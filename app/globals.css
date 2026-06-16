@@ -1,0 +1,336 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   设计令牌
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --bg-app: #f5f6f8;
+  --bg-panel: #ffffff;
+  --bg-elevated: #fbfbfd;
+  --bg-muted: #f1f3f6;
+  --ink: #1f2430;
+  --ink-soft: #4b5566;
+  --ink-faint: #8a94a6;
+  --line: #e7e9ef;
+  --line-soft: #eef0f4;
+  --accent: #5b46e5;
+  --accent-weak: #eef0fe;
+  --accent-ink: #4338ca;
+  --radius: 12px;
+  --shadow-sm: 0 1px 2px rgba(20, 24, 40, 0.06);
+  --shadow-md: 0 6px 20px rgba(20, 24, 40, 0.1);
+  --shadow-lg: 0 18px 48px rgba(20, 24, 40, 0.18);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Source Han Sans SC", sans-serif;
+  --font-serif: "Noto Serif SC", "Songti SC", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg-app);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 滚动条 */
+.scroll-y {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cfd4dd transparent;
+}
+.scroll-y::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+.scroll-y::-webkit-scrollbar-thumb {
+  background: #cfd4dd;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.scroll-y::-webkit-scrollbar-thumb:hover {
+  background: #b4bcc9;
+  background-clip: content-box;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   笔记排版 (.prose-notes)
+   ───────────────────────────────────────────────────────────── */
+.prose-notes {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.85;
+  max-width: 50rem;
+  margin: 0 auto;
+}
+.prose-notes h1,
+.prose-notes h2,
+.prose-notes h3,
+.prose-notes h4 {
+  line-height: 1.35;
+  font-weight: 680;
+  letter-spacing: -0.01em;
+  scroll-margin-top: 84px;
+}
+.prose-notes h1 {
+  font-size: 1.85rem;
+  margin: 0.2em 0 0.7em;
+}
+.prose-notes h2 {
+  font-size: 1.4rem;
+  margin: 1.9em 0 0.7em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--line);
+}
+.prose-notes h3 {
+  font-size: 1.16rem;
+  margin: 1.5em 0 0.6em;
+  color: #2b3140;
+}
+.prose-notes h4 {
+  font-size: 1.02rem;
+  margin: 1.2em 0 0.5em;
+  color: var(--ink-soft);
+}
+.prose-notes p {
+  margin: 0.85em 0;
+}
+.prose-notes a {
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-notes ul,
+.prose-notes ol {
+  margin: 0.7em 0;
+  padding-left: 1.5em;
+}
+.prose-notes li {
+  margin: 0.35em 0;
+}
+.prose-notes ul > li::marker {
+  color: var(--accent);
+}
+.prose-notes strong {
+  font-weight: 680;
+  color: #161b26;
+}
+.prose-notes blockquote {
+  margin: 1.1em 0;
+  padding: 0.2em 1.1em;
+  border-left: 3px solid var(--accent);
+  color: var(--ink-soft);
+  background: var(--accent-weak);
+  border-radius: 0 8px 8px 0;
+}
+.prose-notes code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--bg-muted);
+  padding: 0.12em 0.4em;
+  border-radius: 5px;
+  color: #b3344a;
+}
+.prose-notes pre {
+  background: #1f2430;
+  color: #e6e9ef;
+  padding: 1em 1.15em;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+.prose-notes pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+.prose-notes hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 2em 0;
+}
+.prose-notes table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2em 0;
+  font-size: 0.95em;
+}
+.prose-notes th,
+.prose-notes td {
+  border: 1px solid var(--line);
+  padding: 0.5em 0.8em;
+  text-align: left;
+}
+.prose-notes th {
+  background: var(--bg-muted);
+  font-weight: 640;
+}
+
+/* KaTeX 尺寸与块公式滚动 */
+.prose-notes .katex {
+  font-size: 1.06em;
+}
+.prose-notes .katex-display {
+  margin: 1.1em 0;
+  padding: 0.4em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.prose-notes .katex-display > .katex {
+  font-size: 1.16em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   指令块（theorem / example / insight / pitfall / derivation）
+   ───────────────────────────────────────────────────────────── */
+.callout {
+  margin: 1.3em 0;
+  border: 1px solid var(--line);
+  border-left-width: 4px;
+  border-radius: 10px;
+  padding: 0.9em 1.1em 0.95em;
+  background: var(--bg-elevated);
+}
+.callout > .callout-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.35em;
+}
+.callout > :last-child {
+  margin-bottom: 0;
+}
+.callout p:first-of-type {
+  margin-top: 0.2em;
+}
+.callout-definition {
+  border-left-color: #2563eb;
+  background: #f3f7ff;
+}
+.callout-definition .callout-label {
+  color: #1d4ed8;
+}
+.callout-theorem {
+  border-left-color: #7c3aed;
+  background: #f7f4ff;
+}
+.callout-theorem .callout-label {
+  color: #6d28d9;
+}
+.callout-example {
+  border-left-color: #059669;
+  background: #f0fbf6;
+}
+.callout-example .callout-label {
+  color: #047857;
+}
+.callout-insight {
+  border-left-color: #d97706;
+  background: #fff9ef;
+}
+.callout-insight .callout-label {
+  color: #b45309;
+}
+.callout-pitfall {
+  border-left-color: #dc2626;
+  background: #fff4f3;
+}
+.callout-pitfall .callout-label {
+  color: #b91c1c;
+}
+.callout-note {
+  border-left-color: #64748b;
+  background: #f8fafc;
+}
+.callout-note .callout-label {
+  color: #475569;
+}
+
+/* 可折叠推导 */
+.derivation {
+  margin: 1.3em 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fcfcfd;
+  overflow: hidden;
+}
+.derivation > summary {
+  cursor: pointer;
+  padding: 0.7em 1em;
+  font-weight: 640;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  background: var(--bg-muted);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  user-select: none;
+}
+.derivation > summary::-webkit-details-marker {
+  display: none;
+}
+.derivation > summary::before {
+  content: "▶";
+  font-size: 0.7em;
+  color: var(--accent);
+  transition: transform 0.15s ease;
+}
+.derivation[open] > summary::before {
+  transform: rotate(90deg);
+}
+.derivation > .derivation-body {
+  padding: 0.4em 1.1em 0.8em;
+}
+
+/* 行内划词高亮 */
+::selection {
+  background: #d9d2ff;
+}
+
+/* 通用动画 */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+.animate-fade-up {
+  animation: fadeUp 0.25s ease both;
+}
+
+/* highlight.js（无主题时的最小可读样式） */
+.hljs-keyword, .hljs-built_in { color: #c792ea; }
+.hljs-string { color: #c3e88d; }
+.hljs-number { color: #f78c6c; }
+.hljs-comment { color: #6b7280; font-style: italic; }
+.hljs-title, .hljs-function .hljs-title { color: #82aaff; }

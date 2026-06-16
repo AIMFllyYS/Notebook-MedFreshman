@@ -1,0 +1,31 @@
+# dependencies
+node_modules/
+.pnp/
+.pnp.*
+
+# next.js
+.next/
+out/
+build/
+next-env.d.ts
+
+# env (keep .env.example tracked)
+.env.local
+.env*.local
+
+# manim intermediate render cache (final mp4s live in public/media)
+manim/media/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# misc
+.DS_Store
+*.log
+npm-debug.log*
+yarn-error.log*
+.vercel
+*.tsbuildinfo
+.idea/
+.vscode/
