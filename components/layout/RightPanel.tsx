@@ -1,10 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
 import { useStore, type RightTab } from "@/lib/store";
-import ChatPanel from "@/components/chat/ChatPanel";
-import VideoTab from "@/components/video/VideoTab";
-import InteractiveTab from "@/components/interactives/InteractiveTab";
+
+const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
+const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
+const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
 
 const TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
   {
@@ -38,6 +41,12 @@ const TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
   },
 ];
 
+const tabVariants = {
+  initial: { opacity: 0, x: 8 },
+  animate: { opacity: 1, x: 0, transition: { duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] } },
+  exit: { opacity: 0, x: -8, transition: { duration: 0.15, ease: [0.42, 0, 0.58, 1] } },
+};
+
 export default function RightPanel() {
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);
@@ -50,7 +59,7 @@ export default function RightPanel() {
             key={t.id}
             onClick={() => setTab(t.id)}
             className={clsx(
-              "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
+              "press flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
               tab === t.id
                 ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
                 : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
@@ -62,17 +71,24 @@ export default function RightPanel() {
         ))}
       </div>
 
-      {/* 三板块全部挂载、仅切换可见性，保留各自状态 */}
-      <div className="min-h-0 flex-1">
-        <div className={clsx("h-full", tab === "ai" ? "block" : "hidden")}>
-          <ChatPanel />
-        </div>
-        <div className={clsx("h-full", tab === "video" ? "block" : "hidden")}>
-          <VideoTab />
-        </div>
-        <div className={clsx("h-full", tab === "interactive" ? "block" : "hidden")}>
-          <InteractiveTab />
-        </div>
+      <div className="min-h-0 flex-1 overflow-hidden">
+        <AnimatePresence mode="wait">
+          {tab === "ai" && (
+            <motion.div key="ai" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
+              <ChatPanel />
+            </motion.div>
+          )}
+          {tab === "video" && (
+            <motion.div key="video" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
+              <VideoTab />
+            </motion.div>
+          )}
+          {tab === "interactive" && (
+            <motion.div key="interactive" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
+              <InteractiveTab />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

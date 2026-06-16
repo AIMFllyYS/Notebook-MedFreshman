@@ -19,7 +19,7 @@ export default function ModelSwitch() {
           onClick={() => setModel(m)}
           title={LABELS[m].hint}
           className={clsx(
-            "rounded-md px-2.5 py-1 transition-colors",
+            "press rounded-md px-2.5 py-1 transition-colors",
             model === m
               ? "bg-white text-[var(--accent-ink)] shadow-sm"
               : "text-[var(--ink-faint)] hover:text-[var(--ink-soft)]",

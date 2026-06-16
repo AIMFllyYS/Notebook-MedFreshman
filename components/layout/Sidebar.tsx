@@ -63,7 +63,7 @@ export default function Sidebar() {
             <div key={ch.id} className="mb-0.5">
               <button
                 onClick={() => toggleChapter(ch.id)}
-                className="flex w-full items-center gap-1.5 rounded-lg px-2 py-1.5 text-left text-[13.5px] font-semibold hover:bg-[var(--bg-muted)]"
+                className="press flex w-full items-center gap-1.5 rounded-lg px-2 py-1.5 text-left text-[13.5px] font-semibold hover:bg-[var(--bg-muted)]"
               >
                 <Chevron open={open} dim={!hasSections} />
                 <span className="grid h-5 w-5 shrink-0 place-items-center rounded-md bg-[var(--accent-weak)] text-[11px] font-bold text-[var(--accent-ink)]">
@@ -78,7 +78,7 @@ export default function Sidebar() {
               </button>
 
               {open && hasSections && (
-                <div className="ml-[14px] mt-0.5 border-l border-[var(--line-soft)] pl-2">
+                <div className="animate-expand ml-[14px] mt-0.5 border-l border-[var(--line-soft)] pl-2">
                   {ch.sections.map((sec) => {
                     const active = sec.id === activeSectionId;
                     return (
@@ -86,7 +86,7 @@ export default function Sidebar() {
                         key={sec.id}
                         onClick={() => setActiveSection(ch.id, sec.id)}
                         className={clsx(
-                          "flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left text-[13px] transition-colors",
+                          "press flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left text-[13px] transition-colors",
                           active
                             ? "bg-[var(--accent-weak)] font-medium text-[var(--accent-ink)]"
                             : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",

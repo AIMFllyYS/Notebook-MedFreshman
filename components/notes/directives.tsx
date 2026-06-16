@@ -3,6 +3,7 @@
 import { useStore } from "@/lib/store";
 import { getVideo } from "@/content/media";
 import { getInteractive } from "@/components/interactives/registry";
+import LazyVisible from "@/components/ui/LazyVisible";
 
 interface NodeProps {
   node?: { properties?: Record<string, unknown> };
@@ -56,7 +57,7 @@ function VideoEmbed({ id }: { id: string }) {
   return (
     <button
       onClick={() => openPip(video)}
-      className="group my-4 flex w-full items-center gap-3 rounded-xl border border-[var(--line)] bg-white px-4 py-3 text-left transition-shadow hover:shadow-[var(--shadow-md)]"
+      className="hover-lift group my-4 flex w-full items-center gap-3 rounded-xl border border-[var(--line)] bg-white px-4 py-3 text-left transition-shadow"
     >
       <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-[var(--accent-weak)] text-[var(--accent-ink)]">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
@@ -80,13 +81,15 @@ function InteractiveEmbed({ id }: { id: string }) {
   }
   const C = item.Component;
   return (
-    <div className="my-5">
-      <div className="mb-2 flex items-center gap-2 text-[13px] font-semibold text-[var(--ink-soft)]">
-        <span className="grid h-5 w-5 place-items-center rounded bg-[var(--accent-weak)] text-[var(--accent-ink)]">🧩</span>
-        {item.title}
+    <LazyVisible placeholder={<div className="my-5 h-48 rounded-xl border border-dashed border-[var(--line)] bg-[var(--bg-muted)]" />}>
+      <div className="my-5">
+        <div className="mb-2 flex items-center gap-2 text-[13px] font-semibold text-[var(--ink-soft)]">
+          <span className="grid h-5 w-5 place-items-center rounded bg-[var(--accent-weak)] text-[var(--accent-ink)]">🧩</span>
+          {item.title}
+        </div>
+        <C />
       </div>
-      <C />
-    </div>
+    </LazyVisible>
   );
 }
 

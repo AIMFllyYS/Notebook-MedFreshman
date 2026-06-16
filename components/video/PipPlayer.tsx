@@ -41,8 +41,10 @@ export default function PipPlayer() {
       dragControls={controls}
       dragListener={false}
       dragMomentum={false}
-      initial={{ opacity: 0, scale: 0.92, y: 12 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
+      initial={{ opacity: 0, scale: 0.85, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 350, damping: 25 } }}
+      exit={{ opacity: 0, scale: 0.85, y: 20, transition: { duration: 0.2 } }}
+      whileDrag={{ scale: 1.02, boxShadow: "0 24px 60px rgba(20,24,40,0.25)" }}
       className="fixed bottom-6 right-6 z-[100] overflow-hidden rounded-xl border border-black/20 bg-black shadow-[var(--shadow-lg)]"
       style={{ width }}
     >

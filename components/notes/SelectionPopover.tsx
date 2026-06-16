@@ -21,7 +21,7 @@ function PopBtn({
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-[var(--ink-soft)] hover:bg-[var(--accent-weak)] hover:text-[var(--accent-ink)]"
+      className="press flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-[var(--ink-soft)] hover:bg-[var(--accent-weak)] hover:text-[var(--accent-ink)]"
     >
       <span>{icon}</span>
       {label}

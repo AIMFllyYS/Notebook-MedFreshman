@@ -26,6 +26,18 @@
   --font-serif: "Noto Serif SC", "Songti SC", Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
     monospace;
+
+  /* ── 动画令牌 ────────────────────────────── */
+  --duration-instant: 75ms;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --scale-press: 0.97;
+  --scale-hover: 1.02;
 }
 
 * {
@@ -309,7 +321,7 @@ body {
   background: #d9d2ff;
 }
 
-/* 通用动画 */
+/* ── 动画库 ────────────────────────────────── */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -320,12 +332,104 @@ body {
     transform: translateY(0);
   }
 }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes expandHeight {
+  from { opacity: 0; max-height: 0; }
+  to { opacity: 1; max-height: 500px; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
 @keyframes pulse-dot {
   0%, 100% { opacity: 0.35; }
   50% { opacity: 1; }
 }
+
+/* ── 动画工具类 ────────────────────────────── */
 .animate-fade-up {
-  animation: fadeUp 0.25s ease both;
+  animation: fadeUp var(--duration-normal) var(--ease-out) both;
+}
+.animate-fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-out) both;
+}
+.animate-slide-in-right {
+  animation: slideInRight var(--duration-normal) var(--ease-out) both;
+}
+.animate-slide-in-left {
+  animation: slideInLeft var(--duration-normal) var(--ease-out) both;
+}
+.animate-slide-in-up {
+  animation: slideInUp var(--duration-normal) var(--ease-out) both;
+}
+.animate-scale-in {
+  animation: scaleIn var(--duration-fast) var(--ease-spring) both;
+}
+.animate-expand {
+  animation: expandHeight var(--duration-normal) var(--ease-decelerate) both;
+  overflow: hidden;
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, var(--bg-muted) 25%, var(--bg-elevated) 50%, var(--bg-muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ── 交互反馈 ──────────────────────────────── */
+.press {
+  transition: transform var(--duration-instant) var(--ease-out);
+}
+.press:active {
+  transform: scale(var(--scale-press));
+}
+.hover-lift {
+  transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+}
+.hover-lift:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── 长列表虚拟渲染 ────────────────────────── */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 48px;
+}
+
+/* ── 尊重用户动画偏好 ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* highlight.js（无主题时的最小可读样式） */

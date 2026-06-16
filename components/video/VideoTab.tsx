@@ -30,7 +30,7 @@ export default function VideoTab() {
             <button
               key={v.id}
               onClick={() => openPip(v)}
-              className="group overflow-hidden rounded-xl border border-[var(--line)] bg-white text-left transition-shadow hover:shadow-[var(--shadow-md)]"
+              className="hover-lift group overflow-hidden rounded-xl border border-[var(--line)] bg-white text-left transition-shadow"
             >
               <div className="relative aspect-video w-full bg-gradient-to-br from-[#ece9ff] to-[#e6f7f1]">
                 {v.poster && (

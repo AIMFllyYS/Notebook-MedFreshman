@@ -1,9 +1,11 @@
 "use client";
 
+import { memo } from "react";
 import { useStore } from "@/lib/store";
 import { getInteractivesForSection } from "./registry";
+import LazyVisible from "@/components/ui/LazyVisible";
 
-export default function InteractiveTab() {
+function InteractiveTabBase() {
   const chapterId = useStore((s) => s.activeChapterId);
   const sectionId = useStore((s) => s.activeSectionId);
   const items = getInteractivesForSection(chapterId, sectionId);
@@ -28,15 +30,20 @@ export default function InteractiveTab() {
           {items.map((item) => {
             const C = item.Component;
             return (
-              <div key={item.id}>
-                <h3 className="text-[14px] font-semibold text-[var(--ink)]">{item.title}</h3>
-                {item.description && (
-                  <p className="mb-2 mt-0.5 text-[12.5px] leading-relaxed text-[var(--ink-faint)]">
-                    {item.description}
-                  </p>
-                )}
-                <C />
-              </div>
+              <LazyVisible
+                key={item.id}
+                placeholder={<div className="h-48 rounded-xl border border-[var(--line)] bg-[var(--bg-muted)] animate-shimmer" />}
+              >
+                <div className="animate-scale-in">
+                  <h3 className="text-[14px] font-semibold text-[var(--ink)]">{item.title}</h3>
+                  {item.description && (
+                    <p className="mb-2 mt-0.5 text-[12.5px] leading-relaxed text-[var(--ink-faint)]">
+                      {item.description}
+                    </p>
+                  )}
+                  <C />
+                </div>
+              </LazyVisible>
             );
           })}
         </div>
@@ -44,3 +51,5 @@ export default function InteractiveTab() {
     </div>
   );
 }
+
+export default memo(InteractiveTabBase);

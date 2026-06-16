@@ -206,7 +206,7 @@ export default function ChatPanel() {
                 <button
                   key={s}
                   onClick={() => send(s)}
-                  className="rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-left text-[13px] text-[var(--ink-soft)] hover:border-[var(--accent)] hover:bg-[var(--accent-weak)]"
+                  className="press rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-left text-[13px] text-[var(--ink-soft)] hover:border-[var(--accent)] hover:bg-[var(--accent-weak)]"
                 >
                   {s}
                 </button>
@@ -236,7 +236,7 @@ export default function ChatPanel() {
           <button
             onClick={() => send(input)}
             disabled={busy || !input.trim()}
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[var(--accent)] text-white transition-opacity disabled:opacity-40"
+            className="press grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[var(--accent)] text-white transition-opacity disabled:opacity-40"
           >
             {busy ? (
               <span className="block h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
