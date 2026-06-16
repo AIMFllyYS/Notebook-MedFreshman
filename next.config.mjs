@@ -8,6 +8,10 @@ const nextConfig = {
   outputFileTracingIncludes: {
     "/api/**": ["./content/**/*"],
   },
+  // 重型依赖按需加载，减少首屏 bundle 体积
+  experimental: {
+    optimizePackageImports: ["framer-motion", "katex"],
+  },
 };
 
 export default nextConfig;

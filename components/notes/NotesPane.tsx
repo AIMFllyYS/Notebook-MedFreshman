@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useDeferredValue, useRef, useState } from "react";
 import { useStore } from "@/lib/store";
 import { manifest } from "@/content/manifest";
 import NoteRenderer from "./NoteRenderer";
@@ -8,7 +8,7 @@ import SelectionPopover from "./SelectionPopover";
 
 function Skeleton() {
   return (
-    <div className="animate-pulse space-y-3">
+    <div className="animate-shimmer space-y-3">
       {[..."xxxxxxx"].map((_, i) => (
         <div
           key={i}
@@ -45,13 +45,13 @@ function EmptyNote({
           onClick={() =>
             sendToChat(`请基于当前页面，系统、通俗地讲解「${sectionId} ${title}」这一节的核心内容、直觉与典型例子。`)
           }
-          className="rounded-lg bg-[var(--accent)] px-4 py-2 text-[13px] font-medium text-white hover:opacity-90"
+          className="press rounded-lg bg-[var(--accent)] px-4 py-2 text-[13px] font-medium text-white hover:opacity-90"
         >
           问 AI：这一节讲什么
         </button>
         <button
           onClick={() => setRightTab("interactive")}
-          className="rounded-lg bg-[var(--bg-muted)] px-4 py-2 text-[13px] font-medium text-[var(--ink-soft)] hover:bg-[var(--line)]"
+          className="press rounded-lg bg-[var(--bg-muted)] px-4 py-2 text-[13px] font-medium text-[var(--ink-soft)] hover:bg-[var(--line)]"
         >
           看看交互内容
         </button>
@@ -61,8 +61,11 @@ function EmptyNote({
 }
 
 export default function NotesPane() {
-  const chapterId = useStore((s) => s.activeChapterId);
-  const sectionId = useStore((s) => s.activeSectionId);
+  const activeChapterId = useStore((s) => s.activeChapterId);
+  const activeSectionId = useStore((s) => s.activeSectionId);
+  // 延迟读取：面板 resize 期间不急于更新内容
+  const chapterId = useDeferredValue(activeChapterId);
+  const sectionId = useDeferredValue(activeSectionId);
   const containerRef = useRef<HTMLDivElement>(null);
   const [content, setContent] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -116,15 +119,17 @@ export default function NotesPane() {
           {loading ? (
             <Skeleton />
           ) : content ? (
-            <div className="prose-notes">
+            <div key={sectionId} className="prose-notes animate-fade-in">
               <NoteRenderer content={content} />
             </div>
           ) : (
-            <EmptyNote
-              chapterId={chapterId}
-              sectionId={sectionId}
-              title={sec?.title ?? ""}
-            />
+            <div key={sectionId} className="animate-fade-in">
+              <EmptyNote
+                chapterId={chapterId}
+                sectionId={sectionId}
+                title={sec?.title ?? ""}
+              />
+            </div>
           )}
         </article>
       </div>

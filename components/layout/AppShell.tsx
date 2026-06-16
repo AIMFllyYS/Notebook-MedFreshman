@@ -1,18 +1,21 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useTransition } from "react";
 import {
   Panel,
   PanelGroup,
   PanelResizeHandle,
   type ImperativePanelHandle,
 } from "react-resizable-panels";
+import dynamic from "next/dynamic";
+import { AnimatePresence } from "framer-motion";
 import { useStore } from "@/lib/store";
 import { manifest } from "@/content/manifest";
 import Sidebar from "./Sidebar";
 import RightPanel from "./RightPanel";
 import NotesPane from "@/components/notes/NotesPane";
-import PipPlayer from "@/components/video/PipPlayer";
+
+const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 
 function TopBar() {
   const toggleSidebar = useStore((s) => s.toggleSidebar);
@@ -76,6 +79,7 @@ export default function AppShell() {
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
   const setSidebarCollapsed = useStore((s) => s.setSidebarCollapsed);
   const leftRef = useRef<ImperativePanelHandle>(null);
+  const [, startTransition] = useTransition();
 
   // store 折叠状态 -> 面板命令式同步
   useEffect(() => {
@@ -99,8 +103,8 @@ export default function AppShell() {
             minSize={13}
             defaultSize={19}
             maxSize={34}
-            onCollapse={() => setSidebarCollapsed(true)}
-            onExpand={() => setSidebarCollapsed(false)}
+            onCollapse={() => startTransition(() => setSidebarCollapsed(true))}
+            onExpand={() => startTransition(() => setSidebarCollapsed(false))}
           >
             <Sidebar />
           </Panel>
@@ -128,7 +132,9 @@ export default function AppShell() {
           </Panel>
         </PanelGroup>
       </div>
-      <PipPlayer />
+      <AnimatePresence>
+        <PipPlayer />
+      </AnimatePresence>
     </div>
   );
 }
