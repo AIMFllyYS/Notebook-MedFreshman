@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ─────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -180,7 +180,7 @@ function fmt2(v: number): string {
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────
-export default function HypTestDemo() {
+function HypTestDemoBase() {
   const [alpha, setAlpha] = useState(0.05);
   const [zStat, setZStat] = useState(1.8);
   const [testType, setTestType] = useState<TestType>("two");
@@ -632,3 +632,5 @@ export default function HypTestDemo() {
     </div>
   );
 }
+
+export default memo(HypTestDemoBase);

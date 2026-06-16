@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Fragment } from "react";
+import { memo, useState, Fragment } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -396,7 +396,7 @@ function MiniHeat({ p, label }: MiniHeatProps) {
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────────────────────
-export default function MarginalExplorer() {
+function MarginalExplorerBase() {
   const [tab, setTab] = useState<Tab>("main");
   const [raw, setRaw] = useState<number[][]>(PRESET_MAIN.map((r) => [...r]));
   const [mode, setMode] = useState<Mode>("rowSelect");
@@ -914,3 +914,5 @@ export default function MarginalExplorer() {
     </div>
   );
 }
+
+export default memo(MarginalExplorerBase);

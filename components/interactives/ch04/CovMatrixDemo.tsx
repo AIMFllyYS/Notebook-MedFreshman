@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -152,7 +152,7 @@ function SliderRow({ label, symbol, value, min, max, step, onChange, color, fmt 
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────────────────────
-export default function CovMatrixDemo() {
+function CovMatrixDemoBase() {
   // 协方差矩阵参数：σ₁², σ₂², ρ（相关系数）
   // 矩阵 Σ = [[σ₁², ρσ₁σ₂], [ρσ₁σ₂, σ₂²]]
   const [s1sq, setS1sq] = useState(1.0);  // σ₁² ∈ (0,4]
@@ -635,3 +635,5 @@ export default function CovMatrixDemo() {
     </div>
   );
 }
+
+export default memo(CovMatrixDemoBase);

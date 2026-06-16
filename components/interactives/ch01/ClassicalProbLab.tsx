@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─── 场景定义 ────────────────────────────────────────────────────────────────
 
@@ -97,7 +97,7 @@ const CHART_H = SVG_H - PAD_T - PAD_B;
 
 // ─── 主组件 ──────────────────────────────────────────────────────────────────
 
-export default function ClassicalProbLab() {
+function ClassicalProbLabBase() {
   // 场景选择
   const [scene, setScene] = useState<SceneKey>("dice");
 
@@ -580,3 +580,5 @@ export default function ClassicalProbLab() {
     </div>
   );
 }
+
+export default memo(ClassicalProbLabBase);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { memo, useState, useMemo } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -288,7 +288,7 @@ function StatCard({ label, value, color, bg }: StatCardProps) {
 // ─── 主组件 ───────────────────────────────────────────────────────────────────
 type TabType = "binomial" | "poisson";
 
-export default function BinomialExplorer() {
+function BinomialExplorerBase() {
   const [tab, setTab] = useState<TabType>("binomial");
 
   // 二项分布参数
@@ -587,3 +587,5 @@ function BinomPoissonBridge({
     </div>
   );
 }
+
+export default memo(BinomialExplorerBase);

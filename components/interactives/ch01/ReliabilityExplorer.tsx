@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─── 常量与类型 ─────────────────────────────────────────────────────────────
 
@@ -243,7 +243,7 @@ function reliabilityColor(r: number): string {
 
 // ─── 主组件 ─────────────────────────────────────────────────────────────────
 
-export default function ReliabilityExplorer() {
+function ReliabilityExplorerBase() {
   const [mode, setMode] = useState<Mode>("series");
   const [components, setComponents] = useState<Component[]>(INIT_COMPONENTS);
   const [simResult, setSimResult] = useState<{
@@ -528,3 +528,5 @@ export default function ReliabilityExplorer() {
     </div>
   );
 }
+
+export default memo(ReliabilityExplorerBase);

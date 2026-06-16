@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useId } from "react";
+import { memo, useState, useCallback, useId } from "react";
 
 // ─── 设计常量 ─────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -204,7 +204,7 @@ function StepCard({ step, title, children }: StepCardProps) {
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────
-export default function StatisticCalculator() {
+function StatisticCalculatorBase() {
   const inputId = useId();
 
   // 输入状态
@@ -586,3 +586,5 @@ export default function StatisticCalculator() {
     </div>
   );
 }
+
+export default memo(StatisticCalculatorBase);

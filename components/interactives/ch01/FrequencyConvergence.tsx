@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 const W = 340;
 const H = 160;
 const P = 26;
 const MAX_POINTS = 600;
 
-export default function FrequencyConvergence() {
+function FrequencyConvergenceBase() {
   const [total, setTotal] = useState(0);
   const [heads, setHeads] = useState(0);
   const [points, setPoints] = useState<number[]>([]);
@@ -92,3 +92,5 @@ export default function FrequencyConvergence() {
     </div>
   );
 }
+
+export default memo(FrequencyConvergenceBase);

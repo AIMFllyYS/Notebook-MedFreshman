@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -119,7 +119,7 @@ function SliderRow({ label, value, display, min, max, step, onChange }: SliderRo
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────────────────────
-export default function ConfidenceIntervalExplorer() {
+function ConfidenceIntervalExplorerBase() {
   // 参数状态
   const [confidenceLevel, setConfidenceLevel] = useState(0.95); // 1 - α
   const [n, setN] = useState(20);                               // 样本量
@@ -578,3 +578,5 @@ export default function ConfidenceIntervalExplorer() {
     </div>
   );
 }
+
+export default memo(ConfidenceIntervalExplorerBase);

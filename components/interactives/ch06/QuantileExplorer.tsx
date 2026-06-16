@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { memo, useState, useCallback, useMemo } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -439,7 +439,7 @@ function qqCorrelation(points: QQPoint[]): number {
 
 // ─── 主组件 ───────────────────────────────────────────────────────────────────
 
-export default function QuantileExplorer() {
+function QuantileExplorerBase() {
   const [dist, setDist] = useState<Distribution>("normal");
   const [n, setN] = useState(30);
   const [sorted, setSorted] = useState<number[]>([]);
@@ -643,3 +643,5 @@ export default function QuantileExplorer() {
     </div>
   );
 }
+
+export default memo(QuantileExplorerBase);

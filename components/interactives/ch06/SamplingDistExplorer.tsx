@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { memo, useState, useMemo } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -591,7 +591,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────────────────────
-export default function SamplingDistExplorer() {
+function SamplingDistExplorerBase() {
   const [activeTab, setActiveTab] = useState<TabId>("chi2");
 
   // χ² 参数
@@ -916,3 +916,5 @@ export default function SamplingDistExplorer() {
     </div>
   );
 }
+
+export default memo(SamplingDistExplorerBase);

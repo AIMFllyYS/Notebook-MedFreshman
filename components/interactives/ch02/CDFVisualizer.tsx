@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { memo, useState, useCallback, useRef, useEffect } from "react";
 
 // ─── 设计令牌常量 ───────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -187,7 +187,7 @@ function clamp(v: number, lo: number, hi: number): number {
 }
 
 // ─── 主组件 ─────────────────────────────────────────────────────
-export default function CDFVisualizer() {
+function CDFVisualizerBase() {
   // 分布选择
   const [distType, setDistType] = useState<DistType>("binomial");
   // 二项参数
@@ -994,3 +994,5 @@ export default function CDFVisualizer() {
     </div>
   );
 }
+
+export default memo(CDFVisualizerBase);

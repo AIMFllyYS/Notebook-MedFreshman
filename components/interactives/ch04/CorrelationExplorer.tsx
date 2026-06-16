@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { memo, useState, useCallback, useMemo } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -137,7 +137,7 @@ function RhoSlider({ value, onChange }: RhoSliderProps) {
 }
 
 // ─── 主组件 ──────────────────────────────────────────────────────────────────
-export default function CorrelationExplorer() {
+function CorrelationExplorerBase() {
   const [rho, setRho] = useState(0.6);
   const [mode, setMode] = useState<Mode>("normal");
   const [points, setPoints] = useState<Point[]>(() =>
@@ -539,3 +539,5 @@ export default function CorrelationExplorer() {
     </div>
   );
 }
+
+export default memo(CorrelationExplorerBase);

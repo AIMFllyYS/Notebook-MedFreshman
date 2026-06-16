@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { memo, useState, useCallback } from "react";
 
 // ─── 颜色常量 ────────────────────────────────────────────────────────────────
 const C_ALPHA = "#dc2626";       // 红：α（第一类错误）
@@ -176,7 +176,7 @@ function StatCard({ label, value, sub, color, bg }: StatCardProps) {
 }
 
 // ─── 主组件 ──────────────────────────────────────────────────────────────────
-export default function ErrorTypeDemo() {
+function ErrorTypeDemoBase() {
   const [alpha, setAlpha] = useState(0.05);
   const [delta, setDelta] = useState(1.5);   // 效应量 δ = μ1 - μ0
   const [n, setN] = useState(20);
@@ -560,3 +560,5 @@ export default function ErrorTypeDemo() {
     </div>
   );
 }
+
+export default memo(ErrorTypeDemoBase);

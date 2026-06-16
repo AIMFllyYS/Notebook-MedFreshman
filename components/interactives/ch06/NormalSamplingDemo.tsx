@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -434,7 +434,7 @@ function SliderRow({ label, value, min, max, step, display, color, onChange }: S
 
 // ─── 主组件 ────────────────────────────────────────────────────
 
-export default function NormalSamplingDemo() {
+function NormalSamplingDemoBase() {
   const [mu, setMu] = useState(0);
   const [sigma, setSigma] = useState(1);
   const [n, setN] = useState(10);
@@ -748,3 +748,5 @@ export default function NormalSamplingDemo() {
     </div>
   );
 }
+
+export default memo(NormalSamplingDemoBase);

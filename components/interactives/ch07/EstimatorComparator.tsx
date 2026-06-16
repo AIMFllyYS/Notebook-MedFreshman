@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -217,7 +217,7 @@ function StatCard({ label, value, sub, color, bg, badge, badgeColor }: StatCardP
 }
 
 // ─── 主组件 ──────────────────────────────────────────────────────────────────
-export default function EstimatorComparator() {
+function EstimatorComparatorBase() {
   const [n, setN] = useState<number>(10);
   const [simCount] = useState<number>(2000);
   const [running, setRunning] = useState<boolean>(false);
@@ -641,3 +641,5 @@ export default function EstimatorComparator() {
     </div>
   );
 }
+
+export default memo(EstimatorComparatorBase);

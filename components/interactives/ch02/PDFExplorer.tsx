@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { memo, useState, useCallback, useRef } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -226,7 +226,7 @@ function MemorylessPanel({ lam }: MemorylessProps) {
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────────
-export default function PDFExplorer() {
+function PDFExplorerBase() {
   const [dist, setDist] = useState<DistType>("normal");
 
   // 均匀分布参数 [ua, ub]
@@ -609,3 +609,5 @@ export default function PDFExplorer() {
     </div>
   );
 }
+
+export default memo(PDFExplorerBase);

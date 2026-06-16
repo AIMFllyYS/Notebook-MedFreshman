@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 type RegionKey = "a" | "b" | "ab" | "out";
 
@@ -26,7 +26,7 @@ const OPS: Op[] = [
 const ACCENT = "#5b46e5";
 const REGION_BASE = "#e9ebf2";
 
-export default function VennPlayground() {
+function VennPlaygroundBase() {
   const [opKey, setOpKey] = useState("inter");
   const op = OPS.find((o) => o.key === opKey)!;
   const on = (r: RegionKey) => op.regions.includes(r);
@@ -94,3 +94,5 @@ export default function VennPlayground() {
     </div>
   );
 }
+
+export default memo(VennPlaygroundBase);

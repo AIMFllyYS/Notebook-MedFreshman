@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -507,7 +507,7 @@ function ParamSlider({ label, value, min, max, step, onChange, color }: ParamSli
 }
 
 // ─── 主组件 ──────────────────────────────────────────────────────
-export default function MomentEstimator() {
+function MomentEstimatorBase() {
   const [dist, setDist] = useState<DistType>("exponential");
   const [dataText, setDataText] = useState<string>("2.1, 0.8, 1.5, 0.4, 3.2, 0.6, 1.9, 2.7, 0.3, 1.1");
   const [sampleSize, setSampleSize] = useState<number>(30);
@@ -877,3 +877,5 @@ export default function MomentEstimator() {
     </div>
   );
 }
+
+export default memo(MomentEstimatorBase);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ──────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -518,7 +518,7 @@ function HistogramSVG({
 const N_SAMPLES = 5000;
 const N_BINS = 50;
 
-export default function ConvolutionDemo() {
+function ConvolutionDemoBase() {
   const [xDist, setXDist] = useState<DistParams>({ type: "normal", p1: 0, p2: 1 });
   const [yDist, setYDist] = useState<DistParams>({ type: "normal", p1: 0, p2: 1 });
   const [bins, setBins] = useState<number[]>([]);
@@ -792,3 +792,5 @@ export default function ConvolutionDemo() {
     </div>
   );
 }
+
+export default memo(ConvolutionDemoBase);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ──────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -161,7 +161,7 @@ function SliderRow({ label, value, min, max, step, fmt, onChange, color }: Slide
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────
-export default function LLNSimulator() {
+function LLNSimulatorBase() {
   // 控制参数
   const [dist, setDist] = useState<DistType>("bernoulli");
   const [param, setParam] = useState(0.5);         // p / mean
@@ -586,3 +586,5 @@ export default function LLNSimulator() {
     </div>
   );
 }
+
+export default memo(LLNSimulatorBase);

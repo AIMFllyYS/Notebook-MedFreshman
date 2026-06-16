@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { memo, useState, useCallback } from "react";
 
 // ─── Design constants ────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -322,7 +322,7 @@ function MarginalBadge({ value, label, color }: { value: number; label: string; 
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
-export default function IndependenceChecker() {
+function IndependenceCheckerBase() {
   const [grid, setGrid] = useState<Grid3x3>(() => INIT_GRID.map((r) => [...r]) as Grid3x3);
   const [selectedCell, setSelectedCell] = useState<[number, number] | null>([1, 1]);
   const [showFormula, setShowFormula] = useState(false);
@@ -688,3 +688,5 @@ export default function IndependenceChecker() {
     </div>
   );
 }
+
+export default memo(IndependenceCheckerBase);

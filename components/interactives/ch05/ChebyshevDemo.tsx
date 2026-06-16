@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -259,7 +259,7 @@ function MetricRow({ label, formula, value, color, bg, isRatio, ratio }: MetricR
 }
 
 // ─── 主组件 ──────────────────────────────────────────────────
-export default function ChebyshevDemo() {
+function ChebyshevDemoBase() {
   const [sigma, setSigma] = useState<number>(1.0);
   const [eps, setEps]     = useState<number>(2.0);
 
@@ -556,3 +556,5 @@ export default function ChebyshevDemo() {
     </div>
   );
 }
+
+export default memo(ChebyshevDemoBase);

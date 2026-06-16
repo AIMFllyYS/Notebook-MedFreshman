@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -91,7 +91,7 @@ const PRESETS: Record<PresetKey, { label: string; raw: number[][] | null }> = {
 };
 
 // ─── 主组件 ──────────────────────────────────────────────────────────────────
-export default function JointDistExplorer() {
+function JointDistExplorerBase() {
   const [raw, setRaw] = useState<number[][]>(INITIAL_RAW);
   const [hoveredCell, setHoveredCell] = useState<[number, number] | null>(null);
   const [preset, setPreset] = useState<PresetKey>("custom");
@@ -621,3 +621,5 @@ function HeatmapGrid({
     </div>
   );
 }
+
+export default memo(JointDistExplorerBase);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ──────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -203,7 +203,7 @@ function SliderRow({ label, value, min, max, step, fmt, onChange, color }: Slide
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────
-export default function CLTSimulator() {
+function CLTSimulatorBase() {
   const [dist, setDist] = useState<DistType>("uniform");
   const [sampleSize, setSampleSize] = useState(5); // n: 每组样本量
 
@@ -675,3 +675,5 @@ export default function CLTSimulator() {
     </div>
   );
 }
+
+export default memo(CLTSimulatorBase);

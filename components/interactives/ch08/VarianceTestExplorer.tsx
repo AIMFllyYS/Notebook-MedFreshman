@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -581,7 +581,7 @@ function Derivation({ s2, n, sigma02, tail, alpha, result }: DerivationProps) {
 }
 
 // ─── Main Component ───────────────────────────────────────────────────────────
-export default function VarianceTestExplorer() {
+function VarianceTestExplorerBase() {
   // Parameter inputs
   const [s2, setS2] = useState(1.44);        // sample variance S²
   const [n, setN] = useState(16);             // sample size
@@ -912,3 +912,5 @@ export default function VarianceTestExplorer() {
     </div>
   );
 }
+
+export default memo(VarianceTestExplorerBase);

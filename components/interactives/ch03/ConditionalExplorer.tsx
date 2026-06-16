@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─── 设计常量 ─────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -158,7 +158,7 @@ function fmt(v: number): string {
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────
-export default function ConditionalExplorer() {
+function ConditionalExplorerBase() {
   // 联合分布矩阵（行=Y，列=X）
   const [joint, setJoint] = useState<Matrix3x3>(normalizeMatrix(INDEP_JOINT));
   // 当前选中的行（Y 的取值索引）
@@ -522,3 +522,5 @@ export default function ConditionalExplorer() {
     </div>
   );
 }
+
+export default memo(ConditionalExplorerBase);

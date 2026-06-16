@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ─────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -432,7 +432,7 @@ function TabBtn({ active, onClick, color = ACCENT, children }: TabBtnProps) {
 }
 
 // ─── 主组件 ──────────────────────────────────────────────────
-export default function FuncDistDemo() {
+function FuncDistDemoBase() {
   const [distKey, setDistKey] = useState<DistKey>("normal");
   const [transformKey, setTransformKey] = useState<TransformKey>("square");
   const [samples, setSamples] = useState<number[]>([]);
@@ -680,3 +680,5 @@ export default function FuncDistDemo() {
     </div>
   );
 }
+
+export default memo(FuncDistDemoBase);

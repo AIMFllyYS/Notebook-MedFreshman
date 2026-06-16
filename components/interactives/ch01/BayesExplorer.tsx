@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -137,7 +137,7 @@ function Slider({ label, value, min, max, step, onChange, color, note }: SliderP
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────
-export default function BayesExplorer() {
+function BayesExplorerBase() {
   // 三个可调参数
   const [prevalence, setPrevalence] = useState(0.01);   // 先验：患病率 P(D)
   const [sensitivity, setSensitivity] = useState(0.9);  // 灵敏度 P(+|D)
@@ -411,3 +411,5 @@ export default function BayesExplorer() {
     </div>
   );
 }
+
+export default memo(BayesExplorerBase);

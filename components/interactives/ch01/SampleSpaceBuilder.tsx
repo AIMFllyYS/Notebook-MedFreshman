@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 类型
@@ -178,7 +178,7 @@ function SetDisplay({
 // ─────────────────────────────────────────────────────────────────────────────
 // 主组件
 // ─────────────────────────────────────────────────────────────────────────────
-export default function SampleSpaceBuilder() {
+function SampleSpaceBuilderBase() {
   const [outcomes, setOutcomes] = useState<OutcomeState[]>(
     ALL_FACES.map((f) => ({ face: f, membership: "none" }))
   );
@@ -515,3 +515,5 @@ export default function SampleSpaceBuilder() {
     </div>
   );
 }
+
+export default memo(SampleSpaceBuilderBase);

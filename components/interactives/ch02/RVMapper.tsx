@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -298,7 +298,7 @@ function DistChart({ dist, hoveredX, onHover }: DistChartProps) {
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────────────────────
-export default function RVMapper() {
+function RVMapperBase() {
   const [activePreset, setActivePreset] = useState<PresetKey>("identity");
   const [outcomes, setOutcomes] = useState<DieOutcome[]>(() =>
     getInitialOutcomes(PRESETS.find((p) => p.key === "identity")!.fn)
@@ -615,3 +615,5 @@ export default function RVMapper() {
     </div>
   );
 }
+
+export default memo(RVMapperBase);

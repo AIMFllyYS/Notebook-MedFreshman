@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 
 // ─── Design tokens (static fallbacks for SVG) ──────────────────────────────
 const ACCENT = "#5b46e5";
@@ -605,7 +605,7 @@ function Derivation({ testType, tail, xbar, mu0, spread, n, result, alpha }: Der
 }
 
 // ─── Main component ───────────────────────────────────────────────────────
-export default function MeanTestExplorer() {
+function MeanTestExplorerBase() {
   // Tab
   const [testType, setTestType] = useState<TestType>("z");
 
@@ -926,3 +926,5 @@ export default function MeanTestExplorer() {
     </div>
   );
 }
+
+export default memo(MeanTestExplorerBase);

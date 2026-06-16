@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const BLUE = "#5b46e5";
@@ -139,7 +139,7 @@ function StatCard({ label, value, color, bg }: StatCardProps) {
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────────────────────
-export default function VarianceExplorer() {
+function VarianceExplorerBase() {
   // 分布 A（蓝）
   const [muA, setMuA] = useState<number>(0);
   const [sigmaA, setSigmaA] = useState<number>(1);
@@ -562,3 +562,5 @@ export default function VarianceExplorer() {
     </div>
   );
 }
+
+export default memo(VarianceExplorerBase);

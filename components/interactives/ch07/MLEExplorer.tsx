@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { memo, useState, useRef, useCallback } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -222,7 +222,7 @@ function SliderRow({ label, value, min, max, step, fmt_fn, onChange, color }: Sl
 }
 
 // ─── 主组件 ──────────────────────────────────────────────────────
-export default function MLEExplorer() {
+function MLEExplorerBase() {
   const [dist, setDist] = useState<DistType>("exponential");
   const [dataText, setDataText] = useState<string>("0.5, 1.2, 0.8, 2.1, 0.3, 1.5, 0.9, 0.4, 1.8, 0.6");
   const [cursorTheta, setCursorTheta] = useState<number>(1.0);
@@ -748,3 +748,5 @@ export default function MLEExplorer() {
     </div>
   );
 }
+
+export default memo(MLEExplorerBase);

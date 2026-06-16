@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { memo, useState, useRef, useCallback } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -131,7 +131,7 @@ function fmt(v: number, d = 4): string {
 }
 
 // ─── 主组件 ───────────────────────────────────────────────────────────────────
-export default function ExpectationExplorer() {
+function ExpectationExplorerBase() {
   const [masses, setMasses] = useState<Mass[]>(INITIAL_MASSES);
   const [dragTarget, setDragTarget] = useState<DragTarget | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -599,3 +599,5 @@ export default function ExpectationExplorer() {
     </div>
   );
 }
+
+export default memo(ExpectationExplorerBase);
