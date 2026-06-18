@@ -17,6 +17,7 @@ import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
+const QuickExplainWindow = dynamic(() => import("@/components/chat/QuickExplainWindow"), { ssr: false });
 
 /** 从 pathname 解析路由信息：/[subject]/[category]/[id] */
 function parseRoute(pathname: string) {
@@ -160,6 +161,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <AnimatePresence>
         <PipPlayer />
       </AnimatePresence>
+      <QuickExplainWindow />
     </div>
   );
 }

@@ -151,18 +151,32 @@ export default function QuickExplainWindow() {
             if (!data || data === "[DONE]") continue;
             try {
               const event = JSON.parse(data);
-              if (event.type === "content" && event.delta) {
-                accumulated += event.delta;
-                // 不可变更新：创建新数组和新对象
-                useChatUI.setState((state) => ({
-                  quickExplainMessages: state.quickExplainMessages.map((m) =>
-                    m.id === assistantMsgId
-                      ? { ...m, content: accumulated }
-                      : m,
-                  ),
-                }));
-              } else if (event.type === "error") {
-                setError(event.message || "发生未知错误");
+              switch (event.type) {
+                case "content":
+                  // 兼容流式增量(delta)和完整内容(content)两种格式
+                  if (event.delta) {
+                    accumulated += event.delta;
+                  } else if (event.content) {
+                    accumulated = event.content;
+                  }
+                  useChatUI.setState((state) => ({
+                    quickExplainMessages: state.quickExplainMessages.map((m) =>
+                      m.id === assistantMsgId
+                        ? { ...m, content: accumulated }
+                        : m,
+                    ),
+                  }));
+                  break;
+                case "done":
+                  // 流结束信号，退出循环
+                  return;
+                case "error":
+                  setError(event.message || "发生未知错误");
+                  break;
+                case "reasoning":
+                case "tool":
+                  // 浮窗模式忽略深度思考和工具调用事件
+                  break;
               }
             } catch {
               // 忽略解析失败的行
@@ -375,18 +389,32 @@ export default function QuickExplainWindow() {
           if (!data || data === "[DONE]") continue;
           try {
             const event = JSON.parse(data);
-            if (event.type === "content" && event.delta) {
-              accumulated += event.delta;
-              // 不可变更新：创建新数组和新对象
-              useChatUI.setState((state) => ({
-                quickExplainMessages: state.quickExplainMessages.map((m) =>
-                  m.id === assistantMsgId
-                    ? { ...m, content: accumulated }
-                    : m,
-                ),
-              }));
-            } else if (event.type === "error") {
-              setError(event.message || "发生未知错误");
+            switch (event.type) {
+              case "content":
+                // 兼容流式增量(delta)和完整内容(content)两种格式
+                if (event.delta) {
+                  accumulated += event.delta;
+                } else if (event.content) {
+                  accumulated = event.content;
+                }
+                useChatUI.setState((state) => ({
+                  quickExplainMessages: state.quickExplainMessages.map((m) =>
+                    m.id === assistantMsgId
+                      ? { ...m, content: accumulated }
+                      : m,
+                  ),
+                }));
+                break;
+              case "done":
+                // 流结束信号，退出循环
+                return;
+              case "error":
+                setError(event.message || "发生未知错误");
+                break;
+              case "reasoning":
+              case "tool":
+                // 浮窗模式忽略深度思考和工具调用事件
+                break;
             }
           } catch {
             // 忽略解析失败的行
