@@ -9,25 +9,43 @@ import {
 } from "react-resizable-panels";
 import dynamic from "next/dynamic";
 import { AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { useStore } from "@/lib/store";
-import { manifest } from "@/content/manifest";
-import Sidebar from "./Sidebar";
+import { getSubject, getCategory, getContentItem } from "@/content";
+import type { SubjectId, CategoryId } from "@/lib/types/content";
+import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
-import NotesPane from "@/components/notes/NotesPane";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 
-function TopBar() {
+/** 从 pathname 解析路由信息：/[subject]/[category]/[id] */
+function parseRoute(pathname: string) {
+  const segments = pathname.split("/").filter(Boolean);
+  if (segments.length >= 3) {
+    return {
+      subjectId: segments[0] as SubjectId,
+      categoryId: segments[1] as CategoryId,
+      itemId: segments[2],
+    };
+  }
+  return null;
+}
+
+function TopBar({
+  subjectId,
+  categoryId,
+  itemId,
+}: {
+  subjectId: SubjectId;
+  categoryId: CategoryId;
+  itemId: string;
+}) {
   const toggleSidebar = useStore((s) => s.toggleSidebar);
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
-  const chapterId = useStore((s) => s.activeChapterId);
-  const sectionId = useStore((s) => s.activeSectionId);
 
-  const crumb = useMemo(() => {
-    const ch = manifest.chapters.find((c) => c.id === chapterId);
-    const sec = ch?.sections.find((s) => s.id === sectionId);
-    return { ch, sec };
-  }, [chapterId, sectionId]);
+  const subject = getSubject(subjectId);
+  const category = getCategory(subjectId, categoryId);
+  const item = getContentItem(subjectId, categoryId, itemId);
 
   return (
     <header className="flex h-12 shrink-0 items-center gap-3 border-b border-[var(--line)] bg-[var(--bg-panel)] px-3">
@@ -44,27 +62,27 @@ function TopBar() {
       </button>
       <div className="flex items-center gap-2">
         <span className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--accent)] text-[13px] font-bold text-white">
-          概
+          {subject?.name.charAt(0) ?? "?"}
         </span>
         <span className="text-[15px] font-semibold tracking-tight">
-          {manifest.course}
+          {subject?.name ?? ""}
         </span>
         <span className="ml-1 rounded-md bg-[var(--bg-muted)] px-1.5 py-0.5 text-[11px] font-medium text-[var(--ink-faint)]">
           辅助学习
         </span>
       </div>
       <div className="ml-2 flex min-w-0 items-center gap-1.5 text-[13px] text-[var(--ink-faint)]">
-        {crumb.ch && (
+        {category && (
           <>
             <span className="shrink-0">·</span>
             <span className="shrink-0 truncate">
-              第{crumb.ch.number}章 {crumb.ch.title}
+              {category.name}
             </span>
-            {crumb.sec && (
+            {item && (
               <>
                 <span className="shrink-0 text-[var(--ink-faint)]">/</span>
                 <span className="truncate font-medium text-[var(--ink-soft)]">
-                  {crumb.sec.id} {crumb.sec.title}
+                  {itemId} {item.title}
                 </span>
               </>
             )}
@@ -75,11 +93,14 @@ function TopBar() {
   );
 }
 
-export default function AppShell() {
+export default function AppShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
   const setSidebarCollapsed = useStore((s) => s.setSidebarCollapsed);
   const leftRef = useRef<ImperativePanelHandle>(null);
   const [, startTransition] = useTransition();
+
+  const route = useMemo(() => parseRoute(pathname), [pathname]);
 
   // store 折叠状态 -> 面板命令式同步
   useEffect(() => {
@@ -91,9 +112,13 @@ export default function AppShell() {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]">
-      <TopBar />
+      <TopBar
+        subjectId={route?.subjectId ?? "probability"}
+        categoryId={route?.categoryId ?? "detail"}
+        itemId={route?.itemId ?? ""}
+      />
       <div className="min-h-0 flex-1">
-        <PanelGroup direction="horizontal" autoSaveId="gailvlun-layout-v1">
+        <PanelGroup direction="horizontal" autoSaveId="gailvlun-layout-v2">
           <Panel
             ref={leftRef}
             id="sidebar"
@@ -106,7 +131,7 @@ export default function AppShell() {
             onCollapse={() => startTransition(() => setSidebarCollapsed(true))}
             onExpand={() => startTransition(() => setSidebarCollapsed(false))}
           >
-            <Sidebar />
+            <SubjectSidebar />
           </Panel>
 
           <PanelResizeHandle className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">
@@ -117,7 +142,7 @@ export default function AppShell() {
           </PanelResizeHandle>
 
           <Panel id="notes" order={2} minSize={32} defaultSize={50}>
-            <NotesPane />
+            {children}
           </Panel>
 
           <PanelResizeHandle className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">

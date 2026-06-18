@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { SUBJECTS } from "@/lib/constants/subjects";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,17 +14,20 @@ interface ClientMessage {
   content: string;
 }
 
-// 举一反三：由更快的 Flash 档模型生成 3 个可点击的追问
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const messages: ClientMessage[] = Array.isArray(body.messages) ? body.messages : [];
+  const subjectId: string = String(body.subjectId ?? "probability");
+  const categoryId: string = String(body.categoryId ?? "detail");
+  const itemId: string = String(body.itemId ?? "");
 
   if (!BASE || !KEY || BASE.includes("your-endpoint") || messages.length === 0) {
     return NextResponse.json({ questions: [] });
   }
 
-  // 仅取最近若干轮，控制开销
+  const subjectName = SUBJECTS[subjectId as keyof typeof SUBJECTS] || subjectId;
   const recent = messages.slice(-4);
+
   try {
     const res = await fetch(`${BASE.replace(/\/$/, "")}/chat/completions`, {
       method: "POST",
@@ -39,7 +43,10 @@ export async function POST(req: NextRequest) {
           {
             role: "system",
             content:
-              "你是学习追问助手。基于给定对话，提出 3 个简短、具体、能引发举一反三式深入思考的后续问题（站在学生视角）。只输出一个 JSON 字符串数组，例如 [\"问题一\",\"问题二\",\"问题三\"]，每条不超过 28 字，不要任何额外文字。",
+              `你是「${subjectName}」课程的学习追问助手。` +
+              `当前上下文：科目 ${subjectName}，分类 ${categoryId}，内容项 ${itemId || "(未指定)"}。` +
+              `基于给定对话，提出 3 个简短、具体、能引发举一反三式深入思考的后续问题（站在学生视角）。` +
+              `只输出一个 JSON 字符串数组，例如 ["问题一","问题二","问题三"]，每条不超过 28 字，不要任何额外文字。`,
           },
           ...recent,
           { role: "user", content: "请据此给出 3 个举一反三的追问（仅 JSON 数组）。" },
@@ -55,9 +62,7 @@ export async function POST(req: NextRequest) {
       try {
         const arr = JSON.parse(match[0]);
         if (Array.isArray(arr)) questions = arr.map((x) => String(x)).slice(0, 3);
-      } catch {
-        /* ignore */
-      }
+      } catch { /* ignore */ }
     }
     return NextResponse.json({ questions });
   } catch {

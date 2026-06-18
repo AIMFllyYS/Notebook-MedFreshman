@@ -1,9 +1,15 @@
 "use client";
 
 import clsx from "clsx";
-import { manifest } from "@/content/manifest";
-import { useStore } from "@/lib/store";
-import type { ContentStatus } from "@/lib/content/types";
+import Link from "next/link";
+import { contentTree, getSubject, getCategory } from "@/content";
+import type { SubjectId, CategoryId, ContentItem } from "@/lib/types/content";
+
+interface SidebarProps {
+  subjectId: SubjectId;
+  categoryId: CategoryId;
+  itemId: string;
+}
 
 function Chevron({ open, dim }: { open: boolean; dim?: boolean }) {
   return (
@@ -27,8 +33,8 @@ function Chevron({ open, dim }: { open: boolean; dim?: boolean }) {
   );
 }
 
-function StatusDot({ status }: { status?: ContentStatus }) {
-  const map: Record<ContentStatus, string> = {
+function StatusDot({ status }: { status?: string }) {
+  const map: Record<string, string> = {
     done: "bg-emerald-500",
     draft: "bg-amber-400",
     stub: "border border-[var(--ink-faint)]/50",
@@ -44,75 +50,152 @@ function StatusDot({ status }: { status?: ContentStatus }) {
   );
 }
 
-export default function Sidebar() {
-  const expanded = useStore((s) => s.expandedChapters);
-  const toggleChapter = useStore((s) => s.toggleChapter);
-  const activeSectionId = useStore((s) => s.activeSectionId);
-  const setActiveSection = useStore((s) => s.setActiveSection);
+/** 递归渲染内容项（含子项展开） */
+function ContentItemNode({
+  item,
+  subjectId,
+  categoryId,
+  activeItemId,
+  depth = 0,
+}: {
+  item: ContentItem;
+  subjectId: SubjectId;
+  categoryId: CategoryId;
+  activeItemId: string;
+  depth?: number;
+}) {
+  const isActive = item.id === activeItemId;
+  const hasChildren = item.children && item.children.length > 0;
+  // 判断当前项或其子项是否处于激活路径
+  const isAncestor =
+    !isActive &&
+    hasChildren &&
+    item.children!.some(
+      (c) => c.id === activeItemId || isAncestorOf(c, activeItemId),
+    );
+
+  return (
+    <div>
+      <Link
+        href={`/${subjectId}/${categoryId}/${item.id}`}
+        className={clsx(
+          "press flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left text-[13px] transition-colors",
+          isActive
+            ? "bg-[var(--accent-weak)] font-medium text-[var(--accent-ink)]"
+            : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
+          depth > 0 && "ml-3",
+        )}
+      >
+        <span
+          className={clsx(
+            "mt-px shrink-0 font-mono text-[11px]",
+            isActive ? "text-[var(--accent)]" : "text-[var(--ink-faint)]",
+          )}
+        >
+          {item.id}
+        </span>
+        <span className="leading-snug">{item.title}</span>
+        <StatusDot status={item.status} />
+      </Link>
+      {/* 子项：当自身激活或为祖先时展开 */}
+      {hasChildren && (isActive || isAncestor) && (
+        <div className="animate-expand ml-[14px] border-l border-[var(--line-soft)] pl-2">
+          {item.children!.map((child) => (
+            <ContentItemNode
+              key={child.id}
+              item={child}
+              subjectId={subjectId}
+              categoryId={categoryId}
+              activeItemId={activeItemId}
+              depth={depth + 1}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** 检查 item 是否为 activeItemId 的祖先 */
+function isAncestorOf(item: ContentItem, targetId: string): boolean {
+  if (!item.children) return false;
+  return item.children.some(
+    (c) => c.id === targetId || isAncestorOf(c, targetId),
+  );
+}
+
+export default function Sidebar({ subjectId, categoryId, itemId }: SidebarProps) {
+  const subject = getSubject(subjectId);
+  const category = getCategory(subjectId, categoryId);
 
   return (
     <aside className="flex h-full flex-col border-r border-[var(--line)] bg-[var(--bg-panel)]">
+      {/* 科目选择 */}
+      <div className="border-b border-[var(--line)] px-2 py-2">
+        <div className="px-2 pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">
+          科目
+        </div>
+        <div className="flex flex-wrap gap-1">
+          {contentTree.subjects.map((s) => (
+            <Link
+              key={s.id}
+              href={`/${s.id}/${categoryId}/${itemId}`}
+              className={clsx(
+                "rounded-md px-2 py-1 text-[12px] font-medium transition-colors",
+                s.id === subjectId
+                  ? "bg-[var(--accent)] text-white"
+                  : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--line)]",
+              )}
+            >
+              {s.name.length > 6 ? s.name.slice(0, 6) + "…" : s.name}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* 分类选择 */}
+      <div className="border-b border-[var(--line)] px-2 py-2">
+        <div className="px-2 pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">
+          分类
+        </div>
+        <div className="flex gap-1">
+          {subject?.categories.map((c) => (
+            <Link
+              key={c.id}
+              href={`/${subjectId}/${c.id}/${itemId}`}
+              className={clsx(
+                "rounded-md px-2 py-1 text-[12px] font-medium transition-colors",
+                c.id === categoryId
+                  ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
+                  : "bg-[var(--bg-muted)] text-[var(--ink-soft)] hover:bg-[var(--line)]",
+              )}
+            >
+              {c.name}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* 内容目录 */}
       <div className="scroll-y flex-1 px-2 py-3">
         <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">
-          课程目录
+          {category?.name ?? "目录"}
         </p>
-        {manifest.chapters.map((ch) => {
-          const open = !!expanded[ch.id];
-          const hasSections = ch.sections.length > 0;
-          return (
-            <div key={ch.id} className="mb-0.5">
-              <button
-                onClick={() => toggleChapter(ch.id)}
-                className="press flex w-full items-center gap-1.5 rounded-lg px-2 py-1.5 text-left text-[13.5px] font-semibold hover:bg-[var(--bg-muted)]"
-              >
-                <Chevron open={open} dim={!hasSections} />
-                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-md bg-[var(--accent-weak)] text-[11px] font-bold text-[var(--accent-ink)]">
-                  {ch.number}
-                </span>
-                <span className="truncate">{ch.title}</span>
-                {!hasSections && (
-                  <span className="ml-auto shrink-0 rounded bg-[var(--bg-muted)] px-1 text-[10px] font-normal text-[var(--ink-faint)]">
-                    待建
-                  </span>
-                )}
-              </button>
-
-              {open && hasSections && (
-                <div className="animate-expand ml-[14px] mt-0.5 border-l border-[var(--line-soft)] pl-2">
-                  {ch.sections.map((sec) => {
-                    const active = sec.id === activeSectionId;
-                    return (
-                      <button
-                        key={sec.id}
-                        onClick={() => setActiveSection(ch.id, sec.id)}
-                        className={clsx(
-                          "press flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left text-[13px] transition-colors",
-                          active
-                            ? "bg-[var(--accent-weak)] font-medium text-[var(--accent-ink)]"
-                            : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
-                        )}
-                      >
-                        <span
-                          className={clsx(
-                            "mt-px shrink-0 font-mono text-[11px]",
-                            active ? "text-[var(--accent)]" : "text-[var(--ink-faint)]",
-                          )}
-                        >
-                          {sec.id}
-                        </span>
-                        <span className="leading-snug">{sec.title}</span>
-                        <StatusDot status={sec.status} />
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {category?.items.map((item) => (
+          <ContentItemNode
+            key={item.id}
+            item={item}
+            subjectId={subjectId}
+            categoryId={categoryId}
+            activeItemId={itemId}
+          />
+        ))}
+        {(!category || category.items.length === 0) && (
+          <p className="px-2 text-[12px] text-[var(--ink-faint)]">暂无内容</p>
+        )}
       </div>
       <div className="border-t border-[var(--line)] px-3 py-2 text-[11px] text-[var(--ink-faint)]">
-        共 {manifest.chapters.length} 章 · 课堂录音 18 节
+        {subject?.name ?? ""} · {category?.items.length ?? 0} 项内容
       </div>
     </aside>
   );

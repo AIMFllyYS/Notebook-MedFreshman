@@ -54,7 +54,9 @@ function ThinkingBlock({ reasoning, streaming }: { reasoning: string; streaming?
         onClick={() => setOpen((o) => !o)}
         className="flex w-full items-center gap-2 px-3 py-2 text-[12.5px] font-medium text-[var(--ink-soft)]"
       >
-        <span>🧠</span>
+        <span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5a3 3 0 1 0-5.196 1.737A7 7 0 0 0 8 14.5a7 7 0 0 0 7 0 7 7 0 0 0 1.196-7.763A3 3 0 1 0 12 5z" /><path d="M12 5v2" /><circle cx="12" cy="17" r="1" /></svg>
+        </span>
         <span>{streaming ? "思考中" : "思考过程"}</span>
         {streaming && <Dots />}
         <span className="ml-auto text-[11px] text-[var(--ink-faint)]">{open ? "收起" : "展开"}</span>
@@ -75,12 +77,14 @@ function ToolChips({ tools }: { tools: ToolEvent[] }) {
       {tools.map((t) => (
         <span
           key={t.id}
-          className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-white px-2.5 py-1 text-[12px] text-[var(--ink-soft)]"
+          className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--md-sys-color-surface-container)] px-2.5 py-1 text-[12px] text-[var(--ink-soft)]"
         >
-          <span>📖</span>
+          <span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>
+          </span>
           {TOOL_LABEL[t.name] ?? t.name}
           {t.status === "result" ? (
-            <span className="text-emerald-500">✓</span>
+            <span className="text-[var(--color-success)]">[OK]</span>
           ) : (
             <Dots />
           )}
@@ -140,7 +144,7 @@ function MessageBase({
               <button
                 key={i}
                 onClick={() => onFollow?.(q)}
-                className="group flex items-center gap-2 rounded-lg border border-[var(--line)] bg-white px-3 py-1.5 text-left text-[13px] text-[var(--ink-soft)] transition-colors hover:border-[var(--accent)] hover:bg-[var(--accent-weak)] hover:text-[var(--accent-ink)]"
+                className="group flex items-center gap-2 rounded-lg border border-[var(--line)] bg-[var(--md-sys-color-surface-container)] px-3 py-1.5 text-left text-[13px] text-[var(--ink-soft)] transition-colors hover:border-[var(--accent)] hover:bg-[var(--accent-weak)] hover:text-[var(--accent-ink)]"
               >
                 <span className="text-[var(--accent)]">→</span>
                 <span className="flex-1">{q}</span>

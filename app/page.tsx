@@ -1,5 +1,6 @@
-import AppShell from "@/components/layout/AppShell";
+import { redirect } from "next/navigation";
+import { DEFAULT_SUBJECT, DEFAULT_CATEGORY } from "@/lib/constants/subjects";
 
 export default function Page() {
-  return <AppShell />;
+  redirect(`/${DEFAULT_SUBJECT}/${DEFAULT_CATEGORY}/1.1`);
 }

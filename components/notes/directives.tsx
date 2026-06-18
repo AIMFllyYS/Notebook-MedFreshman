@@ -50,14 +50,14 @@ function VideoEmbed({ id }: { id: string }) {
   if (!video) {
     return (
       <div className="my-4 rounded-xl border border-dashed border-[var(--line)] bg-[var(--bg-muted)] px-4 py-3 text-[13px] text-[var(--ink-faint)]">
-        🎬 动画视频「{id}」即将生成。
+        动画视频「{id}」即将生成。
       </div>
     );
   }
   return (
     <button
       onClick={() => openPip(video)}
-      className="hover-lift group my-4 flex w-full items-center gap-3 rounded-xl border border-[var(--line)] bg-white px-4 py-3 text-left transition-shadow"
+      className="hover-lift group my-4 flex w-full items-center gap-3 rounded-xl border border-[var(--line)] bg-[var(--md-sys-color-surface-container-lowest)] px-4 py-3 text-left transition-shadow"
     >
       <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-[var(--accent-weak)] text-[var(--accent-ink)]">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
@@ -75,7 +75,7 @@ function InteractiveEmbed({ id }: { id: string }) {
   if (!item) {
     return (
       <div className="my-4 rounded-xl border border-dashed border-[var(--line)] bg-[var(--bg-muted)] px-4 py-3 text-[13px] text-[var(--ink-faint)]">
-        🧩 交互组件「{id}」即将生成。
+        交互组件「{id}」即将生成。
       </div>
     );
   }
@@ -84,7 +84,9 @@ function InteractiveEmbed({ id }: { id: string }) {
     <LazyVisible placeholder={<div className="my-5 h-48 rounded-xl border border-dashed border-[var(--line)] bg-[var(--bg-muted)]" />}>
       <div className="my-5">
         <div className="mb-2 flex items-center gap-2 text-[13px] font-semibold text-[var(--ink-soft)]">
-          <span className="grid h-5 w-5 place-items-center rounded bg-[var(--accent-weak)] text-[var(--accent-ink)]">🧩</span>
+          <span className="grid h-5 w-5 place-items-center rounded bg-[var(--accent-weak)] text-[var(--accent-ink)]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>
+          </span>
           {item.title}
         </div>
         <C />

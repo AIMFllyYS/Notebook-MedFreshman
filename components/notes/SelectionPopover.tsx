@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Lightbulb, Pen, MessageSquare, Send } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { useChatUI } from "@/lib/hooks/useChatUI";
 
 interface PopState {
   x: number;
@@ -11,19 +13,19 @@ interface PopState {
 
 function PopBtn({
   onClick,
-  icon,
+  icon: Icon,
   label,
 }: {
   onClick: () => void;
-  icon: string;
+  icon: React.ComponentType<{ size?: number }>;
   label: string;
 }) {
   return (
     <button
       onClick={onClick}
-      className="press flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-[var(--ink-soft)] hover:bg-[var(--accent-weak)] hover:text-[var(--accent-ink)]"
+      className="press flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-secondary-container)] hover:text-[var(--md-sys-color-on-secondary-container)]"
     >
-      <span>{icon}</span>
+      <Icon size={15} />
       {label}
     </button>
   );
@@ -35,6 +37,7 @@ export default function SelectionPopover({
   containerRef: React.RefObject<HTMLDivElement | null>;
 }) {
   const sendToChat = useStore((s) => s.sendToChat);
+  const { setQuickExplain, setQuotedText } = useChatUI();
   const [pop, setPop] = useState<PopState | null>(null);
   const [asking, setAsking] = useState(false);
   const [q, setQ] = useState("");
@@ -43,7 +46,6 @@ export default function SelectionPopover({
   useEffect(() => {
     function onMouseUp(e: MouseEvent) {
       if (boxRef.current && boxRef.current.contains(e.target as Node)) return;
-      // 等浏览器把选区敲定
       window.setTimeout(() => {
         const sel = window.getSelection();
         if (!sel || sel.isCollapsed || sel.rangeCount === 0) {
@@ -89,21 +91,43 @@ export default function SelectionPopover({
 
   if (!pop) return null;
 
-  function ask(kind: "explain" | "example" | "custom") {
+  function handleExplain() {
     if (!pop) return;
+    setQuickExplain(pop.text, { x: pop.x, y: pop.y }, "explain");
+    setPop(null);
+  }
+
+  function handleExample() {
+    if (!pop) return;
+    setQuickExplain(pop.text, { x: pop.x, y: pop.y }, "example");
+    setPop(null);
+  }
+
+  function handleFollowUp() {
+    if (!pop) return;
+    setAsking(true);
+  }
+
+  function handleQuote() {
+    if (!pop) return;
+    setQuotedText(pop.text);
+    setPop(null);
+  }
+
+  function askCustom() {
+    if (!pop || !q.trim()) return;
     const quote = pop.text.length > 180 ? pop.text.slice(0, 180) + "…" : pop.text;
-    let prompt = "";
-    if (kind === "explain") prompt = `请详细解释当前页面里这段内容：\n> ${quote}`;
-    else if (kind === "example")
-      prompt = `请就当前页面里这段内容，再举一两个直观例子帮助我理解：\n> ${quote}`;
-    else prompt = `${q.trim()}\n\n（针对当前页面这段原文：> ${quote}）`;
+    const prompt = `${q.trim()}\n\n（针对当前页面这段原文：> ${quote}）`;
     sendToChat(prompt);
     setPop(null);
     setAsking(false);
     setQ("");
   }
 
-  const left = Math.min(Math.max(pop.x, 130), (typeof window !== "undefined" ? window.innerWidth : 1200) - 130);
+  const left = Math.min(
+    Math.max(pop.x, 150),
+    (typeof window !== "undefined" ? window.innerWidth : 1200) - 150,
+  );
   const top = Math.max(pop.y - 8, 10);
 
   return (
@@ -115,18 +139,20 @@ export default function SelectionPopover({
       style={{ position: "fixed", left, top, transform: "translate(-50%, -100%)" }}
       className="z-50 animate-fade-up"
     >
-      <div className="flex items-center gap-1 rounded-xl border border-[var(--line)] bg-white p-1 shadow-[var(--shadow-lg)]">
+      <div className="flex items-center gap-0.5 rounded-xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] p-1 shadow-lg">
         {!asking ? (
           <>
-            <PopBtn onClick={() => ask("explain")} icon="💡" label="解释" />
-            <PopBtn onClick={() => ask("example")} icon="✏️" label="举例" />
-            <PopBtn onClick={() => setAsking(true)} icon="💬" label="追问…" />
+            <PopBtn onClick={handleExplain} icon={Lightbulb} label="解释" />
+            <PopBtn onClick={handleExample} icon={Pen} label="举例" />
+            <PopBtn onClick={handleFollowUp} icon={MessageSquare} label="追问" />
+            <div className="mx-0.5 h-5 w-px bg-[var(--md-sys-color-outline-variant)]" />
+            <PopBtn onClick={handleQuote} icon={Send} label="引用" />
           </>
         ) : (
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              if (q.trim()) ask("custom");
+              askCustom();
             }}
             className="flex items-center gap-1"
           >
@@ -135,18 +161,18 @@ export default function SelectionPopover({
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="对这段内容问点什么…"
-              className="w-56 rounded-lg bg-[var(--bg-muted)] px-3 py-1.5 text-[13px] outline-none focus:ring-2 focus:ring-[var(--accent)]/30"
+              className="w-56 rounded-lg bg-[var(--md-sys-color-surface-container-highest)] px-3 py-1.5 text-[13px] text-[var(--md-sys-color-on-surface)] outline-none placeholder:text-[var(--md-sys-color-on-surface-variant)] focus:ring-2 focus:ring-[var(--md-sys-color-primary)]/30"
             />
             <button
               type="submit"
-              className="shrink-0 rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[13px] font-medium text-white"
+              className="shrink-0 rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[13px] font-medium text-[var(--md-sys-color-on-primary)]"
             >
               问 AI
             </button>
           </form>
         )}
       </div>
-      <div className="mx-auto h-2 w-2 -translate-y-1 rotate-45 border-b border-r border-[var(--line)] bg-white" />
+      <div className="mx-auto h-2 w-2 -translate-y-1 rotate-45 border-b border-r border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)]" />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import type { MediaManifest, VideoEntry } from "@/lib/content/types";
+import type { SubjectId } from "@/lib/types/content";
 import { generatedVideos } from "./media.generated";
 
 /**
@@ -15,10 +16,14 @@ export function getVideo(id?: string | null): VideoEntry | undefined {
 }
 
 export function getVideosForSection(
+  subjectId: SubjectId,
   chapterId: string,
   sectionId: string,
 ): VideoEntry[] {
   return mediaManifest.videos.filter(
-    (v) => v.chapterId === chapterId && v.sectionId === sectionId,
+    (v) =>
+      v.subjectId === subjectId &&
+      v.chapterId === chapterId &&
+      v.sectionId === sectionId,
   );
 }

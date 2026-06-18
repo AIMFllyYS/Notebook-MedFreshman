@@ -1,254 +1,288 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useStore } from "@/lib/store";
-import Message, { type ChatMsg } from "./Message";
-import ModelSwitch from "./ModelSwitch";
+import React, { useRef, useEffect, useState } from 'react';
+import {
+  Sparkles, Plus, Trash2, Clock, X, ArrowDown, Loader, AlertTriangle,
+} from 'lucide-react';
+import { useChat } from '@/lib/hooks/useChat';
+import { useChatHistory, type ChatSession } from '@/lib/hooks/useChatHistory';
+import ChatMessage from '@/components/chat/ChatMessage';
+import ChatInput from '@/components/chat/ChatInput';
+import type { ChatContext, ChatOptions } from '@/lib/types/chat';
 
-let counter = 0;
-const newId = () => `m${++counter}`;
+interface ChatPanelProps {
+  chatContext: ChatContext;
+}
 
-const SUGGESTIONS = [
-  "讲讲当前这一节的核心思想",
-  "这一节和前一节有什么联系？",
-  "围绕本节知识点出两道例题并讲解",
-];
+const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
+  const [chatOptions] = useState<ChatOptions>({
+    enableThinking: false,
+    enableSearch: false,
+    contextMode: 'full',
+  });
+  const { messages, isLoading, error, sendMessage, stopGeneration, clearError } = useChat(chatContext, chatOptions);
+  const sessions = useChatHistory((s) => s.sessions);
+  const activeSessionId = useChatHistory((s) => s.activeSessionId);
+  const createSession = useChatHistory((s) => s.createSession);
+  const deleteSession = useChatHistory((s) => s.deleteSession);
+  const switchSession = useChatHistory((s) => s.switchSession);
+  const clearHistory = useChatHistory((s) => s.clearHistory);
 
-export default function ChatPanel() {
-  const model = useStore((s) => s.model);
-  const chapterId = useStore((s) => s.activeChapterId);
-  const sectionId = useStore((s) => s.activeSectionId);
-  const outbound = useStore((s) => s.outbound);
-  const clearOutbound = useStore((s) => s.clearOutbound);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
+  const [showHistory, setShowHistory] = useState(false);
 
-  const [messages, setMessages] = useState<ChatMsg[]>([]);
-  const [input, setInput] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  const messagesRef = useRef<ChatMsg[]>([]);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const flushScheduled = useRef(false);
-  const lastNonce = useRef(0);
-
-  const commit = useCallback(() => {
-    if (flushScheduled.current) return;
-    flushScheduled.current = true;
-    requestAnimationFrame(() => {
-      flushScheduled.current = false;
-      setMessages(messagesRef.current.slice());
-      const el = scrollRef.current;
-      if (el) el.scrollTop = el.scrollHeight;
-    });
-  }, []);
-
-  const patchAi = useCallback(
-    (id: string, producer: (m: ChatMsg) => Partial<ChatMsg>) => {
-      const arr = messagesRef.current;
-      const idx = arr.findIndex((m) => m.id === id);
-      if (idx < 0) return;
-      arr[idx] = { ...arr[idx], ...producer(arr[idx]) };
-    },
-    [],
-  );
-
-  const send = useCallback(
-    async (text: string) => {
-      const content = text.trim();
-      if (!content || busy) return;
-      setBusy(true);
-
-      const userMsg: ChatMsg = { id: newId(), role: "user", content, tools: [] };
-      const aiId = newId();
-      const aiMsg: ChatMsg = {
-        id: aiId,
-        role: "assistant",
-        content: "",
-        reasoning: "",
-        tools: [],
-        streaming: true,
-      };
-      messagesRef.current = [...messagesRef.current, userMsg, aiMsg];
-      setMessages(messagesRef.current.slice());
-      setInput("");
-      requestAnimationFrame(() => {
-        const el = scrollRef.current;
-        if (el) el.scrollTop = el.scrollHeight;
-      });
-
-      const history = messagesRef.current
-        .filter((m) => m.id !== aiId)
-        .map((m) => ({ role: m.role, content: m.content }));
-
-      try {
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: history, model, chapterId, sectionId }),
-        });
-        if (!res.body) throw new Error("无响应流");
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        let buf = "";
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          buf += decoder.decode(value, { stream: true });
-          let nl: number;
-          while ((nl = buf.indexOf("\n")) >= 0) {
-            const line = buf.slice(0, nl).trim();
-            buf = buf.slice(nl + 1);
-            if (!line.startsWith("data:")) continue;
-            const data = line.slice(5).trim();
-            if (!data) continue;
-            let ev: any;
-            try {
-              ev = JSON.parse(data);
-            } catch {
-              continue;
-            }
-            if (ev.type === "reasoning") {
-              patchAi(aiId, (m) => ({ reasoning: (m.reasoning ?? "") + ev.delta }));
-              commit();
-            } else if (ev.type === "content") {
-              patchAi(aiId, (m) => ({ content: m.content + ev.delta }));
-              commit();
-            } else if (ev.type === "tool") {
-              patchAi(aiId, (m) => {
-                if (ev.status === "call") {
-                  return { tools: [...m.tools, { id: ev.id, name: ev.name, args: ev.args, status: "call" }] };
-                }
-                return {
-                  tools: m.tools.map((t) => (t.id === ev.id ? { ...t, status: "result" } : t)),
-                };
-              });
-              commit();
-            } else if (ev.type === "error") {
-              patchAi(aiId, () => ({ error: ev.message }));
-              commit();
-            } else if (ev.type === "done") {
-              patchAi(aiId, () => ({ streaming: false }));
-              commit();
-            }
-          }
-        }
-        patchAi(aiId, () => ({ streaming: false }));
-        setMessages(messagesRef.current.slice());
-
-        // 举一反三追问
-        const ai = messagesRef.current.find((m) => m.id === aiId);
-        if (ai && ai.content && !ai.error) {
-          fetch("/api/follow-ups", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              messages: messagesRef.current.map((m) => ({ role: m.role, content: m.content })),
-            }),
-          })
-            .then((r) => r.json())
-            .then((d) => {
-              if (Array.isArray(d.questions) && d.questions.length) {
-                patchAi(aiId, () => ({ followUps: d.questions }));
-                setMessages(messagesRef.current.slice());
-              }
-            })
-            .catch(() => {});
-        }
-      } catch (e) {
-        patchAi(aiId, () => ({ streaming: false, error: String((e as Error)?.message ?? e) }));
-        setMessages(messagesRef.current.slice());
-      } finally {
-        setBusy(false);
-      }
-    },
-    [busy, model, chapterId, sectionId, commit, patchAi],
-  );
-
-  // 划词 / 外部注入
+  // Auto-scroll only if already at bottom
   useEffect(() => {
-    if (outbound && outbound.nonce !== lastNonce.current) {
-      lastNonce.current = outbound.nonce;
-      send(outbound.content);
-      clearOutbound();
+    if (isAtBottom) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [outbound, send, clearOutbound]);
+  }, [messages, isAtBottom]);
 
-  const clearChat = () => {
-    messagesRef.current = [];
-    setMessages([]);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    setIsAtBottom(true);
+  };
+
+  const handleScroll = () => {
+    if (!scrollContainerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
+    setIsAtBottom(scrollHeight - scrollTop - clientHeight < 100);
+  };
+
+  const handleSend = (content: string, options?: { quotedText?: string; enableThinking?: boolean; enableSearch?: boolean }) => {
+    sendMessage(content, {
+      quotedText: options?.quotedText,
+      enableThinking: options?.enableThinking,
+      enableSearch: options?.enableSearch,
+    });
+  };
+
+  const handleFollowUpClick = (question: string) => {
+    sendMessage(question);
+  };
+
+  const handleNewChat = () => {
+    createSession(chatContext);
+  };
+
+  const handleClearCurrent = () => {
+    if (activeSessionId) {
+      deleteSession(activeSessionId);
+    }
   };
 
   return (
-    <div className="flex h-full flex-col bg-[var(--bg-panel)]">
-      <div className="flex shrink-0 items-center justify-between border-b border-[var(--line-soft)] px-3 py-2">
-        <ModelSwitch />
-        {messages.length > 0 && (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--md-sys-color-surface-container-low)', position: 'relative' }}>
+      {/* Header */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '8px 12px',
+        borderBottom: '1px solid var(--md-sys-color-outline-variant)',
+        background: 'var(--md-sys-color-surface-container)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Sparkles size={14} style={{ color: 'var(--md-sys-color-primary)' }} />
+          <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--md-sys-color-on-surface)' }}>AI 助教</span>
+          {chatContext && (
+            <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', marginLeft: '4px' }}>
+              {chatContext.currentTopic}
+            </span>
+          )}
+        </div>
+        <div style={{ display: 'flex', gap: '4px' }}>
           <button
-            onClick={clearChat}
-            className="rounded-md px-2 py-1 text-[12px] text-[var(--ink-faint)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink-soft)]"
-          >
-            清空
-          </button>
-        )}
-      </div>
-
-      <div ref={scrollRef} className="scroll-y flex-1 space-y-4 px-3 py-4">
-        {messages.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center px-4 text-center">
-            <div className="mb-3 grid h-12 w-12 place-items-center rounded-2xl bg-[var(--accent-weak)] text-2xl">
-              💬
-            </div>
-            <h3 className="text-[15px] font-semibold">问我关于这门课的任何问题</h3>
-            <p className="mt-1 max-w-xs text-[13px] leading-relaxed text-[var(--ink-faint)]">
-              我能读取你正在看的页面与全书大纲，结合上下文为你讲解。也可在左侧划词直接提问。
-            </p>
-            <div className="mt-4 flex w-full max-w-xs flex-col gap-1.5">
-              {SUGGESTIONS.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => send(s)}
-                  className="press rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-left text-[13px] text-[var(--ink-soft)] hover:border-[var(--accent)] hover:bg-[var(--accent-weak)]"
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          messages.map((m) => <Message key={m.id} message={m} onFollow={send} />)
-        )}
-      </div>
-
-      <div className="shrink-0 border-t border-[var(--line)] p-2.5">
-        <div className="flex items-end gap-2 rounded-xl border border-[var(--line)] bg-white px-2.5 py-1.5 focus-within:border-[var(--accent)] focus-within:ring-2 focus-within:ring-[var(--accent)]/20">
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                send(input);
-              }
+            onClick={() => setShowHistory(true)}
+            title="历史记录"
+            style={{
+              padding: '4px 8px', borderRadius: '6px', border: 'none', background: 'transparent',
+              color: 'var(--md-sys-color-on-surface-variant)', fontSize: '11px', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 500,
             }}
-            rows={1}
-            placeholder="输入问题，Enter 发送 / Shift+Enter 换行"
-            className="max-h-32 flex-1 resize-none bg-transparent py-1 text-[14px] outline-none scroll-y"
-          />
-          <button
-            onClick={() => send(input)}
-            disabled={busy || !input.trim()}
-            className="press grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[var(--accent)] text-white transition-opacity disabled:opacity-40"
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--md-sys-color-surface-container-high)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
           >
-            {busy ? (
-              <span className="block h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-            ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m22 2-7 20-4-9-9-4Z" />
-                <path d="M22 2 11 13" />
-              </svg>
-            )}
+            <Clock size={12} /> 历史
           </button>
+          <button
+            onClick={handleNewChat}
+            title="开启新对话"
+            style={{
+              padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--md-sys-color-outline-variant)',
+              background: 'var(--md-sys-color-surface)', color: 'var(--md-sys-color-primary)', fontSize: '11px',
+              cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 500,
+            }}
+          >
+            <Plus size={12} /> 新对话
+          </button>
+          {messages.length > 0 && (
+            <button
+              onClick={handleClearCurrent}
+              title="清空当前记录"
+              style={{
+                padding: '4px 8px', borderRadius: '6px', border: 'none', background: 'transparent',
+                color: 'var(--md-sys-color-on-surface-variant)', fontSize: '11px', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: '4px',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--md-sys-color-surface-container-high)'; e.currentTarget.style.color = 'var(--md-sys-color-error)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--md-sys-color-on-surface-variant)'; }}
+            >
+              <Trash2 size={12} /> 清空
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Messages Area */}
+      <div
+        ref={scrollContainerRef}
+        onScroll={handleScroll}
+        style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', padding: '12px' }}
+      >
+        {messages.length === 0 ? (
+          <div style={{
+            margin: 'auto', textAlign: 'center', color: 'var(--md-sys-color-on-surface-variant)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem',
+          }}>
+            <div style={{
+              width: '48px', height: '48px', borderRadius: '50%',
+              background: 'var(--md-sys-color-primary-container)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem',
+            }}>
+              <Sparkles size={24} style={{ color: 'var(--md-sys-color-primary)' }} />
+            </div>
+            <p style={{ fontSize: '14px', fontWeight: 500, marginBottom: '0.5rem' }}>我是你的概率论助教</p>
+            <p style={{ fontSize: '12px', maxWidth: '240px' }}>
+              遇到不懂的概念随时问我，我可以解释公式、出题练习、或者帮你梳理知识点
+            </p>
+            {chatContext && (
+              <div style={{
+                marginTop: '1rem', padding: '8px 12px',
+                background: 'var(--md-sys-color-surface-container-high)', borderRadius: '8px', fontSize: '11px',
+              }}>
+                当前学习: {chatContext.currentTopic}
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
+            {messages.filter((m) => m.role !== 'tool').map((msg) => (
+              <ChatMessage
+                key={msg.id}
+                message={msg}
+                onFollowUpSelect={handleFollowUpClick}
+                isStreaming={isLoading && msg === messages[messages.length - 1] && msg.role === 'assistant'}
+              />
+            ))}
+            {isLoading && (
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: '8px', padding: '12px',
+                color: 'var(--md-sys-color-on-surface-variant)', fontSize: '13px',
+              }}>
+                <Loader size={16} className="animate-spin" style={{ color: 'var(--md-sys-color-primary)' }} />
+                <span>AI 正在思考中...</span>
+              </div>
+            )}
+          </>
+        )}
+
+        {error && (
+          <div style={{
+            color: 'var(--md-sys-color-error)', padding: '12px',
+            border: '1px solid var(--md-sys-color-error)', borderRadius: '8px',
+            margin: '12px 0', display: 'flex', alignItems: 'center', gap: '8px',
+            fontSize: '13px', background: 'var(--md-sys-color-error-container)',
+          }}>
+            <AlertTriangle size={16} />
+            <span>{error}</span>
+            <button onClick={clearError} style={{ marginLeft: 'auto', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--md-sys-color-error)' }}>
+              <X size={14} />
+            </button>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Scroll to bottom button */}
+      {!isAtBottom && (
+        <button
+          onClick={scrollToBottom}
+          style={{
+            position: 'absolute', bottom: '80px', right: '20px', width: '36px', height: '36px',
+            borderRadius: '50%', background: 'var(--md-sys-color-primary-container)',
+            color: 'var(--md-sys-color-primary)', border: '1px solid var(--md-sys-color-outline-variant)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+            boxShadow: 'var(--md-sys-elevation-level2)', zIndex: 10,
+          }}
+          title="跟随最新输出"
+        >
+          <ArrowDown size={18} />
+        </button>
+      )}
+
+      {/* Input Area */}
+      <ChatInput onSend={handleSend} onStop={stopGeneration} isLoading={isLoading} chatContext={chatContext} />
+
+      {/* History Overlay */}
+      {showHistory && (
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'var(--md-sys-color-surface-container-low)', zIndex: 50,
+          display: 'flex', flexDirection: 'column',
+        }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '12px 16px', borderBottom: '1px solid var(--md-sys-color-outline-variant)',
+          }}>
+            <h3 style={{ margin: 0, fontSize: '14px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Clock size={16} /> 历史对话
+            </h3>
+            <button onClick={() => setShowHistory(false)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--md-sys-color-on-surface-variant)' }}>
+              <X size={18} />
+            </button>
+          </div>
+          <div style={{ flex: 1, overflowY: 'auto', padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {sessions.length === 0 ? (
+              <div style={{ textAlign: 'center', color: 'var(--md-sys-color-on-surface-variant)', marginTop: '2rem', fontSize: '13px' }}>
+                暂无历史记录
+              </div>
+            ) : (
+              sessions.map((session: ChatSession) => (
+                <div
+                  key={session.id}
+                  style={{
+                    padding: '12px', borderRadius: '8px', border: '1px solid',
+                    borderColor: session.id === activeSessionId ? 'var(--md-sys-color-primary)' : 'var(--md-sys-color-outline-variant)',
+                    background: session.id === activeSessionId ? 'var(--md-sys-color-primary-container)' : 'var(--md-sys-color-surface)',
+                    cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '4px', position: 'relative',
+                  }}
+                  onClick={() => { switchSession(session.id); setShowHistory(false); }}
+                >
+                  <div style={{ fontWeight: 500, fontSize: '13px', color: session.id === activeSessionId ? 'var(--md-sys-color-on-primary-container)' : 'var(--md-sys-color-on-surface)' }}>
+                    {session.title}
+                  </div>
+                  <div style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', display: 'flex', justifyContent: 'space-between' }}>
+                    <span>{new Date(session.updatedAt).toLocaleString()}</span>
+                    <span>{session.messages.length} 条消息</span>
+                  </div>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); deleteSession(session.id); }}
+                    style={{ position: 'absolute', right: '8px', top: '8px', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--md-sys-color-on-surface-variant)' }}
+                    title="删除"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default ChatPanel;

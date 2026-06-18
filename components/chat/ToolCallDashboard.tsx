@@ -1,0 +1,213 @@
+'use client';
+
+import React, { useState } from 'react';
+import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle } from 'lucide-react';
+import type { ToolCallBlock } from '@/lib/types/chat';
+
+interface ToolCallDashboardProps {
+  toolCalls: ToolCallBlock[];
+}
+
+const StatusIcon: React.FC<{ status: ToolCallBlock['status'] }> = ({ status }) => {
+  switch (status) {
+    case 'running':
+      return <Loader2 size={14} className="animate-spin" style={{ color: 'var(--md-sys-color-primary)' }} />;
+    case 'success':
+      return <CheckCircle size={14} style={{ color: 'var(--md-sys-color-tertiary)' }} />;
+    case 'error':
+      return <XCircle size={14} style={{ color: 'var(--md-sys-color-error)' }} />;
+  }
+};
+
+const statusLabel: Record<ToolCallBlock['status'], string> = {
+  running: '正在运行...',
+  success: '运行成功',
+  error: '运行失败',
+};
+
+const statusBg: Record<ToolCallBlock['status'], string> = {
+  running: 'rgba(79, 195, 247, 0.05)',
+  success: 'rgba(102, 187, 106, 0.05)',
+  error: 'rgba(239, 83, 80, 0.05)',
+};
+
+const statusBorder: Record<ToolCallBlock['status'], string> = {
+  running: 'rgba(79, 195, 247, 0.2)',
+  success: 'rgba(102, 187, 106, 0.2)',
+  error: 'rgba(239, 83, 80, 0.2)',
+};
+
+const formatArgs = (args: Record<string, any> | string | undefined): string => {
+  if (!args) return '{}';
+  if (typeof args === 'string') {
+    try {
+      return JSON.stringify(JSON.parse(args), null, 2);
+    } catch {
+      return args;
+    }
+  }
+  return JSON.stringify(args, null, 2);
+};
+
+const ToolCallItem: React.FC<{ call: ToolCallBlock }> = ({ call }) => {
+  const [expandArgs, setExpandArgs] = useState(false);
+  const [expandResult, setExpandResult] = useState(false);
+
+  return (
+    <div
+      style={{
+        padding: '0.75rem',
+        background: statusBg[call.status],
+        border: `1px solid ${statusBorder[call.status]}`,
+        borderRadius: '8px',
+        fontSize: '0.8rem',
+        fontFamily: 'monospace',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.5rem',
+      }}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div className="flex items-center gap-1.5" style={{ color: 'var(--md-sys-color-on-surface)' }}>
+          <Wrench size={14} style={{ color: 'var(--md-sys-color-primary)' }} />
+          <span>{call.name}()</span>
+        </div>
+        <div className="flex items-center gap-1 font-bold" style={{ color: 'var(--md-sys-color-primary)' }}>
+          <StatusIcon status={call.status} />
+          <span>{statusLabel[call.status]}</span>
+        </div>
+      </div>
+
+      {/* Execution Time */}
+      {call.executionTime != null && (
+        <div style={{ fontSize: '0.7rem', color: 'var(--md-sys-color-on-surface-variant)' }}>
+          执行耗时: {call.executionTime}ms
+        </div>
+      )}
+
+      {/* Arguments Toggle */}
+      <div style={{ border: '1px solid var(--md-sys-color-outline-variant)', borderRadius: '4px', overflow: 'hidden' }}>
+        <button
+          onClick={() => setExpandArgs(!expandArgs)}
+          className="w-full flex items-center justify-between px-2.5 py-1.5 bg-transparent border-none cursor-pointer text-left"
+          style={{ fontSize: '0.75rem', color: 'var(--md-sys-color-on-surface-variant)' }}
+          type="button"
+        >
+          <span>输入参数 (Arguments)</span>
+          {expandArgs ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+        </button>
+        {expandArgs && (
+          <pre
+            style={{
+              padding: '0.6rem',
+              margin: 0,
+              background: 'var(--md-sys-color-surface-container)',
+              color: 'var(--md-sys-color-on-surface-variant)',
+              overflowX: 'auto',
+              fontSize: '0.75rem',
+              lineHeight: '1.4',
+            }}
+          >
+            {formatArgs(call.arguments ?? call.argumentsStr)}
+          </pre>
+        )}
+      </div>
+
+      {/* Result Toggle */}
+      {call.status !== 'running' && call.result && (
+        <div style={{ border: '1px solid var(--md-sys-color-outline-variant)', borderRadius: '4px', overflow: 'hidden' }}>
+          <button
+            onClick={() => setExpandResult(!expandResult)}
+            className="w-full flex items-center justify-between px-2.5 py-1.5 bg-transparent border-none cursor-pointer text-left"
+            style={{ fontSize: '0.75rem', color: 'var(--md-sys-color-on-surface-variant)' }}
+            type="button"
+          >
+            <span>返回结果 (Result)</span>
+            {expandResult ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+          </button>
+          {expandResult && (
+            <pre
+              style={{
+                padding: '0.6rem',
+                margin: 0,
+                background: 'var(--md-sys-color-surface-container)',
+                color: 'var(--md-sys-color-on-surface-variant)',
+                overflowX: 'auto',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-all',
+                fontSize: '0.75rem',
+                lineHeight: '1.4',
+                maxHeight: '200px',
+                overflowY: 'auto',
+              }}
+            >
+              {call.result}
+            </pre>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const ToolCallDashboard: React.FC<ToolCallDashboardProps> = ({ toolCalls }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  if (!toolCalls || toolCalls.length === 0) {
+    return null;
+  }
+
+  return (
+    <div
+      style={{
+        margin: '8px 0',
+        borderRadius: '8px',
+        background: 'var(--md-sys-color-surface-container-high)',
+        border: '1px solid var(--md-sys-color-outline-variant)',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Header */}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full flex items-center justify-between px-3 py-2 border-none bg-transparent cursor-pointer transition-colors duration-200 hover:bg-[var(--md-sys-color-surface-container-highest)]"
+        type="button"
+      >
+        <div className="flex items-center gap-1.5">
+          <Wrench size={14} style={{ color: 'var(--md-sys-color-primary)' }} />
+          <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--md-sys-color-primary)' }}>
+            工具调用 ({toolCalls.length})
+          </span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+            {isExpanded ? '收起' : '展开'}
+          </span>
+          {isExpanded ? (
+            <ChevronUp size={14} style={{ color: 'var(--md-sys-color-on-surface-variant)' }} />
+          ) : (
+            <ChevronDown size={14} style={{ color: 'var(--md-sys-color-on-surface-variant)' }} />
+          )}
+        </div>
+      </button>
+
+      {/* Expanded Content */}
+      {isExpanded && (
+        <div
+          className="flex flex-col gap-2"
+          style={{
+            padding: '0 12px 12px 12px',
+            borderTop: '1px solid var(--md-sys-color-outline-variant)',
+          }}
+        >
+          {toolCalls.map((call, idx) => (
+            <ToolCallItem key={call.id ?? idx} call={call} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ToolCallDashboard;

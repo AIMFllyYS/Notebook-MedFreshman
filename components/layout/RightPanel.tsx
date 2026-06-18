@@ -1,44 +1,29 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
+import { MessageSquare, Settings, MonitorPlay, Hand } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useStore, type RightTab } from "@/lib/store";
+import type { ChatContext } from "@/lib/types/chat";
 
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
+const ChatSettings = dynamic(() => import("@/components/chat/ChatSettings"), { ssr: false });
 const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
 const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
 
-const TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
-  {
-    id: "ai",
-    label: "AI 对话",
-    icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      </svg>
-    ),
-  },
-  {
-    id: "video",
-    label: "动画讲解",
-    icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="4" width="20" height="16" rx="2" />
-        <path d="m10 9 5 3-5 3z" fill="currentColor" stroke="none" />
-      </svg>
-    ),
-  },
-  {
-    id: "interactive",
-    label: "可交互",
-    icon: (
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19" />
-        <circle cx="12" cy="12" r="3" />
-      </svg>
-    ),
-  },
+type AiSubTab = "chat" | "settings";
+
+const RIGHT_TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
+  { id: "ai", label: "AI 对话", icon: <MessageSquare size={15} /> },
+  { id: "video", label: "动画讲解", icon: <MonitorPlay size={15} /> },
+  { id: "interactive", label: "可交互", icon: <Hand size={15} /> },
+];
+
+const AI_SUB_TABS: { id: AiSubTab; label: string; icon: React.ReactNode }[] = [
+  { id: "chat", label: "对话", icon: <MessageSquare size={14} /> },
+  { id: "settings", label: "设置", icon: <Settings size={14} /> },
 ];
 
 const tabVariants = {
@@ -50,11 +35,23 @@ const tabVariants = {
 export default function RightPanel() {
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);
+  const activeSubjectId = useStore((s) => s.activeSubjectId);
+  const activeChapterId = useStore((s) => s.activeChapterId);
+  const activeSectionId = useStore((s) => s.activeSectionId);
+  const [aiSubTab, setAiSubTab] = useState<AiSubTab>("chat");
+
+  const chatContext: ChatContext = useMemo(() => ({
+    subjectId: activeSubjectId,
+    categoryId: activeChapterId,
+    itemId: activeSectionId,
+    currentTopic: `${activeSubjectId} ${activeChapterId} ${activeSectionId}`,
+  }), [activeSubjectId, activeChapterId, activeSectionId]);
 
   return (
     <div className="flex h-full flex-col border-l border-[var(--line)] bg-[var(--bg-panel)]">
+      {/* Top-level tab bar */}
       <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-2 py-1.5">
-        {TABS.map((t) => (
+        {RIGHT_TABS.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
@@ -71,11 +68,46 @@ export default function RightPanel() {
         ))}
       </div>
 
+      {/* AI sub-tab bar (only when AI tab is active) */}
+      {tab === "ai" && (
+        <div className="flex shrink-0 border-b border-[var(--line)]">
+          {AI_SUB_TABS.map((st) => (
+            <button
+              key={st.id}
+              onClick={() => setAiSubTab(st.id)}
+              className={clsx(
+                "relative flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium transition-colors",
+                aiSubTab === st.id
+                  ? "text-[var(--md-sys-color-primary)]"
+                  : "text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)]",
+              )}
+            >
+              {st.icon}
+              {st.label}
+              {/* Bottom border indicator */}
+              {aiSubTab === st.id && (
+                <motion.div
+                  layoutId="ai-sub-tab-indicator"
+                  className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[var(--md-sys-color-primary)]"
+                  transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Content area */}
       <div className="min-h-0 flex-1 overflow-hidden">
         <AnimatePresence mode="wait">
-          {tab === "ai" && (
-            <motion.div key="ai" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
-              <ChatPanel />
+          {tab === "ai" && aiSubTab === "chat" && (
+            <motion.div key="ai-chat" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
+              <ChatPanel chatContext={chatContext} />
+            </motion.div>
+          )}
+          {tab === "ai" && aiSubTab === "settings" && (
+            <motion.div key="ai-settings" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
+              <ChatSettings />
             </motion.div>
           )}
           {tab === "video" && (

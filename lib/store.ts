@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { VideoEntry } from "@/lib/content/types";
+import type { SubjectId } from "@/lib/types/content";
 
 export type RightTab = "ai" | "video" | "interactive";
 export type ModelTier = "pro" | "flash";
@@ -13,9 +14,11 @@ export interface OutboundMessage {
 
 interface AppState {
   // ── 导航 ──────────────────────────────────────────────
+  activeSubjectId: SubjectId;
   activeChapterId: string;
   activeSectionId: string;
-  setActiveSection: (chapterId: string, sectionId: string) => void;
+  setActiveSubject: (s: SubjectId) => void;
+  setActiveSection: (subjectId: SubjectId, chapterId: string, sectionId: string) => void;
 
   sidebarCollapsed: boolean;
   toggleSidebar: () => void;
@@ -46,10 +49,12 @@ interface AppState {
 }
 
 export const useStore = create<AppState>((set, get) => ({
+  activeSubjectId: "probability",
   activeChapterId: "ch01",
   activeSectionId: "1.1",
-  setActiveSection: (chapterId, sectionId) =>
-    set({ activeChapterId: chapterId, activeSectionId: sectionId }),
+  setActiveSubject: (s) => set({ activeSubjectId: s }),
+  setActiveSection: (subjectId, chapterId, sectionId) =>
+    set({ activeSubjectId: subjectId, activeChapterId: chapterId, activeSectionId: sectionId }),
 
   sidebarCollapsed: false,
   toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
