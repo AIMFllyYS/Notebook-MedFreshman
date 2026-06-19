@@ -2,11 +2,9 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
-  BrainCircuit, Globe, Send, Square, Quote, X, CheckCircle, HelpCircle,
+  BrainCircuit, Globe, Send, Square, Quote, X, CheckCircle,
 } from 'lucide-react';
-import * as Icons from 'lucide-react';
 import type { ChatContext } from '@/lib/types/chat';
-import { QUICK_PROMPTS } from '@/lib/constants/prompts';
 import { useChatUI } from '@/lib/hooks/useChatUI';
 import { useSettings } from '@/lib/hooks/useSettings';
 import ModelMenu from '@/components/chat/ModelMenu';
@@ -52,11 +50,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
     }
   };
 
-  const handleQuickPrompt = (text: string) => {
-    if (isLoading) return;
-    onSend(text);
-  };
-
   const disabled = isLoading;
 
   return (
@@ -68,54 +61,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
       flexDirection: 'column',
       gap: '6px',
     }}>
-      {/* Quick prompts */}
-      <div className="hide-scrollbar" style={{ display: 'flex', gap: '6px', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-        {QUICK_PROMPTS.map((prompt) => {
-          const IconComp = (Icons as any)[prompt.icon] || HelpCircle;
-          return (
-            <button
-              key={prompt.label}
-              onClick={() => handleQuickPrompt(prompt.text)}
-              disabled={disabled}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                padding: '4px 8px',
-                borderRadius: '12px',
-                border: '1px solid var(--md-sys-color-outline-variant)',
-                background: 'var(--md-sys-color-surface)',
-                color: 'var(--md-sys-color-on-surface-variant)',
-                fontSize: '11px',
-                fontWeight: 500,
-                cursor: disabled ? 'not-allowed' : 'pointer',
-                opacity: disabled ? 0.5 : 1,
-                transition: 'all 0.2s ease',
-                flexShrink: 0,
-                whiteSpace: 'nowrap',
-              }}
-              onMouseEnter={(e) => {
-                if (!disabled) {
-                  e.currentTarget.style.background = 'var(--md-sys-color-primary-container)';
-                  e.currentTarget.style.color = 'var(--md-sys-color-primary)';
-                  e.currentTarget.style.borderColor = 'var(--md-sys-color-primary)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!disabled) {
-                  e.currentTarget.style.background = 'var(--md-sys-color-surface)';
-                  e.currentTarget.style.color = 'var(--md-sys-color-on-surface-variant)';
-                  e.currentTarget.style.borderColor = 'var(--md-sys-color-outline-variant)';
-                }
-              }}
-            >
-              <IconComp size={10} />
-              <span>{prompt.label}</span>
-            </button>
-          );
-        })}
-      </div>
-
       {/* Quoted Text Block */}
       {quotedText && (
         <div style={{

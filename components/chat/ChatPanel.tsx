@@ -10,6 +10,8 @@ import { useSettings } from '@/lib/hooks/useSettings';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
 import ChatSettings from '@/components/chat/ChatSettings';
+import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
+import { QUICK_PROMPTS } from '@/lib/constants/prompts';
 import type { ChatContext, ChatOptions } from '@/lib/types/chat';
 
 interface ChatPanelProps {
@@ -183,6 +185,14 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
                 当前学习: {chatContext.currentTopic}
               </div>
             )}
+            {/* 快捷指令：仅在空对话（新建页面）时复用追问组件呈现，开始对话后隐藏 */}
+            <div style={{ width: '100%', maxWidth: '300px', marginTop: '0.5rem' }}>
+              <FollowUpQuestions
+                title="试试这样问我"
+                questions={QUICK_PROMPTS.map((p) => p.text)}
+                onSelect={handleFollowUpClick}
+              />
+            </div>
           </div>
         ) : (
           <>

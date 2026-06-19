@@ -6,9 +6,10 @@ import { Sparkles } from 'lucide-react';
 interface FollowUpQuestionsProps {
   questions: string[];
   onSelect: (question: string) => void;
+  title?: string;
 }
 
-export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({ questions, onSelect }) => {
+export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({ questions, onSelect, title = '你可能还想问' }) => {
   if (!questions || questions.length === 0) {
     return null;
   }
@@ -33,7 +34,7 @@ export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({ questions,
             color: 'var(--md-sys-color-primary)',
           }}
         >
-          你可能还想问
+          {title}
         </span>
       </div>
 
