@@ -32,3 +32,6 @@ yarn-error.log*
 
 # archived one-off scripts (not part of the app build)
 /scripts/archive/
+
+# reference project (kept locally, not part of the app)
+/docs/refer/dist/

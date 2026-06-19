@@ -1,8 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_05_rejection/720p30/partial_movie_files/RejectionRegionScene/1493548702_2816040599_223132457.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_05_rejection/720p30/partial_movie_files/RejectionRegionScene/2428101289_3955122590_510493238.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_05_rejection/720p30/partial_movie_files/RejectionRegionScene/2428101289_3875408371_1141688254.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_05_rejection/720p30/partial_movie_files/RejectionRegionScene/2428101289_3949631828_1141688254.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_05_rejection/720p30/partial_movie_files/RejectionRegionScene/2428101289_1059081163_3517080188.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_05_rejection/720p30/partial_movie_files/RejectionRegionScene/2428101289_2872842549_2394177950.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_05_rejection/720p30/partial_movie_files/RejectionRegionScene/2428101289_1718325768_2358810818.mp4'

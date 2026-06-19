@@ -1,9 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch07_confidence/720p30/partial_movie_files/ConfidenceIntervalScene/uncached_00000.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch07_confidence/720p30/partial_movie_files/ConfidenceIntervalScene/uncached_00001.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch07_confidence/720p30/partial_movie_files/ConfidenceIntervalScene/uncached_00002.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch07_confidence/720p30/partial_movie_files/ConfidenceIntervalScene/uncached_00003.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch07_confidence/720p30/partial_movie_files/ConfidenceIntervalScene/uncached_00004.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch07_confidence/720p30/partial_movie_files/ConfidenceIntervalScene/uncached_00005.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch07_confidence/720p30/partial_movie_files/ConfidenceIntervalScene/uncached_00006.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch07_confidence/720p30/partial_movie_files/ConfidenceIntervalScene/uncached_00007.mp4'

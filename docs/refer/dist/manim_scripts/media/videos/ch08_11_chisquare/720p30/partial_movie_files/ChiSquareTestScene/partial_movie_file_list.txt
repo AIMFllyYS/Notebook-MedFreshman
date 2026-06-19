@@ -1,9 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_11_chisquare/720p30/partial_movie_files/ChiSquareTestScene/1493548702_3827126649_223132457.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_11_chisquare/720p30/partial_movie_files/ChiSquareTestScene/2428101289_18276865_4026056253.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_11_chisquare/720p30/partial_movie_files/ChiSquareTestScene/2428101289_1894503573_1182636699.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_11_chisquare/720p30/partial_movie_files/ChiSquareTestScene/2428101289_3343483091_2591435666.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_11_chisquare/720p30/partial_movie_files/ChiSquareTestScene/2428101289_2199765835_357561342.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_11_chisquare/720p30/partial_movie_files/ChiSquareTestScene/2428101289_2051517425_800964951.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_11_chisquare/720p30/partial_movie_files/ChiSquareTestScene/2428101289_2872842549_2049180267.mp4'
-file 'file:C:/gailvlun/manim_scripts/media/videos/ch08_11_chisquare/720p30/partial_movie_files/ChiSquareTestScene/2428101289_1415620073_2358810818.mp4'
