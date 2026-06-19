@@ -8,6 +8,7 @@ import * as Icons from 'lucide-react';
 import type { ChatContext } from '@/lib/types/chat';
 import { QUICK_PROMPTS } from '@/lib/constants/prompts';
 import { useChatUI } from '@/lib/hooks/useChatUI';
+import { useSettings } from '@/lib/hooks/useSettings';
 import ModelMenu from '@/components/chat/ModelMenu';
 
 interface ChatInputProps {
@@ -15,13 +16,14 @@ interface ChatInputProps {
   onStop: () => void;
   isLoading: boolean;
   chatContext: ChatContext;
+  onOpenSettings?: () => void;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatContext }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatContext, onOpenSettings }) => {
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
-  const [enableThinking, setEnableThinking] = useState(false);
-  const [enableSearch, setEnableSearch] = useState(false);
+  const [enableThinking, setEnableThinking] = useState(() => useSettings.getState().defaultThinking);
+  const [enableSearch, setEnableSearch] = useState(() => useSettings.getState().defaultSearch);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { quotedText, clearQuotedText } = useChatUI();
 
@@ -299,7 +301,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
         </div>
 
         {/* Model selector */}
-        <ModelMenu />
+        <ModelMenu onOpenSettings={onOpenSettings} />
       </div>
     </div>
   );

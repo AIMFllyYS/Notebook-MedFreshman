@@ -2,12 +2,14 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import {
-  Sparkles, Plus, Trash2, Clock, X, ArrowDown, Loader, AlertTriangle,
+  Sparkles, Plus, Trash2, Clock, X, ArrowDown, Loader, AlertTriangle, Settings,
 } from 'lucide-react';
 import { useChat } from '@/lib/hooks/useChat';
 import { useChatHistory, type ChatSession } from '@/lib/hooks/useChatHistory';
+import { useSettings } from '@/lib/hooks/useSettings';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
+import ChatSettings from '@/components/chat/ChatSettings';
 import type { ChatContext, ChatOptions } from '@/lib/types/chat';
 
 interface ChatPanelProps {
@@ -32,6 +34,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [showHistory, setShowHistory] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const fontScale = useSettings((s) => s.fontScale);
 
   // Auto-scroll only if already at bottom
   useEffect(() => {
@@ -95,6 +99,19 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         </div>
         <div style={{ display: 'flex', gap: '4px' }}>
           <button
+            onClick={() => setShowSettings(true)}
+            title="AI 设置"
+            style={{
+              padding: '4px 8px', borderRadius: '6px', border: 'none', background: 'transparent',
+              color: 'var(--md-sys-color-on-surface-variant)', fontSize: '11px', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 500,
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--md-sys-color-surface-container-high)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+          >
+            <Settings size={12} /> 设置
+          </button>
+          <button
             onClick={() => setShowHistory(true)}
             title="历史记录"
             style={{
@@ -140,7 +157,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', padding: '12px' }}
+        style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', padding: '12px', ['--chat-fs' as string]: `${Math.round(13 * fontScale)}px` } as React.CSSProperties}
       >
         {messages.length === 0 ? (
           <div style={{
@@ -224,7 +241,16 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
       )}
 
       {/* Input Area */}
-      <ChatInput onSend={handleSend} onStop={stopGeneration} isLoading={isLoading} chatContext={chatContext} />
+      <ChatInput
+        onSend={handleSend}
+        onStop={stopGeneration}
+        isLoading={isLoading}
+        chatContext={chatContext}
+        onOpenSettings={() => setShowSettings(true)}
+      />
+
+      {/* Settings Overlay */}
+      {showSettings && <ChatSettings onClose={() => setShowSettings(false)} />}
 
       {/* History Overlay */}
       {showHistory && (

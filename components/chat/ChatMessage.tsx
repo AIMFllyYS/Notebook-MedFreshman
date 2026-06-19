@@ -131,7 +131,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
             background: 'var(--md-sys-color-primary-container)',
             borderRadius: '12px',
             borderBottomRightRadius: '4px',
-            fontSize: '13px',
+            fontSize: 'var(--chat-fs, 13px)',
             lineHeight: '1.5',
           }}>
             {message.content}
@@ -144,7 +144,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
               padding: '12px',
               borderRadius: '12px',
               borderBottomLeftRadius: '4px',
-              fontSize: '13px',
+              fontSize: 'var(--chat-fs, 13px)',
               lineHeight: '1.5',
             }}>
               <MessageContent
