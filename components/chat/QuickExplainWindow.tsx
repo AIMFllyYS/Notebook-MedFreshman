@@ -698,7 +698,7 @@ export default function QuickExplainWindow() {
           }}
         >
           <MessageSquare size={12} />
-          转到主面板
+          添加至对话
         </button>
       </div>
 

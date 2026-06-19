@@ -7,6 +7,8 @@ import {
 import { useChat } from '@/lib/hooks/useChat';
 import { useChatHistory, type ChatSession } from '@/lib/hooks/useChatHistory';
 import { useSettings } from '@/lib/hooks/useSettings';
+import { useStore } from '@/lib/store';
+import SelectionPopover from '@/components/notes/SelectionPopover';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
 import ChatSettings from '@/components/chat/ChatSettings';
@@ -25,6 +27,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     contextMode: 'full',
   });
   const { messages, isLoading, error, sendMessage, stopGeneration, clearError } = useChat(chatContext, chatOptions);
+  const outbound = useStore((s) => s.outbound);
+  const clearOutbound = useStore((s) => s.clearOutbound);
   const sessions = useChatHistory((s) => s.sessions);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
   const createSession = useChatHistory((s) => s.createSession);
@@ -45,6 +49,14 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, isAtBottom]);
+
+  // 划词/外部触发的待发送消息（store.sendToChat 设置 outbound）→ 发起对话
+  useEffect(() => {
+    if (outbound && outbound.content) {
+      sendMessage(outbound.content);
+      clearOutbound();
+    }
+  }, [outbound, sendMessage, clearOutbound]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -261,6 +273,9 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
 
       {/* Settings Overlay */}
       {showSettings && <ChatSettings onClose={() => setShowSettings(false)} />}
+
+      {/* 划词助手：在 AI 回答区选中文字也可弹出（解释/举例/追问/引用） */}
+      <SelectionPopover containerRef={scrollContainerRef} />
 
       {/* History Overlay */}
       {showHistory && (

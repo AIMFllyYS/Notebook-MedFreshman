@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { FileText, ClipboardCheck, Lightbulb } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import NoteRenderer from "@/components/notes/NoteRenderer";
+import SelectionPopover from "@/components/notes/SelectionPopover";
 import type { SubjectId, CategoryId } from "@/lib/types/content";
 import type { ExampleMeta } from "@/app/api/examples/route";
 
@@ -170,6 +171,9 @@ export default function ContentPageClient({
           )}
         </AnimatePresence>
       </div>
+
+      {/* 划词助手：在正文阅读区选中文字即弹出（解释/举例/追问/引用） */}
+      <SelectionPopover containerRef={containerRef} />
     </div>
   );
 }
