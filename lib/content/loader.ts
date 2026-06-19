@@ -42,6 +42,48 @@ export function readSectionMarkdown(
   }
 }
 
+/**
+ * 按 (subjectId, categoryId, itemId) 读取内容 markdown；不存在返回 null。
+ * 供 page.tsx 做 SSR 首屏渲染与 /api/section 客户端回退共用，统一路径解析逻辑。
+ *
+ * - probability/detail：复用 content/chapters 目录结构（itemId "1.1" → ch01/1.1.md，
+ *   章级 id "ch01" → ch01/index.md）。
+ * - 其他科目/分类：content/{subjectId}/{categoryId}/{itemId}.md。
+ */
+export function readContentMarkdown(
+  subjectId: string,
+  categoryId: string,
+  itemId: string,
+): string | null {
+  if (subjectId === "probability" && categoryId === "detail") {
+    const chapterMatch = itemId.match(/^(\d+)\./);
+    if (chapterMatch) {
+      const chapterNum = parseInt(chapterMatch[1], 10);
+      const chapterId = `ch${String(chapterNum).padStart(2, "0")}`;
+      return readSectionMarkdown(chapterId, itemId);
+    }
+    const chapterFile = path.join(CONTENT_ROOT, itemId, "index.md");
+    try {
+      return fs.readFileSync(chapterFile, "utf8");
+    } catch {
+      return null;
+    }
+  }
+
+  const genericPath = path.join(
+    process.cwd(),
+    "content",
+    subjectId,
+    categoryId,
+    `${itemId}.md`,
+  );
+  try {
+    return fs.readFileSync(genericPath, "utf8");
+  } catch {
+    return null;
+  }
+}
+
 /** 紧凑的全书大纲文本，供 AI 的 get_outline 工具。 */
 export function getOutlineText(): string {
   const lines: string[] = [`课程：${manifest.course}`];

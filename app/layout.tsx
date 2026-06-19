@@ -4,9 +4,9 @@ import "./globals.css";
 import "katex/dist/katex.min.css";
 
 export const metadata: Metadata = {
-  title: "概率论与数理统计 · 辅助学习",
+  title: "期末复习栈 · 多学科辅助学习",
   description:
-    "课堂录音驱动的深度学习助手：详尽原创笔记、AI 对话、Manim 动画讲解与可交互内容。",
+    "课堂录音驱动的深度学习助手：详尽原创笔记、AI 对话、Manim 动画讲解与可交互内容，覆盖概率论、有机化学、近现代史等多学科。",
 };
 
 export default function RootLayout({

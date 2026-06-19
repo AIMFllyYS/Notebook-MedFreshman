@@ -4,6 +4,8 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useStore } from "@/lib/store";
 import { getVideosForSection } from "@/content/media";
+// 讲稿单独成模块（~388KB），只在本懒加载的 VideoTab chunk 内引用，不进入首屏内容包。
+import { videoScripts } from "@/content/media.scripts.generated";
 
 // NoteRenderer 较重（含 KaTeX/highlight），折叠讲稿展开时才懒加载
 const NoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), {
@@ -41,7 +43,8 @@ export default function VideoTab() {
       ) : (
         <div className="flex flex-col gap-3">
           {videos.map((v) => {
-            const hasScript = Boolean(v.scriptMd);
+            const script = videoScripts[v.id];
+            const hasScript = Boolean(script);
             const isExpanded = expandedScripts[v.id];
             return (
               <div
@@ -100,7 +103,7 @@ export default function VideoTab() {
                     {isExpanded && (
                       <div className="border-t border-[var(--line)] bg-[var(--bg-app)] px-3 py-3">
                         <div className="prose-notes max-w-none">
-                          <NoteRenderer content={v.scriptMd!} />
+                          <NoteRenderer content={script!} />
                         </div>
                       </div>
                     )}

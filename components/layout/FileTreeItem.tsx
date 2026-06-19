@@ -1,20 +1,28 @@
 "use client";
 
+import { memo } from "react";
 import { ChevronRight, Folder, FolderOpen, FileText } from "lucide-react";
 import type { ContentItem } from "@/lib/types/content";
 
 interface FileTreeItemProps {
   item: ContentItem;
   depth: number;
+  /** 命名空间化的展开/选中键 */
+  nsKey: string;
+  subjectId: string;
+  categoryId: string;
   isExpanded: boolean;
   isSelected: boolean;
-  onToggle: () => void;
-  onSelect: () => void;
+  onToggle: (nsKey: string) => void;
+  onSelect: (subjectId: string, categoryId: string, item: ContentItem) => void;
 }
 
-export default function FileTreeItem({
+function FileTreeItem({
   item,
   depth,
+  nsKey,
+  subjectId,
+  categoryId,
   isExpanded,
   isSelected,
   onToggle,
@@ -26,7 +34,11 @@ export default function FileTreeItem({
   return (
     <div>
       <button
-        onClick={isFolder ? onToggle : onSelect}
+        onClick={
+          isFolder
+            ? () => onToggle(nsKey)
+            : () => onSelect(subjectId, categoryId, item)
+        }
         className="flex w-full items-center gap-1 border-0 bg-transparent text-left outline-none"
         style={{
           paddingLeft: depth * 16 + 4,
@@ -87,3 +99,7 @@ export default function FileTreeItem({
     </div>
   );
 }
+
+// memo + 稳定回调：仅当某行自身的 props（isExpanded/isSelected 等）变化时才重渲染，
+// 避免一次展开/选中导致整棵树所有行重渲染。
+export default memo(FileTreeItem);

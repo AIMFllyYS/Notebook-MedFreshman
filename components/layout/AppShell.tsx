@@ -102,6 +102,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const [, startTransition] = useTransition();
 
   const route = useMemo(() => parseRoute(pathname), [pathname]);
+  const setActiveRoute = useStore((s) => s.setActiveRoute);
+
+  // 路由 -> 全局导航状态（单一同步点，覆盖所有分类）。
+  // 之前该同步在 ContentPageClient 且仅 categoryId==='detail' 时执行，导致切到
+  // 录音/纪要页时右侧面板（视频/交互/例题/AI 上下文）仍停留在上一个学科。
+  useEffect(() => {
+    if (route) setActiveRoute(route.subjectId, route.categoryId, route.itemId);
+  }, [route, setActiveRoute]);
 
   // store 折叠状态 -> 面板命令式同步
   useEffect(() => {

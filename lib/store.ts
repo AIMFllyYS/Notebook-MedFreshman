@@ -12,13 +12,26 @@ export interface OutboundMessage {
   nonce: number;
 }
 
+/** detail 分类下 itemId（如 "1.1"）→ 章节 id（"ch01"）。非 detail 返回 ""。 */
+function deriveChapterId(categoryId: string, itemId: string): string {
+  if (categoryId !== "detail") return "";
+  const n = parseInt(itemId.split(".")[0], 10);
+  return Number.isNaN(n) ? "" : `ch${String(n).padStart(2, "0")}`;
+}
+
 interface AppState {
-  // ── 导航 ──────────────────────────────────────────────
+  // ── 导航（始终反映当前路由，由 AppShell 统一同步）──────────
   activeSubjectId: SubjectId;
+  /** 当前分类（detail/recording/summary/textbook…），用于 AI 上下文 */
+  activeCategoryId: string;
+  /** 当前内容项原始 id（如 "1.1" / "rec-01"），用于 AI 上下文 */
+  activeItemId: string;
+  /** 仅 detail 分类下有意义；非 detail 为 ""，使右侧视频/交互/例题显示空态而非串科目 */
   activeChapterId: string;
   activeSectionId: string;
   setActiveSubject: (s: SubjectId) => void;
-  setActiveSection: (subjectId: SubjectId, chapterId: string, sectionId: string) => void;
+  /** 由路由 (subjectId, categoryId, itemId) 统一驱动导航状态 */
+  setActiveRoute: (subjectId: SubjectId, categoryId: string, itemId: string) => void;
 
   sidebarCollapsed: boolean;
   toggleSidebar: () => void;
@@ -50,11 +63,19 @@ interface AppState {
 
 export const useStore = create<AppState>((set, get) => ({
   activeSubjectId: "probability",
+  activeCategoryId: "detail",
+  activeItemId: "1.1",
   activeChapterId: "ch01",
   activeSectionId: "1.1",
   setActiveSubject: (s) => set({ activeSubjectId: s }),
-  setActiveSection: (subjectId, chapterId, sectionId) =>
-    set({ activeSubjectId: subjectId, activeChapterId: chapterId, activeSectionId: sectionId }),
+  setActiveRoute: (subjectId, categoryId, itemId) =>
+    set({
+      activeSubjectId: subjectId,
+      activeCategoryId: categoryId,
+      activeItemId: itemId,
+      activeChapterId: deriveChapterId(categoryId, itemId),
+      activeSectionId: categoryId === "detail" ? itemId : "",
+    }),
 
   sidebarCollapsed: false,
   toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),

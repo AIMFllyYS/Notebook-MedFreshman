@@ -12,6 +12,18 @@ export const mediaManifest: MediaManifest = {
   videos: [...generatedVideos, ...chemistryVideos],
 };
 
+// 防御：视频 id 必须全局唯一。getVideo 与内联 ::video{id=...} 均按裸 id 查找；
+// 跨学科复用同一 id 会静默返回错视频，这里在模块加载时立即抛错。
+(() => {
+  const seen = new Set<string>();
+  for (const v of mediaManifest.videos) {
+    if (seen.has(v.id)) {
+      throw new Error(`[media] 重复的视频 id: "${v.id}"（视频 id 必须全局唯一）`);
+    }
+    seen.add(v.id);
+  }
+})();
+
 export function getVideo(id?: string | null): VideoEntry | undefined {
   if (!id) return undefined;
   return mediaManifest.videos.find((v) => v.id === id);

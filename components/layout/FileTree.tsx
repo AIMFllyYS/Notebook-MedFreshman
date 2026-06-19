@@ -7,13 +7,19 @@ import type { ContentItem } from "@/lib/types/content";
 interface FileTreeProps {
   items: ContentItem[];
   depth?: number;
+  /** 当前子树所属科目，用于构造命名空间化的选中/展开键，避免跨学科 id 碰撞 */
+  subjectId: string;
+  /** 当前子树所属分类 */
+  categoryId: string;
   selectedId: string | null;
-  onItemSelect: (item: ContentItem) => void;
+  onItemSelect: (subjectId: string, categoryId: string, item: ContentItem) => void;
 }
 
 export default function FileTree({
   items,
   depth = 0,
+  subjectId,
+  categoryId,
   selectedId,
   onItemSelect,
 }: FileTreeProps) {
@@ -25,8 +31,12 @@ export default function FileTree({
   return (
     <div>
       {items.map((item) => {
-        const isExpanded = expandedIds.has(item.id);
-        const isSelected = selectedId === item.id;
+        // 命名空间键：`${subjectId}/${categoryId}/${item.id}`。
+        // 不同学科复用相同的 item.id（ch01 / 1.1 等），裸 id 会导致跨学科
+        // 选中高亮与展开状态相互串扰，必须加上学科+分类前缀。
+        const nsKey = `${subjectId}/${categoryId}/${item.id}`;
+        const isExpanded = expandedIds.has(nsKey);
+        const isSelected = selectedId === nsKey;
         const hasChildren = item.children && item.children.length > 0;
 
         return (
@@ -34,15 +44,20 @@ export default function FileTree({
             <FileTreeItem
               item={item}
               depth={depth}
+              nsKey={nsKey}
+              subjectId={subjectId}
+              categoryId={categoryId}
               isExpanded={isExpanded}
               isSelected={isSelected}
-              onToggle={() => toggleExpand(item.id)}
-              onSelect={() => onItemSelect(item)}
+              onToggle={toggleExpand}
+              onSelect={onItemSelect}
             />
             {isExpanded && hasChildren && (
               <FileTree
                 items={item.children!}
                 depth={depth + 1}
+                subjectId={subjectId}
+                categoryId={categoryId}
                 selectedId={selectedId}
                 onItemSelect={onItemSelect}
               />

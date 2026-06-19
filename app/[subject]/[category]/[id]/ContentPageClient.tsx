@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useDeferredValue, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { FileText, ClipboardCheck, Lightbulb } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import NoteRenderer from "@/components/notes/NoteRenderer";
 import type { SubjectId, CategoryId } from "@/lib/types/content";
-import { useStore } from "@/lib/store";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
 const ExampleTab = dynamic(() => import("@/components/examples/ExampleTab"), { ssr: false });
@@ -24,25 +23,13 @@ interface ContentPageClientProps {
   subjectId: SubjectId;
   categoryId: CategoryId;
   itemId: string;
+  /** 服务端 SSR 注入的正文 markdown；null 表示该项暂无内容文件 */
+  initialContent: string | null;
   itemTitle: string;
   itemSummary: string;
   subjectName: string;
   categoryName: string;
   itemStatus: string;
-}
-
-function Skeleton() {
-  return (
-    <div className="animate-shimmer space-y-3">
-      {[..."xxxxxxx"].map((_, i) => (
-        <div
-          key={i}
-          className="h-4 rounded bg-[var(--bg-muted)]"
-          style={{ width: `${[92, 78, 96, 64, 88, 72, 90][i]}%` }}
-        />
-      ))}
-    </div>
-  );
 }
 
 function EmptyNote({ itemId, title }: { itemId: string; title: string }) {
@@ -59,61 +46,29 @@ function EmptyNote({ itemId, title }: { itemId: string; title: string }) {
   );
 }
 
-function itemIdToChapterId(itemId: string): string {
-  const chapterNum = parseInt(itemId.split('.')[0], 10);
-  return `ch${String(chapterNum).padStart(2, '0')}`;
-}
-
 export default function ContentPageClient({
   subjectId,
   categoryId,
   itemId,
+  initialContent,
   itemTitle,
   itemSummary,
   subjectName,
   categoryName,
   itemStatus,
 }: ContentPageClientProps) {
-  const deferredItemId = useDeferredValue(itemId);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [content, setContent] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<ContentTab>("content");
-  const setActiveSection = useStore((s) => s.setActiveSection);
 
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    setContent(null);
-    fetch(
-      `/api/section?subjectId=${subjectId}&categoryId=${categoryId}&itemId=${deferredItemId}`,
-    )
-      .then((r) => r.json())
-      .then((d) => {
-        if (!cancelled) {
-          setContent(d.content ?? null);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [subjectId, categoryId, deferredItemId]);
+  // 正文由服务端 SSR 注入（initialContent）。客户端切换路由时 page.tsx 会重新做
+  // 服务端渲染并以新 prop 下发，无需再 fetch /api/section，消除瀑布与骨架闪烁。
+  const content = initialContent;
 
-  // 同步路由到 store，使右侧面板（动画讲解/可交互/AI对话上下文）随路由联动。
-  // 仅当 categoryId === 'detail' 时同步（教材/录音/纪要不联动右侧面板）。
-  useEffect(() => {
-    if (categoryId !== "detail") return;
-    const chapterId = itemIdToChapterId(deferredItemId);
-    setActiveSection(subjectId, chapterId, deferredItemId);
-  }, [subjectId, categoryId, deferredItemId, setActiveSection]);
+  // 路由→store 的同步已上移到 AppShell（覆盖所有分类），此处不再处理。
 
   useEffect(() => {
     containerRef.current?.scrollTo({ top: 0 });
-  }, [deferredItemId]);
+  }, [itemId]);
 
   return (
     <div className="relative flex h-full flex-col bg-[var(--bg-app)]">
@@ -173,9 +128,7 @@ export default function ContentPageClient({
                   )}
                 </div>
 
-                {loading ? (
-                  <Skeleton />
-                ) : content ? (
+                {content ? (
                   <div key={itemId} className="prose-notes animate-fade-in">
                     <NoteRenderer content={content} />
                   </div>

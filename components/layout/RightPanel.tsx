@@ -36,16 +36,16 @@ export default function RightPanel() {
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);
   const activeSubjectId = useStore((s) => s.activeSubjectId);
-  const activeChapterId = useStore((s) => s.activeChapterId);
-  const activeSectionId = useStore((s) => s.activeSectionId);
+  const activeCategoryId = useStore((s) => s.activeCategoryId);
+  const activeItemId = useStore((s) => s.activeItemId);
   const [aiSubTab, setAiSubTab] = useState<AiSubTab>("chat");
 
   const chatContext: ChatContext = useMemo(() => ({
     subjectId: activeSubjectId,
-    categoryId: activeChapterId,
-    itemId: activeSectionId,
-    currentTopic: `${activeSubjectId} ${activeChapterId} ${activeSectionId}`,
-  }), [activeSubjectId, activeChapterId, activeSectionId]);
+    categoryId: activeCategoryId,
+    itemId: activeItemId,
+    currentTopic: `${activeSubjectId} ${activeCategoryId} ${activeItemId}`,
+  }), [activeSubjectId, activeCategoryId, activeItemId]);
 
   return (
     <div className="flex h-full flex-col border-l border-[var(--line)] bg-[var(--bg-panel)]">

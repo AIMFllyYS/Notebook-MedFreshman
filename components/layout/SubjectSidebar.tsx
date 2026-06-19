@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   ChevronRight,
   Folder,
@@ -39,31 +39,33 @@ function SubjectIcon({ name, size = 15 }: { name: string; size?: number }) {
 
 export default function SubjectSidebar() {
   const router = useRouter();
+  const pathname = usePathname();
   const expandedIds = useSidebarStore((s) => s.expandedIds);
-  const selectedId = useSidebarStore((s) => s.selectedId);
   const toggleExpand = useSidebarStore((s) => s.toggleExpand);
-  const setSelected = useSidebarStore((s) => s.setSelected);
   const isCollapsed = useSidebarStore((s) => s.isCollapsed);
   const setCollapsed = useSidebarStore((s) => s.setCollapsed);
   const [isLight, setIsLight] = useState(false);
+
+  // 选中态由路由派生（单一真相源）：/[subject]/[category]/[id] → `${subject}/${category}/${id}`。
+  // 这样刷新/深链时也能正确高亮，且天然命名空间化，不会跨学科串扰。
+  const selectedKey = useMemo(() => {
+    const segs = pathname.split("/").filter(Boolean);
+    return segs.length >= 3 ? `${segs[0]}/${segs[1]}/${segs[2]}` : null;
+  }, [pathname]);
 
   useEffect(() => {
     setIsLight(document.documentElement.getAttribute("data-theme") === "light");
   }, []);
 
-  const handleItemSelect = (item: ContentItem) => {
-    setSelected(item.id);
-    // Find the subject and category for this item to build route
-    for (const subject of contentTree.subjects) {
-      for (const category of subject.categories) {
-        const found = findItemInList(category.items, item.id);
-        if (found) {
-          router.push(`/${subject.id}/${category.id}/${item.id}`);
-          return;
-        }
-      }
-    }
-  };
+  // 路由直接由渲染处已知的 (subjectId, categoryId) 构造，不再全局搜索 item.id。
+  // 此前的全局搜索会因裸 id 跨学科碰撞（概率论排在首位）而把化学等学科的点击
+  // 错误地解析到 /probability/...。选中键同样命名空间化，杜绝跨学科高亮串扰。
+  const handleItemSelect = useCallback(
+    (subjectId: string, categoryId: string, item: ContentItem) => {
+      router.push(`/${subjectId}/${categoryId}/${item.id}`);
+    },
+    [router],
+  );
 
   return (
     <aside
@@ -207,7 +209,9 @@ export default function SubjectSidebar() {
                         <FileTree
                           items={category.items}
                           depth={3}
-                          selectedId={selectedId}
+                          subjectId={subject.id}
+                          categoryId={category.id}
+                          selectedId={selectedKey}
                           onItemSelect={handleItemSelect}
                         />
                       )}
@@ -250,12 +254,4 @@ export default function SubjectSidebar() {
       </div>
     </aside>
   );
-}
-
-function findItemInList(items: ContentItem[], targetId: string): boolean {
-  for (const item of items) {
-    if (item.id === targetId) return true;
-    if (item.children && findItemInList(item.children, targetId)) return true;
-  }
-  return false;
 }
