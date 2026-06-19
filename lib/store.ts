@@ -3,7 +3,6 @@ import type { VideoEntry } from "@/lib/content/types";
 import type { SubjectId } from "@/lib/types/content";
 
 export type RightTab = "ai" | "video" | "interactive" | "browser";
-export type ModelTier = "pro" | "flash";
 
 export interface OutboundMessage {
   /** 要发送给 AI 的完整内容（可能含划词引用） */
@@ -48,9 +47,6 @@ interface AppState {
   setRightTab: (t: RightTab) => void;
 
   // ── AI 对话 ───────────────────────────────────────────
-  model: ModelTier;
-  setModel: (m: ModelTier) => void;
-
   /** 划词 / 外部触发的待发送消息 */
   outbound: OutboundMessage | null;
   /** 把一段文本送入 AI 对话并切到 AI Tab（用于划词问答与建议追问） */
@@ -95,9 +91,6 @@ export const useStore = create<AppState>((set, get) => ({
 
   rightTab: "ai",
   setRightTab: (t) => set({ rightTab: t }),
-
-  model: "pro",
-  setModel: (m) => set({ model: m }),
 
   outbound: null,
   sendToChat: (content) =>

@@ -3,17 +3,20 @@ import { SYSTEM_PROMPT_TEMPLATE } from "@/lib/constants/prompts";
 import { SUBJECTS } from "@/lib/constants/subjects";
 import { getContextManager } from "@/lib/context";
 import type { ChatContext, ChatOptions } from "@/lib/types/chat";
-import { getActiveTools } from "@/lib/types/tools";
-import { runTool } from "@/lib/ai/tools";
+import { getToolDefs, runTool } from "@/lib/ai/tools";
+import {
+  resolveProvider,
+  chatCompletionsUrl,
+  thinkingBudget,
+  ENV_MODEL_PRO,
+  ENV_MODEL_FLASH,
+  type CustomProvider,
+} from "@/lib/ai/provider";
+import { getModelInfo } from "@/lib/ai/models";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const BASE = process.env.AI_BASE_URL || "";
-const KEY = process.env.AI_API_KEY || "";
-const MODEL_PRO = process.env.AI_MODEL_PRO || "v4-pro";
-const MODEL_FLASH = process.env.AI_MODEL_FLASH || "v4-flash";
-const REASONING_FIELD = process.env.AI_REASONING_FIELD || "reasoning_content";
 const MAX_TOOL_TURNS = 6;
 
 function sse(obj: unknown): string {
@@ -55,7 +58,18 @@ function buildSystemPrompt(chatCtx: ChatContext): string {
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const messages: ClientMessage[] = Array.isArray(body.messages) ? body.messages : [];
-  const model: string = body.model === "flash" ? "flash" : "pro";
+
+  // 模型选择：优先 modelId（新菜单）；兼容旧式 model:'flash'/'pro'（如划词浮窗）。
+  let modelId: string | undefined =
+    typeof body.modelId === "string" ? body.modelId : undefined;
+  if (!modelId && typeof body.model === "string") {
+    modelId = body.model === "pro" ? ENV_MODEL_PRO : body.model === "flash" ? ENV_MODEL_FLASH : undefined;
+  }
+  const customProvider: CustomProvider | undefined =
+    body.customProvider && typeof body.customProvider === "object" ? body.customProvider : undefined;
+  const disabledTools: string[] = Array.isArray(body.disabledTools)
+    ? body.disabledTools.map(String)
+    : [];
 
   // 多科上下文参数
   const subjectId: string = String(body.subjectId ?? "probability");
@@ -72,8 +86,9 @@ export async function POST(req: NextRequest) {
   };
 
   const chatCtx: ChatContext = { subjectId, categoryId, itemId, currentTopic };
-  const modelId = model === "flash" ? MODEL_FLASH : MODEL_PRO;
-  const toolDefs = getActiveTools(options.enableSearch ?? false);
+  const provider = resolveProvider(modelId, customProvider);
+  const reasoningField = provider.reasoningField;
+  const toolDefs = getToolDefs({ enableSearch: options.enableSearch ?? false, disabled: disabledTools });
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
@@ -81,11 +96,11 @@ export async function POST(req: NextRequest) {
       const send = (o: unknown) => controller.enqueue(encoder.encode(sse(o)));
 
       try {
-        if (!BASE || !KEY || BASE.includes("your-endpoint")) {
+        if (!provider.configured) {
           send({
             type: "content",
             content:
-              "AI 暂未配置。请在 .env.local 填写 AI_BASE_URL / AI_API_KEY 后重启 pnpm dev。",
+              "AI 暂未配置。请在 .env.local 填写 AI_BASE_URL / AI_API_KEY，或在「设置」中填入自定义 API 后重试。",
           });
           send({ type: "done" });
           controller.close();
@@ -113,11 +128,11 @@ export async function POST(req: NextRequest) {
           ...messages.map((m) => ({ role: m.role, content: m.content })),
         ];
 
-        const endpoint = `${BASE.replace(/\/$/, "")}/chat/completions`;
+        const endpoint = chatCompletionsUrl(provider.baseUrl);
 
         for (let turn = 0; turn < MAX_TOOL_TURNS; turn++) {
           const reqBody: Record<string, unknown> = {
-            model: modelId,
+            model: provider.model,
             messages: convo,
             tools: toolDefs,
             tool_choice: "auto",
@@ -125,16 +140,21 @@ export async function POST(req: NextRequest) {
             temperature: 0.6,
           };
 
-          // 深度思考参数
+          // 深度思考参数（仅在模型支持思考时下发，避免不支持的端点报未知参数）。
           if (options.enableThinking) {
-            reqBody.thinking = { type: "enabled", budget_tokens: 10000 };
+            const info = provider.isCustom ? undefined : getModelInfo(provider.model);
+            const supportsThinking = provider.isCustom || !info || info.thinking;
+            if (supportsThinking) {
+              reqBody.enable_thinking = true;
+              reqBody.thinking_budget = thinkingBudget(options.thinkingEffort);
+            }
           }
 
           const res = await fetch(endpoint, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${KEY}`,
+              Authorization: `Bearer ${provider.apiKey}`,
             },
             body: JSON.stringify(reqBody),
           });
@@ -172,7 +192,7 @@ export async function POST(req: NextRequest) {
               const delta: StreamDelta = choice.delta || {};
 
               // 深度思考增量
-              const reasoning = delta[REASONING_FIELD] ?? delta.reasoning;
+              const reasoning = delta[reasoningField] ?? delta.reasoning;
               if (reasoning) send({ type: "reasoning", delta: reasoning });
 
               // 内容增量
@@ -212,8 +232,9 @@ export async function POST(req: NextRequest) {
               try { parsed = c.args ? JSON.parse(c.args) : {}; } catch { parsed = {}; }
               send({ type: "tool", id: c.id, name: c.name, args: parsed, status: "call" });
               const result = await runTool(c.name, parsed, {
-                chapterId: subjectId,
-                sectionId: itemId,
+                subjectId,
+                categoryId,
+                itemId,
               });
               send({ type: "tool", id: c.id, status: "result" });
               convo.push({ role: "tool", tool_call_id: c.id, content: result });

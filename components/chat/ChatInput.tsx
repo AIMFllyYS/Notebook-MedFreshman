@@ -8,6 +8,7 @@ import * as Icons from 'lucide-react';
 import type { ChatContext } from '@/lib/types/chat';
 import { QUICK_PROMPTS } from '@/lib/constants/prompts';
 import { useChatUI } from '@/lib/hooks/useChatUI';
+import ModelMenu from '@/components/chat/ModelMenu';
 
 interface ChatInputProps {
   onSend: (content: string, options?: { quotedText?: string; enableThinking?: boolean; enableSearch?: boolean }) => void;
@@ -297,10 +298,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
           </button>
         </div>
 
-        {/* Model indicator */}
-        <span style={{ fontSize: '10px', color: 'var(--md-sys-color-outline)', fontWeight: 400 }}>
-          {enableThinking ? 'deepseek-pro' : 'deepseek-flash'}
-        </span>
+        {/* Model selector */}
+        <ModelMenu />
       </div>
     </div>
   );

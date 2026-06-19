@@ -1,5 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { useChatHistory } from './useChatHistory';
+import { useSettings } from './useSettings';
+import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
 import type { ChatMessage, ChatContext, ChatOptions, ToolCallBlock } from '@/lib/types/chat';
 import { parseXmlTags } from '@/lib/utils/xmlParser';
 
@@ -129,12 +131,18 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
         const toolCallsMap = new Map<string, ToolCallBlock>();
 
         try {
+          const settings = useSettings.getState();
+          const isCustom = settings.selectedModelId === CUSTOM_MODEL_ID;
           const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               messages: requestMessages,
-              model: enableThinking ? 'pro' : 'flash',
+              modelId: settings.selectedModelId,
+              customProvider: isCustom
+                ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: settings.customModelId }
+                : undefined,
+              disabledTools: settings.disabledTools,
               subjectId: chatContext.subjectId,
               categoryId: chatContext.categoryId,
               itemId: chatContext.itemId,
