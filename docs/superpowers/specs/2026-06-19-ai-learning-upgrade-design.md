@@ -1,0 +1,111 @@
+# AI 学习系统深度升级 · 主设计文档 / 路线图
+
+> 状态：进行中（无人值守）。每完成一个阶段即 commit。本文件是跨会话的持久蓝图，
+> 上下文被压缩后从这里恢复进度。
+
+## 0. 目标
+
+系统性升级右侧 AI 助教与划词助手，使其真正以最高效率帮助学习。同时升级右侧面板
+（新增浏览器 Tab）。整体遵守项目既有架构：文件按职责拆分、不过长、复用组件、路由清晰、
+暗色 CSS 变量体系、SSR 正文不破坏。
+
+## 1. 现状关键发现（开工前体检）
+
+技术栈：Next.js 16.2 + React 19.2 + TS（pnpm）；三栏布局；右侧 3 Tab（AI对话/动画讲解/可交互）。
+AI 走 OpenAI 兼容端点（`.env.local`：`AI_BASE_URL`/`AI_API_KEY`/`AI_MODEL_PRO`/`AI_MODEL_FLASH`/
+`AI_REASONING_FIELD`），后端 `app/api/chat/route.ts` 做工具循环 + SSE 流。
+
+**已确认的断点 / bug：**
+1. **工具名不匹配**：route 把 `getActiveTools()`（camelCase：`getCurrentPage`/`getFolderTree`/
+   `getPageContent`/`webSearch`，来自 `lib/types/tools.ts`）发给模型，但 `runTool()`（`lib/ai/tools.ts`）
+   的 switch 只认 snake_case（`get_current_page`/`get_outline`/`get_section`/`search_notes`）→
+   任何工具调用都命中 `未知工具`。两套工具定义并存，必须统一。
+2. **自定义 API 配置完全断连**：`ChatSettings.tsx` 把 endpoint/key/model 写入 localStorage
+   (`gailvlun-chat-settings`)，但 `useChat`/route 从不读取它 → 用户填的自定义 API 无效
+   （这正是"配置冲突"bug）。需求：env 为站点默认；自定义配置作为"自定义模型"并存、不冲突。
+3. **模型选择未接线**：`ModelSwitch.tsx`（pro/flash）存在，但 `ChatPanel` 把 model 硬编码为
+   `enableThinking ? 'pro' : 'flash'`；`ChatInput` 右下角模型指示器硬编码 `deepseek-pro/flash`。
+   需求：像 agent 软件那样的模型下拉菜单，可选硅基流动多个顶尖模型 + 自定义模型。
+4. **划词无弹窗（bug）**：`SelectionPopover.tsx`（解释/举例/追问/引用）组件存在，但**未在任何地方挂载**
+   → 划词后不出现。`QuickExplainWindow.tsx`（WPS 式浮窗）已在 `AppShell` 挂载，但它依赖
+   `SelectionPopover` 触发 `setQuickExplain`，故也无从触发。
+5. **`outbound`/`sendToChat` 无人消费**：store 有划词→对话的 `outbound` 通道，注释说 ChatPanel 监听，
+   但实际无任何组件读取 → 划词"问AI"链路断。
+6. **提示词内嵌且单一**：`lib/constants/prompts.ts` 单文件、仅概率论口径、未分学科、未独立成 MD。
+7. **联网搜索/向量为空壳**：`webSearch` 工具有声明无实现；`contextMode: 'semantic'` 标"即将推出"。
+
+## 2. 已核实事实（用真实 key 查 `GET /v1/models` + 联网调研）
+
+- Base：`https://api.siliconflow.cn/v1`，OpenAI 兼容，Bearer 鉴权。
+- **顶尖对话/推理模型（真实存在）**：`deepseek-ai/DeepSeek-V4-Pro`（1M，旗舰推理，三档思考）、
+  `deepseek-ai/DeepSeek-V4-Flash`（1M，性价比推理）、`deepseek-ai/DeepSeek-V3.2`、`zai-org/GLM-5.2`、
+  `Pro/zai-org/GLM-5.1`、`Qwen/Qwen3.6-35B-A3B`、`Qwen/Qwen3.5-397B-A17B`、`Qwen/Qwen3.5-35B-A3B`、
+  `moonshotai/Kimi-K2.7-Code`、`Pro/moonshotai/Kimi-K2.6`、`MiniMaxAI/MiniMax-M2.5`、
+  `deepseek-ai/DeepSeek-V3`、`deepseek-ai/DeepSeek-R1`。env 现有 V4-Pro/Flash **有效**。
+- 思维链字段：`reasoning_content`（流式 `delta.reasoning_content`）。开关：`enable_thinking` /
+  `thinking_budget`（各家默认不一，需显式传）。function calling：OpenAI 格式 `tools`。
+- **Embedding**：`/v1/embeddings`，默认推荐 `BAAI/bge-m3`（1024 维，8192 上下文，中文好）。
+- **Rerank**：`/v1/rerank`，默认 `BAAI/bge-reranker-v2-m3`。
+- **联网搜索：平台不内置**。自建 `webSearch`：默认走博查 Bocha
+  `POST https://api.bochaai.com/v1/web-search`（Bearer，中文/时效好，`summary` 字段 RAG 友好）；
+  可选 Tavily `https://api.tavily.com/search`。
+- **Prompt caching**：DeepSeek-V4 系自带前缀自动缓存（命中价≈2% miss 价）。实践：稳定 system prompt
+  放最前且逐字节一致；易变内容（页面快照、检索结果、对话历史）放最后，用工具调用获取而非插进 system。
+
+## 3. 架构决策
+
+- **AI Provider 层**（新增 `lib/ai/provider.ts` + `lib/ai/models.ts`）：集中解析"用哪个 base/key/model"。
+  优先级：请求体里指定的自定义 provider（来自前端设置，仅当用户填了 customBaseUrl+customApiKey+customModel）
+  → 否则 env 默认。模型注册表 `models.ts` 导出精选硅基流动模型（id/label/能力标签：思考/工具/上下文）。
+- **统一工具系统**：删除重复定义，单一来源 `lib/ai/tools.ts`（定义 + 执行），camelCase 命名，
+  route 同时从这里取 defs 与 executor，彻底修复名字不匹配。工具：`getCurrentPage`/`getOutline`/
+  `getSection`/`searchNotes`/`webSearch`/`renderInteractive`(后期)。ToolContext 带完整
+  `{subjectId, categoryId, itemId}`。
+- **动态提示词系统**（`lib/ai/prompts/`）：
+  - `lib/ai/prompts/global.md`（全局系统提示词，作为稳定缓存前缀）
+  - `lib/ai/prompts/subjects/{probability,physics,chemistry}.md`（分学科专门化）
+  - `lib/ai/prompts/index.ts`：服务端 `import` 这些 md 文本（Next 可用 `?raw` 或 fs 读取），
+    按 `subjectId` 拼装：global + 工具说明 + 学科段 + （末尾）易变上下文。保持前缀稳定利于缓存。
+- **设置存储**：`lib/ai/settings.ts` + `useSettings` store（localStorage 持久化）：自定义 provider、
+  默认模型、字体大小、各工具开关、默认思考/搜索。前端设置经请求体传到 route，覆盖 env（仅自定义项）。
+- **划词复用**：`SelectionPopover` 在内容容器与右侧聊天容器都挂载（containerRef 注入）；修复 `outbound`
+  消费（ChatPanel 监听并 sendMessage）。
+
+## 4. 分阶段计划（每阶段 = 一次 commit，遵循 PDCA）
+
+- [ ] **S1 右侧浏览器 Tab**：RightPanel 顶部 Tab 栏新增"浏览器"（在"可交互"右侧）；可滑动横向 Tab 栏；
+  最右侧"+"功能按钮：设置浏览器/新增固定网址（收藏夹式 Tab，localStorage 持久）；iframe 渲染任意 URL，
+  本地基础安全（sandbox/allow 合理放开 B 站等）。新组件 `components/browser/`。
+- [ ] **S2 AI Provider/模型层 + 多模型菜单 + 自定义 API 修复 + 工具名 bug 修复 + env 扩展**：
+  `lib/ai/{provider,models}.ts`；route 用 provider 层；统一工具系统；`ModelMenu` 下拉（替代 ModelSwitch）；
+  设置里自定义 provider 与 env 并存；扩展 `.env.local`/`.env.example`（嵌入/重排/搜索占位）。真实 key 烟测。
+- [ ] **S3 动态提示词系统**：`lib/ai/prompts/` MD 化 + 加载器；全局 + 三学科；route 接入；防幻觉/工具策略/
+  追问/苏格拉底刹车。
+- [ ] **S4 设置融入按钮 + 设置增强**：去掉"对话/设置"子 Tab，改为对话头部的设置小按钮（弹出面板/抽屉）；
+  设置真实生效：字体大小（聊天区）、各工具启用/禁用、默认模型/思考/搜索/自定义 provider。
+- [ ] **S5 联网搜索工具 + 前端组件 + 缓存**：实现 `webSearch`（Bocha，env key）；后端缓存（内存 LRU + 可选
+  embedding 语义缓存命中）；前端"联网搜索中/来源卡片"组件（复用 ToolCallDashboard 思路）。
+- [ ] **S6 快捷指令复用 FollowUp + 开始后隐藏**：解释概念/给我出题/推理过程三按钮在"新对话空态"时以
+  FollowUp 组件样式出现在顶部，一旦开始对话即隐藏。
+- [ ] **S7 划词弹窗修复 + 右侧复用**：挂载 `SelectionPopover`（正文 + 右侧聊天）；修复 `outbound` 消费；
+  "添加至对话/即时分析"WPS 式浮窗复用。
+- [ ] **S8 富文本排版升级**：右侧渲染（MessageContent/NoteRenderer）排版高级化，行距/段距/标题层级/表格/
+  代码块/公式块间距，参考 docx/refer 旧版 V4。
+- [ ] **S9 AI 生成交互式 HTML**：`renderInteractive` 工具 → 后台子智能体撰写 HTML（独立 API 路由流式）；
+  对话顶部横幅（流式时）→ 半屏预览 → 完成后内嵌进工具调用思考链 + "查看"弹窗（左侧）渲染 iframe。
+
+## 5. 不变量 / 约束（务必遵守）
+
+- 暗色优先 + CSS 变量翻转，禁硬编码浅色。
+- 跨学科 id 命名空间：内容叶子 id 仅在 (subject, category) 内唯一；勿按裸 id 全局查。
+- 导航单一同步点在 AppShell（路由驱动 store）。勿回退。
+- SSR 正文 + media 讲稿拆分不破坏；勿盲目重跑 render.py。
+- 文件按职责拆分、组件复用、路由清晰。每阶段 `pnpm exec tsc --noEmit` 通过 + 关键路径烟测后再 commit。
+- 提交用显式 `git add <我的文件>`，不卷入用户既有 BrandLogo/scratch 改动。
+
+## 6. 研究产出引用
+
+- 硅基流动模型/搜索/嵌入/缓存：见 §2。
+- 学习型提示词（苏格拉底+刹车、费曼/自解释、渐隐例题、ICAP、布鲁姆、间隔检索、脚手架、元认知、
+  错误诊断）与全局/三学科成稿：落地于 S3 的 MD 文件。caching 拼装顺序：global→工具定义→学科段→
+  会话稳定上下文→易变上下文（最后）。
