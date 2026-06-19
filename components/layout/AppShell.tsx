@@ -16,6 +16,7 @@ import type { SubjectId, CategoryId } from "@/lib/types/content";
 import { isSubjectId, isCategoryId } from "@/lib/types/content";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
+import BrandLogo from "./BrandLogo";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const QuickExplainWindow = dynamic(() => import("@/components/chat/QuickExplainWindow"), { ssr: false });
@@ -60,20 +61,25 @@ function TopBar({
         </svg>
       </button>
       <div className="flex items-center gap-2">
-        <span className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--accent)] text-[13px] font-bold text-white">
-          {subject?.name.charAt(0) ?? "?"}
+        <span className="flex h-7 w-7 items-center justify-center">
+          <BrandLogo size={24} />
         </span>
         <span className="text-[15px] font-semibold tracking-tight">
-          {subject?.name ?? ""}
-        </span>
-        <span className="ml-1 rounded-md bg-[var(--bg-muted)] px-1.5 py-0.5 text-[11px] font-medium text-[var(--ink-faint)]">
-          辅助学习
+          期末复习工作站
         </span>
       </div>
       <div className="ml-2 flex min-w-0 items-center gap-1.5 text-[13px] text-[var(--ink-faint)]">
-        {category && (
+        {subject && (
           <>
             <span className="shrink-0">·</span>
+            <span className="shrink-0 truncate font-medium text-[var(--ink-soft)]">
+              {subject.name}
+            </span>
+          </>
+        )}
+        {category && (
+          <>
+            <span className="shrink-0 text-[var(--ink-faint)]">/</span>
             <span className="shrink-0 truncate">
               {category.name}
             </span>

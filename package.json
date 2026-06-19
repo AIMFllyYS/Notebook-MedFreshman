@@ -2,7 +2,7 @@
   "name": "gailvlun",
   "version": "0.1.0",
   "private": true,
-  "description": "概率论与数理统计 · 辅助学习应用",
+  "description": "期末复习工作站 · 多学科辅助学习应用",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
