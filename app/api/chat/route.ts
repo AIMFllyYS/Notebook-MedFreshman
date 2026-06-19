@@ -1,6 +1,5 @@
 import type { NextRequest } from "next/server";
-import { SYSTEM_PROMPT_TEMPLATE } from "@/lib/constants/prompts";
-import { SUBJECTS } from "@/lib/constants/subjects";
+import { buildSystemPrompt, buildLocationLine } from "@/lib/ai/prompts";
 import { getContextManager } from "@/lib/context";
 import type { ChatContext, ChatOptions } from "@/lib/types/chat";
 import { getToolDefs, runTool } from "@/lib/ai/tools";
@@ -43,16 +42,6 @@ interface StreamDelta {
 }
 interface StreamChunk {
   choices?: Array<{ delta?: StreamDelta; finish_reason?: string }>;
-}
-
-function buildSystemPrompt(chatCtx: ChatContext): string {
-  const subjectName = SUBJECTS[chatCtx.subjectId as keyof typeof SUBJECTS] || chatCtx.subjectId;
-  let prompt = SYSTEM_PROMPT_TEMPLATE.replace("{subjectName}", subjectName);
-  prompt += `\n\n【当前上下文】科目：${subjectName} | 分类：${chatCtx.categoryId} | 内容项：${chatCtx.itemId}`;
-  if (chatCtx.currentTopic) {
-    prompt += ` | 主题：${chatCtx.currentTopic}`;
-  }
-  return prompt;
 }
 
 export async function POST(req: NextRequest) {
@@ -118,13 +107,15 @@ export async function POST(req: NextRequest) {
           return;
         }
 
+        // 稳定前缀（global + 学科），利于 prefix 缓存命中。
         const systemPrompt = buildSystemPrompt(chatCtx);
-        const contextHint = ctxResult.context
-          ? `\n\n【参考材料】\n${ctxResult.context}`
-          : "";
+        // 易变上下文（当前定位 + 参考材料）后置为独立 system 消息，避免破坏前缀缓存。
+        const volatile = buildLocationLine(chatCtx) +
+          (ctxResult.context ? `\n\n【参考材料】\n${ctxResult.context}` : "");
 
         const convo: Record<string, unknown>[] = [
-          { role: "system", content: systemPrompt + contextHint },
+          { role: "system", content: systemPrompt },
+          { role: "system", content: volatile },
           ...messages.map((m) => ({ role: m.role, content: m.content })),
         ];
 
