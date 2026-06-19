@@ -152,7 +152,7 @@ function DiazoniumNetworkBase() {
     REACTIONS.find((r) => r.id === activeId) ?? null;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold text-[var(--ink)]">
         重氮盐转化网络
       </h3>
@@ -266,8 +266,8 @@ function DiazoniumNetworkBase() {
               cx={CENTER}
               cy={CENTER}
               r={CENTER_R}
-              fill="var(--ink)"
-              stroke="#ffffff"
+              fill="var(--accent)"
+              stroke="var(--bg-elevated)"
               strokeWidth={3}
             />
             <text
@@ -276,7 +276,7 @@ function DiazoniumNetworkBase() {
               textAnchor="middle"
               fontSize="18"
               fontWeight={800}
-              fill="#ffffff"
+              fill="var(--accent-ink)"
             >
               ArN₂⁺
             </text>
@@ -285,7 +285,7 @@ function DiazoniumNetworkBase() {
               y={CENTER + 16}
               textAnchor="middle"
               fontSize="11"
-              fill="#ffffff"
+              fill="var(--accent-ink)"
               fillOpacity={0.85}
             >
               芳基重氮盐

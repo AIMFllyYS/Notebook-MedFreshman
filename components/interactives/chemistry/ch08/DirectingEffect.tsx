@@ -126,7 +126,7 @@ const ORTHO_PARA_POSITIONS: readonly number[] = [1, 3, 5];
 /** 间位定位：高亮 3、5（间位） */
 const META_POSITIONS: readonly number[] = [2, 4];
 
-const PRIMARY = "#6d28d9"; // 自定义主色
+const PRIMARY = "var(--accent)"; // 自定义主色
 
 function DirectingEffectBase() {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -146,7 +146,7 @@ function DirectingEffectBase() {
     selected.directing === "ortho-para" ? "邻位 + 对位" : "间位";
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold text-[var(--ink)]">
         芳环定位效应预测
       </h3>
@@ -198,8 +198,8 @@ function DirectingEffectBase() {
               <span
                 className={`rounded-md px-2 py-0.5 text-xs font-medium ${
                   selected.activating
-                    ? "bg-emerald-100 text-emerald-700"
-                    : "bg-rose-100 text-rose-700"
+                    ? "bg-emerald-500/10 text-[var(--color-success)]"
+                    : "bg-rose-500/10 text-[var(--md-sys-color-error)]"
                 }`}
               >
                 {selected.activating ? "致活（活化苯环）" : "致钝（钝化苯环）"}
@@ -207,7 +207,7 @@ function DirectingEffectBase() {
             </div>
 
             {selected.isHalogen && (
-              <p className="mt-2 rounded-md bg-amber-50 px-2 py-1 text-xs text-amber-700">
+              <p className="mt-2 rounded-md bg-amber-500/10 px-2 py-1 text-xs text-[var(--color-warning)]">
                 ⚠ 特例：卤素是「致钝的邻对位定位基」——既钝化苯环，又把反应导向邻、对位。
               </p>
             )}

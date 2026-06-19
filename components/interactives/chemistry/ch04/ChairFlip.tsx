@@ -85,7 +85,7 @@ function ChairFlipBase() {
     : "甲基目前在 e 键（赤道键），位阻最小，能量较低（更稳定，优势构象）。";
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-base font-semibold text-[var(--ink)]">
         环己烷椅式翻转：直立键 a ⇄ 平伏键 e
       </h3>
@@ -202,7 +202,7 @@ function ChairFlipBase() {
         <button
           type="button"
           onClick={() => setFlipped((v) => !v)}
-          className="mt-3 rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] px-5 py-2 text-sm font-medium text-[var(--ink)] transition-colors hover:bg-white"
+          className="mt-3 rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] px-5 py-2 text-sm font-medium text-[var(--ink)] transition-colors hover:bg-[var(--bg-elevated)]"
         >
           翻转椅式（ring flip）
         </button>

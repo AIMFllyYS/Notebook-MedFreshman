@@ -3,13 +3,13 @@
 import { memo, useState } from "react";
 
 // ─── Design tokens (static fallbacks for SVG) ──────────────────────────────
-const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT = "var(--accent)";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const RED = "#dc2626";
 const RED_LIGHT = "#fee2e2";
 const GREEN = "#0f766e";
 const GREEN_LIGHT = "#ccfbf1";
-const GRAY_LINE = "#e7e9ef";
+const GRAY_LINE = "var(--line)";
 
 // ─── SVG dimensions ────────────────────────────────────────────────────────
 const SVG_W = 480;
@@ -317,7 +317,7 @@ function NumInput({ label, value, min, max, step, onChange, unit }: NumInputProp
             const v = parseFloat(e.target.value);
             if (!isNaN(v)) onChange(Math.min(max, Math.max(min, v)));
           }}
-          className="w-full rounded-md border border-[var(--line)] bg-white px-2 py-1 text-[13px] font-mono text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
+          className="w-full rounded-md border border-[var(--line)] bg-[var(--bg-elevated)] px-2 py-1 text-[13px] font-mono text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
         />
         {unit && <span className="text-[11px] text-[var(--ink-soft)] whitespace-nowrap">{unit}</span>}
       </div>
@@ -405,15 +405,15 @@ function DistSVG({ result, tail, type, df }: DistSVGProps) {
   return (
     <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full rounded-lg border border-[var(--line)]">
       {/* Background */}
-      <rect x={PX} y={PY} width={PLOT_W} height={PLOT_H} fill="#fafbfd" stroke={GRAY_LINE} />
+      <rect x={PX} y={PY} width={PLOT_W} height={PLOT_H} fill="var(--bg-muted)" stroke={GRAY_LINE} />
 
       {/* X-axis ticks */}
       {[-4, -3, -2, -1, 0, 1, 2, 3, 4].map((v) => {
         const sx = toSX(v);
         return (
           <g key={v}>
-            <line x1={sx} y1={baseline} x2={sx} y2={baseline + 3} stroke="#aab" />
-            <text x={sx} y={baseline + 11} fontSize="8" textAnchor="middle" fill="#8a94a6">{v}</text>
+            <line x1={sx} y1={baseline} x2={sx} y2={baseline + 3} stroke="var(--ink-faint)" />
+            <text x={sx} y={baseline + 11} fontSize="8" textAnchor="middle" fill="var(--ink-faint)">{v}</text>
           </g>
         );
       })}
@@ -493,7 +493,7 @@ function DistSVG({ result, tail, type, df }: DistSVGProps) {
       )}
 
       {/* Axis labels */}
-      <text x={PX + PLOT_W / 2} y={SVG_H - 1} fontSize="9" textAnchor="middle" fill="#8a94a6">
+      <text x={PX + PLOT_W / 2} y={SVG_H - 1} fontSize="9" textAnchor="middle" fill="var(--ink-faint)">
         {type === "z" ? "Z 统计量" : `T 统计量 (df=${df})`}
       </text>
 
@@ -639,7 +639,7 @@ function MeanTestExplorerBase() {
   const alphaOptions: AlphaLevel[] = [0.01, 0.05, 0.1];
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* Header */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">正态总体均值假设检验</h3>
@@ -656,7 +656,7 @@ function MeanTestExplorerBase() {
             onClick={() => setTestType(tp)}
             className={`flex-1 rounded-md py-1.5 text-[13px] font-semibold transition-colors ${
               testType === tp
-                ? "bg-white shadow text-[var(--ink)]"
+                ? "bg-[var(--bg-elevated)] shadow text-[var(--ink)]"
                 : "text-[var(--ink-soft)] hover:text-[var(--ink)]"
             }`}
           >

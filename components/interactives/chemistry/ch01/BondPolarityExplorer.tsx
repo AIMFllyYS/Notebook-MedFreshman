@@ -145,7 +145,7 @@ function BondPolarityExplorerBase(): ReactElement {
     : arrowCenterX - arrowLen / 2;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-base font-semibold text-[var(--ink)]">
         电负性与键极性探索器
       </h3>
@@ -223,7 +223,7 @@ function BondPolarityExplorerBase(): ReactElement {
             cx={cxA}
             cy={cyAtom}
             r={rAtom}
-            fill="#ffffff"
+            fill="var(--bg-muted)"
             stroke={ACCENT}
             strokeWidth={2.5}
           />
@@ -255,7 +255,7 @@ function BondPolarityExplorerBase(): ReactElement {
             cx={cxB}
             cy={cyAtom}
             r={rAtom}
-            fill="#ffffff"
+            fill="var(--bg-muted)"
             stroke={ACCENT}
             strokeWidth={2.5}
           />

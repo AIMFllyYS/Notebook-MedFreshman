@@ -7,7 +7,7 @@ const ACCENT = "#5b46e5";
 const ACCENT_LIGHT = "#ede9fe";
 const ORANGE = "#ea580c";
 const ORANGE_LIGHT = "#fff7ed";
-const GRAY_BORDER = "#e7e9ef";
+const GRAY_BORDER = "var(--line)";
 
 // ─── SVG 画布参数 ─────────────────────────────────────────────────────────────
 const W = 380;
@@ -100,7 +100,7 @@ function RhoSlider({ value, onChange }: RhoSliderProps) {
       ? ACCENT
       : value < -0.5
       ? ORANGE
-      : "#64748b";
+      : "var(--ink-soft)";
 
   return (
     <div className="space-y-2">
@@ -207,7 +207,7 @@ function CorrelationExplorerBase() {
   const yTickVals = isDependent ? [0, 4, 9] : [-3, 0, 3];
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题区 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">
@@ -267,7 +267,7 @@ function CorrelationExplorerBase() {
           <rect
             x={PAD} y={PAD}
             width={PLOT_W} height={PLOT_H}
-            fill="#f8f9fc" stroke={GRAY_BORDER}
+            fill="var(--bg-muted)" stroke={GRAY_BORDER}
           />
 
           {/* X 轴、Y 轴网格线 */}
@@ -278,7 +278,7 @@ function CorrelationExplorerBase() {
               <line
                 key={`vg${v}`}
                 x1={sx} y1={PAD} x2={sx} y2={H - PAD}
-                stroke={v === 0 ? "#b0b8cc" : "#e7e9ef"}
+                stroke={v === 0 ? "var(--ink-faint)" : "var(--line)"}
                 strokeWidth={v === 0 ? 1.5 : 1}
                 strokeDasharray={v === 0 ? undefined : "3 3"}
               />
@@ -291,7 +291,7 @@ function CorrelationExplorerBase() {
               <line
                 key={`hg${v}`}
                 x1={PAD} y1={sy} x2={W - PAD} y2={sy}
-                stroke={v === 0 ? "#b0b8cc" : "#e7e9ef"}
+                stroke={v === 0 ? "var(--ink-faint)" : "var(--line)"}
                 strokeWidth={v === 0 ? 1.5 : 1}
                 strokeDasharray={v === 0 ? undefined : "3 3"}
               />
@@ -303,7 +303,7 @@ function CorrelationExplorerBase() {
             const sx = toSvgX(v);
             return (
               <text key={`xl${v}`} x={sx} y={H - PAD + 13} fontSize={9}
-                textAnchor="middle" fill="#8a94a6">
+                textAnchor="middle" fill="var(--ink-faint)">
                 {v}
               </text>
             );
@@ -315,7 +315,7 @@ function CorrelationExplorerBase() {
             if (sy < PAD || sy > H - PAD) return null;
             return (
               <text key={`yl${v}`} x={PAD - 5} y={sy + 3} fontSize={9}
-                textAnchor="end" fill="#8a94a6">
+                textAnchor="end" fill="var(--ink-faint)">
                 {v}
               </text>
             );
@@ -323,11 +323,11 @@ function CorrelationExplorerBase() {
 
           {/* 轴标签 */}
           <text x={W / 2} y={H - 5} fontSize={10}
-            textAnchor="middle" fill="#8a94a6" fontStyle="italic">
+            textAnchor="middle" fill="var(--ink-faint)" fontStyle="italic">
             X
           </text>
           <text x={10} y={H / 2} fontSize={10}
-            textAnchor="middle" fill="#8a94a6" fontStyle="italic"
+            textAnchor="middle" fill="var(--ink-faint)" fontStyle="italic"
             transform={`rotate(-90, 10, ${H / 2})`}>
             Y
           </text>
@@ -382,10 +382,10 @@ function CorrelationExplorerBase() {
           {/* 四角极限标注：+1 / -1 的角度 */}
           {mode === "normal" && (
             <>
-              <text x={W - PAD + 2} y={PAD - 4} fontSize={8} fill="#94a3b8" textAnchor="end">
+              <text x={W - PAD + 2} y={PAD - 4} fontSize={8} fill="var(--ink-faint)" textAnchor="end">
                 ρ=+1 →直线
               </text>
-              <text x={PAD} y={PAD - 4} fontSize={8} fill="#94a3b8">
+              <text x={PAD} y={PAD - 4} fontSize={8} fill="var(--ink-faint)">
                 ρ=−1 →直线
               </text>
             </>
@@ -409,8 +409,8 @@ function CorrelationExplorerBase() {
           {
             label: "设定 ρ",
             val: isDependent ? "N/A" : (rho >= 0 ? "+" : "") + rho.toFixed(2),
-            color: isDependent ? "#64748b" : ACCENT,
-            bg: isDependent ? "#f1f5f9" : ACCENT_LIGHT,
+            color: isDependent ? "var(--ink-soft)" : ACCENT,
+            bg: isDependent ? "var(--bg-muted)" : ACCENT_LIGHT,
           },
           {
             label: "样本 r",
@@ -421,8 +421,8 @@ function CorrelationExplorerBase() {
           {
             label: "样本量 n",
             val: `${points.length}`,
-            color: "#475569",
-            bg: "#f1f5f9",
+            color: "var(--ink-soft)",
+            bg: "var(--bg-muted)",
           },
         ].map(({ label, val, color, bg }) => (
           <div

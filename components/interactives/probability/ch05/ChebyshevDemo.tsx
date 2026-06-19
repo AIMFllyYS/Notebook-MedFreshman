@@ -297,7 +297,7 @@ function ChebyshevDemoBase() {
   const boundIsOne = bound >= 1;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">切比雪夫不等式演示</h3>
@@ -337,7 +337,7 @@ function ChebyshevDemoBase() {
       <div className="rounded-lg border border-[var(--line)] overflow-hidden">
         <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full" style={{ maxHeight: 220 }}>
           {/* 背景 */}
-          <rect x={PAD_L} y={PAD_T} width={PLOT_W} height={PLOT_H} fill="#fafbfd" />
+          <rect x={PAD_L} y={PAD_T} width={PLOT_W} height={PLOT_H} fill="var(--bg-muted)" />
 
           {/* 尾部面积（橙色填充） */}
           <path d={tailPath} fill={TAIL_COLOR} fillOpacity={0.28} />
@@ -383,31 +383,31 @@ function ChebyshevDemoBase() {
           <line
             x1={toSvgX(0)} y1={peakY}
             x2={toSvgX(0)} y2={baselineY}
-            stroke="#94a3b8" strokeWidth="1" strokeDasharray="3 3"
+            stroke="var(--ink-faint)" strokeWidth="1" strokeDasharray="3 3"
           />
-          <text x={toSvgX(0) - 2} y={PAD_T + 10} fontSize="9" fill="#94a3b8" textAnchor="middle">
+          <text x={toSvgX(0) - 2} y={PAD_T + 10} fontSize="9" fill="var(--ink-faint)" textAnchor="middle">
             μ=0
           </text>
 
           {/* X 轴 */}
-          <line x1={PAD_L} y1={baselineY} x2={SVG_W - PAD_R} y2={baselineY} stroke="#cbd5e1" strokeWidth="1" />
+          <line x1={PAD_L} y1={baselineY} x2={SVG_W - PAD_R} y2={baselineY} stroke="var(--line)" strokeWidth="1" />
           {xTicks.map((t) => {
             const tx = toSvgX(t);
             if (tx < PAD_L || tx > SVG_W - PAD_R) return null;
             return (
               <g key={t}>
-                <line x1={tx} y1={baselineY} x2={tx} y2={baselineY + 4} stroke="#94a3b8" strokeWidth="1" />
-                <text x={tx} y={baselineY + 13} fontSize="9" textAnchor="middle" fill="#94a3b8">{t}</text>
+                <line x1={tx} y1={baselineY} x2={tx} y2={baselineY + 4} stroke="var(--ink-faint)" strokeWidth="1" />
+                <text x={tx} y={baselineY + 13} fontSize="9" textAnchor="middle" fill="var(--ink-faint)">{t}</text>
               </g>
             );
           })}
 
           {/* Y 轴 */}
-          <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={baselineY} stroke="#cbd5e1" strokeWidth="1" />
-          <text x={PAD_L - 4} y={PAD_T + 4} fontSize="9" textAnchor="end" fill="#94a3b8">
+          <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={baselineY} stroke="var(--line)" strokeWidth="1" />
+          <text x={PAD_L - 4} y={PAD_T + 4} fontSize="9" textAnchor="end" fill="var(--ink-faint)">
             {yTickVal}
           </text>
-          <text x={PAD_L - 4} y={baselineY} fontSize="9" textAnchor="end" fill="#94a3b8">0</text>
+          <text x={PAD_L - 4} y={baselineY} fontSize="9" textAnchor="end" fill="var(--ink-faint)">0</text>
 
           {/* 图例 */}
           <rect x={SVG_W - PAD_R - 110} y={PAD_T + 2} width="10" height="10" fill={TAIL_COLOR} fillOpacity={0.55} rx="2" />

@@ -4,13 +4,13 @@ import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const GREEN = "#0f766e";
 const GREEN_LIGHT = "#d1fae5";
 const RED = "#dc2626";
 const RED_LIGHT = "#fee2e2";
 const ORANGE = "#d97706";
-const GRAY_LINE = "#e7e9ef";
+const GRAY_LINE = "var(--line)";
 const MU = 0;       // 总体均值 μ
 const SIGMA = 2;    // 总体标准差 σ
 
@@ -163,9 +163,9 @@ function YAxis({ vMin, vMax, ticks, label }: { vMin: number; vMax: number; ticks
         if (y < PAD_T - 2 || y > PAD_T + PLOT_H + 2) return null;
         return (
           <g key={v}>
-            <line x1={PAD_L - 4} y1={y} x2={PAD_L} y2={y} stroke="#b0b8c8" strokeWidth={1} />
+            <line x1={PAD_L - 4} y1={y} x2={PAD_L} y2={y} stroke="var(--line)" strokeWidth={1} />
             <line x1={PAD_L} y1={y} x2={PAD_L + PLOT_W} y2={y} stroke={GRAY_LINE} strokeWidth={0.6} />
-            <text x={PAD_L - 6} y={y + 3.5} fontSize={10} textAnchor="end" fill="#8a94a6">
+            <text x={PAD_L - 6} y={y + 3.5} fontSize={10} textAnchor="end" fill="var(--ink-faint)">
               {v % 1 === 0 ? v : v.toFixed(1)}
             </text>
           </g>
@@ -176,7 +176,7 @@ function YAxis({ vMin, vMax, ticks, label }: { vMin: number; vMax: number; ticks
         y={PAD_T + PLOT_H / 2}
         fontSize={10}
         textAnchor="middle"
-        fill="#8a94a6"
+        fill="var(--ink-faint)"
         transform={`rotate(-90, 10, ${PAD_T + PLOT_H / 2})`}
       >
         {label}
@@ -322,7 +322,7 @@ function EstimatorComparatorBase() {
   const theoreticalSn2Bias = -trueVar / n;          // → 0 as n→∞
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
 
       {/* 标题 */}
       <div>
@@ -380,7 +380,7 @@ function EstimatorComparatorBase() {
           <button
             onClick={reset}
             disabled={!hasData}
-            className="rounded-lg px-4 py-1.5 text-[13px] font-medium text-[var(--ink-soft)] bg-white border border-[var(--line)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
+            className="rounded-lg px-4 py-1.5 text-[13px] font-medium text-[var(--ink-soft)] bg-[var(--bg-elevated)] border border-[var(--line)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
           >
             重置
           </button>
@@ -431,7 +431,7 @@ function EstimatorComparatorBase() {
         </div>
         <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full rounded-lg border border-[var(--line)]">
           {/* 底色 */}
-          <rect x={PAD_L} y={PAD_T} width={PLOT_W} height={PLOT_H} fill="#fafbfd" />
+          <rect x={PAD_L} y={PAD_T} width={PLOT_W} height={PLOT_H} fill="var(--bg-muted)" />
           <YAxis vMin={xbarMin} vMax={xbarMax} ticks={xbarTicks} label="X̄" />
           {/* 真实 μ 红虚线 */}
           {(() => {
@@ -462,7 +462,7 @@ function EstimatorComparatorBase() {
             />
           )}
           {!hasData && (
-            <text x={PAD_L + PLOT_W / 2} y={PAD_T + PLOT_H / 2 + 4} fontSize={13} textAnchor="middle" fill="#b0b8c8">
+            <text x={PAD_L + PLOT_W / 2} y={PAD_T + PLOT_H / 2 + 4} fontSize={13} textAnchor="middle" fill="var(--ink-faint)">
               点击「模拟 {simCount} 次」开始
             </text>
           )}
@@ -472,7 +472,7 @@ function EstimatorComparatorBase() {
             const ly = PAD_T + 12;
             return (
               <g>
-                <rect x={lx} y={ly - 8} width={100} height={26} rx={4} fill="white" opacity={0.85} />
+                <rect x={lx} y={ly - 8} width={100} height={26} rx={4} fill="var(--bg-elevated)" opacity={0.85} />
                 <line x1={lx + 6} y1={ly} x2={lx + 22} y2={ly} stroke={RED} strokeWidth={1.8} strokeDasharray="5 3" />
                 <text x={lx + 26} y={ly + 3.5} fontSize={10} fill={RED}>真实 μ</text>
                 <polygon points={`${lx + 60},${ly} ${lx + 64},${ly + 5} ${lx + 60},${ly + 10} ${lx + 56},${ly + 5}`}
@@ -504,7 +504,7 @@ function EstimatorComparatorBase() {
           </span>
         </div>
         <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full rounded-lg border border-[var(--line)]">
-          <rect x={PAD_L} y={PAD_T} width={PLOT_W} height={PLOT_H} fill="#fafbfd" />
+          <rect x={PAD_L} y={PAD_T} width={PLOT_W} height={PLOT_H} fill="var(--bg-muted)" />
           <YAxis vMin={varMin} vMax={varMax} ticks={varTicks} label="方差" />
           {/* 真实 σ² 红虚线 */}
           {(() => {
@@ -556,16 +556,16 @@ function EstimatorComparatorBase() {
                 return (
                   <g>
                     <text x={sc.x(0.3)} y={labelY} fontSize={12} textAnchor="middle" fontWeight="700" fill={GREEN}>S²</text>
-                    <text x={sc.x(0.3) + 2} y={labelY + 11} fontSize={9} textAnchor="middle" fill="#8a94a6">无偏方差</text>
+                    <text x={sc.x(0.3) + 2} y={labelY + 11} fontSize={9} textAnchor="middle" fill="var(--ink-faint)">无偏方差</text>
                     <text x={sc.x(0.72)} y={labelY} fontSize={12} textAnchor="middle" fontWeight="700" fill={RED}>Sn²</text>
-                    <text x={sc.x(0.72)} y={labelY + 11} fontSize={9} textAnchor="middle" fill="#8a94a6">有偏方差</text>
+                    <text x={sc.x(0.72)} y={labelY + 11} fontSize={9} textAnchor="middle" fill="var(--ink-faint)">有偏方差</text>
                   </g>
                 );
               })()}
             </>
           )}
           {!hasData && (
-            <text x={PAD_L + PLOT_W / 2} y={PAD_T + PLOT_H / 2 + 4} fontSize={13} textAnchor="middle" fill="#b0b8c8">
+            <text x={PAD_L + PLOT_W / 2} y={PAD_T + PLOT_H / 2 + 4} fontSize={13} textAnchor="middle" fill="var(--ink-faint)">
               点击「模拟 {simCount} 次」开始
             </text>
           )}

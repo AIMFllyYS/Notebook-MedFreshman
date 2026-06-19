@@ -13,23 +13,21 @@ import { usePathname } from "next/navigation";
 import { useStore } from "@/lib/store";
 import { getSubject, getCategory, getContentItem } from "@/content";
 import type { SubjectId, CategoryId } from "@/lib/types/content";
+import { isSubjectId, isCategoryId } from "@/lib/types/content";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const QuickExplainWindow = dynamic(() => import("@/components/chat/QuickExplainWindow"), { ssr: false });
 
-/** 从 pathname 解析路由信息：/[subject]/[category]/[id] */
+/** 从 pathname 解析路由信息：/[subject]/[category]/[id]。
+ *  科目/分类段做运行时校验，非法段返回 null（不再无脑 `as` 强转）。 */
 function parseRoute(pathname: string) {
   const segments = pathname.split("/").filter(Boolean);
-  if (segments.length >= 3) {
-    return {
-      subjectId: segments[0] as SubjectId,
-      categoryId: segments[1] as CategoryId,
-      itemId: segments[2],
-    };
-  }
-  return null;
+  if (segments.length < 3) return null;
+  const [subjectId, categoryId, itemId] = segments;
+  if (!isSubjectId(subjectId) || !isCategoryId(categoryId)) return null;
+  return { subjectId, categoryId, itemId };
 }
 
 function TopBar({

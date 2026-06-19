@@ -128,7 +128,7 @@ function BoilingPointComparatorBase() {
   const zeroX = padLeft + ((0 - minBp) / range) * barAreaW;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold text-[var(--ink)]">
         分子间作用力与沸点比较
       </h3>
@@ -178,8 +178,8 @@ function BoilingPointComparatorBase() {
                 className={
                   "relative rounded-lg border px-3 py-2 text-sm transition-colors " +
                   (chosen
-                    ? "cursor-default border-indigo-300 bg-white text-[var(--ink-soft)] opacity-60"
-                    : "border-[var(--line)] bg-white text-[var(--ink)] hover:border-indigo-400")
+                    ? "cursor-default border-indigo-300 bg-[var(--bg-elevated)] text-[var(--ink-soft)] opacity-60"
+                    : "border-[var(--line)] bg-[var(--bg-elevated)] text-[var(--ink)] hover:border-indigo-400")
                 }
               >
                 <span className="font-medium">{m.name}</span>{" "}
@@ -202,7 +202,7 @@ function BoilingPointComparatorBase() {
             <span className="text-[var(--ink-soft)]">你的顺序：</span>
             {order.map((idx, k) => (
               <span key={idx} className="flex items-center gap-1.5">
-                <span className="rounded bg-white px-2 py-0.5 ring-1 ring-[var(--line)]">
+                <span className="rounded bg-[var(--bg-elevated)] px-2 py-0.5 ring-1 ring-[var(--line)]">
                   {molecules[idx].name}
                 </span>
                 {k < order.length - 1 && (
@@ -230,7 +230,7 @@ function BoilingPointComparatorBase() {
           <button
             type="button"
             onClick={resetGuess}
-            className="rounded-lg border border-[var(--line)] bg-white px-3 py-1.5 text-sm text-[var(--ink)] transition-colors hover:border-indigo-400"
+            className="rounded-lg border border-[var(--line)] bg-[var(--bg-elevated)] px-3 py-1.5 text-sm text-[var(--ink)] transition-colors hover:border-indigo-400"
           >
             重新猜
           </button>
@@ -244,8 +244,8 @@ function BoilingPointComparatorBase() {
             className={
               "mb-3 rounded-lg px-3 py-2 text-sm font-medium " +
               (guessCorrect
-                ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200"
-                : "bg-amber-50 text-amber-700 ring-1 ring-amber-200")
+                ? "bg-emerald-500/10 text-[var(--color-success)] ring-1 ring-emerald-500/30"
+                : "bg-amber-500/10 text-[var(--color-warning)] ring-1 ring-amber-500/30")
             }
           >
             {guessCorrect

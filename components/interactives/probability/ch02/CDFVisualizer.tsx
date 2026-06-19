@@ -4,12 +4,12 @@ import { memo, useState, useCallback, useRef, useEffect } from "react";
 
 // ─── 设计令牌常量 ───────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const ACCENT_FILL = "#7c3aed33";
-const INK = "#1a1a2e";
-const INK_SOFT = "#6b7280";
-const LINE = "#e5e7eb";
-const BG_MUTED = "#f8f9fc";
+const INK = "var(--ink)";
+const INK_SOFT = "var(--ink-soft)";
+const LINE = "var(--line)";
+const BG_MUTED = "var(--bg-muted)";
 const GREEN = "#059669";
 const ORANGE = "#d97706";
 
@@ -468,7 +468,7 @@ function CDFVisualizerBase() {
   const fxSvgY_cdf = yToSvg(fxVal, 1);
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">分布函数 F(x) 可视化</h3>
@@ -508,7 +508,7 @@ function CDFVisualizerBase() {
               className={
                 "rounded-lg px-2.5 py-1 text-[11px] font-semibold transition-colors " +
                 (viewMode === m
-                  ? "bg-[#1a1a2e] text-white"
+                  ? "bg-[var(--ink)] text-[var(--bg-elevated)]"
                   : "bg-[var(--bg-muted)] text-[var(--ink-soft)]")
               }
             >
@@ -741,7 +741,7 @@ function CDFVisualizerBase() {
                 {/* 水平线到 y 轴 */}
                 <line x1={PAD_L} y1={fxSvgY_cdf} x2={xSvg} y2={fxSvgY_cdf} stroke={ACCENT} strokeWidth={1.5} strokeDasharray="4 3" />
                 {/* y 轴上的数值标注 */}
-                <rect x={0} y={fxSvgY_cdf - 8} width={PAD_L - 4} height={14} fill="white" rx={2} />
+                <rect x={0} y={fxSvgY_cdf - 8} width={PAD_L - 4} height={14} fill="var(--bg-elevated)" rx={2} />
                 <text x={PAD_L - 5} y={fxSvgY_cdf + 4} fontSize={9.5} textAnchor="end" fill={ACCENT} fontWeight="bold">
                   {fxVal.toFixed(3)}
                 </text>
@@ -853,11 +853,11 @@ function CDFVisualizerBase() {
               <span className="text-[12px] text-[var(--ink-soft)]">
                 x =
               </span>
-              <span className="rounded-md bg-white px-2 py-0.5 text-[13px] font-mono font-bold" style={{ color: ACCENT }}>
+              <span className="rounded-md bg-[var(--bg-elevated)] px-2 py-0.5 text-[13px] font-mono font-bold" style={{ color: ACCENT }}>
                 {distType === "binomial" ? xVal.toFixed(0) : xVal.toFixed(3)}
               </span>
               <span className="text-[18px] font-mono text-[var(--ink-soft)]">→</span>
-              <span className="rounded-md bg-white px-3 py-0.5 text-[18px] font-mono font-extrabold" style={{ color: ACCENT }}>
+              <span className="rounded-md bg-[var(--bg-elevated)] px-3 py-0.5 text-[18px] font-mono font-extrabold" style={{ color: ACCENT }}>
                 {fmt4(fxVal)}
               </span>
             </div>
@@ -877,7 +877,7 @@ function CDFVisualizerBase() {
             )}
           </p>
           {/* 进度条 */}
-          <div className="h-4 w-full rounded-full bg-white overflow-hidden border border-[var(--line)]">
+          <div className="h-4 w-full rounded-full bg-[var(--bg-elevated)] overflow-hidden border border-[var(--line)]">
             <div
               className="h-full rounded-full transition-all duration-200"
               style={{ width: `${fxVal * 100}%`, background: ACCENT }}
@@ -897,7 +897,7 @@ function CDFVisualizerBase() {
             <span className="text-[13px] font-bold text-[var(--ink)]">
               P({distType === "binomial" ? "a≤X≤b" : "a≤X≤b"}) = F(b) − F(a{distType === "binomial" ? "−" : ""})
             </span>
-            <span className="rounded-md bg-white px-3 py-0.5 text-[18px] font-mono font-extrabold" style={{ color: ORANGE }}>
+            <span className="rounded-md bg-[var(--bg-elevated)] px-3 py-0.5 text-[18px] font-mono font-extrabold" style={{ color: ORANGE }}>
               {fmt4(intervalProb)}
             </span>
           </div>
@@ -925,7 +925,7 @@ function CDFVisualizerBase() {
             <b style={{ color: ORANGE }}>{fmt4(intervalProb)}</b>
           </p>
           {/* 进度条 */}
-          <div className="h-4 w-full rounded-full bg-white overflow-hidden border border-[var(--line)]">
+          <div className="h-4 w-full rounded-full bg-[var(--bg-elevated)] overflow-hidden border border-[var(--line)]">
             <div
               className="h-full rounded-full transition-all duration-200"
               style={{ width: `${intervalProb * 100}%`, background: ORANGE }}

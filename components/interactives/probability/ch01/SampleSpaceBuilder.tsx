@@ -31,7 +31,7 @@ const ACCENT = "#5b46e5";
 const A_COLOR = "#7c3aed";
 const B_COLOR = "#0f766e";
 const BOTH_COLOR = "#b45309";
-const NONE_COLOR = "#94a3b8";
+const NONE_COLOR = "var(--ink-faint)";
 
 const MEMBERSHIP_CYCLE: Record<Membership, Membership> = {
   none: "A",
@@ -66,11 +66,11 @@ function DieFace({
   membership: Membership;
   onClick: () => void;
 }) {
-  const dotColor = membership === "none" ? "#64748b" : "white";
+  const dotColor = membership === "none" ? "var(--ink-soft)" : "white";
   const borderColor = MEMBERSHIP_COLORS[membership];
   const bgColor =
     membership === "none"
-      ? "#f1f5f9"
+      ? "var(--bg-muted)"
       : membership === "A"
       ? "#ede9fe"
       : membership === "B"
@@ -107,7 +107,7 @@ function DieFace({
             cx={cx}
             cy={cy}
             r={9}
-            fill={membership !== "none" ? MEMBERSHIP_COLORS[membership] : "#475569"}
+            fill={membership !== "none" ? MEMBERSHIP_COLORS[membership] : "var(--ink-soft)"}
             opacity={membership !== "none" ? 0.85 : 0.7}
           />
         ))}
@@ -162,9 +162,9 @@ function SetDisplay({
       <span
         className="rounded-md px-2 py-0.5 font-mono"
         style={{
-          background: elements.length === 0 ? "#f1f5f9" : `${color}18`,
+          background: elements.length === 0 ? "var(--bg-muted)" : `${color}18`,
           color: elements.length === 0 ? NONE_COLOR : color,
-          border: `1px solid ${elements.length === 0 ? "#e2e8f0" : `${color}40`}`,
+          border: `1px solid ${elements.length === 0 ? "var(--line)" : `${color}40`}`,
           minWidth: 40,
           display: "inline-block",
         }}
@@ -281,7 +281,7 @@ function SampleSpaceBuilderBase() {
   const pInter = inter.length / totalSampleSpace;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       {/* 标题行 */}
       <div className="mb-3 flex items-center justify-between">
         <div>
@@ -300,7 +300,7 @@ function SampleSpaceBuilderBase() {
 
       {/* 提示 */}
       {showHint && (
-        <div className="mb-3 rounded-lg border border-[var(--accent)] bg-[#f5f3ff] px-3 py-2 text-[12px] text-[#5b46e5]">
+        <div className="mb-3 rounded-lg border border-[var(--accent)] bg-[var(--accent-weak)] px-3 py-2 text-[12px] text-[var(--accent-ink)]">
           点击骰子循环切换归属：无 → A → B → A∩B → 无
         </div>
       )}
@@ -370,11 +370,11 @@ function SampleSpaceBuilderBase() {
       </div>
 
       {/* 维恩图可视化 */}
-      <div className="mb-3 overflow-hidden rounded-lg border border-[var(--line)] bg-[#fafbfd]">
+      <div className="mb-3 overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--bg-muted)]">
         <svg viewBox={`0 0 ${OMEGA_W} ${OMEGA_H}`} className="w-full" style={{ maxHeight: 180 }}>
           {/* Ω 边框 */}
-          <rect x={4} y={4} width={OMEGA_W - 8} height={OMEGA_H - 8} rx={10} fill="#f7f8fb" stroke="#d7dbe6" strokeWidth={1.2} />
-          <text x={12} y={20} fontSize={11} fill="#8a94a6" fontStyle="italic">Ω</text>
+          <rect x={4} y={4} width={OMEGA_W - 8} height={OMEGA_H - 8} rx={10} fill="var(--bg-muted)" stroke="var(--line)" strokeWidth={1.2} />
+          <text x={12} y={20} fontSize={11} fill="var(--ink-faint)" fontStyle="italic">Ω</text>
 
           {/* A 圆（半透明）*/}
           <circle
@@ -446,7 +446,7 @@ function SampleSpaceBuilderBase() {
                   textAnchor="middle"
                   fontSize={11}
                   fontWeight={700}
-                  fill={o.membership === "none" ? "#475569" : "white"}
+                  fill={o.membership === "none" ? "var(--ink)" : "white"}
                 >
                   {o.face}
                 </text>
@@ -473,8 +473,8 @@ function SampleSpaceBuilderBase() {
 
       {/* 概率数值 */}
       {(setA.length > 0 || setB.length > 0) && (
-        <div className="mt-3 rounded-lg bg-[#f5f3ff] border border-[#c4b5fd] px-3 py-2">
-          <p className="text-[11px] font-semibold text-[#5b46e5] mb-1">古典概型下（等可能，|Ω|=6）</p>
+        <div className="mt-3 rounded-lg bg-[var(--accent-weak)] border border-[var(--accent)] px-3 py-2">
+          <p className="text-[11px] font-semibold text-[var(--accent-ink)] mb-1">古典概型下（等可能，|Ω|=6）</p>
           <div className="flex flex-wrap gap-x-6 gap-y-0.5 text-[12px] font-mono">
             <span>
               <span style={{ color: A_COLOR }}>P(A)</span>
@@ -499,7 +499,7 @@ function SampleSpaceBuilderBase() {
           </div>
           {/* 加法公式验证 */}
           {setA.length > 0 && setB.length > 0 && (
-            <p className="mt-1.5 text-[11px] text-[#5b46e5]">
+            <p className="mt-1.5 text-[11px] text-[var(--accent-ink)]">
               验证加法公式：P(A∪B) = P(A) + P(B) − P(A∩B) ={" "}
               <b>{setA.length}/6 + {setB.length}/6 − {inter.length}/6 = {union.length}/6</b>
               {pA + pB - pInter === pUnion ? " [OK]" : ""}

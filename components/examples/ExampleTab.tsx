@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import { useStore } from "@/lib/store";
 import type { ExampleMeta } from "@/app/api/examples/route";
 
 // NoteRenderer 较重，例题展开时才懒加载
@@ -11,20 +10,6 @@ const NoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), {
   ssr: false,
   loading: () => <div className="py-8 text-center text-[13px] text-[var(--ink-faint)]">加载中…</div>,
 });
-
-function ExampleSkeleton() {
-  return (
-    <div className="animate-shimmer space-y-3">
-      {[..."xxxxx"].map((_, i) => (
-        <div
-          key={i}
-          className="h-16 rounded-xl border border-[var(--line)] bg-[var(--bg-muted)]"
-          style={{ width: `${[100, 96, 92][i % 3]}%` }}
-        />
-      ))}
-    </div>
-  );
-}
 
 function EmptyExamples({ sectionId }: { sectionId: string }) {
   return (
@@ -34,41 +19,26 @@ function EmptyExamples({ sectionId }: { sectionId: string }) {
       </div>
       <h3 className="text-[16px] font-semibold">本节暂无例题</h3>
       <p className="mx-auto mt-1.5 max-w-sm text-[14px] leading-relaxed text-[var(--ink-soft)]">
-        「{sectionId}」的例题正在整理中，敬请期待。
+        「{sectionId || "本节"}」的例题正在整理中，敬请期待。
       </p>
     </div>
   );
 }
 
-export default function ExampleTab() {
-  const subjectId = useStore((s) => s.activeSubjectId);
-  const chapterId = useStore((s) => s.activeChapterId);
-  const sectionId = useStore((s) => s.activeSectionId);
+interface ExampleTabProps {
+  /** 服务端 SSR 预读的例题列表；随路由变化由 page.tsx 重新下发 */
+  initialExamples: ExampleMeta[];
+  sectionId: string;
+}
 
-  const [examples, setExamples] = useState<ExampleMeta[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function ExampleTab({ initialExamples, sectionId }: ExampleTabProps) {
+  const examples = initialExamples;
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  // 路由切换（新的 sectionId / 新一批例题）时回到列表视图
   useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    setExamples([]);
     setSelectedId(null);
-    fetch(`/api/examples?subjectId=${subjectId}&chapterId=${chapterId}&sectionId=${sectionId}`)
-      .then((r) => r.json())
-      .then((d) => {
-        if (!cancelled) {
-          setExamples(d.examples ?? []);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [subjectId, chapterId, sectionId]);
+  }, [sectionId]);
 
   const selected = examples.find((e) => e.id === selectedId);
 
@@ -84,9 +54,7 @@ export default function ExampleTab() {
         </p>
       </div>
 
-      {loading ? (
-        <ExampleSkeleton />
-      ) : examples.length === 0 ? (
+      {examples.length === 0 ? (
         <EmptyExamples sectionId={sectionId} />
       ) : (
         <div className="flex flex-col gap-3">

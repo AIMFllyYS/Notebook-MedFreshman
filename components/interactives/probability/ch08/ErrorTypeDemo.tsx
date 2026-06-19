@@ -11,7 +11,7 @@ const C_POWER = "#0f766e";       // 绿：功效 1-β
 const C_POWER_FILL = "#ccfbf1";
 const C_H0 = "#5b46e5";          // 主色：H0 曲线
 const C_H1 = "#0ea5e9";          // 蓝：H1 曲线
-const C_CRIT = "#6b7280";        // 灰：临界线
+const C_CRIT = "var(--ink-soft)";        // 灰：临界线
 const ACCENT = "#5b46e5";
 
 // ─── SVG 布局 ────────────────────────────────────────────────────────────────
@@ -236,7 +236,7 @@ function ErrorTypeDemoBase() {
   }
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">两类错误权衡可视化</h3>
@@ -249,7 +249,7 @@ function ErrorTypeDemoBase() {
       <div className="relative select-none">
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-          className="w-full rounded-lg border border-[var(--line)] bg-[#fafbfd]"
+          className="w-full rounded-lg border border-[var(--line)] bg-[var(--bg-muted)]"
           style={{ maxHeight: 220 }}
         >
           {/* ── 填充区域 ── */}
@@ -345,18 +345,18 @@ function ErrorTypeDemoBase() {
           <line
             x1={PAD_L} y1={baseY}
             x2={SVG_W - PAD_R} y2={baseY}
-            stroke="#d1d5db" strokeWidth="1"
+            stroke="var(--line)" strokeWidth="1"
           />
           {xTicks.map((v) => (
             <g key={v}>
               <line
                 x1={toSvgX(v)} y1={baseY}
                 x2={toSvgX(v)} y2={baseY + 3}
-                stroke="#d1d5db" strokeWidth="1"
+                stroke="var(--line)" strokeWidth="1"
               />
               <text
                 x={toSvgX(v)} y={baseY + 12}
-                fontSize="8" textAnchor="middle" fill="#9ca3af"
+                fontSize="8" textAnchor="middle" fill="var(--ink-faint)"
               >
                 {v}
               </text>
@@ -418,9 +418,9 @@ function ErrorTypeDemoBase() {
             onClick={() => setHoveredRegion(hoveredRegion === key ? null : key)}
             className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] border transition-all duration-150"
             style={{
-              background: hoveredRegion === key ? bg : "#f9fafb",
-              borderColor: hoveredRegion === key ? color : "#e5e7eb",
-              color: hoveredRegion === key ? color : "#6b7280",
+              background: hoveredRegion === key ? bg : "var(--bg-muted)",
+              borderColor: hoveredRegion === key ? color : "var(--line)",
+              color: hoveredRegion === key ? color : "var(--ink-soft)",
             }}
           >
             <span className="h-2.5 w-2.5 rounded-sm flex-shrink-0" style={{ background: color }} />
@@ -495,7 +495,7 @@ function ErrorTypeDemoBase() {
           value={(showDouble ? critValue_2n : critValue).toFixed(3)}
           sub={`z_α = ${normQuantile(1 - alpha).toFixed(3)}`}
           color={C_CRIT}
-          bg="#f3f4f6"
+          bg="var(--bg-muted)"
         />
       </div>
 
@@ -509,8 +509,8 @@ function ErrorTypeDemoBase() {
             onClick={() => setShowDouble((v) => !v)}
             className="rounded-lg px-3 py-1 text-[12px] font-semibold transition-colors"
             style={{
-              background: showDouble ? C_POWER : "#e5e7eb",
-              color: showDouble ? "white" : "#374151",
+              background: showDouble ? C_POWER : "var(--bg-muted)",
+              color: showDouble ? "white" : "var(--ink-soft)",
             }}
           >
             {showDouble ? "恢复原始 n" : "展示 n×2"}
@@ -530,7 +530,7 @@ function ErrorTypeDemoBase() {
                 <span className="text-[var(--ink-soft)]">→</span>
                 <span
                   className="font-mono font-bold"
-                  style={{ color: changed ? (label.includes("β") ? C_BETA : C_POWER) : "#6b7280" }}
+                  style={{ color: changed ? (label.includes("β") ? C_BETA : C_POWER) : "var(--ink-soft)" }}
                 >
                   {after}
                 </span>

@@ -113,7 +113,7 @@ const CATION_RANK: Record<CarbocationClass, number> = {
   tertiary: 3,
 };
 
-const PRIMARY = "#2563eb";
+const PRIMARY = "var(--accent)";
 
 interface PathInfo {
   /** H⁺ 加到哪个碳（"c1" | "c2"） */
@@ -204,7 +204,7 @@ function MarkovnikovPredictorBase() {
         className="rounded-lg border p-3"
         style={{
           borderColor: isMarkovnikov ? PRIMARY : "var(--line)",
-          background: isMarkovnikov ? "rgba(37,99,235,0.06)" : "var(--bg-muted)",
+          background: isMarkovnikov ? "var(--accent-weak)" : "var(--bg-muted)",
         }}
       >
         <div className="mb-1 text-sm font-semibold" style={{ color: "var(--ink)" }}>
@@ -227,7 +227,7 @@ function MarkovnikovPredictorBase() {
   }
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-bold" style={{ color: "var(--ink)" }}>
         马氏规则加成预测
       </h3>
@@ -254,7 +254,7 @@ function MarkovnikovPredictorBase() {
                   className="rounded-lg border px-2 py-1 text-xs transition-colors"
                   style={{
                     borderColor: active ? PRIMARY : "var(--line)",
-                    background: active ? PRIMARY : "white",
+                    background: active ? PRIMARY : "var(--bg-muted)",
                     color: active ? "white" : "var(--ink)",
                   }}
                 >
@@ -280,7 +280,7 @@ function MarkovnikovPredictorBase() {
                   className="rounded-lg border px-3 py-1 text-xs font-mono transition-colors"
                   style={{
                     borderColor: active ? PRIMARY : "var(--line)",
-                    background: active ? PRIMARY : "white",
+                    background: active ? PRIMARY : "var(--bg-muted)",
                     color: active ? "white" : "var(--ink)",
                   }}
                 >
@@ -315,7 +315,7 @@ function MarkovnikovPredictorBase() {
       {peroxideIgnored && (
         <div
           className="mt-2 rounded-lg border px-3 py-2 text-xs"
-          style={{ borderColor: "#f59e0b", background: "rgba(245,158,11,0.08)", color: "#92400e" }}
+          style={{ borderColor: "#f59e0b", background: "rgba(245,158,11,0.08)", color: "var(--color-warning)" }}
         >
           注意：过氧化物效应（反马氏自由基加成）仅对 <strong>HBr</strong> 适用。
           {acid.name} 仍按马氏规则进行离子型加成，开关不影响产物。

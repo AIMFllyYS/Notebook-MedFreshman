@@ -9,7 +9,7 @@ const BLUE_MID = "#8b5cf6";
 const ORANGE = "#ea580c";
 const ORANGE_LIGHT = "#ffedd5";
 const ORANGE_MID = "#f97316";
-const GRAY = "#e9ebf2";
+const GRAY = "var(--line)";
 
 // ─── SVG 布局常量 ────────────────────────────────────────────────────────────
 const SVG_W = 560;
@@ -191,7 +191,7 @@ function VarianceExplorerBase() {
   const fmt = useCallback((v: number, d = 3) => v.toFixed(d), []);
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">方差与分布扩散度可视化</h3>
@@ -201,13 +201,13 @@ function VarianceExplorerBase() {
       </div>
 
       {/* 共用 SVG 图区 */}
-      <div className="rounded-lg border border-[var(--line)] overflow-hidden bg-[#fafbfd]">
+      <div className="rounded-lg border border-[var(--line)] overflow-hidden bg-[var(--bg-muted)]">
         <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full">
           {/* 图区背景 */}
           <rect
             x={PAD_L} y={PAD_T}
             width={PLOT_W} height={PLOT_H}
-            fill="#fafbfd"
+            fill="var(--bg-muted)"
           />
 
           {/* x 轴网格线 */}
@@ -216,7 +216,7 @@ function VarianceExplorerBase() {
               key={t}
               x1={xToSvg(t)} y1={PAD_T}
               x2={xToSvg(t)} y2={PAD_T + PLOT_H}
-              stroke={t === 0 ? "#c7c8d2" : GRAY}
+              stroke={t === 0 ? "var(--ink-faint)" : GRAY}
               strokeWidth={t === 0 ? 1.2 : 0.8}
               strokeDasharray={t === 0 ? undefined : "3 3"}
             />
@@ -262,7 +262,7 @@ function VarianceExplorerBase() {
           <line
             x1={PAD_L} y1={baseY}
             x2={PAD_L + PLOT_W} y2={baseY}
-            stroke="#c4c8d4" strokeWidth={1}
+            stroke="var(--ink-faint)" strokeWidth={1}
           />
 
           {/* x 轴刻度与标签 */}
@@ -271,12 +271,12 @@ function VarianceExplorerBase() {
               <line
                 x1={xToSvg(t)} y1={baseY}
                 x2={xToSvg(t)} y2={baseY + 4}
-                stroke="#9095a4" strokeWidth={1}
+                stroke="var(--ink-faint)" strokeWidth={1}
               />
               <text
                 x={xToSvg(t)} y={baseY + 13}
                 fontSize="9" textAnchor="middle"
-                fill="#8a94a6"
+                fill="var(--ink-faint)"
               >
                 {t}
               </text>
@@ -490,7 +490,7 @@ function VarianceExplorerBase() {
               <span className="text-[12px] font-semibold text-[var(--ink)]">平移 b</span>
               <span
                 className="rounded px-1.5 py-0.5 text-[12px] font-mono font-bold"
-                style={{ background: GRAY, color: "#64748b" }}
+                style={{ background: GRAY, color: "var(--ink-soft)" }}
               >
                 {fmt(linB, 1)}
               </span>
@@ -509,7 +509,7 @@ function VarianceExplorerBase() {
         </div>
 
         {/* 数值验算展示 */}
-        <div className="rounded-lg bg-white border border-[var(--line)] px-3 py-2.5 font-mono text-[12px] leading-loose text-[var(--ink-soft)] space-y-0.5">
+        <div className="rounded-lg bg-[var(--bg-elevated)] border border-[var(--line)] px-3 py-2.5 font-mono text-[12px] leading-loose text-[var(--ink-soft)] space-y-0.5">
           <div>
             <span className="text-[var(--ink)]">X</span>
             {" ~ N("}

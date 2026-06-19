@@ -3,14 +3,14 @@
 import { memo, useState, useMemo } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
-const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT = "var(--accent)";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const TEAL = "#0f766e";
-const TEAL_LIGHT = "#ccfbf1";
+const TEAL_LIGHT = "#0f766e22"; // 半透明青，深浅色皆可读
 const ORANGE = "#ea580c";
-const ORANGE_LIGHT = "#fff7ed";
-const GRAY_LINE = "#e7e9ef";
-const GRAY_BG = "#fafbfd";
+const ORANGE_LIGHT = "#ea580c1f"; // 半透明橙，深浅色皆可读
+const GRAY_LINE = "var(--line)";
+const GRAY_BG = "var(--bg-muted)";
 
 // ─── SVG 布局 ────────────────────────────────────────────────────────────────
 const SVG_W = 480;
@@ -431,7 +431,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
         <path
           d={normPath}
           fill="none"
-          stroke="#94a3b8"
+          stroke="var(--ink-faint)"
           strokeWidth={1.5}
           strokeDasharray="5 3"
           opacity={0.7}
@@ -483,7 +483,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
         y1={PAD.top}
         x2={PAD.left}
         y2={PAD.top + PH}
-        stroke="#94a3b8"
+        stroke="var(--ink-faint)"
         strokeWidth={1.5}
       />
       <line
@@ -491,7 +491,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
         y1={PAD.top + PH}
         x2={PAD.left + PW}
         y2={PAD.top + PH}
-        stroke="#94a3b8"
+        stroke="var(--ink-faint)"
         strokeWidth={1.5}
       />
 
@@ -503,7 +503,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
             y1={PAD.top + PH}
             x2={px(t)}
             y2={PAD.top + PH + 4}
-            stroke="#94a3b8"
+            stroke="var(--ink-faint)"
             strokeWidth={1}
           />
           <text
@@ -511,7 +511,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
             y={PAD.top + PH + 14}
             fontSize={9}
             textAnchor="middle"
-            fill="#64748b"
+            fill="var(--ink-soft)"
           >
             {t % 1 === 0 ? t : t.toFixed(1)}
           </text>
@@ -526,7 +526,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
             y1={py(t)}
             x2={PAD.left}
             y2={py(t)}
-            stroke="#94a3b8"
+            stroke="var(--ink-faint)"
             strokeWidth={1}
           />
           <text
@@ -534,7 +534,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
             y={py(t) + 3}
             fontSize={8}
             textAnchor="end"
-            fill="#64748b"
+            fill="var(--ink-soft)"
           >
             {t.toFixed(2)}
           </text>
@@ -547,7 +547,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
         y={SVG_H - 2}
         fontSize={10}
         textAnchor="middle"
-        fill="#475569"
+        fill="var(--ink-soft)"
         fontWeight="600"
       >
         x
@@ -557,7 +557,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
         y={PAD.top + PH / 2}
         fontSize={10}
         textAnchor="middle"
-        fill="#475569"
+        fill="var(--ink-soft)"
         fontWeight="600"
         transform={`rotate(-90,9,${PAD.top + PH / 2})`}
       >
@@ -572,7 +572,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
             y1={PAD.top + 8}
             x2={PAD.left + PW - 54}
             y2={PAD.top + 8}
-            stroke="#94a3b8"
+            stroke="var(--ink-faint)"
             strokeWidth={1.5}
             strokeDasharray="5 3"
           />
@@ -580,7 +580,7 @@ function DistPlot({ result, tabId, color, showNormal, alpha }: DistPlotProps) {
             x={PAD.left + PW - 50}
             y={PAD.top + 11}
             fontSize={9}
-            fill="#94a3b8"
+            fill="var(--ink-faint)"
           >
             N(0,1)
           </text>
@@ -673,7 +673,7 @@ function SamplingDistExplorerBase() {
   }
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">三大抽样分布探索器</h3>
@@ -703,8 +703,8 @@ function SamplingDistExplorerBase() {
           className="ml-auto rounded-lg px-3 py-1.5 text-[12px] font-medium transition-all border"
           style={{
             borderColor: GRAY_LINE,
-            background: showNormal ? "#f1f5f9" : "white",
-            color: showNormal ? "#475569" : "#94a3b8",
+            background: showNormal ? "var(--bg-muted)" : "var(--bg-elevated)",
+            color: showNormal ? "var(--ink-soft)" : "var(--ink-faint)",
           }}
         >
           {showNormal ? "▣" : "□"} 正态对照
@@ -772,8 +772,8 @@ function SamplingDistExplorerBase() {
           min={0.01}
           max={0.1}
           step={0.01}
-          color="#dc2626"
-          bg="#fee2e2"
+          color="var(--md-sys-color-error)"
+          bg="#dc26261f"
           onChange={setAlpha}
           format={(v) => v.toFixed(2)}
         />
@@ -787,7 +787,7 @@ function SamplingDistExplorerBase() {
           </span>
           <span
             className="rounded-md px-2 py-0.5 text-[11px] font-mono font-bold"
-            style={{ background: "#fee2e2", color: "#dc2626" }}
+            style={{ background: "#dc26261f", color: "var(--md-sys-color-error)" }}
           >
             {curveResult.criticalLabel}
           </span>
@@ -817,7 +817,7 @@ function SamplingDistExplorerBase() {
                   y1="3"
                   x2="18"
                   y2="3"
-                  stroke="#94a3b8"
+                  stroke="var(--ink-faint)"
                   strokeWidth="1.5"
                   strokeDasharray="5 3"
                 />
@@ -859,8 +859,8 @@ function SamplingDistExplorerBase() {
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
         {[
           { label: "均值", val: stats.mean, color: tab.color, bg: tab.bg },
-          { label: "方差", val: stats.variance, color: "#475569", bg: "#f1f5f9" },
-          { label: "极限行为", val: stats.convergence, color: "#475569", bg: "#f1f5f9" },
+          { label: "方差", val: stats.variance, color: "var(--ink-soft)", bg: "var(--bg-muted)" },
+          { label: "极限行为", val: stats.convergence, color: "var(--ink-soft)", bg: "var(--bg-muted)" },
         ].map(({ label, val, color, bg }) => (
           <div key={label} className="rounded-lg p-2.5" style={{ background: bg }}>
             <div className="text-[10px] font-semibold text-[var(--ink-soft)] mb-0.5">{label}</div>
@@ -875,7 +875,7 @@ function SamplingDistExplorerBase() {
       {showNormal && (
         <div
           className="rounded-lg border p-3 space-y-1"
-          style={{ borderColor: GRAY_LINE, background: "#f8fafc" }}
+          style={{ borderColor: GRAY_LINE, background: "var(--bg-muted)" }}
         >
           <div className="text-[12px] font-bold text-[var(--ink)]">
             n → ∞ 收敛到正态（图中灰虚线）

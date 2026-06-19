@@ -3,8 +3,8 @@
 import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ──────────────────────────────────────────────────
-const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT = "var(--accent)";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const LINE_COLORS = [
   "#5b46e5", "#0891b2", "#0f766e", "#ca8a04", "#dc2626",
   "#7c3aed", "#0369a1", "#065f46", "#92400e", "#991b1b",
@@ -246,7 +246,7 @@ function LLNSimulatorBase() {
   const exceedCount = lastVals.filter((v) => Math.abs(v - mean) > epsilon).length;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">大数定律模拟器</h3>
@@ -274,7 +274,7 @@ function LLNSimulatorBase() {
                   "rounded-lg px-2.5 py-1 text-[12px] font-medium transition-colors " +
                   (d === dist
                     ? "bg-[var(--accent)] text-white"
-                    : "bg-white border border-[var(--line)] text-[var(--ink-soft)] hover:border-[var(--accent)]")
+                    : "bg-[var(--bg-elevated)] border border-[var(--line)] text-[var(--ink-soft)] hover:border-[var(--accent)]")
                 }
               >
                 {d === "bernoulli" ? "伯努利" : d === "uniform" ? "均匀" : "指数"}
@@ -356,7 +356,7 @@ function LLNSimulatorBase() {
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           className="w-full rounded-lg border border-[var(--line)]"
-          style={{ background: "#fafbfd" }}
+          style={{ background: "var(--bg-muted)" }}
         >
           {/* ε 带 */}
           <rect
@@ -380,11 +380,11 @@ function LLNSimulatorBase() {
                   y1={yy}
                   x2={SVG_W - PAD_R}
                   y2={yy}
-                  stroke={isMu ? "#5b46e5" : isEpsUp || isEpsDn ? EPSILON_COLOR : "#e9ebf2"}
+                  stroke={isMu ? "var(--accent)" : isEpsUp || isEpsDn ? EPSILON_COLOR : "var(--line)"}
                   strokeDasharray={isMu ? "5 3" : isEpsUp || isEpsDn ? "4 3" : undefined}
                   strokeWidth={isMu || isEpsUp || isEpsDn ? 1.2 : 1}
                 />
-                <text x={PAD_L - 4} y={yy + 3} fontSize="9" textAnchor="end" fill="#8a94a6">
+                <text x={PAD_L - 4} y={yy + 3} fontSize="9" textAnchor="end" fill="var(--ink-faint)">
                   {t.toFixed(2)}
                 </text>
               </g>
@@ -409,8 +409,8 @@ function LLNSimulatorBase() {
           )}
 
           {/* X 轴标签 */}
-          <text x={PAD_L} y={SVG_H - 4} fontSize="9" fill="#8a94a6">n=1</text>
-          <text x={SVG_W - PAD_R} y={SVG_H - 4} fontSize="9" textAnchor="end" fill="#8a94a6">
+          <text x={PAD_L} y={SVG_H - 4} fontSize="9" fill="var(--ink-faint)">n=1</text>
+          <text x={SVG_W - PAD_R} y={SVG_H - 4} fontSize="9" textAnchor="end" fill="var(--ink-faint)">
             n={nMax}
           </text>
 
@@ -439,14 +439,14 @@ function LLNSimulatorBase() {
               y={SVG_H / 2}
               textAnchor="middle"
               fontSize="12"
-              fill="#b0b8cc"
+              fill="var(--ink-faint)"
             >
               点击「模拟」开始
             </text>
           )}
 
           {/* y 轴 */}
-          <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={PAD_T + CHART_H} stroke="#d0d5e0" />
+          <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={PAD_T + CHART_H} stroke="var(--line)" />
         </svg>
       </div>
 
@@ -459,7 +459,7 @@ function LLNSimulatorBase() {
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG2_H}`}
           className="w-full rounded-lg border border-[var(--line)]"
-          style={{ background: "#fafbfd" }}
+          style={{ background: "var(--bg-muted)" }}
         >
           {/* y 轴刻度 */}
           {[0, 0.25, 0.5, 0.75, 1].map((v) => {
@@ -471,11 +471,11 @@ function LLNSimulatorBase() {
                   y1={yy}
                   x2={SVG_W - PAD_R}
                   y2={yy}
-                  stroke={v === 0 ? "#5b46e5" : "#e9ebf2"}
+                  stroke={v === 0 ? "var(--accent)" : "var(--line)"}
                   strokeDasharray={v === 0 ? "4 3" : undefined}
                   strokeWidth={v === 0 ? 1.2 : 1}
                 />
-                <text x={PAD_L - 4} y={yy + 3} fontSize="9" textAnchor="end" fill="#8a94a6">
+                <text x={PAD_L - 4} y={yy + 3} fontSize="9" textAnchor="end" fill="var(--ink-faint)">
                   {v}
                 </text>
               </g>
@@ -488,8 +488,8 @@ function LLNSimulatorBase() {
           </text>
 
           {/* X 轴标签 */}
-          <text x={PAD_L} y={SVG2_H - 4} fontSize="9" fill="#8a94a6">n=1</text>
-          <text x={SVG_W - PAD_R} y={SVG2_H - 4} fontSize="9" textAnchor="end" fill="#8a94a6">
+          <text x={PAD_L} y={SVG2_H - 4} fontSize="9" fill="var(--ink-faint)">n=1</text>
+          <text x={SVG_W - PAD_R} y={SVG2_H - 4} fontSize="9" textAnchor="end" fill="var(--ink-faint)">
             n={nMax}
           </text>
 
@@ -524,14 +524,14 @@ function LLNSimulatorBase() {
               y={SVG2_H / 2}
               textAnchor="middle"
               fontSize="12"
-              fill="#b0b8cc"
+              fill="var(--ink-faint)"
             >
               模拟后显示
             </text>
           )}
 
           {/* y 轴 */}
-          <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={PAD_T + CHART2_H} stroke="#d0d5e0" />
+          <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={PAD_T + CHART2_H} stroke="var(--line)" />
         </svg>
       </div>
 

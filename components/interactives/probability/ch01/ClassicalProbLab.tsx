@@ -186,7 +186,7 @@ function ClassicalProbLabBase() {
   // ─── 渲染 ────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
 
       {/* 标题行 */}
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
@@ -300,14 +300,14 @@ function ClassicalProbLabBase() {
           <p className="mb-1 text-[11px] text-[var(--ink-soft)]">
             理论概率分布（各结果占比）
           </p>
-          <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full rounded-lg bg-[#fafbfd]">
+          <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full rounded-lg bg-[var(--bg-muted)]">
             {/* y 轴 */}
             <line
               x1={PAD_L}
               y1={PAD_T}
               x2={PAD_L}
               y2={PAD_T + CHART_H}
-              stroke="#d7dbe6"
+              stroke="var(--line)"
               strokeWidth={1}
             />
             {/* x 轴 */}
@@ -316,7 +316,7 @@ function ClassicalProbLabBase() {
               y1={PAD_T + CHART_H}
               x2={SVG_W - PAD_R}
               y2={PAD_T + CHART_H}
-              stroke="#d7dbe6"
+              stroke="var(--line)"
               strokeWidth={1}
             />
             {/* y 刻度 */}
@@ -325,13 +325,13 @@ function ClassicalProbLabBase() {
               if (yy < PAD_T) return null;
               return (
                 <g key={v}>
-                  <line x1={PAD_L - 3} y1={yy} x2={PAD_L} y2={yy} stroke="#d7dbe6" />
+                  <line x1={PAD_L - 3} y1={yy} x2={PAD_L} y2={yy} stroke="var(--line)" />
                   <text
                     x={PAD_L - 5}
                     y={yy + 3}
                     fontSize={8}
                     textAnchor="end"
-                    fill="#8a94a6"
+                    fill="var(--ink-faint)"
                   >
                     {v.toFixed(1)}
                   </text>
@@ -359,7 +359,7 @@ function ClassicalProbLabBase() {
                     y={PAD_T + CHART_H + 12}
                     fontSize={scene === "dice" ? 7.5 : 10}
                     textAnchor="middle"
-                    fill="#8a94a6"
+                    fill="var(--ink-faint)"
                   >
                     {o.label}
                   </text>
@@ -385,7 +385,7 @@ function ClassicalProbLabBase() {
               y={PAD_T - 3}
               fontSize={9}
               textAnchor="middle"
-              fill="#8a94a6"
+              fill="var(--ink-faint)"
             >
               {sceneDef.name} — 理论分布
             </text>
@@ -397,15 +397,15 @@ function ClassicalProbLabBase() {
           <p className="mb-1 text-[11px] text-[var(--ink-soft)]">
             频率收敛曲线（{sceneDef.targetLabel}）
           </p>
-          <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full rounded-lg bg-[#fafbfd]">
+          <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full rounded-lg bg-[var(--bg-muted)]">
             {/* 背景格 */}
             <rect
               x={PAD_L}
               y={PAD_T}
               width={CHART_W}
               height={CHART_H}
-              fill="#fafbfd"
-              stroke="#e7e9ef"
+              fill="var(--bg-muted)"
+              stroke="var(--line)"
             />
             {/* 理论线 */}
             <line
@@ -435,14 +435,14 @@ function ClassicalProbLabBase() {
                   y1={yScale(v)}
                   x2={PAD_L}
                   y2={yScale(v)}
-                  stroke="#d7dbe6"
+                  stroke="var(--line)"
                 />
                 <text
                   x={PAD_L - 5}
                   y={yScale(v) + 3}
                   fontSize={8}
                   textAnchor="end"
-                  fill="#8a94a6"
+                  fill="var(--ink-faint)"
                 >
                   {v}
                 </text>
@@ -503,8 +503,8 @@ function ClassicalProbLabBase() {
               (freqProb === null
                 ? "text-[var(--ink-soft)]"
                 : Math.abs(freqProb - theoryProb) < 0.02
-                ? "text-emerald-600"
-                : "text-amber-600")
+                ? "text-[var(--color-success)]"
+                : "text-[var(--color-warning)]")
             }
           >
             {freqProb !== null ? freqProb.toFixed(4) : "—"}
@@ -520,10 +520,10 @@ function ClassicalProbLabBase() {
             className={
               "font-mono font-bold " +
               (Math.abs(freqProb - theoryProb) < 0.01
-                ? "text-emerald-600"
+                ? "text-[var(--color-success)]"
                 : Math.abs(freqProb - theoryProb) < 0.05
-                ? "text-amber-600"
-                : "text-red-500")
+                ? "text-[var(--color-warning)]"
+                : "text-[var(--md-sys-color-error)]")
             }
           >
             {Math.abs(freqProb - theoryProb).toFixed(4)}

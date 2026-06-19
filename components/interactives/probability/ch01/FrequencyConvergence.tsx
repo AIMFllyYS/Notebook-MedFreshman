@@ -47,17 +47,17 @@ function FrequencyConvergenceBase() {
       : "";
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
-        <rect x={P} y={P} width={W - 2 * P} height={H - 2 * P} fill="#fafbfd" stroke="#e7e9ef" />
+        <rect x={P} y={P} width={W - 2 * P} height={H - 2 * P} fill="var(--bg-muted)" stroke="var(--line)" />
         {/* y 轴刻度 0 / 0.5 / 1 */}
         {[0, 0.5, 1].map((v) => (
           <g key={v}>
-            <line x1={P} y1={y(v)} x2={W - P} y2={y(v)} stroke={v === 0.5 ? "#c4b5fd" : "#eef0f4"} strokeDasharray={v === 0.5 ? "4 3" : undefined} />
-            <text x={P - 6} y={y(v) + 3} fontSize="10" textAnchor="end" fill="#8a94a6">{v}</text>
+            <line x1={P} y1={y(v)} x2={W - P} y2={y(v)} stroke={v === 0.5 ? "#c4b5fd" : "var(--line)"} strokeDasharray={v === 0.5 ? "4 3" : undefined} />
+            <text x={P - 6} y={y(v) + 3} fontSize="10" textAnchor="end" fill="var(--ink-faint)">{v}</text>
           </g>
         ))}
-        <text x={W - P} y={y(0.5) - 5} fontSize="10" textAnchor="end" fill="#7c3aed">理论概率 0.5</text>
+        <text x={W - P} y={y(0.5) - 5} fontSize="10" textAnchor="end" fill="var(--accent)">理论概率 0.5</text>
         {path && <path d={path} fill="none" stroke="#5b46e5" strokeWidth="1.8" />}
         {points.length > 0 && (
           <circle cx={x(points.length - 1, points.length)} cy={y(freq)} r="3" fill="#5b46e5" />

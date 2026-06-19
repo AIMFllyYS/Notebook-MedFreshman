@@ -17,7 +17,7 @@ import {
   PanelLeft,
 } from "lucide-react";
 import FileTree from "./FileTree";
-import { useSidebarStore } from "@/lib/store/useSidebarStore";
+import { useStore } from "@/lib/store";
 import { contentTree } from "@/content/manifest";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
 import type { SubjectId, ContentItem } from "@/lib/types/content";
@@ -40,10 +40,11 @@ function SubjectIcon({ name, size = 15 }: { name: string; size?: number }) {
 export default function SubjectSidebar() {
   const router = useRouter();
   const pathname = usePathname();
-  const expandedIds = useSidebarStore((s) => s.expandedIds);
-  const toggleExpand = useSidebarStore((s) => s.toggleExpand);
-  const isCollapsed = useSidebarStore((s) => s.isCollapsed);
-  const setCollapsed = useSidebarStore((s) => s.setCollapsed);
+  const expandedIds = useStore((s) => s.expandedIds);
+  const toggleExpand = useStore((s) => s.toggleExpand);
+  // 折叠状态与 AppShell 左面板共用同一真相源（此前各持一份，导致此处的折叠按钮失效）。
+  const isCollapsed = useStore((s) => s.sidebarCollapsed);
+  const setCollapsed = useStore((s) => s.setSidebarCollapsed);
   const [isLight, setIsLight] = useState(false);
 
   // 选中态由路由派生（单一真相源）：/[subject]/[category]/[id] → `${subject}/${category}/${id}`。

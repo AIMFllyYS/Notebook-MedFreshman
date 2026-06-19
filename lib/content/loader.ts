@@ -84,6 +84,71 @@ export function readContentMarkdown(
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// 例题读取（与正文一致走服务端 SSR；/api/examples 仅作客户端回退/兼容）
+// ─────────────────────────────────────────────────────────────
+
+const EXAMPLES_ROOT = path.join(process.cwd(), "content", "examples");
+
+export interface ExampleMeta {
+  id: string;
+  title: string;
+  content: string;
+}
+
+/**
+ * 由 (categoryId, itemId) 推导例题所在的 (chapterId, sectionId)。
+ * 仅 detail 分类有例题：itemId "1.1" → chapterId "ch01"、sectionId "1.1"。
+ * 其他分类返回空串（无例题）。
+ */
+export function deriveExampleKey(
+  categoryId: string,
+  itemId: string,
+): { chapterId: string; sectionId: string } {
+  if (categoryId !== "detail") return { chapterId: "", sectionId: "" };
+  const n = parseInt(itemId.split(".")[0], 10);
+  if (Number.isNaN(n)) return { chapterId: "", sectionId: "" };
+  return { chapterId: `ch${String(n).padStart(2, "0")}`, sectionId: itemId };
+}
+
+/**
+ * 读取某小节下的所有例题（学科命名空间，防多科 chapterId 冲突）：
+ * - probability：content/examples/{chapterId}/{sectionId}/（兼容旧路径）
+ * - 其他学科：content/examples/{subjectId}/{chapterId}/{sectionId}/
+ * title 提取优先级：:::example{label=...} > 第一个 # 标题 > 文件名。
+ * 目录不存在或 chapterId/sectionId 为空时返回 []。
+ */
+export function readExamples(
+  subjectId: string,
+  chapterId: string,
+  sectionId: string,
+): ExampleMeta[] {
+  if (!chapterId || !sectionId) return [];
+  const dir =
+    subjectId && subjectId !== "probability"
+      ? path.join(EXAMPLES_ROOT, subjectId, chapterId, sectionId)
+      : path.join(EXAMPLES_ROOT, chapterId, sectionId);
+
+  let files: string[];
+  try {
+    files = fs.readdirSync(dir).filter((f) => f.endsWith(".md")).sort();
+  } catch {
+    return [];
+  }
+
+  return files.map((file) => {
+    const content = fs.readFileSync(path.join(dir, file), "utf8");
+    const exampleLabelMatch = content.match(/:::example\{label=([^}]+)\}/);
+    const titleMatch = content.match(/^#\s+(.+)$/m);
+    const title = exampleLabelMatch
+      ? exampleLabelMatch[1].trim()
+      : titleMatch
+        ? titleMatch[1].trim()
+        : file.replace(/\.md$/, "");
+    return { id: file.replace(/\.md$/, ""), title, content };
+  });
+}
+
 /** 紧凑的全书大纲文本，供 AI 的 get_outline 工具。 */
 export function getOutlineText(): string {
   const lines: string[] = [`课程：${manifest.course}`];

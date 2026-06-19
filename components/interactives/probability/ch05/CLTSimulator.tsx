@@ -3,12 +3,12 @@
 import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ──────────────────────────────────────────────────
-const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT = "#5b46e5"; // 与 alpha 拼接（如 ACCENT + "22"），保留 hex
+const ACCENT_LIGHT = "var(--accent-weak)";
 const GREEN = "#0f766e";
-const GREEN_LIGHT = "#d1fae5";
+const GREEN_LIGHT = "#0f766e22"; // 半透明绿，深浅色皆可读
 const ORANGE = "#ea580c";
-const GRAY_LINE = "#e9ebf2";
+const GRAY_LINE = "var(--line)";
 
 // ─── SVG 尺寸 ──────────────────────────────────────────────────
 const SVG_W = 520;
@@ -290,7 +290,7 @@ function CLTSimulatorBase() {
   const nLabelColor = sampleSize >= 30 ? GREEN : sampleSize >= 10 ? "#ca8a04" : ORANGE;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">中心极限定理模拟实验室</h3>
@@ -320,7 +320,7 @@ function CLTSimulatorBase() {
                     "rounded-lg px-2.5 py-1 text-[12px] font-medium transition-colors " +
                     (d === dist
                       ? "bg-[var(--accent)] text-white"
-                      : "bg-white border border-[var(--line)] text-[var(--ink-soft)] hover:border-[var(--accent)]")
+                      : "bg-[var(--bg-elevated)] border border-[var(--line)] text-[var(--ink-soft)] hover:border-[var(--accent)]")
                   }
                 >
                   {info.shortName}
@@ -410,7 +410,7 @@ function CLTSimulatorBase() {
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           className="w-full rounded-lg border border-[var(--line)]"
-          style={{ background: "#fafbfd" }}
+          style={{ background: "var(--bg-muted)" }}
         >
           {/* 网格线 */}
           {[0.1, 0.2, 0.3, 0.4].map((v) => {
@@ -426,7 +426,7 @@ function CLTSimulatorBase() {
                   stroke={GRAY_LINE}
                   strokeWidth={1}
                 />
-                <text x={PAD_L - 4} y={yy + 3} fontSize="9" textAnchor="end" fill="#8a94a6">
+                <text x={PAD_L - 4} y={yy + 3} fontSize="9" textAnchor="end" fill="var(--ink-faint)">
                   {v.toFixed(1)}
                 </text>
               </g>
@@ -470,7 +470,7 @@ function CLTSimulatorBase() {
             y1={PAD_T + CHART_H}
             x2={SVG_W - PAD_R}
             y2={PAD_T + CHART_H}
-            stroke="#d0d5e0"
+            stroke="var(--line)"
             strokeWidth={1}
           />
 
@@ -480,7 +480,7 @@ function CLTSimulatorBase() {
             y1={PAD_T}
             x2={PAD_L}
             y2={PAD_T + CHART_H}
-            stroke="#d0d5e0"
+            stroke="var(--line)"
             strokeWidth={1}
           />
 
@@ -494,7 +494,7 @@ function CLTSimulatorBase() {
                   y1={PAD_T + CHART_H}
                   x2={xx}
                   y2={PAD_T + CHART_H + 4}
-                  stroke="#b0b8cc"
+                  stroke="var(--ink-faint)"
                   strokeWidth={1}
                 />
                 <text
@@ -502,7 +502,7 @@ function CLTSimulatorBase() {
                   y={PAD_T + CHART_H + 12}
                   fontSize="9"
                   textAnchor="middle"
-                  fill="#8a94a6"
+                  fill="var(--ink-faint)"
                 >
                   {z}
                 </text>
@@ -516,7 +516,7 @@ function CLTSimulatorBase() {
             y1={PAD_T}
             x2={xChart(0)}
             y2={PAD_T + CHART_H}
-            stroke="#5b46e5"
+            stroke="var(--accent)"
             strokeWidth={1}
             strokeDasharray="4 3"
             opacity={0.5}
@@ -529,7 +529,7 @@ function CLTSimulatorBase() {
               y={SVG_H / 2 - 4}
               textAnchor="middle"
               fontSize="13"
-              fill="#b0b8cc"
+              fill="var(--ink-faint)"
             >
               点击「模拟」开始实验
             </text>
@@ -541,7 +541,7 @@ function CLTSimulatorBase() {
             y={PAD_T - 4}
             fontSize="9"
             textAnchor="end"
-            fill="#8a94a6"
+            fill="var(--ink-faint)"
           >
             密度
           </text>
@@ -552,7 +552,7 @@ function CLTSimulatorBase() {
             y={PAD_T + CHART_H + 24}
             fontSize="9"
             textAnchor="end"
-            fill="#8a94a6"
+            fill="var(--ink-faint)"
           >
             Z
           </text>
@@ -599,13 +599,13 @@ function CLTSimulatorBase() {
             {
               label: "每组样本量 n",
               val: String(sampleSize),
-              bg: (sampleSize >= 30 ? GREEN_LIGHT : "#fef3c7"),
+              bg: (sampleSize >= 30 ? GREEN_LIGHT : "#f59e0b22"),
               col: (sampleSize >= 30 ? GREEN : "#b45309"),
             },
             {
               label: "σ/√n（理论标准误）",
               val: (Math.sqrt(distInfo.variance) / Math.sqrt(sampleSize)).toFixed(4),
-              bg: "#f0f9ff",
+              bg: "#0369a122",
               col: "#0369a1",
             },
             {

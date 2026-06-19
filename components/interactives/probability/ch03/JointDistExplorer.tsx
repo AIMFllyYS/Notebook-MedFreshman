@@ -4,7 +4,7 @@ import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const ACCENT_MID = "#7c6af0";
 
 // 热力图色阶：白→浅紫→中紫→深紫
@@ -158,7 +158,7 @@ function JointDistExplorerBase() {
       : null;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">联合分布律探索器</h3>
@@ -397,7 +397,7 @@ function HeatmapGrid({
             textAnchor="middle"
             fontSize="12"
             fontWeight="600"
-            fill="#6b7280"
+            fill="var(--ink-soft)"
           >
             {yl}
           </text>
@@ -412,7 +412,7 @@ function HeatmapGrid({
             textAnchor="end"
             fontSize="12"
             fontWeight="600"
-            fill="#6b7280"
+            fill="var(--ink-soft)"
           >
             {xl}
           </text>
@@ -486,7 +486,7 @@ function HeatmapGrid({
           y={MARGIN_T - 5}
           textAnchor="middle"
           fontSize="10"
-          fill="#9ca3af"
+          fill="var(--ink-faint)"
         >
           P(X)
         </text>
@@ -534,7 +534,7 @@ function HeatmapGrid({
           y={MARGIN_T + N * CELL + MARGIN_BAR + BAR_CELL / 2 + 4}
           textAnchor="end"
           fontSize="10"
-          fill="#9ca3af"
+          fill="var(--ink-faint)"
         >
           P(Y)
         </text>

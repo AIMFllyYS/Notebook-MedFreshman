@@ -3,14 +3,14 @@
 import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ─────────────────────────────────────────────────
-const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT = "var(--accent)";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const RED = "#dc2626";
 const RED_LIGHT = "#fee2e2";
 const GREEN = "#16a34a";
 const GREEN_LIGHT = "#dcfce7";
-const GRAY_LINE = "#e7e9ef";
-const GRAY_TEXT = "#8a94a6";
+const GRAY_LINE = "var(--line)";
+const GRAY_TEXT = "var(--ink-faint)";
 
 // ─── SVG 画布参数 ──────────────────────────────────────────────
 const W = 500;
@@ -232,7 +232,7 @@ function HypTestDemoBase() {
   const xTicks = [-3, -2, -1, 0, 1, 2, 3];
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">假设检验直觉演示</h3>
@@ -263,7 +263,7 @@ function HypTestDemoBase() {
       </div>
 
       {/* 正态分布 SVG 可视化 */}
-      <div className="rounded-lg border border-[var(--line)] overflow-hidden bg-[#fafbfd]">
+      <div className="rounded-lg border border-[var(--line)] overflow-hidden bg-[var(--bg-muted)]">
         <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ maxHeight: 200 }}>
           {/* 拒绝域填充 */}
           {rejectPaths.map((d, i) => (
@@ -274,14 +274,14 @@ function HypTestDemoBase() {
           {testType === "left" && (
             <path
               d={buildRejectPath(X_MIN, Math.max(X_MIN, Math.min(X_MAX, zStat)))}
-              fill={zInRejectRegion ? RED : "#94a3b8"}
+              fill={zInRejectRegion ? RED : "var(--ink-faint)"}
               fillOpacity={0.12}
             />
           )}
           {testType === "right" && (
             <path
               d={buildRejectPath(Math.max(X_MIN, Math.min(X_MAX, zStat)), X_MAX)}
-              fill={zInRejectRegion ? RED : "#94a3b8"}
+              fill={zInRejectRegion ? RED : "var(--ink-faint)"}
               fillOpacity={0.12}
             />
           )}
@@ -292,7 +292,7 @@ function HypTestDemoBase() {
                   X_MIN,
                   Math.max(X_MIN, Math.min(X_MAX, Math.min(zStat, -Math.abs(zStat))))
                 )}
-                fill={zInRejectRegion ? RED : "#94a3b8"}
+                fill={zInRejectRegion ? RED : "var(--ink-faint)"}
                 fillOpacity={0.12}
               />
               <path
@@ -300,7 +300,7 @@ function HypTestDemoBase() {
                   Math.max(X_MIN, Math.min(X_MAX, Math.abs(zStat))),
                   X_MAX
                 )}
-                fill={zInRejectRegion ? RED : "#94a3b8"}
+                fill={zInRejectRegion ? RED : "var(--ink-faint)"}
                 fillOpacity={0.12}
               />
             </>
@@ -559,7 +559,7 @@ function HypTestDemoBase() {
               testType === "two"
                 ? `双尾 α/2 = ${(alpha / 2).toFixed(3)}`
                 : `单尾 α = ${alpha.toFixed(2)}`,
-            bg: "#f1f5f9",
+            bg: "var(--bg-muted)",
             col: ACCENT,
           },
         ].map(({ label, val, sub, bg, col }) => (

@@ -117,7 +117,7 @@ function OptionButton<T extends string>({
       className={[
         "w-full rounded-lg border px-3 py-2 text-left transition-colors",
         active
-          ? "border-indigo-500 bg-indigo-50"
+          ? "border-indigo-500 bg-[var(--accent-weak)]"
           : "border-[var(--line)] bg-[var(--bg-muted)] hover:border-indigo-300",
       ].join(" ")}
     >
@@ -210,13 +210,13 @@ function SN1SN2CompareBase() {
 
   const headlineColor: string =
     verdict.mechanism === "SN2"
-      ? "text-emerald-700"
+      ? "text-[var(--color-success)]"
       : verdict.mechanism === "SN1"
-      ? "text-rose-700"
-      : "text-amber-700";
+      ? "text-[var(--md-sys-color-error)]"
+      : "text-[var(--color-warning)]";
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold text-[var(--ink)]">SN1 / SN2 机理对比</h3>
       <p className="mt-1 text-sm text-[var(--ink-soft)]">
         选择底物级数、亲核试剂强弱与溶剂极性，综合判定卤代烷亲核取代是走 SN2（一步背面进攻、构型翻转）
@@ -293,11 +293,11 @@ function SN1SN2CompareBase() {
           className={[
             "rounded-lg border p-3",
             verdict.mechanism === "SN2"
-              ? "border-emerald-400 bg-emerald-50"
+              ? "border-emerald-400 bg-emerald-500/10"
               : "border-[var(--line)] bg-[var(--bg-muted)]",
           ].join(" ")}
         >
-          <p className="mb-2 text-sm font-semibold text-emerald-700">SN2 机理</p>
+          <p className="mb-2 text-sm font-semibold text-[var(--color-success)]">SN2 机理</p>
           <SN2Diagram />
           <p className="mt-2 text-xs text-[var(--ink-soft)]">
             速率 = k[底物][Nu]，双分子决速步。亲核试剂从离去基团背面进攻，过渡态为五配位，
@@ -309,11 +309,11 @@ function SN1SN2CompareBase() {
           className={[
             "rounded-lg border p-3",
             verdict.mechanism === "SN1"
-              ? "border-rose-400 bg-rose-50"
+              ? "border-rose-400 bg-rose-500/10"
               : "border-[var(--line)] bg-[var(--bg-muted)]",
           ].join(" ")}
         >
-          <p className="mb-2 text-sm font-semibold text-rose-700">SN1 机理</p>
+          <p className="mb-2 text-sm font-semibold text-[var(--md-sys-color-error)]">SN1 机理</p>
           <SN1Diagram />
           <p className="mt-2 text-xs text-[var(--ink-soft)]">
             速率 = k[底物]，单分子决速步为电离生成<strong>平面 sp² 碳正离子</strong>中间体。

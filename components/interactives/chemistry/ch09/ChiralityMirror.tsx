@@ -146,7 +146,7 @@ function ChiralityMirrorBase() {
       : "因为存在对称面，旋转后镜像可以与原分子重叠 —— 这是非手性分子。";
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-bold text-[var(--ink)]">手性与镜像</h3>
       <p className="mt-1 text-sm text-[var(--ink-soft)]">
         一个连有四个<strong>不同</strong>基团的碳原子（手性碳），其分子与镜像无法通过旋转完全重叠，
@@ -242,8 +242,8 @@ function ChiralityMirrorBase() {
       <p
         className={`mt-3 rounded-lg border px-3 py-2 text-sm ${
           isChiral
-            ? "border-rose-200 bg-rose-50 text-rose-700"
-            : "border-emerald-200 bg-emerald-50 text-emerald-700"
+            ? "border-rose-500/30 bg-rose-500/10 text-[var(--md-sys-color-error)]"
+            : "border-emerald-500/30 bg-emerald-500/10 text-[var(--color-success)]"
         }`}
       >
         {resultText}

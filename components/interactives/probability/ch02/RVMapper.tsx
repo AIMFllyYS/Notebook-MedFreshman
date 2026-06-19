@@ -4,11 +4,11 @@ import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
-const INK = "#1a1a2e";
-const INK_SOFT = "#6b7280";
-const LINE = "#e5e7eb";
-const BG_MUTED = "#f8f9fc";
+const ACCENT_LIGHT = "var(--accent-weak)";
+const INK = "var(--ink)";
+const INK_SOFT = "var(--ink-soft)";
+const LINE = "var(--line)";
+const BG_MUTED = "var(--bg-muted)";
 const BAR_COLORS = [
   "#5b46e5", "#7c3aed", "#0ea5e9", "#059669", "#d97706", "#dc2626",
 ];
@@ -93,7 +93,7 @@ function DieFace({ face, selected, onClick }: DieFaceProps) {
       className="rounded-xl border-2 transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-1"
       style={{
         borderColor: selected ? ACCENT : LINE,
-        background: selected ? ACCENT_LIGHT : "white",
+        background: selected ? ACCENT_LIGHT : "var(--bg-elevated)",
         boxShadow: selected ? `0 0 0 2px ${ACCENT}44` : "0 1px 3px rgba(0,0,0,0.08)",
         padding: 0,
         width: 52,
@@ -192,7 +192,7 @@ function DistChart({ dist, hoveredX, onHover }: DistChartProps) {
             y1={yPx(v)}
             x2={CHART_W - CHART_PR}
             y2={yPx(v)}
-            stroke={v === 0 ? "#d1d5db" : "#e5e7eb"}
+            stroke={v === 0 ? "var(--line)" : "var(--line)"}
             strokeWidth={v === 0 ? 1.5 : 1}
           />
           <text
@@ -335,7 +335,7 @@ function RVMapperBase() {
     : [];
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题区 */}
       <div>
         <h3 className="text-[15px] font-bold" style={{ color: INK }}>
@@ -397,8 +397,8 @@ function RVMapperBase() {
                   background: isHighlighted
                     ? ACCENT_LIGHT
                     : isSelected
-                    ? "#f5f3ff"
-                    : "white",
+                    ? "var(--accent-weak)"
+                    : "var(--bg-elevated)",
                   border: `1px solid ${isHighlighted ? ACCENT : isSelected ? "#c4b5fd" : LINE}`,
                 }}
               >
@@ -428,7 +428,7 @@ function RVMapperBase() {
                       >
                         <path
                           d="M0,0 L0,6 L6,3 z"
-                          fill={isHighlighted ? ACCENT : "#9ca3af"}
+                          fill={isHighlighted ? ACCENT : "var(--ink-faint)"}
                         />
                       </marker>
                     </defs>
@@ -437,7 +437,7 @@ function RVMapperBase() {
                       y1={7}
                       x2={20}
                       y2={7}
-                      stroke={isHighlighted ? ACCENT : "#9ca3af"}
+                      stroke={isHighlighted ? ACCENT : "var(--ink-faint)"}
                       strokeWidth={1.5}
                       markerEnd={`url(#arrow-${face})`}
                     />
@@ -461,7 +461,7 @@ function RVMapperBase() {
                     className="w-[70px] rounded-lg border px-2 py-1 text-[13px] font-mono font-bold text-center transition-all focus:outline-none focus:ring-2"
                     style={{
                       borderColor: isHighlighted ? ACCENT : LINE,
-                      background: isHighlighted ? "white" : BG_MUTED,
+                      background: isHighlighted ? "var(--bg-elevated)" : BG_MUTED,
                       color: isHighlighted ? ACCENT : INK,
                       boxShadow: isHighlighted ? `0 0 0 2px ${ACCENT}33` : "none",
                     }}

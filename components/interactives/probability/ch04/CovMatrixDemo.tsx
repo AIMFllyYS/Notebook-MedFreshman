@@ -7,8 +7,8 @@ const ACCENT = "#5b46e5";
 const ACCENT_LIGHT = "#ede9fe";
 const RED = "#dc2626";
 const RED_LIGHT = "#fee2e2";
-const GRAY_LINE = "#e2e8f0";
-const INK_SOFT = "#64748b";
+const GRAY_LINE = "var(--line)";
+const INK_SOFT = "var(--ink-soft)";
 
 // ─── SVG 画布尺寸 ─────────────────────────────────────────────────────────────
 const SVG_W = 400;
@@ -208,7 +208,7 @@ function CovMatrixDemoBase() {
   const f2 = (v: number) => v.toFixed(2);
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">
@@ -226,7 +226,7 @@ function CovMatrixDemoBase() {
           <svg
             viewBox={`0 0 ${SVG_W} ${SVG_H}`}
             className="w-full rounded-lg border border-[var(--line)]"
-            style={{ background: "#f8fafc", maxHeight: 340 }}
+            style={{ background: "var(--bg-muted)", maxHeight: 340 }}
           >
             {/* 坐标网格 */}
             {gridLines.map((v) => (
@@ -236,7 +236,7 @@ function CovMatrixDemoBase() {
                   y1={20}
                   x2={CX + v * SCALE}
                   y2={SVG_H - 20}
-                  stroke={v === 0 ? "#94a3b8" : GRAY_LINE}
+                  stroke={v === 0 ? "var(--ink-faint)" : GRAY_LINE}
                   strokeWidth={v === 0 ? 1.2 : 0.8}
                   strokeDasharray={v !== 0 ? "4,4" : undefined}
                 />
@@ -245,7 +245,7 @@ function CovMatrixDemoBase() {
                   y1={CY - v * SCALE}
                   x2={SVG_W - 20}
                   y2={CY - v * SCALE}
-                  stroke={v === 0 ? "#94a3b8" : GRAY_LINE}
+                  stroke={v === 0 ? "var(--ink-faint)" : GRAY_LINE}
                   strokeWidth={v === 0 ? 1.2 : 0.8}
                   strokeDasharray={v !== 0 ? "4,4" : undefined}
                 />
@@ -275,10 +275,10 @@ function CovMatrixDemoBase() {
             ))}
 
             {/* 轴标签 */}
-            <text x={SVG_W - 18} y={CY + 14} fontSize="12" fill="#334155" fontStyle="italic">
+            <text x={SVG_W - 18} y={CY + 14} fontSize="12" fill="var(--ink)" fontStyle="italic">
               x₁
             </text>
-            <text x={CX + 8} y={24} fontSize="12" fill="#334155" fontStyle="italic">
+            <text x={CX + 8} y={24} fontSize="12" fill="var(--ink)" fontStyle="italic">
               x₂
             </text>
 
@@ -615,8 +615,8 @@ function CovMatrixDemoBase() {
 
         {/* 当前数值代入 */}
         <div
-          className="mt-2 rounded bg-white px-3 py-2 font-mono text-[11px] border border-[var(--line)]"
-          style={{ color: posDefOk ? "#334155" : RED }}
+          className="mt-2 rounded bg-[var(--bg-elevated)] px-3 py-2 font-mono text-[11px] border border-[var(--line)]"
+          style={{ color: posDefOk ? "var(--ink)" : RED }}
         >
           <div>
             Σ = [[{f2(s1sq)}, {f3(cov12)}], [{f3(cov12)}, {f2(s2sq)}]]

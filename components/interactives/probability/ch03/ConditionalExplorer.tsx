@@ -86,7 +86,7 @@ function BarChart({ values, color, label, xLabels }: BarChartProps) {
           y1={BAR_H - 20}
           x2={BAR_W - BAR_PAD}
           y2={BAR_H - 20}
-          stroke="#e5e7eb"
+          stroke="var(--line)"
           strokeWidth={1}
         />
         {/* 参考线 0.5 */}
@@ -99,10 +99,10 @@ function BarChart({ values, color, label, xLabels }: BarChartProps) {
                 y1={yPos}
                 x2={BAR_W - BAR_PAD}
                 y2={yPos}
-                stroke="#f3f4f6"
+                stroke="var(--line)"
                 strokeWidth={1}
               />
-              <text x={BAR_PAD - 4} y={yPos + 3} fontSize="8" textAnchor="end" fill="#9ca3af">
+              <text x={BAR_PAD - 4} y={yPos + 3} fontSize="8" textAnchor="end" fill="var(--ink-faint)">
                 {v}
               </text>
             </g>
@@ -140,7 +140,7 @@ function BarChart({ values, color, label, xLabels }: BarChartProps) {
                 y={BAR_H - 6}
                 fontSize="9"
                 textAnchor="middle"
-                fill="#6b7280"
+                fill="var(--ink-soft)"
               >
                 {xLabels[idx]}
               </text>
@@ -213,7 +213,7 @@ function ConditionalExplorerBase() {
   const independent = isNearlyIndependent();
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题 */}
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
@@ -227,14 +227,14 @@ function ConditionalExplorerBase() {
           onClick={toggleCorrelation}
           className="flex items-center gap-2 rounded-lg border px-3 py-1.5 text-[12px] font-medium transition-colors"
           style={{
-            borderColor: correlated ? ACCENT : "#d1d5db",
-            background: correlated ? ACCENT_LIGHT : "#f9fafb",
-            color: correlated ? ACCENT : "#6b7280",
+            borderColor: correlated ? ACCENT : "var(--line)",
+            background: correlated ? ACCENT_LIGHT : "var(--bg-muted)",
+            color: correlated ? ACCENT : "var(--ink-soft)",
           }}
         >
           <span
             className="inline-block h-4 w-7 rounded-full transition-all relative"
-            style={{ background: correlated ? ACCENT : "#d1d5db" }}
+            style={{ background: correlated ? ACCENT : "var(--line)" }}
           >
             <span
               className="absolute top-0.5 h-3 w-3 rounded-full bg-white transition-all"
@@ -319,7 +319,7 @@ function ConditionalExplorerBase() {
                             className="w-16 rounded border text-center text-[12px] font-mono py-0.5 focus:outline-none focus:ring-1"
                             style={{
                               borderColor: isSelected ? ACCENT : "var(--line)",
-                              background: isSelected ? "#fff" : "var(--bg-muted)",
+                              background: isSelected ? "var(--bg-elevated)" : "var(--bg-muted)",
                               color: isSelected ? ACCENT : "var(--ink)",
                             }}
                           />
@@ -401,7 +401,7 @@ function ConditionalExplorerBase() {
                     <span className="w-4 font-semibold text-[var(--ink-soft)]">{xl}</span>
                     <div
                       className="flex-1 h-3 rounded-full overflow-hidden"
-                      style={{ background: "#e5e7eb" }}
+                      style={{ background: "var(--line)" }}
                     >
                       <div
                         className="h-full rounded-full transition-all duration-300"

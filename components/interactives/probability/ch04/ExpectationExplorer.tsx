@@ -7,10 +7,10 @@ const ACCENT = "#5b46e5";
 const ACCENT_LIGHT = "#ede9fe";
 const RED = "#dc2626";
 const RED_LIGHT = "#fee2e2";
-const GRAY_BG = "#f8f9fb";
-const GRAY_STROKE = "#e7e9ef";
-const INK = "#1a1a2e";
-const INK_SOFT = "#6b7280";
+const GRAY_BG = "var(--bg-muted)";
+const GRAY_STROKE = "var(--line)";
+const INK = "var(--ink)";
+const INK_SOFT = "var(--ink-soft)";
 
 // ─── SVG 布局 ─────────────────────────────────────────────────────────────────
 const SVG_W = 560;
@@ -224,7 +224,7 @@ function ExpectationExplorerBase() {
 
   return (
     <div
-      className="rounded-xl border border-[var(--line)] bg-white p-4"
+      className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4"
       style={{ fontFamily: "system-ui, sans-serif" }}
     >
       {/* 标题区 */}
@@ -258,7 +258,7 @@ function ExpectationExplorerBase() {
                 y1={lineY}
                 x2={X_RIGHT}
                 y2={lineY}
-                stroke={p === 1.0 ? "#c4b5fd" : "#e7e9ef"}
+                stroke={p === 1.0 ? "#c4b5fd" : "var(--line)"}
                 strokeDasharray={p < 1.0 ? "4 3" : "none"}
                 strokeWidth={p === 1.0 ? 1.5 : 1}
               />

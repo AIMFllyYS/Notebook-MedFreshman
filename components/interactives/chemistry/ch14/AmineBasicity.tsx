@@ -113,7 +113,7 @@ const LEVEL_COLOR: Record<BasicityLevel, string> = {
   medium: "#0ea5e9",
   weak: "#f59e0b",
   "very-weak": "#f97316",
-  none: "#9ca3af",
+  none: "var(--ink-faint)",
 };
 
 function AmineBasicityBase() {
@@ -126,7 +126,7 @@ function AmineBasicityBase() {
       : AMINES.find((c) => c.id === selectedId) ?? null;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold text-[var(--ink)]">
         胺的碱性比较
       </h3>
@@ -163,7 +163,7 @@ function AmineBasicityBase() {
               className={`w-full rounded-lg border px-3 py-2 text-left transition-colors ${
                 isSelected
                   ? "border-[var(--primary,#2563eb)] bg-[var(--bg-muted)]"
-                  : "border-[var(--line)] bg-white hover:bg-[var(--bg-muted)]"
+                  : "border-[var(--line)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-muted)]"
               }`}
             >
               <div className="flex items-baseline justify-between gap-2">

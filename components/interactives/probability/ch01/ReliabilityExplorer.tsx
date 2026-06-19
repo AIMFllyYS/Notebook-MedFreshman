@@ -12,7 +12,7 @@ interface Component {
   p: number; // 可靠度 0..1
 }
 
-const ACCENT = "#5b46e5";
+const ACCENT = "var(--accent)";
 const COLOR_OK = "#22c55e";
 const COLOR_FAIL = "#ef4444";
 const COLOR_WIRE = "#6b7280";
@@ -69,9 +69,9 @@ function SeriesCircuit({ components, sysOk, compOk }: Omit<CircuitProps, "mode">
       {components.map((comp, i) => {
         const boxX = startX + i * (BOX_W + 20);
         const ok = compOk ? compOk[i] : null;
-        const boxColor = ok === null ? "#e9ebf2" : ok ? "#dcfce7" : "#fee2e2";
-        const strokeCol = ok === null ? "#c4c9d4" : ok ? COLOR_OK : COLOR_FAIL;
-        const textCol = ok === null ? "#4b5563" : ok ? "#15803d" : "#b91c1c";
+        const boxColor = ok === null ? "var(--bg-elevated)" : ok ? "#dcfce7" : "#fee2e2";
+        const strokeCol = ok === null ? "var(--line)" : ok ? COLOR_OK : COLOR_FAIL;
+        const textCol = ok === null ? "var(--ink-soft)" : ok ? "#15803d" : "#b91c1c";
 
         // 左连接线
         const leftWire = i === 0 ? startX : startX + i * (BOX_W + 20);
@@ -130,7 +130,7 @@ function SeriesCircuit({ components, sysOk, compOk }: Omit<CircuitProps, "mode">
       />
       {/* 负载符号 */}
       <circle cx={SVG_W - 8} cy={CY} r={5} fill={sysOk === false ? COLOR_FAIL : ACCENT} />
-      <text x={SVG_W / 2} y={SVG_H - 8} textAnchor="middle" fontSize={11} fill="#9ca3af">
+      <text x={SVG_W / 2} y={SVG_H - 8} textAnchor="middle" fontSize={11} fill="var(--ink-faint)">
         ← 串联：全部正常系统才正常 →
       </text>
     </svg>
@@ -189,9 +189,9 @@ function ParallelCircuit({ components, sysOk, compOk }: Omit<CircuitProps, "mode
       {components.map((comp, i) => {
         const by = branchY(i);
         const ok = compOk ? compOk[i] : null;
-        const boxColor = ok === null ? "#e9ebf2" : ok ? "#dcfce7" : "#fee2e2";
-        const strokeCol = ok === null ? "#c4c9d4" : ok ? COLOR_OK : COLOR_FAIL;
-        const textCol = ok === null ? "#4b5563" : ok ? "#15803d" : "#b91c1c";
+        const boxColor = ok === null ? "var(--bg-elevated)" : ok ? "#dcfce7" : "#fee2e2";
+        const strokeCol = ok === null ? "var(--line)" : ok ? COLOR_OK : COLOR_FAIL;
+        const textCol = ok === null ? "var(--ink-soft)" : ok ? "#15803d" : "#b91c1c";
         const branchWire = wireColor(ok);
 
         return (
@@ -226,7 +226,7 @@ function ParallelCircuit({ components, sysOk, compOk }: Omit<CircuitProps, "mode
         );
       })}
 
-      <text x={SVG_W / 2} y={svgH - 6} textAnchor="middle" fontSize={11} fill="#9ca3af">
+      <text x={SVG_W / 2} y={svgH - 6} textAnchor="middle" fontSize={11} fill="var(--ink-faint)">
         ← 并联：任一正常系统即正常 →
       </text>
     </svg>
@@ -299,7 +299,7 @@ function ReliabilityExplorerBase() {
   const rCol = reliabilityColor(sysR);
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       {/* 标题 + 模式切换 */}
       <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
         <h3 className="text-[15px] font-semibold text-[var(--ink)]">可靠性系统探索</h3>
@@ -348,10 +348,10 @@ function ReliabilityExplorerBase() {
                 className="w-6 h-6 rounded-md flex items-center justify-center text-[13px] font-bold flex-shrink-0"
                 style={{
                   background:
-                    ok === null ? "#e9ebf2" : ok ? "#dcfce7" : "#fee2e2",
+                    ok === null ? "var(--bg-muted)" : ok ? "#dcfce7" : "#fee2e2",
                   color:
-                    ok === null ? "#4b5563" : ok ? "#15803d" : "#b91c1c",
-                  border: `1.5px solid ${ok === null ? "#c4c9d4" : ok ? COLOR_OK : COLOR_FAIL}`,
+                    ok === null ? "var(--ink-soft)" : ok ? "#15803d" : "#b91c1c",
+                  border: `1.5px solid ${ok === null ? "var(--line)" : ok ? COLOR_OK : COLOR_FAIL}`,
                 }}
               >
                 {comp.label}
@@ -438,7 +438,7 @@ function ReliabilityExplorerBase() {
           ))}
           <button
             onClick={resetSim}
-            className="rounded-lg bg-white border border-[var(--line)] px-2.5 py-1 text-[12px] font-medium text-[var(--ink-soft)] hover:bg-[var(--line)]"
+            className="rounded-lg bg-[var(--bg-elevated)] border border-[var(--line)] px-2.5 py-1 text-[12px] font-medium text-[var(--ink-soft)] hover:bg-[var(--line)]"
           >
             重置
           </button>
@@ -483,7 +483,7 @@ function ReliabilityExplorerBase() {
         {simCount >= 10 && simFreq !== null && (
           <div className="mt-2 flex items-center gap-2 text-[11px] text-[var(--ink-soft)]">
             <span className="w-8">模拟</span>
-            <div className="flex-1 h-2 rounded-full bg-white border border-[var(--line)] overflow-hidden">
+            <div className="flex-1 h-2 rounded-full bg-[var(--bg-elevated)] border border-[var(--line)] overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-200"
                 style={{
@@ -493,7 +493,7 @@ function ReliabilityExplorerBase() {
               />
             </div>
             <span className="w-8">理论</span>
-            <div className="flex-1 h-2 rounded-full bg-white border border-[var(--line)] overflow-hidden">
+            <div className="flex-1 h-2 rounded-full bg-[var(--bg-elevated)] border border-[var(--line)] overflow-hidden">
               <div
                 className="h-full rounded-full"
                 style={{ width: `${sysR * 100}%`, background: rCol }}

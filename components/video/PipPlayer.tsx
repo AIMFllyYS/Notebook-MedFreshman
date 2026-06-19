@@ -50,7 +50,7 @@ export default function PipPlayer() {
     >
       <div
         onPointerDown={(e) => controls.start(e)}
-        className="flex cursor-move items-center justify-between gap-2 bg-[var(--ink)] px-2.5 py-1.5 text-white"
+        className="flex cursor-move items-center justify-between gap-2 bg-[#23232b] px-2.5 py-1.5 text-white"
       >
         <span className="truncate text-[12.5px] font-medium">{video.title}</span>
         <div className="flex items-center gap-0.5">

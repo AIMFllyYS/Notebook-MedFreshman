@@ -4,13 +4,13 @@ import { memo, useState, Fragment } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const ACCENT_MID = "#7c6af0";
 const TEAL = "#0d9488";
 const TEAL_LIGHT = "#ccfbf1";
 const ORANGE = "#ea580c";
 const ORANGE_LIGHT = "#ffedd5";
-const GRAY_BG = "#f4f5f9";
+const GRAY_BG = "var(--bg-muted)";
 
 // ─── 热力图色阶 ───────────────────────────────────────────────────────────────
 function heatColor(ratio: number): string {
@@ -119,7 +119,7 @@ function MarginalBar({ values, labels, color, lightColor, highlightIdx, directio
             >
               <span
                 className="text-[12px] font-semibold w-6 text-right flex-shrink-0"
-                style={{ color: isHL ? color : "#9ca3af" }}
+                style={{ color: isHL ? color : "var(--ink-faint)" }}
               >
                 {labels[i]}
               </span>
@@ -165,7 +165,7 @@ function MarginalBar({ values, labels, color, lightColor, highlightIdx, directio
           >
             <span
               className="text-[10px] font-mono font-bold"
-              style={{ color: isHL ? color : "#9ca3af" }}
+              style={{ color: isHL ? color : "var(--ink-faint)" }}
             >
               {fmt4(v)}
             </span>
@@ -180,7 +180,7 @@ function MarginalBar({ values, labels, color, lightColor, highlightIdx, directio
             />
             <span
               className="text-[12px] font-semibold"
-              style={{ color: isHL ? color : "#9ca3af" }}
+              style={{ color: isHL ? color : "var(--ink-faint)" }}
             >
               {labels[j]}
             </span>
@@ -232,7 +232,7 @@ function Heatmap({ p, selectedRow, selectedCol, mode, onRowClick, onColClick }: 
               textAnchor="middle"
               fontSize="12"
               fontWeight={isHL ? "800" : "600"}
-              fill={isHL ? ACCENT : "#6b7280"}
+              fill={isHL ? ACCENT : "var(--ink-soft)"}
             >
               {yl}
             </text>
@@ -259,7 +259,7 @@ function Heatmap({ p, selectedRow, selectedCol, mode, onRowClick, onColClick }: 
               textAnchor="end"
               fontSize="12"
               fontWeight={isHL ? "800" : "600"}
-              fill={isHL ? ACCENT : "#6b7280"}
+              fill={isHL ? ACCENT : "var(--ink-soft)"}
             >
               {xl}
             </text>
@@ -371,10 +371,10 @@ function MiniHeat({ p, label }: MiniHeatProps) {
       <div className="text-[12px] font-semibold text-[var(--ink)]">{label}</div>
       <svg viewBox={`0 0 ${W} ${H}`} style={{ width: W, userSelect: "none" }}>
         {Y_LABELS.map((yl, j) => (
-          <text key={j} x={ML + j * C + C / 2} y={MT - 4} textAnchor="middle" fontSize="10" fill="#9ca3af">{yl}</text>
+          <text key={j} x={ML + j * C + C / 2} y={MT - 4} textAnchor="middle" fontSize="10" fill="var(--ink-faint)">{yl}</text>
         ))}
         {X_LABELS.map((xl, i) => (
-          <text key={i} x={ML - 4} y={MT + i * C + C / 2 + 4} textAnchor="end" fontSize="10" fill="#9ca3af">{xl}</text>
+          <text key={i} x={ML - 4} y={MT + i * C + C / 2 + 4} textAnchor="end" fontSize="10" fill="var(--ink-faint)">{xl}</text>
         ))}
         {p.map((row, i) =>
           row.map((val, j) => {
@@ -498,7 +498,7 @@ function MarginalExplorerBase() {
     pYA.every((v, j) => Math.abs(v - pYB[j]) < 0.001);
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">边缘分布提取演示</h3>
@@ -519,7 +519,7 @@ function MarginalExplorerBase() {
             className={
               "flex-1 rounded-md py-1.5 text-[12px] font-medium transition-colors " +
               (tab === key
-                ? "bg-white shadow-sm text-[var(--ink)]"
+                ? "bg-[var(--bg-elevated)] shadow-sm text-[var(--ink)]"
                 : "text-[var(--ink-soft)] hover:text-[var(--ink)]")
             }
           >
@@ -671,7 +671,7 @@ function MarginalExplorerBase() {
                             <div className="text-[10px] text-[var(--ink-soft)]">p(x{selectedRow + 1},{Y_LABELS[j]})</div>
                             <div
                               className="rounded-md px-2 py-1 text-[12px] font-mono font-bold"
-                              style={{ background: "white", color: ACCENT }}
+                              style={{ background: "var(--bg-elevated)", color: ACCENT }}
                             >
                               {fmt4(v)}
                             </div>
@@ -716,7 +716,7 @@ function MarginalExplorerBase() {
                             <div className="text-[10px] text-[var(--ink-soft)]">p({X_LABELS[i]},y{selectedCol + 1})</div>
                             <div
                               className="rounded-md px-2 py-1 text-[12px] font-mono font-bold"
-                              style={{ background: "white", color: TEAL }}
+                              style={{ background: "var(--bg-elevated)", color: TEAL }}
                             >
                               {fmt4(v)}
                             </div>

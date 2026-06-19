@@ -7,6 +7,7 @@ import { FileText, ClipboardCheck, Lightbulb } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import NoteRenderer from "@/components/notes/NoteRenderer";
 import type { SubjectId, CategoryId } from "@/lib/types/content";
+import type { ExampleMeta } from "@/app/api/examples/route";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
 const ExampleTab = dynamic(() => import("@/components/examples/ExampleTab"), { ssr: false });
@@ -25,6 +26,10 @@ interface ContentPageClientProps {
   itemId: string;
   /** 服务端 SSR 注入的正文 markdown；null 表示该项暂无内容文件 */
   initialContent: string | null;
+  /** 服务端 SSR 注入的例题列表（随路由变化重新下发） */
+  initialExamples: ExampleMeta[];
+  /** 例题所属小节 id（detail 分类为 itemId，否则为 ""） */
+  sectionId: string;
   itemTitle: string;
   itemSummary: string;
   subjectName: string;
@@ -51,6 +56,8 @@ export default function ContentPageClient({
   categoryId,
   itemId,
   initialContent,
+  initialExamples,
+  sectionId,
   itemTitle,
   itemSummary,
   subjectName,
@@ -149,7 +156,7 @@ export default function ContentPageClient({
               transition={{ duration: 0.15 }}
               className="h-full"
             >
-              <ExampleTab />
+              <ExampleTab initialExamples={initialExamples} sectionId={sectionId} />
             </motion.div>
           )}
           {activeTab === "quiz" && (

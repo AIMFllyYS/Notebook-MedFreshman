@@ -152,7 +152,7 @@ function RSConfigPracticeBase() {
   }
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold text-[var(--ink)]">
         R / S 构型判定练习
       </h3>
@@ -246,7 +246,7 @@ function RSConfigPracticeBase() {
               cx={CX}
               cy={CY}
               r={16}
-              fill="white"
+              fill="var(--bg-elevated)"
               stroke="var(--ink)"
               strokeWidth={2}
             />
@@ -271,7 +271,7 @@ function RSConfigPracticeBase() {
                     cx={v.x}
                     cy={v.y}
                     r={18}
-                    fill={on ? PRIORITY_COLORS[idx] : "white"}
+                    fill={on ? PRIORITY_COLORS[idx] : "var(--bg-elevated)"}
                     stroke={PRIORITY_COLORS[idx]}
                     strokeWidth={2}
                   />
@@ -303,7 +303,7 @@ function RSConfigPracticeBase() {
               cx={dVertex.x}
               cy={dVertex.y}
               r={18}
-              fill={step === 2 ? PRIORITY_COLORS[3] : "white"}
+              fill={step === 2 ? PRIORITY_COLORS[3] : "var(--bg-elevated)"}
               stroke={PRIORITY_COLORS[3]}
               strokeWidth={2}
               strokeDasharray={step === 2 ? "0" : "4 3"}

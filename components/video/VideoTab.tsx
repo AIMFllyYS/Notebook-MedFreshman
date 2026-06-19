@@ -56,7 +56,7 @@ export default function VideoTab() {
                   onClick={() => openPip(v)}
                   className="hover-lift group block w-full text-left transition-shadow"
                 >
-                  <div className="relative aspect-video w-full bg-gradient-to-br from-[#ece9ff] to-[#e6f7f1]">
+                  <div className="relative aspect-video w-full bg-gradient-to-br from-[var(--accent-weak)] to-[var(--bg-muted)]">
                     {v.poster && (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={v.poster} alt={v.title} className="h-full w-full object-cover" />

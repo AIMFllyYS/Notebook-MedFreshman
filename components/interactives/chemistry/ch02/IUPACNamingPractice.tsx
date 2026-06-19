@@ -146,7 +146,7 @@ function IUPACNamingPracticeBase() {
   }
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold" style={{ color: "var(--ink)" }}>
         IUPAC 命名练习器
       </h3>
@@ -285,7 +285,7 @@ function IUPACNamingPracticeBase() {
 
           <div
             className="rounded-lg border-2 p-4 text-center"
-            style={{ borderColor: ACCENT, backgroundColor: "#f0fdfa" }}
+            style={{ borderColor: ACCENT, backgroundColor: "rgba(20, 184, 166, 0.12)" }}
           >
             <div className="text-xs" style={{ color: "var(--ink-soft)" }}>
               正确的 IUPAC 系统名

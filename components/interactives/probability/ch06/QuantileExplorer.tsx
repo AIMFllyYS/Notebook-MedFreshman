@@ -3,14 +3,14 @@
 import { memo, useState, useCallback, useMemo } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
-const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT = "var(--accent)";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const ORANGE = "#ea580c";
-const ORANGE_LIGHT = "#fff7ed";
+const ORANGE_LIGHT = "#ea580c1f"; // 半透明橙，深浅色皆可读
 const GREEN = "#0f766e";
-const GREEN_LIGHT = "#ccfbf1";
-const GRAY_LINE = "#e7e9ef";
-const GRAY_BG = "#fafbfd";
+const GREEN_LIGHT = "#0f766e22"; // 半透明绿，深浅色皆可读
+const GRAY_LINE = "var(--line)";
+const GRAY_BG = "var(--bg-muted)";
 
 // ─── 数学工具 ─────────────────────────────────────────────────────────────────
 
@@ -267,7 +267,7 @@ function QQPlot({
         y1={scaleY(lo, lo, hi)}
         x2={scaleX(hi, lo, hi)}
         y2={scaleY(hi, lo, hi)}
-        stroke="#94a3b8"
+        stroke="var(--ink-faint)"
         strokeWidth={1.5}
         strokeDasharray="5 3"
       />
@@ -275,7 +275,7 @@ function QQPlot({
         x={scaleX(hi, lo, hi) - 4}
         y={scaleY(hi, lo, hi) + 12}
         fontSize={9}
-        fill="#94a3b8"
+        fill="var(--ink-faint)"
         textAnchor="end"
       >
         y=x
@@ -334,11 +334,11 @@ function QQPlot({
             const by = Math.max(PAD.top + 4, ty - boxH - 4);
             return (
               <g>
-                <rect x={bx} y={by} width={boxW} height={boxH} rx={5} fill="white" stroke={color} strokeWidth={1} />
+                <rect x={bx} y={by} width={boxW} height={boxH} rx={5} fill="var(--bg-elevated)" stroke={color} strokeWidth={1} />
                 <text x={bx + 6} y={by + 14} fontSize={10} fill={color} fontWeight="700">
                   x₍{hov.rank}₎  理论: {hov.theoretical.toFixed(3)}
                 </text>
-                <text x={bx + 6} y={by + 28} fontSize={10} fill="#475569">
+                <text x={bx + 6} y={by + 28} fontSize={10} fill="var(--ink-soft)">
                   样本 Z: {hov.sample.toFixed(3)}
                 </text>
               </g>
@@ -348,8 +348,8 @@ function QQPlot({
       )}
 
       {/* 坐标轴 */}
-      <line x1={PAD.left} y1={PAD.top} x2={PAD.left} y2={PAD.top + plotH()} stroke="#cbd5e1" strokeWidth={1.5} />
-      <line x1={PAD.left} y1={PAD.top + plotH()} x2={PAD.left + plotW()} y2={PAD.top + plotH()} stroke="#cbd5e1" strokeWidth={1.5} />
+      <line x1={PAD.left} y1={PAD.top} x2={PAD.left} y2={PAD.top + plotH()} stroke="var(--line)" strokeWidth={1.5} />
+      <line x1={PAD.left} y1={PAD.top + plotH()} x2={PAD.left + plotW()} y2={PAD.top + plotH()} stroke="var(--line)" strokeWidth={1.5} />
 
       {/* X 轴刻度 */}
       {xTicks.map((t) => (
@@ -357,9 +357,9 @@ function QQPlot({
           <line
             x1={scaleX(t, lo, hi)} y1={PAD.top + plotH()}
             x2={scaleX(t, lo, hi)} y2={PAD.top + plotH() + 4}
-            stroke="#cbd5e1" strokeWidth={1}
+            stroke="var(--line)" strokeWidth={1}
           />
-          <text x={scaleX(t, lo, hi)} y={PAD.top + plotH() + 14} fontSize={9} textAnchor="middle" fill="#64748b">
+          <text x={scaleX(t, lo, hi)} y={PAD.top + plotH() + 14} fontSize={9} textAnchor="middle" fill="var(--ink-soft)">
             {t}
           </text>
         </g>
@@ -371,9 +371,9 @@ function QQPlot({
           <line
             x1={PAD.left - 4} y1={scaleY(t, lo, hi)}
             x2={PAD.left} y2={scaleY(t, lo, hi)}
-            stroke="#cbd5e1" strokeWidth={1}
+            stroke="var(--line)" strokeWidth={1}
           />
-          <text x={PAD.left - 6} y={scaleY(t, lo, hi) + 3} fontSize={9} textAnchor="end" fill="#64748b">
+          <text x={PAD.left - 6} y={scaleY(t, lo, hi) + 3} fontSize={9} textAnchor="end" fill="var(--ink-soft)">
             {t}
           </text>
         </g>
@@ -385,7 +385,7 @@ function QQPlot({
         y={SVG_H - 2}
         fontSize={10}
         textAnchor="middle"
-        fill="#475569"
+        fill="var(--ink-soft)"
         fontWeight="600"
       >
         理论正态分位数
@@ -395,7 +395,7 @@ function QQPlot({
         y={PAD.top + plotH() / 2}
         fontSize={10}
         textAnchor="middle"
-        fill="#475569"
+        fill="var(--ink-soft)"
         fontWeight="600"
         transform={`rotate(-90, 10, ${PAD.top + plotH() / 2})`}
       >
@@ -460,7 +460,7 @@ function QuantileExplorerBase() {
   const isNormalLike = corr > 0.97;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">样本分位数与 Q-Q 图</h3>
@@ -590,7 +590,7 @@ function QuantileExplorerBase() {
               {isNormalLike ? "点接近对角线 → 可能来自正态总体" : "点偏离对角线 → 不服从正态分布"}
             </span>
           </div>
-          <p style={{ color: isNormalLike ? "#3730a3" : "#9a3412" }}>
+          <p style={{ color: isNormalLike ? "var(--accent)" : ORANGE }}>
             {meta.desc}。
             {dist === "uniform" && " 均匀分布尾部「截断」，没有极端值，所以 Q-Q 图两端向内弯曲。"}
             {dist === "exponential" && " 指数分布右偏，有长右尾，样本最大值比正态分位数大很多，图形右端上翘。"}
@@ -604,10 +604,10 @@ function QuantileExplorerBase() {
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
           {[
             { label: "均值 x̄", val: stats.mean.toFixed(3), color: meta.color, bg: meta.bg },
-            { label: "标准差 s", val: stats.std.toFixed(3), color: "#475569", bg: "#f1f5f9" },
-            { label: "中位数", val: stats.median.toFixed(3), color: "#475569", bg: "#f1f5f9" },
-            { label: "Q₁", val: stats.q1.toFixed(3), color: "#475569", bg: "#f1f5f9" },
-            { label: "Q₃", val: stats.q3.toFixed(3), color: "#475569", bg: "#f1f5f9" },
+            { label: "标准差 s", val: stats.std.toFixed(3), color: "var(--ink-soft)", bg: "var(--bg-muted)" },
+            { label: "中位数", val: stats.median.toFixed(3), color: "var(--ink-soft)", bg: "var(--bg-muted)" },
+            { label: "Q₁", val: stats.q1.toFixed(3), color: "var(--ink-soft)", bg: "var(--bg-muted)" },
+            { label: "Q₃", val: stats.q3.toFixed(3), color: "var(--ink-soft)", bg: "var(--bg-muted)" },
             {
               label: "偏度",
               val: stats.skewness.toFixed(3),

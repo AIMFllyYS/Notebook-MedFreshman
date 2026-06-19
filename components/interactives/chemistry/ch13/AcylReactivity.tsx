@@ -80,7 +80,7 @@ function AcylReactivityBase() {
     DERIVATIVES.find((d) => d.id === selectedId) ?? DERIVATIVES[0];
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold text-[var(--ink)]">
         羧酸衍生物活性序列
       </h3>
@@ -187,7 +187,7 @@ function AcylReactivityBase() {
       </div>
 
       {/* 转化方向说明 */}
-      <div className="mt-4 rounded-lg border border-[var(--line)] bg-white p-4">
+      <div className="mt-4 rounded-lg border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
         <p className="text-sm font-medium text-[var(--ink)]">
           转化方向：高活性 → 低活性 容易，反之困难
         </p>

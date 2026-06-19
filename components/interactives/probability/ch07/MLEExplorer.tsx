@@ -3,10 +3,10 @@
 import { memo, useState, useRef, useCallback } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────
-const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT = "#5b46e5"; // 与 alpha 拼接（如 `${ACCENT}30`），保留 hex
+const ACCENT_LIGHT = "var(--accent-weak)";
 const MLE_COLOR = "#0f766e";
-const MLE_LIGHT = "#ccfbf1";
+const MLE_LIGHT = "#0f766e22"; // 半透明青绿，深浅色皆可读
 const CURSOR_COLOR = "#f59e0b";
 const CURVE_COLOR = "#5b46e5";
 
@@ -339,7 +339,7 @@ function MLEExplorerBase() {
   const formulaStr = data.length > 0 && isFinite(mle) ? mleFormula(dist, data, mle) : "请输入有效样本数据";
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">极大似然估计可视化</h3>
@@ -363,7 +363,7 @@ function MLEExplorerBase() {
                   "rounded-lg px-3 py-1 text-[12px] font-medium transition-colors " +
                   (d === dist
                     ? "bg-[var(--accent)] text-white"
-                    : "bg-white border border-[var(--line)] text-[var(--ink-soft)] hover:border-[var(--accent)]")
+                    : "bg-[var(--bg-elevated)] border border-[var(--line)] text-[var(--ink-soft)] hover:border-[var(--accent)]")
                 }
               >
                 {d === "exponential" ? "指数分布 Exp(λ)" : "伯努利分布 B(p)"}
@@ -401,7 +401,7 @@ function MLEExplorerBase() {
           </span>
           <button
             onClick={randomSamples}
-            className="rounded-lg bg-white border border-[var(--line)] px-2.5 py-0.5 text-[11px] text-[var(--ink-soft)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
+            className="rounded-lg bg-[var(--bg-elevated)] border border-[var(--line)] px-2.5 py-0.5 text-[11px] text-[var(--ink-soft)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors"
           >
             随机生成
           </button>
@@ -410,7 +410,7 @@ function MLEExplorerBase() {
           value={dataText}
           onChange={(e) => setDataText(e.target.value)}
           rows={2}
-          className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-[12px] font-mono text-[var(--ink)] placeholder-[var(--ink-soft)] focus:outline-none focus:border-[var(--accent)] resize-none"
+          className="w-full rounded-lg border border-[var(--line)] bg-[var(--bg-elevated)] px-3 py-2 text-[12px] font-mono text-[var(--ink)] placeholder-[var(--ink-soft)] focus:outline-none focus:border-[var(--accent)] resize-none"
           placeholder={
             dist === "exponential"
               ? "输入正实数，逗号/空格分隔，如: 0.5, 1.2, 0.8, 2.1, 0.3"
@@ -419,7 +419,7 @@ function MLEExplorerBase() {
           spellCheck={false}
         />
         {data.length === 0 && dataText.trim() !== "" && (
-          <p className="text-[11px] text-red-500">无法解析数据，请检查格式</p>
+          <p className="text-[11px] text-[var(--md-sys-color-error)]">无法解析数据，请检查格式</p>
         )}
       </div>
 
@@ -437,7 +437,7 @@ function MLEExplorerBase() {
           ref={svgRef}
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           className="w-full rounded-lg border border-[var(--line)] cursor-crosshair select-none"
-          style={{ background: "#fafbfd", touchAction: "none" }}
+          style={{ background: "var(--bg-muted)", touchAction: "none" }}
           onMouseDown={handleSvgMouseDown}
           onMouseMove={handleSvgMouseMove}
           onMouseUp={handleSvgMouseUp}
@@ -449,7 +449,7 @@ function MLEExplorerBase() {
           }}
         >
           {/* 绘图区背景 */}
-          <rect x={PAD_L} y={PAD_T} width={CHART_W} height={CHART_H} fill="#f8f9fc" />
+          <rect x={PAD_L} y={PAD_T} width={CHART_W} height={CHART_H} fill="var(--bg-muted)" />
 
           {/* Y 轴网格线与刻度 */}
           {yTickValues.map((v) => {
@@ -462,10 +462,10 @@ function MLEExplorerBase() {
                   y1={yy}
                   x2={PAD_L + CHART_W}
                   y2={yy}
-                  stroke="#e9ebf2"
+                  stroke="var(--line)"
                   strokeWidth={1}
                 />
-                <text x={PAD_L - 5} y={yy + 3.5} fontSize="9" textAnchor="end" fill="#8a94a6">
+                <text x={PAD_L - 5} y={yy + 3.5} fontSize="9" textAnchor="end" fill="var(--ink-faint)">
                   {v >= -100 && v <= 100 ? v.toFixed(1) : v.toExponential(1)}
                 </text>
               </g>
@@ -482,10 +482,10 @@ function MLEExplorerBase() {
                   y1={PAD_T}
                   x2={xx}
                   y2={PAD_T + CHART_H}
-                  stroke="#e9ebf2"
+                  stroke="var(--line)"
                   strokeWidth={1}
                 />
-                <text x={xx} y={PAD_T + CHART_H + 14} fontSize="9" textAnchor="middle" fill="#8a94a6">
+                <text x={xx} y={PAD_T + CHART_H + 14} fontSize="9" textAnchor="middle" fill="var(--ink-faint)">
                   {v.toFixed(dist === "exponential" ? 2 : 2)}
                 </text>
               </g>
@@ -493,8 +493,8 @@ function MLEExplorerBase() {
           })}
 
           {/* 轴线 */}
-          <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={PAD_T + CHART_H} stroke="#c8ccd8" />
-          <line x1={PAD_L} y1={PAD_T + CHART_H} x2={PAD_L + CHART_W} y2={PAD_T + CHART_H} stroke="#c8ccd8" />
+          <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={PAD_T + CHART_H} stroke="var(--line)" />
+          <line x1={PAD_L} y1={PAD_T + CHART_H} x2={PAD_L + CHART_W} y2={PAD_T + CHART_H} stroke="var(--line)" />
 
           {/* X 轴标签 */}
           <text
@@ -502,7 +502,7 @@ function MLEExplorerBase() {
             y={SVG_H - 4}
             fontSize="10"
             textAnchor="middle"
-            fill="#8a94a6"
+            fill="var(--ink-faint)"
           >
             θ（{tRange.label}{tRange.unit}）
           </text>
@@ -525,7 +525,7 @@ function MLEExplorerBase() {
               y={PAD_T + CHART_H / 2}
               textAnchor="middle"
               fontSize="13"
-              fill="#b0b8cc"
+              fill="var(--ink-faint)"
             >
               请输入样本数据
             </text>
@@ -667,7 +667,7 @@ function MLEExplorerBase() {
           {/* 当前 θ */}
           <div
             className="rounded-lg p-3 text-center"
-            style={{ background: "#fffbeb", border: `1.5px solid ${CURSOR_COLOR}40` }}
+            style={{ background: "#f59e0b1f", border: `1.5px solid ${CURSOR_COLOR}40` }}
           >
             <div className="text-[10px] text-[var(--ink-soft)] mb-0.5">当前游标 θ</div>
             <div className="text-[22px] font-extrabold font-mono" style={{ color: CURSOR_COLOR }}>

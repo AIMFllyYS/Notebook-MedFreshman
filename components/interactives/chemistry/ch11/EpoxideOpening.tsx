@@ -45,7 +45,7 @@ function EpoxideOpeningBase() {
   const attackC1 = info.attackedCarbon === "C1";
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold" style={{ color: "var(--ink)" }}>
         环氧乙烷开环：区域选择性（酸催化 vs 碱催化）
       </h3>

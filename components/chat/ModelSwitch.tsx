@@ -21,7 +21,7 @@ export default function ModelSwitch() {
           className={clsx(
             "press rounded-md px-2.5 py-1 transition-colors",
             model === m
-              ? "bg-white text-[var(--accent-ink)] shadow-sm"
+              ? "bg-[var(--accent-weak)] text-[var(--accent-ink)] shadow-sm"
               : "text-[var(--ink-faint)] hover:text-[var(--ink-soft)]",
           )}
         >

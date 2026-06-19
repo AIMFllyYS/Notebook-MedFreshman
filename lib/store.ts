@@ -33,12 +33,15 @@ interface AppState {
   /** 由路由 (subjectId, categoryId, itemId) 统一驱动导航状态 */
   setActiveRoute: (subjectId: SubjectId, categoryId: string, itemId: string) => void;
 
+  // 侧边栏折叠（单一真相源，驱动 react-resizable-panels 的左面板）
   sidebarCollapsed: boolean;
   toggleSidebar: () => void;
   setSidebarCollapsed: (v: boolean) => void;
 
-  expandedChapters: Record<string, boolean>;
-  toggleChapter: (id: string) => void;
+  /** 已展开的科目/分类/章节键。科目用 `${subjectId}`，分类用 `${subjectId}-${categoryId}`，
+   *  叶子用 `${subjectId}/${categoryId}/${itemId}`（命名空间化，避免跨学科碰撞）。 */
+  expandedIds: Set<string>;
+  toggleExpand: (id: string) => void;
 
   // ── 右侧面板 ──────────────────────────────────────────
   rightTab: RightTab;
@@ -81,11 +84,14 @@ export const useStore = create<AppState>((set, get) => ({
   toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
   setSidebarCollapsed: (v) => set({ sidebarCollapsed: v }),
 
-  expandedChapters: { ch01: true },
-  toggleChapter: (id) =>
-    set((s) => ({
-      expandedChapters: { ...s.expandedChapters, [id]: !s.expandedChapters[id] },
-    })),
+  // 初始展开：概率论科目 + 其详解分类（catId 规则为 `${subjectId}-${categoryId}`）。
+  expandedIds: new Set(["probability", "probability-detail"]),
+  toggleExpand: (id) =>
+    set((s) => {
+      const next = new Set(s.expandedIds);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return { expandedIds: next };
+    }),
 
   rightTab: "ai",
   setRightTab: (t) => set({ rightTab: t }),

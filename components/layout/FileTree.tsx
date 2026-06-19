@@ -1,7 +1,7 @@
 "use client";
 
 import FileTreeItem from "./FileTreeItem";
-import { useSidebarStore } from "@/lib/store/useSidebarStore";
+import { useStore } from "@/lib/store";
 import type { ContentItem } from "@/lib/types/content";
 
 interface FileTreeProps {
@@ -23,8 +23,8 @@ export default function FileTree({
   selectedId,
   onItemSelect,
 }: FileTreeProps) {
-  const expandedIds = useSidebarStore((s) => s.expandedIds);
-  const toggleExpand = useSidebarStore((s) => s.toggleExpand);
+  const expandedIds = useStore((s) => s.expandedIds);
+  const toggleExpand = useStore((s) => s.toggleExpand);
 
   if (!items || items.length === 0) return null;
 

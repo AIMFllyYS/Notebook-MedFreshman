@@ -4,12 +4,12 @@ import { memo, useState } from "react";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const RED = "#dc2626";
 const RED_LIGHT = "#fee2e2";
 const GREEN = "#0f766e";
 const GREEN_LIGHT = "#ccfbf1";
-const GRAY_LINE = "#e7e9ef";
+const GRAY_LINE = "var(--line)";
 
 // ─── SVG dimensions ───────────────────────────────────────────────────────────
 const SVG_W = 480;
@@ -247,7 +247,7 @@ function NumInput({ label, value, min, max, step, onChange, unit }: NumInputProp
             const v = parseFloat(e.target.value);
             if (!isNaN(v)) onChange(Math.min(max, Math.max(min, v)));
           }}
-          className="w-full rounded-md border border-[var(--line)] bg-white px-2 py-1 text-[13px] font-mono text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
+          className="w-full rounded-md border border-[var(--line)] bg-[var(--bg-elevated)] px-2 py-1 text-[13px] font-mono text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent"
         />
         {unit && (
           <span className="text-[11px] text-[var(--ink-soft)] whitespace-nowrap">{unit}</span>
@@ -347,7 +347,7 @@ function DistSVG({ result, tail }: DistSVGProps) {
       className="w-full rounded-lg border border-[var(--line)]"
     >
       {/* Background */}
-      <rect x={PX} y={PY} width={PLOT_W} height={PLOT_H} fill="#fafbfd" stroke={GRAY_LINE} />
+      <rect x={PX} y={PY} width={PLOT_W} height={PLOT_H} fill="var(--bg-muted)" stroke={GRAY_LINE} />
 
       {/* X-axis ticks */}
       {ticks.map((v) => {
@@ -355,8 +355,8 @@ function DistSVG({ result, tail }: DistSVGProps) {
         if (sx < PX || sx > PX + PLOT_W) return null;
         return (
           <g key={v}>
-            <line x1={sx} y1={baseline} x2={sx} y2={baseline + 3} stroke="#aab" />
-            <text x={sx} y={baseline + 12} fontSize="8" textAnchor="middle" fill="#8a94a6">
+            <line x1={sx} y1={baseline} x2={sx} y2={baseline + 3} stroke="var(--ink-faint)" />
+            <text x={sx} y={baseline + 12} fontSize="8" textAnchor="middle" fill="var(--ink-faint)">
               {v}
             </text>
           </g>
@@ -473,7 +473,7 @@ function DistSVG({ result, tail }: DistSVGProps) {
         y={SVG_H - 1}
         fontSize="9"
         textAnchor="middle"
-        fill="#8a94a6"
+        fill="var(--ink-faint)"
       >
         χ²({df}) 统计量
       </text>
@@ -607,7 +607,7 @@ function VarianceTestExplorerBase() {
   const alphaPos = alpha * 100;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* Header */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">正态总体方差假设检验（χ² 检验）</h3>
@@ -686,7 +686,7 @@ function VarianceTestExplorerBase() {
                 className={`rounded-lg px-3 py-1.5 text-left text-[12px] font-medium transition-colors ${
                   tail === key
                     ? "text-white"
-                    : "bg-white border border-[var(--line)] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+                    : "bg-[var(--bg-elevated)] border border-[var(--line)] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
                 }`}
                 style={tail === key ? { background: ACCENT } : {}}
               >
@@ -708,7 +708,7 @@ function VarianceTestExplorerBase() {
                 className={`rounded-lg px-3 py-1.5 text-[12px] font-mono font-semibold transition-colors ${
                   alpha === a
                     ? "text-white"
-                    : "bg-white border border-[var(--line)] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+                    : "bg-[var(--bg-elevated)] border border-[var(--line)] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
                 }`}
                 style={alpha === a ? { background: ACCENT } : {}}
               >

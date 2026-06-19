@@ -4,7 +4,7 @@ import { memo, useState, useCallback, useRef } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const TEAL = "#0d9488";
 const ORANGE = "#ea580c";
 const FILL_COLOR = "#a78bfa";
@@ -187,7 +187,7 @@ function MemorylessPanel({ lam }: MemorylessProps) {
   const match = Math.abs(conditional - pXgtt) < 1e-9;
 
   return (
-    <div className="mt-3 rounded-lg border border-[var(--line)] bg-[#f0fdf4] p-3 space-y-3">
+    <div className="mt-3 rounded-lg border border-[var(--line)] bg-emerald-500/10 p-3 space-y-3">
       <div className="text-[12px] font-semibold text-[#0f766e]">无记忆性验证</div>
       <p className="text-[11px] text-[var(--ink-soft)] leading-relaxed">
         指数分布有「无记忆性」：已知 X &gt; s，额外再等 t 的概率，等同于从头等 t。
@@ -197,7 +197,7 @@ function MemorylessPanel({ lam }: MemorylessProps) {
         <SliderRow label="s =" value={s} min={0.1} max={5} step={0.1} onChange={setS} fmt={(v) => v.toFixed(1)} color={TEAL} />
         <SliderRow label="t =" value={t} min={0.1} max={5} step={0.1} onChange={setT} fmt={(v) => v.toFixed(1)} color={ORANGE} />
       </div>
-      <div className="rounded bg-white px-3 py-2 text-[12px] space-y-1 font-mono">
+      <div className="rounded bg-[var(--bg-elevated)] px-3 py-2 text-[12px] space-y-1 font-mono">
         <div>
           P(X &gt; s) = e<sup>−λs</sup> ={" "}
           <span style={{ color: TEAL }}>{pXgts.toFixed(6)}</span>
@@ -216,7 +216,7 @@ function MemorylessPanel({ lam }: MemorylessProps) {
         </div>
         <div
           className="rounded px-2 py-1 text-center font-bold"
-          style={{ background: match ? "#dcfce7" : "#fee2e2", color: match ? "#166534" : "#991b1b" }}
+          style={{ background: match ? "rgba(16,185,129,0.12)" : "rgba(244,63,94,0.12)", color: match ? "var(--color-success)" : "var(--md-sys-color-error)" }}
         >
           {match ? "[OK] 两者完全相等，无记忆性成立！" : "数值偏差过大"}
         </div>
@@ -364,7 +364,7 @@ function PDFExplorerBase() {
   }
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">连续分布密度函数探索器</h3>
@@ -382,7 +382,7 @@ function PDFExplorerBase() {
             className={
               "flex-1 rounded-md py-1 text-[12px] font-semibold transition-all " +
               (dist === d
-                ? "bg-white shadow text-[var(--ink)]"
+                ? "bg-[var(--bg-elevated)] shadow text-[var(--ink)]"
                 : "text-[var(--ink-soft)] hover:text-[var(--ink)]")
             }
           >
@@ -422,7 +422,7 @@ function PDFExplorerBase() {
       </div>
 
       {/* SVG 图形区 */}
-      <div className="rounded-lg border border-[var(--line)] overflow-hidden" style={{ background: "#fafbfd" }}>
+      <div className="rounded-lg border border-[var(--line)] overflow-hidden" style={{ background: "var(--bg-elevated)" }}>
         <svg
           ref={svgRef}
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
@@ -433,15 +433,15 @@ function PDFExplorerBase() {
           onMouseLeave={onMouseUp}
         >
           {/* 底部矩形 */}
-          <rect x={PAD_L} y={PAD_T} width={PLOT_W} height={PLOT_H} fill="#f8f9fc" stroke="#e7e9ef" />
+          <rect x={PAD_L} y={PAD_T} width={PLOT_W} height={PLOT_H} fill="var(--bg-muted)" stroke="var(--line)" />
 
           {/* Y 轴刻度 */}
           {yTicks().map((yv) => {
             const sy = toSVGY(yv, viewRange);
             return (
               <g key={yv}>
-                <line x1={PAD_L} y1={sy} x2={PAD_L + PLOT_W} y2={sy} stroke="#e7e9ef" strokeDasharray="4 3" />
-                <text x={PAD_L - 5} y={sy + 3} fontSize="10" textAnchor="end" fill="#8a94a6">
+                <line x1={PAD_L} y1={sy} x2={PAD_L + PLOT_W} y2={sy} stroke="var(--line)" strokeDasharray="4 3" />
+                <text x={PAD_L - 5} y={sy + 3} fontSize="10" textAnchor="end" fill="var(--ink-faint)">
                   {yv.toFixed(2)}
                 </text>
               </g>
@@ -453,8 +453,8 @@ function PDFExplorerBase() {
             const sx = toSVGX(xv, viewRange);
             return (
               <g key={xv}>
-                <line x1={sx} y1={PAD_T} x2={sx} y2={PAD_T + PLOT_H} stroke="#eef0f4" />
-                <text x={sx} y={PAD_T + PLOT_H + 13} fontSize="10" textAnchor="middle" fill="#8a94a6">
+                <line x1={sx} y1={PAD_T} x2={sx} y2={PAD_T + PLOT_H} stroke="var(--line)" />
+                <text x={sx} y={PAD_T + PLOT_H + 13} fontSize="10" textAnchor="middle" fill="var(--ink-faint)">
                   {xv.toFixed(1)}
                 </text>
               </g>
@@ -502,8 +502,8 @@ function PDFExplorerBase() {
           </g>
 
           {/* 轴标签 */}
-          <text x={PAD_L - 5} y={PAD_T - 5} fontSize="10" fill="#8a94a6" textAnchor="end">f(x)</text>
-          <text x={PAD_L + PLOT_W} y={PAD_T + PLOT_H + 28} fontSize="10" fill="#8a94a6" textAnchor="end">x</text>
+          <text x={PAD_L - 5} y={PAD_T - 5} fontSize="10" fill="var(--ink-faint)" textAnchor="end">f(x)</text>
+          <text x={PAD_L + PLOT_W} y={PAD_T + PLOT_H + 28} fontSize="10" fill="var(--ink-faint)" textAnchor="end">x</text>
 
           {/* 分布标注 */}
           <text x={PAD_L + 8} y={PAD_T + 14} fontSize="11" fill={distMeta[dist].color} fontWeight="600">
@@ -598,7 +598,7 @@ function PDFExplorerBase() {
               "rounded-lg px-3 py-1.5 text-[12px] font-semibold transition-all " +
               (showMemoryless
                 ? "bg-[#0d9488] text-white"
-                : "bg-[#ccfbf1] text-[#0f766e] hover:bg-[#0d9488] hover:text-white")
+                : "bg-teal-500/10 text-[#0f766e] hover:bg-[#0d9488] hover:text-white")
             }
           >
             {showMemoryless ? "收起" : "展开"} 无记忆性验证

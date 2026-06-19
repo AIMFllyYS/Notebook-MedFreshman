@@ -283,7 +283,7 @@ function IndependenceGauge({ maxDev }: { maxDev: number }) {
         max |p(xᵢ,yⱼ) − pᵢ·qⱼ| = {fmt(maxDev)}
       </div>
       {/* Gauge bar */}
-      <div className="relative h-4 w-full rounded-full overflow-hidden" style={{ background: "#e5e7eb" }}>
+      <div className="relative h-4 w-full rounded-full overflow-hidden" style={{ background: "var(--line)" }}>
         <div
           className="h-full rounded-full transition-all duration-300"
           style={{ width: `${pct * 100}%`, background: gaugeColor }}
@@ -386,7 +386,7 @@ function IndependenceCheckerBase() {
   const yLabels = ["Y₁", "Y₂", "Y₃"];
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* Header */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">随机变量独立性检验器</h3>
@@ -405,7 +405,7 @@ function IndependenceCheckerBase() {
             onClick={() => handlePreset(idx)}
             className="rounded-lg px-2.5 py-1 text-[11px] font-medium transition-colors"
             style={{
-              background: activePreset === idx ? ACCENT : "#f3f4f6",
+              background: activePreset === idx ? ACCENT : "var(--bg-muted)",
               color: activePreset === idx ? "white" : "var(--ink-soft)",
               border: `1px solid ${activePreset === idx ? ACCENT : "var(--line)"}`,
             }}
@@ -418,7 +418,7 @@ function IndependenceCheckerBase() {
           onClick={handleRandomize}
           className="rounded-lg px-2.5 py-1 text-[11px] font-medium transition-colors"
           style={{
-            background: activePreset === -1 ? ACCENT : "#f3f4f6",
+            background: activePreset === -1 ? ACCENT : "var(--bg-muted)",
             color: activePreset === -1 ? "white" : "var(--ink-soft)",
             border: `1px solid ${activePreset === -1 ? ACCENT : "var(--line)"}`,
           }}
@@ -481,7 +481,7 @@ function IndependenceCheckerBase() {
               {/* Row sum */}
               <div
                 className="w-[54px] shrink-0 rounded-md px-1 py-1 text-center text-[11px] font-mono"
-                style={{ background: "#f3f4f6", color: "var(--ink-soft)" }}
+                style={{ background: "var(--bg-muted)", color: "var(--ink-soft)" }}
               >
                 <div className="text-[9px]">行和</div>
                 <div className="font-bold text-[var(--ink)]">{fmtShort(rowMargins[i])}</div>
@@ -495,7 +495,7 @@ function IndependenceCheckerBase() {
               <div
                 key={j}
                 className="flex-1 rounded-md px-1 py-1 text-center text-[11px] font-mono"
-                style={{ background: "#f3f4f6", color: "var(--ink-soft)" }}
+                style={{ background: "var(--bg-muted)", color: "var(--ink-soft)" }}
               >
                 <div className="text-[9px]">列和</div>
                 <div className="font-bold text-[var(--ink)]">{fmtShort(colMargins[j])}</div>

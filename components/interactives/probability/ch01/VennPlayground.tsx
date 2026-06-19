@@ -27,7 +27,7 @@ function VennPlaygroundBase() {
   const op = OPS.find((o) => o.key === opKey)!;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       {/* 维恩图绘制：复用 VennDiagram 原语，高亮当前运算的区域 */}
       <VennDiagram
         interactive={true}

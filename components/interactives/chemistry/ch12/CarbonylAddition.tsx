@@ -68,7 +68,7 @@ function CarbonylAdditionBase() {
     NUCLEOPHILES.find((n) => n.id === selectedId) ?? NUCLEOPHILES[0];
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold text-[var(--ink)]">
         羰基亲核加成（Nucleophilic Addition）
       </h3>

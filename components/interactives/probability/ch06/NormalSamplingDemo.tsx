@@ -3,15 +3,15 @@
 import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────
-const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT = "#5b46e5"; // 作为 color 传入并与 alpha 拼接（color + "22"/"18"），保留 hex
+const ACCENT_LIGHT = "var(--accent-weak)";
 const GREEN = "#0f766e";
-const GREEN_LIGHT = "#d1fae5";
+const GREEN_LIGHT = "#0f766e33"; // 半透明绿，深浅色皆可读
 const ORANGE = "#c2410c";
-const ORANGE_LIGHT = "#ffedd5";
+const ORANGE_LIGHT = "#c2410c2e"; // 半透明橙，深浅色皆可读
 const ROSE = "#be123c";
-const ROSE_LIGHT = "#ffe4e6";
-const GRAY_LINE = "#e7e9ef";
+const ROSE_LIGHT = "#be123c2e"; // 半透明玫红，深浅色皆可读
+const GRAY_LINE = "var(--line)";
 
 const N_SAMPLES = 5000;
 
@@ -291,7 +291,7 @@ function HistChart({
   const ksColor = ksP >= 0.05 ? GREEN : ROSE;
 
   return (
-    <div className="rounded-lg border border-[var(--line)] bg-white p-2">
+    <div className="rounded-lg border border-[var(--line)] bg-[var(--bg-elevated)] p-2">
       <div className="mb-1 px-1">
         <div className="text-[12px] font-bold" style={{ color }}>{title}</div>
         <div className="text-[10px] text-[var(--ink-soft)]">{subtitle}</div>
@@ -302,7 +302,7 @@ function HistChart({
         <rect
           x={PAD.left} y={PAD.top}
           width={innerW} height={innerH}
-          fill="#fafbfd" stroke={GRAY_LINE}
+          fill="var(--bg-muted)" stroke={GRAY_LINE}
         />
 
         {/* 直方图柱 */}
@@ -341,7 +341,7 @@ function HistChart({
         <line
           x1={PAD.left} y1={PAD.top + innerH}
           x2={PAD.left + innerW} y2={PAD.top + innerH}
-          stroke="#c4c9d8" strokeWidth="1"
+          stroke="var(--line)" strokeWidth="1"
         />
 
         {/* X 轴刻度 */}
@@ -350,11 +350,11 @@ function HistChart({
             <line
               x1={scaleX(v)} y1={PAD.top + innerH}
               x2={scaleX(v)} y2={PAD.top + innerH + 3}
-              stroke="#c4c9d8"
+              stroke="var(--line)"
             />
             <text
               x={scaleX(v)} y={PAD.top + innerH + 10}
-              textAnchor="middle" fontSize="8" fill="#8a94a6"
+              textAnchor="middle" fontSize="8" fill="var(--ink-faint)"
             >
               {Math.abs(v) < 0.01 ? "0" : v.toFixed(1)}
             </text>
@@ -368,7 +368,7 @@ function HistChart({
             y={H - 2}
             textAnchor="middle"
             fontSize="8"
-            fill="#8a94a6"
+            fill="var(--ink-faint)"
             fontStyle="italic"
           >
             {xLabel}
@@ -515,7 +515,7 @@ function NormalSamplingDemoBase() {
   const hasData = xbars.length > 0;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">正态总体抽样分布仿真</h3>
@@ -695,7 +695,7 @@ function NormalSamplingDemoBase() {
                   ].map(({ label, p, color }) => {
                     const pass = p >= 0.05;
                     return (
-                      <div key={label} className="rounded-md bg-white border border-[var(--line)] px-3 py-2">
+                      <div key={label} className="rounded-md bg-[var(--bg-elevated)] border border-[var(--line)] px-3 py-2">
                         <div className="flex items-center justify-between">
                           <span className="text-[11px] font-semibold" style={{ color }}>{label}</span>
                           <span
@@ -705,7 +705,7 @@ function NormalSamplingDemoBase() {
                             p = {p.toFixed(4)}
                           </span>
                         </div>
-                        <div className="mt-1 h-1.5 rounded-full overflow-hidden bg-gray-100">
+                        <div className="mt-1 h-1.5 rounded-full overflow-hidden bg-[var(--bg-muted)]">
                           <div
                             className="h-full rounded-full transition-all duration-500"
                             style={{

@@ -3,12 +3,12 @@
 import { memo, useState, useCallback, useId } from "react";
 
 // ─── 设计常量 ─────────────────────────────────────────────────
-const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT = "var(--accent)";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const ORANGE = "#ea580c";
 const GREEN = "#0f766e";
-const GREEN_LIGHT = "#ccfbf1";
-const GRAY_LINE = "#e7e9ef";
+const GREEN_LIGHT = "#0f766e22"; // 半透明绿，深浅色皆可读
+const GRAY_LINE = "var(--line)";
 
 // ─── 类型 ─────────────────────────────────────────────────────
 interface Stats {
@@ -122,8 +122,8 @@ function NumberLine({ data, mean, stdN1, useBiased }: NumberLineProps) {
       {/* 刻度 */}
       {ticks.map((v, i) => (
         <g key={i}>
-          <line x1={toX(v)} y1={AX_Y - 4} x2={toX(v)} y2={AX_Y + 4} stroke="#aab" strokeWidth={1} />
-          <text x={toX(v)} y={AX_Y + 16} fontSize="9" textAnchor="middle" fill="#8a94a6">
+          <line x1={toX(v)} y1={AX_Y - 4} x2={toX(v)} y2={AX_Y + 4} stroke="var(--ink-faint)" strokeWidth={1} />
+          <text x={toX(v)} y={AX_Y + 16} fontSize="9" textAnchor="middle" fill="var(--ink-faint)">
             {fmt(v, 1)}
           </text>
         </g>
@@ -163,11 +163,11 @@ function NumberLine({ data, mean, stdN1, useBiased }: NumberLineProps) {
 
       {/* 图例标注 */}
       <circle cx={AX_L + 4} cy={18} r={4} fill="white" stroke={ACCENT} strokeWidth={1.6} />
-      <text x={AX_L + 11} y={22} fontSize="9" fill="#8a94a6">样本点</text>
+      <text x={AX_L + 11} y={22} fontSize="9" fill="var(--ink-faint)">样本点</text>
       <line x1={AX_L + 38} y1={14} x2={AX_L + 38} y2={24} stroke={ORANGE} strokeWidth={2} />
-      <text x={AX_L + 44} y={22} fontSize="9" fill="#8a94a6">均值 X̄</text>
+      <text x={AX_L + 44} y={22} fontSize="9" fill="var(--ink-faint)">均值 X̄</text>
       <rect x={AX_L + 72} y={14} width={10} height={10} fill={ACCENT_LIGHT} rx={2} />
-      <text x={AX_L + 85} y={22} fontSize="9" fill="#8a94a6">X̄±S 范围</text>
+      <text x={AX_L + 85} y={22} fontSize="9" fill="var(--ink-faint)">X̄±S 范围</text>
     </svg>
   );
 }
@@ -181,7 +181,7 @@ interface StepCardProps {
 
 function StepCard({ step, title, children }: StepCardProps) {
   return (
-    <div className="rounded-lg border border-[var(--line)] bg-white overflow-hidden">
+    <div className="rounded-lg border border-[var(--line)] bg-[var(--bg-elevated)] overflow-hidden">
       <div
         className="flex items-center gap-2 px-3 py-2"
         style={{ background: ACCENT_LIGHT }}
@@ -265,7 +265,7 @@ function StatisticCalculatorBase() {
   const denomVal = stats ? (useBiased ? stats.n : stats.n - 1) : 1;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">统计量计算器</h3>
@@ -287,10 +287,10 @@ function StatisticCalculatorBase() {
             onChange={(e) => handleInputChange(e.target.value)}
             placeholder="例：4 7 2 9 5 8 3 6"
             className="w-full rounded-lg border px-3 py-1.5 font-mono text-[13px] text-[var(--ink)] outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]"
-            style={{ borderColor: inputError ? "#dc2626" : GRAY_LINE }}
+            style={{ borderColor: inputError ? "var(--md-sys-color-error)" : GRAY_LINE }}
           />
           {inputError && (
-            <p className="text-[11px] text-red-600">{inputError}</p>
+            <p className="text-[11px] text-[var(--md-sys-color-error)]">{inputError}</p>
           )}
         </div>
 
@@ -347,7 +347,7 @@ function StatisticCalculatorBase() {
                   "rounded-md px-3 py-1 text-[12px] font-semibold transition-colors " +
                   (useBiased === biased
                     ? "text-white"
-                    : "text-[var(--ink-soft)] bg-white border border-[var(--line)] hover:border-[var(--accent)]")
+                    : "text-[var(--ink-soft)] bg-[var(--bg-elevated)] border border-[var(--line)] hover:border-[var(--accent)]")
                 }
                 style={useBiased === biased ? { background: ACCENT } : {}}
               >
@@ -408,7 +408,7 @@ function StatisticCalculatorBase() {
                   {data.map((xi, i) => (
                     <tr
                       key={i}
-                      className={i % 2 === 0 ? "bg-[var(--bg-muted)]" : "bg-white"}
+                      className={i % 2 === 0 ? "bg-[var(--bg-muted)]" : "bg-[var(--bg-elevated)]"}
                     >
                       <td className="px-2 py-0.5 font-mono">{i + 1}</td>
                       <td className="px-2 py-0.5 font-mono">{fmt(xi, 2)}</td>
@@ -457,14 +457,14 @@ function StatisticCalculatorBase() {
               <div
                 className="rounded-md px-2.5 py-2 text-center"
                 style={{
-                  background: useBiased ? ACCENT_LIGHT : "#f8f9fb",
+                  background: useBiased ? ACCENT_LIGHT : "var(--bg-muted)",
                   borderWidth: 1,
                   borderStyle: "solid",
                   borderColor: useBiased ? ACCENT : GRAY_LINE,
                 }}
               >
                 <div className="text-[10px] text-[var(--ink-soft)]">有偏 S²（÷n）</div>
-                <div className="text-[14px] font-extrabold font-mono" style={{ color: useBiased ? ACCENT : "#aab" }}>
+                <div className="text-[14px] font-extrabold font-mono" style={{ color: useBiased ? ACCENT : "var(--ink-faint)" }}>
                   {fmt(stats.varN)}
                 </div>
                 <div className="text-[9px] text-[var(--ink-soft)]">S = {fmt(stats.stdN)}</div>
@@ -472,14 +472,14 @@ function StatisticCalculatorBase() {
               <div
                 className="rounded-md px-2.5 py-2 text-center"
                 style={{
-                  background: !useBiased ? GREEN_LIGHT : "#f8f9fb",
+                  background: !useBiased ? GREEN_LIGHT : "var(--bg-muted)",
                   borderWidth: 1,
                   borderStyle: "solid",
                   borderColor: !useBiased ? GREEN : GRAY_LINE,
                 }}
               >
                 <div className="text-[10px] text-[var(--ink-soft)]">无偏 S²（÷n−1）</div>
-                <div className="text-[14px] font-extrabold font-mono" style={{ color: !useBiased ? GREEN : "#aab" }}>
+                <div className="text-[14px] font-extrabold font-mono" style={{ color: !useBiased ? GREEN : "var(--ink-faint)" }}>
                   {fmt(stats.varN1)}
                 </div>
                 <div className="text-[9px] text-[var(--ink-soft)]">S = {fmt(stats.stdN1)}</div>
@@ -579,7 +579,7 @@ function StatisticCalculatorBase() {
 
       {/* 数据不足提示 */}
       {data.length < 2 && (
-        <div className="rounded-lg border border-yellow-200 bg-yellow-50 px-3 py-2.5 text-[12px] text-yellow-800">
+        <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-[12px] text-[var(--color-warning)]">
           请输入至少 2 个数字以开始计算。
         </div>
       )}

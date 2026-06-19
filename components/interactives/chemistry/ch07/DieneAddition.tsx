@@ -46,7 +46,7 @@ function DieneAdditionBase() {
   }, [tempC]);
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold text-[var(--ink)]">
         共轭二烯的 1,2- 加成 vs 1,4- 加成
       </h3>
@@ -142,7 +142,7 @@ function DieneAdditionBase() {
           className="rounded-lg border p-3 transition-colors"
           style={{
             borderColor: isKineticDominant ? "#2563eb" : "var(--line)",
-            backgroundColor: isKineticDominant ? "#eff6ff" : "var(--bg-muted)",
+            backgroundColor: isKineticDominant ? "rgba(37,99,235,0.1)" : "var(--bg-muted)",
           }}
         >
           <svg viewBox="0 0 200 90" className="w-full" role="img" aria-label="3-溴-1-丁烯结构">
@@ -175,7 +175,7 @@ function DieneAdditionBase() {
           className="rounded-lg border p-3 transition-colors"
           style={{
             borderColor: !isKineticDominant ? "#dc2626" : "var(--line)",
-            backgroundColor: !isKineticDominant ? "#fef2f2" : "var(--bg-muted)",
+            backgroundColor: !isKineticDominant ? "rgba(220,38,38,0.1)" : "var(--bg-muted)",
           }}
         >
           <svg viewBox="0 0 200 90" className="w-full" role="img" aria-label="1-溴-2-丁烯结构">

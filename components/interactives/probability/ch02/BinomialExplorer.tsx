@@ -4,10 +4,10 @@ import { memo, useState, useMemo } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const TEAL = "#0d9488";
 const TEAL_LIGHT = "#ccfbf1";
-const GRAY_BORDER = "#e7e9ef";
+const GRAY_BORDER = "var(--line)";
 
 // ─── 数学工具 ────────────────────────────────────────────────────────────────
 
@@ -141,7 +141,7 @@ function BarChart({ data, mean, color, label }: BarChartProps) {
         y={PAD_T}
         width={chartW}
         height={chartH}
-        fill="#fafbfd"
+        fill="var(--bg-elevated)"
         stroke={GRAY_BORDER}
         rx={2}
       />
@@ -164,7 +164,7 @@ function BarChart({ data, mean, color, label }: BarChartProps) {
               y={y + 3}
               fontSize={9}
               textAnchor="end"
-              fill="#8a94a6"
+              fill="var(--ink-faint)"
             >
               {v < 0.01 ? v.toExponential(1) : v.toFixed(3)}
             </text>
@@ -232,7 +232,7 @@ function BarChart({ data, mean, color, label }: BarChartProps) {
             y={PAD_T + chartH + 14}
             fontSize={9}
             textAnchor="middle"
-            fill="#8a94a6"
+            fill="var(--ink-faint)"
           >
             {k}
           </text>
@@ -245,7 +245,7 @@ function BarChart({ data, mean, color, label }: BarChartProps) {
         y={CHART_H - 2}
         fontSize={10}
         textAnchor="middle"
-        fill="#8a94a6"
+        fill="var(--ink-faint)"
       >
         k（X 的取值）
       </text>
@@ -254,7 +254,7 @@ function BarChart({ data, mean, color, label }: BarChartProps) {
         y={PAD_T + chartH / 2}
         fontSize={9}
         textAnchor="middle"
-        fill="#8a94a6"
+        fill="var(--ink-faint)"
         transform={`rotate(-90, 9, ${PAD_T + chartH / 2})`}
       >
         P(X=k)
@@ -326,7 +326,7 @@ function BinomialExplorerBase() {
   const poissonStd = Math.sqrt(lambda);
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">

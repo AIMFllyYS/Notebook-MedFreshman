@@ -9,8 +9,8 @@ const TEAL = "#0d9488";
 const TEAL_LIGHT = "#ccfbf1";
 const ORANGE = "#ea580c";
 const ORANGE_LIGHT = "#ffedd5";
-const GRAY_LINE = "#e7e9ef";
-const GRAY_BG = "#fafbfd";
+const GRAY_LINE = "var(--line)";
+const GRAY_BG = "var(--bg-muted)";
 
 // ─── SVG 图表尺寸 ─────────────────────────────────────────────
 const W = 480;
@@ -272,8 +272,8 @@ function DistPanel({ label, color, dist, onChange }: DistPanelProps) {
               dist.type === t
                 ? { background: color, color: "#fff" }
                 : {
-                    background: "#f0f0f5",
-                    color: "#555",
+                    background: "var(--bg-muted)",
+                    color: "var(--ink-soft)",
                   }
             }
           >
@@ -429,7 +429,7 @@ function HistogramSVG({
               y={yy + 3}
               fontSize={9}
               textAnchor="end"
-              fill="#8a94a6"
+              fill="var(--ink-faint)"
             >
               {d.toFixed(2)}
             </text>
@@ -476,14 +476,14 @@ function HistogramSVG({
             y1={PAD.top + CHART_H}
             x2={xScale(v)}
             y2={PAD.top + CHART_H + 3}
-            stroke="#8a94a6"
+            stroke="var(--ink-faint)"
           />
           <text
             x={xScale(v)}
             y={PAD.top + CHART_H + 13}
             fontSize={9}
             textAnchor="middle"
-            fill="#8a94a6"
+            fill="var(--ink-faint)"
           >
             {v.toFixed(1)}
           </text>
@@ -496,7 +496,7 @@ function HistogramSVG({
         y={H - 2}
         fontSize={10}
         textAnchor="middle"
-        fill="#8a94a6"
+        fill="var(--ink-faint)"
       >
         Z = X + Y
       </text>
@@ -505,7 +505,7 @@ function HistogramSVG({
         y={PAD.top + CHART_H / 2}
         fontSize={9}
         textAnchor="middle"
-        fill="#8a94a6"
+        fill="var(--ink-faint)"
         transform={`rotate(-90, 9, ${PAD.top + CHART_H / 2})`}
       >
         密度
@@ -579,7 +579,7 @@ function ConvolutionDemoBase() {
   const hasPdf = showPdf && hasAnalyticConvPDF(xDist.type, yDist.type);
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">
@@ -664,7 +664,7 @@ function ConvolutionDemoBase() {
           disabled={!canSimulate || isRunning}
           className="rounded-lg px-4 py-1.5 text-[13px] font-semibold text-white transition-opacity"
           style={{
-            background: canSimulate ? ACCENT : "#aaa",
+            background: canSimulate ? ACCENT : "var(--ink-faint)",
             opacity: isRunning ? 0.7 : 1,
           }}
         >

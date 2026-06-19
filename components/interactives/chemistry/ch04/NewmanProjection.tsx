@@ -206,7 +206,7 @@ function NewmanProjectionBase() {
   const xTicks: number[] = [0, 60, 120, 180, 240, 300, 360];
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-lg font-semibold" style={{ color: "var(--ink)" }}>
         纽曼投影构象能量
       </h3>
@@ -223,7 +223,7 @@ function NewmanProjectionBase() {
           className="rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors"
           style={{
             borderColor: molecule === "ethane" ? PRIMARY : "var(--line)",
-            backgroundColor: molecule === "ethane" ? PRIMARY : "white",
+            backgroundColor: molecule === "ethane" ? PRIMARY : "var(--bg-elevated)",
             color: molecule === "ethane" ? "white" : "var(--ink)",
           }}
         >
@@ -235,7 +235,7 @@ function NewmanProjectionBase() {
           className="rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors"
           style={{
             borderColor: molecule === "butane" ? PRIMARY : "var(--line)",
-            backgroundColor: molecule === "butane" ? PRIMARY : "white",
+            backgroundColor: molecule === "butane" ? PRIMARY : "var(--bg-elevated)",
             color: molecule === "butane" ? "white" : "var(--ink)",
           }}
         >
@@ -255,7 +255,7 @@ function NewmanProjectionBase() {
               cx={cx}
               cy={cy}
               r={rCircle}
-              fill="white"
+              fill="var(--bg-muted)"
               stroke="var(--line)"
               strokeWidth={2}
             />
@@ -276,7 +276,7 @@ function NewmanProjectionBase() {
                     y1={start.y}
                     x2={end.x}
                     y2={end.y}
-                    stroke="#64748b"
+                    stroke="var(--ink-soft)"
                     strokeWidth={isMethyl ? 5 : 4}
                     strokeLinecap="round"
                   />
@@ -287,7 +287,7 @@ function NewmanProjectionBase() {
                     dy={end.y >= cy ? 12 : -4}
                     fontSize={11}
                     textAnchor={end.x >= cx ? "start" : "end"}
-                    fill="#475569"
+                    fill="var(--ink-soft)"
                   >
                     {backLabels[i]}
                   </text>

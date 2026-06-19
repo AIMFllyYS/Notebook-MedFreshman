@@ -4,11 +4,11 @@ import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const GREEN = "#0f766e";
 const GREEN_LIGHT = "#ccfbf1";
 const ORANGE = "#c2410c";
-const GRAY_LINE = "#e9ebf2";
+const GRAY_LINE = "var(--line)";
 
 // ─── 分布类型 ─────────────────────────────────────────────────────
 type DistType = "exponential" | "normal" | "uniform";
@@ -371,12 +371,12 @@ function ConvergenceChart({ series }: { series: ConvergenceSeries }) {
   const xTicks = [ns[0], ...ns.filter((n, i) => i > 0 && i < ns.length - 1 && i % 3 === 0), ns[ns.length - 1]];
 
   return (
-    <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full rounded-lg border border-[var(--line)]" style={{ background: "#fafbfd" }}>
+    <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} className="w-full rounded-lg border border-[var(--line)]" style={{ background: "var(--bg-muted)" }}>
       {/* 网格 */}
       {yTicks.map((v, i) => (
         <g key={i}>
           <line x1={PAD_L} y1={sy(v)} x2={PAD_L + CHART_W} y2={sy(v)} stroke={GRAY_LINE} strokeWidth={1} />
-          <text x={PAD_L - 5} y={sy(v) + 3.5} fontSize="9" textAnchor="end" fill="#8a94a6">
+          <text x={PAD_L - 5} y={sy(v) + 3.5} fontSize="9" textAnchor="end" fill="var(--ink-faint)">
             {Math.abs(v) < 100 ? v.toFixed(2) : v.toFixed(0)}
           </text>
         </g>
@@ -384,13 +384,13 @@ function ConvergenceChart({ series }: { series: ConvergenceSeries }) {
       {xTicks.map((n, i) => (
         <g key={i}>
           <line x1={sx(n)} y1={PAD_T} x2={sx(n)} y2={PAD_T + CHART_H} stroke={GRAY_LINE} strokeWidth={1} />
-          <text x={sx(n)} y={PAD_T + CHART_H + 14} fontSize="9" textAnchor="middle" fill="#8a94a6">{n}</text>
+          <text x={sx(n)} y={PAD_T + CHART_H + 14} fontSize="9" textAnchor="middle" fill="var(--ink-faint)">{n}</text>
         </g>
       ))}
 
       {/* 轴线 */}
-      <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={PAD_T + CHART_H} stroke="#c8ccd8" />
-      <line x1={PAD_L} y1={PAD_T + CHART_H} x2={PAD_L + CHART_W} y2={PAD_T + CHART_H} stroke="#c8ccd8" />
+      <line x1={PAD_L} y1={PAD_T} x2={PAD_L} y2={PAD_T + CHART_H} stroke="var(--line)" />
+      <line x1={PAD_L} y1={PAD_T + CHART_H} x2={PAD_L + CHART_W} y2={PAD_T + CHART_H} stroke="var(--line)" />
 
       {/* 真实值水平参考线 */}
       {trueVals.map((arr, pi) => {
@@ -447,7 +447,7 @@ function ConvergenceChart({ series }: { series: ConvergenceSeries }) {
       })}
 
       {/* 轴标签 */}
-      <text x={PAD_L + CHART_W / 2} y={SVG_H - 4} fontSize="10" textAnchor="middle" fill="#8a94a6">
+      <text x={PAD_L + CHART_W / 2} y={SVG_H - 4} fontSize="10" textAnchor="middle" fill="var(--ink-faint)">
         样本量 n
       </text>
 
@@ -605,7 +605,7 @@ function MomentEstimatorBase() {
   const sliderColors = [ACCENT, GREEN, ORANGE];
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">矩估计量计算器</h3>
@@ -625,7 +625,7 @@ function MomentEstimatorBase() {
               "rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors " +
               (d === dist
                 ? "bg-[var(--accent)] text-white"
-                : "border border-[var(--line)] bg-white text-[var(--ink-soft)] hover:border-[var(--accent)] hover:text-[var(--accent)]")
+                : "border border-[var(--line)] bg-[var(--bg-elevated)] text-[var(--ink-soft)] hover:border-[var(--accent)] hover:text-[var(--accent)]")
             }
           >
             {DIST_CONFIGS[d].label}
@@ -707,7 +707,7 @@ function MomentEstimatorBase() {
           value={dataText}
           onChange={(e) => setDataText(e.target.value)}
           rows={3}
-          className="w-full rounded-lg border border-[var(--line)] bg-white px-3 py-2 text-[12px] font-mono text-[var(--ink)] placeholder-[var(--ink-soft)] focus:outline-none focus:border-[var(--accent)] resize-none"
+          className="w-full rounded-lg border border-[var(--line)] bg-[var(--bg-elevated)] px-3 py-2 text-[12px] font-mono text-[var(--ink)] placeholder-[var(--ink-soft)] focus:outline-none focus:border-[var(--accent)] resize-none"
           placeholder="输入样本值，逗号/空格分隔"
           spellCheck={false}
         />
@@ -776,7 +776,7 @@ function MomentEstimatorBase() {
                 >
                   <span
                     className="shrink-0 text-[11px] font-semibold mt-0.5"
-                    style={{ color: step.color ?? "#8a94a6" }}
+                    style={{ color: step.color ?? "var(--ink-soft)" }}
                   >
                     {step.label}
                   </span>
@@ -805,7 +805,7 @@ function MomentEstimatorBase() {
               <div
                 key={label}
                 className="rounded-lg p-3 text-center"
-                style={{ background: "white", border: `1.5px solid ${color}40` }}
+                style={{ background: "var(--bg-elevated)", border: `1.5px solid ${color}40` }}
               >
                 <div className="text-[10px] text-[var(--ink-soft)]">参数 {label}</div>
                 <div className="text-[20px] font-extrabold font-mono mt-0.5" style={{ color }}>
@@ -818,8 +818,8 @@ function MomentEstimatorBase() {
                   <div
                     className="mt-1 text-[10px] font-mono rounded px-1.5 py-0.5"
                     style={{
-                      background: Math.abs(est - true_) < 0.1 ? GREEN_LIGHT : "#fef3c7",
-                      color: Math.abs(est - true_) < 0.1 ? GREEN : "#92400e",
+                      background: Math.abs(est - true_) < 0.1 ? "rgb(16 185 129 / 0.12)" : "rgb(245 158 11 / 0.14)",
+                      color: Math.abs(est - true_) < 0.1 ? "var(--color-success)" : "var(--color-warning)",
                     }}
                   >
                     真值 {true_.toFixed(3)}｜误差 {Math.abs(est - true_).toFixed(3)}

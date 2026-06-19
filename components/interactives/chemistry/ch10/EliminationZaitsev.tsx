@@ -153,7 +153,7 @@ function EliminationZaitsevBase() {
     : "扎伊采夫取向（多取代、更稳定烯烃为主）";
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="mb-1 text-lg font-semibold text-[var(--ink)]">
         E1 / E2 消除与扎伊采夫规则
       </h3>
@@ -179,8 +179,8 @@ function EliminationZaitsevBase() {
                 onClick={() => setSubstrateId(s.id)}
                 className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
                   active
-                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                    : "border-[var(--line)] bg-white text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+                    ? "border-indigo-500 bg-[var(--accent-weak)] text-[var(--accent)]"
+                    : "border-[var(--line)] bg-[var(--bg-elevated)] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
                 }`}
               >
                 {s.name}
@@ -207,7 +207,7 @@ function EliminationZaitsevBase() {
               className={`px-4 py-1.5 text-sm transition-colors ${
                 mechanism === m
                   ? "bg-indigo-600 text-white"
-                  : "bg-white text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+                  : "bg-[var(--bg-elevated)] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
               }`}
             >
               {m}
@@ -252,8 +252,8 @@ function EliminationZaitsevBase() {
       <div
         className={`mb-3 rounded-lg px-3 py-2 text-sm font-medium ${
           bulkyBase
-            ? "bg-amber-50 text-amber-700"
-            : "bg-emerald-50 text-emerald-700"
+            ? "bg-amber-500/10 text-[var(--color-warning)]"
+            : "bg-emerald-500/10 text-[var(--color-success)]"
         }`}
       >
         当前取向：{orientationLabel}
@@ -276,25 +276,25 @@ function EliminationZaitsevBase() {
                     {p.substitution} 取代烯烃
                   </span>
                   {p.isZaitsev ? (
-                    <span className="rounded bg-emerald-100 px-1.5 py-0.5 text-[11px] text-emerald-700">
+                    <span className="rounded bg-emerald-500/10 px-1.5 py-0.5 text-[11px] text-[var(--color-success)]">
                       扎伊采夫（更稳定）
                     </span>
                   ) : (
-                    <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[11px] text-amber-700">
+                    <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[11px] text-[var(--color-warning)]">
                       霍夫曼（少取代）
                     </span>
                   )}
                 </div>
                 <span
                   className={`text-sm font-semibold ${
-                    isMajor ? "text-indigo-700" : "text-[var(--ink-soft)]"
+                    isMajor ? "text-[var(--accent)]" : "text-[var(--ink-soft)]"
                   }`}
                 >
                   ~{ratio}% · {isMajor ? "主产物" : "次产物"}
                 </span>
               </div>
               <div className="mt-2">
-                {bar(ratio, isMajor ? "#4f46e5" : "#cbd5e1")}
+                {bar(ratio, isMajor ? "var(--accent)" : "var(--line)")}
               </div>
               <p className="mt-2 text-xs text-[var(--ink-soft)]">{p.detail}</p>
             </div>

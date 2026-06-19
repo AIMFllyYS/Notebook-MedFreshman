@@ -4,12 +4,12 @@ import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const GREEN = "#0f766e";
 const GREEN_LIGHT = "#ccfbf1";
 const RED = "#dc2626";
 const RED_LIGHT = "#fee2e2";
-const GRAY = "#e9ebf2";
+const GRAY = "var(--bg-muted)";
 
 // ─── 辅助：将概率格式化成百分比（最多 2 位小数）────────────────
 function pct(v: number): string {
@@ -179,7 +179,7 @@ function BayesExplorerBase() {
   ];
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">贝叶斯推断可视化</h3>
@@ -383,8 +383,8 @@ function BayesExplorerBase() {
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {[
           { label: "人群患病率 P(D)", val: pct(pD), bg: ACCENT_LIGHT, col: ACCENT },
-          { label: "检测阳性率 P(+)", val: pct(pPos), bg: "#f0fdf4", col: GREEN },
-          { label: "假阳性率 P(+|D̄)", val: pct(pPosDgDc), bg: RED_LIGHT, col: RED },
+          { label: "检测阳性率 P(+)", val: pct(pPos), bg: "rgba(16,185,129,0.10)", col: GREEN },
+          { label: "假阳性率 P(+|D̄)", val: pct(pPosDgDc), bg: "rgba(244,63,94,0.10)", col: RED },
           { label: "后验 P(D|+)", val: pct(posterior), bg: ACCENT_LIGHT, col: ACCENT },
         ].map(({ label, val, bg, col }) => (
           <div

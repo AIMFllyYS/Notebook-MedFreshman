@@ -3,8 +3,8 @@
 import { memo, useState } from "react";
 
 // ─── 设计常量 ────────────────────────────────────────────────────────────────
-const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT = "var(--accent)";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const GREEN = "#0f766e";
 const GREEN_LIGHT = "#d1fae5";
 const RED = "#dc2626";
@@ -201,7 +201,7 @@ function ConfidenceIntervalExplorerBase() {
   const xTicks = [-3, -2, -1, 0, 1, 2, 3];
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-5">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-5">
       {/* 标题区 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">置信区间捕获率可视化</h3>
@@ -309,11 +309,11 @@ function ConfidenceIntervalExplorerBase() {
               style={{ maxHeight: 400, display: "block" }}
             >
               {/* 背景 */}
-              <rect x={0} y={0} width={SVG_W} height={SVG_H} fill="#fafbfd" />
+              <rect x={0} y={0} width={SVG_W} height={SVG_H} fill="var(--bg-muted)" />
               <rect
                 x={MARGIN_L} y={MARGIN_T}
                 width={plotW} height={plotH}
-                fill="white" stroke="#e7e9ef"
+                fill="var(--bg-elevated)" stroke="var(--line)"
               />
 
               {/* x 轴刻度线与标签 */}
@@ -322,7 +322,7 @@ function ConfidenceIntervalExplorerBase() {
                   <line
                     x1={xScale(v)} y1={MARGIN_T}
                     x2={xScale(v)} y2={MARGIN_T + plotH}
-                    stroke="#eef0f4" strokeWidth={1}
+                    stroke="var(--line)" strokeWidth={1}
                     strokeDasharray={v === 0 ? undefined : "3 3"}
                   />
                   <text
@@ -330,7 +330,7 @@ function ConfidenceIntervalExplorerBase() {
                     y={MARGIN_T + plotH + 14}
                     textAnchor="middle"
                     fontSize={9}
-                    fill="#8a94a6"
+                    fill="var(--ink-faint)"
                   >
                     {v}
                   </text>
@@ -338,10 +338,10 @@ function ConfidenceIntervalExplorerBase() {
               ))}
 
               {/* 标题标签 */}
-              <text x={MARGIN_L - 8} y={MARGIN_T - 8} fontSize={9} fill="#8a94a6" textAnchor="end">
+              <text x={MARGIN_L - 8} y={MARGIN_T - 8} fontSize={9} fill="var(--ink-faint)" textAnchor="end">
                 第 k 次
               </text>
-              <text x={SVG_W / 2} y={SVG_H - 4} fontSize={9} fill="#8a94a6" textAnchor="middle">
+              <text x={SVG_W / 2} y={SVG_H - 4} fontSize={9} fill="var(--ink-faint)" textAnchor="middle">
                 样本均值 x̄
               </text>
 
@@ -363,7 +363,7 @@ function ConfidenceIntervalExplorerBase() {
                       y={y + 3}
                       textAnchor="end"
                       fontSize={7}
-                      fill="#9ca3af"
+                      fill="var(--ink-faint)"
                     >
                       {seqNum}
                     </text>
@@ -417,7 +417,7 @@ function ConfidenceIntervalExplorerBase() {
             className="rounded-lg p-3 text-center"
             style={{
               background: total === 0
-                ? "#f9fafb"
+                ? "var(--bg-muted)"
                 : Math.abs(diff) < 0.05
                   ? GREEN_LIGHT
                   : RED_LIGHT,
@@ -428,7 +428,7 @@ function ConfidenceIntervalExplorerBase() {
               className="text-[22px] font-extrabold font-mono"
               style={{
                 color: total === 0
-                  ? "#9ca3af"
+                  ? "var(--ink-faint)"
                   : Math.abs(diff) < 0.05
                     ? GREEN
                     : RED,

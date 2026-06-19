@@ -110,7 +110,7 @@ function CarbocationStabilityBase() {
   const angles = methylAngles(current.adjacentMethyls);
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4">
       <h3 className="text-base font-semibold text-[var(--ink)]">
         碳正离子稳定性：超共轭与诱导效应
       </h3>
@@ -180,7 +180,7 @@ function CarbocationStabilityBase() {
                     strokeWidth={2}
                   />
                   {/* 甲基碳 */}
-                  <circle r={14} cx={ex} cy={ey} fill="#fff" stroke="var(--ink)" strokeWidth={1.5} />
+                  <circle r={14} cx={ex} cy={ey} fill="var(--bg-muted)" stroke="var(--ink)" strokeWidth={1.5} />
                   <text
                     x={ex}
                     y={ey + 4}
@@ -222,7 +222,7 @@ function CarbocationStabilityBase() {
               r={20}
               cx={cx}
               cy={cy}
-              fill="#fff"
+              fill="var(--bg-muted)"
               stroke={POSITIVE_COLOR}
               strokeWidth={2.5}
             />
@@ -297,7 +297,7 @@ function CarbocationStabilityBase() {
                       </span>
                       <span>超共轭 {c.hyperconjugationBonds} 个 C–H</span>
                     </div>
-                    <div className="mt-1 h-4 w-full overflow-hidden rounded bg-white ring-1 ring-[var(--line)]">
+                    <div className="mt-1 h-4 w-full overflow-hidden rounded bg-[var(--bg-elevated)] ring-1 ring-[var(--line)]">
                       <div
                         className="h-full rounded transition-all"
                         style={{
@@ -318,7 +318,7 @@ function CarbocationStabilityBase() {
       </div>
 
       {/* 文字解释 */}
-      <div className="mt-4 rounded-lg border border-[var(--line)] bg-white p-3 text-sm text-[var(--ink-soft)]">
+      <div className="mt-4 rounded-lg border border-[var(--line)] bg-[var(--bg-elevated)] p-3 text-sm text-[var(--ink-soft)]">
         <p className="font-medium text-[var(--ink)]">为什么烷基越多越稳定？</p>
         <ul className="mt-1 list-disc space-y-1 pl-5">
           <li>
@@ -353,7 +353,7 @@ function CarbocationStabilityBase() {
             {RESONANCE_CATIONS.map((r) => (
               <div
                 key={r.key}
-                className="rounded-lg border border-[var(--line)] bg-white p-3"
+                className="rounded-lg border border-[var(--line)] bg-[var(--bg-elevated)] p-3"
               >
                 <p className="text-sm font-semibold text-[var(--ink)]">
                   {r.label}

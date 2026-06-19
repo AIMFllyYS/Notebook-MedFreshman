@@ -4,11 +4,11 @@ import { memo, useState, useCallback } from "react";
 
 // ─── 设计常量 ─────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
-const ACCENT_LIGHT = "#ede9fe";
+const ACCENT_LIGHT = "var(--accent-weak)";
 const ORANGE = "#ea580c";
 const GREEN = "#0f766e";
-const GRAY_LINE = "#e7e9ef";
-const GRAY_BG = "#fafbfd";
+const GRAY_LINE = "var(--line)";
+const GRAY_BG = "var(--bg-muted)";
 
 // ─── SVG 尺寸 ─────────────────────────────────────────────────
 const W = 320;
@@ -323,7 +323,7 @@ function PdfChart({
                 y={sy + 3}
                 fontSize="9"
                 textAnchor="end"
-                fill="#8a94a6"
+                fill="var(--ink-faint)"
               >
                 {v.toFixed(v < 1 ? 1 : 0)}
               </text>
@@ -341,14 +341,14 @@ function PdfChart({
                 y1={PAD_T + PLOT_H}
                 x2={sx}
                 y2={PAD_T + PLOT_H + 4}
-                stroke="#8a94a6"
+                stroke="var(--ink-faint)"
               />
               <text
                 x={sx}
                 y={PAD_T + PLOT_H + 13}
                 fontSize="9"
                 textAnchor="middle"
-                fill="#8a94a6"
+                fill="var(--ink-faint)"
               >
                 {Math.abs(v) < 0.001 ? "0" : v.toFixed(1)}
               </text>
@@ -362,7 +362,7 @@ function PdfChart({
           y={H - 2}
           fontSize="10"
           textAnchor="middle"
-          fill="#8a94a6"
+          fill="var(--ink-faint)"
         >
           {xLabel}
         </text>
@@ -371,7 +371,7 @@ function PdfChart({
           y={PAD_T + PLOT_H / 2}
           fontSize="9"
           textAnchor="middle"
-          fill="#8a94a6"
+          fill="var(--ink-faint)"
           transform={`rotate(-90,9,${PAD_T + PLOT_H / 2})`}
         >
           密度
@@ -490,7 +490,7 @@ function FuncDistDemoBase() {
       : null;
 
   return (
-    <div className="rounded-xl border border-[var(--line)] bg-white p-4 space-y-4">
+    <div className="rounded-xl border border-[var(--line)] bg-[var(--bg-elevated)] p-4 space-y-4">
       {/* 标题 */}
       <div>
         <h3 className="text-[15px] font-bold text-[var(--ink)]">随机变量函数的分布</h3>
