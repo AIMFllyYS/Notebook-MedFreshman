@@ -557,6 +557,7 @@ export default function QuickExplainWindow() {
             }}
           >
             <div
+              className={msg.role === "assistant" ? "chat-prose" : undefined}
               style={{
                 maxWidth: "85%",
                 padding: "8px 12px",

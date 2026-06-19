@@ -17,22 +17,17 @@ interface MessageContentProps {
   onFollowUpSelect?: (question: string) => void;
 }
 
-/* ---- Markdown rendering components ---- */
+/* ---- Markdown rendering components ----
+   排版交由 .chat-prose CSS 统一控制（行距/段距/标题/列表/引用/代码/表格/KaTeX）；
+   这里只保留必要的行为：链接新开页、表格横向滚动包裹。 */
 const mdComponents = {
-  p: ({ node, ...props }: any) => <p style={{ marginBottom: '0.4rem' }} {...props} />,
   a: ({ node, ...props }: any) => (
-    <a style={{ color: 'var(--md-sys-color-primary)' }} target="_blank" rel="noopener noreferrer" {...props} />
+    <a target="_blank" rel="noopener noreferrer" {...props} />
   ),
   table: ({ node, ...props }: any) => (
-    <div style={{ overflowX: 'auto', marginBottom: '0.5rem' }}>
-      <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: '0.9em' }} {...props} />
+    <div className="chat-table-scroll">
+      <table {...props} />
     </div>
-  ),
-  th: ({ node, ...props }: any) => (
-    <th style={{ border: '1px solid var(--md-sys-color-outline-variant)', padding: '6px 8px', background: 'var(--md-sys-color-surface-container-high)', textAlign: 'left' }} {...props} />
-  ),
-  td: ({ node, ...props }: any) => (
-    <td style={{ border: '1px solid var(--md-sys-color-outline-variant)', padding: '6px 8px' }} {...props} />
   ),
 };
 

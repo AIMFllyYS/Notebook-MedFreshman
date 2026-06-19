@@ -139,13 +139,12 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
         ) : (
           <>
             <ProcessingSteps msg={message} streaming={isStreaming} />
-            <div style={{
+            <div className="chat-prose" style={{
               background: 'var(--md-sys-color-surface-container)',
-              padding: '12px',
+              padding: '14px 14px 12px',
               borderRadius: '12px',
               borderBottomLeftRadius: '4px',
               fontSize: 'var(--chat-fs, 13px)',
-              lineHeight: '1.5',
             }}>
               <MessageContent
                 content={message.content}
