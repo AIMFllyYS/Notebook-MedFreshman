@@ -4,6 +4,7 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useStore } from "@/lib/store";
 import { getVideosForSection } from "@/content/media";
+import { videoPoster } from "@/lib/content/poster";
 // 讲稿单独成模块（~388KB），只在本懒加载的 VideoTab chunk 内引用，不进入首屏内容包。
 import { videoScripts } from "@/content/media.scripts.generated";
 
@@ -57,10 +58,22 @@ export default function VideoTab() {
                   className="hover-lift group block w-full text-left transition-shadow"
                 >
                   <div className="relative aspect-video w-full bg-gradient-to-br from-[var(--accent-weak)] to-[var(--bg-muted)]">
-                    {v.poster && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={v.poster} alt={v.title} className="h-full w-full object-cover" />
-                    )}
+                    {(() => {
+                      const poster = videoPoster(v);
+                      return poster ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={poster}
+                          alt={v.title}
+                          loading="lazy"
+                          className="h-full w-full object-cover"
+                          // 封面缺失时隐藏图片，露出底层占位渐变
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                          }}
+                        />
+                      ) : null;
+                    })()}
                     <span className="absolute inset-0 grid place-items-center">
                       <span className="grid h-12 w-12 place-items-center rounded-full bg-[var(--md-sys-color-surface-container-lowest)]/85 text-[var(--accent-ink)] shadow-md transition-transform group-hover:scale-110">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>

@@ -3,6 +3,7 @@
 import { motion, useDragControls } from "framer-motion";
 import { useState } from "react";
 import { useStore } from "@/lib/store";
+import { videoPoster } from "@/lib/content/poster";
 
 export default function PipPlayer() {
   const video = useStore((s) => s.pipVideo);
@@ -79,7 +80,8 @@ export default function PipPlayer() {
       <video
         id="pip-video-el"
         src={video.src}
-        poster={video.poster}
+        poster={videoPoster(video) || undefined}
+        preload="metadata"
         controls
         autoPlay
         className="block w-full bg-black"
