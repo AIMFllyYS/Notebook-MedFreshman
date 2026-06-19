@@ -41,6 +41,7 @@ function EmptyExamples({ sectionId }: { sectionId: string }) {
 }
 
 export default function ExampleTab() {
+  const subjectId = useStore((s) => s.activeSubjectId);
   const chapterId = useStore((s) => s.activeChapterId);
   const sectionId = useStore((s) => s.activeSectionId);
 
@@ -53,7 +54,7 @@ export default function ExampleTab() {
     setLoading(true);
     setExamples([]);
     setSelectedId(null);
-    fetch(`/api/examples?chapterId=${chapterId}&sectionId=${sectionId}`)
+    fetch(`/api/examples?subjectId=${subjectId}&chapterId=${chapterId}&sectionId=${sectionId}`)
       .then((r) => r.json())
       .then((d) => {
         if (!cancelled) {
@@ -67,7 +68,7 @@ export default function ExampleTab() {
     return () => {
       cancelled = true;
     };
-  }, [chapterId, sectionId]);
+  }, [subjectId, chapterId, sectionId]);
 
   const selected = examples.find((e) => e.id === selectedId);
 

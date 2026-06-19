@@ -16,23 +16,29 @@ export interface ExampleMeta {
 /**
  * 列出某小节下的所有例题。
  *
- * 路由：GET /api/examples?chapterId=ch01&sectionId=1.1
+ * 路由：GET /api/examples?chapterId=ch01&sectionId=1.1[&subjectId=chemistry]
  *
- * 读取 content/examples/{chapterId}/{sectionId}/ 目录下所有 .md 文件，
+ * 路径规则（学科命名空间，防多科 chapterId 冲突）：
+ * - 概率论（subjectId 缺省或为 probability）：content/examples/{chapterId}/{sectionId}/（兼容旧路径）
+ * - 其他学科：content/examples/{subjectId}/{chapterId}/{sectionId}/
+ *
  * 返回 [{ id, title, content }] 列表，按文件名排序。
- *
- * title 提取规则：取 md 第一个 # 标题行；若无则用文件名（去扩展名）。
+ * title 提取规则：:::example{label=...} > 第一个 # 标题 > 文件名（去扩展名）。
  */
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const chapterId = searchParams.get("chapterId") ?? "";
   const sectionId = searchParams.get("sectionId") ?? "";
+  const subjectId = searchParams.get("subjectId") ?? "";
 
   if (!chapterId || !sectionId) {
     return NextResponse.json({ examples: [] });
   }
 
-  const dir = path.join(EXAMPLES_ROOT, chapterId, sectionId);
+  const dir =
+    subjectId && subjectId !== "probability"
+      ? path.join(EXAMPLES_ROOT, subjectId, chapterId, sectionId)
+      : path.join(EXAMPLES_ROOT, chapterId, sectionId);
   let files: string[] = [];
   try {
     files = fs

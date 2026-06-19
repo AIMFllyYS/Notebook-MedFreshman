@@ -8,6 +8,8 @@ import remarkMath from "remark-math";
 import remarkDirective from "remark-directive";
 import rehypeKatex from "rehype-katex";
 import rehypeHighlight from "rehype-highlight";
+// mhchem 扩展：注册 \ce{} / \pu{} 化学式宏到 KaTeX 实例（供有机化学详解使用）
+import "katex/contrib/mhchem";
 import remarkDirectives from "@/lib/markdown/remarkDirectives";
 import { Callout, Derivation, MediaEmbed } from "./directives";
 

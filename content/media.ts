@@ -1,13 +1,15 @@
 import type { MediaManifest, VideoEntry } from "@/lib/content/types";
 import type { SubjectId } from "@/lib/types/content";
 import { generatedVideos } from "./media.generated";
+import { chemistryVideos } from "./media.chemistry.generated";
 
 /**
- * 视频媒体清单。条目由 manim/render.py 渲染后写入 media.generated.ts。
- * src 为相对 public 的路径，例如 /media/videos/ch01/ch01-1.4-classical.mp4
+ * 视频媒体清单。概率论等条目由 manim/render.py 写入 media.generated.ts；
+ * 有机化学条目由 manim/render_chemistry.py 写入 media.chemistry.generated.ts，
+ * 两份清单在此合并。src 为相对 public 的路径。
  */
 export const mediaManifest: MediaManifest = {
-  videos: generatedVideos,
+  videos: [...generatedVideos, ...chemistryVideos],
 };
 
 export function getVideo(id?: string | null): VideoEntry | undefined {
