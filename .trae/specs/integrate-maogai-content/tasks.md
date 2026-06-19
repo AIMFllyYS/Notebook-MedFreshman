@@ -43,7 +43,7 @@
   - 源文件：`D:\飞书文档保存\毛概\毛概第9节.txt`
   - 输出：`content/maogai/recording/rec-08.md`
 
-- [ ] Task 10: 录音整理 rec-09（ch12 毛泽东思想活的灵魂）
+- [x] Task 10: 录音整理 rec-09（ch12 毛泽东思想活的灵魂）
   - 源文件：`D:\飞书文档保存\毛概\第12节毛泽东思想与邓小平理论讲解.txt`
   - 输出：`content/maogai/recording/rec-09.md`
 
@@ -131,31 +131,31 @@
 
 ### 3A: ch01~ch05 详解（5 个任务）
 
-- [ ] Task 28: 详解 ch01（马克思主义中国化导论）
+- [x] Task 28: 详解 ch01（马克思主义中国化导论）
   - 源材料：rec-01.md + sum-01.md
   - 输出：`content/maogai/detail/1.1.md`、`1.2.md`
   - 子节规划：1.1 课程介绍与教学安排 / 1.2 马克思主义中国化命题
   - 依赖：Task 2、Task 23
 
-- [ ] Task 29: 详解 ch02（马克思主义中国化的历史进程）
+- [x] Task 29: 详解 ch02（马克思主义中国化的历史进程）
   - 源材料：rec-02.md + sum-02.md
   - 输出：`content/maogai/detail/2.1.md`、`2.2.md`
   - 子节规划：2.1 马克思主义中国化的提出 / 2.2 长征与遵义会议
   - 依赖：Task 3、Task 15
 
-- [ ] Task 30: 详解 ch03（毛泽东思想及其历史地位）
+- [x] Task 30: 详解 ch03（毛泽东思想及其历史地位）
   - 源材料：rec-03.md + sum-03.md
   - 输出：`content/maogai/detail/3.1.md`、`3.2.md`、`3.3.md`
   - 子节规划：3.1 毛泽东思想的形成和发展 / 3.2 毛泽东思想的主要内容 / 3.3 毛泽东思想的历史地位
   - 依赖：Task 4、Task 16
 
-- [ ] Task 31: 详解 ch04（新民主主义革命理论——历史条件）
+- [x] Task 31: 详解 ch04（新民主主义革命理论——历史条件）
   - 源材料：rec-04.md + sum-04.md
   - 输出：`content/maogai/detail/4.1.md`、`4.2.md`
   - 子节规划：4.1 近代中国国情 / 4.2 新民主主义革命的总路线
   - 依赖：Task 5、Task 17
 
-- [ ] Task 32: 详解 ch05（新民主主义革命理论——革命理论）
+- [x] Task 32: 详解 ch05（新民主主义革命理论——革命理论）
   - 源材料：rec-05.md + sum-05.md
   - 输出：`content/maogai/detail/5.1.md`、`5.2.md`
   - 子节规划：5.1 政治革命理论框架 / 5.2 新旧民主主义革命比较
@@ -163,19 +163,19 @@
 
 ### 3B: ch07~ch09 详解（3 个任务）
 
-- [ ] Task 33: 详解 ch07（新民主主义革命理论——三大法宝）
+- [x] Task 33: 详解 ch07（新民主主义革命理论——三大法宝）
   - 源材料：rec-06.md + sum-06.md
   - 输出：`content/maogai/detail/7.1.md`、`7.2.md`、`7.3.md`
   - 子节规划：7.1 统一战线 / 7.2 武装斗争 / 7.3 党的建设
   - 依赖：Task 7、Task 19
 
-- [ ] Task 34: 详解 ch08（社会主义改造理论上）
+- [x] Task 34: 详解 ch08（社会主义改造理论上）
   - 源材料：rec-07.md + sum-07.md
   - 输出：`content/maogai/detail/8.1.md`、`8.2.md`
   - 子节规划：8.1 新民主主义社会 / 8.2 过渡时期总路线
   - 依赖：Task 8、Task 24
 
-- [ ] Task 35: 详解 ch09（社会主义改造理论下）
+- [x] Task 35: 详解 ch09（社会主义改造理论下）
   - 源材料：rec-08.md + sum-08.md
   - 输出：`content/maogai/detail/9.1.md`、`9.2.md`、`9.3.md`
   - 子节规划：9.1 农业社会主义改造 / 9.2 手工业改造 / 9.3 资本主义工商业改造
@@ -183,25 +183,25 @@
 
 ### 3C: ch12~ch16 详解（4 个任务）
 
-- [ ] Task 36: 详解 ch12（毛泽东思想活的灵魂）
+- [x] Task 36: 详解 ch12（毛泽东思想活的灵魂）
   - 源材料：rec-09.md + sum-09.md
   - 输出：`content/maogai/detail/12.1.md`、`12.2.md`、`12.3.md`
   - 子节规划：12.1 实事求是 / 12.2 群众路线 / 12.3 独立自主
   - 依赖：Task 10、Task 21
 
-- [ ] Task 37: 详解 ch14（邓小平理论下）
+- [x] Task 37: 详解 ch14（邓小平理论下）
   - 源材料：rec-10.md + sum-10.md
   - 输出：`content/maogai/detail/14.1.md`、`14.2.md`
   - 子节规划：14.1 社会主义初级阶段理论 / 14.2 改革开放理论
   - 依赖：Task 11、Task 22
 
-- [ ] Task 38: 详解 ch15（一国两制与祖国统一）
+- [x] Task 38: 详解 ch15（一国两制与祖国统一）
   - 源材料：rec-11.md + sum-11.md
   - 输出：`content/maogai/detail/15.1.md`、`15.2.md`
   - 子节规划：15.1 "一国两制"构想 / 15.2 祖国统一与对外关系
   - 依赖：Task 12、Task 25
 
-- [ ] Task 39: 详解 ch16（期末复习与重点梳理）
+- [x] Task 39: 详解 ch16（期末复习与重点梳理）
   - 源材料：rec-12.md + sum-12.md
   - 输出：`content/maogai/detail/16.1.md`、`16.2.md`
   - 子节规划：16.1 重点知识梳理 / 16.2 论十大关系与矛盾分析
@@ -215,57 +215,57 @@
 
 每个子智能体读取对应章的录音 .md + 纪要 .md + 详解 .md，深度分析出题方向，生成 3-5 道典型例题。
 
-- [ ] Task 40: 例题 ch01
+- [x] Task 40: 例题 ch01
   - 输出：`content/maogai/detail/ch01-examples.md`
   - 依赖：Task 28
 
-- [ ] Task 41: 例题 ch02
+- [x] Task 41: 例题 ch02
   - 输出：`content/maogai/detail/ch02-examples.md`
   - 依赖：Task 29
 
-- [ ] Task 42: 例题 ch03
+- [x] Task 42: 例题 ch03
   - 输出：`content/maogai/detail/ch03-examples.md`
   - 依赖：Task 30
 
-- [ ] Task 43: 例题 ch04
+- [x] Task 43: 例题 ch04
   - 输出：`content/maogai/detail/ch04-examples.md`
   - 依赖：Task 31
 
-- [ ] Task 44: 例题 ch05
+- [x] Task 44: 例题 ch05
   - 输出：`content/maogai/detail/ch05-examples.md`
   - 依赖：Task 32
 
-- [ ] Task 45: 例题 ch07
+- [x] Task 45: 例题 ch07
   - 输出：`content/maogai/detail/ch07-examples.md`
   - 依赖：Task 33
 
-- [ ] Task 46: 例题 ch08
+- [x] Task 46: 例题 ch08
   - 输出：`content/maogai/detail/ch08-examples.md`
   - 依赖：Task 34
 
-- [ ] Task 47: 例题 ch09
+- [x] Task 47: 例题 ch09
   - 输出：`content/maogai/detail/ch09-examples.md`
   - 依赖：Task 35
 
-- [ ] Task 48: 例题 ch12
+- [x] Task 48: 例题 ch12
   - 输出：`content/maogai/detail/ch12-examples.md`
   - 依赖：Task 36
 
-- [ ] Task 49: 例题 ch14
+- [x] Task 49: 例题 ch14
   - 输出：`content/maogai/detail/ch14-examples.md`
   - 依赖：Task 37
 
-- [ ] Task 50: 例题 ch15
+- [x] Task 50: 例题 ch15
   - 输出：`content/maogai/detail/ch15-examples.md`
   - 依赖：Task 38
 
-- [ ] Task 51: 例题 ch16
+- [x] Task 51: 例题 ch16
   - 输出：`content/maogai/detail/ch16-examples.md`
   - 依赖：Task 39
 
 ## Phase 5: 集成验证（2 个任务）
 
-- [ ] Task 52: TypeScript 编译检查
+- [x] Task 52: TypeScript 编译检查
   - 运行 `pnpm exec tsc --noEmit`
   - 确认零错误
   - 依赖：Task 1
