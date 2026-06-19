@@ -85,11 +85,27 @@ export const ALL_TOOLS: Record<string, ToolDefinition> = {
       },
     },
   },
+  renderInteractive: {
+    type: "function",
+    function: {
+      name: "renderInteractive",
+      description:
+        "当一个概念用静态文字难以讲清、且交互能显著提升理解时，调用本工具在后台生成一个可交互的 HTML 演示（例如：可拖动滑块看概率分布随参数变化、物理受力/矢量合成、分子构象翻转/反应机理分步等）。生成后用户可在对话中点击「查看」打开。仅在交互确有必要时调用，不要滥用。",
+      parameters: {
+        type: "object",
+        properties: {
+          title: { type: "string", description: "演示标题（简短）" },
+          prompt: { type: "string", description: "要可视化/讲解的知识点与交互需求的详细描述" },
+        },
+        required: ["title", "prompt"],
+      },
+    },
+  },
 };
 
 /** 取本次请求要启用的工具定义。enableSearch 控制是否暴露 webSearch；disabled 来自用户设置。 */
 export function getToolDefs(opts: { enableSearch: boolean; disabled?: string[] }): ToolDefinition[] {
-  const names = ["getCurrentPage", "getOutline", "getSection", "searchNotes"];
+  const names = ["getCurrentPage", "getOutline", "getSection", "searchNotes", "renderInteractive"];
   if (opts.enableSearch) names.push("webSearch");
   const disabled = new Set(opts.disabled ?? []);
   return names.filter((n) => !disabled.has(n)).map((n) => ALL_TOOLS[n]);

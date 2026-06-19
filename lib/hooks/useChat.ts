@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { useChatHistory } from './useChatHistory';
 import { useSettings } from './useSettings';
+import { useArtifacts } from './useArtifacts';
 import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
 import type { ChatMessage, ChatContext, ChatOptions, ToolCallBlock } from '@/lib/types/chat';
 import { parseXmlTags } from '@/lib/utils/xmlParser';
@@ -208,12 +209,22 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                       const meta = event.meta;
                       if (meta && Array.isArray(meta.sources)) existing.sources = meta.sources;
                       if (meta && typeof meta.cacheHit === 'boolean') existing.cacheHit = meta.cacheHit;
+                      if (meta && typeof meta.artifactId === 'string') existing.artifactId = meta.artifactId;
                       updateMessage(sessionId!, assistantId, {
                         toolCalls: Array.from(toolCallsMap.values()),
                       });
                     }
                   }
                   break;
+
+                case 'artifact': {
+                  const a = useArtifacts.getState();
+                  if (event.status === 'start') a.start(event.id, event.title || '交互演示');
+                  else if (event.status === 'delta') a.append(event.id, event.delta || '');
+                  else if (event.status === 'done') a.finish(event.id);
+                  else if (event.status === 'error') a.fail(event.id);
+                  break;
+                }
 
                 case 'error':
                   setError(event.message || '发生未知错误');

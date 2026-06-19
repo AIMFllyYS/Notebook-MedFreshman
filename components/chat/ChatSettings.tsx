@@ -11,6 +11,7 @@ const TOOLS: { name: string; label: string; desc: string }[] = [
   { name: "getSection", label: "读取指定小节", desc: "让 AI 调取其他小节正文做对比讲解" },
   { name: "searchNotes", label: "全文检索", desc: "让 AI 在全书笔记中按关键词检索" },
   { name: "webSearch", label: "联网搜索", desc: "需配置 Bocha key；联网获取实时信息" },
+  { name: "renderInteractive", label: "交互演示", desc: "让 AI 生成可交互的 HTML 讲解（横幅/弹窗查看）" },
 ];
 
 function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {

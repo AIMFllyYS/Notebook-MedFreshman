@@ -18,6 +18,8 @@ export interface ToolCallBlock {
   /** webSearch 专用：联网来源 + 是否命中缓存。 */
   sources?: WebSearchSource[];
   cacheHit?: boolean;
+  /** renderInteractive 专用：生成的交互产物 id（点击「查看」打开弹窗）。 */
+  artifactId?: string;
 }
 
 export interface ChatMessage {

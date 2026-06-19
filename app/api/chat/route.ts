@@ -12,6 +12,7 @@ import {
   type CustomProvider,
 } from "@/lib/ai/provider";
 import { getModelInfo } from "@/lib/ai/models";
+import { streamInteractiveArtifact } from "@/lib/ai/artifact";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -222,6 +223,21 @@ export async function POST(req: NextRequest) {
               let parsed: Record<string, unknown> = {};
               try { parsed = c.args ? JSON.parse(c.args) : {}; } catch { parsed = {}; }
               send({ type: "tool", id: c.id, name: c.name, args: parsed, status: "call" });
+
+              // renderInteractive：交由"子智能体"流式生成 HTML 产物（横幅/半屏/弹窗在前端）。
+              if (c.name === "renderInteractive") {
+                const artifactId = `art_${c.id}`;
+                const summary = await streamInteractiveArtifact(
+                  send,
+                  artifactId,
+                  { title: String(parsed.title ?? ""), prompt: String(parsed.prompt ?? "") },
+                  provider,
+                );
+                send({ type: "tool", id: c.id, status: "result", meta: { artifactId } });
+                convo.push({ role: "tool", tool_call_id: c.id, content: summary });
+                continue;
+              }
+
               const result = await runTool(c.name, parsed, {
                 subjectId,
                 categoryId,

@@ -12,6 +12,8 @@ import SelectionPopover from '@/components/notes/SelectionPopover';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
 import ChatSettings from '@/components/chat/ChatSettings';
+import ArtifactBanner from '@/components/chat/ArtifactBanner';
+import ArtifactViewer from '@/components/chat/ArtifactViewer';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import { QUICK_PROMPTS } from '@/lib/constants/prompts';
 import type { ChatContext, ChatOptions } from '@/lib/types/chat';
@@ -167,6 +169,9 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         </div>
       </div>
 
+      {/* 交互演示横幅（流式生成时展开半屏看实时源码，完成后可弹窗查看） */}
+      <ArtifactBanner />
+
       {/* Messages Area */}
       <div
         ref={scrollContainerRef}
@@ -276,6 +281,9 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
 
       {/* 划词助手：在 AI 回答区选中文字也可弹出（解释/举例/追问/引用） */}
       <SelectionPopover containerRef={scrollContainerRef} />
+
+      {/* 交互演示弹窗（点击「查看」时在左侧渲染 HTML 产物） */}
+      <ArtifactViewer />
 
       {/* History Overlay */}
       {showHistory && (
