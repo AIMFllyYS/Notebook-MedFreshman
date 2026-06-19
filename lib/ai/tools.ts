@@ -8,12 +8,18 @@ import {
   readContentMarkdown,
   searchNotes,
 } from "@/lib/content/loader";
-import { runWebSearch } from "@/lib/ai/webSearch";
+import { runWebSearchDetailed } from "@/lib/ai/webSearch";
 
 export interface ToolContext {
   subjectId: string;
   categoryId: string;
   itemId: string;
+}
+
+/** 工具执行结果：content 回灌给模型；meta 透传给前端展示（如联网来源）。 */
+export interface ToolRunResult {
+  content: string;
+  meta?: Record<string, unknown>;
 }
 
 export const ALL_TOOLS: Record<string, ToolDefinition> = {
@@ -105,28 +111,30 @@ export async function runTool(
   name: string,
   args: Record<string, unknown>,
   ctx: ToolContext,
-): Promise<string> {
+): Promise<ToolRunResult> {
   switch (name) {
     case "getCurrentPage":
-      return currentPagePayload(ctx);
+      return { content: currentPagePayload(ctx) };
     case "getOutline":
-      return getOutlineText();
+      return { content: getOutlineText() };
     case "getSection": {
       const sid = String(args.sectionId ?? "");
       const loc = locateSection(sid);
-      if (!loc) return `未找到小节 ${sid}。可调用 getOutline 查看有效的小节 id。`;
+      if (!loc) return { content: `未找到小节 ${sid}。可调用 getOutline 查看有效的小节 id。` };
       const md = readContentMarkdown(ctx.subjectId, "detail", sid);
       const title = `第${loc.chapter.number}章 ${loc.chapter.title} / ${loc.section.id} ${loc.section.title}`;
-      return md ? `【${title}】\n\n${md}` : `【${title}】该小节正文尚未生成（占位）。`;
+      return { content: md ? `【${title}】\n\n${md}` : `【${title}】该小节正文尚未生成（占位）。` };
     }
     case "searchNotes": {
       const hits = searchNotes(String(args.query ?? ""));
-      if (!hits.length) return "未检索到相关内容（可能对应小节尚未生成详细笔记）。";
-      return hits.map((h) => `[${h.title}] …${h.snippet}…`).join("\n\n");
+      if (!hits.length) return { content: "未检索到相关内容（可能对应小节尚未生成详细笔记）。" };
+      return { content: hits.map((h) => `[${h.title}] …${h.snippet}…`).join("\n\n") };
     }
-    case "webSearch":
-      return runWebSearch(String(args.query ?? ""), Number(args.numResults) || 5);
+    case "webSearch": {
+      const r = await runWebSearchDetailed(String(args.query ?? ""), Number(args.numResults) || 5);
+      return { content: r.content, meta: { sources: r.sources, cacheHit: r.cacheHit } };
+    }
     default:
-      return `未知工具：${name}`;
+      return { content: `未知工具：${name}` };
   }
 }

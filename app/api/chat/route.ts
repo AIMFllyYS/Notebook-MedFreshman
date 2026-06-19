@@ -227,8 +227,8 @@ export async function POST(req: NextRequest) {
                 categoryId,
                 itemId,
               });
-              send({ type: "tool", id: c.id, status: "result" });
-              convo.push({ role: "tool", tool_call_id: c.id, content: result });
+              send({ type: "tool", id: c.id, status: "result", meta: result.meta });
+              convo.push({ role: "tool", tool_call_id: c.id, content: result.content });
             }
             continue;
           }

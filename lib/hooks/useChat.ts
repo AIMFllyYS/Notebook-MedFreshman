@@ -205,6 +205,9 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                     const existing = toolCallsMap.get(event.id);
                     if (existing) {
                       existing.status = 'success';
+                      const meta = event.meta;
+                      if (meta && Array.isArray(meta.sources)) existing.sources = meta.sources;
+                      if (meta && typeof meta.cacheHit === 'boolean') existing.cacheHit = meta.cacheHit;
                       updateMessage(sessionId!, assistantId, {
                         toolCalls: Array.from(toolCallsMap.values()),
                       });

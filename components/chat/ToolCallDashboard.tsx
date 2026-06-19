@@ -1,8 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle } from 'lucide-react';
+import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle, Globe, ExternalLink, Zap } from 'lucide-react';
 import type { ToolCallBlock } from '@/lib/types/chat';
+
+function hostOf(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+}
 
 interface ToolCallDashboardProps {
   toolCalls: ToolCallBlock[];
@@ -83,6 +91,49 @@ const ToolCallItem: React.FC<{ call: ToolCallBlock }> = ({ call }) => {
       {call.executionTime != null && (
         <div style={{ fontSize: '0.7rem', color: 'var(--md-sys-color-on-surface-variant)' }}>
           执行耗时: {call.executionTime}ms
+        </div>
+      )}
+
+      {/* 联网搜索来源卡片 */}
+      {call.name === 'webSearch' && call.sources && call.sources.length > 0 && (
+        <div className="flex flex-col gap-1.5" style={{ fontFamily: 'inherit' }}>
+          <div className="flex items-center gap-1.5" style={{ fontSize: '0.72rem', color: 'var(--md-sys-color-on-surface-variant)' }}>
+            <Globe size={12} style={{ color: 'var(--md-sys-color-primary)' }} />
+            <span>联网来源 · {call.sources.length} 条</span>
+            {call.cacheHit && (
+              <span className="inline-flex items-center gap-0.5" style={{ color: 'var(--md-sys-color-tertiary)' }}>
+                <Zap size={11} /> 缓存命中
+              </span>
+            )}
+          </div>
+          {call.sources.map((s, i) => (
+            <a
+              key={i}
+              href={s.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col gap-0.5 rounded-lg px-2.5 py-2 transition-colors"
+              style={{
+                background: 'var(--md-sys-color-surface-container)',
+                border: '1px solid var(--md-sys-color-outline-variant)',
+                textDecoration: 'none',
+                fontFamily: 'inherit',
+              }}
+            >
+              <div className="flex items-center gap-1" style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--md-sys-color-primary)' }}>
+                <span className="truncate">{i + 1}. {s.title}</span>
+                <ExternalLink size={11} className="shrink-0" />
+              </div>
+              {s.snippet && (
+                <div
+                  style={{ fontSize: '0.72rem', lineHeight: 1.5, color: 'var(--md-sys-color-on-surface-variant)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                >
+                  {s.snippet}
+                </div>
+              )}
+              <div style={{ fontSize: '0.68rem', color: 'var(--md-sys-color-outline)' }}>{hostOf(s.url)}</div>
+            </a>
+          ))}
         </div>
       )}
 

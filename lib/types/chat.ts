@@ -1,5 +1,11 @@
 // AI 对话完整类型定义 —— 1:1 参考原 refer/dist/src/types/chat.ts，扩展多科上下文。
 
+export interface WebSearchSource {
+  title: string;
+  url: string;
+  snippet: string;
+}
+
 export interface ToolCallBlock {
   index?: number;
   id: string;
@@ -9,6 +15,9 @@ export interface ToolCallBlock {
   status: 'running' | 'success' | 'error';
   result?: string;
   executionTime?: number;
+  /** webSearch 专用：联网来源 + 是否命中缓存。 */
+  sources?: WebSearchSource[];
+  cacheHit?: boolean;
 }
 
 export interface ChatMessage {
