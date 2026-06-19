@@ -52,8 +52,6 @@ function EmptyNote({ itemId, title }: { itemId: string; title: string }) {
 }
 
 export default function ContentPageClient({
-  subjectId,
-  categoryId,
   itemId,
   initialContent,
   initialExamples,
@@ -62,7 +60,6 @@ export default function ContentPageClient({
   itemSummary,
   subjectName,
   categoryName,
-  itemStatus,
 }: ContentPageClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<ContentTab>("content");

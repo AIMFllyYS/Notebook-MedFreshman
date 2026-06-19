@@ -25,6 +25,23 @@ interface ClientMessage {
   content: string;
 }
 
+// 上游 SSE 流式增量的最小结构（OpenAI 兼容 chat/completions 流格式）。
+interface StreamToolCall {
+  index?: number;
+  id?: string;
+  function?: { name?: string; arguments?: string };
+}
+interface StreamDelta {
+  content?: string;
+  reasoning?: string;
+  tool_calls?: StreamToolCall[];
+  // 深度思考字段名可由环境变量（REASONING_FIELD）配置，故保留字符串索引签名。
+  [key: string]: unknown;
+}
+interface StreamChunk {
+  choices?: Array<{ delta?: StreamDelta; finish_reason?: string }>;
+}
+
 function buildSystemPrompt(chatCtx: ChatContext): string {
   const subjectName = SUBJECTS[chatCtx.subjectId as keyof typeof SUBJECTS] || chatCtx.subjectId;
   let prompt = SYSTEM_PROMPT_TEMPLATE.replace("{subjectName}", subjectName);
@@ -148,11 +165,11 @@ export async function POST(req: NextRequest) {
               if (!line.startsWith("data:")) continue;
               const data = line.slice(5).trim();
               if (!data || data === "[DONE]") continue;
-              let json: any;
+              let json: StreamChunk;
               try { json = JSON.parse(data); } catch { continue; }
               const choice = json.choices?.[0];
               if (!choice) continue;
-              const delta = choice.delta || {};
+              const delta: StreamDelta = choice.delta || {};
 
               // 深度思考增量
               const reasoning = delta[REASONING_FIELD] ?? delta.reasoning;
