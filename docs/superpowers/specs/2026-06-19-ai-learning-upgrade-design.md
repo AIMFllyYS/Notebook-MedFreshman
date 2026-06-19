@@ -73,7 +73,10 @@ AI 走 OpenAI 兼容端点（`.env.local`：`AI_BASE_URL`/`AI_API_KEY`/`AI_MODEL
 
 ## 4. 分阶段计划（每阶段 = 一次 commit，遵循 PDCA）
 
-- [ ] **S1 右侧浏览器 Tab**：RightPanel 顶部 Tab 栏新增"浏览器"（在"可交互"右侧）；可滑动横向 Tab 栏；
+> 全部 9 阶段已完成并提交（S1=8e5621c, S2=97965ed, S3=ec7654a, S4=e2dc966, S5=4e545e7,
+> S6=c416e96, S7=a21edc2, S8=469d7ce, S9=f8e799c）。每阶段经 tsc + pnpm build + 真实 key 烟测。
+
+- [x] **S1 右侧浏览器 Tab**：RightPanel 顶部 Tab 栏新增"浏览器"（在"可交互"右侧）；可滑动横向 Tab 栏；
   最右侧"+"功能按钮：设置浏览器/新增固定网址（收藏夹式 Tab，localStorage 持久）；iframe 渲染任意 URL，
   本地基础安全（sandbox/allow 合理放开 B 站等）。新组件 `components/browser/`。
 - [ ] **S2 AI Provider/模型层 + 多模型菜单 + 自定义 API 修复 + 工具名 bug 修复 + env 扩展**：
