@@ -607,6 +607,19 @@ body {
   0%, 100% { opacity: 0.35; }
   50% { opacity: 1; }
 }
+@keyframes dropdown-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 隐藏滚动条但保留滚动（用于可横向滑动的 Tab 栏、快捷指令栏等） */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
 /* ── 动画工具类 ────────────────────────────── */
 .animate-fade-up {

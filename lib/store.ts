@@ -2,7 +2,7 @@ import { create } from "zustand";
 import type { VideoEntry } from "@/lib/content/types";
 import type { SubjectId } from "@/lib/types/content";
 
-export type RightTab = "ai" | "video" | "interactive";
+export type RightTab = "ai" | "video" | "interactive" | "browser";
 export type ModelTier = "pro" | "flash";
 
 export interface OutboundMessage {

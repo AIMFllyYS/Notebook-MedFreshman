@@ -3,15 +3,18 @@
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
-import { MessageSquare, Settings, MonitorPlay, Hand } from "lucide-react";
+import { MessageSquare, Settings, MonitorPlay, Hand, Globe, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useStore, type RightTab } from "@/lib/store";
+import { useBrowser, normalizeUrl } from "@/lib/hooks/useBrowser";
+import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
 import type { ChatContext } from "@/lib/types/chat";
 
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
 const ChatSettings = dynamic(() => import("@/components/chat/ChatSettings"), { ssr: false });
 const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
 const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
+const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false });
 
 type AiSubTab = "chat" | "settings";
 
@@ -19,6 +22,7 @@ const RIGHT_TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
   { id: "ai", label: "AI 对话", icon: <MessageSquare size={15} /> },
   { id: "video", label: "动画讲解", icon: <MonitorPlay size={15} /> },
   { id: "interactive", label: "可交互", icon: <Hand size={15} /> },
+  { id: "browser", label: "浏览器", icon: <Globe size={15} /> },
 ];
 
 const AI_SUB_TABS: { id: AiSubTab; label: string; icon: React.ReactNode }[] = [
@@ -40,6 +44,12 @@ export default function RightPanel() {
   const activeItemId = useStore((s) => s.activeItemId);
   const [aiSubTab, setAiSubTab] = useState<AiSubTab>("chat");
 
+  // 浏览器收藏夹标签
+  const bookmarks = useBrowser((s) => s.bookmarks);
+  const currentUrl = useBrowser((s) => s.currentUrl);
+  const navigate = useBrowser((s) => s.navigate);
+  const removeBookmark = useBrowser((s) => s.removeBookmark);
+
   const chatContext: ChatContext = useMemo(() => ({
     subjectId: activeSubjectId,
     categoryId: activeCategoryId,
@@ -49,23 +59,62 @@ export default function RightPanel() {
 
   return (
     <div className="flex h-full flex-col border-l border-[var(--line)] bg-[var(--bg-panel)]">
-      {/* Top-level tab bar */}
-      <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-2 py-1.5">
-        {RIGHT_TABS.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={clsx(
-              "press flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
-              tab === t.id
-                ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
-                : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
-            )}
-          >
-            {t.icon}
-            {t.label}
-          </button>
-        ))}
+      {/* Top-level tab bar（可横向滑动；含浏览器收藏夹标签 + 末尾「＋」） */}
+      <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-1.5 py-1.5">
+        <div className="hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
+          {RIGHT_TABS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={clsx(
+                "press flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
+                tab === t.id
+                  ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
+                  : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
+              )}
+            >
+              {t.icon}
+              {t.label}
+            </button>
+          ))}
+
+          {/* 浏览器收藏夹标签 */}
+          {bookmarks.map((bm) => {
+            const active = tab === "browser" && currentUrl === normalizeUrl(bm.url);
+            return (
+              <span
+                key={bm.id}
+                className={clsx(
+                  "group flex shrink-0 items-center gap-1 rounded-lg border py-1.5 pl-2 pr-1 text-[12.5px] font-medium transition-colors",
+                  active
+                    ? "border-[var(--accent)] bg-[var(--accent-weak)] text-[var(--accent-ink)]"
+                    : "border-[var(--line)] text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
+                )}
+              >
+                <button
+                  onClick={() => {
+                    setTab("browser");
+                    navigate(bm.url);
+                  }}
+                  className="press flex items-center gap-1"
+                  title={bm.url}
+                >
+                  <Globe size={12} />
+                  <span className="max-w-[88px] truncate">{bm.name}</span>
+                </button>
+                <button
+                  onClick={() => removeBookmark(bm.id)}
+                  title="移除收藏"
+                  className="rounded p-0.5 text-[var(--ink-faint)] opacity-0 transition-opacity hover:text-[var(--md-sys-color-error)] group-hover:opacity-100"
+                >
+                  <X size={11} />
+                </button>
+              </span>
+            );
+          })}
+        </div>
+
+        <BrowserSettingsButton onAdded={() => setTab("browser")} />
       </div>
 
       {/* AI sub-tab bar (only when AI tab is active) */}
@@ -118,6 +167,11 @@ export default function RightPanel() {
           {tab === "interactive" && (
             <motion.div key="interactive" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
               <InteractiveTab />
+            </motion.div>
+          )}
+          {tab === "browser" && (
+            <motion.div key="browser" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
+              <BrowserTab />
             </motion.div>
           )}
         </AnimatePresence>
