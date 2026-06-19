@@ -30,13 +30,5 @@ yarn-error.log*
 .idea/
 .vscode/
 
-# one-off / scratch helper scripts (not part of the app build)
-/_*.mjs
-/temp_*.py
-/read_docx.py
-/extract_docx.py
-/process_recording.py
-/count_words.ps1
-
-# standalone vite sub-project, not part of the Next.js app
-/exhibition-hall/
+# archived one-off scripts (not part of the app build)
+/scripts/archive/
