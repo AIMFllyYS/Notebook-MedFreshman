@@ -1,0 +1,90 @@
+/* ─────────────────────────────────────────────────────────────
+   代码块 + highlight.js 最小可读样式
+   ───────────────────────────────────────────────────────────── */
+.hljs-keyword, .hljs-built_in { color: var(--md-sys-color-secondary); }
+.hljs-string { color: var(--color-success); }
+.hljs-number { color: var(--color-warning); }
+.hljs-comment { color: var(--md-sys-color-outline); font-style: italic; }
+.hljs-title, .hljs-function .hljs-title { color: var(--md-sys-color-primary); }
+
+/* ── CodeBlock 组件（复制按钮 + 语言标签） ─────────────────── */
+.code-block-wrapper {
+  margin: 1em 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-lowest);
+}
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: var(--md-sys-color-surface-container-high);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+.code-block-lang {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.code-block-copy {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 11px;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.code-block-copy:hover {
+  background: var(--md-sys-color-surface-container);
+}
+.code-block-pre {
+  margin: 0;
+  padding: 12px 14px;
+  overflow-x: auto;
+  font-size: 0.88em;
+  line-height: 1.6;
+  background: var(--md-sys-color-surface-container-lowest);
+  color: var(--md-sys-color-on-surface-variant);
+}
+.code-block-pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-family: var(--font-mono);
+}
+
+/* ── 公式块样式（KaTeX display） ────────────────────────────── */
+.prose-notes .katex-display,
+.chat-prose .katex-display {
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: 8px;
+  padding: 0.6em 1em;
+  margin: 1.1em 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* ── 表格增强（sticky header + zebra stripes） ──────────────── */
+.prose-notes table thead th,
+.chat-prose table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--bg-muted);
+}
+.prose-notes tbody tr:nth-child(even),
+.chat-prose tbody tr:nth-child(even) {
+  background: var(--md-sys-color-surface-container-low);
+}
+.prose-notes tbody tr:hover,
+.chat-prose tbody tr:hover {
+  background: var(--md-sys-color-surface-container);
+}

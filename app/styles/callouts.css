@@ -1,0 +1,150 @@
+/* ─────────────────────────────────────────────────────────────
+   指令块（theorem / example / insight / pitfall / derivation）
+   ───────────────────────────────────────────────────────────── */
+.callout {
+  margin: 1.3em 0;
+  border: 1px solid var(--line);
+  border-left-width: 4px;
+  border-radius: 10px;
+  padding: 0.9em 1.1em 0.95em;
+  background: var(--bg-elevated);
+}
+.callout > .callout-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.35em;
+}
+.callout > :last-child {
+  margin-bottom: 0;
+}
+.callout p:first-of-type {
+  margin-top: 0.2em;
+}
+.callout-definition {
+  border-left-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
+}
+.callout-definition .callout-label {
+  color: var(--md-sys-color-on-primary-container);
+}
+.callout-theorem {
+  border-left-color: var(--md-sys-color-secondary);
+  background: var(--md-sys-color-secondary-container);
+}
+.callout-theorem .callout-label {
+  color: var(--md-sys-color-on-secondary-container);
+}
+.callout-example {
+  border-left-color: var(--color-success);
+  background: var(--md-sys-color-surface-container-low);
+}
+.callout-example .callout-label {
+  color: var(--color-success);
+}
+.callout-insight {
+  border-left-color: var(--color-warning);
+  background: var(--md-sys-color-surface-container-low);
+}
+.callout-insight .callout-label {
+  color: var(--color-warning);
+}
+.callout-pitfall {
+  border-left-color: var(--md-sys-color-error);
+  background: var(--md-sys-color-error-container);
+}
+.callout-pitfall .callout-label {
+  color: var(--md-sys-color-on-error-container);
+}
+.callout-note {
+  border-left-color: var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-container);
+}
+.callout-note .callout-label {
+  color: var(--md-sys-color-on-surface-variant);
+}
+.callout-tip {
+  border-left-color: var(--color-info);
+  background: var(--md-sys-color-surface-container-low);
+}
+.callout-tip .callout-label {
+  color: var(--color-info);
+}
+
+/* ── Callout 语义图标（SVG data URI，无 emoji 依赖） ────────── */
+.callout > .callout-label::before {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  content: "";
+}
+.callout-definition > .callout-label::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/%3E%3Cpath d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/%3E%3C/svg%3E");
+}
+.callout-theorem > .callout-label::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 21l3-3 5 5'/%3E%3Cpath d='M9 15l5 5'/%3E%3Cpath d='M15 9l5 5'/%3E%3Cpath d='M21 3l-3 3-5-5'/%3E%3C/svg%3E");
+}
+.callout-example > .callout-label::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18h6'/%3E%3Cpath d='M10 22h4'/%3E%3Cpath d='M12 2a7 7 0 0 0-7 7c0 3 2 5 2 7h10c0-2 2-4 2-7a7 7 0 0 0-7-7z'/%3E%3C/svg%3E");
+}
+.callout-insight > .callout-label::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.386 4.5 4.5 0 0 0 2.026 7.419A3.5 3.5 0 0 0 12 20.5a3.5 3.5 0 0 0 6.497-2.57 4.5 4.5 0 0 0 2.026-7.419 4 4 0 0 0-2.526-5.386A3 3 0 0 0 12 5z'/%3E%3Cpath d='M12 5v3'/%3E%3Cpath d='M9 12a3 3 0 1 0 6 0'/%3E%3C/svg%3E");
+}
+.callout-pitfall > .callout-label::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z'/%3E%3Cline x1='12' y1='9' x2='12' y2='13'/%3E%3Cline x1='12' y1='17' x2='12.01' y2='17'/%3E%3C/svg%3E");
+}
+.callout-note > .callout-label::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 17v5'/%3E%3Cpath d='M9 10.76a6 6 0 1 1 6 0v3a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-3z'/%3E%3C/svg%3E");
+}
+.callout-tip > .callout-label::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2l1.5 5L19 8.5l-5 1.5L12 15l-1.5-5L5 8.5l5-1.5L12 2z'/%3E%3Cpath d='M19 15l.7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7L19 15z'/%3E%3C/svg%3E");
+}
+
+/* 可折叠推导 */
+.derivation {
+  margin: 1.3em 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--md-sys-color-surface-container-low);
+  overflow: hidden;
+}
+.derivation > summary {
+  cursor: pointer;
+  padding: 0.7em 1em;
+  font-weight: 640;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  background: var(--bg-muted);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  user-select: none;
+}
+.derivation > summary::-webkit-details-marker {
+  display: none;
+}
+.derivation > summary::before {
+  content: "\25B6";
+  font-size: 0.7em;
+  color: var(--accent);
+  transition: transform 0.15s ease;
+}
+.derivation[open] > summary::before {
+  transform: rotate(90deg);
+}
+.derivation > .derivation-body {
+  padding: 0.4em 1.1em 0.8em;
+}
+
+/* 行内划词高亮 */
+::selection {
+  background: var(--md-sys-color-primary-container);
+}
