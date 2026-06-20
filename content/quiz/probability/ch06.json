@@ -1,0 +1,266 @@
+{
+  "subjectId": "probability",
+  "chapterId": "ch06",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch06",
+      "points": 10,
+      "stem": "下列关于统计量的说法正确的是（ ）。",
+      "options": [
+        "统计量可以含有未知参数，只要样本给定即可",
+        "统计量是样本的函数，且不含任何未知参数",
+        "总体均值μ一定是统计量",
+        "样本观测值和样本随机变量没有区别"
+      ],
+      "answer": 1,
+      "hint": "统计量要能由样本观测值直接算出具体数。",
+      "explanation": "B正确。6.1节定义统计量为样本函数且不含未知参数。若含未知参数，代入样本后仍无法得到确定数；总体参数不是样本函数；样本随机变量与观测值也必须区分。",
+      "sourceRef": {
+        "path": "content/chapters/ch06/6.1.md",
+        "label": "6.1 总体、样本与统计量 · 统计量定义"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "stem": "中心极限定理中，i.i.d.随机变量之和S_n=ΣX_i在n较大时近似服从（ ）。",
+      "options": [
+        "N(μ,σ^2/n)",
+        "N(nμ,nσ^2)",
+        "N(0,1/n)",
+        "χ^2(n)"
+      ],
+      "answer": 1,
+      "hint": "和的均值与方差都随n成倍增长；样本均值才会除以n。",
+      "explanation": "B正确。5.3节给出和的近似分布S_n≈N(nμ,nσ^2)。A是样本均值的近似分布，C无根据，D是标准正态平方和的抽样分布而非一般i.i.d.和。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.3.md",
+        "label": "5.3 中心极限定理 · 三种实用形式"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch06",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设总体X~N(μ,σ^2)，X_1,...,X_n为简单随机样本，则样本均值的分布为____。",
+      "answer": "\n$$\n\\bar X\\sim N\\left(\\mu,\\frac{\\sigma^2}{n}\\right)\n$$\n",
+      "hint": "正态总体下样本均值精确正态，不需要n很大。",
+      "explanation": "6.3节定理一说明正态总体的样本均值仍服从正态分布，均值不变，方差缩小为σ^2/n。这是精确结论，不是中心极限定理的大样本近似。",
+      "scoring_criteria": [
+        "写出X̄服从正态分布（3分）",
+        "均值参数为μ（3分）",
+        "方差参数为σ^2/n（4分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch06/6.3.md",
+        "label": "6.3 正态总体的抽样分布定理 · 样本均值的分布"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "total_points": 10,
+      "stem": "辛钦大数定律说明，若X_1,X_2,...独立同分布且E[X_i]=μ，则样本均值满足____。",
+      "answer": "\n$$\n\\bar X_n\\xrightarrow{P}\\mu\n$$\n",
+      "hint": "关键词是“依概率收敛到总体期望”。",
+      "explanation": "5.2节给出辛钦大数定律：只要独立同分布且期望存在，样本均值就依概率收敛到总体均值μ。这是用样本均值估计总体期望的理论依据。",
+      "scoring_criteria": [
+        "写出样本均值X̄_n（2分）",
+        "写出依概率收敛符号或等价文字（4分）",
+        "极限目标为总体期望μ（4分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.2.md",
+        "label": "5.2 大数定律 · 辛钦大数定律"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch06",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "给出样本观测值2, 4, 6。求样本均值和样本方差S^2。",
+      "answer": "样本均值为\n$$\n\\bar x=\\frac{2+4+6}{3}=4\n$$\n样本方差按分母n-1计算：\n$$\ns^2=\\frac{(2-4)^2+(4-4)^2+(6-4)^2}{3-1}=\\frac{4+0+4}{2}=4\n$$\n",
+      "hint": "样本方差使用n-1，不是n。",
+      "explanation": "6.1节定义样本均值为算术平均，样本方差S^2使用分母n-1，以保证对总体方差无偏。本题三个数围绕4对称，偏差平方和为8，除以2得4。",
+      "scoring_criteria": [
+        "正确计算样本均值4（3分）",
+        "写出偏差平方和(2-4)^2+(4-4)^2+(6-4)^2=8（3分）",
+        "样本方差分母用n-1=2（2分）",
+        "得到s^2=4（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch06/6.1.md",
+        "label": "6.1 总体、样本与统计量 · 样本均值与样本方差"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "某随机变量X的期望为100，标准差为20。独立抽取400个样本，求样本均值的期望、方差，并用切比雪夫不等式给出P(|X̄-100|<5)的下界。",
+      "answer": "单个变量方差为400，样本均值满足\n$$\nE[\\bar X]=100,\\qquad D(\\bar X)=\\frac{400}{400}=1\n$$\n由切比雪夫不等式，\n$$\nP(|\\bar X-100|\\ge5)\\le\\frac{1}{25}\n$$\n所以\n$$\nP(|\\bar X-100|<5)\\ge1-\\frac1{25}=\\frac{24}{25}=0.96\n$$\n",
+      "hint": "先把标准差平方成方差，再把样本均值方差除以样本量。",
+      "explanation": "5.2节例题展示了样本均值方差缩小和切比雪夫下界的结合。这里标准差20意味着总体方差400；样本量400使均值方差变为1，偏差小于5的概率至少为0.96。",
+      "scoring_criteria": [
+        "由标准差20得到总体方差400（2分）",
+        "算出E[X̄]=100（2分）",
+        "算出D(X̄)=1（2分）",
+        "正确使用切比雪夫得到偏离概率≤1/25（2分）",
+        "得到目标概率下界24/25或0.96（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.2.md",
+        "label": "5.2 大数定律 · 样本均值估计与切比雪夫下界"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch06",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设X_1,...,X_8相互独立且均服从N(0,1)。判断ΣX_i^2服从什么分布，并写出其期望和方差。",
+      "answer": "根据χ^2分布定义，8个独立标准正态平方和服从χ^2(8)：\n$$\n\\sum_{i=1}^{8}X_i^2\\sim\\chi^2(8)\n$$\nχ^2(n)的期望为n，方差为2n，所以\n$$\nE=8,\\qquad D=16\n$$\n",
+      "hint": "卡方自由度等于参与平方求和的独立标准正态变量个数。",
+      "explanation": "6.2节定义χ^2分布为独立标准正态平方和，并给出数字特征：期望等于自由度，方差等于自由度的两倍。这里自由度为8。",
+      "scoring_criteria": [
+        "识别每个X_i为独立N(0,1)（2分）",
+        "写出平方和服从χ^2(8)（4分）",
+        "写出期望8（2分）",
+        "写出方差16（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch06/6.2.md",
+        "label": "6.2 三大抽样分布 · χ²分布定义与数字特征"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "manimVideoId": "quiz-prob-ch06-q08",
+      "stem": "设X~B(400,0.25)。用棣莫弗-拉普拉斯定理近似求P(90≤X≤110)，已知Φ(1.155)≈0.876、Φ(-1.155)≈0.124。",
+      "answer": "二项分布参数为n=400,p=0.25,q=0.75，故\n$$\nE[X]=np=100,\\qquad D(X)=npq=400\\times0.25\\times0.75=75\n$$\n标准差为√75≈8.66。标准化端点：\n$$\n\\frac{90-100}{\\sqrt{75}}\\approx-1.155,\\qquad \\frac{110-100}{\\sqrt{75}}\\approx1.155\n$$\n因此\n$$\nP(90\\le X\\le110)\\approx\\Phi(1.155)-\\Phi(-1.155)=0.876-0.124=0.752\n$$\n",
+      "hint": "这是二项分布的大样本正态近似，先算np和npq。",
+      "explanation": "5.3节说明棣莫弗-拉普拉斯定理是中心极限定理处理二项分布的特殊形式：B(n,p)在n大时近似N(np,npq)。本题p不极端且n较大，可用该近似；未要求连续性校正，按给定端点标准化即可。",
+      "scoring_criteria": [
+        "计算np=100与npq=75（3分）",
+        "说明用棣莫弗-拉普拉斯正态近似（2分）",
+        "正确标准化两个端点（2分）",
+        "代入Φ值算出0.752（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.3.md",
+        "label": "5.3 中心极限定理 · 棣莫弗-拉普拉斯定理"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch06",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "manimVideoId": "quiz-prob-ch06-q09",
+      "stem": "设总体X~N(μ,σ^2)，抽取容量n=10的简单随机样本，样本方差为S^2。写出(n-1)S^2/σ^2的分布，并解释自由度为什么是9。",
+      "answer": "正态总体抽样分布定理给出\n$$\n\\frac{(n-1)S^2}{\\sigma^2}\\sim\\chi^2(n-1)\n$$\n当n=10时，\n$$\n\\frac{9S^2}{\\sigma^2}\\sim\\chi^2(9)\n$$\n自由度是9，是因为计算偏差平方和时用样本均值X̄替代未知总体均值μ，偏差满足Σ(X_i-X̄)=0，10个偏差中只有9个独立信息。",
+      "hint": "样本方差的分母n-1和卡方自由度n-1来自同一个“损失一个自由度”的原因。",
+      "explanation": "6.3节定理二说明正态总体下(n-1)S^2/σ^2服从χ^2(n-1)；6.1节解释n-1来自用样本均值作为中心后引入约束。这里容量10，所以自由度为9。",
+      "scoring_criteria": [
+        "写出总体为正态且使用样本方差抽样分布定理（2分）",
+        "写出(n-1)S^2/σ^2~χ^2(n-1)（3分）",
+        "代入n=10得到9S^2/σ^2~χ^2(9)（2分）",
+        "解释因估计均值损失1个自由度（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch06/6.3.md",
+        "label": "6.3 正态总体的抽样分布定理 · 样本方差的分布"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "manimVideoId": "quiz-prob-ch06-q10",
+      "stem": "设总体X的期望μ、方差σ^2有限，X_1,...,X_n为简单随机样本，S^2=(1/(n-1))Σ(X_i-X̄)^2。证明E[S^2]=σ^2，并指出为什么这说明分母应取n-1。",
+      "answer": "利用恒等式\n$$\n\\sum_{i=1}^n(X_i-\\bar X)^2=\\sum_{i=1}^n(X_i-\\mu)^2-n(\\bar X-\\mu)^2\n$$\n两边取期望。因为E[(X_i-μ)^2]=σ^2，且D(X̄)=σ^2/n，所以\n$$\nE\\left[\\sum_{i=1}^n(X_i-\\bar X)^2\\right]=n\\sigma^2-n\\cdot\\frac{\\sigma^2}{n}=(n-1)\\sigma^2\n$$\n因此\n$$\nE[S^2]=\\frac{1}{n-1}(n-1)\\sigma^2=\\sigma^2\n$$\n这说明用n-1作分母时S^2是总体方差的无偏估计；若除以n，期望会变成((n-1)/n)σ^2，系统偏小。",
+      "hint": "把样本对样本均值的偏差平方和，拆成对总体均值的偏差平方和减去样本均值偏差项。",
+      "explanation": "6.1节给出样本方差无偏性的推导与自由度解释，4.2节提供样本均值方差缩小为σ^2/n的基础。核心是样本均值由样本算出，消耗一个独立约束，因此偏差平方和期望为(n-1)σ^2。",
+      "scoring_criteria": [
+        "写出偏差平方和分解恒等式（3分）",
+        "正确取期望得到nσ^2-nD(X̄)（2分）",
+        "使用D(X̄)=σ^2/n（2分）",
+        "推出E[S^2]=σ^2（2分）",
+        "说明分母n会导致有偏、n-1保证无偏（1分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch06/6.1.md",
+        "label": "6.1 总体、样本与统计量 · 样本方差的无偏性"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 10,
+    "byType": {
+      "single_choice": 2,
+      "fill_blank": 2,
+      "essay": 6
+    },
+    "bySource": {
+      "current_chapter": 5,
+      "review": 5
+    },
+    "byDifficulty": {
+      "basic": 7,
+      "medium": 2,
+      "hard": 1
+    }
+  }
+}

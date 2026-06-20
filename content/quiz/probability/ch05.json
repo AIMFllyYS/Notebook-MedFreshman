@@ -1,0 +1,264 @@
+{
+  "subjectId": "probability",
+  "chapterId": "ch05",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "stem": "切比雪夫不等式的主要作用是（ ）。",
+      "options": [
+        "在已知具体分布时给出精确概率",
+        "仅凭期望和方差给出偏离均值概率的上界",
+        "证明随机变量一定等于其期望",
+        "把所有分布都化为正态分布"
+      ],
+      "answer": 1,
+      "hint": "它是保底工具，不要求知道分布全貌。",
+      "explanation": "B正确。5.1节指出切比雪夫不等式只凭均值和方差控制P(|X-μ|≥ε)的上界。它通常不是精确概率，不能说明随机变量必等于期望，也不是中心极限定理。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式 · 仅凭均值与方差给出偏差概率上界"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "stem": "若X_1,...,X_n相互独立且同方差σ^2，样本均值X̄=(X_1+...+X_n)/n的方差为（ ）。",
+      "options": [
+        "σ^2",
+        "nσ^2",
+        "σ^2/n",
+        "σ/n"
+      ],
+      "answer": 2,
+      "hint": "平均会让独立误差相互抵消，方差按1/n缩小。",
+      "explanation": "C正确。4.2和4.3节都强调独立重复测量取平均时，样本均值的方差为σ^2/n。A忘记平均，B是和的方差，D混淆了方差和标准差。",
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.2.md",
+        "label": "4.2 方差与标准差 · 多次测量取平均使方差缩小 n 倍"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "total_points": 10,
+      "stem": "切比雪夫不等式中，若E[X]=μ，D(X)=σ^2，则P(|X-μ|≥ε)≤____。",
+      "answer": "\n$$\nP(|X-\\mu|\\ge \\varepsilon)\\le \\frac{\\sigma^2}{\\varepsilon^2}\n$$\n",
+      "hint": "偏差门槛越大，上界按平方反比变小。",
+      "explanation": "5.1节给出切比雪夫不等式：偏离均值至少ε的概率不超过方差除以ε的平方。注意方向是“≥ε”的概率上界，而不是小于ε的概率。",
+      "scoring_criteria": [
+        "写出偏差事件|X-μ|≥ε（3分）",
+        "右端为σ^2/ε^2（4分）",
+        "不等号方向为≤（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式 · 定义"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "total_points": 10,
+      "stem": "若X~B(n,p)，q=1-p，则D(X)=____。",
+      "answer": "\n$$\nD(X)=npq=np(1-p)\n$$\n",
+      "hint": "把二项变量看作n个独立0-1变量之和。",
+      "explanation": "4.2节用拆分法说明二项分布方差为npq，其中q=1-p。这依赖独立重复试验：每个0-1变量方差为pq，n个独立相加得到npq。",
+      "scoring_criteria": [
+        "指出q=1-p（2分）",
+        "写出二项分布方差npq（5分）",
+        "等价写成np(1-p)（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.2.md",
+        "label": "4.2 方差与标准差 · 二项分布的方差"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设E[X]=10，D(X)=4。用切比雪夫不等式估计P(|X-10|≥6)的上界。",
+      "answer": "取μ=10，σ^2=4，ε=6。由切比雪夫不等式\n$$\nP(|X-10|\\ge6)\\le\\frac{4}{6^2}=\\frac{1}{9}\n$$\n所以上界为1/9。",
+      "hint": "把偏差门槛6代入σ^2/ε^2即可。",
+      "explanation": "5.1节说明切比雪夫不等式适合在不知道具体分布时给出偏离概率上界。本题只给出均值与方差，无法求精确概率，但可保证偏离10至少6的概率不超过1/9。",
+      "scoring_criteria": [
+        "识别μ=10、σ^2=4、ε=6（3分）",
+        "正确写出切比雪夫不等式（3分）",
+        "计算4/36=1/9（3分）",
+        "说明这是上界不是精确概率（1分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式 · 例题与性质"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设X_1,...,X_25相互独立同分布，E[X_i]=8，D(X_i)=16。求样本均值X̄的期望和方差。",
+      "answer": "样本均值是25个样本的平均。由期望线性性，\n$$\nE[\\bar X]=\\frac1{25}\\sum_{i=1}^{25}E[X_i]=8\n$$\n由独立性，\n$$\nD(\\bar X)=\\frac1{25^2}\\sum_{i=1}^{25}D(X_i)=\\frac{25\\cdot16}{625}=\\frac{16}{25}=0.64\n$$\n",
+      "hint": "均值的期望不变，方差缩小为单个变量方差的1/n。",
+      "explanation": "4.1节给出期望线性性，4.2节说明独立平均会使方差缩小n倍。样本均值仍以总体期望8为中心，波动程度则由16降为16/25。",
+      "scoring_criteria": [
+        "写出样本均值定义或使用平均结构（2分）",
+        "算出E[X̄]=8（3分）",
+        "利用独立性计算方差而非直接除以25一次以外的错误形式（3分）",
+        "得到D(X̄)=16/25或0.64（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.2.md",
+        "label": "4.2 方差与标准差 · 多次测量取平均"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "在n次独立重复试验中事件A发生概率为p，发生频率为f_n(A)。写出伯努利大数定律的结论，并解释其概率意义。",
+      "answer": "伯努利大数定律表明频率依概率收敛到概率：\n$$\nf_n(A)\\xrightarrow{P}p\n$$\n等价地，对任意ε>0，\n$$\nP(|f_n(A)-p|\\ge \\varepsilon)\\to0\\quad(n\\to\\infty)\n$$\n其意义是：重复试验次数越多，频率偏离真实概率超过任意固定误差的概率越趋近0，概率的频率解释因此获得理论保证。",
+      "hint": "大数定律不是说每一次样本路径都必然等于p，而是偏差概率趋于0。",
+      "explanation": "5.2节把伯努利大数定律解释为频率稳定于概率，且使用依概率收敛语言。它说明频率是概率的观测值，概率是频率的理论值；这种稳定是概率意义上的，而不是有限n时必然相等。",
+      "scoring_criteria": [
+        "写出f_n(A)依概率收敛到p（3分）",
+        "用任意ε描述偏差概率趋于0（3分）",
+        "说明频率稳定于概率的含义（2分）",
+        "避免说成有限次必然等于p（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.2.md",
+        "label": "5.2 大数定律 · 伯努利大数定律"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "manimVideoId": "quiz-prob-ch05-q08",
+      "stem": "某零件尺寸X满足E[X]=50，D(X)=9。独立抽取n个零件，用样本均值估计总体均值。至少取多大n，才能用切比雪夫不等式保证P(|X̄-50|≥1)≤0.01？",
+      "answer": "独立同分布样本均值满足\n$$\nE[\\bar X]=50,\\qquad D(\\bar X)=\\frac{9}{n}\n$$\n由切比雪夫不等式，\n$$\nP(|\\bar X-50|\\ge1)\\le\\frac{D(\\bar X)}{1^2}=\\frac{9}{n}\n$$\n要求9/n≤0.01，故n≥900。至少抽取900个。",
+      "hint": "先把单个变量方差换成样本均值方差，再套切比雪夫。",
+      "explanation": "本题把4.2节样本均值方差缩小为σ^2/n与5.1节切比雪夫不等式连接起来。若直接用9而忘记除以n，就无法体现样本量提高精度；解不等式得到保证型最小样本量900。",
+      "scoring_criteria": [
+        "写出D(X̄)=9/n（3分）",
+        "正确套用切比雪夫到样本均值（3分）",
+        "建立9/n≤0.01（2分）",
+        "解得n≥900并说明至少900个（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式与大数定律 · 样本均值证明思路"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "manimVideoId": "quiz-prob-ch05-q09",
+      "stem": "设X_1,...,X_100独立同分布，E[X_i]=2，D(X_i)=9。用中心极限定理近似求P(185≤ΣX_i≤215)，已知Φ(0.5)≈0.6915。",
+      "answer": "令S为100个样本之和，则\n$$\nE[S]=100\\times2=200,\\qquad D(S)=100\\times9=900\n$$\n由中心极限定理，S近似服从N(200,900)，标准差为30。于是\n$$\nP(185\\le S\\le215)\\approx P\\left(-0.5\\le Z\\le0.5\\right)=2\\Phi(0.5)-1\n$$\n代入Φ(0.5)≈0.6915，得概率约0.383。",
+      "hint": "先算和的期望与方差，再标准化到标准正态。",
+      "explanation": "5.3节给出中心极限定理的和的实用形式：i.i.d.变量之和近似N(nμ,nσ^2)。这里n=100足够大，区间185到215关于均值200对称，标准化端点为±0.5。",
+      "scoring_criteria": [
+        "计算S的期望200和方差900（3分）",
+        "说明由CLT得S近似N(200,900)（2分）",
+        "标准化端点得到-0.5与0.5（2分）",
+        "用2Φ(0.5)-1算出约0.383（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.3.md",
+        "label": "5.3 中心极限定理 · 和的近似分布与标准化形式"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "manimVideoId": "quiz-prob-ch05-q10",
+      "stem": "设X和Y独立，均服从U(0,1)，Z=X+Y。求Z的密度，并由此求E[Z]。",
+      "answer": "独立时使用卷积公式。因f_X(x)=f_Y(x)=1(0<x<1)，有\n$$\nf_Z(z)=\\int_{-\\infty}^{+\\infty} f_X(x)f_Y(z-x)\\,dx\n$$\n有效积分长度为：0<z<1时x在(0,z)，1≤z<2时x在(z-1,1)。故\n$$\nf_Z(z)=\\begin{cases}z,&0<z<1,\\\\2-z,&1\\le z<2,\\\\0,&\\text{其他}.\\end{cases}\n$$\n再由线性性，E[Z]=E[X]+E[Y]=1/2+1/2=1；也可对分段密度积分得到同样结果。",
+      "hint": "画出0<x<1且0<z-x<1的重叠区间，密度就是重叠长度。",
+      "explanation": "3.5节用两个U(0,1)变量的和展示卷积。卷积积分的核心是确定x同时满足0<x<1和0<z-x<1的长度；得到三角形密度后，第四章期望线性性立刻给出E[Z]=1。",
+      "scoring_criteria": [
+        "写出独立卷积公式（2分）",
+        "正确分析0<z<1与1≤z<2两段积分区间（3分）",
+        "得到三角形密度分段函数（3分）",
+        "求得E[Z]=1（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.5.md",
+        "label": "3.5 两个随机变量函数的分布 · 均匀分布的卷积"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 10,
+    "byType": {
+      "single_choice": 2,
+      "fill_blank": 2,
+      "essay": 6
+    },
+    "bySource": {
+      "current_chapter": 5,
+      "review": 5
+    },
+    "byDifficulty": {
+      "basic": 7,
+      "medium": 2,
+      "hard": 1
+    }
+  }
+}

@@ -1,0 +1,266 @@
+{
+  "subjectId": "probability",
+  "chapterId": "ch03",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch03",
+      "label": "单项选择题",
+      "points": 10,
+      "stem": "设连续型二维随机变量 (X,Y) 的联合密度为 f(x,y)，则 X 的边缘密度 f_X(x) 应为（　）。",
+      "options": [
+        "f(x,0)",
+        "∫ f(x,y) dy，在 y 的全范围上积分",
+        "∫ f(x,y) dx，在 x 的全范围上积分",
+        "F(x,+∞)"
+      ],
+      "answer": 1,
+      "hint": "求 X 的边缘密度，要把另一个变量 Y “积分掉”。",
+      "explanation": "B 正确。连续型二维随机变量中，X 的边缘密度由联合密度对 y 在有效范围上积分得到，即 f_X(x)=∫f(x,y)dy。A 错在把 y 固定为 0；C 是求 Y 的边缘密度时对 x 积分；D 是边缘分布函数 F_X(x) 的形式，不是边缘密度。",
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.2.md",
+        "label": "3.2 边缘分布 · 连续型边缘概率密度"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "label": "单项选择题",
+      "points": 10,
+      "stem": "若 X~Exp(λ)，则下列关于其分布函数 F(x) 的表达正确的是（　）。",
+      "options": [
+        "F(x)=λe^{-λx}, x>0",
+        "F(x)=1-e^{-λx}, x>0；F(x)=0, x≤0",
+        "F(x)=e^{-λx}, x>0",
+        "F(x)=1/λ, x>0"
+      ],
+      "answer": 1,
+      "hint": "密度是 λe^{-λx}，分布函数是从 0 到 x 积分后的累积概率。",
+      "explanation": "B 正确。指数分布的密度为 f(x)=λe^{-λx}（x>0），对其积分得到 F(x)=1-e^{-λx}；当 x≤0 时，随机变量不取正轴以外的值，F(x)=0。A 是密度不是 CDF，C 是生存函数 P(X>x)，D 与分布函数无关。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.4.md",
+        "label": "2.4 连续型随机变量与常见连续分布 · 指数分布的分布函数"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch03",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "若连续型随机变量 X、Y 相互独立，边缘密度分别为 f_X(x)、f_Y(y)，则联合密度 f(x,y)=____。",
+      "answer": "\\n$$\\nf(x,y)=f_X(x)f_Y(y)\\n$$\\n",
+      "hint": "独立性正好是“联合可由边缘相乘恢复”的条件。",
+      "explanation": "连续型随机变量独立的充要条件是联合密度几乎处处等于两个边缘密度的乘积。这个公式也是从边缘分布构造联合分布最常用的工具。反过来，若已知联合密度不能分解为边缘乘积，或者有效域不是两个一维范围的笛卡儿积，通常说明不独立。",
+      "scoring_criteria": [
+        "写出联合密度等于边缘密度乘积的结构（6分）",
+        "变量对应正确，为 f_X(x)f_Y(y)（4分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.4.md",
+        "label": "3.4 随机变量的独立性 · 连续型独立的充要条件"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "若 X~P(λ)，则 P(X=0)=____。",
+      "answer": "\\n$$\\ne^{-\\lambda}\\n$$\\n",
+      "hint": "泊松分布从 k=0 开始，把 k=0 代入公式即可。",
+      "explanation": "泊松分布的分布律为 P(X=k)=λ^k e^{-λ}/k!，k=0,1,2,...。代入 k=0，有 λ^0=1，0!=1，所以 P(X=0)=e^{-λ}。这是“至少发生一次”类题目常用的补集起点：P(X≥1)=1-e^{-λ}。",
+      "scoring_criteria": [
+        "写出泊松分布公式或说明代入 k=0（4分）",
+        "正确使用 λ^0=1、0!=1（3分）",
+        "得到 e^{-λ}（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.2.md",
+        "label": "2.2 离散型随机变量与常见分布 · 泊松分布"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch03",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设 (X,Y) 在三角形区域 D={ (x,y): x≥0, y≥0, x+y≤1 } 上均匀分布。求联合密度 f(x,y)，并求 P(X+Y≤1/2)。",
+      "answer": "区域 D 是直角三角形，面积为\\n$$\\nS_D=\\frac{1}{2}\\times1\\times1=\\frac{1}{2}.\\n$$\\n二维均匀分布的密度为面积的倒数，所以\\n$$\\nf(x,y)=\\begin{cases}2,&(x,y)\\in D,\\\\0,&\\text{其他}.\n\\end{cases}\\n$$\\n事件 X+Y≤1/2 对应相似小三角形，面积为\\n$$\\n\\frac{1}{2}\\times\\frac{1}{2}\\times\\frac{1}{2}=\\frac{1}{8}.\\n$$\\n因此\\n$$\\nP(X+Y\\leq1/2)=2\\times\\frac{1}{8}=\\frac{1}{4}.\\n$$\\n",
+      "hint": "二维均匀分布的密度是区域面积的倒数；概率正比于子区域面积。",
+      "explanation": "本题考查二维均匀分布。联合密度不是区域面积，而是面积的倒数，因为密度在整个区域上的二重积分必须为 1。子事件 X+Y≤1/2 仍是同顶点的直角三角形，线性比例为 1/2，面积比例为 1/4。用密度 2 乘以子区域面积 1/8 得到同样结果。",
+      "scoring_criteria": [
+        "求出三角形面积 1/2（2分）",
+        "写出联合密度在 D 上为 2、其他为 0（3分）",
+        "识别 X+Y≤1/2 的子区域并算得面积 1/8（3分）",
+        "计算概率 1/4（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.1.md",
+        "label": "3.1 二维随机变量与联合分布 · 三角形区域上的均匀分布"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设 P(A)=0.6，P(B|A)=0.5。求 P(AB)。",
+      "answer": "由条件概率定义或乘法公式，\\n$$\\nP(AB)=P(A)P(B\\mid A).\\n$$\\n代入题设，\\n$$\\nP(AB)=0.6\\times0.5=0.3.\\n$$\\n",
+      "hint": "把条件概率公式 P(B|A)=P(AB)/P(A) 变形。",
+      "explanation": "乘法公式是条件概率定义的直接变形：当 P(A)>0 时，P(B|A)=P(AB)/P(A)，所以 P(AB)=P(A)P(B|A)。本题没有给出 P(B)，也不需要 P(B)；不能把 P(B|A) 当成 P(B) 使用。",
+      "scoring_criteria": [
+        "写出乘法公式 P(AB)=P(A)P(B|A)（5分）",
+        "正确代入 0.6×0.5（3分）",
+        "算得 0.3（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式 · 乘法公式"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch03",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设 (X,Y) 的联合密度为 f(x,y)=4xy，0≤x≤1，0≤y≤1，其他处为 0。求 X、Y 的边缘密度，并判断 X 与 Y 是否独立。",
+      "answer": "先求 X 的边缘密度：\\n$$\\nf_X(x)=\\int_0^1 4xy\\,dy=4x\\cdot\\frac{1}{2}=2x,\\quad0\\leq x\\leq1.\\n$$\\n同理，\\n$$\\nf_Y(y)=\\int_0^1 4xy\\,dx=4y\\cdot\\frac{1}{2}=2y,\\quad0\\leq y\\leq1.\\n$$\\n检查乘积：\\n$$\\nf_X(x)f_Y(y)=(2x)(2y)=4xy=f(x,y)\\n$$\\n在有效区域内成立，区域也是矩形 [0,1]×[0,1]，因此 X 与 Y 相互独立。",
+      "hint": "先分别对另一个变量积分，再检验联合密度能否写成两个边缘密度的乘积。",
+      "explanation": "联合密度定义在矩形区域上，先具备独立性的可能。计算边缘密度后，f_X(x)=2x、f_Y(y)=2y，其乘积恰等于联合密度 4xy，并且在区域外也同为 0。因此满足连续型独立的充要条件。该题不能只看“4xy 含 x 和 y”就判断不独立，关键是能否分解为边缘密度乘积。",
+      "scoring_criteria": [
+        "正确求得 f_X(x)=2x，0≤x≤1（3分）",
+        "正确求得 f_Y(y)=2y，0≤y≤1（3分）",
+        "验证 f_X(x)f_Y(y)=f(x,y)（3分）",
+        "判断 X、Y 独立（1分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.1.md",
+        "label": "3.1 二维随机变量与联合分布 · 联合密度与边缘密度例题"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设 X 的密度为 f_X(x)=x/2，0<x<2，其他处为 0。令 Y=(X-1)^2。求 Y 的分布函数和密度。",
+      "answer": "X∈(0,2)，所以 Y=(X-1)^2 的取值范围为 0≤Y<1。若 y<0，则 F_Y(y)=0；若 y≥1，则 F_Y(y)=1。对 0≤y<1，\\n$$\\nF_Y(y)=P((X-1)^2\\leq y)=P(1-\\sqrt y\\leq X\\leq1+\\sqrt y).\\n$$\\n因此\\n$$\\nF_Y(y)=\\int_{1-\\sqrt y}^{1+\\sqrt y}\\frac{x}{2}\\,dx=\\frac{(1+\\sqrt y)^2-(1-\\sqrt y)^2}{4}=\\sqrt y.\\n$$\\n对 0<y<1 求导，\\n$$\\nf_Y(y)=F_Y'(y)=\\frac{1}{2\\sqrt y}.\\n$$\\n综上，\\n$$\\nF_Y(y)=\\begin{cases}0,&y<0,\\\\\\sqrt y,&0\\leq y<1,\\\\1,&y\\geq1,\n\\end{cases}\\quad\nf_Y(y)=\\begin{cases}\\frac{1}{2\\sqrt y},&0<y<1,\\\\0,&\\text{其他}.\n\\end{cases}\\n$$\\n",
+      "hint": "Y=(X-1)^2 非单调，不能直接套单调变换公式；先求 F_Y(y)。",
+      "explanation": "本题是非单调函数分布，必须用分布函数法。先确定 Y 的取值范围，再把 (X-1)^2≤y 解成关于 X 的区间。由于 y∈[0,1) 时该区间完整落在 X 的支撑 (0,2) 内，直接积分即可。最后对 F_Y(y)=√y 求导得到密度。注意 y=0 处密度无须定义，单点不影响连续型概率。",
+      "scoring_criteria": [
+        "指出 Y 的取值范围为 [0,1) 并分段处理（2分）",
+        "将不等式转化为 1-√y≤X≤1+√y（3分）",
+        "正确积分得 F_Y(y)=√y（3分）",
+        "求导得 f_Y(y)=1/(2√y)，0<y<1（2分）"
+      ],
+      "manimVideoId": "quiz-prob-ch03-q008",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.5.md",
+        "label": "2.5 随机变量函数的分布 · 分布函数法完整过程"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设 X~U(0,10)。令 Y=2X+5。求 Y 的密度函数。",
+      "answer": "X 的密度为\\n$$\\nf_X(x)=\\frac{1}{10},\\quad0<x<10.\\n$$\\n变换 Y=2X+5 严格单调递增，反函数为\\n$$\\nx=\\frac{y-5}{2},\\quad \\left|\\frac{dx}{dy}\\right|=\\frac{1}{2}.\\n$$\\nY 的取值范围为\\n$$\\n5<y<25.\\n$$\\n由单调变量变换公式，\\n$$\\nf_Y(y)=f_X\\left(\\frac{y-5}{2}\\right)\\cdot\\frac{1}{2}=\\frac{1}{10}\\cdot\\frac{1}{2}=\\frac{1}{20},\\quad5<y<25.\\n$$\\n其他处 f_Y(y)=0。",
+      "hint": "线性变换会把区间长度放大 2 倍，密度高度相应变成原来的一半。",
+      "explanation": "本题是严格单调函数的公式法。均匀分布经线性变换后仍为均匀分布，但必须同步变换取值范围和密度高度。X∈(0,10) 被 Y=2X+5 映到 (5,25)，区间长度从 10 变成 20，因此密度为 1/20。若忘记乘反函数导数 1/2，会错误得到 1/10，积分总面积变成 2。",
+      "scoring_criteria": [
+        "写出 X 的密度和 Y 的取值范围 (5,25)（3分）",
+        "求得反函数 x=(y-5)/2 及雅可比 1/2（3分）",
+        "正确代入公式得 f_Y(y)=1/20（3分）",
+        "说明其他处密度为 0（1分）"
+      ],
+      "manimVideoId": "quiz-prob-ch03-q009",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.5.md",
+        "label": "2.5 随机变量函数的分布 · 单调函数变量变换公式 / 线性变换"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "ch03",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设 X、Y 独立且均服从 U(0,1)。令 Z=X+Y。求 Z 的密度函数。",
+      "answer": "X、Y 独立，且\\n$$\\nf_X(x)=f_Y(y)=1,\\quad0<x<1.\\n$$\\n由卷积公式，\\n$$\\nf_Z(z)=\\int_{-\\infty}^{+\\infty}f_X(x)f_Y(z-x)\\,dx.\\n$$\\n被积函数非零需同时满足 0<x<1 与 0<z-x<1，即\\n$$\\nz-1<x<z\\quad\\text{且}\\quad0<x<1.\\n$$\\n当 0<z<1 时，交集为 0<x<z，所以\\n$$\\nf_Z(z)=\\int_0^z1\\,dx=z.\\n$$\\n当 1≤z<2 时，交集为 z-1<x<1，所以\\n$$\\nf_Z(z)=\\int_{z-1}^{1}1\\,dx=2-z.\\n$$\\n其他 z 下交集为空。故\\n$$\\nf_Z(z)=\\begin{cases}z,&0<z<1,\\\\2-z,&1\\leq z<2,\\\\0,&\\text{其他}.\n\\end{cases}\\n$$\\n",
+      "hint": "卷积的关键不是公式本身，而是同时满足 x 和 z-x 都落在 (0,1) 的积分区间。",
+      "explanation": "这是两个独立均匀分布之和的经典卷积题。独立允许把联合密度写成边缘乘积，卷积积分中被积函数非零的条件必须同时来自 X 的支撑和 Y 的支撑。随着 z 从 0 到 2 移动，两个区间的交集长度先增后减，因此密度呈三角形：0 到 1 上为 z，1 到 2 上为 2-z。常见错误是把积分上下限固定为 0 到 1，忽略 z 的分段。",
+      "scoring_criteria": [
+        "写出独立情形卷积公式（2分）",
+        "正确给出非零条件 0<x<1 且 0<z-x<1（3分）",
+        "分 0<z<1 算得 f_Z(z)=z（2分）",
+        "分 1≤z<2 算得 f_Z(z)=2-z，并说明其他处为 0（3分）"
+      ],
+      "manimVideoId": "quiz-prob-ch03-q010",
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.5.md",
+        "label": "3.5 两个随机变量函数的分布 · 均匀分布的卷积"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 10,
+    "byType": {
+      "single_choice": 2,
+      "fill_blank": 2,
+      "essay": 6
+    },
+    "bySource": {
+      "current_chapter": 5,
+      "review": 5
+    },
+    "byDifficulty": {
+      "basic": 7,
+      "medium": 2,
+      "hard": 1
+    }
+  }
+}

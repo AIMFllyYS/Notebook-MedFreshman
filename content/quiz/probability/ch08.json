@@ -1,0 +1,270 @@
+{
+  "subjectId": "probability",
+  "chapterId": "ch08",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 10,
+      "stem": "在假设检验中，若样本统计量没有落入拒绝域，正确的结论表述是（ ）。",
+      "options": [
+        "接受 \n$$\nH_0\n$$\n，并证明 \n$$\nH_0\n$$\n 一定为真",
+        "不拒绝 \n$$\nH_0\n$$\n，说明样本证据不足以推翻它",
+        "拒绝 \n$$\nH_1\n$$\n，并证明 \n$$\nH_1\n$$\n 一定为假",
+        "同时接受 \n$$\nH_0\n$$\n 与 \n$$\nH_1\n$$\n，因为二者都可能为真"
+      ],
+      "answer": 1,
+      "hint": "假设检验的语言是非对称的，证据不足和证明为真不是一回事。",
+      "explanation": "B 正确。8.1 节反复强调，假设检验只说“拒绝 \n$$\nH_0\n$$\n”或“不拒绝 \n$$\nH_0\n$$\n”，不说“接受 \n$$\nH_0\n$$\n”。样本没有落入拒绝域，只表示证据强度不够，并不能证明原假设为真。A、C 都把统计决策误解成确定性证明；D 错在 \n$$\nH_0\n$$\n 与 \n$$\nH_1\n$$\n 在设定上互斥。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.1.md",
+        "label": "8.1 假设检验的基本思想 · 为什么是拒绝而非接受"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 10,
+      "stem": "对正态总体均值 \n$$\n\\mu\n$$\n 构造置信区间时，若 \n$$\n\\sigma^2\n$$\n 未知，应使用的分布是（ ）。",
+      "options": [
+        "标准正态分布 \n$$\nN(0,1)\n$$\n",
+        "自由度为 \n$$\nn-1\n$$\n 的 \n$$\nt\n$$\n 分布",
+        "自由度为 \n$$\nn\n$$\n 的 \n$$\n\\chi^2\n$$\n 分布",
+        "自由度为 \n$$\n(1,n-1)\n$$\n 的 \n$$\nF\n$$\n 分布"
+      ],
+      "answer": 1,
+      "hint": "未知方差时，标准化分母从 \n$$\n\\sigma/\\sqrt n\n$$\n 换成 \n$$\nS/\\sqrt n\n$$\n。",
+      "explanation": "B 正确。7.4 节中，正态总体均值区间分为两种：\n$$\n\\sigma^2\n$$\n 已知用 \n$$\nZ=(\\bar X-\\mu)/(\\sigma/\\sqrt n)\\sim N(0,1)\n$$\n；\n$$\n\\sigma^2\n$$\n 未知用 \n$$\nT=(\\bar X-\\mu)/(S/\\sqrt n)\\sim t(n-1)\n$$\n。\n$$\n\\chi^2\n$$\n 分布主要用于正态总体方差区间，\n$$\nF\n$$\n 分布主要用于两个方差比的推断。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.4.md",
+        "label": "7.4 区间估计 · Z 区间与 t 区间对比"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设总体 \n$$\nX\\sim N(\\mu,\\sigma^2)\n$$\n 且 \n$$\n\\sigma^2\n$$\n 已知，检验 \n$$\nH_0:\\mu=\\mu_0\n$$\n 时使用的 \n$$\nZ\n$$\n 统计量为：____。",
+      "answer": "\n$$\nZ=\\frac{\\bar{X}-\\mu_0}{\\sigma/\\sqrt{n}}\n$$\n",
+      "hint": "把样本均值与假设均值的差，除以样本均值的标准差。",
+      "explanation": "8.2 节指出，在 \n$$\nH_0:\\mu=\\mu_0\n$$\n 为真时，\n$$\n\\bar{X}\\sim N(\\mu_0,\\sigma^2/n)\n$$\n。标准化后得到 \n$$\nZ=(\\bar X-\\mu_0)/(\\sigma/\\sqrt n)\\sim N(0,1)\n$$\n。双侧、左侧、右侧检验的拒绝域都以这个统计量为基础。",
+      "scoring_criteria": [
+        "分子写为 \n$$\n\\bar{X}-\\mu_0\n$$\n（3分）",
+        "分母写为 \n$$\n\\sigma/\\sqrt n\n$$\n（4分）",
+        "整体表达为 \n$$\nZ\n$$\n 检验统计量（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.2.md",
+        "label": "8.2 正态总体均值的假设检验 · σ已知的 Z 检验"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设样本来自正态总体 \n$$\nN(\\mu,\\sigma^2)\n$$\n，\n$$\n\\mu,\\sigma^2\n$$\n 均未知。\n$$\n\\sigma^2\n$$\n 的置信区间使用的枢轴量为：____。",
+      "answer": "\n$$\n\\chi^2=\\frac{(n-1)S^2}{\\sigma^2}\\sim \\chi^2(n-1)\n$$\n",
+      "hint": "方差推断对应卡方分布，分子是无偏样本方差乘以自由度。",
+      "explanation": "7.4 节的正态总体方差区间建立在抽样分布定理上：\n$$\n(n-1)S^2/\\sigma^2\\sim \\chi^2(n-1)\n$$\n。由于该枢轴量分布已知且只含未知参数 \n$$\n\\sigma^2\n$$\n，可通过卡方分位点解出方差的置信区间。注意 \n$$\nS^2\n$$\n 的分母是 \n$$\nn-1\n$$\n。",
+      "scoring_criteria": [
+        "写出分子 \n$$\n(n-1)S^2\n$$\n（3分）",
+        "写出分母 \n$$\n\\sigma^2\n$$\n（2分）",
+        "指出服从 \n$$\n\\chi^2(n-1)\n$$\n（5分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.4.md",
+        "label": "7.4 区间估计 · σ² 的卡方置信区间"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "某饮料厂规定每瓶平均含量为 \n$$\n500\n$$\n mL。随机抽取 \n$$\n25\n$$\n 瓶，得 \n$$\n\\bar{x}=497\n$$\n mL，已知总体标准差 \n$$\n\\sigma=10\n$$\n mL，且总体服从正态分布。在 \n$$\n\\alpha=0.05\n$$\n 下检验平均含量是否仍为 \n$$\n500\n$$\n mL。",
+      "answer": "提出假设：\n$$\nH_0:\\mu=500,\\qquad H_1:\\mu\\neq500.\n$$\n总体正态且 \n$$\n\\sigma\n$$\n 已知，用 \n$$\nZ\n$$\n 检验：\n$$\nZ=\\frac{\\bar{X}-500}{10/\\sqrt{25}}=\\frac{\\bar{X}-500}{2}.\n$$\n在 \n$$\n\\alpha=0.05\n$$\n 的双侧检验中，拒绝域为\n$$\n|Z|>z_{0.025}=1.96.\n$$\n观测值为\n$$\nz=\\frac{497-500}{2}=-1.5,\\qquad |z|=1.5<1.96.\n$$\n所以统计量未落入拒绝域，在显著性水平 \n$$\n0.05\n$$\n 下不拒绝 \n$$\nH_0\n$$\n。结论：没有充分证据表明平均含量不是 \n$$\n500\n$$\n mL。",
+      "hint": "“是否仍为 500”是双侧检验；先写假设，再算标准化统计量。",
+      "scoring_criteria": [
+        "正确提出 \n$$\nH_0:\\mu=500\n$$\n、\n$$\nH_1:\\mu\\neq500\n$$\n（2分）",
+        "判断使用 \n$$\nZ\n$$\n 检验并写出统计量（2分）",
+        "确定双侧拒绝域 \n$$\n|Z|>1.96\n$$\n（2分）",
+        "计算 \n$$\nz=-1.5\n$$\n 且 \n$$\n|z|<1.96\n$$\n（2分）",
+        "作出“不拒绝 \n$$\nH_0\n$$\n”并给出实际结论（2分）"
+      ],
+      "explanation": "8.1 与 8.2 节给出假设检验六步流程。本题中偏差 \n$$\n497-500=-3\n$$\n mL 看似存在，但样本均值标准差为 \n$$\n10/\\sqrt{25}=2\n$$\n mL，偏离只有 \n$$\n1.5\n$$\n 个标准误，未达到 5% 双侧检验的临界程度。因此不能说机器已显著偏离标准，只能说证据不足以拒绝原假设。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.2.md",
+        "label": "8.2 正态总体均值的假设检验 · σ已知双侧 Z 检验例题"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch06",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设 \n$$\nX_1,\\ldots,X_n\n$$\n 来自 \n$$\nN(\\mu,\\sigma^2)\n$$\n。写出正态总体抽样分布中与 \n$$\n\\bar{X}\n$$\n、\n$$\nS^2\n$$\n 有关的四个基础结论，并说明它们为什么是区间估计和假设检验的基础。",
+      "answer": "正态总体的抽样分布定理给出：\n$$\n\\bar{X}\\sim N\\left(\\mu,\\frac{\\sigma^2}{n}\\right),\n$$\n$$\n\\frac{(n-1)S^2}{\\sigma^2}\\sim \\chi^2(n-1),\n$$\n并且 \n$$\n\\bar{X}\n$$\n 与 \n$$\nS^2\n$$\n 相互独立。由前两条和独立性可推出\n$$\n\\frac{\\bar{X}-\\mu}{S/\\sqrt n}\\sim t(n-1).\n$$\n意义：第一条支持 \n$$\n\\sigma\n$$\n 已知时对 \n$$\n\\mu\n$$\n 的 Z 区间和 Z 检验；第二条支持对 \n$$\n\\sigma^2\n$$\n 的卡方区间和卡方检验；第三条独立性保证 t 统计量的构造成立；第四条支持 \n$$\n\\sigma\n$$\n 未知时对 \n$$\n\\mu\n$$\n 的 t 区间和 t 检验。",
+      "hint": "围绕四个关键词组织：样本均值、样本方差卡方、独立性、t 统计量。",
+      "scoring_criteria": [
+        "写出 \n$$\n\\bar X\\sim N(\\mu,\\sigma^2/n)\n$$\n（2分）",
+        "写出 \n$$\n(n-1)S^2/\\sigma^2\\sim\\chi^2(n-1)\n$$\n（2分）",
+        "指出 \n$$\n\\bar X\n$$\n 与 \n$$\nS^2\n$$\n 相互独立（2分）",
+        "写出 \n$$\n(\\bar X-\\mu)/(S/\\sqrt n)\\sim t(n-1)\n$$\n（2分）",
+        "说明这些结论对应 Z、t、χ² 推断方法（2分）"
+      ],
+      "explanation": "6.3 节把这些结论称为区间估计和假设检验的基石。第七章用它们构造置信区间，第八章用它们构造检验统计量和拒绝域。特别要注意，\n$$\n\\bar X\n$$\n 与 \n$$\nS^2\n$$\n 独立是正态总体的独有重要性质，一般总体不一定成立。",
+      "sourceRef": {
+        "path": "content/chapters/ch06/6.3.md",
+        "label": "6.3 正态总体的抽样分布定理 · 四个基础结论"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设 \n$$\nX_1,\\ldots,X_n\n$$\n 为来自两点分布 \n$$\nP(X=1)=p, P(X=0)=1-p\n$$\n 的样本。用极大似然法求 \n$$\np\n$$\n 的估计量。",
+      "answer": "由于 \n$$\nX_i\\in\\{0,1\\}\n$$\n，单个样本的概率可写为\n$$\nP(X_i=x_i)=p^{x_i}(1-p)^{1-x_i}.\n$$\n独立样本的似然函数为\n$$\nL(p)=\\prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}=p^{\\sum x_i}(1-p)^{n-\\sum x_i}.\n$$\n取对数：\n$$\n\\ell(p)=\\left(\\sum x_i\\right)\\ln p+\\left(n-\\sum x_i\\right)\\ln(1-p).\n$$\n求导并令零：\n$$\n\\ell'(p)=\\frac{\\sum x_i}{p}-\\frac{n-\\sum x_i}{1-p}=0.\n$$\n解得\n$$\n\\hat p=\\frac{1}{n}\\sum_{i=1}^n X_i=\\bar X.\n$$\n即成功概率的极大似然估计量是样本成功频率。",
+      "hint": "把 \n$$\n0/1\n$$\n 样本的联合概率写成 \n$$\np\n$$\n 的幂与 \n$$\n(1-p)\n$$\n 的幂。",
+      "scoring_criteria": [
+        "写出单个样本概率 \n$$\np^{x_i}(1-p)^{1-x_i}\n$$\n（2分）",
+        "写出似然函数 \n$$\np^{\\sum x_i}(1-p)^{n-\\sum x_i}\n$$\n（2分）",
+        "正确取对数并求导（3分）",
+        "解出 \n$$\n\\hat p=\\sum X_i/n\n$$\n（2分）",
+        "解释为样本成功频率（1分）"
+      ],
+      "explanation": "7.2 节的 MLE 思想适用于离散分布：给定观测样本，选择使联合概率最大的参数。本题结论也符合直觉，若 \n$$\nn\n$$\n 次试验中有 \n$$\n\\sum X_i\n$$\n 次成功，成功概率最自然的估计就是成功频率。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.2.md",
+        "label": "7.2 最大似然估计 · 二项/两点分布的似然函数"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "某正态总体方差未知。抽取 \n$$\nn=16\n$$\n 个样本，得 \n$$\n\\bar{x}=10.8\n$$\n、\n$$\ns=1.2\n$$\n。在 \n$$\n\\alpha=0.05\n$$\n 下检验 \n$$\nH_0:\\mu=10\n$$\n，\n$$\nH_1:\\mu>10\n$$\n。已知 \n$$\nt_{0.05}(15)=1.753\n$$\n。",
+      "answer": "方差未知且总体正态，使用单侧 t 检验。统计量为\n$$\nT=\\frac{\\bar{X}-\\mu_0}{S/\\sqrt n}\\sim t(n-1)\\quad (H_0\\text{ 为真时}).\n$$\n本题自由度为 \n$$\n15\n$$\n，右侧检验拒绝域为\n$$\nT>t_{0.05}(15)=1.753.\n$$\n计算观测值：\n$$\nt=\\frac{10.8-10}{1.2/\\sqrt{16}}=\\frac{0.8}{0.3}=2.667.\n$$\n因为 \n$$\n2.667>1.753\n$$\n，统计量落入拒绝域，故在显著性水平 \n$$\n0.05\n$$\n 下拒绝 \n$$\nH_0\n$$\n。结论：有充分证据认为总体均值大于 \n$$\n10\n$$\n。",
+      "hint": "备择假设是“>”，所以拒绝域在右侧；方差未知用 t。",
+      "scoring_criteria": [
+        "判断使用右侧 t 检验（2分）",
+        "写出统计量 \n$$\nT=(\\bar X-\\mu_0)/(S/\\sqrt n)\n$$\n（2分）",
+        "确定拒绝域 \n$$\nT>1.753\n$$\n（2分）",
+        "计算观测值 \n$$\nt=2.667\n$$\n（2分）",
+        "比较并作出拒绝 \n$$\nH_0\n$$\n 的结论（2分）"
+      ],
+      "explanation": "8.2 节将正态均值检验按方差已知/未知分为 Z 检验和 t 检验。这里 \n$$\n\\sigma^2\n$$\n 未知，必须用样本标准差 \n$$\ns\n$$\n，自由度为 \n$$\nn-1=15\n$$\n。由于备择假设为 \n$$\n\\mu>10\n$$\n，大于临界值才拒绝；观测值 2.667 已超过 1.753，因此样本均值偏大达到显著水平。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.2.md",
+        "label": "8.2 正态总体均值的假设检验 · σ未知的右侧 t 检验"
+      },
+      "manimVideoId": "quiz-prob-ch08-q08"
+    },
+    {
+      "id": "q009",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "某正态总体标准差已知为 \n$$\n\\sigma=6\n$$\n，抽取 \n$$\nn=36\n$$\n 个样本，得 \n$$\n\\bar{x}=52\n$$\n。求 \n$$\n\\mu\n$$\n 的 \n$$\n95\\%\n$$\n 置信区间，并据此判断在双侧水平 \n$$\n\\alpha=0.05\n$$\n 下是否拒绝 \n$$\nH_0:\\mu=50\n$$\n。（取 \n$$\nu_{0.025}=1.96\n$$\n）",
+      "answer": "标准差已知，\n$$\n\\mu\n$$\n 的 95% 置信区间为\n$$\n\\bar{x}\\pm u_{0.025}\\frac{\\sigma}{\\sqrt n}.\n$$\n区间半宽：\n$$\n1.96\\times\\frac{6}{\\sqrt{36}}=1.96\\times1=1.96.\n$$\n所以\n$$\n\\mu\\in(52-1.96,\\ 52+1.96)=(50.04,\\ 53.96).\n$$\n由于原假设值 \n$$\n50\n$$\n 不在该 95% 置信区间内，因此与双侧 \n$$\n\\alpha=0.05\n$$\n 检验等价地，应拒绝 \n$$\nH_0:\\mu=50\n$$\n。也可直接算 \n$$\nZ=(52-50)/(6/6)=2>1.96\n$$\n，同样拒绝。",
+      "hint": "双侧 5% 检验与 95% 置信区间有对应关系：假设值不在区间内就拒绝。",
+      "scoring_criteria": [
+        "写出 σ已知时区间公式（2分）",
+        "算出半宽 \n$$\n1.96\n$$\n（2分）",
+        "给出置信区间 \n$$\n(50.04,53.96)\n$$\n（2分）",
+        "指出 \n$$\n50\n$$\n 不在区间内（2分）",
+        "得出双侧 0.05 水平下拒绝 \n$$\nH_0\n$$\n，或用 \n$$\nZ=2\n$$\n 验证（2分）"
+      ],
+      "explanation": "7.4 节给出 \n$$\n\\sigma\n$$\n 已知时的 Z 置信区间，第八章的双侧 Z 检验与该区间有直接对应关系：若 \n$$\n\\mu_0\n$$\n 落在 95% 区间外，则样本均值相对 \n$$\n\\mu_0\n$$\n 的偏离超过 \n$$\n1.96\n$$\n 个标准误，故在 5% 双侧水平下拒绝原假设。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.4.md",
+        "label": "7.4 区间估计 · σ已知时 μ 的置信区间"
+      },
+      "manimVideoId": "quiz-prob-ch08-q09"
+    },
+    {
+      "id": "q010",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "某药片有效成分总体标准差已知为 \n$$\n\\sigma=10\n$$\n mg。检验 \n$$\nH_0:\\mu=500\n$$\n 对 \n$$\nH_1:\\mu>500\n$$\n，取 \n$$\n\\alpha=0.05\n$$\n，样本量 \n$$\nn=25\n$$\n。若真实均值为 \n$$\n\\mu_1=505\n$$\n，求该检验的功效 \n$$\n1-\\beta\n$$\n。取 \n$$\nz_{0.05}=1.645\n$$\n，\n$$\n\\Phi(-0.855)=0.196\n$$\n。",
+      "answer": "右侧 Z 检验的拒绝域为\n$$\n\\bar{X}>\\mu_0+z_{0.05}\\frac{\\sigma}{\\sqrt n}=500+1.645\\times\\frac{10}{5}=500+3.29=503.29.\n$$\n当真实均值为 \n$$\n\\mu_1=505\n$$\n 时，\n$$\n\\bar{X}\\sim N\\left(505,\\frac{10^2}{25}\\right)=N(505,4),\n$$\n标准差为 \n$$\n2\n$$\n。第二类错误是实际 \n$$\n\\mu=505\n$$\n 时仍不拒绝 \n$$\nH_0\n$$\n：\n$$\n\\beta=P(\\bar{X}\\le 503.29\\mid \\mu=505)=P\\left(Z\\le\\frac{503.29-505}{2}\\right).\n$$\n标准化值为\n$$\n\\frac{503.29-505}{2}=-0.855.\n$$\n故\n$$\n\\beta=\\Phi(-0.855)=0.196,\\qquad 1-\\beta=0.804.\n$$\n该检验在真实均值为 505 mg 时的功效约为 \n$$\n80.4\\%\n$$\n。",
+      "hint": "先在 \n$$\nH_0\n$$\n 下由 \n$$\n\\alpha\n$$\n 确定临界值，再在真实 \n$$\n\\mu_1\n$$\n 下计算落入拒绝域的概率。",
+      "scoring_criteria": [
+        "正确写出右侧拒绝域并算出临界均值 \n$$\n503.29\n$$\n（3分）",
+        "写出真实 \n$$\n\\mu_1=505\n$$\n 下 \n$$\n\\bar X\\sim N(505,4)\n$$\n（2分）",
+        "把第二类错误表示为 \n$$\nP(\\bar X\\le503.29\\mid\\mu=505)\n$$\n（2分）",
+        "标准化得到 \n$$\n-0.855\n$$\n 并算出 \n$$\n\\beta=0.196\n$$\n（2分）",
+        "给出功效 \n$$\n1-\\beta=0.804\n$$\n 并解释含义（1分）"
+      ],
+      "explanation": "8.4 节说明功效是 \n$$\nH_0\n$$\n 为假时正确拒绝 \n$$\nH_0\n$$\n 的概率。计算时要分清两个分布：临界值由 \n$$\nH_0:\\mu=500\n$$\n 和 \n$$\n\\alpha=0.05\n$$\n 决定；功效则在真实 \n$$\n\\mu_1=505\n$$\n 的分布下计算。样本量固定时，若减小 \n$$\n\\alpha\n$$\n，临界值右移，通常会增大 \n$$\n\\beta\n$$\n；若增大样本量，样本均值分布变窄，功效会提高。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.4.md",
+        "label": "8.4 两类错误与检验功效 · 单侧正态均值检验的功效"
+      },
+      "manimVideoId": "quiz-prob-ch08-q10"
+    }
+  ],
+  "summary": {
+    "totalQuestions": 10,
+    "byType": {
+      "single_choice": 2,
+      "fill_blank": 2,
+      "essay": 6
+    },
+    "bySource": {
+      "current_chapter": 5,
+      "review": 5
+    },
+    "byDifficulty": {
+      "basic": 7,
+      "medium": 2,
+      "hard": 1
+    }
+  }
+}

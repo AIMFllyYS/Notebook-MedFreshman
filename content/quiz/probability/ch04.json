@@ -1,0 +1,265 @@
+{
+  "subjectId": "probability",
+  "chapterId": "ch04",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "stem": "关于方差的计算公式，下列说法正确的是（ ）。",
+      "options": [
+        "D(X)=E[X]-(E[X])^2",
+        "D(X)=E[X^2]-(E[X])^2",
+        "D(aX+b)=aD(X)+b",
+        "若D(X)=0，则X不可能为常数"
+      ],
+      "answer": 1,
+      "hint": "回忆方差是偏离均值的平方的期望，展开平方后会出现二阶矩。",
+      "explanation": "B正确。4.2节由定义D(X)=E[(X-E[X])^2]展开得到D(X)=E[X^2]-(E[X])^2；A少了二阶矩，C漏掉平方系数且平移项不影响方差，D与方差非负性相反：方差为0表示随机变量几乎处处为常数。",
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.2.md",
+        "label": "4.2 方差与标准差 · 方差定义与公式 D(X)=E[X²]-(E[X])²"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 10,
+      "stem": "若二维连续型随机变量(X,Y)的联合密度在三角形区域0<x, 0<y, x+y<1内为常数，在其他区域为0，则关于X与Y独立性的判断正确的是（ ）。",
+      "options": [
+        "一定独立，因为联合密度为常数",
+        "一定不独立，因为非零区域不是x区间与y区间的笛卡儿积",
+        "只要边缘密度相等就独立",
+        "无法判断，必须先知道协方差"
+      ],
+      "answer": 1,
+      "hint": "独立要求联合密度能分解为边缘密度乘积，同时有效域也要能分解。",
+      "explanation": "B正确。3.4节强调连续型独立的充要条件是联合密度几乎处处等于边缘密度乘积；若非零区域不是矩形或笛卡儿积，如三角形，则一个变量取值会限制另一个变量范围，不能独立。A忽略有效域，C把边缘相同误当成联合唯一，D把不相关/协方差与独立混为一谈。",
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.4.md",
+        "label": "3.4 随机变量的独立性 · 有效域形状是独立性的关键陷阱"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设X的期望为μ、方差为σ^2>0，则标准化变量X*的标准答案为（填公式）。",
+      "answer": "\n$$\nX^*=\\frac{X-\\mu}{\\sigma}\n$$\n",
+      "hint": "标准化要先减去中心位置，再除以标准差，使新变量无量纲。",
+      "explanation": "4.2节定义标准化变量为(X-μ)/σ。减去μ使期望变为0，除以标准差σ使方差变为1；注意分母是标准差σ，不是方差σ^2。",
+      "scoring_criteria": [
+        "写出减均值X-μ（3分）",
+        "分母使用标准差σ而非方差σ^2（4分）",
+        "表达为完整标准化变量X*=(X-μ)/σ（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.2.md",
+        "label": "4.2 方差与标准差 · 随机变量的标准化"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 10,
+      "total_points": 10,
+      "stem": "若X服从参数为λ>0的指数分布，则其期望为（填公式）。",
+      "answer": "\n$$\nE[X]=\\frac{1}{\\lambda}\n$$\n",
+      "hint": "指数分布的参数是率参数，平均等待时间与率参数互为倒数。",
+      "explanation": "2.4节给出指数分布Exp(λ)的密度与性质，并说明均值等于1/λ。率参数越大，事件发生越快，平均等待时间越短，因此答案是1/λ。",
+      "scoring_criteria": [
+        "明确对象为指数分布Exp(λ)（2分）",
+        "写出期望与率参数成倒数关系（4分）",
+        "公式E[X]=1/λ书写正确（4分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.4.md",
+        "label": "2.4 连续型随机变量与常见连续分布 · 指数分布 Exp(λ)"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设随机变量X满足E[X]=3，E[X^2]=13。求D(X)，并说明计算中最容易混淆的两项是什么。",
+      "answer": "由方差计算公式\n$$\nD(X)=E[X^2]-(E[X])^2\n$$\n代入E[X]=3，E[X^2]=13，得\n$$\nD(X)=13-3^2=4\n$$\n最容易混淆的是E[X^2]与(E[X])^2：前者是先平方再取期望，后者是先取期望再平方，不能互换。",
+      "hint": "直接使用方差的二阶矩公式，注意不要把E[X^2]写成(E[X])^2。",
+      "explanation": "本题完全对应4.2节方差推导式。方差衡量偏离均值的平均平方偏差，展开后要用二阶矩E[X^2]减去均值平方(E[X])^2。代入13和9得到4，结果非负，符合方差含义。",
+      "scoring_criteria": [
+        "写出方差公式D(X)=E[X^2]-(E[X])^2（3分）",
+        "正确代入E[X^2]=13与(E[X])^2=9（3分）",
+        "算出D(X)=4（2分）",
+        "说明E[X^2]与(E[X])^2不可混淆（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.2.md",
+        "label": "4.2 方差与标准差 · 计算捷径：方差的推导公式"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设X服从均匀分布U(2,8)。求E[X]与D(X)。",
+      "answer": "均匀分布U(a,b)的期望与方差为\n$$\nE[X]=\\frac{a+b}{2},\\qquad D(X)=\\frac{(b-a)^2}{12}\n$$\n令a=2，b=8，得到\n$$\nE[X]=\\frac{2+8}{2}=5,\\qquad D(X)=\\frac{(8-2)^2}{12}=3\n$$\n",
+      "hint": "均匀分布的中心在区间中点，方差只由区间长度决定。",
+      "explanation": "4.1和4.2节分别汇总了均匀分布的期望与方差；2.4节也把均匀分布作为基本连续分布。区间[2,8]长度为6，因此方差为36/12=3，期望为中点5。",
+      "scoring_criteria": [
+        "写出U(a,b)期望公式(a+b)/2（2分）",
+        "写出U(a,b)方差公式(b-a)^2/12（3分）",
+        "正确代入a=2,b=8（2分）",
+        "得到E[X]=5,D(X)=3（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.4.md",
+        "label": "2.4 连续型随机变量与常见连续分布 · 均匀分布与常见连续分布汇总"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "设X与Y独立，D(X)=4，D(Y)=9。求D(2X-Y+3)。",
+      "answer": "常数平移不影响方差，独立时线性组合的方差按系数平方相加：\n$$\nD(2X-Y+3)=2^2D(X)+(-1)^2D(Y)=4\\cdot4+9=25\n$$\n",
+      "hint": "方差对数乘会产生系数平方；独立使协方差项为0；常数项不影响方差。",
+      "explanation": "4.2节给出D(aX+b)=a^2D(X)以及独立时和的方差可加；4.3节说明独立推出协方差为零。这里2X与-Y的系数平方分别为4和1，常数3消失，因此结果为25。",
+      "scoring_criteria": [
+        "指出常数3不影响方差（2分）",
+        "使用系数平方而非系数本身（3分）",
+        "利用独立性令协方差项为0（2分）",
+        "计算得到25（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.2.md",
+        "label": "4.2 方差与标准差 · 方差的基本性质"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "manimVideoId": "quiz-prob-ch04-q08",
+      "stem": "设X、Y相互独立，且X~P(2)，Y~P(3)。求Z=X+Y的分布，并写出E[Z]与D(Z)。",
+      "answer": "独立泊松变量相加仍为泊松分布，参数相加：\n$$\nZ=X+Y\\sim P(2+3)=P(5)\n$$\n泊松分布的期望和方差都等于参数，所以\n$$\nE[Z]=5,\\qquad D(Z)=5\n$$\n",
+      "hint": "先用第三章的独立卷积/泊松可加性确定分布，再用第四章泊松数字特征。",
+      "explanation": "3.5节例题说明独立泊松分布之和仍为泊松分布，参数相加；4.1与4.2节分别说明泊松分布P(λ)的期望、方差均为λ。因此Z服从P(5)，其期望和方差均为5。",
+      "scoring_criteria": [
+        "说明X、Y独立，可使用泊松可加性（2分）",
+        "写出Z~P(5)（3分）",
+        "说明泊松分布期望等于参数（2分）",
+        "说明泊松分布方差等于参数并得D(Z)=5（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.5.md",
+        "label": "3.5 两个随机变量函数的分布 · 泊松分布的可加性"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "manimVideoId": "quiz-prob-ch04-q09",
+      "stem": "已知E[X]=2，E[Y]=1，E[XY]=5，D(X)=4，D(Y)=9。求Cov(X,Y)和相关系数ρ。",
+      "answer": "协方差的简化公式为\n$$\n\\operatorname{Cov}(X,Y)=E[XY]-E[X]E[Y]\n$$\n故\n$$\n\\operatorname{Cov}(X,Y)=5-2\\times1=3\n$$\n相关系数为\n$$\n\\rho=\\frac{\\operatorname{Cov}(X,Y)}{\\sqrt{D(X)}\\sqrt{D(Y)}}=\\frac{3}{2\\times3}=\\frac12\n$$\n",
+      "hint": "先求协方差，再除以两个标准差；分母不是两个方差的乘积。",
+      "explanation": "4.3节定义协方差并给出E[XY]-E[X]E[Y]的简化公式；相关系数是协方差的无量纲版本，需要除以两个标准差。这里标准差分别为2和3，因此相关系数为1/2。",
+      "scoring_criteria": [
+        "写出协方差简化公式（2分）",
+        "算出Cov(X,Y)=3（3分）",
+        "正确把方差开方得到标准差2和3（2分）",
+        "算出相关系数1/2（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.3.md",
+        "label": "4.3 协方差与相关系数 · 协方差简化公式与相关系数定义"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "manimVideoId": "quiz-prob-ch04-q10",
+      "stem": "设(X,Y)在三角形区域D={(x,y):0<x<1, 0<y<1-x}上服从均匀分布。求f_X(x)、E[X]，并判断X与Y是否独立。",
+      "answer": "区域面积为1/2，故联合密度f(x,y)=2。固定0<x<1时，0<y<1-x，所以\n$$\nf_X(x)=\\int_0^{1-x}2\\,dy=2(1-x),\\quad 0<x<1\n$$\n于是\n$$\nE[X]=\\int_0^1 x\\,2(1-x)\\,dx=2\\left(\\frac12-\\frac13\\right)=\\frac13\n$$\nD不是矩形区域，且联合密度不能写成边缘密度乘积，因此X与Y不独立。",
+      "hint": "先由面积求联合密度，再固定x确定y的积分上限；独立性要看有效域能否拆成矩形。",
+      "explanation": "3.2节用同一三角形区域示范边缘密度积分，3.4节强调非矩形有效域会破坏独立性。边缘密度不是把y固定为某个值，而是沿有效y范围积分；由于y上限依赖x，X取值会限制Y取值，所以不独立。",
+      "scoring_criteria": [
+        "由面积1/2写出联合密度2（2分）",
+        "固定x写出正确积分区间0到1-x（2分）",
+        "求得f_X(x)=2(1-x),0<x<1（2分）",
+        "积分求得E[X]=1/3（2分）",
+        "说明非矩形有效域导致X,Y不独立（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.2.md",
+        "label": "3.2 边缘分布 · 三角形区域上的边缘密度与独立性讨论"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 10,
+    "byType": {
+      "single_choice": 2,
+      "fill_blank": 2,
+      "essay": 6
+    },
+    "bySource": {
+      "current_chapter": 5,
+      "review": 5
+    },
+    "byDifficulty": {
+      "basic": 7,
+      "medium": 2,
+      "hard": 1
+    }
+  }
+}
