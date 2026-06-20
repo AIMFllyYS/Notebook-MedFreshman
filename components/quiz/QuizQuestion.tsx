@@ -1,18 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
-import { Check, X, ChevronDown } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Check, X, ChevronDown, Lightbulb, BookOpen, Film } from "lucide-react";
 import type { QuizQuestion as Q, UserAnswer } from "@/lib/quiz/types";
+import { displayLabel } from "@/lib/quiz/types";
 import type { QuestionResult } from "@/lib/quiz-store";
+import { useQuizStore } from "@/lib/quiz-store";
+import { getVideo } from "@/content/media";
 import QuizMarkdown from "./QuizMarkdown";
 
-const TYPE_LABELS: Record<Q["type"], string> = {
-  single_choice: "单选题",
-  multiple_choice: "多选题",
-  true_false: "判断题",
-  fill_blank: "填空题",
-  essay: "材料分析 / 解答题",
-};
+const InlinePlayer = dynamic(() => import("@/components/video/InlinePlayer"), {
+  ssr: false,
+  loading: () => <div className="aspect-video w-full animate-shimmer rounded-lg" />,
+});
 
 const DIFFICULTY_LABELS: Record<Q["difficulty"], string> = {
   basic: "基础",
@@ -35,25 +36,6 @@ interface QuizQuestionProps {
   result?: QuestionResult;
 }
 
-/** 题型 / 难度 / 来源 标签条。 */
-function MetaBar({ q, index, total }: { q: Q; index: number; total: number }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "12px" }}>
-      <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--md-sys-color-primary)" }}>
-        第 {index + 1} / {total} 题
-      </span>
-      <Chip>{TYPE_LABELS[q.type]}</Chip>
-      <Chip>{DIFFICULTY_LABELS[q.difficulty]}</Chip>
-      {q.source === "review" && (
-        <Chip tone="review">复习 · {q.sourceChapter ?? "前序章节"}</Chip>
-      )}
-      <span style={{ marginLeft: "auto", fontSize: "12px", color: "var(--md-sys-color-on-surface-variant)" }}>
-        {q.points} 分
-      </span>
-    </div>
-  );
-}
-
 function Chip({ children, tone }: { children: React.ReactNode; tone?: "review" }) {
   return (
     <span
@@ -74,6 +56,22 @@ function Chip({ children, tone }: { children: React.ReactNode; tone?: "review" }
     >
       {children}
     </span>
+  );
+}
+
+function MetaBar({ q, index, total }: { q: Q; index: number; total: number }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "12px" }}>
+      <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--md-sys-color-primary)" }}>
+        第 {index + 1} / {total} 题
+      </span>
+      <Chip>{displayLabel(q)}</Chip>
+      <Chip>{DIFFICULTY_LABELS[q.difficulty]}</Chip>
+      {q.source === "review" && <Chip tone="review">复习 · {q.sourceChapter ?? "前序章节"}</Chip>}
+      <span style={{ marginLeft: "auto", fontSize: "12px", color: "var(--md-sys-color-on-surface-variant)" }}>
+        {q.points} 分
+      </span>
+    </div>
   );
 }
 
@@ -160,81 +158,194 @@ function OptionRow({
   );
 }
 
-/** 参考答案 / 解析块（review 模式或 essay 折叠用）。 */
-function AnswerReveal({
-  q,
-  defaultOpen,
-}: {
-  q: Q;
-  defaultOpen?: boolean;
-}) {
-  const [open, setOpen] = useState(!!defaultOpen);
+/** 交卷前的「提示」按钮（不泄露答案）。 */
+function HintBlock({ q }: { q: Q }) {
+  const used = useQuizStore((s) => s.hintsUsed.includes(q.id));
+  const useHint = useQuizStore((s) => s.useHint);
+  if (!q.hint) return null;
   return (
     <div style={{ marginTop: "14px" }}>
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "6px",
-          fontSize: "13px",
-          fontWeight: 600,
-          color: "var(--md-sys-color-primary)",
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          padding: 0,
-        }}
-      >
-        <ChevronDown
-          size={15}
-          style={{ transform: open ? "rotate(0deg)" : "rotate(-90deg)", transition: "transform 200ms" }}
-        />
-        参考答案与评分要点
-      </button>
-      {open && (
-        <div
+      {!used ? (
+        <button
+          type="button"
+          onClick={() => useHint(q.id)}
+          className="press"
           style={{
-            marginTop: "10px",
-            padding: "12px 14px",
-            borderRadius: "var(--md-sys-shape-corner-medium)",
-            background: "var(--md-sys-color-surface-container)",
-            border: "1px solid var(--md-sys-color-outline-variant)",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            padding: "7px 14px",
+            borderRadius: "var(--md-sys-shape-corner-full)",
+            border: "1px solid var(--color-warning)",
+            background: "color-mix(in srgb, var(--color-warning) 12%, transparent)",
+            color: "var(--color-warning)",
+            fontSize: "13px",
+            fontWeight: 600,
+            cursor: "pointer",
           }}
         >
-          <div style={{ fontSize: "12px", fontWeight: 700, color: "var(--md-sys-color-on-surface-variant)", marginBottom: "6px" }}>
-            参考答案
+          <Lightbulb size={15} />
+          查看提示
+        </button>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            padding: "11px 14px",
+            borderRadius: "var(--md-sys-shape-corner-medium)",
+            background: "color-mix(in srgb, var(--color-warning) 10%, transparent)",
+            border: "1px solid color-mix(in srgb, var(--color-warning) 40%, transparent)",
+          }}
+        >
+          <Lightbulb size={16} style={{ color: "var(--color-warning)", flexShrink: 0, marginTop: "2px" }} />
+          <div style={{ fontSize: "13.5px", lineHeight: 1.65, color: "var(--md-sys-color-on-surface)" }}>
+            <QuizMarkdown inline>{q.hint}</QuizMarkdown>
           </div>
-          <div style={{ fontSize: "14px", lineHeight: 1.7, color: "var(--md-sys-color-on-surface)" }}>
-            <QuizMarkdown>{String(q.answer ?? "")}</QuizMarkdown>
-          </div>
-          {q.scoring_criteria && q.scoring_criteria.length > 0 && (
-            <>
-              <div style={{ fontSize: "12px", fontWeight: 700, color: "var(--md-sys-color-on-surface-variant)", margin: "12px 0 6px" }}>
-                评分要点
-              </div>
-              <ul style={{ margin: 0, paddingLeft: "18px", display: "flex", flexDirection: "column", gap: "4px" }}>
-                {q.scoring_criteria.map((c, i) => (
-                  <li key={i} style={{ fontSize: "13px", lineHeight: 1.6, color: "var(--md-sys-color-on-surface)" }}>
-                    <QuizMarkdown inline>{c}</QuizMarkdown>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-          {q.explanation && (
-            <>
-              <div style={{ fontSize: "12px", fontWeight: 700, color: "var(--md-sys-color-on-surface-variant)", margin: "12px 0 6px" }}>
-                解析
-              </div>
-              <div style={{ fontSize: "13px", lineHeight: 1.7, color: "var(--md-sys-color-on-surface-variant)" }}>
-                <QuizMarkdown>{q.explanation}</QuizMarkdown>
-              </div>
-            </>
-          )}
         </div>
       )}
+    </div>
+  );
+}
+
+/** Manim 视频讲解卡片（复杂题，点击播放）。 */
+function ManimVideo({ id }: { id: string }) {
+  const [playing, setPlaying] = useState(false);
+  const video = getVideo(id);
+  return (
+    <div style={{ marginTop: "12px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 700, color: "var(--md-sys-color-on-surface-variant)", marginBottom: "6px" }}>
+        <Film size={14} style={{ color: "var(--md-sys-color-primary)" }} />
+        Manim 视频讲解
+      </div>
+      {!video ? (
+        <div style={{ fontSize: "12.5px", color: "var(--md-sys-color-on-surface-variant)", padding: "10px 12px", borderRadius: "var(--md-sys-shape-corner-medium)", border: "1px dashed var(--md-sys-color-outline-variant)" }}>
+          本题视频讲解正在生成中（{id}）。
+        </div>
+      ) : playing ? (
+        <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
+          <InlinePlayer video={video} />
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setPlaying(true)}
+          className="hover-lift"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            width: "100%",
+            textAlign: "left",
+            padding: "12px 14px",
+            borderRadius: "var(--md-sys-shape-corner-medium)",
+            border: "1px solid var(--md-sys-color-outline-variant)",
+            background: "var(--md-sys-color-surface-container-lowest)",
+            cursor: "pointer",
+          }}
+        >
+          <span style={{ display: "grid", placeItems: "center", width: "36px", height: "36px", borderRadius: "var(--md-sys-shape-corner-full)", background: "var(--md-sys-color-primary-container)", color: "var(--md-sys-color-on-primary-container)", flexShrink: 0 }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+          </span>
+          <span style={{ fontSize: "13.5px", fontWeight: 600, color: "var(--md-sys-color-on-surface)" }}>
+            {video.title || "播放本题动画讲解"}
+          </span>
+        </button>
+      )}
+    </div>
+  );
+}
+
+/** review 模式：深度解析 + 参考答案 + 评分要点 + 来源目录 + 视频。 */
+function ReviewExplain({ q }: { q: Q }) {
+  const isSubjective = q.type === "analysis" || q.type === "fill_blank" || q.type === "essay";
+  return (
+    <div
+      style={{
+        marginTop: "14px",
+        padding: "13px 15px",
+        borderRadius: "var(--md-sys-shape-corner-medium)",
+        background: "var(--md-sys-color-surface-container)",
+        border: "1px solid var(--md-sys-color-outline-variant)",
+      }}
+    >
+      {/* 辨析题：先给命题判断 */}
+      {q.type === "analysis" && (
+        <div style={{ fontSize: "13px", fontWeight: 700, marginBottom: "8px", color: q.answer === 1 ? SUCCESS : ERROR }}>
+          此命题：{q.answer === 1 ? "正确 √" : "错误 ×"}
+        </div>
+      )}
+
+      {/* 参考答案（主观题） */}
+      {isSubjective && (
+        <>
+          <SectionLabel>参考答案</SectionLabel>
+          <div style={{ fontSize: "14px", lineHeight: 1.75, color: "var(--md-sys-color-on-surface)" }}>
+            <QuizMarkdown>{q.type === "analysis" ? q.reasoning || String(q.answer ?? "") : String(q.answer ?? "")}</QuizMarkdown>
+          </div>
+        </>
+      )}
+
+      {/* 评分要点 */}
+      {q.scoring_criteria && q.scoring_criteria.length > 0 && (
+        <>
+          <SectionLabel>评分要点</SectionLabel>
+          <ul style={{ margin: 0, paddingLeft: "18px", display: "flex", flexDirection: "column", gap: "4px" }}>
+            {q.scoring_criteria.map((c, i) => (
+              <li key={i} style={{ fontSize: "13px", lineHeight: 1.6, color: "var(--md-sys-color-on-surface)" }}>
+                <QuizMarkdown inline>{c}</QuizMarkdown>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {/* 深度解析 */}
+      {q.explanation && (
+        <>
+          <SectionLabel>深度解析</SectionLabel>
+          <div style={{ fontSize: "13.5px", lineHeight: 1.75, color: "var(--md-sys-color-on-surface-variant)" }}>
+            <QuizMarkdown>{q.explanation}</QuizMarkdown>
+          </div>
+        </>
+      )}
+
+      {/* 来源目录 */}
+      {q.sourceRef && (q.sourceRef.label || q.sourceRef.path) && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: "6px",
+            marginTop: "12px",
+            paddingTop: "10px",
+            borderTop: "1px dashed var(--md-sys-color-outline-variant)",
+            fontSize: "12px",
+            color: "var(--md-sys-color-on-surface-variant)",
+          }}
+        >
+          <BookOpen size={14} style={{ flexShrink: 0, marginTop: "2px", color: "var(--md-sys-color-primary)" }} />
+          <span>
+            来源：{q.sourceRef.label}
+            {q.sourceRef.path && (
+              <code style={{ marginLeft: "6px", fontSize: "11.5px", color: "var(--md-sys-color-on-surface-variant)", fontFamily: "var(--font-mono)" }}>
+                {q.sourceRef.path}
+              </code>
+            )}
+          </span>
+        </div>
+      )}
+
+      {/* Manim 视频讲解 */}
+      {q.manimVideoId && <ManimVideo id={q.manimVideoId} />}
+    </div>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ fontSize: "12px", fontWeight: 700, color: "var(--md-sys-color-on-surface-variant)", margin: "12px 0 6px" }}>
+      {children}
     </div>
   );
 }
@@ -250,7 +361,6 @@ export default function QuizQuestion({
 }: QuizQuestionProps) {
   const reviewing = mode === "review";
 
-  // ── 选项类（单选 / 多选）─────────────────────
   const renderChoices = (multiple: boolean) => {
     const correctSet = new Set<number>(
       multiple ? ((q.answer as number[]) ?? []) : [q.answer as number],
@@ -299,7 +409,6 @@ export default function QuizQuestion({
     );
   };
 
-  // ── 判断题 ──────────────────────────────────
   const renderTrueFalse = () => {
     const picked = typeof answer === "number" ? answer : null;
     const correct = q.answer as number;
@@ -359,7 +468,6 @@ export default function QuizQuestion({
     );
   };
 
-  // ── 填空题 ──────────────────────────────────
   const renderFillBlank = () => (
     <input
       type="text"
@@ -380,14 +488,14 @@ export default function QuizQuestion({
     />
   );
 
-  // ── 解答 / 材料分析大题 ──────────────────────
-  const renderEssay = () => (
+  // analysis（辨析）与 essay（简答/材料分析/论述）统一用多行文本作答
+  const renderTextArea = (placeholder: string) => (
     <textarea
       value={typeof answer === "string" ? answer : ""}
       onChange={(e) => onChange?.(e.target.value)}
       disabled={reviewing}
       rows={reviewing ? 4 : 7}
-      placeholder="在此作答（要点式即可）…"
+      placeholder={placeholder}
       style={{
         width: "100%",
         padding: "12px 14px",
@@ -404,13 +512,10 @@ export default function QuizQuestion({
     />
   );
 
-  const isSubjective = q.type === "fill_blank" || q.type === "essay";
-
   return (
     <div>
       <MetaBar q={q} index={index} total={total} />
 
-      {/* 题干 */}
       <div
         style={{
           fontSize: "16px",
@@ -428,9 +533,10 @@ export default function QuizQuestion({
       {q.type === "multiple_choice" && renderChoices(true)}
       {q.type === "true_false" && renderTrueFalse()}
       {q.type === "fill_blank" && renderFillBlank()}
-      {q.type === "essay" && renderEssay()}
+      {q.type === "analysis" && renderTextArea("先判断「正确/错误」，再写出你的理由…")}
+      {q.type === "essay" && renderTextArea("在此作答（要点式即可）…")}
 
-      {/* review 模式：客观题判分徽标 */}
+      {/* 客观题判分徽标（review） */}
       {reviewing && result && result.objective && (
         <div
           style={{
@@ -448,15 +554,9 @@ export default function QuizQuestion({
         </div>
       )}
 
-      {/* 解析 / 参考答案：
-          - review 模式：客观题展开解析；主观题展开参考答案+评分要点
-          - answer 模式：仅 essay 提供可折叠参考答案（默认收起，供自学对照） */}
-      {reviewing && (q.explanation || isSubjective || q.scoring_criteria?.length) && (
-        <AnswerReveal q={q} defaultOpen={isSubjective} />
-      )}
-      {!reviewing && q.type === "essay" && (q.scoring_criteria?.length || q.answer) && (
-        <AnswerReveal q={q} defaultOpen={false} />
-      )}
+      {/* 交卷前提示 / 交卷后深度解析 */}
+      {!reviewing && <HintBlock q={q} />}
+      {reviewing && <ReviewExplain q={q} />}
     </div>
   );
 }

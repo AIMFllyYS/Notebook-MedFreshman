@@ -1,14 +1,54 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ClipboardCheck, ChevronLeft, ChevronRight, CheckCircle2, AlertCircle } from "lucide-react";
+import { ClipboardCheck, ChevronLeft, ChevronRight, CheckCircle2, AlertCircle, History } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useQuizStore } from "@/lib/quiz-store";
 import type { UserAnswer } from "@/lib/quiz/types";
+import { getChapterProgress, type ChapterProgress } from "@/lib/quiz-progress";
 import QuizQuestion from "./QuizQuestion";
 import QuizScoring from "./QuizScoring";
 import QuizSummary from "./QuizSummary";
+
+/** 客户端读取本地历史成绩（mounted 后再读，避免 hydration 抖动）。 */
+function useChapterProgress(subjectId: string, chapterId: string, deps: unknown[] = []) {
+  const [progress, setProgress] = useState<ChapterProgress | null>(null);
+  useEffect(() => {
+    setProgress(getChapterProgress(subjectId, chapterId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subjectId, chapterId, ...deps]);
+  return progress;
+}
+
+/** 历史成绩横幅（上次 / 最佳）。 */
+function HistoryBanner({ subjectId, chapterId }: { subjectId: string; chapterId: string }) {
+  const progress = useChapterProgress(subjectId, chapterId);
+  if (!progress) return null;
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        marginBottom: "16px",
+        padding: "8px 13px",
+        borderRadius: "var(--md-sys-shape-corner-medium)",
+        background: "var(--md-sys-color-surface-container)",
+        border: "1px solid var(--md-sys-color-outline-variant)",
+        fontSize: "12.5px",
+        color: "var(--md-sys-color-on-surface-variant)",
+      }}
+    >
+      <History size={14} style={{ color: "var(--md-sys-color-primary)" }} />
+      <span>
+        历史最佳 <strong style={{ color: "var(--md-sys-color-primary)" }}>{progress.best} 分</strong>
+        <span style={{ margin: "0 8px", opacity: 0.5 }}>·</span>
+        上次 {progress.last.percent} 分（已作答 {progress.attempts} 次）
+      </span>
+    </div>
+  );
+}
 
 function isAnswered(a: UserAnswer | undefined): boolean {
   if (a === undefined || a === null) return false;
@@ -64,6 +104,8 @@ function CenterState({
 
 function AnsweringView() {
   const data = useQuizStore((s) => s.data)!;
+  const subjectId = useQuizStore((s) => s.subjectId);
+  const chapterId = useQuizStore((s) => s.chapterId);
   const currentIndex = useQuizStore((s) => s.currentIndex);
   const answers = useQuizStore((s) => s.answers);
   const setAnswer = useQuizStore((s) => s.setAnswer);
@@ -111,6 +153,9 @@ function AnsweringView() {
           />
         </div>
       </div>
+
+      {/* 历史成绩 */}
+      <HistoryBanner subjectId={subjectId} chapterId={chapterId} />
 
       {/* 题号导航 */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>

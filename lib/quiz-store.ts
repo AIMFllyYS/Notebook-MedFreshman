@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { QuizData, QuizQuestion, UserAnswer } from "@/lib/quiz/types";
 import { autoGrade, isObjective, maxPointsOf } from "@/lib/quiz/types";
+import { saveAttempt, type QuizAttempt } from "@/lib/quiz-progress";
 
 export type QuizStatus = "idle" | "loading" | "ready" | "empty" | "error";
 
@@ -24,6 +25,8 @@ interface QuizState {
   // ── 数据加载 ───────────────────────────────
   status: QuizStatus;
   data: QuizData | null;
+  subjectId: string;
+  chapterId: string;
   /** 当前已加载的 quiz 键（subjectId/chapterId），用于避免重复加载。 */
   loadedKey: string | null;
   errorMessage: string | null;
@@ -33,6 +36,8 @@ interface QuizState {
   currentIndex: number;
   /** questionId → 用户作答 */
   answers: Record<string, UserAnswer>;
+  /** 已查看提示的题目 id（交卷前点击提示） */
+  hintsUsed: string[];
   /** 提交后计算的逐题结果（含主观题自评分，可被 setSelfScore 修改） */
   results: QuestionResult[];
 
@@ -40,14 +45,15 @@ interface QuizState {
   load: (subjectId: string, chapterId: string) => Promise<void>;
   reset: () => void;
   setAnswer: (id: string, answer: UserAnswer) => void;
+  useHint: (id: string) => void;
   goTo: (index: number) => void;
   next: () => void;
   prev: () => void;
-  /** 作答 → 评分：自动判分客观题，主观题初始化为 0 待自评。 */
+  /** 作答 → 评分：自动判分客观题，主观题初始化为 0 待自评；并把当前成绩先落地本地。 */
   submit: () => void;
   /** 主观题自评打分（0 ~ 满分），同时同步到 results。 */
   setSelfScore: (id: string, awarded: number) => void;
-  /** 评分 → 总结。 */
+  /** 评分 → 总结：存最终成绩到本地。 */
   finishScoring: () => void;
   /** 回到评分面板（从总结返回修改自评）。 */
   backToScoring: () => void;
@@ -59,12 +65,35 @@ const ANSWERING_DEFAULTS = {
   phase: "answering" as QuizPhase,
   currentIndex: 0,
   answers: {} as Record<string, UserAnswer>,
+  hintsUsed: [] as string[],
   results: [] as QuestionResult[],
 };
+
+/** 由当前 results 构造一次作答记录（用于本地持久化）。 */
+function buildAttempt(state: QuizState, stage: QuizAttempt["stage"]): QuizAttempt {
+  const earned = state.results.reduce((a, r) => a + r.awarded, 0);
+  const max = state.results.reduce((a, r) => a + r.max, 0);
+  return {
+    earned,
+    max,
+    percent: max > 0 ? Math.round((earned / max) * 1000) / 10 : 0,
+    completedAt: new Date().toISOString(),
+    stage,
+    hintsUsed: state.hintsUsed.length,
+    perQuestion: state.results.map((r) => ({
+      id: r.question.id,
+      awarded: r.awarded,
+      max: r.max,
+      correct: r.objective ? r.correct : null,
+    })),
+  };
+}
 
 export const useQuizStore = create<QuizState>((set, get) => ({
   status: "idle",
   data: null,
+  subjectId: "",
+  chapterId: "",
   loadedKey: null,
   errorMessage: null,
   ...ANSWERING_DEFAULTS,
@@ -74,17 +103,23 @@ export const useQuizStore = create<QuizState>((set, get) => ({
     // 已是同一套题且加载成功，无需重复请求。
     if (get().loadedKey === key && get().status === "ready") return;
     if (!subjectId || !chapterId) {
-      set({ status: "empty", data: null, loadedKey: key, ...ANSWERING_DEFAULTS });
+      set({ status: "empty", data: null, subjectId, chapterId, loadedKey: key, ...ANSWERING_DEFAULTS });
       return;
     }
-    set({ status: "loading", errorMessage: null, loadedKey: key, ...ANSWERING_DEFAULTS });
+    set({
+      status: "loading",
+      errorMessage: null,
+      subjectId,
+      chapterId,
+      loadedKey: key,
+      ...ANSWERING_DEFAULTS,
+    });
     try {
       const res = await fetch(
         `/api/quiz?subjectId=${encodeURIComponent(subjectId)}&chapterId=${encodeURIComponent(chapterId)}`,
       );
       // 当前章节未生成题目：API 返回 404。
       if (res.status === 404) {
-        // 仅在仍是最新请求时落定状态，避免快速切换章节时的竞态。
         if (get().loadedKey === key) set({ status: "empty", data: null });
         return;
       }
@@ -103,10 +138,21 @@ export const useQuizStore = create<QuizState>((set, get) => ({
   },
 
   reset: () =>
-    set({ status: "idle", data: null, loadedKey: null, errorMessage: null, ...ANSWERING_DEFAULTS }),
+    set({
+      status: "idle",
+      data: null,
+      subjectId: "",
+      chapterId: "",
+      loadedKey: null,
+      errorMessage: null,
+      ...ANSWERING_DEFAULTS,
+    }),
 
   setAnswer: (id, answer) =>
     set((s) => ({ answers: { ...s.answers, [id]: answer } })),
+
+  useHint: (id) =>
+    set((s) => (s.hintsUsed.includes(id) ? s : { hintsUsed: [...s.hintsUsed, id] })),
 
   goTo: (index) => {
     const total = get().data?.questions.length ?? 0;
@@ -130,6 +176,9 @@ export const useQuizStore = create<QuizState>((set, get) => ({
       return { question: q, answer, awarded: 0, max, correct: false, objective };
     });
     set({ results, phase: "scoring" });
+    // 「分数首先确保存储在本地」：交卷即把客观分落地（随后才在评分页展示解析）。
+    const s = get();
+    saveAttempt(s.subjectId, s.chapterId, buildAttempt(s, "submitted"));
   },
 
   setSelfScore: (id, awarded) =>
@@ -141,7 +190,12 @@ export const useQuizStore = create<QuizState>((set, get) => ({
       ),
     })),
 
-  finishScoring: () => set({ phase: "summary" }),
+  finishScoring: () => {
+    set({ phase: "summary" });
+    const s = get();
+    // 自评完成 → 存最终成绩，更新历史最佳与作答次数。
+    saveAttempt(s.subjectId, s.chapterId, buildAttempt(s, "final"));
+  },
   backToScoring: () => set({ phase: "scoring" }),
 
   restart: () => set({ ...ANSWERING_DEFAULTS }),

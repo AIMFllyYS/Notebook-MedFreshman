@@ -1,16 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { RotateCcw, ArrowLeft, Trophy } from "lucide-react";
+import { RotateCcw, ArrowLeft, Trophy, Check } from "lucide-react";
 import { useQuizStore, computeBreakdown } from "@/lib/quiz-store";
+import { getChapterProgress } from "@/lib/quiz-progress";
 
 const TYPE_LABELS: Record<string, string> = {
   single_choice: "单选题",
   multiple_choice: "多选题",
   true_false: "判断题",
+  analysis: "辨析题",
   fill_blank: "填空题",
-  essay: "材料分析 / 解答题",
+  essay: "简答/材料分析/论述",
 };
 const SOURCE_LABELS: Record<string, string> = {
   current_chapter: "本章题目",
@@ -94,11 +96,38 @@ export default function QuizSummary() {
   const results = useQuizStore((s) => s.results);
   const restart = useQuizStore((s) => s.restart);
   const backToScoring = useQuizStore((s) => s.backToScoring);
+  const subjectId = useQuizStore((s) => s.subjectId);
+  const chapterId = useQuizStore((s) => s.chapterId);
   const breakdown = computeBreakdown(results);
   const grade = gradeOf(breakdown.percent);
 
+  // finishScoring 已把成绩写入 localStorage；mounted 后读回展示「已保存 + 历史最佳」。
+  const [best, setBest] = useState<number | null>(null);
+  useEffect(() => {
+    setBest(getChapterProgress(subjectId, chapterId)?.best ?? null);
+  }, [subjectId, chapterId]);
+
   return (
     <div className="mx-auto w-full max-w-3xl px-8 py-10">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          marginBottom: "16px",
+          fontSize: "12.5px",
+          color: "var(--color-success)",
+          fontWeight: 600,
+        }}
+      >
+        <Check size={15} />
+        成绩已保存到本地
+        {best !== null && (
+          <span style={{ color: "var(--md-sys-color-on-surface-variant)", fontWeight: 500 }}>
+            · 历史最佳 {best} 分
+          </span>
+        )}
+      </div>
       {/* 总分卡片 */}
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
