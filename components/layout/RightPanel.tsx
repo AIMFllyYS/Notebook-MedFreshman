@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { MessageSquare, MonitorPlay, Hand, Globe, X } from "lucide-react";
@@ -42,6 +42,12 @@ export default function RightPanel() {
   const openBookmark = useBrowser((s) => s.openBookmark);
   const removeBookmark = useBrowser((s) => s.removeBookmark);
 
+  // 避免 hydration mismatch：bookmarks 源自 localStorage，SSR 时使用默认值，
+  // 客户端 hydrate 后才使用 localStorage 的真实数据。
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const safeBookmarks = mounted ? bookmarks : [];
+
   const chatContext: ChatContext = useMemo(() => ({
     subjectId: activeSubjectId,
     categoryId: activeCategoryId,
@@ -78,12 +84,12 @@ export default function RightPanel() {
           })}
 
           {/* 分隔符：核心标签 与 浏览器固定书签标签 分开 */}
-          {bookmarks.length > 0 && (
+          {safeBookmarks.length > 0 && (
             <span className="mx-0.5 h-5 w-px shrink-0 bg-[var(--line)]" aria-hidden />
           )}
 
           {/* 浏览器收藏夹标签（独立固定标签） */}
-          {bookmarks.map((bm) => {
+          {safeBookmarks.map((bm) => {
             const active = tab === "browser" && activeTabId === bm.id;
             return (
               <span

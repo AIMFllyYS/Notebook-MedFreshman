@@ -793,3 +793,8 @@ body {
   --media-slider-track-fill-bg: var(--md-sys-color-primary);
   --media-slider-thumb-bg: #fff;
 }
+
+/* 隐藏 vidstack 原生 PiP 按钮：项目使用自定义浮窗 PiP（PipPlayer）替代 */
+.vs-player [data-media-pip-button] {
+  display: none !important;
+}

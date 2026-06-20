@@ -191,8 +191,6 @@ export default function PipPlayer() {
           src={video.src}
           poster={poster || undefined}
           title={video.title}
-          muted
-          autoPlay
           playsInline
           keyTarget="player"
           className="vs-player h-full"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { useStore } from "@/lib/store";
 import { getVideosForSection } from "@/content/media";
@@ -28,28 +28,27 @@ export default function VideoTab() {
 
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [expandedScripts, setExpandedScripts] = useState<Record<string, boolean>>({});
+  const startTimeRef = useRef<number | undefined>(undefined);
+
+  // InlinePlayer 挂载后清除 pipReturnTime，避免在渲染过程中调用 closePip
+  useEffect(() => {
+    if (pipReturnTime !== null && playingId !== null) {
+      startTimeRef.current = pipReturnTime;
+      closePip();
+    }
+  }, [pipReturnTime, playingId, closePip]);
+
   const toggleScript = (id: string) =>
     setExpandedScripts((prev) => ({ ...prev, [id]: !prev[id] }));
 
   const handlePip = (v: (typeof videos)[number], currentTime: number) => {
     setPlayingId(null);
+    startTimeRef.current = undefined;
     openPip(v, currentTime);
   };
 
   const handleCardClick = (v: (typeof videos)[number]) => {
     setPlayingId(v.id);
-    if (pipReturnTime !== null) {
-      closePip();
-    }
-  };
-
-  const getStartTime = (v: (typeof videos)[number]) => {
-    if (pipReturnTime !== null && playingId === v.id) {
-      const t = pipReturnTime;
-      closePip();
-      return t;
-    }
-    return undefined;
   };
 
   return (
@@ -80,10 +79,10 @@ export default function VideoTab() {
                 className="overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--md-sys-color-surface-container-lowest)]"
               >
                 {isPlaying ? (
-                  <div className="aspect-video w-full bg-black">
+                  <div className="group aspect-video w-full bg-black">
                     <InlinePlayer
                       video={v}
-                      startTime={getStartTime(v)}
+                      startTime={startTimeRef.current}
                       onPip={(currentTime) => handlePip(v, currentTime)}
                     />
                   </div>

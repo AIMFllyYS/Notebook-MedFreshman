@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { MediaPlayer, MediaProvider, type MediaPlayerInstance } from "@vidstack/react";
 import { DefaultVideoLayout, defaultLayoutIcons } from "@vidstack/react/player/layouts/default";
 import type { VideoEntry } from "@/lib/content/types";
 import { videoPoster } from "@/lib/content/poster";
+import { PictureInPicture } from "lucide-react";
 
 const zhTranslations = {
   Settings: "设置",
@@ -46,31 +47,52 @@ export default function InlinePlayer({ video, onPip, startTime }: InlinePlayerPr
   const ref = useRef<MediaPlayerInstance>(null);
   const poster = videoPoster(video);
 
-  const handlePipRequest = (event: { preventDefault: () => void }) => {
+  useEffect(() => {
+    const player = ref.current;
+    if (!player) return;
+    const onLoaded = () => {
+      if (startTime) player.currentTime = startTime;
+      player.play().catch(() => {});
+    };
+    player.addEventListener("can-play", onLoaded);
+    return () => player.removeEventListener("can-play", onLoaded);
+  }, [startTime]);
+
+  const handlePipClick = () => {
     if (!onPip) return;
-    event.preventDefault();
     const player = ref.current;
     if (!player) return;
     onPip(player.state.currentTime);
   };
 
   return (
-    <MediaPlayer
-      ref={ref}
-      src={video.src}
-      poster={poster || undefined}
-      title={video.title}
-      playsInline
-      keyTarget="player"
-      onMediaEnterPipRequest={handlePipRequest}
-      className="vs-player"
-    >
-      <MediaProvider />
-      <DefaultVideoLayout
-        icons={defaultLayoutIcons}
-        colorScheme="dark"
-        translations={zhTranslations}
-      />
-    </MediaPlayer>
+    <div className="relative h-full w-full">
+      <MediaPlayer
+        ref={ref}
+        src={video.src}
+        poster={poster || undefined}
+        title={video.title}
+        playsInline
+        keyTarget="player"
+        className="vs-player h-full"
+      >
+        <MediaProvider />
+        <DefaultVideoLayout
+          icons={defaultLayoutIcons}
+          colorScheme="dark"
+          translations={zhTranslations}
+        />
+      </MediaPlayer>
+
+      {onPip && (
+        <button
+          onClick={handlePipClick}
+          title="小窗播放"
+          className="absolute right-2 top-2 z-20 grid h-8 w-8 place-items-center rounded-lg bg-black/50 text-white opacity-0 backdrop-blur-sm transition-opacity hover:bg-black/70 group-hover:opacity-100 [.vds-controls:not([data-visible])_~_&]:opacity-0"
+        >
+          <PictureInPicture size={16} />
+        </button>
+      )}
+    </div>
   );
 }
