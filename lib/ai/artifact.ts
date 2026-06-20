@@ -1,14 +1,49 @@
 // 交互式 HTML 产物生成（"子智能体"）：当主模型调用 renderInteractive 工具时，
-// 用一次独立的 LLM 流式调用产出一个自包含 HTML 文档，并通过 SSE 的 artifact 事件
-// 实时推给前端（顶部横幅 + 半屏源码 + 完成后弹窗渲染）。
+// 用一次独立的 LLM 流式调用产出一个自包含 HTML 文档。
+//
+// 【异步模式】本函数不再阻塞主对话 SSE 流。主路由不 await 本函数，
+// 而是将其作为 fire-and-forget Promise 启动。流式输出写入 artifactRegistry，
+// 前端通过独立 SSE 端点 (/api/artifact-stream) 实时接收。
 import { chatCompletionsUrl, type ResolvedProvider } from "@/lib/ai/provider";
+import { register, appendChunk, finalize, fail } from "@/lib/ai/artifactRegistry";
 
-const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。请只输出一个完整、自包含的 HTML 文档用于在 iframe 中渲染：
-- 必须以 <!DOCTYPE html> 开头，包含 <html><head><body>，所有 CSS 与 JavaScript 全部内联。
-- 严禁任何外部网络依赖（不要 <script src=...> 或 <link href=...> 外链；公式/图形用纯 JS、SVG 或 Canvas 自行绘制）。
+const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一任务是输出一个完整、自包含的 HTML 文档。
+
+## 严格输出规则（违反将导致渲染失败）
+- 只输出 HTML 代码本身。不要输出任何解释、说明、注释、问候或总结文字。
+- 不要使用 \`\`\` 代码围栏包裹输出。
+- 第一个字符必须是 <!DOCTYPE html>，最后一个字符应是 </html>。
+- 如果你输出了 HTML 以外的任何内容，系统将无法渲染演示，用户将看到空白。
+
+## HTML 结构要求
+- 必须以 <!DOCTYPE html> 开头，包含 <html lang="zh"><head><body>。
+- 所有 CSS 与 JavaScript 全部内联在 <style> 和 <script> 标签中。
+- 严禁任何外部网络依赖：不要 <script src=...>、不要 <link href=...> 外链。
+- 公式/图形用纯 JS、SVG 或 Canvas 自行绘制，不要引入任何库。
+
+## 交互与设计要求
 - 面向学习者，做成可交互的（滑块/按钮/拖拽即时改变可视化），帮助直观理解给定知识点。
-- 深色背景友好、布局自适应（width:100%）、中文文案。
-- 只输出 HTML 本身，不要任何解释文字，也不要用 \`\`\` 代码围栏包裹。`;
+- 深色背景友好（body 背景用 #1a1a2e 或类似深色）、布局自适应（width:100%）、中文文案。
+- 代码精简优先：优先用最少的代码实现核心交互，避免冗余装饰。总长度控制在 8000 字符以内。
+
+## 骨架模板（可在此基础上填充）
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  body { background:#1a1a2e; color:#e0e0e0; font-family:system-ui,sans-serif; margin:0; padding:16px; }
+  /* 在此添加样式 */
+</style>
+</head>
+<body>
+  <!-- 在此添加 HTML 结构 -->
+  <script>
+    // 在此添加交互逻辑
+  </script>
+</body>
+</html>`;
 
 function stripFences(s: string): string {
   let t = s.trim();
@@ -18,11 +53,27 @@ function stripFences(s: string): string {
 }
 
 /**
- * 收尾并“尽量修复”生成的 HTML：去围栏 + 对被截断（达到 max_tokens 而中途停止）的文档做补救，
+ * 从原始输出中提取 HTML 文档部分。
+ * 优先匹配 <!DOCTYPE html>...</html>，回退到 <html...</html>，再回退到原文。
+ * 这层防护确保即使 LLM 在 HTML 前后输出了解释文字，也能正确提取。
+ */
+function extractHtml(raw: string): string {
+  const fullMatch = raw.match(/<!DOCTYPE\s+html>[\s\S]*<\/html>/i);
+  if (fullMatch) return fullMatch[0].trim();
+
+  const htmlMatch = raw.match(/<html[\s\S]*?<\/html>/i);
+  if (htmlMatch) return htmlMatch[0].trim();
+
+  return raw;
+}
+
+/**
+ * 收尾并“尽量修复”生成的 HTML：提取 + 去围栏 + 对被截断（达到 max_tokens 而中途停止）的文档做补救，
  * 避免未闭合的 <script>/<body>/<html> 导致 iframe 渲染整段空白。
  */
 function finalizeHtml(raw: string, truncated: boolean): string {
-  let html = stripFences(raw);
+  let html = extractHtml(raw);
+  html = stripFences(html);
   if (!html) return html;
   const lower = html.toLowerCase();
 
@@ -50,8 +101,13 @@ interface SendFn {
 }
 
 /**
- * 流式生成交互式 HTML 产物。emits: artifact start/delta/done/error。
- * 返回给主模型的简短工具结果（不含完整 HTML，省 token）。
+ * 流式生成交互式 HTML 产物（fire-and-forget）。
+ *
+ * 主路由不 await 本函数。流式输出写入 artifactRegistry，
+ * 前端通过 /api/artifact-stream 独立连接接收。
+ *
+ * @param send 主 SSE 的发送函数（仅用于发送 start 事件，让前端拿到 artifactId）
+ * @returns 给主模型的简短工具结果（不含完整 HTML，省 token）
  */
 export async function streamInteractiveArtifact(
   send: SendFn,
@@ -61,10 +117,12 @@ export async function streamInteractiveArtifact(
 ): Promise<string> {
   const title = (args.title || "交互演示").slice(0, 60);
   const prompt = (args.prompt || args.title || "").trim();
+
   send({ type: "artifact", id: artifactId, status: "start", title });
+  register(artifactId, title);
 
   if (!prompt) {
-    send({ type: "artifact", id: artifactId, status: "error", message: "缺少演示描述" });
+    fail(artifactId, "缺少演示描述");
     return "未能生成交互演示：缺少演示描述。";
   }
 
@@ -88,7 +146,7 @@ export async function streamInteractiveArtifact(
     });
 
     if (!res.ok || !res.body) {
-      send({ type: "artifact", id: artifactId, status: "error", message: `生成失败 ${res.status}` });
+      fail(artifactId, `生成失败 ${res.status}`);
       return `交互演示生成失败（${res.status}）。可改用文字讲解。`;
     }
 
@@ -114,7 +172,7 @@ export async function streamInteractiveArtifact(
           const delta = choice?.delta?.content;
           if (delta) {
             raw += delta;
-            send({ type: "artifact", id: artifactId, status: "delta", delta });
+            appendChunk(artifactId, delta);
           }
           if (choice?.finish_reason) finish = choice.finish_reason;
         } catch {
@@ -125,10 +183,10 @@ export async function streamInteractiveArtifact(
 
     // finish_reason === "length" 表示达到 max_tokens 被截断 → 收尾时补救闭合标签。
     const html = finalizeHtml(raw, finish === "length");
-    send({ type: "artifact", id: artifactId, status: "done", html });
-    return `已生成交互式演示「${title}」，用户可在对话中点击「查看」打开。请用一两句话说明这个演示能帮助理解什么，然后继续你的讲解。`;
+    finalize(artifactId, html);
+    return `已开始后台生成交互式演示「${title}」，生成完成后会自动出现在对话中。请用一两句话说明这个演示将帮助理解什么，然后继续你的讲解。`;
   } catch (e) {
-    send({ type: "artifact", id: artifactId, status: "error", message: String((e as Error)?.message ?? e) });
+    fail(artifactId, String((e as Error)?.message ?? e));
     return "交互演示生成出错，可改用文字讲解。";
   }
 }
