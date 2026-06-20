@@ -134,6 +134,36 @@ AI 走 OpenAI 兼容端点（`.env.local`：`AI_BASE_URL`/`AI_API_KEY`/`AI_MODEL
      Bing结果页/B站播放器/example.com→正常内嵌。
    - 真·全站只有桌面版（Tauri/Electron）WebView 一条实路；反向代理打不过 Cloudflare 且风险大，未采用。
 
+## 6.6 增补：交互式 HTML 产物机制深度修复（2026-06-20）
+
+用户反馈两点：①生成 HTML 时看不到“流式输出代码”；②看不到“渲染/打开按钮”。
+
+**根因定位（用 `scripts/temp` 探针直打 `/api/chat` 取证，已删除）：**
+- 服务端管线本身**完全正确**：模型确实走 `renderInteractive`、SSE `artifact start/delta/done` 逐条流式
+  （单次 4292 个 delta、~3.8 分钟）、`done` 带完整 HTML、`tool result` 带 `artifactId`。自然措辞请求也走工具，
+  正文里**不**夹带 HTML。故两 bug 均为**前端呈现层**问题：
+  1. **流式源码藏在顶部独立横幅**（`ArtifactBanner`），与用户视线（消息气泡）分离 → 漫长生成期里消息区只见
+     “正在思考”转圈 → 误判“没有流式输出”。
+  2. **“查看”按钮被双层折叠吞掉**：`ChatMessage` 的 ProcessingSteps 在完成瞬间 `isProcessing→false` 自动收起，
+     其内 `ToolCallDashboard` 又默认折叠 → 演示就绪那一刻按钮恰好消失。
+  3. `artifactId` 仅在结尾 `tool result` 才到达消息 → 无法在消息内从流式一开始就挂卡片。
+  4. `max_tokens:6000` 对 ~15.7KB 产物有**截断风险** → 未闭合 `<script>`/`<body>` 致 iframe 空白。
+  5. （潜在）`parseXmlTags` 会把正文里的 HTML 小写标签当组件切碎成“未知标签占位框”。
+
+**修复（更规范：把产物做成消息内常驻、流式、可一键打开的卡片）：**
+- `route.ts`：`renderInteractive` 的 `artifactId` 在 **call 事件**即下发（不再等 result）；`useChat` 在 call 阶段
+  即把 `artifactId` 挂到该工具调用块。
+- 新增 `components/chat/ArtifactCard.tsx`：按 id **反应式**订阅 `useArtifacts`，渲染于**消息气泡内**
+  （`ChatMessage`，置于会折叠的 ProcessingSteps 之外）。生成中流式显示源码 + “已写入 N 字符”进度；
+  完成后给**常驻显眼**「打开演示」（开 `ArtifactViewer` iframe）+「新标签打开」+「查看/隐藏源码」。
+- 删除顶部 `ArtifactBanner` 与 `ToolCallDashboard` 内的重复（且会被折叠的）查看按钮。
+- `artifact.ts`：`max_tokens` 6000→12000；捕获 `finish_reason`，`finalizeHtml()` 对截断产物补救
+  （丢弃半截标签、平衡 `<script>`、补 `</body></html>`）。
+- `xmlParser.tsx`：标签正则改为**仅匹配大写字母开头**的组件标签 → 小写 HTML 永不被切碎（防御性，修复潜在 bug）。
+
+注：单次产物生成仍需数分钟（上游模型整篇 HTML 二次流式），属上游速度上限；本次修复让等待期“看得见在写代码”、
+完成后“按钮一直在”，并保证截断也能渲染。
+
 ## 6. 研究产出引用
 
 - 硅基流动模型/搜索/嵌入/缓存：见 §2。

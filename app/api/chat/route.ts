@@ -222,14 +222,24 @@ export async function POST(req: NextRequest) {
             for (const c of calls) {
               let parsed: Record<string, unknown> = {};
               try { parsed = c.args ? JSON.parse(c.args) : {}; } catch { parsed = {}; }
-              send({ type: "tool", id: c.id, name: c.name, args: parsed, status: "call" });
 
-              // renderInteractive：交由"子智能体"流式生成 HTML 产物（横幅/半屏/弹窗在前端）。
+              // renderInteractive 的产物 id 在调用伊始即确定并随 "call" 事件下发，
+              // 让前端能从流式一开始就把内嵌产物卡片挂到这条消息上（边生成边看代码）。
+              const artifactId = c.name === "renderInteractive" ? `art_${c.id}` : undefined;
+              send({
+                type: "tool",
+                id: c.id,
+                name: c.name,
+                args: parsed,
+                status: "call",
+                meta: artifactId ? { artifactId } : undefined,
+              });
+
+              // renderInteractive：交由"子智能体"流式生成 HTML 产物（消息内卡片实时展示）。
               if (c.name === "renderInteractive") {
-                const artifactId = `art_${c.id}`;
                 const summary = await streamInteractiveArtifact(
                   send,
-                  artifactId,
+                  artifactId!,
                   { title: String(parsed.title ?? ""), prompt: String(parsed.prompt ?? "") },
                   provider,
                 );

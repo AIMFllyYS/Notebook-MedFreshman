@@ -12,7 +12,6 @@ import SelectionPopover from '@/components/notes/SelectionPopover';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
 import ChatSettings from '@/components/chat/ChatSettings';
-import ArtifactBanner from '@/components/chat/ArtifactBanner';
 import ArtifactViewer from '@/components/chat/ArtifactViewer';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import { QUICK_PROMPTS } from '@/lib/constants/prompts';
@@ -168,9 +167,6 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
           )}
         </div>
       </div>
-
-      {/* 交互演示横幅（流式生成时展开半屏看实时源码，完成后可弹窗查看） */}
-      <ArtifactBanner />
 
       {/* Messages Area */}
       <div

@@ -8,8 +8,11 @@ import type { ParsedBlock } from '@/lib/types/chat';
 export function parseXmlTags(text: string): ParsedBlock[] {
   if (!text) return [];
 
+  // 仅匹配“大写字母开头”的自定义组件标签（InteractiveVenn/FormulaSteps/Answer…）。
+  // 普通 HTML 标签（<div>/<script>/<html>…）一律小写，永远不在此匹配，
+  // 从而避免助教把 HTML 写进正文时被切碎成“未知标签占位框”。
   const tagRegex =
-    /(<[A-Za-z0-9]+(?:\s+[a-zA-Z_][a-zA-Z0-9_-]*=(?:"[^"]*"|'[^']*'|\{(?:[^{}]|\{[^{}]*\})*\}|[0-9.]+))*?\s*(?:\/>|>[\s\S]*?<\/[A-Za-z0-9]+>))/g;
+    /(<[A-Z][A-Za-z0-9]*(?:\s+[a-zA-Z_][a-zA-Z0-9_-]*=(?:"[^"]*"|'[^']*'|\{(?:[^{}]|\{[^{}]*\})*\}|[0-9.]+))*?\s*(?:\/>|>[\s\S]*?<\/[A-Z][A-Za-z0-9]*>))/g;
 
   const parts = text.split(tagRegex);
   const blocks: ParsedBlock[] = [];

@@ -8,6 +8,7 @@ import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { ReasoningBlock } from '@/components/chat/ReasoningBlock';
 import { ToolCallDashboard } from '@/components/chat/ToolCallDashboard';
 import { MessageContent } from '@/components/chat/MessageContent';
+import ArtifactCard from '@/components/chat/ArtifactCard';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -139,19 +140,27 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
         ) : (
           <>
             <ProcessingSteps msg={message} streaming={isStreaming} />
-            <div className="chat-prose" style={{
-              background: 'var(--md-sys-color-surface-container)',
-              padding: '14px 14px 12px',
-              borderRadius: '12px',
-              borderBottomLeftRadius: '4px',
-              fontSize: 'var(--chat-fs, 13px)',
-            }}>
-              <MessageContent
-                content={message.content}
-                enableVisualizations={true}
-                onFollowUpSelect={onFollowUpSelect}
-              />
-            </div>
+            {message.content && (
+              <div className="chat-prose" style={{
+                background: 'var(--md-sys-color-surface-container)',
+                padding: '14px 14px 12px',
+                borderRadius: '12px',
+                borderBottomLeftRadius: '4px',
+                fontSize: 'var(--chat-fs, 13px)',
+              }}>
+                <MessageContent
+                  content={message.content}
+                  enableVisualizations={true}
+                  onFollowUpSelect={onFollowUpSelect}
+                />
+              </div>
+            )}
+            {/* 交互演示卡片：常驻于气泡内（不随工具调用面板折叠而消失），生成中流式展示源码、完成后提供「打开演示」 */}
+            {message.toolCalls
+              ?.filter((tc) => tc.name === 'renderInteractive' && tc.artifactId)
+              .map((tc) => (
+                <ArtifactCard key={tc.artifactId} artifactId={tc.artifactId!} />
+              ))}
           </>
         )}
       </div>

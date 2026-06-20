@@ -198,6 +198,10 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                       arguments: event.args || {},
                       status: 'running',
                     };
+                    // renderInteractive 在 call 阶段即带回 artifactId → 消息内卡片可从一开始就流式展示
+                    if (event.meta && typeof event.meta.artifactId === 'string') {
+                      tc.artifactId = event.meta.artifactId;
+                    }
                     toolCallsMap.set(tc.id, tc);
                     updateMessage(sessionId!, assistantId, {
                       toolCalls: Array.from(toolCallsMap.values()),

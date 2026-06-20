@@ -17,6 +17,34 @@ function stripFences(s: string): string {
   return t.trim();
 }
 
+/**
+ * 收尾并“尽量修复”生成的 HTML：去围栏 + 对被截断（达到 max_tokens 而中途停止）的文档做补救，
+ * 避免未闭合的 <script>/<body>/<html> 导致 iframe 渲染整段空白。
+ */
+function finalizeHtml(raw: string, truncated: boolean): string {
+  let html = stripFences(raw);
+  if (!html) return html;
+  const lower = html.toLowerCase();
+
+  // 截断时，若停在某个标签中途（最后一个 '<' 之后没有匹配的 '>'），丢弃这半截标签。
+  if (truncated) {
+    const lt = html.lastIndexOf("<");
+    const gt = html.lastIndexOf(">");
+    if (lt > gt) html = html.slice(0, lt);
+  }
+
+  // 平衡 <script>：未闭合会把后续内容全部当脚本吞掉。
+  const openScript = (lower.match(/<script\b/g) || []).length;
+  const closeScript = (lower.match(/<\/script>/g) || []).length;
+  for (let i = 0; i < openScript - closeScript; i++) html += "\n</script>";
+
+  // 补全 body / html 闭合标签。
+  if (lower.includes("<body") && !lower.includes("</body>")) html += "\n</body>";
+  if (lower.includes("<html") && !lower.includes("</html>")) html += "\n</html>";
+
+  return html;
+}
+
 interface SendFn {
   (o: unknown): void;
 }
@@ -55,7 +83,7 @@ export async function streamInteractiveArtifact(
         ],
         stream: true,
         temperature: 0.4,
-        max_tokens: 6000,
+        max_tokens: 12000,
       }),
     });
 
@@ -68,6 +96,7 @@ export async function streamInteractiveArtifact(
     const decoder = new TextDecoder();
     let buf = "";
     let raw = "";
+    let finish = "";
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
@@ -81,18 +110,21 @@ export async function streamInteractiveArtifact(
         if (!data || data === "[DONE]") continue;
         try {
           const json = JSON.parse(data);
-          const delta = json?.choices?.[0]?.delta?.content;
+          const choice = json?.choices?.[0];
+          const delta = choice?.delta?.content;
           if (delta) {
             raw += delta;
             send({ type: "artifact", id: artifactId, status: "delta", delta });
           }
+          if (choice?.finish_reason) finish = choice.finish_reason;
         } catch {
           /* 忽略解析失败行 */
         }
       }
     }
 
-    const html = stripFences(raw);
+    // finish_reason === "length" 表示达到 max_tokens 被截断 → 收尾时补救闭合标签。
+    const html = finalizeHtml(raw, finish === "length");
     send({ type: "artifact", id: artifactId, status: "done", html });
     return `已生成交互式演示「${title}」，用户可在对话中点击「查看」打开。请用一两句话说明这个演示能帮助理解什么，然后继续你的讲解。`;
   } catch (e) {

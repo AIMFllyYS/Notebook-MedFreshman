@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle, Globe, ExternalLink, Zap, MonitorPlay } from 'lucide-react';
+import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle, Globe, ExternalLink, Zap } from 'lucide-react';
 import type { ToolCallBlock } from '@/lib/types/chat';
-import { useArtifacts } from '@/lib/hooks/useArtifacts';
 
 function hostOf(url: string): string {
   try {
@@ -95,30 +94,7 @@ const ToolCallItem: React.FC<{ call: ToolCallBlock }> = ({ call }) => {
         </div>
       )}
 
-      {/* 交互演示：查看按钮（点击弹窗渲染 HTML 产物） */}
-      {call.name === 'renderInteractive' && call.artifactId && (
-        <button
-          type="button"
-          onClick={() => {
-            const a = useArtifacts.getState();
-            if (a.byId[call.artifactId!]) a.openViewer(call.artifactId!);
-          }}
-          disabled={!useArtifacts.getState().byId[call.artifactId]}
-          className="flex items-center gap-1.5 self-start rounded-lg px-2.5 py-1.5"
-          style={{
-            background: 'var(--md-sys-color-primary-container)',
-            color: 'var(--md-sys-color-primary)',
-            fontSize: '0.76rem',
-            fontWeight: 600,
-            fontFamily: 'inherit',
-            border: '1px solid var(--md-sys-color-primary)',
-            cursor: 'pointer',
-          }}
-        >
-          <MonitorPlay size={13} />
-          {useArtifacts.getState().byId[call.artifactId] ? '查看交互演示' : '演示已失效（请重新生成）'}
-        </button>
-      )}
+      {/* 交互演示的查看入口已上移为消息内常驻 ArtifactCard（见 ChatMessage），此处不再重复。 */}
 
       {/* 联网搜索来源卡片 */}
       {call.name === 'webSearch' && call.sources && call.sources.length > 0 && (
