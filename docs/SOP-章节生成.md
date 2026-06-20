@@ -101,7 +101,10 @@ $$\begin{aligned}
 可折叠的详细推导步骤
 :::
 ```
-可用的 `kind`：`definition / theorem / example / insight / pitfall / note / derivation`。
+可用的 `kind`：`definition / theorem / example / insight / pitfall / note / tip / derivation`。
+
+> 完整的指令语法、CSS 类名、语义图标及化学公式 KaTeX 注意事项，
+> 参见 `docs/refer/rendering-architecture.md` §5。
 
 ### 2.3 内嵌动画与交互（用本小节对应的 id）
 ```

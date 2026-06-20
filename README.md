@@ -97,6 +97,7 @@ public/              # 静态资源（视频、图片、海报）
 - **组件注册系统** - 交互组件通过 `registry.ts` 统一管理，支持懒加载
 - **媒体清单驱动** - 视频资源通过 `media.generated.ts` 集中管理
 - **富文本扩展** - 自定义 Markdown 指令实现多媒体内容嵌入
+- **共享渲染架构** - 笔记与 AI 对话复用同一 Markdown 渲染核心，详见 `docs/refer/rendering-architecture.md`
 - **状态管理** - Zustand 全局状态管理导航、播放、对话等跨组件状态
 
 ### 关键技术组件
