@@ -4,6 +4,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { sharedRemarkPlugins, sharedRehypePlugins } from '@/lib/markdown/plugins';
 import { directiveComponents } from '@/lib/markdown/directiveComponents';
+import { normalizeDirectiveLabels } from '@/lib/markdown/normalizeDirectiveLabels';
 import 'katex/dist/katex.min.css';
 import { parseXmlTags } from '@/lib/utils/xmlParser';
 import { ChatMessageVisualizations } from '@/components/chat/ChatMessageVisualizations';
@@ -98,7 +99,7 @@ export const MessageContent: React.FC<MessageContentProps> = ({
   onFollowUpSelect,
 }) => {
   const followUps = extractFollowUpQuestions(content);
-  const cleanedContent = getCleanedContent(content);
+  const cleanedContent = normalizeDirectiveLabels(getCleanedContent(content));
 
   return (
     <>

@@ -84,6 +84,17 @@
 
 提供复制按钮和语言标签。两侧的 `pre` 组件均映射到此组件。
 
+### 2.5 指令标签规范化 (`lib/markdown/normalizeDirectiveLabels.ts`)
+
+remark-directive 的属性语法 `:::type{label=值}` 中，**未加引号的属性值不能包含空格或 ASCII 直引号 `"`**。
+中文标题里一旦出现空格（`:::definition{label=σ-p 超共轭}`）或直引号（`:::insight{label=从"衣食住行"讲起}`），
+micromark 属性解析失败 → 整个指令被丢弃，渲染成裸 `:::type{...}` 字面文本（callout 框消失、围栏裸露、块结构坍塌）。
+
+`normalizeDirectiveLabels(src)` 在交给 react-markdown 解析**之前**，仅对指令起始行的 `{label=…}`/`{title=…}`：
+①把成对 ASCII 引号转中文弯引号；②用 ASCII 双引号给整个值「定界」（`{label="σ-p 超共轭"}`），
+使空格/标点都能被接受。代码块内一律跳过，正文引号不受影响，幂等可重入。
+**两侧入口（NoteRenderer / MessageContent）都必须先经它**，既修复既有内容也兜底 AI 生成与作者笔误。
+
 ---
 
 ## 3. 笔记侧 — NoteRenderer
@@ -286,3 +297,9 @@ $$
 - **不要**在 `globals.css` 中添加 prose/callout/code 相关样式 — 各有专属文件
 - **不要**在化学公式中使用 `#`（三键）、`^`（气体箭头）、`sp^n`、`^.`（自由基）— KaTeX mhchem 不支持，用本文档 §5.4 中的替代写法
 - **不要**删除 `globals.css` 顶部的 `@import "tailwindcss"` — 它必须是第一行
+- **不要**绕过 `normalizeDirectiveLabels`（见 §2.5）直接把原始内容喂给 react-markdown — 否则带空格/引号的中文 callout 标签会解析失败、围栏裸露
+- **不要**在 Windows 上经 PowerShell/控制台重定向（GBK/cp936）写内容文件 — 三字节汉字尾字节会被替换为 `?` 产生非法 UTF-8（乱码 + 块坍塌）。务必用 Write/Edit（UTF-8）写盘；`pnpm run check:encoding`（已挂 `prebuild`）会拦截此类损坏
+
+> **历史事故备忘**：曾有一次「化学 KaTeX 批量修复」提交把 `4.1/4.2/4.3/5.3.md` 经 GBK 管道写坏（非法 UTF-8），
+> 导致有机化学正文「乱码 + 组件层层堆叠」。修复方式：`git checkout <好提交> -- <文件>` 字节级恢复；
+> 并新增 `scripts/check-content-encoding.mjs` 作为 `prebuild` 守卫，永久拦截。

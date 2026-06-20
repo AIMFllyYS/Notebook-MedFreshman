@@ -5,6 +5,8 @@
   "description": "期末复习工作站 · 多学科辅助学习应用",
   "scripts": {
     "dev": "next dev",
+    "check:encoding": "node scripts/check-content-encoding.mjs",
+    "prebuild": "node scripts/check-content-encoding.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",

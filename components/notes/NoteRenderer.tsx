@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import { sharedRemarkPlugins, sharedRehypePlugins } from "@/lib/markdown/plugins";
 import { directiveComponents } from "@/lib/markdown/directiveComponents";
+import { normalizeDirectiveLabels } from "@/lib/markdown/normalizeDirectiveLabels";
 import CodeBlock from "@/components/shared/CodeBlock";
 
 const components = {
@@ -23,7 +24,7 @@ function NoteRendererBase({ content }: { content: string }) {
       rehypePlugins={sharedRehypePlugins}
       components={components}
     >
-      {content}
+      {normalizeDirectiveLabels(content)}
     </ReactMarkdown>
   );
 }
