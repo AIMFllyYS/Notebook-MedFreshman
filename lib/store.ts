@@ -56,8 +56,16 @@ interface AppState {
   // ── 小窗视频（PiP）─────────────────────────────────────
   /** 当前在浮动小窗播放的视频；null 表示未打开 */
   pipVideo: VideoEntry | null;
-  openPip: (v: VideoEntry) => void;
-  closePip: () => void;
+  /** 小窗开始播放位置（秒），用于内嵌→小窗续播 */
+  pipStartTime: number;
+  /** 小窗关闭时记录的播放位置，供内嵌续播 */
+  pipReturnTime: number | null;
+  /** 浮窗几何状态记忆（跨视频关闭/打开持久化） */
+  pipGeometry: { x: number; y: number; width: number; height: number } | null;
+  /** 保存浮窗几何状态 */
+  setPipGeometry: (g: { x: number; y: number; width: number; height: number }) => void;
+  openPip: (v: VideoEntry, startTime?: number) => void;
+  closePip: (returnTime?: number) => void;
 }
 
 export const useStore = create<AppState>((set, get) => ({
@@ -101,6 +109,11 @@ export const useStore = create<AppState>((set, get) => ({
   clearOutbound: () => set({ outbound: null }),
 
   pipVideo: null,
-  openPip: (v) => set({ pipVideo: v }),
-  closePip: () => set({ pipVideo: null }),
+  pipStartTime: 0,
+  pipReturnTime: null,
+  pipGeometry: null,
+  setPipGeometry: (g) => set({ pipGeometry: g }),
+  openPip: (v, startTime = 0) => set({ pipVideo: v, pipStartTime: startTime }),
+  closePip: (returnTime) =>
+    set({ pipVideo: null, pipReturnTime: returnTime ?? null }),
 }));

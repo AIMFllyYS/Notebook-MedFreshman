@@ -5,10 +5,13 @@ import dynamic from "next/dynamic";
 import { useStore } from "@/lib/store";
 import { getVideosForSection } from "@/content/media";
 import { videoPoster } from "@/lib/content/poster";
-// 讲稿单独成模块（~388KB），只在本懒加载的 VideoTab chunk 内引用，不进入首屏内容包。
 import { videoScripts } from "@/content/media.scripts.generated";
 
-// NoteRenderer 较重（含 KaTeX/highlight），折叠讲稿展开时才懒加载
+const InlinePlayer = dynamic(() => import("@/components/video/InlinePlayer"), {
+  ssr: false,
+  loading: () => <div className="aspect-video w-full animate-pulse bg-[var(--bg-muted)]" />,
+});
+
 const NoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), {
   ssr: false,
   loading: () => <div className="py-4 text-center text-[12px] text-[var(--ink-faint)]">加载讲稿…</div>,
@@ -19,12 +22,35 @@ export default function VideoTab() {
   const chapterId = useStore((s) => s.activeChapterId);
   const sectionId = useStore((s) => s.activeSectionId);
   const openPip = useStore((s) => s.openPip);
+  const pipReturnTime = useStore((s) => s.pipReturnTime);
+  const closePip = useStore((s) => s.closePip);
   const videos = getVideosForSection(activeSubjectId, chapterId, sectionId);
 
-  // 记录每个视频卡片的讲稿展开状态，key 为视频 id
+  const [playingId, setPlayingId] = useState<string | null>(null);
   const [expandedScripts, setExpandedScripts] = useState<Record<string, boolean>>({});
   const toggleScript = (id: string) =>
     setExpandedScripts((prev) => ({ ...prev, [id]: !prev[id] }));
+
+  const handlePip = (v: (typeof videos)[number], currentTime: number) => {
+    setPlayingId(null);
+    openPip(v, currentTime);
+  };
+
+  const handleCardClick = (v: (typeof videos)[number]) => {
+    setPlayingId(v.id);
+    if (pipReturnTime !== null) {
+      closePip();
+    }
+  };
+
+  const getStartTime = (v: (typeof videos)[number]) => {
+    if (pipReturnTime !== null && playingId === v.id) {
+      const t = pipReturnTime;
+      closePip();
+      return t;
+    }
+    return undefined;
+  };
 
   return (
     <div className="scroll-y h-full px-3 py-4">
@@ -47,48 +73,57 @@ export default function VideoTab() {
             const script = videoScripts[v.id];
             const hasScript = Boolean(script);
             const isExpanded = expandedScripts[v.id];
+            const isPlaying = playingId === v.id;
             return (
               <div
                 key={v.id}
                 className="overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--md-sys-color-surface-container-lowest)]"
               >
-                {/* 播放区：点击打开画中画 */}
-                <button
-                  onClick={() => openPip(v)}
-                  className="hover-lift group block w-full text-left transition-shadow"
-                >
-                  <div className="relative aspect-video w-full bg-gradient-to-br from-[var(--accent-weak)] to-[var(--bg-muted)]">
-                    {(() => {
-                      const poster = videoPoster(v);
-                      return poster ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={poster}
-                          alt={v.title}
-                          loading="lazy"
-                          className="h-full w-full object-cover"
-                          // 封面缺失时隐藏图片，露出底层占位渐变
-                          onError={(e) => {
-                            e.currentTarget.style.display = "none";
-                          }}
-                        />
-                      ) : null;
-                    })()}
-                    <span className="absolute inset-0 grid place-items-center">
-                      <span className="grid h-12 w-12 place-items-center rounded-full bg-[var(--md-sys-color-surface-container-lowest)]/85 text-[var(--accent-ink)] shadow-md transition-transform group-hover:scale-110">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                {isPlaying ? (
+                  <div className="aspect-video w-full bg-black">
+                    <InlinePlayer
+                      video={v}
+                      startTime={getStartTime(v)}
+                      onPip={(currentTime) => handlePip(v, currentTime)}
+                    />
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => handleCardClick(v)}
+                    className="hover-lift group block w-full text-left transition-shadow"
+                  >
+                    <div className="relative aspect-video w-full bg-gradient-to-br from-[var(--accent-weak)] to-[var(--bg-muted)]">
+                      {(() => {
+                        const poster = videoPoster(v);
+                        return poster ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={poster}
+                            alt={v.title}
+                            loading="lazy"
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.style.display = "none";
+                            }}
+                          />
+                        ) : null;
+                      })()}
+                      <span className="absolute inset-0 grid place-items-center">
+                        <span className="grid h-12 w-12 place-items-center rounded-full bg-[var(--md-sys-color-surface-container-lowest)]/85 text-[var(--accent-ink)] shadow-md transition-transform group-hover:scale-110">
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                  <div className="px-3 py-2.5">
-                    <div className="text-[14px] font-semibold text-[var(--ink)]">{v.title}</div>
-                    {v.description && (
-                      <div className="mt-0.5 line-clamp-2 text-[12.5px] text-[var(--ink-faint)]">{v.description}</div>
-                    )}
-                  </div>
-                </button>
+                    </div>
+                  </button>
+                )}
 
-                {/* 配套讲稿折叠区 */}
+                <div className="px-3 py-2.5">
+                  <div className="text-[14px] font-semibold text-[var(--ink)]">{v.title}</div>
+                  {v.description && (
+                    <div className="mt-0.5 line-clamp-2 text-[12.5px] text-[var(--ink-faint)]">{v.description}</div>
+                  )}
+                </div>
+
                 {hasScript && (
                   <div className="border-t border-[var(--line)]">
                     <button

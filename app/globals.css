@@ -779,3 +779,17 @@ body {
 .hljs-number { color: var(--color-warning); }
 .hljs-comment { color: var(--md-sys-color-outline); font-style: italic; }
 .hljs-title, .hljs-function .hljs-title { color: var(--md-sys-color-primary); }
+
+/* ── Vidstack 播放器主题适配 ─────────────────── */
+.vs-player {
+  --media-primary-color: var(--md-sys-color-primary);
+  --media-secondary-color: var(--md-sys-color-secondary);
+  --media-bg: var(--md-sys-color-surface-container-lowest);
+  --media-focus-ring-color: var(--md-sys-color-primary);
+  --media-control-hover-bg: rgba(255, 255, 255, 0.12);
+  --media-tooltip-bg: rgba(20, 20, 28, 0.9);
+  --media-menu-bg: rgba(20, 20, 28, 0.95);
+  --media-slider-track-bg: rgba(255, 255, 255, 0.2);
+  --media-slider-track-fill-bg: var(--md-sys-color-primary);
+  --media-slider-thumb-bg: #fff;
+}

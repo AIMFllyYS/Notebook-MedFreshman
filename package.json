@@ -13,6 +13,7 @@
     "render:chapter": "python manim/render.py --chapter"
   },
   "dependencies": {
+    "@vidstack/react": "1.15.6",
     "clsx": "^2.1.1",
     "framer-motion": "^11.18.0",
     "katex": "^0.16.21",

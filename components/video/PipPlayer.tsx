@@ -1,40 +1,157 @@
 "use client";
 
-import { motion, useDragControls } from "framer-motion";
-import { useState } from "react";
+import { motion, useDragControls, type PanInfo } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { MediaPlayer, MediaProvider, type MediaPlayerInstance } from "@vidstack/react";
+import { DefaultVideoLayout, defaultLayoutIcons } from "@vidstack/react/player/layouts/default";
 import { useStore } from "@/lib/store";
 import { videoPoster } from "@/lib/content/poster";
 
+const zhTranslations = {
+  Settings: "设置",
+  Speed: "倍速",
+  Normal: "正常",
+  PIP: "画中画",
+  Enter: "进入画中画",
+  Exit: "退出画中画",
+  Fullscreen: "全屏",
+  EnterFullscreen: "进入全屏",
+  ExitFullscreen: "退出全屏",
+  Mute: "静音",
+  Unmute: "取消静音",
+  Captions: "字幕",
+  "Captions off": "关闭字幕",
+  Loop: "循环",
+  Seek: "跳转",
+  Play: "播放",
+  Pause: "暂停",
+  "Keyboard Shortcuts": "快捷键",
+  Restart: "重新播放",
+  Quality: "画质",
+  Audio: "音量",
+  Volume: "音量",
+  Live: "直播",
+  SeekBackward: "后退",
+  SeekForward: "前进",
+};
+
+const DEFAULT_WIDTH = 440;
+const DEFAULT_HEIGHT = 248;
+const MIN_WIDTH = 300;
+const MAX_WIDTH = 760;
+const MIN_HEIGHT = 169;
+const MAX_HEIGHT = 423;
+const MARGIN = 24;
+
+function clampGeometry(x: number, y: number, w: number, h: number) {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  return {
+    x: Math.max(0, Math.min(x, vw - w - MARGIN)),
+    y: Math.max(0, Math.min(y, vh - h - MARGIN)),
+    width: w,
+    height: h,
+  };
+}
+
 export default function PipPlayer() {
   const video = useStore((s) => s.pipVideo);
+  const startTime = useStore((s) => s.pipStartTime);
   const close = useStore((s) => s.closePip);
+  const pipGeometry = useStore((s) => s.pipGeometry);
+  const setPipGeometry = useStore((s) => s.setPipGeometry);
+
   const controls = useDragControls();
-  const [width, setWidth] = useState(440);
+  const playerRef = useRef<MediaPlayerInstance>(null);
+  const posRef = useRef({ x: 0, y: 0, width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT });
+
+  const [width, setWidth] = useState(DEFAULT_WIDTH);
+  const [height, setHeight] = useState(DEFAULT_HEIGHT);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    if (!video || initialized) return;
+    let g;
+    if (pipGeometry) {
+      g = clampGeometry(pipGeometry.x, pipGeometry.y, pipGeometry.width, pipGeometry.height);
+    } else {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      g = clampGeometry(vw - DEFAULT_WIDTH - MARGIN, vh - DEFAULT_HEIGHT - MARGIN, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
+    setWidth(g.width);
+    setHeight(g.height);
+    setPos({ x: g.x, y: g.y });
+    posRef.current = g;
+    setInitialized(true);
+  }, [video, pipGeometry, initialized]);
+
+  useEffect(() => {
+    if (!initialized) return;
+    posRef.current = { ...posRef.current, x: pos.x, y: pos.y, width, height };
+  }, [pos, width, height, initialized]);
+
+  useEffect(() => {
+    if (!video || !initialized) return;
+    const player = playerRef.current;
+    if (!player) return;
+    const onLoaded = () => {
+      if (startTime) player.currentTime = startTime;
+      player.play().catch(() => {});
+      try { player.muted = false; } catch {}
+    };
+    player.addEventListener("can-play", onLoaded);
+    return () => player.removeEventListener("can-play", onLoaded);
+  }, [video, startTime, initialized]);
 
   if (!video) return null;
 
-  function nativePip() {
-    const v = document.getElementById("pip-video-el") as HTMLVideoElement | null;
-    if (v && "requestPictureInPicture" in v) {
-      (v as HTMLVideoElement).requestPictureInPicture().catch(() => {});
-    }
-  }
+  const saveGeometry = () => {
+    const g = clampGeometry(posRef.current.x, posRef.current.y, posRef.current.width, posRef.current.height);
+    setPipGeometry(g);
+  };
+
+  const handleClose = () => {
+    const player = playerRef.current;
+    const returnTime = player?.state.currentTime ?? 0;
+    saveGeometry();
+    close(returnTime);
+  };
+
+  const handleDragEnd = (_e: unknown, info: PanInfo) => {
+    const newX = pos.x + info.offset.x;
+    const newY = pos.y + info.offset.y;
+    const clamped = clampGeometry(newX, newY, width, height);
+    setPos({ x: clamped.x, y: clamped.y });
+    posRef.current = { ...posRef.current, x: clamped.x, y: clamped.y };
+    saveGeometry();
+  };
 
   function startResize(e: React.PointerEvent) {
     e.preventDefault();
     e.stopPropagation();
     const startX = e.clientX;
+    const startY = e.clientY;
     const startW = width;
+    const startH = height;
     const move = (ev: PointerEvent) => {
-      setWidth(Math.min(760, Math.max(300, startW + (ev.clientX - startX))));
+      const newW = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, startW + (ev.clientX - startX)));
+      const newH = Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, startH + (ev.clientY - startY)));
+      setWidth(newW);
+      setHeight(newH);
+      posRef.current = { ...posRef.current, width: newW, height: newH };
     };
     const up = () => {
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
+      saveGeometry();
     };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
   }
+
+  const poster = videoPoster(video);
 
   return (
     <motion.div
@@ -42,12 +159,13 @@ export default function PipPlayer() {
       dragControls={controls}
       dragListener={false}
       dragMomentum={false}
-      initial={{ opacity: 0, scale: 0.85, y: 20 }}
-      animate={{ opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 350, damping: 25 } }}
-      exit={{ opacity: 0, scale: 0.85, y: 20, transition: { duration: 0.2 } }}
+      onDragEnd={handleDragEnd}
+      initial={{ opacity: 0, scale: 0.85 }}
+      animate={{ opacity: 1, scale: 1, transition: { type: "spring", stiffness: 350, damping: 25 } }}
+      exit={{ opacity: 0, scale: 0.85, transition: { duration: 0.2 } }}
       whileDrag={{ scale: 1.02, boxShadow: "0 24px 60px rgba(20,24,40,0.25)" }}
-      className="fixed bottom-6 right-6 z-[100] overflow-hidden rounded-xl border border-black/20 bg-black shadow-[var(--shadow-lg)]"
-      style={{ width }}
+      className="fixed z-[100] overflow-hidden rounded-xl border border-black/20 bg-black shadow-[var(--shadow-lg)]"
+      style={{ width, height, left: pos.x, top: pos.y }}
     >
       <div
         onPointerDown={(e) => controls.start(e)}
@@ -56,17 +174,7 @@ export default function PipPlayer() {
         <span className="truncate text-[12.5px] font-medium">{video.title}</span>
         <div className="flex items-center gap-0.5">
           <button
-            onClick={nativePip}
-            title="浏览器原生画中画"
-            className="grid h-6 w-6 place-items-center rounded hover:bg-white/15"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="4" width="18" height="14" rx="2" />
-              <rect x="11" y="10" width="8" height="6" rx="1" fill="currentColor" />
-            </svg>
-          </button>
-          <button
-            onClick={close}
+            onClick={handleClose}
             title="关闭"
             className="grid h-6 w-6 place-items-center rounded hover:bg-white/15"
           >
@@ -77,15 +185,26 @@ export default function PipPlayer() {
         </div>
       </div>
 
-      <video
-        id="pip-video-el"
-        src={video.src}
-        poster={videoPoster(video) || undefined}
-        preload="metadata"
-        controls
-        autoPlay
-        className="block w-full bg-black"
-      />
+      <div style={{ height: height - 32 }}>
+        <MediaPlayer
+          ref={playerRef}
+          src={video.src}
+          poster={poster || undefined}
+          title={video.title}
+          muted
+          autoPlay
+          playsInline
+          keyTarget="player"
+          className="vs-player h-full"
+        >
+          <MediaProvider />
+          <DefaultVideoLayout
+            icons={defaultLayoutIcons}
+            colorScheme="dark"
+            translations={zhTranslations}
+          />
+        </MediaPlayer>
+      </div>
 
       <div
         onPointerDown={startResize}
