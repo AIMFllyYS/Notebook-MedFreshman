@@ -3,46 +3,24 @@
 import { memo } from "react";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
-import remarkGfm from "remark-gfm";
-import remarkMath from "remark-math";
-import remarkDirective from "remark-directive";
-import rehypeKatex from "rehype-katex";
-import rehypeHighlight from "rehype-highlight";
-// mhchem 扩展：注册 \ce{} / \pu{} 化学式宏到 KaTeX 实例（供有机化学详解使用）
-import "katex/contrib/mhchem";
-import remarkDirectives from "@/lib/markdown/remarkDirectives";
-import { Callout, Derivation, MediaEmbed } from "./directives";
+import { sharedRemarkPlugins, sharedRehypePlugins } from "@/lib/markdown/plugins";
+import { directiveComponents } from "@/lib/markdown/directiveComponents";
+import CodeBlock from "@/components/shared/CodeBlock";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const remarkPlugins: any[] = [
-  remarkGfm,
-  remarkMath,
-  remarkDirective,
-  remarkDirectives,
-];
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const rehypePlugins: any[] = [
-  [rehypeKatex, { throwOnError: false, strict: false }],
-  [rehypeHighlight, { detect: true, ignoreMissing: true }],
-];
-
-// 自定义指令元素 -> React 组件，图片统一懒加载
 const components = {
-  callout: Callout,
-  derivation: Derivation,
-  mediaembed: MediaEmbed,
+  ...directiveComponents,
   img: ({ src, alt, ...rest }: React.ImgHTMLAttributes<HTMLImageElement>) => (
     // eslint-disable-next-line @next/next/no-img-element
     <img src={src} alt={alt ?? ""} loading="lazy" decoding="async" {...rest} />
   ),
+  pre: ({ node, ...props }: any) => <CodeBlock {...props} />,
 } as unknown as Components;
 
 function NoteRendererBase({ content }: { content: string }) {
   return (
     <ReactMarkdown
-      remarkPlugins={remarkPlugins}
-      rehypePlugins={rehypePlugins}
+      remarkPlugins={sharedRemarkPlugins}
+      rehypePlugins={sharedRehypePlugins}
       components={components}
     >
       {content}

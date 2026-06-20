@@ -1,8 +1,9 @@
 import { visit } from "unist-util-visit";
+import { CALLOUTS } from "./calloutTypes";
 
 /**
  * 把 remark-directive 解析出的容器/叶子指令，转换为渲染器可识别的自定义元素：
- *   :::definition / theorem / example / insight / pitfall / note  -> <callout kind=...>
+ *   :::definition / theorem / example / insight / pitfall / note / tip  -> <callout kind=...>
  *   :::derivation{title=...}                                       -> <derivation>
  *   ::video{id=...} / ::interactive{id=...}                        -> <mediaembed kind=... id=...>
  *
@@ -14,14 +15,6 @@ import { visit } from "unist-util-visit";
  *   ::video{id=ch01-1.4-classical}
  *   ::interactive{id=ch01-1.2-venn}
  */
-const CALLOUTS = new Set([
-  "definition",
-  "theorem",
-  "example",
-  "insight",
-  "pitfall",
-  "note",
-]);
 
 interface DirectiveNode {
   type: string;

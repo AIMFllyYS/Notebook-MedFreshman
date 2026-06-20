@@ -2,14 +2,14 @@
 
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import remarkMath from 'remark-math';
-import remarkGfm from 'remark-gfm';
-import rehypeKatex from 'rehype-katex';
+import { sharedRemarkPlugins, sharedRehypePlugins } from '@/lib/markdown/plugins';
+import { directiveComponents } from '@/lib/markdown/directiveComponents';
 import 'katex/dist/katex.min.css';
 import { parseXmlTags } from '@/lib/utils/xmlParser';
 import { ChatMessageVisualizations } from '@/components/chat/ChatMessageVisualizations';
 import { ToolCallDashboard } from '@/components/chat/ToolCallDashboard';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
+import CodeBlock from '@/components/shared/CodeBlock';
 
 interface MessageContentProps {
   content: string;
@@ -19,8 +19,9 @@ interface MessageContentProps {
 
 /* ---- Markdown rendering components ----
    排版交由 .chat-prose CSS 统一控制（行距/段距/标题/列表/引用/代码/表格/KaTeX）；
-   这里只保留必要的行为：链接新开页、表格横向滚动包裹。 */
+   这里只保留必要的行为：链接新开页、表格横向滚动包裹、代码块复制按钮。 */
 const mdComponents = {
+  ...directiveComponents,
   a: ({ node, ...props }: any) => (
     <a target="_blank" rel="noopener noreferrer" {...props} />
   ),
@@ -29,16 +30,14 @@ const mdComponents = {
       <table {...props} />
     </div>
   ),
+  pre: ({ node, ...props }: any) => <CodeBlock {...props} />,
 };
-
-const remarkPlugins = [remarkMath, remarkGfm];
-const rehypePlugins = [rehypeKatex];
 
 /* ---- Render a single parsed block ---- */
 const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boolean, onFollowUpSelect?: (question: string) => void) => {
   if (block.type === 'markdown') {
     return (
-      <ReactMarkdown key={idx} remarkPlugins={remarkPlugins} rehypePlugins={rehypePlugins} components={mdComponents}>
+      <ReactMarkdown key={idx} remarkPlugins={sharedRemarkPlugins} rehypePlugins={sharedRehypePlugins} components={mdComponents}>
         {block.content || ''}
       </ReactMarkdown>
     );
@@ -47,7 +46,7 @@ const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boole
   const { tagName, props: compProps, childrenText } = block;
 
   // Visualization components
-  const vizTags = ['InteractiveVenn', 'InteractiveDistribution', 'FormulaSteps', 'ManimPlayer', 'ManimAnimation', 'InteractiveFormulaDerivation'];
+  const vizTags = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'ManimPlayer'];
   if (enableVisualizations && vizTags.includes(tagName || '')) {
     return <ChatMessageVisualizations key={idx} tagName={tagName!} props={compProps || {}} childrenText={childrenText || ''} />;
   }
@@ -60,7 +59,7 @@ const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boole
   // Answer / Thinking tags rendered as markdown
   if (tagName === 'Answer' || tagName === 'Thinking') {
     return (
-      <ReactMarkdown key={idx} remarkPlugins={remarkPlugins} rehypePlugins={rehypePlugins} components={mdComponents}>
+      <ReactMarkdown key={idx} remarkPlugins={sharedRemarkPlugins} rehypePlugins={sharedRehypePlugins} components={mdComponents}>
         {childrenText || ''}
       </ReactMarkdown>
     );
