@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { MessageSquare, MonitorPlay, Hand, Globe, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useStore, type RightTab } from "@/lib/store";
-import { useBrowser, normalizeUrl } from "@/lib/hooks/useBrowser";
+import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
 import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
 import type { ChatContext } from "@/lib/types/chat";
 
@@ -37,8 +37,9 @@ export default function RightPanel() {
 
   // 浏览器收藏夹标签
   const bookmarks = useBrowser((s) => s.bookmarks);
-  const currentUrl = useBrowser((s) => s.currentUrl);
-  const navigate = useBrowser((s) => s.navigate);
+  const activeTabId = useBrowser((s) => s.activeTabId);
+  const openBrowse = useBrowser((s) => s.openBrowse);
+  const openBookmark = useBrowser((s) => s.openBookmark);
   const removeBookmark = useBrowser((s) => s.removeBookmark);
 
   const chatContext: ChatContext = useMemo(() => ({
@@ -53,25 +54,37 @@ export default function RightPanel() {
       {/* Top-level tab bar（可横向滑动；含浏览器收藏夹标签 + 末尾「＋」） */}
       <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-1.5 py-1.5">
         <div className="hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
-          {RIGHT_TABS.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={clsx(
-                "press flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
-                tab === t.id
-                  ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
-                  : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
-              )}
-            >
-              {t.icon}
-              {t.label}
-            </button>
-          ))}
+          {RIGHT_TABS.map((t) => {
+            const isActive =
+              t.id === "browser" ? tab === "browser" && activeTabId === BROWSE_TAB : tab === t.id;
+            return (
+              <button
+                key={t.id}
+                onClick={() => {
+                  setTab(t.id);
+                  if (t.id === "browser") openBrowse();
+                }}
+                className={clsx(
+                  "press flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
+                  isActive
+                    ? "bg-[var(--accent-weak)] text-[var(--accent-ink)]"
+                    : "text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
+                )}
+              >
+                {t.icon}
+                {t.label}
+              </button>
+            );
+          })}
 
-          {/* 浏览器收藏夹标签 */}
+          {/* 分隔符：核心标签 与 浏览器固定书签标签 分开 */}
+          {bookmarks.length > 0 && (
+            <span className="mx-0.5 h-5 w-px shrink-0 bg-[var(--line)]" aria-hidden />
+          )}
+
+          {/* 浏览器收藏夹标签（独立固定标签） */}
           {bookmarks.map((bm) => {
-            const active = tab === "browser" && currentUrl === normalizeUrl(bm.url);
+            const active = tab === "browser" && activeTabId === bm.id;
             return (
               <span
                 key={bm.id}
@@ -85,7 +98,7 @@ export default function RightPanel() {
                 <button
                   onClick={() => {
                     setTab("browser");
-                    navigate(bm.url);
+                    openBookmark(bm.id);
                   }}
                   className="press flex items-center gap-1"
                   title={bm.url}

@@ -12,7 +12,7 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
   const removeBookmark = useBrowser((s) => s.removeBookmark);
   const homeUrl = useBrowser((s) => s.homeUrl);
   const setHomeUrl = useBrowser((s) => s.setHomeUrl);
-  const navigate = useBrowser((s) => s.navigate);
+  const openBookmark = useBrowser((s) => s.openBookmark);
 
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
@@ -59,7 +59,7 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
     if (!url.trim()) return;
     const id = addBookmark(name, url);
     if (id) {
-      navigate(url);
+      openBookmark(id);
       setName("");
       setUrl("");
       setOpen(false);
@@ -130,7 +130,7 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
                       <Globe size={13} className="shrink-0 text-[var(--ink-faint)]" />
                       <button
                         onClick={() => {
-                          navigate(bm.url);
+                          openBookmark(bm.id);
                           setOpen(false);
                           onAdded?.();
                         }}

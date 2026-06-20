@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Home, RotateCw, ArrowRight, ExternalLink, Globe, Compass } from "lucide-react";
-import { useBrowser, normalizeUrl } from "@/lib/hooks/useBrowser";
+import { useEffect, useRef, useState } from "react";
+import { Home, RotateCw, ArrowRight, ExternalLink, Globe, Search, Smartphone, Monitor } from "lucide-react";
+import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
 
-/** 右侧面板内置浏览器：地址栏 + iframe。本地使用，仅做基础 sandbox 安全。 */
+/** 右侧面板内置浏览器：地址栏 + 自适应（手机视口模拟）iframe。本地使用，仅做基础 sandbox 安全。 */
 export default function BrowserTab() {
   const currentUrl = useBrowser((s) => s.currentUrl);
   const reloadNonce = useBrowser((s) => s.reloadNonce);
-  const bookmarks = useBrowser((s) => s.bookmarks);
+  const viewMode = useBrowser((s) => s.viewMode);
   const navigate = useBrowser((s) => s.navigate);
   const reload = useBrowser((s) => s.reload);
   const goHome = useBrowser((s) => s.goHome);
+  const setViewMode = useBrowser((s) => s.setViewMode);
 
   const [addr, setAddr] = useState(currentUrl);
   useEffect(() => setAddr(currentUrl), [currentUrl]);
@@ -20,13 +21,15 @@ export default function BrowserTab() {
     if (addr.trim()) navigate(addr);
   };
 
+  const toggleView = () => setViewMode(viewMode === "mobile" ? "desktop" : "mobile");
+
   return (
     <div className="flex h-full flex-col bg-[var(--bg-panel)]">
       {/* 工具栏 */}
       <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-2 py-1.5">
         <button
           onClick={goHome}
-          title="主页"
+          title="主页 / 必应搜索"
           className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
         >
           <Home size={15} />
@@ -58,6 +61,13 @@ export default function BrowserTab() {
         >
           <ArrowRight size={15} />
         </button>
+        <button
+          onClick={toggleView}
+          title={viewMode === "mobile" ? "当前：手机视图（点击切桌面）" : "当前：桌面视图（点击切手机）"}
+          className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+        >
+          {viewMode === "mobile" ? <Smartphone size={15} /> : <Monitor size={15} />}
+        </button>
         <a
           href={currentUrl || undefined}
           target="_blank"
@@ -76,57 +86,97 @@ export default function BrowserTab() {
       {/* 内容区 */}
       <div className="min-h-0 flex-1">
         {currentUrl ? (
-          <iframe
-            key={`${currentUrl}:${reloadNonce}`}
-            src={currentUrl}
-            title="内置浏览器"
-            className="h-full w-full border-0 bg-white"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-downloads allow-modals"
-            allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-read; clipboard-write"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          <FramedSite url={currentUrl} nonce={reloadNonce} viewMode={viewMode} />
         ) : (
-          <StartPage bookmarks={bookmarks} onOpen={navigate} />
+          <BingStartPage onSearch={navigate} />
         )}
       </div>
     </div>
   );
 }
 
-function StartPage({
-  bookmarks,
-  onOpen,
-}: {
-  bookmarks: { id: string; name: string; url: string }[];
-  onOpen: (url: string) => void;
-}) {
+/**
+ * 自适应 iframe：手机视图下以固定逻辑视口宽（414px）渲染，再 transform 缩放贴合面板宽，
+ * 让所有站点都拿到"手机视口"并完整放进右侧窄面板（无横向溢出）；桌面视图按面板原宽 1:1。
+ */
+function FramedSite({ url, nonce, viewMode }: { url: string; nonce: number; viewMode: ViewMode }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState({ w: 0, h: 0 });
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const r = entries[0]?.contentRect;
+      if (r) setSize({ w: Math.round(r.width), h: Math.round(r.height) });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const logicalW = viewMode === "mobile" ? MOBILE_LOGICAL_WIDTH : size.w;
+  const scale = size.w > 0 && logicalW > 0 ? size.w / logicalW : 1;
+  const logicalH = scale > 0 ? size.h / scale : size.h;
+
   return (
-    <div className="flex h-full flex-col items-center overflow-y-auto px-6 py-10 text-center">
-      <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--accent-weak)] text-[var(--accent-ink)]">
-        <Compass size={28} />
-      </div>
-      <p className="text-[15px] font-semibold text-[var(--ink)]">内置浏览器</p>
-      <p className="mt-1 max-w-[280px] text-[12px] leading-relaxed text-[var(--ink-soft)]">
-        在上方地址栏输入网址即可访问；可用右上角「＋」收藏常用站点为标签。B 站视频链接会自动转为可内嵌的播放器。
-      </p>
-
-      {bookmarks.length > 0 && (
-        <div className="mt-6 grid w-full max-w-[320px] grid-cols-2 gap-2">
-          {bookmarks.map((bm) => (
-            <button
-              key={bm.id}
-              onClick={() => onOpen(bm.url)}
-              className="press flex items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--bg-muted)] px-3 py-2.5 text-left hover:border-[var(--accent)]"
-            >
-              <Globe size={15} className="shrink-0 text-[var(--accent-ink)]" />
-              <span className="truncate text-[12.5px] font-medium text-[var(--ink)]">{bm.name}</span>
-            </button>
-          ))}
-        </div>
+    <div ref={wrapRef} className="relative h-full w-full overflow-hidden bg-white">
+      {size.w > 0 && (
+        <iframe
+          key={`${url}:${nonce}:${viewMode}`}
+          src={url}
+          title="内置浏览器"
+          style={{
+            width: logicalW,
+            height: logicalH,
+            transform: `scale(${scale})`,
+            transformOrigin: "top left",
+            border: 0,
+          }}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-downloads allow-modals"
+          allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-read; clipboard-write"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
       )}
+    </div>
+  );
+}
 
-      <p className="mt-6 max-w-[280px] text-[11px] leading-relaxed text-[var(--ink-faint)]">
-        提示：部分站点（如各家 AI、登录后页面）会禁止被内嵌，若页面空白请用工具栏「在新标签页打开」。
+/** 必应搜索起始页（浏览器标签的默认页）：本地深色搜索框 → 走 bing.com/search 结果页（可内嵌）。 */
+function BingStartPage({ onSearch }: { onSearch: (q: string) => void }) {
+  const [q, setQ] = useState("");
+  const submit = () => {
+    if (q.trim()) onSearch(q.trim());
+  };
+  return (
+    <div className="flex h-full flex-col items-center justify-center px-6 text-center">
+      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--accent-weak)] text-[var(--accent-ink)]">
+        <Search size={28} />
+      </div>
+      <p className="text-[17px] font-semibold tracking-tight text-[var(--ink)]">必应搜索</p>
+      <p className="mt-1 text-[12px] text-[var(--ink-soft)]">搜索网页，或直接输入网址访问</p>
+
+      <div className="mt-5 flex w-full max-w-[360px] items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--bg-muted)] px-4 py-2.5 focus-within:border-[var(--accent)]">
+        <Search size={15} className="shrink-0 text-[var(--ink-faint)]" />
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && submit()}
+          autoFocus
+          placeholder="搜索内容或网址…"
+          className="min-w-0 flex-1 bg-transparent text-[14px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)]"
+        />
+        <button
+          onClick={submit}
+          disabled={!q.trim()}
+          title="搜索"
+          className="press flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
+        >
+          <ArrowRight size={15} />
+        </button>
+      </div>
+
+      <p className="mt-6 max-w-[300px] text-[11px] leading-relaxed text-[var(--ink-faint)]">
+        常用站点（如 B 站）已固定在上方标签栏，点击即可切换；用右上角「＋」可新增固定标签。
       </p>
     </div>
   );

@@ -106,6 +106,24 @@ AI 走 OpenAI 兼容端点（`.env.local`：`AI_BASE_URL`/`AI_API_KEY`/`AI_MODEL
 - 文件按职责拆分、组件复用、路由清晰。每阶段 `pnpm exec tsc --noEmit` 通过 + 关键路径烟测后再 commit。
 - 提交用显式 `git add <我的文件>`，不卷入用户既有 BrandLogo/scratch 改动。
 
+## 6.5 增补：浏览器机制升级（2026-06-20）
+
+针对内置浏览器的两点机制更新（右侧面板偏手机端布局）：
+
+1. **全部内嵌网址自适应屏幕（手机视图模拟）**：`BrowserTab` 的 iframe 改为
+   `FramedSite`：`ResizeObserver` 量容器宽，手机视图以固定逻辑视口宽 `414px` 渲染、
+   `transform: scale(容器宽/414)` 缩放贴合面板 → 任意站点拿到手机视口、无横向溢出；
+   工具栏「手机/桌面」切换，`viewMode` 持久化（默认 mobile）。
+
+2. **浏览器标签默认必应搜索页 + 书签为独立固定标签**：
+   - 已核实 `www.bing.com/` 首页带 `X-Frame-Options: SAMEORIGIN` 不可内嵌，但
+     `bing.com/search?q=...` 结果页无 XFO 可内嵌 → 默认页改为**本地必应搜索起始页**
+     （`BingStartPage`，深色响应式，回车走 bing 结果页）。
+   - `useBrowser` 状态从单 `currentUrl` 拆为 `browseUrl`(通用浏览器页面) + `activeTabId`
+     (`__browse__` 或书签 id)，`currentUrl` 为派生显示页；新增 `openBrowse`/`openBookmark`。
+   - 点「浏览器」→ `__browse__`(必应起始页/上次自由浏览页)；点 B站等书签 → 各自独立标签。
+     `RightPanel` 在核心标签与书签标签间加分隔符；起始页移除书签磁贴（书签只作顶部固定标签）。
+
 ## 6. 研究产出引用
 
 - 硅基流动模型/搜索/嵌入/缓存：见 §2。
