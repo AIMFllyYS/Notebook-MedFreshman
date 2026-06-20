@@ -9,6 +9,7 @@ import NoteRenderer from "@/components/notes/NoteRenderer";
 import SelectionPopover from "@/components/notes/SelectionPopover";
 import type { SubjectId, CategoryId } from "@/lib/types/content";
 import type { ExampleMeta } from "@/app/api/examples/route";
+import { tabPanelVariants } from "@/lib/motion";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
 const ExampleTab = dynamic(() => import("@/components/examples/ExampleTab"), { ssr: false });
@@ -65,6 +66,10 @@ export default function ContentPageClient({
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<ContentTab>("content");
 
+  const tabIndex = CONTENT_TABS.findIndex((t) => t.id === activeTab);
+  const prevTabIndexRef = useRef(tabIndex);
+  const dirRef = useRef<1 | -1>(1);
+
   // 正文由服务端 SSR 注入（initialContent）。客户端切换路由时 page.tsx 会重新做
   // 服务端渲染并以新 prop 下发，无需再 fetch /api/section，消除瀑布与骨架闪烁。
   const content = initialContent;
@@ -82,7 +87,12 @@ export default function ContentPageClient({
         {CONTENT_TABS.map((t) => (
           <button
             key={t.id}
-            onClick={() => setActiveTab(t.id)}
+            onClick={() => {
+            const newIdx = CONTENT_TABS.findIndex((x) => x.id === t.id);
+            dirRef.current = newIdx >= prevTabIndexRef.current ? 1 : -1;
+            prevTabIndexRef.current = newIdx;
+            setActiveTab(t.id);
+          }}
             className={clsx(
               "relative flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium transition-colors",
               activeTab === t.id
@@ -109,10 +119,10 @@ export default function ContentPageClient({
           {activeTab === "content" && (
             <motion.div
               key="content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              variants={tabPanelVariants(dirRef.current)}
+              initial="initial"
+              animate="animate"
+              exit="exit"
               className="h-full"
             >
               <article className="mx-auto w-full max-w-3xl px-8 py-10">
@@ -148,10 +158,10 @@ export default function ContentPageClient({
           {activeTab === "examples" && (
             <motion.div
               key="examples"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              variants={tabPanelVariants(dirRef.current)}
+              initial="initial"
+              animate="animate"
+              exit="exit"
               className="h-full"
             >
               <ExampleTab initialExamples={initialExamples} sectionId={sectionId} />
@@ -160,10 +170,10 @@ export default function ContentPageClient({
           {activeTab === "quiz" && (
             <motion.div
               key="quiz"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              variants={tabPanelVariants(dirRef.current)}
+              initial="initial"
+              animate="animate"
+              exit="exit"
               className="h-full"
             >
               <QuizTab />

@@ -9,7 +9,7 @@ import { videoScripts } from "@/content/media.scripts.generated";
 
 const InlinePlayer = dynamic(() => import("@/components/video/InlinePlayer"), {
   ssr: false,
-  loading: () => <div className="aspect-video w-full animate-pulse bg-[var(--bg-muted)]" />,
+  loading: () => <div className="aspect-video w-full animate-shimmer rounded-lg" />,
 });
 
 const NoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), {

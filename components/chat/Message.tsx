@@ -2,6 +2,7 @@
 
 import { memo, useEffect, useState } from "react";
 import NoteRenderer from "@/components/notes/NoteRenderer";
+import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 
 export interface ToolEvent {
   id: string;
@@ -61,11 +62,11 @@ function ThinkingBlock({ reasoning, streaming }: { reasoning: string; streaming?
         {streaming && <Dots />}
         <span className="ml-auto text-[11px] text-[var(--ink-faint)]">{open ? "收起" : "展开"}</span>
       </button>
-      {open && (
+      <AnimatedCollapse isOpen={open}>
         <div className="max-h-72 overflow-y-auto whitespace-pre-wrap border-t border-[var(--line)] px-3 py-2 text-[12.5px] leading-relaxed text-[var(--ink-faint)] scroll-y">
           {reasoning}
         </div>
-      )}
+      </AnimatedCollapse>
     </div>
   );
 }

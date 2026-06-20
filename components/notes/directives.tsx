@@ -6,10 +6,11 @@ import { useStore } from "@/lib/store";
 import { getVideo } from "@/content/media";
 import { getInteractive } from "@/components/interactives/registry";
 import LazyVisible from "@/components/ui/LazyVisible";
+import { SkeletonBlock } from "@/components/notes/NoteSkeleton";
 
 const InlinePlayer = dynamic(() => import("@/components/video/InlinePlayer"), {
   ssr: false,
-  loading: () => <div className="my-4 aspect-video w-full animate-pulse rounded-xl bg-[var(--bg-muted)]" />,
+  loading: () => <div className="my-4 aspect-video w-full animate-shimmer rounded-xl" />,
 });
 
 interface NodeProps {
@@ -86,6 +87,7 @@ function VideoEmbed({ id }: { id: string }) {
   }
 
   return (
+    <LazyVisible placeholder={<SkeletonBlock height={60} className="my-4" />}>
     <button
       onClick={() => {
         setIsPlaying(true);
@@ -101,6 +103,7 @@ function VideoEmbed({ id }: { id: string }) {
         <span className="block text-[12px] text-[var(--ink-faint)]">点击播放动画讲解</span>
       </span>
     </button>
+    </LazyVisible>
   );
 }
 
@@ -115,7 +118,7 @@ function InteractiveEmbed({ id }: { id: string }) {
   }
   const C = item.Component;
   return (
-    <LazyVisible placeholder={<div className="my-5 h-48 rounded-xl border border-dashed border-[var(--line)] bg-[var(--bg-muted)]" />}>
+    <LazyVisible placeholder={<SkeletonBlock height={192} className="my-5" />}>
       <div className="my-5">
         <div className="mb-2 flex items-center gap-2 text-[13px] font-semibold text-[var(--ink-soft)]">
           <span className="grid h-5 w-5 place-items-center rounded bg-[var(--accent-weak)] text-[var(--accent-ink)]">

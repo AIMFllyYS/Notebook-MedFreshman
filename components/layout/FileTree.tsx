@@ -1,6 +1,7 @@
 "use client";
 
 import FileTreeItem from "./FileTreeItem";
+import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
 import type { ContentItem } from "@/lib/types/content";
 
@@ -52,7 +53,7 @@ export default function FileTree({
               onToggle={toggleExpand}
               onSelect={onItemSelect}
             />
-            {isExpanded && hasChildren && (
+            <AnimatedCollapse isOpen={!!(isExpanded && hasChildren)}>
               <FileTree
                 items={item.children!}
                 depth={depth + 1}
@@ -61,7 +62,7 @@ export default function FileTree({
                 selectedId={selectedId}
                 onItemSelect={onItemSelect}
               />
-            )}
+            </AnimatedCollapse>
           </div>
         );
       })}

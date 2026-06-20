@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import type { ExampleMeta } from "@/app/api/examples/route";
+import { fadeInUpVariants } from "@/lib/motion";
+import LazyVisible from "@/components/ui/LazyVisible";
+import { SkeletonLine } from "@/components/notes/NoteSkeleton";
 
 // NoteRenderer 较重，例题展开时才懒加载
 const NoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), {
@@ -63,17 +66,17 @@ export default function ExampleTab({ initialExamples, sectionId }: ExampleTabPro
             {!selected && (
               <motion.div
                 key="list"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
+                variants={fadeInUpVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
                 className="flex flex-col gap-2.5"
               >
                 {examples.map((ex, idx) => (
+                  <LazyVisible key={ex.id} placeholder={<SkeletonLine height={76} className="rounded-xl" />}>
                   <button
-                    key={ex.id}
                     onClick={() => setSelectedId(ex.id)}
-                    className="hover-lift group flex items-start gap-3 rounded-xl border border-[var(--line)] bg-[var(--md-sys-color-surface-container-lowest)] p-4 text-left transition-shadow"
+                    className="hover-lift group flex w-full items-start gap-3 rounded-xl border border-[var(--line)] bg-[var(--md-sys-color-surface-container-lowest)] p-4 text-left transition-shadow"
                   >
                     <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[var(--accent-weak)] text-[12px] font-bold text-[var(--accent-ink)]">
                       {idx + 1}
@@ -106,6 +109,7 @@ export default function ExampleTab({ initialExamples, sectionId }: ExampleTabPro
                       <path d="M9 18l6-6-6-6" />
                     </svg>
                   </button>
+                  </LazyVisible>
                 ))}
               </motion.div>
             )}
@@ -114,10 +118,10 @@ export default function ExampleTab({ initialExamples, sectionId }: ExampleTabPro
             {selected && (
               <motion.div
                 key="detail"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
+                variants={fadeInUpVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
               >
                 <button
                   onClick={() => setSelectedId(null)}

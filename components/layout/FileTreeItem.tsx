@@ -70,7 +70,7 @@ function FileTreeItem({
           style={{
             width: 16,
             height: 16,
-            transition: "transform 0.15s ease",
+            transition: "transform 0.35s cubic-bezier(0.05,0.7,0.1,1.0)",
             transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)",
             opacity: isFolder ? 1 : 0,
           }}

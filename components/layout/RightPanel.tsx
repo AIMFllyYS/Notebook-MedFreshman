@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { MessageSquare, MonitorPlay, Hand, Globe, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useStore, type RightTab } from "@/lib/store";
+import { tabPanelVariants } from "@/lib/motion";
 import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
 import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
 import type { ChatContext } from "@/lib/types/chat";
@@ -22,15 +23,15 @@ const RIGHT_TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
   { id: "browser", label: "浏览器", icon: <Globe size={15} /> },
 ];
 
-const tabVariants = {
-  initial: { opacity: 0, x: 8 },
-  animate: { opacity: 1, x: 0, transition: { duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] } },
-  exit: { opacity: 0, x: -8, transition: { duration: 0.15, ease: [0.42, 0, 0.58, 1] } },
-};
-
 export default function RightPanel() {
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);
+
+  // 追踪方向：比较新旧 tab index 决定滑入方向
+  const tabIndex = RIGHT_TABS.findIndex((t) => t.id === tab);
+  const prevTabIndexRef = useRef(tabIndex);
+  const dirRef = useRef<1 | -1>(1);
+  const variants = tabPanelVariants(dirRef.current);
   const activeSubjectId = useStore((s) => s.activeSubjectId);
   const activeCategoryId = useStore((s) => s.activeCategoryId);
   const activeItemId = useStore((s) => s.activeItemId);
@@ -67,6 +68,9 @@ export default function RightPanel() {
               <button
                 key={t.id}
                 onClick={() => {
+                  const newIdx = RIGHT_TABS.findIndex((x) => x.id === t.id);
+                  dirRef.current = newIdx >= prevTabIndexRef.current ? 1 : -1;
+                  prevTabIndexRef.current = newIdx;
                   setTab(t.id);
                   if (t.id === "browser") openBrowse();
                 }}
@@ -129,24 +133,24 @@ export default function RightPanel() {
 
       {/* Content area */}
       <div className="min-h-0 flex-1 overflow-hidden">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" custom={dirRef.current}>
           {tab === "ai" && (
-            <motion.div key="ai-chat" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
+            <motion.div key="ai-chat" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
               <ChatPanel chatContext={chatContext} />
             </motion.div>
           )}
           {tab === "video" && (
-            <motion.div key="video" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
+            <motion.div key="video" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
               <VideoTab />
             </motion.div>
           )}
           {tab === "interactive" && (
-            <motion.div key="interactive" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
+            <motion.div key="interactive" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
               <InteractiveTab />
             </motion.div>
           )}
           {tab === "browser" && (
-            <motion.div key="browser" variants={tabVariants} initial="initial" animate="animate" exit="exit" className="h-full">
+            <motion.div key="browser" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
               <BrowserTab />
             </motion.div>
           )}

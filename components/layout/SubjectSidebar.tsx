@@ -17,6 +17,7 @@ import {
   PanelLeft,
 } from "lucide-react";
 import FileTree from "./FileTree";
+import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
 import { contentTree } from "@/content/manifest";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
@@ -146,7 +147,7 @@ export default function SubjectSidebar() {
                   style={{
                     width: 16,
                     height: 16,
-                    transition: "transform 0.15s ease",
+                    transition: "transform 0.35s cubic-bezier(0.05,0.7,0.1,1.0)",
                     transform: isSubjectExpanded ? "rotate(90deg)" : "rotate(0deg)",
                   }}
                 >
@@ -159,8 +160,8 @@ export default function SubjectSidebar() {
               </button>
 
               {/* 分类列表 */}
-              {isSubjectExpanded &&
-                subject.categories.map((category) => {
+              <AnimatedCollapse isOpen={isSubjectExpanded}>
+                {subject.categories.map((category) => {
                   const catId = `${subject.id}-${category.id}`;
                   const isCatExpanded = expandedIds.has(catId);
 
@@ -189,7 +190,7 @@ export default function SubjectSidebar() {
                           style={{
                             width: 16,
                             height: 16,
-                            transition: "transform 0.15s ease",
+                            transition: "transform 0.35s cubic-bezier(0.05,0.7,0.1,1.0)",
                             transform: isCatExpanded ? "rotate(90deg)" : "rotate(0deg)",
                           }}
                         >
@@ -206,7 +207,7 @@ export default function SubjectSidebar() {
                       </button>
 
                       {/* 内容项 */}
-                      {isCatExpanded && (
+                      <AnimatedCollapse isOpen={isCatExpanded}>
                         <FileTree
                           items={category.items}
                           depth={3}
@@ -215,10 +216,11 @@ export default function SubjectSidebar() {
                           selectedId={selectedKey}
                           onItemSelect={handleItemSelect}
                         />
-                      )}
+                      </AnimatedCollapse>
                     </div>
                   );
                 })}
+              </AnimatedCollapse>
             </div>
           );
         })}

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { BrainCircuit, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
+import AnimatedCollapse from '@/components/ui/AnimatedCollapse';
 
 interface ReasoningBlockProps {
   content: string;
@@ -80,7 +81,7 @@ export const ReasoningBlock: React.FC<ReasoningBlockProps> = ({ content, isStrea
       </button>
 
       {/* Expanded Content */}
-      {isExpanded && (
+      <AnimatedCollapse isOpen={isExpanded}>
         <div
           style={{
             padding: '0 12px 12px 12px',
@@ -104,10 +105,10 @@ export const ReasoningBlock: React.FC<ReasoningBlockProps> = ({ content, isStrea
             {content}
           </pre>
         </div>
-      )}
+      </AnimatedCollapse>
 
       {/* Collapsed Preview */}
-      {!isExpanded && (
+      <AnimatedCollapse isOpen={!isExpanded}>
         <div
           style={{
             padding: '8px 12px',
@@ -119,7 +120,7 @@ export const ReasoningBlock: React.FC<ReasoningBlockProps> = ({ content, isStrea
         >
           {previewContent}
         </div>
-      )}
+      </AnimatedCollapse>
     </div>
   );
 };

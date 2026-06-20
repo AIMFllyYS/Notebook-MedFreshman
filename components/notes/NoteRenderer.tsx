@@ -27,11 +27,15 @@ const rehypePlugins: any[] = [
   [rehypeHighlight, { detect: true, ignoreMissing: true }],
 ];
 
-// 自定义指令元素 -> React 组件
+// 自定义指令元素 -> React 组件，图片统一懒加载
 const components = {
   callout: Callout,
   derivation: Derivation,
   mediaembed: MediaEmbed,
+  img: ({ src, alt, ...rest }: React.ImgHTMLAttributes<HTMLImageElement>) => (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt={alt ?? ""} loading="lazy" decoding="async" {...rest} />
+  ),
 } as unknown as Components;
 
 function NoteRendererBase({ content }: { content: string }) {
