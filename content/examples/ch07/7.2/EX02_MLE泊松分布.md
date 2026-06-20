@@ -22,33 +22,49 @@
 
 泊松分布 $P(\lambda)$ 的概率质量函数为：
 
-$$P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots$$
+$$
+P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots
+$$
 
 观测到样本值 $x_1, x_2, \ldots, x_n$ 的联合概率（即似然函数）：
 
-$$L(\lambda) = \prod_{i=1}^n P(X=x_i;\lambda) = \prod_{i=1}^n \frac{\lambda^{x_i} e^{-\lambda}}{x_i!}$$
+$$
+L(\lambda) = \prod_{i=1}^n P(X=x_i;\lambda) = \prod_{i=1}^n \frac{\lambda^{x_i} e^{-\lambda}}{x_i!}
+$$
 
-$$L(\lambda) = \frac{\lambda^{\sum_{i=1}^n x_i} \cdot e^{-n\lambda}}{\prod_{i=1}^n x_i!}$$
+$$
+L(\lambda) = \frac{\lambda^{\sum_{i=1}^n x_i} \cdot e^{-n\lambda}}{\prod_{i=1}^n x_i!}
+$$
 
 **第二步：取对数似然函数**
 
-$$\ell(\lambda) = \ln L(\lambda) = \left(\sum_{i=1}^n x_i\right)\ln\lambda - n\lambda - \sum_{i=1}^n \ln(x_i!)$$
+$$
+\ell(\lambda) = \ln L(\lambda) = \left(\sum_{i=1}^n x_i\right)\ln\lambda - n\lambda - \sum_{i=1}^n \ln(x_i!)
+$$
 
 注意：最后一项 $\sum \ln(x_i!)$ 与参数 $\lambda$ 无关，是常数，不影响最大值的位置。
 
 **第三步：求导并令导数为零**
 
-$$\frac{d\ell}{d\lambda} = \frac{\sum_{i=1}^n x_i}{\lambda} - n = 0$$
+$$
+\frac{d\ell}{d\lambda} = \frac{\sum_{i=1}^n x_i}{\lambda} - n = 0
+$$
 
-$$\frac{\sum_{i=1}^n x_i}{\lambda} = n$$
+$$
+\frac{\sum_{i=1}^n x_i}{\lambda} = n
+$$
 
-$$\boxed{\hat{\lambda} = \frac{1}{n}\sum_{i=1}^n x_i = \bar{x}}$$
+$$
+\boxed{\hat{\lambda} = \frac{1}{n}\sum_{i=1}^n x_i = \bar{x}}
+$$
 
 因此，$\lambda$ 的最大似然估计量为 $\hat{\lambda} = \bar{X}$（样本均值）。
 
 **第四步：验证是最大值点**
 
-$$\frac{d^2\ell}{d\lambda^2} = -\frac{\sum_{i=1}^n x_i}{\lambda^2} < 0$$
+$$
+\frac{d^2\ell}{d\lambda^2} = -\frac{\sum_{i=1}^n x_i}{\lambda^2} < 0
+$$
 
 （在 $\lambda > 0$、$\sum x_i \geq 0$ 时，二阶导数为负），因此 $\hat{\lambda} = \bar{x}$ 确实是最大值点。
 
@@ -68,19 +84,27 @@ $$\frac{d^2\ell}{d\lambda^2} = -\frac{\sum_{i=1}^n x_i}{\lambda^2} < 0$$
 
 泊松分布概率质量函数：
 
-$$P(X=k;\lambda) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k=0,1,2,\ldots$$
+$$
+P(X=k;\lambda) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k=0,1,2,\ldots
+$$
 
 对数似然函数：
 
-$$\ell(\lambda) = \left(\sum_{i=1}^n X_i\right)\ln\lambda - n\lambda - \sum_{i=1}^n \ln(X_i!)$$
+$$
+\ell(\lambda) = \left(\sum_{i=1}^n X_i\right)\ln\lambda - n\lambda - \sum_{i=1}^n \ln(X_i!)
+$$
 
 MLE 结果：
 
-$$\hat{\lambda} = \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$$
+$$
+\hat{\lambda} = \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
+$$
 
 MLE 的期望和方差：
 
-$$E[\hat{\lambda}] = \lambda, \quad D[\hat{\lambda}] = D[\bar{X}] = \frac{D[X]}{n} = \frac{\lambda}{n}$$
+$$
+E[\hat{\lambda}] = \lambda, \quad D[\hat{\lambda}] = D[\bar{X}] = \frac{D[X]}{n} = \frac{\lambda}{n}
+$$
 
 （泊松分布满足 $E[X] = D[X] = \lambda$）
 

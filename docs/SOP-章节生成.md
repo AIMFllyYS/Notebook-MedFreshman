@@ -37,9 +37,39 @@
 **参考黄金范例**：`content/chapters/ch01/1.1.md`，新笔记的结构与深度向它看齐或更深。
 
 ### 2.1 公式（KaTeX）
-- 行内：`$...$`；独立公式：`$$...$$`。
+- 行内：`$...$`；独立公式：`$$` 必须独占一行。
 - **禁止** `\( \)` 与 `\[ \]`。中文与公式之间留意排版。
-- 多行对齐用 `aligned`：`$$\begin{aligned} ... \\ ... \end{aligned}$$`。
+- **铁律：`$$` 必须独占一行**，前后不能有任何其他字符（包括文字、标点）。否则 `micromark-extension-math` 的 `mathFlow` tokenizer 无法识别闭合 fence，会导致后续所有内容（包括 directive、标题、段落）被吞噬为一坨 raw math text，前端渲染完全崩溃。
+
+**正确写法：**
+```markdown
+$$
+P(AB) = P(A)\,P(B)
+$$
+```
+
+```markdown
+$$
+\begin{aligned}
+P(AB) &= P(A)\,P(B)\\
+&\Updownarrow\\
+P(B|A) &= P(B)
+\end{aligned}
+$$
+```
+
+**错误写法（会导致渲染崩溃）：**
+```markdown
+$$P(AB) = P(A)\,P(B)$$
+```
+```markdown
+$$\begin{aligned}
+...
+\end{aligned}$$
+```
+```markdown
+文字$$content$$
+```
 
 ### 2.2 富文本指令块（自定义语法，务必使用）
 ```

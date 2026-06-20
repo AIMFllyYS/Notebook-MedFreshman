@@ -1,7 +1,9 @@
 :::example{label=验证PDF}
 设随机变量 $X$ 的概率密度函数为
 
-$$f(x) = A e^{-|x|}, \quad -\infty < x < +\infty$$
+$$
+f(x) = A e^{-|x|}, \quad -\infty < x < +\infty
+$$
 
 **(1)** 求常数 $A$ 的值。
 
@@ -24,17 +26,25 @@ $$f(x) = A e^{-|x|}, \quad -\infty < x < +\infty$$
 
 利用归一化条件 $\int_{-\infty}^{+\infty} f(x)dx = 1$：
 
-$$\int_{-\infty}^{+\infty} Ae^{-|x|}dx = 1$$
+$$
+\int_{-\infty}^{+\infty} Ae^{-|x|}dx = 1
+$$
 
 由于 $e^{-|x|}$ 关于原点对称（偶函数），可以利用对称性：
 
-$$A \int_{-\infty}^{+\infty} e^{-|x|}dx = 2A \int_0^{+\infty} e^{-x}dx$$
+$$
+A \int_{-\infty}^{+\infty} e^{-|x|}dx = 2A \int_0^{+\infty} e^{-x}dx
+$$
 
 计算积分：
-$$\int_0^{+\infty} e^{-x}dx = \left[-e^{-x}\right]_0^{+\infty} = 0 - (-1) = 1$$
+$$
+\int_0^{+\infty} e^{-x}dx = \left[-e^{-x}\right]_0^{+\infty} = 0 - (-1) = 1
+$$
 
 因此：
-$$2A \cdot 1 = 1 \implies \boxed{A = \frac{1}{2}}$$
+$$
+2A \cdot 1 = 1 \implies \boxed{A = \frac{1}{2}}
+$$
 
 ### 第(2)步：求CDF $F(x)$
 
@@ -42,19 +52,29 @@ $$2A \cdot 1 = 1 \implies \boxed{A = \frac{1}{2}}$$
 
 **当 $x < 0$ 时**：积分区间 $(-\infty, x]$ 完全在负半轴上，$|t| = -t$：
 
-$$F(x) = \int_{-\infty}^{x} \frac{1}{2}e^{-|t|}dt = \int_{-\infty}^{x} \frac{1}{2}e^{t}dt = \frac{1}{2}\left[e^t\right]_{-\infty}^{x} = \frac{1}{2}e^x$$
+$$
+F(x) = \int_{-\infty}^{x} \frac{1}{2}e^{-|t|}dt = \int_{-\infty}^{x} \frac{1}{2}e^{t}dt = \frac{1}{2}\left[e^t\right]_{-\infty}^{x} = \frac{1}{2}e^x
+$$
 
 **当 $x \geq 0$ 时**：积分区间跨越 $x = 0$，需分段：
 
-$$F(x) = \int_{-\infty}^{0} \frac{1}{2}e^{t}dt + \int_0^{x} \frac{1}{2}e^{-t}dt$$
+$$
+F(x) = \int_{-\infty}^{0} \frac{1}{2}e^{t}dt + \int_0^{x} \frac{1}{2}e^{-t}dt
+$$
 
-$$= \frac{1}{2}\left[e^t\right]_{-\infty}^{0} + \frac{1}{2}\left[-e^{-t}\right]_0^{x}$$
+$$
+= \frac{1}{2}\left[e^t\right]_{-\infty}^{0} + \frac{1}{2}\left[-e^{-t}\right]_0^{x}
+$$
 
-$$= \frac{1}{2}(1 - 0) + \frac{1}{2}(1 - e^{-x}) = \frac{1}{2} + \frac{1}{2} - \frac{1}{2}e^{-x} = 1 - \frac{1}{2}e^{-x}$$
+$$
+= \frac{1}{2}(1 - 0) + \frac{1}{2}(1 - e^{-x}) = \frac{1}{2} + \frac{1}{2} - \frac{1}{2}e^{-x} = 1 - \frac{1}{2}e^{-x}
+$$
 
 因此，$X$ 的累积分布函数为：
 
-$$\boxed{F(x) = \begin{cases} \dfrac{1}{2}e^{x}, & x < 0 \\[6pt] 1 - \dfrac{1}{2}e^{-x}, & x \geq 0 \end{cases}}$$
+$$
+\boxed{F(x) = \begin{cases} \dfrac{1}{2}e^{x}, & x < 0 \\[6pt] 1 - \dfrac{1}{2}e^{-x}, & x \geq 0 \end{cases}}
+$$
 
 **验证连续性**：在 $x = 0$ 处，左极限 $F(0^-) = \frac{1}{2}e^0 = \frac{1}{2}$，右侧 $F(0) = 1 - \frac{1}{2}e^0 = \frac{1}{2}$，连续 ✓。
 
@@ -62,36 +82,58 @@ $$\boxed{F(x) = \begin{cases} \dfrac{1}{2}e^{x}, & x < 0 \\[6pt] 1 - \dfrac{1}{2
 
 利用CDF：
 
-$$P(-1 < X < 2) = F(2) - F(-1)$$
+$$
+P(-1 < X < 2) = F(2) - F(-1)
+$$
 
 代入分段公式：
-$$F(2) = 1 - \frac{1}{2}e^{-2} \quad (x = 2 \geq 0)$$
+$$
+F(2) = 1 - \frac{1}{2}e^{-2} \quad (x = 2 \geq 0)
+$$
 
-$$F(-1) = \frac{1}{2}e^{-1} \quad (x = -1 < 0)$$
+$$
+F(-1) = \frac{1}{2}e^{-1} \quad (x = -1 < 0)
+$$
 
 因此：
 
-$$P(-1 < X < 2) = \left(1 - \frac{1}{2e^2}\right) - \frac{1}{2e}$$
+$$
+P(-1 < X < 2) = \left(1 - \frac{1}{2e^2}\right) - \frac{1}{2e}
+$$
 
-$$= 1 - \frac{1}{2e^2} - \frac{1}{2e}$$
+$$
+= 1 - \frac{1}{2e^2} - \frac{1}{2e}
+$$
 
-$$\approx 1 - \frac{1}{2 \times 7.389} - \frac{1}{2 \times 2.718}$$
+$$
+\approx 1 - \frac{1}{2 \times 7.389} - \frac{1}{2 \times 2.718}
+$$
 
-$$\approx 1 - 0.0677 - 0.1839 \approx \boxed{0.748}$$
+$$
+\approx 1 - 0.0677 - 0.1839 \approx \boxed{0.748}
+$$
 :::
 
 :::theorem{label=关键公式}
 **归一化条件（求常数 $A$）**：
-$$\int_{-\infty}^{+\infty} f(x)\,dx = 1$$
+$$
+\int_{-\infty}^{+\infty} f(x)\,dx = 1
+$$
 
 **利用偶函数对称性**：
-$$\int_{-\infty}^{+\infty} e^{-|x|}dx = 2\int_0^{+\infty} e^{-x}dx = 2$$
+$$
+\int_{-\infty}^{+\infty} e^{-|x|}dx = 2\int_0^{+\infty} e^{-x}dx = 2
+$$
 
 **CDF分段结果**：
-$$F(x) = \begin{cases} \frac{1}{2}e^x, & x < 0 \\ 1 - \frac{1}{2}e^{-x}, & x \geq 0 \end{cases}$$
+$$
+F(x) = \begin{cases} \frac{1}{2}e^x, & x < 0 \\ 1 - \frac{1}{2}e^{-x}, & x \geq 0 \end{cases}
+$$
 
 **区间概率**：
-$$P(-1 < X < 2) = F(2) - F(-1) = 1 - \frac{1}{2e^2} - \frac{1}{2e} \approx 0.748$$
+$$
+P(-1 < X < 2) = F(2) - F(-1) = 1 - \frac{1}{2e^2} - \frac{1}{2e} \approx 0.748
+$$
 :::
 
 :::pitfall{label=易错点1}

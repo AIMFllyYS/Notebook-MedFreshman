@@ -173,7 +173,9 @@ public/
 :::
 
 :::theorem{label=全概率公式}
-$$P(A) = \sum_{i=1}^{n} P(B_i) P(A|B_i)$$
+$$
+P(A) = \sum_{i=1}^{n} P(B_i) P(A|B_i)
+$$
 :::
 
 :::example{label=掷骰子}
@@ -210,11 +212,15 @@ $P(A|B) \neq P(B|A)$，除非 $P(A) = P(B)$。
 :::derivation{label=方差展开推导}
 由定义 $D(X) = E[(X-EX)^2]$，展开平方：
 
-$$D(X) = E[X^2 - 2X \cdot EX + (EX)^2]$$
+$$
+D(X) = E[X^2 - 2X \cdot EX + (EX)^2]
+$$
 
 由期望线性性：
 
-$$D(X) = E[X^2] - 2(EX)^2 + (EX)^2 = E[X^2] - (EX)^2$$
+$$
+D(X) = E[X^2] - 2(EX)^2 + (EX)^2 = E[X^2] - (EX)^2
+$$
 :::
 ```
 
@@ -225,7 +231,15 @@ $$D(X) = E[X^2] - 2(EX)^2 + (EX)^2 = E[X^2] - (EX)^2$$
 正文支持 LaTeX 数学公式（通过 `remark-math` + `rehype-katex`）：
 
 - 行内公式：`$E(X)$`
-- 行间公式：`$$D(X) = E[X^2] - (EX)^2$$`
+- 行间公式：`$$` **必须独占一行**：
+
+```markdown
+$$
+D(X) = E[X^2] - (EX)^2
+$$
+```
+
+> **铁律：`$$` 必须独占一行**，前后不能有任何其他字符。`$$content$$` 单行写法或 `\end{aligned}$$` 行尾写法会导致 `mathFlow` tokenizer 无法识别闭合 fence，后续所有内容被吞噬为 raw math text，渲染崩溃。
 
 ---
 
@@ -486,7 +500,9 @@ public/media/videos/physics/ch01/physics-ch01-1.1-motion.mp4
 :::definition{label=匀变速直线运动}
 加速度 $a$ 恒定的直线运动称为**匀变速直线运动**。其位移随时间的变化规律为：
 
-$$x = v_0 t + \frac{1}{2} a t^2$$
+$$
+x = v_0 t + \frac{1}{2} a t^2
+$$
 :::
 
 :::video{id=physics-ch01-1.1-motion}
@@ -496,7 +512,9 @@ $$x = v_0 t + \frac{1}{2} a t^2$$
 :::derivation{label=位移公式推导}
 由 $v = v_0 + at$ 和 $x = \int_0^t v \, dt$：
 
-$$x = \int_0^t (v_0 + at) \, dt = v_0 t + \frac{1}{2} a t^2$$
+$$
+x = \int_0^t (v_0 + at) \, dt = v_0 t + \frac{1}{2} a t^2
+$$
 :::
 ```
 

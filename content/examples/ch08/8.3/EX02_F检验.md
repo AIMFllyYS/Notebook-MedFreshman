@@ -41,7 +41,9 @@
 
 在 $H_0:\, \sigma_1^2 = \sigma_2^2$ 成立时，统计量：
 
-$$F = \frac{S_1^2}{S_2^2} \sim F(n_1 - 1,\, n_2 - 1) = F(12,\, 9)$$
+$$
+F = \frac{S_1^2}{S_2^2} \sim F(n_1 - 1,\, n_2 - 1) = F(12,\, 9)
+$$
 
 其中分子自由度为 $n_1 - 1 = 12$，分母自由度为 $n_2 - 1 = 9$。
 
@@ -53,31 +55,43 @@ $$F = \frac{S_1^2}{S_2^2} \sim F(n_1 - 1,\, n_2 - 1) = F(12,\, 9)$$
 
 **右侧临界值：** 查 F 分布表（$\alpha/2 = 0.05$），得：
 
-$$F_{0.05}(12, 9) = 3.07$$
+$$
+F_{0.05}(12, 9) = 3.07
+$$
 
 **左侧临界值：** F 分布不对称，左侧临界值不能直接查表，需利用**倒数公式**：
 
-$$F_{1-\alpha/2}(m, n) = \frac{1}{F_{\alpha/2}(n, m)}$$
+$$
+F_{1-\alpha/2}(m, n) = \frac{1}{F_{\alpha/2}(n, m)}
+$$
 
 注意倒数公式中自由度要**互换**（$m$ 和 $n$ 对调）：
 
-$$F_{1-0.05}(12, 9) = F_{0.95}(12, 9) = \frac{1}{F_{0.05}(9, 12)} = \frac{1}{2.80} \approx 0.357$$
+$$
+F_{1-0.05}(12, 9) = F_{0.95}(12, 9) = \frac{1}{F_{0.05}(9, 12)} = \frac{1}{2.80} \approx 0.357
+$$
 
 因此，双侧拒绝域为：
 
-$$W = \left\{ F \leq 0.357 \right\} \cup \left\{ F \geq 3.07 \right\}$$
+$$
+W = \left\{ F \leq 0.357 \right\} \cup \left\{ F \geq 3.07 \right\}
+$$
 
 **第四步：计算检验统计量的观测值**
 
 将已知数据代入：
 
-$$F = \frac{s_1^2}{s_2^2} = \frac{4.2}{1.8} \approx 2.33$$
+$$
+F = \frac{s_1^2}{s_2^2} = \frac{4.2}{1.8} \approx 2.33
+$$
 
 **第五步：作出判断**
 
 比较观测值与临界值：
 
-$$0.357 < F = 2.33 < 3.07$$
+$$
+0.357 < F = 2.33 < 3.07
+$$
 
 检验统计量 $F = 2.33$ **落在接受域内**，不落入拒绝域 $W$。
 
@@ -91,15 +105,23 @@ F 分布的一个重要性质：若 $F \sim F(m, n)$，则 $\dfrac{1}{F} \sim F(
 
 由此推导出：
 
-$$P\left(F(m,n) \leq F_{1-\alpha}(m,n)\right) = 1 - \alpha$$
+$$
+P\left(F(m,n) \leq F_{1-\alpha}(m,n)\right) = 1 - \alpha
+$$
 
-$$\Leftrightarrow \quad P\left(\frac{1}{F(m,n)} \geq \frac{1}{F_{1-\alpha}(m,n)}\right) = 1 - \alpha$$
+$$
+\Leftrightarrow \quad P\left(\frac{1}{F(m,n)} \geq \frac{1}{F_{1-\alpha}(m,n)}\right) = 1 - \alpha
+$$
 
-$$\Leftrightarrow \quad P\left(F(n,m) \geq \frac{1}{F_{1-\alpha}(m,n)}\right) = 1 - \alpha$$
+$$
+\Leftrightarrow \quad P\left(F(n,m) \geq \frac{1}{F_{1-\alpha}(m,n)}\right) = 1 - \alpha
+$$
 
 与 $F$ 分布上分位点定义对比，即得：
 
-$$F_\alpha(n,m) = \frac{1}{F_{1-\alpha}(m,n)} \quad \Longleftrightarrow \quad F_{1-\alpha}(m,n) = \frac{1}{F_\alpha(n,m)}$$
+$$
+F_\alpha(n,m) = \frac{1}{F_{1-\alpha}(m,n)} \quad \Longleftrightarrow \quad F_{1-\alpha}(m,n) = \frac{1}{F_\alpha(n,m)}
+$$
 
 **补充：F 检验与两样本 t 检验的关系**
 
@@ -107,7 +129,9 @@ $$F_\alpha(n,m) = \frac{1}{F_{1-\alpha}(m,n)} \quad \Longleftrightarrow \quad F_
 
 - 若 F 检验**不拒绝** $H_0$（方差相等），则两样本 t 检验应使用**等方差形式**（合并方差 $S_p^2$）：
 
-$$t = \frac{\bar{X} - \bar{Y}}{S_p \sqrt{\dfrac{1}{n_1} + \dfrac{1}{n_2}}} \sim t(n_1 + n_2 - 2)$$
+$$
+t = \frac{\bar{X} - \bar{Y}}{S_p \sqrt{\dfrac{1}{n_1} + \dfrac{1}{n_2}}} \sim t(n_1 + n_2 - 2)
+$$
 
 - 若 F 检验**拒绝** $H_0$（方差不等），则应使用 **Welch 近似 t 检验**（不等方差形式），自由度需近似估计。
 
@@ -121,15 +145,21 @@ $$t = \frac{\bar{X} - \bar{Y}}{S_p \sqrt{\dfrac{1}{n_1} + \dfrac{1}{n_2}}} \sim 
 
 **F 检验统计量（两正态总体，方差相等检验）：**
 
-$$F = \frac{S_1^2}{S_2^2} \sim F(n_1 - 1,\, n_2 - 1) \quad \text{（在 } H_0:\,\sigma_1^2 = \sigma_2^2 \text{ 下）}$$
+$$
+F = \frac{S_1^2}{S_2^2} \sim F(n_1 - 1,\, n_2 - 1) \quad \text{（在 } H_0:\,\sigma_1^2 = \sigma_2^2 \text{ 下）}
+$$
 
 **双侧检验拒绝域（$\alpha$ 为显著性水平）：**
 
-$$W = \left\{ F \leq F_{1-\alpha/2}(n_1-1,\, n_2-1) \right\} \cup \left\{ F \geq F_{\alpha/2}(n_1-1,\, n_2-1) \right\}$$
+$$
+W = \left\{ F \leq F_{1-\alpha/2}(n_1-1,\, n_2-1) \right\} \cup \left\{ F \geq F_{\alpha/2}(n_1-1,\, n_2-1) \right\}
+$$
 
 **F 分布左侧临界值的倒数换算公式：**
 
-$$F_{1-\alpha}(m,\,n) = \frac{1}{F_{\alpha}(n,\,m)}$$
+$$
+F_{1-\alpha}(m,\,n) = \frac{1}{F_{\alpha}(n,\,m)}
+$$
 
 注意：换算时自由度要**互换**，$m$ 和 $n$ 对调。
 

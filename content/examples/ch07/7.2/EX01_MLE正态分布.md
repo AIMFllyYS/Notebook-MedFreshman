@@ -22,45 +22,69 @@
 
 正态分布 $N(\mu, \sigma^2)$ 的密度函数为：
 
-$$f(x;\mu,\sigma^2) = \frac{1}{\sqrt{2\pi}\,\sigma}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$$
+$$
+f(x;\mu,\sigma^2) = \frac{1}{\sqrt{2\pi}\,\sigma}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+$$
 
 似然函数（$n$ 个独立同分布样本的联合密度）：
 
-$$L(\mu,\sigma^2) = \prod_{i=1}^n f(x_i;\mu,\sigma^2) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\,\sigma}\exp\left(-\frac{(x_i-\mu)^2}{2\sigma^2}\right)$$
+$$
+L(\mu,\sigma^2) = \prod_{i=1}^n f(x_i;\mu,\sigma^2) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\,\sigma}\exp\left(-\frac{(x_i-\mu)^2}{2\sigma^2}\right)
+$$
 
-$$L(\mu,\sigma^2) = \left(\frac{1}{\sqrt{2\pi}\,\sigma}\right)^n \exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\mu)^2\right)$$
+$$
+L(\mu,\sigma^2) = \left(\frac{1}{\sqrt{2\pi}\,\sigma}\right)^n \exp\left(-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\mu)^2\right)
+$$
 
 **第二步：取对数似然函数**
 
-$$\ell(\mu,\sigma^2) = \ln L = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln(\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\mu)^2$$
+$$
+\ell(\mu,\sigma^2) = \ln L = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln(\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\mu)^2
+$$
 
 **第三步：建立似然方程组**
 
 对 $\mu$ 求偏导并令其为零：
 
-$$\frac{\partial \ell}{\partial \mu} = \frac{1}{\sigma^2}\sum_{i=1}^n(x_i - \mu) = 0$$
+$$
+\frac{\partial \ell}{\partial \mu} = \frac{1}{\sigma^2}\sum_{i=1}^n(x_i - \mu) = 0
+$$
 
-$$\sum_{i=1}^n(x_i - \mu) = 0 \implies n\mu = \sum_{i=1}^n x_i \implies \boxed{\hat{\mu} = \bar{x} = \frac{1}{n}\sum_{i=1}^n x_i}$$
+$$
+\sum_{i=1}^n(x_i - \mu) = 0 \implies n\mu = \sum_{i=1}^n x_i \implies \boxed{\hat{\mu} = \bar{x} = \frac{1}{n}\sum_{i=1}^n x_i}
+$$
 
 令 $\sigma^2 = t$（令 $t = \sigma^2$，对 $t$ 求偏导更方便）：
 
-$$\frac{\partial \ell}{\partial t} = -\frac{n}{2t} + \frac{1}{2t^2}\sum_{i=1}^n(x_i-\mu)^2 = 0$$
+$$
+\frac{\partial \ell}{\partial t} = -\frac{n}{2t} + \frac{1}{2t^2}\sum_{i=1}^n(x_i-\mu)^2 = 0
+$$
 
 代入已求得的 $\hat{\mu} = \bar{x}$：
 
-$$-\frac{n}{2t} + \frac{1}{2t^2}\sum_{i=1}^n(x_i-\bar{x})^2 = 0$$
+$$
+-\frac{n}{2t} + \frac{1}{2t^2}\sum_{i=1}^n(x_i-\bar{x})^2 = 0
+$$
 
 两边乘以 $2t^2$：
 
-$$-nt + \sum_{i=1}^n(x_i-\bar{x})^2 = 0 \implies t = \frac{1}{n}\sum_{i=1}^n(x_i-\bar{x})^2$$
+$$
+-nt + \sum_{i=1}^n(x_i-\bar{x})^2 = 0 \implies t = \frac{1}{n}\sum_{i=1}^n(x_i-\bar{x})^2
+$$
 
-$$\boxed{\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n(X_i - \bar{X})^2}$$
+$$
+\boxed{\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n(X_i - \bar{X})^2}
+$$
 
 **最终结果**：
 
-$$\hat{\mu} = \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$$
+$$
+\hat{\mu} = \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
+$$
 
-$$\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n(X_i - \bar{X})^2$$
+$$
+\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n(X_i - \bar{X})^2
+$$
 
 **讨论估计量的性质**：
 
@@ -77,15 +101,21 @@ MLE 的不变性：$\sigma$ 的MLE为 $\hat{\sigma} = \sqrt{\hat{\sigma}^2} = \s
 
 正态分布的对数似然函数：
 
-$$\ell(\mu, \sigma^2) = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln\sigma^2 - \frac{\sum_{i=1}^n(X_i-\mu)^2}{2\sigma^2}$$
+$$
+\ell(\mu, \sigma^2) = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln\sigma^2 - \frac{\sum_{i=1}^n(X_i-\mu)^2}{2\sigma^2}
+$$
 
 MLE 结果：
 
-$$\hat{\mu} = \bar{X}, \quad \hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2$$
+$$
+\hat{\mu} = \bar{X}, \quad \hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2
+$$
 
 与无偏估计的对比：
 
-$$S^2 = \frac{n}{n-1}\hat{\sigma}^2 = \frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2 \quad \text{（无偏）}$$
+$$
+S^2 = \frac{n}{n-1}\hat{\sigma}^2 = \frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2 \quad \text{（无偏）}
+$$
 
 :::
 
