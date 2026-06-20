@@ -149,6 +149,32 @@ export function readExamples(
   });
 }
 
+// ─────────────────────────────────────────────────────────────
+// 题目测试读取（content/quiz/{subjectId}/{chapterId}.json）
+// 由 /api/quiz 客户端读取；非 .md 文件，不走 readContentMarkdown。
+// ─────────────────────────────────────────────────────────────
+
+const QUIZ_ROOT = path.join(process.cwd(), "content", "quiz");
+
+/**
+ * 读取某章节的题目测试 JSON（学科命名空间，防多科 chapterId 冲突）：
+ * content/quiz/{subjectId}/{chapterId}.json。
+ * 文件不存在 / 解析失败 / 参数为空时返回 null。
+ */
+export function readQuiz(subjectId: string, chapterId: string): unknown | null {
+  if (!subjectId || !chapterId) return null;
+  // 仅允许安全的标识符，避免路径穿越。
+  if (!/^[a-zA-Z0-9_-]+$/.test(subjectId) || !/^[a-zA-Z0-9_-]+$/.test(chapterId)) {
+    return null;
+  }
+  const file = path.join(QUIZ_ROOT, subjectId, `${chapterId}.json`);
+  try {
+    return JSON.parse(fs.readFileSync(file, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
 /** 紧凑的全书大纲文本，供 AI 的 get_outline 工具。 */
 export function getOutlineText(): string {
   const lines: string[] = [`课程：${manifest.course}`];
