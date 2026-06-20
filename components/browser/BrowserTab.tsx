@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Home, RotateCw, ArrowRight, ExternalLink, Globe, Search, Smartphone, Monitor } from "lucide-react";
+import { Home, RotateCw, ArrowRight, ExternalLink, Globe, Search, Smartphone, Monitor, ShieldAlert } from "lucide-react";
 import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
+
+/** 可嵌入预检结果缓存（url → 是否允许内嵌），避免重复探测。 */
+const embedCache = new Map<string, boolean>();
 
 /** 右侧面板内置浏览器：地址栏 + 自适应（手机视口模拟）iframe。本地使用，仅做基础 sandbox 安全。 */
 export default function BrowserTab() {
@@ -16,6 +19,36 @@ export default function BrowserTab() {
 
   const [addr, setAddr] = useState(currentUrl);
   useEffect(() => setAddr(currentUrl), [currentUrl]);
+
+  // 可嵌入预检：乐观渲染 iframe，同时探测响应头；判为不可内嵌则切到提示面板。
+  const [blocked, setBlocked] = useState(false);
+  const [forced, setForced] = useState<string | null>(null);
+  useEffect(() => {
+    if (!currentUrl || forced === currentUrl) {
+      setBlocked(false);
+      return;
+    }
+    const cached = embedCache.get(currentUrl);
+    if (cached !== undefined) {
+      setBlocked(!cached);
+      return;
+    }
+    setBlocked(false); // 乐观：先按可嵌入渲染
+    let alive = true;
+    fetch(`/api/can-embed?url=${encodeURIComponent(currentUrl)}`)
+      .then((r) => r.json())
+      .then((d) => {
+        const ok = d?.embeddable !== false;
+        embedCache.set(currentUrl, ok);
+        if (alive && forced !== currentUrl) setBlocked(!ok);
+      })
+      .catch(() => {
+        /* 探测失败不阻断 */
+      });
+    return () => {
+      alive = false;
+    };
+  }, [currentUrl, forced]);
 
   const go = () => {
     if (addr.trim()) navigate(addr);
@@ -86,7 +119,11 @@ export default function BrowserTab() {
       {/* 内容区 */}
       <div className="min-h-0 flex-1">
         {currentUrl ? (
-          <FramedSite url={currentUrl} nonce={reloadNonce} viewMode={viewMode} />
+          blocked ? (
+            <EmbedBlocked url={currentUrl} onForce={() => setForced(currentUrl)} />
+          ) : (
+            <FramedSite url={currentUrl} nonce={reloadNonce} viewMode={viewMode} />
+          )
         ) : (
           <BingStartPage onSearch={navigate} />
         )}
@@ -178,6 +215,44 @@ function BingStartPage({ onSearch }: { onSearch: (q: string) => void }) {
       <p className="mt-6 max-w-[300px] text-[11px] leading-relaxed text-[var(--ink-faint)]">
         常用站点（如 B 站）已固定在上方标签栏，点击即可切换；用右上角「＋」可新增固定标签。
       </p>
+    </div>
+  );
+}
+
+/** 站点禁止被内嵌时的提示面板（替代困惑的空白页），主推「在新标签打开」。 */
+function EmbedBlocked({ url, onForce }: { url: string; onForce: () => void }) {
+  let host = url;
+  try {
+    host = new URL(url).host;
+  } catch {
+    /* 保持原串 */
+  }
+  return (
+    <div className="flex h-full flex-col items-center justify-center px-6 text-center">
+      <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--bg-muted)] text-[var(--ink-soft)]">
+        <ShieldAlert size={28} />
+      </div>
+      <p className="text-[15px] font-semibold text-[var(--ink)]">该站点禁止被内嵌</p>
+      <p className="mt-1 max-w-[300px] text-[12px] leading-relaxed text-[var(--ink-soft)]">
+        <span className="font-medium text-[var(--ink)]">{host}</span>{" "}
+        通过 X-Frame-Options / CSP 拒绝在内置浏览器中显示，这是站点侧的安全策略，无法绕过。请在新标签页打开。
+      </p>
+
+      <a
+        href={url}
+        target="_blank"
+        rel="noreferrer"
+        className="press mt-5 inline-flex items-center gap-1.5 rounded-full bg-[var(--accent)] px-4 py-2 text-[13px] font-medium text-[var(--md-sys-color-on-primary)]"
+      >
+        <ExternalLink size={15} /> 在新标签页打开
+      </a>
+
+      <button
+        onClick={onForce}
+        className="press mt-3 text-[11.5px] text-[var(--ink-faint)] underline-offset-2 hover:underline"
+      >
+        仍要尝试内嵌（可能显示空白）
+      </button>
     </div>
   );
 }

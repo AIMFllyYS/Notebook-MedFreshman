@@ -124,6 +124,16 @@ AI 走 OpenAI 兼容端点（`.env.local`：`AI_BASE_URL`/`AI_API_KEY`/`AI_MODEL
    - 点「浏览器」→ `__browse__`(必应起始页/上次自由浏览页)；点 B站等书签 → 各自独立标签。
      `RightPanel` 在核心标签与书签标签间加分隔符；起始页移除书签磁贴（书签只作顶部固定标签）。
 
+3. **可嵌入预检 + 优雅外开**（应对"很多网站打不开"）：内嵌是纯 Web 的硬天花板——
+   墙 A=站点 `X-Frame-Options`/CSP `frame-ancestors` 拒绝跨域内嵌；墙 B=Cloudflare/Turnstile
+   人机校验 + 第三方 Cookie 分区（用户实遇 DeepSeek "Max challenge attempts exceeded"）。前端无法绕过。
+   - 新增 `app/api/can-embed/route.ts`：服务端抓目标响应头，判 XFO / CSP frame-ancestors（墙 A 可靠可探测）；
+     并对顶层 GET 的非正常状态（202/403/429/503…）判为疑似人机校验（墙 B 的近似探测，DeepSeek 返回 202）。
+   - `BrowserTab` 乐观渲染 iframe 同时探测，判不可内嵌则切到 `EmbedBlocked` 面板（主推「在新标签打开」+
+     「仍要尝试内嵌」兜底），结果按 url 缓存。真实站点实测：DeepSeek/Google/Bing首页→拦截外开；
+     Bing结果页/B站播放器/example.com→正常内嵌。
+   - 真·全站只有桌面版（Tauri/Electron）WebView 一条实路；反向代理打不过 Cloudflare 且风险大，未采用。
+
 ## 6. 研究产出引用
 
 - 硅基流动模型/搜索/嵌入/缓存：见 §2。
