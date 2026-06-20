@@ -155,7 +155,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </PanelResizeHandle>
 
           <Panel id="notes" order={2} minSize={32} defaultSize={50}>
-            {children}
+            {/* id="notes-panel" 作为划词 AI 浮窗"展开"时查询内容栏视口矩形的锚点 */}
+            <div id="notes-panel" className="h-full w-full">
+              {children}
+            </div>
           </Panel>
 
           <PanelResizeHandle className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">

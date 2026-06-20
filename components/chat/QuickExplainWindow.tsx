@@ -37,7 +37,7 @@ export default function QuickExplainWindow() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [size, setSize] = useState(quickExplainSize);
   const [mounted, setMounted] = useState(false);
-  const [isMaximized, setIsMaximized] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const dragRef = useRef<{
     startX: number;
@@ -46,12 +46,25 @@ export default function QuickExplainWindow() {
     initialY: number;
   } | null>(null);
 
-  const resizeRef = useRef<{
+  // 右下角手柄（边缘=右下，左上角 pos 不变，改 width/height）
+  const resizeBRRef = useRef<{
     startX: number;
     startY: number;
     initialWidth: number;
     initialHeight: number;
   } | null>(null);
+
+  // 左下角手柄（边缘=左下，右边缘不动，左边缘 pos.x 跟随鼠标，width 反向，height 正向）
+  const resizeBLRef = useRef<{
+    startX: number;
+    startY: number;
+    initialX: number;
+    initialWidth: number;
+    initialHeight: number;
+  } | null>(null);
+
+  // 扩大前快照（pos+size），用于还原
+  const preExpandRef = useRef<{ x: number; y: number; width: number; height: number } | null>(null);
 
   const abortRef = useRef<AbortController | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -199,9 +212,12 @@ export default function QuickExplainWindow() {
     scrollToBottom();
   }, [quickExplainMessages, scrollToBottom]);
 
-  // 拖拽逻辑
+  // ── 拖拽逻辑（标题栏）──────────────────────────────────────
+  // 点中按钮时不启动拖拽，避免 setPointerCapture 吞掉按钮的 click（根因修复）
   const handlePointerDown = useCallback(
     (e: React.PointerEvent) => {
+      if ((e.target as HTMLElement).closest("button")) return;
+      if (isExpanded) return; // 展开态禁用拖拽
       dragRef.current = {
         startX: e.clientX,
         startY: e.clientY,
@@ -210,30 +226,33 @@ export default function QuickExplainWindow() {
       };
       e.currentTarget.setPointerCapture(e.pointerId);
     },
-    [pos],
+    [pos, isExpanded],
   );
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     if (!dragRef.current) return;
     const dx = e.clientX - dragRef.current.startX;
     const dy = e.clientY - dragRef.current.startY;
+    const maxX = window.innerWidth - size.width;
+    const maxY = window.innerHeight - size.height;
     setPos({
-      x: dragRef.current.initialX + dx,
-      y: dragRef.current.initialY + dy,
+      x: Math.max(0, Math.min(dragRef.current.initialX + dx, maxX)),
+      y: Math.max(0, Math.min(dragRef.current.initialY + dy, maxY)),
     });
-  }, []);
+  }, [size.width, size.height]);
 
   const handlePointerUp = useCallback((e: React.PointerEvent) => {
     dragRef.current = null;
     e.currentTarget.releasePointerCapture(e.pointerId);
   }, []);
 
-  // 尺寸调节逻辑
-  const handleResizeStart = useCallback(
+  // ── 右下角伸缩（边缘=右下，左上角 pos 不变）─────────────────
+  const handleResizeBRStart = useCallback(
     (e: React.PointerEvent) => {
+      if (isExpanded) return;
       e.preventDefault();
       e.stopPropagation();
-      resizeRef.current = {
+      resizeBRRef.current = {
         startX: e.clientX,
         startY: e.clientY,
         initialWidth: size.width,
@@ -241,48 +260,145 @@ export default function QuickExplainWindow() {
       };
       e.currentTarget.setPointerCapture(e.pointerId);
     },
-    [size],
+    [size, isExpanded],
   );
 
-  const handleResizeMove = useCallback((e: React.PointerEvent) => {
-    if (!resizeRef.current) return;
-    const dx = e.clientX - resizeRef.current.startX;
-    const dy = e.clientY - resizeRef.current.startY;
-    const newWidth = Math.max(
-      MIN_WIDTH,
-      Math.min(MAX_WIDTH, resizeRef.current.initialWidth + dx),
-    );
-    const newHeight = Math.max(
-      MIN_HEIGHT,
-      Math.min(MAX_HEIGHT, resizeRef.current.initialHeight + dy),
-    );
-    setSize({ width: newWidth, height: newHeight });
-  }, []);
+  const handleResizeBRMove = useCallback((e: React.PointerEvent) => {
+    if (!resizeBRRef.current) return;
+    const dx = e.clientX - resizeBRRef.current.startX;
+    const dy = e.clientY - resizeBRRef.current.startY;
+    const maxWidth = Math.min(MAX_WIDTH, window.innerWidth - pos.x);
+    const maxHeight = Math.min(MAX_HEIGHT, window.innerHeight - pos.y);
+    setSize({
+      width: Math.max(MIN_WIDTH, Math.min(maxWidth, resizeBRRef.current.initialWidth + dx)),
+      height: Math.max(MIN_HEIGHT, Math.min(maxHeight, resizeBRRef.current.initialHeight + dy)),
+    });
+  }, [pos.x, pos.y]);
 
-  const handleResizeEnd = useCallback(
+  const handleResizeBREnd = useCallback(
     (e: React.PointerEvent) => {
-      if (resizeRef.current) {
-        setQuickExplainSize(size);
-      }
-      resizeRef.current = null;
+      if (resizeBRRef.current) setQuickExplainSize(size);
+      resizeBRRef.current = null;
       e.currentTarget.releasePointerCapture(e.pointerId);
     },
     [size, setQuickExplainSize],
   );
 
+  // ── 左下角伸缩（边缘=左下，右边缘固定，pos.x+width 联动，height 正向）──
+  const handleResizeBLStart = useCallback(
+    (e: React.PointerEvent) => {
+      if (isExpanded) return;
+      e.preventDefault();
+      e.stopPropagation();
+      resizeBLRef.current = {
+        startX: e.clientX,
+        startY: e.clientY,
+        initialX: pos.x,
+        initialWidth: size.width,
+        initialHeight: size.height,
+      };
+      e.currentTarget.setPointerCapture(e.pointerId);
+    },
+    [pos, size, isExpanded],
+  );
+
+  const handleResizeBLMove = useCallback((e: React.PointerEvent) => {
+    if (!resizeBLRef.current) return;
+    const dx = e.clientX - resizeBLRef.current.startX;
+    const dy = e.clientY - resizeBLRef.current.startY;
+    // 右边缘固定：right = initialX + initialWidth
+    const right = resizeBLRef.current.initialX + resizeBLRef.current.initialWidth;
+    // 新宽度 = 右边缘 - 新左边缘；先算未夹紧的新左边缘
+    let newX = resizeBLRef.current.initialX + dx;
+    let newWidth = right - newX;
+    // 夹紧宽度
+    if (newWidth < MIN_WIDTH) {
+      newWidth = MIN_WIDTH;
+      newX = right - MIN_WIDTH;
+    }
+    if (newWidth > MAX_WIDTH) {
+      newWidth = MAX_WIDTH;
+      newX = right - MAX_WIDTH;
+    }
+    // 左边缘不能跑出视口左侧
+    if (newX < 0) {
+      newX = 0;
+      newWidth = right - newX;
+      if (newWidth > MAX_WIDTH) newWidth = MAX_WIDTH;
+    }
+    const maxHeight = Math.min(MAX_HEIGHT, window.innerHeight - pos.y);
+    const newHeight = Math.max(MIN_HEIGHT, Math.min(maxHeight, resizeBLRef.current.initialHeight + dy));
+    setPos({ x: newX, y: pos.y });
+    setSize({ width: newWidth, height: newHeight });
+  }, [pos.y]);
+
+  const handleResizeBLEnd = useCallback(
+    (e: React.PointerEvent) => {
+      if (resizeBLRef.current) setQuickExplainSize(size);
+      resizeBLRef.current = null;
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    },
+    [size, setQuickExplainSize],
+  );
+
+  // ── 关闭：重置全部本地状态 ──────────────────────────────────
   const handleClose = () => {
     abortRef.current?.abort();
     clearQuickExplain();
+    setIsExpanded(false);
+    setPos({ x: 0, y: 0 });
+    setSize(quickExplainSize); // 回到 store 持久化尺寸（或默认 400×450）
+    setInputValue("");
+    setError(null);
+    preExpandRef.current = null;
   };
 
-  const handleToggleMaximize = () => {
-    if (isMaximized) {
-      setSize(quickExplainSize);
+  // ── 扩大/还原：铺满中间内容栏（notes-panel）──────────────────
+  const handleToggleExpand = () => {
+    if (isExpanded) {
+      // 还原到扩大前快照
+      const snap = preExpandRef.current;
+      if (snap) {
+        setPos({ x: snap.x, y: snap.y });
+        setSize({ width: snap.width, height: snap.height });
+      }
+      preExpandRef.current = null;
+      setIsExpanded(false);
     } else {
-      setSize({ width: MAX_WIDTH, height: MAX_HEIGHT });
+      // 记住扩大前快照
+      preExpandRef.current = { x: pos.x, y: pos.y, width: size.width, height: size.height };
+      const rect = document.getElementById("notes-panel")?.getBoundingClientRect();
+      if (rect && rect.width > 0 && rect.height > 0) {
+        setPos({ x: rect.left, y: rect.top });
+        setSize({ width: rect.width, height: rect.height });
+      } else {
+        // 兜底：铺满除顶栏(48px)外的左半屏
+        setPos({ x: 0, y: 48 });
+        setSize({ width: Math.floor(window.innerWidth / 2), height: window.innerHeight - 48 });
+      }
+      setIsExpanded(true);
     }
-    setIsMaximized(!isMaximized);
   };
+
+  // ── 浏览器窗口缩放：展开态跟随 notes-panel，非展开态夹紧 pos ──
+  useEffect(() => {
+    function onResize() {
+      if (isExpanded) {
+        const rect = document.getElementById("notes-panel")?.getBoundingClientRect();
+        if (rect && rect.width > 0 && rect.height > 0) {
+          setPos({ x: rect.left, y: rect.top });
+          setSize({ width: rect.width, height: rect.height });
+        }
+      } else {
+        setPos((p) => ({
+          x: Math.max(0, Math.min(p.x, window.innerWidth - size.width)),
+          y: Math.max(0, Math.min(p.y, window.innerHeight - size.height)),
+        }));
+      }
+    }
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [isExpanded, size.width, size.height]);
 
   // 转到主面板：把浮窗消息转移到主对话历史
   const handleTransferToMainPanel = () => {
@@ -445,9 +561,10 @@ export default function QuickExplainWindow() {
         width: size.width,
         height: size.height,
         background: "var(--md-sys-color-surface-container-lowest)",
-        borderRadius: 12,
-        boxShadow:
-          "0 8px 24px rgba(0,0,0,0.15), 0 0 0 1px var(--md-sys-color-outline-variant)",
+        borderRadius: isExpanded ? 0 : 12,
+        boxShadow: isExpanded
+          ? "0 0 0 1px var(--md-sys-color-outline-variant)"
+          : "0 8px 24px rgba(0,0,0,0.15), 0 0 0 1px var(--md-sys-color-outline-variant)",
         zIndex: 2000,
         display: "flex",
         flexDirection: "column",
@@ -467,7 +584,7 @@ export default function QuickExplainWindow() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          cursor: dragRef.current ? "grabbing" : "grab",
+          cursor: isExpanded ? "default" : (dragRef.current ? "grabbing" : "grab"),
           userSelect: "none",
           touchAction: "none",
         }}
@@ -487,8 +604,9 @@ export default function QuickExplainWindow() {
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
           <button
-            onClick={handleToggleMaximize}
-            title={isMaximized ? "还原" : "最大化"}
+            onClick={handleToggleExpand}
+            onPointerDown={(e) => e.stopPropagation()}
+            title={isExpanded ? "还原" : "展开"}
             style={{
               background: "transparent",
               border: "none",
@@ -508,10 +626,11 @@ export default function QuickExplainWindow() {
               (e.currentTarget.style.background = "transparent")
             }
           >
-            {isMaximized ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+            {isExpanded ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
           </button>
           <button
             onClick={handleClose}
+            onPointerDown={(e) => e.stopPropagation()}
             title="关闭"
             style={{
               background: "transparent",
@@ -703,24 +822,47 @@ export default function QuickExplainWindow() {
         </button>
       </div>
 
-      {/* 尺寸调节手柄 */}
-      <div
-        onPointerDown={handleResizeStart}
-        onPointerMove={handleResizeMove}
-        onPointerUp={handleResizeEnd}
-        style={{
-          position: "absolute",
-          right: 0,
-          bottom: 0,
-          width: 16,
-          height: 16,
-          cursor: "nwse-resize",
-          background:
-            "linear-gradient(135deg, transparent 50%, var(--md-sys-color-outline-variant) 50%)",
-          borderRadius: "0 0 12px 0",
-          touchAction: "none",
-        }}
-      />
+      {/* 右下角伸缩手柄（展开态隐藏） */}
+      {!isExpanded && (
+        <div
+          onPointerDown={handleResizeBRStart}
+          onPointerMove={handleResizeBRMove}
+          onPointerUp={handleResizeBREnd}
+          style={{
+            position: "absolute",
+            right: 0,
+            bottom: 0,
+            width: 16,
+            height: 16,
+            cursor: "nwse-resize",
+            background:
+              "linear-gradient(135deg, transparent 50%, var(--md-sys-color-outline-variant) 50%)",
+            borderRadius: "0 0 12px 0",
+            touchAction: "none",
+          }}
+        />
+      )}
+
+      {/* 左下角伸缩手柄（展开态隐藏） */}
+      {!isExpanded && (
+        <div
+          onPointerDown={handleResizeBLStart}
+          onPointerMove={handleResizeBLMove}
+          onPointerUp={handleResizeBLEnd}
+          style={{
+            position: "absolute",
+            left: 0,
+            bottom: 0,
+            width: 16,
+            height: 16,
+            cursor: "nesw-resize",
+            background:
+              "linear-gradient(225deg, transparent 50%, var(--md-sys-color-outline-variant) 50%)",
+            borderRadius: "0 0 0 12px",
+            touchAction: "none",
+          }}
+        />
+      )}
     </div>,
     document.body,
   );
