@@ -1,0 +1,150 @@
+YouTube爆款封面 AI生图提示词
+
+====================
+主提示词 (中文)
+====================
+
+Create a viral YouTube thumbnail for an educational AI learning platform called "期末复习工作站" (Final Exam Review Workstation). 
+
+**Main Title (Large, Bold, Eye-catching):**
+"多学科 AI 学习助手" 
+(Multi-disciplinary AI Learning Assistant)
+
+**Subtitle:**
+"由课堂录音驱动的深度学习平台"
+(Deep Learning Platform Driven by Classroom Recordings)
+
+**Visual Elements:**
+- Modern gradient background: deep blue (#1a1a2e) to purple (#764ba2) with glowing circular decorative elements
+- 4 key feature icons with text labels:
+  📝 详尽原创笔记 + 完美公式渲染
+  🤖 AI 智能对话 + 划词提问  
+  🎬 Manim 数学动画讲解
+  🎯 可交互可视化组件
+
+- Subject badges (floating pills):
+  📊 概率论与数理统计
+  ⚗️ 有机化学
+  📚 中国近现代史
+  🏛️ 毛概
+
+**Tech Stack (bottom):**
+Next.js 16 · TypeScript · Tailwind v4 · Manim
+
+**Call-to-Action:**
+"高效备考 · 智能学习"
+(Efficient Exam Prep · Smart Learning)
+
+**Style:**
+- YouTube thumbnail style: bold, high contrast, eye-catching
+- 16:9 aspect ratio (1280x720)
+- Modern tech aesthetic with glassmorphism effects
+- Vibrant purple/blue gradient theme
+- Clear, readable Chinese typography
+- Professional educational technology feel
+- Subtle glowing effects and depth
+
+====================
+主提示词 (英文 - 适用于Midjourney/DALL-E)
+====================
+
+YouTube thumbnail design for educational AI platform "期末复习工作站", viral style, 16:9 aspect ratio.
+
+**Center Title:** "多学科 AI 学习助手" (Multi-disciplinary AI Learning Assistant) - extremely large, bold, white text with subtle glow
+
+**Background:** Deep gradient from dark blue (#1a1a2e) to rich purple (#764ba2), with glowing translucent circular decorations, modern tech aesthetic
+
+**Feature List (left side, vertical layout):**
+- 📝 详尽原创笔记 + 完美公式渲染
+- 🤖 AI 智能对话 + 划词提问  
+- 🎬 Manim 数学动画讲解
+- 🎯 可交互可视化组件
+
+**Subject Badges (right side, floating pills):**
+- 📊 概率论与数理统计
+- ⚗️ 有机化学
+- 📚 中国近现代史
+- 🏛️ 毛概
+
+**Bottom Section:**
+- Tech stack: Next.js 16 · TypeScript · Tailwind v4 · Manim
+- CTA text: "高效备考 · 智能学习"
+
+**Style Requirements:**
+- YouTube viral thumbnail aesthetic: high contrast, bold colors, eye-catching
+- Glassmorphism effects on badges and feature boxes
+- Professional educational technology feel
+- Clear, readable Chinese typography
+- Subtle particle effects or glow
+- Modern, clean, trustworthy design
+- Version badge: "v0.1.0" in top right corner
+
+====================
+Midjourney 专用提示词
+====================
+
+YouTube thumbnail for AI learning platform, Chinese text "多学科 AI 学习助手", viral educational technology style, 16:9, bold typography, gradient background deep blue to purple, glowing circular decorations, feature icons with Chinese text, subject badges floating, tech stack labels, modern glassmorphism, high contrast, eye-catching, professional educational design, Next.js TypeScript Tailwind Manim branding, clean trustworthy aesthetic, version badge v0.1.0 --ar 16:9 --style raw --v 6.0
+
+====================
+DALL-E 3 专用提示词
+====================
+
+A professional YouTube thumbnail for an educational AI learning platform. Main title in large bold Chinese characters: "多学科 AI 学习助手". Subtitle below: "由课堂录音驱动的深度学习平台". Background features a modern gradient from deep navy blue to rich purple with subtle glowing circular decorative elements. 
+
+On the left side, four feature boxes with icons:
+- 📝 详尽原创笔记 + 完美公式渲染
+- 🤖 AI 智能对话 + 划词提问  
+- 🎬 Manim 数学动画讲解
+- 🎯 可交互可视化组件
+
+On the right side, four subject badges:
+- 📊 概率论与数理统计
+- ⚗️ 有机化学  
+- 📚 中国近现代史
+- 🏛️ 毛概
+
+Bottom section shows tech stack: "Next.js 16 · TypeScript · Tailwind v4 · Manim" and call-to-action: "高效备考 · 智能学习". Top right corner shows "v0.1.0".
+
+Style: YouTube viral thumbnail aesthetic with high contrast, glassmorphism effects, modern educational technology feel, clear Chinese typography, professional and trustworthy design. 16:9 aspect ratio.
+
+====================
+Stable Diffusion 专用提示词
+====================
+
+Positive prompt:
+(masterpiece, best quality, ultra-detailed), YouTube thumbnail, educational AI platform, Chinese text "多学科 AI 学习助手", bold typography, gradient background, deep blue purple, glowing decorations, feature icons, subject badges, tech stack, glassmorphism, modern tech aesthetic, educational technology, high contrast, eye-catching, professional design, Next.js, TypeScript, Tailwind, Manim, clean trustworthy, 16:9 aspect ratio
+
+Negative prompt:
+(ugly, low quality, worst quality:1.4), blurry, distorted text, unreadable Chinese characters, bad composition, cropped, watermark, signature, low resolution, pixelated, oversaturated, dull colors
+
+====================
+设计要点总结
+====================
+
+**核心视觉元素:**
+1. 主标题：多学科 AI 学习助手 (超大字号，加粗，发光效果)
+2. 副标题：由课堂录音驱动的深度学习平台
+3. 四大功能图标 + 文字说明
+4. 四个学科徽章 (悬浮胶囊样式)
+5. 技术栈标签
+6. 行动号召文字
+7. 版本号标识
+
+**色彩方案:**
+- 主背景：深蓝 (#1a1a2e) → 紫色 (#764ba2) 渐变
+- 强调色：亮紫色 (#667eea) 发光效果
+- 文字：白色为主，浅蓝灰色辅助
+- 装饰：半透明圆形光晕
+
+**设计风格:**
+- YouTube 爆款封面美学
+- 玻璃拟态效果 (Glassmorphism)
+- 现代教育科技感
+- 高对比度，醒目易读
+- 专业可信的视觉语言
+
+**技术规格:**
+- 比例：16:9 (1280x720)
+- 字体：微软雅黑 / 苹方
+- 中文排版优化
+- 适合缩略图显示

@@ -37,3 +37,6 @@ yarn-error.log*
 
 # reference project (kept locally, not part of the app)
 /docs/refer/dist/
+
+# ZIP files
+*.zip
