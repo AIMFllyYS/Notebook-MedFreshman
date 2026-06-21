@@ -92,3 +92,101 @@ export function saveAttempt(
   map[k] = { best, last: attempt, attempts };
   return persistAll(map);
 }
+
+// ── 全局成绩（设置面板「全局分数」消费）─────────────────────────
+
+/** 一条章节成绩档案（已带回 subject/chapter 标识，便于聚合展示）。 */
+export interface ProgressEntry {
+  subjectId: string;
+  chapterId: string;
+  progress: ChapterProgress;
+}
+
+/** 读取全部章节成绩（仅含已作答的章节）。 */
+export function getAllProgress(): ProgressEntry[] {
+  const map = loadAll();
+  return Object.entries(map).map(([k, progress]) => {
+    const slash = k.indexOf("/");
+    return {
+      subjectId: slash >= 0 ? k.slice(0, slash) : k,
+      chapterId: slash >= 0 ? k.slice(slash + 1) : "",
+      progress,
+    };
+  });
+}
+
+/** 全局成绩汇总。 */
+export interface GlobalSummary {
+  /** 已测验的章节数 */
+  chapters: number;
+  /** 各章历史最佳分的平均（百分制，保留一位小数） */
+  avgBest: number;
+  /** 累计作答次数（final） */
+  totalAttempts: number;
+  /** 单章最高分 */
+  bestEver: number;
+}
+
+export function getGlobalSummary(entries?: ProgressEntry[]): GlobalSummary {
+  const list = entries ?? getAllProgress();
+  if (list.length === 0) return { chapters: 0, avgBest: 0, totalAttempts: 0, bestEver: 0 };
+  const sumBest = list.reduce((a, e) => a + e.progress.best, 0);
+  const totalAttempts = list.reduce((a, e) => a + e.progress.attempts, 0);
+  const bestEver = list.reduce((a, e) => Math.max(a, e.progress.best), 0);
+  return {
+    chapters: list.length,
+    avgBest: Math.round((sumBest / list.length) * 10) / 10,
+    totalAttempts,
+    bestEver,
+  };
+}
+
+/** 清空全部成绩，返回是否成功。 */
+export function clearAllProgress(): boolean {
+  return persistAll({});
+}
+
+/** 删除单章成绩，返回是否成功。 */
+export function clearChapterProgress(subjectId: string, chapterId: string): boolean {
+  const map = loadAll();
+  delete map[keyOf(subjectId, chapterId)];
+  return persistAll(map);
+}
+
+// ── 展示辅助（标签 / 排序 / 评级）──────────────────────────────
+
+/** 章节 id → 中文短标签：ch07→「第 7 章」、rec-03→「录音 3」、sum-01→「纪要 1」。 */
+export function chapterLabel(chapterId: string): string {
+  const m = /^([a-z]+)-?0*(\d+)$/i.exec(chapterId);
+  if (m) {
+    const prefix = m[1].toLowerCase();
+    const n = m[2];
+    if (prefix === "ch") return `第 ${n} 章`;
+    if (prefix === "rec") return `录音 ${n}`;
+    if (prefix === "sum") return `纪要 ${n}`;
+  }
+  return chapterId;
+}
+
+function chapterRank(id: string): [number, number] {
+  const m = /^([a-z]+)-?0*(\d+)/i.exec(id);
+  const prefix = (m?.[1] ?? id).toLowerCase();
+  const num = m ? parseInt(m[2], 10) : 0;
+  const order = prefix === "ch" ? 0 : prefix === "rec" ? 1 : prefix === "sum" ? 2 : 3;
+  return [order, num];
+}
+
+/** 章节排序：ch < rec < sum，组内按编号升序。 */
+export function compareChapter(a: string, b: string): number {
+  const [ra, na] = chapterRank(a);
+  const [rb, nb] = chapterRank(b);
+  return ra - rb || na - nb;
+}
+
+/** 百分制 → 评级（与 QuizSummary 一致的色阶）。 */
+export function scoreGrade(percent: number): { label: string; color: string } {
+  if (percent >= 90) return { label: "优秀", color: "var(--color-success)" };
+  if (percent >= 80) return { label: "良好", color: "var(--color-info)" };
+  if (percent >= 60) return { label: "及格", color: "var(--color-warning)" };
+  return { label: "待加强", color: "var(--md-sys-color-error)" };
+}

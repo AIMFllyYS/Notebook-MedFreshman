@@ -56,6 +56,8 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
   const sendMessage = useCallback(
     (content: string, sendOptions?: SendMessageOptions) => {
       if (!content.trim() || loadingRef.current) return;
+      // 水合门控双保险：IndexedDB 异步恢复完成前禁止建会话，防止抢跑导致历史丢失
+      if (!useChatHistory.persist.hasHydrated()) return;
 
       // 合并 per-message 与 chat-level 选项
       const enableThinking = sendOptions?.enableThinking ?? options?.enableThinking;

@@ -52,6 +52,49 @@ export default function remarkDirectives() {
         data.hProperties = { kind: name, eid: attrs.id ?? "" };
         return;
       }
+      if (name === "figure") {
+        data.hName = "figuremedia";
+        data.hProperties = {
+          src: attrs.src ?? "",
+          alt: attrs.alt ?? "",
+          caption: attrs.caption ?? attrs.label ?? "",
+        };
+        return;
+      }
+      if (name === "plot") {
+        data.hName = "functionplot";
+        data.hProperties = {
+          fn: attrs.fn ?? "",
+          xmin: attrs.xmin ?? "",
+          xmax: attrs.xmax ?? "",
+          ymin: attrs.ymin ?? "",
+          ymax: attrs.ymax ?? "",
+          color: attrs.color ?? "",
+          label: attrs.label ?? "",
+          xlabel: attrs.xlabel ?? "",
+          ylabel: attrs.ylabel ?? "",
+          width: attrs.width ?? "",
+          height: attrs.height ?? "",
+          samples: attrs.samples ?? "",
+        };
+        return;
+      }
+      if (node.type === "containerDirective" && name === "canvas") {
+        data.hName = "svgcanvas";
+        data.hProperties = {
+          width: attrs.width ?? "",
+          height: attrs.height ?? "",
+          xmin: attrs.xmin ?? "",
+          xmax: attrs.xmax ?? "",
+          ymin: attrs.ymin ?? "",
+          ymax: attrs.ymax ?? "",
+          xlabel: attrs.xlabel ?? "",
+          ylabel: attrs.ylabel ?? "",
+          grid: attrs.grid ?? "",
+          axes: attrs.axes ?? "",
+        };
+        return;
+      }
     });
   };
 }
