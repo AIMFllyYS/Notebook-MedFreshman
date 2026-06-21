@@ -17,6 +17,9 @@ importers:
       framer-motion:
         specifier: ^11.18.0
         version: 11.18.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      idb-keyval:
+        specifier: ^6.2.5
+        version: 6.2.5
       katex:
         specifier: ^0.16.21
         version: 0.16.47
@@ -1457,6 +1460,9 @@ packages:
 
   html-void-elements@3.0.0:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
+
+  idb-keyval@6.2.5:
+    resolution: {integrity: sha512-eKQkTnS0relYsSOYomx8ozIbmdsQCKUdhyuIaQ2DZgKuaxtyQQMkyD/wlnQN32pO3yutN1b1L8uqwcDKaJd7/Q==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -4012,6 +4018,8 @@ snapshots:
   html-url-attributes@3.0.1: {}
 
   html-void-elements@3.0.0: {}
+
+  idb-keyval@6.2.5: {}
 
   ignore@5.3.2: {}
 

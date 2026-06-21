@@ -74,8 +74,8 @@ python manim/render.py --force --quality h   # 强制高画质重渲
 
 ## 量产章节内容
 
-参见 **`docs/SOP-章节生成.md`**。指定章节即可经 Workflow 扇出子智能体，
-为每个小节产出「详尽笔记 + 动画 + 交互」三件套。
+参见 **`docs/sop/02-detail-generation.md`**。指定章节即可经 Workflow 扇出子智能体，
+为每个小节产出「详尽笔记 + 动画 + 交互」三件套。完整 SOP 体系见 `docs/sop/README.md`。
 
 ## 目录结构
 
@@ -98,7 +98,7 @@ public/              # 静态资源（视频、图片、海报）
 - **媒体清单驱动** - 视频资源通过 `media.generated.ts` 集中管理
 - **富文本扩展** - 自定义 Markdown 指令实现多媒体内容嵌入
 - **共享渲染架构** - 笔记与 AI 对话复用同一 Markdown 渲染核心，详见 `docs/refer/rendering-architecture.md`
-- **状态管理** - Zustand 全局状态管理导航、播放、对话等跨组件状态
+- **状态管理** - Zustand 全局状态管理导航、播放、对话等跨组件状态；对话历史与交互演示产物持久化至 IndexedDB，设置/主题等小数据保留 localStorage（详见 `docs/refer/storage-architecture.md`）
 
 ### 关键技术组件
 - **内容树** - `content/manifest.ts` 定义多学科内容结构
