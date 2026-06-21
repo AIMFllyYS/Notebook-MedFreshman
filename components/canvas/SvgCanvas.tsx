@@ -84,6 +84,7 @@ export default function SvgCanvas({
   const handleWheel = useCallback(
     (e: RWheelEvent<SVGSVGElement>) => {
       if (!zoomable) return;
+      if (!e.ctrlKey && !e.metaKey) return;
       e.preventDefault();
       const factor = e.deltaY > 0 ? 0.9 : 1.1;
       setZoom((z) => Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, z * factor)));
