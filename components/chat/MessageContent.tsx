@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { sharedRemarkPlugins, sharedRehypePlugins } from '@/lib/markdown/plugins';
 import { directiveComponents } from '@/lib/markdown/directiveComponents';
@@ -11,6 +11,7 @@ import { ChatMessageVisualizations } from '@/components/chat/ChatMessageVisualiz
 import { ToolCallDashboard } from '@/components/chat/ToolCallDashboard';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import CodeBlock from '@/components/shared/CodeBlock';
+import { ContentImage } from '@/components/shared/ContentImage';
 
 interface MessageContentProps {
   content: string;
@@ -23,6 +24,7 @@ interface MessageContentProps {
    这里只保留必要的行为：链接新开页、表格横向滚动包裹、代码块复制按钮。 */
 const mdComponents = {
   ...directiveComponents,
+  img: ContentImage,
   a: ({ node, ...props }: any) => (
     <a target="_blank" rel="noopener noreferrer" {...props} />
   ),
@@ -47,7 +49,7 @@ const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boole
   const { tagName, props: compProps, childrenText } = block;
 
   // Visualization components
-  const vizTags = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'ManimPlayer'];
+  const vizTags = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'ManimPlayer', 'SvgDiagram'];
   if (enableVisualizations && vizTags.includes(tagName || '')) {
     return <ChatMessageVisualizations key={idx} tagName={tagName!} props={compProps || {}} childrenText={childrenText || ''} />;
   }
@@ -93,17 +95,20 @@ const getCleanedContent = (content: string): string =>
   content.replace(/<FollowUp>.*?<\/FollowUp>/s, '');
 
 /* ---- Main MessageContent component ---- */
-export const MessageContent: React.FC<MessageContentProps> = ({
+export const MessageContent: React.FC<MessageContentProps> = React.memo(({
   content,
   enableVisualizations = true,
   onFollowUpSelect,
 }) => {
-  const followUps = extractFollowUpQuestions(content);
-  const cleanedContent = normalizeDirectiveLabels(getCleanedContent(content));
+  const { followUps, blocks } = useMemo(() => {
+    const followUps = extractFollowUpQuestions(content);
+    const cleanedContent = normalizeDirectiveLabels(getCleanedContent(content));
+    return { followUps, blocks: parseXmlTags(cleanedContent) };
+  }, [content]);
 
   return (
     <>
-      {parseXmlTags(cleanedContent).map((block, idx) =>
+      {blocks.map((block, idx) =>
         renderParsedBlock(block, idx, enableVisualizations, onFollowUpSelect)
       )}
       {followUps.length > 0 && onFollowUpSelect && (
@@ -111,6 +116,6 @@ export const MessageContent: React.FC<MessageContentProps> = ({
       )}
     </>
   );
-};
+});
 
 export default MessageContent;

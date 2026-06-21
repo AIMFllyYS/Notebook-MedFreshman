@@ -206,7 +206,36 @@ $P(A|B) \neq P(B|A)$，除非 $P(A) = P(B)$。
 
 `label` 属性可选，会追加在标签后（如「定理 · 全概率公式」）。
 
-### 4.3 推导过程指令（容器指令 `:::derivation`）
+### 4.3 图片与 SVG 画布指令
+
+#### 图片嵌入（`::figure`）
+
+```markdown
+::figure{src="/images/physics/ch08/图8-4.jpg" caption="安培环路定律示意" alt="安培环路"}
+```
+
+渲染为带图注的 `<figure>` 元素。`src` 支持 `/images/` 开头的本地路径或 HTTP URL。图片加载失败时自动显示错误兜底。
+
+#### 函数图像（`::plot`）
+
+```markdown
+::plot{fn="sin(x)" xmin=-6.28 xmax=6.28 label="y=sin(x)"}
+```
+
+渲染为主题适配的 SVG 画布 + 函数曲线。支持拖拽平移和缩放。`fn` 表达式语法见 [rendering-architecture.md §5.5](../refer/rendering-architecture.md)。
+
+#### 多函数画布（`:::canvas`）
+
+```markdown
+:::canvas{width=500 height=300 xmin=-3 xmax=3 ymin=-1 ymax=5}
+::plot{fn="x^2" label="y=x²"}
+::plot{fn="x^3" label="y=x³"}
+:::
+```
+
+多条曲线共享坐标系，自动生成图例。
+
+### 4.4 推导过程指令（容器指令 `:::derivation`）
 
 ```markdown
 :::derivation{label=方差展开推导}
@@ -505,9 +534,9 @@ x = v_0 t + \frac{1}{2} a t^2
 $$
 :::
 
-:::video{id=physics-ch01-1.1-motion}
+::video{id=physics-ch01-1.1-motion}
 
-:::interactive{id=physics-ch01-1.1-motion}
+::interactive{id=physics-ch01-1.1-motion}
 
 :::derivation{label=位移公式推导}
 由 $v = v_0 + at$ 和 $x = \int_0^t v \, dt$：
@@ -564,6 +593,30 @@ $$
 ### 步骤 8（可选）：扩展 AI 对话标签
 
 若 physics 需要专属可视化（如受力分析图），按第 6 节步骤在 `ChatMessageVisualizations.tsx` 增加 `case 'PhysicsFreeBodyDiagram'`，并在 AI 系统提示词中声明。
+
+---
+
+## 8. 共享组件：图片与 SVG 画布
+
+### ContentImage（`components/shared/ContentImage.tsx`）
+
+所有 Markdown 渲染器（笔记侧 NoteRenderer、聊天侧 MessageContent、测验 QuizMarkdown）的 `img` 组件均映射到 `ContentImage`。功能：
+
+- 图片加载失败时显示 `ImageOff` 错误图标 + 文件名（不会白屏）
+- 提供 `title` 时自动包裹 `<figure>` + `<figcaption>`
+
+### SVG Canvas 系统（`components/canvas/`）
+
+提供主题适配的矢量画布，由 `::plot` 和 `:::canvas` 指令触发。亦可在交互组件中直接导入使用：
+
+```typescript
+import { SvgCanvas, FunctionPlot } from '@/components/canvas';
+
+// 在交互组件中嵌入函数图
+<SvgCanvas width={400} height={300} xRange={[-5, 5]} yRange={[-2, 2]} showGrid>
+  <FunctionPlot fns={[{ expr: 'sin(x)', label: 'sin(x)' }]} xRange={[-5, 5]} />
+</SvgCanvas>
+```
 
 ---
 

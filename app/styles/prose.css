@@ -112,6 +112,32 @@
   font-weight: 640;
 }
 
+/* 图片 / Figure */
+.prose-notes img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--md-sys-shape-corner-medium, 10px);
+  margin: 1rem auto;
+  display: block;
+}
+.prose-notes figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+.prose-notes figcaption {
+  font-size: 0.85em;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.5rem;
+}
+
+/* SVG in markdown */
+.prose-notes svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1rem auto;
+}
+
 /* KaTeX 尺寸与块公式滚动 */
 .prose-notes .katex {
   font-size: 1.06em;
@@ -210,6 +236,29 @@
   text-align: left;
 }
 .chat-prose th { background: var(--bg-muted); font-weight: 640; }
+/* 图片 / Figure / SVG in chat */
+.chat-prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--md-sys-shape-corner-medium, 10px);
+  margin: 0.8em auto;
+  display: block;
+}
+.chat-prose figure {
+  margin: 1rem 0;
+  text-align: center;
+}
+.chat-prose figcaption {
+  font-size: 0.82em;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.4rem;
+}
+.chat-prose svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0.8em auto;
+}
 .chat-prose .katex { font-size: 1.04em; }
 .chat-prose .katex-display {
   margin: 0.95em 0;
@@ -240,25 +289,34 @@
   padding: 8px 12px;
   border-bottom: 1px solid var(--md-sys-color-outline-variant);
   background: var(--md-sys-color-surface-container);
+  container-type: inline-size;
 }
 .chat-header-left {
   display: flex;
   align-items: center;
   gap: 6px;
+  min-width: 0;
+  overflow: hidden;
 }
 .chat-header-title {
   font-size: 13px;
   font-weight: 600;
   color: var(--md-sys-color-on-surface);
+  flex-shrink: 0;
 }
 .chat-header-topic {
   font-size: 11px;
   color: var(--md-sys-color-on-surface-variant);
   margin-left: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 .chat-header-actions {
   display: flex;
   gap: 4px;
+  flex-shrink: 0;
 }
 .chat-header-btn {
   padding: 4px 8px;
@@ -273,6 +331,10 @@
   gap: 4px;
   font-weight: 500;
   transition: background var(--duration-fast) var(--ease-out);
+  flex-shrink: 0;
+}
+.chat-header-btn-text {
+  display: inline;
 }
 .chat-header-btn:hover {
   background: var(--md-sys-color-surface-container-high);
@@ -290,6 +352,17 @@
 .chat-header-btn-danger:hover {
   background: var(--md-sys-color-surface-container-high);
   color: var(--md-sys-color-error);
+}
+@container (max-width: 320px) {
+  .chat-header-topic {
+    display: none;
+  }
+  .chat-header-btn {
+    padding: 4px;
+  }
+  .chat-header-btn-text {
+    display: none;
+  }
 }
 
 /* ── Chat 消息区 ──────────────────────────────── */
@@ -689,6 +762,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 4px;
+  container-type: inline-size;
 }
 .chat-input-toolbar-group {
   display: flex;
@@ -770,4 +844,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* ── 底部工具栏响应式 ────────────────────────── */
+@container (max-width: 280px) {
+  .chat-input-toolbar-group {
+    gap: 4px;
+  }
+  .chat-input-toggle {
+    padding: 3px 4px;
+    gap: 0;
+  }
+  .chat-input-toggle-text {
+    display: none;
+  }
+  .model-menu-label {
+    display: none;
+  }
 }

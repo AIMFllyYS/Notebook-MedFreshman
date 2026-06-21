@@ -1,0 +1,132 @@
+/* ─────────────────────────────────────────────────────────────
+   SVG Canvas 画布组件样式
+   ───────────────────────────────────────────────────────────── */
+
+.svg-canvas-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--md-sys-shape-corner-large, 14px);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-lowest);
+  margin: 1.25rem 0;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+}
+.svg-canvas-wrapper:active {
+  cursor: grabbing;
+}
+
+.svg-canvas-wrapper svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Grid lines */
+.svg-canvas-grid line {
+  stroke: var(--md-sys-color-outline-variant);
+  stroke-opacity: 0.35;
+}
+
+/* Axes */
+.svg-canvas-axis line,
+.svg-canvas-axis path {
+  stroke: var(--md-sys-color-on-surface);
+  stroke-width: 1.5;
+  fill: none;
+}
+.svg-canvas-axis text {
+  fill: var(--md-sys-color-on-surface-variant);
+  font-size: 11px;
+  font-family: var(--font-mono);
+}
+.svg-canvas-axis-label {
+  fill: var(--md-sys-color-on-surface);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-sans);
+}
+
+/* Tick marks */
+.svg-canvas-tick line {
+  stroke: var(--md-sys-color-on-surface);
+  stroke-width: 1;
+}
+.svg-canvas-tick text {
+  fill: var(--md-sys-color-on-surface-variant);
+  font-size: 10px;
+  font-family: var(--font-mono);
+}
+
+/* Function curves */
+.svg-canvas-curve {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Legend */
+.svg-canvas-legend {
+  font-size: 12px;
+  font-family: var(--font-sans);
+}
+.svg-canvas-legend text {
+  fill: var(--md-sys-color-on-surface);
+}
+
+/* Controls overlay */
+.svg-canvas-controls {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 2;
+}
+.svg-canvas-controls button {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--md-sys-shape-corner-small, 6px);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--duration-fast, 150ms) var(--ease-out);
+}
+.svg-canvas-controls button:hover {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Figure directive */
+.figure-directive {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+.figure-directive img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--md-sys-shape-corner-medium, 10px);
+}
+.figure-directive figcaption {
+  font-size: 0.85em;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.5rem;
+}
+.figure-directive-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 1rem;
+  border-radius: var(--md-sys-shape-corner-medium, 10px);
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.85em;
+}

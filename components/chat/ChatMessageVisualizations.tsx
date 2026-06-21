@@ -7,6 +7,7 @@ import {
   FormulaSteps as FormulaStepsPrimitive,
   VideoPlayer,
 } from '@/components/visualizations';
+import { SvgCanvas } from '@/components/canvas';
 
 // ----------------------------------------------------
 // ChatMessageVisualizations: 标签分发器
@@ -87,6 +88,32 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
           poster={props.poster}
         />
       );
+
+    case 'SvgDiagram': {
+      const svgContent = childrenText.trim();
+      const title = props.title || '示意图';
+      return (
+        <div style={{ margin: '0.8em 0' }}>
+          {title && (
+            <div style={{
+              fontSize: '0.85em',
+              fontWeight: 600,
+              color: 'var(--md-sys-color-on-surface-variant)',
+              marginBottom: '0.5em',
+            }}>
+              {title}
+            </div>
+          )}
+          <SvgCanvas
+            width={toNum(props.width) ?? 400}
+            height={toNum(props.height) ?? 300}
+            showGrid={toBool(props.grid)}
+          >
+            <g dangerouslySetInnerHTML={{ __html: svgContent }} />
+          </SvgCanvas>
+        </div>
+      );
+    }
 
     default:
       return null;

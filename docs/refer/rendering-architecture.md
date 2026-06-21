@@ -13,23 +13,29 @@
 │                                                                 │
 │  plugins.ts                                                     │
 │  ├─ sharedRemarkPlugins  (GFM + Math + Directive + 自定义)      │
-│  └─ sharedRehypePlugins  (KaTeX + highlight.js)                 │
+│  └─ sharedRehypePlugins  (rehype-raw + KaTeX + highlight.js)   │
 │                                                                 │
 │  directiveComponents.ts                                         │
 │  ├─ Callout       (components/shared/directives/Callout.tsx)    │
 │  ├─ Derivation    (components/shared/directives/Derivation.tsx) │
-│  └─ MediaEmbed    (components/shared/directives/MediaEmbed.tsx) │
+│  ├─ MediaEmbed    (components/shared/directives/MediaEmbed.tsx) │
+│  ├─ Figure        (components/shared/directives/Figure.tsx)     │
+│  ├─ PlotDirective (components/canvas/PlotDirective.tsx)         │
+│  └─ CanvasDirective (components/canvas/CanvasDirective.tsx)     │
 │                                                                 │
 │  calloutTypes.ts   ── CALLOUT_META 单一数据源                    │
-│  remarkDirectives.ts ── 解析 :::callout 等指令                   │
+│  remarkDirectives.ts ── 解析 :::callout / ::figure 等指令       │
 │                                                                 │
-│  components/shared/CodeBlock.tsx ── 代码块（复制 + 语言标签）     │
+│  components/shared/CodeBlock.tsx    ── 代码块（复制 + 语言标签） │
+│  components/shared/ContentImage.tsx ── 统一图片组件（错误兜底） │
+│  components/canvas/                ── SVG 画布 + 函数绘图       │
 └───────────────────────────────────────────────────────────────┘
          │                                          │
     ┌────┴──────────────┐                ┌───────────┴──────────┐
     │  笔记侧            │                │  聊天侧               │
     │  NoteRenderer      │                │  MessageContent       │
-    │                    │                │                       │
+    │  img: ContentImage │                │  img: ContentImage    │
+    │                    │                │  + SvgDiagram 标签    │
     │  外层 CSS:          │                │  外层 CSS:            │
     │  .prose-notes      │                │  .chat-prose          │
     └────────────────────┘                └───────────────────────┘
@@ -50,7 +56,7 @@
 | 导出 | 内容 | 说明 |
 |---|---|---|
 | `sharedRemarkPlugins` | `[remarkGfm, remarkMath, remarkDirective, remarkDirectives]` | Markdown → MDAST 解析插件 |
-| `sharedRehypePlugins` | `[[rehypeKatex, { throwOnError: false, strict: false }], [rehypeHighlight, { detect: true, ignoreMissing: true }]]` | MDAST → HAST 转换插件 |
+| `sharedRehypePlugins` | `[rehypeRaw, [rehypeKatex, { throwOnError: false, strict: false }], [rehypeHighlight, { detect: true, ignoreMissing: true }]]` | MDAST → HAST 转换插件（rehype-raw 在 KaTeX 前，以支持内联 HTML/SVG） |
 
 **禁止**在 `NoteRenderer` 或 `MessageContent` 中直接内联插件配置。必须从此文件导入。
 
@@ -61,6 +67,9 @@
 | `callout` | `Callout` | `components/shared/directives/Callout.tsx` |
 | `derivation` | `Derivation` | `components/shared/directives/Derivation.tsx` |
 | `mediaembed` | `MediaEmbed` | `components/shared/directives/MediaEmbed.tsx` |
+| `figuremedia` | `Figure` | `components/shared/directives/Figure.tsx` |
+| `functionplot` | `PlotDirective` | `components/canvas/PlotDirective.tsx` |
+| `svgcanvas` | `CanvasDirective` | `components/canvas/CanvasDirective.tsx` |
 
 两侧通过 `...directiveComponents` 展开到各自的 `components` 对象中。
 
@@ -107,7 +116,7 @@ micromark 属性解析失败 → 整个指令被丢弃，渲染成裸 `:::type{.
 
 | 组件覆盖 | 用途 |
 |---|---|
-| `img` | 添加 `loading="lazy"` 和 `decoding="async"` |
+| `img` | `ContentImage` — 统一图片组件，提供加载错误兜底 + figure/figcaption 包裹 |
 | `pre` | 映射到 `CodeBlock` |
 
 ### 性能优化
@@ -136,6 +145,7 @@ micromark 属性解析失败 → 整个指令被丢弃，渲染成裸 `:::type{.
 | 组件覆盖 | 用途 |
 |---|---|
 | `a` | `target="_blank" rel="noopener noreferrer"` 新窗口打开 |
+| `img` | `ContentImage` — 支持 AI 返回的网络图片和 `imageSearch` 结果 |
 | `table` | 外包 `.chat-table-scroll` 实现横向滚动 |
 | `pre` | 映射到 `CodeBlock` |
 
@@ -144,14 +154,14 @@ micromark 属性解析失败 → 整个指令被丢弃，渲染成裸 `:::type{.
 | 功能 | 实现 | 说明 |
 |---|---|---|
 | XML 标签解析 | `parseXmlTags()` | 解析 `<FollowUp>`、`<InteractiveVenn>` 等标签 |
-| 可视化组件 | `ChatMessageVisualizations` | 渲染 Venn 图、分布图、公式步骤、Manim 播放器 |
+| 可视化组件 | `ChatMessageVisualizations` | 渲染 Venn 图、分布图、公式步骤、Manim 播放器、SVG 图形 |
 | 工具调用面板 | `ToolCallDashboard` | 内联 `<ToolCall>` 标签渲染 |
 | FollowUp 追问 | `FollowUpQuestions` | 从 `<FollowUp>q1|q2|q3</FollowUp>` 提取并渲染按钮 |
 
 ### 可视化标签白名单
 
 ```
-vizTags = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'ManimPlayer']
+vizTags = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'ManimPlayer', 'SvgDiagram']
 ```
 
 新增可视化标签时，需同步修改此数组和 `ChatMessageVisualizations` 组件。
@@ -226,6 +236,84 @@ $$
 | `\ce{sp^3}` | `\mathrm{sp}^3` | `sp` 不是化学元素，需用 `\mathrm` |
 | `\ce{Cl^.}` | `\ce{Cl\cdot}` | `^.` 不是自由基符号 |
 
+### 5.5 SVG Canvas 系统
+
+SVG Canvas 提供主题适配的矢量画布，支持函数图像绘制和自由 SVG 内容。
+
+#### 组件架构（`components/canvas/`）
+
+| 组件 | 用途 |
+|------|------|
+| `SvgCanvas` | 核心画布：主题适配（亮色白底/暗色黑底）、拖拽平移、滚轮缩放、可配置网格和坐标轴 |
+| `CanvasControls` | 缩放控件覆盖层（放大/缩小/重置） |
+| `FunctionPlot` | 在 `SvgCanvas` 内绘制数学函数曲线，支持多函数叠加 |
+| `PlotDirective` | `::plot` 指令渲染组件 — 单函数快速绘图 |
+| `CanvasDirective` | `:::canvas` 容器指令渲染组件 — 多函数共享坐标系 + 图例 |
+| `canvasUtils` | 数学表达式解析器 + 坐标轴刻度计算 + 函数采样 |
+
+#### `::plot` 指令语法
+
+```markdown
+::plot{fn="sin(x)" xmin=-6.28 xmax=6.28 ymin=-1.5 ymax=1.5 label="y=sin(x)"}
+```
+
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `fn` | string | 必填 | 数学表达式，变量为 `x`，支持 `sin/cos/tan/exp/log/sqrt/abs/pi/e` |
+| `xmin` | number | -10 | x 轴最小值 |
+| `xmax` | number | 10 | x 轴最大值 |
+| `ymin` | number | auto | y 轴最小值（省略时自动计算） |
+| `ymax` | number | auto | y 轴最大值 |
+| `label` | string | — | 曲线标签 |
+
+#### `:::canvas` 容器指令语法
+
+```markdown
+:::canvas{width=500 height=300 xmin=-3 xmax=3 ymin=-1 ymax=5}
+::plot{fn="x^2" label="y=x²"}
+::plot{fn="x^3" label="y=x³"}
+:::
+```
+
+共享坐标系，多曲线叠加，自动生成颜色区分的图例。
+
+#### 表达式解析器（`compileMathExpr`）
+
+将字符串表达式编译为 `(x: number) => number` 函数。安全沙箱执行，不使用 `eval`。
+
+支持的运算和函数：`+`, `-`, `*`, `/`, `^`（幂）, `sin`, `cos`, `tan`, `exp`, `log`, `sqrt`, `abs`, `pi`, `e`。
+
+### 5.6 图片基础设施
+
+#### ContentImage 组件（`components/shared/ContentImage.tsx`）
+
+统一的图片渲染组件，两侧（笔记 + 聊天）均使用：
+
+- 图片加载失败时显示 `ImageOff` 图标 + 文件名提示（优雅降级）
+- 若提供 `title` 属性，自动包裹 `<figure>` + `<figcaption>`
+- 支持所有标准 `<img>` 属性
+
+#### `::figure` 指令语法
+
+```markdown
+::figure{src="/images/physics/ch08/图8-4.jpg" caption="安培环路定律示意" alt="安培环路"}
+```
+
+| 参数 | 类型 | 说明 |
+|------|------|------|
+| `src` | string | 图片路径（`/images/` 开头的本地路径或 HTTP URL） |
+| `caption` | string | 图注文字 |
+| `alt` | string | 无障碍替代文本 |
+
+#### 图片路径约定
+
+| 来源 | 路径格式 | 示例 |
+|------|---------|------|
+| MinerU 解析提取 | `/images/{subject}/{baseName}/{filename}` | `/images/physics/ch08/图8-4.jpg` |
+| 手动添加 | `/images/{subject}/{自定义}/` | `/images/chemistry/molecules/ethanol.svg` |
+
+`scripts/parse-docs.ts` 在 MinerU 解析后自动将 `images/` 目录复制到 `public/images/{subject}/{baseName}/`，并将 Markdown 中的相对路径重写为绝对公共路径。
+
 ---
 
 ## 6. CSS 容器规范
@@ -238,6 +326,7 @@ $$
 | `app/styles/prose.css` | `.prose-notes` + `.chat-prose` 排版 + chat 组件 CSS 类 |
 | `app/styles/callouts.css` | 7 种 callout 样式 + 语义图标 + derivation |
 | `app/styles/code.css` | highlight.js + CodeBlock + 公式块 + 表格增强 |
+| `app/styles/canvas.css` | SVG Canvas 画布样式（网格/轴/曲线/控件/figure 指令） |
 
 `globals.css` 顶部通过 `@import` 引入三个子文件，`@import "tailwindcss"` 必须保持第一行。
 

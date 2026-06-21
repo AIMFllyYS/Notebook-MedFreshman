@@ -8,7 +8,7 @@ import {
   readContentMarkdown,
   searchNotes,
 } from "@/lib/content/loader";
-import { runWebSearchDetailed } from "@/lib/ai/webSearch";
+import { runWebSearchDetailed, runImageSearch } from "@/lib/ai/webSearch";
 
 export interface ToolContext {
   subjectId: string;
@@ -101,12 +101,49 @@ export const ALL_TOOLS: Record<string, ToolDefinition> = {
       },
     },
   },
+  imageSearch: {
+    type: "function",
+    function: {
+      name: "imageSearch",
+      description:
+        "搜索互联网图片并返回可嵌入的图片链接。当讲解需要配图（如物理实验装置、化学分子结构、生物组织图等）时调用。返回结果包含图片 URL，可直接以 Markdown 图片语法嵌入回复。",
+      parameters: {
+        type: "object",
+        properties: {
+          query: { type: "string", description: "图片搜索关键词，如 '高斯面示意图'" },
+          numResults: { type: "number", description: "返回图片数量，默认 3" },
+        },
+        required: ["query"],
+      },
+    },
+  },
+  drawDiagram: {
+    type: "function",
+    function: {
+      name: "drawDiagram",
+      description:
+        "生成 SVG 矢量示意图（电路图、光路图、场线图、分子结构等）。当讲解需要精确的物理/化学/数学图形，且无合适的现成图片时调用。图形会以可缩放、主题适配的画布形式嵌入对话。简单函数图像请直接使用 ::plot 指令而非此工具。",
+      parameters: {
+        type: "object",
+        properties: {
+          title: { type: "string", description: "图形标题" },
+          description: { type: "string", description: "需要绘制的图形的详细描述：包含哪些元素、相对位置、标注文字、箭头方向等" },
+          type: {
+            type: "string",
+            description: "图形类型",
+            enum: ["circuit", "optics", "field", "molecule", "geometry", "custom"],
+          },
+        },
+        required: ["title", "description"],
+      },
+    },
+  },
 };
 
-/** 取本次请求要启用的工具定义。enableSearch 控制是否暴露 webSearch；disabled 来自用户设置。 */
+/** 取本次请求要启用的工具定义。enableSearch 控制是否暴露 webSearch/imageSearch；disabled 来自用户设置。 */
 export function getToolDefs(opts: { enableSearch: boolean; disabled?: string[] }): ToolDefinition[] {
-  const names = ["getCurrentPage", "getOutline", "getSection", "searchNotes", "renderInteractive"];
-  if (opts.enableSearch) names.push("webSearch");
+  const names = ["getCurrentPage", "getOutline", "getSection", "searchNotes", "renderInteractive", "drawDiagram"];
+  if (opts.enableSearch) names.push("webSearch", "imageSearch");
   const disabled = new Set(opts.disabled ?? []);
   return names.filter((n) => !disabled.has(n)).map((n) => ALL_TOOLS[n]);
 }
@@ -149,6 +186,19 @@ export async function runTool(
     case "webSearch": {
       const r = await runWebSearchDetailed(String(args.query ?? ""), Number(args.numResults) || 5);
       return { content: r.content, meta: { sources: r.sources, cacheHit: r.cacheHit } };
+    }
+    case "imageSearch": {
+      const r = await runImageSearch(String(args.query ?? ""), Number(args.numResults) || 3);
+      return { content: r.content, meta: { sources: r.sources, cacheHit: r.cacheHit } };
+    }
+    case "drawDiagram": {
+      const title = String(args.title ?? "示意图");
+      const desc = String(args.description ?? "");
+      const diagramType = String(args.type ?? "custom");
+      return {
+        content: `[SVG 图形已生成] 标题：${title}，类型：${diagramType}`,
+        meta: { title, description: desc, type: diagramType, action: "drawDiagram" },
+      };
     }
     default:
       return { content: `未知工具：${name}` };
