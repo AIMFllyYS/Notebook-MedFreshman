@@ -35,11 +35,6 @@
 
 **重要**：该文件由用户动态维护，SOP 执行时必须实时读取，绝不硬编码任何题型配比。
 
-示例（概率论）：
-- 单项选择题：10 题，每题 3 分，共 30 分
-- 解答题：10 题，每题 7 分，共 70 分
-
-每章测试需按此比例缩放（若原卷 10 题选择，每章测试可出 5 题选择 + 对应比例的大题）。
 
 ### Step 2：知识点提取
 
@@ -291,6 +286,78 @@ node -e "JSON.parse(require('fs').readFileSync('content/quiz/{subject}/{chapterI
 | `options` | 不使用（留空或省略） |
 
 前端 `QuizScoring` 组件对 `essay`/`fill_blank` 主观题展示参考答案 + 评分要点，并提供自评滑块，与本规范的要点式评分标准直接对应。
+
+## 课上录音出题专节
+
+> 为课上录音板块（`content/{subject}/recording/rec-{NN}.md`）生成配套测验。题目**严格基于录音逐字稿**，不得引用详解或教材中录音未提及的内容。
+
+### 输入物料
+
+| 物料 | 路径 | 说明 |
+|------|------|------|
+| 课上录音 | `content/{subject}/recording/rec-{NN}.md` | **主要来源**，清洗后逐字稿 |
+| 课堂纪要 | `content/{subject}/summary/sum-{NN}.md` | **辅助理解**，提取知识结构 |
+| 考试题型分布 | `docs/refer/考试题型分布.md` | 动态引用 |
+
+### 产出路径
+
+`content/quiz/{subject}/rec-{NN}.json` — 与章节测验共用同一目录。
+
+### 题型分布（100 分制，50 分钟）
+
+| type | label | 数量 | 分值 | 合计 | 考查侧重 |
+|------|-------|------|------|------|----------|
+| single_choice | — | 10 | 2 | 20 | 课堂知识点 |
+| multiple_choice | — | 5 | 2 | 10 | 课堂知识点 |
+| single_choice / multiple_choice | **考试重点** | 5 | 4 | 20 | 老师划重点、考试提示 |
+| essay | 简答题 | 2 | 10 | 20 | 课堂核心论述 |
+| essay | 论述题 | 1 | 15 | 15 | 课堂深度分析 |
+| essay | 材料分析题 | 1 | 15 | 15 | 老师引用的原文/案例 |
+| **合计** | | **24** | | **100** | |
+
+### 考试重点题说明
+
+- 使用现有 `single_choice` 或 `multiple_choice` 类型，`label` 字段设为 `"考试重点"`
+- 专门考查老师在录音中明确说过「这个要考」「重点」「划一下」「记住」等标记的内容
+- `sourceRef.label` 应包含时间戳定位（如 `"rec-06 · 说话人1 42:15 · 统一战线四阶段划重点"`）
+- 前端 QuizTab 可通过 `label` 字段识别并视觉区分
+
+### 难度分布
+
+- 70% basic：直接考查老师明确讲过的内容
+- 20% medium：需综合老师讲的多个要点
+- 10% hard：需理解老师话语中的深层含义
+
+### Current/Review Split
+
+- **100% 当前录音**，`source` 字段全部为 `"current_chapter"`，无滚动复习
+
+### sourceRef 规范（录音专用）
+
+```json
+"sourceRef": {
+  "path": "content/maogai/recording/rec-06.md",
+  "label": "rec-06 · 说话人1 42:15 · 统一战线的四个发展阶段"
+}
+```
+
+- `path`：指向实际录音文件
+- `label`：`rec-NN · 说话人X HH:MM · 内容定位`，便于学生回查原始录音位置
+
+### JSON Schema 差异（相对章节测验）
+
+| 字段 | 录音测验的值 |
+|------|-------------|
+| `chapterId` | `"rec-01"` 等（非 `"ch01"`） |
+| `source` | 全部 `"current_chapter"` |
+| `sourceRef.path` | `content/{subject}/recording/rec-{NN}.md` |
+| 考试重点题 `label` | `"考试重点"` |
+
+其余字段（`subjectId`、`examConfig`、`questions[]` schema、`summary`）与章节测验完全一致。
+
+### 前端适配
+
+`lib/store.ts` 中 `deriveChapterId()` 已扩展：`recording` 分类直接返回 `itemId`（如 `"rec-01"`），使 QuizTab 能从 `content/quiz/{subject}/rec-01.json` 加载数据。无需修改 loader 或 progress 逻辑。
 
 ## 参考文件
 

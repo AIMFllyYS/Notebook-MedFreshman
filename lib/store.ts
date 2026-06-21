@@ -11,8 +11,9 @@ export interface OutboundMessage {
   nonce: number;
 }
 
-/** detail 分类下 itemId（如 "1.1"）→ 章节 id（"ch01"）。非 detail 返回 ""。 */
+/** detail/recording 分类下的 quiz key 推导。recording 直接用 itemId（"rec-01"）。 */
 function deriveChapterId(categoryId: string, itemId: string): string {
+  if (categoryId === "recording") return itemId;
   if (categoryId !== "detail") return "";
   const n = parseInt(itemId.split(".")[0], 10);
   return Number.isNaN(n) ? "" : `ch${String(n).padStart(2, "0")}`;

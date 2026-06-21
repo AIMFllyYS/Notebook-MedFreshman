@@ -1,0 +1,596 @@
+{
+  "subjectId": "maogai",
+  "chapterId": "rec-03",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "老师指出\"马克思主义中国化\"命题正式提出于（　）。",
+      "answer": 1,
+      "hint": "老师强调要考。",
+      "explanation": "1938年六届六中全会《论新阶段》，\"过去要考的一个\"知识点。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 02:42 · 六届六中全会"
+      },
+      "options": [
+        "1935年遵义会议",
+        "1938年六届六中全会《论新阶段》",
+        "1945年党的七大",
+        "1942年延安整风"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "1945年七大上刘少奇指出毛泽东思想是（　）。",
+      "answer": 0,
+      "hint": "七大表述。",
+      "explanation": "中国化的马克思主义。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 03:45 · 七大定位"
+      },
+      "options": [
+        "中国化的马克思主义",
+        "中国特色社会主义理论体系开篇之作",
+        "马克思主义中国化时代化新的飞跃",
+        "科学发展观的核心"
+      ]
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "2022年二十大对马克思主义中国化时代化，老师强调（　）。",
+      "answer": 2,
+      "hint": "2022新表述。",
+      "explanation": "明确谱写马克思主义中国化时代化新篇章为庄严历史责任。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 03:45 · 二十大"
+      },
+      "options": [
+        "首次提出马克思主义中国化",
+        "仅强调大众化",
+        "明确谱写新篇章为庄严历史责任",
+        "宣布毛泽东思想过时"
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "马克思主义中国化时代化内涵包括几层含义？",
+      "answer": 1,
+      "hint": "实际、成果、文化。",
+      "explanation": "三层：与实际结合、理论成果、与优秀传统文化结合。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 04:41 · 三层含义"
+      },
+      "options": [
+        "两层",
+        "三层",
+        "四层",
+        "五层"
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "\"我的专业，我的国\"展示计入平时成绩（　）分。",
+      "answer": 1,
+      "hint": "占总成绩20%。",
+      "explanation": "占总成绩20%，满分20分（老师口误说40分后纠正为20分）。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 16:48 · 专业展演20分"
+      },
+      "options": [
+        "10分",
+        "20分",
+        "30分",
+        "40分"
+      ]
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "毛泽东1893年生，与2007级同学相差约（　）岁。",
+      "answer": 2,
+      "hint": "课堂计算结果。",
+      "explanation": "课堂确认相差114岁。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 37:01 · 相差114岁"
+      },
+      "options": [
+        "110岁",
+        "112岁",
+        "114岁",
+        "120岁"
+      ]
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "13岁毛泽东与父亲冲突，反抗方式是（　）。",
+      "answer": 1,
+      "hint": "池塘与半磕头。",
+      "explanation": "池塘边威胁跳下，只半磕头道歉。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 38:10 · 与父亲冲突"
+      },
+      "options": [
+        "立即永久离家",
+        "以跳池塘相威胁并只半磕头",
+        "完全顺从",
+        "向官府告状"
+      ]
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "1919年冬天毛泽东树立信仰所读三本书不包括（　）。",
+      "answer": 3,
+      "hint": "老师列举三本。",
+      "explanation": "共产党宣言、阶级斗争、社会主义史；未提资本论全文。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 57:55 · 三本书"
+      },
+      "options": [
+        "《共产党宣言》",
+        "考茨基《阶级斗争》",
+        "《社会主义史》",
+        "《资本论》全文"
+      ]
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "毛泽东思想以毛泽东命名条件之一：他是（　）。",
+      "answer": 0,
+      "hint": "1921年7月。",
+      "explanation": "1921年一大代表，中国共产党创始人之一。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 57:55 · 一大代表"
+      },
+      "options": [
+        "中国共产党创始人之一",
+        "唯一留法归来领导人",
+        "民国首任总统",
+        "志愿军总司令"
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "\"中国人民从此站起来了\"说于（　）。",
+      "answer": 1,
+      "hint": "老师专门纠正。",
+      "explanation": "1949年9月21日政协开幕词，非开国大典。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:07:10 · 站起来场合"
+      },
+      "options": [
+        "1949年10月1日开国大典",
+        "1949年9月21日政协开幕词",
+        "1956年社会主义改造完成",
+        "1978年十一届三中全会"
+      ]
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "老师要求\"记住\"的三个知识点包括（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "老师说了三个。",
+      "explanation": "马中国化命题提出、毛泽东思想、马中国化时代化命题提出。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 04:41 · 三个知识点"
+      },
+      "options": [
+        "1938六届六中全会提出马克思主义中国化",
+        "1945七大确立毛泽东思想",
+        "2021/2022提出马克思主义中国化时代化",
+        "1956八大提出科学发展观"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "新民主主义革命时期\"四个彻底\"包括（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "hint": "5个选项。",
+      "explanation": "四个彻底+向人民民主伟大飞跃，\"很容易出多选题\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 07:31 · 四个彻底"
+      },
+      "options": [
+        "彻底结束半殖民地半封建历史",
+        "彻底结束极少数剥削者统治",
+        "彻底结束一盘散沙",
+        "彻底废除不平等条约和列强特权",
+        "实现向人民民主的伟大飞跃"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "毛泽东四个个人特征包括（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "课堂归纳四点。",
+      "explanation": "不畏强权、同情贫苦、民族独立、坚定马克思主义者。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 36:22 · 四特征"
+      },
+      "options": [
+        "敢于反抗专制和不公",
+        "对贫苦人民深深同情",
+        "致力于民族真正独立",
+        "成为马克思主义者和党的创始人"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "各理论围绕的根本问题，正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "各理论一个核心问题。",
+      "explanation": "邓小平什么是社会主义；三个代表建设什么样的党；科学发展观什么样的发展；习思想新时代坚持发展中国特色社会主义。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 08:52 · 根本问题"
+      },
+      "options": [
+        "邓小平理论——什么是社会主义、怎样建设社会主义",
+        "三个代表——建设什么样的党、怎样建设党",
+        "科学发展观——实现什么样的发展、怎样发展",
+        "习近平思想——新时代坚持和发展中国特色社会主义"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "毛泽东经典话语，课堂重点提到的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "hint": "发展才是硬道理不是本条梳理。",
+      "explanation": "星星之火、纸老虎、站起来、世界是你们的等；\"发展才是硬道理\"是邓小平。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:03:58 · 经典话语"
+      },
+      "options": [
+        "\"星星之火，可以燎原\"",
+        "\"一切反动派都是纸老虎\"",
+        "\"中国人民从此站起来了\"",
+        "\"发展才是硬道理\"",
+        "\"世界是你们的，归根结底是你们的\""
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 4,
+      "stem": "六届六中全会提出马克思主义中国化命题，老师说这是（　）。",
+      "answer": 1,
+      "hint": "老师怎么评价。",
+      "explanation": "\"前两年我在这个学堂练习中的话，要考的一个\"知识点。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 02:42 · 要考的知识点"
+      },
+      "label": "考试重点",
+      "options": [
+        "可选了解",
+        "过去随堂练习和考试要考的知识点",
+        "仅研究生内容",
+        "已不在教材中"
+      ]
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 4,
+      "stem": "准确把握内涵要做到\"两个结合\"（　）。",
+      "answer": 0,
+      "hint": "两个结合标准表述。",
+      "explanation": "同中国实际相结合、同中国优秀传统文化相结合。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 05:49 · 两个结合"
+      },
+      "label": "考试重点",
+      "options": [
+        "同中国实际相结合、同中国优秀传统文化相结合",
+        "同苏联模式相结合、同西方民主相结合",
+        "同市场经济相结合、同传统文化替代相结合",
+        "同军事斗争相结合、同土地革命相结合"
+      ]
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 4,
+      "stem": "\"归根到底是\"（　）。",
+      "answer": 1,
+      "hint": "关键话语。",
+      "explanation": "中国化、时代化的马克思主义行。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 11:12 · 归根到底"
+      },
+      "label": "考试重点",
+      "options": [
+        "西方自由主义行",
+        "中国化、时代化的马克思主义行",
+        "传统文化行",
+        "市场经济行"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 4,
+      "stem": "二三四章讲完后回到第一章讲（　）。",
+      "answer": 2,
+      "hint": "回过头来讲什么。",
+      "explanation": "活的灵魂和历史地位。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 26:23 · 教学安排"
+      },
+      "label": "考试重点",
+      "options": [
+        "仅复习第一节",
+        "重新讲授新民主主义革命",
+        "毛泽东思想活的灵魂和历史地位",
+        "直接进入邓小平理论"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 4,
+      "stem": "坚持马克思主义两个\"坚持\"包括（　）。",
+      "answer": [
+        0,
+        1
+      ],
+      "hint": "第六页两个坚持。",
+      "explanation": "坚持基本原理不动摇；坚持发展观点和两个结合。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 05:23 · 两个坚持"
+      },
+      "label": "考试重点",
+      "options": [
+        "坚持马克思主义基本原理和立场观点方法不动摇",
+        "坚持发展观点，推进两个结合",
+        "坚持完全照搬经典",
+        "坚持放弃基本原理"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 10,
+      "stem": "简述马克思主义中国化时代化历史进程四个阶段及作用。",
+      "answer": "四阶段：新民主主义革命（根本社会条件）、社会主义革命建设（政治前提制度基础）、改革开放（体制保证物质条件）、新时代（强起来）。",
+      "hint": "四阶段+作用。",
+      "explanation": "老师带复习第七至九页。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 06:50 · 四阶段"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "四阶段（4分）",
+        "各阶段作用（5分）",
+        "条理（1分）"
+      ]
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 10,
+      "stem": "简述毛泽东四个突出个人特征。",
+      "answer": "不畏强权；同情贫苦；坚定民族独立；坚定马克思主义者（一大代表）。各配课堂事例。",
+      "hint": "四点各举例。",
+      "explanation": "课堂讨论归纳。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 36:22 · 四特征"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "四特征（4分）",
+        "事例（5分）",
+        "条理（1分）"
+      ]
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 15,
+      "stem": "论述\"伟人与政治家\"区别，以孙中山、毛泽东、邓小平为例。",
+      "answer": "伟人指方向：孙中山醒过来、毛泽东站起来、邓小平富起来。政治家如蒋介石、周恩来。结合习近平对毛泽东评价。",
+      "hint": "区别+三人+评价。",
+      "explanation": "老师01:22:59处论述。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:22:59 · 伟人与政治家"
+      },
+      "label": "论述题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "区别（4分）",
+        "三人分析（6分）",
+        "联系评价（3分）",
+        "条理（2分）"
+      ]
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 15,
+      "stem": "阅读材料，回答问题。\n\n> 材料：\"占人类总数四分之一的中国人从此站立起来了。\"——1949年9月21日政协开幕词。老师纠正：开国大典说的是\"中华人民共和国中央人民政府今天成立了\"。\n\n（1）历史贡献？（5分）\n（2）如何区分两个场合？（5分）\n（3）与毛泽东思想历史地位联系？（5分）",
+      "answer": "（1）使中国人民站起来，实现民族独立。\n（2）9月21日政协vs10月1日开国大典不同表述。\n（3）毛泽东思想第一次历史性飞跃，指导革命胜利。",
+      "hint": "贡献→场合→思想地位。",
+      "explanation": "老师纠正常见混淆。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:07:10 · 站起来场合"
+      },
+      "label": "材料分析题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "贡献（5分）",
+        "区分场合（5分）",
+        "思想地位（5分）"
+      ]
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

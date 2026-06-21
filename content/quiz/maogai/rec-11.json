@@ -1,0 +1,606 @@
+{
+  "subjectId": "maogai",
+  "chapterId": "rec-11",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "1949年新中国成立时未回归的三块领土中，台湾问题与香港、澳门问题的性质区别在于（　）。",
+      "options": [
+        "台湾是国共内战中美国介入导致内政问题演变为国际关系问题",
+        "台湾是殖民主义侵略遗留问题",
+        "香港、澳门是国共内战遗留问题",
+        "三者性质完全相同"
+      ],
+      "answer": 0,
+      "hint": "香港澳门是殖民主义遗留，台湾因美国介入更复杂。",
+      "explanation": "教师指出：香港、澳门是历史上殖民主义侵略遗留问题，到期谈判即可；台湾是因国共两党围绕主权归属争斗、美国介入，由内政演变为中美关系问题。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 00:00 · 三块领土不同性质"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "毛泽东1960年提出的“一纲四目”中，“一纲”是指（　）。",
+      "options": [
+        "台湾必须统一于中国",
+        "台湾可以独立",
+        "划峡而治",
+        "一国两制正式写入宪法"
+      ],
+      "answer": 0,
+      "hint": "一纲四目是一国两制雏形。",
+      "explanation": "教师说：一纲是台湾必须统一中国、必须回来；四目涉及除外交权外军政大权可保留、费用中央拨付、社会改革从缓、不派特务等。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 00:00 · 一纲四目纲要"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "1985年，一国两制被正式确定为（　）。",
+      "options": [
+        "中国的一项基本国策",
+        "临时性外交策略",
+        "仅适用于香港的地方政策",
+        "仅适用于澳门的经济政策"
+      ],
+      "answer": 0,
+      "hint": "六届全国人大三次会议。",
+      "explanation": "教师说：1985年六届全国人大三次会议正式把一国两制确定为中国的一项基本国策；先在港澳成功实践，主要构想针对台湾。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 00:00 · 1985年基本国策"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "香港特别行政区享有的高度自治权包括（　）。",
+      "options": [
+        "立法权、行政权、司法权独立和财政独立",
+        "外交权和国防权",
+        "完全独立主权",
+        "不受中央人民政府管辖"
+      ],
+      "answer": 0,
+      "hint": "中央保留外交权、国防权、任命权。",
+      "explanation": "教师明确：香港高度自治包括立法、行政、司法独立和财政独立；中央人民政府保留外交权、国防权（驻军）和行政长官任命权；香港是直属于中央的地方行政区域。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 00:00 · 香港高度自治权"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "“九二共识”是指（　）。",
+      "options": [
+        "1992年海协会与海基会以口头方式表达的海峡两岸均坚持一个中国原则的共识",
+        "1992年两岸正式签署统一条约",
+        "1992年台湾宣布独立",
+        "1992年美国承认两个中国"
+      ],
+      "answer": 0,
+      "hint": "九二共识另一面就是一个中国原则。",
+      "explanation": "教师说：1992年10月海协会与海基会就如何表明坚持一个中国原则达成口头共识，即九二共识；十九大报告指出它明确界定两岸关系根本性质。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 09:34 · 九二共识含义"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "2005年全国人大通过的《反国家分裂法》在命名上的特殊之处是（　）。",
+      "options": [
+        "是全国人大所有法律中唯一没有加上“中国”二字的法律",
+        "是唯一没有公布施行的法律",
+        "是唯一由国务院制定的法律",
+        "是唯一适用于港澳的法律"
+      ],
+      "answer": 0,
+      "hint": "针对民进党“台湾不是中国一部分”的论调。",
+      "explanation": "教师强调：反国家分裂法是全国人大通过的所有法律中唯一没有加上“中国”二字的——针对民进党说“你中国是中国，我台湾是台湾”；反的是中国这个国家的分裂。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 11:08 · 反分裂法命名特殊"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "1995年江泽民提出的“江八条”中，前四条主要强调（　）。",
+      "options": [
+        "一个中国原则",
+        "两岸经贸合作",
+        "人文交流",
+        "政治互信"
+      ],
+      "answer": 0,
+      "hint": "95年李登辉上台、台独势力上扬背景。",
+      "explanation": "教师说：面对95—96年台海危机，江八条第一至四条都谈一个中国原则，第五条才谈两岸经济交流合作。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 06:44 · 江八条一个中国原则"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "胡锦涛2005年提出的对台“四个绝不”不包括（　）。",
+      "options": [
+        "放弃一个中国原则绝不动摇",
+        "争取和平统一的努力绝不放弃",
+        "贯彻寄希望于台湾人民的方针绝不改变",
+        "反对“台独”分裂活动绝不妥协"
+      ],
+      "answer": 0,
+      "hint": "是“坚持”一个中国原则绝不动摇。",
+      "explanation": "教师说四个绝不：坚持一个中国原则绝不动摇；争取和平统一绝不放弃；寄希望于台湾人民方针绝不改变；反对分裂活动绝不妥协。A把“坚持”偷换为“放弃”。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 07:20 · 胡四点四个绝不"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "2015年习近平提出的“习五点”中，经贸合作的位置（　）。",
+      "options": [
+        "从江八条第五点上升为第二点",
+        "被完全取消",
+        "仍放在最后一条",
+        "仅针对港澳"
+      ],
+      "answer": 0,
+      "hint": "深化两岸利益融合，共创互利共赢。",
+      "explanation": "教师指出：习五点第二点是深化两岸利益融合、共创互利共赢，经贸合作从20年前江八条的第五点上升到第二点，体现政策重心变化。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 08:11 · 习五点经贸合作位置上升"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "邓小平理论的历史地位不包括（　）。",
+      "options": [
+        "马克思主义中国化的第一个重大理论成果",
+        "中国特色社会主义理论体系的开篇之作",
+        "改革开放和社会主义现代化建设的科学指南",
+        "马克思列宁主义、毛泽东思想的继承和发展"
+      ],
+      "answer": 0,
+      "hint": "第一个重大理论成果是毛泽东思想。",
+      "explanation": "教师说邓小平理论历史地位三方面：马克思列宁主义毛泽东思想的继承和发展；中国特色社会主义理论体系开篇之作；改革开放和现代化建设科学指南。第一个重大理论成果是毛泽东思想。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 19:49 · 邓小平理论历史地位三方面"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "一国两制科学构想的内涵包括（　）。",
+      "options": [
+        "一个中国，两制并存",
+        "特别行政区高度自治",
+        "尽最大努力争取和平统一，但不承诺放弃使用武力",
+        "实现祖国完全统一寄希望于台湾人民",
+        "立即武力统一"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "两只手、两种方式都不能排除。",
+      "explanation": "教师归纳五个要点：一国两制；高度自治；和平统一但不承诺放弃武力；寄希望于台湾人民；先在港澳实践。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 00:00 · 一国两制五个内容"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "一国两制的重大意义包括（　）。",
+      "options": [
+        "创造性发展马克思主义国家结构学说",
+        "开辟以和平方式实现祖国统一的新路径",
+        "为解决国际争端和历史遗留问题提供新思路",
+        "完全照搬美国联邦制",
+        "仅具有经济意义而无政治意义"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "1982年撒切尔与阿根廷战争对比。",
+      "explanation": "教师说：一国两制创造性发展国家结构学说（兼有联邦制与单一制特征）；开辟和平统一新路径（港澳谈判）；为国际争端提供新思路（对比马尔维纳斯战争）。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 02:51 · 一国两制三大意义"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "90年代以来对台政策的四个核心维度包括（　）。",
+      "options": [
+        "一个中国是原则",
+        "经贸合作是基石",
+        "人文交流是重心",
+        "政治互信是关键",
+        "完全依赖美国调解"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "从江八条、胡四点到习五点。",
+      "explanation": "教师概括：一个中国原则是原则；经贸合作是基石（大陆是台湾第一大贸易伙伴）；人文交流是重心（31项惠台措施）；政治互信是关键（没有政治互信地动山摇）。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 09:01 · 对台政策四个维度"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "从“一纲四目”到“一国两制”的演变中，权力关系建构的变化包括（　）。",
+      "options": [
+        "一纲四目除外交权外国防权等也可归台湾自治",
+        "港澳实践表明外交权和国防权均归中央",
+        "台湾可保留军队是一纲四目和邓六条的内容",
+        "香港财政独立、不上交中央",
+        "台湾回归后完全脱离中央管辖"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "对台湾可保留军队，香港有驻军。",
+      "explanation": "教师对比：一纲四目除外交权外包括国防权都可自治；港澳实践中外交权、国防权（驻军）归中央；台湾可保留军队；香港财政独立不上交中央——是一脉相承又与时俱进。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 21:11 · 一纲四目到一国两制继承发展"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "加强党的建设（邓小平理论内容）包括（　）。",
+      "options": [
+        "重视马克思主义理论学习",
+        "加强党的组织建设",
+        "加强领导班子建设",
+        "加强党风建设",
+        "重视制度建设"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "hint": "关键在于坚持、加强和改善党的领导。",
+      "explanation": "教师列举五个方面：马克思主义理论学习、组织建设、领导班子建设、党风建设、制度建设。建设中国特色社会主义关键在于坚持、加强和改善党的领导。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 19:26 · 党的建设五个方面"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "习近平总书记针对香港问题明确指出（　）。",
+      "options": [
+        "香港特别行政区不是独立行政区，是直属于中央人民政府的地方行政区域",
+        "香港是独立政治实体",
+        "中央不应在香港驻军",
+        "香港可以自行决定外交事务"
+      ],
+      "answer": 0,
+      "hint": "既有联邦制特征又有单一制特征。",
+      "explanation": "教师引用习近平指示：香港不是独立行政区，是只限于中央人民政府的地方行政区——说明一国两制下中央与特区关系。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 04:27 · 习近平论香港不是独立行政区"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "1978年十一届三中全会公报后，对台工作用语从“解放”改为“统一大业”，并停止炮击金门，直接结果是（　）。",
+      "options": [
+        "1979年元旦《告台湾同胞书》提出争取祖国和平统一",
+        "1987年台湾开放居民赴大陆探亲，打破38年隔绝",
+        "立即实现两岸三通",
+        "国共第三次合作立即完成"
+      ],
+      "answer": 0,
+      "hint": "和平统一更合法、更符合人心。",
+      "explanation": "教师说：78年公报不再用“解放”，改用“台湾回到祖国怀抱、统一大业”；停止对金门定时定量炮击；79年元旦告台湾同胞书提出争取和平统一；87年开放探亲是后续效应。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 01:29:13 · 78年公报与告台湾同胞书"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "邓小平关于和平统一与使用武力的关系，下列正确的是（　）。",
+      "options": [
+        "两种方式都不能排除，力争用和平方式",
+        "不承诺放弃使用武力是对“台独”的警示",
+        "“两只手”比喻和平与军事手段",
+        "已承诺永远放弃使用武力",
+        "只要和平统一就不需任何武力准备"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "实在不行还得用左手。",
+      "explanation": "教师引用邓小平：两种方式都不能排除，力争用右手争取和平统一，实在不行还得用左手；不承诺放弃使用武力以警示和威胁“台独”势力。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 10:34 · 两只手两种方式"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师评价伟人功绩：毛泽东使中国人站起来，邓小平使中国人（　）。",
+      "options": [
+        "富起来了",
+        "醒过来并富起来",
+        "直接进入发达国家",
+        "完全西化"
+      ],
+      "answer": 1,
+      "hint": "醒过来了、富起来了。",
+      "explanation": "教师说：毛泽东是中国人站起来了；邓小平是中国人醒过来了；邓小平作为伟人的功绩是中国人富起来了——思想解放、经济发展。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 28:13 · 站起来醒过来富起来"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "叶剑英1981年九条方针（一国两制雏形）的内容包括（　）。",
+      "options": [
+        "统一后台湾作特别行政区，享有高度自治权",
+        "可保留军队",
+        "1982年五届人大五次会议宪法第31条设立特别行政区",
+        "1983年邓小平向杨力宇阐述邓六条",
+        "立即武力攻台"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "81年九条→82年宪法→83年邓六条→85年基本国策。",
+      "explanation": "教师梳理：81年9月叶剑英九条方针——台湾作特别行政区、高度自治、可保留军队；82年宪法第31条；83年邓六条；85年正式确定基本国策。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 01:29:51 · 九条方针到基本国策"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "简述“一国两制”科学构想的基本内涵。",
+      "answer": "①一个中国，两制并存：国家主权属于中华人民共和国，台湾/港澳可实行资本主义制度。②特别行政区高度自治：立法、行政、司法独立，财政独立（港澳实践），同时直属于中央人民政府。③统一方式：尽最大努力争取和平统一，不承诺放弃使用武力。④统一动力：实现祖国完全统一寄希望于台湾人民。⑤先在港澳成功实践，主要构想针对台湾。",
+      "hint": "五个要点+两只手。",
+      "explanation": "rec-11开篇系统概括一国两制五个内容。",
+      "scoring_criteria": [
+        "一个中国两制并存（3分）",
+        "高度自治与中央权力（3分）",
+        "和平统一与武力关系、寄希望于人民（4分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 00:00 · 一国两制五个内容"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "简述90年代以来对台方针政策从江八条、胡四点到习五点的发展。",
+      "answer": "江八条（1995）：李登辉上台、台独上扬背景下，前四条强调一个中国原则，第五条谈两岸经贸合作。胡四点（2005）：陈水扁谋求台独背景下提出四个绝不，同年通过《反分裂国家法》。习五点（2015）：第一点坚持九二共识，第二点深化两岸利益融合（经贸从第五点上升为第二点）。总体概括为：一个中国是原则，经贸合作是基石，人文交流是重心，政治互信是关键——是对邓小平一国两制正确路径的丰富发展。",
+      "hint": "四个维度概括。",
+      "explanation": "教师系统梳理江胡习对台政策演进。",
+      "scoring_criteria": [
+        "江八条背景与要点（3分）",
+        "胡四点与反分裂法（3分）",
+        "习五点与四维度总结（4分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 06:11 · 江八条胡四点习五点"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "label": "论述题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "论述“一国两制”对马克思主义国家结构学说的创造性发展。",
+      "answer": "马克思主义国家结构学说主要有联邦制（如美国、苏联加盟共和国）和单一制（中国大陆31省市自治区接受中央领导）。一国两制：兼有联邦制特征——特区立法、行政、司法、财政独立，类似分权；又有单一制特征——特区是直属于中央人民政府的地方行政区域，不是独立国家。中央保留外交权、国防权、任命权；习近平强调香港不是独立行政区。与一纲四目一脉相承又与时俱进（从仅外交权归中央到外交国防权均归中央）。基于国情和时代需求创新中央与地方权力关系，为和平统一提供路径，也为解决国际争端提供中国智慧。",
+      "hint": "联邦制+单一制双重特征。",
+      "explanation": "rec-11和rec-10均强调国家结构学说创新。",
+      "scoring_criteria": [
+        "联邦制与单一制传统（4分）",
+        "一国两制双重特征（5分）",
+        "与一纲四目关系及意义（6分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 02:51 · 创造性发展国家结构学说"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "label": "材料分析题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "阅读材料，回答问题。\n\n材料：“我们绝不允许任何人、任何组织、任何政党在任何时候，以任何形式把任何一块中国领土从中国分裂出去。”\n——党的十九大报告\n\n（1）这一表述针对什么威胁？（5分）\n（2）我国以国家大法形式宣示维护统一意志的法律是什么？有何特殊命名？（5分）\n（3）实现祖国统一与中华民族伟大复兴有何关系？（5分）",
+      "answer": "（1）针对“台独”分裂势力及外部势力干涉中国内政、把台湾等领土从中国分裂出去的图谋；背景包括李登辉、陈水扁等谋求台独，美国售台武器、维持两岸现状等。（2）《反国家分裂法》（2005年全国人大通过）；是全国人大所有法律中唯一没有加上“中国”二字的法律——针对民进党否认台湾属于中国的论调，以国家大法形式宣示维护统一、领土完整的坚强意志。（3）实现祖国完全统一是中华民族伟大复兴的重要一环；台湾问题因民族感情和根本国家利益必须誓死捍卫；只有实现统一才能维护主权领土完整，凝聚民族力量推进强国建设。",
+      "hint": "联系九二共识、四个绝不、反分裂法。",
+      "explanation": "教师引用十九大“六个任何”及反分裂法特殊命名。",
+      "scoring_criteria": [
+        "（1）台独威胁背景（5分）",
+        "（2）反分裂法及命名（5分）",
+        "（3）与民族复兴关系（5分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 01:23:41 · 六个任何与统一意志"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 10,
+      "multiple_choice": 5,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

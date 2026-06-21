@@ -1,0 +1,602 @@
+{
+  "subjectId": "maogai",
+  "chapterId": "rec-10",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "邓小平1992年南方谈话指出：“计划多一点还是市场多一点，不是社会主义与资本主义的本质区别。”其核心结论是（　）。",
+      "options": [
+        "计划和市场都是经济手段",
+        "计划经济等于社会主义",
+        "市场经济等于资本主义",
+        "社会主义不能搞市场经济"
+      ],
+      "answer": 0,
+      "hint": "最核心的一句话就是市场、计划都是经济手段。",
+      "explanation": "教师强调南方谈话最核心：计划多一点还是市场多一点不是社资本质区别；计划经济不等于社会主义，资本主义也有计划；市场经济不等于资本主义，社会主义也有市场；计划和市场都是经济手段。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 04:13 · 南方谈话计划与市场"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "邓小平对社会主义本质的完整概括是（　）。",
+      "options": [
+        "解放生产力，发展生产力，消灭剥削，消除两极分化，最终达到共同富裕",
+        "公有制为主体，按劳分配，计划经济",
+        "四个现代化，三步走，一国两制",
+        "解放思想，实事求是，与时俱进"
+      ],
+      "answer": 0,
+      "hint": "1992年南方谈话完整表述。",
+      "explanation": "教师完整引用：社会主义本质是解放生产力、发展生产力，消灭剥削，消除两极分化，最终达到共同富裕——从生产力和生产关系两个层面把握基于中国国情的社会主义最本质内容。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 06:48 · 社会主义本质完整表述"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "邓小平理论的精髓是（　）。",
+      "options": [
+        "解放思想，实事求是",
+        "与时俱进，开拓创新",
+        "群众路线，实事求是",
+        "独立自主，自力更生"
+      ],
+      "answer": 0,
+      "hint": "在实事求是思想路线中又加了一条——解放思想。",
+      "explanation": "教师指出：解放思想、实事求是是邓小平理论的精髓，也是党的思想路线；1978年重新确立实事求是，并增加解放思想。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 23:58 · 邓小平理论精髓"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "判断各方面工作是非得失的根本标准是“三个有利于”，其内容不包括（　）。",
+      "options": [
+        "是否有利于扩大个人私有财产",
+        "是否有利于发展社会主义社会的生产力",
+        "是否有利于增强社会主义国家的综合国力",
+        "是否有利于提高人民的生活水平"
+      ],
+      "answer": 0,
+      "hint": "三个有利于针对姓社姓资争论。",
+      "explanation": "教师明确三个有利于：是否有利于促进生产力发展、增强综合国力、提高人民物质文化（生活）水平。A不在其中。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 22:03 · 三个有利于标准"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "1987年党的十三大报告对中国国情的判断是（　）。",
+      "options": [
+        "中国处于并将长期处于社会主义初级阶段",
+        "中国已进入发达社会主义阶段",
+        "中国仍是新民主主义社会",
+        "中国可以直接跳过初级阶段"
+      ],
+      "answer": 0,
+      "hint": "两个层面：性质是社会主义，程度是初级阶段。",
+      "explanation": "教师说：1987年十三大明确中国处于社会主义初级阶段——从性质讲已是社会主义，从程度讲是不发达阶段；后将长期处于社会主义初级阶段。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 31:20 · 社会主义初级阶段判断"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "党在社会主义初级阶段基本路线的核心内容是（　）。",
+      "options": [
+        "一个中心，两个基本点",
+        "三位一体，四个全面",
+        "五位一体，四个全面",
+        "两个凡是，两个坚持"
+      ],
+      "answer": 0,
+      "hint": "以经济建设为中心，坚持四项基本原则，坚持改革开放。",
+      "explanation": "教师指出基本路径是“一个中心，两个基本点”——以经济建设为中心，坚持四项基本原则，坚持改革开放；不能忽视两个基本点中任何一个。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 33:02 · 基本路线一个中心两个基本点"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "邓小平提出“科学技术是（　）”。",
+      "options": [
+        "第一生产力",
+        "唯一生产力",
+        "次要生产力",
+        "上层建筑"
+      ],
+      "answer": 0,
+      "hint": "80年代一批学工科出身的领导人走上岗位与此相关。",
+      "explanation": "教师说：邓小平在80年代提出科学技术是第一生产力，这一认识带来掌握科技的科技人员走向政治舞台。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 34:22 · 科学技术是第一生产力"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "“三步走”发展战略第一步（1981—1990年）的目标是（　）。",
+      "options": [
+        "国民生产总值比1980年翻一番，解决温饱",
+        "达到小康水平",
+        "达到中等发达国家水平",
+        "全面建成小康社会"
+      ],
+      "answer": 0,
+      "hint": "90年左右全国才解决温饱。",
+      "explanation": "教师说：第一步1981—1990年GNP比1980年翻一番，解决温饱；第二步到2000年再翻一番达小康；第三步21世纪50年再翻两番达中等发达国家水平。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 35:41 · 三步走战略第一步"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "邓小平说改革是“第二次革命”，主要是指（　）。",
+      "options": [
+        "改革引起的社会变革广度和深度是一场革命，但用和平方式进行",
+        "改革意味着社会制度根本变革和流血牺牲",
+        "改革仅指农村家庭联产承包",
+        "改革就是照搬苏联模式"
+      ],
+      "answer": 0,
+      "hint": "没有成千上万流血牺牲，但广度和深度是革命。",
+      "explanation": "教师解释：改革是社会主义建设的革命，虽无大规模流血，但引起社会变革的广度和深度无疑是一场革命，用和平方式进行。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 40:20 · 改革是第二次革命"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "社会主义市场经济理论强调，社会主义市场经济的特色所在、优势所在是（　）。",
+      "options": [
+        "坚持社会主义制度与市场经济的结合",
+        "完全照搬资本主义市场经济",
+        "取消公有制主体地位",
+        "以计划代替市场"
+      ],
+      "answer": 0,
+      "hint": "三点：计划市场不是制度标志；都是手段；与公有制结合。",
+      "explanation": "教师说社会主义市场经济三点：①计划市场不是划分社资标志；②都是经济手段；③坚持社会主义制度与市场经济的结合是特色所在、优势所在——公有制下运用市场促进生产力，成果用于共同富裕。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 41:17 · 社会主义市场经济特色"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "80年代改革中引发“姓社姓资”争论的四大领域包括（　）。",
+      "options": [
+        "家庭联产承包责任制",
+        "特区建设",
+        "商品经济",
+        "市场经济",
+        "恢复高考"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "争论最激烈的是市场经济姓社姓资。",
+      "explanation": "教师明确：四大领域改革都引起姓社姓资争论——家庭联产承包、特区、商品经济、市场经济，其中市场经济争论最激烈。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 05:22 · 四大领域姓社姓资争论"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "邓小平在改革中始终坚持的两条根本原则是包括（　）。",
+      "options": [
+        "以社会主义公有制为主体",
+        "共同富裕",
+        "允许两极分化扩大",
+        "放弃四项基本原则",
+        "全面私有化"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "hint": "教师说“记住啊”。",
+      "explanation": "教师强调：改革中始终坚持两条根本原则——一是社会主义公有制为主体，一是共同富裕；允许私营经济发展但国家整体保持公有制主体地位。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 20:49 · 两条根本原则记住"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "解放思想、实事求是的实践价值包括（　）。",
+      "options": [
+        "有力推动拨乱反正，破除两个凡是",
+        "破除僵化社会主义模式，确认社会主义市场经济目标",
+        "找到社会主义初级阶段国情，走中国自己的路",
+        "可以背离马克思主义胡思乱想",
+        "取消四项基本原则"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "拨乱反正持续到1981年决议。",
+      "explanation": "教师归纳实践价值：推动拨乱反正；破除僵化模式、确认市场经济；找到初级阶段国情；坚持三个有利于。解放思想必须以马克思主义为指导，坚持四项基本原则，不能胡思乱想。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 25:10 · 解放思想实事求是实践价值"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "“两手抓，两手都要硬”包括（　）。",
+      "options": [
+        "一手抓物质文明，一手抓精神文明",
+        "一手抓建设，一手抓法治",
+        "一手抓改革开放，一手抓惩治腐败",
+        "一手抓计划，一手抓取消市场",
+        "只抓经济不抓其他"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "反对资产阶级自由化。",
+      "explanation": "教师列举：一手抓物质文明一手抓精神文明（反对资产阶级自由化）；一手抓建设一手抓法治；一手抓改革开放一手抓惩治腐败。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 42:38 · 两手抓两手都要硬"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "points": 2,
+      "stem": "1992年南方谈话的直接成果包括（　）。",
+      "options": [
+        "全党全国学习南方讲话",
+        "1992年10月十四大提出建立社会主义市场经济体制目标",
+        "从1979年首批计划与市场关系讨论到1992年才给出定义",
+        "立即放弃公有制",
+        "停止对外开放"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "一边走一边讲，往市场改还要搞快一点。",
+      "explanation": "教师说：南方之行一边走一边讲；学习结果使1992年10月十四大正式提出建立社会主义市场经济体制；从79年到92年才将计划与市场关系给出定义。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 04:56 · 南方谈话成果与十四大"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "邓小平理论首要的基本理论问题是（　）。",
+      "options": [
+        "什么是社会主义、怎样建设社会主义",
+        "什么是马克思主义、怎样对待马克思主义",
+        "建设什么样的党、怎样建设党",
+        "实现什么样的发展、怎样发展"
+      ],
+      "answer": 0,
+      "hint": "教师说“这是我给大家重点讲的”。",
+      "explanation": "教师明确：邓小平理论首要的基本理论问题是什么是社会主义、怎样建设社会主义；社会主义本质论是回答这一问题的核心。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 23:25 · 首要基本理论问题重点讲"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "针对80年代姓社姓资争论，邓小平提出不要在意识形态上头脑发热，应（　）。",
+      "options": [
+        "抓住机遇发展自己，把注意力集中在办好自己的事情上",
+        "停止一切改革退回计划经济",
+        "全面照搬西方资本主义制度",
+        "关闭国门抵制一切外资"
+      ],
+      "answer": 0,
+      "hint": "办好自己的事就是发展生产力。",
+      "explanation": "教师引用邓小平：不要在意识形态头脑中发热，要坚决把注意力集中在办好自己事情上——发展生产力，对传统束缚生产力的计划经济体制进行改革。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 05:49 · 不要意识形态头脑发热"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "从生产力和生产关系两个层面理解社会主义本质，正确的是（　）。",
+      "options": [
+        "生产力层面：解放生产力、发展生产力",
+        "生产关系层面：消灭剥削、消除两极分化、共同富裕",
+        "强调解放生产力是回到马克思主义本源",
+        "只要提高公有化程度就能自然推动生产力",
+        "允许私营经济但须坚持公有制主体地位"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "hint": "过去只讲发展生产力，不讲解放生产力不完全。",
+      "explanation": "教师从两个层面分析：生产力上解放和发展生产力（过去只讲发展不讲解放不完全）；生产关系上通过公有制主体消灭剥削、消除两极分化、实现共同富裕；单纯提高公有化程度六七十年代后反而束缚生产力。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 09:24 · 两个层面把握社会主义本质"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "解放思想和实事求是的关系，教师概括为（　）。",
+      "options": [
+        "一个硬币的两面，解放思想就是使思想与实际相符合",
+        "二者完全对立、不可统一",
+        "解放思想就是脱离马克思主义",
+        "只要解放思想就不需要实事求是"
+      ],
+      "answer": 0,
+      "hint": "一面解放思想，另一面实事求是。",
+      "explanation": "教师说：解放思想和实事求是是一个硬币的两面；解放思想就是使思想和实际、主观和客观相符合，就是实事求是；但解放思想必须以马克思主义为指导，坚持四项基本原则。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 27:17 · 解放思想与实事求是辩证关系"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "1946年毛泽东与西方记者谈香港问题时的基本方针包括（　）。",
+      "options": [
+        "暂不急于提出立即归还香港",
+        "将来收回也按协商办法解决",
+        "可利用香港地位发展海外关系和贸易",
+        "1949年10月解放军兵临深圳界河后停止前进",
+        "1949年立即武力收回香港"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "长期打算，充分利用。",
+      "explanation": "教师说：1946年毛泽东对西方记者说暂不急于归还，将来按协商解决；1949年与米高扬会谈认为可利用香港发展海外关系；1949年10月解放广州后兵临深圳界河停止，获英国好感，1950年英国承认新中国（半建交）。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 01:02:55 · 毛泽东时期香港政策"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "简述邓小平关于社会主义本质的概括及其实践意义。",
+      "answer": "概括：解放生产力，发展生产力，消灭剥削，消除两极分化，最终达到共同富裕——从生产力和生产关系两个层面把握基于中国国情的社会主义最本质内容。实践意义：①反映人民利益和时代需求，回应日益增长的物质文化需要；②破除两个凡是和僵化模式，以三个有利于判断得失；③摆脱把苏联式计划经济等同于社会主义本质的错误，为建立社会主义市场经济提供理论依据；④明确改革中坚持公有制为主体和共同富裕两条根本原则。",
+      "hint": "完整表述+三个实践意义维度。",
+      "explanation": "教师重点讲授社会主义本质论，是回答“什么是社会主义、怎样建设社会主义”的核心。",
+      "scoring_criteria": [
+        "准确写出完整表述（4分）",
+        "阐明两个层面（3分）",
+        "实践意义（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 21:16 · 社会主义本质实践意义"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "简述社会主义初级阶段基本路线的主要内容。",
+      "answer": "内容：领导和团结全国各族人民，以经济建设为中心，坚持四项基本原则，坚持改革开放，自力更生，艰苦奋斗，为把我国建设成为富强、民主、文明的社会主义现代化国家而奋斗。要点：奋斗目标——富强民主文明的社会主义现代化国家；基本路径——一个中心两个基本点；领导力量——中国共产党；依靠力量——全国各族人民；根本立足点——自力更生、艰苦奋斗；根本任务——发展生产力。",
+      "hint": "159页第三段内容。",
+      "explanation": "教师系统讲解基本路线各要素，强调两个基本点不可偏废。",
+      "scoring_criteria": [
+        "完整表述基本路线（4分）",
+        "一个中心两个基本点（3分）",
+        "领导力量、依靠力量、立足点（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 33:02 · 社会主义初级阶段基本路线"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "label": "论述题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "论述1992年邓小平南方谈话的背景、核心内容和历史意义。",
+      "answer": "背景：80年代四大领域改革引发姓社姓资争论；87年后物价上涨、通货膨胀；80年代中叶后政治体制改革；89年自由化运动被终止后西方制裁；91年12月苏联解体，向市场经济改革声音占上风。核心：一边走一边讲，最核心是计划和市场都是经济手段，社会主义也可以搞市场；社会主义本质是解放发展生产力、共同富裕；要搞快一点。意义：全党学习南方讲话；1992年十四大确立建立社会主义市场经济体制目标；从1979年到1992年终于给计划与市场关系明确定义；有力推动改革开放和现代化建设新高度。",
+      "hint": "结合苏联解体和姓社姓资争论。",
+      "explanation": "教师用较长篇幅还原80—92年改革争论与南方谈话历程。",
+      "scoring_criteria": [
+        "背景（4分）",
+        "核心内容（6分）",
+        "历史意义（5分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 03:46 · 南方谈话背景与意义"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-10",
+      "label": "材料分析题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "阅读材料，回答问题。\n\n材料：“计划多一点还是市场多一点，不是社会主义与资本主义的本质区别。计划经济不等于社会主义，资本主义也有计划；市场经济不等于资本主义，社会主义也有市场。计划和市场都是经济手段。”\n——邓小平1992年南方谈话\n\n（1）这一论断针对当时什么争论？（5分）\n（2）为什么说计划和市场都是“经济手段”？（5分）\n（3）这一论断对建立社会主义市场经济体制有何意义？（5分）",
+      "answer": "（1）针对80年代家庭联产承包、特区、商品经济、尤其是市场经济姓社还是姓资的争论；89年后西方制裁和国内对改革方向的疑虑；91年苏联解体后对中国走什么路的担忧。（2）计划和市场是资源配置方式，不决定社会制度性质；资本主义可用计划，社会主义也可用市场；把计划经济等同于社会主义、市场经济等同于资本主义是僵化观念。（3）破除了把苏联式计划经济当作社会主义本质的错误，为1992年十四大提出建立社会主义市场经济体制提供理论依据，使改革从姓社姓资争论中解放出来，以三个有利于和生产力发展作为判断标准。",
+      "hint": "联系四大领域争论和十四大目标。",
+      "explanation": "这是南方谈话最核心论断，教师反复强调。",
+      "scoring_criteria": [
+        "（1）姓社姓资争论背景（5分）",
+        "（2）经济手段含义（5分）",
+        "（3）对市场经济体制意义（5分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-10.md",
+        "label": "rec-10 · 说话人1 04:13 · 南方谈话核心论断材料"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 10,
+      "multiple_choice": 5,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

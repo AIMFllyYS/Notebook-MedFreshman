@@ -1,0 +1,596 @@
+{
+  "subjectId": "maogai",
+  "chapterId": "rec-01",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "老师将本课程概括为\"一二三四\"，其中\"一条主线\"是指（　）。",
+      "answer": 1,
+      "hint": "想想把两大理论\"连接在一起\"的纽带。",
+      "explanation": "老师指出：把毛泽东思想和中国特色社会主义理论体系连接在一起的纽带是\"马克思主义中国化、时代化\"，课程讲\"一条主线、两大理论、三个阶段、四个自信\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 07:18 · 一二三四课程框架"
+      },
+      "options": [
+        "毛泽东思想",
+        "马克思主义中国化时代化",
+        "社会主义革命、建设与改革",
+        "道路自信、理论自信、制度自信、文化自信"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "在五门思想政治理论课中，老师将\"毛泽东思想和中国特色社会主义理论体系概论\"定位为（　）。",
+      "answer": 2,
+      "hint": "与思修相对。",
+      "explanation": "老师强调：思想道德与法治偏重\"修身\"，毛概是\"治国课\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 12:27 · 修身课与治国课"
+      },
+      "options": [
+        "修身课",
+        "历史课",
+        "治国课",
+        "原理课"
+      ]
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "2016年12月全国高校思想政治工作会议上，习近平总书记提出\"四个正确认识\"。老师指出这次会议是（　）。",
+      "answer": 1,
+      "hint": "注意\"首次\"的时间限定。",
+      "explanation": "老师原话：\"这是新中国成立以来召开的首次高校思想政治工作会议。\"",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 08:29 · 首次全国高校思政工作会议"
+      },
+      "options": [
+        "改革开放后首次全国高校思想政治工作会议",
+        "新中国成立以来首次全国高校思想政治工作会议",
+        "党的二十大后首次全国高校思想政治工作会议",
+        "新时代首次全国高校思想政治工作会议"
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "1978年邓小平乘坐日本新干线后，用一个字概括感受。这个字是（　）。",
+      "answer": 2,
+      "hint": "邓小平访日原话。",
+      "explanation": "老师讲述：邓小平说\"一个字，快\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 28:33 · 新干线快"
+      },
+      "options": [
+        "远",
+        "高",
+        "快",
+        "稳"
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于\"中国式现代化\"的提出，下列说法与课堂内容一致的是（　）。",
+      "answer": 0,
+      "hint": "区分正式提出与早有酝酿。",
+      "explanation": "2022年二十大正式提出，1979年12月邓小平会见大平正芳时已提出\"中国式的四个现代化\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 27:17 · 中国式现代化提出时间"
+      },
+      "options": [
+        "2022年党的二十大正式提出，1979年邓小平已提出\"中国式的现代化\"",
+        "1978年十一届三中全会首次写入党纲",
+        "2012年党的十八大首次系统阐述",
+        "仅在2022年党的二十大才首次出现相关表述"
+      ]
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "老师以2021年建党100周年为例说明共同富裕现代化，下列数据来自课堂的是（　）。",
+      "answer": 3,
+      "hint": "回忆脱贫与社保数字。",
+      "explanation": "近1亿农村贫困人口全部脱贫，医保覆盖13亿人，养老近10亿人。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 33:56 · 全面建成小康社会指标"
+      },
+      "options": [
+        "农村贫困人口全部脱贫约5000万人",
+        "中等收入群体超过2亿人",
+        "基本医疗保险覆盖8亿人",
+        "近1亿农村贫困人口全部脱贫，医保覆盖13亿人"
+      ]
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "习近平总书记2021年谈到国际局势时，老师引用的表述是（　）。",
+      "answer": 1,
+      "hint": "联系俄乌战争等讨论。",
+      "explanation": "2021年改为\"新百年未有大变局，会同新冠肺炎疫情，世界进入了新的动荡变革期\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 20:43 · 新的动荡变革期"
+      },
+      "options": [
+        "世界进入永久和平发展期",
+        "世界进入新的动荡变革期",
+        "冷战格局全面重建",
+        "单极世界格局最终确立"
+      ]
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "马克思主义关于人类解放学说中，马克思主义主要解决的是第几个阶段的解放任务？",
+      "answer": 2,
+      "hint": "马克思主义主要解决哪个阶段。",
+      "explanation": "第三个阶段\"从资本的束缚中解放\"，第四个\"自由人的联合体\"留给后人想象。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 24:10 · 人类解放第三阶段"
+      },
+      "options": [
+        "从自然界束缚中解放",
+        "从人的束缚中解放",
+        "从资本的束缚中解放",
+        "从自身束缚中解放"
+      ]
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "老师分析资本主义制度的经济与政治核心分别是（　）。",
+      "answer": 0,
+      "hint": "两个关键词概括资本主义。",
+      "explanation": "资本主义制度\"一个是市场，另一个的话是民主\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 28:03 · 市场与民主"
+      },
+      "options": [
+        "市场与民主",
+        "计划与专制",
+        "福利与选举",
+        "工业与殖民"
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "老师以1992年为例说明中国财富增长，与之直接相关的事件是（　）。",
+      "answer": 1,
+      "hint": "92派与哪次改革相关。",
+      "explanation": "1992年十四大确立社会主义市场经济体制，\"92派\"下海，GDP飙升至2010年世界第二。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 29:42 · 1992年市场经济"
+      },
+      "options": [
+        "1978年家庭联产承包责任制全国推开",
+        "1992年党的十四大确立社会主义市场经济体制",
+        "2001年加入世界贸易组织",
+        "2010年成为世界第一大经济体"
+      ]
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "党的十七大报告对中国特色社会主义理论体系的表述，课堂中包括的内容有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "注意习思想\"单独出去了\"。",
+      "explanation": "包括邓小平理论、三个代表重要思想、科学发展观；习思想已单独成体系。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 05:22 · 十七大理论体系"
+      },
+      "options": [
+        "邓小平理论",
+        "三个代表重要思想",
+        "科学发展观",
+        "习近平新时代中国特色社会主义思想（单独成体系）"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "习近平总书记提出的\"四个正确认识\"及其强调重点，课堂表述正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "四个认识各强调什么。",
+      "explanation": "分别强调道路、中国之特、中国梦激扬青春梦、实现理想的方式。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 08:29 · 四个正确认识"
+      },
+      "options": [
+        "正确认识世界和中国发展大势——突出中国特色社会主义道路",
+        "正确认识中国特色和国际比较——强调中国之特",
+        "正确认识时代责任和历史使命——用中国梦激扬青春梦",
+        "正确认识远大抱负和脚踏实地——强调实现个人理想的方式"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "老师阐述中国式现代化五大特色时，下列配对正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "hint": "每特色配一个课堂例子。",
+      "explanation": "分别用脱贫、吃饱肚子、春晚、喻家湖、和平合作等实例说明五大特色。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 33:56 · 五大特色"
+      },
+      "options": [
+        "人口规模最大的现代化——近1亿农村贫困人口脱贫",
+        "全体人民共同富裕的现代化——从吃饱肚子到小康",
+        "物质文明和精神文明相协调——以2026年春晚为例",
+        "人与自然和谐共生——湖西河（福新河）从臭水沟到校园景观",
+        "走和平发展道路——全方位合作而非殖民掠夺"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "老师梳理人类走向自由的四个阶段，下列对应正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "第四阶段不是福利国家。",
+      "explanation": "四阶段：自然界、人的束缚、资本束缚、自由人联合体。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 22:13 · 人类解放四阶段"
+      },
+      "options": [
+        "第一阶段：从自然界束缚中解放",
+        "第二阶段：从人的束缚中解放——资产阶级革命",
+        "第三阶段：从资本的束缚中解放——建立社会主义",
+        "第四阶段：从阶级压迫中解放——建立福利国家"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于五门思政课的逻辑关系，课堂表述正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "修身与治国对比。",
+      "explanation": "思修修身、毛概治国、史纲回答自觉选择马克思主义、毛概回到历史。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 11:56 · 五门思政课逻辑"
+      },
+      "options": [
+        "思想道德与法治偏重\"修身\"",
+        "毛概是\"治国课\"",
+        "中国近现代史纲要回答中国人为何自觉选择马克思主义",
+        "本课程立足于今天回到历史，了解革命建设改革的历史进程"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 4,
+      "stem": "老师梳理导论四个问题时指出，其中\"重点讲的\"是哪两个？",
+      "answer": 0,
+      "hint": "重点讲与略讲区分。",
+      "explanation": "\"重点讲的第一个和第二个，第三个和第四个略讲提一下。\"",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 17:51 · 导论四问题重点"
+      },
+      "label": "考试重点",
+      "options": [
+        "第一个（提出）和第二个（内涵）",
+        "第三个（历史进程）和第四个（理论成果关系）",
+        "第一个和第四个",
+        "第二个和第三个"
+      ]
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 4,
+      "stem": "开设本课程目的，老师强调四个层次依次是（　）。",
+      "answer": 1,
+      "hint": "注意递进顺序。",
+      "explanation": "\"了解、理解、把握、能力提升\"层层递进。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 16:34 · 了解理解把握提升"
+      },
+      "label": "考试重点",
+      "options": [
+        "理解→了解→把握→提升",
+        "了解→理解→把握→能力提升",
+        "把握→理解→了解→应用",
+        "了解→把握→理解→提升"
+      ]
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 4,
+      "stem": "关于本学期平时成绩，老师说明考勤占（　）分。",
+      "answer": 1,
+      "hint": "平时50分中考勤占多少。",
+      "explanation": "\"缺勤分的考勤分是20分\"，一次扣4分。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:11:08 · 考勤20分"
+      },
+      "label": "考试重点",
+      "options": [
+        "10分",
+        "20分",
+        "30分",
+        "40分"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 4,
+      "stem": "老师谈到去年期末考试题型变化，目的是（　）。",
+      "answer": 2,
+      "hint": "老师直接说了目的。",
+      "explanation": "\"增加单选题降低多选题的目的是什么？就是提分\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:13:56 · 题型变化提分"
+      },
+      "label": "考试重点",
+      "options": [
+        "增加考试难度以筛选学生",
+        "减少机改题数量",
+        "提分——单选题相对好拿分",
+        "与史纲合并后的统一要求"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 4,
+      "stem": "老师引用教材对马克思主义中国化时代化内涵的界定，构成要素包括（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "两个结合是核心。",
+      "explanation": "两个结合+科学回答时代课题形成创新理论成果。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 06:47 · 内涵界定"
+      },
+      "label": "考试重点",
+      "options": [
+        "把马克思主义基本原理同中国具体实际相结合",
+        "把马克思主义基本原理同中国优秀传统文化相结合",
+        "科学回答时代课题，形成创新理论成果",
+        "完全照搬苏联社会主义建设模式"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 10,
+      "stem": "简述2016年全国高校思想政治工作会议上提出的\"四个正确认识\"的主要内容。",
+      "answer": "一、正确认识世界和中国发展大势——认识中国特色社会主义道路。\n二、正确认识中国特色和国际比较——全面客观认识当代中国，强调中国之特。\n三、正确认识时代责任和历史使命——用中国梦激扬青春梦，融入国家和民族事业。\n四、正确认识远大抱负和脚踏实地——将远大抱负落实到实际行动中。",
+      "hint": "按四个认识顺序作答。",
+      "explanation": "老师逐一解读四个正确认识。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 08:29 · 四个正确认识"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "正确列出四个正确认识（4分）",
+        "各指出强调重点（4分）",
+        "条理清楚（2分）"
+      ]
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 10,
+      "stem": "简述老师概括的本课程\"一二三四\"总体框架。",
+      "answer": "一条主线：马克思主义中国化时代化。\n两大理论：毛泽东思想与中国特色社会主义理论体系。\n三个阶段：社会主义在中国的建立、建设、改革。\n四个自信：道路、理论、制度、文化自信。",
+      "hint": "按一二三四逐项说明。",
+      "explanation": "老师：\"关于一条主线、两大理论、三个阶段、四个自信的思想政治课\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 07:18 · 一二三四"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "一条主线（3分）",
+        "两大理论（2分）",
+        "三个阶段（2分）",
+        "四个自信（2分）",
+        "条理清楚（1分）"
+      ]
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 15,
+      "stem": "论述老师所讲的\"中国式现代化\"五大特色，并结合课堂实例说明至少三个特色。",
+      "answer": "人口规模巨大（近1亿脱贫、医保13亿）；共同富裕（先吃饱饭）；两个文明协调（春晚）；人与自然（喻家湖）；和平发展（合作非掠夺）。答题至少展开三个并举例。",
+      "hint": "五特色各配课堂例子。",
+      "explanation": "中国式现代化是课程主线，五大特色贯穿全课。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 27:17 · 中国式现代化主线"
+      },
+      "label": "论述题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "列出五大特色（5分）",
+        "至少三特色结合实例（6分）",
+        "史论结合条理清楚（4分）"
+      ]
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 15,
+      "stem": "阅读材料，回答问题。\n\n> 材料：1978年邓小平参观日本全自动化汽车生产车间后说\"我知道什么是现代化了\"；乘坐新干线评价\"快\"。1979年访美参观福特公司，生产线一小时装配50辆汽车。1979年12月会见大平正芳提出\"中国式的四个现代化\"。\n\n（1）材料反映了邓小平怎样的认识过程？（5分）\n（2）\"中国式现代化\"三层核心含义是什么？（6分）\n（3）与本课程主线有何联系？（4分）",
+      "answer": "（1）通过1978-1979出访对比认识中国与发达国家差距。\n（2）先小康、可借鉴西方技术与经验、必须走中国自己的路。\n（3）中国式现代化是课程主线，是马克思主义中国化时代化的生动实践。",
+      "hint": "认识过程→三层含义→课程主线。",
+      "explanation": "材料来自邓小平出访系列讲述。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 28:09 · 邓小平出访"
+      },
+      "label": "材料分析题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "认识过程（5分）",
+        "三层含义（6分）",
+        "联系主线（4分）"
+      ]
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

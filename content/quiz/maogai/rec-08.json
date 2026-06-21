@@ -1,0 +1,568 @@
+{
+  "subjectId": "maogai",
+  "chapterId": "rec-08",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "对资本主义工商业社会主义改造中，\"四马分肥\"的分配比例正确的是（　）。",
+      "options": [
+        "资本家20.5%，国家税收34.5%，职工福利15%，企业公积金30%",
+        "资本家50%，国家25%，职工15%，公积金10%",
+        "资本家34.5%，国家20.5%，职工30%，公积金15%",
+        "全部归国家所有，资本家不得分红"
+      ],
+      "answer": 0,
+      "hint": "毛泽东说20.5%不够，25%更好",
+      "explanation": "A正确。老师指出：\"资本家拿红利20.5%，国家税收34.5%，职工福利15%，企业公积金30%\"，毛泽东1953年9月提出给资本家25%上下更好。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 11:03 · 四马分肥比例"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "资本主义工商业改造中，真正实行和平赎买的是（　）。",
+      "options": [
+        "苏联布尔什维克党",
+        "列宁新经济政策时期的俄国",
+        "中国共产党",
+        "国民党政府"
+      ],
+      "answer": 2,
+      "hint": "苏俄实践中仍采取强制没收",
+      "explanation": "C正确。老师指出：马克思恩格斯曾设想赎买，列宁在新经济政策时期设想国家资本主义方式，\"但从苏俄的时间来看……还是采取强制力强制没收\"，\"真正对资本主义工商业进行和平赎买的社会主义改造是中国共产党实施的\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 03:55 · 中国共产党和平赎买"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "1956年底，农业社会主义改造基本完成的主要标志是（　）。",
+      "options": [
+        "土地改革完成",
+        "加入高级社农户占全国农户87.8%",
+        "家庭联产承包责任制推行",
+        "全部农民加入人民公社"
+      ],
+      "answer": 1,
+      "hint": "1.17亿户加入合作社",
+      "explanation": "B正确。老师指出：1956年底加入农业生产合作社农户达1.17亿户，\"其中加入高级社的农户占到87.8%，农业社会主义改造基本完成\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 00:38 · 1956年农业改造基本完成"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "手工业社会主义改造的三个阶段依次是（　）。",
+      "options": [
+        "生产合作社→供销合作社→供销小组",
+        "供销小组→供销合作社→生产合作社",
+        "互助组→初级社→高级社",
+        "初级国家资本主义→个别企业公私合营→全行业公私合营"
+      ],
+      "answer": 1,
+      "hint": "与农业三阶段不同",
+      "explanation": "B正确。老师指出手工业改造：\"先是办手工业供销小组，接着办手工业供销合作社，最后办手工业生产合作社\"，1956年底合作化产值达92.9%。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 01:23 · 手工业改造三阶段"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "资本主义工商业改造第三阶段，资本家所得方式是（　）。",
+      "options": [
+        "四马分肥",
+        "定股定息",
+        "平均分配",
+        "无偿充公"
+      ],
+      "answer": 1,
+      "hint": "全行业公私合营后不再四马分肥",
+      "explanation": "B正确。老师指出：第一、二阶段四马分肥；第三阶段全行业公私合营后，\"不再按照四马分配了，企业家拿什么？根据你在这个企业中所占的股份拿定息\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 12:47 · 第三阶段定股定息"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "1956年社会主义改造完成后，荣毅仁的身份变化体现了（　）。",
+      "options": [
+        "资本家被肉体消灭",
+        "对资本主义工商业者\"量才使用、适当照顾\"改造为自食其力劳动者",
+        "全部资本家 exile 出国",
+        "资本家继续独占企业"
+      ],
+      "answer": 1,
+      "hint": "1956年后任上海市副市长",
+      "explanation": "B正确。老师以荣毅仁为例：1956年改造完成后任上海市副市长、纺织工业部副部长，后任中信董事长、国家副主席，体现\"量才使用适当照顾\"\"改造为自食其力的社会主义劳动者\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 15:32 · 荣毅仁改造为劳动者"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "1956年7月国产第一辆解放牌汽车诞生于（　）。",
+      "options": [
+        "武汉钢铁公司",
+        "长春第一汽车制造厂",
+        "沈阳飞机厂",
+        "上海申新纺织厂"
+      ],
+      "answer": 1,
+      "hint": "集中力量办大事的成果",
+      "explanation": "B正确。老师指出：1956年7月\"国产第一辆解放牌4吨载货汽车在长春第一汽车制造厂诞生\"，与1956年9月沈阳飞机厂试制歼-5一起，说明改造完成后能造汽车、飞机。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 25:17 · 1956年第一辆解放牌汽车"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "《关于建国以来党的若干历史问题的决议》对社会主义改造存在问题的总结，不包括（　）。",
+      "options": [
+        "要求过急、工作过粗、改变过快",
+        "形式过于单一简单化",
+        "对部分原工商业者使用处理不当",
+        "根本不应进行社会主义改造"
+      ],
+      "answer": 3,
+      "hint": "决议肯定改造成功，问题在速度",
+      "explanation": "D正确（选\"不包括\"）。老师指出五个问题：要求过急、工作过粗、改变过快、形式过于单一、对部分工商业者使用处理不当，\"汇集在一点就是速度确确实实快了\"，而非不该改造。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 29:42 · 改造存在问题五点"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "社会主义基本制度确立后，我国公有制包括（　）。",
+      "options": [
+        "仅全民所有制一种",
+        "全民所有制和劳动群众集体所有制两种",
+        "全民所有制、集体所有制和私人所有制",
+        "国家资本主义和个体经济"
+      ],
+      "answer": 1,
+      "hint": "与苏联单纯全民所有不同",
+      "explanation": "B正确。老师指出：\"相比较苏联是一个单纯的全民所有的国有经济，不是我们是有两个的，我们有劳动群众集体所有的公有制，还有国家所有的全民所有的公有制\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 41:06 · 两种公有制"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "1954年宪法确立的我国根本政治制度是（　）。",
+      "options": [
+        "中国共产党领导的多党合作和政治协商制度",
+        "民族区域自治制度",
+        "人民代表大会制度",
+        "民主集中制"
+      ],
+      "answer": 2,
+      "hint": "与\"基本政治制度\"区分",
+      "explanation": "C正确。老师强调：\"政体是人民代表大会制度，这是根本的政治制度\"；基本政治制度是两个——多党合作和政治协商制度、民族区域自治制度。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 42:25 · 根本政治制度"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "中国共产党能够对资本主义工商业实行和平赎买的原因包括（　）。",
+      "options": [
+        "认识到民族资产阶级两面性",
+        "新民主主义革命时期已建立既联合又斗争的统一战线关系",
+        "人民民主专政政权和强大社会主义经济基础造成私营经济对社会主义依赖",
+        "建国初期政府雪中送炭（供原料、统购统销、提供资金）",
+        "民族资产阶级与帝国主义利益完全一致"
+      ],
+      "answer": [0, 1, 2, 3],
+      "hint": "荣毅仁案例说明三个原因",
+      "explanation": "ABCD正确。老师归纳三个原因：认识两面性、已有统一战线关系、政治经济依赖；荣智健还补充共产党雪中送炭与国民党强取豪夺对比。E错误，民族资产阶级受帝国主义压迫。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 04:47 · 和平赎买三个原因"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "对资本主义工商业改造的三个步骤包括（　）。",
+      "options": [
+        "初级形式的国家资本主义（供原料、销市场）",
+        "个别企业的公私合营（国家投资入股、共同管理）",
+        "全行业的公私合营（定股定息）",
+        "立即暴力没收全部企业",
+        "土地改革"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "第一二阶段四马分肥，第三阶段定息",
+      "explanation": "ABC正确。老师指出三步骤：初级国家资本主义→个别企业公私合营→全行业公私合营，\"贯穿三个阶段的是和平赎买\"。D与和平方针相反，E属于农业改造。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 12:01 · 资本主义工商业改造三步骤"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "1981年《决议》评价社会主义改造\"了不起\"的三个方面包括（　）。",
+      "options": [
+        "一化三改同时进行",
+        "采取积极引导、逐步过渡方式",
+        "用和平方法进行改造",
+        "完全照搬苏联战时共产主义",
+        "改造后生产力遭到严重破坏"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "123三个方面",
+      "explanation": "ABC正确。老师引用决议：\"第一个宣传工业化和改造同时进行一化三改……第二个积极引导逐步过渡……第三个和平的方法进行改造\"。DE与\"成功\"\"促进生产力发展\"评价相反。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 18:46 · 改造了不起三个方面"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "世界历史上社会主义改造\"两个罕见\"的事实是（　）。",
+      "options": [
+        "在几亿人口大国比较顺利实现复杂深刻的社会变革",
+        "变革后没有破坏生产力反而促进工农业发展",
+        "没有引起社会大动荡，在人民普遍拥护下完成",
+        "完全依靠外国武力完成",
+        "改造后立即进入共产主义"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "86页第二段两个40",
+      "explanation": "ABC正确。老师指出两个罕见：一是顺利实现变革且促进生产力发展；二是变私有为公有未引起社会大动荡，在人民拥护下完成，涉及思想观念从私有到集体国家的转变。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 27:27 · 两个罕见"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "社会主义改造的理论贡献包括创造性回答了（　）。",
+      "options": [
+        "经济文化落后国家能不能建立社会主义",
+        "如何用和平方法消灭资产阶级",
+        "如何引导农民走社会主义道路",
+        "如何立即实现四个现代化",
+        "如何全盘西化"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "三大历史性课题",
+      "explanation": "ABC正确。老师指出理论贡献三个：落后国家能否建社会主义、和平消灭资产阶级、引导农民走社会主义道路。\"三年改造证明在一个还不发达的中国也能搞社会主义\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 38:06 · 改造理论三大贡献"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师强调必须注意：1949年建立的是新民主主义国家，社会主义基本制度正式确立于（　）。",
+      "options": [
+        "1949年",
+        "1953年",
+        "1956年",
+        "1978年"
+      ],
+      "answer": 2,
+      "hint": "五六年之后才是社会主义性质",
+      "explanation": "C正确。老师反复强调：\"1949年建立是个新民主主义国家，56年一定要注意一下社会主义国家\"\"社会主义基本制度正式确立\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 42:51 · 1956年社会主义制度确立"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师讲解往年考题：资本主义工商业改造第一步是（　），不是公私合营。",
+      "options": [
+        "全行业公私合营",
+        "初级形式的国家资本主义",
+        "个别企业公私合营",
+        "定股定息"
+      ],
+      "answer": 1,
+      "hint": "6位同学曾答错公私合营",
+      "explanation": "B正确。老师讲解考题：\"第一个步骤是初级形式的资本主义……初级形式是政府给你提供生产资料、给你提供销售市场\"。第二步才是个别企业公私合营，第三步是全行业公私合营。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 01:06:31 · 改造三步骤第一步"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师强调必须区分：我国的基本政治制度包括（　）。",
+      "options": [
+        "人民代表大会制度",
+        "中国共产党领导的多党合作和政治协商制度",
+        "民族区域自治制度",
+        "基层群众自治制度",
+        "总统制"
+      ],
+      "answer": [1, 2],
+      "hint": "人民代表大会制度是\"根本\"不是\"基本\"",
+      "explanation": "BC正确。老师明确：\"政体是人民代表大会制度，这是根本的政治制度；基本的政治制度是两个——多党合作和政治协商制度、民族区域自治制度。\"A是根本政治制度，不是基本政治制度。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 42:25 · 根本与基本政治制度"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师指出：邓子恢与毛泽东的争议焦点是（　）。",
+      "options": [
+        "要不要进行社会主义改造",
+        "改造速度是否过快",
+        "要不要实行改革开放",
+        "要不要优先发展轻工业"
+      ],
+      "answer": 1,
+      "hint": "早知今日何必当初——是速度问题不是改不改",
+      "explanation": "B正确。老师明确指出：\"邓子恢和毛泽东50年代争议的到底是改不改的问题，还是速度过快的问题呢？很显然是速度过快这个问题\"，\"是速度的问题，而不是该不该搞的问题\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 56:32 · 邓子恢争议是速度问题"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师讲解往年考题：社会主义改造完成后，社会主要矛盾是（　）。",
+      "options": [
+        "工人阶级与资产阶级的矛盾",
+        "社会主义道路和资本主义道路之间的矛盾",
+        "帝国主义与中华民族的矛盾",
+        "人民内部道德与政治的矛盾"
+      ],
+      "answer": 1,
+      "hint": "不是阶级矛盾还存在时的主要矛盾",
+      "explanation": "B正确。老师讲解：\"剥削阶级作为阶级已经消灭了……主要矛盾是社会主义道路和资本主义道路之间的矛盾\"，不是工人与资产阶级矛盾（那是改造完成前新民主主义社会的主要矛盾）。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 01:05:22 · 改造完成后主要矛盾"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 10,
+      "stem": "简答题：简述对资本主义工商业社会主义改造的三个步骤及分配方式。",
+      "options": [],
+      "answer": "第一步：初级形式国家资本主义，国家提供原料和销售市场，利润四马分肥；第二步：个别企业公私合营，国家投资入股、公私共同管理，仍四马分肥；第三步：全行业公私合营，企业人财物全部归国家，资本家按股份拿定息。贯穿三阶段的是和平赎买。",
+      "hint": "低级到高级，四马分肥→定息",
+      "explanation": "老师系统讲解国家资本主义三阶段，强调1956年北京率先全行业公私合营，全国99%私营工业户纳入改造。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 12:01 · 资本主义工商业改造三步骤"
+      },
+      "scoring_criteria": [
+        "初级国家资本主义及四马分肥（3分）",
+        "个别企业公私合营（3分）",
+        "全行业公私合营及定股定息（3分）",
+        "和平赎买贯穿始终（1分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 10,
+      "stem": "简答题：简述社会主义改造\"了不起\"的成功之处及存在的问题。",
+      "options": [],
+      "answer": "成功：一化三改同时进行；积极引导逐步过渡；和平方法改造；在几亿人口大国顺利实现深刻变革且促进生产力发展；未引起社会大动荡。问题：要求过急、工作过粗、改变过快、形式过于单一简单化、对部分工商业者使用处理不当——核心在于速度过快，而非不该改造。",
+      "hint": "三个方面+五个问题",
+      "explanation": "老师引用1981年《决议》评价，并用武汉长江大桥、武钢、解放牌汽车等说明集中力量办大事成就，同时指出邓子恢争议焦点是速度。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 18:46 · 改造评价"
+      },
+      "scoring_criteria": [
+        "成功三个方面（4分）",
+        "两个罕见事实（3分）",
+        "存在问题五点（2分）",
+        "速度问题而非改不改（1分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 15,
+      "stem": "论述题：如何理解\"早知今日，何必当初\"？结合教师讲解，论述1950年代社会主义改造的历史必然性。",
+      "options": [],
+      "answer": "改革开放后允许私有经济发展，有人质疑50年代改造。教师指出：从实践看，焦点是经济落后国家如何建立社会主义——50年代现实需要工业化巩固国防，现实条件具备（人民政权、国营经济领导地位），苏联20年完成工业革命提供榜样；改造集中财富、计划生产、优先重工业，三年完成变私有为公有，1956年能造汽车飞机，建立完整国民经济体系。从理论看，创造性回答落后国家能否建社会主义、和平消灭资产阶级、引导农民走社会主义道路。结论：\"早知今日，当初还是应该进行这个社会改造\"——今天发展非公有制是在社会主义制度已建立、生产力水平变化下的新探索，否定改造等于否定父辈建设成就。",
+      "hint": "实践层面+理论层面+与今天关系",
+      "explanation": "老师专门用一节回应\"早知今日何必当初\"，区分速度问题与方向问题，联系家庭联产承包与荣毅仁再任资本家等现象。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 33:05 · 早知今日何必当初"
+      },
+      "scoring_criteria": [
+        "说明争论焦点及错误观点（3分）",
+        "50年代现实需要与条件（4分）",
+        "改造成就与制度确立（4分）",
+        "理论贡献（2分）",
+        "正确结论：应肯定改造（2分）"
+      ],
+      "total_points": 15
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 15,
+      "stem": "材料分析题：阅读下列材料，回答问题。\n\n材料：\"党领导人民完成社会主义革命，消灭了一切剥削制度，实现了中华民族有史以来最为广泛而深刻的社会变革，实现了一穷二白、人口众多的东方大国大步迈进社会主义社会的伟大飞跃。\"\n\n（1）材料所指历史事件完成于何时？标志是什么？（5分）\n（2）结合教师讲解，分析社会主义基本制度确立的意义。（10分）",
+      "options": [],
+      "answer": "（1）指1956年社会主义改造基本完成。标志：农业87.8%农户加入高级社，手工业91.7%从业者合作化，99%私营工业户纳入公私合营；由新民主主义国家转变为社会主义国家。（2）意义：经济领域公有制（全民和集体两种）确立，结束四五千年阶级剥削；政治领域人民民主专政和人民代表大会制度等确立；阶级关系根本变化，剥削阶级作为整体消灭；为当代中国发展奠定制度基础，调动人民积极性；占世界人口1/4的东方大国进入社会主义，增强社会主义阵营力量；创新马克思主义（和平赎买、逐步过渡、落后国家建社会主义）。",
+      "hint": "1956年+制度基础+世界意义",
+      "explanation": "老师引用十九届六中全会决议，并从经济、政治、阶级关系、当代意义、世界意义、理论创新多方面阐述1956年社会主义基本制度确立意义。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 55:36 · 十九届六中全会评价改造"
+      },
+      "scoring_criteria": [
+        "正确指出1956年及完成标志（3分）",
+        "经济制度意义（2分）",
+        "政治制度意义（2分）",
+        "阶级关系变化（2分）",
+        "制度基础与世界意义（4分）",
+        "理论创新（2分）"
+      ],
+      "total_points": 15
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": { "single_choice": 14, "multiple_choice": 6, "essay": 4 },
+    "bySource": { "current_chapter": 24 },
+    "byDifficulty": { "basic": 17, "medium": 5, "hard": 2 }
+  }
+}

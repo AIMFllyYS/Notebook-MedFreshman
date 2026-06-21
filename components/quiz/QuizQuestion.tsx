@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { Check, X, ChevronDown, Lightbulb, BookOpen, Film } from "lucide-react";
 import type { QuizQuestion as Q, UserAnswer } from "@/lib/quiz/types";
-import { displayLabel } from "@/lib/quiz/types";
+import { displayLabel, TYPE_LABELS } from "@/lib/quiz/types";
 import type { QuestionResult } from "@/lib/quiz-store";
 import { useQuizStore } from "@/lib/quiz-store";
 import { getVideo } from "@/content/media";
@@ -36,7 +36,7 @@ interface QuizQuestionProps {
   result?: QuestionResult;
 }
 
-function Chip({ children, tone }: { children: React.ReactNode; tone?: "review" }) {
+function Chip({ children, tone }: { children: React.ReactNode; tone?: "review" | "exam" }) {
   return (
     <span
       style={{
@@ -47,11 +47,15 @@ function Chip({ children, tone }: { children: React.ReactNode; tone?: "review" }
         background:
           tone === "review"
             ? "var(--md-sys-color-tertiary-container)"
-            : "var(--md-sys-color-surface-container-high)",
+            : tone === "exam"
+              ? "var(--md-sys-color-error-container)"
+              : "var(--md-sys-color-surface-container-high)",
         color:
           tone === "review"
             ? "var(--md-sys-color-on-tertiary-container)"
-            : "var(--md-sys-color-on-surface-variant)",
+            : tone === "exam"
+              ? "var(--md-sys-color-on-error-container)"
+              : "var(--md-sys-color-on-surface-variant)",
       }}
     >
       {children}
@@ -60,13 +64,15 @@ function Chip({ children, tone }: { children: React.ReactNode; tone?: "review" }
 }
 
 function MetaBar({ q, index, total }: { q: Q; index: number; total: number }) {
+  const isExamFocus = q.label === "考试重点";
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "12px" }}>
       <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--md-sys-color-primary)" }}>
         第 {index + 1} / {total} 题
       </span>
-      <Chip>{displayLabel(q)}</Chip>
+      <Chip>{isExamFocus ? TYPE_LABELS[q.type] : displayLabel(q)}</Chip>
       <Chip>{DIFFICULTY_LABELS[q.difficulty]}</Chip>
+      {isExamFocus && <Chip tone="exam">考试重点</Chip>}
       {q.source === "review" && <Chip tone="review">复习 · {q.sourceChapter ?? "前序章节"}</Chip>}
       <span style={{ marginLeft: "auto", fontSize: "12px", color: "var(--md-sys-color-on-surface-variant)" }}>
         {q.points} 分

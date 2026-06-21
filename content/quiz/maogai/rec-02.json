@@ -1,0 +1,593 @@
+{
+  "subjectId": "maogai",
+  "chapterId": "rec-02",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "长征途中，老师指出一代中国共产党人解决的核心问题是（　）。",
+      "answer": 1,
+      "hint": "失败原因是照搬苏联本本。",
+      "explanation": "总结第五次反围剿失败教训，解决\"马克思主义中国化问题\"，原因是照搬苏联本本。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 04:12 · 长征与马克思主义中国化"
+      },
+      "options": [
+        "如何发展社会主义市场经济",
+        "马克思主义中国化问题",
+        "如何建立人民民主专政",
+        "如何完成社会主义改造"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "遵义会议上，周恩来作报告时的态度是（　）。",
+      "answer": 1,
+      "hint": "对比博古与周恩来。",
+      "explanation": "明确提出军事指挥错误并承担责任，与博古归客观原因形成对比。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 06:14 · 周恩来担责"
+      },
+      "options": [
+        "把失败完全归因于客观原因",
+        "明确指出军事指挥错误并承担责任",
+        "反对毛泽东的一切意见",
+        "拒绝参加会议"
+      ]
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "遵义会议解决了哪两个关键问题？",
+      "answer": 0,
+      "hint": "领导地位+独立自主。",
+      "explanation": "确立毛泽东领导地位；第一次独立自主运用马列主义解决路线方针政策。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 09:13 · 遵义会议两大意义"
+      },
+      "options": [
+        "确立毛泽东领导地位；第一次独立自主运用马列主义解决路线方针政策",
+        "通过新民主主义革命总路线；确立土地革命路线",
+        "完成三大改造；建立社会主义制度",
+        "提出改革开放；确立以经济建设为中心"
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "马克思主义中国化命题正式提出的会议和报告是（　）。",
+      "answer": 2,
+      "hint": "正式提出的时间地点。",
+      "explanation": "1938年六届六中全会《论新阶段》：\"没有抽象的马克思主义，只有具体的马克思主义\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 25:16 · 六届六中全会"
+      },
+      "options": [
+        "1935年遵义会议",
+        "1945年党的七大",
+        "1938年六届六中全会《论新阶段》",
+        "1942年延安整风"
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "1945年党的七大上，毛泽东思想被界定为（　）。",
+      "answer": 0,
+      "hint": "七大党章表述。",
+      "explanation": "马克思主义中国化的第一个重大理论成果，写入党章。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 26:02 · 七大确立"
+      },
+      "options": [
+        "马克思主义中国化第一个重大理论成果",
+        "中国特色社会主义理论体系开篇之作",
+        "马克思主义中国化时代化新的飞跃",
+        "科学发展观的核心"
+      ]
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "马克思主义中国化时代化内涵的第三个构成要素是（　）。",
+      "answer": 2,
+      "hint": "两个结合+一个成果。",
+      "explanation": "三要素：同中国实际结合、同优秀传统文化结合、形成中国化马克思主义理论成果。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 33:39 · 三构成要素"
+      },
+      "options": [
+        "完全照搬苏联模式",
+        "坚持计划经济体制",
+        "形成中国化的马克思主义理论成果",
+        "放弃马克思主义基本原理"
+      ]
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "毛泽东时代与邓小平时期，老师归纳的时代主题分别是（　）。",
+      "answer": 0,
+      "hint": "两个时代各一主题。",
+      "explanation": "毛泽东时代\"战争与革命\"；邓小平时期\"和平与发展\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 30:58 · 时代主题"
+      },
+      "options": [
+        "战争与革命；和平与发展",
+        "和平与发展；战争与革命",
+        "经济全球化；冷战对峙",
+        "百年变局；殖民扩张"
+      ]
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "对中国等落后国家而言，现代化本质是（　）。",
+      "answer": 3,
+      "hint": "老师概括为四个字。",
+      "explanation": "罗荣渠概括：\"对中国这些国家来说就是落后的赶先进\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 37:07 · 落后赶先进"
+      },
+      "options": [
+        "完全照搬西方政治制度",
+        "优先发展军事工业",
+        "通过殖民扩张实现富强",
+        "落后赶先进"
+      ]
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "1861年清政府设立总理衙门，学者认为是中国（　）。",
+      "answer": 1,
+      "hint": "1861与总理衙门。",
+      "explanation": "1861年总理各国事务衙门被视为中国现代化开始。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 37:30 · 1861现代化起点"
+      },
+      "options": [
+        "社会主义改造的开始",
+        "现代化的开始",
+        "新民主主义革命的开始",
+        "改革开放起点"
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "1920年毛泽东致蔡和森信中，对俄国道路的态度是（　）。",
+      "answer": 0,
+      "hint": "关键词\"变计\"。",
+      "explanation": "\"诸路皆走不通的一个变计，并不是有更好的方法弃而不采用。\"",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 51:52 · 致蔡和森信"
+      },
+      "options": [
+        "诸路皆走不通时不得不选择的\"变计\"",
+        "优于一切其他道路的\"最佳方案\"",
+        "仅适用于俄国",
+        "应完全取代中国文化"
+      ]
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "遵义会议上的发言与态度，课堂所述正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "凯丰是反对者。",
+      "explanation": "博古归客观；周恩来担责；张闻天批评；凯丰反对。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 06:14 · 遵义会议各方"
+      },
+      "options": [
+        "博古把失败原因主要归于客观因素",
+        "周恩来承认军事指挥错误并担责",
+        "张闻天批评单纯防御路线",
+        "凯丰完全支持毛泽东意见"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "六届六中全会前后与马克思主义中国化相关的表述，正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "四个时间节点。",
+      "explanation": "1938正式提出；1939彭真；1940张闻天；1942朱德。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 25:16 · 命题传播"
+      },
+      "options": [
+        "1938年六届六中全会《论新阶段》正式提出",
+        "1939年彭真阐释马克思主义中国化",
+        "1940年张闻天提出中国化的马克思主义",
+        "1942年朱德正式使用中国化的马列主义第一个就是毛泽东思想"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "马克思主义中国化时代化历史进程四个时期，正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "四个起止年。",
+      "explanation": "1921-49、49-78、78-2012、2012至今。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 56:52 · 四时期"
+      },
+      "options": [
+        "1921-1949新民主主义革命时期",
+        "1949-1978社会主义革命和建设时期",
+        "1978-2012改革开放和社会主义现代化建设时期",
+        "2012至今中国特色社会主义新时代"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "各理论成果解决的时代课题，配对正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "站起来富起来等。",
+      "explanation": "毛泽东思想站起来、邓小平富起来、三个代表跨世纪、科学发展观新发展。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 58:17 · 理论成果"
+      },
+      "options": [
+        "毛泽东思想——使中国人站起来",
+        "邓小平理论——推动富起来，开篇之作",
+        "三个代表——跨世纪发展",
+        "科学发展观——新世纪新阶段新发展"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "内涵中\"两个结合\"包括（　）。",
+      "answer": [
+        0,
+        1
+      ],
+      "hint": "两个结合。",
+      "explanation": "同中国具体实际相结合、同中国优秀传统文化相结合。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 33:05 · 两个结合"
+      },
+      "options": [
+        "同中国具体实际相结合",
+        "同中国优秀传统文化相结合",
+        "同西方自由主义完全接轨",
+        "同苏联模式完全统一"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 4,
+      "stem": "读马克思主义中国化时代化概念时，老师强调应（　）。",
+      "answer": 2,
+      "hint": "反对仅仅背概念。",
+      "explanation": "\"一定要看到这个概念是由哪几个要素构成的，要还原的。\"",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 33:39 · 分析构成要素"
+      },
+      "label": "考试重点",
+      "options": [
+        "只背诵原文",
+        "与苏联模式逐字对照",
+        "分析构成要素并还原",
+        "仅关注时代化"
+      ]
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 4,
+      "stem": "2022年党的二十大对马克思主义中国化时代化，老师强调增加了（　）。",
+      "answer": 1,
+      "hint": "新教材加了什么。",
+      "explanation": "把中国化后面加了时代化，明确谱写新篇章为庄严历史责任。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 26:50 · 二十大加时代化"
+      },
+      "label": "考试重点",
+      "options": [
+        "大众化",
+        "时代化",
+        "国际化",
+        "科学化"
+      ]
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 4,
+      "stem": "\"归根到底\"是因为（　）。",
+      "answer": 0,
+      "hint": "建党100周年和二十大表述。",
+      "explanation": "从\"马克思主义行\"到\"是中国化时代化的马克思主义行\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 57:24 · 中国化时代化的马克思主义行"
+      },
+      "label": "考试重点",
+      "options": [
+        "中国化时代化的马克思主义行",
+        "西方自由主义行",
+        "苏联模式完全正确",
+        "传统文化可以取代马克思主义"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 4,
+      "stem": "每章复习三个内容，下列不属于的是（　）。",
+      "answer": 3,
+      "hint": "老师说了三个内容。",
+      "explanation": "过去考题、企业微信单选多选、论述题过答案；无额外闭卷模拟。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 01:05:04 · 复习三内容"
+      },
+      "label": "考试重点",
+      "options": [
+        "过去考试题作平常作业",
+        "企业微信发布单选多选题",
+        "课后论述题在书上过答案",
+        "每章额外闭卷模拟考"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 4,
+      "stem": "王稼祥带回共产国际指示包括（　）。",
+      "answer": [
+        0,
+        1
+      ],
+      "hint": "两点指示。",
+      "explanation": "肯定遵义到陕北路线正确；领导机关以毛泽东为首。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 23:46 · 共产国际指示"
+      },
+      "label": "考试重点",
+      "options": [
+        "肯定遵义会议到陕北期间政治路线正确",
+        "强调中共中央领导机关要以毛泽东为首",
+        "要求撤销毛泽东职务",
+        "命令放弃农村根据地"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 10,
+      "stem": "简述遵义会议的主要过程和历史意义。",
+      "answer": "过程：1935年1月遵义政治局扩大会议，博古、周恩来、张闻天、毛泽东等发言，改组领导机构，增选毛泽东为常委，成立三人军事小组。\n意义：确立毛泽东领导地位；第一次独立自主运用马列主义解决路线方针政策，是生死攸关转折点。",
+      "hint": "过程+意义。",
+      "explanation": "老师强调两大意义。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 09:13 · 遵义会议"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "过程（4分）",
+        "领导地位（3分）",
+        "独立自主（2分）",
+        "条理（1分）"
+      ]
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 10,
+      "stem": "简述马克思主义中国化时代化内涵的三个构成要素。",
+      "answer": "一、同中国具体实际相结合。\n二、同中国优秀传统文化相结合。\n三、形成中国化马克思主义理论成果。",
+      "hint": "两个结合+成果。",
+      "explanation": "老师强调分析三要素。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 33:05 · 内涵三要素"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "同实际结合（3分）",
+        "同文化结合（3分）",
+        "新理论成果（3分）",
+        "条理（1分）"
+      ]
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 15,
+      "stem": "论述各理论成果关系，并结合老师举例说明\"一脉相承又与时俱进\"。",
+      "answer": "总体：都是马列主义在中国运用发展，一脉相承又与时俱进。各成果定位：毛泽东思想站起来、邓小平富起来等。老师以国际合作政策演变（50年代结盟→人类命运共同体）为例。",
+      "hint": "总述+分述+国际合作例。",
+      "explanation": "老师以自己研究为例。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 01:02:42 · 一脉相承"
+      },
+      "label": "论述题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "总体关系（4分）",
+        "各成果定位（4分）",
+        "举例（4分）",
+        "条理（3分）"
+      ]
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 15,
+      "stem": "阅读材料，回答问题。\n\n> 材料：\"没有抽象的马克思主义，只有具体的马克思主义……按照中国的特点去应用它，成为全党亟待了解并急需解决的问题。\"——毛泽东《论新阶段》\n\n（1）针对什么问题？（4分）\n（2）提出背景？（6分）\n（3）产生什么影响？（5分）",
+      "answer": "（1）反对照搬苏联本本和教条主义。\n（2）长征教训、遵义会议、王稼祥带回指示、1938六届六中全会。\n（3）党内使用命题→1942朱德→1945七大写入党章→二十大时代化。",
+      "hint": "照搬本本→六中全会→七大。",
+      "explanation": "六届六中全会核心论断。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 25:16 · 论新阶段"
+      },
+      "label": "材料分析题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "针对问题（4分）",
+        "背景（6分）",
+        "影响（5分）"
+      ]
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

@@ -1,0 +1,598 @@
+{
+  "subjectId": "maogai",
+  "chapterId": "rec-12",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "教师梳理的《论十大关系》构成中，涉及中国工业化道路的有（　）。",
+      "options": [
+        "三条",
+        "两条",
+        "五条",
+        "十条"
+      ],
+      "answer": 0,
+      "hint": "94—95页：工业化三条、经济体制改革两条、政治思想文化五条。",
+      "explanation": "教师说论十大关系构成：94页倒数第二段中国工业化道路涉及三条；95页第一段经济体制改革涉及两条；后面5条涉及政治生活和思想文化领域调动积极性。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:25 · 论十大关系构成"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "毛泽东1960年“一纲四目”中，“一纲”是指（　）。",
+      "options": [
+        "台湾必须统一于中国",
+        "台湾实行资本主义永不变",
+        "划峡而治",
+        "立即武力解放台湾"
+      ],
+      "answer": 0,
+      "hint": "教师说“一纲四目在这里”“过去确实考了的”。",
+      "explanation": "教师复习107—108页强调一纲四目：一纲是台湾必须统一于中国；四目涉及权力关系建构。教师说一纲四目“说不定也会考”“过去确实是考了的”。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 04:07 · 一纲四目复习重点"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "1982年党的十二大开幕词中，邓小平首次提出的命题是（　）。",
+      "options": [
+        "走自己的路，建设有中国特色的社会主义",
+        "社会主义初级阶段",
+        "社会主义市场经济",
+        "三个代表"
+      ],
+      "answer": 0,
+      "hint": "135页第一段记住。",
+      "explanation": "教师强调135页第一段：1982年十二大开幕词中邓小平提出“走自己的路，建设有中国特色的社会主义”，中国特色社会主义命题首次出现。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 12:09 · 十二大首次提出中国特色社会主义"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "“邓小平理论”这一概念正式提出于（　）。",
+      "options": [
+        "1997年党的十五大",
+        "1992年党的十四大",
+        "1987年党的十三大",
+        "1982年党的十二大"
+      ],
+      "answer": 0,
+      "hint": "137页第二段注意。",
+      "explanation": "教师明确：137页第二段，邓小平理论这一概念1997年党的十五大正式提出；1992年十四大从九个方面概括主要内容。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 12:09 · 十五大正式提出邓小平理论"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "贯彻“三个代表”重要思想的根本要求中，“关键”在于（　）。",
+      "options": [
+        "坚持与时俱进",
+        "坚持党的先进性",
+        "坚持执政为民",
+        "坚持公有制为主体"
+      ],
+      "answer": 0,
+      "hint": "方框内容教师说可能考。",
+      "explanation": "教师强调江泽民讲话：贯彻三个代表关键在坚持与时俱进，核心在坚持党的先进性，本质在坚持执政为民——“方框框的东西说不定也会考”。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 28:00 · 三个代表根本要求方框"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "1945年党的七大上，毛泽东思想被明确为（　）。",
+      "options": [
+        "党必须长期坚持的指导思想",
+        "临时性参考理论",
+        "仅适用于农村的理论",
+        "已被邓小平理论取代的理论"
+      ],
+      "answer": 0,
+      "hint": "19页第一段。",
+      "explanation": "教师复习19页：1945年党的七大通过党章，明确毛泽东思想是党必须长期坚持的指导思想。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 07:07 · 七大确立指导思想"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "社会主义初级阶段基本路线中，“一个中心”是指（　）。",
+      "options": [
+        "以经济建设为中心",
+        "以阶级斗争为纲",
+        "以政治建设为中心",
+        "以文化建设为中心"
+      ],
+      "answer": 0,
+      "hint": "160—161页一个中心两个基本点。",
+      "explanation": "教师复习159—161页：基本路线简化为一个中心两个基本点——以经济建设为中心，坚持四项基本原则，坚持改革开放。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 16:40 · 一个中心两个基本点"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "本次期末考试的时间是（　）。",
+      "options": [
+        "7月2日下午3:00—5:00，闭卷",
+        "7月2日上午9:00—11:00，开卷",
+        "6月21日下午，开卷",
+        "随堂考查，不计入总评"
+      ],
+      "answer": 0,
+      "hint": "教师明确公布考试安排。",
+      "explanation": "教师说：考试7月2日下午3点到5点，两个小时，闭卷；题型跟去年一样。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 36:15 · 期末考试时间安排"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "三个代表重要思想科学内涵全面阐述于（　）。",
+      "options": [
+        "2001年7月1日建党80周年大会",
+        "1989年十三届四中全会",
+        "2002年十六大",
+        "1992年十四大"
+      ],
+      "answer": 0,
+      "hint": "140页最后一段注意。",
+      "explanation": "教师强调：140页最后一段，三个代表科学内涵和基本内容全面阐述是在2001年7月1日建党80周年大会江泽民报告；2002年十六大写入党章。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 25:41 · 七一讲话全面阐述三个代表"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "党的十七大对基本路线奋斗目标的表述增加了（　）。",
+      "options": [
+        "和谐",
+        "美丽",
+        "民主",
+        "文明"
+      ],
+      "answer": 0,
+      "hint": "十九大加美丽。",
+      "explanation": "教师说：160页第二段，十七大把“和谐”加进基本路线；十九大把“美丽”加进去。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 16:40 · 基本路线充实完善"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "教师公布的期末考试题型包括（　）。",
+      "options": [
+        "单选题20道，每题2分，共40分",
+        "多选题5道，每题2分，共10分",
+        "材料分析题3题，共50分",
+        "论述题5题，共50分",
+        "填空题10道"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "跟去年一样。",
+      "explanation": "教师明确：单选20×2=40分；多选5×2=10分；材料分析3题共50分；总计100分。无单独论述题和填空题。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 36:15 · 考试题型分布"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "毛泽东思想活的灵魂包括（　）。",
+      "options": [
+        "实事求是",
+        "群众路线",
+        "独立自主",
+        "解放思想",
+        "与时俱进"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "27—32页复习重点。",
+      "explanation": "教师复习第一章：活的灵魂三方面——实事求是（27—28页）、群众路线（29—30页）、独立自主（30—32页）。解放思想是邓小平理论精髓。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 08:09 · 活的灵魂三方面复习"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "邓小平理论精髓“解放思想、实事求是”的实践价值包括（　）。",
+      "options": [
+        "有力推动和保证拨乱反正",
+        "破除僵化社会主义模式，走自己的路",
+        "从社会主义初级阶段出发",
+        "以三个有利于作为检验标准",
+        "取消四项基本原则"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "154页第二段四个价值。",
+      "explanation": "教师复习154页：精髓实践价值——拨乱反正；破除僵化模式；从初级阶段出发；三个有利于。解放思想须坚持马克思主义和四项基本原则。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 14:26 · 精髓实践价值四点"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "108—109页国际战略和外交工作认识包括（　）。",
+      "options": [
+        "和平共处五项原则",
+        "两个中间地带战略思想",
+        "三个世界划分",
+        "一边倒政策",
+        "不结盟政策"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "第四章复习108—109页。",
+      "explanation": "教师复习第四章108—109页：国际战略包括和平共处五项基本原则、两个中间地带战略思想、三个世界的划分。一边倒和不结盟是具体外交方针。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 04:07 · 国际战略三项内容"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "社会主义全面发展的三大基本目标（210页）包括（　）。",
+      "options": [
+        "物质文明",
+        "政治文明",
+        "精神文明",
+        "生态文明",
+        "军事文明"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "教师说“很容易出多选题”。",
+      "explanation": "教师复习210页最后一段：社会主义政治文明与物质文明、精神文明一起，确定为社会主义全面发展的三大基本目标——“很容易出那种多选题”。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 31:26 · 三大基本目标多选题"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师说“去年考过的”内容是（　）。",
+      "options": [
+        "实事求是的内涵及如何坚持",
+        "论十大关系的全部十条并列关系",
+        "三个代表写入党章的具体条文",
+        "科学发展观首次提出时间"
+      ],
+      "answer": 0,
+      "hint": "28页第二、三、四段。",
+      "explanation": "教师复习27—28页实事求是：说“这个题我们去年我看了一下去年考过的……但也不一定作为材料题考过，但肯定今年不会说，但会以别的方式出现”——说明去年考过实事求是，今年仍可能出现。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 08:09 · 实事求是去年考过今年仍可能出现"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "1992年邓小平南方谈话中社会主义本质的内容在教材（　）。",
+      "options": [
+        "152页第二段",
+        "119页第一段",
+        "191页最后一段",
+        "210页最后一段"
+      ],
+      "answer": 0,
+      "hint": "150—153页首要基本理论问题重点。",
+      "explanation": "教师复习150—153页：首要基本理论问题是什么社会主义怎样建设社会主义；152页第二段是1992年南方讲话社会主义本质内容；要从生产力和生产关系两个层面认识。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 14:26 · 152页社会主义本质重点"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "初步探索的经验教训共有六个方面，教师要求“你要记得”，116页还要把握（　）。",
+      "options": [
+        "两个30年——改革开放前和改革开放后的关系",
+        "完全否定改革开放前的探索",
+        "把两个时期割裂对立",
+        "认识到二者不可相互否定",
+        "改革开放后与前时期无任何联系"
+      ],
+      "answer": [
+        0,
+        3
+      ],
+      "hint": "112—116页六条+两个30年。",
+      "explanation": "教师复习112—115页经验教训六个方面，116页最后把握改革开放前和改革开放后二者关系——不能把两个30年相互否定。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 05:00 · 六条经验教训与两个30年"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "社会主义市场经济体制的第二个内涵（171页第三段）强调（　）。",
+      "options": [
+        "计划和市场都是经济手段等三点内容",
+        "取消公有制",
+        "实行全盘西化",
+        "回到计划经济"
+      ],
+      "answer": 0,
+      "hint": "171页第三段一二三三点。",
+      "explanation": "教师复习171页：社会主义市场经济理论一定要注意第三段第二个内涵，一二三三点——计划市场不是制度标志、都是手段、社会主义制度与市场结合是特色。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 18:24 · 171页市场经济三个内涵"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "党必须解决好的两大历史性课题（125页）是（　）。",
+      "options": [
+        "进一步提高党的领导水平和执政水平",
+        "提高拒腐防变和抵御风险的能力",
+        "立即实行多党制",
+        "放弃社会主义市场经济",
+        "全面私有化"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "hint": "历史方位变化后必须解决。",
+      "explanation": "教师复习125页：党的历史方位发生重大变化后，必须解决两大历史性课题——提高领导水平和执政水平；提高拒腐防变和抵御风险能力。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 23:51 · 两大历史性课题"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "简述毛泽东思想活的灵魂中“实事求是”的内涵及如何坚持。",
+      "answer": "内涵（27页第三段）：一切从实际出发，理论联系实际，在实践中检验真理和发展真理。如何坚持（28页）：①深入实际了解事物本来面貌，把握内在规律性，按客观规律办事；②正确认识和把握国情；③把探索到的规律上升到理论层次，实现理论创新。",
+      "hint": "教师说去年考过，今年会以别的方式出现。",
+      "explanation": "rec-12复习第一章重点，教师明确标注页码。",
+      "scoring_criteria": [
+        "内涵准确（4分）",
+        "如何坚持三点（6分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 08:09 · 实事求是内涵与坚持"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "简述“一纲四目”的主要内容及其与“一国两制”的关系。",
+      "answer": "一纲：台湾必须统一于中国。四目：①除外交权归中央外，军政大权等可保留（可保留军队）；②建设费用不足由中央拨付；③社会改革从缓；④不派特务，不破坏对方团结。关系：一纲四目是和平统一与高度自治的早期探索，是“一国两制”的雏形；改革开放中在基础上形成基本国策，港澳实践后外交权、国防权均归中央，是一脉相承又与时俱进的发展。",
+      "hint": "107—108页，教师说过去考过选择题。",
+      "explanation": "rec-12第四章复习重点，教师特别强调。",
+      "scoring_criteria": [
+        "一纲（2分）",
+        "四目（4分）",
+        "与一国两制关系（4分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 04:07 · 一纲四目重点曾考"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "label": "论述题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "论述邓小平理论的形成过程及首要基本理论问题。",
+      "answer": "形成过程（135—138页）：1982年十二大首次提出“建设有中国特色的社会主义”；1984年经济体制改革决定；1987年十三大系统阐述社会主义初级阶段理论；1992年南方谈话；1992年十四大从九个方面概括主要内容；1997年十五大正式提出“邓小平理论”概念。形成条件：国际背景（119页一方面另一方面）、历史条件（124页）、实践基础（129页拨乱反正、家庭联产承包、市场经济改革、特区建设）。首要基本理论问题（150—151页）：什么是社会主义、怎样建设社会主义——1992年南方谈话从生产力和生产关系两个层面概括社会主义本质：解放生产力，发展生产力，消灭剥削，消除两极分化，最终达到共同富裕。",
+      "hint": "按教师复习页码组织答案。",
+      "explanation": "rec-12第六章复习核心脉络。",
+      "scoring_criteria": [
+        "形成过程关键节点（6分）",
+        "形成条件（4分）",
+        "首要基本理论问题及本质论（5分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 12:09 · 邓小平理论形成过程与首要问题"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "label": "材料分析题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "阅读材料，回答问题。\n\n材料：“调动一切积极因素为社会主义事业服务，必须坚持两个坚持……积极因素和消极因素是一对矛盾，积极因素处于主导的、统治的、占压倒优势的地位，积极因素和消极因素在一定条件下可以相互转换。”\n——教师复习第四章96页内容\n\n（1）论十大关系在构成上分为哪几个层面？各是什么？（6分）\n（2）积极因素与消极因素的关系如何理解？（4分）\n（3）教师要求掌握“两个坚持”应在教材哪一页、哪几段？（5分）",
+      "answer": "（1）三个层面：①中国工业化道路（三条，94页倒数第二段）；②经济体制改革（两条，95页第一段）；③政治生活和思想文化领域如何调动积极性（五条）。（2）积极因素与消极因素是一对矛盾；积极因素处于主导、统治、占压倒优势地位；二者在一定条件下可以相互转换。（3）教师在复习中明确指出：两个坚持的内容在96页第二段和第三段，要掌握“调动一切积极因素为社会主义事业服务必须坚持两个坚持，哪两个坚持”——具体两个坚持的内容见教材96页第二、三段（教师将该题列为第四章17个分解复习题之一，要求结合教材该页段落复习）。",
+      "hint": "第四章17个分解题之一。",
+      "explanation": "rec-12将第四章3个思考题分解为17题，此为前几题综合。",
+      "scoring_criteria": [
+        "（1）论十大关系三层面（6分）",
+        "（2）积极消极因素关系（4分）",
+        "（3）两个坚持所在页码与段落（5分）"
+      ],
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:49 · 积极因素与两个坚持96页"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 10,
+      "multiple_choice": 5,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

@@ -1,0 +1,597 @@
+{
+  "subjectId": "maogai",
+  "chapterId": "rec-04",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "毛泽东思想产生的时代背景是（　）。",
+      "answer": 0,
+      "hint": "国内+国际。",
+      "explanation": "20世纪二三十年代半殖民地半封建中国+战争与革命时代主题。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 05:15 · 时代背景"
+      },
+      "options": [
+        "半殖民地半封建中国+战争与革命",
+        "和平与发展+改革开放",
+        "经济全球化+信息革命",
+        "百年变局+全面小康"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "鸦片战争以来迫切要解决的三大问题是（　）。",
+      "answer": 1,
+      "hint": "三民主义问题。",
+      "explanation": "民族独立、民生（贫穷）、民主——\"也就是三民主义的问题\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 05:36 · 三大问题"
+      },
+      "options": [
+        "工业农业国防科技现代化",
+        "民族独立、民生、民主",
+        "改革开放发展",
+        "富强民主文明和谐"
+      ]
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "吉田茂说日本人（　）。",
+      "answer": 1,
+      "hint": "对比中国不接受。",
+      "explanation": "\"自古以来总是依靠一个大国而存在……今天依靠美国而存在，我们日本民族会接受的。\"",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 09:16 · 吉田茂"
+      },
+      "options": [
+        "绝不接受外国驻军",
+        "自古以来依靠大国而存在，会接受日美安保条约",
+        "应走原教旨道路",
+        "应完全拒绝美国"
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "1948年柏林危机若爆发大战，当时中国政府会站在（　）。",
+      "answer": 2,
+      "hint": "1948年谁在打内战。",
+      "explanation": "1948年国共内战，国民党政府站美国一边。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 17:26 · 1948站美国"
+      },
+      "options": [
+        "苏联一边",
+        "完全中立",
+        "美国一边",
+        "既不美也不苏"
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "古巴导弹危机赫鲁晓夫回应\"先眨眼\"（　）。",
+      "answer": 1,
+      "hint": "针对瞪眼珠子嘲笑。",
+      "explanation": "\"先眨眼的不一定是弱者，有时候他是个智者\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 23:37 · 先眨眼"
+      },
+      "options": [
+        "承认苏联失败",
+        "先眨眼的不一定是弱者，有时是智者",
+        "要求核打击",
+        "永不退让"
+      ]
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "1972年尼克松访华，毛泽东指出来访目的是（　）。",
+      "answer": 0,
+      "hint": "毛泽东打断后说了什么。",
+      "explanation": "打断尼克松谈民主自由：\"就是为了对付苏联\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 25:20 · 对付苏联"
+      },
+      "options": [
+        "共同对付苏联",
+        "推广美国民主",
+        "解决台湾问题",
+        "建立军事同盟"
+      ]
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "毛泽东思想初步形成时期是（　）。",
+      "answer": 1,
+      "hint": "到遵义会议。",
+      "explanation": "1921年中共成立到1935年遵义会议。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 32:56 · 形成时期"
+      },
+      "options": [
+        "1919-1927",
+        "1921-1935",
+        "1935-1945",
+        "1949-1956"
+      ]
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "标志初步形成的四篇文章不包括（　）。",
+      "answer": 3,
+      "hint": "论持久战是成熟期。",
+      "explanation": "红色政权、井冈山、星星之火、反对本本主义；论持久战属成熟期。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 40:48 · 四篇文章"
+      },
+      "options": [
+        "《星星之火，可以燎原》",
+        "《反对本本主义》",
+        "《中国的红色政权为什么能够存在？》",
+        "《论持久战》"
+      ]
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "认清一切革命问题的基本依据是（　）。",
+      "answer": 0,
+      "hint": "基本依据。",
+      "explanation": "\"认清中国社会的性质，就是认清中国的国情，乃是认清一切革命问题的基本依据。\"",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:03:11 · 基本依据"
+      },
+      "options": [
+        "认清中国社会性质/国情",
+        "照搬苏联经验",
+        "完全接受西方自由主义",
+        "优先发展重工业"
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "社会形态变革只能武装斗争，根源在于（　）。",
+      "answer": 1,
+      "hint": "马克思对国家的分析。",
+      "explanation": "国家是剥削阶级暴力工具，面对镇压只能以暴易暴革命。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:26:57 · 国家暴力工具"
+      },
+      "options": [
+        "落后国家缺乏和平传统",
+        "国家是阶级压迫暴力工具，面对镇压只能革命",
+        "资产阶级拒绝改革",
+        "帝国主义禁止和平过渡"
+      ]
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "半殖民地半封建社会特征包括（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "hint": "未完成工业化不对。",
+      "explanation": "封建剥削依旧、资本主义软弱、军阀统治、人民贫困世界少见等。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:12:38 · 六特征"
+      },
+      "options": [
+        "封建剥削根基依旧",
+        "民族资本主义软弱",
+        "推翻皇帝后出现军阀官僚统治",
+        "已完成工业化",
+        "人民贫困不自由程度世界少见"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "形成时期两个革命斗争是（　）。",
+      "answer": [
+        0,
+        1
+      ],
+      "hint": "1921-1935两个斗争。",
+      "explanation": "大革命斗争和土地革命斗争。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 32:56 · 两个革命"
+      },
+      "options": [
+        "大革命斗争",
+        "土地革命斗争",
+        "社会主义改造",
+        "改革开放"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "大革命时期著作与观点正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "新民主主义论是成熟期。",
+      "explanation": "中国社会各阶级分析、湖南农民运动考察报告、无产阶级领导农民——萌芽。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 37:26 · 大革命著作"
+      },
+      "options": [
+        "《中国社会各阶级的分析》",
+        "《湖南农民运动考察报告》",
+        "提出无产阶级领导农民的基本思想",
+        "系统阐述《新民主主义论》"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "成熟时期著作包括（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "1935-1945。",
+      "explanation": "实践论矛盾论、论持久战、发刊词三大法宝、1945七大。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 42:59 · 成熟著作"
+      },
+      "options": [
+        "《实践论》《矛盾论》",
+        "《论持久战》",
+        "《〈共产党人〉发刊词》",
+        "1945年七大写入党章"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "新民主主义革命\"新\"在（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "老师逐一对比。",
+      "explanation": "无产阶级领导、联合农民、新民主主义国家再走向社会主义、农村包围城市。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:37:29 · 新在何处"
+      },
+      "options": [
+        "领导阶级变为无产阶级",
+        "联合农民等阶级",
+        "前途是新民主主义国家再走向社会主义",
+        "道路是农村包围城市武装夺取政权"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 4,
+      "stem": "本章最核心的问题是（　）。",
+      "answer": 1,
+      "hint": "老师反复强调。",
+      "explanation": "\"新民主主义革命的新到底新在何处呢？这是我们这一章中重点要把握的。\"",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 57:48 · 新在何处重点"
+      },
+      "label": "考试重点",
+      "options": [
+        "如何完成三大改造",
+        "新民主主义革命的新到底新在何处",
+        "如何建立市场经济",
+        "如何理解一国两制"
+      ]
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 4,
+      "stem": "最主要的社会矛盾是（　）。",
+      "answer": 0,
+      "hint": "两个矛盾选最主要。",
+      "explanation": "帝国主义和中华民族的矛盾是最主要的。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:15:54 · 最主要矛盾"
+      },
+      "label": "考试重点",
+      "options": [
+        "帝国主义和中华民族的矛盾",
+        "封建主义和人民大众的矛盾",
+        "无产阶级和资产阶级的矛盾",
+        "中华民族内部矛盾"
+      ]
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 4,
+      "stem": "上井冈山后提出的口号是（　）。",
+      "answer": 1,
+      "hint": "井冈山关键口号。",
+      "explanation": "\"打土豪分田地\"，1930年红军达6万多人。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 39:28 · 打土豪分田地"
+      },
+      "label": "考试重点",
+      "options": [
+        "耕者有其田",
+        "打土豪分田地",
+        "平均地权",
+        "联俄联共"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 4,
+      "stem": "《反对本本主义》开篇论断是（　）。",
+      "answer": 0,
+      "hint": "反对本本主义开篇。",
+      "explanation": "\"你对于某个问题没有调查就停止你对于某个问题的发言权\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 40:48 · 没有调查没有发言权"
+      },
+      "label": "考试重点",
+      "options": [
+        "没有调查，没有发言权",
+        "枪杆子里面出政权",
+        "一切反动派都是纸老虎",
+        "自力更生，丰衣足食"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 4,
+      "stem": "1949年建立的新民主主义国家特点（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "对比1789和1917。",
+      "explanation": "资产阶级民主革命范畴但有新特点；先建新民主主义国家再走向社会主义。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:38:41 · 新民主主义国家"
+      },
+      "label": "考试重点",
+      "options": [
+        "属资产阶级民主革命范畴但有新特点",
+        "建立新民主主义国家而非立即建社会主义",
+        "在新民主主义基础上再走向社会主义",
+        "与旧民主主义结果完全相同"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 10,
+      "stem": "简述毛泽东思想形成、成熟、继续发展三时期及标志。",
+      "answer": "形成1921-1935（四篇文章、农村包围城市）；成熟1935-1945（系统理论、七大）；继续发展（论人民民主专政、论十大关系等）。",
+      "hint": "三时期+标志。",
+      "explanation": "老师系统梳理三阶段。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 32:56 · 三阶段"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "三时期（3分）",
+        "形成标志（2分）",
+        "成熟标志（3分）",
+        "继续发展（1分）",
+        "条理（1分）"
+      ]
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 10,
+      "stem": "简述半殖民地半封建社会的主要矛盾、革命任务和革命性质。",
+      "answer": "矛盾：帝国主义与中华民族（最主要）、封建主义与人民大众。任务：推翻三座大山。性质：资产阶级民主革命范畴，无产阶级领导的新民主主义革命。",
+      "hint": "矛盾→任务→性质。",
+      "explanation": "国情分析链。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:14:44 · 矛盾任务性质"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "矛盾（3分）",
+        "任务（3分）",
+        "性质（3分）",
+        "条理（1分）"
+      ]
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 15,
+      "stem": "对比法国大革命、十月革命和新民主主义革命，论述\"新\"在何处。",
+      "answer": "运用政治革命四要素；法国资产阶级共和国、十月社会主义国家、中国新民主主义国家再走向社会主义；新在领导阶级、联盟、前途、道路。",
+      "hint": "理论框架+三场对比+归纳新。",
+      "explanation": "本章最核心论述01:37:29。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:37:29 · 三场革命对比"
+      },
+      "label": "论述题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "理论框架（3分）",
+        "法俄对比（4分）",
+        "中国分析（5分）",
+        "归纳新（2分）",
+        "条理（1分）"
+      ]
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 15,
+      "stem": "阅读材料，回答问题。\n\n> 材料：\"认清中国社会的性质，就是认清中国的国情，乃是认清一切革命问题的基本依据。\"中国是\"殖民地半封建\"社会。\n\n（1）如何理解半殖民地半封建？（5分）\n（2）决定怎样的主要矛盾和革命任务？（5分）\n（3）为何是分析\"新在何处\"的基本依据？（5分）",
+      "answer": "（1）半殖民地：帝国主义操纵财政经济政治军事；半封建：地主剥削依旧、军阀官僚专政。\n（2）主要矛盾帝国主义与中华民族等；任务推翻三座大山。\n（3）国情决定必须无产阶级领导的新民主主义革命，走农村包围城市道路。",
+      "hint": "半殖半封→矛盾任务→新。",
+      "explanation": "中国革命和中国共产党一文。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:03:11 · 认清国情"
+      },
+      "label": "材料分析题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "半殖半封（5分）",
+        "矛盾任务（5分）",
+        "联系新（5分）"
+      ]
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

@@ -1,0 +1,568 @@
+{
+  "subjectId": "maogai",
+  "chapterId": "rec-06",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "1927年1月毛泽东考察湖南五县农民运动，历时32天，行程约（　）。",
+      "options": [
+        "500公里",
+        "700公里",
+        "900公里",
+        "1200公里"
+      ],
+      "answer": 1,
+      "hint": "老师描述\"身着蓝布长衫，脚穿草鞋，手拿雨伞\"",
+      "explanation": "B正确。老师指出：1927年1月4日毛泽东考察湘潭、湘乡、醴陵、长沙五县，历时32天，行程700公里，3月写成《湖南农民运动考察报告》。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 05:28 · 湖南五县考察32天700公里"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "《中国红色政权为什么能够存在？》中，毛泽东认为红色政权能够存在的最重要条件是（　）。",
+      "options": [
+        "全国革命形势继续向前发展",
+        "相当力量的正式红军存在",
+        "国家的政治经济发展极端不平衡",
+        "共产党有力量及其政策正确"
+      ],
+      "answer": 3,
+      "hint": "五个条件中有一个被特别强调为\"最重要\"",
+      "explanation": "D正确。老师指出五个条件中，\"红色政权之所以能够存在的最重要的条件是什么？共产党的有力量和他的政策的正确\"，从三湾改编到古田会议都体现了这一点。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 26:44 · 红色政权最重要条件"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "1929年12月古田会议决议中最核心的一条是（　）。",
+      "options": [
+        "确立农村包围城市道路",
+        "确立党对军队的绝对领导权",
+        "批判流寇思想",
+        "恢复毛泽东前敌委员会职务"
+      ],
+      "answer": 1,
+      "hint": "组织建设和军队建设的基本原则之一",
+      "explanation": "B正确。老师强调：\"古田会议决议中最核心一条，确立了党对军队的绝对领导权\"，这是中国共产党组织建设和军队建设的基本原则之一。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 30:07 · 古田会议党指挥枪"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "新民主主义革命道路走成功的根本在于党领导下正确处理哪三者关系？",
+      "options": [
+        "统一战线、武装斗争、党的建设",
+        "土地革命、武装斗争、农村革命根据地",
+        "工人运动、农民运动、学生运动",
+        "调查研究、理论建设、组织建设"
+      ],
+      "answer": 1,
+      "hint": "三者中土地革命是基本内容",
+      "explanation": "B正确。老师指出：\"根本在于党领导之下正确处理了土地革命、武装斗争和农村革命根据地这三者之间的关系\"——土地革命是基本内容，武装斗争是主要形式，农村根据地是战略阵地。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 37:48 · 土地革命武装斗争根据地三者关系"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "1939年毛泽东在《〈共产党人〉发刊词》中提出的新民主主义革命胜利三大法宝是（　）。",
+      "options": [
+        "实事求是、群众路线、独立自主",
+        "统一战线、武装斗争、党的建设",
+        "土地革命、武装斗争、根据地建设",
+        "理论联系实际、密切联系群众、批评与自我批评"
+      ],
+      "answer": 1,
+      "hint": "老师提醒考试多选题\"题目说是3个就不要选4个\"",
+      "explanation": "B正确。老师明确：\"新民主主义革命取得胜利的三大法宝是这三个\"——统一战线、武装斗争、党的建设，并批评有学生多选了ABCD四个选项。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 43:41 · 三大法宝"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "土地革命时期（1927—1937年）的统一战线是（　）。",
+      "options": [
+        "第一次国共合作统一战线",
+        "工农民主统一战线",
+        "抗日民族统一战线",
+        "人民民主统一战线"
+      ],
+      "answer": 1,
+      "hint": "四个阶段中第二个阶段",
+      "explanation": "B正确。老师归纳四个阶段：大革命时期第一次国共合作；土地革命时期工农民主统一战线（工人、农民、小资产阶级）；抗日战争时期抗日民族统一战线；解放战争时期人民民主统一战线。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 40:20 · 四个统一战线阶段"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "瞿秋白为《湖南农民运动考察报告》作序，称毛泽东为（　）。",
+      "options": [
+        "中国革命的理论家",
+        "农民运动的王",
+        "农村包围城市的先驱",
+        "工农联盟的奠基人"
+      ],
+      "answer": 1,
+      "hint": "1927年4月单行本出版时的序言",
+      "explanation": "B正确。老师指出：瞿秋白作序言，\"把毛泽东称为农民运动的这个王\"，并号召\"中国的革命者个个都应该读一读毛泽东的这本书\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 15:07 · 瞿秋白序称农民运动之王"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "建设人民军队的经验中，\"军队是干什么的\"这一问题，毛泽东在纪念张思德文章中回答是（　）。",
+      "options": [
+        "保卫革命果实",
+        "全心全意为人民服务",
+        "党指挥枪",
+        "开展政治工作"
+      ],
+      "answer": 1,
+      "hint": "延安时期的重要论述",
+      "explanation": "B正确。老师指出建设军队四方面经验之一：\"这个军队是干什么的？是全心全意为人民服务的\"，在纪念张思德文章中回答。A是农民参军的动机，C是古田会议确立的原则。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 41:07 · 军队全心全意为人民服务"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "《星星之火，可以燎原》原名是一封回信，针对林彪提出的疑问是（　）。",
+      "options": [
+        "红色政权为什么能够存在",
+        "红旗到底能打多久",
+        "要不要上井冈山",
+        "是否坚持农村包围城市"
+      ],
+      "answer": 1,
+      "hint": "针对根据地不稳固、流动游击战错误观点",
+      "explanation": "B正确。老师指出：该文原名是回信，\"针对林彪本人的话写的——红旗到底能够打多久？\"批判单纯流动式游击战，提出朱德毛泽东式有根据地的建设方针。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 31:18 · 星星之火针对红旗能打多久"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "党的建设中，毛泽东提出的三大优良作风是（　）。",
+      "options": [
+        "实事求是、群众路线、独立自主",
+        "理论联系实际、密切联系群众、批评与自我批评",
+        "谦虚谨慎、艰苦奋斗、理论联系实际",
+        "调查研究、实事求是、独立自主"
+      ],
+      "answer": 1,
+      "hint": "在重视作风建设中提出",
+      "explanation": "B正确。老师指出党的建设四方面经验，在作风建设中提出三大优良作风：理论联系实际、密切联系群众、批评与自我批评。A是毛泽东思想活的灵魂。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 42:44 · 三大优良作风"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "《中国红色政权为什么能够存在？》概括的红色政权存在条件包括（　）。",
+      "options": [
+        "政治经济发展极端不平衡",
+        "人民革命愿望非常强烈",
+        "全国革命形势继续向前发展",
+        "相当力量的正式红军存在",
+        "共产党有力量及其政策正确"
+      ],
+      "answer": [0, 1, 2, 3, 4],
+      "hint": "五个方面，最重要是最后一个",
+      "explanation": "ABCDE全部正确。老师系统讲解五个方面：不平衡与四分五裂、群众基础、革命形势、红军力量、党的领导与政策，其中党的领导是最重要条件。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 20:40 · 红色政权五个条件"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "统一战线的两个联盟包括（　）。",
+      "options": [
+        "工人阶级与农民阶级、知识分子的联盟（基础性联盟）",
+        "工人阶级与民族资产阶级的联盟（必不可少联盟）",
+        "工人阶级与帝国主义的联盟",
+        "农民阶级与封建地主阶级的联盟",
+        "小资产阶级与官僚资本主义的联盟"
+      ],
+      "answer": [0, 1],
+      "hint": "一个基石性，一个必不可少",
+      "explanation": "AB正确。老师指出：基础性联盟是工人阶级与农民阶级、广大知识分子及其他劳动者；必不可少联盟是工人阶级与非劳动人民联盟，尤其是与民族资产阶级联盟。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 41:07 · 统一战线两个联盟"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "《湖南农民运动考察报告》中，毛泽东对农民运动不同言论的回应正确的有（　）。",
+      "options": [
+        "对\"糟得很\"回应：好得很，打翻封建势力是国民革命真正目标",
+        "对\"太过分了\"回应：革命是暴动，所谓过分在革命意义下并不过分",
+        "对\"痞子运动\"回应：过去被压在底层的人现在掌权了",
+        "对农民运动应站在后面评头论足",
+        "农民问题是国民革命需要一个大的农村运动"
+      ],
+      "answer": [0, 1, 2, 4],
+      "hint": "应站在前面引导领导农民",
+      "explanation": "ABCE正确。老师详述对\"糟得很\"\"太过分了\"\"痞子运动\"三类言论的回应，强调应\"站在农民运动的前面来引导和领导他们\"，而非D选项的站在后面评头论足。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 09:35 · 糟得很与好得很"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "三大法宝的相互关系，下列表述正确的有（　）。",
+      "options": [
+        "统一战线和武装斗争是战胜敌人的两个基本武器",
+        "统一战线是实现武装斗争的统一战线",
+        "党的组织是掌握两个武器冲锋陷阵的英勇战士",
+        "三大法宝相互独立、互不关联",
+        "1949年《论人民民主专政》对此做了高度概括"
+      ],
+      "answer": [0, 1, 2, 4],
+      "hint": "引用1939年《〈共产党人〉发刊词》",
+      "explanation": "ABCE正确。老师引用1939年发刊词和1949年《论人民民主专政》的表述，说明三者相互联系。D错误，三者有机统一而非互不关联。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 43:15 · 三大法宝相互关系"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 2,
+      "stem": "新民主主义革命理论的意义，教师归纳包括（　）。",
+      "options": [
+        "理论意义：揭示中国革命规律，丰富马克思主义",
+        "实践意义：建立中华人民共和国，实现人民民主飞跃",
+        "世界意义：加入社会主义阵营，鼓舞被压迫民族反帝斗争",
+        "方法论意义：注重调查研究与实践总结",
+        "仅对中国有意义，对世界无影响"
+      ],
+      "answer": [0, 1, 2, 3],
+      "hint": "三个意义+道路探索的方法论贡献",
+      "explanation": "ABCD正确。老师分别阐述理论、实践、世界意义，并强调道路探索中调查研究与实践总结为马克思主义中国化提供方法论贡献。E与\"极大改变了世界政治格局\"相悖。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 54:53 · 新民主主义革命理论意义"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师强调\"很容易出那种单选的\"——解决中国革命问题的基本前提是（　）。",
+      "options": [
+        "分清敌友",
+        "认清中国国情",
+        "掌握无产阶级领导权",
+        "建立革命统一战线"
+      ],
+      "answer": 1,
+      "hint": "39页节目下面一行，思考题第一题",
+      "explanation": "B正确。老师明确指出：\"认清中国国情是解决中国革命问题的基本前提，这个很容易出那种单选的啊\"，并引用毛泽东：认清中国社会性质\"乃是认清一切革命问题的基本依据\"。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 01:12:38 · 认清国情是基本前提"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师讲解往年考题：新民主主义革命的性质是（　）。",
+      "options": [
+        "无产阶级的社会主义革命",
+        "资产阶级的民族革命（民主革命）",
+        "农民阶级革命",
+        "新民主主义社会主义革命"
+      ],
+      "answer": 1,
+      "hint": "任务是反帝反封，尤其是反封",
+      "explanation": "B正确。老师讲解考题时强调：\"新民主主义性质是资产阶级的民族革命，它的任务是反帝反封的，尤其是反封，只要反封，它就是属于资产阶级民族革命的范畴。\"",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 01:09:21 · 新民主主义革命性质"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师讲解往年考题：中国民主革命要\"分两步走\"，是指（　）。",
+      "options": [
+        "旧民主主义革命和新民主主义革命",
+        "上篇新民主主义革命，下篇社会主义革命",
+        "土地革命和抗日战争",
+        "新民主主义革命和改革开放",
+        "武装斗争与和平改造"
+      ],
+      "answer": 1,
+      "hint": "五个同学曾答错此题",
+      "explanation": "B正确。老师强调：\"分两步走，毛泽东说的那就是新民主主义革命……上篇是新民主主义革命，下篇的话就是社会主义革命。\"旧民主主义革命（太平天国到辛亥革命）是失败的。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 01:10:56 · 分两步走上下篇"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师讲解往年考题与课堂内容：农村中的\"自耕农\"属于（　）。",
+      "options": [
+        "小资产阶级",
+        "半无产阶级",
+        "无产阶级",
+        "富农",
+        "地主阶级"
+      ],
+      "answer": [0],
+      "hint": "老师讲解考题时说\"自耕农/四雇农是小资产阶级，不是半无产阶级\"",
+      "explanation": "A正确。老师讲解考题：农村自耕农（录音转写作\"四雇农\"）属于小资产阶级——有土地有工具，产品不但满足需求还有剩余，不是半无产阶级。贫农属半无产阶级。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 01:10:56 · 四雇农是小资产阶级"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "教师讲解往年考题：《反对本本主义》主要强调（　）。",
+      "options": [
+        "农村包围城市",
+        "调查研究的重要性——没有调查就没有发言权",
+        "论持久战",
+        "新民主主义国家的政治经济文化"
+      ],
+      "answer": 1,
+      "hint": "与《实践论》区分，反对本本主义强调调查",
+      "explanation": "B正确。老师讲解：\"反对本本主义的话主要强调调查研究的重要性……没有调查就没有发言权\"。并区分《实践论》虽涉及调查但未强调调查研究重要性。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 01:08:12 · 反对本本主义与调查研究"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 10,
+      "stem": "简答题：简述新民主主义革命道路中土地革命、武装斗争、农村革命根据地三者的关系。",
+      "options": [],
+      "answer": "三者密切关联：土地革命是基本内容——红军到各地打土豪分田地，农民获得土地后踊跃参军；武装斗争是主要形式和强有力保障；农村革命根据地是战略阵地和依托，是在根据地政权领导下进行土地革命和武装斗争的基地。道路走成功的根本在于党领导下正确处理三者关系。",
+      "hint": "基本内容、主要形式、战略阵地三个定位",
+      "explanation": "老师系统阐述三者有机统一：深入土地革命、有计划建设政权、发展武装力量，促进革命高潮到来。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 37:00 · 三者关系"
+      },
+      "scoring_criteria": [
+        "土地革命是基本内容（3分）",
+        "武装斗争是主要形式/保障（3分）",
+        "农村根据地是战略阵地/依托（3分）",
+        "三者有机统一、党领导（1分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 10,
+      "stem": "简答题：简述新民主主义革命统一战线四个发展阶段及其阶级构成。",
+      "options": [],
+      "answer": "（1）1924—1927大革命：第一次国共合作，工人、农民、小资产阶级、民族资产阶级；（2）1927—1937土地革命：工农民主统一战线，工人、农民、小资产阶级；（3）1937—1946抗日战争：抗日民族统一战线，除汉奸等外一切抗日力量；（4）1946—1949解放战争：人民民主统一战线，涵盖工人、农民、小资产阶级、民族资产阶级、民主党派、少数民族、海外侨胞等。",
+      "hint": "四个时间段+各阶段联合的阶级",
+      "explanation": "老师详细列出四个阶段，并强调两个联盟：工农联盟是基础，与民族资产阶级联盟必不可少。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 39:38 · 四个统一战线阶段"
+      },
+      "scoring_criteria": [
+        "大革命时期国共合作统一战线（2分）",
+        "土地革命时期工农民主统一战线（2分）",
+        "抗日战争时期抗日民族统一战线（3分）",
+        "解放战争时期人民民主统一战线（3分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 15,
+      "stem": "论述题：论述农村包围城市、武装夺取政权道路的形成过程及其对中国革命的意义。",
+      "options": [],
+      "answer": "形成过程：1927年湖南农民运动考察报告找到农民、肯定农民运动→秋收起义后上井冈山建立根据地→1928年《中国的红色政权为什么能够存在》《井冈山斗争》论证红色政权→1929年古田会议确立党指挥枪→1930年《星星之火，可以燎原》批判流动游击战、提出正确方针，道路初步形成。意义：找到正确中国革命道路；超出马克思列宁主义城市中心设想，丰富发展马克思主义；注重调查研究与实践总结，为马克思主义中国化提供方法论贡献。",
+      "hint": "从找农民到星星之火+两个意义",
+      "explanation": "老师重点讲第一个问题——革命道路，从湖南考察到古田会议到星星之火，并强调这条道路是对马克思主义的丰富和发展。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 35:39 · 农村包围城市道路初步形成"
+      },
+      "scoring_criteria": [
+        "湖南农民运动考察与找农民（3分）",
+        "井冈山根据地与红色政权理论（4分）",
+        "古田会议与星星之火可以燎原（4分）",
+        "道路意义：中国正确道路+丰富马克思主义（3分）",
+        "方法论贡献（1分）"
+      ],
+      "total_points": 15
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-06",
+      "points": 15,
+      "stem": "材料分析题：阅读下列材料，回答问题。\n\n材料：\"统一战线和武装斗争，是战胜敌人的两个基本武器。统一战线，是实行武装斗争的统一战线。而党的组织，则是掌握统一战线和武装斗争这两个武器以实行对敌冲锋陷阵的英勇战士。\"\n\n（1）材料出自哪篇著作？三大法宝是什么？（5分）\n（2）结合材料，分析三大法宝的相互关系及在新民主主义革命中的作用。（10分）",
+      "options": [],
+      "answer": "（1）出自1939年毛泽东《〈共产党人〉发刊词》。三大法宝是统一战线、武装斗争、党的建设。（2）关系：统一战线和武装斗争是战胜敌人的两个基本武器，相互联系——统一战线为武装斗争服务；党的组织是掌握两大武器、带领冲锋陷阵的核心力量。作用：统一战线团结各革命阶级；武装斗争是主要斗争形式；党的建设保证正确领导和组织力。三者统一，使中国革命取得胜利。",
+      "hint": "两个基本武器+党的组织是战士",
+      "explanation": "老师引用原文并补充1949年《论人民民主专政》的概括，强调三大法宝是有纪律的党、党领导的军队、党领导的统一战线。",
+      "sourceRef": {
+        "path": "content/maogai/recording/rec-06.md",
+        "label": "rec-06 · 说话人1 43:15 · 三大法宝相互关系原文"
+      },
+      "scoring_criteria": [
+        "正确指出著作和三大法宝（3分）",
+        "阐释两个基本武器含义（3分）",
+        "阐释党的组织的作用（3分）",
+        "分析三者统一对革命胜利的意义（4分）",
+        "结合材料（2分）"
+      ],
+      "total_points": 15
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": { "single_choice": 14, "multiple_choice": 6, "essay": 4 },
+    "bySource": { "current_chapter": 24 },
+    "byDifficulty": { "basic": 17, "medium": 5, "hard": 2 }
+  }
+}
