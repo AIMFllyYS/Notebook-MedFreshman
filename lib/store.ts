@@ -11,6 +11,44 @@ export interface OutboundMessage {
   nonce: number;
 }
 
+/** Layout 折叠状态持久化 key。 */
+const LS_KEY_SIDEBAR = "gailvlun-sidebar-collapsed";
+const LS_KEY_TOPBAR = "gailvlun-topbar-collapsed";
+
+function readBoolean(key: string, fallback: boolean): boolean {
+  if (typeof localStorage === "undefined") return fallback;
+  try {
+    const v = localStorage.getItem(key);
+    return v === "true" ? true : v === "false" ? false : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeBoolean(key: string, value: boolean): void {
+  if (typeof localStorage === "undefined") return;
+  try {
+    localStorage.setItem(key, String(value));
+  } catch {
+    /* ignore */
+  }
+}
+
+/** 同步 layout 折叠状态到 html 的 data 属性（供 CSS 在首屏 paint 前应用）。 */
+function setLayoutAttr(name: string, value: boolean): void {
+  if (typeof document === "undefined") return;
+  document.documentElement.setAttribute(name, String(value));
+}
+
+/** 从 DOM 属性读取 layout 折叠状态（由 app/layout.tsx 内联脚本在 paint 前应用）。 */
+function domBoolean(name: string): boolean | null {
+  if (typeof document === "undefined") return null;
+  const v = document.documentElement.getAttribute(name);
+  if (v === "true") return true;
+  if (v === "false") return false;
+  return null;
+}
+
 /** detail/recording 分类下的 quiz key 推导。recording 直接用 itemId（"rec-01"）。 */
 function deriveChapterId(categoryId: string, itemId: string): string {
   if (categoryId === "recording") return itemId;
@@ -37,6 +75,14 @@ interface AppState {
   sidebarCollapsed: boolean;
   toggleSidebar: () => void;
   setSidebarCollapsed: (v: boolean) => void;
+
+  // 顶部导航栏折叠
+  topBarCollapsed: boolean;
+  toggleTopBar: () => void;
+  setTopBarCollapsed: (v: boolean) => void;
+
+  /** 从 DOM 回填本地持久化的布局状态（首屏避免闪烁）。 */
+  hydrateLayout: () => void;
 
   /** 已展开的科目/分类/章节键。科目用 `${subjectId}`，分类用 `${subjectId}-${categoryId}`，
    *  叶子用 `${subjectId}/${categoryId}/${itemId}`（命名空间化，避免跨学科碰撞）。 */
@@ -69,7 +115,7 @@ interface AppState {
   closePip: (returnTime?: number) => void;
 }
 
-export const useStore = create<AppState>((set, get) => ({
+export const useStore = create<AppState>((set) => ({
   activeSubjectId: "probability",
   activeCategoryId: "detail",
   activeItemId: "1.1",
@@ -85,9 +131,40 @@ export const useStore = create<AppState>((set, get) => ({
       activeSectionId: categoryId === "detail" ? itemId : "",
     }),
 
-  sidebarCollapsed: false,
-  toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
-  setSidebarCollapsed: (v) => set({ sidebarCollapsed: v }),
+  sidebarCollapsed: readBoolean(LS_KEY_SIDEBAR, false),
+  toggleSidebar: () =>
+    set((s) => {
+      const next = !s.sidebarCollapsed;
+      writeBoolean(LS_KEY_SIDEBAR, next);
+      return { sidebarCollapsed: next };
+    }),
+  setSidebarCollapsed: (v) => {
+    writeBoolean(LS_KEY_SIDEBAR, v);
+    set({ sidebarCollapsed: v });
+  },
+
+  topBarCollapsed: false,
+  toggleTopBar: () =>
+    set((s) => {
+      const next = !s.topBarCollapsed;
+      writeBoolean(LS_KEY_TOPBAR, next);
+      setLayoutAttr("data-topbar-collapsed", next);
+      return { topBarCollapsed: next };
+    }),
+  setTopBarCollapsed: (v) => {
+    writeBoolean(LS_KEY_TOPBAR, v);
+    setLayoutAttr("data-topbar-collapsed", v);
+    set({ topBarCollapsed: v });
+  },
+
+  hydrateLayout: () => {
+    const topBar = domBoolean("data-topbar-collapsed");
+    const sidebar = domBoolean("data-sidebar-collapsed");
+    const updates: Partial<AppState> = {};
+    if (topBar !== null) updates.topBarCollapsed = topBar;
+    if (sidebar !== null) updates.sidebarCollapsed = sidebar;
+    if (Object.keys(updates).length > 0) set(updates);
+  },
 
   // 初始展开：概率论科目 + 其详解分类（catId 规则为 `${subjectId}-${categoryId}`）。
   expandedIds: new Set(["probability", "probability-detail"]),

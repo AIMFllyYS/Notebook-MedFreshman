@@ -807,3 +807,12 @@ body {
     transform: rotateY(0deg);
   }
 }
+
+/* —— 布局持久化：在 React hydrate 前通过 data 属性隐藏已折叠的 TopBar，避免闪烁 —— */
+html[data-topbar-collapsed="true"] header[data-topbar] {
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom-width: 0;
+  overflow: hidden;
+}

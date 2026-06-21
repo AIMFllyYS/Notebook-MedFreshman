@@ -10,6 +10,8 @@ import {
 import dynamic from "next/dynamic";
 import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import clsx from "clsx";
+import { PanelTopClose, PanelTopOpen, Maximize, Minimize } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { getSubject, getCategory, getContentItem } from "@/content";
 import type { SubjectId, CategoryId } from "@/lib/types/content";
@@ -43,13 +45,41 @@ function TopBar({
 }) {
   const toggleSidebar = useStore((s) => s.toggleSidebar);
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
+  const topBarCollapsed = useStore((s) => s.topBarCollapsed);
+  const toggleTopBar = useStore((s) => s.toggleTopBar);
+
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const onChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+
+  const toggleFullscreen = useCallback(async () => {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   const subject = getSubject(subjectId);
   const category = getCategory(subjectId, categoryId);
   const item = getContentItem(subjectId, categoryId, itemId);
 
   return (
-    <header className="flex h-12 shrink-0 items-center gap-3 border-b border-[var(--line)] bg-[var(--bg-panel)] px-3">
+    <header
+      data-topbar
+      className={clsx(
+        "flex shrink-0 items-center gap-3 bg-[var(--bg-panel)] px-3 transition-all duration-300 ease-out overflow-hidden",
+        topBarCollapsed ? "h-0 border-b-0 py-0" : "h-12 border-b border-[var(--line)]",
+      )}
+    >
       <button
         onClick={toggleSidebar}
         title={sidebarCollapsed ? "展开导航" : "收起导航"}
@@ -95,6 +125,24 @@ function TopBar({
           </>
         )}
       </div>
+
+      <div className="ml-auto flex items-center gap-1">
+        <button
+          onClick={toggleTopBar}
+          title={topBarCollapsed ? "展开顶部导航栏" : "收起顶部导航栏"}
+          aria-pressed={topBarCollapsed}
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+        >
+          {topBarCollapsed ? <PanelTopOpen size={18} /> : <PanelTopClose size={18} />}
+        </button>
+        <button
+          onClick={toggleFullscreen}
+          title={isFullscreen ? "退出全屏" : "全屏"}
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+        >
+          {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
+        </button>
+      </div>
     </header>
   );
 }
@@ -103,6 +151,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
   const setSidebarCollapsed = useStore((s) => s.setSidebarCollapsed);
+  const hydrateLayout = useStore((s) => s.hydrateLayout);
   const leftRef = useRef<ImperativePanelHandle>(null);
   const [, startTransition] = useTransition();
   const [isResizing, setIsResizing] = useState(false);
@@ -117,6 +166,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (route) setActiveRoute(route.subjectId, route.categoryId, route.itemId);
   }, [route, setActiveRoute]);
+
+  // 客户端挂载后从 DOM 回填本地持久化的布局状态（与 layout.tsx 内联脚本对齐）。
+  useEffect(() => {
+    hydrateLayout();
+  }, [hydrateLayout]);
 
   // store 折叠状态 -> 面板命令式同步
   useEffect(() => {

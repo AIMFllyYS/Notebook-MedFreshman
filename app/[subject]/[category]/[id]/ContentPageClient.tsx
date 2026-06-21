@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
-import { FileText, ClipboardCheck, Lightbulb } from "lucide-react";
+import { FileText, ClipboardCheck, Lightbulb, PanelTopClose, PanelTopOpen } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import SelectionPopover from "@/components/notes/SelectionPopover";
 import type { SubjectId, CategoryId } from "@/lib/types/content";
 import type { ExampleMeta } from "@/app/api/examples/route";
+import { useStore } from "@/lib/store";
 import { tabPanelVariants } from "@/lib/motion";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
@@ -68,6 +69,8 @@ export default function ContentPageClient({
 }: ContentPageClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<ContentTab>("content");
+  const topBarCollapsed = useStore((s) => s.topBarCollapsed);
+  const toggleTopBar = useStore((s) => s.toggleTopBar);
 
   const tabIndex = CONTENT_TABS.findIndex((t) => t.id === activeTab);
   const prevTabIndexRef = useRef(tabIndex);
@@ -86,7 +89,7 @@ export default function ContentPageClient({
   return (
     <div className="relative flex h-full flex-col bg-[var(--bg-app)]">
       {/* Content tab bar */}
-      <div className="flex shrink-0 border-b border-[var(--line)] bg-[var(--bg-app)]">
+      <div className="flex shrink-0 items-center border-b border-[var(--line)] bg-[var(--bg-app)]">
         {CONTENT_TABS.map((t) => (
           <button
             key={t.id}
@@ -114,6 +117,15 @@ export default function ContentPageClient({
             )}
           </button>
         ))}
+
+        <button
+          onClick={toggleTopBar}
+          title={topBarCollapsed ? "展开顶部导航栏" : "收起顶部导航栏"}
+          aria-pressed={topBarCollapsed}
+          className="ml-auto mr-1 flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+        >
+          {topBarCollapsed ? <PanelTopOpen size={18} /> : <PanelTopClose size={18} />}
+        </button>
       </div>
 
       {/* Content area */}

@@ -21,11 +21,11 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <head>
-        {/* 在 paint 前应用本地保存的主题，避免深/浅色闪烁（默认深色）。 */}
+        {/* 在 paint 前应用本地保存的主题与布局状态，避免首屏闪烁。 */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{var t=localStorage.getItem('gailvlun-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();",
+              "(function(){try{var t=localStorage.getItem('gailvlun-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);var sb=localStorage.getItem('gailvlun-sidebar-collapsed');if(sb==='true'||sb==='false')document.documentElement.setAttribute('data-sidebar-collapsed',sb);var tb=localStorage.getItem('gailvlun-topbar-collapsed');if(tb==='true'||tb==='false')document.documentElement.setAttribute('data-topbar-collapsed',tb);}catch(e){}})();",
           }}
         />
       </head>
