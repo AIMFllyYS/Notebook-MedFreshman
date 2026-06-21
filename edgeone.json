@@ -1,0 +1,15 @@
+{
+  "buildCommand": "next build",
+  "installCommand": "pnpm install",
+  "outputDirectory": ".next",
+  "nodeVersion": "22.17.1",
+  "cloudFunctions": {
+    "nodejs": {
+      "includeFiles": [
+        "content/**",
+        "lib/ai/prompts/**"
+      ],
+      "maxDuration": 60
+    }
+  }
+}
