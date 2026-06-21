@@ -1,11 +1,11 @@
 // 交互式 HTML 产物生成（"子智能体"）：当主模型调用 renderInteractive 工具时，
 // 用一次独立的 LLM 流式调用产出一个自包含 HTML 文档。
 //
-// 【异步模式】本函数不再阻塞主对话 SSE 流。主路由不 await 本函数，
-// 而是将其作为 fire-and-forget Promise 启动。流式输出写入 artifactRegistry，
-// 前端通过独立 SSE 端点 (/api/artifact-stream) 实时接收。
+// 【内联模式】所有 artifact 事件（start/delta/done/error）通过主 SSE 流直接推送，
+// 不再依赖 artifactRegistry 内存态和独立 /api/artifact-stream 端点。
+// 主路由 await 本函数，生成完成后再继续对话。单连接、单请求生命周期，
+// 兼容本地 dev 和 Serverless 部署（EdgeOne Pages）。
 import { chatCompletionsUrl, type ResolvedProvider } from "@/lib/ai/provider";
-import { register, appendChunk, finalize, fail } from "@/lib/ai/artifactRegistry";
 
 const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一任务是输出一个完整、自包含的 HTML 文档。
 
@@ -101,12 +101,12 @@ interface SendFn {
 }
 
 /**
- * 流式生成交互式 HTML 产物（fire-and-forget）。
+ * 流式生成交互式 HTML 产物（内联到主 SSE 流）。
  *
- * 主路由不 await 本函数。流式输出写入 artifactRegistry，
- * 前端通过 /api/artifact-stream 独立连接接收。
+ * 主路由 await 本函数。所有 artifact 事件通过 send() 直接推送到主 SSE 流，
+ * 前端在主对话连接中实时接收，无需独立 SSE 端点。
  *
- * @param send 主 SSE 的发送函数（仅用于发送 start 事件，让前端拿到 artifactId）
+ * @param send 主 SSE 的发送函数，用于推送 artifact 事件
  * @returns 给主模型的简短工具结果（不含完整 HTML，省 token）
  */
 export async function streamInteractiveArtifact(
@@ -119,10 +119,9 @@ export async function streamInteractiveArtifact(
   const prompt = (args.prompt || args.title || "").trim();
 
   send({ type: "artifact", id: artifactId, status: "start", title });
-  register(artifactId, title);
 
   if (!prompt) {
-    fail(artifactId, "缺少演示描述");
+    send({ type: "artifact", id: artifactId, status: "error", message: "缺少演示描述" });
     return "未能生成交互演示：缺少演示描述。";
   }
 
@@ -146,7 +145,7 @@ export async function streamInteractiveArtifact(
     });
 
     if (!res.ok || !res.body) {
-      fail(artifactId, `生成失败 ${res.status}`);
+      send({ type: "artifact", id: artifactId, status: "error", message: `生成失败 ${res.status}` });
       return `交互演示生成失败（${res.status}）。可改用文字讲解。`;
     }
 
@@ -172,7 +171,7 @@ export async function streamInteractiveArtifact(
           const delta = choice?.delta?.content;
           if (delta) {
             raw += delta;
-            appendChunk(artifactId, delta);
+            send({ type: "artifact", id: artifactId, status: "delta", delta });
           }
           if (choice?.finish_reason) finish = choice.finish_reason;
         } catch {
@@ -183,10 +182,10 @@ export async function streamInteractiveArtifact(
 
     // finish_reason === "length" 表示达到 max_tokens 被截断 → 收尾时补救闭合标签。
     const html = finalizeHtml(raw, finish === "length");
-    finalize(artifactId, html);
-    return `已开始后台生成交互式演示「${title}」，生成完成后会自动出现在对话中。请用一两句话说明这个演示将帮助理解什么，然后继续你的讲解。`;
+    send({ type: "artifact", id: artifactId, status: "done", html });
+    return `已生成交互式演示「${title}」。请用一两句话说明这个演示将帮助理解什么，然后继续你的讲解。`;
   } catch (e) {
-    fail(artifactId, String((e as Error)?.message ?? e));
+    send({ type: "artifact", id: artifactId, status: "error", message: String((e as Error)?.message ?? e) });
     return "交互演示生成出错，可改用文字讲解。";
   }
 }

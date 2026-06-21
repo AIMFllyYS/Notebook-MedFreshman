@@ -6,9 +6,10 @@ import { useArtifacts } from '@/lib/hooks/useArtifacts';
 
 /**
  * 消息内的交互演示卡片：直接挂在对话气泡里（用户视线所在处），而非顶部独立横幅。
- * - 生成中：实时流式显示 HTML 源码 + 进度，让用户看到“正在写代码”；
+ * - 生成中：实时流式显示 HTML 源码 + 进度，让用户看到"正在写代码"；
  * - 完成后：常驻、显眼的「打开演示」按钮（不会被折叠面板藏起来）。
  * 通过 artifactId 反应式订阅 useArtifacts —— 该 id 在工具调用伊始即下发，故全程可见。
+ * artifact 事件通过主 /api/chat SSE 流内联推送，无需独立 SSE 端点。
  */
 export default function ArtifactCard({ artifactId }: { artifactId: string }) {
   const art = useArtifacts((s) => s.byId[artifactId]);

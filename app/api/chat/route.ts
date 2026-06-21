@@ -235,17 +235,16 @@ export async function POST(req: NextRequest) {
                 meta: artifactId ? { artifactId } : undefined,
               });
 
-              // renderInteractive：fire-and-forget 启动子智能体，不阻塞主对话流。
-              // 子智能体流式输出写入 artifactRegistry，前端通过 /api/artifact-stream 独立接收。
+              // renderInteractive：内联到主 SSE 流，await 生成完成后再继续对话。
+              // artifact 事件（start/delta/done/error）通过 send() 直接推送，无需独立 SSE 端点。
               if (c.name === "renderInteractive") {
                 const title = String(parsed.title ?? "");
-                streamInteractiveArtifact(
+                const summary = await streamInteractiveArtifact(
                   send,
                   artifactId!,
                   { title, prompt: String(parsed.prompt ?? "") },
                   provider,
-                ).catch(() => {});
-                const summary = `已开始后台生成交互式演示「${title.slice(0, 60)}」，生成完成后会自动出现在对话中。请用一两句话说明这个演示将帮助理解什么，然后继续你的讲解。`;
+                );
                 send({ type: "tool", id: c.id, status: "result", meta: { artifactId } });
                 convo.push({ role: "tool", tool_call_id: c.id, content: summary });
                 continue;

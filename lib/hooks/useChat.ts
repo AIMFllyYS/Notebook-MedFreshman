@@ -132,7 +132,6 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
         let contentBuf = '';
         let reasoningBuf = '';
         const toolCallsMap = new Map<string, ToolCallBlock>();
-        const pendingArtifactIds: string[] = [];
 
         try {
           const settings = useSettings.getState();
@@ -228,10 +227,8 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                   const a = useArtifacts.getState();
                   if (event.status === 'start') {
                     a.start(event.id, event.title || '交互演示');
-                    pendingArtifactIds.push(event.id);
                   }
-                  // delta/done/error 事件不再通过主 SSE 发送（由 /api/artifact-stream 独立连接处理）
-                  // 保留兼容处理：如果主 SSE 仍发了这些事件，照常处理
+                  // delta/done/error 事件由主 SSE 流内联推送（不再需要独立 /api/artifact-stream 连接）
                   else if (event.status === 'delta') a.append(event.id, event.delta || '');
                   else if (event.status === 'done') a.finish(event.id, event.html);
                   else if (event.status === 'error') a.fail(event.id);
@@ -279,11 +276,6 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
           loadingRef.current = false;
           setIsLoading(false);
           abortRef.current = null;
-          // 主流结束后，对每个待接收的 artifact 建立独立 SSE 连接
-          // 子智能体在后台继续生成，前端实时接收流式输出
-          for (const artId of pendingArtifactIds) {
-            useArtifacts.getState().connectStream(artId);
-          }
         }
       })();
     },
