@@ -1,0 +1,568 @@
+{
+  "subjectId": "modern-history",
+  "chapterId": "rec-03",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "洋务运动兴起的直接原因是（　）。",
+      "options": [
+        "第一次鸦片战争失败",
+        "太平天国和第二次鸦片战争的双重打击",
+        "甲午中日战争失败",
+        "义和团运动爆发"
+      ],
+      "answer": 1,
+      "hint": "60年代初，自强求富。",
+      "explanation": "老师指出：洋务运动指19世纪60年代初，在太平天国和第二次鸦片战争双重打击下，统治阶级为挽救清廷而以自强求富为口号、学习外国工业制造技术而兴起。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 21:31 · 洋务运动兴起原因"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "魏源在《海国图志》中提出的核心主张是（　）。",
+      "options": [
+        "中学为体，西学为用",
+        "师夷长技以制夷",
+        "扶清灭洋",
+        "全盘西化"
+      ],
+      "answer": 1,
+      "hint": "1843年出版，长期遭冷遇。",
+      "explanation": "老师强调：《海国图志》明确提出“师夷长技以制夷”，在清代理学士林中长期遭讥讽、无视，事实上处于半禁书状态。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 26:00 · 师夷长技以制夷"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "张之洞在《劝学篇》中对洋务指导思想的经典表述是（　）。",
+      "options": [
+        "师夷长技以制夷",
+        "中学为体，西学为用",
+        "和魂洋才",
+        "西学中源"
+      ],
+      "answer": 1,
+      "hint": "冯桂芬思想的另一种表述。",
+      "explanation": "老师指出：冯桂芬《校邠庐抗议》提“以中国之伦常名教为原本，辅以中国富强之术”；张之洞《劝学篇》换表述为“中学为体，西学为用”——也是一种“不中不洋”。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 37:26 · 中学为体西学为用"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "晚清士大夫反感“师夷长技以制夷”的深层观念原因是（　）。",
+      "options": [
+        "认为中国已全面落后于西方",
+        "在夷夏天下观中，“夷”不可能有长处",
+        "魏源著作事实被正式封禁",
+        "洋务派反对学习任何西方技术"
+      ],
+      "answer": 1,
+      "hint": "“夷学了我夏的才有长处”。",
+      "explanation": "老师分析：古典天下观无“世界”只有朝贡夷夏；东夷西狄南蛮北戎，夷不可能有长处，承认夷长技则夷夏观崩溃；只能接受“以夷变夏”——夷学夏才有长处。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 34:08 · 夷夏观与师夷长技"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "中国历史上第一任驻英使节是（　）。",
+      "options": [
+        "李鸿章",
+        "郭嵩焘",
+        "严复",
+        "刘锡鸿"
+      ],
+      "answer": 1,
+      "hint": "无人愿接，他自我牺牲式赴任。",
+      "explanation": "老师讲：西方要求互派使节，士大夫皆不愿“自降身份”驻留蛮夷之地；最后郭嵩焘以自我牺牲姿态出任第一任驻英使节。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 43:32 · 郭嵩焘驻英"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "刘锡鸿公开弹劾郭嵩焘的“三大罪”之一，是郭嵩焘在英国（　）。",
+      "options": [
+        "拒绝参观英国监狱",
+        "参观炮台时接受英国人递来的大衣并穿上",
+        "拒绝学习外语",
+        "公开主张废除君主制"
+      ],
+      "answer": 1,
+      "hint": "古板到无以复加的“罪名”。",
+      "explanation": "老师列举刘锡鸿弹劾三大罪：穿英国人递的大衣；见巴西国王起身敬礼；听交响乐时装模作样翻乐谱还学外语——反映士大夫面对西方冲击的精神分裂。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 54:59 · 刘锡鸿弹劾三大罪"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "冯友兰区分“在中国的佛教”与“中国佛教”的关键转折是（　）。",
+      "options": [
+        "玄奘西行取经",
+        "以净土宗为代表、信众广泛的底层佛学流派兴起",
+        "《老子化胡经》出现",
+        "康熙禁止基督教"
+      ],
+      "answer": 1,
+      "hint": "从上层思想游戏到融入民间生活。",
+      "explanation": "老师引冯友兰：玄奘三论宗是“在中国的佛教”，仍属上层思想游戏；唐至宋净土宗等底层流派兴起，念阿弥陀佛即可往生，佛教融入民众生活，才成“中国佛教”。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 12:32 · 冯友兰论中国佛教"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "关于中国无产阶级与民族资产阶级出现顺序，课堂观点是（　）。",
+      "options": [
+        "同时出现",
+        "先出现民族资产阶级，后出现无产阶级",
+        "先出现无产阶级，后出现民族资产阶级",
+        "两者均到20世纪初才出现"
+      ],
+      "answer": 2,
+      "hint": "洋人办厂与洋务企业示范。",
+      "explanation": "老师指出：一般矛盾双方应同时出现，但中国先有无产阶级（第二次鸦片战争后洋人建厂），民族资产阶级要到六七十年代洋务及仿办企业后才慢慢出现。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:09:13 · 无产阶级先于资产阶级"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "张之洞主张大量派遣留学生去日本而非欧美，主要原因是（　）。",
+      "options": [
+        "日本拒绝接收中国学生",
+        "距离近、成本低，且可用汉字“手谈”交流",
+        "欧美禁止中国学生学军事",
+        "日本已废除汉字"
+      ],
+      "answer": 1,
+      "hint": "轮船10天到日本 vs 数月到英国。",
+      "explanation": "老师说明：留英留美人数少因经济和时间成本极高；日本近、费用低，知识分子会写汉字可纸上交流，张之洞任内送3000余人留日，清末留日占压倒性优势。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:13:28 · 留日优势"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "甲午黄海海战中，北洋海军与日本海军在速射炮方面的差距是（　）。",
+      "options": [
+        "双方均大量装备大口径速射炮",
+        "日本有68门大口径速射炮，北洋一门都没有",
+        "北洋速射炮数量多于日本",
+        "双方均未使用速射炮"
+      ],
+      "answer": 1,
+      "hint": "吉野号代表新一代军舰技术。",
+      "explanation": "视频及老师补充：日本海军有68门大口径速射炮，北洋一门都没有；定远镇远等80年代铁甲舰航速、火力配置已被1893年吉野号等新一代军舰超越。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人4 01:20:40 · 速射炮差距"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "洋务派代表人物包括（　）。",
+      "answer": [0, 1, 2, 3],
+      "hint": "中兴名臣群体。",
+      "explanation": "老师指出：除奕訢外，曾国藩、李鸿章、左宗棠、张之洞等镇压太平天国中涌现的“中兴名臣”是洋务派代表，属实权派。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 37:00 · 洋务派代表"
+      },
+      "options": [
+        "曾国藩",
+        "李鸿章",
+        "左宗棠",
+        "张之洞"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "洋务事业兴办的主要内容有（　）。",
+      "answer": [0, 1, 2],
+      "hint": "军工、军队、教育留学。",
+      "explanation": "老师归纳：兴办近代军工与民用企业（汉阳兵工厂、轮船招商局等）；建立新式海陆军（北洋水师等）；创办新式学堂、派遣留学生。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:04:48 · 洋务事业内容"
+      },
+      "options": [
+        "兴办近代军工和民用企业",
+        "建立新式海陆军",
+        "创办新式学堂、派遣留学生",
+        "立即实行君主立宪"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "洋务运动在客观上产生的积极作用包括（　）。",
+      "answer": [0, 1, 2],
+      "hint": "民族资本主义、教育、社会风气。",
+      "explanation": "老师分析三点历史作用：客观上促进民族资本主义发展；促进近代教育事业（新式学堂、官派留学生、译书）；促进社会风气与价值观念变化（投资兴业冲击重本抑末）。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:07:09 · 洋务运动历史作用"
+      },
+      "options": [
+        "客观上促进民族资本主义发展",
+        "推动近代教育（新式学堂、官派留学生）",
+        "促进社会风气与价值观念变化",
+        "完全实现自强求富、巩固清统治"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "老师认为“不中不洋”在中国思想史上是常态，其例证包括（　）。",
+      "answer": [0, 1, 2],
+      "hint": "佛教、基督教、拜上帝教、洋务。",
+      "explanation": "老师以佛教本土化（《老子化胡经》）、利玛窦允许祭孔与龙华民教案、拜上帝教、洋务“中学为体西学为用”说明：异质文明碰撞必然彼此影响，结果常是“不中不洋”的常态。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 19:35 · 不中不洋是常态"
+      },
+      "options": [
+        "佛教通过《老子化胡经》等完成本土化",
+        "利玛窦与龙华民在能否祭孔问题上的分歧",
+        "洋务派“中学为体，西学为用”",
+        "唐代景教完全拒绝任何中国习俗"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "points": 2,
+      "stem": "洋务运动失败的表现与原因包括（　）。",
+      "answer": [0, 1, 2],
+      "hint": "依赖性、封建性、甲午失败。",
+      "explanation": "老师指出：对列强具有依赖性（吉野竞购、炮弹技术受制）；新生产力与封建制度不相容（企业像衙门）；指导思想维护封建秩序决定必然失败；甲午战败标志自强求富目标落空。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:27:33 · 洋务失败原因"
+      },
+      "options": [
+        "对列强具有依赖性",
+        "资本主义生产力与封建管理制不相容",
+        "以维护封建统治为目的，引进西学仅为手段",
+        "完全未兴办任何近代企业"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】严复在英国法庭旁听后提出“英国与诸欧之所以富强，公理日申，其端在此一事”。老师认为这说明（　）。",
+      "options": [
+        "西方领先仅在于枪炮舰船",
+        "西方优势不仅是器物，还涉及制度、文明与社会发展程度",
+        "中国应完全照搬英国议会",
+        "法庭旁听与军事无关"
+      ],
+      "answer": 1,
+      "hint": "超越“奇技淫巧”。",
+      "explanation": "老师强调：严复意识到西方富强不仅是皮毛器物，还有制度、精神、文明层面；这种认识三四十年后才更大范围展现，但已超越洋务派“仅学军事技术”的层次。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:04:16 · 严复公理日申"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】关于“北洋水师经费被挪用修园子”，课堂观点更接近（　）。",
+      "options": [
+        "仅是慈禧个人贪腐享乐",
+        "涉及高层政治博弈，有学者认为与“买她退休”的默契有关，反映封建性悲剧",
+        "北洋水师从未缺经费",
+        "日本主动提供经费帮助中国"
+      ],
+      "answer": 1,
+      "hint": "不能只看表面叙事。",
+      "explanation": "老师指出：此事很复杂，非表面“贪腐修园子”那么简单；许多史家认为涉及清廷高层与慈禧的政治默契；在锐意争霸的资本主义国家不可能发生此类事，根子在清王室无人制约的封建性。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:24:18 · 修园子与政治博弈"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】“西学中源”说与当代网络“西方伪史论”的共同点，按课堂分析包括（　）。",
+      "answer": [0, 1, 2],
+      "hint": "阿Q精神，我祖上阔过。",
+      "explanation": "老师指出：西学中源称西方富强术源自中国古书，向西方学习不算“师夷”；鲁迅斥为“我祖上也是阔过的”阿Q精神；与今日“西方历史编造、科技来自《永乐大典》”等论调如出一辙。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:01:01 · 西学中源与西方伪史论"
+      },
+      "options": [
+        "以心理防御机制否认向“夷”学习",
+        "宣称西方技术本源于中国古代",
+        "鲁迅称之为“我祖上也是阔过的”阿Q精神",
+        "得到严复等留学生的系统论证"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】汉阳铁厂炼钢失败的关键原因是（　）。",
+      "options": [
+        "英国故意出售假图纸",
+        "张之洞未寄样本化验，英国售高炉不能脱磷，而大冶铁矿除首批外多为高磷矿",
+        "工人故意破坏",
+        "日本买走了全部设备"
+      ],
+      "answer": 1,
+      "hint": "天朝地大物博，随便卖炉子。",
+      "explanation": "老师详述：英商建议寄焦煤铁矿石样本化验，张之洞拒称“随便卖最新技术”；所购高炉不能脱磷，首批低磷矿炼钢成功，后续高磷矿致钢材脆裂无法铺轨——反映缺乏科学知识与管理尊重。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:34:03 · 汉阳铁厂脱磷问题"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】老师认为洋务运动与推翻清朝的革命者之间存在何种联系（　）。",
+      "options": [
+        "毫无联系",
+        "洋务派直接领导辛亥革命",
+        "送留学生等措施直接培育了后来推翻清政府的一批人",
+        "洋务运动立即建立共和国"
+      ],
+      "answer": 2,
+      "hint": "留日学生的源头。",
+      "explanation": "老师点出：灭亡清政府的那批革命大佬留日等路径，直接源头正在洋务运动送留学生出去；洋务既未使清富强的，却客观上培养了其掘墓人。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:38:19 · 洋务与革命者"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "analysis",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "label": "辨析题",
+      "points": 10,
+      "stem": "辨析题：有人认为“甲午海战失败纯属军事技术落后，因此不能批判洋务运动的封建性和指导思想落后”。请判断该观点是否正确。",
+      "answer": 0,
+      "hint": "老师明确说“这样批判就不对”之后还要追问。",
+      "explanation": "错误。老师承认技术落后是直接因素，但强调不能因此否定对洋务封建性的批判；应追问为何军舰10年不得更新、经费被挪、英国售舰给日本等——根子在维护封建秩序的指导思想与制度，技术落后本身是封建性后果之一。",
+      "reasoning": "错误。以技术原因掩盖制度与指导思想问题；吉野竞购、挪用经费、企业衙门化等说明失败深层原因是“中学为体”维护封建统治与列强依赖。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:23:12 · 甲午失败与封建性"
+      },
+      "scoring_criteria": [
+        "正确判断该观点错误（2分）",
+        "承认技术因素但指出不能以此否定制度批判（4分）",
+        "结合吉野、经费、洋务指导思想等论证（4分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "label": "简答题",
+      "points": 10,
+      "stem": "简答题：简述“中学为体，西学为用”的内涵及洋务派的实践局限。",
+      "answer": "内涵：以中国封建伦理纲常、名教为根本（体），以西方近代工业技术为辅助手段（用），用中学支配西学，维护封建统治秩序。\n局限：实践中只能承认西方在“奇技淫巧”层面略长；新生产力与封建管理制度不相容（企业像衙门）；对列强依赖；留学生等接触到制度文明后产生思想冲击；最终未能实现自强求富，甲午失败标志破产。",
+      "hint": "体用关系+制度不相容。",
+      "explanation": "老师从冯桂芬到张之洞梳理体用论，并指出其与封建生产关系不相容决定必然失败。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 37:26 · 中体西用"
+      },
+      "scoring_criteria": [
+        "正确解释中体西用（4分）",
+        "指出实践局限与失败（4分）",
+        "条理清楚（2分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "label": "论述题",
+      "points": 15,
+      "stem": "论述题：以佛教中国化为例，论述老师提出的“不中不洋是中国思想史常态”这一观点，并说明其对理解洋务运动的意义。",
+      "answer": "一、佛教例：初传中国为异质文化；通过《老子化胡经》等解决排外心理；玄奘三论宗是“在中国的佛教”，净土宗兴起后融入民间成“中国佛教”。\n二、基督教例：唐代至明拒绝中国化则毫无影响；利玛窦“西儒”路线与龙华民教案对比。\n三、洋务意义：拜上帝教、洋务“中体西用”同属异质文明碰撞后的“不中不洋”；地主阶级亦无法超越阶级局限；在维护封建前提下学技术走不通，失败具有必然性。",
+      "hint": "思想史主线→洋务。",
+      "explanation": "开课即接rec-02讨论，贯穿全课的中外思想交融框架。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 01:53 · 不中不洋思想史主线"
+      },
+      "scoring_criteria": [
+        "阐述佛教（或基督教）中国化例证（5分）",
+        "论证不中不洋是常态（5分）",
+        "联系洋务运动意义（4分）",
+        "条理清楚（1分）"
+      ],
+      "total_points": 15
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-03",
+      "label": "材料分析题",
+      "points": 15,
+      "stem": "材料分析题：阅读材料，回答问题。\n\n> 材料：刘锡鸿公开弹劾郭嵩焘“三大罪”，但《英轺私记》却高度赞扬英国监狱、议会与文明；老师评点：“你读《英轺私记》的话，你就猛然有种怀疑，这个是不是其实才是郭嵩焘的日记？这里实际上反映出来了当时晚清士大夫面对强烈的西方异质文明的冲击的时候，这种内心的精神分裂状态。”\n\n（1）这一材料反映了晚清士大夫怎样的思想状态？（5分）\n（2）与“西学中源”说相比，严复的认识有何不同？（5分）\n（3）这种思想状态对洋务运动结局有何影响？（5分）",
+      "answer": "（1）公开守旧、私下承认西方制度与社会文明更优，内心分裂——既被迫承认现实，又用弹劾、西学中源等防御机制拒绝学习。\n（2）严复“公理日申”意识到制度与文明层面，非仅器物；虽影响稍迟但更深刻。西学中源则用“古已有之”自我安慰，拒绝“师夷”。\n（3）洋务仅学军事技术，无法制度变革；士大夫分裂导致改革止步“奇技淫巧”；最终甲午失败，且留日学生等成为更激进变革力量。",
+      "hint": "精神分裂+体用局限。",
+      "explanation": "郭嵩焘—刘锡鸿对照是课堂重点案例。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-03.md",
+        "label": "rec-03 · 说话人1 58:11 · 刘锡鸿与英轺私记"
+      },
+      "scoring_criteria": [
+        "（1）思想分裂状态（5分）",
+        "（2）与严复、西学中源对比（5分）",
+        "（3）对洋务结局影响（5分）"
+      ],
+      "total_points": 15
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "analysis": 1,
+      "essay": 3
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

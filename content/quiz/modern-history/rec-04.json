@@ -1,0 +1,568 @@
+{
+  "subjectId": "modern-history",
+  "chapterId": "rec-04",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "郑观应在《盛世危言》中提出的新概念，强调国际竞争应以商业竞争为主的是（　）。",
+      "options": [
+        "兵战",
+        "商战",
+        "文战",
+        "教战"
+      ],
+      "answer": 1,
+      "hint": "兵战为下，商战为上。",
+      "explanation": "老师讲郑观应提出“商战”概念，明确说国际竞争“兵战为下，商战为上”，国家应为商业竞争提供保护，反映民族资产阶级政治诉求。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 06:51 · 郑观应商战论"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "《马关条约》赔款总额（含赎回辽东）约为（　）。",
+      "options": [
+        "2100万银元",
+        "2.3亿两白银",
+        "6亿两白银",
+        "8000万两白银"
+      ],
+      "answer": 1,
+      "hint": "当时最大一笔赔款。",
+      "explanation": "老师指出：赔款2亿两加赎回辽东3000万两，共2.3亿两，约为清政府年收入4倍；借贷本息连本带息要还6亿多两。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 11:20 · 马关赔款"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "清政府以路矿权向西洋银行团抵押贷款，客观上与下列哪一历史后果关系最密切（　）。",
+      "options": [
+        "太平天国再起",
+        "武昌成为铁路枢纽与革命爆发点之一",
+        "立即实行共和制",
+        "废除全部不平等条约"
+      ],
+      "answer": 1,
+      "hint": "九省通衢、几条干线汇合。",
+      "explanation": "老师分析：京汉、粤汉、川汉等路权抵押，列强获勘探修筑权及沿线15华里矿权；武昌为多条干线汇合的枢纽，带来思想人员流动，与辛亥革命爆发非偶然相关。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 13:12 · 路矿权与武昌"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "梁启超将洋务运动学习目标概括为“器物之学”，与之相对，明治维新被强调学习的是（　）。",
+      "options": [
+        "仅学习造枪炮",
+        "政体国体的彻底性变革及全方位西方社会结构",
+        "恢复幕府将军制",
+        "完全拒绝西方"
+      ],
+      "answer": 1,
+      "hint": "对比“和魂洋才”与“中体西用”。",
+      "explanation": "老师对比：洋务学造枪炮、用枪炮（器物）；明治维新是对政体国体彻底颠覆，西洋“艺术”含社会风俗、礼仪、社会结构认知，非仅技术。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 19:31 · 器物之学与明治维新"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "《海国图志》在中日两国流传情况的对比是（　）。",
+      "options": [
+        "在中国极受欢迎，在日本被禁",
+        "在中国长期冷遇，1854年前在日本出20多版本",
+        "两国同时列为官定教材",
+        "魏源未在日本出版"
+      ],
+      "answer": 1,
+      "hint": "平象山教吉田松阴的教材。",
+      "explanation": "老师指出：1843年中国出版后长期漠视；1851年传入日本，1854年前已出20多版本，价翻4倍；吉田松阴等用《海国图志》教学——“人家改得多快，我们改得多慢”。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 26:37 · 海国图志中日对比"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "康有为为变法提供的经学武器中，断定古文经系刘歆父子伪造、为王莽造舆论的是（　）。",
+      "options": [
+        "《孔子改制考》",
+        "《新学伪经考》",
+        "《天演论》",
+        "《盛世危言》"
+      ],
+      "answer": 1,
+      "hint": "破古文经之伪。",
+      "explanation": "老师讲康有为写《新学伪经考》破古文经，虽阎若璩已有学术考辨，康将其武器化，称古文经全为刘歆、刘向伪造；再写《孔子改制考》立“孔子改制”形象。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 57:05 · 新学伪经考"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "康有为结合今文经“三世说”与进化论，认为“升平世”对应何种政治形态（　）。",
+      "options": [
+        "君主专制",
+        "君主立宪",
+        "民主共和",
+        "封建割据"
+      ],
+      "answer": 1,
+      "hint": "据乱→升平→太平。",
+      "explanation": "老师归纳：据乱世=君主专制，升平世=君主立宪，太平世=民主共和（《大同书》中甚至指向共产主义社会）；历史由循环改为上升进化。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:04:05 · 三世说与进化"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "维新派与守旧派论战的三个核心问题不包括（　）。",
+      "options": [
+        "要不要变法",
+        "要不要兴民权、设议院、实行君主立宪",
+        "要不要废八股改科举和兴西学",
+        "要不要立即推翻清朝建立民国"
+      ],
+      "answer": 3,
+      "hint": "三点论战。",
+      "explanation": "老师明确论战围绕三点：要不要变法；要不要兴民权设议院行君主立宪；要不要废八股改科举兴西学。维新派并非立即共和革命派。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:09:46 · 论战三大问题"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "关于公车上书，近年研究结论与康有为自述的主要差异是（　）。",
+      "options": [
+        "万言书按时送达光绪并获赞赏",
+        "万言书未送到光绪手中，光绪当时不知康有为",
+        "无举人参与签名",
+        "发生在甲午战争之前"
+      ],
+      "answer": 1,
+      "hint": "“虽未按时送出”。",
+      "explanation": "老师指出：学者普遍认为万言书未到光绪手中；康有为回南海后大肆宣传领导公车上书、光绪赞赏，成为其政治资本，但属夸大。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 35:06 · 公车上书考证"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "戊戌变法从《明定国是诏》到慈禧废除变法诏令，历时约（　）。",
+      "options": [
+        "30天",
+        "103天",
+        "300天",
+        "3年"
+      ],
+      "answer": 1,
+      "hint": "百日维新。",
+      "explanation": "老师讲：1898年6月11日光绪颁《明定国是诏》，至慈禧废除变法共103天，故称戊戌变法或百日维新。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:33:54 · 103天百日维新"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "早期改良派代表人物包括（　）。",
+      "answer": [0, 1],
+      "hint": "六七十年代即意识到不能止器物。",
+      "explanation": "老师介绍王韬、郑观应活跃于洋务时代六七十年代，较早意识到向西方学习不能止步于器物；严复属90年代维新派，不属于早期改良派。洪秀全是农民起义领袖，更不相关。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:39 · 王韬郑观应"
+      },
+      "options": [
+        "王韬",
+        "郑观应",
+        "严复",
+        "洪秀全"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "《马关条约》与两次鸦片战争相比，危机感的不同在于（　）。",
+      "answer": [0, 1],
+      "hint": "领土野心、列强瓜分。",
+      "explanation": "老师对比：过去英法主要为做生意，能不打则不打；马关显示日本有领土野心（占辽东），列强要求路矿权抵押，民族危机与过去“不可同日而语”。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 15:10 · 马关危机特殊性"
+      },
+      "options": [
+        "日本对中国有领土野心",
+        "列强通过路矿权等加深瓜分",
+        "战争仅发生在沿海五口",
+        "中国成为战胜国"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "维新变法运动在舆论动员上的创新包括（　）。",
+      "answer": [0, 1, 2],
+      "hint": "学会、报纸、知识分子参政。",
+      "explanation": "老师指出：维新派开创舆论战先河——办强学会、保国会、南学会、万木草堂、时务学堂等；大规模办报；使知识分子参与国政讨论，政治秘闻下沉。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:07:31 · 舆论战开创"
+      },
+      "options": [
+        "创办学会、学堂",
+        "大规模创办报纸",
+        "知识分子通过舆论干预政治",
+        "发动全国农民武装起义"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "今文经学的特点包括（　）。",
+      "answer": [0, 1, 2],
+      "hint": "政治神学、微言大义、变革武器。",
+      "explanation": "老师讲今文经属“政治神学”：孔子为“素王”；六经为孔子所作；强调微言大义；主张因时而变，历代常成变革者思想武器（王莽、庆历新政、康有为等）。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 54:52 · 今文经特点"
+      },
+      "options": [
+        "强调孔子为“素王”，六经为孔子所作",
+        "强调“微言大义”，主张因时而变",
+        "历史上常成为变革者的思想武器",
+        "认为古文经比今文经更正统"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "老师分析废八股改科举政策难以推行的原因包括（　）。",
+      "answer": [0, 1, 2],
+      "hint": "300万读书人、无替代方案、利益问题。",
+      "explanation": "老师指出：废除科举斩断300万读书人前途且无替代方案，地方不接诏；政治核心是资源分配与夺权，非单纯对不对；问题在谁控制中央权力，科举非封建本质属性（现代公考亦源于此）。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:27:04 · 废科举政策困境"
+      },
+      "options": [
+        "切断大量读书人前途且无替代出路",
+        "地方官员与士绅强烈抵制",
+        "触及既得利益，政治上是夺权而非单纯思想问题",
+        "光绪皇帝强烈反对废科举"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】平象山提出、吉田松阴继承的口号，与“中学为体，西学为用”表面相似的是（　）。",
+      "options": [
+        "尊王攘夷",
+        "东洋道德、西洋艺术（和魂洋才）",
+        "师夷长技以制夷",
+        "扶清灭洋"
+      ],
+      "answer": 1,
+      "hint": "八个字何其相似，差在“艺术”内涵。",
+      "explanation": "老师对比：平象山提“东洋道德、西洋艺术”，凝练为“和魂洋才”，表述与“中体西用”相似，但“艺术”含全方位西方社会结构，非仅器物，这是中日改革深度差异的关键。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 24:39 · 和魂洋才与中体西用"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】光绪皇帝参与维新变法的主要动机，老师分析更接近（　）。",
+      "options": [
+        "真心主动限制自身权力建立议会",
+        "借维新派从慈禧太后手中夺回权力，挑战既得利益集团",
+        "立即实行民主共和",
+        "完全拒绝任何改革"
+      ],
+      "answer": 1,
+      "hint": "“光脚的不怕穿鞋的”。",
+      "explanation": "老师指出：光绪并非真欲主动限权；目的是借维新派夺权；能实质支持他的只有“光着脚”、已无多少可失的光绪；改革注定伤害大批既得利益者。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:15:04 · 光绪与维新派关系"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】百日维新与明治维新在准备与时间上的对比，课堂强调的有（　）。",
+      "answer": [0, 1, 2],
+      "hint": "14年舆论+30年改革 vs 103天。",
+      "explanation": "老师对比：明治维新前平象山—吉田松阴师徒两代约14年思想舆论准备，1868大政奉还后至1898约30年；中国甲午失败后仅3年到戊戌变法，103天颁100多道诏书——改革过急过烈与其失败相关。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:36:46 · 百日与明治对比"
+      },
+      "options": [
+        "明治维新有约14年思想舆论准备",
+        "明治维新从1868到1898约30年完成",
+        "戊戌变法仅103天颁100多道诏书",
+        "慈禧一开始就坚决反对《明定国是诏》"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】严复翻译的《天演论》来源与特点是（　）。",
+      "options": [
+        "直译达尔文《物种起源》全书",
+        "主要据赫胥黎著作，且严复大量加注，鲁迅称“做了一篇《天演论》”",
+        "康有为亲笔撰写",
+        "日本官方教材"
+      ],
+      "answer": 1,
+      "hint": "社会达尔文主义中国化。",
+      "explanation": "老师说明：严复译的实为赫胥黎《天演论》而非《物种起源》；内容约原文1/3—1/2，其余为针对中国时局的注；社会达尔文主义“物竞天择”被时代化，1894年前已引发知识界巨浪。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 59:30 · 严复天演论"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】老师引用毛主席的话说明政治的本质是（　）。",
+      "options": [
+        "资源分配是政治唯一内容",
+        "把敌人搞得少少的，把朋友搞得多多的",
+        "纯粹讲道理说服所有人",
+        "完全依靠舆论战"
+      ],
+      "answer": 1,
+      "hint": "分析废科举为何触动利益。",
+      "explanation": "老师引毛主席口语化定义：政治就是把敌人搞得少少的，把朋友搞得多多的；进入实践领域核心是谁从中得利，而非单纯有没有道理。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:27:04 · 政治的本质"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "analysis",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "label": "辨析题",
+      "points": 10,
+      "stem": "辨析题：有人认为“康有为与光绪皇帝多次会面、合影，公车上书直接促使光绪下决心变法，因此康有为是戊戌变法的唯一核心”。请判断该说法是否正确。",
+      "answer": 0,
+      "hint": "见面一面、梁启超伪造合影。",
+      "explanation": "错误。老师指出：康有为自称多次见面，实际仅一面；与光绪合影系梁启超伪造；万言书未到光绪手中；康有为有虚华、剑走偏锋一面。戊戌变法是维新派集体努力，非康一人之功。",
+      "reasoning": "错误。夸大康有为作用；与学术考证及课堂史实不符；忽略梁启超、谭嗣同、严复等及光绪—慈禧权力结构。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 36:18 · 康有为夸大与伪造"
+      },
+      "scoring_criteria": [
+        "正确判断说法错误（2分）",
+        "指出公车上书、见面、合影等方面的史实偏差（4分）",
+        "说明戊戌变法的多元政治思想背景（4分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "label": "简答题",
+      "points": 10,
+      "stem": "简答题：简述维新派与守旧派论战的三个核心问题及康有为“托古改制”的主要做法。",
+      "answer": "论战三问题：要不要变法；要不要兴民权、设议院、实行君主立宪；要不要废八股改科举和兴西学。\n托古改制：运用今文经学，写《新学伪经考》破古文经，写《孔子改制考》把孔子塑造为改革家；结合严复《天演论》进化论，提出据乱—升平—太平三世进化说，宣称不是我要改革，而是孔子精神要求改革。",
+      "hint": "三点论战+两部著作。",
+      "explanation": "论战与今文经武器是课堂核心线索。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:09:46 · 论战与托古改制"
+      },
+      "scoring_criteria": [
+        "三个论战问题（4分）",
+        "托古改制主要做法（4分）",
+        "条理清楚（2分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "label": "论述题",
+      "points": 15,
+      "stem": "论述题：比较洋务运动与明治维新，分析甲午战争后中国为何在约三年内迅速走向戊戌变法，以及维新变法为何难以成功。",
+      "answer": "一、对比：洋务“器物之学”“中体西用”，维护封建体制；明治“和魂洋才”含制度与社会结构变革，1868—1898约30年。\n二、迅速变法原因：甲午惨败，《马关条约》2.3亿两及路矿权抵押，危机远超前两次鸦片战争；日本30年崛起对比强烈；《海国图志》等思想资源与留日传统；求新求变思潮蔓延。\n三、难以成功：103天过急，100多诏书缺乏社会基础；托古改制无法彻底打破孔子权威；触及300万读书人及既得利益，光绪仅借维新夺权；舆论限于知识分子，未动员民众；慈禧政变结束变法。",
+      "hint": "慢改vs速改+利益结构。",
+      "explanation": "贯穿rec-04的中日对比与政治利益分析。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 27:47 · 改革速度对比"
+      },
+      "scoring_criteria": [
+        "洋务与明治对比（5分）",
+        "三年内走向变法的原因（5分）",
+        "维新难以成功的原因（4分）",
+        "条理清楚（1分）"
+      ],
+      "total_points": 15
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "label": "材料分析题",
+      "points": 15,
+      "stem": "材料分析题：阅读材料，回答问题。\n\n> 材料：“我们不是在问废除科举制度是正确的吗？我们是在问废除科举制度是正确的政策吗？……你们现在把帝国的300万读书人的前途给斩断了。你有没有提供一个可以替代的方案？没有，所以在维新变法运动中废八股改科举的政策根本就没有推行下去。”\n> 老师又说：“科举制它跟封建专制，它不属于封建专制的本质属性的东西……问题不在于废不废除科举制度，问题在于夺权的问题，问题在于谁控制着中央权力的问题。”\n\n（1）老师如何区分“正确性”与“政策可行性”？（5分）\n（2）废科举政策为何在百日维新中推不下去？（5分）\n（3）这一分析对理解维新变法局限有何启示？（5分）",
+      "answer": "（1）正当性不等于可推行：最优解在理想状态才存在，实践中常取次优解；政策成败看能否达成政治目的（夺权、改革），而非抽象正确。\n（2）斩断300万读书人前途且无替代；地方不接诏；触及地主—士大夫—官僚既得利益；光绪借维新夺权，真正支持仅来自无实权的光绪。\n（3）维新局限在利益结构与权力格局：思想舆论战难动上层利益；改革过急；未动员底层民众；说明政治核心是资源分配与敌友关系，非单纯说理。",
+      "hint": "真空球形鸡+政治本质。",
+      "explanation": "材料来自废科举政策讨论，是理解维新失败的关键段落。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:23:18 · 废科举政策分析"
+      },
+      "scoring_criteria": [
+        "（1）正确性与可行性区分（5分）",
+        "（2）推不下去的原因（5分）",
+        "（3）对维新局限的启示（5分）"
+      ],
+      "total_points": 15
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "analysis": 1,
+      "essay": 3
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

@@ -1,0 +1,568 @@
+{
+  "subjectId": "modern-history",
+  "chapterId": "rec-01",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于中国近现代史的时间断代，下列说法与课堂内容一致的是（　）。",
+      "options": [
+        "1840年鸦片战争至1911年辛亥革命为中国近代史",
+        "1840年鸦片战争至1949年中华人民共和国成立前夕为中国近代史",
+        "1911年辛亥革命至1949年中华人民共和国成立为中国近代史",
+        "1949年中华人民共和国成立至1978年改革开放为中国现代史"
+      ],
+      "answer": 1,
+      "hint": "两个关键节点：1840与1949。",
+      "explanation": "老师明确：1840年鸦片战争到1949年中华人民共和国成立前夕为中国近代史，1949年以来为中国现代史。A、C错在起止年份；D错在现代史起点虽为1949年，但并未以1978年为界。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人4 25:47 · 1840与1949断代"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "马克思、恩格斯认为人类历史作为客观存在包含三个要素。古典史学（无论东西方）主要关注前两个而有意无意忽略的，是（　）。",
+      "options": [
+        "人的活动",
+        "人本身",
+        "环境条件",
+        "英雄人物的关键抉择"
+      ],
+      "answer": 2,
+      "hint": "福楼拜写包法利夫人的故事与此有关。",
+      "explanation": "老师指出三要素为人的活动、人本身、环境条件；古典史学聚焦前两者，唯物史观才重视环境条件——自然地理、社会历史、文化场域等“舞台”，它才是推动历史走向的根本性条件。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人4 20:55 · 唯物史观三要素"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "教师阐释“纲要”二字时指出，“纲”的本义是渔网的主绳。由此引出的学习历史的方法论是（　）。",
+      "options": [
+        "穷尽过去一切信息，如拉普拉斯妖般全知",
+        "提纲挈领，抓住主题主线，进而认识主流和本质",
+        "只研究帝王将相等“重要人物”",
+        "完全以个人主观印象定义历史"
+      ],
+      "answer": 1,
+      "hint": "抓住主绳，网口就收——“挈领”。",
+      "explanation": "老师以撒网捕鱼类比：纲是主绳，提纲挈领即抓住历史主题主线，认识主流本质；不可能穷尽过去一切知识，必须高效抓“纲”“要”。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人4 29:41 · 纲要拆词与提纲挈领"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于纲要课与历史专业课的区别，下列表述正确的是（　）。",
+      "options": [
+        "纲要课要求站在客观中立角度叙述和评价历史",
+        "纲要课主要是思想政治课，讲清“四个选择”的历史必然性",
+        "纲要课与历史专业课在立场和方法上完全相同",
+        "纲要课只需记住某年某月某日发生了什么"
+      ],
+      "answer": 1,
+      "hint": "双重属性：历史课+政治理论课。",
+      "explanation": "老师强调：历史专业追求客观中立；纲要课是必修思想政治课，站在中华民族、中国人民、中国共产党立场，用唯物史观讲清四个选择的历史必然性，目标是情感、价值与逻辑三重认同。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人4 33:48 · 纲要课性质与立场"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "课堂上多数同学认为“1911年辛亥革命爆发”是事实陈述，但有同学指出它也可能蕴含价值判断。其主要依据是（　）。",
+      "options": [
+        "“1911年”是客观时间，因此整句必为事实",
+        "“革命”一词本身带有立场，清廷视武昌首义为“反贼叛乱”",
+        "只有乙句“贪腐反动”才含价值判断",
+        "价值判断只出现在当代史学著作中"
+      ],
+      "answer": 1,
+      "hint": "《清史稿》怎么写武昌事件？",
+      "explanation": "老师引导：革命是从日本转译revolution而来；在清廷立场武昌是叛乱。我们生活在辛亥叙事的“延长线”上，才自然把该句当事实——这正是环境条件对人的塑造。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人4 42:43 · 革命一词的立场性"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "龚育之先生论述党史教育功能时提出的“资政育人”中，“资政”的含义是（　）。",
+      "options": [
+        "以史为师、学史明理，实现爱党爱国",
+        "以历史为镜，看清世界、参透生活、认识自己、指导未来",
+        "背诵重大事件年代以应付考试",
+        "站在局外人立场客观评价中国历史"
+      ],
+      "answer": 1,
+      "hint": "“资政”重在以史为鉴、面向未来。",
+      "explanation": "老师区分：资政是以历史为镜，认识过去是为了把握当下、面向未来；育人是在学习中以史为师、以史为鉴，实现学史明理、爱党爱国。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 07:48 · 资政育人功能"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "习近平同志在参观复兴之路展览时指出，中国近现代历史的主题主线是（　）。",
+      "options": [
+        "中国社会应对西方文明冲击并走向现代化",
+        "实现中华民族伟大复兴",
+        "实现工业化和城市化",
+        "建立资产阶级共和国"
+      ],
+      "answer": 1,
+      "hint": "这是站在中国立场凝练出的主题。",
+      "explanation": "老师引用：实现中华民族伟大复兴是近代以来最伟大的梦想，100年来历史主题即民族复兴。A是费正清“冲击—回应”模式，属于需批判的历史虚无主义观点。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 15:48 · 历史主题主线"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "费正清将中国近现代史主线概括为“冲击—回应”模式。按课堂分析，这一观点的深层前提是（　）。",
+      "options": [
+        "中国社会内部具有持续变革的强劲动力",
+        "认为晚清中国社会已失去内在变化发展的动力",
+        "强调中国人民是历史的创造者",
+        "站在中华民族立场研究中国问题"
+      ],
+      "answer": 1,
+      "hint": "联系黑格尔“中国停滞论”。",
+      "explanation": "老师指出：费氏模式认为若无西方打开国门，中国历史将停滞；其前提是中国已失内在发展动力（可溯至黑格尔）。在此前提下才会推出“鸦片战争送来现代文明”一类历史虚无主义论调。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 20:18 · 费正清冲击回应模式"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于1840年鸦片战争对当时人的意义，课堂上的核心观点是（　）。",
+      "options": [
+        "1840年出生者在20—30岁时必然意识到“近代史”开始了",
+        "1840年对当时普通人只是“道光年间”的平常一年，断代含义是后人赋予的",
+        "清政府立即全面认识到1840年的深远影响",
+        "1840年比1949年更重要，是唯一的近代史起点"
+      ],
+      "answer": 1,
+      "hint": "1810—1820年出生者怎么看1840？",
+      "explanation": "老师设问：当时20—30岁的人不会认为历史突然分成两段，他们处在道光年间；1840、1949作为断代标志是后世主观判断进入文化场域的结果。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 17:32 · 1840年对当时人的意义"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于本课程考核方式，老师明确说明（　）。",
+      "options": [
+        "开卷考试，可携带资料",
+        "闭卷考试",
+        "仅平时作业，无期末考试",
+        "讨论课成绩占期末100%"
+      ],
+      "answer": 1,
+      "hint": "课程技术安排部分。",
+      "explanation": "老师在介绍阅读、考勤后特别强调：本课是闭卷考试，所有内容统一在华科大课程平台上。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人4 51:53 · 闭卷考试"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "纲要课要认识的“四个选择”包括（　）。",
+      "answer": [0, 1, 2, 3],
+      "hint": "历史和人民的选择。",
+      "explanation": "老师原话：历史和人民怎样选择了马克思主义、中国共产党、社会主义道路、改革开放。四项缺一不可。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 11:10 · 四个选择"
+      },
+      "options": [
+        "选择了马克思主义",
+        "选择了中国共产党",
+        "选择了社会主义道路",
+        "选择了改革开放"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "教师归纳课堂讨论中“历史是什么”的分歧，涉及哪些维度（　）。",
+      "answer": [0, 1, 2],
+      "hint": "重要/全部、客观/主观、记录与评价。",
+      "explanation": "老师归纳三维度：重要vs全部；客观存在vs需主观记述；是否包含今人对过去的评价与反思——并指出这些分歧反映史学发展各阶段观点。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人4 16:09 · 历史是什么的三维分歧"
+      },
+      "options": [
+        "历史是全部过去还是仅“重要”之事",
+        "历史是客观存在还是需经人的记述与加工",
+        "历史是否包含今人对过去的评价与反思",
+        "历史是否等于王者荣耀游戏背景"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "教师指出历史事实具有的特点包括（　）。",
+      "answer": [0, 1, 2],
+      "hint": "一次性、相似性、规律性。",
+      "explanation": "老师讲历史的三个特点：一次性（往者不可追）；现象常现极大相似性（马克思：第一次正剧、第二次悲剧）；由此人们探寻可重复的历史规律，服务于资政育人。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 06:09 · 历史的三个特点"
+      },
+      "options": [
+        "一次性，过去了不会再来",
+        "历史现象往往出现极大相似性",
+        "可在相似现象中探寻具有重复性的规律",
+        "可以完全还原过去一切细节"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "教师列举的历史虚无主义典型表现包括（　）。",
+      "answer": [0, 1, 2],
+      "hint": "费正清模式、殖民文明论、假设历史。",
+      "explanation": "课堂评析：费正清“冲击—回应”及“鸦片战争送来现代文明”；否定本民族历史文化；以“重新评价”为名假设“若无西安事变”等——均属历史虚无主义，需用正确立场和方法辨析。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 42:03 · 西安事变历史假设与历史虚无主义"
+      },
+      "options": [
+        "“鸦片战争一声炮响，给中国送来了现代文明”",
+        "费正清“冲击—回应”模式作为中国近现代史主线",
+        "假设“若无西安事变”则中国可由蒋公带领",
+        "站在中华民族立场研究中国问题"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "老师建议的作业主题方向包括（　）。",
+      "answer": [0, 1, 2],
+      "hint": "长征90周年、红色探访、家史。",
+      "explanation": "老师列出三类：纪念红军长征胜利90周年；红色文化探访计划；大学生家史计划。形式可为文字、图片、PPT、短剧、视频等。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人4 49:09 · 作业三大主题"
+      },
+      "options": [
+        "纪念红军长征胜利90周年专题",
+        "红色文化探访计划",
+        "大学生家史计划",
+        "王者荣耀皮肤文化考据"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】大学阶段历史学习与初高中最大的不同，老师强调的核心目标是（　）。",
+      "options": [
+        "精确背诵某年某月某日某时发生了什么",
+        "掌握事件与其意义之间的内在联系，学会用历史唯物主义推导结论",
+        "培养对李白是刺客等历史爱好者兴趣",
+        "站在完全中立立场得出客观结论"
+      ],
+      "answer": 1,
+      "hint": "问“为什么”而非只背“能”和“好”。",
+      "explanation": "老师对比：初高中重年代与意义背诵；大学纲要课要认识近代社会发展进程及内在规律，掌握事件与意义的联系，用唯物史观回答“中国共产党为什么能”等，而非死记结论。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 12:17 · 大学与中学历史教育差异"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】1840年以来中国近现代历史的主流和本质，老师概括为（　）。",
+      "options": [
+        "中国应对西方冲击并逐步现代化的过程",
+        "中国人民救亡图存、实现民族复兴的英勇奋斗与艰辛探索并取得伟大成就的历史",
+        "帝王将相创造历史的英雄史诗",
+        "中国固有文明停滞等待西方拯救的历史"
+      ],
+      "answer": 1,
+      "hint": "小结部分的原话。",
+      "explanation": "老师小结：主流本质是人民救亡图存、实现民族复兴的奋斗探索史，尤其包括党领导下建立新中国、走向社会主义繁荣富强的历史。A、D是需批判的西方中心论或历史虚无主义表述。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 44:50 · 主流本质小结"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】学好纲要课的方法论要求包括（　）。",
+      "answer": [0, 1, 2, 3],
+      "hint": "科学史观、主题主线、反对虚无主义、四个选择。",
+      "explanation": "老师明确：运用科学历史观分析解决问题；明确主题主线主流本质；警惕反对历史虚无主义；实现对四个选择的情感、价值与逻辑认同——要求确实很高。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 13:39 · 学习方法论要求"
+      },
+      "options": [
+        "提高运用科学历史观分析问题和解决问题的能力",
+        "明确中国近现代历史的主题、主线、主流和本质",
+        "警惕并分析批判历史虚无主义",
+        "实现对四个选择的情感性、价值性与逻辑性认同"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】教师用武汉城市印象说明认识历史“主流与支流”：不应因交通混乱、说话粗鲁等负面印象否定武汉，而应看到东湖、樱花、长江与城市精神。这一类比旨在说明（　）。",
+      "options": [
+        "历史研究应只关注政治史",
+        "花边新闻、野史杂谈若被当作全部，会偏离近现代史的主流和本质",
+        "武汉没有缺点",
+        "支流比主流更重要"
+      ],
+      "answer": 1,
+      "hint": "民国文人风流逸事不是全部。",
+      "explanation": "老师指出：负面面相真实存在，但不是全部；政治史仍是影响今天思想的主要来源；1840年以来塑造今天生活的是救亡图存、党领导人民奋斗的主流，而非各类花边。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 30:53 · 主流与支流武汉类比"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】龚自珍名言“灭人之国，必先去其史”在课堂上的用意是说明（　）。",
+      "options": [
+        "历史学科应取消政治立场",
+        "抛弃或背叛本民族历史文化不可能真正发展，与抵御历史虚无主义相关",
+        "所有历史记载都是帝王家谱",
+        "历史学只需研究自然地理"
+      ],
+      "answer": 1,
+      "hint": "联系习近平关于历史文化的论述。",
+      "explanation": "老师引龚自珍并接习近平论述：历史凝聚民族灵魂；抛弃背叛历史文化是历史虚无主义的一种表现，学习纲要正是要认识根源、脊梁与灵魂，抵御此类观点。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 03:17 · 灭人之国必先去其史"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "analysis",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "label": "辨析题",
+      "points": 10,
+      "stem": "辨析题：有人说，“如果没有西方殖民者打开中国国门，中国社会将长期停滞在晚清腐朽统治之下；因此鸦片战争一声炮响，给中国送来了现代文明。”请判断该观点是否正确，并说明理由。",
+      "answer": 0,
+      "hint": "联系费正清模式与历史虚无主义。",
+      "explanation": "该观点错误，属于历史虚无主义。老师指出其模仿“十月革命一声炮响”而来，深层前提是认为中国社会已失内在发展动力（黑格尔、费正清一脉）；正确主线应是从中国立场看中国人民救亡图存、实现民族复兴的奋斗史，而非感谢殖民侵略。",
+      "reasoning": "错误。前提错误：否定中国社会内在变革动力；立场错误：站在殖民主义视角美化侵略；与课程主题主线（实现中华民族伟大复兴）根本对立。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 23:45 · 鸦片战争送来现代文明论"
+      },
+      "scoring_criteria": [
+        "正确判断命题错误（2分）",
+        "指出其属于历史虚无主义并说明错误前提（4分）",
+        "结合课堂提出正确主题主线并论证（4分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "label": "简答题",
+      "points": 10,
+      "stem": "简答题：简述“四个选择”的具体内容，并说明纲要课为何不能停留于背诵结论。",
+      "answer": "四个选择：历史和人民选择了马克思主义、中国共产党、社会主义道路、改革开放。\n纲要课不能停留背诵，因为大学教育目标是认识近代中国社会发展、革命建设改革的历史进程及其内在规律性，掌握事件与意义之间的联系，学会用历史唯物主义推导“为什么”，实现情感、价值与逻辑三重认同，而非死记“能”“好”等结论。",
+      "hint": "四个选择+“为什么”。",
+      "explanation": "老师强调四个选择是根本教育目的之一；与初高中不同，要回答中国共产党为什么能、中国特色社会主义为什么好。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 11:10 · 四个选择与学习目标"
+      },
+      "scoring_criteria": [
+        "正确列出四个选择（4分）",
+        "说明不能停留背诵、要掌握内在规律（4分）",
+        "条理清楚（2分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "label": "论述题",
+      "points": 15,
+      "stem": "论述题：结合课堂关于“环境条件”的讲授，论述为什么要学习中国近现代史纲要，以及如何抵御历史虚无主义。",
+      "answer": "一、环境条件的决定性：历史是主客观合一；人的思想被自然地理、社会历史、文化场域塑造（如“辛亥革命”叙事、王者荣耀接触历史元素）。福楼拜例说明人物命运由环境推动而非任意改写。\n二、学习纲要的意义：认识塑造我们的环境，突破知识傲慢；通过断代史知识理解四个选择；资政育人，学史明理、爱党爱国。\n三、抵御历史虚无主义：树立唯物史观和正确党史观，站在中华民族、人民、党立场；识别费正清模式、殖民文明论、历史假设等；追问历史事件的环境条件与必然性，区分重新评价与意淫幻想。",
+      "hint": "环境条件+四个选择+批判虚无主义。",
+      "explanation": "贯穿第一课：历史是什么→环境条件→纲要课性质→主题主线→历史虚无主义辨析。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 44:00 · 抵御历史虚无主义"
+      },
+      "scoring_criteria": [
+        "阐述环境条件及其对历史认识的作用（5分）",
+        "论述学习纲要课的意义（5分）",
+        "说明识别和抵御历史虚无主义的路径（4分）",
+        "史论结合、条理清楚（1分）"
+      ],
+      "total_points": 15
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "label": "材料分析题",
+      "points": 15,
+      "stem": "材料分析题：阅读材料，回答问题。\n\n> 材料：“我们仅仅知道一门唯一的科学，即历史科学。”（恩格斯）课堂上，老师提到这句话也出现在游戏《王者荣耀》伽罗皮肤“天狼追猎者”的出场台词中，并追问：在大学场域学习历史，我们更应关注“李白为什么是刺客”，还是“为什么要把李白做成刺客”？\n\n（1）材料中的“历史科学”观与课堂讨论的“历史是什么”有何关联？（5分）\n（2）“为什么要把李白做成刺客”这一追问体现了怎样的历史观？（5分）\n（3）这对理解纲要课的学习方法有何启示？（5分）",
+      "answer": "（1）历史科学强调历史具有规律性、整体性；课堂讨论揭示历史是主客观合一，需通过记述进入文化场域，并关注环境条件对认知的塑造。\n（2）体现唯物史观：不纠缠个别史实娱乐化改编，而追问文化产品背后的社会历史背景、环境条件与意识形态动因。\n（3）启示：纲要课要抓主题主线主流本质，认识塑造思想的环境条件，用马克思主义史学方法理解四个选择，而非被动接受流行叙事。",
+      "hint": "环境条件+游戏改编+方法论。",
+      "explanation": "材料来自课堂恩格斯引文与王者荣耀、李白刺客之辨，核心是环境条件决定论与纲要课方法论。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-01.md",
+        "label": "rec-01 · 说话人4 24:46 · 李白刺客与环境条件"
+      },
+      "scoring_criteria": [
+        "（1）历史科学与课堂讨论关联（5分）",
+        "（2）追问体现的历史观（5分）",
+        "（3）对纲要课学习方法的启示（5分）"
+      ],
+      "total_points": 15
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "analysis": 1,
+      "essay": 3
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

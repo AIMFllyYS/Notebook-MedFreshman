@@ -1,0 +1,567 @@
+{
+  "subjectId": "modern-history",
+  "chapterId": "rec-02",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "太平天国农民战争与中国历史上诸多农民起义最显著的不同背景是（　）。",
+      "options": [
+        "首次提出“均田”口号",
+        "农民已被迫卷入全球市场的中国经济之中",
+        "完全依靠儒家经典动员群众",
+        "得到外国列强直接军事援助"
+      ],
+      "answer": 1,
+      "hint": "与上节课全球贸易背景相连。",
+      "explanation": "老师指出：共同背景是封建压迫，但太平天国面临的经济背景是已被迫卷入全球市场的中国经济，这是与以往农民起义的显著不同。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 01:48 · 太平天国独特背景"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "据台湾学者林满红研究，约1815年起清代北方城市银铜比价最高可达（　）。",
+      "options": [
+        "1:800",
+        "1:1000",
+        "1:2200以上，最高约1:2600",
+        "1:500"
+      ],
+      "answer": 2,
+      "hint": "银贵钱贱加剧农民负担。",
+      "explanation": "老师引用林满红数据：1815年起北方银铜比升至1:2200以上，最高约1:2600；清初大城市曾低至1:800。税收占家庭收入比例可由1/5—1/10升至2/5以上。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 08:38 · 林满红银铜比研究"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "洪秀全1836年发高烧后做的梦被称为（　）。",
+      "options": [
+        "甲午异梦",
+        "丁酉异梦",
+        "天父下凡",
+        "金田预言"
+      ],
+      "answer": 1,
+      "hint": "1836年发高烧后所做之梦，录音中称其为丁酉异梦。",
+      "explanation": "老师讲述：1836年洪秀全考秀才失败后高烧四五十天，梦中见天父皇上帝等，此梦称“丁酉异梦”；1842年读《劝世良言》后与之印证，创立拜上帝教。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 18:05 · 丁酉异梦"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "1851年洪秀全以何种名义在金田集结教众，掀起起义（　）。",
+      "options": [
+        "反清复明",
+        "给天父庆生",
+        "推翻孔教",
+        "北伐直捣北京"
+      ],
+      "answer": 1,
+      "hint": "地方官府监控下的借口。",
+      "explanation": "老师讲：1851年洪秀全以给天父庆生名义集结数万人于广西桂平县金田村；清政府监控下，洪秀全称清廷要杀尽教众，遂起金田起义，建号太平天国。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 30:58 · 金田起义"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "《天朝田亩制度》中“凡天下田，天下人同耕……此处不足则迁彼处”等表述，老师认为其思想根源最接近（　）。",
+      "options": [
+        "纯粹的基督教教义",
+        "两千多年地主小农经济下农民与儒家共同的社会理想",
+        "西方空想社会主义原著",
+        "清代经世致用学派"
+      ],
+      "answer": 1,
+      "hint": "联想《孟子·梁惠王上》与《水浒传》李逵。",
+      "explanation": "老师指出：条文与《孟子》“河东凶则移其民……”相通；核心是“有田同耕、有饭同食……无处不均匀”；这是农民两千年的共同理想，非仅儒家大同影响。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 37:25 · 天朝田亩制度思想根源"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "定都天京后，杨秀清等人上书建议“照旧交粮纳税”，洪秀全批复“胞等所议是也”。这说明（　）。",
+      "options": [
+        "《天朝田亩制度》在占领区完全落实",
+        "理想性的平均分配方案在战争现实中难以实行",
+        "太平天国立即放弃土地改革",
+        "清政府已承认太平天国合法"
+      ],
+      "answer": 1,
+      "hint": "理想与现实的分野。",
+      "explanation": "老师强调：“物归上主、圣库分配”设想从未真正实现；江西军事胜利后，面对现实只能照旧交粮纳税，反映农民平均主义理想不具备实际可实现性。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 44:31 · 照旧交粮纳税"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "1856年天京事变中，首先被韦昌辉率部杀害的是（　）。",
+      "options": [
+        "洪秀全",
+        "杨秀清",
+        "石达开",
+        "冯云山"
+      ],
+      "answer": 1,
+      "hint": "东王与天王矛盾。",
+      "explanation": "老师及视频：1856年9月韦昌辉奉洪秀全密诏回京，杀东王杨秀清及2万多将士；后又杀石达开全家（石逃脱），三个月后再诛韦昌辉，严重削弱太平天国。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人2 01:02:19 · 天京事变"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "关于《资政新篇》，下列与课堂表述一致的是（　）。",
+      "options": [
+        "在太平天国基层全面推行并见成效",
+        "具有资本主义色彩，但从未被付诸实践",
+        "由杨秀清代天父下凡提出",
+        "主要内容是恢复四书五经教育"
+      ],
+      "answer": 1,
+      "hint": "洪仁玕1859年提出。",
+      "explanation": "老师明确：《资政新篇》具鲜明资本主义色彩，洪秀全批“是也”，但在战乱中既未尝试实践，也无任何一条措施真正落地，只是上层政治设计蓝图。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 01:12:42 · 资政新篇未实践"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "老师认为陈胜、吴广不宜简单称为“农民起义”，主要依据是（　）。",
+      "options": [
+        "他们从未建立政权",
+        "陈胜有字，被《史记》归入“世家”，应为破落贵族后代",
+        "他们反对土地兼并",
+        "他们使用宗教动员"
+      ],
+      "answer": 1,
+      "hint": "“农民是不可能有字的”。",
+      "explanation": "老师指出：陈涉世家表明陈胜有字，是破落贵族后代，农民不可能有字；真正建立完整政权的农民起义极少，如李自成、洪秀全等。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 41:48 · 陈胜吴广非农民"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "太平天国失败时，天京于何年被湘军攻破（　）。",
+      "options": [
+        "1856年",
+        "1859年",
+        "1864年",
+        "1871年"
+      ],
+      "answer": 2,
+      "hint": "洪秀全病亡后次月。",
+      "explanation": "老师讲：1864年6月洪秀全病亡，7月天京被湘军攻破；曾国荃下令“不封刀屠城十日”，太平天国起义正式失败。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 01:15:42 · 1864天京陷落"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "下列属于永安建制所封诸王的有（　）。",
+      "answer": [0, 1, 2, 3],
+      "hint": "东、西、南、北、翼。",
+      "explanation": "老师列举：东王杨秀清、西王萧朝贵、南王冯云山、北王韦昌辉、翼王石达开；制度粗糙，带说书演义色彩。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 31:46 · 永安建制五王"
+      },
+      "options": [
+        "东王杨秀清",
+        "西王萧朝贵",
+        "北王韦昌辉",
+        "翼王石达开"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "《天朝田亩制度》的主要内容包括（　）。",
+      "answer": [0, 1, 2, 3],
+      "hint": "土地、圣库、军政教合一等。",
+      "explanation": "老师归纳：按产量分等、按人口平分土地；“物归上主”圣库分配；军事与社会制度合一；政教合一，废私塾儒学，设礼拜堂读洪秀全著作；还有司法与选举制度。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 34:22 · 天朝田亩制度内容"
+      },
+      "options": [
+        "否定封建土地所有制，按人口平分土地",
+        "缴获物资归圣库，按需求分配",
+        "军事制度与社会制度合一",
+        "政教合一，废除四书五经"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "老师归纳的太平天国历史功绩包括（　）。",
+      "answer": [0, 1, 2, 3],
+      "hint": "教材四点逐条对应。",
+      "explanation": "老师分析四点：沉重打击封建统治、撼动清根基；旧式农民战争最高峰且具新特点；一定程度上削弱封建精神支柱；有力打击外国侵略势力（19世纪中叶亚洲民族解放运动中最久最大最深之一）。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 01:17:56 · 太平天国历史功绩"
+      },
+      "options": [
+        "沉重打击封建统治阶级，撼动清政府统治根基",
+        "旧式农民战争的最高峰，具有新的历史特点",
+        "一定程度上削弱了封建统治的精神支柱",
+        "有力打击了外国侵略势力"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "太平天国失败的主观原因，老师概括为（　）。",
+      "answer": [0, 1, 2, 3],
+      "hint": "四点：腐败、战略、宗教、对西方认识。",
+      "explanation": "老师明确四点主观原因：领导集团腐败争权；军事战略重大失误（北伐分兵、拒捻军结盟、拒“让城别走”等）；拜上帝教危害；对西方侵略者缺乏理性认识，未能区别侵略者与普通民众。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 01:36:01 · 失败主观原因"
+      },
+      "options": [
+        "无法制止领导集团自身腐败",
+        "军事战略出现重大失误",
+        "以宗教发动组织群众带来危害",
+        "对西方资本主义侵略者缺乏理性认识"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "points": 2,
+      "stem": "洪秀全、冯云山在广西传教时利用的有利条件包括（　）。",
+      "answer": [0, 1],
+      "hint": "贫困山区与土客矛盾。",
+      "explanation": "老师指出：他们刻意前往贫困山区；利用两广土客矛盾——客家人贫困且好勇斗狠（如土楼防御），成为组织群众的有利条件。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 28:00 · 土客矛盾与广西传教"
+      },
+      "options": [
+        "客家人贫困且长期土客械斗形成的动员基础",
+        "刻意选择远离官府的贫困山区",
+        "清政府主动支持拜上帝教",
+        "英国传教士全面军事援助"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】老师解释“撼动清政府统治根基”的核心含义是（　）。",
+      "options": [
+        "太平天国立即推翻了清朝",
+        "打碎清政府暴力垄断，迫使依靠湘军淮军等地方武装，引发晚清地方军事化",
+        "仅造成经济上的白银外流",
+        "使科举制度立即废除"
+      ],
+      "answer": 1,
+      "hint": "“天子兵强马壮者为之”。",
+      "explanation": "老师阐释：太平天国硬打碎了清暴力垄断，暴露八旗绿营失效；只能允许曾国藩等办团练、自开厘卡自筹粮饷，湘淮楚军演变为地方军阀集团——清政府事实上已完蛋。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 01:19:15 · 撼动统治根基"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】认定太平天国是“农民政权”的最根本依据是（　）。",
+      "options": [
+        "洪秀全自称上帝次子",
+        "颁布以解决土地问题为中心的《天朝田亩制度》",
+        "定都南京改称天京",
+        "与洋人辩论基督教神学"
+      ],
+      "answer": 1,
+      "hint": "纲领性文件。",
+      "explanation": "老师强调：定都天京后颁布《天朝田亩制度》，贯穿否定封建土地所有制和平均主义，以制度形式规定农民两千年来的土地愿望，这是认定其农民政权的最根本原因。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 32:59 · 农民政权依据"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】关于太平天国与西方的关系，课堂要点包括（　）。",
+      "answer": [0, 1, 2],
+      "hint": "传教士兴奋→异端→倒向清政府。",
+      "explanation": "老师讲述：起事初西方宗教界曾兴奋；访天京后认为洪秀全魔改基督教为异端；英国希望臣服并承认不平等条约、允许鸦片，太平天国不可能接受，洋人最终倒向清政府“借师助剿”。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 01:31:40 · 太平天国与西方"
+      },
+      "options": [
+        "西方传教士最初对“东方长老国”传说曾非常兴奋",
+        "洪秀全与正统传教士辩论后仍坚持自身神学",
+        "英国最终选择与清政府合作镇压太平天国",
+        "太平天国主动签订全部不平等条约"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】杨秀清在洪秀全被官府抓住、拜上帝会群龙无首时，通过“口吐白沫、天父下凡”稳定局面。老师对此的评价侧重（　）。",
+      "options": [
+        "纯粹骗术，毫无历史意义",
+        "体现宗教动员中巫术与权力的结合，以及杨秀清的智慧、勇气与野心",
+        "证明天父真的下凡",
+        "说明清政府立即全面镇压成功"
+      ],
+      "answer": 1,
+      "hint": "宗教形式与权力斗争的联系。",
+      "explanation": "老师分析：天京事变起因与宗教动员形式直接相关；杨秀清用“代天父传旨”解危并巩固权力，后甚至辱骂殴打洪秀全；同时展现其军事才能——这是理解内讧的关键。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 56:41 · 杨秀清代天父下凡"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "label": "考试重点",
+      "points": 4,
+      "stem": "【考试重点】关于“举人在1851年投奔洪秀全、被拒后转投曾国藩即为左宗棠”的流行故事，课堂结论是（　）。",
+      "options": [
+        "确有其事，是信史",
+        "学者考证为民间传说侵蚀史学，但反映了依赖地主士大夫才能夺天下的问题",
+        "证明洪秀全正确采纳了儒家正统",
+        "说明左宗棠出身农民"
+      ],
+      "answer": 1,
+      "hint": "传说与学术考证。",
+      "explanation": "老师指出：近年学者考证该故事为假，是民间传说倒灌学界；但反映根本问题——未打破旧基础前夺天下仍须依赖地主阶级，洪秀全拒儒则削弱精神支柱亦引败亡因素。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 01:30:30 · 左宗棠传说考证"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "analysis",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "label": "辨析题",
+      "points": 10,
+      "stem": "辨析题：有人认为“陈胜、吴广起义是中国历史上典型的农民战争，与太平天国一样都是农民阶级反抗封建压迫”。请判断该说法是否准确，并说明理由。",
+      "answer": 0,
+      "hint": "陈涉世家与农民身份。",
+      "explanation": "不准确。老师明确：陈胜有字，入《史记·陈涉世家》，应为破落贵族后代，“农民是不可能有字的”；不宜与太平天国等真正农民战争简单并列。",
+      "reasoning": "错误。混淆不同社会身份的起义性质；陈胜吴广不能简单称为农民起义；太平天国则有明确农民纲领《天朝田亩制度》和农民政权特征。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 41:48 · 陈胜吴广身份辨析"
+      },
+      "scoring_criteria": [
+        "正确判断说法不准确（2分）",
+        "指出陈胜吴广非典型农民起义的依据（4分）",
+        "对比太平天国作为农民战争的特征（4分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "label": "简答题",
+      "points": 10,
+      "stem": "简答题：简述《天朝田亩制度》的基本精神及其历史地位。",
+      "answer": "基本精神：否定封建土地所有制，贯穿“天下大家处处平均、人人饱暖”的平均主义；规定按人口平分土地、物归圣库、按需分配，并实行军政教合一等。\n历史地位：反映中国农民两千年来的土地愿望，并以纲领性文献形式固定下来，在中国历史上是空前的；是认定太平天国为农民政权的最根本依据。但未能超出小生产者狭隘眼界，仍属闭塞自给自足的自然经济理想，占领区亦未真正实行。",
+      "hint": "精神+地位+局限。",
+      "explanation": "老师对比李自成“闯王来了不纳粮”仅为口号，强调《天朝田亩制度》之空前性。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 32:59 · 天朝田亩制度地位"
+      },
+      "scoring_criteria": [
+        "基本精神（4分）",
+        "历史地位（4分）",
+        "条理清楚（2分）"
+      ],
+      "total_points": 10
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "label": "论述题",
+      "points": 15,
+      "stem": "论述题：结合课堂内容，论述太平天国如何“撼动清政府统治根基”，并分析其最终失败的原因。",
+      "answer": "一、撼动根基：暴露八旗绿营失效，清政府虚架子绷不住；被迫允许地方办团练，1858年后湘军等自开厘卡自筹粮饷，演变为湘淮楚军地方军事集团，出现晚清地方军事化，皇权名存实亡。\n二、失败原因：客观上洋人倒向清政府，“借师助剿”致力量悬殊；主观上领导集团腐败争权、军事战略失误（北伐孤军、拒结盟、拒战略转移）、宗教动员危害、对西方侵略缺乏理性认识。\n三、小结：是旧式农民战争最高峰，但无法超越农民阶级和拜上帝教局限。",
+      "hint": "湘军淮军+主客观失败原因。",
+      "explanation": "功绩与失败原因均为课堂重点收束部分。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 01:26:05 · 地方军事化与失败"
+      },
+      "scoring_criteria": [
+        "阐述如何撼动统治根基（6分）",
+        "分析失败主客观原因（6分）",
+        "史论结合、条理清楚（3分）"
+      ],
+      "total_points": 15
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-02",
+      "label": "材料分析题",
+      "points": 15,
+      "stem": "材料分析题：阅读材料，回答问题。\n\n> 材料：“凡天下田，天下人同耕，处处平均，人人饱暖。有田同耕，有饭同食，有衣同穿，有钱同使，无处不均匀，无人不饱暖也。”——《天朝田亩制度》\n> 老师课堂评点：“这一句话只是个由头，它真正的东西是什么？是有田同耕……这是2000多年的地主小农经济产生的共同的社会理想。”\n\n（1）该纲领反映的核心诉求是什么？（5分）\n（2）老师为何说这与儒家“大同”说法“并不尽然”？（5分）\n（3）该理想为何在太平天国实践中难以实现？（5分）",
+      "answer": "（1）否定封建土地所有制，实现土地平均、产品公有分配，反映农民阶级对土地的渴望和平均主义理想。\n（2）此理想非儒家独有，而是地主—小农对立双方共享的社会理想；儒家因文化水平能较好表达，农民亦有同样理想但难以表述；不能简单说仅受儒家大同影响。\n（3）超出小生产者狭隘眼界，属闭塞自给自足自然经济幻想；战争环境下“照旧交粮纳税”；圣库分配从未真正实行；领导集团后期腐化背离“无处不均匀”。",
+      "hint": "由头vs实质+理想vs现实。",
+      "explanation": "材料与评点均来自《天朝田亩制度》讲授段落。",
+      "sourceRef": {
+        "path": "content/modern-history/recording/rec-02.md",
+        "label": "rec-02 · 说话人1 39:22 · 有田同耕理想"
+      },
+      "scoring_criteria": [
+        "（1）核心诉求（5分）",
+        "（2）与儒家大同关系（5分）",
+        "（3）难以实现的原因（5分）"
+      ],
+      "total_points": 15
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "analysis": 1,
+      "essay": 3
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}
