@@ -5,7 +5,7 @@
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
-    "timeLimit": 50
+    "timeLimit": 120
   },
   "questions": [
     {
@@ -14,21 +14,20 @@
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch01",
-      "label": "单项选择题",
-      "points": 10,
-      "stem": "下列关于事件“互斥”和“对立”的说法，正确的是（　）。",
+      "points": 2,
+      "stem": "已知事件 A、B 满足 \n$$\nP(A)=\\frac{3}{5},\\ P(B)=\\frac{1}{2},\\ P(AB)=\\frac{1}{5}\n$$\n 则 \n$$\nP(A\\cup B)\n$$\n 等于（ ）。",
       "options": [
-        "互斥事件一定互为对立事件",
-        "对立事件一定互斥，且两事件之并为样本空间",
-        "若两个事件互斥，则二者概率之和一定为 1",
-        "若两个事件不可能同时发生，则二者一定覆盖全部样本空间"
+        "\n$$\nP(A\\cup B)=\\frac{3}{5}+\\frac{1}{2}-\\frac{1}{5}=\\frac{9}{10}\n$$\n",
+        "\n$$\n\\frac{11}{10}\n$$\n",
+        "\n$$\n\\frac{3}{10}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n"
       ],
-      "answer": 1,
-      "hint": "先分别写出互斥和对立的集合条件，再比较谁多了一个“覆盖整个样本空间”的要求。",
-      "explanation": "B 正确。互斥只要求两个事件不能同时发生，即交集为空；对立不仅要求互斥，还要求二者之并等于样本空间，因此对立是互斥的特殊情形。A、C、D 都把互斥误当成了对立：互斥事件可能都不发生，概率和不一定为 1，也不一定覆盖全部样本空间。",
+      "answer": 0,
+      "hint": "用加法公式，注意交集概率只能减一次。",
+      "explanation": "由事件加法公式 \n$$\nP(A\\cup B)=P(A)+P(B)-P(AB)\n$$\n Python 分数校验得到 9/10，故选该项；不减交集会重复计数，直接相乘则误把题目当成独立事件。",
       "sourceRef": {
         "path": "content/chapters/ch01/1.2.md",
-        "label": "1.2 事件间的关系与运算 · 互斥与对立"
+        "label": "1.2 事件间的关系与运算"
       }
     },
     {
@@ -37,232 +36,580 @@
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch01",
-      "label": "单项选择题",
-      "points": 10,
-      "stem": "若事件 A 与 B 相互独立，且 P(A)>0、P(B)>0，下列结论一定成立的是（　）。",
+      "points": 2,
+      "stem": "袋中有 5 个白球、3 个黑球，不放回任取 3 个，恰有 2 个白球的概率是（ ）。",
       "options": [
-        "A 与 B 一定互斥",
-        "P(A|B)=P(A)",
-        "P(A∪B)=P(A)+P(B)",
-        "P(A-B)=P(A)-P(B)"
+        "\n$$\n\\frac{15}{4}\n$$\n",
+        "\n$$\n\\frac{5}{28}\n$$\n",
+        "\n$$\n\\frac{1}{2}\n$$\n",
+        "\n$$\n\\frac{15}{28}\n$$\n"
       ],
-      "answer": 1,
-      "hint": "独立性表达的是一个事件发生不改变另一个事件的概率；互斥表达的是不能同时发生。",
-      "explanation": "B 正确。独立的定义为 P(AB)=P(A)P(B)，在 P(B)>0 时等价于 P(A|B)=P(A)。A 错：若 A、B 均为正概率事件，互斥会导致 P(AB)=0，与独立时 P(A)P(B)>0 矛盾。C 错：一般加法公式为 P(A∪B)=P(A)+P(B)-P(AB)，独立时仍要减 P(A)P(B)。D 错：通用减法公式是 P(A-B)=P(A)-P(AB)，只有 B⊆A 时才可写成 P(A)-P(B)。",
+      "answer": 3,
+      "hint": "总取法数和有利取法数都按组合数计算。",
+      "explanation": "总取法数为 \n$$\nC_8^3=56\n$$\n 有利取法数为 \n$$\nC_5^2C_3^1=30\n$$\n Python 组合数校验概率为 \n$$\n\\frac{15}{28}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.6.md",
-        "label": "1.6 事件的独立性 · 两事件独立的定义 / 互斥与独立"
+        "path": "content/chapters/ch01/1.4.md",
+        "label": "1.4 古典概型与几何概型"
       }
     },
     {
       "id": "q003",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch01",
-      "label": "填空题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设 P(A)=0.6，P(B)=0.5，P(AB)=0.3，则 P(\\bar{A}\\bar{B})=____。",
-      "answer": "0.2",
-      "hint": "先用加法公式求 P(A∪B)，再对“都不发生”取对立。",
-      "explanation": "由两事件加法公式，P(A∪B)=P(A)+P(B)-P(AB)=0.6+0.5-0.3=0.8。由德摩根律，\\bar{A}\\bar{B}=\\overline{A∪B}，所以 P(\\bar{A}\\bar{B})=1-P(A∪B)=0.2。这里的关键是不能把 P(A∪B) 直接写成 1.1，必须减去重复计算的交集。",
-      "scoring_criteria": [
-        "正确写出加法公式 P(A∪B)=P(A)+P(B)-P(AB)（4分）",
-        "算得 P(A∪B)=0.8（3分）",
-        "用对立事件得 P(\\bar{A}\\bar{B})=0.2（3分）"
+      "points": 2,
+      "stem": "某产品来自三条生产线的比例为 0.2、0.5、0.3，次品率分别为 0.01、0.02、0.04。随机取一件发现为次品，它来自第三条生产线的概率是（ ）。",
+      "options": [
+        "\n$$\n\\frac{3}{125}\n$$\n",
+        "\n$$\n\\frac{1}{3}\n$$\n",
+        "\n$$\n\\frac{1}{2}\n$$\n",
+        "\n$$\n\\frac{3}{250}\n$$\n"
       ],
+      "answer": 2,
+      "hint": "先用全概率公式求次品总概率，再用贝叶斯公式由果溯因。",
+      "explanation": "Python 精确分数计算次品总概率 \n$$\nP(D)=\\frac{3}{125}\n$$\n 后验概率 \n$$\nP(B_3\\mid D)=\\frac{3}{250}/\\frac{3}{125}=\\frac{1}{2}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.3.md",
-        "label": "1.3 频率与概率 · 加法公式 / 对立事件公式"
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式"
       }
     },
     {
       "id": "q004",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch01",
-      "label": "填空题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设 B1,B2,...,Bn 构成样本空间的一个划分，且 P(Bi)>0。全概率公式可写为____。",
-      "answer": "\\n$$\\nP(A)=\\sum_{i=1}^{n}P(B_i)P(A\\mid B_i)\\n$$\\n",
-      "hint": "把事件 A 按完备事件组切成互不相容的几块，再分别用乘法公式展开。",
-      "explanation": "完备事件组 B1,...,Bn 互不相容且并为 Ω，因此 A 可分解为 AB1,AB2,...,ABn 的互不相容并。由有限可加性 P(A)=ΣP(ABi)，再用乘法公式 P(ABi)=P(Bi)P(A|Bi)，得到全概率公式。它用于“由因推果”：按原因发生的权重加权各条件概率。",
-      "scoring_criteria": [
-        "写出按划分求和的结构（3分）",
-        "每一项包含原因概率 P(B_i)（3分）",
-        "每一项包含条件概率 P(A\\mid B_i)，整体表达正确（4分）"
+      "points": 2,
+      "stem": "两个独立部件并联，可靠度分别为 0.9 与 0.8，则系统可靠度为（ ）。",
+      "options": [
+        "\n$$\n\\frac{17}{10}\n$$\n",
+        "\n$$\n\\frac{49}{50}\n$$\n",
+        "\n$$\n\\frac{18}{25}\n$$\n",
+        "\n$$\n\\frac{7}{25}\n$$\n"
       ],
+      "answer": 1,
+      "hint": "并联系统失效当且仅当两个部件都失效。",
+      "explanation": "并联可靠度为 \n$$\n1-(1-R_1)(1-R_2)\n$$\n Python 分数计算为 \n$$\n\\frac{49}{50}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.5.md",
-        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式 · 全概率公式"
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
       }
     },
     {
       "id": "q005",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch01",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "袋中有 5 个红球、3 个白球，从中随机不放回取出 3 个。求恰好取到 2 个红球、1 个白球的概率。",
-      "answer": "不放回且不计顺序，可用古典概型的组合计数。样本空间大小为\\n$$\\n\\binom{8}{3}=56.\\n$$\\n恰好 2 红 1 白的取法数为\\n$$\\n\\binom{5}{2}\\binom{3}{1}=10\\times 3=30.\\n$$\\n故所求概率为\\n$$\\nP=\\frac{30}{56}=\\frac{15}{28}.\\n$$\\n",
-      "hint": "“随机取出 3 个”通常按无序不放回处理；先数所有取法，再数有利取法。",
-      "explanation": "本题是古典概型。因为每种 3 球组合等可能，概率等于有利组合数除以总组合数。总数是从 8 个球中选 3 个；有利情形要同时完成“红球中选 2 个”和“白球中选 1 个”，所以用乘法原理得到 C(5,2)C(3,1)。该题容易错在把不放回无序抽样误写成排列，或只算红球取法而漏乘白球取法。",
-      "scoring_criteria": [
-        "判断为古典概型并采用组合计数（2分）",
-        "算出总取法数 \\binom{8}{3}=56（2分）",
-        "算出有利取法数 \\binom{5}{2}\\binom{3}{1}=30（3分）",
-        "给出概率 30/56=15/28（3分）"
+      "points": 2,
+      "stem": "已知事件 A、B 满足 \n$$\nP(A)=\\frac{3}{5},\\ P(B)=\\frac{1}{2},\\ P(AB)=\\frac{1}{5}\n$$\n 则 \n$$\nP(A\\cup B)\n$$\n 等于（ ）。",
+      "options": [
+        "\n$$\nP(A\\cup B)=\\frac{3}{5}+\\frac{1}{2}-\\frac{1}{5}=\\frac{9}{10}\n$$\n",
+        "\n$$\n\\frac{11}{10}\n$$\n",
+        "\n$$\n\\frac{3}{10}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n"
       ],
+      "answer": 0,
+      "hint": "用加法公式，注意交集概率只能减一次。",
+      "explanation": "由事件加法公式 \n$$\nP(A\\cup B)=P(A)+P(B)-P(AB)\n$$\n Python 分数校验得到 9/10，故选该项；不减交集会重复计数，直接相乘则误把题目当成独立事件。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.4.md",
-        "label": "1.4 古典概型与几何概型 · 摸球问题"
+        "path": "content/chapters/ch01/1.2.md",
+        "label": "1.2 事件间的关系与运算"
       }
     },
     {
       "id": "q006",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch01",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "某系统由 3 个独立元件并联组成，每个元件正常工作的概率均为 0.9。求系统正常工作的概率。",
-      "answer": "并联系统只要至少一个元件正常，系统就正常。先求对立事件：系统失效当且仅当 3 个元件全部失效。每个元件失效概率为 0.1，且相互独立，所以\\n$$\\nP(\\text{系统失效})=0.1^3=0.001.\\n$$\\n因此\\n$$\\nP(\\text{系统正常})=1-0.001=0.999.\\n$$\\n",
-      "hint": "并联系统的正面事件是“至少一个正常”，对立事件“全都失效”更好算。",
-      "explanation": "本题考查独立性和对立事件法。并联结构对应“至少一个元件正常”，直接枚举有 1 个、2 个、3 个正常较繁；取对立后只剩“全都失效”一种情形。由于元件独立，3 个失效事件的概率可相乘。注意并联不是把 0.9 直接相加，概率也不能超过 1。",
-      "scoring_criteria": [
-        "指出并联系统正常等价于至少一个元件正常（2分）",
-        "转化为对立事件：全失效（2分）",
-        "利用独立性算出全失效概率 0.1^3=0.001（3分）",
-        "得出系统正常概率 0.999（3分）"
+      "points": 2,
+      "stem": "袋中有 5 个白球、3 个黑球，不放回任取 3 个，恰有 2 个白球的概率是（ ）。",
+      "options": [
+        "\n$$\n\\frac{15}{4}\n$$\n",
+        "\n$$\n\\frac{5}{28}\n$$\n",
+        "\n$$\n\\frac{1}{2}\n$$\n",
+        "\n$$\n\\frac{15}{28}\n$$\n"
       ],
+      "answer": 3,
+      "hint": "总取法数和有利取法数都按组合数计算。",
+      "explanation": "总取法数为 \n$$\nC_8^3=56\n$$\n 有利取法数为 \n$$\nC_5^2C_3^1=30\n$$\n Python 组合数校验概率为 \n$$\n\\frac{15}{28}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.6.md",
-        "label": "1.6 事件的独立性 · 系统可靠性"
+        "path": "content/chapters/ch01/1.4.md",
+        "label": "1.4 古典概型与几何概型"
       }
     },
     {
       "id": "q007",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch01",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "甲、乙两人约定在 1 小时内随机到达会面地点，先到者等候 15 分钟。假设二人到达时刻独立且在 [0,60] 上均匀，求二人能够会合的概率。",
-      "answer": "设甲、乙到达时刻分别为 x,y（单位：分钟），样本空间为边长 60 的正方形，面积\\n$$\\n60\\times 60=3600.\\n$$\\n能够会合当且仅当\\n$$\\n|x-y|\\leq 15.\\n$$\\n其对立事件是 |x-y|>15，对应正方形两个角上的直角三角形，每个直角边长 45，面积为\\n$$\\n\\frac{1}{2}\\times45\\times45=1012.5.\\n$$\\n两个三角形总面积为 2025，因此会合区域面积为\\n$$\\n3600-2025=1575.\\n$$\\n所求概率为\\n$$\\n\\frac{1575}{3600}=\\frac{7}{16}.\\n$$\\n",
-      "hint": "把两人的到达时间作为平面坐标，能会合对应两条直线 y=x±15 之间的带状区域。",
-      "explanation": "本题是几何概型，概率等于有利区域面积与总区域面积之比。样本空间是 60×60 正方形；会合条件是两人到达时间差不超过 15。直接算带状区域也可，但对立区域更简单：不能会合是两块等腰直角三角形，边长均为 60-15=45。该题的关键是用面积而不是点数，并且保持时间单位一致。",
-      "scoring_criteria": [
-        "建立二维几何概型，样本空间面积为 3600（2分）",
-        "正确写出会合条件 |x-y|≤15（2分）",
-        "正确识别对立区域为两个边长 45 的直角三角形（3分）",
-        "算出概率 7/16（3分）"
+      "points": 2,
+      "stem": "某产品来自三条生产线的比例为 0.2、0.5、0.3，次品率分别为 0.01、0.02、0.04。随机取一件发现为次品，它来自第三条生产线的概率是（ ）。",
+      "options": [
+        "\n$$\n\\frac{3}{125}\n$$\n",
+        "\n$$\n\\frac{1}{3}\n$$\n",
+        "\n$$\n\\frac{1}{2}\n$$\n",
+        "\n$$\n\\frac{3}{250}\n$$\n"
       ],
+      "answer": 2,
+      "hint": "先用全概率公式求次品总概率，再用贝叶斯公式由果溯因。",
+      "explanation": "Python 精确分数计算次品总概率 \n$$\nP(D)=\\frac{3}{125}\n$$\n 后验概率 \n$$\nP(B_3\\mid D)=\\frac{3}{250}/\\frac{3}{125}=\\frac{1}{2}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.4.md",
-        "label": "1.4 古典概型与几何概型 · 会面问题"
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式"
       }
     },
     {
       "id": "q008",
-      "type": "essay",
-      "difficulty": "medium",
+      "type": "single_choice",
+      "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch01",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "某厂产品由甲、乙、丙三条生产线供应，供应比例分别为 20%、50%、30%，次品率分别为 1%、2%、4%。随机抽取一件产品，求：（1）该产品为次品的概率；（2）已知该产品为次品，它来自丙线的概率。",
-      "answer": "设 A 表示“抽到次品”，B1,B2,B3 分别表示来自甲、乙、丙线。由全概率公式，\\n$$\\nP(A)=0.2\\times0.01+0.5\\times0.02+0.3\\times0.04=0.002+0.010+0.012=0.024.\\n$$\\n由贝叶斯公式，\\n$$\\nP(B_3\\mid A)=\\frac{P(B_3)P(A\\mid B_3)}{P(A)}=\\frac{0.3\\times0.04}{0.024}=\\frac{0.012}{0.024}=0.5.\\n$$\\n因此随机产品为次品的概率为 0.024；已知为次品时来自丙线的概率为 0.5。",
-      "hint": "第一问是由因推果，用全概率；第二问是由果溯因，用贝叶斯。",
-      "explanation": "生产线来源构成完备事件组，且各生产线下的次品率是条件概率 P(A|Bi)。第一问把每条线的“供应比例×该线次品率”加总，是全概率公式。第二问已知结果 A 已发生，要反推原因 B3，需用贝叶斯公式：分子是“来自丙且为次品”的联合概率，分母是所有次品的总概率。虽然丙线供应比例不是最大，但次品率最高，最终贡献了一半次品。",
-      "scoring_criteria": [
-        "正确设定 A 与完备事件组 B1,B2,B3（2分）",
-        "用全概率公式列式并算得 P(A)=0.024（4分）",
-        "用贝叶斯公式列出 P(B3|A) 的分子和分母（2分）",
-        "算得 P(B3|A)=0.5 并解释含义（2分）"
+      "points": 2,
+      "stem": "两个独立部件并联，可靠度分别为 0.9 与 0.8，则系统可靠度为（ ）。",
+      "options": [
+        "\n$$\n\\frac{17}{10}\n$$\n",
+        "\n$$\n\\frac{49}{50}\n$$\n",
+        "\n$$\n\\frac{18}{25}\n$$\n",
+        "\n$$\n\\frac{7}{25}\n$$\n"
       ],
-      "manimVideoId": "quiz-prob-ch01-q008",
+      "answer": 1,
+      "hint": "并联系统失效当且仅当两个部件都失效。",
+      "explanation": "并联可靠度为 \n$$\n1-(1-R_1)(1-R_2)\n$$\n Python 分数计算为 \n$$\n\\frac{49}{50}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.5.md",
-        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式 · 三厂供货例题"
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
       }
     },
     {
       "id": "q009",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "ch01",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "甲、乙二人独立射击一次，甲命中概率为 0.7，乙命中概率为 0.6。求：（1）至少一人命中的概率；（2）恰好一人命中的概率。",
-      "answer": "设 A 表示甲命中，B 表示乙命中，则 P(A)=0.7，P(B)=0.6，且 A、B 独立。（1）至少一人命中为 A∪B，可用对立事件：\\n$$\\nP(A\\cup B)=1-P(\\bar A\\bar B)=1-(0.3)(0.4)=0.88.\\n$$\\n（2）恰好一人命中为 A\\bar B∪\\bar A B，两部分互斥，且独立性可传递到对立事件：\\n$$\\nP(A\\bar B)+P(\\bar A B)=0.7\\times0.4+0.3\\times0.6=0.28+0.18=0.46.\\n$$\\n",
-      "hint": "至少一人命中适合先算“二人都未命中”；恰好一人命中要分成甲中乙不中、甲不中乙中。",
-      "explanation": "本题核心是独立性把积事件概率化成乘积。至少一人命中若直接用加法公式也可以：0.7+0.6-0.42=0.88；用对立事件更快。恰好一人命中是两个互斥情形的并，不能写成 P(A)+P(B)，因为“两人都中”不属于恰好一人。独立性还保证 A 与 \\bar B、\\bar A 与 B 也独立。",
-      "scoring_criteria": [
-        "设定 A、B 并写明独立（2分）",
-        "用对立事件或加法公式求至少一人命中为 0.88（3分）",
-        "将恰好一人命中分解为 A\\bar B 与 \\bar A B（2分）",
-        "利用独立性计算并求和得 0.46（3分）"
+      "points": 2,
+      "stem": "已知事件 A、B 满足 \n$$\nP(A)=\\frac{3}{5},\\ P(B)=\\frac{1}{2},\\ P(AB)=\\frac{1}{5}\n$$\n 则 \n$$\nP(A\\cup B)\n$$\n 等于（ ）。",
+      "options": [
+        "\n$$\nP(A\\cup B)=\\frac{3}{5}+\\frac{1}{2}-\\frac{1}{5}=\\frac{9}{10}\n$$\n",
+        "\n$$\n\\frac{11}{10}\n$$\n",
+        "\n$$\n\\frac{3}{10}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n"
       ],
-      "manimVideoId": "quiz-prob-ch01-q009",
+      "answer": 0,
+      "hint": "用加法公式，注意交集概率只能减一次。",
+      "explanation": "由事件加法公式 \n$$\nP(A\\cup B)=P(A)+P(B)-P(AB)\n$$\n Python 分数校验得到 9/10，故选该项；不减交集会重复计数，直接相乘则误把题目当成独立事件。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.6.md",
-        "label": "1.6 事件的独立性 · 利用独立性计算概率"
+        "path": "content/chapters/ch01/1.2.md",
+        "label": "1.2 事件间的关系与运算"
       }
     },
     {
       "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "stem": "袋中有 5 个白球、3 个黑球，不放回任取 3 个，恰有 2 个白球的概率是（ ）。",
+      "options": [
+        "\n$$\n\\frac{15}{4}\n$$\n",
+        "\n$$\n\\frac{5}{28}\n$$\n",
+        "\n$$\n\\frac{1}{2}\n$$\n",
+        "\n$$\n\\frac{15}{28}\n$$\n"
+      ],
+      "answer": 3,
+      "hint": "总取法数和有利取法数都按组合数计算。",
+      "explanation": "总取法数为 \n$$\nC_8^3=56\n$$\n 有利取法数为 \n$$\nC_5^2C_3^1=30\n$$\n Python 组合数校验概率为 \n$$\n\\frac{15}{28}\n$$\n。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.4.md",
+        "label": "1.4 古典概型与几何概型"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "已知 P(AB)=3/20，P(B)=1/2，则 P(A|B)=____。",
+      "answer": "\n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "条件概率 P(A|B)=P(AB)/P(B)，Python 分数校验为 3/10。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 A、B 独立，P(A)=4/5，P(B)=3/4，则 P(AB)=____。",
+      "answer": "\n$$\n\\frac{3}{5}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "独立事件交概率为乘积，Python 分数校验为 3/5。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 P(A)=0.7，则 P(\\bar A)=____。",
+      "answer": "\n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "补事件概率为 1-P(A)，Python 分数校验得到 3/10。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.3.md",
+        "label": "1.3 频率与概率"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "10 件产品中有 4 件次品，任取 2 件均为次品的概率为____。",
+      "answer": "\n$$\n\\frac{2}{15}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "有利取法 C_4^2，总取法 C_10^2，Python 组合数校验为 2/15。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.4.md",
+        "label": "1.4 古典概型与几何概型"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "已知 P(AB)=3/20，P(B)=1/2，则 P(A|B)=____。",
+      "answer": "\n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "条件概率 P(A|B)=P(AB)/P(B)，Python 分数校验为 3/10。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 A、B 独立，P(A)=4/5，P(B)=3/4，则 P(AB)=____。",
+      "answer": "\n$$\n\\frac{3}{5}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "独立事件交概率为乘积，Python 分数校验为 3/5。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 P(A)=0.7，则 P(\\bar A)=____。",
+      "answer": "\n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "补事件概率为 1-P(A)，Python 分数校验得到 3/10。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.3.md",
+        "label": "1.3 频率与概率"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "10 件产品中有 4 件次品，任取 2 件均为次品的概率为____。",
+      "answer": "\n$$\n\\frac{2}{15}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "有利取法 C_4^2，总取法 C_10^2，Python 组合数校验为 2/15。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.4.md",
+        "label": "1.4 古典概型与几何概型"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "已知 P(AB)=3/20，P(B)=1/2，则 P(A|B)=____。",
+      "answer": "\n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "条件概率 P(A|B)=P(AB)/P(B)，Python 分数校验为 3/10。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "fill_blank",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 A、B 独立，P(A)=4/5，P(B)=3/4，则 P(AB)=____。",
+      "answer": "\n$$\n\\frac{3}{5}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "独立事件交概率为乘积，Python 分数校验为 3/5。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "三个部件独立并联，可靠度分别为 0.9、0.8、0.75，求系统可靠度。",
+      "answer": "并联系统失效当且仅当三个部件均失效，所以 \n$$\nR=1-(1-0.9)(1-0.8)(1-0.75)=\\frac{199}{200}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "指出并联系统的失效条件（2分）",
+        "写出独立失效概率乘积（3分）",
+        "写出可靠度公式（3分）",
+        "计算最终结果（2分）"
+      ],
+      "explanation": "Python 分数校验可靠度=199/200。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "袋中有 4 个红球、6 个白球，不放回任取 3 个，求恰有 2 个红球的概率。",
+      "answer": "总取法为 \n$$\nC_{10}^3=120\n$$\n 有利取法为 \n$$\nC_4^2C_6^1=36\n$$\n 因此概率为 \n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "列出总取法 C_10^3（2分）",
+        "列出有利取法 C_4^2C_6^1（3分）",
+        "写出古典概型概率比值（2分）",
+        "化简得到正确结果（3分）"
+      ],
+      "explanation": "Python 组合数校验 total=120, good=36, 概率=3/10。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.4.md",
+        "label": "1.4 古典概型与几何概型"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "某零件来自甲、乙两厂的比例为 0.3、0.7，次品率为 0.02、0.05。随机抽一件发现为次品，求它来自乙厂的概率。",
+      "answer": "设 D 为次品。全概率为 \n$$\nP(D)=0.3\\times0.02+0.7\\times0.05=\\frac{41}{1000}\n$$\n 贝叶斯公式给出 \n$$\nP(乙\\mid D)=\\frac{0.7\\times0.05}{P(D)}=\\frac{35}{41}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "设定事件并写出全概率结构（2分）",
+        "计算次品总概率（3分）",
+        "写出贝叶斯公式（3分）",
+        "给出后验概率并解释（2分）"
+      ],
+      "explanation": "Python 分数校验 P(D)=41/1000, 后验概率=35/41。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "三个部件独立并联，可靠度分别为 0.9、0.8、0.75，求系统可靠度。",
+      "answer": "并联系统失效当且仅当三个部件均失效，所以 \n$$\nR=1-(1-0.9)(1-0.8)(1-0.75)=\\frac{199}{200}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "指出并联系统的失效条件（2分）",
+        "写出独立失效概率乘积（3分）",
+        "写出可靠度公式（3分）",
+        "计算最终结果（2分）"
+      ],
+      "explanation": "Python 分数校验可靠度=199/200。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
+      },
+      "manimVideoId": "quiz-prob-ch01-q024"
+    },
+    {
+      "id": "q025",
       "type": "essay",
       "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "ch01",
-      "label": "计算题",
       "points": 10,
+      "label": "计算题",
       "total_points": 10,
-      "stem": "设 A、B 为两个事件，已知 P(A)=P(B)=0.5。证明 P(AB)=P(\\bar A\\bar B)。",
-      "answer": "由德摩根律，\\bar A\\bar B=\\overline{A\\cup B}。因此\\n$$\\nP(\\bar A\\bar B)=1-P(A\\cup B).\\n$$\\n由两事件加法公式，\\n$$\\nP(A\\cup B)=P(A)+P(B)-P(AB)=0.5+0.5-P(AB)=1-P(AB).\\n$$\\n代入得\\n$$\\nP(\\bar A\\bar B)=1-[1-P(AB)]=P(AB).\\n$$\\n故命题成立。",
-      "hint": "把右边的“两个对立事件同时发生”先用德摩根律转化为“并事件的对立”。",
-      "explanation": "证明题的关键是不要试图分别求 P(AB) 和 P(\\bar A\\bar B)，因为题目没有给出交集概率。右侧结构含有两个补事件的交，正适合用德摩根律变成 A∪B 的补。再用加法公式展开 P(A∪B)，由于 P(A)+P(B)=1，刚好得到 P(A∪B)=1-P(AB)，所以右侧概率等于 P(AB)。",
+      "stem": "袋中有 4 个红球、6 个白球，不放回任取 3 个，求恰有 2 个红球的概率。",
+      "answer": "总取法为 \n$$\nC_{10}^3=120\n$$\n 有利取法为 \n$$\nC_4^2C_6^1=36\n$$\n 因此概率为 \n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
       "scoring_criteria": [
-        "正确使用德摩根律 \\bar A\\bar B=\\overline{A\\cup B}（3分）",
-        "写出 P(\\bar A\\bar B)=1-P(A∪B)（2分）",
-        "用加法公式展开 P(A∪B)=1-P(AB)（3分）",
-        "完成代入并得出等式成立（2分）"
+        "列出总取法 C_10^3（2分）",
+        "列出有利取法 C_4^2C_6^1（3分）",
+        "写出古典概型概率比值（2分）",
+        "化简得到正确结果（3分）"
       ],
-      "manimVideoId": "quiz-prob-ch01-q010",
+      "explanation": "Python 组合数校验 total=120, good=36, 概率=3/10。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.2.md",
-        "label": "1.2 事件间的关系与运算 · 德摩根定律 / 概率证明例题"
-      }
+        "path": "content/chapters/ch01/1.4.md",
+        "label": "1.4 古典概型与几何概型"
+      },
+      "manimVideoId": "quiz-prob-ch01-q025"
+    },
+    {
+      "id": "q026",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "ch01",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "某零件来自甲、乙两厂的比例为 0.3、0.7，次品率为 0.02、0.05。随机抽一件发现为次品，求它来自乙厂的概率。",
+      "answer": "设 D 为次品。全概率为 \n$$\nP(D)=0.3\\times0.02+0.7\\times0.05=\\frac{41}{1000}\n$$\n 贝叶斯公式给出 \n$$\nP(乙\\mid D)=\\frac{0.7\\times0.05}{P(D)}=\\frac{35}{41}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "设定事件并写出全概率结构（2分）",
+        "计算次品总概率（3分）",
+        "写出贝叶斯公式（3分）",
+        "给出后验概率并解释（2分）"
+      ],
+      "explanation": "Python 分数校验 P(D)=41/1000, 后验概率=35/41。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式"
+      },
+      "manimVideoId": "quiz-prob-ch01-q026"
     }
   ],
   "summary": {
-    "totalQuestions": 10,
+    "totalQuestions": 26,
     "byType": {
-      "single_choice": 2,
-      "fill_blank": 2,
+      "single_choice": 10,
+      "fill_blank": 10,
       "essay": 6
     },
     "bySource": {
-      "current_chapter": 10,
-      "review": 0
+      "current_chapter": 26
     },
     "byDifficulty": {
-      "basic": 7,
-      "medium": 2,
-      "hard": 1
+      "basic": 18,
+      "medium": 5,
+      "hard": 3
     }
   }
 }

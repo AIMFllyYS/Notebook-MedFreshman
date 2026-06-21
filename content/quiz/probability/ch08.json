@@ -5,7 +5,7 @@
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
-    "timeLimit": 50
+    "timeLimit": 120
   },
   "questions": [
     {
@@ -14,257 +14,604 @@
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch08",
-      "points": 10,
-      "stem": "在假设检验中，若样本统计量没有落入拒绝域，正确的结论表述是（ ）。",
+      "points": 2,
+      "stem": "关于正态总体均值检验，下列说法正确的是（ ）。",
       "options": [
-        "接受 \n$$\nH_0\n$$\n，并证明 \n$$\nH_0\n$$\n 一定为真",
-        "不拒绝 \n$$\nH_0\n$$\n，说明样本证据不足以推翻它",
-        "拒绝 \n$$\nH_1\n$$\n，并证明 \n$$\nH_1\n$$\n 一定为假",
-        "同时接受 \n$$\nH_0\n$$\n 与 \n$$\nH_1\n$$\n，因为二者都可能为真"
+        "方差未知仍必须使用 Z 统计量",
+        "t 检验自由度为 n",
+        "备择假设方向不影响拒绝域",
+        "正态总体方差未知时，单样本均值检验使用 t 统计量"
       ],
-      "answer": 1,
-      "hint": "假设检验的语言是非对称的，证据不足和证明为真不是一回事。",
-      "explanation": "B 正确。8.1 节反复强调，假设检验只说“拒绝 \n$$\nH_0\n$$\n”或“不拒绝 \n$$\nH_0\n$$\n”，不说“接受 \n$$\nH_0\n$$\n”。样本没有落入拒绝域，只表示证据强度不够，并不能证明原假设为真。A、C 都把统计决策误解成确定性证明；D 错在 \n$$\nH_0\n$$\n 与 \n$$\nH_1\n$$\n 在设定上互斥。",
+      "answer": 3,
+      "hint": "未知 σ 时用 S 替代，分布也变为 t。",
+      "explanation": "Python 键值校验对应 8.2 节：方差未知用 t(n-1)，单侧/双侧备择决定拒绝域方向。",
       "sourceRef": {
-        "path": "content/chapters/ch08/8.1.md",
-        "label": "8.1 假设检验的基本思想 · 为什么是拒绝而非接受"
+        "path": "content/chapters/ch08/8.2.md",
+        "label": "8.2 正态总体均值的假设检验"
       }
     },
     {
       "id": "q002",
       "type": "single_choice",
       "difficulty": "basic",
-      "source": "review",
-      "sourceChapter": "ch07",
-      "points": 10,
-      "stem": "对正态总体均值 \n$$\n\\mu\n$$\n 构造置信区间时，若 \n$$\n\\sigma^2\n$$\n 未知，应使用的分布是（ ）。",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 2,
+      "stem": "关于正态总体方差检验，下列说法正确的是（ ）。",
       "options": [
-        "标准正态分布 \n$$\nN(0,1)\n$$\n",
-        "自由度为 \n$$\nn-1\n$$\n 的 \n$$\nt\n$$\n 分布",
-        "自由度为 \n$$\nn\n$$\n 的 \n$$\n\\chi^2\n$$\n 分布",
-        "自由度为 \n$$\n(1,n-1)\n$$\n 的 \n$$\nF\n$$\n 分布"
+        "两个方差比检验使用 t 分布",
+        "χ² 检验统计量可以为负",
+        "单个正态总体方差检验使用 χ² 统计量",
+        "方差检验使用标准正态 Z 统计量"
       ],
-      "answer": 1,
-      "hint": "未知方差时，标准化分母从 \n$$\n\\sigma/\\sqrt n\n$$\n 换成 \n$$\nS/\\sqrt n\n$$\n。",
-      "explanation": "B 正确。7.4 节中，正态总体均值区间分为两种：\n$$\n\\sigma^2\n$$\n 已知用 \n$$\nZ=(\\bar X-\\mu)/(\\sigma/\\sqrt n)\\sim N(0,1)\n$$\n；\n$$\n\\sigma^2\n$$\n 未知用 \n$$\nT=(\\bar X-\\mu)/(S/\\sqrt n)\\sim t(n-1)\n$$\n。\n$$\n\\chi^2\n$$\n 分布主要用于正态总体方差区间，\n$$\nF\n$$\n 分布主要用于两个方差比的推断。",
+      "answer": 2,
+      "hint": "样本方差标准化后进入卡方分布。",
+      "explanation": "Python 键值校验对应 8.3 节：单方差用 χ²，两个方差比用 F，χ² 非负。",
       "sourceRef": {
-        "path": "content/chapters/ch07/7.4.md",
-        "label": "7.4 区间估计 · Z 区间与 t 区间对比"
+        "path": "content/chapters/ch08/8.3.md",
+        "label": "8.3 正态总体方差的假设检验"
       }
     },
     {
       "id": "q003",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch08",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设总体 \n$$\nX\\sim N(\\mu,\\sigma^2)\n$$\n 且 \n$$\n\\sigma^2\n$$\n 已知，检验 \n$$\nH_0:\\mu=\\mu_0\n$$\n 时使用的 \n$$\nZ\n$$\n 统计量为：____。",
-      "answer": "\n$$\nZ=\\frac{\\bar{X}-\\mu_0}{\\sigma/\\sqrt{n}}\n$$\n",
-      "hint": "把样本均值与假设均值的差，除以样本均值的标准差。",
-      "explanation": "8.2 节指出，在 \n$$\nH_0:\\mu=\\mu_0\n$$\n 为真时，\n$$\n\\bar{X}\\sim N(\\mu_0,\\sigma^2/n)\n$$\n。标准化后得到 \n$$\nZ=(\\bar X-\\mu_0)/(\\sigma/\\sqrt n)\\sim N(0,1)\n$$\n。双侧、左侧、右侧检验的拒绝域都以这个统计量为基础。",
-      "scoring_criteria": [
-        "分子写为 \n$$\n\\bar{X}-\\mu_0\n$$\n（3分）",
-        "分母写为 \n$$\n\\sigma/\\sqrt n\n$$\n（4分）",
-        "整体表达为 \n$$\nZ\n$$\n 检验统计量（3分）"
+      "points": 2,
+      "stem": "关于两类错误与检验功效，下列说法正确的是（ ）。",
+      "options": [
+        "样本量增大通常会降低功效",
+        "功效等于 1-β，是 H0 为假时正确拒绝 H0 的概率",
+        "功效等于第一类错误概率 α",
+        "β 是弃真错误概率"
       ],
+      "answer": 1,
+      "hint": "第二类错误是纳伪，功效是避免纳伪的概率。",
+      "explanation": "Python 键值校验对应 8.4 节：功效=1-β；β 是纳伪错误概率。",
       "sourceRef": {
-        "path": "content/chapters/ch08/8.2.md",
-        "label": "8.2 正态总体均值的假设检验 · σ已知的 Z 检验"
+        "path": "content/chapters/ch08/8.4.md",
+        "label": "8.4 两类错误与检验功效"
       }
     },
     {
       "id": "q004",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
-      "source": "review",
-      "sourceChapter": "ch07",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设样本来自正态总体 \n$$\nN(\\mu,\\sigma^2)\n$$\n，\n$$\n\\mu,\\sigma^2\n$$\n 均未知。\n$$\n\\sigma^2\n$$\n 的置信区间使用的枢轴量为：____。",
-      "answer": "\n$$\n\\chi^2=\\frac{(n-1)S^2}{\\sigma^2}\\sim \\chi^2(n-1)\n$$\n",
-      "hint": "方差推断对应卡方分布，分子是无偏样本方差乘以自由度。",
-      "explanation": "7.4 节的正态总体方差区间建立在抽样分布定理上：\n$$\n(n-1)S^2/\\sigma^2\\sim \\chi^2(n-1)\n$$\n。由于该枢轴量分布已知且只含未知参数 \n$$\n\\sigma^2\n$$\n，可通过卡方分位点解出方差的置信区间。注意 \n$$\nS^2\n$$\n 的分母是 \n$$\nn-1\n$$\n。",
-      "scoring_criteria": [
-        "写出分子 \n$$\n(n-1)S^2\n$$\n（3分）",
-        "写出分母 \n$$\n\\sigma^2\n$$\n（2分）",
-        "指出服从 \n$$\n\\chi^2(n-1)\n$$\n（5分）"
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 2,
+      "stem": "关于假设检验显著性水平，下列说法正确的是（ ）。",
+      "options": [
+        "显著性水平 α 是 H0 为真时拒绝 H0 的概率上限",
+        "α 是 H1 为真时接受 H1 的概率",
+        "不拒绝 H0 等于证明 H0 为真",
+        "拒绝域越大 α 越小"
       ],
+      "answer": 0,
+      "hint": "第一类错误就是弃真错误。",
+      "explanation": "Python 键值校验对应 8.1 节：α 控制第一类错误概率；不拒绝只代表证据不足。",
       "sourceRef": {
-        "path": "content/chapters/ch07/7.4.md",
-        "label": "7.4 区间估计 · σ² 的卡方置信区间"
+        "path": "content/chapters/ch08/8.1.md",
+        "label": "8.1 假设检验的基本思想"
       }
     },
     {
       "id": "q005",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
-      "source": "current_chapter",
-      "sourceChapter": "ch08",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "某饮料厂规定每瓶平均含量为 \n$$\n500\n$$\n mL。随机抽取 \n$$\n25\n$$\n 瓶，得 \n$$\n\\bar{x}=497\n$$\n mL，已知总体标准差 \n$$\n\\sigma=10\n$$\n mL，且总体服从正态分布。在 \n$$\n\\alpha=0.05\n$$\n 下检验平均含量是否仍为 \n$$\n500\n$$\n mL。",
-      "answer": "提出假设：\n$$\nH_0:\\mu=500,\\qquad H_1:\\mu\\neq500.\n$$\n总体正态且 \n$$\n\\sigma\n$$\n 已知，用 \n$$\nZ\n$$\n 检验：\n$$\nZ=\\frac{\\bar{X}-500}{10/\\sqrt{25}}=\\frac{\\bar{X}-500}{2}.\n$$\n在 \n$$\n\\alpha=0.05\n$$\n 的双侧检验中，拒绝域为\n$$\n|Z|>z_{0.025}=1.96.\n$$\n观测值为\n$$\nz=\\frac{497-500}{2}=-1.5,\\qquad |z|=1.5<1.96.\n$$\n所以统计量未落入拒绝域，在显著性水平 \n$$\n0.05\n$$\n 下不拒绝 \n$$\nH_0\n$$\n。结论：没有充分证据表明平均含量不是 \n$$\n500\n$$\n mL。",
-      "hint": "“是否仍为 500”是双侧检验；先写假设，再算标准化统计量。",
-      "scoring_criteria": [
-        "正确提出 \n$$\nH_0:\\mu=500\n$$\n、\n$$\nH_1:\\mu\\neq500\n$$\n（2分）",
-        "判断使用 \n$$\nZ\n$$\n 检验并写出统计量（2分）",
-        "确定双侧拒绝域 \n$$\n|Z|>1.96\n$$\n（2分）",
-        "计算 \n$$\nz=-1.5\n$$\n 且 \n$$\n|z|<1.96\n$$\n（2分）",
-        "作出“不拒绝 \n$$\nH_0\n$$\n”并给出实际结论（2分）"
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "stem": "已知事件 A、B 满足 \n$$\nP(A)=\\frac{3}{5},\\ P(B)=\\frac{1}{2},\\ P(AB)=\\frac{1}{5}\n$$\n 则 \n$$\nP(A\\cup B)\n$$\n 等于（ ）。",
+      "options": [
+        "\n$$\nP(A\\cup B)=\\frac{3}{5}+\\frac{1}{2}-\\frac{1}{5}=\\frac{9}{10}\n$$\n",
+        "\n$$\n\\frac{11}{10}\n$$\n",
+        "\n$$\n\\frac{3}{10}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n"
       ],
-      "explanation": "8.1 与 8.2 节给出假设检验六步流程。本题中偏差 \n$$\n497-500=-3\n$$\n mL 看似存在，但样本均值标准差为 \n$$\n10/\\sqrt{25}=2\n$$\n mL，偏离只有 \n$$\n1.5\n$$\n 个标准误，未达到 5% 双侧检验的临界程度。因此不能说机器已显著偏离标准，只能说证据不足以拒绝原假设。",
+      "answer": 0,
+      "hint": "用加法公式，注意交集概率只能减一次。",
+      "explanation": "由事件加法公式 \n$$\nP(A\\cup B)=P(A)+P(B)-P(AB)\n$$\n Python 分数校验得到 9/10，故选该项；不减交集会重复计数，直接相乘则误把题目当成独立事件。",
       "sourceRef": {
-        "path": "content/chapters/ch08/8.2.md",
-        "label": "8.2 正态总体均值的假设检验 · σ已知双侧 Z 检验例题"
+        "path": "content/chapters/ch01/1.2.md",
+        "label": "1.2 事件间的关系与运算"
       }
     },
     {
       "id": "q006",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "review",
-      "sourceChapter": "ch06",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设 \n$$\nX_1,\\ldots,X_n\n$$\n 来自 \n$$\nN(\\mu,\\sigma^2)\n$$\n。写出正态总体抽样分布中与 \n$$\n\\bar{X}\n$$\n、\n$$\nS^2\n$$\n 有关的四个基础结论，并说明它们为什么是区间估计和假设检验的基础。",
-      "answer": "正态总体的抽样分布定理给出：\n$$\n\\bar{X}\\sim N\\left(\\mu,\\frac{\\sigma^2}{n}\\right),\n$$\n$$\n\\frac{(n-1)S^2}{\\sigma^2}\\sim \\chi^2(n-1),\n$$\n并且 \n$$\n\\bar{X}\n$$\n 与 \n$$\nS^2\n$$\n 相互独立。由前两条和独立性可推出\n$$\n\\frac{\\bar{X}-\\mu}{S/\\sqrt n}\\sim t(n-1).\n$$\n意义：第一条支持 \n$$\n\\sigma\n$$\n 已知时对 \n$$\n\\mu\n$$\n 的 Z 区间和 Z 检验；第二条支持对 \n$$\n\\sigma^2\n$$\n 的卡方区间和卡方检验；第三条独立性保证 t 统计量的构造成立；第四条支持 \n$$\n\\sigma\n$$\n 未知时对 \n$$\n\\mu\n$$\n 的 t 区间和 t 检验。",
-      "hint": "围绕四个关键词组织：样本均值、样本方差卡方、独立性、t 统计量。",
-      "scoring_criteria": [
-        "写出 \n$$\n\\bar X\\sim N(\\mu,\\sigma^2/n)\n$$\n（2分）",
-        "写出 \n$$\n(n-1)S^2/\\sigma^2\\sim\\chi^2(n-1)\n$$\n（2分）",
-        "指出 \n$$\n\\bar X\n$$\n 与 \n$$\nS^2\n$$\n 相互独立（2分）",
-        "写出 \n$$\n(\\bar X-\\mu)/(S/\\sqrt n)\\sim t(n-1)\n$$\n（2分）",
-        "说明这些结论对应 Z、t、χ² 推断方法（2分）"
+      "sourceChapter": "ch02",
+      "points": 2,
+      "stem": "设 X 服从二项分布 B(5,0.2)，则 P(X=2) 为（ ）。",
+      "options": [
+        "\n$$\n\\frac{128}{625}\n$$\n",
+        "\n$$\n\\frac{1}{25}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n",
+        "\n$$\n\\frac{497}{625}\n$$\n"
       ],
-      "explanation": "6.3 节把这些结论称为区间估计和假设检验的基石。第七章用它们构造置信区间，第八章用它们构造检验统计量和拒绝域。特别要注意，\n$$\n\\bar X\n$$\n 与 \n$$\nS^2\n$$\n 独立是正态总体的独有重要性质，一般总体不一定成立。",
+      "answer": 0,
+      "hint": "二项分布点概率要同时包含组合数、成功概率和失败概率。",
+      "explanation": "Python 按二项分布公式计算 \n$$\nC_5^2(0.2)^2(0.8)^3=\\frac{128}{625}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch06/6.3.md",
-        "label": "6.3 正态总体的抽样分布定理 · 四个基础结论"
+        "path": "content/chapters/ch02/2.2.md",
+        "label": "2.2 离散型随机变量与常见分布"
       }
     },
     {
       "id": "q007",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "review",
-      "sourceChapter": "ch07",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设 \n$$\nX_1,\\ldots,X_n\n$$\n 为来自两点分布 \n$$\nP(X=1)=p, P(X=0)=1-p\n$$\n 的样本。用极大似然法求 \n$$\np\n$$\n 的估计量。",
-      "answer": "由于 \n$$\nX_i\\in\\{0,1\\}\n$$\n，单个样本的概率可写为\n$$\nP(X_i=x_i)=p^{x_i}(1-p)^{1-x_i}.\n$$\n独立样本的似然函数为\n$$\nL(p)=\\prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}=p^{\\sum x_i}(1-p)^{n-\\sum x_i}.\n$$\n取对数：\n$$\n\\ell(p)=\\left(\\sum x_i\\right)\\ln p+\\left(n-\\sum x_i\\right)\\ln(1-p).\n$$\n求导并令零：\n$$\n\\ell'(p)=\\frac{\\sum x_i}{p}-\\frac{n-\\sum x_i}{1-p}=0.\n$$\n解得\n$$\n\\hat p=\\frac{1}{n}\\sum_{i=1}^n X_i=\\bar X.\n$$\n即成功概率的极大似然估计量是样本成功频率。",
-      "hint": "把 \n$$\n0/1\n$$\n 样本的联合概率写成 \n$$\np\n$$\n 的幂与 \n$$\n(1-p)\n$$\n 的幂。",
-      "scoring_criteria": [
-        "写出单个样本概率 \n$$\np^{x_i}(1-p)^{1-x_i}\n$$\n（2分）",
-        "写出似然函数 \n$$\np^{\\sum x_i}(1-p)^{n-\\sum x_i}\n$$\n（2分）",
-        "正确取对数并求导（3分）",
-        "解出 \n$$\n\\hat p=\\sum X_i/n\n$$\n（2分）",
-        "解释为样本成功频率（1分）"
+      "sourceChapter": "ch03",
+      "points": 2,
+      "stem": "关于二维连续型随机变量的边缘密度，下列说法正确的是（ ）。",
+      "options": [
+        "边缘密度由联合密度对另一个变量积分得到",
+        "边缘密度总能唯一推出联合密度",
+        "边缘密度等于联合密度在 y=0 的截面",
+        "只要边缘密度相同，两个变量必独立"
       ],
-      "explanation": "7.2 节的 MLE 思想适用于离散分布：给定观测样本，选择使联合概率最大的参数。本题结论也符合直觉，若 \n$$\nn\n$$\n 次试验中有 \n$$\n\\sum X_i\n$$\n 次成功，成功概率最自然的估计就是成功频率。",
+      "answer": 0,
+      "hint": "“边缘”意味着把另一个变量消去。",
+      "explanation": "Python 键值校验依据边缘化定义：对另一变量积分；边缘不能唯一确定联合，独立还需乘积分解。",
       "sourceRef": {
-        "path": "content/chapters/ch07/7.2.md",
-        "label": "7.2 最大似然估计 · 二项/两点分布的似然函数"
+        "path": "content/chapters/ch03/3.2.md",
+        "label": "3.2 边缘分布"
       }
     },
     {
       "id": "q008",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "ch08",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "某正态总体方差未知。抽取 \n$$\nn=16\n$$\n 个样本，得 \n$$\n\\bar{x}=10.8\n$$\n、\n$$\ns=1.2\n$$\n。在 \n$$\n\\alpha=0.05\n$$\n 下检验 \n$$\nH_0:\\mu=10\n$$\n，\n$$\nH_1:\\mu>10\n$$\n。已知 \n$$\nt_{0.05}(15)=1.753\n$$\n。",
-      "answer": "方差未知且总体正态，使用单侧 t 检验。统计量为\n$$\nT=\\frac{\\bar{X}-\\mu_0}{S/\\sqrt n}\\sim t(n-1)\\quad (H_0\\text{ 为真时}).\n$$\n本题自由度为 \n$$\n15\n$$\n，右侧检验拒绝域为\n$$\nT>t_{0.05}(15)=1.753.\n$$\n计算观测值：\n$$\nt=\\frac{10.8-10}{1.2/\\sqrt{16}}=\\frac{0.8}{0.3}=2.667.\n$$\n因为 \n$$\n2.667>1.753\n$$\n，统计量落入拒绝域，故在显著性水平 \n$$\n0.05\n$$\n 下拒绝 \n$$\nH_0\n$$\n。结论：有充分证据认为总体均值大于 \n$$\n10\n$$\n。",
-      "hint": "备择假设是“>”，所以拒绝域在右侧；方差未知用 t。",
-      "scoring_criteria": [
-        "判断使用右侧 t 检验（2分）",
-        "写出统计量 \n$$\nT=(\\bar X-\\mu_0)/(S/\\sqrt n)\n$$\n（2分）",
-        "确定拒绝域 \n$$\nT>1.753\n$$\n（2分）",
-        "计算观测值 \n$$\nt=2.667\n$$\n（2分）",
-        "比较并作出拒绝 \n$$\nH_0\n$$\n 的结论（2分）"
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 2,
+      "stem": "关于数学期望性质，下列说法正确的是（ ）。",
+      "options": [
+        "数学期望具有线性性：E(aX+bY)=aE(X)+bE(Y)",
+        "只有 X,Y 独立时期望才线性",
+        "E(XY) 总等于 E(X)E(Y)",
+        "E(X+b)=E(X)b"
       ],
-      "explanation": "8.2 节将正态均值检验按方差已知/未知分为 Z 检验和 t 检验。这里 \n$$\n\\sigma^2\n$$\n 未知，必须用样本标准差 \n$$\ns\n$$\n，自由度为 \n$$\nn-1=15\n$$\n。由于备择假设为 \n$$\n\\mu>10\n$$\n，大于临界值才拒绝；观测值 2.667 已超过 1.753，因此样本均值偏大达到显著水平。",
+      "answer": 0,
+      "hint": "期望线性性不要求独立。",
+      "explanation": "Python 键值校验对应 4.1 节：期望线性性总成立；乘积期望等式需要独立等条件。",
       "sourceRef": {
-        "path": "content/chapters/ch08/8.2.md",
-        "label": "8.2 正态总体均值的假设检验 · σ未知的右侧 t 检验"
-      },
-      "manimVideoId": "quiz-prob-ch08-q08"
+        "path": "content/chapters/ch04/4.1.md",
+        "label": "4.1 数学期望"
+      }
     },
     {
       "id": "q009",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "medium",
       "source": "review",
-      "sourceChapter": "ch07",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "某正态总体标准差已知为 \n$$\n\\sigma=6\n$$\n，抽取 \n$$\nn=36\n$$\n 个样本，得 \n$$\n\\bar{x}=52\n$$\n。求 \n$$\n\\mu\n$$\n 的 \n$$\n95\\%\n$$\n 置信区间，并据此判断在双侧水平 \n$$\n\\alpha=0.05\n$$\n 下是否拒绝 \n$$\nH_0:\\mu=50\n$$\n。（取 \n$$\nu_{0.025}=1.96\n$$\n）",
-      "answer": "标准差已知，\n$$\n\\mu\n$$\n 的 95% 置信区间为\n$$\n\\bar{x}\\pm u_{0.025}\\frac{\\sigma}{\\sqrt n}.\n$$\n区间半宽：\n$$\n1.96\\times\\frac{6}{\\sqrt{36}}=1.96\\times1=1.96.\n$$\n所以\n$$\n\\mu\\in(52-1.96,\\ 52+1.96)=(50.04,\\ 53.96).\n$$\n由于原假设值 \n$$\n50\n$$\n 不在该 95% 置信区间内，因此与双侧 \n$$\n\\alpha=0.05\n$$\n 检验等价地，应拒绝 \n$$\nH_0:\\mu=50\n$$\n。也可直接算 \n$$\nZ=(52-50)/(6/6)=2>1.96\n$$\n，同样拒绝。",
-      "hint": "双侧 5% 检验与 95% 置信区间有对应关系：假设值不在区间内就拒绝。",
-      "scoring_criteria": [
-        "写出 σ已知时区间公式（2分）",
-        "算出半宽 \n$$\n1.96\n$$\n（2分）",
-        "给出置信区间 \n$$\n(50.04,53.96)\n$$\n（2分）",
-        "指出 \n$$\n50\n$$\n 不在区间内（2分）",
-        "得出双侧 0.05 水平下拒绝 \n$$\nH_0\n$$\n，或用 \n$$\nZ=2\n$$\n 验证（2分）"
+      "sourceChapter": "ch05",
+      "points": 2,
+      "stem": "辛钦大数定律的统计含义最恰当的是（ ）。",
+      "options": [
+        "样本均值依概率收敛到总体均值",
+        "样本均值必然逐项等于总体均值",
+        "大数定律要求总体一定正态",
+        "依概率收敛等同于每次样本都无误差"
       ],
-      "explanation": "7.4 节给出 \n$$\n\\sigma\n$$\n 已知时的 Z 置信区间，第八章的双侧 Z 检验与该区间有直接对应关系：若 \n$$\n\\mu_0\n$$\n 落在 95% 区间外，则样本均值相对 \n$$\n\\mu_0\n$$\n 的偏离超过 \n$$\n1.96\n$$\n 个标准误，故在 5% 双侧水平下拒绝原假设。",
+      "answer": 0,
+      "hint": "关注样本均值随样本量增大时的稳定趋势。",
+      "explanation": "Python 键值校验对应 5.2 节：i.i.d. 且期望存在时，样本均值依概率收敛到总体均值。",
       "sourceRef": {
-        "path": "content/chapters/ch07/7.4.md",
-        "label": "7.4 区间估计 · σ已知时 μ 的置信区间"
-      },
-      "manimVideoId": "quiz-prob-ch08-q09"
+        "path": "content/chapters/ch05/5.2.md",
+        "label": "5.2 大数定律"
+      }
     },
     {
       "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 2,
+      "stem": "关于正态总体方差检验，下列说法正确的是（ ）。",
+      "options": [
+        "两个方差比检验使用 t 分布",
+        "χ² 检验统计量可以为负",
+        "单个正态总体方差检验使用 χ² 统计量",
+        "方差检验使用标准正态 Z 统计量"
+      ],
+      "answer": 2,
+      "hint": "样本方差标准化后进入卡方分布。",
+      "explanation": "Python 键值校验对应 8.3 节：单方差用 χ²，两个方差比用 F，χ² 非负。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.3.md",
+        "label": "8.3 正态总体方差的假设检验"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "检验功效通常记为____。",
+      "answer": "\n$$\n1-\\beta\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验：功效是正确拒绝错误 H0 的概率。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.4.md",
+        "label": "8.4 两类错误与检验功效"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "第一类错误的含义是____。",
+      "answer": "H0 为真却拒绝 H0",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验：第一类错误又称弃真错误。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.1.md",
+        "label": "8.1 假设检验的基本思想"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "正态总体 σ 未知时检验 H0:μ=μ0 的统计量 T=____。",
+      "answer": "\n$$\n\\frac{\\bar X-\\mu_0}{S/\\sqrt n}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为单样本 t 检验统计量。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.2.md",
+        "label": "8.2 正态总体均值的假设检验"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "单个正态总体方差检验的统计量为____。",
+      "answer": "\n$$\n\\frac{(n-1)S^2}{\\sigma_0^2}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为卡方检验统计量。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.3.md",
+        "label": "8.3 正态总体方差的假设检验"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch06",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 Z_i 独立且均服从 N(0,1)，则 Σ_{i=1}^8 Z_i^2 服从____。",
+      "answer": "\n$$\n\\chi^2(8)\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为 8 个独立标准正态平方和。",
+      "sourceRef": {
+        "path": "content/chapters/ch06/6.2.md",
+        "label": "6.2 三大抽样分布"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "两点分布 P(X=1)=p 的最大似然估计 p̂=____。",
+      "answer": "\n$$\n\\bar X\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验：伯努利样本似然最大点为成功频率。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.2.md",
+        "label": "7.2 最大似然估计"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 P(A)=0.7，则 P(\\bar A)=____。",
+      "answer": "\n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "补事件概率为 1-P(A)，Python 分数校验得到 3/10。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.3.md",
+        "label": "1.3 频率与概率"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 X~P(3)，则 P(X=2)=____（保留 e 的形式）。",
+      "answer": "\n$$\n\\frac{9}{2}e^{-3}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "泊松分布点概率 e^-λ λ^k/k!，Python 校验系数为 9/2。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.2.md",
+        "label": "2.2 离散型随机变量与常见分布"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "二维连续型随机变量联合密度 f(x,y) 在全平面上的积分应等于____。",
+      "answer": "\n$$\n1\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 数值规范校验：概率密度总质量为 1。",
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.1.md",
+        "label": "3.1 二维随机变量与联合分布"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "fill_blank",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "第一类错误的含义是____。",
+      "answer": "H0 为真却拒绝 H0",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验：第一类错误又称弃真错误。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.1.md",
+        "label": "8.1 假设检验的基本思想"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "某正态总体样本容量 n=10，样本方差 S²=1.8。检验 H0:σ²=2.25 时，求卡方检验统计量的观测值。",
+      "answer": "方差检验统计量为 \n$$\n\\chi^2=\\frac{(n-1)S^2}{\\sigma_0^2}\n$$\n 代入得 \n$$\n\\chi^2=\\frac{9\\times1.8}{2.25}=7.2\n$$\n。",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "写出卡方统计量（3分）",
+        "正确代入 n-1=9（2分）",
+        "正确代入 S² 与 σ0²（2分）",
+        "算出观测值 7.2（3分）"
+      ],
+      "explanation": "Python 浮点校验统计量=7.2。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.3.md",
+        "label": "8.3 正态总体方差的假设检验"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch08",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "右侧检验 H0:μ=500，H1:μ>500，已知 σ=10，n=25，α=0.05，z0.05=1.645。若真实均值 μ=505，求检验功效。",
+      "answer": "拒绝域临界均值为 \n$$\n\\bar X>500+1.645\\times\\frac{10}{5}=503.29\n$$\n 当 μ=505 时，\\bar X~N(505,4)。第二类错误概率 \n$$\n\\beta=P(\\bar X\\le 503.29\\mid \\mu=505)=\\Phi(-0.855)\\approx 0.196\n$$\n 功效为 \n$$\n1-\\beta\\approx 0.804\n$$\n。",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "求出右侧拒绝临界均值（3分）",
+        "写出真实均值下样本均值分布（2分）",
+        "表达第二类错误概率（2分）",
+        "计算 β（2分）",
+        "给出功效（1分）"
+      ],
+      "explanation": "Python erf 校验 crit=503.29, beta=0.196276, power=0.803724。",
+      "sourceRef": {
+        "path": "content/chapters/ch08/8.4.md",
+        "label": "8.4 两类错误与检验功效"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "已知 E(X)=2，E(Y)=1，E(XY)=5，D(X)=4，D(Y)=9。求 Cov(X,Y) 和相关系数 ρ。",
+      "answer": "\n$$\nCov(X,Y)=E(XY)-E(X)E(Y)=5-2\\times1=3\n$$\n \n$$\n\\rho=\\frac{Cov(X,Y)}{\\sqrt{D(X)}\\sqrt{D(Y)}}=\\frac{3}{2\\times3}=\\frac12\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "写出协方差简化公式（2分）",
+        "算出 Cov=3（2分）",
+        "写出相关系数公式（3分）",
+        "算出 ρ=1/2（3分）"
+      ],
+      "explanation": "Python 分数校验 Cov=3, rho=1/2。",
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.3.md",
+        "label": "4.3 协方差与相关系数"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "设 X_i 独立同分布，E(X_i)=2，D(X_i)=9。用中心极限定理近似求 P(185<ΣX_i<215)，其中 n=100。",
+      "answer": "和 S 的均值为 200，方差为 900，标准差为 30。标准化得 \n$$\nP(185<S<215)=P(-0.5<Z<0.5)\n$$\n 因而 \n$$\n\\Phi(0.5)-\\Phi(-0.5)\\approx 0.3829\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "求出和的均值 200（2分）",
+        "求出和的标准差 30（2分）",
+        "正确标准化为 (-0.5,0.5)（3分）",
+        "用标准正态求近似概率（3分）"
+      ],
+      "explanation": "Python erf 正态近似校验概率=0.3829。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.3.md",
+        "label": "5.3 中心极限定理"
+      },
+      "manimVideoId": "quiz-prob-ch08-q024"
+    },
+    {
+      "id": "q025",
       "type": "essay",
       "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "ch08",
-      "label": "计算题",
       "points": 10,
+      "label": "计算题",
       "total_points": 10,
-      "stem": "某药片有效成分总体标准差已知为 \n$$\n\\sigma=10\n$$\n mg。检验 \n$$\nH_0:\\mu=500\n$$\n 对 \n$$\nH_1:\\mu>500\n$$\n，取 \n$$\n\\alpha=0.05\n$$\n，样本量 \n$$\nn=25\n$$\n。若真实均值为 \n$$\n\\mu_1=505\n$$\n，求该检验的功效 \n$$\n1-\\beta\n$$\n。取 \n$$\nz_{0.05}=1.645\n$$\n，\n$$\n\\Phi(-0.855)=0.196\n$$\n。",
-      "answer": "右侧 Z 检验的拒绝域为\n$$\n\\bar{X}>\\mu_0+z_{0.05}\\frac{\\sigma}{\\sqrt n}=500+1.645\\times\\frac{10}{5}=500+3.29=503.29.\n$$\n当真实均值为 \n$$\n\\mu_1=505\n$$\n 时，\n$$\n\\bar{X}\\sim N\\left(505,\\frac{10^2}{25}\\right)=N(505,4),\n$$\n标准差为 \n$$\n2\n$$\n。第二类错误是实际 \n$$\n\\mu=505\n$$\n 时仍不拒绝 \n$$\nH_0\n$$\n：\n$$\n\\beta=P(\\bar{X}\\le 503.29\\mid \\mu=505)=P\\left(Z\\le\\frac{503.29-505}{2}\\right).\n$$\n标准化值为\n$$\n\\frac{503.29-505}{2}=-0.855.\n$$\n故\n$$\n\\beta=\\Phi(-0.855)=0.196,\\qquad 1-\\beta=0.804.\n$$\n该检验在真实均值为 505 mg 时的功效约为 \n$$\n80.4\\%\n$$\n。",
-      "hint": "先在 \n$$\nH_0\n$$\n 下由 \n$$\n\\alpha\n$$\n 确定临界值，再在真实 \n$$\n\\mu_1\n$$\n 下计算落入拒绝域的概率。",
+      "stem": "右侧检验 H0:μ=500，H1:μ>500，已知 σ=10，α=0.05，z0.05=1.645。若希望真实均值 μ=506 时检验功效至少为 0.90，求最小样本量。",
+      "answer": "右侧检验在 μ=506 时的功效条件可写为 \n$$\n\\Phi\\left(\\frac{(\\mu_1-\\mu_0)\\sqrt n}{\\sigma}-z_{0.05}\\right)\\ge 0.90\n$$\n 因而 \n$$\n\\frac{6\\sqrt n}{10}-1.645\\ge 1.282\n$$\n 即 \n$$\nn\\ge \\left(\\frac{(1.645+1.282)\\times10}{6}\\right)^2\\approx 23.79\n$$\n 样本量取整数，所以最小 n 为 \n$$\n24\n$$\n。",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
       "scoring_criteria": [
-        "正确写出右侧拒绝域并算出临界均值 \n$$\n503.29\n$$\n（3分）",
-        "写出真实 \n$$\n\\mu_1=505\n$$\n 下 \n$$\n\\bar X\\sim N(505,4)\n$$\n（2分）",
-        "把第二类错误表示为 \n$$\nP(\\bar X\\le503.29\\mid\\mu=505)\n$$\n（2分）",
-        "标准化得到 \n$$\n-0.855\n$$\n 并算出 \n$$\n\\beta=0.196\n$$\n（2分）",
-        "给出功效 \n$$\n1-\\beta=0.804\n$$\n 并解释含义（1分）"
+        "写出功效不等式（3分）",
+        "代入 z0.05 与 z0.10 分位数（2分）",
+        "整理得到样本量不等式（3分）",
+        "向上取整给出最小 n=24（2分）"
       ],
-      "explanation": "8.4 节说明功效是 \n$$\nH_0\n$$\n 为假时正确拒绝 \n$$\nH_0\n$$\n 的概率。计算时要分清两个分布：临界值由 \n$$\nH_0:\\mu=500\n$$\n 和 \n$$\n\\alpha=0.05\n$$\n 决定；功效则在真实 \n$$\n\\mu_1=505\n$$\n 的分布下计算。样本量固定时，若减小 \n$$\n\\alpha\n$$\n，临界值右移，通常会增大 \n$$\n\\beta\n$$\n；若增大样本量，样本均值分布变窄，功效会提高。",
+      "explanation": "Python math.ceil 校验 n_min=24，未向上取整会使功效不足 0.90。",
       "sourceRef": {
         "path": "content/chapters/ch08/8.4.md",
-        "label": "8.4 两类错误与检验功效 · 单侧正态均值检验的功效"
+        "label": "8.4 两类错误与检验功效"
       },
-      "manimVideoId": "quiz-prob-ch08-q10"
+      "manimVideoId": "quiz-prob-ch08-q025"
+    },
+    {
+      "id": "q026",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch06",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "设 Z_1,...,Z_6 独立同服从 N(0,1)，求 Q=ΣZ_i² 的分布、期望与方差。",
+      "answer": "由 χ² 分布定义，\n$$\nQ=\\sum_{i=1}^6Z_i^2\\sim\\chi^2(6)\n$$\n 因而 \n$$\nE(Q)=6,\\quad D(Q)=12\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "识别为标准正态平方和（3分）",
+        "写出 χ²(6)（3分）",
+        "写出期望为自由度（2分）",
+        "写出方差为 2 倍自由度（2分）"
+      ],
+      "explanation": "Python 整数规则校验 df=6, E=6, D=12。",
+      "sourceRef": {
+        "path": "content/chapters/ch06/6.2.md",
+        "label": "6.2 三大抽样分布"
+      },
+      "manimVideoId": "quiz-prob-ch08-q026"
     }
   ],
   "summary": {
-    "totalQuestions": 10,
+    "totalQuestions": 26,
     "byType": {
-      "single_choice": 2,
-      "fill_blank": 2,
+      "single_choice": 10,
+      "fill_blank": 10,
       "essay": 6
     },
     "bySource": {
-      "current_chapter": 5,
-      "review": 5
+      "current_chapter": 13,
+      "review": 13
     },
     "byDifficulty": {
-      "basic": 7,
-      "medium": 2,
-      "hard": 1
+      "basic": 18,
+      "medium": 5,
+      "hard": 3
     }
   }
 }

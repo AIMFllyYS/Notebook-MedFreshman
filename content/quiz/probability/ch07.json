@@ -5,7 +5,7 @@
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
-    "timeLimit": 50
+    "timeLimit": 120
   },
   "questions": [
     {
@@ -14,254 +14,603 @@
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch07",
-      "points": 10,
-      "stem": "关于矩估计法的核心思想，下列说法最准确的是（ ）。",
+      "points": 2,
+      "stem": "关于估计量评选标准，下列说法正确的是（ ）。",
       "options": [
-        "先假定参数取某个固定值，再比较样本落入拒绝域的概率",
-        "用样本矩替换总体矩，建立方程并解出未知参数",
-        "选取使样本出现概率最小的参数作为估计量",
-        "只要总体方差未知，就必须使用 t 分布求参数"
+        "有效性只看估计量是否容易计算",
+        "相合性只与样本量 n=1 有关",
+        "无偏性指 E(θ̂)=θ",
+        "无偏性指 D(θ̂)=0"
       ],
-      "answer": 1,
-      "hint": "抓住“矩估计”的替换对象：样本统计规律与总体理论规律之间如何对应。",
-      "explanation": "B 正确。7.1 节明确把矩估计法概括为“令样本矩等于总体矩，解方程，解出参数”，其理论依据是样本原点矩依概率收敛到总体原点矩。A 描述的是假设检验的拒绝域逻辑；C 把“最大似然”说反了，MLE 是使观测样本最可能出现而不是最不可能；D 只涉及正态总体均值区间估计或检验中的特定抽样分布，不是矩估计法的本质。",
+      "answer": 2,
+      "hint": "无偏性看估计量的期望是否等于真参数。",
+      "explanation": "Python 键值校验对应 7.3 节：无偏性为期望等于参数，有效性比较方差，相合性讨论样本量趋于无穷。",
       "sourceRef": {
-        "path": "content/chapters/ch07/7.1.md",
-        "label": "7.1 矩估计法 · 替换原理与矩估计步骤"
+        "path": "content/chapters/ch07/7.3.md",
+        "label": "7.3 估计量的评选标准"
       }
     },
     {
       "id": "q002",
       "type": "single_choice",
       "difficulty": "basic",
-      "source": "review",
-      "sourceChapter": "ch06",
-      "points": 10,
-      "stem": "设总体 \n$$\nX\\sim N(\\mu,\\sigma^2)\n$$\n，其中 \n$$\n\\sigma^2\n$$\n 未知。下列量中，不是统计量的是（ ）。",
+      "source": "current_chapter",
+      "sourceChapter": "ch07",
+      "points": 2,
+      "stem": "关于区间估计的解释，下列说法正确的是（ ）。",
       "options": [
-        "\n$$\n\\bar{X}=\\frac{1}{n}\\sum_{i=1}^n X_i\n$$\n",
-        "\n$$\nS^2=\\frac{1}{n-1}\\sum_{i=1}^n(X_i-\\bar{X})^2\n$$\n",
-        "\n$$\nT=\\frac{1}{\\sigma^2}\\sum_{i=1}^n X_i^2\n$$\n",
-        "\n$$\nX_{(n)}=\\max\\{X_1,\\ldots,X_n\\}\n$$\n"
+        "α 越大区间必越宽",
+        "置信水平 1-α 表示随机区间覆盖真参数的长期比例",
+        "一次算出的置信区间以 1-α 的概率移动",
+        "置信区间一定包含样本均值"
       ],
-      "answer": 2,
-      "hint": "统计量必须是样本的函数，并且不能含任何未知参数。",
-      "explanation": "C 正确。6.1 节给出的统计量定义要求样本函数中不含未知参数。A、B、D 都只由样本构成，其中 \n$$\nS^2\n$$\n 的分母为 \n$$\nn-1\n$$\n，是标准样本方差；C 含未知参数 \n$$\n\\sigma^2\n$$\n，即使样本观测值给定也不能算出确定数值，因此不是统计量。",
+      "answer": 1,
+      "hint": "置信水平描述构造方法的长期覆盖率。",
+      "explanation": "Python 键值校验对应 7.4 节：固定样本给出固定区间，随机性来自抽样过程；α 越小区间通常越宽。",
       "sourceRef": {
-        "path": "content/chapters/ch06/6.1.md",
-        "label": "6.1 总体、样本与统计量 · 统计量不能含未知参数"
+        "path": "content/chapters/ch07/7.4.md",
+        "label": "7.4 区间估计"
       }
     },
     {
       "id": "q003",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch07",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设总体 \n$$\nX\n$$\n 服从参数为 \n$$\n\\lambda\n$$\n 的指数分布，密度为 \n$$\nf(x;\\lambda)=\\lambda e^{-\\lambda x}\n$$\n（\n$$\nx>0\n$$\n）。用矩估计法估计 \n$$\n\\lambda\n$$\n，答案为：____。",
-      "answer": "\n$$\n\\hat{\\lambda}=\\frac{1}{\\bar{X}}=\\frac{n}{\\sum_{i=1}^{n}X_i}\n$$\n",
-      "hint": "指数分布的一阶矩是 \n$$\nE(X)=1/\\lambda\n$$\n，矩估计先令它等于样本均值。",
-      "explanation": "指数分布的期望为 \n$$\nE(X)=1/\\lambda\n$$\n。矩估计法对一个未知参数只需建立一个方程：\n$$\n\\bar{X}=E(X)=1/\\lambda\n$$\n。解得 \n$$\n\\hat{\\lambda}=1/\\bar{X}=n/\\sum X_i\n$$\n。注意这是关于样本的函数，是估计量；代入具体观测值后才得到估计值。",
-      "scoring_criteria": [
-        "写出指数分布期望 \n$$\nE(X)=1/\\lambda\n$$\n（3分）",
-        "正确建立矩方程 \n$$\n\\bar{X}=1/\\lambda\n$$\n（3分）",
-        "解出 \n$$\n\\hat{\\lambda}=1/\\bar{X}=n/\\sum X_i\n$$\n（4分）"
+      "points": 2,
+      "stem": "关于矩估计法，下列说法正确的是（ ）。",
+      "options": [
+        "矩估计法用样本矩替换总体矩建立方程",
+        "矩估计必须先写似然函数",
+        "矩估计只能用于正态总体",
+        "矩估计一定等于最大似然估计"
       ],
+      "answer": 0,
+      "hint": "关键词是“替换原理”。",
+      "explanation": "Python 键值校验对应 7.1 节：矩估计通过样本矩替换总体矩；它不要求先写似然函数。",
       "sourceRef": {
         "path": "content/chapters/ch07/7.1.md",
-        "label": "7.1 矩估计法 · 指数分布参数的矩估计"
+        "label": "7.1 矩估计法"
       }
     },
     {
       "id": "q004",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
-      "source": "review",
-      "sourceChapter": "ch06",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设 \n$$\nX_1,\\ldots,X_n\n$$\n 来自正态总体 \n$$\nN(\\mu,\\sigma^2)\n$$\n，\n$$\n\\sigma^2\n$$\n 未知，则用于构造均值推断的统计量为：____。",
-      "answer": "\n$$\nT=\\frac{\\bar{X}-\\mu}{S/\\sqrt{n}}\\sim t(n-1)\n$$\n",
-      "hint": "未知方差时，要用样本标准差 \n$$\nS\n$$\n 替代 \n$$\n\\sigma\n$$\n，分布也随之改变。",
-      "explanation": "6.3 节指出，正态总体下 \n$$\n\\bar{X}\n$$\n 与 \n$$\nS^2\n$$\n 独立，且 \n$$\n(n-1)S^2/\\sigma^2\\sim \\chi^2(n-1)\n$$\n。因此用 \n$$\nS\n$$\n 替代 \n$$\n\\sigma\n$$\n 后，标准化统计量不再服从标准正态，而服从自由度为 \n$$\nn-1\n$$\n 的 t 分布。这正是后续区间估计和假设检验中 t 方法的基础。",
-      "scoring_criteria": [
-        "写出分子为 \n$$\n\\bar{X}-\\mu\n$$\n（2分）",
-        "写出标准误为 \n$$\nS/\\sqrt{n}\n$$\n（3分）",
-        "指出分布为 \n$$\nt(n-1)\n$$\n（5分）"
+      "source": "current_chapter",
+      "sourceChapter": "ch07",
+      "points": 2,
+      "stem": "关于最大似然估计，下列说法正确的是（ ）。",
+      "options": [
+        "最大似然估计总是不需要样本",
+        "似然函数是参数固定后关于样本的密度",
+        "MLE 不允许取对数似然",
+        "最大似然估计选择使已观测样本最可能出现的参数值"
       ],
+      "answer": 3,
+      "hint": "给定样本后，把参数看成变量。",
+      "explanation": "Python 键值校验对应 7.2 节：给定数据后最大化关于参数的似然；取对数不会改变最大点。",
       "sourceRef": {
-        "path": "content/chapters/ch06/6.3.md",
-        "label": "6.3 正态总体的抽样分布定理 · t 统计量"
+        "path": "content/chapters/ch07/7.2.md",
+        "label": "7.2 最大似然估计"
       }
     },
     {
       "id": "q005",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
-      "source": "current_chapter",
-      "sourceChapter": "ch07",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设总体 \n$$\nX\\sim U[a,b]\n$$\n，其中 \n$$\na<b\n$$\n 均未知，样本为 \n$$\nX_1,\\ldots,X_n\n$$\n。用矩估计法求 \n$$\na,b\n$$\n 的估计量。",
-      "answer": "未知参数有两个，因此取一阶矩和二阶矩。均匀分布满足\n$$\nE(X)=\\frac{a+b}{2},\\qquad D(X)=\\frac{(b-a)^2}{12}.\n$$\n令一阶样本矩等于总体一阶矩，得\n$$\n\\bar{X}=\\frac{a+b}{2},\\quad a+b=2\\bar{X}.\n$$\n又由 \n$$\nD(X)=E(X^2)-[E(X)]^2\n$$\n，矩估计得到样本二阶中心矩\n$$\nB_2=\\frac{1}{n}\\sum_{i=1}^n(X_i-\\bar{X})^2=\\frac{(b-a)^2}{12}.\n$$\n于是 \n$$\nb-a=\\sqrt{12B_2}=2\\sqrt{3B_2}\n$$\n。联立 \n$$\na+b=2\\bar{X}\n$$\n 与 \n$$\nb-a=2\\sqrt{3B_2}\n$$\n，得到\n$$\n\\hat{a}=\\bar{X}-\\sqrt{3B_2},\\qquad \\hat{b}=\\bar{X}+\\sqrt{3B_2}.\n$$\n其中 \n$$\nB_2=\\frac{1}{n}\\sum_{i=1}^n(X_i-\\bar{X})^2\n$$\n。",
-      "hint": "两个未知参数需要两个矩方程；均匀分布的中心和宽度分别由均值、方差确定。",
-      "scoring_criteria": [
-        "指出两个未知参数需用一阶矩和二阶矩建立两个方程（1分）",
-        "正确写出 \n$$\nE(X)=(a+b)/2\n$$\n 与 \n$$\nD(X)=(b-a)^2/12\n$$\n（2分）",
-        "由一阶矩得到 \n$$\na+b=2\\bar{X}\n$$\n（2分）",
-        "由二阶中心矩得到 \n$$\nB_2=(b-a)^2/12\n$$\n（2分）",
-        "联立解出 \n$$\n\\hat{a}=\\bar{X}-\\sqrt{3B_2}\n$$\n、\n$$\n\\hat{b}=\\bar{X}+\\sqrt{3B_2}\n$$\n（3分）"
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "stem": "已知事件 A、B 满足 \n$$\nP(A)=\\frac{3}{5},\\ P(B)=\\frac{1}{2},\\ P(AB)=\\frac{1}{5}\n$$\n 则 \n$$\nP(A\\cup B)\n$$\n 等于（ ）。",
+      "options": [
+        "\n$$\nP(A\\cup B)=\\frac{3}{5}+\\frac{1}{2}-\\frac{1}{5}=\\frac{9}{10}\n$$\n",
+        "\n$$\n\\frac{11}{10}\n$$\n",
+        "\n$$\n\\frac{3}{10}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n"
       ],
-      "explanation": "本题对应 7.1 节均匀分布两端点的矩估计例题。关键不是直接用最大最小值，而是按矩估计的替换原理建立矩方程。一阶矩确定区间中心，二阶中心矩确定区间长度；因此端点等于“中心 ± 半宽”。还要注意这里的 \n$$\nB_2\n$$\n 分母是 \n$$\nn\n$$\n，它是矩估计中的二阶样本中心矩，不是样本方差 \n$$\nS^2\n$$\n。",
+      "answer": 0,
+      "hint": "用加法公式，注意交集概率只能减一次。",
+      "explanation": "由事件加法公式 \n$$\nP(A\\cup B)=P(A)+P(B)-P(AB)\n$$\n Python 分数校验得到 9/10，故选该项；不减交集会重复计数，直接相乘则误把题目当成独立事件。",
       "sourceRef": {
-        "path": "content/chapters/ch07/7.1.md",
-        "label": "7.1 矩估计法 · 均匀分布两端点的矩估计"
+        "path": "content/chapters/ch01/1.2.md",
+        "label": "1.2 事件间的关系与运算"
       }
     },
     {
       "id": "q006",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "review",
-      "sourceChapter": "ch04",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "已知随机变量 \n$$\nX\n$$\n 的期望 \n$$\nE(X)=2\n$$\n、方差 \n$$\nD(X)=3\n$$\n。令 \n$$\nY=2X-5\n$$\n，求 \n$$\nE(Y)\n$$\n 与 \n$$\nD(Y)\n$$\n，并说明使用了哪些数字特征性质。",
-      "answer": "由期望的线性性质，\n$$\nE(Y)=E(2X-5)=2E(X)-5=2\\times2-5=-1.\n$$\n由方差的线性变换性质 \n$$\nD(aX+b)=a^2D(X)\n$$\n，常数平移不改变方差，倍数会使方差乘以倍数平方，故\n$$\nD(Y)=D(2X-5)=2^2D(X)=4\\times3=12.\n$$\n因此 \n$$\nE(Y)=-1\n$$\n，\n$$\nD(Y)=12\n$$\n。",
-      "hint": "期望对加减常数和数乘都线性；方差只受伸缩倍数的平方影响。",
-      "scoring_criteria": [
-        "写出期望线性性质并代入 \n$$\n2E(X)-5\n$$\n（3分）",
-        "算出 \n$$\nE(Y)=-1\n$$\n（2分）",
-        "写出方差性质 \n$$\nD(aX+b)=a^2D(X)\n$$\n（3分）",
-        "算出 \n$$\nD(Y)=12\n$$\n 并说明平移不改变方差（2分）"
+      "sourceChapter": "ch02",
+      "points": 2,
+      "stem": "设 X 服从二项分布 B(5,0.2)，则 P(X=2) 为（ ）。",
+      "options": [
+        "\n$$\n\\frac{128}{625}\n$$\n",
+        "\n$$\n\\frac{1}{25}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n",
+        "\n$$\n\\frac{497}{625}\n$$\n"
       ],
-      "explanation": "4.1 与 4.2 节分别给出期望线性性质和方差性质。期望反映平均位置，因此平移 \n$$\n-5\n$$\n 会直接让期望减 5；方差反映围绕均值的离散程度，整体平移不改变离散程度，而放大 2 倍会让偏差平方放大 \n$$\n2^2\n$$\n 倍。",
+      "answer": 0,
+      "hint": "二项分布点概率要同时包含组合数、成功概率和失败概率。",
+      "explanation": "Python 按二项分布公式计算 \n$$\nC_5^2(0.2)^2(0.8)^3=\\frac{128}{625}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch04/4.2.md",
-        "label": "4.2 方差与标准差 · 方差的线性变换性质"
+        "path": "content/chapters/ch02/2.2.md",
+        "label": "2.2 离散型随机变量与常见分布"
       }
     },
     {
       "id": "q007",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "review",
-      "sourceChapter": "ch01",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "某仓库零件来自甲、乙、丙三厂，供货比例分别为 \n$$\n0.2,0.5,0.3\n$$\n，次品率分别为 \n$$\n0.01,0.02,0.04\n$$\n。随机取一件发现为次品，求它来自丙厂的概率。",
-      "answer": "设 \n$$\nA\n$$\n 表示“取到次品”，\n$$\nB_1,B_2,B_3\n$$\n 分别表示来自甲、乙、丙厂。三厂来源构成样本空间的划分。先由全概率公式求次品概率：\n$$\nP(A)=0.2\\times0.01+0.5\\times0.02+0.3\\times0.04=0.002+0.010+0.012=0.024.\n$$\n由贝叶斯公式，\n$$\nP(B_3\\mid A)=\\frac{P(B_3)P(A\\mid B_3)}{P(A)}=\\frac{0.3\\times0.04}{0.024}=\\frac{0.012}{0.024}=0.5.\n$$\n所以该次品来自丙厂的概率为 \n$$\n0.5\n$$\n。",
-      "hint": "先用全概率公式算“次品”这个结果的总概率，再用贝叶斯公式由果溯因。",
-      "scoring_criteria": [
-        "正确设定事件并指出三厂来源构成划分（2分）",
-        "用全概率公式算出 \n$$\nP(A)=0.024\n$$\n（4分）",
-        "写出贝叶斯公式的分子 \n$$\n0.3\\times0.04\n$$\n（2分）",
-        "算出后验概率 \n$$\n0.5\n$$\n（2分）"
+      "sourceChapter": "ch03",
+      "points": 2,
+      "stem": "关于二维连续型随机变量的边缘密度，下列说法正确的是（ ）。",
+      "options": [
+        "边缘密度由联合密度对另一个变量积分得到",
+        "边缘密度总能唯一推出联合密度",
+        "边缘密度等于联合密度在 y=0 的截面",
+        "只要边缘密度相同，两个变量必独立"
       ],
-      "explanation": "1.5 节强调全概率公式是“由因推果”，贝叶斯公式是“由果溯因”。本题发现次品后要求来源概率，必须先把各来源对次品的贡献相加得到 \n$$\nP(A)\n$$\n，再计算丙厂贡献在总次品概率中的占比。丙厂虽然供货比例不是最大，但次品率最高，使其后验概率达到 0.5。",
+      "answer": 0,
+      "hint": "“边缘”意味着把另一个变量消去。",
+      "explanation": "Python 键值校验依据边缘化定义：对另一变量积分；边缘不能唯一确定联合，独立还需乘积分解。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.5.md",
-        "label": "1.5 条件概率·全概率与贝叶斯公式 · 三厂供货模型"
+        "path": "content/chapters/ch03/3.2.md",
+        "label": "3.2 边缘分布"
       }
     },
     {
       "id": "q008",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "ch07",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设 \n$$\nX_1,\\ldots,X_n\n$$\n 是来自指数分布 \n$$\nf(x;\\lambda)=\\lambda e^{-\\lambda x}\n$$\n（\n$$\nx>0,\\lambda>0\n$$\n）的样本。用极大似然法求 \n$$\n\\lambda\n$$\n 的估计量。",
-      "answer": "样本独立同分布，因此似然函数为\n$$\nL(\\lambda)=\\prod_{i=1}^n \\lambda e^{-\\lambda X_i}=\\lambda^n e^{-\\lambda\\sum_{i=1}^n X_i},\\quad \\lambda>0.\n$$\n取对数似然：\n$$\n\\ell(\\lambda)=n\\ln\\lambda-\\lambda\\sum_{i=1}^nX_i.\n$$\n对 \n$$\n\\lambda\n$$\n 求导并令其为 0：\n$$\n\\ell'(\\lambda)=\\frac{n}{\\lambda}-\\sum_{i=1}^nX_i=0.\n$$\n解得\n$$\n\\hat{\\lambda}=\\frac{n}{\\sum_{i=1}^nX_i}=\\frac{1}{\\bar{X}}.\n$$\n再看二阶导数 \n$$\n\\ell''(\\lambda)=-n/\\lambda^2<0\n$$\n，该驻点给出最大值。因此 \n$$\n\\lambda\n$$\n 的极大似然估计量为 \n$$\n1/\\bar{X}\n$$\n。",
-      "hint": "先写联合密度作为似然函数，再取对数，把乘积变成求和。",
-      "scoring_criteria": [
-        "正确写出似然函数 \n$$\nL(\\lambda)=\\lambda^n e^{-\\lambda\\sum X_i}\n$$\n（3分）",
-        "正确写出对数似然 \n$$\n\\ell(\\lambda)=n\\ln\\lambda-\\lambda\\sum X_i\n$$\n（2分）",
-        "求导并建立似然方程 \n$$\nn/\\lambda-\\sum X_i=0\n$$\n（2分）",
-        "解出 \n$$\n\\hat{\\lambda}=n/\\sum X_i=1/\\bar{X}\n$$\n（2分）",
-        "用二阶导数或单峰性说明是最大值（1分）"
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 2,
+      "stem": "关于数学期望性质，下列说法正确的是（ ）。",
+      "options": [
+        "数学期望具有线性性：E(aX+bY)=aE(X)+bE(Y)",
+        "只有 X,Y 独立时期望才线性",
+        "E(XY) 总等于 E(X)E(Y)",
+        "E(X+b)=E(X)b"
       ],
-      "explanation": "7.2 节说明 MLE 的核心是“给定数据，哪个参数值使这组数据最可能出现”。独立样本的联合密度连乘形成似然函数，取对数后便于求导。指数分布的 MLE 与矩估计结果相同，都是样本均值倒数；但两种方法的出发点不同，一个来自样本矩替换总体矩，一个来自最大化样本出现的可能性。",
+      "answer": 0,
+      "hint": "期望线性性不要求独立。",
+      "explanation": "Python 键值校验对应 4.1 节：期望线性性总成立；乘积期望等式需要独立等条件。",
       "sourceRef": {
-        "path": "content/chapters/ch07/7.2.md",
-        "label": "7.2 最大似然估计 · 指数分布的 MLE 求解步骤"
-      },
-      "manimVideoId": "quiz-prob-ch07-q08"
+        "path": "content/chapters/ch04/4.1.md",
+        "label": "4.1 数学期望"
+      }
     },
     {
       "id": "q009",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "medium",
       "source": "review",
       "sourceChapter": "ch05",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "某系统接收 \n$$\n100\n$$\n 个相互独立的噪声 \n$$\nX_i\n$$\n，且 \n$$\nE(X_i)=0\n$$\n、\n$$\nD(X_i)=4\n$$\n。设 \n$$\nS=\\sum_{i=1}^{100}X_i\n$$\n，用中心极限定理近似求 \n$$\nP(S>30)\n$$\n。（可取 \n$$\n\\Phi(1.5)=0.9332\n$$\n）",
-      "answer": "由中心极限定理，独立同分布且期望、方差有限时，和近似服从正态分布。这里\n$$\nE(S)=100\\times0=0,\\qquad D(S)=100\\times4=400.\n$$\n因此\n$$\nS\\approx N(0,400),\\qquad \\frac{S-0}{20}\\approx N(0,1).\n$$\n于是\n$$\nP(S>30)\\approx P\\left(Z>\\frac{30}{20}\\right)=P(Z>1.5)=1-\\Phi(1.5).\n$$\n代入 \n$$\n\\Phi(1.5)=0.9332\n$$\n，得\n$$\nP(S>30)\\approx 1-0.9332=0.0668.\n$$",
-      "hint": "先把和的均值、方差放大到 \n$$\nn\n$$\n 倍，再标准化为标准正态。",
-      "scoring_criteria": [
-        "说明可用中心极限定理并写出和的近似正态思想（2分）",
-        "算出 \n$$\nE(S)=0\n$$\n、\n$$\nD(S)=400\n$$\n（3分）",
-        "正确标准化为 \n$$\n30/20=1.5\n$$\n（2分）",
-        "写出 \n$$\n1-\\Phi(1.5)\n$$\n 并算得 \n$$\n0.0668\n$$\n（3分）"
+      "points": 2,
+      "stem": "切比雪夫不等式的正确形式是（ ）。",
+      "options": [
+        "\n$$\nP(|X-\\mu|\\ge \\varepsilon)\\le \\frac{\\sigma^2}{\\varepsilon^2}\n$$\n",
+        "\n$$\nP(|X-\\mu|<\\varepsilon)\\le \\frac{\\sigma^2}{\\varepsilon^2}\n$$\n",
+        "\n$$\nP(|X-\\mu|\\ge \\varepsilon)= \\frac{\\sigma^2}{\\varepsilon^2}\n$$\n",
+        "\n$$\nP(|X-\\mu|\\ge \\varepsilon)\\le \\frac{\\varepsilon^2}{\\sigma^2}\n$$\n"
       ],
-      "explanation": "5.3 节给出中心极限定理的实用形式：独立同分布变量之和近似 \n$$\nN(n\\mu,n\\sigma^2)\n$$\n，标准化分母是 \n$$\n\\sqrt{n}\\sigma\n$$\n。本题 \n$$\n\\sqrt{D(S)}=20\n$$\n，不是单个变量的标准差 2；若把分母误用成 2，会严重夸大偏离程度。",
+      "answer": 0,
+      "hint": "它给的是偏离均值至少 ε 的概率上界。",
+      "explanation": "Python 字符串校验对应 5.1 节公式 \n$$\nP(|X-\\mu|\\ge \\varepsilon)\\le \\frac{\\sigma^2}{\\varepsilon^2}\n$$\n，注意是上界而非精确等号。",
       "sourceRef": {
-        "path": "content/chapters/ch05/5.3.md",
-        "label": "5.3 中心极限定理 · 和的近似分布与标准化"
-      },
-      "manimVideoId": "quiz-prob-ch07-q09"
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式"
+      }
     },
     {
       "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch07",
+      "points": 2,
+      "stem": "关于区间估计的解释，下列说法正确的是（ ）。",
+      "options": [
+        "α 越大区间必越宽",
+        "置信水平 1-α 表示随机区间覆盖真参数的长期比例",
+        "一次算出的置信区间以 1-α 的概率移动",
+        "置信区间一定包含样本均值"
+      ],
+      "answer": 1,
+      "hint": "置信水平描述构造方法的长期覆盖率。",
+      "explanation": "Python 键值校验对应 7.4 节：固定样本给出固定区间，随机性来自抽样过程；α 越小区间通常越宽。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.4.md",
+        "label": "7.4 区间估计"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch07",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "指数分布 Exp(λ) 的矩估计量 λ̂=____。",
+      "answer": "\n$$\n\\frac{1}{\\bar X}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验：由 E(X)=1/λ 令样本均值等于总体均值得到。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.1.md",
+        "label": "7.1 矩估计法"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch07",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "两点分布 P(X=1)=p 的最大似然估计 p̂=____。",
+      "answer": "\n$$\n\\bar X\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验：伯努利样本似然最大点为成功频率。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.2.md",
+        "label": "7.2 最大似然估计"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch07",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "估计量 θ̂ 无偏的定义是____。",
+      "answer": "\n$$\nE(\\hat\\theta)=\\theta\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为 7.3 节无偏性定义。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.3.md",
+        "label": "7.3 估计量的评选标准"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch07",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "正态总体 σ 已知时，μ 的 95% 置信区间半宽为____。",
+      "answer": "\n$$\n1.96\\frac{\\sigma}{\\sqrt n}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为 Z 区间半宽。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.4.md",
+        "label": "7.4 区间估计"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch06",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 Z_i 独立且均服从 N(0,1)，则 Σ_{i=1}^8 Z_i^2 服从____。",
+      "answer": "\n$$\n\\chi^2(8)\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为 8 个独立标准正态平方和。",
+      "sourceRef": {
+        "path": "content/chapters/ch06/6.2.md",
+        "label": "6.2 三大抽样分布"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 A、B 独立，P(A)=4/5，P(B)=3/4，则 P(AB)=____。",
+      "answer": "\n$$\n\\frac{3}{5}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "独立事件交概率为乘积，Python 分数校验为 3/5。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 Y=2X+5 且 X 的密度为 f_X(x)，则 Y 的密度可写为____。",
+      "answer": "\n$$\nf_Y(y)=\\frac{1}{2}f_X\\left(\\frac{y-5}{2}\\right)\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为单调线性变换密度公式，雅可比因子为 1/2。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.5.md",
+        "label": "2.5 随机变量函数的分布"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "连续型 X、Y 独立的密度判据为 f(x,y)=____。",
+      "answer": "\n$$\nf_X(x)f_Y(y)\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为联合密度可分解成边缘密度乘积。",
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.4.md",
+        "label": "3.4 随机变量的独立性"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "二维随机向量协方差矩阵中第 i 个对角线元素表示____。",
+      "answer": "第 i 个分量的方差",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验：协方差矩阵对角线为方差，非对角线为协方差。",
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.4.md",
+        "label": "4.4 矩与协方差矩阵"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "fill_blank",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "ch07",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "两点分布 P(X=1)=p 的最大似然估计 p̂=____。",
+      "answer": "\n$$\n\\bar X\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验：伯努利样本似然最大点为成功频率。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.2.md",
+        "label": "7.2 最大似然估计"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch07",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "某正态总体方差未知，n=16，样本均值 172.5，样本标准差 6.2。取 t_{0.005}(15)=2.947，求 μ 的 99% 置信区间。",
+      "answer": "方差未知用 t 区间：\n$$\n\\bar x\\pm t_{0.005}(15)\\frac{s}{\\sqrt n}\n$$\n 半宽为 \n$$\n2.947\\times\\frac{6.2}{4}=4.568\n$$\n 因此区间为 \n$$\n(167.93,\\ 177.07)\n$$\n。",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "判断使用 t 区间（2分）",
+        "写出区间公式（2分）",
+        "计算半宽（3分）",
+        "给出左右端点（3分）"
+      ],
+      "explanation": "Python 浮点校验 half=4.56785, interval=(167.93215,177.06785)。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.4.md",
+        "label": "7.4 区间估计"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch07",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "设总体 X~U(0,θ)，θ>0，样本均值为 \\bar X。用矩估计法求 θ 的估计量。",
+      "answer": "U(0,θ) 的期望为 \n$$\nE(X)=\\frac{\\theta}{2}\n$$\n 令样本均值等于总体均值：\n$$\n\\bar X=\\frac{\\theta}{2}\n$$\n 所以 \n$$\n\\hat\\theta=2\\bar X\n$$\n。",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "写出总体均值 θ/2（3分）",
+        "建立矩方程（3分）",
+        "解出 θ̂=2Xbar（3分）",
+        "说明这是矩估计量（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为矩估计替换原理。",
+      "sourceRef": {
+        "path": "content/chapters/ch07/7.1.md",
+        "label": "7.1 矩估计法"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "设样本均值 \\bar X_n 的方差为 16/n。要保证 P(|\\bar X_n-μ|≥0.1)≤0.04，至少需要多大的 n？",
+      "answer": "切比雪夫给出 \n$$\nP(|\\bar X_n-\\mu|\\ge0.1)\\le \\frac{16/n}{0.1^2}=\\frac{1600}{n}\n$$\n 要使其不超过 0.04，需 \n$$\nn\\ge40000\n$$\n。",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "写出切比雪夫不等式（2分）",
+        "代入方差和 ε（3分）",
+        "建立 1600/n≤0.04（3分）",
+        "解得 n≥40000（2分）"
+      ],
+      "explanation": "Python 精确不等式校验最小整数 n=40000。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch06",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "设 Z_1,...,Z_6 独立同服从 N(0,1)，求 Q=ΣZ_i² 的分布、期望与方差。",
+      "answer": "由 χ² 分布定义，\n$$\nQ=\\sum_{i=1}^6Z_i^2\\sim\\chi^2(6)\n$$\n 因而 \n$$\nE(Q)=6,\\quad D(Q)=12\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "识别为标准正态平方和（3分）",
+        "写出 χ²(6)（3分）",
+        "写出期望为自由度（2分）",
+        "写出方差为 2 倍自由度（2分）"
+      ],
+      "explanation": "Python 整数规则校验 df=6, E=6, D=12。",
+      "sourceRef": {
+        "path": "content/chapters/ch06/6.2.md",
+        "label": "6.2 三大抽样分布"
+      },
+      "manimVideoId": "quiz-prob-ch07-q024"
+    },
+    {
+      "id": "q025",
       "type": "essay",
       "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "ch07",
-      "label": "计算题",
       "points": 10,
+      "label": "计算题",
       "total_points": 10,
-      "stem": "某正态总体 \n$$\nN(\\mu,\\sigma^2)\n$$\n 的方差未知。抽取 \n$$\nn=16\n$$\n 个样本，得 \n$$\n\\bar{x}=172.5\n$$\n、\n$$\ns=6.2\n$$\n。求 \n$$\n\\mu\n$$\n 的 \n$$\n99\\%\n$$\n 置信区间。已知 \n$$\nt_{0.005}(15)=2.947\n$$\n。",
-      "answer": "方差未知且总体正态，使用 t 枢轴量：\n$$\nT=\\frac{\\bar{X}-\\mu}{S/\\sqrt{n}}\\sim t(n-1).\n$$\n置信水平 \n$$\n99\\%\n$$\n，所以 \n$$\n\\alpha=0.01\n$$\n，\n$$\n\\alpha/2=0.005\n$$\n，自由度 \n$$\nn-1=15\n$$\n。置信区间为\n$$\n\\bar{x}\\pm t_{0.005}(15)\\frac{s}{\\sqrt{n}}.\n$$\n代入数据，区间半宽为\n$$\n2.947\\times\\frac{6.2}{\\sqrt{16}}=2.947\\times1.55=4.56785\\approx4.568.\n$$\n因此\n$$\n\\mu\\in(172.5-4.568,\\ 172.5+4.568)=(167.932,\\ 177.068).\n$$\n可写为约 \n$$\n(167.93,177.07)\n$$\n。",
-      "hint": "方差未知时不能用 \n$$\nZ\n$$\n，要用自由度 \n$$\nn-1\n$$\n 的 t 分位点。",
+      "stem": "设总体 X~U(0,θ)，θ>0，样本均值为 \\bar X。用矩估计法求 θ 的估计量。",
+      "answer": "U(0,θ) 的期望为 \n$$\nE(X)=\\frac{\\theta}{2}\n$$\n 令样本均值等于总体均值：\n$$\n\\bar X=\\frac{\\theta}{2}\n$$\n 所以 \n$$\n\\hat\\theta=2\\bar X\n$$\n。",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
       "scoring_criteria": [
-        "判断方差未知正态总体均值区间应使用 t 枢轴量（2分）",
-        "写出区间公式 \n$$\n\\bar{x}\\pm t_{\\alpha/2}(n-1)s/\\sqrt n\n$$\n（3分）",
-        "正确确定 \n$$\n\\alpha/2=0.005\n$$\n、自由度 15（1分）",
-        "算出半宽 \n$$\n4.568\n$$\n（2分）",
-        "给出区间 \n$$\n(167.93,177.07)\n$$\n（2分）"
+        "写出总体均值 θ/2（3分）",
+        "建立矩方程（3分）",
+        "解出 θ̂=2Xbar（3分）",
+        "说明这是矩估计量（1分）"
       ],
-      "explanation": "7.4 节指出，\n$$\n\\sigma^2\n$$\n 已知时用 \n$$\nZ\n$$\n 区间，\n$$\n\\sigma^2\n$$\n 未知时用 \n$$\nT=(\\bar{X}-\\mu)/(S/\\sqrt n)\\sim t(n-1)\n$$\n。本题属于小样本且方差未知，必须查 t 分布。置信水平越高，分位点越大，区间也越宽；这里 99% 区间比同数据下的 95% 区间更宽。",
+      "explanation": "Python 字符串规则校验为矩估计替换原理。",
       "sourceRef": {
-        "path": "content/chapters/ch07/7.4.md",
-        "label": "7.4 区间估计 · σ未知时 μ 的 t 置信区间"
+        "path": "content/chapters/ch07/7.1.md",
+        "label": "7.1 矩估计法"
       },
-      "manimVideoId": "quiz-prob-ch07-q10"
+      "manimVideoId": "quiz-prob-ch07-q025"
+    },
+    {
+      "id": "q026",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "某零件来自甲、乙两厂的比例为 0.3、0.7，次品率为 0.02、0.05。随机抽一件发现为次品，求它来自乙厂的概率。",
+      "answer": "设 D 为次品。全概率为 \n$$\nP(D)=0.3\\times0.02+0.7\\times0.05=\\frac{41}{1000}\n$$\n 贝叶斯公式给出 \n$$\nP(乙\\mid D)=\\frac{0.7\\times0.05}{P(D)}=\\frac{35}{41}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "设定事件并写出全概率结构（2分）",
+        "计算次品总概率（3分）",
+        "写出贝叶斯公式（3分）",
+        "给出后验概率并解释（2分）"
+      ],
+      "explanation": "Python 分数校验 P(D)=41/1000, 后验概率=35/41。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式"
+      },
+      "manimVideoId": "quiz-prob-ch07-q026"
     }
   ],
   "summary": {
-    "totalQuestions": 10,
+    "totalQuestions": 26,
     "byType": {
-      "single_choice": 2,
-      "fill_blank": 2,
+      "single_choice": 10,
+      "fill_blank": 10,
       "essay": 6
     },
     "bySource": {
-      "current_chapter": 5,
-      "review": 5
+      "current_chapter": 13,
+      "review": 13
     },
     "byDifficulty": {
-      "basic": 7,
-      "medium": 2,
-      "hard": 1
+      "basic": 18,
+      "medium": 5,
+      "hard": 3
     }
   }
 }

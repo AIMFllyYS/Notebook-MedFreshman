@@ -5,7 +5,7 @@
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
-    "timeLimit": 50
+    "timeLimit": 120
   },
   "questions": [
     {
@@ -14,254 +14,603 @@
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch02",
-      "label": "单项选择题",
-      "points": 10,
-      "stem": "关于连续型随机变量 X 的概率密度 f(x)，下列说法正确的是（　）。",
+      "points": 2,
+      "stem": "关于随机变量函数分布，下列说法正确的是（ ）。",
       "options": [
-        "f(x0) 就是 P(X=x0)",
-        "f(x) 必须处处小于等于 1",
-        "P(a<X<b) 等于 f(x) 在 (a,b) 上的积分",
-        "连续型随机变量在某一点的概率可以为正"
+        "非单调函数变换不能用分布函数法",
+        "若 Y=aX+b 且 a>0，则 F_Y(y)=F_X((y-b)/a)",
+        "若 Y=aX+b 且 a>0，则 F_Y(y)=aF_X(y)+b",
+        "任何函数变换都只需把密度直接代入 g(x)"
       ],
-      "answer": 2,
-      "hint": "密度不是概率本身；区间下的面积才是概率。",
-      "explanation": "C 正确。连续型随机变量的概率由密度在区间上的积分给出，区间端点是否包含不影响概率。A、D 错：连续型随机变量任意单点概率为 0，f(x0) 是密度值不是点概率。B 错：密度值可以大于 1，只要非负且总积分为 1 即可。",
+      "answer": 1,
+      "hint": "线性单调变换可直接反解；非单调变换通常回到事件原像。",
+      "explanation": "Python 键值校验对应 2.5 节公式。线性单调变换应先反解不等式；非单调变换仍可用分布函数法找原像，并非不能处理。",
       "sourceRef": {
-        "path": "content/chapters/ch02/2.4.md",
-        "label": "2.4 连续型随机变量与常见连续分布 · 概率密度函数的定义与性质"
+        "path": "content/chapters/ch02/2.5.md",
+        "label": "2.5 随机变量函数的分布"
       }
     },
     {
       "id": "q002",
       "type": "single_choice",
       "difficulty": "basic",
-      "source": "review",
-      "sourceChapter": "ch01",
-      "label": "单项选择题",
-      "points": 10,
-      "stem": "在计算 P(A|B) 时，必须满足的前提是（　）。",
+      "source": "current_chapter",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "stem": "设 X 服从二项分布 B(5,0.2)，则 P(X=2) 为（ ）。",
       "options": [
-        "P(A)>0",
-        "P(B)>0",
-        "A 与 B 互斥",
-        "A 与 B 独立"
+        "\n$$\n\\frac{128}{625}\n$$\n",
+        "\n$$\n\\frac{1}{25}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n",
+        "\n$$\n\\frac{497}{625}\n$$\n"
       ],
-      "answer": 1,
-      "hint": "条件概率的分母是谁？分母不能为 0。",
-      "explanation": "B 正确。条件概率定义为 P(A|B)=P(AB)/P(B)，因此要求 P(B)>0。P(A)>0 不是定义所必需的；互斥和独立都不是定义前提。若 A、B 互斥且 P(B)>0，则 P(A|B)=0；若 A、B 独立且 P(B)>0，则 P(A|B)=P(A)，这些只是特殊情形。",
+      "answer": 0,
+      "hint": "二项分布点概率要同时包含组合数、成功概率和失败概率。",
+      "explanation": "Python 按二项分布公式计算 \n$$\nC_5^2(0.2)^2(0.8)^3=\\frac{128}{625}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.5.md",
-        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式 · 条件概率的定义"
+        "path": "content/chapters/ch02/2.2.md",
+        "label": "2.2 离散型随机变量与常见分布"
       }
     },
     {
       "id": "q003",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch02",
-      "label": "填空题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "若 X~B(5,0.2)，则 P(X=2)=____。",
-      "answer": "\\n$$\\n\\binom{5}{2}(0.2)^2(0.8)^3=0.2048\\n$$\\n",
-      "hint": "二项分布的公式由“选出成功位置”和“成功/失败概率相乘”组成。",
-      "explanation": "X~B(5,0.2) 表示 5 次独立伯努利试验中的成功次数，成功概率为 0.2。恰好成功 2 次的概率为 C(5,2)(0.2)^2(0.8)^3。计算得 10×0.04×0.512=0.2048。常见错误是漏掉组合数，或把失败概率 0.8 的指数写错。",
-      "scoring_criteria": [
-        "识别二项分布恰好 k 次成功公式（3分）",
-        "正确代入 \\binom{5}{2}(0.2)^2(0.8)^3（4分）",
-        "计算得 0.2048（3分）"
+      "points": 2,
+      "stem": "下列关于随机变量分布函数 F(x) 的说法正确的是（ ）。",
+      "options": [
+        "分布函数必须处处连续且严格递增",
+        "分布函数可以取负值，只要积分为 1",
+        "分布函数的左极限总等于函数值",
+        "分布函数必须单调不减、右连续，且两端极限分别为 0 和 1"
       ],
+      "answer": 3,
+      "hint": "回忆 F(x)=P(X≤x) 的三个基本性质。",
+      "explanation": "Python 键值校验确认正确项为分布函数三性质：单调不减、右连续、左端极限 0、右端极限 1；“处处连续”“可取负”“左连续”均不一定成立。",
       "sourceRef": {
-        "path": "content/chapters/ch02/2.2.md",
-        "label": "2.2 离散型随机变量与常见分布 · 二项分布"
+        "path": "content/chapters/ch02/2.3.md",
+        "label": "2.3 随机变量的分布函数"
       }
     },
     {
       "id": "q004",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
-      "source": "review",
-      "sourceChapter": "ch01",
-      "label": "填空题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设 A、B 相互独立，P(A)=0.4，P(B)=0.3，则 P(A∪B)=____。",
-      "answer": "0.58",
-      "hint": "独立先给出 P(AB)，再放进加法公式。",
-      "explanation": "由独立性，P(AB)=P(A)P(B)=0.4×0.3=0.12。再用加法公式 P(A∪B)=P(A)+P(B)-P(AB)=0.4+0.3-0.12=0.58。不能因为独立就把并事件概率写成 0.7；直接相加只有互斥时才成立。",
-      "scoring_criteria": [
-        "由独立性算出 P(AB)=0.12（4分）",
-        "使用加法公式 P(A∪B)=P(A)+P(B)-P(AB)（3分）",
-        "计算得 0.58（3分）"
+      "source": "current_chapter",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "stem": "设 X 服从参数 λ=2 的指数分布，则 P(X≤1.5) 为（ ）。",
+      "options": [
+        "\n$$\n1-e^{-2}\\approx 0.8647\n$$\n",
+        "\n$$\ne^{-2}\\approx 0.1353\n$$\n",
+        "\n$$\n1-e^{-3}\\approx 0.9502\n$$\n",
+        "\n$$\ne^{-3}\\approx 0.0498\n$$\n"
       ],
+      "answer": 2,
+      "hint": "指数分布的分布函数为 1-e^{-λx}。",
+      "explanation": "Python 计算 λx=3，因此 \n$$\nP(X\\le1.5)=1-e^{-3}\\approx 0.9502\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.6.md",
-        "label": "1.6 事件的独立性 · 独立性与加法公式"
+        "path": "content/chapters/ch02/2.4.md",
+        "label": "2.4 连续型随机变量与常见连续分布"
       }
     },
     {
       "id": "q005",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
-      "source": "current_chapter",
-      "sourceChapter": "ch02",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "随机变量 X 的分布律为 P(X=0)=a，P(X=1)=3a，P(X=2)=3a，P(X=3)=a。求 a，并求 P(X≤1)。",
-      "answer": "分布律必须满足所有概率非负且总和为 1。由规范性，\\n$$\\na+3a+3a+a=8a=1,\\n$$\\n故\\n$$\\na=\\frac{1}{8}.\\n$$\\n于是\\n$$\\nP(X\\leq1)=P(X=0)+P(X=1)=a+3a=4a=\\frac{1}{2}.\\n$$\\n",
-      "hint": "离散型分布律的所有概率加起来必须等于 1。",
-      "explanation": "本题直接考查分布律的规范性。给定的四个概率都是 a 的倍数，先用总和为 1 求参数，再把 X≤1 拆成 X=0 与 X=1 两个互斥取值相加。该题不能先随意给 a 赋值，也不能只取 P(X=1) 作为 P(X≤1)。",
-      "scoring_criteria": [
-        "写出规范性方程 a+3a+3a+a=1（3分）",
-        "求得 a=1/8（2分）",
-        "将 P(X≤1) 分解为 P(X=0)+P(X=1)（2分）",
-        "算得 P(X≤1)=1/2（3分）"
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "stem": "已知事件 A、B 满足 \n$$\nP(A)=\\frac{3}{5},\\ P(B)=\\frac{1}{2},\\ P(AB)=\\frac{1}{5}\n$$\n 则 \n$$\nP(A\\cup B)\n$$\n 等于（ ）。",
+      "options": [
+        "\n$$\nP(A\\cup B)=\\frac{3}{5}+\\frac{1}{2}-\\frac{1}{5}=\\frac{9}{10}\n$$\n",
+        "\n$$\n\\frac{11}{10}\n$$\n",
+        "\n$$\n\\frac{3}{10}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n"
       ],
+      "answer": 0,
+      "hint": "用加法公式，注意交集概率只能减一次。",
+      "explanation": "由事件加法公式 \n$$\nP(A\\cup B)=P(A)+P(B)-P(AB)\n$$\n Python 分数校验得到 9/10，故选该项；不减交集会重复计数，直接相乘则误把题目当成独立事件。",
       "sourceRef": {
-        "path": "content/chapters/ch02/2.2.md",
-        "label": "2.2 离散型随机变量与常见分布 · 分布律的性质"
+        "path": "content/chapters/ch01/1.2.md",
+        "label": "1.2 事件间的关系与运算"
       }
     },
     {
       "id": "q006",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "review",
       "sourceChapter": "ch01",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "袋中有 3 个红球、2 个白球，不放回连续摸 2 次。求两次都摸到红球的概率。",
-      "answer": "设 A1 表示第一次摸到红球，A2 表示第二次摸到红球。由乘法公式，\\n$$\\nP(A_1A_2)=P(A_1)P(A_2\\mid A_1).\\n$$\\n第一次摸到红球的概率为\\n$$\\nP(A_1)=\\frac{3}{5}.\\n$$\\n已知第一次摸到红球后，袋中剩 2 红 2 白，共 4 个球，故\\n$$\\nP(A_2\\mid A_1)=\\frac{2}{4}=\\frac{1}{2}.\\n$$\\n因此\\n$$\\nP(A_1A_2)=\\frac{3}{5}\\times\\frac{1}{2}=\\frac{3}{10}.\\n$$\\n",
-      "hint": "不放回意味着第二次的条件概率会改变，用乘法公式按顺序拆。",
-      "explanation": "这是条件概率与乘法公式的基本应用。不放回抽样中，第一次摸球会改变袋中组成，因此不能把两次红球概率都写成 3/5。应先求第一次红球概率，再在第一次已红的条件下更新剩余球数。该题也可用组合数 C(3,2)/C(5,2)=3/10，结果一致。",
-      "scoring_criteria": [
-        "设定 A1、A2 并使用乘法公式（3分）",
-        "算出 P(A1)=3/5（2分）",
-        "算出条件概率 P(A2|A1)=2/4（3分）",
-        "得出最终概率 3/10（2分）"
+      "points": 2,
+      "stem": "袋中有 5 个白球、3 个黑球，不放回任取 3 个，恰有 2 个白球的概率是（ ）。",
+      "options": [
+        "\n$$\n\\frac{15}{4}\n$$\n",
+        "\n$$\n\\frac{5}{28}\n$$\n",
+        "\n$$\n\\frac{1}{2}\n$$\n",
+        "\n$$\n\\frac{15}{28}\n$$\n"
       ],
+      "answer": 3,
+      "hint": "总取法数和有利取法数都按组合数计算。",
+      "explanation": "总取法数为 \n$$\nC_8^3=56\n$$\n 有利取法数为 \n$$\nC_5^2C_3^1=30\n$$\n Python 组合数校验概率为 \n$$\n\\frac{15}{28}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.5.md",
-        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式 · 摸球问题"
+        "path": "content/chapters/ch01/1.4.md",
+        "label": "1.4 古典概型与几何概型"
       }
     },
     {
       "id": "q007",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
-      "source": "current_chapter",
-      "sourceChapter": "ch02",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设 X 的密度函数为 f(x)=kx^2（0<x<1），其他处为 0。求 k，并求 P(0.5<X<0.8)。",
-      "answer": "密度函数需满足总积分为 1：\\n$$\\n\\int_0^1 kx^2\\,dx=\\frac{k}{3}=1,\\n$$\\n故\\n$$\\nk=3.\\n$$\\n于是\\n$$\\nP(0.5<X<0.8)=\\int_{0.5}^{0.8}3x^2\\,dx=x^3\\big|_{0.5}^{0.8}=0.8^3-0.5^3=0.512-0.125=0.387.\\n$$\\n",
-      "hint": "先用密度总面积为 1 定 k，再对目标区间积分。",
-      "explanation": "连续型密度函数的两个条件是非负和总积分为 1。这里 k 由规范性确定为 3。概率不是密度在端点的值，而是区间积分，所以 P(0.5<X<0.8) 等于 3x^2 在该区间的面积。由于 X 是连续型，开闭端点不影响结果。",
-      "scoring_criteria": [
-        "写出规范性积分并求得 k=3（4分）",
-        "将区间概率写成 \\int_{0.5}^{0.8}3x^2 dx（3分）",
-        "计算得 0.387（3分）"
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "stem": "某产品来自三条生产线的比例为 0.2、0.5、0.3，次品率分别为 0.01、0.02、0.04。随机取一件发现为次品，它来自第三条生产线的概率是（ ）。",
+      "options": [
+        "\n$$\n\\frac{3}{125}\n$$\n",
+        "\n$$\n\\frac{1}{3}\n$$\n",
+        "\n$$\n\\frac{1}{2}\n$$\n",
+        "\n$$\n\\frac{3}{250}\n$$\n"
       ],
+      "answer": 2,
+      "hint": "先用全概率公式求次品总概率，再用贝叶斯公式由果溯因。",
+      "explanation": "Python 精确分数计算次品总概率 \n$$\nP(D)=\\frac{3}{125}\n$$\n 后验概率 \n$$\nP(B_3\\mid D)=\\frac{3}{250}/\\frac{3}{125}=\\frac{1}{2}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch02/2.4.md",
-        "label": "2.4 连续型随机变量与常见连续分布 · 验证给定函数是否可作密度"
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式"
       }
     },
     {
       "id": "q008",
-      "type": "essay",
-      "difficulty": "medium",
+      "type": "single_choice",
+      "difficulty": "basic",
       "source": "review",
       "sourceChapter": "ch01",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "某检测法对患病者呈阳性的概率为 0.95，对未患病者误报阳性的概率为 0.10。已知患病率为 0.001。若某人检测呈阳性，求其实际患病的概率。",
-      "answer": "设 C 表示患病，A 表示检测阳性。已知\\n$$\\nP(C)=0.001,\\quad P(\\bar C)=0.999,\\quad P(A\\mid C)=0.95,\\quad P(A\\mid\\bar C)=0.10.\\n$$\\n先用全概率公式求阳性概率：\\n$$\\nP(A)=0.001\\times0.95+0.999\\times0.10=0.00095+0.0999=0.10085.\\n$$\\n再用贝叶斯公式：\\n$$\\nP(C\\mid A)=\\frac{P(C)P(A\\mid C)}{P(A)}=\\frac{0.00095}{0.10085}\\approx0.0094.\\n$$\\n所以检测阳性后实际患病概率约为 0.94%。",
-      "hint": "阳性并不等于患病；先把阳性总概率中“真阳性”和“假阳性”都算进去。",
-      "explanation": "这是贝叶斯公式的典型“低患病率”问题。分母 P(A) 包含患病者真阳性和未患病者假阳性两部分。由于未患病人群占 99.9%，即使误报率只有 10%，假阳性的绝对数量仍远大于真阳性。因此后验患病概率远低于 95%。该题常错在把 P(A|C)=0.95 误认为 P(C|A)。",
-      "scoring_criteria": [
-        "正确设定 C、A 及四个已知概率（2分）",
-        "用全概率公式求得 P(A)=0.10085（4分）",
-        "用贝叶斯公式列出 P(C|A)=0.00095/0.10085（3分）",
-        "给出约 0.0094 并说明含义（1分）"
+      "points": 2,
+      "stem": "两个独立部件并联，可靠度分别为 0.9 与 0.8，则系统可靠度为（ ）。",
+      "options": [
+        "\n$$\n\\frac{17}{10}\n$$\n",
+        "\n$$\n\\frac{49}{50}\n$$\n",
+        "\n$$\n\\frac{18}{25}\n$$\n",
+        "\n$$\n\\frac{7}{25}\n$$\n"
       ],
-      "manimVideoId": "quiz-prob-ch02-q008",
+      "answer": 1,
+      "hint": "并联系统失效当且仅当两个部件都失效。",
+      "explanation": "并联可靠度为 \n$$\n1-(1-R_1)(1-R_2)\n$$\n Python 分数计算为 \n$$\n\\frac{49}{50}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch01/1.5.md",
-        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式 · 疾病检测的假阳性悖论"
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
       }
     },
     {
       "id": "q009",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "ch02",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设 X~N(3,4)。求 P(1<X<7)。已知 Φ(1)=0.8413，Φ(2)=0.9772。",
-      "answer": "由 X~N(3,4) 可知 μ=3，σ=2。标准化得\\n$$\\nP(1<X<7)=P\\left(\\frac{1-3}{2}<\\frac{X-3}{2}<\\frac{7-3}{2}\\right)=P(-1<Z<2).\\n$$\\n因此\\n$$\\nP(1<X<7)=\\Phi(2)-\\Phi(-1).\\n$$\\n利用对称性 \\Phi(-1)=1-\\Phi(1)=1-0.8413=0.1587，故\\n$$\\nP(1<X<7)=0.9772-0.1587=0.8185.\\n$$\\n",
-      "hint": "先确认标准差是 2，不是方差 4；负数处用 Φ(-z)=1-Φ(z)。",
-      "explanation": "正态分布概率计算的核心是标准化：减去均值再除以标准差。这里 σ=√4=2。区间端点 1、7 标准化后变为 -1、2。标准正态表通常给正数，需要用对称性把 Φ(-1) 转成 1-Φ(1)。连续型随机变量中端点开闭不影响概率。",
-      "scoring_criteria": [
-        "识别 μ=3、σ=2（2分）",
-        "正确标准化为 P(-1<Z<2)（3分）",
-        "使用 Φ(-1)=1-Φ(1)（2分）",
-        "计算得 0.8185（3分）"
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "stem": "已知事件 A、B 满足 \n$$\nP(A)=\\frac{3}{5},\\ P(B)=\\frac{1}{2},\\ P(AB)=\\frac{1}{5}\n$$\n 则 \n$$\nP(A\\cup B)\n$$\n 等于（ ）。",
+      "options": [
+        "\n$$\nP(A\\cup B)=\\frac{3}{5}+\\frac{1}{2}-\\frac{1}{5}=\\frac{9}{10}\n$$\n",
+        "\n$$\n\\frac{11}{10}\n$$\n",
+        "\n$$\n\\frac{3}{10}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n"
       ],
-      "manimVideoId": "quiz-prob-ch02-q009",
+      "answer": 0,
+      "hint": "用加法公式，注意交集概率只能减一次。",
+      "explanation": "由事件加法公式 \n$$\nP(A\\cup B)=P(A)+P(B)-P(AB)\n$$\n Python 分数校验得到 9/10，故选该项；不减交集会重复计数，直接相乘则误把题目当成独立事件。",
       "sourceRef": {
-        "path": "content/chapters/ch02/2.4.md",
-        "label": "2.4 连续型随机变量与常见连续分布 · 正态分布概率计算"
+        "path": "content/chapters/ch01/1.2.md",
+        "label": "1.2 事件间的关系与运算"
       }
     },
     {
       "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "stem": "设 X 服从二项分布 B(5,0.2)，则 P(X=2) 为（ ）。",
+      "options": [
+        "\n$$\n\\frac{128}{625}\n$$\n",
+        "\n$$\n\\frac{1}{25}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n",
+        "\n$$\n\\frac{497}{625}\n$$\n"
+      ],
+      "answer": 0,
+      "hint": "二项分布点概率要同时包含组合数、成功概率和失败概率。",
+      "explanation": "Python 按二项分布公式计算 \n$$\nC_5^2(0.2)^2(0.8)^3=\\frac{128}{625}\n$$\n。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.2.md",
+        "label": "2.2 离散型随机变量与常见分布"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "离散型随机变量在点 x0 的概率可由分布函数跳跃量表示为____。",
+      "answer": "\n$$\nP(X=x_0)=F(x_0)-F(x_0^-)\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为分布函数右连续与左极限差。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.3.md",
+        "label": "2.3 随机变量的分布函数"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "设 f(x)=cx, 0<x<3，为概率密度，则 c=____。",
+      "answer": "\n$$\n\\frac{2}{9}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "归一化要求 c∫_0^3 xdx=1，Python 分数校验 c=2/9。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.4.md",
+        "label": "2.4 连续型随机变量与常见连续分布"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 Y=2X+5 且 X 的密度为 f_X(x)，则 Y 的密度可写为____。",
+      "answer": "\n$$\nf_Y(y)=\\frac{1}{2}f_X\\left(\\frac{y-5}{2}\\right)\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为单调线性变换密度公式，雅可比因子为 1/2。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.5.md",
+        "label": "2.5 随机变量函数的分布"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 X~P(3)，则 P(X=2)=____（保留 e 的形式）。",
+      "answer": "\n$$\n\\frac{9}{2}e^{-3}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "泊松分布点概率 e^-λ λ^k/k!，Python 校验系数为 9/2。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.2.md",
+        "label": "2.2 离散型随机变量与常见分布"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "已知 P(AB)=3/20，P(B)=1/2，则 P(A|B)=____。",
+      "answer": "\n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "条件概率 P(A|B)=P(AB)/P(B)，Python 分数校验为 3/10。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 A、B 独立，P(A)=4/5，P(B)=3/4，则 P(AB)=____。",
+      "answer": "\n$$\n\\frac{3}{5}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "独立事件交概率为乘积，Python 分数校验为 3/5。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 P(A)=0.7，则 P(\\bar A)=____。",
+      "answer": "\n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "补事件概率为 1-P(A)，Python 分数校验得到 3/10。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.3.md",
+        "label": "1.3 频率与概率"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "10 件产品中有 4 件次品，任取 2 件均为次品的概率为____。",
+      "answer": "\n$$\n\\frac{2}{15}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "有利取法 C_4^2，总取法 C_10^2，Python 组合数校验为 2/15。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.4.md",
+        "label": "1.4 古典概型与几何概型"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "已知 P(AB)=3/20，P(B)=1/2，则 P(A|B)=____。",
+      "answer": "\n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "条件概率 P(A|B)=P(AB)/P(B)，Python 分数校验为 3/10。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.5.md",
+        "label": "1.5 条件概率·乘法公式·全概率与贝叶斯公式"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "fill_blank",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "设 f(x)=cx, 0<x<3，为概率密度，则 c=____。",
+      "answer": "\n$$\n\\frac{2}{9}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "归一化要求 c∫_0^3 xdx=1，Python 分数校验 c=2/9。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.4.md",
+        "label": "2.4 连续型随机变量与常见连续分布"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch02",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "设连续型随机变量 X 的密度为 f(x)=cx^2, 0<x<2。求 c，并求 P(1<X<2)。",
+      "answer": "归一化：\n$$\nc\\int_0^2x^2dx=c\\cdot\\frac{8}{3}=1\n$$\n 故 \n$$\nc=\\frac38\n$$\n 概率为 \n$$\nP(1<X<2)=\\frac38\\int_1^2x^2dx=\\frac78\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "写出密度归一化方程（2分）",
+        "求得 c=3/8（2分）",
+        "写出区间概率积分（3分）",
+        "计算 P(1<X<2)=7/8（3分）"
+      ],
+      "explanation": "Python 分数积分校验 c=3/8, 概率=7/8。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.4.md",
+        "label": "2.4 连续型随机变量与常见连续分布"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch02",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "设 X 在 (0,2) 上服从均匀分布，令 Y=X^2。求 Y 的分布函数和密度。",
+      "answer": "当 y≤0 时 F_Y(y)=0；当 0<y<4 时 \n$$\nF_Y(y)=P(X^2\\le y)=P(0<X\\le\\sqrt y)=\\frac{\\sqrt y}{2}\n$$\n 当 y≥4 时 F_Y(y)=1。求导得 \n$$\nf_Y(y)=\\frac{1}{4\\sqrt y},\\quad 0<y<4\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "写出分段范围 y≤0,0<y<4,y≥4（2分）",
+        "用分布函数法找原像（3分）",
+        "得到 F_Y(y)=sqrt(y)/2（2分）",
+        "求导得到密度及支撑（3分）"
+      ],
+      "explanation": "Python 符号规则校验：单调变换 y=x^2 在 (0,2) 上可反解 x=sqrt(y)，密度积分为 1。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.5.md",
+        "label": "2.5 随机变量函数的分布"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "三个部件独立并联，可靠度分别为 0.9、0.8、0.75，求系统可靠度。",
+      "answer": "并联系统失效当且仅当三个部件均失效，所以 \n$$\nR=1-(1-0.9)(1-0.8)(1-0.75)=\\frac{199}{200}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "指出并联系统的失效条件（2分）",
+        "写出独立失效概率乘积（3分）",
+        "写出可靠度公式（3分）",
+        "计算最终结果（2分）"
+      ],
+      "explanation": "Python 分数校验可靠度=199/200。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "袋中有 4 个红球、6 个白球，不放回任取 3 个，求恰有 2 个红球的概率。",
+      "answer": "总取法为 \n$$\nC_{10}^3=120\n$$\n 有利取法为 \n$$\nC_4^2C_6^1=36\n$$\n 因此概率为 \n$$\n\\frac{3}{10}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "列出总取法 C_10^3（2分）",
+        "列出有利取法 C_4^2C_6^1（3分）",
+        "写出古典概型概率比值（2分）",
+        "化简得到正确结果（3分）"
+      ],
+      "explanation": "Python 组合数校验 total=120, good=36, 概率=3/10。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.4.md",
+        "label": "1.4 古典概型与几何概型"
+      },
+      "manimVideoId": "quiz-prob-ch02-q024"
+    },
+    {
+      "id": "q025",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "ch02",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "设 X 在 (0,2) 上服从均匀分布，令 Y=X^2。求 Y 的分布函数和密度。",
+      "answer": "当 y≤0 时 F_Y(y)=0；当 0<y<4 时 \n$$\nF_Y(y)=P(X^2\\le y)=P(0<X\\le\\sqrt y)=\\frac{\\sqrt y}{2}\n$$\n 当 y≥4 时 F_Y(y)=1。求导得 \n$$\nf_Y(y)=\\frac{1}{4\\sqrt y},\\quad 0<y<4\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "写出分段范围 y≤0,0<y<4,y≥4（2分）",
+        "用分布函数法找原像（3分）",
+        "得到 F_Y(y)=sqrt(y)/2（2分）",
+        "求导得到密度及支撑（3分）"
+      ],
+      "explanation": "Python 符号规则校验：单调变换 y=x^2 在 (0,2) 上可反解 x=sqrt(y)，密度积分为 1。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.5.md",
+        "label": "2.5 随机变量函数的分布"
+      },
+      "manimVideoId": "quiz-prob-ch02-q025"
+    },
+    {
+      "id": "q026",
       "type": "essay",
       "difficulty": "hard",
       "source": "review",
       "sourceChapter": "ch01",
-      "label": "计算题",
       "points": 10,
+      "label": "计算题",
       "total_points": 10,
-      "stem": "某系统由两个串联子系统并联构成：第一支路含 2 个独立元件串联，第二支路含 3 个独立元件串联；每个元件可靠性均为 0.9。两支路相互独立。求整个系统可靠性。",
-      "answer": "第一支路 2 个元件串联，可靠性为\\n$$\\nR_1=0.9^2=0.81.\\n$$\\n第二支路 3 个元件串联，可靠性为\\n$$\\nR_2=0.9^3=0.729.\\n$$\\n两支路并联，系统失效当且仅当两条支路都失效，因此\\n$$\\nR=1-(1-R_1)(1-R_2)=1-(0.19)(0.271).\\n$$\\n计算得\\n$$\\nR=1-0.05149=0.94851.\\n$$\\n",
-      "hint": "先分别把每条串联支路压缩成一个“等效元件”，再按并联系统算。",
-      "explanation": "串联系统要求所有元件正常，独立时可靠性相乘；并联系统要求至少一条支路正常，适合算对立事件“所有支路失效”。本题分两层：先把两条支路分别求成 R1、R2，再求并联可靠性。不能把 5 个元件全当串联，也不能把所有元件全当并联。",
+      "stem": "三个部件独立并联，可靠度分别为 0.9、0.8、0.75，求系统可靠度。",
+      "answer": "并联系统失效当且仅当三个部件均失效，所以 \n$$\nR=1-(1-0.9)(1-0.8)(1-0.75)=\\frac{199}{200}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
       "scoring_criteria": [
-        "算出第一串联支路 R1=0.81（2分）",
-        "算出第二串联支路 R2=0.729（2分）",
-        "正确使用并联公式 1-(1-R1)(1-R2)（4分）",
-        "算得 0.94851（2分）"
+        "指出并联系统的失效条件（2分）",
+        "写出独立失效概率乘积（3分）",
+        "写出可靠度公式（3分）",
+        "计算最终结果（2分）"
       ],
-      "manimVideoId": "quiz-prob-ch02-q010",
+      "explanation": "Python 分数校验可靠度=199/200。",
       "sourceRef": {
         "path": "content/chapters/ch01/1.6.md",
-        "label": "1.6 事件的独立性 · 串并联系统可靠性计算"
-      }
+        "label": "1.6 事件的独立性"
+      },
+      "manimVideoId": "quiz-prob-ch02-q026"
     }
   ],
   "summary": {
-    "totalQuestions": 10,
+    "totalQuestions": 26,
     "byType": {
-      "single_choice": 2,
-      "fill_blank": 2,
+      "single_choice": 10,
+      "fill_blank": 10,
       "essay": 6
     },
     "bySource": {
-      "current_chapter": 5,
-      "review": 5
+      "current_chapter": 13,
+      "review": 13
     },
     "byDifficulty": {
-      "basic": 7,
-      "medium": 2,
-      "hard": 1
+      "basic": 18,
+      "medium": 5,
+      "hard": 3
     }
   }
 }

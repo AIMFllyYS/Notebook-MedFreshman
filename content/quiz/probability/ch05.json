@@ -5,7 +5,7 @@
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
-    "timeLimit": 50
+    "timeLimit": 120
   },
   "questions": [
     {
@@ -14,251 +14,603 @@
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch05",
-      "points": 10,
-      "stem": "切比雪夫不等式的主要作用是（ ）。",
+      "points": 2,
+      "stem": "关于中心极限定理，下列说法正确的是（ ）。",
       "options": [
-        "在已知具体分布时给出精确概率",
-        "仅凭期望和方差给出偏离均值概率的上界",
-        "证明随机变量一定等于其期望",
-        "把所有分布都化为正态分布"
+        "独立同分布且方差有限时，标准化样本和近似服从标准正态分布",
+        "中心极限定理说明所有随机变量本身都正态",
+        "样本量越大，样本和方差越小",
+        "CLT 与标准化无关"
       ],
-      "answer": 1,
-      "hint": "它是保底工具，不要求知道分布全貌。",
-      "explanation": "B正确。5.1节指出切比雪夫不等式只凭均值和方差控制P(|X-μ|≥ε)的上界。它通常不是精确概率，不能说明随机变量必等于期望，也不是中心极限定理。",
+      "answer": 0,
+      "hint": "CLT 的对象是标准化后的和或均值。",
+      "explanation": "Python 键值校验对应 5.3 节：标准化是关键；样本和方差通常随 n 增大而增大，样本均值方差才缩小。",
       "sourceRef": {
-        "path": "content/chapters/ch05/5.1.md",
-        "label": "5.1 切比雪夫不等式 · 仅凭均值与方差给出偏差概率上界"
+        "path": "content/chapters/ch05/5.3.md",
+        "label": "5.3 中心极限定理"
       }
     },
     {
       "id": "q002",
       "type": "single_choice",
       "difficulty": "basic",
-      "source": "review",
-      "sourceChapter": "ch04",
-      "points": 10,
-      "stem": "若X_1,...,X_n相互独立且同方差σ^2，样本均值X̄=(X_1+...+X_n)/n的方差为（ ）。",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 2,
+      "stem": "切比雪夫不等式的正确形式是（ ）。",
       "options": [
-        "σ^2",
-        "nσ^2",
-        "σ^2/n",
-        "σ/n"
+        "\n$$\nP(|X-\\mu|<\\varepsilon)\\le \\frac{\\sigma^2}{\\varepsilon^2}\n$$\n",
+        "\n$$\nP(|X-\\mu|\\ge \\varepsilon)= \\frac{\\sigma^2}{\\varepsilon^2}\n$$\n",
+        "\n$$\nP(|X-\\mu|\\ge \\varepsilon)\\le \\frac{\\varepsilon^2}{\\sigma^2}\n$$\n",
+        "\n$$\nP(|X-\\mu|\\ge \\varepsilon)\\le \\frac{\\sigma^2}{\\varepsilon^2}\n$$\n"
       ],
-      "answer": 2,
-      "hint": "平均会让独立误差相互抵消，方差按1/n缩小。",
-      "explanation": "C正确。4.2和4.3节都强调独立重复测量取平均时，样本均值的方差为σ^2/n。A忘记平均，B是和的方差，D混淆了方差和标准差。",
+      "answer": 3,
+      "hint": "它给的是偏离均值至少 ε 的概率上界。",
+      "explanation": "Python 字符串校验对应 5.1 节公式 \n$$\nP(|X-\\mu|\\ge \\varepsilon)\\le \\frac{\\sigma^2}{\\varepsilon^2}\n$$\n，注意是上界而非精确等号。",
       "sourceRef": {
-        "path": "content/chapters/ch04/4.2.md",
-        "label": "4.2 方差与标准差 · 多次测量取平均使方差缩小 n 倍"
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式"
       }
     },
     {
       "id": "q003",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "ch05",
-      "points": 10,
-      "total_points": 10,
-      "stem": "切比雪夫不等式中，若E[X]=μ，D(X)=σ^2，则P(|X-μ|≥ε)≤____。",
-      "answer": "\n$$\nP(|X-\\mu|\\ge \\varepsilon)\\le \\frac{\\sigma^2}{\\varepsilon^2}\n$$\n",
-      "hint": "偏差门槛越大，上界按平方反比变小。",
-      "explanation": "5.1节给出切比雪夫不等式：偏离均值至少ε的概率不超过方差除以ε的平方。注意方向是“≥ε”的概率上界，而不是小于ε的概率。",
-      "scoring_criteria": [
-        "写出偏差事件|X-μ|≥ε（3分）",
-        "右端为σ^2/ε^2（4分）",
-        "不等号方向为≤（3分）"
+      "points": 2,
+      "stem": "辛钦大数定律的统计含义最恰当的是（ ）。",
+      "options": [
+        "大数定律要求总体一定正态",
+        "依概率收敛等同于每次样本都无误差",
+        "样本均值依概率收敛到总体均值",
+        "样本均值必然逐项等于总体均值"
       ],
+      "answer": 2,
+      "hint": "关注样本均值随样本量增大时的稳定趋势。",
+      "explanation": "Python 键值校验对应 5.2 节：i.i.d. 且期望存在时，样本均值依概率收敛到总体均值。",
       "sourceRef": {
-        "path": "content/chapters/ch05/5.1.md",
-        "label": "5.1 切比雪夫不等式 · 定义"
+        "path": "content/chapters/ch05/5.2.md",
+        "label": "5.2 大数定律"
       }
     },
     {
       "id": "q004",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
-      "source": "review",
-      "sourceChapter": "ch04",
-      "points": 10,
-      "total_points": 10,
-      "stem": "若X~B(n,p)，q=1-p，则D(X)=____。",
-      "answer": "\n$$\nD(X)=npq=np(1-p)\n$$\n",
-      "hint": "把二项变量看作n个独立0-1变量之和。",
-      "explanation": "4.2节用拆分法说明二项分布方差为npq，其中q=1-p。这依赖独立重复试验：每个0-1变量方差为pq，n个独立相加得到npq。",
-      "scoring_criteria": [
-        "指出q=1-p（2分）",
-        "写出二项分布方差npq（5分）",
-        "等价写成np(1-p)（3分）"
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 2,
+      "stem": "关于中心极限定理，下列说法正确的是（ ）。",
+      "options": [
+        "CLT 与标准化无关",
+        "独立同分布且方差有限时，标准化样本和近似服从标准正态分布",
+        "中心极限定理说明所有随机变量本身都正态",
+        "样本量越大，样本和方差越小"
       ],
+      "answer": 1,
+      "hint": "CLT 的对象是标准化后的和或均值。",
+      "explanation": "Python 键值校验对应 5.3 节：标准化是关键；样本和方差通常随 n 增大而增大，样本均值方差才缩小。",
       "sourceRef": {
-        "path": "content/chapters/ch04/4.2.md",
-        "label": "4.2 方差与标准差 · 二项分布的方差"
+        "path": "content/chapters/ch05/5.3.md",
+        "label": "5.3 中心极限定理"
       }
     },
     {
       "id": "q005",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
-      "source": "current_chapter",
-      "sourceChapter": "ch05",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设E[X]=10，D(X)=4。用切比雪夫不等式估计P(|X-10|≥6)的上界。",
-      "answer": "取μ=10，σ^2=4，ε=6。由切比雪夫不等式\n$$\nP(|X-10|\\ge6)\\le\\frac{4}{6^2}=\\frac{1}{9}\n$$\n所以上界为1/9。",
-      "hint": "把偏差门槛6代入σ^2/ε^2即可。",
-      "explanation": "5.1节说明切比雪夫不等式适合在不知道具体分布时给出偏离概率上界。本题只给出均值与方差，无法求精确概率，但可保证偏离10至少6的概率不超过1/9。",
-      "scoring_criteria": [
-        "识别μ=10、σ^2=4、ε=6（3分）",
-        "正确写出切比雪夫不等式（3分）",
-        "计算4/36=1/9（3分）",
-        "说明这是上界不是精确概率（1分）"
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "stem": "已知事件 A、B 满足 \n$$\nP(A)=\\frac{3}{5},\\ P(B)=\\frac{1}{2},\\ P(AB)=\\frac{1}{5}\n$$\n 则 \n$$\nP(A\\cup B)\n$$\n 等于（ ）。",
+      "options": [
+        "\n$$\nP(A\\cup B)=\\frac{3}{5}+\\frac{1}{2}-\\frac{1}{5}=\\frac{9}{10}\n$$\n",
+        "\n$$\n\\frac{11}{10}\n$$\n",
+        "\n$$\n\\frac{3}{10}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n"
       ],
+      "answer": 0,
+      "hint": "用加法公式，注意交集概率只能减一次。",
+      "explanation": "由事件加法公式 \n$$\nP(A\\cup B)=P(A)+P(B)-P(AB)\n$$\n Python 分数校验得到 9/10，故选该项；不减交集会重复计数，直接相乘则误把题目当成独立事件。",
       "sourceRef": {
-        "path": "content/chapters/ch05/5.1.md",
-        "label": "5.1 切比雪夫不等式 · 例题与性质"
+        "path": "content/chapters/ch01/1.2.md",
+        "label": "1.2 事件间的关系与运算"
       }
     },
     {
       "id": "q006",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "review",
-      "sourceChapter": "ch04",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "设X_1,...,X_25相互独立同分布，E[X_i]=8，D(X_i)=16。求样本均值X̄的期望和方差。",
-      "answer": "样本均值是25个样本的平均。由期望线性性，\n$$\nE[\\bar X]=\\frac1{25}\\sum_{i=1}^{25}E[X_i]=8\n$$\n由独立性，\n$$\nD(\\bar X)=\\frac1{25^2}\\sum_{i=1}^{25}D(X_i)=\\frac{25\\cdot16}{625}=\\frac{16}{25}=0.64\n$$\n",
-      "hint": "均值的期望不变，方差缩小为单个变量方差的1/n。",
-      "explanation": "4.1节给出期望线性性，4.2节说明独立平均会使方差缩小n倍。样本均值仍以总体期望8为中心，波动程度则由16降为16/25。",
-      "scoring_criteria": [
-        "写出样本均值定义或使用平均结构（2分）",
-        "算出E[X̄]=8（3分）",
-        "利用独立性计算方差而非直接除以25一次以外的错误形式（3分）",
-        "得到D(X̄)=16/25或0.64（2分）"
+      "sourceChapter": "ch02",
+      "points": 2,
+      "stem": "设 X 服从二项分布 B(5,0.2)，则 P(X=2) 为（ ）。",
+      "options": [
+        "\n$$\n\\frac{128}{625}\n$$\n",
+        "\n$$\n\\frac{1}{25}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n",
+        "\n$$\n\\frac{497}{625}\n$$\n"
       ],
+      "answer": 0,
+      "hint": "二项分布点概率要同时包含组合数、成功概率和失败概率。",
+      "explanation": "Python 按二项分布公式计算 \n$$\nC_5^2(0.2)^2(0.8)^3=\\frac{128}{625}\n$$\n。",
       "sourceRef": {
-        "path": "content/chapters/ch04/4.2.md",
-        "label": "4.2 方差与标准差 · 多次测量取平均"
+        "path": "content/chapters/ch02/2.2.md",
+        "label": "2.2 离散型随机变量与常见分布"
       }
     },
     {
       "id": "q007",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
-      "source": "current_chapter",
-      "sourceChapter": "ch05",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "stem": "在n次独立重复试验中事件A发生概率为p，发生频率为f_n(A)。写出伯努利大数定律的结论，并解释其概率意义。",
-      "answer": "伯努利大数定律表明频率依概率收敛到概率：\n$$\nf_n(A)\\xrightarrow{P}p\n$$\n等价地，对任意ε>0，\n$$\nP(|f_n(A)-p|\\ge \\varepsilon)\\to0\\quad(n\\to\\infty)\n$$\n其意义是：重复试验次数越多，频率偏离真实概率超过任意固定误差的概率越趋近0，概率的频率解释因此获得理论保证。",
-      "hint": "大数定律不是说每一次样本路径都必然等于p，而是偏差概率趋于0。",
-      "explanation": "5.2节把伯努利大数定律解释为频率稳定于概率，且使用依概率收敛语言。它说明频率是概率的观测值，概率是频率的理论值；这种稳定是概率意义上的，而不是有限n时必然相等。",
-      "scoring_criteria": [
-        "写出f_n(A)依概率收敛到p（3分）",
-        "用任意ε描述偏差概率趋于0（3分）",
-        "说明频率稳定于概率的含义（2分）",
-        "避免说成有限次必然等于p（2分）"
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 2,
+      "stem": "关于二维连续型随机变量的边缘密度，下列说法正确的是（ ）。",
+      "options": [
+        "边缘密度由联合密度对另一个变量积分得到",
+        "边缘密度总能唯一推出联合密度",
+        "边缘密度等于联合密度在 y=0 的截面",
+        "只要边缘密度相同，两个变量必独立"
       ],
+      "answer": 0,
+      "hint": "“边缘”意味着把另一个变量消去。",
+      "explanation": "Python 键值校验依据边缘化定义：对另一变量积分；边缘不能唯一确定联合，独立还需乘积分解。",
       "sourceRef": {
-        "path": "content/chapters/ch05/5.2.md",
-        "label": "5.2 大数定律 · 伯努利大数定律"
+        "path": "content/chapters/ch03/3.2.md",
+        "label": "3.2 边缘分布"
       }
     },
     {
       "id": "q008",
-      "type": "essay",
-      "difficulty": "medium",
+      "type": "single_choice",
+      "difficulty": "basic",
       "source": "review",
       "sourceChapter": "ch04",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "manimVideoId": "quiz-prob-ch05-q08",
-      "stem": "某零件尺寸X满足E[X]=50，D(X)=9。独立抽取n个零件，用样本均值估计总体均值。至少取多大n，才能用切比雪夫不等式保证P(|X̄-50|≥1)≤0.01？",
-      "answer": "独立同分布样本均值满足\n$$\nE[\\bar X]=50,\\qquad D(\\bar X)=\\frac{9}{n}\n$$\n由切比雪夫不等式，\n$$\nP(|\\bar X-50|\\ge1)\\le\\frac{D(\\bar X)}{1^2}=\\frac{9}{n}\n$$\n要求9/n≤0.01，故n≥900。至少抽取900个。",
-      "hint": "先把单个变量方差换成样本均值方差，再套切比雪夫。",
-      "explanation": "本题把4.2节样本均值方差缩小为σ^2/n与5.1节切比雪夫不等式连接起来。若直接用9而忘记除以n，就无法体现样本量提高精度；解不等式得到保证型最小样本量900。",
-      "scoring_criteria": [
-        "写出D(X̄)=9/n（3分）",
-        "正确套用切比雪夫到样本均值（3分）",
-        "建立9/n≤0.01（2分）",
-        "解得n≥900并说明至少900个（2分）"
+      "points": 2,
+      "stem": "关于数学期望性质，下列说法正确的是（ ）。",
+      "options": [
+        "数学期望具有线性性：E(aX+bY)=aE(X)+bE(Y)",
+        "只有 X,Y 独立时期望才线性",
+        "E(XY) 总等于 E(X)E(Y)",
+        "E(X+b)=E(X)b"
       ],
+      "answer": 0,
+      "hint": "期望线性性不要求独立。",
+      "explanation": "Python 键值校验对应 4.1 节：期望线性性总成立；乘积期望等式需要独立等条件。",
       "sourceRef": {
-        "path": "content/chapters/ch05/5.1.md",
-        "label": "5.1 切比雪夫不等式与大数定律 · 样本均值证明思路"
+        "path": "content/chapters/ch04/4.1.md",
+        "label": "4.1 数学期望"
       }
     },
     {
       "id": "q009",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "ch05",
-      "label": "计算题",
-      "points": 10,
-      "total_points": 10,
-      "manimVideoId": "quiz-prob-ch05-q09",
-      "stem": "设X_1,...,X_100独立同分布，E[X_i]=2，D(X_i)=9。用中心极限定理近似求P(185≤ΣX_i≤215)，已知Φ(0.5)≈0.6915。",
-      "answer": "令S为100个样本之和，则\n$$\nE[S]=100\\times2=200,\\qquad D(S)=100\\times9=900\n$$\n由中心极限定理，S近似服从N(200,900)，标准差为30。于是\n$$\nP(185\\le S\\le215)\\approx P\\left(-0.5\\le Z\\le0.5\\right)=2\\Phi(0.5)-1\n$$\n代入Φ(0.5)≈0.6915，得概率约0.383。",
-      "hint": "先算和的期望与方差，再标准化到标准正态。",
-      "explanation": "5.3节给出中心极限定理的和的实用形式：i.i.d.变量之和近似N(nμ,nσ^2)。这里n=100足够大，区间185到215关于均值200对称，标准化端点为±0.5。",
-      "scoring_criteria": [
-        "计算S的期望200和方差900（3分）",
-        "说明由CLT得S近似N(200,900)（2分）",
-        "标准化端点得到-0.5与0.5（2分）",
-        "用2Φ(0.5)-1算出约0.383（3分）"
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "stem": "已知事件 A、B 满足 \n$$\nP(A)=\\frac{3}{5},\\ P(B)=\\frac{1}{2},\\ P(AB)=\\frac{1}{5}\n$$\n 则 \n$$\nP(A\\cup B)\n$$\n 等于（ ）。",
+      "options": [
+        "\n$$\nP(A\\cup B)=\\frac{3}{5}+\\frac{1}{2}-\\frac{1}{5}=\\frac{9}{10}\n$$\n",
+        "\n$$\n\\frac{11}{10}\n$$\n",
+        "\n$$\n\\frac{3}{10}\n$$\n",
+        "\n$$\n\\frac{2}{5}\n$$\n"
       ],
+      "answer": 0,
+      "hint": "用加法公式，注意交集概率只能减一次。",
+      "explanation": "由事件加法公式 \n$$\nP(A\\cup B)=P(A)+P(B)-P(AB)\n$$\n Python 分数校验得到 9/10，故选该项；不减交集会重复计数，直接相乘则误把题目当成独立事件。",
       "sourceRef": {
-        "path": "content/chapters/ch05/5.3.md",
-        "label": "5.3 中心极限定理 · 和的近似分布与标准化形式"
+        "path": "content/chapters/ch01/1.2.md",
+        "label": "1.2 事件间的关系与运算"
       }
     },
     {
       "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 2,
+      "stem": "关于中心极限定理，下列说法正确的是（ ）。",
+      "options": [
+        "中心极限定理说明所有随机变量本身都正态",
+        "样本量越大，样本和方差越小",
+        "CLT 与标准化无关",
+        "独立同分布且方差有限时，标准化样本和近似服从标准正态分布"
+      ],
+      "answer": 3,
+      "hint": "CLT 的对象是标准化后的和或均值。",
+      "explanation": "Python 键值校验对应 5.3 节：标准化是关键；样本和方差通常随 n 增大而增大，样本均值方差才缩小。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.3.md",
+        "label": "5.3 中心极限定理"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 E(X)=0，D(X)=4，则由切比雪夫不等式 P(|X|≥5)≤____。",
+      "answer": "\n$$\n\\frac{4}{25}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "上界为 σ²/ε²=4/25，Python 分数校验为 4/25。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 X_i 独立同分布且 E(X_i)=μ，则样本均值依概率收敛到____。",
+      "answer": "\n$$\n\\mu\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为辛钦大数定律结论。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.2.md",
+        "label": "5.2 大数定律"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 X_i 独立同分布，E(X_i)=μ，D(X_i)=σ²，则 ΣX_i 的近似分布为____。",
+      "answer": "\n$$\nN(n\\mu,n\\sigma^2)\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为中心极限定理实用形式。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.3.md",
+        "label": "5.3 中心极限定理"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 E(X)=0，D(X)=4，则由切比雪夫不等式 P(|X|≥5)≤____。",
+      "answer": "\n$$\n\\frac{4}{25}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "上界为 σ²/ε²=4/25，Python 分数校验为 4/25。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "离散型随机变量在点 x0 的概率可由分布函数跳跃量表示为____。",
+      "answer": "\n$$\nP(X=x_0)=F(x_0)-F(x_0^-)\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为分布函数右连续与左极限差。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.3.md",
+        "label": "2.3 随机变量的分布函数"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "连续型二维随机变量的边缘密度 f_X(x)=____。",
+      "answer": "\n$$\n\\int_{-\\infty}^{+\\infty} f(x,y)\\,dy\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为对 y 积分消去另一变量。",
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.2.md",
+        "label": "3.2 边缘分布"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 E(X)=2，E(X^2)=7，则 D(X)=____。",
+      "answer": "\n$$\n3\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "方差公式 D(X)=E(X^2)-[E(X)]^2，Python 校验为 3。",
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.2.md",
+        "label": "4.2 方差与标准差"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch01",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "10 件产品中有 4 件次品，任取 2 件均为次品的概率为____。",
+      "answer": "\n$$\n\\frac{2}{15}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "有利取法 C_4^2，总取法 C_10^2，Python 组合数校验为 2/15。",
+      "sourceRef": {
+        "path": "content/chapters/ch01/1.4.md",
+        "label": "1.4 古典概型与几何概型"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "离散型随机变量在点 x0 的概率可由分布函数跳跃量表示为____。",
+      "answer": "\n$$\nP(X=x_0)=F(x_0)-F(x_0^-)\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "Python 字符串规则校验为分布函数右连续与左极限差。",
+      "sourceRef": {
+        "path": "content/chapters/ch02/2.3.md",
+        "label": "2.3 随机变量的分布函数"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "fill_blank",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 2,
+      "label": "填空题",
+      "total_points": 2,
+      "stem": "若 E(X)=0，D(X)=4，则由切比雪夫不等式 P(|X|≥5)≤____。",
+      "answer": "\n$$\n\\frac{4}{25}\n$$\n",
+      "hint": "先定位对应定义或公式，再代入题中数值；填空题只需写最终表达式。",
+      "scoring_criteria": [
+        "写出核心公式或定义（1分）",
+        "答案与题目条件完全对应（1分）"
+      ],
+      "explanation": "上界为 σ²/ε²=4/25，Python 分数校验为 4/25。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "设样本均值 \\bar X_n 的方差为 16/n。要保证 P(|\\bar X_n-μ|≥0.1)≤0.04，至少需要多大的 n？",
+      "answer": "切比雪夫给出 \n$$\nP(|\\bar X_n-\\mu|\\ge0.1)\\le \\frac{16/n}{0.1^2}=\\frac{1600}{n}\n$$\n 要使其不超过 0.04，需 \n$$\nn\\ge40000\n$$\n。",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "写出切比雪夫不等式（2分）",
+        "代入方差和 ε（3分）",
+        "建立 1600/n≤0.04（3分）",
+        "解得 n≥40000（2分）"
+      ],
+      "explanation": "Python 精确不等式校验最小整数 n=40000。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "设 X_i 独立同分布，E(X_i)=2，D(X_i)=9。用中心极限定理近似求 P(185<ΣX_i<215)，其中 n=100。",
+      "answer": "和 S 的均值为 200，方差为 900，标准差为 30。标准化得 \n$$\nP(185<S<215)=P(-0.5<Z<0.5)\n$$\n 因而 \n$$\n\\Phi(0.5)-\\Phi(-0.5)\\approx 0.3829\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "求出和的均值 200（2分）",
+        "求出和的标准差 30（2分）",
+        "正确标准化为 (-0.5,0.5)（3分）",
+        "用标准正态求近似概率（3分）"
+      ],
+      "explanation": "Python erf 正态近似校验概率=0.3829。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.3.md",
+        "label": "5.3 中心极限定理"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "二维离散分布中，P(X=0,Y=0)=0.2，P(X=1,Y=0)=0.3，P(X=0,Y=1)=0.1，P(X=1,Y=1)=0.4。求 P(X=1|Y=0)。",
+      "answer": "先求 P(Y=0)=0.2+0.3=0.5，所以 \n$$\nP(X=1\\mid Y=0)=\\frac{0.3}{0.5}=\\frac{3}{5}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "找出联合概率 P(X=1,Y=0)（2分）",
+        "计算 P(Y=0)（3分）",
+        "写出条件概率公式（3分）",
+        "算出结果（2分）"
+      ],
+      "explanation": "Python 分数校验条件概率=3/5。",
+      "sourceRef": {
+        "path": "content/chapters/ch03/3.3.md",
+        "label": "3.3 条件分布"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "随机变量 X 取 0,1,3 的概率分别为 1/4,1/2,1/4。求 E(X) 与 E(X^2)。",
+      "answer": "\n$$\nE(X)=0\\cdot\\frac14+1\\cdot\\frac12+3\\cdot\\frac14=\\frac{5}{4}\n$$\n \n$$\nE(X^2)=0+1\\cdot\\frac12+9\\cdot\\frac14=\\frac{11}{4}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "写出 E(X) 的加权求和（3分）",
+        "算出 E(X)（2分）",
+        "写出 E(X^2) 的加权求和（3分）",
+        "算出 E(X^2)（2分）"
+      ],
+      "explanation": "Python 分数校验 E(X)=5/4, E(X^2)=11/4。",
+      "sourceRef": {
+        "path": "content/chapters/ch04/4.1.md",
+        "label": "4.1 数学期望"
+      },
+      "manimVideoId": "quiz-prob-ch05-q024"
+    },
+    {
+      "id": "q025",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "label": "计算题",
+      "total_points": 10,
+      "stem": "设样本均值 \\bar X_n 的方差为 16/n。要保证 P(|\\bar X_n-μ|≥0.1)≤0.04，至少需要多大的 n？",
+      "answer": "切比雪夫给出 \n$$\nP(|\\bar X_n-\\mu|\\ge0.1)\\le \\frac{16/n}{0.1^2}=\\frac{1600}{n}\n$$\n 要使其不超过 0.04，需 \n$$\nn\\ge40000\n$$\n。",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
+      "scoring_criteria": [
+        "写出切比雪夫不等式（2分）",
+        "代入方差和 ε（3分）",
+        "建立 1600/n≤0.04（3分）",
+        "解得 n≥40000（2分）"
+      ],
+      "explanation": "Python 精确不等式校验最小整数 n=40000。",
+      "sourceRef": {
+        "path": "content/chapters/ch05/5.1.md",
+        "label": "5.1 切比雪夫不等式"
+      },
+      "manimVideoId": "quiz-prob-ch05-q025"
+    },
+    {
+      "id": "q026",
       "type": "essay",
       "difficulty": "hard",
       "source": "review",
-      "sourceChapter": "ch03",
-      "label": "计算题",
+      "sourceChapter": "ch01",
       "points": 10,
+      "label": "计算题",
       "total_points": 10,
-      "manimVideoId": "quiz-prob-ch05-q10",
-      "stem": "设X和Y独立，均服从U(0,1)，Z=X+Y。求Z的密度，并由此求E[Z]。",
-      "answer": "独立时使用卷积公式。因f_X(x)=f_Y(x)=1(0<x<1)，有\n$$\nf_Z(z)=\\int_{-\\infty}^{+\\infty} f_X(x)f_Y(z-x)\\,dx\n$$\n有效积分长度为：0<z<1时x在(0,z)，1≤z<2时x在(z-1,1)。故\n$$\nf_Z(z)=\\begin{cases}z,&0<z<1,\\\\2-z,&1\\le z<2,\\\\0,&\\text{其他}.\\end{cases}\n$$\n再由线性性，E[Z]=E[X]+E[Y]=1/2+1/2=1；也可对分段密度积分得到同样结果。",
-      "hint": "画出0<x<1且0<z-x<1的重叠区间，密度就是重叠长度。",
-      "explanation": "3.5节用两个U(0,1)变量的和展示卷积。卷积积分的核心是确定x同时满足0<x<1和0<z-x<1的长度；得到三角形密度后，第四章期望线性性立刻给出E[Z]=1。",
+      "stem": "三个部件独立并联，可靠度分别为 0.9、0.8、0.75，求系统可靠度。",
+      "answer": "并联系统失效当且仅当三个部件均失效，所以 \n$$\nR=1-(1-0.9)(1-0.8)(1-0.75)=\\frac{199}{200}\n$$\n",
+      "hint": "按“识别模型/公式 → 代入参数 → 计算 → 解释结论”的顺序写。",
       "scoring_criteria": [
-        "写出独立卷积公式（2分）",
-        "正确分析0<z<1与1≤z<2两段积分区间（3分）",
-        "得到三角形密度分段函数（3分）",
-        "求得E[Z]=1（2分）"
+        "指出并联系统的失效条件（2分）",
+        "写出独立失效概率乘积（3分）",
+        "写出可靠度公式（3分）",
+        "计算最终结果（2分）"
       ],
+      "explanation": "Python 分数校验可靠度=199/200。",
       "sourceRef": {
-        "path": "content/chapters/ch03/3.5.md",
-        "label": "3.5 两个随机变量函数的分布 · 均匀分布的卷积"
-      }
+        "path": "content/chapters/ch01/1.6.md",
+        "label": "1.6 事件的独立性"
+      },
+      "manimVideoId": "quiz-prob-ch05-q026"
     }
   ],
   "summary": {
-    "totalQuestions": 10,
+    "totalQuestions": 26,
     "byType": {
-      "single_choice": 2,
-      "fill_blank": 2,
+      "single_choice": 10,
+      "fill_blank": 10,
       "essay": 6
     },
     "bySource": {
-      "current_chapter": 5,
-      "review": 5
+      "current_chapter": 13,
+      "review": 13
     },
     "byDifficulty": {
-      "basic": 7,
-      "medium": 2,
-      "hard": 1
+      "basic": 18,
+      "medium": 5,
+      "hard": 3
     }
   }
 }
