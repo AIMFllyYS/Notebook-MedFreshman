@@ -1,5 +1,13 @@
 # ppt-7.2 苯的亲电取代反应
 
+
+:::note{label=课件示意图}
+以下示意图摘自王锋老师课堂讲授 PPT，配合本节内容阅读。
+
+::figure{src="/images/chemistry/07. 第7章 芳香烃-王锋/073b098d25eb8fda8dd66cbcbd9cfbe8fbce96e124b3ccdd2939b89bca2e0b4e.jpg" alt="课件示意图 1" caption="课件示意图 1"}
+::figure{src="/images/chemistry/07. 第7章 芳香烃-王锋/5fd3f528e1cfb07fe699c1617f65945fecc20ec1a2b346b1ed96eaccf0134684.jpg" alt="课件示意图 2" caption="课件示意图 2"}
+::figure{src="/images/chemistry/07. 第7章 芳香烃-王锋/b237e22a3f7adc97d4530d8f2b8068208ded047b1a5e1d086f9e87b9ade10189.jpg" alt="课件示意图 3" caption="课件示意图 3"}
+:::
 :::insight{label=从"为什么苯不发生加成而发生取代"说起}
 上一节我们学到，苯有 124-150 kJ/mol 的离域能，特别稳定。如果苯像烯烃一样发生加成反应，$\pi$ 电子参与成键，离域大 $\pi$ 键就被破坏了——丢失离域能，能量上"不划算"。
 
@@ -64,6 +72,7 @@ $$
 
 所以苯环"选择"了取代路径——这是芳香性"驱动"的结果。
 :::
+<!-- SVG-TODO: 苯亲电取代反应机理（E+ 进攻苯环形成 σ-络合物/Wheland 中间体，sp3 碳破坏局部芳香性，再失去 H+ 恢复芳香性，标注能量曲线与中间体结构） -->
 
 ## 卤代反应
 

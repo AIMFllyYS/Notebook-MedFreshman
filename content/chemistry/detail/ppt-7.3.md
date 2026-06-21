@@ -1,5 +1,13 @@
 # ppt-7.3 亲电取代定位规律
 
+
+:::note{label=课件示意图}
+以下示意图摘自王锋老师课堂讲授 PPT，配合本节内容阅读。
+
+::figure{src="/images/chemistry/07. 第7章 芳香烃-王锋/073b098d25eb8fda8dd66cbcbd9cfbe8fbce96e124b3ccdd2939b89bca2e0b4e.jpg" alt="课件示意图 1" caption="课件示意图 1"}
+::figure{src="/images/chemistry/07. 第7章 芳香烃-王锋/5fd3f528e1cfb07fe699c1617f65945fecc20ec1a2b346b1ed96eaccf0134684.jpg" alt="课件示意图 2" caption="课件示意图 2"}
+::figure{src="/images/chemistry/07. 第7章 芳香烃-王锋/b237e22a3f7adc97d4530d8f2b8068208ded047b1a5e1d086f9e87b9ade10189.jpg" alt="课件示意图 3" caption="课件示意图 3"}
+:::
 :::insight{label=从"甲苯硝化为什么得到邻对位产物"说起}
 上一节我们学了苯的亲电取代反应。现在考虑一个问题：甲苯 $\ce{C6H5-CH3}$ 硝化时，硝基进入哪个位置？
 
@@ -59,6 +67,7 @@
 
 **致活原因**：环上电子云密度增加，亲电试剂更容易进攻，反应速率比苯快。
 :::
+<!-- SVG-TODO: 邻对位定位基与间位定位基的电子效应对比（给电子基使邻对位电子云密度高，吸电子基使邻对位电子云密度低、间位相对高，标注共振结构中电荷分布） -->
 
 :::theorem{label=间位定位基的电子效应}
 **吸电子基团**（如 $\ce{-NO2}$、$\ce{-COOH}$、$\ce{-CN}$）通过 -I 效应和 -C 效应从苯环拉电子，使环上电子云密度降低。

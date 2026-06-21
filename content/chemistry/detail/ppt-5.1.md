@@ -1,5 +1,13 @@
 # ppt-5.1 诱导效应
 
+
+:::note{label=课件示意图}
+以下示意图摘自王锋老师课堂讲授 PPT，配合本节内容阅读。
+
+::figure{src="/images/chemistry/05. 第5章 有机化学中的取代基效应-王锋/0f8dc6bf648b7aa90c431d360fc6887521149eb73d5d1a88a760f3de266c1f07.jpg" alt="课件示意图 1" caption="课件示意图 1"}
+::figure{src="/images/chemistry/05. 第5章 有机化学中的取代基效应-王锋/6989df55e56b9c6e775890ebcaa679e84e5734f58938c40da9afad934ba6f51d.jpg" alt="课件示意图 2" caption="课件示意图 2"}
+::figure{src="/images/chemistry/05. 第5章 有机化学中的取代基效应-王锋/afd681ab52eb9cadd469a8e18055fb6c7052f1a53abd390a11d63af90dc0f246.jpg" alt="课件示意图 3" caption="课件示意图 3"}
+:::
 :::insight{label=从"为什么氯乙酸比乙酸酸性强"说起}
 看一组数据：
 
@@ -50,6 +58,8 @@
 - 这种偏移通过 σ 键传递：$\ce{CH3-\overset{\delta\delta+}{CH2}-\overset{\delta+}{CH2}-\overset{\delta-}{Cl}}$
 - 电子云沿原子链向 Cl 方向移动
 :::
+
+<!-- SVG-TODO: 1-氯丙烷诱导效应传递示意图（CH3-CH2-CH2-Cl 结构式，标注 Cl 端 δ-、相邻 CH2 δ+、再下一个 CH2 δδ+、CH3 端 δδδ+，箭头表示电子云沿 σ 键向 Cl 方向偏移，标注每经过一个 C-C 键效应衰减约 1/3，三个键后基本可忽略） -->
 
 :::theorem{label=诱导效应的两个特点}
 1. **电子云沿着原子链传递**：诱导效应通过 σ 键传递，不像共轭效应那样通过 π 键离域
@@ -148,6 +158,8 @@ $$
 4. 卤素中等（$\ce{-F > -Cl > -Br > -I}$）
 5. 烷基是给电子基（+I），比 H 弱
 :::
+
+<!-- SVG-TODO: 常见基团 -I 吸电子诱导效应强度排序图（条形图从强到弱：-NR3+ > -NO2 > -CN > -COOH > -COOR > -F > -Cl > -Br > -I > -OCH3 > -OH > -C6H5 > -R > H，标注带正电荷最强、含强电负性原子 N/O 的强、含羰基较强、卤素中等、烷基 +I 给电子） -->
 
 :::insight{label=为什么 sp 杂化碳吸电子更强**
 sp 杂化碳有 50% s 成分，sp² 有 33%，sp³ 有 25%。s 轨道比 p 轨道更靠近原子核，所以 s 成分越多，轨道电子云越靠近核，原子实对价电子的吸引力越强——也就是电负性越大。
