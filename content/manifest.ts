@@ -3,6 +3,7 @@ import { probabilityDetailItems, probabilityRecordings } from './probability-det
 import { modernHistoryDetailItems, modernHistoryRecordings } from './modern-history-detail';
 import { organicChemistryDetailItems } from './organic-chemistry-detail';
 import { maogaiDetailItems } from './maogai-detail';
+import { physicsDetailItems } from './physics-detail';
 
 export const contentTree: ContentTree = {
   subjects: [
@@ -51,7 +52,7 @@ export const contentTree: ContentTree = {
       icon: 'Atom',
       categories: [
         { id: 'textbook', name: '教材', items: [{ id: 'main', title: '大学物理（教材）', type: 'document', status: 'stub' }] },
-        { id: 'detail', name: '详解', items: [] },
+        { id: 'detail', name: '详解', items: physicsDetailItems },
         { id: 'recording', name: '课上录音', items: [] },
         { id: 'summary', name: '课堂纪要', items: [] },
       ],
