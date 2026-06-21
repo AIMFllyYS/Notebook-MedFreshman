@@ -14,7 +14,7 @@ next-env.d.ts
 .env*.local
 
 # manim intermediate render cache (final mp4s live in public/media)
-manim/media/
+manim/media*/
 __pycache__/
 *.pyc
 .venv/
@@ -40,3 +40,4 @@ yarn-error.log*
 
 # Temporary files
 tmp/
+tmp_*
