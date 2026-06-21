@@ -1,0 +1,414 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch05",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "关于温度的微观意义，下列说法正确的是（　）。",
+      "options": [
+        "温度是单个分子动能的度量，可对任意一个分子直接测量其温度",
+        "理想气体分子的平均平动动能 $\\overline{E_k}=\\frac{3}{2}kT$，只与温度有关，与分子种类无关",
+        "温度升高时，每个分子的动能都按 $\\frac{3}{2}kT$ 同步增大",
+        "绝对零度 $T=0\\,\\mathrm{K}$ 时分子完全静止，在有限步骤内可以达到"
+      ],
+      "answer": 1,
+      "hint": "温度是大量分子热运动剧烈程度的统计量；$\\overline{E_k}=\\frac{3}{2}kT$ 是统计平均，不是单个分子的确定值。",
+      "explanation": "B 正确：由理想气体能量公式 $\\overline{E_k}=\\frac{3}{2}kT$，平均平动动能只取决于温度，与分子质量、种类无关。A 错：温度是统计量，不适用于单个分子。C 错：温度升高时各分子动能分布变宽，并非每个分子都等于 $\\frac{3}{2}kT$。D 错：$T=0\\,\\mathrm{K}$ 时 $\\overline{E_k}=0$，但绝对零度不可在有限步骤内达到。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.1.md",
+        "label": "5.1 理想气体的能量公式"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "把氧气 $O_2$ 视为刚性双原子理想气体，其分子总自由度 $i$ 及 1 mol 气体在只计分子动能时的内能为（　）。",
+      "options": [
+        "$i=3$，$U=\\frac{3}{2}RT$",
+        "$i=5$，$U=\\frac{5}{2}RT$",
+        "$i=6$，$U=\\frac{6}{2}RT$",
+        "$i=5$，$U=\\frac{3}{2}RT$"
+      ],
+      "answer": 1,
+      "hint": "刚性双原子分子：平动 3 自由度 + 转动 2 自由度；内能 $U=\\frac{i}{2}\\nu RT$。",
+      "explanation": "B 正确：刚性双原子分子 $i=3+2=5$，由能量均分定理 $U=\\frac{M}{\\mu}\\cdot\\frac{i}{2}RT$，1 mol 时 $U=\\frac{5}{2}RT$。A 错：$i=3$ 对应单原子分子。C 错：$i=6$ 对应刚性多原子分子。D 错：虽 $i=5$ 正确，但内能应为 $\\frac{5}{2}RT$ 而非 $\\frac{3}{2}RT$（后者只含平动）。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.1.md",
+        "label": "5.1 能量均分定理与自由度"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "两瓶不同种类的理想气体，压强 $p$ 相同、温度 $T$ 相同，则两瓶中（　）。",
+      "options": [
+        "单位体积内的分子数一定相同",
+        "分子的平均平动动能一定不同",
+        "气体的质量一定相同",
+        "气体的体积一定相同"
+      ],
+      "answer": 0,
+      "hint": "由 $p=nkT$ 或阿伏伽德罗定律：同 $T$、同 $p$ 下，单位体积分子数 $n=p/(kT)$ 相同。",
+      "explanation": "A 正确：$p=nkT$，$p$、$T$ 相同则数密度 $n$ 相同，与气体种类无关（阿伏伽德罗定律）。B 错：$\\overline{E_k}=\\frac{3}{2}kT$ 只与 $T$ 有关，同温则相同。C、D 错：质量、体积可以不同，只要 $p$、$T$ 相同即可。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.1.md",
+        "label": "5.1 阿伏伽德罗定律"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "一定量理想气体，温度从 $27\\,^\\circ\\mathrm{C}$ 升到 $177\\,^\\circ\\mathrm{C}$，体积减为原来的一半，则最终压强 $p_2$ 与初始压强 $p_1$ 之比 $p_2/p_1$ 为（　）。",
+      "options": [
+        "$1.5$",
+        "$2$",
+        "$3$",
+        "$4$"
+      ],
+      "answer": 2,
+      "hint": "用 $\\dfrac{p_1V_1}{T_1}=\\dfrac{p_2V_2}{T_2}$，注意先把摄氏温度换算为开尔文。",
+      "explanation": "C 正确：$T_1=300\\,\\mathrm{K}$，$T_2=450\\,\\mathrm{K}$，$V_2=V_1/2$。由 $\\dfrac{p_2}{p_1}=\\dfrac{T_2}{T_1}\\cdot\\dfrac{V_1}{V_2}=\\dfrac{450}{300}\\times2=3$。A 错：只考虑温度变化 $\\times1.5$。B 错：只考虑体积减半 $\\times2$。D 错：误将 $T_2/T_1$ 当作 2 再乘 2。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.1.md",
+        "label": "5.1 理想气体状态方程应用"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "直径为 $10\\,\\mathrm{cm}$ 的肥皂泡，肥皂液表面张力系数 $\\alpha=40\\times10^{-3}\\,\\mathrm{N\\cdot m^{-1}}$，则泡内外压强差 $\\Delta p=p_{\\mathrm{内}}-p_{\\mathrm{外}}$ 约为（　）。",
+      "options": [
+        "$1.6\\,\\mathrm{Pa}$",
+        "$3.2\\,\\mathrm{Pa}$",
+        "$6.4\\,\\mathrm{Pa}$",
+        "$12.8\\,\\mathrm{Pa}$"
+      ],
+      "answer": 1,
+      "hint": "肥皂泡有内外两层液膜，附加压强公式为 $\\Delta p=\\dfrac{4\\alpha}{R}$，不是单球面的 $2\\alpha/R$。",
+      "explanation": "B 正确：$R=0.05\\,\\mathrm{m}$，双层膜 $\\Delta p=\\dfrac{4\\alpha}{R}=\\dfrac{4\\times0.04}{0.05}=3.2\\,\\mathrm{Pa}$。A 错：误用 $\\Delta p=2\\alpha/R$（单球面公式）。C 错：可能多乘了 2 倍。D 错：把直径当作半径代入。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.2.md",
+        "label": "5.2 拉普拉斯公式（肥皂泡双膜）"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "一列平面简谐波连续通过几种均匀介质传播时，下列量中保持不变的是（　）。",
+      "options": [
+        "频率",
+        "波速",
+        "波长",
+        "振幅"
+      ],
+      "answer": 0,
+      "hint": "频率由波源决定；波速、波长随介质性质而变。",
+      "explanation": "A 正确：频率由波源决定，不随介质改变。B、C 错：$u=\\lambda\\nu$，介质不同则 $u$、$\\lambda$ 均改变。D 错：振幅在界面可能因反射、吸收而改变。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.1.md",
+        "label": "4.1 频率与介质"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "弦上形成驻波后，相邻两个波节（或相邻两个波腹）之间的距离为（　）。",
+      "options": [
+        "$\\lambda$",
+        "$\\lambda/2$",
+        "$\\lambda/4$",
+        "$2\\lambda$"
+      ],
+      "answer": 1,
+      "hint": "驻波 $y=2A\\cos kx\\cos\\omega t$，波节满足 $\\cos kx=0$，相邻波节间距 $\\Delta x=\\lambda/2$。",
+      "explanation": "B 正确：波节处 $\\cos kx=0$，$kx=(2n+1)\\pi/2$，相邻波节间距 $\\lambda/2$；波腹间距亦为 $\\lambda/2$。A 错：$\\lambda$ 是一个完整波长，相邻同相点间距。C 错：$\\lambda/4$ 是波节到最近波腹的距离。D 错：过大。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.2.md",
+        "label": "4.2 驻波波节与波腹"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "声速 $u=340\\,\\mathrm{m\\cdot s^{-1}}$，波源以 $v_S=34\\,\\mathrm{m\\cdot s^{-1}}$ 向静止观测者运动，源频率 $\\nu=500\\,\\mathrm{Hz}$，则观测者听到的频率 $\\nu'$ 约为（　）。",
+      "options": [
+        "$455\\,\\mathrm{Hz}$",
+        "$500\\,\\mathrm{Hz}$",
+        "$556\\,\\mathrm{Hz}$",
+        "$625\\,\\mathrm{Hz}$"
+      ],
+      "answer": 2,
+      "hint": "波源靠近静止观测者：$\\nu'=\\dfrac{u}{u-v_S}\\nu$，分子分母符号勿反。",
+      "explanation": "C 正确：$\\nu'=\\dfrac{340}{340-34}\\times500=\\dfrac{340}{306}\\times500\\approx556\\,\\mathrm{Hz}$。A 错：用了远离公式 $\\dfrac{u}{u+v_S}\\nu$。B 错：忽略多普勒效应。D 错：误用 $\\dfrac{u+v_S}{u}\\nu$（观测者运动公式）。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.3.md",
+        "label": "4.3 多普勒效应"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "弹簧振子质量 $m=0.50\\,\\mathrm{kg}$，劲度系数 $k=200\\,\\mathrm{N\\cdot m^{-1}}$，则其振动周期 $T$ 为（　）。",
+      "options": [
+        "$\\dfrac{\\pi}{10}\\,\\mathrm{s}$",
+        "$\\dfrac{\\pi}{5}\\,\\mathrm{s}$",
+        "$\\dfrac{2\\pi}{5}\\,\\mathrm{s}$",
+        "$\\dfrac{\\pi}{20}\\,\\mathrm{s}$"
+      ],
+      "answer": 0,
+      "hint": "弹簧振子 $T=2\\pi\\sqrt{m/k}$，$\\omega=\\sqrt{k/m}$。",
+      "explanation": "A 正确：$T=2\\pi\\sqrt{\\dfrac{0.50}{200}}=2\\pi\\sqrt{0.0025}=\\dfrac{\\pi}{10}\\,\\mathrm{s}$。B 错：$\\sqrt{m/k}$ 计算错误。C 错：多乘了 2。D 错：$\\sqrt{m/k}$ 算成 $1/40$ 而非 $1/20$。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.1.md",
+        "label": "3.1 弹簧振子周期"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "两同向同频简谐振动 $y_1=5\\cos(\\pi t-\\pi/2)\\,\\mathrm{cm}$、$y_2=15\\cos(\\pi t+\\pi/2)\\,\\mathrm{cm}$ 合成，合振幅为（　）。",
+      "options": [
+        "$20\\,\\mathrm{cm}$",
+        "$10\\,\\mathrm{cm}$",
+        "$5\\,\\mathrm{cm}$",
+        "$15\\,\\mathrm{cm}$"
+      ],
+      "answer": 1,
+      "hint": "相位差 $\\varphi_2-\\varphi_1=\\pi$，反相合成 $A=|A_1-A_2|$。",
+      "explanation": "B 正确：$\\varphi_2-\\varphi_1=\\pi/2-(-\\pi/2)=\\pi$，反相，$A=|15-5|=10\\,\\mathrm{cm}$。A 错：同相时 $A=A_1+A_2=20\\,\\mathrm{cm}$。C 错：$|A_1-A_2|$ 算错。D 错：只取较大振幅。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.2.md",
+        "label": "3.2 同向同频振动合成"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：容积 $V=10\\,\\mathrm{L}$ 的密闭容器内装有理想气体，初始状态 $p_1=2.0\\,\\mathrm{atm}$、$T_1=300\\,\\mathrm{K}$。现将容器加热至 $T_2=450\\,\\mathrm{K}$，体积保持不变。求：（1）最终压强 $p_2$；（2）若改用等压过程从 $T_1$ 加热到 $T_2$，体积变为原来的多少倍？",
+      "answer": "（1）等容过程由 $\\dfrac{p_1}{T_1}=\\dfrac{p_2}{T_2}$，得\n$$p_2=p_1\\frac{T_2}{T_1}=2.0\\times\\frac{450}{300}=3.0\\,\\mathrm{atm}$$\n（2）等压过程由 $\\dfrac{V_1}{T_1}=\\dfrac{V_2}{T_2}$，得\n$$\\frac{V_2}{V_1}=\\frac{T_2}{T_1}=\\frac{450}{300}=1.5$$\n即体积增为原来的 1.5 倍。",
+      "hint": "等容：$p\\propto T$；等压：$V\\propto T$。温度一律用开尔文。",
+      "scoring_criteria": [
+        "写出等容过程关系式 $p_1/T_1=p_2/T_2$（3分）",
+        "正确计算 $p_2=3.0\\,\\mathrm{atm}$（3分）",
+        "写出等压过程 $V_2/V_1=T_2/T_1$ 并得 $1.5$ 倍（4分）"
+      ],
+      "explanation": "本题考查理想气体状态方程在等容、等压过程中的应用。等容时 $p$ 与 $T$ 成正比，$p_2=2.0\\times450/300=3.0\\,\\mathrm{atm}$；等压时 $V$ 与 $T$ 成正比，$V_2/V_1=1.5$。常见错误：用摄氏温度直接代入比例式。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.1.md",
+        "label": "5.1 理想气体状态方程"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：把 1 mol 氧气 $O_2$ 视为刚性双原子理想气体，温度 $T=300\\,\\mathrm{K}$（即 $27\\,^\\circ\\mathrm{C}$）。求：（1）分子的平均平动动能；（2）分子的平均转动动能；（3）气体的内能 $U$（只计分子动能）。已知 $R=8.31\\,\\mathrm{J\\cdot K^{-1}\\cdot mol^{-1}}$。",
+      "answer": "（1）平均平动动能（1 mol）：\n$$E_{\\mathrm{trans}}=N_A\\cdot\\frac{3}{2}kT=\\frac{3}{2}RT=\\frac{3}{2}\\times8.31\\times300=3.74\\times10^3\\,\\mathrm{J}$$\n（2）平均转动动能（1 mol，$i_{\\mathrm{rot}}=2$）：\n$$E_{\\mathrm{rot}}=N_A\\cdot2\\cdot\\frac{1}{2}kT=RT=8.31\\times300=2.49\\times10^3\\,\\mathrm{J}$$\n（3）内能：\n$$U=E_{\\mathrm{trans}}+E_{\\mathrm{rot}}=\\frac{5}{2}RT=6.23\\times10^3\\,\\mathrm{J}$$",
+      "hint": "每个平动自由度 $kT/2$；刚性双原子 $i=5$，$U=\\frac{5}{2}RT$。",
+      "scoring_criteria": [
+        "正确计算平均平动动能 $E_{\\mathrm{trans}}=3.74\\times10^3\\,\\mathrm{J}$（4分）",
+        "正确计算平均转动动能 $E_{\\mathrm{rot}}=2.49\\times10^3\\,\\mathrm{J}$（3分）",
+        "正确计算内能 $U=6.23\\times10^3\\,\\mathrm{J}$（3分）"
+      ],
+      "explanation": "刚性双原子 $O_2$：平动 3 自由度、转动 2 自由度。1 mol 平动动能 $\\frac{3}{2}RT$，转动动能 $RT$，总内能 $\\frac{5}{2}RT$。与详解例题 EX02 一致。易错：把双原子 $i$ 误作 3，或内能只算平动。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.1.md",
+        "label": "5.1 能量均分定理"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：氮气 $N_2$ 摩尔质量 $\\mu=28\\times10^{-3}\\,\\mathrm{kg\\cdot mol^{-1}}$，温度 $T=300\\,\\mathrm{K}$。求该温度下氮气分子的（1）最概然速率 $v_p$；（2）平均速率 $\\bar{v}$；（3）方均根速率 $v_{\\mathrm{rms}}$。已知 $R=8.31\\,\\mathrm{J\\cdot K^{-1}\\cdot mol^{-1}}$。",
+      "answer": "（1）$v_p=\\sqrt{\\dfrac{2RT}{\\mu}}=\\sqrt{\\dfrac{2\\times8.31\\times300}{0.028}}\\approx4.22\\times10^2\\,\\mathrm{m\\cdot s^{-1}}$\n（2）$\\bar{v}=\\sqrt{\\dfrac{8RT}{\\pi\\mu}}=\\sqrt{\\dfrac{8\\times8.31\\times300}{\\pi\\times0.028}}\\approx4.76\\times10^2\\,\\mathrm{m\\cdot s^{-1}}$\n（3）$v_{\\mathrm{rms}}=\\sqrt{\\dfrac{3RT}{\\mu}}=\\sqrt{\\dfrac{3\\times8.31\\times300}{0.028}}\\approx5.17\\times10^2\\,\\mathrm{m\\cdot s^{-1}}$\n三者关系：$v_p<\\bar{v}<v_{\\mathrm{rms}}$。",
+      "hint": "$v_p=\\sqrt{2RT/\\mu}$，$\\bar{v}=\\sqrt{8RT/(\\pi\\mu)}$，$v_{\\mathrm{rms}}=\\sqrt{3RT/\\mu}$。",
+      "scoring_criteria": [
+        "正确计算 $v_p\\approx422\\,\\mathrm{m\\cdot s^{-1}}$（3分）",
+        "正确计算 $\\bar{v}\\approx476\\,\\mathrm{m\\cdot s^{-1}}$（3分）",
+        "正确计算 $v_{\\mathrm{rms}}\\approx517\\,\\mathrm{m\\cdot s^{-1}}$ 并说明大小关系（4分）"
+      ],
+      "explanation": "三种特征速率公式不同、用途不同：$v_p$ 讨论分布峰值，$\\bar{v}$ 讨论碰撞频率，$v_{\\mathrm{rms}}$ 讨论平均平动动能。由 $v_{\\mathrm{rms}}=\\sqrt{3RT/\\mu}$ 得 $\\overline{E_k}=\\frac{3}{2}kT$，与 5.1 节一致。数值允许 $\\pm5\\,\\mathrm{m\\cdot s^{-1}}$ 误差。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.2.md",
+        "label": "5.2 三种特征速率"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：内半径 $r=0.50\\,\\mathrm{mm}$ 的玻璃毛细管竖直插入水中，水完全润湿管壁（接触角 $\\theta=0$）。已知水的表面张力系数 $\\alpha=73\\times10^{-3}\\,\\mathrm{N\\cdot m^{-1}}$，密度 $\\rho=1.0\\times10^3\\,\\mathrm{kg\\cdot m^{-3}}$，$g=9.8\\,\\mathrm{m\\cdot s^{-2}}$。求：（1）毛细管中水面上升高度 $h$；（2）若改用内半径 $r'=0.25\\,\\mathrm{mm}$ 的毛细管，$h$ 变为多少？",
+      "answer": "（1）润湿时 $\\cos\\theta=1$，\n$$h=\\frac{2\\alpha\\cos\\theta}{\\rho g r}=\\frac{2\\times0.073}{1000\\times9.8\\times0.50\\times10^{-3}}\\approx2.98\\times10^{-2}\\,\\mathrm{m}\\approx3.0\\,\\mathrm{cm}$$\n（2）$h\\propto1/r$，故\n$$h'=h\\cdot\\frac{r}{r'}=3.0\\times\\frac{0.50}{0.25}=6.0\\,\\mathrm{cm}$$",
+      "hint": "毛细上升公式 $h=2\\alpha\\cos\\theta/(\\rho g r)$；$h$ 与 $r$ 成反比。",
+      "scoring_criteria": [
+        "写出毛细公式并代入 $\\cos\\theta=1$（3分）",
+        "正确计算 $h\\approx3.0\\,\\mathrm{cm}$（4分）",
+        "利用 $h\\propto1/r$ 得 $h'\\approx6.0\\,\\mathrm{cm}$（3分）"
+      ],
+      "explanation": "润湿液体在毛细管中上升，$h=2\\alpha/(\\rho g r)$。管径减半则高度加倍，与详解 EX11 思路一致。易错：半径单位未换算为 m；忽略 $\\cos\\theta$；误用拉普拉斯单球面公式。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.2.md",
+        "label": "5.2 毛细现象"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：两相干波源 $S_1$、$S_2$ 间距 $d=0.60\\,\\mathrm{m}$，波长 $\\lambda=0.20\\,\\mathrm{m}$，波速 $u=40\\,\\mathrm{m\\cdot s^{-1}}$。在连两源的直线上，$P$ 点距 $S_1$ 为 $r_1=1.10\\,\\mathrm{m}$、距 $S_2$ 为 $r_2=0.50\\,\\mathrm{m}$，两源初相位相同。求：（1）波程差 $\\delta$；（2）$P$ 点干涉是加强还是减弱；（3）波的频率 $\\nu$。",
+      "answer": "（1）$\\delta=|r_1-r_2|=|1.10-0.50|=0.60\\,\\mathrm{m}$\n（2）$\\delta=0.60\\,\\mathrm{m}=3\\lambda$，满足相长条件 $\\delta=k\\lambda$（$k=3$），$P$ 点干涉**加强**。\n（3）$\\nu=\\dfrac{u}{\\lambda}=\\dfrac{40}{0.20}=200\\,\\mathrm{Hz}$",
+      "hint": "波程差 $\\delta=|r_1-r_2|$；相长 $\\delta=k\\lambda$，相消 $\\delta=(2k+1)\\lambda/2$；$\\nu=u/\\lambda$。",
+      "scoring_criteria": [
+        "正确计算波程差 $\\delta=0.60\\,\\mathrm{m}$（3分）",
+        "判断 $\\delta=3\\lambda$，P 点干涉加强（4分）",
+        "正确计算频率 $\\nu=200\\,\\mathrm{Hz}$（3分）"
+      ],
+      "explanation": "相干波叠加时相位差 $\\Delta\\varphi=2\\pi\\delta/\\lambda$。$\\delta=3\\lambda$ 时 $\\Delta\\varphi=6\\pi$，合振幅最大。若 $\\delta=(2k+1)\\lambda/2$ 则相消。频率由 $u=\\lambda\\nu$ 得 $\\nu=200\\,\\mathrm{Hz}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.2.md",
+        "label": "4.2 波的干涉条件"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：水平弹簧振子，质量 $m=1.0\\,\\mathrm{kg}$，劲度系数 $k=400\\,\\mathrm{N\\cdot m^{-1}}$。$t=0$ 时物体位于 $x_0=0.040\\,\\mathrm{m}$ 处，初速度 $v_0=0$。求：（1）角频率 $\\omega$ 和周期 $T$；（2）振幅 $A$；（3）最大速率 $v_{\\max}$ 和最大加速度 $|a|_{\\max}$。",
+      "answer": "（1）$\\omega=\\sqrt{\\dfrac{k}{m}}=\\sqrt{\\dfrac{400}{1.0}}=20\\,\\mathrm{rad\\cdot s^{-1}}$，$T=\\dfrac{2\\pi}{\\omega}=\\dfrac{\\pi}{10}\\,\\mathrm{s}\\approx0.314\\,\\mathrm{s}$\n（2）$v_0=0$ 时在最大位移处释放，$A=x_0=0.040\\,\\mathrm{m}$\n（3）$v_{\\max}=\\omega A=20\\times0.040=0.80\\,\\mathrm{m\\cdot s^{-1}}$；$|a|_{\\max}=\\omega^2 A=400\\times0.040=16\\,\\mathrm{m\\cdot s^{-2}}$",
+      "hint": "$\\omega=\\sqrt{k/m}$；$v_0=0$ 且 $x_0\\neq0$ 时 $A=|x_0|$；$v_{\\max}=\\omega A$，$|a|_{\\max}=\\omega^2 A$。",
+      "scoring_criteria": [
+        "正确求 $\\omega=20\\,\\mathrm{rad\\cdot s^{-1}}$ 和 $T=\\pi/10\\,\\mathrm{s}$（3分）",
+        "正确求振幅 $A=0.040\\,\\mathrm{m}$（3分）",
+        "正确求 $v_{\\max}=0.80\\,\\mathrm{m\\cdot s^{-1}}$ 和 $|a|_{\\max}=16\\,\\mathrm{m\\cdot s^{-2}}$（4分）"
+      ],
+      "explanation": "简谐振动 $x=A\\cos(\\omega t+\\varphi)$。$t=0$ 时 $x=A$，$v=0$，故 $\\varphi=0$，$A=x_0$。最大速率在平衡位置，最大加速度在端点。与 3.1 节弹簧振子公式一致。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.1.md",
+        "label": "3.1 简谐振动特征量"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：理想不可压缩流体在水平管道中作稳定流动。粗管段截面积 $S_1=6.0\\,\\mathrm{cm^2}$、流速 $v_1=1.5\\,\\mathrm{m\\cdot s^{-1}}$；细管段截面积 $S_2=2.0\\,\\mathrm{cm^2}$。求：（1）细管段流速 $v_2$；（2）若粗、细管为同一流管的两段，体积流量 $Q$ 为多少（用 $\\mathrm{cm^3\\cdot s^{-1}}$ 表示）；（3）说明为何细管处流速更大。",
+      "answer": "（1）由连续性方程 $S_1v_1=S_2v_2$，\n$$v_2=\\frac{S_1v_1}{S_2}=\\frac{6.0\\times1.5}{2.0}=4.5\\,\\mathrm{m\\cdot s^{-1}}$$\n（2）$Q=S_1v_1=6.0\\,\\mathrm{cm^2}\\times150\\,\\mathrm{cm\\cdot s^{-1}}=900\\,\\mathrm{cm^3\\cdot s^{-1}}$（或 $Q=S_2v_2=900\\,\\mathrm{cm^3\\cdot s^{-1}}$）\n（3）不可压缩流体在同一流管中体积流量守恒，$Sv$ 为常数，故截面积小处流速大。",
+      "hint": "连续性方程 $S_1v_1=S_2v_2$；$Q=Sv$；注意单位统一。",
+      "scoring_criteria": [
+        "写出连续性方程并求 $v_2=4.5\\,\\mathrm{m\\cdot s^{-1}}$（4分）",
+        "正确计算体积流量 $Q=900\\,\\mathrm{cm^3\\cdot s^{-1}}$（3分）",
+        "正确解释：$Sv$ 守恒，管细处流速大（3分）"
+      ],
+      "explanation": "连续性方程源于不可压缩流体稳定流动中体积（质量）守恒。$S_1v_1=S_2v_2$ 表明截面积与流速成反比——细管流速更大，并非截面积小处流量更大。与 2.1 节例题及易错点一致。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.1.md",
+        "label": "2.1 连续性方程"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": {
+      "single_choice": 10,
+      "essay": 7
+    },
+    "bySource": {
+      "current_chapter": 9,
+      "review": 8
+    },
+    "byDifficulty": {
+      "basic": 12,
+      "medium": 3,
+      "hard": 2
+    },
+    "byPoints": {
+      "current_chapter": 50,
+      "review": 50
+    }
+  }
+}

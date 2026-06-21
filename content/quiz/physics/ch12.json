@@ -1,0 +1,416 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch12",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "铯金属光电效应逸出功 $W=1.9\\,\\mathrm{eV}$，用频率 $\\nu=6.0\\times10^{14}\\,\\mathrm{Hz}$ 的单色光照射（$h=6.626\\times10^{-34}\\,\\mathrm{J\\cdot s}$，$e=1.602\\times10^{-19}\\,\\mathrm{C}$），遏止电压 $U_a$ 约为（　）。",
+      "options": [
+        "$0.58\\,\\mathrm{V}$",
+        "$1.90\\,\\mathrm{V}$",
+        "$2.48\\,\\mathrm{V}$",
+        "$3.48\\,\\mathrm{V}$"
+      ],
+      "answer": 0,
+      "hint": "爱因斯坦光电方程 $eU_a=h\\nu-W$；先将 $h\\nu$ 换算为 eV 再减逸出功。",
+      "explanation": "A 正确：$h\\nu=6.626\\times10^{-34}\\times6.0\\times10^{14}=3.976\\times10^{-19}\\,\\mathrm{J}\\approx2.48\\,\\mathrm{eV}$，$U_a=(2.48-1.90)\\,\\mathrm{V}\\approx0.58\\,\\mathrm{V}$。B 错：误将逸出功当作遏止电压。C 错：$2.48\\,\\mathrm{V}$ 是光子能量而非最大动能对应电压。D 错：将光子能量与逸出功相加。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.1.md",
+        "label": "12.1 爱因斯坦光电方程与遏止电压"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "频率 $\\nu=5.0\\times10^{14}\\,\\mathrm{Hz}$ 的单色光，其每个光子的能量 $\\varepsilon=h\\nu$ 及 3 个此类光子携带的总能量 $E=3h\\nu$ 分别为（　）。（$h=6.626\\times10^{-34}\\,\\mathrm{J\\cdot s}$）",
+      "options": [
+        "$3.31\\times10^{-19}\\,\\mathrm{J}$，$9.94\\times10^{-19}\\,\\mathrm{J}$",
+        "$6.626\\times10^{-34}\\,\\mathrm{J}$，$1.99\\times10^{-33}\\,\\mathrm{J}$",
+        "$3.31\\times10^{-19}\\,\\mathrm{J}$，$3.31\\times10^{-19}\\,\\mathrm{J}$",
+        "$1.66\\times10^{-19}\\,\\mathrm{J}$，$4.98\\times10^{-19}\\,\\mathrm{J}$"
+      ],
+      "answer": 0,
+      "hint": "普朗克能量量子化 $E=nh\\nu$；单光子能量 $\\varepsilon=h\\nu$，$n=3$ 时 $E=3h\\nu$。",
+      "explanation": "A 正确：$\\varepsilon=h\\nu=6.626\\times10^{-34}\\times5.0\\times10^{14}=3.31\\times10^{-19}\\,\\mathrm{J}$；$E=3\\varepsilon=9.94\\times10^{-19}\\,\\mathrm{J}$。B 错：误将 $h$ 本身当作光子能量。C 错：3 个光子总能量应为 $3h\\nu$ 而非 $h\\nu$。D 错：$h\\nu/2$ 无物理依据。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.1.md",
+        "label": "12.1 普朗克能量量子化 $E=nh\\nu$"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "氢原子玻尔模型中，$n=3$ 定态能量 $E_3$ 及从 $n=3$ 跃迁至 $n=2$（巴尔末系）所发射光子能量 $\\Delta E$ 分别为（　）。（$E_n=-13.6/n^2\\,\\mathrm{eV}$）",
+      "options": [
+        "$E_3=-1.51\\,\\mathrm{eV}$，$\\Delta E=1.89\\,\\mathrm{eV}$",
+        "$E_3=-4.53\\,\\mathrm{eV}$，$\\Delta E=1.89\\,\\mathrm{eV}$",
+        "$E_3=-1.51\\,\\mathrm{eV}$，$\\Delta E=2.55\\,\\mathrm{eV}$",
+        "$E_3=-3.40\\,\\mathrm{eV}$，$\\Delta E=1.51\\,\\mathrm{eV}$"
+      ],
+      "answer": 0,
+      "hint": "$E_n=-13.6/n^2\\,\\mathrm{eV}$；跃迁光子能量 $\\Delta E=E_3-E_2=13.6(1/4-1/9)\\,\\mathrm{eV}$。",
+      "explanation": "A 正确：$E_3=-13.6/9=-1.51\\,\\mathrm{eV}$；$\\Delta E=13.6(1/4-1/9)=13.6\\times5/36=1.89\\,\\mathrm{eV}$。B 错：$E_3$ 误取 $-13.6/3$。C 错：$\\Delta E=2.55\\,\\mathrm{eV}$ 对应 $n=4\\to2$ 跃迁。D 错：$-3.40\\,\\mathrm{eV}$ 为 $n=2$ 能级能量。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.2.md",
+        "label": "12.2 玻尔氢原子能级与巴尔末系"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "电子经 $U=150\\,\\mathrm{V}$ 加速（非相对论），德布罗意波长 $\\lambda=h/p=h/\\sqrt{2m_e eU}$ 约为（　）。（$h=6.626\\times10^{-34}\\,\\mathrm{J\\cdot s}$，$m_e=9.11\\times10^{-31}\\,\\mathrm{kg}$，$e=1.602\\times10^{-19}\\,\\mathrm{C}$）",
+      "options": [
+        "$0.10\\,\\mathrm{nm}$",
+        "$0.37\\,\\mathrm{nm}$",
+        "$1.0\\,\\mathrm{nm}$",
+        "$2.43\\,\\mathrm{pm}$"
+      ],
+      "answer": 0,
+      "hint": "非相对论 $\\lambda=\\dfrac{h}{\\sqrt{2m_e eU}}$；$U=150\\,\\mathrm{V}$ 时 $E_k=150\\,\\mathrm{eV}\\ll m_e c^2$，可用经典公式。",
+      "explanation": "A 正确：$\\lambda=\\dfrac{6.626\\times10^{-34}}{\\sqrt{2\\times9.11\\times10^{-31}\\times1.602\\times10^{-19}\\times150}}=\\dfrac{6.626\\times10^{-34}}{6.62\\times10^{-23}}=1.0\\times10^{-10}\\,\\mathrm{m}=0.10\\,\\mathrm{nm}$。B 错：$U=100\\,\\mathrm{keV}$ 量级电子波长的结果。C 错：$U\\approx1.5\\,\\mathrm{V}$ 时的结果。D 错：$2.43\\,\\mathrm{pm}$ 是康普顿波长 $\\lambda_C$，非德布罗意波长。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.3.md",
+        "label": "12.3 德布罗意波长 $\\lambda=h/p$"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "一维自由粒子位置不确定度 $\\Delta x=1.0\\times10^{-10}\\,\\mathrm{m}$（原子线度量级），由不确定关系 $\\Delta x\\Delta p_x\\geq\\hbar/2$ 估算动量不确定度 $\\Delta p_x$ 的最小值约为（　）。（$\\hbar=1.055\\times10^{-34}\\,\\mathrm{J\\cdot s}$）",
+      "options": [
+        "$5.3\\times10^{-25}\\,\\mathrm{kg\\cdot m/s}$",
+        "$1.1\\times10^{-24}\\,\\mathrm{kg\\cdot m/s}$",
+        "$5.3\\times10^{-34}\\,\\mathrm{kg\\cdot m/s}$",
+        "$1.0\\times10^{-10}\\,\\mathrm{kg\\cdot m/s}$"
+      ],
+      "answer": 0,
+      "hint": "取等号估算：$\\Delta p_x\\geq\\hbar/(2\\Delta x)$；注意用 $\\hbar$ 而非 $h$。",
+      "explanation": "A 正确：$\\Delta p_x\\geq\\dfrac{1.055\\times10^{-34}}{2\\times10^{-10}}=5.3\\times10^{-25}\\,\\mathrm{kg\\cdot m/s}$。B 错：误用 $h$ 代替 $\\hbar/2$（即少除 2 倍）。C 错：将 $\\hbar$ 本身当作结果。D 错：$\\Delta p$ 与 $\\Delta x$ 量纲相同但物理意义完全不同。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.4.md",
+        "label": "12.4 海森堡不确定关系"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch11",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "杨氏双缝实验中，缝屏距 $D=1.20\\,\\mathrm{m}$，双缝间距 $d=0.60\\,\\mathrm{mm}$，入射光波长 $\\lambda=600\\,\\mathrm{nm}$，相邻明纹间距 $\\Delta x$ 约为（　）。",
+      "options": [
+        "$0.60\\,\\mathrm{mm}$",
+        "$1.20\\,\\mathrm{mm}$",
+        "$2.40\\,\\mathrm{mm}$",
+        "$0.30\\,\\mathrm{mm}$"
+      ],
+      "answer": 1,
+      "hint": "杨氏双缝条纹间距 $\\Delta x=\\dfrac{D\\lambda}{d}$；注意 $d$、$\\lambda$ 单位统一。",
+      "explanation": "B 正确：$\\Delta x=\\dfrac{1.20\\times600\\times10^{-9}}{0.60\\times10^{-3}}=1.20\\times10^{-3}\\,\\mathrm{m}=1.20\\,\\mathrm{mm}$。A 错：$d$ 误取 $1.2\\,\\mathrm{mm}$。C 错：$D$ 误取 $2.4\\,\\mathrm{m}$ 或 $d$ 减半。D 错：$d$ 误取 $2.4\\,\\mathrm{mm}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.1.md",
+        "label": "11.1 杨氏双缝干涉条纹间距"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch11",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "波长 $\\lambda=589.3\\,\\mathrm{nm}$ 的钠光垂直入射光栅，第 $2$ 级明纹衍射角满足 $\\sin\\theta=0.30$，光栅常数 $d$ 约为（　）。",
+      "options": [
+        "$2.95\\,\\mu\\mathrm{m}$",
+        "$3.93\\,\\mu\\mathrm{m}$",
+        "$1.77\\,\\mu\\mathrm{m}$",
+        "$5.89\\,\\mu\\mathrm{m}$"
+      ],
+      "answer": 1,
+      "hint": "光栅方程 $d\\sin\\theta=k\\lambda$；$k=2$ 时 $d=k\\lambda/\\sin\\theta$。",
+      "explanation": "B 正确：$d=\\dfrac{2\\times589.3\\times10^{-9}}{0.30}=3.93\\times10^{-6}\\,\\mathrm{m}=3.93\\,\\mu\\mathrm{m}$。A 错：$k=1$ 时的结果。C 错：$k=2$ 但 $\\sin\\theta$ 误取 $0.667$。D 错：$k=3$ 时的结果。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.2.md",
+        "label": "11.2 光栅方程 $d\\sin\\theta=k\\lambda$"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch11",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "线偏振光强度为 $I_0$，通过振动方向与入射光振动方向夹角 $\\theta=60°$ 的检偏器后，出射光强 $I$ 为（　）。",
+      "options": [
+        "$I_0/2$",
+        "$I_0/4$",
+        "$3I_0/4$",
+        "$I_0/8$"
+      ],
+      "answer": 1,
+      "hint": "马吕斯定律 $I=I_0\\cos^2\\theta$；$\\theta=60°$ 时 $\\cos^260°=1/4$。",
+      "explanation": "B 正确：$I=I_0\\cos^260°=I_0/4$。A 错：$I_0/2$ 是自然光通过偏振片后的强度，或 $\\theta=45°$ 时线偏振光的结果。C 错：$\\cos^230°=3/4$，对应 $\\theta=30°$。D 错：$\\cos^260°\\cos^230°$ 双偏振片组合的结果。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.3.md",
+        "label": "11.3 马吕斯定律"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch10",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "空气中薄凸透镜焦距 $f=15\\,\\mathrm{cm}$，实物置于透镜左侧 $u=45\\,\\mathrm{cm}$ 处，由薄透镜高斯公式 $\\dfrac{1}{u}+\\dfrac{1}{v}=\\dfrac{1}{f}$ 可得像距 $v$ 及像的性质为（　）。",
+      "options": [
+        "$v=22.5\\,\\mathrm{cm}$，倒立实像",
+        "$v=-22.5\\,\\mathrm{cm}$，正立虚像",
+        "$v=30\\,\\mathrm{cm}$，倒立实像",
+        "$v=-30\\,\\mathrm{cm}$，正立虚像"
+      ],
+      "answer": 0,
+      "hint": "代入 $\\dfrac{1}{45}+\\dfrac{1}{v}=\\dfrac{1}{15}$ 求 $v$；$u>2f$ 时凸透镜成缩小实像。",
+      "explanation": "A 正确：$\\dfrac{1}{v}=\\dfrac{1}{15}-\\dfrac{1}{45}=\\dfrac{2}{45}$，$v=22.5\\,\\mathrm{cm}>0$，为透镜右侧倒立实像。B 错：$u>f$ 时凸透镜不可能成虚像。C 错：$v=30\\,\\mathrm{cm}$ 对应 $u=30\\,\\mathrm{cm}$（$u=2f$ 等大实像）。D 错：符号与数值均错。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.2.md",
+        "label": "10.2 薄透镜高斯公式"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch09",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "$N=150$ 匝线圈，穿过每匝的磁通量 $\\Phi_B=0.04\\cos(80t)\\,\\mathrm{Wb}$（$t$ 以 s 计），回路电阻不计，感应电动势的幅值 $|\\varepsilon_i|_{\\max}$ 为（　）。",
+      "options": [
+        "$480\\,\\mathrm{V}$",
+        "$320\\,\\mathrm{V}$",
+        "$240\\,\\mathrm{V}$",
+        "$120\\,\\mathrm{V}$"
+      ],
+      "answer": 0,
+      "hint": "法拉第定律 $\\varepsilon_i=-N\\dfrac{\\mathrm{d}\\Phi_B}{\\mathrm{d}t}$；$\\Phi_B=\\Phi_0\\cos\\omega t$ 时 $|\\varepsilon_i|_{\\max}=N\\Phi_0\\omega$。",
+      "explanation": "A 正确：$\\dfrac{\\mathrm{d}\\Phi_B}{\\mathrm{d}t}=-0.04\\times80\\sin(80t)$，$|\\varepsilon_i|_{\\max}=150\\times0.04\\times80=480\\,\\mathrm{V}$。B 错：漏乘 $\\omega=80$ 或 $\\Phi_0$ 误取 $0.067$。C 错：漏乘匝数 $N$。D 错：将 $\\Phi_0$ 本身而非变化率代入。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.1.md",
+        "label": "9.1 法拉第电磁感应定律"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：铯的光电效应逸出功 $W=1.9\\,\\mathrm{eV}$。（$h=6.626\\times10^{-34}\\,\\mathrm{J\\cdot s}$，$c=3.00\\times10^8\\,\\mathrm{m/s}$，$e=1.602\\times10^{-19}\\,\\mathrm{C}$）求：（1）红限频率 $\\nu_0$ 和红限波长 $\\lambda_0$；（2）用波长 $\\lambda=400\\,\\mathrm{nm}$ 的单色光照射时，遏止电压 $U_a$；（3）此时光电子最大初动能 $E_{k,\\max}$（以 eV 和 J 表示）。",
+      "answer": "（1）红限条件 $h\\nu_0=W$，\n$$\\nu_0=\\frac{W}{h}=\\frac{1.9\\times1.602\\times10^{-19}}{6.626\\times10^{-34}}=4.59\\times10^{14}\\,\\mathrm{Hz}$$\n$$\\lambda_0=\\frac{c}{\\nu_0}=\\frac{hc}{W}=\\frac{6.626\\times10^{-34}\\times3.00\\times10^8}{1.9\\times1.602\\times10^{-19}}=6.54\\times10^{-7}\\,\\mathrm{m}=654\\,\\mathrm{nm}$$\n\n（2）入射光子能量 $E_\\gamma=\\dfrac{hc}{\\lambda}=\\dfrac{6.626\\times10^{-34}\\times3.00\\times10^8}{400\\times10^{-9}}=4.97\\times10^{-19}\\,\\mathrm{J}=3.10\\,\\mathrm{eV}$\n\n由 $eU_a=h\\nu-W$：$U_a=3.10-1.90=1.20\\,\\mathrm{V}$\n\n（3）$E_{k,\\max}=h\\nu-W=3.10-1.90=1.20\\,\\mathrm{eV}=1.92\\times10^{-19}\\,\\mathrm{J}$",
+      "hint": "红限 $\\nu_0=W/h$，$\\lambda_0=hc/W$；光电方程 $h\\nu=W+E_{k,\\max}$，$eU_a=E_{k,\\max}$。",
+      "scoring_criteria": [
+        "正确求 $\\nu_0=4.59\\times10^{14}\\,\\mathrm{Hz}$ 和 $\\lambda_0=654\\,\\mathrm{nm}$（4分）",
+        "正确求 $\\lambda=400\\,\\mathrm{nm}$ 时 $U_a=1.20\\,\\mathrm{V}$（3分）",
+        "正确求 $E_{k,\\max}=1.20\\,\\mathrm{eV}$（$1.92\\times10^{-19}\\,\\mathrm{J}$）（3分）"
+      ],
+      "explanation": "本题与详解 EX20 铯光电效应一致。红限频率/波长由 $W=h\\nu_0$ 确定；遏止电压直接等于光子能量超出逸出功的部分（以 eV 计）。易错：$hc/\\lambda$ 忘记换算为 eV；红限波长误用 $\\lambda=c\\nu$ 中 $\\nu$ 为入射光频率。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.1.md",
+        "label": "12.1 光电效应红限与遏止电压计算"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：氢原子玻尔能级 $E_n=-13.6/n^2\\,\\mathrm{eV}$。（$hc=1240\\,\\mathrm{eV\\cdot nm}$）求：（1）$n=4$ 定态能量 $E_4$；（2）电子从 $n=4$ 跃迁至 $n=2$（巴尔末系）所发射光子能量 $\\Delta E$ 及波长 $\\lambda$；（3）欲将基态氢原子（$n=1$）激发至 $n=4$，外来单色光子的最低能量 $h\\nu$ 及对应波长；（4）该激发后除巴尔末系外，还可观察到哪些谱系的一条谱线？",
+      "answer": "（1）$E_4=-\\dfrac{13.6}{16}=-0.850\\,\\mathrm{eV}$\n\n（2）$\\Delta E=E_4-E_2=13.6\\left(\\dfrac{1}{4}-\\dfrac{1}{16}\\right)=13.6\\times\\dfrac{3}{16}=2.55\\,\\mathrm{eV}$\n$$\\lambda=\\frac{hc}{\\Delta E}=\\frac{1240}{2.55}=486\\,\\mathrm{nm}$$\n（蓝绿光，巴尔末系 $H_\\beta$ 附近）\n\n（3）$h\\nu=E_4-E_1=13.6\\left(1-\\dfrac{1}{16}\\right)=12.75\\,\\mathrm{eV}$\n$$\\lambda=\\frac{1240}{12.75}=97.3\\,\\mathrm{nm}$$（紫外，赖曼系激发光）\n\n（4）还可观察到**赖曼系**（如 $4\\to1$，$\\Delta E=12.75\\,\\mathrm{eV}$）和**帕邢系**（如 $4\\to3$，$\\Delta E=13.6(1/9-1/16)=0.944\\,\\mathrm{eV}$）的谱线。",
+      "hint": "$\\Delta E=13.6(1/k^2-1/n^2)\\,\\mathrm{eV}$（$n>k$）；激发光 $h\\nu=E_n-E_1$；各谱系由终态 $k$ 决定。",
+      "scoring_criteria": [
+        "正确求 $E_4=-0.850\\,\\mathrm{eV}$ 及 $4\\to2$ 跃迁 $\\Delta E=2.55\\,\\mathrm{eV}$、$\\lambda\\approx486\\,\\mathrm{nm}$（4分）",
+        "正确求激发至 $n=4$ 所需 $h\\nu=12.75\\,\\mathrm{eV}$ 及 $\\lambda\\approx97.3\\,\\mathrm{nm}$（3分）",
+        "正确指出还可观察赖曼系和帕邢系谱线（3分）"
+      ],
+      "explanation": "本题与教材 12.2 节巴尔末系例题及 EX04 氢原子跃迁一致。$4\\to2$ 为巴尔末系；激发光能量为 $E_4-E_1$ 而非 $E_4$ 本身。易错：跃迁波长公式中 $\\Delta E$ 取绝对值；忘记 $n=4$ 还可向 $n=1$、$n=3$ 跃迁产生其他谱系。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.2.md",
+        "label": "12.2 玻尔模型能级跃迁与谱线系"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：波长 $\\lambda_0=0.20\\,\\mathrm{nm}$ 的 X 射线光子与静止自由电子发生康普顿散射，在与入射方向成 $\\theta=90°$ 的方向上观察散射光。（$h=6.626\\times10^{-34}\\,\\mathrm{J\\cdot s}$，$c=3.00\\times10^8\\,\\mathrm{m/s}$，$m_0=9.11\\times10^{-31}\\,\\mathrm{kg}$，$\\lambda_C=h/(m_0 c)=2.43\\times10^{-12}\\,\\mathrm{m}$）求：（1）散射光波长改变量 $\\Delta\\lambda$ 及散射光波长 $\\lambda$；（2）反冲电子动能 $E_k$（以 eV 表示）；（3）若改用可见光 $\\lambda_0=500\\,\\mathrm{nm}$，同样 $\\theta=90°$ 时 $\\Delta\\lambda$ 相对原波长的百分比。",
+      "answer": "（1）$\\Delta\\lambda=\\lambda_C(1-\\cos90°)=2.43\\times10^{-12}\\,\\mathrm{m}=2.43\\times10^{-3}\\,\\mathrm{nm}$\n$$\\lambda=\\lambda_0+\\Delta\\lambda=0.20\\,\\mathrm{nm}+0.00243\\,\\mathrm{nm}=0.20243\\,\\mathrm{nm}$$\n\n（2）反冲电子动能等于光子损失能量：\n$$E_k=hc\\left(\\frac{1}{\\lambda_0}-\\frac{1}{\\lambda}\\right)=hc\\frac{\\Delta\\lambda}{\\lambda_0(\\lambda_0+\\Delta\\lambda)}$$\n$$=6.626\\times10^{-34}\\times3.00\\times10^8\\times\\frac{2.43\\times10^{-12}}{0.20\\times10^{-9}\\times(0.20\\times10^{-9}+2.43\\times10^{-12})}=1.19\\times10^{-17}\\,\\mathrm{J}=74.2\\,\\mathrm{eV}$$\n\n（3）可见光时 $\\Delta\\lambda$ 仍为 $2.43\\times10^{-12}\\,\\mathrm{m}$，相对改变\n$$\\frac{\\Delta\\lambda}{\\lambda_0}=\\frac{2.43\\times10^{-12}}{500\\times10^{-9}}=4.86\\times10^{-6}=0.00049\\%$$\n几乎不可观测，说明可见光康普顿效应极弱。",
+      "hint": "$\\Delta\\lambda=\\lambda_C(1-\\cos\\theta)$；$E_k=hc(1/\\lambda_0-1/\\lambda)$；可见光 $\\Delta\\lambda/\\lambda_0\\ll1$。",
+      "scoring_criteria": [
+        "正确求 $\\Delta\\lambda=2.43\\times10^{-12}\\,\\mathrm{m}$ 及 $\\lambda=0.20243\\,\\mathrm{nm}$（3分）",
+        "正确求反冲电子动能 $E_k=74.2\\,\\mathrm{eV}$（4分）",
+        "正确说明可见光 $\\Delta\\lambda/\\lambda_0\\approx0.00049\\%$ 并解释效应极弱（3分）"
+      ],
+      "explanation": "本题与详解 EX01 康普顿散射数值完全一致。$\\theta=90°$ 时 $\\Delta\\lambda=\\lambda_C$ 为最大值之一；反冲电子动能由能量守恒 $E_k=h\\nu_0-h\\nu$ 求得。易错：$E_k$ 误用 $\\Delta\\lambda$ 直接乘以 $hc$；忽略分母中 $\\lambda_0+\\Delta\\lambda$。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.3.md",
+        "label": "12.3 康普顿散射计算"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：一维粒子状态波函数 $\\psi(x)=C\\,e^{-\\alpha x^2}$（$-\\infty<x<\\infty$），其中 $\\alpha=1.0\\times10^{20}\\,\\mathrm{m^{-2}}$。（$\\hbar=1.055\\times10^{-34}\\,\\mathrm{J\\cdot s}$）求：（1）归一化常数 $C$；（2）粒子在 $|x|\\leq\\Delta x$ 内出现的概率（取 $\\Delta x=\\dfrac{1}{2\\sqrt{\\alpha}}$ 为位置特征宽度）；（3）由不确定关系估算动量不确定度 $\\Delta p_x$ 的最小值及对应速度不确定度 $\\Delta v_x$（电子 $m_e=9.11\\times10^{-31}\\,\\mathrm{kg}$）；（4）说明为何该结果说明原子内电子不存在经典确定轨道。",
+      "answer": "（1）归一化 $\\displaystyle\\int_{-\\infty}^{\\infty}|\\psi|^2\\,\\mathrm{d}x=1$：\n$$C^2\\int_{-\\infty}^{\\infty}e^{-2\\alpha x^2}\\,\\mathrm{d}x=C^2\\sqrt{\\frac{\\pi}{2\\alpha}}=1$$\n$$C=\\left(\\frac{2\\alpha}{\\pi}\\right)^{1/4}=\\left(\\frac{2\\times10^{20}}{\\pi}\\right)^{1/4}\\approx8.5\\times10^9\\,\\mathrm{m^{-1/2}}$$\n\n（2）高斯波包在 $|x|\\leq\\Delta x=\\dfrac{1}{2\\sqrt{\\alpha}}=5.0\\times10^{-11}\\,\\mathrm{m}$ 内的概率（利用误差函数）：\n$$P\\approx\\mathrm{erf}(1)\\approx0.84\\quad(84\\%)$$\n\n（3）位置不确定度 $\\Delta x\\sim\\dfrac{1}{2\\sqrt{\\alpha}}=5.0\\times10^{-11}\\,\\mathrm{m}$\n$$\\Delta p_x\\geq\\frac{\\hbar}{2\\Delta x}=\\frac{1.055\\times10^{-34}}{2\\times5.0\\times10^{-11}}=1.06\\times10^{-24}\\,\\mathrm{kg\\cdot m/s}$$\n$$\\Delta v_x=\\frac{\\Delta p_x}{m_e}=\\frac{1.06\\times10^{-24}}{9.11\\times10^{-31}}=1.16\\times10^6\\,\\mathrm{m/s}$$\n\n（4）速度不确定度 $\\sim10^6\\,\\mathrm{m/s}$ 与玻尔 $n=1$ 轨道电子速度同量级，表明原子尺度内动量高度不确定，电子没有经典意义上的同时精确位置和速度，**不存在确定轨道**，必须用波函数概率描述。",
+      "hint": "高斯积分 $\\int e^{-\\beta x^2}\\mathrm{d}x=\\sqrt{\\pi/\\beta}$；$\\Delta x\\sim1/(2\\sqrt{\\alpha})$；$\\Delta p_x\\geq\\hbar/(2\\Delta x)$。",
+      "scoring_criteria": [
+        "正确求归一化常数 $C=(2\\alpha/\\pi)^{1/4}\\approx8.5\\times10^9\\,\\mathrm{m^{-1/2}}$（3分）",
+        "正确求 $|x|\\leq\\Delta x$ 内概率 $P\\approx0.84$（2分）",
+        "正确估算 $\\Delta p_x\\geq1.06\\times10^{-24}\\,\\mathrm{kg\\cdot m/s}$，$\\Delta v_x\\approx1.16\\times10^6\\,\\mathrm{m/s}$（3分）",
+        "正确说明原子内电子无经典确定轨道（2分）"
+      ],
+      "explanation": "本题综合 12.4 波函数归一化与 12.3 不确定关系。高斯波包归一化是标准题型；$\\Delta x\\sim1/(2\\sqrt{\\alpha})$ 给出位置特征宽度，由此估算 $\\Delta p$ 并与玻尔速度对比，揭示轨道概念的局限。易错：归一化积分中指数写为 $e^{-\\alpha x^2}$ 却忘记 $| \\psi |^2$ 中指数为 $-2\\alpha x^2$；用 $h$ 代替 $\\hbar/2$。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.4.md",
+        "label": "12.4 波函数归一化与不确定关系"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch11",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：波长 $\\lambda=600\\,\\mathrm{nm}$ 的单色光垂直入射光栅，第 $2$ 级明纹对应 $\\sin\\theta=0.20$，且第 $4$ 级明纹缺级。求：（1）光栅常数 $d$；（2）狭缝宽度 $a$；（3）在 $|\\sin\\theta|\\leq1$ 条件下，该光栅可见的谱线级次（写出所有 $k$ 值）；（4）说明缺级条件的物理原因。",
+      "answer": "（1）由光栅方程 $d\\sin\\theta=k\\lambda$，$k=2$：\n$$d=\\frac{k\\lambda}{\\sin\\theta}=\\frac{2\\times600\\times10^{-9}}{0.20}=6.0\\times10^{-6}\\,\\mathrm{m}=6.0\\,\\mu\\mathrm{m}$$\n\n（2）第 $4$ 级缺级说明 $d/a=4$，故\n$$a=\\frac{d}{4}=1.5\\times10^{-6}\\,\\mathrm{m}=1.5\\,\\mu\\mathrm{m}$$\n\n（3）最高级次 $|k|_{\\max}=\\lfloor d/\\lambda\\rfloor=\\lfloor 6.0/0.6\\rfloor=10$，但 $k=\\pm4,\\pm8$ 缺级，$k=\\pm10$ 时 $\\sin\\theta=1$ 恰在边界。\n\n可见级次：$k=0,\\pm1,\\pm2,\\pm3,\\pm5,\\pm6,\\pm7,\\pm9$（共 13 条谱线，含中央）。\n\n（4）缺级原因：光栅衍射 = 单缝衍射包络 $\\times$ 多缝干涉。当某级干涉主极大恰好落在单缝衍射暗纹位置（$a\\sin\\theta=k'\\lambda$）时，该级干涉虽满足 $d\\sin\\theta=k\\lambda$，但单缝包络光强为零，故**缺级**。",
+      "hint": "$d=k\\lambda/\\sin\\theta$；第 $k$ 级缺级 $\\Rightarrow d/a=k$；$|k|_{\\max}=d/\\lambda$，去掉缺级和 $\\sin\\theta>1$ 的级次。",
+      "scoring_criteria": [
+        "正确求 $d=6.0\\,\\mu\\mathrm{m}$ 和 $a=1.5\\,\\mu\\mathrm{m}$（4分）",
+        "正确列出可见级次 $k=0,\\pm1,\\pm2,\\pm3,\\pm5,\\pm6,\\pm7,\\pm9$（4分）",
+        "正确说明缺级是单缝衍射暗纹与光栅干涉主极大重合所致（2分）"
+      ],
+      "explanation": "本题与教材 11.2 节光栅缺级例题完全一致。$d/a=4$ 时 $k=\\pm4,\\pm8$ 缺级；计算可见级次时需同时考虑 $d\\sin\\theta=k\\lambda$ 与缺级条件。易错：$|k|_{\\max}$ 取 10 却忘记 $k=\\pm10$ 在 $\\sin\\theta=1$ 边界；缺级条件写为 $d/a=k'$ 而非 $d/a=k$。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.2.md",
+        "label": "11.2 光栅衍射与缺级现象"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch10",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：凸透镜 $L_1$ 焦距 $f_1=20\\,\\mathrm{cm}$，凹透镜 $L_2$ 焦距 $f_2=-30\\,\\mathrm{cm}$，$L_2$ 位于 $L_1$ 右侧 $40\\,\\mathrm{cm}$ 处。实物置于 $L_1$ 左侧 $30\\,\\mathrm{cm}$ 处。求：（1）$L_1$ 单独成像的像距 $v_1$ 及放大率 $m_1$；（2）$L_2$ 的物距 $u_2$；（3）最终像距 $v_2$ 及像的位置、虚实、正倒；（4）总放大率 $|m_1 m_2|$。",
+      "answer": "（1）$L_1$ 成像：$\\dfrac{1}{30}+\\dfrac{1}{v_1}=\\dfrac{1}{20}$，得 $v_1=60\\,\\mathrm{cm}$（$L_1$ 右侧实像）\n$$m_1=-\\frac{v_1}{u_1}=-\\frac{60}{30}=-2$$\n\n（2）$L_1$ 实像位于 $L_2$ 左侧 $60-40=20\\,\\mathrm{cm}$ 处，对 $L_2$ 为**虚物**：$u_2=-20\\,\\mathrm{cm}$\n\n（3）$L_2$ 成像：$\\dfrac{1}{-20}+\\dfrac{1}{v_2}=\\dfrac{1}{-30}$，得 $v_2=-40\\,\\mathrm{cm}$\n\n最终在 $L_2$ 左侧 $40\\,\\mathrm{cm}$ 处成**正立虚像**（$v_2<0$）。\n$$m_2=-\\frac{v_2}{u_2}=-\\frac{-40}{-20}=-2$$\n\n（4）$|m_1 m_2|=|-2\\times(-2)|=4$",
+      "hint": "非密接透镜组逐次成像；$L_1$ 实像在 $L_2$ 左侧时 $u_2<0$（虚物）；总放大率为两透镜放大率之积。",
+      "scoring_criteria": [
+        "正确求 $v_1=60\\,\\mathrm{cm}$，$m_1=-2$（3分）",
+        "正确求 $u_2=-20\\,\\mathrm{cm}$ 并说明为虚物（2分）",
+        "正确求 $v_2=-40\\,\\mathrm{cm}$，判断为 $L_2$ 左侧正立虚像（3分）",
+        "正确求 $|m_1 m_2|=4$（2分）"
+      ],
+      "explanation": "本题与 ch10 薄透镜组合例题及 ch10 试卷 q012 一致。非密接组合不能用 $\\dfrac{1}{f}=\\dfrac{1}{f_1}+\\dfrac{1}{f_2}$，必须逐次成像。易错：$u_2$ 符号（实像作虚物取负）；最终像位置表述为\"$L_2$ 左侧 $40\\,\\mathrm{cm}$\"而非仅写 $v_2=-40\\,\\mathrm{cm}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.2.md",
+        "label": "10.2 薄透镜组合逐次成像"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch09",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：（1）$N=200$ 匝、面积 $S=0.050\\,\\mathrm{m^2}$ 的矩形线圈在匀强磁场 $B=0.40\\,\\mathrm{T}$ 中绕垂直于 $\\mathbf{B}$ 的轴以角速度 $\\omega=100\\,\\mathrm{rad\\cdot s^{-1}}$ 匀速转动，$t=0$ 时线圈平面与 $\\mathbf{B}$ 垂直。求 $t=0$ 时磁通量 $\\Phi_B$、感应电动势瞬时值表达式 $\\varepsilon(t)$ 及 $t=\\dfrac{\\pi}{200}\\,\\mathrm{s}$ 时 $|\\varepsilon|$。（2）匀强磁场 $B=0.40\\,\\mathrm{T}$ 垂直纸面向里，长 $l=0.50\\,\\mathrm{m}$ 的直导体棒以 $v=8.0\\,\\mathrm{m\\cdot s^{-1}}$ 垂直切割磁力线，求动生电动势 $\\varepsilon_{\\mathrm{动}}$ 及棒两端电势高低。（3）说明两种情况下感应电动势产生的物理机制有何不同。",
+      "answer": "（1）$t=0$ 时 $\\Phi_B=BS=0.40\\times0.050=0.020\\,\\mathrm{Wb}$\n\n$\\Phi_B=BS\\cos\\omega t$，由法拉第定律：\n$$\\varepsilon(t)=-N\\frac{\\mathrm{d}\\Phi_B}{\\mathrm{d}t}=NBS\\omega\\sin\\omega t=200\\times0.40\\times0.050\\times100\\sin(100t)=400\\sin(100t)\\,\\mathrm{V}$$\n\n$t=\\dfrac{\\pi}{200}\\,\\mathrm{s}$ 时 $\\omega t=\\dfrac{\\pi}{2}$，$|\\varepsilon|=400\\,\\mathrm{V}$\n\n（2）$\\varepsilon_{\\mathrm{动}}=Blv=0.40\\times0.50\\times8.0=1.60\\,\\mathrm{V}$\n\n由 $\\mathbf{v}\\times\\mathbf{B}$ 方向判断：若 $\\mathbf{v}$ 向右、$\\mathbf{B}$ 向里，则棒上端（或右端）电势较高。\n\n（3）旋转线圈：$\\mathbf{B}$ 不变，回路转动导致 $\\Phi_B$ 变化，属于**动生电动势**（导体切割磁力线）；切割棒：同样是 $\\mathbf{B}$ 不变、导体运动，非静电力 $\\mathbf{E}_{\\mathrm{非}}=\\mathbf{v}\\times\\mathbf{B}$ 驱动电荷。两者机制相同，均可用 $\\varepsilon=\\oint(\\mathbf{v}\\times\\mathbf{B})\\cdot\\mathrm{d}\\mathbf{l}$ 或法拉第定律 $\\varepsilon=-\\mathrm{d}\\Phi/\\mathrm{d}t$ 计算。若 $\\mathbf{B}$ 随时间变化而回路不动，则为**感生电动势**（感应电场驱动）。",
+      "hint": "$\\Phi_B=BS\\cos\\omega t$；$\\varepsilon=NBS\\omega\\sin\\omega t$；动生 $\\varepsilon=Blv$；区分动生（切割）与感生（$\\mathbf{B}$ 变）。",
+      "scoring_criteria": [
+        "正确求 $\\Phi_B(0)=0.020\\,\\mathrm{Wb}$ 及 $\\varepsilon(t)=400\\sin(100t)\\,\\mathrm{V}$，$t=\\pi/200\\,\\mathrm{s}$ 时 $|\\varepsilon|=400\\,\\mathrm{V}$（4分）",
+        "正确求 $\\varepsilon_{\\mathrm{动}}=1.60\\,\\mathrm{V}$ 并判断电势高低（3分）",
+        "正确区分动生/感生电动势机制（3分）"
+      ],
+      "explanation": "本题综合 ch09 旋转线圈（9.1 节例题）与动生电动势（9.2 节）。$\\varepsilon$ 与 $\\Phi_B$ 相位差 $\\pi/2$：磁通量最大时变化率为零。易错：漏乘匝数 $N$；旋转线圈与切割棒均属动生机制，但需与感生电动势（$\\mathbf{B}$ 时变、回路不动）区分。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.1.md",
+        "label": "9.1–9.2 感应电动势综合"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": {
+      "single_choice": 10,
+      "essay": 7
+    },
+    "bySource": {
+      "current_chapter": 9,
+      "review": 8
+    },
+    "byDifficulty": {
+      "basic": 12,
+      "medium": 3,
+      "hard": 2
+    },
+    "byPoints": {
+      "current_chapter": 50,
+      "review": 50
+    }
+  }
+}

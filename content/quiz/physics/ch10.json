@@ -1,0 +1,415 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch10",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "光从折射率 $n_1=1.50$ 的玻璃射向空气（$n_2=1.00$），在玻璃—空气界面上发生全反射的临界角 $\\theta_c$ 约为（　）。",
+      "options": [
+        "$30.0°$",
+        "$41.8°$",
+        "$48.6°$",
+        "$56.3°$"
+      ],
+      "answer": 1,
+      "hint": "全反射临界角 $\\sin\\theta_c=n_2/n_1$（光从光密介质射向光疏介质）；$\\theta_c=\\arcsin(1/1.50)$。",
+      "explanation": "B 正确：$\\sin\\theta_c=\\dfrac{n_2}{n_1}=\\dfrac{1.00}{1.50}=\\dfrac{2}{3}$，故 $\\theta_c=\\arcsin(2/3)\\approx41.8°$。A 错：$\\sin30°=1/2$，对应 $n_1=2$ 的情形。C 错：$48.6°$ 对应 $\\sin\\theta_c\\approx0.75$。D 错：$56.3°$ 对应 $\\sin\\theta_c\\approx0.833$，与 $2/3$ 不符。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.1.md",
+        "label": "10.1 折射定律与全反射临界角"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "空气中薄凸透镜焦距 $f=20\\,\\mathrm{cm}$，实物置于透镜左侧 $u=30\\,\\mathrm{cm}$ 处，由薄透镜高斯公式 $\\dfrac{1}{u}+\\dfrac{1}{v}=\\dfrac{1}{f}$ 可得像距 $v$ 及像的性质为（　）。",
+      "options": [
+        "$v=60\\,\\mathrm{cm}$，倒立实像",
+        "$v=-60\\,\\mathrm{cm}$，正立虚像",
+        "$v=12\\,\\mathrm{cm}$，倒立实像",
+        "$v=-12\\,\\mathrm{cm}$，正立虚像"
+      ],
+      "answer": 0,
+      "hint": "代入 $\\dfrac{1}{30}+\\dfrac{1}{v}=\\dfrac{1}{20}$ 求 $v$；$v>0$ 为实像，$v<0$ 为虚像。",
+      "explanation": "A 正确：$\\dfrac{1}{v}=\\dfrac{1}{20}-\\dfrac{1}{30}=\\dfrac{1}{60}$，$v=60\\,\\mathrm{cm}>0$，为透镜右侧倒立实像。B 错：$v$ 符号错误，$u>2f$ 时凸透镜成实像。C、D 错：$v=12\\,\\mathrm{cm}$ 对应 $u=60\\,\\mathrm{cm}$ 的情形。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.2.md",
+        "label": "10.2 薄透镜高斯公式"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "接上题（$f=20\\,\\mathrm{cm}$，$u=30\\,\\mathrm{cm}$，$v=60\\,\\mathrm{cm}$），该透镜的线放大率 $m=-\\dfrac{v}{u}$ 为（　）。",
+      "options": [
+        "$-2$",
+        "$+2$",
+        "$-0.5$",
+        "$+0.5$"
+      ],
+      "answer": 0,
+      "hint": "薄透镜放大率 $m=-v/u$；实像 $v>0$ 时 $m<0$ 表示倒立。",
+      "explanation": "A 正确：$m=-\\dfrac{60}{30}=-2$，负号表示倒立，$|m|=2$ 表示像高为物高的 2 倍。B 错：漏掉负号，误为正立放大。C 错：$|m|=0.5$ 对应 $u=2f$、$v=2f$ 的等大实像。D 错：符号与大小均错。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.2.md",
+        "label": "10.2 薄透镜放大率"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "某近视眼不调节时远点在眼前 $50\\,\\mathrm{cm}$ 处，欲看清无穷远物体，应佩戴的眼镜焦度 $\\Phi$ 及度数为（　）。",
+      "options": [
+        "$\\Phi=+2\\,\\mathrm{D}$，$200$ 度凸透镜",
+        "$\\Phi=-2\\,\\mathrm{D}$，$200$ 度凹透镜",
+        "$\\Phi=+0.5\\,\\mathrm{D}$，$50$ 度凸透镜",
+        "$\\Phi=-0.5\\,\\mathrm{D}$，$50$ 度凹透镜"
+      ],
+      "answer": 1,
+      "hint": "近视镜使无穷远物成虚像于远点：$f=-d$，$\\Phi=1/f=-1/d$（$d$ 为远点距离，单位 m）。",
+      "explanation": "B 正确：$d=0.50\\,\\mathrm{m}$，$f=-0.50\\,\\mathrm{m}$，$\\Phi=1/f=-2\\,\\mathrm{D}=-200$ 度，凹透镜。A 错：凸透镜用于远视/老花矫正。C、D 错：$50$ 度对应远点 $2\\,\\mathrm{m}$，与题意不符。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.3.md",
+        "label": "10.3 近视眼矫正与焦度"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "焦距 $f=15\\,\\mathrm{cm}$ 的放大镜用于观察细小物体，人眼在明视距离 $D=25\\,\\mathrm{cm}$ 处观察放大虚像，其角放大率 $\\alpha\\approx\\dfrac{D}{f}$ 约为（　）。",
+      "options": [
+        "$0.60$",
+        "$1.00$",
+        "$1.67$",
+        "$2.50$"
+      ],
+      "answer": 2,
+      "hint": "放大镜角放大率 $\\alpha=\\dfrac{\\tan\\theta}{\\tan\\theta_0}\\approx\\dfrac{25\\,\\mathrm{cm}}{f}$（$f$ 以 cm 计）。",
+      "explanation": "C 正确：$\\alpha\\approx25/15\\approx1.67$。A 错：$f/D$ 的倒数关系弄反。B 错：$\\alpha=1$ 对应 $f=25\\,\\mathrm{cm}$。D 错：$2.50=25/10$，对应 $f=10\\,\\mathrm{cm}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.4.md",
+        "label": "10.4 放大镜角放大率"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch09",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "$N=200$ 匝线圈，穿过每匝的磁通量 $\\Phi_B=0.02t\\,\\mathrm{Wb}$（$t$ 以 s 计），回路电阻不计，则感应电动势的大小为（　）。",
+      "options": [
+        "$2.0\\,\\mathrm{V}$",
+        "$4.0\\,\\mathrm{V}$",
+        "$8.0\\,\\mathrm{V}$",
+        "$40\\,\\mathrm{V}$"
+      ],
+      "answer": 1,
+      "hint": "法拉第定律 $\\varepsilon_i=-N\\dfrac{\\mathrm{d}\\Phi_B}{\\mathrm{d}t}$；$\\Phi_B=0.02t$ 时 $|\\varepsilon_i|=N\\times0.02$。",
+      "explanation": "B 正确：$\\dfrac{\\mathrm{d}\\Phi_B}{\\mathrm{d}t}=0.02\\,\\mathrm{Wb/s}$，$|\\varepsilon_i|=200\\times0.02=4.0\\,\\mathrm{V}$。A 错：漏乘匝数 $N$。C 错：多乘了 2 倍。D 错：误将 $\\Phi_B$ 本身而非变化率代入。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.1.md",
+        "label": "9.1 法拉第电磁感应定律"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch09",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "匀强磁场 $B=0.40\\,\\mathrm{T}$ 垂直纸面向里，长 $l=0.50\\,\\mathrm{m}$ 的直导体棒以 $v=10\\,\\mathrm{m\\cdot s^{-1}}$ 垂直切割磁力线运动，动生电动势 $\\varepsilon=Blv$ 为（　）。",
+      "options": [
+        "$2.0\\,\\mathrm{V}$",
+        "$4.0\\,\\mathrm{V}$",
+        "$0.20\\,\\mathrm{V}$",
+        "$20\\,\\mathrm{V}$"
+      ],
+      "answer": 0,
+      "hint": "动生电动势 $\\varepsilon=Blv$（$\\mathbf{v}\\perp\\mathbf{B}\\perp l$）；注意 $B$、$l$、$v$ 单位统一。",
+      "explanation": "A 正确：$\\varepsilon=0.40\\times0.50\\times10=2.0\\,\\mathrm{V}$。B 错：$l$ 误取 $1.0\\,\\mathrm{m}$。C 错：$v$ 误取 $1\\,\\mathrm{m/s}$。D 错：$B$ 误取 $4\\,\\mathrm{T}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.2.md",
+        "label": "9.2 动生电动势"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch08",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "无限长直导线通电流 $I=8.0\\,\\mathrm{A}$，距导线垂直距离 $a=0.10\\,\\mathrm{m}$ 处磁感应强度大小为（　）。（$\\mu_0=4\\pi\\times10^{-7}\\,\\mathrm{T\\cdot m/A}$）",
+      "options": [
+        "$1.6\\times10^{-5}\\,\\mathrm{T}$",
+        "$1.6\\times10^{-4}\\,\\mathrm{T}$",
+        "$3.2\\times10^{-5}\\,\\mathrm{T}$",
+        "$8.0\\times10^{-6}\\,\\mathrm{T}$"
+      ],
+      "answer": 0,
+      "hint": "无限长直导线 $B=\\dfrac{\\mu_0 I}{2\\pi a}$；$\\mu_0/(2\\pi)=2\\times10^{-7}$。",
+      "explanation": "A 正确：$B=\\dfrac{4\\pi\\times10^{-7}\\times8.0}{2\\pi\\times0.10}=\\dfrac{32\\times10^{-7}}{0.20}=1.6\\times10^{-5}\\,\\mathrm{T}$。B 错：距离 $a$ 少除 10 倍。C 错：多乘了 2 倍。D 错：$I$ 误取 $1\\,\\mathrm{A}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.3.md",
+        "label": "8.3 安培环路定理（无限长直导线）"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch08",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "半径 $R=0.10\\,\\mathrm{m}$ 的圆环通电流 $I=5.0\\,\\mathrm{A}$，求圆心处磁感应强度大小为（　）。",
+      "options": [
+        "$1.6\\times10^{-5}\\,\\mathrm{T}$",
+        "$3.1\\times10^{-5}\\,\\mathrm{T}$",
+        "$6.3\\times10^{-5}\\,\\mathrm{T}$",
+        "$1.0\\times10^{-4}\\,\\mathrm{T}$"
+      ],
+      "answer": 1,
+      "hint": "圆电流圆心处 $B=\\dfrac{\\mu_0 I}{2R}$；$\\mu_0/(2\\pi)=2\\times10^{-7}$。",
+      "explanation": "B 正确：$B=\\dfrac{4\\pi\\times10^{-7}\\times5.0}{2\\times0.10}=\\pi\\times10^{-5}\\approx3.1\\times10^{-5}\\,\\mathrm{T}$。A 错：误用直导线公式 $B=\\mu_0 I/(2\\pi R)$。C 错：分母 $R$ 少除 2 倍。D 错：$I$ 或 $R$ 代入错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.2.md",
+        "label": "8.2 毕奥—萨伐尔定律（圆环圆心）"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "半径 $R=0.20\\,\\mathrm{m}$ 的均匀带电球面，总电量 $q=+4.0\\times10^{-8}\\,\\mathrm{C}$，球外 $r=0.30\\,\\mathrm{m}$ 处电场强度大小为（　）。（$\\dfrac{1}{4\\pi\\varepsilon_0}=9.0\\times10^9\\,\\mathrm{N\\cdot m^2/C^2}$）",
+      "options": [
+        "$0\\,\\mathrm{N/C}$",
+        "$4.0\\,\\mathrm{N/C}$",
+        "$9.0\\,\\mathrm{N/C}$",
+        "$36\\,\\mathrm{N/C}$"
+      ],
+      "answer": 1,
+      "hint": "均匀带电球面外场强 $E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r^2}$，与点电荷相同；球面内 $E=0$。",
+      "explanation": "B 正确：$r=0.30\\,\\mathrm{m}>R$，$E=9.0\\times10^9\\times\\dfrac{4.0\\times10^{-8}}{0.30^2}=\\dfrac{0.36}{0.09}=4.0\\,\\mathrm{N/C}$。A 错：$E=0$ 仅适用于 $r<R$。C 错：$r$ 误取 $0.20\\,\\mathrm{m}$。D 错：$r$ 误取 $0.10\\,\\mathrm{m}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.2.md",
+        "label": "7.2 高斯定理（均匀带电球面）"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：折射率 $n=1.5$ 的玻璃球（半径 $R=10\\,\\mathrm{cm}$）置于空气中（$n_0=1.0$），点光源置于球左侧主光轴上距球面 $40\\,\\mathrm{cm}$ 处。用逐次成像法求近轴光线通过玻璃球后最终像的位置，并说明像的虚实。",
+      "answer": "玻璃球有两个折射面，逐次成像。\n\n**第一次成像**（空气→玻璃，凸面，$r_1=+10\\,\\mathrm{cm}$，$u_1=40\\,\\mathrm{cm}$）：\n$$\\frac{1.0}{40}+\\frac{1.5}{v_1}=\\frac{1.5-1.0}{10} \\quad \\Rightarrow \\quad v_1=60\\,\\mathrm{cm}$$\n\n**第二次成像**（玻璃→空气，凹面，$r_2=-10\\,\\mathrm{cm}$）：第一次像点作第二次的物，对凹面为虚物，$u_2=-(20-60)=-40\\,\\mathrm{cm}$：\n$$\\frac{1.5}{-40}+\\frac{1.0}{v_2}=\\frac{1.0-1.5}{-10} \\quad \\Rightarrow \\quad v_2=40\\,\\mathrm{cm}$$\n\n最终像在球右侧 $40\\,\\mathrm{cm}$ 处，$v_2>0$，为**实像**。",
+      "hint": "逐次成像：上一面的像即下一面的物；注意第二次 $r<0$（凹面）及虚物 $u_2<0$ 的符号。",
+      "scoring_criteria": [
+        "正确写出第一次折射公式并求 $v_1=60\\,\\mathrm{cm}$（4分）",
+        "正确判断 $u_2=-40\\,\\mathrm{cm}$（虚物）并写出第二次公式（3分）",
+        "正确求 $v_2=40\\,\\mathrm{cm}$ 并判断为实像（3分）"
+      ],
+      "explanation": "本题考查共轴球面系统的逐次成像法，与详解 EX03 玻璃球逐次成像一致。关键：第一次凸面 $r>0$ 成实像于球内；第二次凹面 $r<0$，球内像点对凹面为虚物 $u_2<0$。符号法则错误是本章最常见失分点。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.1.md",
+        "label": "10.1 共轴球面系统逐次成像"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：凸透镜 $L_1$ 焦距 $f_1=20\\,\\mathrm{cm}$，凹透镜 $L_2$ 焦距 $f_2=-40\\,\\mathrm{cm}$，$L_2$ 在 $L_1$ 右侧 $40\\,\\mathrm{cm}$ 处。实物置于 $L_1$ 左侧 $30\\,\\mathrm{cm}$ 处。求：（1）$L_1$ 单独成像的像距 $v_1$；（2）$L_2$ 的物距 $u_2$；（3）最终像距 $v_2$ 及像的虚实、位置。",
+      "answer": "（1）$L_1$ 成像：$\\dfrac{1}{30}+\\dfrac{1}{v_1}=\\dfrac{1}{20}$，得 $v_1=60\\,\\mathrm{cm}$（$L_1$ 右侧实像）。\n\n（2）该实像作 $L_2$ 的物，位于 $L_2$ 左侧，为虚物：$u_2=-(60-40)=-20\\,\\mathrm{cm}$。\n\n（3）$L_2$ 成像：$\\dfrac{1}{-20}+\\dfrac{1}{v_2}=\\dfrac{1}{-40}$，得 $v_2=-40\\,\\mathrm{cm}$。\n\n最终在 $L_2$ 左侧 $40\\,\\mathrm{cm}$ 处成**正立虚像**（$v_2<0$）。",
+      "hint": "非密接透镜组用逐次成像；$L_1$ 实像若在 $L_2$ 左侧则为 $L_2$ 的虚物，$u_2<0$。",
+      "scoring_criteria": [
+        "正确求 $v_1=60\\,\\mathrm{cm}$（3分）",
+        "正确求 $u_2=-20\\,\\mathrm{cm}$ 并说明为虚物（3分）",
+        "正确求 $v_2=-40\\,\\mathrm{cm}$ 并判断为 $L_2$ 左侧正立虚像（4分）"
+      ],
+      "explanation": "本题与教材 10.2 节凸凹透镜组例题及详解 EX02 双透镜组成像一致。非密接组合不能用 $\\dfrac{1}{f}=\\dfrac{1}{f_1}+\\dfrac{1}{f_2}$，必须逐次成像。易错：$u_2$ 符号（实像作虚物取负）及最终像位置表述。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.2.md",
+        "label": "10.2 薄透镜组合逐次成像"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：（1）某近视眼不调节时远点在眼前 $50\\,\\mathrm{cm}$ 处，欲看清无穷远物体，应佩戴多少度眼镜？（2）某远视眼不调节时近点在眼前 $1.2\\,\\mathrm{m}$ 处，欲在明视距离 $25\\,\\mathrm{cm}$ 处看清物体，应佩戴多少度眼镜？",
+      "answer": "（1）近视矫正：无穷远物经凹透镜成虚像于远点，$f=-0.50\\,\\mathrm{m}$，\n$$\\Phi_1=\\frac{1}{f}=-2\\,\\mathrm{D}=-200\\ \\text{度}$$\n应佩戴 **200 度凹透镜**。\n\n（2）远视矫正：明视距离处实物 $u=+0.25\\,\\mathrm{m}$，成像于近点 $v=-1.2\\,\\mathrm{m}$（虚像），\n$$\\Phi_2=\\frac{1}{f}=\\frac{1}{u}+\\frac{1}{v}=\\frac{1}{0.25}+\\frac{1}{-1.2}=4.0-0.833=3.17\\,\\mathrm{m^{-1}}$$\n$\\Phi_2\\approx+3.2\\,\\mathrm{D}$，即约 **320 度凸透镜**。",
+      "hint": "近视：$\\Phi=-1/d$（$d$ 为远点距离）；远视：$\\dfrac{1}{f}=\\dfrac{1}{u}+\\dfrac{1}{v}$，$u>0$（实物），$v<0$（虚像于近点）。",
+      "scoring_criteria": [
+        "正确求近视镜 $\\Phi=-2\\,\\mathrm{D}$（$-200$ 度凹透镜）（5分）",
+        "正确写出远视镜公式并代入 $u=+0.25\\,\\mathrm{m}$、$v=-1.2\\,\\mathrm{m}$（3分）",
+        "正确求 $\\Phi\\approx+3.2\\,\\mathrm{D}$（约 $320$ 度凸透镜）（2分）"
+      ],
+      "explanation": "本题考查屈光不正矫正的核心思路：把物点成像移到患者能看清的位置。近视用 $\\Phi=-1/d$，与详解 EX03 一致；远视矫正时 $u>0$（明视距离处实物）、$v<0$（虚像于近点），与 10.3 节例题符号法则一致。易错：远视题中 $u$ 误取负值导致 $\\Phi$ 符号错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.3.md",
+        "label": "10.3 近视与远视眼镜度数"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：显微镜物镜焦距 $f_1=2.0\\,\\mathrm{mm}$，目镜焦距 $f_2=25\\,\\mathrm{mm}$，标本放在物镜前 $u_1=2.2\\,\\mathrm{mm}$ 处，物镜所成实像到目镜的距离使目镜成像于无穷远（$u_2=f_2$）。求：（1）物镜像距 $v_1$；（2）物镜线放大率 $m_1$；（3）显微镜总放大倍数 $M$。",
+      "answer": "（1）物镜：$\\dfrac{1}{u_1}+\\dfrac{1}{v_1}=\\dfrac{1}{f_1}$，\n$$\\frac{1}{2.2}+\\frac{1}{v_1}=\\frac{1}{2.0} \\quad \\Rightarrow \\quad v_1=22\\,\\mathrm{mm}$$\n\n（2）$m_1=-\\dfrac{v_1}{u_1}=-\\dfrac{22}{2.2}=-10$（倒立，$|m_1|=10$）\n\n（3）目镜成像于无穷远时 $u_2=f_2$，角放大率 $\\alpha_2=\\dfrac{25\\,\\mathrm{cm}}{f_2}=\\dfrac{250\\,\\mathrm{mm}}{25\\,\\mathrm{mm}}=10$\n$$M=|m_1|\\cdot\\alpha_2=10\\times10=100\\ \\text{倍}$$",
+      "hint": "$M=m_1\\cdot\\alpha_2=\\dfrac{v_1}{u_1}\\cdot\\dfrac{25\\,\\mathrm{cm}}{f_2}$；目镜成无穷远时 $u_2=f_2$。",
+      "scoring_criteria": [
+        "正确求 $v_1=22\\,\\mathrm{mm}$（3分）",
+        "正确求 $|m_1|=10$（3分）",
+        "正确求 $\\alpha_2=10$ 及总放大倍数 $M=100$ 倍（4分）"
+      ],
+      "explanation": "本题与详解 EX03 显微镜放大率思路一致。物镜成实像于目镜前焦平面附近，目镜作放大镜；总放大率为物镜线放大率与目镜角放大率之积。易错：$f_1$、$u_1$ 单位均为 mm 但 $\\alpha_2$ 中 $25\\,\\mathrm{cm}$ 需换算；忽略 $|m_1|$ 只取数值。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.4.md",
+        "label": "10.4 显微镜放大倍数"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch09",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：$N=100$ 匝、面积 $S=0.020\\,\\mathrm{m^2}$ 的矩形线圈在匀强磁场 $B=0.50\\,\\mathrm{T}$ 中绕垂直于 $\\mathbf{B}$ 的轴以角速度 $\\omega=50\\,\\mathrm{rad\\cdot s^{-1}}$ 匀速转动，$t=0$ 时线圈平面与 $\\mathbf{B}$ 垂直。求：（1）$t=0$ 时穿过线圈的磁通量 $\\Phi_B$；（2）感应电动势的瞬时值表达式 $\\varepsilon(t)$；（3）$t=\\dfrac{\\pi}{100}\\,\\mathrm{s}$ 时 $\\varepsilon$ 的大小；（4）若改用一个 $L=0.20\\,\\mathrm{H}$ 的自感线圈，电流在 $0.10\\,\\mathrm{s}$ 内由 $0$ 均匀增至 $2.0\\,\\mathrm{A}$，自感电动势大小为多少？",
+      "answer": "（1）$t=0$ 时 $\\Phi_B=BS=0.50\\times0.020=0.010\\,\\mathrm{Wb}$\n\n（2）$\\Phi_B=BS\\cos\\omega t$，由法拉第定律\n$$\\varepsilon(t)=-N\\frac{\\mathrm{d}\\Phi_B}{\\mathrm{d}t}=NBS\\omega\\sin\\omega t=100\\times0.50\\times0.020\\times50\\sin(50t)=50\\sin(50t)\\ \\mathrm{V}$$\n\n（3）$t=\\dfrac{\\pi}{100}\\,\\mathrm{s}$ 时 $\\omega t=\\dfrac{\\pi}{2}$，$\\varepsilon=50\\sin\\dfrac{\\pi}{2}=50\\,\\mathrm{V}$\n\n（4）$|\\varepsilon_L|=L\\dfrac{\\mathrm{d}i}{\\mathrm{d}t}=0.20\\times\\dfrac{2.0}{0.10}=4.0\\,\\mathrm{V}$",
+      "hint": "$\\Phi_B=BS\\cos\\omega t$；$\\varepsilon=NBS\\omega\\sin\\omega t$；自感 $|\\varepsilon_L|=L\\,\\mathrm{d}i/\\mathrm{d}t$。",
+      "scoring_criteria": [
+        "正确求 $\\Phi_B(0)=0.010\\,\\mathrm{Wb}$（2分）",
+        "正确写出 $\\varepsilon(t)=50\\sin(50t)\\,\\mathrm{V}$（4分）",
+        "正确求 $t=\\pi/100\\,\\mathrm{s}$ 时 $|\\varepsilon|=50\\,\\mathrm{V}$（2分）",
+        "正确求自感电动势 $|\\varepsilon_L|=4.0\\,\\mathrm{V}$（2分）"
+      ],
+      "explanation": "本题综合考查 ch09 法拉第定律（旋转线圈）、动生/感生电动势与自感（9.3 节 $\\varepsilon_L=-L\\,\\mathrm{d}i/\\mathrm{d}t$）。$\\varepsilon$ 与 $\\Phi_B$ 相位差 $\\pi/2$：磁通量最大时变化率为零。易错：漏乘匝数 $N$；自感公式中 $\\mathrm{d}i/\\mathrm{d}t$ 计算错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.1.md",
+        "label": "9.1 旋转线圈的感应电动势"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch08",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：无限长载流实心圆柱导体，半径 $R=0.050\\,\\mathrm{m}$，通均匀分布的总电流 $I=10\\,\\mathrm{A}$。求：（1）$r=0.030\\,\\mathrm{m}$ 处（柱内）磁感应强度 $B_1$；（2）$r=0.080\\,\\mathrm{m}$ 处（柱外）磁感应强度 $B_2$；（3）说明 $r>R$ 时 $B$ 随 $r$ 如何变化。",
+      "answer": "（1）柱内 $r<R$：$I_{\\mathrm{enc}}=I\\left(\\dfrac{r}{R}\\right)^2$，由安培环路定理\n$$B_1=\\frac{\\mu_0 I r}{2\\pi R^2}=\\frac{4\\pi\\times10^{-7}\\times10\\times0.030}{2\\pi\\times0.050^2}=2.4\\times10^{-5}\\,\\mathrm{T}$$\n\n（2）柱外 $r>R$：$B_2=\\dfrac{\\mu_0 I}{2\\pi r}=\\dfrac{4\\pi\\times10^{-7}\\times10}{2\\pi\\times0.080}=2.5\\times10^{-5}\\,\\mathrm{T}$\n\n（3）$r>R$ 时 $B=\\dfrac{\\mu_0 I}{2\\pi r}\\propto\\dfrac{1}{r}$，距轴线越远 $B$ 越小。",
+      "hint": "安培环路定理 $\\oint\\mathbf{B}\\cdot\\mathrm{d}\\mathbf{l}=\\mu_0 I_{\\mathrm{enc}}$；柱内 $I_{\\mathrm{enc}}=I(r/R)^2$，柱外 $I_{\\mathrm{enc}}=I$。",
+      "scoring_criteria": [
+        "正确写出柱内公式并求 $B_1=2.4\\times10^{-5}\\,\\mathrm{T}$（4分）",
+        "正确求柱外 $B_2=2.5\\times10^{-5}\\,\\mathrm{T}$（4分）",
+        "正确说明 $r>R$ 时 $B\\propto1/r$（2分）"
+      ],
+      "explanation": "本题与 8.3 节无限长载流实心圆柱例题一致。柱内 $B\\propto r$（电流 enclosed 随 $r^2$ 增加），柱外 $B\\propto1/r$（与无限长直导线相同）。易错：柱内误用 $B=\\mu_0 I/(2\\pi r)$；$I_{\\mathrm{enc}}$ 比例弄错。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.3.md",
+        "label": "8.3 安培环路定理（载流圆柱）"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：真空中两点电荷 $q_1=+3.0\\times10^{-8}\\,\\mathrm{C}$、$q_2=-2.0\\times10^{-8}\\,\\mathrm{C}$，相距 $d=0.30\\,\\mathrm{m}$。求：（1）中点 $P$ 处（距两电荷各 $0.15\\,\\mathrm{m}$）电场强度大小；（2）将 $q_0=+1.0\\times10^{-9}\\,\\mathrm{C}$ 试探电荷从无穷远移至 $P$ 点，外力至少做功多少？（$\\dfrac{1}{4\\pi\\varepsilon_0}=9.0\\times10^9\\,\\mathrm{N\\cdot m^2/C^2}$）",
+      "answer": "（1）$P$ 在中点，距 $q_1$、$q_2$ 均为 $r=0.15\\,\\mathrm{m}$。\n\n$q_1$ 在 $P$ 处场强 $E_1=\\dfrac{k|q_1|}{r^2}=9.0\\times10^9\\times\\dfrac{3.0\\times10^{-8}}{0.15^2}=1.2\\times10^4\\,\\mathrm{N/C}$，方向背离 $q_1$。\n\n$q_2$ 在 $P$ 处场强 $E_2=\\dfrac{k|q_2|}{r^2}=9.0\\times10^9\\times\\dfrac{2.0\\times10^{-8}}{0.15^2}=8.0\\times10^3\\,\\mathrm{N/C}$，方向指向 $q_2$。\n\n两场同向（均指向 $q_2$ 方向），$E=E_1+E_2=2.0\\times10^4\\,\\mathrm{N/C}$。\n\n（2）$P$ 点电势 $V_P=\\dfrac{kq_1}{r}+\\dfrac{kq_2}{r}=\\dfrac{k(q_1+q_2)}{r}=9.0\\times10^9\\times\\dfrac{1.0\\times10^{-8}}{0.15}=600\\,\\mathrm{V}$\n\n从无穷远（$V_\\infty=0$）移入：$W_{\\mathrm{外}}=q_0 V_P=1.0\\times10^{-9}\\times600=6.0\\times10^{-7}\\,\\mathrm{J}$",
+      "hint": "场强叠加注意方向；电势标量叠加 $V=\\sum kq_i/r_i$；$W_{\\mathrm{外}}=q_0(V_P-V_\\infty)$。",
+      "scoring_criteria": [
+        "正确求 $E_1$、$E_2$ 并叠加得 $E=2.0\\times10^4\\,\\mathrm{N/C}$（4分）",
+        "正确求 $V_P=600\\,\\mathrm{V}$（3分）",
+        "正确求外力做功 $W=6.0\\times10^{-7}\\,\\mathrm{J}$（3分）"
+      ],
+      "explanation": "本题综合库仑定律场强叠加（7.1）与电势、电场力做功（7.2）。中点处两电荷场强方向相同（异号电荷连线中点场强指向负电荷），需矢量叠加而非相减。电势为标量，$V_P=k(q_1+q_2)/r$。易错：场强方向判断错误导致相减；电势符号弄错。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.1.md",
+        "label": "7.1 库仑定律与场强叠加"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": {
+      "single_choice": 10,
+      "essay": 7
+    },
+    "bySource": {
+      "current_chapter": 9,
+      "review": 8
+    },
+    "byDifficulty": {
+      "basic": 12,
+      "medium": 3,
+      "hard": 2
+    },
+    "byPoints": {
+      "current_chapter": 50,
+      "review": 50
+    }
+  }
+}

@@ -1,0 +1,389 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch02",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于**理想流体**模型的下列说法，正确的是（　）。",
+      "options": [
+        "理想流体绝对不可压缩，且完全没有黏性（内摩擦力）",
+        "理想流体具有较大黏性，如甘油、蜂蜜",
+        "理想流体主要适用于高速可压缩气体流动",
+        "理想流体模型要求各点流速必须相同"
+      ],
+      "answer": 0,
+      "hint": "回顾理想流体的两个核心简化：压缩性与黏性。它与实际蜂蜜、沥青等黏性流体有何不同？",
+      "explanation": "A 正确。详解定义理想流体为**绝对不可压缩、无黏性**的人为模型，是对许多流动问题的良好近似。B 错：甘油、蜂蜜属于**黏性流体**，与理想流体相反。C 错：气体可压缩性明显，理想流体近似多用于流速不太大、管道不太细的液体流动。D 错：理想流体并不要求各点速度相同，稳定流动只要求各点速度**不随时间改变**。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.1.md",
+        "label": "2.1 理想流体的稳定流动与连续性方程 · 理想流体"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于**稳定流动**（steady flow），下列说法正确的是（　）。",
+      "options": [
+        "流速场的空间分布不随时间改变，各空间点处速度大小和方向恒定",
+        "稳定流动意味着流体中每个质点都做匀速直线运动",
+        "稳定流动时流线形状随时间不断变化",
+        "稳定流动只存在于竖直管道中"
+      ],
+      "answer": 0,
+      "hint": "区分\"稳定\"与\"匀速\"：管道转弯处质点可以变速，但各点速度场是否随时间变化？",
+      "explanation": "A 正确。稳定流动的定义是**流速场的空间分布不随时间改变**，流体粒子顺序到达空间任一点时，该点速度恒定。B 错：稳定 $\\neq$ 匀速——转弯处质点可变速，只要各点速度场不随时间变即可。C 错：稳定流动时流线分布**不随时间改变**。D 错：稳定流动与管道方向无关，水平、竖直、弯曲管道均可出现。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.1.md",
+        "label": "2.1 理想流体的稳定流动与连续性方程 · 稳定流动"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于**流线**的性质，下列说法正确的是（　）。",
+      "options": [
+        "任意两条流线互不相交；稳定流动时流线就是质点的轨迹线",
+        "流线就是流体质点在任何流动状态下的真实运动轨迹",
+        "两条流线可以在同一点相交，表示该点有两个流速方向",
+        "稳定流动时流线分布随时间周期性变化"
+      ],
+      "answer": 0,
+      "hint": "交点处速度方向是否唯一？稳定流与非稳定流下，流线与轨迹线关系有何不同？",
+      "explanation": "A 正确。流线切向沿速度方向，**互不相交**（交点处速度方向不唯一）；**稳定流动时流线与轨迹线重合**。B 错：非稳定流时流线只是某一时刻的\"快照\"，不等于质点轨迹。C 错：物理上不允许两条流线相交。D 错：稳定流动时流线分布**保持不变**。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.1.md",
+        "label": "2.1 理想流体的稳定流动与连续性方程 · 流线与流管"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "不可压缩理想流体在水平管道中作稳定流动，粗段截面积 $S_1=4.0\\,\\mathrm{cm^2}$、流速 $v_1=2.0\\,\\mathrm{m/s}$，细段截面积 $S_2=1.0\\,\\mathrm{cm^2}$。细段流速 $v_2$ 为（　）。",
+      "options": [
+        "$8.0\\,\\mathrm{m/s}$",
+        "$0.50\\,\\mathrm{m/s}$",
+        "$4.0\\,\\mathrm{m/s}$",
+        "$2.0\\,\\mathrm{m/s}$"
+      ],
+      "answer": 0,
+      "hint": "同一流管中体积流量守恒：$S_1 v_1 = S_2 v_2$。截面积小处流速如何变化？",
+      "explanation": "由连续性方程 $S_1 v_1 = S_2 v_2$，得 $v_2 = \\dfrac{S_1 v_1}{S_2} = \\dfrac{4.0 \\times 2.0}{1.0} = 8.0\\,\\mathrm{m/s}$。B 是把\"管细流速大\"误记为\"管细流速小\"；C、D 未正确应用 $Q=Sv$ 为常数。物理本质：体积流量守恒，**管细处流速大、管粗处流速小**。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.1.md",
+        "label": "2.1 理想流体的稳定流动与连续性方程 · 连续性方程"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "理想流体作稳定流动时，沿**同一流线**（或同一流管）不同截面，下列各量之和为常数的是（　）。",
+      "options": [
+        "$p + \\rho g h + \\dfrac{1}{2}\\rho v^2$",
+        "$p + \\dfrac{1}{2}\\rho v^2$（不含高度项）",
+        "$\\rho g h + \\dfrac{1}{2}\\rho v^2$（不含压强项）",
+        "$p + \\rho g h$（不含动能项）"
+      ],
+      "answer": 0,
+      "hint": "伯努利方程三项分别对应何种能量？单位体积的压强能、重力势能与动能。",
+      "explanation": "A 正确。伯努利方程 $p + \\rho g h + \\dfrac{1}{2}\\rho v^2 = \\text{常数}$，三项分别为静压强、单位体积重力势能、单位体积动能，单位均为 Pa。B 仅适用于**水平管**（$h$ 相同）的特例。C、D 均缺少完整能量项，不能普遍成立。适用条件：理想流体、稳定流动、同一流线。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.2.md",
+        "label": "2.2 伯努利方程及其应用 · 伯努利方程"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "理想流体在**水平不均匀管**中作稳定流动时，关于压强 $p$ 与流速 $v$ 的关系，正确的是（　）。",
+      "options": [
+        "流速大处压强小，流速小处压强大",
+        "流速大处压强大，流速小处压强小",
+        "压强与流速无关，只由液体密度决定",
+        "同一水平管中各截面压强始终相等"
+      ],
+      "answer": 0,
+      "hint": "水平管中 $h$ 相同，伯努利方程简化为 $p + \\frac{1}{2}\\rho v^2 = \\text{常数}$。动能增大时静压强如何变化？",
+      "explanation": "A 正确。水平管 $h_1=h_2$，伯努利方程化为 $p_1 + \\dfrac{1}{2}\\rho v_1^2 = p_2 + \\dfrac{1}{2}\\rho v_2^2$，故**流速大处动压强大、静压强小**。B 把关系说反，是常见错误。C、D 忽略了动能与压强之间的转化。此结论与连续性方程联立：管细 $\\Rightarrow v$ 大 $\\Rightarrow p$ 小，可解释喷雾器空吸现象。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.2.md",
+        "label": "2.2 伯努利方程及其应用 · 水平不均匀管"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "根据**牛顿黏滞定律** $F = \\eta S \\dfrac{\\mathrm{dv}}{\\mathrm{dx}}$，下列说法正确的是（　）。",
+      "options": [
+        "黏性阻力 $F$ 与接触面积 $S$、速度梯度 $\\mathrm{dv}/\\mathrm{dx}$ 成正比，$\\eta$ 为黏度系数",
+        "液体温度升高时，黏度 $\\eta$ 一定增大",
+        "气体温度升高时，黏度 $\\eta$ 一定减小",
+        "血液是典型的牛顿流体，其 $\\eta$ 为常数"
+      ],
+      "answer": 0,
+      "hint": "对比液体与气体黏度随温度的变化趋势；血液属于哪类流体？",
+      "explanation": "A 正确。牛顿黏滞定律 $F = \\eta S \\dfrac{\\mathrm{dv}}{\\mathrm{dx}}$，$\\eta$ 单位 Pa·s。B 错：**液体**温度升高 $\\eta$ 减小。C 错：**气体**温度升高 $\\eta$ 增大。D 错：血液是**非牛顿流体**，其黏度随剪切速率变化，不能简单视为 $\\eta$ 为常数。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.3.md",
+        "label": "2.3 黏性流体、泊肃叶定律与血液流动 · 牛顿黏滞定律"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "文丘里流量计水平放置，粗段截面积 $S_1=1.0\\times10^{-2}\\,\\mathrm{m^2}$，收缩段 $S_2=5.0\\times10^{-3}\\,\\mathrm{m^2}$，U 形管压强计液面高度差 $\\Delta h=0.20\\,\\mathrm{m}$（指示液体为水，$\\rho=1.0\\times10^3\\,\\mathrm{kg/m^3}$）。被测液体为水，体积流量 $Q$ 约为（　）。",
+      "options": [
+        "$3.6\\times10^{-3}\\,\\mathrm{m^3/s}$",
+        "$2.0\\times10^{-3}\\,\\mathrm{m^3/s}$",
+        "$1.0\\times10^{-2}\\,\\mathrm{m^3/s}$",
+        "$5.0\\times10^{-4}\\,\\mathrm{m^3/s}$"
+      ],
+      "answer": 0,
+      "hint": "液体文丘里管公式 $Q = S_2 \\sqrt{\\dfrac{2\\Delta h}{1-(S_2/S_1)^2}}$，注意 $(S_2/S_1)^2=0.25$。",
+      "explanation": "由文丘里流量计公式 $Q = S_2 \\sqrt{\\dfrac{2\\Delta h}{1-(S_2/S_1)^2}}$，$(S_2/S_1)^2=(0.5)^2=0.25$，故\n$$Q = 5.0\\times10^{-3} \\times \\sqrt{\\frac{2\\times0.20}{1-0.25}} = 5.0\\times10^{-3} \\times \\sqrt{0.533} \\approx 3.6\\times10^{-3}\\,\\mathrm{m^3/s}$$\nB 可能漏除 $1-(S_2/S_1)^2$ 因子；C、D 数量级错误。文丘里管与皮托管均利用伯努利效应：动压与静压之差反映流速或流量。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.2.md",
+        "label": "2.2 伯努利方程及其应用 · 文丘里流量计"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "20 °C 水流经直径 $d=2.0\\times10^{-2}\\,\\mathrm{m}$ 的圆管，平均流速 $v=0.50\\,\\mathrm{m/s}$，密度 $\\rho=1.0\\times10^3\\,\\mathrm{kg/m^3}$，黏度 $\\eta=1.0\\times10^{-3}\\,\\mathrm{Pa\\cdot s}$。由 $Re=\\dfrac{\\rho v r}{\\eta}$（$r=d/2$）判断流动状态为（　）。",
+      "options": [
+        "湍流",
+        "层流",
+        "过渡区（两种状态均可能出现）",
+        "无法判断"
+      ],
+      "answer": 0,
+      "hint": "计算 $Re=\\rho v r/\\eta$，对照经验判据：$Re<1000$ 层流，$Re>1500$ 湍流。",
+      "explanation": "$Re = \\dfrac{\\rho v r}{\\eta} = \\dfrac{10^3 \\times 0.50 \\times 0.01}{10^{-3}} = 5000$。因 $Re=5000 > 1500$，流动为**湍流**。B 错在只看\"水管\"直觉而忽略实际 $Re$ 值；C 适用于 $1000<Re<1500$；详解举例 0 °C 水在 $d=2\\,\\mathrm{cm}$ 管中要求层流需 $v<0.18\\,\\mathrm{m/s}$，一般管道水流速达数米/秒，多处于湍流。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.3.md",
+        "label": "2.3 黏性流体、泊肃叶定律与血液流动 · 雷诺数"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "不可压缩牛顿流体在水平圆管中作稳定**层流**，管长 $L$ 与压强差 $\\Delta p$ 不变。若管半径由 $r$ 减半为 $r/2$（其余条件不变），体积流量 $Q$ 变为原来的（　）。",
+      "options": [
+        "$\\dfrac{1}{2}$",
+        "$\\dfrac{1}{4}$",
+        "$\\dfrac{1}{8}$",
+        "$\\dfrac{1}{16}$"
+      ],
+      "answer": 3,
+      "hint": "泊肃叶定律 $Q \\propto r^4$。半径减半时，四次方效应意味着什么？",
+      "explanation": "由泊肃叶定律 $Q = \\dfrac{\\pi \\Delta p\\, r^4}{8\\eta L}$，$Q \\propto r^4$。半径减半：$Q' = Q \\times (1/2)^4 = Q/16$，即变为原来的 **$1/16$**。A、B、C 分别对应 $r^1$、$r^2$、$r^3$ 的缩放，是常见误用。详解易错点强调：半径减半，流量降为 **$1/16$**，这在血管流阻分析中至关重要。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.3.md",
+        "label": "2.3 黏性流体、泊肃叶定律与血液流动 · 泊肃叶定律"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "理想流体在水平主管中作稳定流动。主管直径 $D=6.0\\,\\mathrm{cm}$，流速 $v_0=1.5\\,\\mathrm{m/s}$。主管在下游分为 3 根直径 $d=2.0\\,\\mathrm{cm}$ 的相同并联支管。求每根支管内的流速。",
+      "answer": "**解：**\n\n1. 主管截面积 $S_0 = \\dfrac{\\pi D^2}{4} = \\dfrac{\\pi (0.060)^2}{4}$；每支管截面积 $S = \\dfrac{\\pi d^2}{4} = \\dfrac{\\pi (0.020)^2}{4}$。\n\n2. 由连续性方程，主管体积流量等于三支管流量之和：\n$$S_0 v_0 = 3 S v$$\n\n3. 代入直径比：$\\dfrac{S_0}{S} = \\left(\\dfrac{D}{d}\\right)^2 = \\left(\\dfrac{6.0}{2.0}\\right)^2 = 9$，故\n$$v = \\dfrac{S_0 v_0}{3S} = \\dfrac{9 v_0}{3} = 3 v_0 = 3 \\times 1.5 = 4.5\\,\\mathrm{m/s}$$\n\n**答：**每根支管内流速为 $4.5\\,\\mathrm{m/s}$。",
+      "hint": "分支流管需对各支路流量求和：$Q_{\\text{主}} = Q_1 + Q_2 + Q_3$。三支管对称时流量均分。",
+      "explanation": "本题考查连续性方程在**分支流管**中的应用。不可压缩稳定流中，$Sv$ 在同一流管主干为常数，分叉处各支路体积流量之和等于主管流量。因三支管截面积相同，流量均分，得 $v = \\dfrac{S_0 v_0}{3S}$。注意：支管更细（$d<D$），在相同流量分配下支管流速可以大于主管，本题 $v=4.5\\,\\mathrm{m/s} > v_0=1.5\\,\\mathrm{m/s}$ 正是因为 $S_0 = 9S$ 且流量分到 3 支。",
+      "scoring_criteria": [
+        "正确写出分支连续性方程 $S_0 v_0 = 3Sv$ 或等价形式（3分）",
+        "正确计算截面积比 $(D/d)^2=9$（2分）",
+        "代入数据求得 $v=4.5\\,\\mathrm{m/s}$（3分）",
+        "结果含单位，物理分析说明流量守恒（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/2.1.md",
+        "label": "2.1 理想流体的稳定流动与连续性方程 · 分支流管"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "理想不可压缩水流在**水平**变截面管中作稳定流动。粗段截面积 $S_1=20\\,\\mathrm{cm^2}$、流速 $v_1=3.0\\,\\mathrm{m/s}$、计示压强 $p_1=150\\,\\mathrm{kPa}$；细段截面积 $S_2=5.0\\,\\mathrm{cm^2}$。水的密度 $\\rho=1.0\\times10^3\\,\\mathrm{kg/m^3}$。求细段计示压强 $p_2$。",
+      "answer": "**解：**\n\n1. 连续性方程求细段流速：\n$$v_2 = \\frac{S_1 v_1}{S_2} = \\frac{20 \\times 3.0}{5.0} = 12\\,\\mathrm{m/s}$$\n\n2. 水平管伯努利方程（$h_1=h_2$）：\n$$p_1 + \\frac{1}{2}\\rho v_1^2 = p_2 + \\frac{1}{2}\\rho v_2^2$$\n\n3. 解出 $p_2$：\n$$p_2 = p_1 + \\frac{1}{2}\\rho(v_1^2 - v_2^2) = 150000 + 500 \\times (9 - 144)$$\n$$= 150000 - 67500 = 82500\\,\\mathrm{Pa} = 82.5\\,\\mathrm{kPa}$$\n\n**答：**细段计示压强为 $82.5\\,\\mathrm{kPa}$。",
+      "hint": "先由 $S_1 v_1 = S_2 v_2$ 求 $v_2$，再对水平管应用 $p + \\frac{1}{2}\\rho v^2 = \\text{常数}$。",
+      "explanation": "水平变截面管是伯努利方程的经典题型：连续性方程给出 $v_2=4v_1=12\\,\\mathrm{m/s}$，细段流速增大导致动压增大、静压减小，$p_2 < p_1$。计算 $\\Delta p = \\frac{1}{2}\\rho(v_1^2-v_2^2) = -67500\\,\\mathrm{Pa}$。常见错误：忘记先用连续性求 $v_2$，或误用含 $h$ 项的完整方程。",
+      "scoring_criteria": [
+        "正确写出连续性方程并求得 $v_2=12\\,\\mathrm{m/s}$（3分）",
+        "正确写出水平管伯努利方程（2分）",
+        "代入数据计算 $p_2=82.5\\,\\mathrm{kPa}$（3分）",
+        "结果含单位，并指出细段压强降低的物理原因（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/2.2.md",
+        "label": "2.2 伯努利方程及其应用 · 水平不均匀管"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "甘油在两块平行平板间作层流流动，两板接触面积 $S=25\\,\\mathrm{cm^2}=2.5\\times10^{-3}\\,\\mathrm{m^2}$，垂直于流动方向相距 $\\Delta x=1.0\\,\\mathrm{mm}$ 的两层流速差 $\\Delta v=1.2\\times10^{-3}\\,\\mathrm{m/s}$。甘油黏度 $\\eta=4.0\\times10^{-3}\\,\\mathrm{Pa\\cdot s}$。求两层之间的黏性摩擦力 $F$。",
+      "answer": "**解：**\n\n1. 速度梯度：\n$$\\frac{\\mathrm{dv}}{\\mathrm{dx}} = \\frac{\\Delta v}{\\Delta x} = \\frac{1.2\\times10^{-3}}{1.0\\times10^{-3}} = 1.2\\,\\mathrm{s^{-1}}$$\n\n2. 牛顿黏滞定律：\n$$F = \\eta S \\frac{\\mathrm{dv}}{\\mathrm{dx}} = 4.0\\times10^{-3} \\times 2.5\\times10^{-3} \\times 1.2$$\n$$= 1.2\\times10^{-5}\\,\\mathrm{N}$$\n\n**答：**层间黏性摩擦力为 $1.2\\times10^{-5}\\,\\mathrm{N}$。",
+      "hint": "先求速度梯度 $\\mathrm{dv}/\\mathrm{dx}$，再代入 $F=\\eta S\\,\\mathrm{dv}/\\mathrm{dx}$。注意单位换算。",
+      "explanation": "本题直接应用牛顿黏滞定律。速度梯度 $\\mathrm{dv}/\\mathrm{dx} = 1.2\\,\\mathrm{s^{-1}}$，面积需换算为 $\\mathrm{m^2}$。与详解例题（$\\eta=3.0\\times10^{-3}$，$\\mathrm{dv}/\\mathrm{dx}=0.6$，$S=10\\,\\mathrm{cm^2}$ 得 $F=1.8\\times10^{-6}\\,\\mathrm{N}$）同一类型。常见错误：面积用 $\\mathrm{cm^2}$ 直接代入，或梯度取倒数。",
+      "scoring_criteria": [
+        "正确计算速度梯度 $\\mathrm{dv}/\\mathrm{dx}=1.2\\,\\mathrm{s^{-1}}$（3分）",
+        "正确写出牛顿黏滞定律 $F=\\eta S\\,\\mathrm{dv}/\\mathrm{dx}$（2分）",
+        "单位换算正确并算出 $F=1.2\\times10^{-5}\\,\\mathrm{N}$（3分）",
+        "结果含单位，说明层流层间以黏性力相互作用（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/2.3.md",
+        "label": "2.3 黏性流体、泊肃叶定律与血液流动 · 牛顿黏滞定律"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "20 °C 的水（$\\eta=1.0\\times10^{-3}\\,\\mathrm{Pa\\cdot s}$）在水平毛细管中作稳定层流。管长 $L=0.10\\,\\mathrm{m}$，半径 $r=0.50\\,\\mathrm{mm}$，两端压强差 $\\Delta p=2000\\,\\mathrm{Pa}$。求：（1）体积流量 $Q$；（2）管轴处最大流速 $v_{\\max}$。",
+      "answer": "**解：**\n\n1. 泊肃叶定律：\n$$Q = \\frac{\\pi \\Delta p\\, r^4}{8\\eta L} = \\frac{\\pi \\times 2000 \\times (5.0\\times10^{-4})^4}{8 \\times 1.0\\times10^{-3} \\times 0.10}$$\n$$= \\frac{\\pi \\times 2000 \\times 6.25\\times10^{-15}}{8.0\\times10^{-4}} = 4.9\\times10^{-8}\\,\\mathrm{m^3/s}$$\n\n2. 平均流速 $\\bar{v} = \\dfrac{Q}{\\pi r^2} = \\dfrac{4.9\\times10^{-8}}{\\pi \\times (5.0\\times10^{-4})^2} = 6.2\\times10^{-2}\\,\\mathrm{m/s}$\n\n3. 层流抛物线分布，管轴最大流速：\n$$v_{\\max} = 2\\bar{v} = 1.2\\times10^{-1}\\,\\mathrm{m/s}$$\n\n**答：**$Q \\approx 4.9\\times10^{-8}\\,\\mathrm{m^3/s}$，$v_{\\max} \\approx 0.12\\,\\mathrm{m/s}$。",
+      "hint": "层流圆管中 $Q=\\pi\\Delta p r^4/(8\\eta L)$，且 $v_{\\max}=2\\bar{v}$。先确认 $Re<1000$ 满足层流条件。",
+      "explanation": "泊肃叶定律适用于不可压缩牛顿流体、水平圆管、稳定层流。$r^4$ 效应使细管流量对半径极其敏感。平均流速 $\\bar{v}=\\Delta p r^2/(8\\eta L)$，轴心处 $v_{\\max}=2\\bar{v}$ 来自抛物线速度分布。可验算 $Re \\approx 10^3 \\times 0.062 \\times 5\\times10^{-4}/10^{-3} \\approx 31 \\ll 1000$，层流条件满足。",
+      "scoring_criteria": [
+        "正确写出泊肃叶定律 $Q=\\pi\\Delta p r^4/(8\\eta L)$（2分）",
+        "计算得 $Q \\approx 4.9\\times10^{-8}\\,\\mathrm{m^3/s}$（3分）",
+        "正确求 $\\bar{v}$ 并得 $v_{\\max}=2\\bar{v} \\approx 0.12\\,\\mathrm{m/s}$（3分）",
+        "结果含单位，说明层流条件（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/2.3.md",
+        "label": "2.3 黏性流体、泊肃叶定律与血液流动 · 泊肃叶定律"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "血液在动脉中流动，取 $\\rho=1.06\\times10^3\\,\\mathrm{kg/m^3}$，$\\eta=3.5\\times10^{-3}\\,\\mathrm{Pa\\cdot s}$，动脉半径 $r=4.0\\,\\mathrm{mm}$，截面平均流速 $\\bar{v}=0.30\\,\\mathrm{m/s}$。求雷诺数 $Re$，并判断流动状态（层流/湍流/过渡区）。",
+      "answer": "**解：**\n\n1. 雷诺数：\n$$Re = \\frac{\\rho \\bar{v} r}{\\eta} = \\frac{1.06\\times10^3 \\times 0.30 \\times 4.0\\times10^{-3}}{3.5\\times10^{-3}} = 363$$\n\n2. 判据：$Re=363 < 1000$，属于**层流**。\n\n**答：**$Re \\approx 363$，流动为层流。",
+      "hint": "代入 $Re=\\rho v r/\\eta$，对照 $Re<1000$（层流）、$Re>1500$（湍流）、中间为过渡区。",
+      "explanation": "雷诺数是判断层流与湍流的无量纲量。本题 $Re=363 \\ll 1000$，为层流，与详解中藤本植物管内 $Re\\approx3.33$ 同为层流情形。注意体温下血液 $\\eta\\approx3\\text{–}4\\times10^{-3}\\,\\mathrm{Pa\\cdot s}$，约为水的 3–4 倍，使相同条件下 $Re$ 较水小，更易保持层流。大动脉中流速较高时 $Re$ 可更大，需具体计算。",
+      "scoring_criteria": [
+        "正确写出雷诺数公式 $Re=\\rho v r/\\eta$（2分）",
+        "代入数据计算 $Re \\approx 363$（4分）",
+        "对照判据正确判断为层流（2分）",
+        "结果含单位说明，分析合理（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/2.3.md",
+        "label": "2.3 黏性流体、泊肃叶定律与血液流动 · 雷诺数"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "柱形开口容器高 $H=0.80\\,\\mathrm{m}$，横截面积 $S_A=5.0\\times10^{-2}\\,\\mathrm{m^2}$，底部小孔面积 $S_B=1.0\\times10^{-4}\\,\\mathrm{m^2}$（$S_B \\ll S_A$），与大气相通。水面初始与容器口齐平。不计黏性，求水全部从小孔流尽所需时间 $t$。取 $g=9.8\\,\\mathrm{m/s^2}$。",
+      "answer": "**解：**\n\n1. 任意水位 $h$ 处，托里拆利公式 $v=\\sqrt{2gh}$；连续性方程 $S_A \\dfrac{\\mathrm{dh}}{\\mathrm{dt}} = -S_B v$。\n\n2. 分离变量：\n$$\\frac{\\mathrm{dh}}{\\sqrt{h}} = -\\frac{S_B}{S_A}\\sqrt{2g}\\,\\mathrm{dt}$$\n\n3. 积分，$t=0$ 时 $h=H$，$t=t$ 时 $h=0$：\n$$2\\sqrt{H} = \\frac{S_B}{S_A}\\sqrt{2g}\\,t$$\n$$t = \\frac{2S_A}{S_B}\\sqrt{\\frac{H}{2g}} = \\frac{S_A}{S_B}\\sqrt{\\frac{2H}{g}}$$\n\n4. 代入数据：\n$$t = \\frac{5.0\\times10^{-2}}{1.0\\times10^{-4}}\\sqrt{\\frac{2\\times0.80}{9.8}} = 500 \\times 0.404 = 2.0\\times10^2\\,\\mathrm{s}$$\n\n**答：**流尽时间 $t \\approx 200\\,\\mathrm{s}$（约 3.3 分钟）。",
+      "hint": "水位下降时出流速度随 $h$ 变化，不能直接用 $H/v$。建立 $S_A\\,\\mathrm{dh}/\\mathrm{dt} = -S_B\\sqrt{2gh}$ 并积分。",
+      "explanation": "容器排水是连续性方程与托里拆利公式的综合题。因 $S_B \\ll S_A$，液面下降速度远小于出流速度，液面处 $v_A \\approx 0$ 合理。积分得 $t=(S_A/S_B)\\sqrt{2H/g}$，与详解例题（$h_A=0.7\\,\\mathrm{m}$，$S_A=6\\times10^{-2}$，$S_B=10^{-4}$）方法一致。随水位降低流速减小，故不能假设恒定流量。",
+      "scoring_criteria": [
+        "正确建立 $S_A\\,\\mathrm{dh}/\\mathrm{dt} = -S_B\\sqrt{2gh}$（3分）",
+        "分离变量并积分得到 $t=\\dfrac{S_A}{S_B}\\sqrt{\\dfrac{2H}{g}}$（3分）",
+        "代入数据得 $t \\approx 200\\,\\mathrm{s}$（2分）",
+        "说明变流量积分的必要性及 $S_B \\ll S_A$ 条件（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/2.2.md",
+        "label": "2.2 伯努利方程及其应用 · 容器水流完所需时间"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "人体循环系统中，取左心室射血速度 $v_L=0.40\\,\\mathrm{m/s}$，主动脉压 $p_L=100\\,\\mathrm{mmHg}\\approx1.33\\times10^4\\,\\mathrm{Pa}$，血液密度 $\\rho=1.06\\times10^3\\,\\mathrm{kg/m^3}$。主动脉半径 $R=1.30\\times10^{-2}\\,\\mathrm{m}$，长度 $L=0.10\\,\\mathrm{m}$，流量 $Q=1.00\\times10^{-4}\\,\\mathrm{m^3/s}$，黏度 $\\eta=3.00\\times10^{-3}\\,\\mathrm{Pa\\cdot s}$。小动脉半径为主动脉的一半，流量为主动脉的五分之一。求：（1）心脏每输出 $1\\,\\mathrm{cm^3}$ 血液所做的功；（2）主动脉与小动脉的流阻及压强降落；（3）小动脉压强降落与主动脉压强降落之比。",
+      "answer": "**解：**\n\n**（1）心脏做功**\n\n每单位体积做功（能量方程，$h_1=h_2$，$v_2=0$）：\n$$w = p_L + \\frac{1}{2}\\rho v_L^2 = 1.33\\times10^4 + 0.5 \\times 1.06\\times10^3 \\times 0.40^2$$\n$$= 1.33\\times10^4 + 84.8 = 1.34\\times10^4\\,\\mathrm{J/m^3}$$\n\n每 $1\\,\\mathrm{cm^3}=10^{-6}\\,\\mathrm{m^3}$ 做功：$W = w \\times 10^{-6} = 1.34\\times10^{-2}\\,\\mathrm{J}$\n\n**（2）流阻与压降**\n\n流阻 $R_f = \\dfrac{8\\eta L}{\\pi r^4}$，$\\Delta p = Q R_f$。\n\n主动脉：\n$$R_{f,a} = \\frac{8 \\times 3.0\\times10^{-3} \\times 0.10}{\\pi \\times (1.30\\times10^{-2})^4} = 2.67\\times10^4\\,\\mathrm{Pa\\cdot s/m^3}$$\n$$\\Delta p_a = Q R_{f,a} = 1.0\\times10^{-4} \\times 2.67\\times10^4 = 2.67\\,\\mathrm{Pa}$$\n\n小动脉（$r=R/2$，$Q'=Q/5$）：\n$$R_{f,s} = \\frac{8\\eta L}{\\pi (R/2)^4} = 16 R_{f,a} = 4.27\\times10^5\\,\\mathrm{Pa\\cdot s/m^3}$$\n$$\\Delta p_s = Q' R_{f,s} = \\frac{Q}{5} \\times 16 R_{f,a} = \\frac{16}{5} Q R_{f,a} = 8.56\\,\\mathrm{Pa}$$\n\n**（3）压降之比**\n$$\\frac{\\Delta p_s}{\\Delta p_a} = \\frac{8.56}{2.67} = 3.2 = \\frac{16}{5}$$\n\n**答：**（1）$W \\approx 1.34\\times10^{-2}\\,\\mathrm{J/cm^3}$；（2）$R_{f,a}\\approx2.67\\times10^4\\,\\mathrm{Pa\\cdot s/m^3}$，$\\Delta p_a\\approx2.67\\,\\mathrm{Pa}$；$R_{f,s}\\approx4.27\\times10^5\\,\\mathrm{Pa\\cdot s/m^3}$，$\\Delta p_s\\approx8.56\\,\\mathrm{Pa}$；（3）比值 $3.2$。",
+      "hint": "心脏做功用 $w \\approx p_L + \\frac{1}{2}\\rho v_L^2$；血管流阻 $R_f=8\\eta L/(\\pi r^4)$，注意 $r$ 减半时 $R_f$ 增大 $2^4=16$ 倍。",
+      "explanation": "本题综合心脏做功估算与泊肃叶流阻分析。做功公式来自详解能量方程：每单位体积 $w = p_L + \\frac{1}{2}\\rho v_L^2$，压强项占主导（$\\approx99\\%$），动能项 $84.8\\,\\mathrm{Pa}$ 较小。流阻 $R_f \\propto 1/r^4$，半径减半使流阻增 16 倍；流量降为 1/5，故 $\\Delta p_s/\\Delta p_a = 16/5 = 3.2$。小动脉虽细，$r^4$ 效应使其对总流阻贡献显著，与详解\"主动脉与小动脉\"例题一致。",
+      "scoring_criteria": [
+        "正确计算心脏做功 $W \\approx 1.34\\times10^{-2}\\,\\mathrm{J/cm^3}$（3分）",
+        "正确求主动脉流阻与压降 $R_{f,a}$、$\\Delta p_a$（2分）",
+        "正确求小动脉流阻与压降，体现 $r^4$ 效应（3分）",
+        "正确求压降比 $16/5=3.2$，物理分析合理（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/2.3.md",
+        "label": "2.3 黏性流体、泊肃叶定律与血液流动 · 心脏做功与血管流阻"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": { "single_choice": 10, "essay": 7 },
+    "bySource": { "current_chapter": 17, "review": 0 },
+    "byDifficulty": { "basic": 12, "medium": 3, "hard": 2 }
+  }
+}

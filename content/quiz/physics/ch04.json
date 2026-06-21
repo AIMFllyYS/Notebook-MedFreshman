@@ -1,0 +1,409 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch04",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "points": 3,
+      "stem": "关于机械波的分类与传播特点，下列说法正确的是（ ）。",
+      "options": [
+        "空气中传播的声波属于纵波，介质质点振动方向与波传播方向平行",
+        "绳上手抖产生的波属于纵波",
+        "机械波传播时，各质点随波向前迁移",
+        "平面简谐波从一种介质进入另一种介质时，频率和波长均不变"
+      ],
+      "answer": 0,
+      "hint": "先区分横波（振动⊥传播）与纵波（振动∥传播），再回忆跨介质时什么量由波源决定。",
+      "explanation": "A 正确：声波在空气中为疏密波，质点沿传播方向振动，属纵波。B 错：绳波振动方向垂直于传播方向，为横波。C 错：波传播的是振动状态与能量，质点只在平衡位置附近振动，不随波迁移。D 错：跨介质时**频率不变**（波源决定），波速与波长随介质改变。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.1.md",
+        "label": "4.1 机械波的特点与平面简谐波 · 波的分类"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "points": 3,
+      "stem": "一列机械波的波长 $\\lambda=0.40\\,\\mathrm{m}$，频率 $\\nu=250\\,\\mathrm{Hz}$，则波速 $u$ 为（ ）。",
+      "options": [
+        "$100\\,\\mathrm{m/s}$",
+        "$62.5\\,\\mathrm{m/s}$",
+        "$625\\,\\mathrm{m/s}$",
+        "$0.0016\\,\\mathrm{m/s}$"
+      ],
+      "answer": 0,
+      "hint": "波速、波长、频率满足 $u=\\lambda\\nu=\\lambda/T$。",
+      "explanation": "由 $u=\\lambda\\nu$ 得 $u=0.40\\times250=100\\,\\mathrm{m/s}$。B 误用 $u=\\nu/\\lambda$；C 误用 $u=\\lambda/\\nu$；D 量纲错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.1.md",
+        "label": "4.1 机械波的特点与平面简谐波 · 波速、波长、周期与频率"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "points": 3,
+      "stem": "原点处质点振动方程为 $y=A\\cos(\\omega t+\\varphi_0)$，平面简谐波沿 $x$ 轴**正方向**传播，波速为 $u$，则波函数为（ ）。",
+      "options": [
+        "$y=A\\cos\\!\\left[\\omega\\!\\left(t-\\dfrac{x}{u}\\right)+\\varphi_0\\right]$",
+        "$y=A\\cos\\!\\left[\\omega\\!\\left(t+\\dfrac{x}{u}\\right)+\\varphi_0\\right]$",
+        "$y=A\\cos(\\omega t+kx+\\varphi_0)$",
+        "$y=A\\cos(\\omega t-kx-\\varphi_0)$"
+      ],
+      "answer": 0,
+      "hint": "沿 $+x$ 传播时，距原点越远的点振动越**晚**，时间项用“晚减早加”。",
+      "explanation": "向 $+x$ 传播时，$x$ 处质点比原点**落后** $\\Delta t=x/u$，故 $t$ 换为 $t-x/u$，即 A。B、C 对应向 $-x$ 传播或符号弄反；D 仅改变初相符号，不能体现传播方向的相位滞后关系。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.1.md",
+        "label": "4.1 机械波的特点与平面简谐波 · 平面简谐波与波函数"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "points": 3,
+      "stem": "两列相干波源振动**同相**，波长 $\\lambda=0.50\\,\\mathrm{m}$。空间一点 $P$ 到两源的波程差 $\\delta=0.25\\,\\mathrm{m}$，则 $P$ 点干涉结果为（ ）。",
+      "options": [
+        "相长干涉（加强）",
+        "相消干涉（减弱）",
+        "干涉图样随时间无规律变化",
+        "合振幅恒为两源振幅之和"
+      ],
+      "answer": 1,
+      "hint": "波程差 $\\delta=k\\lambda$ 加强，$\\delta=(2k+1)\\lambda/2$ 减弱；同相时 $\\Delta\\varphi=2\\pi\\delta/\\lambda$。",
+      "explanation": "$\\delta=0.25\\,\\mathrm{m}=\\lambda/2$，对应 $\\Delta\\varphi=\\pi$，为**相消干涉**（减弱）。A 需 $\\delta=k\\lambda$；C 错在相干波叠加图样稳定；D 只在同相且 $\\delta=k\\lambda$ 时成立。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.2.md",
+        "label": "4.2 波的能量、衍射、干涉与驻波 · 干涉条件"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "points": 3,
+      "stem": "静止观测者，声源以 $v_S=34\\,\\mathrm{m/s}$ **远离**观测者运动，声源频率 $\\nu=800\\,\\mathrm{Hz}$，声速 $u=340\\,\\mathrm{m/s}$，则观测者听到的频率 $\\nu'$ 约为（ ）。",
+      "options": [
+        "$727\\,\\mathrm{Hz}$",
+        "$800\\,\\mathrm{Hz}$",
+        "$880\\,\\mathrm{Hz}$",
+        "$960\\,\\mathrm{Hz}$"
+      ],
+      "answer": 0,
+      "hint": "波源远离时 $\\nu'=\\dfrac{u}{u+v_S}\\nu$，频率**降低**；勿与靠近公式混淆。",
+      "explanation": "$\\nu'=\\dfrac{340}{340+34}\\times800=\\dfrac{340}{374}\\times800\\approx727\\,\\mathrm{Hz}$。B 为无多普勒效应；C、D 对应频率升高，是源**靠近**或符号用错的结果。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.3.md",
+        "label": "4.3 多普勒效应与声波 · 多普勒效应"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 3,
+      "stem": "简谐振动位移方程 $x=A\\cos(\\omega t+\\varphi)$。$t=0$ 时质点位于正向位移最大处且速度为零，则初相位 $\\varphi$ 为（ ）。",
+      "options": [
+        "$0$",
+        "$\\pi/2$",
+        "$\\pi$",
+        "$3\\pi/2$"
+      ],
+      "answer": 0,
+      "hint": "$t=0$ 时 $x=A$ 且 $v=0$ 向平衡位置运动，代入 $x=A\\cos\\varphi$、$v=-\\omega A\\sin\\varphi$。",
+      "explanation": "$x(0)=A\\cos\\varphi=A$ 且 $v(0)=-\\omega A\\sin\\varphi=0$，得 $\\varphi=0$（或 $2k\\pi$）。$\\pi/2$、$3\\pi/2$ 对应平衡位置；$\\pi$ 对应 $x=-A$。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.1.md",
+        "label": "3.1 简谐振动 · 初始条件决定 A 与 φ"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 3,
+      "stem": "弹簧振子质量 $m=0.20\\,\\mathrm{kg}$，劲度系数 $k=50\\,\\mathrm{N/m}$，则振动周期 $T$ 约为（ ）。",
+      "options": [
+        "$0.40\\,\\mathrm{s}$",
+        "$0.20\\,\\mathrm{s}$",
+        "$1.25\\,\\mathrm{s}$",
+        "$2.0\\,\\mathrm{s}$"
+      ],
+      "answer": 0,
+      "hint": "弹簧振子 $T=2\\pi\\sqrt{m/k}$。",
+      "explanation": "$T=2\\pi\\sqrt{0.20/50}=2\\pi\\sqrt{0.004}\\approx0.40\\,\\mathrm{s}$。B 误用 $T=\\sqrt{m/k}$；C 误用 $T=2\\pi\\sqrt{k/m}$；D 为 $\\pi\\sqrt{m/k}$ 量级错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.1.md",
+        "label": "3.1 简谐振动 · 周期、频率与角频率"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 3,
+      "stem": "两同向同频简谐振动 $y_1=3\\cos(\\omega t)$ cm，$y_2=3\\cos(\\omega t+\\pi)$ cm，合振动振幅为（ ）。",
+      "options": [
+        "$0\\,\\mathrm{cm}$",
+        "$3\\,\\mathrm{cm}$",
+        "$6\\,\\mathrm{cm}$",
+        "$3\\sqrt{2}\\,\\mathrm{cm}$"
+      ],
+      "answer": 0,
+      "hint": "相位差 $\\Delta\\varphi=\\pi$ 时为反相，$A=|A_1-A_2|$。",
+      "explanation": "两振动反相（$\\Delta\\varphi=\\pi$），$A=|3-3|=0\\,\\mathrm{cm}$，完全相消。C 为同相结果；D 为相位差 $\\pi/2$ 时的结果。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.2.md",
+        "label": "3.2 简谐振动的合成 · 同向同频合成"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 3,
+      "stem": "理想流体在水平等流管中作稳定流动，粗段截面积 $S_1=2S_2$，粗段流速 $v_1=1.0\\,\\mathrm{m/s}$，则细段流速 $v_2$ 为（ ）。",
+      "options": [
+        "$2.0\\,\\mathrm{m/s}$",
+        "$0.50\\,\\mathrm{m/s}$",
+        "$1.0\\,\\mathrm{m/s}$",
+        "$4.0\\,\\mathrm{m/s}$"
+      ],
+      "answer": 0,
+      "hint": "同一流管中体积流量守恒：$S_1v_1=S_2v_2$，管细处流速大。",
+      "explanation": "由连续性方程 $S_1v_1=S_2v_2$，得 $v_2=(S_1/S_2)v_1=2\\times1.0=2.0\\,\\mathrm{m/s}$。B 误把面积与速度成正比；D 误用 $v_2=4v_1$。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.1.md",
+        "label": "2.1 理想流体的稳定流动与连续性方程 · 连续性方程"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 3,
+      "stem": "水平圆管中不可压缩牛顿流体作层流，其他条件不变，仅将管半径减半，则体积流量 $Q$ 变为原来的（ ）。",
+      "options": [
+        "$1/2$",
+        "$1/4$",
+        "$1/8$",
+        "$1/16$"
+      ],
+      "answer": 3,
+      "hint": "泊肃叶定律 $Q=\\pi\\Delta p\\,r^4/(8\\eta L)$，注意 $r$ 的四次方关系。",
+      "explanation": "$Q\\propto r^4$，半径减半时 $Q'=(1/2)^4 Q=Q/16$。A、B、C 分别误用一次、二次、三次方关系，是常见错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.3.md",
+        "label": "2.3 黏性流体、泊肃叶定律与血液流动 · 泊肃叶定律"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "label": "计算题",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "total_points": 10,
+      "stem": "一列平面简谐横波沿 $x$ 轴正方向传播。已知振幅 $A=0.08\\,\\mathrm{m}$，周期 $T=0.40\\,\\mathrm{s}$，波长 $\\lambda=4.0\\,\\mathrm{m}$，原点处质点振动方程为 $y(0,t)=0.08\\cos(\\omega t)$（SI 单位）。\n\n（1）求角频率 $\\omega$、波数 $k$ 和波速 $u$；\n（2）写出波函数 $y(x,t)$；\n（3）求 $x_1=2.0\\,\\mathrm{m}$ 与 $x_2=6.0\\,\\mathrm{m}$ 处质点的相位差 $\\Delta\\varphi$。",
+      "answer": "（1）$\\omega=\\dfrac{2\\pi}{T}=\\dfrac{2\\pi}{0.40}=5\\pi\\,\\mathrm{rad/s}$；$k=\\dfrac{2\\pi}{\\lambda}=\\dfrac{2\\pi}{4.0}=\\dfrac{\\pi}{2}\\,\\mathrm{rad/m}$；$u=\\dfrac{\\lambda}{T}=\\dfrac{4.0}{0.40}=10\\,\\mathrm{m/s}$（或 $u=\\lambda\\nu=\\omega/k$）。\n\n（2）向 $+x$ 传播，原点 $\\varphi_0=0$，故\n$$y(x,t)=0.08\\cos\\!\\left(5\\pi t-\\dfrac{\\pi}{2}x\\right)\\,\\mathrm{m}$$\n\n（3）$\\Delta\\varphi=k(x_2-x_1)=\\dfrac{\\pi}{2}\\times(6.0-2.0)=2\\pi$（rad），两质点**同相**。",
+      "hint": "先由 $T$、$\\lambda$ 求 $\\omega$、$k$、$u$，再用“晚减早加”写 $+x$ 方向波函数；相位差用 $\\Delta\\varphi=k\\Delta x$。",
+      "scoring_criteria": [
+        "正确求出 $\\omega=5\\pi\\,\\mathrm{rad/s}$、$k=\\pi/2\\,\\mathrm{rad/m}$、$u=10\\,\\mathrm{m/s}$（3分）",
+        "写出向 $+x$ 传播的波函数 $y=0.08\\cos(5\\pi t-\\pi x/2)$（4分）",
+        "正确求相位差 $\\Delta\\varphi=2\\pi$ 并说明同相（3分）"
+      ],
+      "explanation": "本题考查波函数“三步法”：定传播方向→写 $\\omega,k,u$→代入 $y=A\\cos(\\omega t-kx+\\varphi_0)$。$x_2-x_1=4.0\\,\\mathrm{m}=\\lambda$，故相位差为 $2\\pi$ 的整数倍，两质点振动完全相同。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.1.md",
+        "label": "4.1 机械波的特点与平面简谐波 · 平面简谐波与波函数"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "basic",
+      "label": "计算题",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "total_points": 10,
+      "stem": "两相干波源 $S_1$、$S_2$ 振动**同相**，振幅均为 $A_0=0.050\\,\\mathrm{m}$，波长 $\\lambda=0.50\\,\\mathrm{m}$。点 $P$ 到 $S_1$、$S_2$ 的距离分别为 $r_1=3.00\\,\\mathrm{m}$、$r_2=3.75\\,\\mathrm{m}$。\n\n（1）求 $P$ 点两列波的波程差 $\\delta$ 和相位差 $\\Delta\\varphi$；\n（2）判断 $P$ 点是加强还是减弱，并求合振幅 $A$。",
+      "answer": "（1）波程差 $\\delta=r_2-r_1=3.75-3.00=0.75\\,\\mathrm{m}=1.5\\lambda$。\n相位差 $\\Delta\\varphi=\\dfrac{2\\pi}{\\lambda}(r_2-r_1)=2\\pi\\times1.5=3\\pi\\equiv\\pi\\,(\\mathrm{mod}\\,2\\pi)$。\n\n（2）$\\delta=(2k+1)\\lambda/2$（$k=1$），为**相消干涉**（减弱）。两源同相且振幅相等，合振幅 $A=|A_0-A_0|=0$。",
+      "hint": "同相相干源：$\\Delta\\varphi=2\\pi\\delta/\\lambda$；$\\delta=k\\lambda$ 加强，$\\delta=(2k+1)\\lambda/2$ 减弱。",
+      "scoring_criteria": [
+        "正确计算波程差 $\\delta=0.75\\,\\mathrm{m}=1.5\\lambda$（3分）",
+        "正确求相位差 $\\Delta\\varphi=3\\pi$（或等效 $\\pi$）（3分）",
+        "判断为相消干涉且合振幅 $A=0$（4分）"
+      ],
+      "explanation": "$\\delta=1.5\\lambda$ 恰为半波长的奇数倍，属于相消条件。振幅相等时完全抵消，合振幅为零。与详解例题“$PQ=1.5\\lambda$ 相消”一致。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.2.md",
+        "label": "4.2 波的能量、衍射、干涉与驻波 · 干涉条件"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "label": "计算题",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "total_points": 10,
+      "stem": "两端固定的弦线长 $L=0.90\\,\\mathrm{m}$，弦上横波传播速度 $u=180\\,\\mathrm{m/s}$。\n\n（1）求基频 $f_1$ 及第二、第三谐频 $f_2$、$f_3$；\n（2）对 $n=3$ 的振动模式，求波长 $\\lambda_3$ 及相邻两波节之间的距离。",
+      "answer": "（1）两端固定，边界为波节，$L=n\\lambda_n/2$，故 $f_n=\\dfrac{nu}{2L}$。\n$f_1=\\dfrac{180}{2\\times0.90}=100\\,\\mathrm{Hz}$；$f_2=200\\,\\mathrm{Hz}$；$f_3=300\\,\\mathrm{Hz}$。\n\n（2）$n=3$ 时 $\\lambda_3=\\dfrac{2L}{3}=\\dfrac{2\\times0.90}{3}=0.60\\,\\mathrm{m}$。\n相邻波节间距 $d=\\lambda/2=0.30\\,\\mathrm{m}$。",
+      "hint": "弦上驻波满足 $L=n\\lambda/2$；相邻波节（或波腹）间距为 $\\lambda/2$，不是 $\\lambda$。",
+      "scoring_criteria": [
+        "写出驻波频率公式 $f_n=nu/(2L)$（2分）",
+        "正确求 $f_1=100\\,\\mathrm{Hz}$、$f_2=200\\,\\mathrm{Hz}$、$f_3=300\\,\\mathrm{Hz}$（4分）",
+        "求 $\\lambda_3=0.60\\,\\mathrm{m}$ 且相邻波节距 $0.30\\,\\mathrm{m}$（4分）"
+      ],
+      "explanation": "固定弦驻波是 $L$ 等于半波长整数倍的标准模式。$n=3$ 时弦上有 4 个波节、3 个波腹，相邻波节距 $\\lambda_3/2=0.30\\,\\mathrm{m}$，与例题“相邻波节距 65 cm → $\\lambda=1.3\\,\\mathrm{m}$”同一套路。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.2.md",
+        "label": "4.2 波的能量、衍射、干涉与驻波 · 驻波的简正模式"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "hard",
+      "label": "计算题",
+      "source": "current_chapter",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "total_points": 10,
+      "stem": "火车以 $v_S=34\\,\\mathrm{m/s}$ 向静止在站台上的观察者驶来，拉响汽笛，声源频率 $\\nu=600\\,\\mathrm{Hz}$。声在空气中传播速度 $u=340\\,\\mathrm{m/s}$。\n\n（1）观察者听到的频率 $\\nu'$ 是多少？\n（2）若火车改为以相同速率**远离**观察者，听到的频率 $\\nu''$ 是多少？\n（3）说明超声多普勒血流仪中，探头固定、红细胞运动时为何需考虑**两次**多普勒频移。",
+      "answer": "（1）波源向静止观察者运动（$v_R=0$）：\n$$\\nu'=\\frac{u}{u-v_S}\\nu=\\frac{340}{340-34}\\times600=\\frac{340}{306}\\times600\\approx667\\,\\mathrm{Hz}$$\n\n（2）波源远离：\n$$\\nu''=\\frac{u}{u+v_S}\\nu=\\frac{340}{374}\\times600\\approx545\\,\\mathrm{Hz}$$\n\n（3）超声多普勒血流仪中：红细胞先作为**运动观测者**接收探头发射的超声波，再作为**运动波源**将波反射回固定探头，因此经历发射→反射两次多普勒效应，频移 $\\Delta\\nu$ 与血流速度 $v_R$ 成正比，可反推血流速度。",
+      "hint": "波源运动时 $\\nu'=u\\nu/(u\\mp v_S)$，靠近取减号、远离取加号；反射问题等价于二次多普勒。",
+      "scoring_criteria": [
+        "写出波源运动多普勒公式并求 $\\nu'\\approx667\\,\\mathrm{Hz}$（4分）",
+        "正确求远离时 $\\nu''\\approx545\\,\\mathrm{Hz}$（3分）",
+        "说明超声反射需考虑两次多普勒及与测速的关系（3分）"
+      ],
+      "explanation": "靠近时波前压缩、频率升高；远离时波前稀疏、频率降低。符号“靠近取上方、远离取下方”易错。医学超声中 $\\Delta\\nu\\propto v_R\\cos\\theta$，声束应尽量与血管平行。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.3.md",
+        "label": "4.3 多普勒效应与声波 · 多普勒效应与超声多普勒血流仪"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "basic",
+      "label": "计算题",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 10,
+      "total_points": 10,
+      "stem": "一弹簧振子质量 $m=0.50\\,\\mathrm{kg}$，劲度系数 $k=200\\,\\mathrm{N/m}$。$t=0$ 时物体位于 $x_0=0.10\\,\\mathrm{m}$ 处自静止释放（取该方向为正）。\n\n（1）求角频率 $\\omega$、周期 $T$ 和振动方程 $x(t)$；\n（2）求最大速率 $v_{\\max}$ 和系统总机械能 $E$。",
+      "answer": "（1）$\\omega=\\sqrt{k/m}=\\sqrt{200/0.50}=20\\,\\mathrm{rad/s}$。\n$T=2\\pi/\\omega=2\\pi/20=\\pi/10\\approx0.314\\,\\mathrm{s}$。\n自静止自 $x=A$ 释放，$\\varphi=0$，$A=0.10\\,\\mathrm{m}$，故\n$$x(t)=0.10\\cos(20t)\\,\\mathrm{m}$$\n\n（2）$v_{\\max}=\\omega A=20\\times0.10=2.0\\,\\mathrm{m/s}$。\n$E=\\dfrac{1}{2}kA^2=\\dfrac{1}{2}\\times200\\times0.10^2=1.0\\,\\mathrm{J}$。",
+      "hint": "端点释放 $v_0=0$、$x_0=A$ 时 $\\varphi=0$；$v_{\\max}=\\omega A$，$E=\\frac{1}{2}kA^2$。",
+      "scoring_criteria": [
+        "求 $\\omega=20\\,\\mathrm{rad/s}$、$T=\\pi/10\\,\\mathrm{s}$ 并写出 $x=0.10\\cos(20t)$（5分）",
+        "求 $v_{\\max}=2.0\\,\\mathrm{m/s}$（3分）",
+        "求总机械能 $E=1.0\\,\\mathrm{J}$（2分）"
+      ],
+      "explanation": "本题综合 SHM 运动方程、初始条件定相位与能量守恒。最大速率出现在平衡位置，总机械能等于最大势能 $\\frac{1}{2}kA^2$。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.1.md",
+        "label": "3.1 简谐振动 · 简谐振动的特征量与能量"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "medium",
+      "label": "计算题",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 10,
+      "total_points": 10,
+      "stem": "两同向同频简谐振动（单位 cm）：\n$$y_1=4\\cos\\!\\left(2t-\\dfrac{\\pi}{3}\\right),\\quad y_2=4\\cos\\!\\left(2t+\\dfrac{\\pi}{6}\\right)$$\n\n（1）求两振动的相位差 $\\Delta\\varphi$；\n（2）求合振动振幅 $A$ 及合振动方程 $y= A\\cos(2t+\\varphi)$ 中的 $\\varphi$（保留根号形式即可）。",
+      "answer": "（1）$\\Delta\\varphi=\\varphi_2-\\varphi_1=\\dfrac{\\pi}{6}-\\left(-\\dfrac{\\pi}{3}\\right)=\\dfrac{\\pi}{2}$。\n\n（2）$A=\\sqrt{A_1^2+A_2^2+2A_1A_2\\cos\\Delta\\varphi}=\\sqrt{16+16+2\\times4\\times4\\times0}=\\sqrt{32}=4\\sqrt{2}\\,\\mathrm{cm}$。\n\n由 $\\tan\\varphi=\\dfrac{A_1\\sin\\varphi_1+A_2\\sin\\varphi_2}{A_1\\cos\\varphi_1+A_2\\cos\\varphi_2}$，代入得 $\\varphi=-\\dfrac{\\pi}{12}$（或等价角）。合振动：$y=4\\sqrt{2}\\cos\\!\\left(2t-\\dfrac{\\pi}{12}\\right)\\,\\mathrm{cm}$。",
+      "hint": "同频合成用 $A=\\sqrt{A_1^2+A_2^2+2A_1A_2\\cos\\Delta\\varphi}$；$\\Delta\\varphi=\\pi/2$ 时 $\\cos\\Delta\\varphi=0$。",
+      "scoring_criteria": [
+        "正确求相位差 $\\Delta\\varphi=\\pi/2$（3分）",
+        "正确求合振幅 $A=4\\sqrt{2}\\,\\mathrm{cm}$（4分）",
+        "求出合振动初相 $\\varphi=-\\pi/12$ 并写出合方程（3分）"
+      ],
+      "explanation": "相位差 $\\pi/2$ 时两分量正交，$A=\\sqrt{A_1^2+A_2^2}$。旋转矢量平行四边形法则与代数公式结果一致。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.2.md",
+        "label": "3.2 简谐振动的合成 · 同向同频合成"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "hard",
+      "label": "计算题",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 10,
+      "total_points": 10,
+      "stem": "理想不可压缩流体在**水平**变截面管道中作稳定流动，密度 $\\rho=1.0\\times10^3\\,\\mathrm{kg/m^3}$。粗段截面积 $S_1=4.0\\,\\mathrm{cm^2}$，细段 $S_2=1.0\\,\\mathrm{cm^2}$，粗段流速 $v_1=0.50\\,\\mathrm{m/s}$，粗段压强 $p_1=1.50\\times10^5\\,\\mathrm{Pa}$。\n\n（1）求细段流速 $v_2$ 和细段压强 $p_2$；\n（2）若细段换成水平毛细管：半径 $r=0.50\\,\\mathrm{mm}$，长 $L=0.20\\,\\mathrm{m}$，黏度 $\\eta=1.0\\times10^{-3}\\,\\mathrm{Pa\\cdot s}$，两端压强差 $\\Delta p=1.0\\times10^3\\,\\mathrm{Pa}$，求层流体积流量 $Q$（泊肃叶定律）。",
+      "answer": "（1）连续性方程：$v_2=\\dfrac{S_1}{S_2}v_1=\\dfrac{4.0}{1.0}\\times0.50=2.0\\,\\mathrm{m/s}$。\n\n水平伯努利方程：$p_1+\\dfrac{1}{2}\\rho v_1^2=p_2+\\dfrac{1}{2}\\rho v_2^2$，\n$$p_2=p_1+\\frac{1}{2}\\rho(v_1^2-v_2^2)=1.50\\times10^5+500\\times(0.25-4.0)=1.48125\\times10^5\\,\\mathrm{Pa}$$\n即细段压强降低 $1875\\,\\mathrm{Pa}$（流速大处压强小）。\n\n（2）泊肃叶定律：\n$$Q=\\frac{\\pi\\Delta p\\,r^4}{8\\eta L}=\\frac{\\pi\\times10^3\\times(0.50\\times10^{-3})^4}{8\\times1.0\\times10^{-3}\\times0.20}\\approx1.23\\times10^{-7}\\,\\mathrm{m^3/s}$$",
+      "hint": "先 $S_1v_1=S_2v_2$，再水平管 $p+\\frac{1}{2}\\rho v^2=\\mathrm{const}$；毛细管层流用 $Q=\\pi\\Delta pr^4/(8\\eta L)$。",
+      "scoring_criteria": [
+        "由连续性方程求 $v_2=2.0\\,\\mathrm{m/s}$（2分）",
+        "用伯努利方程求 $p_2\\approx1.48\\times10^5\\,\\mathrm{Pa}$ 并说明压强降低（4分）",
+        "用泊肃叶定律求 $Q\\approx1.2\\times10^{-7}\\,\\mathrm{m^3/s}$（4分）"
+      ],
+      "explanation": "水平变截面管是连续性+伯努利经典组合：管细→流速大→压强小。泊肃叶段强调 $Q\\propto r^4\\Delta p$，半径四次方效应显著。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.2.md",
+        "label": "2.2 伯努利方程及其应用 · 伯努利方程"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": {
+      "single_choice": 10,
+      "essay": 7
+    },
+    "bySource": {
+      "current_chapter": 9,
+      "review": 8
+    },
+    "byDifficulty": {
+      "basic": 12,
+      "medium": 3,
+      "hard": 2
+    }
+  }
+}

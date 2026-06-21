@@ -1,0 +1,414 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch14",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "产生 X 射线必须具备的两个基本条件是（　）。",
+      "options": [
+        "高速电子流和阻止其运动的阳极靶",
+        "热阴极发射和可见光激发",
+        "高气压环境和低原子序数靶材",
+        "强磁场偏转和荧光屏接收"
+      ],
+      "answer": 0,
+      "hint": "X 射线管：热阴极发射电子，经高压加速轰击高 $Z$ 靶（如钨）产生 X 射线；管内需高真空。",
+      "explanation": "A 正确：产生 X 射线需（1）**高速电子流**；（2）**阳极靶**阻止电子运动（轫致辐射与标识辐射均由此产生）。B 错：可见光激发产生荧光，不是 X 射线管原理。C 错：X 射线管需**高真空**（$<10^{-4}\\,\\mathrm{Pa}$），靶材宜高 $Z$（钨、钼）。D 错：X 射线不带电，不受磁场偏转；荧光屏用于检测而非产生。",
+      "sourceRef": {
+        "path": "content/physics/detail/14.1.md",
+        "label": "14.1 X 射线产生装置与条件"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "X 射线管管电压 $U=80\\,\\mathrm{kV}$ 时，连续 X 射线谱的短波极限 $\\lambda_{\\min}$ 约为（　）。（$\\lambda_{\\min}=\\dfrac{1.24}{U(\\mathrm{kV})}\\,\\mathrm{nm}$）",
+      "options": [
+        "$0.0155\\,\\mathrm{nm}$",
+        "$0.155\\,\\mathrm{nm}$",
+        "$1.55\\,\\mathrm{nm}$",
+        "$15.5\\,\\mathrm{nm}$"
+      ],
+      "answer": 0,
+      "hint": "短波极限 $\\lambda_{\\min}=hc/(eU)=1.24/U(\\mathrm{kV})$（nm）；只取决于管电压，与靶材料无关。",
+      "explanation": "A 正确：$\\lambda_{\\min}=\\dfrac{1.24}{80}=0.0155\\,\\mathrm{nm}$。B 错：$U$ 少除 10 倍。C 错：$U$ 少除 100 倍。D 错：误将 kV 当作 V 或公式用错。短波极限对应电子全部动能转化为单个光子：$eU=h\\nu_{\\max}=hc/\\lambda_{\\min}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/14.1.md",
+        "label": "14.1 连续 X 射线短波极限"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "关于标识 X 射线（特征 X 射线），下列说法正确的是（　）。",
+      "options": [
+        "标识 X 射线的波长仅取决于阳极靶元素，与管电压无关（管电压须超过激发电压）",
+        "标识 X 射线的波长随管电压升高而连续变短",
+        "标识 X 射线由轫致辐射产生，波长连续分布",
+        "标识 X 射线的强度只取决于管电流，与靶原子序数无关"
+      ],
+      "answer": 0,
+      "hint": "标识 X 射线源于内壳层空位填充（K 系、L 系）；莫塞莱定律 $\\sqrt{\\nu}\\propto(Z-1)$，波长由靶 $Z$ 决定。",
+      "explanation": "A 正确：标识 X 射线波长**仅取决于靶元素**（K 系、L 系），管电压只需超过激发电压即可产生，与管电压大小无关（莫塞莱定律）。B 错：连续谱最短波长随 $U$ 变短，标识线波长不变。C 错：轫致辐射产生**连续谱**；标识线来自内层电子跃迁。D 错：靶 $Z$ 越大，标识线强度越大；强度也与管电压、管电流有关。",
+      "sourceRef": {
+        "path": "content/physics/detail/14.1.md",
+        "label": "14.1 标识 X 射线与莫塞莱定律"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "单色 X 射线线性衰减系数 $\\mu=0.20\\,\\mathrm{cm^{-1}}$，强度减为原来一半时所需物质厚度（半价层）为（　）。",
+      "options": [
+        "$1.39\\,\\mathrm{cm}$",
+        "$3.47\\,\\mathrm{cm}$",
+        "$5.00\\,\\mathrm{cm}$",
+        "$10.0\\,\\mathrm{cm}$"
+      ],
+      "answer": 1,
+      "hint": "朗伯定律 $I=I_0 e^{-\\mu x}$；半价层 $x_{1/2}=\\ln2/\\mu=0.693/\\mu$。",
+      "explanation": "B 正确：$x_{1/2}=\\dfrac{0.693}{0.20}=3.47\\,\\mathrm{cm}$。A 错：$\\ln2/(2\\mu)$ 或 $\\mu$ 代入错误。C 错：$1/\\mu=5\\,\\mathrm{cm}$ 不是半价层。D 错：数值随意。经 $n$ 个半价层后 $I=I_0/2^n$，12.5% 对应 $n=3$。",
+      "sourceRef": {
+        "path": "content/physics/detail/14.1.md",
+        "label": "14.1 朗伯定律与半价层"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "关于激光的产生条件与特点，下列说法正确的是（　）。",
+      "options": [
+        "实现粒子数反转后，受激辐射占主导，配合谐振腔可得到方向性好、单色性好的激光",
+        "自发辐射产生的光子与外来光子频率、相位、方向完全相同",
+        "只要有激活物质和泵浦源，无需谐振腔即可产生激光",
+        "激光的高亮度仅源于光子数多，与受激辐射机制无关"
+      ],
+      "answer": 0,
+      "hint": "激光三支柱：粒子数反转（$N_2>N_1$）、激活物质（含亚稳态）、光学谐振腔；受激辐射光子与外来光子完全相同。",
+      "explanation": "A 正确：粒子数反转使受激辐射超过受激吸收，谐振腔选频、选方向，激光具有**高方向性、高单色性、高亮度、强相干性**。B 错：自发辐射各向同性、相位随机；**受激辐射**才与外来光子完全相同。C 错：仅有激活物质和泵浦不够，**谐振腔**是产生激光的必要条件之一。D 错：激光高亮度源于受激辐射光放大，而非普通光源的自发辐射叠加。",
+      "sourceRef": {
+        "path": "content/physics/detail/14.2.md",
+        "label": "14.2 粒子数反转、谐振腔与激光特点"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch13",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "某放射性核素发生 $\\beta^{-}$ 衰变，下列衰变方程正确的是（　）。",
+      "options": [
+        "$^{14}_{6}\\mathrm{C}\\to\\,^{14}_{7}\\mathrm{N}+\\beta^{-}+\\bar{\\nu}$",
+        "$^{14}_{6}\\mathrm{C}\\to\\,^{14}_{5}\\mathrm{B}+\\beta^{-}+\\bar{\\nu}$",
+        "$^{226}_{88}\\mathrm{Ra}\\to\\,^{222}_{86}\\mathrm{Rn}+^{4}_{2}\\mathrm{He}$",
+        "$^{60}_{27}\\mathrm{Co}^{*}\\to\\,^{60}_{27}\\mathrm{Co}+\\gamma$"
+      ],
+      "answer": 0,
+      "hint": "$\\beta^{-}$ 衰变：$Z\\to Z+1$，$A$ 不变（中子→质子+电子+反中微子）；$\\alpha$ 衰变 $A\\to A-4$，$Z\\to Z-2$。",
+      "explanation": "A 正确：$\\beta^{-}$ 衰变电荷数增 1、质量数不变，$^{14}_{6}\\mathrm{C}\\to\\,^{14}_{7}\\mathrm{N}+\\beta^{-}+\\bar{\\nu}$ 符合位移法则。B 错：$Z$ 应增加而非减少。C 错：这是 $\\alpha$ 衰变（$^{226}_{88}\\mathrm{Ra}\\to\\,^{222}_{86}\\mathrm{Rn}+^{4}_{2}\\mathrm{He}$）。D 错：这是 $\\gamma$ 衰变（同核异能跃迁，$A$、$Z$ 均不变）。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.2.md",
+        "label": "13.2 β 衰变与位移法则"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch13",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "某放射性核素半衰期 $T=30\\,\\mathrm{年}$，初始活度 $A_0$，经过 $t=90\\,\\mathrm{年}$ 后活度 $A$ 与 $A_0$ 之比为（　）。",
+      "options": [
+        "$1/2$",
+        "$1/4$",
+        "$1/8$",
+        "$1/16$"
+      ],
+      "answer": 2,
+      "hint": "$A=A_0 e^{-\\lambda t}=A_0(1/2)^{t/T}$；$t/T=3$ 时 $A/A_0=(1/2)^3$。",
+      "explanation": "C 正确：$t/T=90/30=3$，$A/A_0=(1/2)^3=1/8=12.5\\%$。A 错：$t=T$ 时 $A/A_0=1/2$。B 错：$t=2T$ 时 $A/A_0=1/4$。D 错：$t=4T$ 时 $A/A_0=1/16$。衰变仅取决于核的内在性质，与温度、压强无关。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.2.md",
+        "label": "13.2 半衰期与活度衰减"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch12",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "关于光电效应实验规律，下列说法正确的是（　）。",
+      "options": [
+        "遏止电压 $U_a$ 与入射光频率 $\\nu$ 线性相关，与光强无关",
+        "饱和光电流与入射光频率成正比，与光强无关",
+        "光电子最大初动能与入射光强度成正比",
+        "任何频率的光照射任何金属表面均能产生光电效应"
+      ],
+      "answer": 0,
+      "hint": "爱因斯坦方程 $h\\nu=W+E_{k,\\max}$，$E_{k,\\max}=eU_a$；饱和电流 $I_S\\propto$ 光强；存在红限频率 $\\nu_0$。",
+      "explanation": "A 正确：$U_a=(h\\nu-W)/e$，与 $\\nu$ 线性相关，与光强无关——经典理论无法解释。B 错：饱和光电流与**光强**成正比，与频率无关（$\\nu>\\nu_0$ 时）。C 错：$E_{k,\\max}$ 只取决于 $\\nu$，不取决于光强。D 错：$\\nu<\\nu_0=W/h$ 时不发生光电效应。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.1.md",
+        "label": "12.1 光电效应实验规律"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch12",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "氢原子从 $n=3$ 能级跃迁到 $n=1$ 能级时，辐射光子能量约为（　）。（$E_n=-\\dfrac{13.6\\,\\mathrm{eV}}{n^2}$）",
+      "options": [
+        "$1.51\\,\\mathrm{eV}$",
+        "$3.40\\,\\mathrm{eV}$",
+        "$10.2\\,\\mathrm{eV}$",
+        "$12.1\\,\\mathrm{eV}$"
+      ],
+      "answer": 3,
+      "hint": "$h\\nu=E_3-E_1=13.6\\left(\\dfrac{1}{1^2}-\\dfrac{1}{3^2}\\right)\\,\\mathrm{eV}$；$3\\to1$ 属于赖曼系（紫外）。",
+      "explanation": "D 正确：$\\Delta E=13.6\\times\\left(1-\\dfrac{1}{9}\\right)=13.6\\times\\dfrac{8}{9}\\approx12.1\\,\\mathrm{eV}$。A 错：$1.51\\,\\mathrm{eV}$ 对应 $3\\to2$（巴尔末系 $H_\\alpha$）。B 错：$3.40\\,\\mathrm{eV}$ 对应 $4\\to2$。C 错：$10.2\\,\\mathrm{eV}$ 对应 $2\\to1$（赖曼 $\\alpha$ 线）。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.2.md",
+        "label": "12.2 玻尔能级与氢原子跃迁"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch11",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "光栅常数 $d=2.00\\,\\mu\\mathrm{m}$，波长 $\\lambda=500\\,\\mathrm{nm}$ 的单色光垂直入射，第一级明纹（$k=1$）的衍射角 $\\theta$ 满足（　）。",
+      "options": [
+        "$\\sin\\theta=0.125$",
+        "$\\sin\\theta=0.250$",
+        "$\\sin\\theta=0.500$",
+        "$\\sin\\theta=1.000$"
+      ],
+      "answer": 1,
+      "hint": "光栅方程 $d\\sin\\theta=k\\lambda$；$k=1$ 时 $\\sin\\theta=\\lambda/d$。",
+      "explanation": "B 正确：$\\sin\\theta=\\dfrac{k\\lambda}{d}=\\dfrac{500\\times10^{-9}}{2.00\\times10^{-6}}=0.250$，$\\theta\\approx14.5°$。A 错：$\\sin\\theta=0.125$ 对应 $k=0.5$ 或 $d$ 算错。C 错：$\\sin\\theta=0.5$ 对应 $k=2$ 或 $\\lambda=1\\,\\mu\\mathrm{m}$。D 错：$\\sin\\theta=1$ 为最高级次极限 $k_{\\max}=d/\\lambda$。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.2.md",
+        "label": "11.2 光栅方程"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：X 射线管管电压 $U=120\\,\\mathrm{kV}$。（1）求连续 X 射线谱短波极限 $\\lambda_{\\min}$；（2）求电子到达阳极时的动能 $E_k$（用 eV 和 J 表示）；（3）若管电压加倍至 $240\\,\\mathrm{kV}$，短波极限变为原来的多少倍？",
+      "answer": "（1）$\\lambda_{\\min}=\\dfrac{hc}{eU}=\\dfrac{1.24}{U(\\mathrm{kV})}\\,\\mathrm{nm}=\\dfrac{1.24}{120}=0.0103\\,\\mathrm{nm}$\n\n（2）电子动能 $E_k=eU=120\\,\\mathrm{keV}=120\\times10^3\\times1.602\\times10^{-19}=1.92\\times10^{-14}\\,\\mathrm{J}$\n\n（3）$\\lambda_{\\min}\\propto1/U$，$U$ 加倍则 $\\lambda_{\\min}$ 减半，变为原来的 **$1/2$**",
+      "hint": "$\\lambda_{\\min}=1.24/U(\\mathrm{kV})$（nm）；$E_k=eU$；短波极限与管电压成反比。",
+      "scoring_criteria": [
+        "正确求 $\\lambda_{\\min}=0.0103\\,\\mathrm{nm}$（4分）",
+        "正确求 $E_k=120\\,\\mathrm{keV}=1.92\\times10^{-14}\\,\\mathrm{J}$（4分）",
+        "正确判断 $\\lambda_{\\min}$ 变为原来的 $1/2$（2分）"
+      ],
+      "explanation": "本题与详解 EX01、EX26 一致。短波极限 $eU=h\\nu_{\\max}=hc/\\lambda_{\\min}$，只取决于管电压。易错：$U$ 单位未用 kV 导致 $\\lambda_{\\min}$ 差 1000 倍；$E_k$ 只写 eV 或只写 J 不完整。",
+      "sourceRef": {
+        "path": "content/physics/detail/14.1.md",
+        "label": "14.1 连续 X 射线短波极限计算"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：某单色 X 射线束初始强度 $I_0$，穿过线性衰减系数 $\\mu=0.30\\,\\mathrm{cm^{-1}}$ 的物质。（1）求半价层 $x_{1/2}$；（2）求强度减为 $0.25I_0$ 所需厚度 $x$；（3）若改用 $\\mu=0.60\\,\\mathrm{cm^{-1}}$ 的物质，达到同样衰减比需多厚？",
+      "answer": "（1）$x_{1/2}=\\dfrac{\\ln2}{\\mu}=\\dfrac{0.693}{0.30}=2.31\\,\\mathrm{cm}$\n\n（2）$I/I_0=e^{-\\mu x}=0.25$，$\\mu x=\\ln4=1.386$，$x=\\dfrac{1.386}{0.30}=4.62\\,\\mathrm{cm}$\n（亦可用 $0.25=(1/2)^2$，即 2 个半价层：$x=2\\times2.31=4.62\\,\\mathrm{cm}$）\n\n（3）$\\mu$ 加倍，半价层减半 $x'_{1/2}=1.16\\,\\mathrm{cm}$，仍减至 0.25 需 2 个半价层：$x'=2.31\\,\\mathrm{cm}$",
+      "hint": "朗伯定律 $I=I_0 e^{-\\mu x}$；$x_{1/2}=0.693/\\mu$；$I/I_0=(1/2)^n$ 对应 $n$ 个半价层。",
+      "scoring_criteria": [
+        "正确求 $x_{1/2}=2.31\\,\\mathrm{cm}$（3分）",
+        "正确求 $x=4.62\\,\\mathrm{cm}$（4分）",
+        "正确分析 $\\mu$ 加倍时所需厚度 $x'=2.31\\,\\mathrm{cm}$（3分）"
+      ],
+      "explanation": "本题考查朗伯定律与半价层，与 14.1 节例题及详解 EX13、EX21 一致。$0.25I_0$ 即 $(1/2)^2$，对应 2 个半价层。易错：混淆线性衰减系数 $\\mu$ 与质量衰减系数 $\\mu_m$；$\\ln(0.25)$ 符号弄错。",
+      "sourceRef": {
+        "path": "content/physics/detail/14.1.md",
+        "label": "14.1 X 射线指数衰减"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "简答题",
+      "stem": "简答题：简述三能级激光器中实现粒子数反转的过程，并说明为何正常情况下无法实现激光、需要哪些必要条件才能产生激光。",
+      "answer": "**三能级系统粒子数反转过程**：\n\n基态 $E_1$、激光上能级 $E_2$（亚稳态）、泵浦态 $E_3$。泵浦将粒子从 $E_1$ 抽到 $E_3$，$E_3\\to E_2$ 快速无辐射跃迁，粒子在 $E_2$ 积累；当 $N_2>N_1$ 时实现**粒子数反转**，$E_2\\to E_1$ 的**受激辐射**占主导，产生激光。\n\n**正常情况下不能产生激光的原因**：按玻尔兹曼分布，低能态 $N_1\\gg N_2$，受激吸收占主导，光子被吸收而非放大。\n\n**产生激光的必要条件**：\n1. **粒子数反转**（$N_2>N_1$）\n2. **合适的激活物质**（含亚稳态能级）\n3. **激励能源**（泵浦）\n4. **光学谐振腔**（选频、选方向、维持振荡）",
+      "hint": "三能级：$E_1$（基态）$\\leftarrow E_2$（亚稳态，激光上能级）$\\leftarrow E_3$（泵浦态）；粒子数反转 + 激活物质 + 泵浦 + 谐振腔。",
+      "scoring_criteria": [
+        "正确描述三能级泵浦、无辐射跃迁及 $N_2>N_1$ 的粒子数反转过程（4分）",
+        "正确说明正常分布下受激吸收占主导、不能产生激光（3分）",
+        "列出粒子数反转、激活物质、泵浦、谐振腔四项必要条件（3分）"
+      ],
+      "explanation": "本题与 14.2 节三能级系统及详解 EX01、EX04、EX05 一致。He-Ne 激光器为四能级系统的典型，但三能级原理更直观展示亚稳态积累。易错：漏写谐振腔；混淆自发辐射与受激辐射；认为仅有泵浦即可产生激光。",
+      "sourceRef": {
+        "path": "content/physics/detail/14.2.md",
+        "label": "14.2 三能级激光器与粒子数反转"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "综合题",
+      "stem": "综合题：比较 X 射线与激光在产生机制、物理特性及医学应用方面的异同，并各举一例说明其在现代医学中的典型用途。",
+      "answer": "**产生机制**：\n- X 射线：高速电子轰击靶（轫致辐射→连续谱）或内层电子跃迁（标识线）；相干性差\n- 激光：受激辐射 + 光学谐振腔放大；相干性好\n\n**物理特性对比**：\n| | X 射线 | 激光 |\n|---|--------|------|\n| 波长 | ~0.01–10 nm | 可见/红外/紫外（如 632.8 nm） |\n| 相干性 | 差 | 极好（相干长度可达 km 级） |\n| 方向性 | 较差 | 极好 |\n| 穿透力 | 强（电离能力强） | 取决于波长，可见/红外穿透软组织有限 |\n\n**医学应用举例**：\n- **X 射线**：X-CT 体层成像（CT 值以水为 0 Hu，多角度投影重建）；普通摄影/透视\n- **激光**：Nd:YAG 激光（1064 nm）眼科凝固；CO₂ 激光（10.6 μm）组织切割；准分子激光（193 nm）角膜屈光手术\n\n**互补关系**：X 射线擅长深层结构成像（骨、肺）；激光擅长精准局部治疗与光学检测（OCT 等）。",
+      "hint": "X 射线：轫致辐射/内层跃迁，穿透、电离；激光：受激辐射，相干、定向、单色；CT vs 激光手术/OCT。",
+      "scoring_criteria": [
+        "正确对比产生机制（轫致辐射/标识线 vs 受激辐射+谐振腔）（3分）",
+        "正确对比至少三项物理特性（波长、相干性、方向性、穿透力等）（4分）",
+        "各举一例医学应用并说明（X-CT/摄影 vs 激光手术/眼科等）（3分）"
+      ],
+      "explanation": "本题综合 14.1 与 14.2 节，呼应教材中 X 射线与激光两条医学物理技术主线。X 射线靠电离与穿透做诊断影像；激光靠能量集中与相干性做精准治疗。易错：混淆两者波长范围；认为激光穿透力一定强于 X 射线。",
+      "sourceRef": {
+        "path": "content/physics/detail/14.1.md",
+        "label": "14.1–14.2 X 射线与激光医学应用对比"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch13",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：某放射性核素初始活度 $A_0=3.7\\times10^{10}\\,\\mathrm{Bq}$（约 1 Ci），半衰期 $T=30\\,\\mathrm{年}$。（1）求衰变常数 $\\lambda$；（2）求 $t=60\\,\\mathrm{年}$ 时的活度 $A$ 及剩余核数比例 $N/N_0$；（3）活度减至 $A_0$ 的 12.5% 需时多久？",
+      "answer": "（1）$\\lambda=\\dfrac{\\ln2}{T}=\\dfrac{0.693}{30\\,\\mathrm{yr}}=0.0231\\,\\mathrm{yr^{-1}}$\n\n（2）$t=60\\,\\mathrm{yr}=2T$，$A=A_0\\left(\\dfrac{1}{2}\\right)^2=\\dfrac{3.7\\times10^{10}}{4}=9.25\\times10^9\\,\\mathrm{Bq}$\n$N/N_0=A/A_0=1/4=0.25$\n\n（3）12.5%$=(1/2)^3$，需 **3 个半衰期**，$t=3T=90\\,\\mathrm{年}$",
+      "hint": "$\\lambda=0.693/T$；$A=A_0 e^{-\\lambda t}=A_0(1/2)^{t/T}$；12.5% 对应 3 个半衰期。",
+      "scoring_criteria": [
+        "正确求 $\\lambda=0.0231\\,\\mathrm{yr^{-1}}$（3分）",
+        "正确求 $A=9.25\\times10^9\\,\\mathrm{Bq}$，$N/N_0=0.25$（4分）",
+        "正确判断需 3 个半衰期、$t=90\\,\\mathrm{年}$（3分）"
+      ],
+      "explanation": "本题与 13.2 节半衰期例题一致。活度 $A=\\lambda N$，与核数同步指数衰减。12.5%=$ (1/2)^3$ 是核物理考题高频结论。易错：$t/T$ 计算错误；活度与核数比例混淆（二者同步衰减，比例相同）。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.2.md",
+        "label": "13.2 衰变常数、活度与半衰期计算"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch12",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：钠金属逸出功 $W=2.30\\,\\mathrm{eV}$，波长 $\\lambda=400\\,\\mathrm{nm}$ 的紫光照射。（1）求入射光子能量 $h\\nu$（eV）及光电子最大初动能 $E_{k,\\max}$；（2）求遏止电压 $U_a$；（3）波长 $\\lambda_0=0.050\\,\\mathrm{nm}$ 的 X 射线在碳上康普顿散射，散射角 $\\theta=90°$，求波长改变量 $\\Delta\\lambda$。（$hc=1240\\,\\mathrm{eV\\cdot nm}$，$\\lambda_C=2.43\\times10^{-12}\\,\\mathrm{m}$）",
+      "answer": "（1）$h\\nu=\\dfrac{hc}{\\lambda}=\\dfrac{1240}{400}=3.10\\,\\mathrm{eV}$\n$E_{k,\\max}=h\\nu-W=3.10-2.30=0.80\\,\\mathrm{eV}$\n\n（2）$U_a=\\dfrac{E_{k,\\max}}{e}=0.80\\,\\mathrm{V}$\n\n（3）$\\Delta\\lambda=\\lambda_C(1-\\cos\\theta)=2.43\\times10^{-12}\\times(1-0)=2.43\\,\\mathrm{pm}$\n（$\\theta=90°$ 时 $\\Delta\\lambda=\\lambda_C$）",
+      "hint": "光电方程 $h\\nu=W+E_{k,\\max}$，$U_a=E_{k,\\max}/e$；康普顿 $\\Delta\\lambda=\\lambda_C(1-\\cos\\theta)$，$\\lambda_C=h/(m_0 c)$。",
+      "scoring_criteria": [
+        "正确求 $h\\nu=3.10\\,\\mathrm{eV}$ 和 $E_{k,\\max}=0.80\\,\\mathrm{eV}$（4分）",
+        "正确求 $U_a=0.80\\,\\mathrm{V}$（2分）",
+        "正确求 $\\Delta\\lambda=2.43\\,\\mathrm{pm}$（4分）"
+      ],
+      "explanation": "本题综合 ch12 光电效应与康普顿效应，与 12.1 节钾光电例题及康普顿例题一致。光电：一个光子被一个电子一次性吸收；康普顿：光子与自由电子弹性碰撞，$\\Delta\\lambda$ 只与 $\\theta$ 有关。易错：$h\\nu$ 单位换算；$\\theta=90°$ 时 $1-\\cos\\theta=1$ 漏算；混淆光电（光子消失）与康普顿（波长变长）。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.1.md",
+        "label": "12.1 光电效应与康普顿散射计算"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch11",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：杨氏双缝实验 $D=1.50\\,\\mathrm{m}$，缝距 $d=0.60\\,\\mathrm{mm}$，相邻明纹间距 $\\Delta x=1.50\\,\\mathrm{mm}$。（1）求入射光波长 $\\lambda$；（2）用折射率 $n=1.30$、厚度 $l=0.010\\,\\mathrm{mm}$ 的薄膜遮住其中一缝后，原中央明纹处光程差增加 $(n-1)l$，变为第几级明纹？（3）光栅常数 $d_g=3.33\\,\\mu\\mathrm{m}$，同波长垂直入射，求最高可见级次 $k_{\\max}$ 及明纹总数（不考虑缺级）。",
+      "answer": "（1）$\\lambda=\\dfrac{d\\Delta x}{D}=\\dfrac{0.60\\times10^{-3}\\times1.50\\times10^{-3}}{1.50}=600\\,\\mathrm{nm}$\n\n（2）光程差增量 $\\delta=(n-1)l=(1.30-1)\\times0.010\\,\\mathrm{mm}=0.0030\\,\\mathrm{mm}$\n由 $\\delta=k\\lambda$：$k=\\dfrac{0.0030\\times10^{-3}}{600\\times10^{-9}}=5$，变为第 **5 级明纹**\n\n（3）$k_{\\max}=\\lfloor d_g/\\lambda\\rfloor=\\lfloor3.33\\times10^{-6}/600\\times10^{-9}\\rfloor=\\lfloor5.55\\rfloor=5$\n明纹总数：$k=0,\\pm1,\\pm2,\\pm3,\\pm4,\\pm5$，共 **11 条**",
+      "hint": "由 $\\Delta x=D\\lambda/d$ 反求 $\\lambda$；薄膜 $(n-1)l=k\\lambda$；光栅 $k_{\\max}=d/\\lambda$（$\\sin\\theta\\leq1$）。",
+      "scoring_criteria": [
+        "正确求 $\\lambda=600\\,\\mathrm{nm}$（3分）",
+        "正确求薄膜引起第 5 级明纹（4分）",
+        "正确求 $k_{\\max}=5$ 及明纹总数 11 条（3分）"
+      ],
+      "explanation": "本题综合 ch11 杨氏双缝干涉与光栅衍射，与 11.1 节薄膜例题（$k=5$）及 11.2 节光栅总明纹数例题一致。薄膜遮住一缝增加光程差 $(n-1)l$，原中央明纹处 $\\delta$ 从 0 变为 $(n-1)l$。光栅 $k_{\\max}=d/\\lambda$ 取整数部分。易错：$d$、$D$ 单位未统一；光栅计数漏掉 $k=0$。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.1.md",
+        "label": "11.1–11.2 干涉与光栅综合计算"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": {
+      "single_choice": 10,
+      "essay": 7
+    },
+    "bySource": {
+      "current_chapter": 9,
+      "review": 8
+    },
+    "byDifficulty": {
+      "basic": 12,
+      "medium": 3,
+      "hard": 2
+    },
+    "byPoints": {
+      "current_chapter": 50,
+      "review": 50
+    }
+  }
+}

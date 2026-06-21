@@ -1,0 +1,414 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch08",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "质子在 $B=0.50\\,\\mathrm{T}$ 的均匀磁场中垂直于 $\\mathbf{B}$ 运动，速率 $v=6.0\\times10^6\\,\\mathrm{m\\cdot s^{-1}}$，所受洛伦兹力大小约为（　）。",
+      "options": [
+        "$4.8\\times10^{-16}\\,\\mathrm{N}$",
+        "$1.9\\times10^{-13}\\,\\mathrm{N}$",
+        "$4.8\\times10^{-19}\\,\\mathrm{N}$",
+        "$9.6\\times10^{-16}\\,\\mathrm{N}$"
+      ],
+      "answer": 0,
+      "hint": "$\\mathbf{v}\\perp\\mathbf{B}$ 时 $F=qvB$；质子 $q=1.6\\times10^{-19}\\,\\mathrm{C}$。",
+      "explanation": "A 正确：$F=qvB=1.6\\times10^{-19}\\times6.0\\times10^6\\times0.50=4.8\\times10^{-16}\\,\\mathrm{N}$，与 8.1 节例题一致。B 错：多乘了 $10^3$ 倍。C 错：误用 $F=qv$ 未乘 $B$。D 错：电荷或速度代入错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.1.md",
+        "label": "8.1 洛伦兹力与磁感应强度"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "无限长直导线通稳恒电流 $I=10\\,\\mathrm{A}$，距导线垂直距离 $r=0.050\\,\\mathrm{m}$ 处磁感应强度大小约为（　）。",
+      "options": [
+        "$4.0\\times10^{-5}\\,\\mathrm{T}$",
+        "$2.0\\times10^{-5}\\,\\mathrm{T}$",
+        "$8.0\\times10^{-5}\\,\\mathrm{T}$",
+        "$1.6\\times10^{-4}\\,\\mathrm{T}$"
+      ],
+      "answer": 0,
+      "hint": "无限长直导线 $B=\\dfrac{\\mu_0 I}{2\\pi r}$，$\\mu_0=4\\pi\\times10^{-7}\\,\\mathrm{T\\cdot m/A}$。",
+      "explanation": "A 正确：$B=\\dfrac{4\\pi\\times10^{-7}\\times10}{2\\pi\\times0.050}=4.0\\times10^{-5}\\,\\mathrm{T}$。B 错：误用半无限长公式 $B=\\mu_0 I/(4\\pi r)$。C 错：$r$ 代入 $0.025\\,\\mathrm{m}$。D 错：漏除 $2\\pi$。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.2.md",
+        "label": "8.2 无限长直导线磁场"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "无限长螺线管单位长度匝数 $n=1000\\,\\mathrm{m^{-1}}$，通电流 $I=2.0\\,\\mathrm{A}$，管内磁感应强度约为（　）。",
+      "options": [
+        "$2.5\\times10^{-3}\\,\\mathrm{T}$",
+        "$1.3\\times10^{-3}\\,\\mathrm{T}$",
+        "$5.0\\times10^{-3}\\,\\mathrm{T}$",
+        "$2.5\\times10^{-6}\\,\\mathrm{T}$"
+      ],
+      "answer": 0,
+      "hint": "无限长螺线管内 $B=\\mu_0 nI$，方向沿轴线。",
+      "explanation": "A 正确：$B=\\mu_0 nI=4\\pi\\times10^{-7}\\times1000\\times2.0\\approx2.51\\times10^{-3}\\,\\mathrm{T}$。B 错：用了半无限长管口公式 $B=\\mu_0 nI/2$。C 错：多乘了 2 倍。D 错：$\\mu_0$ 数量级错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.3.md",
+        "label": "8.3 无限长螺线管"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "电子以 $v=3.0\\times10^6\\,\\mathrm{m\\cdot s^{-1}}$ 垂直进入 $B=0.50\\,\\mathrm{T}$ 的均匀磁场，作匀速圆周运动，回旋半径约为（　）。",
+      "options": [
+        "$3.4\\times10^{-5}\\,\\mathrm{m}$",
+        "$3.4\\times10^{-3}\\,\\mathrm{m}$",
+        "$6.8\\times10^{-5}\\,\\mathrm{m}$",
+        "$1.7\\times10^{-5}\\,\\mathrm{m}$"
+      ],
+      "answer": 0,
+      "hint": "$\\mathbf{v}\\perp\\mathbf{B}$ 时 $R=\\dfrac{mv}{|q|B}$；电子 $m=9.1\\times10^{-31}\\,\\mathrm{kg}$，$|q|=1.6\\times10^{-19}\\,\\mathrm{C}$。",
+      "explanation": "A 正确：$R=\\dfrac{9.1\\times10^{-31}\\times3.0\\times10^6}{1.6\\times10^{-19}\\times0.50}\\approx3.4\\times10^{-5}\\,\\mathrm{m}$。B 错：$B$ 或 $v$ 数量级错误。C 错：用了质子质量。D 错：$R$ 公式中漏乘 $v$ 或 $B$。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.4.md",
+        "label": "8.4 洛伦兹力圆周运动"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "铜片厚度 $d=2.0\\,\\mathrm{mm}$，置于 $B=3.0\\,\\mathrm{T}$ 的匀强磁场中（$\\mathbf{I}\\perp\\mathbf{B}$），载流子浓度 $n=8.4\\times10^{22}\\,\\mathrm{cm^{-3}}$，通电流 $I=200\\,\\mathrm{A}$，霍尔电压 $U_H$ 约为（　）。",
+      "options": [
+        "$2.2\\times10^{-5}\\,\\mathrm{V}$",
+        "$2.2\\times10^{-2}\\,\\mathrm{V}$",
+        "$4.4\\times10^{-5}\\,\\mathrm{V}$",
+        "$1.1\\times10^{-5}\\,\\mathrm{V}$"
+      ],
+      "answer": 0,
+      "hint": "$U_H=\\dfrac{IB}{nqd}$，注意 $n$ 换算为 $\\mathrm{m^{-3}}$：$8.4\\times10^{22}\\,\\mathrm{cm^{-3}}=8.4\\times10^{28}\\,\\mathrm{m^{-3}}$。",
+      "explanation": "A 正确：$U_H=\\dfrac{200\\times3.0}{8.4\\times10^{28}\\times1.6\\times10^{-19}\\times2.0\\times10^{-3}}\\approx2.2\\times10^{-5}\\,\\mathrm{V}$，与详解 EX05 一致。B 错：$d$ 未换算为 m。C 错：$n$ 单位未换算。D 错：漏乘 $B$ 或 $I$。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.4.md",
+        "label": "8.4 霍尔效应"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "真空中两点电荷 $q_1=+2.0\\times10^{-6}\\,\\mathrm{C}$、$q_2=-4.0\\times10^{-6}\\,\\mathrm{C}$，相距 $r=0.30\\,\\mathrm{m}$，它们之间的库仑力大小约为（　）。",
+      "options": [
+        "$0.80\\,\\mathrm{N}$",
+        "$0.40\\,\\mathrm{N}$",
+        "$1.60\\,\\mathrm{N}$",
+        "$0.20\\,\\mathrm{N}$"
+      ],
+      "answer": 0,
+      "hint": "$F=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{|q_1 q_2|}{r^2}$，$k=9.0\\times10^9\\,\\mathrm{N\\cdot m^2/C^2}$。",
+      "explanation": "A 正确：$F=9.0\\times10^9\\times\\dfrac{2.0\\times10^{-6}\\times4.0\\times10^{-6}}{0.30^2}=0.80\\,\\mathrm{N}$，异号相吸但大小如此。B 错：只算了一个电荷贡献。C 错：$r$ 误用 $0.15\\,\\mathrm{m}$。D 错：$q$ 或 $k$ 代入错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.1.md",
+        "label": "7.1 库仑定律"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "关于静电场高斯定理 $\\displaystyle\\oint_S\\mathbf{E}\\cdot\\mathrm{d}\\mathbf{S}=\\dfrac{Q_{\\mathrm{enc}}}{\\varepsilon_0}$，下列说法正确的是（　）。",
+      "options": [
+        "闭合曲面上的 $\\mathbf{E}$ 只由曲面内的电荷产生",
+        "穿过闭合曲面的电通量只与曲面内包围的电荷有关",
+        "只有具有球、柱或平面对称性的电场才能用高斯定理",
+        "曲面内无电荷时，曲面上各点 $\\mathbf{E}$ 必为零"
+      ],
+      "answer": 1,
+      "hint": "高斯定理恒成立；$S$ 上各点 $\\mathbf{E}$ 由全部电荷贡献，但净通量只与内部电荷有关。",
+      "explanation": "B 正确：$\\Phi_E$ 只取决于 $Q_{\\mathrm{enc}}$，外部电荷不改变净通量。A 错：$\\mathbf{E}$ 由全部电荷产生。C 错：定理对任意场成立，对称时便于求 $\\mathbf{E}$。D 错：内部可有等量异号电荷使面上 $\\mathbf{E}$ 非零但 $\\Phi_E=0$。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.2.md",
+        "label": "7.2 高斯定理物理意义"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "点电荷 $q=+3.0\\times10^{-8}\\,\\mathrm{C}$ 在真空中产生的电场，距电荷 $r=0.30\\,\\mathrm{m}$ 处电势约为（　）。",
+      "options": [
+        "$900\\,\\mathrm{V}$",
+        "$450\\,\\mathrm{V}$",
+        "$1800\\,\\mathrm{V}$",
+        "$-900\\,\\mathrm{V}$"
+      ],
+      "answer": 0,
+      "hint": "点电荷电势 $V=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r}$，正电荷 $V>0$。",
+      "explanation": "A 正确：$V=9.0\\times10^9\\times\\dfrac{3.0\\times10^{-8}}{0.30}=900\\,\\mathrm{V}$。B 错：$r$ 误用 $0.60\\,\\mathrm{m}$。C 错：$q$ 多乘 2 倍。D 错：正电荷电势应为正。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.3.md",
+        "label": "7.3 点电荷电势"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "一定量理想气体，初始 $p_1=1.0\\times10^5\\,\\mathrm{Pa}$、$V_1=4.0\\,\\mathrm{L}$、$T_1=300\\,\\mathrm{K}$，等温压缩至 $V_2=2.0\\,\\mathrm{L}$，最终压强 $p_2$ 为（　）。",
+      "options": [
+        "$2.0\\times10^5\\,\\mathrm{Pa}$",
+        "$1.0\\times10^5\\,\\mathrm{Pa}$",
+        "$4.0\\times10^5\\,\\mathrm{Pa}$",
+        "$1.5\\times10^5\\,\\mathrm{Pa}$"
+      ],
+      "answer": 0,
+      "hint": "等温过程 $p_1V_1=p_2V_2$（波义耳定律）。",
+      "explanation": "A 正确：$p_2=p_1V_1/V_2=1.0\\times10^5\\times4.0/2.0=2.0\\times10^5\\,\\mathrm{Pa}$。B 错：忽略体积变化。C 错：误用 $p_2=p_1V_1/V_2$ 中 $V$ 比例反了。D 错：误用 $p\\propto T$ 而非等温关系。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.1.md",
+        "label": "5.1 理想气体等温过程"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "平面简谐波在均匀介质中传播，波速 $u=340\\,\\mathrm{m\\cdot s^{-1}}$，波长 $\\lambda=0.68\\,\\mathrm{m}$，则频率 $\\nu$ 为（　）。",
+      "options": [
+        "$500\\,\\mathrm{Hz}$",
+        "$231\\,\\mathrm{Hz}$",
+        "$680\\,\\mathrm{Hz}$",
+        "$250\\,\\mathrm{Hz}$"
+      ],
+      "answer": 0,
+      "hint": "$u=\\lambda\\nu$，故 $\\nu=u/\\lambda$。",
+      "explanation": "A 正确：$\\nu=\\dfrac{340}{0.68}=500\\,\\mathrm{Hz}$。B 错：误用 $\\nu=\\lambda/u$。C 错：把 $\\lambda$ 当作频率相关量直接代入。D 错：$u$ 或 $\\lambda$ 换算错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.1.md",
+        "label": "4.1 波速、波长与频率"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：半径 $R=0.20\\,\\mathrm{m}$、阻值 $200\\,\\Omega$ 的圆形电流回路接在 $12\\,\\mathrm{V}$ 稳恒电压源上。求：（1）回路中的电流 $I$；（2）圆心处磁感应强度 $B$ 的大小。",
+      "answer": "（1）由欧姆定律\n$$I=\\frac{U}{R}=\\frac{12}{200}=0.060\\,\\mathrm{A}$$\n（2）圆电流圆心处\n$$B=\\frac{\\mu_0 I}{2R}=\\frac{4\\pi\\times10^{-7}\\times0.060}{2\\times0.20}=1.9\\times10^{-7}\\,\\mathrm{T}$$",
+      "hint": "圆环圆心 $B=\\mu_0 I/(2R)$；先由 $U=IR$ 求电流。",
+      "scoring_criteria": [
+        "正确求电流 $I=0.060\\,\\mathrm{A}$（3分）",
+        "写出圆心磁场公式 $B=\\mu_0 I/(2R)$（3分）",
+        "正确计算 $B=1.9\\times10^{-7}\\,\\mathrm{T}$（4分）"
+      ],
+      "explanation": "本题直接应用圆电流圆心公式，与详解 EX04 一致。常见错误：误用无限长直导线公式 $B=\\mu_0 I/(2\\pi r)$；$\\mu_0$ 数量级写错。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.2.md",
+        "label": "8.2 圆电流轴线上磁场"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：半径 $R=0.050\\,\\mathrm{m}$ 的无限长实心圆柱导体，通有总电流 $I=20\\,\\mathrm{A}$，电流在横截面上均匀分布。求：（1）柱内距轴线 $r=0.020\\,\\mathrm{m}$ 处 $P$ 点的 $B$；（2）柱外距轴线 $r=0.10\\,\\mathrm{m}$ 处 $Q$ 点的 $B$。",
+      "answer": "（1）$r<R$ 时 $I_{\\mathrm{enc}}=I(r/R)^2$，由安培环路定理\n$$B\\cdot2\\pi r=\\mu_0 I_{\\mathrm{enc}}=\\mu_0 I\\frac{r^2}{R^2}$$\n$$B=\\frac{\\mu_0 I r}{2\\pi R^2}=\\frac{4\\pi\\times10^{-7}\\times20\\times0.020}{2\\pi\\times0.050^2}=3.2\\times10^{-5}\\,\\mathrm{T}$$\n（2）$r>R$ 时\n$$B=\\frac{\\mu_0 I}{2\\pi r}=\\frac{4\\pi\\times10^{-7}\\times20}{2\\pi\\times0.10}=4.0\\times10^{-5}\\,\\mathrm{T}$$",
+      "hint": "取同轴圆为安培回路；内部 $I_{\\mathrm{enc}}=I(r/R)^2$，外部 $B=\\mu_0 I/(2\\pi r)$。",
+      "scoring_criteria": [
+        "正确写出内部 $I_{\\mathrm{enc}}=I(r/R)^2$ 及安培环路方程（3分）",
+        "正确计算 $P$ 点 $B=3.2\\times10^{-5}\\,\\mathrm{T}$（4分）",
+        "正确计算 $Q$ 点 $B=4.0\\times10^{-5}\\,\\mathrm{T}$（3分）"
+      ],
+      "explanation": "实心圆柱内外场强公式是安培环路定理的标准应用，与 8.3 节例题一致。易错：内部误用外部公式；$I_{\\mathrm{enc}}$ 未按面积比例计算。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.3.md",
+        "label": "8.3 无限长载流实心圆柱"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：质子以 $v=2.0\\times10^6\\,\\mathrm{m\\cdot s^{-1}}$ 垂直进入 $B=0.40\\,\\mathrm{T}$ 的均匀磁场，作匀速圆周运动。已知质子质量 $m_p=1.67\\times10^{-27}\\,\\mathrm{kg}$，电荷 $e=1.6\\times10^{-19}\\,\\mathrm{C}$。求：（1）回旋半径 $R$；（2）回旋周期 $T$；（3）回旋频率 $f$。",
+      "answer": "（1）$R=\\dfrac{m_p v}{eB}=\\dfrac{1.67\\times10^{-27}\\times2.0\\times10^6}{1.6\\times10^{-19}\\times0.40}=5.2\\times10^{-2}\\,\\mathrm{m}$\n（2）$T=\\dfrac{2\\pi m_p}{eB}=\\dfrac{2\\pi\\times1.67\\times10^{-27}}{1.6\\times10^{-19}\\times0.40}=1.6\\times10^{-7}\\,\\mathrm{s}$\n（3）$f=\\dfrac{1}{T}=\\dfrac{eB}{2\\pi m_p}=6.2\\times10^6\\,\\mathrm{Hz}$",
+      "hint": "$R=mv/(qB)$；$T=2\\pi m/(qB)$ 与 $v$ 无关；$f=1/T$。",
+      "scoring_criteria": [
+        "正确计算回旋半径 $R\\approx5.2\\times10^{-2}\\,\\mathrm{m}$（4分）",
+        "正确计算周期 $T\\approx1.6\\times10^{-7}\\,\\mathrm{s}$（3分）",
+        "正确计算频率 $f\\approx6.2\\times10^6\\,\\mathrm{Hz}$（3分）"
+      ],
+      "explanation": "洛伦兹力提供向心力 $qvB=mv^2/R$，得 $R=mv/(qB)$。周期 $T=2\\pi R/v=2\\pi m/(qB)$ 与速率无关——回旋加速器的基础。易错：用 $T=2\\pi R/v$ 时 $R$ 与 $v$ 有关但相消后 $T$ 与 $v$ 无关。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.4.md",
+        "label": "8.4 带电粒子圆周运动"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：半径 $R=0.10\\,\\mathrm{m}$ 的半圆形线圈通电流 $I=5.0\\,\\mathrm{A}$，置于与线圈平面平行、大小 $B=0.80\\,\\mathrm{T}$ 的均匀磁场中，线圈平面与 $\\mathbf{B}$ 夹角 $\\theta=30^\\circ$（$\\mathbf{m}$ 与 $\\mathbf{B}$ 夹角）。求：（1）线圈磁偶极矩 $m$ 的大小；（2）线圈所受磁力矩 $M$ 的大小；（3）力矩方向（使线圈如何转动）。",
+      "answer": "（1）有效面积 $S=\\dfrac{\\pi R^2}{2}=\\dfrac{\\pi\\times0.10^2}{2}=1.57\\times10^{-2}\\,\\mathrm{m^2}$\n$$m=IS=5.0\\times1.57\\times10^{-2}=7.85\\times10^{-2}\\,\\mathrm{A\\cdot m^2}$$\n（2）$M=mB\\sin\\theta=7.85\\times10^{-2}\\times0.80\\times\\sin30^\\circ=3.14\\times10^{-2}\\,\\mathrm{N\\cdot m}$$\n（3）磁力矩 $\\mathbf{M}=\\mathbf{m}\\times\\mathbf{B}$ 使线圈转向 $\\mathbf{m}$ 与 $\\mathbf{B}$ 平行的稳定平衡位置（$\\theta=0$），即减小 $\\mathbf{m}$ 与 $\\mathbf{B}$ 的夹角。",
+      "hint": "半圆面积 $S=\\pi R^2/2$；$M=mB\\sin\\theta$；稳定平衡时 $\\mathbf{m}\\parallel\\mathbf{B}$。",
+      "scoring_criteria": [
+        "正确求有效面积与磁矩 $m\\approx7.85\\times10^{-2}\\,\\mathrm{A\\cdot m^2}$（3分）",
+        "正确计算力矩 $M\\approx3.14\\times10^{-2}\\,\\mathrm{N\\cdot m}$（4分）",
+        "正确说明力矩使线圈转向 $\\mathbf{m}\\parallel\\mathbf{B}$ 的稳定平衡（3分）"
+      ],
+      "explanation": "半圆线圈有效面积为整圆之半，与详解 EX09 一致。易错：用整圆面积 $\\pi R^2$；$\\theta$ 取错（应用 $\\mathbf{m}$ 与 $\\mathbf{B}$ 夹角）；忽略 $\\sin\\theta$ 因子。均匀磁场中闭合线圈合力为零，但力矩一般非零。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.4.md",
+        "label": "8.4 载流线圈磁力矩"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：半径 $R=0.10\\,\\mathrm{m}$ 的均匀带电球面，总电量 $q=+2.0\\times10^{-8}\\,\\mathrm{C}$。用高斯定理求：（1）球面内 $r=0.050\\,\\mathrm{m}$ 处场强 $E$；（2）球面外 $r=0.30\\,\\mathrm{m}$ 处场强 $E$。",
+      "answer": "（1）$r<R$：$Q_{\\mathrm{enc}}=0$，由高斯定理 $E\\cdot4\\pi r^2=0$，故 $E=0$。\n（2）$r>R$：$Q_{\\mathrm{enc}}=q$，\n$$E\\cdot4\\pi r^2=\\frac{q}{\\varepsilon_0}$$\n$$E=\\frac{1}{4\\pi\\varepsilon_0}\\frac{q}{r^2}=9.0\\times10^9\\times\\frac{2.0\\times10^{-8}}{0.30^2}=2.0\\,\\mathrm{N\\cdot C^{-1}}$$",
+      "hint": "均匀带电球面：内部 $E=0$，外部等效于球心点电荷。",
+      "scoring_criteria": [
+        "正确判断球面内 $Q_{\\mathrm{enc}}=0$，$E=0$（4分）",
+        "正确写出球面外高斯定理方程（3分）",
+        "正确计算 $r=0.30\\,\\mathrm{m}$ 处 $E=2.0\\,\\mathrm{N\\cdot C^{-1}}$（3分）"
+      ],
+      "explanation": "均匀带电球面是 7.2 节标准模型：电荷全在球面上，内部无净电荷，场强为零；外部场强与球心处等量点电荷相同。易错：内部误用 $E=kq/r^2$；外部用 $R$ 而非 $r$ 代入。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.2.md",
+        "label": "7.2 均匀带电球面"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：容积 $V=5.0\\,\\mathrm{L}$ 的密闭容器内装有 $n=0.20\\,\\mathrm{mol}$ 理想气体，温度 $T=300\\,\\mathrm{K}$。已知 $R=8.31\\,\\mathrm{J\\cdot K^{-1}\\cdot mol^{-1}}$。求：（1）气体压强 $p$；（2）分子数密度 $N/V$（用 $\\mathrm{m^{-3}}$ 表示，$N_A=6.02\\times10^{23}\\,\\mathrm{mol^{-1}}$）。",
+      "answer": "（1）由 $pV=nRT$，$V=5.0\\times10^{-3}\\,\\mathrm{m^3}$\n$$p=\\frac{nRT}{V}=\\frac{0.20\\times8.31\\times300}{5.0\\times10^{-3}}=9.97\\times10^4\\,\\mathrm{Pa}\\approx1.0\\times10^5\\,\\mathrm{Pa}$$\n（2）$N=nN_A=0.20\\times6.02\\times10^{23}=1.20\\times10^{23}$\n$$\\frac{N}{V}=\\frac{1.20\\times10^{23}}{5.0\\times10^{-3}}=2.4\\times10^{25}\\,\\mathrm{m^{-3}}$$",
+      "hint": "$pV=nRT$，体积换算为 $\\mathrm{m^3}$；$N/V=nN_A/V$。",
+      "scoring_criteria": [
+        "正确写出 $pV=nRT$ 并换算体积（3分）",
+        "正确计算 $p\\approx1.0\\times10^5\\,\\mathrm{Pa}$（4分）",
+        "正确计算数密度 $N/V=2.4\\times10^{25}\\,\\mathrm{m^{-3}}$（3分）"
+      ],
+      "explanation": "理想气体状态方程 $pV=nRT$ 是 5.1 节核心公式。易错：$V$ 未从 L 换算为 $\\mathrm{m^3}$；混淆 $n$（物质的量）与 $N/V$（数密度）。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.1.md",
+        "label": "5.1 理想气体状态方程"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：沿 $x$ 轴正方向传播的平面简谐横波，振幅 $A=0.020\\,\\mathrm{m}$，波长 $\\lambda=0.40\\,\\mathrm{m}$，波速 $u=8.0\\,\\mathrm{m\\cdot s^{-1}}$，原点 $x=0$ 处振动方程 $y(0,t)=0.020\\cos(4\\pi t)\\,\\mathrm{m}$。求：（1）角频率 $\\omega$ 和波数 $k$；（2）波函数 $y(x,t)$；（3）$t=0.25\\,\\mathrm{s}$ 时 $x=0.20\\,\\mathrm{m}$ 处质点的位移 $y$。",
+      "answer": "（1）$\\omega=4\\pi\\,\\mathrm{rad\\cdot s^{-1}}$，$k=\\dfrac{2\\pi}{\\lambda}=\\dfrac{2\\pi}{0.40}=5\\pi\\,\\mathrm{rad\\cdot m^{-1}}$\n（2）沿 $x$ 正向传播：$y(x,t)=A\\cos(\\omega t-kx)=0.020\\cos(4\\pi t-5\\pi x)\\,\\mathrm{m}$\n（3）$y(0.20,0.25)=0.020\\cos(4\\pi\\times0.25-5\\pi\\times0.20)=0.020\\cos(\\pi-\\pi)=0.020\\cos0=0.020\\,\\mathrm{m}$",
+      "hint": "正向传播 $y=A\\cos(\\omega t-kx)$；$k=2\\pi/\\lambda$，$\\omega=2\\pi\\nu=u k$。",
+      "scoring_criteria": [
+        "正确求 $\\omega=4\\pi\\,\\mathrm{rad\\cdot s^{-1}}$ 和 $k=5\\pi\\,\\mathrm{rad\\cdot m^{-1}}$（3分）",
+        "正确写出波函数 $y=0.020\\cos(4\\pi t-5\\pi x)\\,\\mathrm{m}$（4分）",
+        "正确计算 $y(0.20,0.25)=0.020\\,\\mathrm{m}$（3分）"
+      ],
+      "explanation": "写波函数关键是判断传播方向：沿 $+x$ 用 $\\omega t-kx$，沿 $-x$ 用 $\\omega t+kx$。本题 $\\omega$ 已由原点振动方程给出。易错：传播方向搞反导致 $kx$ 符号错误；$k$ 与 $\\lambda$ 关系记错。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.1.md",
+        "label": "4.1 平面简谐波波函数"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": {
+      "single_choice": 10,
+      "essay": 7
+    },
+    "bySource": {
+      "current_chapter": 9,
+      "review": 8
+    },
+    "byDifficulty": {
+      "basic": 12,
+      "medium": 3,
+      "hard": 2
+    },
+    "byPoints": {
+      "current_chapter": 50,
+      "review": 50
+    }
+  }
+}

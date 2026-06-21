@@ -1,0 +1,417 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch11",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "杨氏双缝实验中，缝屏距 $D=1.0\\,\\mathrm{m}$，双缝间距 $d=0.20\\,\\mathrm{mm}$，入射光波长 $\\lambda=600\\,\\mathrm{nm}$，相邻明纹间距 $\\Delta x$ 约为（　）。",
+      "options": [
+        "$0.30\\,\\mathrm{mm}$",
+        "$3.0\\,\\mathrm{mm}$",
+        "$6.0\\,\\mathrm{mm}$",
+        "$12\\,\\mathrm{mm}$"
+      ],
+      "answer": 1,
+      "hint": "条纹间距 $\\Delta x=\\dfrac{D\\lambda}{d}$；注意 $d$、$\\lambda$ 单位统一为 m。",
+      "explanation": "B 正确：$\\Delta x=\\dfrac{1.0\\times600\\times10^{-9}}{0.20\\times10^{-3}}=3.0\\times10^{-3}\\,\\mathrm{m}=3.0\\,\\mathrm{mm}$。A 错：$d$ 误取 $2.0\\,\\mathrm{mm}$。C 错：$D$ 误取 $2.0\\,\\mathrm{m}$。D 错：$\\lambda$ 误取 $1200\\,\\mathrm{nm}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.1.md",
+        "label": "11.1 杨氏双缝条纹间距"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "下列关于相干光的表述，正确的是（　）。",
+      "options": [
+        "普通白炽灯发出的光可直接用于稳定干涉实验",
+        "两列光相干需频率相同、振动方向相同、相位差恒定",
+        "相干光只需频率相同，相位差可以任意变化",
+        "半波损失发生在光从光密介质射向光疏介质反射时"
+      ],
+      "answer": 1,
+      "hint": "相干三条件：同频、同向、恒定相位差；半波损失发生在光疏→光密反射。",
+      "explanation": "B 正确：普通光源各原子发光随机间歇，不满足恒定相位差，需分波面法获得相干光。A 错：白炽灯非相干光源。C 错：相位差必须恒定。D 错：半波损失发生在光疏→光密反射，而非光密→光疏。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.1.md",
+        "label": "11.1 相干条件与半波损失"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "波长 $\\lambda=546\\,\\mathrm{nm}$ 的平行光垂直照射缝宽 $a=0.437\\,\\mathrm{mm}$ 的单缝，第一级暗纹对应的衍射角 $\\theta$（$a\\sin\\theta=\\lambda$）约为（　）。",
+      "options": [
+        "$0.072°$",
+        "$0.72°$",
+        "$7.2°$",
+        "$72°$"
+      ],
+      "answer": 1,
+      "hint": "单缝暗纹 $a\\sin\\theta=k\\lambda$（$k=\\pm1,\\pm2,\\ldots$）；小角时 $\\sin\\theta\\approx\\theta$（rad）。",
+      "explanation": "B 正确：$\\sin\\theta=\\dfrac{\\lambda}{a}=\\dfrac{546\\times10^{-9}}{0.437\\times10^{-3}}\\approx1.25\\times10^{-3}$，$\\theta\\approx0.072\\,\\mathrm{rad}\\approx0.72°$。A 错：角度单位换算错误。C 错：$a$ 少除 10 倍。D 错：$\\lambda$ 与 $a$ 量级弄反。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.2.md",
+        "label": "11.2 单缝夫琅禾费衍射暗纹条件"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "波长 $\\lambda=600\\,\\mathrm{nm}$ 的单色光垂直入射光栅，第 2 级明纹 $\\sin\\theta=0.20$，且第 4 级缺级。光栅常数 $d$ 与缝宽 $a$ 分别为（　）。",
+      "options": [
+        "$d=6.0\\,\\mu\\mathrm{m}$，$a=1.5\\,\\mu\\mathrm{m}$",
+        "$d=3.0\\,\\mu\\mathrm{m}$，$a=0.75\\,\\mu\\mathrm{m}$",
+        "$d=6.0\\,\\mu\\mathrm{m}$，$a=3.0\\,\\mu\\mathrm{m}$",
+        "$d=1.2\\,\\mu\\mathrm{m}$，$a=0.30\\,\\mu\\mathrm{m}$"
+      ],
+      "answer": 0,
+      "hint": "光栅方程 $d\\sin\\theta=k\\lambda$；第 4 级缺级时 $d/a=4$。",
+      "explanation": "A 正确：$d=\\dfrac{k\\lambda}{\\sin\\theta}=\\dfrac{2\\times600\\times10^{-9}}{0.20}=6.0\\times10^{-6}\\,\\mathrm{m}$；第 4 级缺级 $\\Rightarrow d/a=4$，$a=d/4=1.5\\,\\mu\\mathrm{m}$。B 错：$d$ 对应 $k=1$ 级。C 错：$a=d/2$ 对应第 2 级缺级。D 错：$\\sin\\theta$ 代入错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.2.md",
+        "label": "11.2 光栅方程与缺级条件"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "强度为 $I_0$ 的线偏振光通过检偏器，检偏器透振方向与入射光振动方向夹角 $\\theta=30°$，透射光强 $I$ 为（　）。",
+      "options": [
+        "$I_0/4$",
+        "$3I_0/4$",
+        "$I_0/2$",
+        "$\\sqrt{3}\\,I_0/2$"
+      ],
+      "answer": 1,
+      "hint": "马吕斯定律 $I=I_0\\cos^2\\theta$；$\\cos30°=\\sqrt{3}/2$。",
+      "explanation": "B 正确：$I=I_0\\cos^2 30°=I_0\\times\\dfrac{3}{4}=\\dfrac{3I_0}{4}$。A 错：$I_0/4$ 对应 $\\theta=60°$。C 错：$I_0/2$ 是自然光过偏振片或 $\\theta=45°$ 的结果。D 错：误用 $\\cos\\theta$ 而非 $\\cos^2\\theta$。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.3.md",
+        "label": "11.3 马吕斯定律"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch10",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "光从折射率 $n_1=1.50$ 的玻璃射向空气（$n_2=1.00$），在玻璃—空气界面上发生全反射的临界角 $\\theta_c$ 约为（　）。",
+      "options": [
+        "$30.0°$",
+        "$41.8°$",
+        "$48.6°$",
+        "$56.3°$"
+      ],
+      "answer": 1,
+      "hint": "全反射临界角 $\\sin\\theta_c=n_2/n_1$（光从光密介质射向光疏介质）；$\\theta_c=\\arcsin(1/1.50)$。",
+      "explanation": "B 正确：$\\sin\\theta_c=\\dfrac{n_2}{n_1}=\\dfrac{1.00}{1.50}=\\dfrac{2}{3}$，故 $\\theta_c=\\arcsin(2/3)\\approx41.8°$。A 错：$\\sin30°=1/2$，对应 $n_1=2$ 的情形。C 错：$48.6°$ 对应 $\\sin\\theta_c\\approx0.75$。D 错：$56.3°$ 为空气→玻璃的布儒斯特角，非全反射临界角。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.1.md",
+        "label": "10.1 全反射临界角"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch10",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "空气中薄凸透镜焦距 $f=20\\,\\mathrm{cm}$，实物置于透镜左侧 $u=30\\,\\mathrm{cm}$ 处，由薄透镜高斯公式 $\\dfrac{1}{u}+\\dfrac{1}{v}=\\dfrac{1}{f}$ 可得像距 $v$ 及像的性质为（　）。",
+      "options": [
+        "$v=60\\,\\mathrm{cm}$，倒立实像",
+        "$v=-60\\,\\mathrm{cm}$，正立虚像",
+        "$v=12\\,\\mathrm{cm}$，倒立实像",
+        "$v=-12\\,\\mathrm{cm}$，正立虚像"
+      ],
+      "answer": 0,
+      "hint": "代入 $\\dfrac{1}{30}+\\dfrac{1}{v}=\\dfrac{1}{20}$ 求 $v$；$v>0$ 为实像，$v<0$ 为虚像。",
+      "explanation": "A 正确：$\\dfrac{1}{v}=\\dfrac{1}{20}-\\dfrac{1}{30}=\\dfrac{1}{60}$，$v=60\\,\\mathrm{cm}>0$，为透镜右侧倒立实像。B 错：$v$ 符号错误，$u>2f$ 时凸透镜成实像。C、D 错：$v=12\\,\\mathrm{cm}$ 对应 $u=60\\,\\mathrm{cm}$ 的情形。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.2.md",
+        "label": "10.2 薄透镜高斯公式"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch09",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "$N=150$ 匝线圈，穿过每匝的磁通量 $\\Phi_B=0.04t\\,\\mathrm{Wb}$（$t$ 以 s 计），回路电阻不计，则感应电动势的大小为（　）。",
+      "options": [
+        "$4.0\\,\\mathrm{V}$",
+        "$6.0\\,\\mathrm{V}$",
+        "$8.0\\,\\mathrm{V}$",
+        "$60\\,\\mathrm{V}$"
+      ],
+      "answer": 1,
+      "hint": "法拉第定律 $\\varepsilon_i=-N\\dfrac{\\mathrm{d}\\Phi_B}{\\mathrm{d}t}$；$\\Phi_B=0.04t$ 时 $|\\varepsilon_i|=N\\times0.04$。",
+      "explanation": "B 正确：$\\dfrac{\\mathrm{d}\\Phi_B}{\\mathrm{d}t}=0.04\\,\\mathrm{Wb/s}$，$|\\varepsilon_i|=150\\times0.04=6.0\\,\\mathrm{V}$。A 错：漏乘匝数 $N$ 或 $N=100$。C 错：多乘了 $\\dfrac{4}{3}$ 倍。D 错：误将 $\\Phi_B$ 本身而非变化率代入。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.1.md",
+        "label": "9.1 法拉第电磁感应定律"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch09",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "自感系数 $L=0.50\\,\\mathrm{H}$ 的线圈，电流在 $0.25\\,\\mathrm{s}$ 内由 $0$ 均匀增至 $4.0\\,\\mathrm{A}$，自感电动势 $|\\varepsilon_L|$ 为（　）。",
+      "options": [
+        "$2.0\\,\\mathrm{V}$",
+        "$4.0\\,\\mathrm{V}$",
+        "$8.0\\,\\mathrm{V}$",
+        "$16\\,\\mathrm{V}$"
+      ],
+      "answer": 2,
+      "hint": "自感电动势 $|\\varepsilon_L|=L\\dfrac{\\mathrm{d}i}{\\mathrm{d}t}$；均匀变化时 $\\dfrac{\\mathrm{d}i}{\\mathrm{d}t}=\\dfrac{\\Delta i}{\\Delta t}$。",
+      "explanation": "C 正确：$\\dfrac{\\mathrm{d}i}{\\mathrm{d}t}=\\dfrac{4.0}{0.25}=16\\,\\mathrm{A/s}$，$|\\varepsilon_L|=0.50\\times16=8.0\\,\\mathrm{V}$。A 错：$\\Delta t$ 误取 $1.0\\,\\mathrm{s}$。B 错：漏乘 $L$ 或 $\\mathrm{d}i/\\mathrm{d}t$ 计算错误。D 错：$L$ 误取 $1.0\\,\\mathrm{H}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.3.md",
+        "label": "9.3 自感电动势"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch08",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "无限长直导线通电流 $I=5.0\\,\\mathrm{A}$，距导线垂直距离 $a=0.20\\,\\mathrm{m}$ 处磁感应强度大小为（　）。（$\\mu_0=4\\pi\\times10^{-7}\\,\\mathrm{T\\cdot m/A}$）",
+      "options": [
+        "$2.5\\times10^{-5}\\,\\mathrm{T}$",
+        "$5.0\\times10^{-6}\\,\\mathrm{T}$",
+        "$1.0\\times10^{-5}\\,\\mathrm{T}$",
+        "$2.0\\times10^{-6}\\,\\mathrm{T}$"
+      ],
+      "answer": 1,
+      "hint": "无限长直导线 $B=\\dfrac{\\mu_0 I}{2\\pi a}$；$\\mu_0/(2\\pi)=2\\times10^{-7}$。",
+      "explanation": "B 正确：$B=\\dfrac{4\\pi\\times10^{-7}\\times5.0}{2\\pi\\times0.20}=\\dfrac{20\\times10^{-7}}{0.40}=5.0\\times10^{-6}\\,\\mathrm{T}$。A 错：$a$ 误取 $0.10\\,\\mathrm{m}$。C 错：$I$ 误取 $2.0\\,\\mathrm{A}$。D 错：$a$ 误取 $0.50\\,\\mathrm{m}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.3.md",
+        "label": "8.3 安培环路定理（无限长直导线）"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：杨氏双缝实验中，双缝间距 $d=0.60\\,\\mathrm{mm}$，缝到观察屏距离 $D=1.50\\,\\mathrm{m}$，用钠光 $\\lambda=589.3\\,\\mathrm{nm}$ 照射。求：（1）相邻明纹间距 $\\Delta x$；（2）第 3 级明纹中心与中央明纹中心的距离 $x_3$；（3）第 3 级暗纹中心与中央明纹中心的距离 $x_3'$。",
+      "answer": "（1）$\\Delta x=\\dfrac{D\\lambda}{d}=\\dfrac{1.50\\times589.3\\times10^{-9}}{0.60\\times10^{-3}}=1.47\\times10^{-3}\\,\\mathrm{m}\\approx1.47\\,\\mathrm{mm}$\n\n（2）第 3 级明纹：$\\delta=3\\lambda$，$x_3=3\\Delta x=3\\times1.47=4.41\\,\\mathrm{mm}$\n\n（3）第 3 级暗纹：$\\delta=(2\\times3+1)\\dfrac{\\lambda}{2}=\\dfrac{7\\lambda}{2}$，$x_3'=\\dfrac{7}{2}\\Delta x=\\dfrac{7}{2}\\times1.47\\approx5.15\\,\\mathrm{mm}$",
+      "hint": "$\\Delta x=\\dfrac{D\\lambda}{d}$；明纹 $x_k=k\\Delta x$；暗纹 $x_k'=(2k-1)\\dfrac{\\Delta x}{2}$（$k=1,2,3,\\ldots$）。",
+      "scoring_criteria": [
+        "正确求 $\\Delta x\\approx1.47\\,\\mathrm{mm}$（4分）",
+        "正确求第 3 级明纹 $x_3\\approx4.41\\,\\mathrm{mm}$（3分）",
+        "正确求第 3 级暗纹 $x_3'\\approx5.15\\,\\mathrm{mm}$（3分）"
+      ],
+      "explanation": "本题与详解 EX01 双缝明暗纹距离一致。近轴近似 $\\delta\\approx dx/D$，明纹 $\\delta=k\\lambda$，暗纹 $\\delta=(2k+1)\\lambda/2$。易错：暗纹级次公式中 $k$ 从 1 起计，第 3 级暗纹对应 $(2\\times3+1)\\lambda/2$ 而非 $3\\lambda/2$。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.1.md",
+        "label": "11.1 杨氏双缝明暗纹距离"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：（1）照相机镜头镀 MgF$_2$ 增透膜（$n=1.38$），玻璃折射率 $n'=1.50$，要使 $\\lambda=550\\,\\mathrm{nm}$ 反射最小，求最小膜厚 $e$。（2）两玻璃片形成空气劈尖，劈尖角 $\\theta=2.0\\times10^{-4}\\,\\mathrm{rad}$，用 $\\lambda=600\\,\\mathrm{nm}$ 垂直照射，相邻明纹间距 $L$ 为多少？",
+      "answer": "（1）$n'>n>n_0$（空气），上下界面均无半波损失。反射相消：$2ne=(2k+1)\\dfrac{\\lambda}{2}$，$k=0$ 时\n$$e_{\\min}=\\frac{\\lambda}{4n}=\\frac{550}{4\\times1.38}\\approx99.6\\,\\mathrm{nm}$$\n\n（2）空气劈尖 $n=1$，垂直入射，$\\delta=2e$，棱边 $e=0$ 为暗纹（有半波损失）。相邻明纹厚度差 $\\Delta e=\\lambda/(2n)=\\lambda/2$，明纹间距\n$$L=\\frac{\\lambda}{2n\\sin\\theta}\\approx\\frac{\\lambda}{2n\\theta}=\\frac{600\\times10^{-9}}{2\\times1\\times2.0\\times10^{-4}}=1.5\\times10^{-3}\\,\\mathrm{m}=1.5\\,\\mathrm{mm}$$",
+      "hint": "增透膜：判断半波损失后写 $2ne=(2k+1)\\lambda/2$；劈尖 $L=\\lambda/(2n\\sin\\theta)$，小角 $\\sin\\theta\\approx\\theta$。",
+      "scoring_criteria": [
+        "正确判断增透膜无半波损失并写出相消条件（2分）",
+        "正确求 $e_{\\min}\\approx99.6\\,\\mathrm{nm}$（3分）",
+        "正确写出劈尖明纹间距公式（2分）",
+        "正确求 $L=1.5\\,\\mathrm{mm}$（3分）"
+      ],
+      "explanation": "本题综合薄膜干涉（增透膜）与劈尖等厚干涉，与详解 EX07 增透膜、EX08 劈尖夹角一致。增透膜关键：$n_1<n<n_2$ 时无半波损失，最小厚度 $e=\\lambda/(4n)$。劈尖易错：忘记 $\\sin\\theta\\approx\\theta$ 或误加半波损失到厚度差公式。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.1.md",
+        "label": "11.1 薄膜干涉与劈尖等厚干涉"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：（1）波长 $\\lambda=546\\,\\mathrm{nm}$ 的平行光垂直照射缝宽 $a=0.437\\,\\mathrm{mm}$ 的单缝，透镜焦距 $f=40\\,\\mathrm{cm}$，求焦平面上中央明纹的线宽度 $\\Delta x$。（2）光栅常数 $d=3.0\\,\\mu\\mathrm{m}$、缝宽 $a=0.75\\,\\mu\\mathrm{m}$ 的光栅，用 $\\lambda=500\\,\\mathrm{nm}$ 垂直入射，第 3 级谱线 $\\sin\\theta_3=0.50$，验证 $d$ 并求可见谱线总数（考虑缺级）。",
+      "answer": "（1）中央明纹宽度\n$$\\Delta x=\\frac{2f\\lambda}{a}=\\frac{2\\times0.40\\times546\\times10^{-9}}{0.437\\times10^{-3}}\\approx1.0\\times10^{-3}\\,\\mathrm{m}=1.0\\,\\mathrm{mm}$$\n\n（2）由光栅方程验证：$d=\\dfrac{k\\lambda}{\\sin\\theta_3}=\\dfrac{3\\times500\\times10^{-9}}{0.50}=3.0\\times10^{-6}\\,\\mathrm{m}=3.0\\,\\mu\\mathrm{m}$\n\n缺级：$d/a=3.0/0.75=4$，第 $\\pm4,\\pm8,\\ldots$ 级缺级。\n\n最高级次 $|k|_{\\max}=\\lfloor d/\\lambda\\rfloor=6$，去掉 $k=\\pm4$，可见 $k=0,\\pm1,\\pm2,\\pm3,\\pm5,\\pm6$，共 **13 条**谱线。",
+      "hint": "中央明纹 $\\Delta x=2f\\lambda/a$；光栅 $d\\sin\\theta=k\\lambda$；缺级 $d/a=k/k'$ 为整数；$|k|<d/\\lambda$。",
+      "scoring_criteria": [
+        "正确求中央明纹宽度 $\\Delta x\\approx1.0\\,\\mathrm{mm}$（3分）",
+        "正确验证 $d=3.0\\,\\mu\\mathrm{m}$（2分）",
+        "正确判断缺级条件 $d/a=4$（2分）",
+        "正确求可见谱线共 13 条（3分）"
+      ],
+      "explanation": "本题与详解 EX01 光栅常数缺级、教材 11.2 单缝中央明纹宽度例题一致。单缝中央明纹宽度约为次级明纹 2 倍。光栅缺级时 $d/a$ 必须为整数比；$k=\\pm6$ 时 $\\sin\\theta=1$ 恰在边界，仍可见。易错：缺级后谱线计数遗漏 $k=\\pm6$ 或误计 $k=\\pm4$。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.2.md",
+        "label": "11.2 单缝衍射与光栅缺级"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：自然光垂直入射两偏振片 $P_1$、$P_2$，$P_1$、$P_2$ 透振方向夹角 $60°$。在 $P_1$ 与 $P_2$ 之间插入 $P_3$，$P_3$ 透振方向与 $P_1$ 夹 $30°$、与 $P_2$ 夹 $30°$。（1）无 $P_3$ 时透射光强 $I$ 与自然光强 $I_0$ 之比；（2）插入 $P_3$ 后透射光强 $I'$；（3）空气（$n_1=1.00$）射向玻璃（$n_2=1.50$）的布儒斯特角 $i_0$ 及此时反射光的偏振特性。",
+      "answer": "（1）自然光过 $P_1$：$I_1=I_0/2$；过 $P_2$：$I=I_1\\cos^2 60°=\\dfrac{I_0}{2}\\times\\dfrac{1}{4}=\\dfrac{I_0}{8}$\n\n（2）插入 $P_3$：$I'=\\dfrac{I_0}{2}\\cos^2 30°\\cdot\\cos^2 30°=\\dfrac{I_0}{2}\\times\\left(\\dfrac{3}{4}\\right)^2=\\dfrac{9I_0}{32}$\n\n比值 $I'/I=\\dfrac{9/32}{1/8}=\\dfrac{9}{4}$，插入 $P_3$ 后光强增大。\n\n（3）$\\tan i_0=\\dfrac{n_2}{n_1}=1.50$，$i_0=\\arctan1.50\\approx56.3°$。反射光为振动方向**垂直于入射面**的线偏振光；折射光仍为部分偏振光。",
+      "hint": "自然光过偏振片强度减半；马吕斯定律逐级相乘；布儒斯特角 $\\tan i_0=n_2/n_1$。",
+      "scoring_criteria": [
+        "正确求无 $P_3$ 时 $I=I_0/8$（3分）",
+        "正确求插入 $P_3$ 后 $I'=9I_0/32$（4分）",
+        "正确求布儒斯特角 $i_0\\approx56.3°$ 并说明反射光偏振方向（3分）"
+      ],
+      "explanation": "本题与详解 EX02 三块偏振片、教材 11.3 布儒斯特角例题一致。插入与两原偏振片均成 30° 的第三偏振片后，光强反而增大——这是马吕斯定律的经典结论。布儒斯特角时反射光与折射光垂直，反射光振动垂直于入射面。易错：自然光未先减半；$P_3$ 与 $P_2$ 夹角误取 60° 而非 30°。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.3.md",
+        "label": "11.3 马吕斯定律与布儒斯特角"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch10",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：薄凸透镜焦距 $f=15\\,\\mathrm{cm}$，实物置于 $u=25\\,\\mathrm{cm}$ 处。（1）求像距 $v$ 及像的虚实、正倒；（2）线放大率 $m$；（3）焦距 $f=15\\,\\mathrm{cm}$ 的放大镜用于明视距离 $D=25\\,\\mathrm{cm}$ 观察，角放大率 $\\alpha$ 约为多少？",
+      "answer": "（1）$\\dfrac{1}{v}=\\dfrac{1}{f}-\\dfrac{1}{u}=\\dfrac{1}{15}-\\dfrac{1}{25}=\\dfrac{2}{75}$，$v=37.5\\,\\mathrm{cm}>0$，为**倒立实像**。\n\n（2）$m=-\\dfrac{v}{u}=-\\dfrac{37.5}{25}=-1.5$（倒立，像高为物高的 1.5 倍）\n\n（3）$\\alpha\\approx\\dfrac{D}{f}=\\dfrac{25}{15}\\approx1.67$",
+      "hint": "高斯公式 $\\dfrac{1}{u}+\\dfrac{1}{v}=\\dfrac{1}{f}$；$m=-v/u$；放大镜 $\\alpha\\approx D/f$（$D=25\\,\\mathrm{cm}$，$f$ 以 cm 计）。",
+      "scoring_criteria": [
+        "正确求 $v=37.5\\,\\mathrm{cm}$ 并判断为倒立实像（4分）",
+        "正确求 $m=-1.5$（3分）",
+        "正确求角放大率 $\\alpha\\approx1.67$（3分）"
+      ],
+      "explanation": "本题综合 ch10 薄透镜成像与放大镜角放大率。$f<u<2f$ 时凸透镜成放大倒立实像。放大镜角放大率 $\\alpha\\approx25\\,\\mathrm{cm}/f$，与 ch10 详解一致。易错：$v$ 符号；放大率漏负号；$\\alpha$ 中 $D$ 与 $f$ 单位不统一。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.2.md",
+        "label": "10.2 薄透镜成像与放大镜"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch09",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：$N=100$ 匝、面积 $S=0.040\\,\\mathrm{m^2}$ 的矩形线圈在匀强磁场 $B=0.40\\,\\mathrm{T}$ 中绕垂直于 $\\mathbf{B}$ 的轴以 $\\omega=40\\,\\mathrm{rad\\cdot s^{-1}}$ 匀速转动，$t=0$ 时线圈平面与 $\\mathbf{B}$ 垂直。（1）$t=0$ 时磁通量 $\\Phi_B$；（2）感应电动势瞬时值 $\\varepsilon(t)$；（3）$t=\\dfrac{\\pi}{80}\\,\\mathrm{s}$ 时 $|\\varepsilon|$；（4）长 $L=0.50\\,\\mathrm{m}$ 的金属杆在 $B=0.40\\,\\mathrm{T}$ 中以 $\\omega=20\\,\\mathrm{rad\\cdot s^{-1}}$ 绕一端转动，求动生电动势大小。",
+      "answer": "（1）$\\Phi_B(0)=BS=0.40\\times0.040=0.016\\,\\mathrm{Wb}$\n\n（2）$\\Phi_B=BS\\cos\\omega t$，$\\varepsilon(t)=NBS\\omega\\sin\\omega t=100\\times0.40\\times0.040\\times40\\sin(40t)=64\\sin(40t)\\,\\mathrm{V}$\n\n（3）$t=\\dfrac{\\pi}{80}\\,\\mathrm{s}$ 时 $\\omega t=\\dfrac{\\pi}{2}$，$|\\varepsilon|=64\\,\\mathrm{V}$\n\n（4）$\\varepsilon=\\dfrac{1}{2}B\\omega L^2=\\dfrac{1}{2}\\times0.40\\times20\\times0.50^2=1.0\\,\\mathrm{V}$",
+      "hint": "$\\Phi_B=BS\\cos\\omega t$；$\\varepsilon=NBS\\omega\\sin\\omega t$；旋转杆 $\\varepsilon=\\dfrac{1}{2}B\\omega L^2$。",
+      "scoring_criteria": [
+        "正确求 $\\Phi_B(0)=0.016\\,\\mathrm{Wb}$（2分）",
+        "正确写出 $\\varepsilon(t)=64\\sin(40t)\\,\\mathrm{V}$（3分）",
+        "正确求 $t=\\pi/80\\,\\mathrm{s}$ 时 $|\\varepsilon|=64\\,\\mathrm{V}$（2分）",
+        "正确求旋转杆电动势 $\\varepsilon=1.0\\,\\mathrm{V}$（3分）"
+      ],
+      "explanation": "本题综合 ch09 法拉第定律（旋转线圈）、动生电动势（旋转杆，9.2 节）。$\\varepsilon$ 与 $\\Phi_B$ 相位差 $\\pi/2$：磁通量最大时变化率为零。旋转杆可用 $\\varepsilon=\\dfrac{1}{2}B\\omega L^2$ 或 $\\varepsilon=-\\mathrm{d}\\Phi/\\mathrm{d}t$ 验证。易错：漏乘匝数 $N$；旋转杆误用 $\\varepsilon=BLv$。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.1.md",
+        "label": "9.1 法拉第定律与动生电动势"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch08",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：无限长载流实心圆柱导体，半径 $R=0.050\\,\\mathrm{m}$，通均匀分布的总电流 $I=10\\,\\mathrm{A}$。求：（1）$r=0.030\\,\\mathrm{m}$ 处（柱内）磁感应强度 $B_1$；（2）$r=0.080\\,\\mathrm{m}$ 处（柱外）磁感应强度 $B_2$；（3）质子（$q=1.6\\times10^{-19}\\,\\mathrm{C}$）以 $v=2.0\\times10^6\\,\\mathrm{m/s}$ 垂直于 $B_2$ 运动，所受洛伦兹力大小 $F$。",
+      "answer": "（1）柱内 $r<R$：$I_{\\mathrm{enc}}=I\\left(\\dfrac{r}{R}\\right)^2$，由安培环路定理\n$$B_1=\\frac{\\mu_0 I r}{2\\pi R^2}=\\frac{4\\pi\\times10^{-7}\\times10\\times0.030}{2\\pi\\times0.050^2}=2.4\\times10^{-5}\\,\\mathrm{T}$$\n\n（2）柱外 $r>R$：$B_2=\\dfrac{\\mu_0 I}{2\\pi r}=\\dfrac{4\\pi\\times10^{-7}\\times10}{2\\pi\\times0.080}=2.5\\times10^{-5}\\,\\mathrm{T}$\n\n（3）$F=qvB_2=1.6\\times10^{-19}\\times2.0\\times10^6\\times2.5\\times10^{-5}=8.0\\times10^{-12}\\,\\mathrm{N}$",
+      "hint": "安培环路 $\\oint\\mathbf{B}\\cdot\\mathrm{d}\\mathbf{l}=\\mu_0 I_{\\mathrm{enc}}$；柱内 $I_{\\mathrm{enc}}=I(r/R)^2$；洛伦兹力 $F=qvB$（$v\\perp B$）。",
+      "scoring_criteria": [
+        "正确求柱内 $B_1=2.4\\times10^{-5}\\,\\mathrm{T}$（4分）",
+        "正确求柱外 $B_2=2.5\\times10^{-5}\\,\\mathrm{T}$（3分）",
+        "正确求洛伦兹力 $F=8.0\\times10^{-12}\\,\\mathrm{N}$（3分）"
+      ],
+      "explanation": "本题综合 ch08 安培环路定理（载流圆柱，8.3 节）与洛伦兹力（8.1 节）。柱内 $B\\propto r$，柱外 $B\\propto1/r$。洛伦兹力用柱外 $B_2$ 计算，$v\\perp B$ 时 $F=qvB$。易错：柱内误用 $B=\\mu_0 I/(2\\pi r)$；$I_{\\mathrm{enc}}$ 比例弄错；洛伦兹力公式中 $B$ 取值错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.3.md",
+        "label": "8.3 安培环路定理与洛伦兹力"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": {
+      "single_choice": 10,
+      "essay": 7
+    },
+    "bySource": {
+      "current_chapter": 9,
+      "review": 8
+    },
+    "byDifficulty": {
+      "basic": 12,
+      "medium": 3,
+      "hard": 2
+    },
+    "byPoints": {
+      "current_chapter": 50,
+      "review": 50
+    }
+  }
+}

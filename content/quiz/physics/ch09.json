@@ -1,0 +1,414 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch09",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "$N=50$ 匝矩形线圈，面积 $S=20\\,\\mathrm{cm^2}$，线圈平面与匀强磁场 $\\mathbf{B}$ 垂直。$\\mathbf{B}$ 的大小在 $t=0$ 到 $t=0.50\\,\\mathrm{s}$ 内由 $0.10\\,\\mathrm{T}$ 均匀增加到 $0.40\\,\\mathrm{T}$，则感应电动势的大小为（　）。",
+      "options": [
+        "$60\\,\\mathrm{mV}$",
+        "$30\\,\\mathrm{mV}$",
+        "$120\\,\\mathrm{mV}$",
+        "$600\\,\\mathrm{mV}$"
+      ],
+      "answer": 0,
+      "hint": "多匝线圈 $\\varepsilon=-N\\dfrac{\\mathrm{d}\\Phi}{\\mathrm{d}t}$，$\\Phi=BS$，$S$ 不变时 $|\\varepsilon|=NS\\left|\\dfrac{\\mathrm{d}B}{\\mathrm{d}t}\\right|$。",
+      "explanation": "A 正确：$S=2.0\\times10^{-3}\\,\\mathrm{m^2}$，$\\dfrac{\\mathrm{d}B}{\\mathrm{d}t}=\\dfrac{0.40-0.10}{0.50}=0.60\\,\\mathrm{T\\cdot s^{-1}}$，$|\\varepsilon|=NS\\left|\\dfrac{\\mathrm{d}B}{\\mathrm{d}t}\\right|=50\\times2.0\\times10^{-3}\\times0.60=0.060\\,\\mathrm{V}=60\\,\\mathrm{mV}$。B 错：漏乘匝数 $N$ 或 $S$ 单位未换算。C 错：$\\mathrm{d}B/\\mathrm{d}t$ 算成 $1.2\\,\\mathrm{T/s}$。D 错：多乘了 10 倍。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.1.md",
+        "label": "9.1 法拉第电磁感应定律"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "匀强磁场 $\\mathbf{B}=0.50\\,\\mathrm{T}$ 垂直纸面向里，直导体棒 $ab$ 长 $l=0.40\\,\\mathrm{m}$，以 $v=5.0\\,\\mathrm{m\\cdot s^{-1}}$ 向右匀速运动，且 $\\mathbf{v}\\perp\\mathbf{B}\\perp l$。动生电动势的大小为（　）。",
+      "options": [
+        "$1.0\\,\\mathrm{V}$",
+        "$0.50\\,\\mathrm{V}$",
+        "$2.0\\,\\mathrm{V}$",
+        "$0.20\\,\\mathrm{V}$"
+      ],
+      "answer": 0,
+      "hint": "直导体动生电动势 $\\varepsilon_{\\mathrm{动}}=Blv$（$\\mathbf{v}\\perp\\mathbf{B}\\perp l$）；方向由 $\\mathbf{v}\\times\\mathbf{B}$ 或楞次定律判断。",
+      "explanation": "A 正确：$\\varepsilon=Blv=0.50\\times0.40\\times5.0=1.0\\,\\mathrm{V}$。由 $\\mathbf{v}\\times\\mathbf{B}$ 向上，电子向上漂移，$a$ 端（下端）电势较高。B 错：漏乘 $l$ 或 $v$。C 错：$B$ 或 $v$ 多乘 2 倍。D 错：$Blv$ 计算错误。与详解 EX01 一致。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.2.md",
+        "label": "9.2 动生电动势"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "长直螺线管长 $l=0.50\\,\\mathrm{m}$，单位长度匝数 $n=1000\\,\\mathrm{m^{-1}}$，截面积 $S=10\\,\\mathrm{cm^2}$，通以电流并以 $\\dfrac{\\mathrm{d}i}{\\mathrm{d}t}=2.0\\,\\mathrm{A\\cdot s^{-1}}$ 均匀增加。自感系数 $L$ 及自感电动势 $|\\varepsilon_L|$ 分别约为（　）。",
+      "options": [
+        "$L\\approx6.3\\times10^{-4}\\,\\mathrm{H}$，$|\\varepsilon_L|\\approx1.3\\,\\mathrm{mV}$",
+        "$L\\approx3.1\\times10^{-4}\\,\\mathrm{H}$，$|\\varepsilon_L|\\approx0.63\\,\\mathrm{mV}$",
+        "$L\\approx6.3\\times10^{-4}\\,\\mathrm{H}$，$|\\varepsilon_L|\\approx2.5\\,\\mathrm{mV}$",
+        "$L\\approx1.3\\times10^{-3}\\,\\mathrm{H}$，$|\\varepsilon_L|\\approx2.6\\,\\mathrm{mV}$"
+      ],
+      "answer": 0,
+      "hint": "中空螺线管 $L=\\mu_0 n^2 l S$；自感电动势 $\\varepsilon_L=-L\\dfrac{\\mathrm{d}i}{\\mathrm{d}t}$，$L$ 为常数时 $|\\varepsilon_L|=L\\left|\\dfrac{\\mathrm{d}i}{\\mathrm{d}t}\\right|$。",
+      "explanation": "A 正确：$S=1.0\\times10^{-3}\\,\\mathrm{m^2}$，$L=\\mu_0 n^2 l S=4\\pi\\times10^{-7}\\times10^6\\times0.50\\times10^{-3}=2\\pi\\times10^{-4}\\,\\mathrm{H}\\approx6.3\\times10^{-4}\\,\\mathrm{H}$；$|\\varepsilon_L|=L\\dfrac{\\mathrm{d}i}{\\mathrm{d}t}\\approx6.3\\times10^{-4}\\times2.0\\approx1.3\\,\\mathrm{mV}$。B 错：$L$ 少乘 $l$ 或 $S$ 单位错误。C 错：$\\varepsilon_L$ 多乘 2 倍。D 错：$n$ 平方或 $S$ 换算错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.3.md",
+        "label": "9.3 自感系数"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "关于麦克斯韦方程组与位移电流，下列说法正确的是（　）。",
+      "options": [
+        "位移电流是电荷在真空中宏观流动形成的传导电流",
+        "平行板电容器充放电时，极板间虽无传导电流，但 $\\dfrac{\\mathrm{d}\\Phi_E}{\\mathrm{d}t}\\neq0$，仍可在安培—麦克斯韦定律中激发磁场",
+        "位移电流只在有介质的电容器内部存在，真空中不存在",
+        "麦克斯韦方程组中，变化磁场产生电场，但变化电场不产生磁场"
+      ],
+      "answer": 1,
+      "hint": "位移电流 $I_D=\\varepsilon_0\\dfrac{\\mathrm{d}\\Phi_E}{\\mathrm{d}t}$，不是电荷宏观流动；麦克斯韦核心创新是变化电场也激发磁场。",
+      "explanation": "B 正确：电容器极板间无传导电流，但变化电场（位移电流）满足 $\\oint\\mathbf{B}\\cdot\\mathrm{d}\\mathbf{l}=\\mu_0\\varepsilon_0\\dfrac{\\mathrm{d}\\Phi_E}{\\mathrm{d}t}$，仍产生磁场。A 错：位移电流非电荷宏观流动。C 错：真空中变化电场同样产生位移电流。D 错：麦克斯韦方程组中变化 $\\mathbf{E}$ 与变化 $\\mathbf{B}$ 互相激发，是电磁波传播的基础。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.4.md",
+        "label": "9.4 位移电流与麦克斯韦方程组"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "圆形金属线圈固定，匀强磁场 $\\mathbf{B}$ 垂直纸面向里且均匀增大。从上方俯视，线圈中感应电流的方向为（　）。",
+      "options": [
+        "顺时针",
+        "逆时针",
+        "无感应电流",
+        "无法确定，取决于线圈电阻"
+      ],
+      "answer": 1,
+      "hint": "楞次定律：原磁通向里且增大 $\\Rightarrow$ 感应磁场应向外 $\\Rightarrow$ 从上方看感应电流逆时针。",
+      "explanation": "B 正确：$\\Phi_B$ 向里增大，感应电流产生的磁场应阻碍此变化，即感应 $\\mathbf{B}'$ 向外；由右手定则，从上方看为逆时针。A 错：顺时针对应感应 $\\mathbf{B}'$ 向里，会加强原变化，违反楞次定律。C 错：$\\mathrm{d}\\Phi/\\mathrm{d}t\\neq0$，必有感应电动势（闭合导体则有电流）。D 错：方向由楞次定律决定，与电阻大小无关（电阻只影响电流大小）。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.1.md",
+        "label": "9.1 楞次定律方向判断"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch08",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "无限长直导线通稳恒电流 $I=10\\,\\mathrm{A}$，距导线垂直距离 $r=0.050\\,\\mathrm{m}$ 处磁感应强度 $B$ 约为（　）。",
+      "options": [
+        "$4.0\\times10^{-5}\\,\\mathrm{T}$",
+        "$2.0\\times10^{-5}\\,\\mathrm{T}$",
+        "$8.0\\times10^{-5}\\,\\mathrm{T}$",
+        "$4.0\\times10^{-4}\\,\\mathrm{T}$"
+      ],
+      "answer": 0,
+      "hint": "无限长直导线 $B=\\dfrac{\\mu_0 I}{2\\pi r}$，$\\mu_0=4\\pi\\times10^{-7}\\,\\mathrm{T\\cdot m/A}$。",
+      "explanation": "A 正确：$B=\\dfrac{\\mu_0 I}{2\\pi r}=\\dfrac{4\\pi\\times10^{-7}\\times10}{2\\pi\\times0.050}=4.0\\times10^{-5}\\,\\mathrm{T}$。B 错：误用半无限长公式 $B=\\mu_0 I/(4\\pi r)$。C 错：$I$ 或距离代入错误。D 错：$r$ 单位未换算为 m。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.2.md",
+        "label": "8.2 无限长直导线磁场"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch08",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "无限长密绕螺线管单位长度匝数 $n=500\\,\\mathrm{m^{-1}}$，通电流 $I=2.0\\,\\mathrm{A}$，管内磁感应强度 $B$ 约为（　）。",
+      "options": [
+        "$1.3\\times10^{-3}\\,\\mathrm{T}$",
+        "$6.3\\times10^{-4}\\,\\mathrm{T}$",
+        "$2.5\\times10^{-3}\\,\\mathrm{T}$",
+        "$4.0\\times10^{-4}\\,\\mathrm{T}$"
+      ],
+      "answer": 0,
+      "hint": "无限长螺线管内部 $B=\\mu_0 nI$，方向沿轴线，与到轴线距离无关（远离管口处）。",
+      "explanation": "A 正确：$B=\\mu_0 nI=4\\pi\\times10^{-7}\\times500\\times2.0=4\\pi\\times10^{-4}\\,\\mathrm{T}\\approx1.26\\times10^{-3}\\,\\mathrm{T}$。B 错：误用管口公式 $B=\\mu_0 nI/2$。C 错：$n$ 或 $I$ 多乘 2 倍。D 错：漏乘 $n$ 或 $\\mu_0$ 计算错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.3.md",
+        "label": "8.3 安培环路定理（螺线管）"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "点电荷 $q=+2.0\\times10^{-6}\\,\\mathrm{C}$，距其 $r=0.50\\,\\mathrm{m}$ 处的电势 $V$ 约为（取无穷远为零电势，$k=9.0\\times10^9\\,\\mathrm{N\\cdot m^2/C^2}$）（　）。",
+      "options": [
+        "$3.6\\times10^4\\,\\mathrm{V}$",
+        "$1.8\\times10^4\\,\\mathrm{V}$",
+        "$7.2\\times10^4\\,\\mathrm{V}$",
+        "$3.6\\times10^3\\,\\mathrm{V}$"
+      ],
+      "answer": 0,
+      "hint": "点电荷电势 $V=\\dfrac{kq}{r}$，是标量，直接代入 $q$ 的正负号。",
+      "explanation": "A 正确：$V=\\dfrac{kq}{r}=\\dfrac{9.0\\times10^9\\times2.0\\times10^{-6}}{0.50}=3.6\\times10^4\\,\\mathrm{V}$。B 错：$r$ 多乘 2 倍。C 错：$q$ 或 $k$ 多乘 2 倍。D 错：数量级错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.3.md",
+        "label": "7.3 点电荷电势"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "真空中闭合高斯面包围自由电荷 $Q_{\\mathrm{enc}}=+3.0\\times10^{-6}\\,\\mathrm{C}$，则通过该高斯面的电通量 $\\Phi_E$ 约为（　）。",
+      "options": [
+        "$3.4\\times10^5\\,\\mathrm{N\\cdot m^2/C}$",
+        "$1.7\\times10^5\\,\\mathrm{N\\cdot m^2/C}$",
+        "$2.7\\times10^{11}\\,\\mathrm{N\\cdot m^2/C}$",
+        "$3.4\\times10^4\\,\\mathrm{N\\cdot m^2/C}$"
+      ],
+      "answer": 0,
+      "hint": "高斯定理 $\\Phi_E=\\dfrac{Q_{\\mathrm{enc}}}{\\varepsilon_0}$，$\\varepsilon_0=8.85\\times10^{-12}\\,\\mathrm{C^2/(N\\cdot m^2)}$。",
+      "explanation": "A 正确：$\\Phi_E=\\dfrac{Q_{\\mathrm{enc}}}{\\varepsilon_0}=\\dfrac{3.0\\times10^{-6}}{8.85\\times10^{-12}}\\approx3.39\\times10^5\\,\\mathrm{N\\cdot m^2/C}$。B 错：多除 2 倍。C 错：误乘 $\\varepsilon_0$ 而非除以。D 错：指数或数量级错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.2.md",
+        "label": "7.2 高斯定理"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "一定量理想气体，初始 $p_1=2.0\\,\\mathrm{atm}$、$T_1=300\\,\\mathrm{K}$，在体积不变条件下加热至 $T_2=450\\,\\mathrm{K}$，最终压强 $p_2$ 为（　）。",
+      "options": [
+        "$3.0\\,\\mathrm{atm}$",
+        "$1.5\\,\\mathrm{atm}$",
+        "$2.0\\,\\mathrm{atm}$",
+        "$4.0\\,\\mathrm{atm}$"
+      ],
+      "answer": 0,
+      "hint": "等容过程 $\\dfrac{p_1}{T_1}=\\dfrac{p_2}{T_2}$，温度一律用开尔文。",
+      "explanation": "A 正确：等容时 $p\\propto T$，$p_2=p_1\\dfrac{T_2}{T_1}=2.0\\times\\dfrac{450}{300}=3.0\\,\\mathrm{atm}$。B 错：误用 $\\dfrac{T_1}{T_2}$ 比例。C 错：忽略温度变化。D 错：只考虑温度比 $\\times2$ 再乘 $p_1$。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.1.md",
+        "label": "5.1 理想气体状态方程"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：$N=100$ 匝、面积 $S=10\\,\\mathrm{cm^2}$ 的矩形线圈在 $B=0.20\\,\\mathrm{T}$ 的匀强磁场中，以角速度 $\\omega=50\\,\\mathrm{rad\\cdot s^{-1}}$ 绕垂直于 $\\mathbf{B}$ 的轴匀速转动（$t=0$ 时线圈平面与 $\\mathbf{B}$ 垂直）。求：（1）磁通量 $\\Phi_B(t)$ 的表达式；（2）感应电动势 $\\varepsilon_i(t)$ 的表达式；（3）电动势的最大值 $|\\varepsilon|_{\\max}$。",
+      "answer": "（1）$\\Phi_B=BS\\cos\\omega t=0.20\\times10^{-2}\\cos(50t)\\,\\mathrm{Wb}$\n\n（2）$\\varepsilon_i=-\\dfrac{\\mathrm{d}\\Phi}{\\mathrm{d}t}=NBS\\omega\\sin\\omega t=100\\times0.20\\times10^{-2}\\times50\\sin(50t)\\,\\mathrm{V}$\n\n即 $\\varepsilon_i=1.0\\sin(50t)\\,\\mathrm{V}$\n\n（3）$|\\varepsilon|_{\\max}=NBS\\omega=100\\times0.20\\times10^{-2}\\times50=10\\,\\mathrm{V}$",
+      "hint": "$\\Phi=BS\\cos\\omega t$；$\\varepsilon=-N\\dfrac{\\mathrm{d}\\Phi}{\\mathrm{d}t}=NBS\\omega\\sin\\omega t$；最大值在 $\\sin\\omega t=\\pm1$。",
+      "scoring_criteria": [
+        "正确写出 $\\Phi_B=BS\\cos\\omega t$（3分）",
+        "正确求 $\\varepsilon_i=NBS\\omega\\sin\\omega t$（4分）",
+        "正确计算 $|\\varepsilon|_{\\max}=10\\,\\mathrm{V}$（3分）"
+      ],
+      "explanation": "旋转线圈在匀强磁场中产生正弦交流电动势，是发电机原理。$t=0$ 时 $\\Phi$ 最大、$\\varepsilon=0$；$\\Phi=0$ 时 $|\\varepsilon|$ 最大。与 9.1 节例题及详解 EX03 一致。易错：漏乘匝数 $N$；$S$ 未换算为 $\\mathrm{m^2}$；把 $\\cos$ 误作 $\\sin$ 导致相位错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.1.md",
+        "label": "9.1 旋转线圈感应电动势"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：匀强磁场 $B=0.40\\,\\mathrm{T}$ 垂直纸面向里，金属杆 $oa$ 长 $L=1.0\\,\\mathrm{m}$，一端 $o$ 固定，杆以 $\\omega=20\\,\\mathrm{rad\\cdot s^{-1}}$ 逆时针绕 $o$ 在纸面内转动，$\\mathrm{d}B/\\mathrm{d}t=0$。求：（1）用动生电动势公式 $\\varepsilon=\\int(\\mathbf{v}\\times\\mathbf{B})\\cdot\\mathrm{d}\\mathbf{l}$ 求感应电动势大小；（2）哪端（$o$ 或 $a$）电势较高；（3）用法拉第定律验证结果。",
+      "answer": "（1）距 $o$ 为 $r$ 处线元速度 $v=\\omega r$，方向垂直杆。\n$$\\varepsilon=\\int_0^L \\omega rB\\,\\mathrm{d}r=\\frac{1}{2}B\\omega L^2=\\frac{1}{2}\\times0.40\\times20\\times1.0^2=4.0\\,\\mathrm{V}$$\n\n（2）由 $\\mathbf{v}\\times\\mathbf{B}$ 沿杆指向 $a$，$a$ 端电势较高。\n\n（3）扇形面积 $S=\\dfrac{1}{2}L^2\\theta$，$\\Phi=BS=\\dfrac{1}{2}BL^2\\theta$，\n$$\\varepsilon=-\\frac{\\mathrm{d}\\Phi}{\\mathrm{d}t}=-\\frac{1}{2}B\\omega L^2=4.0\\,\\mathrm{V}$$\n两种方法一致。",
+      "hint": "旋转杆 $v=\\omega r$；$\\varepsilon=\\dfrac{1}{2}B\\omega L^2$；法拉第定律用扇形面积 $\\Phi=\\dfrac{1}{2}BL^2\\theta$。",
+      "scoring_criteria": [
+        "正确积分得 $\\varepsilon=\\dfrac{1}{2}B\\omega L^2=4.0\\,\\mathrm{V}$（4分）",
+        "正确判断 $a$ 端电势较高（3分）",
+        "用法拉第定律验证结果一致（3分）"
+      ],
+      "explanation": "动生电动势与法拉第定律等价。旋转杆是电磁学经典题型，与 9.2 节例题及详解 EX01 思路一致。易错：忘记 $\\dfrac{1}{2}$ 因子（误用 $BL^2\\omega$）；绕中点转动时电动势为零（对称抵消）。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.2.md",
+        "label": "9.2 旋转金属杆动生电动势"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：长直螺线管长 $l=0.40\\,\\mathrm{m}$，单位长度匝数 $n=800\\,\\mathrm{m^{-1}}$，截面积 $S=5.0\\,\\mathrm{cm^2}$，通电流 $I=3.0\\,\\mathrm{A}$。另一半径 $r=0.050\\,\\mathrm{m}$ 的单匝圆环套在管外，环面与管轴垂直。求：（1）螺线管自感系数 $L$；（2）两线圈互感系数 $M$；（3）若 $I$ 以 $\\dfrac{\\mathrm{d}I}{\\mathrm{d}t}=5.0\\,\\mathrm{A\\cdot s^{-1}}$ 增加，圆环中互感电动势大小。",
+      "answer": "（1）$L=\\mu_0 n^2 l S=4\\pi\\times10^{-7}\\times800^2\\times0.40\\times5.0\\times10^{-4}=4\\pi\\times10^{-7}\\times128\\approx1.61\\times10^{-4}\\,\\mathrm{H}$\n\n（2）管内 $B=\\mu_0 nI$，穿过圆环磁通 $\\Psi_{12}=B\\pi r^2=\\mu_0 nI\\pi r^2$，故\n$$M=\\frac{\\Psi_{12}}{I}=\\mu_0 n\\pi r^2=4\\pi\\times10^{-7}\\times800\\times\\pi\\times0.050^2\\approx7.9\\times10^{-6}\\,\\mathrm{H}$$\n\n（3）$|\\varepsilon_{12}|=M\\left|\\frac{\\mathrm{d}I}{\\mathrm{d}t}\\right|=7.9\\times10^{-6}\\times5.0\\approx3.95\\times10^{-5}\\,\\mathrm{V}$",
+      "hint": "$L=\\mu_0 n^2 l S$；螺线管与圆环 $M=\\mu_0 n\\pi r^2$；$\\varepsilon_{12}=-M\\dfrac{\\mathrm{d}i_1}{\\mathrm{d}t}$。",
+      "scoring_criteria": [
+        "正确计算 $L\\approx1.6\\times10^{-4}\\,\\mathrm{H}$（3分）",
+        "正确计算 $M\\approx7.9\\times10^{-6}\\,\\mathrm{H}$（4分）",
+        "正确计算 $|\\varepsilon_{12}|\\approx4.0\\times10^{-5}\\,\\mathrm{V}$（3分）"
+      ],
+      "explanation": "自感与互感均只取决于线圈几何结构与介质，与电流大小无关。互感电动势正比于另一线圈电流变化率。与 9.3 节例题及详解 EX01、EX04 一致。易错：$M$ 公式漏 $\\pi r^2$；$S$ 单位未换算；混淆 $L$ 与 $M$ 公式。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.3.md",
+        "label": "9.3 自感与互感计算"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：长直螺线管长 $l=0.30\\,\\mathrm{m}$，单位长度匝数 $n=1000\\,\\mathrm{m^{-1}}$，截面积 $S=8.0\\,\\mathrm{cm^2}$，通稳恒电流 $I=5.0\\,\\mathrm{A}$。求：（1）自感系数 $L$ 和储存的磁场能量 $W_m$；（2）管内磁感应强度 $B$；（3）用磁能密度 $w_m=\\dfrac{B^2}{2\\mu_0}$ 计算体积 $V=lS$ 内的磁能，验证与（1）一致。",
+      "answer": "（1）$L=\\mu_0 n^2 l S=4\\pi\\times10^{-7}\\times10^6\\times0.30\\times8.0\\times10^{-4}=4\\pi\\times10^{-7}\\times240\\approx3.02\\times10^{-4}\\,\\mathrm{H}$\n\n$W_m=\\dfrac{1}{2}LI^2=\\dfrac{1}{2}\\times3.02\\times10^{-4}\\times25\\approx3.78\\times10^{-3}\\,\\mathrm{J}$\n\n（2）$B=\\mu_0 nI=4\\pi\\times10^{-7}\\times1000\\times5.0=2\\pi\\times10^{-3}\\,\\mathrm{T}\\approx6.28\\times10^{-3}\\,\\mathrm{T}$\n\n（3）$V=lS=0.30\\times8.0\\times10^{-4}=2.4\\times10^{-4}\\,\\mathrm{m^3}$\n$$W_m'=\\int_V w_m\\,\\mathrm{d}V=\\frac{B^2 V}{2\\mu_0}=\\frac{(2\\pi\\times10^{-3})^2\\times2.4\\times10^{-4}}{2\\times4\\pi\\times10^{-7}}\\approx3.77\\times10^{-3}\\,\\mathrm{J}$$\n与 $\\dfrac{1}{2}LI^2$ 一致。",
+      "hint": "$W_m=\\dfrac{1}{2}LI^2$ 与 $W_m=\\int\\dfrac{B^2}{2\\mu_0}\\mathrm{d}V$ 等价；先求 $L$、$B$，再验证两种算法。",
+      "scoring_criteria": [
+        "正确求 $L\\approx3.0\\times10^{-4}\\,\\mathrm{H}$ 和 $W_m\\approx3.8\\times10^{-3}\\,\\mathrm{J}$（4分）",
+        "正确求 $B\\approx6.3\\times10^{-3}\\,\\mathrm{T}$（3分）",
+        "用 $w_m=B^2/(2\\mu_0)$ 验证磁能一致（3分）"
+      ],
+      "explanation": "磁场能量可用 $\\dfrac{1}{2}LI^2$ 或 $\\int w_m\\,\\mathrm{d}V$ 计算，两者等价。本题综合自感与磁能密度，与 9.3 节及详解 EX05、EX06 一致。易错：$B=\\mu_0 nI$ 漏 $n$；磁能密度公式分母 $2\\mu_0$ 写成 $2\\mu$；体积 $V$ 计算错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/9.3.md",
+        "label": "9.3 磁场能量与能量密度"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch08",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：两根无限长平行直导线 $1$、$2$ 相距 $a=0.050\\,\\mathrm{m}$，分别通稳恒电流 $I_1=5.0\\,\\mathrm{A}$、$I_2=3.0\\,\\mathrm{A}$，方向相同。长 $L=0.30\\,\\mathrm{m}$ 的直导线 $2$ 段位于两导线所在平面内且与它们平行。求：（1）导线 $2$ 所在处由 $I_1$ 产生的磁感应强度 $B$；（2）导线 $2$ 所受安培力大小 $F$；（3）两导线单位长度相互作用力，并说明是吸引还是排斥。",
+      "answer": "（1）$B=\\dfrac{\\mu_0 I_1}{2\\pi a}=\\dfrac{4\\pi\\times10^{-7}\\times5.0}{2\\pi\\times0.050}=2.0\\times10^{-5}\\,\\mathrm{T}$\n\n（2）$F=BI_2L=2.0\\times10^{-5}\\times3.0\\times0.30=1.8\\times10^{-5}\\,\\mathrm{N}$\n\n（3）$\\dfrac{F}{L}=\\dfrac{\\mu_0 I_1 I_2}{2\\pi a}=\\dfrac{4\\pi\\times10^{-7}\\times5.0\\times3.0}{2\\pi\\times0.050}=6.0\\times10^{-5}\\,\\mathrm{N\\cdot m^{-1}}$，方向相互**吸引**（同向电流）。",
+      "hint": "无限长直导线 $B=\\mu_0 I/(2\\pi r)$；安培力 $F=BI_2L$；平行导线 $\\dfrac{F}{L}=\\mu_0 I_1 I_2/(2\\pi a)$，同向吸引。",
+      "scoring_criteria": [
+        "正确计算 $B=2.0\\times10^{-5}\\,\\mathrm{T}$（3分）",
+        "正确计算 $F=1.8\\times10^{-5}\\,\\mathrm{N}$（4分）",
+        "正确求单位长度力 $6.0\\times10^{-5}\\,\\mathrm{N/m}$ 并判断为吸引（3分）"
+      ],
+      "explanation": "载流导线在磁场中受安培力，两平行导线间力是毕奥—萨伐尔/安培环路定理与安培定律的综合应用。同向电流相吸、反向相斥。与 8.2、8.4 节例题一致。易错：$B$ 用错距离 $a$；忘记 $F=BI_2L$ 中 $L$ 是受力段长度；同反向判断错误。",
+      "sourceRef": {
+        "path": "content/physics/detail/8.4.md",
+        "label": "8.4 平行载流导线相互作用"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：半径 $R=0.10\\,\\mathrm{m}$ 的均匀带电球面，总电量 $q=+1.0\\times10^{-8}\\,\\mathrm{C}$。求：（1）球面内（$r=0.050\\,\\mathrm{m}$）电场强度 $E$；（2）球面外（$r=0.20\\,\\mathrm{m}$）电场强度 $E$；（3）$r=0.20\\,\\mathrm{m}$ 处的电势 $V$（取无穷远为零电势，$k=9.0\\times10^9\\,\\mathrm{N\\cdot m^2/C^2}$）。",
+      "answer": "（1）$r<R$：由高斯定理 $Q_{\\mathrm{enc}}=0$，故 $E=0$。\n\n（2）$r>R$：$E=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q}{r^2}=k\\dfrac{q}{r^2}=9.0\\times10^9\\times\\dfrac{1.0\\times10^{-8}}{0.20^2}=2.25\\times10^3\\,\\mathrm{N/C}$\n\n（3）球面外 $V=\\dfrac{kq}{r}=9.0\\times10^9\\times\\dfrac{1.0\\times10^{-8}}{0.20}=450\\,\\mathrm{V}$",
+      "hint": "均匀带电球面：内部 $E=0$；外部 $E=kq/r^2$；球面外 $V=kq/r$。",
+      "scoring_criteria": [
+        "正确判断球面内 $E=0$（3分）",
+        "正确计算球面外 $E=2.25\\times10^3\\,\\mathrm{N/C}$（4分）",
+        "正确计算 $V=450\\,\\mathrm{V}$（3分）"
+      ],
+      "explanation": "均匀带电球面是高斯定理与电势叠加的经典模型：内部无电场，外部等效于球心点电荷。与 7.2、7.3 节例题一致。易错：球面内误用 $E=kqr/R^3$（那是均匀带电**球体**公式）；电势在 $r<R$ 时并非零而是等于球面电势 $kq/R$。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.2.md",
+        "label": "7.2 均匀带电球面"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：$\\nu=2.0\\,\\mathrm{mol}$ 理想气体，初始状态 $p_1=1.0\\times10^5\\,\\mathrm{Pa}$、$V_1=10\\,\\mathrm{L}$、$T_1=300\\,\\mathrm{K}$。先经**等压**膨胀至 $V_2=15\\,\\mathrm{L}$，再经**等容**加热至 $T_3=350\\,\\mathrm{K}$。已知 $R=8.31\\,\\mathrm{J\\cdot K^{-1}\\cdot mol^{-1}}$。求：（1）等压末态 $T_2$ 和 $p_2$；（2）等容末态 $p_3$；（3）全过程气体对外做功 $W$（只计等压段）。",
+      "answer": "（1）等压：$p_2=p_1=1.0\\times10^5\\,\\mathrm{Pa}$，$T_2=T_1\\dfrac{V_2}{V_1}=300\\times\\dfrac{15}{10}=450\\,\\mathrm{K}$\n\n（2）等容：$\\dfrac{p_3}{p_2}=\\dfrac{T_3}{T_2}$，$p_3=p_2\\dfrac{T_3}{T_2}=1.0\\times10^5\\times\\dfrac{350}{450}\\approx7.78\\times10^4\\,\\mathrm{Pa}$\n\n（3）等压段对外做功 $W=p_1(V_2-V_1)=1.0\\times10^5\\times(15-10)\\times10^{-3}=500\\,\\mathrm{J}$\n（$V$ 换算：$\\Delta V=5\\,\\mathrm{L}=5\\times10^{-3}\\,\\mathrm{m^3}$）",
+      "hint": "等压 $V/T=\\mathrm{const}$；等容 $p/T=\\mathrm{const}$；等压功 $W=p\\Delta V$，注意体积用 $\\mathrm{m^3}$。",
+      "scoring_criteria": [
+        "正确求 $T_2=450\\,\\mathrm{K}$、$p_2=1.0\\times10^5\\,\\mathrm{Pa}$（3分）",
+        "正确求 $p_3\\approx7.8\\times10^4\\,\\mathrm{Pa}$（4分）",
+        "正确求等压段做功 $W=500\\,\\mathrm{J}$（3分）"
+      ],
+      "explanation": "多过程问题需分段应用状态方程：等压段 $V\\propto T$，等容段 $p\\propto T$。做功只发生在体积变化段。与 5.1 节状态方程应用一致。易错：摄氏温度直接代入；$\\Delta V$ 未从 L 换算为 $\\mathrm{m^3}$；等容段误算做功。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.1.md",
+        "label": "5.1 理想气体多过程"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": {
+      "single_choice": 10,
+      "essay": 7
+    },
+    "bySource": {
+      "current_chapter": 9,
+      "review": 8
+    },
+    "byDifficulty": {
+      "basic": 12,
+      "medium": 3,
+      "hard": 2
+    },
+    "byPoints": {
+      "current_chapter": 55,
+      "review": 45
+    }
+  }
+}

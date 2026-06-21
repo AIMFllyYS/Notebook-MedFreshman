@@ -1,0 +1,414 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch13",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "关于原子核的组成与标记，下列说法正确的是（　）。",
+      "options": [
+        "原子核仅由质子组成，中子存在于核外",
+        "质量数 $A$ 等于质子数 $Z$ 与中子数 $N$ 之和，即 $A=Z+N$",
+        "同位素的 $Z$ 不同、$N$ 相同",
+        "电荷数 $Z$ 等于中子数 $N$"
+      ],
+      "answer": 1,
+      "hint": "核由质子（$+e$）和中子（不带电）组成；$A$ 为核子总数，$Z$ 为质子数；同位素 $Z$ 相同、$N$ 不同。",
+      "explanation": "B 正确：$A=Z+N$ 是核素标记的基本关系。A 错：中子在核内而非核外。C 错：同位素 $Z$ 相同、$N$ 不同（如 $^{12}\\mathrm{C}$ 与 $^{14}\\mathrm{C}$）。D 错：$Z$ 为质子数，一般 $Z\\neq N$（轻核除外）。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.1.md",
+        "label": "13.1 原子核的组成（质子、中子、A/Z/N）"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "关于核力的特点，下列表述错误的是（　）。",
+      "options": [
+        "核力是短程力，作用半径约为 $10^{-15}\\,\\mathrm{m}$ 量级",
+        "核力具有饱和性，每个核子只与邻近少数核子相互作用",
+        "核力与电荷无关，质子—质子、中子—中子、质子—中子间均存在",
+        "核力就是质子间的库仑电磁力，将带正电的质子束缚在一起"
+      ],
+      "answer": 3,
+      "hint": "核力属于强力（残余效应），短程、饱和、与电荷无关；电磁力使质子相互排斥，大核需更多中子。",
+      "explanation": "D 错误（为本题答案）：核力不是电磁力——电磁力使质子相互排斥，核力才是将核子束缚在核内的短程强相互作用。A、B、C 均为核力的正确描述，与 13.1 节一致。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.1.md",
+        "label": "13.1 核力特点（短程、饱和、与电荷无关）"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "关于结合能与比结合能，下列说法正确的是（　）。",
+      "options": [
+        "比结合能 $\\varepsilon=\\Delta E/A$ 越大，核越不稳定",
+        "质量数 $A$ 越大，比结合能一定越大",
+        "比结合能曲线在 $A\\approx56$（Fe 附近）达到峰值，轻核聚变与重核裂变均向更大比结合能方向演化",
+        "结合能 $\\Delta E=\\Delta m\\,c^2$ 只适用于化学反应，不适用于核反应"
+      ],
+      "answer": 2,
+      "hint": "比结合能衡量核稳定性；$\\varepsilon$ 越大核越稳定；Fe 附近为曲线峰值。",
+      "explanation": "C 正确：比结合能曲线在 $A\\approx56$ 达峰，聚变（轻核）与裂变（重核）均释放能量。A 错：$\\varepsilon$ 越大核越稳定。B 错：重核比结合能反而下降。D 错：$\\Delta E=\\Delta mc^2$ 正是核结合能的核心公式。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.1.md",
+        "label": "13.1 结合能与比结合能"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "$^{32}_{15}\\mathrm{P}$ 经 $\\beta^-$ 衰变后，子核在元素周期表中的位置变化及子核符号为（　）。",
+      "options": [
+        "前移 2 位，$^{28}_{13}\\mathrm{Al}$",
+        "后移 1 位，$^{32}_{16}\\mathrm{S}$",
+        "后移 1 位，$^{32}_{14}\\mathrm{Si}$",
+        "位置不变，$^{32}_{15}\\mathrm{P}$"
+      ],
+      "answer": 1,
+      "hint": "$\\beta^-$ 衰变：$^A_Z X\\to^A_{Z+1}Y+\\beta^-+\\bar\\nu$，$A$ 不变、$Z$ 增 1，周期表后移 1 位。",
+      "explanation": "B 正确：$\\beta^-$ 衰变中 $n\\to p+e^-+\\bar\\nu$，子核 $Z=16$、$A=32$，即 $^{32}_{16}\\mathrm{S}$，周期表后移 1 位。A 错：前移 2 位是 $\\alpha$ 衰变（$Z$ 减 2）。C 错：$Z=14$ 对应 $\\beta^+$ 或电子俘获（$Z$ 减 1）。D 错：$\\beta^-$ 必改变 $Z$。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.2.md",
+        "label": "13.2 β⁻ 衰变位移法则"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "某放射性核素半衰期 $T=30\\,\\mathrm{年}$，初始核数为 $N_0$。按 $N=N_0 e^{-\\lambda t}$ 衰减，经过 $t=90\\,\\mathrm{年}$ 后剩余核数占初始值的比例为（　）。",
+      "options": [
+        "$50\\%$",
+        "$25\\%$",
+        "$12.5\\%$",
+        "$6.25\\%$"
+      ],
+      "answer": 2,
+      "hint": "$90/30=3$ 个半衰期；每经一个半衰期剩余 $(1/2)$，$N/N_0=(1/2)^3$。",
+      "explanation": "C 正确：$90\\,\\mathrm{年}=3T$，$N/N_0=(1/2)^3=12.5\\%$。A 错：$50\\%$ 对应 1 个半衰期（30 年）。B 错：$25\\%$ 对应 2 个半衰期（60 年）。D 错：$6.25\\%$ 对应 4 个半衰期（120 年）。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.2.md",
+        "label": "13.2 衰变定律与半衰期倍数关系"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch12",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "金属钠的逸出功 $W=2.3\\,\\mathrm{eV}$，用波长 $\\lambda=400\\,\\mathrm{nm}$ 的紫光照射（$hc\\approx1240\\,\\mathrm{eV\\cdot nm}$），遏止电压 $U_a$ 约为（　）。",
+      "options": [
+        "$0\\,\\mathrm{V}$（不发生光电效应）",
+        "$0.8\\,\\mathrm{V}$",
+        "$2.3\\,\\mathrm{V}$",
+        "$3.1\\,\\mathrm{V}$"
+      ],
+      "answer": 1,
+      "hint": "光子能量 $E=h\\nu=hc/\\lambda$；爱因斯坦方程 $eU_a=E-W$（$E>W$ 时）。",
+      "explanation": "B 正确：$E=1240/400=3.1\\,\\mathrm{eV}$，$U_a=(3.1-2.3)/e=0.8\\,\\mathrm{V}$。A 错：$E>W$，能发生光电效应。C 错：$U_a\\neq W/e$，应为 $(E-W)/e$。D 错：$3.1\\,\\mathrm{V}$ 误将光子能量直接当作遏止电压。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.1.md",
+        "label": "12.1 爱因斯坦光电方程与遏止电压"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch12",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "氢原子从 $n=4$ 能级跃迁至 $n=2$ 能级时，辐射光子能量 $\\Delta E$ 及波长 $\\lambda$ 约为（　）。（$E_n=-13.6/n^2\\,\\mathrm{eV}$，$hc\\approx1240\\,\\mathrm{eV\\cdot nm}$）",
+      "options": [
+        "$\\Delta E=10.2\\,\\mathrm{eV}$，$\\lambda=122\\,\\mathrm{nm}$",
+        "$\\Delta E=2.55\\,\\mathrm{eV}$，$\\lambda=486\\,\\mathrm{nm}$",
+        "$\\Delta E=1.89\\,\\mathrm{eV}$，$\\lambda=657\\,\\mathrm{nm}$",
+        "$\\Delta E=0.85\\,\\mathrm{eV}$，$\\lambda=1460\\,\\mathrm{nm}$"
+      ],
+      "answer": 1,
+      "hint": "$\\Delta E=E_4-E_2=-13.6/16+13.6/4$；$\\lambda=hc/\\Delta E$；$4\\to2$ 属巴尔末系可见光区。",
+      "explanation": "B 正确：$\\Delta E=13.6\\times(1/4-1/16)=13.6\\times3/16=2.55\\,\\mathrm{eV}$，$\\lambda=1240/2.55\\approx486\\,\\mathrm{nm}$（H$\\beta$ 线）。A 错：$10.2\\,\\mathrm{eV}$ 对应 $n=\\infty\\to1$ 电离。C 错：$657\\,\\mathrm{nm}$ 对应 $3\\to2$（H$\\alpha$）。D 错：$1460\\,\\mathrm{nm}$ 对应更低能级跃迁。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.2.md",
+        "label": "12.2 玻尔能级与氢原子光谱"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch12",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "电子经 $100\\,\\mathrm{V}$ 电压加速（非相对论），其德布罗意波长 $\\lambda=h/p$ 约为（　）。（$h=6.63\\times10^{-34}\\,\\mathrm{J\\cdot s}$，$m_e=9.11\\times10^{-31}\\,\\mathrm{kg}$，$e=1.60\\times10^{-19}\\,\\mathrm{C}$）",
+      "options": [
+        "$0.012\\,\\mathrm{nm}$",
+        "$0.12\\,\\mathrm{nm}$",
+        "$1.2\\,\\mathrm{nm}$",
+        "$12\\,\\mathrm{nm}$"
+      ],
+      "answer": 1,
+      "hint": "$E_k=eU=100\\,\\mathrm{eV}$；非相对论 $p=\\sqrt{2m_e E_k}$；$\\lambda=h/p$。",
+      "explanation": "B 正确：$E_k=100\\times1.60\\times10^{-19}=1.60\\times10^{-17}\\,\\mathrm{J}$，$p=\\sqrt{2\\times9.11\\times10^{-31}\\times1.60\\times10^{-17}}\\approx5.4\\times10^{-24}\\,\\mathrm{kg\\cdot m/s}$，$\\lambda=6.63\\times10^{-34}/(5.4\\times10^{-24})\\approx0.12\\,\\mathrm{nm}$。A 错：少除 10 倍。C、D 错：数量级偏差过大。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.3.md",
+        "label": "12.3 德布罗意波长"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch11",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "杨氏双缝实验中，缝屏距 $D=2.0\\,\\mathrm{m}$，双缝间距 $d=0.40\\,\\mathrm{mm}$，入射光 $\\lambda=550\\,\\mathrm{nm}$，相邻明纹间距 $\\Delta x=\\dfrac{D\\lambda}{d}$ 为（　）。",
+      "options": [
+        "$0.28\\,\\mathrm{mm}$",
+        "$1.38\\,\\mathrm{mm}$",
+        "$2.75\\,\\mathrm{mm}$",
+        "$5.50\\,\\mathrm{mm}$"
+      ],
+      "answer": 2,
+      "hint": "近轴条件下 $\\Delta x=D\\lambda/d$；注意 $d$ 换算为 m。",
+      "explanation": "C 正确：$\\Delta x=\\dfrac{2.0\\times550\\times10^{-9}}{0.40\\times10^{-3}}=2.75\\times10^{-3}\\,\\mathrm{m}=2.75\\,\\mathrm{mm}$。A 错：$d$ 少除 10 倍。B 错：$D$ 误取 $1.0\\,\\mathrm{m}$。D 错：$d$ 误取 $0.20\\,\\mathrm{mm}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.1.md",
+        "label": "11.1 杨氏双缝干涉条纹间距"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch10",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "空气中薄凸透镜焦距 $f=25\\,\\mathrm{cm}$，实物置于透镜左侧 $u=40\\,\\mathrm{cm}$ 处，由 $\\dfrac{1}{u}+\\dfrac{1}{v}=\\dfrac{1}{f}$ 求得像距 $v$ 及像的性质为（　）。",
+      "options": [
+        "$v=66.7\\,\\mathrm{cm}$，倒立实像",
+        "$v=-66.7\\,\\mathrm{cm}$，正立虚像",
+        "$v=40\\,\\mathrm{cm}$，倒立实像",
+        "$v=-40\\,\\mathrm{cm}$，正立虚像"
+      ],
+      "answer": 0,
+      "hint": "$\\dfrac{1}{v}=\\dfrac{1}{f}-\\dfrac{1}{u}$；$v>0$ 为实像，$v<0$ 为虚像；$f<u<2f$ 时成放大实像。",
+      "explanation": "A 正确：$\\dfrac{1}{v}=\\dfrac{1}{25}-\\dfrac{1}{40}=\\dfrac{8-5}{200}=\\dfrac{3}{200}$，$v=200/3\\approx66.7\\,\\mathrm{cm}>0$，为倒立实像。B 错：$u>f$ 时凸透镜成实像，$v$ 应为正。C 错：$v=40\\,\\mathrm{cm}$ 对应 $u=66.7\\,\\mathrm{cm}$。D 错：$v<0$ 为虚像，需 $u<f$。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.2.md",
+        "label": "10.2 薄透镜高斯公式"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：完成下列核反应方程配平，并计算反应能 $Q$。（已知原子质量：$m(^2\\mathrm{H})=2.014102\\,\\mathrm{u}$，$m(^3\\mathrm{H})=3.016049\\,\\mathrm{u}$，$m(^4\\mathrm{He})=4.002603\\,\\mathrm{u}$，$m(^1\\mathrm{n})=1.008665\\,\\mathrm{u}$；$1\\,\\mathrm{u}=931.5\\,\\mathrm{MeV}/c^2$）\n\n$$^2_1\\mathrm{H}+^3_1\\mathrm{H}\\to\\,?+\\,?$$",
+      "answer": "**配平**：$^2_1\\mathrm{H}+^3_1\\mathrm{H}\\to^4_2\\mathrm{He}+^1_0\\mathrm{n}$\n\n电荷守恒：$1+1=2+0$ ✓；质量数守恒：$2+3=4+1$ ✓\n\n**反应能**：\n$$\\Delta m=(2.014102+3.016049)-(4.002603+1.008665)=0.018883\\,\\mathrm{u}$$\n$$Q=\\Delta m\\,c^2=0.018883\\times931.5\\approx17.6\\,\\mathrm{MeV}$$\n\n$Q>0$，为**放能反应**（氘-氚聚变）。",
+      "hint": "配平时 $A$、$Z$ 分别守恒；$Q=(m_{\\mathrm{react}}-m_{\\mathrm{prod}})c^2$，$Q>0$ 放能。",
+      "scoring_criteria": [
+        "正确配平为 $^4_2\\mathrm{He}+^1_0\\mathrm{n}$（4分）",
+        "正确写出 $\\Delta m=0.018883\\,\\mathrm{u}$（3分）",
+        "正确求 $Q\\approx17.6\\,\\mathrm{MeV}$ 并判断为放能反应（3分）"
+      ],
+      "explanation": "本题考查人工核反应配平与反应能计算，与 13.2 节 $Q=(m_a+m_A-m_B-m_b)c^2$ 一致。D-T 聚变是磁约束核聚变与氢弹的基本反应之一。易错：产物写成 $^5_2\\mathrm{He}$（不存在稳定核）或 $Q$ 符号弄反。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.2.md",
+        "label": "13.2 人工核反应与反应能"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：试计算 $^4_2\\mathrm{He}$ 核的结合能 $\\Delta E$ 和比结合能 $\\varepsilon$。（已知 $m_p=1.007276\\,\\mathrm{u}$，$m_n=1.008665\\,\\mathrm{u}$，$m(^4\\mathrm{He})=4.002603\\,\\mathrm{u}$；$1\\,\\mathrm{u}=931.5\\,\\mathrm{MeV}/c^2$）",
+      "answer": "组成 $^4\\mathrm{He}$ 核需 2 个质子和 2 个中子：\n\n$$\\Delta m=2m_p+2m_n-m(^4\\mathrm{He})=2\\times1.007276+2\\times1.008665-4.002603=0.029279\\,\\mathrm{u}$$\n\n$$\\Delta E=\\Delta m\\,c^2=0.029279\\times931.5\\approx27.3\\,\\mathrm{MeV}$$\n\n$$\\varepsilon=\\frac{\\Delta E}{A}=\\frac{27.3}{4}\\approx6.82\\,\\mathrm{MeV/核子}$$",
+      "hint": "质量亏损 $\\Delta m=Zm_p+Nm_n-M_{\\mathrm{核}}$；$\\Delta E=\\Delta mc^2$；$\\varepsilon=\\Delta E/A$。",
+      "scoring_criteria": [
+        "正确写出 $\\Delta m=0.029279\\,\\mathrm{u}$（4分）",
+        "正确求结合能 $\\Delta E\\approx27.3\\,\\mathrm{MeV}$（4分）",
+        "正确求比结合能 $\\varepsilon\\approx6.82\\,\\mathrm{MeV/核子}$（2分）"
+      ],
+      "explanation": "本题与详解 EX04 氘核/氦核结合能计算思路一致。$^4\\mathrm{He}$ 为双幻数核，比结合能较大、特别稳定。易错：用原子质量代替核质量（本题已给核质量）；$\\varepsilon$ 忘记除以 $A$。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.1.md",
+        "label": "13.1 质量亏损、结合能与比结合能计算"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：$^{32}_{15}\\mathrm{P}$ 的半衰期 $T=14.3\\,\\mathrm{d}$，摩尔质量 $\\mu=32\\,\\mathrm{g\\cdot mol^{-1}}$。求：（1）衰变常数 $\\lambda$（以 $\\mathrm{d^{-1}}$ 计）；（2）平均寿命 $\\tau$；（3）$2.0\\,\\mu\\mathrm{g}$ 纯 $^{32}\\mathrm{P}$ 的放射性活度 $A$（Bq）。（$N_A=6.022\\times10^{23}\\,\\mathrm{mol^{-1}}$）",
+      "answer": "（1）$\\lambda=\\dfrac{0.693}{T}=\\dfrac{0.693}{14.3}\\approx4.85\\times10^{-2}\\,\\mathrm{d^{-1}}$\n\n（2）$\\tau=\\dfrac{1}{\\lambda}=\\dfrac{1}{4.85\\times10^{-2}}\\approx20.6\\,\\mathrm{d}$\n\n（3）核数 $N=\\dfrac{mN_A}{\\mu}=\\dfrac{2.0\\times10^{-6}\\times6.022\\times10^{23}}{32}=3.76\\times10^{16}$\n\n$$A=\\lambda N=\\frac{0.693\\,mN_A}{T\\mu}=\\frac{0.693\\times2.0\\times10^{-6}\\times6.022\\times10^{23}}{14.3\\times24\\times3600\\times32}\\approx2.12\\times10^{10}\\,\\mathrm{Bq}$$",
+      "hint": "$\\lambda=0.693/T$；$\\tau=1/\\lambda$；$A=\\lambda N$，$N=mN_A/\\mu$，注意 $T$ 换算为秒。",
+      "scoring_criteria": [
+        "正确求 $\\lambda\\approx4.85\\times10^{-2}\\,\\mathrm{d^{-1}}$（3分）",
+        "正确求 $\\tau\\approx20.6\\,\\mathrm{d}$（2分）",
+        "正确求活度 $A\\approx2.12\\times10^{10}\\,\\mathrm{Bq}$（5分）"
+      ],
+      "explanation": "本题与详解 EX06（$^{32}\\mathrm{P}$ 半衰期与活度）完全一致，只是质量取 $2.0\\,\\mu\\mathrm{g}$。核心公式链：$T\\to\\lambda\\to A=\\lambda N$。易错：$T$ 未换算为秒导致 $A$ 差 $86400$ 倍；$\\tau$ 与 $T$ 混淆（$\\tau=T/0.693$）。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.2.md",
+        "label": "13.2 半衰期、衰变常数与放射性活度"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：某甲亢患者口服 $^{131}\\mathrm{I}$ 治疗，服药时活度 $A_0=370\\,\\mathrm{MBq}$。已知 $^{131}\\mathrm{I}$ 物理半衰期 $T_p=8.0\\,\\mathrm{d}$，生物半衰期 $T_b=6.0\\,\\mathrm{d}$（体内代谢排出）。求：（1）有效半衰期 $T_{\\mathrm{eff}}$；（2）服药后 $24\\,\\mathrm{h}$ 体内剩余活度 $A$；（3）若甲状腺吸收 $30\\%$ 的放射性，其余排出体外不计，甲状腺内初始活度及 $24\\,\\mathrm{h}$ 后活度。",
+      "answer": "（1）$\\dfrac{1}{T_{\\mathrm{eff}}}=\\dfrac{1}{T_p}+\\dfrac{1}{T_b}=\\dfrac{1}{8.0}+\\dfrac{1}{6.0}=\\dfrac{7}{24}$\n\n$$T_{\\mathrm{eff}}=\\dfrac{24}{7}\\approx3.43\\,\\mathrm{d}$$\n\n（2）$t=1\\,\\mathrm{d}$，$A=A_0\\left(\\dfrac{1}{2}\\right)^{t/T_{\\mathrm{eff}}}=370\\times\\left(\\dfrac{1}{2}\\right)^{1/3.43}\\approx370\\times0.819\\approx303\\,\\mathrm{MBq}$\n\n（3）甲状腺初始活度 $A_{0,\\mathrm{thy}}=0.30\\times370=111\\,\\mathrm{MBq}$\n\n$24\\,\\mathrm{h}$ 后 $A_{\\mathrm{thy}}=111\\times0.819\\approx91\\,\\mathrm{MBq}$",
+      "hint": "$1/T_{\\mathrm{eff}}=1/T_p+1/T_b$；$A=A_0 e^{-\\lambda t}=A_0(1/2)^{t/T_{\\mathrm{eff}}}$；甲状腺活度按吸收份额分配。",
+      "scoring_criteria": [
+        "正确求 $T_{\\mathrm{eff}}\\approx3.43\\,\\mathrm{d}$（3分）",
+        "正确求 $24\\,\\mathrm{h}$ 后总活度 $A\\approx303\\,\\mathrm{MBq}$（4分）",
+        "正确求甲状腺初始活度 $111\\,\\mathrm{MBq}$ 及 $24\\,\\mathrm{h}$ 后 $\\approx91\\,\\mathrm{MBq}$（3分）"
+      ],
+      "explanation": "本题综合有效半衰期（13.2 节核医学应用）与活度衰减。生物体内同时发生物理衰变与代谢排出，$T_{\\mathrm{eff}}<T_p$。$^{131}\\mathrm{I}$ 是甲亢治疗的经典示踪/治疗核素。易错：仅用物理半衰期；$t$ 单位与 $T$ 不一致；忘记按吸收份额分配。",
+      "sourceRef": {
+        "path": "content/physics/detail/13.2.md",
+        "label": "13.2 有效半衰期与核医学碘治疗"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch12",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：（1）金属铯逸出功 $W=2.0\\,\\mathrm{eV}$，用波长 $\\lambda=300\\,\\mathrm{nm}$ 的 ultraviolet 照射（$hc\\approx1240\\,\\mathrm{eV\\cdot nm}$），求遏止电压 $U_a$ 及出射电子最大动能 $E_{k,\\max}$（eV）。（2）波长 $\\lambda_0=0.10\\,\\mathrm{nm}$ 的 X 射线与自由电子发生康普顿散射，散射角 $\\theta=90°$，求波长改变量 $\\Delta\\lambda$ 及散射光子波长 $\\lambda$。（$\\lambda_C=h/(m_0 c)=2.43\\times10^{-12}\\,\\mathrm{m}$）",
+      "answer": "（1）光子能量 $E=h\\nu=hc/\\lambda=1240/300\\approx4.13\\,\\mathrm{eV}$\n\n$$E_{k,\\max}=E-W=4.13-2.0=2.13\\,\\mathrm{eV}$$\n\n$$U_a=\\frac{E_{k,\\max}}{e}=2.13\\,\\mathrm{V}$$\n\n（2）$\\Delta\\lambda=\\lambda_C(1-\\cos\\theta)=2.43\\times10^{-12}\\times(1-0)=2.43\\times10^{-12}\\,\\mathrm{m}=2.43\\,\\mathrm{pm}$$\n\n$$\\lambda=\\lambda_0+\\Delta\\lambda=0.10\\,\\mathrm{nm}+0.00243\\,\\mathrm{nm}=0.10243\\,\\mathrm{nm}$$",
+      "hint": "光电：$h\\nu=W+E_{k,\\max}$；康普顿：$\\Delta\\lambda=\\lambda_C(1-\\cos\\theta)$，$\\theta=90°$ 时 $\\Delta\\lambda=\\lambda_C$。",
+      "scoring_criteria": [
+        "正确求 $E_{k,\\max}\\approx2.13\\,\\mathrm{eV}$ 及 $U_a\\approx2.13\\,\\mathrm{V}$（5分）",
+        "正确求 $\\Delta\\lambda=2.43\\,\\mathrm{pm}$（3分）",
+        "正确求 $\\lambda\\approx0.102\\,\\mathrm{nm}$（2分）"
+      ],
+      "explanation": "本题综合 ch12 光电效应与康普顿散射。光电效应：一个光子被一个电子吸收，$E_k$ 与光强无关。康普顿：光子与自由电子弹性碰撞，$\\Delta\\lambda$ 仅与 $\\theta$ 有关；$\\theta=90°$ 时波长改变最大为 $\\lambda_C$。易错：康普顿公式中 $(1-\\cos\\theta)$ 漏写；单位 nm 与 pm 混用。",
+      "sourceRef": {
+        "path": "content/physics/detail/12.1.md",
+        "label": "12.1 光电效应与康普顿散射"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch11",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：波长 $\\lambda=600\\,\\mathrm{nm}$ 的单色光垂直入射光栅，第 2 级明纹对应的 $\\sin\\theta=0.20$，且第 4 级明纹缺级。求：（1）光栅常数 $d$；（2）缝宽 $a$；（3）在可见光范围内（$400\\,\\mathrm{nm}\\sim760\\,\\mathrm{nm}$）该光栅可能出现的最高级次 $k_{\\max}$（不考虑缺级以外的限制）。",
+      "answer": "（1）由光栅方程 $d\\sin\\theta=k\\lambda$：\n$$d=\\frac{k\\lambda}{\\sin\\theta}=\\frac{2\\times600\\times10^{-9}}{0.20}=6.0\\times10^{-6}\\,\\mathrm{m}=6.0\\,\\mu\\mathrm{m}$$\n\n（2）第 4 级缺级：$d/a=4$，故 $a=d/4=1.5\\,\\mu\\mathrm{m}$\n\n（3）$|\\sin\\theta|\\leq1$，$|k|_{\\max}=d/\\lambda=6.0\\times10^{-6}/(600\\times10^{-9})=10$\n\n考虑缺级 $k=\\pm4,\\pm8$，可见范围内（$\\lambda=600\\,\\mathrm{nm}$ 已给定）主极大级次为 $k=0,\\pm1,\\pm2,\\pm3,\\pm5,\\pm6,\\pm7,\\pm9$（$k=\\pm10$ 时 $\\sin\\theta=1$ 舍去），共 15 条谱线。",
+      "hint": "$d\\sin\\theta=k\\lambda$；缺级条件 $d/a=k/k'$ 为整数比；$|k|_{\\max}=d/\\lambda$。",
+      "scoring_criteria": [
+        "正确求 $d=6.0\\,\\mu\\mathrm{m}$（4分）",
+        "正确求 $a=1.5\\,\\mu\\mathrm{m}$（3分）",
+        "正确求 $|k|_{\\max}=10$ 并说明缺级后可见级次（3分）"
+      ],
+      "explanation": "本题与 11.2 节光栅常数与缺级例题一致。光栅衍射 = 多缝干涉 + 单缝衍射包络；当 $d/a=4$ 时 $k=\\pm4,\\pm8,\\ldots$ 缺级。易错：缺级级次判断错误；$k_{\\max}$ 未取整或 $k=\\pm10$ 未舍去。",
+      "sourceRef": {
+        "path": "content/physics/detail/11.2.md",
+        "label": "11.2 光栅方程与缺级现象"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch10",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：凸透镜 $L_1$ 焦距 $f_1=20\\,\\mathrm{cm}$，凹透镜 $L_2$ 焦距 $f_2=-40\\,\\mathrm{cm}$，$L_2$ 位于 $L_1$ 右侧 $40\\,\\mathrm{cm}$ 处。实物置于 $L_1$ 左侧 $30\\,\\mathrm{cm}$ 处。求：（1）$L_1$ 单独成像的像距 $v_1$ 及放大率 $m_1$；（2）$L_2$ 的物距 $u_2$；（3）最终像距 $v_2$、总放大率 $|m|$ 及像的虚实与位置。",
+      "answer": "（1）$L_1$：$\\dfrac{1}{30}+\\dfrac{1}{v_1}=\\dfrac{1}{20}$，得 $v_1=60\\,\\mathrm{cm}$（$L_1$ 右侧实像）\n\n$$m_1=-\\frac{v_1}{u_1}=-\\frac{60}{30}=-2$$\n\n（2）$L_1$ 实像作 $L_2$ 的物，位于 $L_2$ 左侧 $20\\,\\mathrm{cm}$ 处，为虚物：$u_2=-20\\,\\mathrm{cm}$\n\n（3）$L_2$：$\\dfrac{1}{-20}+\\dfrac{1}{v_2}=\\dfrac{1}{-40}$，得 $v_2=-40\\,\\mathrm{cm}$\n\n$$m_2=-\\frac{v_2}{u_2}=-\\frac{-40}{-20}=-2,\\quad |m|=|m_1\\cdot m_2|=4$$\n\n最终在 $L_2$ 左侧 $40\\,\\mathrm{cm}$ 处成**正立虚像**（$v_2<0$），像高为物的 4 倍。",
+      "hint": "非密接透镜组逐次成像；$L_1$ 实像若在 $L_2$ 左侧则为 $L_2$ 虚物 $u_2<0$；总放大率 $m=m_1 m_2$。",
+      "scoring_criteria": [
+        "正确求 $v_1=60\\,\\mathrm{cm}$、$m_1=-2$（3分）",
+        "正确求 $u_2=-20\\,\\mathrm{cm}$ 并说明为虚物（3分）",
+        "正确求 $v_2=-40\\,\\mathrm{cm}$、$|m|=4$ 并判断为 $L_2$ 左侧正立虚像（4分）"
+      ],
+      "explanation": "本题与 ch10 详解 EX02 凸凹透镜组逐次成像一致。非密接组合不能用密接公式 $\\dfrac{1}{f}=\\dfrac{1}{f_1}+\\dfrac{1}{f_2}$。易错：$u_2$ 符号（实像作虚物取负）；最终像位置表述为\"$L_2$ 左侧 $40\\,\\mathrm{cm}$\"而非\"$-40\\,\\mathrm{cm}$ 处\"的物理含义。",
+      "sourceRef": {
+        "path": "content/physics/detail/10.2.md",
+        "label": "10.2 薄透镜组合逐次成像"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": {
+      "single_choice": 10,
+      "essay": 7
+    },
+    "bySource": {
+      "current_chapter": 9,
+      "review": 8
+    },
+    "byDifficulty": {
+      "basic": 12,
+      "medium": 3,
+      "hard": 2
+    },
+    "byPoints": {
+      "current_chapter": 55,
+      "review": 45
+    }
+  }
+}

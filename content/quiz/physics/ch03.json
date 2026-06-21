@@ -1,0 +1,406 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch03",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "质量 $m = 0.50\\,\\mathrm{kg}$ 的物体连在劲度系数 $k = 200\\,\\mathrm{N/m}$ 的弹簧上作无阻尼简谐振动，其周期 $T$ 为（　）。",
+      "options": [
+        "$\\dfrac{\\pi}{10}\\,\\mathrm{s}$",
+        "$\\dfrac{\\pi}{5}\\,\\mathrm{s}$",
+        "$\\dfrac{\\pi}{2}\\,\\mathrm{s}$",
+        "$2\\pi\\,\\mathrm{s}$"
+      ],
+      "answer": 0,
+      "hint": "弹簧振子周期 $T = 2\\pi\\sqrt{m/k}$，先求 $\\omega = \\sqrt{k/m}$。",
+      "explanation": "由 $\\omega = \\sqrt{k/m} = \\sqrt{200/0.50} = 20\\,\\mathrm{rad/s}$，得 $T = 2\\pi/\\omega = 2\\pi/20 = \\pi/10\\,\\mathrm{s}$。振幅不影响周期，故选 A。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.1.md",
+        "label": "3.1 简谐振动 — 周期与角频率"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "一质点作简谐振动 $x = A\\cos(\\omega t + \\varphi)$，以 $t = 0$ 时位于正向位移极大处为参考。当质点运动至正向端点 $x = A$ 时，其速度与加速度分别为（　）。",
+      "options": [
+        "$v = \\omega A$，$a = -\\omega^2 A$",
+        "$v = 0$，$a = +\\omega^2 A$",
+        "$v = 0$，$a = -\\omega^2 A$",
+        "$v = -\\omega A$，$a = 0$"
+      ],
+      "answer": 2,
+      "hint": "端点处速度为零；加速度 $a = -\\omega^2 x$，在 $x = A$ 时为负。",
+      "explanation": "正向端点 $x = A$ 时 $v = 0$；由 $a = -\\omega^2 x$ 得 $a = -\\omega^2 A$。易错点是把加速度写成 $+\\omega^2 A$，故选 C。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.1.md",
+        "label": "3.1 简谐振动 — 位移、速度、加速度相位"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "质点同时参与两互相垂直、同频率的简谐振动 $x = A\\cos(\\omega t)$、$y = A\\cos(\\omega t + \\pi/2)$，其合运动轨迹为（　）。",
+      "options": [
+        "沿斜率 $A_2/A_1$ 的直线段",
+        "圆（半径 $A$）",
+        "频率比为 $2:3$ 的李萨如图形",
+        "沿 $x$ 轴的简谐振动"
+      ],
+      "answer": 1,
+      "hint": "相位差 $\\Delta\\varphi = \\pi/2$ 且 $A_1 = A_2$ 时，垂直同频合成轨迹为圆。",
+      "explanation": "教材指出：互相垂直、同频率振动，当 $\\Delta\\varphi = \\pm\\pi/2$ 且 $A_1 = A_2$ 时轨迹为圆；$\\Delta\\varphi = 0$ 时为斜直线段。李萨如图形需两方向频率为简单整数比，故选 B。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.2.md",
+        "label": "3.2 互相垂直同频振动合成"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "两同方向、同频率简谐振动 $y_1 = 5\\cos(\\pi t - \\pi/2)\\,\\mathrm{cm}$、$y_2 = 15\\cos(\\pi t + \\pi/2)\\,\\mathrm{cm}$ 合成，合振动振幅为（　）。",
+      "options": [
+        "$20\\,\\mathrm{cm}$",
+        "$10\\,\\mathrm{cm}$",
+        "$5\\,\\mathrm{cm}$",
+        "$\\sqrt{250}\\,\\mathrm{cm}$"
+      ],
+      "answer": 1,
+      "hint": "相位差 $\\Delta\\varphi = \\varphi_2 - \\varphi_1$；反相时 $A = |A_1 - A_2|$。",
+      "explanation": "$\\Delta\\varphi = \\pi/2 - (-\\pi/2) = \\pi$（反相），合振幅 $A = |15 - 5| = 10\\,\\mathrm{cm}$。误用 $A_1 + A_2$ 得 20 cm，误用一般公式算错得 $\\sqrt{250}\\,\\mathrm{cm}$，故选 B。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.2.md",
+        "label": "3.2 同向同频振动合成"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于阻尼振动与受迫振动，下列说法**错误**的是（　）。",
+      "options": [
+        "欠阻尼自由振动中，振幅随时间单调减小",
+        "受迫振动稳态时，振动频率等于驱动力频率 $\\Omega$",
+        "阻尼越大，共振峰越高、越尖锐",
+        "临界阻尼状态下系统最快回到平衡位置且不过冲"
+      ],
+      "answer": 2,
+      "hint": "共振峰高度与宽度随阻尼增大而降低、变宽。",
+      "explanation": "教材指出阻尼越大，共振峰越宽、越低；C 说「越高、越尖锐」与事实相反。A、B、D 均与详解一致，故选 C。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.3.md",
+        "label": "3.3 阻尼振动、受迫振动和共振"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 3,
+      "stem": "理想不可压缩流体在同一流管中作稳定流动，截面 $S_1 = 2.0\\,\\mathrm{cm}^2$ 处流速 $v_1 = 6.0\\,\\mathrm{m/s}$，截面 $S_2 = 6.0\\,\\mathrm{cm}^2$ 处流速 $v_2$ 为（　）。",
+      "options": [
+        "$18.0\\,\\mathrm{m/s}$",
+        "$2.0\\,\\mathrm{m/s}$",
+        "$3.0\\,\\mathrm{m/s}$",
+        "$1.0\\,\\mathrm{m/s}$"
+      ],
+      "answer": 1,
+      "hint": "连续性方程 $S_1 v_1 = S_2 v_2$，管粗处流速小。",
+      "explanation": "由 $S_1 v_1 = S_2 v_2$ 得 $v_2 = 2.0 \\times 6.0 / 6.0 = 2.0\\,\\mathrm{m/s}$。误把截面积与流速成正比得 18 m/s，故选 B。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.1.md",
+        "label": "2.1 连续性方程"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 3,
+      "stem": "理想流体在水平不等径管中作稳定流动，由伯努利方程可知（　）。",
+      "options": [
+        "流速大处压强大",
+        "流速大处压强小",
+        "流速与压强无关",
+        "管径大处流速一定大"
+      ],
+      "answer": 1,
+      "hint": "水平管中 $p + \\frac{1}{2}\\rho v^2 = \\text{常数}$，结合连续性方程联立分析。",
+      "explanation": "水平管 $h$ 相同，由 $p + \\frac{1}{2}\\rho v^2 = \\text{常数}$ 知 $v$ 大则 $p$ 小；连续性方程又给出细管处 $v$ 大，故选 B。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.2.md",
+        "label": "2.2 伯努利方程 — 水平不均匀管"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 3,
+      "stem": "开口容器液面距侧壁小孔高度 $h = 2.0\\,\\mathrm{m}$，取 $g = 9.8\\,\\mathrm{m/s}^2$，由托里拆利公式得小孔出流速度约为（　）。",
+      "options": [
+        "$4.4\\,\\mathrm{m/s}$",
+        "$6.3\\,\\mathrm{m/s}$",
+        "$9.8\\,\\mathrm{m/s}$",
+        "$19.6\\,\\mathrm{m/s}$"
+      ],
+      "answer": 1,
+      "hint": "托里拆利公式 $v = \\sqrt{2gh}$，液面处 $v \\approx 0$。",
+      "explanation": "$v = \\sqrt{2 \\times 9.8 \\times 2.0} = \\sqrt{39.2} \\approx 6.26\\,\\mathrm{m/s} \\approx 6.3\\,\\mathrm{m/s}$，与自由落体 $\\sqrt{2gh}$ 形式相同，故选 B。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.2.md",
+        "label": "2.2 托里拆利公式"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 3,
+      "stem": "水平圆管中不可压缩牛顿流体作层流，其他条件不变，仅将管半径减半，由泊肃叶定律知体积流量 $Q$ 变为原来的（　）。",
+      "options": [
+        "$1/2$",
+        "$1/4$",
+        "$1/8$",
+        "$1/16$"
+      ],
+      "answer": 3,
+      "hint": "泊肃叶定律 $Q \\propto r^4$，半径减半时 $Q$ 按四次方缩放。",
+      "explanation": "$Q = \\dfrac{\\pi \\Delta p\\, r^4}{8 \\eta L}$，$r$ 减半则 $Q' = Q \\times (1/2)^4 = Q/16$，故选 D。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.3.md",
+        "label": "2.3 泊肃叶定律"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "points": 3,
+      "stem": "$0\\,^\\circ\\mathrm{C}$ 时水在直径 $d = 2.0 \\times 10^{-2}\\,\\mathrm{m}$ 圆管中流动，取 $\\rho = 10^3\\,\\mathrm{kg/m}^3$、$\\eta = 1.8 \\times 10^{-3}\\,\\mathrm{Pa\\cdot s}$。若 $v = 0.15\\,\\mathrm{m/s}$，雷诺数 $Re = \\rho v r / \\eta$ 约为 833，则流动状态为（　）。",
+      "options": [
+        "湍流（$Re > 1500$）",
+        "过渡区（$1000 < Re < 1500$）",
+        "层流（$Re < 1000$）",
+        "无法判断"
+      ],
+      "answer": 2,
+      "hint": "经验判据：$Re < 1000$ 为层流，$Re > 1500$ 为湍流。",
+      "explanation": "$Re \\approx 833 < 1000$，按教材判据属于层流。一般自来水管流速为数 m/s 时多属湍流，但本题给定 $v = 0.15\\,\\mathrm{m/s}$ 时 $Re < 1000$，故选 C。",
+      "sourceRef": {
+        "path": "content/physics/detail/2.3.md",
+        "label": "2.3 雷诺数与层流湍流"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "质量 $m = 0.10\\,\\mathrm{kg}$ 的物体连在劲度系数 $k = 40\\,\\mathrm{N/m}$ 的弹簧上，在光滑水平面上作简谐振动。$t = 0$ 时物体位于 $x_0 = 0.050\\,\\mathrm{m}$ 处自静止释放（取 $x$ 轴正向为拉伸方向）。\n\n（1）求角频率 $\\omega$、周期 $T$ 和振幅 $A$；\n（2）求初相位 $\\varphi$ 并写出振动方程 $x(t)$；\n（3）求 $t = \\pi/20\\,\\mathrm{s}$ 时的位移 $x$。",
+      "answer": "（1）$\\omega = \\sqrt{k/m} = \\sqrt{400} = 20\\,\\mathrm{rad/s}$，$T = 2\\pi/\\omega = \\pi/10\\,\\mathrm{s}$，$A = \\sqrt{x_0^2 + (v_0/\\omega)^2} = 0.050\\,\\mathrm{m}$。\n\n（2）$v_0 = 0$、$x_0 = A > 0$，故 $\\varphi = 0$，$x = 0.050\\cos(20t)\\,\\mathrm{m}$。\n\n（3）$x(\\pi/20) = 0.050\\cos(\\pi) = -0.050\\,\\mathrm{m}$。",
+      "hint": "静止释放于最大位移处时 $\\varphi = 0$；用 $x = A\\cos(\\omega t + \\varphi)$ 代入 $t = \\pi/20$。",
+      "explanation": "由 $F = -kx$ 知为简谐振动，$\\omega = \\sqrt{k/m}$。初始静止于 $x_0 = A$ 处对应正向位移极大，初相位为零。半个周期后位移反号。",
+      "scoring_criteria": [
+        "正确求出 $\\omega = 20\\,\\mathrm{rad/s}$ 与 $T = \\pi/10\\,\\mathrm{s}$（3分）",
+        "正确确定 $A = 0.050\\,\\mathrm{m}$ 与 $\\varphi = 0$（3分）",
+        "写出完整振动方程 $x = 0.050\\cos(20t)\\,\\mathrm{m}$（2分）",
+        "正确计算 $x(\\pi/20) = -0.050\\,\\mathrm{m}$（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/3.1.md",
+        "label": "3.1 初始条件确定 A 与 φ"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "单摆摆长 $L = 1.00\\,\\mathrm{m}$，在小角度近似下作简谐振动，最大摆角 $\\theta_{\\max} = 8.0°$（弧度制 $\\theta_{\\max} = 8\\pi/180\\,\\mathrm{rad}$）。取 $g = 9.8\\,\\mathrm{m/s}^2$。\n\n（1）求周期 $T$ 和角频率 $\\omega$；\n（2）求线位移振幅 $s_{\\max} = L\\theta_{\\max}$ 及最大速率 $v_{\\max}$；\n（3）说明为何小角度下单摆可视为简谐振动。",
+      "answer": "（1）$\\omega = \\sqrt{g/L} = \\sqrt{9.8}\\,\\mathrm{rad/s} \\approx 3.13\\,\\mathrm{rad/s}$，$T = 2\\pi/\\omega = 2\\pi\\sqrt{L/g} \\approx 2.01\\,\\mathrm{s}$。\n\n（2）$s_{\\max} = L\\theta_{\\max} = 1.00 \\times 8\\pi/180 \\approx 0.140\\,\\mathrm{m}$；$v_{\\max} = \\omega s_{\\max} = \\sqrt{g/L}\\,L\\theta_{\\max} = \\theta_{\\max}\\sqrt{gL} \\approx 0.439\\,\\mathrm{m/s}$。\n\n（3）小角度时 $F \\approx -(mg/L)s$，回复力与位移成正比，故 $s = A\\cos(\\omega t + \\varphi)$ 为简谐振动。",
+      "hint": "单摆 $\\omega = \\sqrt{g/L}$；$v_{\\max} = \\omega A$，线振幅 $A = L\\theta_{\\max}$。",
+      "explanation": "教材给出小角度单摆等效 $k = mg/L$，$\\omega = \\sqrt{g/L}$，能量与弹簧振子形式相同。$L = 1\\,\\mathrm{m}$ 时 $T \\approx 2\\,\\mathrm{s}$，与立钟设计一致。",
+      "scoring_criteria": [
+        "正确求 $\\omega = \\sqrt{g/L}$ 与 $T = 2\\pi\\sqrt{L/g}$（3分）",
+        "正确计算 $s_{\\max} \\approx 0.140\\,\\mathrm{m}$（2分）",
+        "正确求 $v_{\\max} \\approx 0.44\\,\\mathrm{m/s}$（3分）",
+        "说明小角度下 $F \\propto -s$ 满足 SHM 条件（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/3.1.md",
+        "label": "3.1 小角度单摆"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "两同方向、同频率简谐振动（单位 cm）：\n$$x_1 = 6\\cos(2t + \\pi/4), \\quad x_2 = 8\\cos(2t - \\pi/4)$$\n\n（1）求两振动的相位差 $\\Delta\\varphi$；\n（2）用旋转矢量法求合振动振幅 $A$ 和初相位 $\\varphi$；\n（3）写出合振动方程 $x = A\\cos(2t + \\varphi)$；\n（4）若另有两同向振动频率分别为 $\\nu_1 = 256\\,\\mathrm{Hz}$、$\\nu_2 = 260\\,\\mathrm{Hz}$、振幅相同，求拍频 $\\nu_{\\text{拍}}$。",
+      "answer": "（1）$\\Delta\\varphi = \\varphi_2 - \\varphi_1 = -\\pi/4 - \\pi/4 = -\\pi/2$。\n\n（2）$A = \\sqrt{A_1^2 + A_2^2 + 2A_1 A_2 \\cos\\Delta\\varphi} = \\sqrt{36 + 64 + 0} = 10\\,\\mathrm{cm}$。\n\n$\\tan\\varphi = \\dfrac{A_1\\sin\\varphi_1 + A_2\\sin\\varphi_2}{A_1\\cos\\varphi_1 + A_2\\cos\\varphi_2} = \\dfrac{3\\sqrt{2} - 4\\sqrt{2}}{3\\sqrt{2} + 4\\sqrt{2}} = -\\dfrac{1}{7}$\n\n$\\varphi \\approx -0.142\\,\\mathrm{rad}$（约 $-8.1°$）。\n\n（3）$x = 10\\cos(2t - 0.142)\\,\\mathrm{cm}$。\n\n（4）$\\nu_{\\text{拍}} = |\\nu_1 - \\nu_2| = |256 - 260| = 4\\,\\mathrm{Hz}$。",
+      "hint": "$\\Delta\\varphi = -\\pi/2$ 时 $A = \\sqrt{A_1^2 + A_2^2}$；用 $\\tan\\varphi$ 公式求合初相。",
+      "explanation": "同向同频合成仍为简谐振动，频率不变。本题相位差为 $-\\pi/2$，两分量正交，振幅恰为 $\\sqrt{6^2+8^2} = 10\\,\\mathrm{cm}$，与教材例题方法一致。",
+      "scoring_criteria": [
+        "正确求相位差 $\\Delta\\varphi = -\\pi/2$（2分）",
+        "正确求合振幅 $A = 10\\,\\mathrm{cm}$（3分）",
+        "正确求 $\\tan\\varphi = -1/7$，$\\varphi \\approx -0.14\\,\\mathrm{rad}$（2分）",
+        "写出合振动方程（2分）",
+        "正确求拍频 $\\nu_{\\text{拍}} = 4\\,\\mathrm{Hz}$（1分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/3.2.md",
+        "label": "3.2 同向同频振动合成"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "弹簧振子质量 $m = 1.0\\,\\mathrm{kg}$，劲度系数 $k = 400\\,\\mathrm{N/m}$，线性阻尼系数 $\\gamma = 8.0\\,\\mathrm{N\\cdot s/m}$。系统还受周期性外力 $F = 5.0\\cos(\\Omega t)\\,\\mathrm{N}$ 作用。\n\n（1）求固有角频率 $\\omega_0$、阻尼参数 $\\beta = \\gamma/(2m)$，并判断自由振动属于欠阻尼、临界阻尼还是过阻尼；\n（2）当 $\\Omega = \\omega_0$ 时，求稳态振动振幅 $A$；\n（3）简述共振条件及增大阻尼对共振峰的影响。",
+      "answer": "（1）$\\omega_0 = \\sqrt{k/m} = 20\\,\\mathrm{rad/s}$，$\\beta = 8.0/(2 \\times 1.0) = 4.0\\,\\mathrm{s}^{-1}$。因 $\\beta = 4 < \\omega_0 = 20$，属**欠阻尼**。\n\n（2）$\\Omega = \\omega_0$ 时，$A = \\dfrac{F_0/m}{\\sqrt{(\\omega_0^2 - \\Omega^2)^2 + (2\\beta\\Omega)^2}} = \\dfrac{5}{2\\beta\\omega_0} = \\dfrac{5}{2 \\times 4 \\times 20} = 0.0313\\,\\mathrm{m}$。\n\n（3）当驱动频率 $\\Omega \\approx \\omega_0$ 时发生共振，稳态振幅达相对极大；阻尼越大，共振峰越低、越宽。",
+      "hint": "比较 $\\beta$ 与 $\\omega_0$ 判断阻尼类型；共振时 $\\omega_0^2 - \\Omega^2 = 0$，代入稳态振幅公式。",
+      "explanation": "方程 $m\\ddot{x} + \\gamma\\dot{x} + kx = F_0\\cos\\Omega t$ 中，$\\beta < \\omega_0$ 为欠阻尼。教材给出 $A(\\Omega)$ 公式，$\\Omega = \\omega_0$ 时分母最小。受迫振动稳态频率恒为 $\\Omega$，与 $\\omega_0$ 无关。",
+      "scoring_criteria": [
+        "正确求 $\\omega_0 = 20\\,\\mathrm{rad/s}$、$\\beta = 4\\,\\mathrm{s}^{-1}$ 并判断欠阻尼（3分）",
+        "正确求共振振幅 $A \\approx 0.031\\,\\mathrm{m}$（4分）",
+        "正确说明共振条件 $\\Omega \\approx \\omega_0$（2分）",
+        "正确说明阻尼增大使共振峰降低、变宽（1分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/3.3.md",
+        "label": "3.3 受迫振动与共振"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "理想不可压缩水流经水平变径管，粗段截面积 $S_1 = 5.0 \\times 10^{-2}\\,\\mathrm{m}^2$，流速 $v_1 = 2.0\\,\\mathrm{m/s}$，压强 $p_1 = 1.50 \\times 10^5\\,\\mathrm{Pa}$；细段截面积 $S_2 = 2.0 \\times 10^{-2}\\,\\mathrm{m}^2$。取 $\\rho = 1.0 \\times 10^3\\,\\mathrm{kg/m}^3$。\n\n（1）由连续性方程求 $v_2$；\n（2）由伯努利方程求细段压强 $p_2$；\n（3）计算两截面间的压强差 $\\Delta p = p_1 - p_2$。",
+      "answer": "（1）$v_2 = S_1 v_1 / S_2 = 0.05 \\times 2.0 / 0.02 = 5.0\\,\\mathrm{m/s}$。\n\n（2）水平管 $p_1 + \\frac{1}{2}\\rho v_1^2 = p_2 + \\frac{1}{2}\\rho v_2^2$，\n$p_2 = p_1 + \\frac{1}{2}\\rho(v_1^2 - v_2^2) = 1.50 \\times 10^5 + 500 \\times (4 - 25) = 1.395 \\times 10^5\\,\\mathrm{Pa}$。\n\n（3）$\\Delta p = p_1 - p_2 = 1.05 \\times 10^4\\,\\mathrm{Pa}$。",
+      "hint": "先 $S_1 v_1 = S_2 v_2$，再水平伯努利 $p + \\frac{1}{2}\\rho v^2 = \\text{常数}$。",
+      "explanation": "细管处流速大、压强小，是伯努利效应与连续性方程联用的典型题。动压项 $\\frac{1}{2}\\rho v^2$ 在细段更大，故静压 $p$ 降低。",
+      "scoring_criteria": [
+        "正确求 $v_2 = 5.0\\,\\mathrm{m/s}$（3分）",
+        "正确列水平伯努利方程（2分）",
+        "正确求 $p_2 = 1.395 \\times 10^5\\,\\mathrm{Pa}$（3分）",
+        "正确求 $\\Delta p = 1.05 \\times 10^4\\,\\mathrm{Pa}$（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/2.2.md",
+        "label": "2.2 伯努利方程应用"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "血液在水平直圆管中作层流，管长 $L = 0.50\\,\\mathrm{m}$，半径 $r = 1.0 \\times 10^{-2}\\,\\mathrm{m}$，两端压强差 $\\Delta p = 1.60 \\times 10^3\\,\\mathrm{Pa}$，黏度 $\\eta = 2.0 \\times 10^{-3}\\,\\mathrm{Pa\\cdot s}$。\n\n（1）由泊肃叶定律求体积流量 $Q$；\n（2）求截面平均流速 $\\bar{v}$ 和管轴最大流速 $v_{\\max}$；\n（3）求该段血管的流阻 $R_f$。",
+      "answer": "（1）$Q = \\dfrac{\\pi \\Delta p\\, r^4}{8 \\eta L} = \\dfrac{\\pi \\times 1600 \\times (10^{-2})^4}{8 \\times 2.0 \\times 10^{-3} \\times 0.50} = 6.28 \\times 10^{-4}\\,\\mathrm{m}^3/\\mathrm{s}$。\n\n（2）$\\bar{v} = Q/(\\pi r^2) = 6.28 \\times 10^{-4} / (\\pi \\times 10^{-4}) = 2.00\\,\\mathrm{m/s}$；$v_{\\max} = 2\\bar{v} = 4.00\\,\\mathrm{m/s}$。\n\n（3）$R_f = \\Delta p / Q = 1600 / (6.28 \\times 10^{-4}) \\approx 2.55 \\times 10^6\\,\\mathrm{Pa\\cdot s/m}^3$（亦可用 $R_f = 8\\eta L/(\\pi r^4)$ 验证）。",
+      "hint": "$Q = \\pi \\Delta p r^4/(8\\eta L)$；层流抛物线分布 $v_{\\max} = 2\\bar{v}$；$R_f = 8\\eta L/(\\pi r^4)$。",
+      "explanation": "泊肃叶定律适用于 $Re < 1000$ 的层流。流量与 $r^4$ 成正比，故小动脉半径减半时流阻增大 16 倍，压降贡献显著。",
+      "scoring_criteria": [
+        "正确求 $Q \\approx 6.3 \\times 10^{-4}\\,\\mathrm{m}^3/\\mathrm{s}$（4分）",
+        "正确求 $\\bar{v} = 2.0\\,\\mathrm{m/s}$、$v_{\\max} = 4.0\\,\\mathrm{m/s}$（3分）",
+        "正确求 $R_f \\approx 2.5 \\times 10^6\\,\\mathrm{Pa\\cdot s/m}^3$（3分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/2.3.md",
+        "label": "2.3 泊肃叶定律与流阻"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch02",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "圆柱形开口容器横截面积 $S_A = 4.0 \\times 10^{-2}\\,\\mathrm{m}^2$，底侧壁开小孔面积 $S_B = 2.0 \\times 10^{-4}\\,\\mathrm{m}^2$。初始水深 $h_0 = 0.80\\,\\mathrm{m}$，取 $g = 9.8\\,\\mathrm{m/s}^2$，忽略黏性损失。\n\n（1）初始时刻小孔出流速度 $v_B$ 和体积流量 $Q$；\n（2）由连续性方程写出 $S_A \\dfrac{dh}{dt} = -S_B v_B$ 并代入托里拆利公式；\n（3）估算容器水流尽所需时间 $t$（提示：$t = \\dfrac{2 S_A \\sqrt{h_0}}{S_B \\sqrt{2g}}$）。",
+      "answer": "（1）$v_B = \\sqrt{2gh_0} = \\sqrt{2 \\times 9.8 \\times 0.80} = 3.96\\,\\mathrm{m/s}$；$Q = S_B v_B = 2.0 \\times 10^{-4} \\times 3.96 = 7.92 \\times 10^{-4}\\,\\mathrm{m}^3/\\mathrm{s}$。\n\n（2）$S_A \\dfrac{dh}{dt} = -S_B \\sqrt{2gh}$，水面下降速率随 $h$ 减小而变慢。\n\n（3）$t = \\dfrac{2 S_A \\sqrt{h_0}}{S_B \\sqrt{2g}} = \\dfrac{2 \\times 0.04 \\times \\sqrt{0.80}}{2.0 \\times 10^{-4} \\times \\sqrt{19.6}} \\approx 80.8\\,\\mathrm{s}$。",
+      "hint": "小孔出流 $v = \\sqrt{2gh}$；对 $\\dfrac{dh}{dt}$ 积分得流尽时间，教材 2.2 节有变流量积分思路。",
+      "explanation": "本题综合连续性方程与托里拆利公式。水位下降导致出流速度逐渐减小，需积分而非简单用 $h_0/v$ 估算。$S_A \\gg S_B$ 时水面下降缓慢，但积分结果约 81 s。",
+      "scoring_criteria": [
+        "正确求初始 $v_B \\approx 3.96\\,\\mathrm{m/s}$ 与 $Q \\approx 7.9 \\times 10^{-4}\\,\\mathrm{m}^3/\\mathrm{s}$（3分）",
+        "正确建立 $S_A dh/dt = -S_B \\sqrt{2gh}$（3分）",
+        "正确积分或套用公式求 $t \\approx 81\\,\\mathrm{s}$（4分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/2.2.md",
+        "label": "2.2 托里拆利公式与容器排水"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": {
+      "single_choice": 10,
+      "essay": 7
+    },
+    "bySource": {
+      "current_chapter": 9,
+      "review": 8
+    },
+    "byDifficulty": {
+      "basic": 12,
+      "medium": 3,
+      "hard": 2
+    }
+  }
+}

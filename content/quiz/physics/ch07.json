@@ -1,0 +1,414 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch07",
+  "generatedAt": "2026-06-21",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "真空中两点电荷 $q_1=+2.0\\times10^{-6}\\,\\mathrm{C}$、$q_2=+3.0\\times10^{-6}\\,\\mathrm{C}$，相距 $r=0.30\\,\\mathrm{m}$，则它们之间的库仑力大小约为（　）。已知 $k=9.0\\times10^9\\,\\mathrm{N\\cdot m^2\\cdot C^{-2}}$。",
+      "options": [
+        "$0.20\\,\\mathrm{N}$",
+        "$0.60\\,\\mathrm{N}$",
+        "$1.80\\,\\mathrm{N}$",
+        "$6.00\\,\\mathrm{N}$"
+      ],
+      "answer": 1,
+      "hint": "同号相斥，大小 $F=k|q_1q_2|/r^2$，注意 $r$ 用米、电荷用库仑。",
+      "explanation": "B 正确：$F=k\\dfrac{q_1q_2}{r^2}=9.0\\times10^9\\times\\dfrac{2.0\\times10^{-6}\\times3.0\\times10^{-6}}{0.30^2}=0.60\\,\\mathrm{N}$。A 错：$r$ 未平方或电荷指数算错。C 错：多乘了 3 倍。D 错：$r$ 误当作 $0.10\\,\\mathrm{m}$ 或忘记 $10^{-12}$ 量级。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.1.md",
+        "label": "7.1 库仑定律"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "点电荷 $Q=+5.0\\times10^{-6}\\,\\mathrm{C}$ 在真空中产生的电场，距电荷 $r=0.20\\,\\mathrm{m}$ 处场强大小为（　）。",
+      "options": [
+        "$1.1\\times10^5\\,\\mathrm{N\\cdot C^{-1}}$",
+        "$1.1\\times10^6\\,\\mathrm{N\\cdot C^{-1}}$",
+        "$2.5\\times10^6\\,\\mathrm{N\\cdot C^{-1}}$",
+        "$1.1\\times10^7\\,\\mathrm{N\\cdot C^{-1}}$"
+      ],
+      "answer": 1,
+      "hint": "点电荷场强 $E=k|Q|/r^2$，方向沿径向向外。",
+      "explanation": "B 正确：$E=k\\dfrac{|Q|}{r^2}=9.0\\times10^9\\times\\dfrac{5.0\\times10^{-6}}{0.20^2}=1.1\\times10^6\\,\\mathrm{N\\cdot C^{-1}}$。A 错：$r$ 少除一次。C 错：误用 $E=kQ/r$。D 错：$r=0.20\\,\\mathrm{m}$ 误作 $0.020\\,\\mathrm{m}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.1.md",
+        "label": "7.1 点电荷场强公式"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "真空中一任意闭合曲面 $S$ 内包围净电荷 $Q_{\\mathrm{enc}}=+3.0\\times10^{-6}\\,\\mathrm{C}$，则通过 $S$ 面的电通量 $\\Phi_E$ 约为（　）。已知 $\\varepsilon_0=8.85\\times10^{-12}\\,\\mathrm{C^2\\cdot N^{-1}\\cdot m^{-2}}$。",
+      "options": [
+        "$2.7\\times10^4\\,\\mathrm{N\\cdot m^2\\cdot C^{-1}}$",
+        "$3.4\\times10^5\\,\\mathrm{N\\cdot m^2\\cdot C^{-1}}$",
+        "$3.0\\times10^6\\,\\mathrm{N\\cdot m^2\\cdot C^{-1}}$",
+        "$3.4\\times10^{11}\\,\\mathrm{N\\cdot m^2\\cdot C^{-1}}$"
+      ],
+      "answer": 1,
+      "hint": "高斯定理 $\\Phi_E=Q_{\\mathrm{enc}}/\\varepsilon_0$，与曲面形状无关。",
+      "explanation": "B 正确：$\\Phi_E=\\dfrac{Q_{\\mathrm{enc}}}{\\varepsilon_0}=\\dfrac{3.0\\times10^{-6}}{8.85\\times10^{-12}}\\approx3.4\\times10^5\\,\\mathrm{N\\cdot m^2\\cdot C^{-1}}$。A 错：多除约 10 倍。C 错：忘记除以 $\\varepsilon_0$。D 错：误乘 $\\varepsilon_0$ 而非除以。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.2.md",
+        "label": "7.2 高斯定理"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "关于静电场，下列说法正确的是（　）。",
+      "options": [
+        "在等势面上移动试探电荷，电场力做功为零",
+        "场强大处电势一定高",
+        "等势面上各点场强大小一定相等",
+        "匀强电场中各点电势相等"
+      ],
+      "answer": 0,
+      "hint": "环路定理 $\\oint\\mathbf{E}\\cdot\\mathrm{d}\\mathbf{l}=0$ 意味着沿等势面移动电荷电场力不做功。",
+      "explanation": "A 正确：等势面上 $V$ 不变，$W=-q_0\\Delta V=0$，与 7.3 节等势面性质一致。B 错：负点电荷附近 $E$ 大但 $V<0$。C 错：等势面只保证 $E\\perp$ 等势面，不保证 $E$ 大小相等。D 错：匀强场中等势面为平行平面，沿 $\\mathbf{E}$ 方向电势线性变化。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.3.md",
+        "label": "7.3 等势面与环路定理"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "正三角形三个顶点各放置等量点电荷 $+q$，以三角形中心为球心作球形高斯面 $S$。关于用高斯定理求 $S$ 面上场强，下列说法正确的是（　）。",
+      "options": [
+        "因 $S$ 包围总电荷 $3q$，可直接得 $E=k\\cdot3q/r^2$",
+        "因对称性，$S$ 上各点 $E$ 大小相等，可用 $\\Phi_E=ES$ 求 $E$",
+        "对称性不足，$S$ 上各点 $\\mathbf{E}$ 方向不同，不能仅用高斯定理求 $E$",
+        "因 $\\Phi_E=3q/\\varepsilon_0$，故 $S$ 上各点 $E=3q/(\\varepsilon_0 S)$"
+      ],
+      "answer": 2,
+      "hint": "高斯定理恒成立，但求 $E$ 需 $S$ 上 $E$ 大小处处相等且与 $\\mathrm{d}\\mathbf{S}$ 平行或垂直；正三角形中心对称性不足。",
+      "explanation": "C 正确：与 7.2 节 EX 综合判断一致——三个相等点电荷在正三角形顶点时，中心球面上 $\\mathbf{E}$ 方向各异，$E$ 非常数，不能用 $\\Phi_E=ES$ 一步求出 $E$，需用叠加原理。A 错：$k\\cdot3q/r^2$ 是点电荷近似，且未考虑方向。B 错：$E$ 大小在球面上不相等。D 错：$\\Phi_E$ 给出的是通量，不能直接除以面积得各点 $E$。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.2.md",
+        "label": "7.2 高斯定理适用条件"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "一定量理想气体在温度不变条件下，体积由 $V_1=4.0\\,\\mathrm{L}$ 膨胀到 $V_2=8.0\\,\\mathrm{L}$，初始压强 $p_1=3.0\\times10^5\\,\\mathrm{Pa}$，则最终压强 $p_2$ 为（　）。",
+      "options": [
+        "$1.5\\times10^5\\,\\mathrm{Pa}$",
+        "$3.0\\times10^5\\,\\mathrm{Pa}$",
+        "$6.0\\times10^5\\,\\mathrm{Pa}$",
+        "$1.2\\times10^6\\,\\mathrm{Pa}$"
+      ],
+      "answer": 0,
+      "hint": "等温过程 $p_1V_1=p_2V_2$（波义耳定律）。",
+      "explanation": "A 正确：$p_2=p_1V_1/V_2=3.0\\times10^5\\times4.0/8.0=1.5\\times10^5\\,\\mathrm{Pa}$。B 错：忽略体积变化。C 错：误用 $p_2=p_1V_2/V_1$。D 错：温度也变化时的错误外推。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.1.md",
+        "label": "5.1 理想气体状态方程"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "温度 $T=300\\,\\mathrm{K}$ 时，下列关于理想气体分子速率的说法正确的是（　）。",
+      "options": [
+        "同温度下，$O_2$ 分子的最概然速率大于 $H_2$ 分子",
+        "温度升高时，速率分布曲线峰值对应的最概然速率增大",
+        "每个分子的速率都等于最概然速率 $v_p$",
+        "方均根速率 $v_{\\mathrm{rms}}$ 小于最概然速率 $v_p$"
+      ],
+      "answer": 1,
+      "hint": "$v_p=\\sqrt{2kT/m}$，温度升高曲线变平坦且峰值右移；分子质量越小 $v_p$ 越大。",
+      "explanation": "B 正确：温度升高，分子热运动加剧，$v_p$ 增大，分布曲线峰值右移并变平坦（5.2 节）。A 错：同温下轻分子 $H_2$ 的 $v_p$ 更大。C 错：$v_p$ 是统计最可几速率，非每个分子的确定值。D 错：$v_p<\\bar{v}<v_{\\mathrm{rms}}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.2.md",
+        "label": "5.2 麦克斯韦速率分布"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "下列函数中，满足一维波动方程 $\\dfrac{\\partial^2 y}{\\partial x^2}=\\dfrac{1}{u^2}\\dfrac{\\partial^2 y}{\\partial t^2}$ 的是（　）。",
+      "options": [
+        "$y=A\\sin kx\\cos\\omega t$（$k$、$\\omega$ 任意）",
+        "$y=A\\cos(\\omega t-kx)$（$\\omega=uk$）",
+        "$y=A\\cos(\\omega t)+B\\sin kx$",
+        "$y=Ae^{-\\alpha x}\\cos\\omega t$"
+      ],
+      "answer": 1,
+      "hint": "行波解 $y=f(x-ut)$ 或 $y=A\\cos(\\omega t-kx)$ 需满足色散关系 $\\omega=uk$。",
+      "explanation": "B 正确：$y=A\\cos(\\omega t-kx)$ 在 $\\omega=uk$ 时为沿 $+x$ 传播的简谐波，满足波动方程（4.2 节）。A 错：$y=A\\sin kx\\cos\\omega t$ 是驻波形式，需特定 $k$、$\\omega$ 关系才满足。C 错：两项不能合成行波。D 错：含衰减因子，不满足标准波动方程。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.2.md",
+        "label": "4.2 波动方程"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "声速 $u=340\\,\\mathrm{m\\cdot s^{-1}}$，频率 $\\nu=500\\,\\mathrm{Hz}$ 的声源以 $v_S=34\\,\\mathrm{m\\cdot s^{-1}}$ 向静止观测者运动，观测者听到的频率 $\\nu'$ 约为（　）。",
+      "options": [
+        "$455\\,\\mathrm{Hz}$",
+        "$500\\,\\mathrm{Hz}$",
+        "$556\\,\\mathrm{Hz}$",
+        "$625\\,\\mathrm{Hz}$"
+      ],
+      "answer": 2,
+      "hint": "波源靠近静止观测者：$\\nu'=\\dfrac{u}{u-v_S}\\nu$。",
+      "explanation": "C 正确：$\\nu'=\\dfrac{340}{340-34}\\times500=\\dfrac{340}{306}\\times500\\approx556\\,\\mathrm{Hz}$。A 错：用了源远离公式 $\\dfrac{u}{u+v_S}\\nu$。B 错：忽略多普勒效应。D 错：误用 $\\dfrac{u+v_S}{u}\\nu$。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.3.md",
+        "label": "4.3 多普勒效应"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 3,
+      "label": "单项选择题",
+      "stem": "两同向同频简谐振动 $y_1=4\\cos(\\pi t)\\,\\mathrm{cm}$、$y_2=3\\cos(\\pi t+\\pi)\\,\\mathrm{cm}$ 合成，合振幅为（　）。",
+      "options": [
+        "$7\\,\\mathrm{cm}$",
+        "$1\\,\\mathrm{cm}$",
+        "$5\\,\\mathrm{cm}$",
+        "$12\\,\\mathrm{cm}$"
+      ],
+      "answer": 1,
+      "hint": "相位差 $\\Delta\\varphi=\\pi$ 时反相，$A=|A_1-A_2|$。",
+      "explanation": "B 正确：$\\varphi_2-\\varphi_1=\\pi$，反相合成 $A=|4-3|=1\\,\\mathrm{cm}$。A 错：同相时 $A=A_1+A_2=7\\,\\mathrm{cm}$。C 错：误用 $\\sqrt{A_1^2+A_2^2}$。D 错：振幅直接相加且未考虑相位。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.1.md",
+        "label": "3.1 简谐振动合成"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：半径 $R=0.20\\,\\mathrm{m}$、总电量 $Q=+4.0\\times10^{-6}\\,\\mathrm{C}$ 的均匀带电圆环，求轴线上距环心 $x=0.30\\,\\mathrm{m}$ 处 $P$ 点的电场强度大小和方向。已知 $k=9.0\\times10^9\\,\\mathrm{N\\cdot m^2\\cdot C^{-2}}$。",
+      "answer": "由对称性，轴线上 $\\mathbf{E}$ 沿 $x$ 轴方向，大小\n$$E=\\frac{kQx}{(R^2+x^2)^{3/2}}=\\frac{9.0\\times10^9\\times4.0\\times10^{-6}\\times0.30}{(0.20^2+0.30^2)^{3/2}}$$\n$$=\\frac{10.8}{(0.13)^{3/2}}\\approx\\frac{10.8}{0.0469}\\approx2.3\\times10^5\\,\\mathrm{N\\cdot C^{-1}}$$\n方向沿 $x$ 轴，由环心指向 $P$ 点（正电荷向外）。",
+      "hint": "圆环轴线上 $E_x=kQx/(R^2+x^2)^{3/2}$；垂直轴线分量因对称性抵消。",
+      "scoring_criteria": [
+        "正确写出圆环轴线场强公式并说明对称性（4分）",
+        "正确代入数据计算 $E\\approx2.3\\times10^5\\,\\mathrm{N\\cdot C^{-1}}$（4分）",
+        "正确给出方向：沿轴线由环心指向 $P$（2分）"
+      ],
+      "explanation": "本题与 7.1 节均匀带电圆环轴线场强例题一致。关键步骤：识别对称性 → 写出 $E_x$ 积分结果 → 代入 $R=0.20\\,\\mathrm{m}$、$x=0.30\\,\\mathrm{m}$、$Q=4.0\\,\\mu\\mathrm{C}$。$x=0$ 时 $E=0$；$x\\gg R$ 时退化为点电荷场。常见错误：忘记 $(R^2+x^2)^{3/2}$ 中的 3/2 次方，或漏写 $x$ 因子。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.1.md",
+        "label": "7.1 均匀带电圆环轴线场强"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：一根无限长均匀带电直线，线电荷密度 $\\lambda=2.0\\times10^{-6}\\,\\mathrm{C\\cdot m^{-1}}$。（1）用高斯定理求距直线 $r=0.10\\,\\mathrm{m}$ 处的场强大小和方向；（2）若改为有限长 $L=2.0\\,\\mathrm{m}$ 的带电细棒，无限长公式是否仍严格成立？简述理由。",
+      "answer": "（1）取同轴圆柱面为高斯面，由对称性 $\\mathbf{E}$ 沿径向，底面通量为零，侧面 $\\Phi_E=E\\cdot2\\pi r h$。由高斯定理\n$$E\\cdot2\\pi r h=\\frac{\\lambda h}{\\varepsilon_0}\\quad\\Rightarrow\\quad E=\\frac{\\lambda}{2\\pi\\varepsilon_0 r}=\\frac{2k\\lambda}{r}$$\n代入：$E=\\dfrac{2\\times9.0\\times10^9\\times2.0\\times10^{-6}}{0.10}=3.6\\times10^5\\,\\mathrm{N\\cdot C^{-1}}$\n方向沿径向向外（设 $\\lambda>0$）。\n（2）不严格成立。有限长棒两端附近电场线不再严格径向，需用积分法；仅当 $r\\ll L$ 时可近似用无限长公式。",
+      "hint": "圆柱高斯面：$E(2\\pi rh)=\\lambda h/\\varepsilon_0$；有限长棒需考虑端效应。",
+      "scoring_criteria": [
+        "正确选取圆柱高斯面并写出 $\\Phi_E=E\\cdot2\\pi rh$（3分）",
+        "正确求得 $E=3.6\\times10^5\\,\\mathrm{N\\cdot C^{-1}}$ 并给出径向方向（4分）",
+        "正确说明有限长棒不严格满足无限长结论及理由（3分）"
+      ],
+      "explanation": "与 7.2 节无限长均匀带电圆柱例题一致。高斯定理解题三步：分析对称性 → 选高斯面 → 算通量与 $Q_{\\mathrm{enc}}$。$E=\\lambda/(2\\pi\\varepsilon_0 r)$ 也可写为 $E=2k\\lambda/r$。易错：底面通量不为零的误算；忘记 $\\lambda$ 是单位长度电荷量。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.2.md",
+        "label": "7.2 无限长均匀带电圆柱"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：半径 $R=0.30\\,\\mathrm{m}$、总电量 $Q=+9.0\\times10^{-9}\\,\\mathrm{C}$ 的均匀带电实心球体（非导体），取 $V_\\infty=0$。求：（1）球内 $r=0.15\\,\\mathrm{m}$ 处的电势 $V$；（2）球外 $r=0.60\\,\\mathrm{m}$ 处的电势 $V$。已知 $k=9.0\\times10^9\\,\\mathrm{N\\cdot m^2\\cdot C^{-2}}$。",
+      "answer": "（1）球内 $r<R$：先由高斯定理 $E=kQr/R^3$，再积分或由公式\n$$V=\\frac{kQ}{2R^3}(3R^2-r^2)=\\frac{kQ}{2R}\\left(3-\\frac{r^2}{R^2}\\right)$$\n代入 $r=0.15\\,\\mathrm{m}$，$r^2/R^2=0.25$：\n$$V=\\frac{9.0\\times10^9\\times9.0\\times10^{-9}}{2\\times0.30}\\times(3-0.25)=\\frac{81}{0.60}\\times2.75=371\\,\\mathrm{V}$$\n（2）球外 $r>R$：$V=\\dfrac{kQ}{r}=\\dfrac{9.0\\times10^9\\times9.0\\times10^{-9}}{0.60}=135\\,\\mathrm{V}$",
+      "hint": "球内 $V=kQ/(2R^3)(3R^2-r^2)$；球外 $V=kQ/r$；球心处电势最高。",
+      "scoring_criteria": [
+        "正确写出球内、球外电势公式（4分）",
+        "正确计算球内 $V\\approx371\\,\\mathrm{V}$（3分）",
+        "正确计算球外 $V=135\\,\\mathrm{V}$（3分）"
+      ],
+      "explanation": "与 7.3 节均匀带电实心球电势例题一致。也可先求 $E(r)$ 再积分：球内 $E\\propto r$，球外 $E\\propto 1/r^2$。球心 $V=3kQ/(2R)=405\\,\\mathrm{V}$ 为最大值。易错：球内误用 $V=kQ/r$；$r$ 与 $R$ 单位不统一。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.3.md",
+        "label": "7.3 均匀带电实心球电势"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：电偶极子由 $+q=5.0\\times10^{-9}\\,\\mathrm{C}$ 与 $-q$ 组成，两电荷间距 $l=2.0\\,\\mathrm{cm}$，偶极矩 $\\mathbf{p}$ 沿 $x$ 轴由 $-q$ 指向 $+q$。求远场点 $P$ 处（$r=0.50\\,\\mathrm{m}\\gg l$）：（1）在偶极轴线上（$\\theta=0$）的电势 $V$ 和场强 $E$；（2）在中垂面上（$\\theta=90^\\circ$）的电势 $V$。已知 $k=9.0\\times10^9\\,\\mathrm{N\\cdot m^2\\cdot C^{-2}}$。",
+      "answer": "偶极矩 $p=ql=5.0\\times10^{-9}\\times0.020=1.0\\times10^{-10}\\,\\mathrm{C\\cdot m}$\n（1）轴线上 $\\theta=0$：\n$$V=\\frac{kp}{r^2}=\\frac{9.0\\times10^9\\times1.0\\times10^{-10}}{0.50^2}=3.6\\,\\mathrm{V}$$\n$$E=\\frac{2kp}{r^3}=\\frac{2\\times9.0\\times10^9\\times1.0\\times10^{-10}}{0.50^3}=1.44\\,\\mathrm{N\\cdot C^{-1}}$$\n方向沿 $+x$ 轴。\n（2）中垂面 $\\theta=90^\\circ$：$V=\\dfrac{kp\\cos90^\\circ}{r^2}=0$",
+      "hint": "远场 $V=kp\\cos\\theta/r^2$；轴线上 $E=2kp/r^3$；中垂面 $\\cos\\theta=0$ 故 $V=0$。",
+      "scoring_criteria": [
+        "正确计算 $p=1.0\\times10^{-10}\\,\\mathrm{C\\cdot m}$（2分）",
+        "正确求轴线上 $V=3.6\\,\\mathrm{V}$、$E=1.44\\,\\mathrm{N\\cdot C^{-1}}$（5分）",
+        "正确求中垂面 $V=0$ 并说明原因（3分）"
+      ],
+      "explanation": "与 7.4 节电偶极子远场公式一致：$V\\propto1/r^2$，$E\\propto1/r^3$，比点电荷衰减更快。轴线上 $\\theta=0$，$\\cos\\theta=1$；中垂面 $\\theta=90^\\circ$，正负电荷贡献抵消使 $V=0$，但 $E\\neq0$（沿 $-x$ 指向 $-q$ 一侧）。易错：轴线上误用 $E=kp/r^2$；忘记远场条件 $r\\gg l$。",
+      "sourceRef": {
+        "path": "content/physics/detail/7.4.md",
+        "label": "7.4 电偶极子远场电势与场强"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch05",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：氮气 $N_2$ 摩尔质量 $\\mu=28\\times10^{-3}\\,\\mathrm{kg\\cdot mol^{-1}}$，温度 $T=300\\,\\mathrm{K}$。求该温度下氮气分子的（1）最概然速率 $v_p$；（2）平均速率 $\\bar{v}$；（3）方均根速率 $v_{\\mathrm{rms}}$。已知 $R=8.31\\,\\mathrm{J\\cdot K^{-1}\\cdot mol^{-1}}$。",
+      "answer": "（1）$v_p=\\sqrt{\\dfrac{2RT}{\\mu}}=\\sqrt{\\dfrac{2\\times8.31\\times300}{0.028}}\\approx4.22\\times10^2\\,\\mathrm{m\\cdot s^{-1}}$\n（2）$\\bar{v}=\\sqrt{\\dfrac{8RT}{\\pi\\mu}}=\\sqrt{\\dfrac{8\\times8.31\\times300}{\\pi\\times0.028}}\\approx4.76\\times10^2\\,\\mathrm{m\\cdot s^{-1}}$\n（3）$v_{\\mathrm{rms}}=\\sqrt{\\dfrac{3RT}{\\mu}}=\\sqrt{\\dfrac{3\\times8.31\\times300}{0.028}}\\approx5.17\\times10^2\\,\\mathrm{m\\cdot s^{-1}}$\n三者关系：$v_p<\\bar{v}<v_{\\mathrm{rms}}$。",
+      "hint": "$v_p=\\sqrt{2RT/\\mu}$，$\\bar{v}=\\sqrt{8RT/(\\pi\\mu)}$，$v_{\\mathrm{rms}}=\\sqrt{3RT/\\mu}$。",
+      "scoring_criteria": [
+        "正确计算 $v_p\\approx422\\,\\mathrm{m\\cdot s^{-1}}$（3分）",
+        "正确计算 $\\bar{v}\\approx476\\,\\mathrm{m\\cdot s^{-1}}$（3分）",
+        "正确计算 $v_{\\mathrm{rms}}\\approx517\\,\\mathrm{m\\cdot s^{-1}}$ 并说明大小关系（4分）"
+      ],
+      "explanation": "三种特征速率公式不同、用途不同：$v_p$ 讨论分布峰值，$\\bar{v}$ 讨论碰撞频率，$v_{\\mathrm{rms}}$ 讨论平均平动动能。由 $v_{\\mathrm{rms}}=\\sqrt{3RT/\\mu}$ 得 $\\overline{E_k}=\\frac{3}{2}kT$，与 5.1 节一致。数值允许 $\\pm5\\,\\mathrm{m\\cdot s^{-1}}$ 误差。",
+      "sourceRef": {
+        "path": "content/physics/detail/5.2.md",
+        "label": "5.2 三种特征速率"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "review",
+      "sourceChapter": "ch04",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：两相干波源 $S_1$、$S_2$ 间距 $d=0.60\\,\\mathrm{m}$，波长 $\\lambda=0.20\\,\\mathrm{m}$，波速 $u=40\\,\\mathrm{m\\cdot s^{-1}}$。在连两源的直线上，$P$ 点距 $S_1$ 为 $r_1=1.10\\,\\mathrm{m}$、距 $S_2$ 为 $r_2=0.50\\,\\mathrm{m}$，两源初相位相同。求：（1）波程差 $\\delta$；（2）$P$ 点干涉是加强还是减弱；（3）波的频率 $\\nu$。",
+      "answer": "（1）$\\delta=|r_1-r_2|=|1.10-0.50|=0.60\\,\\mathrm{m}$\n（2）$\\delta=0.60\\,\\mathrm{m}=3\\lambda$，满足相长条件 $\\delta=k\\lambda$（$k=3$），$P$ 点干涉**加强**。\n（3）$\\nu=\\dfrac{u}{\\lambda}=\\dfrac{40}{0.20}=200\\,\\mathrm{Hz}$",
+      "hint": "波程差 $\\delta=|r_1-r_2|$；相长 $\\delta=k\\lambda$，相消 $\\delta=(2k+1)\\lambda/2$；$\\nu=u/\\lambda$。",
+      "scoring_criteria": [
+        "正确计算波程差 $\\delta=0.60\\,\\mathrm{m}$（3分）",
+        "判断 $\\delta=3\\lambda$，P 点干涉加强（4分）",
+        "正确计算频率 $\\nu=200\\,\\mathrm{Hz}$（3分）"
+      ],
+      "explanation": "相干波叠加时相位差 $\\Delta\\varphi=2\\pi\\delta/\\lambda$。$\\delta=3\\lambda$ 时 $\\Delta\\varphi=6\\pi$，合振幅最大。若 $\\delta=(2k+1)\\lambda/2$ 则相消。频率由 $u=\\lambda\\nu$ 得 $\\nu=200\\,\\mathrm{Hz}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/4.2.md",
+        "label": "4.2 波的干涉条件"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "review",
+      "sourceChapter": "ch03",
+      "points": 10,
+      "total_points": 10,
+      "label": "计算题",
+      "stem": "计算题：水平弹簧振子，质量 $m=0.50\\,\\mathrm{kg}$，劲度系数 $k=200\\,\\mathrm{N\\cdot m^{-1}}$。$t=0$ 时物体位于 $x_0=0.030\\,\\mathrm{m}$，初速度 $v_0=0.80\\,\\mathrm{m\\cdot s^{-1}}$（沿 $+x$ 方向）。求：（1）角频率 $\\omega$；（2）振幅 $A$ 和初相位 $\\varphi$（$x=A\\cos(\\omega t+\\varphi)$）；（3）$t=0.10\\,\\mathrm{s}$ 时的位移 $x$ 和速度 $v$。",
+      "answer": "（1）$\\omega=\\sqrt{\\dfrac{k}{m}}=\\sqrt{\\dfrac{200}{0.50}}=20\\,\\mathrm{rad\\cdot s^{-1}}$\n（2）$A=\\sqrt{x_0^2+\\left(\\dfrac{v_0}{\\omega}\\right)^2}=\\sqrt{0.030^2+\\left(\\dfrac{0.80}{20}\\right)^2}=\\sqrt{0.0009+0.0016}=0.050\\,\\mathrm{m}$\n$\\tan\\varphi=-\\dfrac{v_0}{\\omega x_0}=-\\dfrac{0.80}{20\\times0.030}=-\\dfrac{4}{3}$，$x_0>0$、$v_0>0$ 得 $\\varphi=-\\arctan(4/3)\\approx-0.927\\,\\mathrm{rad}$\n（3）$x=0.050\\cos(20\\times0.10-0.927)=0.050\\cos(1.073)\\approx0.024\\,\\mathrm{m}$\n$v=-\\omega A\\sin(\\omega t+\\varphi)=-20\\times0.050\\sin(1.073)\\approx-0.90\\,\\mathrm{m\\cdot s^{-1}}$",
+      "hint": "$A=\\sqrt{x_0^2+(v_0/\\omega)^2}$，$\\tan\\varphi=-v_0/(\\omega x_0)$；$v=-\\omega A\\sin(\\omega t+\\varphi)$。",
+      "scoring_criteria": [
+        "正确求 $\\omega=20\\,\\mathrm{rad\\cdot s^{-1}}$（2分）",
+        "正确求 $A=0.050\\,\\mathrm{m}$ 和 $\\varphi\\approx-0.93\\,\\mathrm{rad}$（4分）",
+        "正确求 $t=0.10\\,\\mathrm{s}$ 时 $x\\approx0.024\\,\\mathrm{m}$、$v\\approx-0.90\\,\\mathrm{m\\cdot s^{-1}}$（4分）"
+      ],
+      "explanation": "本题综合 3.1 节初始条件定 $A$、$\\varphi$ 与运动学求导。$x_0$、$v_0$ 均非零时振幅由矢量合成得 $A=5.0\\,\\mathrm{cm}$，初相位需根据象限判断（$x_0>0$、$v_0>0$ 时 $\\varphi$ 在第四象限）。易错：$\\varphi$ 符号；$v$ 求导漏负号；$\\omega$ 计算时 $k$、$m$ 颠倒。",
+      "sourceRef": {
+        "path": "content/physics/detail/3.1.md",
+        "label": "3.1 简谐振动初始条件"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 17,
+    "byType": {
+      "single_choice": 10,
+      "essay": 7
+    },
+    "bySource": {
+      "current_chapter": 9,
+      "review": 8
+    },
+    "byDifficulty": {
+      "basic": 12,
+      "medium": 3,
+      "hard": 2
+    },
+    "byPoints": {
+      "current_chapter": 50,
+      "review": 50
+    }
+  }
+}
