@@ -157,7 +157,7 @@ ${ROOT}/content/chapters/ch01/${j.sectionId}.md
 
 【动手前务必】
 1. Read 黄金范例 ${ROOT}/content/chapters/ch01/1.1.md，严格对齐其风格、深度与指令块用法（向它看齐或更深）。
-2. Read ${ROOT}/docs/SOP-章节生成.md 的 §2「笔记写作合同」。
+2. Read ${ROOT}/docs/sop/02-detail-generation.md 的 §2「笔记写作合同」。
 3. 可选：skim ${ROOT}/docs/${j.transcript} 中与本节相关段落，还原老师强调的重点/例子（次要，主体按标准教材写全）。
 
 【渲染契约（务必遵守）】
@@ -177,7 +177,7 @@ ${ROOT}/${k.file}
 
 用途：第一章 ${k.sectionId} 节。主题：${k.concept}
 
-【动手前务必】Read ${ROOT}/docs/SOP-章节生成.md 的 §3「交互组件合同」，并 Read 样板 ${ROOT}/components/interactives/ch01/VennPlayground.tsx 与 ${ROOT}/components/interactives/ch01/FrequencyConvergence.tsx，对齐风格与约束。
+【动手前务必】Read ${ROOT}/docs/sop/02-detail-generation.md 的 §3「交互组件合同」，并 Read 样板 ${ROOT}/components/interactives/ch01/VennPlayground.tsx 与 ${ROOT}/components/interactives/ch01/FrequencyConvergence.tsx，对齐风格与约束。
 
 【硬约束】
 - 文件首行 "use client";，默认导出名为 ${k.componentName} 的无 props 组件。
@@ -198,7 +198,7 @@ ${ROOT}/${v.file}
 
 用途：第一章 ${v.sectionId} 节。主题：${v.concept}
 
-【动手前务必】Read ${ROOT}/docs/SOP-章节生成.md 的 §4「Manim 动画合同」，并 Read 样板 ${ROOT}/manim/chapters/ch01/scene_1_1_sample_space.py。
+【动手前务必】Read ${ROOT}/docs/sop/02-detail-generation.md 的 §4「Manim 动画合同」，并 Read 样板 ${ROOT}/manim/chapters/ch01/scene_1_1_sample_space.py。
 
 【硬约束】
 - 定义 class ${v.scene}(Scene)，construct 内做 20–60s、循序渐进、有重点高亮的动画；画面不要堆满或重叠。

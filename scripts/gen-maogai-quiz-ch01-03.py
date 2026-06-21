@@ -1,0 +1,466 @@
+#!/usr/bin/env python3
+"""Generate high-quality maogai quiz JSON for ch01-ch03."""
+import json
+from pathlib import Path
+
+OUT = Path(__file__).resolve().parents[1] / "content" / "quiz" / "maogai"
+
+EXAM = {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50,
+}
+
+
+def summary(questions):
+    by_type = {"single_choice": 0, "multiple_choice": 0, "essay": 0}
+    by_source = {"current_chapter": 0, "review": 0}
+    by_diff = {"basic": 0, "medium": 0, "hard": 0}
+    for q in questions:
+        by_type[q["type"]] = by_type.get(q["type"], 0) + 1
+        by_source[q["source"]] = by_source.get(q["source"], 0) + 1
+        by_diff[q["difficulty"]] = by_diff.get(q["difficulty"], 0) + 1
+    return {
+        "totalQuestions": len(questions),
+        "byType": by_type,
+        "bySource": by_source,
+        "byDifficulty": by_diff,
+    }
+
+
+def write_chapter(chapter_id, questions):
+    data = {
+        "subjectId": "maogai",
+        "chapterId": chapter_id,
+        "generatedAt": "2026-06-21",
+        "examConfig": EXAM,
+        "questions": questions,
+        "summary": summary(questions),
+    }
+    path = OUT / f"{chapter_id}.json"
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Wrote {path} ({len(questions)} questions, {sum(q['points'] for q in questions)} pts)")
+
+
+CH01 = [
+    {
+        "id": "q001", "type": "single_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 一、这是一门什么课程？ · 2. \"一二三四\"：课程的总体框架"},
+        "stem": "教师将本课程概括为\"一二三四\"，其中\"一条主线\"是指（　）。",
+        "options": [
+            "毛泽东思想",
+            "马克思主义中国化时代化",
+            "社会主义革命、建设与改革",
+            "道路自信、理论自信、制度自信、文化自信",
+        ],
+        "answer": 1,
+        "hint": "将两大理论连接在一起的\"纽带\"是什么？",
+        "explanation": "B正确。1.1.md指出课程框架\"一二三四\"中，\"一\"是一条主线——马克思主义中国化时代化；将毛泽东思想和中国特色社会主义理论体系连接在一起的纽带正是这一主线。A是\"两大理论\"之一；C对应\"三个阶段\"；D对应\"四个自信\"。",
+    },
+    {
+        "id": "q002", "type": "single_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 一、这是一门什么课程？ · 3. 两大理论成果的历史定位"},
+        "stem": "根据教材，毛泽东思想在马克思主义中国化进程中的历史定位是（　）。",
+        "options": [
+            "马克思主义中国化第一次历史性飞跃的理论成果",
+            "马克思主义中国化最新成果",
+            "马克思主义中国化时代化新的飞跃",
+            "中国特色社会主义理论体系的开篇之作",
+        ],
+        "answer": 0,
+        "hint": "区分\"第一次飞跃\"\"最新成果\"与\"新的飞跃\"分别对应哪一理论。",
+        "explanation": "A正确。1.1.md表格：毛泽东思想是马克思主义中国化第一次历史性飞跃的理论成果。B对应中国特色社会主义理论体系（十七大）；C对应习近平新时代中国特色社会主义思想（二十大）；D对应邓小平理论。",
+    },
+    {
+        "id": "q003", "type": "single_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 二、为什么要学习这门课程？ · 2. 五门思政课的逻辑关系"},
+        "stem": "在五门思想政治理论课中，\"毛泽东思想和中国特色社会主义理论体系概论\"的定位是（　）。",
+        "options": ["修身课", "历史课", "理论课", "治国课"],
+        "answer": 3,
+        "hint": "与\"思想道德与法治\"偏重修身相对，毛概偏重什么？",
+        "explanation": "D正确。1.1.md表格：毛概是治国课，核心问题是社会主义革命、建设、改革的历程。A是思想道德与法治；B是中国近现代史纲要；C是马克思主义基本原理。",
+    },
+    {
+        "id": "q004", "type": "single_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 二、为什么要学习这门课程？ · 1. \"四个正确认识\"：思政课的总目标"},
+        "stem": "2016年12月全国高校思想政治工作会议上，习近平总书记提出引导学生树立\"四个正确认识\"。这次会议是（　）。",
+        "options": [
+            "改革开放后首次全国高校思想政治工作会议",
+            "新中国成立以来首次全国高校思想政治工作会议",
+            "党的二十大后首次全国高校思想政治工作会议",
+            "新时代首次全国高校思想政治工作会议",
+        ],
+        "answer": 1,
+        "hint": "注意\"首次\"的时间限定词。",
+        "explanation": "B正确。1.1.md明确：2016年12月，新中国成立以来首次全国高校思想政治工作会议召开，提出\"四个正确认识\"。A、C、D均与原文\"新中国成立以来首次\"不符。",
+    },
+    {
+        "id": "q005", "type": "single_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 三、教学安排与考核方式 · 2. 成绩构成"},
+        "stem": "本课程成绩构成中，平时成绩占50分，其中考勤占（　）分。",
+        "options": ["10分", "20分", "30分", "40分"],
+        "answer": 1,
+        "hint": "平时成绩50分由考勤、专业展演、时事讨论等子项构成。",
+        "explanation": "B正确。1.1.md成绩构成表：平时成绩50分，其中考勤20分、专业展演20分、时事讨论10分。A是时事讨论分值；C、D无对应依据。",
+    },
+    {
+        "id": "q006", "type": "single_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 一、什么是马克思主义？ · 1. 马克思主义的基本定义"},
+        "stem": "马克思主义的核心是（　）。",
+        "options": [
+            "市场经济与民主政治",
+            "无产阶级和全人类的解放",
+            "优先发展重工业",
+            "实现四个现代化",
+        ],
+        "answer": 1,
+        "hint": "\"解放\"换一个词就是\"自由\"。",
+        "explanation": "B正确。1.2.md定义：马克思主义以反对资本主义、建设社会主义和实现共产主义为目标，其核心是无产阶级和全人类的解放。A是资本主义制度两大支柱；C、D分别是工业化和现代化表述，非马克思主义核心定义。",
+    },
+    {
+        "id": "q007", "type": "single_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 二、马克思主义中国化时代化的提出 · 1. 马克思主义的传播路径"},
+        "stem": "马克思主义传入中国的传播路径是（　）。",
+        "options": [
+            "德国→中国",
+            "德国→法国→中国",
+            "德国→俄国→中国",
+            "俄国→德国→中国",
+        ],
+        "answer": 2,
+        "hint": "十月革命一声炮响，给我们送来了马克思列宁主义。",
+        "explanation": "C正确。1.2.md：马克思主义传播路径为德国（创立）→俄国（列宁发展与十月革命）→中国。毛泽东指出\"十月革命一声炮响，给我们送来了马克思列宁主义\"。A、B忽略了俄国环节；D顺序错误。",
+    },
+    {
+        "id": "q008", "type": "single_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 三、中国式现代化：贯穿课程的核心主线 · 1. \"中国式现代化\"概念的提出"},
+        "stem": "1979年12月，邓小平在会见日本首相大平正芳时正式提出（　）。",
+        "options": [
+            "建设四个现代化",
+            "我们要实现的四个现代化是中国式的四个现代化",
+            "以中国式现代化全面推进中华民族伟大复兴",
+            "全面建成小康社会",
+        ],
+        "answer": 1,
+        "hint": "注意\"中国式的\"这一限定语首次提出的时间与场合。",
+        "explanation": "B正确。1.2.md时间表：1979年12月邓小平会见大平正芳时正式提出\"我们要实现的四个现代化是中国式的四个现代化\"。A是1978年全国科学大会表述，未强调\"中国式\"；C是2022年二十大表述；D是2020年目标。",
+    },
+    {
+        "id": "q009", "type": "single_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 三、中国式现代化：贯穿课程的核心主线 · 3. 中国式现代化的五大中国特色 · （三）物质文明和精神文明相协调的现代化"},
+        "stem": "毛泽东在1956年《论十大关系》中概括中国经济文化状况为\"一穷二白\"，其中\"白\"是指（　）。",
+        "options": [
+            "没有多少工业，农业也不发达",
+            "文化水平、科学水平都不高",
+            "没有实现民族独立",
+            "尚未建立社会主义制度",
+        ],
+        "answer": 1,
+        "hint": "\"穷\"与\"白\"各指什么？",
+        "explanation": "B正确。1.2.md定义：\"穷\"指没有多少工业、农业也不发达；\"白\"指一张白纸，文化水平、科学水平都不高。A对应\"穷\"；C、D与\"一穷二白\"含义无关。",
+    },
+    {
+        "id": "q010", "type": "single_choice", "difficulty": "medium",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 四、当代国际局势：理解\"中国化\"的时代背景 · 3. 拜登政府的五点核心判断"},
+        "stem": "2022年10月拜登政府国家安全战略中，美国对华战略总目标是（　）。",
+        "options": ["接触与合作", "竞而胜之", "全面军事对抗", "放弃对华竞争"],
+        "answer": 1,
+        "hint": "拜登战略第五条核心判断。",
+        "explanation": "B正确。1.2.md：拜登政府五点判断之五——美国对华战略总目标是\"竞而胜之\"。A对应1970年代后接触政策；C与\"无法承受直接军事冲突后果\"的新冷战特征不符；D与\"应对中国挑战是全球优先事务\"矛盾。",
+    },
+    {
+        "id": "q011", "type": "single_choice", "difficulty": "medium",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 一、什么是马克思主义？ · 2. 人类解放的四个阶段"},
+        "stem": "马克思主义学说主要解决的是人类解放四阶段中的（　）。",
+        "options": [
+            "从自然界的束缚中解放",
+            "从人的束缚（封建等级制度）中解放",
+            "从资本的束缚中解放",
+            "从自身的束缚中解放",
+        ],
+        "answer": 2,
+        "hint": "建立社会主义社会取代资本主义，主要对应哪个阶段？",
+        "explanation": "C正确。1.2.md指出：马克思恩格斯学说主要解决第三阶段——从资本束缚中解放，建立社会主义社会取代资本主义。A对应原始共产主义进入奴隶社会；B由资产阶级革命完成；D是\"自由人的联合体\"，留给后人探索。",
+    },
+    {
+        "id": "q012", "type": "single_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 三、教学安排与考核方式 · 1. 课程时间安排"},
+        "stem": "本课程教学安排中，第一至四章（毛泽东思想）主要安排在（　）。",
+        "options": ["第1-2周", "第3-9周", "第10-16周", "第17-18周"],
+        "answer": 1,
+        "hint": "导论在第1周，邓三科在第10-16周。",
+        "explanation": "B正确。1.1.md：第3-9周讲第一至四章（毛泽东思想）。A是导论周次；C是第五至七章（邓三科）；D是总结复习与考试周。",
+    },
+    {
+        "id": "q013", "type": "single_choice", "difficulty": "medium",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 三、教学安排与考核方式 · 3. 教学方法与课程特色 · 毛概与史纲的核心区别"},
+        "stem": "关于\"毛概\"与\"中国近现代史纲要\"的区别，下列表述正确的是（　）。",
+        "options": [
+            "史纲偏重理论，毛概偏重时间、地点、人物、事件",
+            "两门课讲的是不同历史时期",
+            "史纲告诉你\"发生了什么\"，毛概告诉你\"为什么会这样\"",
+            "毛概不涉及任何历史事件",
+        ],
+        "answer": 2,
+        "hint": "一门偏历史叙述，一门偏规律提炼。",
+        "explanation": "C正确。1.1.md：两门课讲同一段历史但视角不同——史纲讲\"发生了什么\"，毛概讲\"为什么会这样\"，在事件中寻找规律上升到理论。A颠倒了二者侧重；B错误，讲的是同一段历史；D与\"从历史事件中提炼规律性\"矛盾。",
+    },
+    {
+        "id": "q014", "type": "single_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 三、中国式现代化：贯穿课程的核心主线 · 3. 中国式现代化的五大中国特色 · （一）人口规模最大的现代化"},
+        "stem": "2021年建党100周年之际，中国全面建成小康社会，在现行标准下（　）。",
+        "options": [
+            "中等收入群体超过4亿人",
+            "近1亿农村贫困人口全部脱贫",
+            "基本养老保险覆盖13亿人",
+            "基本医疗保险覆盖10亿人",
+        ],
+        "answer": 1,
+        "hint": "全面建成小康社会与绝对贫困问题的关系。",
+        "explanation": "B正确。1.2.md：2021年建党100周年全面建成小康社会，近1亿农村贫困人口全部脱贫。A中等收入群体超4亿、C基本医疗覆盖13亿、D养老覆盖近10亿均为同期数据，但题干\"现行标准下\"对应的是脱贫数据。",
+    },
+    {
+        "id": "q015", "type": "single_choice", "difficulty": "hard",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 一、什么是马克思主义？ · 3. 资本主义制度的建立与批判"},
+        "stem": "关于资本主义社会贫富分化，马克思主义者与自由主义者的根本分歧在于（　）。",
+        "options": [
+            "是否承认市场经济能创造财富",
+            "贫富分化是个人能力差异的结果，还是资本家对无产者的剥削",
+            "是否应当建立民主政治制度",
+            "是否应当实行二次分配和福利国家",
+        ],
+        "answer": 1,
+        "hint": "两种理论对贫富分化根源的解释不同。",
+        "explanation": "B正确。1.2.md表格：自由主义者认为贫富分化是平等规则下个人能力差异的自然结果；马克思主义者认为根源是掌握生产资料的资本家对无产者的剥削。A两者都承认资本主义创造财富（恩格斯评价100年财富）；C是资本主义制度支柱之一，非分歧点；D是自由主义改良方案，非根本分歧。",
+    },
+    {
+        "id": "q016", "type": "multiple_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 一、这是一门什么课程？ · 2. \"一二三四\"：课程的总体框架"},
+        "stem": "本课程\"一二三四\"总体框架中，下列配对正确的有（　）。",
+        "options": [
+            "\"一\"——马克思主义中国化时代化",
+            "\"二\"——毛泽东思想与中国特色社会主义理论体系",
+            "\"三\"——社会主义在中国的建立、建设、改革",
+            "\"四\"——道路自信、理论自信、制度自信、文化自信",
+            "\"四\"——新民主主义革命、社会主义革命、改革开放",
+        ],
+        "answer": [0, 1, 2, 3],
+        "hint": "\"四\"对应的是\"四个自信\"。",
+        "explanation": "ABCD正确。1.1.md表格完整列出\"一二三四\"：一为主线，二为两大理论，三为三个阶段，四为四个自信。E将\"四\"替换为革命阶段划分，与原文不符。",
+    },
+    {
+        "id": "q017", "type": "multiple_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 二、为什么要学习这门课程？ · 1. \"四个正确认识\"：思政课的总目标"},
+        "stem": "习近平总书记提出的\"四个正确认识\"包括（　）。",
+        "options": [
+            "正确认识世界和中国发展大势",
+            "正确认识中国特色和国际比较",
+            "正确认识时代责任和历史使命",
+            "正确认识远大抱负和脚踏实地",
+            "正确认识个人利益与集体利益",
+        ],
+        "answer": [0, 1, 2, 3],
+        "hint": "前两个解决\"看清楚\"，后两个解决\"怎么做\"。",
+        "explanation": "ABCD正确。1.1.md表格完整列出四个正确认识。E虽与思政教育相关，但不在\"四个正确认识\"的正式表述中。",
+    },
+    {
+        "id": "q018", "type": "multiple_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 三、中国式现代化：贯穿课程的核心主线 · 3. 中国式现代化的五大中国特色"},
+        "stem": "党的二十大报告系统阐述的中国式现代化五大特色包括（　）。",
+        "options": [
+            "人口规模巨大的现代化",
+            "全体人民共同富裕的现代化",
+            "物质文明和精神文明相协调的现代化",
+            "人与自然和谐共生的现代化",
+            "走和平发展道路的现代化",
+        ],
+        "answer": [0, 1, 2, 3, 4],
+        "hint": "五大特色在1.2.md逐一阐述。",
+        "explanation": "ABCDE全部正确。1.2.md第三节完整阐述中国式现代化五大特色，ch01-examples.md例题2亦确认五项均属特色。",
+    },
+    {
+        "id": "q019", "type": "multiple_choice", "difficulty": "medium",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 三、中国式现代化：贯穿课程的核心主线 · 2. 邓小平的现代化探索：从\"看世界\"到\"走自己的路\""},
+        "stem": "邓小平1978年出访后对中国式现代化形成的认识包括（　）。",
+        "options": [
+            "短期内不可能达到西方现代化水平，先解决\"小康之家\"",
+            "西方先进技术与经验可以借鉴",
+            "绝不能照搬西方现代化道路",
+            "必须完全复制日本新干线模式",
+            "应优先通过殖民扩张实现现代化",
+        ],
+        "answer": [0, 1, 2],
+        "hint": "邓小平出访日本、美国后的三个层次感悟。",
+        "explanation": "ABC正确。1.2.md\"三个层次感悟\"：先解决小康、可借鉴西方技术与经验、必须走中国自己的路。D\"完全复制\"与\"借鉴但不照搬\"矛盾；E与\"走和平发展道路\"及不走殖民掠夺老路相悖。",
+    },
+    {
+        "id": "q020", "type": "multiple_choice", "difficulty": "medium",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 二、为什么要学习这门课程？ · 3. 课程目的：四个层次层层递进"},
+        "stem": "教材概括的本课程学习目的四个层层递进的层次包括（　）。",
+        "options": ["了解", "理解", "把握", "能力提升", "背诵"],
+        "answer": [0, 1, 2, 3],
+        "hint": "从知道历史到会用马克思主义分析问题。",
+        "explanation": "ABCD正确。1.1.md：四个层次为了解（历史进程）→理解（马克思主义中国化时代化）→把握（理论成果）→能力提升（运用立场观点方法分析解决问题）。E\"背诵\"不在四层目的中，且与课程\"不是让你背诵政治口号\"的定位相反。",
+    },
+    {
+        "id": "q021", "type": "multiple_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 一、什么是马克思主义？ · 3. 资本主义制度的建立与批判 · 资本主义制度的两大支柱"},
+        "stem": "教材指出资本主义制度的两大支柱是（　）。",
+        "options": ["市场经济", "民主政治", "指令性计划经济", "封建等级制度"],
+        "answer": [0, 1],
+        "hint": "赋予平等追求财富的权利 + 防止权力介入经济。",
+        "explanation": "AB正确。1.2.md定义：资本主义两大支柱是市场经济（平等追求财富）和民主政治（防止权力之手伸入经济领域）。C是斯大林经济模式特征；D是资本主义革命要推翻的对象。",
+    },
+    {
+        "id": "q022", "type": "multiple_choice", "difficulty": "medium",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 三、教学安排与考核方式 · 3. 教学方法与课程特色"},
+        "stem": "本课程采用问题导读为主的互动教学，其特点包括（　）。",
+        "options": [
+            "理论导向——从历史事件中提炼规律性",
+            "专题深入——结合教师研究方向深入分析",
+            "原文研读——增加毛泽东选集等经典文献引用",
+            "现实关怀——以中国式现代化道路探索为主线",
+            "纯事件叙述——侧重时间、地点、人物、事件",
+        ],
+        "answer": [0, 1, 2, 3],
+        "hint": "最后一项是史纲的特点，不是毛概。",
+        "explanation": "ABCD正确。1.1.md教学方法四点：理论导向、专题深入、原文研读、现实关怀。E是史纲侧重，与毛概\"理论导向\"相反。",
+    },
+    {
+        "id": "q023", "type": "multiple_choice", "difficulty": "basic",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 二、马克思主义中国化时代化的提出 · 2. 为什么必须\"中国化\"？"},
+        "stem": "马克思主义必须中国化的原因包括（　）。",
+        "options": [
+            "中国20世纪初是半殖民地半封建的落后农业国，与欧洲工业社会截然不同",
+            "马克思恩格斯许多具体结论不能机械照搬到中国",
+            "马克思主义提供的是立场、观点和方法，不是可直接照搬的施工图纸",
+            "中国化意味着修改马克思主义基本原理",
+            "中国不需要与中华优秀传统文化相结合",
+        ],
+        "answer": [0, 1, 2],
+        "hint": "中国化不是修改基本原理，而是运用它解决实际问题。",
+        "explanation": "ABC正确。1.2.md从国情差异、不能机械照搬、提供方法论而非施工图纸三方面论证。D与\"不是要修改马克思主义的基本原理\"直接矛盾；E与\"两个结合\"相悖。",
+    },
+    {
+        "id": "q024", "type": "multiple_choice", "difficulty": "hard",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 四、当代国际局势：理解\"中国化\"的时代背景 · 2. 中美关系的历史演变"},
+        "stem": "教材梳理的中美关系历史演变中，下列事件与态度配对正确的有（　）。",
+        "options": [
+            "1949年新中国成立——美国拒不承认新生社会主义政权",
+            "1979年中美建交、邓小平访美——合作开启但嘉宾对中国\"不在意\"",
+            "2015年习近平访美——会场鸦雀无声，讲毕长时期掌声",
+            "2018年3月——中美贸易冲突爆发，升级为技术遏制",
+            "1954年日内瓦会议——美国正式承认新中国",
+        ],
+        "answer": [0, 1, 2, 3],
+        "hint": "1954年日内瓦会议公报注明\"不含有外交承认之意\"。",
+        "explanation": "ABCD正确。1.2.md中美关系演变表：1949拒不承认、1979合作开启但不在意、2015走进舞台中央、2018贸易冲突升级技术遏制。E错误——1954年虽同意中国参会，但公报注明不含有外交承认之意。",
+    },
+    {
+        "id": "q025", "type": "multiple_choice", "difficulty": "medium",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 2,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 一、这是一门什么课程？ · 3. 两大理论成果的历史定位 · 两大理论的关系"},
+        "stem": "关于毛泽东思想与中国特色社会主义理论体系的关系，下列表述正确的有（　）。",
+        "options": [
+            "毛泽东思想是中国特色社会主义理论体系的源头和基础",
+            "中国特色社会主义理论体系是对毛泽东思想的继承和发展",
+            "二者通过马克思主义中国化时代化一脉相承",
+            "二者毫无联系、相互独立",
+            "中国特色社会主义理论体系否定毛泽东思想",
+        ],
+        "answer": [0, 1, 2],
+        "hint": "源头与基础、继承与发展、一脉相承。",
+        "explanation": "ABC正确。1.1.md note：毛泽东思想是源头和基础，中特理论体系是继承和发展，二者通过马克思主义中国化时代化一脉相承。D、E与\"继承和发展\"关系直接矛盾。",
+    },
+    {
+        "id": "q026", "type": "essay", "difficulty": "basic", "label": "简答题",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 10, "total_points": 10,
+        "sourceRef": {"path": "content/maogai/detail/1.1.md", "label": "1.1 课程介绍与教学安排 · 二、为什么要学习这门课程？ · 1. \"四个正确认识\"：思政课的总目标"},
+        "stem": "2016年12月全国高校思想政治工作会议上提出的\"四个正确认识\"的主要内容是什么？并简述本课程学习目的\"了解→理解→把握→能力提升\"四个层次的递进关系。",
+        "answer": "一、四个正确认识：①正确认识世界和中国发展大势——认识中国特色社会主义道路，把握人类社会发展规律；②正确认识中国特色和国际比较——全面客观认识当代中国，正确看待外部世界；③正确认识时代责任和历史使命——将个人理想融入国家和民族事业，用中国梦激扬青春梦；④正确认识远大抱负和脚踏实地——将远大抱负落实到实际行动中，让勤奋学习成为青春飞扬的动力。前两个解决\"看清楚\"，后两个解决\"怎么做\"。\n\n二、四个层次递进：①了解——对革命、建设、改革历史进程有更全面系统了解；②理解——对马克思主义中国化时代化有更深刻理性理解；③把握——对形成的理论成果有更准确整体把握；④能力提升——运用马克思主义立场、观点、方法分析和解决问题的能力明显提升。核心方法是立足今天中国特色社会主义建设，回到历史中去。",
+        "hint": "先列四个认识及其要义，再按了解→理解→把握→能力提升顺序说明递进。",
+        "explanation": "本题综合1.1.md\"四个正确认识\"与\"四个层次\"两处核心内容，ch01-examples例题3提供了标准答题框架。",
+        "scoring_criteria": [
+            "正确列出四个正确认识及其核心要义（4分）",
+            "说明前两个与后两个的逻辑关系（2分）",
+            "正确表述四个学习目的层次（3分）",
+            "条理清楚（1分）",
+        ],
+    },
+    {
+        "id": "q027", "type": "essay", "difficulty": "medium", "label": "简答题",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 10, "total_points": 10,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 三、中国式现代化：贯穿课程的核心主线 · 3. 中国式现代化的五大中国特色"},
+        "stem": "简述党的二十大报告阐述的中国式现代化五大特色，并各举一点教材中的实例说明。",
+        "answer": "①人口规模巨大的现代化——近1亿农村贫困人口全部脱贫，医保覆盖13亿人；②全体人民共同富裕的现代化——从\"吃饱肚子\"起步，1980年邓小平表态贫困区\"先吃饱饭要紧\"；③物质文明和精神文明相协调的现代化——从\"一穷二白\"到科技文化飞跃，人形机器人等技术满足精神文化需求；④人与自然和谐共生的现代化——2012年后生态文明建设纳入\"五位一体\"，武汉空气质量优良天数从2013年162天增至2017年255天；⑤走和平发展道路的现代化——不走殖民掠夺扩张老路，2010年成为世界第二大经济体。",
+        "hint": "五大特色各配一个教材实例。",
+        "explanation": "1.2.md第三节逐一阐述五大特色并配有数据实例，ch01-examples例题2为对应参考。",
+        "scoring_criteria": [
+            "正确列出五大特色（5分）",
+            "各举一点教材实例（4分）",
+            "条理清楚（1分）",
+        ],
+    },
+    {
+        "id": "q028", "type": "essay", "difficulty": "hard", "label": "论述题",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 15, "total_points": 15,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 一、什么是马克思主义？ · 2. 人类解放的四个阶段"},
+        "stem": "论述马克思主义关于人类走向自由的四个阶段，并分析马克思主义者与自由主义者对资本主义社会贫富分化问题的不同认识。",
+        "answer": "一、人类走向自由的四个阶段：①从自然界束缚中解放——生产力发展，对应原始共产主义进入奴隶社会；②从人的束缚（封建等级）中解放——资产阶级革命建立资本主义；③从资本束缚中解放——无产阶级革命建立社会主义（马克思主义主要解决的任务）；④从自身束缚中解放——\"自由人的联合体\"，留给后人探索。\n\n二、对贫富分化的不同认识：资本主义以市场经济和民主政治为支柱，创造了巨大财富但也带来贫富分化。自由主义者认为：平等规则下个人能力差异导致分化，二战后通过征税二次分配建立福利国家。马克思主义者认为：根源是掌握生产资料的资本家对无产者的剥削，应通过无产阶级革命建立社会主义制度。教材还指出1992年十四大建立社会主义市场经济后中国GDP飙升，从实践印证市场创造财富，同时说明社会主义制度建立在对资本主义深刻揭露批判基础上。",
+        "hint": "先述四阶段，再对比两种理论对贫富分化根源的解释。",
+        "explanation": "ch01-examples例题4提供了完整论述框架，依据1.2.md人类解放四阶段表与资本主义批判部分。",
+        "scoring_criteria": [
+            "准确论述四个解放阶段（5分）",
+            "指出马克思主义主要解决第三阶段（2分）",
+            "正确对比自由主义者与马克思主义者观点（5分）",
+            "史论结合、条理清楚（3分）",
+        ],
+    },
+    {
+        "id": "q029", "type": "essay", "difficulty": "medium", "label": "材料分析题",
+        "source": "current_chapter", "sourceChapter": "ch01", "points": 15, "total_points": 15,
+        "sourceRef": {"path": "content/maogai/detail/1.2.md", "label": "1.2 马克思主义中国化命题 · 三、中国式现代化：贯穿课程的核心主线 · 2. 邓小平的现代化探索"},
+        "stem": "阅读材料，回答问题。\n\n> 材料：1978年10月，邓小平参观日本全自动汽车生产车间后感叹\"我知道什么是现代化了\"；乘坐新干线，评价一个字——\"快\"。1979年1-2月访美9天，参观NASA、福特汽车公司。1979年12月会见日本首相大平正芳时提出：\"我们要实现的四个现代化是中国式的四个现代化。\"\n\n（1）材料反映了邓小平对现代化怎样的认识过程？（5分）\n（2）邓小平由此形成的\"中国式现代化\"三层核心含义是什么？（6分）\n（3）这一探索与马克思主义中国化时代化有何内在联系？（4分）",
+        "answer": "（1）认识过程：邓小平1978年密集出访（缅甸、朝鲜、日本、东南亚、新加坡及美国），通过对比认识到中国与发达国家现代化差距，从\"看世界\"中理解什么是现代化，进而思考中国应走什么样的现代化道路。\n\n（2）三层含义：①短期内不可能达到西方水平，先解决\"小康之家\"；②西方先进技术与经验可以借鉴（资金、技术、管理经验与中国市场交换）；③绝不能照搬西方道路，必须走出中国自己的现代化道路。\n\n（3）内在联系：中国式现代化是贯穿本课程的核心主线，其探索过程本身就是马克思主义中国化时代化最生动的实践——运用马克思主义立场观点方法，结合中国具体实际和时代条件，回答\"如何实现现代化\"这一时代课题，体现了\"两个结合\"和理论创新。",
+        "hint": "从出访感悟→三层含义→马克思主义中国化实践逻辑。",
+        "explanation": "材料综合1.2.md邓小平出访表与\"三个层次感悟\"，联系课程主线\"中国式现代化\"与马克思主义中国化时代化。",
+        "scoring_criteria": [
+            "概括邓小平认识过程（5分）",
+            "正确阐述三层核心含义（6分）",
+            "联系马克思主义中国化时代化（4分）",
+        ],
+    },
+]
+
+if __name__ == "__main__":
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from gen_maogai_quiz_ch01_03_part2 import CH02, CH03
+
+    write_chapter("ch01", CH01)
+    write_chapter("ch02", CH02)
+    write_chapter("ch03", CH03)

@@ -586,7 +586,7 @@ function notePrompt(item) {
 
 【动手前务必】
 1. Read 黄金范例 ${ROOT}/content/chapters/ch01/1.1.md，严格对齐其风格、深度与指令块用法（向它看齐或超越）。
-2. Read ${ROOT}/docs/SOP-章节生成.md 的 §2「笔记写作合同」。
+2. Read ${ROOT}/docs/sop/02-detail-generation.md 的 §2「笔记写作合同」。
 3. ${transcriptLines}
 
 【渲染契约（务必遵守）】
@@ -612,7 +612,7 @@ function interactivePrompt(item) {
 组件 ID：${sec.interactiveId}，组件名：${sec.componentName}
 
 【动手前务必】
-1. Read ${ROOT}/docs/SOP-章节生成.md 的 §3「交互组件合同」
+1. Read ${ROOT}/docs/sop/02-detail-generation.md 的 §3「交互组件合同」
 2. Read 参考样板：${ROOT}/components/interactives/ch01/FrequencyConvergence.tsx 和 ${ROOT}/components/interactives/ch01/BayesExplorer.tsx
 
 【主题与概念】${sec.interactiveConcept}
@@ -642,7 +642,7 @@ function manimPrompt(item) {
 视频 ID：${sec.videoId}，场景类：${sec.videoScene}
 
 【动手前务必】
-1. Read ${ROOT}/docs/SOP-章节生成.md 的 §4「Manim 动画合同」
+1. Read ${ROOT}/docs/sop/02-detail-generation.md 的 §4「Manim 动画合同」
 2. Read 参考样板：${ROOT}/manim/chapters/ch01/scene_1_1_sample_space.py
 
 【主题与概念】${sec.videoConcept}
