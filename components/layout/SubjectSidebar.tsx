@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import {
   ChevronRight,
   Folder,
@@ -22,6 +22,8 @@ import { useStore } from "@/lib/store";
 import { contentTree } from "@/content/manifest";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
 import type { SubjectId, ContentItem } from "@/lib/types/content";
+
+let savedSidebarScroll = 0;
 
 const ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
   Calculator,
@@ -47,6 +49,15 @@ export default function SubjectSidebar() {
   const isCollapsed = useStore((s) => s.sidebarCollapsed);
   const setCollapsed = useStore((s) => s.setSidebarCollapsed);
   const [isLight, setIsLight] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTop = savedSidebarScroll;
+    return () => {
+      if (el) savedSidebarScroll = el.scrollTop;
+    };
+  }, []);
 
   // 选中态由路由派生（单一真相源）：/[subject]/[category]/[id] → `${subject}/${category}/${id}`。
   // 这样刷新/深链时也能正确高亮，且天然命名空间化，不会跨学科串扰。
@@ -115,7 +126,7 @@ export default function SubjectSidebar() {
       </div>
 
       {/* 科目列表 */}
-      <div className="scroll-y flex-1" style={{ padding: "4px 0" }}>
+      <div ref={scrollRef} className="scroll-y flex-1" style={{ padding: "4px 0" }}>
         {contentTree.subjects.map((subject) => {
           const isSubjectExpanded = expandedIds.has(subject.id);
           const iconName = SUBJECT_ICONS[subject.id as SubjectId] ?? "Folder";

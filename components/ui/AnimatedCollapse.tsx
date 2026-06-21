@@ -18,8 +18,13 @@ interface Props {
 export default function AnimatedCollapse({ isOpen, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const controls = useAnimationControls();
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     if (isOpen) {
       controls.start({
         height: "auto",
@@ -41,7 +46,7 @@ export default function AnimatedCollapse({ isOpen, children }: Props) {
   return (
     <motion.div
       ref={ref}
-      initial={{ height: 0, opacity: 0 }}
+      initial={isOpen ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
       animate={controls}
       style={{ overflow: "hidden" }}
     >
