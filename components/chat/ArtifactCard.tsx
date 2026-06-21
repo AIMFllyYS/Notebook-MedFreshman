@@ -20,7 +20,8 @@ export default function ArtifactCard({ artifactId }: { artifactId: string }) {
   const streaming = status === 'streaming';
   const done = status === 'done';
   const errored = status === 'error';
-  // 产物为会话内存态：刷新历史后 art 不存在 → 已失效（需重新生成）。
+  // artifact 已持久化到 IndexedDB：刷新后从存储恢复，不再"已失效"。
+  // 仅在极旧消息（迁移前）或 prune 后才会 expired。
   const expired = !art;
 
   // 生成中默认展开源码以呈现“流式输出”；完成后默认收起，把焦点交给「打开演示」按钮。
@@ -70,7 +71,7 @@ export default function ArtifactCard({ artifactId }: { artifactId: string }) {
             : errored
               ? '交互演示生成失败'
               : expired
-                ? '交互演示已失效（刷新后丢失，可让助教重新生成）'
+                ? '交互演示数据缺失（可让助教重新生成）'
                 : `交互演示已就绪：${title}`}
         </span>
 

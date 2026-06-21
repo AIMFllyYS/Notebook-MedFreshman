@@ -8,6 +8,7 @@ import {
   FolderOpen,
   Sun,
   Moon,
+  Settings,
   Calculator,
   Atom,
   FlaskConical,
@@ -17,8 +18,10 @@ import {
   PanelLeft,
 } from "lucide-react";
 import FileTree from "./FileTree";
+import GlobalSettings from "./GlobalSettings";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
+import { useTheme } from "@/lib/hooks/useTheme";
 import { contentTree } from "@/content/manifest";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
 import type { SubjectId, ContentItem } from "@/lib/types/content";
@@ -48,8 +51,12 @@ export default function SubjectSidebar() {
   // 折叠状态与 AppShell 左面板共用同一真相源（此前各持一份，导致此处的折叠按钮失效）。
   const isCollapsed = useStore((s) => s.sidebarCollapsed);
   const setCollapsed = useStore((s) => s.setSidebarCollapsed);
-  const [isLight, setIsLight] = useState(false);
+  const theme = useTheme((s) => s.theme);
+  const toggleTheme = useTheme((s) => s.toggle);
+  const hydrateTheme = useTheme((s) => s.hydrate);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const settingsBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -66,9 +73,10 @@ export default function SubjectSidebar() {
     return segs.length >= 3 ? `${segs[0]}/${segs[1]}/${segs[2]}` : null;
   }, [pathname]);
 
+  // 挂载后从 DOM（已由内联脚本应用本地值）回填真实主题。
   useEffect(() => {
-    setIsLight(document.documentElement.getAttribute("data-theme") === "light");
-  }, []);
+    hydrateTheme();
+  }, [hydrateTheme]);
 
   // 路由直接由渲染处已知的 (subjectId, categoryId) 构造，不再全局搜索 item.id。
   // 此前的全局搜索会因裸 id 跨学科碰撞（概率论排在首位）而把化学等学科的点击
@@ -237,35 +245,62 @@ export default function SubjectSidebar() {
         })}
       </div>
 
-      {/* 底部主题切换 */}
+      {/* 底部工具条：全局设置 + 主题切换 */}
       <div
-        className="flex shrink-0 items-center justify-center"
+        className="flex shrink-0 items-center gap-1"
         style={{
-          height: 32,
+          height: 40,
+          padding: "0 8px",
           borderTop: "1px solid var(--md-sys-color-outline-variant)",
         }}
       >
         <button
-          onClick={() => {
-            const html = document.documentElement;
-            const nextIsLight = html.getAttribute("data-theme") !== "light";
-            html.setAttribute("data-theme", nextIsLight ? "light" : "dark");
-            setIsLight(nextIsLight);
-          }}
-          className="flex items-center justify-center rounded"
+          ref={settingsBtnRef}
+          onClick={() => setSettingsOpen((v) => !v)}
+          className="flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors"
           style={{
-            width: 28,
-            height: 24,
-            color: "var(--md-sys-color-outline)",
+            color: "var(--md-sys-color-on-surface-variant)",
             background: "transparent",
             border: "none",
             cursor: "pointer",
           }}
-          title="切换主题"
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--md-sys-color-surface-container-high)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
+          }}
+          title="设置 · 查看全局成绩"
         >
-          {isLight ? <Moon size={14} /> : <Sun size={14} />}
+          <Settings size={15} className="shrink-0" />
+          <span className="truncate text-[12.5px] font-medium">设置</span>
+        </button>
+        <button
+          onClick={toggleTheme}
+          className="flex shrink-0 items-center justify-center rounded-lg transition-colors"
+          style={{
+            width: 30,
+            height: 28,
+            color: "var(--md-sys-color-on-surface-variant)",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--md-sys-color-surface-container-high)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "transparent";
+          }}
+          title={theme === "light" ? "切换到深色" : "切换到浅色"}
+        >
+          {theme === "light" ? <Moon size={15} /> : <Sun size={15} />}
         </button>
       </div>
+
+      {settingsOpen && (
+        <GlobalSettings anchorRef={settingsBtnRef} onClose={() => setSettingsOpen(false)} />
+      )}
     </aside>
   );
 }

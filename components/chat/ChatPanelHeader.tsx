@@ -29,17 +29,21 @@ const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({
       </div>
       <div className="chat-header-actions">
         <button onClick={onOpenSettings} title="AI 设置" className="chat-header-btn">
-          <Settings size={12} /> 设置
+          <Settings size={12} />
+          <span className="chat-header-btn-text">设置</span>
         </button>
         <button onClick={onOpenHistory} title="历史记录" className="chat-header-btn">
-          <Clock size={12} /> 历史
+          <Clock size={12} />
+          <span className="chat-header-btn-text">历史</span>
         </button>
         <button onClick={onNewChat} title="开启新对话" className="chat-header-btn chat-header-btn-primary">
-          <Plus size={12} /> 新对话
+          <Plus size={12} />
+          <span className="chat-header-btn-text">新对话</span>
         </button>
         {hasMessages && (
           <button onClick={onClearCurrent} title="清空当前记录" className="chat-header-btn chat-header-btn-danger">
-            <Trash2 size={12} /> 清空
+            <Trash2 size={12} />
+            <span className="chat-header-btn-text">清空</span>
           </button>
         )}
       </div>

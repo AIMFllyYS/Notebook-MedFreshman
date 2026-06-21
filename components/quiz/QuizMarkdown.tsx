@@ -3,6 +3,7 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { sharedRemarkPlugins, sharedRehypePlugins } from "@/lib/markdown/plugins";
+import { ContentImage } from "@/components/shared/ContentImage";
 import "katex/dist/katex.min.css";
 
 interface QuizMarkdownProps {
@@ -13,17 +14,17 @@ interface QuizMarkdownProps {
 }
 
 const blockComponents = {
-  // 题干内表格可横向滚动
   table: ({ node, ...props }: any) => (
     <div style={{ overflowX: "auto" }}>
       <table {...props} />
     </div>
   ),
+  img: ContentImage,
 };
 
 const inlineComponents = {
-  // 行内场景：段落不换行，去掉默认 margin
   p: ({ node, ...props }: any) => <span {...props} />,
+  img: ContentImage,
 };
 
 /**
