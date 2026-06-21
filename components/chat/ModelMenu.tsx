@@ -62,10 +62,11 @@ export default function ModelMenu({ onOpenSettings }: { onOpenSettings?: () => v
         ref={btnRef}
         onClick={() => setOpen((v) => !v)}
         title="选择模型"
-        className="press flex max-w-[180px] items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+        className="press flex max-w-[180px] min-w-0 items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] [flex-shrink:1]"
       >
         <Cpu size={12} className="shrink-0 text-[var(--accent-ink)]" />
-        <span className="model-menu-label truncate">{label}</span>
+        <span className="model-menu-label model-menu-label-full truncate">{label}</span>
+        <span className="model-menu-label model-menu-label-short">model</span>
         <ChevronDown size={12} className="shrink-0" />
       </button>
 

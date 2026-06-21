@@ -766,6 +766,8 @@
 }
 .chat-input-toolbar-group {
   display: flex;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
   gap: 12px;
   align-items: center;
 }
@@ -847,6 +849,15 @@
 }
 
 /* ── 底部工具栏响应式 ────────────────────────── */
+@container (max-width: 420px) {
+  .model-menu-label-full {
+    display: none;
+  }
+  .model-menu-label-short {
+    display: inline;
+  }
+}
+
 @container (max-width: 280px) {
   .chat-input-toolbar-group {
     gap: 4px;
@@ -858,7 +869,11 @@
   .chat-input-toggle-text {
     display: none;
   }
-  .model-menu-label {
-    display: none;
-  }
+}
+
+.model-menu-label-full {
+  display: inline;
+}
+.model-menu-label-short {
+  display: none;
 }
