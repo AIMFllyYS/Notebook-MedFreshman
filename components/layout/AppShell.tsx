@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import {
   Panel,
   PanelGroup,
@@ -17,6 +17,7 @@ import { isSubjectId, isCategoryId } from "@/lib/types/content";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
 import BrandLogo from "./BrandLogo";
+import { PencilLoader, PageLoader } from "@/components/shared/ResizeLoader";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const QuickExplainWindow = dynamic(() => import("@/components/chat/QuickExplainWindow"), { ssr: false });
@@ -104,6 +105,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const setSidebarCollapsed = useStore((s) => s.setSidebarCollapsed);
   const leftRef = useRef<ImperativePanelHandle>(null);
   const [, startTransition] = useTransition();
+  const [isResizing, setIsResizing] = useState(false);
+  const handleDragging = useCallback((dragging: boolean) => setIsResizing(dragging), []);
 
   const route = useMemo(() => parseRoute(pathname), [pathname]);
   const setActiveRoute = useStore((s) => s.setActiveRoute);
@@ -124,7 +127,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, [sidebarCollapsed]);
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]">
+    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined}>
       <TopBar
         subjectId={route?.subjectId ?? "probability"}
         categoryId={route?.categoryId ?? "detail"}
@@ -147,7 +150,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <SubjectSidebar />
           </Panel>
 
-          <PanelResizeHandle className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">
+          <PanelResizeHandle onDragging={handleDragging} className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">
             <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
             <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
               <span className="block h-7 w-1 rounded-full bg-[var(--accent)]/40" />
@@ -155,13 +158,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </PanelResizeHandle>
 
           <Panel id="notes" order={2} minSize={32} defaultSize={50}>
-            {/* id="notes-panel" 作为划词 AI 浮窗"展开"时查询内容栏视口矩形的锚点 */}
-            <div id="notes-panel" className="h-full w-full">
-              {children}
+            <div className="relative h-full w-full">
+              {/* id="notes-panel" 作为划词 AI 浮窗"展开"时查询内容栏视口矩形的锚点 */}
+              <div id="notes-panel" className="h-full w-full">
+                {children}
+              </div>
+              {isResizing && <PageLoader />}
             </div>
           </Panel>
 
-          <PanelResizeHandle className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">
+          <PanelResizeHandle onDragging={handleDragging} className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">
             <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
             <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
               <span className="block h-7 w-1 rounded-full bg-[var(--accent)]/40" />
@@ -169,7 +175,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </PanelResizeHandle>
 
           <Panel id="right" order={3} minSize={22} defaultSize={31}>
-            <RightPanel />
+            <div className="relative h-full">
+              <RightPanel />
+              {isResizing && <PencilLoader />}
+            </div>
           </Panel>
         </PanelGroup>
       </div>

@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { ArrowDown, Loader, AlertTriangle, X } from 'lucide-react';
 import { useChat } from '@/lib/hooks/useChat';
 import { useChatHistory } from '@/lib/hooks/useChatHistory';
+import { useHydrated } from '@/lib/hooks/useHydrated';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useStore } from '@/lib/store';
 import SelectionPopover from '@/components/notes/SelectionPopover';
@@ -41,6 +42,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const [showHistory, setShowHistory] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const fontScale = useSettings((s) => s.fontScale);
+  const hydrated = useHydrated(useChatHistory);
 
   useEffect(() => {
     if (isAtBottom) {
@@ -49,11 +51,11 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   }, [messages, isAtBottom]);
 
   useEffect(() => {
-    if (outbound && outbound.content) {
+    if (hydrated && outbound && outbound.content) {
       sendMessage(outbound.content);
       clearOutbound();
     }
-  }, [outbound, sendMessage, clearOutbound]);
+  }, [outbound, sendMessage, clearOutbound, hydrated]);
 
   const handleScroll = () => {
     if (!scrollContainerRef.current) return;
@@ -65,7 +67,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     sendMessage(content, options);
   };
 
-  const handleFollowUpClick = (question: string) => sendMessage(question);
+  const handleFollowUpClick = useCallback((question: string) => sendMessage(question), [sendMessage]);
   const handleNewChat = () => createSession(chatContext);
   const handleClearCurrent = () => { if (activeSessionId) deleteSession(activeSessionId); };
 
@@ -90,7 +92,12 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         className="chat-messages"
         style={{ ['--chat-fs' as string]: `${Math.round(13 * fontScale)}px` } as React.CSSProperties}
       >
-        {messages.length === 0 ? (
+        {!hydrated ? (
+          <div className="chat-loading">
+            <Loader size={16} className="animate-spin" style={{ color: 'var(--md-sys-color-primary)' }} />
+            <span className="chat-loading-text">正在加载历史记录...</span>
+          </div>
+        ) : messages.length === 0 ? (
           <ChatEmptyState
             topic={chatContext?.currentTopic ?? ''}
             subjectName={subjectName}
@@ -140,7 +147,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
       <ChatInput
         onSend={handleSend}
         onStop={stopGeneration}
-        isLoading={isLoading}
+        isLoading={isLoading || !hydrated}
         chatContext={chatContext}
         onOpenSettings={() => setShowSettings(true)}
       />

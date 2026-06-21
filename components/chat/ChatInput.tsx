@@ -111,7 +111,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
             title="开启深度思考（展示推理过程）"
           >
             <BrainCircuit size={12} />
-            <span>深度思考</span>
+            <span className="chat-input-toggle-text">深度思考</span>
             {enableThinking && <CheckCircle size={10} />}
           </button>
 
@@ -122,7 +122,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
             title="联网搜索（需配置搜索API）"
           >
             <Globe size={12} />
-            <span>联网搜索</span>
+            <span className="chat-input-toggle-text">联网搜索</span>
             {enableSearch && <CheckCircle size={10} />}
           </button>
         </div>

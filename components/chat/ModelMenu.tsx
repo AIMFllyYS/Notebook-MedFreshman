@@ -65,7 +65,7 @@ export default function ModelMenu({ onOpenSettings }: { onOpenSettings?: () => v
         className="press flex max-w-[180px] items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
       >
         <Cpu size={12} className="shrink-0 text-[var(--accent-ink)]" />
-        <span className="truncate">{label}</span>
+        <span className="model-menu-label truncate">{label}</span>
         <ChevronDown size={12} className="shrink-0" />
       </button>
 

@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { FileText, ClipboardCheck, Lightbulb } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import NoteRenderer from "@/components/notes/NoteRenderer";
 import SelectionPopover from "@/components/notes/SelectionPopover";
 import type { SubjectId, CategoryId } from "@/lib/types/content";
 import type { ExampleMeta } from "@/app/api/examples/route";
@@ -13,6 +12,10 @@ import { tabPanelVariants } from "@/lib/motion";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
 const ExampleTab = dynamic(() => import("@/components/examples/ExampleTab"), { ssr: false });
+const NoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), {
+  ssr: false,
+  loading: () => <div className="py-8 text-center text-[13px] text-[var(--ink-faint)]">加载中…</div>,
+});
 
 type ContentTab = "content" | "examples" | "quiz";
 

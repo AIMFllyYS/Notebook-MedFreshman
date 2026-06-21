@@ -1,8 +1,13 @@
 "use client";
 
 import { memo, useEffect, useState } from "react";
-import NoteRenderer from "@/components/notes/NoteRenderer";
+import dynamic from "next/dynamic";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
+
+const NoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), {
+  ssr: false,
+  loading: () => <div className="py-2 text-center text-[12px] text-[var(--ink-faint)]">加载中…</div>,
+});
 
 export interface ToolEvent {
   id: string;

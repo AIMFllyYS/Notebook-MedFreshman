@@ -67,4 +67,4 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
   );
 };
 
-export default ChatMessage;
+export default React.memo(ChatMessage);
