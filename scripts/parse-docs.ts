@@ -162,6 +162,99 @@ async function pollBatchResults(batchId: string, timeoutMs = 300000): Promise<Ex
   throw new Error(`Polling timed out after ${timeoutMs / 1000}s. batch_id: ${batchId}`);
 }
 
+// ─── Image injection from layout.json ──────────────────────────────────────
+
+/**
+ * MinerU VLM model extracts images but doesn't include ![]() references in full.md.
+ * This function reads layout.json to find image positions and injects references.
+ */
+function injectImagesFromLayout(
+  md: string,
+  extractDir: string,
+  subject: string,
+  baseName: string,
+): string {
+  const layoutPath = findFile(extractDir, "layout.json");
+  if (!layoutPath) return md;
+
+  try {
+    const layout = JSON.parse(fs.readFileSync(layoutPath, "utf8"));
+    if (!layout.pdf_info) return md;
+
+    // Extract image positions from layout.json
+    const imageBlocks: { pageNum: number; text: string; imagePath: string }[] = [];
+
+    for (const page of layout.pdf_info) {
+      for (const block of page.para_blocks || []) {
+        let imagePath: string | null = null;
+        const textParts: string[] = [];
+
+        for (const line of block.lines || []) {
+          for (const span of line.spans || []) {
+            if (span.image_path) imagePath = span.image_path;
+            if (span.content) textParts.push(span.content);
+          }
+        }
+
+        if (imagePath) {
+          imageBlocks.push({
+            pageNum: page.page_idx,
+            text: textParts.join(" ").slice(0, 100),
+            imagePath,
+          });
+        }
+      }
+    }
+
+    if (imageBlocks.length === 0) return md;
+
+    // Inject images into markdown at positions matching nearby text
+    const lines = md.split("\n");
+    const inserted = new Set<string>();
+    let injected = 0;
+
+    for (const img of imageBlocks) {
+      if (inserted.has(img.imagePath)) continue;
+
+      // Find the best matching line in markdown by searching for text fragments
+      const fragments = img.text
+        .split(/[，。、；：！？\s]+/)
+        .filter((f: string) => f.length >= 6)
+        .slice(0, 3);
+
+      let bestLine = -1;
+      let bestScore = 0;
+
+      for (let i = 0; i < lines.length; i++) {
+        let score = 0;
+        for (const frag of fragments) {
+          if (lines[i].includes(frag)) score++;
+        }
+        if (score > bestScore) {
+          bestScore = score;
+          bestLine = i;
+        }
+      }
+
+      if (bestLine >= 0 && bestScore >= 1) {
+        const imgRef = `\n![](/images/${subject}/${baseName}/${img.imagePath})\n`;
+        lines.splice(bestLine + 1, 0, imgRef);
+        inserted.add(img.imagePath);
+        injected++;
+      }
+    }
+
+    if (injected > 0) {
+      console.log(`  🔗 Injected ${injected} image references from layout.json`);
+    }
+
+    return lines.join("\n");
+  } catch (e) {
+    console.warn(`  ⚠ Failed to inject images from layout.json: ${(e as Error).message}`);
+    return md;
+  }
+}
+
 // ─── Step 4: Download and extract markdown ──────────────────────────────────
 
 async function downloadAndExtractMarkdown(zipUrl: string, outputPath: string): Promise<void> {
@@ -205,6 +298,12 @@ async function downloadAndExtractMarkdown(zipUrl: string, outputPath: string): P
           /!\[([^\]]*)\]\(images\/([^)]+)\)/g,
           `![$1](/images/${subject}/${baseName}/$2)`,
         );
+
+        // NEW: If no image references in md, inject from layout.json
+        if (!md.includes("![](")) {
+          md = injectImagesFromLayout(md, extractDir, subject, baseName);
+        }
+
         fs.writeFileSync(outputPath, md, "utf8");
       }
     } else {
