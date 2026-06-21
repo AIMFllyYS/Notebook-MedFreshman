@@ -816,3 +816,43 @@ html[data-topbar-collapsed="true"] header[data-topbar] {
   border-bottom-width: 0;
   overflow: hidden;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Mobile Optimization
+   ───────────────────────────────────────────────────────────── */
+
+/* Safe area CSS variables for notched / rounded screens */
+:root {
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Bottom navigation bar glass effect */
+.mobile-bottom-nav {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Prevent pull-to-refresh / overscroll bounce on mobile shell */
+@media (max-width: 767px) {
+  html, body {
+    overscroll-behavior: none;
+  }
+
+  /* Ensure touch targets are at least 44px */
+  .mobile-bottom-nav button {
+    min-height: 44px;
+  }
+
+  /* Tighter scrollbar on mobile */
+  .scroll-y::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  /* Prevent text selection on nav elements */
+  .mobile-bottom-nav,
+  .mobile-bottom-nav * {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}

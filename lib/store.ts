@@ -3,6 +3,7 @@ import type { VideoEntry } from "@/lib/content/types";
 import type { SubjectId } from "@/lib/types/content";
 
 export type RightTab = "ai" | "video" | "interactive" | "browser";
+export type MobileTab = "detail" | "video" | "ai" | "interactive" | "browser";
 
 export interface OutboundMessage {
   /** 要发送给 AI 的完整内容（可能含划词引用） */
@@ -100,6 +101,13 @@ interface AppState {
   sendToChat: (content: string) => void;
   clearOutbound: () => void;
 
+  // ── 手机端 ──────────────────────────────────────────────
+  mobileTab: MobileTab;
+  setMobileTab: (t: MobileTab) => void;
+  mobileChapterPickerOpen: boolean;
+  toggleMobileChapterPicker: () => void;
+  setMobileChapterPickerOpen: (v: boolean) => void;
+
   // ── 小窗视频（PiP）─────────────────────────────────────
   /** 当前在浮动小窗播放的视频；null 表示未打开 */
   pipVideo: VideoEntry | null;
@@ -182,9 +190,17 @@ export const useStore = create<AppState>((set) => ({
   sendToChat: (content) =>
     set((s) => ({
       rightTab: "ai",
+      mobileTab: "ai",
       outbound: { content, nonce: (s.outbound?.nonce ?? 0) + 1 },
     })),
   clearOutbound: () => set({ outbound: null }),
+
+  mobileTab: "detail",
+  setMobileTab: (t) => set({ mobileTab: t }),
+  mobileChapterPickerOpen: false,
+  toggleMobileChapterPicker: () =>
+    set((s) => ({ mobileChapterPickerOpen: !s.mobileChapterPickerOpen })),
+  setMobileChapterPickerOpen: (v) => set({ mobileChapterPickerOpen: v }),
 
   pipVideo: null,
   pipStartTime: 0,

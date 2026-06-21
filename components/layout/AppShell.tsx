@@ -13,16 +13,25 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { PanelTopClose, PanelTopOpen, Maximize, Minimize } from "lucide-react";
 import { useStore } from "@/lib/store";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { getSubject, getCategory, getContentItem } from "@/content";
 import type { SubjectId, CategoryId } from "@/lib/types/content";
 import { isSubjectId, isCategoryId } from "@/lib/types/content";
+import type { ChatContext } from "@/lib/types/chat";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
 import BrandLogo from "./BrandLogo";
+import MobileTopBar from "./MobileTopBar";
+import MobileBottomNav from "./MobileBottomNav";
+import MobileChapterPicker from "./MobileChapterPicker";
 import { PencilLoader, PageLoader } from "@/components/shared/ResizeLoader";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const QuickExplainWindow = dynamic(() => import("@/components/chat/QuickExplainWindow"), { ssr: false });
+const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
+const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
+const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
+const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false });
 
 /** 从 pathname 解析路由信息：/[subject]/[category]/[id]。
  *  科目/分类段做运行时校验，非法段返回 null（不再无脑 `as` 强转）。 */
@@ -149,9 +158,14 @@ function TopBar({
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const isMobile = useIsMobile();
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
   const setSidebarCollapsed = useStore((s) => s.setSidebarCollapsed);
   const hydrateLayout = useStore((s) => s.hydrateLayout);
+  const mobileTab = useStore((s) => s.mobileTab);
+  const activeSubjectId = useStore((s) => s.activeSubjectId);
+  const activeCategoryId = useStore((s) => s.activeCategoryId);
+  const activeItemId = useStore((s) => s.activeItemId);
   const leftRef = useRef<ImperativePanelHandle>(null);
   const [, startTransition] = useTransition();
   const [isResizing, setIsResizing] = useState(false);
@@ -160,19 +174,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const route = useMemo(() => parseRoute(pathname), [pathname]);
   const setActiveRoute = useStore((s) => s.setActiveRoute);
 
-  // 路由 -> 全局导航状态（单一同步点，覆盖所有分类）。
-  // 之前该同步在 ContentPageClient 且仅 categoryId==='detail' 时执行，导致切到
-  // 录音/纪要页时右侧面板（视频/交互/例题/AI 上下文）仍停留在上一个学科。
   useEffect(() => {
     if (route) setActiveRoute(route.subjectId, route.categoryId, route.itemId);
   }, [route, setActiveRoute]);
 
-  // 客户端挂载后从 DOM 回填本地持久化的布局状态（与 layout.tsx 内联脚本对齐）。
   useEffect(() => {
     hydrateLayout();
   }, [hydrateLayout]);
 
-  // store 折叠状态 -> 面板命令式同步
   useEffect(() => {
     const panel = leftRef.current;
     if (!panel) return;
@@ -180,6 +189,60 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     else if (!sidebarCollapsed && panel.isCollapsed()) panel.expand();
   }, [sidebarCollapsed]);
 
+  const chatContext: ChatContext = useMemo(
+    () => ({
+      subjectId: activeSubjectId,
+      categoryId: activeCategoryId,
+      itemId: activeItemId,
+      currentTopic: `${activeSubjectId} ${activeCategoryId} ${activeItemId}`,
+    }),
+    [activeSubjectId, activeCategoryId, activeItemId],
+  );
+
+  // ── Mobile layout ──────────────────────────────────────────
+  if (isMobile) {
+    return (
+      <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]">
+        <MobileTopBar />
+
+        <div className="min-h-0 flex-1 overflow-hidden">
+          <div className={clsx("h-full", mobileTab !== "detail" && "hidden")}>
+            <div id="notes-panel" className="h-full">
+              {children}
+            </div>
+          </div>
+          {mobileTab === "video" && (
+            <div className="h-full">
+              <VideoTab />
+            </div>
+          )}
+          {mobileTab === "ai" && (
+            <div className="h-full">
+              <ChatPanel chatContext={chatContext} />
+            </div>
+          )}
+          {mobileTab === "interactive" && (
+            <div className="h-full">
+              <InteractiveTab />
+            </div>
+          )}
+          {mobileTab === "browser" && (
+            <div className="h-full">
+              <BrowserTab />
+            </div>
+          )}
+        </div>
+
+        <MobileBottomNav />
+        <MobileChapterPicker />
+        <AnimatePresence>
+          <PipPlayer />
+        </AnimatePresence>
+      </div>
+    );
+  }
+
+  // ── Desktop layout (unchanged) ─────────────────────────────
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined}>
       <TopBar
@@ -213,7 +276,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
           <Panel id="notes" order={2} minSize={32} defaultSize={50}>
             <div className="relative h-full w-full">
-              {/* id="notes-panel" 作为划词 AI 浮窗"展开"时查询内容栏视口矩形的锚点 */}
               <div id="notes-panel" className="h-full w-full">
                 {children}
               </div>

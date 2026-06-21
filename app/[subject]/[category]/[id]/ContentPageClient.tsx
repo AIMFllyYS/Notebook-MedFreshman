@@ -9,6 +9,7 @@ import SelectionPopover from "@/components/notes/SelectionPopover";
 import type { SubjectId, CategoryId } from "@/lib/types/content";
 import type { ExampleMeta } from "@/app/api/examples/route";
 import { useStore } from "@/lib/store";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { tabPanelVariants } from "@/lib/motion";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
@@ -71,6 +72,7 @@ export default function ContentPageClient({
   const [activeTab, setActiveTab] = useState<ContentTab>("content");
   const topBarCollapsed = useStore((s) => s.topBarCollapsed);
   const toggleTopBar = useStore((s) => s.toggleTopBar);
+  const isMobile = useIsMobile();
 
   const tabIndex = CONTENT_TABS.findIndex((t) => t.id === activeTab);
   const prevTabIndexRef = useRef(tabIndex);
@@ -118,14 +120,16 @@ export default function ContentPageClient({
           </button>
         ))}
 
-        <button
-          onClick={toggleTopBar}
-          title={topBarCollapsed ? "展开顶部导航栏" : "收起顶部导航栏"}
-          aria-pressed={topBarCollapsed}
-          className="ml-auto mr-1 flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
-        >
-          {topBarCollapsed ? <PanelTopOpen size={18} /> : <PanelTopClose size={18} />}
-        </button>
+        {!isMobile && (
+          <button
+            onClick={toggleTopBar}
+            title={topBarCollapsed ? "展开顶部导航栏" : "收起顶部导航栏"}
+            aria-pressed={topBarCollapsed}
+            className="ml-auto mr-1 flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+          >
+            {topBarCollapsed ? <PanelTopOpen size={18} /> : <PanelTopClose size={18} />}
+          </button>
+        )}
       </div>
 
       {/* Content area */}
@@ -140,19 +144,19 @@ export default function ContentPageClient({
               exit="exit"
               className="h-full"
             >
-              <article className="mx-auto w-full max-w-3xl px-8 py-10">
-                <div className="mb-7">
-                  <div className="text-[13px] font-semibold text-[var(--accent)]">
+              <article className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-8 sm:py-10">
+                <div className="mb-5 sm:mb-7">
+                  <div className="text-[12px] sm:text-[13px] font-semibold text-[var(--accent)]">
                     {subjectName} · {categoryName}
                   </div>
-                  <h1 className="mt-1.5 text-[28px] font-bold tracking-tight text-[var(--ink)]">
-                    <span className="mr-2 font-mono text-[var(--ink-faint)]">
+                  <h1 className="mt-1 sm:mt-1.5 text-[22px] sm:text-[28px] font-bold tracking-tight text-[var(--ink)]">
+                    <span className="mr-1.5 sm:mr-2 font-mono text-[var(--ink-faint)]">
                       {itemId}
                     </span>
                     {itemTitle}
                   </h1>
                   {itemSummary && (
-                    <p className="mt-2.5 text-[15px] leading-relaxed text-[var(--ink-soft)]">
+                    <p className="mt-2 sm:mt-2.5 text-[14px] sm:text-[15px] leading-relaxed text-[var(--ink-soft)]">
                       {itemSummary}
                     </p>
                   )}
