@@ -1,4 +1,6 @@
 :::example{label=D甘油醛R构型}
+
+::figure{src="/images/chemistry/20.  作业讲解（第9-13章）-王锋/037e312cde1e7a8902d377b6713ae1074896666d1e809b22a61eb8d34abc355e.jpg" alt="课件示意图" caption="课件示意图"}
 给定 D-甘油醛的 Fischer 投影式，判断其手性碳的绝对构型（R 还是 S）。已知其四个基团为羟基、醛基、羟甲基支、氢。
 :::
 :::insight{label=分析}
