@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import AppShell from "@/components/layout/AppShell";
 import "./globals.css";
 import "katex/dist/katex.min.css";
 import "@vidstack/react/player/styles/base.css";
@@ -19,9 +20,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN">
+      <head>
+        {/* 在 paint 前应用本地保存的主题，避免深/浅色闪烁（默认深色）。 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var t=localStorage.getItem('gailvlun-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();",
+          }}
+        />
+      </head>
       <body>
         <Suspense fallback={<div className="flex h-screen items-center justify-center text-[var(--ink-faint)]">加载中…</div>}>
-          {children}
+          <AppShell>{children}</AppShell>
         </Suspense>
       </body>
     </html>

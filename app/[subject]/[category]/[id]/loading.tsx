@@ -5,11 +5,15 @@ import { FileText, Lightbulb, ClipboardCheck } from "lucide-react";
  * Next.js route-level loading UI。
  * 页面导航时由框架自动渲染：侧边栏和右面板保持可见，
  * 只有中间内容区替换为骨架屏，避免整页空白。
+ *
+ * DOM 结构与 ContentPageClient 严格对齐（根容器、tab 栏、滚动区、article 布局），
+ * 确保 Suspense 切换时 PanelGroup 不会因布局差异触发 reflow，
+ * 进而避免侧边栏 AnimatedCollapse 闪动。
  */
 export default function ContentLoading() {
   return (
     <div className="relative flex h-full flex-col bg-[var(--bg-app)]">
-      {/* 静态假 Tab 栏，与 ContentPageClient 结构一致 */}
+      {/* Tab 栏 —— 与 ContentPageClient 完全一致 */}
       <div className="flex shrink-0 border-b border-[var(--line)] bg-[var(--bg-app)]">
         {[
           { icon: <FileText size={14} />, label: "正文", active: true },
@@ -19,7 +23,7 @@ export default function ContentLoading() {
           <div
             key={t.label}
             className={[
-              "relative flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium",
+              "relative flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium transition-colors",
               t.active
                 ? "text-[var(--md-sys-color-primary)]"
                 : "text-[var(--md-sys-color-on-surface-variant)] opacity-50",
@@ -34,9 +38,11 @@ export default function ContentLoading() {
         ))}
       </div>
 
-      {/* 内容区骨架 */}
-      <div className="scroll-y flex-1">
-        <NoteSkeleton />
+      {/* 内容区 —— 与 ContentPageClient 的 scroll 容器结构一致 */}
+      <div data-notes-root className="scroll-y flex-1">
+        <article className="mx-auto w-full max-w-3xl px-8 py-10">
+          <NoteSkeleton />
+        </article>
       </div>
     </div>
   );

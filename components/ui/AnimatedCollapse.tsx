@@ -48,6 +48,7 @@ export default function AnimatedCollapse({ isOpen, children }: Props) {
       ref={ref}
       initial={isOpen ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
       animate={controls}
+      layout="position"
       style={{ overflow: "hidden" }}
     >
       {children}

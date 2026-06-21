@@ -1,4 +1,4 @@
-export default function SubjectLayout({
+export default function CategoryLayout({
   children,
 }: {
   children: React.ReactNode;
