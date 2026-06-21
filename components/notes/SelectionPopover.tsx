@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Lightbulb, Pen, MessageSquare, Send } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useChatUI } from "@/lib/hooks/useChatUI";
@@ -41,7 +42,17 @@ export default function SelectionPopover({
   const [pop, setPop] = useState<PopState | null>(null);
   const [asking, setAsking] = useState(false);
   const [q, setQ] = useState("");
+  const [mounted, setMounted] = useState(false);
+  const [boxWidth, setBoxWidth] = useState(0);
   const boxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => setMounted(true), []);
+
+  useLayoutEffect(() => {
+    if (boxRef.current) {
+      setBoxWidth(boxRef.current.offsetWidth);
+    }
+  }, [pop, asking]);
 
   useEffect(() => {
     function onMouseUp(e: MouseEvent) {
@@ -89,7 +100,7 @@ export default function SelectionPopover({
     };
   }, [containerRef, asking]);
 
-  if (!pop) return null;
+  if (!mounted || !pop) return null;
 
   function handleExplain() {
     if (!pop) return;
@@ -124,22 +135,25 @@ export default function SelectionPopover({
     setQ("");
   }
 
+  const halfW = (boxWidth || 300) / 2;
   const left = Math.min(
-    Math.max(pop.x, 150),
-    (typeof window !== "undefined" ? window.innerWidth : 1200) - 150,
+    Math.max(pop.x, halfW + 8),
+    window.innerWidth - halfW - 8,
   );
   const top = Math.max(pop.y - 8, 10);
 
-  return (
+  return createPortal(
     <div
-      ref={boxRef}
-      onMouseDown={(e) => {
-        if (!(e.target instanceof HTMLInputElement)) e.preventDefault();
-      }}
-      style={{ position: "fixed", left, top, transform: "translate(-50%, -100%)" }}
-      className="z-50 animate-fade-up"
+      style={{ position: "fixed", left, top, width: "max-content", transform: "translate(-50%, -100%)", zIndex: 9999 }}
     >
-      <div className="flex items-center gap-0.5 rounded-xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] p-1 shadow-lg">
+      <div
+        ref={boxRef}
+        onMouseDown={(e) => {
+          if (!(e.target instanceof HTMLInputElement)) e.preventDefault();
+        }}
+        className="animate-fade-up"
+      >
+        <div className="flex items-center gap-0.5 rounded-xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] p-1 shadow-lg">
         {!asking ? (
           <>
             <PopBtn onClick={handleExplain} icon={Lightbulb} label="解释" />
@@ -171,8 +185,10 @@ export default function SelectionPopover({
             </button>
           </form>
         )}
+        </div>
+        <div className="mx-auto h-2 w-2 -translate-y-1 rotate-45 border-b border-r border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)]" />
       </div>
-      <div className="mx-auto h-2 w-2 -translate-y-1 rotate-45 border-b border-r border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)]" />
-    </div>
+    </div>,
+    document.body
   );
 }

@@ -595,10 +595,12 @@ export default function QuickExplainWindow() {
             alignItems: "center",
             gap: 6,
             color: "var(--md-sys-color-primary)",
+            flexShrink: 0,
+            whiteSpace: "nowrap",
           }}
         >
           <Sparkles size={16} />
-          <span style={{ fontSize: 14, fontWeight: 600 }}>
+          <span style={{ fontSize: 14, fontWeight: 600, whiteSpace: "nowrap" }}>
             AI {quickExplainMode === "explain" ? "快捷解释" : "举例说明"}
           </span>
         </div>
