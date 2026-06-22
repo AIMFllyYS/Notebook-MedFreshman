@@ -1,0 +1,19 @@
+# Keep source files as LF to prevent CRLF churn on Windows checkouts.
+# (Two physics scene files had silently flipped to CRLF, producing ~1800
+#  lines of phantom diff; this enforces LF going forward.)
+*.py   text eol=lf
+*.ts   text eol=lf
+*.tsx  text eol=lf
+*.js   text eol=lf
+*.mjs  text eol=lf
+*.json text eol=lf
+*.md   text eol=lf
+*.css  text eol=lf
+
+# Treat media as binary (no EOL conversion, no diff).
+*.mp4  binary
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.webp binary
+*.svg  binary
