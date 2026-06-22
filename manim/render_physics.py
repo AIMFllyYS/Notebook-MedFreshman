@@ -96,11 +96,14 @@ def render_scene(py: Path, scene: str, vid_id: str, quality: str) -> Path | None
         sys.executable, "-m", "manim", "render",
         f"-q{quality}", "-o", vid_id,
         "--media_dir", str(MEDIA_OUT),
-        "--no_latex_cleanup",
         str(py), scene,
     ]
     print("  $", " ".join(cmd))
-    res = subprocess.run(cmd, cwd=str(ROOT), env=_clean_env_for_latex())
+    try:
+        res = subprocess.run(cmd, cwd=str(ROOT), env=_clean_env_for_latex(), timeout=360)
+    except subprocess.TimeoutExpired:
+        print(f"  [error] 渲染超时(>360s)，跳过：{scene}")
+        return None
     if res.returncode != 0:
         print(f"  [error] 渲染失败：{scene}")
         return None
