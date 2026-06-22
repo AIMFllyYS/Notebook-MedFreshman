@@ -13,7 +13,7 @@ from manim import *
 import math
 import numpy as np
 
-CYAN = "#00FFFF"
+CYAN = ManimColor("#00FFFF")
 CJK = "Microsoft YaHei"
 
 # ── 颜色语义 ───────────────────────────────────────────────────────────────────

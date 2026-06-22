@@ -132,18 +132,16 @@ class Ch09Kp2LenzLawDirection(Scene):
 
         # 磁感线（随磁铁位置动态生成）
         def make_b_lines():
+            # 磁铁 N 上 S 下，S 极朝向下方线圈。外部磁感线指向 S 极，
+            # 故磁铁下方(线圈处)的磁场竖直向上、进入 S 极 —— 用向上的箭头表示。
             cy = mag_tracker.get_value()
-            center = np.array([0.0, cy - 0.6, 0.0])
+            mag_bottom = cy - 0.6          # 磁铁底部(S 极)面
             lines = VGroup()
-            for r in [0.45, 0.85]:
-                for k in range(8):
-                    ang = k * TAU / 8
-                    # 磁感线从 N 极向外辐射（向下，即从 N 极出发向四周弯曲，
-                    # 再穿过线圈向上回到 S 极）用简化向外箭头
-                    start = center + np.array([math.cos(ang), math.sin(ang), 0]) * r * 0.4
-                    end   = center + np.array([math.cos(ang), math.sin(ang) - 0.3, 0]) * (r * 0.4 + 0.3)
-                    lines.add(Arrow(start, end, buff=0, color=BLUE_C,
-                                    stroke_width=1.8, max_tip_length_to_length_ratio=0.32))
+            for dx in [-0.7, -0.35, 0.0, 0.35, 0.7]:
+                start = np.array([dx, mag_bottom - 1.35, 0.0])
+                end   = np.array([dx, mag_bottom - 0.08, 0.0])
+                lines.add(Arrow(start, end, buff=0, color=BLUE_C,
+                                stroke_width=1.8, max_tip_length_to_length_ratio=0.18))
             return lines
 
         b_lines = always_redraw(make_b_lines)
@@ -211,7 +209,6 @@ class Ch09Kp2LenzLawDirection(Scene):
         step2.next_to(step1, DOWN, buff=0.32)
 
         step3_zh = Text("③  右手定则：四指弯向电流方向", font=CJK, color=WHITE).scale(0.46)
-        step3._ = step3_zh
         step3 = step3_zh
         step3.next_to(step2, DOWN, buff=0.32)
 

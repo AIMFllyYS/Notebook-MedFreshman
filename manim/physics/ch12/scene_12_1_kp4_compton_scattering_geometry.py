@@ -149,25 +149,31 @@ class Ch12Kp4ComptonScatteringGeometry(Scene):
             color=GREEN, stroke_width=2,
         ))
 
-        phi_text = always_redraw(lambda: MathTex(
-            rf"\varphi={phi_tracker.get_value():.0f}^\circ",
-            color=GREEN,
-        ).scale(0.55).move_to(
-            origin + np.array([
-                0.95 * math.cos(math.radians(phi_tracker.get_value() / 2.0)),
-                0.95 * math.sin(math.radians(phi_tracker.get_value() / 2.0)),
-                0.0,
-            ])
-        ))
+        # φ 角标注：静态前缀 + Integer 数值（避免逐帧重编译 MathTex）
+        phi_prefix = MathTex(r"\varphi=", color=GREEN).scale(0.55)
+        phi_value = Integer(30, unit=r"^\circ", color=GREEN).scale(0.55)
+        phi_text = VGroup(phi_prefix, phi_value).arrange(RIGHT, buff=0.05)
 
-        # 散射光子标签
-        scatter_lam_label = always_redraw(lambda: VGroup(
-            MathTex(r"\lambda>\lambda_0", color=ORANGE).scale(0.55),
-        ).next_to(
-            origin + scatter_end(phi_tracker.get_value()) * 0.55 +
-            np.array([0.25, 0.20, 0.0]),
-            RIGHT, buff=0.05
-        ))
+        def _phi_text_pos(g):
+            phi = phi_tracker.get_value()
+            g.move_to(origin + np.array([
+                0.95 * math.cos(math.radians(phi / 2.0)),
+                0.95 * math.sin(math.radians(phi / 2.0)),
+                0.0,
+            ]))
+
+        # 散射光子标签：静态文字 + 位置 updater（无 LaTeX 重建）
+        scatter_lam_label = MathTex(r"\lambda>\lambda_0", color=ORANGE).scale(0.55)
+
+        def _scatter_lam_pos(m):
+            m.next_to(
+                origin + scatter_end(phi_tracker.get_value()) * 0.55 +
+                np.array([0.25, 0.20, 0.0]),
+                RIGHT, buff=0.05,
+            )
+
+        _phi_text_pos(phi_text)
+        _scatter_lam_pos(scatter_lam_label)
 
         # 反冲电子箭头（动量守恒）
         # 使用固定的 theta = 30 度（简化示意，侧重于散射光子的动态）
@@ -196,71 +202,78 @@ class Ch12Kp4ComptonScatteringGeometry(Scene):
         panel_title = Text("实时数值", font=CJK, color=CYAN).scale(0.46)
         panel_title.move_to(panel_bg.get_top() + DOWN * 0.35)
 
-        def make_delta_label():
-            phi_deg = phi_tracker.get_value()
-            phi = math.radians(phi_deg)
-            delta_pm = 2.43 * (1.0 - math.cos(phi))  # 单位 pm
-            return MathTex(
-                rf"\Delta\lambda={delta_pm:.2f}\,\mathrm{{pm}}",
-                color=YELLOW,
-            ).scale(0.58).next_to(panel_title, DOWN, buff=0.28)
+        # Δλ 行：静态前缀/单位 + DecimalNumber
+        delta_prefix = MathTex(r"\Delta\lambda=", color=YELLOW).scale(0.58)
+        delta_num = DecimalNumber(0.0, num_decimal_places=2, color=YELLOW).scale(0.58)
+        delta_unit = MathTex(r"\mathrm{pm}", color=YELLOW).scale(0.58)
+        delta_row = VGroup(delta_prefix, delta_num, delta_unit).arrange(RIGHT, buff=0.10)
+        delta_row.next_to(panel_title, DOWN, buff=0.30)
 
-        def make_phi_readout():
-            phi_deg = phi_tracker.get_value()
-            return MathTex(
-                rf"\varphi={phi_deg:.0f}^\circ",
-                color=GREEN,
-            ).scale(0.58).next_to(panel_bg.get_center(), DOWN, buff=0.25)
-
-        delta_readout = always_redraw(make_delta_label)
-        phi_readout = always_redraw(make_phi_readout)
+        # φ 行：静态前缀 + Integer
+        phi_pre2 = MathTex(r"\varphi=", color=GREEN).scale(0.58)
+        phi_num2 = Integer(30, unit=r"^\circ", color=GREEN).scale(0.58)
+        phi_row = VGroup(phi_pre2, phi_num2).arrange(RIGHT, buff=0.05)
+        phi_row.next_to(panel_bg.get_center(), DOWN, buff=0.25)
 
         self.play(FadeIn(panel_bg), FadeIn(panel_title))
-        self.add(delta_readout, phi_readout)
-        self.wait(0.6)
+        self.play(FadeIn(delta_row), FadeIn(phi_row))
+        self.wait(0.4)
+
+        # add_updater 放在 FadeIn 之后（Python 3.14 zip 严格）
+        phi_text.add_updater(_phi_text_pos)
+        phi_value.add_updater(lambda m: m.set_value(round(phi_tracker.get_value())))
+        scatter_lam_label.add_updater(_scatter_lam_pos)
+        delta_num.add_updater(
+            lambda m: m.set_value(2.43 * (1.0 - math.cos(math.radians(phi_tracker.get_value()))))
+        )
+        phi_num2.add_updater(lambda m: m.set_value(round(phi_tracker.get_value())))
 
         # ── Step 7: 扫动 φ 从 0° → 180° ────────────────────────────────
         sweep_tip = Text("扫动散射角 φ，观察波长偏移变化", font=CJK, color=WHITE).scale(0.44)
         sweep_tip.to_edge(DOWN, buff=0.55)
         self.play(FadeIn(sweep_tip))
 
-        self.play(phi_tracker.animate.set_value(0.5), run_time=0.8)
-        self.wait(0.3)
-        self.play(phi_tracker.animate.set_value(90.0), run_time=2.5)
-        self.wait(0.8)
+        self.play(phi_tracker.animate.set_value(0.5), run_time=0.6)
+        self.wait(0.2)
+        self.play(phi_tracker.animate.set_value(90.0), run_time=1.8)
+        self.wait(0.5)
 
         # φ=90° 高亮：Δλ = λ_C
         highlight_90 = Text("φ=90°: Δλ = λ_C = 2.43 pm", font=CJK, color=CYAN).scale(0.46)
         highlight_90.next_to(sweep_tip, UP, buff=0.15)
         box_90 = SurroundingRectangle(highlight_90, color=CYAN, buff=0.12, corner_radius=0.08)
         self.play(FadeIn(highlight_90), Create(box_90))
-        self.wait(1.2)
+        self.wait(1.0)
         self.play(FadeOut(highlight_90), FadeOut(box_90))
 
-        self.play(phi_tracker.animate.set_value(180.0), run_time=2.5)
-        self.wait(0.8)
+        self.play(phi_tracker.animate.set_value(180.0), run_time=1.8)
+        self.wait(0.5)
 
         # φ=180° 高亮：最大偏移
         highlight_180 = Text("φ=180°: Δλ_max = 2λ_C = 4.86 pm (最大偏移)", font=CJK, color=RED).scale(0.44)
         highlight_180.next_to(sweep_tip, UP, buff=0.15)
         box_180 = SurroundingRectangle(highlight_180, color=RED, buff=0.12, corner_radius=0.08)
         self.play(FadeIn(highlight_180), Create(box_180))
-        self.wait(1.4)
+        self.wait(1.2)
         self.play(FadeOut(highlight_180), FadeOut(box_180))
 
         # 回到 60° 作为稳定示例
-        self.play(phi_tracker.animate.set_value(60.0), run_time=1.5)
-        self.wait(0.6)
+        self.play(phi_tracker.animate.set_value(60.0), run_time=1.2)
+        self.wait(0.5)
+
+        # FadeOut 前 clear_updaters()
+        for m in (phi_text, phi_value, scatter_lam_label, delta_num, phi_num2):
+            m.clear_updaters()
 
         # 清场第一幕
         geo_group = VGroup(
             electron, e_label, inc_arrow, lam0_label, p0_label,
             recoil_arrow, theta_label,
             panel_bg, panel_title, sweep_tip,
+            delta_row, phi_row,
         )
         self.play(FadeOut(geo_group), FadeOut(scatter_arrow),
                   FadeOut(phi_angle_arc), FadeOut(scatter_lam_label),
-                  FadeOut(delta_readout), FadeOut(phi_readout),
                   FadeOut(phi_text), FadeOut(geo_label))
         self.wait(0.4)
 
@@ -313,19 +326,24 @@ class Ch12Kp4ComptonScatteringGeometry(Scene):
             max_tip_length_to_length_ratio=0.18,
         ))
 
-        # 标签
-        p0_mom = always_redraw(lambda: MathTex(r"\vec{p}_0", color=RED).scale(0.60)
-                               .next_to(tri_origin + np.array([P0_LEN / 2, 0.0, 0.0]), DOWN, buff=0.18))
+        # 标签（静态 MathTex，只创建一次；用位置 updater 跟随，避免逐帧重编译）
+        p0_mom = MathTex(r"\vec{p}_0", color=RED).scale(0.60).next_to(
+            tri_origin + np.array([P0_LEN / 2, 0.0, 0.0]), DOWN, buff=0.18
+        )
+        p_sc_mid = MathTex(r"\vec{p}_{\gamma}", color=ORANGE).scale(0.60)
+        p_el_mid = MathTex(r"\vec{p}_{e}", color=BLUE_C).scale(0.60)
 
-        p_sc_mid = always_redraw(lambda: (
-            lambda mid: MathTex(r"\vec{p}_{\gamma}", color=ORANGE).scale(0.60)
-                        .next_to(mid, LEFT + UP * 0.3, buff=0.12)
-        )(tri_origin + get_p_scatter_vec(phi2.get_value()) / 2.0))
+        def _p_sc_pos(m):
+            mid = tri_origin + get_p_scatter_vec(phi2.get_value()) / 2.0
+            m.next_to(mid, LEFT + UP * 0.3, buff=0.12)
 
-        p_el_mid = always_redraw(lambda: (
-            lambda mid: MathTex(r"\vec{p}_{e}", color=BLUE_C).scale(0.60)
-                        .next_to(mid, RIGHT, buff=0.12)
-        )(tri_origin + get_p_scatter_vec(phi2.get_value()) + get_p_electron_vec(phi2.get_value()) / 2.0))
+        def _p_el_pos(m):
+            mid = (tri_origin + get_p_scatter_vec(phi2.get_value())
+                   + get_p_electron_vec(phi2.get_value()) / 2.0)
+            m.next_to(mid, RIGHT, buff=0.12)
+
+        _p_sc_pos(p_sc_mid)
+        _p_el_pos(p_el_mid)
 
         phi2_arc = always_redraw(lambda: Arc(
             radius=0.50,
@@ -334,15 +352,21 @@ class Ch12Kp4ComptonScatteringGeometry(Scene):
             arc_center=tri_origin,
             color=GREEN, stroke_width=2,
         ))
-        phi2_text = always_redraw(lambda: MathTex(
-            rf"\varphi={phi2.get_value():.0f}^\circ", color=GREEN,
-        ).scale(0.52).move_to(
-            tri_origin + np.array([
-                0.85 * math.cos(math.radians(phi2.get_value() / 2.0)),
-                0.85 * math.sin(math.radians(phi2.get_value() / 2.0)),
+
+        # φ 角标注：静态前缀 + Integer 数值
+        phi2_pre = MathTex(r"\varphi=", color=GREEN).scale(0.52)
+        phi2_val = Integer(60, unit=r"^\circ", color=GREEN).scale(0.52)
+        phi2_text = VGroup(phi2_pre, phi2_val).arrange(RIGHT, buff=0.05)
+
+        def _phi2_text_pos(g):
+            phi = phi2.get_value()
+            g.move_to(tri_origin + np.array([
+                0.85 * math.cos(math.radians(phi / 2.0)),
+                0.85 * math.sin(math.radians(phi / 2.0)),
                 0.0,
-            ])
-        ))
+            ]))
+
+        _phi2_text_pos(phi2_text)
 
         conserv_eq = MathTex(r"\vec{p}_0 = \vec{p}_{\gamma} + \vec{p}_{e}", color=YELLOW).scale(0.78)
         conserv_eq.to_edge(RIGHT, buff=0.6).shift(UP * 0.5)
@@ -352,17 +376,27 @@ class Ch12Kp4ComptonScatteringGeometry(Scene):
         self.play(Create(arrow_p_electron), FadeIn(p_el_mid))
         self.play(Create(phi2_arc), FadeIn(phi2_text))
         self.play(Write(conserv_eq))
-        self.wait(1.0)
+        self.wait(0.8)
+
+        # add_updater 放在 FadeIn 之后（Python 3.14 zip 严格）
+        p_sc_mid.add_updater(_p_sc_pos)
+        p_el_mid.add_updater(_p_el_pos)
+        phi2_text.add_updater(_phi2_text_pos)
+        phi2_val.add_updater(lambda m: m.set_value(round(phi2.get_value())))
 
         # 扫动 φ 演示三角形变化
-        self.play(phi2.animate.set_value(15.0), run_time=1.5)
+        self.play(phi2.animate.set_value(15.0), run_time=1.2)
+        self.wait(0.4)
+        self.play(phi2.animate.set_value(90.0), run_time=1.6)
         self.wait(0.5)
-        self.play(phi2.animate.set_value(90.0), run_time=2.0)
-        self.wait(0.8)
-        self.play(phi2.animate.set_value(150.0), run_time=2.0)
-        self.wait(0.8)
-        self.play(phi2.animate.set_value(60.0), run_time=1.2)
-        self.wait(0.6)
+        self.play(phi2.animate.set_value(150.0), run_time=1.6)
+        self.wait(0.5)
+        self.play(phi2.animate.set_value(60.0), run_time=1.0)
+        self.wait(0.5)
+
+        # FadeOut 前 clear_updaters()
+        for m in (p_sc_mid, p_el_mid, phi2_text, phi2_val):
+            m.clear_updaters()
 
         # 清场第二幕
         self.play(FadeOut(VGroup(

@@ -29,7 +29,7 @@ class Ch13Ex2Carbon14Dating(Scene):
         subtitle = Text("第 13 章 · 原子核与放射性  13.2 例题", font=CJK, color=WHITE).scale(0.38)
         subtitle.next_to(title, DOWN, buff=0.18)
         self.play(Write(title), FadeIn(subtitle))
-        self.wait(1.5)
+        self.wait(1.0)
         self.play(FadeOut(subtitle))
 
         # ── Step 2: 生活类比引入 ─────────────────────────────────────────
@@ -40,11 +40,11 @@ class Ch13Ex2Carbon14Dating(Scene):
         ana.next_to(title, DOWN, buff=0.55)
         ana.scale_to_fit_width(12.5)
         self.play(FadeIn(ana1))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(FadeIn(ana2))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(FadeIn(ana3))
-        self.wait(1.5)
+        self.wait(1.2)
         self.play(FadeOut(ana))
 
         # ── Step 3: 已知量与目标 ──────────────────────────────────────────
@@ -72,20 +72,20 @@ class Ch13Ex2Carbon14Dating(Scene):
         ask_lbl.next_to(known, DOWN, buff=0.45).to_edge(LEFT, buff=0.6)
 
         self.play(FadeIn(known_title))
-        self.play(FadeIn(k1))
-        self.wait(0.5)
-        self.play(FadeIn(k2))
-        self.wait(0.5)
-        self.play(FadeIn(k3))
-        self.wait(0.7)
+        self.play(FadeIn(k1), FadeIn(k2), FadeIn(k3))
+        self.wait(0.6)
         self.play(FadeIn(ask_lbl))
-        self.wait(1.5)
+        self.wait(1.2)
         self.play(FadeOut(VGroup(known_title, known, ask_lbl)))
 
         # ── Step 4: 指数衰减曲线 + 两个标注点 ──────────────────────────────
+        # 性能修复：Axes 的 y_range 若用 ~1e-12 量级的极小浮点步长，会触发
+        # NumberLine 刻度生成卡死（manim 在极小 step 下构造 Axes 会无限/超长循环）。
+        # 解决：y 轴用「以 1e-12 为单位」的常规量级数值（include_numbers=False 视觉不变）。
+        YSCALE = 1e12  # 把比值乘以该系数后再喂给坐标系
         axes = Axes(
             x_range=[0, 12000, 3000],
-            y_range=[0, 1.6e-12, 4e-13],
+            y_range=[0, 1.6, 0.4],
             x_length=9.0,
             y_length=4.2,
             axis_config={"color": BLUE, "include_tip": True, "stroke_width": 2},
@@ -101,19 +101,18 @@ class Ch13Ex2Carbon14Dating(Scene):
         y_label.next_to(axes.y_axis.get_end(), UP, buff=0.08)
 
         curve = axes.plot(
-            lambda x: N0_RATIO * math.exp(-LAM * x),
-            x_range=[0, 11500],
+            lambda x: N0_RATIO * YSCALE * math.exp(-LAM * x),
+            x_range=[0, 11500, 250],
             color=YELLOW,
             stroke_width=3,
         )
 
         self.play(Create(axes), FadeIn(x_label), FadeIn(y_label))
-        self.wait(0.4)
-        self.play(Create(curve), run_time=2.0)
-        self.wait(0.8)
+        self.play(Create(curve), run_time=1.5)
+        self.wait(0.5)
 
         # 死亡时 t=0 绿点
-        p_start = axes.c2p(0, N0_RATIO)
+        p_start = axes.c2p(0, N0_RATIO * YSCALE)
         dot_start = Dot(p_start, color=GREEN, radius=0.11)
         lbl_start = VGroup(
             Text("死亡时 N₀/C =", font=CJK, color=GREEN).scale(0.36),
@@ -122,7 +121,7 @@ class Ch13Ex2Carbon14Dating(Scene):
         lbl_start.next_to(dot_start, UP + RIGHT, buff=0.1)
 
         # 测量时 t≈9090 红点
-        p_end = axes.c2p(T_RESULT, N_RATIO)
+        p_end = axes.c2p(T_RESULT, N_RATIO * YSCALE)
         dot_end = Dot(p_end, color=RED, radius=0.11)
         lbl_end = VGroup(
             Text("测量值 N/C =", font=CJK, color=RED).scale(0.36),
@@ -131,13 +130,13 @@ class Ch13Ex2Carbon14Dating(Scene):
         lbl_end.next_to(dot_end, RIGHT, buff=0.15)
 
         self.play(FadeIn(dot_start), FadeIn(lbl_start))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(FadeIn(dot_end), FadeIn(lbl_end))
-        self.wait(0.8)
+        self.wait(0.5)
 
         # 垂直虚线标注时间距离
-        vline_start = DashedLine(axes.c2p(0, 0), axes.c2p(0, N0_RATIO), color=GREEN, stroke_width=2)
-        vline_end = DashedLine(axes.c2p(T_RESULT, 0), axes.c2p(T_RESULT, N_RATIO), color=RED, stroke_width=2)
+        vline_start = DashedLine(axes.c2p(0, 0), axes.c2p(0, N0_RATIO * YSCALE), color=GREEN, stroke_width=2)
+        vline_end = DashedLine(axes.c2p(T_RESULT, 0), axes.c2p(T_RESULT, N_RATIO * YSCALE), color=RED, stroke_width=2)
         hline = DashedLine(axes.c2p(0, 0), axes.c2p(T_RESULT, 0), color=CYAN, stroke_width=2.5)
         t_brace = Brace(hline, DOWN, buff=0.1, color=CYAN)
         t_brace_lbl = VGroup(
@@ -146,10 +145,9 @@ class Ch13Ex2Carbon14Dating(Scene):
         ).arrange(DOWN, buff=0.08)
         t_brace_lbl.next_to(t_brace, DOWN, buff=0.12)
 
-        self.play(Create(vline_start), Create(vline_end))
-        self.play(Create(hline))
+        self.play(Create(vline_start), Create(vline_end), Create(hline))
         self.play(GrowFromCenter(t_brace), FadeIn(t_brace_lbl))
-        self.wait(2.0)
+        self.wait(1.5)
 
         # 清场（保留 title）
         self.play(FadeOut(VGroup(
@@ -190,7 +188,7 @@ class Ch13Ex2Carbon14Dating(Scene):
         # 步骤 4：代入 T = 5730
         eq4_lbl = Text("代入 T = 5730 a：", font=CJK).scale(0.44)
         eq4 = MathTex(
-            r"t = \frac{\ln(1.30\times10^{-12}/4.33\times10^{-13})}{0.693}",
+            r"t = \frac{\ln(1.30\times10^{-12}/4.33\times10^{-13})}{0.693}\times 5730",
             r"\approx 9090\,\mathrm{a}",
         ).scale(0.68)
         eq4[1].set_color(GREEN)
@@ -201,27 +199,26 @@ class Ch13Ex2Carbon14Dating(Scene):
         steps.scale_to_fit_width(13.0)
 
         self.play(FadeIn(deriv_title))
-        self.wait(0.3)
 
         self.play(FadeIn(row1))
-        self.wait(1.2)
+        self.wait(0.8)
         self.play(FadeIn(row2))
-        self.wait(1.2)
+        self.wait(0.8)
         self.play(FadeIn(row3))
-        self.wait(1.2)
+        self.wait(0.8)
         self.play(FadeIn(row4))
-        self.wait(1.8)
+        self.wait(1.3)
 
         # 结论框
         result_lbl = Text("距今约", font=CJK, color=GREEN).scale(0.55)
-        result_val = MathTex(r"9000\,\mathrm{a}", color=GREEN).scale(0.85)
+        result_val = MathTex(r"9090\,\mathrm{a}", color=GREEN).scale(0.85)
         result_inner = VGroup(result_lbl, result_val).arrange(RIGHT, buff=0.15)
         result_box = SurroundingRectangle(result_inner, color=GREEN, buff=0.25, corner_radius=0.12)
         result_group = VGroup(result_inner, result_box)
         result_group.next_to(steps, DOWN, buff=0.45)
 
         self.play(FadeIn(result_inner), Create(result_box))
-        self.wait(2.0)
+        self.wait(1.5)
 
         self.play(FadeOut(VGroup(deriv_title, steps, result_group)))
 
@@ -261,15 +258,14 @@ class Ch13Ex2Carbon14Dating(Scene):
 
         self.play(FadeIn(side_title))
         self.play(FadeIn(s_row1))
-        self.wait(1.0)
+        self.wait(0.6)
         self.play(FadeIn(s_row2))
-        self.wait(1.0)
+        self.wait(0.6)
         self.play(FadeIn(s_row3))
-        self.wait(1.0)
+        self.wait(0.6)
         self.play(FadeIn(s_row4))
-        self.wait(0.8)
         self.play(FadeIn(note_lbl))
-        self.wait(2.0)
+        self.wait(1.5)
         self.play(FadeOut(VGroup(side_title, side_steps, note_lbl)))
 
         # ── Step 7: 小结卡 ───────────────────────────────────────────────
@@ -300,12 +296,11 @@ class Ch13Ex2Carbon14Dating(Scene):
         result_remind.next_to(summary, DOWN, buff=0.45)
 
         self.play(FadeIn(sum_title))
-        self.play(Write(f1), Write(f2), Write(f3))
+        self.play(Write(f1), Write(f2), Write(f3), run_time=1.5)
         self.play(FadeIn(c1), FadeIn(c2), FadeIn(c3))
         self.play(Create(box))
-        self.wait(0.8)
         self.play(FadeIn(result_remind))
-        self.wait(2.5)
+        self.wait(2.0)
 
         self.play(FadeOut(VGroup(sum_title, summary, box, result_remind, title)))
         self.wait(0.3)

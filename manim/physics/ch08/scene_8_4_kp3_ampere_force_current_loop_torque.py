@@ -32,7 +32,7 @@ class Ch08Kp3AmpereForceCurrentLoopTorque(Scene):
         # Step 2: 生活类比引入
         # ══════════════════════════════════════════════════════════════════
         ana1 = Text("电动机的核心——线圈在磁场里转动——", font=CJK).scale(0.50)
-        ana2 = Text("靠的正是安培力对两条平行边形成的"力偶"。", font=CJK).scale(0.50)
+        ana2 = Text("靠的正是安培力对两条平行边形成的「力偶」。", font=CJK).scale(0.50)
         ana3 = Text("理解磁力矩，就能读懂一切电机的工作原理。", font=CJK, color=GREEN).scale(0.46)
         ana = VGroup(ana1, ana2, ana3).arrange(DOWN, buff=0.28).next_to(title, DOWN, buff=0.65)
         self.play(FadeIn(ana1))
@@ -104,36 +104,25 @@ class Ch08Kp3AmpereForceCurrentLoopTorque(Scene):
         self.play(FadeIn(VGroup(cur_top, cur_bot, cur_left, cur_right)))
         self.wait(0.6)
 
-        # 受力箭头：左边 F 向上，右边 F 向下（垂直B，构成力偶）
-        F_left  = Arrow([left - 0.1, cy, 0], [left - 0.1, cy + 1.2, 0],
-                        buff=0, color=RED, stroke_width=4,
-                        max_tip_length_to_length_ratio=0.2)
-        F_right = Arrow([right + 0.1, cy, 0], [right + 0.1, cy - 1.2, 0],
-                        buff=0, color=RED, stroke_width=4,
-                        max_tip_length_to_length_ratio=0.2)
-        # 上下边受力：大小相等方向相反（沿 B 方向），互相抵消
-        F_top_l = Arrow([cx - 0.9, top + 0.1, 0], [cx - 0.9 - 0.8, top + 0.1, 0],
-                        buff=0, color=YELLOW, stroke_width=2.5,
-                        max_tip_length_to_length_ratio=0.3)
-        F_top_r = Arrow([cx + 0.9, top + 0.1, 0], [cx + 0.9 + 0.8, top + 0.1, 0],
-                        buff=0, color=YELLOW, stroke_width=2.5,
-                        max_tip_length_to_length_ratio=0.3)
-        F_bot_l = Arrow([cx - 0.9, bot - 0.1, 0], [cx - 0.9 + 0.8, bot - 0.1, 0],
-                        buff=0, color=YELLOW, stroke_width=2.5,
-                        max_tip_length_to_length_ratio=0.3)
-        F_bot_r = Arrow([cx + 0.9, bot - 0.1, 0], [cx + 0.9 - 0.8, bot - 0.1, 0],
-                        buff=0, color=YELLOW, stroke_width=2.5,
-                        max_tip_length_to_length_ratio=0.3)
+        # 受力分析（面对线圈，B 在纸面内水平向右）：
+        #   橙色竖直边 电流 ⊥ B → 安培力垂直纸面：左边进入纸面 ⊗、右边穿出纸面 ⊙，
+        #   等大反向且不共线 → 力偶，使线圈绕竖直轴转动。
+        #   （竖直导线不可能受到纸面内的竖直力，故用 ⊗/⊙ 表示垂直纸面方向。）
+        F_left_sym  = MathTex(r"\otimes", color=RED).scale(0.7).move_to([left, cy, 0])
+        F_right_sym = MathTex(r"\odot",  color=RED).scale(0.7).move_to([right, cy, 0])
+        F_left_tag  = Text("F 进入纸面", font=CJK, color=RED).scale(0.34).next_to(F_left_sym, LEFT, buff=0.15)
+        F_right_tag = Text("F 穿出纸面", font=CJK, color=RED).scale(0.34).next_to(F_right_sym, RIGHT, buff=0.15)
 
-        self.play(GrowArrow(F_left), GrowArrow(F_right))
-        f_couple_note = Text("橙色边：产生力偶（使线圈转动）", font=CJK, color=RED).scale(0.42)
+        self.play(FadeIn(F_left_sym), FadeIn(F_right_sym),
+                  FadeIn(F_left_tag), FadeIn(F_right_tag))
+        f_couple_note = Text("橙色边（电流⊥B）：受力一进一出纸面 → 力偶使线圈转动",
+                             font=CJK, color=RED).scale(0.40)
         f_couple_note.next_to(coil, DOWN, buff=0.5)
         self.play(FadeIn(f_couple_note))
         self.wait(0.8)
 
-        self.play(GrowArrow(F_top_l), GrowArrow(F_top_r),
-                  GrowArrow(F_bot_l), GrowArrow(F_bot_r))
-        f_cancel_note = Text("白色边（平行B）：受力等大反向，互相抵消", font=CJK, color=YELLOW).scale(0.42)
+        f_cancel_note = Text("白色边（电流∥B）：dF = I dl × B = 0，不受力",
+                             font=CJK, color=YELLOW).scale(0.40)
         f_cancel_note.next_to(f_couple_note, DOWN, buff=0.22)
         self.play(FadeIn(f_cancel_note))
         self.wait(1.4)
@@ -146,7 +135,7 @@ class Ch08Kp3AmpereForceCurrentLoopTorque(Scene):
         self.wait(1.5)
 
         step1_all = VGroup(sec_label, b_arrows, b_label, coil,
-                           F_left, F_right, F_top_l, F_top_r, F_bot_l, F_bot_r,
+                           F_left_sym, F_right_sym, F_left_tag, F_right_tag,
                            f_couple_note, f_cancel_note, ampere_eq)
         self.play(FadeOut(step1_all))
 
@@ -163,7 +152,7 @@ class Ch08Kp3AmpereForceCurrentLoopTorque(Scene):
         pm_def.scale(0.95).next_to(pm_def_zh, DOWN, buff=0.35)
         pm_def[0].set_color(YELLOW)
         pm_def[2].set_color(ORANGE)
-        pm_def[3].set_color=CYAN
+        pm_def[3].set_color(CYAN)
         pm_def[5].set_color(GREEN)
 
         rhr_note = Text("方向：右手定则（四指沿电流，拇指指向 n̂）", font=CJK, color=GREEN).scale(0.43)

@@ -68,7 +68,7 @@ class Ch05Kp3MeanFreePathCollisionFrequency(Scene):
         # 有效碰撞圆（虚线，半径 d）
         eff_circle = DashedVMobject(
             Circle(radius=d_eff, color=YELLOW).move_to(target_pos),
-            num_dashes=20, dash_ratio=0.6
+            num_dashes=20, dashed_ratio=0.6
         )
         eff_lbl = VGroup(
             Text("有效碰撞半径", font=CJK, color=YELLOW).scale(0.36),
@@ -217,7 +217,7 @@ class Ch05Kp3MeanFreePathCollisionFrequency(Scene):
         lambda_eq[0].set_color(CYAN)
         lambda_eq[2].set_color(YELLOW)
         lambda_eq.next_to(lambda_step1, DOWN, buff=0.30)
-        self.play(TransformMatchingTex(lambda_step1[1].copy(), lambda_eq))
+        self.play(Write(lambda_eq))
         self.wait(1.2)
 
         sym_note_items = [

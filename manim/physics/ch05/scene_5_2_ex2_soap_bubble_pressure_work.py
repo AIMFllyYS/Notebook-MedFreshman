@@ -90,9 +90,9 @@ class Ch05Ex2SoapBubblePressureWork(Scene):
         bubble_center = LEFT * 2.0 + DOWN * 0.3
 
         def make_bubble():
-            rv = r_tracker.get_value()
-            if rv < 0.04:
-                return VGroup()
+            # 始终返回 3 个子物体（半径取下限），避免 always_redraw 在
+            # 子物体数量变化时触发 Python 3.14 的严格 zip 报错。
+            rv = max(r_tracker.get_value(), 0.02)
             outer = Circle(radius=rv + 0.10, color=BUBBLE_OUTER, stroke_width=5).move_to(bubble_center)
             inner = Circle(radius=max(rv - 0.10, 0.01), color=BUBBLE_INNER, stroke_width=5).move_to(bubble_center)
             fill  = Circle(radius=rv + 0.10, fill_color=SOAP_COLOR,
@@ -101,23 +101,34 @@ class Ch05Ex2SoapBubblePressureWork(Scene):
 
         bubble = always_redraw(make_bubble)
 
-        # 右侧实时公式区域
-        def make_readout():
-            rv = r_tracker.get_value()
-            r_phys = R_PHYS * (rv / R_MAX)
-            ds = 8 * math.pi * r_phys ** 2
-            da = alpha * ds
-            lines = VGroup(
-                MathTex(rf"R = {r_phys*100:.2f}\ \mathrm{{cm}}", color=CYAN).scale(0.62),
-                MathTex(rf"\Delta S = 8\pi R^2 = {ds*1e4:.4f}\times10^{{-4}}\ \mathrm{{m}}^2",
-                        color=WHITE).scale(0.52),
-                MathTex(rf"\Delta A = \alpha \cdot \Delta S = {da*1e4:.4f}\times10^{{-4}}\ \mathrm{{J}}",
-                        color=YELLOW).scale(0.52),
-            ).arrange(DOWN, buff=0.32, aligned_edge=LEFT)
-            lines.move_to(RIGHT * 2.4 + DOWN * 0.2)
-            return lines
+        # 右侧实时公式区域（静态标签 + DecimalNumber，避免逐帧 MathTex 重编译）
+        def r_phys_of(rv):
+            return R_PHYS * (rv / R_MAX)
 
-        readout = always_redraw(make_readout)
+        r_row = VGroup(
+            MathTex(r"R =", color=CYAN).scale(0.62),
+            DecimalNumber(0, num_decimal_places=2, color=CYAN).scale(0.62),
+            MathTex(r"\mathrm{cm}", color=CYAN).scale(0.62),
+        ).arrange(RIGHT, buff=0.12)
+        ds_row = VGroup(
+            MathTex(r"\Delta S = 8\pi R^2 =", color=WHITE).scale(0.52),
+            DecimalNumber(0, num_decimal_places=4, color=WHITE).scale(0.52),
+            MathTex(r"\times10^{-4}\ \mathrm{m}^2", color=WHITE).scale(0.52),
+        ).arrange(RIGHT, buff=0.10)
+        da_row = VGroup(
+            MathTex(r"\Delta A = \alpha\,\Delta S =", color=YELLOW).scale(0.52),
+            DecimalNumber(0, num_decimal_places=4, color=YELLOW).scale(0.52),
+            MathTex(r"\times10^{-4}\ \mathrm{J}", color=YELLOW).scale(0.52),
+        ).arrange(RIGHT, buff=0.10)
+        readout = VGroup(r_row, ds_row, da_row).arrange(DOWN, buff=0.36, aligned_edge=LEFT)
+        readout.move_to(RIGHT * 2.4 + DOWN * 0.2)
+
+        r_num, ds_num, da_num = r_row[1], ds_row[1], da_row[1]
+        r_num.add_updater(lambda d: d.set_value(r_phys_of(r_tracker.get_value()) * 100))
+        ds_num.add_updater(lambda d: d.set_value(
+            8 * math.pi * r_phys_of(r_tracker.get_value()) ** 2 * 1e4))
+        da_num.add_updater(lambda d: d.set_value(
+            alpha * 8 * math.pi * r_phys_of(r_tracker.get_value()) ** 2 * 1e4))
 
         blow_caption = Text("正在吹大肥皂泡……", font=CJK, color=ORANGE).scale(0.44).to_edge(DOWN, buff=0.5)
         r_label = Text("半径 R 从 0 增大到 5 cm", font=CJK).scale(0.42).next_to(blow_caption, UP, buff=0.15)
@@ -128,7 +139,7 @@ class Ch05Ex2SoapBubblePressureWork(Scene):
         self.play(FadeIn(step4_title))
         self.add(bubble, readout)
         self.play(FadeIn(blow_caption), FadeIn(r_label))
-        self.play(r_tracker.animate.set_value(R_MAX), run_time=4.0, rate_func=smooth)
+        self.play(r_tracker.animate.set_value(R_MAX), run_time=2.0, rate_func=smooth)
         self.wait(1.0)
         self.play(FadeOut(blow_caption), FadeOut(r_label))
 
@@ -138,16 +149,19 @@ class Ch05Ex2SoapBubblePressureWork(Scene):
 
         bar_bg = Rectangle(width=5.0, height=0.40, color=GREY, fill_opacity=0.3).to_edge(DOWN, buff=1.2)
         bar_fg = Rectangle(width=0.01, height=0.40, color=GREEN, fill_opacity=0.85).align_to(bar_bg, LEFT)
-        bar_fg.add_updater(lambda m: m.set_width(
-            max(0.01, bar_bg.get_width() * r_tracker.get_value() / R_MAX), stretch=True
+        bar_fg.add_updater(lambda m: m.stretch_to_fit_width(
+            max(0.01, bar_bg.get_width() * r_tracker.get_value() / R_MAX)
         ).align_to(bar_bg, LEFT))
 
         bar_label_zh = Text("做功", font=CJK).scale(0.38)
         bar_label_zh.next_to(bar_bg, LEFT, buff=0.2)
-        bar_val = always_redraw(lambda: MathTex(
-            rf"\Delta A = {alpha * 8 * math.pi * (R_PHYS * r_tracker.get_value() / R_MAX)**2 * 1e4:.3f}"
-            rf"\times10^{{-4}}\ \mathrm{{J}}",
-            color=GREEN).scale(0.50).next_to(bar_bg, RIGHT, buff=0.2))
+        bar_val = VGroup(
+            MathTex(r"\Delta A =", color=GREEN).scale(0.50),
+            DecimalNumber(0, num_decimal_places=3, color=GREEN).scale(0.50),
+            MathTex(r"\times10^{-4}\ \mathrm{J}", color=GREEN).scale(0.50),
+        ).arrange(RIGHT, buff=0.10).next_to(bar_bg, RIGHT, buff=0.2)
+        bar_val[1].add_updater(lambda d: d.set_value(
+            alpha * 8 * math.pi * (R_PHYS * r_tracker.get_value() / R_MAX) ** 2 * 1e4))
 
         self.play(Create(bar_bg), FadeIn(bar_label_zh))
         self.add(bar_fg, bar_val)
@@ -168,9 +182,12 @@ class Ch05Ex2SoapBubblePressureWork(Scene):
         self.play(FadeIn(final_da))
         self.play(Write(final_result), Create(final_result_box))
         self.wait(2.0)
+        # 清除所有 updater，避免对已移除对象继续求值
+        for d in (r_num, ds_num, da_num, bar_val[1]):
+            d.clear_updaters()
+        bar_fg.clear_updaters()
         self.play(FadeOut(VGroup(step4_title, final_da, final_result, final_result_box,
                                   bar_bg, bar_label_zh, bar_val, readout, bubble)))
-        bar_fg.clear_updaters()
         self.remove(bar_fg)
 
         # ── Step 5: 截面力平衡 → 推导 ΔP = 4α/R ───────────────────────
@@ -244,7 +261,7 @@ class Ch05Ex2SoapBubblePressureWork(Scene):
         self.play(Write(eq1))
         self.play(FadeIn(note_eq1))
         self.wait(1.0)
-        self.play(TransformMatchingTex(eq1.copy(), eq2))
+        self.play(Write(eq2))
         self.play(Create(eq2_box))
         self.wait(1.8)
 

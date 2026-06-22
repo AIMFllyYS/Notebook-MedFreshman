@@ -364,7 +364,7 @@ class Ch14Kp1ThreeRadiativeProcesses(Scene):
                 # 第一列用中文 Text，其余列：纯数学用 MathTex，否则用 Text
                 if j == 0:
                     obj = Text(cell, font=CJK, color=GRAY_A).scale(0.40)
-                elif cell.startswith("h\\") or cell.startswith(r"h\"):
+                elif cell.startswith("h\\"):
                     obj = MathTex(cell, color=col_color).scale(0.45)
                 else:
                     obj = Text(cell, font=CJK, color=col_color).scale(0.40)

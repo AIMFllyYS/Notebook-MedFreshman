@@ -23,7 +23,7 @@ def make_conductor_outline(w=PLATE_W, h=PLATE_H, color=WHITE):
     return rect
 
 
-# ─── 辅助：磁场点（B 向外/垂直纸面向上用 ×，向里用 ·）─────────────────────
+# ─── 辅助：磁场符号（垂直纸面向外用 ⊙ odot，向里用 ⊗ otimes）─────────────
 def make_b_dots(rows=4, cols=6, w=PLATE_W, h=PLATE_H, symbol="odot", color=BLUE):
     dots = VGroup()
     for r in range(rows):
@@ -77,12 +77,12 @@ class Ch08Kp4HallEffectMechanism(Scene):
         conductor.shift(DOWN * 0.35)
         self.play(Create(conductor))
 
-        # 磁场符号（向外，⊙ odot）
-        b_field = make_b_dots(rows=3, cols=5, symbol="odot", color=BLUE)
+        # 磁场符号（向里，⊗ otimes）—— 决定洛伦兹力把电子推向上侧
+        b_field = make_b_dots(rows=3, cols=5, symbol="otimes", color=BLUE)
         b_field.shift(DOWN * 0.35)
         b_label = VGroup(
             MathTex(r"\vec{B}", color=BLUE).scale(0.65),
-            Text("（垂直导体面向上）", font=CJK, color=BLUE).scale(0.36)
+            Text("（垂直导体面向里）", font=CJK, color=BLUE).scale(0.36)
         ).arrange(RIGHT, buff=0.1)
         b_label.to_corner(UR, buff=0.5)
         self.play(FadeIn(b_field), FadeIn(b_label))
@@ -123,12 +123,13 @@ class Ch08Kp4HallEffectMechanism(Scene):
             MathTex(r"v_e", color=YELLOW).scale(0.6),
             Text("（电子向左运动）", font=CJK, color=YELLOW).scale(0.36)
         ).arrange(RIGHT, buff=0.1)
-        e_label.to_corner(LL, buff=0.4)
+        e_label.to_corner(DL, buff=0.4)
         self.play(FadeIn(electrons), FadeIn(e_vel_arrows), FadeIn(e_label))
         self.wait(0.6)
 
-        # 洛伦兹力方向（F = ev×B，v 向左，B 向外，F = e(-v_x) × B_z → 向上偏转）
-        # F = q v × B；电子 q=-e, v=-v_x x_hat, B=B z_hat → F = (-e)(-v_x,0,0)×(0,0,B) = (-e)(-v_x B y_hat) = ev_x B y_hat（向上）
+        # 洛伦兹力方向（F = qv×B，v 向左，B 向里 → 向上偏转）
+        # 电子 q=-e, v=-v x_hat, B=-B z_hat → v×B = (-v)(-B)(x_hat×z_hat) = vB(-y_hat) = -vB y_hat
+        #   F = (-e)(-vB y_hat) = e v B y_hat（向上）
         f_arrows = VGroup()
         for e_dot in electrons:
             cx, cy, _ = e_dot.get_center()
@@ -175,10 +176,6 @@ class Ch08Kp4HallEffectMechanism(Scene):
             color=YELLOW, fill_color=YELLOW, fill_opacity=0.28,
             stroke_width=1.5
         )
-        accum_rect.move_to([0, conductor.get_top()[1] - 0.28 + conductor.get_center()[1], 0])
-        accum_rect.align_to(conductor, UP)
-        accum_rect.shift(DOWN * 0.0)
-        # 直接用 conductor top 定位
         accum_rect.move_to([conductor.get_center()[0],
                             conductor.get_top()[1] - 0.27, 0])
         accum_text = Text("电子积累（上侧负电荷密度增大）",
@@ -207,8 +204,8 @@ class Ch08Kp4HallEffectMechanism(Scene):
         cond2.shift(DOWN * 0.35)
         self.play(Create(cond2))
 
-        # 再显示 B 场符号
-        b2 = make_b_dots(rows=3, cols=5, symbol="odot", color=BLUE)
+        # 再显示 B 场符号（向里 ⊗，与第 3 步一致）
+        b2 = make_b_dots(rows=3, cols=5, symbol="otimes", color=BLUE)
         b2.shift(DOWN * 0.35)
         self.play(FadeIn(b2))
 
@@ -220,16 +217,16 @@ class Ch08Kp4HallEffectMechanism(Scene):
         self.play(FadeIn(top_minus), FadeIn(bot_plus))
         self.wait(0.6)
 
-        # 霍尔电场 EH 箭头（由上向下，因上负下正）
+        # 霍尔电场 EH 箭头（由下向上：场线由正(下)指向负(上)）
         eh_arrow = Arrow(
-            start=[1.5, cond2.get_top()[1] - 0.3, 0],
-            end=[1.5, cond2.get_bottom()[1] + 0.3, 0],
+            start=[1.5, cond2.get_bottom()[1] + 0.3, 0],
+            end=[1.5, cond2.get_top()[1] - 0.3, 0],
             color=GREEN, stroke_width=4, buff=0,
             max_tip_length_to_length_ratio=0.12
         )
         eh_label = VGroup(
             MathTex(r"\vec{E}_H", color=GREEN).scale(0.7),
-            Text("（霍尔电场向下）", font=CJK, color=GREEN).scale(0.36)
+            Text("（霍尔电场向上）", font=CJK, color=GREEN).scale(0.36)
         ).arrange(DOWN, buff=0.1)
         eh_label.next_to(eh_arrow, RIGHT, buff=0.2)
         self.play(Create(eh_arrow), FadeIn(eh_label))
@@ -277,7 +274,7 @@ class Ch08Kp4HallEffectMechanism(Scene):
 
         step_a = zh_eq("平衡条件：", r"E_H = vB")
         step_b = zh_eq("电流密度：", r"j = nqv \implies v = \frac{j}{nq} = \frac{I}{nqA_\perp}")
-        step_c = zh_eq("导体截面（宽 d）：", r"A_\perp = d \cdot 1\;(\text{单位厚})")
+        step_c = zh_eq("导体截面（宽 d，单位厚）：", r"A_\perp = d \cdot 1")
         step_d = zh_eq("代入得霍尔电场：", r"E_H = vB = \frac{IB}{nqd}")
         step_e_zh = Text("霍尔电压（上下极间距 = d）：",
                          font=CJK, color=WHITE).scale(0.44)
@@ -469,7 +466,7 @@ class Ch08Kp4HallEffectMechanism(Scene):
         p_h_lbl = MathTex(r"h^+ \rightarrow", color=GREEN).scale(0.5)
         p_h_lbl.next_to(p_h_arr, UP, buff=0.1)
 
-        # F=qv×B，q>0, v→右, B↑ → F=向上偏转 → 上侧积累正电荷 → 上侧电位高 → UH > 0
+        # F=qv×B，q>0, v→右, B 向里 → F=向上偏转 → 上侧积累正电荷 → 上侧电位高 → UH > 0
         p_f_arr = Arrow(rect_p.get_center() + DOWN * 0.3,
                         rect_p.get_center() + UP * 0.6,
                         color=RED, stroke_width=3, buff=0,

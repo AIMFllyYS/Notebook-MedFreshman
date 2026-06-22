@@ -43,7 +43,7 @@ class Ch13Ex1Fe59EffectiveHalfLife(Scene):
             Text("① 物理衰变：原子核自发蜕变（半衰期 T）", font=CJK, color=YELLOW).scale(0.44),
             Text("② 生物代谢：人体将核素排泄出去（生物半排期 Tb）", font=CJK, color=GREEN).scale(0.44),
         ).arrange(DOWN, buff=0.22, aligned_edge=LEFT)
-        a3 = Text("两条"排泄通道"并联 → 有效半衰期 Te 比两者都短", font=CJK, color=ORANGE).scale(0.44)
+        a3 = Text("两条「排泄通道」并联 → 有效半衰期 Te 比两者都短", font=CJK, color=ORANGE).scale(0.44)
         analogy = VGroup(a1, a2_items, a3).arrange(DOWN, buff=0.3, aligned_edge=LEFT)
         analogy.next_to(title, DOWN, buff=0.5).scale_to_fit_width(12.5)
         self.play(FadeIn(a1))

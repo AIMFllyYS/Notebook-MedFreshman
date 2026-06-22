@@ -278,59 +278,85 @@ class Ch10Ex2MicroscopeNaResolutionComparison(Scene):
             Text("Z / nm", font=CJK).scale(0.38)
         ).next_to(axes.y_axis.get_top(), UP, buff=0.12)
 
-        # Z(N.A.) 曲线
-        curve = always_redraw(lambda: axes.plot(
-            lambda x: 0.61 * lam_nm / x if x > 0.01 else 800,
-            x_range=[0.41, 1.59, 0.01],
+        # Z(N.A.) 曲线（不随 tracker 变化 → 静态绘制一次，降采样减少点数）
+        curve = axes.plot(
+            lambda x: 0.61 * lam_nm / x,
+            x_range=[0.41, 1.59, 0.03],
             color=CYAN,
             stroke_width=2.5,
-        ))
+        )
 
         # 阈值横线 d=300nm
-        thresh_line = axes.plot(lambda x: d_nm, x_range=[0.41, 1.59], color=WHITE,
-                                stroke_width=1.5, stroke_dash_array=[6, 4])
+        thresh_line = DashedVMobject(
+            axes.plot(lambda x: d_nm, x_range=[0.41, 1.59], color=WHITE,
+                      stroke_width=1.5),
+            num_dashes=30,
+        )
 
         thresh_label = VGroup(
             Text("d = 300 nm（两点间距）", font=CJK, color=WHITE).scale(0.35)
         ).next_to(axes.c2p(0.42, d_nm), RIGHT, buff=0.1)
 
-        # 动态点（NA, Z）
-        moving_dot = always_redraw(lambda: Dot(
-            axes.c2p(na_tracker.get_value(),
-                     min(0.61 * lam_nm / na_tracker.get_value(), 799)),
-            radius=0.12,
-            color=RED if 0.61 * lam_nm / na_tracker.get_value() > d_nm else GREEN,
-        ))
+        # 动态点（NA, Z）：单个 Dot + updater（不重建）
+        moving_dot = Dot(radius=0.12, color=RED)
 
-        # 动态竖线（NA 位置）
-        def na_vline():
+        def update_moving_dot(m):
+            na_val = na_tracker.get_value()
+            z_val = 0.61 * lam_nm / na_val
+            m.move_to(axes.c2p(na_val, min(z_val, 799)))
+            m.set_color(RED if z_val > d_nm else GREEN)
+
+        moving_dot.add_updater(update_moving_dot)
+
+        # 动态竖线（NA 位置）：单个 Line + updater（不用 always_redraw 重建）
+        moving_vline = Line(color=AMBER, stroke_width=1.5)
+
+        def update_vline(m):
             na_val = na_tracker.get_value()
             z_val = min(0.61 * lam_nm / na_val, 799)
-            return DashedLine(
-                axes.c2p(na_val, 0),
-                axes.c2p(na_val, z_val),
-                color=AMBER, stroke_width=1.5,
-            )
-        moving_vline = always_redraw(na_vline)
+            m.put_start_and_end_on(axes.c2p(na_val, 0), axes.c2p(na_val, z_val))
 
-        # 动态文本读数
-        def na_readout():
+        moving_vline.add_updater(update_vline)
+
+        # 动态文本读数：静态文字 + DecimalNumber（数值刷新不编译 LaTeX，避免 dvisvgm 反复调用）
+        na_caption = Text("N.A. =", font=CJK).scale(0.5)
+        na_num = DecimalNumber(0.5, num_decimal_places=2).scale(0.6)
+        na_row = VGroup(na_caption, na_num).arrange(RIGHT, buff=0.12)
+
+        z_caption = Text("Z =", font=CJK).scale(0.5)
+        z_num = DecimalNumber(0, num_decimal_places=0, unit=r"\,\mathrm{nm}").scale(0.6)
+        z_row = VGroup(z_caption, z_num).arrange(RIGHT, buff=0.12)
+
+        # 预创建两条判定文字（绿/红），用透明度切换，避免每帧重建 Text
+        verdict_cannot = Text("Z > d：无法分辨", font=CJK, color=RED).scale(0.42)
+        verdict_can = Text("Z < d：可分辨", font=CJK, color=GREEN).scale(0.42)
+        verdict_group = VGroup(verdict_cannot, verdict_can)
+        # 两条文字叠放在同一位置
+        verdict_can.move_to(verdict_cannot)
+
+        na_readout_mob = VGroup(na_row, z_row, verdict_group).arrange(
+            DOWN, buff=0.2, aligned_edge=LEFT).to_corner(UR, buff=0.5)
+        verdict_can.move_to(verdict_cannot)
+
+        def update_readout(grp):
             na_v = na_tracker.get_value()
             z_v = 0.61 * lam_nm / na_v
             col = RED if z_v > d_nm else GREEN
-            na_text = MathTex(
-                rf"\mathrm{{N.A.}} = {na_v:.2f}", color=col
-            ).scale(0.55)
-            z_text = MathTex(
-                rf"Z = {z_v:.0f}\,\mathrm{{nm}}", color=col
-            ).scale(0.55)
-            verdict_str = "Z > d: cannot resolve" if z_v > d_nm else "Z < d: resolved"
-            verdict = MathTex(verdict_str.replace(":", r"\!:"), color=col).scale(0.45)
-            readout = VGroup(na_text, z_text, verdict).arrange(DOWN, buff=0.18)
-            readout.to_corner(UR, buff=0.5)
-            return readout
+            na_num.set_value(na_v)
+            na_num.set_color(col)
+            na_caption.set_color(col)
+            z_num.set_value(z_v)
+            z_num.set_color(col)
+            z_caption.set_color(col)
+            # 切换判定文字（透明度）
+            if z_v > d_nm:
+                verdict_cannot.set_opacity(1.0)
+                verdict_can.set_opacity(0.0)
+            else:
+                verdict_cannot.set_opacity(0.0)
+                verdict_can.set_opacity(1.0)
 
-        na_readout_mob = always_redraw(na_readout)
+        na_readout_mob.add_updater(update_readout)
 
         self.play(Create(axes), FadeIn(ax_label_x), FadeIn(ax_label_y))
         self.play(Create(curve), Create(thresh_line), FadeIn(thresh_label))
@@ -341,14 +367,18 @@ class Ch10Ex2MicroscopeNaResolutionComparison(Scene):
         sweep_label = Text("N.A. 从 0.5 增大到 1.5：Z 穿越 300nm 时颜色变绿", font=CJK, color=AMBER).scale(0.38)
         sweep_label.to_edge(DOWN, buff=0.3)
         self.play(FadeIn(sweep_label))
-        self.play(na_tracker.animate.set_value(1.5), run_time=4.0, rate_func=linear)
-        self.wait(1.0)
+        self.play(na_tracker.animate.set_value(1.5), run_time=2.0, rate_func=linear)
+        self.wait(0.8)
         # 再扫回
-        self.play(na_tracker.animate.set_value(0.5), run_time=3.0, rate_func=linear)
+        self.play(na_tracker.animate.set_value(0.5), run_time=2.0, rate_func=linear)
         self.wait(0.5)
         # 定格到临界值
         na_crit = 0.61 * lam_nm / d_nm   # ≈ 1.22
         self.play(na_tracker.animate.set_value(na_crit), run_time=1.5)
+        # 移除 updater，便于干净 FadeOut
+        moving_dot.clear_updaters()
+        moving_vline.clear_updaters()
+        na_readout_mob.clear_updaters()
         crit_note = VGroup(
             Text("临界 N.A. =", font=CJK, color=CYAN).scale(0.40),
             MathTex(rf"\frac{{0.61 \times 600}}{{300}} \approx 1.22", color=CYAN).scale(0.55),

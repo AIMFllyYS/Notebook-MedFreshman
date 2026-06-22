@@ -28,7 +28,7 @@ class Ch08Ex1HydrogenAtomMagneticMoment(Scene):
 
         # ── Step 2: 生活类比引入 ─────────────────────────────────────────
         ana1 = Text("电子绕氢原子核高速转动——就像一个", font=CJK).scale(0.48)
-        ana2 = Text("微型"电流环"，会在轨道面上下产生磁场，", font=CJK).scale(0.48)
+        ana2 = Text("微型「电流环」，会在轨道面上下产生磁场，", font=CJK).scale(0.48)
         ana3 = Text("这就是原子固有磁矩的来源。", font=CJK, color=YELLOW).scale(0.48)
         ana = VGroup(ana1, ana2, ana3).arrange(DOWN, buff=0.22).next_to(title, DOWN, buff=0.55)
         for line in [ana1, ana2, ana3]:

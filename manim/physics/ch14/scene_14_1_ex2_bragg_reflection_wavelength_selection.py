@@ -436,7 +436,7 @@ class Ch14Ex2BraggReflectionWavelengthSelection(Scene):
         # 表头行
         header_row = VGroup()
         for i, h in enumerate(headers):
-            c = MathTex(rf"\textbf{{{h}}}" if i >= 2 else h, color=BLUE).scale(0.58) if i >= 2 else \
+            c = MathTex(h, color=BLUE).scale(0.58) if i == 2 else \
                 Text(h, font=CJK, color=BLUE).scale(0.48)
             c.move_to(np.array([tbl_x_starts[i], tbl_top - 0.32, 0]))
             header_row.add(c)

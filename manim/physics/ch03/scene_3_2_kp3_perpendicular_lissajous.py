@@ -102,7 +102,7 @@ class Ch03Kp3PerpendicularLissajous(Scene):
             y_range=[-1.6, 1.6, 1],
             x_length=1.4,
             y_length=5.2,
-            axis_config={"color": ORANGE_C if hasattr(Color, "ORANGE_C") else ORANGE, "include_tip": False, "stroke_width": 1.2},
+            axis_config={"color": ORANGE, "include_tip": False, "stroke_width": 1.2},
         ).next_to(axes, LEFT, buff=0.25).align_to(axes, DOWN)
 
         x_sub_lbl = Text("x(t)", font=CJK, color=GREEN).scale(0.32).next_to(x_sub_axes, UP, buff=0.08)

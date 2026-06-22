@@ -227,7 +227,8 @@ class Ch02Ex2MaxVelocityArteryReynolds(Scene):
             color=WHITE,
             include_numbers=True,
             numbers_to_include=[0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6],
-            decimal_number_config={"num_decimal_places": 1, "font_size": 22},
+            font_size=22,
+            decimal_number_config={"num_decimal_places": 1},
         )
         ax.shift(DOWN * 1.0)
         ax_label = VGroup(

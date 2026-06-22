@@ -165,7 +165,10 @@ class Ch11Ex1ThinFilmMinThickness(Scene):
         step3_title.move_to(eq_area + UP * 2.4)
 
         # 两束光的路程差：光在薄膜中走 2e
-        eq_path = MathTex(r"\text{路程差}=2e", color=WHITE).scale(0.6)
+        eq_path = VGroup(
+            Text("路程差", font=CJK, color=WHITE).scale(0.42),
+            MathTex(r"=2e", color=WHITE).scale(0.6),
+        ).arrange(RIGHT, buff=0.1)
         eq_path.move_to(eq_area + UP * 1.7)
 
         # 但光1有半波损失 → 附加 λ/2

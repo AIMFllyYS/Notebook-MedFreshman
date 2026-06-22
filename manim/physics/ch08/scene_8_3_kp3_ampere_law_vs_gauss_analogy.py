@@ -166,7 +166,7 @@ class Ch08Kp3AmpereLawVsGaussAnalogy(Scene):
         # Step 6: 公式逐步出现，左侧高斯，右侧安培
         # ─────────────────────────────────────────────────────────────────
         gauss_eq = MathTex(
-            r"\oiint_S", r"\mathbf{E}", r"\cdot", r"d\mathbf{S}",
+            r"\oint_S", r"\mathbf{E}", r"\cdot", r"d\mathbf{S}",
             r"=", r"\frac{Q_{\mathrm{enc}}}{\varepsilon_0}"
         ).scale(0.72)
         gauss_eq.move_to(LEFT * 3.3 + DOWN * 2.55)
@@ -410,11 +410,11 @@ class Ch08Kp3AmpereLawVsGaussAnalogy(Scene):
         self.wait(0.5)
 
         gauss_full = MathTex(
-            r"\oiint_S \mathbf{E}\cdot d\mathbf{S}",
+            r"\oint_S \mathbf{E}\cdot d\mathbf{S}",
             r"=",
             r"\frac{Q_{\mathrm{enc}}}{\varepsilon_0}"
         ).scale(0.90)
-        gauss_full.set_color_by_tex(r"\oiint", YELLOW)
+        gauss_full.set_color_by_tex(r"\oint", YELLOW)
         gauss_full[0].set_color(YELLOW)
         gauss_full[2].set_color(YELLOW)
 
@@ -450,7 +450,7 @@ class Ch08Kp3AmpereLawVsGaussAnalogy(Scene):
 
         s1 = VGroup(
             Text("高斯定理（面积分）：", font=CJK, color=YELLOW).scale(0.44),
-            MathTex(r"\oiint_S \mathbf{E}\cdot d\mathbf{S}=\dfrac{Q_{\mathrm{enc}}}{\varepsilon_0}",
+            MathTex(r"\oint_S \mathbf{E}\cdot d\mathbf{S}=\dfrac{Q_{\mathrm{enc}}}{\varepsilon_0}",
                     color=YELLOW).scale(0.78),
         ).arrange(RIGHT, buff=0.2)
 

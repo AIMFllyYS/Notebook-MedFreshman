@@ -275,8 +275,10 @@ class Ch04Kp2WaveInterferencePattern(Scene):
             UP, buff=0.08,
         ))
 
-        # 数值显示面板（右侧）
-        def make_info_panel():
+        # 数值显示面板（右侧）。性能关键：用 DecimalNumber + updater，
+        # 数字逐帧只更新纹理、不重新编译 LaTeX；标签 MathTex 只构建一次。
+        # （此前用 always_redraw 每帧重建 5 个 MathTex，逐帧触发新 LaTeX 编译导致超时）
+        def _vals():
             pxv = px_tracker.get_value()
             pyv = py_tracker.get_value()
             r1v = math.sqrt((pxv - S1_POS[0]) ** 2 + (pyv - S1_POS[1]) ** 2)
@@ -284,30 +286,49 @@ class Ch04Kp2WaveInterferencePattern(Scene):
             delta_v = r2v - r1v
             dphi_v = 2 * math.pi * delta_v / LAM
             amp_v = abs(2 * A0 * math.cos(math.pi * delta_v / LAM))
-            panel = VGroup(
-                MathTex(
-                    rf"r_1={r1v:.2f}", color=GREEN
-                ).scale(0.52),
-                MathTex(
-                    rf"r_2={r2v:.2f}", color=ORANGE
-                ).scale(0.52),
-                MathTex(
-                    rf"\delta={delta_v:.2f}\lambda" if abs(delta_v / LAM) > 0.01 else r"\delta=0",
-                    color=CYAN
-                ).scale(0.52),
-                MathTex(
-                    rf"\Delta\varphi={dphi_v:.2f}",
-                    color=YELLOW
-                ).scale(0.52),
-                MathTex(
-                    rf"A={amp_v:.2f}",
-                    color=RED
-                ).scale(0.52),
-            ).arrange(DOWN, buff=0.20, aligned_edge=LEFT)
-            panel.to_edge(RIGHT, buff=0.25).shift(DOWN * 0.8)
-            return panel
+            return r1v, r2v, delta_v, dphi_v, amp_v
 
-        info_panel = always_redraw(make_info_panel)
+        r1_num = DecimalNumber(0, num_decimal_places=2, color=GREEN).scale(0.52)
+        r2_num = DecimalNumber(0, num_decimal_places=2, color=ORANGE).scale(0.52)
+        delta_num = DecimalNumber(0, num_decimal_places=2, color=CYAN).scale(0.52)
+        dphi_num = DecimalNumber(0, num_decimal_places=2, color=YELLOW).scale(0.52)
+        amp_num = DecimalNumber(0, num_decimal_places=2, color=RED).scale(0.52)
+
+        r1_lbl_t = MathTex(r"r_1=", color=GREEN).scale(0.52)
+        r2_lbl_t = MathTex(r"r_2=", color=ORANGE).scale(0.52)
+        delta_lbl_t = MathTex(r"\delta=", color=CYAN).scale(0.52)
+        delta_unit_t = MathTex(r"\lambda", color=CYAN).scale(0.52)
+        dphi_lbl_t = MathTex(r"\Delta\varphi=", color=YELLOW).scale(0.52)
+        amp_lbl_t = MathTex(r"A=", color=RED).scale(0.52)
+
+        row_r1 = VGroup(r1_lbl_t, r1_num).arrange(RIGHT, buff=0.08)
+        row_r2 = VGroup(r2_lbl_t, r2_num).arrange(RIGHT, buff=0.08)
+        row_delta = VGroup(delta_lbl_t, delta_num, delta_unit_t).arrange(RIGHT, buff=0.08)
+        row_dphi = VGroup(dphi_lbl_t, dphi_num).arrange(RIGHT, buff=0.08)
+        row_amp = VGroup(amp_lbl_t, amp_num).arrange(RIGHT, buff=0.08)
+
+        info_panel = VGroup(row_r1, row_r2, row_delta, row_dphi, row_amp).arrange(
+            DOWN, buff=0.22, aligned_edge=LEFT
+        )
+        info_panel.to_edge(RIGHT, buff=0.25).shift(DOWN * 0.8)
+
+        def _update_panel(_m):
+            r1v, r2v, delta_v, dphi_v, amp_v = _vals()
+            r1_num.set_value(r1v)
+            r2_num.set_value(r2v)
+            delta_num.set_value(delta_v / LAM)  # 以 λ 为单位显示，与后缀 "λ" 一致（δ=nλ 亮纹/半整数暗纹一目了然）
+            dphi_num.set_value(dphi_v)
+            amp_num.set_value(amp_v)
+            # 让数字始终紧贴各自标签（数字位数变化时不漂移）
+            r1_num.next_to(r1_lbl_t, RIGHT, buff=0.08)
+            r2_num.next_to(r2_lbl_t, RIGHT, buff=0.08)
+            delta_num.next_to(delta_lbl_t, RIGHT, buff=0.08)
+            delta_unit_t.next_to(delta_num, RIGHT, buff=0.05)
+            dphi_num.next_to(dphi_lbl_t, RIGHT, buff=0.08)
+            amp_num.next_to(amp_lbl_t, RIGHT, buff=0.08)
+
+        _update_panel(None)
+        info_panel.add_updater(_update_panel)
 
         self.play(
             FadeIn(line_r1), FadeIn(line_r2),
@@ -334,26 +355,27 @@ class Ch04Kp2WaveInterferencePattern(Scene):
         self.play(
             px_tracker.animate.set_value(3.2),
             py_tracker.animate.set_value(0.0),
-            run_time=2.0, rate_func=smooth,
+            run_time=1.6, rate_func=smooth,
         )
-        self.wait(1.0)
+        self.wait(0.8)
 
         # 移向暗纹（δ ≈ 0.5λ）
         self.play(
             px_tracker.animate.set_value(3.2),
             py_tracker.animate.set_value(0.95),
-            run_time=2.0, rate_func=smooth,
+            run_time=1.6, rate_func=smooth,
         )
-        self.wait(1.0)
+        self.wait(0.8)
 
         # 移回加强位置（δ ≈ 2λ 双曲线上）
         self.play(
             px_tracker.animate.set_value(1.0),
             py_tracker.animate.set_value(2.4),
-            run_time=2.0, rate_func=smooth,
+            run_time=1.6, rate_func=smooth,
         )
-        self.wait(1.2)
+        self.wait(1.0)
 
+        info_panel.remove_updater(_update_panel)
         self.play(FadeOut(VGroup(line_r1, line_r2, p_dot, p_label,
                                  info_panel, r1_label, r2_label)))
 
@@ -372,7 +394,8 @@ class Ch04Kp2WaveInterferencePattern(Scene):
         # ══════════════════════════════════════════════════════════════════════
         # Step 10  数值示例：两石子入水 λ=2cm，d=3cm，求 P 点
         # ══════════════════════════════════════════════════════════════════════
-        self.play(FadeOut(VGroup(heatmap, s1_dot, s2_dot, s1_lbl, s2_lbl)))
+        # heatmap 是 ImageMobject（非 VMobject），混合类型须用 Group 而非 VGroup
+        self.play(FadeOut(Group(heatmap, s1_dot, s2_dot, s1_lbl, s2_lbl)))
         self.wait(0.3)
 
         ex_title = Text("数值示例", font=CJK, color=BLUE).scale(0.48)

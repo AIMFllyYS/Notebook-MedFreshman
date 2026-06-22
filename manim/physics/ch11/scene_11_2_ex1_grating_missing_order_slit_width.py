@@ -216,13 +216,11 @@ class Ch11Ex1GratingMissingOrderSlitWidth(Scene):
 
         # k=±4 的主极大标红并打叉
         cross_minus4 = Cross(
-            VGroup(axes_l.c2p(-4, 0), axes_l.c2p(-4, 1.0)),
-            color=RED, stroke_width=3,
-        ).scale(0.15).move_to(axes_l.c2p(-4, 0.5))
+            stroke_color=RED, stroke_width=3,
+        ).scale(0.18).move_to(axes_l.c2p(-4, 0.5))
         cross_plus4 = Cross(
-            VGroup(axes_l.c2p(4, 0), axes_l.c2p(4, 1.0)),
-            color=RED, stroke_width=3,
-        ).scale(0.15).move_to(axes_l.c2p(4, 0.5))
+            stroke_color=RED, stroke_width=3,
+        ).scale(0.18).move_to(axes_l.c2p(4, 0.5))
         miss_label_m4 = MathTex(r"k{=}{-4}", color=RED).scale(0.38).next_to(
             axes_l.c2p(-4, 0), DOWN, buff=0.12)
         miss_label_p4 = MathTex(r"k{=}4", color=RED).scale(0.38).next_to(

@@ -62,7 +62,10 @@ class Ch09Kp2ElectromagneticWavePropagation(Scene):
 
         # k 方向：水平向右（传播方向）
         arr_k = Arrow(origin, origin + np.array([2.8, 0, 0]), color=GREEN, buff=0, stroke_width=5)
-        lbl_k = MathTex(r"\mathbf{k}\ (\text{传播方向})", color=GREEN).scale(0.52)
+        lbl_k = VGroup(
+            MathTex(r"\mathbf{k}", color=GREEN).scale(0.7),
+            Text("(传播方向)", font=CJK, color=GREEN).scale(0.42),
+        ).arrange(RIGHT, buff=0.12)
         lbl_k.next_to(arr_k.get_end(), RIGHT, buff=0.15)
 
         # E 方向：竖直向上（沿 y 轴）

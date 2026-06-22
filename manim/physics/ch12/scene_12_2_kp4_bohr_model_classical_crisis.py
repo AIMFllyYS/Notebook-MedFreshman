@@ -153,7 +153,7 @@ class Ch12Kp4BohrModelClassicalCrisis(Scene):
         self.wait(1.0)
 
         # ── Step 6: 玻尔跃迁——光子飞出动画 ─────────────────────────────
-        photon_colors = [RED, ORANGE_RED, BLUE]
+        photon_colors = [RED, ORANGE, BLUE]
         photon_label_texts = [
             r"h\nu_{32}",
             r"h\nu_{31}",

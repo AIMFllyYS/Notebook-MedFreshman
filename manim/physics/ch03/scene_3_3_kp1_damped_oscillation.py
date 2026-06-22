@@ -116,22 +116,28 @@ class Ch03Kp1DampedOscillation(Scene):
         # 正包络（红色虚线）
         def env_pos():
             b = beta.get_value()
-            return axes.plot(
-                lambda t: A0 * math.exp(-b * t),
-                x_range=[0, 5.5],
-                color=RED,
-                stroke_width=1.8,
-            ).set_stroke(dash_array=[0.12, 0.12])
+            return DashedVMobject(
+                axes.plot(
+                    lambda t: A0 * math.exp(-b * t),
+                    x_range=[0, 5.5],
+                    color=RED,
+                    stroke_width=1.8,
+                ),
+                num_dashes=40,
+            )
 
         # 负包络（红色虚线）
         def env_neg():
             b = beta.get_value()
-            return axes.plot(
-                lambda t: -A0 * math.exp(-b * t),
-                x_range=[0, 5.5],
-                color=RED,
-                stroke_width=1.8,
-            ).set_stroke(dash_array=[0.12, 0.12])
+            return DashedVMobject(
+                axes.plot(
+                    lambda t: -A0 * math.exp(-b * t),
+                    x_range=[0, 5.5],
+                    color=RED,
+                    stroke_width=1.8,
+                ),
+                num_dashes=40,
+            )
 
         wave_under = always_redraw(under_curve)
         envelope_pos = always_redraw(env_pos)

@@ -129,95 +129,69 @@ class Ch12Kp2DeBroglieWavelengthDependence(Scene):
         )
         self.wait(0.8)
 
-        # ── 速度标签 ──
-        v_tracker = ValueTracker(1.0)  # m/s
-
+        # ── 速度标签（固定文字，静态） ──
         v_label_left = Text("v =", font=CJK).scale(0.38)
         v_label_right = Text("v =", font=CJK).scale(0.38)
-
-        # 左栏 v 数值（always_redraw）
-        def make_v_text_left():
-            v = v_tracker.get_value()
-            if v < 1e3:
-                s = f"{v:.1f}"
-            elif v < 1e6:
-                s = f"{v/1e3:.2f}k"
-            else:
-                s = f"{v:.1e}"
-            return MathTex(rf"{v:.2e}\,\text{{m/s}}").scale(0.5)
-
-        def make_v_text_right():
-            v = v_tracker.get_value()
-            return MathTex(rf"{v:.2e}\,\text{{m/s}}").scale(0.5)
-
-        v_num_L = always_redraw(
-            lambda: MathTex(rf"{v_tracker.get_value():.2e}\,\text{{m/s}}").scale(0.48)
-            .next_to(v_label_left, RIGHT, buff=0.12)
-        )
-        v_num_R = always_redraw(
-            lambda: MathTex(rf"{v_tracker.get_value():.2e}\,\text{{m/s}}").scale(0.48)
-            .next_to(v_label_right, RIGHT, buff=0.12)
-        )
-
-        v_row_L = VGroup(v_label_left).next_to(L_m, DOWN, buff=0.25)
         v_label_left.move_to(LEFT * 3.8 + UP * 1.55)
         v_label_right.move_to(RIGHT * 2.8 + UP * 1.55)
 
-        # 左栏 λ（always_redraw）
-        def lam_bullet():
-            v = v_tracker.get_value()
-            lam = H / (M_BULLET * v)
-            exp = math.floor(math.log10(abs(lam)))
-            coeff = lam / (10 ** exp)
-            tex = MathTex(
-                rf"\lambda_{{bullet}} = {coeff:.2f}\times10^{{{int(exp)}}}\,\text{{m}}"
-            ).scale(0.46).set_color(ORANGE)
-            tex.move_to(LEFT * 3.2 + UP * 0.85)
-            return tex
+        # 速度滑块提示
+        v_hint = Text("速度 v 从低速逐步增大到高速", font=CJK, color=CYAN).scale(0.38)
+        v_hint.to_edge(DOWN, buff=0.55)
 
-        def lam_electron():
-            v = v_tracker.get_value()
+        # 帮助函数：科学计数法字符串（纯 ASCII，用于 MathTex）
+        def sci(val):
+            if val == 0:
+                return r"0"
+            exp = math.floor(math.log10(abs(val)))
+            coeff = val / (10 ** exp)
+            return rf"{coeff:.2f}\times10^{{{int(exp)}}}"
+
+        def make_v_num(v, anchor):
+            return MathTex(rf"{sci(v)}\,\mathrm{{m/s}}").scale(0.48).next_to(
+                anchor, RIGHT, buff=0.12
+            )
+
+        def make_lam_L(v):
+            lam = H / (M_BULLET * v)
+            return MathTex(
+                rf"\lambda_{{bullet}} = {sci(lam)}\,\mathrm{{m}}"
+            ).scale(0.46).set_color(ORANGE).move_to(LEFT * 3.2 + UP * 0.85)
+
+        def make_lam_R(v):
             lam = H / (M_ELECTRON * v)
-            exp = math.floor(math.log10(abs(lam)))
-            coeff = lam / (10 ** exp)
-            tex = MathTex(
-                rf"\lambda_{{e}} = {coeff:.2f}\times10^{{{int(exp)}}}\,\text{{m}}"
-            ).scale(0.46).set_color(GREEN)
-            tex.move_to(RIGHT * 3.2 + UP * 0.85)
-            return tex
+            return MathTex(
+                rf"\lambda_{{e}} = {sci(lam)}\,\mathrm{{m}}"
+            ).scale(0.46).set_color(GREEN).move_to(RIGHT * 3.2 + UP * 0.85)
 
-        lam_L = always_redraw(lam_bullet)
-        lam_R = always_redraw(lam_electron)
+        def make_ann_L(v):
+            # 子弹波长始终极小：恒为不可观测
+            return Text("波动性不可观测", font=CJK, color=RED).scale(0.36).move_to(
+                LEFT * 3.2 + UP * 0.2
+            )
 
-        # 注释标签（always_redraw）
-        def annotation_L():
-            v = v_tracker.get_value()
-            lam = H / (M_BULLET * v)
-            if lam < 1e-35:
-                txt = Text("波动性不可观测", font=CJK, color=RED).scale(0.36)
-            else:
-                txt = Text("", font=CJK).scale(0.36)
-            txt.move_to(LEFT * 3.2 + UP * 0.2)
-            return txt
-
-        def annotation_R():
-            v = v_tracker.get_value()
+        def make_ann_R(v):
             lam = H / (M_ELECTRON * v)
             if 5e-11 < lam < 5e-9:
-                txt = Text("原子尺度，干涉可观测！", font=CJK, color=GREEN).scale(0.36)
-            elif lam > 1e-8:
-                txt = Text("波长较长，衍射显著", font=CJK, color=CYAN).scale(0.36)
+                t = ("原子尺度，干涉可观测！", GREEN)
+            elif lam >= 5e-9:
+                t = ("波长较长，衍射显著", CYAN)
             else:
-                txt = Text("波动性减弱", font=CJK, color=YELLOW).scale(0.36)
-            txt.move_to(RIGHT * 3.2 + UP * 0.2)
-            return txt
+                t = ("波动性减弱", YELLOW)
+            return Text(t[0], font=CJK, color=t[1]).scale(0.36).move_to(
+                RIGHT * 3.2 + UP * 0.2
+            )
 
-        ann_L = always_redraw(annotation_L)
-        ann_R = always_redraw(annotation_R)
+        # 离散速度步进（替代 always_redraw 逐帧重编译 LaTeX）
+        v_steps = [1.0, 1e2, 1e4, 1e6, 1e8]
 
-        # 速度滑块提示
-        v_hint = Text("速度 v 从低速扫向高速", font=CJK, color=CYAN).scale(0.38)
-        v_hint.to_edge(DOWN, buff=0.55)
+        v0 = v_steps[0]
+        v_num_L = make_v_num(v0, v_label_left)
+        v_num_R = make_v_num(v0, v_label_right)
+        lam_L = make_lam_L(v0)
+        lam_R = make_lam_R(v0)
+        ann_L = make_ann_L(v0)
+        ann_R = make_ann_R(v0)
 
         self.play(
             FadeIn(v_label_left), FadeIn(v_label_right),
@@ -226,18 +200,38 @@ class Ch12Kp2DeBroglieWavelengthDependence(Scene):
             FadeIn(ann_L), FadeIn(ann_R),
             FadeIn(v_hint),
         )
-        self.wait(0.8)
+        self.wait(1.0)
 
-        # 速度扫动：1 m/s → 1e8 m/s（对数插值）
+        # 逐步增大速度，每步只重建一次标签（无逐帧 LaTeX）
+        for v in v_steps[1:]:
+            new_v_L = make_v_num(v, v_label_left)
+            new_v_R = make_v_num(v, v_label_right)
+            new_lam_L = make_lam_L(v)
+            new_lam_R = make_lam_R(v)
+            new_ann_L = make_ann_L(v)
+            new_ann_R = make_ann_R(v)
+            self.play(
+                Transform(v_num_L, new_v_L),
+                Transform(v_num_R, new_v_R),
+                Transform(lam_L, new_lam_L),
+                Transform(lam_R, new_lam_R),
+                Transform(ann_L, new_ann_L),
+                Transform(ann_R, new_ann_R),
+                run_time=0.9,
+            )
+            self.wait(0.7)
+
+        # 回到电子可观测区间（v≈8e5）作为定格
+        v_obs = 8e5
         self.play(
-            v_tracker.animate.set_value(1e8),
-            run_time=6,
-            rate_func=linear,
+            Transform(v_num_L, make_v_num(v_obs, v_label_left)),
+            Transform(v_num_R, make_v_num(v_obs, v_label_right)),
+            Transform(lam_L, make_lam_L(v_obs)),
+            Transform(lam_R, make_lam_R(v_obs)),
+            Transform(ann_L, make_ann_L(v_obs)),
+            Transform(ann_R, make_ann_R(v_obs)),
+            run_time=1.0,
         )
-        self.wait(1.5)
-
-        # 回到中等速度展示电子可观测区间
-        self.play(v_tracker.animate.set_value(8e5), run_time=2)
         self.wait(1.2)
 
         # 清场

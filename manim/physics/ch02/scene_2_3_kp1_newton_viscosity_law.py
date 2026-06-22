@@ -127,14 +127,7 @@ class Ch02Kp1NewtonViscosityLaw(Scene):
         vdv_label = MathTex(r"v + dv", color=ORANGE).scale(0.55)
         vdv_label.next_to(arr_high.get_end(), RIGHT, buff=0.12)
 
-        # dv 的 Brace
-        brace_dv = Brace(
-            VGroup(arr_low.get_end_anchors()[0] * RIGHT + arr_low.get_end()[1] * UP,
-                   arr_high.get_end_anchors()[0] * RIGHT + arr_high.get_end()[1] * UP),
-            direction=RIGHT,
-            color=ORANGE,
-        )
-        # 用两个点构造 Brace 的目标对象
+        # dv 的 Brace（用两个点构造 Brace 的目标对象）
         p_low  = Dot(arr_low.get_end(),  radius=0)
         p_high = Dot(arr_high.get_end(), radius=0)
         brace_dv2 = Brace(VGroup(p_low, p_high), direction=RIGHT, color=ORANGE)

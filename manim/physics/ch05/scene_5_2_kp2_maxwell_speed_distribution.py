@@ -370,8 +370,8 @@ class Ch05Kp2MaxwellSpeedDistribution(Scene):
         )
         s2 = VGroup(
             MathTex(
-                r"v_p=\sqrt{\tfrac{2kT}{m}},\quad"
-                r"\bar{v}=\sqrt{\tfrac{8kT}{\pi m}},\quad"
+                r"v_p=\sqrt{\tfrac{2kT}{m}},\quad "
+                r"\bar{v}=\sqrt{\tfrac{8kT}{\pi m}},\quad "
                 r"v_{\rm rms}=\sqrt{\tfrac{3kT}{m}}",
                 color=GREEN,
             ).scale(0.62),

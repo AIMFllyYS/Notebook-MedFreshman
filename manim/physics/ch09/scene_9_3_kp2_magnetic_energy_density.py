@@ -102,8 +102,6 @@ class Ch09Kp2MagneticEnergyDensity(Scene):
             return I_inf * (1 - math.exp(-t / tau))
 
         curve = axes.plot(i_curve, x_range=[0, 3.0], color=CYAN, stroke_width=2.5)
-        I_line = axes.plot(lambda t: I_inf, x_range=[0, 3.0], color=WHITE,
-                           stroke_width=1.5, stroke_dash_array=None)
         # 用 DashedLine 画水平渐近线
         I_dash_start = axes.c2p(0, I_inf)
         I_dash_end = axes.c2p(3.0, I_inf)

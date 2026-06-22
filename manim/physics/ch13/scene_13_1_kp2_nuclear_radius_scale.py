@@ -24,21 +24,8 @@ class Ch13Kp2NuclearRadiusScale(Scene):
         subtitle = Text("第十三章 原子核和放射性 · 13.1", font=CJK, color=WHITE).scale(0.38)
         subtitle.next_to(title, DOWN, buff=0.18)
         self.play(Write(title), FadeIn(subtitle))
-        self.wait(1.5)
+        self.wait(1.0)
         self.play(FadeOut(subtitle))
-
-        # ── Step 2: 生活类比——原子 vs 核 ────────────────────────────────
-        ana1 = Text("如果把整个原子放大到足球场那么大，", font=CJK).scale(0.48)
-        ana2 = Text("原子核只有球场中央一粒豌豆那么大。", font=CJK, color=YELLOW).scale(0.48)
-        ana3 = Text("两者尺度相差约 10 万倍（10^5）！", font=CJK, color=ORANGE).scale(0.44)
-        ana_group = VGroup(ana1, ana2, ana3).arrange(DOWN, buff=0.28).next_to(title, DOWN, buff=0.55)
-        self.play(FadeIn(ana1))
-        self.wait(0.6)
-        self.play(FadeIn(ana2))
-        self.wait(0.6)
-        self.play(FadeIn(ana3))
-        self.wait(1.6)
-        self.play(FadeOut(ana_group))
 
         # ── Step 3: 原子 vs 核 图示（左大圆 = 原子，右小点 = 核）──────────
         atom_circle = Circle(radius=1.8, color=CYAN, stroke_width=2.5)
@@ -58,11 +45,10 @@ class Ch13Kp2NuclearRadiusScale(Scene):
         scale_note.next_to(title, DOWN, buff=0.48)
 
         self.play(FadeIn(scale_note))
-        self.wait(0.8)
-        self.play(Create(atom_circle), FadeIn(atom_label))
         self.wait(0.6)
+        self.play(Create(atom_circle), FadeIn(atom_label))
         self.play(Create(nucleus_dot), FadeIn(nuc_label))
-        self.wait(1.8)
+        self.wait(1.2)
         self.play(FadeOut(VGroup(atom_circle, atom_label, nucleus_dot, nuc_label, scale_note)))
 
         # ── Step 4: 经验公式定义（逐步出现 + 高亮）──────────────────────
@@ -84,47 +70,36 @@ class Ch13Kp2NuclearRadiusScale(Scene):
         r0_note.next_to(formula_main, DOWN, buff=0.38)
 
         self.play(FadeIn(def_zh))
-        self.wait(0.6)
-        self.play(Write(formula_main))
-        self.wait(1.0)
+        self.play(Write(formula_main), run_time=1.5)
+        self.wait(0.8)
         self.play(FadeIn(r0_note))
-        self.wait(1.5)
+        self.wait(1.0)
 
         # 标注：A^(1/3) 意义
         key_note = Text("关键：半径与 A^(1/3) 成正比，而非与 A 成正比", font=CJK, color=GREEN).scale(0.42)
         key_note.next_to(r0_note, DOWN, buff=0.35)
         self.play(FadeIn(key_note))
-        self.wait(1.5)
+        self.wait(1.2)
         self.play(FadeOut(VGroup(def_zh, formula_main, r0_note, key_note)))
 
         # ── Step 5: ValueTracker 扫动 A，核半径圆实时缩放 ────────────────
+        # 性能：用 DecimalNumber/Integer + add_updater（只刷数字纹理，不重编译 LaTeX）；
+        # 核圆与读数文字用静态对象 + 位置/缩放 updater，避免 always_redraw 每帧重建 MathTex。
         A_tracker = ValueTracker(1.0)
+        NUC_CENTER = ORIGIN + DOWN * 0.5
 
-        # 核半径归一化：R(A) = R0 * A^(1/3)，视觉半径映射
-        # A=1 时视觉半径 0.10，A=238 时视觉半径 0.10 * 238^(1/3) ≈ 0.62
-        def vis_radius():
-            A = A_tracker.get_value()
-            return 0.12 * (A ** (1.0 / 3.0))
+        # 核圆（静态 Circle + updater 改半径，不重建对象）
+        nucleus_anim = Circle(
+            radius=0.12, color=RED, fill_opacity=0.45, stroke_width=2
+        ).move_to(NUC_CENTER)
 
-        # 核圆（always_redraw 随 A 变化）
-        nucleus_anim = always_redraw(lambda: Circle(
-            radius=vis_radius(),
-            color=RED,
-            fill_opacity=0.45,
-            stroke_width=2
-        ).move_to(ORIGIN + DOWN * 0.5))
-
-        # 数值读出
-        readout_R = always_redraw(lambda: VGroup(
-            Text("A =", font=CJK, color=WHITE).scale(0.42),
-            MathTex(rf"{int(A_tracker.get_value())}", color=ORANGE).scale(0.72),
-            Text(",  R =", font=CJK, color=WHITE).scale(0.42),
-            MathTex(
-                rf"{R0 * (A_tracker.get_value() ** (1.0/3.0)) * 1e15:.2f}"
-                r"\ \mathrm{fm}",
-                color=YELLOW
-            ).scale(0.68)
-        ).arrange(RIGHT, buff=0.12).to_corner(UR, buff=0.5))
+        # 静态读数标签 + DecimalNumber/Integer
+        a_lbl = Text("A =", font=CJK, color=WHITE).scale(0.42)
+        a_num = Integer(1, color=ORANGE).scale(0.72)
+        r_lbl = Text(",  R =", font=CJK, color=WHITE).scale(0.42)
+        r_num = DecimalNumber(R0 * 1e15, num_decimal_places=2, color=YELLOW).scale(0.68)
+        r_unit = MathTex(r"\mathrm{fm}", color=YELLOW).scale(0.62)
+        readout_R = VGroup(a_lbl, a_num, r_lbl, r_num, r_unit).arrange(RIGHT, buff=0.12).to_corner(UR, buff=0.5)
 
         formula_hint = MathTex(r"R = R_0 A^{1/3}", color=CYAN).scale(0.75)
         formula_hint.next_to(title, DOWN, buff=0.45)
@@ -132,19 +107,34 @@ class Ch13Kp2NuclearRadiusScale(Scene):
         scan_caption = Text("随质量数 A 增大，核半径增长缓慢（A^(1/3) 效应）", font=CJK, color=GREEN).scale(0.40)
         scan_caption.to_edge(DOWN, buff=0.55)
 
-        self.play(FadeIn(formula_hint), Create(nucleus_anim), FadeIn(scan_caption))
-        self.add(readout_R)
+        self.play(FadeIn(formula_hint), Create(nucleus_anim), FadeIn(scan_caption), FadeIn(readout_R))
+
+        # FadeIn 完成之后再挂 updater（Python 3.14 zip 严格）
+        def upd_circle(m):
+            A = A_tracker.get_value()
+            m.set(width=2 * 0.12 * (A ** (1.0 / 3.0)))
+            m.move_to(NUC_CENTER)
+        nucleus_anim.add_updater(upd_circle)
+        a_num.add_updater(lambda m: m.set_value(int(A_tracker.get_value())))
+
+        def upd_r(m):
+            A = A_tracker.get_value()
+            m.set_value(R0 * (A ** (1.0 / 3.0)) * 1e15)
+        r_num.add_updater(upd_r)
+        # 读数 right-align：单位跟随数字
+        r_num.add_updater(lambda m: m.next_to(r_lbl, RIGHT, buff=0.12))
+        r_unit.add_updater(lambda m: m.next_to(r_num, RIGHT, buff=0.08))
+
+        self.wait(0.4)
+        # A 从 1 → 238 扫动
+        self.play(A_tracker.animate.set_value(238), run_time=2.0, rate_func=linear)
         self.wait(0.6)
 
-        # A 从 1 → 238 扫动
-        self.play(A_tracker.animate.set_value(238), run_time=4.0, rate_func=linear)
-        self.wait(0.8)
-        # 回到 A=1
-        self.play(A_tracker.animate.set_value(1.0), run_time=1.5)
-        self.wait(0.8)
-
-        self.play(FadeOut(VGroup(formula_hint, scan_caption)), FadeOut(nucleus_anim))
-        self.remove(readout_R)
+        nucleus_anim.clear_updaters()
+        a_num.clear_updaters()
+        r_num.clear_updaters()
+        r_unit.clear_updaters()
+        self.play(FadeOut(VGroup(formula_hint, scan_caption, nucleus_anim, readout_R)))
 
         # ── Step 6: log-log 坐标轴（R vs A，斜率 1/3）────────────────────
         axes = Axes(
@@ -216,14 +206,12 @@ class Ch13Kp2NuclearRadiusScale(Scene):
         loglog_title.next_to(title, DOWN, buff=0.38)
 
         self.play(FadeIn(loglog_title))
-        self.play(Create(axes), FadeIn(x_label), FadeIn(y_label))
-        self.play(FadeIn(x_ticks_labels), FadeIn(y_ticks_labels))
-        self.wait(0.6)
-        self.play(Create(theory_line), run_time=1.8)
+        self.play(Create(axes), FadeIn(x_label), FadeIn(y_label),
+                  FadeIn(x_ticks_labels), FadeIn(y_ticks_labels))
+        self.play(Create(theory_line), run_time=1.5)
         self.play(FadeIn(slope_label))
-        self.wait(0.8)
         self.play(Create(nuc_dots), FadeIn(nuc_labels))
-        self.wait(2.0)
+        self.wait(1.5)
         self.play(FadeOut(VGroup(loglog_title, axes, x_label, y_label,
                                  x_ticks_labels, y_ticks_labels,
                                  theory_line, slope_label, nuc_dots, nuc_labels)))
@@ -250,12 +238,9 @@ class Ch13Kp2NuclearRadiusScale(Scene):
         scale_math.next_to(title, DOWN, buff=0.42)
 
         self.play(FadeIn(scale_math))
-        self.wait(0.6)
         self.play(Create(stadium), FadeIn(stadium_label))
-        self.wait(0.6)
-        self.play(Create(pea), FadeIn(pea_label))
-        self.play(FadeIn(analogy_cap))
-        self.wait(2.0)
+        self.play(Create(pea), FadeIn(pea_label), FadeIn(analogy_cap))
+        self.wait(1.5)
         self.play(FadeOut(VGroup(scale_math, stadium, stadium_label, pea, pea_label, analogy_cap)))
 
         # ── Step 8: 核密度推导 ──────────────────────────────────────────
@@ -283,14 +268,13 @@ class Ch13Kp2NuclearRadiusScale(Scene):
         rho_note.next_to(rho_result, DOWN, buff=0.32)
 
         self.play(FadeIn(density_intro))
-        self.play(Write(rho_step1))
-        self.wait(1.0)
-        self.play(Write(rho_step2))
-        self.wait(1.0)
-        self.play(Write(rho_result))
-        self.wait(0.8)
+        self.play(Write(rho_step1), run_time=1.5)
+        self.wait(0.6)
+        self.play(Write(rho_step2), run_time=1.5)
+        self.wait(0.6)
+        self.play(Write(rho_result), run_time=1.2)
         self.play(FadeIn(rho_note))
-        self.wait(1.8)
+        self.wait(1.3)
         self.play(FadeOut(VGroup(density_intro, rho_step1, rho_step2, rho_result, rho_note)))
 
         # ── Step 9: 数值例题 ────────────────────────────────────────────
@@ -322,15 +306,14 @@ class Ch13Kp2NuclearRadiusScale(Scene):
         ex_ratio.next_to(ex_u, DOWN, buff=0.35)
         ex_ratio.set_color(YELLOW)
 
-        self.play(FadeIn(ex_title))
-        self.play(FadeIn(ex_q))
-        self.wait(0.6)
-        self.play(Write(ex_fe))
-        self.wait(0.8)
-        self.play(Write(ex_u))
-        self.wait(0.8)
-        self.play(Write(ex_ratio))
-        self.wait(1.8)
+        self.play(FadeIn(ex_title), FadeIn(ex_q))
+        self.wait(0.4)
+        self.play(Write(ex_fe), run_time=1.3)
+        self.wait(0.5)
+        self.play(Write(ex_u), run_time=1.3)
+        self.wait(0.5)
+        self.play(Write(ex_ratio), run_time=1.3)
+        self.wait(1.3)
         self.play(FadeOut(VGroup(ex_title, ex_q, ex_fe, ex_u, ex_ratio)))
 
         # ── Step 10: 小结卡 ─────────────────────────────────────────────
@@ -353,17 +336,13 @@ class Ch13Kp2NuclearRadiusScale(Scene):
         box = SurroundingRectangle(s_group, color=BLUE, buff=0.30, corner_radius=0.14)
 
         self.play(FadeIn(s_title))
-        self.play(Write(s1))
-        self.wait(0.6)
-        self.play(Write(s2))
-        self.wait(0.6)
-        self.play(FadeIn(s3_row))
-        self.wait(0.6)
-        self.play(FadeIn(s4))
+        self.play(Write(s1), run_time=1.3)
+        self.play(Write(s2), run_time=1.3)
+        self.play(FadeIn(s3_row), FadeIn(s4))
         self.play(Create(box))
-        self.wait(2.5)
+        self.wait(2.0)
         self.play(FadeOut(VGroup(s_title, s_group, box, title)))
-        self.wait(0.4)
+        self.wait(0.3)
 
 
 REGISTER = [

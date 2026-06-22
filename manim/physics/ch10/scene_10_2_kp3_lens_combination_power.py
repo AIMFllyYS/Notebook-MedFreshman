@@ -358,50 +358,66 @@ class Ch10Kp3LensCombinationPower(Scene):
                 return float('inf')
             return 1.0 / (1.0 / f1 + 1.0 / f2)
 
-        # 焦点标记（always_redraw）
-        focal_dot = always_redraw(lambda: (
-            Dot(
-                [lens_equiv_x + get_f_eq() * UNIT, 0, 0],
-                color=YELLOW, radius=0.14,
-            ) if not math.isinf(get_f_eq()) and abs(get_f_eq() * UNIT + lens_equiv_x) < 5.5
-            else VGroup()
-        ))
+        # ── 焦点标记：单个 Dot + 位置 updater（不重建，避免每帧编译）──
+        focal_dot = Dot([lens_equiv_x, 0, 0], color=YELLOW, radius=0.14)
 
-        f_eq_label = always_redraw(lambda: (
-            VGroup(
-                Text("等效焦点", font=CJK, color=YELLOW).scale(0.35),
-                MathTex(
-                    rf"f_{{eq}}={get_f_eq():.0f}\,\mathrm{{cm}}" if not math.isinf(get_f_eq())
-                    else r"f_{eq}\to\infty",
-                    color=YELLOW
-                ).scale(0.6),
-            ).arrange(DOWN, buff=0.06).next_to(
-                [
-                    min(max(lens_equiv_x + get_f_eq() * UNIT, -5.2), 5.2)
-                    if not math.isinf(get_f_eq()) else lens_equiv_x,
-                    0, 0
-                ],
-                UP, buff=0.22,
-            )
-        ))
+        def update_focal_dot(m):
+            feq = get_f_eq()
+            if math.isinf(feq) or abs(feq * UNIT + lens_equiv_x) >= 5.5:
+                m.set_opacity(0.0)
+            else:
+                m.set_opacity(1.0)
+                m.move_to([lens_equiv_x + feq * UNIT, 0, 0])
 
-        f2_readout = always_redraw(lambda: VGroup(
-            Text("当前 f2 =", font=CJK, color=RED).scale(0.42),
-            MathTex(rf"{f2_tracker.get_value():.0f}\,\mathrm{{cm}}", color=RED).scale(0.65),
-        ).arrange(RIGHT, buff=0.15).to_corner(UR, buff=0.5))
+        # ── 等效焦点读数：静态文字 + DecimalNumber（数值刷新不编译 LaTeX）──
+        feq_caption = Text("等效焦点", font=CJK, color=YELLOW).scale(0.35)
+        feq_num = DecimalNumber(40, num_decimal_places=0, color=YELLOW,
+                                unit=r"\,\mathrm{cm}").scale(0.6)
+        f_eq_label = VGroup(feq_caption, feq_num).arrange(DOWN, buff=0.06)
+        f_eq_label.next_to([lens_equiv_x + get_f_eq() * UNIT, 0, 0], UP, buff=0.22)
 
-        phi_readout = always_redraw(lambda: VGroup(
-            MathTex(
-                rf"\Phi = \frac{{1}}{{20}} + \frac{{1}}{{{f2_tracker.get_value():.0f}}}",
-                color=CYAN,
-            ).scale(0.55),
-        ).to_corner(DR, buff=0.5))
+        def update_f_eq_label(m):
+            feq = get_f_eq()
+            if math.isinf(feq):
+                feq_num.set_value(0)
+                feq_num.set_opacity(0.0)
+                anchor_x = lens_equiv_x
+            else:
+                feq_num.set_opacity(1.0)
+                feq_num.set_value(int(round(feq)))
+                anchor_x = min(max(lens_equiv_x + feq * UNIT, -5.2), 5.2)
+            m.arrange(DOWN, buff=0.06)
+            m.next_to([anchor_x, 0, 0], UP, buff=0.22)
+
+        # ── 当前 f2 读数：静态文字 + DecimalNumber ──
+        f2_caption = Text("当前 f2 =", font=CJK, color=RED).scale(0.42)
+        f2_num = DecimalNumber(-40, num_decimal_places=0, color=RED,
+                               unit=r"\,\mathrm{cm}").scale(0.65)
+        f2_readout = VGroup(f2_caption, f2_num).arrange(RIGHT, buff=0.15).to_corner(UR, buff=0.5)
+
+        def update_f2_num(m):
+            m.set_value(int(round(f2_tracker.get_value())))
+
+        # ── Phi 读数：静态前缀 MathTex (Phi = 1/20 + 1/f2) + DecimalNumber 显示 f2 值 ──
+        phi_prefix = MathTex(r"\Phi = \tfrac{1}{20} + \tfrac{1}{f_2},\quad f_2=",
+                             color=CYAN).scale(0.55)
+        phi_den = DecimalNumber(-40, num_decimal_places=0, color=CYAN).scale(0.55)
+        phi_readout = VGroup(phi_prefix, phi_den).arrange(RIGHT, buff=0.12).to_corner(DR, buff=0.5)
+
+        def update_phi_den(m):
+            m.set_value(int(round(f2_tracker.get_value())))
 
         # 静态透镜图（简单线段代表密接组合位置）
         lens_line = Line([lens_equiv_x, -0.9, 0], [lens_equiv_x, 0.9, 0], color=WHITE, stroke_width=3)
 
+        # FadeIn 时不挂 updater（避免 DecimalNumber 在插值中改变子物件数量导致 zip 报错）
         self.play(Create(lens_line), FadeIn(focal_dot), FadeIn(f_eq_label),
                   FadeIn(f2_readout), FadeIn(phi_readout))
+        # FadeIn 完成后再挂 updater
+        focal_dot.add_updater(update_focal_dot)
+        f_eq_label.add_updater(update_f_eq_label)
+        f2_num.add_updater(update_f2_num)
+        phi_den.add_updater(update_phi_den)
         self.wait(0.8)
 
         zh_sweep = Text("改变 f2：观察等效焦点向左/右移动", font=CJK, color=ORANGE).scale(0.42)
@@ -409,8 +425,8 @@ class Ch10Kp3LensCombinationPower(Scene):
         self.play(FadeIn(zh_sweep))
 
         # 动画1：f2 从 -40 → -100（凹透镜弱化 → 接近平板）
-        self.play(f2_tracker.animate.set_value(-100.0), run_time=2.5)
-        self.wait(0.6)
+        self.play(f2_tracker.animate.set_value(-100.0), run_time=2.0)
+        self.wait(0.5)
 
         # 动画2：f2 → -20（凹透镜与凸透镜等强 → Phi=0，平板）
         flat_note = Text("当 Phi1 + Phi2 = 0：等效为平板（光线不偏折）", font=CJK, color=GREEN).scale(0.42)
@@ -433,6 +449,12 @@ class Ch10Kp3LensCombinationPower(Scene):
         # 动画4：回到原始 -40
         self.play(f2_tracker.animate.set_value(-40.0), run_time=1.5)
         self.wait(0.8)
+
+        # 移除 updater，便于干净 FadeOut
+        focal_dot.clear_updaters()
+        f_eq_label.clear_updaters()
+        f2_num.clear_updaters()
+        phi_den.clear_updaters()
 
         self.play(FadeOut(VGroup(
             ax_line, lens_line, focal_dot, f_eq_label,

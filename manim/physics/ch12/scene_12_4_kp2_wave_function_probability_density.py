@@ -40,7 +40,7 @@ class Ch12Kp2WaveFunctionProbabilityDensity(Scene):
         # ═══════════════════════════════════════════════════════════
         # Step 2: 生活类比（天气预报 → 概率）
         # ═══════════════════════════════════════════════════════════
-        a1 = Text("天气预报说"明天降雨概率 70%"——", font=CJK).scale(0.48)
+        a1 = Text("天气预报说「明天降雨概率 70%」——", font=CJK).scale(0.48)
         a2 = Text("量子力学对粒子位置的描述也是概率性的：", font=CJK).scale(0.48)
         a3 = Text("波函数 ψ(x) 本身不是位置，", font=CJK, color=YELLOW).scale(0.48)
         a4 = Text("|ψ(x)|² 才是在 x 处找到粒子的概率密度。", font=CJK, color=YELLOW).scale(0.48)

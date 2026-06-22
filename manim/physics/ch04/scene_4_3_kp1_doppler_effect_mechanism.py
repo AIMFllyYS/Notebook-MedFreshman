@@ -317,16 +317,15 @@ class Ch04Kp1DopplerEffectMechanism(Scene):
 
         big_formula = MathTex(
             r"\nu'", r"=",
-            r"\frac{u", r"\pm", r"v_R}",
-            r"{u", r"\mp", r"v_S}",
-            r"\nu"
+            r"\frac{u \pm v_R}{u \mp v_S}",
+            r"\nu",
+            substrings_to_isolate=[r"\pm", r"\mp"],
         ).scale(1.1)
         big_formula.next_to(unified_title, DOWN, buff=0.5)
-        # 高亮 ± 符号
-        big_formula[3].set_color(GREEN)   # ±
-        big_formula[6].set_color(RED)     # ∓
-        big_formula[0].set_color(YELLOW)
-        big_formula[8].set_color(YELLOW)
+        # 高亮 ± / ∓ 符号与 nu'
+        big_formula.set_color_by_tex(r"\pm", GREEN)
+        big_formula.set_color_by_tex(r"\mp", RED)
+        big_formula.set_color_by_tex(r"\nu'", YELLOW)
 
         self.play(Write(big_formula))
         self.wait(0.8)

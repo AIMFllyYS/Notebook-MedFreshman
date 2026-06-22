@@ -213,7 +213,7 @@ class Ch07Ex2ChargedSphereCapacitorEnergy(Scene):
         # 注释：E 不变（因 q 不变，σ 不变，E=σ/ε₀ 不变）
         e_note = VGroup(
             Text("电量 q 守恒", font=CJK, color=GREEN).scale(0.40),
-            MathTex(r"\Rightarrow \sigma = q/S \text{ 不变}", color=GREEN).scale(0.68),
+            MathTex(r"\Rightarrow \sigma = q/S", color=GREEN).scale(0.68),
         ).arrange(RIGHT, buff=0.12)
         e_note2 = VGroup(
             MathTex(r"\Rightarrow E = \sigma/\varepsilon_0", color=GREEN).scale(0.68),

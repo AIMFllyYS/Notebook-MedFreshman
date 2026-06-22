@@ -41,23 +41,23 @@ class Ch13Kp2ThreeDecayTypes(Scene):
         subtitle = Text("第13章 原子核和放射性 · 13.2", font=CJK, color=WHITE).scale(0.38)
         subtitle.next_to(title, DOWN, buff=0.18)
         self.play(Write(title), FadeIn(subtitle))
-        self.wait(1.2)
+        self.wait(1.0)
         self.play(FadeOut(subtitle))
 
         # ══════════════════════════════════════════════════════════════════════
         # Step 2: 生活类比引入
         # ══════════════════════════════════════════════════════════════════════
-        ana1 = Text("不稳定的原子核就像"超重的石头"——", font=CJK).scale(0.50)
+        ana1 = Text("不稳定的原子核就像「超重的石头」——", font=CJK).scale(0.50)
         ana2 = Text("为了回到更稳定的状态，它会自动抛出粒子或释放能量，", font=CJK).scale(0.50)
         ana3 = Text("这个过程叫做放射性衰变，共有三种类型：α、β、γ 衰变。", font=CJK, color=YELLOW).scale(0.50)
         ana = VGroup(ana1, ana2, ana3).arrange(DOWN, buff=0.28).next_to(title, DOWN, buff=0.55)
         ana.scale_to_fit_width(12.5)
         self.play(FadeIn(ana1))
-        self.wait(0.6)
+        self.wait(0.4)
         self.play(FadeIn(ana2))
-        self.wait(0.6)
+        self.wait(0.4)
         self.play(FadeIn(ana3))
-        self.wait(1.6)
+        self.wait(1.2)
         self.play(FadeOut(ana))
 
         # ══════════════════════════════════════════════════════════════════════
@@ -94,9 +94,9 @@ class Ch13Kp2ThreeDecayTypes(Scene):
         )
         parent_label.move_to(parent_box.get_center())
 
-        self.play(Create(bg_boxes), FadeIn(ax_n), FadeIn(ax_z))
-        self.play(Create(parent_box), Write(parent_label))
-        self.wait(1.0)
+        self.play(Create(bg_boxes), FadeIn(ax_n), FadeIn(ax_z),
+                  Create(parent_box), Write(parent_label))
+        self.wait(0.6)
 
         # ══════════════════════════════════════════════════════════════════════
         # Step 4: α 衰变
@@ -124,9 +124,9 @@ class Ch13Kp2ThreeDecayTypes(Scene):
             alpha_text.animate.move_to(alpha_fly_target + np.array([0.3, 0.25, 0])),
             Create(daughter_a_box),
             Write(daughter_a_label),
-            run_time=1.6
+            run_time=1.3
         )
-        self.wait(0.5)
+        self.wait(0.3)
 
         # 衰变方程（右侧显示）
         eq_alpha = MathTex(
@@ -143,11 +143,10 @@ class Ch13Kp2ThreeDecayTypes(Scene):
         eq_alpha.to_edge(RIGHT).next_to(alpha_title, DOWN, buff=0.35)
         eq_alpha.shift(LEFT * 0.3)
 
-        self.play(Write(eq_alpha))
         note_a = Text("子核在核素图中向左下移动（Z-2, A-4）", font=CJK, color=ALPHA_COLOR).scale(0.38)
         note_a.next_to(eq_alpha, DOWN, buff=0.25)
-        self.play(FadeIn(note_a))
-        self.wait(1.8)
+        self.play(Write(eq_alpha), FadeIn(note_a))
+        self.wait(1.3)
 
         # 清除 α 相关（保留核素图背景）
         self.play(FadeOut(VGroup(alpha_dot, alpha_text, daughter_a_box, daughter_a_label,
@@ -171,10 +170,9 @@ class Ch13Kp2ThreeDecayTypes(Scene):
                          color=YELLOW, stroke_width=2.5, max_tip_length_to_length_ratio=0.35)
 
         self.play(FadeIn(neutron), FadeIn(n_label))
-        self.wait(0.5)
-        self.play(GrowArrow(arrow_np), Transform(neutron, proton.copy()),
-                  Transform(n_label, p_label.copy()), FadeIn(proton), FadeIn(p_label))
-        self.wait(0.5)
+        self.wait(0.3)
+        self.play(GrowArrow(arrow_np), FadeIn(proton), FadeIn(p_label))
+        self.wait(0.3)
 
         # β⁻粒子和反中微子飞出
         electron = Dot(color=BETA_COLOR, radius=0.10).move_to(micro_center)
@@ -188,9 +186,8 @@ class Ch13Kp2ThreeDecayTypes(Scene):
             e_label.animate.shift(np.array([1.8, -1.0, 0])),
             antinu.animate.move_to(micro_center + np.array([1.5, 1.2, 0])),
             nu_label.animate.shift(np.array([1.5, 1.2, 0])),
-            run_time=1.4
+            run_time=1.2
         )
-        self.wait(0.4)
 
         # 子核：Z+1, N-1（A不变）
         Zd_bm, Nd_bm = Z0 + 1, N0 - 1
@@ -198,7 +195,6 @@ class Ch13Kp2ThreeDecayTypes(Scene):
         daughter_bm_label = MathTex(r"{}^A_{Z+1}Y", color=DAUGHTER_COLOR).scale(0.48)
         daughter_bm_label.move_to(daughter_bm_box.get_center())
         self.play(Create(daughter_bm_box), Write(daughter_bm_label))
-        self.wait(0.4)
 
         # 衰变方程
         eq_betam = MathTex(
@@ -212,12 +208,10 @@ class Ch13Kp2ThreeDecayTypes(Scene):
         eq_betam[2].set_color(DAUGHTER_COLOR)
         eq_betam[3].set_color(BETA_COLOR)
         eq_betam.to_edge(RIGHT).next_to(betam_title, DOWN, buff=0.35).shift(LEFT * 0.2)
-        self.play(Write(eq_betam))
-
-        note_bm = Text("子核在核素图中向右移动（Z+1，A不变）", font=CJK, color=BETA_COLOR).scale(0.38)
+        note_bm = Text("子核在核素图中向左上方移动（Z+1, N-1, A不变）", font=CJK, color=BETA_COLOR).scale(0.38)
         note_bm.next_to(eq_betam, DOWN, buff=0.22)
-        self.play(FadeIn(note_bm))
-        self.wait(1.8)
+        self.play(Write(eq_betam), FadeIn(note_bm))
+        self.wait(1.3)
 
         self.play(FadeOut(VGroup(neutron, proton, n_label, p_label, arrow_np,
                                   electron, antinu, e_label, nu_label,
@@ -263,21 +257,19 @@ class Ch13Kp2ThreeDecayTypes(Scene):
         ec_label.next_to(eq_ec, LEFT, buff=0.25)
 
         self.play(Write(eq_betap), FadeIn(betap_label))
-        self.wait(0.8)
+        self.wait(0.5)
         self.play(Write(eq_ec), FadeIn(ec_label))
-        self.wait(0.6)
+        self.wait(0.4)
 
-        # 子核位置（Z-1, N+1，在核素图向左移动）
+        # 子核位置（Z-1, N+1，在核素图向右下方移动）
         Zd_bp, Nd_bp = Z0 - 1, N0 + 1
         daughter_bp_box = nuclide_box(Zd_bp, Nd_bp, color=DAUGHTER_COLOR, size=SIZE, origin=ORIG)
         daughter_bp_label = MathTex(r"{}^A_{Z-1}Y", color=DAUGHTER_COLOR).scale(0.48)
         daughter_bp_label.move_to(daughter_bp_box.get_center())
-        self.play(Create(daughter_bp_box), Write(daughter_bp_label))
-
-        note_bp = Text("子核在核素图中向左移动（Z-1，A不变）", font=CJK, color=YELLOW).scale(0.38)
+        note_bp = Text("子核在核素图中向右下方移动（Z-1, N+1, A不变）", font=CJK, color=YELLOW).scale(0.38)
         note_bp.next_to(eq_ec, DOWN, buff=0.28)
-        self.play(FadeIn(note_bp))
-        self.wait(1.8)
+        self.play(Create(daughter_bp_box), Write(daughter_bp_label), FadeIn(note_bp))
+        self.wait(1.3)
 
         self.play(FadeOut(VGroup(eq_betap, betap_label, eq_ec, ec_label,
                                   daughter_bp_box, daughter_bp_label,
@@ -299,7 +291,7 @@ class Ch13Kp2ThreeDecayTypes(Scene):
         star_label = MathTex(r"{}^A_Z X^*", color=GAMMA_COLOR).scale(0.48)
         star_label.next_to(excited_dashed, UP, buff=0.08)
         self.play(Create(excited_dashed), FadeIn(star_label))
-        self.wait(0.5)
+        self.wait(0.3)
 
         # 能级图（右侧）
         level_center = np.array([2.0, -0.5, 0])
@@ -319,10 +311,8 @@ class Ch13Kp2ThreeDecayTypes(Scene):
         gamma_photon_label.next_to(trans_arrow, LEFT, buff=0.15)
 
         energy_grp = VGroup(e_high, e_low, excited_lbl, ground_lbl, trans_arrow, gamma_photon_label)
-        self.play(Create(e_high), FadeIn(excited_lbl))
-        self.play(Create(e_low), FadeIn(ground_lbl))
+        self.play(Create(e_high), FadeIn(excited_lbl), Create(e_low), FadeIn(ground_lbl))
         self.play(GrowArrow(trans_arrow), FadeIn(gamma_photon_label))
-        self.wait(0.6)
 
         # γ光子从核素位置射出
         gamma_ray = Arrow(
@@ -334,7 +324,7 @@ class Ch13Kp2ThreeDecayTypes(Scene):
         gamma_ray_lbl = MathTex(r"\gamma", color=GAMMA_COLOR).scale(0.60)
         gamma_ray_lbl.next_to(gamma_ray.get_end(), UP + RIGHT, buff=0.08)
         self.play(GrowArrow(gamma_ray), FadeIn(gamma_ray_lbl))
-        self.wait(0.5)
+        self.wait(0.3)
 
         # 衰变方程
         eq_gamma = MathTex(
@@ -347,12 +337,10 @@ class Ch13Kp2ThreeDecayTypes(Scene):
         eq_gamma[2].set_color(DAUGHTER_COLOR)
         eq_gamma[3].set_color(GAMMA_COLOR)
         eq_gamma.to_edge(RIGHT).next_to(gamma_title, DOWN, buff=0.35).shift(LEFT * 0.2)
-        self.play(Write(eq_gamma))
-
         note_g = Text("Z 和 A 均不变，只是核从激发态跃迁到基态", font=CJK, color=GAMMA_COLOR).scale(0.38)
         note_g.next_to(eq_gamma, DOWN, buff=0.22)
-        self.play(FadeIn(note_g))
-        self.wait(1.8)
+        self.play(Write(eq_gamma), FadeIn(note_g))
+        self.wait(1.3)
 
         self.play(FadeOut(VGroup(excited_dashed, star_label, energy_grp,
                                   gamma_ray, gamma_ray_lbl, eq_gamma, note_g, gamma_title)))
@@ -401,14 +389,13 @@ class Ch13Kp2ThreeDecayTypes(Scene):
             Text("磁场 B 向纸面外", font=CJK, color=GRAY).scale(0.35)
         ).arrange(RIGHT, buff=0.12).move_to(LEFT * 2.0 + DOWN * 1.6)
 
-        self.play(GrowArrow(alpha_ray), FadeIn(alpha_pen))
-        self.wait(0.5)
-        self.play(GrowArrow(beta_ray), FadeIn(beta_pen))
-        self.wait(0.5)
-        self.play(GrowArrow(gamma_ray2), FadeIn(gamma_pen))
-        self.wait(0.5)
-        self.play(FadeIn(field_label))
-        self.wait(1.6)
+        # 注意：CurvedArrow 是 VMobject，GrowArrow 在 manim 0.20.1 下会因 scale_tips 报错，改用 Create
+        self.play(Create(alpha_ray), FadeIn(alpha_pen))
+        self.wait(0.3)
+        self.play(Create(beta_ray), FadeIn(beta_pen))
+        self.wait(0.3)
+        self.play(GrowArrow(gamma_ray2), FadeIn(gamma_pen), FadeIn(field_label))
+        self.wait(1.2)
 
         # 穿透力比较标尺
         comparison_grp = VGroup(
@@ -420,7 +407,7 @@ class Ch13Kp2ThreeDecayTypes(Scene):
             MathTex(r"\gamma", color=GAMMA_COLOR).scale(0.80),
         ).arrange(RIGHT, buff=0.20).move_to(DOWN * 2.6)
         self.play(FadeIn(comparison_grp))
-        self.wait(1.8)
+        self.wait(1.3)
 
         self.play(FadeOut(VGroup(source, source_label,
                                   alpha_ray, beta_ray, gamma_ray2,
@@ -469,21 +456,15 @@ class Ch13Kp2ThreeDecayTypes(Scene):
 
         box = SurroundingRectangle(summary, color=BLUE, buff=0.28, corner_radius=0.14)
 
-        self.play(Write(s_alpha))
-        self.wait(0.5)
-        self.play(Write(s_betam))
-        self.wait(0.5)
-        self.play(Write(s_betap))
-        self.wait(0.5)
-        self.play(Write(s_gamma))
-        self.wait(0.5)
-        self.play(FadeIn(s_pen))
-        self.wait(0.4)
-        self.play(Create(box))
-        self.wait(2.2)
+        self.play(Write(s_alpha), run_time=1.0)
+        self.play(Write(s_betam), run_time=1.0)
+        self.play(Write(s_betap), run_time=1.0)
+        self.play(Write(s_gamma), run_time=1.0)
+        self.play(FadeIn(s_pen), Create(box))
+        self.wait(2.0)
 
         self.play(FadeOut(VGroup(s_title, summary, box, title)))
-        self.wait(0.5)
+        self.wait(0.3)
 
 
 REGISTER = [

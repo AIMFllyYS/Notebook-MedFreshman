@@ -30,7 +30,7 @@ REGISTER = [
 def make_field_line(
     cx: float, cy: float, rx: float, ry: float,
     t_start: float, t_end: float,
-    color=WHITE, stroke_width: float = 2.0, n_points: int = 80
+    color=WHITE, stroke_width: float = 2.0, n_points: int = 24
 ) -> VMobject:
     """返回一段椭圆弧 VMobject，用于拼接磁感应线。"""
     pts = []
@@ -212,10 +212,10 @@ class Ch08Kp2MagneticFluxGaussTheorem(Scene):
                          stroke_width=3, max_tip_length_to_length_ratio=0.28)
 
         normal_arr = always_redraw(make_normal)
-        n_label = always_redraw(lambda: MathTex(r"\hat{n}", color=CYAN).scale(0.6).move_to(
+        n_label = MathTex(r"\hat{n}", color=CYAN).scale(0.6)
+        n_label.add_updater(lambda m: m.move_to(
             np.array([-0.5 + 1.05 * math.sin(theta_vt.get_value()),
-                      -0.5 + 1.05 * math.cos(theta_vt.get_value()), 0])
-        ))
+                      -0.5 + 1.05 * math.cos(theta_vt.get_value()), 0])))
 
         # θ 弧度标注
         def make_theta_arc():
@@ -229,23 +229,27 @@ class Ch08Kp2MagneticFluxGaussTheorem(Scene):
             return arc
 
         theta_arc = always_redraw(make_theta_arc)
-        theta_lbl = always_redraw(lambda: MathTex(r"\theta", color=ORANGE).scale(0.55).move_to(
+        theta_lbl = MathTex(r"\theta", color=ORANGE).scale(0.55)
+        theta_lbl.add_updater(lambda m: m.move_to(
             np.array([-0.5 + 0.62 * math.sin(theta_vt.get_value() / 2),
-                      -0.5 + 0.62 * math.cos(theta_vt.get_value() / 2), 0])
-        ))
+                      -0.5 + 0.62 * math.cos(theta_vt.get_value() / 2), 0])))
 
-        # 实时数值显示
-        def make_flux_readout():
-            th = theta_vt.get_value()
-            val = B_FIXED * math.cos(th) * dS_FIXED
-            th_deg = math.degrees(th)
-            return VGroup(
-                MathTex(rf"\theta = {th_deg:.0f}^\circ", color=ORANGE).scale(0.60),
-                MathTex(rf"\cos\theta = {math.cos(th):.3f}", color=CYAN).scale(0.60),
-                MathTex(rf"d\Phi = {val:.3f}\ \mathrm{{Wb}}", color=GREEN).scale(0.65),
-            ).arrange(DOWN, buff=0.25, aligned_edge=LEFT).to_corner(UR, buff=0.55)
+        # 实时数值显示（用 DecimalNumber 更新器，避免每帧重建 MathTex 造成超时）
+        theta_num = DecimalNumber(0, num_decimal_places=0, unit=r"^\circ", color=ORANGE).scale(0.60)
+        theta_num.add_updater(lambda m: m.set_value(math.degrees(theta_vt.get_value())))
+        theta_row = VGroup(MathTex(r"\theta =", color=ORANGE).scale(0.60), theta_num).arrange(RIGHT, buff=0.12)
 
-        flux_readout = always_redraw(make_flux_readout)
+        cos_num = DecimalNumber(1.0, num_decimal_places=3, color=CYAN).scale(0.60)
+        cos_num.add_updater(lambda m: m.set_value(math.cos(theta_vt.get_value())))
+        cos_row = VGroup(MathTex(r"\cos\theta =", color=CYAN).scale(0.60), cos_num).arrange(RIGHT, buff=0.12)
+
+        flux_num = DecimalNumber(B_FIXED, num_decimal_places=3, color=GREEN).scale(0.65)
+        flux_num.add_updater(lambda m: m.set_value(B_FIXED * math.cos(theta_vt.get_value()) * dS_FIXED))
+        flux_row = VGroup(MathTex(r"d\Phi =", color=GREEN).scale(0.65), flux_num,
+                          MathTex(r"\mathrm{Wb}", color=GREEN).scale(0.55)).arrange(RIGHT, buff=0.12)
+
+        flux_readout = VGroup(theta_row, cos_row, flux_row).arrange(
+            DOWN, buff=0.25, aligned_edge=LEFT).to_corner(UR, buff=0.55)
 
         # 面积元高亮框
         ds_label = Text("面积元 dS（高亮绿色矩形）", font=CJK, color=GREEN).scale(0.40)
@@ -261,14 +265,11 @@ class Ch08Kp2MagneticFluxGaussTheorem(Scene):
         self.wait(0.8)
 
         # θ 从 0 扫到 80°
-        self.play(theta_vt.animate.set_value(math.radians(80)), run_time=3.5)
-        self.wait(0.8)
-        # 回到 0°
-        self.play(theta_vt.animate.set_value(0.0), run_time=2.0)
-        self.wait(0.5)
+        self.play(theta_vt.animate.set_value(math.radians(80)), run_time=2.0)
+        self.wait(0.6)
         # 到 45°
-        self.play(theta_vt.animate.set_value(math.radians(45)), run_time=1.5)
-        self.wait(1.2)
+        self.play(theta_vt.animate.set_value(math.radians(45)), run_time=1.2)
+        self.wait(1.0)
 
         zero_note = Text("θ=90° 时 cosθ=0，磁感线与面平行，磁通量为零！",
                          font=CJK, color=RED).scale(0.40).next_to(ds_label, UP, buff=0.18)
@@ -276,6 +277,9 @@ class Ch08Kp2MagneticFluxGaussTheorem(Scene):
         self.play(FadeIn(zero_note))
         self.wait(1.8)
 
+        # 清除更新器，便于淡出
+        for mob in (n_label, theta_lbl, theta_num, cos_num, flux_num):
+            mob.clear_updaters()
         self.play(FadeOut(VGroup(sec5_title, b_arrow, b_label, ds_label, zero_note,
                                  flux_readout)))
         self.remove(ds_rect, normal_arr, n_label, theta_arc, theta_lbl)
@@ -292,13 +296,13 @@ class Ch08Kp2MagneticFluxGaussTheorem(Scene):
         sphere_label = Text("封闭曲面 S", font=CJK, color=WHITE).scale(0.40)
         sphere_label.next_to(sphere_circle, RIGHT, buff=0.15)
 
-        # 磁铁（小，放在球面内部）
-        mn2 = Rectangle(width=0.55, height=0.30, color=RED,
-                        fill_opacity=0.9, fill_color=RED).shift(LEFT * 0.25 + DOWN * 0.45)
-        ms2 = Rectangle(width=0.55, height=0.30, color=BLUE_D,
-                        fill_opacity=0.9, fill_color=BLUE_D).shift(RIGHT * 0.25 + DOWN * 0.45)
-        ln2 = Text("N", font=CJK, color=WHITE).scale(0.38).move_to(mn2)
-        ls2 = Text("S", font=CJK, color=WHITE).scale(0.38).move_to(ms2)
+        # 磁铁（小，竖直放置：N 上 S 下，与"顶部穿出 / 底部穿入"的场线方向一致）
+        mn2 = Rectangle(width=0.40, height=0.34, color=RED,
+                        fill_opacity=0.9, fill_color=RED).move_to([0.0, -0.45 + 0.17, 0])
+        ms2 = Rectangle(width=0.40, height=0.34, color=BLUE_D,
+                        fill_opacity=0.9, fill_color=BLUE_D).move_to([0.0, -0.45 - 0.17, 0])
+        ln2 = Text("N", font=CJK, color=WHITE).scale(0.34).move_to(mn2)
+        ls2 = Text("S", font=CJK, color=WHITE).scale(0.34).move_to(ms2)
         inner_magnet = VGroup(mn2, ms2, ln2, ls2)
 
         self.play(Create(sphere_circle), FadeIn(sphere_label))
@@ -350,41 +354,39 @@ class Ch08Kp2MagneticFluxGaussTheorem(Scene):
         self.play(FadeIn(in_note))
         self.wait(0.8)
 
-        # ── 计数器动画 ────────────────────────────────────────
+        # ── 计数器动画（用 Integer 更新器，避免每帧重建 MathTex 造成超时）──
         count_out_vt = ValueTracker(0)
         count_in_vt = ValueTracker(0)
 
-        def make_counter():
-            n_out = int(count_out_vt.get_value())
-            n_in = int(count_in_vt.get_value())
-            total = n_out - n_in
-            g = VGroup(
-                VGroup(
-                    Text("穿出条数:", font=CJK, color=BLUE).scale(0.40),
-                    MathTex(rf"+{n_out}", color=BLUE).scale(0.65),
-                ).arrange(RIGHT, buff=0.12),
-                VGroup(
-                    Text("穿入条数:", font=CJK, color=RED).scale(0.40),
-                    MathTex(rf"-{n_in}", color=RED).scale(0.65),
-                ).arrange(RIGHT, buff=0.12),
-                VGroup(
-                    Text("合计:", font=CJK, color=GREEN if total == 0 else ORANGE).scale(0.40),
-                    MathTex(rf"{total:+d}", color=GREEN if total == 0 else ORANGE).scale(0.65),
-                ).arrange(RIGHT, buff=0.12),
-            ).arrange(DOWN, buff=0.22, aligned_edge=LEFT)
-            g.to_corner(DL, buff=0.55)
-            return g
+        out_num = Integer(0, color=BLUE).scale(0.65)
+        out_num.add_updater(lambda m: m.set_value(int(round(count_out_vt.get_value()))))
+        out_row = VGroup(Text("穿出条数:", font=CJK, color=BLUE).scale(0.40),
+                         MathTex(r"+", color=BLUE).scale(0.65), out_num).arrange(RIGHT, buff=0.10)
 
-        counter_display = always_redraw(make_counter)
+        in_num = Integer(0, color=RED).scale(0.65)
+        in_num.add_updater(lambda m: m.set_value(int(round(count_in_vt.get_value()))))
+        in_row = VGroup(Text("穿入条数:", font=CJK, color=RED).scale(0.40),
+                        MathTex(r"-", color=RED).scale(0.65), in_num).arrange(RIGHT, buff=0.10)
+
+        total_num = Integer(0, color=GREEN).scale(0.65)
+        total_num.add_updater(lambda m: m.set_value(
+            int(round(count_out_vt.get_value())) - int(round(count_in_vt.get_value()))))
+        total_row = VGroup(Text("合计:", font=CJK, color=GREEN).scale(0.40),
+                           total_num).arrange(RIGHT, buff=0.12)
+
+        counter_display = VGroup(out_row, in_row, total_row).arrange(
+            DOWN, buff=0.22, aligned_edge=LEFT).to_corner(DL, buff=0.55)
         self.add(counter_display)
         self.wait(0.3)
 
         # 穿出数目增加到 3
-        self.play(count_out_vt.animate.set_value(3), run_time=1.5)
+        self.play(count_out_vt.animate.set_value(3), run_time=1.2)
         self.wait(0.5)
         # 穿入数目增加到 3
-        self.play(count_in_vt.animate.set_value(3), run_time=1.5)
-        self.wait(1.2)
+        self.play(count_in_vt.animate.set_value(3), run_time=1.2)
+        self.wait(1.0)
+        for mob in (out_num, in_num, total_num):
+            mob.clear_updaters()
 
         equal_note = Text("穿出 = 穿入 —— 无论曲面如何，总磁通量恒为零！",
                           font=CJK, color=GREEN).scale(0.42).to_edge(DOWN, buff=0.55)
@@ -401,7 +403,7 @@ class Ch08Kp2MagneticFluxGaussTheorem(Scene):
         gauss_title = Text("磁场高斯定理", font=CJK, color=BLUE).scale(0.52).next_to(title, DOWN, buff=0.42)
 
         step_a_zh = Text("穿过任意封闭曲面的净磁通量……", font=CJK).scale(0.44)
-        step_a_tex = MathTex(r"\oiint_S \mathbf{B}\cdot\mathrm{d}\mathbf{S}",
+        step_a_tex = MathTex(r"\oint_S \mathbf{B}\cdot\mathrm{d}\mathbf{S}",
                              r"= 0").scale(0.92)
         step_a_tex[0].set_color(CYAN)
         step_a_tex[1].set_color(YELLOW)
@@ -409,9 +411,9 @@ class Ch08Kp2MagneticFluxGaussTheorem(Scene):
         step_b_zh = Text("…恒等于零。", font=CJK).scale(0.44)
 
         contrast_title = Text("与电场高斯定理对比：", font=CJK, color=WHITE).scale(0.44)
-        elec_gauss = MathTex(r"\oiint_S \mathbf{E}\cdot\mathrm{d}\mathbf{S}"
+        elec_gauss = MathTex(r"\oint_S \mathbf{E}\cdot\mathrm{d}\mathbf{S}"
                              r"= \frac{q_{\mathrm{enc}}}{\varepsilon_0}", color=ORANGE).scale(0.80)
-        mag_gauss = MathTex(r"\oiint_S \mathbf{B}\cdot\mathrm{d}\mathbf{S} = 0",
+        mag_gauss = MathTex(r"\oint_S \mathbf{B}\cdot\mathrm{d}\mathbf{S} = 0",
                             color=YELLOW).scale(0.80)
 
         grp_ab = VGroup(step_a_zh, step_a_tex, step_b_zh).arrange(DOWN, buff=0.35)
@@ -447,7 +449,7 @@ class Ch08Kp2MagneticFluxGaussTheorem(Scene):
             Text("在 N 极方向从磁铁穿出，", font=CJK).scale(0.44),
             Text("经外部空间绕行，再从 S 极方向穿入磁铁内部，形成闭合回路。", font=CJK).scale(0.44),
         ).arrange(DOWN, buff=0.18, aligned_edge=LEFT)
-        m4_tex = MathTex(r"\oiint_S \mathbf{B}\cdot\mathrm{d}\mathbf{S} = 0",
+        m4_tex = MathTex(r"\oint_S \mathbf{B}\cdot\mathrm{d}\mathbf{S} = 0",
                          r"\quad \Leftrightarrow \quad \nabla\cdot\mathbf{B} = 0",
                          color=YELLOW).scale(0.78)
         m4_note = Text("（积分形式          微分形式）", font=CJK, color=CYAN).scale(0.38)
@@ -484,7 +486,7 @@ class Ch08Kp2MagneticFluxGaussTheorem(Scene):
 
         sf2 = VGroup(
             Text("磁场高斯定理：", font=CJK, color=WHITE).scale(0.44),
-            MathTex(r"\oiint_S \mathbf{B}\cdot\mathrm{d}\mathbf{S} = 0", color=YELLOW).scale(0.90),
+            MathTex(r"\oint_S \mathbf{B}\cdot\mathrm{d}\mathbf{S} = 0", color=YELLOW).scale(0.90),
         ).arrange(RIGHT, buff=0.2)
 
         sf3 = VGroup(

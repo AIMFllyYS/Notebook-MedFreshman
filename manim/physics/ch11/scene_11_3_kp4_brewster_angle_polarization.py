@@ -491,7 +491,7 @@ class Ch11Kp4BrewsterAnglePolarization(Scene):
             lbl_t.move_to(np.array([xpos, base_y - 0.3, 0]))
             bar_lbls.add(lbl_t)
 
-            val_t = MathTex(r"\approx 0" if h < 0.01 else f"{h:.0%}", color=WHITE).scale(0.42)
+            val_t = MathTex(r"\approx 0" if h < 0.01 else rf"{h*100:.0f}\%", color=WHITE).scale(0.42)
             val_t.move_to(np.array([xpos, base_y + bar_height + 0.2, 0]))
             bar_vlbls.add(val_t)
 
