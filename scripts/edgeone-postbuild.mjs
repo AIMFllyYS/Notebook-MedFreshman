@@ -22,41 +22,59 @@ if (!existsSync(join(ROOT, ".edgeone"))) {
 
 const TARGET_BASE = join(ROOT, ".edgeone", "cloud-functions", "ssr-node");
 
-const INCLUDE_DIRS = [
-  "content",
+// 只为 edgeone.json includeFiles 实际匹配的路径创建占位文件
+const INCLUDE_PATTERNS = [
+  "content/chapters/**/*.md",
+  "content/examples/**/*.md",
+  "content/quiz/**/*.json",
+  "content/probability/**/*.md",
+  "content/chemistry/**/*.md",
+  "content/physics/**/*.md",
+  "content/maogai/**/*.md",
+  "content/modern-history/**/*.md",
+  "content/other/**/*.md",
+  "content/**/*.html",
 ];
 
-const EXTENSIONS = new Set([".md", ".json", ".html", ".ts", ".tsx", ".js", ".mjs"]);
+const EXTENSIONS = new Set([".md", ".json", ".html"]);
 
-function collectFiles(dir, acc = []) {
+function matchesPattern(relPath, pattern) {
+  const parts = pattern.split("**");
+  if (parts.length !== 2) return false;
+  const prefix = parts[0];
+  const suffix = parts[1];
+  if (!relPath.startsWith(prefix)) return false;
+  if (suffix && !relPath.endsWith(suffix)) return false;
+  return true;
+}
+
+function collectFiles(dir, base = dir, acc = []) {
   let entries;
   try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return acc; }
   for (const e of entries) {
     const full = join(dir, e.name);
     if (e.isDirectory()) {
-      collectFiles(full, acc);
+      collectFiles(full, base, acc);
     } else if (e.isFile() && EXTENSIONS.has(e.name.slice(e.name.lastIndexOf(".")))) {
-      acc.push(full);
+      const rel = relative(base, full).replace(/\\/g, "/");
+      if (INCLUDE_PATTERNS.some(p => matchesPattern(rel, p))) {
+        acc.push(full);
+      }
     }
   }
   return acc;
 }
 
+const files = collectFiles(join(ROOT, "content"), join(ROOT, "content"));
 let created = 0;
 
-for (const dir of INCLUDE_DIRS) {
-  const srcDir = join(ROOT, dir);
-  if (!existsSync(srcDir)) continue;
-
-  const files = collectFiles(srcDir);
-  for (const src of files) {
-    const rel = relative(join(ROOT, dir), src);
-    const dest = join(TARGET_BASE, dir, rel);
-    if (!existsSync(dest)) {
-      mkdirSync(join(dest, ".."), { recursive: true });
-      writeFileSync(dest, "");
-      created++;
-    }
+for (const src of files) {
+  const rel = relative(join(ROOT, "content"), src).replace(/\\/g, "/");
+  const dest = join(TARGET_BASE, "content", rel);
+  if (!existsSync(dest)) {
+    mkdirSync(join(dest, ".."), { recursive: true });
+    writeFileSync(dest, "");
+    created++;
   }
 }
 
