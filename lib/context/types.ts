@@ -19,6 +19,9 @@ export interface BuildContextResult {
 export const MODEL_TOKEN_LIMITS: Record<string, number> = {
   'deepseek-chat': 1_000_000,
   'deepseek-reasoner': 1_000_000,
+  'mimo-v2.5-pro': 1_000_000,
+  'mimo-v2.5': 1_000_000,
+  'mimo-v2-flash': 256_000,
   'default': 128_000,
 };
 

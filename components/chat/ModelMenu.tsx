@@ -106,6 +106,11 @@ export default function ModelMenu({ onOpenSettings }: { onOpenSettings?: () => v
                               思考
                             </span>
                           )}
+                          {m.vision && (
+                            <span className="shrink-0 rounded bg-[color-mix(in_srgb,var(--md-sys-color-tertiary)_15%,transparent)] px-1 text-[9px] text-[var(--md-sys-color-tertiary)]">
+                              视觉
+                            </span>
+                          )}
                         </span>
                         <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">
                           {m.hint}
