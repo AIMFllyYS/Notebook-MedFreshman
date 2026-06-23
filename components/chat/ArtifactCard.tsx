@@ -3,48 +3,136 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Loader, MonitorPlay, Code2, ChevronDown, ChevronUp, AlertTriangle, ExternalLink } from 'lucide-react';
 import { useArtifacts } from '@/lib/hooks/useArtifacts';
+import { useSettings } from '@/lib/hooks/useSettings';
+import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
+import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 
 /**
  * 消息内的交互演示卡片：直接挂在对话气泡里（用户视线所在处），而非顶部独立横幅。
  * - 生成中：实时流式显示 HTML 源码 + 进度，让用户看到"正在写代码"；
  * - 完成后：常驻、显眼的「打开演示」按钮（不会被折叠面板藏起来）。
- * 通过 artifactId 反应式订阅 useArtifacts —— 该 id 在工具调用伊始即下发，故全程可见。
- * artifact 事件通过主 /api/chat SSE 流内联推送，无需独立 SSE 端点。
+ * artifact HTML 通过独立 /api/artifact SSE 流生成，完成后才持久化到 useArtifacts。
  */
-export default function ArtifactCard({ artifactId }: { artifactId: string }) {
+export default function ArtifactCard({
+  artifactId,
+  title: titleProp,
+  prompt,
+  autoStart = false,
+}: {
+  artifactId: string;
+  title?: string;
+  prompt?: string;
+  autoStart?: boolean;
+}) {
   const art = useArtifacts((s) => s.byId[artifactId]);
   const openViewer = useArtifacts((s) => s.openViewer);
-  const [showCode, setShowCode] = useState(false);
+  const saveDone = useArtifacts((s) => s.saveDone);
+  const [status, setStatus] = useState<'idle' | 'streaming' | 'done' | 'error'>('idle');
+  const [streamHtml, setStreamHtml] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [showCode, setShowCode] = useState(autoStart);
   const preRef = useRef<HTMLPreElement>(null);
+  const startedRef = useRef(false);
 
-  const status = art?.status;
+  const title = titleProp || art?.title || '交互演示';
+  const html = streamHtml || art?.html || '';
   const streaming = status === 'streaming';
-  const done = status === 'done';
+  const preparing = autoStart && !art && status === 'idle';
+  const done = status === 'done' || art?.status === 'done';
   const errored = status === 'error';
-  // artifact 已持久化到 IndexedDB：刷新后从存储恢复，不再"已失效"。
-  // 仅在极旧消息（迁移前）或 prune 后才会 expired。
-  const expired = !art;
-
-  // 生成中默认展开源码以呈现“流式输出”；完成后默认收起，把焦点交给「打开演示」按钮。
-  useEffect(() => {
-    if (streaming) setShowCode(true);
-    if (done) setShowCode(false);
-  }, [streaming, done]);
+  const expired = !art && !streaming && !preparing && !done && !autoStart;
 
   // 流式时自动滚到底部
   useEffect(() => {
     if (showCode && preRef.current) preRef.current.scrollTop = preRef.current.scrollHeight;
-  }, [art?.html, showCode]);
+  }, [html, showCode]);
+
+  useEffect(() => {
+    if (!autoStart || startedRef.current || art || !prompt) return;
+    const abortController = new AbortController();
+    startedRef.current = true;
+    setStatus('streaming');
+    setShowCode(true);
+    setError(null);
+    setStreamHtml('');
+
+    const settings = useSettings.getState();
+    const isCustom = settings.selectedModelId === CUSTOM_MODEL_ID;
+
+    (async () => {
+      try {
+        const response = await fetch('/api/artifact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: artifactId,
+            title,
+            prompt,
+            modelId: settings.selectedModelId,
+            customProvider: isCustom
+              ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: settings.customModelId }
+              : undefined,
+          }),
+          signal: abortController.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`生成请求失败: ${response.status} ${response.statusText}`);
+        }
+
+        const reader = response.body?.getReader();
+        if (!reader) throw new Error('流读取失败');
+        const decoder = new TextDecoder('utf-8');
+        let buffer = '';
+        let htmlBuf = '';
+
+        while (true) {
+          const { done: streamDone, value } = await reader.read();
+          if (streamDone) break;
+          buffer += decoder.decode(value, { stream: true });
+          const parsed = parseSseJsonEvents(buffer);
+          buffer = parsed.remaining;
+
+          for (const event of parsed.events) {
+            if (event.type === 'ping') continue;
+            if (event.type !== 'artifact' || event.id !== artifactId) continue;
+            if (event.status === 'start') {
+              setStatus('streaming');
+              setShowCode(true);
+            } else if (event.status === 'delta') {
+              htmlBuf += event.delta || '';
+              setStreamHtml(htmlBuf);
+            } else if (event.status === 'done') {
+              const finalHtml = event.html || htmlBuf;
+              htmlBuf = finalHtml;
+              setStreamHtml(finalHtml);
+              setStatus('done');
+              setShowCode(true);
+              saveDone(artifactId, title, finalHtml);
+            } else if (event.status === 'error') {
+              setStatus('error');
+              setError(event.message || '交互演示生成失败');
+            }
+          }
+        }
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') return;
+        setStatus('error');
+        setError(err instanceof Error ? err.message : '交互演示生成失败');
+      }
+    })();
+
+    return () => abortController.abort();
+  }, [artifactId, art, autoStart, prompt, saveDone, title]);
 
   const openExternal = () => {
-    if (!art?.html) return;
-    const url = URL.createObjectURL(new Blob([art.html], { type: 'text/html' }));
+    if (!html) return;
+    const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
     window.open(url, '_blank', 'noopener');
     setTimeout(() => URL.revokeObjectURL(url), 60000);
   };
 
-  const title = art?.title || '交互演示';
-  const codeChars = art?.html.length ?? 0;
+  const codeChars = html.length;
 
   return (
     <div
@@ -56,7 +144,7 @@ export default function ArtifactCard({ artifactId }: { artifactId: string }) {
     >
       {/* 头部：状态 + 主操作 */}
       <div className="flex flex-wrap items-center gap-2 px-3 py-2.5">
-        {streaming ? (
+        {streaming || preparing ? (
           <Loader size={15} className="animate-spin shrink-0" style={{ color: 'var(--md-sys-color-primary)' }} />
         ) : errored || expired ? (
           <AlertTriangle size={15} className="shrink-0" style={{ color: 'var(--md-sys-color-error)' }} />
@@ -67,7 +155,7 @@ export default function ArtifactCard({ artifactId }: { artifactId: string }) {
           className="min-w-0 flex-1 truncate text-[12.5px] font-semibold"
           style={{ color: expired ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary-container)' }}
         >
-          {streaming
+          {streaming || preparing
             ? `正在生成交互演示：${title}…`
             : errored
               ? '交互演示生成失败'
@@ -88,8 +176,23 @@ export default function ArtifactCard({ artifactId }: { artifactId: string }) {
         )}
       </div>
 
+      {/* 生成依据（prompt 参数展示） */}
+      {prompt && (streaming || preparing || done) && (
+        <div
+          className="px-3 py-1.5 text-[11px]"
+          style={{
+            color: 'var(--md-sys-color-on-surface-variant)',
+            background: 'color-mix(in srgb, var(--md-sys-color-primary) 6%, transparent)',
+            borderBottom: '1px solid color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent)',
+          }}
+        >
+          <span style={{ fontWeight: 600 }}>生成依据：</span>
+          {prompt}
+        </div>
+      )}
+
       {/* 生成进度（流式时）/ 代码切换条 */}
-      {(streaming || done) && (
+      {(streaming || preparing || done) && (
         <div
           className="flex items-center gap-2 border-t px-3 py-1.5"
           style={{ borderColor: 'color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent)' }}
@@ -104,7 +207,7 @@ export default function ArtifactCard({ artifactId }: { artifactId: string }) {
             {showCode ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
           </button>
           <span className="text-[11px]" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
-            {streaming ? `生成中 · 已写入 ${codeChars} 字符` : `${codeChars} 字符`}
+            {streaming || preparing ? `生成中 · 已写入 ${codeChars} 字符` : `${codeChars} 字符`}
           </span>
           {done && (
             <button
@@ -121,7 +224,7 @@ export default function ArtifactCard({ artifactId }: { artifactId: string }) {
       )}
 
       {/* 流式源码 */}
-      {showCode && (streaming || done) && (
+      {showCode && (streaming || preparing || done) && (
         <pre
           ref={preRef}
           className="hide-scrollbar m-0 max-h-[40vh] overflow-auto px-3 py-2 text-[11px] leading-relaxed"
@@ -133,13 +236,13 @@ export default function ArtifactCard({ artifactId }: { artifactId: string }) {
             color: 'var(--md-sys-color-on-surface-variant)',
           }}
         >
-          {art?.html || '正在生成 HTML…'}
+          {html || '正在生成 HTML…'}
         </pre>
       )}
 
       {errored && (
         <div className="px-3 pb-3 text-[12px]" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
-          该演示生成出错，可让助教重新生成，或改用文字讲解。
+          {error || '该演示生成出错，可让助教重新生成，或改用文字讲解。'}
         </div>
       )}
     </div>

@@ -1,34 +1,15 @@
 import { useState, useCallback, useRef } from 'react';
 import { useChatHistory } from './useChatHistory';
 import { useSettings } from './useSettings';
-import { useArtifacts } from './useArtifacts';
 import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
 import type { ChatMessage, ChatContext, ChatOptions, ToolCallBlock } from '@/lib/types/chat';
 import { parseXmlTags } from '@/lib/utils/xmlParser';
+import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 
 interface SendMessageOptions {
   quotedText?: string;
   enableThinking?: boolean;
   enableSearch?: boolean;
-}
-
-/** 解析 SSE 文本行，提取 JSON 事件 */
-function parseSseLines(buffer: string): { events: any[]; remaining: string } {
-  const lines = buffer.split('\n');
-  const remaining = lines.pop() || '';
-  const events: any[] = [];
-
-  for (const line of lines) {
-    if (!line.startsWith('data:')) continue;
-    const data = line.slice(5).trim();
-    if (!data || data === '[DONE]') continue;
-    try {
-      events.push(JSON.parse(data));
-    } catch {
-      // 忽略解析失败的行
-    }
-  }
-  return { events, remaining };
 }
 
 export function useChat(chatContext: ChatContext, options?: ChatOptions) {
@@ -132,6 +113,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
         let contentBuf = '';
         let reasoningBuf = '';
         const toolCallsMap = new Map<string, ToolCallBlock>();
+        let stallChecker: ReturnType<typeof setInterval> | null = null;
 
         try {
           const settings = useSettings.getState();
@@ -170,13 +152,23 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
           const decoder = new TextDecoder('utf-8');
           let buffer = '';
 
+          // 前端 stall 超时检测：60s 无任何 SSE 事件视为连接断开
+          let lastEventTime = Date.now();
+          stallChecker = setInterval(() => {
+            if (Date.now() - lastEventTime > 60000) {
+              abortController.abort();
+            }
+          }, 5000);
+
           while (true) {
             const { done, value } = await reader.read();
             if (done) break;
 
             buffer += decoder.decode(value, { stream: true });
-            const { events, remaining } = parseSseLines(buffer);
+            const { events, remaining, hadActivity } = parseSseJsonEvents(buffer);
             buffer = remaining;
+
+            if (hadActivity) lastEventTime = Date.now();
 
             for (const event of events) {
               switch (event.type) {
@@ -200,9 +192,13 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                       arguments: event.args || {},
                       status: 'running',
                     };
-                    // renderInteractive 在 call 阶段即带回 artifactId → 消息内卡片可从一开始就流式展示
+                    // renderInteractive 带回 artifactId/title/prompt，卡片随后独立请求 /api/artifact。
                     if (event.meta && typeof event.meta.artifactId === 'string') {
                       tc.artifactId = event.meta.artifactId;
+                    }
+                    if (event.name === 'renderInteractive') {
+                      if (event.args?.title) tc.title = String(event.args.title);
+                      if (event.args?.prompt) tc.prompt = String(event.args.prompt);
                     }
                     toolCallsMap.set(tc.id, tc);
                     updateMessage(sessionId!, assistantId, {
@@ -222,18 +218,6 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                     }
                   }
                   break;
-
-                case 'artifact': {
-                  const a = useArtifacts.getState();
-                  if (event.status === 'start') {
-                    a.start(event.id, event.title || '交互演示');
-                  }
-                  // delta/done/error 事件由主 SSE 流内联推送（不再需要独立 /api/artifact-stream 连接）
-                  else if (event.status === 'delta') a.append(event.id, event.delta || '');
-                  else if (event.status === 'done') a.finish(event.id, event.html);
-                  else if (event.status === 'error') a.fail(event.id);
-                  break;
-                }
 
                 case 'error':
                   setError(event.message || '发生未知错误');
@@ -273,6 +257,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
             setError(message);
           }
         } finally {
+          if (stallChecker) clearInterval(stallChecker);
           loadingRef.current = false;
           setIsLoading(false);
           abortRef.current = null;

@@ -58,7 +58,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
             {message.toolCalls
               ?.filter((tc) => tc.name === 'renderInteractive' && tc.artifactId)
               .map((tc) => (
-                <ArtifactCard key={tc.artifactId} artifactId={tc.artifactId!} />
+                <ArtifactCard
+                  key={tc.artifactId}
+                  artifactId={tc.artifactId!}
+                  title={tc.title}
+                  prompt={tc.prompt}
+                  autoStart={!!isStreaming}
+                />
               ))}
           </>
         )}

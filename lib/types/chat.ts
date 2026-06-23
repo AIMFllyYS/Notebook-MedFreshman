@@ -20,6 +20,10 @@ export interface ToolCallBlock {
   cacheHit?: boolean;
   /** renderInteractive 专用：生成的交互产物 id（点击「查看」打开弹窗）。 */
   artifactId?: string;
+  /** renderInteractive 专用：演示标题。 */
+  title?: string;
+  /** renderInteractive 专用：生成时传入的 prompt 参数，用于前端展示生成依据。 */
+  prompt?: string;
 }
 
 export interface ChatMessage {
