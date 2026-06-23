@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Sparkles } from 'lucide-react';
+import { Lightbulb, HelpCircle } from 'lucide-react';
 
 interface FollowUpQuestionsProps {
   questions: string[];
@@ -17,7 +17,7 @@ export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({ questions,
   return (
     <div className="followup-card">
       <div className="followup-header">
-        <Sparkles size={14} style={{ color: 'var(--md-sys-color-primary)' }} />
+        <Lightbulb size={14} style={{ color: 'var(--md-sys-color-primary)' }} />
         <span className="followup-title">{title}</span>
       </div>
       <div className="followup-list">
@@ -28,7 +28,7 @@ export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({ questions,
             className="followup-btn"
             type="button"
           >
-            <Sparkles size={14} style={{ color: 'var(--md-sys-color-primary)', flexShrink: 0 }} />
+            <HelpCircle size={14} style={{ color: 'var(--md-sys-color-primary)', flexShrink: 0 }} />
             <span className="followup-btn-text">{question}</span>
           </button>
         ))}

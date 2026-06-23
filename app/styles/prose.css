@@ -667,6 +667,12 @@
   gap: 6px;
   margin-bottom: 10px;
 }
+.followup-header svg {
+  display: inline-block;
+  margin: 0;
+  max-width: none;
+  flex-shrink: 0;
+}
 .followup-title {
   font-size: 12px;
   font-weight: 600;
@@ -690,6 +696,11 @@
   cursor: pointer;
   text-align: left;
   transition: all var(--duration-fast) var(--ease-out);
+}
+.followup-btn svg {
+  display: inline-block;
+  margin: 0;
+  max-width: none;
 }
 .followup-btn:hover {
   background: var(--md-sys-color-primary-container);
