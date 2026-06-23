@@ -136,6 +136,10 @@
   --md-sys-elevation-level4: 0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 6px 10px 4px rgba(0, 0, 0, 0.15);
   --md-sys-elevation-level5: 0px 4px 4px 0px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15);
 
+  /* Glass morphism tokens */
+  --glass-bg: rgba(19, 19, 24, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.12);
+
   /* State Layers */
   --md-sys-state-hover: 0.08;
   --md-sys-state-focus: 0.12;
@@ -250,6 +254,7 @@
 
   /* Glass background for light theme */
   --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(0, 0, 0, 0.08);
 
   /* ── 兼容层：浅色模式覆盖 ────────────────────────────── */
   --bg-app: var(--md-sys-color-background);

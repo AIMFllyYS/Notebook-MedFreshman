@@ -467,20 +467,32 @@
 /* ── 滚动到底部按钮 ───────────────────────────── */
 .chat-scroll-btn {
   position: absolute;
-  bottom: 80px;
+  bottom: 100px;
   right: 20px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-primary);
-  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--glass-bg);
+  color: var(--ink-soft);
+  border: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   box-shadow: var(--md-sys-elevation-level2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 10;
+  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.chat-scroll-btn:hover {
+  background: var(--md-sys-color-surface-container);
+  color: var(--ink);
+}
+
+.chat-scroll-btn:active {
+  transform: scale(0.95);
 }
 
 /* ── 历史记录浮层 ─────────────────────────────── */
