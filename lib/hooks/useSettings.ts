@@ -19,12 +19,17 @@ export interface SettingsState {
   defaultThinking: boolean;
   defaultSearch: boolean;
 
+  // ── 全局补充上下文 ────────────────────
+  /** 所有对话自动注入的用户自定义文本（拼入稳定系统前缀）。 */
+  globalContext: string;
+
   setSelectedModelId: (id: string) => void;
   setCustomProvider: (p: { baseUrl?: string; apiKey?: string; model?: string }) => void;
   setFontScale: (v: number) => void;
   toggleTool: (name: string, enabled: boolean) => void;
   setDefaultThinking: (v: boolean) => void;
   setDefaultSearch: (v: boolean) => void;
+  setGlobalContext: (v: string) => void;
 }
 
 const LS_KEY = "gailvlun-settings-v1";
@@ -39,6 +44,7 @@ type Persisted = Pick<
   | "disabledTools"
   | "defaultThinking"
   | "defaultSearch"
+  | "globalContext"
 >;
 
 const DEFAULTS: Persisted = {
@@ -50,6 +56,7 @@ const DEFAULTS: Persisted = {
   disabledTools: [],
   defaultThinking: false,
   defaultSearch: false,
+  globalContext: "",
 };
 
 function load(): Persisted {
@@ -75,6 +82,7 @@ function persist(get: () => SettingsState) {
     disabledTools: s.disabledTools,
     defaultThinking: s.defaultThinking,
     defaultSearch: s.defaultSearch,
+    globalContext: s.globalContext,
   };
   try {
     localStorage.setItem(LS_KEY, JSON.stringify(data));
@@ -116,6 +124,10 @@ export const useSettings = create<SettingsState>((set, get) => ({
   },
   setDefaultSearch: (v) => {
     set({ defaultSearch: v });
+    persist(get);
+  },
+  setGlobalContext: (v) => {
+    set({ globalContext: v });
     persist(get);
   },
 }));

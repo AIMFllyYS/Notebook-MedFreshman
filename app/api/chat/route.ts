@@ -12,6 +12,8 @@ import {
   type CustomProvider,
 } from "@/lib/ai/provider";
 import { getModelInfo } from "@/lib/ai/models";
+import { estimateTokens } from "@/lib/context/estimateTokens";
+import type { Skill } from "@/lib/types/skill";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -71,6 +73,25 @@ export async function POST(req: NextRequest) {
     ? body.disabledTools.map(String)
     : [];
 
+  // 全局补充上下文 + 技能库（前端本地存储，随请求携带）
+  const globalContext: string =
+    typeof body.globalContext === "string" ? body.globalContext.trim() : "";
+  const skills: Skill[] = (Array.isArray(body.skills) ? body.skills : [])
+    .filter((s: unknown): s is Record<string, unknown> => !!s && typeof s === "object")
+    .map((s: Record<string, unknown>) => ({
+      id: String(s.id ?? ""),
+      name: String(s.name ?? "").trim(),
+      description: String(s.description ?? ""),
+      content: String(s.content ?? ""),
+      pinned: s.pinned === true,
+      createdAt: Number(s.createdAt ?? 0),
+    }))
+    .filter((s: Skill) => s.name && s.content)
+    // 稳定排序，保证拼装的系统前缀逐字节一致、利于缓存命中
+    .sort((a: Skill, b: Skill) => a.createdAt - b.createdAt || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  const pinnedSkills = skills.filter((s) => s.pinned);
+  const menuSkills = skills.filter((s) => !s.pinned);
+
   // 多科上下文参数
   const subjectId: string = String(body.subjectId ?? "probability");
   const categoryId: string = String(body.categoryId ?? "detail");
@@ -89,7 +110,11 @@ export async function POST(req: NextRequest) {
   const provider = resolveProvider(modelId, customProvider);
   const reasoningField = provider.reasoningField;
   const modelInfo = modelId ? getModelInfo(modelId) : undefined;
-  const toolDefs = getToolDefs({ enableSearch: options.enableSearch ?? false, disabled: disabledTools });
+  const toolDefs = getToolDefs({
+    enableSearch: options.enableSearch ?? false,
+    disabled: disabledTools,
+    skillNames: menuSkills.map((s) => s.name),
+  });
 
   // 检测消息中是否包含图片
   const hasVisionContent = messages.some(
@@ -162,10 +187,39 @@ export async function POST(req: NextRequest) {
         }
 
         // 稳定前缀（global + 学科），利于 prefix 缓存命中。
-        const systemPrompt = buildSystemPrompt(chatCtx);
+        const baseSystemPrompt = buildSystemPrompt(chatCtx);
+
+        // 会话内稳定的用户内容（全局上下文 / 固定技能全文 / 可调用技能菜单）一并拼入稳定前缀，
+        // 多轮间逐字节一致 → 命中缓存；仅在用户改动设置后失效一次再恢复。
+        const skillsMenuText = menuSkills.length
+          ? menuSkills.map((s) => `- ${s.name}：${s.description || "（无描述）"}`).join("\n")
+          : "";
+        const pinnedSkillsText = pinnedSkills.length
+          ? pinnedSkills.map((s) => `### ${s.name}\n${s.content}`).join("\n\n")
+          : "";
+
+        const promptExtras: string[] = [];
+        if (globalContext) {
+          promptExtras.push(`## 全局补充上下文（用户提供，始终适用）\n${globalContext}`);
+        }
+        if (pinnedSkillsText) {
+          promptExtras.push(`## 已固定启用的技能（用户手动开启，请始终遵循其指导）\n${pinnedSkillsText}`);
+        }
+        if (skillsMenuText) {
+          promptExtras.push(
+            `## 可调用的技能库\n当下列技能与用户问题相关时，调用 useSkill 工具（参数 name 用技能名）加载其完整内容；一次只调用最相关的一个：\n${skillsMenuText}`,
+          );
+        }
+        const systemPrompt = promptExtras.length
+          ? `${baseSystemPrompt}\n\n---\n\n${promptExtras.join("\n\n---\n\n")}`
+          : baseSystemPrompt;
+
         // 易变上下文（当前定位 + 参考材料）后置为独立 system 消息，避免破坏前缀缓存。
         const volatile = buildLocationLine(chatCtx) +
           (ctxResult.context ? `\n\n【参考材料】\n${ctxResult.context}` : "");
+
+        // 工具结果归类用：tool_call_id → 工具名（跨轮累积，供上下文分项统计）。
+        const toolNameById = new Map<string, string>();
 
         const convo: Record<string, unknown>[] = [
           { role: "system", content: systemPrompt },
@@ -286,6 +340,7 @@ export async function POST(req: NextRequest) {
               })),
             });
             for (const c of calls) {
+              toolNameById.set(c.id, c.name);
               let parsed: Record<string, unknown> = {};
               try {
                 parsed = c.args ? JSON.parse(c.args) : {};
@@ -326,12 +381,42 @@ export async function POST(req: NextRequest) {
                 subjectId,
                 categoryId,
                 itemId,
+                skills,
               });
               send({ type: "tool", id: c.id, status: "result", meta: result.meta });
               convo.push({ role: "tool", tool_call_id: c.id, content: result.content });
             }
             continue;
           }
+
+          // 上下文分项统计（服务端按真实拼装精确计算）。msg[0]/msg[1] 的各组成单独累计，
+          // 对话与工具结果（i≥2）按工具名归类，避免与 msg[0]/msg[1] 重复计数。
+          const tk = (v: unknown) => estimateTokens(typeof v === "string" ? v : JSON.stringify(v ?? ""));
+          const breakdown = {
+            tools: tk(baseSystemPrompt) + tk(globalContext) + tk(JSON.stringify(toolDefs)),
+            skills: tk(skillsMenuText) + tk(pinnedSkillsText),
+            conversation: 0,
+            pages: tk(volatile),
+            webSearch: 0,
+            total: 0,
+          };
+          for (let i = 2; i < convo.length; i++) {
+            const msg = convo[i] as { role?: string; content?: unknown; tool_call_id?: string; tool_calls?: unknown };
+            const t = tk(msg.content);
+            if (msg.role === "tool") {
+              const tn = msg.tool_call_id ? toolNameById.get(msg.tool_call_id) : undefined;
+              if (tn === "useSkill") breakdown.skills += t;
+              else if (tn === "webSearch" || tn === "imageSearch") breakdown.webSearch += t;
+              else if (tn === "getCurrentPage" || tn === "getSection" || tn === "searchNotes") breakdown.pages += t;
+              else breakdown.conversation += t;
+            } else {
+              breakdown.conversation += t;
+              if (msg.tool_calls) breakdown.conversation += tk(JSON.stringify(msg.tool_calls));
+            }
+          }
+          breakdown.total =
+            breakdown.tools + breakdown.skills + breakdown.conversation + breakdown.pages + breakdown.webSearch;
+          send({ type: "context_breakdown", breakdown });
 
           if (lastUsage) {
             send({

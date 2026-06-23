@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import type { ContextBreakdown } from '@/lib/types/chat';
 
 export interface TokenUsage {
   promptTokens: number;
@@ -18,9 +19,12 @@ export interface TokenTrackerState {
   modelContextLimit: number;
   /** 最后一次收到 usage 事件的时间戳（Date.now()），用于 prefix cache 倒计时。 */
   lastRequestTime: number | null;
+  /** 服务端回传的上下文分项统计（最近一次发送）；null = 尚无数据。 */
+  contextBreakdown: ContextBreakdown | null;
 
   addUsage(usage: Partial<TokenUsage>): void;
   setCurrentContext(tokens: number, limit: number): void;
+  setContextBreakdown(breakdown: ContextBreakdown): void;
   resetSession(): void;
 }
 
@@ -30,6 +34,7 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
   currentContextTokens: 0,
   modelContextLimit: 128_000,
   lastRequestTime: null,
+  contextBreakdown: null,
 
   addUsage(usage) {
     set((s) => {
@@ -56,12 +61,17 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
     set({ currentContextTokens: tokens, modelContextLimit: limit });
   },
 
+  setContextBreakdown(breakdown) {
+    set({ contextBreakdown: breakdown });
+  },
+
   resetSession() {
     set({
       sessionTotal: { ...EMPTY_USAGE },
       lastTurn: { ...EMPTY_USAGE },
       currentContextTokens: 0,
       lastRequestTime: null,
+      contextBreakdown: null,
     });
   },
 }));

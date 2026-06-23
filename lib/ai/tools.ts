@@ -9,11 +9,14 @@ import {
   searchAllContent,
 } from "@/lib/content/loader";
 import { runWebSearchDetailed, runImageSearch } from "@/lib/ai/webSearch";
+import type { Skill } from "@/lib/types/skill";
 
 export interface ToolContext {
   subjectId: string;
   categoryId: string;
   itemId: string;
+  /** 本次请求携带的全部技能（含正文），供 useSkill 按名取用。 */
+  skills?: Skill[];
 }
 
 /** 工具执行结果：content 回灌给模型；meta 透传给前端展示（如联网来源）。 */
@@ -147,14 +150,66 @@ export const ALL_TOOLS: Record<string, ToolDefinition> = {
       },
     },
   },
+  useSkill: {
+    type: "function",
+    function: {
+      name: "useSkill",
+      description:
+        "调用一个用户上传的「技能」，把它的完整内容加载到上下文作为专门指导。当用户的问题与某技能的名称/描述相关时调用；可用技能见系统提示词中的「可调用的技能库」清单。一次只调用最相关的一个技能，同一技能不要重复调用。",
+      parameters: {
+        type: "object",
+        properties: {
+          name: {
+            type: "string",
+            description: "要调用的技能名称，必须与技能库清单中的名称完全一致。",
+          },
+        },
+        required: ["name"],
+      },
+    },
+  },
 };
 
-/** 取本次请求要启用的工具定义。enableSearch 控制是否暴露 webSearch/imageSearch；disabled 来自用户设置。 */
-export function getToolDefs(opts: { enableSearch: boolean; disabled?: string[] }): ToolDefinition[] {
+/**
+ * 取本次请求要启用的工具定义。
+ * - enableSearch 控制是否暴露 webSearch/imageSearch；
+ * - disabled 来自用户设置；
+ * - skillNames 非空时追加 useSkill 工具，并把技能名作为 name 参数的 enum（提升选名准确度，
+ *   且在一次会话内稳定、利于上游 prefix 缓存）。
+ */
+export function getToolDefs(opts: {
+  enableSearch: boolean;
+  disabled?: string[];
+  skillNames?: string[];
+}): ToolDefinition[] {
   const names = ["getCurrentPage", "getOutline", "getSection", "searchNotes", "renderInteractive", "drawDiagram"];
   if (opts.enableSearch) names.push("webSearch", "imageSearch");
   const disabled = new Set(opts.disabled ?? []);
-  return names.filter((n) => !disabled.has(n)).map((n) => ALL_TOOLS[n]);
+  const defs = names.filter((n) => !disabled.has(n)).map((n) => ALL_TOOLS[n]);
+
+  const skillNames = (opts.skillNames ?? []).filter(Boolean);
+  if (skillNames.length > 0 && !disabled.has("useSkill")) {
+    const base = ALL_TOOLS.useSkill;
+    defs.push({
+      type: "function",
+      function: {
+        name: base.function.name,
+        description: base.function.description,
+        parameters: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+              description: "要调用的技能名称，必须与技能库清单中的名称完全一致。",
+              enum: skillNames,
+            },
+          },
+          required: ["name"],
+        },
+      },
+    });
+  }
+  return defs;
 }
 
 function currentPagePayload(ctx: ToolContext): string {
@@ -225,6 +280,26 @@ export async function runTool(
       const title = String(args.title ?? "示意图");
       const desc = String(args.description ?? "");
       return { content: buildDiagramGuidance(type, title, desc) };
+    }
+
+    case "useSkill": {
+      const wanted = String(args.name ?? "").trim();
+      const list = ctx.skills ?? [];
+      const skill =
+        list.find((s) => s.name === wanted) ??
+        list.find((s) => s.name.toLowerCase() === wanted.toLowerCase());
+      if (!skill) {
+        const available = list.map((s) => s.name).join("、") || "（无）";
+        return {
+          content: `未找到名为「${wanted}」的技能。可用技能：${available}。`,
+          meta: { skill: wanted, found: false },
+        };
+      }
+      const head = skill.description ? `${skill.description}\n\n` : "";
+      return {
+        content: `【技能：${skill.name}】\n${head}${skill.content}`,
+        meta: { skill: skill.name, found: true },
+      };
     }
 
     default:

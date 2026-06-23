@@ -28,6 +28,23 @@ export interface ToolCallBlock {
   prompt?: string;
   /** searchNotes 专用：检索命中的笔记片段。 */
   hits?: { title: string; path: string; snippet: string }[];
+  /** useSkill 专用：被调用的技能名称。 */
+  skill?: string;
+}
+
+/** 上下文分项 token 统计（服务端按真实拼装精确计算，经 SSE 回传给上下文看板）。 */
+export interface ContextBreakdown {
+  /** 系统提示词：global+学科 prompt + 全局补充上下文 + 工具定义 JSON。 */
+  tools: number;
+  /** 技能：可调用菜单 + 固定开启全文 + 被调用的技能工具结果。 */
+  skills: number;
+  /** 对话：user/assistant 文本及其余工具结果。 */
+  conversation: number;
+  /** 笔记页面：定位+参考材料 + 读页/检索类工具结果。 */
+  pages: number;
+  /** 联网搜索：webSearch/imageSearch 工具结果。 */
+  webSearch: number;
+  total: number;
 }
 
 export interface ChatAttachment {

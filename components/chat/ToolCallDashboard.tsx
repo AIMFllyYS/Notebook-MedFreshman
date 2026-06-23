@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle, Globe, ExternalLink, Zap, BookOpen, Image as ImageIcon } from 'lucide-react';
+import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle, Globe, ExternalLink, Zap, BookOpen, Image as ImageIcon, Sparkles } from 'lucide-react';
 import type { ToolCallBlock } from '@/lib/types/chat';
 
 function hostOf(url: string): string {
@@ -173,6 +173,23 @@ const ToolCallItem: React.FC<{ call: ToolCallBlock }> = ({ call }) => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* useSkill 已调用技能徽标 */}
+      {call.name === 'useSkill' && call.skill && (
+        <div
+          className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5"
+          style={{
+            background: 'var(--md-sys-color-surface-container)',
+            border: '1px solid var(--md-sys-color-outline-variant)',
+            fontFamily: 'inherit',
+            fontSize: '0.74rem',
+            color: 'var(--md-sys-color-on-surface)',
+          }}
+        >
+          <Sparkles size={12} style={{ color: 'var(--md-sys-color-primary)' }} />
+          <span>已调用技能：<strong>{call.skill}</strong></span>
         </div>
       )}
 

@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Settings, X, Eye, EyeOff, Type, Brain, Globe } from "lucide-react";
+import { Settings, X, Eye, EyeOff, Type, Brain, Globe, Sparkles, BookText } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { CUSTOM_MODEL_ID } from "@/lib/ai/models";
+import SkillsManager from "./SkillsManager";
 
 const TOOLS: { name: string; label: string; desc: string }[] = [
   { name: "getCurrentPage", label: "读取当前页", desc: "让 AI 获取你正在阅读的页面内容" },
@@ -46,6 +47,8 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
   const setDefaultThinking = useSettings((s) => s.setDefaultThinking);
   const defaultSearch = useSettings((s) => s.defaultSearch);
   const setDefaultSearch = useSettings((s) => s.setDefaultSearch);
+  const globalContext = useSettings((s) => s.globalContext);
+  const setGlobalContext = useSettings((s) => s.setGlobalContext);
 
   const [showKey, setShowKey] = useState(false);
 
@@ -194,6 +197,40 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
               <Toggle on={it.on} onClick={() => it.set(!it.on)} />
             </div>
           ))}
+        </section>
+
+        {/* 全局补充上下文 */}
+        <section className="flex flex-col gap-2">
+          <div className="flex items-center gap-1.5">
+            <Globe size={14} className="text-[var(--md-sys-color-primary)]" />
+            <h3 className={h3}>全局补充上下文</h3>
+          </div>
+          <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+            这里的文字会注入每次对话的系统提示词（拼入稳定前缀，利于缓存）。适合放通用背景、称呼、风格偏好等。
+          </p>
+          <textarea
+            value={globalContext}
+            onChange={(e) => setGlobalContext(e.target.value)}
+            placeholder="例如：请用简洁的中文回答，公式用 KaTeX，回答末尾附一句要点总结。"
+            rows={4}
+            className={input + " resize-y leading-relaxed"}
+          />
+          <div className="self-end text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
+            {globalContext.length} 字
+          </div>
+        </section>
+
+        {/* 技能库 */}
+        <section className="flex flex-col gap-2">
+          <div className="flex items-center gap-1.5">
+            <Sparkles size={14} className="text-[var(--md-sys-color-primary)]" />
+            <h3 className={h3}>技能库（Skills）</h3>
+          </div>
+          <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+            上传单个 <BookText size={11} className="inline align-text-bottom" /> .md 文件作为「技能」。AI 会根据名称与描述按需调用其完整内容；
+            打开右侧开关可将该技能「固定开启」（每轮强制注入）。
+          </p>
+          <SkillsManager />
         </section>
       </div>
     </div>

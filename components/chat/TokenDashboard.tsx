@@ -39,6 +39,15 @@ function calcCost(
   return (uncached * pricing.input + cached * pricing.cachedInput + completion * pricing.output) / 1_000_000;
 }
 
+// 上下文分项（IDE 式构成条）：键对应 ContextBreakdown，色值固定且明暗主题均可辨。
+const BREAKDOWN_CATS: { key: 'tools' | 'skills' | 'pages' | 'webSearch' | 'conversation'; label: string; color: string }[] = [
+  { key: 'tools', label: '系统提示词', color: '#8b5cf6' },
+  { key: 'skills', label: '技能', color: '#ec4899' },
+  { key: 'pages', label: '笔记页面', color: '#f59e0b' },
+  { key: 'webSearch', label: '联网搜索', color: '#3b82f6' },
+  { key: 'conversation', label: '对话', color: '#10b981' },
+];
+
 export default function TokenDashboard() {
   const [open, setOpen] = useState(false);
   const [pinned, setPinned] = useState(false);
@@ -53,6 +62,7 @@ export default function TokenDashboard() {
   const ctxTokens = useTokenTracker((s) => s.currentContextTokens);
   const ctxLimit = useTokenTracker((s) => s.modelContextLimit);
   const lastRequestTime = useTokenTracker((s) => s.lastRequestTime);
+  const breakdown = useTokenTracker((s) => s.contextBreakdown);
 
   const selectedModelId = useSettings((s) => s.selectedModelId);
   const modelInfo = getModelInfo(selectedModelId);
@@ -214,6 +224,45 @@ export default function TokenDashboard() {
                 }} />
               </div>
             </div>
+
+            {/* Context composition (IDE 式分项构成) */}
+            {breakdown && breakdown.total > 0 && (
+              <div style={{ marginBottom: 10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, color: 'var(--ink-soft)' }}>
+                  <span>上下文构成</span>
+                  <span style={{ fontWeight: 600 }}>{fmtTokens(breakdown.total)}</span>
+                </div>
+                <div style={{ display: 'flex', height: 8, borderRadius: 4, background: 'var(--bg-muted)', overflow: 'hidden' }}>
+                  {BREAKDOWN_CATS.map((c) => {
+                    const v = breakdown[c.key];
+                    const w = ctxLimit > 0 ? (v / ctxLimit) * 100 : 0;
+                    if (w <= 0) return null;
+                    return (
+                      <div
+                        key={c.key}
+                        title={`${c.label} ${fmtTokens(v)}`}
+                        style={{ width: `${w}%`, height: '100%', background: c.color, transition: 'width 0.3s ease' }}
+                      />
+                    );
+                  })}
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px 10px', marginTop: 6 }}>
+                  {BREAKDOWN_CATS.map((c) => {
+                    const v = breakdown[c.key];
+                    const pct = breakdown.total > 0 ? Math.round((v / breakdown.total) * 100) : 0;
+                    return (
+                      <div key={c.key} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, color: 'var(--ink-soft)' }}>
+                        <span style={{ width: 8, height: 8, borderRadius: 2, background: c.color, flexShrink: 0 }} />
+                        <span>{c.label}</span>
+                        <span style={{ color: 'var(--ink-faint)', fontVariantNumeric: 'tabular-nums' }}>
+                          {fmtTokens(v)}·{pct}%
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Last turn */}
             <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>

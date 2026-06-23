@@ -1,8 +1,9 @@
 import { useState, useCallback, useRef } from 'react';
 import { useChatHistory } from './useChatHistory';
 import { useSettings } from './useSettings';
+import { useSkills } from './useSkills';
 import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
-import type { ChatMessage, ChatAttachment, ChatContext, ChatOptions, ToolCallBlock, WebSearchSource } from '@/lib/types/chat';
+import type { ChatMessage, ChatAttachment, ChatContext, ChatOptions, ToolCallBlock, WebSearchSource, ContextBreakdown } from '@/lib/types/chat';
 import { parseXmlTags } from '@/lib/utils/xmlParser';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { useTokenTracker } from './useTokenTracker';
@@ -31,11 +32,13 @@ interface ChatSseEvent {
     cachedTokens?: number;
     totalTokens?: number;
   };
+  breakdown?: ContextBreakdown;
   meta?: {
     artifactId?: unknown;
     sources?: WebSearchSource[];
     cacheHit?: unknown;
     hits?: { title: string; path: string; snippet: string }[];
+    skill?: unknown;
   };
 }
 
@@ -186,6 +189,8 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
               enableThinking,
               enableSearch,
               contextMode,
+              globalContext: settings.globalContext,
+              skills: useSkills.getState().skills,
             }),
             signal: abortController.signal,
           });
@@ -264,10 +269,17 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                       if (meta && typeof meta.cacheHit === 'boolean') existing.cacheHit = meta.cacheHit;
                       if (meta && typeof meta.artifactId === 'string') existing.artifactId = meta.artifactId;
                       if (meta && Array.isArray(meta.hits)) existing.hits = meta.hits;
+                      if (meta && typeof meta.skill === 'string') existing.skill = meta.skill;
                       updateMessage(sessionId!, assistantId, {
                         toolCalls: Array.from(toolCallsMap.values()),
                       });
                     }
+                  }
+                  break;
+
+                case 'context_breakdown':
+                  if (event.breakdown) {
+                    useTokenTracker.getState().setContextBreakdown(event.breakdown);
                   }
                   break;
 

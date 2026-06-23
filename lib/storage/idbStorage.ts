@@ -17,6 +17,7 @@ const STORE_NAME = "keyval";
 export const PERSIST_KEYS = {
   chatHistory: "chat-history",
   artifacts: "artifacts",
+  skills: "skills",
 } as const;
 
 // 专属 IDB store 实例（非默认 keyval-store 库）
