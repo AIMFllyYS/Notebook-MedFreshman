@@ -10,7 +10,7 @@
  * 用法：node scripts/check-media-sync.mjs   （prebuild 自动执行）
  * 退出码：0 全部同步；1 存在 stale 条目。
  */
-import { readFileSync, existsSync } from "fs";
+import { readFileSync, existsSync, readdirSync, statSync } from "fs";
 import { join, resolve } from "path";
 
 const ROOT = resolve(import.meta.dirname, "..");
@@ -19,6 +19,22 @@ const GENERATED_FILES = [
   "content/media.physics.generated.ts",
   "content/media.chemistry.generated.ts",
 ];
+const VIDEOS_DIR = join(ROOT, "public", "media", "videos");
+
+function dirHasMp4(dir) {
+  let entries;
+  try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return false; }
+  for (const e of entries) {
+    if (e.isDirectory() && dirHasMp4(join(dir, e.name))) return true;
+    if (e.isFile() && e.name.endsWith(".mp4")) return true;
+  }
+  return false;
+}
+
+if (!dirHasMp4(VIDEOS_DIR)) {
+  console.log("✓ 媒体同步守卫：本地无视频文件（CDN 模式），跳过同步检查。");
+  process.exit(0);
+}
 
 const missing = [];
 let total = 0;
