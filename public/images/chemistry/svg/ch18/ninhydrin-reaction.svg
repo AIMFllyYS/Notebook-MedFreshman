@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 340" width="800" height="340" font-family="system-ui, sans-serif" font-size="13">
+  <title>茚三酮反应机理：α-氨基酸与茚三酮共热，氧化脱羧生成蓝紫色鲁曼紫</title>
+  <defs>
+    <marker id="arr-n" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#374151"/>
+    </marker>
+    <marker id="arr-n2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="340" fill="white" rx="8"/>
+
+  <!-- ── Title ── -->
+  <text x="400" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="#111827">茚三酮反应（Ninhydrin Reaction）</text>
+
+  <!-- ═══ ROW 1: Reactants → Products overview ═══ -->
+
+  <!-- α-Amino acid box -->
+  <rect x="20" y="42" width="155" height="80" rx="5" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="98" y="60" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">α-氨基酸</text>
+  <text x="98" y="78" text-anchor="middle" font-size="12" fill="#374151">H₂N-CαHR-COOH</text>
+  <text x="98" y="96" text-anchor="middle" font-size="11" fill="#6b7280">（R 为侧链）</text>
+  <text x="98" y="113" text-anchor="middle" font-size="11" fill="#6b7280">加热，水溶液</text>
+
+  <!-- + ninhydrin (×2) -->
+  <text x="185" y="88" text-anchor="middle" font-size="18" fill="#374151">+</text>
+
+  <!-- Ninhydrin structure box -->
+  <rect x="200" y="42" width="175" height="80" rx="5" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="287" y="60" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">茚三酮（×2）</text>
+  <!-- Simplified ninhydrin drawn as tricyclic with C=O groups -->
+  <g transform="translate(212,68)">
+    <!-- benzene ring (simplified hexagon) -->
+    <polygon points="10,0 25,0 33,13 25,26 10,26 2,13" fill="none" stroke="#92400e" stroke-width="1.5"/>
+    <!-- fused 5-membered ring -->
+    <line x1="25" y1="0" x2="43" y2="4" stroke="#92400e" stroke-width="1.5"/>
+    <line x1="43" y1="4" x2="47" y2="13" stroke="#92400e" stroke-width="1.5"/>
+    <line x1="47" y1="13" x2="43" y2="22" stroke="#92400e" stroke-width="1.5"/>
+    <line x1="43" y1="22" x2="25" y2="26" stroke="#92400e" stroke-width="1.5"/>
+    <!-- C=O groups -->
+    <line x1="43" y1="4" x2="56" y2="0" stroke="#92400e" stroke-width="1.5"/>
+    <line x1="43" y1="5" x2="56" y2="1" stroke="#92400e" stroke-width="1.5"/>
+    <text x="57" y="4" font-size="11" fill="#dc2626">O</text>
+    <line x1="43" y1="22" x2="56" y2="26" stroke="#92400e" stroke-width="1.5"/>
+    <line x1="43" y1="23" x2="56" y2="27" stroke="#92400e" stroke-width="1.5"/>
+    <text x="57" y="31" font-size="11" fill="#dc2626">O</text>
+    <!-- OH -->
+    <text x="44" y="17" font-size="11" fill="#1d4ed8">OH</text>
+  </g>
+  <text x="287" y="113" text-anchor="middle" font-size="11" fill="#6b7280">三酮结构，含 C=O 和 OH</text>
+
+  <!-- → arrow -->
+  <line x1="382" y1="80" x2="422" y2="80" stroke="#374151" stroke-width="2" marker-end="url(#arr-n)"/>
+  <text x="402" y="72" text-anchor="middle" font-size="11" fill="#374151">Δ, H₂O</text>
+
+  <!-- Products box -->
+  <rect x="428" y="42" width="185" height="80" rx="5" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="520" y="60" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b21b6">蓝紫色产物（鲁曼紫）</text>
+  <text x="520" y="78" text-anchor="middle" font-size="12" fill="#5b21b6">Ruhemann's Purple</text>
+  <text x="520" y="95" text-anchor="middle" font-size="11" fill="#6b7280">λmax ≈ 570 nm</text>
+  <text x="520" y="112" text-anchor="middle" font-size="11" fill="#6b7280">+ RCHO + CO₂ + NH₃</text>
+
+  <!-- + byproducts -->
+  <text x="622" y="88" text-anchor="middle" font-size="14" fill="#374151">+</text>
+  <rect x="633" y="50" width="140" height="65" rx="5" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1"/>
+  <text x="703" y="68" text-anchor="middle" font-size="12" font-weight="bold" fill="#374151">副产物</text>
+  <text x="703" y="85" text-anchor="middle" font-size="12" fill="#374151">RCHO</text>
+  <text x="703" y="100" text-anchor="middle" font-size="12" fill="#374151">CO₂ + NH₃</text>
+  <text x="703" y="114" text-anchor="middle" font-size="11" fill="#6b7280">氧化脱羧</text>
+
+  <!-- ═══ ROW 2: Step-by-step mechanism ═══ -->
+  <text x="20" y="148" font-size="13" font-weight="bold" fill="#111827">反应步骤概览：</text>
+
+  <!-- Step 1 box -->
+  <rect x="20" y="158" width="360" height="70" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1"/>
+  <text x="200" y="175" text-anchor="middle" font-size="12" font-weight="bold" fill="#c2410c">步骤 1：氧化脱羧</text>
+  <text x="200" y="193" text-anchor="middle" font-size="12" fill="#374151">茚三酮氧化 α-氨基酸</text>
+  <text x="200" y="210" text-anchor="middle" font-size="11" fill="#6b7280">→ 释放 RCHO + CO₂；氨基被氧化为 NH₃</text>
+  <text x="200" y="224" text-anchor="middle" font-size="11" fill="#6b7280">（同时茚三酮被还原为还原型茚三酮）</text>
+
+  <!-- → -->
+  <line x1="388" y1="193" x2="420" y2="193" stroke="#374151" stroke-width="2" marker-end="url(#arr-n)"/>
+
+  <!-- Step 2 box -->
+  <rect x="428" y="158" width="345" height="70" rx="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1"/>
+  <text x="600" y="175" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b21b6">步骤 2：缩合显色</text>
+  <text x="600" y="193" text-anchor="middle" font-size="12" fill="#374151">NH₃ + 还原茚三酮 + 另一分子茚三酮</text>
+  <text x="600" y="210" text-anchor="middle" font-size="11" fill="#6b7280">→ 缩合生成蓝紫色鲁曼紫（Ruhemann's Purple）</text>
+  <text x="600" y="224" text-anchor="middle" font-size="11" fill="#5b21b6">吸收峰 λmax = 570 nm（蓝紫色）</text>
+
+  <!-- ═══ ROW 3: Selectivity notes ═══ -->
+  <rect x="20" y="244" width="760" height="82" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="400" y="263" text-anchor="middle" font-size="13" font-weight="bold" fill="#111827">反应特异性与应用</text>
+
+  <!-- Column 1: alpha -->
+  <rect x="35" y="271" width="200" height="44" rx="4" fill="#ede9fe" stroke="#7c3aed" stroke-width="1"/>
+  <text x="135" y="287" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b21b6">α-氨基酸</text>
+  <text x="135" y="303" text-anchor="middle" font-size="11" fill="#5b21b6">→ 蓝紫色（λmax 570 nm）✔</text>
+
+  <!-- Column 2: proline -->
+  <rect x="255" y="271" width="200" height="44" rx="4" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+  <text x="355" y="287" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">脯氨酸（仲胺）</text>
+  <text x="355" y="303" text-anchor="middle" font-size="11" fill="#92400e">→ 黄色（λmax 440 nm）⚠</text>
+
+  <!-- Column 3: beta/gamma -->
+  <rect x="475" y="271" width="295" height="44" rx="4" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+  <text x="622" y="287" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">β/γ-氨基酸</text>
+  <text x="622" y="303" text-anchor="middle" font-size="11" fill="#b91c1c">→ 不反应（氨基不在 α 位）✗</text>
+</svg>

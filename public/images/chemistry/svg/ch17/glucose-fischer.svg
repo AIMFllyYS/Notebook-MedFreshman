@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 500" width="350" height="500" font-family="sans-serif" font-size="13">
+  <title>D-葡萄糖费歇尔投影式</title>
+
+  <!-- Background -->
+  <rect width="350" height="500" fill="white"/>
+
+  <!-- Title -->
+  <text x="175" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">D-葡萄糖费歇尔投影式</text>
+
+  <!-- Vertical backbone line (into page) -->
+  <line x1="175" y1="55" x2="175" y2="435" stroke="#333" stroke-width="2"/>
+
+  <!-- C1: CHO (aldehyde) at top -->
+  <circle cx="175" cy="60" r="4" fill="#e63946"/>
+  <text x="175" y="50" text-anchor="middle" font-size="13" font-weight="bold" fill="#e63946">CHO</text>
+  <text x="72" y="54" text-anchor="start" font-size="12" fill="#555">C1</text>
+  <text x="230" y="54" text-anchor="start" font-size="11" fill="#e63946">醛基</text>
+
+  <!-- C2: H left, OH right -->
+  <circle cx="175" cy="130" r="5" fill="#2d6a4f"/>
+  <line x1="90" y1="130" x2="175" y2="130" stroke="#2d6a4f" stroke-width="2.5"/>
+  <line x1="175" y1="130" x2="260" y2="130" stroke="#2d6a4f" stroke-width="2.5"/>
+  <text x="72" y="134" text-anchor="end" font-size="13" fill="#333">H</text>
+  <text x="270" y="134" text-anchor="start" font-size="13" fill="#333">OH</text>
+  <text x="60" y="134" text-anchor="end" font-size="12" fill="#555">C2</text>
+
+  <!-- C3: OH left, H right -->
+  <circle cx="175" cy="200" r="5" fill="#2d6a4f"/>
+  <line x1="90" y1="200" x2="175" y2="200" stroke="#2d6a4f" stroke-width="2.5"/>
+  <line x1="175" y1="200" x2="260" y2="200" stroke="#2d6a4f" stroke-width="2.5"/>
+  <text x="72" y="204" text-anchor="end" font-size="13" fill="#333">HO</text>
+  <text x="270" y="204" text-anchor="start" font-size="13" fill="#333">H</text>
+  <text x="60" y="204" text-anchor="end" font-size="12" fill="#555">C3</text>
+
+  <!-- C4: H left, OH right -->
+  <circle cx="175" cy="270" r="5" fill="#2d6a4f"/>
+  <line x1="90" y1="270" x2="175" y2="270" stroke="#2d6a4f" stroke-width="2.5"/>
+  <line x1="175" y1="270" x2="260" y2="270" stroke="#2d6a4f" stroke-width="2.5"/>
+  <text x="72" y="274" text-anchor="end" font-size="13" fill="#333">H</text>
+  <text x="270" y="274" text-anchor="start" font-size="13" fill="#333">OH</text>
+  <text x="60" y="274" text-anchor="end" font-size="12" fill="#555">C4</text>
+
+  <!-- C5: OH left, H right (D-configuration: OH on RIGHT — standard D-glucose has OH on RIGHT at C5) -->
+  <circle cx="175" cy="340" r="5" fill="#e63946"/>
+  <line x1="90" y1="340" x2="175" y2="340" stroke="#e63946" stroke-width="2.5"/>
+  <line x1="175" y1="340" x2="260" y2="340" stroke="#e63946" stroke-width="2.5"/>
+  <text x="72" y="344" text-anchor="end" font-size="13" fill="#333">H</text>
+  <text x="270" y="344" text-anchor="start" font-size="13" font-weight="bold" fill="#e63946">OH</text>
+  <text x="60" y="344" text-anchor="end" font-size="12" fill="#555">C5</text>
+
+  <!-- C6: CH2OH at bottom -->
+  <circle cx="175" cy="430" r="4" fill="#333"/>
+  <text x="175" y="465" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">CH₂OH</text>
+  <text x="60" y="434" text-anchor="end" font-size="12" fill="#555">C6</text>
+
+  <!-- Arrow to C5 with label -->
+  <line x1="305" y1="340" x2="278" y2="340" stroke="#e63946" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <text x="310" y="332" text-anchor="start" font-size="11" fill="#e63946">C5-OH 在右</text>
+  <text x="310" y="346" text-anchor="start" font-size="11" fill="#e63946">→ D-型</text>
+
+  <!-- Chiral carbons label -->
+  <rect x="10" y="120" width="40" height="232" rx="4" fill="none" stroke="#2d6a4f" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="5" y="240" text-anchor="middle" font-size="10" fill="#2d6a4f" transform="rotate(-90,5,240)">四个手性碳 C2–C5</text>
+
+  <!-- Note about horizontal bonds -->
+  <text x="175" y="490" text-anchor="middle" font-size="10" fill="#888">水平键伸向纸面外；竖直键伸向纸面内</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e63946"/>
+    </marker>
+  </defs>
+</svg>

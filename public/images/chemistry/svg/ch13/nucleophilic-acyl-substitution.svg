@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 300" width="750" height="300" font-family="system-ui,sans-serif" font-size="13">
+  <title>羧酸衍生物亲核加成-消除机理：Nu进攻→四面体中间体→L-离去</title>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="currentColor"/>
+    </marker>
+    <marker id="redarr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#c00"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="20" y="22" font-size="14" font-weight="bold">亲核加成−消除机理（羧酸衍生物通用）</text>
+
+  <!-- ===== Reactant: RC(=O)L + Nu:- ===== -->
+  <g transform="translate(20,80)">
+    <text x="0" y="0" font-weight="bold" font-size="14">R</text>
+    <line x1="18" y1="-4" x2="42" y2="-4" stroke="currentColor" stroke-width="1.8"/>
+    <text x="43" y="0" font-weight="bold" font-size="14">C</text>
+    <!-- C=O -->
+    <line x1="57" y1="-10" x2="80" y2="-32" stroke="currentColor" stroke-width="1.8"/>
+    <line x1="60" y1="-6" x2="83" y2="-28" stroke="currentColor" stroke-width="1.8"/>
+    <text x="83" y="-30" font-weight="bold" font-size="14">O</text>
+    <!-- C-L -->
+    <line x1="57" y1="6" x2="80" y2="28" stroke="currentColor" stroke-width="1.8"/>
+    <text x="83" y="34" font-weight="bold" font-size="14">L</text>
+    <text x="0" y="60" font-size="11" fill="#555">RC(=O)L</text>
+  </g>
+
+  <!-- Nu:- label -->
+  <text x="125" y="110" font-size="14" font-weight="bold">+ Nu</text>
+  <text x="161" y="106" font-size="14">⊖</text>
+
+  <!-- Curved arrow: Nu attacks C -->
+  <path d="M 145,120 Q 160,145 155,128" stroke="#c00" stroke-width="1.5" fill="none" marker-end="url(#redarr)"/>
+
+  <!-- Curved arrow: pi bond breaks to O -->
+  <path d="M 85,62 Q 75,48 80,55" stroke="#c00" stroke-width="1.5" fill="none" marker-end="url(#redarr)"/>
+
+  <!-- Arrow step 1 -->
+  <line x1="195" y1="100" x2="245" y2="100" stroke="currentColor" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="198" y="90" font-size="11" fill="#555">Nu进攻</text>
+  <text x="198" y="118" font-size="10" fill="#555">π键断裂→O</text>
+
+  <!-- ===== Tetrahedral intermediate ===== -->
+  <g transform="translate(250,65)">
+    <text x="0" y="0" font-size="13" fill="#555">四面体中间体</text>
+    <text x="2" y="15" font-size="16">[</text>
+    <text x="14" y="14" font-weight="bold" font-size="14">R</text>
+    <line x1="30" y1="10" x2="50" y2="10" stroke="currentColor" stroke-width="1.8"/>
+    <text x="51" y="14" font-weight="bold" font-size="14">C</text>
+    <!-- O- -->
+    <line x1="64" y1="4" x2="80" y2="-10" stroke="currentColor" stroke-width="1.8"/>
+    <text x="80" y="-8" font-weight="bold" font-size="13">O</text>
+    <text x="94" y="-12" font-size="14">⊖</text>
+    <!-- L -->
+    <line x1="64" y1="20" x2="80" y2="34" stroke="currentColor" stroke-width="1.8"/>
+    <text x="80" y="40" font-weight="bold" font-size="14">L</text>
+    <!-- Nu -->
+    <line x1="51" y1="2" x2="51" y2="-14" stroke="currentColor" stroke-width="1.8"/>
+    <text x="44" y="-18" font-weight="bold" font-size="13">Nu</text>
+    <text x="105" y="14" font-size="16">]</text>
+    <text x="116" y="10" font-size="14">⊖</text>
+    <!-- dashed box -->
+    <rect x="-4" y="20" width="130" height="0" fill="none"/>
+  </g>
+
+  <!-- Arrow step 2 -->
+  <line x1="490" y1="100" x2="540" y2="100" stroke="currentColor" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="492" y="90" font-size="11" fill="#555">L⁻离去</text>
+  <text x="492" y="118" font-size="10" fill="#555">C-L键断裂</text>
+
+  <!-- Curved arrow: L leaves -->
+  <path d="M 410,120 Q 430,140 450,125" stroke="#c00" stroke-width="1.5" fill="none" marker-end="url(#redarr)"/>
+
+  <!-- ===== Product: RC(=O)Nu ===== -->
+  <g transform="translate(550,80)">
+    <text x="0" y="0" font-weight="bold" font-size="14">R</text>
+    <line x1="18" y1="-4" x2="42" y2="-4" stroke="currentColor" stroke-width="1.8"/>
+    <text x="43" y="0" font-weight="bold" font-size="14">C</text>
+    <!-- C=O -->
+    <line x1="57" y1="-10" x2="80" y2="-32" stroke="currentColor" stroke-width="1.8"/>
+    <line x1="60" y1="-6" x2="83" y2="-28" stroke="currentColor" stroke-width="1.8"/>
+    <text x="83" y="-30" font-weight="bold" font-size="14">O</text>
+    <!-- C-Nu -->
+    <line x1="57" y1="6" x2="80" y2="28" stroke="currentColor" stroke-width="1.8"/>
+    <text x="83" y="34" font-weight="bold" font-size="14">Nu</text>
+    <text x="0" y="60" font-size="12" fill="#090" font-weight="bold">RC(=O)Nu</text>
+  </g>
+
+  <!-- + L- product label -->
+  <text x="660" y="100" font-size="14">+ L</text>
+  <text x="676" y="96" font-size="14">⊖</text>
+
+  <!-- Reactivity info box -->
+  <rect x="20" y="190" width="710" height="80" rx="6" fill="#f0f7ff" stroke="#aac8f0" stroke-width="1"/>
+  <text x="32" y="210" font-size="12" font-weight="bold" fill="#1a4a80">离去基团 L 与活性顺序（越易离去，活性越高）：</text>
+  <text x="32" y="228" font-size="12" fill="#333">酰氯（−Cl）  &gt;  酸酐（−OCOR）  &gt;  酯（−OR）  &gt;  酰胺（−NR₂）</text>
+  <text x="32" y="246" font-size="11" fill="#555">共轭给电子越强（NH₂ &gt; RO &gt; RCOO &gt; Cl），羰基碳电正性越低，亲核加成越慢；碱性越弱，离去越容易。</text>
+  <text x="32" y="262" font-size="11" fill="#555">相同 Nu 时，酰氯反应最快，酰胺最慢。</text>
+</svg>

@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" width="1000" height="300" font-family="sans-serif">
+  <title>缩醛形成机理：酸催化醇进攻→半缩醛→脱水→缩醛</title>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="currentColor" fill="none" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="#27ae60" fill="none" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="#c0392b" fill="none" stroke-width="1.5"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="300" fill="white" rx="8"/>
+  <text x="500" y="24" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">缩醛（酮）形成机理（酸催化）</text>
+
+  <!-- Step 1: Aldehyde + H+ → protonated carbonyl -->
+  <rect x="20" y="45" width="165" height="100" fill="#fef9e7" stroke="#f39c12" stroke-width="1.5" rx="6"/>
+  <text x="102" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#7f8c8d">① 质子化羰基</text>
+  <text x="60" y="95" font-size="13" fill="#555">R</text>
+  <line x1="72" y1="92" x2="90" y2="92" stroke="#555" stroke-width="1.5"/>
+  <text x="94" y="95" font-size="13" font-weight="bold" fill="#2980b9">C</text>
+  <line x1="104" y1="88" x2="128" y2="88" stroke="#c0392b" stroke-width="2.5"/>
+  <line x1="104" y1="95" x2="128" y2="95" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="131" y="95" font-size="13" font-weight="bold" fill="#c0392b">O</text>
+  <line x1="100" y1="97" x2="100" y2="114" stroke="#555" stroke-width="1.5"/>
+  <text x="93" y="127" font-size="12" fill="#555">H</text>
+  <text x="147" y="90" font-size="11" fill="#c0392b">H⁺</text>
+  <!-- H+ approach arrow -->
+  <path d="M 158,78 Q 152,82 145,88" stroke="#f39c12" fill="none" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="102" y="138" text-anchor="middle" font-size="11" fill="#7f8c8d">RCHO + H⁺</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="188" y1="100" x2="218" y2="100" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="203" y="93" text-anchor="middle" font-size="10" fill="#27ae60">ROH</text>
+  <text x="203" y="115" text-anchor="middle" font-size="10" fill="#555">进攻</text>
+
+  <!-- Step 2: Hemiacetal -->
+  <rect x="220" y="45" width="175" height="100" fill="#e8f8f0" stroke="#27ae60" stroke-width="1.5" rx="6"/>
+  <text x="307" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#7f8c8d">② 半缩醛</text>
+  <text x="242" y="95" font-size="13" fill="#555">R</text>
+  <line x1="254" y1="92" x2="272" y2="92" stroke="#555" stroke-width="1.5"/>
+  <text x="275" y="95" font-size="13" font-weight="bold" fill="#2980b9">C</text>
+  <line x1="284" y1="88" x2="308" y2="88" stroke="#555" stroke-width="1.5"/>
+  <text x="310" y="95" font-size="13" font-weight="bold" fill="#c0392b">OH</text>
+  <line x1="281" y1="97" x2="265" y2="112" stroke="#555" stroke-width="1.5"/>
+  <text x="258" y="126" font-size="12" fill="#555">H</text>
+  <line x1="281" y1="97" x2="297" y2="112" stroke="#555" stroke-width="1.5"/>
+  <text x="294" y="126" font-size="13" fill="#27ae60">OR</text>
+  <text x="307" y="140" text-anchor="middle" font-size="11" fill="#7f8c8d">RC(OH)(OR)H</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="398" y1="100" x2="428" y2="100" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="413" y="90" text-anchor="middle" font-size="10" fill="#f39c12">H⁺</text>
+  <text x="413" y="113" text-anchor="middle" font-size="10" fill="#555">-H₂O</text>
+
+  <!-- Step 3: Oxocarbenium ion -->
+  <rect x="430" y="45" width="165" height="100" fill="#fdecea" stroke="#c0392b" stroke-width="1.5" rx="6"/>
+  <text x="512" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#7f8c8d">③ 氧鎓离子</text>
+  <text x="448" y="95" font-size="13" fill="#555">R</text>
+  <line x1="460" y1="92" x2="478" y2="92" stroke="#555" stroke-width="1.5"/>
+  <text x="481" y="95" font-size="13" font-weight="bold" fill="#2980b9">C</text>
+  <line x1="491" y1="88" x2="518" y2="88" stroke="#c0392b" stroke-width="2.5"/>
+  <line x1="491" y1="95" x2="518" y2="95" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="521" y="95" font-size="13" font-weight="bold" fill="#27ae60">OR</text>
+  <line x1="488" y1="97" x2="488" y2="114" stroke="#555" stroke-width="1.5"/>
+  <text x="481" y="127" font-size="12" fill="#555">H</text>
+  <text x="540" y="85" font-size="12" fill="#c0392b">⊕</text>
+  <text x="512" y="140" text-anchor="middle" font-size="11" fill="#7f8c8d">RC⁺(OR)H → -H₂O</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="598" y1="100" x2="628" y2="100" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="613" y="90" text-anchor="middle" font-size="10" fill="#27ae60">ROH</text>
+  <text x="613" y="115" text-anchor="middle" font-size="10" fill="#555">进攻</text>
+
+  <!-- Step 4: Acetal -->
+  <rect x="630" y="45" width="175" height="100" fill="#e8f4fd" stroke="#2980b9" stroke-width="1.5" rx="6"/>
+  <text x="717" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#7f8c8d">④ 缩醛（产物）</text>
+  <text x="648" y="95" font-size="13" fill="#555">R</text>
+  <line x1="660" y1="92" x2="678" y2="92" stroke="#555" stroke-width="1.5"/>
+  <text x="681" y="95" font-size="13" font-weight="bold" fill="#2980b9">C</text>
+  <line x1="690" y1="88" x2="714" y2="88" stroke="#555" stroke-width="1.5"/>
+  <text x="716" y="88" font-size="13" font-weight="bold" fill="#27ae60">OR</text>
+  <line x1="687" y1="97" x2="671" y2="112" stroke="#555" stroke-width="1.5"/>
+  <text x="664" y="126" font-size="12" fill="#555">H</text>
+  <line x1="687" y1="97" x2="703" y2="112" stroke="#555" stroke-width="1.5"/>
+  <text x="700" y="126" font-size="13" fill="#27ae60">OR</text>
+  <text x="717" y="140" text-anchor="middle" font-size="11" fill="#7f8c8d">RC(OR)₂H</text>
+
+  <!-- Overall equation at bottom -->
+  <line x1="20" y1="175" x2="980" y2="175" stroke="#eee" stroke-width="1"/>
+  <text x="500" y="200" text-anchor="middle" font-size="13" fill="#2c3e50" font-weight="bold">总反应：RCHO + 2 ROH</text>
+  <line x1="638" y1="197" x2="685" y2="197" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="660" y="190" text-anchor="middle" font-size="10" fill="#f39c12">H⁺ / Δ</text>
+  <text x="750" y="200" font-size="13" fill="#555">RC(OR)₂H + H₂O</text>
+
+  <!-- Reversibility note -->
+  <text x="500" y="230" text-anchor="middle" font-size="12" fill="#7f8c8d">缩醛在碱性条件下稳定；酸性条件下可逆水解回醛</text>
+  <text x="500" y="252" text-anchor="middle" font-size="11" fill="#27ae60">✓ 可用于羰基保护基（合成策略）</text>
+
+  <!-- Curved electron flow arrows in step boxes -->
+  <!-- Step 2: ROH attacks C+ -->
+  <path d="M 350,100 Q 370,85 390,92" stroke="#27ae60" fill="none" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-green)"/>
+
+  <!-- Step 4: Second ROH attacks oxocarbenium -->
+  <path d="M 555,108 Q 575,90 590,95" stroke="#27ae60" fill="none" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-green)"/>
+</svg>

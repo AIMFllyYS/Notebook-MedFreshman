@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 240" aria-label="吡咯、呋喃、噻吩五元杂环结构对比：sp2杂化，6π电子，富电子芳香体系">
+  <title>吡咯、呋喃、噻吩结构对比（五元杂环富电子芳香体系）</title>
+  <style>text { font-family: serif; fill: currentColor; } line, polygon { stroke: currentColor; }</style>
+
+  <!-- Title -->
+  <text x="280" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">五元杂环：吡咯、呋喃、噻吩</text>
+  <text x="280" y="36" text-anchor="middle" font-size="11" fill="currentColor">所有原子 sp² 杂化，6π 电子共轭体系（Hückel 4n+2，n=1）</text>
+
+  <!-- Pyrrole (left) centered at (90, 130) -->
+  <text x="90" y="58" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">吡咯</text>
+  <!-- Pentagon vertices: top(90,75), TR(118,96), BR(107,128), BL(73,128), TL(62,96) -->
+  <line x1="90" y1="75" x2="118" y2="96" stroke-width="1.5" fill="none"/>
+  <line x1="118" y1="96" x2="107" y2="128" stroke-width="1.5" fill="none"/>
+  <line x1="107" y1="128" x2="73" y2="128" stroke-width="1.5" fill="none"/>
+  <line x1="73" y1="128" x2="62" y2="96" stroke-width="1.5" fill="none"/>
+  <line x1="62" y1="96" x2="90" y2="75" stroke-width="1.5" fill="none"/>
+  <!-- Double bonds: C2=C3, C4=C5 (offset inward) -->
+  <line x1="116" y1="99" x2="109" y2="125" stroke-width="1.5" fill="none"/>
+  <line x1="75" y1="125" x2="65" y2="99" stroke-width="1.5" fill="none"/>
+  <!-- N atom at bottom with H -->
+  <text x="83" y="147" font-size="13" fill="currentColor">NH</text>
+  <!-- N lone pair arrow into ring -->
+  <text x="70" y="160" font-size="10" fill="currentColor">孤对 e⁻ →π 共轭</text>
+  <!-- Labels on ring -->
+  <text x="120" y="94" font-size="10" fill="currentColor">C₂</text>
+  <text x="108" y="135" font-size="10" fill="currentColor">C₃</text>
+  <text x="55" y="135" font-size="10" fill="currentColor">C₄</text>
+  <text x="47" y="94" font-size="10" fill="currentColor">C₅</text>
+  <text x="85" y="73" font-size="10" fill="currentColor">N</text>
+
+  <text x="90" y="183" text-anchor="middle" font-size="11" fill="currentColor">N 孤对电子贡献 2π</text>
+  <text x="90" y="197" text-anchor="middle" font-size="11" fill="currentColor">显弱酸性（pKa=17）</text>
+  <text x="90" y="211" text-anchor="middle" font-size="10" fill="currentColor">富电子 → 亲电取代易</text>
+
+  <!-- Divider 1 -->
+  <line x1="190" y1="45" x2="190" y2="230" stroke-width="0.5" stroke-dasharray="4,3" fill="none" opacity="0.4"/>
+
+  <!-- Furan (middle) centered at (280, 130) -->
+  <text x="280" y="58" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">呋喃</text>
+  <line x1="280" y1="75" x2="308" y2="96" stroke-width="1.5" fill="none"/>
+  <line x1="308" y1="96" x2="297" y2="128" stroke-width="1.5" fill="none"/>
+  <line x1="297" y1="128" x2="263" y2="128" stroke-width="1.5" fill="none"/>
+  <line x1="263" y1="128" x2="252" y2="96" stroke-width="1.5" fill="none"/>
+  <line x1="252" y1="96" x2="280" y2="75" stroke-width="1.5" fill="none"/>
+  <!-- Double bonds -->
+  <line x1="306" y1="99" x2="299" y2="125" stroke-width="1.5" fill="none"/>
+  <line x1="265" y1="125" x2="255" y2="99" stroke-width="1.5" fill="none"/>
+  <!-- O atom at bottom -->
+  <text x="274" y="147" font-size="13" fill="currentColor">O</text>
+  <text x="273" y="73" font-size="10" fill="currentColor">O</text>
+
+  <text x="280" y="183" text-anchor="middle" font-size="11" fill="currentColor">O 孤对电子贡献 2π</text>
+  <text x="280" y="197" text-anchor="middle" font-size="11" fill="currentColor">芳香性较弱</text>
+  <text x="280" y="211" text-anchor="middle" font-size="10" fill="currentColor">富电子 → 亲电取代易</text>
+
+  <!-- Divider 2 -->
+  <line x1="375" y1="45" x2="375" y2="230" stroke-width="0.5" stroke-dasharray="4,3" fill="none" opacity="0.4"/>
+
+  <!-- Thiophene (right) centered at (465, 130) -->
+  <text x="465" y="58" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">噻吩</text>
+  <line x1="465" y1="75" x2="493" y2="96" stroke-width="1.5" fill="none"/>
+  <line x1="493" y1="96" x2="482" y2="128" stroke-width="1.5" fill="none"/>
+  <line x1="482" y1="128" x2="448" y2="128" stroke-width="1.5" fill="none"/>
+  <line x1="448" y1="128" x2="437" y2="96" stroke-width="1.5" fill="none"/>
+  <line x1="437" y1="96" x2="465" y2="75" stroke-width="1.5" fill="none"/>
+  <!-- Double bonds -->
+  <line x1="491" y1="99" x2="484" y2="125" stroke-width="1.5" fill="none"/>
+  <line x1="450" y1="125" x2="440" y2="99" stroke-width="1.5" fill="none"/>
+  <!-- S atom at bottom -->
+  <text x="459" y="147" font-size="13" fill="currentColor">S</text>
+  <text x="459" y="73" font-size="10" fill="currentColor">S</text>
+
+  <text x="465" y="183" text-anchor="middle" font-size="11" fill="currentColor">S 孤对电子贡献 2π</text>
+  <text x="465" y="197" text-anchor="middle" font-size="11" fill="currentColor">芳香性最强（似苯）</text>
+  <text x="465" y="211" text-anchor="middle" font-size="10" fill="currentColor">富电子 → 亲电取代易</text>
+
+  <!-- Bottom summary -->
+  <text x="280" y="232" text-anchor="middle" font-size="10" fill="currentColor">芳香性强弱：噻吩 ≈ 苯 &gt; 吡咯 &gt; 呋喃（富电子→离域程度）</text>
+</svg>

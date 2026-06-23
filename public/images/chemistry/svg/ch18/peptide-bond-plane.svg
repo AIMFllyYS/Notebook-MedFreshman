@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 360" width="700" height="360" font-family="system-ui, sans-serif" font-size="13">
+  <title>肽键平面结构：C-N键长132pm，p-π共轭，肽单元为刚性平面，反式构型稳定</title>
+  <defs>
+    <marker id="arr-p" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#374151"/>
+    </marker>
+    <marker id="arr-res" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="arr-res2" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto">
+      <path d="M8,0 L8,6 L0,3 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="360" fill="white" rx="8"/>
+
+  <!-- ── TITLE ── -->
+  <text x="350" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="#111827">肽键的平面性（Peptide Bond Planarity）</text>
+
+  <!-- ══ MAIN: Peptide unit structure ══ -->
+  <!-- Cα(left) - C(=O) - N(H) - Cα(right) -->
+  <!-- Atoms positioned at y=130 -->
+
+  <!-- left Cα -->
+  <text x="60" y="138" font-size="15" fill="#374151" font-weight="bold">Cα</text>
+  <text x="60" y="155" font-size="11" fill="#6b7280">(自由旋转)</text>
+  <!-- R1 below left Cα -->
+  <line x1="72" y1="140" x2="72" y2="158" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="65" y="172" font-size="12" fill="#9ca3af">R₁</text>
+  <!-- H above left Cα -->
+  <line x1="72" y1="120" x2="72" y2="108" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="65" y="106" font-size="12" fill="#9ca3af">H</text>
+
+  <!-- bond Cα-C -->
+  <line x1="88" y1="130" x2="140" y2="130" stroke="#374151" stroke-width="2"/>
+  <!-- φ angle label -->
+  <text x="110" y="122" text-anchor="middle" font-size="11" fill="#6b7280" font-style="italic">φ</text>
+
+  <!-- ── Peptide plane dashed rectangle ── -->
+  <rect x="140" y="90" width="270" height="90" rx="4" fill="#eff6ff" fill-opacity="0.6" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="275" y="108" text-anchor="middle" font-size="11" fill="#3b82f6" font-weight="bold">肽单元刚性平面</text>
+
+  <!-- C(carbonyl) at x=165 -->
+  <text x="158" y="138" font-size="15" fill="#374151" font-weight="bold">C</text>
+  <!-- =O double bond upward -->
+  <line x1="167" y1="120" x2="167" y2="100" stroke="#dc2626" stroke-width="2"/>
+  <line x1="170" y1="120" x2="170" y2="100" stroke="#dc2626" stroke-width="2"/>
+  <text x="162" y="97" font-size="14" fill="#dc2626" font-weight="bold">O</text>
+
+  <!-- C-N bond (partial double bond - highlight) -->
+  <line x1="178" y1="130" x2="248" y2="130" stroke="#7c3aed" stroke-width="3"/>
+  <!-- bond length label -->
+  <text x="213" y="148" text-anchor="middle" font-size="11" fill="#7c3aed" font-weight="bold">132 pm</text>
+  <text x="213" y="162" text-anchor="middle" font-size="10" fill="#6b7280">(单键 147, 双键 127)</text>
+
+  <!-- N at x=250 -->
+  <text x="248" y="138" font-size="15" fill="#374151" font-weight="bold">N</text>
+  <!-- H above N -->
+  <line x1="256" y1="120" x2="256" y2="100" stroke="#374151" stroke-width="1.5"/>
+  <text x="249" y="97" font-size="14" fill="#374151">H</text>
+
+  <!-- bond N-Cα(right) -->
+  <line x1="268" y1="130" x2="320" y2="130" stroke="#374151" stroke-width="2"/>
+  <!-- ψ angle label -->
+  <text x="290" y="122" text-anchor="middle" font-size="11" fill="#6b7280" font-style="italic">ψ</text>
+
+  <!-- right Cα -->
+  <text x="320" y="138" font-size="15" fill="#374151" font-weight="bold">Cα</text>
+  <text x="320" y="155" font-size="11" fill="#6b7280">(自由旋转)</text>
+  <!-- R2 below right Cα -->
+  <line x1="332" y1="140" x2="332" y2="158" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="325" y="172" font-size="12" fill="#9ca3af">R₂</text>
+  <!-- H above right Cα -->
+  <line x1="332" y1="120" x2="332" y2="108" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="325" y="106" font-size="12" fill="#9ca3af">H</text>
+
+  <!-- ── RESONANCE explanation ── -->
+  <text x="400" y="108" font-size="12" font-weight="bold" fill="#7c3aed">p-π 共轭（共振）</text>
+
+  <!-- resonance form 1: C=O, C-N -->
+  <g transform="translate(395, 115)">
+    <text x="0" y="16" font-size="13" fill="#374151">C</text>
+    <line x1="10" y1="10" x2="22" y2="4" stroke="#dc2626" stroke-width="1.5"/>
+    <line x1="11" y1="12" x2="23" y2="6" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="23" y="7" font-size="12" fill="#dc2626">O</text>
+    <line x1="10" y1="16" x2="30" y2="16" stroke="#374151" stroke-width="1.5"/>
+    <text x="30" y="20" font-size="13" fill="#374151">N</text>
+    <!-- resonance arrow -->
+    <line x1="54" y1="14" x2="72" y2="14" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arr-res)"/>
+    <line x1="72" y1="20" x2="54" y2="20" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arr-res2)"/>
+    <!-- resonance form 2: C-O-, C=N+ -->
+    <text x="82" y="16" font-size="13" fill="#374151">C</text>
+    <line x1="92" y1="10" x2="104" y2="4" stroke="#374151" stroke-width="1.5"/>
+    <text x="105" y="7" font-size="12" fill="#dc2626">O</text>
+    <text x="116" y="7" font-size="10" fill="#dc2626">⁻</text>
+    <line x1="92" y1="14" x2="112" y2="14" stroke="#7c3aed" stroke-width="1.5"/>
+    <line x1="93" y1="16" x2="113" y2="16" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="113" y="20" font-size="13" fill="#374151">N</text>
+    <text x="124" y="14" font-size="10" fill="#7c3aed">⁺</text>
+    <text x="124" y="22" font-size="11" fill="#7c3aed">H</text>
+  </g>
+
+  <!-- key labels right side -->
+  <rect x="390" y="155" width="290" height="62" rx="4" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1"/>
+  <text x="535" y="172" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b21b6">C-N 键特性</text>
+  <text x="535" y="189" text-anchor="middle" font-size="11" fill="#374151">键长 132 pm（介于单键 147 与双键 127 之间）</text>
+  <text x="535" y="204" text-anchor="middle" font-size="11" fill="#374151">具有部分双键性质，不能自由旋转</text>
+  <text x="535" y="218" text-anchor="middle" font-size="11" fill="#5b21b6">→ 肽单元为刚性平面（6 个原子共面）</text>
+
+  <!-- ── BOTTOM: Trans vs Cis ── -->
+  <text x="350" y="248" text-anchor="middle" font-size="13" font-weight="bold" fill="#111827">反式（trans）vs 顺式（cis）酰胺键</text>
+
+  <!-- Trans panel -->
+  <rect x="60" y="258" width="260" height="84" rx="5" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="190" y="276" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">反式构型（trans）★ 稳定</text>
+  <!-- Simplified trans: Cα and Cα on opposite sides of C-N -->
+  <g transform="translate(90, 285)">
+    <text x="0" y="16" font-size="12" fill="#374151">Cα</text>
+    <line x1="22" y1="10" x2="55" y2="10" stroke="#374151" stroke-width="2"/>
+    <text x="35" y="8" font-size="11" fill="#374151">C</text>
+    <!-- =O up -->
+    <line x1="45" y1="6" x2="45" y2="0" stroke="#dc2626" stroke-width="1.5"/>
+    <line x1="47" y1="6" x2="47" y2="0" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="40" y="-2" font-size="11" fill="#dc2626">O</text>
+    <!-- C-N -->
+    <line x1="55" y1="10" x2="90" y2="10" stroke="#7c3aed" stroke-width="2.5"/>
+    <text x="68" y="8" font-size="11" fill="#7c3aed">N</text>
+    <!-- H up from N -->
+    <line x1="75" y1="6" x2="75" y2="0" stroke="#374151" stroke-width="1.5"/>
+    <text x="70" y="-2" font-size="11" fill="#374151">H</text>
+    <line x1="90" y1="10" x2="120" y2="10" stroke="#374151" stroke-width="2"/>
+    <text x="120" y="16" font-size="12" fill="#374151">Cα</text>
+    <!-- annotation: Cα on opposite sides -->
+    <text x="60" y="38" text-anchor="middle" font-size="10" fill="#15803d">两个 Cα 在 C-N 键两侧（反式）</text>
+    <text x="60" y="52" text-anchor="middle" font-size="10" fill="#15803d">空间位阻小，占优势（&gt;99.9%）</text>
+  </g>
+
+  <!-- Cis panel -->
+  <rect x="370" y="258" width="260" height="84" rx="5" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="500" y="276" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">顺式构型（cis）✗ 不稳定</text>
+  <g transform="translate(400, 285)">
+    <text x="0" y="16" font-size="12" fill="#374151">Cα</text>
+    <line x1="22" y1="10" x2="55" y2="10" stroke="#374151" stroke-width="2"/>
+    <text x="35" y="8" font-size="11" fill="#374151">C</text>
+    <line x1="45" y1="6" x2="45" y2="0" stroke="#dc2626" stroke-width="1.5"/>
+    <line x1="47" y1="6" x2="47" y2="0" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="40" y="-2" font-size="11" fill="#dc2626">O</text>
+    <line x1="55" y1="10" x2="90" y2="10" stroke="#7c3aed" stroke-width="2.5"/>
+    <text x="68" y="8" font-size="11" fill="#7c3aed">N</text>
+    <line x1="75" y1="6" x2="75" y2="0" stroke="#374151" stroke-width="1.5"/>
+    <text x="70" y="-2" font-size="11" fill="#374151">H</text>
+    <line x1="90" y1="10" x2="105" y2="10" stroke="#374151" stroke-width="2"/>
+    <!-- Cα on same side - drawn going down -->
+    <line x1="105" y1="10" x2="105" y2="30" stroke="#374151" stroke-width="2"/>
+    <text x="98" y="44" font-size="12" fill="#374151">Cα</text>
+    <text x="60" y="38" text-anchor="middle" font-size="10" fill="#b91c1c">两个 Cα 在 C-N 键同侧（顺式）</text>
+    <text x="60" y="52" text-anchor="middle" font-size="10" fill="#b91c1c">空间位阻大，不稳定</text>
+  </g>
+</svg>

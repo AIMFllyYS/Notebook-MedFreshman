@@ -53,7 +53,7 @@ $$
 
 **关键**：第 4 步是反应能进行完全的驱动力——生成的 $\beta$-酮酸酯被消耗（成盐），使平衡向右移动。
 :::
-<!-- SVG-TODO: 克莱森缩合机理（NaOEt 夺酯 α-H 形成烯醇负离子，进攻另一分子酯羰基，消除乙氧基 OEt-，产物 β-酮酸酯被碱去质子成盐推动平衡，酸化得产物，弯箭头分步表示） -->
+::figure{src="/images/chemistry/svg/ch13/claisen-condensation.svg" caption="克莱森缩合：NaOEt夺α-H→烯醇负离子进攻→消除OEt-→β-酮酸酯" alt="NaOEt夺酯α-H形成烯醇负离子，进攻另一分子酯羰基，消除OEt-，产物被碱去质子成盐推动平衡"}
 
 :::theorem{label=只有一个 α-H 的酯缩合}
 **只有一个 α-H 的酯**（如 $\ce{RCH2COOEt}$ 中 $\alpha$-碳只有一个 H 时——更准确说是生成的 $\beta$-酮酸酯没有 $\alpha$-H，如 $\ce{(R)2CHCOOEt}$ 的缩合）：
@@ -185,7 +185,7 @@ $$
 
 **应用**：制备腈类化合物的常用方法。
 :::
-<!-- SVG-TODO: 罗森孟还原机理（酰氯在 Pd/BaSO4 催化下加氢，喹啉毒化催化剂降低活性，选择性还原为醛而不进一步还原为醇） -->
+::figure{src="/images/chemistry/svg/ch13/rosenmund-reduction.svg" caption="罗森孟还原：Pd/BaSO4+喹啉毒化催化剂，酰氯选择性还原为醛" alt="酰氯在Pd/BaSO4催化下加氢，喹啉毒化催化剂降低活性，选择性还原为醛不过度还原为醇"}
 
 :::pitfall{label=混淆克莱森缩合与羟醛缩合}
 **常见错误**：把克莱森缩合的机理写成羟醛缩合。

@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" width="900" height="340" font-family="sans-serif" font-size="13">
+  <title>差向异构化机理：烯二醇中间体</title>
+  <defs>
+    <marker id="arrFwd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#555"/>
+    </marker>
+    <marker id="arrRev" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto-start-reverse">
+      <path d="M8,0 L8,6 L0,3 z" fill="#555"/>
+    </marker>
+    <marker id="arrGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2d6a4f"/>
+    </marker>
+    <marker id="arrOrange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e76f51"/>
+    </marker>
+    <marker id="arrBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#1a6496"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="340" fill="white"/>
+
+  <!-- Title -->
+  <text x="450" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">差向异构化机理（Lobry-de Bruyn-van Ekenstein 转变）</text>
+
+  <!-- ===== CENTER: Enediol intermediate ===== -->
+  <g transform="translate(450,155)">
+    <rect x="-72" y="-65" width="144" height="130" rx="8" fill="#fff3e0" stroke="#f4a261" stroke-width="2"/>
+    <text x="0" y="-48" text-anchor="middle" font-size="12" font-weight="bold" fill="#f4a261">烯二醇中间体</text>
+    <!-- C1=C2 double bond enediol structure -->
+    <!-- C1 (top): C(OH)= -->
+    <line x1="0" y1="-34" x2="0" y2="48" stroke="#555" stroke-width="1.8"/>
+    <text x="0" y="-38" text-anchor="middle" font-size="13" font-weight="bold" fill="#e63946">C1</text>
+    <!-- C1 OH -->
+    <line x1="0" y1="-28" x2="40" y2="-28" stroke="#555" stroke-width="1.5"/>
+    <text x="52" y="-24" font-size="12" fill="#333">OH</text>
+    <!-- double bond marks -->
+    <line x1="-5" y1="-28" x2="-5" y2="-4" stroke="#e63946" stroke-width="2"/>
+    <line x1="5" y1="-28" x2="5" y2="-4" stroke="#e63946" stroke-width="2"/>
+    <!-- C2 -->
+    <text x="-16" y="2" font-size="13" font-weight="bold" fill="#e63946">C2</text>
+    <line x1="0" y1="-4" x2="40" y2="-4" stroke="#555" stroke-width="1.5"/>
+    <text x="52" y="0" font-size="12" fill="#333">OH</text>
+    <!-- C3 and rest -->
+    <line x1="0" y1="0" x2="0" y2="18" stroke="#555" stroke-width="1.5"/>
+    <text x="0" y="30" text-anchor="middle" font-size="11" fill="#777">C3-C6...</text>
+    <text x="0" y="50" text-anchor="middle" font-size="11" fill="#777">CHO</text>
+    <text x="0" y="-14" text-anchor="middle" font-size="10" fill="#e63946">C1=C2 烯二醇</text>
+  </g>
+
+  <!-- ===== LEFT: D-Glucose ===== -->
+  <g transform="translate(120,155)">
+    <rect x="-80" y="-80" width="160" height="160" rx="8" fill="#e8f4f8" stroke="#1a6496" stroke-width="2"/>
+    <text x="0" y="-62" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a6496">D-葡萄糖</text>
+    <!-- Fischer fragment -->
+    <line x1="0" y1="-48" x2="0" y2="50" stroke="#555" stroke-width="1.8"/>
+    <text x="0" y="-52" text-anchor="middle" font-size="13" fill="#e63946">CHO</text>
+    <!-- C2: H left, OH right -->
+    <line x1="-35" y1="-18" x2="35" y2="-18" stroke="#1a6496" stroke-width="1.8"/>
+    <text x="-46" y="-14" font-size="12" fill="#333">H</text>
+    <text x="40" y="-14" font-size="12" font-weight="bold" fill="#1a6496">OH</text>
+    <text x="-24" y="-26" font-size="10" fill="#555">C2(S)</text>
+    <!-- C3 -->
+    <line x1="-35" y1="8" x2="35" y2="8" stroke="#555" stroke-width="1.5"/>
+    <text x="-46" y="12" font-size="12" fill="#333">HO</text>
+    <text x="40" y="12" font-size="12" fill="#333">H</text>
+    <!-- more carbons -->
+    <text x="0" y="38" text-anchor="middle" font-size="11" fill="#777">C4, C5...</text>
+    <text x="0" y="58" text-anchor="middle" font-size="11" fill="#777">CH2OH</text>
+  </g>
+
+  <!-- ===== TOP CENTER: D-Mannose ===== -->
+  <g transform="translate(450,50)">
+    <rect x="-80" y="-32" width="160" height="130" rx="8" fill="#e8f8ee" stroke="#2d6a4f" stroke-width="2"/>
+    <text x="0" y="-14" text-anchor="middle" font-size="13" font-weight="bold" fill="#2d6a4f">D-甘露糖</text>
+    <text x="0" y="2" text-anchor="middle" font-size="10" fill="#2d6a4f">C2 差向异构体</text>
+    <line x1="0" y1="6" x2="0" y2="82" stroke="#555" stroke-width="1.8"/>
+    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#e63946">CHO</text>
+    <!-- C2: HO left, H right (opposite of glucose) -->
+    <line x1="-35" y1="26" x2="35" y2="26" stroke="#2d6a4f" stroke-width="1.8"/>
+    <text x="-46" y="30" font-size="12" font-weight="bold" fill="#2d6a4f">HO</text>
+    <text x="40" y="30" font-size="12" fill="#333">H</text>
+    <text x="-24" y="18" font-size="10" fill="#555">C2(R)</text>
+    <!-- C3 -->
+    <line x1="-35" y1="50" x2="35" y2="50" stroke="#555" stroke-width="1.5"/>
+    <text x="-46" y="54" font-size="12" fill="#333">HO</text>
+    <text x="40" y="54" font-size="12" fill="#333">H</text>
+    <text x="0" y="78" text-anchor="middle" font-size="11" fill="#777">CH2OH</text>
+  </g>
+
+  <!-- ===== RIGHT: D-Fructose ===== -->
+  <g transform="translate(780,155)">
+    <rect x="-80" y="-80" width="160" height="160" rx="8" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
+    <text x="0" y="-62" text-anchor="middle" font-size="13" font-weight="bold" fill="#c62828">D-果糖</text>
+    <text x="0" y="-48" text-anchor="middle" font-size="10" fill="#c62828">酮糖 (2-酮己糖)</text>
+    <line x1="0" y1="-40" x2="0" y2="52" stroke="#555" stroke-width="1.8"/>
+    <!-- C1: CH2OH -->
+    <text x="0" y="-44" text-anchor="middle" font-size="12" fill="#c62828">CH2OH</text>
+    <!-- C2: C=O ketone -->
+    <line x1="-35" y1="-12" x2="35" y2="-12" stroke="#c62828" stroke-width="2"/>
+    <text x="42" y="-8" font-size="13" font-weight="bold" fill="#c62828">O</text>
+    <text x="-24" y="-20" font-size="10" fill="#555">C2=O</text>
+    <!-- double bond -->
+    <line x1="-3" y1="-38" x2="-3" y2="-16" stroke="#c62828" stroke-width="2"/>
+    <line x1="3" y1="-38" x2="3" y2="-16" stroke="#c62828" stroke-width="2"/>
+    <!-- C3 -->
+    <line x1="-35" y1="14" x2="35" y2="14" stroke="#555" stroke-width="1.5"/>
+    <text x="-46" y="18" font-size="12" fill="#333">HO</text>
+    <text x="40" y="18" font-size="12" fill="#333">H</text>
+    <text x="0" y="42" text-anchor="middle" font-size="11" fill="#777">C4, C5...</text>
+    <text x="0" y="58" text-anchor="middle" font-size="11" fill="#777">CH2OH</text>
+  </g>
+
+  <!-- Arrow: Glucose -> Enediol (left to center) -->
+  <line x1="208" y1="148" x2="372" y2="148" stroke="#1a6496" stroke-width="1.8" marker-end="url(#arrBlue)"/>
+  <line x1="372" y1="162" x2="208" y2="162" stroke="#1a6496" stroke-width="1.8" marker-end="url(#arrRev)"/>
+  <text x="290" y="138" text-anchor="middle" font-size="10" fill="#1a6496">弱碱 OH- 夺 alpha-H</text>
+  <text x="290" y="176" text-anchor="middle" font-size="10" fill="#555">从C2一侧加 H</text>
+
+  <!-- Arrow: Enediol -> Mannose (center up to top) -->
+  <line x1="440" y1="92" x2="440" y2="118" stroke="#2d6a4f" stroke-width="1.8" marker-end="url(#arrGreen)"/>
+  <line x1="460" y1="118" x2="460" y2="92" stroke="#2d6a4f" stroke-width="1.8" marker-end="url(#arrGreen)"/>
+  <text x="490" y="108" font-size="10" fill="#2d6a4f">从C2另一侧加 H</text>
+  <text x="490" y="120" font-size="10" fill="#2d6a4f">-> C2 差向异构</text>
+
+  <!-- Arrow: Enediol -> Fructose (center to right) -->
+  <line x1="528" y1="148" x2="692" y2="148" stroke="#c62828" stroke-width="1.8" marker-end="url(#arrOrange)"/>
+  <line x1="692" y1="162" x2="528" y2="162" stroke="#c62828" stroke-width="1.8" marker-end="url(#arrRev)"/>
+  <text x="610" y="138" text-anchor="middle" font-size="10" fill="#c62828">C1-H 移至 C2 位</text>
+  <text x="610" y="176" text-anchor="middle" font-size="10" fill="#c62828">-> 酮糖(果糖)</text>
+
+  <!-- Bottom note -->
+  <text x="450" y="318" text-anchor="middle" font-size="11" fill="#888">碱催化可逆：葡萄糖 ⇌ 甘露糖（C2 差向）；葡萄糖 ⇌ 果糖（醛酮异构）</text>
+</svg>

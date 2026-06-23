@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380" font-family="sans-serif" font-size="13">
+  <title>淀粉与纤维素结构对比</title>
+
+  <rect width="800" height="380" fill="white"/>
+
+  <!-- Main title -->
+  <text x="400" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a2e">淀粉 vs 纤维素：苷键立体化学与消化性</text>
+
+  <!-- Divider -->
+  <line x1="400" y1="38" x2="400" y2="360" stroke="#ddd" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+  <!-- ===== LEFT: Starch (淀粉) alpha-1,4 ===== -->
+  <text x="200" y="52" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a6496">淀粉 (Starch)</text>
+  <text x="200" y="67" text-anchor="middle" font-size="12" fill="#1a6496">alpha-1,4 苷键</text>
+
+  <!-- Three glucose rings in curved chain (simulating helical tendency) -->
+  <!-- Ring 1: centered at (80, 155) slightly tilted -->
+  <g transform="translate(80,150) rotate(-8)">
+    <polygon points="0,-38 33,-19 33,19 0,38 -33,19 -33,-19"
+             fill="#e8f4f8" stroke="#1a6496" stroke-width="2"/>
+    <text x="0" y="5" text-anchor="middle" font-size="10" fill="#1a6496">Glc</text>
+    <text x="40" y="-16" font-size="11" fill="#e63946">O</text>
+    <!-- C1 alpha (axial = down in Haworth) -->
+    <line x1="33" y1="19" x2="55" y2="32" stroke="#1a6496" stroke-width="1.8"/>
+    <text x="60" y="37" font-size="10" fill="#e63946">O-glyc</text>
+    <!-- C5 CH2OH -->
+    <line x1="0" y1="-38" x2="0" y2="-54" stroke="#555" stroke-width="1.2"/>
+    <text x="0" y="-58" text-anchor="middle" font-size="9" fill="#555">CH2OH</text>
+  </g>
+
+  <!-- Ring 2: centered at (185, 165) -->
+  <g transform="translate(185,165) rotate(-4)">
+    <polygon points="0,-38 33,-19 33,19 0,38 -33,19 -33,-19"
+             fill="#e8f4f8" stroke="#1a6496" stroke-width="2"/>
+    <text x="0" y="5" text-anchor="middle" font-size="10" fill="#1a6496">Glc</text>
+    <text x="40" y="-16" font-size="11" fill="#e63946">O</text>
+    <line x1="33" y1="19" x2="55" y2="32" stroke="#1a6496" stroke-width="1.8"/>
+    <text x="60" y="37" font-size="10" fill="#e63946">O-glyc</text>
+    <line x1="0" y1="-38" x2="0" y2="-54" stroke="#555" stroke-width="1.2"/>
+    <text x="0" y="-58" text-anchor="middle" font-size="9" fill="#555">CH2OH</text>
+    <!-- alpha label -->
+    <text x="-40" y="28" font-size="10" fill="#e63946">alpha</text>
+  </g>
+
+  <!-- Ring 3: centered at (295, 172) -->
+  <g transform="translate(295,172) rotate(0)">
+    <polygon points="0,-38 33,-19 33,19 0,38 -33,19 -33,-19"
+             fill="#e8f4f8" stroke="#1a6496" stroke-width="2"/>
+    <text x="0" y="5" text-anchor="middle" font-size="10" fill="#1a6496">Glc</text>
+    <text x="40" y="-16" font-size="11" fill="#e63946">O</text>
+    <text x="42" y="18" font-size="10" fill="#888">...</text>
+    <line x1="0" y1="-38" x2="0" y2="-54" stroke="#555" stroke-width="1.2"/>
+    <text x="0" y="-58" text-anchor="middle" font-size="9" fill="#555">CH2OH</text>
+  </g>
+
+  <!-- Curved arrow hinting at helix -->
+  <path d="M 60,230 Q 200,260 340,225" fill="none" stroke="#1a6496" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="200" y="252" text-anchor="middle" font-size="10" fill="#1a6496">链弯曲 → 螺旋结构</text>
+
+  <!-- Starch info box -->
+  <rect x="20" y="280" width="360" height="76" rx="6" fill="#e8f4f8" stroke="#1a6496" stroke-width="1.5"/>
+  <text x="200" y="300" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a6496">alpha-1,4: O 轴向连接</text>
+  <text x="200" y="318" text-anchor="middle" font-size="11" fill="#555">相邻环同向偏转 → 自然卷绕成螺旋</text>
+  <text x="200" y="334" text-anchor="middle" font-size="11" fill="#555">直链淀粉：~1000 葡萄糖单元螺旋</text>
+  <text x="200" y="350" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d6a4f">人体 alpha-葡萄糖苷酶可消化</text>
+
+  <!-- ===== RIGHT: Cellulose (纤维素) beta-1,4 ===== -->
+  <text x="600" y="52" text-anchor="middle" font-size="15" font-weight="bold" fill="#5d4037">纤维素 (Cellulose)</text>
+  <text x="600" y="67" text-anchor="middle" font-size="12" fill="#5d4037">beta-1,4 苷键</text>
+
+  <!-- Three glucose rings in straight chain, alternating flip -->
+  <!-- Ring 1 at (470, 160) -->
+  <g transform="translate(475,160)">
+    <polygon points="0,-38 33,-19 33,19 0,38 -33,19 -33,-19"
+             fill="#efebe9" stroke="#5d4037" stroke-width="2"/>
+    <text x="0" y="5" text-anchor="middle" font-size="10" fill="#5d4037">Glc</text>
+    <text x="40" y="-16" font-size="11" fill="#e63946">O</text>
+    <!-- C1 beta (equatorial = up in Haworth) -->
+    <line x1="33" y1="-19" x2="55" y2="-28" stroke="#5d4037" stroke-width="1.8"/>
+    <text x="60" y="-24" font-size="10" fill="#5d4037">O-glyc</text>
+    <line x1="0" y1="-38" x2="0" y2="-54" stroke="#555" stroke-width="1.2"/>
+    <text x="0" y="-58" text-anchor="middle" font-size="9" fill="#555">CH2OH</text>
+    <text x="-40" y="28" font-size="10" fill="#5d4037">beta</text>
+  </g>
+
+  <!-- Ring 2 at (580, 155) flipped -->
+  <g transform="translate(582,155) scale(1,-1)">
+    <polygon points="0,-38 33,-19 33,19 0,38 -33,19 -33,-19"
+             fill="#efebe9" stroke="#5d4037" stroke-width="2"/>
+    <text x="0" y="5" text-anchor="middle" font-size="10" fill="#5d4037" transform="scale(1,-1)">Glc</text>
+    <text x="40" y="-16" font-size="11" fill="#e63946" transform="scale(1,-1)">O</text>
+    <line x1="33" y1="-19" x2="55" y2="-28" stroke="#5d4037" stroke-width="1.8"/>
+    <text x="60" y="-24" font-size="10" fill="#5d4037" transform="scale(1,-1)">O-glyc</text>
+    <line x1="0" y1="-38" x2="0" y2="-54" stroke="#555" stroke-width="1.2"/>
+    <text x="0" y="-62" text-anchor="middle" font-size="9" fill="#555" transform="scale(1,-1)">CH2OH</text>
+  </g>
+
+  <!-- Ring 3 at (690, 160) -->
+  <g transform="translate(688,160)">
+    <polygon points="0,-38 33,-19 33,19 0,38 -33,19 -33,-19"
+             fill="#efebe9" stroke="#5d4037" stroke-width="2"/>
+    <text x="0" y="5" text-anchor="middle" font-size="10" fill="#5d4037">Glc</text>
+    <text x="40" y="-16" font-size="11" fill="#e63946">O</text>
+    <text x="42" y="18" font-size="10" fill="#888">...</text>
+    <line x1="0" y1="-38" x2="0" y2="-54" stroke="#555" stroke-width="1.2"/>
+    <text x="0" y="-58" text-anchor="middle" font-size="9" fill="#555">CH2OH</text>
+  </g>
+
+  <!-- Straight line hinting at extended chain -->
+  <line x1="455" y1="225" x2="740" y2="225" stroke="#5d4037" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="598" y="240" text-anchor="middle" font-size="10" fill="#5d4037">链伸展 → 直线结构</text>
+
+  <!-- Cellulose info box -->
+  <rect x="420" y="280" width="360" height="76" rx="6" fill="#efebe9" stroke="#5d4037" stroke-width="1.5"/>
+  <text x="600" y="300" text-anchor="middle" font-size="12" font-weight="bold" fill="#5d4037">beta-1,4: O 赤道连接</text>
+  <text x="600" y="318" text-anchor="middle" font-size="11" fill="#555">相邻环交替翻转 → 链伸展平直</text>
+  <text x="600" y="334" text-anchor="middle" font-size="11" fill="#555">分子间氢键 → 高强度纤维</text>
+  <text x="600" y="350" text-anchor="middle" font-size="12" font-weight="bold" fill="#c62828">人体缺 beta-葡萄糖苷酶 → 不能消化</text>
+</svg>

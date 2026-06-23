@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400">
+  <title>环氧化物开环区域选择性：碱催化SN2进攻小端，酸催化进攻大端</title>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#333"/>
+    </marker>
+    <marker id="arr-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3a7bd5"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e05050"/>
+    </marker>
+    <marker id="arr-curve" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#8e44ad"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="400" fill="#fafafa" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="24" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">2-甲基环氧乙烷开环区域选择性</text>
+
+  <!-- ===== Starting material: 2-methyloxirane, center ~450, y~90 ===== -->
+  <rect x="340" y="36" width="220" height="110" fill="#f8f0ff" stroke="#8e44ad" stroke-width="1.5" rx="6"/>
+  <text x="450" y="54" text-anchor="middle" font-size="12" font-weight="bold" fill="#8e44ad">2-甲基环氧乙烷（起始物）</text>
+
+  <!-- Triangle ring: O at top (450,75), CH2 at bottom-left (420,105), CH(CH3) at bottom-right (480,105) -->
+  <polygon points="450,72 418,108 482,108" fill="#efe8ff" stroke="#8e44ad" stroke-width="2"/>
+  <!-- O atom -->
+  <circle cx="450" cy="72" r="10" fill="#ffeded" stroke="#cc3333" stroke-width="1.5"/>
+  <text x="450" y="76" text-anchor="middle" font-size="11" font-weight="bold" fill="#cc3333">O</text>
+  <!-- CH2 atom -->
+  <text x="410" y="122" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">CH₂</text>
+  <text x="410" y="134" text-anchor="middle" font-size="10" fill="#555">小端</text>
+  <!-- CH(CH3) atom -->
+  <text x="490" y="122" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">CH(CH₃)</text>
+  <text x="490" y="134" text-anchor="middle" font-size="10" fill="#555">大端</text>
+
+  <!-- ===== Left branch: Base-catalyzed ===== -->
+  <!-- Arrow from starting material going down-left -->
+  <path d="M400,148 Q300,175 240,195" fill="none" stroke="#3a7bd5" stroke-width="2" marker-end="url(#arr-blue)"/>
+  <text x="295" y="168" text-anchor="middle" font-size="11" fill="#2855a0" font-weight="bold">碱催化</text>
+  <text x="295" y="180" text-anchor="middle" font-size="10" fill="#2855a0">Nu:⁻ 直接进攻</text>
+
+  <!-- Base-catalyzed mechanism box -->
+  <rect x="20" y="200" width="330" height="175" fill="#f0f4ff" stroke="#3a7bd5" stroke-width="1.5" rx="6"/>
+  <text x="185" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#2855a0">碱催化 SN2 机理</text>
+
+  <!-- Mini epoxide ring -->
+  <polygon points="110,245 85,272 135,272" fill="#efe8ff" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="110" y="243" text-anchor="middle" font-size="10" fill="#cc3333">O</text>
+  <text x="75" y="283" text-anchor="middle" font-size="10" fill="#333">CH₂</text>
+  <text x="148" y="283" text-anchor="middle" font-size="10" fill="#333">CH(CH₃)</text>
+
+  <!-- Nu: attacking CH2 from backside -->
+  <text x="38" y="265" text-anchor="middle" font-size="12" font-weight="bold" fill="#2855a0">Nu⁻</text>
+  <path d="M52,263 Q65,262 80,265" fill="none" stroke="#2855a0" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <text x="50" y="280" text-anchor="middle" font-size="9" fill="#2855a0">背面进攻</text>
+  <text x="50" y="291" text-anchor="middle" font-size="9" fill="#2855a0">位阻小</text>
+
+  <!-- Arrow to product -->
+  <line x1="185" y1="293" x2="185" y2="315" stroke="#3a7bd5" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+
+  <!-- Product -->
+  <rect x="60" y="318" width="250" height="42" fill="#e8f0ff" stroke="#3a7bd5" stroke-width="1" rx="4"/>
+  <text x="185" y="334" text-anchor="middle" font-size="12" fill="#2855a0" font-weight="bold">Nu−CH₂−CH(OH)−CH₃</text>
+  <text x="185" y="350" text-anchor="middle" font-size="10" fill="#2855a0">Nu 连在位阻小的 C（CH₂ 端）</text>
+
+  <!-- Label -->
+  <text x="185" y="375" text-anchor="middle" font-size="11" fill="#3a7bd5">碱催化：SN2 进攻位阻小端</text>
+
+  <!-- ===== Right branch: Acid-catalyzed ===== -->
+  <!-- Arrow from starting material going down-right -->
+  <path d="M500,148 Q600,175 660,195" fill="none" stroke="#e05050" stroke-width="2" marker-end="url(#arr-red)"/>
+  <text x="600" y="168" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">酸催化</text>
+  <text x="600" y="180" text-anchor="middle" font-size="10" fill="#c0392b">先质子化 O</text>
+
+  <!-- Acid-catalyzed mechanism box -->
+  <rect x="550" y="200" width="330" height="175" fill="#fff5f5" stroke="#e05050" stroke-width="1.5" rx="6"/>
+  <text x="715" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#c0392b">酸催化机理</text>
+
+  <!-- Step 1: Protonation -->
+  <text x="715" y="242" text-anchor="middle" font-size="11" fill="#333">H⁺ 质子化环氧 O</text>
+
+  <!-- Protonated ring -->
+  <polygon points="715,258 690,285 740,285" fill="#ffe8e8" stroke="#e05050" stroke-width="1.5"/>
+  <text x="715" y="256" text-anchor="middle" font-size="10" fill="#e05050">OH⁺</text>
+  <text x="678" y="296" text-anchor="middle" font-size="10" fill="#333">CH₂</text>
+  <text x="754" y="296" text-anchor="middle" font-size="10" fill="#333">CH(CH₃)</text>
+
+  <!-- Partial cation at C(CH3) -->
+  <text x="760" y="270" text-anchor="middle" font-size="11" fill="#e05050">δ⊕</text>
+  <text x="760" y="283" text-anchor="middle" font-size="9" fill="#e05050">稳定</text>
+
+  <!-- Nu attacks C(CH3) -->
+  <text x="830" y="270" text-anchor="middle" font-size="12" font-weight="bold" fill="#e05050">Nu</text>
+  <path d="M820,272 Q800,278 760,282" fill="none" stroke="#e05050" stroke-width="1.5" marker-end="url(#arr-red)"/>
+  <text x="840" y="286" text-anchor="middle" font-size="9" fill="#c0392b">进攻大端</text>
+  <text x="840" y="297" text-anchor="middle" font-size="9" fill="#c0392b">稳定正电荷</text>
+
+  <!-- Arrow to product -->
+  <line x1="715" y1="305" x2="715" y2="320" stroke="#e05050" stroke-width="1.5" marker-end="url(#arr-red)"/>
+
+  <!-- Product -->
+  <rect x="580" y="323" width="270" height="42" fill="#fde8e8" stroke="#e05050" stroke-width="1" rx="4"/>
+  <text x="715" y="339" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="bold">Nu−CH(CH₃)−CH₂−OH</text>
+  <text x="715" y="353" text-anchor="middle" font-size="10" fill="#c0392b">Nu 连在取代基多的 C（CH(CH₃) 端）</text>
+
+  <!-- Label -->
+  <text x="715" y="378" text-anchor="middle" font-size="11" fill="#e05050">酸催化：Nu 进攻含取代基多端</text>
+</svg>

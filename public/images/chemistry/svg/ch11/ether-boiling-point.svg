@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 350" width="700" height="350">
+  <title>醚与醇沸点对比：氢键决定沸点差异</title>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#333"/>
+    </marker>
+    <marker id="arr-up" markerWidth="6" markerHeight="8" refX="3" refY="7" orient="auto">
+      <path d="M0,8 L3,0 L6,8 z" fill="#e05050"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="350" fill="#fafafa" rx="8"/>
+
+  <!-- Title -->
+  <text x="350" y="26" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">醚与醇沸点对比（分子量相近）</text>
+
+  <!-- ===== Left panel: Diethyl ether ===== -->
+  <rect x="15" y="40" width="295" height="270" fill="#f0f8ff" stroke="#3a7bd5" stroke-width="1.5" rx="6"/>
+  <text x="162" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#3a7bd5">乙醚（乙氧基乙烷）</text>
+  <text x="162" y="76" text-anchor="middle" font-size="11" fill="#555">CH₃CH₂−O−CH₂CH₃</text>
+
+  <!-- Two ether molecules (simplified) -->
+  <!-- Molecule A -->
+  <rect x="30" y="90" width="120" height="40" fill="#dbeafe" stroke="#3a7bd5" stroke-width="1" rx="4"/>
+  <text x="90" y="107" text-anchor="middle" font-size="11" fill="#2c3e50">Et−O−Et</text>
+  <text x="90" y="122" text-anchor="middle" font-size="10" fill="#2c3e50">（无 O-H 键）</text>
+
+  <!-- Molecule B -->
+  <rect x="162" y="145" width="120" height="40" fill="#dbeafe" stroke="#3a7bd5" stroke-width="1" rx="4"/>
+  <text x="222" y="162" text-anchor="middle" font-size="11" fill="#2c3e50">Et−O−Et</text>
+  <text x="222" y="177" text-anchor="middle" font-size="10" fill="#2c3e50">（无 O-H 键）</text>
+
+  <!-- X mark for no H-bonding -->
+  <line x1="148" y1="120" x2="162" y2="148" stroke="#e05050" stroke-width="2.5"/>
+  <line x1="162" y1="120" x2="148" y2="148" stroke="#e05050" stroke-width="2.5"/>
+  <text x="155" y="142" text-anchor="middle" font-size="18" fill="#e05050">✕</text>
+  <text x="155" y="162" text-anchor="middle" font-size="10" fill="#c0392b">无氢键</text>
+
+  <!-- Only van der Waals -->
+  <text x="162" y="210" text-anchor="middle" font-size="11" fill="#555">分子间仅靠</text>
+  <text x="162" y="224" text-anchor="middle" font-size="11" fill="#555">范德华力（色散力）</text>
+
+  <!-- Temperature box -->
+  <rect x="55" y="242" width="214" height="50" fill="#bde0fe" stroke="#3a7bd5" stroke-width="1.5" rx="5"/>
+  <text x="162" y="260" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a5276">乙醚 MW = 74</text>
+  <text x="162" y="280" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a5276">bp = 34.6°C</text>
+
+  <!-- ===== Right panel: 1-butanol ===== -->
+  <rect x="390" y="40" width="295" height="270" fill="#fff0f3" stroke="#e05050" stroke-width="1.5" rx="6"/>
+  <text x="537" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#e05050">正丁醇</text>
+  <text x="537" y="76" text-anchor="middle" font-size="11" fill="#555">CH₃CH₂CH₂CH₂OH</text>
+
+  <!-- Two butanol molecules -->
+  <!-- Molecule A -->
+  <rect x="405" y="90" width="120" height="40" fill="#fcd5ce" stroke="#e05050" stroke-width="1" rx="4"/>
+  <text x="465" y="107" text-anchor="middle" font-size="11" fill="#2c3e50">Bu−OH</text>
+  <text x="465" y="122" text-anchor="middle" font-size="10" fill="#c0392b">O-H 为氢键供体</text>
+
+  <!-- H-bond dotted line -->
+  <line x1="525" y1="115" x2="587" y2="150" stroke="#e05050" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="565" y="133" text-anchor="middle" font-size="10" fill="#c0392b">H···O</text>
+  <text x="565" y="145" text-anchor="middle" font-size="10" fill="#c0392b">氢键</text>
+
+  <!-- Molecule B -->
+  <rect x="543" y="155" width="120" height="40" fill="#fcd5ce" stroke="#e05050" stroke-width="1" rx="4"/>
+  <text x="603" y="172" text-anchor="middle" font-size="11" fill="#2c3e50">Bu−OH</text>
+  <text x="603" y="187" text-anchor="middle" font-size="10" fill="#c0392b">O-H 为氢键供体</text>
+
+  <!-- Second H-bond -->
+  <line x1="543" y1="175" x2="480" y2="162" stroke="#e05050" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- H-bond network label -->
+  <text x="537" y="218" text-anchor="middle" font-size="11" fill="#555">O-H···O 氢键网络</text>
+  <text x="537" y="232" text-anchor="middle" font-size="11" fill="#555">需要更多能量才能气化</text>
+
+  <!-- Temperature box -->
+  <rect x="430" y="242" width="214" height="50" fill="#f5b7b1" stroke="#e05050" stroke-width="1.5" rx="5"/>
+  <text x="537" y="260" text-anchor="middle" font-size="13" font-weight="bold" fill="#922b21">正丁醇 MW = 74</text>
+  <text x="537" y="280" text-anchor="middle" font-size="14" font-weight="bold" fill="#922b21">bp = 117°C</text>
+
+  <!-- Middle: temperature difference arrow -->
+  <text x="350" y="168" text-anchor="middle" font-size="12" font-weight="bold" fill="#e05050">沸点差</text>
+  <text x="350" y="185" text-anchor="middle" font-size="13" font-weight="bold" fill="#e05050">82.4°C</text>
+  <line x1="350" y1="260" x2="350" y2="295" stroke="#e05050" stroke-width="2" marker-end="url(#arr-up)"/>
+  <line x1="350" y1="260" x2="350" y2="293" stroke="none"/>
+  <!-- Draw a vertical comparison bar -->
+  <rect x="343" y="265" width="14" height="5" fill="#bde0fe" stroke="#3a7bd5" stroke-width="1"/>
+  <rect x="343" y="270" width="14" height="26" fill="#f5b7b1" stroke="#e05050" stroke-width="1"/>
+  <text x="350" y="310" text-anchor="middle" font-size="9" fill="#888">相对高低</text>
+</svg>

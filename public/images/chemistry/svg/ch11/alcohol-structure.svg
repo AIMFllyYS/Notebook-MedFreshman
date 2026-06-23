@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+  <title>醇分子结构：氧sp3杂化，C-O-H键角108.9°，两类反应位点</title>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e05050"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3a7bd5"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="300" fill="#fafafa" rx="8"/>
+
+  <!-- Title -->
+  <text x="300" y="24" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">醇的结构与反应位点（乙醇示例）</text>
+
+  <!-- CH3 group -->
+  <text x="90" y="155" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">CH₃</text>
+
+  <!-- C-C bond -->
+  <line x1="115" y1="152" x2="155" y2="152" stroke="#333" stroke-width="2"/>
+
+  <!-- CH2 group -->
+  <text x="175" y="155" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">CH₂</text>
+
+  <!-- C-O bond -->
+  <line x1="200" y1="152" x2="248" y2="152" stroke="#333" stroke-width="2"/>
+
+  <!-- delta+ on C -->
+  <text x="224" y="143" text-anchor="middle" font-size="11" fill="#e05050">δ+</text>
+
+  <!-- O atom -->
+  <circle cx="265" cy="152" r="16" fill="#ffeded" stroke="#cc3333" stroke-width="2"/>
+  <text x="265" y="157" text-anchor="middle" font-size="14" font-weight="bold" fill="#cc3333">O</text>
+
+  <!-- sp3 label -->
+  <text x="265" y="182" text-anchor="middle" font-size="10" fill="#888">sp³</text>
+
+  <!-- delta- on O -->
+  <text x="265" y="128" text-anchor="middle" font-size="11" fill="#3a7bd5">δ−</text>
+
+  <!-- Lone pair 1 (top-left of O) -->
+  <text x="240" y="136" font-size="12" fill="#9b59b6">••</text>
+
+  <!-- Lone pair 2 (top-right of O) -->
+  <text x="277" y="136" font-size="12" fill="#9b59b6">••</text>
+
+  <!-- O-H bond (angled down-right) -->
+  <line x1="280" y1="160" x2="320" y2="178" stroke="#333" stroke-width="2"/>
+
+  <!-- delta+ on H -->
+  <text x="332" y="178" text-anchor="start" font-size="11" fill="#e05050">δ+</text>
+
+  <!-- H atom -->
+  <text x="340" y="185" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">H</text>
+
+  <!-- Bond angle label -->
+  <path d="M255,160 Q265,172 278,162" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="265" y="200" text-anchor="middle" font-size="11" fill="#555">∠C-O-H = 108.9°</text>
+
+  <!-- Reaction site 1: O-H cleavage arrow going right-up -->
+  <path d="M345,175 Q420,130 490,115" fill="none" stroke="#e05050" stroke-width="1.5" marker-end="url(#arrow)" stroke-dasharray="5,3"/>
+  <rect x="420" y="90" width="155" height="28" fill="#fff3f3" stroke="#e05050" stroke-width="1" rx="4"/>
+  <text x="498" y="101" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">O-H 断裂</text>
+  <text x="498" y="113" text-anchor="middle" font-size="10" fill="#c0392b">→ 酸性反应（与Na等）</text>
+
+  <!-- Reaction site 2: C-O cleavage arrow going right-down -->
+  <path d="M230,165 Q300,220 380,235" fill="none" stroke="#3a7bd5" stroke-width="1.5" marker-end="url(#arrow-blue)" stroke-dasharray="5,3"/>
+  <rect x="378" y="220" width="165" height="28" fill="#f0f4ff" stroke="#3a7bd5" stroke-width="1" rx="4"/>
+  <text x="460" y="231" text-anchor="middle" font-size="11" fill="#2855a0" font-weight="bold">C-O 断裂</text>
+  <text x="460" y="243" text-anchor="middle" font-size="10" fill="#2855a0">→ 脱水／取代反应</text>
+
+  <!-- Legend for lone pairs -->
+  <text x="30" y="265" font-size="10" fill="#9b59b6">••  孤对电子</text>
+  <text x="140" y="265" font-size="10" fill="#cc3333">δ−  带负电</text>
+  <text x="230" y="265" font-size="10" fill="#e05050">δ+  带正电</text>
+</svg>

@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320" font-family="system-ui,sans-serif" font-size="12">
+  <title>酯交换反应机理：酸/碱催化，四面体中间体</title>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="currentColor"/>
+    </marker>
+    <marker id="redarr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#c00"/>
+    </marker>
+  </defs>
+
+  <!-- ============ TOP ROW: Acid Catalysis ============ -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="#7a3c00">酸催化（H⁺）</text>
+
+  <!-- Step A1: R'COOR'' + H+ -->
+  <g transform="translate(10,55)">
+    <text x="0" y="0" font-weight="bold">R'</text>
+    <line x1="20" y1="-4" x2="40" y2="-4" stroke="currentColor" stroke-width="1.5"/>
+    <text x="41" y="0" font-weight="bold">C</text>
+    <line x1="54" y1="-10" x2="72" y2="-28" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="57" y1="-7" x2="75" y2="-25" stroke="currentColor" stroke-width="1.5"/>
+    <text x="75" y="-26" font-weight="bold">O</text>
+    <line x1="54" y1="5" x2="72" y2="22" stroke="currentColor" stroke-width="1.5"/>
+    <text x="74" y="28" font-weight="bold">O</text>
+    <text x="86" y="28">R''</text>
+    <text x="0" y="50" font-size="10" fill="#888">R'COOR''</text>
+  </g>
+  <text x="115" y="73" font-size="13">+H⁺</text>
+  <line x1="148" y1="73" x2="178" y2="73" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step A2: Protonated ester -->
+  <g transform="translate(185,55)">
+    <text x="0" y="0" font-weight="bold">R'</text>
+    <line x1="20" y1="-4" x2="40" y2="-4" stroke="currentColor" stroke-width="1.5"/>
+    <text x="41" y="0" font-weight="bold">C</text>
+    <line x1="54" y1="-10" x2="72" y2="-28" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="57" y1="-7" x2="75" y2="-25" stroke="currentColor" stroke-width="1.5"/>
+    <text x="75" y="-26" font-weight="bold">O</text>
+    <text x="87" y="-30">H⁺</text>
+    <line x1="54" y1="5" x2="72" y2="22" stroke="currentColor" stroke-width="1.5"/>
+    <text x="74" y="28" font-weight="bold">O</text>
+    <text x="86" y="28">R''</text>
+  </g>
+  <text x="295" y="63" font-size="10" fill="#c00">+MeOH</text>
+  <line x1="298" y1="73" x2="328" y2="73" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step A3: Tetrahedral intermediate (acid) -->
+  <g transform="translate(335,40)">
+    <text x="0" y="0" font-size="10" fill="#555">[四面体中间体]</text>
+    <rect x="-2" y="6" width="128" height="64" rx="5" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="5" y="28" font-weight="bold">R'</text>
+    <line x1="22" y1="24" x2="42" y2="24" stroke="currentColor" stroke-width="1.5"/>
+    <text x="43" y="28" font-weight="bold">C</text>
+    <line x1="56" y1="16" x2="70" y2="6" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="6" font-size="11" font-weight="bold">OH</text>
+    <line x1="56" y1="32" x2="70" y2="44" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="52" font-size="11" font-weight="bold">OR''</text>
+    <line x1="43" y1="16" x2="35" y2="6" stroke="currentColor" stroke-width="1.5"/>
+    <text x="20" y="6" font-size="11" font-weight="bold">OMe</text>
+  </g>
+
+  <text x="475" y="63" font-size="10" fill="#c00">−R''OH</text>
+  <line x1="477" y1="73" x2="507" y2="73" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step A4: product -->
+  <g transform="translate(515,55)">
+    <text x="0" y="0" font-weight="bold">R'</text>
+    <line x1="20" y1="-4" x2="40" y2="-4" stroke="currentColor" stroke-width="1.5"/>
+    <text x="41" y="0" font-weight="bold">C</text>
+    <line x1="54" y1="-10" x2="72" y2="-28" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="57" y1="-7" x2="75" y2="-25" stroke="currentColor" stroke-width="1.5"/>
+    <text x="75" y="-26" font-weight="bold">O</text>
+    <line x1="54" y1="5" x2="72" y2="22" stroke="currentColor" stroke-width="1.5"/>
+    <text x="74" y="28" font-weight="bold">O</text>
+    <text x="86" y="28">Me</text>
+    <text x="0" y="50" font-size="11" fill="#090" font-weight="bold">R'COOMe</text>
+  </g>
+  <text x="640" y="73">+R''OH  −H⁺</text>
+
+  <!-- Divider -->
+  <line x1="0" y1="155" x2="800" y2="155" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ============ BOTTOM ROW: Base Catalysis ============ -->
+  <text x="10" y="175" font-size="13" font-weight="bold" fill="#1a4a80">碱催化（MeO⁻）</text>
+
+  <!-- Step B1: Ester + MeO- -->
+  <g transform="translate(10,210)">
+    <text x="0" y="0" font-weight="bold">R'</text>
+    <line x1="20" y1="-4" x2="40" y2="-4" stroke="currentColor" stroke-width="1.5"/>
+    <text x="41" y="0" font-weight="bold">C</text>
+    <line x1="54" y1="-10" x2="72" y2="-28" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="57" y1="-7" x2="75" y2="-25" stroke="currentColor" stroke-width="1.5"/>
+    <text x="75" y="-26" font-weight="bold">O</text>
+    <line x1="54" y1="5" x2="72" y2="22" stroke="currentColor" stroke-width="1.5"/>
+    <text x="74" y="28" font-weight="bold">O</text>
+    <text x="86" y="28">R''</text>
+  </g>
+  <text x="115" y="228" font-size="13">+MeO⁻</text>
+  <line x1="170" y1="228" x2="200" y2="228" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step B2: Tetrahedral intermediate anion -->
+  <g transform="translate(205,195)">
+    <text x="0" y="0" font-size="10" fill="#555">[四面体中间体]⁻</text>
+    <rect x="-2" y="8" width="136" height="66" rx="5" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="5" y="32" font-weight="bold">R'</text>
+    <line x1="22" y1="28" x2="42" y2="28" stroke="currentColor" stroke-width="1.5"/>
+    <text x="43" y="32" font-weight="bold">C</text>
+    <line x1="56" y1="20" x2="70" y2="10" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="10" font-size="11">O⁻</text>
+    <line x1="56" y1="36" x2="70" y2="48" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="57" font-size="11" font-weight="bold">OR''</text>
+    <line x1="43" y1="20" x2="35" y2="10" stroke="currentColor" stroke-width="1.5"/>
+    <text x="18" y="10" font-size="11" font-weight="bold">OMe</text>
+  </g>
+
+  <text x="355" y="218" font-size="10" fill="#c00">R''O⁻ 离去</text>
+  <line x1="356" y1="228" x2="386" y2="228" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step B3: product -->
+  <g transform="translate(394,210)">
+    <text x="0" y="0" font-weight="bold">R'</text>
+    <line x1="20" y1="-4" x2="40" y2="-4" stroke="currentColor" stroke-width="1.5"/>
+    <text x="41" y="0" font-weight="bold">C</text>
+    <line x1="54" y1="-10" x2="72" y2="-28" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="57" y1="-7" x2="75" y2="-25" stroke="currentColor" stroke-width="1.5"/>
+    <text x="75" y="-26" font-weight="bold">O</text>
+    <line x1="54" y1="5" x2="72" y2="22" stroke="currentColor" stroke-width="1.5"/>
+    <text x="74" y="28" font-weight="bold">O</text>
+    <text x="86" y="28">Me</text>
+    <text x="0" y="50" font-size="11" fill="#090" font-weight="bold">R'COOMe</text>
+  </g>
+  <text x="510" y="228" font-size="13">+ R''O⁻</text>
+  <text x="560" y="250" font-size="11" fill="#555">(R''OH 若比 MeOH pKa 大，平衡向产物)</text>
+
+  <!-- Bottom note -->
+  <rect x="10" y="282" width="780" height="28" rx="4" fill="#f5fff5" stroke="#90c890" stroke-width="1"/>
+  <text x="20" y="300" font-size="11" fill="#1a5a1a">酯交换应用：生物柴油（甘油三酯 + 甲醇 → 脂肪酸甲酯 + 甘油）、普鲁卡因合成；工业常用碱催化（NaOMe/MeOH）</text>
+</svg>

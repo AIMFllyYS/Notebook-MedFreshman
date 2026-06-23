@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 380" aria-label="D-葡萄糖费歇尔投影式：己醛糖，4个手性碳C2-C5，C5羟基在右为D型">
+  <title>D-葡萄糖费歇尔投影式（己醛糖，D型）</title>
+  <style>text { font-family: serif; fill: currentColor; } line { stroke: currentColor; }</style>
+
+  <!-- Title -->
+  <text x="140" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">D-葡萄糖费歇尔投影式</text>
+  <text x="140" y="36" text-anchor="middle" font-size="11" fill="currentColor">己醛糖，4 个手性碳（C₂–C₅）</text>
+
+  <!-- Vertical backbone -->
+  <line x1="140" y1="55" x2="140" y2="345" stroke-width="2" fill="none"/>
+
+  <!-- C1: CHO at top -->
+  <text x="152" y="62" font-size="12" fill="currentColor">C₁</text>
+  <text x="60" y="68" text-anchor="middle" font-size="12" fill="currentColor">CHO</text>
+  <line x1="80" y1="64" x2="138" y2="64" stroke-width="1.5" fill="none"/>
+  <text x="152" y="68" font-size="11" fill="currentColor">（醛基，在上端）</text>
+
+  <!-- C2 -->
+  <line x1="60" y1="110" x2="220" y2="110" stroke-width="1.5" fill="none"/>
+  <text x="140" y="107" font-size="10" fill="currentColor">●</text>
+  <text x="42" y="114" font-size="12" fill="currentColor">HO</text>
+  <text x="227" y="114" font-size="12" fill="currentColor">H</text>
+  <text x="140" y="128" text-anchor="middle" font-size="10" fill="currentColor">C₂（R）</text>
+
+  <!-- C3 -->
+  <line x1="60" y1="165" x2="220" y2="165" stroke-width="1.5" fill="none"/>
+  <text x="140" y="162" font-size="10" fill="currentColor">●</text>
+  <text x="52" y="169" font-size="12" fill="currentColor">H</text>
+  <text x="222" y="169" font-size="12" fill="currentColor">OH</text>
+  <text x="140" y="183" text-anchor="middle" font-size="10" fill="currentColor">C₃（S）</text>
+
+  <!-- C4 -->
+  <line x1="60" y1="218" x2="220" y2="218" stroke-width="1.5" fill="none"/>
+  <text x="140" y="215" font-size="10" fill="currentColor">●</text>
+  <text x="52" y="222" font-size="12" fill="currentColor">H</text>
+  <text x="222" y="222" font-size="12" fill="currentColor">OH</text>
+  <text x="140" y="236" text-anchor="middle" font-size="10" fill="currentColor">C₄（R）</text>
+
+  <!-- C5: OH on right = D-series -->
+  <line x1="60" y1="271" x2="220" y2="271" stroke-width="1.5" fill="none"/>
+  <text x="140" y="268" font-size="10" fill="currentColor">●</text>
+  <text x="52" y="275" font-size="12" fill="currentColor">H</text>
+  <text x="222" y="275" font-size="12" fill="currentColor">OH</text>
+  <text x="140" y="289" text-anchor="middle" font-size="10" fill="currentColor">C₅ — OH 在右 = D 型</text>
+
+  <!-- C6: CH2OH at bottom -->
+  <text x="120" y="330" font-size="12" fill="currentColor">CH₂OH</text>
+  <text x="140" y="310" text-anchor="middle" font-size="10" fill="currentColor">C₆</text>
+
+  <!-- D-series annotation box -->
+  <rect x="8" y="355" width="264" height="20" fill="none" stroke="currentColor" stroke-width="0.8" rx="3" stroke-dasharray="3,2"/>
+  <text x="140" y="369" text-anchor="middle" font-size="10" fill="currentColor">规则：C₅-OH 在右 = D 型；在左 = L 型</text>
+</svg>

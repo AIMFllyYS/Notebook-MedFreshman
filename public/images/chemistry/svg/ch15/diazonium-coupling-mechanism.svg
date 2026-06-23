@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 230" aria-label="重氮盐偶联反应机理：重氮盐亲电进攻富电子酚/胺对位，形成偶氮化合物">
+  <title>重氮盐偶联反应机理（形成偶氮化合物）</title>
+  <style>text { font-family: serif; fill: currentColor; } line, path, polygon { stroke: currentColor; }</style>
+  <defs>
+    <marker id="arr-coup" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0.5 L6,3.5 L0,6.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+    <marker id="curved-arr-coup" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="currentColor" stroke-width="1.5" fill="none"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="280" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">重氮盐偶联反应机理</text>
+
+  <!-- Reagents -->
+  <text x="20" y="50" font-size="12" font-weight="bold" fill="currentColor">亲电试剂：</text>
+  <text x="100" y="50" font-size="12" fill="currentColor">Ar—N₂⁺</text>
+  <text x="150" y="50" font-size="10" fill="currentColor">（重氮盐，弱亲电试剂）</text>
+
+  <text x="20" y="68" font-size="12" font-weight="bold" fill="currentColor">偶合组分：</text>
+  <text x="100" y="68" font-size="12" fill="currentColor">酚（弱碱性条件）或胺（弱酸性条件）</text>
+
+  <!-- Phenol coupling (top path) -->
+  <text x="20" y="100" font-size="12" font-weight="bold" fill="currentColor">酚的偶联（pH 8–10）：</text>
+
+  <!-- Phenol ring with OH at top and para position marked -->
+  <!-- Ar ring centered at (110,145) r=28 -->
+  <polygon points="110,117 133,131 133,158 110,172 87,158 87,131" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="110" y1="121" x2="129" y2="132" stroke-width="1.5" fill="none"/>
+  <line x1="129" y1="134" x2="129" y2="156" stroke-width="1.5" fill="none"/>
+  <line x1="89" y1="156" x2="110" y2="168" stroke-width="1.5" fill="none"/>
+  <text x="104" y="113" font-size="11" fill="currentColor">OH</text>
+  <text x="104" y="186" font-size="11" fill="currentColor">对位↑</text>
+
+  <!-- Curved arrow: N2+ attacks para position of phenol -->
+  <text x="150" y="140" font-size="12" fill="currentColor">+</text>
+  <text x="165" y="140" font-size="12" fill="currentColor">Ar'N₂⁺</text>
+  <path d="M200,140 Q230,120 250,140" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#arr-coup)"/>
+
+  <!-- Product: azo compound -->
+  <!-- Ar ring (phenol) centered at (300,145) -->
+  <polygon points="300,117 323,131 323,158 300,172 277,158 277,131" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="300" y1="121" x2="319" y2="132" stroke-width="1.5" fill="none"/>
+  <line x1="319" y1="134" x2="319" y2="156" stroke-width="1.5" fill="none"/>
+  <line x1="279" y1="156" x2="300" y2="168" stroke-width="1.5" fill="none"/>
+  <text x="294" y="113" font-size="11" fill="currentColor">OH</text>
+  <!-- Azo bond at para position -->
+  <line x1="300" y1="172" x2="300" y2="190" stroke-width="1.5" fill="none"/>
+  <text x="285" y="202" font-size="12" fill="currentColor">N=N</text>
+  <line x1="308" y1="198" x2="330" y2="198" stroke-width="1.5" fill="none"/>
+  <!-- Second Ar ring at right -->
+  <polygon points="355,175 378,189 378,216 355,230 332,216 332,189" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="355" y1="179" x2="374" y2="190" stroke-width="1.5" fill="none"/>
+  <line x1="374" y1="192" x2="374" y2="214" stroke-width="1.5" fill="none"/>
+  <line x1="334" y1="214" x2="355" y2="226" stroke-width="1.5" fill="none"/>
+
+  <!-- Product label -->
+  <text x="360" y="162" font-size="11" fill="currentColor">偶氮化合物</text>
+  <text x="350" y="174" font-size="11" fill="currentColor">Ar—N=N—Ar'</text>
+
+  <!-- Conditions summary -->
+  <text x="20" y="210" font-size="11" fill="currentColor">酚：弱碱性（pH 8–10），PhO⁻ 比 PhOH 更富电子，偶联更易</text>
+  <text x="20" y="225" font-size="11" fill="currentColor">胺：弱酸性（pH 4–6），防止 ArN₂⁺ 在碱性下分解</text>
+</svg>

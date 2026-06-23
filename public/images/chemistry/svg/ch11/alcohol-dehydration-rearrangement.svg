@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="900" height="300">
+  <title>醇酸催化脱水重排机理：1,2-甲基迁移</title>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#333"/>
+    </marker>
+    <marker id="arr-curve" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e05050"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="300" fill="#fafafa" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">3,3-二甲基-2-丁醇酸催化脱水重排机理</text>
+
+  <!-- Step 1: Starting material -->
+  <rect x="10" y="35" width="155" height="130" fill="#f0f8ff" stroke="#3a7bd5" stroke-width="1" rx="5"/>
+  <text x="87" y="52" text-anchor="middle" font-size="11" font-weight="bold" fill="#3a7bd5">Step 1：质子化</text>
+  <!-- Molecule text representation -->
+  <text x="87" y="75" text-anchor="middle" font-size="12" fill="#333">(CH₃)₃C-C(OH)H-CH₃</text>
+  <text x="87" y="92" text-anchor="middle" font-size="11" fill="#555">3,3-二甲基-2-丁醇</text>
+  <!-- Arrow H+ -->
+  <text x="87" y="115" text-anchor="middle" font-size="13" fill="#e05050">+ H⁺</text>
+  <line x1="60" y1="125" x2="114" y2="125" stroke="#e05050" stroke-width="1.5" marker-end="url(#arr-curve)"/>
+  <text x="87" y="148" text-anchor="middle" font-size="12" fill="#333">(CH₃)₃C-C(OH₂⁺)H-CH₃</text>
+  <text x="87" y="163" text-anchor="middle" font-size="10" fill="#888">质子化羟基</text>
+
+  <!-- Arrow 1: -H2O -->
+  <line x1="168" y1="105" x2="202" y2="105" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="185" y="96" text-anchor="middle" font-size="11" fill="#555">−H₂O</text>
+
+  <!-- Step 2: Secondary carbocation -->
+  <rect x="205" y="35" width="155" height="130" fill="#fff5f5" stroke="#e05050" stroke-width="1" rx="5"/>
+  <text x="282" y="52" text-anchor="middle" font-size="11" font-weight="bold" fill="#e05050">Step 2：2° 碳正离子</text>
+  <text x="282" y="80" text-anchor="middle" font-size="12" fill="#333">(CH₃)₃C−Ċ⊕H−CH₃</text>
+  <text x="282" y="98" text-anchor="middle" font-size="10" fill="#888">C2 处 2° 碳正离子</text>
+  <!-- Charge label -->
+  <rect x="235" y="108" width="94" height="20" fill="#ffeaea" rx="3"/>
+  <text x="282" y="122" text-anchor="middle" font-size="10" fill="#c0392b">2° ⊕ 不稳定</text>
+  <!-- Curved arrow for methyl migration -->
+  <path d="M255,140 Q270,160 295,145" fill="none" stroke="#e05050" stroke-width="1.5" marker-end="url(#arr-curve)"/>
+  <text x="270" y="168" text-anchor="middle" font-size="10" fill="#e05050">CH₃ 待迁移</text>
+
+  <!-- Arrow 2: 1,2-methyl shift -->
+  <line x1="363" y1="105" x2="397" y2="105" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="380" y="90" text-anchor="middle" font-size="10" fill="#555">1,2-甲基</text>
+  <text x="380" y="102" text-anchor="middle" font-size="10" fill="#555">迁移</text>
+
+  <!-- Step 3: Tertiary carbocation -->
+  <rect x="400" y="35" width="165" height="130" fill="#fff8ee" stroke="#e67e22" stroke-width="1" rx="5"/>
+  <text x="482" y="52" text-anchor="middle" font-size="11" font-weight="bold" fill="#e67e22">Step 3：3° 碳正离子</text>
+  <text x="482" y="78" text-anchor="middle" font-size="12" fill="#333">(CH₃)₂C⊕−CH(CH₃)₂</text>
+  <text x="482" y="96" text-anchor="middle" font-size="10" fill="#888">C3 处 3° 碳正离子</text>
+  <rect x="435" y="108" width="95" height="20" fill="#fef3e2" rx="3"/>
+  <text x="482" y="122" text-anchor="middle" font-size="10" fill="#ca6f1e">3° ⊕ 更稳定</text>
+  <text x="482" y="145" text-anchor="middle" font-size="10" fill="#e67e22">消除 β-H →</text>
+
+  <!-- Arrow 3: -H+ -->
+  <line x1="568" y1="105" x2="602" y2="105" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="585" y="96" text-anchor="middle" font-size="11" fill="#555">−H⁺</text>
+
+  <!-- Step 4: Product -->
+  <rect x="605" y="35" width="165" height="130" fill="#f0fff4" stroke="#27ae60" stroke-width="1" rx="5"/>
+  <text x="687" y="52" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">Step 4：产物</text>
+  <text x="687" y="78" text-anchor="middle" font-size="12" fill="#333">(CH₃)₂C=C(CH₃)₂</text>
+  <text x="687" y="98" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="bold">2,3-二甲基-2-丁烯</text>
+  <rect x="640" y="110" width="96" height="28" fill="#e8f8f0" rx="3"/>
+  <text x="688" y="122" text-anchor="middle" font-size="10" fill="#1e8449">扎依采夫产物</text>
+  <text x="688" y="134" text-anchor="middle" font-size="10" fill="#1e8449">主要产物</text>
+
+  <!-- Bottom summary -->
+  <rect x="10" y="185" width="880" height="50" fill="#f8f8f8" stroke="#ccc" stroke-width="1" rx="5"/>
+  <text x="450" y="203" text-anchor="middle" font-size="11" fill="#555">驱动力：碳正离子稳定性  3° &gt; 2° &gt; 1°</text>
+  <text x="450" y="222" text-anchor="middle" font-size="11" fill="#555">迁移基团：甲基（带电子对）从相邻碳迁移至缺电子碳正离子</text>
+
+  <!-- Step numbers at bottom -->
+  <text x="87" y="260" text-anchor="middle" font-size="12" fill="#3a7bd5">① 质子化</text>
+  <text x="282" y="260" text-anchor="middle" font-size="12" fill="#e05050">② 2° 碳正离子</text>
+  <text x="482" y="260" text-anchor="middle" font-size="12" fill="#e67e22">③ 1,2-迁移 → 3° 碳正离子</text>
+  <text x="687" y="260" text-anchor="middle" font-size="12" fill="#27ae60">④ 消除 β-H</text>
+</svg>

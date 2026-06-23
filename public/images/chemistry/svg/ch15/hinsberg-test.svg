@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <title>兴斯堡反应鉴别伯仲叔胺：溶于NaOH/不溶/不反应</title>
+  <style>
+    text { font-family: 'Times New Roman', serif; fill: currentColor; }
+    line, rect, circle { stroke: currentColor; fill: none; }
+    .label { font-size: 12px; }
+    .atom { font-size: 13px; }
+    .title { font-size: 13px; font-weight: bold; }
+    .row-label { font-size: 12px; font-weight: bold; }
+    .primary { fill: #2563eb; }
+    .secondary { fill: #7c3aed; }
+    .tertiary { fill: #64748b; }
+    .soluble { fill: #16a34a; }
+    .insoluble { fill: #dc2626; }
+    .noreact { fill: #92400e; }
+  </style>
+
+  <defs>
+    <marker id="arr" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor" stroke="none"/>
+    </marker>
+    <marker id="arrG" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#16a34a" stroke="none"/>
+    </marker>
+    <marker id="arrR" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#dc2626" stroke="none"/>
+    </marker>
+  </defs>
+
+  <!-- Header -->
+  <text x="400" y="25" text-anchor="middle" class="title" font-size="15px">兴斯堡（Hinsberg）反应鉴别伯、仲、叔胺</text>
+  <text x="400" y="44" text-anchor="middle" class="label" fill="#555">试剂：苯磺酰氯 PhSO₂Cl + NaOH</text>
+  <line x1="20" y1="52" x2="780" y2="52" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Row labels column -->
+  <rect x="10" y="60" width="90" height="280" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="55" y="110" text-anchor="middle" class="title primary">伯胺</text>
+  <text x="55" y="126" text-anchor="middle" class="label primary">Primary</text>
+  <text x="55" y="205" text-anchor="middle" class="title secondary">仲胺</text>
+  <text x="55" y="221" text-anchor="middle" class="label secondary">Secondary</text>
+  <text x="55" y="298" text-anchor="middle" class="title tertiary">叔胺</text>
+  <text x="55" y="314" text-anchor="middle" class="label tertiary">Tertiary</text>
+
+  <!-- === Row 1: Primary amine === -->
+  <g transform="translate(110, 75)">
+    <text x="0" y="30" class="atom">RNH₂</text>
+    <text x="0" y="46" class="label" fill="#555">+ PhSO₂Cl</text>
+    <line x1="90" y1="34" x2="140" y2="34" marker-end="url(#arr)" stroke-width="1.5"/>
+    <text x="115" y="28" text-anchor="middle" class="label">−HCl</text>
+    <text x="145" y="30" class="atom">PhSO₂NHR</text>
+    <text x="145" y="46" class="label" fill="#7c3aed">有酸性 N-H</text>
+    <line x1="260" y1="34" x2="320" y2="34" marker-end="url(#arrG)" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="290" y="28" text-anchor="middle" class="label">+NaOH</text>
+    <text x="325" y="30" class="atom">[PhSO₂NR]⁻ Na⁺</text>
+    <rect x="490" y="14" width="130" height="36" rx="6" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="555" y="30" text-anchor="middle" class="row-label soluble">溶于 NaOH</text>
+    <text x="555" y="44" text-anchor="middle" class="label soluble">溶液澄清</text>
+  </g>
+  <line x1="110" y1="145" x2="780" y2="145" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 2"/>
+
+  <!-- === Row 2: Secondary amine === -->
+  <g transform="translate(110, 165)">
+    <text x="0" y="30" class="atom">R₂NH</text>
+    <text x="0" y="46" class="label" fill="#555">+ PhSO₂Cl</text>
+    <line x1="90" y1="34" x2="140" y2="34" marker-end="url(#arr)" stroke-width="1.5"/>
+    <text x="115" y="28" text-anchor="middle" class="label">−HCl</text>
+    <text x="145" y="30" class="atom">PhSO₂NR₂</text>
+    <text x="145" y="46" class="label" fill="#dc2626">无 N-H</text>
+    <line x1="260" y1="34" x2="320" y2="34" marker-end="url(#arrR)" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="290" y="28" text-anchor="middle" class="label">+NaOH</text>
+    <text x="325" y="30" class="atom">PhSO₂NR₂</text>
+    <text x="325" y="46" class="label" fill="#dc2626">不溶，沉淀析出</text>
+    <line x1="450" y1="28" x2="460" y2="40" stroke="#dc2626"/>
+    <line x1="460" y1="28" x2="470" y2="40" stroke="#dc2626"/>
+    <line x1="453" y1="40" x2="468" y2="40" stroke="#dc2626"/>
+    <rect x="490" y="14" width="130" height="36" rx="6" fill="#fee2e2" stroke="#dc2626"/>
+    <text x="555" y="30" text-anchor="middle" class="row-label insoluble">不溶于 NaOH</text>
+    <text x="555" y="44" text-anchor="middle" class="label insoluble">有沉淀</text>
+  </g>
+  <line x1="110" y1="235" x2="780" y2="235" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 2"/>
+
+  <!-- === Row 3: Tertiary amine === -->
+  <g transform="translate(110, 255)">
+    <text x="0" y="30" class="atom">R₃N</text>
+    <text x="0" y="46" class="label" fill="#555">+ PhSO₂Cl</text>
+    <line x1="90" y1="34" x2="190" y2="34" stroke-width="1.5" stroke-dasharray="5 3"/>
+    <line x1="130" y1="25" x2="150" y2="43" stroke="#92400e" stroke-width="2"/>
+    <line x1="150" y1="25" x2="130" y2="43" stroke="#92400e" stroke-width="2"/>
+    <text x="200" y="30" class="atom" fill="#92400e">不反应</text>
+    <text x="200" y="46" class="label" fill="#92400e">N 上无活泼 H</text>
+    <rect x="490" y="14" width="130" height="36" rx="6" fill="#fef3c7" stroke="#d97706"/>
+    <text x="555" y="30" text-anchor="middle" class="row-label noreact">不反应</text>
+    <text x="555" y="44" text-anchor="middle" class="label noreact">两层分离</text>
+  </g>
+
+  <!-- Footer summary -->
+  <rect x="10" y="350" width="780" height="60" rx="6" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="400" y="370" text-anchor="middle" class="title">鉴别结论</text>
+  <text x="400" y="388" text-anchor="middle" class="label">加苯磺酰氯 + NaOH：</text>
+  <text x="400" y="404" text-anchor="middle" class="label">溶解 → 伯胺 ｜ 沉淀 → 仲胺 ｜ 不反应（分层）→ 叔胺</text>
+</svg>

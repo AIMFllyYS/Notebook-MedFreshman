@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 350" width="700" height="350">
+  <title>醇的酸性比较：pKa值与烷基/吸电子基效应</title>
+  <defs>
+    <marker id="arr-right" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e05050"/>
+    </marker>
+    <marker id="arr-left" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto-start-reverse">
+      <path d="M0,0 L0,6 L8,3 z" fill="#27ae60"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="350" fill="#fafafa" rx="8"/>
+
+  <!-- Title -->
+  <text x="350" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">醇的酸性比较（pKa 越大，酸性越弱）</text>
+
+  <!-- Y axis label -->
+  <text x="20" y="175" text-anchor="middle" font-size="12" fill="#555" transform="rotate(-90,20,175)">pKa</text>
+
+  <!-- Axis -->
+  <line x1="60" y1="40" x2="60" y2="280" stroke="#999" stroke-width="1.5"/>
+  <line x1="60" y1="280" x2="660" y2="280" stroke="#999" stroke-width="1.5"/>
+
+  <!-- pKa scale: range 10–21, mapped to y=40 (pKa=21) to y=280 (pKa=10) -->
+  <!-- y = 280 - (pKa - 10) * (240/11) -->
+  <!-- H2O pKa=15.7 → y=280-(5.7*21.8)=280-124=156 -->
+  <!-- 伯醇 pKa=15.9 → y=280-(5.9*21.8)=280-129=151 -->
+  <!-- 仲醇 pKa=18.0 → y=280-(8.0*21.8)=280-174=106 -->
+  <!-- 叔醇 pKa=19.2 → y=280-(9.2*21.8)=280-201=79 -->
+  <!-- CF3CH2OH pKa=12.4 → y=280-(2.4*21.8)=280-52=228 -->
+
+  <!-- Y axis ticks -->
+  <line x1="55" y1="280" x2="60" y2="280" stroke="#999" stroke-width="1"/>
+  <text x="50" y="284" text-anchor="end" font-size="10" fill="#777">10</text>
+  <line x1="55" y1="258" x2="60" y2="258" stroke="#999" stroke-width="1"/>
+  <text x="50" y="262" text-anchor="end" font-size="10" fill="#777">11</text>
+  <line x1="55" y1="236" x2="60" y2="236" stroke="#999" stroke-width="1"/>
+  <text x="50" y="240" text-anchor="end" font-size="10" fill="#777">12</text>
+  <line x1="55" y1="215" x2="60" y2="215" stroke="#999" stroke-width="1"/>
+  <text x="50" y="219" text-anchor="end" font-size="10" fill="#777">13</text>
+  <line x1="55" y1="193" x2="60" y2="193" stroke="#999" stroke-width="1"/>
+  <text x="50" y="197" text-anchor="end" font-size="10" fill="#777">14</text>
+  <line x1="55" y1="171" x2="60" y2="171" stroke="#999" stroke-width="1"/>
+  <text x="50" y="175" text-anchor="end" font-size="10" fill="#777">15</text>
+  <line x1="55" y1="149" x2="60" y2="149" stroke="#999" stroke-width="1"/>
+  <text x="50" y="153" text-anchor="end" font-size="10" fill="#777">16</text>
+  <line x1="55" y1="128" x2="60" y2="128" stroke="#999" stroke-width="1"/>
+  <text x="50" y="132" text-anchor="end" font-size="10" fill="#777">17</text>
+  <line x1="55" y1="106" x2="60" y2="106" stroke="#999" stroke-width="1"/>
+  <text x="50" y="110" text-anchor="end" font-size="10" fill="#777">18</text>
+  <line x1="55" y1="84" x2="60" y2="84" stroke="#999" stroke-width="1"/>
+  <text x="50" y="88" text-anchor="end" font-size="10" fill="#777">19</text>
+
+  <!-- Bars -->
+  <!-- CF3CH2OH: pKa=12.4, y_top=228, height=280-228=52 -->
+  <rect x="85" y="228" width="60" height="52" fill="#27ae60" opacity="0.8" rx="3"/>
+  <text x="115" y="225" text-anchor="middle" font-size="11" fill="#1a8a4a" font-weight="bold">12.4</text>
+  <text x="115" y="300" text-anchor="middle" font-size="10" fill="#333">CF₃CH₂OH</text>
+  <text x="115" y="313" text-anchor="middle" font-size="9" fill="#555">三氟乙醇</text>
+
+  <!-- H2O: pKa=15.7, y_top=156, height=280-156=124 -->
+  <rect x="195" y="156" width="60" height="124" fill="#3498db" opacity="0.8" rx="3"/>
+  <text x="225" y="153" text-anchor="middle" font-size="11" fill="#2471a3" font-weight="bold">15.7</text>
+  <text x="225" y="300" text-anchor="middle" font-size="10" fill="#333">H₂O</text>
+  <text x="225" y="313" text-anchor="middle" font-size="9" fill="#555">水</text>
+
+  <!-- 伯醇: pKa=15.9, y_top=151, height=280-151=129 -->
+  <rect x="305" y="151" width="60" height="129" fill="#e67e22" opacity="0.8" rx="3"/>
+  <text x="335" y="148" text-anchor="middle" font-size="11" fill="#ca6f1e" font-weight="bold">15.9</text>
+  <text x="335" y="300" text-anchor="middle" font-size="10" fill="#333">伯醇 RCH₂OH</text>
+  <text x="335" y="313" text-anchor="middle" font-size="9" fill="#555">1°</text>
+
+  <!-- 仲醇: pKa=18.0, y_top=106, height=280-106=174 -->
+  <rect x="415" y="106" width="60" height="174" fill="#e74c3c" opacity="0.75" rx="3"/>
+  <text x="445" y="103" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">18.0</text>
+  <text x="445" y="300" text-anchor="middle" font-size="10" fill="#333">仲醇 R₂CHOH</text>
+  <text x="445" y="313" text-anchor="middle" font-size="9" fill="#555">2°</text>
+
+  <!-- 叔醇: pKa=19.2, y_top=79, height=280-79=201 -->
+  <rect x="525" y="79" width="60" height="201" fill="#8e44ad" opacity="0.75" rx="3"/>
+  <text x="555" y="76" text-anchor="middle" font-size="11" fill="#7d3c98" font-weight="bold">19.2</text>
+  <text x="555" y="300" text-anchor="middle" font-size="10" fill="#333">叔醇 R₃COH</text>
+  <text x="555" y="313" text-anchor="middle" font-size="9" fill="#555">3°</text>
+
+  <!-- Trend arrow: alkyl +I raises pKa (weakens acidity), from 伯 to 叔 -->
+  <path d="M305,68 L585,68" fill="none" stroke="#e05050" stroke-width="1.5" marker-end="url(#arr-right)"/>
+  <text x="445" y="62" text-anchor="middle" font-size="11" fill="#c0392b">烷基 +I 效应：RO⁻ 不稳定 → 酸性↓</text>
+
+  <!-- CF3 annotation arrow -->
+  <path d="M178,235 L148,235" fill="none" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr-left)"/>
+  <text x="180" y="231" text-anchor="start" font-size="10" fill="#1a6b3c">CF₃吸电子</text>
+  <text x="180" y="243" text-anchor="start" font-size="10" fill="#1a6b3c">稳定RO⁻→酸性↑</text>
+</svg>

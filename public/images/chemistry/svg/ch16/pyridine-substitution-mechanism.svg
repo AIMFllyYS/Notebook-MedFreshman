@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 260" aria-label="吡啶亲电取代β位vs亲核取代α位共振中间体对比">
+  <title>吡啶亲电取代（β位）与亲核取代（α位）共振中间体对比</title>
+  <style>text { font-family: serif; fill: currentColor; } line, path, polygon { stroke: currentColor; }</style>
+  <defs>
+    <marker id="arr16" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0.5 L6,3.5 L0,6.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="280" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">吡啶取代反应机理对比</text>
+
+  <!-- =================== Left: Electrophilic at β =================== -->
+  <text x="130" y="42" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">亲电取代 E⁺（进攻β位）</text>
+
+  <!-- Pyridine ring for SE reaction (β attack) -->
+  <!-- Hexagon centered at (80, 120) -->
+  <polygon points="80,82 112,100 112,136 80,154 48,136 48,100" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="74" y="80" font-size="12" fill="currentColor">N</text>
+  <text x="114" y="98" font-size="11" fill="currentColor">β</text>
+  <text x="114" y="140" font-size="11" fill="currentColor">γ</text>
+  <text x="74" y="170" font-size="11" fill="currentColor">δ</text>
+  <text x="35" y="140" font-size="11" fill="currentColor">ε</text>
+  <text x="35" y="98" font-size="11" fill="currentColor">α</text>
+  <!-- E+ arrow -->
+  <path d="M130,110 L115,110" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#arr16)"/>
+  <text x="134" y="114" font-size="11" fill="currentColor">E⁺</text>
+
+  <!-- Arrow to intermediate -->
+  <line x1="155" y1="120" x2="185" y2="120" stroke-width="1.5" fill="none" marker-end="url(#arr16)"/>
+
+  <!-- Intermediate cation: positive charge NOT on N -->
+  <text x="200" y="42" text-anchor="middle" font-size="11" font-weight="bold" fill="currentColor">中间体：正电荷</text>
+  <text x="200" y="56" text-anchor="middle" font-size="11" fill="currentColor">（不落在N上）</text>
+  <!-- Ring with + at various C positions -->
+  <polygon points="200,70 232,88 232,124 200,142 168,124 168,88" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="194" y="68" font-size="11" fill="currentColor">N</text>
+  <text x="234" y="86" font-size="10" fill="currentColor">⊕</text>
+  <text x="234" y="128" font-size="10" fill="currentColor">⊕</text>
+  <text x="194" y="158" font-size="10" fill="currentColor">⊕(C₄)</text>
+  <text x="156" y="128" font-size="10" fill="currentColor">E</text>
+  <!-- Stability label -->
+  <text x="200" y="178" text-anchor="middle" font-size="11" fill="currentColor">⊕ 不在 N 上</text>
+  <text x="200" y="192" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">→ 较稳定</text>
+  <text x="200" y="207" text-anchor="middle" font-size="10" fill="currentColor">β位取代产物</text>
+
+  <!-- Divider -->
+  <line x1="285" y1="35" x2="285" y2="255" stroke-width="0.5" stroke-dasharray="4,3" fill="none" opacity="0.5"/>
+
+  <!-- =================== Right: Nucleophilic at α =================== -->
+  <text x="420" y="42" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">亲核取代 Nu⁻（进攻α位）</text>
+
+  <!-- Pyridine ring for SN reaction (α attack) -->
+  <polygon points="370,82 402,100 402,136 370,154 338,136 338,100" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="364" y="80" font-size="12" fill="currentColor">N</text>
+  <text x="404" y="98" font-size="11" fill="currentColor">β</text>
+  <text x="404" y="140" font-size="11" fill="currentColor">γ</text>
+  <text x="364" y="170" font-size="11" fill="currentColor">δ</text>
+  <text x="325" y="140" font-size="11" fill="currentColor">ε</text>
+  <text x="320" y="98" font-size="11" fill="currentColor">α</text>
+  <!-- Nu- arrow -->
+  <path d="M308,100 L323,100" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#arr16)"/>
+  <text x="283" y="104" font-size="11" fill="currentColor">Nu⁻</text>
+
+  <!-- Arrow to intermediate -->
+  <line x1="415" y1="120" x2="445" y2="120" stroke-width="1.5" fill="none" marker-end="url(#arr16)"/>
+
+  <!-- Intermediate anion: negative charge on N -->
+  <text x="490" y="42" text-anchor="middle" font-size="11" font-weight="bold" fill="currentColor">中间体：负电荷</text>
+  <text x="490" y="56" text-anchor="middle" font-size="11" fill="currentColor">（可落在N上）</text>
+  <polygon points="490,70 522,88 522,124 490,142 458,124 458,88" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="484" y="68" font-size="11" fill="currentColor">N</text>
+  <text x="484" y="62" font-size="10" fill="currentColor">⊖</text>
+  <text x="524" y="86" font-size="10" fill="currentColor">⊖</text>
+  <text x="450" y="86" font-size="10" fill="currentColor">Nu</text>
+  <!-- Stability label -->
+  <text x="490" y="178" text-anchor="middle" font-size="11" fill="currentColor">⊖ 可在电负性大的 N</text>
+  <text x="490" y="192" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">→ 被 N 稳定</text>
+  <text x="490" y="207" text-anchor="middle" font-size="10" fill="currentColor">α位取代产物</text>
+
+  <!-- Summary -->
+  <text x="280" y="235" text-anchor="middle" font-size="11" fill="currentColor">吡啶：亲电取代→β位（3位）；亲核取代→α位（2/6位）</text>
+</svg>

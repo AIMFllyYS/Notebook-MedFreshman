@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" font-family="sans-serif">
+  <title>醛酮与HCN亲核加成：CN⁻进攻→四面体中间体→α-羟基腈</title>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="currentColor" fill="none" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="#2980b9" fill="none" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="#c0392b" fill="none" stroke-width="1.5"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="300" fill="white" rx="8"/>
+  <text x="400" y="24" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">醛酮与 HCN 亲核加成机理</text>
+
+  <!-- Step 1: Aldehyde + CN- -->
+  <!-- RCHO structure -->
+  <text x="60" y="100" font-size="13" fill="#555">R</text>
+  <line x1="75" y1="97" x2="95" y2="97" stroke="#555" stroke-width="1.5"/>
+  <!-- C=O double bond -->
+  <text x="100" y="100" font-size="13" font-weight="bold" fill="#2980b9">C</text>
+  <line x1="110" y1="95" x2="130" y2="95" stroke="#555" stroke-width="2"/>
+  <line x1="110" y1="100" x2="130" y2="100" stroke="#555" stroke-width="2"/>
+  <text x="133" y="100" font-size="13" font-weight="bold" fill="#c0392b">O</text>
+  <line x1="107" y1="101" x2="107" y2="115" stroke="#555" stroke-width="1.5"/>
+  <text x="100" y="128" font-size="12" fill="#555">H</text>
+  <text x="130" y="115" font-size="11" fill="#c0392b">δ⁻</text>
+  <text x="95" y="88" font-size="11" fill="#2980b9">δ⁺</text>
+
+  <!-- CN- nucleophile -->
+  <text x="55" y="170" font-size="13" fill="#27ae60" font-weight="bold">⁻CN</text>
+  <text x="40" y="190" font-size="11" fill="#27ae60">亲核试剂</text>
+
+  <!-- Curved arrow from CN- to C -->
+  <path d="M 75,162 Q 90,140 100,112" stroke="#27ae60" fill="none" stroke-width="1.8" marker-end="url(#arrow)"/>
+
+  <!-- π bond breaking curved arrow -->
+  <path d="M 128,93 Q 148,75 158,85" stroke="#c0392b" fill="none" stroke-width="1.8" marker-end="url(#arrow-red)"/>
+
+  <text x="100" y="220" text-anchor="middle" font-size="11" fill="#555">Step 1: CN⁻ 进攻</text>
+
+  <!-- Arrow Step 1→2 -->
+  <line x1="185" y1="130" x2="235" y2="130" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="210" y="122" text-anchor="middle" font-size="11" fill="#555">CN⁻ 进攻</text>
+  <text x="210" y="147" text-anchor="middle" font-size="10" fill="#555">π 键断裂</text>
+
+  <!-- Step 2: Tetrahedral intermediate -->
+  <rect x="245" y="75" width="110" height="90" fill="#fff9e6" stroke="#f39c12" stroke-width="1.5" rx="6"/>
+  <text x="300" y="98" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="bold">C</text>
+  <!-- tetrahedral bonds -->
+  <line x1="300" y1="100" x2="275" y2="118" stroke="#555" stroke-width="1.5"/>
+  <text x="262" y="128" font-size="12" fill="#555">R</text>
+  <line x1="300" y1="100" x2="310" y2="118" stroke="#555" stroke-width="1.5"/>
+  <text x="307" y="130" font-size="12" fill="#555">H</text>
+  <line x1="300" y1="100" x2="285" y2="84" stroke="#555" stroke-width="1.5"/>
+  <text x="271" y="82" font-size="12" fill="#c0392b" font-weight="bold">O⁻</text>
+  <line x1="300" y1="100" x2="318" y2="88" stroke="#555" stroke-width="1.5"/>
+  <text x="320" y="86" font-size="12" fill="#27ae60" font-weight="bold">CN</text>
+  <text x="300" y="155" text-anchor="middle" font-size="11" fill="#555">四面体中间体</text>
+  <text x="300" y="168" text-anchor="middle" font-size="10" fill="#c0392b">O⁻ 带负电荷</text>
+
+  <!-- Arrow Step 2→3 -->
+  <line x1="360" y1="130" x2="410" y2="130" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="385" y="122" text-anchor="middle" font-size="11" fill="#555">H⁺（质子化）</text>
+  <text x="385" y="147" text-anchor="middle" font-size="10" fill="#555">HCN 或 H₂O</text>
+
+  <!-- Protonation curved arrow -->
+  <path d="M 365,148 Q 390,165 400,145" stroke="#c0392b" fill="none" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-red)"/>
+
+  <!-- Step 3: Final product α-hydroxy nitrile -->
+  <rect x="418" y="75" width="130" height="90" fill="#e8f8f0" stroke="#27ae60" stroke-width="1.5" rx="6"/>
+  <text x="483" y="98" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="bold">C</text>
+  <line x1="483" y1="100" x2="455" y2="118" stroke="#555" stroke-width="1.5"/>
+  <text x="441" y="128" font-size="12" fill="#555">R</text>
+  <line x1="483" y1="100" x2="493" y2="118" stroke="#555" stroke-width="1.5"/>
+  <text x="490" y="130" font-size="12" fill="#555">H</text>
+  <line x1="483" y1="100" x2="468" y2="82" stroke="#555" stroke-width="1.5"/>
+  <text x="448" y="80" font-size="12" fill="#c0392b" font-weight="bold">OH</text>
+  <line x1="483" y1="100" x2="502" y2="88" stroke="#555" stroke-width="1.5"/>
+  <text x="504" y="86" font-size="12" fill="#27ae60" font-weight="bold">CN</text>
+  <text x="483" y="152" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="bold">α-羟基腈（氰醇）</text>
+  <text x="483" y="165" text-anchor="middle" font-size="10" fill="#555">RC(OH)(CN)H</text>
+
+  <!-- Overall reaction equation at bottom -->
+  <line x1="40" y1="240" x2="760" y2="240" stroke="#ddd" stroke-width="1"/>
+  <text x="400" y="265" text-anchor="middle" font-size="12" fill="#555">总反应：RCHO + HCN</text>
+  <line x1="520" y1="262" x2="565" y2="262" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="615" y="265" font-size="12" fill="#555">RCH(OH)CN</text>
+  <text x="543" y="256" text-anchor="middle" font-size="10" fill="#27ae60">碱催化</text>
+
+  <!-- Step labels -->
+  <text x="100" y="255" text-anchor="middle" font-size="11" fill="#7f8c8d">① CN⁻ 亲核进攻</text>
+  <text x="300" y="255" text-anchor="middle" font-size="11" fill="#7f8c8d">② 四面体中间体</text>
+  <text x="483" y="255" text-anchor="middle" font-size="11" fill="#7f8c8d">③ 质子化 → 产物</text>
+</svg>

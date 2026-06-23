@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 260" aria-label="差向异构化机理：弱碱下D-葡萄糖、D-甘露糖、D-果糖通过烯二醇中间体互变">
+  <title>差向异构化机理（烯二醇中间体互变）</title>
+  <style>text { font-family: serif; fill: currentColor; } line, path, polygon { stroke: currentColor; }</style>
+  <defs>
+    <marker id="arr-epi" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0.5 L6,3.5 L0,6.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="290" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">差向异构化机理（弱碱催化）</text>
+
+  <!-- Left: D-Glucose -->
+  <text x="80" y="45" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">D-葡萄糖</text>
+
+  <!-- Fischer projection simplified -->
+  <line x1="80" y1="55" x2="80" y2="215" stroke-width="1.5" fill="none"/>
+  <text x="66" y="68" font-size="12" fill="currentColor">CHO</text>
+  <!-- C1 -->
+  <line x1="30" y1="90" x2="130" y2="90" stroke-width="1.5" fill="none"/>
+  <text x="10" y="94" font-size="11" fill="currentColor">HO</text>
+  <text x="133" y="94" font-size="11" fill="currentColor">H</text>
+  <text x="72" y="105" font-size="10" fill="currentColor">C₂</text>
+  <!-- C3 etc -->
+  <line x1="30" y1="125" x2="130" y2="125" stroke-width="1.5" fill="none"/>
+  <text x="15" y="129" font-size="11" fill="currentColor">H</text>
+  <text x="133" y="129" font-size="11" fill="currentColor">OH</text>
+  <text x="72" y="140" font-size="10" fill="currentColor">C₃</text>
+  <text x="66" y="175" font-size="11" fill="currentColor">(C₄-C₆)</text>
+  <text x="60" y="220" font-size="12" fill="currentColor">CH₂OH</text>
+
+  <!-- Step 1: Base removes alpha-H -->
+  <text x="160" y="80" font-size="11" fill="currentColor">碱</text>
+  <line x1="150" y1="88" x2="195" y2="88" stroke-width="1.5" fill="none" marker-end="url(#arr-epi)"/>
+  <text x="158" y="102" font-size="10" fill="currentColor">−H⁺（α-H）</text>
+
+  <!-- Center: Enediol intermediate -->
+  <text x="290" y="45" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">烯二醇中间体</text>
+  <line x1="290" y1="55" x2="290" y2="215" stroke-width="1.5" fill="none"/>
+  <text x="268" y="68" font-size="12" fill="currentColor">CH—OH</text>
+  <line x1="265" y1="72" x2="315" y2="72" stroke-width="1" stroke-dasharray="3,2" fill="none"/>
+  <text x="272" y="85" font-size="12" fill="currentColor">C=C</text>
+  <text x="268" y="100" font-size="12" fill="currentColor">⎢     ⎢</text>
+  <text x="266" y="116" font-size="12" fill="currentColor">OH   OH</text>
+  <text x="290" y="135" text-anchor="middle" font-size="11" fill="currentColor">烯二醇（共同中间体）</text>
+  <line x1="240" y1="145" x2="340" y2="145" stroke-width="0.8" stroke-dasharray="3,2" fill="none"/>
+  <text x="290" y="163" text-anchor="middle" font-size="11" fill="currentColor">再质子化方向不同</text>
+  <text x="290" y="178" text-anchor="middle" font-size="10" fill="currentColor">→ 三种不同产物</text>
+
+  <!-- Step 2: Reprotonation from different sides -->
+  <line x1="200" y1="110" x2="165" y2="110" stroke-width="1.5" fill="none" marker-end="url(#arr-epi)"/>
+  <text x="168" y="124" font-size="10" fill="currentColor">C2 反面 +H⁺</text>
+
+  <line x1="380" y1="88" x2="415" y2="88" stroke-width="1.5" fill="none" marker-end="url(#arr-epi)"/>
+  <text x="382" y="102" font-size="10" fill="currentColor">C1 +H⁺ →酮</text>
+
+  <!-- Right top: D-Mannose (C2 epimer) -->
+  <text x="470" y="45" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">D-甘露糖</text>
+  <line x1="470" y1="55" x2="470" y2="155" stroke-width="1.5" fill="none"/>
+  <text x="456" y="68" font-size="12" fill="currentColor">CHO</text>
+  <line x1="420" y1="90" x2="520" y2="90" stroke-width="1.5" fill="none"/>
+  <text x="400" y="94" font-size="11" fill="currentColor">H</text>
+  <text x="523" y="94" font-size="11" fill="currentColor">OH</text>
+  <text x="462" y="105" font-size="10" fill="currentColor">C₂（C₂差向异构）</text>
+
+  <!-- Right bottom: D-Fructose (C1 ketose) -->
+  <text x="470" y="160" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">D-果糖</text>
+  <line x1="470" y1="170" x2="470" y2="240" stroke-width="1.5" fill="none"/>
+  <text x="450" y="182" font-size="12" fill="currentColor">CH₂OH</text>
+  <text x="456" y="198" font-size="12" fill="currentColor">C=O</text>
+  <text x="456" y="215" font-size="11" fill="currentColor">(C₃-C₆)</text>
+  <text x="460" y="230" font-size="10" fill="currentColor">酮糖，C2 差向异构</text>
+
+  <!-- Summary -->
+  <text x="290" y="248" text-anchor="middle" font-size="11" fill="currentColor">结论：弱碱下三糖通过烯二醇互变（C₂ 差向异构化）</text>
+</svg>

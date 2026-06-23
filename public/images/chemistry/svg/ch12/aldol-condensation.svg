@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 320" width="1000" height="320" font-family="sans-serif">
+  <title>羟醛缩合机理：碱夺α-H→烯醇负离子进攻→β-羟基醛→脱水→α,β-不饱和醛</title>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="currentColor" fill="none" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="#c0392b" fill="none" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="#2980b9" fill="none" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="#27ae60" fill="none" stroke-width="1.5"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="320" fill="white" rx="8"/>
+  <text x="500" y="26" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">羟醛缩合机理（碱催化）</text>
+
+  <!-- Step 1: Base removes α-H to form enolate -->
+  <rect x="10" y="45" width="185" height="100" fill="#fef9e7" stroke="#f39c12" stroke-width="1.5" rx="6"/>
+  <text x="102" y="63" text-anchor="middle" font-size="11" font-weight="bold" fill="#f39c12">① 碱夺 α-H</text>
+  <!-- CH3CHO -->
+  <text x="22" y="105" font-size="13" fill="#c0392b" font-weight="bold">H</text>
+  <text x="18" y="93" font-size="10" fill="#c0392b">α-H</text>
+  <line x1="30" y1="101" x2="48" y2="101" stroke="#555" stroke-width="1.5"/>
+  <text x="51" y="105" font-size="13" font-weight="bold" fill="#2980b9">CH₂</text>
+  <line x1="74" y1="101" x2="92" y2="101" stroke="#555" stroke-width="1.5"/>
+  <text x="95" y="105" font-size="13" font-weight="bold" fill="#2980b9">C</text>
+  <line x1="105" y1="97" x2="129" y2="97" stroke="#c0392b" stroke-width="2.5"/>
+  <line x1="105" y1="104" x2="129" y2="104" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="132" y="105" font-size="13" font-weight="bold" fill="#c0392b">O</text>
+  <line x1="102" y1="106" x2="102" y2="120" stroke="#555" stroke-width="1.5"/>
+  <text x="96" y="132" font-size="13" fill="#555">H</text>
+  <!-- OH- base -->
+  <text x="145" y="90" font-size="13" fill="#27ae60" font-weight="bold">OH⁻</text>
+  <!-- Curved arrow: base takes H -->
+  <path d="M 143,88 Q 120,75 42,95" stroke="#27ae60" fill="none" stroke-width="1.8" marker-end="url(#arrow-green)"/>
+  <text x="102" y="138" text-anchor="middle" font-size="10" fill="#555">乙醛 + OH⁻</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="198" y1="95" x2="228" y2="95" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="213" y="87" text-anchor="middle" font-size="10" fill="#555">-H₂O</text>
+
+  <!-- Step 2: Enolate -->
+  <rect x="230" y="45" width="165" height="100" fill="#e8f4fd" stroke="#2980b9" stroke-width="1.5" rx="6"/>
+  <text x="312" y="63" text-anchor="middle" font-size="11" font-weight="bold" fill="#2980b9">② 烯醇负离子</text>
+  <text x="244" y="100" font-size="13" font-weight="bold" fill="#c0392b">⁻CH₂</text>
+  <line x1="272" y1="97" x2="290" y2="97" stroke="#555" stroke-width="1.5"/>
+  <text x="293" y="100" font-size="13" font-weight="bold" fill="#2980b9">C</text>
+  <line x1="303" y1="93" x2="327" y2="93" stroke="#c0392b" stroke-width="2.5"/>
+  <line x1="303" y1="100" x2="327" y2="100" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="330" y="100" font-size="13" font-weight="bold" fill="#c0392b">O⁻</text>
+  <line x1="300" y1="101" x2="300" y2="115" stroke="#555" stroke-width="1.5"/>
+  <text x="294" y="127" font-size="13" fill="#555">H</text>
+  <!-- Alternative enolate form -->
+  <text x="312" y="143" text-anchor="middle" font-size="10" fill="#2980b9">CH₂=CH–O⁻</text>
+  <!-- Curved arrow showing resonance -->
+  <path d="M 250,105 Q 265,120 290,108" stroke="#c0392b" fill="none" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrow-red)"/>
+
+  <!-- Arrow 2→3 -->
+  <line x1="398" y1="95" x2="428" y2="95" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="413" y="83" text-anchor="middle" font-size="10" fill="#555">进攻</text>
+  <text x="413" y="95" text-anchor="middle" font-size="9" fill="#2980b9">CH₃CHO</text>
+  <text x="413" y="110" text-anchor="middle" font-size="9" fill="#555">（另一分子）</text>
+
+  <!-- Step 3: β-hydroxy aldehyde (aldol product) -->
+  <rect x="430" y="45" width="205" height="110" fill="#e8f8f0" stroke="#27ae60" stroke-width="1.5" rx="6"/>
+  <text x="532" y="63" text-anchor="middle" font-size="11" font-weight="bold" fill="#27ae60">③ β-羟基醛（醇醛）</text>
+  <!-- 3-hydroxybutanal: HOCH(CH3)-CH2-CHO -->
+  <text x="445" y="95" font-size="12" fill="#c0392b" font-weight="bold">HO</text>
+  <line x1="464" y1="91" x2="480" y2="91" stroke="#555" stroke-width="1.5"/>
+  <text x="482" y="95" font-size="13" font-weight="bold" fill="#2980b9">CH</text>
+  <line x1="500" y1="91" x2="516" y2="91" stroke="#555" stroke-width="1.5"/>
+  <text x="519" y="95" font-size="13" font-weight="bold" fill="#2980b9">CH₂</text>
+  <line x1="540" y1="91" x2="556" y2="91" stroke="#555" stroke-width="1.5"/>
+  <text x="559" y="95" font-size="13" font-weight="bold" fill="#2980b9">C</text>
+  <line x1="569" y1="87" x2="593" y2="87" stroke="#c0392b" stroke-width="2.5"/>
+  <line x1="569" y1="94" x2="593" y2="94" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="596" y="95" font-size="13" font-weight="bold" fill="#c0392b">O</text>
+  <line x1="566" y1="96" x2="566" y2="110" stroke="#555" stroke-width="1.5"/>
+  <text x="560" y="122" font-size="13" fill="#555">H</text>
+  <!-- CH3 on CHOH carbon -->
+  <line x1="489" y1="96" x2="489" y2="112" stroke="#555" stroke-width="1.5"/>
+  <text x="481" y="124" font-size="12" fill="#555">CH₃</text>
+  <!-- Labels -->
+  <text x="470" y="80" text-anchor="middle" font-size="10" fill="#c0392b">β-OH</text>
+  <text x="566" y="80" text-anchor="middle" font-size="10" fill="#c0392b">CHO</text>
+  <text x="532" y="148" text-anchor="middle" font-size="10" fill="#27ae60">3-羟基丁醛</text>
+
+  <!-- Arrow 3→4 with heat -->
+  <line x1="638" y1="95" x2="668" y2="95" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="653" y="85" text-anchor="middle" font-size="11" fill="#c0392b">Δ</text>
+  <text x="653" y="112" text-anchor="middle" font-size="10" fill="#555">-H₂O</text>
+
+  <!-- Step 4: α,β-unsaturated aldehyde (crotonaldehyde) -->
+  <rect x="670" y="45" width="200" height="110" fill="#fdecea" stroke="#c0392b" stroke-width="1.5" rx="6"/>
+  <text x="770" y="63" text-anchor="middle" font-size="11" font-weight="bold" fill="#c0392b">④ α,β-不饱和醛</text>
+  <!-- CH3-CH=CH-CHO (crotonaldehyde) -->
+  <text x="684" y="98" font-size="12" fill="#555">CH₃</text>
+  <line x1="704" y1="95" x2="720" y2="95" stroke="#27ae60" stroke-width="2.5"/>
+  <line x1="704" y1="101" x2="720" y2="101" stroke="#27ae60" stroke-width="2.5"/>
+  <text x="723" y="98" font-size="13" font-weight="bold" fill="#27ae60">CH</text>
+  <line x1="738" y1="95" x2="760" y2="95" stroke="#27ae60" stroke-width="2.5"/>
+  <line x1="738" y1="101" x2="760" y2="101" stroke="#27ae60" stroke-width="2.5"/>
+  <text x="763" y="98" font-size="13" font-weight="bold" fill="#27ae60">CH</text>
+  <line x1="778" y1="95" x2="800" y2="95" stroke="#555" stroke-width="1.5"/>
+  <text x="803" y="98" font-size="13" font-weight="bold" fill="#2980b9">C</text>
+  <line x1="813" y1="91" x2="837" y2="91" stroke="#c0392b" stroke-width="2.5"/>
+  <line x1="813" y1="98" x2="837" y2="98" stroke="#c0392b" stroke-width="2.5"/>
+  <text x="840" y="98" font-size="13" font-weight="bold" fill="#c0392b">O</text>
+  <line x1="810" y1="99" x2="810" y2="113" stroke="#555" stroke-width="1.5"/>
+  <text x="804" y="125" font-size="13" fill="#555">H</text>
+  <!-- β α labels -->
+  <text x="730" y="83" text-anchor="middle" font-size="10" fill="#27ae60">β</text>
+  <text x="769" y="83" text-anchor="middle" font-size="10" fill="#27ae60">α</text>
+  <text x="770" y="148" text-anchor="middle" font-size="10" fill="#c0392b">巴豆醛（丁烯醛）</text>
+
+  <!-- Bottom summary -->
+  <line x1="10" y1="185" x2="990" y2="185" stroke="#eee" stroke-width="1"/>
+  <text x="500" y="210" text-anchor="middle" font-size="12" fill="#2c3e50" font-weight="bold">总反应（两分子乙醛）：</text>
+  <text x="500" y="235" text-anchor="middle" font-size="12" fill="#555">2 CH₃CHO</text>
+  <line x1="568" y1="232" x2="610" y2="232" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="589" y="224" text-anchor="middle" font-size="10" fill="#27ae60">OH⁻</text>
+  <text x="680" y="235" font-size="12" fill="#555">CH₃CH(OH)CH₂CHO</text>
+  <line x1="820" y1="232" x2="862" y2="232" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="841" y="222" text-anchor="middle" font-size="10" fill="#c0392b">Δ, -H₂O</text>
+  <text x="920" y="235" font-size="12" fill="#c0392b">CH₃CH=CHCHO</text>
+  <text x="500" y="265" text-anchor="middle" font-size="11" fill="#7f8c8d">β-羟基丁醛（可逆） → 巴豆醛（不可逆脱水）</text>
+  <text x="500" y="285" text-anchor="middle" font-size="11" fill="#7f8c8d">自身缩合：两分子相同醛酮；交叉缩合：选无 α-H 醛（如 PhCHO）作受体</text>
+</svg>

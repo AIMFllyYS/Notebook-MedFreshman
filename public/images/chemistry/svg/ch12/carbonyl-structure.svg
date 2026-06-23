@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280" width="500" height="280" font-family="sans-serif">
+  <title>羰基C=O双键结构：sp²杂化，极化C^δ+—O^δ-</title>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="currentColor" fill="none" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="#c0392b" fill="none" stroke-width="1.5"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="280" fill="white" rx="8"/>
+
+  <!-- Title -->
+  <text x="250" y="24" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">羰基结构示意图</text>
+
+  <!-- C atom -->
+  <circle cx="170" cy="140" r="22" fill="#e8f4fd" stroke="#2980b9" stroke-width="2"/>
+  <text x="170" y="145" text-anchor="middle" font-size="16" font-weight="bold" fill="#2980b9">C</text>
+
+  <!-- O atom -->
+  <circle cx="330" cy="140" r="22" fill="#fdecea" stroke="#c0392b" stroke-width="2"/>
+  <text x="330" y="145" text-anchor="middle" font-size="16" font-weight="bold" fill="#c0392b">O</text>
+
+  <!-- σ bond (solid line) -->
+  <line x1="193" y1="140" x2="308" y2="140" stroke="#555" stroke-width="3"/>
+
+  <!-- π bond upper lobe (dashed ellipse) -->
+  <ellipse cx="250" cy="105" rx="50" ry="18" fill="#c8e6c9" fill-opacity="0.5" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="250" y="109" text-anchor="middle" font-size="10" fill="#27ae60">π 电子云</text>
+
+  <!-- π bond lower lobe (dashed ellipse) -->
+  <ellipse cx="250" cy="175" rx="50" ry="18" fill="#c8e6c9" fill-opacity="0.5" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- δ+ on C -->
+  <text x="155" y="120" text-anchor="middle" font-size="13" fill="#2980b9" font-weight="bold">δ⁺</text>
+
+  <!-- δ- on O -->
+  <text x="345" y="120" text-anchor="middle" font-size="13" fill="#c0392b" font-weight="bold">δ⁻</text>
+
+  <!-- Polarization arrow -->
+  <path d="M 195,130 Q 250,115 305,128" stroke="#8e44ad" fill="none" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+  <text x="250" y="118" text-anchor="middle" font-size="10" fill="#8e44ad">π电子偏移</text>
+
+  <!-- sp2 label on C -->
+  <text x="135" y="165" text-anchor="middle" font-size="11" fill="#2980b9">sp² 杂化</text>
+  <line x1="152" y1="158" x2="162" y2="152" stroke="#2980b9" stroke-width="1"/>
+
+  <!-- Bond length label -->
+  <text x="250" y="215" text-anchor="middle" font-size="12" fill="#555">键长: 122 pm</text>
+  <line x1="193" y1="208" x2="308" y2="208" stroke="#aaa" stroke-width="1"/>
+  <line x1="193" y1="204" x2="193" y2="212" stroke="#aaa" stroke-width="1"/>
+  <line x1="308" y1="204" x2="308" y2="212" stroke="#aaa" stroke-width="1"/>
+
+  <!-- Bond energy label -->
+  <text x="250" y="240" text-anchor="middle" font-size="12" fill="#555">键能: 745 kJ/mol</text>
+
+  <!-- Nucleophilic attack arrow -->
+  <path d="M 80,200 Q 110,170 148,150" stroke="#c0392b" fill="none" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="52" y="218" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">亲核</text>
+  <text x="52" y="232" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">进攻</text>
+  <text x="52" y="246" text-anchor="middle" font-size="10" fill="#c0392b">C^δ⁺ 位点</text>
+
+  <!-- Double bond indicator label -->
+  <text x="250" y="60" text-anchor="middle" font-size="11" fill="#27ae60">σ键 + π键（C=O 双键）</text>
+</svg>

@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 450" width="900" height="450">
+  <title>四类胺与HNO2反应：脂肪伯胺放N2，芳香伯胺生成重氮盐，仲胺黄色亚硝胺，芳香叔胺对位亚硝化</title>
+  <style>
+    text { font-family: 'Times New Roman', serif; fill: currentColor; }
+    line, rect { stroke: currentColor; fill: none; }
+    .label { font-size: 12px; }
+    .atom { font-size: 13px; }
+    .title { font-size: 13px; font-weight: bold; }
+    .row-label { font-size: 12px; font-weight: bold; }
+    .r1 { fill: #1d4ed8; }
+    .r2 { fill: #7c3aed; }
+    .r3 { fill: #b45309; }
+    .r4 { fill: #166534; }
+  </style>
+
+  <defs>
+    <marker id="arr2" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor" stroke="none"/>
+    </marker>
+  </defs>
+
+  <!-- Header -->
+  <text x="450" y="24" text-anchor="middle" class="title" font-size="15px">胺与亚硝酸（HNO₂）反应鉴别</text>
+  <line x1="15" y1="32" x2="885" y2="32" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Row header -->
+  <rect x="10" y="36" width="110" height="30" fill="#f1f5f9" stroke="#cbd5e1" rx="3"/>
+  <text x="65" y="56" text-anchor="middle" class="row-label">胺类型</text>
+  <rect x="125" y="36" width="200" height="30" fill="#f1f5f9" stroke="#cbd5e1" rx="3"/>
+  <text x="225" y="56" text-anchor="middle" class="row-label">反应条件</text>
+  <rect x="330" y="36" width="240" height="30" fill="#f1f5f9" stroke="#cbd5e1" rx="3"/>
+  <text x="450" y="56" text-anchor="middle" class="row-label">产物</text>
+  <rect x="575" y="36" width="310" height="30" fill="#f1f5f9" stroke="#cbd5e1" rx="3"/>
+  <text x="730" y="56" text-anchor="middle" class="row-label">现象 / 鉴别依据</text>
+
+  <!-- === Row 1: Aliphatic primary amine === -->
+  <rect x="10" y="70" width="110" height="80" rx="3" fill="#dbeafe" stroke="#3b82f6"/>
+  <text x="65" y="97" text-anchor="middle" class="title r1">脂肪</text>
+  <text x="65" y="113" text-anchor="middle" class="title r1">伯胺</text>
+  <text x="65" y="129" text-anchor="middle" class="label r1">RNH₂</text>
+
+  <g transform="translate(125, 75)">
+    <text x="100" y="20" text-anchor="middle" class="atom">RNH₂ + HNO₂</text>
+    <text x="100" y="38" text-anchor="middle" class="label" fill="#555">（室温）</text>
+    <line x1="60" y1="50" x2="140" y2="50" marker-end="url(#arr2)" stroke-width="1.5"/>
+    <text x="100" y="68" text-anchor="middle" class="atom">ROH + N₂↑ + H₂O</text>
+  </g>
+
+  <rect x="575" y="70" width="310" height="80" rx="3" fill="#dbeafe" stroke="#3b82f6"/>
+  <text x="730" y="100" text-anchor="middle" class="label r1">放出大量 N₂ 气泡</text>
+  <text x="730" y="118" text-anchor="middle" class="label r1" font-weight="bold">气泡剧烈 → 脂肪伯胺</text>
+  <text x="730" y="136" text-anchor="middle" class="label">（重氮盐不稳定立即分解）</text>
+
+  <line x1="10" y1="152" x2="890" y2="152" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- === Row 2: Aromatic primary amine === -->
+  <rect x="10" y="156" width="110" height="80" rx="3" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="65" y="183" text-anchor="middle" class="title r2">芳香</text>
+  <text x="65" y="199" text-anchor="middle" class="title r2">伯胺</text>
+  <text x="65" y="215" text-anchor="middle" class="label r2">ArNH₂</text>
+
+  <g transform="translate(125, 161)">
+    <text x="100" y="20" text-anchor="middle" class="atom">ArNH₂ + NaNO₂ + HCl</text>
+    <text x="100" y="38" text-anchor="middle" class="label" fill="#7c3aed">0–5 °C 低温</text>
+    <line x1="60" y1="50" x2="140" y2="50" marker-end="url(#arr2)" stroke-width="1.5"/>
+    <text x="100" y="68" text-anchor="middle" class="atom">ArN₂⁺Cl⁻</text>
+  </g>
+
+  <rect x="575" y="156" width="310" height="80" rx="3" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="730" y="186" text-anchor="middle" class="label r2">低温稳定，加热分解放 N₂</text>
+  <text x="730" y="204" text-anchor="middle" class="label r2" font-weight="bold">重氮盐（偶联染料）→ 芳香伯胺</text>
+  <text x="730" y="222" text-anchor="middle" class="label">可进一步偶联反应</text>
+
+  <line x1="10" y1="238" x2="890" y2="238" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- === Row 3: Secondary amine === -->
+  <rect x="10" y="242" width="110" height="80" rx="3" fill="#fef3c7" stroke="#b45309"/>
+  <text x="65" y="269" text-anchor="middle" class="title r3">仲胺</text>
+  <text x="65" y="289" text-anchor="middle" class="label r3">R₂NH</text>
+
+  <g transform="translate(125, 247)">
+    <text x="100" y="20" text-anchor="middle" class="atom">R₂NH + HNO₂</text>
+    <line x1="60" y1="36" x2="140" y2="36" marker-end="url(#arr2)" stroke-width="1.5"/>
+    <text x="100" y="54" text-anchor="middle" class="atom">R₂N–N=O</text>
+    <text x="100" y="70" text-anchor="middle" class="label">（N-亚硝基胺）</text>
+  </g>
+
+  <rect x="575" y="242" width="310" height="80" rx="3" fill="#fef3c7" stroke="#b45309"/>
+  <text x="730" y="272" text-anchor="middle" class="label r3">黄色油状物或黄色固体</text>
+  <text x="730" y="290" text-anchor="middle" class="label r3" font-weight="bold">黄色 N-亚硝基胺 → 仲胺</text>
+  <text x="730" y="308" text-anchor="middle" class="label">（强致癌物，注意安全）</text>
+
+  <line x1="10" y1="324" x2="890" y2="324" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- === Row 4: Aromatic tertiary amine === -->
+  <rect x="10" y="328" width="110" height="80" rx="3" fill="#dcfce7" stroke="#166534"/>
+  <text x="65" y="355" text-anchor="middle" class="title r4">芳香</text>
+  <text x="65" y="371" text-anchor="middle" class="title r4">叔胺</text>
+  <text x="65" y="389" text-anchor="middle" class="label r4">ArNR₂</text>
+
+  <g transform="translate(125, 333)">
+    <text x="100" y="20" text-anchor="middle" class="atom">ArNR₂ + HNO₂</text>
+    <line x1="60" y1="36" x2="140" y2="36" marker-end="url(#arr2)" stroke-width="1.5"/>
+    <text x="100" y="54" text-anchor="middle" class="atom">p-ON–Ar–NR₂</text>
+    <text x="100" y="70" text-anchor="middle" class="label">（对位亚硝化产物）</text>
+  </g>
+
+  <rect x="575" y="328" width="310" height="80" rx="3" fill="#dcfce7" stroke="#166534"/>
+  <text x="730" y="358" text-anchor="middle" class="label r4">芳环对位引入亚硝基（–NO）</text>
+  <text x="730" y="376" text-anchor="middle" class="label r4" font-weight="bold">绿色固体 → 芳香叔胺</text>
+  <text x="730" y="394" text-anchor="middle" class="label">（N 上无 H，不能生成重氮盐）</text>
+
+  <!-- Bottom bar -->
+  <line x1="10" y1="410" x2="890" y2="410" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="450" y="430" text-anchor="middle" class="label" fill="#555">鉴别要点：气泡（脂肪伯胺）/ 重氮盐（芳香伯胺）/ 黄色（仲胺）/ 绿色（芳香叔胺）</text>
+  <text x="450" y="446" text-anchor="middle" class="label" fill="#555">试剂：NaNO₂ + HCl（0–5 °C）</text>
+</svg>

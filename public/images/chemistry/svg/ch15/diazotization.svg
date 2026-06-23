@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300">
+  <title>重氮化反应机理：NO+进攻苯胺N→重氮盐ArN2+Cl-</title>
+  <style>
+    text { font-family: 'Times New Roman', serif; fill: currentColor; }
+    line, rect, path { stroke: currentColor; fill: none; }
+    .label { font-size: 12px; }
+    .atom { font-size: 13px; }
+    .title { font-size: 13px; font-weight: bold; }
+    .step { font-size: 11px; fill: #64748b; }
+    .highlight { fill: #dc2626; }
+    .product { fill: #16a34a; }
+    .cond { fill: #7c3aed; font-size: 11px; }
+  </style>
+
+  <defs>
+    <marker id="arr3" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor" stroke="none"/>
+    </marker>
+    <marker id="arrR3" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#dc2626" stroke="none"/>
+    </marker>
+    <marker id="arrG3" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#16a34a" stroke="none"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="22" text-anchor="middle" class="title" font-size="14px">重氮化反应机理</text>
+  <line x1="10" y1="30" x2="790" y2="30" stroke="#e2e8f0"/>
+
+  <!-- Step 1: NaNO2 + HCl → NO+ -->
+  <rect x="15" y="40" width="55" height="18" fill="#f1f5f9" stroke="#cbd5e1" rx="3"/>
+  <text x="43" y="53" text-anchor="middle" class="step">步骤 1</text>
+
+  <text x="80" y="90" class="atom">NaNO₂  +  HCl</text>
+  <line x1="195" y1="85" x2="250" y2="85" marker-end="url(#arr3)" stroke-width="1.5"/>
+  <text x="222" y="79" text-anchor="middle" class="label">酸化</text>
+  <text x="260" y="90" class="atom">HNO₂</text>
+  <line x1="305" y1="85" x2="360" y2="85" marker-end="url(#arrR3)" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="333" y="79" text-anchor="middle" class="label highlight">H⁺ 活化</text>
+  <text x="370" y="90" class="atom highlight" font-weight="bold">NO⁺</text>
+  <text x="395" y="100" class="label highlight">(亲电亚硝化试剂)</text>
+
+  <!-- Step 2: NO+ + ArNH2 → intermediate -->
+  <rect x="15" y="120" width="55" height="18" fill="#f1f5f9" stroke="#cbd5e1" rx="3"/>
+  <text x="43" y="133" text-anchor="middle" class="step">步骤 2</text>
+
+  <text x="80" y="168" class="atom highlight">NO⁺</text>
+  <text x="115" y="168" class="atom">+  ArNH₂</text>
+  <line x1="215" y1="163" x2="270" y2="163" marker-end="url(#arr3)" stroke-width="1.5"/>
+  <text x="243" y="157" text-anchor="middle" class="label">N 亲核</text>
+  <text x="280" y="168" class="atom">Ar–NH–N=O</text>
+  <line x1="390" y1="163" x2="445" y2="163" marker-end="url(#arr3)" stroke-width="1.5"/>
+  <text x="418" y="157" text-anchor="middle" class="label">互变异构</text>
+  <text x="455" y="168" class="atom">Ar–N=N–OH</text>
+  <text x="280" y="184" class="step">(N-亚硝胺中间体)</text>
+  <text x="455" y="184" class="step">(重氮醇)</text>
+
+  <!-- Step 3: Protonation → diazonium -->
+  <rect x="15" y="200" width="55" height="18" fill="#f1f5f9" stroke="#cbd5e1" rx="3"/>
+  <text x="43" y="213" text-anchor="middle" class="step">步骤 3</text>
+
+  <text x="80" y="248" class="atom">Ar–N=N–OH</text>
+  <line x1="200" y1="243" x2="260" y2="243" marker-end="url(#arrG3)" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="230" y="237" text-anchor="middle" class="label">H⁺, −H₂O</text>
+  <text x="270" y="248" class="atom product" font-weight="bold">Ar–N≡N⁺</text>
+  <text x="380" y="248" class="atom">Cl⁻</text>
+  <line x1="355" y1="243" x2="378" y2="243" stroke-dasharray="3 2"/>
+  <text x="395" y="248" class="atom product">→  ArN₂⁺Cl⁻</text>
+  <text x="270" y="265" class="step">(重氮阳离子，线性 sp 杂化)</text>
+  <text x="395" y="265" class="step product">(苯重氮氯化物)</text>
+
+  <!-- Conditions box -->
+  <rect x="600" y="40" width="185" height="80" rx="6" fill="#fef3c7" stroke="#d97706"/>
+  <text x="693" y="60" text-anchor="middle" class="title" fill="#92400e">反应条件</text>
+  <text x="693" y="78" text-anchor="middle" class="cond">温度：0–5 °C（低温）</text>
+  <text x="693" y="94" text-anchor="middle" class="cond">介质：强酸性（HCl）</text>
+  <text x="693" y="110" text-anchor="middle" class="cond">产物：Ar–N≡N⁺（sp 杂化）</text>
+
+  <!-- Bottom note -->
+  <line x1="10" y1="276" x2="790" y2="276" stroke="#e2e8f0"/>
+  <text x="400" y="294" text-anchor="middle" class="label" fill="#555">重氮盐中 N≡N 键为线性 sp 杂化，类似 CO₂；0–5 °C 稳定，升温分解放 N₂</text>
+</svg>

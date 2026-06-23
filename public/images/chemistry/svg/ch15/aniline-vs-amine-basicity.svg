@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 230" aria-label="苯胺碱性弱于脂肪胺：苯胺N孤对电子与苯环共轭导致碱性降低">
+  <title>苯胺碱性弱于脂肪胺的原因：N孤对电子共轭离域</title>
+  <style>text { font-family: serif; fill: currentColor; } line, path, ellipse, polygon { stroke: currentColor; }</style>
+
+  <!-- Title -->
+  <text x="250" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">苯胺 vs 脂肪胺 碱性对比</text>
+
+  <!-- Left: Aniline structure with conjugation -->
+  <text x="120" y="45" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">苯胺（弱碱，pKb=9.4）</text>
+
+  <!-- Benzene ring centered at (100, 120) r=32 -->
+  <polygon points="100,88 128,104 128,136 100,152 72,136 72,104" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Alternating double bonds (inner) -->
+  <line x1="100" y1="92" x2="124" y2="106" stroke-width="1.5" fill="none"/>
+  <line x1="124" y1="108" x2="124" y2="133" stroke-width="1.5" fill="none"/>
+  <line x1="76" y1="133" x2="100" y2="147" stroke-width="1.5" fill="none"/>
+
+  <!-- N-H2 group attached at top -->
+  <line x1="100" y1="88" x2="100" y2="65" stroke-width="1.5" fill="none"/>
+  <text x="85" y="62" font-size="13" fill="currentColor">NH₂</text>
+
+  <!-- p orbital on N (participating in pi) -->
+  <ellipse cx="100" cy="52" rx="7" ry="11" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3,2"/>
+  <ellipse cx="100" cy="35" rx="7" ry="11" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1"/>
+  <text x="110" y="33" font-size="9" fill="currentColor">孤对电子</text>
+
+  <!-- Curved arrows showing delocalization into ring -->
+  <defs>
+    <marker id="arr15a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0.5 L5,3 L0,5.5" stroke="currentColor" stroke-width="1" fill="none"/>
+    </marker>
+  </defs>
+  <path d="M100,66 Q100,80 112,88" stroke="currentColor" stroke-width="1.2" fill="none" marker-end="url(#arr15a)"/>
+
+  <text x="120" y="180" text-anchor="middle" font-size="10" fill="currentColor">N 孤对电子→苯环共轭</text>
+  <text x="120" y="193" text-anchor="middle" font-size="10" fill="currentColor">N 上电子云密度↓</text>
+  <text x="120" y="206" text-anchor="middle" font-size="10" fill="currentColor">接受质子能力↓ → 弱碱</text>
+
+  <!-- Divider -->
+  <line x1="240" y1="35" x2="240" y2="220" stroke-width="0.5" stroke-dasharray="4,3" fill="none" opacity="0.4"/>
+
+  <!-- Right: Aliphatic amine (no conjugation) -->
+  <text x="370" y="45" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">脂肪胺（较强碱，pKb≈3.3）</text>
+
+  <!-- CH3-NH2 structure -->
+  <text x="320" y="120" font-size="13" fill="currentColor">CH₃</text>
+  <line x1="348" y1="116" x2="370" y2="116" stroke-width="1.5" fill="none"/>
+  <text x="370" y="120" font-size="13" fill="currentColor">NH₂</text>
+
+  <!-- Lone pair NOT delocalized: stays on N -->
+  <ellipse cx="388" cy="104" rx="6" ry="9" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1"/>
+  <text x="396" y="102" font-size="9" fill="currentColor">孤对电子</text>
+  <text x="396" y="114" font-size="9" fill="currentColor">（未共轭）</text>
+
+  <!-- Cross mark: no conjugation -->
+  <text x="350" y="145" font-size="11" fill="currentColor">无 π 共轭体系</text>
+  <text x="350" y="158" font-size="10" fill="currentColor">N 电子云密度高</text>
+
+  <text x="370" y="193" text-anchor="middle" font-size="10" fill="currentColor">N 孤对电子局域保留</text>
+  <text x="370" y="206" text-anchor="middle" font-size="10" fill="currentColor">接受质子能力↑ → 较强碱</text>
+
+  <!-- Comparison summary -->
+  <text x="250" y="225" text-anchor="middle" font-size="11" font-weight="bold" fill="currentColor">碱性：脂肪胺 &gt; 苯胺 &gt; 酰胺（≈中性）</text>
+</svg>

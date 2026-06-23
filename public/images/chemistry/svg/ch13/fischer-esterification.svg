@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 320" width="1000" height="320" font-family="system-ui,sans-serif" font-size="12">
+  <title>Fischer酯化反应机理：酸催化质子化→四面体中间体→脱水→酯</title>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="currentColor"/>
+    </marker>
+    <marker id="curveArr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#c00"/>
+    </marker>
+  </defs>
+
+  <!-- Step labels row -->
+  <text x="10" y="18" font-size="11" fill="#888">步骤 1</text>
+  <text x="200" y="18" font-size="11" fill="#888">步骤 2</text>
+  <text x="430" y="18" font-size="11" fill="#888">步骤 3</text>
+  <text x="640" y="18" font-size="11" fill="#888">步骤 4</text>
+  <text x="840" y="18" font-size="11" fill="#888">步骤 5</text>
+
+  <!-- ===== Step 1: RCOOH + H+ → protonated ===== -->
+  <g transform="translate(10,100)">
+    <!-- R-C(=O)-OH -->
+    <text x="0" y="0" font-weight="bold">R</text>
+    <line x1="16" y1="-4" x2="36" y2="-4" stroke="currentColor" stroke-width="1.5"/>
+    <text x="37" y="0" font-weight="bold">C</text>
+    <line x1="50" y1="-8" x2="68" y2="-26" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="53" y1="-5" x2="71" y2="-23" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="-24" font-weight="bold">O</text>
+    <line x1="50" y1="4" x2="68" y2="22" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="28" font-weight="bold">O</text>
+    <text x="83" y="28">H</text>
+    <text x="5" y="50" font-size="11" fill="#555">RCOOH</text>
+  </g>
+
+  <!-- + H+ label -->
+  <text x="108" y="100" font-size="14" font-weight="bold">+H⁺</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="135" y1="100" x2="175" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Step 2 result: RC(=OH+)-OH -->
+  <g transform="translate(185,100)">
+    <text x="0" y="0" font-weight="bold">R</text>
+    <line x1="16" y1="-4" x2="36" y2="-4" stroke="currentColor" stroke-width="1.5"/>
+    <text x="37" y="0" font-weight="bold">C</text>
+    <line x1="50" y1="-8" x2="68" y2="-26" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="53" y1="-5" x2="71" y2="-23" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="-24" font-weight="bold">O</text>
+    <text x="83" y="-28">H</text>
+    <text x="96" y="-32" font-size="14">⊕</text>
+    <line x1="50" y1="4" x2="68" y2="22" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="28" font-weight="bold">O</text>
+    <text x="83" y="28">H</text>
+    <text x="5" y="50" font-size="11" fill="#c00">羰基氧质子化，活化羰基碳</text>
+  </g>
+
+  <!-- Arrow 2→3 with R'OH label -->
+  <line x1="410" y1="100" x2="450" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="415" y="90" font-size="11" fill="#555">+R'OH</text>
+
+  <!-- Step 3: tetrahedral intermediate -->
+  <g transform="translate(460,80)">
+    <text x="0" y="0" font-size="11" fill="#555">[四面体中间体]</text>
+    <rect x="-2" y="6" width="130" height="70" rx="6" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="5" y="28" font-weight="bold">R</text>
+    <line x1="20" y1="24" x2="38" y2="24" stroke="currentColor" stroke-width="1.5"/>
+    <text x="39" y="28" font-weight="bold">C</text>
+    <!-- OH top -->
+    <line x1="50" y1="16" x2="65" y2="6" stroke="currentColor" stroke-width="1.5"/>
+    <text x="65" y="6" font-weight="bold" font-size="11">OH</text>
+    <!-- OR' bottom -->
+    <line x1="50" y1="32" x2="65" y2="44" stroke="currentColor" stroke-width="1.5"/>
+    <text x="65" y="52" font-weight="bold" font-size="11">OR'</text>
+    <!-- O- left -->
+    <line x1="39" y1="16" x2="30" y2="4" stroke="currentColor" stroke-width="1.5"/>
+    <text x="18" y="4" font-size="11" font-weight="bold">O⁻</text>
+    <!-- R right -->
+    <line x1="55" y1="24" x2="72" y2="24" stroke="currentColor" stroke-width="1.5"/>
+  </g>
+
+  <!-- Arrow 3→4 -->
+  <line x1="600" y1="100" x2="635" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="600" y="90" font-size="11" fill="#555">−H₂O</text>
+
+  <!-- Step 4: after water loss -->
+  <g transform="translate(645,100)">
+    <text x="0" y="0" font-weight="bold">R</text>
+    <line x1="16" y1="-4" x2="36" y2="-4" stroke="currentColor" stroke-width="1.5"/>
+    <text x="37" y="0" font-weight="bold">C</text>
+    <line x1="50" y1="-8" x2="68" y2="-26" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="53" y1="-5" x2="71" y2="-23" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="-24" font-weight="bold">O</text>
+    <text x="83" y="-28">H</text>
+    <text x="96" y="-32" font-size="14">⊕</text>
+    <line x1="50" y1="4" x2="68" y2="22" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="28" font-weight="bold">O</text>
+    <text x="83" y="28">R'</text>
+  </g>
+
+  <!-- Arrow 4→5 -->
+  <line x1="800" y1="100" x2="835" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="800" y="90" font-size="11" fill="#555">−H⁺</text>
+
+  <!-- Step 5: ester product -->
+  <g transform="translate(845,100)">
+    <text x="0" y="0" font-weight="bold">R</text>
+    <line x1="16" y1="-4" x2="36" y2="-4" stroke="currentColor" stroke-width="1.5"/>
+    <text x="37" y="0" font-weight="bold">C</text>
+    <line x1="50" y1="-8" x2="68" y2="-26" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="53" y1="-5" x2="71" y2="-23" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="-24" font-weight="bold">O</text>
+    <line x1="50" y1="4" x2="68" y2="22" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="28" font-weight="bold">O</text>
+    <text x="83" y="28">R'</text>
+    <text x="5" y="50" font-size="12" fill="#090" font-weight="bold">酯</text>
+  </g>
+
+  <!-- H+ catalysis label -->
+  <rect x="10" y="190" width="970" height="30" rx="4" fill="#fffbe6" stroke="#e6c700" stroke-width="1"/>
+  <text x="20" y="210" font-size="12" fill="#7a6000">H⁺催化（可回收）：质子化活化羰基碳 → 醇 O 亲核进攻 → 质子转移 → 脱水 → 去质子化 → 酯（可逆反应，过量醇或除水推动平衡）</text>
+
+  <!-- Curved electron arrows (decorative, simplified) -->
+  <path d="M 270,72 Q 300,50 320,65" stroke="#c00" stroke-width="1.5" fill="none" marker-end="url(#curveArr)"/>
+  <text x="280" y="48" font-size="10" fill="#c00">Nu进攻</text>
+</svg>

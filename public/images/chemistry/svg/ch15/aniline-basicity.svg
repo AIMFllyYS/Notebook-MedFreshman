@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 380" width="700" height="380">
+  <title>苯胺碱性弱于脂肪胺：孤对电子共轭离域降低N上电子密度</title>
+  <style>
+    text { font-family: 'Times New Roman', serif; fill: currentColor; }
+    line, path, circle, polygon { stroke: currentColor; }
+    .label { font-size: 12px; }
+    .atom { font-size: 14px; font-weight: bold; }
+    .title { font-size: 13px; font-weight: bold; }
+    .caption { font-size: 11px; }
+    .weak { fill: #dc2626; }
+    .strong { fill: #16a34a; }
+  </style>
+
+  <!-- Panel divider -->
+  <line x1="350" y1="10" x2="350" y2="310" stroke="#ccc" stroke-width="1"/>
+
+  <!-- === LEFT PANEL: Aniline === -->
+  <text x="175" y="28" text-anchor="middle" class="title">苯胺（PhNH₂）</text>
+
+  <!-- Benzene ring (hexagon centered at 120,120) -->
+  <g transform="translate(75, 70)">
+    <!-- Hexagon -->
+    <polygon points="45,0 90,26 90,78 45,104 0,78 0,26" fill="none" stroke-width="1.5"/>
+    <!-- Inner circle for aromaticity -->
+    <circle cx="45" cy="52" r="22" fill="none" stroke-dasharray="3 2" stroke-width="1"/>
+    <!-- NH2 group attached at top -->
+    <line x1="45" y1="0" x2="45" y2="-30" stroke-width="1.5"/>
+    <text x="30" y="-35" class="atom" fill="#2563eb">NH₂</text>
+    <!-- Lone pair on N (two dots) -->
+    <text x="14" y="-50" class="caption" fill="#7c3aed">·· (孤对电子)</text>
+    <!-- Curved arrow from N into ring -->
+    <path d="M 45,-32 Q 30,-10 20,20" fill="none" stroke="#7c3aed" stroke-width="1.5"
+          marker-end="url(#arrowPurple)"/>
+  </g>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowPurple" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed" stroke="none"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="currentColor" stroke="none"/>
+    </marker>
+  </defs>
+
+  <text x="175" y="230" text-anchor="middle" class="caption" fill="#7c3aed">N 孤对电子参与共轭</text>
+  <text x="175" y="246" text-anchor="middle" class="caption" fill="#7c3aed">电子离域到苯环 π 体系</text>
+  <text x="175" y="262" text-anchor="middle" class="caption">N 上电子密度降低</text>
+  <text x="175" y="280" text-anchor="middle" class="label weak">碱性弱  pKb = 9.4</text>
+
+  <!-- === RIGHT PANEL: Aliphatic amine === -->
+  <text x="525" y="28" text-anchor="middle" class="title">脂肪胺（CH₃NH₂）</text>
+
+  <!-- CH3-NH2 structure -->
+  <g transform="translate(430, 90)">
+    <text x="0" y="40" class="atom">CH₃</text>
+    <line x1="52" y1="35" x2="80" y2="35" stroke-width="1.5"/>
+    <text x="82" y="40" class="atom" fill="#2563eb">NH₂</text>
+    <!-- Lone pair dots freely shown -->
+    <text x="120" y="24" class="caption" fill="#7c3aed">··</text>
+    <text x="115" y="10" class="caption" fill="#7c3aed">(孤对电子)</text>
+    <!-- Strike through to show NOT conjugated -->
+    <text x="82" y="68" class="caption">不与 π 体系共轭</text>
+    <line x1="82" y1="80" x2="145" y2="80" stroke="#dc2626" stroke-dasharray="4 2"/>
+    <text x="90" y="94" class="caption" fill="#dc2626">✗ 无共轭</text>
+  </g>
+
+  <text x="525" y="230" text-anchor="middle" class="caption">N 孤对电子不共轭</text>
+  <text x="525" y="246" text-anchor="middle" class="caption">孤对电子完全保留在 N 上</text>
+  <text x="525" y="262" text-anchor="middle" class="caption">N 上电子密度高</text>
+  <text x="525" y="280" text-anchor="middle" class="label strong">碱性强  pKb = 3.4</text>
+
+  <!-- Bottom comparison bar -->
+  <rect x="20" y="310" width="660" height="60" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="350" y="332" text-anchor="middle" class="title">碱性比较</text>
+  <text x="350" y="352" text-anchor="middle" class="label">CH₃NH₂ (pKb 3.4)  &gt;&gt;  PhNH₂ (pKb 9.4)</text>
+  <text x="350" y="368" text-anchor="middle" class="caption" fill="#555">共轭使孤对电子离域，降低给质子（接受 H⁺）能力</text>
+</svg>

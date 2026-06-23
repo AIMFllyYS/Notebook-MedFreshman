@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" aria-label="硝基化合物结构：N sp2杂化，两N-O键等长，p-π共轭离域，共振结构">
+  <title>硝基化合物结构与共振式</title>
+  <style>text { font-family: serif; fill: currentColor; } line, path, polygon { stroke: currentColor; }</style>
+
+  <!-- Title -->
+  <text x="200" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">硝基 —NO₂ 结构与共振</text>
+
+  <!-- Left resonance structure: R-N+(=O)(O-) -->
+  <!-- R group -->
+  <text x="20" y="100" font-size="13" fill="currentColor">R</text>
+  <line x1="32" y1="96" x2="55" y2="96" stroke-width="1.5" fill="none"/>
+  <!-- N atom -->
+  <text x="55" y="100" font-size="13" fill="currentColor">N</text>
+  <text x="64" y="88" font-size="10" fill="currentColor">+</text>
+  <!-- N=O double bond going up-right -->
+  <line x1="65" y1="88" x2="88" y2="68" stroke-width="1.5" fill="none"/>
+  <line x1="68" y1="91" x2="91" y2="71" stroke-width="1.5" fill="none"/>
+  <text x="90" y="64" font-size="13" fill="currentColor">O</text>
+  <!-- N-O single bond going down-right -->
+  <line x1="68" y1="100" x2="90" y2="116" stroke-width="1.5" fill="none"/>
+  <text x="90" y="127" font-size="13" fill="currentColor">O</text>
+  <text x="103" y="124" font-size="10" fill="currentColor">−</text>
+  <!-- Bond lengths annotation -->
+  <text x="20" y="160" font-size="10" fill="currentColor">N—O: 单键</text>
+  <text x="20" y="173" font-size="10" fill="currentColor">N=O: 双键</text>
+
+  <!-- Resonance arrow -->
+  <line x1="155" y1="96" x2="200" y2="96" stroke-width="1.5" fill="none"/>
+  <polygon points="200,96 191,91 191,101" fill="currentColor" stroke="none"/>
+  <polygon points="155,96 164,91 164,101" fill="currentColor" stroke="none"/>
+  <text x="165" y="88" font-size="11" fill="currentColor">共振</text>
+
+  <!-- Right resonance structure: R-N+(O-)(=O) -->
+  <text x="215" y="100" font-size="13" fill="currentColor">R</text>
+  <line x1="227" y1="96" x2="250" y2="96" stroke-width="1.5" fill="none"/>
+  <text x="250" y="100" font-size="13" fill="currentColor">N</text>
+  <text x="259" y="88" font-size="10" fill="currentColor">+</text>
+  <!-- N-O single bond up-right -->
+  <line x1="260" y1="88" x2="283" y2="68" stroke-width="1.5" fill="none"/>
+  <text x="283" y="64" font-size="13" fill="currentColor">O</text>
+  <text x="296" y="61" font-size="10" fill="currentColor">−</text>
+  <!-- N=O double bond down-right -->
+  <line x1="263" y1="100" x2="285" y2="116" stroke-width="1.5" fill="none"/>
+  <line x1="266" y1="97" x2="288" y2="113" stroke-width="1.5" fill="none"/>
+  <text x="285" y="127" font-size="13" fill="currentColor">O</text>
+
+  <!-- Result: equal bond lengths -->
+  <text x="200" y="160" text-anchor="middle" font-size="11" fill="currentColor">真实结构：两N-O键等长</text>
+  <text x="200" y="175" text-anchor="middle" font-size="11" fill="currentColor">键长 0.121 nm（介于单双键之间）</text>
+  <text x="200" y="190" text-anchor="middle" font-size="10" fill="currentColor">p-π 共轭离域，N 为 sp² 杂化</text>
+</svg>

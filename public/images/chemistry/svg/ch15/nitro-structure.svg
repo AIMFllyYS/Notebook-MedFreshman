@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" width="600" height="280">
+  <title>硝基结构：N sp²杂化，p-π共轭，两N-O键等长0.121nm</title>
+  <style>
+    text { font-family: 'Times New Roman', serif; fill: currentColor; }
+    line, path { stroke: currentColor; fill: none; }
+    .label { font-size: 12px; }
+    .atom { font-size: 14px; font-weight: bold; }
+    .charge { font-size: 10px; }
+    .caption { font-size: 12px; fill: #555; }
+  </style>
+
+  <!-- Left resonance structure: R-N+(=O)(O-) -->
+  <g transform="translate(30, 30)">
+    <text x="0" y="60" class="atom">R</text>
+    <line x1="18" y1="55" x2="45" y2="55"/>
+    <text x="48" y="60" class="atom" fill="#2563eb">N</text>
+    <text x="64" y="48" class="charge" fill="#2563eb">+</text>
+    <!-- N to O double bond (top) -->
+    <line x1="70" y1="50" x2="95" y2="28"/>
+    <line x1="73" y1="53" x2="98" y2="31"/>
+    <text x="98" y="28" class="atom" fill="#dc2626">O</text>
+    <!-- N to O- single bond (bottom) -->
+    <line x1="70" y1="62" x2="95" y2="84"/>
+    <text x="98" y="88" class="atom" fill="#dc2626">O</text>
+    <text x="112" y="82" class="charge" fill="#dc2626">-</text>
+  </g>
+
+  <!-- Double-headed resonance arrow -->
+  <g transform="translate(175, 70)">
+    <line x1="0" y1="0" x2="60" y2="0" stroke-width="1.5"/>
+    <!-- Left arrowhead -->
+    <polygon points="0,0 8,-5 8,5" fill="currentColor" stroke="none"/>
+    <!-- Right arrowhead -->
+    <polygon points="60,0 52,-5 52,5" fill="currentColor" stroke="none"/>
+  </g>
+
+  <!-- Right resonance structure: R-N+(O-)(=O) -->
+  <g transform="translate(250, 30)">
+    <text x="0" y="60" class="atom">R</text>
+    <line x1="18" y1="55" x2="45" y2="55"/>
+    <text x="48" y="60" class="atom" fill="#2563eb">N</text>
+    <text x="64" y="48" class="charge" fill="#2563eb">+</text>
+    <!-- N to O- single bond (top) -->
+    <line x1="70" y1="50" x2="95" y2="28"/>
+    <text x="98" y="28" class="atom" fill="#dc2626">O</text>
+    <text x="112" y="22" class="charge" fill="#dc2626">-</text>
+    <!-- N to O double bond (bottom) -->
+    <line x1="70" y1="62" x2="95" y2="84"/>
+    <line x1="67" y1="65" x2="92" y2="87"/>
+    <text x="98" y="88" class="atom" fill="#dc2626">O</text>
+  </g>
+
+  <!-- "硝基" label under each structure -->
+  <text x="75" y="130" text-anchor="middle" class="label">硝基</text>
+  <text x="295" y="130" text-anchor="middle" class="label">共振结构</text>
+
+  <!-- Divider line -->
+  <line x1="20" y1="148" x2="580" y2="148" stroke="#ccc" stroke-dasharray="4 3" stroke-width="1"/>
+
+  <!-- Bottom: actual structure with 1.5-bond character -->
+  <text x="300" y="175" text-anchor="middle" class="label" font-weight="bold">实际结构：两个 N-O 键等长 0.121 nm</text>
+
+  <g transform="translate(140, 180)">
+    <text x="0" y="30" class="atom">R</text>
+    <line x1="18" y1="25" x2="45" y2="25"/>
+    <text x="48" y="30" class="atom" fill="#2563eb">N</text>
+    <text x="64" y="18" class="charge" fill="#2563eb">+</text>
+    <!-- 1.5-bond to top O (dashed second line to indicate partial) -->
+    <line x1="70" y1="20" x2="100" y2="0" stroke-width="1.5"/>
+    <line x1="73" y1="23" x2="103" y2="3" stroke-dasharray="3 2"/>
+    <text x="104" y="0" class="atom" fill="#dc2626">O</text>
+    <!-- 1.5-bond to bottom O -->
+    <line x1="70" y1="32" x2="100" y2="52" stroke-width="1.5"/>
+    <line x1="67" y1="35" x2="97" y2="55" stroke-dasharray="3 2"/>
+    <text x="104" y="56" class="atom" fill="#dc2626">O</text>
+    <!-- bond length label -->
+    <text x="115" y="28" class="caption">0.121 nm</text>
+    <text x="115" y="42" class="caption">0.121 nm</text>
+  </g>
+
+  <!-- Labels at bottom -->
+  <text x="300" y="252" text-anchor="middle" class="caption">N sp² 杂化</text>
+  <text x="300" y="268" text-anchor="middle" class="caption">p-π 共轭离域，两 N-O 键键级相同（1.5）</text>
+</svg>

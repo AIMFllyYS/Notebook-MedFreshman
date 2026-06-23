@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 320" width="1000" height="320" font-family="system-ui,sans-serif" font-size="12">
+  <title>克莱森缩合机理：NaOEt夺α-H→烯醇负离子→进攻酯羰基→消除OEt-→β-酮酸酯→成盐推平衡</title>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="currentColor"/>
+    </marker>
+    <marker id="redarr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#c00"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="10" y="18" font-size="14" font-weight="bold">克莱森缩合机理</text>
+  <text x="200" y="18" font-size="12" fill="#555">（NaOEt 催化，以 EtOOCCH₂R 为例）</text>
+
+  <!-- Step labels -->
+  <text x="10" y="38" font-size="10" fill="#888">① 夺α-H</text>
+  <text x="170" y="38" font-size="10" fill="#888">② 烯醇负离子</text>
+  <text x="360" y="38" font-size="10" fill="#888">③ 进攻酯羰基</text>
+  <text x="565" y="38" font-size="10" fill="#888">④ 消除OEt⁻</text>
+  <text x="720" y="38" font-size="10" fill="#888">⑤ 成盐（关键）</text>
+  <text x="890" y="38" font-size="10" fill="#888">⑥ 酸化</text>
+
+  <!-- ===== Step 1: Ester + NaOEt ===== -->
+  <g transform="translate(10,90)">
+    <text x="0" y="-8" font-size="10" fill="#555">EtOOC</text>
+    <text x="0" y="8" font-weight="bold">CH₂R</text>
+    <text x="0" y="30" font-size="10" fill="#888">酯（有α-H）</text>
+  </g>
+  <text x="68" y="95" font-size="12">+NaOEt</text>
+
+  <!-- Arrow 1 -->
+  <line x1="135" y1="90" x2="165" y2="90" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="135" y="80" font-size="10" fill="#555">−EtOH</text>
+
+  <!-- Step 2: Enolate -->
+  <g transform="translate(170,68)">
+    <text x="0" y="0" font-size="11" fill="#555">烯醇负离子</text>
+    <rect x="-2" y="6" width="120" height="44" rx="5" fill="#fff8f0" stroke="#e09050" stroke-width="1"/>
+    <text x="4" y="24" font-weight="bold">EtOOC</text>
+    <text x="60" y="24">−</text>
+    <line x1="56" y1="20" x2="72" y2="20" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="56" y1="24" x2="72" y2="24" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="73" y="24" font-weight="bold">CHR</text>
+    <text x="4" y="44" font-size="10" fill="#888">[EtOOC-CHR]⁻</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <line x1="300" y1="90" x2="350" y2="90" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="302" y="80" font-size="10" fill="#555">+EtOOCCH₂R</text>
+
+  <!-- Step 3: Tetrahedral intermediate -->
+  <g transform="translate(355,58)">
+    <text x="0" y="0" font-size="10" fill="#555">[四面体中间体]</text>
+    <rect x="-2" y="6" width="140" height="66" rx="5" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="4" y="28" font-size="11" font-weight="bold">EtO</text>
+    <line x1="28" y1="24" x2="48" y2="24" stroke="currentColor" stroke-width="1.5"/>
+    <text x="49" y="28" font-weight="bold">C</text>
+    <line x1="58" y1="16" x2="70" y2="6" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="6" font-size="11">O⁻</text>
+    <line x1="58" y1="32" x2="70" y2="44" stroke="currentColor" stroke-width="1.5"/>
+    <text x="70" y="54" font-size="10">CHR−COOEt</text>
+    <line x1="49" y1="18" x2="40" y2="8" stroke="currentColor" stroke-width="1.5"/>
+    <text x="22" y="8" font-size="10" font-weight="bold">R'</text>
+  </g>
+
+  <!-- Arrow 3 -->
+  <line x1="505" y1="90" x2="555" y2="90" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="507" y="80" font-size="10" fill="#c00">−OEt⁻</text>
+
+  <!-- Step 4: β-ketoester -->
+  <g transform="translate(560,75)">
+    <text x="0" y="-8" font-size="10" fill="#555">β-酮酸酯</text>
+    <rect x="-4" y="-4" width="120" height="44" rx="5" fill="#f0fff0" stroke="#50a050" stroke-width="1"/>
+    <text x="2" y="14" font-weight="bold" font-size="11">RC(=O)</text>
+    <text x="60" y="14" font-weight="bold" font-size="11">CH₂</text>
+    <text x="84" y="14" font-weight="bold" font-size="11">COOEt</text>
+    <text x="2" y="32" font-size="10" fill="#555">pKa ≈ 11（酸性强）</text>
+  </g>
+
+  <!-- Arrow 4: NaOEt deprotonates -->
+  <line x1="690" y1="90" x2="720" y2="90" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="692" y="80" font-size="10" fill="#555">NaOEt</text>
+
+  <!-- Step 5: Sodium enolate (drives equilibrium) -->
+  <g transform="translate(725,68)">
+    <text x="0" y="0" font-size="10" fill="#555">钠烯醇盐</text>
+    <rect x="-2" y="6" width="130" height="42" rx="5" fill="#e8f0ff" stroke="#5080d0" stroke-width="1.5"/>
+    <text x="4" y="26" font-weight="bold" font-size="11">RC(=O)</text>
+    <text x="60" y="26" font-weight="bold" font-size="11">CH⁻</text>
+    <text x="84" y="26" font-weight="bold" font-size="11">COOEt</text>
+    <text x="4" y="42" font-size="10" fill="#2040a0">Na⁺ 稳定盐，平衡向右→</text>
+  </g>
+
+  <!-- Arrow 5: acid workup -->
+  <line x1="865" y1="90" x2="895" y2="90" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="867" y="80" font-size="10" fill="#555">H₃O⁺</text>
+
+  <!-- Step 6: final product -->
+  <g transform="translate(900,75)">
+    <text x="0" y="-8" font-size="10" fill="#090" font-weight="bold">最终产物</text>
+    <text x="0" y="14" font-weight="bold" font-size="11">RC(=O)</text>
+    <text x="54" y="14" font-weight="bold" font-size="11">CH₂</text>
+    <text x="74" y="14" font-weight="bold" font-size="11">COOEt</text>
+    <text x="0" y="30" font-size="10" fill="#090">β-酮酸酯</text>
+  </g>
+
+  <!-- Overall equation -->
+  <rect x="10" y="155" width="980" height="22" rx="3" fill="#fffff0" stroke="#c0c040" stroke-width="1"/>
+  <text x="18" y="170" font-size="11" fill="#555">总反应：2 EtOOCCH₂R  </text>
+  <text x="145" y="170" font-size="11" fill="#555">──NaOEt/EtOH──▶  RC(=O)CH₂COOEt  +  EtOH</text>
+  <text x="480" y="170" font-size="11" fill="#888">（可逆，成盐推动平衡完全向右）</text>
+
+  <!-- Mechanism summary box -->
+  <rect x="10" y="185" width="980" height="120" rx="6" fill="#fafafa" stroke="#ccc" stroke-width="1"/>
+  <text x="20" y="203" font-size="12" font-weight="bold">机理要点</text>
+  <text x="20" y="222" font-size="11" fill="#333">① NaOEt（碱）夺去酯 α-H，形成烯醇负离子（碳负离子被两个吸电子基稳定）</text>
+  <text x="20" y="240" font-size="11" fill="#333">② 烯醇负离子作为亲核试剂，进攻第二分子酯的羰基碳（亲核加成）</text>
+  <text x="20" y="258" font-size="11" fill="#333">③ 形成四面体中间体后，乙氧基（OEt⁻）作为离去基团离去（消除），生成 β-酮酸酯</text>
+  <text x="20" y="276" font-size="11" fill="#c00">④ 关键驱动力：β-酮酸酯的 α-H（pKa≈11）酸性远强于酯（pKa≈25），被 NaOEt 完全去质子化成盐，不可逆消耗产物，使平衡向右完全</text>
+  <text x="20" y="294" font-size="11" fill="#333">⑤ 最后用 H₃O⁺ 酸化，得游离 β-酮酸酯</text>
+</svg>

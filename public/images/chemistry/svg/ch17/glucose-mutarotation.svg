@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" width="900" height="380" font-family="sans-serif" font-size="13">
+  <title>D-葡萄糖变旋现象</title>
+  <defs>
+    <marker id="arrowFwd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#1a6496"/>
+    </marker>
+    <marker id="arrowRev" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto-start-reverse">
+      <path d="M8,0 L8,6 L0,3 z" fill="#1a6496"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="380" fill="white"/>
+
+  <!-- Main title -->
+  <text x="450" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a2e">D-葡萄糖变旋现象 (Mutarotation)</text>
+
+  <!-- ===== LEFT: alpha-D-glucopyranose Haworth (36%) ===== -->
+  <g transform="translate(155,170)">
+    <polygon points="0,-55 48,-27 48,27 0,55 -48,27 -48,-27"
+             fill="#e8f4f8" stroke="#1a6496" stroke-width="2.2"/>
+    <!-- O at ring position (between C1 and C5) -->
+    <text x="62" y="-26" text-anchor="middle" font-size="14" font-weight="bold" fill="#e63946">O</text>
+    <!-- Ring bond to O -->
+    <line x1="48" y1="-27" x2="56" y2="-28" stroke="#1a6496" stroke-width="1.5"/>
+    <line x1="0" y1="-55" x2="56" y2="-28" stroke="#1a6496" stroke-width="1.5"/>
+
+    <!-- C1 (anomeric, bottom-right): OH DOWN = alpha -->
+    <text x="56" y="34" font-size="11" fill="#555">C1</text>
+    <line x1="48" y1="27" x2="48" y2="65" stroke="#e63946" stroke-width="2.2"/>
+    <text x="48" y="79" text-anchor="middle" font-size="13" font-weight="bold" fill="#e63946">OH</text>
+
+    <!-- C2 bottom -->
+    <line x1="0" y1="55" x2="0" y2="75" stroke="#555" stroke-width="1.5"/>
+    <text x="0" y="88" text-anchor="middle" font-size="12" fill="#333">OH</text>
+    <text x="-14" y="70" font-size="10" fill="#777">C2</text>
+
+    <!-- C3 bottom-left -->
+    <line x1="-48" y1="27" x2="-48" y2="55" stroke="#555" stroke-width="1.5"/>
+    <text x="-48" y="68" text-anchor="middle" font-size="12" fill="#333">OH</text>
+    <text x="-62" y="34" font-size="10" fill="#777">C3</text>
+
+    <!-- C4 top-left -->
+    <line x1="-48" y1="-27" x2="-48" y2="-55" stroke="#555" stroke-width="1.5"/>
+    <text x="-48" y="-60" text-anchor="middle" font-size="12" fill="#333">OH</text>
+    <text x="-62" y="-28" font-size="10" fill="#777">C4</text>
+
+    <!-- C5 top-center: CH2OH UP -->
+    <line x1="0" y1="-55" x2="0" y2="-75" stroke="#555" stroke-width="1.5"/>
+    <text x="0" y="-80" text-anchor="middle" font-size="12" fill="#333">CH2OH</text>
+    <text x="-14" y="-60" font-size="10" fill="#777">C5</text>
+  </g>
+
+  <text x="155" y="295" text-anchor="middle" font-size="14" font-weight="bold" fill="#e63946">alpha-D-吡喃葡萄糖</text>
+  <text x="155" y="312" text-anchor="middle" font-size="13" fill="#e63946">36%  [alpha] = +112.2 deg</text>
+  <text x="155" y="329" text-anchor="middle" font-size="11" fill="#555">C1-OH 向下 (与 CH2OH 异侧)</text>
+
+  <!-- ===== MIDDLE: Open-chain form (0.01%) ===== -->
+  <g transform="translate(450,110)">
+    <rect x="-48" y="0" width="96" height="148" rx="6" fill="#fff9e6" stroke="#f4a261" stroke-width="1.8"/>
+    <text x="0" y="18" text-anchor="middle" font-size="13" font-weight="bold" fill="#e63946">CHO</text>
+    <!-- vertical backbone -->
+    <line x1="0" y1="22" x2="0" y2="130" stroke="#555" stroke-width="1.8"/>
+    <!-- 4 chiral carbon horizontal bonds -->
+    <line x1="-30" y1="45" x2="30" y2="45" stroke="#555" stroke-width="1.5"/>
+    <line x1="-30" y1="65" x2="30" y2="65" stroke="#555" stroke-width="1.5"/>
+    <line x1="-30" y1="85" x2="30" y2="85" stroke="#555" stroke-width="1.5"/>
+    <line x1="-30" y1="105" x2="30" y2="105" stroke="#555" stroke-width="1.5"/>
+    <text x="0" y="143" text-anchor="middle" font-size="12" fill="#333">CH2OH</text>
+  </g>
+
+  <text x="450" y="295" text-anchor="middle" font-size="14" font-weight="bold" fill="#f4a261">开链式</text>
+  <text x="450" y="312" text-anchor="middle" font-size="13" fill="#f4a261">0.01%</text>
+  <text x="450" y="329" text-anchor="middle" font-size="11" fill="#555">C5-OH 进攻 C1 醛基 → 形成六元吡喃环</text>
+
+  <!-- ===== RIGHT: beta-D-glucopyranose Haworth (64%) ===== -->
+  <g transform="translate(745,170)">
+    <polygon points="0,-55 48,-27 48,27 0,55 -48,27 -48,-27"
+             fill="#e8f8ee" stroke="#2d6a4f" stroke-width="2.2"/>
+    <text x="62" y="-26" text-anchor="middle" font-size="14" font-weight="bold" fill="#e63946">O</text>
+    <line x1="48" y1="-27" x2="56" y2="-28" stroke="#2d6a4f" stroke-width="1.5"/>
+    <line x1="0" y1="-55" x2="56" y2="-28" stroke="#2d6a4f" stroke-width="1.5"/>
+
+    <!-- C1: OH UP = beta -->
+    <text x="56" y="34" font-size="11" fill="#555">C1</text>
+    <line x1="48" y1="27" x2="48" y2="-10" stroke="#2d6a4f" stroke-width="2.2"/>
+    <text x="48" y="-18" text-anchor="middle" font-size="13" font-weight="bold" fill="#2d6a4f">OH</text>
+
+    <line x1="0" y1="55" x2="0" y2="75" stroke="#555" stroke-width="1.5"/>
+    <text x="0" y="88" text-anchor="middle" font-size="12" fill="#333">OH</text>
+    <text x="-14" y="70" font-size="10" fill="#777">C2</text>
+
+    <line x1="-48" y1="27" x2="-48" y2="55" stroke="#555" stroke-width="1.5"/>
+    <text x="-48" y="68" text-anchor="middle" font-size="12" fill="#333">OH</text>
+    <text x="-62" y="34" font-size="10" fill="#777">C3</text>
+
+    <line x1="-48" y1="-27" x2="-48" y2="-55" stroke="#555" stroke-width="1.5"/>
+    <text x="-48" y="-60" text-anchor="middle" font-size="12" fill="#333">OH</text>
+    <text x="-62" y="-28" font-size="10" fill="#777">C4</text>
+
+    <line x1="0" y1="-55" x2="0" y2="-75" stroke="#555" stroke-width="1.5"/>
+    <text x="0" y="-80" text-anchor="middle" font-size="12" fill="#333">CH2OH</text>
+    <text x="-14" y="-60" font-size="10" fill="#777">C5</text>
+  </g>
+
+  <text x="745" y="295" text-anchor="middle" font-size="14" font-weight="bold" fill="#2d6a4f">beta-D-吡喃葡萄糖</text>
+  <text x="745" y="312" text-anchor="middle" font-size="13" fill="#2d6a4f">64%  [alpha] = +18.7 deg</text>
+  <text x="745" y="329" text-anchor="middle" font-size="11" fill="#555">C1-OH 向上 (与 CH2OH 同侧)</text>
+
+  <!-- Equilibrium arrows left <-> middle -->
+  <line x1="228" y1="162" x2="392" y2="162" stroke="#1a6496" stroke-width="1.8" marker-end="url(#arrowFwd)"/>
+  <line x1="392" y1="176" x2="228" y2="176" stroke="#1a6496" stroke-width="1.8" marker-end="url(#arrowRev)"/>
+
+  <!-- Equilibrium arrows middle <-> right -->
+  <line x1="508" y1="162" x2="672" y2="162" stroke="#1a6496" stroke-width="1.8" marker-end="url(#arrowFwd)"/>
+  <line x1="672" y1="176" x2="508" y2="176" stroke="#1a6496" stroke-width="1.8" marker-end="url(#arrowRev)"/>
+
+  <!-- Bottom note -->
+  <text x="450" y="358" text-anchor="middle" font-size="11" fill="#888">平衡比旋光度: 0.36 x 112.2 + 0.64 x 18.7 = 52.7 deg</text>
+  <text x="450" y="372" text-anchor="middle" font-size="11" fill="#888">C1 半缩醛羟基为苷羟基（异头碳）</text>
+</svg>

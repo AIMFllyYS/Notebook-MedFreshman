@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 400" width="700" height="400">
+  <title>苯酚p-π共轭：氧孤对电子与苯环π体系重叠，邻对位富电子</title>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#333"/>
+    </marker>
+    <marker id="arr-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#8e44ad"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e05050"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="400" fill="#fafafa" rx="8"/>
+
+  <!-- Title -->
+  <text x="350" y="26" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">苯酚的 p-π 共轭效应</text>
+
+  <!-- ===== Benzene ring (center ~280,200) ===== -->
+  <!-- Hexagon vertices for regular hexagon, center (280,200), radius 55 -->
+  <!-- Angles: 90°(top), 30°, -30°, -90°(bottom), -150°, 150° -->
+  <!-- v1(top): 280,145  v2(top-right): 328,172  v3(bot-right): 328,228
+       v4(bot): 280,255  v5(bot-left): 232,228   v6(top-left): 232,172 -->
+  <polygon points="280,145 328,172 328,228 280,255 232,228 232,172"
+           fill="none" stroke="#2c3e50" stroke-width="2.5"/>
+  <!-- Inner circle for aromatic symbol -->
+  <circle cx="280" cy="200" r="28" fill="none" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Carbon labels on ring vertices (small) -->
+  <text x="280" y="141" text-anchor="middle" font-size="10" fill="#555">C1</text>
+  <text x="337" y="172" text-anchor="start" font-size="10" fill="#555">C2</text>
+  <text x="337" y="232" text-anchor="start" font-size="10" fill="#555">C3</text>
+  <text x="280" y="270" text-anchor="middle" font-size="10" fill="#555">C4</text>
+  <text x="218" y="232" text-anchor="end" font-size="10" fill="#555">C5</text>
+  <text x="218" y="172" text-anchor="end" font-size="10" fill="#555">C6</text>
+
+  <!-- O-H group above C1 (at top of ring) -->
+  <!-- O is at 280,105, H at 280,78 -->
+  <line x1="280" y1="145" x2="280" y2="112" stroke="#2c3e50" stroke-width="2"/>
+  <circle cx="280" cy="103" r="12" fill="#ffeded" stroke="#cc3333" stroke-width="2"/>
+  <text x="280" y="107" text-anchor="middle" font-size="12" font-weight="bold" fill="#cc3333">O</text>
+  <line x1="280" y1="91" x2="280" y2="72" stroke="#2c3e50" stroke-width="2"/>
+  <text x="280" y="68" text-anchor="middle" font-size="12" font-weight="bold" fill="#555">H</text>
+
+  <!-- sp2 label on O -->
+  <text x="250" y="100" text-anchor="end" font-size="11" fill="#8e44ad">sp²</text>
+
+  <!-- p-orbital lobes on O (above and below ring plane, shown as ellipses) -->
+  <ellipse cx="295" cy="100" rx="12" ry="20" fill="#d7bde2" opacity="0.6" stroke="#8e44ad" stroke-width="1" transform="rotate(-15,295,100)"/>
+  <ellipse cx="265" cy="108" rx="12" ry="20" fill="#d7bde2" opacity="0.6" stroke="#8e44ad" stroke-width="1" transform="rotate(-15,265,108)"/>
+  <text x="315" y="90" text-anchor="start" font-size="10" fill="#7d3c98">p 轨道</text>
+
+  <!-- Electron flow curved arrow from O p-orbital into ring -->
+  <path d="M280,118 Q280,135 280,145" fill="none" stroke="#8e44ad" stroke-width="2" marker-end="url(#arr-purple)"/>
+  <text x="295" y="138" text-anchor="start" font-size="10" fill="#8e44ad">e⁻ 流入</text>
+
+  <!-- Electron density markers at ortho (C2,C6) and para (C4) positions -->
+  <!-- C2 ortho (top-right, 328,172): highlight -->
+  <circle cx="328" cy="172" r="8" fill="#f9e79f" stroke="#f39c12" stroke-width="1.5" opacity="0.85"/>
+  <text x="328" y="176" text-anchor="middle" font-size="9" fill="#d35400">δ−</text>
+
+  <!-- C6 ortho (top-left, 232,172): highlight -->
+  <circle cx="232" cy="172" r="8" fill="#f9e79f" stroke="#f39c12" stroke-width="1.5" opacity="0.85"/>
+  <text x="232" y="176" text-anchor="middle" font-size="9" fill="#d35400">δ−</text>
+
+  <!-- C4 para (bottom, 280,255): highlight -->
+  <circle cx="280" cy="255" r="8" fill="#f9e79f" stroke="#f39c12" stroke-width="1.5" opacity="0.85"/>
+  <text x="280" y="259" text-anchor="middle" font-size="9" fill="#d35400">δ−</text>
+
+  <!-- ===== Annotations ===== -->
+  <!-- O sp2 label -->
+  <text x="200" y="103" text-anchor="end" font-size="11" fill="#8e44ad">O sp² 杂化</text>
+  <line x1="204" y1="103" x2="267" y2="103" stroke="#8e44ad" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- O-H bond weakened -->
+  <path d="M280,68 Q320,50 400,55" fill="none" stroke="#e05050" stroke-width="1.5" marker-end="url(#arr-red)" stroke-dasharray="4,3"/>
+  <rect x="400" y="38" width="185" height="30" fill="#fff3f3" stroke="#e05050" stroke-width="1" rx="4"/>
+  <text x="492" y="50" text-anchor="middle" font-size="11" fill="#c0392b">O-H 键削弱</text>
+  <text x="492" y="62" text-anchor="middle" font-size="10" fill="#c0392b">→ 酸性增强（pKa ≈ 10）</text>
+
+  <!-- C-O bond strengthened -->
+  <path d="M280,130 Q340,130 400,100" fill="none" stroke="#27ae60" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+  <line x1="280" y1="130" x2="280" y2="145" stroke="none"/>
+  <rect x="400" y="87" width="185" height="28" fill="#f0fff4" stroke="#27ae60" stroke-width="1" rx="4"/>
+  <text x="492" y="99" text-anchor="middle" font-size="11" fill="#1a6b3c">C-O 键增强</text>
+  <text x="492" y="111" text-anchor="middle" font-size="10" fill="#1a6b3c">→ 不易被取代</text>
+
+  <!-- Ortho/para rich annotation -->
+  <path d="M338,168 Q430,145 480,155" fill="none" stroke="#d35400" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+  <rect x="480" y="140" width="200" height="30" fill="#fef9e7" stroke="#f39c12" stroke-width="1" rx="4"/>
+  <text x="580" y="152" text-anchor="middle" font-size="11" fill="#d35400">邻对位富电子</text>
+  <text x="580" y="164" text-anchor="middle" font-size="10" fill="#d35400">→ 亲电取代定向</text>
+
+  <!-- Para annotation -->
+  <path d="M280,264 Q340,290 430,275" fill="none" stroke="#d35400" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4,3"/>
+
+  <!-- Legend -->
+  <rect x="10" y="350" width="670" height="40" fill="#f0f0f0" stroke="#ccc" stroke-width="1" rx="5"/>
+  <circle cx="30" cy="370" r="7" fill="#f9e79f" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="43" y="374" font-size="11" fill="#555">邻/对位电子密度增大（δ−）</text>
+  <ellipse cx="220" cy="370" rx="9" ry="14" fill="#d7bde2" opacity="0.7" stroke="#8e44ad" stroke-width="1"/>
+  <text x="234" y="374" font-size="11" fill="#555">O 的 p 轨道与苯环 π 体系侧面重叠</text>
+  <text x="480" y="374" font-size="11" fill="#8e44ad">→ p-π 共轭</text>
+</svg>

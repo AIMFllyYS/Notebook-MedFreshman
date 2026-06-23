@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 420" width="850" height="420" font-family="system-ui, sans-serif" font-size="13">
+  <title>蛋白质二级结构对比：α-螺旋（链内氢键）与β-折叠（链间氢键）</title>
+  <defs>
+    <marker id="arr-h" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L7,3.5 z" fill="#374151"/>
+    </marker>
+    <marker id="arr-hb" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L7,3.5 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <rect width="850" height="420" fill="white" rx="8"/>
+
+  <!-- ── TITLE ── -->
+  <text x="425" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="#111827">蛋白质二级结构对比</text>
+
+  <!-- ══════════════════════════════════════
+       LEFT PANEL: α-螺旋
+  ══════════════════════════════════════ -->
+  <rect x="20" y="38" width="390" height="360" rx="6" fill="#fef9c3" fill-opacity="0.3" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="215" y="58" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">α-螺旋（α-Helix）</text>
+
+  <!-- Helix schematic: draw coil as series of arcs suggesting a right-handed helix -->
+  <!-- Backbone as a zigzag ribbon going downward, with hydrogen bonds every 4th residue -->
+  <!-- Residues at positions: y = 80, 104, 128, 152, 176, 200, 224, 248 (step 24px) -->
+  <!-- Left turn of helix: alternate x offset left/right -->
+
+  <!-- Simplified helix representation: ribbon + H-bond dashes -->
+  <!-- We draw the backbone as a sine-wave approximation -->
+  <g transform="translate(80, 65)">
+    <!-- Helix backbone - sinusoidal path approximation -->
+    <path d="M60,0 C85,10 85,30 60,40 C35,50 35,70 60,80 C85,90 85,110 60,120 C35,130 35,150 60,160 C85,170 85,190 60,200 C35,210 35,230 60,240"
+          fill="none" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Residue labels at intervals -->
+    <!-- Residue 1 (top, x~60, y~0) -->
+    <circle cx="60" cy="0" r="5" fill="#d97706"/>
+    <text x="72" y="4" font-size="11" fill="#374151">残基 1</text>
+
+    <!-- Residue 2 -->
+    <circle cx="60" cy="40" r="5" fill="#d97706"/>
+    <text x="72" y="44" font-size="11" fill="#374151">残基 2</text>
+
+    <!-- Residue 3 -->
+    <circle cx="60" cy="80" r="5" fill="#d97706"/>
+    <text x="72" y="84" font-size="11" fill="#374151">残基 3</text>
+
+    <!-- Residue 4 -->
+    <circle cx="60" cy="120" r="5" fill="#d97706"/>
+    <text x="72" y="124" font-size="11" fill="#374151">残基 4</text>
+
+    <!-- Residue 5 -->
+    <circle cx="60" cy="160" r="5" fill="#d97706"/>
+    <text x="72" y="164" font-size="11" fill="#374151">残基 5</text>
+
+    <!-- Residue 6 -->
+    <circle cx="60" cy="200" r="5" fill="#d97706"/>
+    <text x="72" y="204" font-size="11" fill="#374151">残基 6</text>
+
+    <!-- Residue 7 -->
+    <circle cx="60" cy="240" r="5" fill="#d97706"/>
+    <text x="72" y="244" font-size="11" fill="#374151">残基 7</text>
+
+    <!-- Hydrogen bonds: residue i to residue i+4 (every 4th) -->
+    <!-- H-bond 1→4+1=5... but here residue spacing=40, 3.6 per turn=144px per turn -->
+    <!-- Residue 1→4 = 3 steps × 40px = 120px -->
+    <line x1="55" y1="0" x2="55" y2="120" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="-8" y="65" font-size="10" fill="#2563eb">H键</text>
+    <polygon points="52,115 55,125 58,115" fill="#2563eb"/>
+
+    <!-- H-bond 2→5 -->
+    <line x1="50" y1="40" x2="50" y2="160" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="47,155 50,165 53,155" fill="#2563eb"/>
+
+    <!-- H-bond 3→6 -->
+    <line x1="45" y1="80" x2="45" y2="200" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="42,195 45,205 48,195" fill="#2563eb"/>
+
+    <!-- N-H label and C=O label -->
+    <text x="15" y="4" font-size="10" fill="#374151">N-H</text>
+    <text x="15" y="124" font-size="10" fill="#dc2626">C=O</text>
+    <text x="15" y="164" font-size="10" fill="#dc2626">C=O</text>
+
+    <!-- Pitch annotation -->
+    <line x1="140" y1="0" x2="140" y2="144" stroke="#374151" stroke-width="1" stroke-dasharray="2,2"/>
+    <line x1="135" y1="0" x2="145" y2="0" stroke="#374151" stroke-width="1"/>
+    <line x1="135" y1="144" x2="145" y2="144" stroke="#374151" stroke-width="1"/>
+    <text x="148" y="60" font-size="11" fill="#374151">螺距</text>
+    <text x="148" y="74" font-size="11" fill="#374151">0.54 nm</text>
+    <text x="148" y="90" font-size="10" fill="#6b7280">(3.6 残基/圈)</text>
+  </g>
+
+  <!-- α-helix annotations -->
+  <rect x="28" y="348" width="374" height="42" rx="4" fill="#fff7ed" stroke="#f97316" stroke-width="1"/>
+  <text x="215" y="364" text-anchor="middle" font-size="11" font-weight="bold" fill="#c2410c">α-螺旋 · 右手螺旋 · 每圈 3.6 个残基 · 螺距 0.54 nm</text>
+  <text x="215" y="381" text-anchor="middle" font-size="11" fill="#6b7280">链内氢键：N-H···O=C（第 i 残基 N-H → 第 i+4 残基 C=O）</text>
+
+  <!-- ══════════════════════════════════════
+       RIGHT PANEL: β-折叠
+  ══════════════════════════════════════ -->
+  <rect x="440" y="38" width="390" height="360" rx="6" fill="#eff6ff" fill-opacity="0.4" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="635" y="58" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d4ed8">β-折叠片（β-Sheet）</text>
+
+  <!-- Two antiparallel chains in zigzag -->
+  <g transform="translate(455, 75)">
+    <!-- Chain 1 (top): N→C direction left to right, zigzag -->
+    <!-- zigzag: points alternating up and down -->
+    <text x="0" y="30" font-size="11" fill="#374151" font-weight="bold">N</text>
+    <line x1="12" y1="28" x2="310" y2="28" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="2,0" marker-end="url(#arr-h)"/>
+
+    <!-- Zigzag backbone chain 1 -->
+    <polyline points="15,20 40,8 65,20 90,8 115,20 140,8 165,20 190,8 215,20 240,8 265,20 290,8 310,20"
+              fill="none" stroke="#1d4ed8" stroke-width="2.5" stroke-linejoin="round"/>
+
+    <!-- Amino acids at peaks/troughs -->
+    <!-- N-H groups pointing up (at valley/trough positions), C=O pointing down (at peak) -->
+    <!-- Peaks (y=8): x=40,90,140,190,240,290 — C=O point DOWN from peak -->
+    <!-- Troughs (y=20): x=15,65,115,165,215,265,310 — N-H points UP from trough -->
+
+    <!-- C=O annotations chain 1 (pointing up at peaks = pointing toward chain 2) -->
+    <line x1="40" y1="8" x2="40" y2="-4" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="33" y="-6" font-size="9" fill="#dc2626">C=O</text>
+    <line x1="140" y1="8" x2="140" y2="-4" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="133" y="-6" font-size="9" fill="#dc2626">C=O</text>
+    <line x1="240" y1="8" x2="240" y2="-4" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="233" y="-6" font-size="9" fill="#dc2626">C=O</text>
+
+    <!-- N-H groups chain 1 pointing down (toward chain 2) -->
+    <line x1="90" y1="20" x2="90" y2="32" stroke="#374151" stroke-width="1.5"/>
+    <text x="80" y="43" font-size="9" fill="#374151">N-H</text>
+    <line x1="190" y1="20" x2="190" y2="32" stroke="#374151" stroke-width="1.5"/>
+    <text x="180" y="43" font-size="9" fill="#374151">N-H</text>
+    <line x1="290" y1="20" x2="290" y2="32" stroke="#374151" stroke-width="1.5"/>
+    <text x="280" y="43" font-size="9" fill="#374151">N-H</text>
+
+    <!-- HYDROGEN BONDS between chain 1 and chain 2 (dashed, vertical) -->
+    <!-- N-H of chain 1 ···O=C of chain 2 -->
+    <line x1="90" y1="32" x2="90" y2="88" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="87,84 90,92 93,84" fill="#2563eb"/>
+    <line x1="190" y1="32" x2="190" y2="88" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="187,84 190,92 193,84" fill="#2563eb"/>
+    <line x1="290" y1="32" x2="290" y2="88" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="287,84 290,92 293,84" fill="#2563eb"/>
+
+    <!-- H-bond label -->
+    <text x="140" y="68" text-anchor="middle" font-size="10" fill="#2563eb">链间 H 键</text>
+
+    <!-- Chain 2 (bottom): C→N direction (antiparallel) right to left -->
+    <text x="316" y="130" font-size="11" fill="#374151" font-weight="bold">N</text>
+    <line x1="310" y1="126" x2="12" y2="126" stroke="#1d4ed8" stroke-width="1.5" marker-end="url(#arr-h)"/>
+
+    <!-- Zigzag backbone chain 2 (antiparallel - same x peaks but phase-shifted) -->
+    <polyline points="310,118 285,106 260,118 235,106 210,118 185,106 160,118 135,106 110,118 85,106 60,118 35,106 15,118"
+              fill="none" stroke="#1d4ed8" stroke-width="2.5" stroke-linejoin="round"/>
+
+    <!-- C=O chain 2 pointing up toward chain 1 (at peaks/y=106) -->
+    <line x1="90" y1="92" x2="90" y2="106" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="83" y="108" font-size="9" fill="#dc2626">C=O</text>
+    <line x1="190" y1="92" x2="190" y2="106" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="183" y="108" font-size="9" fill="#dc2626">C=O</text>
+    <line x1="290" y1="92" x2="290" y2="106" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="283" y="108" font-size="9" fill="#dc2626">C=O</text>
+
+    <!-- N-H groups chain 2 -->
+    <line x1="40" y1="106" x2="40" y2="92" stroke="#374151" stroke-width="1.5"/>
+    <line x1="140" y1="106" x2="140" y2="92" stroke="#374151" stroke-width="1.5"/>
+    <line x1="240" y1="106" x2="240" y2="92" stroke="#374151" stroke-width="1.5"/>
+    <!-- More H-bonds from chain 2 N-H to chain 1 C=O (already drawn above pointing up) -->
+    <line x1="40" y1="92" x2="40" y2="32" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="37,36 40,28 43,36" fill="#2563eb"/>
+    <line x1="140" y1="92" x2="140" y2="32" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="137,36 140,28 143,36" fill="#2563eb"/>
+    <line x1="240" y1="92" x2="240" y2="32" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <polygon points="237,36 240,28 243,36" fill="#2563eb"/>
+
+    <!-- Direction arrows -->
+    <text x="0" y="24" font-size="10" fill="#374151">→ N→C</text>
+    <text x="295" y="140" font-size="10" fill="#374151">C←N ←</text>
+
+    <!-- C-end labels -->
+    <text x="316" y="24" font-size="11" fill="#374151" font-weight="bold">C</text>
+    <text x="0" y="140" font-size="11" fill="#374151" font-weight="bold">C</text>
+
+    <!-- Antiparallel label -->
+    <rect x="85" y="148" width="155" height="28" rx="3" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+    <text x="162" y="160" text-anchor="middle" font-size="10" font-weight="bold" fill="#1d4ed8">反平行 β-折叠</text>
+    <text x="162" y="172" text-anchor="middle" font-size="10" fill="#1d4ed8">更稳定（氢键更直线）</text>
+  </g>
+
+  <!-- β-sheet annotations -->
+  <rect x="448" y="348" width="374" height="42" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+  <text x="635" y="364" text-anchor="middle" font-size="11" font-weight="bold" fill="#1d4ed8">β-折叠片 · 锯齿形伸展链 · 链间氢键</text>
+  <text x="635" y="381" text-anchor="middle" font-size="11" fill="#6b7280">反平行 β-折叠更稳定；氢键方向：N-H···O=C（链间）</text>
+</svg>

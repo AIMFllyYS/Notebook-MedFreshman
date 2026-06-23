@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" width="800" height="380">
+  <title>吡咯/呋喃/噻吩：杂原子孤对电子参与共轭，富电子6π芳香体系</title>
+  <style>
+    text { font-family: sans-serif; fill: currentColor; }
+    .atom { font-size: 13px; font-weight: bold; }
+    .label { font-size: 11px; }
+    .note { font-size: 11px; fill: #555; }
+    .title { font-size: 14px; font-weight: bold; }
+    .bond { stroke: currentColor; stroke-width: 1.8; fill: none; }
+    .bond2 { stroke: currentColor; stroke-width: 1.8; fill: none; stroke-dasharray: none; }
+    .lp { fill: currentColor; }
+    .orbital { fill: rgba(100,149,237,0.25); stroke: #4477cc; stroke-width: 1; }
+    .footer { font-size: 11px; fill: #444; }
+  </style>
+
+  <!-- Background -->
+  <rect width="800" height="380" fill="white" rx="8"/>
+
+  <!-- ===== PYRROLE (Left panel) ===== -->
+  <!-- Pentagon centered at (133, 155) -->
+  <!-- Vertices: top=N, then clockwise C2, C3, C4, C5 -->
+  <!-- Pentagon: top vertex at (133,90), then r=55 -->
+  <!-- top=133,90; C2=133+52.3,90+38=185,128; C3=133+32.3,90+88=165,178; C4=133-32.3,90+88=101,178; C5=133-52.3,90+38=81,128 -->
+
+  <!-- p-orbital lobes above/below N -->
+  <ellipse cx="133" cy="68" rx="10" ry="18" class="orbital" transform="rotate(0,133,68)"/>
+  <ellipse cx="133" cy="110" rx="10" ry="18" class="orbital"/>
+
+  <!-- Ring bonds: aromatic (alternating double) -->
+  <!-- Single bond N-C2 -->
+  <line x1="133" y1="90" x2="183" y2="126" class="bond"/>
+  <!-- Double bond C2-C3 -->
+  <line x1="183" y1="126" x2="163" y2="176" class="bond"/>
+  <line x1="180" y1="122" x2="160" y2="172" class="bond" stroke-width="1.2"/>
+  <!-- Single bond C3-C4 -->
+  <line x1="163" y1="176" x2="103" y2="176" class="bond"/>
+  <!-- Double bond C4-C5 -->
+  <line x1="103" y1="176" x2="83" y2="126" class="bond"/>
+  <line x1="106" y1="172" x2="86" y2="122" class="bond" stroke-width="1.2"/>
+  <!-- Single bond C5-N -->
+  <line x1="83" y1="126" x2="133" y2="90" class="bond"/>
+
+  <!-- N-H bond upward -->
+  <line x1="133" y1="90" x2="133" y2="58" class="bond"/>
+
+  <!-- Atom labels -->
+  <text x="133" y="88" class="atom" text-anchor="middle" dominant-baseline="auto">N</text>
+  <text x="192" y="133" class="atom" text-anchor="start">C</text>
+  <text x="170" y="185" class="atom" text-anchor="middle">C</text>
+  <text x="94" y="185" class="atom" text-anchor="middle">C</text>
+  <text x="64" y="133" class="atom" text-anchor="end">C</text>
+  <text x="133" y="52" class="atom" text-anchor="middle">H</text>
+
+  <!-- Position numbers -->
+  <text x="133" y="75" class="note" text-anchor="middle" font-size="9">1</text>
+  <text x="197" y="125" class="note" font-size="9">2(α)</text>
+  <text x="172" y="193" class="note" text-anchor="middle" font-size="9">3(β)</text>
+  <text x="90" y="193" class="note" text-anchor="middle" font-size="9">4(β)</text>
+  <text x="55" y="125" class="note" font-size="9">5(α)</text>
+
+  <!-- Lone pair dots near orbital -->
+  <circle cx="124" cy="78" r="2" class="lp"/>
+  <circle cx="142" cy="78" r="2" class="lp"/>
+
+  <!-- Pyrrole title -->
+  <text x="133" y="218" class="title" text-anchor="middle">吡咯 (Pyrrole)</text>
+  <!-- Labels -->
+  <text x="133" y="235" class="label" text-anchor="middle">N sp² 杂化</text>
+  <text x="133" y="250" class="label" text-anchor="middle">孤对电子参与共轭</text>
+  <text x="133" y="264" class="label" text-anchor="middle">→ 贡献 2 个 π 电子</text>
+  <text x="133" y="279" class="label" text-anchor="middle" fill="#cc3333">6π 芳香体系</text>
+
+  <!-- ===== FURAN (Middle panel) ===== -->
+  <!-- Pentagon centered at ~400 -->
+  <ellipse cx="400" cy="68" rx="10" ry="18" class="orbital"/>
+  <ellipse cx="400" cy="110" rx="10" ry="18" class="orbital"/>
+
+  <line x1="400" y1="90" x2="450" y2="126" class="bond"/>
+  <line x1="450" y1="126" x2="430" y2="176" class="bond"/>
+  <line x1="447" y1="122" x2="427" y2="172" class="bond" stroke-width="1.2"/>
+  <line x1="430" y1="176" x2="370" y2="176" class="bond"/>
+  <line x1="370" y1="176" x2="350" y2="126" class="bond"/>
+  <line x1="373" y1="172" x2="353" y2="122" class="bond" stroke-width="1.2"/>
+  <line x1="350" y1="126" x2="400" y2="90" class="bond"/>
+
+  <!-- Lone pair dots on O -->
+  <circle cx="391" cy="79" r="2" class="lp"/>
+  <circle cx="409" cy="79" r="2" class="lp"/>
+
+  <!-- Atom labels Furan -->
+  <text x="400" y="88" class="atom" text-anchor="middle" dominant-baseline="auto">O</text>
+  <text x="459" y="133" class="atom" text-anchor="start">C</text>
+  <text x="437" y="185" class="atom" text-anchor="middle">C</text>
+  <text x="361" y="185" class="atom" text-anchor="middle">C</text>
+  <text x="331" y="133" class="atom" text-anchor="end">C</text>
+
+  <text x="400" y="75" class="note" text-anchor="middle" font-size="9">1</text>
+  <text x="465" y="125" class="note" font-size="9">2(α)</text>
+  <text x="439" y="193" class="note" text-anchor="middle" font-size="9">3(β)</text>
+  <text x="357" y="193" class="note" text-anchor="middle" font-size="9">4(β)</text>
+  <text x="322" y="125" class="note" font-size="9">5(α)</text>
+
+  <text x="400" y="218" class="title" text-anchor="middle">呋喃 (Furan)</text>
+  <text x="400" y="235" class="label" text-anchor="middle">O sp² 杂化</text>
+  <text x="400" y="250" class="label" text-anchor="middle">孤对电子参与共轭</text>
+  <text x="400" y="264" class="label" text-anchor="middle">→ 贡献 2 个 π 电子</text>
+  <text x="400" y="279" class="label" text-anchor="middle" fill="#cc3333">6π 芳香</text>
+
+  <!-- ===== THIOPHENE (Right panel) ===== -->
+  <ellipse cx="667" cy="68" rx="10" ry="18" class="orbital"/>
+  <ellipse cx="667" cy="110" rx="10" ry="18" class="orbital"/>
+
+  <line x1="667" y1="90" x2="717" y2="126" class="bond"/>
+  <line x1="717" y1="126" x2="697" y2="176" class="bond"/>
+  <line x1="714" y1="122" x2="694" y2="172" class="bond" stroke-width="1.2"/>
+  <line x1="697" y1="176" x2="637" y2="176" class="bond"/>
+  <line x1="637" y1="176" x2="617" y2="126" class="bond"/>
+  <line x1="640" y1="172" x2="620" y2="122" class="bond" stroke-width="1.2"/>
+  <line x1="617" y1="126" x2="667" y2="90" class="bond"/>
+
+  <circle cx="658" cy="79" r="2" class="lp"/>
+  <circle cx="676" cy="79" r="2" class="lp"/>
+
+  <text x="667" y="88" class="atom" text-anchor="middle" dominant-baseline="auto">S</text>
+  <text x="726" y="133" class="atom" text-anchor="start">C</text>
+  <text x="704" y="185" class="atom" text-anchor="middle">C</text>
+  <text x="628" y="185" class="atom" text-anchor="middle">C</text>
+  <text x="598" y="133" class="atom" text-anchor="end">C</text>
+
+  <text x="667" y="75" class="note" text-anchor="middle" font-size="9">1</text>
+  <text x="732" y="125" class="note" font-size="9">2(α)</text>
+  <text x="706" y="193" class="note" text-anchor="middle" font-size="9">3(β)</text>
+  <text x="624" y="193" class="note" text-anchor="middle" font-size="9">4(β)</text>
+  <text x="589" y="125" class="note" font-size="9">5(α)</text>
+
+  <text x="667" y="218" class="title" text-anchor="middle">噻吩 (Thiophene)</text>
+  <text x="667" y="235" class="label" text-anchor="middle">S sp² 杂化</text>
+  <text x="667" y="250" class="label" text-anchor="middle">孤对电子参与共轭</text>
+  <text x="667" y="264" class="label" text-anchor="middle">→ 贡献 2 个 π 电子</text>
+  <text x="667" y="279" class="label" text-anchor="middle" fill="#cc3333">6π 芳香</text>
+
+  <!-- Dividers -->
+  <line x1="270" y1="30" x2="270" y2="300" stroke="#ccc" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="537" y1="30" x2="537" y2="300" stroke="#ccc" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Footer notes -->
+  <rect x="20" y="306" width="760" height="62" rx="5" fill="#f8f8f8" stroke="#ddd" stroke-width="1"/>
+  <text x="400" y="324" class="footer" text-anchor="middle" font-weight="bold">杂原子孤对电子参与共轭 → 环富电子 → 比苯更活泼的亲电取代（α 位优先）</text>
+  <text x="400" y="342" class="footer" text-anchor="middle">符合 Hückel 4n+2 规则（n=1，6π 电子）</text>
+  <text x="400" y="359" class="footer" text-anchor="middle">亲电取代活性：吡咯 ≈ 呋喃 ≈ 噻吩 &gt; 苯（α 位 &gt; β 位）</text>
+</svg>

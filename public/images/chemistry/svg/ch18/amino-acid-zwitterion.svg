@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 320" width="700" height="320" font-family="system-ui, sans-serif" font-size="13">
+  <title>α-氨基酸两性离子结构：阳离子、两性离子（等电点）、阴离子三种形式</title>
+  <defs>
+    <marker id="arr-fw" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#6b7280"/>
+    </marker>
+    <marker id="arr-bk" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto">
+      <path d="M8,0 L8,6 L0,3 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="700" height="320" fill="white" rx="8"/>
+
+  <!-- ── LEFT: 低 pH 阳离子 ── -->
+  <g transform="translate(40,30)">
+    <rect x="0" y="0" width="140" height="22" rx="4" fill="#fee2e2"/>
+    <text x="70" y="16" text-anchor="middle" font-size="13" font-weight="bold" fill="#dc2626">低 pH（酸性）</text>
+
+    <!-- H2N-CαHR-COOH -->
+    <text x="5" y="72" font-size="14" fill="#1d4ed8">H₂N</text>
+    <line x1="35" y1="67" x2="52" y2="67" stroke="currentColor" stroke-width="1.5"/>
+    <text x="52" y="72" font-size="14" fill="currentColor">Cα</text>
+    <line x1="70" y1="57" x2="70" y2="46" stroke="currentColor" stroke-width="1.5"/>
+    <text x="64" y="44" font-size="13" fill="currentColor">H</text>
+    <line x1="70" y1="77" x2="70" y2="88" stroke="currentColor" stroke-width="1.5"/>
+    <text x="64" y="100" font-size="13" fill="currentColor">R</text>
+    <line x1="80" y1="67" x2="97" y2="67" stroke="currentColor" stroke-width="1.5"/>
+    <!-- COOH group -->
+    <text x="97" y="72" font-size="14" fill="currentColor">C</text>
+    <line x1="108" y1="62" x2="124" y2="54" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="110" y1="64" x2="126" y2="56" stroke="currentColor" stroke-width="1.5"/>
+    <text x="126" y="58" font-size="13" fill="#dc2626">O</text>
+    <line x1="108" y1="72" x2="124" y2="80" stroke="currentColor" stroke-width="1.5"/>
+    <text x="124" y="84" font-size="13" fill="currentColor">OH</text>
+
+    <!-- charge box -->
+    <rect x="5" y="115" width="130" height="40" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+    <text x="70" y="131" text-anchor="middle" font-size="12" font-weight="bold" fill="#92400e">净电荷 +1</text>
+    <text x="70" y="148" text-anchor="middle" font-size="11" fill="#92400e">阳离子形式</text>
+  </g>
+
+  <!-- ── equilibrium arrow left→mid ── -->
+  <g transform="translate(195,115)">
+    <line x1="0" y1="0" x2="45" y2="0" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr-fw)"/>
+    <line x1="45" y1="9" x2="0" y2="9" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr-bk)"/>
+    <text x="22" y="-5" text-anchor="middle" font-size="11" fill="#6b7280">+OH⁻</text>
+    <text x="22" y="25" text-anchor="middle" font-size="11" fill="#6b7280">+H⁺</text>
+  </g>
+
+  <!-- ── MIDDLE: 等电点 两性离子 ── -->
+  <g transform="translate(255,30)">
+    <rect x="-10" y="0" width="172" height="22" rx="4" fill="#dcfce7"/>
+    <text x="76" y="16" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">等电点 pI（两性离子）</text>
+
+    <!-- H3N+-CαHR-COO- -->
+    <text x="0" y="72" font-size="14" fill="#1d4ed8">H₃N</text>
+    <!-- ⊕ on N -->
+    <circle cx="36" cy="61" r="8" fill="none" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="36" y="65" text-anchor="middle" font-size="11" fill="#dc2626" font-weight="bold">+</text>
+    <line x1="44" y1="67" x2="60" y2="67" stroke="currentColor" stroke-width="1.5"/>
+    <text x="60" y="72" font-size="14" fill="currentColor">Cα</text>
+    <line x1="78" y1="57" x2="78" y2="46" stroke="currentColor" stroke-width="1.5"/>
+    <text x="72" y="44" font-size="13" fill="currentColor">H</text>
+    <line x1="78" y1="77" x2="78" y2="88" stroke="currentColor" stroke-width="1.5"/>
+    <text x="72" y="100" font-size="13" fill="currentColor">R</text>
+    <line x1="88" y1="67" x2="105" y2="67" stroke="currentColor" stroke-width="1.5"/>
+    <text x="105" y="72" font-size="14" fill="currentColor">C</text>
+    <line x1="116" y1="62" x2="132" y2="54" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="118" y1="64" x2="134" y2="56" stroke="currentColor" stroke-width="1.5"/>
+    <text x="134" y="58" font-size="13" fill="#dc2626">O</text>
+    <line x1="116" y1="72" x2="132" y2="80" stroke="currentColor" stroke-width="1.5"/>
+    <text x="132" y="84" font-size="13" fill="currentColor">O</text>
+    <!-- ⊖ on O -->
+    <circle cx="152" cy="79" r="8" fill="none" stroke="#1d4ed8" stroke-width="1.5"/>
+    <line x1="147" y1="79" x2="157" y2="79" stroke="#1d4ed8" stroke-width="1.5"/>
+
+    <!-- charge box -->
+    <rect x="-6" y="115" width="164" height="55" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+    <text x="76" y="132" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">净电荷 = 0</text>
+    <text x="76" y="149" text-anchor="middle" font-size="11" fill="#15803d">两性离子（内盐）</text>
+    <text x="76" y="164" text-anchor="middle" font-size="11" fill="#15803d">溶解度最小，电泳不移动</text>
+  </g>
+
+  <!-- ── equilibrium arrow mid→right ── -->
+  <g transform="translate(450,115)">
+    <line x1="0" y1="0" x2="45" y2="0" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr-fw)"/>
+    <line x1="45" y1="9" x2="0" y2="9" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr-bk)"/>
+    <text x="22" y="-5" text-anchor="middle" font-size="11" fill="#6b7280">+OH⁻</text>
+    <text x="22" y="25" text-anchor="middle" font-size="11" fill="#6b7280">+H⁺</text>
+  </g>
+
+  <!-- ── RIGHT: 高 pH 阴离子 ── -->
+  <g transform="translate(508,30)">
+    <rect x="0" y="0" width="140" height="22" rx="4" fill="#dbeafe"/>
+    <text x="70" y="16" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">高 pH（碱性）</text>
+
+    <!-- H2N-CαHR-COO- -->
+    <text x="5" y="72" font-size="14" fill="#1d4ed8">H₂N</text>
+    <line x1="35" y1="67" x2="52" y2="67" stroke="currentColor" stroke-width="1.5"/>
+    <text x="52" y="72" font-size="14" fill="currentColor">Cα</text>
+    <line x1="70" y1="57" x2="70" y2="46" stroke="currentColor" stroke-width="1.5"/>
+    <text x="64" y="44" font-size="13" fill="currentColor">H</text>
+    <line x1="70" y1="77" x2="70" y2="88" stroke="currentColor" stroke-width="1.5"/>
+    <text x="64" y="100" font-size="13" fill="currentColor">R</text>
+    <line x1="80" y1="67" x2="97" y2="67" stroke="currentColor" stroke-width="1.5"/>
+    <text x="97" y="72" font-size="14" fill="currentColor">C</text>
+    <line x1="108" y1="62" x2="124" y2="54" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="110" y1="64" x2="126" y2="56" stroke="currentColor" stroke-width="1.5"/>
+    <text x="126" y="58" font-size="13" fill="#dc2626">O</text>
+    <line x1="108" y1="72" x2="124" y2="80" stroke="currentColor" stroke-width="1.5"/>
+    <text x="124" y="84" font-size="13" fill="currentColor">O</text>
+    <!-- ⊖ -->
+    <circle cx="142" cy="79" r="8" fill="none" stroke="#1d4ed8" stroke-width="1.5"/>
+    <line x1="137" y1="79" x2="147" y2="79" stroke="#1d4ed8" stroke-width="1.5"/>
+
+    <!-- charge box -->
+    <rect x="5" y="115" width="130" height="40" rx="4" fill="#eff6ff" stroke="#93c5fd" stroke-width="1"/>
+    <text x="70" y="131" text-anchor="middle" font-size="12" font-weight="bold" fill="#1d4ed8">净电荷 −1</text>
+    <text x="70" y="148" text-anchor="middle" font-size="11" fill="#1d4ed8">阴离子形式</text>
+  </g>
+
+  <!-- ── Bottom note ── -->
+  <rect x="60" y="242" width="580" height="58" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="350" y="263" text-anchor="middle" font-size="13" font-weight="bold" fill="#374151">等电点 pI 参考值</text>
+  <text x="350" y="281" text-anchor="middle" font-size="12" fill="#6b7280">酸性氨基酸（Asp, Glu）pI ≈ 3 · 中性氨基酸 pI ≈ 5–6 · 碱性氨基酸（Lys, Arg）pI ≈ 9–10</text>
+  <text x="350" y="296" text-anchor="middle" font-size="11" fill="#9ca3af">在 pI 时：两性离子浓度最大，溶解度最小，不在电场中移动</text>
+</svg>

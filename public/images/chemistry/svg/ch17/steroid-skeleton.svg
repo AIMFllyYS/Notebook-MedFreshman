@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 380" width="700" height="380" font-family="sans-serif" font-size="13">
+  <title>甾族化合物基本骨架</title>
+
+  <rect width="700" height="380" fill="white"/>
+
+  <!-- Title -->
+  <text x="350" y="24" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a2e">甾族化合物骨架（环戊烷并氢化菲）</text>
+
+  <!-- ===== MAIN STEROID RING SYSTEM ===== -->
+  <!-- Ring A (cyclohexane, leftmost) - hexagon centered ~(115, 130) -->
+  <!-- Using flat hexagons with vertices -->
+
+  <!-- Ring A vertices: chair-like hexagon, left side -->
+  <!-- A: center ~(110,130), width ~80, height ~60 -->
+  <polygon points="70,105 110,85 150,105 150,155 110,175 70,155"
+           fill="#e3f2fd" stroke="#1565c0" stroke-width="2.2"/>
+  <text x="110" y="135" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">A</text>
+
+  <!-- Ring B (cyclohexane) shares bond with A right edge -->
+  <!-- B shares vertices (150,105)-(150,155) with A -->
+  <polygon points="150,105 190,85 230,105 230,155 190,175 150,155"
+           fill="#e8f5e9" stroke="#2e7d32" stroke-width="2.2"/>
+  <text x="190" y="135" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">B</text>
+
+  <!-- Ring C (cyclohexane) shares bond with B right edge -->
+  <polygon points="230,105 270,85 310,105 310,155 270,175 230,155"
+           fill="#fff3e0" stroke="#e65100" stroke-width="2.2"/>
+  <text x="270" y="135" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">C</text>
+
+  <!-- Ring D (cyclopentane) shares bond with C right edge (310,105)-(310,155) -->
+  <!-- Pentagon: 5 vertices, fused left side to C -->
+  <polygon points="310,105 355,100 375,130 355,165 310,155"
+           fill="#fce4ec" stroke="#c62828" stroke-width="2.2"/>
+  <text x="338" y="135" text-anchor="middle" font-size="14" font-weight="bold" fill="#c62828">D</text>
+
+  <!-- ===== SUBSTITUENTS ===== -->
+
+  <!-- C-3 (bottom of ring A, left): OH (common in sterols) -->
+  <circle cx="90" cy="155" r="3" fill="#1565c0"/>
+  <line x1="90" y1="155" x2="60" y2="175" stroke="#1565c0" stroke-width="1.8"/>
+  <text x="42" y="182" font-size="12" fill="#1565c0">OH</text>
+  <text x="44" y="195" font-size="10" fill="#1565c0">C3</text>
+
+  <!-- C-10 angular methyl (junction A-B top, ~(150,105)) -->
+  <line x1="150" y1="105" x2="150" y2="72" stroke="#555" stroke-width="2"/>
+  <text x="150" y="66" text-anchor="middle" font-size="12" fill="#555">CH3</text>
+  <text x="164" y="100" font-size="10" fill="#555">C10</text>
+
+  <!-- C-13 angular methyl (junction C-D top, ~(310,105)) -->
+  <line x1="310" y1="105" x2="310" y2="72" stroke="#555" stroke-width="2"/>
+  <text x="310" y="66" text-anchor="middle" font-size="12" fill="#555">CH3</text>
+  <text x="322" y="100" font-size="10" fill="#555">C13</text>
+
+  <!-- C-17 side chain at D right vertex (~(375,130)) -->
+  <line x1="375" y1="130" x2="418" y2="115" stroke="#555" stroke-width="2"/>
+  <text x="430" y="114" font-size="12" fill="#555">R</text>
+  <text x="430" y="128" font-size="10" fill="#888">C17侧链</text>
+
+  <!-- Key carbon number labels -->
+  <text x="86" y="100" font-size="10" fill="#888">C1</text>
+  <text x="106" y="182" font-size="10" fill="#888">C2</text>
+  <text x="148" y="182" font-size="10" fill="#888">C4</text>
+  <text x="170" y="98" font-size="10" fill="#888">C5</text>
+  <text x="186" y="182" font-size="10" fill="#888">C6</text>
+  <text x="228" y="98" font-size="10" fill="#888">C8</text>
+  <text x="228" y="182" font-size="10" fill="#888">C9</text>
+  <text x="268" y="98" font-size="10" fill="#888">C11</text>
+  <text x="268" y="182" font-size="10" fill="#888">C12</text>
+  <text x="308" y="182" font-size="10" fill="#888">C14</text>
+  <text x="308" y="98" font-size="10" fill="#888">C15</text>
+  <text x="356" y="98" font-size="10" fill="#888">C16</text>
+
+  <!-- ===== EXAMPLES BELOW ===== -->
+  <line x1="50" y1="215" x2="650" y2="215" stroke="#ddd" stroke-width="1.2"/>
+  <text x="350" y="233" text-anchor="middle" font-size="13" font-weight="bold" fill="#555">常见甾族化合物</text>
+
+  <!-- Cholesterol simplified -->
+  <rect x="50" y="242" width="270" height="120" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="185" y="262" text-anchor="middle" font-size="13" font-weight="bold" fill="#1565c0">胆固醇 (Cholesterol)</text>
+  <text x="185" y="280" text-anchor="middle" font-size="11" fill="#555">C3: -OH (羟基)</text>
+  <text x="185" y="296" text-anchor="middle" font-size="11" fill="#555">C5-C6: 双键 (Delta-5)</text>
+  <text x="185" y="312" text-anchor="middle" font-size="11" fill="#555">C17: 异辛基侧链 (8C)</text>
+  <text x="185" y="328" text-anchor="middle" font-size="11" fill="#555">分子式 C27H46O</text>
+  <text x="185" y="348" text-anchor="middle" font-size="11" fill="#888">细胞膜成分 / 胆汁酸前体</text>
+
+  <!-- Testosterone simplified -->
+  <rect x="380" y="242" width="270" height="120" rx="8" fill="#fce4ec" stroke="#c62828" stroke-width="1.5"/>
+  <text x="515" y="262" text-anchor="middle" font-size="13" font-weight="bold" fill="#c62828">睾丸酮 (Testosterone)</text>
+  <text x="515" y="280" text-anchor="middle" font-size="11" fill="#555">C3: =O (酮基)</text>
+  <text x="515" y="296" text-anchor="middle" font-size="11" fill="#555">C4-C5: 双键 (Delta-4)</text>
+  <text x="515" y="312" text-anchor="middle" font-size="11" fill="#555">C17: -OH (羟基)</text>
+  <text x="515" y="328" text-anchor="middle" font-size="11" fill="#555">分子式 C19H28O2</text>
+  <text x="515" y="348" text-anchor="middle" font-size="11" fill="#888">雄性激素 / 合成代谢</text>
+</svg>

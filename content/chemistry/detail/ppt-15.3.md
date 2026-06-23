@@ -33,7 +33,7 @@ $$
 \ce{ArNH2 + NaNO2 + HCl ->[0-5°C] ArN2^+Cl^- + NaCl + 2H2O}
 $$
 :::
-<!-- SVG-TODO: 重氮化反应机理（苯胺 + NaNO2 + HCl，0-5°C 低温，生成亚硝化试剂 HNO2 + HCl → NO+，进攻苯胺 N 形成重氮盐 ArN2+Cl-，线性结构 sp 杂化） -->
+::figure{src="/images/chemistry/svg/ch15/diazotization.svg" caption="重氮化反应机理：NO+进攻苯胺N→重氮盐ArN2+Cl-" alt="苯胺在NaNO2+HCl、0-5°C下，NaNO2生成NO+，进攻苯胺N形成线性sp杂化重氮盐ArN2+Cl-"}
 
 ## 重氮基的取代反应
 
@@ -141,7 +141,7 @@ $$
 - 重氮盐芳环上连有**吸电子基团**有利于反应（增强亲电性）
 - 偶合组分（酚、胺）需富电子
 :::
-<!-- SVG-TODO: 重氮盐偶联反应机理（重氮盐 ArN2+ 作亲电试剂，进攻富电子酚/胺的对位，形成偶氮化合物 Ar-N=N-Ar'，酚在弱碱性、胺在弱酸性条件下偶联） -->
+::figure{src="/images/chemistry/svg/ch15/diazonium-coupling.svg" caption="重氮盐偶联：亲电进攻酚/胺对位→偶氮化合物" alt="重氮盐ArN2+作亲电试剂，酚在弱碱性pH9-10偶联，胺在弱酸性pH5-7偶联，产物偶氮化合物Ar-N=N-Ar'"}
 
 :::example{label=偶氮染料的合成}
 **题目**：写出由苯胺和对甲基苯酚合成对甲基-4-羟基偶氮苯的反应。

@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 350" width="700" height="350">
+  <title>吡咯型N（参与共轭弱酸性）vs吡啶型N（不参与共轭显碱性）</title>
+  <style>
+    text { font-family: sans-serif; fill: currentColor; }
+    .atom { font-size: 13px; font-weight: bold; }
+    .label { font-size: 11px; }
+    .note { font-size: 10px; fill: #555; }
+    .title { font-size: 14px; font-weight: bold; }
+    .bond { stroke: currentColor; stroke-width: 1.8; fill: none; }
+    .orbital-p { fill: rgba(100,149,237,0.3); stroke: #4477cc; stroke-width: 1.2; }
+    .orbital-sp2 { fill: rgba(230,140,50,0.3); stroke: #cc7700; stroke-width: 1.2; }
+    .lp { fill: currentColor; }
+    .tag-acid { fill: #cc3333; font-size: 11px; font-weight: bold; }
+    .tag-base { fill: #1155aa; font-size: 11px; font-weight: bold; }
+    .divider { stroke: #ccc; stroke-width: 1; stroke-dasharray: 4,3; }
+  </style>
+
+  <rect width="700" height="350" fill="white" rx="8"/>
+
+  <!-- ===== LEFT: PYRROLE (吡咯型氮) ===== -->
+  <!-- p-orbital lobes (blue) above and below N -->
+  <ellipse cx="163" cy="64" rx="11" ry="22" class="orbital-p"/>
+  <ellipse cx="163" cy="112" rx="11" ry="22" class="orbital-p"/>
+
+  <!-- Ring bonds -->
+  <line x1="163" y1="88" x2="213" y2="124" class="bond"/>
+  <line x1="213" y1="124" x2="195" y2="176" class="bond"/>
+  <line x1="210" y1="120" x2="192" y2="172" class="bond" stroke-width="1.2"/>
+  <line x1="195" y1="176" x2="131" y2="176" class="bond"/>
+  <line x1="131" y1="176" x2="113" y2="124" class="bond"/>
+  <line x1="134" y1="172" x2="116" y2="120" class="bond" stroke-width="1.2"/>
+  <line x1="113" y1="124" x2="163" y2="88" class="bond"/>
+
+  <!-- N-H bond -->
+  <line x1="163" y1="88" x2="163" y2="56" class="bond"/>
+
+  <!-- Atom labels -->
+  <text x="163" y="87" class="atom" text-anchor="middle" dominant-baseline="auto">N</text>
+  <text x="222" y="131" class="atom" text-anchor="start">C</text>
+  <text x="200" y="185" class="atom" text-anchor="middle">C</text>
+  <text x="122" y="185" class="atom" text-anchor="middle">C</text>
+  <text x="96" y="131" class="atom" text-anchor="end">C</text>
+  <text x="163" y="52" class="atom" text-anchor="middle">H</text>
+
+  <!-- Lone pair label with annotation line -->
+  <text x="218" y="65" class="note" fill="#4477cc" font-size="10">孤对电子</text>
+  <text x="218" y="77" class="note" fill="#4477cc" font-size="10">在 p 轨道中</text>
+  <line x1="215" y1="70" x2="178" y2="72" stroke="#4477cc" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- Panel title -->
+  <text x="163" y="210" class="title" text-anchor="middle" fill="#cc5500">吡咯型氮</text>
+
+  <text x="163" y="228" class="label" text-anchor="middle">孤对电子在 p 轨道中</text>
+  <text x="163" y="243" class="label" text-anchor="middle">参与共轭 → 贡献 2 个 π 电子</text>
+  <text x="163" y="258" class="label" text-anchor="middle">碱性减弱 → 弱酸性</text>
+  <text x="163" y="273" class="tag-acid" text-anchor="middle">pKa(N-H) ≈ 17</text>
+  <text x="163" y="288" class="label" text-anchor="middle">N-H 具酸性（可被强碱去质子）</text>
+
+  <!-- Divider -->
+  <line x1="350" y1="20" x2="350" y2="310" class="divider"/>
+
+  <!-- ===== RIGHT: PYRIDINE (吡啶型氮) ===== -->
+  <!-- sp2 orbital lobe pointing away from ring (orange) - to the right of N -->
+  <ellipse cx="608" cy="88" rx="22" ry="11" class="orbital-sp2"/>
+
+  <!-- Ring bonds (hexagon) -->
+  <line x1="530" y1="88" x2="574" y2="114" class="bond"/>
+  <line x1="527" y1="92" x2="571" y2="118" class="bond" stroke-width="1.2"/>
+  <line x1="574" y1="114" x2="574" y2="166" class="bond"/>
+  <line x1="574" y1="166" x2="530" y2="192" class="bond"/>
+  <line x1="571" y1="162" x2="527" y2="188" class="bond" stroke-width="1.2"/>
+  <line x1="530" y1="192" x2="486" y2="166" class="bond"/>
+  <line x1="486" y1="166" x2="486" y2="114" class="bond"/>
+  <line x1="489" y1="162" x2="489" y2="118" class="bond" stroke-width="1.2"/>
+  <line x1="486" y1="114" x2="530" y2="88" class="bond"/>
+
+  <!-- Lone pair dots near sp2 orbital -->
+  <circle cx="598" cy="85" r="2" class="lp"/>
+  <circle cx="610" cy="85" r="2" class="lp"/>
+
+  <!-- Atom labels Pyridine -->
+  <text x="530" y="87" class="atom" text-anchor="middle" dominant-baseline="auto">N</text>
+  <text x="582" y="119" class="atom" text-anchor="start">C</text>
+  <text x="582" y="171" class="atom" text-anchor="start">C</text>
+  <text x="530" y="201" class="atom" text-anchor="middle">C</text>
+  <text x="470" y="171" class="atom" text-anchor="end">C</text>
+  <text x="470" y="119" class="atom" text-anchor="end">C</text>
+
+  <!-- sp2 orbital label -->
+  <text x="635" y="83" class="note" fill="#cc7700" font-size="10">孤对电子</text>
+  <text x="635" y="95" class="note" fill="#cc7700" font-size="10">在 sp² 轨道</text>
+  <line x1="632" y1="88" x2="622" y2="88" stroke="#cc7700" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- annotation -->
+  <text x="530" y="62" class="note" text-anchor="middle" fill="#777" font-size="10">（轨道在环平面内，不参与 π 体系）</text>
+
+  <!-- Panel title -->
+  <text x="530" y="222" class="title" text-anchor="middle" fill="#1155aa">吡啶型氮</text>
+
+  <text x="530" y="240" class="label" text-anchor="middle">孤对电子在 sp² 杂化轨道中</text>
+  <text x="530" y="255" class="label" text-anchor="middle">不参与共轭 → 保持碱性</text>
+  <text x="530" y="270" class="tag-base" text-anchor="middle">pKb = 8.8（弱碱）</text>
+  <text x="530" y="285" class="label" text-anchor="middle">可质子化：Py + H⁺ → PyH⁺</text>
+
+  <!-- Bottom comparison bar -->
+  <rect x="20" y="305" width="660" height="36" rx="4" fill="#f5f5f5" stroke="#ddd"/>
+  <text x="350" y="319" font-size="11" text-anchor="middle" fill="#333" font-family="sans-serif">吡咯型 N：p 轨道 → 参与共轭 → 弱酸性 | 吡啶型 N：sp² 轨道 → 不参与共轭 → 碱性</text>
+  <text x="350" y="334" font-size="10" text-anchor="middle" fill="#666" font-family="sans-serif">咪唑含两种 N → 兼具酸碱性（弱碱）</text>
+</svg>

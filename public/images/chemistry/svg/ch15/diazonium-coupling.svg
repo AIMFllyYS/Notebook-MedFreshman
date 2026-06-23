@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 340" width="800" height="340">
+  <title>重氮盐偶联：亲电进攻酚/胺对位→偶氮化合物</title>
+  <style>
+    text { font-family: 'Times New Roman', serif; fill: currentColor; }
+    line, rect, path, polygon, circle { stroke: currentColor; fill: none; }
+    .label { font-size: 12px; }
+    .atom { font-size: 13px; }
+    .title { font-size: 13px; font-weight: bold; }
+    .sub { font-size: 11px; fill: #64748b; }
+    .electro { fill: #dc2626; }
+    .phenol { fill: #2563eb; }
+    .amine { fill: #7c3aed; }
+    .product { fill: #16a34a; }
+    .cond-phenol { fill: #1e40af; }
+    .cond-amine { fill: #6d28d9; }
+  </style>
+
+  <defs>
+    <marker id="arr4" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="currentColor" stroke="none"/>
+    </marker>
+    <marker id="arr4B" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#2563eb" stroke="none"/>
+    </marker>
+    <marker id="arr4P" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#7c3aed" stroke="none"/>
+    </marker>
+    <marker id="arr4G" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#16a34a" stroke="none"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="22" text-anchor="middle" class="title" font-size="14px">重氮盐偶联反应（Coupling Reaction）</text>
+  <line x1="10" y1="30" x2="790" y2="30" stroke="#e2e8f0"/>
+
+  <!-- Top: Diazonium electrophile -->
+  <rect x="290" y="38" width="220" height="52" rx="6" fill="#fee2e2" stroke="#dc2626"/>
+  <text x="400" y="62" text-anchor="middle" class="atom electro" font-weight="bold">Ar–N₂⁺  （ArN₂⁺Cl⁻）</text>
+  <text x="400" y="80" text-anchor="middle" class="sub electro">亲电试剂（弱亲电）</text>
+
+  <!-- Two branches downward -->
+  <!-- Left branch to phenol -->
+  <line x1="360" y1="90" x2="200" y2="150" marker-end="url(#arr4B)" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="255" y="126" class="label cond-phenol">弱碱性</text>
+  <text x="250" y="140" class="label cond-phenol">pH 9–10</text>
+
+  <!-- Right branch to amine -->
+  <line x1="440" y1="90" x2="600" y2="150" marker-end="url(#arr4P)" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="532" y="126" class="label cond-amine">弱酸性</text>
+  <text x="532" y="140" class="label cond-amine">pH 5–7</text>
+
+  <!-- Left panel: Phenol coupling -->
+  <rect x="20" y="152" width="300" height="90" rx="6" fill="#dbeafe" stroke="#3b82f6"/>
+  <text x="170" y="174" text-anchor="middle" class="title phenol">+ 酚（PhOH）</text>
+  <text x="170" y="194" text-anchor="middle" class="atom">ArN₂⁺ + HO–C₆H₄–R</text>
+  <line x1="100" y1="208" x2="240" y2="208" marker-end="url(#arr4B)" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="170" y="204" text-anchor="middle" class="label cond-phenol">OH⁻(碱)</text>
+  <text x="170" y="228" text-anchor="middle" class="atom phenol">Ar–N=N–C₆H₄–OH</text>
+  <text x="170" y="244" text-anchor="middle" class="sub">(偶联在酚的对位)</text>
+
+  <!-- Right panel: Amine coupling -->
+  <rect x="480" y="152" width="300" height="90" rx="6" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="630" y="174" text-anchor="middle" class="title amine">+ 芳胺（ArNH₂）</text>
+  <text x="630" y="194" text-anchor="middle" class="atom">ArN₂⁺ + H₂N–C₆H₄–R</text>
+  <line x1="560" y1="208" x2="700" y2="208" marker-end="url(#arr4P)" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="630" y="204" text-anchor="middle" class="label cond-amine">弱酸(H⁺保持</text>
+  <text x="630" y="228" text-anchor="middle" class="atom amine">Ar–N=N–C₆H₄–NR₂</text>
+  <text x="630" y="244" text-anchor="middle" class="sub">(偶联在胺的对位)</text>
+
+  <!-- Both arrows downward to general azo product -->
+  <line x1="170" y1="244" x2="350" y2="290" marker-end="url(#arr4G)" stroke="#16a34a" stroke-width="1.5"/>
+  <line x1="630" y1="244" x2="450" y2="290" marker-end="url(#arr4G)" stroke="#16a34a" stroke-width="1.5"/>
+
+  <!-- Product box -->
+  <rect x="250" y="292" width="300" height="40" rx="6" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="400" y="314" text-anchor="middle" class="atom product" font-weight="bold">Ar–N=N–Ar′</text>
+  <text x="400" y="328" text-anchor="middle" class="sub product">偶氮化合物（有色，含 –N=N– 发色团）</text>
+
+  <!-- Side notes -->
+  <text x="15" y="260" class="sub">酚需去质子(OH⁻)</text>
+  <text x="15" y="274" class="sub">增强苯环亲核性</text>
+  <text x="685" y="260" class="sub">胺在酸中保持</text>
+  <text x="685" y="274" class="sub">游离胺形式活性</text>
+
+  <!-- Condition summary -->
+  <text x="400" y="14" text-anchor="middle" class="sub" fill="#555"></text>
+</svg>

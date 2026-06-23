@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 260" aria-label="胺与亚硝酸反应鉴别四种胺：脂肪伯胺放N2、芳香伯胺生成重氮盐、仲胺黄色亚硝胺、芳香叔胺绿色">
+  <title>胺与亚硝酸反应鉴别（脂肪伯胺/芳香伯胺/仲胺/芳香叔胺）</title>
+  <style>text { font-family: serif; fill: currentColor; } line, polygon { stroke: currentColor; }</style>
+
+  <!-- Title -->
+  <text x="270" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">胺与 HNO₂ 反应鉴别</text>
+  <text x="270" y="36" text-anchor="middle" font-size="11" fill="currentColor">试剂：NaNO₂ + HCl，0–5 °C</text>
+
+  <!-- Four columns -->
+  <text x="65" y="58" text-anchor="middle" font-size="11" font-weight="bold" fill="currentColor">脂肪伯胺</text>
+  <text x="200" y="58" text-anchor="middle" font-size="11" font-weight="bold" fill="currentColor">芳香伯胺</text>
+  <text x="340" y="58" text-anchor="middle" font-size="11" font-weight="bold" fill="currentColor">仲胺</text>
+  <text x="465" y="58" text-anchor="middle" font-size="11" font-weight="bold" fill="currentColor">芳香叔胺</text>
+
+  <!-- Vertical dividers -->
+  <line x1="133" y1="45" x2="133" y2="250" stroke-width="0.5" stroke-dasharray="4,3" fill="none" opacity="0.4"/>
+  <line x1="270" y1="45" x2="270" y2="250" stroke-width="0.5" stroke-dasharray="4,3" fill="none" opacity="0.4"/>
+  <line x1="400" y1="45" x2="400" y2="250" stroke-width="0.5" stroke-dasharray="4,3" fill="none" opacity="0.4"/>
+
+  <!-- Amine type -->
+  <text x="65" y="76" text-anchor="middle" font-size="11" fill="currentColor">RNH₂</text>
+  <text x="200" y="76" text-anchor="middle" font-size="11" fill="currentColor">ArNH₂</text>
+  <text x="340" y="76" text-anchor="middle" font-size="11" fill="currentColor">R₂NH</text>
+  <text x="465" y="76" text-anchor="middle" font-size="11" fill="currentColor">ArNR₂</text>
+
+  <!-- Arrow -->
+  <text x="65" y="98" text-anchor="middle" font-size="14" fill="currentColor">↓</text>
+  <text x="200" y="98" text-anchor="middle" font-size="14" fill="currentColor">↓</text>
+  <text x="340" y="98" text-anchor="middle" font-size="14" fill="currentColor">↓</text>
+  <text x="465" y="98" text-anchor="middle" font-size="14" fill="currentColor">↓</text>
+
+  <!-- Products -->
+  <text x="65" y="118" text-anchor="middle" font-size="11" fill="currentColor">ROH + N₂↑</text>
+  <text x="65" y="132" text-anchor="middle" font-size="11" fill="currentColor">+ H₂O</text>
+
+  <text x="200" y="118" text-anchor="middle" font-size="11" fill="currentColor">ArN₂⁺Cl⁻</text>
+  <text x="200" y="132" text-anchor="middle" font-size="11" fill="currentColor">（重氮盐）</text>
+
+  <text x="340" y="118" text-anchor="middle" font-size="11" fill="currentColor">R₂N—N=O</text>
+  <text x="340" y="132" text-anchor="middle" font-size="11" fill="currentColor">（N-亚硝基胺）</text>
+
+  <text x="465" y="118" text-anchor="middle" font-size="11" fill="currentColor">对位引入</text>
+  <text x="465" y="132" text-anchor="middle" font-size="11" fill="currentColor">—N=O</text>
+
+  <!-- Observation / color -->
+  <text x="65" y="160" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">放气泡 N₂↑</text>
+  <text x="200" y="160" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">0-5°C 稳定</text>
+  <text x="340" y="160" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">黄色油状</text>
+  <text x="465" y="160" text-anchor="middle" font-size="12" font-weight="bold" fill="currentColor">绿色固体</text>
+
+  <!-- Notes -->
+  <text x="65" y="185" text-anchor="middle" font-size="10" fill="currentColor">室温即分解</text>
+  <text x="65" y="198" text-anchor="middle" font-size="10" fill="currentColor">脱 N₂ 生成碳正离子</text>
+
+  <text x="200" y="185" text-anchor="middle" font-size="10" fill="currentColor">升温分解</text>
+  <text x="200" y="198" text-anchor="middle" font-size="10" fill="currentColor">→ 多种取代产物</text>
+
+  <text x="340" y="185" text-anchor="middle" font-size="10" fill="currentColor">N-亚硝基化合物</text>
+  <text x="340" y="198" text-anchor="middle" font-size="10" fill="currentColor">致癌物，不稳定</text>
+
+  <text x="465" y="185" text-anchor="middle" font-size="10" fill="currentColor">C-亚硝基化</text>
+  <text x="465" y="198" text-anchor="middle" font-size="10" fill="currentColor">芳环对位产物</text>
+
+  <!-- Horizontal separator -->
+  <line x1="10" y1="68" x2="530" y2="68" stroke-width="0.5" fill="none" opacity="0.3"/>
+  <line x1="10" y1="148" x2="530" y2="148" stroke-width="0.5" fill="none" opacity="0.3"/>
+
+  <!-- Summary box -->
+  <rect x="10" y="210" width="520" height="40" fill="none" stroke="currentColor" stroke-width="0.8" stroke-dasharray="4,2" rx="4"/>
+  <text x="270" y="226" text-anchor="middle" font-size="10" fill="currentColor">鉴别顺序：气泡=脂肪伯胺；0-5°C稳定（偶联显色）=芳香伯胺</text>
+  <text x="270" y="242" text-anchor="middle" font-size="10" fill="currentColor">黄色油=仲胺；绿色固体=芳香叔胺</text>
+</svg>
