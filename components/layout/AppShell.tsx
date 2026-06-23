@@ -15,8 +15,8 @@ import { PanelTopClose, PanelTopOpen, Maximize, Minimize } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { getSubject, getCategory, getContentItem } from "@/content";
-import type { SubjectId, CategoryId } from "@/lib/types/content";
-import { isSubjectId, isCategoryId } from "@/lib/types/content";
+import type { SubjectId } from "@/lib/types/content";
+import { isSubjectId } from "@/lib/types/content";
 import type { ChatContext } from "@/lib/types/chat";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
@@ -34,12 +34,13 @@ const InteractiveTab = dynamic(() => import("@/components/interactives/Interacti
 const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false });
 
 /** 从 pathname 解析路由信息：/[subject]/[category]/[id]。
- *  科目/分类段做运行时校验，非法段返回 null（不再无脑 `as` 强转）。 */
+ *  科目做运行时类型守卫；分类由 manifest 动态查找校验（彻底解耦后 CategoryId 不再是固定联合类型）。 */
 function parseRoute(pathname: string) {
   const segments = pathname.split("/").filter(Boolean);
   if (segments.length < 3) return null;
   const [subjectId, categoryId, itemId] = segments;
-  if (!isSubjectId(subjectId) || !isCategoryId(categoryId)) return null;
+  if (!isSubjectId(subjectId)) return null;
+  if (!getCategory(subjectId, categoryId)) return null;
   return { subjectId, categoryId, itemId };
 }
 
@@ -49,7 +50,7 @@ function TopBar({
   itemId,
 }: {
   subjectId: SubjectId;
-  categoryId: CategoryId;
+  categoryId: string;
   itemId: string;
 }) {
   const toggleSidebar = useStore((s) => s.toggleSidebar);

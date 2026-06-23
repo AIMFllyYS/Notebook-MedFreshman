@@ -17,7 +17,7 @@ import {
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
 import { contentTree } from "@/content/manifest";
-import type { SubjectId, CategoryId, ContentItem } from "@/lib/types/content";
+import type { SubjectId, ContentItem } from "@/lib/types/content";
 import { SUBJECTS } from "@/lib/constants/subjects";
 
 const ICON_MAP: Record<
@@ -43,15 +43,15 @@ export default function MobileChapterPicker() {
   const activeItemId = useStore((s) => s.activeItemId);
 
   const [pickerSubject, setPickerSubject] = useState<SubjectId>(activeSubject);
-  const [pickerCategory, setPickerCategory] = useState<CategoryId>(
-    (activeCategoryId as CategoryId) || "detail",
+  const [pickerCategory, setPickerCategory] = useState<string>(
+    activeCategoryId || "detail",
   );
   const activeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (open) {
       setPickerSubject(activeSubject);
-      setPickerCategory((activeCategoryId as CategoryId) || "detail");
+      setPickerCategory(activeCategoryId || "detail");
       requestAnimationFrame(() => {
         activeRef.current?.scrollIntoView({ block: "center", behavior: "instant" });
       });
@@ -130,7 +130,6 @@ export default function MobileChapterPicker() {
             {/* Subject pills */}
             <div className="hide-scrollbar flex shrink-0 gap-1.5 overflow-x-auto px-4 pb-3">
               {contentTree.subjects
-                .filter((s) => s.id !== "other")
                 .map((s) => {
                   const Icon =
                     ICON_MAP[SUBJECT_ICON_NAMES[s.id as SubjectId]] ?? Folder;
@@ -142,7 +141,7 @@ export default function MobileChapterPicker() {
                         setPickerSubject(s.id as SubjectId);
                         const firstCat =
                           s.categories.find((c) => c.items.length > 0)?.id ?? "detail";
-                        setPickerCategory(firstCat as CategoryId);
+                        setPickerCategory(firstCat);
                       }}
                       className={clsx(
                         "press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-medium transition-colors",
@@ -220,7 +219,7 @@ function ChapterGroup({
 }: {
   chapter: ContentItem;
   subjectId: SubjectId;
-  categoryId: CategoryId;
+  categoryId: string;
   activeItemId: string | null;
   onSelect: (sub: string, cat: string, id: string) => void;
   activeRef: React.RefObject<HTMLButtonElement | null>;

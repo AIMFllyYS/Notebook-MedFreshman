@@ -15,7 +15,7 @@ import clsx from "clsx";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
 import { getSubject, getContentItem } from "@/content";
-import type { SubjectId, CategoryId } from "@/lib/types/content";
+import type { SubjectId } from "@/lib/types/content";
 import BrandLogo from "./BrandLogo";
 
 const ICON_MAP: Record<
@@ -52,7 +52,7 @@ function SubjectIcon({
 
 export default function MobileTopBar() {
   const subjectId = useStore((s) => s.activeSubjectId);
-  const categoryId = useStore((s) => s.activeCategoryId) as CategoryId;
+  const categoryId = useStore((s) => s.activeCategoryId);
   const itemId = useStore((s) => s.activeItemId);
   const toggle = useStore((s) => s.toggleMobileChapterPicker);
   const theme = useTheme((s) => s.theme);

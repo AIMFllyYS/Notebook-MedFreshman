@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
-import { FileText, ClipboardCheck, Lightbulb, PanelTopClose, PanelTopOpen } from "lucide-react";
+import { FileText, ClipboardCheck, Lightbulb, PanelTopClose, PanelTopOpen, Maximize, Minimize, ExternalLink } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import SelectionPopover from "@/components/notes/SelectionPopover";
-import type { SubjectId, CategoryId } from "@/lib/types/content";
+import type { SubjectId, RenderType } from "@/lib/types/content";
 import type { ExampleMeta } from "@/app/api/examples/route";
 import { useStore } from "@/lib/store";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { tabPanelVariants } from "@/lib/motion";
+import { ComponentRenderer } from "@/lib/content/componentRegistry";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
 const ExampleTab = dynamic(() => import("@/components/examples/ExampleTab"), { ssr: false });
@@ -29,7 +30,7 @@ const CONTENT_TABS: { id: ContentTab; label: string; icon: React.ReactNode }[] =
 
 interface ContentPageClientProps {
   subjectId: SubjectId;
-  categoryId: CategoryId;
+  categoryId: string;
   itemId: string;
   /** 服务端 SSR 注入的正文 markdown；null 表示该项暂无内容文件 */
   initialContent: string | null;
@@ -42,6 +43,7 @@ interface ContentPageClientProps {
   subjectName: string;
   categoryName: string;
   itemStatus: string;
+  renderType?: RenderType;
 }
 
 function EmptyNote({ itemId, title }: { itemId: string; title: string }) {
@@ -59,6 +61,8 @@ function EmptyNote({ itemId, title }: { itemId: string; title: string }) {
 }
 
 export default function ContentPageClient({
+  subjectId,
+  categoryId,
   itemId,
   initialContent,
   initialExamples,
@@ -67,14 +71,19 @@ export default function ContentPageClient({
   itemSummary,
   subjectName,
   categoryName,
+  renderType = 'markdown',
 }: ContentPageClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<ContentTab>("content");
   const topBarCollapsed = useStore((s) => s.topBarCollapsed);
   const toggleTopBar = useStore((s) => s.toggleTopBar);
   const isMobile = useIsMobile();
+  const [isHtmlFullscreen, setIsHtmlFullscreen] = useState(false);
 
-  const tabIndex = CONTENT_TABS.findIndex((t) => t.id === activeTab);
+  // markdown 模式显示全部 Tab；html / component 模式只显示正文 Tab（无例题/测试）
+  const visibleTabs = renderType === 'markdown' ? CONTENT_TABS : CONTENT_TABS.filter((t) => t.id === 'content');
+
+  const tabIndex = visibleTabs.findIndex((t) => t.id === activeTab);
   const prevTabIndexRef = useRef(tabIndex);
   const dirRef = useRef<1 | -1>(1);
 
@@ -88,15 +97,37 @@ export default function ContentPageClient({
     containerRef.current?.scrollTo({ top: 0 });
   }, [itemId]);
 
+  // HTML 全屏时锁定 body 滚动，退出时恢复。
+  useEffect(() => {
+    if (isHtmlFullscreen) {
+      document.body.style.overflow = "hidden";
+      return () => { document.body.style.overflow = ""; };
+    }
+  }, [isHtmlFullscreen]);
+
+  // 路由切换时退出全屏
+  useEffect(() => {
+    setIsHtmlFullscreen(false);
+  }, [itemId]);
+
+  const handleOpenInNewTab = useCallback(() => {
+    if (!content) return;
+    const blob = new Blob([content], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    window.open(url, "_blank");
+    // 延迟回收，避免新标签页尚未加载就被 revoke
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+  }, [content]);
+
   return (
     <div className="relative flex h-full flex-col bg-[var(--bg-app)]">
       {/* Content tab bar */}
       <div className="flex shrink-0 items-center border-b border-[var(--line)] bg-[var(--bg-app)]">
-        {CONTENT_TABS.map((t) => (
+        {visibleTabs.map((t) => (
           <button
             key={t.id}
             onClick={() => {
-            const newIdx = CONTENT_TABS.findIndex((x) => x.id === t.id);
+            const newIdx = visibleTabs.findIndex((x) => x.id === t.id);
             dirRef.current = newIdx >= prevTabIndexRef.current ? 1 : -1;
             prevTabIndexRef.current = newIdx;
             setActiveTab(t.id);
@@ -130,6 +161,7 @@ export default function ContentPageClient({
             {topBarCollapsed ? <PanelTopOpen size={18} /> : <PanelTopClose size={18} />}
           </button>
         )}
+
       </div>
 
       {/* Content area */}
@@ -163,9 +195,41 @@ export default function ContentPageClient({
                 </div>
 
                 {content ? (
-                  <div key={itemId} className="prose-notes animate-fade-in">
-                    <NoteRenderer content={content} />
-                  </div>
+                  renderType === 'html' ? (
+                    <div key={itemId} className="animate-fade-in relative h-full">
+                      {/* HTML 工具组件操作栏：全屏 + 新页面展开，仅作用于 iframe */}
+                      <div className="absolute right-2 top-2 z-10 flex items-center gap-1 rounded-lg bg-black/30 px-1 py-0.5 backdrop-blur-sm">
+                        <button
+                          onClick={handleOpenInNewTab}
+                          title="新页面展开"
+                          className="flex h-7 w-7 items-center justify-center rounded-md text-white/90 transition-colors hover:bg-white/20"
+                        >
+                          <ExternalLink size={14} />
+                        </button>
+                        <button
+                          onClick={() => setIsHtmlFullscreen(true)}
+                          title="全屏"
+                          className="flex h-7 w-7 items-center justify-center rounded-md text-white/90 transition-colors hover:bg-white/20"
+                        >
+                          <Maximize size={14} />
+                        </button>
+                      </div>
+                      <iframe
+                        srcDoc={content}
+                        sandbox="allow-scripts allow-same-origin"
+                        className="h-full min-h-[60vh] w-full rounded-lg border border-[var(--line)]"
+                        title={itemTitle}
+                      />
+                    </div>
+                  ) : renderType === 'component' ? (
+                    <div key={itemId} className="animate-fade-in">
+                      <ComponentRenderer subjectId={subjectId} categoryId={categoryId} itemId={itemId} />
+                    </div>
+                  ) : (
+                    <div key={itemId} className="prose-notes animate-fade-in">
+                      <NoteRenderer content={content} />
+                    </div>
+                  )
                 ) : (
                   <div key={itemId} className="animate-fade-in">
                     <EmptyNote itemId={itemId} title={itemTitle} />
@@ -203,6 +267,25 @@ export default function ContentPageClient({
 
       {/* 划词助手：在正文阅读区选中文字即弹出（解释/举例/追问/引用） */}
       <SelectionPopover containerRef={containerRef} />
+
+      {/* HTML 全屏覆盖层 */}
+      {isHtmlFullscreen && content && (
+        <div className="fixed inset-0 z-[100] bg-white">
+          <iframe
+            srcDoc={content}
+            sandbox="allow-scripts allow-same-origin"
+            className="h-full w-full border-0"
+            title={itemTitle}
+          />
+          <button
+            onClick={() => setIsHtmlFullscreen(false)}
+            title="退出全屏"
+            className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition-colors hover:bg-black/50"
+          >
+            <Minimize size={20} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
