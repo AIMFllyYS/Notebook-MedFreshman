@@ -135,7 +135,12 @@ export async function streamInteractiveArtifact(
   }
 
   const abortCtrl = new AbortController();
-  const fetchTimeoutId = setTimeout(() => abortCtrl.abort(), timeoutMs);
+  let fetchTimeoutId: ReturnType<typeof setTimeout> | undefined;
+  const resetFetchTimeout = () => {
+    if (fetchTimeoutId) clearTimeout(fetchTimeoutId);
+    fetchTimeoutId = setTimeout(() => abortCtrl.abort(), timeoutMs);
+  };
+  resetFetchTimeout();
   const onAbort = () => abortCtrl.abort(signal?.reason);
   signal?.addEventListener("abort", onAbort, { once: true });
 
@@ -154,7 +159,7 @@ export async function streamInteractiveArtifact(
         ],
         stream: true,
         temperature: 0.4,
-        max_tokens: 12000,
+        max_tokens: 4096,
       }),
       signal: abortCtrl.signal,
     });
@@ -172,6 +177,7 @@ export async function streamInteractiveArtifact(
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
+      resetFetchTimeout();
       buf += decoder.decode(value, { stream: true });
       const parsed = parseSseJsonEvents<StreamChunk>(buf);
       buf = parsed.remaining;
@@ -198,7 +204,7 @@ export async function streamInteractiveArtifact(
       message: isAbort ? "生成超时，请重试" : String((e as Error)?.message ?? e),
     });
   } finally {
-    clearTimeout(fetchTimeoutId);
+    if (fetchTimeoutId) clearTimeout(fetchTimeoutId);
     signal?.removeEventListener("abort", onAbort);
   }
 }
