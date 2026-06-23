@@ -44,7 +44,6 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const [showHistory, setShowHistory] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [warnDismissed, setWarnDismissed] = useState(false);
-  const [prevSessionId, setPrevSessionId] = useState(activeSessionId);
   const fontScale = useSettings((s) => s.fontScale);
   const hydrated = useHydrated(useChatHistory);
 
@@ -54,11 +53,11 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const showWarning = ctxRatio >= 0.8 && ctxRatio < 1 && !warnDismissed;
   const contextFull = ctxRatio >= 1;
 
-  if (activeSessionId !== prevSessionId) {
-    setPrevSessionId(activeSessionId);
+  // 会话切换时重置 token 统计和警告状态
+  useEffect(() => {
     setWarnDismissed(false);
     useTokenTracker.getState().resetSession();
-  }
+  }, [activeSessionId]);
 
   useEffect(() => {
     if (isAtBottom) {
