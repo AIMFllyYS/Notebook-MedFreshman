@@ -44,8 +44,15 @@ interface StreamDelta {
   // 深度思考字段名可由环境变量（REASONING_FIELD）配置，故保留字符串索引签名。
   [key: string]: unknown;
 }
+interface StreamUsage {
+  prompt_tokens?: number;
+  completion_tokens?: number;
+  total_tokens?: number;
+  prompt_tokens_details?: { cached_tokens?: number };
+}
 interface StreamChunk {
   choices?: Array<{ delta?: StreamDelta; finish_reason?: string }>;
+  usage?: StreamUsage;
 }
 
 export async function POST(req: NextRequest) {
@@ -175,6 +182,7 @@ export async function POST(req: NextRequest) {
             tools: toolDefs,
             tool_choice: "auto",
             stream: true,
+            stream_options: { include_usage: true },
             temperature: 0.6,
           };
 
@@ -217,6 +225,7 @@ export async function POST(req: NextRequest) {
           let contentBuf = "";
           const toolCalls: Record<number, { id: string; name: string; args: string }> = {};
           let finish = "";
+          let lastUsage: StreamUsage | undefined;
 
           while (true) {
             const { done, value } = await reader.read();
@@ -231,6 +240,9 @@ export async function POST(req: NextRequest) {
               if (!data || data === "[DONE]") continue;
               let json: StreamChunk;
               try { json = JSON.parse(data); } catch { continue; }
+
+              if (json.usage) lastUsage = json.usage;
+
               const choice = json.choices?.[0];
               if (!choice) continue;
               const delta: StreamDelta = choice.delta || {};
@@ -321,6 +333,17 @@ export async function POST(req: NextRequest) {
             continue;
           }
 
+          if (lastUsage) {
+            send({
+              type: "usage",
+              usage: {
+                promptTokens: lastUsage.prompt_tokens ?? 0,
+                completionTokens: lastUsage.completion_tokens ?? 0,
+                cachedTokens: lastUsage.prompt_tokens_details?.cached_tokens ?? 0,
+                totalTokens: lastUsage.total_tokens ?? 0,
+              },
+            });
+          }
           stopHeartbeat();
           send({ type: "done" });
           controller.close();

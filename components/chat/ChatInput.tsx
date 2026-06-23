@@ -9,6 +9,7 @@ import { useChatUI } from '@/lib/hooks/useChatUI';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { getModelInfo } from '@/lib/ai/models';
 import ModelMenu from '@/components/chat/ModelMenu';
+import TokenDashboard from '@/components/chat/TokenDashboard';
 
 interface AttachmentPreview {
   file: File;
@@ -296,6 +297,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
           </button>
         </div>
 
+        <TokenDashboard />
         <ModelMenu onOpenSettings={onOpenSettings} />
       </div>
     </div>

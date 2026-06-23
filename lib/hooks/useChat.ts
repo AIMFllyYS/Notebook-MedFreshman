@@ -5,6 +5,9 @@ import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
 import type { ChatMessage, ChatAttachment, ChatContext, ChatOptions, ToolCallBlock, WebSearchSource } from '@/lib/types/chat';
 import { parseXmlTags } from '@/lib/utils/xmlParser';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
+import { useTokenTracker } from './useTokenTracker';
+import { getModelInfo } from '@/lib/ai/models';
+import { estimateTokens } from '@/lib/context/fullContext';
 
 interface SendMessageOptions {
   quotedText?: string;
@@ -22,6 +25,12 @@ interface ChatSseEvent {
   id?: string;
   name?: string;
   args?: Record<string, unknown>;
+  usage?: {
+    promptTokens?: number;
+    completionTokens?: number;
+    cachedTokens?: number;
+    totalTokens?: number;
+  };
   meta?: {
     artifactId?: unknown;
     sources?: WebSearchSource[];
@@ -131,6 +140,16 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
           }
           return { role: m.role as 'user' | 'assistant', content: m.content || '' };
         });
+
+      // Estimate current context tokens for the dashboard
+      const settings0 = useSettings.getState();
+      const selectedModel = getModelInfo(settings0.selectedModelId);
+      const contextLimitK = selectedModel?.contextK ?? 128;
+      const allText = requestMessages.map((m) =>
+        typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
+      ).join('');
+      const estContextTokens = estimateTokens(allText) + 3000; // ~3K for system prompts
+      useTokenTracker.getState().setCurrentContext(estContextTokens, contextLimitK * 1000);
 
       loadingRef.current = true;
       setIsLoading(true);
@@ -246,6 +265,20 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                       updateMessage(sessionId!, assistantId, {
                         toolCalls: Array.from(toolCallsMap.values()),
                       });
+                    }
+                  }
+                  break;
+
+                case 'usage':
+                  if (event.usage) {
+                    useTokenTracker.getState().addUsage(event.usage);
+                    // Update context estimate with real prompt tokens
+                    if (event.usage.promptTokens) {
+                      const limit = useTokenTracker.getState().modelContextLimit;
+                      useTokenTracker.getState().setCurrentContext(
+                        event.usage.promptTokens + (event.usage.completionTokens ?? 0),
+                        limit,
+                      );
                     }
                   }
                   break;
