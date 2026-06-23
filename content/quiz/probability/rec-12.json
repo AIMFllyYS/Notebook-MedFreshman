@@ -1,0 +1,555 @@
+{
+  "subjectId": "probability",
+  "chapterId": "rec-12",
+  "generatedAt": "2026-06-24",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "rec-12-q01",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "关于本讲“线性含义”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "线性含义：仅涉及数乘与加法，随机变量之间相乘不属于线性运算。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：线性含义：仅涉及数乘与加法，随机变量之间相乘不属于线性运算。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 线性含义"
+      }
+    },
+    {
+      "id": "rec-12-q02",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "关于本讲“条件可减弱（后续讲不相关即可成立）”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "条件可减弱（后续讲不相关即可成立）。",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：条件可减弱（后续讲不相关即可成立）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 条件可减弱（后续讲不相关即可成立）"
+      }
+    },
+    {
+      "id": "rec-12-q03",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "关于本讲“$X\\sim B(n,p)$，引入指”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "$X\\sim B(n,p)$，引入指示变量 $X_i$：第i次试验成功记1，失败记0。",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$X\\sim B(n,p)$，引入指示变量 $X_i$：第i次试验成功记1，失败记0。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · $X\\sim B(n,p)$，引入指"
+      }
+    },
+    {
+      "id": "rec-12-q04",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "关于本讲“每个 $X_i\\sim B(1,p)”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "每个 $X_i\\sim B(1,p)$（0-1分布），$E[X_i]=p$，且 $X = X_1+X_2+\\dots+X_n$。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：每个 $X_i\\sim B(1,p)$（0-1分布），$E[X_i]=p$，且 $X = X_1+X_2+\\dots+X_n$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 每个 $X_i\\sim B(1,p)"
+      }
+    },
+    {
+      "id": "rec-12-q05",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "关于本讲“由线性性”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "由线性性：$E[X] = \\sum_{i=1}^n E[X_i] = np$，比直接用定义计算简单。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：由线性性：$E[X] = \\sum_{i=1}^n E[X_i] = np$，比直接用定义计算简单。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 由线性性"
+      }
+    },
+    {
+      "id": "rec-12-q06",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "关于本讲“n个数字任意排列，$X$ 为巧合（数”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "n个数字任意排列，$X$ 为巧合（数字k在第k位）个数。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：n个数字任意排列，$X$ 为巧合（数字k在第k位）个数。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · n个数字任意排列，$X$ 为巧合（数"
+      }
+    },
+    {
+      "id": "rec-12-q07",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "关于本讲“引入 $X_k$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "引入 $X_k$：第k个数字巧合记1，否则0，$P(X_k=1)=\\frac{1}{n}$，$E[X_k]=\\frac{1}{n}$。",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：引入 $X_k$：第k个数字巧合记1，否则0，$P(X_k=1)=\\frac{1}{n}$，$E[X_k]=\\frac{1}{n}$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 引入 $X_k$"
+      }
+    },
+    {
+      "id": "rec-12-q08",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "关于本讲“$X = \\sum_{k=1}^n”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "$X = \\sum_{k=1}^n X_k$，故 $E[X] = n\\cdot\\frac{1}{n}=1$，与n无关。",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$X = \\sum_{k=1}^n X_k$，故 $E[X] = n\\cdot\\frac{1}{n}=1$，与n无关。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · $X = \\sum_{k=1}^n"
+      }
+    },
+    {
+      "id": "rec-12-q09",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "关于本讲“$X\\sim NB(k,p)$（k次”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "$X\\sim NB(k,p)$（k次成功所需试验次数）。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$X\\sim NB(k,p)$（k次成功所需试验次数）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · $X\\sim NB(k,p)$（k次"
+      }
+    },
+    {
+      "id": "rec-12-q10",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "关于本讲“分解为k个独立几何分布之和”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "分解为k个独立几何分布之和：$X = X_1+X_2+\\dots+X_k$，$X_i\\sim G(p)$。",
+        "只要两个事件互斥，就一定可以推出二者独立"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：分解为k个独立几何分布之和：$X = X_1+X_2+\\dots+X_k$，$X_i\\sim G(p)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 分解为k个独立几何分布之和"
+      }
+    },
+    {
+      "id": "rec-12-q11",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$E[aX+bY] = aE[X]+bE[Y]$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $E[aX+bY] = aE[X]+bE[Y]$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-12-q12",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\implies E[XY] = E[X]E[Y]$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\implies E[XY] = E[X]E[Y]$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-12-q13",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$X\\geq Y$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $X\\geq Y$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-12-q14",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$E[X]\\geq E[Y]$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $E[X]\\geq E[Y]$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-12-q15",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$|E[X]| \\leq E[|X|]$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $|E[X]| \\leq E[|X|]$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-12-q16",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“几何分布期望 $E[X_i]=\\fr”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "几何分布期望 $E[X_i]=\\frac{1}{p}$，故 $E[X]=\\frac{k}{p}$。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：几何分布期望 $E[X_i]=\\frac{1}{p}$，故 $E[X]=\\frac{k}{p}$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 几何分布期望 $E[X_i]=\\fr"
+      }
+    },
+    {
+      "id": "rec-12-q17",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“本质”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "本质：计算\"随机变量与期望距离平方的平均\"。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：本质：计算\"随机变量与期望距离平方的平均\"。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 09:49 · 本质"
+      }
+    },
+    {
+      "id": "rec-12-q18",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“几何含义”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "几何含义：离均差平方的期望，反映取值围绕均值的分散程度。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：几何含义：离均差平方的期望，反映取值围绕均值的分散程度。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 39:16 · 几何含义"
+      }
+    },
+    {
+      "id": "rec-12-q19",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$E[c] = c$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $E[c] = c$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-12-q20",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$X\\sim B(n,p)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $X\\sim B(n,p)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-12-q21",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 10,
+      "label": "计算题",
+      "stem": "用指示变量法证明 $B(n,p)$ 的期望。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：二项期望。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：令 $X_i$ 为第 $i$ 次成功指示变量，则 $X=\\sum X_i$，$E[X_i]=p$，线性性得 $E[X]=np$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 二项期望"
+      }
+    },
+    {
+      "id": "rec-12-q22",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 10,
+      "label": "计算题",
+      "stem": "n 个数字随机排列，求巧合个数期望。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：巧合问题。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：令 $X_k$ 表示第 k 个数字在第 k 位，$P(X_k=1)=1/n$；$X=\\sum X_k$，故 $E[X]=1$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 巧合问题"
+      }
+    },
+    {
+      "id": "rec-12-q23",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 10,
+      "label": "计算题",
+      "stem": "$V\\sim Exp(\\lambda)$，$X=\\min(V,V_0)$，求 $E[X]$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：电压表期望。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$E[X]=\\int_0^{V_0}v\\lambda e^{-\\lambda v}dv+V_0e^{-\\lambda V_0}=(1-e^{-\\lambda V_0})/\\lambda$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 00:03 · 电压表期望"
+      }
+    },
+    {
+      "id": "rec-12-q24",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-12",
+      "points": 20,
+      "label": "综合计算/证明",
+      "stem": "若 $E[X]=7300,\\sigma=700$，估计 $P(|X-7300|<2100)$ 下界。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：切比雪夫。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：由切比雪夫不等式，概率至少 $1-700^2/2100^2=8/9$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（5分）",
+        "展开关键推导或分段计算（7分）",
+        "得到完整答案或证明结论（5分）",
+        "说明条件、定义域和易错点（3分）"
+      ],
+      "total_points": 20,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-12.md",
+        "label": "rec-12 · 说话人1 01:00:32 · 切比雪夫"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "fill_blank": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 15,
+      "medium": 8,
+      "hard": 1
+    }
+  }
+}

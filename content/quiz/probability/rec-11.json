@@ -1,0 +1,555 @@
+{
+  "subjectId": "probability",
+  "chapterId": "rec-11",
+  "generatedAt": "2026-06-24",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "rec-11-q01",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于本讲“数字特征是与随机变量分布有关的常数，”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "数字特征是与随机变量分布有关的常数，刻画随机变量某一方面的突出特征。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：数字特征是与随机变量分布有关的常数，刻画随机变量某一方面的突出特征。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 数字特征是与随机变量分布有关的常数，"
+      }
+    },
+    {
+      "id": "rec-11-q02",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于本讲“第四章主要数字特征”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "第四章主要数字特征：期望、方差、协方差、相关系数。",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：第四章主要数字特征：期望、方差、协方差、相关系数。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 第四章主要数字特征"
+      }
+    },
+    {
+      "id": "rec-11-q03",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于本讲“加权平均”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "加权平均：$p_k$ 为权重，$E[X]$ 是加权平均分。",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：加权平均：$p_k$ 为权重，$E[X]$ 是加权平均分。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 18:46 · 加权平均"
+      }
+    },
+    {
+      "id": "rec-11-q04",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于本讲“质心位置”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "质心位置：类比物理中质点系的质心，期望是概率分布的平衡点。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：质心位置：类比物理中质点系的质心，期望是概率分布的平衡点。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 质心位置"
+      }
+    },
+    {
+      "id": "rec-11-q05",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于本讲“期望值不一定是随机变量的可能取值（如”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "期望值不一定是随机变量的可能取值（如平均成绩1.8分无人得此分）。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：期望值不一定是随机变量的可能取值（如平均成绩1.8分无人得此分）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 期望值不一定是随机变量的可能取值（如"
+      }
+    },
+    {
+      "id": "rec-11-q06",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于本讲“期望不一定存在，要求级数**绝对收敛”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "期望不一定存在，要求级数**绝对收敛**（保证结果与求和顺序无关）。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：期望不一定存在，要求级数**绝对收敛**（保证结果与求和顺序无关）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 期望不一定存在，要求级数**绝对收敛"
+      }
+    },
+    {
+      "id": "rec-11-q07",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于本讲“泊松分布 $X\\sim P(\\lam”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "泊松分布 $X\\sim P(\\lambda)$：$E[X]=\\lambda$（参数即平均发生次数）。",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：泊松分布 $X\\sim P(\\lambda)$：$E[X]=\\lambda$（参数即平均发生次数）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 泊松分布 $X\\sim P(\\lam"
+      }
+    },
+    {
+      "id": "rec-11-q08",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于本讲“0-1分布”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "0-1分布：$E[X]=p$。",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：0-1分布：$E[X]=p$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 0-1分布"
+      }
+    },
+    {
+      "id": "rec-11-q09",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于本讲“指数分布 $X\\sim E(\\lam”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "指数分布 $X\\sim E(\\lambda)$：$E[X]=\\frac{1}{\\lambda}$（参数的倒数），串联越多平均寿命越短。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：指数分布 $X\\sim E(\\lambda)$：$E[X]=\\frac{1}{\\lambda}$（参数的倒数），串联越多平均寿命越短。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 指数分布 $X\\sim E(\\lam"
+      }
+    },
+    {
+      "id": "rec-11-q10",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于本讲“均匀分布 $U(a,b)$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "均匀分布 $U(a,b)$：$E[X]=\\frac{a+b}{2}$（区间中点，即质心）。",
+        "只要两个事件互斥，就一定可以推出二者独立"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：均匀分布 $U(a,b)$：$E[X]=\\frac{a+b}{2}$（区间中点，即质心）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 均匀分布 $U(a,b)$"
+      }
+    },
+    {
+      "id": "rec-11-q11",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$N = \\min(X_1,X_2,\\dots,X_n)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $N = \\min(X_1,X_2,\\dots,X_n)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-11-q12",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\lambda = \\sum_{i=1}^n \\lambda_i$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\lambda = \\sum_{i=1}^n \\lambda_i$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 23:02 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-11-q13",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$M = \\max(X_1,X_2,\\dots,X_n)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $M = \\max(X_1,X_2,\\dots,X_n)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-11-q14",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$S = X_1+X_2$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $S = X_1+X_2$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-11-q15",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$P(Z\\leq z)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $P(Z\\leq z)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-11-q16",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“离散情形”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "离散情形：$E[g(X)] = \\sum_{k=1}^\\infty g(x_k) p_k$。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：离散情形：$E[g(X)] = \\sum_{k=1}^\\infty g(x_k) p_k$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 离散情形"
+      }
+    },
+    {
+      "id": "rec-11-q17",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“连续情形”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "连续情形：$E[g(X)] = \\int_{-\\infty}^{+\\infty} g(x) f(x) dx$。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：连续情形：$E[g(X)] = \\int_{-\\infty}^{+\\infty} g(x) f(x) dx$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 连续情形"
+      }
+    },
+    {
+      "id": "rec-11-q18",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“离散情形”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "离散情形：$E[g(X,Y)] = \\sum_{i}\\sum_{j} g(x_i,y_j) p_{ij}$。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：离散情形：$E[g(X,Y)] = \\sum_{i}\\sum_{j} g(x_i,y_j) p_{ij}$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 离散情形"
+      }
+    },
+    {
+      "id": "rec-11-q19",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$X\\sim P(\\lambda)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $X\\sim P(\\lambda)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-11-q20",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$E[X]=\\lambda$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $E[X]=\\lambda$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-11-q21",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 10,
+      "label": "计算题",
+      "stem": "独立指数寿命 $X_1\\sim Exp(\\lambda_1),X_2\\sim Exp(\\lambda_2)$，串联系统寿命 $N=\\min(X_1,X_2)$，求 $E[N]$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：指数串联。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：录音结论：最小值仍为指数且参数相加，$N\\sim Exp(\\lambda_1+\\lambda_2)$，故 $E[N]=1/(\\lambda_1+\\lambda_2)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 指数串联"
+      }
+    },
+    {
+      "id": "rec-11-q22",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 10,
+      "label": "计算题",
+      "stem": "随机变量取 $1,2,3$ 的概率为 $1/2,1/3,1/6$，求期望。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：离散期望。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$E[X]=1\\cdot1/2+2\\cdot1/3+3\\cdot1/6=5/3$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 离散期望"
+      }
+    },
+    {
+      "id": "rec-11-q23",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 10,
+      "label": "计算题",
+      "stem": "密度 $f(x)=2x,0<x<1$，求 $E[X]$ 与 $E[X^2]$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：连续期望。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$E[X]=\\int_0^1 2x^2dx=2/3$；$E[X^2]=\\int_0^1 2x^3dx=1/2$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 连续期望"
+      }
+    },
+    {
+      "id": "rec-11-q24",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 20,
+      "label": "综合计算/证明",
+      "stem": "推导 $X\\sim P(\\lambda)$ 的期望。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：泊松期望。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$E[X]=\\sum_{k\\ge1}k e^{-\\lambda}\\lambda^k/k!=\\lambda e^{-\\lambda}\\sum_{j\\ge0}\\lambda^j/j!=\\lambda$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（5分）",
+        "展开关键推导或分段计算（7分）",
+        "得到完整答案或证明结论（5分）",
+        "说明条件、定义域和易错点（3分）"
+      ],
+      "total_points": 20,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:13 · 泊松期望"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "fill_blank": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 15,
+      "medium": 8,
+      "hard": 1
+    }
+  }
+}

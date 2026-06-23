@@ -1,0 +1,555 @@
+{
+  "subjectId": "probability",
+  "chapterId": "rec-04",
+  "generatedAt": "2026-06-24",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "rec-04-q01",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "关于本讲“分布列比分布函数更简单直观，是处理离”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "分布列比分布函数更简单直观，是处理离散随机变量的主要工具。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：分布列比分布函数更简单直观，是处理离散随机变量的主要工具。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 00:00 · 分布列比分布函数更简单直观，是处理离"
+      }
+    },
+    {
+      "id": "rec-04-q02",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "关于本讲“每次试验只有两个结果”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "每次试验只有两个结果：$A$（成功，$P(A)=p$）或$\\overline{A}$（失败，$P(\\overline{A})=1-p=q$）。",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：每次试验只有两个结果：$A$（成功，$P(A)=p$）或$\\overline{A}$（失败，$P(\\overline{A})=1-p=q$）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 00:00 · 每次试验只有两个结果"
+      }
+    },
+    {
+      "id": "rec-04-q03",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "关于本讲“引入随机变量$X$表示n次试验中成功”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "引入随机变量$X$表示n次试验中成功的次数。",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：引入随机变量$X$表示n次试验中成功的次数。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:36 · 引入随机变量$X$表示n次试验中成功"
+      }
+    },
+    {
+      "id": "rec-04-q04",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "关于本讲“$X$的可能取值”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "$X$的可能取值：$0,1,2,\\cdots,n$。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$X$的可能取值：$0,1,2,\\cdots,n$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 00:00 · $X$的可能取值"
+      }
+    },
+    {
+      "id": "rec-04-q05",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "关于本讲“事件$\\{X=k\\}$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "事件$\\{X=k\\}$：n次试验成功k次，等价于从n个位置选k个放\"成功\"，剩下n-k个放\"失败\"，共$\\binom{n}{k}$种序列。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：事件$\\{X=k\\}$：n次试验成功k次，等价于从n个位置选k个放\"成功\"，剩下n-k个放\"失败\"，共$\\binom{n}{k}$种序列。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:36 · 事件$\\{X=k\\}$"
+      }
+    },
+    {
+      "id": "rec-04-q06",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "关于本讲“每个序列概率为$p^k q^{n-k”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "每个序列概率为$p^k q^{n-k}$（试验独立，概率相乘）。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：每个序列概率为$p^k q^{n-k}$（试验独立，概率相乘）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 00:00 · 每个序列概率为$p^k q^{n-k"
+      }
+    },
+    {
+      "id": "rec-04-q07",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "关于本讲“两个参数”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "两个参数：n（重复试验次数）、p（单次成功概率）。",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：两个参数：n（重复试验次数）、p（单次成功概率）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 06:11 · 两个参数"
+      }
+    },
+    {
+      "id": "rec-04-q08",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "关于本讲“参数给定后，概率规律完全确定”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "参数给定后，概率规律完全确定。",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：参数给定后，概率规律完全确定。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 00:00 · 参数给定后，概率规律完全确定"
+      }
+    },
+    {
+      "id": "rec-04-q09",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "关于本讲“不依赖具体模型，只要抽象出n重独立伯”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "不依赖具体模型，只要抽象出n重独立伯努利试验共性即可应用。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：不依赖具体模型，只要抽象出n重独立伯努利试验共性即可应用。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 00:00 · 不依赖具体模型，只要抽象出n重独立伯"
+      }
+    },
+    {
+      "id": "rec-04-q10",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "关于本讲“当$k<(n+1)p$时，比值>1，”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "当$k<(n+1)p$时，比值>1，概率递增。",
+        "只要两个事件互斥，就一定可以推出二者独立"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：当$k<(n+1)p$时，比值>1，概率递增。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 11:51 · 当$k<(n+1)p$时，比值>1，"
+      }
+    },
+    {
+      "id": "rec-04-q11",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$F(x)=P(X\\leq x)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $F(x)=P(X\\leq x)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-04-q12",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$X\\sim B(1,p)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $X\\sim B(1,p)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:10 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-04-q13",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$P(X=1)=p,\\quad P(X=0)=1-p=q$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $P(X=1)=p,\\quad P(X=0)=1-p=q$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:10 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-04-q14",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$p=0$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $p=0$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:10 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-04-q15",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$p=1$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $p=1$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:10 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-04-q16",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“当$k>(n+1)p$时，比值<1，”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "当$k>(n+1)p$时，比值<1，概率递减。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：当$k>(n+1)p$时，比值<1，概率递减。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 11:51 · 当$k>(n+1)p$时，比值<1，"
+      }
+    },
+    {
+      "id": "rec-04-q17",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“抛13次均匀硬币（n=13,p=0.”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "抛13次均匀硬币（n=13,p=0.5），$(n+1)p=7$是整数，最可能看到6次或7次正面。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：抛13次均匀硬币（n=13,p=0.5），$(n+1)p=7$是整数，最可能看到6次或7次正面。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 11:51 · 抛13次均匀硬币（n=13,p=0."
+      }
+    },
+    {
+      "id": "rec-04-q18",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“抛100次均匀硬币，最可能50次正面”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "抛100次均匀硬币，最可能50次正面，符合直觉。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：抛100次均匀硬币，最可能50次正面，符合直觉。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 11:51 · 抛100次均匀硬币，最可能50次正面"
+      }
+    },
+    {
+      "id": "rec-04-q19",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\overline{A}$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\overline{A}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:36 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-04-q20",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$P(\\overline{A})=1-p=q$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $P(\\overline{A})=1-p=q$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 01:36 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-04-q21",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 10,
+      "label": "计算题",
+      "stem": "设 $X\\sim B(10,0.3)$，求 $P(X=3)$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：二项概率。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$P(X=3)=C_{10}^3(0.3)^3(0.7)^7=0.266827932$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 00:00 · 二项概率"
+      }
+    },
+    {
+      "id": "rec-04-q22",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 10,
+      "label": "计算题",
+      "stem": "单位时间平均发生 4 次，按泊松模型求恰发生 2 次的概率。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：泊松概率。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$P(X=2)=e^{-4}4^2/2!=8e^{-4}\\approx0.146526$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 00:00 · 泊松概率"
+      }
+    },
+    {
+      "id": "rec-04-q23",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 10,
+      "label": "计算题",
+      "stem": "设 $X\\sim B(20,0.4)$，用后项比前项判断最可能值。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：二项最可能值。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$(n+1)p=8.4$，概率在 8 附近达到峰值，枚举验证最大点为 $k=8$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 00:00 · 二项最可能值"
+      }
+    },
+    {
+      "id": "rec-04-q24",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-04",
+      "points": 20,
+      "label": "综合计算/证明",
+      "stem": "从 $n$ 重独立伯努利试验推导二项分布公式并验证规范性。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：二项分布推导。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：恰有 $k$ 次成功需选成功位置 $C_n^k$，每个序列概率 $p^k(1-p)^{n-k}$，故 $P(X=k)=C_n^kp^k(1-p)^{n-k}$；求和由二项式定理得 1。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（5分）",
+        "展开关键推导或分段计算（7分）",
+        "得到完整答案或证明结论（5分）",
+        "说明条件、定义域和易错点（3分）"
+      ],
+      "total_points": 20,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-04.md",
+        "label": "rec-04 · 说话人1 00:00 · 二项分布推导"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "fill_blank": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 15,
+      "medium": 8,
+      "hard": 1
+    }
+  }
+}

@@ -1,0 +1,555 @@
+{
+  "subjectId": "probability",
+  "chapterId": "rec-01",
+  "generatedAt": "2026-06-24",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "rec-01-q01",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于本讲“课程名称”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "课程名称：概率论与数理统计（48学时），由概率论（理论基础）和数理统计（实际应用）两部分组成。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：课程名称：概率论与数理统计（48学时），由概率论（理论基础）和数理统计（实际应用）两部分组成。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:34 · 课程名称"
+      }
+    },
+    {
+      "id": "rec-01-q02",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于本讲“学院有配套慕课，全书切分为80多个视”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "学院有配套慕课，全书切分为80多个视频（每视频约10分钟对应一个知识点），建议课前预习。",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：学院有配套慕课，全书切分为80多个视频（每视频约10分钟对应一个知识点），建议课前预习。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:34 · 学院有配套慕课，全书切分为80多个视"
+      }
+    },
+    {
+      "id": "rec-01-q03",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于本讲“作业构成”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "作业构成：练习册笔写作业（必交，一周一次）、慕课题目、扫码题（建议完成，多为历年真题）。",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：作业构成：练习册笔写作业（必交，一周一次）、慕课题目、扫码题（建议完成，多为历年真题）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:34 · 作业构成"
+      }
+    },
+    {
+      "id": "rec-01-q04",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于本讲“先修课程”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "先修课程：微积分（从第二章开始大量使用，尤其是重积分、级数）、线性代数（统计部分高维问题用到矩阵向量）。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：先修课程：微积分（从第二章开始大量使用，尤其是重积分、级数）、线性代数（统计部分高维问题用到矩阵向量）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:34 · 先修课程"
+      }
+    },
+    {
+      "id": "rec-01-q05",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于本讲“第一章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "第一章：随机事件及概率（概念为主，高中基础）。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：第一章：随机事件及概率（概念为主，高中基础）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 08:39 · 第一章"
+      }
+    },
+    {
+      "id": "rec-01-q06",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于本讲“第二章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "第二章：随机变量及分布（随机变量、分布函数两个核心概念贯穿全书，一重积分）。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：第二章：随机变量及分布（随机变量、分布函数两个核心概念贯穿全书，一重积分）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 08:39 · 第二章"
+      }
+    },
+    {
+      "id": "rec-01-q07",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于本讲“第三章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "第三章：多维随机变量（主要处理二维，重积分，为统计打基础）。",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：第三章：多维随机变量（主要处理二维，重积分，为统计打基础）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 08:39 · 第三章"
+      }
+    },
+    {
+      "id": "rec-01-q08",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于本讲“第四章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "第四章：随机变量数字特征（期望、方差等，相对简单）。",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：第四章：随机变量数字特征（期望、方差等，相对简单）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 08:39 · 第四章"
+      }
+    },
+    {
+      "id": "rec-01-q09",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于本讲“第五章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "第五章：大数定律与中心极限定理（一次课讲完，主要讲思想，概率论到统计的过渡）。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：第五章：大数定律与中心极限定理（一次课讲完，主要讲思想，概率论到统计的过渡）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 08:39 · 第五章"
+      }
+    },
+    {
+      "id": "rec-01-q10",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "关于本讲“第六章~第八章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "第六章~第八章：样本及抽样分布、参数估计、假设检验（统计部分，假设检验应用广泛）。",
+        "只要两个事件互斥，就一定可以推出二者独立"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：第六章~第八章：样本及抽样分布、参数估计、假设检验（统计部分，假设检验应用广泛）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:34 · 第六章~第八章"
+      }
+    },
+    {
+      "id": "rec-01-q11",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\Omega$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\Omega$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 58:57 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-01-q12",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\emptyset$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\emptyset$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 58:57 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-01-q13",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\omega$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\omega$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:03:56 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-01-q14",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\Omega=\\{HHH,HHT,HTH,HTT,THH,THT,TTH,TTT\\}$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\Omega=\\{HHH,HHT,HTH,HTT,THH,THT,TTH,TTT\\}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 58:57 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-01-q15",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$2^3=8$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $2^3=8$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:03:56 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-01-q16",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“经典趣例”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "经典趣例：三门问题（换门后获车概率从1/3提高到2/3，100扇门极端情形更易理解）。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：经典趣例：三门问题（换门后获车概率从1/3提高到2/3，100扇门极端情形更易理解）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:34 · 经典趣例"
+      }
+    },
+    {
+      "id": "rec-01-q17",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“大数据四大特征”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "大数据四大特征：数据量大、快速流转、类型多样化、价值密度低（数据挖掘的必要性）。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：大数据四大特征：数据量大、快速流转、类型多样化、价值密度低（数据挖掘的必要性）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:34 · 大数据四大特征"
+      }
+    },
+    {
+      "id": "rec-01-q18",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“描述性统计局限”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "描述性统计局限：平均数易被极端值拉高（如\"村子一个千万富翁九个穷光蛋，平均百万\"无意义）。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：描述性统计局限：平均数易被极端值拉高（如\"村子一个千万富翁九个穷光蛋，平均百万\"无意义）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:34 · 描述性统计局限"
+      }
+    },
+    {
+      "id": "rec-01-q19",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\Omega=\\{0,1,2,3\\}$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\Omega=\\{0,1,2,3\\}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 58:57 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-01-q20",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$A\\subset\\Omega$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $A\\subset\\Omega$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:09:06 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-01-q21",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 10,
+      "label": "计算题",
+      "stem": "抛三次硬币。分别按“记录每次正反面”和“只记录正面次数”写出样本空间。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：样本空间。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：按每次正反面记录有 $2^3=8$ 个样本点；若只记录正面次数，样本空间为 $\\{0,1,2,3\\}$。结论说明同一试验的样本空间由研究目的决定。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 54:10 · 样本空间"
+      }
+    },
+    {
+      "id": "rec-01-q22",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 10,
+      "label": "计算题",
+      "stem": "用 $A,B,C$ 表示“恰好发生一个”和“至少发生一个”，并用德摩根律写出后者的对立事件。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：事件表示。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：恰好发生一个为 $A\\overline B\\overline C\\cup\\overline A B\\overline C\\cup\\overline A\\overline B C$；至少发生一个为 $A\\cup B\\cup C$；其对立事件为 $\\overline A\\overline B\\overline C$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:34 · 事件表示"
+      }
+    },
+    {
+      "id": "rec-01-q23",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 10,
+      "label": "计算题",
+      "stem": "证明对立事件一定互斥，但互斥事件不一定对立。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：互斥对立。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：若 $\\overline A$ 是 $A$ 的对立事件，则 $A\\overline A=\\emptyset$ 且 $A\\cup\\overline A=\\Omega$，所以一定互斥；但两个互斥事件可能并不覆盖全集，因此不一定对立。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:34 · 互斥对立"
+      }
+    },
+    {
+      "id": "rec-01-q24",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-01",
+      "points": 20,
+      "label": "综合计算/证明",
+      "stem": "化简 $A\\overline B\\cup\\overline A B\\cup\\overline A\\overline B$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：事件化简。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：后两项合并为 $\\overline A(B\\cup\\overline B)=\\overline A$；再与第一项合并：$A\\overline B\\cup\\overline A=(A\\cup\\overline A)(\\overline B\\cup\\overline A)=\\overline A\\cup\\overline B=\\overline{AB}$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（5分）",
+        "展开关键推导或分段计算（7分）",
+        "得到完整答案或证明结论（5分）",
+        "说明条件、定义域和易错点（3分）"
+      ],
+      "total_points": 20,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-01.md",
+        "label": "rec-01 · 说话人1 01:34 · 事件化简"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "fill_blank": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 15,
+      "medium": 8,
+      "hard": 1
+    }
+  }
+}

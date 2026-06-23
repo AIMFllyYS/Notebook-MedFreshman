@@ -1,0 +1,555 @@
+{
+  "subjectId": "probability",
+  "chapterId": "rec-07",
+  "generatedAt": "2026-06-24",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "rec-07-q01",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "关于本讲“正态分布的标准化与概率计算”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "正态分布的标准化与概率计算。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：正态分布的标准化与概率计算。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 正态分布的标准化与概率计算"
+      }
+    },
+    {
+      "id": "rec-07-q02",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "关于本讲“离散-连续混合型随机变量”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "离散-连续混合型随机变量。",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：离散-连续混合型随机变量。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 离散-连续混合型随机变量"
+      }
+    },
+    {
+      "id": "rec-07-q03",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "关于本讲“随机变量函数的分布”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "随机变量函数的分布：离散情形。",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：随机变量函数的分布：离散情形。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 34:07 · 随机变量函数的分布"
+      }
+    },
+    {
+      "id": "rec-07-q04",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "关于本讲“随机变量函数的分布”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "随机变量函数的分布：连续情形（分布函数法与公式法）。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：随机变量函数的分布：连续情形（分布函数法与公式法）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 34:07 · 随机变量函数的分布"
+      }
+    },
+    {
+      "id": "rec-07-q05",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "关于本讲“正态分布的线性变换不变性”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "正态分布的线性变换不变性。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：正态分布的线性变换不变性。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 正态分布的线性变换不变性"
+      }
+    },
+    {
+      "id": "rec-07-q06",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "关于本讲“概率积分变换与均匀分布生成”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "概率积分变换与均匀分布生成。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：概率积分变换与均匀分布生成。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 概率积分变换与均匀分布生成"
+      }
+    },
+    {
+      "id": "rec-07-q07",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "关于本讲“若 $X \\sim N(\\mu, \\”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "若 $X \\sim N(\\mu, \\sigma^2)$，则标准化变换 $Z = \\frac{X-\\mu}{\\sigma} \\sim N(0,1)$（标准正态分布）。",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：若 $X \\sim N(\\mu, \\sigma^2)$，则标准化变换 $Z = \\frac{X-\\mu}{\\sigma} \\sim N(0,1)$（标准正态分布）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 若 $X \\sim N(\\mu, \\"
+      }
+    },
+    {
+      "id": "rec-07-q08",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "关于本讲“任意正态分布的分布函数可通过标准正态”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "任意正态分布的分布函数可通过标准正态分布函数 $\\Phi(\\cdot)$ 表示：$F_X(x) = \\Phi\\left(\\frac{x-\\mu}{\\sigma}\\right)$。",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：任意正态分布的分布函数可通过标准正态分布函数 $\\Phi(\\cdot)$ 表示：$F_X(x) = \\Phi\\left(\\frac{x-\\mu}{\\sigma}\\right)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 任意正态分布的分布函数可通过标准正态"
+      }
+    },
+    {
+      "id": "rec-07-q09",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "关于本讲“标准正态分布对称性”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "标准正态分布对称性：$\\Phi(-x) = 1 - \\Phi(x)$。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：标准正态分布对称性：$\\Phi(-x) = 1 - \\Phi(x)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 标准正态分布对称性"
+      }
+    },
+    {
+      "id": "rec-07-q10",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "关于本讲“⚠️ 给定分布函数形式 $\\Phi\\”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "⚠️ 给定分布函数形式 $\\Phi\\left(\\frac{x-a}{b}\\right)$，可反推参数：$\\mu = a$，$\\sigma = |b|$（注意分母为标准差，非方差）。",
+        "只要两个事件互斥，就一定可以推出二者独立"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：⚠️ 给定分布函数形式 $\\Phi\\left(\\frac{x-a}{b}\\right)$，可反推参数：$\\mu = a$，$\\sigma = |b|$（注意分母为标准差，非方差）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · ⚠️ 给定分布函数形式 $\\Phi\\"
+      }
+    },
+    {
+      "id": "rec-07-q11",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$X \\sim N(\\mu, \\sigma^2)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $X \\sim N(\\mu, \\sigma^2)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-07-q12",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$Z = \\frac{X-\\mu}{\\sigma} \\sim N(0,1)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $Z = \\frac{X-\\mu}{\\sigma} \\sim N(0,1)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 01:04:16 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-07-q13",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\Phi(\\cdot)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\Phi(\\cdot)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 06:21 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-07-q14",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$F_X(x) = \\Phi\\left(\\frac{x-\\mu}{\\sigma}\\right)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $F_X(x) = \\Phi\\left(\\frac{x-\\mu}{\\sigma}\\right)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-07-q15",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\Phi(-x) = 1 - \\Phi(x)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\Phi(-x) = 1 - \\Phi(x)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 06:21 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-07-q16",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“$k=1$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "$k=1$：$P\\{|X-\\mu| < \\sigma\\} = 2\\Phi(1)-1 \\approx 0.6826$（约68.26%概率落在1σ范围内）。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$k=1$：$P\\{|X-\\mu| < \\sigma\\} = 2\\Phi(1)-1 \\approx 0.6826$（约68.26%概率落在1σ范围内）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 08:30 · $k=1$"
+      }
+    },
+    {
+      "id": "rec-07-q17",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“$k=2$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "$k=2$：$P\\{|X-\\mu| < 2\\sigma\\} = 2\\Phi(2)-1 \\approx 0.9545$（约95.45%概率落在2σ范围内）。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$k=2$：$P\\{|X-\\mu| < 2\\sigma\\} = 2\\Phi(2)-1 \\approx 0.9545$（约95.45%概率落在2σ范围内）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 08:30 · $k=2$"
+      }
+    },
+    {
+      "id": "rec-07-q18",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“$k=3$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "$k=3$：$P\\{|X-\\mu| < 3\\sigma\\} = 2\\Phi(3)-1 \\approx 0.9974$（约99.74%概率落在3σ范围内）。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$k=3$：$P\\{|X-\\mu| < 3\\sigma\\} = 2\\Phi(3)-1 \\approx 0.9974$（约99.74%概率落在3σ范围内）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 08:30 · $k=3$"
+      }
+    },
+    {
+      "id": "rec-07-q19",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\Phi\\left(\\frac{x-a}{b}\\right)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\Phi\\left(\\frac{x-a}{b}\\right)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-07-q20",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\mu = a$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\mu = a$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-07-q21",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 10,
+      "label": "计算题",
+      "stem": "设身高 $X\\sim N(170,6^2)$，要求碰头概率不超过 0.01，求车门高度 $h$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：车门高度。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$P(X>h)\\le0.01$ 等价于 $\\Phi((h-170)/6)\\ge0.99$；$z_{0.99}\\approx2.3263$，$h\\approx183.96$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 03:03 · 车门高度"
+      }
+    },
+    {
+      "id": "rec-07-q22",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 10,
+      "label": "计算题",
+      "stem": "推导 $P(|X-\\mu|<3\\sigma)$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：3σ规则。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：标准化后为 $P(|Z|<3)=\\Phi(3)-\\Phi(-3)=2\\Phi(3)-1\\approx0.997300$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 3σ规则"
+      }
+    },
+    {
+      "id": "rec-07-q23",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 10,
+      "label": "计算题",
+      "stem": "设 $V\\sim Exp(\\lambda)$，$X=\\min(V,V_0)$，求 $P(X=V_0)$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：电压表混合型。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$X=V_0$ 当且仅当 $V\\ge V_0$，所以 $P(X=V_0)=e^{-\\lambda V_0}$；单点概率不为 0，故不是纯连续型。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 00:00 · 电压表混合型"
+      }
+    },
+    {
+      "id": "rec-07-q24",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-07",
+      "points": 20,
+      "label": "综合计算/证明",
+      "stem": "设 $X\\sim U(0,1)$，$Y=X^2$，求 $Y$ 的分布函数和密度。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：分布函数法。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$0<Y<1$；$0<y<1$ 时 $F_Y(y)=P(X\\le\\sqrt y)=\\sqrt y$，故 $f_Y(y)=1/(2\\sqrt y)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（5分）",
+        "展开关键推导或分段计算（7分）",
+        "得到完整答案或证明结论（5分）",
+        "说明条件、定义域和易错点（3分）"
+      ],
+      "total_points": 20,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-07.md",
+        "label": "rec-07 · 说话人1 56:50 · 分布函数法"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "fill_blank": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 15,
+      "medium": 8,
+      "hard": 1
+    }
+  }
+}

@@ -1,0 +1,555 @@
+{
+  "subjectId": "probability",
+  "chapterId": "rec-09",
+  "generatedAt": "2026-06-24",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "rec-09-q01",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "关于本讲“二维连续型随机变量的边缘密度”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "二维连续型随机变量的边缘密度。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：二维连续型随机变量的边缘密度。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 03:07 · 二维连续型随机变量的边缘密度"
+      }
+    },
+    {
+      "id": "rec-09-q02",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "关于本讲“二维正态分布的边缘分布性质”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "二维正态分布的边缘分布性质。",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：二维正态分布的边缘分布性质。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 07:01 · 二维正态分布的边缘分布性质"
+      }
+    },
+    {
+      "id": "rec-09-q03",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "关于本讲“二维均匀分布的边缘分布性质”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "二维均匀分布的边缘分布性质。",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：二维均匀分布的边缘分布性质。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · 二维均匀分布的边缘分布性质"
+      }
+    },
+    {
+      "id": "rec-09-q04",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "关于本讲“反例”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "反例：边缘正态不能推出联合正态。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：反例：边缘正态不能推出联合正态。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 13:30 · 反例"
+      }
+    },
+    {
+      "id": "rec-09-q05",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "关于本讲“条件密度与联合密度的关系（乘法公式）”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "条件密度与联合密度的关系（乘法公式）。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：条件密度与联合密度的关系（乘法公式）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · 条件密度与联合密度的关系（乘法公式）"
+      }
+    },
+    {
+      "id": "rec-09-q06",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "关于本讲“若 $(X,Y)$ 为二维连续型，联”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "若 $(X,Y)$ 为二维连续型，联合密度为 $f(x,y)$，则 $X, Y$ 均为一维连续型随机变量。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：若 $(X,Y)$ 为二维连续型，联合密度为 $f(x,y)$，则 $X, Y$ 均为一维连续型随机变量。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 12:33 · 若 $(X,Y)$ 为二维连续型，联"
+      }
+    },
+    {
+      "id": "rec-09-q07",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "关于本讲“积分要点”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "积分要点：求 $f_X(x)$ 时，$x$ 视为常数，对 $y$ 积分（消去 $y$）；求 $f_Y(y)$ 时，$y$ 视为常数，对 $x$ 积分（消去 $x$）。",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：积分要点：求 $f_X(x)$ 时，$x$ 视为常数，对 $y$ 积分（消去 $y$）；求 $f_Y(y)$ 时，$y$ 视为常数，对 $x$ 积分（消去 $x$）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · 积分要点"
+      }
+    },
+    {
+      "id": "rec-09-q08",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "关于本讲“直观理解（球的累加）”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "直观理解（球的累加）：固定 $x$，将该竖直线上所有点的\"概率质量\"累加投影到x轴上，得到边缘密度。",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：直观理解（球的累加）：固定 $x$，将该竖直线上所有点的\"概率质量\"累加投影到x轴上，得到边缘密度。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · 直观理解（球的累加）"
+      }
+    },
+    {
+      "id": "rec-09-q09",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "关于本讲“⚠️ 难点”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "⚠️ 难点：被积函数常分区域定义，需正确确定积分上下限。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：⚠️ 难点：被积函数常分区域定义，需正确确定积分上下限。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · ⚠️ 难点"
+      }
+    },
+    {
+      "id": "rec-09-q10",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "关于本讲“二维正态的两个边缘分布都是一维正态分”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "二维正态的两个边缘分布都是一维正态分布，且参数仅由前4个参数决定，与 $\\rho$ 无关。",
+        "只要两个事件互斥，就一定可以推出二者独立"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：二维正态的两个边缘分布都是一维正态分布，且参数仅由前4个参数决定，与 $\\rho$ 无关。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · 二维正态的两个边缘分布都是一维正态分"
+      }
+    },
+    {
+      "id": "rec-09-q11",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$f_X(x) = \\int_{-\\infty}^{+\\infty} f(x,y) \\, dy$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $f_X(x) = \\int_{-\\infty}^{+\\infty} f(x,y) \\, dy$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 03:07 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-09-q12",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$f_Y(y) = \\int_{-\\infty}^{+\\infty} f(x,y) \\, dx$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $f_Y(y) = \\int_{-\\infty}^{+\\infty} f(x,y) \\, dx$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 03:07 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-09-q13",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$(X,Y) \\sim N(\\mu_1, \\mu_2, \\sigma_1^2, \\sigma_2^2, \\rho)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $(X,Y) \\sim N(\\mu_1, \\mu_2, \\sigma_1^2, \\sigma_2^2, \\rho)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 12:33 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-09-q14",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$X \\sim N(\\mu_1, \\sigma_1^2), \\quad Y \\sim N(\\mu_2, \\sigma_2^2)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $X \\sim N(\\mu_1, \\sigma_1^2), \\quad Y \\sim N(\\mu_2, \\sigma_2^2)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 12:33 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-09-q15",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\rho$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\rho$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 01:50 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-09-q16",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“配密度法核心”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "配密度法核心：将被积函数凑成某个已知分布的密度，利用规范性=1快速计算积分。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：配密度法核心：将被积函数凑成某个已知分布的密度，利用规范性=1快速计算积分。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · 配密度法核心"
+      }
+    },
+    {
+      "id": "rec-09-q17",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“⚠️ 记住结论”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "⚠️ 记住结论：二维正态的边缘必为正态。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：⚠️ 记住结论：二维正态的边缘必为正态。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · ⚠️ 记住结论"
+      }
+    },
+    {
+      "id": "rec-09-q18",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“三角形区域反例”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "三角形区域反例：区域 $G: x\\geq0, y\\geq0, 2x+y\\leq2$（面积S=1），联合密度 $f(x,y)=1$ 在G上。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：三角形区域反例：区域 $G: x\\geq0, y\\geq0, 2x+y\\leq2$（面积S=1），联合密度 $f(x,y)=1$ 在G上。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · 三角形区域反例"
+      }
+    },
+    {
+      "id": "rec-09-q19",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$u = \\frac{x-\\mu_1}{\\sigma_1}, v = \\frac{y-\\mu_2}{\\sigma_2}$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $u = \\frac{x-\\mu_1}{\\sigma_1}, v = \\frac{y-\\mu_2}{\\sigma_2}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 08:10 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-09-q20",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\int_{-\\infty}^{+\\infty} \\frac{1}{\\sqrt{2\\pi}} e^{-t^2/2} dt = 1$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\int_{-\\infty}^{+\\infty} \\frac{1}{\\sqrt{2\\pi}} e^{-t^2/2} dt = 1$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 03:07 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-09-q21",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 10,
+      "label": "计算题",
+      "stem": "设 $f(x,y)=2$，$0<x<1,0<y<1-x$，求边缘密度。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：三角形边缘。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$f_X(x)=\\int_0^{1-x}2dy=2(1-x)$；$f_Y(y)=2(1-y)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · 三角形边缘"
+      }
+    },
+    {
+      "id": "rec-09-q22",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 10,
+      "label": "计算题",
+      "stem": "沿用三角形密度，求 $f_{X|Y}(x|y)$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：条件密度。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$f_Y(y)=2(1-y)$，$0<x<1-y$，故 $f_{X|Y}(x|y)=1/(1-y)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 01:09:14 · 条件密度"
+      }
+    },
+    {
+      "id": "rec-09-q23",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 10,
+      "label": "计算题",
+      "stem": "写出二维正态的两个边缘分布。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：二维正态边缘。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：若 $(X,Y)\\sim N(\\mu_1,\\mu_2,\\sigma_1^2,\\sigma_2^2,\\rho)$，则 $X\\sim N(\\mu_1,\\sigma_1^2)$，$Y\\sim N(\\mu_2,\\sigma_2^2)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · 二维正态边缘"
+      }
+    },
+    {
+      "id": "rec-09-q24",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-09",
+      "points": 20,
+      "label": "综合计算/证明",
+      "stem": "若 $f_X(x)=1(0<x<1)$，$Y|X=x\\sim U(0,x)$，求联合密度和 $f_Y(y)$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：边缘条件生成联合。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$f(x,y)=f_X(x)f_{Y|X}(y|x)=1/x$，$0<y<x<1$；$f_Y(y)=\\int_y^1 x^{-1}dx=-\\ln y$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（5分）",
+        "展开关键推导或分段计算（7分）",
+        "得到完整答案或证明结论（5分）",
+        "说明条件、定义域和易错点（3分）"
+      ],
+      "total_points": 20,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-09.md",
+        "label": "rec-09 · 说话人1 00:03 · 边缘条件生成联合"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "fill_blank": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 15,
+      "medium": 8,
+      "hard": 1
+    }
+  }
+}

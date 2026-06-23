@@ -1,0 +1,555 @@
+{
+  "subjectId": "probability",
+  "chapterId": "rec-13",
+  "generatedAt": "2026-06-24",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "rec-13-q01",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "关于本讲“常数提出需平方”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "常数提出需平方：$D(cX) = c^2 D(X)$，注意负号平方后为正。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：常数提出需平方：$D(cX) = c^2 D(X)$，注意负号平方后为正。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 常数提出需平方"
+      }
+    },
+    {
+      "id": "rec-13-q02",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "关于本讲“常数平移不变”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "常数平移不变：$D(X+c) = D(X)$。",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：常数平移不变：$D(X+c) = D(X)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 常数平移不变"
+      }
+    },
+    {
+      "id": "rec-13-q03",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "关于本讲“和的方差”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "和的方差：$D(X+Y) = D(X)+D(Y)+2Cov(X,Y)$，多交叉项（协方差），仅当独立/不相关时才有 $D(X+Y)=D(X)+D(Y)$。",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：和的方差：$D(X+Y) = D(X)+D(Y)+2Cov(X,Y)$，多交叉项（协方差），仅当独立/不相关时才有 $D(X+Y)=D(X)+D(Y)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 01:03 · 和的方差"
+      }
+    },
+    {
+      "id": "rec-13-q04",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "关于本讲“独立 $\\implies$ $E[X”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "独立 $\\implies$ $E[XY] = E[X]E[Y]$（乘积期望等于期望乘积）。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：独立 $\\implies$ $E[XY] = E[X]E[Y]$（乘积期望等于期望乘积）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 独立 $\\implies$ $E[X"
+      }
+    },
+    {
+      "id": "rec-13-q05",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "关于本讲“独立 $\\implies$ $Cov”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "独立 $\\implies$ $Cov(X,Y)=0$ $\\implies$ 和的方差等于方差和。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：独立 $\\implies$ $Cov(X,Y)=0$ $\\implies$ 和的方差等于方差和。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 独立 $\\implies$ $Cov"
+      }
+    },
+    {
+      "id": "rec-13-q06",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "关于本讲“注意”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "注意：$\\frac{1}{n}$ 提出来时要平方，故为 $\\frac{1}{n^2}\\cdot n\\sigma^2 = \\frac{\\sigma^2}{n}$。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：注意：$\\frac{1}{n}$ 提出来时要平方，故为 $\\frac{1}{n^2}\\cdot n\\sigma^2 = \\frac{\\sigma^2}{n}$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 注意"
+      }
+    },
+    {
+      "id": "rec-13-q07",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "关于本讲“期望”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "期望：$E[Z] = E[X]-E[Y] = \\mu_1-\\mu_2$。",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：期望：$E[Z] = E[X]-E[Y] = \\mu_1-\\mu_2$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 期望"
+      }
+    },
+    {
+      "id": "rec-13-q08",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "关于本讲“方差”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "方差：$D(Z) = D(X)+D(Y) = \\sigma_1^2+\\sigma_2^2$（注意：$-1$ 平方为+，是加不是减！）。",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：方差：$D(Z) = D(X)+D(Y) = \\sigma_1^2+\\sigma_2^2$（注意：$-1$ 平方为+，是加不是减！）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 方差"
+      }
+    },
+    {
+      "id": "rec-13-q09",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "关于本讲“k阶绝对原点矩”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "k阶绝对原点矩：$E[|X|^k]$。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：k阶绝对原点矩：$E[|X|^k]$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · k阶绝对原点矩"
+      }
+    },
+    {
+      "id": "rec-13-q10",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "关于本讲“k阶绝对中心矩”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "k阶绝对中心矩：$E[|X-E[X]|^k]$。",
+        "只要两个事件互斥，就一定可以推出二者独立"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：k阶绝对中心矩：$E[|X-E[X]|^k]$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · k阶绝对中心矩"
+      }
+    },
+    {
+      "id": "rec-13-q11",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$E\\left[\\sum_{i=1}^n a_i X_i\\right] = \\sum_{i=1}^n a_i E[X_i]$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $E\\left[\\sum_{i=1}^n a_i X_i\\right] = \\sum_{i=1}^n a_i E[X_i]$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-13-q12",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$D(cX) = c^2 D(X)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $D(cX) = c^2 D(X)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-13-q13",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$D(X+c) = D(X)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $D(X+c) = D(X)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-13-q14",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$D(X+Y) = D(X)+D(Y)+2Cov(X,Y)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $D(X+Y) = D(X)+D(Y)+2Cov(X,Y)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-13-q15",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$D(X+Y)=D(X)+D(Y)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $D(X+Y)=D(X)+D(Y)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-13-q16",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“一阶原点矩 $\\alpha_1 =”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "一阶原点矩 $\\alpha_1 = E[X]$：期望（均值）。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：一阶原点矩 $\\alpha_1 = E[X]$：期望（均值）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 20:04 · 一阶原点矩 $\\alpha_1 ="
+      }
+    },
+    {
+      "id": "rec-13-q17",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“二阶中心矩 $\\mu_2 = D(X”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "二阶中心矩 $\\mu_2 = D(X)$：方差。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：二阶中心矩 $\\mu_2 = D(X)$：方差。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 20:04 · 二阶中心矩 $\\mu_2 = D(X"
+      }
+    },
+    {
+      "id": "rec-13-q18",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“一阶中心矩 $\\mu_1 = E[X”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "一阶中心矩 $\\mu_1 = E[X-E[X]] = 0$（恒为0，只要存在）。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：一阶中心矩 $\\mu_1 = E[X-E[X]] = 0$（恒为0，只要存在）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 24:06 · 一阶中心矩 $\\mu_1 = E[X"
+      }
+    },
+    {
+      "id": "rec-13-q19",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\implies$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\implies$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-13-q20",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$E[XY] = E[X]E[Y]$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $E[XY] = E[X]E[Y]$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 43:01 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-13-q21",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 10,
+      "label": "计算题",
+      "stem": "证明 i.i.d. 样本均值的期望与方差。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：样本均值。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$\\bar X=n^{-1}\\sum X_i$；$E[\\bar X]=\\mu$；独立时 $D(\\bar X)=n^{-2}n\\sigma^2=\\sigma^2/n$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 样本均值"
+      }
+    },
+    {
+      "id": "rec-13-q22",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 10,
+      "label": "计算题",
+      "stem": "用 0-1 分解法证明 $D(B(n,p))=np(1-p)$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：二项方差。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$X=\\sum X_i$，$X_i\\sim B(1,p)$，$D(X_i)=p-p^2=p(1-p)$；独立方差相加得 $np(1-p)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 二项方差"
+      }
+    },
+    {
+      "id": "rec-13-q23",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 10,
+      "label": "计算题",
+      "stem": "若 $X\\sim N(10,0.04)$、$Y\\sim N(10.2,0.09)$ 独立，求 $P(X<Y)$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：活塞装配。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：令 $Z=X-Y$，则 $Z\\sim N(-0.2,0.13)$；$P(X<Y)=P(Z<0)=\\Phi(0.2/\\sqrt{0.13})\\approx0.7103$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 00:00 · 活塞装配"
+      }
+    },
+    {
+      "id": "rec-13-q24",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-13",
+      "points": 20,
+      "label": "综合计算/证明",
+      "stem": "若 $E[X]=10,D(X)=4$，令 $Y=(X-10)/2$，求 $E[Y]$、$D[Y]$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：标准化。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：期望线性得 $E[Y]=0$；方差常数提出平方，$D[Y]=D(X)/4=1$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（5分）",
+        "展开关键推导或分段计算（7分）",
+        "得到完整答案或证明结论（5分）",
+        "说明条件、定义域和易错点（3分）"
+      ],
+      "total_points": 20,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-13.md",
+        "label": "rec-13 · 说话人1 02:40 · 标准化"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "fill_blank": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 15,
+      "medium": 8,
+      "hard": 1
+    }
+  }
+}

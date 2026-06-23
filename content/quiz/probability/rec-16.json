@@ -1,0 +1,555 @@
+{
+  "subjectId": "probability",
+  "chapterId": "rec-16",
+  "generatedAt": "2026-06-24",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "rec-16-q01",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "关于本讲“总体、个体与简单随机样本的概念及联合”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "总体、个体与简单随机样本的概念及联合分布。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：总体、个体与简单随机样本的概念及联合分布。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 总体、个体与简单随机样本的概念及联合"
+      }
+    },
+    {
+      "id": "rec-16-q02",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "关于本讲“经验分布函数的构造、性质及其与理论分”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "经验分布函数的构造、性质及其与理论分布的关系。",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：经验分布函数的构造、性质及其与理论分布的关系。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 04:00 · 经验分布函数的构造、性质及其与理论分"
+      }
+    },
+    {
+      "id": "rec-16-q03",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "关于本讲“统计量的定义与本质要求（不含未知参数”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "统计量的定义与本质要求（不含未知参数）。",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：统计量的定义与本质要求（不含未知参数）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 统计量的定义与本质要求（不含未知参数"
+      }
+    },
+    {
+      "id": "rec-16-q04",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "关于本讲“常用统计量”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "常用统计量：样本均值、样本方差、样本矩。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：常用统计量：样本均值、样本方差、样本矩。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 22:00 · 常用统计量"
+      }
+    },
+    {
+      "id": "rec-16-q05",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "关于本讲“顺序统计量”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "顺序统计量：最小值、最大值、中位数、极差。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：顺序统计量：最小值、最大值、中位数、极差。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 32:00 · 顺序统计量"
+      }
+    },
+    {
+      "id": "rec-16-q06",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "关于本讲“$F_n(x)$ 是**单调非降、右”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "$F_n(x)$ 是**单调非降、右连续**的函数，函数值介于 $0$ 和 $1$ 之间，且 $F_n(-\\infty)=0, F_n(+\\infty)=1$。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$F_n(x)$ 是**单调非降、右连续**的函数，函数值介于 $0$ 和 $1$ 之间，且 $F_n(-\\infty)=0, F_n(+\\infty)=1$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 10:00 · $F_n(x)$ 是**单调非降、右"
+      }
+    },
+    {
+      "id": "rec-16-q07",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "关于本讲“因此 $F_n(x)$ **本身就是”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "因此 $F_n(x)$ **本身就是一个分布函数**，对应一个离散型均匀分布。",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：因此 $F_n(x)$ **本身就是一个分布函数**，对应一个离散型均匀分布。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 因此 $F_n(x)$ **本身就是"
+      }
+    },
+    {
+      "id": "rec-16-q08",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "关于本讲“对应的分布列”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "对应的分布列：在每个排序后的观测值 $x_{(k)}$ 处概率为 $1/n$（重复数据合并同类项，概率为 $m/n$，$m$ 是重复次数）。",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：对应的分布列：在每个排序后的观测值 $x_{(k)}$ 处概率为 $1/n$（重复数据合并同类项，概率为 $m/n$，$m$ 是重复次数）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 对应的分布列"
+      }
+    },
+    {
+      "id": "rec-16-q09",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "关于本讲“当 $n \\to \\infty$ 时”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "当 $n \\to \\infty$ 时，$F_n(x)$ 以概率1关于 $x$ 一致收敛于总体分布函数 $F(x)$，即经验分布函数一致逼近理论分布函数。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：当 $n \\to \\infty$ 时，$F_n(x)$ 以概率1关于 $x$ 一致收敛于总体分布函数 $F(x)$，即经验分布函数一致逼近理论分布函数。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 当 $n \\to \\infty$ 时"
+      }
+    },
+    {
+      "id": "rec-16-q10",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "关于本讲“直观上”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "直观上：随着样本量增大，阶梯形的经验分布函数\"缠绕\"在连续的理论分布函数曲线上。",
+        "只要两个事件互斥，就一定可以推出二者独立"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：直观上：随着样本量增大，阶梯形的经验分布函数\"缠绕\"在连续的理论分布函数曲线上。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 15:00 · 直观上"
+      }
+    },
+    {
+      "id": "rec-16-q11",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$X_1, X_2, \\dots, X_n$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $X_1, X_2, \\dots, X_n$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-16-q12",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$x_1, x_2, \\dots, x_n$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $x_1, x_2, \\dots, x_n$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 22:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-16-q13",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$f(x_1, x_2, \\dots, x_n) = \\prod_{i=1}^n f(x_i), \\quad x_i \\in \\text{定义域}$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $f(x_1, x_2, \\dots, x_n) = \\prod_{i=1}^n f(x_i), \\quad x_i \\in \\text{定义域}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-16-q14",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$f(x) = \\lambda e^{-\\lambda x} (x > 0)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $f(x) = \\lambda e^{-\\lambda x} (x > 0)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-16-q15",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\lambda^n e^{-\\lambda \\sum x_i}$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\lambda^n e^{-\\lambda \\sum x_i}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 53:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-16-q16",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“设 $X_1, X_2, \\dots”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "设 $X_1, X_2, \\dots, X_n$ 是来自总体的样本，若 $T = T(X_1, X_2, \\dots, X_n)$ 是样本的**连续函数**（不要求严格记忆）且**不含任何未知参数**，则称 $T$ 为统",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：设 $X_1, X_2, \\dots, X_n$ 是来自总体的样本，若 $T = T(X_1, X_2, \\dots, X_n)$ 是样本的**连续函数**（不要求严格记忆）且**不含任何未知参数**，则称 $T$ 为统\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 设 $X_1, X_2, \\dots"
+      }
+    },
+    {
+      "id": "rec-16-q17",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“$X_1 + \\mu$（$\\mu$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "$X_1 + \\mu$（$\\mu$ 已知）：是统计量（无未知参数）。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$X_1 + \\mu$（$\\mu$ 已知）：是统计量（无未知参数）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 01:00:30 · $X_1 + \\mu$（$\\mu$"
+      }
+    },
+    {
+      "id": "rec-16-q18",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“$\\frac{X_1 - \\mu}{”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "$\\frac{X_1 - \\mu}{\\sigma}$（$\\sigma$ 未知）：不是统计量（含未知参数 $\\sigma$）。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$\\frac{X_1 - \\mu}{\\sigma}$（$\\sigma$ 未知）：不是统计量（含未知参数 $\\sigma$）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 54:00 · $\\frac{X_1 - \\mu}{"
+      }
+    },
+    {
+      "id": "rec-16-q19",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$x_i > 0$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $x_i > 0$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-16-q20",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$P(X=1)=p, P(X=0)=q$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $P(X=1)=p, P(X=0)=q$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-16-q21",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 10,
+      "label": "计算题",
+      "stem": "指数总体 $f(x)=\\lambda e^{-\\lambda x},x>0$ 的样本联合密度。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：联合密度。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：简单随机样本独立同分布，联合密度为 $\\lambda^n e^{-\\lambda\\sum x_i}$，且所有 $x_i>0$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 01:00 · 联合密度"
+      }
+    },
+    {
+      "id": "rec-16-q22",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 10,
+      "label": "计算题",
+      "stem": "观测值 1,2,4,4，写经验分布函数。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：经验分布。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$F_n(x)=0(x<1)$；$1/4(1\\le x<2)$；$1/2(2\\le x<4)$；$1(x\\ge4)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 00:00 · 经验分布"
+      }
+    },
+    {
+      "id": "rec-16-q23",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 10,
+      "label": "计算题",
+      "stem": "样本 2,4,6,8，求样本均值与无偏样本方差。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：样本方差。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$\\bar x=5$；离差平方和 $20$，无偏样本方差 $20/(4-1)=20/3$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 25:00 · 样本方差"
+      }
+    },
+    {
+      "id": "rec-16-q24",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-16",
+      "points": 20,
+      "label": "综合计算/证明",
+      "stem": "0-1 分布容量 2 样本，求最小值为 1、最大值为 0 的概率。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：顺序统计量。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$X_{(1)}=1$ 等价于两个都为 1，概率 $p^2$；$X_{(2)}=0$ 等价于两个都为 0，概率 $(1-p)^2$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（5分）",
+        "展开关键推导或分段计算（7分）",
+        "得到完整答案或证明结论（5分）",
+        "说明条件、定义域和易错点（3分）"
+      ],
+      "total_points": 20,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-16.md",
+        "label": "rec-16 · 说话人1 32:00 · 顺序统计量"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "fill_blank": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 15,
+      "medium": 8,
+      "hard": 1
+    }
+  }
+}

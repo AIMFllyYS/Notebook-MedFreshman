@@ -1,0 +1,555 @@
+{
+  "subjectId": "probability",
+  "chapterId": "rec-14",
+  "generatedAt": "2026-06-24",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "rec-14-q01",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "关于本讲“对第一个变元”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "对第一个变元：$Cov(aX+bY,Z) = aCov(X,Z)+bCov(Y,Z)$。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：对第一个变元：$Cov(aX+bY,Z) = aCov(X,Z)+bCov(Y,Z)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 对第一个变元"
+      }
+    },
+    {
+      "id": "rec-14-q02",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "关于本讲“对第二个变元”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "对第二个变元：$Cov(X,aY+bZ) = aCov(X,Y)+bCov(X,Z)$。",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：对第二个变元：$Cov(X,aY+bZ) = aCov(X,Y)+bCov(X,Z)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 对第二个变元"
+      }
+    },
+    {
+      "id": "rec-14-q03",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "关于本讲“常数可提出”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它只适用于确定性现象，与随机试验无关",
+        "常数可提出：$Cov(aX,bY) = ab\\cdot Cov(X,Y)$（注意：两常数各提出一个，不是平方）。",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：常数可提出：$Cov(aX,bY) = ab\\cdot Cov(X,Y)$（注意：两常数各提出一个，不是平方）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 常数可提出"
+      }
+    },
+    {
+      "id": "rec-14-q04",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "关于本讲“可写成矩阵二次型形式”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "可写成矩阵二次型形式：$\\boldsymbol{k}^T \\boldsymbol{\\Sigma} \\boldsymbol{k}$，其中 $\\boldsymbol{\\Sigma}=(Cov(X_i,X_j))$ 为协方差矩。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：可写成矩阵二次型形式：$\\boldsymbol{k}^T \\boldsymbol{\\Sigma} \\boldsymbol{k}$，其中 $\\boldsymbol{\\Sigma}=(Cov(X_i,X_j))$ 为协方差矩。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 可写成矩阵二次型形式"
+      }
+    },
+    {
+      "id": "rec-14-q05",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "关于本讲“若变量两两不相关/独立，则交叉项为0”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "若变量两两不相关/独立，则交叉项为0，简化为 $D(\\sum k_iX_i)=\\sum k_i^2 D(X_i)$。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：若变量两两不相关/独立，则交叉项为0，简化为 $D(\\sum k_iX_i)=\\sum k_i^2 D(X_i)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 若变量两两不相关/独立，则交叉项为0"
+      }
+    },
+    {
+      "id": "rec-14-q06",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "关于本讲“令 $X^* = \\frac{X-E”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "令 $X^* = \\frac{X-E[X]}{\\sqrt{D(X)}}, Y^* = \\frac{Y-E[Y]}{\\sqrt{D(Y)}}$，则 $\\rho_{XY}=Cov(X^*,Y^*)$。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：令 $X^* = \\frac{X-E[X]}{\\sqrt{D(X)}}, Y^* = \\frac{Y-E[Y]}{\\sqrt{D(Y)}}$，则 $\\rho_{XY}=Cov(X^*,Y^*)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 令 $X^* = \\frac{X-E"
+      }
+    },
+    {
+      "id": "rec-14-q07",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "关于本讲“证明思路”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "证明思路：通过最优线性预测（用 $a+bX$ 估计 $Y$ 使均方误差最小）推导，或用柯西-施瓦茨不等式。",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域"
+      ],
+      "answer": 1,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：证明思路：通过最优线性预测（用 $a+bX$ 估计 $Y$ 使均方误差最小）推导，或用柯西-施瓦茨不等式。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 证明思路"
+      }
+    },
+    {
+      "id": "rec-14-q08",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "关于本讲“即 $X,Y$ 以概率1存在严格线性”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "即 $X,Y$ 以概率1存在严格线性关系。",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：即 $X,Y$ 以概率1存在严格线性关系。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 即 $X,Y$ 以概率1存在严格线性"
+      }
+    },
+    {
+      "id": "rec-14-q09",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "关于本讲“$\\rho=1$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "$\\rho=1$：正线性相关（$b>0$），$\\rho=-1$：负线性相关（$b<0$）。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$\\rho=1$：正线性相关（$b>0$），$\\rho=-1$：负线性相关（$b<0$）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · $\\rho=1$"
+      }
+    },
+    {
+      "id": "rec-14-q10",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "关于本讲“直观例子”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容",
+        "直观例子：随机将一根粉笔掰成两段，两段长度相关系数为-1（和为常数，严格线性负相关）。",
+        "只要两个事件互斥，就一定可以推出二者独立"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：直观例子：随机将一根粉笔掰成两段，两段长度相关系数为-1（和为常数，严格线性负相关）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 直观例子"
+      }
+    },
+    {
+      "id": "rec-14-q11",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$Cov(X,Y) = Cov(Y,X)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $Cov(X,Y) = Cov(Y,X)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-14-q12",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$Cov(aX+bY,Z) = aCov(X,Z)+bCov(Y,Z)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $Cov(aX+bY,Z) = aCov(X,Z)+bCov(Y,Z)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-14-q13",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$Cov(X,aY+bZ) = aCov(X,Y)+bCov(X,Z)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $Cov(X,aY+bZ) = aCov(X,Y)+bCov(X,Z)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-14-q14",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$Cov(aX,bY) = ab\\cdot Cov(X,Y)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $Cov(aX,bY) = ab\\cdot Cov(X,Y)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-14-q15",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 2,
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$Cov(X,X) = D(X)$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $Cov(X,X) = D(X)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（2分）"
+      ],
+      "total_points": 2,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-14-q16",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“$|\\rho|$ 越接近1”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "$|\\rho|$ 越接近1：$X,Y$ 线性相关程度越强，用线性函数 $a+bX$ 预测 $Y$ 的均方误差越小。",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "可以脱离课堂给出的前提条件直接套用",
+        "录音中明确说这不是本讲需要掌握的内容"
+      ],
+      "answer": 0,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$|\\rho|$ 越接近1：$X,Y$ 线性相关程度越强，用线性函数 $a+bX$ 预测 $Y$ 的均方误差越小。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 11:17 · $|\\rho|$ 越接近1"
+      }
+    },
+    {
+      "id": "rec-14-q17",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“$|\\rho|$ 越接近0”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "它说明概率值可以大于 1，只要样本点足够多",
+        "它只适用于确定性现象，与随机试验无关",
+        "计算时不需要检查概率非负性、总和为 1 或定义域",
+        "$|\\rho|$ 越接近0：线性相关程度越弱，线性预测效果越差。"
+      ],
+      "answer": 3,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$|\\rho|$ 越接近0：线性相关程度越弱，线性预测效果越差。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 11:17 · $|\\rho|$ 越接近0"
+      }
+    },
+    {
+      "id": "rec-14-q18",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "关于本讲“$\\rho=0$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "options": [
+        "录音中明确说这不是本讲需要掌握的内容",
+        "只要两个事件互斥，就一定可以推出二者独立",
+        "$\\rho=0$：称 $X$ 与 $Y$ **不相关**，即不存在线性关系。",
+        "可以脱离课堂给出的前提条件直接套用"
+      ],
+      "answer": 2,
+      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
+      "explanation": "正确项来自本讲录音/纪要整理的考点：$\\rho=0$：称 $X$ 与 $Y$ **不相关**，即不存在线性关系。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · $\\rho=0$"
+      }
+    },
+    {
+      "id": "rec-14-q19",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$Cov(X,c) = 0$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $Cov(X,c) = 0$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-14-q20",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "根据本讲录音，补全关键公式或结论：______",
+      "answer": "$\\implies$",
+      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
+      "explanation": "答案为 $\\implies$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
+      "scoring_criteria": [
+        "写出精确答案（4分）"
+      ],
+      "total_points": 4,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 公式/定义填空"
+      }
+    },
+    {
+      "id": "rec-14-q21",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 10,
+      "label": "计算题",
+      "stem": "已知 $D(X)=4,D(Y)=9,Cov(X,Y)=3$，求相关系数。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：相关系数。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$\\rho=3/(\\sqrt4\\sqrt9)=1/2$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 相关系数"
+      }
+    },
+    {
+      "id": "rec-14-q22",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 10,
+      "label": "计算题",
+      "stem": "已知 $D(X)=1,D(Y)=4,Cov(X,Y)=0.5$，求 $D(2X-3Y)$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：线性组合方差。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$D(2X-3Y)=4+36+2\\cdot2\\cdot(-3)\\cdot0.5=34$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 线性组合方差"
+      }
+    },
+    {
+      "id": "rec-14-q23",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 10,
+      "label": "计算题",
+      "stem": "证明独立推出不相关，并说明反之不成立。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：独立不相关。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：独立得 $E[XY]=E[X]E[Y]$，故协方差为 0；不相关只排除线性关系，不能排除非线性依赖。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（3分）",
+        "列出完整中间步骤（4分）",
+        "得到正确答案或结论（2分）",
+        "检查条件并表述清楚（1分）"
+      ],
+      "total_points": 10,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 独立不相关"
+      }
+    },
+    {
+      "id": "rec-14-q24",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-14",
+      "points": 20,
+      "label": "综合计算/证明",
+      "stem": "说明离差 $X_i-\\bar X$ 与 $X_j-\\bar X$ 的相关系数为何为 $-1/(n-1)$。",
+      "answer": "**解**：\n\n(1) 先识别本题模型：离差相关。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：展开协方差得 $-\\sigma^2/n$，离差方差为 $(n-1)\\sigma^2/n$，相除得 $-1/(n-1)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
+      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
+      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
+      "scoring_criteria": [
+        "写出适用定义/模型/定理（5分）",
+        "展开关键推导或分段计算（7分）",
+        "得到完整答案或证明结论（5分）",
+        "说明条件、定义域和易错点（3分）"
+      ],
+      "total_points": 20,
+      "sourceRef": {
+        "path": "content/probability/recording/rec-14.md",
+        "label": "rec-14 · 说话人1 00:04 · 离差相关"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "fill_blank": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 15,
+      "medium": 8,
+      "hard": 1
+    }
+  }
+}
