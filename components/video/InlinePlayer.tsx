@@ -4,7 +4,7 @@ import { useRef, useEffect } from "react";
 import { MediaPlayer, MediaProvider, type MediaPlayerInstance } from "@vidstack/react";
 import { DefaultVideoLayout, defaultLayoutIcons } from "@vidstack/react/player/layouts/default";
 import type { VideoEntry } from "@/lib/content/types";
-import { videoPoster } from "@/lib/content/poster";
+import { videoPoster, resolveVideoSrc } from "@/lib/content/poster";
 import { PictureInPicture } from "lucide-react";
 
 const zhTranslations = {
@@ -69,7 +69,7 @@ export default function InlinePlayer({ video, onPip, startTime }: InlinePlayerPr
     <div className="relative h-full w-full">
       <MediaPlayer
         ref={ref}
-        src={video.src}
+        src={resolveVideoSrc(video.src)}
         poster={poster || undefined}
         title={video.title}
         playsInline

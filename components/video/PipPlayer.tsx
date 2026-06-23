@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { MediaPlayer, MediaProvider, type MediaPlayerInstance } from "@vidstack/react";
 import { DefaultVideoLayout, defaultLayoutIcons } from "@vidstack/react/player/layouts/default";
 import { useStore } from "@/lib/store";
-import { videoPoster } from "@/lib/content/poster";
+import { videoPoster, resolveVideoSrc } from "@/lib/content/poster";
 
 const zhTranslations = {
   Settings: "设置",
@@ -188,7 +188,7 @@ export default function PipPlayer() {
       <div style={{ height: height - 32 }}>
         <MediaPlayer
           ref={playerRef}
-          src={video.src}
+          src={resolveVideoSrc(video.src)}
           poster={poster || undefined}
           title={video.title}
           playsInline

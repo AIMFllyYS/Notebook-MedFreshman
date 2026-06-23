@@ -44,5 +44,9 @@ yarn-error.log*
 tmp/
 tmp_*
 
+# Video files are hosted on CDN (see NEXT_PUBLIC_VIDEO_CDN_BASE).
+# Posters (~1MB) stay in public/media/posters/ and are tracked.
+public/media/videos/
+
 .claude/
 .trae/

@@ -16,3 +16,24 @@ export function videoPoster(v: Pick<VideoEntry, "src" | "poster">): string {
   }
   return "";
 }
+
+const VIDEO_CDN_BASE = process.env.NEXT_PUBLIC_VIDEO_CDN_BASE ?? "";
+
+/**
+ * 将视频 src 解析为实际播放 URL。
+ *
+ * 当设置了 NEXT_PUBLIC_VIDEO_CDN_BASE 环境变量时（如 https://cdn.example.com），
+ * /media/videos/ch01/foo.mp4 → https://cdn.example.com/media/videos/ch01/foo.mp4
+ *
+ * 未设置时保持原路径不变（从 public/ 静态目录提供）。
+ * 这样视频文件可以从仓库和构建产物中移除，仅托管在 CDN 上，
+ * 避免构建环境磁盘空间不足（ENOSPC）。
+ */
+export function resolveVideoSrc(src: string): string {
+  if (!VIDEO_CDN_BASE) return src;
+  if (src.startsWith("/media/videos/")) {
+    // COS 上路径为 /videos/...（无 media 前缀），去掉 /media 前缀拼接 CDN base
+    return VIDEO_CDN_BASE.replace(/\/$/, "") + src.replace("/media/videos/", "/videos/");
+  }
+  return src;
+}
