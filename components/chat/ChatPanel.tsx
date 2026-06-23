@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { ArrowDown, Loader, AlertTriangle, X } from 'lucide-react';
+import { ArrowDown, Loader, AlertTriangle, X, MessageSquarePlus } from 'lucide-react';
 import { useChat } from '@/lib/hooks/useChat';
 import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { useHydrated } from '@/lib/hooks/useHydrated';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useStore } from '@/lib/store';
+import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
 import SelectionPopover from '@/components/notes/SelectionPopover';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
@@ -41,8 +42,20 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [showHistory, setShowHistory] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [warnDismissed, setWarnDismissed] = useState(false);
   const fontScale = useSettings((s) => s.fontScale);
   const hydrated = useHydrated(useChatHistory);
+
+  const ctxTokens = useTokenTracker((s) => s.currentContextTokens);
+  const ctxLimit = useTokenTracker((s) => s.modelContextLimit);
+  const ctxRatio = ctxLimit > 0 ? ctxTokens / ctxLimit : 0;
+  const showWarning = ctxRatio >= 0.8 && ctxRatio < 1 && !warnDismissed;
+  const contextFull = ctxRatio >= 1;
+
+  useEffect(() => {
+    useTokenTracker.getState().resetSession();
+    setWarnDismissed(false);
+  }, [activeSessionId]);
 
   useEffect(() => {
     if (isAtBottom) {
@@ -68,7 +81,11 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   };
 
   const handleFollowUpClick = useCallback((question: string) => sendMessage(question), [sendMessage]);
-  const handleNewChat = () => createSession(chatContext);
+  const handleNewChat = () => {
+    createSession(chatContext);
+    setWarnDismissed(false);
+    useTokenTracker.getState().resetSession();
+  };
   const handleClearCurrent = () => { if (activeSessionId) deleteSession(activeSessionId); };
 
   const subjectName = chatContext?.subjectId === 'chemistry' ? '化学'
@@ -144,12 +161,60 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         </button>
       )}
 
+      {/* 上下文溢出警告 / 阻止条 */}
+      {contextFull && (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          padding: '8px 12px', margin: '0 8px 4px',
+          borderRadius: 10, fontSize: 12,
+          background: 'var(--md-sys-color-error-container)',
+          color: 'var(--md-sys-color-on-error-container)',
+        }}>
+          <AlertTriangle size={14} style={{ flexShrink: 0 }} />
+          <span style={{ flex: 1 }}>上下文已满（{Math.round(ctxRatio * 100)}%），无法继续输入。请新建对话。</span>
+          <button
+            onClick={handleNewChat}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 4,
+              padding: '4px 10px', borderRadius: 8, border: 'none',
+              background: 'var(--md-sys-color-error)', color: 'var(--md-sys-color-on-error)',
+              fontSize: 11, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap',
+            }}
+          >
+            <MessageSquarePlus size={12} /> 新建对话
+          </button>
+        </div>
+      )}
+
+      {showWarning && !contextFull && (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          padding: '7px 12px', margin: '0 8px 4px',
+          borderRadius: 10, fontSize: 11.5,
+          background: 'color-mix(in srgb, var(--md-sys-color-tertiary) 12%, transparent)',
+          color: 'var(--md-sys-color-tertiary)',
+        }}>
+          <AlertTriangle size={13} style={{ flexShrink: 0 }} />
+          <span style={{ flex: 1 }}>
+            上下文已使用 {Math.round(ctxRatio * 100)}%，建议让 AI 总结对话要点后开启新对话，避免溢出影响质量。
+          </span>
+          <button
+            onClick={() => setWarnDismissed(true)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: 'inherit' }}
+          >
+            <X size={13} />
+          </button>
+        </div>
+      )}
+
       <ChatInput
         onSend={handleSend}
         onStop={stopGeneration}
         isLoading={isLoading || !hydrated}
         chatContext={chatContext}
         onOpenSettings={() => setShowSettings(true)}
+        disabled={contextFull}
+        disabledReason="上下文已满，请新建对话继续"
       />
 
       {showSettings && <ChatSettings onClose={() => setShowSettings(false)} />}
