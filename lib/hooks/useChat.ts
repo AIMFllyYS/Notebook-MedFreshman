@@ -7,7 +7,7 @@ import { parseXmlTags } from '@/lib/utils/xmlParser';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { useTokenTracker } from './useTokenTracker';
 import { getModelInfo } from '@/lib/ai/models';
-import { estimateTokens } from '@/lib/context/fullContext';
+import { estimateTokens } from '@/lib/context/estimateTokens';
 
 interface SendMessageOptions {
   quotedText?: string;

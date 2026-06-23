@@ -4,7 +4,7 @@ import type { ChatContext } from '@/lib/types/chat';
 import { readContentMarkdown } from '@/lib/content/loader';
 import { getContentItem } from '@/content';
 import type { SubjectId, CategoryId } from '@/lib/types/content';
-import { estimateTokens } from './fullContext';
+import { estimateTokens } from './estimateTokens';
 
 // ── 预留接口定义 ──
 

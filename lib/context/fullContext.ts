@@ -6,25 +6,7 @@ import { getContentItem } from '@/content';
 import { readContentMarkdown } from '@/lib/content/loader';
 import type { SubjectId, CategoryId } from '@/lib/types/content';
 import { createHash } from 'node:crypto';
-
-// ── Token 估算 ──
-
-export function estimateTokens(text: string): number {
-  let tokens = 0;
-  for (const char of text) {
-    const code = char.codePointAt(0)!;
-    if (code > 0x4dff && code < 0x9fff) {
-      tokens += 2;
-    } else if (/[a-zA-Z]/.test(char)) {
-      tokens += 0.325;
-    } else if (/\s/.test(char)) {
-      tokens += 0.2;
-    } else {
-      tokens += 1;
-    }
-  }
-  return Math.ceil(tokens);
-}
+import { estimateTokens } from './estimateTokens';
 
 // ── 文件夹树摘要（模块级缓存：课程目录运行时不变） ──
 
