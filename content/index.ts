@@ -7,6 +7,7 @@ export type {
   ContentRoute,
   SubjectId,
   CategoryId,
+  RenderType,
 } from '@/lib/types/content';
 
 import { contentTree } from './manifest';
@@ -15,7 +16,6 @@ import type {
   Category,
   ContentItem,
   SubjectId,
-  CategoryId,
 } from '@/lib/types/content';
 
 export function getSubject(id: SubjectId): Subject | undefined {
@@ -24,7 +24,7 @@ export function getSubject(id: SubjectId): Subject | undefined {
 
 export function getCategory(
   subjectId: SubjectId,
-  categoryId: CategoryId,
+  categoryId: string,
 ): Category | undefined {
   const subject = getSubject(subjectId);
   return subject?.categories.find((c) => c.id === categoryId);
@@ -32,7 +32,7 @@ export function getCategory(
 
 export function getContentItem(
   subjectId: SubjectId,
-  categoryId: CategoryId,
+  categoryId: string,
   itemId: string,
 ): ContentItem | undefined {
   const category = getCategory(subjectId, categoryId);

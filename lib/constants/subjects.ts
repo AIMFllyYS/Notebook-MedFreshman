@@ -1,4 +1,4 @@
-import type { SubjectId, CategoryId } from '@/lib/types/content';
+import type { SubjectId } from '@/lib/types/content';
 
 export const SUBJECTS: Record<SubjectId, string> = {
   'probability': '概率论与数理统计',
@@ -9,7 +9,8 @@ export const SUBJECTS: Record<SubjectId, string> = {
   'other': '其他',
 };
 
-export const CATEGORIES: Record<CategoryId, string> = {
+/** 默认分类模板，仅供新科目初始化参考，不再作为运行时校验约束。 */
+export const DEFAULT_CATEGORIES: Record<string, string> = {
   'textbook': '教材',
   'detail': '详解',
   'recording': '课上录音',
@@ -26,4 +27,4 @@ export const SUBJECT_ICONS: Record<SubjectId, string> = {
 };
 
 export const DEFAULT_SUBJECT: SubjectId = 'probability';
-export const DEFAULT_CATEGORY: CategoryId = 'detail';
+export const DEFAULT_CATEGORY: string = 'detail';
