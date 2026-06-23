@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Lightbulb, HelpCircle } from 'lucide-react';
+import QuizMarkdown from '@/components/quiz/QuizMarkdown';
 
 interface FollowUpQuestionsProps {
   questions: string[];
@@ -29,7 +30,7 @@ export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({ questions,
             type="button"
           >
             <HelpCircle size={14} style={{ color: 'var(--md-sys-color-primary)', flexShrink: 0 }} />
-            <span className="followup-btn-text">{question}</span>
+            <span className="followup-btn-text"><QuizMarkdown inline>{question}</QuizMarkdown></span>
           </button>
         ))}
       </div>
