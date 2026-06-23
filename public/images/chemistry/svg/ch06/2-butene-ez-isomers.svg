@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200" aria-label="2-丁烯的E/Z异构体对比" role="img">
+  <title>2-丁烯的E/Z异构体对比</title>
+  <!-- Z-2-butene (left) -->
+  <g transform="translate(20,20)">
+    <text x="75" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">(Z)-2-丁烯</text>
+    <!-- C=C double bond -->
+    <line x1="55" y1="90" x2="95" y2="90" stroke="currentColor" stroke-width="2"/>
+    <line x1="55" y1="96" x2="95" y2="96" stroke="currentColor" stroke-width="2"/>
+    <!-- Left carbon (C2) -->
+    <circle cx="55" cy="93" r="3" fill="currentColor"/>
+    <!-- Right carbon (C3) -->
+    <circle cx="95" cy="93" r="3" fill="currentColor"/>
+    <!-- CH3 on C2 - upper left (same side as CH3 on C3) -->
+    <line x1="55" y1="93" x2="25" y2="63" stroke="currentColor" stroke-width="1.8"/>
+    <text x="18" y="58" text-anchor="middle" font-size="12" fill="currentColor">CH₃</text>
+    <!-- H on C2 - lower left -->
+    <line x1="55" y1="93" x2="25" y2="123" stroke="currentColor" stroke-width="1.8"/>
+    <text x="20" y="135" text-anchor="middle" font-size="12" fill="currentColor">H</text>
+    <!-- CH3 on C3 - upper right (same side = Z) -->
+    <line x1="95" y1="93" x2="125" y2="63" stroke="currentColor" stroke-width="1.8"/>
+    <text x="133" y="58" text-anchor="middle" font-size="12" fill="currentColor">CH₃</text>
+    <!-- H on C3 - lower right -->
+    <line x1="95" y1="93" x2="125" y2="123" stroke="currentColor" stroke-width="1.8"/>
+    <text x="132" y="135" text-anchor="middle" font-size="12" fill="currentColor">H</text>
+    <!-- Label same-side arrows -->
+    <text x="75" y="155" text-anchor="middle" font-size="11" fill="currentColor">两甲基同侧</text>
+    <text x="75" y="170" text-anchor="middle" font-size="11" fill="currentColor">沸点 4°C</text>
+  </g>
+  <!-- Divider -->
+  <line x1="200" y1="30" x2="200" y2="180" stroke="currentColor" stroke-width="1" stroke-dasharray="5,5" opacity="0.4"/>
+  <!-- E-2-butene (right) -->
+  <g transform="translate(210,20)">
+    <text x="75" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">(E)-2-丁烯</text>
+    <!-- C=C double bond -->
+    <line x1="55" y1="90" x2="95" y2="90" stroke="currentColor" stroke-width="2"/>
+    <line x1="55" y1="96" x2="95" y2="96" stroke="currentColor" stroke-width="2"/>
+    <!-- Left carbon (C2) -->
+    <circle cx="55" cy="93" r="3" fill="currentColor"/>
+    <!-- Right carbon (C3) -->
+    <circle cx="95" cy="93" r="3" fill="currentColor"/>
+    <!-- CH3 on C2 - upper left -->
+    <line x1="55" y1="93" x2="25" y2="63" stroke="currentColor" stroke-width="1.8"/>
+    <text x="18" y="58" text-anchor="middle" font-size="12" fill="currentColor">CH₃</text>
+    <!-- H on C2 - lower left -->
+    <line x1="55" y1="93" x2="25" y2="123" stroke="currentColor" stroke-width="1.8"/>
+    <text x="20" y="135" text-anchor="middle" font-size="12" fill="currentColor">H</text>
+    <!-- H on C3 - upper right (opposite side = E) -->
+    <line x1="95" y1="93" x2="125" y2="63" stroke="currentColor" stroke-width="1.8"/>
+    <text x="132" y="58" text-anchor="middle" font-size="12" fill="currentColor">H</text>
+    <!-- CH3 on C3 - lower right -->
+    <line x1="95" y1="93" x2="125" y2="123" stroke="currentColor" stroke-width="1.8"/>
+    <text x="133" y="135" text-anchor="middle" font-size="12" fill="currentColor">CH₃</text>
+    <!-- Label opposite-side -->
+    <text x="75" y="155" text-anchor="middle" font-size="11" fill="currentColor">两甲基异侧</text>
+    <text x="75" y="170" text-anchor="middle" font-size="11" fill="currentColor">沸点 1°C，更稳定</text>
+  </g>
+</svg>

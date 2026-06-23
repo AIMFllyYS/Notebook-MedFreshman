@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" width="320" height="220" aria-label="18-冠-6与K+的主客体识别：18-冠-6环状空腔，6个O原子指向中心，K+嵌入空腔">
+  <title>18-冠-6 与 K⁺ 的主客体识别示意图</title>
+  <style>
+    text { font-family: serif; font-size: 12px; fill: currentColor; }
+    line, circle, path, polygon { stroke: currentColor; }
+  </style>
+
+  <!-- 18-crown-6: 18 atoms in ring, 6 O atoms, 12 C atoms -->
+  <!-- Place ring centered at (160, 110), radius ~75 -->
+  <!-- 18 positions at 20° intervals, O atoms at positions 0, 60, 120, 180, 240, 300 degrees -->
+
+  <!-- Draw the crown ring segments (C-C-O-C-C-O pattern, repeat 6x) -->
+  <!-- Approximate positions for 18 atoms around circle r=75, center (160, 110) -->
+  <!-- Atom 1 = O at 90° (top): (160, 35) -->
+  <!-- Every 20°, atoms: O@90, C@70, C@50, O@30, C@10, C@350, O@330, C@310, C@290, O@270, C@250, C@230, O@210, C@190, C@170, O@150, C@130, C@110 -->
+
+  <script type="text/javascript">
+    /* positions computed below */
+  </script>
+
+  <!-- Precomputed 18 atom positions on circle r=75, center(160,110), starting at 90° going clockwise every 20° -->
+  <!-- Using: x = 160 + 75*cos(angle), y = 110 - 75*sin(angle) -->
+  <!-- angle in degrees: 90, 70, 50, 30, 10, 350, 330, 310, 290, 270, 250, 230, 210, 190, 170, 150, 130, 110 -->
+  <!-- Oxygen at angles 90, 30, 330, 270, 210, 150 (every 60°) -->
+
+  <!-- Positions: -->
+  <!-- 90°:  (160, 35)   O1 -->
+  <!-- 70°:  (186, 39)   C -->
+  <!-- 50°:  (208, 62)   C -->
+  <!-- 30°:  (225, 72.5) O2 → (160+75*cos30, 110-75*sin30) = (160+64.95, 110-37.5) = (225,72.5) -->
+  <!-- 10°:  (234, 97)   C → (160+73.9, 110-13) = (234,97) -->
+  <!-- 350°: (234,123)   C -->
+  <!-- 330°: (225,147.5) O3 -->
+  <!-- 310°: (208,158)   C -->
+  <!-- 290°: (186,181)   C -->
+  <!-- 270°: (160,185)   O4 -->
+  <!-- 250°: (134,181)   C -->
+  <!-- 230°: (112,158)   C -->
+  <!-- 210°: (95, 147.5) O5 -->
+  <!-- 190°: (86, 123)   C -->
+  <!-- 170°: (86, 97)    C -->
+  <!-- 150°: (95, 72.5)  O6 -->
+  <!-- 130°: (112, 62)   C -->
+  <!-- 110°: (134, 39)   C -->
+
+  <!-- Draw ring bonds -->
+  <line x1="160" y1="35" x2="186" y2="39" stroke-width="1.5" fill="none"/>
+  <line x1="186" y1="39" x2="208" y2="62" stroke-width="1.5" fill="none"/>
+  <line x1="208" y1="62" x2="225" y2="72.5" stroke-width="1.5" fill="none"/>
+  <line x1="225" y1="72.5" x2="234" y2="97" stroke-width="1.5" fill="none"/>
+  <line x1="234" y1="97" x2="234" y2="123" stroke-width="1.5" fill="none"/>
+  <line x1="234" y1="123" x2="225" y2="147.5" stroke-width="1.5" fill="none"/>
+  <line x1="225" y1="147.5" x2="208" y2="158" stroke-width="1.5" fill="none"/>
+  <line x1="208" y1="158" x2="186" y2="181" stroke-width="1.5" fill="none"/>
+  <line x1="186" y1="181" x2="160" y2="185" stroke-width="1.5" fill="none"/>
+  <line x1="160" y1="185" x2="134" y2="181" stroke-width="1.5" fill="none"/>
+  <line x1="134" y1="181" x2="112" y2="158" stroke-width="1.5" fill="none"/>
+  <line x1="112" y1="158" x2="95" y2="147.5" stroke-width="1.5" fill="none"/>
+  <line x1="95" y1="147.5" x2="86" y2="123" stroke-width="1.5" fill="none"/>
+  <line x1="86" y1="123" x2="86" y2="97" stroke-width="1.5" fill="none"/>
+  <line x1="86" y1="97" x2="95" y2="72.5" stroke-width="1.5" fill="none"/>
+  <line x1="95" y1="72.5" x2="112" y2="62" stroke-width="1.5" fill="none"/>
+  <line x1="112" y1="62" x2="134" y2="39" stroke-width="1.5" fill="none"/>
+  <line x1="134" y1="39" x2="160" y2="35" stroke-width="1.5" fill="none"/>
+
+  <!-- Oxygen atoms (filled circles) at O positions -->
+  <circle cx="160" cy="35" r="6" fill="currentColor" opacity="0.6" stroke="none"/>
+  <text x="154" y="25" font-size="10" font-weight="bold">O</text>
+  <circle cx="225" cy="72.5" r="6" fill="currentColor" opacity="0.6" stroke="none"/>
+  <text x="230" y="68" font-size="10" font-weight="bold">O</text>
+  <circle cx="225" cy="147.5" r="6" fill="currentColor" opacity="0.6" stroke="none"/>
+  <text x="230" y="155" font-size="10" font-weight="bold">O</text>
+  <circle cx="160" cy="185" r="6" fill="currentColor" opacity="0.6" stroke="none"/>
+  <text x="154" y="198" font-size="10" font-weight="bold">O</text>
+  <circle cx="95" cy="147.5" r="6" fill="currentColor" opacity="0.6" stroke="none"/>
+  <text x="75" y="155" font-size="10" font-weight="bold">O</text>
+  <circle cx="95" cy="72.5" r="6" fill="currentColor" opacity="0.6" stroke="none"/>
+  <text x="75" y="68" font-size="10" font-weight="bold">O</text>
+
+  <!-- K+ in center -->
+  <circle cx="160" cy="110" r="18" fill="none" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="151" y="115" font-size="13" font-weight="bold">K⁺</text>
+
+  <!-- Coordination arrows from O to K+ -->
+  <line x1="160" y1="41" x2="160" y2="92" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <line x1="220" y1="78" x2="178" y2="100" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <line x1="220" y1="142" x2="178" y2="120" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <line x1="160" y1="179" x2="160" y2="128" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <line x1="100" y1="142" x2="142" y2="120" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <line x1="100" y1="78" x2="142" y2="100" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+
+  <!-- Labels -->
+  <text x="5" y="210" font-size="10" opacity="0.8">空腔直径 2.6~3.2 Å，K⁺直径 2.66 Å，完美匹配</text>
+  <text x="5" y="222" font-size="10" opacity="0.7">6个O孤对电子配位K⁺（Na⁺太小，Cs⁺太大）</text>
+</svg>

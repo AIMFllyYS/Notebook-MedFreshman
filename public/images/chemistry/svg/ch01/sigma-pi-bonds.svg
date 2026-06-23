@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 220" aria-label="σ键与π键形成示意图对比">
+  <title>σ键与π键形成示意图（头对头重叠与肩并肩重叠对比）</title>
+
+  <!-- Title -->
+  <text x="240" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="currentColor">σ 键 vs π 键</text>
+
+  <!-- Left: sigma bond -->
+  <text x="120" y="45" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">σ 键</text>
+  <text x="120" y="62" text-anchor="middle" font-size="11" fill="currentColor">头对头（端对端）重叠</text>
+  <!-- Left orbital lobe -->
+  <ellipse cx="75" cy="110" rx="38" ry="22" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="55" y="114" font-size="11" fill="currentColor">A</text>
+  <!-- Right orbital lobe -->
+  <ellipse cx="165" cy="110" rx="38" ry="22" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="174" y="114" font-size="11" fill="currentColor">B</text>
+  <!-- Overlap region (shaded) -->
+  <ellipse cx="119" cy="110" rx="12" ry="18" fill="currentColor" opacity="0.25"/>
+  <!-- Bond axis arrow -->
+  <line x1="40" y1="135" x2="200" y2="135" stroke="currentColor" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <text x="120" y="148" text-anchor="middle" font-size="10" fill="currentColor">键轴</text>
+  <!-- Symmetry label -->
+  <text x="120" y="170" text-anchor="middle" font-size="11" fill="currentColor">电子云绕键轴对称分布</text>
+  <text x="120" y="185" text-anchor="middle" font-size="11" fill="currentColor">重叠程度大，键能强</text>
+  <text x="120" y="200" text-anchor="middle" font-size="10" fill="currentColor">可自由旋转</text>
+
+  <!-- Divider -->
+  <line x1="240" y1="35" x2="240" y2="215" stroke="currentColor" stroke-width="0.5" stroke-dasharray="4,3" opacity="0.4"/>
+
+  <!-- Right: pi bond -->
+  <text x="360" y="45" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">π 键</text>
+  <text x="360" y="62" text-anchor="middle" font-size="11" fill="currentColor">肩并肩（侧面）重叠</text>
+  <!-- Bond axis line (horizontal) -->
+  <line x1="280" y1="120" x2="440" y2="120" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="452" y="123" font-size="10" fill="currentColor">键轴</text>
+  <!-- Upper p orbital lobes (above axis) -->
+  <ellipse cx="320" cy="95" rx="16" ry="22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <ellipse cx="400" cy="95" rx="16" ry="22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Overlap region upper -->
+  <ellipse cx="360" cy="88" rx="18" ry="12" fill="currentColor" opacity="0.25"/>
+  <!-- Lower p orbital lobes (below axis) -->
+  <ellipse cx="320" cy="148" rx="16" ry="22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <ellipse cx="400" cy="148" rx="16" ry="22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Overlap region lower -->
+  <ellipse cx="360" cy="153" rx="18" ry="12" fill="currentColor" opacity="0.25"/>
+  <!-- Atom centers -->
+  <circle cx="320" cy="120" r="4" fill="currentColor"/>
+  <circle cx="400" cy="120" r="4" fill="currentColor"/>
+  <!-- Labels -->
+  <text x="360" y="185" text-anchor="middle" font-size="11" fill="currentColor">电子云分布于键轴上下</text>
+  <text x="360" y="200" text-anchor="middle" font-size="11" fill="currentColor">重叠程度小，键能弱</text>
+  <text x="360" y="215" text-anchor="middle" font-size="10" fill="currentColor">不能自由旋转</text>
+</svg>

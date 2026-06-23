@@ -197,7 +197,7 @@ $$
 - $\ce{CH3-CH(OH)-CH2-COOH}$：含 $\ce{-OH}$ 和 $\ce{-COOH}$，$\ce{-COOH}$ 优先级高 → **3-羟基丁酸**（$\ce{-OH}$ 作取代基，称为"羟基"）
 - $\ce{OHC-CH2-CO-CH3}$：含醛基和酮基，醛优先 → **3-氧代戊醛**（酮基作取代基，称为"氧代"）
 :::
-<!-- SVG-TODO: 多官能团化合物命名示例（3-羟基丁酸 CH3-CH(OH)-CH2-COOH 结构式，标注 -COOH 为主官能团、-OH 作羟基取代基；及多官能团优先级顺序：羧酸>酯>酰卤>酰胺>腈>醛>酮>醇>胺>醚>炔>烯>烷） -->
+::figure{src="/images/chemistry/svg/ch02/multifunctional-naming.svg" caption="多官能团命名示例：3-羟基丁酸（-COOH为主官能团，-OH为取代基）及官能团优先级顺序" alt="3-羟基丁酸结构式，标注COOH主官能团和OH取代基；下方列出官能团命名优先级从羧酸到烷烃"}
 
 :::example{label=多官能团命名}
 **题目**：命名 $\ce{HOOC-CH2-CH(OH)-CH2-CO-CH3}$。

@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 280" font-family="system-ui, sans-serif" font-size="13" fill="currentColor" stroke="currentColor">
+  <title>三种碳活性中间体：自由基、碳正离子、碳负离子</title>
+
+  <!-- ══ LEFT: Methyl radical .CH3 — sp², planar, unpaired e in p ══ -->
+  <text x="130" y="22" text-anchor="middle" font-weight="bold" font-size="14">甲基自由基</text>
+  <text x="130" y="40" text-anchor="middle" font-size="12">·CH₃</text>
+  <text x="130" y="56" text-anchor="middle" font-size="11" opacity="0.7">sp² 平面三角形</text>
+
+  <!-- plane boundary (faint triangle) -->
+  <polygon points="130,140 60,190 200,190" fill="none" stroke-width="1" stroke-dasharray="4,3" opacity="0.3"/>
+
+  <!-- C center -->
+  <circle cx="130" cy="140" r="14" fill="none" stroke-width="2"/>
+  <text x="130" y="145" text-anchor="middle" font-size="13" font-weight="bold">C</text>
+
+  <!-- 3 H bonds (in-plane) -->
+  <!-- top H (vertical) -->
+  <line x1="130" y1="126" x2="130" y2="96" stroke-width="2"/>
+  <circle cx="130" cy="88" r="10" fill="none" stroke-width="1.5"/>
+  <text x="130" y="92" text-anchor="middle" font-size="12">H</text>
+  <!-- bottom-left H -->
+  <line x1="119" y1="151" x2="90"  y2="178" stroke-width="2"/>
+  <circle cx="82"  cy="184" r="10" fill="none" stroke-width="1.5"/>
+  <text x="82"  y="188" text-anchor="middle" font-size="12">H</text>
+  <!-- bottom-right H -->
+  <line x1="141" y1="151" x2="170" y2="178" stroke-width="2"/>
+  <circle cx="178" cy="184" r="10" fill="none" stroke-width="1.5"/>
+  <text x="178" y="188" text-anchor="middle" font-size="12">H</text>
+
+  <!-- p orbital above plane with single dot -->
+  <ellipse cx="130" cy="114" rx="10" ry="18" fill="none" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <circle cx="130" cy="107" r="3" fill="currentColor"/>
+  <text x="148" y="108" font-size="11" font-weight="bold">·</text>
+  <text x="148" y="120" font-size="10" opacity="0.7">单电子</text>
+
+  <!-- description -->
+  <text x="130" y="218" text-anchor="middle" font-size="11" opacity="0.75">p 轨道含 1 个未成对电子</text>
+  <text x="130" y="234" text-anchor="middle" font-size="11" opacity="0.75">活性极高，不带电</text>
+
+  <!-- divider 1 -->
+  <line x1="267" y1="10" x2="267" y2="260" stroke-width="0.5" stroke-dasharray="6,4" opacity="0.35"/>
+
+  <!-- ══ MIDDLE: Carbocation CH3+ — sp², empty p ══ -->
+  <text x="390" y="22" text-anchor="middle" font-weight="bold" font-size="14">甲基碳正离子</text>
+  <text x="390" y="40" text-anchor="middle" font-size="12">CH₃⁺</text>
+  <text x="390" y="56" text-anchor="middle" font-size="11" opacity="0.7">sp² 平面三角形</text>
+
+  <!-- plane boundary -->
+  <polygon points="390,140 320,190 460,190" fill="none" stroke-width="1" stroke-dasharray="4,3" opacity="0.3"/>
+
+  <!-- C center -->
+  <circle cx="390" cy="140" r="14" fill="none" stroke-width="2"/>
+  <text x="390" y="145" text-anchor="middle" font-size="13" font-weight="bold">C</text>
+  <text x="402" y="128" font-size="11">⁺</text>
+
+  <!-- 3 H bonds (in-plane) -->
+  <line x1="390" y1="126" x2="390" y2="96" stroke-width="2"/>
+  <circle cx="390" cy="88" r="10" fill="none" stroke-width="1.5"/>
+  <text x="390" y="92" text-anchor="middle" font-size="12">H</text>
+  <line x1="379" y1="151" x2="350" y2="178" stroke-width="2"/>
+  <circle cx="342" cy="184" r="10" fill="none" stroke-width="1.5"/>
+  <text x="342" y="188" text-anchor="middle" font-size="12">H</text>
+  <line x1="401" y1="151" x2="430" y2="178" stroke-width="2"/>
+  <circle cx="438" cy="184" r="10" fill="none" stroke-width="1.5"/>
+  <text x="438" y="188" text-anchor="middle" font-size="12">H</text>
+
+  <!-- empty p orbital above (dashed outline, no electron) -->
+  <ellipse cx="390" cy="114" rx="10" ry="18" fill="none" stroke-width="1.5" stroke-dasharray="4,2" opacity="0.6"/>
+  <text x="408" y="108" font-size="10" opacity="0.7">空</text>
+  <text x="408" y="120" font-size="10" opacity="0.7">p 轨道</text>
+
+  <!-- description -->
+  <text x="390" y="218" text-anchor="middle" font-size="11" opacity="0.75">p 轨道为空，亲电中心</text>
+  <text x="390" y="234" text-anchor="middle" font-size="11" opacity="0.75">缺电子，接受亲核试剂</text>
+
+  <!-- divider 2 -->
+  <line x1="513" y1="10" x2="513" y2="260" stroke-width="0.5" stroke-dasharray="6,4" opacity="0.35"/>
+
+  <!-- ══ RIGHT: Carbanion CH3- — sp3, tetrahedral, lone pair ══ -->
+  <text x="646" y="22" text-anchor="middle" font-weight="bold" font-size="14">甲基碳负离子</text>
+  <text x="646" y="40" text-anchor="middle" font-size="12">CH₃⁻</text>
+  <text x="646" y="56" text-anchor="middle" font-size="11" opacity="0.7">sp³ 四面体</text>
+
+  <!-- C center -->
+  <circle cx="646" cy="140" r="14" fill="none" stroke-width="2"/>
+  <text x="646" y="145" text-anchor="middle" font-size="13" font-weight="bold">C</text>
+  <text x="658" y="128" font-size="11">⁻</text>
+
+  <!-- top H (bond up, slightly tilted) -->
+  <line x1="646" y1="126" x2="646" y2="90" stroke-width="2"/>
+  <circle cx="646" cy="82" r="10" fill="none" stroke-width="1.5"/>
+  <text x="646" y="86" text-anchor="middle" font-size="12">H</text>
+  <!-- bottom-left H -->
+  <line x1="635" y1="151" x2="600" y2="178" stroke-width="2"/>
+  <circle cx="592" cy="184" r="10" fill="none" stroke-width="1.5"/>
+  <text x="592" y="188" text-anchor="middle" font-size="12">H</text>
+  <!-- bottom-right H -->
+  <line x1="657" y1="151" x2="690" y2="174" stroke-width="2"/>
+  <circle cx="698" cy="180" r="10" fill="none" stroke-width="1.5"/>
+  <text x="698" y="184" text-anchor="middle" font-size="12">H</text>
+
+  <!-- lone pair as dashed wedge above C (sp3 orbital) -->
+  <path d="M646,126 L636,98 L656,98 Z" fill="none" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.65"/>
+  <!-- two dots for lone pair -->
+  <circle cx="640" cy="112" r="2.5" fill="currentColor"/>
+  <circle cx="652" cy="112" r="2.5" fill="currentColor"/>
+  <text x="670" y="105" font-size="10" opacity="0.7">孤对</text>
+  <text x="670" y="117" font-size="10" opacity="0.7">电子</text>
+
+  <!-- description -->
+  <text x="646" y="210" text-anchor="middle" font-size="11" opacity="0.75">sp³ 轨道含孤对电子</text>
+  <text x="646" y="226" text-anchor="middle" font-size="11" opacity="0.75">富电子，作亲核试剂</text>
+
+  <!-- bottom caption -->
+  <text x="390" y="262" text-anchor="middle" font-size="11" opacity="0.5">碳正离子（亲电）↔ 自由基（不带电）↔ 碳负离子（亲核）</text>
+</svg>

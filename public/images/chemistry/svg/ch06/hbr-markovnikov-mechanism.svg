@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 180" width="520" height="180" aria-label="丙烯与HBr亲电加成马氏规则机理" role="img">
+  <title>丙烯与HBr亲电加成机理——马氏规则</title>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+    <marker id="curved-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+  <!-- Step 1: Propene + H+ -->
+  <text x="10" y="20" font-size="12" font-weight="bold" fill="currentColor">步骤1：H⁺ 进攻π键</text>
+  <!-- Propene structure -->
+  <text x="10" y="55" font-size="13" fill="currentColor">CH₃</text>
+  <line x1="40" y1="50" x2="65" y2="50" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="65" cy="50" r="3" fill="currentColor"/>
+  <line x1="65" y1="50" x2="95" y2="50" stroke="currentColor" stroke-width="2"/>
+  <line x1="65" y1="56" x2="95" y2="56" stroke="currentColor" stroke-width="2"/>
+  <circle cx="95" cy="53" r="3" fill="currentColor"/>
+  <text x="98" y="48" font-size="11" fill="currentColor">H</text>
+  <text x="98" y="62" font-size="11" fill="currentColor">H</text>
+  <!-- delta labels -->
+  <text x="60" y="44" font-size="10" fill="currentColor">δ+</text>
+  <text x="88" y="44" font-size="10" fill="currentColor">δ−</text>
+  <!-- H+ approaching -->
+  <text x="75" y="90" font-size="13" fill="currentColor">H⁺</text>
+  <!-- curved arrow from pi bond to H -->
+  <path d="M80,60 Q85,75 80,85" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#curved-arrow)"/>
+  <!-- Arrow to next step -->
+  <text x="128" y="55" font-size="20" fill="currentColor">→</text>
+  <!-- Carbocation intermediate -->
+  <text x="160" y="20" font-size="12" font-weight="bold" fill="currentColor">仲碳正离子中间体</text>
+  <text x="155" y="55" font-size="13" fill="currentColor">CH₃</text>
+  <line x1="185" y1="50" x2="215" y2="50" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="215" cy="50" r="3" fill="currentColor"/>
+  <line x1="215" y1="50" x2="245" y2="50" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="245" cy="50" r="3" fill="currentColor"/>
+  <text x="248" y="44" font-size="11" fill="currentColor">H</text>
+  <text x="248" y="62" font-size="11" fill="currentColor">H</text>
+  <text x="210" y="40" font-size="13" font-weight="bold" fill="currentColor">⊕</text>
+  <text x="206" y="70" font-size="11" fill="currentColor">C2 仲碳正离子</text>
+  <!-- H added to C1 -->
+  <text x="155" y="90" font-size="11" fill="currentColor">（H 加到 C1，正电荷在 C2）</text>
+  <!-- arrow -->
+  <text x="278" y="55" font-size="20" fill="currentColor">→</text>
+  <!-- Step 2: Br- attack -->
+  <text x="310" y="20" font-size="12" font-weight="bold" fill="currentColor">步骤2：Br⁻ 进攻</text>
+  <text x="305" y="55" font-size="13" fill="currentColor">CH₃</text>
+  <line x1="335" y1="50" x2="365" y2="50" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="365" cy="50" r="3" fill="currentColor"/>
+  <line x1="365" y1="50" x2="395" y2="50" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="395" cy="50" r="3" fill="currentColor"/>
+  <text x="396" y="44" font-size="11" fill="currentColor">H</text>
+  <text x="396" y="62" font-size="11" fill="currentColor">H</text>
+  <!-- Br approaching from above -->
+  <text x="355" y="25" font-size="13" fill="currentColor">Br⁻</text>
+  <path d="M365,30 Q365,42 365,47" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#curved-arrow)"/>
+  <!-- Br on C2 -->
+  <text x="370" y="70" font-size="11" fill="currentColor">→ CH₃CHBrCH₃</text>
+  <text x="310" y="100" font-size="11" fill="currentColor">2-溴丙烷（马氏产物）</text>
+  <!-- Note about stability -->
+  <text x="10" y="140" font-size="11" fill="currentColor">关键：仲碳正离子(CH₃CHCH₃)⁺ 比伯碳正离子(CH₃CH₂CH₂)⁺ 更稳定</text>
+  <text x="10" y="160" font-size="11" fill="currentColor">→ 马氏规则本质：H 加到能形成更稳定碳正离子的碳上</text>
+</svg>

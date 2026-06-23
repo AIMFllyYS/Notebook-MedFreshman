@@ -27,7 +27,7 @@
 
 因此 $\ce{C#C}$ 三键 = **1 个 $\sigma$ 键 + 2 个 $\pi$ 键**，分子为直线型。
 :::
-<!-- SVG-TODO: 乙炔的 sp 杂化结构（两个 sp 杂化轨道形成 σ 键呈直线型，两个未杂化 p 轨道侧面重叠形成 2 个相互垂直的 π 键，π 电子云呈圆柱状包绕） -->
+::figure{src="/images/chemistry/svg/ch06/acetylene-sp-hybridization.svg" caption="乙炔sp杂化结构——直线型，两个相互垂直的π键形成圆柱π云" alt="乙炔两个sp轨道形成σ键直线型，两个垂直p轨道形成两个π键，圆柱状π电子云"}
 
 :::theorem{label=杂化方式对键长和电负性的影响}
 随着碳原子杂化轨道中 s 成分增加，C—C 键长和 C—H 键长均缩短，碳的电负性增大：
@@ -162,7 +162,7 @@ $$
 
 合成路线设计时，如果目标分子有特定立体化学的双键，可以先构建炔键，再选择性还原。
 :::
-<!-- SVG-TODO: 炔烃选择性还原的立体化学对比（Lindlar 催化剂顺式加氢得 Z-烯烃 vs Na/液氨反式加氢得 E-烯烃，标注两种产物的基团相对位置） -->
+::figure{src="/images/chemistry/svg/ch06/alkyne-selective-reduction-stereo.svg" caption="炔烃选择性还原立体化学：Lindlar催化剂得Z-烯烃，Na/NH₃得E-烯烃" alt="炔烃加氢：Lindlar顺式加成得Z烯烃，Na液氨反式加成得E烯烃"}
 
 ## 炔烃的亲电加成
 

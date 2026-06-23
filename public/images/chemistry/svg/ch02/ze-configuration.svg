@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 185" width="420" height="185" aria-label="烯烃Z/E构型标记：Z构型两大基团同侧，E构型两大基团异侧">
+  <title>烯烃 Z/E 构型标记示意图</title>
+  <style>
+    text { font-family: serif; font-size: 12px; fill: currentColor; }
+    line { stroke: currentColor; }
+  </style>
+
+  <!-- ===== Z configuration ===== -->
+  <text x="15" y="18" font-weight="bold" font-size="14" fill="#2563eb">Z 构型</text>
+  <text x="15" y="33" font-size="11">两大基团在双键同侧</text>
+
+  <!-- Double bond: C1(70,90) = C2(145,90) -->
+  <line x1="70" y1="88" x2="145" y2="88" stroke-width="1.8" fill="none"/>
+  <line x1="70" y1="94" x2="145" y2="94" stroke-width="1.8" fill="none"/>
+
+  <!-- C1 left carbon: a(large) up-left, b(small) down-left -->
+  <!-- Large group 'a' upper-left from C1 -->
+  <line x1="70" y1="90" x2="35" y2="58" stroke-width="1.5" fill="none"/>
+  <text x="15" y="54" font-size="11" font-weight="bold">a</text>
+  <text x="30" y="50" font-size="9" opacity="0.7">（大）</text>
+  <!-- Small group 'b' lower-left from C1 -->
+  <line x1="70" y1="90" x2="35" y2="122" stroke-width="1.5" fill="none"/>
+  <text x="15" y="130" font-size="11">b</text>
+  <text x="30" y="138" font-size="9" opacity="0.7">（小）</text>
+
+  <!-- C2 right carbon: c(large) upper-right, d(small) lower-right -->
+  <!-- Large group 'c' upper-right from C2 -->
+  <line x1="145" y1="90" x2="178" y2="58" stroke-width="1.5" fill="none"/>
+  <text x="180" y="54" font-size="11" font-weight="bold">c</text>
+  <text x="165" y="50" font-size="9" opacity="0.7">（大）</text>
+  <!-- Small group 'd' lower-right from C2 -->
+  <line x1="145" y1="90" x2="178" y2="122" stroke-width="1.5" fill="none"/>
+  <text x="180" y="130" font-size="11">d</text>
+
+  <!-- Z same-side indicator (a and c both on top) -->
+  <line x1="35" y1="50" x2="178" y2="50" stroke-width="0.8" stroke-dasharray="4,3" fill="none"/>
+  <text x="88" y="44" font-size="10" fill="#2563eb">同侧 → Z</text>
+
+  <!-- Priority arrows -->
+  <text x="25" y="85" font-size="9" opacity="0.7">a&gt;b</text>
+  <text x="153" y="85" font-size="9" opacity="0.7">c&gt;d</text>
+
+  <text x="15" y="160" font-size="11">Z = Zusammen（德语：一起）</text>
+  <text x="15" y="173" font-size="10" opacity="0.7">高优先级基团在同侧</text>
+
+  <!-- Divider -->
+  <line x1="210" y1="10" x2="210" y2="178" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== E configuration ===== -->
+  <text x="225" y="18" font-weight="bold" font-size="14" fill="#dc2626">E 构型</text>
+  <text x="225" y="33" font-size="11">两大基团在双键异侧</text>
+
+  <!-- Double bond: C1(280,90) = C2(355,90) -->
+  <line x1="280" y1="88" x2="355" y2="88" stroke-width="1.8" fill="none"/>
+  <line x1="280" y1="94" x2="355" y2="94" stroke-width="1.8" fill="none"/>
+
+  <!-- Large group 'a' upper-left from C1 -->
+  <line x1="280" y1="90" x2="245" y2="58" stroke-width="1.5" fill="none"/>
+  <text x="228" y="54" font-size="11" font-weight="bold">a</text>
+  <text x="243" y="50" font-size="9" opacity="0.7">（大）</text>
+  <!-- Small group 'b' lower-left from C1 -->
+  <line x1="280" y1="90" x2="245" y2="122" stroke-width="1.5" fill="none"/>
+  <text x="228" y="130" font-size="11">b</text>
+
+  <!-- Large group 'c' LOWER-right from C2 (opposite side to 'a') -->
+  <line x1="355" y1="90" x2="388" y2="122" stroke-width="1.5" fill="none"/>
+  <text x="390" y="130" font-size="11" font-weight="bold">c</text>
+  <text x="375" y="140" font-size="9" opacity="0.7">（大）</text>
+  <!-- Small group 'd' upper-right from C2 -->
+  <line x1="355" y1="90" x2="388" y2="58" stroke-width="1.5" fill="none"/>
+  <text x="390" y="54" font-size="11">d</text>
+
+  <!-- E opposite-side indicator: a top-left, c bottom-right -->
+  <line x1="245" y1="50" x2="260" y2="70" stroke-width="0.8" stroke-dasharray="4,3" fill="none"/>
+  <line x1="388" y1="130" x2="373" y2="110" stroke-width="0.8" stroke-dasharray="4,3" fill="none"/>
+  <text x="290" y="78" font-size="10" fill="#dc2626">异侧 → E</text>
+
+  <!-- Priority arrows -->
+  <text x="238" y="85" font-size="9" opacity="0.7">a&gt;b</text>
+  <text x="363" y="85" font-size="9" opacity="0.7">c&gt;d</text>
+
+  <text x="225" y="160" font-size="11">E = Entgegen（德语：相反）</text>
+  <text x="225" y="173" font-size="10" opacity="0.7">高优先级基团在异侧</text>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 160" width="420" height="160" aria-label="魏勒尿素合成：氰酸铵与尿素的分子结构对比">
+  <title>魏勒尿素合成反应中氰酸铵与尿素的分子结构</title>
+  <style>
+    text { font-family: serif; font-size: 13px; fill: currentColor; }
+    line, path, polygon { stroke: currentColor; }
+  </style>
+
+  <!-- Left side: NH4OCN (ammonium cyanate) -->
+  <text x="10" y="20" font-size="11" opacity="0.7">氰酸铵</text>
+  <!-- NH4+ ion -->
+  <text x="20" y="50">NH</text>
+  <text x="40" y="45" font-size="10">4</text>
+  <text x="48" y="45" font-size="10">+</text>
+  <!-- OCN- ion -->
+  <text x="60" y="50">O=C=N</text>
+  <text x="108" y="45" font-size="10">−</text>
+  <!-- bracket around cyanate -->
+  <text x="58" y="70" font-size="10">（氰酸根离子）</text>
+
+  <!-- Arrow in middle -->
+  <line x1="165" y1="70" x2="215" y2="70" stroke-width="1.5" fill="none"/>
+  <polygon points="215,70 208,66 208,74" fill="currentColor" stroke="none"/>
+  <text x="172" y="60" font-size="11">加热</text>
+  <text x="168" y="85" font-size="11">重排</text>
+
+  <!-- Right side: Urea (NH2)2CO -->
+  <text x="225" y="20" font-size="11" opacity="0.7">尿素</text>
+  <!-- Central C with =O -->
+  <text x="280" y="80">C</text>
+  <!-- C=O bond going up -->
+  <line x1="285" y1="68" x2="285" y2="50" stroke-width="1.5" fill="none"/>
+  <line x1="288" y1="68" x2="288" y2="50" stroke-width="1.5" fill="none"/>
+  <text x="278" y="47">O</text>
+  <!-- NH2 left -->
+  <line x1="279" y1="80" x2="250" y2="95" stroke-width="1.5" fill="none"/>
+  <text x="228" y="105">H</text>
+  <text x="237" y="105">2</text>
+  <text x="245" y="105">N</text>
+  <!-- NH2 right -->
+  <line x1="292" y1="80" x2="320" y2="95" stroke-width="1.5" fill="none"/>
+  <text x="320" y="105">N</text>
+  <text x="330" y="105">H</text>
+  <text x="339" y="105">2</text>
+
+  <!-- Labels -->
+  <text x="255" y="130" font-size="11">(NH₂)₂C=O</text>
+  <text x="255" y="145" font-size="10" opacity="0.7">非生命体合成有机物</text>
+
+  <!-- Divider -->
+  <line x1="155" y1="10" x2="155" y2="150" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+</svg>

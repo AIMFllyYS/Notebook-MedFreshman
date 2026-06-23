@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 205" width="520" height="205" aria-label="邻间对硝基苯酚共轭路径对比：邻位-I强-C较弱有空间位阻，间位-C失效，对位-C充分发挥">
+  <title>邻/间/对硝基苯酚共轭路径对比图</title>
+  <style>
+    text { font-family: serif; font-size: 10px; fill: currentColor; }
+    line, path { stroke: currentColor; }
+  </style>
+
+  <!-- Helper function: draw benzene ring at (cx, cy) r=28 -->
+  <!-- ===== ortho-Nitrophenol ===== -->
+  <text x="10" y="14" font-weight="bold" font-size="11">邻硝基苯酚</text>
+  <text x="10" y="25" font-size="9">pKₐ = 7.23</text>
+
+  <!-- Ring at (70, 85) -->
+  <line x1="70" y1="57" x2="94" y2="71" stroke-width="1.5" fill="none"/>
+  <line x1="94" y1="71" x2="94" y2="99" stroke-width="1.5" fill="none"/>
+  <line x1="94" y1="99" x2="70" y2="113" stroke-width="1.5" fill="none"/>
+  <line x1="70" y1="113" x2="46" y2="99" stroke-width="1.5" fill="none"/>
+  <line x1="46" y1="99" x2="46" y2="71" stroke-width="1.5" fill="none"/>
+  <line x1="46" y1="71" x2="70" y2="57" stroke-width="1.5" fill="none"/>
+  <!-- inner doubles -->
+  <line x1="73" y1="60" x2="92" y2="70" stroke-width="1.5" fill="none"/>
+  <line x1="49" y1="74" x2="49" y2="97" stroke-width="1.5" fill="none"/>
+  <line x1="73" y1="110" x2="92" y2="100" stroke-width="1.5" fill="none"/>
+
+  <!-- OH at bottom C1 -->
+  <line x1="70" y1="113" x2="70" y2="130" stroke-width="1.5" fill="none"/>
+  <text x="64" y="140">OH</text>
+
+  <!-- NO2 at ortho C2 (upper-right: 94,71) -->
+  <line x1="94" y1="71" x2="110" y2="57" stroke-width="1.5" fill="none"/>
+  <text x="112" y="55">NO₂</text>
+
+  <!-- Annotations -->
+  <text x="10" y="158" font-size="9">-I 强（直接相连）</text>
+  <text x="10" y="168" font-size="9">-C 弱（位阻，C₁位阻碍共轭路径）</text>
+  <text x="10" y="178" font-size="9">分子内氢键（邻位特有）</text>
+  <!-- Small curved arrow showing intramolecular H-bond -->
+  <path d="M74,138 Q95,130 100,75" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <text x="100" y="148" font-size="8" opacity="0.7">分子内氢键</text>
+
+  <!-- Divider -->
+  <line x1="175" y1="8" x2="175" y2="195" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== meta-Nitrophenol ===== -->
+  <text x="183" y="14" font-weight="bold" font-size="11">间硝基苯酚</text>
+  <text x="183" y="25" font-size="9">pKₐ = 8.40（最大，最弱酸）</text>
+
+  <!-- Ring at (245, 85) -->
+  <line x1="245" y1="57" x2="269" y2="71" stroke-width="1.5" fill="none"/>
+  <line x1="269" y1="71" x2="269" y2="99" stroke-width="1.5" fill="none"/>
+  <line x1="269" y1="99" x2="245" y2="113" stroke-width="1.5" fill="none"/>
+  <line x1="245" y1="113" x2="221" y2="99" stroke-width="1.5" fill="none"/>
+  <line x1="221" y1="99" x2="221" y2="71" stroke-width="1.5" fill="none"/>
+  <line x1="221" y1="71" x2="245" y2="57" stroke-width="1.5" fill="none"/>
+  <line x1="248" y1="60" x2="267" y2="70" stroke-width="1.5" fill="none"/>
+  <line x1="224" y1="74" x2="224" y2="97" stroke-width="1.5" fill="none"/>
+  <line x1="248" y1="110" x2="267" y2="100" stroke-width="1.5" fill="none"/>
+
+  <!-- OH at bottom C1 -->
+  <line x1="245" y1="113" x2="245" y2="130" stroke-width="1.5" fill="none"/>
+  <text x="239" y="140">OH</text>
+
+  <!-- NO2 at meta C3 (lower-right: 269, 99) -->
+  <line x1="269" y1="99" x2="288" y2="107" stroke-width="1.5" fill="none"/>
+  <text x="289" y="111">NO₂</text>
+
+  <!-- Cross out conjugation path (no direct conjugation) -->
+  <path d="M245,80 Q260,90 260,99" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <!-- X marker -->
+  <line x1="258" y1="87" x2="264" y2="93" stroke-width="1.2" fill="#dc2626" stroke="#dc2626"/>
+  <line x1="264" y1="87" x2="258" y2="93" stroke-width="1.2" fill="#dc2626" stroke="#dc2626"/>
+
+  <text x="183" y="158" font-size="9">-I 强（远端，较弱）</text>
+  <text x="183" y="168" font-size="9">-C 失效（间位无共轭路径）</text>
+  <text x="183" y="178" font-size="9">酸性最弱（pKₐ最大）</text>
+
+  <!-- Divider -->
+  <line x1="355" y1="8" x2="355" y2="195" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== para-Nitrophenol ===== -->
+  <text x="363" y="14" font-weight="bold" font-size="11">对硝基苯酚</text>
+  <text x="363" y="25" font-size="9">pKₐ = 7.16（酸性最强）</text>
+
+  <!-- Ring at (430, 85) -->
+  <line x1="430" y1="57" x2="454" y2="71" stroke-width="1.5" fill="none"/>
+  <line x1="454" y1="71" x2="454" y2="99" stroke-width="1.5" fill="none"/>
+  <line x1="454" y1="99" x2="430" y2="113" stroke-width="1.5" fill="none"/>
+  <line x1="430" y1="113" x2="406" y2="99" stroke-width="1.5" fill="none"/>
+  <line x1="406" y1="99" x2="406" y2="71" stroke-width="1.5" fill="none"/>
+  <line x1="406" y1="71" x2="430" y2="57" stroke-width="1.5" fill="none"/>
+  <line x1="433" y1="60" x2="452" y2="70" stroke-width="1.5" fill="none"/>
+  <line x1="409" y1="74" x2="409" y2="97" stroke-width="1.5" fill="none"/>
+  <line x1="433" y1="110" x2="452" y2="100" stroke-width="1.5" fill="none"/>
+
+  <!-- OH at bottom C1 -->
+  <line x1="430" y1="113" x2="430" y2="130" stroke-width="1.5" fill="none"/>
+  <text x="424" y="140">OH</text>
+
+  <!-- NO2 at para C4 (top: 430, 57) -->
+  <line x1="430" y1="57" x2="430" y2="40" stroke-width="1.5" fill="none"/>
+  <text x="421" y="37">NO₂</text>
+
+  <!-- Conjugation path arrows through ring -->
+  <path d="M430,130 Q410,120 406,99 Q406,80 430,70 Q454,80 454,99 Q454,120 432,130" stroke-width="0.8" stroke-dasharray="3,2" fill="none"/>
+  <text x="460" y="85" font-size="9" fill="#16a34a">↑</text>
+  <text x="363" y="158" font-size="9">-I 强 + -C 强（直接共轭路径）</text>
+  <text x="363" y="168" font-size="9">O⁻ → 苯环 → NO₂ 共轭完整</text>
+  <text x="363" y="178" font-size="9">稳定酚氧负离子，酸性最强</text>
+
+  <!-- Summary -->
+  <text x="10" y="195" font-size="9" opacity="0.7">酸性：苯酚(9.99) → 邻(7.23) → 对(7.16) → 间(8.40)，间位例外（-C失效）</text>
+</svg>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 210" width="520" height="210" aria-label="三种碳活性中间体：甲基自由基sp²平面型、甲基碳正离子空p轨道、甲基碳负离子sp³四面体">
+  <title>三种碳活性中间体构型对比：自由基、碳正离子、碳负离子</title>
+  <style>
+    text { font-family: serif; font-size: 12px; fill: currentColor; }
+    line, ellipse, path, polygon { stroke: currentColor; }
+  </style>
+
+  <!-- ===== Methyl Radical .CH3 ===== -->
+  <text x="20" y="18" font-weight="bold" font-size="13">甲基自由基 ·CH₃</text>
+  <text x="20" y="33" font-size="11">sp² 平面型</text>
+
+  <!-- Central C -->
+  <text x="78" y="95">C</text>
+  <!-- 3 H in trigonal planar arrangement -->
+  <line x1="78" y1="84" x2="78" y2="60" stroke-width="1.5" fill="none"/>
+  <text x="71" y="55">H</text>
+  <line x1="76" y1="97" x2="55" y2="120" stroke-width="1.5" fill="none"/>
+  <text x="43" y="132">H</text>
+  <line x1="90" y1="97" x2="113" y2="120" stroke-width="1.5" fill="none"/>
+  <text x="113" y="132">H</text>
+  <!-- p orbital above (single electron) -->
+  <ellipse cx="83" cy="62" rx="8" ry="14" fill="none" stroke-width="1" stroke-dasharray="3,2"/>
+  <ellipse cx="83" cy="43" rx="8" ry="14" fill="none" stroke-width="1"/>
+  <!-- Electron dot -->
+  <circle cx="83" cy="41" r="2" fill="currentColor" stroke="none"/>
+  <text x="92" y="38" font-size="10">单电子</text>
+  <!-- Plane line -->
+  <line x1="40" y1="97" x2="135" y2="97" stroke-width="0.5" stroke-dasharray="3,3" fill="none"/>
+  <text x="42" y="155" font-size="11">p 轨道含单电子</text>
+  <text x="42" y="168" font-size="11">能量：最不稳定</text>
+
+  <!-- Divider 1 -->
+  <line x1="178" y1="10" x2="178" y2="200" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== Methyl Carbocation CH3+ ===== -->
+  <text x="192" y="18" font-weight="bold" font-size="13">甲基碳正离子 CH₃⁺</text>
+  <text x="192" y="33" font-size="11">sp² 平面型</text>
+
+  <text x="250" y="95">C</text>
+  <text x="260" y="83" font-size="10">+</text>
+  <!-- 3 H bonds -->
+  <line x1="250" y1="84" x2="250" y2="60" stroke-width="1.5" fill="none"/>
+  <text x="243" y="55">H</text>
+  <line x1="248" y1="97" x2="227" y2="120" stroke-width="1.5" fill="none"/>
+  <text x="215" y="132">H</text>
+  <line x1="262" y1="97" x2="285" y2="120" stroke-width="1.5" fill="none"/>
+  <text x="285" y="132">H</text>
+  <!-- Empty p orbital above (open/dashed) -->
+  <ellipse cx="255" cy="60" rx="8" ry="14" fill="none" stroke-width="1" stroke-dasharray="3,2"/>
+  <ellipse cx="255" cy="40" rx="8" ry="14" fill="none" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="265" y="36" font-size="10">空 p 轨道</text>
+  <!-- Plane line -->
+  <line x1="212" y1="97" x2="307" y2="97" stroke-width="0.5" stroke-dasharray="3,3" fill="none"/>
+  <text x="210" y="155" font-size="11">空 p 轨道，亲电性强</text>
+  <text x="210" y="168" font-size="11">最活泼，寿命最短</text>
+
+  <!-- Divider 2 -->
+  <line x1="350" y1="10" x2="350" y2="200" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== Methyl Carbanion CH3- ===== -->
+  <text x="365" y="18" font-weight="bold" font-size="13">甲基碳负离子 CH₃⁻</text>
+  <text x="365" y="33" font-size="11">sp³ 四面体</text>
+
+  <text x="428" y="95">C</text>
+  <text x="438" y="83" font-size="10">−</text>
+  <!-- 3 H bonds in near-tetrahedral, 4th is lone pair -->
+  <line x1="428" y1="84" x2="410" y2="63" stroke-width="1.5" fill="none"/>
+  <text x="399" y="58">H</text>
+  <line x1="435" y1="84" x2="455" y2="63" stroke-width="1.5" fill="none"/>
+  <text x="456" y="58">H</text>
+  <!-- Wedge bond forward -->
+  <polygon points="430,100 450,120 445,124" fill="currentColor" stroke="none"/>
+  <text x="452" y="133">H</text>
+  <!-- Lone pair (dashed wedge going back = up) -->
+  <line x1="428" y1="85" x2="416" y2="68" stroke-width="1" stroke-dasharray="2,1" fill="none"/>
+  <!-- Lone pair representation -->
+  <circle cx="410" cy="57" r="2.5" fill="currentColor" stroke="none"/>
+  <circle cx="403" cy="57" r="2.5" fill="currentColor" stroke="none"/>
+  <text x="374" y="53" font-size="10">孤对电子</text>
+
+  <text x="368" y="155" font-size="11">sp³，孤对电子占一个轨道</text>
+  <text x="368" y="168" font-size="11">亲核性强，较稳定</text>
+</svg>

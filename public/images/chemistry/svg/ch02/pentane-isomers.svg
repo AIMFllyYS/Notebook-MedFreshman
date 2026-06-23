@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 180" width="540" height="180" aria-label="戊烷三种异构体结构式：正戊烷直链、异戊烷1个甲基支链、新戊烷4个甲基">
+  <title>戊烷的三个异构体：正戊烷、异戊烷、新戊烷</title>
+  <style>
+    text { font-family: serif; font-size: 12px; fill: currentColor; }
+    line { stroke: currentColor; }
+  </style>
+
+  <!-- ===== Normal pentane (n-pentane) ===== -->
+  <text x="10" y="18" font-weight="bold" font-size="13">正戊烷</text>
+  <text x="10" y="33" font-size="11">n-pentane，沸点 36°C</text>
+
+  <!-- C1-C2-C3-C4-C5 linear chain, zig-zag -->
+  <!-- C1 at (20,90), C2 at (50,70), C3 at (80,90), C4 at (110,70), C5 at (140,90) -->
+  <line x1="20" y1="90" x2="50" y2="70" stroke-width="1.5" fill="none"/>
+  <line x1="50" y1="70" x2="80" y2="90" stroke-width="1.5" fill="none"/>
+  <line x1="80" y1="90" x2="110" y2="70" stroke-width="1.5" fill="none"/>
+  <line x1="110" y1="70" x2="140" y2="90" stroke-width="1.5" fill="none"/>
+
+  <!-- Carbon labels (optional, skeletal) -->
+  <text x="13" y="105" font-size="10">CH₃</text>
+  <text x="43" y="67" font-size="10">CH₂</text>
+  <text x="73" y="105" font-size="10">CH₂</text>
+  <text x="103" y="67" font-size="10">CH₂</text>
+  <text x="133" y="105" font-size="10">CH₃</text>
+
+  <!-- Chain label -->
+  <text x="10" y="145" font-size="11">CH₃CH₂CH₂CH₂CH₃</text>
+  <text x="10" y="160" font-size="10" opacity="0.7">直链，无支链</text>
+
+  <!-- Divider -->
+  <line x1="195" y1="10" x2="195" y2="170" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== Isopentane (2-methylbutane) ===== -->
+  <text x="205" y="18" font-weight="bold" font-size="13">异戊烷</text>
+  <text x="205" y="33" font-size="11">2-甲基丁烷，沸点 28°C</text>
+
+  <!-- Main chain C1-C2-C3-C4 zig-zag, branch CH3 at C2 -->
+  <!-- C1(215,90), C2(245,70), C3(275,90), C4(305,70) -->
+  <line x1="215" y1="90" x2="245" y2="70" stroke-width="1.5" fill="none"/>
+  <line x1="245" y1="70" x2="275" y2="90" stroke-width="1.5" fill="none"/>
+  <line x1="275" y1="90" x2="305" y2="70" stroke-width="1.5" fill="none"/>
+  <!-- Branch: CH3 from C2 going up -->
+  <line x1="245" y1="70" x2="245" y2="45" stroke-width="1.5" fill="none"/>
+
+  <!-- Labels -->
+  <text x="208" y="105" font-size="10">CH₃</text>
+  <text x="238" y="67" font-size="10">CH</text>
+  <text x="268" y="105" font-size="10">CH₂</text>
+  <text x="298" y="67" font-size="10">CH₃</text>
+  <text x="238" y="42" font-size="10">CH₃</text>
+  <!-- Branch label -->
+  <text x="253" y="58" font-size="9" opacity="0.7">↑支链</text>
+
+  <text x="205" y="145" font-size="11">(CH₃)₂CHCH₂CH₃</text>
+  <text x="205" y="160" font-size="10" opacity="0.7">链端1个甲基支链</text>
+
+  <!-- Divider -->
+  <line x1="365" y1="10" x2="365" y2="170" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== Neopentane (2,2-dimethylpropane) ===== -->
+  <text x="375" y="18" font-weight="bold" font-size="13">新戊烷</text>
+  <text x="375" y="33" font-size="11">2,2-二甲基丙烷，沸点 9.5°C</text>
+
+  <!-- Central C at (455, 90), 4 CH3 groups: top, bottom, left, right -->
+  <!-- Left CH3 -->
+  <line x1="455" y1="90" x2="420" y2="90" stroke-width="1.5" fill="none"/>
+  <text x="403" y="95" font-size="10">CH₃</text>
+  <!-- Right CH3 -->
+  <line x1="455" y1="90" x2="490" y2="90" stroke-width="1.5" fill="none"/>
+  <text x="492" y="95" font-size="10">CH₃</text>
+  <!-- Top CH3 -->
+  <line x1="455" y1="90" x2="455" y2="57" stroke-width="1.5" fill="none"/>
+  <text x="448" y="53" font-size="10">CH₃</text>
+  <!-- Bottom CH3 (wedge forward) -->
+  <line x1="455" y1="90" x2="455" y2="123" stroke-width="1.5" fill="none"/>
+  <text x="448" y="137" font-size="10">CH₃</text>
+
+  <!-- Center C label -->
+  <text x="449" y="95">C</text>
+
+  <text x="380" y="155" font-size="11">(CH₃)₄C，中心碳连4个甲基</text>
+  <text x="380" y="170" font-size="10" opacity="0.7">沸点最低（球形分子，接触面积最小）</text>
+</svg>

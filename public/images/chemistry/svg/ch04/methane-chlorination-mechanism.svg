@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 230" width="520" height="230" aria-label="甲烷氯化自由基链反应机理：链引发Cl2光照均裂，链转移Cl与CH4循环，链终止自由基结合">
+  <title>甲烷氯化自由基链反应机理图</title>
+  <style>
+    text { font-family: serif; font-size: 12px; fill: currentColor; }
+    line, path, polygon { stroke: currentColor; }
+  </style>
+
+  <!-- ===== Chain Initiation (链引发) ===== -->
+  <text x="10" y="20" font-weight="bold" font-size="13">① 链引发</text>
+  <text x="10" y="36">Cl₂</text>
+  <text x="33" y="30" font-size="9">hν（光照）</text>
+  <line x1="28" y1="36" x2="90" y2="36" stroke-width="1" fill="none"/>
+  <polygon points="90,36 82,32 82,40" fill="currentColor" stroke="none"/>
+  <text x="93" y="40">2 Cl·</text>
+  <!-- Curly arrows showing homolytic cleavage -->
+  <path d="M25,32 Q32,22 43,26" stroke-width="1" fill="none"/>
+  <polygon points="43,26 37,30 38,22" fill="currentColor" stroke="none"/>
+  <path d="M35,32 Q42,42 51,38" stroke-width="1" fill="none"/>
+  <polygon points="51,38 45,35 47,43" fill="currentColor" stroke="none"/>
+  <text x="10" y="52" font-size="10" opacity="0.7">Cl—Cl 均裂，各得 1 个电子</text>
+
+  <!-- ===== Chain Transfer (链转移) - shown as cycle ===== -->
+  <text x="10" y="75" font-weight="bold" font-size="13">② 链转移（循环）</text>
+
+  <!-- Step a: Cl· + CH4 → ·CH3 + HCl -->
+  <text x="15" y="100">Cl·  +  CH₄</text>
+  <line x1="115" y1="95" x2="160" y2="95" stroke-width="1.5" fill="none"/>
+  <polygon points="160,95 153,91 153,99" fill="currentColor" stroke="none"/>
+  <text x="163" y="100">·CH₃  +  HCl</text>
+  <text x="90" y="93" font-size="10" opacity="0.7">慢</text>
+
+  <!-- Step b: ·CH3 + Cl2 → CH3Cl + Cl· (new chain carrier) -->
+  <text x="15" y="125">·CH₃  +  Cl₂</text>
+  <line x1="115" y1="120" x2="160" y2="120" stroke-width="1.5" fill="none"/>
+  <polygon points="160,120 153,116 153,124" fill="currentColor" stroke="none"/>
+  <text x="163" y="125">CH₃Cl  +  Cl·</text>
+  <text x="90" y="118" font-size="10" opacity="0.7">快</text>
+
+  <!-- Cycle arrows -->
+  <path d="M230,100 Q260,88 255,125" stroke-width="1.2" fill="none"/>
+  <polygon points="255,125 251,117 259,118" fill="currentColor" stroke="none"/>
+  <path d="M235,125 Q215,140 220,100" stroke-width="1.2" fill="none"/>
+  <polygon points="220,100 224,108 216,108" fill="currentColor" stroke="none"/>
+  <text x="248" y="115" font-size="11" fill="#2563eb">Cl·</text>
+  <text x="248" y="103" font-size="9" opacity="0.7">再生</text>
+
+  <!-- Amplification annotation -->
+  <text x="290" y="108" font-size="10">链长≈5000</text>
+  <text x="290" y="120" font-size="10">（1个Cl·引发约</text>
+  <text x="290" y="132" font-size="10">5000次循环）</text>
+
+  <!-- ===== Chain Termination (链终止) ===== -->
+  <text x="10" y="158" font-weight="bold" font-size="13">③ 链终止</text>
+  <text x="15" y="175">Cl·  +  Cl·</text>
+  <line x1="100" y1="170" x2="145" y2="170" stroke-width="1.5" fill="none"/>
+  <polygon points="145,170 138,166 138,174" fill="currentColor" stroke="none"/>
+  <text x="148" y="175">Cl₂</text>
+
+  <text x="15" y="193">·CH₃  +  Cl·</text>
+  <line x1="100" y1="188" x2="145" y2="188" stroke-width="1.5" fill="none"/>
+  <polygon points="145,188 138,184 138,192" fill="currentColor" stroke="none"/>
+  <text x="148" y="193">CH₃Cl</text>
+
+  <text x="15" y="211">·CH₃  +  ·CH₃</text>
+  <line x1="100" y1="206" x2="145" y2="206" stroke-width="1.5" fill="none"/>
+  <polygon points="145,206 138,202 138,210" fill="currentColor" stroke="none"/>
+  <text x="148" y="211">CH₃CH₃（乙烷）</text>
+
+  <text x="10" y="228" font-size="10" opacity="0.7">自由基互相结合，链增长停止（副产物：乙烷等）</text>
+</svg>

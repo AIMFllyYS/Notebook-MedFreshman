@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200" width="500" height="200" aria-label="Hückel规则芳香性判据实例" role="img">
+  <title>Hückel规则芳香性判据：苯6e芳香、环丁二烯4e反芳香、环戊二烯负离子6e芳香、环庚三烯正离子6e芳香</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="12" font-weight="bold" fill="currentColor">Hückel 规则 (4n+2)：芳香性 / 反芳香性 判断</text>
+  <!-- 1. Benzene (aromatic) -->
+  <g transform="translate(10, 30)">
+    <polygon points="35,12 58,25 58,50 35,63 12,50 12,25" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <circle cx="35" cy="38" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <text x="24" y="83" font-size="10" fill="currentColor">苯</text>
+    <text x="18" y="95" font-size="11" font-weight="bold" fill="green">6π，芳香</text>
+    <text x="14" y="108" font-size="10" fill="currentColor">n=1，4n+2=6✓</text>
+  </g>
+  <!-- 2. Cyclobutadiene (antiaromatic) -->
+  <g transform="translate(110, 30)">
+    <polygon points="12,12 48,12 48,48 12,48" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <!-- alternating double bonds -->
+    <line x1="14" y1="12" x2="46" y2="12" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="48" y1="14" x2="48" y2="46" stroke="currentColor" stroke-width="2.5"/>
+    <text x="15" y="68" font-size="10" fill="currentColor">环丁二烯</text>
+    <text x="12" y="82" font-size="11" font-weight="bold" fill="red">4π，反芳香</text>
+    <text x="12" y="95" font-size="10" fill="currentColor">n=1，4n=4✗</text>
+    <text x="12" y="108" font-size="10" fill="currentColor">极不稳定</text>
+  </g>
+  <!-- 3. Cyclopentadienyl anion (aromatic) -->
+  <g transform="translate(215, 30)">
+    <!-- Pentagon -->
+    <polygon points="32,5 58,25 48,55 16,55 6,25" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <!-- Two double bonds -->
+    <line x1="34" y1="8" x2="56" y2="26" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="37" y1="7" x2="58" y2="28" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="8" y1="24" x2="18" y2="54" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="11" y1="25" x2="21" y2="53" stroke="currentColor" stroke-width="2.5"/>
+    <!-- Negative charge -->
+    <text x="24" y="70" font-size="13" fill="currentColor">⊖</text>
+    <text x="14" y="84" font-size="10" fill="currentColor">环戊二烯负离子</text>
+    <text x="15" y="96" font-size="11" font-weight="bold" fill="green">6π，芳香</text>
+    <text x="14" y="108" font-size="10" fill="currentColor">4(双键)+2(负电荷)=6</text>
+  </g>
+  <!-- 4. Cycloheptatrienyl cation (aromatic) -->
+  <g transform="translate(330, 25)">
+    <!-- Heptagon -->
+    <polygon points="40,5 63,15 72,38 63,62 40,72 17,62 8,38 17,15" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <!-- Three double bonds -->
+    <line x1="42" y1="7" x2="61" y2="17" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="44" y1="6" x2="62" y2="18" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="64" y1="40" x2="61" y2="62" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="62" y1="39" x2="58" y2="62" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="18" y1="15" x2="9" y2="38" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="19" y1="17" x2="11" y2="39" stroke="currentColor" stroke-width="2.5"/>
+    <!-- Positive charge -->
+    <text x="33" y="85" font-size="13" fill="currentColor">⊕</text>
+    <text x="15" y="98" font-size="10" fill="currentColor">环庚三烯正离子</text>
+    <text x="17" y="110" font-size="11" font-weight="bold" fill="green">6π，芳香</text>
+    <text x="14" y="122" font-size="10" fill="currentColor">6(双键)+0(正电荷)=6</text>
+  </g>
+  <!-- Bottom note -->
+  <text x="10" y="170" font-size="11" fill="currentColor">芳香：环状+平面+完全共轭+4n+2 个π电子（闭壳层稳定）</text>
+  <text x="10" y="185" font-size="11" fill="currentColor">反芳香：4n 个π电子（开壳层，特别不稳定）  |  负电荷碳：贡献2π电子；正电荷碳：贡献0π电子</text>
+</svg>

@@ -116,7 +116,7 @@ $$
 二级反应，速率与底物和碱浓度都有关。
 :::
 
-<!-- SVG-TODO: E2 反应机理图（碱 B- 进攻 β-H，四中心过渡态 [B...H-C-C...X]^-，C-H 键电子形成 π 键同时 C-X 键断裂，一步协同，标注反式消除要求 H 与 X 反平行） -->
+::figure{src="/images/chemistry/svg/ch09/e2-mechanism-antiperiplanar.svg" caption="E2消除机理——四中心过渡态，H与X反式共平面，一步协同" alt="碱攻击β-H，B-H-Cβ-Cα-X四中心过渡态，H-Cβ-Cα-X反式180°共平面要求，协同消除"}
 
 :::theorem{label=E2反应的特点}
 1. **双分子反应**，二级反应
@@ -155,7 +155,7 @@ $$
 **原因**：双键上烷基越多，烯烃越稳定（超共轭效应使双键稳定）。
 :::
 
-<!-- SVG-TODO: Zaitsev 消除产物分布图（2-溴丁烷消除 HBr：C3-H 消除得 Zaitsev 产物 2-丁烯 81%，C1-H 消除得反 Zaitsev 产物 1-丁烯 19%，标注双键上烷基数与稳定性关系） -->
+::figure{src="/images/chemistry/svg/ch09/zaitsev-product-distribution.svg" caption="Zaitsev规则——2-溴丁烷消除：2-丁烯81%(主)，1-丁烯19%(次)" alt="2-溴丁烷加KOH/醇消除：C3-H消除得取代最多2-丁烯81%，C1-H消除得1-丁烯19%"}
 
 :::insight{label=为什么Zaitsev产物更稳定}
 烯烃的稳定性与双键上的烷基数目有关：
@@ -209,7 +209,7 @@ $$
 **例**：2-溴丁烷消除，反式消除得到的主产物是 **$(E)$-2-丁烯**（61%），$(Z)$-2-丁烯较少（20%）。
 :::
 
-<!-- SVG-TODO: E2 反式消除构象图（Newman 投影：对位交叉式中 β-H 与 X 反平行利于消除 vs 重叠式顺式不利，2-溴丁烷消除得 (E)-2-丁烯 61% vs (Z)-2-丁烯 20%，标注大基团反式位阻小更稳定） -->
+::figure{src="/images/chemistry/svg/ch09/e2-anti-elimination-newman.svg" caption="E2消除立体专一性——Newman投影分析：反式共平面得(E)-2-丁烯61%" alt="2-溴丁烷Newman投影：H-Br反式共平面(180°)得E-2-丁烯61%，syn构象得Z-2-丁烯20%"}
 
 :::example{label=E2反式消除的产物预测}
 **题目**：预测 2-溴丁烷在 $\ce{NaOEt/EtOH}$ 中消除的主产物。

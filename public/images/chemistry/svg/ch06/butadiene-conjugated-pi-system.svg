@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 200" width="420" height="200" aria-label="1,3-丁二烯的共轭体系和离域大π键" role="img">
+  <title>1,3-丁二烯共轭体系：4个sp2碳的p轨道侧面重叠形成离域大π键</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="currentColor">1,3-丁二烯的共轭大 π 键</text>
+  <!-- Structural formula -->
+  <text x="10" y="50" font-size="13" fill="currentColor">CH₂=CH—CH=CH₂</text>
+  <!-- Bond length annotation -->
+  <text x="40" y="65" font-size="11" fill="currentColor">134pm</text>
+  <text x="107" y="65" font-size="11" fill="currentColor">146pm</text>
+  <text x="170" y="65" font-size="11" fill="currentColor">134pm</text>
+  <!-- all sp2 labels -->
+  <text x="18" y="78" font-size="10" fill="currentColor">sp²</text>
+  <text x="55" y="78" font-size="10" fill="currentColor">sp²</text>
+  <text x="110" y="78" font-size="10" fill="currentColor">sp²</text>
+  <text x="155" y="78" font-size="10" fill="currentColor">sp²</text>
+  <text x="195" y="78" font-size="10" fill="currentColor">（均 sp²）</text>
+  <!-- Divider -->
+  <line x1="10" y1="88" x2="410" y2="88" stroke="currentColor" stroke-width="1" stroke-dasharray="4,3" opacity="0.3"/>
+  <!-- p orbital representation -->
+  <text x="10" y="105" font-size="12" font-weight="bold" fill="currentColor">p 轨道侧面重叠（分子平面以上）：</text>
+  <!-- 4 p orbitals as lobes -->
+  <g transform="translate(30, 120)">
+    <!-- C1 p orbital -->
+    <ellipse cx="40" cy="20" rx="14" ry="22" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.8"/>
+    <text x="34" y="52" font-size="11" fill="currentColor">C1</text>
+    <!-- C2 p orbital -->
+    <ellipse cx="100" cy="20" rx="14" ry="22" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.8"/>
+    <text x="94" y="52" font-size="11" fill="currentColor">C2</text>
+    <!-- C3 p orbital -->
+    <ellipse cx="160" cy="20" rx="14" ry="22" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.8"/>
+    <text x="154" y="52" font-size="11" fill="currentColor">C3</text>
+    <!-- C4 p orbital -->
+    <ellipse cx="220" cy="20" rx="14" ry="22" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.8"/>
+    <text x="214" y="52" font-size="11" fill="currentColor">C4</text>
+    <!-- Delocalized pi cloud (rectangle enclosing all 4) -->
+    <rect x="28" y="-2" width="206" height="44" rx="22" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="100" y="72" font-size="11" fill="currentColor">离域大 π 键（π₄⁴，4 电子共享）</text>
+    <!-- C-C bonds as sigma underneath -->
+    <line x1="54" y1="20" x2="86" y2="20" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <line x1="114" y1="20" x2="146" y2="20" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <line x1="174" y1="20" x2="206" y2="20" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+  </g>
+  <!-- Bond length comparison note -->
+  <text x="10" y="185" font-size="11" fill="currentColor">C2—C3 键长 146pm（单键 154pm），具有部分双键性质——共轭效应的体现</text>
+</svg>

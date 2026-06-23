@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 200" width="420" height="200" aria-label="苯的离域大π键结构" role="img">
+  <title>苯的离域大π键：6个sp2碳正六边形，6个p轨道重叠形成π6^6</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="currentColor">苯的结构：Kekulé 式 vs 现代表达式</text>
+  <!-- Left: Kekule structure -->
+  <text x="28" y="42" font-size="11" font-weight="bold" fill="currentColor">Kekulé 式</text>
+  <!-- Hexagon with alternating single/double bonds -->
+  <polygon points="70,55 97,68 97,95 70,108 43,95 43,68" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Double bonds (alternating) -->
+  <line x1="70" y1="58" x2="94" y2="71" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="70" y1="61" x2="90" y2="72" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="44" y1="95" x2="68" y2="108" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="47" y1="92" x2="69" y2="105" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="46" y1="68" x2="43" y2="92" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="49" y1="67" x2="46" y2="92" stroke="currentColor" stroke-width="2.5"/>
+  <!-- H labels -->
+  <text x="65" y="47" font-size="10" fill="currentColor">H</text>
+  <text x="102" y="65" font-size="10" fill="currentColor">H</text>
+  <text x="102" y="100" font-size="10" fill="currentColor">H</text>
+  <text x="65" y="118" font-size="10" fill="currentColor">H</text>
+  <text x="28" y="100" font-size="10" fill="currentColor">H</text>
+  <text x="28" y="65" font-size="10" fill="currentColor">H</text>
+  <text x="15" y="140" font-size="10" fill="currentColor">3个单键+3个双键</text>
+  <text x="15" y="153" font-size="10" fill="currentColor">（但实测键长均等！）</text>
+  <!-- Center: double arrow -->
+  <text x="123" y="85" font-size="22" fill="currentColor">↔</text>
+  <!-- Right: modern circle representation -->
+  <text x="155" y="42" font-size="11" font-weight="bold" fill="currentColor">现代圆圈式</text>
+  <polygon points="195,55 222,68 222,95 195,108 168,95 168,68" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <!-- Inner circle representing delocalized electrons -->
+  <circle cx="195" cy="81" r="18" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <!-- H labels -->
+  <text x="190" y="47" font-size="10" fill="currentColor">H</text>
+  <text x="227" y="65" font-size="10" fill="currentColor">H</text>
+  <text x="227" y="100" font-size="10" fill="currentColor">H</text>
+  <text x="190" y="118" font-size="10" fill="currentColor">H</text>
+  <text x="153" y="100" font-size="10" fill="currentColor">H</text>
+  <text x="153" y="65" font-size="10" fill="currentColor">H</text>
+  <text x="150" y="140" font-size="10" fill="currentColor">圆圈=6π电子完全离域</text>
+  <text x="150" y="153" font-size="10" fill="currentColor">C-C键均等（1.39Å）</text>
+  <!-- Right side: p orbital diagram -->
+  <text x="260" y="42" font-size="11" font-weight="bold" fill="currentColor">p 轨道侧面重叠</text>
+  <!-- 6 p orbital lobes above hexagon -->
+  <g transform="translate(290, 55)">
+    <!-- Simplified: 6 small lobes arranged in hex -->
+    <ellipse cx="35" cy="10" rx="9" ry="14" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.8"/>
+    <ellipse cx="63" cy="22" rx="14" ry="9" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.8"/>
+    <ellipse cx="63" cy="52" rx="14" ry="9" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.8"/>
+    <ellipse cx="35" cy="64" rx="9" ry="14" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.8"/>
+    <ellipse cx="8" cy="52" rx="14" ry="9" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.8"/>
+    <ellipse cx="8" cy="22" rx="14" ry="9" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.8"/>
+    <!-- Delocalized cloud -->
+    <circle cx="35" cy="37" r="22" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="20" y="40" font-size="10" fill="currentColor">π₆⁶</text>
+  </g>
+  <!-- Bond data -->
+  <text x="260" y="145" font-size="11" fill="currentColor">键长 1.39 Å（单键 1.54, 双键 1.33 之间）</text>
+  <text x="260" y="160" font-size="11" fill="currentColor">离域能 ≈124 kJ/mol</text>
+  <text x="260" y="175" font-size="11" fill="currentColor">键角 120°，分子平面型</text>
+</svg>

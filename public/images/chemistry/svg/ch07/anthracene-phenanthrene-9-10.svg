@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 190" width="480" height="190" aria-label="蒽和菲的9,10位反应性" role="img">
+  <title>蒽（线性三环）和菲（角形三环）的9,10位活性最高，加成后保留两个完整苯环</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="currentColor">蒽和菲的 9,10 位反应活性</text>
+  <!-- Left: Anthracene (linear) -->
+  <text x="20" y="40" font-size="12" font-weight="bold" fill="currentColor">蒽（线性三环）</text>
+  <!-- Three fused hexagons, linear -->
+  <!-- Left ring -->
+  <polygon points="30,55 53,67 53,92 30,104 7,92 7,67" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <!-- Center ring -->
+  <polygon points="76,55 99,67 99,92 76,104 53,92 53,67" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <!-- Right ring -->
+  <polygon points="122,55 145,67 145,92 122,104 99,92 99,67" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <!-- Double bonds -->
+  <line x1="9" y1="67" x2="28" y2="55" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="10" y1="70" x2="30" y2="57" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="32" y1="104" x2="51" y2="93" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="33" y1="101" x2="52" y2="91" stroke="currentColor" stroke-width="2.5"/>
+  <!-- Center ring double bonds at 9,10 -->
+  <line x1="55" y1="67" x2="74" y2="55" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="55" y1="70" x2="75" y2="57" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="78" y1="104" x2="97" y2="93" stroke="currentColor" stroke-width="2.5"/>
+  <!-- Right ring -->
+  <line x1="101" y1="67" x2="120" y2="55" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="101" y1="70" x2="121" y2="58" stroke="currentColor" stroke-width="2.5"/>
+  <!-- 9,10 positions highlighted -->
+  <circle cx="76" cy="67" r="7" fill="orange" opacity="0.4"/>
+  <circle cx="76" cy="92" r="7" fill="orange" opacity="0.4"/>
+  <text x="68" y="62" font-size="11" font-weight="bold" fill="orange">9</text>
+  <text x="68" y="100" font-size="11" font-weight="bold" fill="orange">10</text>
+  <!-- Why 9,10 is reactive note -->
+  <text x="10" y="125" font-size="10" fill="currentColor">9,10 位加成/取代后：</text>
+  <text x="10" y="138" font-size="10" fill="green">→ 保留两个完整苯环（6π×2）</text>
+  <text x="10" y="151" font-size="10" fill="currentColor">能量"代价"最小</text>
+  <!-- Divider -->
+  <line x1="240" y1="30" x2="240" y2="170" stroke="currentColor" stroke-width="1" stroke-dasharray="5,3" opacity="0.4"/>
+  <!-- Right: Phenanthrene (angular) -->
+  <text x="255" y="40" font-size="12" font-weight="bold" fill="currentColor">菲（角形三环）</text>
+  <!-- Three fused hexagons, angular arrangement -->
+  <!-- Bottom-left ring -->
+  <polygon points="280,75 303,87 303,112 280,124 257,112 257,87" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <!-- Top-center ring (angled) -->
+  <polygon points="312,45 335,57 335,82 312,94 303,87 303,62" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <!-- Bottom-right ring -->
+  <polygon points="357,60 380,72 380,97 357,109 335,97 335,72" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <!-- 9,10 highlighted (in central bond) -->
+  <circle cx="312" cy="87" r="7" fill="orange" opacity="0.4"/>
+  <circle cx="335" cy="82" r="7" fill="orange" opacity="0.4"/>
+  <text x="302" y="84" font-size="11" font-weight="bold" fill="orange">9</text>
+  <text x="338" y="82" font-size="11" font-weight="bold" fill="orange">10</text>
+  <!-- Double bonds on phenanthrene -->
+  <line x1="303" y1="62" x2="310" y2="45" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="259" y1="87" x2="278" y2="75" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="259" y1="90" x2="280" y2="77" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="282" y1="124" x2="301" y2="113" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="282" y1="121" x2="301" y2="110" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="337" y1="72" x2="355" y2="60" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="337" y1="75" x2="357" y2="62" stroke="currentColor" stroke-width="2.5"/>
+  <text x="255" y="138" font-size="10" fill="currentColor">蒽: 9,10-二溴-9,10-二氢蒽</text>
+  <text x="255" y="152" font-size="10" fill="currentColor">菲: 9,10-二氢菲</text>
+  <text x="255" y="166" font-size="10" fill="green">比苯容易（保留两苯环芳香性）</text>
+</svg>

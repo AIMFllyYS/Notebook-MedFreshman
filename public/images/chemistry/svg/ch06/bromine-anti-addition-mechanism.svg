@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200" width="500" height="200" aria-label="烯烃与Br2反式加成机理——溴鎓离子中间体" role="img">
+  <title>烯烃与Br2反式加成机理（经溴鎓离子）</title>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+  <!-- Step 1: Alkene + Br2 -->
+  <text x="10" y="18" font-size="12" font-weight="bold" fill="currentColor">步骤1：Br₂ 被 π 键极化</text>
+  <!-- Alkene: CH2=CH2 -->
+  <circle cx="60" cy="70" r="4" fill="currentColor"/>
+  <circle cx="100" cy="70" r="4" fill="currentColor"/>
+  <line x1="60" y1="70" x2="100" y2="70" stroke="currentColor" stroke-width="2"/>
+  <line x1="60" y1="76" x2="100" y2="76" stroke="currentColor" stroke-width="2"/>
+  <text x="30" y="65" font-size="12" fill="currentColor">R</text>
+  <line x1="42" y1="67" x2="56" y2="71" stroke="currentColor" stroke-width="1.5"/>
+  <text x="105" y="65" font-size="12" fill="currentColor">R'</text>
+  <line x1="104" y1="71" x2="115" y2="67" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Br2 approaching from above -->
+  <text x="62" y="40" font-size="12" fill="currentColor">Br</text>
+  <line x1="75" y1="42" x2="88" y2="42" stroke="currentColor" stroke-width="2"/>
+  <text x="88" y="40" font-size="12" fill="currentColor">Br</text>
+  <text x="65" y="36" font-size="10" fill="currentColor">δ+</text>
+  <text x="90" y="36" font-size="10" fill="currentColor">δ−</text>
+  <!-- Curved arrow pi to Br -->
+  <path d="M80,68 Q80,55 78,48" stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+  <!-- Arrow -->
+  <text x="140" y="72" font-size="18" fill="currentColor">→</text>
+  <!-- Step 2: Bromonium ion -->
+  <text x="170" y="18" font-size="12" font-weight="bold" fill="currentColor">步骤2：溴鎓离子中间体</text>
+  <circle cx="225" cy="85" r="4" fill="currentColor"/>
+  <circle cx="265" cy="85" r="4" fill="currentColor"/>
+  <line x1="225" y1="85" x2="265" y2="85" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Br bridge on top -->
+  <circle cx="245" cy="58" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="241" y="62" font-size="12" fill="currentColor">Br</text>
+  <text x="238" y="52" font-size="10" fill="currentColor">⊕</text>
+  <line x1="225" y1="82" x2="238" y2="64" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="265" y1="82" x2="252" y2="64" stroke="currentColor" stroke-width="1.5"/>
+  <!-- R groups -->
+  <text x="195" y="80" font-size="12" fill="currentColor">R</text>
+  <line x1="207" y1="83" x2="221" y2="86" stroke="currentColor" stroke-width="1.5"/>
+  <text x="270" y="80" font-size="12" fill="currentColor">R'</text>
+  <line x1="269" y1="86" x2="279" y2="82" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Br- coming from BELOW (backside) -->
+  <text x="230" y="125" font-size="12" fill="currentColor">Br⁻</text>
+  <path d="M245,120 Q245,108 255,97" stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="4,2" marker-end="url(#arr)"/>
+  <text x="260" y="118" font-size="11" fill="currentColor">背面进攻</text>
+  <!-- Label bromonium -->
+  <text x="185" y="145" font-size="11" fill="currentColor">三元环溴鎓离子，Br 挡住一侧</text>
+  <!-- Arrow -->
+  <text x="310" y="85" font-size="18" fill="currentColor">→</text>
+  <!-- Step 3: trans product -->
+  <text x="340" y="18" font-size="12" font-weight="bold" fill="currentColor">步骤3：反式产物</text>
+  <circle cx="380" cy="85" r="4" fill="currentColor"/>
+  <circle cx="420" cy="85" r="4" fill="currentColor"/>
+  <line x1="380" y1="85" x2="420" y2="85" stroke="currentColor" stroke-width="1.8"/>
+  <!-- Br on top of C1 -->
+  <line x1="380" y1="85" x2="370" y2="60" stroke="currentColor" stroke-width="1.5"/>
+  <text x="358" y="58" font-size="12" fill="currentColor">Br</text>
+  <!-- Br at bottom of C2 (backside attack) -->
+  <line x1="420" y1="85" x2="430" y2="110" stroke="currentColor" stroke-width="1.5"/>
+  <text x="432" y="118" font-size="12" fill="currentColor">Br</text>
+  <!-- R groups -->
+  <text x="350" y="90" font-size="12" fill="currentColor">R</text>
+  <line x1="362" y1="88" x2="376" y2="86" stroke="currentColor" stroke-width="1.5"/>
+  <text x="425" y="90" font-size="12" fill="currentColor">R'</text>
+  <!-- anti label -->
+  <text x="340" y="135" font-size="11" fill="currentColor">两个 Br 在双键两侧</text>
+  <text x="340" y="150" font-size="11" fill="currentColor">→ 反式加成产物</text>
+  <!-- Bottom note -->
+  <text x="10" y="180" font-size="11" fill="currentColor">反应活性：Cl₂ &gt; Br₂ &gt; I₂ ；溴化反应：可用于鉴别烯烃（溴水褪色）</text>
+</svg>

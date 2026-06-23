@@ -72,7 +72,7 @@ $$
 
 所以苯环"选择"了取代路径——这是芳香性"驱动"的结果。
 :::
-<!-- SVG-TODO: 苯亲电取代反应机理（E+ 进攻苯环形成 σ-络合物/Wheland 中间体，sp3 碳破坏局部芳香性，再失去 H+ 恢复芳香性，标注能量曲线与中间体结构） -->
+::figure{src="/images/chemistry/svg/ch07/eas-mechanism-sigma-complex.svg" caption="苯亲电取代机理——σ-络合物(Wheland中间体)形成与芳香性恢复" alt="E+进攻苯环形成sp3σ-络合物Wheland中间体，失去H+恢复芳香性，与加成路径能量对比"}
 
 ## 卤代反应
 

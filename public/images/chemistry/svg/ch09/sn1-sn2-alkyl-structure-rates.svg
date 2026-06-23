@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 200" width="440" height="200" aria-label="烷基结构对SN1和SN2反应速率的影响" role="img">
+  <title>烷基结构对SN反应速率的影响：CH3X和伯卤代烷有利于SN2（位阻小），叔卤代烷有利于SN1（碳正离子稳定）</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="12" font-weight="bold" fill="currentColor">烷基结构对 SN1 / SN2 速率的影响</text>
+  <!-- Axes -->
+  <!-- Y axis (relative rate) -->
+  <line x1="60" y1="30" x2="60" y2="170" stroke="currentColor" stroke-width="1.5"/>
+  <text x="10" y="100" font-size="10" fill="currentColor" transform="rotate(-90, 10, 100)">相对速率</text>
+  <!-- X axis -->
+  <line x1="60" y1="170" x2="420" y2="170" stroke="currentColor" stroke-width="1.5"/>
+  <!-- X labels: CH3X, 1°, 2°, 3° -->
+  <text x="80" y="185" font-size="11" fill="currentColor">CH₃X</text>
+  <text x="160" y="185" font-size="11" fill="currentColor">1°</text>
+  <text x="240" y="185" font-size="11" fill="currentColor">2°</text>
+  <text x="320" y="185" font-size="11" fill="currentColor">3°</text>
+  <!-- X tick positions: 95, 175, 255, 335 -->
+  <!-- Y gridlines -->
+  <line x1="60" y1="130" x2="420" y2="130" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.3"/>
+  <line x1="60" y1="90" x2="420" y2="90" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.3"/>
+  <line x1="60" y1="50" x2="420" y2="50" stroke="currentColor" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.3"/>
+  <!-- SN2 bars (blue/teal) -->
+  <!-- CH3X: very fast (height ~100) -->
+  <rect x="72" y="70" width="28" height="100" fill="currentColor" opacity="0.6" rx="2"/>
+  <!-- 1°: fast (height ~70) -->
+  <rect x="152" y="100" width="28" height="70" fill="currentColor" opacity="0.6" rx="2"/>
+  <!-- 2°: slow (height ~25) -->
+  <rect x="232" y="145" width="28" height="25" fill="currentColor" opacity="0.6" rx="2"/>
+  <!-- 3°: ~0 (height ~5) -->
+  <rect x="312" y="165" width="28" height="5" fill="currentColor" opacity="0.6" rx="2"/>
+  <!-- SN2 label on bar -->
+  <text x="78" y="66" font-size="10" fill="currentColor">SN2</text>
+  <!-- SN1 bars (orange) -->
+  <!-- CH3X: ~0 -->
+  <rect x="102" y="167" width="28" height="3" fill="orange" opacity="0.8" rx="2"/>
+  <!-- 1°: very slow (~5) -->
+  <rect x="182" y="163" width="28" height="7" fill="orange" opacity="0.8" rx="2"/>
+  <!-- 2°: moderate (~35) -->
+  <rect x="262" y="130" width="28" height="40" fill="orange" opacity="0.8" rx="2"/>
+  <!-- 3°: fast (~110) -->
+  <rect x="342" y="58" width="28" height="112" fill="orange" opacity="0.8" rx="2"/>
+  <text x="347" y="54" font-size="10" fill="orange">SN1</text>
+  <!-- Legend -->
+  <rect x="65" y="35" width="16" height="10" fill="currentColor" opacity="0.6" rx="1"/>
+  <text x="83" y="44" font-size="10" fill="currentColor">SN2（位阻↑→速率↓）</text>
+  <rect x="65" y="50" width="16" height="10" fill="orange" opacity="0.8" rx="1"/>
+  <text x="83" y="59" font-size="10" fill="currentColor">SN1（碳正离子稳定性↑→速率↑）</text>
+  <!-- Dividing line -->
+  <line x1="60" y1="170" x2="60" y2="30" stroke="currentColor" stroke-width="1" opacity="0.2"/>
+  <!-- annotations -->
+  <text x="10" y="198" font-size="10" fill="currentColor">CH₃X / 1°：SN2 优先；2°：混合（条件决定）；3°：SN1 优先</text>
+</svg>

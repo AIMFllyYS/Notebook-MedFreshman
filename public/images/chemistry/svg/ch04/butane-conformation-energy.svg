@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 220" width="500" height="220" aria-label="丁烷沿C2-C3键旋转的构象能量曲线图，标注四种极限构象">
+  <title>丁烷沿 C2-C3 键旋转的构象能量曲线图</title>
+  <style>
+    text { font-family: serif; font-size: 11px; fill: currentColor; }
+    line, path { stroke: currentColor; }
+  </style>
+
+  <!-- Axes -->
+  <!-- Y axis: energy, X axis: dihedral angle 0-360° -->
+  <line x1="50" y1="20" x2="50" y2="180" stroke-width="1.5" fill="none"/>
+  <line x1="50" y1="180" x2="470" y2="180" stroke-width="1.5" fill="none"/>
+
+  <!-- Y-axis label -->
+  <text x="5" y="105" font-size="11" transform="rotate(-90 20 105)">能量</text>
+  <!-- X-axis label -->
+  <text x="220" y="200" font-size="11">二面角 φ / °</text>
+
+  <!-- X-axis ticks at 0, 60, 120, 180, 240, 300, 360 -->
+  <!-- Map: 0°→x=50, 360°→x=470, so scale = 420/360 = 1.167 px/° -->
+  <!-- 0° → 50, 60° → 120, 120° → 190, 180° → 260, 240° → 330, 300° → 400, 360° → 470 -->
+
+  <line x1="50" y1="180" x2="50" y2="185" stroke-width="1" fill="none"/>
+  <text x="43" y="195">0°</text>
+  <line x1="120" y1="180" x2="120" y2="185" stroke-width="1" fill="none"/>
+  <text x="110" y="195">60°</text>
+  <line x1="190" y1="180" x2="190" y2="185" stroke-width="1" fill="none"/>
+  <text x="177" y="195">120°</text>
+  <line x1="260" y1="180" x2="260" y2="185" stroke-width="1" fill="none"/>
+  <text x="247" y="195">180°</text>
+  <line x1="330" y1="180" x2="330" y2="185" stroke-width="1" fill="none"/>
+  <text x="317" y="195">240°</text>
+  <line x1="400" y1="180" x2="400" y2="185" stroke-width="1" fill="none"/>
+  <text x="387" y="195">300°</text>
+  <line x1="470" y1="180" x2="470" y2="185" stroke-width="1" fill="none"/>
+  <text x="457" y="195">360°</text>
+
+  <!-- Energy curve (approximate) -->
+  <!-- Energy levels (y values, lower y = higher energy):
+       0°/360° (fully eclipsed): highest ~y=30
+       60° (gauche): medium-low ~y=120
+       120° (partially eclipsed): medium-high ~y=80
+       180° (anti): lowest ~y=150
+       240° (partially eclipsed): ~y=80
+       300° (gauche): ~y=120
+  -->
+  <!-- Smooth curve through key points -->
+  <path d="M50,30 C70,30 95,140 120,120 C145,100 165,70 190,75 C215,80 240,160 260,155 C280,150 305,70 330,75 C355,80 375,110 400,120 C425,130 450,30 470,30"
+        stroke-width="2" fill="none"/>
+
+  <!-- Horizontal reference lines -->
+  <line x1="46" y1="155" x2="55" y2="155" stroke-width="1" fill="none"/>
+  <text x="5" y="158" font-size="9">最低</text>
+  <line x1="46" y1="30" x2="55" y2="30" stroke-width="1" fill="none"/>
+  <text x="5" y="33" font-size="9">最高</text>
+
+  <!-- Annotations for 4 conformations -->
+  <!-- 0°: fully eclipsed, highest energy -->
+  <line x1="50" y1="30" x2="50" y2="15" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <text x="10" y="13" font-size="9" font-weight="bold">完全重叠式</text>
+  <text x="10" y="22" font-size="9" opacity="0.7">0° (=360°)</text>
+
+  <!-- 60°: gauche (邻位交叉式) -->
+  <line x1="120" y1="120" x2="120" y2="105" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <text x="85" y="103" font-size="9" font-weight="bold">邻位交叉式</text>
+  <text x="95" y="112" font-size="9" opacity="0.7">60°, 占37%</text>
+
+  <!-- 120°: partially eclipsed -->
+  <line x1="190" y1="75" x2="190" y2="60" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <text x="155" y="57" font-size="9" font-weight="bold">部分重叠式</text>
+  <text x="163" y="66" font-size="9" opacity="0.7">120°</text>
+
+  <!-- 180°: anti (对位交叉式), lowest energy -->
+  <line x1="260" y1="155" x2="260" y2="140" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <text x="225" y="137" font-size="9" font-weight="bold">对位交叉式</text>
+  <text x="230" y="146" font-size="9" opacity="0.7">180°, 占63%</text>
+
+  <!-- 240°: partially eclipsed again -->
+  <line x1="330" y1="75" x2="330" y2="60" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <text x="295" y="57" font-size="9" font-weight="bold">部分重叠式</text>
+  <text x="303" y="66" font-size="9" opacity="0.7">240°</text>
+
+  <!-- 300°: gauche again -->
+  <line x1="400" y1="120" x2="400" y2="105" stroke-width="0.8" stroke-dasharray="2,2" fill="none"/>
+  <text x="363" y="103" font-size="9" font-weight="bold">邻位交叉式</text>
+  <text x="373" y="112" font-size="9" opacity="0.7">300°</text>
+
+  <!-- Energy difference annotation -->
+  <line x1="55" y1="30" x2="55" y2="155" stroke-width="0.7" fill="none"/>
+  <line x1="50" y1="155" x2="60" y2="155" stroke-width="0.7" fill="none"/>
+  <line x1="50" y1="30" x2="60" y2="30" stroke-width="0.7" fill="none"/>
+  <text x="58" y="97" font-size="9">ΔE</text>
+</svg>

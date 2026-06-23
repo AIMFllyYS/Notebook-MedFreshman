@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 185" width="420" height="185" aria-label="桥头碳卤代烃——刚性笼状结构阻止SN2和SN1" role="img">
+  <title>1-溴降冰片烷（桥头碳卤代烃）：刚性笼状结构使桥头碳既不能发生背面进攻（SN2），也不能形成平面型碳正离子（SN1）</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="12" font-weight="bold" fill="currentColor">桥头碳卤代烃——刚性笼阻止 SN1 和 SN2</text>
+  <!-- Norbornane skeleton (bicyclo[2.2.1]heptane) viewed from side -->
+  <!-- Approximate 3D perspective drawing of norbornane with Br at C1 -->
+  <!-- C1 (bridgehead, Br attached) -->
+  <circle cx="160" cy="75" r="6" fill="currentColor"/>
+  <text x="140" y="72" font-size="11" fill="currentColor">C1</text>
+  <!-- Br on C1 -->
+  <line x1="160" y1="69" x2="160" y2="48" stroke="currentColor" stroke-width="2"/>
+  <text x="153" y="43" font-size="13" fill="red">Br</text>
+  <!-- C4 (other bridgehead) -->
+  <circle cx="270" cy="75" r="6" fill="currentColor"/>
+  <text x="275" y="72" font-size="11" fill="currentColor">C4</text>
+  <!-- Upper bridge C2-C3 (top) -->
+  <line x1="166" y1="75" x2="215" y2="48" stroke="currentColor" stroke-width="2"/>
+  <circle cx="215" cy="45" r="4" fill="currentColor"/>
+  <line x1="215" y1="45" x2="264" y2="75" stroke="currentColor" stroke-width="2"/>
+  <!-- Lower left bridge C5-C6 (bottom-left) -->
+  <line x1="155" y1="79" x2="175" y2="120" stroke="currentColor" stroke-width="2"/>
+  <circle cx="175" cy="122" r="4" fill="currentColor"/>
+  <line x1="175" y1="122" x2="215" y2="138" stroke="currentColor" stroke-width="2"/>
+  <!-- Lower right bridge C7 (one-carbon bridge) -->
+  <line x1="275" y1="79" x2="255" y2="120" stroke="currentColor" stroke-width="2"/>
+  <circle cx="255" cy="122" r="4" fill="currentColor"/>
+  <line x1="255" y1="122" x2="215" y2="138" stroke="currentColor" stroke-width="2"/>
+  <!-- Connect lower bridges to C1, C4 -->
+  <circle cx="215" cy="138" r="4" fill="currentColor"/>
+  <!-- Bridgehead-bridgehead line -->
+  <line x1="166" y1="75" x2="264" y2="75" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.5"/>
+  <!-- Label: No SN2 -->
+  <text x="10" y="115" font-size="11" fill="red">✗ SN2 不能发生：</text>
+  <text x="10" y="128" font-size="10" fill="currentColor">  刚性笼状结构阻止 Nu⁻ 从背面进攻</text>
+  <text x="10" y="141" font-size="10" fill="currentColor">  （桥键在背面，空间不可及）</text>
+  <!-- Label: No SN1 -->
+  <text x="10" y="158" font-size="11" fill="red">✗ SN1 也不能发生：</text>
+  <text x="10" y="171" font-size="10" fill="currentColor">  桥头碳正离子无法成 sp² 平面（3 条桥链固定角度，Bredt 规则）</text>
+  <!-- Formula label -->
+  <text x="310" y="75" font-size="11" fill="currentColor">1-溴降冰片烷</text>
+  <text x="310" y="90" font-size="10" fill="currentColor">bicyclo[2.2.1]</text>
+  <text x="310" y="103" font-size="10" fill="currentColor">heptyl bromide</text>
+  <text x="300" y="130" font-size="11" fill="orange">Bredt 规则：</text>
+  <text x="300" y="143" font-size="10" fill="currentColor">桥头碳不能成</text>
+  <text x="300" y="156" font-size="10" fill="currentColor">平面型结构</text>
+</svg>

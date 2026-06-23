@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 185" width="500" height="185" aria-label="SN2反应机理——背面进攻构型翻转" role="img">
+  <title>SN2反应机理：Nu-从离去基团X背面进攻，五配位碳过渡态，三个基团翻面，构型翻转（Walden翻转）</title>
+  <defs>
+    <marker id="arr9" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+  <!-- Title -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="currentColor">SN2 机理——双分子亲核取代（背面进攻）</text>
+  <!-- Left: reactant with Nu- approaching from back -->
+  <text x="10" y="38" font-size="11" fill="currentColor">反应物</text>
+  <!-- Nu- (left) -->
+  <text x="10" y="95" font-size="12" fill="currentColor">Nu⁻</text>
+  <line x1="35" y1="92" x2="58" y2="92" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr9)"/>
+  <!-- Alpha carbon (center) -->
+  <circle cx="80" cy="92" r="7" fill="currentColor"/>
+  <!-- 3 substituents on C -->
+  <!-- Up -->
+  <line x1="80" y1="85" x2="80" y2="65" stroke="currentColor" stroke-width="1.8"/>
+  <text x="74" y="60" font-size="11" fill="currentColor">R₁</text>
+  <!-- Down-left -->
+  <line x1="76" y1="96" x2="55" y2="115" stroke="currentColor" stroke-width="1.8"/>
+  <text x="44" y="124" font-size="11" fill="currentColor">R₂</text>
+  <!-- Down-right -->
+  <line x1="84" y1="96" x2="105" y2="115" stroke="currentColor" stroke-width="1.8"/>
+  <text x="108" y="124" font-size="11" fill="currentColor">R₃</text>
+  <!-- X leaving group (right) -->
+  <line x1="87" y1="92" x2="115" y2="92" stroke="currentColor" stroke-width="2"/>
+  <text x="118" y="96" font-size="12" fill="currentColor">X</text>
+  <!-- "Back side" annotation -->
+  <text x="10" y="140" font-size="10" fill="currentColor">Nu⁻ 从 X 的背面进攻</text>
+  <text x="10" y="153" font-size="10" fill="currentColor">（180° 背面进攻）</text>
+  <!-- Rate equation -->
+  <text x="10" y="170" font-size="11" fill="currentColor">v = k[RX][Nu⁻]（二级反应）</text>
+  <!-- Arrow (slow step) -->
+  <text x="145" y="95" font-size="18" fill="currentColor">→</text>
+  <text x="137" y="110" font-size="10" fill="currentColor">（一步协同）</text>
+  <!-- Center: transition state -->
+  <text x="165" y="38" font-size="11" fill="currentColor">过渡态 [Nu···C···X]⁻</text>
+  <!-- Nu partially bonded (dashed) -->
+  <text x="166" y="95" font-size="12" fill="currentColor">Nu</text>
+  <line x1="185" y1="92" x2="200" y2="92" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <!-- Alpha carbon (center) -->
+  <circle cx="215" cy="92" r="7" fill="currentColor" opacity="0.4"/>
+  <circle cx="215" cy="92" r="7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <!-- 3 substituents (in plane now) -->
+  <line x1="215" y1="85" x2="215" y2="65" stroke="currentColor" stroke-width="1.8"/>
+  <text x="209" y="60" font-size="11" fill="currentColor">R₁</text>
+  <line x1="209" y1="94" x2="190" y2="112" stroke="currentColor" stroke-width="1.8"/>
+  <text x="178" y="121" font-size="11" fill="currentColor">R₂</text>
+  <line x1="221" y1="94" x2="240" y2="112" stroke="currentColor" stroke-width="1.8"/>
+  <text x="242" y="121" font-size="11" fill="currentColor">R₃</text>
+  <!-- X partially bonded (dashed, other side) -->
+  <line x1="222" y1="92" x2="237" y2="92" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="240" y="96" font-size="12" fill="currentColor">X</text>
+  <!-- Partial charges -->
+  <text x="260" y="95" font-size="10" fill="currentColor">δ−</text>
+  <text x="163" y="95" font-size="10" fill="currentColor">δ−</text>
+  <!-- Five-coordinate label -->
+  <text x="180" y="140" font-size="10" fill="currentColor">五配位碳（三角双锥）</text>
+  <text x="180" y="153" font-size="10" fill="currentColor">R₁R₂R₃ 在赤道面</text>
+  <!-- Arrow (fast) -->
+  <text x="285" y="95" font-size="18" fill="currentColor">→</text>
+  <!-- Right: product (inverted) -->
+  <text x="310" y="38" font-size="11" fill="currentColor">产物（构型翻转）</text>
+  <!-- Nu bonded to C -->
+  <text x="308" y="95" font-size="12" fill="currentColor">Nu</text>
+  <line x1="325" y1="92" x2="348" y2="92" stroke="currentColor" stroke-width="2"/>
+  <!-- Alpha carbon -->
+  <circle cx="360" cy="92" r="7" fill="currentColor"/>
+  <!-- 3 substituents FLIPPED (umbrella inversion) -->
+  <!-- They now go UP-right instead of down-right etc. -->
+  <line x1="360" y1="85" x2="360" y2="65" stroke="currentColor" stroke-width="1.8"/>
+  <text x="354" y="60" font-size="11" fill="currentColor">R₁</text>
+  <line x1="366" y1="90" x2="390" y2="72" stroke="currentColor" stroke-width="1.8"/>
+  <text x="392" y="70" font-size="11" fill="currentColor">R₂</text>
+  <line x1="366" y1="96" x2="390" y2="114" stroke="currentColor" stroke-width="1.8"/>
+  <text x="392" y="120" font-size="11" fill="currentColor">R₃</text>
+  <!-- X leaving -->
+  <text x="368" y="98" font-size="11" fill="currentColor">（X⁻离去）</text>
+  <!-- Inversion label -->
+  <text x="310" y="140" font-size="10" fill="orange">构型翻转（Walden 翻转）</text>
+  <text x="310" y="153" font-size="10" fill="currentColor">R → S 或 S → R</text>
+  <text x="310" y="170" font-size="11" fill="currentColor">伯卤代烷最优，叔卤代烷不反应（位阻）</text>
+</svg>

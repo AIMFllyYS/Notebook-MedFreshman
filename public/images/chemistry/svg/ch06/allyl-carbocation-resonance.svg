@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 185" width="460" height="185" aria-label="烯丙基碳正离子共振结构与1,2/1,4加成" role="img">
+  <title>烯丙基碳正离子共振结构：正电荷在C2和C4离域，Br-进攻得1,2-或1,4-加成产物</title>
+  <defs>
+    <marker id="arr5" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+  <!-- Title -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="currentColor">1,3-丁二烯与 HBr 的共轭加成机理</text>
+  <!-- Step 1: H+ adds to C1 -->
+  <text x="10" y="40" font-size="11" fill="currentColor">第1步（慢）：H⁺ 进攻 C1</text>
+  <text x="10" y="58" font-size="12" fill="currentColor">CH₂=CH—CH=CH₂</text>
+  <text x="133" y="58" font-size="14" fill="currentColor">→</text>
+  <!-- Allylic carbocation resonance structure 1 -->
+  <text x="152" y="58" font-size="12" fill="currentColor">CH₃—</text>
+  <text x="186" y="55" font-size="12" font-weight="bold" fill="currentColor">⊕</text>
+  <text x="183" y="58" font-size="12" fill="currentColor">CH</text>
+  <text x="203" y="58" font-size="12" fill="currentColor">—CH=CH₂</text>
+  <!-- resonance arrow -->
+  <text x="256" y="54" font-size="13" fill="currentColor">↔</text>
+  <!-- Resonance structure 2 -->
+  <text x="273" y="58" font-size="12" fill="currentColor">CH₃—CH=CH—</text>
+  <text x="362" y="55" font-size="12" font-weight="bold" fill="currentColor">⊕</text>
+  <text x="358" y="58" font-size="12" fill="currentColor">CH₂</text>
+  <!-- Plus sign labels -->
+  <text x="189" y="48" font-size="10" fill="currentColor">C2 有正电荷</text>
+  <text x="352" y="48" font-size="10" fill="currentColor">C4 有正电荷</text>
+  <!-- Step 2: Two pathways for Br- -->
+  <text x="10" y="85" font-size="11" fill="currentColor">第2步（快）：Br⁻ 进攻 C2 或 C4</text>
+  <!-- C2 attack arrow (left branch) -->
+  <line x1="100" y1="90" x2="60" y2="115" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr5)"/>
+  <text x="10" y="112" font-size="11" fill="currentColor">Br⁻ 进攻 C2</text>
+  <!-- 1,2-product -->
+  <text x="10" y="132" font-size="12" fill="currentColor">CH₂=CH—CHBr—CH₃</text>
+  <text x="10" y="148" font-size="11" fill="currentColor">1,2-加成产物</text>
+  <text x="10" y="163" font-size="11" fill="currentColor">（动力学，低温优先）</text>
+  <!-- C4 attack arrow (right branch) -->
+  <line x1="100" y1="90" x2="160" y2="115" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr5)"/>
+  <text x="155" y="112" font-size="11" fill="currentColor">Br⁻ 进攻 C4</text>
+  <!-- 1,4-product -->
+  <text x="145" y="132" font-size="12" fill="currentColor">CH₂Br—CH=CH—CH₃</text>
+  <text x="145" y="148" font-size="11" fill="currentColor">1,4-加成产物</text>
+  <text x="145" y="163" font-size="11" fill="currentColor">（热力学，高温优先）</text>
+  <!-- Temperature note -->
+  <text x="300" y="110" font-size="11" font-weight="bold" fill="currentColor">温度效应：</text>
+  <text x="300" y="127" font-size="11" fill="currentColor">低温（−80°C）→ 1,2-产物 80%</text>
+  <text x="300" y="144" font-size="11" fill="currentColor">高温（40°C）→ 1,4-产物 85%</text>
+  <text x="300" y="161" font-size="11" fill="currentColor">1,4-产物更稳定（双键取代多）</text>
+</svg>

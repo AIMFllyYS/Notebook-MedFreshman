@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 190" width="420" height="190" aria-label="手性分子与镜像关系——乳酸对映异构体" role="img">
+  <title>手性分子与镜像：乳酸的两个对映异构体互为镜像但不能重合</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="currentColor">手性分子与镜像关系（以乳酸为例）</text>
+  <!-- Left molecule: (S)-lactic acid -->
+  <text x="30" y="40" font-size="11" font-weight="bold" fill="currentColor">(S)-乳酸（L-乳酸）</text>
+  <!-- Central chiral carbon -->
+  <circle cx="90" cy="100" r="5" fill="currentColor"/>
+  <!-- COOH - up (wedge forward is in plane here, drawn as regular bond) -->
+  <line x1="90" y1="100" x2="90" y2="65" stroke="currentColor" stroke-width="2"/>
+  <text x="78" y="60" font-size="11" fill="currentColor">COOH</text>
+  <!-- CH3 - down-left -->
+  <line x1="90" y1="100" x2="55" y2="130" stroke="currentColor" stroke-width="2"/>
+  <text x="40" y="142" font-size="11" fill="currentColor">CH₃</text>
+  <!-- OH - right (wedge bond = forward) -->
+  <polygon points="90,100 118,95 120,105" fill="currentColor" opacity="0.9"/>
+  <text x="123" y="104" font-size="11" fill="currentColor">OH</text>
+  <!-- H - left (dash bond = back) -->
+  <line x1="90" y1="100" x2="58" y2="88" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="40" y="90" font-size="11" fill="currentColor">H</text>
+  <!-- Mirror line -->
+  <line x1="200" y1="35" x2="200" y2="165" stroke="currentColor" stroke-width="2" stroke-dasharray="6,3" opacity="0.6"/>
+  <text x="188" y="30" font-size="11" fill="currentColor">镜面</text>
+  <!-- Right molecule: (R)-lactic acid (mirror image) -->
+  <text x="225" y="40" font-size="11" font-weight="bold" fill="currentColor">(R)-乳酸（D-乳酸）</text>
+  <!-- Central chiral carbon -->
+  <circle cx="310" cy="100" r="5" fill="currentColor"/>
+  <!-- COOH - up -->
+  <line x1="310" y1="100" x2="310" y2="65" stroke="currentColor" stroke-width="2"/>
+  <text x="298" y="60" font-size="11" fill="currentColor">COOH</text>
+  <!-- CH3 - down-right (mirrored) -->
+  <line x1="310" y1="100" x2="345" y2="130" stroke="currentColor" stroke-width="2"/>
+  <text x="348" y="142" font-size="11" fill="currentColor">CH₃</text>
+  <!-- OH - left (wedge bond, mirrored) -->
+  <polygon points="310,100 280,95 278,105" fill="currentColor" opacity="0.9"/>
+  <text x="250" y="104" font-size="11" fill="currentColor">OH</text>
+  <!-- H - right (dashes, mirrored) -->
+  <line x1="310" y1="100" x2="342" y2="88" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="345" y="88" font-size="11" fill="currentColor">H</text>
+  <!-- Cannot superimpose note -->
+  <text x="135" y="175" font-size="11" fill="currentColor">↕ 无法重合（对映异构体）</text>
+  <!-- Property comparison table -->
+  <text x="10" y="155" font-size="10" fill="currentColor">非手性环境：沸点、熔点、溶解度完全相同</text>
+  <text x="10" y="168" font-size="10" fill="currentColor">旋光方向相反（(R)-左旋，(S)-右旋），生理活性可能不同</text>
+</svg>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 170" width="380" height="170" aria-label="羧酸分子间氢键二缔合体：两个R-COOH通过两个O-H...O氢键形成环状二聚体">
+  <title>羧酸分子间氢键二缔合体结构</title>
+  <style>
+    text { font-family: serif; font-size: 12px; fill: currentColor; }
+    line, path { stroke: currentColor; }
+  </style>
+
+  <!-- Top molecule: R-C(=O)-O-H pointing right -->
+  <!-- R group at left -->
+  <text x="20" y="65">R</text>
+  <line x1="35" y1="60" x2="65" y2="60" stroke-width="1.5" fill="none"/>
+  <!-- C of COOH -->
+  <text x="67" y="65">C</text>
+  <!-- C=O double bond going up -->
+  <line x1="72" y1="55" x2="72" y2="35" stroke-width="1.5" fill="none"/>
+  <line x1="76" y1="55" x2="76" y2="35" stroke-width="1.5" fill="none"/>
+  <text x="70" y="30">O</text>
+  <!-- C-O-H going right -->
+  <line x1="80" y1="62" x2="108" y2="62" stroke-width="1.5" fill="none"/>
+  <text x="110" y="67">O</text>
+  <line x1="122" y1="62" x2="148" y2="62" stroke-width="1.5" fill="none"/>
+  <text x="150" y="67">H</text>
+
+  <!-- Bottom molecule: H-O-C(=O)-R (mirror of top) -->
+  <!-- H at left side (which is actually right side of top) -->
+  <text x="150" y="120">H</text>
+  <line x1="162" y1="115" x2="188" y2="115" stroke-width="1.5" fill="none"/>
+  <text x="190" y="120">O</text>
+  <line x1="202" y1="115" x2="228" y2="115" stroke-width="1.5" fill="none"/>
+  <!-- C of second COOH -->
+  <text x="230" y="120">C</text>
+  <!-- C=O double bond going down -->
+  <line x1="235" y1="122" x2="235" y2="145" stroke-width="1.5" fill="none"/>
+  <line x1="239" y1="122" x2="239" y2="145" stroke-width="1.5" fill="none"/>
+  <text x="233" y="158">O</text>
+  <!-- C-R bond going right -->
+  <line x1="243" y1="117" x2="273" y2="117" stroke-width="1.5" fill="none"/>
+  <text x="275" y="122">R</text>
+
+  <!-- Two hydrogen bonds (dashed vertical lines between) -->
+  <!-- H-bond 1: H at top (158,62) pointing down to O at bottom (192,115) -->
+  <line x1="158" y1="67" x2="158" y2="113" stroke-width="1.5" stroke-dasharray="5,4" fill="none"/>
+  <!-- H-bond 2: O at top (115,62) receiving H from bottom H at (157,115) -->
+  <line x1="115" y1="68" x2="115" y2="112" stroke-width="1.5" stroke-dasharray="5,4" fill="none"/>
+
+  <!-- Wait, let me fix alignment - the two molecules should face each other -->
+  <!-- Let me redraw as symmetric dimer around vertical center line -->
+
+  <!-- Labels for hydrogen bonds -->
+  <text x="95" y="92" font-size="10" opacity="0.8">O—H···O</text>
+  <text x="135" y="92" font-size="10" opacity="0.8">O—H···O</text>
+
+  <!-- Ring closure label -->
+  <text x="60" y="93" font-size="10" opacity="0.7">环状</text>
+  <text x="60" y="105" font-size="10" opacity="0.7">二聚体</text>
+
+  <!-- Brace showing dimerization -->
+  <path d="M300,60 Q320,88 300,116" stroke-width="1" fill="none"/>
+  <text x="320" y="92" font-size="11">二聚体</text>
+  <text x="310" y="104" font-size="10">Mr×2</text>
+
+  <text x="10" y="158" font-size="11">两个 O—H···O 氢键形成六元环状二聚体（R=H: 甲酸; R=CH₃: 乙酸等）</text>
+  <text x="10" y="172" font-size="10" opacity="0.7">蒸气相中存在二聚体，测得分子量约为单体两倍</text>
+</svg>

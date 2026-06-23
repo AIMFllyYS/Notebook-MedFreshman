@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 200" width="560" height="200" aria-label="丁基的四种异构体：正丁基、异丁基、仲丁基、叔丁基，标注连接点和伯仲叔碳">
+  <title>丁基四种异构体结构式对比</title>
+  <style>
+    text { font-family: serif; font-size: 12px; fill: currentColor; }
+    line, circle { stroke: currentColor; }
+  </style>
+
+  <!-- === n-Butyl (正丁基) CH3CH2CH2CH2- === -->
+  <text x="5" y="16" font-weight="bold" font-size="12">正丁基</text>
+  <text x="5" y="29" font-size="10">n-butyl</text>
+
+  <!-- Zig-zag C1*-C2-C3-C4, attachment at C1 (left end, marked with *) -->
+  <!-- C1*(10,85) C2(35,65) C3(60,85) C4(85,65) -->
+  <line x1="10" y1="85" x2="35" y2="65" stroke-width="1.5" fill="none"/>
+  <line x1="35" y1="65" x2="60" y2="85" stroke-width="1.5" fill="none"/>
+  <line x1="60" y1="85" x2="85" y2="65" stroke-width="1.5" fill="none"/>
+
+  <!-- Attachment point marker -->
+  <circle cx="10" cy="85" r="3" fill="none" stroke-width="1.5"/>
+  <line x1="2" y1="85" x2="10" y2="85" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+
+  <!-- Carbon type labels -->
+  <text x="4" y="100" font-size="9" opacity="0.75">1°</text>
+  <text x="30" y="62" font-size="9" opacity="0.75">2°</text>
+  <text x="55" y="100" font-size="9" opacity="0.75">2°</text>
+  <text x="80" y="62" font-size="9" opacity="0.75">CH₃</text>
+
+  <text x="3" y="130" font-size="10">CH₃CH₂CH₂CH₂—</text>
+  <text x="3" y="143" font-size="9" opacity="0.7">伯碳连接</text>
+
+  <!-- Divider -->
+  <line x1="140" y1="5" x2="140" y2="165" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- === Isobutyl (异丁基) (CH3)2CHCH2- === -->
+  <text x="148" y="16" font-weight="bold" font-size="12">异丁基</text>
+  <text x="148" y="29" font-size="10">isobutyl</text>
+
+  <!-- C1*(155,85), C2(180,65), branch CH3 up from C2, CH3 down-right from C2, C3 down from C1 -->
+  <!-- Actually: attachment at CH2, attached to CH, which has 2 CH3 -->
+  <!-- Attachment C*(155,85) - C(180,65) -->
+  <line x1="155" y1="85" x2="180" y2="65" stroke-width="1.5" fill="none"/>
+  <!-- Two CH3 from C(180,65) -->
+  <line x1="180" y1="65" x2="165" y2="45" stroke-width="1.5" fill="none"/>
+  <text x="155" y="42" font-size="10">CH₃</text>
+  <line x1="180" y1="65" x2="205" y2="45" stroke-width="1.5" fill="none"/>
+  <text x="205" y="42" font-size="10">CH₃</text>
+
+  <!-- Attachment point -->
+  <circle cx="155" cy="85" r="3" fill="none" stroke-width="1.5"/>
+  <line x1="147" y1="85" x2="155" y2="85" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+
+  <!-- Carbon type labels -->
+  <text x="149" y="100" font-size="9" opacity="0.75">1°</text>
+  <text x="175" y="62" font-size="9" opacity="0.75">3°</text>
+
+  <text x="148" y="130" font-size="10">(CH₃)₂CHCH₂—</text>
+  <text x="148" y="143" font-size="9" opacity="0.7">伯碳连接</text>
+
+  <!-- Divider -->
+  <line x1="280" y1="5" x2="280" y2="165" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- === sec-Butyl (仲丁基) CH3CH2CH(CH3)- === -->
+  <text x="288" y="16" font-weight="bold" font-size="12">仲丁基</text>
+  <text x="288" y="29" font-size="10">sec-butyl</text>
+
+  <!-- Backbone C1-C2* zig-zag, C3 down from C2*, CH3 also from C2* -->
+  <!-- C1(295,65) C2*(320,85) C3(345,65) -->
+  <line x1="295" y1="65" x2="320" y2="85" stroke-width="1.5" fill="none"/>
+  <line x1="320" y1="85" x2="345" y2="65" stroke-width="1.5" fill="none"/>
+  <!-- Branch CH3 from C2* going down -->
+  <line x1="320" y1="85" x2="320" y2="115" stroke-width="1.5" fill="none"/>
+  <text x="313" y="128" font-size="10">CH₃</text>
+
+  <!-- Attachment point at C2* -->
+  <circle cx="320" cy="85" r="3" fill="none" stroke-width="1.5"/>
+  <line x1="310" y1="85" x2="320" y2="85" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+
+  <!-- Labels -->
+  <text x="288" y="62" font-size="10">CH₃</text>
+  <text x="346" y="62" font-size="10">CH₂</text>
+  <text x="314" y="100" font-size="9" opacity="0.75">2°</text>
+
+  <text x="288" y="155" font-size="10">CH₃CH₂CH(CH₃)—</text>
+  <text x="288" y="168" font-size="9" opacity="0.7">仲碳连接</text>
+
+  <!-- Divider -->
+  <line x1="420" y1="5" x2="420" y2="175" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- === tert-Butyl (叔丁基) (CH3)3C- === -->
+  <text x="428" y="16" font-weight="bold" font-size="12">叔丁基</text>
+  <text x="428" y="29" font-size="10">tert-butyl</text>
+
+  <!-- Central C* at (480,85), 3 CH3 groups -->
+  <!-- Left -->
+  <line x1="480" y1="85" x2="450" y2="85" stroke-width="1.5" fill="none"/>
+  <text x="433" y="90" font-size="10">CH₃</text>
+  <!-- Up-right -->
+  <line x1="480" y1="85" x2="500" y2="58" stroke-width="1.5" fill="none"/>
+  <text x="500" y="55" font-size="10">CH₃</text>
+  <!-- Down-right -->
+  <line x1="480" y1="85" x2="500" y2="112" stroke-width="1.5" fill="none"/>
+  <text x="500" y="120" font-size="10">CH₃</text>
+
+  <!-- Attachment point -->
+  <circle cx="480" cy="85" r="3" fill="none" stroke-width="1.5"/>
+  <line x1="470" y1="85" x2="480" y2="85" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+  <text x="474" y="100" font-size="9" opacity="0.75">3°</text>
+
+  <text x="428" y="155" font-size="10">(CH₃)₃C—</text>
+  <text x="428" y="168" font-size="9" opacity="0.7">叔碳连接，位阻最大</text>
+</svg>

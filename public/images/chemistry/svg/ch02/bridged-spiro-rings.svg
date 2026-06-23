@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 200" width="460" height="200" aria-label="桥环与螺环结构对比：二环[3.2.1]辛烷和螺[4.5]癸烷">
+  <title>桥环与螺环结构对比</title>
+  <style>
+    text { font-family: serif; font-size: 12px; fill: currentColor; }
+    line, circle { stroke: currentColor; }
+  </style>
+
+  <!-- ===== Bicyclo[3.2.1]octane (bridged) ===== -->
+  <text x="10" y="18" font-weight="bold" font-size="13">桥环：二环[3.2.1]辛烷</text>
+
+  <!-- Bridgehead carbons at (75, 80) and (155, 80) -->
+  <!-- Bridge 1: 3 carbons (top arch) -->
+  <!-- Bridge 2: 2 carbons (middle) -->
+  <!-- Bridge 3: 1 carbon (bottom) -->
+
+  <!-- Bridgehead C1 (left) and C5 (right) -->
+  <circle cx="75" cy="95" r="4" fill="currentColor" stroke="none"/>
+  <circle cx="175" cy="95" r="4" fill="currentColor" stroke="none"/>
+  <text x="60" y="112" font-size="10" font-weight="bold">C₁</text>
+  <text x="178" y="112" font-size="10" font-weight="bold">C₅</text>
+  <text x="60" y="123" font-size="9" opacity="0.7">桥头碳</text>
+  <text x="178" y="123" font-size="9" opacity="0.7">桥头碳</text>
+
+  <!-- Bridge with 3 carbons (top): C1-C2-C3-C4-C5 -->
+  <line x1="75" y1="95" x2="95" y2="55" stroke-width="1.5" fill="none"/>
+  <line x1="95" y1="55" x2="125" y2="40" stroke-width="1.5" fill="none"/>
+  <line x1="125" y1="40" x2="155" y2="55" stroke-width="1.5" fill="none"/>
+  <line x1="155" y1="55" x2="175" y2="95" stroke-width="1.5" fill="none"/>
+  <text x="88" y="52" font-size="9">C₂</text>
+  <text x="118" y="36" font-size="9">C₃</text>
+  <text x="153" y="52" font-size="9">C₄</text>
+  <!-- Bridge 1 label -->
+  <text x="107" y="25" font-size="10" opacity="0.8">桥（3个C）</text>
+
+  <!-- Bridge with 2 carbons (middle): C1-C6-C7-C5 -->
+  <line x1="75" y1="95" x2="95" y2="120" stroke-width="1.5" fill="none"/>
+  <line x1="95" y1="120" x2="155" y2="120" stroke-width="1.5" fill="none"/>
+  <line x1="155" y1="120" x2="175" y2="95" stroke-width="1.5" fill="none"/>
+  <text x="88" y="135" font-size="9">C₆</text>
+  <text x="148" y="135" font-size="9">C₇</text>
+  <!-- Bridge 2 label -->
+  <text x="107" y="152" font-size="10" opacity="0.8">桥（2个C）</text>
+
+  <!-- Bridge with 1 carbon (bottom): C1-C8-C5 -->
+  <line x1="75" y1="95" x2="100" y2="155" stroke-width="1.5" fill="none"/>
+  <line x1="100" y1="155" x2="150" y2="155" stroke-width="1.5" fill="none"/>
+  <line x1="150" y1="155" x2="175" y2="95" stroke-width="1.5" fill="none"/>
+  <text x="118" y="170" font-size="9">C₈</text>
+  <!-- Bridge 3 label -->
+  <text x="107" y="183" font-size="10" opacity="0.8">桥（1个C）</text>
+
+  <!-- Divider -->
+  <line x1="230" y1="10" x2="230" y2="195" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== Spiro[4.5]decane (spiro ring) ===== -->
+  <text x="240" y="18" font-weight="bold" font-size="13">螺环：螺[4.5]癸烷</text>
+
+  <!-- Spiro atom at (350, 100) -->
+  <!-- Left ring: cyclopentane (5 carbons, 4 non-spiro) -->
+  <!-- Right ring: cyclohexane (6 carbons, 5 non-spiro) -->
+
+  <!-- Spiro carbon -->
+  <circle cx="350" cy="100" r="4" fill="currentColor" stroke="none"/>
+  <text x="353" y="116" font-size="10" font-weight="bold">螺原子</text>
+
+  <!-- Left cyclopentane ring (pentagon) centered a bit left -->
+  <!-- Vertices of pentagon around (310, 100), r=38 -->
+  <!-- Point at spiro: (348, 100) ~approx (350,100) -->
+  <!-- 5 vertices: spiro(350,100), and 4 others -->
+  <line x1="350" y1="100" x2="320" y2="72" stroke-width="1.5" fill="none"/>
+  <line x1="320" y1="72" x2="282" y2="83" stroke-width="1.5" fill="none"/>
+  <line x1="282" y1="83" x2="280" y2="120" stroke-width="1.5" fill="none"/>
+  <line x1="280" y1="120" x2="320" y2="130" stroke-width="1.5" fill="none"/>
+  <line x1="320" y1="130" x2="350" y2="100" stroke-width="1.5" fill="none"/>
+  <!-- Label 4 carbons in left ring -->
+  <text x="285" y="70" font-size="9" opacity="0.75">4个C</text>
+  <text x="280" y="155" font-size="10">五元环（4C）</text>
+
+  <!-- Right cyclohexane ring (hexagon) -->
+  <!-- 6 vertices including spiro at (350,100) and 5 others going right -->
+  <line x1="350" y1="100" x2="380" y2="72" stroke-width="1.5" fill="none"/>
+  <line x1="380" y1="72" x2="418" y2="72" stroke-width="1.5" fill="none"/>
+  <line x1="418" y1="72" x2="440" y2="100" stroke-width="1.5" fill="none"/>
+  <line x1="440" y1="100" x2="418" y2="128" stroke-width="1.5" fill="none"/>
+  <line x1="418" y1="128" x2="380" y2="128" stroke-width="1.5" fill="none"/>
+  <line x1="380" y1="128" x2="350" y2="100" stroke-width="1.5" fill="none"/>
+  <!-- Label -->
+  <text x="390" y="65" font-size="9" opacity="0.75">5个C</text>
+  <text x="375" y="155" font-size="10">六元环（5C）</text>
+
+  <text x="250" y="185" font-size="10" opacity="0.7">螺原子：两个环共用唯一的碳原子</text>
+</svg>

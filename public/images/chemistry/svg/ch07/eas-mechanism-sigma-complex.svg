@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 190" width="500" height="190" aria-label="苯亲电取代反应机理σ-络合物Wheland中间体" role="img">
+  <title>苯亲电取代反应机理：E+进攻→σ-络合物(Wheland中间体)→失去H+恢复芳香性</title>
+  <defs>
+    <marker id="arr7" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+  <!-- Title -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="currentColor">苯的亲电取代反应机理（EAS）</text>
+  <!-- Step 1: Benzene + E+ -->
+  <text x="10" y="40" font-size="11" fill="currentColor">底物 + 亲电试剂</text>
+  <!-- Benzene -->
+  <polygon points="50,55 70,67 70,90 50,102 30,90 30,67" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="50" cy="78" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <!-- E+ approaching from above right -->
+  <text x="82" y="60" font-size="13" fill="currentColor">E⁺</text>
+  <line x1="80" y1="63" x2="68" y2="68" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr7)"/>
+  <!-- Rate label -->
+  <text x="20" y="120" font-size="10" fill="currentColor">（π 电子富集）</text>
+  <!-- Arrow (slow step) -->
+  <text x="105" y="82" font-size="18" fill="currentColor">→</text>
+  <text x="100" y="97" font-size="10" fill="currentColor">慢（决速步）</text>
+  <!-- Step 2: Sigma complex (Wheland intermediate) -->
+  <text x="132" y="40" font-size="11" fill="currentColor">σ-络合物（Wheland 中间体）</text>
+  <!-- Ring with sp3 C at top-right -->
+  <polygon points="185,55 205,67 205,90 185,102 165,90 165,67" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <!-- One sp3 carbon (top-right) - filled -->
+  <circle cx="205" cy="67" r="6" fill="currentColor" opacity="0.3"/>
+  <!-- E attached to sp3 carbon -->
+  <line x1="205" y1="67" x2="220" y2="52" stroke="currentColor" stroke-width="1.8"/>
+  <text x="222" y="50" font-size="12" fill="currentColor">E</text>
+  <!-- H on same sp3 carbon -->
+  <line x1="205" y1="67" x2="218" y2="70" stroke="currentColor" stroke-width="1.8"/>
+  <text x="220" y="74" font-size="12" fill="currentColor">H</text>
+  <!-- Charge + delocalization (only 5 carbons in pi, 4 pi electrons) -->
+  <text x="232" y="60" font-size="13" fill="currentColor">⊕</text>
+  <!-- partial pi system shown as dashed arc through remaining 5 atoms -->
+  <path d="M165,67 Q155,78 165,90 Q185,105 205,90" stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="4,2"/>
+  <text x="148" y="118" font-size="10" fill="currentColor">sp³ C（E,H 两键）</text>
+  <text x="148" y="130" font-size="10" fill="currentColor">芳香性局部破坏</text>
+  <text x="148" y="142" font-size="10" fill="currentColor">4π电子，能量高</text>
+  <!-- Arrow (fast step) -->
+  <text x="258" y="82" font-size="18" fill="currentColor">→</text>
+  <text x="253" y="97" font-size="10" fill="currentColor">快（-H⁺）</text>
+  <!-- Step 3: Product (substituted benzene) -->
+  <text x="288" y="40" font-size="11" fill="currentColor">取代苯（芳香性恢复）</text>
+  <!-- Substituted benzene -->
+  <polygon points="330,55 350,67 350,90 330,102 310,90 310,67" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="330" cy="78" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <!-- E substituent -->
+  <line x1="350" y1="67" x2="365" y2="52" stroke="currentColor" stroke-width="1.8"/>
+  <text x="367" y="50" font-size="12" fill="currentColor">E</text>
+  <text x="295" y="118" font-size="10" fill="currentColor">sp² C（E 一键）</text>
+  <text x="295" y="130" font-size="10" fill="currentColor">6π电子离域</text>
+  <text x="295" y="142" font-size="10" fill="currentColor">芳香性恢复，能量低</text>
+  <!-- Energy diagram note -->
+  <text x="10" y="163" font-size="11" fill="currentColor">能量：底物 &lt; σ-络合物过渡态 &gt; 产物（取代保留芳香性，能量低于加成产物）</text>
+  <text x="10" y="178" font-size="11" fill="currentColor">净反应：C₆H₆ + E⁺ → C₆H₅E + H⁺    取代保留芳香环，是芳香性驱动的选择</text>
+</svg>

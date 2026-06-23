@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 180" width="420" height="180" aria-label="硼氢化反应的四中心环状过渡态" role="img">
+  <title>硼氢化反应四中心环状过渡态——顺式反马氏加成</title>
+  <defs>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+  <!-- Left: BH3 + propene -->
+  <text x="10" y="18" font-size="12" font-weight="bold" fill="currentColor">BH₃ 与丙烯的硼氢化</text>
+  <!-- Propene -->
+  <text x="18" y="65" font-size="13" fill="currentColor">CH₃</text>
+  <line x1="47" y1="60" x2="70" y2="60" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="70" cy="60" r="3" fill="currentColor"/>
+  <line x1="70" y1="60" x2="100" y2="60" stroke="currentColor" stroke-width="2"/>
+  <line x1="70" y1="66" x2="100" y2="66" stroke="currentColor" stroke-width="2"/>
+  <circle cx="100" cy="63" r="3" fill="currentColor"/>
+  <text x="104" y="57" font-size="11" fill="currentColor">H</text>
+  <text x="104" y="73" font-size="11" fill="currentColor">H</text>
+  <!-- delta charges on alkene -->
+  <text x="65" y="52" font-size="10" fill="currentColor">δ−</text>
+  <text x="95" y="52" font-size="10" fill="currentColor">δ+</text>
+  <!-- BH3 approaching -->
+  <text x="55" y="100" font-size="12" fill="currentColor">B(δ+)</text>
+  <text x="90" y="100" font-size="12" fill="currentColor">H(δ−)</text>
+  <line x1="72" y1="100" x2="88" y2="100" stroke="currentColor" stroke-width="1.5"/>
+  <text x="56" y="94" font-size="10" fill="currentColor">→</text>
+  <text x="95" y="94" font-size="10" fill="currentColor">←</text>
+  <!-- Arrow -->
+  <text x="135" y="72" font-size="18" fill="currentColor">→</text>
+  <!-- Center: 4-membered cyclic transition state -->
+  <text x="165" y="18" font-size="12" font-weight="bold" fill="currentColor">四中心环状过渡态</text>
+  <!-- Draw the 4-membered ring -->
+  <!-- C1 (top-left) -->
+  <circle cx="220" cy="65" r="3" fill="currentColor"/>
+  <text x="208" y="62" font-size="11" fill="currentColor">C1</text>
+  <!-- C2 (top-right) -->
+  <circle cx="270" cy="65" r="3" fill="currentColor"/>
+  <text x="274" y="62" font-size="11" fill="currentColor">C2</text>
+  <!-- B (bottom-left) -->
+  <circle cx="220" cy="110" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="205" y="120" font-size="11" fill="currentColor">B</text>
+  <text x="198" y="112" font-size="10" fill="currentColor">δ+</text>
+  <!-- H (bottom-right) -->
+  <circle cx="270" cy="110" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="274" y="120" font-size="11" fill="currentColor">H</text>
+  <text x="276" y="112" font-size="10" fill="currentColor">δ−</text>
+  <!-- 4-center ring bonds (dashed = partial) -->
+  <line x1="220" y1="65" x2="270" y2="65" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4,2"/>
+  <line x1="220" y1="65" x2="220" y2="110" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4,2"/>
+  <line x1="270" y1="65" x2="270" y2="110" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4,2"/>
+  <line x1="220" y1="110" x2="270" y2="110" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4,2"/>
+  <!-- CH3 and H2 on C1 -->
+  <text x="195" y="48" font-size="11" fill="currentColor">CH₃</text>
+  <line x1="220" y1="65" x2="210" y2="50" stroke="currentColor" stroke-width="1.5"/>
+  <!-- H2 on C2 -->
+  <text x="274" y="48" font-size="11" fill="currentColor">H₂</text>
+  <line x1="270" y1="65" x2="278" y2="50" stroke="currentColor" stroke-width="1.5"/>
+  <!-- "Syn" label -->
+  <text x="225" y="90" font-size="11" fill="currentColor">同侧加成</text>
+  <!-- Arrow -->
+  <text x="305" y="72" font-size="18" fill="currentColor">→</text>
+  <!-- Right: Product -->
+  <text x="330" y="18" font-size="12" font-weight="bold" fill="currentColor">产物（顺式）</text>
+  <text x="325" y="60" font-size="13" fill="currentColor">CH₃</text>
+  <line x1="355" y1="55" x2="378" y2="55" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="378" cy="55" r="3" fill="currentColor"/>
+  <line x1="378" y1="55" x2="408" y2="55" stroke="currentColor" stroke-width="1.8"/>
+  <circle cx="408" cy="55" r="3" fill="currentColor"/>
+  <text x="411" y="50" font-size="11" fill="currentColor">H</text>
+  <text x="411" y="64" font-size="11" fill="currentColor">H</text>
+  <!-- B on C1 (anti-Markovnikov) -->
+  <line x1="378" y1="55" x2="368" y2="82" stroke="currentColor" stroke-width="1.5"/>
+  <text x="355" y="90" font-size="12" fill="currentColor">B</text>
+  <!-- H on C2 -->
+  <line x1="408" y1="55" x2="418" y2="82" stroke="currentColor" stroke-width="1.5"/>
+  <text x="420" y="90" font-size="12" fill="currentColor">H</text>
+  <text x="325" y="120" font-size="11" fill="currentColor">B 在端碳 C1</text>
+  <text x="325" y="136" font-size="11" fill="currentColor">（反马氏，顺式）</text>
+  <!-- Bottom explanation -->
+  <text x="10" y="165" font-size="11" fill="currentColor">H₂O₂/OH⁻ 氧化后：B→OH，端碳得 OH（1-丙醇），反马氏醇，不重排</text>
+</svg>

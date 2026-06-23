@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 190" width="500" height="190" aria-label="SN1反应机理——碳正离子中间体外消旋化" role="img">
+  <title>SN1反应机理：两步分步，第1步C-X异裂形成sp2平面型碳正离子，第2步Nu-从两侧进攻外消旋化</title>
+  <defs>
+    <marker id="arr10" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+  <!-- Title -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="currentColor">SN1 机理——单分子亲核取代（外消旋化）</text>
+  <!-- Reactant -->
+  <text x="10" y="38" font-size="11" fill="currentColor">底物（叔卤代烷）</text>
+  <!-- Tertiary C with X -->
+  <circle cx="75" cy="95" r="7" fill="currentColor"/>
+  <!-- 3 R groups -->
+  <line x1="75" y1="88" x2="60" y2="68" stroke="currentColor" stroke-width="1.8"/>
+  <text x="48" y="65" font-size="11" fill="currentColor">R₁</text>
+  <line x1="75" y1="88" x2="95" y2="68" stroke="currentColor" stroke-width="1.8"/>
+  <text x="98" y="65" font-size="11" fill="currentColor">R₂</text>
+  <line x1="75" y1="102" x2="75" y2="128" stroke="currentColor" stroke-width="1.8"/>
+  <text x="70" y="140" font-size="11" fill="currentColor">R₃</text>
+  <!-- C-X bond -->
+  <line x1="82" y1="95" x2="115" y2="95" stroke="currentColor" stroke-width="2"/>
+  <text x="118" y="99" font-size="12" fill="currentColor">X</text>
+  <!-- Rate equation -->
+  <text x="10" y="163" font-size="11" fill="currentColor">v = k[RX]（一级反应）</text>
+  <!-- Slow step arrow -->
+  <text x="140" y="95" font-size="14" fill="currentColor">→</text>
+  <text x="132" y="108" font-size="9" fill="currentColor">慢，决速</text>
+  <text x="132" y="120" font-size="9" fill="currentColor">C-X 异裂</text>
+  <!-- Carbocation intermediate -->
+  <text x="170" y="38" font-size="11" fill="currentColor">碳正离子（sp²，平面三角形）</text>
+  <!-- Flat sp2 carbocation -->
+  <circle cx="240" cy="95" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="232" y="75" font-size="12" fill="orange">⊕</text>
+  <!-- 3 R groups in plane (sp2) -->
+  <line x1="240" y1="95" x2="210" y2="75" stroke="currentColor" stroke-width="1.8"/>
+  <text x="196" y="72" font-size="11" fill="currentColor">R₁</text>
+  <line x1="240" y1="95" x2="270" y2="75" stroke="currentColor" stroke-width="1.8"/>
+  <text x="273" y="72" font-size="11" fill="currentColor">R₂</text>
+  <line x1="240" y1="95" x2="240" y2="125" stroke="currentColor" stroke-width="1.8"/>
+  <text x="234" y="138" font-size="11" fill="currentColor">R₃</text>
+  <!-- Empty p orbital (vertical lobes) -->
+  <ellipse cx="240" cy="85" rx="6" ry="12" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3,2" opacity="0.7"/>
+  <ellipse cx="240" cy="107" rx="6" ry="12" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3,2" opacity="0.7"/>
+  <text x="250" y="86" font-size="9" fill="currentColor">空 p</text>
+  <!-- Nu- from above and below -->
+  <text x="175" y="52" font-size="11" fill="currentColor">Nu⁻</text>
+  <line x1="195" y1="55" x2="230" y2="78" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr10)"/>
+  <text x="175" y="145" font-size="11" fill="currentColor">Nu⁻</text>
+  <line x1="195" y1="142" x2="230" y2="112" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr10)"/>
+  <text x="195" y="165" font-size="10" fill="currentColor">从上下两侧进攻，机会均等</text>
+  <!-- Fast step arrow -->
+  <text x="298" y="95" font-size="14" fill="currentColor">→</text>
+  <text x="292" y="108" font-size="9" fill="currentColor">快</text>
+  <!-- Products: two enantiomers -->
+  <text x="315" y="38" font-size="11" fill="currentColor">产物（外消旋化）</text>
+  <!-- Product 1 (R) -->
+  <circle cx="345" cy="75" r="5" fill="currentColor"/>
+  <line x1="345" y1="75" x2="325" y2="58" stroke="currentColor" stroke-width="1.5"/>
+  <text x="313" y="55" font-size="10" fill="currentColor">R₁</text>
+  <line x1="345" y1="75" x2="365" y2="58" stroke="currentColor" stroke-width="1.5"/>
+  <text x="368" y="55" font-size="10" fill="currentColor">R₂</text>
+  <line x1="345" y1="75" x2="345" y2="92" stroke="currentColor" stroke-width="1.5"/>
+  <text x="340" y="100" font-size="10" fill="currentColor">R₃</text>
+  <!-- Nu from above -->
+  <polygon points="345,75 335,52 345,53" fill="currentColor" opacity="0.7"/>
+  <text x="348" y="50" font-size="10" fill="currentColor">Nu</text>
+  <text x="315" y="115" font-size="10" fill="currentColor">(R)-产物 50%</text>
+  <!-- Product 2 (S) -->
+  <circle cx="430" cy="75" r="5" fill="currentColor"/>
+  <line x1="430" y1="75" x2="410" y2="58" stroke="currentColor" stroke-width="1.5"/>
+  <text x="398" y="55" font-size="10" fill="currentColor">R₁</text>
+  <line x1="430" y1="75" x2="450" y2="58" stroke="currentColor" stroke-width="1.5"/>
+  <text x="453" y="55" font-size="10" fill="currentColor">R₂</text>
+  <line x1="430" y1="75" x2="430" y2="92" stroke="currentColor" stroke-width="1.5"/>
+  <text x="425" y="100" font-size="10" fill="currentColor">R₃</text>
+  <!-- Nu from below -->
+  <polygon points="430,75 420,98 430,97" fill="currentColor" opacity="0.7"/>
+  <text x="432" y="100" font-size="10" fill="currentColor">Nu</text>
+  <text x="400" y="115" font-size="10" fill="currentColor">(S)-产物 50%</text>
+  <!-- Racemization note -->
+  <text x="315" y="145" font-size="10" fill="orange">外消旋化（50:50）</text>
+  <text x="315" y="160" font-size="10" fill="currentColor">叔卤代烷最优，可能碳正离子重排</text>
+  <text x="10" y="178" font-size="10" fill="currentColor">判断 SN1：叔卤代烷+弱亲核试剂（H₂O, ROH）+极性质子溶剂  →  SN1（稳定碳正离子）</text>
+</svg>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 175" width="480" height="175" aria-label="旋光仪原理示意图" role="img">
+  <title>旋光仪原理：光源→起偏器得平面偏振光→样品管→检偏器测旋光度α</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="currentColor">旋光仪（Polarimeter）工作原理</text>
+  <!-- Light source -->
+  <circle cx="30" cy="90" r="18" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="18" y="85" font-size="10" fill="currentColor">光</text>
+  <text x="20" y="98" font-size="10" fill="currentColor">源</text>
+  <!-- Multiple direction arrows (ordinary light) -->
+  <line x1="48" y1="90" x2="70" y2="90" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="52" y1="82" x2="70" y2="90" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+  <line x1="52" y1="98" x2="70" y2="90" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+  <line x1="56" y1="76" x2="70" y2="90" stroke="currentColor" stroke-width="0.8" opacity="0.3"/>
+  <line x1="56" y1="104" x2="70" y2="90" stroke="currentColor" stroke-width="0.8" opacity="0.3"/>
+  <text x="20" y="118" font-size="10" fill="currentColor">普通光</text>
+  <!-- Polarizer (Nicol prism) -->
+  <rect x="72" y="72" width="22" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="68" y="122" font-size="10" fill="currentColor">起偏器</text>
+  <!-- Plane polarized light -->
+  <line x1="94" y1="90" x2="160" y2="90" stroke="currentColor" stroke-width="2.5"/>
+  <!-- Vertical oscillation indicator -->
+  <line x1="120" y1="78" x2="120" y2="102" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+  <line x1="118" y1="78" x2="120" y2="78" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+  <line x1="120" y1="78" x2="122" y2="78" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+  <line x1="118" y1="102" x2="120" y2="102" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+  <line x1="120" y1="102" x2="122" y2="102" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+  <text x="108" y="70" font-size="9" fill="currentColor">平面</text>
+  <text x="105" y="60" font-size="9" fill="currentColor">偏振光</text>
+  <!-- Sample tube -->
+  <rect x="162" y="70" width="120" height="40" rx="5" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="192" y="88" font-size="11" fill="currentColor">样品管</text>
+  <text x="185" y="102" font-size="10" fill="currentColor">（手性溶液）</text>
+  <text x="175" y="122" font-size="10" fill="currentColor">浓度 c，长度 l</text>
+  <!-- Rotated beam after sample -->
+  <line x1="282" y1="90" x2="350" y2="90" stroke="currentColor" stroke-width="2.5"/>
+  <!-- Rotated polarization indicator -->
+  <line x1="320" y1="80" x2="332" y2="100" stroke="currentColor" stroke-width="1.8" opacity="0.7"/>
+  <line x1="318" y1="81" x2="320" y2="80" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+  <line x1="320" y1="80" x2="322" y2="82" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+  <!-- Arc showing rotation angle -->
+  <path d="M320,82 A12,12 0 0,1 328,90" stroke="orange" stroke-width="1.8" fill="none"/>
+  <text x="330" y="83" font-size="11" fill="orange">α</text>
+  <!-- Analyzer -->
+  <rect x="352" y="72" width="22" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+  <text x="348" y="122" font-size="10" fill="currentColor">检偏器</text>
+  <!-- Measurement -->
+  <line x1="374" y1="90" x2="420" y2="90" stroke="currentColor" stroke-width="1.5"/>
+  <text x="390" y="82" font-size="10" fill="currentColor">光强</text>
+  <!-- Right vs Left labels -->
+  <text x="10" y="145" font-size="11" fill="currentColor">右旋 (+)：偏振方向顺时针旋转 α 度</text>
+  <text x="10" y="160" font-size="11" fill="currentColor">左旋 (−)：偏振方向逆时针旋转 α 度</text>
+  <text x="260" y="145" font-size="11" fill="currentColor">比旋光度: [α] = α / (l × c)</text>
+  <text x="260" y="160" font-size="11" fill="currentColor">l (dm), c (g/mL)，是特征常数</text>
+</svg>

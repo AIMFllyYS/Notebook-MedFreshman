@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 190" width="460" height="190" aria-label="Zaitsev规则——2-溴丁烷消除取向" role="img">
+  <title>Zaitsev规则：2-溴丁烷在强碱作用下消除，向C3-H方向消除得2-丁烯（81%，Zaitsev产物，取代更多），向C1-H方向消除得1-丁烯（19%）</title>
+  <defs>
+    <marker id="arr_z" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+  <!-- Title -->
+  <text x="10" y="18" font-size="12" font-weight="bold" fill="currentColor">Zaitsev 规则——2-溴丁烷消除产物分布</text>
+  <!-- Reactant: 2-bromobutane -->
+  <text x="10" y="38" font-size="11" fill="currentColor">底物：2-溴丁烷 + KOH/醇（E2 条件）</text>
+  <!-- Skeletal structure: CH3-CHBr-CH2-CH3 -->
+  <!-- C1 -->
+  <text x="25" y="82" font-size="11" fill="currentColor">CH₃</text>
+  <line x1="55" y1="80" x2="78" y2="80" stroke="currentColor" stroke-width="2"/>
+  <!-- C2 (CHBr) -->
+  <circle cx="82" cy="80" r="5" fill="currentColor"/>
+  <line x1="82" y1="75" x2="82" y2="58" stroke="currentColor" stroke-width="2"/>
+  <text x="76" y="53" font-size="12" fill="red">Br</text>
+  <line x1="87" y1="80" x2="110" y2="80" stroke="currentColor" stroke-width="2"/>
+  <!-- C3 (CH2) -->
+  <circle cx="114" cy="80" r="5" fill="currentColor"/>
+  <line x1="119" y1="80" x2="142" y2="80" stroke="currentColor" stroke-width="2"/>
+  <!-- C4 -->
+  <text x="143" y="84" font-size="11" fill="currentColor">CH₃</text>
+  <!-- H labels -->
+  <text x="108" y="100" font-size="10" fill="currentColor">H (C3)</text>
+  <line x1="114" y1="85" x2="114" y2="97" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <text x="18" y="100" font-size="10" fill="currentColor">H (C1)</text>
+  <line x1="38" y1="86" x2="38" y2="97" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2,2"/>
+  <!-- Branching arrows down-left and down-right -->
+  <line x1="82" y1="90" x2="45" y2="128" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr_z)"/>
+  <text x="28" y="112" font-size="10" fill="currentColor">消除 C1-H</text>
+  <line x1="100" y1="90" x2="138" y2="128" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr_z)"/>
+  <text x="115" y="112" font-size="10" fill="currentColor">消除 C3-H</text>
+  <!-- Left product: 1-butene (19%) -->
+  <rect x="5" y="135" width="165" height="50" rx="5" fill="currentColor" opacity="0.03" stroke="currentColor" stroke-width="1"/>
+  <text x="12" y="150" font-size="11" fill="currentColor">1-丁烯（CH₂=CH-CH₂-CH₃）</text>
+  <text x="12" y="165" font-size="11" fill="currentColor">取代少（末端烯烃）</text>
+  <text x="12" y="178" font-size="13" fill="currentColor">19%（次要）</text>
+  <!-- Right product: 2-butene (81%, Zaitsev) -->
+  <rect x="220" y="135" width="235" height="50" rx="5" fill="orange" opacity="0.08" stroke="orange" stroke-width="1.5"/>
+  <text x="228" y="150" font-size="11" fill="currentColor">2-丁烯（CH₃-CH=CH-CH₃）</text>
+  <text x="228" y="165" font-size="11" fill="currentColor">取代多（内烯烃，超共轭稳定）</text>
+  <text x="228" y="178" font-size="13" fill="orange">81%（Zaitsev 主产物）</text>
+  <!-- Zaitsev rule statement -->
+  <text x="175" y="120" font-size="10" fill="orange">Zaitsev 规则：消除方向优先形成取代最多的烯烃</text>
+</svg>

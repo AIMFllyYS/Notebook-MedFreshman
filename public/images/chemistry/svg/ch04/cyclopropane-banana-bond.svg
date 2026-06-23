@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 190" width="380" height="190" aria-label="环丙烷香蕉键：三角形环丙烷，C-C-C键角105.5°，弯曲电子云位于核连线外侧">
+  <title>环丙烷的香蕉键结构</title>
+  <style>
+    text { font-family: serif; font-size: 12px; fill: currentColor; }
+    line, path, ellipse { stroke: currentColor; }
+  </style>
+
+  <!-- ===== Cyclopropane ring triangle ===== -->
+  <!-- Equilateral triangle: C1(120,55), C2(55,160), C3(185,160) -->
+  <!-- Draw as triangle with angle labels -->
+
+  <!-- C atom labels -->
+  <text x="114" y="52">C₁</text>
+  <text x="42" y="170">C₂</text>
+  <text x="185" y="170">C₃</text>
+
+  <!-- Straight internuclear lines (for reference) -->
+  <line x1="120" y1="55" x2="60" y2="158" stroke-width="0.6" stroke-dasharray="3,3" fill="none"/>
+  <line x1="60" y1="158" x2="185" y2="158" stroke-width="0.6" stroke-dasharray="3,3" fill="none"/>
+  <line x1="185" y1="158" x2="120" y2="55" stroke-width="0.6" stroke-dasharray="3,3" fill="none"/>
+
+  <!-- Banana bonds: curved arcs outside the triangle -->
+  <!-- Bond C1-C2: arc bulging to the left -->
+  <path d="M120,55 Q60,80 60,158" stroke-width="2.5" fill="none"/>
+  <!-- Bond C2-C3: arc bulging downward -->
+  <path d="M60,158 Q122,195 185,158" stroke-width="2.5" fill="none"/>
+  <!-- Bond C3-C1: arc bulging to the right -->
+  <path d="M185,158 Q175,80 120,55" stroke-width="2.5" fill="none"/>
+
+  <!-- Electron density shading along banana bonds (ellipses) -->
+  <!-- C1-C2 bond outside: -->
+  <ellipse cx="72" cy="107" rx="14" ry="28" fill="currentColor" opacity="0.12" stroke="none" transform="rotate(-25 72 107)"/>
+  <!-- C2-C3 bond below: -->
+  <ellipse cx="122" cy="185" rx="30" ry="12" fill="currentColor" opacity="0.12" stroke="none"/>
+  <!-- C3-C1 bond outside right: -->
+  <ellipse cx="170" cy="107" rx="14" ry="28" fill="currentColor" opacity="0.12" stroke="none" transform="rotate(25 170 107)"/>
+
+  <!-- H atoms (2 per carbon, sp3-like) -->
+  <!-- H at C1 (top): two H going up -->
+  <line x1="120" y1="55" x2="105" y2="28" stroke-width="1.3" fill="none"/>
+  <text x="96" y="24">H</text>
+  <line x1="120" y1="55" x2="135" y2="28" stroke-width="1.3" fill="none"/>
+  <text x="136" y="24">H</text>
+  <!-- H at C2 (lower-left) -->
+  <line x1="60" y1="158" x2="32" y2="152" stroke-width="1.3" fill="none"/>
+  <text x="18" y="155">H</text>
+  <line x1="60" y1="158" x2="45" y2="177" stroke-width="1.3" fill="none"/>
+  <text x="36" y="190">H</text>
+  <!-- H at C3 (lower-right) -->
+  <line x1="185" y1="158" x2="213" y2="152" stroke-width="1.3" fill="none"/>
+  <text x="215" y="155">H</text>
+  <line x1="185" y1="158" x2="200" y2="177" stroke-width="1.3" fill="none"/>
+  <text x="200" y="190">H</text>
+
+  <!-- Angle annotation at C1 -->
+  <path d="M103,65 A22,22 0 0,1 136,65" stroke-width="0.8" fill="none"/>
+  <text x="104" y="80" font-size="11">105.5°</text>
+
+  <!-- Arrow pointing to banana bond bulge -->
+  <line x1="40" y1="100" x2="65" y2="108" stroke-width="0.8" fill="none"/>
+  <polygon points="65,108 58,104 59,112" fill="currentColor" stroke="none"/>
+  <text x="5" y="97" font-size="10">弯曲</text>
+  <text x="5" y="108" font-size="10">香蕉键</text>
+
+  <!-- ===== Comparison: normal σ bond vs banana bond ===== -->
+  <text x="230" y="40" font-weight="bold" font-size="12">对比：正常 σ 键</text>
+  <text x="230" y="55" font-size="11">（sp³ 头对头）</text>
+  <!-- Straight overlap -->
+  <ellipse cx="295" cy="85" rx="28" ry="11" fill="none" stroke-width="1.5"/>
+  <ellipse cx="340" cy="85" rx="28" ry="11" fill="none" stroke-width="1.5"/>
+  <ellipse cx="317" cy="85" rx="14" ry="9" fill="currentColor" opacity="0.2" stroke="none"/>
+  <line x1="262" y1="85" x2="370" y2="85" stroke-width="0.6" stroke-dasharray="3,3" fill="none"/>
+  <text x="255" y="102" font-size="10">电子云沿键轴对称</text>
+
+  <text x="230" y="125" font-weight="bold" font-size="12">环丙烷香蕉键</text>
+  <text x="230" y="140" font-size="11">（弯曲，在键轴外侧）</text>
+  <path d="M270,158 Q310,145 350,158" stroke-width="2" fill="none"/>
+  <ellipse cx="310" cy="152" rx="22" ry="8" fill="currentColor" opacity="0.15" stroke="none"/>
+  <text x="235" y="180" font-size="10">电子云弯曲至两核连线外</text>
+  <text x="235" y="193" font-size="10" opacity="0.7">键长 151 pm，有较大张力</text>
+</svg>

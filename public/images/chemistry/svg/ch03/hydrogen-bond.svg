@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 175" width="380" height="175" aria-label="氢键形成示意图：X-H...Y，X和Y为F/O/N，H带δ+，Y有孤对电子带δ-">
+  <title>氢键形成示意图 X-H···Y</title>
+  <style>
+    text { font-family: serif; font-size: 13px; fill: currentColor; }
+    line, circle, ellipse { stroke: currentColor; }
+  </style>
+
+  <!-- X-H covalent bond -->
+  <text x="40" y="100">X</text>
+  <line x1="55" y1="93" x2="110" y2="93" stroke-width="2" fill="none"/>
+  <text x="114" y="100">H</text>
+
+  <!-- Hydrogen bond (dashed) -->
+  <line x1="127" y1="93" x2="230" y2="93" stroke-width="1.5" stroke-dasharray="6,4" fill="none"/>
+  <text x="233" y="100">Y</text>
+
+  <!-- Delta charges -->
+  <text x="40" y="82" font-size="11" opacity="0.8">δ−</text>
+  <text x="114" y="82" font-size="11" opacity="0.8">δ+</text>
+  <text x="233" y="82" font-size="11" opacity="0.8">δ−</text>
+
+  <!-- Lone pair on Y -->
+  <circle cx="256" cy="92" r="3" fill="currentColor" stroke="none"/>
+  <circle cx="262" cy="86" r="3" fill="currentColor" stroke="none"/>
+  <text x="260" y="112" font-size="10">孤对电子</text>
+
+  <!-- Atoms that qualify for H-bond -->
+  <text x="30" y="130" font-size="11">X、Y = F、O、N（电负性强）</text>
+
+  <!-- Near linear angle -->
+  <text x="100" y="130" font-size="11">X—H···Y 接近 180°</text>
+  <!-- Angle arc -->
+  <path d="M55,93 A35,35 0 0,1 127,93" stroke-width="0.8" fill="none" stroke-dasharray="2,2"/>
+
+  <!-- Electrostatic attraction arrow -->
+  <path d="M128,105 Q175,120 230,105" stroke-width="0.8" fill="none"/>
+  <polygon points="230,105 222,102 223,110" fill="currentColor" stroke="none"/>
+  <text x="155" y="125" font-size="10">静电吸引</text>
+
+  <!-- Bond labels -->
+  <text x="65" y="75" font-size="10" opacity="0.7">共价键</text>
+  <text x="155" y="75" font-size="10" opacity="0.7">氢键（虚线）</text>
+
+  <!-- Note on bond length -->
+  <text x="30" y="155" font-size="11">氢键能：2～40 kJ/mol（弱于共价键，强于范德华力）</text>
+  <text x="30" y="170" font-size="10" opacity="0.7">F—H···F 最强；O—H···O 次之；N—H···N 最弱</text>
+</svg>

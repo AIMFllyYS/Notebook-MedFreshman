@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 190" width="380" height="190" aria-label="乙烷Newman投影式：左交叉式前后C-H交错60°能量最低，右重叠式前后C-H重叠能量最高">
+  <title>乙烷的 Newman 投影式：交叉式与重叠式</title>
+  <style>
+    text { font-family: serif; font-size: 12px; fill: currentColor; }
+    line, circle { stroke: currentColor; }
+  </style>
+
+  <!-- ===== Staggered conformation (交叉式) ===== -->
+  <text x="20" y="18" font-weight="bold" font-size="13">交叉式（Staggered）</text>
+  <text x="20" y="31" font-size="11">能量最低，最稳定</text>
+
+  <!-- Newman projection: circle represents back carbon, front carbon at center -->
+  <!-- Front carbon circle center at (90, 110), r=30 -->
+  <circle cx="90" cy="110" r="30" fill="none" stroke-width="2"/>
+
+  <!-- Front C bonds: 3 bonds at 90°, 210°, 330° (up, lower-left, lower-right) -->
+  <line x1="90" y1="110" x2="90" y2="70" stroke-width="2" fill="none"/>
+  <text x="82" y="62">H</text>
+  <line x1="90" y1="110" x2="56" y2="144" stroke-width="2" fill="none"/>
+  <text x="42" y="157">H</text>
+  <line x1="90" y1="110" x2="124" y2="144" stroke-width="2" fill="none"/>
+  <text x="126" y="157">H</text>
+
+  <!-- Back C bonds: staggered at 30°, 150°, 270° (upper-right, upper-left, down) -->
+  <!-- These appear from the perimeter of the circle -->
+  <!-- 30°: (90+30*cos30, 110-30*sin30) = (90+26, 110-15) = (116, 95) -->
+  <line x1="116" y1="95" x2="155" y2="72" stroke-width="2" fill="none"/>
+  <text x="158" y="68">H</text>
+  <!-- 150°: (90-26, 95) = (64, 95) -->
+  <line x1="64" y1="95" x2="25" y2="72" stroke-width="2" fill="none"/>
+  <text x="12" y="68">H</text>
+  <!-- 270°: (90, 110+30) = (90, 140) -->
+  <line x1="90" y1="140" x2="90" y2="170" stroke-width="2" fill="none"/>
+  <text x="82" y="183">H</text>
+
+  <!-- Labels -->
+  <text x="50" y="47" font-size="10">前碳</text>
+  <text x="85" y="47" font-size="9" opacity="0.7">↑</text>
+  <text x="20" y="118" font-size="10" opacity="0.7">60°</text>
+
+  <!-- Divider -->
+  <line x1="200" y1="10" x2="200" y2="185" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== Eclipsed conformation (重叠式) ===== -->
+  <text x="215" y="18" font-weight="bold" font-size="13">重叠式（Eclipsed）</text>
+  <text x="215" y="31" font-size="11">能量最高，不稳定</text>
+
+  <!-- Newman projection circle centered at (290, 110) -->
+  <circle cx="290" cy="110" r="30" fill="none" stroke-width="2"/>
+
+  <!-- Front C bonds: same as above at 90°, 210°, 330° -->
+  <line x1="290" y1="110" x2="290" y2="70" stroke-width="2" fill="none"/>
+  <text x="282" y="62">H</text>
+  <line x1="290" y1="110" x2="256" y2="144" stroke-width="2" fill="none"/>
+  <text x="242" y="157">H</text>
+  <line x1="290" y1="110" x2="324" y2="144" stroke-width="2" fill="none"/>
+  <text x="326" y="157">H</text>
+
+  <!-- Back C bonds: eclipsed at 90°, 210°, 330° (same as front - overlapping) -->
+  <!-- Show slightly offset to indicate overlap, at perimeter positions -->
+  <!-- Top back H: slightly offset to right to show overlap -->
+  <line x1="294" y1="80" x2="298" y2="60" stroke-width="2" stroke-dasharray="3,2" fill="none"/>
+  <text x="296" y="55" font-size="10" opacity="0.7">(H)</text>
+  <!-- Lower-left back H -->
+  <line x1="265" y1="132" x2="240" y2="152" stroke-width="2" stroke-dasharray="3,2" fill="none"/>
+  <text x="228" y="163" font-size="10" opacity="0.7">(H)</text>
+  <!-- Lower-right back H -->
+  <line x1="315" y1="132" x2="340" y2="152" stroke-width="2" stroke-dasharray="3,2" fill="none"/>
+  <text x="343" y="163" font-size="10" opacity="0.7">(H)</text>
+
+  <!-- Energy difference label -->
+  <text x="215" y="173" font-size="11">能差 12.1 kJ/mol</text>
+  <text x="215" y="186" font-size="10" opacity="0.7">（扭转张力）</text>
+
+  <!-- Angle annotation on staggered -->
+  <path d="M90,70 A42,42 0 0,1 124,144" stroke-width="0.7" fill="none" stroke-dasharray="2,2"/>
+  <text x="130" y="110" font-size="10">60°</text>
+</svg>

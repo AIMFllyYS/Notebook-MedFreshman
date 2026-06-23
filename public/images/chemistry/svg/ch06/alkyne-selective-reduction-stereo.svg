@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 200" width="460" height="200" aria-label="炔烃选择性还原立体化学对比" role="img">
+  <title>炔烃选择性还原：Lindlar催化剂得Z-烯烃，Na/液氨得E-烯烃</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="currentColor">炔烃选择性还原的立体化学控制</text>
+  <!-- Starting alkyne (center top) -->
+  <text x="185" y="48" font-size="12" fill="currentColor">RC≡CR'</text>
+  <!-- Left branch: Lindlar → Z -->
+  <!-- Arrow down-left -->
+  <line x1="195" y1="55" x2="120" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr4)"/>
+  <defs>
+    <marker id="arr4" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+  <text x="100" y="85" font-size="11" fill="currentColor">Lindlar 催化剂</text>
+  <text x="105" y="98" font-size="11" fill="currentColor">H₂，顺式加 H</text>
+  <!-- Z-alkene -->
+  <g transform="translate(30, 115)">
+    <text x="38" y="18" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">(Z)-烯烃</text>
+    <line x1="15" y1="50" x2="55" y2="50" stroke="currentColor" stroke-width="2"/>
+    <line x1="15" y1="56" x2="55" y2="56" stroke="currentColor" stroke-width="2"/>
+    <circle cx="15" cy="53" r="3" fill="currentColor"/>
+    <circle cx="55" cy="53" r="3" fill="currentColor"/>
+    <!-- R upper-left -->
+    <line x1="15" y1="53" x2="-5" y2="33" stroke="currentColor" stroke-width="1.8"/>
+    <text x="-12" y="30" font-size="12" fill="currentColor">R</text>
+    <!-- H lower-left -->
+    <line x1="15" y1="53" x2="-5" y2="73" stroke="currentColor" stroke-width="1.8"/>
+    <text x="-10" y="80" font-size="12" fill="currentColor">H</text>
+    <!-- R' upper-right (Z = same side as R) -->
+    <line x1="55" y1="53" x2="75" y2="33" stroke="currentColor" stroke-width="1.8"/>
+    <text x="77" y="30" font-size="12" fill="currentColor">R'</text>
+    <!-- H lower-right -->
+    <line x1="55" y1="53" x2="75" y2="73" stroke="currentColor" stroke-width="1.8"/>
+    <text x="78" y="80" font-size="12" fill="currentColor">H</text>
+    <text x="25" y="80" font-size="11" fill="currentColor">R,R' 同侧</text>
+  </g>
+  <!-- Right branch: Na/NH3 → E -->
+  <!-- Arrow down-right -->
+  <line x1="225" y1="55" x2="300" y2="100" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr4)"/>
+  <text x="250" y="85" font-size="11" fill="currentColor">Na/液氨</text>
+  <text x="248" y="98" font-size="11" fill="currentColor">反式加 H</text>
+  <!-- E-alkene -->
+  <g transform="translate(280, 115)">
+    <text x="38" y="18" text-anchor="middle" font-size="13" font-weight="bold" fill="currentColor">(E)-烯烃</text>
+    <line x1="15" y1="50" x2="55" y2="50" stroke="currentColor" stroke-width="2"/>
+    <line x1="15" y1="56" x2="55" y2="56" stroke="currentColor" stroke-width="2"/>
+    <circle cx="15" cy="53" r="3" fill="currentColor"/>
+    <circle cx="55" cy="53" r="3" fill="currentColor"/>
+    <!-- R upper-left -->
+    <line x1="15" y1="53" x2="-5" y2="33" stroke="currentColor" stroke-width="1.8"/>
+    <text x="-12" y="30" font-size="12" fill="currentColor">R</text>
+    <!-- H lower-left -->
+    <line x1="15" y1="53" x2="-5" y2="73" stroke="currentColor" stroke-width="1.8"/>
+    <text x="-10" y="80" font-size="12" fill="currentColor">H</text>
+    <!-- H upper-right (E = R and R' opposite sides) -->
+    <line x1="55" y1="53" x2="75" y2="33" stroke="currentColor" stroke-width="1.8"/>
+    <text x="78" y="30" font-size="12" fill="currentColor">H</text>
+    <!-- R' lower-right -->
+    <line x1="55" y1="53" x2="75" y2="73" stroke="currentColor" stroke-width="1.8"/>
+    <text x="77" y="82" font-size="12" fill="currentColor">R'</text>
+    <text x="20" y="80" font-size="11" fill="currentColor">R,R' 异侧</text>
+  </g>
+  <!-- Summary -->
+  <text x="10" y="182" font-size="11" fill="currentColor">Lindlar（Pd-CaCO₃，毒化）→ (Z) 顺式   |   Na/NH₃(l)（单电子转移）→ (E) 反式，更稳定</text>
+</svg>

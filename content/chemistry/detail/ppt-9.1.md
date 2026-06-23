@@ -106,7 +106,7 @@ $$
 二级反应，速率与底物和亲核试剂浓度都有关。
 :::
 
-<!-- SVG-TODO: SN2 反应机理图（亲核试剂 Nu- 从离去基团 X 背面进攻 α-碳，五配位碳过渡态 [Nu...C...X]^-，三个基团翻面，构型翻转 R→S，标注新键形成与旧键断裂同步） -->
+::figure{src="/images/chemistry/svg/ch09/sn2-mechanism-backside-attack.svg" caption="SN2机理——背面进攻，五配位过渡态，Walden构型翻转" alt="Nu-从X背面180°进攻α碳，五配位三角双锥过渡态，三个基团翻面，构型R→S翻转"}
 
 :::theorem{label=SN2反应的特点}
 1. **双分子反应**，二级反应（$v = k[\ce{RX}][\ce{Nu^-}]$）
@@ -171,7 +171,7 @@ $$
 一级反应，速率只与底物浓度有关，与亲核试剂浓度无关。
 :::
 
-<!-- SVG-TODO: SN1 反应机理图（两步分步：第1步 C-X 键异裂形成 sp2 平面型碳正离子 R+ 中间体，第2步亲核试剂 Nu- 从平面上下两侧进攻机会均等，产物外消旋化，标注慢/快步骤） -->
+::figure{src="/images/chemistry/svg/ch09/sn1-mechanism-racemization.svg" caption="SN1机理——两步分步，sp²碳正离子中间体，Nu-从两侧进攻外消旋化" alt="叔卤代烷C-X异裂形成sp2碳正离子，Nu-从上下两侧等概率进攻，产物50:50外消旋"}
 
 :::theorem{label=SN1反应的特点}
 1. **单分子反应**，一级反应（$v = k[\ce{RX}]$）
@@ -275,7 +275,7 @@ $$
 **记忆**：桥头碳上的卤素"卡死"了，亲核取代反应难以进行。
 :::
 
-<!-- SVG-TODO: 桥头卤代烃结构图（1-溴双环[2.2.1]庚烷，标注桥头碳上的 Br，背面被环系阻挡无法 SN2 进攻，且桥头碳无法形成平面 sp2 碳正离子无法 SN1） -->
+::figure{src="/images/chemistry/svg/ch09/bridgehead-haloalkane.svg" caption="桥头卤代烃——刚性笼状结构阻止SN1和SN2（Bredt规则）" alt="1-溴降冰片烷桥头碳上Br，刚性笼阻止背面进攻(SN2)，桥头碳无法平面化(SN1)"}
 
 :::note{label=本节小结}
 - **卤代烃**：$\ce{R-X}$，按 $\alpha$-碳级数分为伯/仲/叔卤代烷

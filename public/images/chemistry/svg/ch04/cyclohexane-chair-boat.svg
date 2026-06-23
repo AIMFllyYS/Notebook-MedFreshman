@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200" width="500" height="200" aria-label="环己烷椅式与船式构象对比：椅式交叉式键角109.5°，船式旗杆氢距183pm，能量约30kJ/mol">
+  <title>环己烷椅式与船式构象对比图</title>
+  <style>
+    text { font-family: serif; font-size: 11px; fill: currentColor; }
+    line, path, polygon { stroke: currentColor; }
+  </style>
+
+  <!-- ===== Chair conformation (椅式) ===== -->
+  <text x="15" y="16" font-weight="bold" font-size="13">椅式构象</text>
+  <text x="15" y="29" font-size="11">最稳定，能量 = 0</text>
+
+  <!-- Chair: 6 carbons in specific 3D arrangement projected in 2D -->
+  <!-- Typical chair drawing: -->
+  <!-- C1(bottom-left), C2(bottom-right), C3(right-up), C4(top-right), C5(top-left), C6(left-down) -->
+  <!-- Chair coordinates (approximate): -->
+  <!-- C1(40,130), C2(80,110), C3(120,130), C4(140,100), C5(100,80), C6(60,100) -->
+  <!-- Standard 2D chair projection -->
+  <line x1="40" y1="130" x2="80" y2="150" stroke-width="2" fill="none"/>
+  <line x1="80" y1="150" x2="140" y2="130" stroke-width="2" fill="none"/>
+  <line x1="140" y1="130" x2="160" y2="100" stroke-width="2" fill="none"/>
+  <line x1="160" y1="100" x2="120" y2="80" stroke-width="2" fill="none"/>
+  <line x1="120" y1="80" x2="60" y2="100" stroke-width="2" fill="none"/>
+  <line x1="60" y1="100" x2="40" y2="130" stroke-width="2" fill="none"/>
+
+  <!-- Axial H bonds on chair (alternating up/down) -->
+  <!-- Up axial: C1(40,130), C3(140,130), C5(120,80) -- wrong, use proper chair vertices -->
+  <!-- Use actual chair C positions: C1(40,130), C2(80,150), C3(140,130), C4(160,100), C5(120,80), C6(60,100) -->
+  <!-- Axial bonds: up at C1,C3,C5; down at C2,C4,C6 -->
+  <line x1="40" y1="130" x2="40" y2="100" stroke-width="1.2" fill="none"/>
+  <text x="34" y="96" font-size="9">a↑</text>
+  <line x1="140" y1="130" x2="140" y2="100" stroke-width="1.2" fill="none"/>
+  <text x="134" y="96" font-size="9">a↑</text>
+  <line x1="120" y1="80" x2="120" y2="50" stroke-width="1.2" fill="none"/>
+  <text x="114" y="46" font-size="9">a↑</text>
+
+  <line x1="80" y1="150" x2="80" y2="175" stroke-width="1.2" fill="none"/>
+  <text x="74" y="185" font-size="9">a↓</text>
+  <line x1="160" y1="100" x2="160" y2="125" stroke-width="1.2" fill="none"/>
+  <text x="154" y="135" font-size="9">a↓</text>
+  <line x1="60" y1="100" x2="60" y2="125" stroke-width="1.2" fill="none"/>
+  <text x="54" y="135" font-size="9">a↓</text>
+
+  <!-- Labels -->
+  <text x="15" y="175" font-size="11">键角 109.5°</text>
+  <text x="15" y="188" font-size="10" opacity="0.7">全交叉式，无张力</text>
+
+  <!-- Divider -->
+  <line x1="240" y1="10" x2="240" y2="195" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== Boat conformation (船式) ===== -->
+  <text x="255" y="16" font-weight="bold" font-size="13">船式构象</text>
+  <text x="255" y="29" font-size="11">能量 ≈ +30 kJ/mol</text>
+
+  <!-- Boat drawing: two "bow" carbons up -->
+  <!-- C1(280,140), C2(320,115), C3(370,115), C4(410,140), C5(390,170), C6(300,170) -->
+  <!-- Actually boat: C1 and C4 are the "flagpole" carbons -->
+  <!-- Standard boat: C1 and C4 raised, rest lower -->
+  <!-- C1(290,95), C2(320,135), C3(370,135), C4(400,95), C5(380,155), C6(310,155) -->
+
+  <line x1="290" y1="95" x2="320" y2="135" stroke-width="2" fill="none"/>
+  <line x1="320" y1="135" x2="370" y2="135" stroke-width="2" fill="none"/>
+  <line x1="370" y1="135" x2="400" y2="95" stroke-width="2" fill="none"/>
+  <line x1="400" y1="95" x2="380" y2="155" stroke-width="2" fill="none"/>
+  <line x1="380" y1="155" x2="310" y2="155" stroke-width="2" fill="none"/>
+  <line x1="310" y1="155" x2="290" y2="95" stroke-width="2" fill="none"/>
+
+  <!-- Flagpole H on C1 and C4 (vertical bonds going up) -->
+  <line x1="290" y1="95" x2="290" y2="65" stroke-width="1.5" fill="none"/>
+  <text x="282" y="60" font-size="9">H</text>
+  <text x="256" y="58" font-size="9" opacity="0.8">旗杆氢</text>
+  <line x1="400" y1="95" x2="400" y2="65" stroke-width="1.5" fill="none"/>
+  <text x="402" y="60" font-size="9">H</text>
+
+  <!-- Double-headed arrow showing flagpole H distance -->
+  <line x1="293" y1="62" x2="397" y2="62" stroke-width="0.8" fill="none"/>
+  <polygon points="397,62 390,59 390,65" fill="currentColor" stroke="none"/>
+  <polygon points="293,62 300,59 300,65" fill="currentColor" stroke="none"/>
+  <text x="326" y="58" font-size="9">183 pm</text>
+
+  <!-- Bowsprit H annotation -->
+  <line x1="320" y1="135" x2="305" y2="175" stroke-width="1.2" fill="none"/>
+  <text x="296" y="182" font-size="9">H</text>
+  <line x1="370" y1="135" x2="385" y2="175" stroke-width="1.2" fill="none"/>
+  <text x="387" y="182" font-size="9">H</text>
+
+  <!-- Eclipsed bonds annotation -->
+  <text x="325" y="150" font-size="9" opacity="0.7">C2-C3 重叠</text>
+
+  <text x="255" y="175" font-size="11">旗杆氢 H···H 距 183 pm (&lt; 2×范德华)</text>
+  <text x="255" y="188" font-size="10" opacity="0.7">扭船式（twist-boat）能量 ≈ 23 kJ/mol 为中间态</text>
+</svg>

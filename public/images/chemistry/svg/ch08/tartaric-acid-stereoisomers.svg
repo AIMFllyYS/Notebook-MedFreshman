@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200" width="500" height="200" aria-label="酒石酸三种立体异构体对比" role="img">
+  <title>酒石酸三种立体异构体：(R,R)D-酒石酸、(S,S)L-酒石酸、(R,S)meso-酒石酸，标注内消旋体对称面</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="12" font-weight="bold" fill="currentColor">酒石酸（HOOC-CHOH-CHOH-COOH）三种立体异构体</text>
+  <!-- (R,R) D-tartaric acid -->
+  <g transform="translate(10, 28)">
+    <text x="18" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="currentColor">(R,R)</text>
+    <text x="18" y="30" text-anchor="middle" font-size="11" fill="currentColor">D-(−)-酒石酸</text>
+    <!-- Fischer projection -->
+    <!-- C1=COOH (top) -->
+    <text x="10" y="52" font-size="10" fill="currentColor">COOH</text>
+    <line x1="18" y1="55" x2="18" y2="68" stroke="currentColor" stroke-width="1.5"/>
+    <!-- C2: OH right, H left -->
+    <circle cx="18" cy="68" r="2.5" fill="currentColor"/>
+    <line x1="4" y1="68" x2="32" y2="68" stroke="currentColor" stroke-width="1.8"/>
+    <text x="-4" y="71" font-size="10" fill="currentColor">H</text>
+    <text x="34" y="71" font-size="10" fill="currentColor">OH</text>
+    <!-- C3: OH right, H left -->
+    <line x1="18" y1="68" x2="18" y2="88" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="18" cy="88" r="2.5" fill="currentColor"/>
+    <line x1="4" y1="88" x2="32" y2="88" stroke="currentColor" stroke-width="1.8"/>
+    <text x="-4" y="91" font-size="10" fill="currentColor">H</text>
+    <text x="34" y="91" font-size="10" fill="currentColor">OH</text>
+    <!-- C4=COOH (bottom) -->
+    <line x1="18" y1="88" x2="18" y2="100" stroke="currentColor" stroke-width="1.5"/>
+    <text x="10" y="110" font-size="10" fill="currentColor">COOH</text>
+    <text x="2" y="130" font-size="10" fill="currentColor">手性，左旋</text>
+  </g>
+  <!-- (S,S) L-tartaric acid -->
+  <g transform="translate(160, 28)">
+    <text x="18" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="currentColor">(S,S)</text>
+    <text x="18" y="30" text-anchor="middle" font-size="11" fill="currentColor">L-(+)-酒石酸</text>
+    <!-- Fischer projection -->
+    <text x="10" y="52" font-size="10" fill="currentColor">COOH</text>
+    <line x1="18" y1="55" x2="18" y2="68" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="18" cy="68" r="2.5" fill="currentColor"/>
+    <line x1="4" y1="68" x2="32" y2="68" stroke="currentColor" stroke-width="1.8"/>
+    <text x="-4" y="71" font-size="10" fill="currentColor">HO</text>
+    <text x="34" y="71" font-size="10" fill="currentColor">H</text>
+    <line x1="18" y1="68" x2="18" y2="88" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="18" cy="88" r="2.5" fill="currentColor"/>
+    <line x1="4" y1="88" x2="32" y2="88" stroke="currentColor" stroke-width="1.8"/>
+    <text x="-4" y="91" font-size="10" fill="currentColor">HO</text>
+    <text x="34" y="91" font-size="10" fill="currentColor">H</text>
+    <line x1="18" y1="88" x2="18" y2="100" stroke="currentColor" stroke-width="1.5"/>
+    <text x="10" y="110" font-size="10" fill="currentColor">COOH</text>
+    <text x="2" y="130" font-size="10" fill="currentColor">手性，右旋</text>
+  </g>
+  <!-- Double arrow between R,R and S,S (enantiomers) -->
+  <text x="125" y="88" font-size="16" fill="currentColor">↔</text>
+  <text x="115" y="100" font-size="9" fill="currentColor">对映体</text>
+  <!-- meso-tartaric acid -->
+  <g transform="translate(315, 28)">
+    <text x="22" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="currentColor">(R,S)</text>
+    <text x="22" y="30" text-anchor="middle" font-size="11" fill="currentColor">meso-酒石酸</text>
+    <!-- Fischer projection -->
+    <text x="14" y="52" font-size="10" fill="currentColor">COOH</text>
+    <line x1="22" y1="55" x2="22" y2="68" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="22" cy="68" r="2.5" fill="currentColor"/>
+    <line x1="8" y1="68" x2="36" y2="68" stroke="currentColor" stroke-width="1.8"/>
+    <text x="0" y="71" font-size="10" fill="currentColor">H</text>
+    <text x="38" y="71" font-size="10" fill="currentColor">OH</text>
+    <!-- Symmetry plane between C2 and C3 -->
+    <line x1="-5" y1="78" x2="50" y2="78" stroke="orange" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="50" y="81" font-size="9" fill="orange">对称面 σ</text>
+    <line x1="22" y1="68" x2="22" y2="88" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="22" cy="88" r="2.5" fill="currentColor"/>
+    <line x1="8" y1="88" x2="36" y2="88" stroke="currentColor" stroke-width="1.8"/>
+    <text x="0" y="91" font-size="10" fill="currentColor">HO</text>
+    <text x="38" y="91" font-size="10" fill="currentColor">H</text>
+    <line x1="22" y1="88" x2="22" y2="100" stroke="currentColor" stroke-width="1.5"/>
+    <text x="14" y="110" font-size="10" fill="currentColor">COOH</text>
+    <text x="0" y="130" font-size="10" fill="orange">内消旋体</text>
+    <text x="0" y="142" font-size="10" fill="currentColor">有对称面，非手性</text>
+    <text x="0" y="154" font-size="10" fill="currentColor">无旋光性</text>
+  </g>
+  <!-- Bottom notes -->
+  <text x="10" y="175" font-size="11" fill="currentColor">内消旋体（单一化合物，分子内抵消）≠ 外消旋体（(R,R)+(S,S)等量混合物）</text>
+  <text x="10" y="190" font-size="11" fill="currentColor">非对映异构体：(R,R)/(S,S) 与 meso 体之间；物理性质完全不同，可普通方法分离</text>
+</svg>

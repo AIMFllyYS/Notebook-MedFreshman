@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 190" width="480" height="190" aria-label="不饱和卤代烃类型——乙烯型、烯丙型、隔离型活性对比" role="img">
+  <title>不饱和卤代烃三种类型：乙烯型（C=C-X，p-π共轭，极不活泼），烯丙型（C=C-CH2-X，烯丙基碳正离子，极活泼），隔离型（C=C-(CH2)n-X，n≥2，正常活性）</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="12" font-weight="bold" fill="currentColor">不饱和卤代烃类型与活性</text>
+  <!-- Column 1: Vinyl halide (乙烯型) -->
+  <rect x="8" y="28" width="140" height="155" rx="6" fill="currentColor" opacity="0.04" stroke="currentColor" stroke-width="1"/>
+  <text x="20" y="47" font-size="11" font-weight="bold" fill="red">① 乙烯型</text>
+  <text x="20" y="62" font-size="10" fill="currentColor">CH₂=CH—X</text>
+  <!-- Draw vinyl halide: C=C-X -->
+  <!-- C=C double bond -->
+  <line x1="25" y1="88" x2="60" y2="88" stroke="currentColor" stroke-width="2"/>
+  <line x1="25" y1="93" x2="60" y2="93" stroke="currentColor" stroke-width="2"/>
+  <!-- H2C= part -->
+  <text x="10" y="93" font-size="11" fill="currentColor">H₂C</text>
+  <!-- C-X bond -->
+  <line x1="64" y1="90" x2="90" y2="90" stroke="currentColor" stroke-width="2"/>
+  <text x="92" y="94" font-size="13" fill="red">X</text>
+  <!-- p-π conjugation -->
+  <text x="14" y="112" font-size="9" fill="orange">p-π 共轭</text>
+  <!-- Arrow showing electron delocalization -->
+  <path d="M95,83 Q87,70 65,78" stroke="orange" stroke-width="1.5" fill="none" marker-end="url(#arr_uv)"/>
+  <!-- Activity label -->
+  <text x="14" y="130" font-size="10" fill="red">活性极低</text>
+  <text x="14" y="143" font-size="9" fill="currentColor">C—X 键含 π 成分</text>
+  <text x="14" y="155" font-size="9" fill="currentColor">（键能大，不易断裂）</text>
+  <text x="14" y="167" font-size="9" fill="currentColor">SN1/SN2 均极慢</text>
+  <text x="14" y="179" font-size="9" fill="currentColor">碳正离子 sp 杂化不稳</text>
+  <defs>
+    <marker id="arr_uv" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,1 L6,3.5 L0,6" stroke="orange" stroke-width="1" fill="none"/>
+    </marker>
+  </defs>
+  <!-- Column 2: Allylic halide (烯丙型) -->
+  <rect x="170" y="28" width="140" height="155" rx="6" fill="orange" opacity="0.05" stroke="orange" stroke-width="1.5"/>
+  <text x="185" y="47" font-size="11" font-weight="bold" fill="orange">② 烯丙型</text>
+  <text x="185" y="62" font-size="10" fill="currentColor">CH₂=CH—CH₂—X</text>
+  <!-- Draw allyl halide structure -->
+  <line x1="185" y1="88" x2="220" y2="88" stroke="currentColor" stroke-width="2"/>
+  <line x1="185" y1="93" x2="220" y2="93" stroke="currentColor" stroke-width="2"/>
+  <text x="170" y="93" font-size="11" fill="currentColor">H₂C</text>
+  <line x1="224" y1="90" x2="257" y2="90" stroke="currentColor" stroke-width="2"/>
+  <line x1="261" y1="90" x2="286" y2="90" stroke="currentColor" stroke-width="2"/>
+  <text x="288" y="94" font-size="13" fill="red">X</text>
+  <!-- CH2 label -->
+  <text x="230" y="105" font-size="10" fill="currentColor">CH₂</text>
+  <!-- Allylic cation resonance -->
+  <text x="178" y="118" font-size="9" fill="orange">离去后→烯丙基碳正离子</text>
+  <text x="178" y="130" font-size="9" fill="orange">CH₂=CH-CH₂⁺ ↔ ⁺CH₂-CH=CH₂</text>
+  <!-- Activity label -->
+  <text x="182" y="148" font-size="10" fill="orange">活性极高（SN1 快）</text>
+  <text x="182" y="162" font-size="9" fill="currentColor">烯丙基碳正离子共振稳定</text>
+  <text x="182" y="175" font-size="9" fill="currentColor">SN2 也比普通快（p-π 有利）</text>
+  <!-- Column 3: Isolated halide (隔离型) -->
+  <rect x="332" y="28" width="140" height="155" rx="6" fill="currentColor" opacity="0.04" stroke="currentColor" stroke-width="1"/>
+  <text x="348" y="47" font-size="11" font-weight="bold" fill="currentColor">③ 隔离型</text>
+  <text x="348" y="62" font-size="10" fill="currentColor">CH₂=CH-(CH₂)n-X  n≥2</text>
+  <!-- Draw structure schematically -->
+  <line x1="348" y1="88" x2="383" y2="88" stroke="currentColor" stroke-width="2"/>
+  <line x1="348" y1="93" x2="383" y2="93" stroke="currentColor" stroke-width="2"/>
+  <text x="333" y="93" font-size="11" fill="currentColor">H₂C</text>
+  <text x="384" y="93" font-size="11" fill="currentColor">–(CH₂)n–</text>
+  <text x="444" y="94" font-size="13" fill="red">X</text>
+  <!-- Explanation -->
+  <text x="340" y="118" font-size="9" fill="currentColor">π 键与 C-X 不相邻</text>
+  <text x="340" y="130" font-size="9" fill="currentColor">（≥2 个 CH₂ 间隔）</text>
+  <text x="340" y="148" font-size="10" fill="currentColor">活性正常</text>
+  <text x="340" y="162" font-size="9" fill="currentColor">SN1/SN2 与普通</text>
+  <text x="340" y="175" font-size="9" fill="currentColor">卤代烷相同</text>
+</svg>

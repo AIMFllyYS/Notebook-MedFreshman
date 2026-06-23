@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 195" width="460" height="195" aria-label="Diels-Alder反应[4+2]环加成机理" role="img">
+  <title>Diels-Alder反应机理：s-顺式双烯体与亲双烯体[4+2]协同环加成得六元环</title>
+  <defs>
+    <marker id="arr6" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,1 L7,4 L0,7" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+  <!-- Title -->
+  <text x="10" y="18" font-size="13" font-weight="bold" fill="currentColor">Diels-Alder [4+2] 环加成反应</text>
+  <!-- Left: Diene (s-cis conformation) -->
+  <text x="10" y="45" font-size="12" font-weight="bold" fill="currentColor">双烯体（s-顺式）</text>
+  <!-- s-cis diene: C1=C2-C3=C4 in s-cis -->
+  <circle cx="30" cy="80" r="4" fill="currentColor"/>
+  <circle cx="60" cy="60" r="4" fill="currentColor"/>
+  <circle cx="90" cy="70" r="4" fill="currentColor"/>
+  <circle cx="120" cy="50" r="4" fill="currentColor"/>
+  <line x1="30" y1="80" x2="60" y2="60" stroke="currentColor" stroke-width="2"/>
+  <line x1="34" y1="83" x2="64" y2="63" stroke="currentColor" stroke-width="2"/>
+  <line x1="60" y1="60" x2="90" y2="70" stroke="currentColor" stroke-width="1.8"/>
+  <line x1="90" y1="70" x2="120" y2="50" stroke="currentColor" stroke-width="2"/>
+  <line x1="94" y1="73" x2="124" y2="53" stroke="currentColor" stroke-width="2"/>
+  <text x="22" y="95" font-size="11" fill="currentColor">C1</text>
+  <text x="55" y="75" font-size="11" fill="currentColor">C2</text>
+  <text x="88" y="87" font-size="11" fill="currentColor">C3</text>
+  <text x="115" y="65" font-size="11" fill="currentColor">C4</text>
+  <!-- s-cis label -->
+  <text x="20" y="110" font-size="11" fill="currentColor">s-顺式构象（必须）</text>
+  <!-- Plus sign -->
+  <text x="148" y="72" font-size="22" fill="currentColor">+</text>
+  <!-- Dienophile -->
+  <text x="175" y="45" font-size="12" font-weight="bold" fill="currentColor">亲双烯体（缺电子）</text>
+  <circle cx="185" cy="75" r="4" fill="currentColor"/>
+  <circle cx="220" cy="75" r="4" fill="currentColor"/>
+  <line x1="185" y1="75" x2="220" y2="75" stroke="currentColor" stroke-width="2"/>
+  <line x1="185" y1="81" x2="220" y2="81" stroke="currentColor" stroke-width="2"/>
+  <text x="163" y="78" font-size="11" fill="currentColor">Z</text>
+  <line x1="175" y1="78" x2="181" y2="77" stroke="currentColor" stroke-width="1.5"/>
+  <text x="222" y="78" font-size="11" fill="currentColor">Z</text>
+  <line x1="224" y1="77" x2="230" y2="78" stroke="currentColor" stroke-width="1.5"/>
+  <text x="175" y="105" font-size="11" fill="currentColor">Z = 吸电子基</text>
+  <text x="175" y="118" font-size="11" fill="currentColor">（CHO, COOR, CN...）</text>
+  <!-- Main arrow -->
+  <text x="255" y="80" font-size="18" fill="currentColor">→</text>
+  <text x="252" y="95" font-size="11" fill="currentColor">加热，协同</text>
+  <!-- Product: cyclohexene -->
+  <text x="290" y="45" font-size="12" font-weight="bold" fill="currentColor">产物（六元环烯烃）</text>
+  <!-- Hexagonal ring -->
+  <polygon points="350,55 390,55 410,88 390,121 350,121 330,88" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  <!-- Double bond in ring (C2=C3 from diene) -->
+  <line x1="356" y1="58" x2="384" y2="58" stroke="currentColor" stroke-width="2"/>
+  <line x1="356" y1="65" x2="384" y2="65" stroke="currentColor" stroke-width="2"/>
+  <!-- Z groups on bottom carbons -->
+  <line x1="388" y1="122" x2="398" y2="140" stroke="currentColor" stroke-width="1.5"/>
+  <text x="400" y="148" font-size="11" fill="currentColor">Z</text>
+  <line x1="352" y1="122" x2="342" y2="140" stroke="currentColor" stroke-width="1.5"/>
+  <text x="328" y="148" font-size="11" fill="currentColor">Z</text>
+  <!-- New bonds formed at C1 and C4 -->
+  <text x="305" y="165" font-size="11" fill="currentColor">新键（C1-C6, C4-C5）</text>
+  <text x="305" y="180" font-size="11" fill="currentColor">顺式加成，立体化学保留</text>
+  <!-- Note: s-cis requirement -->
+  <text x="10" y="148" font-size="11" fill="currentColor">关键：双烯体必须 s-顺式构象，C1,C4 才能同时与亲双烯体成键</text>
+  <text x="10" y="165" font-size="11" fill="currentColor">双烯体：富电子 + 给电子基   亲双烯体：缺电子 + 吸电子基 → 活性增强</text>
+</svg>

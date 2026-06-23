@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 240" font-family="system-ui, sans-serif" font-size="13" fill="currentColor" stroke="currentColor">
+  <title>苯的两个Kekulé共振结构（C-C键长139 pm）</title>
+
+  <!-- Helper: regular hexagon centered at (cx,cy) with radius r -->
+  <!-- Left Kekulé structure: alternating bonds starting with double on top-right -->
+
+  <!-- ══ LEFT BENZENE ══ center (175, 115) r=55 -->
+  <text x="175" y="22" text-anchor="middle" font-weight="bold" font-size="13">Kekulé 式 I</text>
+
+  <!-- Hexagon vertices (flat-top): angles 30,90,150,210,270,330 degrees -->
+  <!-- v0=top-right, v1=right, v2=bottom-right, v3=bottom-left, v4=left, v5=top-left -->
+  <!-- v0: (175+55cos30, 115-55sin30) = (175+47.6, 115-27.5) = (222.6, 87.5) -->
+  <!-- v1: (175+55,      115)         = (230, 115) -->
+  <!-- v2: (222.6, 142.5) -->
+  <!-- v3: (127.4, 142.5) -->
+  <!-- v4: (120, 115) -->
+  <!-- v5: (127.4, 87.5) -->
+
+  <!-- Single bonds: v0-v1, v2-v3, v4-v5 -->
+  <line x1="222.6" y1="87.5"  x2="230"   y2="115"   stroke-width="2"/>
+  <line x1="222.6" y1="142.5" x2="127.4" y2="142.5"  stroke-width="2"/>
+  <line x1="120"   y1="115"   x2="127.4" y2="87.5"   stroke-width="2"/>
+
+  <!-- Double bonds: v5-v0 (top), v1-v2 (right), v3-v4 (bottom-left) — drawn as two lines offset inward -->
+  <!-- v5-v0 top bond -->
+  <line x1="127.4" y1="87.5"  x2="222.6" y2="87.5"   stroke-width="2"/>
+  <line x1="132"   y1="94"    x2="218"   y2="94"      stroke-width="2"/>
+  <!-- v1-v2 right bond -->
+  <line x1="230"   y1="115"   x2="222.6" y2="142.5"   stroke-width="2"/>
+  <line x1="222"   y1="115"   x2="215"   y2="139"     stroke-width="2"/>
+  <!-- v3-v4 bottom-left bond -->
+  <line x1="127.4" y1="142.5" x2="120"   y2="115"     stroke-width="2"/>
+  <line x1="134"   y1="139"   x2="128"   y2="116"     stroke-width="2"/>
+
+  <!-- H atoms at vertices -->
+  <text x="222.6" y="76"   text-anchor="middle" font-size="12">H</text>
+  <text x="244"   y="119"  text-anchor="middle" font-size="12">H</text>
+  <text x="228"   y="156"  text-anchor="middle" font-size="12">H</text>
+  <text x="120"   y="156"  text-anchor="middle" font-size="12">H</text>
+  <text x="105"   y="119"  text-anchor="middle" font-size="12">H</text>
+  <text x="118"   y="76"   text-anchor="middle" font-size="12">H</text>
+
+  <!-- ══ DOUBLE-HEADED ARROW ══ -->
+  <line x1="282" y1="115" x2="338" y2="115" stroke-width="2"/>
+  <polygon points="282,109 270,115 282,121" fill="currentColor" stroke="none"/>
+  <polygon points="338,109 350,115 338,121" fill="currentColor" stroke="none"/>
+  <text x="310" y="106" text-anchor="middle" font-size="22" stroke="none">↔</text>
+
+  <!-- ══ RIGHT BENZENE ══ center (445, 115) r=55 — bonds rotated (swap single/double) -->
+  <text x="445" y="22" text-anchor="middle" font-weight="bold" font-size="13">Kekulé 式 II</text>
+
+  <!-- Single bonds: v5-v0, v1-v2, v3-v4 -->
+  <line x1="397.4" y1="87.5"  x2="492.6" y2="87.5"   stroke-width="2"/>
+  <line x1="500"   y1="115"   x2="492.6" y2="142.5"   stroke-width="2"/>
+  <line x1="397.4" y1="142.5" x2="390"   y2="115"     stroke-width="2"/>
+
+  <!-- Double bonds: v0-v1, v2-v3, v4-v5 — drawn as two lines offset inward -->
+  <!-- v0-v1 top-right -->
+  <line x1="492.6" y1="87.5"  x2="500"   y2="115"     stroke-width="2"/>
+  <line x1="485"   y1="91"    x2="492"   y2="114"     stroke-width="2"/>
+  <!-- v2-v3 bottom -->
+  <line x1="492.6" y1="142.5" x2="397.4" y2="142.5"   stroke-width="2"/>
+  <line x1="488"   y1="136"   x2="402"   y2="136"     stroke-width="2"/>
+  <!-- v4-v5 top-left -->
+  <line x1="390"   y1="115"   x2="397.4" y2="87.5"    stroke-width="2"/>
+  <line x1="398"   y1="114"   x2="404"   y2="91"      stroke-width="2"/>
+
+  <!-- H atoms -->
+  <text x="492.6" y="76"   text-anchor="middle" font-size="12">H</text>
+  <text x="514"   y="119"  text-anchor="middle" font-size="12">H</text>
+  <text x="498"   y="156"  text-anchor="middle" font-size="12">H</text>
+  <text x="390"   y="156"  text-anchor="middle" font-size="12">H</text>
+  <text x="375"   y="119"  text-anchor="middle" font-size="12">H</text>
+  <text x="388"   y="76"   text-anchor="middle" font-size="12">H</text>
+
+  <!-- ══ BOTTOM BOND LENGTH NOTE ══ -->
+  <line x1="40" y1="188" x2="580" y2="188" stroke-width="0.5" stroke-dasharray="4,3" opacity="0.3"/>
+  <text x="310" y="206" text-anchor="middle" font-size="12" font-weight="bold">C—C 键长 139 pm</text>
+  <text x="310" y="222" text-anchor="middle" font-size="11" opacity="0.7">（单键 154 pm ＞ 139 pm ＞ 双键 134 pm，所有键完全等价）</text>
+</svg>

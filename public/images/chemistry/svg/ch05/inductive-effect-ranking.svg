@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200" width="500" height="200" aria-label="常见基团-I吸电子诱导效应强度排序：从-NR3+最强到烷基+I给电子">
+  <title>常见基团 -I 吸电子诱导效应强度排序图</title>
+  <style>
+    text { font-family: serif; font-size: 10px; fill: currentColor; }
+    line, rect { stroke: currentColor; }
+  </style>
+
+  <text x="10" y="15" font-size="13" font-weight="bold">诱导效应（-I）强度从大到小排序</text>
+
+  <!-- Bar chart: horizontal bars from left (weakest) to right (strongest) -->
+  <!-- Groups and their approximate -I strength (0-100) -->
+  <!-- -NR3+: 100, -NO2: 95, -CN: 88, -COOH: 80, -COOR: 75, -F: 70, -Cl: 62, -Br: 58, -I: 55, -OCH3: 48, -OH: 45, -C6H5: 40, -R: ~0 (gives electrons = +I) -->
+
+  <!-- Y-axis: groups; X-axis: strength -->
+  <!-- Layout: vertical bars for each group -->
+
+  <!-- Axis -->
+  <line x1="45" y1="165" x2="480" y2="165" stroke-width="1.5" fill="none"/>
+  <line x1="45" y1="30" x2="45" y2="165" stroke-width="1.5" fill="none"/>
+
+  <!-- Axis labels -->
+  <text x="5" y="170" font-size="9">0</text>
+  <text x="200" y="178" font-size="10">-I 效应强度（吸电子）→</text>
+
+  <!-- Zero line (neutral) -->
+  <line x1="45" y1="165" x2="45" y2="30" stroke-width="0.5" stroke-dasharray="2,2" fill="none"/>
+
+  <!-- Groups as horizontal bars (y=group position, bar width proportional to strength) -->
+  <!-- Each group takes 10px height, starting from y=35 -->
+
+  <!-- Row format: label left, bar right -->
+  <!-- 1: -NR3+ -->
+  <text x="5" y="42" font-size="9">—NR₃⁺</text>
+  <rect x="45" y="33" width="200" height="8" fill="currentColor" opacity="0.85" stroke="none"/>
+
+  <!-- 2: -NO2 -->
+  <text x="5" y="53" font-size="9">—NO₂</text>
+  <rect x="45" y="44" width="190" height="8" fill="currentColor" opacity="0.8" stroke="none"/>
+
+  <!-- 3: -CN -->
+  <text x="5" y="64" font-size="9">—CN</text>
+  <rect x="45" y="55" width="176" height="8" fill="currentColor" opacity="0.75" stroke="none"/>
+
+  <!-- 4: -COOH -->
+  <text x="5" y="75" font-size="9">—COOH</text>
+  <rect x="45" y="66" width="160" height="8" fill="currentColor" opacity="0.68" stroke="none"/>
+
+  <!-- 5: -COOR -->
+  <text x="5" y="86" font-size="9">—COOR</text>
+  <rect x="45" y="77" width="150" height="8" fill="currentColor" opacity="0.63" stroke="none"/>
+
+  <!-- 6: -F -->
+  <text x="5" y="97" font-size="9">—F</text>
+  <rect x="45" y="88" width="140" height="8" fill="currentColor" opacity="0.58" stroke="none"/>
+
+  <!-- 7: -Cl -->
+  <text x="5" y="108" font-size="9">—Cl</text>
+  <rect x="45" y="99" width="124" height="8" fill="currentColor" opacity="0.53" stroke="none"/>
+
+  <!-- 8: -Br -->
+  <text x="5" y="119" font-size="9">—Br</text>
+  <rect x="45" y="110" width="116" height="8" fill="currentColor" opacity="0.48" stroke="none"/>
+
+  <!-- 9: -I -->
+  <text x="5" y="130" font-size="9">—I</text>
+  <rect x="45" y="121" width="110" height="8" fill="currentColor" opacity="0.43" stroke="none"/>
+
+  <!-- 10: -OCH3 -->
+  <text x="5" y="141" font-size="9">—OCH₃</text>
+  <rect x="45" y="132" width="96" height="8" fill="currentColor" opacity="0.38" stroke="none"/>
+
+  <!-- 11: -OH -->
+  <text x="5" y="152" font-size="9">—OH</text>
+  <rect x="45" y="143" width="90" height="8" fill="currentColor" opacity="0.33" stroke="none"/>
+
+  <!-- 12: H (reference) -->
+  <text x="5" y="163" font-size="9">—H（参考）</text>
+
+  <!-- +I (electron donating) side: alkyl groups -->
+  <text x="250" y="42" font-size="10" font-weight="bold" fill="#2563eb">+I（给电子）：</text>
+  <text x="250" y="55" font-size="9" fill="#2563eb">—R（烷基）</text>
+
+  <!-- Alkyl comparison bar going LEFT (representing +I) -->
+  <!-- Actually show as positive direction note -->
+  <rect x="25" y="33" width="20" height="8" fill="#2563eb" opacity="0.5" stroke="none"/>
+  <text x="248" y="70" font-size="9" fill="#2563eb">供电子，稳定碳正离子</text>
+
+  <!-- Annotation -->
+  <text x="250" y="100" font-size="10" font-weight="bold">注：</text>
+  <text x="250" y="112" font-size="9">带正电荷基团最强（-NR₃⁺）</text>
+  <text x="250" y="124" font-size="9">含强电负性原子 N/O 的强</text>
+  <text x="250" y="136" font-size="9">卤素：F&gt;Cl&gt;Br&gt;I（按电负性）</text>
+  <text x="250" y="148" font-size="9">烷基为 +I 给电子基团</text>
+  <text x="250" y="165" font-size="9" opacity="0.7">（每多一个 α-C，+I 略增强：Me&lt;Et&lt;iPr&lt;tBu）</text>
+</svg>

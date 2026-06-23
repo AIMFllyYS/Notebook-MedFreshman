@@ -81,7 +81,7 @@ $$
 \ce{CH3^. + Cl^. -> CH3Cl}
 $$
 :::
-<!-- SVG-TODO: 甲烷氯化自由基链反应机理图（链引发：Cl2 光照均裂产生 2Cl·；链转移：Cl·+CH4→·CH3+HCl，·CH3+Cl2→CH3Cl+Cl· 循环；链终止：自由基互相结合，标注循环放大效应 1 个 Cl· 可循环 5000 次） -->
+::figure{src="/images/chemistry/svg/ch04/methane-chlorination-mechanism.svg" caption="甲烷氯化自由基链反应机理：链引发（Cl₂光照均裂）→链转移（Cl·循环5000次）→链终止" alt="甲烷氯化反应的三个阶段：Cl2光照均裂引发，Cl·+CH4→·CH3+HCl和·CH3+Cl2→CH3Cl+Cl·循环转移，自由基结合终止"}
 
 :::insight{label=自由基链反应的"链"在哪里}
 "链反应"的"链"指的是**链转移步骤的循环**：一个 $\ce{Cl^.}$ 消失，产生一个 $\ce{CH3^.}$；$\ce{CH3^.}$ 又产生一个新的 $\ce{Cl^.}$……如此循环，**1 个 $\ce{Cl^.}$ 可以引发数千次循环**。

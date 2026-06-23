@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 220" width="560" height="220" aria-label="三种杂化轨道与分子构型对比：sp³甲烷正四面体、sp²乙烯平面三角形、sp乙炔直线形">
+  <title>sp³、sp²、sp 杂化轨道与分子构型对比图</title>
+  <style>
+    text { font-family: serif; font-size: 12px; fill: currentColor; }
+    line, ellipse, path { stroke: currentColor; }
+  </style>
+
+  <!-- ===== sp3: Methane tetrahedral ===== -->
+  <text x="30" y="18" font-weight="bold" font-size="13">sp³ 杂化</text>
+  <text x="20" y="34" font-size="11">甲烷 CH₄ · 正四面体</text>
+
+  <!-- Central C -->
+  <text x="88" y="100">C</text>
+  <!-- 4 bonds at tetrahedral angles projected in 2D -->
+  <!-- Up-left bond -->
+  <line x1="88" y1="92" x2="60" y2="65" stroke-width="1.5" fill="none"/>
+  <text x="48" y="60">H</text>
+  <!-- Up-right bond -->
+  <line x1="95" y1="92" x2="120" y2="65" stroke-width="1.5" fill="none"/>
+  <text x="120" y="60">H</text>
+  <!-- Bottom-left bond -->
+  <line x1="88" y1="102" x2="60" y2="130" stroke-width="1.5" fill="none"/>
+  <text x="48" y="142">H</text>
+  <!-- Bottom-right bond (wedge coming forward) -->
+  <polygon points="92,102 115,128 112,133" fill="currentColor" stroke="none"/>
+  <text x="116" y="142">H</text>
+
+  <text x="42" y="165" font-size="11">键角 109.5°</text>
+  <text x="42" y="178" font-size="11">s 占 25%, p 占 75%</text>
+
+  <!-- ===== sp2: Ethylene planar triangle ===== -->
+  <text x="210" y="18" font-weight="bold" font-size="13">sp² 杂化</text>
+  <text x="200" y="34" font-size="11">乙烯 CH₂=CH₂ · 平面三角形</text>
+
+  <!-- C1 -->
+  <text x="238" y="95">C</text>
+  <!-- C=C double bond -->
+  <line x1="250" y1="89" x2="280" y2="89" stroke-width="1.5" fill="none"/>
+  <line x1="250" y1="93" x2="280" y2="93" stroke-width="1.5" fill="none"/>
+  <!-- C2 -->
+  <text x="282" y="95">C</text>
+
+  <!-- H bonds from C1 -->
+  <line x1="238" y1="84" x2="215" y2="63" stroke-width="1.5" fill="none"/>
+  <text x="204" y="60">H</text>
+  <line x1="238" y1="98" x2="215" y2="120" stroke-width="1.5" fill="none"/>
+  <text x="204" y="132">H</text>
+
+  <!-- H bonds from C2 -->
+  <line x1="293" y1="84" x2="315" y2="63" stroke-width="1.5" fill="none"/>
+  <text x="316" y="60">H</text>
+  <line x1="293" y1="98" x2="315" y2="120" stroke-width="1.5" fill="none"/>
+  <text x="316" y="132">H</text>
+
+  <!-- π bond symbol above -->
+  <path d="M248,72 Q265,62 282,72" stroke-width="1" fill="none" stroke-dasharray="3,2"/>
+  <text x="256" y="58" font-size="10">π 键</text>
+  <!-- 120° angle arc -->
+  <path d="M252,89 A15,15 0 0,0 242,101" stroke-width="1" fill="none"/>
+  <text x="228" y="115" font-size="10">120°</text>
+
+  <text x="200" y="158" font-size="11">键角 120°，含 1 个 π 键</text>
+  <text x="200" y="171" font-size="11">s 占 33%, p 占 67%</text>
+  <text x="200" y="184" font-size="11">未杂化 p 轨道参与 π 键</text>
+
+  <!-- ===== sp: Acetylene linear ===== -->
+  <text x="415" y="18" font-weight="bold" font-size="13">sp 杂化</text>
+  <text x="405" y="34" font-size="11">乙炔 HC≡CH · 直线形</text>
+
+  <!-- H-C≡C-H linear -->
+  <text x="400" y="100">H</text>
+  <line x1="412" y1="93" x2="435" y2="93" stroke-width="1.5" fill="none"/>
+  <text x="437" y="100">C</text>
+  <!-- Triple bond -->
+  <line x1="449" y1="88" x2="478" y2="88" stroke-width="1.5" fill="none"/>
+  <line x1="449" y1="93" x2="478" y2="93" stroke-width="1.5" fill="none"/>
+  <line x1="449" y1="98" x2="478" y2="98" stroke-width="1.5" fill="none"/>
+  <text x="480" y="100">C</text>
+  <line x1="492" y1="93" x2="510" y2="93" stroke-width="1.5" fill="none"/>
+  <text x="512" y="100">H</text>
+
+  <!-- π bond annotation -->
+  <text x="455" y="73" font-size="10">π π</text>
+  <path d="M450,76 Q463,68 476,76" stroke-width="1" fill="none" stroke-dasharray="3,2"/>
+  <path d="M450,80 Q463,70 476,80" stroke-width="1" fill="none" stroke-dasharray="3,2"/>
+
+  <!-- 180° annotation -->
+  <text x="425" y="120" font-size="10">180°</text>
+  <line x1="415" y1="107" x2="540" y2="107" stroke-width="0.5" stroke-dasharray="2,2" fill="none"/>
+
+  <text x="405" y="155" font-size="11">键角 180°，含 2 个 π 键</text>
+  <text x="405" y="168" font-size="11">s 占 50%, p 占 50%</text>
+  <text x="405" y="181" font-size="11">2 个未杂化 p 轨道参与 π 键</text>
+
+  <!-- Dividers -->
+  <line x1="190" y1="10" x2="190" y2="210" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+  <line x1="395" y1="10" x2="395" y2="210" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+</svg>

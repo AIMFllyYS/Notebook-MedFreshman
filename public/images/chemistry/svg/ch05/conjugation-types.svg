@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 210" width="540" height="210" aria-label="三种共轭体系：π-π共轭1,3-丁二烯，p-π共轭苯胺，p-p共轭碳正离子">
+  <title>三种共轭体系类型对比图</title>
+  <style>
+    text { font-family: serif; font-size: 11px; fill: currentColor; }
+    line, path, ellipse { stroke: currentColor; }
+  </style>
+
+  <!-- ===== π-π Conjugation: 1,3-Butadiene ===== -->
+  <text x="10" y="16" font-weight="bold" font-size="12">π-π 共轭</text>
+  <text x="10" y="28" font-size="10">1,3-丁二烯 CH₂=CH—CH=CH₂</text>
+
+  <!-- C1=C2-C3=C4 structure -->
+  <!-- C1(25,75), C2(55,75), C3(80,75), C4(110,75) -->
+  <!-- C1=C2 double bond -->
+  <line x1="25" y1="73" x2="55" y2="73" stroke-width="1.5" fill="none"/>
+  <line x1="25" y1="78" x2="55" y2="78" stroke-width="1.5" fill="none"/>
+  <!-- C2-C3 single bond (but partially double due to conjugation) -->
+  <line x1="55" y1="75" x2="80" y2="75" stroke-width="1.5" fill="none"/>
+  <!-- C3=C4 double bond -->
+  <line x1="80" y1="73" x2="110" y2="73" stroke-width="1.5" fill="none"/>
+  <line x1="80" y1="78" x2="110" y2="78" stroke-width="1.5" fill="none"/>
+
+  <!-- Labels -->
+  <text x="19" y="65">CH₂</text>
+  <text x="49" y="65">CH</text>
+  <text x="74" y="65">CH</text>
+  <text x="104" y="65">CH₂</text>
+
+  <!-- π electron cloud above and below -->
+  <path d="M25,68 Q67,50 110,68" stroke-width="1" stroke-dasharray="3,2" fill="none"/>
+  <path d="M25,83 Q67,100 110,83" stroke-width="1" stroke-dasharray="3,2" fill="none"/>
+  <text x="52" y="47" font-size="9">π电子离域</text>
+
+  <!-- C2-C3 bond length annotation -->
+  <line x1="55" y1="90" x2="80" y2="90" stroke-width="0.8" fill="none"/>
+  <text x="53" y="103" font-size="9">147 pm</text>
+  <text x="53" y="113" font-size="9">(介于单双键)</text>
+
+  <text x="10" y="130" font-size="10">p 轨道并排重叠 → π 电子在 4 个 C 上离域</text>
+  <text x="10" y="142" font-size="9" opacity="0.7">C₂—C₃ 键长 147 pm（纯单键 154，纯双键 134）</text>
+
+  <!-- Divider 1 -->
+  <line x1="175" y1="8" x2="175" y2="200" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== p-π Conjugation: Aniline ===== -->
+  <text x="183" y="16" font-weight="bold" font-size="12">p-π 共轭</text>
+  <text x="183" y="28" font-size="10">苯胺 C₆H₅—NH₂</text>
+
+  <!-- Benzene ring at (260, 90) r=32 -->
+  <line x1="260" y1="58" x2="284" y2="72" stroke-width="1.5" fill="none"/>
+  <line x1="284" y1="72" x2="284" y2="100" stroke-width="1.5" fill="none"/>
+  <line x1="284" y1="100" x2="260" y2="114" stroke-width="1.5" fill="none"/>
+  <line x1="260" y1="114" x2="236" y2="100" stroke-width="1.5" fill="none"/>
+  <line x1="236" y1="100" x2="236" y2="72" stroke-width="1.5" fill="none"/>
+  <line x1="236" y1="72" x2="260" y2="58" stroke-width="1.5" fill="none"/>
+  <line x1="263" y1="61" x2="282" y2="71" stroke-width="1.5" fill="none"/>
+  <line x1="239" y1="75" x2="239" y2="98" stroke-width="1.5" fill="none"/>
+  <line x1="263" y1="111" x2="282" y2="101" stroke-width="1.5" fill="none"/>
+
+  <!-- NH2 group at bottom -->
+  <line x1="260" y1="114" x2="260" y2="132" stroke-width="1.5" fill="none"/>
+  <text x="252" y="143">NH₂</text>
+
+  <!-- p orbital of N overlapping with ring π -->
+  <ellipse cx="260" cy="120" rx="8" ry="5" fill="none" stroke-width="1" stroke-dasharray="2,1"/>
+  <path d="M253,130 Q240,120 248,105" stroke-width="0.8" stroke-dasharray="3,2" fill="none"/>
+  <text x="183" y="158" font-size="10">N 的 p 轨道（含孤对电子）</text>
+  <text x="183" y="168" font-size="10">⊥ 苯环平面 → 与 π 体系重叠</text>
+  <text x="183" y="178" font-size="9" opacity="0.7">苯胺氮的碱性弱于烷基胺（孤对电子被共轭离域）</text>
+
+  <!-- Divider 2 -->
+  <line x1="360" y1="8" x2="360" y2="200" stroke-width="0.5" stroke-dasharray="4,3" fill="none"/>
+
+  <!-- ===== p-p Conjugation: oxocarbenium ===== -->
+  <text x="368" y="16" font-weight="bold" font-size="12">p-p 共轭（超共轭）</text>
+  <text x="368" y="28" font-size="10">CH₃—O⁺=CH₂ 型</text>
+
+  <!-- Structure: CH3-O+(-CH2+) or simplified -->
+  <!-- O with lone pair p orbital, CH2+ empty p orbital -->
+  <!-- CH3-O(+)=CH2 -->
+  <text x="380" y="72">CH₃</text>
+  <line x1="410" y1="68" x2="435" y2="68" stroke-width="1.5" fill="none"/>
+  <text x="437" y="72">O</text>
+  <text x="446" y="62" font-size="9">+</text>
+  <!-- O=CH2 double bond -->
+  <line x1="452" y1="66" x2="478" y2="66" stroke-width="1.5" fill="none"/>
+  <line x1="452" y1="70" x2="478" y2="70" stroke-width="1.5" fill="none"/>
+  <text x="480" y="72">CH₂</text>
+
+  <!-- p orbital on O (lone pair) -->
+  <ellipse cx="446" cy="56" rx="6" ry="10" fill="none" stroke-width="1"/>
+  <ellipse cx="446" cy="78" rx="6" ry="10" fill="none" stroke-width="1"/>
+  <!-- p orbital on CH2+ (empty) -->
+  <ellipse cx="487" cy="56" rx="6" ry="10" fill="none" stroke-width="1" stroke-dasharray="2,1"/>
+  <ellipse cx="487" cy="78" rx="6" ry="10" fill="none" stroke-width="1" stroke-dasharray="2,1"/>
+  <text x="480" y="48" font-size="9">空 p</text>
+  <text x="437" y="48" font-size="9">满 p</text>
+
+  <!-- Overlap arrow -->
+  <path d="M452,60 Q468,55 480,58" stroke-width="0.8" fill="none"/>
+  <polygon points="480,58 473,54 474,61" fill="currentColor" stroke="none"/>
+  <text x="455" y="50" font-size="9">p-p 重叠</text>
+
+  <text x="368" y="100" font-size="10">O 含孤对电子的 p 轨道与</text>
+  <text x="368" y="112" font-size="10">CH₂⁺ 空 p 轨道相互重叠</text>
+  <text x="368" y="124" font-size="10">形成 p-p 共轭（供电子）</text>
+  <text x="368" y="140" font-size="9" opacity="0.7">C—O 键长缩短，C=O 类似</text>
+  <text x="368" y="152" font-size="9" opacity="0.7">稳定碳正离子（氧邻接）</text>
+
+  <!-- Comparison: all three overlap types -->
+  <text x="368" y="170" font-size="10" font-weight="bold">轨道重叠方式：</text>
+  <text x="368" y="182" font-size="9">π-π: p//p（并排）；p-π: p⊥σ平面；p-p: p//p（一满一空）</text>
+</svg>

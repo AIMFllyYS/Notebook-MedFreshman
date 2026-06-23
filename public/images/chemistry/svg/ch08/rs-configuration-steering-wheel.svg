@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 190" width="450" height="190" aria-label="R/S构型判断方向盘模型" role="img">
+  <title>R/S构型判断：最小基团H在后时1→2→3顺时针为R，逆时针为S；H在前时结果反转</title>
+  <!-- Title -->
+  <text x="10" y="18" font-size="12" font-weight="bold" fill="currentColor">R/S 构型判断——"方向盘"模型</text>
+  <!-- Left: H at back (normal case) - R -->
+  <text x="15" y="40" font-size="11" font-weight="bold" fill="currentColor">H 在后方（直接判断）</text>
+  <!-- Tetrahedral view: H pointing back (shown as dashed) -->
+  <circle cx="80" cy="110" r="5" fill="currentColor"/>
+  <!-- Group 1 (top-left, highest priority) -->
+  <line x1="80" y1="110" x2="45" y2="75" stroke="currentColor" stroke-width="2"/>
+  <circle cx="42" cy="72" r="3" fill="orange"/>
+  <text x="30" y="70" font-size="12" fill="orange">①</text>
+  <!-- Group 2 (right) -->
+  <line x1="80" y1="110" x2="120" y2="90" stroke="currentColor" stroke-width="2"/>
+  <circle cx="123" cy="88" r="3" fill="orange"/>
+  <text x="126" y="92" font-size="12" fill="orange">②</text>
+  <!-- Group 3 (bottom) -->
+  <line x1="80" y1="110" x2="80" y2="150" stroke="currentColor" stroke-width="2"/>
+  <circle cx="80" cy="153" r="3" fill="orange"/>
+  <text x="74" y="165" font-size="12" fill="orange">③</text>
+  <!-- H at back (dashed) -->
+  <line x1="80" y1="110" x2="55" y2="130" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="38" y="140" font-size="12" fill="currentColor">H</text>
+  <text x="30" y="152" font-size="9" fill="currentColor">（向后，在 Fischer</text>
+  <text x="30" y="162" font-size="9" fill="currentColor"> 竖直键上）</text>
+  <!-- Circular arrow (clockwise = R) -->
+  <path d="M48,80 A42,42 0 0,1 120,97" stroke="green" stroke-width="2" fill="none"/>
+  <polygon points="120,97 112,88 108,99" fill="green"/>
+  <text x="75" y="105" font-size="11" font-weight="bold" fill="green">顺时针</text>
+  <text x="75" y="118" font-size="13" font-weight="bold" fill="green">R</text>
+  <!-- Divider -->
+  <line x1="218" y1="30" x2="218" y2="175" stroke="currentColor" stroke-width="1" stroke-dasharray="5,3" opacity="0.4"/>
+  <!-- Right: H at front (Fischer horizontal) - need to invert -->
+  <text x="230" y="40" font-size="11" font-weight="bold" fill="currentColor">H 在前方（结果反转）</text>
+  <!-- Tetrahedral: H pointing forward (wedge) -->
+  <circle cx="320" cy="110" r="5" fill="currentColor"/>
+  <!-- Group 1 -->
+  <line x1="320" y1="110" x2="280" y2="75" stroke="currentColor" stroke-width="2"/>
+  <circle cx="277" cy="72" r="3" fill="orange"/>
+  <text x="265" y="70" font-size="12" fill="orange">①</text>
+  <!-- Group 2 -->
+  <line x1="320" y1="110" x2="360" y2="90" stroke="currentColor" stroke-width="2"/>
+  <circle cx="363" cy="88" r="3" fill="orange"/>
+  <text x="366" y="92" font-size="12" fill="orange">②</text>
+  <!-- Group 3 -->
+  <line x1="320" y1="110" x2="320" y2="150" stroke="currentColor" stroke-width="2"/>
+  <circle cx="320" cy="153" r="3" fill="orange"/>
+  <text x="314" y="165" font-size="12" fill="orange">③</text>
+  <!-- H at front (wedge) -->
+  <polygon points="320,110 344,125 340,135" fill="currentColor" opacity="0.7"/>
+  <text x="346" y="138" font-size="12" fill="currentColor">H</text>
+  <text x="330" y="152" font-size="9" fill="currentColor">（向前，Fischer</text>
+  <text x="330" y="162" font-size="9" fill="currentColor"> 水平键上）</text>
+  <!-- Circular arrow (clockwise as seen) but H is in front → invert → S -->
+  <path d="M283,80 A42,42 0 0,1 360,97" stroke="red" stroke-width="2" fill="none"/>
+  <polygon points="360,97 352,88 348,99" fill="red"/>
+  <text x="308" y="105" font-size="11" font-weight="bold" fill="red">顺时针 →</text>
+  <text x="310" y="118" font-size="11" font-weight="bold" fill="red">反转 → S</text>
+  <!-- Bottom summary -->
+  <text x="10" y="178" font-size="11" fill="currentColor">顺序规则：原子序数大优先（I &gt; Br &gt; Cl &gt; S &gt; F &gt; O &gt; N &gt; C &gt; H）；第一原子相同→逐层比较；重键重复</text>
+</svg>
