@@ -1,4 +1,4 @@
-// [已废弃] 此模块已被内联流式方案取代。
-// artifact 事件现在通过主 /api/chat SSE 流直接推送，不再需要内存态注册表。
+// [已废弃] artifact 生成现在由 /api/artifact 独立 SSE 路由负责。
+// 不再使用内存态注册表或主 /api/chat 内联推送 artifact delta。
 // 保留空导出以避免潜在的编译引用错误。
 export {};
