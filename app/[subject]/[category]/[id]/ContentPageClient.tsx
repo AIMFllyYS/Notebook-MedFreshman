@@ -15,10 +15,6 @@ import { ComponentRenderer } from "@/lib/content/componentRegistry";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
 const ExampleTab = dynamic(() => import("@/components/examples/ExampleTab"), { ssr: false });
-const NoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), {
-  ssr: false,
-  loading: () => <div className="py-8 text-center text-[13px] text-[var(--ink-faint)]">加载中…</div>,
-});
 
 type ContentTab = "content" | "examples" | "quiz";
 
@@ -32,8 +28,10 @@ interface ContentPageClientProps {
   subjectId: SubjectId;
   categoryId: string;
   itemId: string;
-  /** 服务端 SSR 注入的正文 markdown；null 表示该项暂无内容文件 */
+  /** 服务端 SSR 注入的正文 markdown 原文；html/component 类型与「新标签打开」仍需要原文字符串 */
   initialContent: string | null;
+  /** 服务端/构建期预渲染好的正文 React 树（仅 markdown 类型非空）；客户端不再解析 markdown */
+  renderedNote?: React.ReactNode;
   /** 服务端 SSR 注入的例题列表（随路由变化重新下发） */
   initialExamples: ExampleMeta[];
   /** 例题所属小节 id（detail 分类为 itemId，否则为 ""） */
@@ -65,6 +63,7 @@ export default function ContentPageClient({
   categoryId,
   itemId,
   initialContent,
+  renderedNote,
   initialExamples,
   sectionId,
   itemTitle,
@@ -227,7 +226,7 @@ export default function ContentPageClient({
                     </div>
                   ) : (
                     <div key={itemId} className="prose-notes animate-fade-in">
-                      <NoteRenderer content={content} />
+                      {renderedNote}
                     </div>
                   )
                 ) : (

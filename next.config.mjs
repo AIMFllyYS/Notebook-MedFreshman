@@ -5,6 +5,9 @@ const nextConfig = {
   // webpack module graph so large generated .md files don't bloat the bundle.
   outputFileTracingIncludes: {
     "/api/**": ["./content/**/*", "./lib/ai/prompts/**/*"],
+    // 内容页 SSG/按需渲染（dynamicParams）在 Node Function 内经 loader 读取 .md，
+    // 需把 content 一并打进函数包，否则未预生成的 id 运行期读不到文件。
+    "/[subject]/[category]/[id]": ["./content/**/*"],
   },
   // 重型依赖按需加载，减少首屏 bundle 体积。lucide-react 有 18 处具名图标导入，
   // 加入后 Next 会把 barrel 导入改写为按图标深层导入，显著减小图标库体积。
