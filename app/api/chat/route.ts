@@ -12,7 +12,6 @@ import {
   type CustomProvider,
 } from "@/lib/ai/provider";
 import { getModelInfo } from "@/lib/ai/models";
-import { streamInteractiveArtifact } from "@/lib/ai/artifact";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -85,8 +84,29 @@ export async function POST(req: NextRequest) {
     async start(controller) {
       const send = (o: unknown) => controller.enqueue(encoder.encode(sse(o)));
 
+      // SSE 心跳保活：在 LLM 首 token 延迟期间定期发送注释行，
+      // 防止 EdgeOne 边缘节点 idle timeout 断开连接。
+      let heartbeatTimer: ReturnType<typeof setInterval> | null = null;
+      let firstContentSent = false;
+      const startHeartbeat = () => {
+        if (heartbeatTimer) return;
+        heartbeatTimer = setInterval(() => {
+          if (!firstContentSent) {
+            controller.enqueue(encoder.encode(": heartbeat\n\n"));
+          }
+        }, 15000);
+      };
+      const stopHeartbeat = () => {
+        if (heartbeatTimer) {
+          clearInterval(heartbeatTimer);
+          heartbeatTimer = null;
+        }
+      };
+      startHeartbeat();
+
       try {
         if (!provider.configured) {
+          stopHeartbeat();
           send({
             type: "content",
             content:
@@ -102,6 +122,7 @@ export async function POST(req: NextRequest) {
         const ctxResult = await ctxManager.buildContext(chatCtx, messages[messages.length - 1]?.content || "");
 
         if (ctxResult.overflow) {
+          stopHeartbeat();
           send({ type: "error", message: "上下文内容过长，已超出模型处理限制，请缩小阅读范围或切换为语义检索模式。" });
           send({ type: "done" });
           controller.close();
@@ -142,6 +163,9 @@ export async function POST(req: NextRequest) {
             }
           }
 
+          const abortCtrl = new AbortController();
+          const fetchTimeoutId = setTimeout(() => abortCtrl.abort(), 45000);
+
           const res = await fetch(endpoint, {
             method: "POST",
             headers: {
@@ -149,10 +173,13 @@ export async function POST(req: NextRequest) {
               Authorization: `Bearer ${provider.apiKey}`,
             },
             body: JSON.stringify(reqBody),
+            signal: abortCtrl.signal,
           });
+          clearTimeout(fetchTimeoutId);
 
           if (!res.ok || !res.body) {
             const t = await res.text().catch(() => "");
+            stopHeartbeat();
             send({ type: "error", message: `接口返回 ${res.status}：${t.slice(0, 300)}` });
             send({ type: "done" });
             controller.close();
@@ -189,6 +216,8 @@ export async function POST(req: NextRequest) {
 
               // 内容增量
               if (delta.content) {
+                firstContentSent = true;
+                stopHeartbeat();
                 contentBuf += delta.content;
                 send({ type: "content", delta: delta.content });
               }
@@ -223,8 +252,8 @@ export async function POST(req: NextRequest) {
               let parsed: Record<string, unknown> = {};
               try { parsed = c.args ? JSON.parse(c.args) : {}; } catch { parsed = {}; }
 
-              // renderInteractive 的产物 id 在调用伊始即确定并随 "call" 事件下发，
-              // 让前端能从流式一开始就把内嵌产物卡片挂到这条消息上（边生成边看代码）。
+              // renderInteractive 的产物 id 随 tool call 下发，前端卡片拿到 title/prompt 后
+              // 独立请求 /api/artifact 流式生成 HTML，不再阻塞主聊天 SSE。
               const artifactId = c.name === "renderInteractive" ? `art_${c.id}` : undefined;
               send({
                 type: "tool",
@@ -235,18 +264,14 @@ export async function POST(req: NextRequest) {
                 meta: artifactId ? { artifactId } : undefined,
               });
 
-              // renderInteractive：内联到主 SSE 流，await 生成完成后再继续对话。
-              // artifact 事件（start/delta/done/error）通过 send() 直接推送，无需独立 SSE 端点。
               if (c.name === "renderInteractive") {
                 const title = String(parsed.title ?? "");
-                const summary = await streamInteractiveArtifact(
-                  send,
-                  artifactId!,
-                  { title, prompt: String(parsed.prompt ?? "") },
-                  provider,
-                );
                 send({ type: "tool", id: c.id, status: "result", meta: { artifactId } });
-                convo.push({ role: "tool", tool_call_id: c.id, content: summary });
+                convo.push({
+                  role: "tool",
+                  tool_call_id: c.id,
+                  content: `交互演示「${title || "交互演示"}」已开始在前端独立生成。请用一两句话说明这个演示将帮助理解什么，然后继续你的讲解。`,
+                });
                 continue;
               }
 
@@ -261,15 +286,18 @@ export async function POST(req: NextRequest) {
             continue;
           }
 
+          stopHeartbeat();
           send({ type: "done" });
           controller.close();
           return;
         }
 
         // 超过最大工具调用轮次
+        stopHeartbeat();
         send({ type: "done" });
         controller.close();
       } catch (err) {
+        stopHeartbeat();
         try {
           send({ type: "error", message: String((err as Error)?.message ?? err) });
           send({ type: "done" });
@@ -284,6 +312,7 @@ export async function POST(req: NextRequest) {
       "Content-Type": "text/event-stream; charset=utf-8",
       "Cache-Control": "no-cache, no-transform",
       Connection: "keep-alive",
+      "X-Accel-Buffering": "no",
     },
   });
 }

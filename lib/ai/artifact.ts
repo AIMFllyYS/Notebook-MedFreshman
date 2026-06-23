@@ -1,11 +1,7 @@
-// 交互式 HTML 产物生成（"子智能体"）：当主模型调用 renderInteractive 工具时，
-// 用一次独立的 LLM 流式调用产出一个自包含 HTML 文档。
-//
-// 【内联模式】所有 artifact 事件（start/delta/done/error）通过主 SSE 流直接推送，
-// 不再依赖 artifactRegistry 内存态和独立 /api/artifact-stream 端点。
-// 主路由 await 本函数，生成完成后再继续对话。单连接、单请求生命周期，
-// 兼容本地 dev 和 Serverless 部署（EdgeOne Pages）。
+// 交互式 HTML 产物生成：用一次独立的 LLM 流式调用产出一个自包含 HTML 文档。
+// 本模块只负责把上游 HTML delta 转换成 artifact 事件，由 /api/artifact 独立 SSE 路由消费。
 import { chatCompletionsUrl, type ResolvedProvider } from "@/lib/ai/provider";
+import { parseSseJsonEvents } from "@/lib/utils/sseEvents";
 
 const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一任务是输出一个完整、自包含的 HTML 文档。
 
@@ -96,25 +92,38 @@ function finalizeHtml(raw: string, truncated: boolean): string {
   return html;
 }
 
-interface SendFn {
-  (o: unknown): void;
+export type ArtifactStreamEvent =
+  | { type: "artifact"; id: string; status: "start"; title: string }
+  | { type: "artifact"; id: string; status: "delta"; delta: string }
+  | { type: "artifact"; id: string; status: "done"; html: string }
+  | { type: "artifact"; id: string; status: "error"; message: string };
+
+interface StreamChoice {
+  delta?: { content?: string };
+  finish_reason?: string;
+}
+
+interface StreamChunk {
+  choices?: StreamChoice[];
+}
+
+interface StreamInteractiveArtifactOptions {
+  send: (event: ArtifactStreamEvent) => void;
+  artifactId: string;
+  args: { title?: string; prompt?: string };
+  provider: ResolvedProvider;
+  signal?: AbortSignal;
+  timeoutMs?: number;
 }
 
 /**
- * 流式生成交互式 HTML 产物（内联到主 SSE 流）。
- *
- * 主路由 await 本函数。所有 artifact 事件通过 send() 直接推送到主 SSE 流，
- * 前端在主对话连接中实时接收，无需独立 SSE 端点。
- *
- * @param send 主 SSE 的发送函数，用于推送 artifact 事件
- * @returns 给主模型的简短工具结果（不含完整 HTML，省 token）
+ * 流式生成交互式 HTML 产物。
+ * 调用方负责把 send() 发出的事件编码为 SSE 或其他传输格式。
  */
 export async function streamInteractiveArtifact(
-  send: SendFn,
-  artifactId: string,
-  args: { title?: string; prompt?: string },
-  provider: ResolvedProvider,
-): Promise<string> {
+  options: StreamInteractiveArtifactOptions,
+): Promise<void> {
+  const { send, artifactId, args, provider, signal, timeoutMs = 90000 } = options;
   const title = (args.title || "交互演示").slice(0, 60);
   const prompt = (args.prompt || args.title || "").trim();
 
@@ -122,8 +131,13 @@ export async function streamInteractiveArtifact(
 
   if (!prompt) {
     send({ type: "artifact", id: artifactId, status: "error", message: "缺少演示描述" });
-    return "未能生成交互演示：缺少演示描述。";
+    return;
   }
+
+  const abortCtrl = new AbortController();
+  const fetchTimeoutId = setTimeout(() => abortCtrl.abort(), timeoutMs);
+  const onAbort = () => abortCtrl.abort(signal?.reason);
+  signal?.addEventListener("abort", onAbort, { once: true });
 
   try {
     const res = await fetch(chatCompletionsUrl(provider.baseUrl), {
@@ -142,11 +156,12 @@ export async function streamInteractiveArtifact(
         temperature: 0.4,
         max_tokens: 12000,
       }),
+      signal: abortCtrl.signal,
     });
 
     if (!res.ok || !res.body) {
       send({ type: "artifact", id: artifactId, status: "error", message: `生成失败 ${res.status}` });
-      return `交互演示生成失败（${res.status}）。可改用文字讲解。`;
+      return;
     }
 
     const reader = res.body.getReader();
@@ -158,34 +173,32 @@ export async function streamInteractiveArtifact(
       const { done, value } = await reader.read();
       if (done) break;
       buf += decoder.decode(value, { stream: true });
-      let nl: number;
-      while ((nl = buf.indexOf("\n")) >= 0) {
-        const line = buf.slice(0, nl).trim();
-        buf = buf.slice(nl + 1);
-        if (!line.startsWith("data:")) continue;
-        const data = line.slice(5).trim();
-        if (!data || data === "[DONE]") continue;
-        try {
-          const json = JSON.parse(data);
-          const choice = json?.choices?.[0];
-          const delta = choice?.delta?.content;
-          if (delta) {
-            raw += delta;
-            send({ type: "artifact", id: artifactId, status: "delta", delta });
-          }
-          if (choice?.finish_reason) finish = choice.finish_reason;
-        } catch {
-          /* 忽略解析失败行 */
+      const parsed = parseSseJsonEvents<StreamChunk>(buf);
+      buf = parsed.remaining;
+      for (const json of parsed.events) {
+        const choice = json.choices?.[0];
+        const delta = choice?.delta?.content;
+        if (delta) {
+          raw += delta;
+          send({ type: "artifact", id: artifactId, status: "delta", delta });
         }
+        if (choice?.finish_reason) finish = choice.finish_reason;
       }
     }
 
     // finish_reason === "length" 表示达到 max_tokens 被截断 → 收尾时补救闭合标签。
     const html = finalizeHtml(raw, finish === "length");
     send({ type: "artifact", id: artifactId, status: "done", html });
-    return `已生成交互式演示「${title}」。请用一两句话说明这个演示将帮助理解什么，然后继续你的讲解。`;
   } catch (e) {
-    send({ type: "artifact", id: artifactId, status: "error", message: String((e as Error)?.message ?? e) });
-    return "交互演示生成出错，可改用文字讲解。";
+    const isAbort = e instanceof Error && e.name === "AbortError";
+    send({
+      type: "artifact",
+      id: artifactId,
+      status: "error",
+      message: isAbort ? "生成超时，请重试" : String((e as Error)?.message ?? e),
+    });
+  } finally {
+    clearTimeout(fetchTimeoutId);
+    signal?.removeEventListener("abort", onAbort);
   }
 }
