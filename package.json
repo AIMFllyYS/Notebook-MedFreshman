@@ -12,6 +12,7 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "build-index": "npx tsx scripts/build-index.ts",
     "render": "python manim/render.py",
     "render:chapter": "python manim/render.py --chapter"
   },
