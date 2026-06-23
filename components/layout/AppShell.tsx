@@ -24,7 +24,7 @@ import BrandLogo from "./BrandLogo";
 import MobileTopBar from "./MobileTopBar";
 import MobileBottomNav from "./MobileBottomNav";
 import MobileChapterPicker from "./MobileChapterPicker";
-import { PencilLoader, PageLoader } from "@/components/shared/ResizeLoader";
+import { ChatSkeleton, PageLoader } from "@/components/shared/ResizeLoader";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const QuickExplainWindow = dynamic(() => import("@/components/chat/QuickExplainWindow"), { ssr: false });
@@ -292,9 +292,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </PanelResizeHandle>
 
           <Panel id="right" order={3} minSize={22} defaultSize={31}>
-            <div className="relative h-full">
+            <div id="right-panel" className="relative h-full">
               <RightPanel />
-              {isResizing && <PencilLoader />}
+              {isResizing && <ChatSkeleton />}
             </div>
           </Panel>
         </PanelGroup>

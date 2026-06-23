@@ -472,7 +472,8 @@ body {
 [data-resizing] [data-chat-messages],
 [data-resizing] .chat-messages,
 [data-resizing] .prose,
-[data-resizing] article {
+[data-resizing] article,
+[data-resizing] #right-panel .vs-player {
   contain: strict;
   content-visibility: hidden;
 }
@@ -508,144 +509,47 @@ body {
   background: var(--bg-app);
 }
 
-/* —— 铅笔动画 —— */
-.resize-loader-pencil {
-  color: var(--accent);
+/* —— AI 对话骨架屏（右栏拖拽；GPU 合成 shimmer：气泡静止、仅高光层做 transform 位移） —— */
+.resize-loader-chat {
+  align-items: stretch;
+  justify-content: flex-start;
 }
-.resize-loader-pencil .pencil {
+.resize-loader-chat .chat-skel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 20px 16px;
+}
+.resize-loader-chat .chat-skel-bubble {
   display: block;
-  width: 10em;
-  height: 10em;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--bg-muted);
 }
-.resize-loader-pencil .pencil__body1,
-.resize-loader-pencil .pencil__body2,
-.resize-loader-pencil .pencil__body3,
-.resize-loader-pencil .pencil__eraser,
-.resize-loader-pencil .pencil__eraser-skew,
-.resize-loader-pencil .pencil__point,
-.resize-loader-pencil .pencil__rotate,
-.resize-loader-pencil .pencil__stroke {
-  animation-duration: 3s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+.resize-loader-chat .chat-skel-bubble.left {
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
 }
-.resize-loader-pencil .pencil__body1,
-.resize-loader-pencil .pencil__body2,
-.resize-loader-pencil .pencil__body3 {
-  transform: rotate(-90deg);
+.resize-loader-chat .chat-skel-bubble.right {
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+  background: var(--accent-weak);
 }
-.resize-loader-pencil .pencil__body1 {
-  animation-name: pencilBody1;
+.resize-loader-chat .chat-skel-bubble::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--bg-elevated), transparent);
+  opacity: 0.65;
+  will-change: transform;
+  animation: chatSkelShimmer 1.4s ease-in-out infinite;
 }
-.resize-loader-pencil .pencil__body2 {
-  animation-name: pencilBody2;
-}
-.resize-loader-pencil .pencil__body3 {
-  animation-name: pencilBody3;
-}
-.resize-loader-pencil .pencil__eraser {
-  animation-name: pencilEraser;
-  transform: rotate(-90deg) translate(49px, 0);
-}
-.resize-loader-pencil .pencil__eraser-skew {
-  animation-name: pencilEraserSkew;
-  animation-timing-function: ease-in-out;
-}
-.resize-loader-pencil .pencil__point {
-  animation-name: pencilPoint;
-  transform: rotate(-90deg) translate(49px, -30px);
-}
-.resize-loader-pencil .pencil__rotate {
-  animation-name: pencilRotate;
-}
-.resize-loader-pencil .pencil__stroke {
-  animation-name: pencilStroke;
-  transform: translate(100px, 100px) rotate(-113deg);
-}
-
-@keyframes pencilBody1 {
-  from, to {
-    stroke-dashoffset: 351.86;
-    transform: rotate(-90deg);
-  }
-  50% {
-    stroke-dashoffset: 150.8;
-    transform: rotate(-225deg);
-  }
-}
-@keyframes pencilBody2 {
-  from, to {
-    stroke-dashoffset: 406.84;
-    transform: rotate(-90deg);
-  }
-  50% {
-    stroke-dashoffset: 174.36;
-    transform: rotate(-225deg);
-  }
-}
-@keyframes pencilBody3 {
-  from, to {
-    stroke-dashoffset: 296.88;
-    transform: rotate(-90deg);
-  }
-  50% {
-    stroke-dashoffset: 127.23;
-    transform: rotate(-225deg);
-  }
-}
-@keyframes pencilEraser {
-  from, to {
-    transform: rotate(-45deg) translate(49px, 0);
-  }
-  50% {
-    transform: rotate(0deg) translate(49px, 0);
-  }
-}
-@keyframes pencilEraserSkew {
-  from, 32.5%, 67.5%, to {
-    transform: skewX(0);
-  }
-  35%, 65% {
-    transform: skewX(-4deg);
-  }
-  37.5%, 62.5% {
-    transform: skewX(8deg);
-  }
-  40%, 45%, 50%, 55%, 60% {
-    transform: skewX(-15deg);
-  }
-  42.5%, 47.5%, 52.5%, 57.5% {
-    transform: skewX(15deg);
-  }
-}
-@keyframes pencilPoint {
-  from, to {
-    transform: rotate(-90deg) translate(49px, -30px);
-  }
-  50% {
-    transform: rotate(-225deg) translate(49px, -30px);
-  }
-}
-@keyframes pencilRotate {
-  from {
-    transform: translate(100px, 100px) rotate(0);
-  }
+@keyframes chatSkelShimmer {
   to {
-    transform: translate(100px, 100px) rotate(720deg);
-  }
-}
-@keyframes pencilStroke {
-  from {
-    stroke-dashoffset: 439.82;
-    transform: translate(100px, 100px) rotate(-113deg);
-  }
-  50% {
-    stroke-dashoffset: 164.93;
-    transform: translate(100px, 100px) rotate(-113deg);
-  }
-  75%, to {
-    stroke-dashoffset: 439.82;
-    transform: translate(100px, 100px) rotate(112deg);
+    transform: translateX(100%);
   }
 }
 
