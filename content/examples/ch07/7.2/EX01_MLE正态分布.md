@@ -93,7 +93,7 @@ $$
 
 若需 $\sigma^2$ 的无偏估计，应使用样本方差 $S^2 = \frac{1}{n-1}\sum(X_i-\bar{X})^2$（分母为 $n-1$）。
 
-MLE 的不变性：$\sigma$ 的MLE为 $\hat{\sigma} = \sqrt{\hat{\sigma}^2} = \sqrt{\frac{1}{n}\sum(X_i-\bar{X})^2}$。
+MLE 的不变性：$\sigma$ 的MLE为 $\hat{\sigma} = \sqrt{\frac{1}{n}\sum(X_i-\bar{X})^2}$。
 
 :::
 
