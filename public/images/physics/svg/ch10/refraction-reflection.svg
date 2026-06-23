@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 360" width="500" height="360" aria-label="折射与反射定律示意" role="img">
+  <title>折射与反射定律示意</title>
+  <defs>
+    <marker id="arr-ref" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 Z" fill="var(--ink,#1a1a1a)"/>
+    </marker>
+    <marker id="arr-acc" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 Z" fill="var(--accent,#2563eb)"/>
+    </marker>
+    <marker id="arr-ref2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 Z" fill="var(--ink,#1a1a1a)" opacity="0.65"/>
+    </marker>
+  </defs>
+
+  <!-- Interface line -->
+  <line x1="40" y1="180" x2="460" y2="180" stroke="var(--ink,#1a1a1a)" stroke-width="2"/>
+
+  <!-- Medium labels -->
+  <text x="30" y="120" font-size="15" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">n₁</text>
+  <text x="30" y="260" font-size="15" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">n₂</text>
+
+  <!-- Shading for n2 medium -->
+  <rect x="40" y="180" width="420" height="140" fill="var(--accent,#2563eb)" opacity="0.06" rx="2"/>
+
+  <!-- Normal line (dashed) -->
+  <line x1="250" y1="50" x2="250" y2="310" stroke="var(--ink,#1a1a1a)" stroke-width="1.2"
+        stroke-dasharray="6,4" opacity="0.55"/>
+
+  <!-- Incident ray: from upper-left toward interface center -->
+  <line x1="105" y1="50" x2="250" y2="180"
+        stroke="var(--accent,#2563eb)" stroke-width="2.2"
+        marker-end="url(#arr-acc)"/>
+
+  <!-- Reflected ray: from interface center to upper-right -->
+  <line x1="250" y1="180" x2="395" y2="50"
+        stroke="var(--ink,#1a1a1a)" stroke-width="2" opacity="0.70"
+        marker-end="url(#arr-ref2)"/>
+
+  <!-- Refracted ray: from interface center downward-right -->
+  <line x1="250" y1="180" x2="380" y2="310"
+        stroke="var(--accent,#2563eb)" stroke-width="2.2"
+        marker-end="url(#arr-acc)"/>
+
+  <!-- Angle arc θ₁ (incident, between normal and incident ray) -->
+  <path d="M250,100 A80,80 0 0,0 202,136"
+        fill="none" stroke="var(--ink,#1a1a1a)" stroke-width="1.3" opacity="0.75"/>
+  <text x="200" y="122" font-size="13" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">θ₁</text>
+
+  <!-- Angle arc θ₁ (reflected, between normal and reflected ray) -->
+  <path d="M250,100 A80,80 0 0,1 298,136"
+        fill="none" stroke="var(--ink,#1a1a1a)" stroke-width="1.3" opacity="0.75"/>
+  <text x="278" y="122" font-size="13" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">θ₁</text>
+
+  <!-- Angle arc θ₂ (refracted, below interface) -->
+  <path d="M250,250 A70,70 0 0,1 291,215"
+        fill="none" stroke="var(--accent,#2563eb)" stroke-width="1.3" opacity="0.8"/>
+  <text x="278" y="250" font-size="13" fill="var(--accent,#2563eb)" font-style="italic" font-family="serif">θ₂</text>
+
+  <!-- Ray labels -->
+  <text x="108" y="45" font-size="12" fill="var(--accent,#2563eb)" font-family="sans-serif">入射光</text>
+  <text x="360" y="45" font-size="12" fill="var(--ink,#1a1a1a)" opacity="0.75" font-family="sans-serif">反射光</text>
+  <text x="370" y="320" font-size="12" fill="var(--accent,#2563eb)" font-family="sans-serif">折射光</text>
+
+  <!-- Snell's law label -->
+  <text x="20" y="348" font-size="11.5" fill="var(--ink,#1a1a1a)" opacity="0.65" font-family="serif" font-style="italic">
+    n₁ sin θ₁ = n₂ sin θ₂
+  </text>
+</svg>

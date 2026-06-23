@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 400" width="440" height="400" aria-label="安培环路定理示意图：载流导线穿过圆形安培环路" role="img">
+  <title>安培环路定理示意图：载流导线穿过圆形安培环路</title>
+  <defs>
+    <marker id="arrow-b" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L0,9 L9,4.5 Z" fill="var(--accent, #2563eb)"/>
+    </marker>
+    <marker id="arrow-i" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 Z" fill="var(--ink, #1a1a1a)"/>
+    </marker>
+    <marker id="arrow-loop" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L0,9 L9,4.5 Z" fill="var(--ink, #1a1a1a)" opacity="0.6"/>
+    </marker>
+  </defs>
+  <style>
+    .ampere-loop { stroke: var(--ink, #1a1a1a); stroke-width: 2; stroke-dasharray: 10,6; fill: none; opacity: 0.75; }
+    .wire { stroke: var(--ink, #1a1a1a); stroke-width: 3; }
+    .b-arrow { stroke: var(--accent, #2563eb); stroke-width: 2; fill: none; }
+    .label { fill: var(--ink, #1a1a1a); font-family: serif; font-size: 13px; }
+    .b-label { fill: var(--accent, #2563eb); font-family: serif; font-size: 14px; font-weight: bold; }
+    .i-label { fill: var(--ink, #1a1a1a); font-family: serif; font-size: 14px; font-weight: bold; }
+    .title-label { fill: var(--ink, #1a1a1a); font-family: serif; font-size: 14px; }
+  </style>
+
+  <!-- Ampere loop (dashed circle), center (220,200), r=130 -->
+  <circle class="ampere-loop" cx="220" cy="200" r="130"/>
+
+  <!-- Directional arrow on loop (counter-clockwise, top arc) -->
+  <path stroke="var(--ink,#1a1a1a)" stroke-width="2" fill="none" stroke-dasharray="10,6"
+        d="M220,70 A130,130 0 0,1 350,200" marker-end="url(#arrow-loop)"/>
+
+  <!-- Wire (current I going upward through loop center) -->
+  <line class="wire" x1="220" y1="20" x2="220" y2="380" />
+  <!-- Current direction arrow -->
+  <line stroke="var(--ink,#1a1a1a)" stroke-width="2.5" x1="220" y1="370" x2="220" y2="290" marker-end="url(#arrow-i)"/>
+
+  <!-- I label -->
+  <text class="i-label" x="228" y="350">I</text>
+
+  <!-- B arrows tangential to loop (at 4 points on the circle) -->
+  <!-- Right side (90°): B points upward (tangent to circle going CCW) -->
+  <line class="b-arrow" x1="350" y1="215" x2="350" y2="165" marker-end="url(#arrow-b)"/>
+  <text class="b-label" x="358" y="185">B</text>
+
+  <!-- Top (0°): B points leftward -->
+  <line class="b-arrow" x1="235" y1="70" x2="185" y2="70" marker-end="url(#arrow-b)"/>
+  <text class="b-label" x="200" y="63">B</text>
+
+  <!-- Left side (270°): B points downward -->
+  <line class="b-arrow" x1="90" y1="185" x2="90" y2="235" marker-end="url(#arrow-b)"/>
+  <text class="b-label" x="62" y="218">B</text>
+
+  <!-- Bottom (180°): B points rightward -->
+  <line class="b-arrow" x1="205" y1="330" x2="255" y2="330" marker-end="url(#arrow-b)"/>
+  <text class="b-label" x="260" y="337">B</text>
+
+  <!-- Loop direction label -->
+  <text class="label" x="310" y="90">环路 L</text>
+
+  <!-- Theorem label -->
+  <text class="title-label" x="80" y="388">安培环路定理：</text>
+  <text class="title-label" x="80" y="405">∮B·dl = μ₀I</text>
+
+  <!-- Title -->
+  <text class="label" x="110" y="28" font-size="15px" font-weight="bold">安培环路</text>
+</svg>

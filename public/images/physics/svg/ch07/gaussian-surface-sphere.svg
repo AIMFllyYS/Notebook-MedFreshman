@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" aria-label="高斯面（球面）包围点电荷示意图" role="img">
+  <title>高斯面（球面）包围点电荷示意图</title>
+  <defs>
+    <marker id="arrow-gauss" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 Z" fill="var(--accent, #2563eb)"/>
+    </marker>
+  </defs>
+  <style>
+    .gauss-surface { stroke: var(--ink, #1a1a1a); stroke-width: 2; stroke-dasharray: 8,5; fill: none; opacity: 0.7; }
+    .field-line { stroke: var(--accent, #2563eb); stroke-width: 1.8; fill: none; }
+    .charge-circle { fill: var(--accent, #2563eb); }
+    .charge-label { fill: #fff; font-family: serif; font-size: 16px; font-weight: bold; }
+    .label { fill: var(--ink, #1a1a1a); font-family: serif; font-size: 13px; }
+    .surface-label { fill: var(--ink, #1a1a1a); font-family: serif; font-size: 13px; font-style: italic; }
+    .e-label { fill: var(--accent, #2563eb); font-family: serif; font-size: 12px; font-weight: bold; }
+  </style>
+
+  <!-- Gaussian surface (dashed circle) -->
+  <circle class="gauss-surface" cx="200" cy="200" r="130"/>
+
+  <!-- E-field arrows pointing outward through Gaussian surface (8 directions) -->
+  <!-- Right -->
+  <line class="field-line" x1="215" y1="200" x2="320" y2="200" marker-end="url(#arrow-gauss)"/>
+  <!-- Upper-right -->
+  <line class="field-line" x1="210" y1="190" x2="291" y2="109" marker-end="url(#arrow-gauss)"/>
+  <!-- Up -->
+  <line class="field-line" x1="200" y1="185" x2="200" y2="80" marker-end="url(#arrow-gauss)"/>
+  <!-- Upper-left -->
+  <line class="field-line" x1="190" y1="190" x2="109" y2="109" marker-end="url(#arrow-gauss)"/>
+  <!-- Left -->
+  <line class="field-line" x1="185" y1="200" x2="80" y2="200" marker-end="url(#arrow-gauss)"/>
+  <!-- Lower-left -->
+  <line class="field-line" x1="190" y1="210" x2="109" y2="291" marker-end="url(#arrow-gauss)"/>
+  <!-- Down -->
+  <line class="field-line" x1="200" y1="215" x2="200" y2="320" marker-end="url(#arrow-gauss)"/>
+  <!-- Lower-right -->
+  <line class="field-line" x1="210" y1="210" x2="291" y2="291" marker-end="url(#arrow-gauss)"/>
+
+  <!-- E labels at arrows (near surface) -->
+  <text class="e-label" x="325" y="196">E</text>
+  <text class="e-label" x="295" y="105">E</text>
+  <text class="e-label" x="203" y="74">E</text>
+
+  <!-- Point charge at center -->
+  <circle class="charge-circle" cx="200" cy="200" r="14"/>
+  <text class="charge-label" x="200" y="205" text-anchor="middle" dominant-baseline="middle">+</text>
+
+  <!-- Labels -->
+  <text class="label" x="200" y="352" text-anchor="middle">q（点电荷）</text>
+  <text class="surface-label" x="270" y="85">S（高斯面）</text>
+
+  <!-- dS normal vector hint -->
+  <text class="label" x="290" y="220">d<tspan font-weight="bold">S</tspan></text>
+  <text class="label" x="116" y="355">∮E·dS = q/ε₀</text>
+</svg>

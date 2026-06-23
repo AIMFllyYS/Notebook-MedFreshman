@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 360" width="560" height="360" aria-label="杨氏双缝干涉实验示意" role="img">
+  <title>杨氏双缝干涉实验示意</title>
+  <defs>
+    <marker id="ds-arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 Z" fill="var(--ink,#1a1a1a)"/>
+    </marker>
+    <marker id="ds-arr-b" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 Z" fill="var(--accent,#2563eb)"/>
+    </marker>
+  </defs>
+
+  <!-- Incident light arrows (from left) -->
+  <line x1="30" y1="130" x2="150" y2="130" stroke="var(--accent,#2563eb)" stroke-width="1.6" marker-end="url(#ds-arr-b)"/>
+  <line x1="30" y1="160" x2="150" y2="160" stroke="var(--accent,#2563eb)" stroke-width="1.6" marker-end="url(#ds-arr-b)"/>
+  <line x1="30" y1="190" x2="150" y2="190" stroke="var(--accent,#2563eb)" stroke-width="1.6" marker-end="url(#ds-arr-b)"/>
+  <line x1="30" y1="220" x2="150" y2="220" stroke="var(--accent,#2563eb)" stroke-width="1.6" marker-end="url(#ds-arr-b)"/>
+  <text x="18" y="182" font-size="11" fill="var(--accent,#2563eb)" font-family="sans-serif" transform="rotate(-90,18,182)">平行光</text>
+
+  <!-- Barrier with two slits -->
+  <!-- Top barrier segment -->
+  <rect x="160" y="60" width="12" height="100" fill="var(--ink,#1a1a1a)" rx="1"/>
+  <!-- Slit S1 gap: y=160..185 -->
+  <!-- Middle barrier segment -->
+  <rect x="160" y="200" width="12" height="50" fill="var(--ink,#1a1a1a)" rx="1"/>
+  <!-- Slit S2 gap: y=250..275 -->
+  <!-- Lower barrier segment -->
+  <rect x="160" y="290" width="12" height="70" fill="var(--ink,#1a1a1a)" rx="1"/>
+
+  <!-- Slit labels -->
+  <text x="142" y="190" font-size="12" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">S₁</text>
+  <text x="142" y="275" font-size="12" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">S₂</text>
+
+  <!-- d dimension label -->
+  <line x1="180" y1="172" x2="180" y2="262" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.6"/>
+  <line x1="177" y1="172" x2="183" y2="172" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.6"/>
+  <line x1="177" y1="262" x2="183" y2="262" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.6"/>
+  <text x="185" y="222" font-size="12" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">d</text>
+
+  <!-- Screen on right -->
+  <rect x="450" y="55" width="12" height="290" fill="var(--ink,#1a1a1a)" rx="1" opacity="0.15"/>
+  <rect x="450" y="55" width="12" height="290" fill="none" stroke="var(--ink,#1a1a1a)" stroke-width="1.5" rx="1"/>
+
+  <!-- Interference fringes on screen — alternating bright/dark bands -->
+  <rect x="451" y="56" width="10" height="20" fill="#f5f5f5" opacity="0.9"/>
+  <rect x="451" y="76" width="10" height="20" fill="var(--accent,#2563eb)" opacity="0.55"/>
+  <rect x="451" y="96" width="10" height="20" fill="#f5f5f5" opacity="0.9"/>
+  <rect x="451" y="116" width="10" height="22" fill="var(--accent,#2563eb)" opacity="0.55"/>
+  <rect x="451" y="138" width="10" height="22" fill="#f5f5f5" opacity="0.9"/>
+  <!-- Central bright fringe wider/brighter -->
+  <rect x="451" y="160" width="10" height="32" fill="var(--accent,#2563eb)" opacity="0.85"/>
+  <rect x="451" y="192" width="10" height="22" fill="#f5f5f5" opacity="0.9"/>
+  <rect x="451" y="214" width="10" height="22" fill="var(--accent,#2563eb)" opacity="0.55"/>
+  <rect x="451" y="236" width="10" height="20" fill="#f5f5f5" opacity="0.9"/>
+  <rect x="451" y="256" width="10" height="20" fill="var(--accent,#2563eb)" opacity="0.55"/>
+  <rect x="451" y="276" width="10" height="20" fill="#f5f5f5" opacity="0.9"/>
+  <rect x="451" y="296" width="10" height="20" fill="var(--accent,#2563eb)" opacity="0.35"/>
+  <rect x="451" y="316" width="10" height="29" fill="#f5f5f5" opacity="0.9"/>
+
+  <!-- Slit center points -->
+  <circle cx="166" cy="182" r="3" fill="var(--accent,#2563eb)"/>
+  <circle cx="166" cy="262" r="3" fill="var(--accent,#2563eb)"/>
+
+  <!-- Point P on screen -->
+  <circle cx="456" cy="140" r="4" fill="var(--ink,#1a1a1a)" opacity="0.8"/>
+  <text x="462" y="138" font-size="12" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">P</text>
+
+  <!-- Rays from S1 and S2 to P -->
+  <line x1="166" y1="182" x2="456" y2="140" stroke="var(--ink,#1a1a1a)" stroke-width="1.3" opacity="0.5" stroke-dasharray="4,3"/>
+  <line x1="166" y1="262" x2="456" y2="140" stroke="var(--ink,#1a1a1a)" stroke-width="1.3" opacity="0.5" stroke-dasharray="4,3"/>
+
+  <!-- θ angle arc -->
+  <path d="M166,182 Q220,182 210,155" fill="none" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.6"/>
+  <text x="215" y="168" font-size="11" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">θ</text>
+
+  <!-- D dimension label -->
+  <line x1="172" y1="345" x2="450" y2="345" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.5"/>
+  <line x1="172" y1="342" x2="172" y2="348" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.5"/>
+  <line x1="450" y1="342" x2="450" y2="348" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.5"/>
+  <text x="303" y="358" font-size="12" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">D</text>
+
+  <!-- δ = d·sinθ label -->
+  <text x="195" y="290" font-size="12" fill="var(--ink,#1a1a1a)" font-family="serif" font-style="italic">
+    δ = d·sinθ
+  </text>
+
+  <!-- Screen label -->
+  <text x="432" y="48" font-size="11" fill="var(--ink,#1a1a1a)" opacity="0.7" font-family="sans-serif">屏</text>
+
+  <!-- Fringe spacing label -->
+  <line x1="464" y1="160" x2="464" y2="192" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.5"/>
+  <line x1="461" y1="160" x2="467" y2="160" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.5"/>
+  <line x1="461" y1="192" x2="467" y2="192" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.5"/>
+  <text x="470" y="180" font-size="10" fill="var(--ink,#1a1a1a)" font-family="serif" font-style="italic">Δx</text>
+</svg>

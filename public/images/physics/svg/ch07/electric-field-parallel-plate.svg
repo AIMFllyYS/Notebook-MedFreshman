@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" width="480" height="320" aria-label="平行板电容器匀强电场线分布" role="img">
+  <title>平行板电容器匀强电场线分布</title>
+  <defs>
+    <marker id="arrow-down" markerWidth="8" markerHeight="8" refX="4" refY="7" orient="auto">
+      <path d="M0,0 L8,0 L4,8 Z" fill="var(--accent, #2563eb)"/>
+    </marker>
+    <marker id="arrow-fringe" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 Z" fill="var(--accent, #2563eb)"/>
+    </marker>
+  </defs>
+  <style>
+    .plate { stroke: var(--ink, #1a1a1a); stroke-width: 3; fill: none; }
+    .plate-fill { fill: var(--ink, #1a1a1a); opacity: 0.15; }
+    .field-line { stroke: var(--accent, #2563eb); stroke-width: 1.8; fill: none; }
+    .charge-sym { fill: var(--ink, #1a1a1a); font-family: serif; font-size: 14px; }
+    .label { fill: var(--ink, #1a1a1a); font-family: serif; font-size: 13px; }
+  </style>
+
+  <!-- Top plate (positive) -->
+  <rect class="plate-fill" x="80" y="60" width="320" height="16" rx="2"/>
+  <line class="plate" x1="80" y1="60" x2="400" y2="60"/>
+  <line class="plate" x1="80" y1="76" x2="400" y2="76"/>
+
+  <!-- Bottom plate (negative) -->
+  <rect class="plate-fill" x="80" y="244" width="320" height="16" rx="2"/>
+  <line class="plate" x1="80" y1="244" x2="400" y2="244"/>
+  <line class="plate" x1="80" y1="260" x2="400" y2="260"/>
+
+  <!-- Charge symbols on top plate (+) -->
+  <text class="charge-sym" x="110" y="72" text-anchor="middle">+</text>
+  <text class="charge-sym" x="160" y="72" text-anchor="middle">+</text>
+  <text class="charge-sym" x="210" y="72" text-anchor="middle">+</text>
+  <text class="charge-sym" x="260" y="72" text-anchor="middle">+</text>
+  <text class="charge-sym" x="310" y="72" text-anchor="middle">+</text>
+  <text class="charge-sym" x="360" y="72" text-anchor="middle">+</text>
+
+  <!-- Charge symbols on bottom plate (−) -->
+  <text class="charge-sym" x="110" y="256" text-anchor="middle">−</text>
+  <text class="charge-sym" x="160" y="256" text-anchor="middle">−</text>
+  <text class="charge-sym" x="210" y="256" text-anchor="middle">−</text>
+  <text class="charge-sym" x="260" y="256" text-anchor="middle">−</text>
+  <text class="charge-sym" x="310" y="256" text-anchor="middle">−</text>
+  <text class="charge-sym" x="360" y="256" text-anchor="middle">−</text>
+
+  <!-- Uniform field lines (5 straight lines between plates) -->
+  <line class="field-line" x1="130" y1="80" x2="130" y2="240" marker-end="url(#arrow-down)"/>
+  <line class="field-line" x1="180" y1="80" x2="180" y2="240" marker-end="url(#arrow-down)"/>
+  <line class="field-line" x1="240" y1="80" x2="240" y2="240" marker-end="url(#arrow-down)"/>
+  <line class="field-line" x1="300" y1="80" x2="300" y2="240" marker-end="url(#arrow-down)"/>
+  <line class="field-line" x1="350" y1="80" x2="350" y2="240" marker-end="url(#arrow-down)"/>
+
+  <!-- Fringe field lines (left edge, curved) -->
+  <path class="field-line" d="M80,76 C40,76 20,160 40,244" marker-end="url(#arrow-fringe)"/>
+  <!-- Fringe field lines (right edge, curved) -->
+  <path class="field-line" d="M400,76 C440,76 460,160 440,244" marker-end="url(#arrow-fringe)"/>
+
+  <!-- Labels -->
+  <text class="label" x="26" y="165">E</text>
+  <text class="label" x="420" y="165">边缘效应</text>
+  <text class="label" x="170" y="175">E（匀强）</text>
+  <text class="label" x="60" y="40">+ 正极板</text>
+  <text class="label" x="60" y="290">− 负极板</text>
+</svg>

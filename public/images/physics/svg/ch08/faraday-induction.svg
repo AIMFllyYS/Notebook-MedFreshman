@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360" aria-label="法拉第电磁感应：矩形线圈在增强磁场中产生感应电流" role="img">
+  <title>法拉第电磁感应：矩形线圈在增强磁场中产生感应电流</title>
+  <defs>
+    <marker id="arrow-emf" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L0,9 L9,4.5 Z" fill="var(--accent, #2563eb)"/>
+    </marker>
+    <marker id="arrow-flux" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 Z" fill="#059669"/>
+    </marker>
+  </defs>
+  <style>
+    .coil { stroke: var(--ink, #1a1a1a); stroke-width: 2.5; fill: none; }
+    .b-dot { fill: var(--ink, #1a1a1a); }
+    .b-cross-h { stroke: var(--ink, #1a1a1a); stroke-width: 1.8; }
+    .induced-arrow { stroke: var(--accent, #2563eb); stroke-width: 2.2; fill: none; }
+    .flux-arrow { stroke: #059669; stroke-width: 2; fill: none; }
+    .label { fill: var(--ink, #1a1a1a); font-family: serif; font-size: 13px; }
+    .b-label { fill: var(--ink, #1a1a1a); font-family: serif; font-size: 13px; font-weight: bold; }
+    .i-label { fill: var(--accent, #2563eb); font-family: serif; font-size: 13px; font-weight: bold; }
+    .flux-label { fill: #059669; font-family: serif; font-size: 12px; }
+    .region-bg { fill: #f0f4ff; stroke: #c7d2fe; stroke-width: 1.5; stroke-dasharray: 6,4; }
+  </style>
+
+  <!-- Magnetic field region background -->
+  <rect class="region-bg" x="80" y="50" width="320" height="260" rx="8"/>
+
+  <!-- B field symbols (dots = out of page) in a grid pattern -->
+  <!-- Row 1 -->
+  <circle class="b-dot" cx="130" cy="100" r="4"/>
+  <circle class="b-dot" cx="200" cy="100" r="4"/>
+  <circle class="b-dot" cx="270" cy="100" r="4"/>
+  <circle class="b-dot" cx="340" cy="100" r="4"/>
+  <!-- Row 2 -->
+  <circle class="b-dot" cx="130" cy="160" r="4"/>
+  <circle class="b-dot" cx="200" cy="160" r="4"/>
+  <circle class="b-dot" cx="270" cy="160" r="4"/>
+  <circle class="b-dot" cx="340" cy="160" r="4"/>
+  <!-- Row 3 -->
+  <circle class="b-dot" cx="130" cy="220" r="4"/>
+  <circle class="b-dot" cx="200" cy="220" r="4"/>
+  <circle class="b-dot" cx="270" cy="220" r="4"/>
+  <circle class="b-dot" cx="340" cy="220" r="4"/>
+  <!-- Row 4 -->
+  <circle class="b-dot" cx="130" cy="280" r="4"/>
+  <circle class="b-dot" cx="200" cy="280" r="4"/>
+  <circle class="b-dot" cx="270" cy="280" r="4"/>
+  <circle class="b-dot" cx="340" cy="280" r="4"/>
+
+  <!-- B field label (top-right of region) -->
+  <text class="b-label" x="352" y="68">B (穿出纸面)</text>
+  <text class="flux-label" x="352" y="86">dB/dt &gt; 0</text>
+
+  <!-- Rectangular coil (centered) -->
+  <rect class="coil" x="140" y="120" width="200" height="120" rx="4"/>
+
+  <!-- Induced current direction arrows (CCW to oppose increasing outward flux) -->
+  <!-- Top edge: current goes LEFT (←) -->
+  <line class="induced-arrow" x1="290" y1="120" x2="200" y2="120" marker-end="url(#arrow-emf)"/>
+  <!-- Left edge: current goes DOWN (↓) -->
+  <line class="induced-arrow" x1="140" y1="170" x2="140" y2="210" marker-end="url(#arrow-emf)"/>
+  <!-- Bottom edge: current goes RIGHT (→) -->
+  <line class="induced-arrow" x1="190" y1="240" x2="280" y2="240" marker-end="url(#arrow-emf)"/>
+  <!-- Right edge: current goes UP (↑) -->
+  <line class="induced-arrow" x1="340" y1="210" x2="340" y2="170" marker-end="url(#arrow-emf)"/>
+
+  <!-- Induced current label -->
+  <text class="i-label" x="228" y="115">I感</text>
+  <text class="i-label" x="148" y="202">I感</text>
+
+  <!-- Flux increase arrow (inside coil) -->
+  <line class="flux-arrow" x1="220" y1="195" x2="220" y2="145" marker-end="url(#arrow-flux)"/>
+  <text class="flux-label" x="224" y="170">ΔΦ↑</text>
+
+  <!-- Coil corners label -->
+  <text class="label" x="100" y="185">矩形</text>
+  <text class="label" x="100" y="200">线圈</text>
+
+  <!-- Title annotation -->
+  <text class="label" x="96" y="338">楞次定律：I感 产生反向磁通抵抗 ΔΦ</text>
+</svg>

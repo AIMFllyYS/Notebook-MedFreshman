@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 360" width="560" height="360" aria-label="牛顿环干涉示意图" role="img">
+  <title>牛顿环薄膜干涉示意</title>
+  <defs>
+    <marker id="nr-arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 Z" fill="var(--ink,#1a1a1a)"/>
+    </marker>
+    <marker id="nr-arr-up" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse">
+      <path d="M0,0 L0,8 L8,4 Z" fill="var(--accent,#2563eb)"/>
+    </marker>
+    <marker id="nr-arr-b" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 Z" fill="var(--accent,#2563eb)"/>
+    </marker>
+  </defs>
+
+  <!-- ===== LEFT: Cross-section view ===== -->
+  <text x="30" y="28" font-size="12" fill="var(--ink,#1a1a1a)" font-family="sans-serif" opacity="0.8">截面图</text>
+
+  <!-- Flat glass plate -->
+  <rect x="30" y="230" width="240" height="25" fill="var(--ink,#1a1a1a)" opacity="0.12" rx="2"/>
+  <rect x="30" y="230" width="240" height="25" fill="none" stroke="var(--ink,#1a1a1a)" stroke-width="1.8" rx="2"/>
+  <text x="36" y="250" font-size="11" fill="var(--ink,#1a1a1a)" opacity="0.6" font-family="sans-serif">平板玻璃 (n=1.5)</text>
+
+  <!-- Plano-convex lens resting on plate -->
+  <!-- Bottom flat side at y=230, curved top -->
+  <path d="M70,230 Q150,110 230,230 Z"
+        fill="var(--accent,#2563eb)" fill-opacity="0.08"
+        stroke="var(--ink,#1a1a1a)" stroke-width="1.8"/>
+
+  <!-- Air gap shading between lens bottom and plate top -->
+  <path d="M70,230 Q150,200 230,230 L230,230 L70,230 Z"
+        fill="var(--accent,#2563eb)" fill-opacity="0.18"/>
+
+  <!-- Air gap label -->
+  <text x="135" y="226" font-size="10.5" fill="var(--accent,#2563eb)" font-family="sans-serif">空气隙</text>
+
+  <!-- Lens label -->
+  <text x="130" y="145" font-size="11" fill="var(--ink,#1a1a1a)" opacity="0.75" font-family="sans-serif">平凸透镜</text>
+
+  <!-- R label (radius of curvature) -->
+  <line x1="150" y1="230" x2="150" y2="110" stroke="var(--ink,#1a1a1a)" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>
+  <text x="155" y="175" font-size="12" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">R</text>
+
+  <!-- Incident light ray (downward) -->
+  <line x1="150" y1="45" x2="150" y2="110"
+        stroke="var(--accent,#2563eb)" stroke-width="2" marker-end="url(#nr-arr-b)"/>
+  <text x="155" y="68" font-size="11" fill="var(--accent,#2563eb)" font-family="sans-serif">入射光</text>
+
+  <!-- Reflected ray 1: from top surface of air gap (lens bottom) going up-left -->
+  <line x1="130" y1="218" x2="96" y2="70"
+        stroke="var(--ink,#1a1a1a)" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.55"
+        marker-end="url(#nr-arr)"/>
+  <text x="60" y="85" font-size="10" fill="var(--ink,#1a1a1a)" opacity="0.7" font-family="sans-serif">反射①</text>
+
+  <!-- Reflected ray 2: from bottom surface (plate top) going up-left more -->
+  <line x1="130" y1="231" x2="85" y2="82"
+        stroke="var(--accent,#2563eb)" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.65"
+        marker-end="url(#nr-arr-b)"/>
+  <text x="40" y="62" font-size="10" fill="var(--accent,#2563eb)" font-family="sans-serif">反射②</text>
+
+  <!-- Air gap thickness label at a specific point -->
+  <line x1="195" y1="222" x2="195" y2="230" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.7"/>
+  <line x1="192" y1="222" x2="198" y2="222" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.7"/>
+  <line x1="192" y1="230" x2="198" y2="230" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.7"/>
+  <text x="201" y="229" font-size="11" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">e</text>
+
+  <!-- rk label -->
+  <line x1="150" y1="235" x2="195" y2="235" stroke="var(--ink,#1a1a1a)" stroke-width="1" opacity="0.5"/>
+  <text x="165" y="250" font-size="11" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">r_k</text>
+
+  <!-- Formula -->
+  <text x="30" y="285" font-size="11.5" fill="var(--ink,#1a1a1a)" opacity="0.7" font-family="serif" font-style="italic">
+    r_k = √(kRλ)  （第k级暗环）
+  </text>
+
+  <!-- ===== RIGHT: Top view — concentric rings pattern ===== -->
+  <text x="348" y="28" font-size="12" fill="var(--ink,#1a1a1a)" font-family="sans-serif" opacity="0.8">俯视图（干涉圆环）</text>
+
+  <!-- Background circle -->
+  <circle cx="450" cy="175" r="140" fill="var(--ink,#1a1a1a)" fill-opacity="0.04" stroke="var(--ink,#1a1a1a)" stroke-width="1.2" stroke-dasharray="5,4" opacity="0.3"/>
+
+  <!-- Concentric rings: dark center, alternating bright/dark -->
+  <!-- Center dark spot -->
+  <circle cx="450" cy="175" r="8" fill="var(--ink,#1a1a1a)" opacity="0.75"/>
+
+  <!-- Ring 1 bright -->
+  <circle cx="450" cy="175" r="20" fill="none" stroke="var(--accent,#2563eb)" stroke-width="8" opacity="0.65"/>
+  <!-- Ring 1 dark -->
+  <circle cx="450" cy="175" r="30" fill="none" stroke="var(--ink,#1a1a1a)" stroke-width="5" opacity="0.6"/>
+  <!-- Ring 2 bright -->
+  <circle cx="450" cy="175" r="42" fill="none" stroke="var(--accent,#2563eb)" stroke-width="7" opacity="0.55"/>
+  <!-- Ring 2 dark -->
+  <circle cx="450" cy="175" r="52" fill="none" stroke="var(--ink,#1a1a1a)" stroke-width="5" opacity="0.5"/>
+  <!-- Ring 3 bright -->
+  <circle cx="450" cy="175" r="63" fill="none" stroke="var(--accent,#2563eb)" stroke-width="6" opacity="0.45"/>
+  <!-- Ring 3 dark -->
+  <circle cx="450" cy="175" r="73" fill="none" stroke="var(--ink,#1a1a1a)" stroke-width="4" opacity="0.4"/>
+  <!-- Ring 4 bright -->
+  <circle cx="450" cy="175" r="83" fill="none" stroke="var(--accent,#2563eb)" stroke-width="5" opacity="0.35"/>
+  <!-- Ring 4 dark -->
+  <circle cx="450" cy="175" r="93" fill="none" stroke="var(--ink,#1a1a1a)" stroke-width="4" opacity="0.3"/>
+  <!-- Ring 5 bright -->
+  <circle cx="450" cy="175" r="103" fill="none" stroke="var(--accent,#2563eb)" stroke-width="4" opacity="0.25"/>
+  <!-- Ring 5 dark -->
+  <circle cx="450" cy="175" r="112" fill="none" stroke="var(--ink,#1a1a1a)" stroke-width="3" opacity="0.22"/>
+  <!-- Ring 6 bright (faint) -->
+  <circle cx="450" cy="175" r="121" fill="none" stroke="var(--accent,#2563eb)" stroke-width="3" opacity="0.15"/>
+
+  <!-- r_k arrow on right side of pattern -->
+  <line x1="450" y1="175" x2="503" y2="175" stroke="var(--ink,#1a1a1a)" stroke-width="1.2" opacity="0.5" marker-end="url(#nr-arr)"/>
+  <text x="470" y="170" font-size="11" fill="var(--ink,#1a1a1a)" font-style="italic" font-family="serif">r_k</text>
+
+  <!-- Dark center label -->
+  <text x="438" y="215" font-size="10" fill="var(--ink,#1a1a1a)" opacity="0.7" font-family="sans-serif">暗中心</text>
+
+  <!-- Rings get denser outward label -->
+  <text x="340" y="330" font-size="10.5" fill="var(--ink,#1a1a1a)" opacity="0.6" font-family="sans-serif">（边缘条纹愈密）</text>
+</svg>
