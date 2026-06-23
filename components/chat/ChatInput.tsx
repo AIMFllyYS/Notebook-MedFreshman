@@ -297,8 +297,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
           </button>
         </div>
 
-        <TokenDashboard />
-        <ModelMenu onOpenSettings={onOpenSettings} />
+        <div className="chat-input-toolbar-group" style={{ gap: 4, flexShrink: 0 }}>
+          <TokenDashboard />
+          <ModelMenu onOpenSettings={onOpenSettings} />
+        </div>
       </div>
     </div>
   );
