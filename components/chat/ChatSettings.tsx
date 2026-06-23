@@ -7,9 +7,9 @@ import { CUSTOM_MODEL_ID } from "@/lib/ai/models";
 
 const TOOLS: { name: string; label: string; desc: string }[] = [
   { name: "getCurrentPage", label: "读取当前页", desc: "让 AI 获取你正在阅读的页面内容" },
-  { name: "getOutline", label: "课程大纲", desc: "让 AI 查看章节大纲、定位知识点" },
-  { name: "getSection", label: "读取指定小节", desc: "让 AI 调取其他小节正文做对比讲解" },
-  { name: "searchNotes", label: "全文检索", desc: "让 AI 在全书笔记中按关键词检索" },
+  { name: "getOutline", label: "课程大纲", desc: "让 AI 查看全部科目的章节大纲" },
+  { name: "getSection", label: "读取指定页面", desc: "让 AI 调取任意科目的任意小节正文" },
+  { name: "searchNotes", label: "全文检索", desc: "让 AI 在全部课程笔记中按关键词检索" },
   { name: "webSearch", label: "联网搜索", desc: "需配置 Bocha key；联网获取实时信息" },
   { name: "renderInteractive", label: "交互演示", desc: "让 AI 生成可交互的 HTML 讲解（横幅/弹窗查看）" },
 ];

@@ -2,7 +2,8 @@
 // 仅可在服务端（route handler / server component）导入。
 import fs from "node:fs";
 import path from "node:path";
-import { manifest } from "@/content/manifest";
+import { manifest, contentTree } from "@/content/manifest";
+import type { ContentItem } from "@/lib/types/content";
 import type { ChapterRef, SectionRef } from "@/lib/content/types";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content", "chapters");
@@ -217,7 +218,232 @@ export function readQuiz(subjectId: string, chapterId: string): unknown | null {
   }
 }
 
-/** 紧凑的全书大纲文本，供 AI 的 get_outline 工具。 */
+// ─────────────────────────────────────────────────────────────
+// 多科目 AI 工具函数（基于 contentTree，覆盖全部科目/分类）
+// ─────────────────────────────────────────────────────────────
+
+const CATEGORY_LABEL: Record<string, string> = {
+  detail: "详解",
+  recording: "录音",
+  summary: "纪要",
+  textbook: "教材",
+};
+
+const SEARCHABLE_CATEGORIES = new Set(["detail", "recording", "summary"]);
+
+/** 从 contentTree 中按 (subjectId, categoryId, itemId) 查找内容项及其标题。 */
+export function findContentItem(
+  subjectId: string,
+  categoryId: string,
+  itemId: string,
+): { subjectName: string; categoryName: string; item: ContentItem; parentTitle?: string } | undefined {
+  for (const subject of contentTree.subjects) {
+    if (subject.id !== subjectId) continue;
+    for (const cat of subject.categories) {
+      if (cat.id !== categoryId) continue;
+      for (const item of cat.items) {
+        if (item.id === itemId) {
+          return { subjectName: subject.name, categoryName: cat.name, item };
+        }
+        if (item.children) {
+          const child = item.children.find((c) => c.id === itemId);
+          if (child) {
+            return { subjectName: subject.name, categoryName: cat.name, item: child, parentTitle: item.title };
+          }
+        }
+      }
+    }
+  }
+  return undefined;
+}
+
+/** 生成全科目大纲文本，供 AI 的 getOutline 工具。 */
+export function getMultiSubjectOutline(): string {
+  const lines: string[] = [];
+
+  for (const subject of contentTree.subjects) {
+    if (subject.id === "other") continue;
+    lines.push(`\n=== ${subject.name} (${subject.id}) ===`);
+
+    for (const cat of subject.categories) {
+      if (!SEARCHABLE_CATEGORIES.has(cat.id)) continue;
+      if (!cat.items.length) continue;
+
+      for (const item of cat.items) {
+        if (item.children?.length) {
+          const chNum = item.id.replace(/^ch0?/, "");
+          lines.push(`\n  第${chNum}章 ${item.title}`);
+          if (item.summary) lines.push(`    概要：${item.summary}`);
+          for (const sec of item.children) {
+            const flag = sec.status === "done" ? "" : "（待完善）";
+            const p = `${subject.id}/${cat.id}/${sec.id}`;
+            lines.push(`    - ${sec.id} ${sec.title}${flag} (${p})`);
+          }
+        } else {
+          const label = CATEGORY_LABEL[cat.id] || cat.id;
+          const flag = item.status === "done" ? "" : "（待完善）";
+          const p = `${subject.id}/${cat.id}/${item.id}`;
+          lines.push(`  [${label}] ${item.id} ${item.title}${flag} (${p})`);
+        }
+      }
+    }
+  }
+  return lines.join("\n");
+}
+
+/** 解析复合路径或小节 ID 为统一的内容定位。 */
+export interface ResolvedPath {
+  subjectId: string;
+  categoryId: string;
+  itemId: string;
+  title: string;
+  found: boolean;
+}
+
+export function resolveContentPath(
+  pathOrId: string,
+  fallbackSubjectId: string,
+): ResolvedPath {
+  const parts = pathOrId.split("/");
+  if (parts.length >= 3) {
+    const [subjectId, categoryId, ...rest] = parts;
+    const itemId = rest.join("/");
+    const found = findContentItem(subjectId, categoryId, itemId);
+    const title = found
+      ? `${found.subjectName} > ${found.categoryName} > ${found.parentTitle ? found.parentTitle + " > " : ""}${found.item.title}`
+      : `${subjectId} > ${categoryId} > ${itemId}`;
+    return { subjectId, categoryId, itemId, title, found: !!found };
+  }
+
+  // 向下兼容：纯小节 ID（如 "1.4"），默认当前科目 detail
+  const found = findContentItem(fallbackSubjectId, "detail", pathOrId);
+  const title = found
+    ? `${found.subjectName} > ${found.categoryName} > ${found.parentTitle ? found.parentTitle + " > " : ""}${found.item.title}`
+    : `${fallbackSubjectId} > detail > ${pathOrId}`;
+  return { subjectId: fallbackSubjectId, categoryId: "detail", itemId: pathOrId, title, found: !!found };
+}
+
+/** 纯文本化 markdown（去掉指令与符号），用于检索/喂给 AI。 */
+export function stripMarkdown(md: string): string {
+  return md
+    .replace(/:::[a-zA-Z]+(\{[^}]*\})?/g, " ")
+    .replace(/:::/g, " ")
+    .replace(/[#>*_`~]/g, " ")
+    .replace(/\$\$[\s\S]*?\$\$/g, (m) => " " + m.replace(/\$/g, "") + " ")
+    .replace(/\n{2,}/g, "\n")
+    .trim();
+}
+
+/** 多科全分类搜索结果。 */
+export interface MultiSearchHit {
+  subjectId: string;
+  subjectName: string;
+  categoryId: string;
+  itemId: string;
+  title: string;
+  snippet: string;
+  /** 可直接传给 getSection 的复合路径 */
+  path: string;
+}
+
+/**
+ * 在全部科目的 detail/recording/summary 中做关键词检索（子串匹配 fallback）。
+ * detail 命中优先排在前面。多关键词按空格拆分做 OR 匹配。
+ */
+function substringSearch(query: string, limit = 8): MultiSearchHit[] {
+  const q = query.trim();
+  if (!q) return [];
+  const keywords = q.split(/\s+/).filter(Boolean);
+  if (!keywords.length) return [];
+
+  const detailHits: MultiSearchHit[] = [];
+  const otherHits: MultiSearchHit[] = [];
+
+  for (const subject of contentTree.subjects) {
+    if (subject.id === "other") continue;
+    for (const cat of subject.categories) {
+      if (!SEARCHABLE_CATEGORIES.has(cat.id)) continue;
+      const isDetail = cat.id === "detail";
+
+      const leafItems: { item: ContentItem; parentTitle?: string }[] = [];
+      for (const item of cat.items) {
+        if (item.children?.length) {
+          for (const child of item.children) {
+            leafItems.push({ item: child, parentTitle: item.title });
+          }
+        } else {
+          leafItems.push({ item });
+        }
+      }
+
+      for (const { item, parentTitle } of leafItems) {
+        if (item.status === "stub") continue;
+        const md = readContentMarkdown(subject.id, cat.id, item.id);
+        if (!md) continue;
+        const text = stripMarkdown(md);
+
+        let matchIdx = -1;
+        for (const kw of keywords) {
+          const idx = text.indexOf(kw);
+          if (idx >= 0) { matchIdx = idx; break; }
+        }
+        if (matchIdx < 0) continue;
+
+        const start = Math.max(0, matchIdx - 80);
+        const end = Math.min(text.length, matchIdx + 120);
+        const titleParts = [subject.name, cat.name];
+        if (parentTitle) titleParts.push(parentTitle);
+        titleParts.push(`${item.id} ${item.title}`);
+
+        const hit: MultiSearchHit = {
+          subjectId: subject.id,
+          subjectName: subject.name,
+          categoryId: cat.id,
+          itemId: item.id,
+          title: titleParts.join(" > "),
+          snippet: (start > 0 ? "…" : "") + text.slice(start, end) + (end < text.length ? "…" : ""),
+          path: `${subject.id}/${cat.id}/${item.id}`,
+        };
+
+        if (isDetail) {
+          detailHits.push(hit);
+        } else {
+          otherHits.push(hit);
+        }
+
+        if (detailHits.length + otherHits.length >= limit * 2) break;
+      }
+      if (detailHits.length + otherHits.length >= limit * 2) break;
+    }
+  }
+
+  return [...detailHits, ...otherHits].slice(0, limit);
+}
+
+/**
+ * 在全部科目中做语义+关键词混合检索。
+ * 索引存在时使用 hybridSearch（BM25 + 向量 + rerank），否则 fallback 到子串匹配。
+ */
+export async function searchAllContent(query: string, limit = 8): Promise<MultiSearchHit[]> {
+  const q = query.trim();
+  if (!q) return [];
+
+  try {
+    const { hybridSearch } = await import('@/lib/ai/search/hybridSearch');
+    const results = await hybridSearch(q, limit);
+    if (results.length > 0) return results;
+  } catch {
+    // 索引不存在或 API 不可用，fallback
+  }
+
+  return substringSearch(q, limit);
+}
+
+// ─────────────────────────────────────────────────────────────
+// @deprecated — 旧版函数，仅保留给历史消费方。新代码请用上面的多科版本。
+// ─────────────────────────────────────────────────────────────
+
+/** @deprecated 仅覆盖概率论。请使用 getMultiSubjectOutline()。 */
 export function getOutlineText(): string {
   const lines: string[] = [`课程：${manifest.course}`];
   for (const ch of manifest.chapters) {
@@ -231,17 +457,6 @@ export function getOutlineText(): string {
   return lines.join("\n");
 }
 
-/** 纯文本化 markdown（去掉指令与符号），用于检索/喂给 AI。 */
-function stripMarkdown(md: string): string {
-  return md
-    .replace(/:::[a-zA-Z]+(\{[^}]*\})?/g, " ")
-    .replace(/:::/g, " ")
-    .replace(/[#>*_`~]/g, " ")
-    .replace(/\$\$[\s\S]*?\$\$/g, (m) => " " + m.replace(/\$/g, "") + " ")
-    .replace(/\n{2,}/g, "\n")
-    .trim();
-}
-
 export interface SearchHit {
   chapterId: string;
   sectionId: string;
@@ -249,7 +464,7 @@ export interface SearchHit {
   snippet: string;
 }
 
-/** 在全书笔记中做朴素子串检索，返回带上下文的命中片段。 */
+/** @deprecated 仅覆盖概率论。请使用 searchAllContent()。 */
 export function searchNotes(query: string, limit = 6): SearchHit[] {
   const q = query.trim();
   if (!q) return [];

@@ -246,7 +246,10 @@ export const contentTree: ContentTree = {
   ],
 };
 
-// ── 兼容导出：保留原有 manifest 结构，指向概率论详解分类数据 ──
+/**
+ * @deprecated 仅覆盖概率论 detail 分类。新代码应直接使用 contentTree。
+ * 保留此导出供页面路由等旧消费方兼容。
+ */
 export const manifest = {
   course: '概率论与数理统计',
   chapters: contentTree.subjects[0].categories[1].items.map((ch) => ({

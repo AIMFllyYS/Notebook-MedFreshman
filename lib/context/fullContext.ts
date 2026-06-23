@@ -3,11 +3,9 @@ import { getMaxTokens } from './types';
 import type { ChatContext } from '@/lib/types/chat';
 import { contentTree } from '@/content/manifest';
 import { getContentItem } from '@/content';
-import { readSectionMarkdown } from '@/lib/content/loader';
+import { readContentMarkdown } from '@/lib/content/loader';
 import type { SubjectId, CategoryId } from '@/lib/types/content';
 import { createHash } from 'node:crypto';
-import fs from 'node:fs';
-import path from 'node:path';
 
 // ── Token 估算 ──
 
@@ -16,10 +14,8 @@ export function estimateTokens(text: string): number {
   for (const char of text) {
     const code = char.codePointAt(0)!;
     if (code > 0x4dff && code < 0x9fff) {
-      // CJK 统一汉字：1 字 ≈ 2 token
       tokens += 2;
     } else if (/[a-zA-Z]/.test(char)) {
-      // 英文字母累积为词后估算，此处简化：0.325/字母（≈1.3/词 ÷ 4字母/词）
       tokens += 0.325;
     } else if (/\s/.test(char)) {
       tokens += 0.2;
@@ -30,35 +26,12 @@ export function estimateTokens(text: string): number {
   return Math.ceil(tokens);
 }
 
-// ── 内容加载 ──
+// ── 文件夹树摘要（模块级缓存：课程目录运行时不变） ──
 
-function loadPageContent(chatContext: ChatContext): string | null {
-  const { subjectId, categoryId, itemId } = chatContext;
-
-  if (subjectId === 'probability' && categoryId === 'detail') {
-    const chapterMatch = itemId.match(/^(\d+)\./);
-    if (chapterMatch) {
-      const chapterNum = parseInt(chapterMatch[1]);
-      const chapterId = `ch${String(chapterNum).padStart(2, '0')}`;
-      return readSectionMarkdown(chapterId, itemId);
-    }
-    return readSectionMarkdown(itemId, 'index');
-  }
-
-  // 其他科目/分类：尝试通用路径
-  try {
-    const filePath = path.join(
-      process.cwd(), 'content', subjectId, categoryId, `${itemId}.md`,
-    );
-    return fs.readFileSync(filePath, 'utf8') ?? null;
-  } catch {
-    return null;
-  }
-}
-
-// ── 文件夹树摘要 ──
+let _treeSummaryCache: string | null = null;
 
 function buildTreeSummary(): string {
+  if (_treeSummaryCache) return _treeSummaryCache;
   const lines: string[] = [];
   for (const subject of contentTree.subjects) {
     lines.push(`[${subject.name}]`);
@@ -67,15 +40,18 @@ function buildTreeSummary(): string {
       lines.push(`  ${cat.name}: ${itemTitles || '(空)'}`);
     }
   }
-  return lines.join('\n');
+  _treeSummaryCache = lines.join('\n');
+  return _treeSummaryCache;
 }
 
-// ── 缓存 ──
+// ── 模块级缓存（跨请求持久化，解决 per-request new 实例的缓存失效问题） ──
 
 interface CacheEntry {
   pageId: string;
   contentHash: string;
 }
+
+let _contextCache: CacheEntry | null = null;
 
 function hashContent(text: string): string {
   return createHash('md5').update(text).digest('hex');
@@ -85,7 +61,6 @@ function hashContent(text: string): string {
 
 export class FullContextManager implements ContextManager {
   mode = 'full' as const;
-  private cache: CacheEntry | null = null;
   private model: string;
 
   constructor(model = 'deepseek-chat') {
@@ -103,11 +78,11 @@ export class FullContextManager implements ContextManager {
 
     const pageId = `${chatContext.subjectId}/${chatContext.categoryId}/${chatContext.itemId}`;
     const contentHash = hashContent(fullContext);
-    const cacheHit = this.cache !== null
-      && this.cache.pageId === pageId
-      && this.cache.contentHash === contentHash;
+    const cacheHit = _contextCache !== null
+      && _contextCache.pageId === pageId
+      && _contextCache.contentHash === contentHash;
 
-    this.cache = { pageId, contentHash };
+    _contextCache = { pageId, contentHash };
 
     const sources = this.collectSources(chatContext);
 
@@ -124,14 +99,13 @@ export class FullContextManager implements ContextManager {
   async getFullContext(chatContext: ChatContext): Promise<string> {
     const parts: string[] = [];
 
-    // 系统提示词
-    parts.push('你是一个课程学习助手，根据以下课程内容回答学生的问题。');
-
-    // 文件夹树结构摘要
     parts.push('\n## 课程目录\n' + buildTreeSummary());
 
-    // 当前页面内容
-    const pageContent = loadPageContent(chatContext);
+    const pageContent = readContentMarkdown(
+      chatContext.subjectId,
+      chatContext.categoryId,
+      chatContext.itemId,
+    );
     if (pageContent) {
       const item = getContentItem(
         chatContext.subjectId as SubjectId,

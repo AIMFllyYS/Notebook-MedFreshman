@@ -250,7 +250,17 @@ export async function POST(req: NextRequest) {
             });
             for (const c of calls) {
               let parsed: Record<string, unknown> = {};
-              try { parsed = c.args ? JSON.parse(c.args) : {}; } catch { parsed = {}; }
+              try {
+                parsed = c.args ? JSON.parse(c.args) : {};
+              } catch {
+                send({ type: "tool", id: c.id, name: c.name, args: {}, status: "result", meta: {} });
+                convo.push({
+                  role: "tool",
+                  tool_call_id: c.id,
+                  content: `工具 ${c.name} 的参数格式错误（JSON 解析失败），请检查参数后重试。原始参数：${(c.args || "").slice(0, 200)}`,
+                });
+                continue;
+              }
 
               // renderInteractive 的产物 id 随 tool call 下发，前端卡片拿到 title/prompt 后
               // 独立请求 /api/artifact 流式生成 HTML，不再阻塞主聊天 SSE。
