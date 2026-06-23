@@ -29,8 +29,7 @@
         "content/maogai/**/*.md",
         "content/modern-history/**/*.md",
         "content/other/**/*.md",
-        "content/**/*.html",
-        "lib/ai/prompts/**"
+        "content/**/*.html"
       ],
       "maxDuration": 120
     }

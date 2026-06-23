@@ -24,7 +24,6 @@ const TARGET_BASE = join(ROOT, ".edgeone", "cloud-functions", "ssr-node");
 
 const INCLUDE_DIRS = [
   "content",
-  "lib/ai/prompts",
 ];
 
 const EXTENSIONS = new Set([".md", ".json", ".html", ".ts", ".tsx", ".js", ".mjs"]);
