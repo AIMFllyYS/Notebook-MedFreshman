@@ -3,13 +3,21 @@
   "installCommand": "pnpm install",
   "outputDirectory": ".next",
   "nodeVersion": "22.17.1",
+  "headers": [
+    {
+      "source": "/api/chat",
+      "headers": [
+        { "key": "X-Accel-Buffering", "value": "no" }
+      ]
+    }
+  ],
   "cloudFunctions": {
     "nodejs": {
       "includeFiles": [
         "content/**",
         "lib/ai/prompts/**"
       ],
-      "maxDuration": 60
+      "maxDuration": 120
     }
   }
 }
