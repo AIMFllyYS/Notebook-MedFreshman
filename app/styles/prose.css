@@ -8,6 +8,20 @@
   max-width: 50rem;
   margin: 0 auto;
 }
+
+/* 离屏跳过渲染：长笔记（最大 ~84KB 逐字稿）里数量多、单块重的静态区块，
+   离屏时跳过 layout/paint，显著降低低配机的常驻 paint 与内存压力。
+   contain-intrinsic-size 的 auto 关键字会记忆首次渲染后的真实尺寸，避免回滚时滚动跳动。
+   仅作用于静态重块，不含可交互的 SVG 画布（避免测量/交互异常）；
+   .katex-display 已在 globals.css 施加 contain，这里不重复。 */
+.prose-notes .callout,
+.prose-notes .derivation,
+.prose-notes .figure-directive,
+.prose-notes table,
+.prose-notes pre {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 200px;
+}
 .prose-notes h1,
 .prose-notes h2,
 .prose-notes h3,

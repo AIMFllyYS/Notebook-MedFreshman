@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useStore } from "@/lib/store";
 import { getVideosForSection } from "@/content/media";
 import { videoPoster } from "@/lib/content/poster";
-import { videoScripts } from "@/content/media.scripts.generated";
+import { videoScriptIds } from "@/content/media.scripts.ids.generated";
 
 const InlinePlayer = dynamic(() => import("@/components/video/InlinePlayer"), {
   ssr: false,
@@ -28,6 +28,9 @@ export default function VideoTab() {
 
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [expandedScripts, setExpandedScripts] = useState<Record<string, boolean>>({});
+  // 讲稿正文按需加载：首次展开任意讲稿时才 dynamic import ~388KB 的本体，不进首屏堆。
+  const [scripts, setScripts] = useState<Record<string, string> | null>(null);
+  const scriptIdSet = useMemo(() => new Set(videoScriptIds), []);
   const startTimeRef = useRef<number | undefined>(undefined);
 
   // InlinePlayer 挂载后清除 pipReturnTime，避免在渲染过程中调用 closePip
@@ -38,8 +41,14 @@ export default function VideoTab() {
     }
   }, [pipReturnTime, playingId, closePip]);
 
-  const toggleScript = (id: string) =>
+  const toggleScript = async (id: string) => {
+    // 首次展开时按需加载讲稿本体（独立 chunk），加载完成后再展开。
+    if (!scripts) {
+      const mod = await import("@/content/media.scripts.generated");
+      setScripts(mod.videoScripts);
+    }
     setExpandedScripts((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const handlePip = (v: (typeof videos)[number], currentTime: number) => {
     setPlayingId(null);
@@ -69,8 +78,8 @@ export default function VideoTab() {
       ) : (
         <div className="flex flex-col gap-3">
           {videos.map((v) => {
-            const script = videoScripts[v.id];
-            const hasScript = Boolean(script);
+            const hasScript = scriptIdSet.has(v.id);
+            const script = scripts?.[v.id];
             const isExpanded = expandedScripts[v.id];
             const isPlaying = playingId === v.id;
             return (
@@ -150,7 +159,11 @@ export default function VideoTab() {
                     {isExpanded && (
                       <div className="border-t border-[var(--line)] bg-[var(--bg-app)] px-3 py-3">
                         <div className="prose-notes max-w-none">
-                          <NoteRenderer content={script!} />
+                          {script ? (
+                            <NoteRenderer content={script} />
+                          ) : (
+                            <div className="py-4 text-center text-[12px] text-[var(--ink-faint)]">加载讲稿…</div>
+                          )}
                         </div>
                       </div>
                     )}

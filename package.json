@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "check:encoding": "node scripts/check-content-encoding.mjs",
-    "prebuild": "node scripts/check-content-encoding.mjs",
+    "gen:script-ids": "node scripts/gen-script-ids.mjs",
+    "prebuild": "node scripts/check-content-encoding.mjs && node scripts/gen-script-ids.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
