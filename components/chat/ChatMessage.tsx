@@ -41,8 +41,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
 
       <div className="chat-message-content">
         {isUser ? (
-          <div className="chat-bubble-user">
-            {message.content}
+          <div className="chat-bubble-user chat-prose">
+            <MessageContent content={message.content} enableVisualizations={false} preserveLineBreaks />
           </div>
         ) : (
           <>

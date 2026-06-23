@@ -6,6 +6,7 @@ import { useArtifacts } from '@/lib/hooks/useArtifacts';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
+import { MessageContent } from '@/components/chat/MessageContent';
 
 type ArtifactApiEvent =
   | { type: 'ping'; t?: number }
@@ -40,6 +41,9 @@ export default function ArtifactCard({
   const [showCode, setShowCode] = useState(autoStart);
   const preRef = useRef<HTMLPreElement>(null);
   const startedRef = useRef(false);
+  // 捕获"卡片随正在流式的消息首次出现"这一意图：仅此时自动生成。用 ref 锁定 autoStart 的首帧值，
+  // 这样主聊天结束 isStreaming→false 导致 autoStart 翻转时，不会触发 effect 重跑/中断生成。
+  const autoGenRef = useRef(autoStart);
 
   const title = titleProp || art?.title || '交互演示';
   const html = streamHtml || art?.html || '';
@@ -54,14 +58,23 @@ export default function ArtifactCard({
     if (showCode && preRef.current) preRef.current.scrollTop = preRef.current.scrollHeight;
   }, [html, showCode]);
 
+  // artifact 一次性生成：startedRef 保证只发一次请求。
+  // 关键：不在 cleanup 里 abort —— 否则 React StrictMode 的 setup→cleanup→setup 会掐断首个
+  // 请求且因 startedRef 已置位而不再重发（dev 下「永远生成不出来」的真凶）；主聊天结束
+  // (autoStart 翻转) 也会误中断尚在生成的演示。请求时长由服务端滑动超时(90s)+maxDuration 收口。
   useEffect(() => {
-    if (!autoStart || startedRef.current || art || !prompt) return;
-    const abortController = new AbortController();
+    if (startedRef.current) return;
+    if (!autoGenRef.current) return; // 历史消息里的旧卡片：不自动重生成
+    if (art || !prompt) return;      // 已有产物 / prompt 尚未就绪
     startedRef.current = true;
+    // 一次性进入流式态：本 effect 的职责就是把生成请求这一外部异步系统挂起来，
+    // 同步置初始 UI 态是必要的且只发生一次（startedRef 守卫），非级联渲染反模式。
+    /* eslint-disable react-hooks/set-state-in-effect */
     setStatus('streaming');
     setShowCode(true);
     setError(null);
     setStreamHtml('');
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     const settings = useSettings.getState();
     const isCustom = settings.selectedModelId === CUSTOM_MODEL_ID;
@@ -80,7 +93,6 @@ export default function ArtifactCard({
               ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: settings.customModelId }
               : undefined,
           }),
-          signal: abortController.signal,
         });
 
         if (!response.ok) {
@@ -128,9 +140,7 @@ export default function ArtifactCard({
         setError(err instanceof Error ? err.message : '交互演示生成失败');
       }
     })();
-
-    return () => abortController.abort();
-  }, [artifactId, art, autoStart, prompt, saveDone, title]);
+  }, [artifactId, art, prompt, saveDone, title]);
 
   const openExternal = () => {
     if (!html) return;
@@ -183,10 +193,10 @@ export default function ArtifactCard({
         )}
       </div>
 
-      {/* 生成依据（prompt 参数展示） */}
+      {/* 生成依据（prompt 参数展示）：复用全量富文本渲染（markdown + 公式 + 软换行） */}
       {prompt && (streaming || preparing || done) && (
         <div
-          className="px-3 py-1.5 text-[11px]"
+          className="chat-prose px-3 py-1.5 text-[11px]"
           style={{
             color: 'var(--md-sys-color-on-surface-variant)',
             background: 'color-mix(in srgb, var(--md-sys-color-primary) 6%, transparent)',
@@ -194,7 +204,7 @@ export default function ArtifactCard({
           }}
         >
           <span style={{ fontWeight: 600 }}>生成依据：</span>
-          {prompt}
+          <MessageContent content={prompt} enableVisualizations={false} preserveLineBreaks />
         </div>
       )}
 

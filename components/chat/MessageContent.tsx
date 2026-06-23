@@ -3,6 +3,7 @@
 import React, { useMemo, Children, isValidElement } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { sharedRemarkPlugins, sharedRehypePlugins } from '@/lib/markdown/plugins';
+import remarkSoftBreaks from '@/lib/markdown/remarkSoftBreaks';
 import { directiveComponents } from '@/lib/markdown/directiveComponents';
 import { normalizeDirectiveLabels } from '@/lib/markdown/normalizeDirectiveLabels';
 import 'katex/dist/katex.min.css';
@@ -18,6 +19,8 @@ interface MessageContentProps {
   content: string;
   enableVisualizations?: boolean;
   onFollowUpSelect?: (question: string) => void;
+  /** 聊天体文本（用户输入/思考过程/生成依据）启用软换行：段内单 \n 渲染为 <br>。 */
+  preserveLineBreaks?: boolean;
 }
 
 /**
@@ -56,10 +59,10 @@ const mdComponents = {
 };
 
 /* ---- Render a single parsed block ---- */
-const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boolean, onFollowUpSelect?: (question: string) => void) => {
+const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boolean, onFollowUpSelect?: (question: string) => void, remarkPlugins: typeof sharedRemarkPlugins = sharedRemarkPlugins) => {
   if (block.type === 'markdown') {
     return (
-      <ReactMarkdown key={idx} remarkPlugins={sharedRemarkPlugins} rehypePlugins={sharedRehypePlugins} components={mdComponents}>
+      <ReactMarkdown key={idx} remarkPlugins={remarkPlugins} rehypePlugins={sharedRehypePlugins} components={mdComponents}>
         {block.content || ''}
       </ReactMarkdown>
     );
@@ -81,7 +84,7 @@ const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boole
   // Answer / Thinking tags rendered as markdown
   if (tagName === 'Answer' || tagName === 'Thinking') {
     return (
-      <ReactMarkdown key={idx} remarkPlugins={sharedRemarkPlugins} rehypePlugins={sharedRehypePlugins} components={mdComponents}>
+      <ReactMarkdown key={idx} remarkPlugins={remarkPlugins} rehypePlugins={sharedRehypePlugins} components={mdComponents}>
         {childrenText || ''}
       </ReactMarkdown>
     );
@@ -123,6 +126,7 @@ export const MessageContent: React.FC<MessageContentProps> = React.memo(({
   content,
   enableVisualizations = true,
   onFollowUpSelect,
+  preserveLineBreaks = false,
 }) => {
   const { followUps, blocks } = useMemo(() => {
     const followUps = extractFollowUpQuestions(content);
@@ -130,10 +134,15 @@ export const MessageContent: React.FC<MessageContentProps> = React.memo(({
     return { followUps, blocks: parseXmlTags(cleanedContent) };
   }, [content]);
 
+  const remarkPlugins = useMemo(
+    () => (preserveLineBreaks ? [...sharedRemarkPlugins, remarkSoftBreaks] : sharedRemarkPlugins),
+    [preserveLineBreaks],
+  );
+
   return (
     <>
       {blocks.map((block, idx) =>
-        renderParsedBlock(block, idx, enableVisualizations, onFollowUpSelect)
+        renderParsedBlock(block, idx, enableVisualizations, onFollowUpSelect, remarkPlugins)
       )}
       {followUps.length > 0 && onFollowUpSelect && (
         <FollowUpQuestions questions={followUps} onSelect={onFollowUpSelect} />

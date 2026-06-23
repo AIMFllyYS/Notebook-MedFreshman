@@ -698,7 +698,11 @@ export default function QuickExplainWindow() {
               }}
             >
               {msg.role === "user" ? (
-                msg.content
+                <MessageContent
+                  content={msg.content}
+                  enableVisualizations={false}
+                  preserveLineBreaks
+                />
               ) : (
                 <MessageContent
                   content={msg.content}

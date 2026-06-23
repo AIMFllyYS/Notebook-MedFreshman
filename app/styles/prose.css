@@ -702,7 +702,7 @@
   gap: 8px;
 }
 .chat-bubble-user {
-  white-space: pre-wrap;
+  /* 正文经 MessageContent(markdown + 软换行) 渲染，换行由 <br>/<p> 承载，无需 pre-wrap。 */
   padding: 8px 12px;
   background: var(--md-sys-color-primary-container);
   border-radius: 12px;
@@ -711,6 +711,9 @@
   line-height: 1.5;
   box-shadow: var(--md-sys-elevation-level1);
 }
+/* 用户气泡内的 markdown：收紧首尾外边距，避免气泡上下出现空白。 */
+.chat-bubble-user.chat-prose > :first-child { margin-top: 0; }
+.chat-bubble-user.chat-prose > :last-child { margin-bottom: 0; }
 .chat-bubble-assistant {
   background: var(--md-sys-color-surface-container);
   padding: 14px 14px 12px;

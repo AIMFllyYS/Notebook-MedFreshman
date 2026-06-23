@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrainCircuit, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
 import AnimatedCollapse from '@/components/ui/AnimatedCollapse';
+import { MessageContent } from '@/components/chat/MessageContent';
 
 interface ReasoningBlockProps {
   content: string;
@@ -83,27 +84,20 @@ export const ReasoningBlock: React.FC<ReasoningBlockProps> = ({ content, isStrea
       {/* Expanded Content */}
       <AnimatedCollapse isOpen={isExpanded}>
         <div
+          className="chat-prose"
           style={{
-            padding: '0 12px 12px 12px',
+            padding: '8px 12px 12px 12px',
             borderTop: '1px solid var(--md-sys-color-outline-variant)',
+            fontSize: '12px',
+            lineHeight: '1.6',
+            color: 'var(--md-sys-color-on-surface-variant)',
+            maxHeight: '300px',
+            overflowY: 'auto',
+            wordBreak: 'break-word',
           }}
         >
-          <pre
-            style={{
-              margin: 0,
-              padding: '8px 0',
-              fontSize: '12px',
-              lineHeight: '1.6',
-              color: 'var(--md-sys-color-on-surface-variant)',
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              whiteSpace: 'pre-wrap',
-              wordBreak: 'break-word',
-              maxHeight: '300px',
-              overflowY: 'auto',
-            }}
-          >
-            {content}
-          </pre>
+          {/* 思考过程复用全量富文本渲染（markdown + 公式），软换行保留模型分行 */}
+          <MessageContent content={content} enableVisualizations={false} preserveLineBreaks />
         </div>
       </AnimatedCollapse>
 
