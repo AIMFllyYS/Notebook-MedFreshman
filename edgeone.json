@@ -20,8 +20,15 @@
   "cloudFunctions": {
     "nodejs": {
       "includeFiles": [
-        "content/**/*.md",
-        "content/**/*.json",
+        "content/chapters/**/*.md",
+        "content/examples/**/*.md",
+        "content/quiz/**/*.json",
+        "content/probability/**/*.md",
+        "content/chemistry/**/*.md",
+        "content/physics/**/*.md",
+        "content/maogai/**/*.md",
+        "content/modern-history/**/*.md",
+        "content/other/**/*.md",
         "content/**/*.html",
         "lib/ai/prompts/**"
       ],
