@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
+import { Clock, AlertTriangle } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { X, Pin } from 'lucide-react';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
@@ -17,6 +18,16 @@ function fmtCost(yuan: number): string {
   if (yuan < 0.0001) return '¥0';
   if (yuan < 0.01) return `¥${yuan.toFixed(4)}`;
   return `¥${yuan.toFixed(2)}`;
+}
+
+function fmtDuration(sec: number): string {
+  if (sec <= 0) return '已过期';
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = Math.floor(sec % 60);
+  if (h > 0) return `${h}h ${m}m`;
+  if (m > 0) return `${m}m ${s}s`;
+  return `${s}s`;
 }
 
 function calcCost(
@@ -41,10 +52,30 @@ export default function TokenDashboard() {
   const lastTurn = useTokenTracker((s) => s.lastTurn);
   const ctxTokens = useTokenTracker((s) => s.currentContextTokens);
   const ctxLimit = useTokenTracker((s) => s.modelContextLimit);
+  const lastRequestTime = useTokenTracker((s) => s.lastRequestTime);
 
   const selectedModelId = useSettings((s) => s.selectedModelId);
   const modelInfo = getModelInfo(selectedModelId);
   const pricing = modelInfo?.pricing;
+  const cacheTtlSec = modelInfo?.cacheTtlSec;
+
+  // ── Prefix cache 倒计时 ──
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    if (!open || !lastRequestTime || !cacheTtlSec) return;
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, [open, lastRequestTime, cacheTtlSec]);
+
+  const cacheElapsed = lastRequestTime && cacheTtlSec ? (now - lastRequestTime) / 1000 : 0;
+  const cacheRemaining = lastRequestTime && cacheTtlSec ? Math.max(0, cacheTtlSec - cacheElapsed) : null;
+  const cacheExpired = cacheRemaining !== null && cacheRemaining <= 0;
+  const cacheRatio = cacheTtlSec && cacheRemaining !== null ? cacheRemaining / cacheTtlSec : 0;
+  const cacheBarColor =
+    cacheExpired ? 'var(--md-sys-color-error)' :
+    cacheRatio < 0.2 ? 'var(--md-sys-color-error)' :
+    cacheRatio < 0.5 ? 'var(--md-sys-color-tertiary)' :
+    'var(--md-sys-color-primary)';
 
   const ratio = ctxLimit > 0 ? ctxTokens / ctxLimit : 0;
   const pctText = `${Math.min(Math.round(ratio * 100), 999)}%`;
@@ -192,6 +223,53 @@ export default function TokenDashboard() {
               <Row label="缓存命中" value={fmtTokens(lastTurn.cachedTokens)} />
               {pricing && <Row label="本轮费用" value={fmtCost(turnCost)} accent />}
             </div>
+
+            {/* Prefix cache countdown */}
+            {cacheTtlSec && lastRequestTime && (
+              <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+                  <Clock size={11} style={{ color: 'var(--ink-faint)' }} />
+                  <span style={{ fontWeight: 600, color: 'var(--ink)' }}>缓存倒计时</span>
+                  <span style={{ fontSize: 9, color: 'var(--ink-faint)', fontWeight: 400 }}>估算</span>
+                </div>
+                {cacheExpired ? (
+                  <div style={{
+                    display: 'flex', alignItems: 'flex-start', gap: 4,
+                    padding: '4px 6px', borderRadius: 4,
+                    background: 'color-mix(in srgb, var(--md-sys-color-error) 12%, transparent)',
+                    color: 'var(--md-sys-color-error)', fontSize: 10, lineHeight: 1.4,
+                  }}>
+                    <AlertTriangle size={12} style={{ flexShrink: 0, marginTop: 1 }} />
+                    <span>
+                      缓存可能已过期，下次请求将按全价计费
+                      {pricing && lastTurn.cachedTokens > 0 && (
+                        <strong>（约 {fmtCost(calcCost(lastTurn.promptTokens, lastTurn.completionTokens, 0, pricing) - turnCost)} 更贵）</strong>
+                      )}
+                    </span>
+                  </div>
+                ) : (
+                  <>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
+                      <span>剩余时间</span>
+                      <span style={{ color: cacheBarColor, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+                        {fmtDuration(cacheRemaining!)}
+                      </span>
+                    </div>
+                    <div style={{ height: 5, borderRadius: 2.5, background: 'var(--bg-muted)', overflow: 'hidden' }}>
+                      <div style={{
+                        width: `${Math.max(cacheRatio * 100, 0)}%`,
+                        height: '100%', borderRadius: 2.5,
+                        background: cacheBarColor,
+                        transition: 'width 1s linear, background 0.3s ease',
+                      }} />
+                    </div>
+                    <div style={{ fontSize: 9, color: 'var(--ink-faint)', marginTop: 3, lineHeight: 1.3 }}>
+                      过期后输入价格将从 {pricing ? `¥${pricing.cachedInput}` : '—'} → {pricing ? `¥${pricing.input}` : '—'} /百万token
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
 
             {/* Session total */}
             <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8 }}>

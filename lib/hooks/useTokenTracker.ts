@@ -16,6 +16,8 @@ export interface TokenTrackerState {
   currentContextTokens: number;
   /** Model context limit in tokens (derived from ModelInfo.contextK). */
   modelContextLimit: number;
+  /** 最后一次收到 usage 事件的时间戳（Date.now()），用于 prefix cache 倒计时。 */
+  lastRequestTime: number | null;
 
   addUsage(usage: Partial<TokenUsage>): void;
   setCurrentContext(tokens: number, limit: number): void;
@@ -27,6 +29,7 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
   lastTurn: { ...EMPTY_USAGE },
   currentContextTokens: 0,
   modelContextLimit: 128_000,
+  lastRequestTime: null,
 
   addUsage(usage) {
     set((s) => {
@@ -38,6 +41,7 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
       };
       return {
         lastTurn: turn,
+        lastRequestTime: Date.now(),
         sessionTotal: {
           promptTokens: s.sessionTotal.promptTokens + turn.promptTokens,
           completionTokens: s.sessionTotal.completionTokens + turn.completionTokens,
@@ -57,6 +61,7 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
       sessionTotal: { ...EMPTY_USAGE },
       lastTurn: { ...EMPTY_USAGE },
       currentContextTokens: 0,
+      lastRequestTime: null,
     });
   },
 }));
