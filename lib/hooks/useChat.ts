@@ -310,13 +310,45 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
           // 流结束后提取 FollowUp 追问
           if (contentBuf) {
             try {
+              let questions: string[] = [];
+              // 优先用 parseXmlTags（处理大小写归一化）
               const blocks = parseXmlTags(contentBuf);
               const followUpBlock = blocks.find((b) => b.tagName === 'FollowUp');
               if (followUpBlock?.childrenText) {
-                const questions = followUpBlock.childrenText
+                questions = followUpBlock.childrenText
                   .split('|')
                   .map((q: string) => q.trim())
                   .filter(Boolean);
+              }
+              // 兜底：正则直接提取（parseXmlTags 可能因标签格式偏差未匹配）
+              if (questions.length === 0) {
+                const m = contentBuf.match(/<FollowUp>([\s\S]*?)<\/FollowUp>/i);
+                if (m) {
+                  questions = m[1].split('|').map((q) => q.trim()).filter(Boolean);
+                }
+              }
+              // 前端兜底：服务端和模型都没生成 FollowUp 时，根据用户提问生成通用追问
+              if (questions.length === 0) {
+                const lastUser = requestMessages.filter((m) => m.role === 'user').pop();
+                const userQ = typeof lastUser?.content === 'string'
+                  ? lastUser.content
+                  : Array.isArray(lastUser?.content)
+                    ? lastUser!.content.filter((p) => p.type === 'text').map((p: any) => p.text).join(' ')
+                    : '';
+                // 根据用户提问类型生成针对性追问
+                if (/解释|什么是|讲讲|说说|为什么/.test(userQ)) {
+                  questions = ['能举个例子说明吗？', '这个知识点考试怎么考？', '给我出一道练习题检验一下'];
+                } else if (/出题|练习|做题|题目/.test(userQ)) {
+                  questions = ['直接给我答案和解析吧', '这道题的考点是什么？', '再出一道类似的题'];
+                } else if (/推导|证明|公式/.test(userQ)) {
+                  questions = ['每一步的依据是什么？', '有没有更简单的推导方法？', '这个公式怎么记忆？'];
+                } else if (/区别|比较|对比|异同/.test(userQ)) {
+                  questions = ['能举个具体例子对比吗？', '它们有什么联系？', '考试容易怎么考？'];
+                } else {
+                  questions = ['能再详细解释一下吗？', '这个知识点考试怎么考？', '给我出一道练习题'];
+                }
+              }
+              if (questions.length > 0) {
                 updateMessage(sessionId!, assistantId, {
                   followUpQuestions: questions,
                 });

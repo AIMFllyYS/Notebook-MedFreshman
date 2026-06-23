@@ -389,6 +389,66 @@ export async function POST(req: NextRequest) {
             continue;
           }
 
+          // FollowUp 兜底：模型未输出 <FollowUp> 标签时，调用轻量模型生成追问
+          if (contentBuf && !/<FollowUp>[\s\S]*?<\/FollowUp>/i.test(contentBuf)) {
+            try {
+              const lastUserMsg = messages.filter((m) => m.role === "user").pop();
+              const userText = typeof lastUserMsg?.content === "string"
+                ? lastUserMsg.content
+                : Array.isArray(lastUserMsg?.content)
+                  ? lastUserMsg!.content.filter((p): p is { type: "text"; text: string } => p.type === "text").map((p) => p.text).join(" ")
+                  : "";
+              const fuEndpoint = chatCompletionsUrl(provider.baseUrl);
+              const fuModel = provider.isCustom ? provider.model : ENV_MODEL_FLASH;
+              const fuCtrl = new AbortController();
+              const fuTimer = setTimeout(() => fuCtrl.abort(), 10000);
+              const fuRes = await fetch(fuEndpoint, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${provider.apiKey}`,
+                },
+                body: JSON.stringify({
+                  model: fuModel,
+                  messages: [
+                    {
+                      role: "system",
+                      content: "你是学习助教。根据学生的提问和助教的回答，生成3个学生可能想继续追问的问题。只输出问题本身，用|分隔，不要编号或额外说明。问题应简洁（15字以内）、有针对性、层层递进。",
+                    },
+                    {
+                      role: "user",
+                      content: `学生提问：${userText.slice(0, 500)}\n\n助教回答（摘要）：${contentBuf.slice(0, 1000)}\n\n请生成3个追问：`,
+                    },
+                  ],
+                  temperature: 0.5,
+                  max_tokens: 200,
+                  stream: false,
+                }),
+                signal: fuCtrl.signal,
+              });
+              clearTimeout(fuTimer);
+              if (fuRes.ok) {
+                const fuJson = await fuRes.json().catch(() => null);
+                const fuText = fuJson?.choices?.[0]?.message?.content?.trim();
+                if (fuText) {
+                  // 清理可能的编号前缀（1. 2. 3.）和换行，只保留 | 分隔的问题
+                  const cleaned = fuText
+                    .replace(/^\d+[.、)]\s*/gm, '')
+                    .replace(/\n+/g, '|')
+                    .replace(/\|+/g, '|')
+                    .trim();
+                  const fuDelta = `\n\n<FollowUp>${cleaned}</FollowUp>`;
+                  contentBuf += fuDelta;
+                  send({ type: "content", delta: fuDelta });
+                }
+              } else {
+                console.warn("[FollowUp fallback] API returned", fuRes.status);
+              }
+            } catch (fuErr) {
+              console.warn("[FollowUp fallback] failed:", (fuErr as Error)?.message);
+            }
+          }
+
           // 上下文分项统计（服务端按真实拼装精确计算）。msg[0]/msg[1] 的各组成单独累计，
           // 对话与工具结果（i≥2）按工具名归类，避免与 msg[0]/msg[1] 重复计数。
           const tk = (v: unknown) => estimateTokens(typeof v === "string" ? v : JSON.stringify(v ?? ""));

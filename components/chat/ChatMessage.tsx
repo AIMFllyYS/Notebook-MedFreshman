@@ -4,6 +4,7 @@ import React from 'react';
 import { User, Sparkles, BookOpen } from 'lucide-react';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { MessageContent } from '@/components/chat/MessageContent';
+import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import ArtifactCard from '@/components/chat/ArtifactCard';
 import ProcessingSteps from '@/components/chat/ProcessingSteps';
 
@@ -70,9 +71,14 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                 <MessageContent
                   content={message.content}
                   enableVisualizations={true}
-                  onFollowUpSelect={onFollowUpSelect}
+                  onFollowUpSelect={message.followUpQuestions?.length ? undefined : onFollowUpSelect}
                 />
               </div>
+            )}
+            {/* FollowUp 追问卡片：优先用 useChat.ts 流后解析的 followUpQuestions，
+                MessageContent 正则提取作为兜底（followUpQuestions 为空时才启用） */}
+            {!isStreaming && message.followUpQuestions && message.followUpQuestions.length > 0 && (
+              <FollowUpQuestions questions={message.followUpQuestions} onSelect={onFollowUpSelect} />
             )}
             {message.toolCalls
               ?.filter((tc) => tc.name === 'renderInteractive' && tc.artifactId)
