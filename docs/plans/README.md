@@ -45,6 +45,19 @@
 └────────────────────────────────────┘
 ```
 
+### 概率论录音+出题（可与并行组 1-3 同时执行）
+
+```
+┌────────────────────────────────────┐
+│           并行组 4                  │
+│                                    │
+│  Chat H (Sequential):              │
+│    09 → 10                         │
+│    (概率论录音纪要→录音出题)          │
+│                                    │
+└────────────────────────────────────┘
+```
+
 ## 文件索引
 
 | 文件 | 执行方式 | 内容 | 依赖 |
@@ -59,6 +72,8 @@
 | [06-physics-image-update.md](./06-physics-image-update.md) | 独立 Chat · 可并行 | 物理图片恢复 + `::plot` 函数图 | Image 基建完成后 |
 | [07-chemistry-image-update.md](./07-chemistry-image-update.md) | 独立 Chat · 可并行 | 化学图片恢复 + 分子SVG标注 | Image 基建完成后 |
 | [08-svg-content-authoring.md](./08-svg-content-authoring.md) | 独立 Chat · 依赖 06+07 | 跨学科 SVG 内容创作 | 06+07 完成后 |
+| [09-probability-recording.md](./09-probability-recording.md) | Chat H · 第1步 | 概率论录音清洗+纪要生成（15讲） | 无 |
+| [10-probability-recording-quiz.md](./10-probability-recording-quiz.md) | Chat H · 第2步 | 概率论录音随堂测试（理工科适配） | 09 完成后 |
 
 ## 全局规范
 
