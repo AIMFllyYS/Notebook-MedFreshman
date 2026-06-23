@@ -84,6 +84,48 @@ export function readContentMarkdown(
   }
 }
 
+/**
+ * 按 (subjectId, categoryId, itemId) 读取 HTML 内容；不存在返回 null。
+ * 路径：content/{subjectId}/{categoryId}/{itemId}.html
+ */
+export function readContentHtml(
+  subjectId: string,
+  categoryId: string,
+  itemId: string,
+): string | null {
+  const htmlPath = path.join(
+    process.cwd(),
+    "content",
+    subjectId,
+    categoryId,
+    `${itemId}.html`,
+  );
+  try {
+    return fs.readFileSync(htmlPath, "utf8");
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * 统一内容加载器：根据 renderType 分发到 readContentMarkdown 或 readContentHtml。
+ * component 类型不走文件系统，返回 null（由客户端 ComponentRenderer 处理）。
+ */
+export function readContent(
+  subjectId: string,
+  categoryId: string,
+  itemId: string,
+  renderType?: string,
+): string | null {
+  if (renderType === "html") {
+    return readContentHtml(subjectId, categoryId, itemId);
+  }
+  if (renderType === "component") {
+    return null;
+  }
+  return readContentMarkdown(subjectId, categoryId, itemId);
+}
+
 // ─────────────────────────────────────────────────────────────
 // 例题读取（与正文一致走服务端 SSR；/api/examples 仅作客户端回退/兼容）
 // ─────────────────────────────────────────────────────────────

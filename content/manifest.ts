@@ -220,10 +220,27 @@ export const contentTree: ContentTree = {
       name: '其他',
       icon: 'FolderOpen',
       categories: [
-        { id: 'textbook', name: '教材', items: [] },
-        { id: 'detail', name: '详解', items: [] },
-        { id: 'recording', name: '课上录音', items: [] },
-        { id: 'summary', name: '课堂纪要', items: [] },
+        {
+          id: 'misc',
+          name: '工具',
+          items: [
+            { id: 'exam-source', title: '历届真题资源包', type: 'document', status: 'done', renderType: 'html' },
+          ],
+        },
+        {
+          id: 'gongshi',
+          name: '公式',
+          items: [
+            { id: 'gongshi', title: '概率论公式', type: 'document', status: 'done', renderType: 'html' },
+          ],
+        },
+        {
+          id: 'guihua',
+          name: '规划',
+          items: [
+            { id: 'schedule', title: '复习计划', type: 'document', status: 'done', renderType: 'html' },
+          ],
+        },
       ],
     },
   ],
