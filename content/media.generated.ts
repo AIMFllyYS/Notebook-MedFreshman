@@ -1210,42 +1210,6 @@ export const generatedVideos: VideoEntry[] = [
   },
   {
     "subjectId": "probability",
-    "id": "ch14-KP06-切比雪夫不等式",
-    "chapterId": "ch05",
-    "sectionId": "5.1",
-    "title": "KP06 切比雪夫不等式",
-    "src": "/media/videos/ch05/KP06_切比雪夫不等式.mp4",
-    "description": "P(|X-μ|≥ε)≤σ²/ε²；普适性；保守性。"
-  },
-  {
-    "subjectId": "probability",
-    "id": "ch14-KP07-切比雪夫LLN",
-    "chapterId": "ch05",
-    "sectionId": "5.2",
-    "title": "KP07 切比雪夫大数定律",
-    "src": "/media/videos/ch05/KP07_切比雪夫大数定律.mp4",
-    "description": "X̄ₙ→ᵖμ；两两不相关+方差有界。"
-  },
-  {
-    "subjectId": "probability",
-    "id": "ch14-KP08-伯努利LLN",
-    "chapterId": "ch05",
-    "sectionId": "5.2",
-    "title": "KP08 伯努利大数定律",
-    "src": "/media/videos/ch05/KP08_伯努利大数定律.mp4",
-    "description": "频率fₙ/n→ᵖp；频率稳定性理论基础。"
-  },
-  {
-    "subjectId": "probability",
-    "id": "ch14-KP09-辛钦LLN",
-    "chapterId": "ch05",
-    "sectionId": "5.2",
-    "title": "KP09 辛钦大数定律",
-    "src": "/media/videos/ch05/KP09_辛钦大数定律.mp4",
-    "description": "iid+期望存在→X̄ₙ→ᵖμ；蒙特卡洛基础。"
-  },
-  {
-    "subjectId": "probability",
     "id": "ch16-KP01-总体样本",
     "chapterId": "ch06",
     "sectionId": "6.1",
@@ -1387,24 +1351,6 @@ export const generatedVideos: VideoEntry[] = [
     "title": "EX03 不相关但不独立",
     "src": "/media/videos/ch04/EX03_不相关但不独立.mp4",
     "description": "X~N(0,1),Y=X²反例验证。"
-  },
-  {
-    "subjectId": "probability",
-    "id": "ch14-EX04-切比雪夫应用",
-    "chapterId": "ch05",
-    "sectionId": "5.1",
-    "title": "EX04 切比雪夫不等式应用",
-    "src": "/media/videos/ch05/EX04_切比雪夫不等式应用.mp4",
-    "description": "用切比雪夫估计概率并与正态精确值对比。"
-  },
-  {
-    "subjectId": "probability",
-    "id": "ch14-EX05-大数定律应用",
-    "chapterId": "ch05",
-    "sectionId": "5.2",
-    "title": "EX05 大数定律应用",
-    "src": "/media/videos/ch05/EX05_大数定律应用.mp4",
-    "description": "工厂次品率频率稳定性与切比雪夫界。"
   },
   {
     "subjectId": "probability",
