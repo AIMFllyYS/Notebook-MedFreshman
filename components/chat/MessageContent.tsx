@@ -84,15 +84,20 @@ const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boole
 };
 
 /* ---- Extract FollowUp questions from content ---- */
+// 大小写不敏感：LLM 偶尔输出 <followup>；闭合标签到齐才提取（流式期间不显示，待完整再渲染按钮）。
 const extractFollowUpQuestions = (content: string): string[] => {
   if (!content) return [];
-  const match = content.match(/<FollowUp>(.*?)<\/FollowUp>/s);
+  const match = content.match(/<FollowUp>([\s\S]*?)<\/FollowUp>/i);
   if (match) return match[1].split('|').map((q) => q.trim()).filter(Boolean);
   return [];
 };
 
+// 既剥离成对的 <FollowUp>…</FollowUp>，也剥离「流式输出期未闭合的尾巴」(<FollowUp>… 还没等到 </FollowUp>)。
+// 否则半截标签会漏进下游 markdown，被 rehype-raw 当作 <followup> 原始 HTML 元素 → React「unrecognized tag」告警。
 const getCleanedContent = (content: string): string =>
-  content.replace(/<FollowUp>.*?<\/FollowUp>/s, '');
+  content
+    .replace(/<FollowUp>[\s\S]*?<\/FollowUp>/gi, '')
+    .replace(/<FollowUp>[\s\S]*$/i, '');
 
 /* ---- Main MessageContent component ---- */
 export const MessageContent: React.FC<MessageContentProps> = React.memo(({
