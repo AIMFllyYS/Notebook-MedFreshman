@@ -19,6 +19,7 @@
   "dependencies": {
     "@vidstack/react": "1.15.6",
     "clsx": "^2.1.1",
+    "dompurify": "^3.4.11",
     "framer-motion": "^11.18.0",
     "idb-keyval": "^6.2.5",
     "katex": "^0.16.21",

@@ -131,7 +131,7 @@ export const ALL_TOOLS: Record<string, ToolDefinition> = {
     function: {
       name: "drawDiagram",
       description:
-        "（暂未上线）生成 SVG 矢量示意图。当前此工具不可用，请直接在回复中使用 <SvgDiagram> 标签手动编写 SVG 内容。简单函数图像请使用 ::plot 指令。",
+        "SVG 图形预处理工具：分析图形需求并返回 SVG 编写指南（推荐结构、颜色规范、模板片段）。调用后按指南在回复中编写 <SvgDiagram mode=\"raw\"> 标签输出 SVG 内容。简单函数图像仍优先用 ::plot。",
       parameters: {
         type: "object",
         properties: {
@@ -217,12 +217,103 @@ export async function runTool(
       return { content: r.content, meta: { sources: r.sources, cacheHit: r.cacheHit } };
     }
 
-    case "drawDiagram":
-      return {
-        content: 'drawDiagram 工具暂未上线，请勿依赖此工具的输出。你可以直接在回复中使用 <SvgDiagram title="标题" width="400" height="300">SVG内容</SvgDiagram> 标签手动编写 SVG 图形。简单函数图像请使用 ::plot 指令。',
-      };
+    case "drawDiagram": {
+      const type = String(args.type ?? "custom");
+      const title = String(args.title ?? "示意图");
+      const desc = String(args.description ?? "");
+      return { content: buildDiagramGuidance(type, title, desc) };
+    }
 
     default:
       return { content: `未知工具：${name}` };
   }
+}
+
+// ─── drawDiagram 引导壳 ───────────────────────────────────────────────
+
+const DIAGRAM_GUIDANCE_COMMON = `【颜色规范】
+- 线条/文字：currentColor（自动适配主题）
+- 强调色：var(--diagram-primary)、var(--diagram-secondary)、var(--diagram-tertiary)
+- 错误/警告：var(--diagram-error)
+- 填充/背景：none 或 var(--diagram-surface)
+- 禁止硬编码 black/white/#000/#fff`;
+
+const TYPE_GUIDANCE: Record<string, { dims: string; tips: string }> = {
+  molecule: {
+    dims: 'width="500" height="350"',
+    tips: `【分子结构模板】
+- 单键：<line x1="..." y1="..." x2="..." y2="..." stroke="currentColor" stroke-width="2"/>
+- 双键：两条平行线（间距3px）
+- 三键：三条平行线
+- 楔形键（朝向）：<polygon points="x1,y1 x2-3,y2 x2+3,y2" fill="currentColor"/>
+- 虚键（远离）：<line ... stroke-dasharray="3 2"/>
+- 原子标签：<text text-anchor="middle" font-size="14">C</text>
+- 苯环：正六边形 + 内圆虚线表示离域
+- 弯箭头（电子转移）：用 <path d="M... C..." /> + marker-end 箭头`,
+  },
+  circuit: {
+    dims: 'width="550" height="350"',
+    tips: `【电路元件模板】
+- 导线：<line stroke="currentColor" stroke-width="2"/>
+- 电阻：锯齿线（6段 zigzag）或矩形
+- 电容：两条平行短线（间距5px）
+- 电池：一长一短平行线
+- 开关：断开线段 + 圆点
+- 电流方向：marker-end 箭头
+- 节点：<circle r="3" fill="currentColor"/>`,
+  },
+  optics: {
+    dims: 'width="550" height="300"',
+    tips: `【光学元件模板】
+- 凸透镜：双弧线 + 上下箭头
+- 凹透镜：内凹弧线 + 上下反向箭头
+- 光线：<line stroke="var(--diagram-primary)"/> + marker-end
+- 焦点标记：<circle r="3"/> + "F" 文字
+- 虚像/虚光线：stroke-dasharray="5 3"
+- 光轴：<line stroke="currentColor" stroke-dasharray="2 4"/>`,
+  },
+  field: {
+    dims: 'width="450" height="400"',
+    tips: `【场线模板】
+- 电场线：<path d="M... Q..." /> 二次贝塞尔曲线 + marker-end
+- 正电荷：<circle fill="var(--diagram-error)"/> + "+" 文字
+- 负电荷：<circle fill="var(--diagram-primary)"/> + "−" 文字
+- 等势线：<circle fill="none" stroke-dasharray="4 3"/>
+- 磁场：用 ⊙（出纸面）和 ⊗（入纸面）表示`,
+  },
+  geometry: {
+    dims: 'width="450" height="400"',
+    tips: `【几何模板】
+- 顶点标签：<text font-size="14" font-weight="600">A</text>（偏移顶点外侧）
+- 边：<line stroke="currentColor" stroke-width="1.5"/>
+- 角弧：<path d="M... A..." fill="none"/>（小圆弧）
+- 辅助线：stroke-dasharray="4 3" + 较细 stroke-width="1"
+- 直角标记：小正方形 <rect width="8" height="8" fill="none"/>
+- 长度标注：平行偏移线 + 双箭头 + 数值文字`,
+  },
+  custom: {
+    dims: 'width="500" height="350"',
+    tips: `【通用建议】
+- 使用 <defs> 定义可复用的 marker（箭头等）
+- 文字标注用 <text>，对齐用 text-anchor
+- 分组用 <g transform="translate(...)">
+- 保持元素间留足间距（≥20px）`,
+  },
+};
+
+function buildDiagramGuidance(type: string, title: string, desc: string): string {
+  const guide = TYPE_GUIDANCE[type] || TYPE_GUIDANCE.custom;
+  return `【drawDiagram 编写指南】
+类型：${type} | 需求：${desc}
+
+【输出格式】
+<SvgDiagram title="${title}" mode="raw" ${guide.dims}>
+  ...SVG 元素...
+</SvgDiagram>
+
+${DIAGRAM_GUIDANCE_COMMON}
+
+${guide.tips}
+
+请在你的下一段回复中直接输出完整的 <SvgDiagram> 标签。`;
 }

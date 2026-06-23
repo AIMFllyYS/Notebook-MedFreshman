@@ -1,4 +1,5 @@
 export { default as SvgCanvas } from "./SvgCanvas";
+export { RawSvgViewer } from "./RawSvgViewer";
 export { FunctionPlot } from "./FunctionPlot";
 export { CanvasControls } from "./CanvasControls";
 export { PlotDirective } from "./PlotDirective";

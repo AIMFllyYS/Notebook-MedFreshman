@@ -104,6 +104,37 @@
   color: var(--md-sys-color-on-surface);
 }
 
+/* Raw AI-generated SVG content — theme integration */
+.svg-raw-content {
+  color: var(--md-sys-color-on-surface);
+  --diagram-primary: var(--md-sys-color-primary);
+  --diagram-secondary: var(--md-sys-color-secondary);
+  --diagram-tertiary: var(--md-sys-color-tertiary);
+  --diagram-error: var(--md-sys-color-error);
+  --diagram-outline: var(--md-sys-color-outline);
+  --diagram-surface: var(--md-sys-color-surface-container-lowest);
+}
+.svg-raw-content svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+}
+.svg-raw-content text {
+  fill: currentColor;
+}
+.svg-raw-content line:not([stroke]),
+.svg-raw-content path:not([stroke]),
+.svg-raw-content polyline:not([stroke]) {
+  stroke: currentColor;
+}
+.svg-raw-content circle:not([fill]),
+.svg-raw-content rect:not([fill]),
+.svg-raw-content ellipse:not([fill]) {
+  fill: none;
+  stroke: currentColor;
+}
+
 /* Figure directive */
 .figure-directive {
   margin: 1.5rem 0;

@@ -12,6 +12,7 @@ const TOOLS: { name: string; label: string; desc: string }[] = [
   { name: "searchNotes", label: "全文检索", desc: "让 AI 在全部课程笔记中按关键词检索" },
   { name: "webSearch", label: "联网搜索", desc: "需配置 Bocha key；联网获取实时信息" },
   { name: "renderInteractive", label: "交互演示", desc: "让 AI 生成可交互的 HTML 讲解（横幅/弹窗查看）" },
+  { name: "drawDiagram", label: "SVG 绘图", desc: "让 AI 绘制矢量示意图（分子/电路/光路/几何等）" },
 ];
 
 function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
