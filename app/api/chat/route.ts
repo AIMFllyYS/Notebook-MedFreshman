@@ -22,9 +22,13 @@ function sse(obj: unknown): string {
   return `data: ${JSON.stringify(obj)}\n\n`;
 }
 
+type MessageContentPart =
+  | { type: "text"; text: string }
+  | { type: "image_url"; image_url: { url: string } };
+
 interface ClientMessage {
   role: "user" | "assistant";
-  content: string;
+  content: string | MessageContentPart[];
 }
 
 // 上游 SSE 流式增量的最小结构（OpenAI 兼容 chat/completions 流格式）。
@@ -77,7 +81,13 @@ export async function POST(req: NextRequest) {
   const chatCtx: ChatContext = { subjectId, categoryId, itemId, currentTopic };
   const provider = resolveProvider(modelId, customProvider);
   const reasoningField = provider.reasoningField;
+  const modelInfo = modelId ? getModelInfo(modelId) : undefined;
   const toolDefs = getToolDefs({ enableSearch: options.enableSearch ?? false, disabled: disabledTools });
+
+  // 检测消息中是否包含图片
+  const hasVisionContent = messages.some(
+    (m) => Array.isArray(m.content) && m.content.some((p) => p.type === "image_url"),
+  );
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
@@ -117,9 +127,24 @@ export async function POST(req: NextRequest) {
           return;
         }
 
-        // 构建上下文
+        // 视觉模型检查：含图片但模型不支持 vision 时拒绝
+        if (hasVisionContent && modelInfo && !modelInfo.vision && !provider.isCustom) {
+          stopHeartbeat();
+          send({ type: "error", message: `当前模型 ${modelInfo.label} 不支持图片理解，请切换到支持视觉的模型（如 MiMo V2.5）。` });
+          send({ type: "done" });
+          controller.close();
+          return;
+        }
+
+        // 构建上下文（从最后一条消息中提取纯文本）
+        const lastMsg = messages[messages.length - 1];
+        const lastMsgText = typeof lastMsg?.content === "string"
+          ? lastMsg.content
+          : Array.isArray(lastMsg?.content)
+            ? lastMsg.content.filter((p): p is { type: "text"; text: string } => p.type === "text").map((p) => p.text).join(" ")
+            : "";
         const ctxManager = getContextManager(options.contextMode ?? "full");
-        const ctxResult = await ctxManager.buildContext(chatCtx, messages[messages.length - 1]?.content || "");
+        const ctxResult = await ctxManager.buildContext(chatCtx, lastMsgText);
 
         if (ctxResult.overflow) {
           stopHeartbeat();

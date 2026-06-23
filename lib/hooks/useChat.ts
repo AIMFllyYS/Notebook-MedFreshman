@@ -2,7 +2,7 @@ import { useState, useCallback, useRef } from 'react';
 import { useChatHistory } from './useChatHistory';
 import { useSettings } from './useSettings';
 import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
-import type { ChatMessage, ChatContext, ChatOptions, ToolCallBlock, WebSearchSource } from '@/lib/types/chat';
+import type { ChatMessage, ChatAttachment, ChatContext, ChatOptions, ToolCallBlock, WebSearchSource } from '@/lib/types/chat';
 import { parseXmlTags } from '@/lib/utils/xmlParser';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 
@@ -10,6 +10,7 @@ interface SendMessageOptions {
   quotedText?: string;
   enableThinking?: boolean;
   enableSearch?: boolean;
+  attachments?: ChatAttachment[];
 }
 
 interface ChatSseEvent {
@@ -69,13 +70,15 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
       }
 
       // 构建用户消息
+      const userContent = sendOptions?.quotedText
+        ? `针对当前页面这段原文：\n\n> ${sendOptions.quotedText}\n\n${content}`
+        : content;
       const userMessage: ChatMessage = {
         id: Date.now().toString(),
         role: 'user',
-        content: sendOptions?.quotedText
-          ? `针对当前页面这段原文：\n\n> ${sendOptions.quotedText}\n\n${content}`
-          : content,
+        content: userContent,
         timestamp: Date.now(),
+        attachments: sendOptions?.attachments,
       };
 
       // 首条消息自动生成标题
@@ -111,11 +114,23 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
       };
       addMessage(sessionId, assistantMessage);
 
-      // 构建请求消息（仅 user / assistant 角色）
+      // 构建请求消息（仅 user / assistant 角色），含多模态图片
       const latestSession = useChatHistory.getState().sessions.find((s) => s.id === sessionId);
       const requestMessages = (latestSession?.messages || [])
         .filter((m) => m.role === 'user' || m.role === 'assistant')
-        .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content || '' }));
+        .map((m) => {
+          if (m.role === 'user' && m.attachments?.length) {
+            const parts: Array<Record<string, unknown>> = [
+              { type: 'text', text: m.content || '' },
+              ...m.attachments.map((a) => ({
+                type: 'image_url',
+                image_url: { url: a.base64 },
+              })),
+            ];
+            return { role: m.role as 'user', content: parts };
+          }
+          return { role: m.role as 'user' | 'assistant', content: m.content || '' };
+        });
 
       loadingRef.current = true;
       setIsLoading(true);

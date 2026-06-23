@@ -26,6 +26,13 @@ export interface ToolCallBlock {
   prompt?: string;
 }
 
+export interface ChatAttachment {
+  type: 'image';
+  mimeType: string;
+  /** data:image/png;base64,... 完整 data-url */
+  base64: string;
+}
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant' | 'system' | 'tool';
@@ -35,6 +42,7 @@ export interface ChatMessage {
   toolCalls?: ToolCallBlock[];
   toolCallId?: string;
   followUpQuestions?: string[];
+  attachments?: ChatAttachment[];
   metadata?: {
     thinkingEnabled?: boolean;
     searchEnabled?: boolean;
