@@ -19,18 +19,7 @@
   ],
   "cloudFunctions": {
     "nodejs": {
-      "includeFiles": [
-        "content/chapters/**/*.md",
-        "content/examples/**/*.md",
-        "content/quiz/**/*.json",
-        "content/probability/**/*.md",
-        "content/chemistry/**/*.md",
-        "content/physics/**/*.md",
-        "content/maogai/**/*.md",
-        "content/modern-history/**/*.md",
-        "content/other/**/*.md",
-        "content/**/*.html"
-      ],
+      "includeFiles": [],
       "maxDuration": 120
     }
   }
