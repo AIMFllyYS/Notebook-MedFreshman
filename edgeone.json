@@ -14,7 +14,9 @@
   "cloudFunctions": {
     "nodejs": {
       "includeFiles": [
-        "content/**",
+        "content/**/*.md",
+        "content/**/*.json",
+        "content/**/*.html",
         "lib/ai/prompts/**"
       ],
       "maxDuration": 120
