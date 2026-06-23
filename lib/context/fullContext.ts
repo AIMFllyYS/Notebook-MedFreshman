@@ -1,8 +1,8 @@
 import type { ContextManager, BuildContextResult } from './types';
 import { getMaxTokens } from './types';
 import type { ChatContext } from '@/lib/types/chat';
-import { contentTree } from '@/content/manifest';
-import { getContentItem } from '@/content';
+import { contentTree } from '@/lib/content-data/manifest';
+import { getContentItem } from '@/lib/content-data';
 import { readContentMarkdown } from '@/lib/content/loader';
 import type { SubjectId, CategoryId } from '@/lib/types/content';
 import { createHash } from 'node:crypto';

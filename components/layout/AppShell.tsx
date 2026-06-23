@@ -14,7 +14,7 @@ import clsx from "clsx";
 import { PanelTopClose, PanelTopOpen, Maximize, Minimize } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
-import { getSubject, getCategory, getContentItem } from "@/content";
+import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import type { SubjectId } from "@/lib/types/content";
 import { isSubjectId } from "@/lib/types/content";
 import type { ChatContext } from "@/lib/types/chat";

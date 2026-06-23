@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { isSubjectId } from "@/lib/types/content";
 import type { ContentItem } from "@/lib/types/content";
-import { contentTree, getContentItem, getSubject, getCategory } from "@/content";
+import { contentTree, getContentItem, getSubject, getCategory } from "@/lib/content-data";
 import { readContent, readExamples, deriveExampleKey } from "@/lib/content/loader";
 import { normalizeDirectiveLabels } from "@/lib/markdown/normalizeDirectiveLabels";
 import NoteRendererServer from "@/components/notes/NoteRendererServer";

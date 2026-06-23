@@ -2,7 +2,7 @@
 // 仅可在服务端（route handler / server component）导入。
 import fs from "node:fs";
 import path from "node:path";
-import { manifest, contentTree } from "@/content/manifest";
+import { manifest, contentTree } from "@/lib/content-data/manifest";
 import type { ContentItem } from "@/lib/types/content";
 import type { ChapterRef, SectionRef } from "@/lib/content/types";
 

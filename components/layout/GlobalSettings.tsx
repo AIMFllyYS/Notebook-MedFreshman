@@ -20,7 +20,7 @@ import {
   ScrollText,
   Folder,
 } from "lucide-react";
-import { contentTree } from "@/content/manifest";
+import { contentTree } from "@/lib/content-data/manifest";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
 import { useTheme } from "@/lib/hooks/useTheme";
 import {

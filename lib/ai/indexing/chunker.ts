@@ -1,5 +1,5 @@
 // 内容分块管道：遍历 contentTree 全部可搜索叶节点，读取 md，按语义边界分块。
-import { contentTree } from '@/content/manifest';
+import { contentTree } from '@/lib/content-data/manifest';
 import { readContentMarkdown, findContentItem, stripMarkdown } from '@/lib/content/loader';
 import type { ContentItem } from '@/lib/types/content';
 

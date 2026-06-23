@@ -9,6 +9,12 @@
       "headers": [
         { "key": "X-Accel-Buffering", "value": "no" }
       ]
+    },
+    {
+      "source": "/api/artifact",
+      "headers": [
+        { "key": "X-Accel-Buffering", "value": "no" }
+      ]
     }
   ],
   "cloudFunctions": {

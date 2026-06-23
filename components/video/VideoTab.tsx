@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useStore } from "@/lib/store";
-import { getVideosForSection } from "@/content/media";
+import { getVideosForSection } from "@/lib/content-data/media";
 import { videoPoster } from "@/lib/content/poster";
-import { videoScriptIds } from "@/content/media.scripts.ids.generated";
+import { videoScriptIds } from "@/lib/content-data/media.scripts.ids.generated";
 
 const InlinePlayer = dynamic(() => import("@/components/video/InlinePlayer"), {
   ssr: false,
@@ -44,7 +44,7 @@ export default function VideoTab() {
   const toggleScript = async (id: string) => {
     // 首次展开时按需加载讲稿本体（独立 chunk），加载完成后再展开。
     if (!scripts) {
-      const mod = await import("@/content/media.scripts.generated");
+      const mod = await import("@/lib/content-data/media.scripts.generated");
       setScripts(mod.videoScripts);
     }
     setExpandedScripts((prev) => ({ ...prev, [id]: !prev[id] }));

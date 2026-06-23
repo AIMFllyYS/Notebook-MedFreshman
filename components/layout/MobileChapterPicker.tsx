@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
-import { contentTree } from "@/content/manifest";
+import { contentTree } from "@/lib/content-data/manifest";
 import type { SubjectId, ContentItem } from "@/lib/types/content";
 import { SUBJECTS } from "@/lib/constants/subjects";
 

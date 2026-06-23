@@ -7,7 +7,7 @@ import type { QuizQuestion as Q, UserAnswer } from "@/lib/quiz/types";
 import { displayLabel, TYPE_LABELS } from "@/lib/quiz/types";
 import type { QuestionResult } from "@/lib/quiz-store";
 import { useQuizStore } from "@/lib/quiz-store";
-import { getVideo } from "@/content/media";
+import { getVideo } from "@/lib/content-data/media";
 import QuizMarkdown from "./QuizMarkdown";
 
 const InlinePlayer = dynamic(() => import("@/components/video/InlinePlayer"), {

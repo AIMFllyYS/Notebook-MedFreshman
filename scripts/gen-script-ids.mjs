@@ -2,8 +2,8 @@
 /**
  * 讲稿 id 清单生成器。
  *
- * 从 content/media.scripts.generated.ts（~388KB 的 id→markdown 大对象）中只提取顶层 key，
- * 写出极小的 content/media.scripts.ids.generated.ts。VideoTab 用它判断某视频是否有配套讲稿，
+ * 从 lib/content-data/media.scripts.generated.ts（~388KB 的 id→markdown 大对象）中只提取顶层 key，
+ * 写出极小的 lib/content-data/media.scripts.ids.generated.ts。VideoTab 用它判断某视频是否有配套讲稿，
  * 从而无需把 388KB 本体静态打进首屏 chunk / 常驻堆——讲稿正文仅在用户展开时按需 dynamic import。
  *
  * 由 prebuild 自动执行，保证 ids 清单与讲稿本体不漂移。也可手动：node scripts/gen-script-ids.mjs
@@ -12,8 +12,8 @@ import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 
 const ROOT = process.cwd();
-const SRC = join(ROOT, "content", "media.scripts.generated.ts");
-const OUT = join(ROOT, "content", "media.scripts.ids.generated.ts");
+const SRC = join(ROOT, "lib", "content-data", "media.scripts.generated.ts");
+const OUT = join(ROOT, "lib", "content-data", "media.scripts.ids.generated.ts");
 
 let src;
 try {

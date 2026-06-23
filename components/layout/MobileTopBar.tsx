@@ -14,7 +14,7 @@ import {
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
-import { getSubject, getContentItem } from "@/content";
+import { getSubject, getContentItem } from "@/lib/content-data";
 import type { SubjectId } from "@/lib/types/content";
 import BrandLogo from "./BrandLogo";
 

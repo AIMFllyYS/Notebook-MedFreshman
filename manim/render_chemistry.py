@@ -41,7 +41,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SCENES_DIR = ROOT / "manim" / "chemistry"
 MEDIA_OUT = ROOT / "manim" / "media_chemistry"
 PUBLIC_VIDEOS = ROOT / "public" / "media" / "videos" / "chemistry"
-GENERATED_TS = ROOT / "content" / "media.chemistry.generated.ts"
+GENERATED_TS = ROOT / "lib" / "content-data" / "media.chemistry.generated.ts"
 
 
 def discover_modules(chapter: str | None) -> list[Path]:

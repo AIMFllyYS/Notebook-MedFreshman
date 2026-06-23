@@ -22,7 +22,7 @@ import GlobalSettings from "./GlobalSettings";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
-import { contentTree } from "@/content/manifest";
+import { contentTree } from "@/lib/content-data/manifest";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
 import type { SubjectId, ContentItem } from "@/lib/types/content";
 

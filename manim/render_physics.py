@@ -42,7 +42,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SCENES_DIR = ROOT / "manim" / "physics"
 MEDIA_OUT = ROOT / "manim" / "media_physics"
 PUBLIC_VIDEOS = ROOT / "public" / "media" / "videos" / "physics"
-GENERATED_TS = ROOT / "content" / "media.physics.generated.ts"
+GENERATED_TS = ROOT / "lib" / "content-data" / "media.physics.generated.ts"
 
 
 def discover_modules(chapter: str | None) -> list[Path]:

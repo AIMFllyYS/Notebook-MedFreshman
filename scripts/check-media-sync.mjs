@@ -15,9 +15,9 @@ import { join, resolve } from "path";
 
 const ROOT = resolve(import.meta.dirname, "..");
 const GENERATED_FILES = [
-  "content/media.generated.ts",
-  "content/media.physics.generated.ts",
-  "content/media.chemistry.generated.ts",
+  "lib/content-data/media.generated.ts",
+  "lib/content-data/media.physics.generated.ts",
+  "lib/content-data/media.chemistry.generated.ts",
 ];
 const VIDEOS_DIR = join(ROOT, "public", "media", "videos");
 

@@ -2,7 +2,7 @@ import type { ContextManager, BuildContextResult } from './types';
 import { getMaxTokens } from './types';
 import type { ChatContext } from '@/lib/types/chat';
 import { readContentMarkdown } from '@/lib/content/loader';
-import { getContentItem } from '@/content';
+import { getContentItem } from '@/lib/content-data';
 import type { SubjectId, CategoryId } from '@/lib/types/content';
 import { estimateTokens } from './estimateTokens';
 

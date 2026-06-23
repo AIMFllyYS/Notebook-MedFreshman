@@ -3,7 +3,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useStore } from "@/lib/store";
-import { getVideo } from "@/content/media";
+import { getVideo } from "@/lib/content-data/media";
 import { getInteractive } from "@/components/interactives/registry";
 import LazyVisible from "@/components/ui/LazyVisible";
 import { SkeletonBlock } from "@/components/notes/NoteSkeleton";
