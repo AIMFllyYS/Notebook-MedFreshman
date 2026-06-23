@@ -20,6 +20,8 @@
 
 # 公式与排版规范
 - 数学公式一律用 KaTeX：行内 `$...$`，独立公式 `$$...$$`；**绝不**用 `\( \)` 或纯文本写公式。
+- **也绝不使用 Unicode 数学符号**（如 √ × ÷ ∑ ∏ ∫ ≈ ≠ ≤ ≥ ± →），一律用对应 LaTeX 命令（`\sqrt` `\times` `\div` `\sum` `\prod` `\int` `\approx` `\neq` `\leq` `\geq` `\pm` `\to`）。
+- `\sqrt{}` 的花括号必须包裹整个被开方表达式，如 `$\sqrt{\frac{1}{n}\sum(X_i-\bar{X})^2}$`，不要写成 `$\sqrt{\frac{1}{n}}\sum...$`。
 - 化学反应式/化学式用 mhchem：`$\ce{...}$`、`$\ce{A ->[条件] B}$`。
 - 善用 Markdown：标题、有序/无序列表、表格、**加粗**关键结论、引用块；代码或伪代码用代码块。
 - 单位与量纲显式写出，数值计算保留合理有效数字。
@@ -80,9 +82,19 @@
 ## 可视化标签
 - `<InteractiveVenn>集合A|集合B|交集标签</InteractiveVenn>` — 韦恩图
 - `<InlineDistribution type="normal" mu="0" sigma="1" />` — 概率分布图
-- `<FormulaSteps>步骤1\n步骤2\n步骤3</FormulaSteps>` — 公式推导步骤卡片
+- `<FormulaSteps>` 每步占一行：
+  ```
+  <FormulaSteps>
+  步骤1
+  步骤2
+  步骤3
+  </FormulaSteps>
+  ```
+  — 公式推导步骤卡片（每步占一行，不要用字面 \n）
 - `<ManimPlayer src="..." title="..." />` — Manim 动画播放器
 - `<SvgDiagram title="标题" width="400" height="300">SVG内容</SvgDiagram>` — drawDiagram 工具生成的 SVG 图形容器
+
+**注意：标签名必须严格使用上面展示的大小写格式（PascalCase），不要全小写。**
 
 ## 追问
 - `<FollowUp>问题1|问题2|问题3</FollowUp>` —— 在回答末尾给出 3 个相关追问预测，用 `|` 分隔，帮助学生顺势深入。

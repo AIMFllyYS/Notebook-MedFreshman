@@ -5,8 +5,37 @@ import type { ParsedBlock } from '@/lib/types/chat';
  * Supports self-closing tags (<Tag prop={0.6} />) and
  * content tags (<Tag>children</Tag>).
  */
+// 已知自定义标签的小写变体 → PascalCase 映射表
+// LLM 有时输出全小写标签（如 <formulasteps>），此处做大小写不敏感归一化
+const KNOWN_TAGS_LOWER_TO_PASCAL: Record<string, string> = {
+  formulasteps: 'FormulaSteps',
+  interactivevenn: 'InteractiveVenn',
+  inlinedistribution: 'InlineDistribution',
+  manimplayer: 'ManimPlayer',
+  svgdiagram: 'SvgDiagram',
+  toolcall: 'ToolCall',
+  answer: 'Answer',
+  thinking: 'Thinking',
+  followup: 'FollowUp',
+};
+
+function normalizeTagCase(text: string): string {
+  let result = text;
+  for (const [lower, pascal] of Object.entries(KNOWN_TAGS_LOWER_TO_PASCAL)) {
+    // 替换开标签 <tagname ...> → <PascalCase ...>（大小写不敏感）
+    result = result.replace(
+      new RegExp(`<(/?)${lower}`, 'gi'),
+      (_, slash) => `<${slash}${pascal}`
+    );
+  }
+  return result;
+}
+
 export function parseXmlTags(text: string): ParsedBlock[] {
   if (!text) return [];
+
+  // 预处理：将已知标签的小写变体归一化为 PascalCase
+  text = normalizeTagCase(text);
 
   // 仅匹配“大写字母开头”的自定义组件标签（InteractiveVenn/FormulaSteps/Answer…）。
   // 普通 HTML 标签（<div>/<script>/<html>…）一律小写，永远不在此匹配，
@@ -35,6 +64,8 @@ export function parseXmlTags(text: string): ParsedBlock[] {
           const tagEndName = tagInner.split(/\s+/)[0];
           const closingTag = `</${tagEndName}>`;
           childrenText = part.slice(closeTagIndex + 1, -closingTag.length);
+          // 归一化字面 \n 转义序列为真实换行符（LLM 常将 \n 当字面输出）
+          childrenText = childrenText.replace(/\\n/g, '\n');
         }
 
         const nameMatch = tagInner.match(/^([A-Za-z0-9]+)/);
