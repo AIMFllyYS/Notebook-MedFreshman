@@ -35,6 +35,7 @@ interface ChatSseEvent {
     artifactId?: unknown;
     sources?: WebSearchSource[];
     cacheHit?: unknown;
+    hits?: { title: string; path: string; snippet: string }[];
   };
 }
 
@@ -262,6 +263,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                       if (meta && Array.isArray(meta.sources)) existing.sources = meta.sources;
                       if (meta && typeof meta.cacheHit === 'boolean') existing.cacheHit = meta.cacheHit;
                       if (meta && typeof meta.artifactId === 'string') existing.artifactId = meta.artifactId;
+                      if (meta && Array.isArray(meta.hits)) existing.hits = meta.hits;
                       updateMessage(sessionId!, assistantId, {
                         toolCalls: Array.from(toolCallsMap.values()),
                       });

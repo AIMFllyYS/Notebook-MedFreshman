@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { User, Sparkles } from 'lucide-react';
+import { User, Sparkles, BookOpen } from 'lucide-react';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { MessageContent } from '@/components/chat/MessageContent';
 import ArtifactCard from '@/components/chat/ArtifactCard';
@@ -46,6 +46,25 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
         ) : (
           <>
             <ProcessingSteps msg={message} streaming={isStreaming} />
+            {/* searchNotes inline reference cards */}
+            {message.toolCalls
+              ?.filter((tc) => tc.name === 'searchNotes' && tc.hits && tc.hits.length > 0)
+              .map((tc) => (
+                <div key={tc.id} className="search-hit-inline-cards">
+                  <div className="search-hit-inline-header">
+                    <BookOpen size={12} />
+                    <span>引用笔记 · {tc.hits!.length} 条</span>
+                  </div>
+                  <div className="search-hit-inline-list">
+                    {tc.hits!.map((h, i) => (
+                      <div key={i} className="search-hit-inline-item">
+                        <span className="search-hit-inline-title">{h.title}</span>
+                        <span className="search-hit-inline-path">{h.path}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             {message.content && (
               <div className="chat-bubble-assistant chat-prose">
                 <MessageContent

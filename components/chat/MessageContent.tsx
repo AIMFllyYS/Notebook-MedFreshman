@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, Children, isValidElement } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { sharedRemarkPlugins, sharedRehypePlugins } from '@/lib/markdown/plugins';
 import { directiveComponents } from '@/lib/markdown/directiveComponents';
@@ -11,7 +11,8 @@ import { ChatMessageVisualizations } from '@/components/chat/ChatMessageVisualiz
 import { ToolCallDashboard } from '@/components/chat/ToolCallDashboard';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import CodeBlock from '@/components/shared/CodeBlock';
-import { ContentImage } from '@/components/shared/ContentImage';
+import { ChatImage } from '@/components/chat/ChatImage';
+import { ImageStrip } from '@/components/chat/ImageStrip';
 
 interface MessageContentProps {
   content: string;
@@ -19,12 +20,30 @@ interface MessageContentProps {
   onFollowUpSelect?: (question: string) => void;
 }
 
+/**
+ * Custom <p> component: when a paragraph contains 2+ images,
+ * wrap them in an ImageStrip for horizontal scrolling.
+ */
+function ChatParagraph({ node, children, ...props }: any) {
+  const childArray = Children.toArray(children);
+  const imgChildren = childArray.filter(
+    (c) => isValidElement(c) && (c.type === ChatImage || (c.props as any)?.src),
+  );
+
+  if (imgChildren.length >= 2) {
+    return <ImageStrip>{children}</ImageStrip>;
+  }
+
+  return <p {...props}>{children}</p>;
+}
+
 /* ---- Markdown rendering components ----
    排版交由 .chat-prose CSS 统一控制（行距/段距/标题/列表/引用/代码/表格/KaTeX）；
    这里只保留必要的行为：链接新开页、表格横向滚动包裹、代码块复制按钮。 */
 const mdComponents = {
   ...directiveComponents,
-  img: ContentImage,
+  img: ChatImage,
+  p: ChatParagraph,
   a: ({ node, ...props }: any) => (
     <a target="_blank" rel="noopener noreferrer" {...props} />
   ),

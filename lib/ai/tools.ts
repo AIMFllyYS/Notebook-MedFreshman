@@ -200,12 +200,15 @@ export async function runTool(
 
     case "searchNotes": {
       const hits = await searchAllContent(String(args.query ?? ""));
-      if (!hits.length) return { content: "未检索到相关内容。可尝试更换关键词，或调用 getOutline 浏览目录。" };
+      if (!hits.length) return { content: "未检索到相关内容。可尝试更换关键词，或调用 getOutline 浏览目录。", meta: { hits: [] } };
       const lines = hits.map(
         (h) => `[${h.title}] (path: ${h.path})\n…${h.snippet}…`,
       );
       lines.push("\n如需查看完整内容，可调用 getSection(path: \"对应路径\")。");
-      return { content: lines.join("\n\n") };
+      return {
+        content: lines.join("\n\n"),
+        meta: { hits: hits.slice(0, 5).map((h) => ({ title: h.title, path: h.path, snippet: h.snippet })) },
+      };
     }
 
     case "webSearch": {

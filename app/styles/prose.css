@@ -258,6 +258,81 @@
   margin: 0.8em auto;
   display: block;
 }
+.chat-image-clickable {
+  cursor: zoom-in;
+  transition: opacity 0.15s ease;
+}
+.chat-image-clickable:hover {
+  opacity: 0.88;
+}
+
+/* Image scroll strip — horizontal row for multiple images */
+.chat-image-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 200px;
+  padding: 4px 0;
+  margin: 0.8em 0;
+  cursor: grab;
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+  touch-action: pan-x;
+}
+.chat-image-strip:active { cursor: grabbing; }
+.chat-image-strip img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  border-radius: var(--md-sys-shape-corner-medium, 10px);
+  object-fit: cover;
+  flex-shrink: 0;
+  margin: 0;
+  display: inline-block;
+}
+
+/* Image lightbox overlay */
+.image-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lightbox-fade-in 0.2s ease;
+}
+@keyframes lightbox-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.image-lightbox-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+.image-lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.image-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
 .chat-prose figure {
   margin: 1rem 0;
   text-align: center;
@@ -913,4 +988,48 @@
 }
 .model-menu-label-short {
   display: none;
+}
+
+/* searchNotes inline reference cards (above assistant bubble) */
+.search-hit-inline-cards {
+  margin-bottom: 6px;
+  padding: 8px 10px;
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 10px;
+  font-size: 0.76rem;
+}
+.search-hit-inline-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--md-sys-color-secondary);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.search-hit-inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.search-hit-inline-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: var(--md-sys-color-surface-container-high);
+  border-radius: 6px;
+  line-height: 1.6;
+}
+.search-hit-inline-title {
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface);
+}
+.search-hit-inline-path {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  color: var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-container);
+  padding: 0 4px;
+  border-radius: 3px;
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle, Globe, ExternalLink, Zap } from 'lucide-react';
+import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle, Globe, ExternalLink, Zap, BookOpen, Image as ImageIcon } from 'lucide-react';
 import type { ToolCallBlock } from '@/lib/types/chat';
 
 function hostOf(url: string): string {
@@ -136,6 +136,88 @@ const ToolCallItem: React.FC<{ call: ToolCallBlock }> = ({ call }) => {
               <div style={{ fontSize: '0.68rem', color: 'var(--md-sys-color-outline)' }}>{hostOf(s.url)}</div>
             </a>
           ))}
+        </div>
+      )}
+
+      {/* searchNotes 笔记检索命中卡片 */}
+      {call.name === 'searchNotes' && call.hits && call.hits.length > 0 && (
+        <div className="flex flex-col gap-1.5" style={{ fontFamily: 'inherit' }}>
+          <div className="flex items-center gap-1.5" style={{ fontSize: '0.72rem', color: 'var(--md-sys-color-on-surface-variant)' }}>
+            <BookOpen size={12} style={{ color: 'var(--md-sys-color-secondary)' }} />
+            <span>笔记引用 · {call.hits.length} 条</span>
+          </div>
+          {call.hits.map((h, i) => (
+            <div
+              key={i}
+              className="flex flex-col gap-0.5 rounded-lg px-2.5 py-2"
+              style={{
+                background: 'var(--md-sys-color-surface-container)',
+                border: '1px solid var(--md-sys-color-outline-variant)',
+                fontFamily: 'inherit',
+              }}
+            >
+              <div className="flex items-center gap-1" style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--md-sys-color-secondary)' }}>
+                <span className="truncate">{i + 1}. {h.title}</span>
+              </div>
+              {h.snippet && (
+                <div
+                  style={{ fontSize: '0.72rem', lineHeight: 1.5, color: 'var(--md-sys-color-on-surface-variant)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                >
+                  {h.snippet}
+                </div>
+              )}
+              <div
+                style={{ fontSize: '0.66rem', color: 'var(--md-sys-color-outline)', fontFamily: 'var(--font-mono, monospace)', background: 'var(--md-sys-color-surface-container-high)', padding: '1px 6px', borderRadius: '4px', width: 'fit-content' }}
+              >
+                {h.path}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* imageSearch 图片来源缩略图 */}
+      {call.name === 'imageSearch' && call.sources && call.sources.length > 0 && (
+        <div className="flex flex-col gap-1.5" style={{ fontFamily: 'inherit' }}>
+          <div className="flex items-center gap-1.5" style={{ fontSize: '0.72rem', color: 'var(--md-sys-color-on-surface-variant)' }}>
+            <ImageIcon size={12} style={{ color: 'var(--md-sys-color-primary)' }} />
+            <span>图片来源 · {call.sources.length} 条</span>
+            {call.cacheHit && (
+              <span className="inline-flex items-center gap-0.5" style={{ color: 'var(--md-sys-color-tertiary)' }}>
+                <Zap size={11} /> 缓存命中
+              </span>
+            )}
+          </div>
+          <div className="flex gap-2 overflow-x-auto py-1" style={{ scrollbarWidth: 'thin' }}>
+            {call.sources.map((s, i) => (
+              <a
+                key={i}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center gap-1 shrink-0 rounded-lg p-1.5 transition-colors hover:bg-[var(--md-sys-color-surface-container-highest)]"
+                style={{
+                  textDecoration: 'none',
+                  width: '80px',
+                }}
+              >
+                {s.media ? (
+                  <img
+                    src={s.media}
+                    alt={s.title}
+                    style={{ height: '64px', width: 'auto', maxWidth: '76px', borderRadius: '6px', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <div style={{ height: '64px', width: '64px', borderRadius: '6px', background: 'var(--md-sys-color-surface-container-high)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <ImageIcon size={20} style={{ color: 'var(--md-sys-color-outline)' }} />
+                  </div>
+                )}
+                <div style={{ fontSize: '0.62rem', color: 'var(--md-sys-color-on-surface-variant)', textAlign: 'center', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
+                  {s.title}
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       )}
 

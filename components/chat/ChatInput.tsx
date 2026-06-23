@@ -110,6 +110,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
       attachments: chatAttachments,
     });
     setInput('');
+    attachments.forEach((a) => URL.revokeObjectURL(a.previewUrl));
     setAttachments([]);
     if (quotedText) clearQuotedText();
   }, [input, attachments, isLoading, externalDisabled, onSend, enableThinking, enableSearch, quotedText, clearQuotedText]);
@@ -183,6 +184,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
         }}>
           {attachments.map((a, i) => (
             <div key={i} style={{ position: 'relative', width: 56, height: 56, borderRadius: 8, overflow: 'hidden', border: '1px solid var(--line)' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element -- blob URLs not supported by next/image */}
               <img src={a.previewUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               <button
                 onClick={() => removeAttachment(i)}

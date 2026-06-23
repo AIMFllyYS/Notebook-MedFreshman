@@ -13,10 +13,11 @@ import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
 import ChatSettings from '@/components/chat/ChatSettings';
 import ArtifactViewer from '@/components/chat/ArtifactViewer';
+import { ImageLightbox } from '@/components/shared/ImageLightbox';
 import ChatPanelHeader from '@/components/chat/ChatPanelHeader';
 import ChatEmptyState from '@/components/chat/ChatEmptyState';
 import ChatHistoryOverlay from '@/components/chat/ChatHistoryOverlay';
-import type { ChatContext, ChatOptions } from '@/lib/types/chat';
+import type { ChatContext, ChatOptions, ChatAttachment } from '@/lib/types/chat';
 
 interface ChatPanelProps {
   chatContext: ChatContext;
@@ -43,6 +44,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const [showHistory, setShowHistory] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [warnDismissed, setWarnDismissed] = useState(false);
+  const [prevSessionId, setPrevSessionId] = useState(activeSessionId);
   const fontScale = useSettings((s) => s.fontScale);
   const hydrated = useHydrated(useChatHistory);
 
@@ -52,10 +54,11 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const showWarning = ctxRatio >= 0.8 && ctxRatio < 1 && !warnDismissed;
   const contextFull = ctxRatio >= 1;
 
-  useEffect(() => {
-    useTokenTracker.getState().resetSession();
+  if (activeSessionId !== prevSessionId) {
+    setPrevSessionId(activeSessionId);
     setWarnDismissed(false);
-  }, [activeSessionId]);
+    useTokenTracker.getState().resetSession();
+  }
 
   useEffect(() => {
     if (isAtBottom) {
@@ -76,7 +79,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     setIsAtBottom(scrollHeight - scrollTop - clientHeight < 100);
   };
 
-  const handleSend = (content: string, options?: { quotedText?: string; enableThinking?: boolean; enableSearch?: boolean }) => {
+  const handleSend = (content: string, options?: { quotedText?: string; enableThinking?: boolean; enableSearch?: boolean; attachments?: ChatAttachment[] }) => {
     sendMessage(content, options);
   };
 
@@ -230,6 +233,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
           onClose={() => setShowHistory(false)}
         />
       )}
+      <ImageLightbox />
     </div>
   );
 };

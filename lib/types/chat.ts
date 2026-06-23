@@ -4,6 +4,8 @@ export interface WebSearchSource {
   title: string;
   url: string;
   snippet: string;
+  icon?: string;
+  media?: string;
 }
 
 export interface ToolCallBlock {
@@ -24,6 +26,8 @@ export interface ToolCallBlock {
   title?: string;
   /** renderInteractive 专用：生成时传入的 prompt 参数，用于前端展示生成依据。 */
   prompt?: string;
+  /** searchNotes 专用：检索命中的笔记片段。 */
+  hits?: { title: string; path: string; snippet: string }[];
 }
 
 export interface ChatAttachment {
