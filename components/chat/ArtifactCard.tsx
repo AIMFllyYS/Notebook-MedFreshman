@@ -7,6 +7,13 @@ import { useSettings } from '@/lib/hooks/useSettings';
 import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 
+type ArtifactApiEvent =
+  | { type: 'ping'; t?: number }
+  | { type: 'artifact'; id: string; status: 'start'; title?: string }
+  | { type: 'artifact'; id: string; status: 'delta'; delta?: string }
+  | { type: 'artifact'; id: string; status: 'done'; html?: string }
+  | { type: 'artifact'; id: string; status: 'error'; message?: string };
+
 /**
  * 消息内的交互演示卡片：直接挂在对话气泡里（用户视线所在处），而非顶部独立横幅。
  * - 生成中：实时流式显示 HTML 源码 + 进度，让用户看到"正在写代码"；
@@ -90,7 +97,7 @@ export default function ArtifactCard({
           const { done: streamDone, value } = await reader.read();
           if (streamDone) break;
           buffer += decoder.decode(value, { stream: true });
-          const parsed = parseSseJsonEvents(buffer);
+          const parsed = parseSseJsonEvents<ArtifactApiEvent>(buffer);
           buffer = parsed.remaining;
 
           for (const event of parsed.events) {

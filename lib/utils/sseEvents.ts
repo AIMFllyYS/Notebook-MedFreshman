@@ -1,10 +1,10 @@
-export interface ParsedSseJsonEvents<T = any> {
+export interface ParsedSseJsonEvents<T = unknown> {
   events: T[];
   remaining: string;
   hadActivity: boolean;
 }
 
-export function parseSseJsonEvents<T = any>(buffer: string): ParsedSseJsonEvents<T> {
+export function parseSseJsonEvents<T = unknown>(buffer: string): ParsedSseJsonEvents<T> {
   const lines = buffer.split("\n");
   const remaining = lines.pop() || "";
   const events: T[] = [];

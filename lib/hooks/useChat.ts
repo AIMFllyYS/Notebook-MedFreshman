@@ -2,7 +2,7 @@ import { useState, useCallback, useRef } from 'react';
 import { useChatHistory } from './useChatHistory';
 import { useSettings } from './useSettings';
 import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
-import type { ChatMessage, ChatContext, ChatOptions, ToolCallBlock } from '@/lib/types/chat';
+import type { ChatMessage, ChatContext, ChatOptions, ToolCallBlock, WebSearchSource } from '@/lib/types/chat';
 import { parseXmlTags } from '@/lib/utils/xmlParser';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 
@@ -10,6 +10,22 @@ interface SendMessageOptions {
   quotedText?: string;
   enableThinking?: boolean;
   enableSearch?: boolean;
+}
+
+interface ChatSseEvent {
+  type?: string;
+  delta?: string;
+  content?: string;
+  message?: string;
+  status?: string;
+  id?: string;
+  name?: string;
+  args?: Record<string, unknown>;
+  meta?: {
+    artifactId?: unknown;
+    sources?: WebSearchSource[];
+    cacheHit?: unknown;
+  };
 }
 
 export function useChat(chatContext: ChatContext, options?: ChatOptions) {
@@ -165,7 +181,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
             if (done) break;
 
             buffer += decoder.decode(value, { stream: true });
-            const { events, remaining, hadActivity } = parseSseJsonEvents(buffer);
+            const { events, remaining, hadActivity } = parseSseJsonEvents<ChatSseEvent>(buffer);
             buffer = remaining;
 
             if (hadActivity) lastEventTime = Date.now();
@@ -205,7 +221,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                       toolCalls: Array.from(toolCallsMap.values()),
                     });
                   } else if (event.status === 'result') {
-                    const existing = toolCallsMap.get(event.id);
+                    const existing = event.id ? toolCallsMap.get(event.id) : undefined;
                     if (existing) {
                       existing.status = 'success';
                       const meta = event.meta;
