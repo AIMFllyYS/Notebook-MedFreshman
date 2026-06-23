@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>期末冲刺 · 12天分散复习日程</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700;800&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#efe7d6; --paper2:#f5efe2; --card:#faf6ec;
+    --ink:#23201a; --ink2:#5a5346; --ink3:#8a8270;
+    --rule:#cabfa6; --rule2:#ddd3bd;
+    --exam:#ff2a17; --exam-d:#c41100;
+    --eng:#3d6b5e; --org:#a8512f; --phy:#39487a; --mao:#7e4a63; --prob:#b07d2a; --his:#6b6f2e;
+    --meal:#b58a4c; --fixed:#857d6c; --mix:#6f7e65; --free:#8a8064;
+    --trackH:640px; --glbl:104px;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Spectral","Noto Serif SC",Georgia,"Songti SC",serif;line-height:1.6;
+    -webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1;}
+  .wrap{max-width:1560px;margin:0 auto;padding:46px clamp(20px,4.2vw,64px) 96px;}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  @keyframes drawLine{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes exglow{0%,100%{box-shadow:0 0 0 0 rgba(255,42,23,.55);}50%{box-shadow:0 0 0 5px rgba(255,42,23,0);}}
+  @media (prefers-reduced-motion:no-preference){
+    .anim{opacity:0;animation:fadeUp .65s cubic-bezier(.2,.7,.2,1) both;}
+    .d1{animation-delay:.04s} .d2{animation-delay:.12s} .d3{animation-delay:.22s} .d4{animation-delay:.34s}
+    .exhot{animation:exglow 1.5s ease-in-out infinite;}
+    .view.on{animation:fadeIn .34s ease;}
+  }
+
+  .masthead{border-bottom:2px solid var(--ink);padding-bottom:20px;position:relative;}
+  .eyebrow{font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:var(--exam-d);font-weight:600;margin:0 0 12px;}
+  h1{font-family:"Noto Serif SC",serif;font-weight:700;font-size:clamp(30px,5vw,52px);margin:0;letter-spacing:.01em;line-height:1.1;}
+  .dek{display:flex;flex-wrap:wrap;gap:7px 26px;align-items:baseline;margin-top:16px;font-size:14px;color:var(--ink2);}
+  .dek b{color:var(--ink);font-weight:600;}
+  .colophon{font-size:13.5px;color:var(--ink3);margin:15px 0 0;font-style:italic;line-height:1.55;max-width:760px;}
+
+  .principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:0;
+    margin:34px 0 0;border:1px solid var(--rule);border-bottom:none;background:var(--paper2);}
+  .pr{padding:16px 20px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    transition:background .2s;}
+  .pr:hover{background:var(--card);}
+  .pr h4{margin:0 0 6px;font-size:14px;font-weight:600;font-family:"Noto Serif SC",serif;display:flex;align-items:baseline;gap:9px;}
+  .pr h4 .n{font-family:"Spectral",serif;font-size:12px;color:var(--exam-d);font-weight:600;}
+  .pr p{margin:0;font-size:12.5px;color:var(--ink2);line-height:1.55;}
+
+  .shead{display:flex;align-items:center;gap:16px;margin:48px 0 18px;flex-wrap:wrap;}
+  .shead h2{font-family:"Noto Serif SC",serif;font-weight:600;font-size:22px;margin:0;white-space:nowrap;
+    position:relative;padding-bottom:3px;}
+  .shead h2::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--ink);
+    transform-origin:left;}
+  @media (prefers-reduced-motion:no-preference){.shead h2::after{animation:drawLine .6s .2s cubic-bezier(.2,.7,.2,1) both;}}
+  .shead .line{flex:1;height:1px;background:var(--rule);min-width:20px;}
+  .shead .hint{font-size:12.5px;color:var(--ink3);white-space:nowrap;}
+
+  .toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;}
+  .legend{display:flex;flex-wrap:wrap;gap:7px;}
+  .lg{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border:1px solid var(--rule);
+    background:var(--card);cursor:pointer;font-size:12.5px;user-select:none;border-radius:3px;transition:.16s;}
+  .lg:hover{background:var(--paper2);transform:translateY(-1px);}
+  .lg .sw{width:11px;height:11px;border-radius:2px;flex:none;}
+  .lg.dim{opacity:.34;} .lg.active{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);}
+  .spacer{flex:1;min-width:10px;}
+  .viewsw{display:inline-flex;border:1px solid var(--ink);border-radius:4px;overflow:hidden;}
+  .viewsw button{font-family:"Noto Serif SC",serif;font-size:13px;border:none;background:transparent;
+    color:var(--ink2);padding:7px 17px;cursor:pointer;transition:.16s;border-left:1px solid var(--rule);}
+  .viewsw button:first-child{border-left:none;}
+  .viewsw button.on{background:var(--ink);color:var(--paper2);}
+  .viewsw button:not(.on):hover{background:var(--paper2);}
+
+  .view{display:none;} .view.on{display:block;}
+
+  /* DETAIL */
+  .tabbar{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px;}
+  .tab{font-family:"Spectral",serif;font-size:13px;border:1px solid var(--rule);background:var(--card);
+    color:var(--ink2);padding:8px 13px 7px;cursor:pointer;border-radius:4px;line-height:1.15;text-align:center;
+    transition:transform .16s,box-shadow .16s,background .16s,border-color .16s;min-width:62px;}
+  .tab .wd{display:block;font-size:10px;color:var(--ink3);font-family:"Noto Serif SC",serif;}
+  .tab:hover{background:var(--paper2);transform:translateY(-2px);}
+  .tab.on{border-color:var(--ink);background:var(--paper2);box-shadow:inset 0 0 0 1px var(--ink);}
+  .tab.exam{border-color:var(--exam);background:var(--exam);color:#fff;}
+  .tab.exam .wd{color:#ffe0db;}
+  .tab.exam.on{box-shadow:0 0 0 2px var(--exam-d);transform:translateY(-2px);}
+
+  .pane{border:1px solid var(--rule);background:var(--card);border-radius:4px;overflow:hidden;}
+  .pane.examday{border-color:var(--exam);box-shadow:0 0 0 1px var(--exam);}
+  .ph{display:flex;align-items:center;gap:12px;padding:15px 20px;border-bottom:1px solid var(--rule);background:var(--paper2);flex-wrap:wrap;}
+  .ph .dt{font-family:"Spectral",serif;font-weight:600;font-size:24px;line-height:1;}
+  .ph .wd{font-size:13px;color:var(--ink3);}
+  .ph .tag{font-size:13.5px;color:var(--ink2);font-family:"Noto Serif SC",serif;}
+  .ph .exb{margin-left:auto;font-size:13px;color:#fff;background:var(--exam);border-radius:3px;padding:5px 14px;font-family:"Noto Serif SC",serif;font-weight:600;}
+  .ph .now{font-size:11px;color:#fff;background:var(--ink);border-radius:2px;padding:2px 8px;font-family:"Noto Serif SC",serif;}
+
+  .ribbon{position:relative;height:18px;margin:15px 20px 3px;border-radius:3px;background:rgba(35,32,26,.05);overflow:hidden;}
+  .ribbon .seg{position:absolute;top:0;bottom:0;transition:opacity .16s;}
+  .ribbon .seg:hover{outline:1.5px solid var(--ink);outline-offset:-1px;z-index:3;}
+  .ribbon .seg.dim{opacity:.14;}
+  .rib-axis{position:relative;height:13px;margin:0 20px 10px;}
+  .rib-axis span{position:absolute;transform:translateX(-50%);font-size:9.5px;color:var(--ink3);font-family:"Spectral",serif;}
+
+  .dlist{padding:2px 20px 16px;column-gap:36px;}
+  @media(min-width:920px){.dlist{column-count:2;}}
+  .drow{display:flex;gap:11px;padding:6px 0;align-items:flex-start;border-top:1px solid var(--rule2);
+    break-inside:avoid;-webkit-column-break-inside:avoid;}
+  .drow.dim{opacity:.22;}
+  .drow .tm{font-family:"Spectral",serif;font-size:12px;color:var(--ink3);flex:none;width:46px;
+    font-variant-numeric:tabular-nums;padding-top:2px;text-align:right;}
+  .drow .body{flex:1;border-left:3px solid var(--c,var(--ink3));padding:1px 0 1px 11px;}
+  .drow .ty{font-size:10.5px;font-weight:600;font-family:"Noto Serif SC",serif;margin-right:8px;color:var(--c,var(--ink2));white-space:nowrap;}
+  .drow .act{font-size:14px;line-height:1.45;color:var(--ink);}
+  .drow.meal .body{border-color:var(--meal);} .drow.meal .act{color:#6e5224;}
+  .drow.fixed .body{border-color:var(--fixed);border-left-style:double;border-left-width:4px;} .drow.fixed .ty{color:var(--fixed);}
+  .drow.exam .body{border:2px solid var(--exam);border-radius:3px;background:rgba(255,42,23,.07);padding:5px 11px;}
+  .drow.exam .act{font-weight:700;color:var(--exam-d);font-size:15px;}
+  .drow.exam .act::before{content:"★ 考试 · ";color:var(--exam);}
+  .drow.exam .ty{display:none;}
+  .drow.free .body{border-left-style:dashed;border-color:var(--free);} .drow.free .act{font-style:italic;color:var(--ink2);}
+  .drow.maintain .body{border-left-style:dashed;}
+  .brk{display:flex;align-items:center;gap:10px;padding:3px 0 3px 57px;color:var(--ink3);font-size:10.5px;
+    font-style:italic;break-inside:avoid;}
+  .brk .ln{flex:1;height:1px;background:var(--rule2);} .brk.dim{opacity:.22;}
+
+  /* CALENDAR */
+  .calwrap{border:1px solid var(--rule);background:var(--card);border-radius:4px;overflow:hidden;overflow-x:auto;}
+  .calgrid{display:grid;grid-template-columns:44px repeat(12,minmax(74px,1fr));min-width:920px;}
+  .chh{border-left:1px solid var(--rule2);border-bottom:1px solid var(--rule);padding:9px 2px;text-align:center;background:var(--paper2);font-family:"Noto Serif SC",serif;}
+  .chh.g0{border-left:none;}
+  .chh .cd{font-family:"Spectral",serif;font-weight:600;font-size:15px;line-height:1.05;}
+  .chh .cw{font-size:10px;color:var(--ink3);}
+  .chh.exam{background:var(--exam);color:#fff;} .chh.exam .cw{color:#ffe0db;}
+  .cbody{border-left:1px solid var(--rule2);position:relative;height:var(--trackH);}
+  .cbody.g0{border-left:none;}
+  .cgutter .ghr{position:absolute;right:6px;transform:translateY(-50%);font-size:10px;color:var(--ink3);font-family:"Spectral",serif;}
+  .cgutter .gl{position:absolute;right:0;width:5px;height:1px;background:var(--rule2);transform:translateY(-50%);}
+  .calblk{position:absolute;left:2px;right:2px;border-radius:2px;overflow:hidden;display:flex;align-items:center;
+    justify-content:center;font-size:11px;font-family:"Noto Serif SC",serif;color:var(--ink);transition:opacity .16s;cursor:default;}
+  .calblk:hover{outline:1.5px solid var(--ink);outline-offset:-1px;z-index:4;}
+  .calblk.dim{opacity:.16;}
+  .calblk.exam{background:var(--exam)!important;color:#fff;font-weight:700;border-radius:3px;writing-mode:vertical-rl;letter-spacing:3px;font-size:13px;}
+
+  /* GANTT */
+  .gwrap{border:1px solid var(--rule);background:var(--card);border-radius:4px;overflow:hidden;overflow-x:auto;}
+  .ginner{min-width:920px;}
+  .gaxis{position:relative;height:22px;margin-left:var(--glbl);border-bottom:1px solid var(--rule);}
+  .gaxis span{position:absolute;transform:translateX(-50%);font-size:10px;color:var(--ink3);font-family:"Spectral",serif;top:4px;}
+  .gaxis span::after{content:"";position:absolute;left:50%;top:14px;width:1px;height:5px;background:var(--rule);}
+  .grow{display:flex;border-top:1px solid var(--rule2);min-height:38px;}
+  .grow:first-child{border-top:none;}
+  .glbl{width:var(--glbl);flex:none;padding:8px 13px;border-right:1px solid var(--rule);background:var(--paper2);display:flex;align-items:center;gap:8px;}
+  .glbl .gd{font-family:"Spectral",serif;font-weight:600;font-size:16px;}
+  .glbl .gw{font-size:11px;color:var(--ink3);}
+  .glbl.exam{background:var(--exam);} .glbl.exam .gd,.glbl.exam .gw{color:#fff;}
+  .gtrack{position:relative;flex:1;}
+  .gblk{position:absolute;top:5px;bottom:5px;border-radius:2px;overflow:hidden;display:flex;align-items:center;
+    justify-content:center;font-size:10.5px;font-family:"Noto Serif SC",serif;color:var(--ink);transition:opacity .16s;}
+  .gblk:hover{outline:1.5px solid var(--ink);outline-offset:-1px;z-index:4;}
+  .gblk.dim{opacity:.16;}
+  .gblk.exam{background:var(--exam)!important;color:#fff;font-weight:700;border-radius:3px;}
+
+  #tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--paper2);font-size:12px;
+    padding:7px 11px;border-radius:3px;max-width:250px;line-height:1.45;opacity:0;transition:opacity .1s;box-shadow:0 6px 18px rgba(0,0,0,.28);}
+  #tip b{color:#fff;} #tip .tt{font-size:10.5px;color:#cbb;font-family:"Spectral",serif;}
+
+  .footnotes{margin-top:46px;border-top:1px solid var(--rule);padding-top:22px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px 34px;}
+  .fn h4{margin:0 0 6px;font-size:14px;font-weight:600;font-family:"Noto Serif SC",serif;display:flex;align-items:baseline;gap:9px;}
+  .fn h4 .b{font-size:10px;color:#fff;background:var(--exam);border-radius:2px;padding:1px 7px;font-family:"Noto Serif SC",serif;font-weight:600;flex:none;}
+  .fn p{margin:0;font-size:13px;color:var(--ink2);line-height:1.6;} .fn p b{color:var(--ink);}
+
+  .actions{margin-top:34px;display:flex;gap:11px;flex-wrap:wrap;}
+  .btn{font-family:inherit;font-size:13px;border:1px solid var(--ink);background:transparent;color:var(--ink);
+    padding:9px 18px;cursor:pointer;border-radius:3px;transition:.16s;}
+  .btn:hover{background:var(--ink);color:var(--paper2);}
+
+  @media (max-width:560px){ .wrap{padding:30px 15px 64px;} .dek{font-size:13px;} }
+  @media print{
+    body{background:#fff;} .wrap{max-width:none;padding:0;}
+    .actions,#tip,.viewsw,.tabbar,.toolbar{display:none;}
+    .view{display:block!important;} .calwrap,.gwrap{overflow:visible;}
+    .dlist{column-count:2;} .pane{page-break-inside:avoid;}
+    .anim{opacity:1!important;animation:none!important;} .exhot{animation:none;}
+    .principles,.cell,.calblk,.gblk,.chh,.glbl,.drow .body,.tab.exam,.ribbon .seg{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+
+  /* PATCH: 更稳的视图显示 + 轻量美化 */
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+    background:
+      radial-gradient(circle at 12% 8%,rgba(255,255,255,.42),transparent 30%),
+      radial-gradient(circle at 86% 16%,rgba(168,81,47,.10),transparent 34%),
+      linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 38%);}
+  .masthead{background:linear-gradient(135deg,rgba(250,246,236,.86),rgba(245,239,226,.58));
+    border:1px solid var(--rule);border-bottom:2px solid var(--ink);border-radius:18px;
+    padding:28px clamp(18px,3vw,34px) 24px;box-shadow:0 18px 42px rgba(73,55,28,.10);}
+  .toolbar{position:sticky;top:0;z-index:20;padding:10px 0;background:rgba(239,231,214,.88);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(202,191,166,.56);}
+  .pane,.calwrap,.gwrap,.principles{box-shadow:0 14px 34px rgba(73,55,28,.08);}
+  .calwrap,.gwrap{background:linear-gradient(180deg,var(--card),rgba(250,246,236,.72));}
+  .view{min-height:220px;}
+  .view.on{opacity:1!important;}
+  #view-calendar.on .calgrid{display:grid;}
+  .calblk,.gblk{box-shadow:inset 0 0 0 1px rgba(35,32,26,.05);}
+  .calblk:not(.exam):hover,.gblk:not(.exam):hover{box-shadow:0 6px 16px rgba(35,32,26,.14),inset 0 0 0 1px rgba(35,32,26,.18);}
+  .render-fallback{padding:22px;margin:14px;border:1px dashed var(--exam);border-radius:8px;background:rgba(255,42,23,.06);color:var(--exam-d);font-family:"Noto Serif SC",serif;}
+
+  /* PATCH 2: 日历 / 甘特可读性增强 —— 字体更厚、字号更大、间距更舒展 */
+  :root{
+    --ui-font:"Noto Sans SC","Microsoft YaHei UI","PingFang SC","Source Han Sans SC","Heiti SC",Arial,sans-serif;
+    --trackH:760px;
+    --glbl:122px;
+  }
+  .calwrap,.gwrap{
+    border-radius:14px;
+    border-color:rgba(150,132,91,.62);
+    box-shadow:0 18px 46px rgba(73,55,28,.12);
+  }
+  .calgrid{
+    grid-template-columns:58px repeat(12,minmax(102px,1fr));
+    min-width:1340px;
+    font-family:var(--ui-font);
+  }
+  .chh{
+    padding:14px 6px 13px;
+    font-family:var(--ui-font);
+    background:linear-gradient(180deg,rgba(250,246,236,.98),rgba(240,231,211,.86));
+  }
+  .chh .cd{
+    display:block;
+    font-family:"Spectral",Georgia,serif;
+    font-size:19px;
+    font-weight:700;
+    letter-spacing:.02em;
+    line-height:1.05;
+    color:var(--ink);
+  }
+  .chh .cw{
+    display:block;
+    margin-top:4px;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.08em;
+    color:var(--ink2);
+  }
+  .chh.exam .cd,.chh.exam .cw{color:#fff;}
+  .cbody{
+    height:var(--trackH);
+    background-image:linear-gradient(to bottom,rgba(202,191,166,.24) 1px,transparent 1px);
+    background-size:100% calc(var(--trackH) / 9);
+  }
+  .cgutter{background:rgba(245,239,226,.72);}
+  .cgutter .ghr{
+    right:10px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.02em;
+    color:var(--ink2);
+    font-family:"Spectral",Georgia,serif;
+  }
+  .cgutter .gl{width:9px;background:rgba(138,130,112,.62);}
+  .calblk{
+    left:5px;
+    right:5px;
+    border-radius:8px;
+    padding:3px 5px;
+    font-family:var(--ui-font);
+    font-size:13px;
+    font-weight:800;
+    line-height:1.18;
+    letter-spacing:.03em;
+    color:rgba(35,32,26,.92);
+    text-shadow:0 1px 0 rgba(255,255,255,.32);
+    box-shadow:inset 0 0 0 1px rgba(35,32,26,.08),0 3px 8px rgba(73,55,28,.06);
+  }
+  .calblk.exam{
+    border-radius:9px;
+    font-size:15px;
+    font-weight:800;
+    letter-spacing:4px;
+    text-shadow:none;
+    box-shadow:0 8px 20px rgba(196,17,0,.24),inset 0 0 0 1px rgba(255,255,255,.22);
+  }
+  .calblk:hover{transform:translateY(-1px) scale(1.015);}
+  .ginner{min-width:1280px;font-family:var(--ui-font);}
+  .gaxis{height:30px;margin-left:var(--glbl);}
+  .gaxis span{font-size:12px;font-weight:700;color:var(--ink2);top:6px;}
+  .gaxis span::after{top:17px;height:8px;}
+  .grow{min-height:50px;}
+  .glbl{padding:10px 16px;gap:10px;font-family:var(--ui-font);}
+  .glbl .gd{font-family:"Spectral",Georgia,serif;font-size:18px;font-weight:700;}
+  .glbl .gw{font-size:12px;font-weight:700;color:var(--ink2);}
+  .gblk{
+    top:7px;
+    bottom:7px;
+    border-radius:8px;
+    padding:0 8px;
+    font-family:var(--ui-font);
+    font-size:12.5px;
+    font-weight:800;
+    letter-spacing:.03em;
+    color:rgba(35,32,26,.92);
+    text-shadow:0 1px 0 rgba(255,255,255,.28);
+    box-shadow:inset 0 0 0 1px rgba(35,32,26,.08),0 4px 10px rgba(73,55,28,.06);
+  }
+  .gblk.exam{
+    font-size:13px;
+    text-shadow:none;
+    box-shadow:0 8px 18px rgba(196,17,0,.22),inset 0 0 0 1px rgba(255,255,255,.22);
+  }
+  @media (max-width:760px){
+    .calgrid{grid-template-columns:54px repeat(12,minmax(92px,1fr));min-width:1180px;}
+    .calblk{font-size:12.5px;}
+    .chh .cd{font-size:18px;}
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead anim">
+    <p class="eyebrow">Final Sprint · Distributed Review</p>
+    <h1>期末冲刺 · 十二天分散复习日程</h1>
+    <div class="dek">
+      <span><b>6/23 周一 → 7/4 周五</b></span><span>六门 · 六考</span>
+      <span>6:30 起 · 22:30 睡（最晚 23:00）</span><span>三餐 6:30 / 11:00 / 17:00</span>
+    </div>
+    <p class="colophon">不是把一门做到完美，是在六门之间分配最高分。深学整块在上午，刷题交错在午后，要背的放睡前——然后真的去睡。</p>
+  </header>
+
+  <div class="principles anim d1" id="principles"></div>
+
+  <div class="shead anim d2"><h2>每日时间表</h2><span class="line"></span><span class="hint">考试日炫红标出 · 悬停看时段</span></div>
+
+  <div class="toolbar anim d2">
+    <div class="legend" id="legend"></div>
+    <span class="spacer"></span>
+    <div class="viewsw" id="viewsw">
+      <button data-v="detail" class="on">详细</button>
+      <button data-v="calendar">日历</button>
+      <button data-v="gantt">甘特</button>
+    </div>
+  </div>
+
+  <div id="view-detail" class="view on anim d3">
+    <div class="tabbar" id="tabbar"></div>
+    <div id="pane"></div>
+  </div>
+  <div id="view-calendar" class="view anim d3">
+    <div class="calwrap"><div class="calgrid" id="calgrid"></div></div>
+  </div>
+  <div id="view-gantt" class="view anim d3">
+    <div class="gwrap"><div class="ginner"><div class="gaxis" id="gaxis"></div><div id="grows"></div></div></div>
+  </div>
+
+  <div class="footnotes anim d4">
+    <div class="fn"><h4><span class="b">承重墙</span>6/28 晚的物理启动</h4>
+      <p>物理最迟只能在有机考完（6/28 晚）才系统开学，公式间隔最短。<b>有机考完当晚必须立刻开物理网课</b>，不能歇——一歇，物理就从冲分塌回保过。这是全程唯一不能拖的启动点。</p></div>
+    <div class="fn"><h4><span class="b">先瞄量</span>毛概 / 史纲的页数</h4>
+      <p>文科第一轮全扫排在 6/24。<b>今明两天先翻一眼两门考纲页数</b>，量没大到离谱，这套间隔复习就够；若哪门厚得吓人，把首扫拆成 6/24 + 6/26 两天。</p></div>
+    <div class="fn"><h4><span class="b">硬约束</span>吃饭与睡觉在线</h4>
+      <p>这张表默认你吃了饭、睡了觉。睡前巩固有容量上限，<b>靠熬夜塞不进去</b>；考前一晚睡够比多背一小时换分更多。</p></div>
+    <div class="fn"><h4><span class="b">留白</span>7/4 晚是空的</h4>
+      <p>最后一门考完，晚上故意没排任何东西。<b>那一格是你挣来的</b>——什么都不做，也能坐下来。</p></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="window.print()">打印 / 存为 PDF</button>
+    <button class="btn" id="clearbtn">清除高亮</button>
+  </div>
+</div>
+
+<div id="tip"></div>
+
+<script>
+(function(){
+"use strict";
+const SUBJ={
+  eng:{name:"综合英语",sh:"英",c:"#3d6b5e"},
+  org:{name:"有机化学",sh:"有",c:"#a8512f"},
+  phy:{name:"大学物理",sh:"物",c:"#39487a"},
+  mao:{name:"毛概",sh:"毛",c:"#7e4a63"},
+  prob:{name:"概率论",sh:"概",c:"#b07d2a"},
+  his:{name:"史纲",sh:"史",c:"#6b6f2e"},
+};
+const NEUT={meal:"#b58a4c",rest:"#cdbf9f",fixed:"#857d6c",mix:"#6f7e65",free:"#8a8064"};
+const TY={learn:"深学",practice:"刷题",review:"复习",maintain:"维持",mix:"维持",exam:"考试",meal:"用餐",fixed:"",free:""};
+const DENS={learn:.50,practice:.30,review:.30,maintain:.13,mix:.13,meal:.22,rest:.09,fixed:.20,free:.07};
+function hx(h){h=h.replace("#","");return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function rgba(h,a){var c=hx(h);return "rgba("+c[0]+","+c[1]+","+c[2]+","+a+")";}
+function col(k){return SUBJ[k]?SUBJ[k].c:NEUT[k];}
+function fmt(m){return Math.floor(m/60)+":"+String(m%60).padStart(2,"0");}
+function bgFor(k,t){
+  var c=col(k);
+  if(t==="exam")return "background:var(--exam);";
+  if(t==="free")return "background:repeating-linear-gradient(135deg,"+rgba(c,.05)+","+rgba(c,.05)+" 4px,"+rgba(c,.13)+" 4px,"+rgba(c,.13)+" 8px);";
+  if(t==="fixed")return "background:repeating-linear-gradient(135deg,"+rgba(c,.16)+","+rgba(c,.16)+" 4px,"+rgba(c,.26)+" 4px,"+rgba(c,.26)+" 8px);";
+  if(t==="meal")return "background:"+rgba(c,.22)+";";
+  if(t==="rest")return "background:"+rgba(c,.10)+";";
+  return "background:"+rgba(c,DENS[t]||.15)+";";
+}
+
+const PRIN=[
+ ["间隔复习","同一批公式 / 考点跨天反复回忆，胜过集中突击。物理公式天天默一遍。"],
+ ["50 / 90 法则","深学 90 分钟封顶，常规专注 50 分钟一段，每段后 10 分钟真休息（别刷手机）。"],
+ ["睡前巩固","要背的放睡前最后一格，然后真去睡。睡眠加工记忆，但有容量上限。"],
+ ["交错刷题","新知识整块深啃；进入复习后，把有机 / 物理 / 概率的题混着做。"],
+ ["上午深学","最难的新学放精力最足的早晨；午后与傍晚做练习和复习。"],
+];
+document.getElementById("principles").innerHTML=PRIN.map(function(p,i){
+ return '<div class="pr"><h4><span class="n">'+String(i+1).padStart(2,"0")+'</span>'+p[0]+'</h4><p>'+p[1]+'</p></div>';
+}).join("");
+
+const DAYS=[{d:"6/23",wd:"一"},{d:"6/24",wd:"二"},{d:"6/25",wd:"三"},{d:"6/26",wd:"四"},
+ {d:"6/27",wd:"五"},{d:"6/28",wd:"六"},{d:"6/29",wd:"日"},{d:"6/30",wd:"一"},
+ {d:"7/1",wd:"二"},{d:"7/2",wd:"三"},{d:"7/3",wd:"四"},{d:"7/4",wd:"五"}];
+const EXAMDAY={"6/27":"eng","6/28":"org","7/1":"phy","7/2":"mao","7/3":"prob","7/4":"his"};
+const TAG={"6/23":"概率随堂考","6/24":"最重的一天","6/25":"物理主攻 · 体育考","6/26":"英语临考冲","6/27":"英语考","6/28":"有机考 · 物理起跑","6/29":"物理锁定","6/30":"物理峰值","7/1":"物理考","7/2":"毛概考","7/3":"概率考","7/4":"收工"};
+
+const SCHED={
+"6/23":[[390,450,"meal","meal","起床 · 早餐"],[450,660,"prob","learn","概率基础通关（自学，上午）"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休"],[750,965,"fixed","fixed","概率课 + 随堂考"],[965,1020,"org","learn","有机首过 · 启动"],[1020,1080,"meal","meal","晚餐"],[1080,1170,"org","learn","有机首过"],[1170,1185,"rest","rest","休息"],[1185,1275,"org","learn","有机首过"],[1275,1290,"rest","rest","休息"],[1290,1335,"eng","maintain","英语听力 + 课文（日常线启动）"],[1335,1380,"rest","rest","洗漱 · 就寝"]],
+"6/24":[[390,450,"meal","meal","早餐"],[450,540,"phy","learn","物理首过 · 网课基础"],[540,555,"rest","rest","休息"],[555,645,"mao","learn","毛概 · 全书首扫"],[645,660,"rest","rest","休息"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休 · 小睡"],[750,840,"org","learn","有机首过 · 收尾"],[840,855,"rest","rest","休息"],[855,945,"his","learn","史纲 · 全书首扫"],[945,960,"rest","rest","休息"],[960,1020,"eng","practice","英语阅读练习"],[1020,1080,"meal","meal","晚餐"],[1080,1170,"eng","practice","英语作文 + 整套卷（冲卷面分）"],[1170,1185,"rest","rest","休息"],[1185,1260,"org","practice","有机刷题"],[1260,1275,"rest","rest","休息"],[1275,1335,"mix","maintain","睡前：物理公式 · 概率公式 · 英语听力"],[1335,1380,"rest","rest","洗漱 · 就寝"]],
+"6/25":[[390,450,"meal","meal","早餐"],[450,480,"mix","maintain","晨读：物理公式 · 英语听力"],[480,590,"fixed","fixed","概率课"],[600,640,"fixed","fixed","体育考（最后一节）"],[640,660,"rest","rest","缓冲"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休"],[750,840,"phy","learn","物理主攻 · 系统学 + 课件"],[840,855,"rest","rest","休息"],[855,945,"phy","learn","物理主攻 · 公式推导"],[945,960,"rest","rest","休息"],[960,1020,"org","practice","有机刷题"],[1020,1080,"meal","meal","晚餐"],[1080,1170,"eng","practice","英语整套卷 · 临考冲刺"],[1170,1185,"rest","rest","休息"],[1185,1260,"phy","practice","物理刷题 + 公式"],[1260,1275,"rest","rest","休息"],[1275,1335,"mix","maintain","睡前：文科扫读 · 概率公式 · 听力"],[1335,1380,"rest","rest","就寝"]],
+"6/26":[[390,450,"meal","meal","早餐"],[450,540,"eng","learn","英语 · 听力强化 + 作文模板"],[540,555,"rest","rest","休息"],[555,645,"org","practice","有机刷题 · 收口"],[645,660,"rest","rest","休息"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休"],[750,840,"phy","learn","物理 · 继续学 / 公式"],[840,855,"rest","rest","休息"],[855,900,"mao","review","毛概 · 第二轮扫（间隔复习）"],[900,945,"his","review","史纲 · 第二轮扫（间隔复习）"],[945,960,"rest","rest","休息"],[960,1020,"prob","practice","概率刷题 + 公式"],[1020,1080,"meal","meal","晚餐"],[1080,1170,"eng","review","英语终冲 · 整套卷 + 听力（明天考）"],[1170,1185,"rest","rest","休息"],[1185,1260,"org","review","有机易错回顾"],[1260,1275,"rest","rest","休息"],[1275,1335,"eng","maintain","睡前：英语听力（明天考）+ 物理公式"],[1335,1380,"rest","rest","早睡 · 明天英语考"]],
+"6/27":[[390,450,"meal","meal","早餐"],[450,540,"eng","review","英语终复 · 作文背诵 + 听力热身"],[540,555,"rest","rest","休息"],[555,630,"eng","review","英语终复 · 真题手感 + 课文重点"],[630,660,"rest","rest","缓冲"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休 · 考前别累"],[750,810,"eng","review","英语轻过 · 临场调整"],[840,990,"eng","exam","综合英语 · 考试"],[990,1020,"rest","rest","缓冲 · 放松"],[1020,1080,"meal","meal","晚餐"],[1080,1170,"org","learn","有机终攻（明天考）"],[1170,1185,"rest","rest","休息"],[1185,1275,"org","review","有机易错 + 反应机理"],[1275,1335,"org","maintain","睡前：有机重点过一遍（明天考）"],[1335,1380,"rest","rest","就寝"]],
+"6/28":[[390,450,"meal","meal","早餐"],[450,540,"org","review","有机终复 · 机理 + 易错"],[540,555,"rest","rest","休息"],[555,630,"org","review","有机终复 · 刷一套 + 查漏"],[630,660,"rest","rest","缓冲"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休"],[750,810,"org","review","有机轻过 · 临场"],[840,990,"org","exam","有机化学 · 考试"],[990,1020,"rest","rest","缓冲"],[1020,1080,"meal","meal","晚餐"],[1080,1170,"phy","learn","物理启动 · 考完立刻开（承重墙）"],[1170,1185,"rest","rest","休息"],[1185,1275,"phy","learn","物理 · 公式推导记忆"],[1275,1335,"mix","maintain","睡前：物理公式 + 文科扫读"],[1335,1380,"rest","rest","就寝"]],
+"6/29":[[390,450,"meal","meal","早餐"],[450,540,"phy","learn","物理 · 基础速通收尾"],[540,555,"rest","rest","休息"],[555,645,"phy","learn","物理 · 公式全推导一遍"],[645,660,"rest","rest","休息"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休"],[750,840,"phy","practice","物理 · 章节专项刷题"],[840,855,"rest","rest","休息"],[855,945,"phy","practice","物理 · 刷题 + 错题"],[945,960,"rest","rest","休息"],[960,1020,"prob","practice","概率刷题 + 公式（维持手感）"],[1020,1080,"meal","meal","晚餐"],[1080,1170,"mao","review","毛概 · 第三轮（7/2 临近，加权）"],[1170,1185,"rest","rest","休息"],[1185,1260,"phy","practice","物理公式 + 综合题"],[1260,1275,"rest","rest","休息"],[1275,1335,"mix","maintain","睡前：物理公式 + 文科扫"],[1335,1380,"rest","rest","就寝"]],
+"6/30":[[390,450,"meal","meal","早餐"],[450,540,"phy","practice","物理 · 全真套题"],[540,555,"rest","rest","休息"],[555,645,"phy","review","物理 · 公式默写 + 弱项"],[645,660,"rest","rest","休息"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休"],[750,840,"phy","practice","物理 · 错题 + 重点公式再推"],[840,855,"rest","rest","休息"],[855,945,"phy","practice","物理 · 套题计时"],[945,960,"rest","rest","休息"],[960,1020,"mao","review","毛概复习（继续加权）"],[1020,1080,"meal","meal","晚餐"],[1080,1170,"phy","review","物理终冲 · 公式默写 + 高频题"],[1170,1185,"rest","rest","休息"],[1185,1260,"phy","review","物理 · 临场题感"],[1260,1275,"rest","rest","休息"],[1275,1335,"phy","maintain","睡前：物理公式最后过（明早考）"],[1335,1380,"rest","rest","早睡 · 明早物理考"]],
+"7/1":[[390,450,"meal","meal","早餐"],[450,510,"phy","review","物理终复 · 公式默写 + 临场"],[540,660,"phy","exam","大学物理 · 考试（上午）"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休 · 考完休整"],[750,840,"mao","learn","毛概 · 全书精读（明天考）"],[840,855,"rest","rest","休息"],[855,945,"mao","review","毛概 · 框架 + 高频考点"],[945,960,"rest","rest","休息"],[960,1020,"mao","review","毛概背诵 + 概率公式维持"],[1020,1080,"meal","meal","晚餐"],[1080,1170,"mao","review","毛概 · 主观题要点"],[1170,1185,"rest","rest","休息"],[1185,1260,"mao","practice","毛概自测 · 合书默写框架"],[1260,1275,"rest","rest","休息"],[1275,1335,"mao","maintain","睡前：毛概重点过一遍（明天考）"],[1335,1380,"rest","rest","就寝"]],
+"7/2":[[390,450,"meal","meal","早餐"],[450,540,"mao","review","毛概终背 · 框架默写"],[540,555,"rest","rest","休息"],[555,630,"mao","review","毛概终背 · 主观模板 + 查漏"],[630,660,"rest","rest","缓冲"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休"],[750,810,"mao","review","毛概轻过 · 临场"],[840,990,"mao","exam","毛概 · 考试"],[990,1020,"rest","rest","缓冲"],[1020,1080,"meal","meal","晚餐"],[1080,1170,"prob","review","概率集中复习 · 公式体系 + 题型"],[1170,1185,"rest","rest","休息"],[1185,1275,"prob","practice","概率刷题 · 套题 / 真题"],[1275,1335,"prob","maintain","睡前：概率公式 + 史纲扫读启动"],[1335,1380,"rest","rest","就寝"]],
+"7/3":[[390,450,"meal","meal","早餐"],[450,540,"prob","review","概率终复 · 公式默写 + 易错题型"],[540,555,"rest","rest","休息"],[555,630,"prob","review","概率套题计时 + 查漏"],[630,660,"rest","rest","缓冲"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休"],[750,810,"prob","review","概率轻过 · 临场"],[840,990,"prob","exam","概率论 · 考试"],[990,1020,"rest","rest","缓冲"],[1020,1080,"meal","meal","晚餐"],[1080,1170,"his","learn","史纲 · 全书过 + 时间线（明天考）"],[1170,1185,"rest","rest","休息"],[1185,1275,"his","review","史纲 · 大事件 + 高频考点"],[1275,1335,"his","maintain","睡前：史纲框架过一遍（明天考）"],[1335,1380,"rest","rest","就寝"]],
+"7/4":[[390,450,"meal","meal","早餐"],[450,540,"his","review","史纲终背 · 时间线默写"],[540,555,"rest","rest","休息"],[555,630,"his","review","史纲终背 · 主观要点 + 查漏"],[630,660,"rest","rest","缓冲"],[660,700,"meal","meal","午餐"],[700,750,"rest","rest","午休"],[750,810,"his","review","史纲轻过 · 临场"],[840,990,"his","exam","近现代史纲要 · 考试"],[990,1080,"free","free","收工！两周结束"],[1080,1140,"meal","meal","晚餐 · 去吃顿好的"],[1140,1380,"free","free","自由 · 休息（你挣来的）"]],
+};
+
+const T0=390,T1=1380,SPAN=T1-T0;
+function pct(m){return (m-T0)/SPAN*100;}
+
+/* DETAIL */
+document.getElementById("tabbar").innerHTML=DAYS.map(function(dy){
+ var ex=EXAMDAY[dy.d];
+ return '<button class="tab '+(ex?'exam exhot':'')+'" data-day="'+dy.d+'">'+dy.d+'<span class="wd">周'+dy.wd+'</span></button>';
+}).join("");
+
+function buildRibbon(day){
+ return SCHED[day].map(function(b){
+  return '<div class="seg '+(b[3]==="exam"?"exhot":"")+'" data-subj="'+(SUBJ[b[2]]?b[2]:"")+'" data-tip="'+fmt(b[0])+'–'+fmt(b[1])+' · '+b[4]+'" style="left:'+pct(b[0])+'%;width:'+((b[1]-b[0])/SPAN*100)+'%;'+bgFor(b[2],b[3])+'"></div>';
+ }).join("");
+}
+function buildList(day){
+ return SCHED[day].map(function(b){
+  var s=b[0],e=b[1],k=b[2],t=b[3],label=b[4],c=col(k),isS=!!SUBJ[k];
+  if(t==="rest"){var mn=e-s;return '<div class="brk"><span>'+fmt(s)+'</span><span class="ln"></span><span>'+label+(mn>=20?" · "+mn+"′":"")+'</span><span class="ln"></span></div>';}
+  var ty=TY[t]||"";
+  return '<div class="drow '+t+'" data-subj="'+(isS?k:"")+'" style="--c:'+c+'"><span class="tm">'+fmt(s)+'</span><span class="body">'+(ty?'<span class="ty">'+ty+'</span>':"")+'<span class="act">'+label+'</span></span></div>';
+ }).join("");
+}
+function showDay(day){
+ document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("on",t.dataset.day===day);});
+ var dy=DAYS.filter(function(x){return x.d===day;})[0],ex=EXAMDAY[day],today=day==="6/23";
+ var axis=[9,13,17,21].map(function(h){return '<span style="left:'+pct(h*60)+'%">'+h+'</span>';}).join("");
+ document.getElementById("pane").innerHTML='<div class="pane '+(ex?'examday':'')+'">'+
+  '<div class="ph"><span class="dt">'+day+'</span><span class="wd">周'+dy.wd+'</span>'+(today?'<span class="now">今日</span>':'')+'<span class="tag">'+TAG[day]+'</span>'+(ex?'<span class="exb exhot">★ '+SUBJ[ex].name+'考</span>':'')+'</div>'+
+  '<div class="ribbon">'+buildRibbon(day)+'</div>'+
+  '<div class="rib-axis">'+axis+'</div>'+
+  '<div class="dlist">'+buildList(day)+'</div></div>';
+ apply();
+}
+
+/* CALENDAR & GANTT: patched lazy/defensive rendering */
+var calendarReady=false,ganttReady=false;
+function failRender(el,name,err){
+ console.error(name+" render failed",err);
+ el.innerHTML='<div class="render-fallback">'+name+' 加载失败：'+(err&&err.message?err.message:String(err))+'。已改为兜底提示，请刷新或检查脚本。</div>';
+}
+function renderCalendar(force){
+ var grid=document.getElementById("calgrid"); if(!grid)return;
+ if(calendarReady&&!force&&grid.children.length)return;
+ try{
+  var head='<div class="chh g0"></div>';
+  DAYS.forEach(function(dy){var ex=EXAMDAY[dy.d];
+   head+='<div class="chh '+(ex?'exam exhot':'')+'"><span class="cd">'+dy.d+'</span><span class="cw">周'+dy.wd+'</span></div>';});
+  var body='<div class="cbody g0 cgutter">';
+  [7,9,11,13,15,17,19,21,23].forEach(function(h){var top=(h*60-T0)/SPAN*100;
+   body+='<span class="ghr" style="top:'+top+'%">'+h+'</span><span class="gl" style="top:'+top+'%"></span>';});
+  body+='</div>';
+  DAYS.forEach(function(dy){
+   var blks=(SCHED[dy.d]||[]).map(function(b){
+    var s=b[0],e=b[1],k=b[2],t=b[3],label=b[4],isS=!!SUBJ[k];
+    var top=(s-T0)/SPAN*100,hgt=(e-s)/SPAN*100,inner="";
+    if(t==="exam")inner=SUBJ[k].sh+"考";
+    else if(t!=="meal"&&t!=="rest"&&t!=="fixed"&&t!=="free"&&hgt>4.5)inner=SUBJ[k]?SUBJ[k].sh:"";
+    return '<div class="calblk '+(t==="exam"?'exam exhot':'')+'" data-subj="'+(isS?k:'')+'" data-tip="'+fmt(s)+'–'+fmt(e)+' · '+label+'" style="top:'+top+'%;height:'+hgt+'%;'+bgFor(k,t)+'">'+inner+'</div>';
+   }).join("");
+   body+='<div class="cbody">'+blks+'</div>';
+  });
+  grid.innerHTML=head+body;
+  calendarReady=true;
+ }catch(err){calendarReady=false;failRender(grid,"日历视图",err);}
+}
+function renderGantt(force){
+ var axis=document.getElementById("gaxis"),rowsEl=document.getElementById("grows"); if(!axis||!rowsEl)return;
+ if(ganttReady&&!force&&rowsEl.children.length)return;
+ try{
+  var ax="";for(var h=7;h<=23;h+=2){ax+='<span style="left:'+pct(h*60)+'%">'+h+'</span>';}
+  axis.innerHTML=ax;
+  var rows=DAYS.map(function(dy){var ex=EXAMDAY[dy.d];
+   var blks=(SCHED[dy.d]||[]).map(function(b){
+    var s=b[0],e=b[1],k=b[2],t=b[3],label=b[4],isS=!!SUBJ[k],w=(e-s)/SPAN*100,inner="";
+    if(t==="exam")inner=SUBJ[k].name+"考";
+    else if(t!=="meal"&&t!=="rest"&&t!=="fixed"&&t!=="free"&&w>4.5)inner=SUBJ[k]?SUBJ[k].sh:"";
+    return '<div class="gblk '+(t==="exam"?'exam exhot':'')+'" data-subj="'+(isS?k:'')+'" data-tip="'+fmt(s)+'–'+fmt(e)+' · '+label+'" style="left:'+pct(s)+'%;width:'+w+'%;'+bgFor(k,t)+'">'+inner+'</div>';
+   }).join("");
+   return '<div class="grow"><div class="glbl '+(ex?'exam exhot':'')+'"><span class="gd">'+dy.d+'</span><span class="gw">周'+dy.wd+'</span></div><div class="gtrack">'+blks+'</div></div>';
+  }).join("");
+  rowsEl.innerHTML=rows;
+  ganttReady=true;
+ }catch(err){ganttReady=false;failRender(rowsEl,"甘特视图",err);}
+}
+function ensureView(name){
+ if(name==="calendar")renderCalendar(false);
+ if(name==="gantt")renderGantt(false);
+ window.requestAnimationFrame(function(){
+  var el=document.getElementById("view-"+name); if(!el)return;
+  el.style.transform="translateZ(0)";
+  setTimeout(function(){el.style.transform="";},80);
+ });
+}
+
+/* LEGEND */
+document.getElementById("legend").innerHTML=Object.keys(SUBJ).map(function(k){var s=SUBJ[k];
+ return '<div class="lg" data-subj="'+k+'"><span class="sw" style="background:'+s.c+'"></span>'+s.name+'</div>';
+}).join("");
+
+/* view switch (delegated) */
+document.getElementById("viewsw").addEventListener("click",function(e){
+ var b=e.target.closest("button"); if(!b)return;
+ var name=b.dataset.v;
+ ensureView(name);
+ document.querySelectorAll("#viewsw button").forEach(function(x){x.classList.toggle("on",x===b);});
+ document.querySelectorAll(".view").forEach(function(v){v.classList.remove("on");});
+ var target=document.getElementById("view-"+name);
+ if(target)target.classList.add("on");
+ apply();
+});
+
+/* tabs (delegated) */
+document.getElementById("tabbar").addEventListener("click",function(e){
+ var b=e.target.closest(".tab"); if(!b)return; showDay(b.dataset.day);
+});
+
+/* legend filter (delegated) */
+var active=null;
+document.getElementById("legend").addEventListener("click",function(e){
+ var el=e.target.closest(".lg"); if(!el)return;
+ active=(active===el.dataset.subj)?null:el.dataset.subj; apply();
+});
+document.getElementById("clearbtn").addEventListener("click",function(){active=null;apply();});
+function apply(){
+ document.querySelectorAll(".lg").forEach(function(el){el.classList.toggle("active",el.dataset.subj===active);el.classList.toggle("dim",active&&el.dataset.subj!==active);});
+ document.querySelectorAll(".seg,.drow,.brk,.calblk,.gblk").forEach(function(el){
+  if(!active){el.classList.remove("dim");return;}
+  el.classList.toggle("dim",el.dataset.subj!==active);});
+}
+
+/* tooltip */
+var tip=document.getElementById("tip");
+document.body.addEventListener("mousemove",function(e){
+ var el=e.target.closest(".seg,.calblk,.gblk"); if(!el){tip.style.opacity=0;return;}
+ var subj=el.dataset.subj,sn=subj?SUBJ[subj].name:"",p=el.dataset.tip.split(" · ");
+ tip.innerHTML='<span class="tt">'+p[0]+'</span><br><b>'+p.slice(1).join(" · ")+'</b>'+(sn?'<br><span class="tt">'+sn+'</span>':"");
+ tip.style.opacity=1;var x=e.clientX+14,y=e.clientY+14;
+ if(x+260>window.innerWidth)x=e.clientX-260; if(y+82>window.innerHeight)y=e.clientY-82;
+ tip.style.left=x+"px";tip.style.top=y+"px";
+});
+
+renderCalendar(false);
+renderGantt(false);
+showDay("6/23");
+ensureView("detail");
+})();
+</script>
+</body>
+</html>

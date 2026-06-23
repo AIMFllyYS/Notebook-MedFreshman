@@ -1,0 +1,1460 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUST 真题资源包 · 统一中心</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hlTheme">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0f0d12;--bg-grad1:#131119;--bg-grad2:#0c0a0f;
+  --text:#e8e2d8;--text-secondary:#a09890;--text-muted:#6b6358;
+  --border:rgba(200,180,140,0.08);
+  --card-bg:rgba(255,250,240,0.025);--card-border:rgba(200,180,140,0.1);
+  --accent:#c8a062;--accent-light:#dcb878;--accent-dim:rgba(200,160,98,0.15);
+  --sidebar-bg:#0c0a10;--sidebar-text:#a09890;
+  --content-bg:#0f0d12;--code-bg:#1a1620;
+  --table-border:rgba(200,180,140,0.1);--table-stripe:rgba(200,180,140,0.02);
+  --header-bg:#0a0810;--header-text:#c8c0b0;
+  --scrollbar-thumb:#3a3428;--scrollbar-track:#0c0a10;
+  --tile-glow:rgba(200,160,98,0.08);
+  --splash-bg:#08060c;--splash-accent:#c8a062;
+}
+body.light{
+  --bg:#f5f1ea;--bg-grad1:#faf6ef;--bg-grad2:#f0ebe2;
+  --text:#2a2520;--text-secondary:#5a5248;--text-muted:#8a8278;
+  --border:rgba(60,50,40,0.1);
+  --card-bg:rgba(0,0,0,0.025);--card-border:rgba(60,50,40,0.12);
+  --accent:#8b6d3a;--accent-light:#a0824a;--accent-dim:rgba(139,109,58,0.12);
+  --sidebar-bg:#ede8e0;--sidebar-text:#5a5248;
+  --content-bg:#f5f1ea;--code-bg:#e8e2d8;
+  --table-border:rgba(60,50,40,0.12);--table-stripe:rgba(60,50,40,0.03);
+  --header-bg:#e8e2d8;--header-text:#3a3530;
+  --scrollbar-thumb:#c8c0b0;--scrollbar-track:#ede8e0;
+  --tile-glow:rgba(139,109,58,0.1);
+  --splash-bg:#f5f1ea;--splash-accent:#8b6d3a;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);transition:background .4s,color .4s}
+
+/* ===== Splash ===== */
+#splash{position:fixed;inset:0;background:var(--splash-bg);display:flex;align-items:center;justify-content:center;z-index:9999;overflow:hidden;transition:background .4s}
+#splash.fade-out{animation:splashOut .7s ease forwards}
+@keyframes splashOut{to{opacity:0;pointer-events:none}}
+.splash-content{text-align:center;position:relative;z-index:2;user-select:none}
+.splash-school{font-size:13px;color:var(--text-muted);letter-spacing:6px;text-transform:uppercase;margin-bottom:24px;opacity:0;animation:splashSlide .5s .2s ease forwards}
+.splash-title{font-size:34px;font-weight:800;color:var(--splash-accent);letter-spacing:3px;margin-bottom:18px;opacity:0;animation:splashSlide .5s .45s ease forwards}
+.splash-wish{font-size:17px;color:var(--text-secondary);letter-spacing:1px;opacity:0;animation:splashSlide .5s .7s ease forwards;display:flex;align-items:center;justify-content:center;gap:8px}
+.splash-wish svg{width:20px;height:20px;stroke:var(--splash-accent)}
+.particle-char{position:absolute;top:50%;left:50%;color:var(--splash-accent);font-size:20px;font-weight:800;pointer-events:none;animation:pFly 1s cubic-bezier(0,0.1,0.2,1) forwards}
+@keyframes pFly{0%{transform:translate(-50%,-50%) scale(1.1);opacity:1}60%{opacity:.5}100%{transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) rotate(var(--rot)) scale(.1);opacity:0}}
+@keyframes splashSlide{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== Home Page ===== */
+#home{display:flex;flex-direction:column;height:100vh;position:relative;overflow:hidden;background:radial-gradient(ellipse at 30% 20%,var(--bg-grad1) 0%,var(--bg) 50%,var(--bg-grad2) 100%)}
+#home.hidden{display:none}
+.bg-danmaku{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.danmaku-item{position:absolute;white-space:nowrap;font-weight:600;animation:danmakuScroll linear forwards;will-change:transform}
+@keyframes danmakuScroll{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+.bg-meteor{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.meteor-item{position:absolute;top:-30px;opacity:0;animation:meteorFall linear forwards;will-change:transform,opacity}
+@keyframes meteorFall{0%{opacity:0;transform:translateY(-30px) rotate(0deg)}10%{opacity:.35}90%{opacity:.25}100%{opacity:0;transform:translateY(100vh) rotate(360deg)}}
+.home-content{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.home-header{text-align:center;margin-bottom:28px}
+.home-header h1{font-size:30px;font-weight:800;color:var(--text);letter-spacing:1px;margin-bottom:4px}
+.home-header h1 span{color:var(--accent)}
+.home-header p{font-size:13px;color:var(--text-muted);letter-spacing:2px}
+.bento-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:14px;max-width:1100px;width:100%;height:min(420px,calc(100vh - 220px))}
+.bento-tile{
+  position:relative;border-radius:14px;cursor:pointer;overflow:hidden;
+  background:var(--card-bg);border:1px solid var(--card-border);
+  backdrop-filter:blur(12px);padding:20px;display:flex;flex-direction:column;
+  justify-content:space-between;transition:border-color .3s,box-shadow .3s;
+}
+.bento-tile:hover{border-color:var(--tile-accent);box-shadow:0 8px 32px rgba(0,0,0,.2),0 0 24px var(--tile-glow)}
+.bento-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--tile-accent),transparent);opacity:0;transition:opacity .3s}
+.bento-tile:hover::before{opacity:.8}
+.tile-glow-blob{position:absolute;top:-40%;right:-20%;width:180px;height:180px;border-radius:50%;background:var(--tile-accent);opacity:.04;filter:blur(50px);transition:opacity .4s}
+.bento-tile:hover .tile-glow-blob{opacity:.1}
+.tile-top{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1}
+.tile-icon{width:36px;height:36px;color:var(--tile-accent);flex-shrink:0;transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.bento-tile:hover .tile-icon{transform:scale(1.1)}
+.tile-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.tile-count{font-size:11px;color:var(--text-muted);text-align:right;line-height:1.4}
+.tile-count strong{display:block;font-size:22px;color:var(--tile-accent);font-weight:700}
+.tile-bottom{position:relative;z-index:1}
+.tile-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px}
+.tile-sub{font-size:11px;color:var(--text-muted);margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile-links{display:flex;gap:8px;align-items:center}
+.tile-enter{background:var(--tile-accent);color:#fff;border:none;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .2s}
+.tile-enter:hover{opacity:.85}
+.tile-sep{font-size:11px;color:var(--text-muted);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:3px}
+.tile-sep:hover{color:var(--tile-accent)}
+.tile-sep svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+.bento-tile.large{grid-column:span 2;grid-row:span 2}
+.bento-tile.large .tile-icon{width:48px;height:48px}
+.bento-tile.large .tile-name{font-size:20px}
+.bento-tile.large .tile-sub{font-size:12px}
+.bento-tile.wide-l{grid-column:span 2;grid-row:span 1}
+.bento-tile.wide-r{grid-column:span 2;grid-row:span 1}
+
+/* ===== Browse Page ===== */
+#browse{display:none;flex-direction:row;height:100vh;overflow:hidden}
+#browse.active{display:flex}
+#sidebar{width:280px;min-width:280px;background:var(--sidebar-bg);color:var(--sidebar-text);display:flex;flex-direction:column;transition:transform .3s,background .4s;z-index:100}
+#sidebar.collapsed{transform:translateX(-280px);margin-right:-280px}
+.sidebar-header{padding:14px 16px;background:rgba(0,0,0,.15);font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.sidebar-header svg{width:16px;height:16px;stroke:var(--header-text);fill:none;stroke-width:2;flex-shrink:0}
+.sidebar-header .back-btn{background:rgba(255,255,255,.08);border:none;color:var(--header-text);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:12px;transition:background .2s;white-space:nowrap;display:flex;align-items:center;gap:4px}
+.sidebar-header .back-btn:hover{background:rgba(255,255,255,.16)}
+.sidebar-header .back-btn svg{width:14px;height:14px}
+#file-tree{flex:1;overflow-y:auto;padding:8px 0;font-size:13px}
+#file-tree::-webkit-scrollbar{width:4px}
+#file-tree::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:2px}
+#file-tree::-webkit-scrollbar-track{background:var(--scrollbar-track)}
+.tree-item{display:flex;align-items:center;padding:5px 12px;padding-left:calc(12px + var(--level,0) * 16px);cursor:pointer;user-select:none;transition:background .15s,border-left-color .15s;border-left:2px solid transparent;gap:5px;min-height:28px;color:var(--sidebar-text)}
+.tree-item:hover{background:rgba(255,255,255,.05);border-left-color:var(--accent)}
+body.light .tree-item:hover{background:rgba(0,0,0,.04)}
+.tree-item.active{background:var(--accent-dim);color:var(--accent);border-left-color:var(--accent);font-weight:600}
+.tree-item .tree-icon{width:14px;height:14px;flex-shrink:0;color:var(--text-muted)}
+.tree-item.active .tree-icon{color:var(--accent)}
+.tree-item .tree-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.5}
+.tree-item .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.tree-item.folder{font-weight:600;color:var(--header-text)}
+.tree-badge{flex-shrink:0;background:var(--accent-dim);color:var(--accent);font-size:10px;padding:1px 6px;border-radius:8px;font-weight:600}
+.tree-children{display:none}
+.tree-children.open{display:block}
+.tree-item.file.stagger{opacity:0;transform:translateX(-10px);animation:treeIn .3s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes treeIn{to{opacity:1;transform:translateX(0)}}
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+#header{background:var(--header-bg);color:var(--header-text);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;font-size:14px;transition:background .4s}
+#header .title{font-weight:600;display:flex;align-items:center;gap:8px}
+#header .actions{display:flex;gap:8px;align-items:center}
+#header button{background:rgba(255,255,255,.08);border:none;color:var(--header-text);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;transition:background .2s;display:flex;align-items:center;gap:6px}
+body.light #header button{background:rgba(0,0,0,.06)}
+#header button:hover{background:rgba(255,255,255,.16)}
+body.light #header button:hover{background:rgba(0,0,0,.1)}
+#header button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+#content{flex:1;overflow-y:auto;padding:24px 32px;background:var(--content-bg);color:var(--text);transition:background .4s,color .4s}
+#content::-webkit-scrollbar{width:6px}
+#content::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:3px}
+#content h1{font-size:1.8em;margin-bottom:.5em;color:var(--accent)}
+#content h2{font-size:1.4em;margin:1.2em 0 .5em;padding-bottom:4px;border-bottom:2px solid var(--accent)}
+#content h3{font-size:1.15em;margin:1em 0 .4em;color:var(--text)}
+#content p{margin:.6em 0;line-height:1.7;color:var(--text)}
+#content table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.9em}
+#content th{background:var(--accent);color:#fff;padding:8px 12px;text-align:left}
+#content td{padding:6px 12px;border:1px solid var(--table-border);color:var(--text)}
+#content tr:nth-child(even){background:var(--table-stripe)}
+#content code{background:var(--code-bg);padding:2px 6px;border-radius:3px;font-size:.9em;color:var(--text)}
+#content pre{background:var(--code-bg);padding:12px 16px;border-radius:6px;overflow-x:auto;margin:1em 0}
+#content pre code{background:none;padding:0}
+#content a{color:var(--accent-light)}
+#content blockquote{border-left:4px solid var(--accent);padding:8px 16px;margin:1em 0;background:var(--table-stripe);color:var(--text-secondary)}
+#content hr{border:none;border-top:1px solid var(--border);margin:1.5em 0}
+#content ul,#content ol{padding-left:24px;margin:8px 0;color:var(--text)}
+#content li{margin:4px 0}
+#content strong{color:var(--text)}
+.reveal-item{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease}
+.reveal-item.revealed{opacity:1;transform:translateY(0)}
+#hamburger{display:none}
+#overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);z-index:99}
+#overlay.show{display:block}
+@media(max-width:768px){
+  #sidebar{position:fixed;top:0;left:0;height:100%;z-index:100}
+  #sidebar.collapsed{transform:translateX(-280px);margin-right:0}
+  #hamburger{display:inline-flex}
+  #content{padding:16px}
+  .bento-grid{grid-template-columns:1fr;grid-template-rows:auto;height:auto}
+  .bento-tile.large,.bento-tile.wide-l,.bento-tile.wide-r{grid-column:span 1;grid-row:span 1}
+  .home-header h1{font-size:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- Splash -->
+<div id="splash">
+  <div class="splash-content">
+    <div class="splash-school">华中科技大学 &middot; HUST</div>
+    <div class="splash-title" id="splashTitle">真题资源包 · 统一中心</div>
+    <div class="splash-wish">
+      <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      考试顺利！逢考必过！
+    </div>
+  </div>
+</div>
+
+<!-- Home Page -->
+<div id="home">
+  <div class="bg-danmaku" id="danmakuLayer"></div>
+  <div class="bg-meteor" id="meteorLayer"></div>
+  <div class="home-content">
+    <div class="home-header">
+      <h1>HUST <span>真题资源包</span></h1>
+      <p>华中科技大学 · 考试复习资源统一中心</p>
+    </div>
+    <div class="bento-grid" id="cardGrid"></div>
+  </div>
+</div>
+
+<!-- Browse Page -->
+<div id="browse">
+  <div id="overlay"></div>
+  <div id="sidebar">
+    <div class="sidebar-header">
+      <button class="back-btn" onclick="goHome()">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        首页
+      </button>
+      <span id="sidebarSubject">科目</span>
+    </div>
+    <div id="file-tree"></div>
+  </div>
+  <div id="main">
+    <div id="header">
+      <div class="title">
+        <button id="hamburger" onclick="toggleSidebar()">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+        <span id="headerTitle">HUST 真题资源包</span>
+      </div>
+      <div class="actions">
+        <button onclick="toggleTheme()" id="themeBtn">
+          <svg id="themeIcon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <span id="themeLabel">浅色模式</span>
+        </button>
+      </div>
+    </div>
+    <div id="content"><p style="text-align:center;color:var(--text-muted);margin-top:100px">请从左侧文件树选择文件查看</p></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+var ALL_CONTENTS = {
+  "physics": {"README.md": "# 华中科技大学大学物理（医科）真题资源包\n\n## 概述\n\n本资源包是华中科技大学「大学物理（医科）」考试真题情报搜集成果，由真题情报官自动搜索、整理、打包生成。\n\n**搜索日期：** 2026年6月21日\n\n**搜索范围：** GitHub、aizhugong.com、CSDN、考研资源网（hustky.net / dhfdb.com / freekaoyan.com）、牛客网、知乎、B站、百度贴吧、原创力文档、夸克文档、豆丁网、金锄头文库、道客巴巴、中国考研网等平台。\n\n---\n\n## 重要说明\n\n1. **课程背景**：华中科技大学为医科学生开设的物理课程名称为「大学物理（六）」或「医学物理学」，由项林川教授领导的大学物理课程组负责。该课程实行**考教分离、全校统一命题**，工科、医科、理科统一考试。因此，本资源包中收录的「大学物理」通用试卷对医科学生同样具有参考价值。\n\n2. **医科专属资源稀缺**：经全面搜索，公开互联网上**未找到**专门标注为「华中科技大学 大学物理（医科）」或「华中科技大学 医学物理学」的专属历年真题试卷。本资源包如实记录了这一情况。\n\n3. **资源真实性**：所有链接均来自实际搜索结果，标注「待验证」的资源可信度较低，建议优先使用标注可信度「高」的资源。\n\n4. **付费资源**：部分资源需要付费购买（如原创力文档VIP、考研资料包等），已如实标注费用说明，不尝试绕过付费墙。\n\n---\n\n## 目录结构\n\n```\nhust_daxuewuliyike_exam_pack/\n├── README.md                         # 本文件\n├── 资源总表.md                        # 期末 + 考研两张总表 + 覆盖报告\n├── 期末真题/                          # 期末考试真题\n│   ├── 2011-2012年/资源链接.md\n│   ├── 2013-2014年/资源链接.md\n│   ├── 2014-2015年/资源链接.md\n│   ├── 2015-2018年/资源链接.md\n│   ├── 2016-2017年/资源链接.md\n│   ├── 2016-2020年/资源链接.md\n│   ├── 2020-2021年/资源链接.md\n│   ├── 2021-2022年/资源链接.md\n│   ├── 2022-2023年/资源链接.md\n│   ├── 2023-2024年/资源链接.md\n│   └── 未知年份/资源链接.md\n├── 考研真题/                          # 考研初试真题\n│   ├── 2001-2002年/资源链接.md\n│   ├── 2021年/资源链接.md\n│   ├── 2024年/资源链接.md\n│   └── 考研大纲/资源链接.md\n└── index.html                        # 离线可用的浏览界面\n```\n\n---\n\n## 使用方式\n\n1. **双击 `index.html`** 即可在浏览器中离线浏览所有资源（无需服务器）。\n2. 左侧文件树可展开/折叠，点击 `.md` 文件在右侧渲染。\n3. 支持深色/浅色模式切换，支持移动端浏览。\n\n---\n\n## 免责声明\n\n本资源包仅供学习参考使用，资源链接来自公开互联网搜索结果。请尊重知识产权，付费资源请通过正规渠道获取。", "资源总表.md": "# 华中科技大学大学物理（医科）真题资源总表\n\n## 一、覆盖报告\n\n| 指标 | 数值 |\n|------|------|\n| 搜索来源平台数 | 14 |\n| 有效资源总数 | 28 |\n| 期末真题覆盖年份范围 | 2011年 — 2024年 |\n| 考研真题覆盖年份范围 | 2001年 — 2024年 |\n| 暂无期末真题资源的年份 | 2012-2013年、2017-2018年、2018-2019年、2019-2020年（部分断续） |\n| 暂无考研真题资源的年份 | 2003-2020年、2022-2023年、2025年（大量缺失） |\n| 医科专属资源（标注\"医科\"/\"医学物理学\"） | 0 个 |\n| 通用大学物理资源（对医科有参考价值） | 28 个 |\n\n## 二、重要说明\n\n**华中科技大学大学物理课程为考教分离、全校统一命题**，工科、医科、理科统一使用同一套试卷。因此，以下收录的「大学物理（二）」、「大学物理」通用试卷**对医科学生具有同等参考价值**。\n\n**「大学物理（医科）」专属真题**：经 14 个平台全面搜索，**公开互联网上未找到**专门标注为「华中科技大学 大学物理（医科）」或「华中科技大学 医学物理学」的专属历年真题试卷。建议通过校内渠道（学长学姐、课程QQ群、打印店）获取。\n\n---\n\n## 三、期末真题总表\n\n| 序号 | 年份 | 资源描述 | 来源平台 | 链接 | 格式 | 含答案 | 可信度 | 费用 |\n|------|------|----------|----------|------|------|--------|--------|------|\n| 1 | 2011-2012 | 大学物理(下)期末试卷 | GitHub (HUST-AIA) | https://github.com/mfp0610/HUST-AIA-Courses-Resource/tree/main/%E5%BF%85%E4%BF%AE%E8%AF%BE/%E7%AC%AC1%E5%AD%A6%E6%9C%9F/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/%E8%AF%95%E5%8D%B7/%E5%A4%A7%E7%89%A9%E4%B8%8B | PDF | 是 | 高 | 免费 |\n| 2 | 2013-2014 | 大学物理(下)期末试卷 | GitHub (HUST-AIA) | 同上 | PDF | 是 | 高 | 免费 |\n| 3 | 2014-2015 | 大学物理(下)期末试卷 | GitHub (HUST-AIA) | 同上 | PDF | 是 | 高 | 免费 |\n| 4 | 2015-2018 | 大学物理(二) 15-18年4套期末试卷+答案 | CSDN 文库 | https://wenku.csdn.net/doc/5y3denkiue | 7z(PDF/JPG) | 是 | 高 | 10积分 |\n| 5 | 2016-2017 | 大学物理 第二学期期末试题 | 夸克文档 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/EF9FDEE27047065C8D807BF3A9AE1B77 | 在线预览 | 未知 | 中 | 需查看 |\n| 6 | 2016-2020 | 大学物理(下)期末试卷（2016、2017、2018、2019、2020年） | GitHub (HUST-AIA) | 同上 | PDF | 部分 | 高 | 免费 |\n| 7 | 2020-2021 | 大学物理(二) 第一学期期末试卷+答案 | 原创力文档 | https://m.book118.com/html/2025/1129/8123036142010014.shtm | PDF | 是 | 高 | VIP |\n| 8 | 2020-2021 | 大学物理一 第二学期期末试卷A卷 | 夸克文档 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/EA940381A56E1B9B632ACF158A366D63 | 在线预览 | 未知 | 中 | 需查看 |\n| 9 | 2020-2021 | 大学物理 第二学期期末试卷 | 夸克文档 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/DF61E28032FEA7E46C43532241668336 | 在线预览 | 未知 | 中 | 需查看 |\n| 10 | 2021-2022 | 大学物理(二) 第一学期期末试卷+答案(A卷) | 原创力文档 | https://m.book118.com/html/2025/1129/7146036200011015.shtm | PDF | 是 | 高 | VIP |\n| 11 | 2021-2022 | 大学物理 第二学期期末试卷 | 原创力文档 | https://m.book118.com/html/2026/0303/6034134042012104.shtm | PDF | 不完整 | 高 | 60金币 |\n| 12 | 2022-2023 | 大学物理(二) 第一学期期末试卷+答案 | 原创力文档 | https://m.book118.com/html/2025/1129/6215041242012020.shtm | PDF | 是 | 高 | VIP |\n| 13 | 2023-2024 | 物理实验 第一学期期末试卷 | 原创力文档 | https://m.book118.com/html/2026/0302/8041114007010050.shtm | PDF | 未知 | 中 | VIP |\n| 14 | 未知 | 物理期末真题 A/B/C/D四套卷+答案 | 原创力文档 | https://m.book118.com/html/2025/0414/6104002012011111.shtm | DOCX | 是 | 高 | 150金币 |\n| 15 | 未知 | 大学物理期末ABCD四套卷+答案 | 免费考研网 | http://www.freekaoyan.com/jy/zhuanyekeziliao/2015/07-06/1436138605222256.shtml | PDF | 是 | 中 | 5下载币 |\n| 16 | 2025 | 华科大一物理考试题+答案（标题含\"华科\"，内容待验证） | 金锄头文库 | https://www.jinchutou.com/shtml/c0c3881a5c4b78435bf293b4983b60ec.html | DOC | 是 | 低 | 付费 |\n\n---\n\n## 四、考研真题总表\n\n| 序号 | 年份 | 考试类型 | 科目代码 | 资源描述 | 来源平台 | 链接 | 格式 | 含答案 | 可信度 | 费用 |\n|------|------|----------|----------|----------|----------|------|------|--------|--------|------|\n| 1 | 2001-2002 | 考研初试 | 890 | 普通物理考研真题（无答案） | 中国考研网 | https://m.chinakaoyan.com/note/NoteShow/id/186313.shtml | 纸质+电子 | 否 | 中 | 220元 |\n| 2 | 2021 | 考研初试 | 890 | 普通物理考研核心题库（程守洙《普通物理学》综合题精编，116页） | 原创力文档 | https://m.book118.com/html/2024/1031/6115014234010240.shtm | PDF | 是 | 低 | VIP |\n| 3 | 2024 | 考研初试 | 890 | 083100生物医学工程《普通物理》基础检测5套卷（50页） | 豆丁网 | https://www.docin.com/touch_new/preview_new.do?id=3636042845 | PDF | 是 | 高 | 付费 |\n| 4 | 2024 | 考研初试 | 890 | 085409生物医学工程（专硕）《普通物理》基础检测5套卷 | 豆丁网 | http://www.docin.com/p-3635654915.html | PDF | 是 | 高 | 付费 |\n| 5 | 2025 | 考研大纲 | 823 | 大学物理考试大纲（生物医学工程等专业） | 华科考研网 | http://hustky.net/article/575.html | 网页 | 不适用 | 高 | 免费 |\n| 6 | 2025 | 考研大纲 | 890 | 普通物理考试大纲（2025新版，考试范围大幅扩展） | 启航考研 | https://www.zzqihang.com.cn/news/42434.html | 网页 | 不适用 | 高 | 免费 |\n| 7 | 2025 | 考研大纲 | 890 | 普通物理考试大纲 PDF版 | 中国考研网 | https://static.kaoyan.cn/file/2024/10/12/25012b07382009f3044e955e6a239927.pdf | PDF | 不适用 | 高 | 免费 |\n| 8 | 2026 | 考研全套 | 890 | 普通物理考研全套（全国名校真题汇总+辅导） | 圣才学习网 | https://wx.100xuexi.com/product/package.aspx?id=976809&type=1 | 电子书 | 部分 | 中 | 付费 |\n| 9 | 2002-2022 | 考研初试 | 870 | 量子力学考研真题（物理学院，2002-2022年） | 华科考研网 | http://www.hustky.net/article/987.html | 纸质/电子 | 是 | 高 | 付费 |\n| 10 | 2015 | 考研大纲 | 890 | 普通物理考试大纲（旧版） | 免费考研网 | http://school.freekaoyan.com/hb/hust/ziliao/20150821/1440143394353323.shtml | 网页 | 不适用 | 高 | 免费 |\n\n---\n\n## 五、暂无资源年份列表\n\n### 期末真题暂无资源的年份\n- 2012-2013年（大一上学期/大一下学期）\n- 2017-2018年（大一上学期/大一下学期，CSDN资源含2015-2018但未细分）\n- 2018-2019年\n- 2019-2020年（GitHub有2016-2020但未细分）\n- 2024-2025年\n- 2025-2026年\n\n### 考研真题暂无资源的年份\n- 2003-2020年（890普通物理）\n- 2022-2023年（890普通物理）\n- 2025年（最新真题）\n- 823大学物理：所有年份均无真题\n\n---\n\n## 六、补充资料（非真题但具有参考价值）\n\n| 序号 | 资源描述 | 来源平台 | 链接 | 格式 | 可信度 | 费用 |\n|------|----------|----------|------|------|--------|------|\n| 1 | 项林川《大学物理》MOOC（力学、电磁学，含章末测验） | 国家高等教育智慧教育平台 | https://higher.smartedu.cn/course/62354d7c9906eace0490c797 | 在线课程 | 高 | 免费 |\n| 2 | 华科大学物理教学课件 | 中国高校课件下载中心 | http://m.download.cucdc.com/cw/4855.html | 课件包 | 高 | 10积分 |\n| 3 | 华科物理实验教学资源（基础物理实验指导书，333页） | 中国高校课件下载中心 | http://m.download.cucdc.com/wenku/2ed228298a5f4625bb7d5627f89e27df.html | PDF | 高 | 免费 |\n| 4 | 医学物理学（第7版）绪论课件（王章金） | 华科官方OSS | https://fz-nerc.oss-cn-beijing.aliyuncs.com/media/2011/09/08/b584df7f-1935-4b91-9d54-838e519a7b3d/Scorm/fea9fca9-e881-4b7a-b4af-7a24cd9d6146.pdf | PDF | 高 | 免费 |\n| 5 | 华科物理学院课程组介绍（课程体系） | 华科物理学院官网 | https://phys.hust.edu.cn/info/1411/3774.htm | 网页 | 高 | 免费 |\n| 6 | 【华科大金课】项林川：大学物理（课程介绍） | 华科新闻网 | https://news.hust.edu.cn/info/1003/53950.htm | 网页 | 高 | 免费 |\n| 7 | 大学物理课程组（含大学物理六、医学物理学） | 华科物理学院 | https://phys.hust.edu.cn/info/1502/5981.htm | 网页 | 高 | 免费 |\n| 8 | 华科大学物理教学课件（小木虫论坛） | 小木虫 | http://mob.muchong.com/html/201308/6205251_2.html | RAR | 中 | 需注册 |\n| 9 | 华科物理学院考研资料汇总（870量子力学+602数学） | 华科考研网 | http://www.hustky.net/article/985.html | 网页 | 高 | 付费 |\n| 10 | 华科《大学物理—力学、电磁学》MOOC（爱课程） | 中国大学MOOC | https://www.icourse163.org/course/HUST-1001530003 | 在线课程 | 高 | 免费 |", "期末真题/2022-2023年/资源链接.md": "# 2022-2023年 期末真题资源\n\n## 资源列表\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 原创力文档 (book118.com) |\n| 获取链接 | https://m.book118.com/html/2025/1129/6215041242012020.shtm |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 需VIP或金币 |\n| 备注 | 华中科技大学《大学物理(二)》2022-2023学年第一学期期末试卷及答案，11页。 |\n\n## 补充说明\n\n- 2022-2023学年第二学期期末试卷暂未找到公开资源\n- 建议关注原创力文档搜索\"华中科技大学 大学物理 2022-2023 第二学期\"以获取最新上传", "期末真题/2021-2022年/资源链接.md": "# 2021-2022年 期末真题资源\n\n## 资源列表\n\n### 资源一：原创力文档 — 大学物理(二) 第一学期期末试卷+答案(A卷)\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 原创力文档 (book118.com) |\n| 获取链接 | https://m.book118.com/html/2025/1129/7146036200011015.shtm |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 需VIP或金币 |\n| 备注 | 华中科技大学《大学物理(二)》2021-2022学年第一学期期末试卷及答案(A卷)。 |\n\n### 资源二：原创力文档 — 大学物理 第二学期期末试卷\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 原创力文档 (book118.com) |\n| 获取链接 | https://m.book118.com/html/2026/0303/6034134042012104.shtm |\n| 资源格式 | PDF |\n| 是否含答案 | 不完整（预览可见选择题，答案不完整） |\n| 费用说明 | 60金币 |\n| 备注 | 华中科技大学《大学物理》2021-2022学年第二学期期末试卷，4页，闭卷考试，150分钟。 |", "期末真题/2014-2015年/资源链接.md": "# 2014-2015年 期末真题资源\n\n## 资源列表\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | GitHub (HUST-AIA-Courses-Resource) |\n| 获取链接 | https://github.com/mfp0610/HUST-AIA-Courses-Resource/tree/main/%E5%BF%85%E4%BF%AE%E8%AF%BE/%E7%AC%AC1%E5%AD%A6%E6%9C%9F/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/%E8%AF%95%E5%8D%B7/%E5%A4%A7%E7%89%A9%E4%B8%8B |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 免费 |\n| 备注 | 大学物理(下)期末试卷，含14-15学年试卷及参考答案。华科考教分离全校统一命题，对医科学生有参考价值。 |", "期末真题/2015-2018年/资源链接.md": "# 2015-2018年 期末真题资源\n\n## 资源列表\n\n### 资源一：CSDN 文库（推荐）\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | CSDN 文库 |\n| 获取链接 | https://wenku.csdn.net/doc/5y3denkiue |\n| 资源格式 | 7z压缩包（内含PDF/JPG） |\n| 是否含答案 | 是 |\n| 费用说明 | 10积分下载 |\n| 备注 | 华科大学物理(二) 15-18年期末考试试卷及答案汇总，含4套完整试卷+答案，约21个子文件，14.79MB。性价比最高的资源。 |\n\n### 资源二：GitHub（补充）\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | GitHub (HUST-AIA-Courses-Resource) |\n| 获取链接 | https://github.com/mfp0610/HUST-AIA-Courses-Resource/tree/main/%E5%BF%85%E4%BF%AE%E8%AF%BE/%E7%AC%AC1%E5%AD%A6%E6%9C%9F/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/%E8%AF%95%E5%8D%B7/%E5%A4%A7%E7%89%A9%E4%B8%8B |\n| 资源格式 | PDF |\n| 是否含答案 | 部分 |\n| 费用说明 | 免费 |\n| 备注 | GitHub仓库中2016-2020年试卷可能包含2015-2018年部分。建议优先使用CSDN资源。 |", "期末真题/2013-2014年/资源链接.md": "# 2013-2014年 期末真题资源\n\n## 资源列表\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | GitHub (HUST-AIA-Courses-Resource) |\n| 获取链接 | https://github.com/mfp0610/HUST-AIA-Courses-Resource/tree/main/%E5%BF%85%E4%BF%AE%E8%AF%BE/%E7%AC%AC1%E5%AD%A6%E6%9C%9F/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/%E8%AF%95%E5%8D%B7/%E5%A4%A7%E7%89%A9%E4%B8%8B |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 免费 |\n| 备注 | 大学物理(下)期末试卷，含13-14学年试卷及参考答案。华科考教分离全校统一命题，对医科学生有参考价值。 |", "期末真题/2016-2017年/资源链接.md": "# 2016-2017年 期末真题资源\n\n## 资源列表\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 夸克文档 |\n| 获取链接 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/EF9FDEE27047065C8D807BF3A9AE1B77 |\n| 资源格式 | 在线预览 |\n| 是否含答案 | 未知 |\n| 费用说明 | 需查看（可能需夸克会员） |\n| 备注 | 华中科技大学《大学物理》2016-2017第二学期期末试题。建议注册夸克账号查看完整内容。 |", "期末真题/2011-2012年/资源链接.md": "# 2011-2012年 期末真题资源\n\n## 资源列表\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | GitHub (HUST-AIA-Courses-Resource) |\n| 获取链接 | https://github.com/mfp0610/HUST-AIA-Courses-Resource/tree/main/%E5%BF%85%E4%BF%AE%E8%AF%BE/%E7%AC%AC1%E5%AD%A6%E6%9C%9F/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/%E8%AF%95%E5%8D%B7/%E5%A4%A7%E7%89%A9%E4%B8%8B |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 免费 |\n| 备注 | 大学物理(下)期末试卷，适用于AI自动化学院，但华科考教分离全校统一命题，对医科学生有参考价值。含11-12学年试卷及参考答案。 |\n\n## 补充说明\n\n- 该仓库由华科学生维护，收录了多个年份的大学物理试卷\n- 试卷为大学物理(II)（即大物下），内容涵盖电磁学、波动光学、量子物理等\n- 建议结合「大学物理(二)」课程大纲使用", "期末真题/2020-2021年/资源链接.md": "# 2020-2021年 期末真题资源\n\n## 资源列表\n\n### 资源一：原创力文档 — 大学物理(二) 第一学期期末试卷+答案\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 原创力文档 (book118.com) |\n| 获取链接 | https://m.book118.com/html/2025/1129/8123036142010014.shtm |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 需VIP或金币 |\n| 备注 | 华中科技大学《大学物理(二)》2020-2021学年第一学期期末试卷及答案。 |\n\n### 资源二：夸克文档 — 大学物理一 第二学期期末试卷A卷\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 夸克文档 (quark.cn) |\n| 获取链接 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/EA940381A56E1B9B632ACF158A366D63 |\n| 资源格式 | 在线预览 |\n| 是否含答案 | 未知 |\n| 费用说明 | 需查看 |\n| 备注 | 华中科技大学《大学物理一》2020-2021学年第二学期期末试卷A卷。 |\n\n### 资源三：夸克文档 — 大学物理 第二学期期末试卷\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 夸克文档 (quark.cn) |\n| 获取链接 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/DF61E28032FEA7E46C43532241668336 |\n| 资源格式 | 在线预览 |\n| 是否含答案 | 未知 |\n| 费用说明 | 需查看 |\n| 备注 | 华中科技大学《大学物理》2020-2021学年第二学期期末试卷。与资源二可能为同一试卷的不同版本。 |", "期末真题/2016-2020年/资源链接.md": "# 2016-2020年 期末真题资源\n\n## 资源列表\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | GitHub (HUST-AIA-Courses-Resource) |\n| 获取链接 | https://github.com/mfp0610/HUST-AIA-Courses-Resource/tree/main/%E5%BF%85%E4%BF%AE%E8%AF%BE/%E7%AC%AC1%E5%AD%A6%E6%9C%9F/%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86/%E8%AF%95%E5%8D%B7/%E5%A4%A7%E7%89%A9%E4%B8%8B |\n| 资源格式 | PDF |\n| 是否含答案 | 部分（2016年前有答案，后续年份答案不完整） |\n| 费用说明 | 免费 |\n| 备注 | 仓库收录了2016、2017、2018、2019、2020年共5个年份的大学物理(下)期末试卷。该仓库由华科学生维护，免费下载。建议与CSDN的2015-2018资源互补使用。 |\n\n## 文件列表（参考）\n\n- 2016年大学物理(下)试卷.pdf\n- 2017年大学物理(下)试卷.pdf\n- 2018年大学物理(下)试卷.pdf\n- 2019年大学物理(下)试卷.pdf\n- 2020年大学物理(下)试卷.pdf", "期末真题/2023-2024年/资源链接.md": "# 2023-2024年 期末真题资源\n\n## 资源列表\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 原创力文档 (book118.com) |\n| 获取链接 | https://m.book118.com/html/2026/0302/8041114007010050.shtm |\n| 资源格式 | PDF |\n| 是否含答案 | 未知 |\n| 费用说明 | 需VIP或金币 |\n| 备注 | 华中科技大学《物理实验》2023-2024学年第一学期期末试卷。注意：此为物理实验课试卷，非大学物理理论课试卷。 |\n\n## 补充说明\n\n- 2023-2024学年大学物理理论课期末试卷暂未找到公开资源\n- 物理实验课也是医科学生必修课程，此资源有参考价值", "期末真题/未知年份/资源链接.md": "# 未知年份 期末真题资源\n\n以下资源年份未明确标注，但均为华中科技大学大学物理期末真题。\n\n## 资源一：原创力文档 — A/B/C/D四套卷+答案\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 原创力文档 (book118.com) |\n| 获取链接 | https://m.book118.com/html/2025/0414/6104002012011111.shtm |\n| 资源格式 | DOCX |\n| 是否含答案 | 是（含详细参考答案） |\n| 费用说明 | 150金币 |\n| 备注 | 华中科技大学物理期末真题.docx，含A/B/C/D共4套完整试卷及参考答案，37页。内容涵盖电磁学、波动光学、量子物理等。 |\n\n## 资源二：免费考研网 — ABCD四套卷+答案\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 免费考研网 (freekaoyan.com) |\n| 获取链接 | http://www.freekaoyan.com/jy/zhuanyekeziliao/2015/07-06/1436138605222256.shtml |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 5下载币 |\n| 备注 | 华中科技大学大学物理期末考试试卷ABCD四套带答案，308.61 KB。与资源一可能为同一套试卷的不同版本。 |\n\n## 资源三：金锄头文库 — 2025华科大一物理考试题\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 金锄头文库 (jinchutou.com) |\n| 获取链接 | https://www.jinchutou.com/shtml/c0c3881a5c4b78435bf293b4983b60ec.html |\n| 资源格式 | DOC |\n| 是否含答案 | 是 |\n| 费用说明 | 付费 |\n| 备注 | 标题含\"2025年华科大一物理考试题及答案\"，但内容可能为通用物理选择题，可信度较低，标注为「待验证」。 |", "考研真题/2024年/资源链接.md": "# 2024年 考研真题资源\n\n## 资源列表\n\n### 资源一：豆丁网 — 890普通物理 基础检测5套卷（学硕）\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 豆丁网 (docin.com) |\n| 获取链接 | https://www.docin.com/touch_new/preview_new.do?id=3636042845 |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 付费 |\n| 备注 | 2024年华中科技大学083100生物医学工程《890普通物理》考研基础检测5套卷，50页。按考研大纲出题，含详细解析。 |\n\n### 资源二：豆丁网 — 890普通物理 基础检测5套卷（专硕）\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 豆丁网 (docin.com) |\n| 获取链接 | http://www.docin.com/p-3635654915.html |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 付费 |\n| 备注 | 2024年华中科技大学085409生物医学工程（专硕）《890普通物理》考研基础检测5套卷。与资源一为同一系列，学硕/专硕版本。 |\n\n## 补充说明\n\n- 以上为模拟检测卷，非历年真题\n- 890普通物理适用于生物医学工程专业考研\n- 2025年大纲已更新，建议同时参考最新大纲", "考研真题/2021年/资源链接.md": "# 2021年 考研真题资源\n\n## 资源列表\n\n### 890 普通物理 考研核心题库\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 原创力文档 (book118.com) |\n| 获取链接 | https://m.book118.com/html/2024/1031/6115014234010240.shtm |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 需VIP或金币 |\n| 备注 | 2021年华中科技大学890普通物理考研核心题库，基于程守洙《普通物理学》综合题精编，116页。非真题，但按考研大纲编写，有参考价值。 |\n\n## 补充说明\n\n- 该资源为考研核心题库/模拟题，非历年真题\n- 适用于生物医学工程（083100/085409）专业考研\n- 890普通物理2025年大纲已大幅更新，使用2021年资料时需注意大纲变化", "考研真题/2001-2002年/资源链接.md": "# 2001-2002年 考研真题资源\n\n## 资源列表\n\n### 890 普通物理 考研真题（2001-2002年）\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 中国考研网 (chinakaoyan.com) |\n| 获取链接 | https://m.chinakaoyan.com/note/NoteShow/id/186313.shtml |\n| 资源格式 | 纸质+电子 |\n| 是否含答案 | 否（真题无答案，附赠名校真题汇编2016-2022含答案） |\n| 费用说明 | 220元 |\n| 备注 | 仅有的可追溯890普通物理真题。适用于生物医学工程等专业考研。资料包还包含复习笔记、课件、题库、模拟题等。 |\n\n### 当当网 — 890普通物理考研资料\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 当当网 |\n| 获取链接 | http://product.m.dangdang.com/detail11489342126-22294-1.html |\n| 资源格式 | 纸质 |\n| 是否含答案 | 否 |\n| 费用说明 | 收费 |\n| 备注 | 与上述中国考研网资源可能为同一资料包的不同渠道。 |\n\n## 补充说明\n\n- 890普通物理是华中科技大学生物医学工程专业考研科目之一\n- 旧版大纲仅覆盖电磁波+光学五大块；2025年新版大纲大幅扩展，新增力学、静电场、激光半导体、原子核物理\n- 2003-2020年间的890真题暂未找到公开资源", "考研真题/考研大纲/资源链接.md": "# 考研大纲 资源\n\n## 823 大学物理 考试大纲\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 华科考研网 (hustky.net) |\n| 获取链接 | http://hustky.net/article/575.html |\n| 资源格式 | 网页 |\n| 费用说明 | 免费 |\n| 备注 | 适用于生物医学工程等专业。考试内容涵盖六大板块：力学、气体动理论及热力学、电磁学、振动和波动、波动光学、狭义相对论和量子物理基础。 |\n\n## 890 普通物理 考试大纲（2025新版）\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 启航考研 (zzqihang.com) |\n| 获取链接 | https://www.zzqihang.com.cn/news/42434.html |\n| 资源格式 | 网页 |\n| 费用说明 | 免费 |\n| 备注 | 2025年新版大纲，**考试范围大幅扩展**：新增力学、静电场、激光和半导体、原子核物理等内容。参考书为项林川《大学物理》2021年第1版。 |\n\n### 890大纲 PDF版\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 中国考研网 (chinakaoyan.com) |\n| 获取链接 | https://static.kaoyan.cn/file/2024/10/12/25012b07382009f3044e955e6a239927.pdf |\n| 资源格式 | PDF |\n| 费用说明 | 免费 |\n| 备注 | 已下载1113次。可直接下载PDF版本。 |\n\n## 890 普通物理 考试大纲（旧版）\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 华科考研网 (hustky.net) |\n| 获取链接 | http://www.hustky.net/article/631.html |\n| 资源格式 | 网页 |\n| 费用说明 | 免费 |\n| 备注 | 旧版大纲，重点考察电磁波和光学部分（电磁振荡、光波干涉/衍射/偏振、光的量子理论）。已被2025新版大纲取代。 |\n\n## 890 普通物理 考试大纲（2015版）\n\n| 属性 | 内容 |\n|------|------|\n| 来源平台 | 免费考研网 (freekaoyan.com) |\n| 获取链接 | http://school.freekaoyan.com/hb/hust/ziliao/20150821/1440143394353323.shtml |\n| 资源格式 | 网页 |\n| 费用说明 | 免费 |\n| 备注 | 2015年旧版大纲，仅供参考。 |\n\n## 补充说明\n\n- 823大学物理和890普通物理均为华中科技大学生物医学工程专业考研可选专业课\n- 823覆盖六大基础物理板块，范围更广\n- 890（2025新版）新增了与现代医学工程相关的激光、半导体、核物理等内容\n- 官方大纲来源：http://gszs.hust.edu.cn/ （华科研招网）"},
+  "maogai": {
+  "README.md": `# 华中科技大学毛概真题资源包
+
+> 生成日期：2026-06-21 | 搜索范围：GitHub / aizhugong / CSDN / 考研资源网 / 知乎 / B站 / 通用搜索 / 文档平台
+
+## 内容概览
+
+本资源包收集了华中科技大学（HUST）《毛泽东思想和中国特色社会主义理论体系概论》（简称"毛概"）的期末考试真题和考研初试真题资源，按年份升序排列。
+
+## 目录结构
+
+\`\`\`
+hust_maogai_exam_pack/
+├── README.md                  # 本说明文件
+├── 资源总表.md                 # 汇总表格 + 覆盖报告
+├── index.html                 # 离线浏览工具（双击即可使用）
+├── 期末真题/
+│   ├── 2020-2021年/
+│   │   └── 资源链接.md
+│   ├── 2022-2023年/
+│   │   └── 资源链接.md
+│   └── 2023-2024年/
+│       └── 资源链接.md
+├── 考研真题/
+│   ├── 2002-2016年/
+│   │   └── 资源链接.md
+│   ├── 2021-2026年/
+│   │   └── 资源链接.md
+│   └── 2024年/
+│       └── 资源链接.md
+└── 辅助资料/
+    ├── 辨析题总结.md
+    └── 通用题库资源.md
+\`\`\`
+
+## 使用说明
+
+1. 双击 \`index.html\` 即可在浏览器中离线浏览所有资源（无需网络）。
+2. 每个"资源链接.md"包含：来源平台、获取链接、资源格式、是否含答案、费用说明、备注。
+3. 标注"付费资源"的需自行购买，本资源包不提供破解/绕过付费墙的方式。
+4. 标注"待验证"的链接请自行核实有效性。
+
+## 免责声明
+
+- 所有资源链接来自公开互联网搜索结果，仅供学习参考。
+- 付费资源请支持原作者和平台。
+- 本资源包不保证所有链接长期有效，请及时保存。`,
+  "期末真题/2020-2021年/资源链接.md": `# 2020-2021学年 期末真题资源
+
+## 资源详情
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | 原创力文档 (book118.com) |
+| 获取链接 | https://m.book118.com/html/2022/0216/8034073003004057.shtm |
+| 资源格式 | DOCX |
+| 是否含答案 | **是**（含标准答案） |
+| 费用说明 | 需 159 金币（平台虚拟货币） |
+| 备注 | 2020-2021学年第2学期《毛概》期末考试试卷（A卷），含名词解释、简答、辨析、材料分析等题型，附完整参考答案 |
+
+## 试卷信息
+
+- 考试类型：期末考试
+- 学年学期：2020-2021学年第二学期
+- 试卷类型：A卷
+- 题型分布：名词解释、简答题、辨析题、材料分析题
+
+## 获取方式
+
+1. 访问上述链接
+2. 注册/登录 book118.com 账号
+3. 充值金币后下载 DOCX 文件`,
+  "期末真题/2022-2023年/资源链接.md": `# 2022-2023学年 期末真题资源
+
+## 资源一：原创力文档（book118.com）
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | 原创力文档 (book118.com) |
+| 获取链接 | https://m.book118.com/html/2026/0306/5033233043013131.shtm |
+| 资源格式 | PDF（10页，0.37MB） |
+| 是否含答案 | **是**（含完整答案） |
+| 费用说明 | 需 50 金币 |
+| 备注 | 考试日期：2023年6月23日，闭卷，120分钟。题型：单选15题 + 多选5题 + 材料分析题（60分）。完整试卷含答案，质量高 |
+
+## 资源二：爱助攻（aizhugong.com）
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | 爱助攻 (aizhugong.com) |
+| 获取链接 | https://www.aizhugong.com/thread-113170-1-1.html |
+| 资源格式 | 未知（付费后可见） |
+| 是否含答案 | **是**（标题明确标注"附答案"） |
+| 费用说明 | 需 6 金币 |
+| 备注 | 发布于 2025-06-16，上传者：淮川。查看659次，4人已购买。华科专属板块 forum-324 |
+
+## 试卷信息
+
+- 考试类型：期末考试
+- 学年学期：2022-2023学年第二学期
+- 试卷类型：A卷
+- 考试日期：2023年6月23日
+- 考试方式：闭卷，120分钟
+
+## 获取方式
+
+**原创力文档：**
+1. 访问 https://m.book118.com/html/2026/0306/5033233043013131.shtm
+2. 注册/登录 book118.com
+3. 充值金币后下载 PDF
+
+**爱助攻：**
+1. 访问 https://www.aizhugong.com/thread-113170-1-1.html
+2. 注册/登录 aizhugong.com
+3. 支付 6 金币查看/下载`,
+  "期末真题/2023-2024年/资源链接.md": `# 2023-2024学年 期末真题资源
+
+## 资源详情
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | 夸克文档 (quark.cn) |
+| 获取链接 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/B43CBE1E44A80328BDAEBBD89F4C47E9 |
+| 资源格式 | PDF（7页，3.2MB） |
+| 是否含答案 | 待验证 |
+| 费用说明 | 免费预览 |
+| 备注 | 华中科技大学《毛泽东思想和中国特色社会主义理论体系概论》2023-2024第一学期期末试题。夸克平台可在线预览，下载可能需要夸克会员 |
+
+## 试卷信息
+
+- 考试类型：期末考试
+- 学年学期：2023-2024学年第一学期
+- 课程名称：毛泽东思想和中国特色社会主义理论体系概论
+
+## 获取方式
+
+1. 访问上述夸克文档链接
+2. 在线预览试卷内容
+3. 如需下载，可能需要夸克会员或夸克币`,
+  "考研真题/2002-2016年/资源链接.md": `# 2002-2016年 考研真题资源
+
+## 资源详情
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | 考研派 (okaoyan.com) |
+| 获取链接 | https://m.okaoyan.com/shop/hust/66533.html |
+| 资源格式 | 纸质版 |
+| 是否含答案 | **是**（含毛邓三期末试卷及答案） |
+| 费用说明 | **¥468** |
+| 备注 | 覆盖 2002-2016 年华中科技大学马克思主义理论考研真题，包含 615 中国近现代史 + 860 马克思主义理论综合两门专业课，含《毛邓三》期末试卷 |
+
+## 科目说明
+
+华中科技大学马克思主义理论（030500）考研专业课：
+- **615 马克思主义理论综合**：含高教版《马克思主义基本原理》+ 高教版《毛泽东思想和中国特色社会主义理论体系概论》
+- **860 中共党史与党的建设**：含党史 + 党建
+
+毛概内容主要在 615 科目中。
+
+## 获取方式
+
+1. 访问 https://m.okaoyan.com/shop/hust/66533.html
+2. 在线下单购买纸质版资料
+3. 费用：¥468`,
+  "考研真题/2021-2026年/资源链接.md": `# 2021-2026年 考研真题资源
+
+## 资源详情
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | 鸿知考研网 (hongzedu.com) |
+| 获取链接 | https://www.hongzedu.com/productinfo/2895249.html |
+| 资源格式 | 纸质版 |
+| 是否含答案 | **是** |
+| 费用说明 | **¥150**（2027版） |
+| 备注 | 覆盖 2021-2026 年华中科技大学马克思主义理论考研真题，包含 615 马克思主义理论综合 + 860 中共党史与党的建设 |
+
+## 科目说明
+
+华中科技大学马克思主义理论（030500）考研专业课：
+- **615 马克思主义理论综合**：含高教版《马克思主义基本原理》+ 高教版《毛泽东思想和中国特色社会主义理论体系概论》
+- **860 中共党史与党的建设**：含党史 + 党建
+
+毛概内容主要在 615 科目中。
+
+## 获取方式
+
+1. 访问 https://www.hongzedu.com/productinfo/2895249.html
+2. 在线下单购买纸质版资料
+3. 费用：¥150`,
+  "考研真题/2024年/资源链接.md": `# 2024年 考研真题资源
+
+## 资源一：原创力文档（book118.com）
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | 原创力文档 (book118.com) |
+| 获取链接 | https://m.book118.com/html/2024/0720/5133144114011300.shtm |
+| 资源格式 | DOCX |
+| 是否含答案 | **否**（仅真题，8道名词解释） |
+| 费用说明 | 需付费（平台积分） |
+| 备注 | 华中科技大学 2024 年 615 马克思主义理论综合考研真题，部分内容可预览 |
+
+## 资源二：华科考研网（hustky.net）
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | 华科考研网 (hustky.net) |
+| 获取链接 | http://www.hustky.net/article/1041.html |
+| 资源格式 | 纸质版 |
+| 是否含答案 | 待验证 |
+| 费用说明 | 联系淘宝店购买 |
+| 备注 | 华科马院全套考研资料，含真题、笔记、讲义、本科试卷。淘宝店：shop121882856.taobao.com |
+
+## 科目说明
+
+华中科技大学马克思主义理论（030500）考研专业课：
+- **615 马克思主义理论综合**：含高教版《马克思主义基本原理》+ 高教版《毛泽东思想和中国特色社会主义理论体系概论》
+- **860 中共党史与党的建设**：含党史 + 党建
+
+## 获取方式
+
+**原创力文档：**
+1. 访问 https://m.book118.com/html/2024/0720/5133144114011300.shtm
+2. 注册/登录后付费下载
+
+**华科考研网：**
+1. 访问 http://www.hustky.net/article/1041.html 了解详情
+2. 联系淘宝店 shop121882856.taobao.com 购买`,
+  "资源总表.md": `# 华中科技大学毛概真题资源总表
+
+## 一、期末考试真题
+
+| 学年 | 学期 | 试卷类型 | 来源平台 | 获取链接 | 格式 | 含答案 | 费用 | 可信度 |
+|------|------|----------|----------|----------|------|--------|------|--------|
+| 2020-2021 | 第二学期 | A卷 | 原创力文档 (book118.com) | https://m.book118.com/html/2022/0216/8034073003004057.shtm | DOCX | 是 | 需159金币 | 高 |
+| 2022-2023 | 第二学期 | A卷 | 原创力文档 (book118.com) | https://m.book118.com/html/2026/0306/5033233043013131.shtm | PDF | 是 | 需50金币 | 高 |
+| 2022-2023 | 第二学期 | A卷 | 爱助攻 (aizhugong.com) | https://www.aizhugong.com/thread-113170-1-1.html | 未知 | 是（标题标注） | 需6金币 | 高 |
+| 2023-2024 | 第一学期 | 期末试题 | 夸克文档 (quark.cn) | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/B43CBE1E44A80328BDAEBBD89F4C47E9 | PDF | 待验证 | 免费预览 | 高 |
+
+## 二、考研初试真题
+
+> 说明：华中科技大学马克思主义理论（030500）考研专业课为 **615 马克思主义理论综合**（含《马原》+《毛概》）和 **860 中共党史与党的建设**，不单独考"毛概"科目。
+
+| 年份范围 | 科目 | 来源平台 | 获取链接 | 格式 | 含答案 | 费用 | 可信度 |
+|----------|------|----------|----------|------|--------|------|--------|
+| 2002-2016 | 615+860 | 考研派 (okaoyan.com) | https://m.okaoyan.com/shop/hust/66533.html | 纸质版 | 是（含毛邓三期末试卷） | ¥468 | 高 |
+| 2021-2026 | 615+860 | 鸿知考研网 (hongzedu.com) | https://www.hongzedu.com/productinfo/2895249.html | 纸质版 | 是 | ¥150 | 高 |
+| 2024 | 615 | 原创力文档 (book118.com) | https://m.book118.com/html/2024/0720/5133144114011300.shtm | DOCX | 否（仅真题） | 需付费 | 中 |
+| 多年度 | 615+860 | 华科考研网 (hustky.net) | http://www.hustky.net/article/1041.html | 纸质版 | 待验证 | 联系淘宝店 | 高 |
+
+## 三、辅助资料
+
+| 资源描述 | 来源平台 | 获取链接 | 格式 | 含答案 | 费用 | 可信度 |
+|----------|----------|----------|------|--------|------|--------|
+| 华科毛概辨析题总结（第1-12章） | 道客巴巴 (doc88.com) | https://m.doc88.com/p-3833745409819.html | 在线文档 | 否 | 需积分 | 中 |
+| 毛概2023版通用题库（含答案） | GitHub Gist (YouXam) | https://gist.github.com/YouXam/b2ff9d7ea35380d4d6083c504f1b60df | Typst/PDF | 是 | 免费 | 高 |
+| 毛概2023版通用题库PDF | byrdocs | https://s3.byrdocs.org/byrdocs/4a7fabef0146a3cbf55b7f73f299f220.pdf | PDF | 是 | 免费 | 高 |
+| 2025-2026毛概题库（334题） | 试题通 (shititong.cn) | https://www.shititong.cn/cha-kan/tikuheji/CBB05AAD5F70000127A072215D401AA9.html | 在线 | 否 | 免费 | 中 |
+
+## 四、覆盖报告
+
+| 指标 | 数值 |
+|------|------|
+| 搜索来源数 | 10+ 平台 |
+| 期末有效资源数 | 4 条（含去重） |
+| 考研有效资源数 | 4 条 |
+| 辅助资料数 | 4 条 |
+| 期末覆盖年份 | 2020-2021、2022-2023、2023-2024 |
+| 考研覆盖年份 | 2002-2016、2021-2026、2024 |
+
+### 暂无资源的年份（期末）
+
+- 2019年及以前：暂未找到
+- 2021-2022学年：暂未找到
+- 2024-2025学年：暂未找到
+- 2025-2026学年：暂未找到
+
+### 暂无资源的年份（考研）
+
+- 2017-2020年：暂未找到独立真题资源
+- 2025年：暂未找到独立真题资源
+
+## 五、搜索来源明细
+
+| 来源 | 有效资源数 | 备注 |
+|------|------------|------|
+| 原创力文档 (book118.com) | 3 | 期末真题最丰富 |
+| 爱助攻 (aizhugong.com) | 1 | 华科专属板块 |
+| 夸克文档 (quark.cn) | 1 | 2023-2024期末 |
+| 道客巴巴 (doc88.com) | 1 | 辨析题总结 |
+| 鸿知考研网 (hongzedu.com) | 1 | 考研真题 |
+| 考研派 (okaoyan.com) | 1 | 考研真题 |
+| 华科考研网 (hustky.net) | 1 | 考研资料 |
+| GitHub | 2 | 通用题库 |
+| 试题通 (shititong.cn) | 1 | 通用题库 |
+| CSDN | 0 | 无华科专属毛概 |
+| 知乎 | 0 | 无华科专属毛概 |
+| B站 | 0 | 无华科专属毛概 |
+| 牛客网 | 0 | 平台不匹配 |`,
+  "辅助资料/辨析题总结.md": `# 华科毛概辨析题总结
+
+## 资源详情
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | 道客巴巴 (doc88.com) |
+| 获取链接 | https://m.doc88.com/p-3833745409819.html |
+| 资源格式 | 在线文档 |
+| 是否含答案 | 否（仅辨析题题干） |
+| 费用说明 | 需平台积分（可在线预览部分内容） |
+| 备注 | 华科毛概辨析题总结（含有目录）整理版，覆盖第1-12章辨析题，可作复习参考 |
+
+## 内容范围
+
+- 第1章：马克思主义中国化两大理论成果
+- 第2章：新民主主义革命理论
+- 第3章：社会主义改造理论
+- 第4章：社会主义建设道路初步探索的理论成果
+- 第5章：建设中国特色社会主义总依据
+- 第6章：社会主义本质和建设中国特色社会主义总任务
+- 第7章：社会主义改革开放理论
+- 第8章：建设中国特色社会主义总布局
+- 第9章：实现祖国完全统一的理论
+- 第10章：中国特色社会主义外交和国际战略
+- 第11章：建设中国特色社会主义的根本目的和依靠力量
+- 第12章：中国特色社会主义领导核心理论
+
+## 获取方式
+
+1. 访问 https://m.doc88.com/p-3833745409819.html
+2. 注册/登录 doc88.com
+3. 积分兑换后在线阅读或下载`,
+  "辅助资料/通用题库资源.md": `# 通用题库资源
+
+以下资源为通用毛概题库（非华科专属），但教材一致，可作刷题参考。
+
+## 资源一：毛概2023版通用题库（GitHub Gist）
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | GitHub Gist (YouXam) |
+| 获取链接 | https://gist.github.com/YouXam/b2ff9d7ea35380d4d6083c504f1b60df |
+| 资源格式 | Typst 源码 + PDF 导出 |
+| 是否含答案 | **是** |
+| 费用说明 | 免费 |
+| 备注 | 基于《毛泽东思想和中国特色社会主义理论体系概论》(2023年版) 的完整题库，含单选、多选、判断、填空，答案附后 |
+
+## 资源二：毛概2023版题库PDF（byrdocs）
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | byrdocs |
+| 获取链接 | https://s3.byrdocs.org/byrdocs/4a7fabef0146a3cbf55b7f73f299f220.pdf |
+| 资源格式 | PDF |
+| 是否含答案 | **是** |
+| 费用说明 | 免费 |
+| 备注 | 与 GitHub Gist 同源的 PDF 导出版本，可直接下载使用 |
+
+## 资源三：2025-2026毛概题库（试题通）
+
+| 字段 | 内容 |
+|------|------|
+| 来源平台 | 试题通 (shititong.cn) |
+| 获取链接 | https://www.shititong.cn/cha-kan/tikuheji/CBB05AAD5F70000127A072215D401AA9.html |
+| 资源格式 | 在线题库 |
+| 是否含答案 | 否 |
+| 费用说明 | 免费 |
+| 备注 | 2025-2026第二学期毛概期末题库，共334题，可在线刷题 |
+
+## 参考资源（非华科，但可参考）
+
+| 资源 | 平台 | 链接 |
+|------|------|------|
+| 浙江大学毛概资料（2017-2021年真题+笔记） | GitHub | https://github.com/CSfufu/Introduction-to-Mao-Zedong-Thought |
+| 北京理工大学毛概回忆版试卷（2023/2024/2025） | GitHub Pages | https://ri-nai-bit-se.github.io/Cat-Theory-Notes/papers/ |`,
+},
+  "youji": {
+  "README.md": "# 华中科技大学 有机化学（A）真题资源包\n\n## 概述\n\n本资源包收录了华中科技大学**有机化学（A）**相关的期末考试真题和考研初试真题资源索引，由「真题情报官」于 2026 年 6 月自动搜索整理。\n\n## 资源结构\n\n```\nhust_youjihuaxueA_exam_pack/\n├── README.md                  # 本说明文件\n├── 资源总表.md                 # 完整资源总表与覆盖报告\n├── 期末真题/                   # 期末考试真题索引\n│   ├── 2021-2022年/资源链接.md\n│   ├── 2023-2024年/资源链接.md\n│   ├── 2024年MOOC/资源链接.md\n│   └── 本科多套/资源链接.md\n├── 考研真题/                   # 考研初试真题索引\n│   ├── 2000-2012年/资源链接.md\n│   ├── 2010年/资源链接.md\n│   ├── 2013年/资源链接.md\n│   ├── 2014年/资源链接.md\n│   ├── 2014-2017年/资源链接.md\n│   ├── 2015-2016年/资源链接.md\n│   ├── 2018-2021年/资源链接.md\n│   ├── 2020年/资源链接.md\n│   └── 2022-2023年/资源链接.md\n└── index.html                 # 离线浏览入口（双击打开）\n```\n\n## 使用说明\n\n1. **离线浏览**：双击 `index.html` 即可在浏览器中打开，无需服务器，支持深色/浅色模式切换。\n2. **直接查看**：也可直接打开各 `.md` 文件查看资源详情。\n3. **资源获取**：点击资源链接可跳转到对应平台。部分资源需付费，已在文件中标注。\n\n## 华科有机化学考试体系说明\n\n| 场景 | 科目代码/名称 | 适用学院 |\n|------|-------------|---------|\n| 本科期末 | 有机化学（A）/ 有机化学（一） | 化学与化工学院 |\n| 考研学术型 | 622有机化学 / 874有机化学 | 化学与化工学院 |\n| 考研药学 | 755药学综合（一）/ 349药学综合 | 药学院 |\n| 历史代码 | 804有机化学(含实验)A（2010年）、812有机化学A（2014年） | 各方向 |\n\n> **注意**：考研科目代码经历过多次变化（804→812→874/622），不同学院/专业有不同科目。本资源包尽量覆盖所有相关科目。\n\n## 重要声明\n\n- 所有资源链接均来自实际搜索结果，时间戳为 2026 年 6 月。\n- 标注\"待验证\"的资源需进一步确认真实性。\n- 付费资源如实标注，不尝试绕过付费墙。\n- 标记\"暂无资源\"的年份表示搜索后未找到任何公开资源。\n- 本资源包不存储任何题目原文，仅提供索引链接。\n\n## 搜索覆盖平台\n\nGitHub、aizhugong.com（爱助攻）、CSDN、考研资源网（freekaoyan.com、hustky.net、okaoyan.com）、牛客网、知乎、B站、百度/必应通用搜索、原创力文档（book118.com）、道客巴巴（doc88.com）、豆丁网（docin.com）、七彩学科网（7cxk.com）、微店（weidian.com）、考研论坛（bbs.kaoyan.com）、中国高校课件下载中心（cucdc.com）",
+  "资源总表.md": "# 华中科技大学 有机化学（A）真题资源总表\n\n> 搜索时间：2026 年 6 月 21 日 | 覆盖平台：16 个\n\n---\n\n## 一、期末考试真题总表\n\n| 序号 | 年份 | 资源描述 | 来源平台 | 链接 | 格式 | 含答案 | 费用 | 可信度 |\n|------|------|---------|---------|------|------|--------|------|--------|\n| 1 | 2021-2022 | 华中科技大学《有机化学(一)》第一学期期末试卷（化学专业，120分钟，100分） | 原创力文档 | https://m.book118.com/html/2024/0722/6011224205010203.shtm | PDF | 待验证 | 需金币 | 高 |\n| 2 | 2021-2022 | 同上（DOCX版本） | 原创力文档 | https://m.book118.com/html/2024/0722/8006123115006113.shtm | DOCX | 待验证 | 需金币 | 高 |\n| 3 | 2023-2024 | 华中科技大学《有机化学》第一学期期末试卷（单选10题+多选5题） | 原创力文档 | https://m.book118.com/html/2026/0302/6053231011012104.shtm | PDF | 待验证 | 60金币 | 高 |\n| 4 | 2024 | 【MOOC期末】有机化学期末测试中国大学慕课答案（标注\"有机化学试题2024年-1（A）\"） | 七彩学科网 | https://m.7cxk.com/p-4125193.html | DOCX | 是 | 30积分 | 高 |\n| 5 | 本科多套 | 有机化学本科卷8套（4套有答案，4套无答案） | 华科考研网 | http://www.hustky.net/article/992.html | 纸质 | 4套有答案 | 付费（套装内） | 高 |\n| 6 | 本科多套 | 有机化学期末试卷4套（含解答） | 考研论坛 | https://bbs.kaoyan.com/t10346295p1 | 待确认 | 是 | 需联系发帖人 | 高 |\n| 7 | 本科多套 | 有机化学本科试卷和答案（349药学综合配套） | 华科考研网 | http://hustky.net/article/1049.html | 纸质 | 是 | 付费（套装内） | 高 |\n\n## 二、考研初试真题总表\n\n| 序号 | 年份 | 科目代码 | 资源描述 | 来源平台 | 链接 | 格式 | 含答案 | 费用 | 可信度 |\n|------|------|---------|---------|---------|------|------|--------|------|--------|\n| 1 | 2000-2012 | 622/874 | 有机化学考研真题原卷扫描版（46页，含2001/2002/2003/2004/2005/2006/2009/2010/2011/2012年） | 原创力文档 | https://m.book118.com/html/2023/1007/5244330341010340.shtm | PDF | 2000-2005有答案 | 需金币 | 高 |\n| 2 | 2000-2012 | 622/874 | 全套资料（真题原卷+答案+本科卷8套+课件+模拟题+习题） | 华科考研网 | http://www.hustky.net/article/992.html | 纸质 | 2000-2005有答案 | 付费 | 高 |\n| 3 | 2000-2012 | 874 | 考研真题（2000-2012原版，2015-2016可能为回忆版）+ 答案 + 课件 + 题库 | 考研派 | https://m.okaoyan.com/shop/hust/72253.html | 纸质 | 2000-2005含答案 | ¥208 | 高 |\n| 4 | 2000-2012 | 622 | 原版真题 + 2001-2005答案 + 4套期末试卷含答案 + 习题库 + 课件 + 复习讲义 | 考研论坛 | https://bbs.kaoyan.com/t5510338p1 | 待确认 | 2001-2005有答案 | 需联系发帖人 | 高 |\n| 5 | 2000-2012 | 622 | 原版真题 + 2014回忆版(较完整) + 2018-2021回忆版 + 真题解析 + 期末试卷+测试题+习题库 | 考研论坛 | https://bbs.kaoyan.com/t10346295p1 | 待确认 | 含解答 | 需联系发帖人 | 高 |\n| 6 | 2002 | 有机化学 | 华中科技大学2002年有机化学考研试卷1 | 高校课件下载中心 | http://m.download.cucdc.com/wenku/8ca07607ad094fd68e089bb6513a7186.html | DOC | 待验证 | 需付费下载 | 中 |\n| 7 | 2002 | 有机化学 | 华中科技大学2002年有机化学考研试卷2 | 高校课件下载中心 | http://m.download.cucdc.com/wenku/e783ad3c1dd0428f85622fe6f29fc241.html | DOC | 待验证 | 需付费下载 | 中 |\n| 8 | 2004 | 有机化学 | 华中科技大学2004年有机化学考研试卷（5页，可预览全部内容） | 高校课件下载中心 | http://m.download.cucdc.com/wenku/1dd0c22fbf5947128720cbd4aacf6f22.html | DOC | 待验证 | 需付费下载 | 高 |\n| 9 | 2002-2023 | 349 | 349药学综合考研真题（部分答案在卷面上）+ 有机化学本科试卷和答案 + 习题库 | 华科考研网 | http://hustky.net/article/1049.html | 纸质 | 部分有答案 | 付费 | 高 |\n| 10 | 2010 | 804 | 804有机化学(含实验)A 硕士学位研究生入学考试题（PDF直链可下载） | Free考研 | http://school.freekaoyan.com/d/file/2013/12-21/029e79b82c222bb7ea149172cb32f557.pdf | PDF | 待验证 | 免费 | 高 |\n| 11 | 2013 | 有机化学 | 有机化学近两年真题回忆版（含2012、2013、2014年题目） | 原创力文档 | https://m.book118.com/html/2025/0831/8005011060007126.shtm | DOC | 待验证 | 需金币 | 中 |\n| 12 | 2014 | 812 | 812有机化学A 硕士学位研究生入学考试正题（5页完整预览） | 道客巴巴 | https://m.doc88.com/p-8911319114866.html | 网页预览 | 待验证 | 免费预览 | 高 |\n| 13 | 2014-2017 | 有机化学 | 硕士考试有机化学真题集（含2014-2017年正题） | 原创力文档 | https://m.book118.com/html/2024/0121/7134200023006033.shtm | PDF | 待验证 | 需金币 | 高 |\n| 14 | 2015-2016 | 874 | 874有机化学考研真题 | 考研派 | https://m.okaoyan.com/shop/hust/72253.html | 纸质 | 待验证 | ¥208 | 中 |\n| 15 | 2018-2021 | 622 | 2018-2021年回忆版试题 | 考研论坛 | https://bbs.kaoyan.com/t10346295p1 | 待确认 | 待验证 | 需联系发帖人 | 中 |\n| 16 | 2020 | 622 | 622有机化学考试大纲 | 原创力文档 | https://m.book118.com/html/2021/0919/5141043114004011.shtm | PDF | N/A | 需金币 | 高 |\n| 17 | 2022-2023 | 349 | 349药学综合历年真题（含有机化学） | 华科考研网 | http://hustky.net/article/1049.html | 纸质 | 部分有答案 | 付费 | 高 |\n| 18 | 2026 | 622 | 622有机化学考研冲刺五套卷及参考答案（模拟题） | 豆丁网 | https://www.docin.com/touch_new/preview_new.do?id=4870940996 | PDF | 是 | 需付费 | 中 |\n| 19 | 多年度 | 874 | 874有机化学考研真题+期末题库+重点题库全套资料 | 微店 | https://weidian.com/item.html?itemID=2883435253 | 纸质/电子 | 待验证 | ¥166 | 中 |\n\n## 三、考研经验与参考资料\n\n| 序号 | 类型 | 描述 | 链接 | 可信度 |\n|------|------|------|------|--------|\n| 1 | 考研大纲 | 华中科技大学874有机化学考研大纲（完整版，含考试范围、试卷结构、21章考查要点） | http://hustky.net/article/617.html | 高 |\n| 2 | 考研经验 | B站专栏：华中科技大学有机化学专业考研经验分享（365分上岸） | https://www.bilibili.com/read/cv18274265/ | 高 |\n| 3 | 考研经验 | B站专栏：超详细上岸华中科技大学经验分享（361分，有机138分） | https://www.bilibili.com/read/cv24564797/ | 高 |\n| 4 | 考研经验 | B站专栏：华科药学专业考研参考书、难度及复习指导 | https://www.bilibili.com/opus/798365834259988534 | 高 |\n| 5 | 考研经验 | B站专栏：华科化学专业考研参考书、难度及备考经验（推荐邢大本1-19章） | https://www.bilibili.com/read/cv23628357/ | 高 |\n| 6 | 考研指南 | 华科有机化学专业2026年考研上岸经验和2027年备考指南 | http://www.xxxedu.net/articlenew.php?id=396126 | 中 |\n| 7 | 考研指南 | 华科有机化学专业2027年考研参考书目和复习指南（推荐胡宏纹《有机化学》） | http://www.xxxedu.net/articlenew.php?id=396688 | 中 |\n| 8 | 教学资源 | 华中科技大学有机化学MOOC（龚跃法团队，中国大学MOOC平台） | https://www.icourse163.org/course/HUST-1001936008 | 高 |\n| 9 | 教辅 | 有机化学题解（聂进、马敬中主编，华中科技大学出版社） | https://pdfyl.ertongbook.com/31/31500894.pdf | 高 |\n| 10 | 考研资料 | 2024年华中科技大学349《药学综合》考研考试大纲 | https://www.bilibili.com/opus/852633862492127241 | 高 |\n\n## 四、覆盖报告\n\n| 指标 | 期末真题 | 考研真题 |\n|------|---------|---------|\n| 来源平台数 | 4 | 10 |\n| 有效资源数 | 7 | 19 |\n| 覆盖年份范围 | 2021-2024 | 2000-2023 |\n| 暂无资源年份 | 2020年及以前（除本科多套外） | 2024-2025年（暂无公开资源） |\n\n### 暂无资源年份列表\n\n**期末真题暂无资源年份**：2020年及以前的单独年份期末试卷（仅有本科多套合集，未标注具体年份）\n\n**考研真题暂无资源年份**：2024年、2025年（截至搜索日，未找到公开渠道的真题资源）\n\n### 年份覆盖详情（考研）\n\n| 年份 | 状态 | 版本类型 |\n|------|------|---------|\n| 2000-2012 | 有资源 | 原版扫描（622/874） |\n| 2013 | 有资源 | 回忆版（部分） |\n| 2014 | 有资源 | 正题+回忆版（812） |\n| 2015-2017 | 有资源 | 真题集（正题+可能回忆版） |\n| 2018-2021 | 有资源 | 回忆版 |\n| 2022-2023 | 有资源 | 349药学综合（含有机化学） |\n| 2024-2025 | **暂无** | 暂未找到公开资源 |\n\n## 五、搜索平台覆盖情况\n\n| 平台 | 搜索结果 | 有效资源 |\n|------|---------|---------|\n| GitHub | 无相关资源 | 0 |\n| aizhugong.com | 需登录，无法获取内容 | 0 |\n| CSDN | 未找到相关资源 | 0 |\n| freekaoyan.com | 有资源 | 1 |\n| dhfdb.com | 无 | 0 |\n| hustky.net | 有资源 | 3 |\n| okaoyan.com | 有资源 | 2 |\n| 牛客网 | 无 | 0 |\n| 知乎 | 无 | 0 |\n| B站 | 有考研经验帖 | 5 |\n| 原创力文档(book118) | 有资源 | 6 |\n| 道客巴巴(doc88) | 有资源 | 1 |\n| 豆丁网(docin) | 有资源 | 1 |\n| 七彩学科网(7cxk) | 有资源 | 1 |\n| 微店(weidian) | 有资源 | 1 |\n| 考研论坛(bbs.kaoyan) | 有资源 | 3 |",
+  "期末真题/2021-2022年/资源链接.md": "# 期末真题 — 2021-2022 学年\n\n## 资源 1：华中科技大学《有机化学(一)》第一学期期末试卷\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 原创力文档（book118.com） |\n| **获取链接** | https://m.book118.com/html/2024/0722/6011224205010203.shtm |\n| **资源格式** | PDF |\n| **是否含答案** | 待验证（预览仅显示题目） |\n| **费用说明** | 需金币下载（具体金币数见页面） |\n| **备注** | 标注\"华中科技大学\"\"化学专业\"\"120分钟，100分\"；题型包括命名、选择、完成反应、合成、机理等 |\n\n## 资源 2：同上（DOCX 版本）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 原创力文档（book118.com） |\n| **获取链接** | https://m.book118.com/html/2024/0722/8006123115006113.shtm |\n| **资源格式** | DOCX |\n| **是否含答案** | 待验证 |\n| **费用说明** | 需金币下载 |\n| **备注** | 与资源1内容相同，格式为DOCX，可能更便于编辑 |\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：通用搜索引擎 + book118 站内搜索*",
+  "期末真题/本科多套/资源链接.md": "# 期末真题 — 本科多套（年份未标注）\n\n## 资源 1：有机化学本科卷 8 套（华科考研网套装）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 华科考研网（hustky.net） |\n| **获取链接** | http://www.hustky.net/article/992.html |\n| **资源格式** | 纸质（购买后邮寄） |\n| **是否含答案** | 4套有答案，4套无答案 |\n| **费用说明** | 含在622有机化学全套资料中，需付费购买（联系QQ：365939006 或淘宝店 https://shop121882856.taobao.com） |\n| **备注** | 由华科在校研究生团队整理，具体年份未标注 |\n\n## 资源 2：有机化学期末试卷 4 套（含解答）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 考研论坛（bbs.kaoyan.com） |\n| **获取链接** | https://bbs.kaoyan.com/t10346295p1 |\n| **资源格式** | 待确认（需联系发帖人） |\n| **是否含答案** | 是 |\n| **费用说明** | 需联系发帖人获取 |\n| **备注** | 2021年发布，发帖人声称有4套期末试卷含解答 |\n\n## 资源 3：有机化学本科试卷和答案（349药学综合配套）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 华科考研网（hustky.net） |\n| **获取链接** | http://hustky.net/article/1049.html |\n| **资源格式** | 纸质 |\n| **是否含答案** | 是 |\n| **费用说明** | 含在349药学综合全套资料中，需付费购买 |\n| **备注** | 药学院相关，有机化学为其中一部分 |\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：hustky.net + bbs.kaoyan.com 搜索*",
+  "期末真题/2024年MOOC/资源链接.md": "# 期末真题 — 2024 年 MOOC 期末\n\n## 资源 1：【MOOC期末】有机化学期末测试中国大学慕课答案\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 七彩学科网（7cxk.com） |\n| **获取链接** | https://m.7cxk.com/p-4125193.html |\n| **资源格式** | DOCX |\n| **是否含答案** | **是**（含完整答案） |\n| **费用说明** | 30积分下载 |\n| **备注** | **重要发现**：文档明确标注\"有机化学试题2024年-1（A）\"，是与\"有机化学（A）\"直接相关的唯一确凿证据。共21道题（单选+多选+判断），涵盖亲核加成、芳香性、手性、Diels-Alder反应等核心考点 |\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：搜索\"华中科技大学 有机化学 期末 回忆题\"*",
+  "期末真题/2023-2024年/资源链接.md": "# 期末真题 — 2023-2024 学年\n\n## 资源 1：华中科技大学《有机化学》第一学期期末试卷\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 原创力文档（book118.com） |\n| **获取链接** | https://m.book118.com/html/2026/0302/6053231011012104.shtm |\n| **资源格式** | PDF |\n| **是否含答案** | 待验证（预览仅显示题目） |\n| **费用说明** | 60金币下载 |\n| **备注** | 共5页，含单选题10道、多选题5道，题目内容完整可预览；上传者来自贵州，建议交叉验证真实性 |\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：通用搜索引擎搜索\"华科 有机化学A 期末考试 试卷\"*",
+  "考研真题/2014年/资源链接.md": "# 考研真题 — 2014 年（812 有机化学A）\n\n> 2014年有两种版本来源：道客巴巴的正题（完整预览）和考研论坛的回忆版（较完整）。两个版本均保留。\n\n## 资源 1：812有机化学A 硕士学位研究生入学考试正题（完整预览）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 道客巴巴（doc88.com） |\n| **获取链接** | https://m.doc88.com/p-8911319114866.html |\n| **资源格式** | 网页预览（可免费查看全部5页内容） |\n| **是否含答案** | 待验证（预览仅显示题目） |\n| **费用说明** | 免费预览，下载需付费 |\n| **备注** | 适用方向：无机化学、分析化学、有机化学、物理化学、高分子化学与物理、应用化学。题型含命名、问答、完成反应等。科目代码为812，与2010年的804及后期的622/874不同 |\n\n## 资源 2：2014 年回忆版（较完整）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 考研论坛（bbs.kaoyan.com） |\n| **获取链接** | https://bbs.kaoyan.com/t10346295p1 |\n| **资源格式** | 待确认（需联系发帖人） |\n| **是否含答案** | 待验证 |\n| **费用说明** | 需联系发帖人获取 |\n| **备注** | 发帖人描述为\"2014回忆版(较完整)\"，包含在622有机化学全套资料中 |\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：搜索\"华中科技大学 有机化学 2014 考研真题\" + bbs.kaoyan.com*",
+  "考研真题/2013年/资源链接.md": "# 考研真题 — 2013 年（回忆版）\n\n## 资源 1：有机化学近两年真题回忆版（含2012、2013、2014年题目）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 原创力文档（book118.com） |\n| **获取链接** | https://m.book118.com/html/2025/0831/8005011060007126.shtm |\n| **资源格式** | DOC |\n| **是否含答案** | 待验证 |\n| **费用说明** | 需金币下载 |\n| **备注** | 回忆版，非原卷扫描。2013年题目包含在此文档中，完整性待验证 |\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：book118.com 搜索\"有机化学 近两年 真题 回忆版\"*",
+  "考研真题/2014-2017年/资源链接.md": "# 考研真题 — 2014-2017 年（真题集）\n\n## 资源 1：硕士考试有机化学真题集（含 2014-2017 年正题）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 原创力文档（book118.com） |\n| **获取链接** | https://m.book118.com/html/2024/0121/7134200023006033.shtm |\n| **资源格式** | PDF |\n| **是否含答案** | 待验证 |\n| **费用说明** | 需金币下载 |\n| **备注** | 涵盖2014-2017年有机化学真题，标注为\"正题\"（区别于回忆版），可信度较高 |\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：搜索\"华中科技大学 有机化学 2014-2017 考研真题\"*",
+  "考研真题/2022-2023年/资源链接.md": "# 考研真题 — 2022-2023 年（349 药学综合）\n\n> 2022-2023年的考研真题主要通过349药学综合（药学院）渠道获取，有机化学为其中一部分。\n\n## 资源 1：349药学综合考研真题（含有机化学，2002-2023年）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 华科考研网（hustky.net） |\n| **获取链接** | http://hustky.net/article/1049.html |\n| **资源格式** | 纸质 |\n| **是否含答案** | 部分答案在卷面上 |\n| **费用说明** | 需付费购买全套资料 |\n| **备注** | 包含2002-2023年349药学综合历年真题，有机化学为其中一部分。另含有机化学本科试卷和答案、习题库及答案、模拟题 |\n\n## 补充说明\n\n- 2022-2023年的622有机化学（化学与化工学院学术型）单独真题暂未在公开平台发现\n- 如需最新的622有机化学真题，建议联系华科考研网（QQ：365939006）或考研论坛发帖人获取\n- 2024-2025年真题截至搜索日暂未找到任何公开资源\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：hustky.net 搜索*",
+  "考研真题/2020年/资源链接.md": "# 考研真题 — 2020 年（622 考试大纲）\n\n## 资源 1：622有机化学考试大纲\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 原创力文档（book118.com） |\n| **获取链接** | https://m.book118.com/html/2021/0919/5141043114004011.shtm |\n| **资源格式** | PDF |\n| **是否含答案** | N/A（考试大纲，非真题） |\n| **费用说明** | 需金币下载 |\n| **备注** | 2020年622有机化学考试大纲，非真题但可作为复习参考 |\n\n## 补充说明\n\n2020年考研真题目前仅找到回忆版，来源于考研论坛（bbs.kaoyan.com/t10346295p1），需联系发帖人获取。完整原版暂未在公开平台发现。\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：搜索\"华中科技大学 有机化学 2020 考研真题\"*",
+  "考研真题/2010年/资源链接.md": "# 考研真题 — 2010 年（804 有机化学(含实验)A）\n\n## 资源 1：804有机化学(含实验)A 硕士学位研究生入学考试题\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | Free考研（freekaoyan.com） |\n| **获取链接** | http://school.freekaoyan.com/d/file/2013/12-21/029e79b82c222bb7ea149172cb32f557.pdf |\n| **资源格式** | PDF（直接下载） |\n| **是否含答案** | 待验证 |\n| **费用说明** | **免费** |\n| **备注** | **重要发现**：可直接下载的PDF文件，科目代码804，含实验内容。与后续年份的622/874科目代码不同，说明考试科目代码经历过变化 |\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：site:freekaoyan.com 搜索*",
+  "考研真题/2018-2021年/资源链接.md": "# 考研真题 — 2018-2021 年（回忆版）\n\n> 2018年之后的考研真题主要以回忆版形式存在于考研论坛，暂未在公开文档平台发现完整原版。\n\n## 资源 1：2018-2021 年回忆版试题\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 考研论坛（bbs.kaoyan.com） |\n| **获取链接** | https://bbs.kaoyan.com/t10346295p1 |\n| **资源格式** | 待确认（需联系发帖人） |\n| **是否含答案** | 待验证 |\n| **费用说明** | 需联系发帖人获取 |\n| **备注** | 2021年发帖，声称有2018-2021年回忆版试题。根据经验，回忆版完整性不如原版，但仍是近年真题的重要来源 |\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：bbs.kaoyan.com 搜索*",
+  "考研真题/2015-2016年/资源链接.md": "# 考研真题 — 2015-2016 年（874 有机化学）\n\n## 资源 1：考研派 874 有机化学考研真题\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 考研派（okaoyan.com） |\n| **获取链接** | https://m.okaoyan.com/shop/hust/72253.html |\n| **资源格式** | 纸质 |\n| **是否含答案** | 待验证 |\n| **费用说明** | ¥208（全套，含2000-2012原版+2015-2016真题+答案+课件+题库） |\n| **备注** | 2015-2016年可能为回忆版，非原版扫描。包含在874有机化学全套资料中 |\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：okaoyan.com 搜索*",
+  "考研真题/2000-2012年/资源链接.md": "# 考研真题 — 2000-2012 年（622/874 有机化学）\n\n> 这是目前最完整的考研真题合集，覆盖 2000-2012 年（缺2007-2008年），原版扫描。\n\n## 资源 1：2001-2012 年有机化学考研真题原卷扫描版（46页）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 原创力文档（book118.com） |\n| **获取链接** | https://m.book118.com/html/2023/1007/5244330341010340.shtm |\n| **资源格式** | PDF（扫描版） |\n| **是否含答案** | 2000-2005年有答案，其余年份待验证 |\n| **费用说明** | 需金币下载 |\n| **备注** | 46页原版试卷扫描，涵盖2001/2002/2003/2004/2005/2006/2009/2010/2011/2012年；缺2007-2008年 |\n\n## 资源 2：华科考研网全套资料（622有机化学）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 华科考研网（hustky.net） |\n| **获取链接** | http://www.hustky.net/article/992.html |\n| **资源格式** | 纸质（购买后邮寄） |\n| **是否含答案** | 2000-2005年有答案 |\n| **费用说明** | 全套付费，含真题原卷+答案+本科卷8套+出题老师课件+重点习题+模拟题+专题辅导讲义 |\n| **备注** | 由华科在校研究生团队运营，联系QQ：365939006，淘宝店：https://shop121882856.taobao.com |\n\n## 资源 3：考研派（874有机化学）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 考研派（okaoyan.com） |\n| **获取链接** | https://m.okaoyan.com/shop/hust/72253.html |\n| **资源格式** | 纸质 |\n| **是否含答案** | 2000-2005年含答案 |\n| **费用说明** | ¥208 |\n| **备注** | 2000-2012年为原版，2015-2016年可能为回忆版 |\n\n## 资源 4：考研论坛帖子（t5510338p1）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 考研论坛（bbs.kaoyan.com） |\n| **获取链接** | https://bbs.kaoyan.com/t5510338p1 |\n| **资源格式** | 待确认（需联系发帖人） |\n| **是否含答案** | 2001-2005年有答案 |\n| **费用说明** | 需联系发帖人获取 |\n| **备注** | 含原版真题+4套期末试卷含答案+习题库+课件+复习讲义+测试题 |\n\n## 资源 5：考研论坛帖子（t10346295p1）\n\n| 项目 | 内容 |\n|------|------|\n| **来源平台** | 考研论坛（bbs.kaoyan.com） |\n| **获取链接** | https://bbs.kaoyan.com/t10346295p1 |\n| **资源格式** | 待确认（需联系发帖人） |\n| **是否含答案** | 含解答 |\n| **费用说明** | 需联系发帖人获取 |\n| **备注** | 2021年发布，除2000-2012原版外，还含2014回忆版(较完整) + 2018-2021回忆版 + 真题解析 + 4套期末试卷含解答 + 测试题 + 习题库 |\n\n---\n\n*搜索时间：2026年6月 | 搜索方式：hustky.net + book118.com + bbs.kaoyan.com + okaoyan.com*"
+},
+  "gailvlun": {
+  "README.md": "# 华中科技大学概率论与数理统计（A）真题资源包\n\n## 概览\n\n本资源包由「真题情报官」自动搜索整理，覆盖华中科技大学**概率论与数理统计（A）** 课程的**期末考试真题**和**考研初试真题**两个方向，年份跨度 2001–2025。\n\n## 资源统计\n\n| 方向 | 有效资源数 | 覆盖年份 | 免费资源 | 付费资源 |\n|------|-----------|----------|----------|----------|\n| 期末真题 | 10 | 2018–2025 | 6 | 4 |\n| 考研真题 | 8 | 2001–2025 | 4 | 4 |\n\n## 目录结构\n\n```\nhust_gailvlunshuliitongjiA_exam_pack/\n├── README.md               ← 本文件\n├── 资源总表.md              ← 完整资源汇总表 + 覆盖报告\n├── index.html              ← 离线浏览器（双击打开）\n├── 期末真题/\n│   ├── 2018年/资源链接.md\n│   ├── 2020年/资源链接.md\n│   ├── 2021年/资源链接.md\n│   ├── 2022年/资源链接.md\n│   ├── 2023年/资源链接.md\n│   ├── 2024年/资源链接.md\n│   └── 2025年/资源链接.md\n└── 考研真题/\n    ├── 2001年/资源链接.md\n    ├── 2002年/资源链接.md\n    ├── 2016年/资源链接.md\n    ├── 数学一统考/资源链接.md\n    └── 数学三统考/资源链接.md\n```\n\n## 使用说明\n\n1. **离线浏览**：双击 `index.html` 即可在浏览器中查看所有资源，无需联网或服务器\n2. **手动查阅**：按年份进入对应子目录，查看 `资源链接.md` 获取详细来源信息\n3. **资源获取**：免费资源可直接下载；付费资源需自行前往对应平台购买\n\n## 免责声明\n\n- 所有资源链接来自公开网络搜索，仅供学习参考\n- 付费资源已如实标注，不尝试绕过付费墙\n- 不确定的资源标注\"待验证\"，请自行核实\n- 本资源包不包含任何题目原文，仅提供链接索引\n\n## 更新日期\n\n2026年6月21日",
+  "期末真题/2018年/资源链接.md": "# 2018年 期末真题 — 资源链接\n\n## 资源 1：学习部2018年试卷扫描版\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | GitHub — HUSR-CS-Learning（HUST开源计划） |\n| 获取链接 | https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/往年题/概率论（学习部2018年试卷扫描版）.pdf |\n| 资源格式 | PDF（扫描版） |\n| 是否含答案 | 否 |\n| 费用说明 | 免费，可直接下载 |\n| 备注 | 由华科学习部扫描上传，原卷扫描质量较高。GitHub仓库由2023级本硕博班学生维护，66 Stars。 |\n\n## 资源 2：概率论与数理统计A期末试题及详细解析\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | CSDN文库 |\n| 获取链接 | https://wenku.csdn.net/doc/3hfmjms2yb |\n| 资源格式 | PDF（164KB） |\n| 是否含答案 | 是（含详细解析） |\n| 费用说明 | 0积分，免费下载 |\n| 备注 | 含填空题15分、选择题15分、计算证明题，覆盖联合分布、期望方差、置信区间、正态分布等核心考点。体系与华科教材一致，但标题未明确标注\"华中科技大学\"，建议下载后核实。标记为\"待验证\"。 |",
+  "期末真题/2020年/资源链接.md": "# 2020年 期末真题 — 资源链接\n\n## 资源 1：概率统计20年上学期期末考试（含答案）\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | GitHub — HUSR-CS-Learning（HUST开源计划） |\n| 获取链接 | https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/往年题/概率统计20年上学期期末考试.pdf |\n| 资源格式 | PDF |\n| 是否含答案 | 是（附答案） |\n| 费用说明 | 免费，可直接下载 |\n| 备注 | 由华科学生上传，含完整试题和参考答案。HUST开源计划核心资源之一。 |\n\n## 资源 2：2020-2021学年第一学期期末试卷\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 夸克文档 |\n| 获取链接 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/3540CD043E2CA3E2F64D2EAAF4F0C97C |\n| 资源格式 | 在线预览 |\n| 是否含答案 | 否（仅试题） |\n| 费用说明 | 免费在线预览 |\n| 备注 | 夸克文档官方收录，需夸克APP打开。标注为华中科技大学2020-2021学年第一学期期末试卷。 |",
+  "期末真题/2021年/资源链接.md": "# 2021年 期末真题 — 资源链接\n\n## 资源 1：2021级《概率论与数理统计》试卷(A)（含参考答案）\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | GitHub — HUSR-CS-Learning（HUST开源计划） |\n| 获取链接 | https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/往年题/2021级(一)《概率论与数理统计》试卷(A)（本科理工类2021～22学年第2学期）.docx |\n| 资源格式 | DOCX |\n| 是否含答案 | 是（附参考答案） |\n| 费用说明 | 免费，可直接下载 |\n| 备注 | 明确标注为\"本科理工类\"，A卷，2021～22学年第2学期考试。HUST开源计划核心资源，最权威的2021年试卷。 |\n\n## 资源 2：2021-2022学年第二学期期末试卷及答案A卷\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 原创力文档（book118.com） |\n| 获取链接 | https://m.book118.com/html/2026/0613/6204143133012145.shtm |\n| 资源格式 | DOCX |\n| 是否含答案 | 是 |\n| 费用说明 | 需VIP付费下载 |\n| 备注 | 与资源1可能为同一份试卷的不同来源，建议优先使用资源1（GitHub免费版）。标注为\"待验证\"是否与资源1内容一致。 |",
+  "期末真题/2022年/资源链接.md": "# 2022年 期末真题 — 资源链接\n\n## 资源 1：概率统计2022年秋季学期考试答案\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | GitHub — HUSR-CS-Learning（HUST开源计划） |\n| 获取链接 | https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/往年题/概率统计2022年秋季学期考试答案.pdf |\n| 资源格式 | PDF |\n| 是否含答案 | 是（答案为主，可能含部分试题） |\n| 费用说明 | 免费，可直接下载 |\n| 备注 | 文件名标注为\"考试答案\"，以解答为主。HUST开源计划核心资源之一。 |",
+  "期末真题/2023年/资源链接.md": "# 2023年 期末真题 — 资源链接\n\n## 状态：暂未找到\n\n| 项目 | 详情 |\n|------|------|\n| 搜索状态 | 已搜索GitHub、book118、aizhugong、CSDN、夸克文档、百度/必应，均未找到2023年单独学年的期末试卷 |\n| 替代方案 | 2023-2024学年试卷已覆盖（见2024年目录），包含2023级学生2024年1月的考试内容 |\n| 建议 | 通过华科校内渠道（学习部、学数群、校内论坛）获取 |\n| 备注 | 2022-2023学年第二学期试卷暂未公开，可能尚未被学生上传至公共平台 |",
+  "期末真题/2024年/资源链接.md": "# 2024年 期末真题 — 资源链接\n\n## 资源 1：2023-2024学年第一学期期末试卷及答案A卷\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 原创力文档（book118.com） |\n| 获取链接 | https://m.book118.com/html/2025/1214/5332023121013033.shtm |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 需VIP付费下载 |\n| 备注 | 标注为华中科技大学《概率论与数理统计》2023-2024学年第一学期期末试卷及答案A卷。上传于2025年12月。 |\n\n## 资源 2：2024-2025学年第一学期期末试卷及答案A卷\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 原创力文档（book118.com） |\n| 获取链接 | https://m.book118.com/html/2025/1214/5332032121013033.shtm |\n| 资源格式 | PDF（扫描版） |\n| 是否含答案 | 是 |\n| 费用说明 | 需VIP付费下载 |\n| 备注 | 标注为必修，理工类本科2023级，考试时间2025年1月11日，闭卷150分钟。原卷扫描，含完整试题内容和答案。与\"概率论与数理统计（A）\"课程性质高度吻合。 |\n\n## 资源 3：华科能源学院概率论与数理统计核心考点精要\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | CSDN文库 |\n| 获取链接 | https://wenku.csdn.net/doc/oj39aj244r |\n| 资源格式 | DOC（433KB） |\n| 是否含答案 | 否（仅复习纲要） |\n| 费用说明 | 8积分 |\n| 备注 | 2024年11月上传，明确标注为华中科技大学能源学院。覆盖ch1-ch4完整知识体系（随机事件与概率、随机变量与分布、二维随机向量、数字特征）。 |",
+  "期末真题/2025年/资源链接.md": "# 2025年 期末真题 — 资源链接\n\n## 资源 1：2025年期末考试试卷及答案\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 原创力文档（book118.com） |\n| 获取链接 | https://m.book118.com/html/2026/0417/7043144130011102.shtm |\n| 资源格式 | DOCX |\n| 是否含答案 | 是 |\n| 费用说明 | 需VIP付费下载 |\n| 备注 | 标注为华中科技大学概率论与数理统计2025年期末考试试卷及答案。格式为文字版而非扫描件，部分答案可能截断。上传于2026年4月。 |\n\n## 资源 2：ib_概率论与数理统计 22级/23级历年真题\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | aizhugong.com（爱助攻） |\n| 获取链接 | https://www.aizhugong.com/thread-112174-1-1.html |\n| 资源格式 | ZIP（947KB） |\n| 是否含答案 | 待确认 |\n| 费用说明 | 6金币（需注册） |\n| 备注 | 前缀\"ib_\"表明很可能是国际班/英才班课程，内容与普通班（A）版本可能有差异。发布者 hzkj00，下载15次，浏览920次。标注为\"待验证\"。 |",
+  "考研真题/2001年/资源链接.md": "# 2001年 考研真题 — 资源链接\n\n## 资源 1：研究生入学考试概率论与数理统计试题\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 中国高校课件下载中心（cucdc.com） |\n| 获取链接 | http://m.download.cucdc.com/wenku/1b7ad73369f044d5a44d7353c587fffd.html |\n| 资源格式 | DOC |\n| 是否含答案 | 否 |\n| 费用说明 | 待验证（可能需要积分或登录） |\n| 备注 | 华中科技大学2001年研究生入学考试概率论与数理统计试题，来自习题库。数学系自命题，适用于概率统计、应用数学等专业。标注为\"待验证\"。 |\n\n## 资源 2：2001-2002年概率统计考研真题\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 夸克文档 |\n| 获取链接 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-kaoyan/57340CBDBB11B8398D3FBF2A88C9C3A9 |\n| 资源格式 | PDF |\n| 是否含答案 | 否 |\n| 费用说明 | 待验证（需夸克APP打开） |\n| 备注 | 华中科技大学数学系历年真题汇总，包含概率统计2001-2002年考研真题。标注为\"待验证\"。 |",
+  "考研真题/2002年/资源链接.md": "# 2002年 考研真题 — 资源链接\n\n## 资源 1：2001-2002年概率统计考研真题（同2001年资源2）\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 夸克文档 |\n| 获取链接 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-kaoyan/57340CBDBB11B8398D3FBF2A88C9C3A9 |\n| 资源格式 | PDF |\n| 是否含答案 | 否 |\n| 费用说明 | 待验证（需夸克APP打开） |\n| 备注 | 与2001年资源2为同一文件，包含2001-2002年两年试题。 |\n\n## 资源 2：601数学分析考研真题（含概率统计方向，2002年起）\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | hustky.net（华科考研网） |\n| 获取链接 | http://www.hustky.net/article/984.html |\n| 资源格式 | 纸质/淘宝购买 |\n| 是否含答案 | 部分年份 |\n| 费用说明 | 付费（联系QQ: 365939006，手机: 15071318598） |\n| 备注 | 华科数学学院考研以601数学分析+801高等代数为主，概率统计内容含在数学分析中。hustky.net与dhfdb.com为同一团队运营。 |",
+  "考研真题/2016年/资源链接.md": "# 2016年 考研真题 — 资源链接\n\n## 资源 1：432统计学回忆版考研真题\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | freekaoyan.com（免费考研网） |\n| 获取链接 | http://www.freekaoyan.com/jy/zhuanyekeziliao/2016/08-24/1472034381262908.shtml |\n| 资源格式 | 网页 |\n| 是否含答案 | 部分（回忆版，含试题详细描述） |\n| 费用说明 | 免费 |\n| 备注 | 华中科技大学432统计学（应用统计专硕）回忆版考研真题，含概率论60分试题的详细回忆。参考书为刘次华、万建平《概率论与数理统计》第三版。 |\n\n## 资源 2：432统计学真题汇编（2000-2005）\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 经管之家（bbs.pinggu.org） |\n| 获取链接 | https://bbs.pinggu.org/thread-11904999-1-1.html |\n| 资源格式 | PDF |\n| 是否含答案 | 否 |\n| 费用说明 | 付费下载 |\n| 备注 | 含华中科技大学432统计学2000-2001、2004-2005年真题，以及数学分析2000-2008年真题。 |",
+  "考研真题/数学一统考/资源链接.md": "# 数学一统考 — 资源链接\n\n> 说明：全国硕士研究生入学统一考试数学一包含概率论与数理统计模块（约22%分值，34分左右）。适用于华科大部分工科专业考研。\n\n## 资源 1：2025考研数学一真题\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 聚英考研 |\n| 获取链接 | https://www.juyingonline.com/upload/202412/23/202412231044055357.pdf |\n| 资源格式 | PDF |\n| 是否含答案 | 是 |\n| 费用说明 | 免费 |\n| 备注 | 2025年全国硕士研究生招生考试数学一试题，含概率论与数理统计模块。 |\n\n## 资源 2：2021-2025数学一真题近5年核心汇编\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 原创力文档（book118.com） |\n| 获取链接 | https://m.book118.com/html/2026/0515/8062003050010072.shtm |\n| 资源格式 | DOCX |\n| 是否含答案 | 是 |\n| 费用说明 | 需VIP付费下载 |\n| 备注 | 近5年考研数学一真题汇编，含概率论与数理统计模块。 |\n\n## 资源 3：2026考研数学一真题及答案解析\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 中公考研 |\n| 获取链接 | https://www.kaoyan365.cn/shuxue/zhenti/ |\n| 资源格式 | 网页 |\n| 是否含答案 | 是 |\n| 费用说明 | 免费 |\n| 备注 | 2026年考研数学一真题，中公考研整理发布。 |\n\n## 资源 4：2022-2023概率论真题解析\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 搜狐 |\n| 获取链接 | https://m.sohu.com/a/962910861_122362512/ |\n| 资源格式 | 网页 |\n| 是否含答案 | 是 |\n| 费用说明 | 免费 |\n| 备注 | 数学一2022年第16题、2023年第16题——条件概率与独立事件专题解析。 |",
+  "考研真题/数学三统考/资源链接.md": "# 数学三统考 — 资源链接\n\n> 说明：全国硕士研究生入学统一考试数学三包含概率论与数理统计模块（约22%分值，34分左右）。适用于华科经济管理类等专业考研。\n\n## 资源 1：2025考研数学三真题及答案\n\n| 项目 | 详情 |\n|------|------|\n| 来源平台 | 中国教育在线 |\n| 获取链接 | https://kaoyan.eol.cn/shiti/shuxue/202508/t20250828_2686975.shtml |\n| 资源格式 | 网页 |\n| 是否含答案 | 是 |\n| 费用说明 | 免费 |\n| 备注 | 2025年全国硕士研究生招生考试数学三试题及答案，含概率论与数理统计模块。 |\n\n---\n\n### 补充说明\n\n- 数学一和数学三的概率论与数理统计模块考试内容略有差异，数学三侧重经济应用背景\n- 历年真题可在\"中国教育在线\"（kaoyan.eol.cn）免费获取\n- 如需要华科特定专业的考研数学真题，请参考432统计学（专硕）或601数学分析+801高等代数（学硕）方向",
+  "资源总表.md": "# 资源总表\n\n## 一、期末真题资源总表\n\n| 年份 | 资源描述 | 来源平台 | 获取链接 | 格式 | 含答案 | 费用 | 可信度 |\n|------|----------|----------|----------|------|--------|------|--------|\n| 2018 | 概率论（学习部2018年试卷扫描版） | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/往年题/概率论（学习部2018年试卷扫描版）.pdf) | PDF | 否 | 免费 | 高 |\n| 2018 | 概率论与数理统计A期末试题及详细解析 | CSDN文库 | [链接](https://wenku.csdn.net/doc/3hfmjms2yb) | PDF | 是 | 0积分 | 中高 |\n| 2020 | 概率统计20年上学期期末考试 | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/往年题/概率统计20年上学期期末考试.pdf) | PDF | 是 | 免费 | 高 |\n| 2020-2021 | 第一学期期末试卷 | 夸克文档 | [链接](https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/3540CD043E2CA3E2F64D2EAAF4F0C97C) | 在线 | 否 | 免费 | 高 |\n| 2021 | 2021级《概率论与数理统计》试卷(A) 含参考答案 | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/往年题/2021级(一)《概率论与数理统计》试卷(A)（本科理工类2021～22学年第2学期）.docx) | DOCX | 是 | 免费 | 高 |\n| 2021-2022 | 第二学期期末试卷及答案A卷 | 原创力文档 book118 | [链接](https://m.book118.com/html/2026/0613/6204143133012145.shtm) | DOCX | 是 | VIP付费 | 中 |\n| 2022 | 概率统计2022年秋季学期考试答案 | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/往年题/概率统计2022年秋季学期考试答案.pdf) | PDF | 是 | 免费 | 高 |\n| 2023-2024 | 第一学期期末试卷及答案A卷 | 原创力文档 book118 | [链接](https://m.book118.com/html/2025/1214/5332023121013033.shtm) | PDF | 是 | VIP付费 | 中 |\n| 2024-2025 | 第一学期期末试卷及答案A卷（2023级理工类，考试时间2025.01.11） | 原创力文档 book118 | [链接](https://m.book118.com/html/2025/1214/5332032121013033.shtm) | PDF | 是 | VIP付费 | 高 |\n| 2025 | 2025年期末考试试卷及答案 | 原创力文档 book118 | [链接](https://m.book118.com/html/2026/0417/7043144130011102.shtm) | DOCX | 是 | VIP付费 | 中 |\n\n### 补充资源（非单一年份）\n\n| 资源描述 | 来源平台 | 获取链接 | 格式 | 含答案 | 费用 | 可信度 |\n|----------|----------|----------|------|--------|------|--------|\n| 学数华科《概率论与数理统计》习题集（第1版） | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/复习参考题/学数华科《概率论与数理统计》习题集（第1版）%20(1).pdf) | PDF | 是 | 免费 | 高 |\n| 学数华科《概率论与数理统计》习题集（第2版） | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/复习参考题/学数华科《概率论与数理统计》习题集（第2版）.pdf) | PDF | 是 | 免费 | 高 |\n| 概率统计练习册（注释版） | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/练习册和答案/注释版概率统计练习册.pdf) | PDF | 是 | 免费 | 高 |\n| 左婧怡概率论作业答案 | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/练习册和答案/左婧怡概率论作业.pdf) | PDF | 是 | 免费 | 高 |\n| 概率论课程PPT打包 | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/ppt/概率论ppt.zip) | ZIP | 否 | 免费 | 高 |\n| 概率论与数理统计（第三版）教材 | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/书本/概率论与数理统计（第三版）(2).pdf) | PDF | 否 | 免费 | 高 |\n| 概率统计复习资料 | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/复习参考题/概率统计复习.doc) | DOC | 否 | 免费 | 高 |\n| 概率论与数理统计公式汇总 | GitHub HUSR-CS-Learning | [链接](https://github.com/YuhangChen1/HUSR-CS-Learning/blob/master/概率论/复习参考题/概率论与数理统计公式.docx) | DOCX | 否 | 免费 | 高 |\n| 华科能源学院概率论与数理统计核心考点精要 | CSDN文库 | [链接](https://wenku.csdn.net/doc/oj39aj244r) | DOC | 否 | 8积分 | 高 |\n| 考试指南题型篇（基于华科数统学院第四版） | CSDN博客 | [链接](https://blog.csdn.net/u013140841/article/details/108556742) | 网页 | 否 | 免费 | 高 |\n| 考试重点篇（逐章标注不考内容） | CSDN博客 | [链接](https://blog.csdn.net/u013140841/article/details/108556890) | 网页 | 否 | 免费 | 高 |\n| ib_概率论与数理统计 22级/23级历年真题 | aizhugong.com | [链接](https://www.aizhugong.com/thread-112174-1-1.html) | ZIP | 待确认 | 6金币 | 中 |\n| 华科概率论与数理统计课件与习题（ch01-ch19） | 经管之家 | [链接](https://bbs.pinggu.org/thread-16168225-1-1.html) | 压缩包 | 部分 | 9元 | 高 |\n| 中国大学MOOC：华科刘继成老师概率论与数理统计 | 智慧高教 | [链接](https://higher.smartedu.cn/course/678ed61c225d72705e840280) | 在线 | 否 | 免费 | 高 |\n\n---\n\n## 二、考研真题资源总表\n\n### 2.1 华科自命题考研真题\n\n| 年份 | 资源描述 | 来源平台 | 获取链接 | 格式 | 含答案 | 费用 | 可信度 |\n|------|----------|----------|----------|------|--------|------|--------|\n| 2001 | 研究生入学考试概率论与数理统计试题 | 中国高校课件下载中心 | [链接](http://m.download.cucdc.com/wenku/1b7ad73369f044d5a44d7353c587fffd.html) | DOC | 否 | 待验证 | 中 |\n| 2001-2002 | 概率统计考研真题（数学系自命题，适用于概率统计、应用数学等专业） | 夸克文档 | [链接](https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-kaoyan/57340CBDBB11B8398D3FBF2A88C9C3A9) | PDF | 否 | 待验证 | 中 |\n| 2016 | 432统计学回忆版考研真题（含概率论60分试题详细回忆） | freekaoyan.com | [链接](http://www.freekaoyan.com/jy/zhuanyekeziliao/2016/08-24/1472034381262908.shtml) | 网页 | 部分 | 免费 | 中 |\n| 2000-2005 | 432统计学真题汇编 | 经管之家 | [链接](https://bbs.pinggu.org/thread-11904999-1-1.html) | PDF | 否 | 付费 | 高 |\n| 2002-2025 | 601数学分析考研真题（含概率统计方向） | hustky.net | [链接](http://www.hustky.net/article/984.html) | 纸质/淘宝 | 部分 | 付费 | 高 |\n| 2002-2025 | 801高等代数考研真题（含概率统计方向） | hustky.net | [链接](http://www.hustky.net/article/984.html) | 纸质/淘宝 | 部分 | 付费 | 高 |\n| 各年 | 概率论与数理统计（070103）全套考研资料 | dhfdb.com | [链接](http://www.dhfdb.com/view.asp?id=1467) | 纸质/淘宝 | 部分 | 付费 | 高 |\n| 各年 | 432统计学全套考研资料 | 考研派 | [链接](https://www.okaoyan.com/shop/hust/72249.html) | 纸质/淘宝 | 部分 | 付费 | 中 |\n| 2009-2026 | 数学分析与高等代数考研真题 | 原创力文档 book118 | [链接](https://m.book118.com/html/2026/0428/6232020110012130.shtm) | PDF | 否 | 付费 | 高 |\n| 2025 | 数学分析考研真题回忆版 | 个人博客 | [链接](https://shuaifeihu.github.io/posts/d3aa4e24.html) | 网页 | 否 | 免费 | 中 |\n\n### 2.2 全国统考数学一/三（概率论与数理统计模块）\n\n| 年份 | 资源描述 | 来源平台 | 获取链接 | 格式 | 含答案 | 费用 | 可信度 |\n|------|----------|----------|----------|------|--------|------|--------|\n| 2025 | 考研数学一真题（含概率论模块） | 聚英考研 | [链接](https://www.juyingonline.com/upload/202412/23/202412231044055357.pdf) | PDF | 是 | 免费 | 高 |\n| 2025 | 考研数学三真题及答案 | 中国教育在线 | [链接](https://kaoyan.eol.cn/shiti/shuxue/202508/t20250828_2686975.shtml) | 网页 | 是 | 免费 | 高 |\n| 2021-2025 | 数学一真题近5年核心汇编 | 原创力文档 book118 | [链接](https://m.book118.com/html/2026/0515/8062003050010072.shtm) | DOCX | 是 | 付费 | 高 |\n| 2026 | 考研数学一真题及答案解析 | 中公考研 | [链接](https://www.kaoyan365.cn/shuxue/zhenti/) | 网页 | 是 | 免费 | 高 |\n| 2022-2023 | 概率论真题解析（条件概率与独立事件） | 搜狐 | [链接](https://m.sohu.com/a/962910861_122362512/) | 网页 | 是 | 免费 | 中 |\n\n---\n\n## 三、覆盖报告\n\n| 指标 | 期末真题 | 考研真题 |\n|------|----------|----------|\n| 来源平台数 | 5（GitHub, book118, 夸克, CSDN, aizhugong） | 6（夸克, cucdc, freekaoyan, 经管之家, hustky, 中公考研等） |\n| 有效资源数 | 10 | 10 |\n| 覆盖年份范围 | 2018–2025 | 2001–2026 |\n| 暂无资源年份 | 2019年、2023年（单独）期末暂未找到 | 2003-2015年间华科自命题概率论单独真题暂未找到 |\n| 免费资源数 | 6 | 4 |\n| 付费资源数 | 4 | 4 |\n\n### 备注\n\n- 2019年期末暂未找到公开资源，建议通过华科校内渠道（如学习部、学数群）获取\n- 2023年（单独学年）期末暂未找到，但 2023-2024 学年试卷已覆盖\n- 考研自命题\"概率论与数理统计\"单独科目真题极少，华科数学学院考研以601数学分析+801高等代数为主\n- 概率论与数理统计（A）是本科课程编号，考研对应的是432统计学（专硕）或全国统考数学一/三\n- dhfdb.com 与 hustky.net 为同一团队运营（QQ: 365939006，淘宝: shop121882856.taobao.com），提供全套华科数学学院考研资料"
+},
+  "jindaishi": {
+  "README.md": `# 华中科技大学 中国近现代史纲要 真题资源包
+
+## 概述
+
+本资源包由「真题情报官」自动搜索、整理、打包生成，收录华中科技大学（HUST）**中国近现代史纲要**课程的期末考试真题与考研初试真题资源。
+
+生成日期：2026年6月21日
+
+## 搜索范围
+
+搜索覆盖以下6类平台：
+
+| 平台类型 | 具体站点 |
+|----------|----------|
+| GitHub | HUST相关仓库、通用课程资料仓库 |
+| 爱助攻 | aizhugong.com（forum-324华科专区） |
+| CSDN | 博客帖、下载资源帖 |
+| 考研资源网 | hustky.net、okaoyan.com、dhfdb.com、freekaoyan.com、bbs.kaoyan.com |
+| 社区平台 | 牛客网、知乎、B站 |
+| 通用搜索 | 百度/必应（含夸克文档、原创力文档、百度文库、道客巴巴、豆丁网等） |
+
+## 资源目录结构
+
+\`\`\`
+hust_zhongguojinxiandaishigangyao_exam_pack/
+├── README.md                    # 本说明文件
+├── 资源总表.md                   # 期末+考研两张总表 + 覆盖报告
+├── index.html                   # 离线浏览器（双击即可使用）
+├── 期末真题/
+│   ├── 2012-2013年/资源链接.md
+│   ├── 2020-2021年/资源链接.md
+│   ├── 2021-2022年/资源链接.md
+│   ├── 2021年题库/资源链接.md
+│   ├── 2023年/资源链接.md
+│   └── 2025年/资源链接.md
+└── 考研真题/
+    ├── 2001-2007年/资源链接.md
+    ├── 2002-2016年/资源链接.md
+    ├── 2005-2014年/资源链接.md
+    ├── 2017-2018年/资源链接.md
+    ├── 2021-2026年/资源链接.md
+    └── 考研大纲/资源链接.md
+\`\`\`
+
+## 使用说明
+
+1. **离线浏览**：双击 \`index.html\` 即可在浏览器中打开，左侧文件树浏览，右侧渲染 Markdown 内容。
+2. **直接查看**：也可直接用文本编辑器打开各 \`.md\` 文件。
+3. **资源链接**：所有资源链接均为搜索时实际发现，请自行访问获取。
+
+## 重要提示
+
+- 所有资源链接来自实际搜索结果，可信度标注为"高/中/低"。
+- 付费资源已诚实标注，不尝试绕过付费墙。
+- 暂无资源的年份在总表中标注"暂未找到"。
+- 本资源包不捏造任何资源信息。
+
+## 免责声明
+
+本资源包仅供学习参考，所有链接指向第三方平台，内容的真实性和时效性请自行判断。`,
+  "期末真题/2012-2013年/资源链接.md": `# 2012-2013年 期末真题资源链接
+
+## 资源 1
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 道客巴巴（doc88.com） |
+| 获取链接 | https://m.doc88.com/p-7897712073177.html |
+| 资源格式 | 网页（在线文档） |
+| 是否含答案 | 是（14道思考题均附答案） |
+| 费用说明 | 免费预览，下载完整版可能需要付费 |
+| 备注 | 华科近代史纲要14道思考题，涵盖课程核心知识点，适合复习参考 |
+
+---
+
+## 覆盖情况
+
+该年份仅找到一份思考题资料，未找到完整期末试卷。如需完整试卷，建议尝试考研派付费资料包（含华科本科期末试题）。`,
+  "期末真题/2020-2021年/资源链接.md": `# 2020-2021年 期末真题资源链接
+
+## 资源 1
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 夸克文档（doc.quark.cn） |
+| 获取链接 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/CD757842445692ED56D98D101A8B59BB |
+| 资源格式 | 在线预览（PDF） |
+| 是否含答案 | 否 |
+| 费用说明 | 免费在线预览，下载可能需要夸克会员 |
+| 备注 | 华中科技大学《中国近现代史纲要》2020-2021学年第一学期期末试卷，6页，闭卷。试卷内容可见部分单选题和材料分析题结构。 |
+
+---
+
+## 覆盖情况
+
+该学年仅找到一份期末试卷，无参考答案。该试卷为夸克文档收录的华科教育考试试卷系列之一。`,
+  "期末真题/2021-2022年/资源链接.md": `# 2021-2022年 期末真题资源链接
+
+## 资源 1
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 夸克文档（doc.quark.cn） |
+| 获取链接 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/8945AF3F9126EF5894E370189D0428D8 |
+| 资源格式 | 在线预览（PDF） |
+| 是否含答案 | 否 |
+| 费用说明 | 免费在线预览，下载可能需要夸克会员 |
+| 备注 | 华中科技大学《中国近现代史纲要》2021-2022学年第一学期期末试卷（A卷），闭卷，120分钟，含单选题20题（2分/题）及材料分析题。试卷标注"绝密★启用前"。 |
+
+## 资源 2
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 原创力文档（book118.com） |
+| 获取链接 | https://m.book118.com/html/2022/1223/6125222154005031.shtm |
+| 资源格式 | PDF |
+| 是否含答案 | 否 |
+| 费用说明 | 需注册并消耗金币下载 |
+| 备注 | 与资源1为同一份试卷的PDF版本，7页，2022年12月上传。 |
+
+---
+
+## 覆盖情况
+
+该学年有两份同一试卷的不同来源，分别来自夸克文档和原创力文档。试卷内容一致，均为A卷，无参考答案。`,
+  "期末真题/2021年题库/资源链接.md": `# 2021年（题库） 期末复习资源链接
+
+## 资源 1
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | B站（bilibili.com） |
+| 获取链接 | https://www.bilibili.com/opus/747919935769935906 |
+| 资源格式 | 图文专栏 |
+| 是否含答案 | 是（14道完整考题+答案） |
+| 费用说明 | 免费 |
+| 备注 | 2021级《中国近现代史纲要》课程期末开卷考试要求及题库。用户"B-O_S"发布，疑似华科学生。内容包含：考试形式说明（开卷、八开纸答题）、必考题+题库抽题+机动题的形式。题库含建党精神、辛亥革命、东北抗联精神、三大里程碑等核心考点。 |
+
+---
+
+## 覆盖情况
+
+该资源为2021级学生的开卷考试题库，非正式试卷，但提供了完整的考试要求和14道考题及答案，对2021级及后续年份的期末复习有较高参考价值。`,
+  "期末真题/2023年/资源链接.md": `# 2023年 期末复习资源链接
+
+## 资源 1
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | B站（bilibili.com） |
+| 获取链接 | https://www.bilibili.com/opus/839620914749374483 |
+| 资源格式 | 图文专栏 |
+| 是否含答案 | 是（20道简答题均含详细答案） |
+| 费用说明 | 免费 |
+| 备注 | 用户"认真地昊昊"发布，明确标注"华中科技大学近代史纲要20道简答题"。题目涵盖：近代中国主要矛盾、社会性质变化、辛亥革命失败原因、三种建国方案、马克思主义在中国的传播与选择、中国共产党成立的历史意义、中国革命新道路的探索、抗日战争的中流砥柱作用等核心考点。 |
+
+---
+
+## 覆盖情况
+
+该年份未找到正式期末试卷，仅有B站用户上传的20道简答题复习资料。该资料虽非官方试卷，但题目覆盖课程核心内容，且明确标注华科，可作为期末复习重要参考。`,
+  "期末真题/2025年/资源链接.md": `# 2025年 期末模拟题资源链接
+
+## 资源 1
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 原创力文档（book118.com） |
+| 获取链接 | https://m.book118.com/html/2026/0118/6013104151012050.shtm |
+| 资源格式 | DOCX |
+| 是否含答案 | 是（100道单选题+答案） |
+| 费用说明 | 需7000金币下载（约¥7-14），可在线预览部分内容 |
+| 备注 | 标题"2025年华中科技大学中国近现代史纲要期末考试模拟题必考题"，27页，100道单选题。内容包含2024-2025年时政热点（如二十届三中全会、新质生产力、爱国主义教育法等），时效性强。但上传者IP为河南，与华科所在地湖北不符，可能为非官方整理。可信度：中。 |
+
+## 资源 2
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 豆丁网（docin.com） |
+| 获取链接 | https://www.docin.com/touch_new/preview_new.do?id=4937859474 |
+| 资源格式 | DOCX |
+| 是否含答案 | 是（100道单选题+答案） |
+| 费用说明 | 需付费/会员下载 |
+| 备注 | 与资源1为同一份文档的豆丁网镜像，27页，100题。 |
+
+## 资源 3
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 原创力文档（book118.com） |
+| 获取链接 | https://m.book118.com/html/2026/0108/8035132051010033.shtm |
+| 资源格式 | DOCX |
+| 是否含答案 | 是（60道单选题+答案） |
+| 费用说明 | 需5000金币下载 |
+| 备注 | 标题"2025年华中科技大学中国近现代史纲要期末考试模拟题及答案1套"，17页，60道单选题。与资源1为不同版本（100题 vs 60题），可能来自不同上传者。 |
+
+---
+
+## 覆盖情况
+
+2025年有两份模拟题资源（100题版和60题版），均含答案，但均为第三方上传的模拟题，非华科官方试卷。两份模拟题标注"华科"但可能为通用性整理，使用时需注意辨别。该年份未找到正式期末试卷。`,
+  "考研真题/2001-2007年/资源链接.md": `# 2001-2007年 考研真题资源链接
+
+## 资源 1
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 道客巴巴（doc88.com） |
+| 获取链接 | https://m.doc88.com/p-90620584323409.html |
+| 资源格式 | PDF（在线文档） |
+| 是否含答案 | 否 |
+| 费用说明 | 免费预览，下载完整版需付费 |
+| 备注 | 华中科技大学615中国近现代史历年考研真题汇编，含2001-2007年共7套真题。科目代码：615，招生单位：马克思主义学院。 |
+
+## 资源 2
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 原创力文档（book118.com） |
+| 获取链接 | https://m.book118.com/html/2025/0412/8064056076007052.shtm |
+| 资源格式 | DOCX |
+| 是否含答案 | 否 |
+| 费用说明 | 需注册并消耗金币下载 |
+| 备注 | 与资源1为同一文档的镜像版本，上传于2025年4月。 |
+
+## 资源 3
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 经管之家（bbs.pinggu.org） |
+| 获取链接 | https://bbs.pinggu.org/thread-11904999-1-1.html |
+| 资源格式 | PDF |
+| 是否含答案 | 不详 |
+| 费用说明 | 需注册，可能需要论坛币 |
+| 备注 | 华科各专业考研真题汇编中包含615中国近现代史2001-2008年真题PDF。 |
+
+---
+
+## 覆盖情况
+
+2001-2007年真题有多个来源可获取，但均需付费或注册。建议优先尝试道客巴巴在线预览，确认内容后再决定是否付费下载。`,
+  "考研真题/2002-2016年/资源链接.md": `# 2002-2016年 考研真题资源链接
+
+## 资源 1（重点推荐）
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 考研派（okaoyan.com） |
+| 获取链接 | https://m.okaoyan.com/shop/hust/66533.html |
+| 资源格式 | 纸质资料 / 电子版 |
+| 是否含答案 | 是（2004-2015年真题答案） |
+| 费用说明 | ¥468（全套资料） |
+| 备注 | **已知最完整的华科615真题合集**。包含：615真题2002-2016年（缺2008年，共14年）、615真题答案2004-2015年、615复习笔记（第一轮/第二轮总结笔记、知识要点、详细笔记）、**华科本科期末考试试题及答案**、预测题、重点习题、划重点习题和答案。另含860马克思主义理论综合真题2007-2016年及配套资料。 |
+
+## 资源 2
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 道客巴巴（doc88.com） |
+| 获取链接 | https://m.doc88.com/p-3197631444091.html |
+| 资源格式 | 在线文档 |
+| 是否含答案 | 否（仅试题） |
+| 费用说明 | 免费预览部分内容 |
+| 备注 | 标题"华科近现代史真题几套"，列出2002年（名词解释6题+简答2题+论述2题）、2004年（名词解释8题+论述2题）、2005年（名词解释8题+论述2题）、2006年（名词解释等）的具体题目内容。可免费预览部分题目，适合了解题型和难度。 |
+
+---
+
+## 覆盖情况
+
+2002-2016年考研真题可通过考研派付费获取全套（¥468），也可通过道客巴巴免费预览部分年份题目。2008年真题在所有来源中均缺失。考研派资料包中还包含华科本科期末试题，是获取本科真题的间接渠道。`,
+  "考研真题/2005-2014年/资源链接.md": `# 2005-2014年 考研真题合集资源链接
+
+## 资源 1
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 夸克文档（doc.quark.cn） |
+| 获取链接 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-kaoyan/A9F3C7C56DFC100C571E0430862231D6 |
+| 资源格式 | 在线预览（PDF） |
+| 是否含答案 | 部分有 |
+| 费用说明 | 免费在线预览，下载可能需要夸克会员 |
+| 备注 | 华中科技大学硕士生入学考试《中国近现代史》考试大纲 + 2005年/2007年/2011年/2012年/2013年/2014年/2015年真题 + 近代史问答题 + 复习资料 + 串讲资料。科目代码：615。 |
+
+---
+
+## 覆盖情况
+
+夸克文档收录的这份合集包含考试大纲、多年度真题和复习资料，是免费获取华科615考研真题的重要渠道。覆盖年份：2005、2007、2011-2015年。`,
+  "考研真题/2017-2018年/资源链接.md": `# 2017-2018年 考研真题资源链接（865方向）
+
+## 重要说明
+
+以下资源为华中科技大学**865中国近现代史**（人文学院/历史学方向）的考研真题，非马克思主义学院的615中国近现代史。两个代码属于不同学院的考试科目，请注意区分。
+
+## 资源 1
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 考研论坛（bbs.kaoyan.com） |
+| 获取链接 | https://bbs.kaoyan.com/t7583742p1 |
+| 资源格式 | 网页（论坛帖） |
+| 是否含答案 | 否 |
+| 费用说明 | 免费 |
+| 备注 | 2017年华中科技大学865中国近现代史真题回忆版。题型：选择题、名词解释、材料分析题、论述题。由考研考生回忆发布，内容不完整。可信度：中。 |
+
+## 资源 2
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 考研论坛（bbs.kaoyan.com） |
+| 获取链接 | https://bbs.kaoyan.com/t8333891p1 |
+| 资源格式 | 网页（论坛帖） |
+| 是否含答案 | 否 |
+| 费用说明 | 免费 |
+| 备注 | 2018年华中科技大学865中国近代史回忆版。题型：名词解释、简答题。由考研考生回忆发布，内容不完整。可信度：中。 |
+
+---
+
+## 覆盖情况
+
+2017-2018年仅有865方向（人文学院）的回忆版真题，615方向（马克思主义学院）的真题暂未在公开渠道找到。2019-2020年两个方向的真题均未找到。`,
+  "考研真题/2021-2026年/资源链接.md": `# 2021-2026年 考研真题资源链接（代码变更后）
+
+## 重要说明
+
+2021年起，华中科技大学马克思主义学院将原"615中国近现代史"专业课代码更名为**615马克思主义理论综合**，考试内容和范围可能已调整，不再单独考查中国近现代史，而是综合考查马克思主义理论。
+
+## 资源 1
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 宏泽教育（hongzedu.com） |
+| 获取链接 | https://www.hongzedu.com/productinfo/2895249.html |
+| 资源格式 | 纸质资料 |
+| 是否含答案 | 是 |
+| 费用说明 | 付费（价格需咨询） |
+| 备注 | 615马克思主义理论综合考研真题+答案，覆盖2021-2026年。注意：该科目已非单独的"中国近现代史"，而是综合性的马克思主义理论考试。适合报考华科马院的考生。 |
+
+## 资源 2
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | hustky.net（华中科技大学考研网） |
+| 获取链接 | http://hustky.net/article/674.html |
+| 资源格式 | 网页 |
+| 是否含答案 | N/A |
+| 费用说明 | 免费 |
+| 备注 | 华科马院2026年研招参考书目，含最新考试科目和参考书信息，可帮助了解考试范围变化。 |
+
+---
+
+## 覆盖情况
+
+2021年后，615中国近现代史已更名为615马克思主义理论综合，考试内容发生重大变化。如果需要的是"中国近现代史纲要"（公共课）而非"中国近现代史"（专业课），请注意考研政治公共课中的"中国近现代史纲要"部分与华科专业课是完全不同的考试。考研政治公共课资料可在市面上广泛获取。`,
+  "考研真题/考研大纲/资源链接.md": `# 考研大纲 资源链接
+
+## 资源 1
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | hustky.net（华中科技大学考研网） |
+| 获取链接 | http://www.hustky.net/article/529.html |
+| 资源格式 | 网页 |
+| 是否含答案 | N/A（大纲） |
+| 费用说明 | 免费 |
+| 备注 | 华中科技大学615中国近现代史考研大纲完整版。包含上编（从鸦片战争到五四运动前夜）、中编（从五四运动到新中国成立）、下编（从新中国成立到社会主义现代化建设新时期）三大编共10章的完整考点。 |
+
+## 资源 2
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 道客巴巴（doc88.com） |
+| 获取链接 | https://m.doc88.com/p-9853697968276.html |
+| 资源格式 | 在线文档 |
+| 是否含答案 | N/A（大纲） |
+| 费用说明 | 免费预览，下载需付费 |
+| 备注 | 华中科技大学硕士研究生入学考试《中国近现代史》考试大纲，科目代码615。 |
+
+## 资源 3
+
+| 项目 | 内容 |
+|------|------|
+| 来源平台 | 夸克文档（doc.quark.cn） |
+| 获取链接 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-kaoyan/A9F3C7C56DFC100C571E0430862231D6 |
+| 资源格式 | 在线预览（PDF） |
+| 是否含答案 | N/A（大纲含在真题合集中） |
+| 费用说明 | 免费在线预览 |
+| 备注 | 与2005-2014年真题合集在同一文档中，含完整考试大纲。 |
+
+---
+
+## 覆盖情况
+
+考研大纲可从三个渠道免费获取，内容一致，均为615中国近现代史考试大纲。建议优先使用hustky.net的网页版，最方便阅读。`,
+  "资源总表.md": `# 资源总表 — 华中科技大学 中国近现代史纲要
+
+## 一、期末考试真题 / 复习资料总表
+
+| 序号 | 年份 | 资源描述 | 来源平台 | 链接 | 格式 | 含答案 | 费用 | 可信度 |
+|------|------|----------|----------|------|------|--------|------|--------|
+| 1 | 2012-2013 | 14道近代史纲要思考题（附答案） | 道客巴巴 | https://m.doc88.com/p-7897712073177.html | 网页 | 是 | 免费 | 高 |
+| 2 | 2020-2021第一学期 | 期末试卷（6页，闭卷） | 夸克文档 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/CD757842445692ED56D98D101A8B59BB | 在线预览 | 否 | 免费 | 高 |
+| 3 | 2021-2022第一学期 | 期末试卷A卷（7页，含单选题+材料分析题） | 夸克文档 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-qimo/8945AF3F9126EF5894E370189D0428D8 | 在线预览 | 否 | 免费 | 高 |
+| 4 | 2021-2022第一学期 | 同上（PDF版） | 原创力文档 | https://m.book118.com/html/2022/1223/6125222154005031.shtm | PDF | 否 | 需金币 | 高 |
+| 5 | 2021级 | 开卷考试题库（14道完整考题+答案，含建党精神/辛亥革命等） | B站 | https://www.bilibili.com/opus/747919935769935906 | 图文专栏 | 是 | 免费 | 中 |
+| 6 | 2023 | 华科近代史纲要20道简答题（含详细答案） | B站 | https://www.bilibili.com/opus/839620914749374483 | 图文专栏 | 是 | 免费 | 中 |
+| 7 | 2025 | 期末模拟题必考题（100道单选题+答案，27页，含时政热点） | 原创力文档 | https://m.book118.com/html/2026/0118/6013104151012050.shtm | DOCX | 是 | 需7000金币 | 中 |
+| 8 | 2025 | 同上（豆丁网镜像） | 豆丁网 | https://www.docin.com/touch_new/preview_new.do?id=4937859474 | DOCX | 是 | 需付费 | 中 |
+| 9 | 2025 | 期末模拟题及答案1套（60道单选题+答案，17页） | 原创力文档 | https://m.book118.com/html/2026/0108/8035132051010033.shtm | DOCX | 是 | 需5000金币 | 中 |
+| 10 | 2024 | 补考通知（官方，确认课程存在） | HUST本科生院 | http://ugs.hust.edu.cn/info/1142/6345.htm | 网页 | N/A | 免费 | 高 |
+| 11 | 2024 | 教材复习重点内容（11道核心问答+答案） | B站 | https://www.bilibili.com/opus/811867875455270960 | 图文专栏 | 是 | 免费 | 中 |
+| 12 | 2024 | 课后思考题答案（第1-8章完整答案） | B站 | https://www.bilibili.com/opus/883537852987605001 | 图文专栏 | 是 | 免费 | 中 |
+| 13 | 2025 | 期末考试大纲（十章节考点+题型示例） | B站 | https://www.bilibili.com/opus/950132682413572100 | 图文专栏 | 部分 | 免费 | 中 |
+| 14 | 2022 | 近代史纲要最终版复习资料 | B站 | https://www.bilibili.com/opus/659584986976878612 | 图文专栏 | 部分 | 免费 | 中 |
+
+## 二、考研初试真题 / 资料总表
+
+### 方向一：615 中国近现代史（马克思主义学院，已更名为615马克思主义理论综合）
+
+| 序号 | 年份 | 资源描述 | 来源平台 | 链接 | 格式 | 含答案 | 费用 | 可信度 |
+|------|------|----------|----------|------|------|--------|------|--------|
+| 1 | 2001-2007 | 615中国近现代史历年考研真题汇编（7套） | 道客巴巴 | https://m.doc88.com/p-90620584323409.html | PDF | 否 | 需付费 | 高 |
+| 2 | 2001-2007 | 同上（原创力文档镜像） | 原创力文档 | https://m.book118.com/html/2025/0412/8064056076007052.shtm | DOCX | 否 | 需付费 | 高 |
+| 3 | 2002/2004/2005/2006 | 华科近现代史真题几套（含具体题目内容：名词解释+简答+论述） | 道客巴巴 | https://m.doc88.com/p-3197631444091.html | 在线文档 | 否 | 需付费 | 高 |
+| 4 | 2002-2016 | 615中国近现代史真题（缺2008年）+ 答案（2004-2015年）+ 本科期末试题+笔记 | 考研派 | https://m.okaoyan.com/shop/hust/66533.html | 纸质/电子 | 是 | ¥468 | 高 |
+| 5 | 2005-2014 | 考研真题合集（含大纲+笔记+问答题+串讲资料） | 夸克文档 | https://doc.quark.cn/preview/jiaoyukaoshi-shijuan-kaoyan/A9F3C7C56DFC100C571E0430862231D6 | 在线预览 | 部分有 | 免费 | 高 |
+| 6 | — | 615中国近现代史考研大纲（完整10章） | hustky.net | http://www.hustky.net/article/529.html | 网页 | N/A | 免费 | 高 |
+| 7 | — | 615中国近现代史考试大纲 | 道客巴巴 | https://m.doc88.com/p-9853697968276.html | 在线文档 | N/A | 需付费 | 高 |
+| 8 | 2021-2026 | 615马克思主义理论综合考研真题+答案（代码已变更） | 宏泽教育 | https://www.hongzedu.com/productinfo/2895249.html | 纸质 | 是 | 付费 | 中 |
+| 9 | 2026 | 华科马院2026研招参考书目 | hustky.net | http://hustky.net/article/674.html | 网页 | N/A | 免费 | 高 |
+
+### 方向二：865 中国近现代史（人文学院/历史学方向）
+
+| 序号 | 年份 | 资源描述 | 来源平台 | 链接 | 格式 | 含答案 | 费用 | 可信度 |
+|------|------|----------|----------|------|------|--------|------|--------|
+| 10 | 2017 | 865中国近现代史真题回忆版（选择/名词/材料/论述） | 考研论坛 | https://bbs.kaoyan.com/t7583742p1 | 网页 | 否 | 免费 | 中 |
+| 11 | 2018 | 865中国近代史回忆版（名词解释/简答） | 考研论坛 | https://bbs.kaoyan.com/t8333891p1 | 网页 | 否 | 免费 | 中 |
+| 12 | 2020 | 865中国近现代史考试大纲 | xxxedu.net | http://www.xxxedu.net/articlenew.php?id=99020 | 网页 | N/A | 免费 | 高 |
+
+## 三、通用参考资源（非HUST专属，但可作参考）
+
+| 序号 | 资源描述 | 来源 | 链接 |
+|------|----------|------|------|
+| 1 | HITSZ哈工大深圳 中国近现代史纲要（含2020/2022/2023真题PDF） | GitHub | https://github.com/HITSZ-OpenAuto/GEIP1016 |
+| 2 | 近代史纲要复习笔记（含课后思考题答案，2021） | GitHub | https://github.com/BPsoda/Outline-of-modern-Chinese-history-note-2021 |
+| 3 | 五门思政课笔记合集（含近现代史纲要，2025） | GitHub | https://github.com/novpath/Ideological-and-Political-Theory |
+| 4 | 中国近现代史纲要学习闪卡（87条+28条论述，可导入Anki） | GitHub | https://github.com/bbbkawaii/chinese-modern-history-flashcards |
+| 5 | SWJTU西南交大 中国近现代史纲要（期末复习资料） | GitHub | https://github.com/swjtuhub/SWJTU-Courses |
+| 6 | 高校思政课在线题库（问卷星） | 问卷星 | https://www.wjx.cn/xz/367443412.aspx |
+| 7 | 中国近现代史纲要题库及参考答案 | 腾讯文档 | https://wenku.docs.qq.com/detail?docId=jEzFKdcMda |
+| 8 | CSDN 期末复习系列（单选题/判断题/填空题详解，2025） | CSDN | https://blog.csdn.net/2402_84764726 |
+
+---
+
+## 四、覆盖报告
+
+### 来源统计
+
+| 指标 | 数值 |
+|------|------|
+| 搜索来源平台数 | 6大类（GitHub / 爱助攻 / CSDN / 考研资源网 / 社区平台 / 通用搜索） |
+| 实际搜索子平台数 | 20+（含夸克文档、原创力文档、道客巴巴、豆丁网、百度文库、B站、知乎、牛客网等） |
+| 期末有效资源数 | 14个（含HUST专属真题+通用复习资料） |
+| 考研有效资源数 | 12个（含615和865两个方向） |
+| 通用参考资源数 | 8个 |
+
+### 期末真题覆盖年份
+
+| 状态 | 年份 |
+|------|------|
+| 有资源 | 2012-2013、2020-2021、2021-2022、2021（题库）、2023、2024（补考通知）、2025（模拟题） |
+| 暂未找到 | 2019年及以前、2022-2023学年、2023-2024学年、2024-2025学年真题试卷 |
+
+### 考研真题覆盖年份
+
+| 状态 | 年份 |
+|------|------|
+| 有资源（615方向） | 2001-2016年（缺2008年） |
+| 有资源（865方向） | 2017年、2018年（回忆版） |
+| 有资源（代码变更后） | 2021-2026年（615→马克思主义理论综合） |
+| 暂未找到 | 2019-2020年615方向真题 |
+
+### 说明
+
+1. 2021年后，华中科技大学马克思主义学院将"615中国近现代史"专业课代码更名为"615马克思主义理论综合"，考试内容可能已调整。
+2. 865中国近现代史为人文学院/历史学方向的专业课，与马克思主义学院的615是不同的考试科目。
+3. 期末试卷大多为内部资料，仅少数年份流出至公开平台，部分年份的试卷标注"绝密★启用前"。
+4. 原创力文档、豆丁网、道客巴巴等平台的资源通常需要注册/付费才能下载完整版。
+5. 考研派（okaoyan.com）的¥468全套资料是已知最完整的华科615真题合集，包含本科期末试题。`,
+}
+};
+
+// ===== SUBJECT META =====
+var SVG_ICONS = {
+  physics: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m10 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24"/></svg>',
+  maogai: '<svg viewBox="0 0 24 24"><path d="M4 21V8a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v13"/><path d="M4 21h16"/><path d="M9 21V11m6 10V11"/><path d="M12 5V2"/></svg>',
+  youji: '<svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.5L5.5 17a2 2 0 0 0 1.8 3h9.4a2 2 0 0 0 1.8-3L14 9.5V3"/><path d="M7.5 14h9"/></svg>',
+  gailvlun: '<svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/><circle cx="7" cy="14" r="1.5" fill="currentColor"/><circle cx="11" cy="10" r="1.5" fill="currentColor"/><circle cx="14" cy="13" r="1.5" fill="currentColor"/><circle cx="19" cy="7" r="1.5" fill="currentColor"/></svg>',
+  jindaishi: '<svg viewBox="0 0 24 24"><path d="M4 4v17l8-4 8 4V4"/><path d="M4 4h16"/><path d="M12 4v13"/></svg>',
+  external: '<svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>',
+  folder: '<svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
+  file: '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>',
+  chevron: '<svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>',
+  moon: '<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+  sun: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42m12.72-12.72l1.42-1.42"/></svg>'
+};
+var SUBJECTS = [
+  {key:'physics',name:'大学物理（一）',svg:'physics',subtitle:'University Physics I',
+   accent:'#c8a062',accentLight:'#dcb878',glow:'rgba(200,160,98,0.12)',
+   bg:'#0f0d12',sidebarBg:'#0c0a10',headerBg:'#0a0810',
+   independent:'hust_daxuewuliyike_exam_pack/hust_daxuewuliyike_exam_pack/index.html',
+   size:'large'},
+  {key:'maogai',name:'毛概',svg:'maogai',subtitle:'毛泽东思想和中国特色社会主义理论体系概论',
+   accent:'#c45a3e',accentLight:'#d4705a',glow:'rgba(196,90,62,0.12)',
+   bg:'#0f0d12',sidebarBg:'#0c0a10',headerBg:'#0a0810',
+   independent:'hust_maogai_exam_pack/hust_maogai_exam_pack/index.html',
+   size:'wide-l'},
+  {key:'youji',name:'有机化学（A）',svg:'youji',subtitle:'Organic Chemistry A',
+   accent:'#5a9e7a',accentLight:'#7ab898',glow:'rgba(90,158,122,0.12)',
+   bg:'#0f0d12',sidebarBg:'#0c0a10',headerBg:'#0a0810',
+   independent:'hust_youjihuaxueA_exam_pack/hust_youjihuaxueA_exam_pack/index.html',
+   size:'wide-r'},
+  {key:'gailvlun',name:'概率论与数理统计（A）',svg:'gailvlun',subtitle:'Probability & Statistics A',
+   accent:'#7a8cb4',accentLight:'#9aaed4',glow:'rgba(122,140,180,0.12)',
+   bg:'#0f0d12',sidebarBg:'#0c0a10',headerBg:'#0a0810',
+   independent:'hust_gailvlunshuliitongjiA_exam_pack/hust_gailvlunshuliitongjiA_exam_pack/index.html',
+   size:'wide-l'},
+  {key:'jindaishi',name:'中国近现代史纲要',svg:'jindaishi',subtitle:'Modern Chinese History',
+   accent:'#b08850',accentLight:'#c8a068',glow:'rgba(176,136,80,0.12)',
+   bg:'#0f0d12',sidebarBg:'#0c0a10',headerBg:'#0a0810',
+   independent:'hust_zhongguojinxiandaishigangyao_exam_pack/hust_zhongguojinxiandaishigangyao_exam_pack/index.html',
+   size:'wide-r'}
+];
+
+// ===== MARKED SETUP =====
+(function(){
+  var linkRend = new marked.Renderer();
+  linkRend.link = function(href, title, text){
+    if(href && typeof href === 'object'){title=href.title;text=href.text||'';href=href.href||'';}
+    var t = title ? ' title="'+String(title).replace(/"/g,'&quot;')+'"' : '';
+    return '<a href="'+String(href)+'" target="_blank" rel="noopener noreferrer"'+t+'>'+text+'</a>';
+  };
+  marked.setOptions({renderer:linkRend, breaks:true, gfm:true});
+})();
+
+// ===== HOME PAGE =====
+function buildHome(){
+  var grid = document.getElementById('cardGrid');
+  var html = '';
+  SUBJECTS.forEach(function(s, i){
+    var fileCount = Object.keys(ALL_CONTENTS[s.key]).length;
+    var folderCount = new Set(Object.keys(ALL_CONTENTS[s.key]).map(function(k){return k.split('/')[0];})).size;
+    var sizeClass = s.size === 'large' ? 'large' : (s.size === 'wide-l' ? 'wide-l' : 'wide-r');
+    html += '<div class="bento-tile '+sizeClass+'" style="--tile-accent:'+s.accent+';--tile-glow:'+s.glow+'" data-subject="'+s.key+'" onclick="enterSubject(\''+s.key+'\')">';
+    html += '<div class="tile-glow-blob"></div>';
+    html += '<div class="tile-top">';
+    html += '<div class="tile-icon">'+SVG_ICONS[s.svg]+'</div>';
+    html += '<div class="tile-count"><strong>'+fileCount+'</strong>文件<br>'+folderCount+'分类</div>';
+    html += '</div>';
+    html += '<div class="tile-bottom">';
+    html += '<div class="tile-name">'+s.name+'</div>';
+    html += '<div class="tile-sub">'+s.subtitle+'</div>';
+    html += '<div class="tile-links">';
+    html += '<button class="tile-enter" onclick="event.stopPropagation();enterSubject(\''+s.key+'\')">进入浏览</button>';
+    html += '<a class="tile-sep" href="'+s.independent+'" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">独立版 '+SVG_ICONS.external+'</a>';
+    html += '</div></div></div>';
+  });
+  grid.innerHTML = html;
+  // GSAP stagger entrance
+  if(typeof gsap !== 'undefined'){
+    gsap.fromTo('.bento-tile',{opacity:0,y:30,scale:0.96},{opacity:1,y:0,scale:1,duration:0.6,stagger:0.1,ease:'power3.out',delay:0.3});
+  } else {
+    grid.querySelectorAll('.bento-tile').forEach(function(c,i){
+      c.style.opacity='0';c.style.transform='translateY(30px)';
+      setTimeout(function(){c.style.transition='opacity .5s,transform .5s';c.style.opacity='1';c.style.transform='';},300+i*100);
+    });
+  }
+  // 3D tilt
+  grid.querySelectorAll('.bento-tile').forEach(function(tile){
+    tile.addEventListener('mousemove', function(e){
+      var rect = tile.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width - 0.5;
+      var y = (e.clientY - rect.top) / rect.height - 0.5;
+      tile.style.transform = 'perspective(800px) rotateX('+(-y*6)+'deg) rotateY('+(x*6)+'deg) scale(1.02)';
+    });
+    tile.addEventListener('mouseleave', function(){tile.style.transform='';});
+  });
+}
+
+// ===== DANMAKU =====
+function initDanmaku(){
+  var layer = document.getElementById('danmakuLayer');
+  var messages = ['考试顺利！','逢考必过！','高分喷雾！','绩点拉满！','All Pass！','上岸！','满分！','逢考必过！','稳住能赢！','一稿过！','不挂科！','门门4.0！','逢题必会！','蒙的全对！','写的全对！'];
+  function spawn(){
+    var el = document.createElement('div');
+    el.className = 'danmaku-item';
+    el.textContent = messages[Math.floor(Math.random()*messages.length)];
+    el.style.top = (Math.random()*80+5)+'%';
+    el.style.fontSize = (Math.random()*10+14)+'px';
+    el.style.opacity = (Math.random()*0.15+0.05);
+    el.style.color = ['#c8a062','#a08868','#8a7858','#b89868','#d4b478'][Math.floor(Math.random()*5)];
+    var dur = Math.random()*8+12;
+    el.style.animationDuration = dur+'s';
+    layer.appendChild(el);
+    setTimeout(function(){el.remove();}, dur*1000);
+  }
+  for(var i=0;i<6;i++) setTimeout(spawn, i*1500);
+  setInterval(spawn, 2500);
+}
+
+// ===== METEOR RAIN =====
+function initMeteors(){
+  var layer = document.getElementById('meteorLayer');
+  var symbols = ['\u222b','\u2211','\u03c0','\u03b8','\u0394','F=ma','\u2202','\u221a','\u221e','\u2248','\u2207','\u03bb','\u03c3','\u03bc','\u03b2','\u03b1','\u03c6','\u03c9','d/dx','lim','P(A)','E[X]','\u03c7\u00b2','\u03c3\u00b2','n!','C(n,k)','H\u2082O','C\u2086H\u2086','pH','mol/L','\u21d2','\u2234','\u2235'];
+  function spawn(){
+    var el = document.createElement('div');
+    el.className = 'meteor-item';
+    el.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    el.style.left = (Math.random()*100)+'%';
+    el.style.fontSize = (Math.random()*8+12)+'px';
+    el.style.color = ['#c8a062','#a08868','#8a7858','#b89868'][Math.floor(Math.random()*4)];
+    var dur = Math.random()*5+5;
+    el.style.animationDuration = dur+'s';
+    layer.appendChild(el);
+    setTimeout(function(){el.remove();}, dur*1000);
+  }
+  for(var i=0;i<8;i++) setTimeout(spawn, i*600);
+  setInterval(spawn, 1200);
+}
+
+// ===== BROWSE PAGE =====
+var currentSubject = null;
+var _staggerIdx = 0;
+
+function enterSubject(key){
+  var s = SUBJECTS.find(function(x){return x.key===key;});
+  if(!s) return;
+  currentSubject = s;
+  // Apply theme
+  var root = document.documentElement;
+  root.style.setProperty('--accent', s.accent);
+  root.style.setProperty('--accent-light', s.accentLight);
+  root.style.setProperty('--sidebar-bg', s.sidebarBg);
+  root.style.setProperty('--header-bg', s.headerBg);
+  root.style.setProperty('--content-bg', s.bg);
+  // Update header
+  document.getElementById('headerTitle').textContent = 'HUST ' + s.name + ' 真题资源包';
+  document.getElementById('sidebarSubject').innerHTML = '<span style="width:16px;height:16px;display:inline-flex;color:var(--accent)">'+SVG_ICONS[s.svg]+'</span> ' + s.name;
+  // Build tree
+  _staggerIdx = 0;
+  var tree = buildTree(ALL_CONTENTS[s.key]);
+  var fileTree = document.getElementById('file-tree');
+  fileTree.innerHTML = '';
+  renderTree(tree, fileTree, '');
+  // Show browse page
+  document.getElementById('home').classList.add('hidden');
+  document.getElementById('browse').classList.add('active');
+  // Auto-open README
+  var files = ALL_CONTENTS[s.key];
+  if(files['README.md']){
+    openFile('README.md', s.key);
+    var firstFile = fileTree.querySelector('.tree-item.file');
+    if(firstFile) firstFile.classList.add('active');
+  }
+}
+
+function goHome(){
+  document.getElementById('browse').classList.remove('active');
+  document.getElementById('home').classList.remove('hidden');
+  currentSubject = null;
+}
+
+function buildTree(files){
+  var root = {children:{}, files:{}};
+  for(var path in files){
+    var parts = path.split('/');
+    var node = root;
+    for(var i=0;i<parts.length-1;i++){
+      if(!node.children[parts[i]]) node.children[parts[i]] = {children:{}, files:{}};
+      node = node.children[parts[i]];
+    }
+    node.files[parts[parts.length-1]] = files[path];
+  }
+  return root;
+}
+
+function countNodeFiles(node){
+  var c = Object.keys(node.files).length;
+  for(var k in node.children) c += countNodeFiles(node.children[k]);
+  return c;
+}
+
+function renderTree(node, container, basePath, level){
+  level = level || 0;
+  var folderNames = Object.keys(node.children).sort(function(a,b){
+    var aY = /^\d/.test(a), bY = /^\d/.test(b);
+    if(aY && !bY) return -1;
+    if(!aY && bY) return 1;
+    return a.localeCompare(b,'zh');
+  });
+  folderNames.forEach(function(name){
+    var folderDiv = document.createElement('div');
+    folderDiv.className = 'tree-item folder';
+    folderDiv.style.setProperty('--level', level);
+    var childContainer = document.createElement('div');
+    childContainer.className = 'tree-children';
+    var fullPath = basePath ? basePath+'/'+name : name;
+    var fc = countNodeFiles(node.children[name]);
+    folderDiv.innerHTML = '<span class="tree-icon">'+SVG_ICONS.folder+'</span><span class="name">'+name+'</span>'+(fc>0?'<span class="tree-badge">'+fc+'</span>':'');
+    folderDiv.addEventListener('click', function(e){
+      e.stopPropagation();
+      folderDiv.classList.toggle('open');
+      childContainer.classList.toggle('open');
+    });
+    container.appendChild(folderDiv);
+    container.appendChild(childContainer);
+    renderTree(node.children[name], childContainer, fullPath, level+1);
+  });
+  var fileNames = Object.keys(node.files).sort();
+  fileNames.forEach(function(name){
+    var fileDiv = document.createElement('div');
+    fileDiv.className = 'tree-item file stagger';
+    fileDiv.style.setProperty('--level', level);
+    fileDiv.style.animationDelay = (_staggerIdx++ * 26)+'ms';
+    var fullPath = basePath ? basePath+'/'+name : name;
+    fileDiv.innerHTML = '<span class="tree-icon">'+SVG_ICONS.file+'</span><span class="name">'+name+'</span>';
+    fileDiv.addEventListener('click', function(e){
+      e.stopPropagation();
+      document.querySelectorAll('.tree-item.active').forEach(function(el){el.classList.remove('active');});
+      fileDiv.classList.add('active');
+      openFile(fullPath, currentSubject.key);
+    });
+    container.appendChild(fileDiv);
+  });
+}
+
+function openFile(path, subjectKey){
+  var content = ALL_CONTENTS[subjectKey][path];
+  var contentEl = document.getElementById('content');
+  if(content){
+    contentEl.innerHTML = marked.parse(content);
+    document.querySelectorAll('#content pre code').forEach(function(block){hljs.highlightElement(block);});
+    contentEl.scrollTop = 0;
+    if(window.IntersectionObserver){
+      var obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('revealed');obs.unobserve(e.target);}});
+      }, {threshold:0.05});
+      contentEl.querySelectorAll('h1,h2,h3,h4,p,table,blockquote,ul,ol,pre').forEach(function(el){el.classList.add('reveal-item');obs.observe(el);});
+    }
+  }
+}
+
+function toggleTheme(){
+  var isLight = document.body.classList.toggle('light');
+  var icon = document.getElementById('themeIcon');
+  var label = document.getElementById('themeLabel');
+  if(isLight){
+    icon.innerHTML = '<circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42m12.72-12.72l1.42-1.42"/>';
+    label.textContent = '深色模式';
+  } else {
+    icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    label.textContent = '浅色模式';
+  }
+  var hl = document.getElementById('hlTheme');
+  if(hl) hl.href = isLight
+    ? 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css'
+    : 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css';
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('collapsed');
+  document.getElementById('overlay').classList.toggle('show');
+}
+
+document.getElementById('overlay').addEventListener('click', toggleSidebar);
+
+// ===== INIT =====
+buildHome();
+initDanmaku();
+initMeteors();
+
+// Splash
+(function(){
+  var splash = document.getElementById('splash');
+  setTimeout(function(){
+    var title = document.getElementById('splashTitle');
+    if(title){
+      title.textContent.split('').forEach(function(ch){
+        for(var j=0;j<4;j++){
+          var p = document.createElement('span');
+          p.className = 'particle-char'; p.textContent = ch;
+          p.style.setProperty('--tx', (Math.random()*900-450)+'px');
+          p.style.setProperty('--ty', (Math.random()*700-350)+'px');
+          p.style.setProperty('--rot', (Math.random()*720-360)+'deg');
+          p.style.animationDelay = (Math.random()*0.25)+'s';
+          splash.appendChild(p);
+        }
+      });
+      title.style.opacity = '0';
+    }
+    setTimeout(function(){
+      splash.classList.add('fade-out');
+      setTimeout(function(){splash.style.display='none';}, 700);
+    }, 900);
+  }, 1600);
+})();
+</script>
+</body>
+</html>
