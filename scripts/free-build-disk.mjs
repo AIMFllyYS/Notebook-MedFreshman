@@ -55,4 +55,18 @@ for (const t of targets) {
     console.log(`[free-build-disk]   FAILED to remove ${t} (${before}): ${e.message}`);
   }
 }
+
+// Extra headroom: strip dev-only deps from node_modules before the plugin assembles
+// + copies standalone. After `next build` the toolchain (typescript/eslint/tailwind/
+// postcss/@types/cos-sdk) is dead weight, and the standalone trace only copies runtime
+// `dependencies`. Verified: no lib/ runtime code imports cos-nodejs-sdk-v5 (build
+// scripts only). Non-fatal — if prune fails, the build proceeds on the cache saving.
+try {
+  const before = sizeOf("node_modules");
+  execFileSync("pnpm", ["prune", "--prod"], { stdio: ["ignore", "ignore", "pipe"] });
+  console.log(`[free-build-disk]   pnpm prune --prod: node_modules ${before} -> ${sizeOf("node_modules")}`);
+} catch (e) {
+  console.log(`[free-build-disk]   pnpm prune --prod skipped (non-fatal): ${e.message}`);
+}
+
 console.log("[free-build-disk] done.");
