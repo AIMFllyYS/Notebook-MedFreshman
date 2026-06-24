@@ -11,8 +11,11 @@ const nextConfig = {
   },
   // 重型依赖按需加载，减少首屏 bundle 体积。lucide-react 有 18 处具名图标导入，
   // 加入后 Next 会把 barrel 导入改写为按图标深层导入，显著减小图标库体积。
+  // 注意：katex 不可加入——它靠 `import "katex/contrib/mhchem"` 的副作用给 katex 单例打补丁，
+  // barrel 优化的深层导入改写会破坏该单例关系，导致 SSR 包里 mhchem 的气体箭头 `^`、三键 `#`
+  // 等惰性特性失效（\ce{N2 ^}、\ce{-C#CH} 渲染成红字错误），而 node 直跑无此改写故正常。
   experimental: {
-    optimizePackageImports: ["framer-motion", "katex", "lucide-react"],
+    optimizePackageImports: ["framer-motion", "lucide-react"],
   },
 };
 

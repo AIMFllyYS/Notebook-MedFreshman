@@ -1,4 +1,4 @@
-import { visit } from "unist-util-visit";
+import { visit, SKIP } from "unist-util-visit";
 import { CALLOUTS } from "./calloutTypes";
 
 /**
@@ -21,11 +21,14 @@ interface DirectiveNode {
   name: string;
   attributes?: Record<string, string | null | undefined>;
   data?: Record<string, unknown>;
+  children?: unknown[];
 }
 
 export default function remarkDirectives() {
   return (tree: unknown) => {
-    visit(tree as never, (node: DirectiveNode) => {
+    visit(
+      tree as never,
+      (node: DirectiveNode, index: number | undefined, parent: { children: unknown[] } | undefined) => {
       if (
         node.type !== "containerDirective" &&
         node.type !== "leafDirective" &&
@@ -95,6 +98,18 @@ export default function remarkDirectives() {
         };
         return;
       }
-    });
+
+      // 兜底：未被任何处理器识别的「文本指令」(:name)。本项目不使用文本指令，
+      // 而 remark-directive 会把散文里的「词:Word」(如 "Nd:YAG"、比值 "3:X") 误解析成
+      // textDirective，未识别就会被 mdast-util-to-hast 静默丢弃 → 吞掉冒号后的文字。
+      // 这里把它还原成字面文本 ":name"（保留其内联子节点，如有 [label]），既修复笔记，
+      // 也兜底 AI 对话输出。容器/叶子指令为块级、与散文冲突概率低，暂不在此处理。
+      if (node.type === "textDirective" && parent && typeof index === "number") {
+        const tail = Array.isArray(node.children) ? node.children : [];
+        parent.children.splice(index, 1, { type: "text", value: ":" + name }, ...tail);
+        return [SKIP, index];
+      }
+    },
+    );
   };
 }
