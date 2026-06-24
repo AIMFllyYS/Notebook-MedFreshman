@@ -6,10 +6,22 @@ import { ChevronDown, Check, Cpu, SlidersHorizontal } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { getModelGroups, getModelInfo, CUSTOM_MODEL_ID } from "@/lib/ai/models";
 
-/** 模型选择下拉菜单（agent 软件风格）：硅基流动精选模型 + 自定义模型。 */
-export default function ModelMenu({ onOpenSettings }: { onOpenSettings?: () => void }) {
-  const selectedModelId = useSettings((s) => s.selectedModelId);
-  const setSelectedModelId = useSettings((s) => s.setSelectedModelId);
+/** 模型选择下拉菜单（agent 软件风格）：硅基流动精选模型 + 自定义模型。
+ *  默认读写全局 useSettings.selectedModelId；传入 value/onChange 则改为受控（供划词
+ *  浮窗等每个实例独立选模型用，互不影响也不改全局）。 */
+export default function ModelMenu({
+  onOpenSettings,
+  value,
+  onChange,
+}: {
+  onOpenSettings?: () => void;
+  value?: string;
+  onChange?: (id: string) => void;
+}) {
+  const globalSelected = useSettings((s) => s.selectedModelId);
+  const globalSet = useSettings((s) => s.setSelectedModelId);
+  const selectedModelId = value ?? globalSelected;
+  const setSelectedModelId = onChange ?? globalSet;
   const customConfigured = useSettings(
     (s) => !!(s.customBaseUrl && s.customApiKey && s.customModelId),
   );

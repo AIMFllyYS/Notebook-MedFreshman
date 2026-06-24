@@ -27,7 +27,7 @@ import MobileChapterPicker from "./MobileChapterPicker";
 import { ChatSkeleton, PageLoader } from "@/components/shared/ResizeLoader";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
-const QuickExplainWindow = dynamic(() => import("@/components/chat/QuickExplainWindow"), { ssr: false });
+const FloatingChatLayer = dynamic(() => import("@/components/chat/FloatingChatLayer"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
 const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
 const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
@@ -239,6 +239,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <AnimatePresence>
           <PipPlayer />
         </AnimatePresence>
+        <FloatingChatLayer />
       </div>
     );
   }
@@ -302,7 +303,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <AnimatePresence>
         <PipPlayer />
       </AnimatePresence>
-      <QuickExplainWindow />
+      <FloatingChatLayer />
     </div>
   );
 }

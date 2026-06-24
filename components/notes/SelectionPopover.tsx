@@ -3,8 +3,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Lightbulb, Pen, MessageSquare, Send } from "lucide-react";
-import { useStore } from "@/lib/store";
 import { useChatUI } from "@/lib/hooks/useChatUI";
+import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 
 interface PopState {
   x: number;
@@ -37,22 +37,17 @@ export default function SelectionPopover({
 }: {
   containerRef: React.RefObject<HTMLDivElement | null>;
 }) {
-  const sendToChat = useStore((s) => s.sendToChat);
-  const { setQuickExplain, setQuotedText } = useChatUI();
+  const setQuotedText = useChatUI((s) => s.setQuotedText);
+  const openWindow = useFloatingChats((s) => s.openWindow);
   const [pop, setPop] = useState<PopState | null>(null);
-  const [asking, setAsking] = useState(false);
-  const [q, setQ] = useState("");
-  const [mounted, setMounted] = useState(false);
   const [boxWidth, setBoxWidth] = useState(0);
   const boxRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => setMounted(true), []);
 
   useLayoutEffect(() => {
     if (boxRef.current) {
       setBoxWidth(boxRef.current.offsetWidth);
     }
-  }, [pop, asking]);
+  }, [pop]);
 
   useEffect(() => {
     function onMouseUp(e: MouseEvent) {
@@ -60,12 +55,12 @@ export default function SelectionPopover({
       window.setTimeout(() => {
         const sel = window.getSelection();
         if (!sel || sel.isCollapsed || sel.rangeCount === 0) {
-          if (!asking) setPop(null);
+          setPop(null);
           return;
         }
         const text = sel.toString().trim();
         if (text.length < 2) {
-          if (!asking) setPop(null);
+          setPop(null);
           return;
         }
         const range = sel.getRangeAt(0);
@@ -73,23 +68,18 @@ export default function SelectionPopover({
         if (!root || !root.contains(range.commonAncestorContainer)) return;
         const rect = range.getBoundingClientRect();
         setPop({ x: rect.left + rect.width / 2, y: rect.top, text });
-        setAsking(false);
-        setQ("");
       }, 0);
     }
     document.addEventListener("mouseup", onMouseUp);
     return () => document.removeEventListener("mouseup", onMouseUp);
-  }, [containerRef, asking]);
+  }, [containerRef]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        setPop(null);
-        setAsking(false);
-      }
+      if (e.key === "Escape") setPop(null);
     }
     function onScroll() {
-      if (!asking) setPop(null);
+      setPop(null);
     }
     document.addEventListener("keydown", onKey);
     const root = containerRef.current;
@@ -98,41 +88,21 @@ export default function SelectionPopover({
       document.removeEventListener("keydown", onKey);
       root?.removeEventListener("scroll", onScroll, true);
     };
-  }, [containerRef, asking]);
+  }, [containerRef]);
 
-  if (!mounted || !pop) return null;
+  if (!pop) return null;
 
-  function handleExplain() {
+  // 解释 / 举例 / 追问 都开一个独立的划词浮窗（多开、互不影响）。
+  function spawn(seedMode: "explain" | "example" | "ask") {
     if (!pop) return;
-    setQuickExplain(pop.text, { x: pop.x, y: pop.y }, "explain");
+    openWindow({ anchor: { x: pop.x, y: pop.y }, seedMode, seedText: pop.text });
     setPop(null);
-  }
-
-  function handleExample() {
-    if (!pop) return;
-    setQuickExplain(pop.text, { x: pop.x, y: pop.y }, "example");
-    setPop(null);
-  }
-
-  function handleFollowUp() {
-    if (!pop) return;
-    setAsking(true);
   }
 
   function handleQuote() {
     if (!pop) return;
     setQuotedText(pop.text);
     setPop(null);
-  }
-
-  function askCustom() {
-    if (!pop || !q.trim()) return;
-    const quote = pop.text.length > 180 ? pop.text.slice(0, 180) + "…" : pop.text;
-    const prompt = `${q.trim()}\n\n（针对当前页面这段原文：> ${quote}）`;
-    sendToChat(prompt);
-    setPop(null);
-    setAsking(false);
-    setQ("");
   }
 
   const halfW = (boxWidth || 300) / 2;
@@ -154,37 +124,11 @@ export default function SelectionPopover({
         className="animate-fade-up"
       >
         <div className="flex items-center gap-0.5 rounded-xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] p-1 shadow-lg">
-        {!asking ? (
-          <>
-            <PopBtn onClick={handleExplain} icon={Lightbulb} label="解释" />
-            <PopBtn onClick={handleExample} icon={Pen} label="举例" />
-            <PopBtn onClick={handleFollowUp} icon={MessageSquare} label="追问" />
-            <div className="mx-0.5 h-5 w-px bg-[var(--md-sys-color-outline-variant)]" />
-            <PopBtn onClick={handleQuote} icon={Send} label="引用" />
-          </>
-        ) : (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              askCustom();
-            }}
-            className="flex items-center gap-1"
-          >
-            <input
-              autoFocus
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder="对这段内容问点什么…"
-              className="w-56 rounded-lg bg-[var(--md-sys-color-surface-container-highest)] px-3 py-1.5 text-[13px] text-[var(--md-sys-color-on-surface)] outline-none placeholder:text-[var(--md-sys-color-on-surface-variant)] focus:ring-2 focus:ring-[var(--md-sys-color-primary)]/30"
-            />
-            <button
-              type="submit"
-              className="shrink-0 rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[13px] font-medium text-[var(--md-sys-color-on-primary)]"
-            >
-              问 AI
-            </button>
-          </form>
-        )}
+          <PopBtn onClick={() => spawn("explain")} icon={Lightbulb} label="解释" />
+          <PopBtn onClick={() => spawn("example")} icon={Pen} label="举例" />
+          <PopBtn onClick={() => spawn("ask")} icon={MessageSquare} label="追问" />
+          <div className="mx-0.5 h-5 w-px bg-[var(--md-sys-color-outline-variant)]" />
+          <PopBtn onClick={handleQuote} icon={Send} label="引用" />
         </div>
         <div className="mx-auto h-2 w-2 -translate-y-1 rotate-45 border-b border-r border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)]" />
       </div>
