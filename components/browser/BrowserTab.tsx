@@ -1,11 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Home, RotateCw, ArrowRight, ExternalLink, Globe, Search, Smartphone, Monitor, ShieldAlert } from "lucide-react";
+import { Home, RotateCw, ArrowRight, ArrowLeft, ExternalLink, Globe, Search, Smartphone, Monitor, ShieldAlert } from "lucide-react";
 import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
 
 /** 可嵌入预检结果缓存（url → 是否允许内嵌），避免重复探测。 */
 const embedCache = new Map<string, boolean>();
+
+/** Electron <webview> 元素的运行时方法（注入式，非标准 DOM）。 */
+interface WebviewEl extends HTMLElement {
+  loadURL(url: string): Promise<void>;
+  reload(): void;
+  goBack(): void;
+  goForward(): void;
+  getURL(): string;
+}
+// <webview> 是 Electron 注入的自定义元素，非标准 JSX；以字符串 host 元素形式渲染，旁路类型检查。
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Webview: any = "webview";
 
 /** 右侧面板内置浏览器：地址栏 + 自适应（手机视口模拟）iframe。本地使用，仅做基础 sandbox 安全。 */
 export default function BrowserTab() {
@@ -19,6 +31,16 @@ export default function BrowserTab() {
 
   const [addr, setAddr] = useState(currentUrl);
   useEffect(() => setAddr(currentUrl), [currentUrl]);
+
+  // 桌面端（Electron）→ 用真实 <webview> 跑全站；网页/开发态 → 维持 iframe + 可嵌入预检。
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    setIsDesktop(
+      typeof window !== "undefined" &&
+        !!(window as unknown as { desktop?: { isElectron?: boolean } }).desktop?.isElectron,
+    );
+  }, []);
+  const webviewRef = useRef<WebviewEl | null>(null);
 
   // 可嵌入预检：乐观渲染 iframe，同时探测响应头；判为不可内嵌则切到提示面板。
   const [blocked, setBlocked] = useState(false);
@@ -67,6 +89,26 @@ export default function BrowserTab() {
         >
           <Home size={15} />
         </button>
+        {isDesktop && (
+          <>
+            <button
+              onClick={() => webviewRef.current?.goBack()}
+              title="后退"
+              disabled={!currentUrl}
+              className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
+            >
+              <ArrowLeft size={15} />
+            </button>
+            <button
+              onClick={() => webviewRef.current?.goForward()}
+              title="前进"
+              disabled={!currentUrl}
+              className="press flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] disabled:opacity-40"
+            >
+              <ArrowRight size={15} />
+            </button>
+          </>
+        )}
         <button
           onClick={reload}
           title="刷新"
@@ -119,7 +161,17 @@ export default function BrowserTab() {
       {/* 内容区 */}
       <div className="min-h-0 flex-1">
         {currentUrl ? (
-          blocked ? (
+          isDesktop ? (
+            <WebviewSite
+              key={`wv-${viewMode}`}
+              seedUrl={addr}
+              url={currentUrl}
+              nonce={reloadNonce}
+              viewMode={viewMode}
+              webviewRef={webviewRef}
+              onUrlChange={setAddr}
+            />
+          ) : blocked ? (
             <EmbedBlocked url={currentUrl} onForce={() => setForced(currentUrl)} />
           ) : (
             <FramedSite url={currentUrl} nonce={reloadNonce} viewMode={viewMode} />
@@ -174,6 +226,85 @@ function FramedSite({ url, nonce, viewMode }: { url: string; nonce: number; view
           referrerPolicy="no-referrer-when-downgrade"
         />
       )}
+    </div>
+  );
+}
+
+/**
+ * 桌面端真实浏览器：内嵌 Electron <webview>（真·Chromium，持久分区保留登录态/Cookie）。
+ * 无 can-embed 限制、无 sandbox —— 几乎可打开所有站点（含需登录的 DeepSeek/Claude 等）。
+ * 导航沿用 useBrowser store：currentUrl 变化→loadURL，reloadNonce 变化→reload；
+ * 内部跳转经 did-navigate 同步回地址栏。前进/后退由工具栏经 webviewRef 调用。
+ */
+function WebviewSite({
+  seedUrl,
+  url,
+  nonce,
+  viewMode,
+  webviewRef,
+  onUrlChange,
+}: {
+  seedUrl: string;
+  url: string;
+  nonce: number;
+  viewMode: ViewMode;
+  webviewRef: React.MutableRefObject<WebviewEl | null>;
+  onUrlChange: (u: string) => void;
+}) {
+  const localRef = useRef<WebviewEl | null>(null);
+  // 挂载时定格初始地址（viewMode 切换会通过 key 重挂载，从而以当前地址重载）。
+  const [initialUrl] = useState(() => seedUrl || url);
+  const lastLoaded = useRef(url);
+  const firstNonce = useRef(nonce);
+
+  const MOBILE_UA =
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
+
+  // 地址栏同步：内部跳转/登录后地址栏跟随真实 URL。
+  useEffect(() => {
+    const wv = localRef.current;
+    if (!wv) return;
+    const onNav = (e: Event) => {
+      const u = (e as unknown as { url?: string }).url || wv.getURL?.();
+      if (u) onUrlChange(u);
+    };
+    wv.addEventListener("did-navigate", onNav);
+    wv.addEventListener("did-navigate-in-page", onNav);
+    return () => {
+      wv.removeEventListener("did-navigate", onNav);
+      wv.removeEventListener("did-navigate-in-page", onNav);
+    };
+  }, [onUrlChange]);
+
+  // 书签/标签/主页/地址栏访问 → store.currentUrl 变化 → loadURL。
+  useEffect(() => {
+    const wv = localRef.current;
+    if (wv && url && url !== lastLoaded.current) {
+      lastLoaded.current = url;
+      wv.loadURL(url).catch(() => {});
+    }
+  }, [url]);
+
+  // 刷新按钮 → reloadNonce 变化 → reload 当前页面。
+  useEffect(() => {
+    if (nonce === firstNonce.current) return;
+    firstNonce.current = nonce;
+    localRef.current?.reload();
+  }, [nonce]);
+
+  return (
+    <div className="relative h-full w-full bg-white">
+      <Webview
+        ref={(n: WebviewEl | null) => {
+          localRef.current = n;
+          webviewRef.current = n;
+        }}
+        src={initialUrl}
+        partition="persist:browser"
+        allowpopups="true"
+        {...(viewMode === "mobile" ? { useragent: MOBILE_UA } : {})}
+        style={{ width: "100%", height: "100%", border: 0 }}
+      />
     </div>
   );
 }
