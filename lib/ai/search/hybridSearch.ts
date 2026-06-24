@@ -73,8 +73,8 @@ export async function hybridSearch(
   topK = 5,
 ): Promise<MultiSearchHit[]> {
   const mode = getSearchMode();
-  const hasVectorIndex = isVectorIndexLoaded();
-  const hasBM25Index = isBM25IndexLoaded();
+  const hasVectorIndex = await isVectorIndexLoaded();
+  const hasBM25Index = await isBM25IndexLoaded();
 
   if (!hasVectorIndex && !hasBM25Index) {
     return [];
@@ -84,7 +84,7 @@ export async function hybridSearch(
 
   // BM25 检索
   if (mode !== 'vector' && hasBM25Index) {
-    const bm25Results = bm25Search(query, 30);
+    const bm25Results = await bm25Search(query, 30);
     if (bm25Results.length) rankings.push(bm25Results);
   }
 
@@ -93,7 +93,7 @@ export async function hybridSearch(
     try {
       const embeddingClient = getEmbeddingClient();
       const queryVector = await embeddingClient.embed(query);
-      const vecResults = vectorSearch(queryVector, 30);
+      const vecResults = await vectorSearch(queryVector, 30);
       if (vecResults.length) rankings.push(vecResults);
     } catch {
       // embedding API 失败时仅用 BM25

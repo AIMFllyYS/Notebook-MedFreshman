@@ -1,13 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // content/ and manim/ are read at runtime by API routes; keep them out of the
-  // webpack module graph so large generated .md files don't bloat the bundle.
+  // content/ 下的 .md/.json/.html 通过 outputFileTracingIncludes 打包进 standalone，
+  // 供 serverless 运行时读取。但 content/.index/ (307MB 向量索引) 必须排除，
+  // 否则 EdgeOne 复制 standalone 到 /dev/shm (64MB) 会 ENOSPC。
+  // .index/ 改为运行时从 COS 下载到 /tmp 缓存（见 vectorStore.ts / bm25Store.ts）。
   outputFileTracingIncludes: {
     "/api/**": ["./content/**/*", "./lib/ai/prompts/**/*"],
     // 内容页 SSG/按需渲染（dynamicParams）在 Node Function 内经 loader 读取 .md，
     // 需把 content 一并打进函数包，否则未预生成的 id 运行期读不到文件。
     "/[subject]/[category]/[id]": ["./content/**/*"],
+  },
+  outputFileTracingExcludes: {
+    "/api/**": ["./content/.index/**/*"],
+    "/[subject]/[category]/[id]": ["./content/.index/**/*"],
   },
   // 重型依赖按需加载，减少首屏 bundle 体积。lucide-react 有 18 处具名图标导入，
   // 加入后 Next 会把 barrel 导入改写为按图标深层导入，显著减小图标库体积。

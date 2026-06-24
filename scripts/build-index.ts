@@ -231,6 +231,47 @@ async function main() {
   console.log(`   Chunks: ${chunks.length}`);
   console.log(`   Dimension: ${dimension}`);
   console.log(`   BM25 terms: ${Object.keys(bm25Index.invertedIndex).length}`);
+
+  // ── 上传到 COS（可选）──
+  const secretId = process.env.COS_SECRET_ID;
+  const secretKey = process.env.COS_SECRET_KEY;
+  const bucket = process.env.COS_BUCKET;
+  const region = process.env.COS_REGION;
+
+  if (secretId && secretKey && bucket && region) {
+    console.log('\n☁️  Uploading index files to COS...');
+    try {
+      const COS = (await import('cos-nodejs-sdk-v5')).default;
+      const cos = new COS({ SecretId: secretId, SecretKey: secretKey });
+
+      for (const filename of ['bm25.json', 'vectors.json']) {
+        const localPath = path.join(indexDir, filename);
+        const key = `index/${filename}`;
+        const size = (fs.statSync(localPath).size / 1024 / 1024).toFixed(2);
+        await new Promise<void>((resolve, reject) => {
+          cos.putObject(
+            {
+              Bucket: bucket,
+              Region: region,
+              Key: key,
+              Body: fs.createReadStream(localPath),
+              ContentType: 'application/json',
+            },
+            (err: unknown, _data: unknown) => {
+              if (err) reject(err);
+              else resolve();
+            },
+          );
+        });
+        console.log(`   ✓ index/${filename} (${size} MB)`);
+      }
+      console.log(`\n   COS_INDEX_BASE_URL=https://${bucket}.cos.${region}.myqcloud.com/index/`);
+    } catch (e) {
+      console.error('   ✗ COS upload failed:', e);
+    }
+  } else {
+    console.log('\n   (跳过 COS 上传：未设置 COS_SECRET_ID/COS_SECRET_KEY/COS_BUCKET/COS_REGION)');
+  }
 }
 
 main().catch((err) => {

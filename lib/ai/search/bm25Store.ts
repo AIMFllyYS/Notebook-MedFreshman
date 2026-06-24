@@ -1,6 +1,10 @@
 // BM25 检索：惰性加载 bm25.json，提供 BM25 评分 top-K 查询。
+// 加载顺序：本地 content/.index/ → /tmp 缓存 → COS 远程下载。
+// 307MB 索引不打包进 serverless 函数（outputFileTracingExcludes 排除），
+// EdgeOne 运行时从 COS 下载到 /tmp 缓存，本地开发直接读本地文件。
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import * as os from 'node:os';
 import type { ScoredChunk } from './vectorStore';
 
 interface BM25Index {
@@ -28,39 +32,100 @@ let _bm25Index: BM25Index | null = null;
 let _chunkMeta: Map<string, ChunkMeta> | null = null;
 let _loadAttempted = false;
 
-function loadIndex(): BM25Index | null {
+const LOCAL_INDEX_DIR = path.join(process.cwd(), 'content', '.index');
+const TMP_INDEX_DIR = path.join(os.tmpdir(), '.search-index');
+
+function getCosIndexBaseUrl(): string {
+  return process.env.COS_INDEX_BASE_URL || '';
+}
+
+function readJsonFromPaths(filePaths: string[]): string | null {
+  for (const p of filePaths) {
+    try {
+      return fs.readFileSync(p, 'utf8');
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
+async function downloadFromCos(filename: string): Promise<string | null> {
+  const baseUrl = getCosIndexBaseUrl();
+  if (!baseUrl) return null;
+  const url = baseUrl.endsWith('/')
+    ? baseUrl + filename
+    : baseUrl + '/' + filename;
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`COS fetch ${resp.status}: ${url}`);
+  const text = await resp.text();
+  try {
+    fs.mkdirSync(TMP_INDEX_DIR, { recursive: true });
+    fs.writeFileSync(path.join(TMP_INDEX_DIR, filename), text);
+  } catch {
+    // /tmp 写入失败不影响内存使用
+  }
+  return text;
+}
+
+async function loadIndexAsync(): Promise<BM25Index | null> {
   if (_loadAttempted) return _bm25Index;
   _loadAttempted = true;
 
-  const bm25Path = path.join(process.cwd(), 'content', '.index', 'bm25.json');
+  // 1. 尝试本地 + /tmp 缓存
+  let bm25Raw = readJsonFromPaths([
+    path.join(LOCAL_INDEX_DIR, 'bm25.json'),
+    path.join(TMP_INDEX_DIR, 'bm25.json'),
+  ]);
+
+  // 2. 本地没有 → 从 COS 下载
+  if (!bm25Raw) {
+    try {
+      bm25Raw = await downloadFromCos('bm25.json');
+    } catch {
+      return null;
+    }
+  }
+  if (!bm25Raw) return null;
+
   try {
-    const raw = fs.readFileSync(bm25Path, 'utf8');
-    _bm25Index = JSON.parse(raw);
+    _bm25Index = JSON.parse(bm25Raw);
   } catch {
     return null;
   }
 
-  // 加载 chunk 元数据（从 vectors.json 中获取文本信息）
-  const vectorPath = path.join(process.cwd(), 'content', '.index', 'vectors.json');
-  try {
-    const raw = fs.readFileSync(vectorPath, 'utf8');
-    const vectorIndex = JSON.parse(raw);
-    _chunkMeta = new Map();
-    for (const chunk of vectorIndex.chunks) {
-      _chunkMeta.set(chunk.id, {
-        id: chunk.id,
-        path: chunk.path,
-        subjectId: chunk.subjectId,
-        subjectName: chunk.subjectName,
-        categoryId: chunk.categoryId,
-        itemId: chunk.itemId,
-        title: chunk.title,
-        chunkIndex: chunk.chunkIndex,
-        text: chunk.text,
-      });
+  // 3. 加载 chunk 元数据（从 vectors.json）
+  let vecRaw = readJsonFromPaths([
+    path.join(LOCAL_INDEX_DIR, 'vectors.json'),
+    path.join(TMP_INDEX_DIR, 'vectors.json'),
+  ]);
+  if (!vecRaw) {
+    try {
+      vecRaw = await downloadFromCos('vectors.json');
+    } catch {
+      // vector 文件不存在时 BM25 仍可用，但结果会缺少 text 字段
     }
-  } catch {
-    // vector 文件不存在时 BM25 仍可用，但结果会缺少 text 字段
+  }
+  if (vecRaw) {
+    try {
+      const vectorIndex = JSON.parse(vecRaw);
+      _chunkMeta = new Map();
+      for (const chunk of vectorIndex.chunks) {
+        _chunkMeta.set(chunk.id, {
+          id: chunk.id,
+          path: chunk.path,
+          subjectId: chunk.subjectId,
+          subjectName: chunk.subjectName,
+          categoryId: chunk.categoryId,
+          itemId: chunk.itemId,
+          title: chunk.title,
+          chunkIndex: chunk.chunkIndex,
+          text: chunk.text,
+        });
+      }
+    } catch {
+      // vectors.json 解析失败，BM25 仍可用
+    }
   }
 
   return _bm25Index;
@@ -112,8 +177,8 @@ function tokenize(text: string): string[] {
 const K1 = 1.5;
 const B = 0.75;
 
-export function bm25Search(query: string, topK: number): ScoredChunk[] {
-  const index = loadIndex();
+export async function bm25Search(query: string, topK: number): Promise<ScoredChunk[]> {
+  const index = await loadIndexAsync();
   if (!index) return [];
 
   const queryTerms = tokenize(query);
@@ -157,6 +222,6 @@ export function bm25Search(query: string, topK: number): ScoredChunk[] {
   });
 }
 
-export function isBM25IndexLoaded(): boolean {
-  return loadIndex() !== null;
+export async function isBM25IndexLoaded(): Promise<boolean> {
+  return (await loadIndexAsync()) !== null;
 }
