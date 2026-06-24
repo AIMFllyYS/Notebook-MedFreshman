@@ -14,6 +14,8 @@ import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import CodeBlock from '@/components/shared/CodeBlock';
 import { ChatImage } from '@/components/chat/ChatImage';
 import { ImageStrip } from '@/components/chat/ImageStrip';
+import { RawSvgViewer } from '@/components/canvas';
+import { sanitizeSvg } from '@/lib/utils/sanitizeSvg';
 
 interface MessageContentProps {
   content: string;
@@ -58,14 +60,50 @@ const mdComponents = {
   pre: ({ node, ...props }: any) => <CodeBlock {...props} />,
 };
 
+/* ---- Markdown rendering that routes raw inline <svg> to the sanitized viewer ----
+   助教有时直接吐裸 <svg>…</svg>（未用 <SvgDiagram> 包裹）。裸 SVG 会落进 markdown 块、
+   被 rehype-raw 逐元素交给 React 渲染，而 <text>/<g>/<tspan> 等 SVG 命名空间标签在
+   非 <svg> React 上下文下会触发「unrecognized tag」告警（流式半截 SVG 尤甚）。
+   这里把完整的 <svg>…</svg> 切出来，经 sanitizeSvg(DOMPurify) 后交给 RawSvgViewer
+   以 innerHTML 渲染（浏览器原生处理 SVG 命名空间，零告警）；其余文本仍走 ReactMarkdown。 */
+const SVG_BLOCK_RE = /<svg[\s\S]*?<\/svg>/gi;
+
+function renderMarkdownWithSvg(
+  text: string,
+  keyPrefix: string,
+  remarkPlugins: typeof sharedRemarkPlugins,
+): React.ReactNode {
+  const content = text || '';
+  const md = (key: string, value: string) => (
+    <ReactMarkdown key={key} remarkPlugins={remarkPlugins} rehypePlugins={sharedRehypePlugins} components={mdComponents}>
+      {value}
+    </ReactMarkdown>
+  );
+
+  if (!content.includes('<svg')) return md(keyPrefix, content);
+
+  const out: React.ReactNode[] = [];
+  let last = 0;
+  let i = 0;
+  let m: RegExpExecArray | null;
+  SVG_BLOCK_RE.lastIndex = 0;
+  while ((m = SVG_BLOCK_RE.exec(content)) !== null) {
+    const before = content.slice(last, m.index);
+    if (before.trim()) out.push(md(`${keyPrefix}-md-${i}`, before));
+    out.push(<RawSvgViewer key={`${keyPrefix}-svg-${i}`} svg={sanitizeSvg(m[0])} />);
+    last = m.index + m[0].length;
+    i++;
+  }
+  const tail = content.slice(last);
+  if (tail.trim()) out.push(md(`${keyPrefix}-md-${i}`, tail));
+
+  return <React.Fragment key={keyPrefix}>{out}</React.Fragment>;
+}
+
 /* ---- Render a single parsed block ---- */
 const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boolean, onFollowUpSelect?: (question: string) => void, remarkPlugins: typeof sharedRemarkPlugins = sharedRemarkPlugins) => {
   if (block.type === 'markdown') {
-    return (
-      <ReactMarkdown key={idx} remarkPlugins={remarkPlugins} rehypePlugins={sharedRehypePlugins} components={mdComponents}>
-        {block.content || ''}
-      </ReactMarkdown>
-    );
+    return renderMarkdownWithSvg(block.content || '', `md-${idx}`, remarkPlugins);
   }
 
   const { tagName, props: compProps, childrenText } = block;
@@ -83,11 +121,7 @@ const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boole
 
   // Answer / Thinking tags rendered as markdown
   if (tagName === 'Answer' || tagName === 'Thinking') {
-    return (
-      <ReactMarkdown key={idx} remarkPlugins={remarkPlugins} rehypePlugins={sharedRehypePlugins} components={mdComponents}>
-        {childrenText || ''}
-      </ReactMarkdown>
-    );
+    return renderMarkdownWithSvg(childrenText || '', `at-${idx}`, remarkPlugins);
   }
 
   // Fallback: unknown tag
@@ -119,7 +153,12 @@ const extractFollowUpQuestions = (content: string): string[] => {
 const getCleanedContent = (content: string): string =>
   content
     .replace(/<FollowUp>[\s\S]*?<\/FollowUp>/gi, '')
-    .replace(/<FollowUp>[\s\S]*$/i, '');
+    .replace(/<FollowUp>[\s\S]*$/i, '')
+    // 流式期未闭合的 <SvgDiagram> 尾巴：隐藏，待整体到齐再渲染（与 FollowUp 同理）。
+    .replace(/<SvgDiagram\b(?:(?!<\/SvgDiagram>)[\s\S])*$/i, '')
+    // 流式期未闭合的裸 <svg> 尾巴：先隐藏，待 </svg> 到齐再由 RawSvgViewer 整体渲染。
+    // 否则半截 SVG 漏进 rehype-raw → <text>/<g> 等 SVG 命名空间标签触发 React「unrecognized tag」。
+    .replace(/<svg\b(?:(?!<\/svg>)[\s\S])*$/i, '');
 
 /* ---- Main MessageContent component ---- */
 export const MessageContent: React.FC<MessageContentProps> = React.memo(({

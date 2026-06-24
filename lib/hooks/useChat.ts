@@ -169,6 +169,29 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
         const toolCallsMap = new Map<string, ToolCallBlock>();
         let stallChecker: ReturnType<typeof setInterval> | null = null;
 
+        // 流式 UI 节流：把每 token 的 updateMessage 合并为 ~60ms 一次（尾随节流）。
+        // 既减少重渲染（markdown/KaTeX 全量重解析），又降低 persist 写盘触发频率；
+        // 配合 idbStorage 写防抖，把流式 O(n²) 降到 ~O(n)。流结束/中断时强制落定最后一帧。
+        const UI_THROTTLE_MS = 60;
+        let uiTimer: ReturnType<typeof setTimeout> | null = null;
+        const writeUi = () => {
+          updateMessage(sessionId!, assistantId, { content: contentBuf, reasoningContent: reasoningBuf });
+        };
+        const scheduleUi = () => {
+          if (uiTimer) return;
+          uiTimer = setTimeout(() => {
+            uiTimer = null;
+            writeUi();
+          }, UI_THROTTLE_MS);
+        };
+        const flushUiNow = () => {
+          if (uiTimer) {
+            clearTimeout(uiTimer);
+            uiTimer = null;
+          }
+          writeUi();
+        };
+
         try {
           const settings = useSettings.getState();
           const isCustom = settings.selectedModelId === CUSTOM_MODEL_ID;
@@ -230,14 +253,12 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
               switch (event.type) {
                 case 'content':
                   contentBuf += event.delta || event.content || '';
-                  updateMessage(sessionId!, assistantId, { content: contentBuf });
+                  scheduleUi();
                   break;
 
                 case 'reasoning':
                   reasoningBuf += event.delta || event.content || '';
-                  updateMessage(sessionId!, assistantId, {
-                    reasoningContent: reasoningBuf,
-                  });
+                  scheduleUi();
                   break;
 
                 case 'tool':
@@ -307,6 +328,9 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
             }
           }
 
+          // 流正常结束：落定最后一帧（节流可能还压着一次未刷新的更新）
+          flushUiNow();
+
           // 流结束后提取 FollowUp 追问
           if (contentBuf) {
             try {
@@ -367,6 +391,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
             setError(message);
           }
         } finally {
+          flushUiNow(); // 错误/中断路径也落定已流式的内容，避免丢字
           if (stallChecker) clearInterval(stallChecker);
           loadingRef.current = false;
           setIsLoading(false);
