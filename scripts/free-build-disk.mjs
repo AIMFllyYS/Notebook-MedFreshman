@@ -2,10 +2,11 @@
 // .next/standalone -> .edgeone/cloud-functions/ssr-node (the step that ENOSPCs).
 //
 // Runs as the last thing inside `pnpm run build`, i.e. after `next build` has
-// produced .next/standalone but before the plugin duplicates it. It removes
-// paths that neither the copy step nor the deployed runtime need:
-//   - .git        : the cloned git history. Huge (~900MB) IF EdgeOne does a full
-//                   clone; this dead weight just sits in /dev/shm during the copy.
+// finished but before the plugin assembles+duplicates .next/standalone. It removes
+// paths that neither the standalone assembly, the copy step, nor the runtime need:
+//   - .next/cache : Turbopack's fresh build cache. MEASURED to be the bulk of the
+//                   1.4GB .next dir; never needed post-build. This is the big one.
+//   - .git        : cloned git history (~109MB; EdgeOne shallow-clones, so small).
 //   - docs/       : transcripts/PDFs/tarball, build-irrelevant (~42MB).
 //   - content/_raw: original source PDFs/docx, already excluded from tracing.
 // It also LOGS each path's size first, which answers the key open question:
@@ -28,8 +29,8 @@ if (process.env.EDGEONE_FREE_DISK === "0" || !inEdgeOneBuild) {
   process.exit(0);
 }
 
-// Hardcoded targets only — never derived from input.
-const targets = [".git", "docs", "content/_raw"];
+// Hardcoded targets only — never derived from input. Order: biggest/safest first.
+const targets = [".next/cache", ".git", "docs", "content/_raw"];
 
 function sizeOf(path) {
   try {

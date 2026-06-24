@@ -23,7 +23,7 @@ console.log(sh("df -h"));
 console.log("\n--- du -sh of the heavy paths (sorted) ---");
 console.log(
   sh(
-    "du -sh .git node_modules .next .next/standalone .next/standalone/node_modules content public docs 2>/dev/null | sort -h"
+    "du -sh .next .next/cache .next/server .next/static .next/standalone .next/standalone/node_modules node_modules content public 2>/dev/null | sort -h"
   )
 );
 console.log("\n--- working dir total ---");
