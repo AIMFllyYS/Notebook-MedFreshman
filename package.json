@@ -8,7 +8,7 @@
     "check:encoding": "node scripts/check-content-encoding.mjs",
     "gen:script-ids": "node scripts/gen-script-ids.mjs",
     "prebuild": "node scripts/check-content-encoding.mjs && node scripts/gen-script-ids.mjs && node scripts/check-katex-chars.mjs && node scripts/check-media-sync.mjs",
-    "build": "next build && node scripts/report-disk.mjs",
+    "build": "next build && node scripts/free-build-disk.mjs && node scripts/report-disk.mjs",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
