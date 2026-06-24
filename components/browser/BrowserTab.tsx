@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Home, RotateCw, ArrowRight, ArrowLeft, ExternalLink, Globe, Search, Smartphone, Monitor, ShieldAlert } from "lucide-react";
+import { Home, RotateCw, ArrowRight, ArrowLeft, ExternalLink, Globe, Search, Smartphone, Monitor, ShieldAlert, Loader2 } from "lucide-react";
 import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
 
 /** 可嵌入预检结果缓存（url → 是否允许内嵌），避免重复探测。 */
@@ -163,11 +163,8 @@ export default function BrowserTab() {
         {currentUrl ? (
           isDesktop ? (
             <WebviewSite
-              key={`wv-${viewMode}`}
-              seedUrl={addr}
               url={currentUrl}
               nonce={reloadNonce}
-              viewMode={viewMode}
               webviewRef={webviewRef}
               onUrlChange={setAddr}
             />
@@ -237,30 +234,24 @@ function FramedSite({ url, nonce, viewMode }: { url: string; nonce: number; view
  * 内部跳转经 did-navigate 同步回地址栏。前进/后退由工具栏经 webviewRef 调用。
  */
 function WebviewSite({
-  seedUrl,
   url,
   nonce,
-  viewMode,
   webviewRef,
   onUrlChange,
 }: {
-  seedUrl: string;
   url: string;
   nonce: number;
-  viewMode: ViewMode;
   webviewRef: React.MutableRefObject<WebviewEl | null>;
   onUrlChange: (u: string) => void;
 }) {
   const localRef = useRef<WebviewEl | null>(null);
-  // 挂载时定格初始地址（viewMode 切换会通过 key 重挂载，从而以当前地址重载）。
-  const [initialUrl] = useState(() => seedUrl || url);
+  const [initialUrl] = useState(() => url); // 定格挂载时地址作为初始 src
   const lastLoaded = useRef(url);
   const firstNonce = useRef(nonce);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const MOBILE_UA =
-    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
-
-  // 地址栏同步：内部跳转/登录后地址栏跟随真实 URL。
+  // 事件监听：地址同步 + 加载态 + 失败兜底（把"白屏"变成可读错误，便于定位）。
   useEffect(() => {
     const wv = localRef.current;
     if (!wv) return;
@@ -268,19 +259,51 @@ function WebviewSite({
       const u = (e as unknown as { url?: string }).url || wv.getURL?.();
       if (u) onUrlChange(u);
     };
+    const onStart = () => { setError(null); setLoading(true); };
+    const onStop = () => setLoading(false);
+    const onReady = () => {
+      setLoading(false);
+      // 兜底：若 src 属性未触发导航（自定义元素属性/属性时序问题），dom-ready 后主动 loadURL。
+      try {
+        const cur = wv.getURL?.();
+        if ((!cur || cur === "about:blank") && initialUrl) wv.loadURL(initialUrl).catch(() => {});
+      } catch { /* ignore */ }
+    };
+    const onFail = (e: Event) => {
+      const ev = e as unknown as { errorCode?: number; errorDescription?: string; isMainFrame?: boolean };
+      // -3 = ERR_ABORTED（重定向/主动取消）忽略；仅主框架失败才提示。
+      if (ev.isMainFrame && ev.errorCode !== -3) {
+        setError(`${ev.errorDescription || "加载失败"}（${ev.errorCode}）`);
+        setLoading(false);
+      }
+    };
+    const onGone = () => { setError("页面渲染进程已退出，请重试。"); setLoading(false); };
+
     wv.addEventListener("did-navigate", onNav);
     wv.addEventListener("did-navigate-in-page", onNav);
+    wv.addEventListener("did-start-loading", onStart);
+    wv.addEventListener("did-stop-loading", onStop);
+    wv.addEventListener("dom-ready", onReady);
+    wv.addEventListener("did-fail-load", onFail);
+    wv.addEventListener("render-process-gone", onGone);
     return () => {
       wv.removeEventListener("did-navigate", onNav);
       wv.removeEventListener("did-navigate-in-page", onNav);
+      wv.removeEventListener("did-start-loading", onStart);
+      wv.removeEventListener("did-stop-loading", onStop);
+      wv.removeEventListener("dom-ready", onReady);
+      wv.removeEventListener("did-fail-load", onFail);
+      wv.removeEventListener("render-process-gone", onGone);
     };
-  }, [onUrlChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 书签/标签/主页/地址栏访问 → store.currentUrl 变化 → loadURL。
   useEffect(() => {
     const wv = localRef.current;
     if (wv && url && url !== lastLoaded.current) {
       lastLoaded.current = url;
+      setError(null);
       wv.loadURL(url).catch(() => {});
     }
   }, [url]);
@@ -289,11 +312,12 @@ function WebviewSite({
   useEffect(() => {
     if (nonce === firstNonce.current) return;
     firstNonce.current = nonce;
+    setError(null);
     localRef.current?.reload();
   }, [nonce]);
 
   return (
-    <div className="relative h-full w-full bg-white">
+    <div className="relative h-full w-full overflow-hidden bg-white">
       <Webview
         ref={(n: WebviewEl | null) => {
           localRef.current = n;
@@ -302,9 +326,37 @@ function WebviewSite({
         src={initialUrl}
         partition="persist:browser"
         allowpopups="true"
-        {...(viewMode === "mobile" ? { useragent: MOBILE_UA } : {})}
-        style={{ width: "100%", height: "100%", border: 0 }}
+        // 绝对铺满 + display:flex，规避 <webview> 默认 display 导致塌成 0 高的白屏。
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", display: "flex", border: 0 }}
       />
+      {loading && !error && (
+        <div className="absolute left-2 top-2 z-10 flex items-center gap-1.5 rounded-full bg-[var(--bg-panel)] px-2.5 py-1 text-[11px] text-[var(--ink-soft)] shadow">
+          <Loader2 size={12} className="animate-spin" /> 加载中…
+        </div>
+      )}
+      {error && (
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-[var(--bg-panel)] px-6 text-center">
+          <ShieldAlert size={26} className="text-[var(--ink-soft)]" />
+          <p className="text-[14px] font-semibold text-[var(--ink)]">页面加载失败</p>
+          <p className="max-w-[300px] text-[12px] leading-relaxed text-[var(--ink-soft)]">{error}</p>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => { setError(null); setLoading(true); localRef.current?.reload(); }}
+              className="press inline-flex items-center gap-1.5 rounded-full bg-[var(--accent)] px-3.5 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)]"
+            >
+              <RotateCw size={13} /> 重试
+            </button>
+            <a
+              href={url || undefined}
+              target="_blank"
+              rel="noreferrer"
+              className="press inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3.5 py-1.5 text-[12.5px] text-[var(--ink-soft)]"
+            >
+              <ExternalLink size={13} /> 系统浏览器打开
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
