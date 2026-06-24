@@ -9,6 +9,9 @@ out/
 build/
 next-env.d.ts
 
+# electron desktop build output
+dist-desktop/
+
 # env (keep .env.example tracked)
 .env.local
 .env*.local

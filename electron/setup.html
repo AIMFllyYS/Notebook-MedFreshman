@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>API 密钥设置</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; padding: 28px 30px; font: 14px/1.5 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+        background: #0b0b0f; color: #e7e7ea;
+      }
+      h1 { font-size: 18px; margin: 0 0 6px; }
+      p.sub { margin: 0 0 20px; color: #9b9ba3; font-size: 12.5px; }
+      label { display: block; margin: 16px 0 6px; font-weight: 600; font-size: 13px; }
+      label .req { color: #ff6b6b; }
+      label .opt { color: #6b6b73; font-weight: 400; }
+      input {
+        width: 100%; padding: 9px 11px; border-radius: 8px; border: 1px solid #2a2a33;
+        background: #15151b; color: #e7e7ea; font-size: 13px; outline: none;
+      }
+      input:focus { border-color: #5b8cff; }
+      .hint { color: #6b6b73; font-size: 11.5px; margin-top: 4px; }
+      .row { display: flex; gap: 10px; margin-top: 24px; }
+      button {
+        flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #2a2a33;
+        background: #1c1c24; color: #e7e7ea; font-size: 13.5px; cursor: pointer;
+      }
+      button.primary { background: #3b6bff; border-color: #3b6bff; color: #fff; font-weight: 600; }
+      button:disabled { opacity: .5; cursor: default; }
+      #status { margin-top: 14px; font-size: 12.5px; min-height: 18px; white-space: pre-wrap; }
+      .ok { color: #4ade80; } .bad { color: #ff8a8a; } .muted { color: #9b9ba3; }
+    </style>
+  </head>
+  <body>
+    <h1>填写 API 密钥</h1>
+    <p class="sub">密钥仅保存在本机（加密存储），不会上传、不在安装包内。只填你有的即可。</p>
+
+    <label>硅基流动 SiliconFlow <span class="req">必填</span></label>
+    <input id="AI_API_KEY" type="password" placeholder="sk-..." autocomplete="off" />
+    <div class="hint">解锁 AI 对话、语义搜索（embedding + rerank）、追问、生成。</div>
+
+    <label>小米 MiMo <span class="opt">可选</span></label>
+    <input id="MIMO_API_KEY" type="password" placeholder="留空则不启用 MiMo 模型" autocomplete="off" />
+    <div class="hint">解锁 MiMo 系模型对话。</div>
+
+    <label>智谱 Zhipu <span class="opt">可选</span></label>
+    <input id="ZHIPU_API_KEY" type="password" placeholder="留空则联网搜索不可用" autocomplete="off" />
+    <div class="hint">解锁对话中的联网搜索工具。</div>
+
+    <div class="row">
+      <button id="test">测试连通</button>
+      <button id="save" class="primary">保存并启动</button>
+    </div>
+    <div id="status" class="muted"></div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const fields = ["AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY"];
+      const collect = () => Object.fromEntries(fields.map((f) => [f, $(f).value]));
+      const status = (msg, cls) => { const s = $("status"); s.textContent = msg; s.className = cls || "muted"; };
+
+      (async () => {
+        const cur = await window.setupAPI.getKeys();
+        for (const f of fields) if (cur && cur[f]) $(f).value = cur[f];
+      })();
+
+      $("test").onclick = async () => {
+        if (!$("AI_API_KEY").value.trim()) return status("请先填写硅基流动密钥（必填）", "bad");
+        status("测试中…", "muted");
+        $("test").disabled = true;
+        try {
+          const r = await window.setupAPI.test(collect());
+          const line = (x) => `${x.label}: ${x.status}`;
+          const ok = r.AI_API_KEY.status === "ok";
+          status([line(r.AI_API_KEY), line(r.MIMO_API_KEY), line(r.ZHIPU_API_KEY)].join("\n"), ok ? "ok" : "bad");
+        } catch (e) {
+          status("测试失败：" + e, "bad");
+        } finally {
+          $("test").disabled = false;
+        }
+      };
+
+      $("save").onclick = async () => {
+        if (!$("AI_API_KEY").value.trim()) return status("硅基流动密钥为必填项", "bad");
+        status("保存并启动服务中…（首次稍慢）", "muted");
+        $("save").disabled = true;
+        try {
+          const res = await window.setupAPI.save(collect());
+          if (res && res.ok) {
+            status("已保存，正在打开应用…", "ok");
+            window.close();
+          } else {
+            status("启动失败：" + (res && res.error), "bad");
+            $("save").disabled = false;
+          }
+        } catch (e) {
+          status("保存失败：" + e, "bad");
+          $("save").disabled = false;
+        }
+      };
+    </script>
+  </body>
+</html>

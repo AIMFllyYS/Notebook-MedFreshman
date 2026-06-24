@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // 桌面打包(Electron)：仅当 BUILD_STANDALONE=1 时产出自包含 standalone server，
+  // 并关闭图片优化(免 sharp 原生依赖，便于离线打包)。Web/本地/EdgeOne 构建不受影响。
+  ...(process.env.BUILD_STANDALONE === "1"
+    ? { output: "standalone", images: { unoptimized: true } }
+    : {}),
   // content/ 下的 .md/.json/.html 通过 outputFileTracingIncludes 打包进 standalone，
   // 供 serverless 运行时读取。但 content/.index/ (307MB 向量索引) 必须排除，
   // 否则 EdgeOne 复制 standalone 到 /dev/shm (64MB) 会 ENOSPC。

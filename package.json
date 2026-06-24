@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "description": "期末复习工作站 · 多学科辅助学习应用",
+  "author": "Gailvlun",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "next dev",
     "check:encoding": "node scripts/check-content-encoding.mjs",
@@ -14,7 +16,9 @@
     "lint:fix": "eslint . --fix",
     "build-index": "npx tsx scripts/build-index.ts",
     "render": "python manim/render.py",
-    "render:chapter": "python manim/render.py --chapter"
+    "render:chapter": "python manim/render.py --chapter",
+    "desktop:build": "node scripts/build-desktop.mjs",
+    "desktop:dev": "electron ."
   },
   "dependencies": {
     "@vidstack/react": "1.15.6",
@@ -44,6 +48,8 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "cos-nodejs-sdk-v5": "^2.15.4",
+    "electron": "^42.5.0",
+    "electron-builder": "^26.15.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.9",
     "postcss": "^8.5.1",

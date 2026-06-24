@@ -1,0 +1,28 @@
+appId: com.gailvlun.desktop
+productName: Gailvlun
+directories:
+  output: dist-desktop
+  buildResources: build
+# Only the Electron shell goes into app.asar; the heavy Next standalone (server +
+# node_modules + content + 307MB index) ships UNPACKED as a resource the child
+# server reads at runtime.
+files:
+  - electron/**/*
+  - package.json
+extraResources:
+  - from: .next/standalone
+    to: standalone
+asar: true
+win:
+  target:
+    - portable
+    - nsis
+  # icon: build/icon.ico   # optional — default Electron icon used if absent
+portable:
+  artifactName: Gailvlun-portable-${version}.exe
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  artifactName: Gailvlun-setup-${version}.exe
+  shortcutName: Gailvlun
