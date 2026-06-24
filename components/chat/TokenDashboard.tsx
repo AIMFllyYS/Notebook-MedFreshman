@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
-import { Clock, AlertTriangle } from 'lucide-react';
+import { Clock, AlertTriangle, X, Pin, RefreshCw } from 'lucide-react';
 import { createPortal } from 'react-dom';
-import { X, Pin } from 'lucide-react';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { getModelInfo } from '@/lib/ai/models';
+import { useChatHistory } from '@/lib/hooks/useChatHistory';
+import { estimateTokens } from '@/lib/context/estimateTokens';
+import { useDraggable } from '@/lib/hooks/useDraggable';
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -52,10 +54,10 @@ export default function TokenDashboard() {
   const [open, setOpen] = useState(false);
   const [pinned, setPinned] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
 
   const [pos, setPos] = useState({ x: 0, y: 0 });
-  const dragRef = useRef<{ startX: number; startY: number; origX: number; origY: number } | null>(null);
+  // 拖动：rAF + transform（零重渲染），松手才提交。left 正向、bottom 反向（向上拖 = bottom 增大）。
+  const { elRef, onPointerDown } = useDraggable((dx, dy) => setPos((p) => ({ x: p.x + dx, y: p.y - dy })));
 
   const sessionTotal = useTokenTracker((s) => s.sessionTotal);
   const lastTurn = useTokenTracker((s) => s.lastTurn);
@@ -69,23 +71,26 @@ export default function TokenDashboard() {
   const pricing = modelInfo?.pricing;
   const cacheTtlSec = modelInfo?.cacheTtlSec;
 
-  // ── Prefix cache 倒计时 ──
-  const [now, setNow] = useState(Date.now());
-  useEffect(() => {
-    if (!open || !lastRequestTime || !cacheTtlSec) return;
-    const timer = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(timer);
-  }, [open, lastRequestTime, cacheTtlSec]);
+  // ── 上下文实时估算（前端先算，后端 usage 再覆盖为真值）+ 手动刷新 ──
+  // 读 getState 不订阅 sessions，避免流式时整组件重渲染风暴。
+  const recompute = useCallback(() => {
+    const st = useChatHistory.getState();
+    const msgs = st.sessions.find((s) => s.id === st.activeSessionId)?.messages ?? [];
+    const text = msgs
+      .map((m) => (typeof m.content === 'string' ? m.content : JSON.stringify(m.content ?? '')))
+      .join('');
+    const est = estimateTokens(text) + 3000; // ~3K 系统提示词余量，与 useChat 估算一致
+    const limit = (getModelInfo(useSettings.getState().selectedModelId)?.contextK ?? 128) * 1000;
+    useTokenTracker.getState().setCurrentContext(est, limit);
+  }, []);
 
-  const cacheElapsed = lastRequestTime && cacheTtlSec ? (now - lastRequestTime) / 1000 : 0;
-  const cacheRemaining = lastRequestTime && cacheTtlSec ? Math.max(0, cacheTtlSec - cacheElapsed) : null;
-  const cacheExpired = cacheRemaining !== null && cacheRemaining <= 0;
-  const cacheRatio = cacheTtlSec && cacheRemaining !== null ? cacheRemaining / cacheTtlSec : 0;
-  const cacheBarColor =
-    cacheExpired ? 'var(--md-sys-color-error)' :
-    cacheRatio < 0.2 ? 'var(--md-sys-color-error)' :
-    cacheRatio < 0.5 ? 'var(--md-sys-color-tertiary)' :
-    'var(--md-sys-color-primary)';
+  // 打开看板时立即估算，并每 2.5s 刷新（解决「更新不及时」）。
+  useEffect(() => {
+    if (!open) return;
+    recompute();
+    const id = setInterval(recompute, 2500);
+    return () => clearInterval(id);
+  }, [open, recompute]);
 
   const ratio = ctxLimit > 0 ? ctxTokens / ctxLimit : 0;
   const pctText = `${Math.min(Math.round(ratio * 100), 999)}%`;
@@ -110,7 +115,7 @@ export default function TokenDashboard() {
   useEffect(() => {
     if (!open || pinned) return;
     const onDown = (e: MouseEvent) => {
-      if (btnRef.current?.contains(e.target as Node) || panelRef.current?.contains(e.target as Node)) return;
+      if (btnRef.current?.contains(e.target as Node) || elRef.current?.contains(e.target as Node)) return;
       setOpen(false);
     };
     const onEsc = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
@@ -120,26 +125,7 @@ export default function TokenDashboard() {
       document.removeEventListener('mousedown', onDown);
       document.removeEventListener('keydown', onEsc);
     };
-  }, [open, pinned]);
-
-  const handleDragStart = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    dragRef.current = { startX: e.clientX, startY: e.clientY, origX: pos.x, origY: pos.y };
-    const onMove = (ev: MouseEvent) => {
-      if (!dragRef.current) return;
-      setPos({
-        x: dragRef.current.origX + (ev.clientX - dragRef.current.startX),
-        y: dragRef.current.origY - (ev.clientY - dragRef.current.startY),
-      });
-    };
-    const onUp = () => {
-      dragRef.current = null;
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp);
-    };
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
-  }, [pos]);
+  }, [open, pinned, elRef]);
 
   const iconSvg = (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -163,7 +149,7 @@ export default function TokenDashboard() {
 
       {open && createPortal(
         <div
-          ref={panelRef}
+          ref={elRef}
           style={{
             position: 'fixed',
             left: pos.x,
@@ -175,18 +161,27 @@ export default function TokenDashboard() {
         >
           {/* Title bar — draggable */}
           <div
-            onMouseDown={handleDragStart}
+            onPointerDown={onPointerDown}
             style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               padding: '8px 12px', borderBottom: '1px solid var(--line)',
-              cursor: 'grab', userSelect: 'none',
+              cursor: 'grab', userSelect: 'none', touchAction: 'none',
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink)' }}>上下文看板</span>
             <span style={{ display: 'flex', gap: 4 }}>
               <button
+                onClick={() => recompute()}
+                title="刷新上下文估算"
+                data-no-drag
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: 'var(--ink-faint)' }}
+              >
+                <RefreshCw size={13} />
+              </button>
+              <button
                 onClick={() => setPinned((v) => !v)}
                 title={pinned ? '取消固定' : '固定面板'}
+                data-no-drag
                 style={{
                   background: 'none', border: 'none', cursor: 'pointer', padding: 2,
                   color: pinned ? 'var(--md-sys-color-primary)' : 'var(--ink-faint)',
@@ -196,6 +191,7 @@ export default function TokenDashboard() {
               </button>
               <button
                 onClick={() => { setOpen(false); setPinned(false); }}
+                data-no-drag
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: 'var(--ink-faint)' }}
               >
                 <X size={13} />
@@ -273,52 +269,14 @@ export default function TokenDashboard() {
               {pricing && <Row label="本轮费用" value={fmtCost(turnCost)} accent />}
             </div>
 
-            {/* Prefix cache countdown */}
-            {cacheTtlSec && lastRequestTime && (
-              <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
-                  <Clock size={11} style={{ color: 'var(--ink-faint)' }} />
-                  <span style={{ fontWeight: 600, color: 'var(--ink)' }}>缓存倒计时</span>
-                  <span style={{ fontSize: 9, color: 'var(--ink-faint)', fontWeight: 400 }}>估算</span>
-                </div>
-                {cacheExpired ? (
-                  <div style={{
-                    display: 'flex', alignItems: 'flex-start', gap: 4,
-                    padding: '4px 6px', borderRadius: 4,
-                    background: 'color-mix(in srgb, var(--md-sys-color-error) 12%, transparent)',
-                    color: 'var(--md-sys-color-error)', fontSize: 10, lineHeight: 1.4,
-                  }}>
-                    <AlertTriangle size={12} style={{ flexShrink: 0, marginTop: 1 }} />
-                    <span>
-                      缓存可能已过期，下次请求将按全价计费
-                      {pricing && lastTurn.cachedTokens > 0 && (
-                        <strong>（约 {fmtCost(calcCost(lastTurn.promptTokens, lastTurn.completionTokens, 0, pricing) - turnCost)} 更贵）</strong>
-                      )}
-                    </span>
-                  </div>
-                ) : (
-                  <>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
-                      <span>剩余时间</span>
-                      <span style={{ color: cacheBarColor, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
-                        {fmtDuration(cacheRemaining!)}
-                      </span>
-                    </div>
-                    <div style={{ height: 5, borderRadius: 2.5, background: 'var(--bg-muted)', overflow: 'hidden' }}>
-                      <div style={{
-                        width: `${Math.max(cacheRatio * 100, 0)}%`,
-                        height: '100%', borderRadius: 2.5,
-                        background: cacheBarColor,
-                        transition: 'width 1s linear, background 0.3s ease',
-                      }} />
-                    </div>
-                    <div style={{ fontSize: 9, color: 'var(--ink-faint)', marginTop: 3, lineHeight: 1.3 }}>
-                      过期后输入价格将从 {pricing ? `¥${pricing.cachedInput}` : '—'} → {pricing ? `¥${pricing.input}` : '—'} /百万token
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
+            {/* Prefix cache countdown — 隔离到子组件，其每秒 tick 不再重渲整个看板 */}
+            <CacheCountdown
+              cacheTtlSec={cacheTtlSec}
+              lastRequestTime={lastRequestTime}
+              pricing={pricing}
+              lastTurn={lastTurn}
+              turnCost={turnCost}
+            />
 
             {/* Session total */}
             <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8 }}>
@@ -343,6 +301,82 @@ function Row({ label, value, accent }: { label: string; value: string; accent?: 
     }}>
       <span>{label}</span>
       <span style={{ fontVariantNumeric: 'tabular-nums', fontWeight: accent ? 600 : 400 }}>{value}</span>
+    </div>
+  );
+}
+
+// Prefix cache 倒计时：自带每秒 tick，隔离重渲染范围（不影响外层看板）。
+function CacheCountdown({
+  cacheTtlSec, lastRequestTime, pricing, lastTurn, turnCost,
+}: {
+  cacheTtlSec?: number;
+  lastRequestTime?: number | null;
+  pricing?: { input: number; cachedInput: number; output: number };
+  lastTurn: { promptTokens: number; completionTokens: number; cachedTokens: number };
+  turnCost: number;
+}) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (!lastRequestTime || !cacheTtlSec) return;
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, [lastRequestTime, cacheTtlSec]);
+
+  if (!cacheTtlSec || !lastRequestTime) return null;
+
+  const cacheElapsed = (now - lastRequestTime) / 1000;
+  const cacheRemaining = Math.max(0, cacheTtlSec - cacheElapsed);
+  const cacheExpired = cacheRemaining <= 0;
+  const cacheRatio = cacheRemaining / cacheTtlSec;
+  const cacheBarColor =
+    cacheExpired ? 'var(--md-sys-color-error)' :
+    cacheRatio < 0.2 ? 'var(--md-sys-color-error)' :
+    cacheRatio < 0.5 ? 'var(--md-sys-color-tertiary)' :
+    'var(--md-sys-color-primary)';
+
+  return (
+    <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+        <Clock size={11} style={{ color: 'var(--ink-faint)' }} />
+        <span style={{ fontWeight: 600, color: 'var(--ink)' }}>缓存倒计时</span>
+        <span style={{ fontSize: 9, color: 'var(--ink-faint)', fontWeight: 400 }}>估算</span>
+      </div>
+      {cacheExpired ? (
+        <div style={{
+          display: 'flex', alignItems: 'flex-start', gap: 4,
+          padding: '4px 6px', borderRadius: 4,
+          background: 'color-mix(in srgb, var(--md-sys-color-error) 12%, transparent)',
+          color: 'var(--md-sys-color-error)', fontSize: 10, lineHeight: 1.4,
+        }}>
+          <AlertTriangle size={12} style={{ flexShrink: 0, marginTop: 1 }} />
+          <span>
+            缓存可能已过期，下次请求将按全价计费
+            {pricing && lastTurn.cachedTokens > 0 && (
+              <strong>（约 {fmtCost(calcCost(lastTurn.promptTokens, lastTurn.completionTokens, 0, pricing) - turnCost)} 更贵）</strong>
+            )}
+          </span>
+        </div>
+      ) : (
+        <>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
+            <span>剩余时间</span>
+            <span style={{ color: cacheBarColor, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+              {fmtDuration(cacheRemaining)}
+            </span>
+          </div>
+          <div style={{ height: 5, borderRadius: 2.5, background: 'var(--bg-muted)', overflow: 'hidden' }}>
+            <div style={{
+              width: `${Math.max(cacheRatio * 100, 0)}%`,
+              height: '100%', borderRadius: 2.5,
+              background: cacheBarColor,
+              transition: 'width 1s linear, background 0.3s ease',
+            }} />
+          </div>
+          <div style={{ fontSize: 9, color: 'var(--ink-faint)', marginTop: 3, lineHeight: 1.3 }}>
+            过期后输入价格将从 {pricing ? `¥${pricing.cachedInput}` : '—'} → {pricing ? `¥${pricing.input}` : '—'} /百万token
+          </div>
+        </>
+      )}
     </div>
   );
 }
