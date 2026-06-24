@@ -104,7 +104,7 @@
 - 例题：$X \sim U[0,1]$，$Y \sim U[0,1]$ 独立，求 $Z=X+Y$ 的密度
 - 分析：被积函数非零条件 $0\leq x\leq1$ 且 $0\leq z-x\leq1$，即 $\max(0,z-1) \leq x \leq \min(1,z)$
 - 分段讨论得三角分布：
-  $$f_{X+Y}(z) = \begin{cases} z, &amp; 0\leq z &lt; 1 \\ 2-z, &amp; 1\leq z &lt; 2 \\ 0, &amp; \text{其他} \end{cases}$$
+  $$f_{X+Y}(z) = \begin{cases} z, & 0\leq z < 1 \\ 2-z, & 1\leq z < 2 \\ 0, & \text{其他} \end{cases}$$
 - 取值范围：$Z \in [0,2]$，密度图像为三角形，在 $z=1$ 处取最大值1
 
 ### 十一、商的分布与柯西分布
@@ -122,7 +122,7 @@
   $$F_M(x) = P\{M \leq x\} = P\{X_1\leq x, \dots, X_n\leq x\} = \prod_{i=1}^n F_i(x)$$
   （最大值≤x 等价于每个都≤x，独立则概率乘积）
 - 极小值 $m = \min\{X_1,\dots,X_n\}$ 的分布函数：
-  $$F_m(x) = 1 - P\{m &gt; x\} = 1 - P\{X_1&gt;x, \dots, X_n&gt;x\} = 1 - \prod_{i=1}^n (1-F_i(x))$$
+  $$F_m(x) = 1 - P\{m > x\} = 1 - P\{X_1>x, \dots, X_n>x\} = 1 - \prod_{i=1}^n (1-F_i(x))$$
   （对立事件法：最小值&gt;x 等价于每个都&gt;x）
 - 独立同分布（i.i.d.）情形：$F_i(x) = F(x)$，则
   - $F_M(x) = [F(x)]^n$
@@ -131,9 +131,9 @@
 - ⚠️ 理解推导过程，不要死记公式
 
 ### 十三、分段函数与全概率公式应用
-- 例题：$Z = \begin{cases} X, &amp; X\leq 1/2 \\ Y, &amp; X&gt;1/2 \end{cases}$，$X\sim U[0,1]$，$Y\sim\text{Exp}(\lambda)$ 独立
-- 解法：用全概率公式，按 $\{X\leq1/2\}$ 和 $\{X&gt;1/2\}$ 划分样本空间
-  $$F_Z(z) = P\{X\leq1/2\}P\{X\leq z|X\leq1/2\} + P\{X&gt;1/2\}P\{Y\leq z\}$$
+- 例题：$Z = \begin{cases} X, & X\leq 1/2 \\ Y, & X>1/2 \end{cases}$，$X\sim U[0,1]$，$Y\sim\text{Exp}(\lambda)$ 独立
+- 解法：用全概率公式，按 $\{X\leq1/2\}$ 和 $\{X>1/2\}$ 划分样本空间
+  $$F_Z(z) = P\{X\leq1/2\}P\{X\leq z|X\leq1/2\} + P\{X>1/2\}P\{Y\leq z\}$$
 - 分段计算得到分段的分布函数
 
 ## 核心公式汇总
@@ -151,7 +151,7 @@
 | 柯西分布 | $f(z) = \frac{1}{\pi(1+z^2)}$ |
 | 极大值分布 | $F_{\max}(x) = \prod_{i=1}^n F_i(x)$ |
 | 极小值分布 | $F_{\min}(x) = 1-\prod_{i=1}^n(1-F_i(x))$ |
-| 三角分布（两个U[0,1]和） | $f(z) = z$（$0\leq z&lt;1$），$2-z$（$1\leq z&lt;2$） |
+| 三角分布（两个U[0,1]和） | $f(z) = z$（$0\leq z<1$），$2-z$（$1\leq z<2$） |
 
 ## 考试重点标注
 - ⚠️ 二维正态独立的充要条件是 $\rho=0$：必须记住，这是考试高频考点

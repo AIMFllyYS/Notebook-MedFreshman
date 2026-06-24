@@ -80,9 +80,9 @@
 - **正态分布 $N(\mu,\sigma^2)$**：第二个参数 $\sigma^2$ 就是方差
 
 ### 七、切比雪夫不等式（⚠️考试重点）
-- **定理**：设随机变量 $X$ 的期望 $E[X]=\mu$ 和方差 $D(X)$ 存在，则对任意 $\varepsilon&gt;0$，有
+- **定理**：设随机变量 $X$ 的期望 $E[X]=\mu$ 和方差 $D(X)$ 存在，则对任意 $\varepsilon>0$，有
   $$P(|X-\mu|\geq\varepsilon) \leq \frac{D(X)}{\varepsilon^2}$$
-  等价形式：$$P(|X-\mu|&lt;\varepsilon) \geq 1-\frac{D(X)}{\varepsilon^2}$$
+  等价形式：$$P(|X-\mu|<\varepsilon) \geq 1-\frac{D(X)}{\varepsilon^2}$$
 - **证明思路**（连续型为例）：
   1. $P(|X-\mu|\geq\varepsilon) = \int_{|x-\mu|\geq\varepsilon} f(x)dx$
   2. 在积分区域上 $(x-\mu)^2\geq\varepsilon^2$，故被积函数放大：$f(x) \leq \frac{(x-\mu)^2}{\varepsilon^2}f(x)$
