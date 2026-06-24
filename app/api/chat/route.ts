@@ -214,16 +214,19 @@ export async function POST(req: NextRequest) {
           ? `${baseSystemPrompt}\n\n---\n\n${promptExtras.join("\n\n---\n\n")}`
           : baseSystemPrompt;
 
-        // 易变上下文（当前定位 + 参考材料）后置为独立 system 消息，避免破坏前缀缓存。
+        // 易变上下文（当前定位 + 参考材料）。
         const volatile = buildLocationLine(chatCtx) +
           (ctxResult.context ? `\n\n【参考材料】\n${ctxResult.context}` : "");
 
         // 工具结果归类用：tool_call_id → 工具名（跨轮累积，供上下文分项统计）。
         const toolNameById = new Map<string, string>();
 
+        // 必须只有「一条」system 消息且在最前：部分模型（如硅基流动 Qwen3）会对第二条
+        // system 报 20015「System message must be at the beginning.」。故把稳定前缀与易变
+        // 上下文合并为单条 system（同页多轮内两部分均稳定 → 仍可命中前缀缓存）。
+        const systemMessage = volatile ? `${systemPrompt}\n\n${volatile}` : systemPrompt;
         const convo: Record<string, unknown>[] = [
-          { role: "system", content: systemPrompt },
-          { role: "system", content: volatile },
+          { role: "system", content: systemMessage },
           ...messages.map((m) => ({ role: m.role, content: m.content })),
         ];
 
@@ -449,8 +452,8 @@ export async function POST(req: NextRequest) {
             }
           }
 
-          // 上下文分项统计（服务端按真实拼装精确计算）。msg[0]/msg[1] 的各组成单独累计，
-          // 对话与工具结果（i≥2）按工具名归类，避免与 msg[0]/msg[1] 重复计数。
+          // 上下文分项统计（服务端按真实拼装精确计算）。system 各组成由源变量单独累计，
+          // 对话与工具结果（convo[0] 为合并后的单条 system，故 i≥1）按工具名归类。
           const tk = (v: unknown) => estimateTokens(typeof v === "string" ? v : JSON.stringify(v ?? ""));
           const breakdown = {
             tools: tk(baseSystemPrompt) + tk(globalContext) + tk(JSON.stringify(toolDefs)),
@@ -460,7 +463,7 @@ export async function POST(req: NextRequest) {
             webSearch: 0,
             total: 0,
           };
-          for (let i = 2; i < convo.length; i++) {
+          for (let i = 1; i < convo.length; i++) {
             const msg = convo[i] as { role?: string; content?: unknown; tool_call_id?: string; tool_calls?: unknown };
             const t = tk(msg.content);
             if (msg.role === "tool") {
