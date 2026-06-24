@@ -10,8 +10,14 @@ files:
   - electron/**/*
   - package.json
 extraResources:
+  # electron-builder 默认忽略含 '!**/node_modules/**'，会把 standalone 自带的 node_modules
+  # 整个剔除（即便是真实文件）→ 打包后子服务 require('next') 崩、启动超时。
+  # 第一条复制 standalone（其内的 node_modules 被默认忽略掉）；第二条以 node_modules 目录
+  # 自身为 from，相对路径不含 'node_modules' 段，故绕过该忽略，把依赖真实文件复制进去。
   - from: .next/standalone
     to: standalone
+  - from: .next/standalone/node_modules
+    to: standalone/node_modules
 asar: true
 win:
   target:

@@ -80,16 +80,18 @@ function pkgNameFromPnpmDir(d) {
   return at === -1 ? null : d.slice(0, at);
 }
 
-// ROOT CAUSE of the "Next 服务启动超时" failure: under pnpm, `.next/standalone/
-// node_modules` is a SYMLINK farm whose top-level next/react/react-dom are ABSOLUTE
-// symlinks into the repo's .pnpm store. electron-builder can't relocate those, so the
-// packaged app shipped an EMPTY node_modules and `server.js` died on require('next')
-// -> the port never opened -> waitForServer timed out. A naive deref-to-flat copy also
-// fails: a package's deps live as SIBLINGS in .pnpm (not nested), so flattening just the
-// top-level symlink decouples `next` from `@swc/helpers` etc. Correct fix: HOIST every
-// .pnpm primary package to top-level node_modules as real files, then drop the redundant
-// .pnpm store. Yields a flat, relocatable, symlink-free tree. (Verified: boots & serves
-// `/` over HTTP 200; ~18MB — the genuine traced size.)
+// ROOT CAUSE of the "Next 服务启动超时" failure has TWO layers, both fixed:
+//   (1) electron-builder's DEFAULT ignore `!**/node_modules/**` strips node_modules from
+//       extraResources entirely -> packaged app had NO node_modules -> server.js dies on
+//       require('next') -> port never opens -> timeout. Fixed in electron-builder.yml by a
+//       SECOND extraResources entry rooted AT node_modules (its relative paths contain no
+//       'node_modules' segment, so the ignore doesn't match).
+//   (2) Under pnpm the standalone node_modules is also a SYMLINK farm (top-level next/
+//       react are ABSOLUTE symlinks into the repo .pnpm) — unreliable to copy on Windows.
+//       A naive deref-to-flat copy breaks resolution (a package's deps are SIBLINGS in
+//       .pnpm, not nested). Fixed here by HOISTING each .pnpm primary to top-level as real
+//       files, then dropping the redundant .pnpm store -> flat, relocatable, symlink-free.
+// Both are required. (Verified: packaged standalone boots & serves `/` HTTP 200; ~18MB.)
 function materializeNodeModules(saDir) {
   const nm = `${saDir}/node_modules`;
   const pnpm = `${nm}/.pnpm`;
