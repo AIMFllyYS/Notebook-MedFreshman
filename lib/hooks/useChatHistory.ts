@@ -16,6 +16,8 @@ export interface ChatSession {
   createdAt: number;
   updatedAt: number;
   context?: ChatContext;
+  /** 会话来源：缺省/'main' = 右侧主对话；'floating' = 划词浮窗会话（历史面板「划词」栏，可还原）。 */
+  kind?: 'main' | 'floating';
 }
 
 interface ChatHistoryState {
@@ -24,7 +26,7 @@ interface ChatHistoryState {
   /** IndexedDB 异步水合完成标志；false = 首屏加载中，消费方应门控输入。 */
   _hasHydrated: boolean;
   _setHasHydrated: (v: boolean) => void;
-  createSession: (context?: ChatContext) => string;
+  createSession: (context?: ChatContext, kind?: 'main' | 'floating') => string;
   deleteSession: (id: string) => void;
   switchSession: (id: string) => void;
   addMessage: (sessionId: string, message: ChatMessage) => void;
@@ -40,7 +42,7 @@ export const useChatHistory = create<ChatHistoryState>()(
       _hasHydrated: false,
       _setHasHydrated: (v) => set({ _hasHydrated: v }),
 
-      createSession: (context) => {
+      createSession: (context, kind) => {
         const id = Date.now().toString();
         const newSession: ChatSession = {
           id,
@@ -49,21 +51,24 @@ export const useChatHistory = create<ChatHistoryState>()(
           createdAt: Date.now(),
           updatedAt: Date.now(),
           context,
+          ...(kind === 'floating' ? { kind } : {}),
         };
+        // 划词会话不抢占主面板的 activeSessionId（否则会劫持当前主对话焦点）。
+        const claimActive = kind !== 'floating';
         set((state) => {
           // 最多保留 50 个会话，溢出的最老会话其 artifact 一并清理
           const sessions = [newSession, ...state.sessions];
+          const capped = sessions.length > 50 ? sessions.slice(0, 50) : sessions;
           if (sessions.length > 50) {
             const dropped = sessions.slice(50);
-            const keepIds = collectArtifactIds(sessions.slice(0, 50));
+            const keepIds = collectArtifactIds(capped);
             const droppedIds = collectArtifactIds(dropped);
             const orphanIds = droppedIds.filter((aid) => !keepIds.includes(aid));
             if (orphanIds.length > 0) {
               pruneArtifacts(keepIds);
             }
-            return { sessions: sessions.slice(0, 50), activeSessionId: id };
           }
-          return { sessions, activeSessionId: id };
+          return claimActive ? { sessions: capped, activeSessionId: id } : { sessions: capped };
         });
         return id;
       },

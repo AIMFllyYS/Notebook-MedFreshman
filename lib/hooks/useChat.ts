@@ -42,14 +42,24 @@ interface ChatSseEvent {
   };
 }
 
-export function useChat(chatContext: ChatContext, options?: ChatOptions) {
+// overrides 让划词浮窗复用同一套流式引擎：
+//  - sessionId：读写指定会话（而非全局 activeSessionId），实现每窗独立且持久化的对话；
+//  - modelId：该窗自选模型（不改全局选择）。
+// 传 overrides.sessionId 时，本 hook 不向全局 token 看板写入（避免多窗/主面板互相污染）。
+export function useChat(
+  chatContext: ChatContext,
+  options?: ChatOptions,
+  overrides?: { sessionId?: string; modelId?: string },
+) {
+  const ovSessionId = overrides?.sessionId;
+  const ovModelId = overrides?.modelId;
   const sessions = useChatHistory((s) => s.sessions);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
   const createSession = useChatHistory((s) => s.createSession);
   const addMessage = useChatHistory((s) => s.addMessage);
   const updateMessage = useChatHistory((s) => s.updateMessage);
 
-  const activeSession = sessions.find((s) => s.id === activeSessionId);
+  const activeSession = sessions.find((s) => s.id === (ovSessionId ?? activeSessionId));
   const messages = activeSession?.messages || [];
 
   const [isLoading, setIsLoading] = useState(false);
@@ -75,9 +85,12 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
       const enableSearch = sendOptions?.enableSearch ?? options?.enableSearch;
       const contextMode = options?.contextMode ?? 'full';
 
-      // 获取或创建会话
+      // 该次请求使用的模型：划词窗传入 ovModelId，否则用全局选择。
+      const effectiveModelId = ovModelId ?? useSettings.getState().selectedModelId;
+
+      // 获取或创建会话（划词窗已自带 ovSessionId，绝不在此新建主会话）
       const state = useChatHistory.getState();
-      let sessionId = state.activeSessionId;
+      let sessionId = ovSessionId ?? state.activeSessionId;
       if (!sessionId) {
         sessionId = createSession(chatContext);
       }
@@ -94,10 +107,10 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
         attachments: sendOptions?.attachments,
       };
 
-      // 首条消息自动生成标题
+      // 首条消息自动生成标题；但仅当标题仍是默认「新对话」时（划词会话已用选区预置标题，勿覆盖）
       const currentSession = useChatHistory.getState().sessions.find((s) => s.id === sessionId);
       const isFirstMessage = !currentSession || currentSession.messages.length === 0;
-      const title = isFirstMessage
+      const title = isFirstMessage && (!currentSession || currentSession.title === '新对话')
         ? content.slice(0, 15) + (content.length > 15 ? '...' : '')
         : undefined;
 
@@ -145,15 +158,16 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
           return { role: m.role as 'user' | 'assistant', content: m.content || '' };
         });
 
-      // Estimate current context tokens for the dashboard
-      const settings0 = useSettings.getState();
-      const selectedModel = getModelInfo(settings0.selectedModelId);
-      const contextLimitK = selectedModel?.contextK ?? 128;
-      const allText = requestMessages.map((m) =>
-        typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
-      ).join('');
-      const estContextTokens = estimateTokens(allText) + 3000; // ~3K for system prompts
-      useTokenTracker.getState().setCurrentContext(estContextTokens, contextLimitK * 1000);
+      // Estimate current context tokens for the dashboard —— 仅主面板写全局看板，划词窗不污染。
+      if (!ovSessionId) {
+        const selectedModel = getModelInfo(effectiveModelId);
+        const contextLimitK = selectedModel?.contextK ?? 128;
+        const allText = requestMessages.map((m) =>
+          typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
+        ).join('');
+        const estContextTokens = estimateTokens(allText) + 3000; // ~3K for system prompts
+        useTokenTracker.getState().setCurrentContext(estContextTokens, contextLimitK * 1000);
+      }
 
       loadingRef.current = true;
       setIsLoading(true);
@@ -194,13 +208,13 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
 
         try {
           const settings = useSettings.getState();
-          const isCustom = settings.selectedModelId === CUSTOM_MODEL_ID;
+          const isCustom = effectiveModelId === CUSTOM_MODEL_ID;
           const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               messages: requestMessages,
-              modelId: settings.selectedModelId,
+              modelId: effectiveModelId,
               customProvider: isCustom
                 ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: settings.customModelId }
                 : undefined,
@@ -299,13 +313,13 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                   break;
 
                 case 'context_breakdown':
-                  if (event.breakdown) {
+                  if (!ovSessionId && event.breakdown) {
                     useTokenTracker.getState().setContextBreakdown(event.breakdown);
                   }
                   break;
 
                 case 'usage':
-                  if (event.usage) {
+                  if (!ovSessionId && event.usage) {
                     useTokenTracker.getState().addUsage(event.usage);
                     // Update context estimate with real prompt tokens
                     if (event.usage.promptTokens) {
@@ -357,7 +371,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
                 const userQ = typeof lastUser?.content === 'string'
                   ? lastUser.content
                   : Array.isArray(lastUser?.content)
-                    ? lastUser!.content.filter((p) => p.type === 'text').map((p: any) => p.text).join(' ')
+                    ? lastUser!.content.filter((p) => p.type === 'text').map((p) => (p as { text?: string }).text ?? '').join(' ')
                     : '';
                 // 根据用户提问类型生成针对性追问
                 if (/解释|什么是|讲讲|说说|为什么/.test(userQ)) {
@@ -399,7 +413,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions) {
         }
       })();
     },
-    [chatContext, options, createSession, addMessage, updateMessage],
+    [chatContext, options, ovSessionId, ovModelId, createSession, addMessage, updateMessage],
   );
 
   return { messages, isLoading, error, sendMessage, stopGeneration, clearError };

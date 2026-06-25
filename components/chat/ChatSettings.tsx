@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Settings, X, Eye, EyeOff, Type, Brain, Globe, Sparkles, BookText } from "lucide-react";
+import { Settings, X, Eye, EyeOff, Type, Brain, Globe, Sparkles, BookText, Download } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { CUSTOM_MODEL_ID } from "@/lib/ai/models";
+import { exportAllChats } from "@/lib/chat/exportChats";
 import SkillsManager from "./SkillsManager";
 
 const TOOLS: { name: string; label: string; desc: string }[] = [
@@ -51,6 +52,7 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
   const setGlobalContext = useSettings((s) => s.setGlobalContext);
 
   const [showKey, setShowKey] = useState(false);
+  const [exportMsg, setExportMsg] = useState<string | null>(null);
 
   const label = "block text-[12px] font-semibold text-[var(--md-sys-color-on-surface-variant)] mb-1";
   const input =
@@ -231,6 +233,29 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
             打开右侧开关可将该技能「固定开启」（每轮强制注入）。
           </p>
           <SkillsManager />
+        </section>
+
+        {/* 数据 */}
+        <section className="flex flex-col gap-2">
+          <div className="flex items-center gap-1.5">
+            <Download size={14} className="text-[var(--md-sys-color-primary)]" />
+            <h3 className={h3}>数据</h3>
+          </div>
+          <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+            把全部聊天记录（主对话 + 划词）导出为本地 JSON 文件备份。仅保存到你选择的位置，绝不上传任何服务器。
+          </p>
+          <button
+            onClick={() => {
+              const r = exportAllChats();
+              setExportMsg(r.ok ? `已导出 ${r.count} 个会话` : "暂无可导出的聊天数据");
+            }}
+            className="press flex items-center gap-1.5 self-start rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)]"
+          >
+            <Download size={13} /> 导出所有聊天数据
+          </button>
+          {exportMsg && (
+            <span className="text-[11px] font-medium text-[var(--md-sys-color-primary)]">{exportMsg}</span>
+          )}
         </section>
       </div>
     </div>

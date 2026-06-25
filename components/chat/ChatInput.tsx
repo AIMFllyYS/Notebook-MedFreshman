@@ -25,9 +25,16 @@ export interface ChatInputProps {
   onOpenSettings?: () => void;
   disabled?: boolean;
   disabledReason?: string;
+  /** 受控模型（划词浮窗每窗独立选模型）；不传则模型菜单读写全局 useSettings。 */
+  modelId?: string;
+  onModelChange?: (id: string) => void;
+  /** 是否显示上下文 token 看板（划词浮窗传 false，避免显示主面板的全局统计）。默认 true。 */
+  showTokenDashboard?: boolean;
+  /** 禁用「引用到输入框」（划词浮窗传 true，避免全局选区引用串入浮窗）。默认 false。 */
+  disableQuote?: boolean;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatContext, onOpenSettings, disabled: externalDisabled, disabledReason }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, disableQuote = false }) => {
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [enableThinking, setEnableThinking] = useState(() => useSettings.getState().defaultThinking);
@@ -35,6 +42,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { quotedText, clearQuotedText } = useChatUI();
+  const effectiveQuote = disableQuote ? null : quotedText;
   const {
     attachments,
     addFiles,
@@ -63,15 +71,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
     if ((!trimmed && attachments.length === 0) || isLoading || externalDisabled) return;
 
     onSend(trimmed || '请描述这张图片', {
-      quotedText: quotedText || undefined,
+      quotedText: effectiveQuote || undefined,
       enableThinking,
       enableSearch,
       attachments: toChatFormat(),
     });
     setInput('');
     clearAttachments();
-    if (quotedText) clearQuotedText();
-  }, [input, attachments, isLoading, externalDisabled, onSend, enableThinking, enableSearch, quotedText, clearQuotedText, toChatFormat, clearAttachments]);
+    if (effectiveQuote) clearQuotedText();
+  }, [input, attachments, isLoading, externalDisabled, onSend, enableThinking, enableSearch, effectiveQuote, clearQuotedText, toChatFormat, clearAttachments]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -119,7 +127,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
         <AttachmentThumbnails previews={attachments} onRemove={removeAttachment} />
       )}
 
-      {quotedText && (
+      {effectiveQuote && (
         <div className="chat-input-quote">
           <Quote size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--md-sys-color-tertiary)' }} />
           <div className="chat-input-quote-label">
@@ -127,7 +135,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
             <span>引用自当前页面</span>
           </div>
           <div className="chat-input-quote-text">
-            {quotedText}
+            {effectiveQuote}
           </div>
           <button
             onClick={clearQuotedText}
@@ -219,8 +227,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
         </div>
 
         <div className="chat-input-toolbar-group" style={{ gap: 4, flexShrink: 0 }}>
-          <TokenDashboard />
-          <ModelMenu onOpenSettings={onOpenSettings} />
+          {showTokenDashboard && <TokenDashboard />}
+          <ModelMenu onOpenSettings={onOpenSettings} value={modelId} onChange={onModelChange} />
         </div>
       </div>
     </div>
