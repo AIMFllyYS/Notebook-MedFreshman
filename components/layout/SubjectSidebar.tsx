@@ -16,6 +16,7 @@ import {
   ScrollText,
   PanelLeftClose,
   PanelLeft,
+  Home,
 } from "lucide-react";
 import FileTree from "./FileTree";
 import GlobalSettings from "./GlobalSettings";
@@ -132,6 +133,30 @@ export default function SubjectSidebar() {
           {isCollapsed ? <PanelLeft size={14} /> : <PanelLeftClose size={14} />}
         </button>
       </div>
+
+      {/* 首页入口 */}
+      <button
+        onClick={() => router.push("/")}
+        className="press"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          margin: "6px 8px 2px",
+          padding: "8px 10px",
+          width: "calc(100% - 16px)",
+          borderRadius: 9,
+          border: "none",
+          background: pathname === "/" ? "var(--md-sys-color-secondary-container)" : "transparent",
+          color: pathname === "/" ? "var(--md-sys-color-on-secondary-container)" : "var(--md-sys-color-on-surface-variant)",
+          fontSize: 13,
+          fontWeight: 600,
+          cursor: "pointer",
+        }}
+        title="首页 · 书架"
+      >
+        <Home size={15} /> 首页
+      </button>
 
       {/* 科目列表 */}
       <div ref={scrollRef} className="scroll-y flex-1" style={{ padding: "4px 0" }}>
