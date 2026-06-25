@@ -37,6 +37,15 @@ const SYSTEM_PROMPT =
   `只输出一个 JSON 对象，不要任何额外文字、不要代码围栏。示例：\n` +
   `{"cardType":"cloze","front":"动能定理：合外力做的功等于物体____的变化","back":"动能定理：合外力做的功等于物体动能的变化","blanks":["动能"],"explanation":"W合=ΔEk"}`;
 
+const REVISE_SYSTEM_PROMPT =
+  `你是学习记忆卡片编辑器。下面给你一张已生成的复习卡片 JSON、它的原文，以及用户的修订要求。\n` +
+  `请按用户要求改写这张卡片，并严格保持同一套字段与格式约定：\n` +
+  `- cardType 取 "cloze"（填空闪卡：front 用「____」挖空，back 为填全后的完整句，blanks 为被挖答案数组）` +
+  `或 "qa"（问答卡：front 题干，back 答案/解析）；可按用户要求在两种类型间转换；\n` +
+  `- 全部用中文；数学/化学公式用 $...$ 行内、$$...$$ 块级（KaTeX/mhchem 语法）；\n` +
+  `- 内容忠于原文，不杜撰；explanation 可选，1~2 句记忆提示。\n` +
+  `只输出一个修订后的 JSON 对象，不要任何额外文字、不要代码围栏。`;
+
 function clampInput(text: string): string {
   if (text.length <= MAX_INPUT) return text;
   return text.slice(0, MAX_INPUT) + "…（原文过长已截断）";
@@ -75,8 +84,16 @@ export async function POST(req: NextRequest) {
   const modelId: string | undefined =
     body.modelId === "custom" ? "custom" : ENV_MODEL_FLASH;
 
-  if (!text) {
+  // create=从原文成卡；revise=按指令改写已有卡片 JSON。
+  const mode: "create" | "revise" = body.mode === "revise" ? "revise" : "create";
+  const instruction: string = typeof body.instruction === "string" ? body.instruction.trim() : "";
+  const currentCard = body.currentCard as Partial<RecordCardAI> | undefined;
+
+  if (mode === "create" && !text) {
     return NextResponse.json({ error: "原文为空" }, { status: 400 });
+  }
+  if (mode === "revise" && (!instruction || !currentCard?.front || !currentCard?.back)) {
+    return NextResponse.json({ error: "修订要求或原卡内容缺失" }, { status: 400 });
   }
 
   const provider = resolveProvider(modelId, customProvider);
@@ -86,6 +103,32 @@ export async function POST(req: NextRequest) {
 
   const contextLine =
     `当前出处：${[subjectName, categoryName, itemLabel].filter(Boolean).join(" / ") || "(未指定)"}。`;
+
+  const messages =
+    mode === "revise"
+      ? [
+          { role: "system", content: REVISE_SYSTEM_PROMPT },
+          {
+            role: "user",
+            content:
+              `${contextLine}\n现有卡片：\n${JSON.stringify({
+                cardType: currentCard!.cardType,
+                front: currentCard!.front,
+                back: currentCard!.back,
+                blanks: currentCard!.blanks,
+                explanation: currentCard!.explanation,
+              })}\n\n` +
+              (text ? `原文参考：\n"""\n${clampInput(text)}\n"""\n\n` : "") +
+              `用户修订要求：${instruction}\n请输出修订后的卡片（仅 JSON 对象）。`,
+          },
+        ]
+      : [
+          { role: "system", content: SYSTEM_PROMPT },
+          {
+            role: "user",
+            content: `${contextLine}\n请把下面的原文转成一张复习卡片（仅 JSON 对象）：\n"""\n${clampInput(text)}\n"""`,
+          },
+        ];
 
   try {
     const res = await fetch(chatCompletionsUrl(provider.baseUrl), {
@@ -99,13 +142,7 @@ export async function POST(req: NextRequest) {
         stream: false,
         temperature: 0.3,
         max_tokens: 1200,
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          {
-            role: "user",
-            content: `${contextLine}\n请把下面的原文转成一张复习卡片（仅 JSON 对象）：\n"""\n${clampInput(text)}\n"""`,
-          },
-        ],
+        messages,
       }),
     });
     if (!res.ok) {

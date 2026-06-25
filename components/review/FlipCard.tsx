@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { RotateCw } from "lucide-react";
+import { RotateCw, ChevronRight } from "lucide-react";
 import QuizMarkdown from "@/components/quiz/QuizMarkdown";
 import type { CardType } from "@/lib/review/types";
 
@@ -108,6 +108,9 @@ function CardFace({
 }
 
 export default function FlipCard({ card, flipped, onFlip, className }: FlipCardProps) {
+  // 解析/提示默认收起 —— 强化「先回忆答案，再点开看提示」。
+  const [hintOpen, setHintOpen] = useState(false);
+
   function handleClick(e: React.MouseEvent) {
     // 正在划词选区时不翻面（复习板内可继续划词记录）
     const sel = typeof window !== "undefined" ? window.getSelection() : null;
@@ -140,19 +143,40 @@ export default function FlipCard({ card, flipped, onFlip, className }: FlipCardP
         <CardFace rotate={180} label="答案 · 解析">
           <QuizMarkdown className="chat-prose">{card.back}</QuizMarkdown>
           {card.explanation ? (
-            <div
-              style={{
-                marginTop: 14,
-                paddingTop: 12,
-                borderTop: "1px dashed var(--line)",
-                fontSize: 12.5,
-                color: "var(--ink-soft)",
-              }}
-            >
-              <span style={{ color: "var(--accent)", fontWeight: 600 }}>提示 </span>
-              <QuizMarkdown inline className="chat-prose">
-                {card.explanation}
-              </QuizMarkdown>
+            <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px dashed var(--line)" }}>
+              <button
+                type="button"
+                data-no-flip
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setHintOpen((o) => !o);
+                }}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 5,
+                  border: "none",
+                  background: "transparent",
+                  color: "var(--accent)",
+                  fontSize: 12.5,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                <ChevronRight
+                  size={13}
+                  style={{ transition: "transform 0.2s", transform: hintOpen ? "rotate(90deg)" : "none" }}
+                />
+                提示 · 解析
+              </button>
+              {hintOpen && (
+                <div style={{ marginTop: 8, fontSize: 12.5, color: "var(--ink-soft)" }}>
+                  <QuizMarkdown inline className="chat-prose">
+                    {card.explanation}
+                  </QuizMarkdown>
+                </div>
+              )}
             </div>
           ) : null}
         </CardFace>

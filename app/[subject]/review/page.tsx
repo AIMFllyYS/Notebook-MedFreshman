@@ -4,10 +4,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
-  ChevronLeft, ChevronRight, Trash2, Download, Loader, RefreshCw,
-  AlertTriangle, BookOpenCheck, Home, GraduationCap,
+  ChevronLeft, ChevronRight, ChevronUp, Trash2, Download, Loader, RefreshCw,
+  AlertTriangle, BookOpenCheck, Home, GraduationCap, Wand2,
 } from "lucide-react";
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
+import { useRecordPreviews } from "@/lib/hooks/useRecordPreviews";
 import { useStore } from "@/lib/store";
 import { getSubject } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
@@ -203,33 +204,27 @@ export default function ReviewBoardPage() {
                 <ChevronLeft size={18} />
               </button>
 
-              <select
-                value={safeIdx}
-                onChange={(e) => go(Number(e.target.value))}
-                style={{
-                  height: 36,
-                  padding: "0 10px",
-                  borderRadius: 9,
-                  border: "1px solid var(--line)",
-                  background: "var(--bg-panel)",
-                  color: "var(--ink)",
-                  fontSize: 13,
-                  cursor: "pointer",
-                }}
-                title="跳转到第 N 张"
-              >
-                {cards.map((_, i) => (
-                  <option key={i} value={i}>
-                    第 {i + 1} / {cards.length} 张
-                  </option>
-                ))}
-              </select>
+              <CardJumpControl count={cards.length} index={safeIdx} onPick={go} />
 
               <button className="press" style={navBtn} onClick={() => go(Math.min(cards.length - 1, safeIdx + 1))} disabled={safeIdx >= cards.length - 1} title="下一张">
                 <ChevronRight size={18} />
               </button>
 
               <div style={{ width: 1, height: 22, background: "var(--line)", margin: "0 2px" }} />
+
+              <button
+                className="press"
+                style={{ ...navBtn, opacity: current?.status === "ready" ? 1 : 0.45 }}
+                disabled={current?.status !== "ready"}
+                onClick={(e) => {
+                  if (current?.status === "ready") {
+                    useRecordPreviews.getState().open(current.id, { x: e.clientX, y: e.clientY });
+                  }
+                }}
+                title="在浮窗中让 AI 修订本张卡"
+              >
+                <Wand2 size={16} />
+              </button>
 
               <button className="press" style={{ ...navBtn, color: "var(--md-sys-color-error)" }} onClick={handleDeleteCurrent} title="删除本张卡">
                 <Trash2 size={16} />
@@ -258,7 +253,7 @@ function CardSlot({
   onRemove: () => void;
 }) {
   if (card.status === "ready") {
-    return <FlipCard card={card} flipped={flipped} onFlip={onFlip} />;
+    return <FlipCard key={card.id} card={card} flipped={flipped} onFlip={onFlip} />;
   }
   const isError = card.status === "error";
   return (
@@ -344,6 +339,107 @@ function MenuItem({ label, onClick }: { label: string; onClick: () => void }) {
     >
       {label}
     </button>
+  );
+}
+
+/** 跳卡控件：点击向上弹出数字方格面板，选第几张直接跳转（替代原生下拉）。 */
+function CardJumpControl({ count, index, onPick }: { count: number; index: number; onPick: (i: number) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function onDocPointer(e: PointerEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    window.addEventListener("pointerdown", onDocPointer);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("pointerdown", onDocPointer);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={ref} style={{ position: "relative" }}>
+      <button
+        className="press"
+        onClick={() => setOpen((o) => !o)}
+        style={{
+          height: 36,
+          minWidth: 108,
+          padding: "0 12px",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 6,
+          borderRadius: 9,
+          border: "1px solid var(--line)",
+          background: "var(--bg-panel)",
+          color: "var(--ink)",
+          fontSize: 13,
+          fontWeight: 600,
+          cursor: "pointer",
+        }}
+        title="跳转到第 N 张"
+      >
+        第 {index + 1} / {count} 张
+        <ChevronUp size={14} style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }} />
+      </button>
+
+      {open && (
+        <div
+          className="scroll-y"
+          style={{
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            bottom: "calc(100% + 8px)",
+            zIndex: 30,
+            width: 252,
+            maxHeight: 240,
+            overflowY: "auto",
+            padding: 8,
+            background: "var(--md-sys-color-surface-container-low)",
+            border: "1px solid var(--line)",
+            borderRadius: 12,
+            boxShadow: "0 12px 32px -8px rgba(0,0,0,0.35)",
+          }}
+        >
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 6 }}>
+            {Array.from({ length: count }, (_, i) => {
+              const active = i === index;
+              return (
+                <button
+                  key={i}
+                  className="press"
+                  onClick={() => {
+                    onPick(i);
+                    setOpen(false);
+                  }}
+                  style={{
+                    height: 38,
+                    borderRadius: 8,
+                    border: active ? "none" : "1px solid var(--line)",
+                    background: active ? "var(--md-sys-color-primary)" : "var(--bg-panel)",
+                    color: active ? "var(--md-sys-color-on-primary)" : "var(--ink-soft)",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                  }}
+                  title={`第 ${i + 1} 张`}
+                >
+                  {i + 1}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

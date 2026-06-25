@@ -7,11 +7,14 @@ export interface RecordPreview {
   id: string;
   cardId: string;
   pos: { x: number; y: number };
+  size: { w: number; h: number };
   z: number;
 }
 
 const WIDTH = 420;
 const HEIGHT = 520;
+const MIN_W = 320;
+const MIN_H = 360;
 const genId = () => Math.random().toString(36).slice(2, 11);
 
 interface RecordPreviewsState {
@@ -20,6 +23,7 @@ interface RecordPreviewsState {
   open: (cardId: string, anchor: { x: number; y: number }) => string;
   close: (id: string) => void;
   move: (id: string, dx: number, dy: number) => void;
+  resize: (id: string, w: number, h: number) => void;
   bringToFront: (id: string) => void;
 }
 
@@ -38,7 +42,10 @@ export const useRecordPreviews = create<RecordPreviewsState>((set) => ({
       x = Math.max(16, x);
       y = Math.max(16, y);
       const z = s.topZ + 1;
-      return { previews: [...s.previews, { id, cardId, pos: { x, y }, z }], topZ: z };
+      return {
+        previews: [...s.previews, { id, cardId, pos: { x, y }, size: { w: WIDTH, h: HEIGHT }, z }],
+        topZ: z,
+      };
     });
     return id;
   },
@@ -49,6 +56,15 @@ export const useRecordPreviews = create<RecordPreviewsState>((set) => ({
     set((s) => ({
       previews: s.previews.map((p) =>
         p.id === id ? { ...p, pos: { x: p.pos.x + dx, y: p.pos.y + dy } } : p,
+      ),
+    })),
+
+  resize: (id, w, h) =>
+    set((s) => ({
+      previews: s.previews.map((p) =>
+        p.id === id
+          ? { ...p, size: { w: Math.max(MIN_W, w), h: Math.max(MIN_H, h) } }
+          : p,
       ),
     })),
 
