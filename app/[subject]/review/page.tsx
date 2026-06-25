@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -57,23 +57,23 @@ export default function ReviewBoardPage() {
       .reverse();
   }, [order, byId, subjectId]);
 
-  // 卡片增删后夹紧 idx；切卡复位翻面
-  useEffect(() => {
-    setIdx((i) => Math.min(Math.max(0, i), Math.max(0, cards.length - 1)));
-  }, [cards.length]);
-  useEffect(() => {
+  // 渲染期夹紧索引（不在 effect 里 setState，避免级联渲染）
+  const safeIdx = cards.length === 0 ? 0 : Math.min(idx, cards.length - 1);
+  const current = cards[safeIdx];
+
+  // 切卡 = 改索引并复位翻面（所有切卡入口统一走这里）
+  const go = useCallback((n: number) => {
+    setIdx(n);
     setFlipped(false);
-  }, [idx]);
+  }, []);
 
-  const current = cards[idx];
-
-  // 键盘导航：←/→ 切卡，空格翻面
+  // 键盘导航：←/→ 切卡，空格/回车翻面
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return;
-      if (e.key === "ArrowLeft") setIdx((i) => Math.max(0, i - 1));
-      else if (e.key === "ArrowRight") setIdx((i) => Math.min(cards.length - 1, i + 1));
+      if (e.key === "ArrowLeft") go(Math.max(0, safeIdx - 1));
+      else if (e.key === "ArrowRight") go(Math.min(cards.length - 1, safeIdx + 1));
       else if (e.key === " " || e.key === "Enter") {
         if (current?.status === "ready") {
           e.preventDefault();
@@ -83,7 +83,7 @@ export default function ReviewBoardPage() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [cards.length, current?.status]);
+  }, [cards.length, safeIdx, current?.status, go]);
 
   if (!subjectId) {
     return <CenterNote text="未知科目。" />;
@@ -92,6 +92,7 @@ export default function ReviewBoardPage() {
 
   function handleDeleteCurrent() {
     if (!current) return;
+    setFlipped(false);
     remove(current.id);
   }
 
@@ -198,13 +199,13 @@ export default function ReviewBoardPage() {
 
             {/* 底部控制条：◀ ▶ + 跳转选卡 + 删卡 */}
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <button className="press" style={navBtn} onClick={() => setIdx((i) => Math.max(0, i - 1))} disabled={idx <= 0} title="上一张">
+              <button className="press" style={navBtn} onClick={() => go(Math.max(0, safeIdx - 1))} disabled={safeIdx <= 0} title="上一张">
                 <ChevronLeft size={18} />
               </button>
 
               <select
-                value={idx}
-                onChange={(e) => setIdx(Number(e.target.value))}
+                value={safeIdx}
+                onChange={(e) => go(Number(e.target.value))}
                 style={{
                   height: 36,
                   padding: "0 10px",
@@ -224,7 +225,7 @@ export default function ReviewBoardPage() {
                 ))}
               </select>
 
-              <button className="press" style={navBtn} onClick={() => setIdx((i) => Math.min(cards.length - 1, i + 1))} disabled={idx >= cards.length - 1} title="下一张">
+              <button className="press" style={navBtn} onClick={() => go(Math.min(cards.length - 1, safeIdx + 1))} disabled={safeIdx >= cards.length - 1} title="下一张">
                 <ChevronRight size={18} />
               </button>
 
