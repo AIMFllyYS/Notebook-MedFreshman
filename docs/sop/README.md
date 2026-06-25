@@ -16,6 +16,7 @@
 | 03 | [03-recording-processing.md](./03-recording-processing.md) | 课堂录音+纪要 | 逐字稿清洗 + 结构化纪要生成 |
 | 04 | [04-quiz-generation.md](./04-quiz-generation.md) | 题目测试 | AI 出题 + 组卷 + 评分规范 |
 | 05 | [05-content-integration.md](./05-content-integration.md) | 集成验证 | manifest 注册 + AI 工具可达性校验 |
+| 06 | [06-desktop-packaging-release.md](./06-desktop-packaging-release.md) | 桌面打包/发布 | Windows exe 打包 + GitHub Release 新建/更新（node_modules 双层坑、两道护栏、密钥安全、版本策略） |
 | — | [subject-onboarding.md](./subject-onboarding.md) | 新学科接入 | 从零接入一个新科目的端到端流程 |
 
 ---

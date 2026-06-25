@@ -1,0 +1,209 @@
+# SOP 06 — 桌面端打包与 Release 发布
+
+## 适用场景
+
+将「期末复习工作站」打包为 **Windows 桌面 exe**，并**发布或更新** GitHub Release。适用于：新功能/新内容上线、紧急 bug 修复热更、正式里程碑发版。
+
+> 架构定论：EdgeOne Pages 因 SSR 云函数 **128MiB 硬限**无法承载本应用 376 个预渲染页（架构不适配，非磁盘问题），已**放弃云部署**，改为本地 Electron 桌面 exe，功能与本地一致。云部署相关弯路见 `scripts/free-build-disk.mjs` 注释，本 SOP 只覆盖桌面打包链路。
+
+## 架构速览
+
+- **运行模型**：Electron 主进程 `spawn` 内置的 Next standalone 服务（`ELECTRON_RUN_AS_NODE=1`，用 Electron 自带 Node 跑 `server.js`），再开 BrowserWindow 指向 `127.0.0.1:PORT`。
+- **密钥模型**：3 个 API Key（硅基流动必填、小米/智谱可选）**用户首启填写**，`safeStorage`(Windows DPAPI) 加密存 `userData/keys.enc`，**绝不进包**；非密配置（BASE_URL/模型名/CDN）烘焙在 `electron/config.js`。
+- **关键文件**：`scripts/build-desktop.mjs`(构建编排)、`electron-builder.yml`(打包配置)、`electron/main.js`(主进程)、`electron/config.js`(烘焙非密配置)、`next.config.mjs`(`BUILD_STANDALONE` 开关)。
+
+## 输入物料
+
+| 物料 | 说明 |
+|------|------|
+| 源码（master 或特性分支） | 已通过 `tsc --noEmit`，功能/内容就绪 |
+| 已注册的内容 | 新增板块须先按 SOP 01–05 完成 + manifest 注册（见 05-content-integration） |
+| gh CLI 登录态 | `gh auth status` 含 `repo` scope（建 release + 推送） |
+| 桌面依赖 | `electron` / `electron-builder`（package.json devDeps，CN 镜像见 build-desktop） |
+
+---
+
+## 🔴 三条不可违背的不变量（血泪经验，违反则 exe 启动即崩或泄密）
+
+### 不变量 1：node_modules 必须真正进包（双层坑，缺一不可）
+
+桌面 exe「启动报 `Next 服务启动超时`（安装版）/ `未找到 server.js`（便携版）」的根因有**两层**，两个修复都已内置，改打包流程时**不可移除任一**：
+
+1. **electron-builder 默认忽略剔除 node_modules**：其默认 ignore 含 `!**/node_modules/**`，会把 `extraResources` 里的 `node_modules` **整个剔除**（与 symlink 无关，即便是真实文件也丢）。
+   → `electron-builder.yml` **必须有第二条 extraResources，以 `node_modules` 目录自身为 `from`**（其相对路径不含 `node_modules` 段，故绕过忽略）：
+   ```yaml
+   extraResources:
+     - from: .next/standalone
+       to: standalone
+     - from: .next/standalone/node_modules     # ← 关键第二条，缺它包内 node_modules 为空
+       to: standalone/node_modules
+   ```
+2. **pnpm 的 standalone node_modules 是符号链接农场**：顶层 `next`/`react` 是指向仓库 `.pnpm` 的**绝对** symlink，Windows 复制不可靠；而 `cpSync(dereference)` 拍平又会**破坏 pnpm 解析**（包依赖在 `.pnpm/<pkg>/node_modules/` 下是**兄弟**非嵌套，拍平顶层 `next` 后找不到兄弟 `@swc/helpers` → `Cannot find module '@swc/helpers'`）。
+   → `build-desktop.mjs` 的 `materializeNodeModules()` 把 `.pnpm` **各主包 hoist 成顶层真实文件**再删 `.pnpm`（扁平解析、~18MB），**不可改回 deref**。
+
+### 不变量 2：两道护栏，绝不跳过
+
+`build-desktop.mjs` 内置且必须保留：
+- **打包前冒烟测试** `smokeTestStandalone()`：用系统 `node server.js` 起服并轮询 `/` 期望 HTTP 200，失败即 `exit 1`（系统 node 与 Electron-as-Node 等价，能复现缺/坏 node_modules）。
+- **打包后断言** `assertPackagedDeps()`：断言 `dist-desktop/win-unpacked/resources/standalone/node_modules/next/package.json` 存在（正是它抓出了 electron-builder 剔除 node_modules 这层坑）。
+
+### 不变量 3：密钥绝不进包，公开发布前必扫描
+
+3 个 API Key 用户首启填、DPAPI 加密存 userData。**发布到公开仓库 Release 前必须**：
+- 扫产物无密钥：`find dist-desktop/win-unpacked -iname "*.env*" -o -iname "keys.enc"`（应空）。
+- 扫 standalone 无明文密钥：grep `sk-` / `AI_API_KEY=` / `Bearer <token>`（应空）。
+- 确认 `electron/config.js` 只放**非密** URL/模型名。
+
+---
+
+## 步骤流程
+
+### Step 0 — 预检
+```bash
+gh auth status                      # 含 repo scope
+git status                          # 确认待打包改动 / 当前分支
+npx tsc --noEmit                    # 必须 0 错误
+```
+- 带新内容时：确认 manifest 已注册、内容文件 UTF-8 无 BOM。
+- 决定**版本号与分支策略**（见下「版本与更新策略」）。
+
+### Step 1 — 构建
+```bash
+pnpm run desktop:build
+```
+脚本顺序：`gen-script-ids` → `next build`(BUILD_STANDALONE=1) → robocopy `static/public/content` 进 standalone → `stripSegmentCaches` → **`materializeNodeModules`(hoist)** → **`smokeTestStandalone`** → `electron-builder --win`(portable+nsis) → **`assertPackagedDeps`**。
+
+**必须看到这四行 marker，缺一即停**：
+```
+[build-desktop] hoisted N packages; node_modules is now flat real files.
+[build-desktop] smoke test passed — standalone serves / OK.
+[build-desktop] post-pack check OK — packaged standalone has real node_modules/next.
+[build-desktop] done. Artifacts in dist-desktop/.
+```
+构建约 8–12 分钟。建议 `run_in_background` 跑，完成通知。
+
+### Step 2 — 产物定身验证（最确凿）
+```bash
+ls -la dist-desktop/*.exe           # 时间戳应为刚构建
+# 直接启动「打包产物」里的 standalone，确认能服务：
+node -e '...spawn dist-desktop/win-unpacked/resources/standalone/server.js, 轮询 / 期望 200...'
+ls dist-desktop/win-unpacked/resources/standalone/node_modules/next/package.json   # 应存在
+```
+> 经验：仅验源 standalone 不够——一定要验**打包后**那份（exe 里真正要跑的），本会话两次靠它发现问题。
+
+### Step 3 — 安全扫描（公开发布前强制，见不变量 3）
+
+### Step 4 — 版本、分支与推送
+```bash
+git checkout master && git merge --ff-only <feature-branch>   # 如在特性分支
+git tag -a vX.Y.Z -m "桌面版 vX.Y.Z：……"
+git push origin master && git push origin vX.Y.Z
+```
+
+### Step 5 — 校验值（业界规范）
+```bash
+sha256sum dist-desktop/Gailvlun-setup-X.Y.Z.exe dist-desktop/Gailvlun-portable-X.Y.Z.exe
+```
+记录两个 SHA256，写进 Release notes。
+
+### Step 6 — Release Notes
+写 `dist-desktop/RELEASE_NOTES.md`（该目录 gitignored），按**附录模板**填：简介 / 下载选择表 / 系统要求 / 首次填 3 密钥(加密本地·不进包) / 未签名 SmartScreen 提示 / 功能亮点 / 修订记录 / SHA256。
+
+### Step 7 — 发布
+```bash
+# 新建：
+gh release create vX.Y.Z --target master --title "Gailvlun 桌面版 vX.Y.Z（Windows）" --notes-file dist-desktop/RELEASE_NOTES.md
+# 原地更新（已存在的 release）：
+gh release edit vX.Y.Z --notes-file dist-desktop/RELEASE_NOTES.md
+# 上传资源（2.3GB+，务必后台跑）：
+gh release upload vX.Y.Z dist-desktop/Gailvlun-setup-X.Y.Z.exe dist-desktop/Gailvlun-portable-X.Y.Z.exe --clobber
+```
+
+### Step 8 — 发布后验证
+```bash
+gh release view vX.Y.Z --json assets -q '.assets[] | "\(.name) \(.size) \(.updatedAt)"'
+```
+确认两个 exe **大小=本地、updatedAt 新**。
+
+---
+
+## 版本与更新策略（决策表）
+
+| 情况 | 版本号 | tag | Release |
+|------|--------|-----|---------|
+| 新功能 / 新内容 | minor/patch bump `package.json.version` | 新 tag | 新建 release |
+| **紧急 bug 修复**（旧版刚发布、基本无下载、已破损） | 保持版本，原地更新 | `git tag -f vX.Y.Z` 移到修复 commit + `git push -f origin vX.Y.Z` | `gh release edit` + `upload --clobber` |
+| 正式里程碑 | semver | 新 tag | 新建 release |
+
+> **force-move tag 仅用于刚发布的破损版本**（无下游依赖时低风险，保证 tag↔二进制一致）；否则一律发新版本号，不要乱移已被人下载的 tag。本会话 v0.1.0 即因首发版有两个 bug，采用「原地更新 + force-move tag + clobber 资源」。
+
+## 产物规范
+
+| 文件 | 路径 | 大小 | 说明 |
+|------|------|------|------|
+| 安装版 | `dist-desktop/Gailvlun-setup-X.Y.Z.exe` | ~1.5 GB | NSIS，装一次秒启，**日常推荐** |
+| 便携版 | `dist-desktop/Gailvlun-portable-X.Y.Z.exe` | ~800 MB | 自解压到 `%TEMP%`，每次启动慢/脆，次选 |
+| 解包目录 | `dist-desktop/win-unpacked/` | — | 验证用，不分发 |
+
+`dist-desktop/` 已 `.gitignore`，exe 不进 git。
+
+## 常见故障速查（本项目实测）
+
+| 症状 | 根因 | 处理 |
+|------|------|------|
+| exe 启动「Next 服务启动超时」 | 包内 node_modules 缺失/损坏 | 查 `electron-builder.yml` 第二条 extraResources + `build-desktop` hoist；两道护栏会提前抓到 |
+| 便携版「未找到 server.js」 | standalone 不完整（同上） | 同上 |
+| `Cannot find module '@swc/helpers'` | 用了 deref 拍平 node_modules（破坏 pnpm 兄弟依赖） | 改用 hoist（`materializeNodeModules`），**勿 deref** |
+| 桌面浏览器白屏 | webview 无 `display:flex`/绝对定位塌成 0 高 | 见 `components/browser/BrowserTab.tsx` 的 `WebviewSite`（绝对铺满 + display:flex + 失败可视化） |
+| 划词浮窗接口 400 `20015 System message must be at the beginning` | 给请求拼了多条 system（Qwen 只允许一条在最前） | `app/api/chat/route.ts` 合并为单条 system |
+| 子智能体「carpool quota exhausted / Overloaded」 | 服务端临时限流（非用量超限） | 等几分钟重试失败项；产物多半已落盘，**先校验再补**，勿盲目重跑全部 |
+| 上传卡很久 | 2.3GB 走上行带宽 | 正常，后台跑 + `gh release view` 确认 |
+
+## 自动化脚本与配置清单
+
+| 文件 | 角色 |
+|------|------|
+| `scripts/build-desktop.mjs` | 端到端构建（hoist + 冒烟 + 断言 + 段缓存裁剪） |
+| `electron-builder.yml` | **extraResources 两条目（关键）**、portable+nsis target、asar |
+| `electron/main.js` | spawn standalone、首启密钥门、`webviewTag`、启动诊断（子进程提前退出带 stderr 立即 reject） |
+| `electron/config.js` | 烘焙非密配置（改端点/模型在此，**勿放密钥**） |
+| `next.config.mjs` | `BUILD_STANDALONE=1` 才产出 standalone（Web/EdgeOne 构建不受影响） |
+
+## 参考文件
+
+- [00-infrastructure.md](./00-infrastructure.md) — 环境变量规范
+- [05-content-integration.md](./05-content-integration.md) — 打包前内容须先注册并验证
+- `electron/README.md` — 桌面架构与本地构建/使用说明
+- `scripts/build-desktop.mjs` / `electron-builder.yml` / `electron/main.js` — 实现真相源
+
+---
+
+## 附录：Release Notes 模板
+
+```markdown
+**Gailvlun · 期末复习工作站** 的 Windows 桌面版。多学科学习应用（笔记/正文、AI 助教、Manim 视频、交互演示、内置浏览器、题库），本地离线使用，功能与网页版一致。
+
+## 下载
+| 文件 | 适合 | 大小 |
+|---|---|---|
+| **Gailvlun-setup-X.Y.Z.exe** | 多数用户（安装版，秒启） | ~1.5 GB |
+| **Gailvlun-portable-X.Y.Z.exe** | 免安装（单文件，启动稍慢） | ~800 MB |
+
+**系统要求**：Windows 10 / 11（64 位）。
+
+## 首次运行
+填 3 个 API 密钥：硅基流动（必填）、小米 MiMo / 智谱（可选）。密钥经 Windows DPAPI 加密存本机，**绝不打进安装包、绝不上传**。
+
+## ⚠️ 未签名说明
+二进制未签名，SmartScreen 可能拦截 → 点「更多信息 → 仍要运行」；介意者用下方 SHA256 校验。
+
+## 功能亮点 / 修订记录
+- …（本版改了什么）
+
+## SHA256 校验
+\`\`\`
+<sha256>  Gailvlun-setup-X.Y.Z.exe
+<sha256>  Gailvlun-portable-X.Y.Z.exe
+\`\`\`
+校验（PowerShell）：`Get-FileHash .\Gailvlun-setup-X.Y.Z.exe -Algorithm SHA256`
+```
