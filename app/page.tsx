@@ -4,6 +4,7 @@ import {
   GraduationCap, BookOpenCheck,
 } from "lucide-react";
 import { contentTree } from "@/lib/content-data/manifest";
+import { subjectColor } from "@/lib/constants/subjects";
 import type { Subject } from "@/lib/types/content";
 
 // 首页 · 书架：每个科目一本「书」，悬浮出「开始学习 / 开始复习」。
@@ -44,6 +45,7 @@ function BookCard({ subject }: { subject: Subject }) {
   const Icon = ICON_MAP[subject.icon] ?? BookOpen;
   const learnHref = firstLearnHref(subject);
   const chapterCount = subject.categories.reduce((n, c) => n + c.items.length, 0);
+  const color = subjectColor(subject.id);
 
   return (
     <div className="group" style={{ position: "relative", aspectRatio: "3 / 4" }}>
@@ -57,16 +59,42 @@ function BookCard({ subject }: { subject: Subject }) {
           borderRadius: "4px 12px 12px 4px",
           overflow: "hidden",
           border: "1px solid var(--line)",
-          borderLeft: "6px solid var(--accent)",
-          background:
-            "linear-gradient(150deg, var(--md-sys-color-primary-container) 0%, var(--md-sys-color-surface-container-high) 70%)",
+          borderLeft: `6px solid ${color}`,
+          background: `linear-gradient(150deg, color-mix(in oklab, ${color} 22%, var(--md-sys-color-surface-container-high)) 0%, var(--md-sys-color-surface-container-high) 72%)`,
           boxShadow: "0 8px 22px -10px rgba(0,0,0,0.35)",
           transition: "transform 0.18s ease, box-shadow 0.18s ease",
         }}
         className="group-hover:-translate-y-1 group-hover:shadow-lg"
       >
-        <Icon size={30} style={{ color: "var(--accent)" }} />
-        <div style={{ marginTop: "auto" }}>
+        {/* 顶部高光细线 */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 2,
+            background: `linear-gradient(90deg, transparent, color-mix(in oklab, ${color} 60%, transparent), transparent)`,
+            pointerEvents: "none",
+          }}
+        />
+        {/* 学科图标大号水印（装饰 SVG） */}
+        <Icon
+          size={150}
+          style={{
+            position: "absolute",
+            right: -22,
+            bottom: -16,
+            color,
+            opacity: 0.08,
+            pointerEvents: "none",
+          }}
+        />
+
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <Icon size={30} style={{ color }} />
+        </div>
+        <div style={{ marginTop: "auto", position: "relative", zIndex: 1 }}>
           <div style={{ fontSize: 16.5, fontWeight: 700, color: "var(--ink)", lineHeight: 1.25 }}>
             {subject.name}
           </div>
@@ -75,12 +103,13 @@ function BookCard({ subject }: { subject: Subject }) {
           </div>
         </div>
 
-        {/* 悬浮遮罩：开始学习 / 开始复习 */}
+        {/* 悬浮遮罩：开始学习 / 开始复习（须高于正文 zIndex） */}
         <div
           className="opacity-0 group-hover:opacity-100"
           style={{
             position: "absolute",
             inset: 0,
+            zIndex: 2,
             display: "flex",
             flexDirection: "column",
             gap: 10,

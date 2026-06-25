@@ -26,5 +26,20 @@ export const SUBJECT_ICONS: Record<SubjectId, string> = {
   'other': 'Folder',
 };
 
+/** 每个学科的专属主色（书架封面书脊/图标/水印取色，告别统一同色）。 */
+export const SUBJECT_COLORS: Record<SubjectId, string> = {
+  'probability': '#6366f1',     // 靛蓝
+  'physics': '#0ea5e9',         // 天蓝
+  'chemistry': '#10b981',       // 翠绿
+  'modern-history': '#ef4444',  // 朱红
+  'maogai': '#f59e0b',          // 琥珀
+  'other': '#64748b',           // 石板灰
+};
+
+/** 取学科主色（缺省回退石板灰）。 */
+export function subjectColor(id: string): string {
+  return (SUBJECT_COLORS as Record<string, string>)[id] ?? '#64748b';
+}
+
 export const DEFAULT_SUBJECT: SubjectId = 'probability';
 export const DEFAULT_CATEGORY: string = 'detail';
