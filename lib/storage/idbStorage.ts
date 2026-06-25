@@ -18,6 +18,7 @@ export const PERSIST_KEYS = {
   chatHistory: "chat-history",
   artifacts: "artifacts",
   skills: "skills",
+  reviewCards: "review-cards",
 } as const;
 
 // 专属 IDB store 实例（非默认 keyval-store 库）
