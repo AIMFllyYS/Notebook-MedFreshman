@@ -8,6 +8,7 @@ import { displayLabel, TYPE_LABELS } from "@/lib/quiz/types";
 import type { QuestionResult } from "@/lib/quiz-store";
 import { useQuizStore } from "@/lib/quiz-store";
 import { getVideo } from "@/lib/content-data/media";
+import { openMessageMenu } from "@/lib/hooks/useContextMenu";
 import QuizMarkdown from "./QuizMarkdown";
 
 const InlinePlayer = dynamic(() => import("@/components/video/InlinePlayer"), {
@@ -310,7 +311,10 @@ function ReviewExplain({ q }: { q: Q }) {
       {q.explanation && (
         <>
           <SectionLabel>深度解析</SectionLabel>
-          <div style={{ fontSize: "13.5px", lineHeight: 1.75, color: "var(--md-sys-color-on-surface-variant)" }}>
+          <div
+            style={{ fontSize: "13.5px", lineHeight: 1.75, color: "var(--md-sys-color-on-surface-variant)" }}
+            onContextMenu={(e) => openMessageMenu(e, q.explanation!)}
+          >
             <QuizMarkdown>{q.explanation}</QuizMarkdown>
           </div>
         </>

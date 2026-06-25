@@ -16,6 +16,7 @@ import ReasoningBlock from "@/components/chat/ReasoningBlock";
 import ModelMenu from "@/components/chat/ModelMenu";
 import { estimateTokens } from "@/lib/context/estimateTokens";
 import { getModelInfo } from "@/lib/ai/models";
+import { openMessageMenu } from "@/lib/hooks/useContextMenu";
 import type { ChatMessage } from "@/lib/types/chat";
 
 const MIN_WIDTH = 360;
@@ -417,6 +418,7 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
           <div key={msg.id} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start" }}>
             <div
               className={msg.role === "assistant" ? "chat-prose" : undefined}
+              onContextMenu={(e) => openMessageMenu(e, msg.content)}
               style={{
                 maxWidth: "88%", padding: "8px 12px",
                 background: msg.role === "user" ? "var(--md-sys-color-primary-container)" : "var(--md-sys-color-surface-container)",

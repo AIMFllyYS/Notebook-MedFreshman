@@ -25,6 +25,8 @@ interface ReviewCardsState {
   addPending: (originalText: string, ctx: ReviewCardContext) => string;
   /** 后台成卡成功，回填卡片内容并置为 ready。 */
   finalize: (id: string, ai: RecordCardAI, model: string) => void;
+  /** 重试成卡：把卡片置回 parsing（清错误）。 */
+  markParsing: (id: string) => void;
   /** 后台成卡失败，置为 error（原文仍在，可重试/删除）。 */
   markError: (id: string, message: string) => void;
   /** 删除一张卡。 */
@@ -87,6 +89,13 @@ export const useReviewCards = create<ReviewCardsState>()(
               },
             },
           };
+        }),
+
+      markParsing: (id) =>
+        set((s) => {
+          const prev = s.byId[id];
+          if (!prev) return s;
+          return { byId: { ...s.byId, [id]: { ...prev, status: "parsing", error: undefined } } };
         }),
 
       markError: (id, message) =>

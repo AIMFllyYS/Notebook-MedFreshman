@@ -7,6 +7,7 @@ import { MessageContent } from '@/components/chat/MessageContent';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import ArtifactCard from '@/components/chat/ArtifactCard';
 import ProcessingSteps from '@/components/chat/ProcessingSteps';
+import { openMessageMenu } from '@/lib/hooks/useContextMenu';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -41,7 +42,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
 
       <div className="chat-message-content">
         {isUser ? (
-          <div className="chat-bubble-user chat-prose">
+          <div
+            className="chat-bubble-user chat-prose"
+            onContextMenu={(e) => openMessageMenu(e, message.content)}
+          >
             <MessageContent content={message.content} enableVisualizations={false} preserveLineBreaks />
           </div>
         ) : (
@@ -67,7 +71,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                 </div>
               ))}
             {message.content && (
-              <div className="chat-bubble-assistant chat-prose">
+              <div
+                className="chat-bubble-assistant chat-prose"
+                onContextMenu={(e) => openMessageMenu(e, message.content)}
+              >
                 <MessageContent
                   content={message.content}
                   enableVisualizations={true}

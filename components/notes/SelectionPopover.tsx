@@ -2,9 +2,12 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Lightbulb, Pen, MessageSquare, Send } from "lucide-react";
+import { Lightbulb, BookmarkPlus, MessageSquare, Send } from "lucide-react";
 import { useChatUI } from "@/lib/hooks/useChatUI";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
+import { startRecord } from "@/lib/review/startRecord";
+import { currentRecordContext } from "@/lib/review/recordContext";
+import type { SubjectId } from "@/lib/types/content";
 
 interface PopState {
   x: number;
@@ -34,8 +37,11 @@ function PopBtn({
 
 export default function SelectionPopover({
   containerRef,
+  recordSubjectId,
 }: {
   containerRef: React.RefObject<HTMLDivElement | null>;
+  /** 复习板内划词时强制记录到本科目（出处标为「复习板」）。 */
+  recordSubjectId?: SubjectId;
 }) {
   const setQuotedText = useChatUI((s) => s.setQuotedText);
   const openWindow = useFloatingChats((s) => s.openWindow);
@@ -105,6 +111,12 @@ export default function SelectionPopover({
     setPop(null);
   }
 
+  function handleRecord() {
+    if (!pop) return;
+    startRecord(pop.text, currentRecordContext(recordSubjectId), { x: pop.x, y: pop.y });
+    setPop(null);
+  }
+
   const halfW = (boxWidth || 300) / 2;
   const left = Math.min(
     Math.max(pop.x, halfW + 8),
@@ -125,7 +137,7 @@ export default function SelectionPopover({
       >
         <div className="flex items-center gap-0.5 rounded-xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] p-1 shadow-lg">
           <PopBtn onClick={() => spawn("explain")} icon={Lightbulb} label="解释" />
-          <PopBtn onClick={() => spawn("example")} icon={Pen} label="举例" />
+          <PopBtn onClick={handleRecord} icon={BookmarkPlus} label="记录" />
           <PopBtn onClick={() => spawn("ask")} icon={MessageSquare} label="追问" />
           <div className="mx-0.5 h-5 w-px bg-[var(--md-sys-color-outline-variant)]" />
           <PopBtn onClick={handleQuote} icon={Send} label="引用" />

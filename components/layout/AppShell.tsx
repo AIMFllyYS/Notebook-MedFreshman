@@ -28,6 +28,8 @@ import { ChatSkeleton, PageLoader } from "@/components/shared/ResizeLoader";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const FloatingChatLayer = dynamic(() => import("@/components/chat/FloatingChatLayer"), { ssr: false });
+const RecordPreviewLayer = dynamic(() => import("@/components/review/RecordPreviewLayer"), { ssr: false });
+const MessageContextMenu = dynamic(() => import("@/components/shared/MessageContextMenu"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
 const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
 const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
@@ -240,6 +242,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <PipPlayer />
         </AnimatePresence>
         <FloatingChatLayer />
+        <RecordPreviewLayer />
+        <MessageContextMenu />
       </div>
     );
   }
@@ -304,6 +308,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <PipPlayer />
       </AnimatePresence>
       <FloatingChatLayer />
+      <RecordPreviewLayer />
+      <MessageContextMenu />
     </div>
   );
 }

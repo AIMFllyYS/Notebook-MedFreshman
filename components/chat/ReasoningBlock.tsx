@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { BrainCircuit, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
 import AnimatedCollapse from '@/components/ui/AnimatedCollapse';
 import { MessageContent } from '@/components/chat/MessageContent';
+import { openMessageMenu } from '@/lib/hooks/useContextMenu';
 
 interface ReasoningBlockProps {
   content: string;
@@ -85,6 +86,7 @@ export const ReasoningBlock: React.FC<ReasoningBlockProps> = ({ content, isStrea
       <AnimatedCollapse isOpen={isExpanded}>
         <div
           className="chat-prose"
+          onContextMenu={(e) => openMessageMenu(e, content)}
           style={{
             padding: '8px 12px 12px 12px',
             borderTop: '1px solid var(--md-sys-color-outline-variant)',
