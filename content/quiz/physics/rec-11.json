@@ -1,0 +1,573 @@
+{
+  "subjectId": "physics",
+  "chapterId": "rec-11",
+  "generatedAt": "2026-06-25",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "均匀带电圆环（半径 $R$、带电量 $Q$）在其轴线上距环心 $x$ 处产生的电场强度，老师推导得到的表达式是（　）。",
+      "answer": 1,
+      "hint": "回忆 $\\cos\\theta=\\dfrac{x}{\\sqrt{R^2+x^2}}$ 代入积分后，分母出现的是 $r^3=(x^2+R^2)^{3/2}$。",
+      "explanation": "由对称性垂直 $x$ 轴的分量抵消，只剩 $x$ 方向：$dE_x=dE\\cos\\theta$，$\\cos\\theta=\\dfrac{x}{r}=\\dfrac{x}{\\sqrt{R^2+x^2}}$，对 $dq$ 积分得 $Q$，得 $E=\\dfrac{Qx}{4\\pi\\varepsilon_0(x^2+R^2)^{3/2}}$。选项 A 缺少分子的 $x$；选项 C 把指数写成 $1/2$（误把 $r$ 当 $r^3$）；选项 D 漏掉 $4\\pi\\varepsilon_0$ 中的 $4$。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 00:41-01:18 · 圆环轴线电场强度积分"
+      },
+      "options": [
+        "$E=\\dfrac{Q}{4\\pi\\varepsilon_0(x^2+R^2)^{3/2}}$",
+        "$E=\\dfrac{Qx}{4\\pi\\varepsilon_0(x^2+R^2)^{3/2}}$",
+        "$E=\\dfrac{Qx}{4\\pi\\varepsilon_0(x^2+R^2)^{1/2}}$",
+        "$E=\\dfrac{Qx}{\\pi\\varepsilon_0(x^2+R^2)^{3/2}}$"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "对均匀带电圆环轴线上的电场，当 $x=0$（即环心处）时，老师指出电场强度为（　）。",
+      "answer": 0,
+      "hint": "想象环心处四面八方的贡献。",
+      "explanation": "老师指出：在圆环中心，各个环元在该点产生的电场四面八方对称、全部相互抵消，所以 $x=0$ 时 $E=0$；从表达式 $E=\\dfrac{Qx}{4\\pi\\varepsilon_0(x^2+R^2)^{3/2}}$ 也能看出分子含 $x$，$x=0$ 时为 0。其余选项均与“对称抵消”的结论矛盾。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 02:13 · 环心处电场为零"
+      },
+      "options": [
+        "$0$",
+        "$\\dfrac{Q}{4\\pi\\varepsilon_0 R^2}$",
+        "$\\dfrac{Q}{2\\varepsilon_0}$",
+        "最大值"
+      ]
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "老师让大家对圆环轴线电场表达式求导，求得电场取最大值的位置在（　）。",
+      "answer": 2,
+      "hint": "老师直接给出了这个含 $\\sqrt{2}$ 的结果。",
+      "explanation": "求函数最大值通常对 $x$ 求导，老师指出化简虽麻烦，但算出来最大值出现在 $x=\\dfrac{\\sqrt{2}}{2}R$ 处。选项 A（环心）恰是 $E=0$ 处；选项 B、D 是常见的错误猜测，与求导结果不符。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 08:15 · 圆环电场最大值位置"
+      },
+      "options": [
+        "$x=0$",
+        "$x=R$",
+        "$x=\\dfrac{\\sqrt{2}}{2}R$",
+        "$x=\\sqrt{2}R$"
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "老师把均匀带电圆盘视为许多同心小圆环来求电场。取宽度为 $dr$ 的小圆环，其带电量 $dq$ 等于（　）。",
+      "answer": 1,
+      "hint": "小圆环的面积 = 周长 × 宽度。",
+      "explanation": "宽度 $dr$ 的小圆环面积为 $2\\pi r\\cdot dr$（周长 $2\\pi r$ 乘宽度 $dr$），乘以面电荷密度 $\\sigma$ 得 $dq=\\sigma\\cdot 2\\pi r\\,dr$。选项 A 漏掉 $\\sigma$；选项 C 用的是圆盘总面积式 $\\pi R^2$ 而非环元；选项 D 把 $2\\pi r$ 误写成 $\\pi r^2$（面积公式张冠李戴）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 09:29 · 圆盘视为小圆环的环元带电量"
+      },
+      "options": [
+        "$dq=2\\pi r\\,dr$",
+        "$dq=\\sigma\\cdot 2\\pi r\\,dr$",
+        "$dq=\\sigma\\cdot \\pi R^2$",
+        "$dq=\\sigma\\cdot \\pi r^2\\,dr$"
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "求带电圆盘的电场时，要对形如 $\\dfrac{r\\,dr}{(r^2+x^2)^{3/2}}$ 的积分化简。老师建议采用的方法及换元的上下限是（　）。",
+      "answer": 0,
+      "hint": "令 $u=r^2+x^2$，注意 $r$ 从 $0$ 到 $R$ 时 $u$ 的变化。",
+      "explanation": "老师指出这种分子带 $r\\,dr$ 的结构用换元法：设 $u=r^2+x^2$，$du=2r\\,dr$，恰好对应分子。换元后上下限随之改变：$r=0$ 时 $u=x^2$，$r=R$ 时 $u=R^2+x^2$。选项 B 把上下限写反；选项 C 是细棒情形（分子无 $r$）才用的三角换元；选项 D 与换元结果矛盾。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 11:16 · 圆盘积分换元 u=r²+x²"
+      },
+      "options": [
+        "换元 $u=r^2+x^2$，上下限由 $x^2$ 到 $R^2+x^2$",
+        "换元 $u=r^2+x^2$，上下限由 $R^2+x^2$ 到 $x^2$",
+        "三角换元，上下限由 $0$ 到 $R$",
+        "无需换元，直接积分"
+      ]
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "求长为 $l$、线电荷密度为 $\\lambda$ 的均匀细棒在其垂直平面上的电场时，老师指出该积分与圆盘积分的区别在于（　）。",
+      "answer": 2,
+      "hint": "比较两个被积式的分子里有没有可凑微分的那一项。",
+      "explanation": "圆盘积分 $\\dfrac{r\\,dr}{(r^2+x^2)^{3/2}}$ 分子带 $r$，可用 $u=r^2+x^2$ 凑微分换元；而细棒积分 $\\dfrac{x\\,dy}{(x^2+y^2)^{3/2}}$ 分子上没有 $y$，不能凑微分，所以要用三角换元。选项 A、B 把方法对调或说成无需换元，均错；选项 D 与“合场沿 $x$ 方向”的对称性结论无关且错误。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 19:50 · 细棒积分分子无 y 用三角换元"
+      },
+      "options": [
+        "细棒用换元 $u$、圆盘用三角换元",
+        "两者都无需换元",
+        "细棒积分分子无 $y$，须用三角换元",
+        "细棒的合场沿 $y$ 方向"
+      ]
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "无限长（$l\\to\\infty$ 或 $l\\gg x$）均匀带电细棒，在距棒 $r$ 处产生的电场强度大小为（　）。",
+      "answer": 1,
+      "hint": "无限长直线的场与距离成反比，注意分母里的 $2\\pi$。",
+      "explanation": "老师积分后讨论：当 $l\\to\\infty$ 或 $l\\gg x$ 时得 $E=\\dfrac{\\lambda}{2\\pi\\varepsilon_0 x}$，$x$ 可记为 $r$，矢量形式 $\\vec{E}=\\dfrac{\\lambda}{2\\pi\\varepsilon_0 r}$，轴对称。选项 A 是无限大平面的结果（与 $\\sigma$ 有关、与距离无关）；选项 C 把 $r$ 写成 $r^2$（与点电荷混淆）；选项 D 漏掉 $2\\pi$。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 22:42-23:18 · 无限长细棒电场 λ/(2πε₀r)"
+      },
+      "options": [
+        "$E=\\dfrac{\\sigma}{2\\varepsilon_0}$",
+        "$E=\\dfrac{\\lambda}{2\\pi\\varepsilon_0 r}$",
+        "$E=\\dfrac{\\lambda}{2\\pi\\varepsilon_0 r^2}$",
+        "$E=\\dfrac{\\lambda}{\\varepsilon_0 r}$"
+      ]
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "老师把无限大带电平面看成无数宽为 $dy$ 的细线叠加来推导。其中一条宽 $dy$ 的条带，对应的等效线电荷密度 $\\lambda$ 等于（　）。",
+      "answer": 1,
+      "hint": "条带面积 = 长 $l$ × 宽 $dy$，线密度 = 带电量 ÷ 长度。",
+      "explanation": "宽 $dy$、长 $l$ 的条带面积为 $l\\cdot dy$，带电量 $\\Delta q=\\sigma\\cdot l\\cdot dy$，线电荷密度 $\\lambda=\\dfrac{\\Delta q}{l}=\\sigma\\,dy$。所以把无限长细线公式中的 $\\lambda$ 替换为 $\\sigma\\,dy$ 再对 $dy$ 积分。选项 A 漏掉 $\\sigma$；选项 C、D 量纲与含义均不符（$\\lambda$ 应为单位长度电荷）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 25:07 · 平面拆细线 λ=σdy"
+      },
+      "options": [
+        "$\\lambda=dy$",
+        "$\\lambda=\\sigma\\,dy$",
+        "$\\lambda=\\sigma\\,l$",
+        "$\\lambda=\\sigma$"
+      ]
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于电场线的特征，下列说法与老师课堂讲述一致的是（　）。",
+      "answer": 2,
+      "hint": "回忆电场线的“头尾”从哪来、到哪去，以及它能否构成回路。",
+      "explanation": "老师讲：静电场的电场线起于正电荷、止于负电荷（或起于、止于无穷远），有头有尾，不会在无电荷处中断，且不构成闭合回路；在无电荷的空间里任意两条电场线不相交。选项 A 把起止说反；选项 B 错在“可形成闭合回路”；选项 D 错在“处处可相交”——只有点电荷发出处可视为汇聚于一点，无电荷空间里不相交。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 36:18-37:44 · 电场线特征"
+      },
+      "options": [
+        "电场线起于负电荷、止于正电荷",
+        "静电场的电场线可以形成闭合回路",
+        "电场线起于正电荷、止于负电荷，不在无电荷处中断，不构成闭合回路",
+        "在无电荷的空间里任意两条电场线处处可相交"
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "老师讲电通量正负判断：设面元法线方向与电场方向夹角为 $\\theta$。下列判断正确的是（　）。",
+      "answer": 0,
+      "hint": "$\\Phi_E=\\vec{E}\\cdot\\vec{S}=ES\\cos\\theta$，看 $\\cos\\theta$ 的符号。",
+      "explanation": "$\\Phi_E=ES\\cos\\theta$：$\\theta<90°$ 时 $\\cos\\theta>0$，$\\Phi_E>0$；$\\theta=90°$ 时面与电场方向平行，$\\Phi_E=0$；$\\theta>90°$ 时 $\\Phi_E<0$。选项 A 与此完全一致。选项 B 把 $\\theta=90°$ 误判为最大；选项 C 把 $\\theta>90°$ 误判为正；选项 D 错在“与 $\\theta$ 无关”。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 42:04 · 电通量正负与θ的关系"
+      },
+      "options": [
+        "$\\theta<90°$ 时 $\\Phi_E>0$，$\\theta=90°$ 时 $\\Phi_E=0$，$\\theta>90°$ 时 $\\Phi_E<0$",
+        "$\\theta=90°$ 时 $\\Phi_E$ 最大",
+        "$\\theta>90°$ 时 $\\Phi_E>0$",
+        "$\\Phi_E$ 与 $\\theta$ 无关"
+      ]
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "老师对圆环轴线电场表达式 $E=\\dfrac{Qx}{4\\pi\\varepsilon_0(x^2+R^2)^{3/2}}$ 作了哪些讨论？下列与课堂一致的有（　）。",
+      "answer": [0, 1, 2],
+      "hint": "回忆三种特殊情形：很远、环心、求最大值。",
+      "explanation": "老师讨论了三点：①$x\\gg R$ 时可看成带电量为 $Q$ 的点电荷；②$x=0$（环心）时四面八方对称抵消，$E=0$；③对 $x$ 求导得最大值在 $x=\\dfrac{\\sqrt{2}}{2}R$。选项 D 错误——环心处是 $E=0$（极小）而非最大值，最大值在 $x=\\dfrac{\\sqrt{2}}{2}R$。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 01:18-08:15 · 圆环电场的三点讨论"
+      },
+      "options": [
+        "$x\\gg R$ 时退化为点电荷 $\\dfrac{Q}{4\\pi\\varepsilon_0 x^2}$",
+        "$x=0$（环心）时 $E=0$",
+        "对 $x$ 求导得最大值出现在 $x=\\dfrac{\\sqrt{2}}{2}R$",
+        "$x=0$（环心）时电场取最大值"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于均匀带电圆盘电场的两类极限讨论，下列与老师课堂讲述一致的有（　）。",
+      "answer": [0, 1, 2],
+      "hint": "一类是 $R\\gg x$（看成无限大平面），一类是 $R\\ll x$（看成点电荷，需要某种数学技巧）。",
+      "explanation": "老师讲两类极限：①$R\\gg x$ 时圆盘视为无限大平面，$E=\\dfrac{\\sigma}{2\\varepsilon_0}$，与 $x$ 无关、均匀、垂直平面；②$R\\ll x$ 时不能简单令 $\\dfrac{x}{x}=1$，须用泰勒展开 $(1+u)^n\\approx 1+nu$；③并用 $Q=\\pi R^2\\sigma$ 代回，最终得点电荷表达式 $\\dfrac{Q}{4\\pi\\varepsilon_0 x^2}$。选项 D 错误——$R\\ll x$ 时恰恰不能直接令 $\\dfrac{x}{x}=1$，老师专门强调过。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 13:51-18:13 · 圆盘两类极限与泰勒展开"
+      },
+      "options": [
+        "$R\\gg x$ 时 $E=\\dfrac{\\sigma}{2\\varepsilon_0}$，与 $x$ 无关",
+        "$R\\ll x$ 时须用泰勒展开 $(1+u)^n\\approx 1+nu$",
+        "$R\\ll x$ 时用 $Q=\\pi R^2\\sigma$ 代回得点电荷表达式",
+        "$R\\ll x$ 时可直接令 $\\dfrac{x}{x}=1$ 简化"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "本讲中老师用微元法依次推导了哪些带电体在某处的电场强度？（　）",
+      "answer": [0, 1, 2, 3],
+      "hint": "老师自己总结“推了一个环、一个面、一根杆子”，平面是由细线叠加而来。",
+      "explanation": "老师总结：推了均匀带电圆环（轴线）、圆盘（轴线）、细棒（垂直面）、无限大带电平面，并指出无限大平面是由无数宽 $dy$ 的细线叠加而成，所以先推线再推面。四个选项均为课堂明确推导的对象，全选。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 23:18-25:07 · 环/盘/棒/无限大平面的推导"
+      },
+      "options": [
+        "均匀带电圆环（轴线）",
+        "均匀带电圆盘（轴线）",
+        "均匀带电细棒（垂直面）",
+        "无限大均匀带电平面"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "关于平行板电容器（两板面电荷密度大小均为 $\\sigma$）内外电场，下列与老师课堂分析一致的有（　）。",
+      "answer": [0, 1, 2],
+      "hint": "一正一负与同号两种情形，分别看“中间”和“外侧”的叠加结果。",
+      "explanation": "老师分析：①一正一负两板，中间两板电场矢量同向相加为 $\\dfrac{\\sigma}{\\varepsilon_0}$；②一正一负时外侧两板电场抵消为 0，电场全部局限在两板之间；③两板同号时中间抵消为 0、外侧为 $\\dfrac{\\sigma}{\\varepsilon_0}$。选项 D 错误——一正一负时外侧为 0，而非 $\\dfrac{2\\sigma}{\\varepsilon_0}$。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 29:21-30:36 · 平行板电容器内外电场"
+      },
+      "options": [
+        "一正一负两板，中间 $E=\\dfrac{\\sigma}{\\varepsilon_0}$",
+        "一正一负两板，外侧 $E=0$，电场局限在两板之间",
+        "两板同号时，中间 $E=0$、外侧 $E=\\dfrac{\\sigma}{\\varepsilon_0}$",
+        "一正一负两板，外侧 $E=\\dfrac{2\\sigma}{\\varepsilon_0}$"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 2,
+      "stem": "老师对三棱柱（置于 $E=200\\,N/C$ 均匀电场中）求电通量的例题，下列分析正确的有（　）。",
+      "answer": [0, 1, 2],
+      "hint": "5 个面分两类：与电场平行的、与电场不平行的；最后整体闭合面的结果与“内部有无电荷”有关。",
+      "explanation": "老师讲：①三棱柱 5 个面中前、后、下三面与电场平行（法线与电场垂直，夹角 90°），通量为 0；②左面法线与电场夹角 $\\pi$，通量 $-ES_左$；右面投影面积 $S\\cos\\theta=S_左$，通量 $+ES_左$，两者相消；③整个闭合面总电通量为 0，因为内部不含电荷。选项 D 错误——结论恰恰是“内部无电荷则总通量为 0”，要不为 0 内部必须含电荷。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 46:31-49:50 · 三棱柱电通量例题"
+      },
+      "options": [
+        "前、后、下三面与电场平行，通量均为 0",
+        "左面通量为 $-ES_左$、右面为 $+ES_左$，二者相消",
+        "整个闭合三棱柱的总电通量为 0",
+        "整个闭合三棱柱的总电通量不为 0，因为电场线穿过了它"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 4,
+      "stem": "老师明确强调“需要记住”：一正一负平行板电容器中间的电场强度是（　）。",
+      "answer": 2,
+      "hint": "老师原话“$\\dfrac{\\sigma}{\\varepsilon_0}$ 需要记住”，是两块板场强矢量相加的结果。",
+      "explanation": "老师特别强调“中间是 $\\dfrac{\\sigma}{\\varepsilon_0}$，需要记住”：单块无限大带电平面场强为 $\\dfrac{\\sigma}{2\\varepsilon_0}$，一正一负两板在中间方向相同，矢量相加得 $\\dfrac{\\sigma}{2\\varepsilon_0}\\times 2=\\dfrac{\\sigma}{\\varepsilon_0}$。选项 A 是单块平面的场强；选项 B、D 与叠加结果不符。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 29:59 · σ/ε₀“需要记住”划重点"
+      },
+      "label": "考试重点",
+      "options": [
+        "$\\dfrac{\\sigma}{2\\varepsilon_0}$",
+        "$\\dfrac{\\sigma}{4\\varepsilon_0}$",
+        "$\\dfrac{\\sigma}{\\varepsilon_0}$",
+        "$\\dfrac{2\\sigma}{\\varepsilon_0}$"
+      ]
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 4,
+      "stem": "老师反复强调的电场强度密度规定中，关键限定条件是（　）。",
+      "answer": 1,
+      "hint": "老师反复说“这一定要垂直”“斜着就不能用”。",
+      "explanation": "老师讲电场线密度规定：电场中某点，通过该点垂直于电场的单位面积上的电场线根数等于电场强度大小，即 $E=\\dfrac{dN}{dS}$，并反复强调 $dS$ 一定要垂直于电场线方向，斜着就不能用。选项 A 把“垂直”说成“平行”；选项 C、D 与该定义无关。这是老师明确划的重点。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 33:26-35:01 · dS必须垂直于电场（划重点）"
+      },
+      "label": "考试重点",
+      "options": [
+        "$dS$ 必须平行于电场线方向",
+        "$dS$ 必须垂直于电场线方向",
+        "$dS$ 取任意方向均可",
+        "$dS$ 必须沿电荷连线方向"
+      ]
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 4,
+      "stem": "老师强调的远场近似原则是：当研究的距离远远大于体系的尺寸时可把它看成一个点。基于此，圆盘在 $R\\ll x$ 时（　）。",
+      "answer": 1,
+      "hint": "老师特别强调“大于的时候可以这样假设，但小于的时候需要用泰勒展开”。",
+      "explanation": "老师强调远场近似：当研究距离远远大于体系尺寸（即 $R\\ll x$）时把带电体看成一个点，电场退化为点电荷表达式 $\\dfrac{Q}{4\\pi\\varepsilon_0 x^2}$；但推导时不能简单令 $\\dfrac{x}{x}=1$，须用泰勒展开 $(1+u)^n\\approx 1+nu$ 处理。选项 A 错在“可直接约分”；选项 C 是 $R\\gg x$（无限大平面）的结果，与此情形相反；选项 D 与点电荷近似矛盾。这是老师明确划的重点原则。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 16:04 · 远场近似与泰勒展开（划重点）"
+      },
+      "label": "考试重点",
+      "options": [
+        "可直接令 $\\dfrac{x}{x}=1$ 得点电荷表达式",
+        "须用泰勒展开，退化为点电荷表达式 $\\dfrac{Q}{4\\pi\\varepsilon_0 x^2}$",
+        "退化为 $E=\\dfrac{\\sigma}{2\\varepsilon_0}$",
+        "电场强度趋于无穷大"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 4,
+      "stem": "高斯定理是本讲核心，老师以球面证明。下列对高斯定理内容及证明的表述，与老师讲述一致的是（　）。",
+      "answer": 2,
+      "hint": "回忆高斯定理的“等于谁除以谁”，以及球面证明里 $4\\pi r^2$ 是怎么约掉的。",
+      "explanation": "老师表述：真空中通过任意闭合曲面的电通量等于该曲面所包围的所有电荷的代数和除以 $\\varepsilon_0$。球面证明：取半径 $r$ 的球面，$\\vec{E}$ 总与球面法线平行，$\\oint\\vec{E}\\cdot d\\vec{S}=E\\cdot 4\\pi r^2=\\dfrac{q}{4\\pi\\varepsilon_0 r^2}\\cdot 4\\pi r^2=\\dfrac{q}{\\varepsilon_0}$，$4\\pi r^2$ 约掉。选项 A 错在“除以 $4\\pi\\varepsilon_0$”；选项 B 错在“只对球面成立”——高斯定理对任意闭合曲面成立；选项 D 错在“与所包围电荷无关”。这是老师明确划的本章核心重点。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 49:50-51:53 · 高斯定理内容与球面证明（核心重点）"
+      },
+      "label": "考试重点",
+      "options": [
+        "通过任意闭合曲面的电通量等于所包围电荷代数和除以 $4\\pi\\varepsilon_0$",
+        "高斯定理只对球面成立，对其他曲面不成立",
+        "通过任意闭合曲面的电通量等于所包围电荷的代数和除以 $\\varepsilon_0$，球面证明中 $4\\pi r^2$ 与电场表达式相约",
+        "闭合曲面的电通量只与曲面形状有关，与所包围电荷无关"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 4,
+      "stem": "老师在课堂上明确点出的“考试要注意/要记住”的要点有哪些？（　）",
+      "answer": [0, 1, 2, 3],
+      "hint": "回忆老师反复叮嘱的：换元法、$\\dfrac{\\sigma}{\\varepsilon_0}$、$dS$ 垂直、写单位。",
+      "explanation": "老师反复强调的要点：①圆盘、圆环等积分要练习，主要是换元法，回去看高等数学；②平行板中间 $\\dfrac{\\sigma}{\\varepsilon_0}$ 需要记住；③电场线密度与电通量计算中面元 $dS$ 必须垂直于电场；④答题要写单位——助教反馈很多同学不写单位，“这一分不要丢”，如振幅写 $0.2$ 米而非 $0.2$，电通量单位为 $N\\cdot m^2/C$。四项均为老师明确划的重点，全选。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 30:36/29:59/40:57/46:31 · 老师划重点汇总"
+      },
+      "label": "考试重点",
+      "options": [
+        "圆盘、圆环积分要练习，主要是换元法",
+        "平行板中间 $E=\\dfrac{\\sigma}{\\varepsilon_0}$ 需要记住",
+        "电场线密度与电通量中 $dS$ 必须垂直于电场",
+        "答题要写单位，如电通量单位 $N\\cdot m^2/C$，“这一分不要丢”"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 10,
+      "stem": "请简述老师课堂上讲的电场线的密度规定与基本特征。",
+      "answer": "一、密度规定：电场中任意一点处，通过该点且垂直于电场的单位面积上的电场线根数，等于该点电场强度的大小，即 $E=\\dfrac{dN}{dS}$，其中 $dS$ 必须垂直于电场线方向（斜着不能用）。电场线稀疏处场强小，密集处场强大。\n二、基本特征：①电场线上每一点的切线方向表示该处电场强度的方向；②静电场的电场线起于正电荷、止于负电荷（或起于、止于无穷远），有头有尾，不会在无电荷处中断；③不构成闭合回路；④在没有电荷的空间里，任意两条电场线不会相交（否则交点处电场方向无法确定）。电场线只是对电场的形象描述，实际电场是连续分布的。",
+      "hint": "从“密度怎么定义、$dS$ 的方向要求”和“起止、相交、闭合”几方面分点作答。",
+      "explanation": "本题对应得分点：密度规定 $E=\\dfrac{dN}{dS}$ 及 $dS$ 必须垂直（呼应老师反复强调的“一定要垂直”）；切线方向即电场方向；起于正止于负、不中断、不闭合；无电荷空间不相交。逐点答到即得分。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 32:42-37:44 · 电场线密度规定与特征"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "写出密度规定 $E=\\dfrac{dN}{dS}$ 并指出 $dS$ 必须垂直于电场（3分）",
+        "指出电场线切线方向即该点电场方向、稀疏处场强小密集处场强大（2分）",
+        "起于正电荷止于负电荷（或起止于无穷远）、有头有尾不在无电荷处中断（2分）",
+        "不构成闭合回路、无电荷空间内两条电场线不相交（2分）",
+        "条理清楚（1分）"
+      ]
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 10,
+      "stem": "请简述电通量 $\\Phi_E$ 的定义，并写出均匀电场中平面的电通量、非均匀电场中曲面的电通量以及闭合曲面电通量正负的规定。",
+      "answer": "一、定义：通过电场中任意给定面的电场线总数，称为该面的电通量 $\\Phi_E$（此面不必与电场垂直）。\n二、均匀电场中的平面 $S$：若法线与 $E$ 平行，$\\Phi_E=E\\cdot S$；若法线与 $E$ 成夹角 $\\theta$，$\\Phi_E=E\\cdot S\\cos\\theta$（$S\\cos\\theta$ 为有效投影面积），可写成矢量形式 $\\Phi_E=\\vec{E}\\cdot\\vec{S}$。\n三、非均匀电场/曲面：取微元 $d\\Phi_E=\\vec{E}\\cdot d\\vec{S}=E\\,dS\\cos\\theta$，整个曲面 $\\Phi_E=\\displaystyle\\int_S\\vec{E}\\cdot d\\vec{S}$。\n四、闭合曲面法向规定由内向外为正：电场线从内向外穿出（夹角 $<90°$）时 $\\Phi_E>0$；从外向内穿入（夹角 $>90°$）时 $\\Phi_E<0$。",
+      "hint": "按“定义→均匀场平面→曲面积分→闭合面正负规定”四层依次写，注意 $\\cos\\theta$ 和矢量点乘。",
+      "explanation": "得分点对应老师讲解：电通量是任意给定面的电场线总数；均匀场 $\\Phi_E=\\vec{E}\\cdot\\vec{S}=ES\\cos\\theta$；曲面积分 $\\Phi_E=\\int_S\\vec{E}\\cdot d\\vec{S}$；闭合面由内向外为正、穿出为正穿入为负。注意单位 $N\\cdot m^2/C$ 不要丢（老师提醒写单位）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 37:44-45:49 · 电通量定义与计算"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "正确给出电通量定义：通过任意给定面的电场线总数（此面不必垂直电场）（2分）",
+        "均匀场平面 $\\Phi_E=ES\\cos\\theta=\\vec{E}\\cdot\\vec{S}$（3分）",
+        "曲面/非均匀场 $\\Phi_E=\\displaystyle\\int_S\\vec{E}\\cdot d\\vec{S}$（2分）",
+        "闭合曲面由内向外为正、穿出为正穿入为负（2分）",
+        "条理清楚（含单位意识）（1分）"
+      ]
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 15,
+      "stem": "结合老师课堂推导，论述如何用微元法求均匀带电圆盘（半径 $R$、面电荷密度 $\\sigma$）轴线上距盘心 $x$ 处的电场强度，并讨论 $R\\gg x$ 与 $R\\ll x$ 两类极限情形。",
+      "answer": "一、微元法建立：将圆盘视为许多同心小圆环，取半径 $r$、宽 $dr$ 的小圆环，面积 $2\\pi r\\,dr$，带电量 $dq=\\sigma\\cdot 2\\pi r\\,dr$。\n二、套用圆环结果：单个圆环在轴线上的场 $dE=\\dfrac{dq\\,x}{4\\pi\\varepsilon_0(r^2+x^2)^{3/2}}$，方向沿 $x$ 轴。\n三、积分求和：$E=\\displaystyle\\int_0^R\\dfrac{\\sigma\\cdot 2\\pi r\\,dr\\cdot x}{4\\pi\\varepsilon_0(r^2+x^2)^{3/2}}$，用换元 $u=r^2+x^2$（$du=2r\\,dr$，下限 $x^2$、上限 $R^2+x^2$）化简，得 $E=\\dfrac{\\sigma}{2\\varepsilon_0}\\left(1-\\dfrac{x}{\\sqrt{R^2+x^2}}\\right)$，方向沿 $x$ 轴（带正电时向外）。\n四、极限讨论：①$R\\gg x$ 时 $\\dfrac{x}{\\sqrt{R^2+x^2}}\\to 0$，$E\\to\\dfrac{\\sigma}{2\\varepsilon_0}$，与 $x$ 无关，圆盘可视为无限大均匀带电平面，产生垂直平面的均匀场；②$R\\ll x$ 时不能简单令 $\\dfrac{x}{x}=1$，须用泰勒展开 $(1+u)^n\\approx 1+nu$，并用总电量 $Q=\\pi R^2\\sigma$ 代回，最终退化为点电荷表达式 $E=\\dfrac{Q}{4\\pi\\varepsilon_0 x^2}$——体现“当研究距离远远大于体系尺寸时可看成一个点”的原则。",
+      "hint": "按“取环元 $dq$ →套圆环公式→换元积分→两类极限”展开，$R\\ll x$ 那一类务必点出泰勒展开而非直接约分。",
+      "explanation": "本题呼应得分点：环元 $dq=\\sigma\\cdot 2\\pi r\\,dr$；套圆环式；换元 $u=r^2+x^2$ 完成积分；$R\\gg x$ 得无限大平面均匀场 $\\dfrac{\\sigma}{2\\varepsilon_0}$；$R\\ll x$ 用泰勒展开退化为点电荷。其中“不能直接约分、须泰勒展开”是老师专门强调的易错点。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 08:15-18:13 · 圆盘电场微元法推导与两类极限"
+      },
+      "label": "论述题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "取环元 $dq=\\sigma\\cdot 2\\pi r\\,dr$，将圆盘视为同心小圆环（3分）",
+        "套用圆环轴线场 $dE=\\dfrac{dq\\,x}{4\\pi\\varepsilon_0(r^2+x^2)^{3/2}}$ 并列出积分（3分）",
+        "用换元 $u=r^2+x^2$ 正确处理积分（含改限）（3分）",
+        "$R\\gg x$ 时 $E\\to\\dfrac{\\sigma}{2\\varepsilon_0}$，视为无限大平面均匀场（3分）",
+        "$R\\ll x$ 时用泰勒展开（非直接约分）退化为点电荷 $\\dfrac{Q}{4\\pi\\varepsilon_0 x^2}$（3分）"
+      ]
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-11",
+      "points": 15,
+      "stem": "阅读老师课堂例题材料，回答问题。\n\n> 材料：把一个三棱柱放在 $E=200\\,N/C$ 的均匀电场中（电场沿水平方向从左到右）。三棱柱共有 5 个面：前、后、下三个面，以及左、右两个倾斜面。老师让大家求通过整个三棱柱（闭合面）的电场强度通量。\n\n（1）前、后、下三个面的电通量各为多少？为什么？（4分）\n（2）左面与右面的电通量分别是多少？如何相消？（6分）\n（3）整个闭合三棱柱的总电通量是多少？由此可得出什么一般结论（与高斯定理联系）？（5分）",
+      "answer": "（1）前、后、下三个面都与电场方向平行（即面的法线方向与电场垂直，夹角为 $90°$），$\\Phi_E=E\\,S\\cos 90°=0$，所以这三个面的电通量都为 0。\n（2）左面：电场从左到右，左面法线方向从右指向左，与 $E$ 夹角为 $\\pi$，$\\Phi_{左}=E\\,S_左\\cos\\pi=-E\\,S_左$；右面（倾斜面）：法线与 $E$ 成夹角 $\\theta$，$\\Phi_{右}=E\\,S_右\\cos\\theta$，而 $S_右\\cos\\theta$ 正是右面在垂直于电场方向上的投影面积，恰等于 $S_左$，故 $\\Phi_{右}=+E\\,S_左$。两者大小相等、符号相反，相加为 0。\n（3）整个闭合三棱柱的总电通量 $\\Phi_E=0+(-E\\,S_左)+E\\,S_左=0$。一般结论：电场线从外面穿过一个内部不含电荷的闭合面时，穿入与穿出的电场线总数相等，总电通量为 0；要使总电通量不为 0，闭合面内部必须含有电荷——这正与高斯定理“通过闭合曲面的电通量等于所包围电荷代数和除以 $\\varepsilon_0$”一致。",
+      "hint": "（1）看哪些面与电场平行；（2）左面夹角 $\\pi$、右面用投影面积；（3）求和并联系“内部有无电荷”。",
+      "explanation": "得分点对应老师讲解：前后下三面平行电场通量为 0；左面 $-ES_左$、右面投影面积 $S\\cos\\theta=S_左$ 得 $+ES_左$；总和为 0；并由此引出“内部无电荷则总通量为 0，要不为 0 内部必须有电荷”，与高斯定理衔接。注意写单位（$N\\cdot m^2/C$）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-11.md",
+        "label": "rec-11 · 说话人1 46:31-49:50 · 三棱柱电通量例题与高斯定理引入"
+      },
+      "label": "材料分析题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "指出前、后、下三面与电场平行、夹角 $90°$，通量均为 0（4分）",
+        "左面 $\\Phi_{左}=-E\\,S_左$（夹角 $\\pi$）（2分）",
+        "右面 $\\Phi_{右}=E\\,S_右\\cos\\theta=+E\\,S_左$（投影面积相等），二者相消（4分）",
+        "总电通量为 0，并指出穿入穿出相等（2分）",
+        "得出一般结论：内部无电荷则总通量为 0，联系高斯定理（3分）"
+      ]
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

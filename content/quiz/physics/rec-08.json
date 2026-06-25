@@ -1,0 +1,592 @@
+{
+  "subjectId": "physics",
+  "chapterId": "rec-08",
+  "generatedAt": "2026-06-25",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师讲到惠更斯原理时指出，该原理\"主要告诉我们\"的是（　）。",
+      "answer": 1,
+      "hint": "回忆老师说惠更斯原理更多用在判断什么。",
+      "explanation": "老师明确说\"惠更斯原理主要告诉我们波往哪里传\"，并强调它更多用在复杂结构中判断波的传播方向（如波经过小孔后往哪个方向传），平面波和球面波很容易判断不需要它。A 错在惠更斯原理不直接给波速；C 错在它不计算干涉条纹位置；D 错在频率由波源决定，与惠更斯原理无关。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 07:19 · 惠更斯原理告诉波往哪里传"
+      },
+      "options": [
+        "波的传播速度大小",
+        "波往哪个方向传播",
+        "干涉条纹的间距",
+        "波源的振动频率"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师解释\"隔墙有耳\"现象时指出，外面的人能听到屋里说话，是因为声波（　）。",
+      "answer": 2,
+      "hint": "声波遇到墙这种障碍会发生什么现象绕出去？",
+      "explanation": "老师说\"外面的人能听到我说话，是因为声波通过墙衍射绕出去\"，即声波绕过障碍物（墙）发生衍射。A 反射不能让声音绕到墙背后；B 折射是穿过介质改变方向，非绕行；D 干涉是两列相干波叠加，与单一声源绕墙无关。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 07:19 · 隔墙有耳是声波衍射"
+      },
+      "options": [
+        "在墙面发生反射",
+        "穿过墙发生折射",
+        "绕过墙发生衍射",
+        "与回声发生干涉"
+      ]
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师讲 2G–6G 时强调，字母 \"G\" 的含义是（　）。",
+      "answer": 1,
+      "hint": "老师特别提醒 G 不是 frequency。",
+      "explanation": "老师原话\"注意 G 是'代'（generation）的意思，不是 frequency\"。各代主要区别在频率不同（2G 频率低、5G 高），但 G 本身指\"代\"。A 把 G 误当频率，正是老师专门纠正的常见错误；C、D 均非老师所述含义。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 08:16 · G 是代不是频率"
+      },
+      "options": [
+        "频率（frequency）",
+        "代（generation）",
+        "增益（gain）",
+        "千兆（giga）"
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "关于产生衍射的条件，与老师课堂表述一致的是（　）。",
+      "answer": 2,
+      "hint": "波要绕过去，孔或障碍物的尺寸要与波长比是大还是小？",
+      "explanation": "老师说\"产生衍射的条件：小孔或障碍物尺寸与波长相当或小于波长，波才能绕过去\"。故只有当障碍物尺寸与波长相当或更小时衍射明显。A、B 说障碍物远大于波长则衍射不明显，与课堂相反；D 衍射条件与振幅无关。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 13:19 · 衍射条件"
+      },
+      "options": [
+        "障碍物尺寸远大于波长时衍射明显",
+        "障碍物尺寸与波长无关",
+        "小孔或障碍物尺寸与波长相当或小于波长时才能绕过去",
+        "波的振幅越大衍射越明显"
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师给出驻波方程为 $y = 2A\\cos\\left(\\frac{2\\pi}{\\lambda}x\\right)\\cos\\omega t$。其中 $2A\\cos\\left(\\frac{2\\pi}{\\lambda}x\\right)$ 表示（　）。",
+      "answer": 1,
+      "hint": "老师说把 $\\cos\\omega t$ 看成时间项，前面整个看成什么？",
+      "explanation": "老师讲\"$\\cos\\omega t$ 看成时间项，把前面整个看成振幅（$x$ 一定时是定值，只和 $x$ 有关、和时间无关）\"。故 $2A\\cos\\left(\\frac{2\\pi}{\\lambda}x\\right)$ 是随位置 $x$ 变化的驻波振幅。A 错，它不含时间不是相位；C、D 都不是该因子的物理含义，波速与波长是常数。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 26:31 · 驻波方程振幅项"
+      },
+      "options": [
+        "各点的振动相位",
+        "随位置 $x$ 变化的驻波振幅",
+        "波的传播速度",
+        "波长随时间的变化"
+      ]
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "关于驻波中相邻波节（或相邻波腹）之间的距离，老师指出为（　）。",
+      "answer": 1,
+      "hint": "老师反复强调这个间距是半波长。",
+      "explanation": "老师明确\"相邻波节之间距离是半波长\"\"相邻波腹之间距离也是半波长\"，即 $\\frac{1}{2}\\lambda$。A 一个波长是相邻同相点距离，非波节间距；C、D 均与课堂结论不符（波节与相邻波腹间距才是 $\\frac{1}{4}\\lambda$）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 27:40 · 相邻波节波腹间距半波长"
+      },
+      "options": [
+        "一个波长 $\\lambda$",
+        "半波长 $\\frac{1}{2}\\lambda$",
+        "四分之一波长 $\\frac{1}{4}\\lambda$",
+        "两个波长 $2\\lambda$"
+      ]
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师给出多普勒效应的定义，下列表述与课堂一致的是（　）。",
+      "answer": 0,
+      "hint": "关键在\"波源或接收者相对媒质运动\"导致频率不同。",
+      "explanation": "老师定义\"多普勒效应是波源或接收者相对于媒质运动而接收到的频率与波源频率不同的现象\"。A 与此完全一致。B 错在多普勒效应不改变波源自身发出的频率；C 错在它本质是相对媒质运动引起的接收频率变化，而非波速改变；D 把多普勒效应误当波长被介质吸收，错误。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 42:50 · 多普勒效应定义"
+      },
+      "options": [
+        "波源或接收者相对于媒质运动，使接收到的频率与波源频率不同的现象",
+        "波源运动使其自身发出的频率发生改变的现象",
+        "介质运动使波速改变从而频率改变的现象",
+        "波长被介质吸收而频率降低的现象"
+      ]
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "波源静止、观察者以速度 $v_R$ 朝波源运动时，老师给出观察者接收到的频率为（　）。",
+      "answer": 0,
+      "hint": "靠近波源频率应增大，看分子是 $u+v_R$ 还是 $u-v_R$。",
+      "explanation": "老师推导\"观察者靠近波源时频率增加\"，得 $f' = \\dfrac{u + v_R}{u}f$，因为相对波速变为 $u+v_R$，单位时间通过的完整波更多。B 是观察者远离时的情形（频率降低）；C 是波源运动的公式，不适用于此处观察者运动；D 形式不符合任何课堂结论。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 57:38 · 观察者靠近波源频率公式"
+      },
+      "options": [
+        "$f' = \\dfrac{u + v_R}{u}f$",
+        "$f' = \\dfrac{u - v_R}{u}f$",
+        "$f' = \\dfrac{u}{u - v_R}f$",
+        "$f' = \\dfrac{u}{u + v_R}f$"
+      ]
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师讲警察用多普勒效应测车速时强调，测速仪一般架在路中间，目的是（　）。",
+      "answer": 1,
+      "hint": "在路中间时，速度方向与波线夹角的 $\\cos$ 接近多少？",
+      "explanation": "老师说\"测速都是龙门架在路中间\"\"为避免角度问题，在中间时 $\\cos\\theta$ 非常小可忽略\"，使车速方向近似与波线共线，避免引入难以确定的夹角。A 与提高功率无关；C 不是为了避开干扰；D 错，恰恰是路旁架设才需考虑夹角，路中间是为了让 $\\cos\\theta\\approx0$（角度因子可忽略）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 01:10:06 · 测速架路中间避免角度"
+      },
+      "options": [
+        "提高发射功率",
+        "使速度方向与波线近似共线、避免角度问题",
+        "避开其他车辆信号干扰",
+        "便于计算车与路旁的夹角"
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师讲声波时指出，声音是纵波而不是横波，根本原因是（　）。",
+      "answer": 2,
+      "hint": "横波需要什么应力？气体能不能承受这种应力？",
+      "explanation": "老师说\"声音是纵波不是横波，因为横波有剪切应力、声音没有。剪切应力是扭曲变形，气体不能变形\"，即气体、液体不能承受切变（剪切应力）。A 与传播速度无关；B 频率高低不决定纵横波；D 声波能在真空外的介质传播，但纵横波由能否承受切应力决定，而非\"只能在固体传播\"。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 01:26:16 · 声音是纵波无切应力"
+      },
+      "options": [
+        "声音传播速度太快",
+        "声音频率太低",
+        "横波需要剪切应力，而气体、液体不能承受切变",
+        "声音只能在固体中传播"
+      ]
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师讲两列波叠加（相遇后）的特性，下列表述正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "想想\"两个陌生人擦肩而过没磨出火花\"这个比喻说明了什么。",
+      "explanation": "老师说\"相遇处质点的振动是各波到达该点所引起振动的叠加\"（A 对）；\"相遇后各波仍保持各自特性（频率、波长、振动方向），沿原方向传播\"（B、C 对），并用\"两个陌生人擦肩而过没磨出火花\"比喻。D 错：老师强调所有讨论都在线性条件下，叠加成立正是因为线性，非线性时才可能有阈值、不满足简单叠加。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 13:51 · 波的叠加特性"
+      },
+      "options": [
+        "相遇处质点的振动是各波引起振动的叠加",
+        "相遇后各波保持各自的频率、波长、振动方向",
+        "相遇后各波沿原方向继续传播",
+        "波的叠加在非线性条件下也总是简单成立"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师讲驻波时谈到能量问题，下列与课堂表述一致的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "驻波不传播能量，能量在哪两种形式间转换？波节、波腹各以哪种能量为主？",
+      "explanation": "老师说\"驻波的能量很类似简谐振动，能量没有传播\"（A 对）；\"在波节处形变最大，势能最大\"（B 对）；\"波腹处速度最大\"\"势能全部转化为动能\"，即波腹处动能最大（C 对）。D 错：老师强调\"单看一个质点能量不守恒，要看一个波包\"，能量是在一个波包内动能与势能间来回转换，不是每个质点各自守恒。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 31:55 · 驻波能量动势能转换"
+      },
+      "options": [
+        "驻波不传播能量，能量在动能与势能间转换",
+        "波节处形变最大、势能最大",
+        "波腹处速度最大、动能最大",
+        "驻波中每个质点自身的能量都守恒"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师讲 5G 通信与不同频段波时，下列说法与课堂内容一致的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "频率高带来下载快，但波长短带来什么问题？",
+      "explanation": "老师讲\"频率越高，传播信息速度越快，下载速度快\"（A 对）；\"5G 到了室内很可能收不到信号\"\"5G 基站数目比 4G 翻一倍甚至更多\"（B 对）；\"频率高了在空气中容易被散射掉、不会衍射过来\"（C 对）。D 错：老师明确探潜艇时\"水的散射很大，微波穿透不了\"，需要超长波超低频雷达，故微波并不适合探测水下潜艇。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 09:25 · 5G 频率高散射强基站多"
+      },
+      "options": [
+        "频率越高，下载速度越快",
+        "5G 频率高、波长短，室内易收不到信号，基站数远多于 4G",
+        "频率高在空气中容易被散射，不易衍射绕过来",
+        "微波适合探测水下潜艇位置"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师讲医学彩超时给出颜色约定，下列与课堂一致的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "红蓝代表方向，绿色代表什么？亮度代表什么？",
+      "explanation": "老师说\"速度大于 0 用红色表示（流向超声波方向），速度小于 0 用蓝色（远离超声波方向）\"（A 对）；\"亮度表示速度大小，越亮血液流速越快\"（B 对）；血管阻塞产生湍流\"用绿色表示\"（C 对）。D 错：老师特别强调\"彩超的红色和蓝色不代表静脉和动脉，是流动方向（相对于探头）\"。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 01:15:09 · 彩超颜色约定"
+      },
+      "options": [
+        "红色表示流向探头、蓝色表示远离探头",
+        "亮度表示血液流速大小，越亮越快",
+        "绿色表示血管中存在湍流",
+        "红色和蓝色分别代表动脉和静脉"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 2,
+      "stem": "老师讲声强级（分贝）与张飞怒吼的趣味题，下列与课堂一致的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "声强级用对数定义，$I_0 = 10^{-12}$ W/m²；张飞 140 dB 与士兵 90 dB 差几个量级？",
+      "explanation": "老师讲声强级\"用对数定义\"，分贝是在贝尔基础上乘 10（A 对）；\"$I_0 = 10^{-12}$ W/m²（理论上人类能听到的最低声音强度）\"（B 对）；张飞 140 dB（$I_1 = 100$ W/m²）与士兵 90 dB（$10^{-3}$ W/m²）相差 5 个量级，故相当于 10 万士兵（C 对）。D 错：老师说痛阈约 120 分贝，130 分贝才伤害人，并非 80 分贝伤害人（80 分贝以上是长期会损害耳膜的噪音阈，但非\"立即伤害\"）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 01:33:20 · 声强级分贝与张飞题"
+      },
+      "options": [
+        "声强级用对数定义，分贝在贝尔基础上乘 10",
+        "参考声强 $I_0 = 10^{-12}$ W/m²，是人类能听到的最低强度",
+        "张飞 140 dB 与士兵 90 dB 相差 5 个量级，相当于 10 万士兵齐吼",
+        "人在 80 分贝时即受到听力伤害"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 4,
+      "stem": "老师反复强调的两列波形成稳定干涉图样（相干波）所需的三个条件包括（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "老师特别强调\"相位差恒定\"暗含频率相等，这是考试金句。",
+      "explanation": "老师明确\"相干波条件：振动频率必须一样、振动方向一样、相位差恒定\"（A、B、C 全对），并解释相位差恒定隐含频率相等、初相位不随时间变化（初相位可以不一样）。D 错：相干波要求初相位差恒定，但并不要求两波振幅相等——振幅可以不同（强度不一定相同），振幅相同只是完全相消等特殊情形的附加条件。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 16:02 · 相干波三条件划重点"
+      },
+      "label": "考试重点",
+      "options": [
+        "振动频率相同",
+        "振动方向相同",
+        "相位差恒定",
+        "两波振幅必须相等"
+      ]
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 4,
+      "stem": "老师给出合振幅公式 $A = \\sqrt{A_1^2 + A_2^2 + 2A_1 A_2\\cos\\Delta\\varphi}$。发生相长干涉（振动始终加强）的条件是相位差 $\\Delta\\varphi$ 为（　）。",
+      "answer": 0,
+      "hint": "相长时 $\\cos\\Delta\\varphi = 1$，$\\Delta\\varphi$ 应是 $2\\pi$ 的整数倍。",
+      "explanation": "老师讲\"相长干涉时相位差是 $2\\pi$ 的整数倍，$\\cos = 1$，最大强度 $A_1 + A_2$\"，故选 A。B（$\\pi$ 的奇数倍）是相消干涉条件，$\\cos = -1$，振幅为 $|A_1 - A_2|$；C、D 均非课堂给出的判据。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 21:54 · 相长干涉相位差 2π 整数倍"
+      },
+      "label": "考试重点",
+      "options": [
+        "$2\\pi$ 的整数倍",
+        "$\\pi$ 的奇数倍",
+        "$\\frac{\\pi}{2}$ 的整数倍",
+        "任意值"
+      ]
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 4,
+      "stem": "两波源初相位相同时，老师指出波程差 $\\Delta r = R_2 - R_1$ 满足什么条件时发生相消干涉？",
+      "answer": 1,
+      "hint": "相消对应半波长的奇数倍，这是高中就讨论过的判据。",
+      "explanation": "老师说\"波程差等于波长（整数倍）则相长干涉，等于半波长的奇数倍则相消干涉\"。故相消条件是波程差为半波长 $\\frac{\\lambda}{2}$ 的奇数倍（B 对）。A（整数倍波长）是相长条件；C、D 均非课堂判据。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 23:49 · 波程差半波长奇数倍相消"
+      },
+      "label": "考试重点",
+      "options": [
+        "波长 $\\lambda$ 的整数倍",
+        "半波长 $\\frac{\\lambda}{2}$ 的奇数倍",
+        "四分之一波长的整数倍",
+        "任意值"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 4,
+      "stem": "老师讲两端固定的弦形成稳定驻波的条件时，给出弦长 $L$ 与波长 $\\lambda$ 的关系是（　）。",
+      "answer": 2,
+      "hint": "两固定端必为波节，弦长是半波长的整数倍。",
+      "explanation": "老师说\"只有弦长（固定两端的距离）$l = n\\cdot\\frac{\\lambda}{2}$ 时才能保证两端为波节的边界条件，形成稳定驻波\"，由此 $\\lambda = \\frac{2L}{n}$。C 与之一致。A、B 错（不满足两端为波节的边界条件）；D 形式不符，且波长是离散的而非连续可变。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 35:03 · 弦长 L=nλ/2 形成驻波"
+      },
+      "label": "考试重点",
+      "options": [
+        "$L = n\\lambda$",
+        "$L = (2n-1)\\frac{\\lambda}{2}$",
+        "$L = n\\cdot\\frac{\\lambda}{2}$",
+        "$L = \\frac{\\lambda}{2n}$"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 4,
+      "stem": "老师讲冲击波时指出，当波源运动速度 $v_s$ 恰好等于波速 $u$ 时会出现\"声爆\"。此时马赫锥的顶角 $\\alpha$ 变为（　）。",
+      "answer": 2,
+      "hint": "速度越快顶角越小；当 $v_s = u$ 时锥面变成平面，顶角张到最大。",
+      "explanation": "老师说\"当波源速度刚好等于波速（$v = u$）时……马赫锥顶角 $\\alpha = \\pi$（速度越快顶角越小，等于 $u$ 时锥面变成平面）\"，此时波几乎共面、能量高度集中形成声爆。故顶角为 $\\pi$（C 对）。A、B、D 均与课堂\"$v_s = u$ 时锥面成平面、顶角为 $\\pi$\"的结论不符（顶角越小对应速度越快、$v_s > u$ 的情形）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 01:22:26 · vs=u 时马赫锥顶角 π 声爆"
+      },
+      "label": "考试重点",
+      "options": [
+        "$0$",
+        "$\\frac{\\pi}{2}$",
+        "$\\pi$",
+        "$2\\pi$"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 10,
+      "stem": "简述老师强调的相干波（产生稳定干涉的两列波）需满足的三个条件，并说明\"相位差恒定\"这一条件隐含了什么。",
+      "answer": "相干波的三个条件：\n一、两列波的振动频率必须相同；\n二、两列波的振动方向必须相同；\n三、两列波在相遇点的相位差恒定。\n\n\"相位差恒定\"隐含两点：（1）两波频率必须相等——因为简谐振动相位为 $\\omega t + \\varphi$，若频率不同，相位差会随时间变化而不恒定；（2）初相位不随时间变化（但两波的初相位可以不相同）。满足这三个条件的两列波相遇，叠加区某些位置振动始终加强、某些位置减弱或完全消失，呈现规则、稳定的分布，即波的干涉。",
+      "hint": "三个条件 + 相位差恒定为何隐含频率相等。",
+      "explanation": "本题考查老师明确划重点的相干波三条件（频率相同、振动方向相同、相位差恒定）。解析须呼应得分点：列全三条件，并解释相位差恒定如何隐含频率相等（相位 $\\omega t+\\varphi$ 若 $\\omega$ 不同则差随时间变）与初相位不随时间变化（初相可不同）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 16:02 · 相干波三条件与相位差恒定"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "正确列出三个条件：频率相同、振动方向相同、相位差恒定（每点 2 分，共 6 分）",
+        "说明相位差恒定隐含频率必须相等（2 分）",
+        "说明初相位不随时间变化、但初相位可以不同（2 分）"
+      ]
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 10,
+      "stem": "简述老师讲解的驻波概念及其主要特性，包括驻波方程 $y = 2A\\cos\\left(\\frac{2\\pi}{\\lambda}x\\right)\\cos\\omega t$ 中波节、波腹的振幅特点及相邻波节（波腹）的间距。",
+      "answer": "一、驻波定义：振幅相同的相干波以同一直线相向传播时合成的一种不传播的波称为驻波。\n二、振幅特点：由驻波方程 $y = 2A\\cos\\left(\\frac{2\\pi}{\\lambda}x\\right)\\cos\\omega t$，$2A\\cos\\left(\\frac{2\\pi}{\\lambda}x\\right)$ 是只与位置 $x$ 有关的振幅。波腹处振幅最大为 $2A$（$\\cos = \\pm 1$）；波节处振幅恒为 $0$（$\\cos = 0$），位置固定不随时间变化。\n三、间距：相邻波节之间、相邻波腹之间的距离都是半波长 $\\frac{1}{2}\\lambda$。\n四、相位特点：波节两侧的振动方向相反、相位相反；波腹两侧振动方向相同、相位相同。驻波波形不变、不传播能量，故称\"驻波\"。",
+      "hint": "定义 + 波腹波腹/波节振幅 + 半波长间距 + 波节两侧相位相反。",
+      "explanation": "本题为老师划重点的驻波方程与波节波腹特性。解析须呼应得分点：定义（相向传播、不传播的波）、波腹振幅 $2A$ 与波节振幅 0、相邻波节波腹间距 $\\frac{1}{2}\\lambda$、波节两侧相位相反波腹两侧相同。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 24:17 · 驻波定义、方程与波节波腹特性"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "正确给出驻波定义（振幅相同的相干波沿同一直线相向传播合成的不传播的波）（3 分）",
+        "指出波腹处振幅为 $2A$、波节处振幅恒为 0 且位置固定（3 分）",
+        "指出相邻波节（波腹）间距为半波长 $\\frac{1}{2}\\lambda$（2 分）",
+        "说明波节两侧相位相反、波腹两侧相位相同（2 分）"
+      ]
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 15,
+      "stem": "老师以警察测车速为例讲解了多普勒效应的\"两步\"应用。请论述这道例题的物理过程与求解思路：固定波源发出频率 $f$ 的超声波，汽车朝波源行驶（车速 $v$），与波源装在一起的接收器收到汽车反射回来的频率为 $f''$，空气中波速为 $u$。要求写出两步各自的多普勒公式并说明如何由 $f$、$f''$、$u$ 求出车速 $v$。",
+      "answer": "整个过程分为两步，关键在于汽车先后扮演\"观察者\"和\"波源\"两个角色。\n\n第一步（车作观察者）：固定发射器（波源）速度为 0，汽车作为观察者以速度 $v_R = v$ 朝波源运动，属于观察者靠近波源、取上面符号，车接收到的频率为\n$$f' = \\frac{u + v_R}{u}f = \\frac{u + v}{u}f$$\n\n第二步（车作波源）：汽车把信号反射回来，相当于以频率 $f'$ 重新发出超声波。此时汽车是波源（$v_s = v$）朝接收器运动、接收器静止，属于波源靠近观察者、分母取减号，接收器收到的频率为\n$$f'' = \\frac{u}{u - v_s}f' = \\frac{u}{u - v}\\cdot\\frac{u + v}{u}f = \\frac{u + v}{u - v}f$$\n\n求解：声速 $u$、发出频率 $f$、接收频率 $f''$ 均已知，由 $f'' = \\dfrac{u + v}{u - v}f$ 解出\n$$v = \\frac{f'' - f}{f'' + f}\\,u$$\n代入数据即得车速（老师课堂例题中 $f = 100$ kHz、$f'' = 118$ kHz、$u = 330$ m/s，算得约 98 km/h，未超速）。",
+      "hint": "车先是观察者（靠近）→ 再是波源（靠近），两公式联立消去 $f'$。",
+      "explanation": "本题考查老师明确划重点的多普勒测速两步推导。解析须呼应得分点：第一步车作观察者用 $f'=\\frac{u+v}{u}f$；第二步车作波源用 $f''=\\frac{u}{u-v}f'$；两式联立消 $f'$ 得 $f''=\\frac{u+v}{u-v}f$；解出 $v=\\frac{f''-f}{f''+f}u$。老师课堂数据 $f=100$ kHz、$f''=118$ kHz、$u=330$ m/s 得约 98 km/h。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 01:05:58 · 多普勒测速两步推导例题"
+      },
+      "label": "论述题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "指出过程分两步、汽车先后作观察者与波源（3 分）",
+        "第一步车作观察者，正确写出 $f' = \\frac{u + v}{u}f$（3 分）",
+        "第二步车作波源，正确写出 $f'' = \\frac{u}{u - v}f'$（3 分）",
+        "联立消去 $f'$ 得 $f'' = \\frac{u + v}{u - v}f$（3 分）",
+        "解出车速 $v = \\frac{f'' - f}{f'' + f}u$ 并能代入数据（约 98 km/h）（3 分）"
+      ]
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-08",
+      "points": 15,
+      "stem": "阅读老师课堂引用的案例，回答问题。\n\n> 材料一：老师讲冲击波时说，更普适的物理叫切伦科夫辐射，是苏联物理学家最早发现的。他观察到核电站冷却水是蔚蓝色，研究发现：核反应里有些中子或质子，光在水里的速度比真空小，但核电站里质子或中子在水里的速度可以超过光在水里的速度，就会激发新的光（短波长的蓝光）。\n>\n> 材料二：老师讲声强级时举例，《三国演义》中张飞喝断当阳桥。假设张飞怒吼强度为 $140$ 分贝（$I_1 = 100$ W/m²），普通士兵大喝 $90$ 分贝（$10^{-3}$ W/m²）。\n\n（1）结合材料一，说明切伦科夫辐射与空气中的冲击波（马赫锥）在物理本质上的共同点。（5 分）\n（2）结合材料二，说明声强级为什么要用对数（分贝）来定义。（5 分）\n（3）计算张飞一声怒吼相当于多少名普通士兵同时大喝，并写出思路。（5 分）",
+      "answer": "（1）共同点：两者本质相同——都是\"波源（运动粒子/物体）的速度超过了波在该介质中的传播速度\"而产生的现象。空气中飞机等波源速度 $v_s$ 超过声速 $u$，把波甩在身后、各波面包络成马赫锥（冲击波）；切伦科夫辐射则是高速质子/中子在水中的速度超过了光在水中的速度，激发出新的（蓝）光。冲击波是这一普适物理在空气中的称呼，切伦科夫辐射是更 general 的表述。\n\n（2）人耳在 $1000$ Hz 处可感知的声强范围约 $10^{-12}$ 到 $1$ W/m²，相差约 $10^{12}$ 倍（12 个量级）。若直接用强度的线性数值，跨度太大、不直观（如 30 分贝对应 $10^{-9}$ W/m² 难有概念），故采用对数：声强级（贝尔）$= \\lg\\dfrac{I}{I_0}$，$I_0 = 10^{-12}$ W/m²；分贝在此基础上再乘 10。对数定义把巨大的强度跨度压缩为便于使用的数值。\n\n（3）思路：分贝是对数量，比较强度须先把对数转回线性强度再相除。张飞 $I_1 = 100$ W/m²，士兵 $I_2 = 10^{-3}$ W/m²，两者相差 $\\dfrac{I_1}{I_2} = \\dfrac{100}{10^{-3}} = 10^{5}$，即相差 5 个量级。所以张飞一声怒吼相当于 $10^5 = 10$ 万名普通士兵同时大喝。",
+      "hint": "（1）波源速度超过介质中波速；（2）强度跨 12 个量级故取对数；（3）140 与 90 dB 差 50 dB → 强度比 $10^5$。",
+      "explanation": "本题取自老师课堂亲口引用的切伦科夫辐射与张飞两则案例。解析须呼应得分点：（1）抓住\"波源速度超过介质中波速\"这一共同本质，冲击波是空气中的称呼、切伦科夫辐射更普适；（2）强度跨 12 个量级、不直观，故取对数定义声强级，$I_0=10^{-12}$ W/m²、分贝再乘 10；（3）对数转线性后 $\\frac{I_1}{I_2}=\\frac{100}{10^{-3}}=10^5$，即 10 万士兵。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-08.md",
+        "label": "rec-08 · 说话人1 01:19:08 / 01:36:12 · 切伦科夫辐射与张飞声强级"
+      },
+      "label": "材料分析题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "（1）指出共同本质是波源速度超过波在介质中的传播速度，冲击波为空气中称呼、切伦科夫辐射更普适（5 分）",
+        "（2）说明声强范围跨约 12 个量级不直观，故用对数定义声强级，给出 $\\lg\\frac{I}{I_0}$、$I_0=10^{-12}$ W/m²、分贝再乘 10（5 分）",
+        "（3）正确把对数转为线性强度比 $\\frac{I_1}{I_2}=10^5$，得出相当于 10 万名士兵（5 分）"
+      ]
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

@@ -1,0 +1,598 @@
+{
+  "subjectId": "physics",
+  "chapterId": "rec-25",
+  "generatedAt": "2026-06-25",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "老师讲解玻尔轨道角动量量子化的根源时指出，电子轨道之所以量子化，是因为电子（　）。",
+      "answer": 2,
+      "hint": "上节课玻尔只是\"假设\"，本节用什么解释了它？",
+      "explanation": "老师明确指出：玻尔提出轨道角动量量子化只是一个假设，没有物理根据；用德布罗意波（电子的波动性）可以解释——电子绕核形成驻波，周长等于波长整数倍时轨道才稳定，由此推出 $mvr = n\\hbar$。所以量子化的根源在于电子（粒子）也具有波动性。A、B 把根源说成粒子性或库仑力，与录音相反；D\"能量守恒\"录音并未作为量子化根据提出。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 02:30 · 轨道量子化源于电子波动性"
+      },
+      "options": [
+        "具有确定的经典轨道",
+        "受到库仑力提供的向心力",
+        "也具有波动性",
+        "满足能量守恒定律"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "电子绕核形成稳定驻波（轨道稳定）的条件是（　）。",
+      "answer": 1,
+      "hint": "驻波稳定要求周长与波长是什么关系？",
+      "explanation": "老师讲：考虑电子波动性，电子有一个波长，只有当轨道周长 $2\\pi r$ 刚好等于波长的整数倍 $n\\lambda$ 时轨道才稳定。代入 $\\lambda=\\frac{h}{p}$ 即可推出 $mvr=n\\hbar$。A 是\"半整数倍\"、C\"任意倍\"、D\"恰好一个波长\"都不符合\"整数倍\"这一条件。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 01:17 · 周长等于波长整数倍轨道稳定"
+      },
+      "options": [
+        "轨道周长等于波长的半整数倍",
+        "轨道周长等于波长的整数倍",
+        "轨道周长等于波长的任意倍",
+        "轨道周长恰好等于一个波长"
+      ]
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "由德布罗意关系 $\\lambda=\\frac{h}{p}$ 代入驻波稳定条件，推出的轨道角动量量子化结果是（　）。",
+      "answer": 2,
+      "hint": "把 $2\\pi r = n\\lambda$ 与 $\\lambda=h/p$ 联立，$p=mv$。",
+      "explanation": "老师推导：由 $2\\pi r = n\\lambda = n\\frac{h}{p}$，把 $mv$、$2\\pi$ 移项得 $mvr = n\\frac{h}{2\\pi} = n\\hbar$，这正是玻尔假设的轨道角动量量子化。A 缺少 $n$；B 漏了 $2\\pi$（应为 $\\frac{h}{2\\pi}$ 即 $\\hbar$）；D 量纲与推导均不符。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 01:58 · 推出 mvr=nℏ"
+      },
+      "options": [
+        "$mvr = \\frac{h}{2\\pi}$",
+        "$mvr = nh$",
+        "$mvr = n\\frac{h}{2\\pi} = n\\hbar$",
+        "$mvr = \\frac{n h}{\\lambda}$"
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "戴维逊-革末电子衍射实验中，电子打到镍单晶反射，探测器在散射角约为多少度时测到电子束强度最大？",
+      "answer": 1,
+      "hint": "老师反复强调的那个角度。",
+      "explanation": "老师明确：电子枪加热溢出电子、电压加速后打到镍单晶反射，探测器转动角度，最后发现在 50 度时测到的电子强度最大（$k=1$）。其余角度（30°、45°、60°）均非录音所述的最大强度角。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 02:30 · 散射角50度强度最大"
+      },
+      "options": [
+        "30 度",
+        "50 度",
+        "45 度",
+        "60 度"
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "用波的概念分析镍单晶电子衍射，相邻晶面间总光程差经倍角化简后，反射相长（增强）的条件是（　）。",
+      "answer": 0,
+      "hint": "$2\\sin\\frac{\\theta}{2}\\cos\\frac{\\theta}{2}$ 化简成什么？",
+      "explanation": "老师推导：两晶面间光程差是 $2d\\sin\\frac{\\theta}{2}\\cos\\frac{\\theta}{2}$，由倍角关系 $2\\sin\\frac{\\theta}{2}\\cos\\frac{\\theta}{2}=\\sin\\theta$，故光程差为 $d\\sin\\theta$；当它等于波长整数倍即 $d\\sin\\theta = k\\lambda$ 时反射增强。B 把 $\\sin$ 写成 $\\cos$；C 漏了晶格常数 $d$；D 形式错误。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 05:08 · dsinθ=kλ 相长条件"
+      },
+      "options": [
+        "$d\\sin\\theta = k\\lambda$",
+        "$d\\cos\\theta = k\\lambda$",
+        "$\\sin\\theta = k\\lambda$",
+        "$2d\\sin\\theta = k\\lambda$"
+      ]
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "戴维逊-革末实验由 $d\\sin\\theta=k\\lambda$ 求得的电子波长，与下列哪条德布罗意公式求得的波长高度吻合，从而证明电子的波动性？",
+      "answer": 0,
+      "hint": "$U$ 是加速电压，公式里有根号。",
+      "explanation": "老师说：根据德布罗意公式 $\\lambda=\\frac{1.225}{\\sqrt{U}}$（$U$ 为加速电压）求出的波长，与由干涉条件 $d\\sin\\theta=k\\lambda$ 求出的约 $10^{-10}$ 米非常接近，说明理论与实验吻合，证明电子具有波动性。B、C、D 的形式（与 $U$ 成正比、平方、$\\sqrt{U}$ 在分子）均与录音公式不符。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 05:50 · λ=1.225/√U"
+      },
+      "options": [
+        "$\\lambda = \\frac{1.225}{\\sqrt{U}}$",
+        "$\\lambda = 1.225\\sqrt{U}$",
+        "$\\lambda = \\frac{1.225}{U}$",
+        "$\\lambda = 1.225\\,U^2$"
+      ]
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "固定探测器角度、改变加速电压（即改变波长）测电子束强度时，曲线呈现的特征是（　）。",
+      "answer": 2,
+      "hint": "只有满足 $d\\sin\\theta=k\\lambda$ 才相长，$k$ 取 1、2、3……",
+      "explanation": "老师讲：变加速电压实际是变波长，固定角度时强度不是单调增加，而是只有当波长满足 $d\\sin\\theta=k\\lambda$（$\\theta$、$d$ 固定，$k=1,2,3\\dots$）干涉相长时才增强，所以测出来是独立、分离、不连续的峰。这正是波动性的体现。A\"单调增加\"、B\"恒定不变\"、D\"连续平滑\"均与录音相反。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 07:52 · 独立分离的峰"
+      },
+      "options": [
+        "随加速电压单调增加",
+        "强度恒定不变",
+        "呈独立、分离、不连续的峰",
+        "呈连续平滑的上升曲线"
+      ]
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "海森堡不确定关系指出，在 $x$ 方向上粒子位置不确定度 $\\Delta x$ 与动量不确定度 $\\Delta p$ 满足（量子力学精确推导）（　）。",
+      "answer": 1,
+      "hint": "老师说精确推导右边是 $\\hbar/2$。",
+      "explanation": "老师指出：通过量子力学推导，$\\Delta x \\cdot \\Delta p \\geq \\frac{\\hbar}{2}$；它们不是确定值而是一个范围。虽然单缝衍射的简单估算得 $\\Delta x\\cdot\\Delta p_x \\geq h$，不同书右边也有取 $h$、$\\frac{h}{2}$ 的，但精确（量子力学）结果是 $\\frac{\\hbar}{2}$。A 写成 $\\leq$ 方向错；C 是 $2\\hbar$ 数值错；D 把 $\\hbar$ 写成 $h$ 且无 1/2。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 11:21 · Δx·Δp≥ℏ/2"
+      },
+      "options": [
+        "$\\Delta x \\cdot \\Delta p \\leq \\frac{\\hbar}{2}$",
+        "$\\Delta x \\cdot \\Delta p \\geq \\frac{\\hbar}{2}$",
+        "$\\Delta x \\cdot \\Delta p \\geq 2\\hbar$",
+        "$\\Delta x \\cdot \\Delta p \\geq h$（精确推导值）"
+      ]
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "关于不确定关系的本质，老师强调下列哪种说法是正确的？",
+      "answer": 2,
+      "hint": "是仪器问题还是量子力学本身的问题？",
+      "explanation": "老师明确：不确定关系不是测量误差导致的，也不是仪器精度问题，而是量子力学物理根本导致的测不准，是微观粒子固有属性，是波粒二象性及统计关系带来的必然结果。所以 A（仪器精度不足）、B（测量误差）、D（计算近似）都被老师明确否定，只有 C 正确。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 12:03 · 本质是量子力学固有属性"
+      },
+      "options": [
+        "由仪器精度不足导致，可随技术进步消除",
+        "本质上是测量误差",
+        "是微观粒子固有属性，源于波粒二象性，非测量误差",
+        "是计算近似带来的系统误差"
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "用能量-时间不确定关系 $\\Delta E\\cdot\\Delta t\\geq\\frac{\\hbar}{2}$ 解释能级展宽，下列说法与课堂一致的是（　）。",
+      "answer": 0,
+      "hint": "哪个能级停留时间最长、展宽最小、最稳？",
+      "explanation": "老师讲：原子在某激发态停留时间（$\\Delta t$）越短，$\\Delta E$ 越大、能级展宽越大；停留越久展宽越小。基态在无扰动时一直停留，$t\\to\\infty$、$\\Delta E\\to 0$，是一根线、没有展宽，所以基态最稳、可被准确测定。故 A 正确。B 把基态说成展宽最大、C 说激发态最稳、D 说与时间无关，均与录音相反。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 18:27 · 基态展宽最小最稳"
+      },
+      "options": [
+        "基态停留时间最长，能级展宽最小，最稳定可准确测定",
+        "基态能级展宽最大",
+        "激发态停留时间长、最稳定",
+        "能级展宽与停留时间长短无关"
+      ]
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "关于戴维逊-革末电子衍射实验装置与结论，下列与课堂表述一致的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "回忆电子枪、加速、镍单晶、50度、波长量级。",
+      "explanation": "老师讲：①电子枪加热让电子溢出；②给电压加速电子；③电子打到镍单晶上反射，探测器转角度；④在 50 度时强度最大，由 $d\\sin\\theta=k\\lambda$（$k=1$）求出电子波长约 $10^{-10}$ 米。四项均与录音一致。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 02:30 · 衍射实验装置与波长量级"
+      },
+      "options": [
+        "电子枪加热使电子溢出，再用电压加速",
+        "电子打到镍单晶上反射，探测器转动角度探测",
+        "在散射角 50 度时电子束强度达到最大",
+        "由相长条件求出电子波长约为 $10^{-10}$ 米"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "关于物质波（德布罗意波）的波动性证明与诺贝尔奖，下列符合课堂内容的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "汤姆孙父子、莫格为何没拿奖、质子中子。",
+      "explanation": "老师讲：①P·汤姆孙（发现电子的 J·J·汤姆孙之子）用电子透过纳米金属薄片产生衍射图像证明波动性；②戴维逊和汤姆孙因电子波动性获诺贝尔物理学奖；③后来证实质子、中子等粒子也具有波动性，证明了德布罗意波的存在。D 错误——老师说莫格因当年美国科技话语权不足、且仅为戴维逊助手而未获奖，并非\"获得诺贝尔奖\"。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 07:52 · 透射衍射·汤姆孙·诺奖·莫格"
+      },
+      "options": [
+        "P·汤姆孙用电子透过纳米金属薄片产生衍射图像证明波动性",
+        "戴维逊和汤姆孙因电子波动性获诺贝尔物理学奖",
+        "后来证实质子、中子等粒子也具有波动性",
+        "戴维逊的助手莫格也一同获得了诺贝尔奖"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "波函数必须满足的标准化条件包括（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "归一化 + 三个\"性\"。",
+      "explanation": "老师讲波函数的标准化条件：①归一化——$|\\psi|^2$ 在整个空间积分等于 1（粒子总在空间某处）；②连续——概率处处连续，不可能某处突然变化；③单值——一点不可能既 50% 又 60%，只有一个概率值；④有限——整个空间积分必须是 1，无限就不满足归一化。四项全部正确。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 39:28 · 归一化·连续·单值·有限"
+      },
+      "options": [
+        "归一化：$\\int|\\psi|^2\\,\\mathrm{d}V=1$",
+        "连续：概率处处连续",
+        "单值：每点只有一个概率值",
+        "有限：空间积分有限（满足归一化）"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "关于波函数的玻恩概率波解释，下列与课堂一致的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "概率波、模平方、爱因斯坦的态度。",
+      "explanation": "老师讲：①玻恩给出物质波既不是机械波也不是电磁波，而是概率波；②粒子物质波强度正比于波函数模的平方 $|\\psi|^2$，代表粒子在该处出现的概率（密度）；③爱因斯坦最早不相信，说\"不相信上帝在掷骰子\"，但该解释已被物理学界大部分认可并被实验证明。D 错误——老师说对微观粒子讨论其轨道和速度\"没有意义\"，波函数反映的是统计规律。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 35:47 · 玻恩概率波·|ψ|²·爱因斯坦"
+      },
+      "options": [
+        "物质波是概率波，既非机械波也非电磁波（玻恩提出）",
+        "$|\\psi|^2$ 正比于粒子在该处出现的概率密度",
+        "爱因斯坦最早不相信，称\"不相信上帝在掷骰子\"",
+        "波函数能精确给出微观粒子的轨道和速度"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 2,
+      "stem": "关于自由粒子波函数的构造及其与机械波的区别，下列符合课堂内容的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "复数指数、德布罗意代换、ψ与振幅的区别、ψ与Cψ。",
+      "explanation": "老师讲：①波函数由经典平面机械波出发，化成复数指数形式（求导方便、指数求导仍为指数，测量主要取实部、虚部无所谓）；②再用德布罗意 $E=h\\nu$、$p=\\frac{h}{\\lambda}$ 代换 $\\nu$、$\\lambda$ 构造出 $\\psi$；③此时 $y_0$（振幅）不再是振幅，$\\psi$ 与概率相关；④概率分布取决于各点波强占总波强的比例，不取决于绝对值，故 $\\psi$ 与 $C\\psi$ 描述同一状态。四项全部正确。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 28:56 · 复数构造·德布罗意代换·ψ与Cψ"
+      },
+      "options": [
+        "由机械波化成复数指数形式，便于求导、测量取实部",
+        "用德布罗意 $E=h\\nu$、$p=\\frac{h}{\\lambda}$ 代换构造出 $\\psi$",
+        "代换后 $\\psi$ 不再是振幅，而与概率相关",
+        "$\\psi$ 与 $C\\psi$ 描述同一状态（概率取比例不取绝对值）"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "【考试重点】老师强调的能量-时间不确定关系是（　）。",
+      "answer": 1,
+      "hint": "与位置-动量不确定关系形式一致，把 $x,p$ 换成 $E,t$。",
+      "explanation": "老师讲：既然位置和动量有不确定性，能量和时间也有不确定性——能量求得越准时间不确定度越大，反之亦然，写作 $\\Delta E\\cdot\\Delta t\\geq\\frac{\\hbar}{2}$。这是解释能级展宽的关键关系，属课堂重点。A 写成 $\\leq$；C 把 $\\hbar$ 误作 $h$ 且无 1/2；D 形式错误（不是 $\\frac{\\hbar}{2t}$ 这类）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 17:11 · ΔE·Δt≥ℏ/2 能量时间不确定关系"
+      },
+      "options": [
+        "$\\Delta E\\cdot\\Delta t \\leq \\frac{\\hbar}{2}$",
+        "$\\Delta E\\cdot\\Delta t \\geq \\frac{\\hbar}{2}$",
+        "$\\Delta E\\cdot\\Delta t \\geq h$",
+        "$\\Delta E \\geq \\frac{\\hbar}{2\\,\\Delta t^2}$"
+      ]
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "【考试重点】老师重点讲解的电子 vs 子弹不确定度对比题中（两者均以 200 m/s 运动、速度误差 0.1%），关于位置不确定度 $\\Delta x$ 的量级，正确的是（　）。",
+      "answer": 2,
+      "hint": "电子质量小 Δx 大，子弹质量大 Δx 小；记住两个量级。",
+      "explanation": "老师讲这是典型考法：对电子，质量很小，$\\Delta x\\approx 10^{-3}$ 米，远大于电子线宽 $10^{-15}$，在此范围内根本不知道电子在哪，位置无法确定；对子弹（10 g），质量大，$\\Delta x\\approx 10^{-31}$ 米，没有仪器能测到这么小位移，可视为位置确定。故 C 正确。A、B 把两者量级颠倒或写错，D\"两者相同\"明显错误——结论正是\"不确定关系主要在微观尺度起作用\"。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 20:28 · 电子Δx≈10⁻³、子弹Δx≈10⁻³¹"
+      },
+      "options": [
+        "电子 $\\Delta x\\approx 10^{-31}$ 米，子弹 $\\Delta x\\approx 10^{-3}$ 米",
+        "电子 $\\Delta x\\approx 10^{-15}$ 米，子弹 $\\Delta x\\approx 10^{-3}$ 米",
+        "电子 $\\Delta x\\approx 10^{-3}$ 米，子弹 $\\Delta x\\approx 10^{-31}$ 米",
+        "电子与子弹的 $\\Delta x$ 量级相同"
+      ]
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "【考试重点】老师由原子中电子的不确定度论证经典图像失效。原子尺度约 $10^{-10}$ 米，估算出原子中电子速度不确定度的量级约为（　），并据此说明不能用牛顿第二定律描述。",
+      "answer": 1,
+      "hint": "速度不确定度与玻尔 n=1 电子速度同量级。",
+      "explanation": "老师讲：原子中电子位置不确定度约 $10^{-10}$ 米（与原子尺寸同量级），由此估算速度不确定度约 $10^6$（米/秒量级）；而按玻尔量子轨道 $n=1$ 时电子速度也约 $10^6$，两者量级一样。速度不确定量与速度本身同量级，故不能用牛顿第二定律/经典轨道描述，说明玻尔氢原子理论仍有缺陷。A（$10^3$）、C（$10^{10}$）、D（$10^{-6}$）量级均错。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 24:32 · 速度不确定度≈10⁶ 与电子速度同量级"
+      },
+      "options": [
+        "$10^{3}$",
+        "$10^{6}$",
+        "$10^{10}$",
+        "$10^{-6}$"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "【考试重点】老师讲解的一维无限深势阱例题：粒子被限制在相距 $L$ 的势阱中，波函数 $\\psi=Cx(L-x)$。由归一化求出 $C^2$，并算得在 $0$ 到 $\\frac{L}{3}$ 区间发现粒子的概率。下列结果与课堂一致的是（　）。",
+      "answer": 0,
+      "hint": "归一化给 $C^2=\\frac{30}{L^5}$，区间概率约 21%。",
+      "explanation": "老师讲：用归一化条件 $\\int_0^L|\\psi|^2\\,\\mathrm{d}x=1$（仅在 0 到 $L$ 有分布）求得 $C^2=\\frac{30}{L^5}$；再把 $C^2$ 代入 $\\int_0^{L/3}|\\psi|^2\\,\\mathrm{d}x$，最后求出概率为 $\\frac{17}{81}\\approx 21\\%$。故 A 正确。B（$C^2=\\frac{30}{L^3}$）、C（概率 $\\frac{17}{81}$ 但 $C^2$ 写错）、D（50%）均与录音结果不符。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 53:12 · C²=30/L⁵、0→L/3概率17/81≈21%"
+      },
+      "options": [
+        "$C^2=\\frac{30}{L^5}$，概率 $\\frac{17}{81}\\approx 21\\%$",
+        "$C^2=\\frac{30}{L^3}$，概率 $\\frac{17}{81}\\approx 21\\%$",
+        "$C^2=\\frac{17}{81}$，概率 $\\frac{30}{L^5}$",
+        "$C^2=\\frac{30}{L^5}$，概率约 $50\\%$"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "【考试重点】关于薛定谔方程，下列与课堂内容一致的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "地位类比、求导阶数、势能项、定态形式。",
+      "explanation": "老师强调（重点）：①薛定谔方程在微观粒子中的地位，相当于宏观的牛顿第二定律、电磁场与电磁波里的麦克斯韦方程组，波函数是其解；②自由粒子推导中波函数对位置做二阶导、对时间做一阶导（因 $E=\\frac{p^2}{2m}$，位置二阶导对应 $p^2$、时间一阶导对应 $E$）；③考虑势能时需多加一个势能项 $U$；④力场不随时间变化（$U$ 仅与位置有关）时分离变量得定态薛定谔方程，可写成 $\\hat{H}\\psi(r)=E\\psi(r)$，$\\hat{H}$ 为哈密顿量。四项全部正确。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 57:24 · 薛定谔方程地位·求导阶数·势能项·Ĥψ=Eψ"
+      },
+      "options": [
+        "其地位相当于牛顿第二定律和麦克斯韦方程组，波函数是其解",
+        "自由粒子方程对位置二阶导、对时间一阶导",
+        "考虑势能时需加势能项 $U$",
+        "定态薛定谔方程可写成 $\\hat{H}\\psi(r)=E\\psi(r)$，$\\hat{H}$ 为哈密顿量"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 10,
+      "label": "简答题",
+      "stem": "简述老师所讲的海森堡不确定关系的内容，并说明其物理本质（为什么会\"测不准\"）。",
+      "answer": "一、内容：微观粒子的位置坐标与动量不能同时具有确定值。在某确定方向（如 $x$ 方向）上，位置不确定度 $\\Delta x$ 与动量不确定度 $\\Delta p$ 满足 $\\Delta x\\cdot\\Delta p\\geq\\frac{\\hbar}{2}$（单缝衍射简单估算为 $\\geq h$，不同教材右边取 $h$、$\\frac{h}{2}$ 或 $\\frac{\\hbar}{2}$）；位置确定越准，动量误差越大，反之亦然。能量与时间同样有不确定关系 $\\Delta E\\cdot\\Delta t\\geq\\frac{\\hbar}{2}$。\n二、物理本质：不确定关系不是测量误差，也不是仪器精度问题，而是量子力学物理根本导致的测不准，是微观粒子的固有属性，来源于波粒二象性及其统计关系——微观粒子像波一样\"分布\"，找不到确定位置，若测得准它就成了粒子而非波，所以\"测不准\"是必然结果。",
+      "hint": "先写关系式（含位置-动量、能量-时间），再答\"本质=波粒二象性固有属性、非误差\"。",
+      "explanation": "解析呼应得分点：①写出位置-动量不确定关系 $\\Delta x\\cdot\\Delta p\\geq\\frac{\\hbar}{2}$（老师 11:21 推导）；②补充能量-时间关系 $\\Delta E\\cdot\\Delta t\\geq\\frac{\\hbar}{2}$（17:11）；③点明\"位置准则动量不准、反之亦然\"的反比含义（13:00）；④本质——非测量误差/仪器问题，是波粒二象性带来的固有属性（12:03、12:34）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 11:21 / 12:03 / 17:11 · 不确定关系内容与本质"
+      },
+      "total_points": 10,
+      "scoring_criteria": [
+        "写出位置-动量不确定关系 $\\Delta x\\cdot\\Delta p\\geq\\frac{\\hbar}{2}$（3分）",
+        "指出位置与动量不能同时确定、二者成反比制约（2分）",
+        "补充能量-时间不确定关系 $\\Delta E\\cdot\\Delta t\\geq\\frac{\\hbar}{2}$（2分）",
+        "说明本质是波粒二象性带来的固有属性、非测量误差或仪器精度（3分）"
+      ]
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 10,
+      "label": "简答题",
+      "stem": "简述波函数 $\\psi$ 模的平方 $|\\psi|^2$ 的物理意义，并写出波函数必须满足的标准化条件。",
+      "answer": "一、$|\\psi|^2$ 的物理意义：物质波是概率波（玻恩解释），$|\\psi|^2$（复数乘以其共轭复数，即实部与虚部的平方和）代表 $t$ 时刻在 $r$ 附近单位区间内粒子出现的概率密度；$t$ 时刻出现在 $r$ 附近体积 $\\Delta V$ 内的概率为 $|\\psi|^2\\Delta V$。它反映微观粒子运动的统计规律，对微观粒子讨论确定轨道和速度没有意义。\n二、标准化条件：①归一化——$\\int_{-\\infty}^{+\\infty}|\\psi|^2\\,\\mathrm{d}V=1$（粒子总要出现在空间某处）；②连续——概率处处连续，不可能某处突然变化；③单值——一点只能有一个概率值，不能既是某值又是另一值；④有限——整个空间积分必须有限（等于 1），否则不满足归一化。",
+      "hint": "先答\"概率密度/概率波\"，再答归一化 + 连续、单值、有限四条。",
+      "explanation": "解析呼应得分点：①$|\\psi|^2$ 是概率密度、$|\\psi|^2\\Delta V$ 是 $\\Delta V$ 内概率（老师 38:25、39:00）；②物质波是概率波、反映统计规律（35:47）；③归一化条件 $\\int|\\psi|^2\\mathrm{d}V=1$（39:28）；④连续、单值、有限三条（39:28–41:13，并配\"哪条曲线可作波函数\"的判别）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 38:25 / 39:28 · |ψ|²物理意义与标准化条件"
+      },
+      "total_points": 10,
+      "scoring_criteria": [
+        "指出 $|\\psi|^2$ 为概率密度、$|\\psi|^2\\Delta V$ 为体积内概率（3分）",
+        "指出物质波是概率波、反映统计规律（玻恩解释）（2分）",
+        "写出归一化条件 $\\int|\\psi|^2\\,\\mathrm{d}V=1$（2分）",
+        "列出连续、单值、有限三条标准化条件（3分）"
+      ]
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 15,
+      "label": "论述题",
+      "stem": "结合本节课内容，论述薛定谔方程的地位、由自由粒子构造其方程的基本思路（求导阶数的依据与势能项的引入），以及什么是定态薛定谔方程。要求条理清晰、史论（理）结合。",
+      "answer": "一、地位：波函数描述微观粒子的运动状态（类比宏观的\"位置和动量\"），而运动规律需要一个方程来描述。薛定谔方程在微观粒子中的地位，相当于宏观粒子的牛顿第二定律 $F=ma$、以及电磁场与电磁波中的麦克斯韦方程组；波函数只是薛定谔方程的解。\n二、构造思路：波函数最初是由机械波\"构造\"出来的，更普适的应直接由薛定谔方程导出。以低速自由粒子一维波函数为例——对位置（$x$）做二阶导，对时间做一阶导。求导阶数的依据是能量-动量关系 $E=\\frac{p^2}{2m}$：位置二阶导对应 $p^2$，时间若也做二阶导就成了 $E^2$ 接不上，故时间只做一阶导对应 $E$。把 $E=\\frac{p^2}{2m}$ 代入、两边消去，即得一维自由粒子波函数所满足的方程（左边对时间一阶导、右边对位置二阶导，前面带系数）。\n三、势能项与三维推广：上述只考虑了动能（机械能），若考虑势能，则能量加上势能后方程要多加一个势能项 $U$；一维推广到三维时 $x\\to r$，对 $x,y,z$ 求偏导，用拉普拉斯算子（倒三角）表示。\n四、定态薛定谔方程：当粒子所在力场不随时间变化（$U$ 只与位置有关）时，可把波函数分离为只含位置和只含时间的两部分。代入后时间项移到一边、位置项移到另一边，两边相等只能等于一个不随时间和位置变化的常数——它就是体系的总能量 $E$。由此得到定态（不含时）薛定谔方程，可写成 $\\hat{H}\\psi(r)=E\\psi(r)$，$\\hat{H}$ 为哈密顿量。不含时方程有解析解，含时方程通常无解析解、可用数值解。",
+      "hint": "按\"地位类比→求导阶数(E=p²/2m)→势能项U与三维→定态分离变量得Ĥψ=Eψ\"四层展开。",
+      "explanation": "解析呼应得分点：①地位类比牛顿第二定律与麦克斯韦方程组、波函数是其解（老师 57:24）；②对位置二阶导、对时间一阶导，依据 $E=\\frac{p^2}{2m}$（59:47、01:00:26）；③势能项 $U$ 与三维拉普拉斯算子（01:01:42、01:02:45）；④定态薛定谔方程的分离变量、常数即总能量、$\\hat{H}\\psi=E\\psi$、含时无解析解（01:02:45–01:06:54）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 57:24 / 59:47 / 01:01:42 / 01:04:55 · 薛定谔方程地位与定态方程"
+      },
+      "total_points": 15,
+      "scoring_criteria": [
+        "说明薛定谔方程地位（类比牛顿第二定律、麦克斯韦方程组），波函数是其解（4分）",
+        "说明对位置二阶导、对时间一阶导及其依据 $E=\\frac{p^2}{2m}$（4分）",
+        "说明势能项 $U$ 的引入与三维拉普拉斯算子推广（3分）",
+        "说明定态薛定谔方程：分离变量、常数即总能量、$\\hat{H}\\psi=E\\psi$（3分）",
+        "条理清晰、理论推演连贯（1分）"
+      ]
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-25",
+      "points": 15,
+      "label": "材料分析题",
+      "stem": "阅读老师课堂讲述的材料，回答问题。\n\n> 材料：老师说，单缝（或圆孔）衍射本是连续的图样，但若把光\"一个一个\"地发射光子，会发现感光材料上光子\"中间概率高、旁边少\"；越来越多光子叠加，中间概率越来越大，最后看起来连续。平时用的激光看到的就是连续图样（光子太多）。玻恩据此提出：物质波不是机械波也不是电磁波，而是概率波。爱因斯坦最早不相信，说\"不相信上帝在掷骰子\"。\n\n（1）材料中\"单光子逐个发射仍呈现衍射分布\"说明了波函数（物质波）怎样的物理本质？（5分）\n（2）结合 $|\\psi|^2$ 的含义，解释为什么单个光子\"中间概率高、旁边少\"而大量光子叠加后\"看起来连续\"。（6分）\n（3）爱因斯坦\"不相信上帝掷骰子\"反映了怎样的物理观分歧？请作简要评价。（4分）",
+      "answer": "（1）说明物质波是概率波（玻恩解释），既非机械波也非电磁波。即使单个光子逐个发射，其落点也服从一定的概率分布，波函数反映的是微观粒子运动的统计规律；对微观粒子讨论其确定轨道和落点没有意义，只能讨论\"出现在某处的概率\"。\n（2）$|\\psi|^2$（波函数模的平方）代表粒子在该处出现的概率密度。衍射中央明纹处 $|\\psi|^2$ 大，故单个光子打在中间的概率高、旁边概率低；这是单光子层面的随机事件。当光子数极多时，大量随机落点按各处概率密度累积，概率高处累积的光子多、概率低处少，宏观上就还原出连续的、与 $|\\psi|^2$ 分布一致的衍射图样——这正是\"概率→统计规律→宏观连续\"的体现。\n（3）反映了决定论（经典物理观，认为自然规律严格确定，故爱因斯坦\"不信上帝掷骰子\"）与量子力学的统计/概率诠释（玻恩概率波，微观世界本质是概率性的）之间的分歧。评价：尽管爱因斯坦提出质疑，但玻恩的概率波解释已被物理学界大部分认可，并被单光子衍射等实验所证实，是描述微观世界的成功理论；这一争论也推动了人们对量子力学物理意义的深入理解。",
+      "hint": "(1)答\"概率波/统计规律\"；(2)用 $|\\psi|^2$=概率密度解释单个随机、大量统计还原连续；(3)答\"决定论 vs 概率诠释\"并据实验证实作评价。",
+      "explanation": "解析呼应得分点：①单光子逐个发射仍成衍射图——物质波是概率波、反映统计规律（老师 36:56、35:47）；②$|\\psi|^2$ 为概率密度，中央明纹 $|\\psi|^2$ 大故概率高，光子越多越接近连续（34:37、37:31、38:25）；③爱因斯坦\"不信上帝掷骰子\"代表决定论与概率诠释之争，但玻恩解释已被实验证实、获学界认可（37:31）。三问层层递进，各得分点之和为 15 分。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-25.md",
+        "label": "rec-25 · 说话人1 35:47 / 36:56 / 37:31 · 概率波·单光子衍射·爱因斯坦掷骰子"
+      },
+      "total_points": 15,
+      "scoring_criteria": [
+        "指出物质波是概率波、波函数反映统计规律，对微观粒子轨道无意义（5分）",
+        "用 $|\\psi|^2$=概率密度解释单光子\"中间概率高\"（3分）",
+        "解释大量光子按概率密度累积、宏观还原连续衍射图样（3分）",
+        "指出决定论与概率诠释的分歧并据实验证实作出评价（4分）"
+      ]
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 13,
+      "multiple_choice": 7,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 7,
+      "medium": 12,
+      "hard": 5
+    }
+  }
+}

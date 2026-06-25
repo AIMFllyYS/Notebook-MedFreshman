@@ -1,0 +1,592 @@
+{
+  "subjectId": "physics",
+  "chapterId": "rec-15",
+  "generatedAt": "2026-06-25",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "老师在课堂演示中指出，两根（或两组螺线管）平行导线通电时，电流方向相同与相反的相互作用分别是（　）。",
+      "answer": 0,
+      "hint": "回忆滑轨演示：同向通电时两螺线管的运动方向。",
+      "explanation": "老师开篇讲安培实验：同方向电流相互吸引，反方向（逆向）相互排斥，并用滑轨上两个同向通电的环形螺线管演示了明显吸引、改变一个电流方向后明显排斥。故选 A。B、D 把方向关系弄反；C 说不受力错误，导线之间通过磁场媒介确有作用力。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 00:00 · 同向吸引反向排斥的安培实验"
+      },
+      "options": [
+        "同向吸引、反向排斥",
+        "同向排斥、反向吸引",
+        "无论方向都不受力",
+        "同向排斥、反向也排斥"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "老师给出的安培环路定理（安培环路定律）的数学表达式是（　）。",
+      "answer": 2,
+      "hint": "类比静电场高斯定理，但这是对闭合曲线而非曲面的积分，右边带 $\\mu_0$。",
+      "explanation": "老师明确给出：$\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 \\sum I$，即 $B$ 沿任意闭合曲线的线积分等于穿过该曲线内电流强度代数和的 $\\mu_0$ 倍。A 是磁场的高斯定理（对闭合曲面积分为 0）；B 是静电场高斯定理；D 是静电场环路定理，均非本题所问。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 05:28 · 安培环路定律的给出"
+      },
+      "options": [
+        "$\\oint \\vec{B} \\cdot d\\vec{S} = 0$",
+        "$\\oint \\vec{E} \\cdot d\\vec{S} = \\dfrac{\\sum q}{\\varepsilon_0}$",
+        "$\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 \\sum I$",
+        "$\\oint \\vec{E} \\cdot d\\vec{l} = 0$"
+      ]
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "按老师讲的电流正负判定规则，当电流方向与所选闭合回路 $l$ 的环绕方向（　）时，该电流取正值（$I>0$）。",
+      "answer": 1,
+      "hint": "用右手四指顺着回路绕向，看大拇指与电流方向的关系。",
+      "explanation": "老师指出：电流方向与 $l$ 的环绕方向满足右手螺旋关系时 $I>0$，不满足时 $I<0$；在回路外的电流不计入（$I=0$）。故选 B。A、C 描述的几何关系与右手螺旋判据无关；D 错误，回路外电流不计入代数和。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 06:47 · 电流正负的右手螺旋判定"
+      },
+      "options": [
+        "与回路平面垂直",
+        "与回路绕向满足右手螺旋关系",
+        "与回路绕向反平行",
+        "在回路外部"
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "老师用安培环路定理求无限长载流实心圆柱体（半径 $R$、总电流 $I$）外部（$r>R$）的磁感应强度，结果是（　）。",
+      "answer": 0,
+      "hint": "取半径 $r$ 的同心圆回路，$B\\cdot 2\\pi r$ 等于回路内包含的全部电流乘 $\\mu_0$。",
+      "explanation": "老师推导：$r>R$ 时回路包含全部电流 $I$，$\\oint\\vec{B}\\cdot d\\vec{l}=B\\cdot 2\\pi r=\\mu_0 I$，故 $B_1=\\dfrac{\\mu_0 I}{2\\pi r}$，与无限长直导线外部结果相同。B 是内部（$r<R$，随 $r$ 线性增大）的结果；C 缺少 $2\\pi$；D 形式错误。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 29:16 · 圆柱体外部 r>R 的磁场"
+      },
+      "options": [
+        "$B = \\dfrac{\\mu_0 I}{2\\pi r}$",
+        "$B = \\dfrac{\\mu_0 J r}{2}$",
+        "$B = \\dfrac{\\mu_0 I}{r}$",
+        "$B = \\mu_0 I \\cdot 2\\pi r$"
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "老师讲无限长载流实心圆柱体内部（$r<R$）的磁感应强度随 $r$ 的变化规律是（　）。",
+      "answer": 1,
+      "hint": "内部回路只包含 $J\\cdot\\pi r^2$ 的电流，注意 $B$ 与 $r$ 的关系；表面处取得最大值。",
+      "explanation": "老师推导内部 $B_2\\cdot 2\\pi r=\\mu_0 J\\pi r^2$，$\\pi$ 约掉后 $B_2$ 随 $r$ 线性增大，到 $r=R$ 时最大为 $\\dfrac{\\mu_0 I}{2\\pi R}$，之后在外部按 $1/r$ 衰减。故选 B。A 与内部规律相反；C 错，内部并非处处为零（那是通电圆柱面的情形）；D 错，最大值在表面而非轴心。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 31:20 · 圆柱体内部 r<R 随半径线性增大"
+      },
+      "options": [
+        "随 $r$ 增大而减小，轴心处最大",
+        "随 $r$ 线性增大，到 $r=R$ 表面处最大",
+        "内部处处为零",
+        "随 $r$ 增大而增大，但最大值在轴心"
+      ]
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "老师用安培环路定理求无限大均匀面电流（横切线电流线密度为 $i$）在平面外的磁感应强度，结果是（　）。",
+      "answer": 2,
+      "hint": "取矩形回路，两条平行段贡献相加为 $2B\\cdot AB$，回路内电流为 $i\\cdot AB$。",
+      "explanation": "老师取矩形 $ABCD$ 回路，垂直段 $BC$、$DA$ 与 $B$ 垂直积分为零，$2B\\cdot AB=\\mu_0\\cdot i\\cdot AB$，$AB$ 约掉得 $B=\\dfrac{1}{2}\\mu_0 i$，且与到平面的距离无关（类比平板电场 $\\dfrac{\\sigma}{2\\varepsilon_0}$）。故选 C。A 多了 $1/r$ 项不成立；B 缺 $1/2$；D 形式错误。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 40:59 · 无限大面电流 B=½μ₀i"
+      },
+      "options": [
+        "$B = \\dfrac{\\mu_0 i}{2\\pi r}$",
+        "$B = \\mu_0 i$",
+        "$B = \\dfrac{1}{2}\\mu_0 i$",
+        "$B = 2\\mu_0 i$"
+      ]
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "老师讲螺绕环（轴线半径 $R$、共 $N$ 匝、通电流 $I$）时指出，当 $r<R_1$（内半径以内）或 $r>R_2$（外半径以外）时，管外/管内空腔处的磁感应强度为（　）。",
+      "answer": 0,
+      "hint": "回路若不包含任何电流，或包含的电流代数和为零，则积分为零。",
+      "explanation": "老师指出：$r<R_1$ 时回路不包含任何电流，$B=0$；$r>R_2$ 时回路内电流有正有负刚好抵消，求和为零，$B$ 也为零。所以磁场全部局域在环管内部。只有 $R_1<r<R_2$ 时 $B=\\dfrac{\\mu_0 N I}{2\\pi r}$。故选 A。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 52:14 · 螺绕环内外 B=0，磁场局域环内"
+      },
+      "options": [
+        "都等于 $0$",
+        "都等于 $\\dfrac{\\mu_0 N I}{2\\pi r}$",
+        "$r<R_1$ 时为 $0$，$r>R_2$ 时不为 $0$",
+        "都等于 $\\mu_0 n I$"
+      ]
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "老师给出的洛伦兹力公式及方向判定是（　）。",
+      "answer": 1,
+      "hint": "运动电荷在磁场中受力，方向由 $\\vec{v}$ 叉乘 $\\vec{B}$ 给出，负电荷再加负号。",
+      "explanation": "老师讲：运动带电粒子在磁场中受的力叫洛伦兹力，$\\vec{F}=q\\vec{v}\\times\\vec{B}$，方向满足右手法则的 $\\vec{v}\\times\\vec{B}$，负电荷加一个负号方向相反。故选 B。A 把叉乘写成点乘（点乘是标量，不能表示力的矢量方向）；C 是电场力公式；D 是安培力的电流元形式，不是对单个运动电荷的洛伦兹力。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 01:03:42 · 洛伦兹力 F=qv×B"
+      },
+      "options": [
+        "$\\vec{F} = q\\vec{v} \\cdot \\vec{B}$",
+        "$\\vec{F} = q\\vec{v} \\times \\vec{B}$",
+        "$\\vec{F} = q\\vec{E}$",
+        "$\\vec{F} = I\\,d\\vec{l} \\times \\vec{B}$"
+      ]
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "带电粒子以速度 $v_0$ 垂直进入均匀磁场做匀速圆周运动，老师推导出其运动周期 $T$（　）。",
+      "answer": 2,
+      "hint": "由 $qvB=\\dfrac{mv^2}{r}$ 得半径，再代入 $T=\\dfrac{2\\pi r}{v_0}$，看 $v_0$ 是否约去。",
+      "explanation": "老师推导：半径 $r=\\dfrac{mv_0}{qB}$，周期 $T=\\dfrac{2\\pi r}{v_0}=\\dfrac{2\\pi m}{qB}$，$v_0$ 被约掉，所以周期与速度无关，这正是回旋加速器的原理基础。故选 C。A 含 $v_0$，与老师强调的“周期与速度无关”矛盾；B 是半径公式不是周期；D 形式错误。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 01:07:29 · 周期 T=2πm/(qB) 与速度无关"
+      },
+      "options": [
+        "$T = \\dfrac{2\\pi r}{v_0}$，与速度有关",
+        "$T = \\dfrac{m v_0}{qB}$",
+        "$T = \\dfrac{2\\pi m}{qB}$，与速度无关",
+        "$T = \\dfrac{qB}{2\\pi m}$"
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "老师在课末讲安培力时强调，安培力的本质是（　）。",
+      "answer": 3,
+      "hint": "导线里是谁在运动、受什么力？把一段导线内所有这种力加起来就是安培力。",
+      "explanation": "老师明确指出：安培力的本质就是洛伦兹力——电荷在导线里移动，每个电荷受到洛伦兹力，一段导线里所有电荷受到的力之和就是安培力。故选 D。A 静电力、B 引力、C 弹力都与安培力的微观起源无关。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 01:31:18 · 安培力的本质是洛伦兹力"
+      },
+      "options": [
+        "电荷之间的静电库仑力",
+        "万有引力",
+        "导线的弹性恢复力",
+        "导线中运动电荷所受洛伦兹力之和"
+      ]
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "关于无限长螺线管的磁场，老师讲到的正确结论有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "回忆内部均匀的表达式、外部约等于零的磁力线闭合解释。",
+      "explanation": "老师讲：无限长螺线管内部均匀 $B=\\mu_0 n I$，只与单位长度匝数 $n$ 有关（A、B 对）；外部 $B\\approx 0$，因为磁力线闭合、回流空间无限大，单位面积磁力线趋于零（C 对）。D 错，外部恰恰约等于零而不是与内部相等。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 04:56 · 螺线管内部 B=μ₀nI、外部≈0"
+      },
+      "options": [
+        "内部磁场 $B = \\mu_0 n I$，且是均匀的",
+        "内部磁场只与单位长度匝数 $n$ 有关",
+        "外部磁场约等于 $0$",
+        "外部磁场与内部相等"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "老师将安培环路定理与静电场高斯定理类比，下列对比正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "区分“对闭合曲面积分”和“对闭合曲线积分”两套说法，注意磁场无源、有旋。",
+      "explanation": "老师对比：磁场对闭合曲面积分等于 0（无源，因无磁单极、磁总成对出现）（A 对）；磁场对闭合曲线积分等于 $\\mu_0\\sum I$（有旋）（B 对）；静电场对闭合曲线积分为 0（保守、无旋）（C 对）。D 错，静电场是保守场，对闭合曲线积分恰为零而非 $\\mu_0\\sum I$。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 01:00:12 · 静电场与稳恒磁场两定理对比"
+      },
+      "options": [
+        "磁场对闭合曲面积分等于 $0$，是无源场",
+        "磁场对闭合曲线积分等于 $\\mu_0\\sum I$，是有旋场",
+        "静电场对闭合曲线积分等于 $0$，是保守、无旋场",
+        "静电场对闭合曲线积分等于 $\\mu_0\\sum I$"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "关于带电粒子速度 $v$ 与磁场 $B$ 成夹角时的螺旋运动，老师讲到的正确说法有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "把 $v$ 分解为垂直分量和平行分量，分别决定打转和前进；螺距由平行速度乘周期得到。",
+      "explanation": "老师把 $v$ 分解为 $v_\\perp$（受洛伦兹力做圆周运动）和 $v_\\parallel$（不受力匀速前进），合成螺旋运动（A 对）；螺旋半径 $r=\\dfrac{m v_\\perp}{qB}$（B 对）；螺距 $d=v_\\parallel T$，且 $v_\\parallel=v_0\\cos\\theta$（C 对）。D 错，平行分量沿 $B$ 方向，叉乘为零不受洛伦兹力。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 01:14:40 · 螺旋运动半径与螺距"
+      },
+      "options": [
+        "运动可分解为 $v_\\perp$ 的圆周运动与 $v_\\parallel$ 的匀速直线运动",
+        "螺旋半径 $r = \\dfrac{m v_\\perp}{qB}$",
+        "螺距等于 $v_\\parallel$ 乘以转一圈的周期 $T$",
+        "平行分量 $v_\\parallel$ 也受洛伦兹力作用"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "老师小结的“用安培环路定理解题”的步骤/要点，正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "先找磁场方向（对称性），再选与磁场平行或垂直的回路，平行段才能把 $B$ 提出积分号。",
+      "explanation": "老师小结三步：① 分析磁场对称性、找到磁场方向（A 对）；② 选与磁场平行或垂直的闭合回路——平行段把 $B$ 提到积分号外、且要求该段 $B$ 等大，垂直段积分为零（B、C 对）；③ 分别求线积分与电流代数和。D 错，垂直段 $\\vec{B}\\cdot d\\vec{l}=0$，不能、也无需把 $B$ 提出。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 59:41 · 安培环路定理解题三步法"
+      },
+      "options": [
+        "先分析磁场对称性，确定磁场方向",
+        "选择与磁场平行或垂直的闭合回路",
+        "平行段且 $B$ 等大处可把 $B$ 提到积分号外",
+        "垂直段也应把 $B$ 提到积分号外计算"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 2,
+      "stem": "老师讲“闭合曲线内不包含任何电流时，$\\oint\\vec{B}\\cdot d\\vec{l}=0$”，对此正确的理解有（　）。",
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "hint": "积分为零不等于被积函数处处为零；想想外部导线对回路上各点 $B$ 的影响。",
+      "explanation": "老师强调：回路不含电流时积分为零（A 对），但不能说回路上每一点的 $B$ 都为零（B 对）；外面有导线时回路上各点都有磁场、且各点 $B$ 大小可不同，只是积分（相当于加权平均）恰好为零（D 对）。C 错，外部电流不计入代数和，但会改变回路上各点 $B$ 的分布，正是“积分不变而各点 $B$ 变”的体现。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 26:04 · 积分为零不等于各点B为零"
+      },
+      "options": [
+        "回路内无电流时，$\\oint\\vec{B}\\cdot d\\vec{l}=0$",
+        "积分为零不代表回路上每一点 $B$ 都为零",
+        "外部电流既不计入代数和，也不会改变回路上各点的 $B$",
+        "外部导线会使回路上各点都有磁场，但积分仍为零"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "老师反复强调“这节课很重要的一个”知识点，并以它作为计算磁感应强度的核心工具。这个知识点是（　）。",
+      "answer": 2,
+      "hint": "老师原话点名了本节最重要的内容，并把它与高斯定理对照。",
+      "explanation": "老师原话“这节课很重要的一个是安培环路定理”，并将其作为求磁感应强度的核心工具，与高斯定理系统类比。故选 C。A 毕奥-萨伐尔定律是上节课内容、推导较繁；B、D 虽本节也讲，但老师点名“很重要的一个”指的是安培环路定理。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 04:56 · “很重要的一个是安培环路定理”"
+      },
+      "options": [
+        "毕奥-萨伐尔定律",
+        "洛伦兹力公式",
+        "安培环路定理",
+        "安培力公式"
+      ]
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "老师专门小结的“安培环路定理解题三步法”，其第一步是（　）。",
+      "answer": 1,
+      "hint": "老师说“首先分析……”，要先知道磁场方向才好取回路。",
+      "explanation": "老师小结时强调：“首先分析磁场是否具有对称性”，因为只有找到磁场方向，才好取与磁场平行或垂直的闭合回路，进而把 $B$ 提出积分号或令垂直段积分为零。故第一步是 B。A、C 是后续步骤；D 是判定电流正负的辅助操作，非首步。该三步法与高斯定理解题完全类比，是老师明确小结的重点。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 59:10 · 解题步骤“首先分析磁场对称性”"
+      },
+      "options": [
+        "直接对 $d\\vec{l}$ 积分求回路长度",
+        "分析磁场对称性、确定磁场方向",
+        "计算回路内电流的代数和",
+        "用右手螺旋法则判定电流正负"
+      ]
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "老师作为回旋加速器原理基础反复强调的结论是：带电粒子在均匀磁场中做匀速圆周运动的（　）。",
+      "answer": 1,
+      "hint": "推导周期时哪个量被约掉了？正因如此才能在固定位置周期性加速。",
+      "explanation": "老师强调：周期 $T=\\dfrac{2\\pi m}{qB}$ 中 $v_0$ 被约掉，所以周期与速度无关——无论粒子速度多快周期都恒定，这正是回旋加速器能在固定位置以恒定频率持续加速的基础。故选 B。A 错，周期与速度无关而非半径无关于速度（半径 $r=\\dfrac{mv_0}{qB}$ 反而与速度有关）；C、D 与结论相反。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 01:07:54 · 周期与速度无关、回旋加速器"
+      },
+      "options": [
+        "半径与速度无关",
+        "周期与速度无关",
+        "周期与速度成正比",
+        "周期随速度增大而减小"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "老师作为理解性必考点反复对照的“静电场与稳恒磁场两大基本性质”表中，关于“源”和“旋”的正确判断是（　）。",
+      "answer": 0,
+      "hint": "静电场有电荷做源、保守无旋；磁场没有磁单极，但环路积分不为零。",
+      "explanation": "老师对照：静电场是有源场（高斯定理 $\\oint\\vec{E}\\cdot d\\vec{S}=\\dfrac{\\sum q}{\\varepsilon_0}$）、保守无旋场（环路积分为零）；稳恒磁场是无源场（$\\oint\\vec{B}\\cdot d\\vec{S}=0$，因无磁单极）、有旋场（$\\oint\\vec{B}\\cdot d\\vec{l}=\\mu_0\\sum I$，像漩涡）。故选 A。B、C、D 均把有源/无源或有旋/无旋的对应关系弄反。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 01:00:12 · 有源无源、有旋无旋对比"
+      },
+      "options": [
+        "静电场有源无旋，稳恒磁场无源有旋",
+        "静电场无源有旋，稳恒磁场有源无旋",
+        "两者都是有源有旋场",
+        "静电场有源有旋，稳恒磁场无源无旋"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 4,
+      "label": "考试重点",
+      "stem": "老师列举的“安培环路定理四类典型应用结果”中，与课堂推导一致的有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "圆柱体外、无限大面电流、螺绕环管内、无限长螺线管四个结果分别是什么？",
+      "explanation": "老师推导的四类典型结果全部正确：无限长实心圆柱体外部 $B=\\dfrac{\\mu_0 I}{2\\pi r}$（A 对）；无限大均匀面电流 $B=\\dfrac{1}{2}\\mu_0 i$、与距离无关（B 对）；螺绕环管内（$R_1<r<R_2$）$B=\\dfrac{\\mu_0 N I}{2\\pi r}$（C 对）；无限长螺线管内部 $B=\\mu_0 n I$（D 对）。四项均为老师明确划出的典型应用，故全选。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 27:37–58:31 · 四类典型应用结果"
+      },
+      "options": [
+        "无限长实心圆柱体外部 $B = \\dfrac{\\mu_0 I}{2\\pi r}$",
+        "无限大均匀面电流 $B = \\dfrac{1}{2}\\mu_0 i$",
+        "螺绕环管内 $B = \\dfrac{\\mu_0 N I}{2\\pi r}$",
+        "无限长螺线管内部 $B = \\mu_0 n I$"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 10,
+      "label": "简答题",
+      "stem": "请简述老师小结的“运用安培环路定理求磁感应强度”的解题步骤，并说明为什么必须先分析磁场的对称性。",
+      "answer": "一、解题三步骤：\n1. 分析磁场对称性，找到磁场的方向（即先判断 $B$ 沿什么方向分布）。\n2. 选取合适的闭合回路：使回路各段与磁场平行或垂直——平行段（且 $B$ 等大处）可把 $B$ 提到积分号外，垂直段 $\\vec{B}\\cdot d\\vec{l}=0$ 积分为零。\n3. 分别求出线积分 $\\oint\\vec{B}\\cdot d\\vec{l}$ 与回路内电流的代数和 $\\mu_0\\sum I$，令两者相等解出 $B$。\n二、先分析对称性的原因：只有先知道磁场方向，才能选出与磁场平行或垂直的回路；平行段才能把（处处相等的）$B$ 提出积分号、垂直段才能让积分为零，从而把复杂的矢量线积分化为简单的 $B\\times$回路长度，使方程可解。若磁场无对称性、方向不明，就无法选出这样的回路，安培环路定理虽然成立却难以用来求 $B$。",
+      "hint": "三步：对称性→选回路→求积分与电流代数和；再说明对称性是“能否把 B 提出积分号”的前提。",
+      "explanation": "本题对应老师 59:10–01:00:12 的小结。得分点呼应三步骤与对称性的作用：① 三个步骤完整（对称性分析、选平行/垂直回路、求积分与电流代数和）；② 解释平行段提出 $B$、垂直段积分为零；③ 说明对称性是把矢量线积分化简、方程可解的前提。与高斯定理解题完全类比。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 59:10 · 安培环路定理解题步骤小结"
+      },
+      "total_points": 10,
+      "scoring_criteria": [
+        "完整列出解题三步骤：分析对称性→选平行/垂直回路→求线积分与电流代数和（4分）",
+        "说明平行段且 B 等大可提出积分号、垂直段积分为零（3分）",
+        "解释先分析对称性的原因：化简矢量线积分、使方程可解（3分）"
+      ]
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 10,
+      "label": "简答题",
+      "stem": "带电粒子的速度 $v$ 与均匀磁场 $B$ 成夹角 $\\theta$（$0<\\theta<90^\\circ$）进入磁场。请说明它做什么运动，写出螺旋半径与螺距的表达式，并解释为什么周期与速度大小无关。",
+      "answer": "一、运动形式：将速度分解为垂直磁场的分量 $v_\\perp$ 和平行磁场的分量 $v_\\parallel$。$v_\\parallel$ 沿 $B$ 方向，叉乘为零不受洛伦兹力，做匀速直线前进；$v_\\perp$ 受洛伦兹力做匀速圆周运动。两者合成为螺旋运动（边转圈边前进）。\n二、表达式：\n- 螺旋半径 $r = \\dfrac{m v_\\perp}{qB}$。\n- 周期 $T = \\dfrac{2\\pi m}{qB}$。\n- 螺距 $d = v_\\parallel T = v_0\\cos\\theta\\cdot\\dfrac{2\\pi m}{qB}$。\n三、周期与速度无关的原因：圆周运动由 $qv_\\perp B = \\dfrac{m v_\\perp^2}{r}$ 得 $r=\\dfrac{m v_\\perp}{qB}$，代入 $T=\\dfrac{2\\pi r}{v_\\perp}$ 后 $v_\\perp$ 被约掉，得 $T=\\dfrac{2\\pi m}{qB}$，只与 $m$、$q$、$B$ 有关，与速度大小无关。这正是回旋加速器可在固定频率下持续加速的基础。",
+      "hint": "分解速度→螺旋运动；写 r、T、d 三式；周期推导中说明 v 被约掉。",
+      "explanation": "本题综合老师 01:12:31–01:15:18 关于螺旋运动与 01:07:29 关于周期的讲解。得分点：① 速度分解并判明螺旋运动（含 $v_\\parallel$ 不受力、$v_\\perp$ 做圆周）；② 正确写出 $r=\\dfrac{m v_\\perp}{qB}$、$T=\\dfrac{2\\pi m}{qB}$、$d=v_\\parallel T=v_0\\cos\\theta\\cdot T$；③ 通过约去 $v_\\perp$ 解释周期与速度无关并点出回旋加速器意义。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 01:14:40 · 螺旋运动半径、螺距与周期"
+      },
+      "total_points": 10,
+      "scoring_criteria": [
+        "速度分解为 v⊥、v∥ 并判明做螺旋运动（含 v∥ 不受力、v⊥ 做圆周）（4分）",
+        "正确写出螺旋半径 r=mv⊥/(qB)、周期 T=2πm/(qB) 与螺距 d=v∥T=v₀cosθ·T（3分）",
+        "通过约去 v⊥ 解释周期与速度无关，并指出回旋加速器原理（3分）"
+      ]
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 15,
+      "label": "论述题",
+      "stem": "老师在课堂上将“静电场”与“稳恒磁场”的两大基本性质做了系统对比。请论述这两大场各自的高斯定理与环路定理（写出表达式），并从“有源/无源”“有旋/无旋（保守与否）”两个角度展开比较，最后说明造成磁场“无源”的物理根源。",
+      "answer": "一、静电场的两个基本性质：\n1. 高斯定理：$\\oint\\vec{E}\\cdot d\\vec{S}=\\dfrac{\\sum q}{\\varepsilon_0}$——电场对闭合曲面的通量等于面内电荷除以 $\\varepsilon_0$，说明静电场是有源场（电荷是源）。\n2. 环路定理：$\\oint\\vec{E}\\cdot d\\vec{l}=0$——静电场对闭合曲线积分为零，因为它是保守场（保守力绕一圈不做功），即无旋场。\n二、稳恒磁场的两个基本性质：\n1. 高斯定理：$\\oint\\vec{B}\\cdot d\\vec{S}=0$——磁场对闭合曲面的通量恒为零，说明磁场是无源场。\n2. 安培环路定理：$\\oint\\vec{B}\\cdot d\\vec{l}=\\mu_0\\sum I$——磁场对闭合曲线积分等于回路内电流代数和的 $\\mu_0$ 倍，说明磁场是有旋场（像漩涡一样有旋）。\n三、两角度比较：\n- 源：静电场有源（电荷），磁场无源（曲面积分恒为零）。\n- 旋：静电场无旋（保守、环路积分为零），磁场有旋（环路积分不为零，等于 $\\mu_0\\sum I$）。\n四、磁场“无源”的物理根源：自然界不存在磁单极，磁极（N、S）总是成对出现，进出任一闭合曲面的磁力线一一对应、净通量为零；而电荷可以单独存在，故电场有源而磁场无源。",
+      "hint": "分别写两场的高斯定理和环路定理表达式；从源与旋两维度比较；最后用“无磁单极”解释磁场无源。",
+      "explanation": "本题对应老师 01:00:12 起对两大场基本性质的系统对比。得分点：① 准确写出静电场高斯定理与环路定理及其有源/无旋含义；② 准确写出磁场高斯定理与安培环路定理及其无源/有旋含义；③ 从源与旋两维度展开比较；④ 用“没有磁单极、磁极成对出现导致净通量为零”解释磁场无源；⑤ 表达式书写与条理。论证须做到史论（公式与含义）结合、对照清晰。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 01:00:12 · 静电场与稳恒磁场两大性质对比"
+      },
+      "total_points": 15,
+      "scoring_criteria": [
+        "写出静电场高斯定理 ∮E·dS=Σq/ε₀（有源）与环路定理 ∮E·dl=0（保守、无旋）（4分）",
+        "写出磁场高斯定理 ∮B·dS=0（无源）与安培环路定理 ∮B·dl=μ₀ΣI（有旋）（4分）",
+        "从“有源/无源”“有旋/无旋”两角度展开对比（3分）",
+        "用“无磁单极、磁极成对出现、净通量为零”解释磁场无源（3分）",
+        "表达式正确、条理清晰、对照明确（1分）"
+      ]
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-15",
+      "points": 15,
+      "label": "材料分析题",
+      "stem": "阅读老师课堂讲述的材料，回答问题。\n\n> 材料：1930 年狄拉克预言——既然有带负电的负电子，会不会有带正电的正电子？要验证就要看正、负电子在磁场中的不同表现。安德森用一束高能光子（电中性）撞击重金属，产生一对正负电子，再用云室观测：云室里充过饱和气体（水蒸气之类），速度很快、有能量的电子与气体相互作用，气体很容易凝结成小水滴，于是看到电子的痕迹——“有点像在操场上撒把沙子，有人走过就能看到足迹”。\n\n（1）从洛伦兹力角度说明，为什么同时进入磁场的正、负电子轨迹不同？（5分）\n（2）安德森为什么能用云室“看到”电子的径迹？其物理机制是什么？（5分）\n（3）安德森为什么不直接用电子束、而要用高能光子撞重金属来获得正负电子对？（5分）",
+      "answer": "（1）运动电荷在磁场中受洛伦兹力 $\\vec{F}=q\\vec{v}\\times\\vec{B}$。正、负电子电荷符号相反（$q$ 异号），在相同的 $\\vec{v}$、$\\vec{B}$ 下所受洛伦兹力方向相反（负电荷的洛伦兹力相对正电荷加一个负号）。洛伦兹力使粒子做圆周（或螺旋）运动并提供向心力，力的方向相反就使两者向相反方向偏转，故在同一磁场中正、负电子的弯曲轨迹方向相反，从而可以区分。\n（2）云室内充有过饱和气体（如水蒸气）。高速、带能量的电子穿过时与过饱和气体相互作用，使气体沿其路径很容易凝结成一串小水滴（尾迹），就像“操场上撒沙子，有人走过留下足迹”一样，于是电子经过的轨迹被可视化、可被观测和记录。\n（3）高能光子是电中性的，撞击重金属时可以一次性产生一对正负电子（电子-正电子对），从而在同一实验条件下同时得到正、负两种电子；若直接用电子束只能得到负电子，无法同时获得正电子来做对照，也就无法在同一磁场中比较正、负电子轨迹的差异。用中性高能光子产生正负电子对，正是为了让正电子与负电子在相同条件下同时出现以便对照验证。",
+      "hint": "(1) 用 F=qv×B、正负电荷受力反向；(2) 过饱和气体凝结成尾迹使径迹可见；(3) 中性光子撞重金属产生正负电子对、便于同时对照。",
+      "explanation": "材料取自老师 01:09:44–01:12:31 关于狄拉克预言、安德森云室实验的讲述。得分点：① 用 $\\vec{F}=q\\vec{v}\\times\\vec{B}$ 说明正负电荷受力方向相反、偏转方向相反；② 解释云室中过饱和气体被高速电子诱发凝结成水滴尾迹使径迹可见；③ 说明用中性高能光子撞重金属可一次产生正负电子对、便于在相同条件下同时观测对照（直接用电子束只有负电子）。三问层层递进，紧扣材料。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-15.md",
+        "label": "rec-15 · 说话人1 01:09:44 · 狄拉克预言正电子与安德森云室实验"
+      },
+      "total_points": 15,
+      "scoring_criteria": [
+        "用 F=qv×B 说明正负电子电荷异号、受力方向相反、轨迹偏转方向相反（5分）",
+        "解释云室中过饱和气体被高速电子诱发凝结成水滴尾迹，使径迹可见（5分）",
+        "说明中性高能光子撞重金属可产生正负电子对，便于在相同条件下同时对照（5分）"
+      ]
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 5,
+      "hard": 2
+    }
+  }
+}

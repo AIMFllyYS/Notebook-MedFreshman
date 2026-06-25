@@ -1,0 +1,595 @@
+{
+  "subjectId": "physics",
+  "chapterId": "rec-17",
+  "generatedAt": "2026-06-25",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 50
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "法拉第电磁感应定律的数学表达式是（　）。",
+      "answer": 1,
+      "hint": "感应电动势正比于磁通对时间变化率的负值。",
+      "explanation": "老师明确给出：穿过闭合回路所围面积的磁通量变化时产生感应电动势，且感应电动势正比于磁通量对时间变化率的负值，即 $\\varepsilon = -\\dfrac{d\\Phi}{dt}$。\n\n- B 项正确，含负号且对时间求导。\n- A 项 $\\varepsilon=\\dfrac{d\\Phi}{dt}$ 缺负号，负号代表方向、由楞次定律保证能量守恒，不可省。\n- C 项 $\\varepsilon=-\\dfrac{dB}{dt}$ 把磁通误写成磁感应强度，量纲不对。\n- D 项 $\\varepsilon=-\\Phi t$ 是凭空臆造的乘积式。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 16:35 · 法拉第电磁感应定律内容与公式"
+      },
+      "options": [
+        "$\\varepsilon = \\dfrac{d\\Phi}{dt}$",
+        "$\\varepsilon = -\\dfrac{d\\Phi}{dt}$",
+        "$\\varepsilon = -\\dfrac{dB}{dt}$",
+        "$\\varepsilon = -\\Phi t$"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "1820 年偶然发现通电导线能使附近小磁针偏转（即电流产生磁场）这一现象的科学家是（　）。",
+      "answer": 2,
+      "hint": "现象是他做的，理论框架主要是安培建立的。",
+      "explanation": "老师讲电磁感应发现史时指出：运动的电荷或电流产生磁场，这是奥斯特在 1820 年偶然发现的——讲座时把小磁针靠近通电电流，发现小磁针发生转向。\n\n- C 奥斯特正确。\n- A 安培是后来进行详细研究、提出主要理论框架的人，但现象是奥斯特发现的。\n- B 法拉第做的是 1831 年的磁生电（电磁感应），不是 1820 年的电生磁。\n- D 戴维是化学家、法拉第的引荐人，与该现象无关。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 04:00 · 奥斯特1820年发现电生磁"
+      },
+      "options": [
+        "安培",
+        "法拉第",
+        "奥斯特",
+        "戴维"
+      ]
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "法拉第从进入实验室到做出电磁感应现象的年份，课堂表述正确的是（　）。",
+      "answer": 1,
+      "hint": "从知道电生磁（1820）到做出磁生电用了十多年。",
+      "explanation": "老师原话：法拉第 1813 年（经戴维引荐）进入实验室，做出电磁感应是 1831 年，从 1820 年知道电生磁到 1831 年做出磁生电，用了十多年。\n\n- B 项 1813 入职、1831 发现，正确。\n- A 项把入职年误作 1820。\n- C 项把发现年误作 1820（那是奥斯特电生磁之年）。\n- D 项 1845 年是法拉第磁光效应的年份，不是电磁感应。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 08:41 · 法拉第1813入职1831发现电磁感应"
+      },
+      "options": [
+        "1820 年入职，1831 年发现",
+        "1813 年入职，1831 年发现",
+        "1813 年入职，1820 年发现",
+        "1831 年入职，1845 年发现"
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "磁通量 $\\Phi$ 的定义式以及它发生变化的条件，下列正确的是（　）。",
+      "answer": 0,
+      "hint": "磁通是磁感应强度对曲面的积分，$B$、$\\theta$、$S$ 任一变化都会引起磁通变化。",
+      "explanation": "老师指出 $\\Phi = \\displaystyle\\int \\vec{B}\\cdot d\\vec{S} = \\int B\\cos\\theta\\,dS$（$\\theta$ 是 $B$ 与法线的夹角），磁通量变化意味着 $B$ 变、$\\theta$ 变、$S$ 变中任意一个变化，回路中都有感应电动势。\n\n- A 项定义式与变化条件均正确。\n- B 项称只有 $B$ 变化才产生感应电动势，遗漏了 $\\theta$、$S$ 变化（如旋转、棒移动）。\n- C 项把 $\\cos\\theta$ 误写成 $\\sin\\theta$。\n- D 项称磁通是 $B$ 对体积的积分，定义错误。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 19:22 · 磁通定义与变化条件"
+      },
+      "options": [
+        "$\\Phi = \\int B\\cos\\theta\\,dS$，$B$、$\\theta$、$S$ 任一变化都产生感应电动势",
+        "$\\Phi = \\int B\\cos\\theta\\,dS$，只有 $B$ 变化才产生感应电动势",
+        "$\\Phi = \\int B\\sin\\theta\\,dS$，$B$、$\\theta$、$S$ 任一变化都产生感应电动势",
+        "$\\Phi = \\int B\\,dV$，体积变化才产生感应电动势"
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "1838 年提出、用于简便判断感应电动势（感应电流）方向的定律是（　）。",
+      "answer": 2,
+      "hint": "其核心是“总是反抗引起感应电流的原因”。",
+      "explanation": "老师讲：严格法（设回路绕向→右手螺旋定法线→算磁通正负→看 $d\\Phi/dt$ 符号→代负号）比较麻烦，更简单的方法就是 1838 年的楞次定律——感应电流的效果总是反抗引起感应电流的原因（磁通量的变化）。\n\n- C 楞次定律正确。\n- A 法拉第电磁感应定律给出大小与负号，但方向判定繁琐，正是楞次定律要简化的对象。\n- B 安培环路定理讲电流与磁场的关系，不判断感应方向。\n- D 右手螺旋法则只是定法线方向的工具，并非该定律本身。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 25:24 · 楞次定律1838年提出"
+      },
+      "options": [
+        "法拉第电磁感应定律",
+        "安培环路定理",
+        "楞次定律",
+        "右手螺旋法则"
+      ]
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "把钕铁硼磁铁放入竖直铜管中下落会很慢，而把不带磁性的铜块放入铜管中则接近自由落体。对此现象的解释，正确的是（　）。",
+      "answer": 0,
+      "hint": "磁铁下落使铜管每一圈导体的磁通变化，产生感应电流。",
+      "explanation": "老师做铜管实验并解释：磁铁往下走，把铜管看成一圈一圈的导体，每次经过都增加这一圈导体的磁通量，产生的感应电流产生感应磁场，这个磁场和原来磁场方向相反，阻止磁铁的变化，所以落得很慢；铜块本身在铜管里不产生这种环路感应电流，所以接近自由落体。\n\n- A 正确。\n- B 与楞次定律相反，感应磁场是反抗（阻碍）而非吸引。\n- C 老师明确说铜不带磁性、磁铁吸不了铜，不是磁吸引。\n- D 摩擦力只是次要因素，老师强调主因是涡电流（感应电流）的反抗效应。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 31:13 · 磁铁在铜管中缓慢下落的涡电流解释"
+      },
+      "options": [
+        "磁铁下落使铜管每圈导体磁通变化，感应电流产生反向磁场阻碍下落",
+        "感应电流产生的磁场与磁铁同向，把磁铁向下吸引",
+        "铜管对磁铁有静磁吸引力",
+        "主要是铜管内壁摩擦力使磁铁变慢"
+      ]
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "均匀磁场中面积为 $S$、$N$ 匝的线圈以角速度 $\\omega$ 匀速转动（$t=0$ 时法线与 $B$ 同向），其感应电动势随时间变化的表达式是（　）。",
+      "answer": 1,
+      "hint": "磁链 $\\Psi=NBS\\cos\\omega t$，对时间求导，两个负号约掉。",
+      "explanation": "老师推导：$\\theta=\\omega t$，$\\Psi = NBS\\cos\\omega t$，$\\varepsilon = -\\dfrac{d\\Psi}{dt}$；$\\cos\\omega t$ 求导出一个负号，与前面负号约掉，得 $\\varepsilon = NBS\\omega\\sin\\omega t$。\n\n- B 项正确，这正是发电机输出的正弦交流电动势。\n- A 项 $\\cos\\omega t$ 错，$t=0$ 时法线与 $B$ 同向、磁通最大，电动势应为零（$\\sin 0=0$），故应是 $\\sin$。\n- C 项漏了 $\\omega$ 因子（$\\varepsilon_m=NBS\\omega$）。\n- D 项漏了匝数 $N$。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 41:34 · 发电机感应电动势 NBSω sinωt"
+      },
+      "options": [
+        "$\\varepsilon = NBS\\omega\\cos\\omega t$",
+        "$\\varepsilon = NBS\\omega\\sin\\omega t$",
+        "$\\varepsilon = NBS\\sin\\omega t$",
+        "$\\varepsilon = BS\\omega\\sin\\omega t$"
+      ]
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "一根长为 $L$ 的金属杆 $OA$ 在均匀磁场 $B$ 中以角速度 $\\omega$ 绕 $O$ 端旋转，其感应电动势大小为（　）。",
+      "answer": 2,
+      "hint": "对长度元积分 $\\int(\\vec v\\times\\vec B)\\cdot d\\vec l$，$v=\\omega l$。",
+      "explanation": "老师推导旋转杆动生电动势：取微元 $dl$，$v=\\omega l$，对 $l$ 从 $0$ 到 $L$ 积分得 $\\varepsilon = \\dfrac{1}{2}\\omega B L^2$（带符号为 $-\\dfrac12\\omega B L^2$，大小取 $\\dfrac12\\omega B L^2$）。\n\n- C 项正确。\n- A 项 $vBL$ 是直棒平动的结果，旋转杆各点速度不同需积分。\n- B 项漏了系数 $\\dfrac12$。\n- D 项幂次错，应是 $L^2$ 而非 $L$。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 01:18:09 · 旋转杆动生电动势 ½ωBL²"
+      },
+      "options": [
+        "$\\varepsilon = \\omega B L$",
+        "$\\varepsilon = \\omega B L^2$",
+        "$\\varepsilon = \\dfrac{1}{2}\\omega B L^2$",
+        "$\\varepsilon = \\dfrac{1}{2}\\omega B L$"
+      ]
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "关于动生电动势与感生电动势的区别，下列说法正确的是（　）。",
+      "answer": 3,
+      "hint": "一个靠导体运动（洛伦兹力），一个靠磁场随时间变化（感应电场）。",
+      "explanation": "老师区分二者微观机制：动生电动势——$B$ 恒定，导体运动导致回路面积或夹角变化，微观机制是洛伦兹力；感生电动势——导体不动，$B$ 随时间变化，机制是感应电场（变化的磁场产生电场，可在真空中存在）。\n\n- D 项正确。\n- A 项把两者机制对调。\n- B 项称两者机制相同，错误，老师强调“微观机制不一样”。\n- C 项称感生电动势必须有导体切割磁力线，错误，感应电场在真空中也存在、不需导体。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 01:33:23 · 动生(洛伦兹力)与感生(感应电场)机制区别"
+      },
+      "options": [
+        "动生电动势的机制是感应电场，感生电动势的机制是洛伦兹力",
+        "两者微观机制相同，都是洛伦兹力",
+        "感生电动势必须有导体切割磁力线才能产生",
+        "动生电动势的机制是洛伦兹力，感生电动势的机制是感应电场"
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "在动生电动势公式 $\\varepsilon=\\displaystyle\\int(\\vec v\\times\\vec B)\\cdot d\\vec l$ 中，下列哪种情形会使动生电动势为零（　）。",
+      "answer": 3,
+      "hint": "$\\vec v$、$\\vec B$、$d\\vec l$ 三个矢量中任意两个相互平行时结果如何？",
+      "explanation": "老师指出：如果 $\\vec v$、$\\vec B$、$d\\vec l$ 这三个矢量任意两个相互平行（或三者共面），动生电动势都是 $0$。例如 $v\\parallel B$ 叉乘为零；$B\\parallel dl$ 时 $\\vec v\\times\\vec B$ 垂直于 $dl$，点乘为零。\n\n- D 项“任意两个矢量相互平行”正确。\n- A 项三者两两垂直时恰恰电动势最大（如直棒 $vBL$），不为零。\n- B 项“导体运动”是产生动生电动势的前提，不是为零的条件。\n- C 项“磁场很强”只影响大小，不会使其为零。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 01:06:19 · v、B、dl 任两平行则动生电动势为零"
+      },
+      "options": [
+        "$\\vec v$、$\\vec B$、$d\\vec l$ 三者两两垂直",
+        "导体在做匀速运动",
+        "磁场强度很大",
+        "$\\vec v$、$\\vec B$、$d\\vec l$ 中任意两个矢量相互平行"
+      ]
+    },
+    {
+      "id": "q011",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "关于法拉第电磁感应定律的相关结论，课堂中讲到的正确表述有（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "回忆单位、磁链、回路电流以及流过电荷与磁通的关系。",
+      "explanation": "老师逐条讲到：\n- A 感应电动势单位是伏特、磁通量单位是韦伯，正确。\n- B 若回路有 $N$ 匝且每匝磁通相同，磁链 $\\Psi=N\\Phi$，正确。\n- C 闭合回路电阻为 $R$ 时感应电流 $I=\\dfrac{\\varepsilon}{R}$，正确。\n- D 短时间内流过回路的电荷等于磁通的变化量（磁通计原理），正确。\n四项均为课堂明确陈述，全选。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 16:35-18:36 · 单位、磁链、回路电流、磁通计"
+      },
+      "options": [
+        "感应电动势单位是伏特，磁通量单位是韦伯",
+        "$N$ 匝且每匝磁通相同时磁链 $\\Psi = N\\Phi$",
+        "回路电阻为 $R$ 时感应电流 $I = \\dfrac{\\varepsilon}{R}$",
+        "短时间内流过回路的电荷等于磁通的变化量（磁通计原理）"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "课堂提到法拉第除电磁感应外的科学工作，下列属实的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "电解、电容率、磁光效应，还有最早提纯的有机物。",
+      "explanation": "老师列举法拉第主要工作：1831 年电磁感应、1833 年电解定律、1837 年电解质对电容的影响（引入电容率概念）、1845 年磁光效应，并提到苯也是他最早提纯的。\n- A 1833 电解定律，正确。\n- B 1845 磁光效应（光进入磁性材料后偏振方向改变），正确。\n- C 最早提纯苯，正确。\n- D 错误：钠、镁等元素是化学家戴维最早提纯发现的，不是法拉第。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 10:02 · 法拉第电解定律/磁光效应/提纯苯"
+      },
+      "options": [
+        "1833 年提出电解定律",
+        "1845 年发现磁光效应",
+        "最早提纯了苯",
+        "最早提纯发现了钠、镁等化学元素"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "关于楞次定律及其意义，课堂表述正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "反抗“原因”、与负号对应、保证能量守恒、遇强则强。",
+      "explanation": "老师讲楞次定律：\n- A 感应电流的效果总是反抗引起它的原因（磁通量的变化），正确。\n- B 楞次定律的“反抗”与法拉第定律中的负号相对应，正确。\n- C 它保证了电磁现象中的能量守恒，确定了电磁永动机不可能存在，正确。\n- D 错误：老师说“遇强则强”，$d\\Phi/dt$ 越大、变化越快，反抗效率越大（如福建号电磁弹射快速刹车），而非“越慢反抗越强”。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 25:24-36:57 · 楞次定律、负号对应、能量守恒、遇强则强"
+      },
+      "options": [
+        "感应电流的效果总是反抗引起它的原因（磁通量的变化）",
+        "楞次定律的“反抗”与法拉第定律中的负号相对应",
+        "它保证了电磁现象的能量守恒，杜绝电磁永动机",
+        "磁通变化越慢，产生的反抗效果越强"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "导体棒做切割磁力线运动时，电子受洛伦兹力但总洛伦兹力不做功，却能形成动生电动势。关于课堂的辨析，正确的有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "电子合速度 $\\vec v+\\vec u$，总洛伦兹力垂直于合速度；分力 $F_1$、$F_2$ 各自做功不为零。",
+      "explanation": "老师辨析洛伦兹力不做功却产生动生电动势：\n- A 电子合速度为 $\\vec v+\\vec u$，总洛伦兹力垂直于合速度，故总洛伦兹力不做功，正确。\n- B 分力 $F_1$ 平行于漂移速度 $u$，$\\vec F_1\\cdot\\vec u>0$ 做正功，提供动生电动势，正确。\n- C 分力 $F_2$ 与导体运动速度 $v$ 反平行做负功，需外力克服，真正做功（机械能→电能）的是外力，正确。\n- D 错误：老师强调洛伦兹力起媒介转化作用、“不吃回扣”，电能来自外力做功，不是凭空产生、更非违背能量守恒。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 01:29:18-01:31:38 · 洛伦兹力不做功、F1正功F2负功、外力做功"
+      },
+      "options": [
+        "总洛伦兹力垂直于电子合速度 $\\vec v+\\vec u$，故不做功",
+        "分力 $F_1$ 对漂移速度做正功，提供动生电动势",
+        "分力 $F_2$ 阻碍导体运动，需外力克服，做功的是外力",
+        "电能由洛伦兹力凭空产生，与能量守恒无关"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 2,
+      "stem": "下列哪些情形会因磁通量变化而在闭合回路中产生感应电动势（　）。",
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "磁通 $\\Phi=\\int B\\cos\\theta\\,dS$，$B$、$\\theta$、$S$ 中任一变化都行。",
+      "explanation": "老师归纳磁通变化的四种典型情形，回路中都产生感应电动势：\n- A 合开关使螺线管磁场突变——变的是 $B$，正确。\n- B 永磁铁靠近线圈——变的是 $B$（同时方向 $\\theta$ 也变），正确。\n- C 闭合面在均匀磁场中旋转——变的是 $\\theta$，正确。\n- D 导线（杆）向右匀速运动使回路面积增大——变的是 $S$，正确。\n这四种正对应 $B$、$\\theta$、$S$ 的变化，全选。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 19:54-20:43 · B、θ、S 任一变化的四种情形"
+      },
+      "options": [
+        "合上开关使螺线管中磁场突然变化",
+        "永磁铁靠近线圈",
+        "闭合线圈在均匀磁场中旋转",
+        "导线在均匀磁场中向右匀速移动使回路面积增大"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 4,
+      "stem": "（老师明确划重点）法拉第电磁感应定律的内容是（　）。",
+      "answer": 1,
+      "hint": "老师强调本章“五节都挺重要”，定律是核心，注意“正比于变化率的负值”。",
+      "explanation": "这是老师反复强调的本章核心。老师原话：当穿过闭合导体回路所围成面积的磁通量发生变化时，回路中产生感应电动势，且感应电动势正比于磁通量对时间变化率的负值，即 $\\varepsilon=-\\dfrac{d\\Phi}{dt}$。\n\n- B 项与课堂表述完全一致，正确。\n- A 项把“磁通量变化率”误为“磁通量本身”，定律是对变化率而非磁通量值成正比。\n- C 项漏掉“负值（负号）”，负号代表方向、保证能量守恒，不可省。\n- D 项把“磁通量”误为“电流”，混淆了概念。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 16:35 · 法拉第电磁感应定律内容（本章核心重点）"
+      },
+      "label": "考试重点",
+      "options": [
+        "回路感应电动势正比于穿过回路的磁通量本身",
+        "回路感应电动势正比于穿过回路磁通量对时间变化率的负值",
+        "回路感应电动势正比于穿过回路磁通量对时间的变化率（无负号）",
+        "回路感应电动势正比于穿过回路的电流对时间变化率的负值"
+      ]
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 4,
+      "stem": "（重点）长为 $L$ 的金属杆 $OA$ 在均匀磁场中绕 $O$ 端以角速度 $\\omega$ 旋转，关于其电动势大小及电势高低，正确的是（　）。",
+      "answer": 0,
+      "hint": "老师强调动生电动势类比电源，电池内部把电荷推向高电势端。",
+      "explanation": "老师重点推导：$\\varepsilon=\\dfrac12\\omega B L^2$；定义 $dl$ 从 $O$ 指向 $A$，$\\vec v\\times\\vec B$ 指向 $O$，与 $dl$ 反向（180 度）出现负号，说明电动势方向从 $A$ 指向 $O$。哪一点电势高？$O$ 点——因为这是电池内部、与外部相反，非静电力把电荷推向高电势端，故 $O$ 端电势高。\n\n- A 项大小 $\\dfrac12\\omega B L^2$、$O$ 端电势高，正确。\n- B 项大小对但电势高低判反（A 端高错误）。\n- C 项漏系数 $\\dfrac12$。\n- D 项 $vBL$ 是平动直棒结果，旋转杆需积分。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 01:18:09-01:18:59 · 旋转杆电动势½ωBL²、O端电势高（重点）"
+      },
+      "label": "考试重点",
+      "options": [
+        "$\\varepsilon = \\dfrac{1}{2}\\omega B L^2$，$O$ 端电势高",
+        "$\\varepsilon = \\dfrac{1}{2}\\omega B L^2$，$A$ 端电势高",
+        "$\\varepsilon = \\omega B L^2$，$O$ 端电势高",
+        "$\\varepsilon = \\omega B L$，$A$ 端电势高"
+      ]
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 4,
+      "stem": "（重点）老师强调：“非均匀且随时间变化磁场”中的导体棒题（第二问），能否直接用动生电动势公式 $\\int(\\vec v\\times\\vec B)\\cdot d\\vec l$ 求解？正确判断是（　）。",
+      "answer": 2,
+      "hint": "老师特别提醒：用这个公式必须全部是动生电动势。",
+      "explanation": "老师特别提醒（点了重点）：第二问虽然有动生电动势，但 $B$ 还随时间变化，会在 $MN$ 上额外产生感生电动势；而动生电动势公式只适用于“全部是动生电动势”的情形，故第二问不能仅用该公式，应改用法拉第电磁感应定律 $\\varepsilon=-\\dfrac{d\\Phi}{dt}$ 综合求解。\n\n- C 项正确。\n- A 项忽视了感生电动势成分。\n- B 项的理由（磁场太强）不成立，与是否动生无关。\n- D 项颠倒了适用条件，动生公式恰恰不能含感生成分。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 01:14:24 · 第二问含感生电动势不能仅用动生公式（重点提醒）"
+      },
+      "label": "考试重点",
+      "options": [
+        "可以，动生公式对任意磁场都适用",
+        "不能，因为磁场太强会失效",
+        "不能，因为 $B$ 随时间变化还会产生感生电动势，动生公式只适用于纯动生情形",
+        "可以，只要回路是闭合的"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 4,
+      "stem": "（重点）发电机（均匀磁场中匀速转动的线圈）输出的电流性质是（　）。",
+      "answer": 2,
+      "hint": "$\\varepsilon=NBS\\omega\\sin\\omega t$ 是正弦函数，方向周期性变化。",
+      "explanation": "老师重点结论：均匀磁场中匀速转动的线圈，感应电动势 $\\varepsilon=NBS\\omega\\sin\\omega t$ 是时间的正弦函数，方向周期性变化；外接电阻后电流 $I=\\dfrac{\\varepsilon}{R}=I_m\\sin\\omega t$，也是正弦变化、方向周期变化的电流——所以“发电机发出来的是交流电”。\n\n- C 项正弦交流电正确。\n- A 项恒定直流与正弦变化矛盾。\n- B 项脉动直流（方向不变）也错，电流方向会周期性反向。\n- D 项三角波波形不符，输出是正弦波。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 42:27 · 发电机输出正弦交流电（重点）"
+      },
+      "label": "考试重点",
+      "options": [
+        "恒定的直流电",
+        "方向不变的脉动直流电",
+        "方向周期性变化的正弦交流电",
+        "三角波形的交流电"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 4,
+      "stem": "（重点）关于动生电动势 $\\varepsilon=\\displaystyle\\int(\\vec v\\times\\vec B)\\cdot d\\vec l$ 及其应用，老师强调的正确结论有（　）。",
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "hint": "非静电场 $\\vec E_k=\\vec v\\times\\vec B$；直棒 $vBL$；动生只出现在切割磁力线的那段导体上。",
+      "explanation": "老师重点讲动生电动势：\n- A 微观机制是洛伦兹力，把它看成非静电场 $\\vec E_k=\\dfrac{F}{q}=\\vec v\\times\\vec B$，正确。\n- B 三者两两垂直的直导体棒 $\\varepsilon=vBL$，方向从 $a$ 指向 $b$，正确。\n- C 三角框架题中动生电动势只出现在运动的 $MN$ 棒上，因为只有它切割磁力线，正确。\n- D 错误：$\\vec v$、$\\vec B$、$d\\vec l$ 中任意两个矢量平行（或三者共面）时动生电动势为零，而非“任意一个为零时”才为零，表述不准确。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 01:03:32-01:15:33 · 动生电动势机制、vBL、只在切割棒上（重点）"
+      },
+      "label": "考试重点",
+      "options": [
+        "微观机制是洛伦兹力，非静电场 $\\vec E_k = \\vec v\\times\\vec B$",
+        "三者两两垂直的直导体棒 $\\varepsilon = vBL$",
+        "动生电动势只出现在切割磁力线的那段运动导体上",
+        "只要 $\\vec v$、$\\vec B$、$d\\vec l$ 中任意一个为零，动生电动势才为零"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 10,
+      "stem": "简述楞次定律的内容，并说明它与法拉第电磁感应定律中的负号、能量守恒之间的关系。",
+      "answer": "一、内容：楞次定律（1838 年）指出，感应电流（感应电动势）的效果总是反抗引起感应电流的原因——即反抗磁通量的变化。具体地，当穿过回路的磁通量增大时，感应电流产生的磁场方向与原磁场相反，力图阻止磁通增大；当磁通量减小时，感应电流产生的磁场与原磁场同向，力图阻止磁通减小。\n二、与负号的关系：楞次定律的“反抗”正好与法拉第电磁感应定律 $\\varepsilon=-\\dfrac{d\\Phi}{dt}$ 中的负号相对应。负号表示感应电动势的方向总是使其效果反抗磁通变化，因此楞次定律提供了无需繁琐定法线、判磁通正负的简便方向判定方法。\n三、与能量守恒的关系：正是这种“反抗”保证了电磁现象中的能量守恒与转换。如磁铁靠近导体时感应电流阻碍其运动，外界必须克服阻力对磁铁做功，机械能才转化为电能；若没有负号（不反抗），磁铁会被自动吸入、越来越快，相当于凭空获得能量，构成电磁永动机，这是不可能的。故楞次定律杜绝了电磁永动机。",
+      "hint": "先答内容（反抗原因），再答与负号对应，最后答保证能量守恒、杜绝永动机。",
+      "explanation": "本题呼应得分点：楞次定律内容（反抗磁通变化）来自 25:24-27:47；与负号对应、保证能量守恒杜绝永动机来自 36:57-39:38。老师以磁铁靠近导体需克服阻力做功、若无负号则自动吸入成永动机为例，论证负号保证能量守恒。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 25:24-39:38 · 楞次定律内容、与负号对应、能量守恒"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "准确叙述楞次定律内容：感应电流效果总是反抗引起它的原因（磁通量的变化），并区分磁通增大/减小两种情形（4分）",
+        "说明“反抗”与法拉第定律负号相对应，是判定方向的简便方法（3分）",
+        "说明楞次定律保证电磁现象能量守恒、杜绝电磁永动机（如磁铁需克服阻力做功）（3分）"
+      ]
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 10,
+      "stem": "简述动生电动势与感生电动势的区别，分别说明它们产生的条件和微观机制。",
+      "answer": "一、动生电动势：\n1. 产生条件：磁场 $B$ 恒定（不随时间变化），导体（回路）发生运动，使回路所围面积或回路与磁场的夹角改变，从而磁通量变化。\n2. 微观机制：洛伦兹力。导体运动时其中的自由电子随之运动，受到洛伦兹力 $\\vec F=q\\vec v\\times\\vec B$，把它看成非静电场 $\\vec E_k=\\dfrac{F}{q}=\\vec v\\times\\vec B$，电动势 $\\varepsilon=\\displaystyle\\int(\\vec v\\times\\vec B)\\cdot d\\vec l$。\n二、感生电动势：\n1. 产生条件：导体（回路）不动，磁场 $B$ 随时间变化，引起磁通量变化。\n2. 微观机制：感应电场。变化的磁场会激发（感应出）一个电场，这个电场可以在真空中存在，不需要导体；正是它驱动电荷形成感生电动势。\n三、两者微观机制不同：动生主要靠洛伦兹力，感生靠感应电场。",
+      "hint": "分别从“产生条件（谁动、谁变）”和“微观机制（洛伦兹力 vs 感应电场）”两方面对比。",
+      "explanation": "本题呼应得分点：动生条件（B恒定、导体运动）与机制（洛伦兹力、$\\vec E_k=\\vec v\\times\\vec B$）来自 01:02:29-01:03:32；感生条件（导体不动、B随时间变）与机制（感应电场、真空中存在）来自 01:33:23-01:33:56。老师强调二者“微观机制不一样”。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 01:02:29-01:33:56 · 动生与感生电动势的条件与微观机制"
+      },
+      "label": "简答题",
+      "total_points": 10,
+      "scoring_criteria": [
+        "动生电动势条件：B 恒定、导体运动使回路面积或夹角改变（2分）",
+        "动生电动势机制：洛伦兹力，$\\vec E_k=\\vec v\\times\\vec B$，$\\varepsilon=\\int(\\vec v\\times\\vec B)\\cdot d\\vec l$（3分）",
+        "感生电动势条件：导体不动、B 随时间变化（2分）",
+        "感生电动势机制：感应电场，变化磁场激发电场、可在真空中存在（3分）"
+      ]
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 15,
+      "stem": "论述：洛伦兹力对运动电荷不做功，为什么导体棒做切割磁力线运动时却能形成动生电动势？请结合电子受力分解，论证能量的来源与转化，并说明洛伦兹力在其中的作用。",
+      "answer": "一、矛盾的提出：动生电动势的微观机制是洛伦兹力，但洛伦兹力始终垂直于电荷速度，理论上不做功；既然不做功，为何外接导线后该电动势能形成电流、对外做功？\n二、电子的速度与受力分解：导体向右以速度 $\\vec v$ 运动带动电子，电子在导体内还有沿导体的漂移速度 $\\vec u$，故电子合速度为 $\\vec v+\\vec u$。总洛伦兹力 $\\vec F$ 垂直于合速度 $\\vec v+\\vec u$。把 $\\vec F$ 分解为两个分力：$\\vec F_1$（平行于漂移速度 $\\vec u$ 方向，沿导体）和 $\\vec F_2$（垂直于导体、与运动速度 $\\vec v$ 反向）。\n三、做功分析：\n1. $\\vec F_1\\cdot\\vec u>0$，做正功，把电子沿导体推动，正是它提供动生电动势（充当非静电力）。\n2. $\\vec F_2\\cdot\\vec v<0$，做负功，表现为阻碍导体运动的阻力。\n3. 总功 $\\vec F\\cdot(\\vec v+\\vec u)=0$，即总洛伦兹力不做功——两分力做的正负功恰好抵消。\n四、能量来源与洛伦兹力的作用：要使导体匀速运动，必须施加一个与 $\\vec F_2$ 等大反向的外力，外力做正功克服阻力。这部分外力做的功（机械能）通过洛伦兹力这个“媒介”全部转化为动生电动势提供的电能——洛伦兹力本身不做净功、“不吃回扣”，只起转化中介作用：你提供多少外力做功，就转化成多少电能。因此真正做功、提供能量的是外力，过程满足能量守恒（机械能→电能）。",
+      "hint": "依次论证：①洛伦兹力垂直合速度不做功；②分解 F₁（正功，给电动势）、F₂（负功，阻碍）；③外力克服 F₂ 做功；④洛伦兹力只作媒介，能量来自外力，满足能量守恒。",
+      "explanation": "本题呼应每个得分点：合速度 $\\vec v+\\vec u$ 与总洛伦兹力垂直不做功（01:27:14-01:29:18）；$\\vec F_1$ 对 $u$ 做正功提供电动势、$\\vec F_2$ 对 $v$ 做负功（01:30:58）；需外力克服 $F_2$（01:31:38）；洛伦兹力起媒介转化作用、做功的是外力、机械能转电能（01:31:38-01:33:23）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 01:24:59-01:33:23 · 洛伦兹力不做功却产生动生电动势的辨析"
+      },
+      "label": "论述题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "指出矛盾：洛伦兹力垂直于电荷速度、对电荷不做功，但动生电动势能对外做功（3分）",
+        "电子合速度 $\\vec v+\\vec u$，总洛伦兹力垂直于合速度故不做功；将洛伦兹力分解为 $\\vec F_1$（沿导体）与 $\\vec F_2$（阻碍运动）（4分）",
+        "$\\vec F_1$ 对漂移 $u$ 做正功、提供动生电动势；$\\vec F_2$ 对 $v$ 做负功、阻碍运动（4分）",
+        "需外力克服 $F_2$ 做功，能量来源是外力（机械能），洛伦兹力只起媒介转化作用、过程满足能量守恒（机械能→电能）（4分）"
+      ]
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceChapter": "rec-17",
+      "points": 15,
+      "stem": "阅读材料，回答问题。\n\n> 材料（老师课堂演示与举例）：把一块不带磁性的铜块放进竖直铜管中，它几乎像自由落体一样很快落下（不到一秒）；但把一块钕铁硼磁铁放进同一根铜管，磁铁却下落得非常缓慢；若换成塑料（非导体）管，磁铁又恢复自由落体。说话人2 还展示：用磁铁撞击或落向铜板时，磁铁像被“隔空定住”、缓慢落到铜板上。老师补充：福建号航母电磁弹射把飞机弹出后能“马上刹车”，估计也是这个原理，且“$d\\Phi/dt$ 越大、反抗越强，遇强则强”。\n\n（1）指出材料中各现象共同涉及的物理原理及对应的物理量名称。（4分）\n（2）运用楞次定律解释为什么磁铁在铜管中下落缓慢、而铜块或塑料管中不会。（6分）\n（3）分析“遇强则强”（速度越快刹车越强）的物理原因，并指出该过程中的能量转化。（5分）",
+      "answer": "（1）各现象共同涉及电磁感应中的楞次定律，本质是涡电流（涡流）效应——涡电流是“移动的磁场”（说话人2 旁白）；核心物理量是磁通量 $\\Phi$ 及其对时间的变化率 $\\dfrac{d\\Phi}{dt}$、感应电动势 $\\varepsilon$ 与感应（涡）电流。\n（2）磁铁在铜管中下落时，把铜管看成一圈圈闭合导体，磁铁经过使各圈导体内的磁通量不断变化，由法拉第定律产生感应（涡）电流；由楞次定律，感应电流产生的磁场总是反抗磁通的变化，对磁铁的运动施加阻碍力，故磁铁下落缓慢。铜块本身在铜管内不构成切割磁力线的闭合环路、不产生这种环路涡流，故接近自由落体；塑料是非导体，无法形成感应电流，也无反抗力，磁铁同样自由落体。\n（3）由 $\\varepsilon=-\\dfrac{d\\Phi}{dt}$，磁铁（或被弹射物）运动越快，磁通变化率 $\\dfrac{d\\Phi}{dt}$ 越大，感应电动势和涡电流越大，反抗（阻碍）力也越大，故“遇强则强”、速度越快刹车越猛（如电磁弹射后快速制动）。能量转化：磁铁/运动物体的机械能（动能）通过涡电流在导体中转化为电能，并因导体电阻发热转化为内能（焦耳热），动能因此被消耗、运动被制动，整个过程满足能量守恒。",
+      "hint": "（1）认出楞次定律/涡电流及磁通、感应电流等量；（2）用“感应电流反抗磁通变化”解释，并对比导体/非导体；（3）由 ε=-dΦ/dt 说明遇强则强，能量由机械能→电能→内能。",
+      "explanation": "材料与设问紧扣课堂：铜管/铜块/塑料管对照实验（28:55-31:53）、说话人2 涡电流“移动的磁场”旁白（33:34）、福建号电磁弹射与“遇强则强、$d\\Phi/dt$ 越大反抗越强”（33:58-34:24）。各得分点分别对应原理识别、楞次定律解释、$d\\Phi/dt$ 机理与能量守恒（机械能→电能→焦耳热）。",
+      "sourceRef": {
+        "path": "content/physics/recording/rec-17.md",
+        "label": "rec-17 · 说话人1 28:55-34:24 · 铜管磁铁实验、涡电流、福建号电磁弹射遇强则强"
+      },
+      "label": "材料分析题",
+      "total_points": 15,
+      "scoring_criteria": [
+        "指出共同原理为电磁感应/楞次定律与涡电流效应，并列出磁通量、磁通变化率、感应电动势、感应（涡）电流等物理量（4分）",
+        "用楞次定律解释磁铁在铜管中缓慢下落：感应涡流产生反向磁场反抗磁通变化、阻碍运动（3分）",
+        "对比说明铜块、塑料（非导体）管中无环路涡流故自由落体（3分）",
+        "由 $\\varepsilon=-\\dfrac{d\\Phi}{dt}$ 说明速度越快磁通变化越快、反抗越强（遇强则强）（2分）",
+        "指出能量转化：机械能（动能）→电能→内能（焦耳热），满足能量守恒（3分）"
+      ]
+    }
+  ],
+  "summary": {
+    "totalQuestions": 24,
+    "byType": {
+      "single_choice": 14,
+      "multiple_choice": 6,
+      "essay": 4
+    },
+    "bySource": {
+      "current_chapter": 24
+    },
+    "byDifficulty": {
+      "basic": 13,
+      "medium": 9,
+      "hard": 2
+    }
+  }
+}
