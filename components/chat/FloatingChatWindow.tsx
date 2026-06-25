@@ -40,6 +40,11 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
   const [pos, setPos] = useState(win.pos);
   const [size, setSize] = useState(win.size);
 
+  // 当前科目上下文（划词浮窗需携带，否则 API 会 fallback 到默认科目）
+  const activeSubjectId = useStore((s) => s.activeSubjectId);
+  const activeCategoryId = useStore((s) => s.activeCategoryId);
+  const activeItemId = useStore((s) => s.activeItemId);
+
   const dragRef = useRef<{ startX: number; startY: number; initialX: number; initialY: number } | null>(null);
   const resizeBRRef = useRef<{ startX: number; startY: number; initialWidth: number; initialHeight: number } | null>(null);
   const resizeBLRef = useRef<{ startX: number; startY: number; initialX: number; initialWidth: number; initialHeight: number } | null>(null);
@@ -77,6 +82,9 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
             modelId: win.modelId,
             enableThinking: win.enableThinking,
             enableSearch: win.enableSearch,
+            subjectId: activeSubjectId,
+            categoryId: activeCategoryId,
+            itemId: activeItemId,
           }),
           signal: ctrl.signal,
         });

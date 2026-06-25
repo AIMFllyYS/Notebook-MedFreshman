@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
   const menuSkills = skills.filter((s) => !s.pinned);
 
   // 多科上下文参数
-  const subjectId: string = String(body.subjectId ?? "probability");
+  const subjectId: string = String(body.subjectId ?? "other");
   const categoryId: string = String(body.categoryId ?? "detail");
   const itemId: string = String(body.itemId ?? "");
   const currentTopic: string = String(body.currentTopic ?? "");
