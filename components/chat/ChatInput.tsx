@@ -7,51 +7,10 @@ import {
 import type { ChatContext, ChatAttachment } from '@/lib/types/chat';
 import { useChatUI } from '@/lib/hooks/useChatUI';
 import { useSettings } from '@/lib/hooks/useSettings';
-import { getModelInfo } from '@/lib/ai/models';
+import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
 import ModelMenu from '@/components/chat/ModelMenu';
 import TokenDashboard from '@/components/chat/TokenDashboard';
-
-interface AttachmentPreview {
-  file: File;
-  previewUrl: string;
-  base64: string;
-  mimeType: string;
-}
-
-const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2 MB — above this we compress
-
-function compressImage(file: File, maxDim = 1920): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = () => {
-      URL.revokeObjectURL(url);
-      let { width, height } = img;
-      if (width > maxDim || height > maxDim) {
-        const scale = maxDim / Math.max(width, height);
-        width = Math.round(width * scale);
-        height = Math.round(height * scale);
-      }
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d')!;
-      ctx.drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL('image/jpeg', 0.85));
-    };
-    img.onerror = reject;
-    img.src = url;
-  });
-}
-
-function readFileAsDataUrl(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
+import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 
 export interface ChatInputProps {
   onSend: (content: string, options?: {
@@ -73,11 +32,23 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
   const [isFocused, setIsFocused] = useState(false);
   const [enableThinking, setEnableThinking] = useState(() => useSettings.getState().defaultThinking);
   const [enableSearch, setEnableSearch] = useState(() => useSettings.getState().defaultSearch);
-  const [attachments, setAttachments] = useState<AttachmentPreview[]>([]);
-  const [attachError, setAttachError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { quotedText, clearQuotedText } = useChatUI();
+  const {
+    attachments,
+    addFiles,
+    remove: removeAttachment,
+    clear: clearAttachments,
+    toChatFormat,
+    handlePaste,
+    handleDrop,
+    handleDragOver,
+    handleDragEnter,
+    handleDragLeave,
+    isDragging,
+    error: attachError,
+  } = useImageAttachments();
 
   useEffect(() => {
     const el = textareaRef.current;
@@ -87,33 +58,20 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
     }
   }, [input]);
 
-  useEffect(() => {
-    if (attachError) {
-      const t = setTimeout(() => setAttachError(null), 3000);
-      return () => clearTimeout(t);
-    }
-  }, [attachError]);
-
   const handleSend = useCallback(() => {
     const trimmed = input.trim();
     if ((!trimmed && attachments.length === 0) || isLoading || externalDisabled) return;
-
-    const chatAttachments: ChatAttachment[] | undefined =
-      attachments.length > 0
-        ? attachments.map((a) => ({ type: 'image' as const, mimeType: a.mimeType, base64: a.base64 }))
-        : undefined;
 
     onSend(trimmed || '请描述这张图片', {
       quotedText: quotedText || undefined,
       enableThinking,
       enableSearch,
-      attachments: chatAttachments,
+      attachments: toChatFormat(),
     });
     setInput('');
-    attachments.forEach((a) => URL.revokeObjectURL(a.previewUrl));
-    setAttachments([]);
+    clearAttachments();
     if (quotedText) clearQuotedText();
-  }, [input, attachments, isLoading, externalDisabled, onSend, enableThinking, enableSearch, quotedText, clearQuotedText]);
+  }, [input, attachments, isLoading, externalDisabled, onSend, enableThinking, enableSearch, quotedText, clearQuotedText, toChatFormat, clearAttachments]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -123,50 +81,31 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
   };
 
   const handleAttachClick = () => {
-    const modelId = useSettings.getState().selectedModelId;
-    const info = getModelInfo(modelId);
-    if (info && !info.vision) {
-      setAttachError(`当前模型 ${info.label} 不支持图片上传`);
-      return;
-    }
     fileInputRef.current?.click();
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files?.length) return;
-
-    const newAttachments: AttachmentPreview[] = [];
-    for (const file of Array.from(files)) {
-      if (!file.type.startsWith('image/')) {
-        setAttachError('仅支持图片文件（JPG/PNG/GIF/WebP）');
-        continue;
-      }
-      try {
-        const needsCompress = file.size > MAX_IMAGE_SIZE;
-        const base64 = needsCompress ? await compressImage(file) : await readFileAsDataUrl(file);
-        const previewUrl = URL.createObjectURL(file);
-        const mimeType = needsCompress ? 'image/jpeg' : file.type;
-        newAttachments.push({ file, previewUrl, base64, mimeType });
-      } catch {
-        setAttachError(`处理 ${file.name} 失败`);
-      }
-    }
-    setAttachments((prev) => [...prev, ...newAttachments]);
+    await addFiles(Array.from(files));
     e.target.value = '';
-  };
-
-  const removeAttachment = (idx: number) => {
-    setAttachments((prev) => {
-      URL.revokeObjectURL(prev[idx].previewUrl);
-      return prev.filter((_, i) => i !== idx);
-    });
   };
 
   const inputDisabled = isLoading || !!externalDisabled;
 
   return (
-    <div className="chat-input-container">
+    <div
+      className="chat-input-container"
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      style={isDragging ? {
+        outline: '2px dashed var(--md-sys-color-primary)',
+        outlineOffset: '-4px',
+        borderRadius: '12px',
+      } : undefined}
+    >
       {attachError && (
         <div style={{
           padding: '6px 12px', fontSize: '11px', color: 'var(--md-sys-color-error)',
@@ -177,28 +116,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
       )}
 
       {attachments.length > 0 && (
-        <div style={{
-          display: 'flex', gap: '6px', flexWrap: 'wrap', padding: '6px 8px',
-          borderRadius: '10px 10px 0 0',
-          background: 'var(--bg-muted)', borderBottom: '1px solid var(--line)',
-        }}>
-          {attachments.map((a, i) => (
-            <div key={i} style={{ position: 'relative', width: 56, height: 56, borderRadius: 8, overflow: 'hidden', border: '1px solid var(--line)' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element -- blob URLs not supported by next/image */}
-              <img src={a.previewUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              <button
-                onClick={() => removeAttachment(i)}
-                style={{
-                  position: 'absolute', top: 2, right: 2, width: 16, height: 16, borderRadius: '50%',
-                  background: 'rgba(0,0,0,0.55)', color: '#fff', border: 'none', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
-                }}
-              >
-                <X size={10} />
-              </button>
-            </div>
-          ))}
-        </div>
+        <AttachmentThumbnails previews={attachments} onRemove={removeAttachment} />
       )}
 
       {quotedText && (
@@ -227,9 +145,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, chatCo
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
+          onPaste={handlePaste}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder={externalDisabled ? (disabledReason || '输入已禁用') : isLoading ? 'AI 正在思考中...' : '输入问题，Shift+Enter换行...'}
+          placeholder={externalDisabled ? (disabledReason || '输入已禁用') : isLoading ? 'AI 正在思考中...' : '输入问题，Shift+Enter换行，Ctrl+V粘贴图片...'}
           disabled={inputDisabled}
           rows={1}
           className="chat-input-textarea"

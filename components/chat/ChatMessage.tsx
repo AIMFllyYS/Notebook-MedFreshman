@@ -7,6 +7,7 @@ import { MessageContent } from '@/components/chat/MessageContent';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import ArtifactCard from '@/components/chat/ArtifactCard';
 import ProcessingSteps from '@/components/chat/ProcessingSteps';
+import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
 
 interface ChatMessageProps {
@@ -42,12 +43,17 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
 
       <div className="chat-message-content">
         {isUser ? (
-          <div
-            className="chat-bubble-user chat-prose"
-            onContextMenu={(e) => openMessageMenu(e, message.content)}
-          >
-            <MessageContent content={message.content} enableVisualizations={false} preserveLineBreaks />
-          </div>
+          <>
+            {message.attachments && message.attachments.length > 0 && (
+              <AttachmentThumbnails readonlyAttachments={message.attachments} size={80} />
+            )}
+            <div
+              className="chat-bubble-user chat-prose"
+              onContextMenu={(e) => openMessageMenu(e, message.content)}
+            >
+              <MessageContent content={message.content} enableVisualizations={false} preserveLineBreaks />
+            </div>
+          </>
         ) : (
           <>
             <ProcessingSteps msg={message} streaming={isStreaming} />
