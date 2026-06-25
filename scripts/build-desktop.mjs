@@ -233,7 +233,16 @@ materializeNodeModules(SA);
 await smokeTestStandalone(SA);
 
 // 3. Package. electron-builder reads electron-builder.yml.
-run("pnpm exec electron-builder --win");
+//    electron-builder downloads winCodeSign/nsis helper binaries from GitHub at pack
+//    time (even unsigned builds need winCodeSign). On CN networks that GitHub fetch
+//    routinely fails with `connect ETIMEDOUT <github-ip>:443` AFTER next build + hoist +
+//    smoke test all pass — i.e. minutes of work thrown away at the last step. Default the
+//    binaries mirror to npmmirror so packaging is reliable here; an explicit env wins.
+run("pnpm exec electron-builder --win", {
+  ELECTRON_BUILDER_BINARIES_MIRROR:
+    process.env.ELECTRON_BUILDER_BINARIES_MIRROR ||
+    "https://npmmirror.com/mirrors/electron-builder-binaries/",
+});
 
 // 3b. Verify the real node_modules survived into the packaged resources.
 assertPackagedDeps();
