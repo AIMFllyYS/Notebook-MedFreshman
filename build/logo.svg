@@ -1,0 +1,44 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="64" y1="32" x2="448" y2="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f0702f"/>
+      <stop offset="1" stop-color="#c63f18"/>
+    </linearGradient>
+    <linearGradient id="pageL" x1="128" y1="120" x2="256" y2="392" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff8ee"/>
+      <stop offset="1" stop-color="#ffe8cd"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 品牌底色：暖橙 squircle -->
+  <rect x="0" y="0" width="512" height="512" rx="116" fill="url(#bg)"/>
+  <!-- 顶部柔光，做出立体 -->
+  <path d="M116 0 H396 A116 116 0 0 1 512 116 V196 H0 V116 A116 116 0 0 1 116 0 Z" fill="#ffffff" opacity="0.10"/>
+
+  <!-- 摊开的书 -->
+  <g>
+    <path d="M256 156 C214 130 170 126 130 138 V374 C170 362 214 366 256 392 Z" fill="url(#pageL)"/>
+    <path d="M256 156 C298 130 342 126 382 138 V374 C342 362 298 366 256 392 Z" fill="#ffffff"/>
+    <rect x="249" y="156" width="14" height="236" rx="7" fill="#f4d4b3"/>
+    <g stroke="#eba673" stroke-width="11" stroke-linecap="round">
+      <line x1="162" y1="194" x2="230" y2="205"/>
+      <line x1="162" y1="232" x2="230" y2="243"/>
+      <line x1="162" y1="270" x2="230" y2="281"/>
+    </g>
+    <g stroke="#eba673" stroke-width="11" stroke-linecap="round">
+      <line x1="282" y1="205" x2="350" y2="194"/>
+      <line x1="282" y1="243" x2="350" y2="232"/>
+      <line x1="282" y1="281" x2="350" y2="270"/>
+    </g>
+  </g>
+
+  <!-- AI 火花（四角星）：象征智能讲解 -->
+  <g transform="translate(388,150)">
+    <path d="M0 -40 C7 -12 12 -7 40 0 C12 7 7 12 0 40 C-7 12 -12 7 -40 0 C-12 -7 -7 -12 0 -40 Z" fill="#fff4d8"/>
+    <circle cx="0" cy="0" r="7" fill="#ffffff"/>
+  </g>
+  <!-- 小火花点缀 -->
+  <g transform="translate(150,378)" fill="#ffe7c4">
+    <path d="M0 -15 C2.6 -4.5 4.5 -2.6 15 0 C4.5 2.6 2.6 4.5 0 15 C-2.6 4.5 -4.5 2.6 -15 0 C-4.5 -2.6 -2.6 -4.5 0 -15 Z"/>
+  </g>
+</svg>

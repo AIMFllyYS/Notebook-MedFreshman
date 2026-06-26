@@ -687,6 +687,43 @@
   cursor: pointer;
   color: var(--md-sys-color-on-surface-variant);
 }
+/* 删除二次确认浮条（覆盖在条目右上角） */
+.chat-history-confirm {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 5px;
+  border-radius: 9px;
+  background: var(--md-sys-color-surface-container-high);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+.chat-history-confirm-label {
+  font-size: 11px;
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 0 2px;
+}
+.chat-history-confirm-yes {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+}
+.chat-history-confirm-no {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface-variant);
+}
 
 /* ── 消息气泡 ─────────────────────────────────── */
 .chat-message {

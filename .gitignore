@@ -6,11 +6,21 @@ node_modules/
 # next.js
 .next/
 out/
-build/
 next-env.d.ts
 
 # electron desktop build output
 dist-desktop/
+
+# electron-builder build resources: track the icon assets, never track signing material
+build/*
+!build/logo.svg
+!build/icon.ico
+!build/icon.png
+!build/installer-icon.ico
+!build/installer-icon.png
+# code-signing material must NEVER be committed (kept in %LOCALAPPDATA%\Gailvlun)
+*.pfx
+*.pwd
 
 # env (keep .env.example tracked)
 .env.local

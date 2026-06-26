@@ -7,9 +7,11 @@
 //
 // Run via: pnpm run desktop:build
 import { execSync, spawn } from "node:child_process";
-import { existsSync, readdirSync, rmSync, cpSync } from "node:fs";
+import { existsSync, readdirSync, rmSync, cpSync, readFileSync } from "node:fs";
 import net from "node:net";
 import http from "node:http";
+import path from "node:path";
+import os from "node:os";
 
 const SA = ".next/standalone";
 
@@ -198,9 +200,28 @@ function assertPackagedDeps() {
   console.log("[build-desktop] post-pack check OK — packaged standalone has real node_modules/next.");
 }
 
-// 0. Regenerate the script-id manifest the app imports (normally a prebuild step;
-//    we call `next build` directly, so run it explicitly here).
+// Optional basic (self-signed) code signing. If a local cert exists OUTSIDE the repo
+// (%LOCALAPPDATA%\Gailvlun\codesign.pfx + codesign.pwd), electron-builder signs the
+// portable + installer with it (signtool, RFC3161-timestamped). The cert & password are
+// NEVER committed — absent them the build is simply unsigned (prior behavior). An explicit
+// CSC_LINK in the environment always wins.
+function resolveSigning() {
+  if (process.env.CSC_LINK) return {};
+  const dir = path.join(process.env.LOCALAPPDATA || os.homedir(), "Gailvlun");
+  const pfx = path.join(dir, "codesign.pfx");
+  const pwd = path.join(dir, "codesign.pwd");
+  if (existsSync(pfx) && existsSync(pwd)) {
+    console.log("[build-desktop] code-signing: local self-signed cert found (kept outside repo) — will sign.");
+    return { CSC_LINK: pfx, CSC_KEY_PASSWORD: readFileSync(pwd, "utf8").trim() };
+  }
+  console.log("[build-desktop] code-signing: no local cert — building UNSIGNED.");
+  return {};
+}
+
+// 0. Regenerate derived assets the app/package imports (normally prebuild steps; we call
+//    `next build` directly, so run them explicitly here): script-id manifest + app icons.
 run("node scripts/gen-script-ids.mjs");
+run("node scripts/gen-icon.mjs");
 
 // 1. Standalone production build. NEXT_PUBLIC_VIDEO_CDN_BASE is inlined here.
 run("pnpm exec next build", {
@@ -242,6 +263,7 @@ run("pnpm exec electron-builder --win", {
   ELECTRON_BUILDER_BINARIES_MIRROR:
     process.env.ELECTRON_BUILDER_BINARIES_MIRROR ||
     "https://npmmirror.com/mirrors/electron-builder-binaries/",
+  ...resolveSigning(),
 });
 
 // 3b. Verify the real node_modules survived into the packaged resources.

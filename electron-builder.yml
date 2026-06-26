@@ -1,5 +1,6 @@
 appId: com.gailvlun.desktop
 productName: Gailvlun
+copyright: Copyright © 2026 Gailvlun
 directories:
   output: dist-desktop
   buildResources: build
@@ -20,10 +21,11 @@ extraResources:
     to: standalone/node_modules
 asar: true
 win:
+  icon: build/icon.ico
+  publisherName: Gailvlun
   target:
     - portable
     - nsis
-  # icon: build/icon.ico   # optional — default Electron icon used if absent
 portable:
   artifactName: Gailvlun-portable-${version}.exe
 nsis:
@@ -32,3 +34,7 @@ nsis:
   allowToChangeInstallationDirectory: true
   artifactName: Gailvlun-setup-${version}.exe
   shortcutName: Gailvlun
+  # 安装器自带的精致 LOGO（setup.exe 自身 + 向导）；应用/快捷方式仍用 win.icon（网站图标）。
+  installerIcon: build/installer-icon.ico
+  installerHeaderIcon: build/installer-icon.ico
+  uninstallerIcon: build/icon.ico
