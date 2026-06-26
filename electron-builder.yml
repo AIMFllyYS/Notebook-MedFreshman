@@ -22,7 +22,8 @@ extraResources:
 asar: true
 win:
   icon: build/icon.ico
-  publisherName: Gailvlun
+  # 发布者名称取自签名证书主题（CN=Gailvlun）；electron-builder 26 已把签名相关项移入
+  # win.signtoolOptions，这里不再设顶层 publisherName（否则 schema 校验失败）。
   target:
     - portable
     - nsis
