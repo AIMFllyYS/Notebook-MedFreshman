@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle, Globe, ExternalLink, Zap, BookOpen, Image as ImageIcon, Sparkles } from 'lucide-react';
 import type { ToolCallBlock, WebSearchSource } from '@/lib/types/chat';
+import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
 
 function hostOf(url: string): string {
   try {
@@ -14,6 +15,8 @@ function hostOf(url: string): string {
 
 interface ToolCallDashboardProps {
   toolCalls: ToolCallBlock[];
+  /** 整条回复是否仍在处理。处理中自动展开仪表盘与各工具项，完成自动折叠。 */
+  isProcessing?: boolean;
 }
 
 const StatusIcon: React.FC<{ status: ToolCallBlock['status'] }> = ({ status }) => {
@@ -65,43 +68,47 @@ const ImageSourceCard: React.FC<{ source: WebSearchSource; index: number }> = ({
 
   return (
     <div
-      className="flex flex-col items-center gap-1 shrink-0 rounded-lg p-1.5 transition-colors hover:bg-[var(--md-sys-color-surface-container-highest)]"
-      style={{ width: '100px' }}
+      className="flex flex-col items-center gap-1.5 shrink-0 rounded-lg p-2 transition-colors hover:bg-[var(--md-sys-color-surface-container-highest)]"
+      style={{ width: '160px' }}
     >
       <a
         href={sourceUrl}
         target="_blank"
         rel="noopener noreferrer"
-        style={{ textDecoration: 'none' }}
+        style={{ textDecoration: 'none', width: '100%' }}
       >
         {!imgError ? (
           <img
             src={thumbnailUrl}
             alt={authorName}
             onError={() => setImgError(true)}
-            style={{ height: '64px', width: 'auto', maxWidth: '88px', borderRadius: '6px', objectFit: 'cover' }}
+            style={{ height: '120px', width: '100%', borderRadius: '8px', objectFit: 'cover' }}
           />
         ) : (
-          <div style={{ height: '64px', width: '88px', borderRadius: '6px', background: 'var(--md-sys-color-surface-container-high)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <ImageIcon size={20} style={{ color: 'var(--md-sys-color-outline)' }} />
+          <div style={{ height: '120px', width: '100%', borderRadius: '8px', background: 'var(--md-sys-color-surface-container-high)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <ImageIcon size={24} style={{ color: 'var(--md-sys-color-outline)' }} />
           </div>
         )}
       </a>
-      <div style={{ fontSize: '0.56rem', color: 'var(--md-sys-color-on-surface-variant)', textAlign: 'center', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
-        <a href={sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>
+      <div style={{ fontSize: '0.62rem', color: 'var(--md-sys-color-on-surface-variant)', textAlign: 'center', lineHeight: 1.4 }}>
+        Photo by{' '}
+        <a href={sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--md-sys-color-primary)', textDecoration: 'underline' }}>
           {authorName}
         </a>
-      </div>
-      <div style={{ fontSize: '0.5rem', color: 'var(--md-sys-color-outline)', textAlign: 'center' }}>
-        on <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Unsplash</a>
+        {' '}on{' '}
+        <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--md-sys-color-primary)', textDecoration: 'underline' }}>
+          Unsplash
+        </a>
       </div>
     </div>
   );
 };
 
-const ToolCallItem: React.FC<{ call: ToolCallBlock }> = ({ call }) => {
-  const [expandArgs, setExpandArgs] = useState(false);
-  const [expandResult, setExpandResult] = useState(false);
+const ToolCallItem: React.FC<{ call: ToolCallBlock; isProcessing?: boolean }> = ({ call, isProcessing }) => {
+  // 处理中（或本调用正在运行）自动展开输入参数/返回结果，让用户实时看到工具执行；完成自动折叠。
+  const active = !!isProcessing || call.status === 'running';
+  const [expandArgs, setExpandArgs] = useProcessingDisclosure(active);
+  const [expandResult, setExpandResult] = useProcessingDisclosure(active);
 
   return (
     <div
@@ -253,20 +260,19 @@ const ToolCallItem: React.FC<{ call: ToolCallBlock }> = ({ call }) => {
             ))}
           </div>
           {call.provider === 'unsplash' && call.sources && (
-            <div style={{ fontSize: '0.58rem', color: 'var(--md-sys-color-outline)', textAlign: 'center', marginTop: '4px' }}>
-              Photos by{' '}
+            <div style={{ fontSize: '0.62rem', color: 'var(--md-sys-color-on-surface-variant)', textAlign: 'center', marginTop: '6px', lineHeight: 1.6 }}>
               {call.sources.map((s, i) => (
-                <span key={i}>
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>
+                <div key={i}>
+                  Photo by{' '}
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--md-sys-color-primary)', textDecoration: 'underline' }}>
                     {s.title}
                   </a>
-                  {i < (call.sources?.length ?? 0) - 1 ? ', ' : ''}
-                </span>
+                  {' '}on{' '}
+                  <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--md-sys-color-primary)', textDecoration: 'underline' }}>
+                    Unsplash
+                  </a>
+                </div>
               ))}
-              {' '}on{' '}
-              <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>
-                Unsplash
-              </a>
             </div>
           )}
         </div>
@@ -337,8 +343,9 @@ const ToolCallItem: React.FC<{ call: ToolCallBlock }> = ({ call }) => {
   );
 };
 
-export const ToolCallDashboard: React.FC<ToolCallDashboardProps> = ({ toolCalls }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+export const ToolCallDashboard: React.FC<ToolCallDashboardProps> = ({ toolCalls, isProcessing }) => {
+  // 处理中自动展开仪表盘、完成自动折叠，中途手动开合受尊重。
+  const [isExpanded, setIsExpanded] = useProcessingDisclosure(!!isProcessing);
 
   if (!toolCalls || toolCalls.length === 0) {
     return null;
@@ -388,7 +395,7 @@ export const ToolCallDashboard: React.FC<ToolCallDashboardProps> = ({ toolCalls 
           }}
         >
           {toolCalls.map((call, idx) => (
-            <ToolCallItem key={call.id ?? idx} call={call} />
+            <ToolCallItem key={call.id ?? idx} call={call} isProcessing={isProcessing} />
           ))}
         </div>
       )}

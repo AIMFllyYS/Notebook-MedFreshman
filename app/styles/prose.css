@@ -295,11 +295,12 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
   animation: lightbox-fade-in 0.2s ease;
+  overflow: hidden;
 }
 @keyframes lightbox-fade-in {
   from { opacity: 0; }
@@ -311,6 +312,9 @@
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: transform 0.1s ease;
+  user-select: none;
+  touch-action: none;
 }
 .image-lightbox-close {
   position: absolute;
@@ -327,9 +331,47 @@
   justify-content: center;
   cursor: pointer;
   transition: background 0.15s;
+  z-index: 10;
 }
 .image-lightbox-close:hover {
   background: rgba(255, 255, 255, 0.25);
+}
+.image-lightbox-controls {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+.image-lightbox-controls button {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.image-lightbox-controls button:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+.image-lightbox-zoom-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  min-width: 40px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 .chat-prose figure {
   margin: 1rem 0;
