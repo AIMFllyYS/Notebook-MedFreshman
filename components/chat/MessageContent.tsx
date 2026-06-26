@@ -16,6 +16,7 @@ import { ChatImage } from '@/components/chat/ChatImage';
 import { ImageStrip } from '@/components/chat/ImageStrip';
 import { RawSvgViewer } from '@/components/canvas';
 import { sanitizeSvg } from '@/lib/utils/sanitizeSvg';
+import { VizErrorBoundary } from '@/components/chat/VizErrorBoundary';
 
 interface MessageContentProps {
   content: string;
@@ -90,7 +91,11 @@ function renderMarkdownWithSvg(
   while ((m = SVG_BLOCK_RE.exec(content)) !== null) {
     const before = content.slice(last, m.index);
     if (before.trim()) out.push(md(`${keyPrefix}-md-${i}`, before));
-    out.push(<RawSvgViewer key={`${keyPrefix}-svg-${i}`} svg={sanitizeSvg(m[0])} />);
+    out.push(
+      <VizErrorBoundary key={`${keyPrefix}-svg-${i}`} label="图形" source={m[0]}>
+        <RawSvgViewer svg={sanitizeSvg(m[0])} />
+      </VizErrorBoundary>,
+    );
     last = m.index + m[0].length;
     i++;
   }
@@ -111,7 +116,11 @@ const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boole
   // Visualization components
   const vizTags = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'ManimPlayer', 'SvgDiagram'];
   if (enableVisualizations && vizTags.includes(tagName || '')) {
-    return <ChatMessageVisualizations key={idx} tagName={tagName!} props={compProps || {}} childrenText={childrenText || ''} />;
+    return (
+      <VizErrorBoundary key={idx} label="图形" source={childrenText || ''}>
+        <ChatMessageVisualizations tagName={tagName!} props={compProps || {}} childrenText={childrenText || ''} />
+      </VizErrorBoundary>
+    );
   }
 
   // Inline ToolCall

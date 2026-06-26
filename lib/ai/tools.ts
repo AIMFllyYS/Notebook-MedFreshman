@@ -10,6 +10,7 @@ import {
 } from "@/lib/content/loader";
 import { runWebSearchDetailed, runImageSearch } from "@/lib/ai/webSearch";
 import type { Skill } from "@/lib/types/skill";
+import { CHEM_DRAW_GUIDE } from "@/lib/chemistry/svgTemplates";
 
 export interface ToolContext {
   subjectId: string;
@@ -318,16 +319,8 @@ const DIAGRAM_GUIDANCE_COMMON = `【颜色规范】
 
 const TYPE_GUIDANCE: Record<string, { dims: string; tips: string }> = {
   molecule: {
-    dims: 'width="500" height="350"',
-    tips: `【分子结构模板】
-- 单键：<line x1="..." y1="..." x2="..." y2="..." stroke="currentColor" stroke-width="2"/>
-- 双键：两条平行线（间距3px）
-- 三键：三条平行线
-- 楔形键（朝向）：<polygon points="x1,y1 x2-3,y2 x2+3,y2" fill="currentColor"/>
-- 虚键（远离）：<line ... stroke-dasharray="3 2"/>
-- 原子标签：<text text-anchor="middle" font-size="14">C</text>
-- 苯环：正六边形 + 内圆虚线表示离域
-- 弯箭头（电子转移）：用 <path d="M... C..." /> + marker-end 箭头`,
+    dims: 'width="400" height="300"',
+    tips: CHEM_DRAW_GUIDE,
   },
   circuit: {
     dims: 'width="550" height="350"',

@@ -4,6 +4,9 @@ export { FunctionPlot } from "./FunctionPlot";
 export { CanvasControls } from "./CanvasControls";
 export { PlotDirective } from "./PlotDirective";
 export { CanvasDirective } from "./CanvasDirective";
+export { DiagramCanvas, isDiagramMode, type DiagramMode } from "./DiagramCanvas";
+export { MoleculeRenderer } from "./MoleculeRenderer";
+export { HtmlCanvasLayer } from "./HtmlCanvasLayer";
 export {
   compileMathExpr,
   calculateTicks,

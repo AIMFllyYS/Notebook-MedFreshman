@@ -9,7 +9,7 @@
     "dev": "next dev -p 35349",
     "check:encoding": "node scripts/check-content-encoding.mjs",
     "gen:script-ids": "node scripts/gen-script-ids.mjs",
-    "prebuild": "node scripts/check-content-encoding.mjs && node scripts/gen-script-ids.mjs && node scripts/check-katex-chars.mjs && node scripts/check-media-sync.mjs",
+    "prebuild": "node scripts/check-content-encoding.mjs && node scripts/gen-script-ids.mjs && node scripts/check-katex-chars.mjs && node scripts/check-media-sync.mjs && node scripts/check-prose-svg-rules.mjs",
     "build": "next build && node scripts/free-build-disk.mjs && node scripts/report-disk.mjs",
     "start": "next start -p 35349",
     "lint": "eslint .",
@@ -21,6 +21,7 @@
     "desktop:dev": "electron ."
   },
   "dependencies": {
+    "@rdkit/rdkit": "2025.3.4-1.0.0",
     "@vidstack/react": "1.15.6",
     "clsx": "^2.1.1",
     "dompurify": "^3.4.11",

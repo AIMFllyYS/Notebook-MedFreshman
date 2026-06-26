@@ -388,6 +388,7 @@ SVG Canvas 提供主题适配的矢量画布，支持函数图像绘制和自由
 - **不要**删除 `globals.css` 顶部的 `@import "tailwindcss"` — 它必须是第一行
 - **不要**绕过 `normalizeDirectiveLabels`（见 §2.5）直接把原始内容喂给 react-markdown — 否则带空格/引号的中文 callout 标签会解析失败、围栏裸露
 - **不要**在 Windows 上经 PowerShell/控制台重定向（GBK/cp936）写内容文件 — 三字节汉字尾字节会被替换为 `?` 产生非法 UTF-8（乱码 + 块坍塌）。务必用 Write/Edit（UTF-8）写盘；`pnpm run check:encoding`（已挂 `prebuild`）会拦截此类损坏
+- **不要**在 `.prose-notes` / `.chat-prose` 内用**裸元素后代选择器**（`svg`/`path`/`table`/`a` 等）设几何或外观 — 这两个容器同时托管第三方渲染的 DOM（KaTeX 拉伸箭头/根号 svg、highlight.js、vidstack）。库内部 DOM 视为**黑箱**，只能用我们自己拥有的 class/wrapper 命中内容元素。典型雷区：KaTeX 的 `\sqrt`、mhchem `->`/`<=>`、`\xrightarrow`、`\overbrace`、`\widehat`、`\vec` 都是 viewBox≈数百:1 的内联拉伸 svg，可见高度**只**靠 KaTeX 自带 `.katex svg{height:inherit}`；任何 `.prose-notes svg{height:auto}` 会把它压成 ~0.04px → 箭头消失/根号错位。作者内嵌图走 `<img>`（`::figure`），画布 svg 由 `canvas.css` 作用域负责。`scripts/check-prose-svg-rules.mjs`（已挂 `prebuild`）会拦截此类规则
 
 > **历史事故备忘**：曾有一次「化学 KaTeX 批量修复」提交把 `4.1/4.2/4.3/5.3.md` 经 GBK 管道写坏（非法 UTF-8），
 > 导致有机化学正文「乱码 + 组件层层堆叠」。修复方式：`git checkout <好提交> -- <文件>` 字节级恢复；

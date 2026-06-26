@@ -28,13 +28,19 @@ const SVG_ALLOWED_ATTRS = [
 export function sanitizeSvg(raw: string, themeAdapt = true): string {
   if (typeof window === "undefined") return raw;
 
-  let clean = DOMPurify.sanitize(raw, {
-    USE_PROFILES: { svg: true, svgFilters: true },
-    ADD_TAGS: SVG_ALLOWED_TAGS,
-    ADD_ATTR: SVG_ALLOWED_ATTRS,
-    FORBID_TAGS: ["script", "foreignObject", "iframe", "object", "embed"],
-    FORBID_ATTR: ["onclick", "onload", "onerror", "onmouseover", "onmouseout", "onfocus", "onblur"],
-  });
+  let clean: string;
+  try {
+    clean = DOMPurify.sanitize(raw, {
+      USE_PROFILES: { svg: true, svgFilters: true },
+      ADD_TAGS: SVG_ALLOWED_TAGS,
+      ADD_ATTR: SVG_ALLOWED_ATTRS,
+      FORBID_TAGS: ["script", "foreignObject", "iframe", "object", "embed"],
+      FORBID_ATTR: ["onclick", "onload", "onerror", "onmouseover", "onmouseout", "onfocus", "onblur"],
+    });
+  } catch {
+    // 畸形输入可能令 DOMPurify 内部抛错；返回空串让上层降级，绝不让异常冒泡成白屏。
+    return "";
+  }
 
   if (themeAdapt) {
     clean = clean

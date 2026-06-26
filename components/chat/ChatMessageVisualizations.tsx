@@ -7,8 +7,7 @@ import {
   FormulaSteps as FormulaStepsPrimitive,
   VideoPlayer,
 } from '@/components/visualizations';
-import { SvgCanvas, RawSvgViewer } from '@/components/canvas';
-import { sanitizeSvg } from '@/lib/utils/sanitizeSvg';
+import { DiagramCanvas, isDiagramMode } from '@/components/canvas';
 
 // ----------------------------------------------------
 // ChatMessageVisualizations: 标签分发器
@@ -91,44 +90,18 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
       );
 
     case 'SvgDiagram': {
-      const svgContent = childrenText.trim();
-      const sanitized = sanitizeSvg(svgContent);
-      const title = props.title || '示意图';
-      const mode = String(props.mode || 'math');
-      const width = toNum(props.width) ?? 400;
-      const height = toNum(props.height) ?? 300;
-
-      const titleEl = title ? (
-        <div style={{
-          fontSize: '0.85em',
-          fontWeight: 600,
-          color: 'var(--md-sys-color-on-surface-variant)',
-          marginBottom: '0.5em',
-        }}>
-          {title}
-        </div>
-      ) : null;
-
-      if (mode === 'raw') {
-        return (
-          <div style={{ margin: '0.8em 0' }}>
-            {titleEl}
-            <RawSvgViewer svg={sanitized} title={title} width={width} height={height} />
-          </div>
-        );
-      }
-
+      // 统一画布：mode 路由 raw(自由SVG) / math(函数图) / molecule(SMILES) / html(沙箱)。
+      const mode = isDiagramMode(props.mode) ? props.mode : 'raw';
+      const title = props.title ? String(props.title) : undefined;
       return (
-        <div style={{ margin: '0.8em 0' }}>
-          {titleEl}
-          <SvgCanvas
-            width={width}
-            height={height}
-            showGrid={toBool(props.grid)}
-          >
-            <g dangerouslySetInnerHTML={{ __html: sanitized }} />
-          </SvgCanvas>
-        </div>
+        <DiagramCanvas
+          mode={mode}
+          content={childrenText.trim()}
+          title={title}
+          width={toNum(props.width)}
+          height={toNum(props.height)}
+          attrs={props}
+        />
       );
     }
 

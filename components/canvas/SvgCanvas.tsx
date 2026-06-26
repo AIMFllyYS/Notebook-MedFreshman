@@ -10,6 +10,7 @@ import {
 } from "react";
 import { calculateTicks } from "./canvasUtils";
 import { CanvasControls } from "./CanvasControls";
+import { useCanvasFullscreen } from "@/lib/hooks/useCanvasFullscreen";
 
 export interface SvgCanvasProps {
   width?: number;
@@ -50,13 +51,16 @@ export default function SvgCanvas({
   const svgRef = useRef<SVGSVGElement>(null);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
+  const { fullscreen, toggle, exit } = useCanvasFullscreen();
   const dragRef = useRef<{ startX: number; startY: number; panX: number; panY: number } | null>(null);
 
   const plotW = width - PADDING.left - PADDING.right;
   const plotH = height - PADDING.top - PADDING.bottom;
 
-  const xRange = xMaxProp - xMinProp;
-  const yRange = yMaxProp - yMinProp;
+  // 夹紧为极小正数：AI/作者给出 xMin===xMax（或 y 同理）时，除以 0 会让所有坐标变成
+  // Infinity，SVG 几何静默失效（看似空白）。保底非零，宁可比例怪也不崩。
+  const xRange = (xMaxProp - xMinProp) || 1e-6;
+  const yRange = (yMaxProp - yMinProp) || 1e-6;
 
   const handlePointerDown = useCallback(
     (e: RPointerEvent<SVGSVGElement>) => {
@@ -109,7 +113,9 @@ export default function SvgCanvas({
     0 >= xMinProp && 0 <= xMaxProp && 0 >= yMinProp && 0 <= yMaxProp;
 
   return (
-    <div className={`svg-canvas-wrapper ${className ?? ""}`}>
+    <>
+      {fullscreen && <div className="canvas-fullscreen-backdrop" onClick={exit} />}
+      <div className={`svg-canvas-wrapper ${className ?? ""}${fullscreen ? " is-fullscreen" : ""}`}>
       <svg
         ref={svgRef}
         viewBox={`0 0 ${width} ${height}`}
@@ -128,9 +134,10 @@ export default function SvgCanvas({
           </clipPath>
         </defs>
 
+        {/* 从画布中心缩放：SVG transform 属性不认 CSS transform-origin，必须显式
+            平移到中心→缩放→平移回，否则会从左上角缩放、内容跳位（旧 bug）。 */}
         <g
-          transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}
-          style={{ transformOrigin: `${width / 2}px ${height / 2}px` }}
+          transform={`translate(${pan.x + width / 2}, ${pan.y + height / 2}) scale(${zoom}) translate(${-width / 2}, ${-height / 2})`}
         >
           {/* Grid */}
           {showGrid && (
@@ -275,14 +282,14 @@ export default function SvgCanvas({
         </g>
       </svg>
 
-      {(pannable || zoomable) && (
-        <CanvasControls
-          onReset={resetView}
-          onZoomIn={zoomable ? () => setZoom((z) => Math.min(ZOOM_MAX, z * 1.2)) : undefined}
-          onZoomOut={zoomable ? () => setZoom((z) => Math.max(ZOOM_MIN, z / 1.2)) : undefined}
-        />
-      )}
-    </div>
+      <CanvasControls
+        onReset={pannable || zoomable ? resetView : undefined}
+        onZoomIn={zoomable ? () => setZoom((z) => Math.min(ZOOM_MAX, z * 1.2)) : undefined}
+        onZoomOut={zoomable ? () => setZoom((z) => Math.max(ZOOM_MIN, z / 1.2)) : undefined}
+        onMaximize={toggle}
+      />
+      </div>
+    </>
   );
 }
 

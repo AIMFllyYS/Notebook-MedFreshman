@@ -8,6 +8,7 @@ import {
   type WheelEvent as RWheelEvent,
 } from "react";
 import { CanvasControls } from "./CanvasControls";
+import { useCanvasFullscreen } from "@/lib/hooks/useCanvasFullscreen";
 
 export interface RawSvgViewerProps {
   /** Sanitized SVG markup (inner elements, may or may not include an <svg> root) */
@@ -33,6 +34,7 @@ export function RawSvgViewer({
   const containerRef = useRef<HTMLDivElement>(null);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
+  const { fullscreen, toggle, exit } = useCanvasFullscreen();
   const dragRef = useRef<{ startX: number; startY: number; panX: number; panY: number } | null>(null);
 
   const handlePointerDown = useCallback(
@@ -72,33 +74,38 @@ export function RawSvgViewer({
     : `<svg viewBox="0 0 ${width} ${height}" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">${svg}</svg>`;
 
   return (
-    <div
-      ref={containerRef}
-      className="svg-canvas-wrapper svg-raw-content"
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
-      onWheel={handleWheel}
-      role="img"
-      aria-label={title}
-      style={{ touchAction: "none" }}
-    >
+    <>
+      {fullscreen && <div className="canvas-fullscreen-backdrop" onClick={exit} />}
       <div
-        style={{
-          transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-          transformOrigin: "center center",
-          width: "100%",
-          height: "auto",
-          minHeight: height,
-        }}
-        dangerouslySetInnerHTML={{ __html: innerHtml }}
-      />
-      <CanvasControls
-        onReset={resetView}
-        onZoomIn={() => setZoom((z) => Math.min(ZOOM_MAX, z * 1.2))}
-        onZoomOut={() => setZoom((z) => Math.max(ZOOM_MIN, z / 1.2))}
-      />
-    </div>
+        ref={containerRef}
+        className={`svg-canvas-wrapper svg-raw-content${fullscreen ? " is-fullscreen" : ""}`}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onWheel={handleWheel}
+        role="img"
+        aria-label={title}
+        style={{ touchAction: "none" }}
+      >
+        <div
+          className="svg-raw-inner"
+          style={{
+            transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+            transformOrigin: "center center",
+            width: "100%",
+            height: "auto",
+            minHeight: height,
+          }}
+          dangerouslySetInnerHTML={{ __html: innerHtml }}
+        />
+        <CanvasControls
+          onReset={resetView}
+          onZoomIn={() => setZoom((z) => Math.min(ZOOM_MAX, z * 1.2))}
+          onZoomOut={() => setZoom((z) => Math.max(ZOOM_MIN, z / 1.2))}
+          onMaximize={toggle}
+        />
+      </div>
+    </>
   );
 }
