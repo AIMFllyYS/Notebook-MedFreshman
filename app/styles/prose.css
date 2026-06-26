@@ -144,13 +144,11 @@
   margin-top: 0.5rem;
 }
 
-/* SVG in markdown */
-.prose-notes svg {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 1rem auto;
-}
+/* ⚠️ 不要给 .prose-notes/.chat-prose 加裸 `svg` 几何规则（max-width/height/margin）。
+   它会以相等特异性命中 KaTeX 内部的“拉伸 svg”（根号 \sqrt、反应箭头 ->/<=>、\xrightarrow、
+   \overbrace、\widehat、\vec 等都是内联 <svg>），用 height:auto 把 viewBox 数百:1 的扁长条
+   压成约 0.04px → 箭头消失、根号错位。作者内嵌图一律走 <img>（::figure），画布 svg 由
+   canvas.css 的 .svg-canvas-wrapper/.svg-raw-content 作用域负责。详见 rendering-architecture §8。 */
 
 /* KaTeX 尺寸与块公式滚动 */
 .prose-notes .katex {
@@ -342,12 +340,7 @@
   color: var(--md-sys-color-on-surface-variant);
   margin-top: 0.4rem;
 }
-.chat-prose svg {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0.8em auto;
-}
+/* ⚠️ 同上：不要加 `.chat-prose svg{}` 裸几何规则——会压塌 KaTeX 拉伸 svg。见上方注释与 §8。 */
 .chat-prose .katex { font-size: 1.04em; }
 .chat-prose .katex-display {
   margin: 0.95em 0;
@@ -356,6 +349,38 @@
   overflow-y: hidden;
 }
 .chat-prose .katex-display > .katex { font-size: 1.1em; }
+
+/* ── 可视化块错误边界降级卡（VizErrorBoundary）──────────────── */
+.viz-error-card {
+  margin: 0.6em 0;
+  padding: 0.6rem 0.75rem;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.82em;
+}
+.viz-error-head { font-weight: 600; }
+.viz-error-toggle {
+  margin-top: 0.4rem;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.95em;
+  cursor: pointer;
+}
+.viz-error-source {
+  margin-top: 0.4rem;
+  max-height: 240px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-size: 0.92em;
+  line-height: 1.45;
+  color: var(--md-sys-color-on-surface);
+}
 
 /* ─────────────────────────────────────────────────────────────
    Chat 组件样式（Task 6.3/6.4 — 内联样式迁移 + 审美提升）

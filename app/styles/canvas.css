@@ -76,32 +76,137 @@
   fill: var(--md-sys-color-on-surface);
 }
 
-/* Controls overlay */
+/* Controls overlay — 半透明悬浮，与正文 HTML（ArtifactViewer）控件一套视觉 */
 .svg-canvas-controls {
   position: absolute;
   top: 8px;
   right: 8px;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  z-index: 2;
+  flex-direction: row;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--md-sys-color-surface-container) 62%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  opacity: 0.55;
+  transition: opacity var(--duration-fast, 150ms) var(--ease-out);
+  z-index: 3;
+}
+.svg-canvas-wrapper:hover .svg-canvas-controls,
+.svg-canvas-controls:focus-within {
+  opacity: 1;
 }
 .svg-canvas-controls button {
   width: 28px;
   height: 28px;
-  border-radius: var(--md-sys-shape-corner-small, 6px);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  background: var(--md-sys-color-surface-container);
+  border-radius: 8px;
+  border: none;
+  background: transparent;
   color: var(--md-sys-color-on-surface-variant);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background var(--duration-fast, 150ms) var(--ease-out);
+  transition: background var(--duration-fast, 150ms) var(--ease-out),
+    color var(--duration-fast, 150ms) var(--ease-out),
+    transform var(--duration-instant, 80ms) var(--ease-out);
 }
 .svg-canvas-controls button:hover {
-  background: var(--md-sys-color-surface-container-high);
+  background: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
   color: var(--md-sys-color-on-surface);
+}
+.svg-canvas-controls button:active {
+  transform: scale(0.94);
+}
+
+/* 「放大查看」全屏态：当前画布升为居中大窗 + 背板，Esc / 点背板退出 */
+.canvas-fullscreen-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 3999;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.svg-canvas-wrapper.is-fullscreen {
+  position: fixed;
+  inset: 4vh 4vw;
+  margin: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  background: var(--md-sys-color-surface-container-lowest);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+.svg-canvas-wrapper.is-fullscreen > svg {
+  width: 100%;
+  height: 100%;
+}
+.svg-canvas-wrapper.is-fullscreen .svg-raw-inner {
+  width: 100%;
+}
+.svg-canvas-wrapper.is-fullscreen .svg-raw-content svg,
+.svg-canvas-wrapper.is-fullscreen.svg-raw-content svg {
+  max-height: none;
+}
+
+/* HTML-in-canvas 沙箱 iframe 图层（复用 .svg-canvas-wrapper 边框/全屏，但还原交互光标） */
+.html-canvas-layer {
+  cursor: default;
+  user-select: auto;
+  touch-action: auto;
+  overflow: hidden;
+}
+.html-canvas-frame {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: #fff;
+  border-radius: inherit;
+}
+.svg-canvas-wrapper.html-canvas-layer.is-fullscreen .html-canvas-frame {
+  height: 100% !important;
+}
+
+/* 统一画布壳（DiagramCanvas） */
+.diagram-canvas {
+  margin: 0.8em 0;
+}
+.diagram-canvas-title {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.45em;
+}
+
+/* 分子结构（RDKit）加载/错误状态卡 */
+.molecule-status {
+  margin: 0.6em 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  background: var(--md-sys-color-surface-container-lowest);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.85em;
+}
+.molecule-status-error {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--md-sys-color-error) 40%, var(--md-sys-color-outline-variant));
+}
+.molecule-smiles {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.92em;
+  color: var(--md-sys-color-on-surface);
+  word-break: break-all;
 }
 
 /* Raw AI-generated SVG content — theme integration */

@@ -92,7 +92,11 @@
   ```
   — 公式推导步骤卡片（每步占一行，不要用字面 \n）
 - `<ManimPlayer src="..." title="..." />` — Manim 动画播放器
-- `<SvgDiagram title="标题" mode="raw" width="400" height="300">SVG内容</SvgDiagram>` — SVG 图形容器。mode="raw"：自由布局（推荐，适合示意图/分子/电路等）；mode="math"：数学坐标系（带网格坐标轴）。
+- `<SvgDiagram mode="raw|math|molecule|html" title="标题" width="400" height="300">内容</SvgDiagram>` — **统一图形画布**，默认 `mode="raw"`：
+  - `raw`（默认）：标签体写自由 SVG，适合示意图 / 反应机理 / 几何图 / **有机投影式**（费歇尔/纽曼/哈沃斯/锯架）。
+  - `math`：**精准函数图**，用属性给函数，无需写 SVG。例：`<SvgDiagram mode="math" fn="sin(x)" xmin="-6.28" xmax="6.28" label="y=sin x" />`。
+  - `molecule`：标签体写 **SMILES**，自动渲染二维结构式（普通分子**首选、最准**）。例：`<SvgDiagram mode="molecule" title="乙酸乙酯">CCOC(=O)C</SvgDiagram>`。
+  - `html`：标签体写**自包含 HTML**（可含 `<script>`），在沙箱 iframe 内运行（**无网络**，须自包含），用于轻量交互/排版化展示。与 renderInteractive（弹窗大演示）不同，这是内联小图层。
 
 **注意：标签名必须严格使用上面展示的大小写格式（PascalCase），不要全小写。**
 
@@ -100,10 +104,12 @@
 
 当你需要绘制 SVG 图形时：
 
-1. **先调用 drawDiagram 工具**获取类型专属的编写指南和模板片段。
-2. **选择渲染模式**：
-   - `mode="raw"`（推荐）：自由布局，适合电路图、分子结构、几何图形等自定义坐标的图形。
-   - `mode="math"`（默认）：数学坐标系模式，带网格和坐标轴，适合在坐标系中标注点/向量。
+1. **先调用 drawDiagram 工具**获取类型专属的编写指南和模板片段（化学会返回 SMILES + 投影式模板）。
+2. **选择渲染模式**（默认 `raw`）：
+   - 普通**分子/反应** → `mode="molecule"` 写 SMILES（最准，别手画键线式）。
+   - **函数图像** → `mode="math"` 给 `fn` 属性（精准采样绘制）。
+   - **投影式 / 立体式 / 机理 / 电路 / 几何** → `mode="raw"` 写 SVG（投影式照 drawDiagram 返回的模板画）。
+   - **轻量交互/动态演示** → `mode="html"` 写自包含 HTML（沙箱、无网络）。
 3. **颜色规范**（确保深色/浅色主题兼容）：
    - 线条和文字：使用 `currentColor`（自动适应主题）
    - 强调色：`var(--diagram-primary)`、`var(--diagram-secondary)`、`var(--diagram-tertiary)`
