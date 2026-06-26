@@ -10,6 +10,7 @@ import {
 } from "react";
 import { calculateTicks } from "./canvasUtils";
 import { CanvasControls } from "./CanvasControls";
+import { CanvasFullscreenPortal } from "./CanvasFullscreenPortal";
 import { useCanvasFullscreen } from "@/lib/hooks/useCanvasFullscreen";
 
 export interface SvgCanvasProps {
@@ -65,6 +66,8 @@ export default function SvgCanvas({
   const handlePointerDown = useCallback(
     (e: RPointerEvent<SVGSVGElement>) => {
       if (!pannable) return;
+      // 防御：按到控件键时不捕获指针（与 RawSvgViewer 同策，避免吞掉按钮 click）。
+      if ((e.target as Element).closest?.(".svg-canvas-controls")) return;
       e.currentTarget.setPointerCapture(e.pointerId);
       dragRef.current = { startX: e.clientX, startY: e.clientY, panX: pan.x, panY: pan.y };
     },
@@ -113,9 +116,8 @@ export default function SvgCanvas({
     0 >= xMinProp && 0 <= xMaxProp && 0 >= yMinProp && 0 <= yMaxProp;
 
   return (
-    <>
-      {fullscreen && <div className="canvas-fullscreen-backdrop" onClick={exit} />}
-      <div className={`svg-canvas-wrapper ${className ?? ""}${fullscreen ? " is-fullscreen" : ""}`}>
+    <CanvasFullscreenPortal open={fullscreen} onExit={exit}>
+      <div className={`svg-canvas-wrapper ${className ?? ""}`}>
       <svg
         ref={svgRef}
         viewBox={`0 0 ${width} ${height}`}
@@ -287,9 +289,10 @@ export default function SvgCanvas({
         onZoomIn={zoomable ? () => setZoom((z) => Math.min(ZOOM_MAX, z * 1.2)) : undefined}
         onZoomOut={zoomable ? () => setZoom((z) => Math.max(ZOOM_MIN, z / 1.2)) : undefined}
         onMaximize={toggle}
+        fullscreen={fullscreen}
       />
       </div>
-    </>
+    </CanvasFullscreenPortal>
   );
 }
 

@@ -1,7 +1,8 @@
 // Baked, NON-SECRET runtime config for the desktop build.
 // These are URLs / model names / modes — safe to ship inside the .exe.
-// The 3 real secrets (AI_API_KEY / MIMO_API_KEY / ZHIPU_API_KEY) are NEVER here;
-// the user enters them on first run and they are stored encrypted in userData.
+// The 4 real secrets (AI_API_KEY / MIMO_API_KEY / ZHIPU_API_KEY / UNSPLASH_ACCESS_KEY)
+// are NEVER here; the user enters them in the 设置 window and they are stored encrypted
+// (DPAPI) in userData/keys.enc.
 // Values mirror the project's .env.local (non-secret fields only). Edit & rebuild
 // if your endpoints/models change.
 module.exports = {

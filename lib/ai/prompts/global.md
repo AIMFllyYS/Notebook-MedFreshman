@@ -96,7 +96,7 @@
   - `raw`（默认）：标签体写自由 SVG，适合示意图 / 反应机理 / 几何图 / **有机投影式**（费歇尔/纽曼/哈沃斯/锯架）。
   - `math`：**精准函数图**，用属性给函数，无需写 SVG。例：`<SvgDiagram mode="math" fn="sin(x)" xmin="-6.28" xmax="6.28" label="y=sin x" />`。
   - `molecule`：标签体写 **SMILES**，自动渲染二维结构式（普通分子**首选、最准**）。例：`<SvgDiagram mode="molecule" title="乙酸乙酯">CCOC(=O)C</SvgDiagram>`。
-  - `html`：标签体写**自包含 HTML**（可含 `<script>`），在沙箱 iframe 内运行（**无网络**，须自包含），用于轻量交互/排版化展示。与 renderInteractive（弹窗大演示）不同，这是内联小图层。
+  - `html`：标签体写 HTML（可含 `<script>`），在沙箱 iframe 内运行（与应用隔离），用于轻量交互/排版化展示。**可联网引用常用 CDN 库**（cdnjs/jsdelivr/unpkg，如 Chart.js/D3/KaTeX）；需要图表/数学排版等就引库，简单图形纯手写即可。与 renderInteractive（弹窗大演示）不同，这是内联小图层。
 
 **注意：标签名必须严格使用上面展示的大小写格式（PascalCase），不要全小写。**
 
@@ -109,7 +109,7 @@
    - 普通**分子/反应** → `mode="molecule"` 写 SMILES（最准，别手画键线式）。
    - **函数图像** → `mode="math"` 给 `fn` 属性（精准采样绘制）。
    - **投影式 / 立体式 / 机理 / 电路 / 几何** → `mode="raw"` 写 SVG（投影式照 drawDiagram 返回的模板画）。
-   - **轻量交互/动态演示** → `mode="html"` 写自包含 HTML（沙箱、无网络）。
+   - **轻量交互/动态演示** → `mode="html"` 写 HTML（沙箱运行，可联网引 CDN 库如 Chart.js/D3）。
 3. **颜色规范**（确保深色/浅色主题兼容）：
    - 线条和文字：使用 `currentColor`（自动适应主题）
    - 强调色：`var(--diagram-primary)`、`var(--diagram-secondary)`、`var(--diagram-tertiary)`

@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { X, MonitorPlay, ExternalLink } from "lucide-react";
+import { X, MonitorPlay, ExternalLink, Download } from "lucide-react";
 import { useArtifacts } from "@/lib/hooks/useArtifacts";
+import { downloadHtmlFile } from "@/lib/utils/downloadHtml";
 
 /** 交互演示弹窗：在左侧以模态形式用 iframe 渲染 AI 生成的自包含 HTML。 */
 export default function ArtifactViewer() {
@@ -69,6 +70,13 @@ export default function ArtifactViewer() {
             {art.title}
           </span>
           <button
+            onClick={() => downloadHtmlFile(art.html, art.title)}
+            title="下载 HTML"
+            className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-panel)]"
+          >
+            <Download size={15} />
+          </button>
+          <button
             onClick={openExternal}
             title="在新标签页打开"
             className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-panel)]"
@@ -86,7 +94,7 @@ export default function ArtifactViewer() {
         <iframe
           title={art.title}
           srcDoc={art.html}
-          sandbox="allow-scripts allow-popups"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-modals allow-downloads"
           className="min-h-0 w-full flex-1 border-0 bg-white"
         />
       </div>

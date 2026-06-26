@@ -76,88 +76,94 @@
   fill: var(--md-sys-color-on-surface);
 }
 
-/* Controls overlay — 半透明悬浮，与正文 HTML（ArtifactViewer）控件一套视觉 */
+/* Controls overlay — 与正文 HTML（ContentPageClient）控件**完全同款**：
+   半透明深色药丸 + 白色图标 + backdrop-blur。逐值对齐参考（bg-black/30、blur-sm、
+   gap-1、px-1 py-0.5、rounded-lg、按钮 h-7 w-7 rounded-md text-white/90 hover:bg-white/20）。
+   常显（参考即常显）。保留 .svg-canvas-controls 类名供指针守卫选择器使用。 */
 .svg-canvas-controls {
   position: absolute;
   top: 8px;
   right: 8px;
   display: flex;
   flex-direction: row;
-  gap: 2px;
-  padding: 2px;
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--md-sys-color-surface-container) 62%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
-  opacity: 0.55;
-  transition: opacity var(--duration-fast, 150ms) var(--ease-out);
+  align-items: center;
+  gap: 3px;
+  padding: 2px 3px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 3;
 }
-.svg-canvas-wrapper:hover .svg-canvas-controls,
-.svg-canvas-controls:focus-within {
-  opacity: 1;
-}
 .svg-canvas-controls button {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
   border: none;
   background: transparent;
-  color: var(--md-sys-color-on-surface-variant);
+  color: rgba(255, 255, 255, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: background var(--duration-fast, 150ms) var(--ease-out),
-    color var(--duration-fast, 150ms) var(--ease-out),
     transform var(--duration-instant, 80ms) var(--ease-out);
 }
 .svg-canvas-controls button:hover {
-  background: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
-  color: var(--md-sys-color-on-surface);
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
 }
 .svg-canvas-controls button:active {
   transform: scale(0.94);
 }
 
-/* 「放大查看」全屏态：当前画布升为居中大窗 + 背板，Esc / 点背板退出 */
+/* 「放大查看」真全屏：CanvasFullscreenPortal 把画布体 portal 到 document.body，
+   脱离 .chat-messages{contain:layout} / .chat-message{content-visibility:auto} 的
+   包含块陷阱，使 position:fixed 锚定真视口（详见 components/canvas/CanvasFullscreenPortal.tsx）。 */
 .canvas-fullscreen-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 3999;
+  z-index: 4000;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-}
-.svg-canvas-wrapper.is-fullscreen {
-  position: fixed;
-  inset: 4vh 4vw;
-  margin: 0;
-  width: auto;
-  height: auto;
-  max-width: none;
-  z-index: 4000;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: auto;
-  background: var(--md-sys-color-surface-container-lowest);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
 }
-.svg-canvas-wrapper.is-fullscreen > svg {
+.canvas-fullscreen-stage {
+  position: relative;
+  width: 92vw;
+  height: 92vh;
+  background: var(--md-sys-color-surface-container-lowest);
+  border-radius: var(--md-sys-shape-corner-large, 14px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* 全屏舞台内的画布体填满舞台（去掉外边距/最大高度限制） */
+.canvas-fullscreen-stage .svg-canvas-wrapper {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  border: none;
+  border-radius: inherit;
+}
+.canvas-fullscreen-stage .svg-canvas-wrapper > svg,
+.canvas-fullscreen-stage .svg-raw-inner {
   width: 100%;
   height: 100%;
 }
-.svg-canvas-wrapper.is-fullscreen .svg-raw-inner {
-  width: 100%;
-}
-.svg-canvas-wrapper.is-fullscreen .svg-raw-content svg,
-.svg-canvas-wrapper.is-fullscreen.svg-raw-content svg {
+.canvas-fullscreen-stage .svg-raw-content svg,
+.canvas-fullscreen-stage .html-canvas-frame {
   max-height: none;
+  height: 100%;
 }
 
-/* HTML-in-canvas 沙箱 iframe 图层（复用 .svg-canvas-wrapper 边框/全屏，但还原交互光标） */
+/* HTML-in-canvas 沙箱 iframe 图层（复用 .svg-canvas-wrapper 边框，但还原交互光标） */
 .html-canvas-layer {
   cursor: default;
   user-select: auto;
@@ -170,9 +176,6 @@
   border: 0;
   background: #fff;
   border-radius: inherit;
-}
-.svg-canvas-wrapper.html-canvas-layer.is-fullscreen .html-canvas-frame {
-  height: 100% !important;
 }
 
 /* 统一画布壳（DiagramCanvas） */

@@ -1,25 +1,25 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { BrainCircuit, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
 import AnimatedCollapse from '@/components/ui/AnimatedCollapse';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
+import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
+import { useStickToBottom } from '@/lib/hooks/useStickToBottom';
 
 interface ReasoningBlockProps {
   content: string;
-  isStreaming: boolean;
+  /** 整条回复是否仍在处理（思考/工具）。处理中自动展开思考、完成自动折叠。 */
+  isProcessing: boolean;
 }
 
-export const ReasoningBlock: React.FC<ReasoningBlockProps> = ({ content, isStreaming }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  // 流式时自动展开
-  useEffect(() => {
-    if (isStreaming) {
-      setIsExpanded(true);
-    }
-  }, [isStreaming]);
+export const ReasoningBlock: React.FC<ReasoningBlockProps> = ({ content, isProcessing }) => {
+  // 处理中自动展开、完成自动折叠，中途手动开合受尊重。
+  const [isExpanded, setIsExpanded] = useProcessingDisclosure(isProcessing);
+  // 思考流式时让内层滚动框贴底跟随；用户上滑退出跟随、滑回底部恢复。
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const onScroll = useStickToBottom(scrollRef, isProcessing);
 
   if (!content || content.trim() === '') {
     return null;
@@ -57,7 +57,7 @@ export const ReasoningBlock: React.FC<ReasoningBlockProps> = ({ content, isStrea
           >
             思考过程
           </span>
-          {isStreaming && (
+          {isProcessing && (
             <Loader2
               size={12}
               className="animate-spin"
@@ -85,6 +85,8 @@ export const ReasoningBlock: React.FC<ReasoningBlockProps> = ({ content, isStrea
       {/* Expanded Content */}
       <AnimatedCollapse isOpen={isExpanded}>
         <div
+          ref={scrollRef}
+          onScroll={onScroll}
           className="chat-prose"
           onContextMenu={(e) => openMessageMenu(e, content)}
           style={{

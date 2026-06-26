@@ -19,10 +19,13 @@ const net = require("node:net");
 const http = require("node:http");
 const BAKED = require("./config");
 
-// Only AI_API_KEY (SiliconFlow) is required for the core AI features; MiMo/Zhipu
-// are optional and only unlock their own features.
+// Only AI_API_KEY (SiliconFlow) is required for the core AI features; MiMo / Zhipu /
+// Unsplash are optional and only unlock their own features.
+// Adding a key here is the whole upgrade story for returning users: the "设置" window
+// reopens any time, prefills the keys they already saved, and a new field just rides
+// along into the same DPAPI-encrypted keys.enc — no plaintext env file to hand-edit.
 const REQUIRED_KEYS = ["AI_API_KEY"];
-const KEY_NAMES = ["AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY"];
+const KEY_NAMES = ["AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY", "UNSPLASH_ACCESS_KEY"];
 
 const KEYS_FILE = path.join(app.getPath("userData"), "keys.enc");
 
@@ -134,6 +137,7 @@ async function startServer(keys) {
     AI_API_KEY: keys.AI_API_KEY || "",
     MIMO_API_KEY: keys.MIMO_API_KEY || "",
     ZHIPU_API_KEY: keys.ZHIPU_API_KEY || "",
+    UNSPLASH_ACCESS_KEY: keys.UNSPLASH_ACCESS_KEY || "",
     PORT: String(serverPort),
     HOSTNAME: "127.0.0.1",
     NODE_ENV: "production",
@@ -228,7 +232,7 @@ function openSetupWindow() {
   }
   setupWindow = new BrowserWindow({
     width: 560,
-    height: 600,
+    height: 680,
     resizable: false,
     title: "Gailvlun · API 密钥设置",
     parent: mainWindow || undefined,
@@ -331,10 +335,24 @@ ipcMain.handle("setup:test", async (_e, keys) => {
       return { label, status: `error: ${String(e && e.message ? e.message : e)}` };
     }
   };
+  // Unsplash uses Client-ID auth on its own API; a real ping catches a mistyped key
+  // before the user saves (cheap: 1 of the 50/hr demo quota, only when 测试 is pressed).
+  const tryUnsplash = async (key) => {
+    if (!key || !key.trim()) return { label: "Unsplash", status: "empty" };
+    try {
+      const resp = await fetch("https://api.unsplash.com/photos?per_page=1", {
+        headers: { Authorization: `Client-ID ${key.trim()}`, "Accept-Version": "v1" },
+      });
+      return { label: "Unsplash", status: resp.ok ? "ok" : `http ${resp.status}` };
+    } catch (e) {
+      return { label: "Unsplash", status: `error: ${String(e && e.message ? e.message : e)}` };
+    }
+  };
   result.AI_API_KEY = await tryModels(BAKED.AI_BASE_URL, keys.AI_API_KEY, "硅基流动");
   result.MIMO_API_KEY = await tryModels(BAKED.MIMO_BASE_URL, keys.MIMO_API_KEY, "小米 MiMo");
   // Zhipu web-search uses a different API surface; we only check non-empty.
   result.ZHIPU_API_KEY = { label: "智谱", status: keys.ZHIPU_API_KEY?.trim() ? "filled" : "empty" };
+  result.UNSPLASH_ACCESS_KEY = await tryUnsplash(keys.UNSPLASH_ACCESS_KEY);
   return result;
 });
 

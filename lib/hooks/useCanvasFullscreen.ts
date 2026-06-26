@@ -17,7 +17,13 @@ export function useCanvasFullscreen() {
       if (e.key === "Escape") setFullscreen(false);
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    // 全屏时锁定 body 滚动，退出/卸载时恢复（与 ContentPageClient 同策）。
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
   }, [fullscreen]);
 
   return { fullscreen, toggle, exit };

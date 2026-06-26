@@ -2,14 +2,19 @@
 
 把整个 Next.js 应用打包成 Windows 桌面 .exe，功能与本地 `pnpm start` **完全一致**。
 设计为「Route A」：Electron 主进程在启动 Next standalone 服务**之前**，把用户填的
-3 个 API 密钥作为环境变量注入。**Next 应用代码零改动。**
+API 密钥作为环境变量注入。**Next 应用代码零改动。**
 
 ## 密钥与配置的边界
 
-- **用户首次运行时自填的 3 个密钥**（加密存于 `userData/keys.enc`，**绝不进安装包**）：
+- **用户自填的密钥**（加密存于 `userData/keys.enc`，**绝不进安装包**）：
   - `AI_API_KEY`（硅基流动，必填）— AI 对话 / 语义搜索 embedding+rerank / 追问 / 生成
   - `MIMO_API_KEY`（小米，可选）— MiMo 模型
   - `ZHIPU_API_KEY`（智谱，可选）— 联网搜索
+  - `UNSPLASH_ACCESS_KEY`（Unsplash，可选）— 对话配图 / 图片搜索
+  - **升级补填**：老用户升级后无需重装、也无需找文件——`keys.enc` 是 DPAPI 加密的二进制，
+    不可手改。打开「应用 → API 密钥设置…」，已存的密钥会自动带出，只需在新增栏补填后
+    「保存并启动」即热生效。新增一个密钥 = 在 `main.js` 的 `KEY_NAMES`、`startServer` 注入、
+    `setup.html` 各加一处，其余流程自动复用。
 - **内置的非密钥配置**（见 `electron/config.js`，可安全打进 exe）：base URL、模型名、
   reasoning 字段、embedding/rerank 模型、search mode、视频 CDN、索引 COS 兜底。
 
@@ -41,7 +46,7 @@ pnpm run desktop:dev    # electron . —— 走真实主进程：弹密钥设置
 
 ## 工作原理（简）
 
-1. `main.js` 读取/收集 3 个密钥（`safeStorage` 加密）。
+1. `main.js` 读取/收集密钥（`KEY_NAMES`，`safeStorage` DPAPI 加密）。
 2. 以 `ELECTRON_RUN_AS_NODE` 用 Electron 自带 Node 跑 `.next/standalone/server.js`，
    `cwd` 设为 standalone 目录（应用用 `process.cwd()` 读 `content/`），注入 env + 动态端口。
 3. 轮询端口就绪后开 `BrowserWindow` 加载 `127.0.0.1:PORT`。

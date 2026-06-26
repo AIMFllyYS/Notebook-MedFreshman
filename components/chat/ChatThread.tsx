@@ -42,20 +42,45 @@ export default function ChatThread({
   const scrollRef = scrollContainerRef ?? internalRef;
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
+  // ref 镜像，供 rAF 跟随循环读取最新「是否在底部」而不重启循环。
+  const isAtBottomRef = useRef(true);
+  const setAtBottom = (v: boolean) => {
+    isAtBottomRef.current = v;
+    setIsAtBottom(v);
+  };
 
+  // 非流式：新消息出现/生成完成且仍在底部 → 平滑滚到底，做最终落位。
   useEffect(() => {
-    if (isAtBottom) messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isAtBottom]);
+    if (isLoading) return;
+    if (isAtBottomRef.current) messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isLoading]);
+
+  // 流式贴底跟随：rAF 即时钉底，覆盖 token 流入 + 思考/工具面板展开动画带来的高度变化
+  // （smooth 跟不上、动画期 messages 不变故 effect 不触发）。用户上滑 → isAtBottom 置否
+  // → 停止跟随、可自由上下；滑回最底部（<100px）→ handleScroll 重新置真 → 恢复跟随。
+  useEffect(() => {
+    if (!isLoading) return;
+    let raf = 0;
+    const tick = () => {
+      const el = scrollRef.current;
+      if (el && isAtBottomRef.current && el.scrollHeight - el.scrollTop - el.clientHeight > 1) {
+        el.scrollTop = el.scrollHeight;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [isLoading, scrollRef]);
 
   const handleScroll = () => {
     const el = scrollRef.current;
     if (!el) return;
-    setIsAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < 100);
+    setAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < 100);
   };
 
   const jumpToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    setIsAtBottom(true);
+    setAtBottom(true);
   };
 
   return (

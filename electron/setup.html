@@ -49,6 +49,10 @@
     <input id="ZHIPU_API_KEY" type="password" placeholder="留空则联网搜索不可用" autocomplete="off" />
     <div class="hint">解锁对话中的联网搜索工具。</div>
 
+    <label>Unsplash 图片搜索 <span class="opt">可选</span></label>
+    <input id="UNSPLASH_ACCESS_KEY" type="password" placeholder="留空则图片搜索不可用" autocomplete="off" />
+    <div class="hint">解锁对话中的配图 / 图片搜索。在 unsplash.com/oauth/applications 申请 Access Key。</div>
+
     <div class="row">
       <button id="test">测试连通</button>
       <button id="save" class="primary">保存并启动</button>
@@ -57,7 +61,7 @@
 
     <script>
       const $ = (id) => document.getElementById(id);
-      const fields = ["AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY"];
+      const fields = ["AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY", "UNSPLASH_ACCESS_KEY"];
       const collect = () => Object.fromEntries(fields.map((f) => [f, $(f).value]));
       const status = (msg, cls) => { const s = $("status"); s.textContent = msg; s.className = cls || "muted"; };
 
@@ -74,7 +78,7 @@
           const r = await window.setupAPI.test(collect());
           const line = (x) => `${x.label}: ${x.status}`;
           const ok = r.AI_API_KEY.status === "ok";
-          status([line(r.AI_API_KEY), line(r.MIMO_API_KEY), line(r.ZHIPU_API_KEY)].join("\n"), ok ? "ok" : "bad");
+          status([line(r.AI_API_KEY), line(r.MIMO_API_KEY), line(r.ZHIPU_API_KEY), line(r.UNSPLASH_ACCESS_KEY)].join("\n"), ok ? "ok" : "bad");
         } catch (e) {
           status("测试失败：" + e, "bad");
         } finally {

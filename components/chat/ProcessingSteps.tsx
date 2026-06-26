@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ChevronUp, ChevronDown, Loader, CheckCircle2,
 } from 'lucide-react';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { ReasoningBlock } from '@/components/chat/ReasoningBlock';
 import { ToolCallDashboard } from '@/components/chat/ToolCallDashboard';
+import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
 
 interface ProcessingStepsProps {
   msg: ChatMessageType;
@@ -16,17 +17,18 @@ interface ProcessingStepsProps {
 const ProcessingSteps: React.FC<ProcessingStepsProps> = ({ msg, streaming }) => {
   const hasReasoning = !!msg.reasoningContent;
   const hasTools = !!msg.toolCalls && msg.toolCalls.length > 0;
-  const [userExpanded, setUserExpanded] = useState<boolean | null>(null);
-
-  if (!hasReasoning && !hasTools) return null;
 
   const isProcessing = streaming || (msg.toolCalls?.some((t) => t.status === 'running') ?? false);
-  const expanded = userExpanded !== null ? userExpanded : isProcessing;
+
+  // 外壳：处理开始自动展开、完成自动折叠到「处理完毕」头，中途手动开合受尊重。
+  const [expanded, setExpanded] = useProcessingDisclosure(isProcessing);
+
+  if (!hasReasoning && !hasTools) return null;
 
   return (
     <div className="processing-steps">
       <button
-        onClick={() => setUserExpanded(!expanded)}
+        onClick={() => setExpanded(!expanded)}
         className="processing-steps-header"
       >
         <div className="processing-steps-header-left">
@@ -41,10 +43,10 @@ const ProcessingSteps: React.FC<ProcessingStepsProps> = ({ msg, streaming }) => 
       {expanded && (
         <div className="processing-steps-body">
           {msg.reasoningContent && (
-            <ReasoningBlock content={msg.reasoningContent} isStreaming={!!(streaming && !hasTools)} />
+            <ReasoningBlock content={msg.reasoningContent} isProcessing={isProcessing} />
           )}
           {msg.toolCalls && msg.toolCalls.length > 0 && (
-            <ToolCallDashboard toolCalls={msg.toolCalls} />
+            <ToolCallDashboard toolCalls={msg.toolCalls} isProcessing={isProcessing} />
           )}
         </div>
       )}
