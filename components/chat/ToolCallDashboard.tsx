@@ -64,32 +64,38 @@ const ImageSourceCard: React.FC<{ source: WebSearchSource; index: number }> = ({
   const sourceUrl = source.url;
 
   return (
-    <a
-      href={sourceUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+    <div
       className="flex flex-col items-center gap-1 shrink-0 rounded-lg p-1.5 transition-colors hover:bg-[var(--md-sys-color-surface-container-highest)]"
-      style={{ textDecoration: 'none', width: '90px' }}
+      style={{ width: '100px' }}
     >
-      {!imgError ? (
-        <img
-          src={thumbnailUrl}
-          alt={authorName}
-          onError={() => setImgError(true)}
-          style={{ height: '64px', width: 'auto', maxWidth: '80px', borderRadius: '6px', objectFit: 'cover' }}
-        />
-      ) : (
-        <div style={{ height: '64px', width: '64px', borderRadius: '6px', background: 'var(--md-sys-color-surface-container-high)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <ImageIcon size={20} style={{ color: 'var(--md-sys-color-outline)' }} />
-        </div>
-      )}
-      <div style={{ fontSize: '0.58rem', color: 'var(--md-sys-color-on-surface-variant)', textAlign: 'center', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
-        {authorName}
+      <a
+        href={sourceUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: 'none' }}
+      >
+        {!imgError ? (
+          <img
+            src={thumbnailUrl}
+            alt={authorName}
+            onError={() => setImgError(true)}
+            style={{ height: '64px', width: 'auto', maxWidth: '88px', borderRadius: '6px', objectFit: 'cover' }}
+          />
+        ) : (
+          <div style={{ height: '64px', width: '88px', borderRadius: '6px', background: 'var(--md-sys-color-surface-container-high)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <ImageIcon size={20} style={{ color: 'var(--md-sys-color-outline)' }} />
+          </div>
+        )}
+      </a>
+      <div style={{ fontSize: '0.56rem', color: 'var(--md-sys-color-on-surface-variant)', textAlign: 'center', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
+        <a href={sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>
+          {authorName}
+        </a>
       </div>
-      <div style={{ fontSize: '0.52rem', color: 'var(--md-sys-color-outline)' }}>
-        Unsplash
+      <div style={{ fontSize: '0.5rem', color: 'var(--md-sys-color-outline)', textAlign: 'center' }}>
+        on <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Unsplash</a>
       </div>
-    </a>
+    </div>
   );
 };
 
@@ -246,6 +252,23 @@ const ToolCallItem: React.FC<{ call: ToolCallBlock }> = ({ call }) => {
               <ImageSourceCard key={i} source={s} index={i} />
             ))}
           </div>
+          {call.provider === 'unsplash' && call.sources && (
+            <div style={{ fontSize: '0.58rem', color: 'var(--md-sys-color-outline)', textAlign: 'center', marginTop: '4px' }}>
+              Photos by{' '}
+              {call.sources.map((s, i) => (
+                <span key={i}>
+                  <a href={s.url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>
+                    {s.title}
+                  </a>
+                  {i < (call.sources?.length ?? 0) - 1 ? ', ' : ''}
+                </span>
+              ))}
+              {' '}on{' '}
+              <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>
+                Unsplash
+              </a>
+            </div>
+          )}
         </div>
       )}
 
