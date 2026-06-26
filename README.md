@@ -20,7 +20,7 @@
 ```bash
 pnpm install
 cp .env.example .env.local   # 填入你的 AI 端点
-pnpm dev                     # http://localhost:3000
+pnpm dev                     # http://localhost:35349
 ```
 
 ### 配置 AI（自定义 OpenAI 兼容端点）
@@ -127,7 +127,7 @@ cp .env.example .env.local
 
 # 启动开发服务器
 pnpm dev
-# 访问 http://localhost:3000
+# 访问 http://localhost:35349
 ```
 
 ### 渲染动画

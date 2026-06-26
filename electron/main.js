@@ -62,15 +62,32 @@ function hasRequiredKeys(keys) {
 }
 
 // ---------- server orchestration ----------
-function getFreePort() {
-  return new Promise((resolve, reject) => {
+// Fixed loopback port → stable renderer origin (http://127.0.0.1:35349) so the app's
+// IndexedDB/localStorage survive restarts. A RANDOM port per launch changes the origin
+// every time, which silently orphans ALL stored data (chat history / skills / review
+// cards) — the root cause of "everything's gone after reboot". Never change APP_PORT
+// once shipped, or users lose access to data saved under the previous origin.
+const APP_PORT = Number(BAKED.APP_PORT) || 35349;
+
+function checkPortFree(port) {
+  return new Promise((resolve) => {
     const srv = net.createServer();
-    srv.once("error", reject);
-    srv.listen(0, "127.0.0.1", () => {
-      const { port } = srv.address();
-      srv.close(() => resolve(port));
-    });
+    srv.once("error", () => resolve(false));
+    srv.listen(port, "127.0.0.1", () => srv.close(() => resolve(true)));
   });
+}
+
+// Wait until APP_PORT is bindable. On a "save keys → restart server" cycle the previous
+// child may still be releasing it, so poll briefly. If a FOREIGN app holds it we time out
+// and let the caller surface a clear message — we NEVER silently switch ports (switching
+// would change the origin and lose the user's data).
+async function waitPortFree(port, timeoutMs = 6000) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    if (await checkPortFree(port)) return true;
+    await new Promise((r) => setTimeout(r, 200));
+  }
+  return false;
 }
 
 function standaloneDir() {
@@ -99,7 +116,13 @@ function waitForServer(port, timeoutMs = 60000) {
 
 async function startServer(keys) {
   stopServer();
-  serverPort = await getFreePort();
+  serverPort = APP_PORT;
+  if (!(await waitPortFree(APP_PORT))) {
+    throw new Error(
+      `本地端口 ${APP_PORT} 被其它程序占用。该端口用于 Gailvlun 的本地数据持久化，不能更换` +
+        `（否则将读不到你之前保存的对话 / 技能 / 复习卡）。请关闭占用该端口的程序后重新启动 Gailvlun。`,
+    );
+  }
   const dir = standaloneDir();
   const serverJs = path.join(dir, "server.js");
   if (!fs.existsSync(serverJs)) {
