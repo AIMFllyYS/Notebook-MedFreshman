@@ -8,7 +8,8 @@ import {
   readContentMarkdown,
   searchAllContent,
 } from "@/lib/content/loader";
-import { runWebSearchDetailed, runImageSearch } from "@/lib/ai/webSearch";
+import { runWebSearchDetailed } from "@/lib/ai/webSearch";
+import { searchImages, trackPhotoDownload } from "@/lib/ai/imageSearch";
 import type { Skill } from "@/lib/types/skill";
 import { CHEM_DRAW_GUIDE } from "@/lib/chemistry/svgTemplates";
 
@@ -272,8 +273,26 @@ export async function runTool(
       return { content: r.content, meta: { sources: r.sources, cacheHit: r.cacheHit } };
     }
     case "imageSearch": {
-      const r = await runImageSearch(String(args.query ?? ""), Number(args.numResults) || 3);
-      return { content: r.content, meta: { sources: r.sources, cacheHit: r.cacheHit } };
+      const results = await searchImages(String(args.query ?? ""), Number(args.numResults) || 3);
+      if (!results.length) {
+        return {
+          content: `未找到「${args.query}」的相关图片。`,
+          meta: { sources: [] },
+        };
+      }
+      const content = results
+        .map(
+          (r, i) =>
+            `[${i + 1}] ${r.alt}\n![${r.alt}](${r.url})\n来源：${r.source}，作者：${r.author}（Photo by ${r.author} on Unsplash）`,
+        )
+        .join("\n\n");
+      for (const r of results) {
+        trackPhotoDownload(r.downloadLocation);
+      }
+      return {
+        content,
+        meta: { sources: results, provider: "unsplash" },
+      };
     }
 
     case "drawDiagram": {

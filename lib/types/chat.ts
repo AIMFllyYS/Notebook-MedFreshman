@@ -20,6 +20,8 @@ export interface ToolCallBlock {
   /** webSearch 专用：联网来源 + 是否命中缓存。 */
   sources?: WebSearchSource[];
   cacheHit?: boolean;
+  /** imageSearch 专用：图片来源提供者（如 'unsplash'）。 */
+  provider?: string;
   /** renderInteractive 专用：生成的交互产物 id（点击「查看」打开弹窗）。 */
   artifactId?: string;
   /** renderInteractive 专用：演示标题。 */

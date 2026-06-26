@@ -124,35 +124,3 @@ export async function runWebSearchDetailed(query: string, numResults = 5): Promi
     return { content: `联网搜索出错：${String((e as Error)?.message ?? e)}`, sources: [], cacheHit: false };
   }
 }
-
-/** Image-focused search: appends "图片" to query, returns markdown image syntax. */
-export async function runImageSearch(query: string, numResults = 5): Promise<WebSearchDetailed> {
-  const q = query.trim();
-  if (!q) return { content: "搜索关键词为空。", sources: [], cacheHit: false };
-  if (!ZHIPU_KEY) {
-    return {
-      content: "联网搜索未配置（请在 .env 设置 ZHIPU_API_KEY）。",
-      sources: [],
-      cacheHit: false,
-    };
-  }
-  try {
-    const { results, cacheHit } = await searchCached(`${q} 图片 示意图`, numResults);
-    if (!results.length) return { content: `未搜索到「${q}」的相关图片。`, sources: [], cacheHit };
-
-    const imageResults = results
-      .filter((r) => r.media || r.url)
-      .slice(0, numResults);
-
-    const content = imageResults
-      .map((r, i) => {
-        const imgUrl = r.media || r.url;
-        return `[${i + 1}] ${r.title}\n![${r.title}](${imgUrl})\n来源：${r.url}`;
-      })
-      .join("\n\n");
-
-    return { content: content || `未找到「${q}」的图片结果。`, sources: imageResults, cacheHit };
-  } catch (e) {
-    return { content: `图片搜索出错：${String((e as Error)?.message ?? e)}`, sources: [], cacheHit: false };
-  }
-}

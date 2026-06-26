@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle, Globe, ExternalLink, Zap, BookOpen, Image as ImageIcon, Sparkles } from 'lucide-react';
-import type { ToolCallBlock } from '@/lib/types/chat';
+import type { ToolCallBlock, WebSearchSource } from '@/lib/types/chat';
 
 function hostOf(url: string): string {
   try {
@@ -55,6 +55,42 @@ const formatArgs = (args: Record<string, any> | string | undefined): string => {
     }
   }
   return JSON.stringify(args, null, 2);
+};
+
+const ImageSourceCard: React.FC<{ source: WebSearchSource; index: number }> = ({ source, index: _index }) => {
+  const [imgError, setImgError] = useState(false);
+  const thumbnailUrl = source.media || source.url;
+  const authorName = source.title;
+  const sourceUrl = source.url;
+
+  return (
+    <a
+      href={sourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex flex-col items-center gap-1 shrink-0 rounded-lg p-1.5 transition-colors hover:bg-[var(--md-sys-color-surface-container-highest)]"
+      style={{ textDecoration: 'none', width: '90px' }}
+    >
+      {!imgError ? (
+        <img
+          src={thumbnailUrl}
+          alt={authorName}
+          onError={() => setImgError(true)}
+          style={{ height: '64px', width: 'auto', maxWidth: '80px', borderRadius: '6px', objectFit: 'cover' }}
+        />
+      ) : (
+        <div style={{ height: '64px', width: '64px', borderRadius: '6px', background: 'var(--md-sys-color-surface-container-high)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <ImageIcon size={20} style={{ color: 'var(--md-sys-color-outline)' }} />
+        </div>
+      )}
+      <div style={{ fontSize: '0.58rem', color: 'var(--md-sys-color-on-surface-variant)', textAlign: 'center', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
+        {authorName}
+      </div>
+      <div style={{ fontSize: '0.52rem', color: 'var(--md-sys-color-outline)' }}>
+        Unsplash
+      </div>
+    </a>
+  );
 };
 
 const ToolCallItem: React.FC<{ call: ToolCallBlock }> = ({ call }) => {
@@ -199,40 +235,15 @@ const ToolCallItem: React.FC<{ call: ToolCallBlock }> = ({ call }) => {
           <div className="flex items-center gap-1.5" style={{ fontSize: '0.72rem', color: 'var(--md-sys-color-on-surface-variant)' }}>
             <ImageIcon size={12} style={{ color: 'var(--md-sys-color-primary)' }} />
             <span>图片来源 · {call.sources.length} 条</span>
-            {call.cacheHit && (
-              <span className="inline-flex items-center gap-0.5" style={{ color: 'var(--md-sys-color-tertiary)' }}>
-                <Zap size={11} /> 缓存命中
+            {call.provider === 'unsplash' && (
+              <span style={{ fontSize: '0.66rem', color: 'var(--md-sys-color-outline)' }}>
+                via Unsplash
               </span>
             )}
           </div>
           <div className="flex gap-2 overflow-x-auto py-1" style={{ scrollbarWidth: 'thin' }}>
             {call.sources.map((s, i) => (
-              <a
-                key={i}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col items-center gap-1 shrink-0 rounded-lg p-1.5 transition-colors hover:bg-[var(--md-sys-color-surface-container-highest)]"
-                style={{
-                  textDecoration: 'none',
-                  width: '80px',
-                }}
-              >
-                {s.media ? (
-                  <img
-                    src={s.media}
-                    alt={s.title}
-                    style={{ height: '64px', width: 'auto', maxWidth: '76px', borderRadius: '6px', objectFit: 'cover' }}
-                  />
-                ) : (
-                  <div style={{ height: '64px', width: '64px', borderRadius: '6px', background: 'var(--md-sys-color-surface-container-high)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <ImageIcon size={20} style={{ color: 'var(--md-sys-color-outline)' }} />
-                  </div>
-                )}
-                <div style={{ fontSize: '0.62rem', color: 'var(--md-sys-color-on-surface-variant)', textAlign: 'center', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
-                  {s.title}
-                </div>
-              </a>
+              <ImageSourceCard key={i} source={s} index={i} />
             ))}
           </div>
         </div>
