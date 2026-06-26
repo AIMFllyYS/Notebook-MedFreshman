@@ -283,7 +283,7 @@ export async function runTool(
       const content = results
         .map(
           (r, i) =>
-            `[${i + 1}] ${r.alt}\n![${r.alt}](${r.url})\n来源：${r.source}，作者：${r.author}（Photo by ${r.author} on Unsplash）`,
+            `[${i + 1}] ${r.alt}\n![${r.alt}](${r.url})\nPhoto by [${r.author}](${r.source}) on [Unsplash](https://unsplash.com)`,
         )
         .join("\n\n");
       for (const r of results) {
