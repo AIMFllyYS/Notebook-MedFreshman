@@ -12,6 +12,7 @@ import { useResizable } from "@/lib/hooks/useResizable";
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
 import { useRecordPreviews, type RecordPreview } from "@/lib/hooks/useRecordPreviews";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
 import { processRecord, retryRecord, reviseRecord, type ProcessCallbacks } from "@/lib/review/startRecord";
 import { getSubject } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
@@ -89,6 +90,8 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
     (width, height) => commitGeometry(preview.id, { size: { width, height } }),
     { minW: 320, minH: 360 },
   );
+
+  useFullscreenTrack(preview.id, managed?.fullscreen ?? false);
 
   useEffect(() => {
     if (!card) close(preview.id);

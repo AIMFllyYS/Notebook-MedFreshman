@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { Download, MonitorPlay } from "lucide-react";
 import { useArtifacts } from "@/lib/hooks/useArtifacts";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
 import { useDraggable } from "@/lib/hooks/useDraggable";
 import { useResizable } from "@/lib/hooks/useResizable";
 import WindowChrome from "@/components/window/WindowChrome";
@@ -40,6 +41,8 @@ export default function ArtifactViewer() {
     },
     { minW: 420, minH: 320 },
   );
+
+  useFullscreenTrack(viewerId ? artifactWindowId(viewerId) : "", managed?.fullscreen ?? false);
 
   useEffect(() => {
     if (!art) return;

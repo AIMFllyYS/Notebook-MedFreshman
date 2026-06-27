@@ -11,6 +11,7 @@ import {
   type FloatingWin,
 } from "@/lib/hooks/useFloatingChats";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useStore } from "@/lib/store";
 import { useChat } from "@/lib/hooks/useChat";
@@ -74,6 +75,8 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
     { minW: FLOATING_MIN_W, minH: FLOATING_MIN_H },
   );
 
+  useFullscreenTrack(win.id, managed?.fullscreen ?? false);
+
   useEffect(() => {
     if (win.seedNonce === 0 || win.seedNonce === seededRef.current) return;
     seededRef.current = win.seedNonce;
@@ -87,12 +90,7 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
   useEffect(() => {
     function onResize() {
       if (!managed) return;
-      if (managed.fullscreen) {
-        const rect = document.getElementById("notes-panel")?.getBoundingClientRect();
-        if (rect && rect.width > 0 && rect.height > 0) {
-          commitGeometry(win.id, { pos: { x: rect.left, y: rect.top }, size: { width: rect.width, height: rect.height } });
-        }
-      } else {
+      if (!managed.fullscreen) {
         commitGeometry(win.id, {
           pos: {
             x: Math.max(0, Math.min(managed.pos.x, window.innerWidth - managed.size.width)),
