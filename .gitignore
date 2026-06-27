@@ -49,6 +49,7 @@ yarn-error.log*
 /scripts/archive/
 /scripts/logs/
 /scripts/temp/
+/scripts/pdf_extracts/
 
 # ZIP files
 *.zip

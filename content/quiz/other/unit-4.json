@@ -1,0 +1,170 @@
+{
+  "subjectId": "other",
+  "chapterId": "unit-4",
+  "generatedAt": "2026-06-27",
+  "examConfig": {
+    "source": "大学英语 Unit 4 · Explore the Unknown",
+    "totalPoints": 100,
+    "timeLimit": 90,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 1},
+      {"name": "Reading Comprehension", "points": 40, "questions": 4},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "points": 15,
+      "stem": "Directions: Write a short essay of about 150 words on the following topic.\n\nTopic: The Value of Exploring the Unknown\n\nDiscuss why humanity continues to explore unknown frontiers—whether the deep ocean or outer space—despite the enormous costs and risks involved. Draw on the themes and examples from Unit 4.",
+      "answer": "The drive to explore the unknown is one of humanity's most defining characteristics. From the deep ocean to distant galaxies, we continue to push back the frontiers of knowledge despite enormous costs and risks.\n\nThe deep sea illustrates this impulse vividly. The 1977 discovery of hydrothermal vent communities revolutionized biology, proving that life can thrive without sunlight through chemosynthesis. This finding not only expanded our understanding of life on Earth but also informed the search for life on other planets.\n\nSimilarly, the search for extraterrestrial intelligence, despite decades without results, has driven technological innovation and deepened our understanding of the universe. The instruments built to listen for alien signals have led to discoveries about pulsars and quasars.\n\nUltimately, exploration is not merely about finding what we seek. It is about what we learn along the way—about the universe, about life, and about ourselves. The search itself reminds us that our own planet is a treasure worth protecting.",
+      "hint": "结合 Unit 4 两篇课文的事例（深海热液喷口、化能合成、SETI、费米悖论），论述探索未知的价值，注意引言—主体—结论结构。",
+      "explanation": "参考答案结构：提出论点→深海探索例证→宇宙探索例证→总结升华。涵盖核心词汇：frontier, chemosynthesis, extraterrestrial, endeavor, sustain。",
+      "scoring_criteria": [
+        "内容（5分）：观点明确，紧扣主题；结合 Unit 4 具体事例；立场前后一致。",
+        "语言（5分）：词汇丰富准确，恰当使用单元重点词汇；语法基本正确，句式有变化。",
+        "结构（5分）：引言、主体、结论清晰；逻辑连贯，使用过渡词；篇幅约150词。"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "points": 15,
+      "stem": "Choose the best option to complete each sentence.\n\n1. The submersible was built to _____ the crushing pressure of the Mariana Trench.\n   A. deploy  B. withstand  C. transmit  D. emit\n\n2. Scientists estimate that over 90% of deep-sea organisms are _____, producing their own light through chemical reactions.\n   A. bioluminescent  B. habitable  C. interstellar  D. unprecedented\n\n3. The Arecibo message will take 25,000 years to reach its destination — a timeline that _____ our sense of urgency.\n   A. sustains  B. deploys  C. humbles  D. speculates\n\n4. The discovery of hydrothermal vent communities was _____ in that it proved life can exist independently of sunlight.\n   A. compelling  B. unprecedented  C. barren  D. plausible\n\n5. Fermi's _____ highlights the contradiction between the high probability of alien civilizations and the lack of evidence.\n   A. endeavor  B. frontier  C. paradox  D. galaxy",
+      "options": [
+        "1-B 2-A 3-C 4-B 5-C",
+        "1-A 2-B 3-D 4-C 5-A",
+        "1-C 2-D 3-A 4-D 5-B",
+        "1-B 2-C 3-C 4-A 5-D"
+      ],
+      "answer": 0,
+      "hint": "逐题分析：①承受压力→withstand；②生物发光→bioluminescent；③使渺小→humbles；④前所未有的→unprecedented；⑤悖论→paradox。",
+      "explanation": "正确组合为 1-B 2-A 3-C 4-B 5-C：①withstand（承受）指潜水器承受深海压力；②bioluminescent（生物发光的）指深海生物通过化学反应发光；③humbles（使……显得渺小）指50000年的时间跨度令人类的紧迫感微不足道；④unprecedented（前所未有的）指热液喷口生物群的发现打破了生命依赖阳光的传统认知；⑤paradox（悖论）指费米悖论——高概率与零证据之间的矛盾。"
+    },
+    {
+      "id": "q003",
+      "type": "reading",
+      "section": "Reading Comprehension",
+      "points": 40,
+      "passage": "For centuries, the ocean depths were a realm of myth and imagination. Sailors spoke of sea monsters and bottomless pits, while scientists believed the deep ocean was a barren void, devoid of life and light. Today, we know better — yet the truth is stranger than any legend. The deep sea is a world of breathtaking diversity, where creatures thrive under conditions that would instantly destroy most life on the surface.\n\nSunlight penetrates only the upper 200 meters of the ocean. Below this zone lies a world of perpetual darkness. As one descends further, the pressure increases by one atmosphere for every 10 meters — reaching over 1,000 times atmospheric pressure at the deepest points. Yet far from being a lifeless wasteland, the deep ocean teems with organisms that have evolved extraordinary adaptations to survive.\n\nOne of the most revolutionary discoveries in deep-sea biology came in 1977, when scientists exploring the Galápagos Rift found hydrothermal vents. Around these vents, they found thriving communities of giant tube worms, clams, and shrimp — all living in complete darkness. The key to their survival was chemosynthesis: a process by which bacteria convert chemicals from the vent water into energy, forming the base of a food web entirely independent of sunlight. This discovery challenged the long-held belief that all life on Earth ultimately depended on photosynthesis.",
+      "subQuestions": [
+        {
+          "id": "q003_1",
+          "type": "single_choice",
+          "stem": "What is the main idea of the passage?",
+          "options": [
+            "The deep ocean is a barren void devoid of any life forms.",
+            "The deep sea, once thought lifeless, is a diverse habitat that challenges our understanding of life.",
+            "Hydrothermal vents are the only places where life exists in the deep ocean.",
+            "Sunlight can penetrate to the deepest parts of the ocean."
+          ],
+          "answer": 1,
+          "explanation": "主旨大意题。文章以'once thought lifeless'与'breathtaking diversity'的对比为主线，结尾以化能合成'challenged the long-held belief'收束。A项与全文核心相反；C项'only places'过于绝对；D项与原文'penetrates only the upper 200 meters'矛盾。B项准确概括全文主旨。",
+          "points": 10
+        },
+        {
+          "id": "q003_2",
+          "type": "single_choice",
+          "stem": "According to the passage, at the deepest points of the ocean, the pressure is approximately",
+          "options": [
+            "10 times atmospheric pressure",
+            "200 times atmospheric pressure",
+            "over 1,000 times atmospheric pressure",
+            "exactly equal to atmospheric pressure"
+          ],
+          "answer": 2,
+          "explanation": "细节理解题。第二段明确指出'reaching over 1,000 times atmospheric pressure at the deepest points'。A项10倍对应的是每10米增加1个大气压，非最深处的总压力；B项200倍在文中无依据；D项与原文完全矛盾。C项与原文完全一致。",
+          "points": 10
+        },
+        {
+          "id": "q003_3",
+          "type": "single_choice",
+          "stem": "The word \"barren\" in \"a barren void\" (Paragraph 1) is closest in meaning to",
+          "options": [
+            "extremely dark",
+            "lacking life or vegetation",
+            "extremely deep",
+            "difficult to measure"
+          ],
+          "answer": 1,
+          "explanation": "词义猜测题。'barren void'与'devoid of life and light'并列，且后文以'lifeless wasteland'转折反驳，可知barren与lifeless同义。A项dark、C项deep、D项difficult to measure均与上下文逻辑不符。B项lacking life or vegetation为正确同义替换。",
+          "points": 10
+        },
+        {
+          "id": "q003_4",
+          "type": "single_choice",
+          "stem": "What can be inferred about the 1977 discovery of hydrothermal vent communities?",
+          "options": [
+            "It confirmed that all ocean life depends on sunlight for energy.",
+            "It was expected by scientists who had studied the area for decades.",
+            "It challenged the prevailing belief that life requires sunlight.",
+            "It proved that giant tube worms can only survive in cold water."
+          ],
+          "answer": 2,
+          "explanation": "推理判断题。第三段指出化能合成'forming the base of a food web entirely independent of sunlight'，且'This discovery challenged the long-held belief that all life on Earth ultimately depended on photosynthesis'。A项与原文相反；B项'expected'无依据，原文称其为'revolutionary'；D项偷换概念，管虫生存于热液喷口附近的高温环境。C项为正确推断。",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "cloze",
+      "section": "Cloze",
+      "points": 10,
+      "passage": "The search for extraterrestrial intelligence is one of humanity's most ambitious (1) _____. Since the dawn of civilization, humans have wondered whether we are (2) _____ in the universe. In the twentieth century, this question became a scientific one, (3) _____ the development of radio telescopes and space probes.\n\nOur Milky Way (4) _____ contains between 100 and 400 billion stars. Astronomers have identified dozens of exoplanets within the (5) _____ zone — the region where liquid water can exist. Given these figures, the (6) _____ that at least one planet harbors life seems high.\n\nIn 1974, scientists used the Arecibo telescope to (7) _____ a message into space. It will take 25,000 years to reach its destination, a timeline that (8) _____ our sense of urgency.\n\nYet Fermi's (9) _____ remains: if the probability is so high, why have we found no evidence? Perhaps civilizations are too far apart, or perhaps life is rarer than we (10) _____. Regardless, the search itself has value, reminding us that our planet is a treasure worth protecting.",
+      "blanks": [
+        {"id": "b1", "options": ["endeavors", "frontiers", "paradoxes", "ventures"], "answer": 0, "explanation": "endeavor（事业）指搜索地外智慧是一项跨学科的科学事业。frontier（前沿）虽相关，但此处需要'努力/事业'之意。", "points": 1},
+        {"id": "b2", "options": ["lonely", "alone", "single", "sole"], "answer": 1, "explanation": "alone（孤独的）是固定搭配'are we alone'中的用法，指是否是宇宙中唯一的智慧生命。lonely侧重情感上的孤独，不合语境。", "points": 1},
+        {"id": "b3", "options": ["regardless of", "in spite of", "thanks to", "due to"], "answer": 2, "explanation": "thanks to（由于/多亏了）表示因果关系——正是由于射电望远镜的发展，搜索才成为可能。in spite of表转折，逻辑不符。", "points": 1},
+        {"id": "b4", "options": ["galaxy", "planet", "system", "orbit"], "answer": 0, "explanation": "galaxy（星系）指银河系（Milky Way galaxy）。planet（行星）、system（系统）、orbit（轨道）均与Milky Way不搭配。", "points": 1},
+        {"id": "b5", "options": ["comfortable", "habitable", "survivable", "adaptable"], "answer": 1, "explanation": "habitable zone（宜居带）是天文学术语，指恒星周围液态水可存在的区域。其他选项非专业术语。", "points": 1},
+        {"id": "b6", "options": ["probability", "possibility", "certainty", "mystery"], "answer": 0, "explanation": "probability（概率）与Drake Equation的估算直接相关。possibility（可能性）语气较弱；certainty（确定性）与原文'seems high'的推测语气矛盾。", "points": 1},
+        {"id": "b7", "options": ["emit", "transmit", "submit", "permit"], "answer": 1, "explanation": "transmit（发射/传输）指通过射电望远镜向太空发送信号。emit（发出）虽近义，但transmit更强调有目的的信号发送。", "points": 1},
+        {"id": "b8", "options": ["increases", "validates", "humbles", "amplifies"], "answer": 2, "explanation": "humbles（使……显得渺小）指50000年的时间跨度令人类的紧迫感微不足道。increases和amplifies方向相反。", "points": 1},
+        {"id": "b9", "options": ["equation", "paradox", "theory", "hypothesis"], "answer": 1, "explanation": "Fermi's paradox（费米悖论）是固定术语，指高概率与零证据之间的矛盾。equation（方程）指德雷克方程，非费米提出。", "points": 1},
+        {"id": "b10", "options": ["speculate", "estimate", "calculate", "anticipate"], "answer": 0, "explanation": "speculate（推测）与原文'as some scientists speculate'呼应，指没有充分证据的猜测。estimate（估算）过于确定，与'rarer than'的推测语气不完全匹配。", "points": 1}
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "translation",
+      "section": "Translation",
+      "points": 20,
+      "items": [
+        {
+          "id": "t1",
+          "source": "深海是地球上最大的栖息地，也是被探索最少的地方。",
+          "reference": "The deep sea is the largest habitat on Earth and the least explored.",
+          "explanation": "考点：the + 最高级 + 名词的并列结构；'栖息地'译为habitat；'被探索最少的'用the least explored（过去分词作形容词）。",
+          "points": 5
+        },
+        {
+          "id": "t2",
+          "source": "1977年热液喷口生物群的发现证明了生命可以不依赖阳光而存在。",
+          "reference": "The discovery of hydrothermal vent communities in 1977 proved that life can exist independently of sunlight.",
+          "explanation": "考点：discovery作主语的名词短语结构；'热液喷口'译为hydrothermal vent；'不依赖'译为independently of；prove后接that从句。",
+          "points": 5
+        },
+        {
+          "id": "t3",
+          "source": "费米悖论提出了一个令人不安的问题：如果地外文明的概率如此之高，为什么我们找不到任何证据？",
+          "reference": "Fermi's paradox raises an unsettling question: if the probability of extraterrestrial civilizations is so high, why have we found no evidence of them?",
+          "explanation": "考点：raise a question（提出问题）；'令人不安的'译为unsettling；条件状语从句if... + 主句why...的设问结构；'地外文明'译为extraterrestrial civilizations。",
+          "points": 5
+        },
+        {
+          "id": "t4",
+          "source": "无论我们是否孤独，搜索本身就有价值，它提醒我们地球是一件值得保护的珍宝。",
+          "reference": "Whether we are alone or not, the search itself has value, reminding us that our planet is a treasure worth protecting.",
+          "explanation": "考点：whether... or not让步状语从句；'搜索本身'用the search itself（反身代词表强调）；现在分词reminding作伴随状语；'值得保护的'译为worth protecting。",
+          "points": 5
+        }
+      ]
+    }
+  ]
+}
