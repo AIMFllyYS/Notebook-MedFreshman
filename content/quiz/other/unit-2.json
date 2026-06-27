@@ -1,0 +1,1037 @@
+{
+  "subjectId": "other",
+  "chapterId": "unit-2",
+  "generatedAt": "2026-06-26",
+  "examConfig": {
+    "source": "CET-4 Mock Exam — Unit 2: The Myth of a Dream Job",
+    "totalPoints": 100,
+    "timeLimit": 120
+  },
+  "sections": [
+    {
+      "id": "writing",
+      "title": "Part I  Writing",
+      "titleCn": "写作",
+      "points": 15,
+      "questionIds": ["q001"]
+    },
+    {
+      "id": "vocab_grammar",
+      "title": "Part II  Vocabulary & Grammar",
+      "titleCn": "词汇与语法",
+      "points": 15,
+      "questionIds": ["q002","q003","q004","q005","q006","q007","q008","q009","q010","q011","q012","q013","q014","q015","q016"]
+    },
+    {
+      "id": "reading",
+      "title": "Part III  Reading Comprehension",
+      "titleCn": "阅读理解",
+      "points": 40,
+      "passages": [
+        {
+          "id": "passage1",
+          "title": "Silicon Valley Ruined Work Culture",
+          "questionIds": ["q017","q018","q019","q020","q021","q022","q023","q024","q025","q026"]
+        },
+        {
+          "id": "passage2",
+          "title": "Finding the Right Career Path",
+          "questionIds": ["q027","q028","q029","q030","q031","q032","q033","q034","q035","q036"]
+        }
+      ]
+    },
+    {
+      "id": "cloze",
+      "title": "Part IV  Cloze",
+      "titleCn": "完形填空",
+      "points": 10,
+      "questionIds": ["q037","q038","q039","q040","q041","q042","q043","q044","q045","q046"]
+    },
+    {
+      "id": "translation",
+      "title": "Part V  Translation",
+      "titleCn": "翻译",
+      "points": 20,
+      "questionIds": ["q047","q048","q049","q050"]
+    }
+  ],
+  "passages": {
+    "passage1": {
+      "title": "Silicon Valley Ruined Work Culture",
+      "body": "By 2020, Silicon Valley's work culture had spread throughout Corporate America. United Shore, a mortgage company, installed an escape room for employees; Nationwide Insurance introduced a policy of giving Fridays off; Cargill redesigned its offices with open layouts inspired by tech giants. Executive coach Mike Robbins observed that everyone wants to copy Silicon Valley. However, critics argue that Silicon Valley's biggest \"export\" is not the perks or open offices, but the blurring of work-life boundaries. Dan Lyons, a former journalist who became a writer for the TV series \"Silicon Valley,\" is among the most vocal critics of this 24/7 work culture. He argues that the emphasis on fun perks and casual culture is a form of misdirection from \"shareholder capitalism\" — a way of persuading employees to work harder for less. The article also discusses \"hustle culture\" and the 996 work schedule (working from 9 AM to 9 PM, six days a week), which has become a controversial norm in tech. The Away suitcase company scandal, in which the CEO resigned after employees reported allegations of abusive workplace behavior, is cited as evidence that Silicon Valley's culture is not always as positive as it appears. The article concludes with a simple suggestion: perhaps the office should just be a place to get work done."
+    },
+    "passage2": {
+      "title": "Finding the Right Career Path",
+      "body": "Growing up, I was passionate about fashion. I covered my bedroom walls with magazine cutouts, studied runway trends, and dreamed of working in the industry. But under family influence, I chose medicine instead — a \"respectable\" and stable career. In high school, I interned for a plastic surgeon, and the experience seemed to confirm my path. I earned a merit scholarship to the University of Maryland, where I studied neurobiology and physiology, took the MCATs, and eventually landed a hospital internship in Long Island. During that internship, however, I realized I did not share the burning passion that my colleagues felt for medicine. I hated not being able to wear my own clothes. I struggled with whether to abandon three years of work and preparation. When I finally told my parents, my father said, \"It's your life and your decision.\" My mother simply asked, \"But what are you going to do?\" I had no answer. Weeks later, browsing my room, I spotted Arthur Elgort's Models Manual on my shelf and felt a jolt of recognition. Fashion had been the answer all along — right under my nose. I realized that no amount of external validation or family expectation could substitute for genuine passion."
+    }
+  },
+  "clozePassage": {
+    "title": "The Modern Workplace: Perks or Pressure?",
+    "body": "The modern workplace has undergone (1) _____ changes in recent years. Many companies, (2) _____ by Silicon Valley's remarkable success, have begun to offer employees a wide range of (3) _____, from free meals to flexible working hours. While these benefits may seem (4) _____ at first glance, critics argue that they often serve to (5) _____ the boundaries between work and personal life. Employees are expected to remain (6) _____ almost around the clock, making it increasingly difficult to truly (7) _____ after a long workday. Furthermore, the strong (8) _____ placed on creating a fun and casual atmosphere can sometimes distract workers from their actual (9) _____. As a result, many employees find themselves caught in a (10) _____ of overwork and burnout, wondering whether these perks are truly worth the hidden cost."
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "writing",
+      "points": 15,
+      "label": "作文",
+      "stem": "Directions: For this part, you are required to write a short essay of about 150 words on the following topic. You should state your view clearly and support it with appropriate examples.\n\nTopic: My Dream Job — Passion vs. Reality\n\nYour essay should discuss the relationship between one's ideal career and real-world constraints, drawing on the themes explored in Unit 2.",
+      "answer": "Sample Essay:\n\nMany people grow up with a dream job in mind, yet the gap between passion and reality is often wider than expected. The readings in Unit 2 illustrate this tension vividly: the narrator of \"Finding the Right Career Path\" spent three years pursuing medicine only to discover that fashion — her original love — was always her true calling.\n\nIn my view, passion is an indispensable foundation for a fulfilling career. When people work purely for social approval or financial security, as the narrator initially did, they risk entering what critics call the \"rat race\" — the endless, exhausting pursuit of external validation. Silicon Valley's work culture shows that even glamorous-sounding jobs can become prisons when passion is absent.\n\nOf course, passion alone is not enough. Practical considerations such as income and job stability matter. The wisest approach is to pursue what you love while gradually acquiring the skills and experience to make it viable. As the narrator's story suggests, it is never too late to shift gears.",
+      "hint": "围绕「热情」与「现实」两个维度展开，结合 Unit 2 的具体事例（如叙述者改行时尚、硅谷加班文化等），表明明确立场并给出支持性论据，注意结构完整（引言—主体—结论）。",
+      "explanation": "本题考查考生的书面表达能力。参考答案采用「提出问题—表明立场—举例论证—辩证补充—结论」的议论文结构，词汇涵盖 Unit 2 的核心表达（rat race, shift gears, passion, validation 等）。",
+      "scoring_criteria": [
+        "内容（5分）：观点明确，紧扣「梦想工作与现实」主题；结合 Unit 2 内容（课文人物/硅谷文化等）举出至少1个具体例子；立场前后一致，论证有说服力。",
+        "语言（5分）：词汇丰富、准确，恰当使用 Unit 2 重点词汇；语法基本正确，句式有变化（简单句+复合句），无严重语法错误。",
+        "结构（5分）：有清晰的引言段、主体段和结论段；段落之间逻辑连贯，使用适当的过渡词；篇幅约150词，不少于120词。"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "vocabulary_fill_in",
+      "points": 1,
+      "stem": "The tech company attracted top talent by offering a generous range of _____, including free gourmet meals, on-site fitness centers, and unlimited paid time off.",
+      "options": [
+        "perks",
+        "barriers",
+        "norms",
+        "allegations"
+      ],
+      "answer": 0,
+      "hint": "空格所填词应指雇主提供给员工的额外好处或福利。",
+      "explanation": "A 正确：\"perks\" 指工资之外的额外福利或特权（如免费餐饮、健身房等），与文中例子完全吻合。B \"barriers\" 意为障碍；C \"norms\" 意为规范/准则；D \"allegations\" 意为（未经证实的）指控。后三项均与「吸引人才的额外福利」语义不符。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "vocabulary_fill_in",
+      "points": 1,
+      "stem": "After the public scandal, the company hired a PR firm to _____ its brand image through charitable campaigns and updated workplace policies.",
+      "options": [
+        "amplify",
+        "reinvent",
+        "sugarcoat",
+        "intern"
+      ],
+      "answer": 1,
+      "hint": "丑闻后公司想彻底改变外界对它的印象，需要哪个动词来表达「彻底重塑」？",
+      "explanation": "B 正确：\"reinvent\" 意为彻底重塑或以全新面貌呈现，\"reinvent its brand image\" 是固定搭配，契合「丑闻后重建形象」的语境。A \"amplify\" 意为放大/扩大；C \"sugarcoat\" 意为粉饰/美化（使坏事听起来没那么糟），含贬义；D \"intern\" 意为实习（不及物动词），三者均不符合语境。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "vocabulary_fill_in",
+      "points": 1,
+      "stem": "The line between professional responsibilities and personal time has become increasingly _____, as employees are now expected to answer emails at midnight.",
+      "options": [
+        "vocal",
+        "casual",
+        "blurred",
+        "liberal"
+      ],
+      "answer": 2,
+      "hint": "当工作与生活的「界限」变得不清晰时，我们用哪个形容词来描述这种状态？",
+      "explanation": "C 正确：\"blurred\" 意为模糊的、不清晰的，\"the line has become blurred\" 是描述工作与生活边界消失的标准表达，也是 Unit 2 阅读一的核心词汇。A \"vocal\" 意为直言不讳的；B \"casual\" 意为随意的；D \"liberal\" 意为开明的/宽泛的，均不适合描述「界限模糊」。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "vocabulary_fill_in",
+      "points": 1,
+      "stem": "She decided to _____ at a well-known fashion house during her gap year in order to gain firsthand experience in the industry.",
+      "options": [
+        "wallpaper",
+        "intern",
+        "shift",
+        "unwind"
+      ],
+      "answer": 1,
+      "hint": "空格所填词表示「以实习生身份工作」，是 Unit 2 阅读二中的核心动词。",
+      "explanation": "B 正确：\"intern\"（不及物动词）意为「实习」，\"intern at a company\" 是标准用法，与阅读二中叙述者高中期间 \"interned for a plastic surgeon\" 用法完全一致。A \"wallpaper\" 意为贴壁纸（或比喻刷屏）；C \"shift\" 意为转移/换档；D \"unwind\" 意为放松，三者均不适合「到公司实习」的语境。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "vocabulary_fill_in",
+      "points": 1,
+      "stem": "Despite the _____ opposition from a small group of employees, the management's decision to adopt flexible working hours was welcomed by the majority of staff.",
+      "options": [
+        "stunning",
+        "dreaded",
+        "legitimate",
+        "vocal"
+      ],
+      "answer": 3,
+      "hint": "修饰「反对」的形容词应表示这部分员工是公开、大声表达意见的。",
+      "explanation": "D 正确：\"vocal\" 意为公开发声的、积极表达意见的，\"vocal opposition\" 指少数员工公开表达的反对声音，是 Unit 2 阅读一的核心词汇（\"She was vocal about her dislike of...\"）。A \"stunning\" 意为令人惊叹的；B \"dreaded\" 意为令人恐惧的；C \"legitimate\" 意为合法的/正当的，均不适合修饰「有人公开发声地反对」。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "word_meaning",
+      "points": 1,
+      "stem": "In the sentence \"The media tried to recast Silicon Valley's notorious work culture as an admirable model of dedication,\" the word \"recast\" most nearly means:",
+      "options": [
+        "to fire and replace all existing staff with new personnel",
+        "to present or portray something in a new and different way",
+        "to calculate and revise the financial projections of a company",
+        "to literally melt down and reshape a metal object"
+      ],
+      "answer": 1,
+      "hint": "\"recast\" 是比喻用法，想想「重新包装」或「换一种方式呈现」的意思。",
+      "explanation": "B 正确：\"recast\" 本义是「重新铸造」，引申为「以全新方式呈现或描述某事物」，常见于媒体、叙事等语境。A 是 \"replace\" 的含义；C 与财务计算无关；D 是 \"recast\" 的字面义（冶金），在此为比喻，选 B 是理解语境的正确解读。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "word_meaning",
+      "points": 1,
+      "stem": "The word \"allegation\" in \"serious allegations of abusive behavior were made against the CEO\" most nearly means:",
+      "options": [
+        "a fact that has been legally proven in a court of law",
+        "an official policy statement issued by the company's board",
+        "a claim or accusation that has not yet been proven",
+        "a formal punishment handed down by a regulatory authority"
+      ],
+      "answer": 2,
+      "hint": "\"allegation\" 是法律用语，注意它与「已证实的事实」的区别。",
+      "explanation": "C 正确：\"allegation\" 指尚未被证实的指控或声索（an accusation not yet proven），这正是新闻报道中用此词而非 \"proven fact\" 的原因。A 是 \"proven fact\" 的含义；B 是 \"statement\" 的含义；D 是 \"sanction/penalty\" 的含义。理解这一法律含义对阅读英文新闻至关重要。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "word_meaning",
+      "points": 1,
+      "stem": "The word \"albeit\" in \"She accepted the offer, albeit with considerable reluctance\" most nearly means:",
+      "options": [
+        "therefore",
+        "although",
+        "moreover",
+        "instead"
+      ],
+      "answer": 1,
+      "hint": "\"albeit\" 是正式连词，引导一个让步成分，与「虽然」的意思相近。",
+      "explanation": "B 正确：\"albeit\" 是正式书面语连词，意为「虽然/尽管」（although/even though），常用于引导让步状语短语。例：\"She succeeded, albeit with great difficulty.\"（她成功了，尽管过程很艰难。）A \"therefore\" 表因果；C \"moreover\" 表递进；D \"instead\" 表替代，均与让步含义不符。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "word_meaning",
+      "points": 1,
+      "stem": "The word \"drastically\" in \"her career plans changed drastically after the internship\" most nearly means:",
+      "options": [
+        "gradually and almost imperceptibly over a long period",
+        "in a very sudden and extreme degree",
+        "in a well-planned and carefully organized manner",
+        "with only slight and temporary consequences"
+      ],
+      "answer": 1,
+      "hint": "\"drastically\" 是 \"drastic\"（极端的）的副词形式，强调变化的程度。",
+      "explanation": "B 正确：\"drastically\" 意为「极大地、急剧地」，强调变化的幅度极大且往往迅速，如 \"drastically cut costs\"（大幅削减成本）。A 描述缓慢变化，与 \"drastically\" 的「急剧」含义相反；C 强调有计划性；D 强调轻微，均不符合「极端、显著」的语义。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "word_meaning",
+      "points": 1,
+      "stem": "The phrase \"shift gears\" in \"after three years in medicine, she finally decided to shift gears and pursue fashion\" most nearly means:",
+      "options": [
+        "to repair or replace the transmission system of a vehicle",
+        "to increase one's working speed and intensity",
+        "to change one's direction, approach, or focus in life",
+        "to accept additional responsibilities at work"
+      ],
+      "answer": 2,
+      "hint": "\"shift gears\" 是借用驾车换档的习惯说法，引申到职业或生活方向的转变。",
+      "explanation": "C 正确：\"shift gears\" 是固定习语，源自驾车时换档变速，引申为「改变方向/方式/重心」，常用于描述职业转型或策略调整。A 是字面意义（换汽车档位）；B 强调加快速度，未抓住「方向改变」的核心；D 是「承担更多责任」，均不符合语境中「从医学转向时尚」的含义。"
+    },
+    {
+      "id": "q012",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "grammar",
+      "points": 1,
+      "stem": "The company _____ three new branches in Asia since the CEO launched the global expansion strategy last year.",
+      "options": [
+        "opened",
+        "has opened",
+        "had opened",
+        "will have opened"
+      ],
+      "answer": 1,
+      "hint": "句中有「since last year」，这是时态选择的关键线索。",
+      "explanation": "B 正确：\"since + 过去时间点\" 是使用现在完成时（have/has + 过去分词）的标志性结构，表示从过去某时点到现在已发生的动作。A \"opened\" 是一般过去时，不与 \"since\" 搭配；C \"had opened\" 是过去完成时，需要另一个更早的过去时间点；D \"will have opened\" 是将来完成时，与句意不符。"
+    },
+    {
+      "id": "q013",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "grammar",
+      "points": 1,
+      "stem": "She found it nearly impossible to give up medicine, _____ she had invested three years of her life preparing for it.",
+      "options": [
+        "even if",
+        "so that",
+        "as if",
+        "given that"
+      ],
+      "answer": 3,
+      "hint": "空格引导的从句表示「原因/根据」，解释为什么她难以放弃医学。",
+      "explanation": "D 正确：\"given that\" 意为「考虑到/鉴于」，引导表示原因或前提条件的从句，此处解释她难以放弃的原因。A \"even if\" 引导假设让步（即使），句意不通；B \"so that\" 引导目的或结果状语从句；C \"as if\" 引导方式或虚拟比较从句，均不符合「解释原因」的语境。"
+    },
+    {
+      "id": "q014",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "grammar",
+      "points": 1,
+      "stem": "The phrase \"rat race\" as used in the article most accurately refers to:",
+      "options": [
+        "a laboratory experiment using rats to study competitive behavior",
+        "a competitive sport involving trained racing animals",
+        "a futile and exhausting struggle to keep up in a competitive society",
+        "a casual term for a busy city street during rush hour"
+      ],
+      "answer": 2,
+      "hint": "\"rat race\" 是固定习语，想想人们在职场中为了名利不停奔跑、却永无终点的意象。",
+      "explanation": "C 正确：\"rat race\" 是英语习语，形容现代社会中人们为了财富和地位进行的毫无意义、令人精疲力竭的竞争，常用于批评唯利是图的职场文化。A 和 B 是对字面意义的误读；D 是无中生有的解释。理解此类习语对阅读理解至关重要。"
+    },
+    {
+      "id": "q015",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "grammar",
+      "points": 1,
+      "stem": "Not until she arrived at the hospital for her first day of internship _____ how different real medicine was from her expectations.",
+      "options": [
+        "she realized",
+        "she had realized",
+        "did she realize",
+        "had she realized"
+      ],
+      "answer": 2,
+      "hint": "\"Not until...\" 置于句首时，主句需要倒装，且注意时态。",
+      "explanation": "C 正确：\"Not until + 时间状语\" 位于句首时，主句须进行助动词倒装（否定倒装）。句子变为：Not until... did she realize...。句中描述过去某一时刻的认识，故用 did + 动词原形。A、B 未倒装，语法错误；D \"had she realized\" 是过去完成时倒装，时态不符（应为一般过去时）。"
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "section": "vocab_grammar",
+      "subsection": "grammar",
+      "points": 1,
+      "stem": "The article implies that the proliferation of workplace perks _____ a deliberate strategy by corporations to disguise the true demands placed on employees.",
+      "options": [
+        "amounts to",
+        "results from",
+        "leads to",
+        "accounts for"
+      ],
+      "answer": 0,
+      "hint": "句意是说「福利的泛滥本质上等同于一种故意策略」，哪个短语表示「等同于/实质上是」？",
+      "explanation": "A 正确：\"amount to\" 意为「相当于/等同于/实质上是」，常用于表达某事物的本质，如 \"This amounts to a deliberate lie.\"（这实质上是故意撒谎。）B \"result from\" 意为「由……导致」（因果关系，方向相反）；C \"lead to\" 意为「导致……」；D \"account for\" 意为「解释/占比」。只有 A 表达「本质等同」的含义。"
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage1",
+      "points": 2,
+      "stem": "[Passage 1] What is the central argument of the article about Silicon Valley's influence on Corporate America?",
+      "options": [
+        "Silicon Valley companies are producing the world's most innovative technology and should be universally imitated.",
+        "Corporate America has eagerly adopted Silicon Valley's workplace culture, but this culture carries significant hidden costs.",
+        "American companies should offer more perks to increase employee productivity and reduce staff turnover.",
+        "The future of all industries lies in fully embracing the 24/7 availability model pioneered in Silicon Valley."
+      ],
+      "answer": 1,
+      "hint": "主旨题：文章的核心不是单纯赞美或批评，而是描述一种趋势并揭示其代价。",
+      "explanation": "B 正确：文章描述了硅谷工作文化向整个企业界蔓延的趋势（United Shore、Nationwide Insurance、Cargill 等纷纷效仿），同时通过 Dan Lyons 等人的批评揭示了这种文化对工作与生活平衡的负面影响，体现了「趋势 + 代价」的双重主旨。A 和 D 只看到了正面，忽略了批评；C 过于具体，不是全文主旨。"
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage1",
+      "points": 2,
+      "stem": "[Passage 1] According to the article, which company introduced an escape room as a workplace perk?",
+      "options": [
+        "Nationwide Insurance",
+        "Cargill",
+        "United Shore",
+        "Away"
+      ],
+      "answer": 2,
+      "hint": "细节题：注意区分文中三家效仿硅谷的公司各自采用了什么福利。",
+      "explanation": "C 正确：文章明确指出 United Shore（一家抵押贷款公司）安装了密室逃脱游戏供员工使用。Nationwide Insurance 的措施是给员工放周五的假（Fridays off）；Cargill 采用了开放式办公室布局（open office layout）；Away 是行李箱公司，与密室逃脱无关。"
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage1",
+      "points": 2,
+      "stem": "[Passage 1] What does the article identify as Silicon Valley's biggest \"export\" to Corporate America?",
+      "options": [
+        "The concept of providing lavish employee perks such as free meals and gym access",
+        "The blurring of boundaries between work and personal life",
+        "An open-plan office design that encourages spontaneous collaboration",
+        "A startup mentality that values speed and disruption above all else"
+      ],
+      "answer": 1,
+      "hint": "文章明确使用了引号标出硅谷最大的「出口产品」，找到那个关键词。",
+      "explanation": "B 正确：文章明确指出硅谷最大的「出口」（export）不是办公室设计或零食福利，而是「工作与生活边界的模糊化」（the blurring of work-life boundaries）。A、C、D 虽然都是硅谷文化的元素，但均不是文章特别点名的最大影响。"
+    },
+    {
+      "id": "q020",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage1",
+      "points": 2,
+      "stem": "[Passage 1] Which of the following best describes Dan Lyons's professional background as introduced in the article?",
+      "options": [
+        "A Silicon Valley executive who later became a management consultant",
+        "A former journalist who became a writer for the TV series \"Silicon Valley\"",
+        "An executive coach who advises corporations on adopting tech culture",
+        "A tech entrepreneur who founded multiple startups before writing a book"
+      ],
+      "answer": 1,
+      "hint": "细节题：注意 Dan Lyons 的职业身份有两个关键转折点。",
+      "explanation": "B 正确：文章明确介绍 Dan Lyons 是前记者（former journalist），后来成为电视剧《硅谷》（Silicon Valley）的编剧。Mike Robbins 才是企业教练（executive coach），对应 C 选项；A 和 D 是无中生有的描述。"
+    },
+    {
+      "id": "q021",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage1",
+      "points": 2,
+      "stem": "[Passage 1] The \"996 work schedule\" mentioned in the article refers to which of the following?",
+      "options": [
+        "Working 9 hours a day, 9 days a fortnight, with 6 days off per month",
+        "A policy where employees must respond to emails within 9 minutes, 9 hours a day, 6 days a week",
+        "Working from 9 AM to 9 PM, six days a week",
+        "A performance review system where employees are scored out of 996 points annually"
+      ],
+      "answer": 2,
+      "hint": "\"996\" 是一个数字缩写：9→上班时间，9→下班时间，6→每周天数。",
+      "explanation": "C 正确：\"996\" 是源自中国科技行业的用语，指从早上9点工作到晚上9点，每周六天，是「加班文化」（hustle culture）的极端体现。A、B、D 均是对这一数字组合的错误解读。"
+    },
+    {
+      "id": "q022",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage1",
+      "points": 2,
+      "stem": "[Passage 1] According to the article, what led to the resignation of the CEO of Away?",
+      "options": [
+        "The company's declining financial performance and falling stock price",
+        "The CEO voluntarily stepped down to pursue a new entrepreneurial venture",
+        "Employees publicly reported allegations of abusive workplace behavior",
+        "A government investigation into the company's product safety standards"
+      ],
+      "answer": 2,
+      "hint": "Away 是行李箱公司，CEO 离职的直接原因是员工公开举报了什么？",
+      "explanation": "C 正确：文章指出 Away 行李箱公司的 CEO 在员工公开举报职场虐待行为的指控（allegations of abusive behavior）后辞职。A、B、D 均未在文中提及，属于干扰项。此案例在文章中作为硅谷文化负面影响的证据而被引用。"
+    },
+    {
+      "id": "q023",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage1",
+      "points": 2,
+      "stem": "[Passage 1] According to Dan Lyons, the emphasis on perks and casual culture in Silicon Valley companies is best understood as:",
+      "options": [
+        "a genuine effort by tech companies to prioritize employee well-being above profits",
+        "a misdirection that distracts employees from the demands of shareholder capitalism",
+        "a proven strategy that increases productivity by at least 40 percent on average",
+        "a temporary trend that will naturally disappear as the tech industry matures"
+      ],
+      "answer": 1,
+      "hint": "Dan Lyons 用了一个关键词来定性这种文化——它是一种「转移视线」。",
+      "explanation": "B 正确：Dan Lyons 明确将硅谷的福利文化称为「股东资本主义的转移视线策略」（misdirection from shareholder capitalism）——通过娱乐化福利让员工心甘情愿地超时工作，实则是为股东利益服务。A 是他明确反对的解读；C、D 均未在文中出现。"
+    },
+    {
+      "id": "q024",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage1",
+      "points": 2,
+      "stem": "[Passage 1] The overall tone of the article toward Silicon Valley's influence on Corporate America can best be described as:",
+      "options": [
+        "purely celebratory, expressing unconditional admiration for Silicon Valley's innovations",
+        "largely critical and skeptical, while still presenting multiple perspectives",
+        "completely neutral and objective, presenting only facts without any editorial stance",
+        "deeply nostalgic, longing for a return to the traditional nine-to-five office environment"
+      ],
+      "answer": 1,
+      "hint": "作者虽然客观呈现了多种声音，但整体立场是偏向批评还是赞美？",
+      "explanation": "B 正确：文章引用 Dan Lyons 的批评、Away 丑闻、996 工作制等多个负面案例，整体基调偏批评，但也客观呈现了 Mike Robbins 等人的正面观点，因此是「批评为主、多角度并呈」，而非 A（一味赞美）、C（完全中立）或 D（怀旧），选 B 最准确。"
+    },
+    {
+      "id": "q025",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage1",
+      "points": 2,
+      "stem": "[Passage 1] Executive coach Mike Robbins's observation that \"everyone wants to copy Silicon Valley\" most strongly suggests which of the following?",
+      "options": [
+        "Silicon Valley has established a legally mandatory standard that all companies must follow.",
+        "Silicon Valley's work culture has become an overwhelmingly attractive model across Corporate America.",
+        "Only technology companies are realistically capable of implementing Silicon Valley's practices.",
+        "Mike Robbins personally endorses Silicon Valley's culture and recommends it to all his clients."
+      ],
+      "answer": 1,
+      "hint": "这句话是对一种趋势的客观描述，还是 Mike Robbins 个人的推荐？注意语境。",
+      "explanation": "B 正确：Mike Robbins 的陈述是对当时企业趋势的客观描述——硅谷文化已经成为企业界竞相模仿的吸引力模型。A 错：\"want to copy\" 暗示自愿，不是法律强制；C 错：文中 United Shore（抵押贷款公司）和 Nationwide Insurance（保险公司）也在效仿，并非仅限于科技公司；D 错：文中没有说明他是否个人背书。"
+    },
+    {
+      "id": "q026",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage1",
+      "points": 2,
+      "stem": "[Passage 1] The article's concluding suggestion that \"perhaps the office should just be a place to get work done\" implies which of the following about the Silicon Valley trend?",
+      "options": [
+        "Companies should invest even more heavily in creative workplace perks to stay competitive.",
+        "The elaborate transformation of offices into entertainment venues may have overcomplicated a simple purpose.",
+        "Remote work from home is objectively preferable to any form of office environment.",
+        "The historical nine-to-five workday model was superior to any modern alternative."
+      ],
+      "answer": 1,
+      "hint": "结论句是一种「返璞归真」的建议，暗示目前的做法是不是走偏了？",
+      "explanation": "B 正确：文章结尾以「也许办公室只需要是个完成工作的地方」收尾，这是对过度娱乐化、福利化办公室趋势的隐性批评——将工作场所改造成游乐场可能偏离了其根本目的。A 与结论方向相反；C 引入了远程办公话题，文中未涉及；D 过于怀旧，文章并未提倡回到旧模式。"
+    },
+    {
+      "id": "q027",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage2",
+      "points": 2,
+      "stem": "[Passage 2] What was the narrator's original passion before she chose to pursue medicine?",
+      "options": [
+        "Medicine and the life sciences, which she had studied since childhood",
+        "Creative writing and journalism, inspired by celebrity interviews she read",
+        "Fashion, including runway trends and working in the fashion industry",
+        "Technology and design, particularly the aesthetics of consumer products"
+      ],
+      "answer": 2,
+      "hint": "细节题：叙述者在选择医学之前，她的卧室里贴满了什么？她梦想从事什么行业？",
+      "explanation": "C 正确：文章开篇即说明叙述者从小热爱时尚（fashion），用杂志剪图装点卧室、研究走秀趋势、梦想进入时尚业——这是她在家庭影响下选择医学之前的初始热情。A 是她后来选择的方向；B、D 均未在文中提及。"
+    },
+    {
+      "id": "q028",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage2",
+      "points": 2,
+      "stem": "[Passage 2] What was the narrator's undergraduate major at the University of Maryland?",
+      "options": [
+        "Pre-medical biology with a concentration in genetics",
+        "Fashion design and textile technology",
+        "Neurobiology and physiology",
+        "Business administration with a healthcare management focus"
+      ],
+      "answer": 2,
+      "hint": "细节题：文章明确提到她在马里兰大学的专业名称。",
+      "explanation": "C 正确：文章明确指出叙述者在马里兰大学（University of Maryland）就读的专业是神经生物学与生理学（neurobiology and physiology），这是典型的医学预科方向。A、B、D 均非文中信息。"
+    },
+    {
+      "id": "q029",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage2",
+      "points": 2,
+      "stem": "[Passage 2] The phrase \"merit scholarship\" tells us that the narrator received her university scholarship primarily because of:",
+      "options": [
+        "her family's inability to pay for her tuition without financial assistance",
+        "her outstanding academic achievements and performance",
+        "her passionate personal statement about a career in medicine",
+        "the university's recruitment strategy to attract students from her region"
+      ],
+      "answer": 1,
+      "hint": "\"merit\" 意为「功绩/成就」，注意将它与另一类常见奖学金（need-based）区分。",
+      "explanation": "B 正确：\"merit scholarship\"（功绩奖学金）是基于学术成绩（academic achievement）而非经济需求授予的奖学金，与 \"need-based scholarship\"（需求型奖学金）不同。A 描述的是经济援助（financial aid）；C、D 均非 merit scholarship 的评定依据。"
+    },
+    {
+      "id": "q030",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage2",
+      "points": 2,
+      "stem": "[Passage 2] Where did the narrator complete her hospital internship that proved to be a turning point?",
+      "options": [
+        "At a university hospital in College Park, Maryland",
+        "At a prestigious research hospital in Washington D.C.",
+        "At a hospital in Long Island",
+        "At a surgical clinic in New York City"
+      ],
+      "answer": 2,
+      "hint": "细节题：文章明确提到实习地点的名称。",
+      "explanation": "C 正确：文章明确说明她在长岛（Long Island）的一家医院完成实习，正是在那里她意识到自己与同事对医学的热情截然不同。A、B、D 均非文中信息，属于干扰项。"
+    },
+    {
+      "id": "q031",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage2",
+      "points": 2,
+      "stem": "[Passage 2] When the narrator told her father about her decision to leave medicine, he responded by saying:",
+      "options": [
+        "\"I knew all along that medicine was never right for you.\"",
+        "\"It's your life and your decision.\"",
+        "\"But what are you going to do?\"",
+        "\"You cannot throw away everything you have worked for.\""
+      ],
+      "answer": 1,
+      "hint": "细节题：文章对父亲和母亲各自的回应有明确引用，注意区分两者。",
+      "explanation": "B 正确：文章明确引用父亲的话为 \"It's your life and your decision\"（这是你的人生，是你的决定），体现了他对女儿选择的尊重。母亲则问 \"But what are you going to do?\"（但你打算怎么办？），对应 C 选项。A 和 D 均为文中未出现的内容。"
+    },
+    {
+      "id": "q032",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage2",
+      "points": 2,
+      "stem": "[Passage 2] What object triggered the narrator's final realization that fashion was her true calling?",
+      "options": [
+        "A fashion magazine she found at the hospital during her internship",
+        "Arthur Elgort's Models Manual, which she spotted on her bedroom shelf",
+        "A documentary about the fashion industry that she watched online",
+        "A childhood sketchbook filled with fashion illustrations she had drawn"
+      ],
+      "answer": 1,
+      "hint": "找到文中触发叙述者「顿悟时刻」的具体物件及其所在位置。",
+      "explanation": "B 正确：文章描述叙述者在自己房间里看到书架上的 Arthur Elgort's Models Manual，这一瞬间触发了她的「顿悟」——时尚一直是答案，就在她眼皮底下（right under my nose）。A 把地点改成了医院；C、D 均为文中未出现的细节。"
+    },
+    {
+      "id": "q033",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage2",
+      "points": 2,
+      "stem": "[Passage 2] The narrator's detail about hating \"not being able to wear her own clothes\" during her hospital internship is most significant because it suggests:",
+      "options": [
+        "that the hospital's dress code was unusually strict compared to industry norms",
+        "that she was being treated unfairly compared to other medical interns",
+        "that fashion and personal self-expression were deeply central to her identity",
+        "that she had financial difficulties and could not afford appropriate work attire"
+      ],
+      "answer": 2,
+      "hint": "这个细节不只是在抱怨院服，它象征着她被压抑的什么？",
+      "explanation": "C 正确：这一细节不是单纯的服装抱怨，而是一种象征——无法穿自己的衣服代表无法表达自我，揭示了时尚与个人身份认同对她而言的核心地位。在一个严格着装规范的医疗环境中，她深切感受到自我表达的缺失。A 专注于医院规定本身；B 暗示不公平待遇；D 引入财务问题——三者均偏离了情节的深层含义。"
+    },
+    {
+      "id": "q034",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage2",
+      "points": 2,
+      "stem": "[Passage 2] The narrator's decision to leave medicine after three years of preparation can best be described as:",
+      "options": [
+        "impulsive and poorly considered, driven by a single bad day at work",
+        "financially motivated, as medicine was not as lucrative as she had hoped",
+        "deeply painful but ultimately necessary, resulting from genuine self-discovery",
+        "straightforward and easy, since she had always secretly planned to leave"
+      ],
+      "answer": 2,
+      "hint": "结合她「纠结了很久」和「三年心血」两个信息来判断这个决定对她意味着什么。",
+      "explanation": "C 正确：叙述者投入了三年时间准备医学生涯，离开的决定既痛苦（agonizing）又必要（necessary）——她经历了真实的自我认知过程才做出转变。A 错：这不是冲动的决定，而是经过内心挣扎的；B 错：文中没有提到经济动机；D 错：她告诉父母时「没有答案」（had no answer），说明离开并非预谋。"
+    },
+    {
+      "id": "q035",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage2",
+      "points": 2,
+      "stem": "[Passage 2] The phrase \"right under my nose\" at the end of the passage most likely means:",
+      "options": [
+        "something that was physically located directly in front of her face",
+        "an answer that required extensive research and careful investigation to uncover",
+        "something that was obviously available all along but went unnoticed",
+        "a discovery that came as a complete surprise from an unexpected source"
+      ],
+      "answer": 2,
+      "hint": "\"right under my nose\" 是习语，表达「近在眼前却未曾察觉」的含义。",
+      "explanation": "C 正确：\"right under my nose\" 是英语习语，意为「就在眼前却没有注意到」。叙述者发现时尚业一直是她的答案——书就在她的书架上，热情一直在她心里——只是被外部期望和职业道路遮住了视线。A 是对字面意思的误读；B 暗示需要深挖；D 暗示出乎意料的来源，均不符合「近在咫尺却被忽视」的习语含义。"
+    },
+    {
+      "id": "q036",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "section": "reading",
+      "passage": "passage2",
+      "points": 2,
+      "stem": "[Passage 2] Which statement best expresses the central theme of the narrator's story?",
+      "options": [
+        "Family advice should always be followed, as parents understand their children's strengths better than the children themselves.",
+        "True career fulfillment requires the courage to pursue one's authentic passion, even against external expectations.",
+        "Medicine is an inherently less rewarding career than creative industries like fashion design.",
+        "Internships are the most effective way to discover whether a chosen career path is right for oneself."
+      ],
+      "answer": 1,
+      "hint": "主题题：叙述者的故事最终想传递的核心价值观是什么？",
+      "explanation": "B 正确：叙述者的故事是一段自我发现的旅程——她对抗家庭期望（选择时尚而非医学），经历了痛苦的抉择，最终鼓起勇气追随内心的热情。这一主题高度契合 Unit 2 的核心思想。A 是她最初遵循的路径，但最终被否定；C 对医学作出价值判断，是文中没有的；D 只是叙述中的一个情节，非全文主题。"
+    },
+    {
+      "id": "q037",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "cloze",
+      "points": 1,
+      "stem": "[Cloze] Read the following passage and choose the best word for each blank.\n\n\"The modern workplace has undergone (1) _____ changes in recent years. Many companies, (2) _____ by Silicon Valley's remarkable success, have begun to offer employees a wide range of (3) _____, from free meals to flexible working hours. While these benefits may seem (4) _____ at first glance, critics argue that they often serve to (5) _____ the boundaries between work and personal life. Employees are expected to remain (6) _____ almost around the clock, making it increasingly difficult to truly (7) _____ after a long workday. Furthermore, the strong (8) _____ placed on creating a fun and casual atmosphere can sometimes distract workers from their actual (9) _____. As a result, many employees find themselves caught in a (10) _____ of overwork and burnout, wondering whether these perks are truly worth the hidden cost.\"\n\nBlank (1): The modern workplace has undergone _____ changes in recent years.",
+      "options": [
+        "minor",
+        "dramatic",
+        "financial",
+        "gradual"
+      ],
+      "answer": 1,
+      "hint": "硅谷对职场的影响是缓慢渐进的，还是迅速而显著的？",
+      "explanation": "B 正确：\"dramatic\" 意为「显著的、急剧的」，文章描述的是短期内席卷整个企业界的快速变化，而非 A \"minor\"（轻微的）或 D \"gradual\"（渐进的）所暗示的缓慢渐变。C \"financial\"（财务的）在语义上与「变化的性质」不匹配。"
+    },
+    {
+      "id": "q038",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "cloze",
+      "points": 1,
+      "stem": "[Cloze] Blank (2): Many companies, _____ by Silicon Valley's remarkable success, have begun to offer new benefits.",
+      "options": [
+        "confused",
+        "frightened",
+        "inspired",
+        "replaced"
+      ],
+      "answer": 2,
+      "hint": "公司看到硅谷的成功后，会产生什么样的情感驱动去效仿？",
+      "explanation": "C 正确：\"inspired by\" 意为「受……激励/启发」，是描述公司主动效仿硅谷的合理动机。A \"confused\"（困惑的）和 B \"frightened\"（受惊吓的）是负面情感，与主动效仿的语境不符；D \"replaced by\" 意为「被取代」，语义完全不对。"
+    },
+    {
+      "id": "q039",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "cloze",
+      "points": 1,
+      "stem": "[Cloze] Blank (3): ...a wide range of _____, from free meals to flexible working hours.",
+      "options": [
+        "barriers",
+        "perks",
+        "allegations",
+        "norms"
+      ],
+      "answer": 1,
+      "hint": "空格后的举例（免费餐食、弹性工时）都是雇主提供的额外好处，这类事物统称为？",
+      "explanation": "B 正确：\"perks\" 指员工福利或额外特权，\"free meals\" 和 \"flexible working hours\" 正是典型的 perks。A \"barriers\" 意为障碍；C \"allegations\" 意为指控；D \"norms\" 意为规范——三者均不能概括这些员工福利。"
+    },
+    {
+      "id": "q040",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "cloze",
+      "points": 1,
+      "stem": "[Cloze] Blank (4): While these benefits may seem _____ at first glance, critics argue that they have hidden costs.",
+      "options": [
+        "absurd",
+        "dreadful",
+        "appealing",
+        "legitimate"
+      ],
+      "answer": 2,
+      "hint": "\"while...critics argue\" 是让步转折结构，空格处应填一个表示「外表吸引人」的词，以形成转折对比。",
+      "explanation": "C 正确：\"appealing\" 意为「吸引人的、令人感兴趣的」，与后半句的批评形成转折——表面上诱人，实则有代价。A \"absurd\"（荒谬的）和 B \"dreadful\"（可怕的）已是负面词汇，无法形成转折；D \"legitimate\"（合法的/正当的）关注合法性而非吸引力，不符合语境。"
+    },
+    {
+      "id": "q041",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "cloze",
+      "points": 1,
+      "stem": "[Cloze] Blank (5): ...they often serve to _____ the boundaries between work and personal life.",
+      "options": [
+        "reinforce",
+        "establish",
+        "maintain",
+        "blur"
+      ],
+      "answer": 3,
+      "hint": "这些福利让工作与生活的「边界」变得怎样了？是更清晰，还是更模糊？",
+      "explanation": "D 正确：\"blur\"（使模糊）是 Unit 2 阅读一的核心词汇，\"blur the boundaries\" 正是文章批评硅谷文化的核心主张。A \"reinforce\"（加强）、B \"establish\"（建立）、C \"maintain\"（维持）均与「边界变清晰或保持」的含义相关，与语境相反。"
+    },
+    {
+      "id": "q042",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "cloze",
+      "points": 1,
+      "stem": "[Cloze] Blank (6): Employees are expected to remain _____ almost around the clock.",
+      "options": [
+        "productive",
+        "available",
+        "creative",
+        "competitive"
+      ],
+      "answer": 1,
+      "hint": "\"around the clock\" 强调全天候，空格所填词应表示「随时可被联系到/处于待命状态」。",
+      "explanation": "B 正确：\"available\" 在职场语境中意为「随时可联系、处于待命状态」，与 \"around the clock\"（全天候）搭配，精准描述了 24/7 工作文化的期望。A \"productive\"（有生产力的）强调效率；C \"creative\"（有创意的）强调才能；D \"competitive\"（有竞争力的）强调竞争性——三者均不特指「随时可被联系」这一状态。"
+    },
+    {
+      "id": "q043",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "cloze",
+      "points": 1,
+      "stem": "[Cloze] Blank (7): ...making it increasingly difficult to truly _____ after a long workday.",
+      "options": [
+        "amplify",
+        "reinvent",
+        "unwind",
+        "intern"
+      ],
+      "answer": 2,
+      "hint": "下班后最需要做什么来恢复精力？选一个表示「放松、解压」的词。",
+      "explanation": "C 正确：\"unwind\" 意为「放松、消除紧张情绪」，是 Unit 2 阅读一中用来描述员工下班后需要休息却无法做到的核心词汇，\"hard to unwind\" 呼应了 24/7 工作文化对个人空间的侵蚀。A \"amplify\"（放大）、B \"reinvent\"（重塑）、D \"intern\"（实习）在语义上均与「放松下班」无关。"
+    },
+    {
+      "id": "q044",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "cloze",
+      "points": 1,
+      "stem": "[Cloze] Blank (8): Furthermore, the strong _____ placed on creating a fun and casual atmosphere can sometimes distract workers.",
+      "options": [
+        "barrier",
+        "merit",
+        "emphasis",
+        "enthusiasm"
+      ],
+      "answer": 2,
+      "hint": "\"strong _____ placed on...\" 是固定搭配，空格所填词意为「对某事的重视/强调」。",
+      "explanation": "C 正确：\"emphasis\" 意为「强调、重视」，\"place emphasis on\" 是标准固定搭配，意为「对……加以强调」。A \"barrier\"（障碍）不与 \"place...on\" 搭配；B \"merit\"（功绩）语义偏差；D \"enthusiasm\"（热情）虽为名词但不与 \"strong...placed on\" 形成固定表达。"
+    },
+    {
+      "id": "q045",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "cloze",
+      "points": 1,
+      "stem": "[Cloze] Blank (9): ...can sometimes distract workers from their actual _____.",
+      "options": [
+        "outfits",
+        "wardrobes",
+        "applications",
+        "responsibilities"
+      ],
+      "answer": 3,
+      "hint": "在职场语境下，员工不应该被分心的「本职」是什么？",
+      "explanation": "D 正确：\"responsibilities\" 意为「职责、本职工作」，营造娱乐化氛围可能分散员工对核心工作职责的注意力。A \"outfits\"（服装搭配）和 B \"wardrobes\"（衣橱）均指服装，为时尚主题干扰项，与职场语境不符；C \"applications\"（申请/应用程序）语义偏差。"
+    },
+    {
+      "id": "q046",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "section": "cloze",
+      "points": 1,
+      "stem": "[Cloze] Blank (10): ...many employees find themselves caught in a _____ of overwork and burnout.",
+      "options": [
+        "shift",
+        "trade-off",
+        "swirl",
+        "cycle"
+      ],
+      "answer": 3,
+      "hint": "过劳→倦怠→被迫继续→过劳，这种反复的模式用哪个词来形容最贴切？",
+      "explanation": "D 正确：\"cycle\" 意为「循环、周期」，\"caught in a cycle of overwork and burnout\" 形象描述了过劳与倦怠交替出现、无法摆脱的恶性循环。A \"shift\"（轮班/转变）不构成「循环」；B \"trade-off\"（权衡/取舍）语义不同；C \"swirl\"（漩涡）虽有相近的比喻意味，但 \"caught in a cycle\" 才是标准固定搭配，语义更精确。"
+    },
+    {
+      "id": "q047",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "section": "translation",
+      "points": 5,
+      "label": "翻译",
+      "stem": "Directions: Translate the following Chinese sentence into English.\n\n硅谷的工作文化虽然在全球蔓延，但也受到了越来越多的批评。",
+      "answer": "Although Silicon Valley's work culture has spread (globally / throughout the world / across the globe), it has also faced (attracted / received / drawn) increasing (growing / mounting) criticism.",
+      "hint": "注意：「虽然……但也……」是让步转折结构（although/while）；「蔓延」可用 spread、expand 或 proliferate；「越来越多的批评」注意时态应用现在完成时或一般现在时均可。",
+      "explanation": "本题考查让步转折句型与 Unit 2 核心词汇。关键考点：① \"although/while\" 引导让步（不可用 \"even though\" 误用为强对比）；② \"spread globally\" 或 \"spread throughout the world\" 表达「在全球蔓延」；③ \"face/attract/receive increasing criticism\" 表达「受到越来越多批评」，注意 \"increasing\" 可替换为 \"growing\" 或 \"mounting\"。",
+      "scoring_criteria": [
+        "准确性（3分）：让步关系正确表达（although/while），「蔓延」和「批评」的英译准确，无语义遗漏或扭曲。",
+        "语言表达（2分）：语法正确（注意主谓一致、时态一致），用词地道，无汉式英语（Chinglish）。"
+      ]
+    },
+    {
+      "id": "q048",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "section": "translation",
+      "points": 5,
+      "label": "翻译",
+      "stem": "Directions: Translate the following Chinese sentence into English.\n\n真正的职业选择应该基于个人的热情和能力，而不仅仅是社会期望或家庭压力。",
+      "answer": "A genuine (true / real) career choice should be based on one's personal passion and abilities (capabilities / strengths), rather than (instead of) merely (simply / just) social expectations or family pressure (pressures).",
+      "hint": "注意：「应该基于……而不仅仅是……」是 \"should be based on...rather than merely...\" 结构；\"真正的\" 可译为 genuine/true；「个人的热情和能力」注意用 \"one's\" 而非直接 \"personal\"。",
+      "explanation": "本题考查 Unit 2 的核心主题词汇及复杂句型翻译。关键考点：① \"genuine\" 或 \"true\" 翻译「真正的」；② \"be based on...rather than...\" 的对比结构；③ \"merely\" 或 \"simply\" 翻译「仅仅」（注意位置：放在 \"rather than\" 之后）；④ \"social expectations\"（社会期望）与 \"family pressure\"（家庭压力）的地道表达。",
+      "scoring_criteria": [
+        "准确性（3分）：「真正的」「基于」「热情与能力」「而不仅仅是」「社会期望」「家庭压力」六个核心语义点均正确表达，无遗漏。",
+        "语言表达（2分）：句型结构地道（\"based on...rather than\" 或 \"should...not merely...\"），无严重语法错误，行文流畅。"
+      ]
+    },
+    {
+      "id": "q049",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "section": "translation",
+      "points": 5,
+      "label": "翻译",
+      "stem": "Directions: Translate the following Chinese sentence into English.\n\n工作与生活的界限越来越模糊，这对现代员工来说既是机遇也是挑战。",
+      "answer": "The boundary (boundaries / line) between work and (personal) life is becoming increasingly blurred (more and more blurred), which (and this) presents (poses / brings) both opportunities and challenges for modern employees (workers / professionals).",
+      "hint": "注意：「越来越模糊」用 \"is becoming increasingly blurred\"（进行时表趋势）；「既是……也是……」用 \"both...and...\"；「这对……来说」用 \"which presents...for...\" 的非限定性关系从句，或直接用 \"and this...\"。",
+      "explanation": "本题考查 Unit 2 阅读一的核心表达及复合句翻译。关键考点：① \"the boundary between work and life\" 的表达；② \"is becoming increasingly blurred\" 的现在进行时（表正在发生的趋势）；③ \"which presents both...and...\" 的非限定性定语从句；④ \"opportunities and challenges\"（机遇与挑战）的地道搭配。",
+      "scoring_criteria": [
+        "准确性（3分）：「界限模糊」「越来越」「既是机遇也是挑战」「对现代员工来说」四个语义点均准确传达，无遗漏。",
+        "语言表达（2分）：使用非限定性定语从句（which）或并列句正确连接前后分句，时态与语态正确，行文流畅自然。"
+      ]
+    },
+    {
+      "id": "q050",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "section": "translation",
+      "points": 5,
+      "label": "翻译",
+      "stem": "Directions: Translate the following Chinese sentence into English.\n\n只有通过实习和实际工作经验，我们才能真正了解一份职业是否适合自己。",
+      "answer": "Only through internships and practical (hands-on / real-world) work experience can we truly (really) understand (determine / discover) whether a career (job / profession / occupation) is suitable for (right for / a good fit for) us (ourselves).",
+      "hint": "注意：「只有……才……」用 \"only...can...\" 结构，且 \"only\" 置于句首时主句需倒装（can we，而非 we can）；「是否适合自己」用 \"whether...is suitable for us/oneself\"。",
+      "explanation": "本题考查「only + 状语前置倒装」这一重要语法结构及 Unit 2 实习词汇。关键考点：① \"Only through...can we...\" 的倒装结构（这是 CET-4 高频考点）；② \"internships\" 对应「实习」；③ \"practical work experience\" 对应「实际工作经验」；④ \"whether a career is suitable for us\" 对应「一份职业是否适合自己」（注意 \"oneself\" 需变为 \"us/ourselves\" 以与主语一致）。",
+      "scoring_criteria": [
+        "准确性（3分）：「只有通过」「实习」「实际工作经验」「是否适合自己」四个核心语义点正确翻译，无遗漏。",
+        "语言表达（2分）：\"Only...can we...\" 倒装结构使用正确（不倒装扣1分），语法无误，用词准确地道。"
+      ]
+    }
+  ],
+  "summary": {
+    "totalQuestions": 50,
+    "byType": {
+      "single_choice": 45,
+      "essay": 5
+    },
+    "byDifficulty": {
+      "basic": 30,
+      "medium": 15,
+      "hard": 5
+    },
+    "bySection": {
+      "writing": 1,
+      "vocab_grammar": 15,
+      "reading": 20,
+      "cloze": 10,
+      "translation": 4
+    },
+    "pointsDistribution": {
+      "writing": 15,
+      "vocab_grammar": 15,
+      "reading": 40,
+      "cloze": 10,
+      "translation": 20
+    },
+    "difficultyBreakdown": {
+      "basic": ["q002","q003","q004","q005","q006","q012","q013","q014","q017","q018","q019","q020","q021","q022","q027","q028","q029","q030","q031","q032","q037","q038","q039","q040","q041","q042","q044","q046"],
+      "medium": ["q001","q007","q008","q009","q010","q011","q015","q023","q024","q025","q033","q034","q035","q043","q045","q047"],
+      "hard": ["q016","q026","q036","q048","q049","q050"]
+    },
+    "notes": "CET-4 模拟卷，满分100分，建议时间120分钟。覆盖 Unit 2 两篇阅读（Silicon Valley 工作文化 + 职业路径探索），词汇来自课文重点表达，完形填空为原创职场主题短文，翻译句含 Unit 2 核心主题思想。难度分布：basic 约56%，medium 约32%，hard 约12%，接近 CET-4 实际考试分布。"
+  }
+}

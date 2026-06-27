@@ -50,9 +50,10 @@ function domBoolean(name: string): boolean | null {
   return null;
 }
 
-/** detail/recording 分类下的 quiz key 推导。recording 直接用 itemId（"rec-01"）。 */
+/** detail/recording/english 分类下的 quiz key 推导。recording/english 直接用 itemId。 */
 function deriveChapterId(categoryId: string, itemId: string): string {
   if (categoryId === "recording") return itemId;
+  if (categoryId === "english") return itemId;
   if (categoryId !== "detail") return "";
   const n = parseInt(itemId.split(".")[0], 10);
   return Number.isNaN(n) ? "" : `ch${String(n).padStart(2, "0")}`;

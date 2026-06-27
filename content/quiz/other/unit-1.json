@@ -1,0 +1,904 @@
+{
+  "subjectId": "other",
+  "chapterId": "unit-1",
+  "generatedAt": "2026-06-26",
+  "examConfig": {
+    "source": "CET-4 Mock Exam · Unit 1 The True Value of Education",
+    "totalPoints": 100,
+    "timeLimit": 120,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 15},
+      {"name": "Reading Comprehension", "points": 40, "questions": 20},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "difficulty": "medium",
+      "points": 15,
+      "stem": "Write a short essay of about 150 words on the topic: \"What Does Education Mean to Me?\"\n\nYou may refer to the views of Jacob Neusner and Timothee, and express your own opinion. Your essay should include:\n- Your understanding of the purpose of education\n- How education prepares you for real life\n- Your personal attitude toward learning",
+      "answer": "What Does Education Mean to Me?\n\nEducation, in my view, is far more than the acquisition of knowledge — it is preparation for life itself. Jacob Neusner argues that universities should mirror the demands of real-world society: deadlines must be met, work must be precise, and mediocrity is not tolerated. I deeply agree. If a student graduates without ever confronting failure or criticism, how can they withstand the pressures of a competitive workplace?\n\nTimothee, however, reminds us that education is also a journey of self-discovery. The classroom is a space to explore who we are, to question conventional thinking, and to formulate our own values.\n\nTo me, education means learning to think independently, to persist in the face of difficulty, and to grow from every mistake. The true measure of education is not the grade on a transcript, but the person you become in the process.",
+      "hint": "结合 Neusner（大学应模拟现实世界的要求）和 Timothee（教育是自我探索之旅）的观点，表达你自己的立场，注意逻辑连贯与语言准确。",
+      "scoring_criteria": [
+        "内容切题，观点明确：能结合课文观点并提出个人见解，论点有支撑（5分）",
+        "语言表达准确，词汇丰富：句式多样，词汇恰当，语法错误少（5分）",
+        "结构清晰，逻辑连贯：段落分明，有引入、展开和结论，衔接自然（5分）"
+      ],
+      "explanation": "写作要点：① 引入段点明教育的意义；② 中间段引用或化用 Neusner（现实要求）和 Timothee（自我探索）的观点作为支撑；③ 结尾段表达个人态度。注意避免空洞表述，需有具体例子或论证。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "basic",
+      "points": 1,
+      "stem": "The _______ of the senior class was moved indoors because of the heavy rain that afternoon.",
+      "options": [
+        "commencement",
+        "complication",
+        "commotion",
+        "commitment"
+      ],
+      "answer": 0,
+      "hint": "这个词特指大学毕业典礼，是 Unit 1 Reading 1 的核心词汇之一。",
+      "explanation": "commencement 在美式英语中专指「毕业典礼」(graduation ceremony)，是 Neusner 演讲的发生场合。complication 意为「复杂情况/并发症」；commotion 意为「骚动/混乱」；commitment 意为「承诺/投入」。均不符合语境。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "basic",
+      "points": 1,
+      "stem": "The professor refused to accept _______ work; she expected every assignment to be thorough and well-researched.",
+      "options": [
+        "mediocre",
+        "moderate",
+        "modest",
+        "meticulous"
+      ],
+      "answer": 0,
+      "hint": "这个词形容品质平庸、不达标准，是 Neusner 批评学生态度的关键词。",
+      "explanation": "mediocre 意为「平庸的、普通的」，与句意「教授不接受平庸的作业」吻合。moderate 意为「适度的」；modest 意为「谦虚的/不多的」；meticulous 意为「一丝不苟的」，与题意相反，是正面词。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "basic",
+      "points": 1,
+      "stem": "Her _______ attitude toward her studies meant she often submitted reports filled with careless errors.",
+      "options": [
+        "slipshod",
+        "steadfast",
+        "strategic",
+        "scholarly"
+      ],
+      "answer": 0,
+      "hint": "这个词描述做事马虎、潦草的态度，常与 work/approach 搭配。",
+      "explanation": "slipshod 意为「马虎的、草率的」，完全符合语境。steadfast 意为「坚定的」；strategic 意为「战略性的」；scholarly 意为「学术性的、博学的」——这三个选项均为正面含义，与句子语境不符。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "A good teacher does not simply _______ students of the opportunity to struggle; instead, she allows them to work through difficulties independently.",
+      "options": [
+        "deprive",
+        "derive",
+        "devise",
+        "deflect"
+      ],
+      "answer": 0,
+      "hint": "该词组固定搭配是 deprive sb. of sth.，意为剥夺某人某物。",
+      "explanation": "deprive sb. of sth. 是固定搭配，意为「剥夺某人……」。derive 意为「获得/来自」，固定搭配是 derive ... from；devise 意为「设计/发明」；deflect 意为「转移/偏转」。只有 deprive 与 of 构成正确搭配并符合语义。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "basic",
+      "points": 1,
+      "stem": "The child was so _______ that she repeated every word the teacher said without understanding the meaning.",
+      "options": [
+        "attentive",
+        "verbatim",
+        "garrulous",
+        "frantic"
+      ],
+      "answer": 1,
+      "hint": "这个词意为「逐字逐句地」，常修饰转述或复述的方式。",
+      "explanation": "verbatim 意为「逐字逐句地」，副词用法，符合「一字不差地重复老师说的每一个字」的语境。attentive 意为「专心的」，但不能解释「逐字重复」的行为；garrulous 意为「多嘴的、话多的」；frantic 意为「狂乱的、拼命的」。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "The underlined word \"garrulous\" in the sentence \"He was so garrulous that no one could get a word in edgewise\" most nearly means ______.",
+      "options": [
+        "talkative and long-winded",
+        "aggressive and confrontational",
+        "thoughtful and reflective",
+        "forgetful and confused"
+      ],
+      "answer": 0,
+      "hint": "联系上下文：没有人能插上一句话，说明此人话很多。",
+      "explanation": "garrulous 意为「喋喋不休的、话多的」。句中「no one could get a word in edgewise」（没有人能插话）进一步印证此词意。A 选项 talkative and long-winded（爱说话且啰嗦的）最为贴切。B（好斗的）、C（善于思考的）、D（健忘的）均与原意不符。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "The underlined word \"parlous\" in \"The country's economic situation is in a parlous state\" most nearly means ______.",
+      "options": [
+        "perilous and uncertain",
+        "peaceful and stable",
+        "progressive and dynamic",
+        "partial and biased"
+      ],
+      "answer": 0,
+      "hint": "这是一个较为古旧的词，与 perilous（危险的）同源，语气偏负面。",
+      "explanation": "parlous 是 perilous（危险的）的变体，意为「危险的、岌岌可危的」，带有负面含义。A 选项 perilous and uncertain（危险且不确定的）最接近原义。B（和平稳定的）与原意相反；C（进步的、充满活力的）与语境不符；D（片面的）与 parlous 的语义无关。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "basic",
+      "points": 1,
+      "stem": "The underlined word \"confront\" in \"Students must confront the reality that not all ideas are equally valid\" most nearly means ______.",
+      "options": [
+        "face and deal with directly",
+        "avoid and escape from",
+        "research and analyze carefully",
+        "celebrate and acknowledge"
+      ],
+      "answer": 0,
+      "hint": "confront 含有正面面对、不回避的意思，是 Neusner 演讲的核心动词之一。",
+      "explanation": "confront 意为「直面、正视」，强调不回避困难或现实。A 选项 face and deal with directly（直面并处理）最为准确。B（回避逃离）与原意相反；C（研究分析）缺乏 confront 所含的对抗性含义；D（庆祝承认）与语境完全不符。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "She chose to _______ a clear career plan before graduating, outlining the specific steps she would take in the next five years.",
+      "options": [
+        "formulate",
+        "fabricate",
+        "facilitate",
+        "fluctuate"
+      ],
+      "answer": 0,
+      "hint": "这个词意为系统地制定/拟定（计划、策略等），常与 plan、policy、strategy 搭配。",
+      "explanation": "formulate 意为「制定、规划」，常搭配 plan/policy/strategy，符合「制定职业规划」的语境。fabricate 意为「捏造、伪造」；facilitate 意为「促进、帮助」，主语通常是条件或措施，而非人；fluctuate 意为「波动、变化」，完全偏离语义。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "hard",
+      "points": 1,
+      "stem": "The proposal seemed _______ at first, but after careful analysis, the team found several major obstacles that made it impractical.",
+      "options": [
+        "feasible",
+        "flexible",
+        "favorable",
+        "formidable"
+      ],
+      "answer": 0,
+      "hint": "这个词意为「可行的」，与后半句「发现了许多障碍」形成转折。",
+      "explanation": "feasible 意为「可行的、切实可行的」，与后文「但实际上发现了障碍」构成 but 转折。flexible 意为「灵活的」；favorable 意为「有利的、赞成的」；formidable 意为「令人畏惧的、强大的」。只有 feasible 能与后文的转折逻辑自然衔接。"
+    },
+    {
+      "id": "q012",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "Which of the following sentences uses the word \"spoil\" correctly?",
+      "options": [
+        "Constant praise without correction can spoil a child and make them unable to handle criticism.",
+        "The athlete trained hard to spoil her performance at the championship.",
+        "The new policy will spoil the economic growth of the country significantly.",
+        "She spoiled her homework carefully before submitting it to the professor."
+      ],
+      "answer": 0,
+      "hint": "spoil 有「溺爱/宠坏」和「破坏」两种常用义，注意区分语境与搭配。",
+      "explanation": "A 正确：spoil a child 意为「溺爱、宠坏孩子」，是固定用法。B 错误：spoil 不能表示「提升/改善成绩」，此处应用 improve。C 错误：spoil 通常指破坏具体事物或计划，不与「经济增长」搭配，应用 boost 或 hinder。D 错误：spoil 不能用于「仔细检查作业」，应用 review 或 check。"
+    },
+    {
+      "id": "q013",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "Which sentence correctly uses \"tolerate\"?",
+      "options": [
+        "A professional environment does not tolerate repeated lateness or absence without notice.",
+        "The doctor told her to tolerate more vegetables to improve her health.",
+        "He could not tolerate his new bicycle to school every morning.",
+        "The company decided to tolerate a new branch in the northern region."
+      ],
+      "answer": 0,
+      "hint": "tolerate 意为「容忍、忍受」，主语通常是人或机构，宾语是令人不满的行为或状况。",
+      "explanation": "A 正确：tolerate repeated lateness（容忍多次迟到）是 tolerate 的典型用法，主语为机构，宾语为不良行为。B 错误：tolerate 不能用于「摄入/食用蔬菜」，应用 eat more。C 错误：应用 ride his bicycle，tolerate 不与交通工具搭配。D 错误：「开设分支机构」应用 establish/open，而非 tolerate。"
+    },
+    {
+      "id": "q014",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "hard",
+      "points": 1,
+      "stem": "By the time the professor finished speaking, the audience _______ for nearly two hours.",
+      "options": [
+        "had been listening",
+        "has been listening",
+        "was listening",
+        "listened"
+      ],
+      "answer": 0,
+      "hint": "注意句中有 By the time...，表示到某个过去时间点为止，动作一直持续，应用什么时态？",
+      "explanation": "「By the time + 过去时」引导的时间从句，主句应用「过去完成时」或「过去完成进行时」。由于强调动作的持续性（持续了将近两小时），应选过去完成进行时 had been listening（A）。B 选项 has been listening 是现在完成进行时，时态错误；C 是过去进行时，不强调完成点；D 是一般过去时，无法表达持续时间。"
+    },
+    {
+      "id": "q015",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "Not only _______ the final exam, but she also received the highest score in the department.",
+      "options": [
+        "did she pass",
+        "she passed",
+        "she did pass",
+        "has she passed"
+      ],
+      "answer": 0,
+      "hint": "Not only 置于句首时，句子需要部分倒装（助动词/情态动词提前）。",
+      "explanation": "当 Not only 放在句首时，该分句须用部分倒装结构，即助动词提前：Not only did she pass（A）。B 选项 she passed 是陈述语序，违反倒装规则。C 选项 she did pass 同样未倒装。D 选项 has she passed 使用了现在完成时，但语境为过去事件（最终考试），时态不一致。"
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "basic",
+      "points": 1,
+      "stem": "The young man decided to _______ a new career in technology after spending years working in finance.",
+      "options": [
+        "pursue",
+        "persuade",
+        "perceive",
+        "precede"
+      ],
+      "answer": 0,
+      "hint": "该词意为「追求、从事（事业/目标）」，常与 career/dream/goal 搭配。",
+      "explanation": "pursue 意为「追求、从事」，pursue a career 是固定表达。persuade 意为「说服」，后面接人而非 career；perceive 意为「感知、意识到」；precede 意为「在……之前」。三个干扰项均与 career 构成错误搭配。"
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 1: 'The Commencement Speech You'll Never Hear']\n\nAccording to Neusner, what is the main difference between the university setting and the real world?",
+      "options": [
+        "Universities forgive failure, while the real world demands accountability and results.",
+        "The real world provides more opportunities for creativity than universities do.",
+        "Universities focus on scientific research, while the real world values social skills.",
+        "The real world offers better financial rewards for academic achievement."
+      ],
+      "answer": 0,
+      "hint": "Neusner 的核心论点是大学对学生过于宽容，而真实世界不会这样。",
+      "explanation": "Neusner 在演讲中明确批评大学对学生过于宽容——允许迟交作业、接受平庸表现、不追究缺席责任，而现实工作世界不会如此宽容。A 准确捕捉了这一核心对比。B 颠倒了文意，Neusner 并未讨论创造力问题；C 属于无中生有；D 混淆了「学业成绩」与「现实回报」的关系，与文章无关。"
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "[Reading 1]\n\nNeusner criticizes the fact that some professors accept late assignments. What does this criticism imply about the real world?",
+      "options": [
+        "Deadlines in professional life are strict and missing them carries serious consequences.",
+        "Employers prefer employees who can negotiate deadlines flexibly.",
+        "Time management is less important in the workplace than in university.",
+        "Professors should eliminate all deadlines to better prepare students."
+      ],
+      "answer": 0,
+      "hint": "Neusner 对「允许迟交」的批评，是在说真实世界会怎样对待错过截止日期的人？",
+      "explanation": "Neusner 认为，如果教授接受迟交作业，学生就无法养成遵守截止日期的习惯，而现实职场对此零容忍——错过项目截止日期会导致严重后果。A 正确。B 与 Neusner 观点相反，他强调严格而非灵活；C 与文意相反；D 是对 Neusner 观点的误读，他主张的是更严格，而非取消截止日期。"
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 1]\n\nWhat is the overall tone of Neusner's commencement speech?",
+      "options": [
+        "Provocative and critical, challenging students with uncomfortable truths",
+        "Warm and encouraging, celebrating students' four-year achievements",
+        "Neutral and analytical, presenting both sides of university education",
+        "Pessimistic and discouraging, suggesting students are unprepared for life"
+      ],
+      "answer": 0,
+      "hint": "Neusner 的演讲被称为「你永远不会听到的毕业演讲」，说明它与一般毕业演讲有何不同？",
+      "explanation": "Neusner 的演讲语气犀利挑衅，直接批评大学体制对学生的过度宽容，用不加掩饰的真话刺激学生思考。A（挑衅性、批判性）最准确。B（温暖鼓励）是一般毕业演讲的风格，与 Neusner 相反；C（中立分析）不符，他立场鲜明；D（悲观泄气）过度解读，他的意图是警醒而非打击。"
+    },
+    {
+      "id": "q020",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "hard",
+      "points": 2,
+      "stem": "[Reading 1]\n\nNeusner states that professors who do not fail students who deserve to fail are \"not honest.\" What can be inferred from this statement?",
+      "options": [
+        "True education requires honest assessment, even when it is painful for students.",
+        "Professors should increase the number of failing grades to improve academic standards.",
+        "Honesty in grading is less important than maintaining a positive classroom environment.",
+        "Students who fail courses are ultimately more successful in their careers."
+      ],
+      "answer": 0,
+      "hint": "Neusner 说不让该不及格的学生不及格是不诚实的，这反映了他对教育诚实性的什么态度？",
+      "explanation": "Neusner 认为，给不应通过的学生打及格分是对学生的不诚实，真正的教育应该提供真实的反馈，哪怕这种反馈令人难受。A 正确地推断了这一核心立场。B 是过度推断，Neusner 并未主张增加不及格人数，而是强调诚实评估；C 与 Neusner 立场相反；D 是无关推断，文中没有提到职业成功与挂科的关系。"
+    },
+    {
+      "id": "q021",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 1]\n\nWhich of the following best summarizes the main argument of Neusner's speech?",
+      "options": [
+        "Universities have become too lenient and fail to prepare students for the demands of professional life.",
+        "Students should rebel against strict academic standards to foster creativity.",
+        "The purpose of university is to provide a safe space for intellectual exploration free from judgment.",
+        "Professors bear no responsibility for student outcomes after graduation."
+      ],
+      "answer": 0,
+      "hint": "Neusner 演讲的核心主张是什么？他对现行大学教育体制持何种态度？",
+      "explanation": "Neusner 整篇演讲的核心是：大学对学生过于宽容（接受迟交、容忍平庸、不严格执行标准），导致学生没有做好面对真实社会的准备。A 精准概括了这一论点。B 与 Neusner 主张相反；C 恰恰是他所批评的大学现状；D 歪曲了 Neusner 的观点，他认为教授有责任提供诚实的教育。"
+    },
+    {
+      "id": "q022",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "[Reading 2: 'The Wicker Chair']\n\nIn the story, what does the wicker chair primarily symbolize?",
+      "options": [
+        "The wisdom and experience that can be passed down through generations",
+        "The financial burden that old furniture places on a modern family",
+        "The protagonist's desire to escape from family responsibilities",
+        "The conflict between urban and rural lifestyles"
+      ],
+      "answer": 0,
+      "hint": "藤椅是祖辈留下的旧物，在故事中承载了什么情感和文化意义？",
+      "explanation": "藤椅作为家族传承之物，象征着祖辈积累的智慧与经验，以及代际之间的情感联结。A 准确反映了这一象征意义。B（经济负担）完全忽略了藤椅的情感与文化价值；C（逃避家庭责任）是无中生有的推断；D（城乡冲突）偏离了故事的核心主题。"
+    },
+    {
+      "id": "q023",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 2: 'The Wicker Chair']\n\nIn the story, Timothee initially views the wicker chair as ______.",
+      "options": [
+        "an outdated and ugly piece of furniture he wants to throw away",
+        "a priceless antique worth a great deal of money",
+        "a symbol of his family's cultural heritage that must be preserved",
+        "a comfortable seat that reminds him of his childhood home"
+      ],
+      "answer": 0,
+      "hint": "故事开头 Timothee 对藤椅的态度是什么？注意他后来态度发生了怎样的变化。",
+      "explanation": "故事初期，Timothee 认为藤椅又旧又丑，想要丢弃，代表了年轻一代对传统事物的轻视与疏离。A 正确。B（珍贵古董）是后来才逐渐意识到的价值，不是初始态度；C（必须保存的文化遗产）是故事结尾的转变，非初始观点；D（童年回忆的座椅）情感上偏温馨，与初始的排斥态度不符。"
+    },
+    {
+      "id": "q024",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 2]\n\nWhat causes Timothee to change his attitude toward the wicker chair by the end of the story?",
+      "options": [
+        "He discovers the stories and memories embedded in the chair through conversations with his elders.",
+        "He realizes the chair could be sold for a high price at an antique market.",
+        "His interior designer convinces him that wicker chairs are back in fashion.",
+        "He breaks his modern furniture and has no other chair to sit on."
+      ],
+      "answer": 0,
+      "hint": "是什么让 Timothee 改变了对藤椅的看法？注意故事中关于长辈讲述的情节。",
+      "explanation": "Timothee 通过与长辈的交谈，了解到藤椅背后承载的家族故事与情感记忆，从而改变了原先的轻视态度，认识到它的真正价值。A 正确。B（卖高价）是功利性误读，故事核心是情感与文化而非经济价值；C（时尚回归）属于无中生有；D（没有其他椅子）是荒诞的字面化推断。"
+    },
+    {
+      "id": "q025",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "hard",
+      "points": 2,
+      "stem": "[Reading 2]\n\nThe author's attitude toward Timothee's initial dismissal of the wicker chair can best be described as ______.",
+      "options": [
+        "gently critical, suggesting that young people too easily discard what they do not yet understand",
+        "strongly supportive, encouraging the younger generation to embrace modern styles",
+        "completely neutral, presenting Timothee's view without any implied judgment",
+        "harshly condemnatory, portraying Timothee as a deeply flawed character"
+      ],
+      "answer": 0,
+      "hint": "作者对 Timothee 最初轻视藤椅的态度，是赞同、批评还是中立？从故事的结局和整体情感色调来判断。",
+      "explanation": "故事通过 Timothee 最终的转变表明，作者对他最初轻视藤椅的行为持温和批评的态度——不是严厉谴责，而是以叙事引导读者反思年轻人对传统事物的忽视。A 最为贴切。B 与故事主旨相反；C 「完全中立」不符，故事有明显的情感倾向；D「严厉谴责」过度，作者笔调温和，Timothee 是成长型人物而非反面角色。"
+    },
+    {
+      "id": "q026",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "[Reading 2]\n\nWhat is the central theme of 'The Wicker Chair'?",
+      "options": [
+        "The importance of understanding and appreciating inherited wisdom and family heritage",
+        "The dangers of hoarding old furniture in a modern home",
+        "The conflict between a son and his parents over home decoration",
+        "The economic value of antique furniture in contemporary society"
+      ],
+      "answer": 0,
+      "hint": "这篇文章通过藤椅这一物件，想要表达什么更深层的主题？",
+      "explanation": "《藤椅》通过一把旧椅子的故事，探讨了继承与传承的主题——年轻一代应当珍视并理解长辈留下的智慧与情感遗产。A 准确概括了这一主题。B 将故事矮化为「囤积旧物的危害」，过于狭隘；C 仅停留在表面冲突，忽略了更深层的象征意义；D 将主题错误地归结为经济价值，偏离了故事的情感内核。"
+    },
+    {
+      "id": "q027",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 2]\n\nThe phrase \"conventional thinking\" as used in the context of Unit 1 most likely refers to ______.",
+      "options": [
+        "widely accepted but potentially unchallenged assumptions about how things should be done",
+        "the formal thinking methods taught in university logic courses",
+        "ideas that have been proven scientifically and are universally accepted",
+        "thinking patterns that are unique to a specific cultural group"
+      ],
+      "answer": 0,
+      "hint": "conventional 意为「传统的、惯例的」，联系课文语境，指那些未经质疑、被广泛接受的思维方式。",
+      "explanation": "conventional thinking 指「惯常思维/传统思维」，即被广泛接受但未必经过深思熟虑的观念或做法。A 最为准确。B 将其具体化为某一课程内容，过于狭窄；C「科学证明并普遍接受的」偏向科学认知，与 conventional 的语义有差距；D「特定文化群体独有的思维」引入了文化特殊性，与 conventional（广泛流行的）含义不符。"
+    },
+    {
+      "id": "q028",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 1 & 2 Comparison]\n\nBoth Neusner and the author of 'The Wicker Chair' share a similar message. Which of the following best captures this shared message?",
+      "options": [
+        "True growth requires confronting uncomfortable realities rather than remaining in one's comfort zone.",
+        "Education systems worldwide need to be completely reformed from the ground up.",
+        "Young people should reject all traditional values in order to succeed in the modern world.",
+        "The conflict between generations is inevitable and cannot be resolved through communication."
+      ],
+      "answer": 0,
+      "hint": "Neusner 说真实世界不会宽容你，藤椅的故事说年轻人需要重新认识传统——两者有什么共同的成长主题？",
+      "explanation": "Neusner 通过批评大学的过度宽容，强调真正的成长来自直面不舒适的真相；《藤椅》则通过 Timothee 的转变，表明成长需要打破自我的偏见与舒适区。两者共同传递的信息是：真正的成长需要超越舒适圈、直面现实。A 最为准确。B（全面改革教育体制）仅是 Neusner 观点的极端化引申；C（拒绝传统价值）与《藤椅》主旨相反；D（代际冲突不可解决）与两篇文章的乐观转化结局矛盾。"
+    },
+    {
+      "id": "q029",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "hard",
+      "points": 2,
+      "stem": "[Reading 1]\n\nNeusner says that the university has been \"forgiving\" to students. In this context, \"forgiving\" most closely means ______.",
+      "options": [
+        "excessively lenient in a way that does not serve students' best interests",
+        "emotionally supportive during students' periods of difficulty and stress",
+        "willing to pardon students who have committed academic dishonesty",
+        "providing financial assistance to students who cannot pay tuition fees"
+      ],
+      "answer": 0,
+      "hint": "Neusner 用 forgiving 描述大学对学生的态度，结合他对大学「允许迟交、接受平庸」的批评，这个词在此处是褒义还是贬义？",
+      "explanation": "在 Neusner 的语境中，forgiving 是一个带有批评色彩的词，意指大学对学生过于宽松，不要求他们承担后果——这种「宽容」实则是在伤害学生，因为真实世界不会如此。A（过度宽容，有损学生长远利益）最为准确。B（情感支持）是 forgiving 的一个普通含义，但在此语境下不适用；C（赦免学术不诚信）过于具体，偏离原文；D（经济资助）与 forgiving 的语义完全无关。"
+    },
+    {
+      "id": "q030",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 2]\n\nAt the end of 'The Wicker Chair', Timothee most likely feels ______.",
+      "options": [
+        "grateful and humbled, having gained a deeper appreciation of his family's history",
+        "frustrated and resentful that he was pressured to keep the old chair",
+        "indifferent, as the chair holds no personal meaning for him",
+        "relieved that he was able to sell the chair and clear up his living space"
+      ],
+      "answer": 0,
+      "hint": "故事结局时，Timothee 对藤椅的态度已经从排斥转变为……结合整个故事的情感弧线。",
+      "explanation": "故事的情感弧线是：排斥→了解→感激。到故事结尾，Timothee 通过了解藤椅背后的家族故事，产生了对家族历史的感激之情和谦逊态度。A（感激且心怀敬意）最符合故事结局的情感基调。B（沮丧愤恨）是初期情绪，与结局不符；C（漠然）与故事的情感转变相悖；D（卖掉椅子）是错误推断，故事结局是 Timothee 选择保留藤椅。"
+    },
+    {
+      "id": "q031",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 1 & 2]\n\nBoth texts in Unit 1 deal with the theme of education. Which of the following statements reflects a view supported by BOTH texts?",
+      "options": [
+        "Learning often involves challenging one's initial assumptions and being open to new perspectives.",
+        "Formal university education is the only path to personal growth and wisdom.",
+        "Young people should rely entirely on their elders to guide their understanding of the world.",
+        "Academic success is the most reliable indicator of a person's readiness for adult life."
+      ],
+      "answer": 0,
+      "hint": "两篇文章都涉及「成长需要改变原有认知」这一主题——Neusner 批评学生的认知偏差，Timothee 改变了对藤椅的错误认知。",
+      "explanation": "Neusner 呼吁学生质疑大学赋予他们的「一切皆安好」的错误认知；Timothee 打破了「旧物无价值」的偏见。两者都涉及「挑战初始假设、向新视角开放」的主题。A 正确。B（大学教育是唯一路径）过于绝对，两篇文章均未表达此意；C（依赖长辈指引）是对《藤椅》的过度简化，且与 Neusner 的「独立承担责任」理念相悖；D（学业成绩是最可靠指标）恰恰是 Neusner 批评的思维方式。"
+    },
+    {
+      "id": "q032",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "[Reading 1]\n\nAccording to Neusner, which of the following behaviors would be LEAST acceptable in a professional workplace?",
+      "options": [
+        "Submitting a project report two days after the agreed deadline without prior notice",
+        "Asking a colleague for help when you do not understand a task",
+        "Taking a short break during a long shift to maintain productivity",
+        "Requesting feedback from a supervisor after completing a major assignment"
+      ],
+      "answer": 0,
+      "hint": "Neusner 最反对的是哪种在大学被容忍但在职场中不被接受的行为？",
+      "explanation": "Neusner 在演讲中明确批评大学容忍迟交作业的行为，认为这在真实职场中是不可接受的——错过截止日期会有严重后果。A（无通知迟交报告）最符合 Neusner 所批评的行为。B（向同事请教）是正常且受鼓励的职场行为；C（休息以保持效率）是合理的工作安排；D（主动请求反馈）是积极的职业态度，完全符合职场规范。"
+    },
+    {
+      "id": "q033",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "hard",
+      "points": 2,
+      "stem": "[Reading 1]\n\nNeusner's speech is addressed to graduating students, yet he criticizes the university itself. What rhetorical effect does this choice create?",
+      "options": [
+        "It creates a sense of irony, exposing the gap between the celebration of graduation and the harsh realities students are about to face.",
+        "It reassures students that they have done their best despite the university's shortcomings.",
+        "It shifts blame entirely from students to university administrators and professors.",
+        "It encourages students to sue the university for failing to prepare them properly."
+      ],
+      "answer": 0,
+      "hint": "在毕业典礼上批评培养他们的大学，这种反差会产生什么修辞效果？",
+      "explanation": "在本应庆祝的毕业典礼上，Neusner 批评大学对学生的不诚实，制造了强烈的反讽效果——揭示出毕业庆典背后学生尚未准备好的现实。A 准确描述了这种反讽的修辞效果。B（宽慰学生）与 Neusner 的批判语气相反；C（将责任全归给大学）是过度解读，Neusner 同样要求学生自我反省；D（鼓励起诉）完全是无关推断，文中没有任何法律诉讼的含义。"
+    },
+    {
+      "id": "q034",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 1]\n\nWhen Neusner says \"We have prepared you for a world that does not exist,\" he most likely means ______.",
+      "options": [
+        "Universities create an artificial environment that bears little resemblance to the challenges of actual professional life.",
+        "The job market has completely collapsed since students first enrolled, making their degrees worthless.",
+        "Technology has changed the world so rapidly that university education is now completely outdated.",
+        "Students have been taught about historical worlds that no longer exist in the present day."
+      ],
+      "answer": 0,
+      "hint": "这句话的关键词是「不存在的世界」——大学营造的那个世界与真实世界有什么根本不同？",
+      "explanation": "Neusner 所说的「不存在的世界」指大学人为创造的宽松环境：允许拖延、容忍平庸、规避批评——这种环境在真实职场中根本不存在。A 正确。B（就业市场崩溃）是对「不存在」的字面误读；C（技术使教育过时）引入了无关的技术因素；D（教授历史上消失的世界）是字面解读，偏离了 Neusner 的比喻意义。"
+    },
+    {
+      "id": "q035",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 2]\n\nThe wicker chair in the story can be compared to which of the following real-life situations?",
+      "options": [
+        "A family recipe book passed down through generations that a young person initially ignores but later treasures",
+        "An expensive designer sofa that a young professional buys to impress colleagues",
+        "A broken appliance that a family refuses to replace out of stubbornness",
+        "A school trophy that reminds a student of past academic achievements"
+      ],
+      "answer": 0,
+      "hint": "藤椅的核心特征是：被年轻人忽视→承载家族记忆→最终被珍视。哪个现实情景与此最相似？",
+      "explanation": "家族食谱与藤椅高度类比：同样是传代之物，年轻一代起初可能不以为意，但随着了解其背后的故事与情感，逐渐开始珍视。A 最为贴切。B（设计师沙发）是购买的新物，无传承意义；C（拒绝换掉坏家电）侧重固执，而非情感价值；D（学校奖杯）与个人成就相关，非家族传承主题。"
+    },
+    {
+      "id": "q036",
+      "type": "single_choice",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "[Reading 1]\n\nWhat does Neusner imply by saying that a professor who teaches a boring class should be held responsible for boring students?",
+      "options": [
+        "Educators have a professional duty to engage students, not just deliver content.",
+        "Students should be allowed to skip classes they find uninteresting.",
+        "Only charismatic professors deserve to keep their teaching positions.",
+        "Boring students are always the fault of the curriculum design, not the professor."
+      ],
+      "answer": 0,
+      "hint": "Neusner 认为教授不仅要传授知识，还对学生的课堂体验负有什么责任？",
+      "explanation": "Neusner 认为，教授有职业责任使课堂有吸引力，不能以「内容本身就是如此」为借口让学生昏昏欲睡。A 准确表达了「教育者有专业责任吸引学生」的含义。B（允许逃课）是推论过度，Neusner 并未提出此建议；C（只有魅力型教授才能留职）是极端化误读；D（归因于课程设计）将责任从教授转移，与 Neusner 的观点相反。"
+    },
+    {
+      "id": "q037",
+      "type": "single_choice",
+      "section": "Cloze",
+      "difficulty": "basic",
+      "points": 1,
+      "stem": "[Cloze] Read the passage and choose the best word for each blank.\n\nGetting a university education is often seen as the key to a successful career. However, many graduates find that their degrees do not (37)______ prepare them for the real world.",
+      "options": [
+        "adequately",
+        "abundantly",
+        "abruptly",
+        "abstractly"
+      ],
+      "answer": 0,
+      "hint": "此空需要一个副词修饰 prepare，表示「充分地」准备。",
+      "explanation": "adequately 意为「充分地、适当地」，与 prepare 搭配表达「充分准备」，符合文章对大学教育局限性的讨论。abundantly 意为「大量地」，不与 prepare 搭配；abruptly 意为「突然地」；abstractly 意为「抽象地」，均不合语境。"
+    },
+    {
+      "id": "q038",
+      "type": "single_choice",
+      "section": "Cloze",
+      "difficulty": "basic",
+      "points": 1,
+      "stem": "[Cloze] ...They must (38)______ challenges they have never encountered before, from managing workplace relationships to meeting strict deadlines.",
+      "options": [
+        "confront",
+        "confuse",
+        "confirm",
+        "conform"
+      ],
+      "answer": 0,
+      "hint": "此词意为「直面、应对」挑战，是 Unit 1 的核心词汇之一。",
+      "explanation": "confront 意为「直面、应对」，是 Unit 1 的重点词汇，完全符合语境（直面以前从未遇到过的挑战）。confuse 意为「使迷惑」；confirm 意为「确认」；conform 意为「遵守/符合」，均与 challenges 构成语义不通的搭配。"
+    },
+    {
+      "id": "q039",
+      "type": "single_choice",
+      "section": "Cloze",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "[Cloze] ...Some young employees are shocked to discover that (39)______ work is simply not accepted — every report must be precise and thorough.",
+      "options": [
+        "slipshod",
+        "sophisticated",
+        "systematic",
+        "stimulating"
+      ],
+      "answer": 0,
+      "hint": "此处需要一个形容词描述「马虎的、草率的」工作，与后文「精确且全面」形成对比。",
+      "explanation": "slipshod 意为「草率的、马虎的」，与后文的 precise and thorough（精确且全面）形成鲜明对比，逻辑连贯。sophisticated 意为「复杂/老练的」；systematic 意为「系统的」；stimulating 意为「刺激性的/令人振奋的」，三者均为正面词，与语境逻辑不符。"
+    },
+    {
+      "id": "q040",
+      "type": "single_choice",
+      "section": "Cloze",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "[Cloze] ...The concept of being a (40)______ — someone who gives up at the first sign of difficulty — is particularly dangerous in a competitive industry.",
+      "options": [
+        "quitter",
+        "questioner",
+        "qualifier",
+        "quantifier"
+      ],
+      "answer": 0,
+      "hint": "空格后给出了该词的定义：「在第一次遇到困难时就放弃的人」。",
+      "explanation": "quitter 意为「轻易放弃的人」，空格后的 someone who gives up at the first sign of difficulty 正是对这个词的定义。questioner 意为「提问者/质疑者」；qualifier 意为「获得资格者」；quantifier 意为「量词/量化器」。只有 quitter 与定义完全吻合。"
+    },
+    {
+      "id": "q041",
+      "type": "single_choice",
+      "section": "Cloze",
+      "difficulty": "basic",
+      "points": 1,
+      "stem": "[Cloze] ...Employers look for candidates who can (41)______ clear goals and work steadily toward achieving them.",
+      "options": [
+        "formulate",
+        "fabricate",
+        "fluctuate",
+        "flatter"
+      ],
+      "answer": 0,
+      "hint": "此词意为「系统地制定/拟定」目标或计划，常见于正式语境。",
+      "explanation": "formulate 意为「制定、拟定」，formulate clear goals（制定明确目标）是标准搭配。fabricate 意为「捏造、伪造」；fluctuate 意为「波动」；flatter 意为「奉承、使高兴」。后三者均不能与 goals 构成合理搭配。"
+    },
+    {
+      "id": "q042",
+      "type": "single_choice",
+      "section": "Cloze",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "[Cloze] ...At the same time, education should not (42)______ students of the chance to explore subjects beyond their major — breadth of knowledge is just as valuable as depth.",
+      "options": [
+        "deprive",
+        "derive",
+        "deflect",
+        "delay"
+      ],
+      "answer": 0,
+      "hint": "固定搭配：deprive sb. of sth.，意为剥夺某人某物。",
+      "explanation": "deprive sb. of sth. 意为「剥夺某人某物」，是固定搭配，此处表达「不应剥夺学生探索专业以外学科的机会」。derive（获得，常用 derive ... from）、deflect（转移/偏转）、delay（推迟）均不构成 deprive...of 的固定搭配语义。"
+    },
+    {
+      "id": "q043",
+      "type": "single_choice",
+      "section": "Cloze",
+      "difficulty": "hard",
+      "points": 1,
+      "stem": "[Cloze] ...A university degree alone does not make a graduate (43)______ in today's job market; internship experience and practical skills are equally important.",
+      "options": [
+        "marketable",
+        "manageable",
+        "measurable",
+        "memorable"
+      ],
+      "answer": 0,
+      "hint": "此词意为「有市场竞争力的」，常与 job market 连用，描述求职者的竞争力。",
+      "explanation": "marketable 意为「有市场价值的/有竞争力的」，make a graduate marketable in the job market 是自然的表达，强调毕业生在就业市场中的竞争力。manageable 意为「可管理的」；measurable 意为「可测量的」；memorable 意为「难忘的」，三者均不符合就业市场语境中对毕业生能力的描述。"
+    },
+    {
+      "id": "q044",
+      "type": "single_choice",
+      "section": "Cloze",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "[Cloze] ...Successful students are those who are (44)______ in class — they listen carefully, ask questions, and engage with the material.",
+      "options": [
+        "attentive",
+        "aggressive",
+        "ambiguous",
+        "assertive"
+      ],
+      "answer": 0,
+      "hint": "此词意为「专注的、认真听讲的」，与后文的「仔细聆听、提问、参与」相呼应。",
+      "explanation": "attentive 意为「专注的、留心的」，后文的 listen carefully, ask questions, engage with the material 是对 attentive 的具体说明。aggressive 意为「咄咄逼人的」；ambiguous 意为「模糊的/有歧义的」；assertive 意为「自信果断的」，虽为正面词，但不如 attentive 与后文直接对应。"
+    },
+    {
+      "id": "q045",
+      "type": "single_choice",
+      "section": "Cloze",
+      "difficulty": "basic",
+      "points": 1,
+      "stem": "[Cloze] ...A child who is over-protected by their parents may grow up without the ability to (45)______ stress and setbacks independently.",
+      "options": [
+        "tolerate",
+        "translate",
+        "terminate",
+        "transmit"
+      ],
+      "answer": 0,
+      "hint": "此词意为「忍受、承受」压力和挫折，是 Unit 1 词汇表中的重要词汇。",
+      "explanation": "tolerate 意为「忍受、承受」，tolerate stress and setbacks 是自然表达。translate 意为「翻译」；terminate 意为「终止/结束」；transmit 意为「传输/传播」，三者均与「应对压力和挫折」的语义不符。"
+    },
+    {
+      "id": "q046",
+      "type": "single_choice",
+      "section": "Cloze",
+      "difficulty": "medium",
+      "points": 1,
+      "stem": "[Cloze] ...The true value of education lies not in memorizing facts (46)______ in developing the capacity to think critically and solve novel problems.",
+      "options": [
+        "but rather",
+        "and also",
+        "or even",
+        "so that"
+      ],
+      "answer": 0,
+      "hint": "此处是「不在于……而在于……」的固定句式，注意前文已有 not。",
+      "explanation": "\"not in ... but rather in ...\" 是固定对比句式，表达「不在于……而在于……」。but rather 是最精准的选项。and also 表并列而非转折对比；or even 表递进；so that 引导结果从句，均不符合此处 not...but 的对比逻辑。"
+    },
+    {
+      "id": "q047",
+      "type": "essay",
+      "section": "Translation",
+      "difficulty": "medium",
+      "points": 5,
+      "stem": "将下列句子翻译成英文：\n\n大学应该为学生做好面对现实世界挑战的准备，而不仅仅是给他们提供一个无忧无虑的环境。",
+      "answer": "Universities should prepare students to face the challenges of the real world, rather than simply providing them with a carefree environment.",
+      "hint": "注意「做好……的准备」可用 prepare sb. to do sth.；「无忧无虑的」可用 carefree；「而不仅仅是」用 rather than simply。",
+      "scoring_criteria": [
+        "核心意思表达正确，语义完整（2分）",
+        "关键词汇使用准确（prepare, challenges, carefree/worry-free, rather than）（2分）",
+        "语法结构正确，无重大语法错误（1分）"
+      ],
+      "explanation": "关键点：① prepare sb. to do sth.（为某人做好……准备）是固定搭配；② rather than simply 表达「而不仅仅是」；③ carefree 或 free from worries 均可表达「无忧无虑」；④ the real world 前用定冠词 the。常见错误：confuse「prepare for」与「prepare to」，或将「无忧无虑」直译为 no worries。"
+    },
+    {
+      "id": "q048",
+      "type": "essay",
+      "section": "Translation",
+      "difficulty": "medium",
+      "points": 5,
+      "stem": "将下列句子翻译成英文：\n\n在我看来，失败并不意味着放弃，它只是让你认识到自己需要改变方向。",
+      "answer": "In my view, failure does not mean giving up; it simply tells you that you need to change direction.",
+      "hint": "「在我看来」用 In my view / In my opinion；「意味着」用 mean + gerund；「改变方向」用 change direction。",
+      "scoring_criteria": [
+        "核心意思表达正确，语义完整（2分）",
+        "关键词汇使用准确（failure, mean, giving up, change direction）（2分）",
+        "语法结构正确，标点使用合理（1分）"
+      ],
+      "explanation": "关键点：① In my view / In my opinion 是「在我看来」的标准表达；② mean + gerund（mean giving up）表示「意味着放弃」；③ change direction 或 take a different path 均可；④ 可用分号或句号分成两句。常见错误：误用 mean to give up（that 用法）替代 mean giving up，语义变为「打算放弃」而非「意味着放弃」。"
+    },
+    {
+      "id": "q049",
+      "type": "essay",
+      "section": "Translation",
+      "difficulty": "hard",
+      "points": 5,
+      "stem": "将下列句子翻译成英文：\n\n只有当你真正深入了解一份工作时，你才能判断它是否适合自己。",
+      "answer": "Only when you truly get to know a job in depth can you determine whether it is right for you.",
+      "hint": "「只有当……才能……」是 Only when...can... 的倒装结构；「深入了解」可用 get to know...in depth；「判断是否适合」用 determine whether...is right for。",
+      "scoring_criteria": [
+        "Only when 引导的部分倒装结构使用正确（2分）",
+        "关键意思表达完整（truly, in depth, determine, right for you）（2分）",
+        "语法无重大错误（1分）"
+      ],
+      "explanation": "关键点：① Only when 放句首时，主句需部分倒装：Only when...can you...；② get to know...in depth 表示「深入了解」；③ determine/judge whether...is suitable/right for you 均可；④ 副词 truly 强调「真正地」。常见错误：Only when 后忘记倒装，写成 Only when...you can determine，失去2分。"
+    },
+    {
+      "id": "q050",
+      "type": "essay",
+      "section": "Translation",
+      "difficulty": "medium",
+      "points": 5,
+      "stem": "将下列句子翻译成英文：\n\n教育的真正价值在于培养独立思考的能力，而非简单地传授知识。",
+      "answer": "The true value of education lies in cultivating the ability to think independently, rather than simply imparting knowledge.",
+      "hint": "「在于」用 lie in；「培养能力」用 cultivate the ability to；「传授知识」用 impart knowledge；「而非」用 rather than。",
+      "scoring_criteria": [
+        "核心意思完整，结构清晰（2分）",
+        "关键词汇准确（lie in, cultivate, independently, impart / transmit, rather than）（2分）",
+        "语法正确，无重大错误（1分）"
+      ],
+      "explanation": "关键点：① The true value of...lies in...（……的真正价值在于……）是本题的核心句型；② cultivate the ability to think independently（培养独立思考的能力）；③ impart knowledge（传授知识）是标准搭配，也可用 transmit knowledge；④ rather than simply（而非简单地）完成对比。常见错误：将 lie in 写成 lies on（介词错误），或将 independently 误置在 knowledge 之后。"
+    },
+    {
+      "id": "q051",
+      "type": "essay",
+      "section": "Translation",
+      "difficulty": "medium",
+      "points": 0,
+      "stem": "[附加说明] 以上翻译题的评分标准说明：每题5分，扣分原则如下：\n- 核心意思错误或缺失：扣2分\n- 关键词汇错误（错误搭配/词不达意）：每处扣1分，最多扣2分\n- 语法结构错误（主谓不一致/时态/语态）：每处扣1分，最多扣1分\n- 拼写错误：1-2处不扣分；3处及以上扣1分",
+      "answer": "此题为评分说明，不计入总分。",
+      "hint": "参考以上评分原则对学生答案进行评估。",
+      "scoring_criteria": [
+        "此题为评分说明条目，总分为0分，不计入考试总分。"
+      ],
+      "explanation": "翻译评分应综合考虑语义准确性、词汇选择和语法结构三个维度，允许合理的同义替换，不应因措辞与参考答案不完全一致而过度扣分。"
+    }
+  ],
+  "summary": {
+    "totalQuestions": 51,
+    "byType": {
+      "single_choice": 45,
+      "essay": 6
+    },
+    "bySection": {
+      "Writing": 1,
+      "Vocabulary & Grammar": 15,
+      "Reading Comprehension": 20,
+      "Cloze": 10,
+      "Translation": 5
+    },
+    "byDifficulty": {
+      "basic": 20,
+      "medium": 24,
+      "hard": 7
+    },
+    "scoringBreakdown": {
+      "Writing": 15,
+      "Vocabulary & Grammar": 15,
+      "Reading Comprehension": 40,
+      "Cloze": 10,
+      "Translation": 20
+    }
+  }
+}

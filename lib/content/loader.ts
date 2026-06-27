@@ -141,13 +141,15 @@ export interface ExampleMeta {
 
 /**
  * 由 (categoryId, itemId) 推导例题所在的 (chapterId, sectionId)。
- * 仅 detail 分类有例题：itemId "1.1" → chapterId "ch01"、sectionId "1.1"。
- * 其他分类返回空串（无例题）。
+ * - detail 分类：itemId "1.1" → chapterId "ch01"、sectionId "1.1"。
+ * - english 分类：chapterId = sectionId = itemId（如 "unit-1"）。
+ * - 其他分类返回空串（无例题）。
  */
 export function deriveExampleKey(
   categoryId: string,
   itemId: string,
 ): { chapterId: string; sectionId: string } {
+  if (categoryId === "english") return { chapterId: itemId, sectionId: itemId };
   if (categoryId !== "detail") return { chapterId: "", sectionId: "" };
   const n = parseInt(itemId.split(".")[0], 10);
   if (Number.isNaN(n)) return { chapterId: "", sectionId: "" };

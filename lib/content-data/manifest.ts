@@ -303,6 +303,14 @@ export const contentTree: ContentTree = {
       icon: 'FolderOpen',
       categories: [
         {
+          id: 'english',
+          name: '英语练习',
+          items: [
+            { id: 'unit-1', title: '大学英语 Unit 1 · The True Value of Education', type: 'document', status: 'done' },
+            { id: 'unit-2', title: '大学英语 Unit 2 · The Myth of a Dream Job', type: 'document', status: 'done' },
+          ],
+        },
+        {
           id: 'misc',
           name: '工具',
           items: [
