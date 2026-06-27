@@ -1,13 +1,19 @@
 // 记忆系统 —— 复习卡片数据模型（单一真相源）。
 //
-// 用户在正文 / AI 输出处划词或右键「记录」→ 先把原文落库（status=parsing，绝不丢），
-// 再由后台 DeepSeek-V4-Flash（/api/record）异步把内容转成卡片：
-//   - 知识点 → cloze 填空闪卡（front 含 ____，back 为填全后的完整句）
-//   - 题目   → qa 问答卡（front 为题干，back 为答案/解析）
+// 用户在正文 / AI 输出处划词或右键「记录」→ 先把原文落库（status=saved，绝不丢），
+// 弹窗显示原文 + 4 个模式按钮，用户选择后流式 AI 处理（status=processing）：
+//   - excerpt 摘录 → 保证全文完整，背面附记忆提示
+//   - cloze   挖空 → 合理挖空，特殊处理外语场景
+//   - quiz    出题 → 把所有信息融入一道综合题
+//   - custom  自定义 → 按用户指令处理
+// 处理完成 status=ready，可在弹窗中优化或重选模式。
 // 卡片携带章节出处（subject/category/item/sourceLabel）以便复习时溯源。
 
-export type CardType = "cloze" | "qa";
-export type CardStatus = "parsing" | "ready" | "error";
+export type RecordMode = "excerpt" | "cloze" | "quiz" | "custom";
+
+// 向后兼容：旧数据可能含 "qa"；"parsing" 为旧状态，新代码用 saved/processing。
+export type CardType = "excerpt" | "cloze" | "quiz" | "custom" | "qa";
+export type CardStatus = "saved" | "processing" | "ready" | "error" | "parsing";
 
 /** 记录发起时由前端从当前活动路由（或复习板自带科目）采集的上下文。 */
 export interface ReviewCardContext {
@@ -20,6 +26,7 @@ export interface ReviewCardContext {
 
 /** /api/record 返回的成卡结果（不含出处，由前端合并）。 */
 export interface RecordCardAI {
+  mode: RecordMode;
   cardType: CardType;
   front: string;
   back: string;
@@ -32,6 +39,8 @@ export interface RecordCardAI {
 export interface ReviewCard extends ReviewCardContext {
   id: string;
   originalText: string;
+  /** 用户选择的处理模式（旧数据可能无此字段）。 */
+  mode?: RecordMode;
   cardType: CardType;
   front: string;
   back: string;

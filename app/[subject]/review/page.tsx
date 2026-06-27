@@ -15,6 +15,7 @@ import { isSubjectId } from "@/lib/types/content";
 import { retryRecord } from "@/lib/review/startRecord";
 import type { ReviewCard } from "@/lib/review/types";
 import FlipCard from "@/components/review/FlipCard";
+import QuizMarkdown from "@/components/quiz/QuizMarkdown";
 import SelectionPopover from "@/components/notes/SelectionPopover";
 
 function downloadJSON(obj: unknown, filename: string) {
@@ -214,14 +215,14 @@ export default function ReviewBoardPage() {
 
               <button
                 className="press"
-                style={{ ...navBtn, opacity: current?.status === "ready" ? 1 : 0.45 }}
-                disabled={current?.status !== "ready"}
+                style={{ ...navBtn, opacity: current?.status === "ready" || current?.status === "saved" || current?.status === "error" ? 1 : 0.45 }}
+                disabled={current?.status !== "ready" && current?.status !== "saved" && current?.status !== "error"}
                 onClick={(e) => {
-                  if (current?.status === "ready") {
+                  if (current && (current.status === "ready" || current.status === "saved" || current.status === "error")) {
                     useRecordPreviews.getState().open(current.id, { x: e.clientX, y: e.clientY });
                   }
                 }}
-                title="在浮窗中让 AI 修订本张卡"
+                title="在浮窗中处理/优化本张卡"
               >
                 <Wand2 size={16} />
               </button>
@@ -240,7 +241,7 @@ export default function ReviewBoardPage() {
   );
 }
 
-/** 单卡槽：按状态渲染 ready=FlipCard / parsing / error。 */
+/** 单卡槽：按状态渲染 ready=FlipCard / saved,processing / error。 */
 function CardSlot({
   card,
   flipped,
@@ -256,6 +257,7 @@ function CardSlot({
     return <FlipCard key={card.id} card={card} flipped={flipped} onFlip={onFlip} />;
   }
   const isError = card.status === "error";
+  const isProcessing = card.status === "processing" || card.status === "parsing";
   return (
     <div
       style={{
@@ -275,12 +277,12 @@ function CardSlot({
       {isError ? (
         <>
           <AlertTriangle size={26} style={{ color: "var(--md-sys-color-error)" }} />
-          <div style={{ fontSize: 13.5, color: "var(--ink-soft)" }}>{card.error || "成卡失败"}</div>
-          <div style={{ maxHeight: 160, overflowY: "auto", fontSize: 12.5, color: "var(--ink-faint)", lineHeight: 1.6, whiteSpace: "pre-wrap" }}>
-            {card.originalText}
+          <div style={{ fontSize: 13.5, color: "var(--ink-soft)" }}>{card.error || "处理失败"}</div>
+          <div className="scroll-y chat-prose" style={{ maxHeight: 160, overflowY: "auto", fontSize: 12.5, color: "var(--ink-faint)", lineHeight: 1.6, width: "100%" }}>
+            <QuizMarkdown className="chat-prose">{card.originalText}</QuizMarkdown>
           </div>
           <div style={{ display: "flex", gap: 10 }}>
-            <button className="press" style={pillBtn(true)} onClick={() => retryRecord(card.id)}>
+            <button className="press" style={pillBtn(true)} onClick={() => void retryRecord(card.id)}>
               <RefreshCw size={14} /> 重试
             </button>
             <button className="press" style={{ ...pillBtn(false), color: "var(--md-sys-color-error)" }} onClick={onRemove}>
@@ -288,12 +290,20 @@ function CardSlot({
             </button>
           </div>
         </>
-      ) : (
+      ) : isProcessing ? (
         <>
           <Loader size={24} className="animate-spin" style={{ color: "var(--accent)" }} />
-          <div style={{ fontSize: 13.5, color: "var(--ink-soft)" }}>AI 正在解析中…</div>
-          <div style={{ maxHeight: 160, overflowY: "auto", fontSize: 12.5, color: "var(--ink-faint)", lineHeight: 1.6, whiteSpace: "pre-wrap" }}>
-            {card.originalText}
+          <div style={{ fontSize: 13.5, color: "var(--ink-soft)" }}>AI 正在处理中…</div>
+          <div className="scroll-y chat-prose" style={{ maxHeight: 160, overflowY: "auto", fontSize: 12.5, color: "var(--ink-faint)", lineHeight: 1.6, width: "100%" }}>
+            <QuizMarkdown className="chat-prose">{card.originalText}</QuizMarkdown>
+          </div>
+        </>
+      ) : (
+        <>
+          <div style={{ fontSize: 14, fontWeight: 600, color: "var(--ink-soft)" }}>原文已保存</div>
+          <div style={{ fontSize: 12.5, color: "var(--ink-faint)" }}>点击下方魔棒按钮选择处理方式</div>
+          <div className="scroll-y chat-prose" style={{ maxHeight: 200, overflowY: "auto", fontSize: 12.5, color: "var(--ink-faint)", lineHeight: 1.6, width: "100%" }}>
+            <QuizMarkdown className="chat-prose">{card.originalText}</QuizMarkdown>
           </div>
         </>
       )}

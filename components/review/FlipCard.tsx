@@ -11,7 +11,10 @@ import type { CardType } from "@/lib/review/types";
 // 翻面时避开「正在划词选区 / 点击链接」——保证复习板内可继续划词记录。
 
 const FRONT_LABEL: Record<CardType, string> = {
+  excerpt: "摘录 · 原文保留",
   cloze: "填空 · 回忆被挖去的内容",
+  quiz: "题目 · 先思考再翻面",
+  custom: "自定义内容",
   qa: "题目 · 先思考再翻面",
 };
 
@@ -137,49 +140,51 @@ export default function FlipCard({ card, flipped, onFlip, className }: FlipCardP
           cursor: "pointer",
         }}
       >
-        <CardFace rotate={0} accent label={FRONT_LABEL[card.cardType]}>
+        <CardFace rotate={0} accent label={FRONT_LABEL[card.cardType] ?? "内容"}>
           <QuizMarkdown className="chat-prose">{card.front}</QuizMarkdown>
         </CardFace>
-        <CardFace rotate={180} label="答案 · 解析">
-          <QuizMarkdown className="chat-prose">{card.back}</QuizMarkdown>
-          {card.explanation ? (
-            <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px dashed var(--line)" }}>
-              <button
-                type="button"
-                data-no-flip
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setHintOpen((o) => !o);
-                }}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 5,
-                  border: "none",
-                  background: "transparent",
-                  color: "var(--accent)",
-                  fontSize: 12.5,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  padding: 0,
-                }}
-              >
-                <ChevronRight
-                  size={13}
-                  style={{ transition: "transform 0.2s", transform: hintOpen ? "rotate(90deg)" : "none" }}
-                />
-                提示 · 解析
-              </button>
-              {hintOpen && (
-                <div style={{ marginTop: 8, fontSize: 12.5, color: "var(--ink-soft)" }}>
-                  <QuizMarkdown inline className="chat-prose">
-                    {card.explanation}
-                  </QuizMarkdown>
-                </div>
-              )}
-            </div>
-          ) : null}
-        </CardFace>
+        {card.back ? (
+          <CardFace rotate={180} label="答案 · 解析">
+            <QuizMarkdown className="chat-prose">{card.back}</QuizMarkdown>
+            {card.explanation ? (
+              <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px dashed var(--line)" }}>
+                <button
+                  type="button"
+                  data-no-flip
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setHintOpen((o) => !o);
+                  }}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 5,
+                    border: "none",
+                    background: "transparent",
+                    color: "var(--accent)",
+                    fontSize: 12.5,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    padding: 0,
+                  }}
+                >
+                  <ChevronRight
+                    size={13}
+                    style={{ transition: "transform 0.2s", transform: hintOpen ? "rotate(90deg)" : "none" }}
+                  />
+                  提示 · 解析
+                </button>
+                {hintOpen && (
+                  <div style={{ marginTop: 8, fontSize: 12.5, color: "var(--ink-soft)" }}>
+                    <QuizMarkdown inline className="chat-prose">
+                      {card.explanation}
+                    </QuizMarkdown>
+                  </div>
+                )}
+              </div>
+            ) : null}
+          </CardFace>
+        ) : null}
       </motion.div>
     </div>
   );
