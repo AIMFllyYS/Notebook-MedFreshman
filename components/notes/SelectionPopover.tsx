@@ -35,17 +35,39 @@ function PopBtn({
   );
 }
 
-function wrapRange(range: Range): HTMLElement {
-  const mark = document.createElement("mark");
-  mark.className = "crayon-highlight";
-  try {
-    range.surroundContents(mark);
-  } catch {
-    const contents = range.extractContents();
-    mark.appendChild(contents);
-    range.insertNode(mark);
+function wrapRange(range: Range): HTMLElement[] {
+  const marks: HTMLElement[] = [];
+  const root = range.commonAncestorContainer;
+
+  const walker = document.createTreeWalker(
+    root.nodeType === Node.ELEMENT_NODE ? (root as Element) : (root.parentElement as Element),
+    NodeFilter.SHOW_TEXT,
+  );
+
+  const textNodes: Text[] = [];
+  let node: Node | null;
+  while ((node = walker.nextNode())) {
+    const tn = node as Text;
+    if (range.intersectsNode(tn)) {
+      const start = tn === range.startContainer ? range.startOffset : 0;
+      const end = tn === range.endContainer ? range.endOffset : tn.length;
+      if (start < end) textNodes.push(tn);
+    }
   }
-  return mark;
+
+  for (const tn of textNodes) {
+    const start = tn === range.startContainer ? range.startOffset : 0;
+    const end = tn === range.endContainer ? range.endOffset : tn.length;
+    const selected = tn.splitText(start);
+    if (end - start < selected.length) selected.splitText(end - start);
+    const mark = document.createElement("mark");
+    mark.className = "crayon-highlight";
+    selected.parentNode!.insertBefore(mark, selected);
+    mark.appendChild(selected);
+    marks.push(mark);
+  }
+
+  return marks;
 }
 
 function unwrapMark(mark: HTMLElement) {
@@ -71,7 +93,7 @@ export default function SelectionPopover({
   const [pop, setPop] = useState<PopState | null>(null);
   const [boxWidth, setBoxWidth] = useState(0);
   const boxRef = useRef<HTMLDivElement>(null);
-  const markRef = useRef<HTMLElement | null>(null);
+  const markRef = useRef<HTMLElement[] | null>(null);
   const actionTakenRef = useRef(false);
 
   useLayoutEffect(() => {
@@ -85,7 +107,7 @@ export default function SelectionPopover({
       if (boxRef.current && boxRef.current.contains(e.target as Node)) return;
       window.setTimeout(() => {
         if (markRef.current && !actionTakenRef.current) {
-          unwrapMark(markRef.current);
+          markRef.current.forEach(unwrapMark);
         }
         markRef.current = null;
         actionTakenRef.current = false;
@@ -104,8 +126,8 @@ export default function SelectionPopover({
         const root = containerRef.current;
         if (!root || !root.contains(range.commonAncestorContainer)) return;
         const rect = range.getBoundingClientRect();
-        const mark = wrapRange(range);
-        markRef.current = mark;
+        const marks = wrapRange(range);
+        markRef.current = marks;
         sel.removeAllRanges();
         setPop({ x: rect.left + rect.width / 2, y: rect.top, text });
       }, 0);
@@ -117,14 +139,14 @@ export default function SelectionPopover({
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
-        if (markRef.current && !actionTakenRef.current) unwrapMark(markRef.current);
+        if (markRef.current && !actionTakenRef.current) markRef.current.forEach(unwrapMark);
         markRef.current = null;
         actionTakenRef.current = false;
         setPop(null);
       }
     }
     function onScroll() {
-      if (markRef.current && !actionTakenRef.current) unwrapMark(markRef.current);
+      if (markRef.current && !actionTakenRef.current) markRef.current.forEach(unwrapMark);
       markRef.current = null;
       actionTakenRef.current = false;
       setPop(null);
@@ -141,11 +163,20 @@ export default function SelectionPopover({
   if (!pop) return null;
 
   // 解释 / 举例 / 追问 都开一个独立的划词浮窗（多开、互不影响）。
+  function cleanupMarks() {
+    if (markRef.current) {
+      const marks = markRef.current;
+      setTimeout(() => marks.forEach(unwrapMark), 300);
+      markRef.current = null;
+    }
+  }
+
   function spawn(seedMode: "explain" | "example" | "ask") {
     if (!pop) return;
     actionTakenRef.current = true;
     openWindow({ anchor: { x: pop.x, y: pop.y }, seedMode, seedText: pop.text });
     setPop(null);
+    cleanupMarks();
   }
 
   function handleQuote() {
@@ -153,6 +184,7 @@ export default function SelectionPopover({
     actionTakenRef.current = true;
     setQuotedText(pop.text);
     setPop(null);
+    cleanupMarks();
   }
 
   function handleRecord() {
@@ -160,6 +192,7 @@ export default function SelectionPopover({
     actionTakenRef.current = true;
     startRecord(pop.text, currentRecordContext(recordSubjectId), { x: pop.x, y: pop.y });
     setPop(null);
+    cleanupMarks();
   }
 
   const halfW = (boxWidth || 300) / 2;

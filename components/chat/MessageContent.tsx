@@ -66,8 +66,25 @@ const mdComponents = {
    被 rehype-raw 逐元素交给 React 渲染，而 <text>/<g>/<tspan> 等 SVG 命名空间标签在
    非 <svg> React 上下文下会触发「unrecognized tag」告警（流式半截 SVG 尤甚）。
    这里把完整的 <svg>…</svg> 切出来，经 sanitizeSvg(DOMPurify) 后交给 RawSvgViewer
-   以 innerHTML 渲染（浏览器原生处理 SVG 命名空间，零告警）；其余文本仍走 ReactMarkdown。 */
+   以 innerHTML 渲染（浏览器原生处理 SVG 命名空间，零告警）；其余文本仍走 ReactMarkdown。
+   此外，助教在思考过程中偶尔输出不带 <svg> 包裹的裸 SVG 子元素（<text>/<line>/…），
+   同样会被 rehype-raw 当作 HTML 自定义元素交给 React → unrecognized tag + kebab-case
+   属性告警。stripBareSvgChildren 在文本送入 ReactMarkdown 前清除这些孤儿标签。 */
 const SVG_BLOCK_RE = /<svg[\s\S]*?<\/svg>/gi;
+
+const SVG_CHILD_TAGS = [
+  'text', 'tspan', 'textPath', 'line', 'circle', 'ellipse', 'rect', 'path',
+  'polyline', 'polygon', 'g', 'use', 'defs', 'marker', 'stop', 'symbol',
+  'linearGradient', 'radialGradient', 'clipPath', 'mask', 'pattern', 'image',
+];
+const BARE_SVG_CHILD_RE = new RegExp(
+  `</?(?:${SVG_CHILD_TAGS.join('|')})\\b[^>]*/?>`,
+  'gi',
+);
+
+function stripBareSvgChildren(text: string): string {
+  return text.replace(BARE_SVG_CHILD_RE, '');
+}
 
 function renderMarkdownWithSvg(
   text: string,
@@ -81,7 +98,7 @@ function renderMarkdownWithSvg(
     </ReactMarkdown>
   );
 
-  if (!content.includes('<svg')) return md(keyPrefix, content);
+  if (!content.includes('<svg')) return md(keyPrefix, stripBareSvgChildren(content));
 
   const out: React.ReactNode[] = [];
   let last = 0;
@@ -90,7 +107,7 @@ function renderMarkdownWithSvg(
   SVG_BLOCK_RE.lastIndex = 0;
   while ((m = SVG_BLOCK_RE.exec(content)) !== null) {
     const before = content.slice(last, m.index);
-    if (before.trim()) out.push(md(`${keyPrefix}-md-${i}`, before));
+    if (before.trim()) out.push(md(`${keyPrefix}-md-${i}`, stripBareSvgChildren(before)));
     out.push(
       <VizErrorBoundary key={`${keyPrefix}-svg-${i}`} label="图形" source={m[0]}>
         <RawSvgViewer svg={sanitizeSvg(m[0])} />
@@ -100,7 +117,7 @@ function renderMarkdownWithSvg(
     i++;
   }
   const tail = content.slice(last);
-  if (tail.trim()) out.push(md(`${keyPrefix}-md-${i}`, tail));
+  if (tail.trim()) out.push(md(`${keyPrefix}-md-${i}`, stripBareSvgChildren(tail)));
 
   return <React.Fragment key={keyPrefix}>{out}</React.Fragment>;
 }
