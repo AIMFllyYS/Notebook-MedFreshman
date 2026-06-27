@@ -12,8 +12,7 @@ import {
   Layers,
   Repeat,
   Trash2,
-  Sun,
-  Moon,
+  Palette,
   Calculator,
   Atom,
   FlaskConical,
@@ -24,6 +23,7 @@ import {
 import { contentTree } from "@/lib/content-data/manifest";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
 import { useTheme } from "@/lib/hooks/useTheme";
+import { FONT_CHOICES } from "@/lib/theme/appearance";
 import {
   getAllProgress,
   getGlobalSummary,
@@ -33,6 +33,8 @@ import {
   scoreGrade,
   type ProgressEntry,
 } from "@/lib/quiz-progress";
+import AppearanceSettingsControls, { APPEARANCE_LABELS } from "./AppearanceSettingsControls";
+import SettingsSection from "./SettingsSection";
 
 const SUBJECT_ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
   Calculator,
@@ -183,6 +185,10 @@ export default function GlobalSettings({
 }) {
   const theme = useTheme((s) => s.theme);
   const setTheme = useTheme((s) => s.setTheme);
+  const appearance = useTheme((s) => s.appearance);
+  const setAppearanceMode = useTheme((s) => s.setAppearanceMode);
+  const setCustomAppearance = useTheme((s) => s.setCustomAppearance);
+  const resetAppearance = useTheme((s) => s.resetAppearance);
   const router = useRouter();
 
   const [entries, setEntries] = useState<ProgressEntry[]>([]);
@@ -238,9 +244,6 @@ export default function GlobalSettings({
     setConfirmClear(false);
   };
 
-  const sectionTitle =
-    "text-[12px] font-bold uppercase tracking-wide text-[var(--md-sys-color-on-surface-variant)]";
-
   const node = (
     <motion.div
       ref={panelRef}
@@ -282,172 +285,142 @@ export default function GlobalSettings({
           </button>
         </div>
 
-        <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-5">
-          {/* 学习成绩（全局分数） */}
-          <section className="flex flex-col gap-3">
-            <div className="flex items-center gap-1.5">
-              <Trophy size={14} className="text-[var(--md-sys-color-primary)]" />
-              <span className={sectionTitle}>学习成绩 · 全局</span>
-            </div>
-
-            <div className="flex gap-2.5">
-              <StatCard icon={<Layers size={15} />} value={summary.chapters} label="已测章节" />
-              <StatCard
-                icon={<BarChart3 size={15} />}
-                value={summary.chapters ? summary.avgBest : "—"}
-                label="平均最佳分"
-                accent={summary.chapters ? scoreGrade(summary.avgBest).color : undefined}
-              />
-              <StatCard icon={<Repeat size={15} />} value={summary.totalAttempts} label="测验次数" />
-            </div>
-
-            {groups.length === 0 ? (
-              <div
-                className="rounded-[var(--md-sys-shape-corner-large,16px)] px-4 py-6 text-center text-[12.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]"
-                style={{ background: "var(--md-sys-color-surface-container)" }}
-              >
-                还没有测验记录。
-                <br />
-                打开任意章节的「题目测试」标签，完成一套题后成绩会出现在这里。
+        <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
+          <SettingsSection
+            title="成绩"
+            icon={<Trophy size={16} />}
+            summary={
+              summary.chapters
+                ? `${summary.chapters} 章 · 平均 ${summary.avgBest} · ${summary.totalAttempts} 次`
+                : "暂无测验记录"
+            }
+          >
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-2.5">
+                <StatCard icon={<Layers size={15} />} value={summary.chapters} label="已测章节" />
+                <StatCard
+                  icon={<BarChart3 size={15} />}
+                  value={summary.chapters ? summary.avgBest : "—"}
+                  label="平均最佳分"
+                  accent={summary.chapters ? scoreGrade(summary.avgBest).color : undefined}
+                />
+                <StatCard icon={<Repeat size={15} />} value={summary.totalAttempts} label="测验次数" />
               </div>
-            ) : (
-              <div className="flex flex-col gap-3.5">
-                {groups.map((g) => {
-                  const Icon = SUBJECT_ICON_MAP[g.iconName] ?? Folder;
-                  return (
-                    <div key={g.id} className="flex flex-col gap-1.5">
-                      {/* 科目标题行 */}
-                      <div className="flex items-center gap-2 px-0.5">
-                        <Icon size={15} style={{ color: "var(--md-sys-color-primary)" }} />
-                        <span className="text-[13px] font-bold text-[var(--md-sys-color-on-surface)]">
-                          {g.name}
-                        </span>
-                        <span className="text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
-                          {g.items.length} 章
-                        </span>
-                        <span className="ml-auto text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
-                          平均最佳
-                        </span>
-                        <ScoreBadge percent={g.avgBest} />
-                      </div>
-                      {/* 章节行 */}
-                      <div
-                        className="flex flex-col overflow-hidden rounded-[var(--md-sys-shape-corner-large,16px)]"
-                        style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
-                      >
-                        {g.items.map((e, i) => {
-                          const route = findChapterRoute(e.subjectId, e.chapterId);
-                          return (
-                          <div
-                            key={e.chapterId}
-                            onClick={() => {
-                              if (!route) return;
-                              router.push(`/${e.subjectId}/${route.categoryId}/${route.itemId}`);
-                              onClose();
-                            }}
-                            className="flex items-center gap-3 px-3 py-2 transition-colors"
-                            style={{
-                              background:
-                                i % 2 === 0
-                                  ? "var(--md-sys-color-surface-container-lowest)"
-                                  : "var(--md-sys-color-surface-container)",
-                              cursor: route ? "pointer" : "default",
-                            }}
-                          >
-                            <span className="min-w-0 flex-1 truncate text-[12.5px] text-[var(--md-sys-color-on-surface)]">
-                              {chapterLabel(e.chapterId)}
-                            </span>
-                            <span className="shrink-0 text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                              上次 {e.progress.last.percent} · {e.progress.attempts} 次
-                            </span>
-                            <ScoreBadge percent={e.progress.best} />
-                          </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </section>
 
-          {/* 外观 */}
-          <section className="flex flex-col gap-2.5">
-            <span className={sectionTitle}>外观</span>
-            <div
-              className="flex items-center justify-between rounded-[var(--md-sys-shape-corner-large,16px)] px-3.5 py-2.5"
-              style={{
-                background: "var(--md-sys-color-surface-container)",
-                border: "1px solid var(--md-sys-color-outline-variant)",
-              }}
-            >
-              <span className="text-[13px] text-[var(--md-sys-color-on-surface)]">主题</span>
-              <div
-                className="flex items-center gap-0.5 rounded-full p-0.5"
-                style={{ background: "var(--md-sys-color-surface-container-highest)" }}
-              >
-                {(["light", "dark"] as const).map((mode) => {
-                  const active = theme === mode;
-                  return (
-                    <button
-                      key={mode}
-                      onClick={() => setTheme(mode)}
-                      className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
-                      style={{
-                        background: active ? "var(--md-sys-color-primary)" : "transparent",
-                        color: active
-                          ? "var(--md-sys-color-on-primary)"
-                          : "var(--md-sys-color-on-surface-variant)",
-                      }}
-                    >
-                      {mode === "light" ? <Sun size={13} /> : <Moon size={13} />}
-                      {mode === "light" ? "浅色" : "深色"}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-
-          {/* 数据管理 */}
-          <section className="flex flex-col gap-2.5">
-            <span className={sectionTitle}>数据</span>
-            <div
-              className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] px-3.5 py-2.5"
-              style={{
-                background: "var(--md-sys-color-surface-container)",
-                border: "1px solid var(--md-sys-color-outline-variant)",
-              }}
-            >
-              <div className="min-w-0">
-                <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">
-                  清空全部成绩
+              {groups.length === 0 ? (
+                <div
+                  className="rounded-[var(--md-sys-shape-corner-large,16px)] px-4 py-6 text-center text-[12.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]"
+                  style={{ background: "var(--md-sys-color-surface-container-lowest)" }}
+                >
+                  还没有测验记录。
+                  <br />
+                  打开任意章节的「题目测试」标签，完成一套题后成绩会出现在这里。
                 </div>
-                <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                  仅清除本机保存的测验成绩，不影响题目本身。
+              ) : (
+                <div className="flex flex-col gap-3.5">
+                  {groups.map((g) => {
+                    const Icon = SUBJECT_ICON_MAP[g.iconName] ?? Folder;
+                    return (
+                      <div key={g.id} className="flex flex-col gap-1.5">
+                        <div className="flex items-center gap-2 px-0.5">
+                          <Icon size={15} style={{ color: "var(--md-sys-color-primary)" }} />
+                          <span className="text-[13px] font-bold text-[var(--md-sys-color-on-surface)]">
+                            {g.name}
+                          </span>
+                          <span className="text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
+                            {g.items.length} 章
+                          </span>
+                          <span className="ml-auto text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
+                            平均最佳
+                          </span>
+                          <ScoreBadge percent={g.avgBest} />
+                        </div>
+                        <div
+                          className="flex flex-col overflow-hidden rounded-[var(--md-sys-shape-corner-large,16px)]"
+                          style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
+                        >
+                          {g.items.map((e, i) => {
+                            const route = findChapterRoute(e.subjectId, e.chapterId);
+                            return (
+                              <div
+                                key={e.chapterId}
+                                onClick={() => {
+                                  if (!route) return;
+                                  router.push(`/${e.subjectId}/${route.categoryId}/${route.itemId}`);
+                                  onClose();
+                                }}
+                                className="flex items-center gap-3 px-3 py-2 transition-colors"
+                                style={{
+                                  background:
+                                    i % 2 === 0
+                                      ? "var(--md-sys-color-surface-container-lowest)"
+                                      : "var(--md-sys-color-surface-container)",
+                                  cursor: route ? "pointer" : "default",
+                                }}
+                              >
+                                <span className="min-w-0 flex-1 truncate text-[12.5px] text-[var(--md-sys-color-on-surface)]">
+                                  {chapterLabel(e.chapterId)}
+                                </span>
+                                <span className="shrink-0 text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                                  上次 {e.progress.last.percent} · {e.progress.attempts} 次
+                                </span>
+                                <ScoreBadge percent={e.progress.best} />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
+              )}
+
+              <div className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container-lowest)] px-3.5 py-2.5">
+                <div className="min-w-0">
+                  <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">
+                    清空全部成绩
+                  </div>
+                  <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                    仅清除本机保存的测验成绩，不影响题目本身。
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  disabled={summary.chapters === 0 && !confirmClear}
+                  className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors disabled:opacity-40"
+                  style={{
+                    background: confirmClear
+                      ? "var(--md-sys-color-error)"
+                      : "var(--md-sys-color-surface-container-highest)",
+                    color: confirmClear
+                      ? "var(--md-sys-color-on-error)"
+                      : "var(--md-sys-color-error)",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Trash2 size={14} />
+                  {confirmClear ? "确认清空" : "清空"}
+                </button>
               </div>
-              <button
-                onClick={handleClear}
-                disabled={summary.chapters === 0 && !confirmClear}
-                className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors disabled:opacity-40"
-                style={{
-                  background: confirmClear
-                    ? "var(--md-sys-color-error)"
-                    : "var(--md-sys-color-surface-container-highest)",
-                  color: confirmClear
-                    ? "var(--md-sys-color-on-error)"
-                    : "var(--md-sys-color-error)",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                <Trash2 size={14} />
-                {confirmClear ? "确认清空" : "清空"}
-              </button>
             </div>
-          </section>
+          </SettingsSection>
+
+          <SettingsSection
+            title="外观"
+            icon={<Palette size={16} />}
+            summary={`${theme === "light" ? "浅色" : "深色"} · ${APPEARANCE_LABELS[appearance.mode]} · ${FONT_CHOICES[appearance.custom.font].label}`}
+          >
+            <AppearanceSettingsControls
+              theme={theme}
+              setTheme={setTheme}
+              appearance={appearance}
+              setAppearanceMode={setAppearanceMode}
+              setCustomAppearance={setCustomAppearance}
+              resetAppearance={resetAppearance}
+            />
+          </SettingsSection>
         </div>
     </motion.div>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import {
   ChevronDown,
   Sun,
@@ -57,6 +58,11 @@ export default function MobileTopBar() {
   const toggle = useStore((s) => s.toggleMobileChapterPicker);
   const theme = useTheme((s) => s.theme);
   const toggleTheme = useTheme((s) => s.toggle);
+  const hydrateTheme = useTheme((s) => s.hydrate);
+
+  useEffect(() => {
+    hydrateTheme();
+  }, [hydrateTheme]);
 
   const item = getContentItem(subjectId, categoryId, itemId);
   const shortSubject = SHORT_NAMES[subjectId] ?? getSubject(subjectId)?.name ?? subjectId;
