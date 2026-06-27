@@ -308,6 +308,7 @@ export const contentTree: ContentTree = {
           items: [
             { id: 'unit-1', title: '大学英语 Unit 1 · The True Value of Education', type: 'document', status: 'done' },
             { id: 'unit-2', title: '大学英语 Unit 2 · The Myth of a Dream Job', type: 'document', status: 'done' },
+            { id: 'unit-3', title: '大学英语 Unit 3 · The Business of Life', type: 'document', status: 'done' },
           ],
         },
         {

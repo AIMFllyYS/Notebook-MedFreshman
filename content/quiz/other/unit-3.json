@@ -1,0 +1,220 @@
+{
+  "subjectId": "other",
+  "chapterId": "unit-3",
+  "generatedAt": "2026-06-27",
+  "examConfig": {
+    "source": "大学英语 Unit 3 · The Business of Life",
+    "totalPoints": 100,
+    "timeLimit": 90,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 1},
+      {"name": "Reading Comprehension", "points": 40, "questions": 4},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "points": 15,
+      "stem": "Directions: Write a short essay of about 150 words on the following topic.\n\nTopic: Individual Interest vs. Collective Welfare\n\nDiscuss the tension between pursuing personal goals and contributing to collective well-being, drawing on the themes of Unit 3.",
+      "answer": "The tension between self-interest and collective welfare is a defining dilemma of modern society. Game theory illustrates this vividly: in the prisoner's dilemma, two rational individuals each pursuing their own best outcome end up producing a result worse for both than if they had cooperated.\n\nThis logic appears throughout real life. Nations race to industrialize at the expense of the climate. Athletes seek competitive edges through performance-enhancing drugs. Each acts rationally in isolation, yet the collective result is disastrous.\n\nYet the solution is not to abandon self-interest but to design institutions that align it with collective goals. Legally binding agreements, transparent communication, and enforceable norms can shift individual incentives so that cooperation becomes the rational choice. The challenge of governance, at every scale, is precisely to build those aligning mechanisms.",
+      "hint": "结合 Unit 3 事例（囚徒困境、气候变化、兴奋剂等），表明立场并给出论据，注意引言—主体—结论结构。",
+      "explanation": "参考答案结构：提出问题→举例论证（囚徒困境/现实扩展）→辩证补充（解决方案）→结论。涵盖核心词汇：prisoner's dilemma, collective welfare, incentive, binding agreement。",
+      "scoring_criteria": [
+        "内容（5分）：观点明确，紧扣主题；结合 Unit 3 具体事例；立场前后一致。",
+        "语言（5分）：词汇丰富准确，恰当使用单元重点词汇；语法基本正确，句式有变化。",
+        "结构（5分）：引言、主体、结论清晰；逻辑连贯，使用过渡词；篇幅约150词。"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "points": 15,
+      "stem": "Choose the best option to complete each sentence.\n\n1. The documentary offered an _____ look at how corporate decisions affect ordinary workers.\n   A. insightful  B. ambiguous  C. superficial  D. reluctant\n\n2. After years of fierce competition, the two rivals reached a market _____, with neither able to gain a lasting advantage.\n   A. dilemma  B. incentive  C. equilibrium  D. consensus\n\n3. Tax breaks serve as financial _____ for companies that invest in renewable energy.\n   A. allegories  B. equilibria  C. dilemmas  D. incentives\n\n4. The merger will _____ significant changes to the organizational structure.\n   A. emit  B. entail  C. imply  D. confess\n\n5. She refused to settle for _____ and spent years perfecting her craft.\n   A. legacy  B. prudence  C. mediocrity  D. allegory",
+      "options": [
+        "1-A 2-C 3-D 4-B 5-C",
+        "1-B 2-A 3-C 4-D 5-A",
+        "1-C 2-D 3-B 4-A 5-D",
+        "1-A 2-B 3-A 4-C 5-B"
+      ],
+      "answer": 0,
+      "hint": "逐题分析：①洞察力→insightful；②均衡状态→equilibrium；③激励→incentives；④牵涉/需要→entail；⑤平庸→mediocrity。",
+      "explanation": "正确组合为 1-A 2-C 3-D 4-B 5-C：①insightful（富有洞察力）揭示系统性问题；②equilibrium（均衡）指双方势均力敌的稳定状态；③incentives（激励）指税收减免作为奖励机制；④entail（需要/牵涉）表示合并必然带来变化；⑤mediocrity（平庸）指拒绝接受普通水准。"
+    },
+    {
+      "id": "q003",
+      "type": "reading",
+      "section": "Reading Comprehension",
+      "points": 40,
+      "passage": "Game theory is a branch of applied mathematics that analyzes strategic interactions among rational decision-makers. Its central concept — the Nash equilibrium — describes a stable state in which no player can benefit by unilaterally changing their strategy. The prisoner's dilemma is the most famous illustration: two suspects held separately must each decide whether to confess or remain silent. If both stay silent, each gets one year. If both confess, each gets five years. If one confesses while the other stays silent, the confessor goes free and the silent party gets ten years. Individual rationality leads both to confess, producing a Nash equilibrium of five years each — worse than the two-year total that mutual silence would achieve. This illustrates a fundamental tension: what is rational for each individual, when adopted by all, can be collectively disastrous. The dilemma recurs throughout modern life — in climate negotiations, competitive sport, and everyday social pressure — revealing why legally binding agreements and institutional mechanisms are essential to align individual incentives with collective goals.",
+      "subQuestions": [
+        {
+          "id": "q003-1",
+          "type": "single_choice",
+          "stem": "What is the main purpose of the passage?",
+          "options": [
+            "To argue that game theory has replaced classical economics.",
+            "To explain how the Nash equilibrium reveals tensions between individual rationality and collective welfare.",
+            "To prove that human beings are incapable of cooperation.",
+            "To recommend game theory as a tool exclusively for environmental policy."
+          ],
+          "answer": 1,
+          "explanation": "B正确：文章核心是通过Nash equilibrium和囚徒困境说明个体理性与集体福利之间的张力。A中'replaced'过于绝对；C中'incapable'悲观且与文章结尾的解决方案矛盾；D中'exclusively for environmental policy'以偏概全。",
+          "points": 10
+        },
+        {
+          "id": "q003-2",
+          "type": "single_choice",
+          "stem": "According to the passage, what is the Nash equilibrium outcome in the prisoner's dilemma?",
+          "options": [
+            "Both suspects remain silent and receive one year each.",
+            "Both suspects confess and receive five years each.",
+            "One suspect goes free while the other receives ten years.",
+            "Both suspects are acquitted due to lack of evidence."
+          ],
+          "answer": 1,
+          "explanation": "B正确：原文明确说明个体理性导致双方都认罪，各判五年——这是Nash equilibrium。A是集体最优结果（非均衡）；C是一认一不认的情况（非均衡）；D无中生有。",
+          "points": 10
+        },
+        {
+          "id": "q003-3",
+          "type": "single_choice",
+          "stem": "The word \"unilaterally\" in the first paragraph most probably means:",
+          "options": [
+            "together with all other parties involved",
+            "by only one party without the agreement of others",
+            "gradually and over a long period of time",
+            "through formal legal channels and procedures"
+          ],
+          "answer": 1,
+          "explanation": "B正确：unilaterally = uni-（单一）+ laterally（侧面/方向），即'单方面地，不经他方同意地'。Nash equilibrium中没有人能通过'单方面'改变策略来获益。A恰好相反（多方一起）；C和D均与词义无关。",
+          "points": 10
+        },
+        {
+          "id": "q003-4",
+          "type": "single_choice",
+          "stem": "What does the author suggest is necessary to resolve prisoner's dilemma situations in real life?",
+          "options": [
+            "Each party should act on instinct rather than rational calculation.",
+            "External mechanisms such as binding agreements that align individual incentives with collective goals.",
+            "Eliminating competition entirely so that cooperation becomes the only option.",
+            "Educating individuals about the prisoner's dilemma so they voluntarily choose cooperation."
+          ],
+          "answer": 1,
+          "explanation": "B正确：原文末句明确说明'legally binding agreements and institutional mechanisms are essential to align individual incentives with collective goals'。A中依靠本能与理性决策分析矛盾；C中消除竞争过于理想化且超出原文范围；D关于教育的论断原文未提及。",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "cloze",
+      "section": "Cloze",
+      "points": 10,
+      "passage": "One of the most persistent challenges in modern society is the problem of collective action. When individuals make decisions based (1)_____ on their own interests, the outcome for the group can be far worse than if they had cooperated. This phenomenon, known as the prisoner's dilemma, (2)_____ across a remarkable range of real-world situations. Climate change is perhaps the most (3)_____ example: every country has an economic (4)_____ to keep emitting carbon dioxide, even though the collective result is (5)_____ for everyone. The Nash (6)_____ — the stable outcome reached when every party acts rationally — is not the (7)_____ outcome for the group. Economists recognize that resolving such dilemmas requires external (8)_____ that change individual incentives. Legally (9)_____ agreements and transparent communication can make cooperation the individually rational (10)_____.",
+      "blanks": [
+        {
+          "id": "b1",
+          "options": ["solely","gradually","collectively","randomly"],
+          "answer": 0,
+          "explanation": "'solely'（仅仅）修饰'based on their own interests'，强调纯粹出于个人利益，与文章核心词汇对应。"
+        },
+        {
+          "id": "b2",
+          "options": ["disappears","appears","declines","transforms"],
+          "answer": 1,
+          "explanation": "'appears'（出现）表示囚徒困境现象在多种现实情境中'出现'，符合后文列举的语境。"
+        },
+        {
+          "id": "b3",
+          "options": ["obscure","trivial","striking","misleading"],
+          "answer": 2,
+          "explanation": "'striking'（显著的；引人注目的）表达气候变化作为最突出例子，与'perhaps the most'搭配自然。"
+        },
+        {
+          "id": "b4",
+          "options": ["dilemma","incentive","legacy","equilibrium"],
+          "answer": 1,
+          "explanation": "'incentive'（激励；动力）指每个国家排放 CO₂ 的经济动机，是 Unit 3 核心词汇。"
+        },
+        {
+          "id": "b5",
+          "options": ["beneficial","neutral","disastrous","optional"],
+          "answer": 2,
+          "explanation": "'disastrous'（灾难性的）描述所有国家都排放时对所有人造成的集体后果，与文章第4段一致。"
+        },
+        {
+          "id": "b6",
+          "options": ["dilemma","strategy","equilibrium","intervention"],
+          "answer": 2,
+          "explanation": "'equilibrium'（均衡）——Nash equilibrium 是原文核心概念，指每方理性行事时达到的稳定状态。"
+        },
+        {
+          "id": "b7",
+          "options": ["only","optimal","binding","visible"],
+          "answer": 1,
+          "explanation": "'optimal'（最优的）对应原文'the collectively optimal outcome'，均衡结果往往不是集体最优结果。"
+        },
+        {
+          "id": "b8",
+          "options": ["obstacles","mechanisms","dilemmas","pressures"],
+          "answer": 1,
+          "explanation": "'mechanisms'（机制）指改变个体激励的外部手段（如约束性协议），与原文'institutional mechanisms'呼应。"
+        },
+        {
+          "id": "b9",
+          "options": ["optional","binding","informal","collective"],
+          "answer": 1,
+          "explanation": "'binding'（有约束力的）是原文'legally binding agreements'的直接用词，指具有法律强制力的协议。"
+        },
+        {
+          "id": "b10",
+          "options": ["outcome","problem","dilemma","incentive"],
+          "answer": 0,
+          "explanation": "'outcome'（结果）——通过外部机制使合作成为个体理性选择，即从'囚徒困境式结果'转变为'合作结果'。"
+        }
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "translation",
+      "section": "Translation",
+      "points": 20,
+      "items": [
+        {
+          "id": "t1",
+          "source": "博弈论的美妙之处恰恰在于，它揭示了从个体角度理性行事，可能导致集体层面不理想甚至灾难性的结果。",
+          "reference": "The beauty of game theory is precisely that it shows how acting rationally from an individual's point of view can lead to collectively undesirable, or even disastrous, outcomes.",
+          "explanation": "要点：①'beauty of sth.'固定表达；②'precisely that'强调语气；③'acting rationally from an individual's point of view'动名词短语作主语；④'collectively undesirable'副词修饰形容词。",
+          "points": 5
+        },
+        {
+          "id": "t2",
+          "source": "事实上，如果他们达成不认罪的协议，双方处境都会更好，但个人的诱惑使这一协议难以实现。",
+          "reference": "Both of them would in fact be better off if they agreed not to confess, but their personal temptations make this agreement infeasible.",
+          "explanation": "要点：①虚拟语气'would be better off if they agreed'；②'better off'固定搭配；③'make + 宾语 + 形容词'使动结构；④'infeasible'不可行的。",
+          "points": 5
+        },
+        {
+          "id": "t3",
+          "source": "创业精神不再仅仅是一个商业术语——它是一种生活方式。你不需要成为企业家才能拥有创业精神，你只需要培养一种创业的态度。",
+          "reference": "Entrepreneurship is no longer just a business term — it's a way of life. You don't need to be an entrepreneur to be entrepreneurial. You just need to cultivate an entrepreneurial attitude.",
+          "explanation": "要点：①'no longer just'不再仅仅；②破折号的使用；③'entrepreneur'（名词）vs.'entrepreneurial'（形容词）区分；④'cultivate an attitude'培养态度（固定搭配）。",
+          "points": 5
+        },
+        {
+          "id": "t4",
+          "source": "将创业方式应用于生活的方方面面通常需要你重塑僵化的态度，重新审视旧习惯——这些无疑是费心费力的任务，但绝对是比安于平庸更负责任的生活方式。",
+          "reference": "Applying an entrepreneurial approach to all of life usually requires you to reshape rigid attitudes and reconsider old habits — these are painstaking tasks for sure, but this is definitely a more responsible way of living than settling for mediocrity.",
+          "explanation": "要点：①动名词短语'Applying...to all of life'作主语；②'reshape rigid attitudes'重塑僵化态度；③'painstaking'费心费力的；④'settle for mediocrity'安于平庸（固定搭配）；⑤比较级'more responsible...than'。",
+          "points": 5
+        }
+      ]
+    }
+  ]
+}
