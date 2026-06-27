@@ -66,6 +66,7 @@ export async function processRecord(
   mode: RecordMode,
   options?: { userInstruction?: string; currentCard?: RecordCardAI },
   callbacks?: ProcessCallbacks,
+  signal?: AbortSignal,
 ): Promise<{ ok: boolean; error?: string }> {
   const card = useReviewCards.getState().byId[cardId];
   if (!card) return { ok: false, error: "卡片不存在" };
@@ -78,6 +79,7 @@ export async function processRecord(
   try {
     const resp = await fetch("/api/record", {
       method: "POST",
+      signal,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         mode,
@@ -143,6 +145,12 @@ export async function processRecord(
     store.markError(cardId, "成卡结果为空");
     return { ok: false, error: "成卡结果为空" };
   } catch (err) {
+    if (err instanceof DOMException && err.name === "AbortError") {
+      return { ok: false, error: err.message || "aborted" };
+    }
+    if (err instanceof Error && err.name === "AbortError") {
+      return { ok: false, error: err.message || "aborted" };
+    }
     const message = err instanceof Error ? err.message : "网络异常，成卡失败";
     store.markError(cardId, message);
     return { ok: false, error: message };
@@ -166,11 +174,12 @@ export function startRecord(
 export async function retryRecord(
   cardId: string,
   callbacks?: ProcessCallbacks,
+  signal?: AbortSignal,
 ): Promise<{ ok: boolean; error?: string }> {
   const card = useReviewCards.getState().byId[cardId];
   if (!card) return { ok: false, error: "卡片不存在" };
   const mode = card.mode || "excerpt";
-  return processRecord(cardId, mode, {}, callbacks);
+  return processRecord(cardId, mode, {}, callbacks, signal);
 }
 
 /**
@@ -181,6 +190,7 @@ export async function reviseRecord(
   cardId: string,
   instruction: string,
   callbacks?: ProcessCallbacks,
+  signal?: AbortSignal,
 ): Promise<{ ok: boolean; error?: string }> {
   const trimmed = instruction.trim();
   const card = useReviewCards.getState().byId[cardId];
@@ -205,6 +215,7 @@ export async function reviseRecord(
     mode,
     { userInstruction: trimmed, currentCard: prevAi },
     callbacks,
+    signal,
   );
 
   if (!result.ok) {
