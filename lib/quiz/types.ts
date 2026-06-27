@@ -7,7 +7,10 @@ export type QuestionType =
   | "true_false"
   | "analysis" // 辨析题：判断正误并说明理由（主观自评）
   | "fill_blank"
-  | "essay"; // 简答 / 材料分析 / 论述 / 计算解答（用 label 细分显示）
+  | "essay" // 简答 / 材料分析 / 论述 / 计算解答（用 label 细分显示）
+  | "reading" // 阅读理解：一篇材料 + 若干小题（客观/主观子题）
+  | "cloze" // 完形填空：一篇短文 + 若干填空
+  | "translation"; // 翻译题：若干中译英/英译中句子
 
 export type Difficulty = "basic" | "medium" | "hard";
 
@@ -19,6 +22,35 @@ export interface SourceRef {
   path?: string;
   /** 人类可读的定位，如 "2.1 银荒与末世 · 二、银铜双本位制" */
   label?: string;
+}
+
+/** 阅读理解子题。 */
+export interface ReadingSubQuestion {
+  id: string;
+  type: "single_choice" | "multiple_choice" | "true_false";
+  stem: string;
+  options?: string[];
+  answer: number | number[];
+  explanation?: string;
+  points: number;
+}
+
+/** 完形填空空。 */
+export interface ClozeBlank {
+  id: string;
+  options: string[];
+  answer: number;
+  explanation?: string;
+  points?: number;
+}
+
+/** 翻译条目。 */
+export interface TranslationItem {
+  id: string;
+  source: string; // 原文
+  reference: string; // 参考答案
+  explanation?: string;
+  points: number;
 }
 
 /** 单题。answer 字段约定见 SOP-04「各题型 answer 字段约定」。 */
@@ -45,8 +77,16 @@ export interface QuizQuestion {
    * - analysis: number（1=命题正确，0=命题错误）——判断部分；理由见 answer/scoring_criteria
    * - fill_blank: string
    * - essay: string（完整参考答案）
+   * - reading / cloze / translation: 由子结构 answer 字段描述，本字段可空
    */
   answer: number | number[] | string;
+  /** 阅读理解：原文 + 子题列表 */
+  passage?: string;
+  subQuestions?: ReadingSubQuestion[];
+  /** 完形填空：原文 + 空列表 */
+  blanks?: ClozeBlank[];
+  /** 翻译题：翻译条目列表 */
+  items?: TranslationItem[];
   /** 交卷前可点击查看的提示（启发思路，不泄露答案）。 */
   hint?: string;
   /**
@@ -90,8 +130,8 @@ export interface QuizData {
   summary?: QuizSummaryStats;
 }
 
-/** 用户作答：选择/判断为索引，多选为索引数组，填空/大题为文本。 */
-export type UserAnswer = number | number[] | string | null;
+/** 用户作答：选择/判断为索引，多选为索引数组，填空/大题为文本，复合题型为子题 id → 作答映射。 */
+export type UserAnswer = number | number[] | string | Record<string, unknown> | null;
 
 /** 客观题（系统自动判分） vs 主观题（用户自评）。 */
 export const OBJECTIVE_TYPES: QuestionType[] = [
@@ -99,7 +139,19 @@ export const OBJECTIVE_TYPES: QuestionType[] = [
   "multiple_choice",
   "true_false",
 ];
-export const SUBJECTIVE_TYPES: QuestionType[] = ["analysis", "fill_blank", "essay"];
+export const SUBJECTIVE_TYPES: QuestionType[] = ["analysis", "fill_blank", "essay", "translation"];
+
+/** 复合题型：内部包含多个子题/空/条目。 */
+export const COMPOSITE_TYPES: QuestionType[] = ["reading", "cloze", "translation"];
+
+export function isComposite(type: QuestionType): boolean {
+  return COMPOSITE_TYPES.includes(type);
+}
+
+/** 客观题（系统自动判分） vs 主观题（用户自评）。 */
+export function isObjective(type: QuestionType): boolean {
+  return OBJECTIVE_TYPES.includes(type);
+}
 
 /** 题型默认显示名（label 缺省时使用）。 */
 export const TYPE_LABELS: Record<QuestionType, string> = {
@@ -109,11 +161,10 @@ export const TYPE_LABELS: Record<QuestionType, string> = {
   analysis: "辨析题",
   fill_blank: "填空题",
   essay: "解答题",
+  reading: "阅读理解",
+  cloze: "完形填空",
+  translation: "翻译题",
 };
-
-export function isObjective(type: QuestionType): boolean {
-  return OBJECTIVE_TYPES.includes(type);
-}
 
 /** 题型显示名：优先 label，否则类型默认名。 */
 export function displayLabel(q: QuizQuestion): string {
@@ -130,22 +181,65 @@ export function maxPointsOf(q: QuizQuestion): number {
  * 客观题自动判分，返回 [得分, 是否完全正确]。
  * - single_choice / true_false：答对满分，否则 0。
  * - multiple_choice：全对满分；漏选（未选错项）得半分；错选 0 分（SOP-04 策略）。
- * 主观题（analysis / fill_blank / essay）不在此判分，返回 [0, false] 由用户自评。
+ * - reading / cloze：按子题/空自动判分，累加得分。
+ * 主观题（analysis / fill_blank / essay / translation）不在此判分，返回 [0, false] 由用户自评。
  */
 export function autoGrade(q: QuizQuestion, answer: UserAnswer): [number, boolean] {
   const full = maxPointsOf(q);
-  if (q.type === "single_choice" || q.type === "true_false") {
-    return answer === q.answer ? [full, true] : [0, false];
+
+  if (q.type === "reading") {
+    const subs = q.subQuestions ?? [];
+    if (subs.length === 0) return [0, false];
+    let earned = 0;
+    let allCorrect = true;
+    const record = (typeof answer === "object" && answer !== null && !Array.isArray(answer))
+      ? (answer as Record<string, UserAnswer>)
+      : {};
+    for (const sq of subs) {
+      const [subEarned, subCorrect] = gradeSimple(sq.type as "single_choice" | "multiple_choice" | "true_false", sq.answer, sq.points, record[sq.id] ?? null);
+      earned += subEarned;
+      if (!subCorrect) allCorrect = false;
+    }
+    return [earned, allCorrect];
   }
-  if (q.type === "multiple_choice") {
-    const correct = new Set((q.answer as number[]) ?? []);
+
+  if (q.type === "cloze") {
+    const blanks = q.blanks ?? [];
+    if (blanks.length === 0) return [0, false];
+    let earned = 0;
+    let allCorrect = true;
+    const record = (typeof answer === "object" && answer !== null && !Array.isArray(answer))
+      ? (answer as Record<string, UserAnswer>)
+      : {};
+    for (const b of blanks) {
+      const blankPoints = b.points ?? Math.round(full / blanks.length * 10) / 10;
+      const [subEarned, subCorrect] = gradeSimple("single_choice", b.answer, blankPoints, record[b.id] ?? null);
+      earned += subEarned;
+      if (!subCorrect) allCorrect = false;
+    }
+    return [earned, allCorrect];
+  }
+
+  return gradeSimple(q.type, q.answer, full, answer);
+}
+
+function gradeSimple(
+  type: QuestionType,
+  correctAnswer: number | number[] | string,
+  full: number,
+  answer: UserAnswer,
+): [number, boolean] {
+  if (type === "single_choice" || type === "true_false") {
+    return answer === correctAnswer ? [full, true] : [0, false];
+  }
+  if (type === "multiple_choice") {
+    const correct = new Set((correctAnswer as number[]) ?? []);
     const picked = new Set(Array.isArray(answer) ? (answer as number[]) : []);
     if (picked.size === 0) return [0, false];
     const hasWrong = [...picked].some((i) => !correct.has(i));
     if (hasWrong) return [0, false];
     const allCorrect = picked.size === correct.size;
     if (allCorrect) return [full, true];
-    // 漏选但无错选 → 半分
     return [Math.round((full / 2) * 100) / 100, false];
   }
   return [0, false];
