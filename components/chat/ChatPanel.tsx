@@ -65,6 +65,10 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   }, [activeSessionId]);
 
   useEffect(() => {
+    return () => stopGeneration();
+  }, [stopGeneration]);
+
+  useEffect(() => {
     if (hydrated && outbound && outbound.content) {
       sendMessage(outbound.content);
       clearOutbound();
@@ -77,11 +81,15 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
 
   const handleFollowUpClick = useCallback((question: string) => sendMessage(question), [sendMessage]);
   const handleNewChat = () => {
+    stopGeneration();
     createSession(chatContext);
     setWarnDismissed(false);
     useTokenTracker.getState().resetSession();
   };
-  const handleClearCurrent = () => { if (activeSessionId) deleteSession(activeSessionId); };
+  const handleClearCurrent = () => {
+    stopGeneration();
+    if (activeSessionId) deleteSession(activeSessionId);
+  };
   // 删除会话：若是正开着的划词会话，先关掉对应浮窗，再删数据。
   const handleDeleteSession = (id: string) => {
     const fc = useFloatingChats.getState();
