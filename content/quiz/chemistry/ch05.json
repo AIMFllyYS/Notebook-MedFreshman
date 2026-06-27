@@ -1,255 +1,43 @@
 {
   "subjectId": "chemistry",
   "chapterId": "ch05",
-  "generatedAt": "2026-06-21",
-  "examConfig": {
-    "source": "docs/refer/考试题型分布.md",
-    "totalPoints": 100,
-    "timeLimit": 50
-  },
+  "generatedAt": "2026-06-27",
+  "examConfig": { "source": "docs/refer/考试题型分布.md", "totalPoints": 100, "timeLimit": 50 },
   "questions": [
-    {
-      "id": "q001",
-      "type": "single_choice",
-      "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“电子效应”中「诱导效应」的考查，下列说法正确的是（　）。",
-      "options": [
-        "诱导效应沿 sigma 键传递并随距离迅速衰减，吸电子基增强羧酸酸性。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
-      ],
-      "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：诱导效应沿 sigma 键传递并随距离迅速衰减，吸电子基增强羧酸酸性。 这与本节详解对「诱导效应」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "current_chapter",
-      "sourceRef": {
-        "path": "content/chemistry/detail/5.1.md",
-        "label": "5.1 诱导效应"
-      }
-    },
-    {
-      "id": "q002",
-      "type": "single_choice",
-      "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“电子效应”中「共轭效应」的考查，下列说法正确的是（　）。",
-      "options": [
-        "给电子共轭和吸电子共轭会改变芳环电子云密度及邻、间、对位性质。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
-      ],
-      "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：给电子共轭和吸电子共轭会改变芳环电子云密度及邻、间、对位性质。 这与本节详解对「共轭效应」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "current_chapter",
-      "sourceRef": {
-        "path": "content/chemistry/detail/5.2.md",
-        "label": "5.2 共轭效应"
-      }
-    },
-    {
-      "id": "q003",
-      "type": "single_choice",
-      "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“烷烃与环烷烃”中「自由基取代与小环开环」的考查，下列说法正确的是（　）。",
-      "options": [
-        "烷烃卤代为自由基链反应，溴代选择性高于氯代。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
-      ],
-      "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：烷烃卤代为自由基链反应，溴代选择性高于氯代。 这与本节详解对「自由基取代与小环开环」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "review",
-      "sourceChapter": "ch04",
-      "sourceRef": {
-        "path": "content/chemistry/detail/4.3.md",
-        "label": "4.3 自由基取代与小环开环"
-      }
-    },
-    {
-      "id": "q004",
-      "type": "single_choice",
-      "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“烷烃与环烷烃”中「环己烷椅式构象」的考查，下列说法正确的是（　）。",
-      "options": [
-        "环己烷椅式中大取代基优先占据 e 键位置以减小 1,3-二轴相互作用。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
-      ],
-      "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：环己烷椅式中大取代基优先占据 e 键位置以减小 1,3-二轴相互作用。 这与本节详解对「环己烷椅式构象」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "review",
-      "sourceChapter": "ch04",
-      "sourceRef": {
-        "path": "content/chemistry/detail/4.2.md",
-        "label": "4.2 环己烷椅式构象"
-      }
-    },
-    {
-      "id": "q005",
-      "type": "fill_blank",
-      "difficulty": "basic",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「电子效应」中，三级碳正离子和三级自由基因超共轭较多而比一级更稳定。 请写出该判断所依据的核心术语或规则。",
-      "answer": "超共轭与中间体稳定性",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
-      ],
-      "explanation": "本题考查「超共轭与中间体稳定性」。教材要点是：三级碳正离子和三级自由基因超共轭较多而比一级更稳定。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
-      "source": "current_chapter",
-      "sourceRef": {
-        "path": "content/chemistry/detail/5.3.md",
-        "label": "5.3 超共轭与中间体稳定性"
-      }
-    },
-    {
-      "id": "q006",
-      "type": "fill_blank",
-      "difficulty": "basic",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「电子效应」中，诱导效应沿 sigma 键传递并随距离迅速衰减，吸电子基增强羧酸酸性。 请写出该判断所依据的核心术语或规则。",
-      "answer": "诱导效应",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
-      ],
-      "explanation": "本题考查「诱导效应」。教材要点是：诱导效应沿 sigma 键传递并随距离迅速衰减，吸电子基增强羧酸酸性。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
-      "source": "current_chapter",
-      "sourceRef": {
-        "path": "content/chemistry/detail/5.1.md",
-        "label": "5.1 诱导效应"
-      }
-    },
-    {
-      "id": "q007",
-      "type": "fill_blank",
-      "difficulty": "medium",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「烷烃与环烷烃」中，乙烷交叉式构象较重叠式稳定，丁烷反交叉式比邻交叉式更稳定。 请写出该判断所依据的核心术语或规则。",
-      "answer": "烷烃构象",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
-      ],
-      "explanation": "本题考查「烷烃构象」。教材要点是：乙烷交叉式构象较重叠式稳定，丁烷反交叉式比邻交叉式更稳定。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
-      "source": "review",
-      "sourceChapter": "ch04",
-      "sourceRef": {
-        "path": "content/chemistry/detail/4.1.md",
-        "label": "4.1 烷烃构象"
-      }
-    },
-    {
-      "id": "q008",
-      "type": "essay",
-      "difficulty": "basic",
-      "label": "简答题",
-      "points": 20,
-      "total_points": 20,
-      "stem": "简答题：结合「电子效应」中「共轭效应」的内容，说明：给电子共轭和吸电子共轭会改变芳环电子云密度及邻、间、对位性质。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「共轭效应」，再说明教材依据：给电子共轭和吸电子共轭会改变芳环电子云密度及邻、间、对位性质。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
-      "scoring_criteria": [
-        "准确识别考查点「共轭效应」并写出适用对象（4分）",
-        "说明教材依据：给电子共轭和吸电子共轭会改变芳环电子云密度及邻、间、对位性质。（6分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（6分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（4分）"
-      ],
-      "explanation": "解析：本题不是只问结论，而是要求把「共轭效应」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：给电子共轭和吸电子共轭会改变芳环电子云密度及邻、间、对位性质。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
-      "source": "current_chapter",
-      "sourceRef": {
-        "path": "content/chemistry/detail/5.2.md",
-        "label": "5.2 共轭效应"
-      }
-    },
-    {
-      "id": "q009",
-      "type": "essay",
-      "difficulty": "medium",
-      "label": "机理/推断题",
-      "points": 20,
-      "total_points": 20,
-      "stem": "机理/推断题：结合「绪论与有机化学基础」中「有机化学的研究对象与价值」的内容，说明：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「有机化学的研究对象与价值」，再说明教材依据：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
-      "scoring_criteria": [
-        "准确识别考查点「有机化学的研究对象与价值」并写出适用对象（4分）",
-        "说明教材依据：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。（6分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（6分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（4分）"
-      ],
-      "explanation": "解析：本题不是只问结论，而是要求把「有机化学的研究对象与价值」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
-      "source": "review",
-      "sourceChapter": "ch01",
-      "sourceRef": {
-        "path": "content/chemistry/detail/1.1.md",
-        "label": "1.1 有机化学的研究对象与价值"
-      },
-      "manimVideoId": "quiz-chem-ch01-q009"
-    },
-    {
-      "id": "q010",
-      "type": "essay",
-      "difficulty": "hard",
-      "label": "合成/综合题",
-      "points": 25,
-      "total_points": 25,
-      "stem": "合成/综合题：结合「分子结构与分子间作用力」中「范德华力与氢键」的内容，说明：氢键具有方向性和饱和性，常显著升高沸点并改变溶解性。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「范德华力与氢键」，再说明教材依据：氢键具有方向性和饱和性，常显著升高沸点并改变溶解性。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
-      "scoring_criteria": [
-        "准确识别考查点「范德华力与氢键」并写出适用对象（5分）",
-        "说明教材依据：氢键具有方向性和饱和性，常显著升高沸点并改变溶解性。（7分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（7分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（6分）"
-      ],
-      "explanation": "解析：本题不是只问结论，而是要求把「范德华力与氢键」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：氢键具有方向性和饱和性，常显著升高沸点并改变溶解性。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
-      "source": "review",
-      "sourceChapter": "ch03",
-      "sourceRef": {
-        "path": "content/chemistry/detail/3.1.md",
-        "label": "3.1 范德华力与氢键"
-      },
-      "manimVideoId": "quiz-chem-ch03-q010"
-    }
+    {"id":"q001","type":"single_choice","difficulty":"basic","points":2,"stem":"诱导效应的特点是（　）。","options":["沿 σ 键传递，随距离迅速衰减","只在共轭体系中生效，是长程效应","沿 π 键传递，不随距离衰减","只影响物理性质，不影响化学性质"],"answer":0,"hint":"诱导效应通过 σ 键骨架传递，一般到第 3-4 个键就基本消失。","explanation":"**A 正确**：诱导效应源于电负性差异，通过 σ 键传递，每经过一个碳原子就大幅衰减。**B 错**：只在共轭体系中生效的是共轭效应。**C 错**：诱导效应沿 σ 键传递。**D 错**：诱导效应同时影响物理和化学性质（如酸性）。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.1.md","label":"5.1 诱导效应"}},
+    {"id":"q002","type":"single_choice","difficulty":"basic","points":2,"stem":"氯乙酸（ClCH₂COOH，pKa=2.86）的酸性比乙酸（CH₃COOH，pKa=4.76）强，主要原因是（　）。","options":["Cl 的吸电子诱导效应使羧酸根负离子更稳定","Cl 使分子量增大","Cl 增加了分子的极性","Cl 是给电子基团"],"answer":0,"hint":"Cl 电负性大→-I 效应→分散 COO⁻ 的负电荷。","explanation":"**A 正确**：Cl 的 -I 效应通过 σ 键将羧酸根的负电荷向自己方向拉，分散了负电荷密度，使共轭碱更稳定→酸性更强。**B/C 错**：分子量和极性不是酸性差异的主要原因。**D 错**：Cl 是吸电子基团（-I），不是给电子基。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.1.md","label":"5.1 诱导效应"}},
+    {"id":"q003","type":"single_choice","difficulty":"basic","points":2,"stem":"共轭效应与诱导效应的主要区别是（　）。","options":["共轭效应是长程效应，只在共轭体系中生效；诱导效应是短程效应，在任何分子中都存在","两者完全相同","共轭效应比诱导效应弱","诱导效应只在共轭体系中生效"],"answer":0,"hint":"共轭效应通过 π 电子离域传递，需要共轭体系。","explanation":"**A 正确**：共轭效应通过 π 电子离域传递，作用范围长，但必须在共轭体系中才能发挥作用。诱导效应通过 σ 键传递，短程衰减，但任何含极性键的分子中都存在。**B/C/D 错**。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.2.md","label":"5.2 共轭效应"}},
+    {"id":"q004","type":"single_choice","difficulty":"basic","points":2,"stem":"苯酚（pKa=10）的酸性比乙醇（pKa≈16）强约 10⁶ 倍，主要原因是（　）。","options":["苯氧基负离子中负电荷通过 p-π 共轭离域到苯环上","苯酚的分子量比乙醇大","苯环的吸电子诱导效应","乙醇不能解离出 H⁺"],"answer":0,"hint":"关键在于共轭碱的稳定性：苯氧基负离子能离域，乙氧基不能。","explanation":"**A 正确**：苯酚解离后，苯氧基负离子 C₆H₅O⁻ 中氧的孤对电子与苯环 π 体系形成 p-π 共轭，负电荷离域到苯环的邻位和对位，大大稳定了共轭碱。乙醇的乙基不是共轭体系，负电荷无法离域。**B/C/D 错**：分子量和诱导效应不是主要原因。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.2.md","label":"5.2 共轭效应"}},
+    {"id":"q005","type":"single_choice","difficulty":"basic","points":2,"stem":"碳正离子的稳定性顺序为（　）。","options":["3° > 2° > 1° > CH₃⁺","CH₃⁺ > 1° > 2° > 3°","1° > 2° > 3° > CH₃⁺","3° > 1° > 2° > CH₃⁺"],"answer":0,"hint":"超共轭越多越稳定：3° 有 9 个 C-H 超共轭。","explanation":"**A 正确**：碳正离子稳定性由 σ-p 超共轭决定。3° 有 9 个相邻 C-H 键参与超共轭，2° 有 6 个，1° 有 3 个，CH₃⁺ 没有。超共轭越多，正电荷分散越好，越稳定。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.3.md","label":"5.3 超共轭与碳中间体稳定性"}},
+    {"id":"q006","type":"single_choice","difficulty":"medium","points":2,"stem":"超共轭效应的本质是（　）。","options":["C-H σ 键与相邻的 p 轨道或 π 轨道发生部分重叠","两个 π 键之间的完全共轭","C-H 键的完全断裂","分子内氢键的形成"],"answer":0,"hint":"超共轭是 σ 键与相邻轨道的\"不完全\"重叠。","explanation":"**A 正确**：超共轭是 sp³ 碳上的 C-H σ 键因杂化角度与相邻 p 轨道（碳正离子/自由基）或 π 轨道（烯烃）发生部分重叠而产生的电子离域效应。重叠程度比完全共轭弱。**B 错**：超共轭不是完全共轭。**C/D 错**。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.3.md","label":"5.3 超共轭与碳中间体稳定性"}},
+    {"id":"q007","type":"single_choice","difficulty":"medium","points":2,"stem":"丙酮（CH₃COCH₃）的 α-氢具有酸性，能被强碱拔走。其原因是（　）。","options":["α-碳的 C-H σ 键与羰基 π 键形成 σ-π 超共轭，使 C-H 键极化","α-碳是 sp³ 杂化，酸性天然强","羰基的氧原子直接与 α-氢形成氢键","丙酮分子量小所以酸性强"],"answer":0,"hint":"σ-π 超共轭将羰基的吸电子效应传导到 C-H 键。","explanation":"**A 正确**：丙酮 α-碳的 C-H σ 键与相邻的 C=O π 键形成 σ-π 超共轭。羰基氧的吸电子共轭效应通过超共轭体系传导过来，使 C-H 键进一步极化，H 更容易被强碱拔走，生成碳负离子。**B/C/D 错**。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.3.md","label":"5.3 超共轭与碳中间体稳定性"}},
+    {"id":"q008","type":"single_choice","difficulty":"basic","points":2,"stem":"关于诱导效应中「氢为零点」的含义，下列说法正确的是（　）。","options":["以氢的诱导效应为参照零点，比氢更能拉电子的是 -I，比氢更能推电子的是 +I","氢的电负性最大","氢不能参与任何电子效应","氢永远是吸电子基"],"answer":0,"hint":"氢的 I 效应定义为零，是原点。","explanation":"**A 正确**：诱导效应以 H 为零点（I=0）。比 H 更能拉电子的基团（如 Cl、F）为 -I 基团；比 H 更能推电子的基团（如 CH₃）为 +I 基团。**B/C/D 错**。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.1.md","label":"5.1 诱导效应"}},
+    {"id":"q009","type":"single_choice","difficulty":"medium","points":2,"stem":"三氯乙酸（Cl₃CCOOH，pKa=0.64）的酸性比乙酸（pKa=4.76）强约 10⁴ 倍。三个氯原子使酸性增强的机制是（　）。","options":["三个 Cl 的 -I 效应叠加，大大稳定了羧酸根负离子","三个 Cl 增加了分子量","Cl 与羧基形成氢键","Cl 使碳链变长"],"answer":0,"hint":"-I 效应叠加：Cl 越多，吸电子效应越强，羧酸根越稳定。","explanation":"**A 正确**：每个 Cl 都有 -I 效应，三个 Cl 的吸电子效应叠加，将羧酸根的负电荷大幅分散，使共轭碱极其稳定。氯乙酸(pKa=2.86)→二氯乙酸(pKa=1.29)→三氯乙酸(pKa=0.64)，酸性递增。**B/C/D 错**。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.1.md","label":"5.1 诱导效应"}},
+    {"id":"q010","type":"single_choice","difficulty":"basic","points":2,"stem":"碳自由基的稳定性顺序为（　）。","options":["3° > 2° > 1° > CH₃·","CH₃· > 1° > 2° > 3°","1° > 2° > 3° > CH₃·","所有自由基稳定性相同"],"answer":0,"hint":"碳自由基与碳正离子遵循同一稳定性顺序（超共轭）。","explanation":"**A 正确**：碳自由基的稳定性也由超共轭决定（σ-p 超共轭，半满 p 轨道）。3° > 2° > 1° > CH₃·，与碳正离子的顺序一致。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.3.md","label":"5.3 超共轭与碳中间体稳定性"}},
+    {"id":"q011","type":"single_choice","difficulty":"basic","points":2,"stem":"sp³ 杂化碳原子的键角为（　）。","options":["109.5°","120°","180°","90°"],"answer":0,"hint":"sp³ 四面体，sp² 平面三角，sp 直线。","explanation":"**A 正确**：sp³ 杂化→正四面体→109.5°。","source":"review","sourceChapter":"ch01","sourceRef":{"path":"content/chemistry/detail/1.2.md","label":"1.2 共价键与杂化轨道"}},
+    {"id":"q012","type":"single_choice","difficulty":"basic","points":2,"stem":"共振极限式的本质是（　）。","options":["同一分子的不同电子排布表达方式","不同的独立分子","构造异构体","互变异构体"],"answer":0,"hint":"共振只改变电子排布，不改变原子骨架。","explanation":"**A 正确**：共振极限式是描述同一分子的不同 Lewis 结构式，只改变电子位置，原子骨架不变。","source":"review","sourceChapter":"ch01","sourceRef":{"path":"content/chemistry/detail/1.3.md","label":"1.3 酸碱理论与共振"}},
+    {"id":"q013","type":"single_choice","difficulty":"basic","points":2,"stem":"下列基团按顺序规则从大到小排列正确的是（　）。","options":["-C(CH₃)₃ > -CH(CH₃)₂ > -CH₂CH₃ > -CH₃","-CH₃ > -CH₂CH₃ > -CH(CH₃)₂ > -C(CH₃)₃","-CH(CH₃)₂ > -C(CH₃)₃ > -CH₃ > -CH₂CH₃","四个基团相同"],"answer":0,"hint":"逐级比较第二层：叔丁基连3个C，甲基连3个H。","explanation":"**A 正确**：第一层都是C，比较第二层：(C,C,C) > (C,C,H) > (C,H,H) > (H,H,H)。","source":"review","sourceChapter":"ch02","sourceRef":{"path":"content/chemistry/detail/2.2.md","label":"2.2 系统命名法与顺序规则"}},
+    {"id":"q014","type":"single_choice","difficulty":"basic","points":2,"stem":"季碳上（　）。","options":["连4个碳，没有氢","连3个碳，有1个氢","连2个碳，有2个氢","连4个氢"],"answer":0,"hint":"季碳四价全连碳。","explanation":"**A 正确**：季碳(4°)与4个碳相连，没有氢。","source":"review","sourceChapter":"ch04","sourceRef":{"path":"content/chemistry/detail/4.1.md","label":"4.1 烷烃的结构与构造/构型/构象"}},
+    {"id":"q015","type":"single_choice","difficulty":"medium","points":2,"stem":"丙烯与 HBr 加成遵循马氏规则，其本质原因是（　）。","options":["亲电加成的决速步生成更稳定的碳正离子","H⁺ 喜欢加到含 H 多的碳上","Br⁻ 的体积太大","双键的 π 键太强"],"answer":0,"hint":"马氏规则不是经验规律，是碳正离子稳定性的推论。","explanation":"**A 正确**：H⁺ 加到端基碳→正电荷在中间碳(2°)→比1°碳正离子更稳定(超共轭)→反应优先经由更稳定的中间体。","source":"review","sourceChapter":"ch06","sourceRef":{"path":"content/chemistry/detail/6.2.md","label":"6.2 亲电加成与马氏规则"}},
+    {"id":"q016","type":"single_choice","difficulty":"basic","points":2,"stem":"碳碳双键由（　）组成。","options":["一个 σ 键和一个 π 键","两个 σ 键","两个 π 键","三个 σ 键"],"answer":0,"hint":"双键 = 1σ + 1π。","explanation":"**A 正确**。","source":"review","sourceChapter":"ch01","sourceRef":{"path":"content/chemistry/detail/1.2.md","label":"1.2 共价键与杂化轨道"}},
+    {"id":"q017","type":"single_choice","difficulty":"medium","points":2,"stem":"苯甲醛（C₆H₅CHO）的醛基同时发挥诱导效应和共轭效应，两者的方向是（　）。","options":["都是吸电子效应，方向一致叠加增强","诱导吸电子，共轭给电子","都是给电子效应","方向相反互相抵消"],"answer":0,"hint":"醛基的 -I 和 -C 都是吸电子的。","explanation":"**A 正确**：醛基 -CHO 中 C=O 的氧电负性大→-I 效应（吸电子）。同时 C=O 的 π 键与苯环共轭→-C 效应（吸电子共轭）。两者方向一致，叠加增强，使苯甲醛的苯环电子密度降低。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.2.md","label":"5.2 共轭效应"}},
+    {"id":"q018","type":"single_choice","difficulty":"basic","points":2,"stem":"乙烷的交叉式构象比重叠式构象稳定，主要原因是（　）。","options":["交叉式中相邻 C-H 键呈交错排列，扭转张力最小","交叉式的键角更大","重叠式有氢键","交叉式有共轭效应"],"answer":0,"hint":"交叉式=全部 staggered，无 eclipsing interaction。","explanation":"**A 正确**：交叉式中相邻碳上的 C-H 键完全错开（60° 二面角），扭转张力最小。重叠式中 C-H 键正对（0° 二面角），扭转张力最大。","source":"review","sourceChapter":"ch04","sourceRef":{"path":"content/chemistry/detail/4.1.md","label":"4.1 烷烃的结构与构造/构型/构象"}},
+    {"id":"q019","type":"single_choice","difficulty":"basic","points":2,"stem":"Lewis 酸是（　）。","options":["电子对接受体","电子对给予体","质子给予体","质子接受体"],"answer":0,"hint":"Lewis 酸接受电子对，Lewis 碱给予电子对。","explanation":"**A 正确**：Lewis 酸定义为电子对接受体（如 BF₃、AlCl₃）。","source":"review","sourceChapter":"ch01","sourceRef":{"path":"content/chemistry/detail/1.3.md","label":"1.3 酸碱理论与共振"}},
+    {"id":"q020","type":"single_choice","difficulty":"medium","points":2,"stem":"碳负离子的稳定性顺序与碳正离子相反，其原因是（　）。","options":["碳负离子构型不同且给电子基会往已经电子过剩的碳上再推电子","碳负离子没有电子","碳负离子的电荷为零","碳负离子和碳正离子完全一样"],"answer":0,"hint":"碳负离子是 sp³ 构型（无超共轭），给电子基使负电荷更集中。","explanation":"**A 正确**：碳负离子没有变成 sp² 平面构型，形不成 σ-p 超共轭。而且给电子基（如甲基）会往已经电子过剩的碳上再推电子，更不稳定。所以稳定性：CH₃⁻ > 1° > 2° > 3°。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.3.md","label":"5.3 超共轭与碳中间体稳定性"}},
+    {"id":"q021","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"诱导效应的源头是________差异，传递的通道是________键骨架，特征是随距离迅速________。","answer":"电负性，σ（或 sigma），衰减","hint":"三要素：源头→通道→特征。","scoring_criteria":["三个空全部正确（2分）；错一个扣0.5分"],"explanation":"诱导效应的本质：电负性差异→σ键电子偏移→随距离衰减。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.1.md","label":"5.1 诱导效应"}},
+    {"id":"q022","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"乙酸的 pKa = 4.76，氯乙酸的 pKa = 2.86。pKa 越小酸性越________。氯乙酸酸性更强的原因是 Cl 的________效应。","answer":"强，吸电子诱导（或 -I）","hint":"pKa 小=酸性强。Cl 吸电子→稳定羧酸根。","scoring_criteria":["第一空填\"强\"（1分）","第二空填\"吸电子诱导\"或\"-I\"（1分）"],"explanation":"pKa 越小酸性越强。Cl 的 -I 效应分散羧酸根负电荷，使共轭碱更稳定。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.1.md","label":"5.1 诱导效应"}},
+    {"id":"q023","type":"fill_blank","difficulty":"medium","label":"填空/命名题","points":2,"total_points":2,"stem":"共轭效应发挥作用的前提是基团必须连接在________上。诱导效应在任何情况下都存在，而共轭效应只在________中才生效。","answer":"共轭体系，共轭体系","hint":"共轭效应的「铁打前提」。","scoring_criteria":["两空都填\"共轭体系\"（2分）；错一空扣1分"],"explanation":"共轭效应必须在共轭体系中才能发挥作用。连在孤立烷基链上的基团不能产生共轭效应。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.2.md","label":"5.2 共轭效应"}},
+    {"id":"q024","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"碳正离子稳定性：________° > ________° > ________° > CH₃⁺。","answer":"3（或三），2（或二），1（或一）","hint":"超共轭越多越稳定。","scoring_criteria":["三个空全部正确（2分）；错一个扣0.5分"],"explanation":"3°有9个C-H超共轭，2°有6个，1°有3个，CH₃⁺没有。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.3.md","label":"5.3 超共轭与碳中间体稳定性"}},
+    {"id":"q025","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"超共轭效应是 sp³ 碳上的 C-H ________键与相邻的 p 轨道或 π 轨道发生部分________而产生的电子离域效应。","answer":"σ（或 sigma），重叠","hint":"超共轭 = σ键与相邻轨道的不完全重叠。","scoring_criteria":["第一空填\"σ\"或\"sigma\"（1分）","第二空填\"重叠\"（1分）"],"explanation":"超共轭是 C-H σ 键与相邻空/半满 p 轨道或 π 轨道的部分重叠，重叠程度比完全共轭弱。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.3.md","label":"5.3 超共轭与碳中间体稳定性"}},
+    {"id":"q026","type":"fill_blank","difficulty":"medium","label":"填空/命名题","points":2,"total_points":2,"stem":"苯酚的 pKa = 10，甲醇的 pKa ≈ 17。苯酚酸性更强的原因是苯氧基负离子中负电荷可通过________效应离域到苯环上，而甲醇的甲基不是________体系。","answer":"p-π 共轭（或共轭），共轭","hint":"苯环是共轭体系，甲基不是。","scoring_criteria":["第一空填\"p-π 共轭\"或\"共轭\"（1分）","第二空填\"共轭\"（1分）"],"explanation":"苯氧基负离子的负电荷通过 p-π 共轭离域到苯环，大大稳定。乙氧基负离子的负电荷无法离域。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.2.md","label":"5.2 共轭效应"}},
+    {"id":"q027","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"sp 杂化碳原子的空间构型为________，键角为________。","answer":"直线形，180°","hint":"sp 杂化只有2个杂化轨道。","scoring_criteria":["填\"直线形\"（1分）","填\"180°\"（1分）"],"explanation":"sp→2个杂化轨道→直线形→180°。","source":"review","sourceChapter":"ch01","sourceRef":{"path":"content/chemistry/detail/1.2.md","label":"1.2 共价键与杂化轨道"}},
+    {"id":"q028","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"烷烃通式为________，单环烷烃通式为________。","answer":"CₙH₂ₙ₊₂，CₙH₂ₙ","hint":"开链饱和→2n+2个H；成环少2个H。","scoring_criteria":["两空各1分"],"explanation":"烷烃 CₙH₂ₙ₊₂（饱和），环烷烃 CₙH₂ₙ（成环失去2个H）。","source":"review","sourceChapter":"ch04","sourceRef":{"path":"content/chemistry/detail/4.1.md","label":"4.1 烷烃的结构与构造/构型/构象"}},
+    {"id":"q029","type":"fill_blank","difficulty":"medium","label":"填空/命名题","points":2,"total_points":2,"stem":"丙酮（CH₃COCH₃）的 α-氢有酸性，原因是 α-碳的 C-H σ 键与羰基 π 键形成________超共轭。","answer":"σ-π","hint":"σ键与π键之间的超共轭。","scoring_criteria":["填\"σ-π\"或\"sigma-pi\"（2分）"],"explanation":"σ-π超共轭将羰基的吸电子效应传导到α-C-H键，使H更容易被拔走。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.3.md","label":"5.3 超共轭与碳中间体稳定性"}},
+    {"id":"q030","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"命名：CH₃CH₂CH(CH₃)₂ 的系统名称是________。","answer":"2-甲基丁烷","hint":"选最长链4C（丁烷），甲基在2号位。","scoring_criteria":["写出\"2-甲基丁烷\"（2分）"],"explanation":"最长链4C→丁烷，甲基在2号碳→2-甲基丁烷。","source":"review","sourceChapter":"ch02","sourceRef":{"path":"content/chemistry/detail/2.2.md","label":"2.2 系统命名法与顺序规则"}},
+    {"id":"q031","type":"essay","difficulty":"medium","label":"简答题","points":10,"total_points":10,"stem":"以苯酚（pKa=10）和乙醇（pKa≈16）为例，从共轭效应的角度解释为什么苯酚的酸性远强于乙醇。","answer":"参考答案：\n\n**1. 比较对象：**两者解离后的共轭碱分别是苯氧基负离子 C₆H₅O⁻ 和乙氧基负离子 CH₃CH₂O⁻。\n\n**2. 苯氧基负离子的稳定化：**氧的孤对电子占据一个 p 轨道，与苯环的 π 体系平行重叠，形成 p-π 共轭。负电荷通过共轭离域到苯环的邻位和对位，大大分散了负电荷密度，使苯氧基负离子高度稳定。\n\n**3. 乙氧基负离子的不稳定：**乙基不是共轭体系，负电荷完全集中在氧原子上，无法离域分散。\n\n**4. 结论：**共轭碱越稳定→解离平衡越偏向解离→酸性越强。苯氧基因 p-π 共轭而远比乙氧基稳定，因此苯酚酸性远强于乙醇（差 10⁶ 倍）。\n\n**关键概念：**共轭效应必须在共轭体系上才能发挥作用。苯环是共轭体系，烷基不是。","hint":"核心逻辑链：解离→共轭碱→共轭碱能否离域→稳定性差异→酸性差异。","scoring_criteria":["写出两者的解离反应和共轭碱（2分）","说明苯氧基的 p-π 共轭离域机制（3分）","说明乙氧基无法离域（2分）","得出结论（2分）","指出共轭效应必须在共轭体系上（1分）"],"explanation":"这是电子效应应用的经典考题，几乎每年考研都会出现。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.2.md","label":"5.2 共轭效应"}},
+    {"id":"q032","type":"essay","difficulty":"basic","label":"简答题","points":10,"total_points":10,"stem":"简述碳正离子、碳自由基和碳负离子的稳定性顺序，并说明各自的决定因素。","answer":"参考答案：\n\n**碳正离子稳定性：**3° > 2° > 1° > CH₃⁺\n- 决定因素：σ-p 超共轭。相邻 C-H σ 键越多，与空 p 轨道的超共轭越强，正电荷分散越好。\n\n**碳自由基稳定性：**3° > 2° > 1° > CH₃·\n- 决定因素：σ-p 超共轭。与碳正离子相同，只是 p 轨道是半满而非空的。\n\n**碳负离子稳定性：**CH₃⁻ > 1° > 2° > 3°（与前两者相反）\n- 决定因素：①碳负离子保持 sp³ 构型，形不成 σ-p 超共轭；②给电子基往已经电子过剩的碳上再推电子，更不稳定。\n\n**总结：**碳正离子和碳自由基的稳定性由超共轭决定（越多越稳定）；碳负离子的稳定性由电子效应反向决定（给电子基使其更不稳定）。","hint":"三种中间体的稳定性顺序是有机化学的核心知识。","scoring_criteria":["正确给出碳正离子稳定性顺序和原因（3分）","正确给出碳自由基稳定性顺序和原因（3分）","正确给出碳负离子稳定性顺序和原因（3分）","说明三者的异同（1分）"],"explanation":"三种碳中间体的稳定性是理解亲电加成、自由基反应、消除反应的基础。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.3.md","label":"5.3 超共轭与碳中间体稳定性"}},
+    {"id":"q033","type":"essay","difficulty":"medium","label":"合成/推断题","points":10,"total_points":10,"stem":"比较下列化合物的酸性强弱（从强到弱排列），并用诱导效应和共轭效应解释：\n三氯乙酸（Cl₃CCOOH）、乙酸（CH₃COOH）、苯酚（C₆H₅OH）、乙醇（CH₃CH₂OH）","answer":"参考答案：\n\n**酸性排序：**三氯乙酸 > 乙酸 > 苯酚 > 乙醇\n\n**具体 pKa 值：**\n- 三氯乙酸 pKa ≈ 0.64\n- 乙酸 pKa = 4.76\n- 苯酚 pKa = 10\n- 乙醇 pKa ≈ 16\n\n**解释：**\n\n**1. 羧酸 vs 酚 vs 醇：**\n羧酸解离后生成的羧酸根负离子（RCOO⁻），负电荷在两个等价氧之间共振离域，最稳定→酸性最强。苯酚的苯氧基负离子有 p-π 共轭离域，较稳定→酸性次之。醇的烷氧基负离子无法离域，最不稳定→酸性最弱。\n\n**2. 三氯乙酸 vs 乙酸：**\n两者都是羧酸，共轭碱都是羧酸根。区别在于取代基：三个 Cl 的强 -I 效应叠加，将羧酸根的负电荷大幅分散，使三氯乙酸的羧酸根比乙酸的更稳定→酸性更强。\n\n**3. 综合分析：**\n共轭碱的稳定性决定了酸性强弱。离域方式：共振离域（羧酸根）> p-π 共轭（苯氧基）> 无离域（烷氧基）。在同类化合物中，-I 效应越强，共轭碱越稳定。","hint":"先按共轭碱的离域方式分类，再在同一类中用诱导效应比较。","scoring_criteria":["正确排列酸性顺序（2分）","解释羧酸比酚和醇酸性强的原因（共振离域）（3分）","解释酚比醇酸性强的原因（p-π 共轭）（2分）","解释三氯乙酸比乙酸酸性强的原因（-I 效应叠加）（3分）"],"explanation":"本题综合考查诱导效应和共轭效应的应用，是考研高频考点。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.1.md","label":"5.1 诱导效应"}},
+    {"id":"q034","type":"essay","difficulty":"hard","label":"机理/推断题","points":10,"total_points":10,"stem":"解释丙酮（CH₃COCH₃）的 α-氢具有酸性（pKa ≈ 20）而丙烷（CH₃CH₂CH₃）的 C-H 键几乎没有酸性（pKa ≈ 50）的原因。","answer":"参考答案：\n\n**关键区别：**丙酮有羰基 C=O，丙烷没有。\n\n**丙酮 α-氢酸性的解释：**\n\n**1. σ-π 超共轭：**丙酮 α-碳的 C-H σ 键与相邻的 C=O π 键形成 σ-π 超共轭。羰基氧的吸电子共轭效应（-C）通过超共轭体系传导到 α-C-H 键，使 C-H 键进一步极化（C 带更多正电，H 更容易以 H⁺ 离去）。\n\n**2. 共轭碱的稳定性：**丙酮失去 α-氢后生成的碳负离子（烯醇负离子），负电荷可以通过共振离域到羰基氧上：CH₂⁻-C(=O)-CH₃ ↔ CH₂=C(-O⁻)-CH₃。这种共振离域大大稳定了共轭碱。\n\n**3. 丙烷为什么没有酸性：**丙烷没有羰基，C-H 键没有 σ-π 超共轭的极化。失去氢后生成的碳负离子没有共振稳定化途径，极不稳定。因此丙烷的 C-H 酸性极弱（pKa ≈ 50）。\n\n**总结：**丙酮 α-氢的酸性来自两个因素：①σ-π 超共轭使 C-H 键极化；②生成的碳负离子因共振离域到羰基氧上而稳定。","hint":"从两个角度分析：①C-H 键为什么更容易断裂；②生成的碳负离子为什么更稳定。","scoring_criteria":["说明 σ-π 超共轭使 α-C-H 键极化（3分）","说明碳负离子的共振离域稳定化（烯醇负离子）（4分）","说明丙烷没有这些稳定化因素（2分）","综合结论（1分）"],"explanation":"丙酮 α-氢的酸性是理解羟醛缩合、克莱森缩合等反应的基础。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/5.3.md","label":"5.3 超共轭与碳中间体稳定性"}}
   ],
-  "summary": {
-    "totalQuestions": 10,
-    "byType": {
-      "single_choice": 4,
-      "fill_blank": 3,
-      "essay": 3
-    },
-    "bySource": {
-      "current_chapter": 5,
-      "review": 5
-    },
-    "byDifficulty": {
-      "basic": 7,
-      "medium": 2,
-      "hard": 1
-    }
-  }
+  "summary": {"totalQuestions":34,"byType":{"single_choice":20,"fill_blank":10,"essay":4},"bySource":{"current_chapter":17,"review":17},"byDifficulty":{"basic":22,"medium":8,"hard":4}}
 }

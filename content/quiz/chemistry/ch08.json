@@ -1,255 +1,43 @@
 {
   "subjectId": "chemistry",
   "chapterId": "ch08",
-  "generatedAt": "2026-06-21",
-  "examConfig": {
-    "source": "docs/refer/考试题型分布.md",
-    "totalPoints": 100,
-    "timeLimit": 50
-  },
+  "generatedAt": "2026-06-27",
+  "examConfig": { "source": "docs/refer/考试题型分布.md", "totalPoints": 100, "timeLimit": 50 },
   "questions": [
-    {
-      "id": "q001",
-      "type": "single_choice",
-      "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“芳香化合物”中「芳香性与休克尔规则」的考查，下列说法正确的是（　）。",
-      "options": [
-        "芳香性要求共平面、闭环连续共轭并符合 4n+2 pi 电子规则。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
-      ],
-      "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：芳香性要求共平面、闭环连续共轭并符合 4n+2 pi 电子规则。 这与本节详解对「芳香性与休克尔规则」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "current_chapter",
-      "sourceRef": {
-        "path": "content/chemistry/detail/8.1.md",
-        "label": "8.1 芳香性与休克尔规则"
-      }
-    },
-    {
-      "id": "q002",
-      "type": "single_choice",
-      "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“芳香化合物”中「亲电取代与傅克反应」的考查，下列说法正确的是（　）。",
-      "options": [
-        "芳香亲电取代经 sigma 络合物中间体，傅克酰基化不发生碳正离子重排。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
-      ],
-      "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：芳香亲电取代经 sigma 络合物中间体，傅克酰基化不发生碳正离子重排。 这与本节详解对「亲电取代与傅克反应」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "current_chapter",
-      "sourceRef": {
-        "path": "content/chemistry/detail/8.2.md",
-        "label": "8.2 亲电取代与傅克反应"
-      }
-    },
-    {
-      "id": "q003",
-      "type": "single_choice",
-      "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“炔烃与共轭二烯烃”中「共轭二烯与 Diels-Alder」的考查，下列说法正确的是（　）。",
-      "options": [
-        "共轭二烯可发生 1,2-与 1,4-加成，Diels-Alder 是协同环加成。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
-      ],
-      "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：共轭二烯可发生 1,2-与 1,4-加成，Diels-Alder 是协同环加成。 这与本节详解对「共轭二烯与 Diels-Alder」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "review",
-      "sourceChapter": "ch07",
-      "sourceRef": {
-        "path": "content/chemistry/detail/7.3.md",
-        "label": "7.3 共轭二烯与 Diels-Alder"
-      }
-    },
-    {
-      "id": "q004",
-      "type": "single_choice",
-      "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“炔烃与共轭二烯烃”中「炔烃氧化与有机金属」的考查，下列说法正确的是（　）。",
-      "options": [
-        "炔基金属试剂可作为亲核碳源构筑碳碳键。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
-      ],
-      "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：炔基金属试剂可作为亲核碳源构筑碳碳键。 这与本节详解对「炔烃氧化与有机金属」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "review",
-      "sourceChapter": "ch07",
-      "sourceRef": {
-        "path": "content/chemistry/detail/7.2.md",
-        "label": "7.2 炔烃氧化与有机金属"
-      }
-    },
-    {
-      "id": "q005",
-      "type": "fill_blank",
-      "difficulty": "basic",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「芳香化合物」中，给电子基多为邻对位定位，硝基等强吸电子基多为间位定位。 请写出该判断所依据的核心术语或规则。",
-      "answer": "定位效应",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
-      ],
-      "explanation": "本题考查「定位效应」。教材要点是：给电子基多为邻对位定位，硝基等强吸电子基多为间位定位。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
-      "source": "current_chapter",
-      "sourceRef": {
-        "path": "content/chemistry/detail/8.3.md",
-        "label": "8.3 定位效应"
-      }
-    },
-    {
-      "id": "q006",
-      "type": "fill_blank",
-      "difficulty": "basic",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「芳香化合物」中，芳香性要求共平面、闭环连续共轭并符合 4n+2 pi 电子规则。 请写出该判断所依据的核心术语或规则。",
-      "answer": "芳香性与休克尔规则",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
-      ],
-      "explanation": "本题考查「芳香性与休克尔规则」。教材要点是：芳香性要求共平面、闭环连续共轭并符合 4n+2 pi 电子规则。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
-      "source": "current_chapter",
-      "sourceRef": {
-        "path": "content/chemistry/detail/8.1.md",
-        "label": "8.1 芳香性与休克尔规则"
-      }
-    },
-    {
-      "id": "q007",
-      "type": "fill_blank",
-      "difficulty": "medium",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「炔烃与共轭二烯烃」中，端炔氢具有较强酸性，可与银氨或亚铜试剂形成炔化物。 请写出该判断所依据的核心术语或规则。",
-      "answer": "炔烃酸性与加成",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
-      ],
-      "explanation": "本题考查「炔烃酸性与加成」。教材要点是：端炔氢具有较强酸性，可与银氨或亚铜试剂形成炔化物。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
-      "source": "review",
-      "sourceChapter": "ch07",
-      "sourceRef": {
-        "path": "content/chemistry/detail/7.1.md",
-        "label": "7.1 炔烃酸性与加成"
-      }
-    },
-    {
-      "id": "q008",
-      "type": "essay",
-      "difficulty": "basic",
-      "label": "简答题",
-      "points": 20,
-      "total_points": 20,
-      "stem": "简答题：结合「芳香化合物」中「亲电取代与傅克反应」的内容，说明：芳香亲电取代经 sigma 络合物中间体，傅克酰基化不发生碳正离子重排。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「亲电取代与傅克反应」，再说明教材依据：芳香亲电取代经 sigma 络合物中间体，傅克酰基化不发生碳正离子重排。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
-      "scoring_criteria": [
-        "准确识别考查点「亲电取代与傅克反应」并写出适用对象（4分）",
-        "说明教材依据：芳香亲电取代经 sigma 络合物中间体，傅克酰基化不发生碳正离子重排。（6分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（6分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（4分）"
-      ],
-      "explanation": "解析：本题不是只问结论，而是要求把「亲电取代与傅克反应」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：芳香亲电取代经 sigma 络合物中间体，傅克酰基化不发生碳正离子重排。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
-      "source": "current_chapter",
-      "sourceRef": {
-        "path": "content/chemistry/detail/8.2.md",
-        "label": "8.2 亲电取代与傅克反应"
-      }
-    },
-    {
-      "id": "q009",
-      "type": "essay",
-      "difficulty": "medium",
-      "label": "机理/推断题",
-      "points": 20,
-      "total_points": 20,
-      "stem": "机理/推断题：结合「绪论与有机化学基础」中「有机化学的研究对象与价值」的内容，说明：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「有机化学的研究对象与价值」，再说明教材依据：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
-      "scoring_criteria": [
-        "准确识别考查点「有机化学的研究对象与价值」并写出适用对象（4分）",
-        "说明教材依据：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。（6分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（6分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（4分）"
-      ],
-      "explanation": "解析：本题不是只问结论，而是要求把「有机化学的研究对象与价值」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
-      "source": "review",
-      "sourceChapter": "ch01",
-      "sourceRef": {
-        "path": "content/chemistry/detail/1.1.md",
-        "label": "1.1 有机化学的研究对象与价值"
-      },
-      "manimVideoId": "quiz-chem-ch01-q009"
-    },
-    {
-      "id": "q010",
-      "type": "essay",
-      "difficulty": "hard",
-      "label": "合成/综合题",
-      "points": 25,
-      "total_points": 25,
-      "stem": "合成/综合题：结合「烷烃与环烷烃」中「环己烷椅式构象」的内容，说明：环己烷椅式中大取代基优先占据 e 键位置以减小 1,3-二轴相互作用。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「环己烷椅式构象」，再说明教材依据：环己烷椅式中大取代基优先占据 e 键位置以减小 1,3-二轴相互作用。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
-      "scoring_criteria": [
-        "准确识别考查点「环己烷椅式构象」并写出适用对象（5分）",
-        "说明教材依据：环己烷椅式中大取代基优先占据 e 键位置以减小 1,3-二轴相互作用。（7分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（7分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（6分）"
-      ],
-      "explanation": "解析：本题不是只问结论，而是要求把「环己烷椅式构象」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：环己烷椅式中大取代基优先占据 e 键位置以减小 1,3-二轴相互作用。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
-      "source": "review",
-      "sourceChapter": "ch04",
-      "sourceRef": {
-        "path": "content/chemistry/detail/4.2.md",
-        "label": "4.2 环己烷椅式构象"
-      },
-      "manimVideoId": "quiz-chem-ch04-q010"
-    }
+    {"id":"q001","type":"single_choice","difficulty":"basic","points":2,"stem":"判断一个分子是否具有手性的根本依据是（　）。","options":["分子与其镜像不可重叠","分子含有手性碳原子","分子没有对称面和对称中心","分子能旋转偏振光"],"answer":0,"hint":"手性的定义是分子与镜像不可重叠。对称因素是判断方法，不是定义。","explanation":"**A 正确**：手性的定义——分子与其镜像不可重叠。**B/C 是判断方法**：含手性碳、无对称面/中心是常见判断依据，但不是定义本身（有例外：含手性碳但有对称面→内消旋体，无手性）。**D 错**：旋光性是手性的结果，不是判断依据。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.1.md","label":"8.1 对称性与手性"}},
+    {"id":"q002","type":"single_choice","difficulty":"basic","points":2,"stem":"内消旋体的特点是（　）。","options":["含有手性碳原子但因分子内有对称面而不旋光","不含手性碳原子","是对映异构体的等量混合物","分子与镜像不可重叠"],"answer":0,"hint":"内消旋体有手性碳但有对称面→内部抵消→不旋光。","explanation":"**A 正确**：内消旋体含有手性碳，但分子内存在对称面，使分子的两半互为镜像，旋光性内部抵消，整体不旋光。**B 错**：内消旋体含手性碳。**C 错**：等量混合物是外消旋体。**D 错**：内消旋体与其镜像是同一分子（可重叠）。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.2.md","label":"8.2 对映异构、非对映、内消旋与外消旋"}},
+    {"id":"q003","type":"single_choice","difficulty":"basic","points":2,"stem":"只含一个手性碳原子的分子一定是（　）。","options":["手性分子","非手性分子","内消旋体","外消旋体"],"answer":0,"hint":"单手性碳定理：只有一个手性碳→一定有手性。","explanation":"**A 正确**：只含一个手性碳的分子不可能有对称面或对称中心（因为四个取代基不同），因此一定是手性分子。**B/C/D 错**：内消旋体需要至少两个相同手性碳。外消旋体是混合物，不是分子。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.2.md","label":"8.2 对映异构、非对映、内消旋与外消旋"}},
+    {"id":"q004","type":"single_choice","difficulty":"basic","points":2,"stem":"外消旋体是（　）。","options":["一对对映异构体的等量混合物","一种纯净物","不含手性碳的化合物","内消旋体的一种"],"answer":0,"hint":"外消旋体 = (R) + (S) 等量混合 = 不旋光。","explanation":"**A 正确**：外消旋体是一对对映异构体的等量（1:1）混合物。由于两种对映体的旋光度相等方向相反，整体不旋光。**B 错**：外消旋体是混合物，不是纯净物。**C 错**：外消旋体含手性碳。**D 错**：外消旋体和内消旋体是不同的概念。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.2.md","label":"8.2 对映异构、非对映、内消旋与外消旋"}},
+    {"id":"q005","type":"single_choice","difficulty":"basic","points":2,"stem":"Fischer 投影式的书写规则中，碳链应（　）。","options":["竖直放置，竖键朝里（向纸面后方），横键朝外（向纸面前方）","水平放置，竖键朝外","任意方向放置","竖直放置，竖键朝外，横键朝里"],"answer":0,"hint":"Fischer 投影式的核心约定：碳链竖直，横前竖后。","explanation":"**A 正确**：Fischer 投影式三条原则：①碳链竖直（编号最小的碳在上）；②竖键朝里（向纸面后方）；③横键朝外（向纸面前方）。交叉点为手性碳。**B/C/D 错**：方向约定是 Fischer 投影式的基础，不能随意改变。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.3.md","label":"8.3 Fischer 投影式与 R/S 绝对构型"}},
+    {"id":"q006","type":"single_choice","difficulty":"medium","points":2,"stem":"Fischer 投影式有两条旋转禁令：不能在纸面内旋转 90°，不能向纸面外翻转 180°。违反这些规则会导致（　）。","options":["得到对映体（构型改变）","得到同一分子","得到非对映体","得到内消旋体"],"answer":0,"hint":"旋转 90° 或翻转 180° 会使横竖键互换→构型改变→变成对映体。","explanation":"**A 正确**：Fischer 投影式中横键朝外、竖键朝里。旋转 90° 后横竖互换，原来朝外的变成朝里→构型翻转→变成对映体。翻转 180° 同理。**B 错**：不是同一分子。**C/D 错**：不是非对映体或内消旋体。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.3.md","label":"8.3 Fischer 投影式与 R/S 绝对构型"}},
+    {"id":"q007","type":"single_choice","difficulty":"medium","points":2,"stem":"在 R/S 构型标记中，当最小基团位于 Fischer 投影式的横键（朝外）时，判断 R/S 的方法是（　）。","options":["先按正常顺序判断，然后取反转（S 变 R，R 变 S）","直接按从大到小的顺序判断","无法判断 R/S","最小基团永远在竖键上"],"answer":0,"hint":"最小基团应在后方（竖键）才能直接判断。如果在前方（横键），结果需反转。","explanation":"**A 正确**：R/S 判断的前提是：将最小基团放在远离观察者的方向（后方）。如果最小基团在 Fischer 投影式的横键（朝外/前方），则先按其余三个基团的顺序判断，然后取反转。**B 错**：直接判断会得到错误结果。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.3.md","label":"8.3 Fischer 投影式与 R/S 绝对构型"}},
+    {"id":"q008","type":"single_choice","difficulty":"basic","points":2,"stem":"对映异构体之间的关系是（　）。","options":["互为镜像，不可重叠","互为构造异构体","化学性质完全不同","物理性质完全相同"],"answer":0,"hint":"对映异构体的定义：互为镜像且不可重叠的立体异构体。","explanation":"**A 正确**：对映异构体互为镜像、不可重叠。**B 错**：它们是立体异构体，不是构造异构体。**C 错**：对映体的化学性质在非手性环境中相同。**D 错**：旋光方向不同，其他物理性质相同。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.2.md","label":"8.2 对映异构、非对映、内消旋与外消旋"}},
+    {"id":"q009","type":"single_choice","difficulty":"medium","points":2,"stem":"酒石酸（2,3-二羟基丁二酸）有 2 个相同的手性碳。它的立体异构体数目是（　）。","options":["3 个：(R,R)、(S,S) 和内消旋体 (R,S)","4 个：(R,R)、(S,S)、(R,S)、(S,R)","2 个：(R,R) 和 (S,S)","1 个：只有内消旋体"],"answer":0,"hint":"两个相同手性碳→(R,S) 和 (S,R) 是同一分子（内消旋体）。","explanation":"**A 正确**：酒石酸有 2 个相同的手性碳（都是 -CHOH-COOH）。理论上 2²=4 种，但 (R,S) 和 (S,R) 有对称面，是同一分子（内消旋体 meso）。所以实际有 3 种：(R,R)、(S,S)（一对对映体）和 meso-(R,S)。**B 错**：(R,S) 和 (S,R) 是同一分子。**C/D 错**。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.2.md","label":"8.2 对映异构、非对映、内消旋与外消旋"}},
+    {"id":"q010","type":"single_choice","difficulty":"basic","points":2,"stem":"手性碳原子的定义是（　）。","options":["连接四个互不相同的原子或基团的碳原子","连接四个氢原子的碳原子","含有双键的碳原子","位于分子末端的碳原子"],"answer":0,"hint":"手性碳 = 4 个不同的取代基。","explanation":"**A 正确**：手性碳（又称不对称碳）是连接四个互不相同的原子或基团的碳原子，通常用 * 标记。**B 错**：CH₄ 的碳连 4 个相同的 H，不是手性碳。**C/D 错**。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.1.md","label":"8.1 对称性与手性"}},
+    {"id":"q011","type":"single_choice","difficulty":"basic","points":2,"stem":"sp³ 杂化碳原子的键角为（　）。","options":["109.5°","120°","180°","90°"],"answer":0,"hint":"sp³ 四面体。","explanation":"**A 正确**。","source":"review","sourceChapter":"ch01","sourceRef":{"path":"content/chemistry/detail/1.2.md","label":"1.2 共价键与杂化轨道"}},
+    {"id":"q012","type":"single_choice","difficulty":"basic","points":2,"stem":"碳正离子的稳定性顺序为（　）。","options":["3° > 2° > 1° > CH₃⁺","CH₃⁺ > 1° > 2° > 3°","1° > 2° > 3°","所有碳正离子稳定性相同"],"answer":0,"hint":"超共轭决定稳定性。","explanation":"**A 正确**：超共轭越多越稳定。","source":"review","sourceChapter":"ch05","sourceRef":{"path":"content/chemistry/detail/5.3.md","label":"5.3 超共轭与碳中间体稳定性"}},
+    {"id":"q013","type":"single_choice","difficulty":"basic","points":2,"stem":"丙烯与 HBr 加成的主要产物是（　）。","options":["2-溴丙烷","1-溴丙烷","1,2-二溴丙烷","丙烷"],"answer":0,"hint":"马氏规则。","explanation":"**A 正确**：H⁺ 加到端基碳→2°碳正离子→2-溴丙烷。","source":"review","sourceChapter":"ch06","sourceRef":{"path":"content/chemistry/detail/6.2.md","label":"6.2 亲电加成与马氏规则"}},
+    {"id":"q014","type":"single_choice","difficulty":"basic","points":2,"stem":"诱导效应的特点是（　）。","options":["沿 σ 键传递，短程衰减","只在共轭体系中生效","沿 π 键传递，不衰减","只影响物理性质"],"answer":0,"hint":"诱导效应通过 σ 键传递。","explanation":"**A 正确**：诱导效应是短程效应，通过 σ 键传递。","source":"review","sourceChapter":"ch05","sourceRef":{"path":"content/chemistry/detail/5.1.md","label":"5.1 诱导效应"}},
+    {"id":"q015","type":"single_choice","difficulty":"medium","points":2,"stem":"休克尔规则判断芳香性的条件是（　）。","options":["平面、闭环共轭、π 电子数为 4n+2","含有苯环","分子量大于 100","含有双键"],"answer":0,"hint":"三条：平面+闭环+4n+2。","explanation":"**A 正确**：休克尔规则——平面的闭环共轭体系，π 电子数符合 4n+2（n=0,1,2,3...→2,6,10,14...）即有芳香性。","source":"review","sourceChapter":"ch07","sourceRef":{"path":"content/chemistry/detail/7.1.md","label":"7.1 芳香性与休克尔规则"}},
+    {"id":"q016","type":"single_choice","difficulty":"basic","points":2,"stem":"季碳上（　）。","options":["连 4 个碳，没有氢","连 3 个碳，有 1 个氢","连 2 个碳，有 2 个氢","连 4 个氢"],"answer":0,"hint":"季碳四价全连碳。","explanation":"**A 正确**。","source":"review","sourceChapter":"ch04","sourceRef":{"path":"content/chemistry/detail/4.1.md","label":"4.1 烷烃的结构与构造/构型/构象"}},
+    {"id":"q017","type":"single_choice","difficulty":"medium","points":2,"stem":"非对映异构体的定义是（　）。","options":["化学组成相同但不互为镜像的立体异构体","互为镜像的立体异构体","构造异构体","同一化合物的不同构象"],"answer":0,"hint":"非对映 = 立体异构但不互为镜像。","explanation":"**A 正确**：非对映异构体是立体异构体中不互为镜像的那些。例如酒石酸的 (R,R) 和 meso-(R,S) 就是非对映体。**B 错**：互为镜像是对映体。**C/D 错**。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.2.md","label":"8.2 对映异构、非对映、内消旋与外消旋"}},
+    {"id":"q018","type":"single_choice","difficulty":"basic","points":2,"stem":"共振极限式之间的区别在于（　）。","options":["电子排布不同，原子骨架相同","原子骨架不同","分子式不同","键的总数不同"],"answer":0,"hint":"共振只移动电子。","explanation":"**A 正确**。","source":"review","sourceChapter":"ch01","sourceRef":{"path":"content/chemistry/detail/1.3.md","label":"1.3 酸碱理论与共振"}},
+    {"id":"q019","type":"single_choice","difficulty":"medium","points":2,"stem":"下列关于手性的说法，错误的是（　）。","options":["含手性碳的分子一定是手性分子","手性分子一定没有对称面","手性分子一定没有对称中心","手性分子的镜像与其不可重叠"],"answer":0,"hint":"含手性碳但有对称面→内消旋体→非手性。","explanation":"**A 错误（本题答案）**：含手性碳不一定手性。内消旋体含手性碳但有对称面，整体非手性。**B/C/D 正确**：手性分子确实没有对称面和对称中心。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.1.md","label":"8.1 对称性与手性"}},
+    {"id":"q020","type":"single_choice","difficulty":"basic","points":2,"stem":"共轭效应的特点是（　）。","options":["长程效应，只在共轭体系中生效","短程效应，任何分子中都存在","只影响分子量","与诱导效应完全相同"],"answer":0,"hint":"共轭效应通过 π 电子离域传递，需要共轭体系。","explanation":"**A 正确**：共轭效应是长程效应，通过 π 电子离域传递，必须在共轭体系中才能发挥作用。","source":"review","sourceChapter":"ch05","sourceRef":{"path":"content/chemistry/detail/5.2.md","label":"5.2 共轭效应"}},
+    {"id":"q021","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"手性碳原子是连接________个互不相同的原子或基团的碳原子。","answer":"四","hint":"四个不同取代基 = 手性碳。","scoring_criteria":["填\"四\"或\"4\"（2分）"],"explanation":"手性碳（不对称碳）的定义：连有四个不同取代基的碳。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.1.md","label":"8.1 对称性与手性"}},
+    {"id":"q022","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"外消旋体是一对________异构体的等量混合物，整体________旋光。","answer":"对映，不（或无）","hint":"对映体旋光度相等方向相反→抵消。","scoring_criteria":["第一空填\"对映\"（1分）","第二空填\"不\"或\"无\"（1分）"],"explanation":"外消旋体 = (R) + (S) 等量混合，旋光抵消，不旋光。标记为 (±) 或 dl。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.2.md","label":"8.2 对映异构、非对映、内消旋与外消旋"}},
+    {"id":"q023","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"Fischer 投影式中，碳链应________放置，横键朝________（向纸面前方），竖键朝________（向纸面后方）。","answer":"竖直，外（或前方），里（或后方）","hint":"横前竖后，碳链竖直。","scoring_criteria":["三个空全部正确（2分）；错一个扣0.5分"],"explanation":"Fischer 投影式三原则：碳链竖直、横键朝外、竖键朝里。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.3.md","label":"8.3 Fischer 投影式与 R/S 绝对构型"}},
+    {"id":"q024","type":"fill_blank","difficulty":"medium","label":"填空/命名题","points":2,"total_points":2,"stem":"R/S 构型标记中，R 表示按顺序规则从大到小排列时为________时针方向，S 表示________时针方向。","answer":"顺（或右），逆（或左）","hint":"R = Rectus（右），S = Sinister（左）。","scoring_criteria":["第一空填\"顺\"或\"右\"（1分）","第二空填\"逆\"或\"左\"（1分）"],"explanation":"R（拉丁文 Rectus，右）= 顺时针；S（拉丁文 Sinister，左）= 逆时针。前提是将最小基团放在远离观察者的方向。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.3.md","label":"8.3 Fischer 投影式与 R/S 绝对构型"}},
+    {"id":"q025","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"只含一个手性碳的分子一定是________分子。含两个相同手性碳的分子可能是手性分子，也可能是________体。","answer":"手性，内消旋","hint":"单手性碳定理；两个相同手性碳→可能有对称面。","scoring_criteria":["第一空填\"手性\"（1分）","第二空填\"内消旋\"（1分）"],"explanation":"单手性碳→一定手性。两个相同手性碳→(R,R)/(S,S)是手性的，(R,S)可能是内消旋体（有对称面时）。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.2.md","label":"8.2 对映异构、非对映、内消旋与外消旋"}},
+    {"id":"q026","type":"fill_blank","difficulty":"medium","label":"填空/命名题","points":2,"total_points":2,"stem":"Fischer 投影式的两条旋转禁令：不能在纸面内旋转________°，不能向纸面外翻转________°。违反会得到________体。","answer":"90，180，对映","hint":"旋转90°或翻转180°→横竖互换→构型翻转。","scoring_criteria":["三个空全部正确（2分）；错一个扣0.5分"],"explanation":"旋转90°或翻转180°使横竖键互换，构型改变，变成对映体。只有在纸面内旋转180°是允许的（构型不变）。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.3.md","label":"8.3 Fischer 投影式与 R/S 绝对构型"}},
+    {"id":"q027","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"顺序规则第一条：原子序数________的原子所连的基团优先。","answer":"大","hint":"比原子序数，不是比个数。","scoring_criteria":["填\"大\"（2分）"],"explanation":"顺序规则第一条：原子序数大的优先。","source":"review","sourceChapter":"ch02","sourceRef":{"path":"content/chemistry/detail/2.2.md","label":"2.2 系统命名法与顺序规则"}},
+    {"id":"q028","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"碳碳双键由________个 σ 键和________个 π 键组成。","answer":"1，1","hint":"双键 = 1σ + 1π。","scoring_criteria":["两空各1分"],"explanation":"双键 = 1σ + 1π，三键 = 1σ + 2π。","source":"review","sourceChapter":"ch01","sourceRef":{"path":"content/chemistry/detail/1.2.md","label":"1.2 共价键与杂化轨道"}},
+    {"id":"q029","type":"fill_blank","difficulty":"medium","label":"填空/命名题","points":2,"total_points":2,"stem":"苯酚的 pKa = 10，乙醇的 pKa ≈ 16。酸性较强的是________，原因是其共轭碱中负电荷可通过________效应离域到苯环上。","answer":"苯酚，p-π 共轭（或共轭）","hint":"苯氧基负离子的 p-π 共轭。","scoring_criteria":["第一空填\"苯酚\"（1分）","第二空填\"p-π 共轭\"或\"共轭\"（1分）"],"explanation":"苯酚酸性强因为苯氧基负离子的负电荷通过 p-π 共轭离域到苯环。","source":"review","sourceChapter":"ch05","sourceRef":{"path":"content/chemistry/detail/5.2.md","label":"5.2 共轭效应"}},
+    {"id":"q030","type":"fill_blank","difficulty":"basic","label":"填空/命名题","points":2,"total_points":2,"stem":"判断芳香性的休克尔规则要求：平面的、闭环共轭的体系，π 电子数符合________公式（n = 0, 1, 2, 3...）。","answer":"4n+2","hint":"2, 6, 10, 14... 个 π 电子。","scoring_criteria":["填\"4n+2\"（2分）"],"explanation":"休克尔规则：4n+2 个 π 电子→芳香性。苯有 6 个（n=1），萘有 10 个（n=2）。","source":"review","sourceChapter":"ch07","sourceRef":{"path":"content/chemistry/detail/7.1.md","label":"7.1 芳香性与休克尔规则"}},
+    {"id":"q031","type":"essay","difficulty":"basic","label":"简答题","points":10,"total_points":10,"stem":"解释内消旋体和外消旋体的区别，包括定义、组成、旋光性和举例。","answer":"参考答案：\n\n**内消旋体（meso）：**\n- 定义：含有手性碳但因分子内存在对称面而不旋光的化合物。\n- 组成：纯净物（单一化合物）。\n- 旋光性：不旋光（分子内旋光性互相抵消）。\n- 举例：meso-酒石酸——含两个相同手性碳，(R,S)构型有对称面。\n\n**外消旋体（racemic）：**\n- 定义：一对对映异构体的等量混合物。\n- 组成：混合物（两种化合物各 50%）。\n- 旋光性：不旋光（两种对映体旋光度相等方向相反，互相抵消）。\n- 举例：(±)-乳酸 = (R)-乳酸 + (S)-乳酸 等量混合。\n\n**核心区别：**内消旋体是纯净物（一个分子内抵消），外消旋体是混合物（两个分子间抵消）。两者都不旋光，但原因不同。","hint":"从定义、组成（纯净物vs混合物）、旋光性、举例四个角度对比。","scoring_criteria":["正确说明内消旋体的定义和特点（3分）","正确说明外消旋体的定义和特点（3分）","指出核心区别（纯净物 vs 混合物）（2分）","有具体举例（2分）"],"explanation":"内消旋体和外消旋体的区别是立体化学的经典考点。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.2.md","label":"8.2 对映异构、非对映、内消旋与外消旋"}},
+    {"id":"q032","type":"essay","difficulty":"medium","label":"简答题","points":10,"total_points":10,"stem":"说明 Fischer 投影式的书写规则和旋转禁令，并解释为什么在纸面内旋转 180° 是允许的而旋转 90° 是不允许的。","answer":"参考答案：\n\n**书写规则：**\n1. 碳链竖直放置，编号最小的碳在上方。\n2. 竖键朝里（向纸面后方），横键朝外（向纸面前方）。\n3. 交叉点为手性碳。\n\n**旋转禁令：**\n1. 不能在纸面内旋转 90°：旋转后横竖键互换，原来朝外的变成朝里→构型翻转→变成对映体。\n2. 不能向纸面外翻转 180°：同样导致横竖键互换→构型翻转。\n\n**为什么旋转 180° 是允许的：**\n在纸面内旋转 180° 后，碳链仍然竖直（只是上下颠倒），横键仍然朝外、竖键仍然朝里。虽然上下位置变了，但横竖方向没有变，因此构型不变，是同一分子。\n\n**关键理解：**Fischer 投影式的核心约定是「横前竖后」。任何保持这个约定的操作（如纸面内旋转 180°）都是允许的；任何违反这个约定的操作（如旋转 90° 导致横竖互换）都会改变构型。","hint":"核心在于「横前竖后」的约定是否被违反。","scoring_criteria":["正确说明书写规则（3分）","正确说明两条旋转禁令（3分）","解释为什么旋转180°允许（横竖方向不变）（2分）","解释为什么旋转90°不允许（横竖互换）（2分）"],"explanation":"Fischer 投影式的旋转规则是考试高频考点。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.3.md","label":"8.3 Fischer 投影式与 R/S 绝对构型"}},
+    {"id":"q033","type":"essay","difficulty":"medium","label":"机理/推断题","points":10,"total_points":10,"stem":"画出乳酸（CH₃CHOHCOOH）的两种对映异构体的 Fischer 投影式，并标记 R/S 构型。","answer":"参考答案：\n\n乳酸的手性碳连接的四个基团：-OH, -COOH, -CH₃, -H\n\n按顺序规则从大到小：-OH > -COOH > -CH₃ > -H\n\n**R-乳酸 Fischer 投影式：**\n(结构式见解析)\n将 H 放在横键（朝外），其余三个从大到小：OH→COOH→CH₃。由于 H 在前方，先看后方三个的排列方向（逆时针），再反转→R。\n\n**S-乳酸 Fischer 投影式：**\n(结构式见解析)\n将 H 放在横键（朝外），其余三个从大到小：OH→COOH→CH₃。由于 H 在前方，先看后方三个的排列方向（顺时针），再反转→S。\n\n**两者的关系：**互为对映体（镜像，不可重叠）。","hint":"先确定四个基团的优先顺序，再画 Fischer 投影式，最后用 R/S 规则判断。","scoring_criteria":["正确画出 R-乳酸的 Fischer 投影式（3分）","正确画出 S-乳酸的 Fischer 投影式（3分）","正确标记 R/S 构型（2分）","说明两者互为对映体（2分）"],"explanation":"乳酸是手性分子的经典例子。Fischer 投影式 + R/S 标记是立体化学的基本功。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.3.md","label":"8.3 Fischer 投影式与 R/S 绝对构型"}},
+    {"id":"q034","type":"essay","difficulty":"hard","label":"合成/综合题","points":10,"total_points":10,"stem":"酒石酸（2,3-二羟基丁二酸）有 2 个相同的手性碳。画出它的所有立体异构体的 Fischer 投影式，指出哪些是对映体、哪些是内消旋体，并说明为什么 (R,S) 和 (S,R) 是同一分子。","answer":"参考答案：\n\n酒石酸的手性碳（C2 和 C3）各连接：-OH, -COOH, -H, 和另一半分子。\n\n**三种立体异构体：**\n\n**1. (R,R)-酒石酸：**\n(结构式见解析)\n（两个手性碳都是 R 构型）\n\n**2. (S,S)-酒石酸：**\n(结构式见解析)\n（两个手性碳都是 S 构型）\n\n(R,R) 和 (S,S) 互为对映体。\n\n**3. meso-(R,S)-酒石酸：**\n(结构式见解析)\n（C2 是 R，C3 是 S）\n\n**为什么 (R,S) 和 (S,R) 是同一分子：**\n在 Fischer 投影式中，(R,S) 表示上面的碳是 R、下面是 S。(S,R) 表示上面是 S、下面是 R。但将 (R,S) 的 Fischer 投影式在纸面内旋转 180°（上下颠倒），就变成了上面是 S、下面是 R 的描述——即 (S,R)。因为旋转 180° 不改变构型，所以 (R,S) 和 (S,R) 是同一分子。这个分子有对称面（水平穿过 C2-C3 键中点），是内消旋体。","hint":"2 个相同手性碳→最多 2²=4 种，但 (R,S)=(S,R) 是同一分子→实际 3 种。","scoring_criteria":["正确画出 (R,R) 的 Fischer 投影式（2分）","正确画出 (S,S) 的 Fischer 投影式（2分）","正确画出 meso 的 Fischer 投影式（2分）","说明 (R,R)/(S,S) 是对映体（1分）","说明 (R,S)=(S,R) 是同一分子的原因（旋转180°）（2分）","说明 meso 有对称面（1分）"],"explanation":"酒石酸是立体化学的经典教学分子。理解 (R,S)=(S,R) 的关键是 Fischer 投影式的旋转规则。","source":"current_chapter","sourceRef":{"path":"content/chemistry/detail/8.2.md","label":"8.2 对映异构、非对映、内消旋与外消旋"}}
   ],
-  "summary": {
-    "totalQuestions": 10,
-    "byType": {
-      "single_choice": 4,
-      "fill_blank": 3,
-      "essay": 3
-    },
-    "bySource": {
-      "current_chapter": 5,
-      "review": 5
-    },
-    "byDifficulty": {
-      "basic": 7,
-      "medium": 2,
-      "hard": 1
-    }
-  }
+  "summary": {"totalQuestions":34,"byType":{"single_choice":20,"fill_blank":10,"essay":4},"bySource":{"current_chapter":17,"review":17},"byDifficulty":{"basic":22,"medium":8,"hard":4}}
 }

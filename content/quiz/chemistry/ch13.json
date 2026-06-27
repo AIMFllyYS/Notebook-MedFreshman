@@ -1,7 +1,7 @@
 {
   "subjectId": "chemistry",
   "chapterId": "ch13",
-  "generatedAt": "2026-06-21",
+  "generatedAt": "2026-06-27",
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
@@ -12,244 +12,735 @@
       "id": "q001",
       "type": "single_choice",
       "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“羧酸及其衍生物”中「羧酸酸性与反应」的考查，下列说法正确的是（　）。",
+      "points": 2,
+      "stem": "硝基苯在 Fe/HCl 条件下还原，主要产物是（　）。",
       "options": [
-        "羧酸根由共振稳定，吸电子基可增强羧酸酸性。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
+        "苯胺（C₆H₅NH₂）",
+        "苯酚（C₆H₅OH）",
+        "亚硝基苯（C₆H₅NO）",
+        "偶氮苯（C₆H₅N=NC₆H₅）"
       ],
       "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：羧酸根由共振稳定，吸电子基可增强羧酸酸性。 这与本节详解对「羧酸酸性与反应」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "current_chapter",
+      "hint": "Fe/HCl 是经典的铁粉-酸还原体系，能把硝基彻底还原到氨基。",
+      "explanation": "Fe/HCl 能将 -NO₂ 经亚硝基苯、苯基羟胺等中间体，最终彻底还原为 -NH₂（苯胺）。苯酚需由重氮盐水解制备；亚硝基苯只是中间产物；偶氮苯是两分子苯胺氧化偶联的产物。",
+      "source": "review",
       "sourceRef": {
-        "path": "content/chemistry/detail/13.1.md",
-        "label": "13.1 羧酸酸性与反应"
-      }
+        "path": "content/chemistry/detail/5.1.md",
+        "label": "5.1 芳香烃的还原反应"
+      },
+      "sourceChapter": "ch05"
     },
     {
       "id": "q002",
       "type": "single_choice",
       "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“羧酸及其衍生物”中「羧酸衍生物活性」的考查，下列说法正确的是（　）。",
+      "points": 2,
+      "stem": "苯胺进行重氮化反应时，需要使用的关键试剂组合和温度条件是（　）。",
       "options": [
-        "酰氯、酸酐、酯、酰胺的亲核酰基取代活性依次降低。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
+        "NaNO₂ + HCl，反应温度 0-5°C",
+        "NaNO₂ + H₂SO₄，反应温度 50-60°C",
+        "NaOH + HCl，反应温度 0-5°C",
+        "KMnO₄ + HCl，反应温度室温"
       ],
       "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：酰氯、酸酐、酯、酰胺的亲核酰基取代活性依次降低。 这与本节详解对「羧酸衍生物活性」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
+      "hint": "重氮化反应必须在低温下进行，因为重氮盐在高温下不稳定会分解。",
+      "explanation": "苯胺重氮化的标准条件是 NaNO₂ + HCl（生成 HNO₂），温度严格控制在 0-5°C。温度过高重氮盐会迅速分解。NaOH 不是重氮化试剂。KMnO₄ 是强氧化剂会氧化苯胺。",
       "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/13.2.md",
-        "label": "13.2 羧酸衍生物活性"
+        "path": "content/chemistry/detail/13.1.md",
+        "label": "13.1 重氮化反应条件"
       }
     },
     {
       "id": "q003",
       "type": "single_choice",
       "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“醛和酮”中「氧化还原与羟醛缩合」的考查，下列说法正确的是（　）。",
+      "points": 2,
+      "stem": "Sandmeyer 反应中，氯化重氮苯与 CuCN 反应的主要产物是（　）。",
       "options": [
-        "含 alpha 氢的醛酮在碱作用下可经烯醇负离子发生羟醛缩合。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
+        "氯苯",
+        "溴苯",
+        "苯腈（苯基氰）",
+        "氟苯"
       ],
-      "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：含 alpha 氢的醛酮在碱作用下可经烯醇负离子发生羟醛缩合。 这与本节详解对「氧化还原与羟醛缩合」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "review",
-      "sourceChapter": "ch12",
+      "answer": 2,
+      "hint": "Sandmeyer 反应：不同的亚铜盐对应不同的芳基取代产物。",
+      "explanation": "Sandmeyer 反应：CuCl → ArCl，CuBr → ArBr，CuCN → ArCN。CuCN 对应苯腈。氟苯由 Schiemann 反应得到，不属于 Sandmeyer 反应。",
+      "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/12.3.md",
-        "label": "12.3 氧化还原与羟醛缩合"
+        "path": "content/chemistry/detail/13.1.md",
+        "label": "13.1 Sandmeyer反应"
       }
     },
     {
       "id": "q004",
       "type": "single_choice",
       "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“醛和酮”中「金属有机试剂与 Wittig」的考查，下列说法正确的是（　）。",
+      "points": 2,
+      "stem": "偶联反应中，重氮盐通常与下列哪种芳环发生反应？（　）",
       "options": [
-        "格氏试剂加醛酮生成醇；Wittig 反应用叶立德将羰基转化为烯烃。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
+        "未取代的苯环",
+        "含有强供电子基（如 -OH、-NH₂）的活化芳环",
+        "含有强吸电子基（如 -NO₂）的钝化芳环",
+        "稠环芳烃萘的任意位置"
       ],
-      "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：格氏试剂加醛酮生成醇；Wittig 反应用叶立德将羰基转化为烯烃。 这与本节详解对「金属有机试剂与 Wittig」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
+      "answer": 1,
+      "hint": "重氮盐是弱亲电试剂，只能与电子密度很高的芳环反应。",
+      "explanation": "重氮盐是弱亲电试剂，只能与高度活化的芳环（含 -OH、-NH₂ 等强供电子基）发生偶联反应生成偶氮化合物。",
       "source": "review",
-      "sourceChapter": "ch12",
       "sourceRef": {
-        "path": "content/chemistry/detail/12.2.md",
-        "label": "12.2 金属有机试剂与 Wittig"
-      }
+        "path": "content/chemistry/detail/7.2.md",
+        "label": "7.2 亲电芳香取代反应类型"
+      },
+      "sourceChapter": "ch07"
     },
     {
       "id": "q005",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「羧酸及其衍生物」中，酯与格氏试剂通常生成叔醇；克莱森缩合生成 beta-酮酯。 请写出该判断所依据的核心术语或规则。",
-      "answer": "格氏反应与克莱森缩合",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
+      "points": 2,
+      "stem": "下列关于重氮盐的说法，错误的是（　）。",
+      "options": [
+        "重氮盐在低温（0-5°C）下可在溶液中稳定存在",
+        "干燥的重氮盐受热或受撞击易爆炸",
+        "重氮盐可在室温下长期保存固体",
+        "重氮基 -N₂⁺ 是很好的离去基团"
       ],
-      "explanation": "本题考查「格氏反应与克莱森缩合」。教材要点是：酯与格氏试剂通常生成叔醇；克莱森缩合生成 beta-酮酯。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
+      "answer": 2,
+      "hint": "重氮盐的稳定性与温度密切相关。",
+      "explanation": "重氮盐不稳定，干燥状态下受热或受撞击易爆炸，只能在低温水溶液中现制现用，不能在室温下长期保存固体。",
       "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/13.3.md",
-        "label": "13.3 格氏反应与克莱森缩合"
+        "path": "content/chemistry/detail/13.1.md",
+        "label": "13.1 重氮盐的不稳定性"
       }
     },
     {
       "id": "q006",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「羧酸及其衍生物」中，羧酸根由共振稳定，吸电子基可增强羧酸酸性。 请写出该判断所依据的核心术语或规则。",
-      "answer": "羧酸酸性与反应",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
+      "points": 2,
+      "stem": "下列含氮化合物中，碱性最强的是（　）。",
+      "options": [
+        "苯胺",
+        "吡啶",
+        "三甲胺（脂肪叔胺）",
+        "乙酰胺"
       ],
-      "explanation": "本题考查「羧酸酸性与反应」。教材要点是：羧酸根由共振稳定，吸电子基可增强羧酸酸性。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
-      "source": "current_chapter",
+      "answer": 2,
+      "hint": "碱性排序：脂肪胺 > 氨 > 吡啶 > 苯胺 > 酰胺。",
+      "explanation": "脂肪胺的氮上孤对电子不参与共轭，碱性最强。苯胺孤对与苯环共轭，碱性弱。吡啶碱性中等。酰胺碱性极弱。",
+      "source": "review",
       "sourceRef": {
-        "path": "content/chemistry/detail/13.1.md",
-        "label": "13.1 羧酸酸性与反应"
-      }
+        "path": "content/chemistry/detail/10.1.md",
+        "label": "10.1 含氮化合物碱性比较"
+      },
+      "sourceChapter": "ch10"
     },
     {
       "id": "q007",
-      "type": "fill_blank",
-      "difficulty": "medium",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「醛和酮」中，醛酮羰基碳带部分正电，易受亲核试剂进攻形成四面体中间体。 请写出该判断所依据的核心术语或规则。",
-      "answer": "羰基亲核加成",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "苯胺与溴水反应的现象是（　）。",
+      "options": [
+        "无明显现象",
+        "生成白色沉淀（2,4,6-三溴苯胺）",
+        "溶液变为深紫色",
+        "放出氮气"
       ],
-      "explanation": "本题考查「羰基亲核加成」。教材要点是：醛酮羰基碳带部分正电，易受亲核试剂进攻形成四面体中间体。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
-      "source": "review",
-      "sourceChapter": "ch12",
+      "answer": 1,
+      "hint": "苯胺被溴水溴化，生成难溶的三溴苯胺白色沉淀。",
+      "explanation": "苯胺由于氨基的强活化作用，极易与溴水发生亲电取代，生成 2,4,6-三溴苯胺白色沉淀。可用于芳香伯胺鉴别。",
+      "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/12.1.md",
-        "label": "12.1 羰基亲核加成"
+        "path": "content/chemistry/detail/13.2.md",
+        "label": "13.2 苯胺溴水反应"
       }
     },
     {
       "id": "q008",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
-      "label": "简答题",
-      "points": 20,
-      "total_points": 20,
-      "stem": "简答题：结合「羧酸及其衍生物」中「羧酸衍生物活性」的内容，说明：酰氯、酸酐、酯、酰胺的亲核酰基取代活性依次降低。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「羧酸衍生物活性」，再说明教材依据：酰氯、酸酐、酯、酰胺的亲核酰基取代活性依次降低。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
-      "scoring_criteria": [
-        "准确识别考查点「羧酸衍生物活性」并写出适用对象（4分）",
-        "说明教材依据：酰氯、酸酐、酯、酰胺的亲核酰基取代活性依次降低。（6分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（6分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（4分）"
+      "points": 2,
+      "stem": "兴斯堡（Hinsberg）反应可以区分（　）。",
+      "options": [
+        "伯醇、仲醇、叔醇",
+        "伯胺、仲胺、叔胺",
+        "醛和酮",
+        "羧酸和酯"
       ],
-      "explanation": "解析：本题不是只问结论，而是要求把「羧酸衍生物活性」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：酰氯、酸酐、酯、酰胺的亲核酰基取代活性依次降低。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
-      "source": "current_chapter",
+      "answer": 1,
+      "hint": "兴斯堡试剂是苯磺酰氯，与不同类型胺反应产物的溶解性不同。",
+      "explanation": "兴斯堡反应利用苯磺酰氯与胺反应：伯胺磺酰胺溶于碱，仲胺磺酰胺不溶于碱，叔胺不反应。可区分伯、仲、叔胺。",
+      "source": "review",
       "sourceRef": {
-        "path": "content/chemistry/detail/13.2.md",
-        "label": "13.2 羧酸衍生物活性"
-      }
+        "path": "content/chemistry/detail/11.2.md",
+        "label": "11.2 有机化合物鉴别方法"
+      },
+      "sourceChapter": "ch11"
     },
     {
       "id": "q009",
-      "type": "essay",
-      "difficulty": "medium",
-      "label": "机理/推断题",
-      "points": 20,
-      "total_points": 20,
-      "stem": "机理/推断题：结合「绪论与有机化学基础」中「有机化学的研究对象与价值」的内容，说明：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「有机化学的研究对象与价值」，再说明教材依据：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
-      "scoring_criteria": [
-        "准确识别考查点「有机化学的研究对象与价值」并写出适用对象（4分）",
-        "说明教材依据：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。（6分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（6分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（4分）"
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "霍夫曼（Hofmann）消除反应的主要特征是（　）。",
+      "options": [
+        "生成最多取代的烯烃（Zaitsev 产物）",
+        "生成最少取代的烯烃（Hofmann 产物）",
+        "只发生在芳香环上",
+        "需要强酸催化"
       ],
-      "explanation": "解析：本题不是只问结论，而是要求把「有机化学的研究对象与价值」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
-      "source": "review",
-      "sourceChapter": "ch01",
+      "answer": 1,
+      "hint": "季铵碱热消除遵循 Hofmann 规则，与醇的酸催化脱水（Zaitsev）相反。",
+      "explanation": "霍夫曼消除是季铵碱加热发生 E2 消除，大体积季铵基团为离去基团，空间位阻使反应倾向于生成取代最少的烯烃。",
+      "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/1.1.md",
-        "label": "1.1 有机化学的研究对象与价值"
-      },
-      "manimVideoId": "quiz-chem-ch01-q009"
+        "path": "content/chemistry/detail/13.2.md",
+        "label": "13.2 霍夫曼消除"
+      }
     },
     {
       "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "吡啶氮原子的孤对电子不参与芳香 π 体系，因此吡啶具有碱性。该说法（　）。",
+      "options": [
+        "正确",
+        "错误，吡啶没有碱性",
+        "错误，吡啶氮的孤对电子参与了共轭",
+        "部分正确，吡啶碱性极弱可忽略"
+      ],
+      "answer": 0,
+      "hint": "吡啶氮是 sp² 杂化，孤对电子在分子平面内，不参与 π 共轭。",
+      "explanation": "吡啶中氮原子为 sp² 杂化，孤对电子位于分子平面内，不参与芳香 π 体系，因此可以接受质子，具有碱性（pKb 约 8.8）。",
+      "source": "review",
+      "sourceRef": {
+        "path": "content/chemistry/detail/4.3.md",
+        "label": "4.3 杂环化合物的碱性"
+      },
+      "sourceChapter": "ch04"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "吡咯氮原子没有碱性的原因是（　）。",
+      "options": [
+        "吡咯氮上没有孤对电子",
+        "吡咯氮的孤对电子参与了芳香 π 共轭体系",
+        "吡咯不是芳香化合物",
+        "吡咯氮的电负性太低"
+      ],
+      "answer": 1,
+      "hint": "吡咯的芳香性需要氮提供一对电子。",
+      "explanation": "吡咯是五元杂环芳香化合物，6 个 π 电子中 2 个来自氮的孤对电子。孤对已参与共轭，若接受质子会破坏芳香性，因此不显碱性。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.3.md",
+        "label": "13.3 吡咯无碱性的原因"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "吡啶发生亲电取代反应时，取代主要发生在（　）。",
+      "options": [
+        "α 位（2-位）",
+        "β 位（3-位）",
+        "γ 位（4-位）",
+        "氮原子上"
+      ],
+      "answer": 1,
+      "hint": "进攻 α/γ 时中间体正电荷落在 N 上，不稳定，因此取代在 β 位。",
+      "explanation": "吡啶氮吸电子使 α 和 γ 位电子密度低，且进攻 α 或 γ 位形成的中间体正电荷会落在电负性大的氮上，能量不利。亲电取代在 β 位进行。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.3.md",
+        "label": "13.3 吡啶亲电取代"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "吡啶发生亲核取代反应时，取代主要发生在（　）。",
+      "options": [
+        "β 位（3-位）",
+        "α 位（2-位）",
+        "γ 位（4-位）",
+        "B 和 C 均可"
+      ],
+      "answer": 1,
+      "hint": "亲核取代需要正电中心。吡啶 α 位受氮吸电子效应最强，最缺电子。",
+      "explanation": "吡啶氮吸电子使 α 位电子密度最低，最易受亲核进攻。中间体负电荷可通过共振分散到氮上，最稳定。这是 Chichibabin 反应的基础。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.3.md",
+        "label": "13.3 吡啶亲核取代"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "下列碱性从强到弱的排列中，正确的是（　）。",
+      "options": [
+        "苯胺 > 吡啶 > 吡咯 > 酰胺",
+        "三甲胺 > 吡啶 > 苯胺 > 吡咯",
+        "吡咯 > 苯胺 > 吡啶 > 三甲胺",
+        "酰胺 > 苯胺 > 吡啶 > 吡咯"
+      ],
+      "answer": 1,
+      "hint": "关键在于氮上孤对电子是否参与共轭以及共轭的程度。",
+      "explanation": "三甲胺孤对电子完全自由，碱性最强。吡啶孤对不参与共轭，碱性中等。苯胺孤对与苯环共轭，碱性较弱。吡咯孤对完全参与芳香共轭，碱性极弱。",
+      "source": "review",
+      "sourceRef": {
+        "path": "content/chemistry/detail/10.2.md",
+        "label": "10.2 碱性排序与电子效应"
+      },
+      "sourceChapter": "ch10"
+    },
+    {
+      "id": "q015",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "苯胺碱性弱于环己胺，其根本原因是（　）。",
+      "options": [
+        "苯胺氮的电负性比环己胺氮大",
+        "苯胺氮的孤对电子与苯环 π 体系共轭，电子云分散到环上",
+        "苯胺分子量更大导致碱性减弱",
+        "环己胺氮上连接的碳原子更多"
+      ],
+      "answer": 1,
+      "hint": "从共轭效应角度分析。",
+      "explanation": "苯胺中氮的孤对电子与苯环形成 p-π 共轭，电子云离域到苯环上，氮上电子密度降低，碱性减弱。环己胺无共轭效应。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.2.md",
+        "label": "13.2 苯胺碱性弱的原因"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "以苯为原料合成对溴苯胺，下列合成路线中最合理的是（　）。",
+      "options": [
+        "苯 → 苯胺 → 对溴苯胺（Br₂/FeBr₃）",
+        "苯 → 溴苯（Br₂/FeBr₃）→ 对溴硝基苯（混酸硝化）→ 对溴苯胺（Fe/HCl 还原）",
+        "苯 → 硝基苯（混酸）→ 对硝基苯胺（NH₃）→ 对溴苯胺（Br₂）",
+        "苯 → 苯胺 → 乙酰苯胺 → 对溴苯胺"
+      ],
+      "answer": 1,
+      "hint": "注意定位效应。溴是邻对位定位基，先引入溴再硝化可得对位产物。",
+      "explanation": "正确路线：苯 → 溴苯 → 对溴硝基苯（溴导向对位硝化）→ 对溴苯胺（还原）。A 错：苯胺直接溴代得三溴代物。C 错：硝基苯不能直接氨化。D 路线不完整。",
+      "source": "review",
+      "sourceChapter": "ch08",
+      "sourceRef": {
+        "path": "content/chemistry/detail/8.2.md",
+        "label": "8.2 定位效应与合成策略"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "下列关于卤代烃 SN1 和 SN2 反应的说法，正确的是（　）。",
+      "options": [
+        "SN2 反应构型翻转，SN1 反应得到外消旋化产物",
+        "SN1 和 SN2 都构型翻转",
+        "SN2 反应经过碳正离子中间体",
+        "叔卤代烃主要发生 SN2 反应"
+      ],
+      "answer": 0,
+      "hint": "SN2 是协同机理（背面进攻→构型翻转），SN1 经过平面碳正离子（两面进攻→外消旋化）。",
+      "explanation": "SN2 反应中亲核试剂从背面进攻，发生构型翻转。SN1 经过平面碳正离子，两面进攻概率相等，得外消旋化产物。C 错：SN2 是协同机理。D 错：叔卤代烃主要发生 SN1。",
+      "source": "review",
+      "sourceChapter": "ch06",
+      "sourceRef": {
+        "path": "content/chemistry/detail/6.2.md",
+        "label": "6.2 SN1与SN2反应机理"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "下列五元杂环化合物中，亲电取代反应活性最高的是（　）。",
+      "options": [
+        "吡咯（C₄H₅N）",
+        "呋喃（C₄H₄O）",
+        "噻吩（C₄H₄S）",
+        "苯（C₆H₆）"
+      ],
+      "answer": 0,
+      "hint": "杂原子向环贡献孤对电子的能力越强，环上电子密度越高。N 的电负性最小。",
+      "explanation": "亲电取代活性：吡咯 > 呋喃 > 噻吩 > 苯。N 电负性（3.04）< O（3.44），N 孤对更容易离域到环上，吡咯环电子密度最高。",
+      "source": "review",
+      "sourceRef": {
+        "path": "content/chemistry/detail/3.2.md",
+        "label": "3.2 五元杂环芳香性与活性"
+      },
+      "sourceChapter": "ch03"
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "points": 2,
+      "stem": "将对氨基苯甲酸重氮化后与 β-萘酚偶联，偶联位置优先发生在（　）。",
+      "options": [
+        "萘环的 α 位（1-位）",
+        "萘环的 β 位（2-位）",
+        "苯甲酸的苯环上",
+        "羧基的氧上"
+      ],
+      "answer": 0,
+      "hint": "β-萘酚的羟基使邻位（α 位，1-位）高度活化。",
+      "explanation": "β-萘酚中 -OH 在 2-位，其邻位（1-位，α 位）电子密度最高，偶联后共轭体系更长更稳定。",
+      "source": "review",
+      "sourceRef": {
+        "path": "content/chemistry/detail/7.3.md",
+        "label": "7.3 亲电取代位置选择性"
+      },
+      "sourceChapter": "ch07"
+    },
+    {
+      "id": "q020",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "points": 2,
+      "stem": "下列反应中，不能用于制备芳香伯胺的是（　）。",
+      "options": [
+        "硝基苯用 Fe/HCl 还原",
+        "苯腈（PhCN）用 LiAlH₄ 还原",
+        "苯甲酰胺（PhCONH₂）用 Br₂/NaOH（霍夫曼降解）",
+        "苯胺与乙酸酐反应"
+      ],
+      "answer": 3,
+      "hint": "逐一分析每个反应的产物。",
+      "explanation": "A：Fe/HCl → 苯胺。B：PhCN + LiAlH₄ → PhCH₂NH₂（苄胺）。C：霍夫曼降解 → PhNH₂。D：苯胺 + 乙酸酐 → 乙酰苯胺（酰胺），不是伯胺。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.1.md",
+        "label": "13.1 芳香伯胺的制备"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "硝基苯在酸性条件下用铁粉还原，生成的产物是________。",
+      "answer": "苯胺",
+      "hint": "硝基的完全还原产物。",
+      "scoring_criteria": [
+        "写出\"苯胺\"或\"ArNH₂\"或\"C₆H₅NH₂\"（2分）"
+      ],
+      "explanation": "硝基苯在 Fe/HCl 还原条件下，-NO₂ 被完全还原为 -NH₂，生成苯胺。",
+      "source": "review",
+      "sourceRef": {
+        "path": "content/chemistry/detail/5.2.md",
+        "label": "5.2 硝基化合物的还原"
+      },
+      "sourceChapter": "ch05",
+      "total_points": 2
+    },
+    {
+      "id": "q022",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "重氮化反应必须在________°C 的低温条件下进行，因为重氮盐在较高温度下会分解放出氮气。",
+      "answer": "0-5",
+      "hint": "重氮盐对温度敏感。",
+      "scoring_criteria": [
+        "写出\"0-5\"或\"0~5\"或\"冰浴\"（2分）"
+      ],
+      "explanation": "重氮盐（ArN₂⁺）不稳定，温度升高会迅速分解，必须在冰浴中控制温度在 0-5°C。",
+      "source": "review",
+      "sourceRef": {
+        "path": "content/chemistry/detail/6.1.md",
+        "label": "6.1 重氮化反应条件"
+      },
+      "sourceChapter": "ch06",
+      "total_points": 2
+    },
+    {
+      "id": "q023",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "Sandmeyer 反应中，氯化重氮苯与氯化亚铜（CuCl）反应生成________。",
+      "answer": "氯苯",
+      "hint": "Sandmeyer 反应的特征是用亚铜盐置换重氮基。",
+      "scoring_criteria": [
+        "写出\"氯苯\"或\"ArCl\"或\"C₆H₅Cl\"（2分）"
+      ],
+      "explanation": "Sandmeyer 反应：C₆H₅N₂⁺Cl⁻ + CuCl → C₆H₅Cl + N₂。重氮基被氯置换，生成氯苯。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.1.md",
+        "label": "13.1 Sandmeyer反应"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q024",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "苯胺与溴水反应，生成的白色沉淀是________。",
+      "answer": "2,4,6-三溴苯胺",
+      "hint": "苯胺环上三个位置被溴取代。",
+      "scoring_criteria": [
+        "写出\"2,4,6-三溴苯胺\"或\"三溴苯胺\"（2分）"
+      ],
+      "explanation": "苯胺由于 -NH₂ 的强活化作用，与溴水在常温下生成 2,4,6-三溴苯胺白色沉淀，可用于鉴别。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.2.md",
+        "label": "13.2 苯胺溴水反应"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q025",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "碱性排序（从强到弱）：脂肪叔胺 > 吡啶 > 苯胺 > ________。",
+      "answer": "吡咯",
+      "hint": "最弱碱性的含氮杂环。",
+      "scoring_criteria": [
+        "写出\"吡咯\"（2分）"
+      ],
+      "explanation": "完整碱性排序：脂肪胺 > 氨 > 吡啶 > 苯胺 > 酰胺 > 吡咯。吡咯因孤对电子完全参与芳香共轭，碱性最弱。",
+      "source": "review",
+      "sourceRef": {
+        "path": "content/chemistry/detail/10.3.md",
+        "label": "10.3 有机碱的强弱排序"
+      },
+      "sourceChapter": "ch10",
+      "total_points": 2
+    },
+    {
+      "id": "q026",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "兴斯堡反应中使用的试剂是________（写出化学名称或结构简式）。",
+      "answer": "苯磺酰氯",
+      "hint": "也称兴斯堡试剂，用于区分伯仲叔胺。",
+      "scoring_criteria": [
+        "写出\"苯磺酰氯\"或\"对甲苯磺酰氯\"或\"C₆H₅SO₂Cl\"或\"TsCl\"（2分）"
+      ],
+      "explanation": "兴斯堡试剂是苯磺酰氯（C₆H₅SO₂Cl）或对甲苯磺酰氯（TsCl）。与伯胺生成溶于碱的磺酰胺，与仲胺生成不溶的磺酰胺，与叔胺不反应。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.2.md",
+        "label": "13.2 兴斯堡反应试剂"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q027",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "吡啶氮原子的杂化方式是________，其孤对电子位于分子平面内，不参与芳香 π 共轭。",
+      "answer": "sp²",
+      "hint": "杂化方式决定了孤对电子的方向。",
+      "scoring_criteria": [
+        "写出\"sp²\"或\"sp2\"（2分）"
+      ],
+      "explanation": "吡啶氮为 sp² 杂化，孤对电子在 sp² 轨道（分子平面内），不参与 π 共轭，可接受质子。",
+      "source": "review",
+      "sourceRef": {
+        "path": "content/chemistry/detail/4.1.md",
+        "label": "4.1 杂环化合物的结构与杂化"
+      },
+      "sourceChapter": "ch04",
+      "total_points": 2
+    },
+    {
+      "id": "q028",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "吡咯的芳香 π 体系包含________个 π 电子，其中 2 个来自氮原子的孤对电子，满足 Hückel 4n+2 规则。",
+      "answer": "6",
+      "hint": "应用 4n+2 规则。",
+      "scoring_criteria": [
+        "写出\"6\"（2分）"
+      ],
+      "explanation": "吡咯：4C 各 1e + 1N 的 2e = 6 个 π 电子，满足 4n+2（n=1），具有芳香性。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.3.md",
+        "label": "13.3 吡咯芳香性"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q029",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "吡啶亲核取代主要发生在________位（用希腊字母或数字表示），因为该位置受氮原子吸电子效应影响最大。",
+      "answer": "α",
+      "hint": "离杂原子最近的位置。",
+      "scoring_criteria": [
+        "写出\"α\"或\"2-位\"或\"2位\"（2分）"
+      ],
+      "explanation": "吡啶氮吸电子使 α 位电子密度最低，最易受亲核进攻。中间体负电荷可通过共振分散到氮上。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.3.md",
+        "label": "13.3 吡啶亲核取代位置"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q030",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "霍夫曼消除反应的底物是________（写出化合物类型），加热后发生消除生成最少取代的烯烃。",
+      "answer": "季铵碱",
+      "hint": "含有 -NR₃⁺OH⁻ 结构。",
+      "scoring_criteria": [
+        "写出\"季铵碱\"（2分）"
+      ],
+      "explanation": "霍夫曼消除的底物是季铵碱（R₄N⁺OH⁻），加热时 OH⁻ 夺取 β-氢，-NR₃⁺ 离去，生成最少取代烯烃。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.2.md",
+        "label": "13.2 霍夫曼消除底物"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q031",
+      "type": "essay",
+      "difficulty": "basic",
+      "points": 10,
+      "stem": "以苯为起始原料，写出合成对溴苯胺的完整路线，并说明各步反应的类型、条件和定位效应逻辑。",
+      "answer": "参考答案：（1）苯 + Br₂/FeBr₃ → 溴苯（亲电溴化）。（2）溴苯 + 混酸（HNO₃/H₂SO₄）→ 对溴硝基苯（硝化，溴为邻对位定位基，对位为主）。（3）对溴硝基苯 + Fe/HCl → 对溴苯胺（还原）。定位效应逻辑：溴是邻对位定位基，先引入溴再硝化可得对位产物。若先硝化再溴化，-NO₂ 是间位定位基，溴会进入间位。",
+      "hint": "注意定位效应：先引入哪个基团决定了后续取代的位置。",
+      "scoring_criteria": [
+        "正确写出三步反应路线（3分）",
+        "每步反应注明试剂和条件（3分）",
+        "说明定位效应的逻辑：溴为邻对位定位基（2分）",
+        "最后一步还原条件正确（2分）"
+      ],
+      "explanation": "合成对溴苯胺的关键是定位效应的利用。溴是邻对位定位基，先引入溴再硝化可得对溴硝基苯，然后还原得对溴苯胺。",
+      "source": "review",
+      "sourceChapter": "ch08",
+      "sourceRef": {
+        "path": "content/chemistry/detail/8.2.md",
+        "label": "8.2 定位效应与合成路线设计"
+      },
+      "total_points": 10
+    },
+    {
+      "id": "q032",
+      "type": "essay",
+      "difficulty": "medium",
+      "points": 10,
+      "stem": "解释为什么吡啶可以在强酸中接受质子形成吡啶盐（仍保持芳香性），而吡咯接受质子会破坏芳香性。要求从电子结构和芳香性规则角度分析。",
+      "answer": "参考答案：（1）吡啶中氮为 sp² 杂化，孤对电子在分子平面内的 sp² 轨道上，不参与 π 共轭。芳香 π 体系由 6 个电子（5C 各 1e + 1N 的 1e）组成，孤对不在其中。氮接受质子时芳香体系不受影响。（2）吡咯中氮的孤对电子占据 p 轨道，参与芳香 π 共轭。6 个 π 电子（4C 各 1e + 1N 的 2e）。若氮接受质子，π 电子数降为 4，不满足 4n+2，芳香性被破坏。",
+      "hint": "关键区别：吡啶芳香 π 电子不含孤对；吡咯芳香 π 电子包含孤对。",
+      "scoring_criteria": [
+        "正确描述吡啶氮的杂化和电子排布（2分）",
+        "说明吡啶 6π 电子来源，孤对不参与共轭（2分）",
+        "描述吡咯氮的孤对参与芳香 π 共轭（2分）",
+        "应用 4n+2 规则说明吡咯接受质子后芳香性被破坏（2分）",
+        "对比清晰，结论准确（2分）"
+      ],
+      "explanation": "核心区别在于氮上孤对电子的去向：吡啶中在分子平面内（可用），吡咯中在 p 轨道参与共轭（不可用）。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/13.3.md",
+        "label": "13.3 吡啶与吡咯的电子结构与芳香性"
+      },
+      "total_points": 10
+    },
+    {
+      "id": "q033",
       "type": "essay",
       "difficulty": "hard",
-      "label": "合成/综合题",
-      "points": 25,
-      "total_points": 25,
-      "stem": "合成/综合题：结合「炔烃与共轭二烯烃」中「炔烃酸性与加成」的内容，说明：端炔氢具有较强酸性，可与银氨或亚铜试剂形成炔化物。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「炔烃酸性与加成」，再说明教材依据：端炔氢具有较强酸性，可与银氨或亚铜试剂形成炔化物。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
+      "points": 10,
+      "stem": "设计以甲苯为原料合成对氨基苯甲酸的路线，写出各步反应及条件，并解释每步的定位效应逻辑和反应顺序的必要性。",
+      "answer": "参考答案：（1）甲苯 + 混酸 → 对硝基甲苯（甲基为邻对位定位基）。（2）对硝基甲苯 + KMnO₄/H⁺ → 对硝基苯甲酸（甲基氧化为羧基）。（3）对硝基苯甲酸 + Fe/HCl → 对氨基苯甲酸（-NO₂ 还原为 -NH₂）。反应顺序必要性：必须先氧化再还原，若先还原硝基为氨基，-NH₂ 会被 KMnO₄ 氧化破坏。",
+      "hint": "注意反应顺序。氨基易被氧化，所以硝基要在最后一步才还原。",
       "scoring_criteria": [
-        "准确识别考查点「炔烃酸性与加成」并写出适用对象（5分）",
-        "说明教材依据：端炔氢具有较强酸性，可与银氨或亚铜试剂形成炔化物。（7分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（7分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（6分）"
+        "写出三步正确反应路线（3分）",
+        "每步试剂和条件正确（2分）",
+        "解释甲基的定位效应（2分）",
+        "说明先氧化后还原的必要性（2分）",
+        "整体逻辑清晰（1分）"
       ],
-      "explanation": "解析：本题不是只问结论，而是要求把「炔烃酸性与加成」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：端炔氢具有较强酸性，可与银氨或亚铜试剂形成炔化物。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
+      "explanation": "综合考查定位效应、氧化还原和合成策略。关键：利用甲基定位引入硝基；氧化在还原之前（保护氨基不被氧化）。",
       "source": "review",
-      "sourceChapter": "ch07",
+      "sourceChapter": "ch08",
       "sourceRef": {
-        "path": "content/chemistry/detail/7.1.md",
-        "label": "7.1 炔烃酸性与加成"
+        "path": "content/chemistry/detail/8.2.md",
+        "label": "8.2 多步合成与反应顺序"
       },
-      "manimVideoId": "quiz-chem-ch07-q010"
+      "total_points": 10
+    },
+    {
+      "id": "q034",
+      "type": "essay",
+      "difficulty": "hard",
+      "points": 10,
+      "stem": "以苯为原料设计合成对溴苯胺，要求：（1）说明为什么不能直接对苯胺溴代；（2）写出保护氨基→溴代→脱保护的完整路线；（3）说明保护基的作用原理。",
+      "answer": "参考答案：（1）不能直接溴代：氨基是强活化基团，直接与 Br₂ 反应生成 2,4,6-三溴苯胺（不可控多取代）。（2）路线：苯胺 + 乙酸酐 → 乙酰苯胺（保护）；乙酰苯胺 + Br₂/FeBr₃ → 对溴乙酰苯胺（乙酰氨基为邻对位定位基，对位为主）；对溴乙酰苯胺 + 稀酸水解 → 对溴苯胺。（3）原理：酰化降低氨基活化强度（从强活化变为中等活化），使亲电取代可控；乙酰氨基仍为邻对位定位基，导向对位；酰胺水解恢复氨基。",
+      "hint": "核心：氨基太活泼→先保护→溴代→脱保护。",
+      "scoring_criteria": [
+        "说明不能直接溴代的原因（2分）",
+        "写出完整保护→溴代→脱保护三步路线（4分）",
+        "每步反应条件正确（2分）",
+        "解释保护基作用原理（2分）"
+      ],
+      "explanation": "考查保护基策略。氨基太活泼，直接溴代不可控。酰化后乙酰氨基仍是邻对位定位基但活性适中，可实现单溴代。",
+      "source": "review",
+      "sourceChapter": "ch09",
+      "sourceRef": {
+        "path": "content/chemistry/detail/9.1.md",
+        "label": "9.1 芳环取代与保护基策略"
+      },
+      "total_points": 10
     }
   ],
   "summary": {
-    "totalQuestions": 10,
+    "totalQuestions": 34,
     "byType": {
-      "single_choice": 4,
-      "fill_blank": 3,
-      "essay": 3
+      "single_choice": 20,
+      "fill_blank": 10,
+      "essay": 4
     },
     "bySource": {
-      "current_chapter": 5,
-      "review": 5
+      "current_chapter": 17,
+      "review": 17
     },
     "byDifficulty": {
-      "basic": 7,
-      "medium": 2,
-      "hard": 1
+      "basic": 22,
+      "medium": 8,
+      "hard": 4
     }
   }
 }

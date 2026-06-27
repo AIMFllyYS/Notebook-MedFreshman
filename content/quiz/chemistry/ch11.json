@@ -1,255 +1,753 @@
 {
   "subjectId": "chemistry",
   "chapterId": "ch11",
-  "generatedAt": "2026-06-21",
+  "generatedAt": "2026-06-27",
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
-    "timeLimit": 50
+    "timeLimit": 120
   },
   "questions": [
     {
       "id": "q001",
       "type": "single_choice",
       "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“醇、酚、醚”中「醇的反应」的考查，下列说法正确的是（　）。",
+      "points": 2,
+      "stem": "醛酮发生亲核加成反应时，亲核试剂进攻的位点是（　）。",
       "options": [
-        "醇可经 HX、SOCl2 或磺酸酯活化转化，伯醇氧化到醛或酸，仲醇氧化到酮。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
+        "带部分正电荷的羰基碳",
+        "带部分负电荷的羰基氧",
+        "α 碳",
+        "β 碳"
       ],
       "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：醇可经 HX、SOCl2 或磺酸酯活化转化，伯醇氧化到醛或酸，仲醇氧化到酮。 这与本节详解对「醇的反应」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
+      "hint": "羰基中氧的电负性大于碳，导致碳氧双键电荷分离，碳带正电。",
+      "explanation": "A 正确：氧电负性大于碳，碳氧双键中电子云偏向氧端，碳带 δ+、氧带 δ-。亲核试剂进攻缺电子的羰基碳，π 键打开，生成加成产物。B 错：氧带负电荷，是亲电试剂进攻的位点（如质子化），不是亲核试剂进攻的位点。C 错：α 碳在强碱作用下可失去 α-氢生成碳负离子（羟醛缩合），但这不是亲核加成的进攻位点。D 错：β 碳不直接参与羰基的亲核加成反应。",
       "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/11.1.md",
-        "label": "11.1 醇的反应"
+        "path": "content/chemistry/detail/12.1.md",
+        "label": "11.1 羰基的结构与电荷分离"
       }
     },
     {
       "id": "q002",
       "type": "single_choice",
       "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“醇、酚、醚”中「酚的结构与反应」的考查，下列说法正确的是（　）。",
+      "points": 2,
+      "stem": "醛酮的亲核加成与卤代烷的亲核取代的本质区别在于（　）。",
       "options": [
-        "酚羟基与芳环共轭，酚酸性强于醇，且芳环易发生邻对位取代。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
+        "加成断的是碳氧 π 键，氧不离去；取代断的是 C-X σ 键，卤素离去",
+        "加成需要酸催化，取代需要碱催化",
+        "加成只适用于醛，取代只适用于酮",
+        "加成经过碳正离子中间体，取代经过五配位过渡态"
       ],
       "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：酚羟基与芳环共轭，酚酸性强于醇，且芳环易发生邻对位取代。 这与本节详解对「酚的结构与反应」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
+      "hint": "比较两个反应中断裂的化学键和离去基团。",
+      "explanation": "A 正确：醛酮亲核加成断碳氧 π 键，氧不离去；卤代烷亲核取代断 C-X σ 键，卤素带着电子离去。B 错：加成不一定需要酸催化，取代也不一定需要碱催化。C 错：醛和酮都可发生亲核加成。D 错：描述颠倒了，SN2 取代才是五配位过渡态。",
       "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/11.2.md",
-        "label": "11.2 酚的结构与反应"
+        "path": "content/chemistry/detail/12.1.md",
+        "label": "11.1 亲核加成与亲核取代的区别"
       }
     },
     {
       "id": "q003",
       "type": "single_choice",
       "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“卤代烃”中「取代消除竞争与金属有机」的考查，下列说法正确的是（　）。",
+      "points": 2,
+      "stem": "影响醛酮亲核加成活性的因素不包括（　）。",
       "options": [
-        "强碱、高温、位阻大底物有利消除；格氏试剂可构筑碳碳键。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
+        "分子量大小",
+        "诱导效应",
+        "共轭效应",
+        "立体效应（位阻）"
       ],
       "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：强碱、高温、位阻大底物有利消除；格氏试剂可构筑碳碳键。 这与本节详解对「取代消除竞争与金属有机」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "review",
-      "sourceChapter": "ch10",
+      "hint": "亲核试剂能否顺利进攻羰基碳，取决于羰基碳的正电性和周围的空间位阻。",
+      "explanation": "A 正确（即不属于影响因素）：分子量大小不影响亲核加成活性。B/C/D 均属于影响因素：诱导效应影响碳正电性，共轭效应分散碳正电性，位阻阻碍亲核进攻。",
+      "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/10.3.md",
-        "label": "10.3 取代消除竞争与金属有机"
+        "path": "content/chemistry/detail/12.1.md",
+        "label": "11.1 影响亲核加成活性的三因素"
       }
     },
     {
       "id": "q004",
       "type": "single_choice",
       "difficulty": "basic",
-      "points": 5,
-      "stem": "关于“卤代烃”中「E1/E2 消除」的考查，下列说法正确的是（　）。",
+      "points": 2,
+      "stem": "醛与 HCN 加成的产物是（　）。",
       "options": [
-        "E2 为协同反式消除，常遵循扎伊采夫规则生成较稳定烯烃。",
-        "该知识点只适用于无机离子反应，不能用于有机分子结构或反应分析。",
-        "判断该知识点时应优先背结论，不需要考虑结构、电子效应或反应机理。",
-        "只要底物碳数相同，所有区域选择性、立体选择性和反应速率都必然相同。"
+        "α-羟基腈",
+        "α-羟基酸",
+        "β-羟基醛",
+        "氰基烯烃"
       ],
       "answer": 0,
-      "hint": "先回到教材中的定义或机理条件，抓住结构、电子效应和反应路径三件事。",
-      "explanation": "A 正确：E2 为协同反式消除，常遵循扎伊采夫规则生成较稳定烯烃。 这与本节详解对「E1/E2 消除」的表述一致。B 错：该知识点正用于有机分子的结构和反应分析。C 错：有机化学题必须联系结构、电子效应、立体因素和机理，不能只背结论。D 错：碳数相同并不意味着官能团、构型、位阻和中间体稳定性相同，因此选择性和速率可能明显不同。",
-      "source": "review",
-      "sourceChapter": "ch10",
+      "hint": "CN⁻ 作为亲核试剂进攻羰基碳，形成新的 C-C 键，产物含氰基和羟基。",
+      "explanation": "A 正确：RCHO + HCN → RCH(CN)OH（α-羟基腈）。B 错：α-羟基酸是进一步水解的产物。C 错：β-羟基醛是羟醛缩合中间体。D 错：产物不含碳碳双键。",
+      "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/10.2.md",
-        "label": "10.2 E1/E2 消除"
+        "path": "content/chemistry/detail/12.1.md",
+        "label": "11.1 与 HCN 的亲核加成"
       }
     },
     {
       "id": "q005",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「醇、酚、醚」中，Williamson 合成适合一级卤代烃；环氧在酸、碱条件下开环区域选择不同。 请写出该判断所依据的核心术语或规则。",
-      "answer": "醚与环氧乙烷",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
+      "points": 2,
+      "stem": "下列醛酮中，亲核加成反应活性最高的是（　）。",
+      "options": [
+        "甲醛 HCHO",
+        "乙醛 CH₃CHO",
+        "丙酮 CH₃COCH₃",
+        "苯乙酮 C₆H₅COCH₃"
       ],
-      "explanation": "本题考查「醚与环氧乙烷」。教材要点是：Williamson 合成适合一级卤代烃；环氧在酸、碱条件下开环区域选择不同。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
+      "answer": 0,
+      "hint": "羰基碳的正电性越强、位阻越小，亲核加成活性越高。",
+      "explanation": "A 正确：甲醛位阻最小、无给电子基，活性最高。活性顺序：甲醛 > 乙醛 > 丙酮 > 苯乙酮。",
       "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/11.3.md",
-        "label": "11.3 醚与环氧乙烷"
+        "path": "content/chemistry/detail/12.1.md",
+        "label": "11.1 醛酮亲核加成活性比较"
       }
     },
     {
       "id": "q006",
-      "type": "fill_blank",
-      "difficulty": "basic",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「醇、酚、醚」中，醇可经 HX、SOCl2 或磺酸酯活化转化，伯醇氧化到醛或酸，仲醇氧化到酮。 请写出该判断所依据的核心术语或规则。",
-      "answer": "醇的反应",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "醛酮与醇在酸催化下反应生成缩醛/缩酮，该反应的主要用途是（　）。",
+      "options": [
+        "保护羰基，在后续反应中不受影响",
+        "永久除去羰基",
+        "将醛酮还原为醇",
+        "将醛酮氧化为羧酸"
       ],
-      "explanation": "本题考查「醇的反应」。教材要点是：醇可经 HX、SOCl2 或磺酸酯活化转化，伯醇氧化到醛或酸，仲醇氧化到酮。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
+      "answer": 0,
+      "hint": "缩醛/缩酮在碱性条件下稳定，但在酸性水溶液中可水解恢复羰基。",
+      "explanation": "A 正确：缩醛/缩酮可逆地在酸性水溶液中恢复醛酮，用于「保护」羰基。B 错：是可逆反应。C 错：缩醛不是醇。D 错：不是氧化反应。",
       "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/11.1.md",
-        "label": "11.1 醇的反应"
+        "path": "content/chemistry/detail/12.1.md",
+        "label": "11.1 缩醛/缩酮与羰基保护"
       }
     },
     {
       "id": "q007",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "medium",
-      "label": "填空/命名题",
-      "points": 5,
-      "total_points": 5,
-      "stem": "填空：在「卤代烃」中，SN2 为背面进攻并构型翻转，SN1 经碳正离子可外消旋并可能重排。 请写出该判断所依据的核心术语或规则。",
-      "answer": "SN1/SN2 亲核取代",
-      "hint": "答案通常是本小节标题中的核心概念；注意不要把现象和原因倒置。",
-      "scoring_criteria": [
-        "写出核心术语或规则名称（2分）",
-        "能用一句话说明其适用对象或判断条件（2分）",
-        "表述与教材一致、无反向错误（1分）"
+      "points": 2,
+      "stem": "格氏试剂 CH₃MgBr 与丙酮反应后酸化，得到的产物是（　）。",
+      "options": [
+        "叔丁醇（2-甲基-2-丙醇）",
+        "异丙醇",
+        "乙醇",
+        "丙酮醇"
       ],
-      "explanation": "本题考查「SN1/SN2 亲核取代」。教材要点是：SN2 为背面进攻并构型翻转，SN1 经碳正离子可外消旋并可能重排。 因此答案应围绕该术语或规则展开。若只写孤立产物或现象而不写判断依据，不能完整得分。",
-      "source": "review",
-      "sourceChapter": "ch10",
+      "answer": 0,
+      "hint": "格氏试剂提供碳负离子进攻羰基碳。丙酮是酮，产物应为叔醇。",
+      "explanation": "A 正确：CH₃MgBr 中甲基碳负离子进攻丙酮羰基碳，酸化后得 (CH₃)₃COH（叔丁醇）。B 错：异丙醇是丙酮还原产物。C 错：乙醇碳数少于丙酮。D 错：丙酮醇不是规范命名。",
+      "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/10.1.md",
-        "label": "10.1 SN1/SN2 亲核取代"
+        "path": "content/chemistry/detail/12.2.md",
+        "label": "11.2 格氏试剂加酮得叔醇"
       }
     },
     {
       "id": "q008",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "basic",
-      "label": "简答题",
-      "points": 20,
-      "total_points": 20,
-      "stem": "简答题：结合「醇、酚、醚」中「酚的结构与反应」的内容，说明：酚羟基与芳环共轭，酚酸性强于醇，且芳环易发生邻对位取代。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「酚的结构与反应」，再说明教材依据：酚羟基与芳环共轭，酚酸性强于醇，且芳环易发生邻对位取代。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
-      "scoring_criteria": [
-        "准确识别考查点「酚的结构与反应」并写出适用对象（4分）",
-        "说明教材依据：酚羟基与芳环共轭，酚酸性强于醇，且芳环易发生邻对位取代。（6分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（6分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（4分）"
+      "points": 2,
+      "stem": "格氏试剂与甲醛反应后酸化，生成的醇是（　）。",
+      "options": [
+        "伯醇",
+        "仲醇",
+        "叔醇",
+        "酚"
       ],
-      "explanation": "解析：本题不是只问结论，而是要求把「酚的结构与反应」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：酚羟基与芳环共轭，酚酸性强于醇，且芳环易发生邻对位取代。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
+      "answer": 0,
+      "hint": "甲醛的羰基碳上连两个氢（无烃基），格氏试剂加成后羟基碳上只剩一个烃基。",
+      "explanation": "A 正确：甲醛 HCHO 羰基碳连两个 H，加成后得 RCH₂OH（伯醇）。口诀：甲醛→伯醇，其他醛→仲醇，酮→叔醇。",
       "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/11.2.md",
-        "label": "11.2 酚的结构与反应"
+        "path": "content/chemistry/detail/12.2.md",
+        "label": "11.2 格氏试剂与不同底物的加成"
       }
     },
     {
       "id": "q009",
-      "type": "essay",
+      "type": "single_choice",
       "difficulty": "medium",
-      "label": "机理/推断题",
-      "points": 20,
-      "total_points": 20,
-      "stem": "机理/推断题：结合「绪论与有机化学基础」中「有机化学的研究对象与价值」的内容，说明：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「有机化学的研究对象与价值」，再说明教材依据：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
-      "scoring_criteria": [
-        "准确识别考查点「有机化学的研究对象与价值」并写出适用对象（4分）",
-        "说明教材依据：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。（6分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（6分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（4分）"
+      "points": 2,
+      "stem": "Wittig 反应中，醛酮与叶立德反应的最终产物是（　）。",
+      "options": [
+        "碳链增长的烯烃",
+        "碳链增长的醇",
+        "碳链缩短的醛",
+        "环氧化合物"
       ],
-      "explanation": "解析：本题不是只问结论，而是要求把「有机化学的研究对象与价值」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：有机化学以碳化合物为主要研究对象，既要认识已有有机分子，也要创造新分子。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
-      "source": "review",
-      "sourceChapter": "ch01",
+      "answer": 0,
+      "hint": "Wittig 反应的特征是羰基 C=O 被替换为 C=C（碳碳双键）。",
+      "explanation": "A 正确：Ph₃P=CHR + R'₂C=O → R'₂C=CHR + Ph₃P=O。产物是碳链增长的烯烃。B 错：格氏试剂加醛酮才得醇。C 错：是增碳非减碳。D 错：产物不含环氧结构。",
+      "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/1.1.md",
-        "label": "1.1 有机化学的研究对象与价值"
-      },
-      "manimVideoId": "quiz-chem-ch01-q009"
+        "path": "content/chemistry/detail/12.2.md",
+        "label": "11.2 Wittig 反应"
+      }
     },
     {
       "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "制备 Wittig 反应的叶立德试剂时，卤代烷的限制是（　）。",
+      "options": [
+        "不能用三级卤代烷、卤代烯烃和卤代芳烃",
+        "只能用氟代烷",
+        "只能用碘代烷",
+        "只能用一级卤代烷"
+      ],
+      "answer": 0,
+      "hint": "叶立德制备的第一步是三苯基膦对卤代烷的 SN2 亲核取代。",
+      "explanation": "A 正确：叶立德制备第一步需 SN2，三级卤代烷位阻大、卤代烯烃和卤代芳烃 C-X 键太强，都无法 SN2。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.2.md",
+        "label": "11.2 叶立德的制备与卤代烷限制"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "催化加氢还原醛和酮的产物分别是（　）。",
+      "options": [
+        "醛得伯醇，酮得仲醇",
+        "醛得仲醇，酮得叔醇",
+        "醛得羧酸，酮得酯",
+        "醛和酮都得烷烃"
+      ],
+      "answer": 0,
+      "hint": "催化加氢是将 H₂ 加到碳氧双键上，羰基变为羟基。",
+      "explanation": "A 正确：RCHO + H₂ → RCH₂OH（伯醇）；R₂C=O + H₂ → R₂CHOH（仲醇）。B/C/D 均错误。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 醛酮的催化加氢还原"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "NaBH₄ 和 LiAlH₄ 作为还原剂的特点是（　）。",
+      "options": [
+        "选择性还原羰基为醇，可保留碳碳双键",
+        "将醛酮直接还原为烷烃",
+        "只还原醛，不还原酮",
+        "将醛酮氧化为羧酸"
+      ],
+      "answer": 0,
+      "hint": "负氢（H⁻）试剂优先进攻缺电子的羰基碳，对 C=C 双键不反应。",
+      "explanation": "A 正确：NaBH₄ 和 LiAlH₄ 选择性还原 C=O 为 C-OH，C=C 不受影响。B 错：到烷烃需克莱门森或黄鸣龙。C 错：两者都还原酮。D 错：方向相反。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 NaBH₄/LiAlH₄ 选择性还原"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "克莱门森还原的反应条件是（　）。",
+      "options": [
+        "锌汞齐 + 浓盐酸",
+        "NaBH₄ + 甲醇",
+        "H₂ + Pd/C",
+        "N₂H₄ + KOH"
+      ],
+      "answer": 0,
+      "hint": "克莱门森还原是在酸性条件下将羰基直接还原为亚甲基。",
+      "explanation": "A 正确：Zn(Hg) + 浓 HCl，酸性条件。D 错：N₂H₄ + KOH 是黄鸣龙还原条件（碱性），与克莱门森互补。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 克莱门森还原"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "黄鸣龙改进的 Wolff-Kishner 还原使用的反应条件是（　）。",
+      "options": [
+        "肼（N₂H₄）+ KOH + 二甘醇，加热",
+        "锌汞齐 + 浓盐酸",
+        "LiAlH₄ + 无水乙醚",
+        "H₂ + Ni 催化剂"
+      ],
+      "answer": 0,
+      "hint": "黄鸣龙改进使原本高温高压的反应可在常压下进行。",
+      "explanation": "A 正确：N₂H₄ + KOH + 二甘醇，碱性条件，中国第一个人名反应。B 错：这是克莱门森条件。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 黄鸣龙还原"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "醛的银镜反应中，醛被（　），银离子被（　）。",
+      "options": [
+        "氧化，还原",
+        "还原，氧化",
+        "取代，加成",
+        "加成，消除"
+      ],
+      "answer": 0,
+      "hint": "银镜反应中醛失去电子（氧化态升高），银离子得到电子变成银单质。",
+      "explanation": "A 正确：醛被氧化为羧酸，Ag⁺ 被还原为 Ag。可用于鉴别醛和酮。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 醛的氧化与银镜反应"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "羟醛缩合反应中，亲核试剂的来源是（　）。",
+      "options": [
+        "醛酮自身 α-氢被碱拔走后生成的碳负离子",
+        "外加的格氏试剂",
+        "溶液中的氢氧根离子",
+        "醛酮的羰基氧"
+      ],
+      "answer": 0,
+      "hint": "羟醛缩合的特点是不加外源亲核试剂，由底物自身产生。",
+      "explanation": "A 正确：强碱拔 α-氢生成碳负离子，该碳负离子进攻另一分子羰基碳。亲核试剂来自底物自身。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 羟醛缩合的机理"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "羟醛缩合的最终脱水产物是（　）。",
+      "options": [
+        "α,β-不饱和醛酮",
+        "β-羟基醛酮",
+        "α-羟基酸",
+        "邻二醇"
+      ],
+      "answer": 0,
+      "hint": "羟醛缩合先生成含羟基的中间体，再脱水形成共轭双键。",
+      "explanation": "A 正确：先得 β-羟基醛酮，再脱水得 α,β-不饱和醛酮。「羟」指中间体曾含羟基。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 羟醛缩合产物"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "无 α-氢的醛（如苯甲醛）在浓强碱中发生的反应是（　）。",
+      "options": [
+        "康尼扎罗歧化（一分子氧化为酸，一分子还原为醇）",
+        "羟醛缩合",
+        "银镜反应",
+        "克莱门森还原"
+      ],
+      "answer": 0,
+      "hint": "无 α-氢的醛不能进行羟醛缩合，在浓碱中走另一条路。",
+      "explanation": "A 正确：2C₆H₅CHO + NaOH → C₆H₅COO⁻Na⁺ + C₆H₅CH₂OH。一分子氧化为酸盐，一分子还原为醇。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 康尼扎罗反应"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "下列关于亲核取代反应的描述，正确的是（　）。",
+      "options": [
+        "SN1 反应经碳正离子中间体，可能伴随重排",
+        "SN2 反应经碳正离子中间体，构型翻转",
+        "SN1 反应速率与亲核试剂浓度成正比",
+        "SN2 反应中叔卤代烷活性最高"
+      ],
+      "answer": 0,
+      "hint": "SN1 分步进行，第一步生成碳正离子是决速步。",
+      "explanation": "A 正确：SN1 经碳正离子，可能重排。B 错：SN2 没有碳正离子中间体。C 错：SN1 速率与亲核试剂浓度无关。D 错：叔卤代烷倾向 SN1。",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "sourceRef": {
+        "path": "content/chemistry/detail/10.1.md",
+        "label": "7.x SN1 亲核取代机理"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "醇在酸催化下脱水消除遵循扎伊采夫规则，其含义是（　）。",
+      "options": [
+        "优先消除含氢较少的 β 碳上的氢，生成取代基更多的稳定烯烃",
+        "优先消除含氢较多的 β 碳上的氢",
+        "只生成端基烯烃",
+        "消除方向完全随机"
+      ],
+      "answer": 0,
+      "hint": "扎伊采夫规则的核心是「更稳定的烯烃为主要产物」。",
+      "explanation": "A 正确：消除含氢较少的 β 碳上的氢，生成取代基更多的稳定烯烃。B 错：方向相反。",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "sourceRef": {
+        "path": "content/chemistry/detail/10.2.md",
+        "label": "7.x 扎伊采夫规则"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "羰基 C=O 中，由于氧的电负性大于碳，碳端带____电荷（δ+），氧端带____电荷（δ-）。因此亲核试剂进攻____，亲电试剂（如 H⁺）进攻____。",
+      "answer": "部分正、部分负、羰基碳、羰基氧",
+      "hint": "电荷分离决定了两个不同的反应位点。",
+      "scoring_criteria": [
+        "四个空全部正确（2分）",
+        "错一个（1分）",
+        "错两个及以上（0分）"
+      ],
+      "explanation": "羰基中碳 δ+、氧 δ-。亲核试剂进攻羰基碳→亲核加成；亲电试剂进攻羰基氧→质子化。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.1.md",
+        "label": "11.1 羰基的电荷分离"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q022",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "醛与 HCN 加成的产物称为____，其结构特点是同一个碳上同时连有____基和____基。",
+      "answer": "α-羟基腈、羟（OH）、氰（CN）",
+      "hint": "HCN 中 CN⁻ 的碳进攻羰基碳，形成新的 C-C 键。",
+      "scoring_criteria": [
+        "三个空全部正确（2分）",
+        "错一个（1分）",
+        "错两个及以上（0分）"
+      ],
+      "explanation": "RCHO + HCN → RCH(OH)CN（α-羟基腈），可进一步水解为 α-羟基酸。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.1.md",
+        "label": "11.1 与 HCN 加成得 α-羟基腈"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q023",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "影响醛酮亲核加成活性的三个因素是：____效应、____效应和____效应。醛比酮更活泼的原因是醛的位阻____且电子效应使羰基碳正电性更强。",
+      "answer": "诱导、共轭、立体（位阻）、小",
+      "hint": "从电子和空间两个角度分析。",
+      "scoring_criteria": [
+        "四个空全部正确（2分）",
+        "错一个（1分）",
+        "错两个及以上（0分）"
+      ],
+      "explanation": "诱导效应影响碳正电性，共轭效应分散碳正电性，立体效应阻碍亲核进攻。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.1.md",
+        "label": "11.1 影响亲核加成活性的三因素"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q024",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "醛酮与 2 分子醇在酸催化下生成____（醛来的）或____（酮来的），该反应可用于____羰基。",
+      "answer": "缩醛、缩酮、保护",
+      "hint": "该反应可逆，在酸性水溶液中可恢复原来的羰基。",
+      "scoring_criteria": [
+        "三个空全部正确（2分）",
+        "错一个（1分）",
+        "错两个及以上（0分）"
+      ],
+      "explanation": "缩醛/缩酮可逆，在碱性条件下稳定，酸性水解恢复羰基。用于「保护」羰基。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.1.md",
+        "label": "11.1 缩醛/缩酮与羰基保护"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q025",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "格氏试剂与不同底物加成可得到不同级别的醇：加甲醛得____醇，加其他醛得____醇，加酮得____醇。",
+      "answer": "伯、仲、叔",
+      "hint": "看羰基碳上原有几个烃基。",
+      "scoring_criteria": [
+        "三个空全部正确（2分）",
+        "错一个（1分）",
+        "错两个及以上（0分）"
+      ],
+      "explanation": "甲醛→伯醇，其他醛→仲醇，酮→叔醇。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.2.md",
+        "label": "11.2 格氏试剂与不同底物得不同醇"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q026",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "points": 2,
+      "stem": "Wittig 反应的叶立德制备：第一步三苯基膦与卤代烷发生____反应得季鏻盐，第二步用____拔去 α-氢得叶立德。叶立德与醛酮经____元环中间体断裂，生成烯烃。",
+      "answer": "SN2 亲核取代、强碱（如烷基锂）、四",
+      "hint": "叶立德含有碳负离子。",
+      "scoring_criteria": [
+        "三个空全部正确（2分）",
+        "错一个（1分）",
+        "错两个及以上（0分）"
+      ],
+      "explanation": "①Ph₃P + RCH₂X → Ph₃P⁺CH₂R·X⁻（SN2）。②强碱拔 α-氢得叶立德。③经四元环中间体断裂得烯烃。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.2.md",
+        "label": "11.2 叶立德的制备与 Wittig 机理"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q027",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "将羰基（C=O）还原为亚甲基（CH₂）的三条路线是：①克莱门森还原（锌汞齐 + ____酸____）；②黄鸣龙还原（____ + KOH + 二甘醇）；③缩硫酮 + 催化氢化。",
+      "answer": "浓盐酸（HCl）、肼（N₂H₄）",
+      "hint": "克莱门森酸性条件，黄鸣龙碱性条件，两者互补。",
+      "scoring_criteria": [
+        "两个空全部正确（2分）",
+        "错一个（1分）",
+        "全部错误（0分）"
+      ],
+      "explanation": "克莱门森：Zn(Hg) + 浓 HCl（酸性）。黄鸣龙：N₂H₄ + KOH + 二甘醇（碱性）。两者酸碱互补。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 羰基还原为亚甲基的三条路线"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q028",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "醛能与银氨溶液发生____反应（生成银镜），利用此反应可以鉴别____和酮。",
+      "answer": "银镜、醛",
+      "hint": "醛基可被弱氧化剂氧化为羧酸，酮一般不能。",
+      "scoring_criteria": [
+        "两个空全部正确（2分）",
+        "错一个（1分）",
+        "全部错误（0分）"
+      ],
+      "explanation": "银镜反应：醛被氧化为羧酸，Ag⁺ 被还原为 Ag。酮一般不反应，可鉴别醛和酮。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 醛的银镜反应"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q029",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "羟醛缩合是构筑____键的重要方法。强碱拔走一分子醛酮的 α-氢生成____，它进攻另一分子醛酮的羰基碳，经 β-羟基中间体脱水得____醛酮。",
+      "answer": "碳碳（C-C）、碳负离子、α,β-不饱和",
+      "hint": "羟醛缩合的核心价值是通过自身产生的亲核试剂构筑新的碳碳键。",
+      "scoring_criteria": [
+        "三个空全部正确（2分）",
+        "错一个（1分）",
+        "错两个及以上（0分）"
+      ],
+      "explanation": "碱拔 α-氢→碳负离子→进攻另一分子羰基→β-羟基醛酮→脱水→α,β-不饱和醛酮。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 羟醛缩合"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q030",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "points": 2,
+      "stem": "亲核取代中，卤素离去能力顺序为：____ > Br⁻ > Cl⁻ >> F⁻。碳正离子稳定性顺序为：三级 > ____ > 一级 > 甲基碳正离子。",
+      "answer": "I⁻（碘离子）、二级",
+      "hint": "离去能力与原子大小有关；碳正离子稳定性与超共轭效应有关。",
+      "scoring_criteria": [
+        "两个空全部正确（2分）",
+        "错一个（1分）",
+        "全部错误（0分）"
+      ],
+      "explanation": "离去能力：I⁻ > Br⁻ > Cl⁻ >> F⁻。碳正离子稳定性：3° > 2° > 1° > CH₃⁺。",
+      "source": "review",
+      "sourceChapter": "ch07",
+      "sourceRef": {
+        "path": "content/chemistry/detail/10.1.md",
+        "label": "7.x 离去能力与碳正离子稳定性"
+      },
+      "total_points": 2
+    },
+    {
+      "id": "q031",
+      "type": "essay",
+      "difficulty": "medium",
+      "points": 10,
+      "stem": "醛和酮都能发生亲核加成反应，但醛通常比酮更活泼。请：(1) 从电子效应和立体效应两方面解释为什么醛比酮活泼；(2) 以苯甲醛和丙酮为例，分别写出它们与 HCN 加成的反应式和产物结构；(3) 说明为什么苯乙酮的亲核加成活性低于丙酮。",
+      "answer": "参考答案：(1) 电子效应：酮羰基碳连两个给电子烃基，碳正电性弱于醛。立体效应：酮两侧烃基位阻大，醛一侧是小 H。(2) 丙酮 + HCN → (CH₃)₂C(OH)CN；苯甲醛 + HCN → C₆H₅CH(OH)CN。(3) 苯乙酮有苯环共轭（削弱碳正电性）和苯基位阻（大于甲基），双重降低活性。",
+      "hint": "从诱导效应、共轭效应、位阻三因素逐一分析。",
+      "scoring_criteria": [
+        "正确解释电子效应原因（2分）",
+        "正确解释立体效应原因（2分）",
+        "正确写出 HCN 加成产物（2分）",
+        "正确解释苯乙酮活性低的原因（3分）",
+        "结论清楚（1分）"
+      ],
+      "explanation": "醛酮亲核加成活性受三因素控制。苯乙酮兼具共轭效应和位阻效应，活性最低。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.1.md",
+        "label": "11.1 醛酮亲核加成活性比较"
+      },
+      "total_points": 10
+    },
+    {
+      "id": "q032",
+      "type": "essay",
+      "difficulty": "medium",
+      "points": 10,
+      "stem": "格氏试剂是有机合成中构筑碳碳键的核心试剂。请：(1) 写出格氏试剂的制备反应和结构特征；(2) 说明与甲醛、其他醛、酮分别加成得到什么级别的醇；(3) 解释为什么不能在水或醇中使用；(4) 用逆合成分析法合成 1-苯基-1-丙醇。",
+      "answer": "参考答案：(1) RX + Mg →[无水乙醚] RMgX，C-Mg 键极化，碳端为碳负离子。(2) 甲醛→伯醇，其他醛→仲醇，酮→叔醇。(3) 遇活泼氢立即失活：RMgX + H₂O → RH。(4) C₆H₅CHO + CH₃CH₂MgBr →[无水乙醚] →[H₃O⁺] C₆H₅CH(OH)CH₂CH₃。",
+      "hint": "逆合成时把产物醇的羟基碳旁 C-C 键切开。",
+      "scoring_criteria": [
+        "正确写出制备反应和结构（2分）",
+        "正确说明醇级别（2分）",
+        "正确解释遇活泼氢失活（2分）",
+        "正确完成逆合成（3分）",
+        "结论清楚（1分）"
+      ],
+      "explanation": "格氏试剂是碳负离子供体，与不同底物得不同级别醇，遇水失活。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.2.md",
+        "label": "11.2 格氏试剂的制备与应用"
+      },
+      "total_points": 10
+    },
+    {
+      "id": "q033",
       "type": "essay",
       "difficulty": "hard",
-      "label": "合成/综合题",
-      "points": 25,
-      "total_points": 25,
-      "stem": "合成/综合题：结合「烯烃」中「烯烃结构与催化加氢」的内容，说明：烯烃 pi 键旋转受限，催化加氢通常表现为同面加成。 并要求写出关键判断步骤、常见误区及结论。",
-      "answer": "参考答案：应先指出本题考查「烯烃结构与催化加氢」，再说明教材依据：烯烃 pi 键旋转受限，催化加氢通常表现为同面加成。 作答时需把结构特征或反应条件放在第一步，随后分析电子效应、立体效应或中间体稳定性，最后给出主要产物/性质/命名结论。若属于反应题，应写明试剂条件、区域选择性或立体选择性；若属于命名/结构题，应说明主链、编号、官能团优先级或构型判定过程。",
-      "hint": "按“对象识别→规则/机理→中间体或选择性→结论”的顺序组织答案。",
+      "points": 10,
+      "stem": "将羰基（C=O）还原为亚甲基（CH₂）有三条主要路线。请：(1) 分别写出克莱门森还原、黄鸣龙还原和缩硫酮路线的反应条件和反应式；(2) 解释为什么被称为「酸碱互补」；(3) 说明如何根据底物兼容性选路。",
+      "answer": "参考答案：(1) 克莱门森：Zn(Hg)/浓 HCl。黄鸣龙：N₂H₄/KOH/二甘醇。缩硫酮：先成缩硫酮再催化氢化。(2) 同目标（C=O→CH₂）但一酸一碱。(3) 怕碱选克莱门森，怕酸选黄鸣龙。",
+      "hint": "关键在于酸碱互补。",
       "scoring_criteria": [
-        "准确识别考查点「烯烃结构与催化加氢」并写出适用对象（5分）",
-        "说明教材依据：烯烃 pi 键旋转受限，催化加氢通常表现为同面加成。（7分）",
-        "写出关键步骤，包括结构判断、电子效应/立体因素或中间体分析（7分）",
-        "结论清楚，能指出常见错误或干扰判断为什么不成立（6分）"
+        "正确写出三条路线（3分）",
+        "正确解释酸碱互补（3分）",
+        "正确说明选路逻辑（3分）",
+        "结论清楚（1分）"
       ],
-      "explanation": "解析：本题不是只问结论，而是要求把「烯烃结构与催化加氢」的判断链写完整。第一步确认底物、官能团或构型；第二步调用教材规则：烯烃 pi 键旋转受限，催化加氢通常表现为同面加成。 第三步解释为什么其他路径或干扰判断不成立，例如忽略位阻、把马氏/反马氏混淆、把 SN1/SN2 条件混淆、或把官能团优先级写反。按评分标准逐点作答即可得到满分。",
-      "source": "review",
-      "sourceChapter": "ch06",
+      "explanation": "三条路线目标相同，条件各异，按底物兼容性选路。",
+      "source": "current_chapter",
       "sourceRef": {
-        "path": "content/chemistry/detail/6.1.md",
-        "label": "6.1 烯烃结构与催化加氢"
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 羰基还原为亚甲基"
       },
-      "manimVideoId": "quiz-chem-ch06-q010"
+      "total_points": 10
+    },
+    {
+      "id": "q034",
+      "type": "essay",
+      "difficulty": "hard",
+      "points": 10,
+      "stem": "羟醛缩合是合成 α,β-不饱和醛酮的重要方法。请：(1) 详细写出以丁醛为底物的羟醛缩合反应机理；(2) 解释为什么交叉缩合通常得到混合物；(3) 说明如何利用无 α-氢的醛实现产物单一的交叉缩合，以苯甲醛和乙醛合成肉桂醛为例。",
+      "answer": "参考答案：(1) ①OH⁻ 拔 α-氢生成碳负离子；②碳负离子进攻另一分子羰基碳形成新 C-C 键；③质子化得 β-羟基醛；④脱水得 α,β-不饱和醛。(2) A+B 交叉缩合有 4 种产物。(3) 苯甲醛无 α-氢只能做受体：C₆H₅CHO + CH₃CHO →[OH⁻] C₆H₅CH=CHCHO。",
+      "hint": "交叉缩合的控制关键是让一方只能做受体。",
+      "scoring_criteria": [
+        "详细写出机理和电子流向（3分）",
+        "正确解释 4 种混合物（2分）",
+        "正确说明无 α-氢受体策略（2分）",
+        "正确写出肉桂醛合成（2分）",
+        "结论清楚（1分）"
+      ],
+      "explanation": "羟醛缩合机理：碱拔 α-氢→碳负离子→进攻羰基→β-羟基醛→脱水→α,β-不饱和醛。",
+      "source": "current_chapter",
+      "sourceRef": {
+        "path": "content/chemistry/detail/12.3.md",
+        "label": "11.3 羟醛缩合机理与交叉缩合"
+      },
+      "total_points": 10
     }
   ],
   "summary": {
-    "totalQuestions": 10,
+    "totalQuestions": 34,
     "byType": {
-      "single_choice": 4,
-      "fill_blank": 3,
-      "essay": 3
+      "single_choice": 20,
+      "fill_blank": 10,
+      "essay": 4
     },
     "bySource": {
-      "current_chapter": 5,
-      "review": 5
+      "current_chapter": 26,
+      "review": 8
     },
     "byDifficulty": {
-      "basic": 7,
-      "medium": 2,
-      "hard": 1
+      "basic": 20,
+      "medium": 10,
+      "hard": 4
     }
   }
 }
