@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { idbStorage, PERSIST_KEYS } from "@/lib/storage/idbStorage";
+import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
 // AI 生成的交互式 HTML 产物最终态存储。
 // 流式 delta 由 ArtifactCard 本地 state 承接，完成后才写入 IndexedDB。
@@ -30,6 +31,22 @@ interface ArtifactsState {
   prune: (keepIds: string[]) => void;
 }
 
+function artifactWindowGeometry() {
+  if (typeof window === "undefined") {
+    return { pos: { x: 24, y: 64 }, size: { width: 860, height: 720 } };
+  }
+  const width = Math.min(860, Math.floor(window.innerWidth * 0.72));
+  const height = Math.floor(window.innerHeight * 0.94);
+  return {
+    pos: { x: Math.max(16, Math.floor(window.innerWidth * 0.02)), y: Math.max(16, Math.floor(window.innerHeight * 0.03)) },
+    size: { width, height },
+  };
+}
+
+function artifactWindowId(id: string) {
+  return `artifact-viewer:${id}`;
+}
+
 export const useArtifacts = create<ArtifactsState>()(
   persist(
     (set) => ({
@@ -52,8 +69,27 @@ export const useArtifacts = create<ArtifactsState>()(
           };
         }),
 
-      openViewer: (id) => set({ viewerId: id }),
-      closeViewer: () => set({ viewerId: null }),
+      openViewer: (id) =>
+        set((state) => {
+          const artifact = state.byId[id];
+          if (artifact) {
+            const { pos, size } = artifactWindowGeometry();
+            useWindowManager.getState().openWindow({
+              id: artifactWindowId(id),
+              type: "artifact-viewer",
+              title: artifact.title,
+              pos,
+              size,
+              data: { artifactId: id },
+            });
+          }
+          return { viewerId: id };
+        }),
+      closeViewer: () =>
+        set((state) => {
+          if (state.viewerId) useWindowManager.getState().closeWindow(artifactWindowId(state.viewerId));
+          return { viewerId: null };
+        }),
 
       prune: (keepIds) =>
         set((s) => {

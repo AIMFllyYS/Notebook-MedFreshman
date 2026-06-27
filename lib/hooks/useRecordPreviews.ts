@@ -1,14 +1,10 @@
 import { create } from "zustand";
-
-// 「记录」预览浮窗的临时态（内存，不持久化）。每个预览窗绑定一张 ReviewCard（cardId）。
-// 卡片本身已在 useReviewCards 持久化；本 store 只管「窗口开/关/层级/位置」这类 UI 态。
+import { useReviewCards } from "@/lib/hooks/useReviewCards";
+import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
 export interface RecordPreview {
   id: string;
   cardId: string;
-  pos: { x: number; y: number };
-  size: { w: number; h: number };
-  z: number;
 }
 
 const WIDTH = 420;
@@ -19,60 +15,42 @@ const genId = () => Math.random().toString(36).slice(2, 11);
 
 interface RecordPreviewsState {
   previews: RecordPreview[];
-  topZ: number;
   open: (cardId: string, anchor: { x: number; y: number }) => string;
   close: (id: string) => void;
-  move: (id: string, dx: number, dy: number) => void;
-  resize: (id: string, w: number, h: number) => void;
-  bringToFront: (id: string) => void;
 }
 
-export const useRecordPreviews = create<RecordPreviewsState>((set) => ({
+function initialGeometry(anchor: { x: number; y: number }, existingCount: number) {
+  const offset = (existingCount % 6) * 30;
+  const vw = typeof window !== "undefined" ? window.innerWidth : 1440;
+  const vh = typeof window !== "undefined" ? window.innerHeight : 900;
+  const x = Math.max(16, Math.min(anchor.x + 16 + offset, vw - WIDTH - 16));
+  const y = Math.max(16, Math.min(anchor.y - 40 + offset, vh - HEIGHT - 16));
+  return { pos: { x, y }, size: { width: WIDTH, height: HEIGHT } };
+}
+
+export const useRecordPreviews = create<RecordPreviewsState>((set, get) => ({
   previews: [],
-  topZ: 4000,
 
   open: (cardId, anchor) => {
     const id = genId();
-    set((s) => {
-      const off = (s.previews.length % 6) * 30;
-      const vw = typeof window !== "undefined" ? window.innerWidth : 1440;
-      const vh = typeof window !== "undefined" ? window.innerHeight : 900;
-      let x = Math.min(anchor.x + 16 + off, vw - WIDTH - 16);
-      let y = Math.min(anchor.y - 40 + off, vh - HEIGHT - 16);
-      x = Math.max(16, x);
-      y = Math.max(16, y);
-      const z = s.topZ + 1;
-      return {
-        previews: [...s.previews, { id, cardId, pos: { x, y }, size: { w: WIDTH, h: HEIGHT }, z }],
-        topZ: z,
-      };
+    const { pos, size } = initialGeometry(anchor, get().previews.length);
+    const card = useReviewCards.getState().byId[cardId];
+    useWindowManager.getState().openWindow({
+      id,
+      type: "record-preview",
+      title: card?.sourceLabel ? `记录到复习板 · ${card.sourceLabel}` : "记录到复习板",
+      pos,
+      size,
+      data: { cardId },
     });
+    set((state) => ({ previews: [...state.previews, { id, cardId }] }));
     return id;
   },
 
-  close: (id) => set((s) => ({ previews: s.previews.filter((p) => p.id !== id) })),
-
-  move: (id, dx, dy) =>
-    set((s) => ({
-      previews: s.previews.map((p) =>
-        p.id === id ? { ...p, pos: { x: p.pos.x + dx, y: p.pos.y + dy } } : p,
-      ),
-    })),
-
-  resize: (id, w, h) =>
-    set((s) => ({
-      previews: s.previews.map((p) =>
-        p.id === id
-          ? { ...p, size: { w: Math.max(MIN_W, w), h: Math.max(MIN_H, h) } }
-          : p,
-      ),
-    })),
-
-  bringToFront: (id) =>
-    set((s) => {
-      const z = s.topZ + 1;
-      return { topZ: z, previews: s.previews.map((p) => (p.id === id ? { ...p, z } : p)) };
-    }),
+  close: (id) => {
+    useWindowManager.getState().closeWindow(id);
+    set((state) => ({ previews: state.previews.filter((preview) => preview.id !== id) }));
+  },
 }));
 
-export const RECORD_PREVIEW_SIZE = { width: WIDTH, height: HEIGHT };
+export const RECORD_PREVIEW_SIZE = { width: WIDTH, height: HEIGHT, minWidth: MIN_W, minHeight: MIN_H };

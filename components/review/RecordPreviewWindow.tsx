@@ -11,11 +11,13 @@ import { useDraggable } from "@/lib/hooks/useDraggable";
 import { useResizable } from "@/lib/hooks/useResizable";
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
 import { useRecordPreviews, type RecordPreview } from "@/lib/hooks/useRecordPreviews";
+import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { processRecord, retryRecord, reviseRecord, type ProcessCallbacks } from "@/lib/review/startRecord";
 import { getSubject } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
 import { useProcessingDisclosure } from "@/lib/hooks/useProcessingDisclosure";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
+import WindowChrome from "@/components/window/WindowChrome";
 import FlipCard from "@/components/review/FlipCard";
 import CollapsibleSection from "@/components/review/CollapsibleSection";
 import QuizMarkdown from "@/components/quiz/QuizMarkdown";
@@ -37,9 +39,11 @@ const MODE_DEFS: { mode: RecordMode; label: string; icon: typeof BookOpenText }[
 ];
 
 export default function RecordPreviewWindow({ preview }: { preview: RecordPreview }) {
+  const managed = useWindowManager((s) => s.windows.find((w) => w.id === preview.id));
   const card = useReviewCards((s) => s.byId[preview.cardId]);
   const remove = useReviewCards((s) => s.remove);
-  const { close, move, resize, bringToFront } = useRecordPreviews();
+  const close = useRecordPreviews((s) => s.close);
+  const { bringToFront, commitGeometry, minimizeWindow, setFullscreen } = useWindowManager();
   const [flipped, setFlipped] = useState(false);
 
   const [reasoningBuf, setReasoningBuf] = useState("");
@@ -50,42 +54,65 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
 
   const [reviseText, setReviseText] = useState("");
   const [reviseError, setReviseError] = useState<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const preExpandRef = useRef<{ pos: { x: number; y: number }; size: { width: number; height: number } } | null>(null);
+  const uiTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingReasoning = useRef("");
+  const pendingContent = useRef("");
+  const flushUi = useCallback(() => {
+    if (uiTimerRef.current) {
+      clearTimeout(uiTimerRef.current);
+      uiTimerRef.current = null;
+    }
+    setReasoningBuf(pendingReasoning.current);
+    setContentBuf(pendingContent.current);
+  }, []);
+  const scheduleUi = useCallback(() => {
+    if (uiTimerRef.current) return;
+    uiTimerRef.current = setTimeout(() => {
+      uiTimerRef.current = null;
+      flushUi();
+    }, 60);
+  }, [flushUi]);
 
-  const { elRef, onPointerDown } = useDraggable((dx, dy) => move(preview.id, dx, dy));
-  const onResizeStart = useResizable(elRef, (w, h) => resize(preview.id, w, h));
+  const { elRef, onPointerDown } = useDraggable((dx, dy) => {
+    if (!managed) return;
+    commitGeometry(preview.id, {
+      pos: {
+        x: Math.max(0, Math.min(managed.pos.x + dx, window.innerWidth - managed.size.width)),
+        y: Math.max(0, Math.min(managed.pos.y + dy, window.innerHeight - managed.size.height)),
+      },
+    });
+  });
+  const onResizeStart = useResizable(
+    elRef,
+    (width, height) => commitGeometry(preview.id, { size: { width, height } }),
+    { minW: 320, minH: 360 },
+  );
 
   useEffect(() => {
     if (!card) close(preview.id);
   }, [card, close, preview.id]);
 
   useEffect(() => {
+    return () => {
+      if (uiTimerRef.current) clearTimeout(uiTimerRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
     if (card?.status === "saved") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setReasoningBuf("");
       setContentBuf("");
       setBusy(false);
     }
   }, [card?.status]);
 
-  if (!card) return null;
+  if (!card || !managed) return null;
 
   const subjectName =
     isSubjectId(card.subjectId) ? getSubject(card.subjectId)?.name ?? card.subjectId : card.subjectId;
-
-  const headerBtn =
-    "flex items-center justify-center rounded p-1 text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-variant)]";
-
-  const uiTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pendingReasoning = useRef("");
-  const pendingContent = useRef("");
-  const flushUi = useCallback(() => {
-    if (uiTimerRef.current) { clearTimeout(uiTimerRef.current); uiTimerRef.current = null; }
-    setReasoningBuf(pendingReasoning.current);
-    setContentBuf(pendingContent.current);
-  }, []);
-  const scheduleUi = useCallback(() => {
-    if (uiTimerRef.current) return;
-    uiTimerRef.current = setTimeout(() => { uiTimerRef.current = null; flushUi(); }, 60);
-  }, [flushUi]);
 
   const makeCallbacks = (): ProcessCallbacks => ({
     onReasoning: (delta) => { pendingReasoning.current += delta; scheduleUi(); },
@@ -94,6 +121,9 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
 
   async function handleProcess(mode: RecordMode, userInstruction?: string) {
     if (busy) return;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
     setBusy(true);
     setReasoningBuf("");
     setContentBuf("");
@@ -101,38 +131,47 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
     pendingContent.current = "";
     setReviseError(null);
     setCustomExpanded(false);
-    const r = await processRecord(preview.cardId, mode, userInstruction ? { userInstruction } : {}, makeCallbacks());
+    const r = await processRecord(preview.cardId, mode, userInstruction ? { userInstruction } : {}, makeCallbacks(), controller.signal);
     flushUi();
     setBusy(false);
+    if (abortRef.current === controller) abortRef.current = null;
     if (!r.ok) setReviseError(r.error || "处理失败");
   }
 
   async function handleRetry() {
     if (busy) return;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
     setBusy(true);
     setReasoningBuf("");
     setContentBuf("");
     pendingReasoning.current = "";
     pendingContent.current = "";
     setReviseError(null);
-    const r = await retryRecord(preview.cardId, makeCallbacks());
+    const r = await retryRecord(preview.cardId, makeCallbacks(), controller.signal);
     flushUi();
     setBusy(false);
+    if (abortRef.current === controller) abortRef.current = null;
     if (!r.ok) setReviseError(r.error || "重试失败");
   }
 
   async function handleRevise() {
     const text = reviseText.trim();
     if (!text || busy) return;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
     setBusy(true);
     setReasoningBuf("");
     setContentBuf("");
     pendingReasoning.current = "";
     pendingContent.current = "";
     setReviseError(null);
-    const r = await reviseRecord(preview.cardId, text, makeCallbacks());
+    const r = await reviseRecord(preview.cardId, text, makeCallbacks(), controller.signal);
     flushUi();
     setBusy(false);
+    if (abortRef.current === controller) abortRef.current = null;
     if (r.ok) {
       setReviseText("");
       setFlipped(false);
@@ -142,8 +181,36 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
   }
 
   function handleDiscard() {
+    abortRef.current?.abort();
     remove(card.id);
     close(preview.id);
+  }
+
+  function handleClose() {
+    abortRef.current?.abort();
+    close(preview.id);
+  }
+
+  function handleMinimize() {
+    minimizeWindow(preview.id);
+  }
+
+  function toggleFullscreen() {
+    const current = useWindowManager.getState().windows.find((w) => w.id === preview.id);
+    if (!current) return;
+    if (current.fullscreen) {
+      const snap = preExpandRef.current;
+      if (snap) commitGeometry(preview.id, { pos: snap.pos, size: snap.size });
+      preExpandRef.current = null;
+      setFullscreen(preview.id, false);
+      return;
+    }
+    preExpandRef.current = { pos: current.pos, size: current.size };
+    const rect = document.getElementById("notes-panel")?.getBoundingClientRect();
+    if (rect && rect.width > 0 && rect.height > 0) {
+      commitGeometry(preview.id, { pos: { x: rect.left, y: rect.top }, size: { width: rect.width, height: rect.height } });
+    }
+    setFullscreen(preview.id, true);
   }
 
   const isProcessing = card.status === "processing" || busy;
@@ -155,49 +222,36 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
       onPointerDownCapture={() => bringToFront(preview.id)}
       style={{
         position: "fixed",
-        left: preview.pos.x,
-        top: preview.pos.y,
-        width: preview.size.w,
-        height: preview.size.h,
+        left: managed.pos.x,
+        top: managed.pos.y,
+        width: managed.size.width,
+        height: managed.size.height,
         background: "var(--md-sys-color-surface-container-lowest)",
-        borderRadius: 14,
-        boxShadow: "0 12px 32px rgba(0,0,0,0.18), 0 0 0 1px var(--md-sys-color-outline-variant)",
-        zIndex: preview.z,
-        display: "flex",
+        borderRadius: managed.fullscreen ? 0 : 14,
+        boxShadow: managed.fullscreen
+          ? "0 0 0 1px var(--md-sys-color-outline-variant)"
+          : "0 12px 32px rgba(0,0,0,0.18), 0 0 0 1px var(--md-sys-color-outline-variant)",
+        zIndex: managed.z,
+        display: managed.minimized ? "none" : "flex",
         flexDirection: "column",
         overflow: "hidden",
         animation: "scale-up 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
       }}
     >
-      {/* 标题栏 */}
-      <div
-        onPointerDown={onPointerDown}
-        style={{
-          padding: "8px 12px",
-          background: "var(--md-sys-color-surface-container-high)",
-          borderBottom: "1px solid var(--md-sys-color-outline-variant)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          cursor: "grab",
-          userSelect: "none",
-          touchAction: "none",
-        }}
+      <WindowChrome
+        title={`记录到复习板 · ${subjectName}`}
+        icon={<BookmarkCheck size={15} />}
+        onClose={handleClose}
+        onMinimize={handleMinimize}
+        onFullscreen={toggleFullscreen}
+        isFullscreen={managed.fullscreen}
+        isMinimized={managed.minimized}
+        onDragStart={onPointerDown}
+        bodyClassName="flex flex-col"
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 6, color: "var(--md-sys-color-primary)", minWidth: 0 }}>
-          <BookmarkCheck size={15} className="shrink-0" />
-          <span style={{ fontSize: 13, fontWeight: 600, whiteSpace: "nowrap" }}>记录到复习板</span>
-          <span style={{ fontSize: 11.5, color: "var(--ink-faint)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            · {subjectName}
-          </span>
-        </div>
-        <button onClick={() => close(preview.id)} title="关闭" className={headerBtn} data-no-drag>
-          <X size={15} />
-        </button>
-      </div>
-
-      {/* 正文区：统一布局 = 原文区(顶部) + AI输出区(下方) */}
-      <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", padding: 12, gap: 8 }}>
+      {!managed.minimized && (
+        <>
+        <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", padding: 12, gap: 8 }}>
         {/* 原文区 — 所有状态都在顶部显示 */}
         <OriginalRichText text={card.originalText} />
 
@@ -302,7 +356,7 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
             </>
           )}
         </div>
-      </div>
+        </div>
 
       {/* 底部操作 */}
       <div
@@ -330,9 +384,12 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
           <ActionBtn onClick={handleDiscard} icon={X} label="取消" />
         )}
       </div>
+        </>
+      )}
+      </WindowChrome>
 
       {/* 右下角缩放手柄 */}
-      <div
+      {!managed.fullscreen && !managed.minimized && <div
         data-no-drag
         onPointerDown={onResizeStart}
         title="拖拽缩放窗口"
@@ -347,7 +404,7 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
           <path d="M11 4 L4 11" />
           <path d="M11 8 L8 11" />
         </svg>
-      </div>
+      </div>}
     </div>,
     document.body,
   );
