@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Clock, X, Trash2, MessageSquare, Sparkles } from 'lucide-react';
+import { Clock, X, Trash2, MessageSquare } from 'lucide-react';
 import type { ChatSession } from '@/lib/hooks/useChatHistory';
+import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 
 interface ChatHistoryOverlayProps {
   sessions: ChatSession[];
@@ -56,7 +57,7 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
           className={`chat-history-tab ${isFloating ? 'chat-history-tab-active' : ''}`}
           onClick={() => switchTab('floating')}
         >
-          <Sparkles size={13} /> 划词{floatingSessions.length ? ` · ${floatingSessions.length}` : ''}
+          <PencilSparklesIcon size={13} /> 划词{floatingSessions.length ? ` · ${floatingSessions.length}` : ''}
         </button>
       </div>
 

@@ -2,9 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { BookmarkCheck, MonitorPlay, Sparkles } from "lucide-react";
+import clsx from "clsx";
+import { BookmarkCheck, MonitorPlay } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import OverflowMenu from "@/components/window/OverflowMenu";
+import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 
 interface WindowTaskbarProps {
   host: "topbar" | "content-tab";
@@ -13,7 +15,7 @@ interface WindowTaskbarProps {
 const ICON_SLOT = 32;
 
 function WindowIcon({ type }: { type: ManagedWindow["type"] }) {
-  if (type === "floating-chat") return <Sparkles size={15} />;
+  if (type === "floating-chat") return <PencilSparklesIcon size={15} />;
   if (type === "record-preview") return <BookmarkCheck size={15} />;
   return <MonitorPlay size={15} />;
 }
@@ -23,9 +25,9 @@ export function partitionTaskbarWindows(
   host: WindowTaskbarProps["host"],
   width: number,
 ) {
+  void host;
   if (windows.length === 0) return { visible: [] as ManagedWindow[], overflow: [] as ManagedWindow[] };
-  const reserved = host === "topbar" ? 80 : 40;
-  const maxWidth = Math.max(0, width - reserved);
+  const maxWidth = Math.max(0, width);
   if (maxWidth < ICON_SLOT) return { visible: [] as ManagedWindow[], overflow: windows };
 
   const needsOverflow = windows.length * ICON_SLOT > maxWidth;
@@ -83,9 +85,22 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
           type="button"
           onClick={() => toggle(win.id)}
           title={win.title}
-          className="group relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] hover:text-[var(--md-sys-color-primary)]"
+          className={clsx(
+            "group relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-[var(--ink-soft)] shadow-sm transition-colors",
+            "border-[color-mix(in_srgb,var(--line)_88%,var(--md-sys-color-primary)_12%)] bg-[var(--bg-elevated)]",
+            "hover:border-[var(--md-sys-color-primary)] hover:bg-[var(--bg-muted)] hover:text-[var(--md-sys-color-primary)]",
+            !win.minimized && "text-[var(--md-sys-color-primary)]",
+          )}
         >
           <WindowIcon type={win.type} />
+          <span
+            className={clsx(
+              "absolute bottom-0.5 left-1/2 h-0.5 -translate-x-1/2 rounded-full transition-all",
+              win.minimized
+                ? "w-4 bg-[var(--md-sys-color-primary)]"
+                : "w-2 bg-[var(--ink-faint)]",
+            )}
+          />
           {win.badge && win.badge > 1 && (
             <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-[var(--md-sys-color-primary)] px-1 text-[10px] font-semibold leading-none text-[var(--md-sys-color-on-primary)]">
               {win.badge}

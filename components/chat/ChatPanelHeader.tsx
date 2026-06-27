@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Sparkles, Plus, Trash2, Clock, Settings } from 'lucide-react';
+import { Plus, Trash2, Clock, Settings } from 'lucide-react';
+import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 
 interface ChatPanelHeaderProps {
   topic: string;
@@ -23,7 +24,7 @@ const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({
   return (
     <div className="chat-header">
       <div className="chat-header-left">
-        <Sparkles size={14} style={{ color: 'var(--md-sys-color-primary)' }} />
+        <PencilSparklesIcon size={14} style={{ color: 'var(--md-sys-color-primary)' }} />
         <span className="chat-header-title">AI 助教</span>
         {topic && <span className="chat-header-topic">{topic}</span>}
       </div>

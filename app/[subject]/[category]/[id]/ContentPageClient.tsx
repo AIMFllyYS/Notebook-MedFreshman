@@ -13,6 +13,7 @@ import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { tabPanelVariants } from "@/lib/motion";
 import { ComponentRenderer } from "@/lib/content/componentRegistry";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
+import GlobalSearchButton from "@/components/search/GlobalSearchButton";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
 const ExampleTab = dynamic(() => import("@/components/examples/ExampleTab"), { ssr: false });
@@ -147,14 +148,22 @@ export default function ContentPageClient({
           </button>
         ))}
 
-        {!isMobile && topBarCollapsed && <WindowTaskbar host="content-tab" />}
+        {!isMobile && topBarCollapsed && (
+          <div className="ml-auto mr-1 flex min-w-0 flex-1 items-center justify-end gap-1 border-r border-[var(--line)] pr-2">
+            <GlobalSearchButton />
+            <WindowTaskbar host="content-tab" />
+          </div>
+        )}
 
         {!isMobile && (
           <button
             onClick={toggleTopBar}
             title={topBarCollapsed ? "展开顶部导航栏" : "收起顶部导航栏"}
             aria-pressed={topBarCollapsed}
-            className="ml-auto mr-1 flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+            className={clsx(
+              "mr-1 flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]",
+              !topBarCollapsed && "ml-auto",
+            )}
           >
             {topBarCollapsed ? <PanelTopOpen size={18} /> : <PanelTopClose size={18} />}
           </button>

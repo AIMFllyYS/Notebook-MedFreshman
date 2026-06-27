@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Sparkles } from 'lucide-react';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import { QUICK_PROMPTS } from '@/lib/constants/prompts';
+import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 
 interface ChatEmptyStateProps {
   topic: string;
@@ -19,7 +19,7 @@ const ChatEmptyState: React.FC<ChatEmptyStateProps> = ({
   return (
     <div className="chat-empty-state animate-fade-up">
       <div className="chat-empty-icon">
-        <Sparkles size={24} style={{ color: 'var(--md-sys-color-primary)' }} />
+        <PencilSparklesIcon size={24} style={{ color: 'var(--md-sys-color-primary)' }} />
       </div>
       <p className="chat-empty-title">我是你的{subjectName}助教</p>
       <p className="chat-empty-desc">

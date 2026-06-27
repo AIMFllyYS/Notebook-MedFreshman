@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle, Globe, ExternalLink, Zap, BookOpen, Image as ImageIcon, Sparkles } from 'lucide-react';
+import { Wrench, ChevronDown, ChevronUp, Loader2, CheckCircle, XCircle, Globe, ExternalLink, Zap, BookOpen, Image as ImageIcon } from 'lucide-react';
 import type { ToolCallBlock, WebSearchSource } from '@/lib/types/chat';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
+import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 
 function hostOf(url: string): string {
   try {
@@ -48,7 +49,7 @@ const statusBorder: Record<ToolCallBlock['status'], string> = {
   error: 'rgba(239, 83, 80, 0.2)',
 };
 
-const formatArgs = (args: Record<string, any> | string | undefined): string => {
+const formatArgs = (args: Record<string, unknown> | string | undefined): string => {
   if (!args) return '{}';
   if (typeof args === 'string') {
     try {
@@ -60,7 +61,7 @@ const formatArgs = (args: Record<string, any> | string | undefined): string => {
   return JSON.stringify(args, null, 2);
 };
 
-const ImageSourceCard: React.FC<{ source: WebSearchSource; index: number }> = ({ source, index: _index }) => {
+const ImageSourceCard: React.FC<{ source: WebSearchSource }> = ({ source }) => {
   const [imgError, setImgError] = useState(false);
   const thumbnailUrl = source.media || source.url;
   const authorName = source.title;
@@ -237,7 +238,7 @@ const ToolCallItem: React.FC<{ call: ToolCallBlock; isProcessing?: boolean }> = 
             color: 'var(--md-sys-color-on-surface)',
           }}
         >
-          <Sparkles size={12} style={{ color: 'var(--md-sys-color-primary)' }} />
+          <PencilSparklesIcon size={12} style={{ color: 'var(--md-sys-color-primary)' }} />
           <span>已调用技能：<strong>{call.skill}</strong></span>
         </div>
       )}
@@ -256,7 +257,7 @@ const ToolCallItem: React.FC<{ call: ToolCallBlock; isProcessing?: boolean }> = 
           </div>
           <div className="flex gap-2 overflow-x-auto py-1" style={{ scrollbarWidth: 'thin' }}>
             {call.sources.map((s, i) => (
-              <ImageSourceCard key={i} source={s} index={i} />
+              <ImageSourceCard key={i} source={s} />
             ))}
           </div>
           {call.provider === 'unsplash' && call.sources && (

@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
-import { Sparkles } from "lucide-react";
 import {
   useFloatingChats,
   persistFloatingSize,
@@ -18,6 +17,7 @@ import { useChat } from "@/lib/hooks/useChat";
 import { useDraggable } from "@/lib/hooks/useDraggable";
 import { useResizable } from "@/lib/hooks/useResizable";
 import WindowChrome from "@/components/window/WindowChrome";
+import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import ChatThread from "@/components/chat/ChatThread";
 import ChatInput from "@/components/chat/ChatInput";
 import type { ChatContext, ChatAttachment } from "@/lib/types/chat";
@@ -177,7 +177,7 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
     >
       <WindowChrome
         title={titleLabel}
-        icon={<Sparkles size={15} />}
+        icon={<PencilSparklesIcon size={15} />}
         onClose={handleClose}
         onMinimize={handleMinimize}
         onFullscreen={toggleExpand}

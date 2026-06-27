@@ -54,9 +54,17 @@ test("taskbar overflow does not show fixed fallback icons before width is availa
   assert.deepEqual(overflow.map((win) => win.id), ["one", "two", "three"]);
 });
 
+test("taskbar overflow uses the full measured host width before collapsing", () => {
+  const windows = ["one", "two", "three", "four", "five", "six"].map(windowFixture);
+  const { visible, overflow } = partitionTaskbarWindows(windows, "topbar", 128);
+
+  assert.deepEqual(visible.map((win) => win.id), ["one", "two", "three"]);
+  assert.deepEqual(overflow.map((win) => win.id), ["four", "five", "six"]);
+});
+
 test("taskbar overflow reserves room for the overflow menu when icons exceed capacity", () => {
   const windows = ["one", "two", "three", "four"].map(windowFixture);
-  const { visible, overflow } = partitionTaskbarWindows(windows, "content-tab", 136);
+  const { visible, overflow } = partitionTaskbarWindows(windows, "content-tab", 96);
 
   assert.deepEqual(visible.map((win) => win.id), ["one", "two"]);
   assert.deepEqual(overflow.map((win) => win.id), ["three", "four"]);

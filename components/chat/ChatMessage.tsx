@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { User, Sparkles, BookOpen } from 'lucide-react';
+import { User, BookOpen } from 'lucide-react';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
@@ -9,6 +9,7 @@ import ArtifactCard from '@/components/chat/ArtifactCard';
 import ProcessingSteps from '@/components/chat/ProcessingSteps';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
+import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -29,7 +30,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
           </span>
         ) : (
           <span className="chat-message-header-left">
-            <Sparkles size={12} style={{ color: 'var(--md-sys-color-primary)' }} />
+            <PencilSparklesIcon size={12} style={{ color: 'var(--md-sys-color-primary)' }} />
             <span className="chat-message-header-name">AI 助教</span>
             {message.metadata?.thinkingEnabled && (
               <span className="chat-message-badge chat-message-badge-thinking">深度思考</span>

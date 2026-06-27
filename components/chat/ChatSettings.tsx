@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Settings, X, Eye, EyeOff, Type, Brain, Globe, Sparkles, BookText, Download } from "lucide-react";
+import { Settings, X, Eye, EyeOff, Type, Brain, Globe, BookText, Download } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { CUSTOM_MODEL_ID } from "@/lib/ai/models";
+import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import { exportAllChats } from "@/lib/chat/exportChats";
 import SkillsManager from "./SkillsManager";
 
@@ -225,7 +226,7 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
         {/* 技能库 */}
         <section className="flex flex-col gap-2">
           <div className="flex items-center gap-1.5">
-            <Sparkles size={14} className="text-[var(--md-sys-color-primary)]" />
+            <PencilSparklesIcon size={14} className="text-[var(--md-sys-color-primary)]" />
             <h3 className={h3}>技能库（Skills）</h3>
           </div>
           <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
