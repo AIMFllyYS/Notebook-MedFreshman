@@ -35,6 +35,29 @@ function PopBtn({
   );
 }
 
+function wrapRange(range: Range): HTMLElement {
+  const mark = document.createElement("mark");
+  mark.className = "crayon-highlight";
+  try {
+    range.surroundContents(mark);
+  } catch {
+    const contents = range.extractContents();
+    mark.appendChild(contents);
+    range.insertNode(mark);
+  }
+  return mark;
+}
+
+function unwrapMark(mark: HTMLElement) {
+  const parent = mark.parentNode;
+  if (!parent) return;
+  while (mark.firstChild) {
+    parent.insertBefore(mark.firstChild, mark);
+  }
+  parent.removeChild(mark);
+  parent.normalize();
+}
+
 export default function SelectionPopover({
   containerRef,
   recordSubjectId,
@@ -48,6 +71,8 @@ export default function SelectionPopover({
   const [pop, setPop] = useState<PopState | null>(null);
   const [boxWidth, setBoxWidth] = useState(0);
   const boxRef = useRef<HTMLDivElement>(null);
+  const markRef = useRef<HTMLElement | null>(null);
+  const actionTakenRef = useRef(false);
 
   useLayoutEffect(() => {
     if (boxRef.current) {
@@ -59,6 +84,12 @@ export default function SelectionPopover({
     function onMouseUp(e: MouseEvent) {
       if (boxRef.current && boxRef.current.contains(e.target as Node)) return;
       window.setTimeout(() => {
+        if (markRef.current && !actionTakenRef.current) {
+          unwrapMark(markRef.current);
+        }
+        markRef.current = null;
+        actionTakenRef.current = false;
+
         const sel = window.getSelection();
         if (!sel || sel.isCollapsed || sel.rangeCount === 0) {
           setPop(null);
@@ -73,6 +104,9 @@ export default function SelectionPopover({
         const root = containerRef.current;
         if (!root || !root.contains(range.commonAncestorContainer)) return;
         const rect = range.getBoundingClientRect();
+        const mark = wrapRange(range);
+        markRef.current = mark;
+        sel.removeAllRanges();
         setPop({ x: rect.left + rect.width / 2, y: rect.top, text });
       }, 0);
     }
@@ -82,9 +116,17 @@ export default function SelectionPopover({
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setPop(null);
+      if (e.key === "Escape") {
+        if (markRef.current && !actionTakenRef.current) unwrapMark(markRef.current);
+        markRef.current = null;
+        actionTakenRef.current = false;
+        setPop(null);
+      }
     }
     function onScroll() {
+      if (markRef.current && !actionTakenRef.current) unwrapMark(markRef.current);
+      markRef.current = null;
+      actionTakenRef.current = false;
       setPop(null);
     }
     document.addEventListener("keydown", onKey);
@@ -101,18 +143,21 @@ export default function SelectionPopover({
   // 解释 / 举例 / 追问 都开一个独立的划词浮窗（多开、互不影响）。
   function spawn(seedMode: "explain" | "example" | "ask") {
     if (!pop) return;
+    actionTakenRef.current = true;
     openWindow({ anchor: { x: pop.x, y: pop.y }, seedMode, seedText: pop.text });
     setPop(null);
   }
 
   function handleQuote() {
     if (!pop) return;
+    actionTakenRef.current = true;
     setQuotedText(pop.text);
     setPop(null);
   }
 
   function handleRecord() {
     if (!pop) return;
+    actionTakenRef.current = true;
     startRecord(pop.text, currentRecordContext(recordSubjectId), { x: pop.x, y: pop.y });
     setPop(null);
   }
