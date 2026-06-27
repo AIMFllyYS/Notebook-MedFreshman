@@ -18,6 +18,25 @@ function WindowIcon({ type }: { type: ManagedWindow["type"] }) {
   return <MonitorPlay size={15} />;
 }
 
+export function partitionTaskbarWindows(
+  windows: ManagedWindow[],
+  host: WindowTaskbarProps["host"],
+  width: number,
+) {
+  if (windows.length === 0) return { visible: [] as ManagedWindow[], overflow: [] as ManagedWindow[] };
+  const reserved = host === "topbar" ? 80 : 40;
+  const maxWidth = Math.max(0, width - reserved);
+  if (maxWidth < ICON_SLOT) return { visible: [] as ManagedWindow[], overflow: windows };
+
+  const needsOverflow = windows.length * ICON_SLOT > maxWidth;
+  const overflowSlot = needsOverflow ? 1 : 0;
+  const maxVisible = Math.max(0, Math.floor(maxWidth / ICON_SLOT) - overflowSlot);
+  return {
+    visible: windows.slice(0, maxVisible),
+    overflow: windows.slice(maxVisible),
+  };
+}
+
 export default function WindowTaskbar({ host }: WindowTaskbarProps) {
   const windows = useWindowManager((state) => state.windows);
   const { minimizeWindow, restoreWindow } = useWindowManager();
@@ -36,14 +55,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
   }, []);
 
   const { visible, overflow } = useMemo(() => {
-    if (windows.length === 0) return { visible: [] as ManagedWindow[], overflow: [] as ManagedWindow[] };
-    const reserved = host === "topbar" ? 80 : 40;
-    const maxWidth = Math.max(0, width - reserved);
-    const maxVisible = Math.max(0, Math.floor(maxWidth / ICON_SLOT) - (windows.length * ICON_SLOT > maxWidth ? 1 : 0));
-    return {
-      visible: windows.slice(0, maxVisible || Math.min(windows.length, 3)),
-      overflow: windows.slice(maxVisible || Math.min(windows.length, 3)),
-    };
+    return partitionTaskbarWindows(windows, host, width);
   }, [host, width, windows]);
 
   const toggle = (id: string) => {

@@ -13,7 +13,6 @@ import SelectionPopover from '@/components/notes/SelectionPopover';
 import ChatThread from '@/components/chat/ChatThread';
 import ChatInput from '@/components/chat/ChatInput';
 import ChatSettings from '@/components/chat/ChatSettings';
-import ArtifactViewer from '@/components/chat/ArtifactViewer';
 import { ImageLightbox } from '@/components/shared/ImageLightbox';
 import ChatPanelHeader from '@/components/chat/ChatPanelHeader';
 import ChatEmptyState from '@/components/chat/ChatEmptyState';
@@ -189,7 +188,6 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
 
       {showSettings && <ChatSettings onClose={() => setShowSettings(false)} />}
       <SelectionPopover containerRef={scrollContainerRef} />
-      <ArtifactViewer />
 
       {showHistory && (
         <ChatHistoryOverlay
