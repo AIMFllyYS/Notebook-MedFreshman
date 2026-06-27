@@ -33,7 +33,7 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
   const managed = useWindowManager((state) => state.windows.find((item) => item.id === win.id));
   const closeFloatingWindow = useFloatingChats((state) => state.closeWindow);
   const updateFloatingWindow = useFloatingChats((state) => state.updateWindow);
-  const { bringToFront, commitGeometry, minimizeWindow, setFullscreen } = useWindowManager();
+  const { bringToFront, commitGeometry, minimizeWindow, setFullscreen, updateWindow: updateManagedWindow } = useWindowManager();
   const sessionTitle = useChatHistory((state) => state.sessions.find((item) => item.id === win.sessionId)?.title);
 
   const activeSubjectId = useStore((state) => state.activeSubjectId);
@@ -76,6 +76,12 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
   );
 
   useFullscreenTrack(win.id, managed?.fullscreen ?? false);
+
+  useEffect(() => {
+    if (sessionTitle && managed && managed.title !== sessionTitle) {
+      updateManagedWindow(win.id, { title: sessionTitle });
+    }
+  }, [managed, sessionTitle, updateManagedWindow, win.id]);
 
   useEffect(() => {
     if (win.seedNonce === 0 || win.seedNonce === seededRef.current) return;

@@ -84,7 +84,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
           key={win.id}
           type="button"
           onClick={() => toggle(win.id)}
-          title={win.title}
+          aria-label={win.title}
           className={clsx(
             "group relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-[var(--ink-soft)] shadow-sm transition-colors",
             "border-[color-mix(in_srgb,var(--line)_88%,var(--md-sys-color-primary)_12%)] bg-[var(--bg-elevated)]",
@@ -106,7 +106,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
               {win.badge}
             </span>
           )}
-          <span className="pointer-events-none absolute right-0 top-8 z-[7000] max-w-56 translate-y-1 rounded-md border border-[var(--line)] bg-[var(--bg-panel)] px-2 py-1 text-[12px] text-[var(--ink)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
+          <span className="pointer-events-none absolute right-0 top-8 z-[7000] w-max max-w-[min(70vw,28rem)] translate-y-1 truncate whitespace-nowrap rounded-md border border-[var(--line)] bg-[var(--bg-panel)] px-2 py-1 text-[12px] text-[var(--ink)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
             {win.title}
           </span>
         </button>

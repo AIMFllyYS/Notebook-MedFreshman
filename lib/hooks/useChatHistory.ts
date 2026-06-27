@@ -31,6 +31,7 @@ interface ChatHistoryState {
   switchSession: (id: string) => void;
   addMessage: (sessionId: string, message: ChatMessage) => void;
   updateMessage: (sessionId: string, messageId: string, updates: Partial<ChatMessage>) => void;
+  updateSessionTitle: (sessionId: string, title: string) => void;
   clearHistory: () => void;
 }
 
@@ -114,6 +115,16 @@ export const useChatHistory = create<ChatHistoryState>()(
                   ),
                   updatedAt: Date.now(),
                 }
+              : s,
+          ),
+        }));
+      },
+
+      updateSessionTitle: (sessionId, title) => {
+        set((state) => ({
+          sessions: state.sessions.map((s) =>
+            s.id === sessionId
+              ? { ...s, title, updatedAt: Date.now() }
               : s,
           ),
         }));

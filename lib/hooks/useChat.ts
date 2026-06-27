@@ -9,6 +9,7 @@ import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { useTokenTracker } from './useTokenTracker';
 import { getModelInfo } from '@/lib/ai/models';
 import { estimateTokens } from '@/lib/context/estimateTokens';
+import { buildFallbackSessionTitle, sanitizeSessionTitle } from '@/lib/chat/sessionTitle';
 
 interface SendMessageOptions {
   quotedText?: string;
@@ -58,6 +59,7 @@ export function useChat(
   const createSession = useChatHistory((s) => s.createSession);
   const addMessage = useChatHistory((s) => s.addMessage);
   const updateMessage = useChatHistory((s) => s.updateMessage);
+  const updateSessionTitle = useChatHistory((s) => s.updateSessionTitle);
 
   const activeSession = sessions.find((s) => s.id === (ovSessionId ?? activeSessionId));
   const messages = activeSession?.messages || [];
@@ -107,21 +109,35 @@ export function useChat(
         attachments: sendOptions?.attachments,
       };
 
-      // 首条消息自动生成标题；但仅当标题仍是默认「新对话」时（划词会话已用选区预置标题，勿覆盖）
+      // 首条消息发送后后台生成标题；主对话和划词浮窗共用同一套轻量标题机制。
       const currentSession = useChatHistory.getState().sessions.find((s) => s.id === sessionId);
       const isFirstMessage = !currentSession || currentSession.messages.length === 0;
-      const title = isFirstMessage && (!currentSession || currentSession.title === '新对话')
-        ? content.slice(0, 15) + (content.length > 15 ? '...' : '')
-        : undefined;
+      const fallbackTitle = isFirstMessage ? buildFallbackSessionTitle(userContent) : undefined;
 
       addMessage(sessionId, userMessage);
 
-      if (title) {
-        useChatHistory.setState((prev) => ({
-          sessions: prev.sessions.map((s) =>
-            s.id === sessionId ? { ...s, title } : s,
-          ),
-        }));
+      if (fallbackTitle) {
+        updateSessionTitle(sessionId, fallbackTitle);
+        void fetch('/api/chat-title', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            content: userContent,
+            subjectId: chatContext.subjectId,
+            categoryId: chatContext.categoryId,
+            itemId: chatContext.itemId,
+          }),
+        })
+          .then((res) => (res.ok ? res.json() : null))
+          .then((payload: unknown) => {
+            if (!payload || typeof payload !== 'object') return;
+            const title = (payload as { title?: unknown }).title;
+            if (typeof title !== 'string') return;
+            useChatHistory.getState().updateSessionTitle(sessionId!, sanitizeSessionTitle(title, fallbackTitle));
+          })
+          .catch(() => {
+            // 标题生成失败不影响主对话；fallback 已经落库。
+          });
       }
 
       // 创建空的助手消息占位
@@ -413,7 +429,7 @@ export function useChat(
         }
       })();
     },
-    [chatContext, options, ovSessionId, ovModelId, createSession, addMessage, updateMessage],
+    [chatContext, options, ovSessionId, ovModelId, createSession, addMessage, updateMessage, updateSessionTitle],
   );
 
   return { messages, isLoading, error, sendMessage, stopGeneration, clearError };

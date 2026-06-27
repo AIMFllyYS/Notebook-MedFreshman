@@ -69,3 +69,16 @@ test("taskbar overflow reserves room for the overflow menu when icons exceed cap
   assert.deepEqual(visible.map((win) => win.id), ["one", "two"]);
   assert.deepEqual(overflow.map((win) => win.id), ["three", "four"]);
 });
+
+test("taskbar window tooltip uses one responsive custom label instead of native title", () => {
+  const taskbar = readWorkspaceFile("components/window/WindowTaskbar.tsx");
+
+  assert.doesNotMatch(
+    taskbar,
+    /title=\{win\.title\}/,
+    "Native title and custom tooltip render as two competing hover labels.",
+  );
+  assert.match(taskbar, /aria-label=\{win\.title\}/);
+  assert.match(taskbar, /whitespace-nowrap/);
+  assert.match(taskbar, /max-w-\[min\(70vw,28rem\)\]/);
+});
