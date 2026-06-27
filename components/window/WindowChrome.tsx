@@ -70,7 +70,7 @@ export default function WindowChrome({
       <div
         onPointerDown={isFullscreen ? undefined : onDragStart}
         className={clsx(
-          "grid min-h-8 shrink-0 grid-cols-[72px_minmax(0,1fr)_auto] items-center gap-2 border-b border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-high)] px-3",
+          "window-chrome-header grid min-h-8 shrink-0 grid-cols-[72px_minmax(0,1fr)_auto] items-center gap-2 border-b border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-high)] px-3",
           isFullscreen ? "cursor-default" : "cursor-grab",
         )}
         style={{ userSelect: "none", touchAction: "none" }}

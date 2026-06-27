@@ -1,0 +1,213 @@
+/* ─────────────────────────────────────────────────────────────
+   Global appearance layers
+   - default: no-op, preserves existing MD3 palette
+   - colorful: watercolor semantic overrides by module/subject
+   - custom: unified user accent + selection + font
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --selection-bg: rgba(255, 152, 0, 0.35);
+  --highlight-bg-a: rgba(255, 152, 0, 0.28);
+  --highlight-bg-b: rgba(255, 167, 38, 0.42);
+  --highlight-bg-c: rgba(255, 143, 0, 0.30);
+  --highlight-bg-d: rgba(255, 160, 0, 0.38);
+  --highlight-shadow: rgba(230, 81, 0, 0.18);
+
+  --appearance-card-bg-a: var(--md-sys-color-surface-container);
+  --appearance-card-bg-b: var(--md-sys-color-surface-container-low);
+  --appearance-card-bg-c: var(--md-sys-color-surface-container-high);
+  --appearance-ai-answer-bg: var(--md-sys-color-surface-container);
+  --appearance-ai-answer-border: var(--md-sys-color-outline-variant);
+  --appearance-dialog-header-bg: var(--md-sys-color-surface-container);
+  --appearance-table-head-bg: var(--bg-muted);
+  --appearance-table-row-alt-bg: var(--md-sys-color-surface-container-low);
+}
+
+[data-appearance="custom"][data-theme="light"] {
+  --md-sys-color-primary: var(--appearance-light-accent, #6750a4);
+  --md-sys-color-on-primary: var(--appearance-light-on-accent, #ffffff);
+  --md-sys-color-primary-container: var(--appearance-light-accent-container, #eaddff);
+  --md-sys-color-on-primary-container: var(--appearance-light-on-accent-container, #21005d);
+  --md-sys-color-secondary: color-mix(in srgb, var(--appearance-light-accent, #6750a4) 68%, #64748b);
+  --md-sys-color-secondary-container: color-mix(in srgb, var(--appearance-light-accent, #6750a4) 14%, #ffffff);
+  --md-sys-color-tertiary: color-mix(in srgb, var(--appearance-light-accent, #6750a4) 42%, #0f766e);
+  --md-sys-color-tertiary-container: color-mix(in srgb, var(--appearance-light-accent, #6750a4) 12%, #ffffff);
+  --accent: var(--md-sys-color-primary);
+  --accent-weak: var(--md-sys-color-primary-container);
+  --accent-ink: var(--md-sys-color-on-primary-container);
+  --selection-bg: var(--appearance-selection-bg, rgba(255, 152, 0, 0.35));
+  --highlight-bg-a: var(--appearance-highlight-a, rgba(255, 152, 0, 0.28));
+  --highlight-bg-b: var(--appearance-highlight-b, rgba(255, 167, 38, 0.42));
+  --highlight-bg-c: var(--appearance-highlight-c, rgba(255, 143, 0, 0.30));
+  --highlight-bg-d: var(--appearance-highlight-d, rgba(255, 160, 0, 0.38));
+  --highlight-shadow: var(--appearance-highlight-shadow, rgba(230, 81, 0, 0.18));
+}
+
+[data-appearance="custom"][data-theme="dark"],
+:root[data-appearance="custom"]:not([data-theme="light"]) {
+  --md-sys-color-primary: var(--appearance-dark-accent, #a8c7fa);
+  --md-sys-color-on-primary: var(--appearance-dark-on-accent, #062e6f);
+  --md-sys-color-primary-container: var(--appearance-dark-accent-container, #284777);
+  --md-sys-color-on-primary-container: var(--appearance-dark-on-accent-container, #d3e3fd);
+  --md-sys-color-secondary: color-mix(in srgb, var(--appearance-dark-accent, #a8c7fa) 62%, #c4b5fd);
+  --md-sys-color-secondary-container: color-mix(in srgb, var(--appearance-dark-accent, #a8c7fa) 24%, #1a1b22);
+  --md-sys-color-tertiary: color-mix(in srgb, var(--appearance-dark-accent, #a8c7fa) 46%, #8ddad5);
+  --md-sys-color-tertiary-container: color-mix(in srgb, var(--appearance-dark-accent, #a8c7fa) 24%, #141f23);
+  --accent: var(--md-sys-color-primary);
+  --accent-weak: var(--md-sys-color-primary-container);
+  --accent-ink: var(--md-sys-color-on-primary-container);
+  --selection-bg: var(--appearance-selection-bg, rgba(255, 152, 0, 0.35));
+  --highlight-bg-a: var(--appearance-highlight-a, rgba(255, 152, 0, 0.28));
+  --highlight-bg-b: var(--appearance-highlight-b, rgba(255, 167, 38, 0.42));
+  --highlight-bg-c: var(--appearance-highlight-c, rgba(255, 143, 0, 0.30));
+  --highlight-bg-d: var(--appearance-highlight-d, rgba(255, 160, 0, 0.38));
+  --highlight-shadow: var(--appearance-highlight-shadow, rgba(230, 81, 0, 0.18));
+}
+
+[data-appearance="colorful"][data-theme="light"] {
+  --md-sys-color-primary: #3677a8;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #d7ecf7;
+  --md-sys-color-on-primary-container: #07344f;
+  --md-sys-color-secondary: #8b6fa8;
+  --md-sys-color-secondary-container: #eadff4;
+  --md-sys-color-on-secondary-container: #322044;
+  --md-sys-color-tertiary: #428a7f;
+  --md-sys-color-tertiary-container: #d8f0e9;
+  --md-sys-color-on-tertiary-container: #063b33;
+  --color-success: #3f8f63;
+  --color-warning: #b98627;
+  --color-info: #3a8fc4;
+  --accent: var(--md-sys-color-primary);
+  --accent-weak: var(--md-sys-color-primary-container);
+  --accent-ink: var(--md-sys-color-on-primary-container);
+  --selection-bg: rgba(91, 151, 201, 0.30);
+  --highlight-bg-a: rgba(122, 174, 219, 0.22);
+  --highlight-bg-b: rgba(119, 194, 173, 0.32);
+  --highlight-bg-c: rgba(219, 173, 92, 0.24);
+  --highlight-bg-d: rgba(163, 138, 205, 0.26);
+  --highlight-shadow: rgba(74, 111, 151, 0.18);
+  --appearance-card-bg-a: #edf6fa;
+  --appearance-card-bg-b: #f4f0fa;
+  --appearance-card-bg-c: #eef8f2;
+  --appearance-ai-answer-bg: #f1f7fb;
+  --appearance-ai-answer-border: #b8d6e8;
+  --appearance-dialog-header-bg: #edf4f7;
+  --appearance-table-head-bg: #e6f2f8;
+  --appearance-table-row-alt-bg: rgba(119, 194, 173, 0.10);
+}
+
+[data-appearance="colorful"][data-theme="dark"],
+:root[data-appearance="colorful"]:not([data-theme="light"]) {
+  --md-sys-color-primary: #9bc8e6;
+  --md-sys-color-on-primary: #062a3e;
+  --md-sys-color-primary-container: #21445a;
+  --md-sys-color-on-primary-container: #d7ecf7;
+  --md-sys-color-secondary: #d0b9e8;
+  --md-sys-color-secondary-container: #3e314e;
+  --md-sys-color-on-secondary-container: #f0e5fa;
+  --md-sys-color-tertiary: #98d7cb;
+  --md-sys-color-tertiary-container: #1e4b45;
+  --md-sys-color-on-tertiary-container: #d8f0e9;
+  --color-success: #92d2a7;
+  --color-warning: #e1bd72;
+  --color-info: #94cae8;
+  --accent: var(--md-sys-color-primary);
+  --accent-weak: var(--md-sys-color-primary-container);
+  --accent-ink: var(--md-sys-color-on-primary-container);
+  --selection-bg: rgba(132, 190, 229, 0.34);
+  --highlight-bg-a: rgba(132, 190, 229, 0.22);
+  --highlight-bg-b: rgba(140, 213, 196, 0.30);
+  --highlight-bg-c: rgba(225, 189, 114, 0.22);
+  --highlight-bg-d: rgba(204, 178, 232, 0.24);
+  --highlight-shadow: rgba(47, 92, 126, 0.42);
+  --appearance-card-bg-a: #182732;
+  --appearance-card-bg-b: #211d2e;
+  --appearance-card-bg-c: #182c28;
+  --appearance-ai-answer-bg: #172631;
+  --appearance-ai-answer-border: #315c73;
+  --appearance-dialog-header-bg: #1c2931;
+  --appearance-table-head-bg: #20333f;
+  --appearance-table-row-alt-bg: rgba(140, 213, 196, 0.08);
+}
+
+[data-appearance="colorful"] .chat-message:nth-of-type(4n+1) {
+  --appearance-ai-answer-bg: var(--appearance-card-bg-a);
+  --appearance-ai-answer-border: color-mix(in srgb, var(--md-sys-color-primary) 36%, var(--line));
+}
+[data-appearance="colorful"] .chat-message:nth-of-type(4n+2) {
+  --appearance-ai-answer-bg: var(--appearance-card-bg-b);
+  --appearance-ai-answer-border: color-mix(in srgb, var(--md-sys-color-secondary) 38%, var(--line));
+}
+[data-appearance="colorful"] .chat-message:nth-of-type(4n+3) {
+  --appearance-ai-answer-bg: var(--appearance-card-bg-c);
+  --appearance-ai-answer-border: color-mix(in srgb, var(--md-sys-color-tertiary) 38%, var(--line));
+}
+
+[data-appearance="colorful"] .chat-bubble-assistant {
+  background: var(--appearance-ai-answer-bg);
+  border-color: var(--appearance-ai-answer-border);
+}
+
+[data-appearance="colorful"] .artifact-card {
+  border-color: color-mix(in srgb, var(--md-sys-color-tertiary) 45%, var(--line)) !important;
+  background: color-mix(in srgb, var(--appearance-card-bg-c) 84%, var(--bg-panel)) !important;
+}
+
+[data-appearance="colorful"] .followup-card,
+[data-appearance="colorful"] .processing-steps,
+[data-appearance="colorful"] .search-hit-inline-cards,
+[data-appearance="colorful"] .code-block-wrapper {
+  background: color-mix(in srgb, var(--appearance-card-bg-b) 82%, var(--bg-panel));
+  border-color: color-mix(in srgb, var(--md-sys-color-secondary) 32%, var(--line));
+}
+
+[data-appearance="colorful"] .chat-header,
+[data-appearance="colorful"] .chat-history-header,
+[data-appearance="colorful"] .code-block-header,
+[data-appearance="colorful"] .window-chrome-header {
+  background: var(--appearance-dialog-header-bg);
+}
+
+[data-appearance="colorful"] .prose-notes table thead th,
+[data-appearance="colorful"] .chat-prose table thead th {
+  background: var(--appearance-table-head-bg);
+}
+
+[data-appearance="colorful"] .prose-notes tbody tr:nth-child(even),
+[data-appearance="colorful"] .chat-prose tbody tr:nth-child(even) {
+  background: var(--appearance-table-row-alt-bg);
+}
+
+[data-appearance="colorful"] [data-subject="probability"] {
+  --subject-accent: #4e91c7;
+}
+[data-appearance="colorful"] [data-subject="physics"] {
+  --subject-accent: #5d9b82;
+}
+[data-appearance="colorful"] [data-subject="chemistry"] {
+  --subject-accent: #b882bd;
+}
+[data-appearance="colorful"] [data-subject="modern-history"] {
+  --subject-accent: #b68a44;
+}
+[data-appearance="colorful"] [data-subject="maogai"] {
+  --subject-accent: #c77272;
+}
+[data-appearance="colorful"] [data-subject="other"] {
+  --subject-accent: #6f8fb4;
+}
+
+[data-appearance="colorful"] [data-subject] .prose-notes {
+  --accent: var(--subject-accent, var(--md-sys-color-primary));
+  --md-sys-color-primary: var(--subject-accent, var(--md-sys-color-primary));
+}
+
+[data-appearance="colorful"] [data-subject] .prose-notes h2 {
+  border-bottom-color: color-mix(in srgb, var(--subject-accent, var(--accent)) 32%, var(--line));
+}
+
+[data-appearance="colorful"] [data-subject] .prose-notes blockquote {
+  border-left-color: var(--subject-accent, var(--accent));
+  background: color-mix(in srgb, var(--subject-accent, var(--accent)) 12%, transparent);
+}

@@ -153,7 +153,7 @@ export default function ArtifactCard({
 
   return (
     <div
-      className="my-2 overflow-hidden rounded-xl border"
+      className="artifact-card my-2 overflow-hidden rounded-xl border"
       style={{
         borderColor: errored || expired ? 'var(--md-sys-color-error)' : 'var(--md-sys-color-primary)',
         background: expired ? 'var(--md-sys-color-surface-container-high)' : 'var(--md-sys-color-primary-container)',

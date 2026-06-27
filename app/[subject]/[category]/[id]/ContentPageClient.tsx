@@ -117,7 +117,7 @@ export default function ContentPageClient({
   }, [content]);
 
   return (
-    <div className="relative flex h-full flex-col bg-[var(--bg-app)]">
+    <div className="relative flex h-full flex-col bg-[var(--bg-app)]" data-subject={subjectId}>
       {/* Content tab bar */}
       <div className="flex shrink-0 items-center border-b border-[var(--line)] bg-[var(--bg-app)]">
         {visibleTabs.map((t) => (
