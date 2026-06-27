@@ -65,12 +65,18 @@ python manim/render.py --force --quality h   # 强制高画质重渲
 - **可交互组件** - 动态可视化工具，支持参数调节和实时反馈
 - **三板块布局** - AI 对话 / 动画讲解 / 可交互内容无缝切换
 
-### 🛠 技术亮点
+### � 安装为应用（PWA）
+- **桌面端固定到任务栏** - Edge / Chrome 打开站点 → 地址栏安装图标或菜单「安装此站点为应用」，即可像原生软件一样独立窗口运行，右键固定到任务栏一键秒开
+- **手机端固定到主屏幕** - iPhone（Safari 分享 → 添加到主屏幕）/ Android（Chrome 菜单 → 安装应用），启动时全屏无浏览器地址栏
+- **零安装包** - 无需应用商店下载，通过浏览器即可安装，不占用额外存储
+
+### �🛠 技术亮点
 - **多学科内容树** - 统一的内容管理系统，支持教材、详解、录音、纪要分类
 - **自定义 Markdown 指令** - `::video`、`::interactive`、`:::definition` 等富文本扩展
 - **可视化原语库** - 维恩图、分布图、公式步骤等可复用组件
 - **小窗播放模式** - 视频画中画功能，支持跨页面续播
 - **响应式设计** - 基于 Tailwind v4 的现代化 UI
+- **PWA 可安装** - Web App Manifest + appleWebApp，支持安装为桌面/移动端独立应用
 
 ## 量产章节内容
 
@@ -80,14 +86,14 @@ python manim/render.py --force --quality h   # 强制高画质重渲
 ## 目录结构
 
 ```
-app/                 # Next App Router（页面 + /api 路由）
+app/                 # Next App Router（页面 + /api 路由 + manifest.ts PWA 清单）
 components/           # 布局 / 笔记渲染 / 对话 / 视频 / 交互
 lib/                 # store、内容加载器、AI 工具
 content/             # manifest + 各小节 .md 笔记 + 媒体清单
 manim/               # Manim 场景与渲染脚本
 docs/                # 逐字稿、纪要、SOP、设计文档
 scripts/             # 内容提取、海报生成、工作流脚本
-public/              # 静态资源（视频、图片、海报）
+public/              # 静态资源（视频、图片、海报、PWA 图标）
 ```
 
 ## 项目架构
