@@ -132,7 +132,7 @@ async function loadIndexAsync(): Promise<BM25Index | null> {
 }
 
 // 分词逻辑与构建时一致（bigram + 空格分割）
-function tokenize(text: string): string[] {
+export function tokenize(text: string): string[] {
   const tokens: string[] = [];
   let englishBuf = '';
 

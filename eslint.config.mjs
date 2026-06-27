@@ -21,5 +21,7 @@ export default defineConfig([
     "exhibition-hall/**",
     "showroom/**",
     "docs/refer/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
   ]),
 ]);

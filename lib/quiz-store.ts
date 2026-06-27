@@ -70,7 +70,7 @@ const ANSWERING_DEFAULTS = {
 };
 
 /** 由当前 results 构造一次作答记录（用于本地持久化）。 */
-function buildAttempt(state: QuizState, stage: QuizAttempt["stage"]): QuizAttempt {
+export function buildAttempt(state: QuizState, stage: QuizAttempt["stage"]): QuizAttempt {
   const earned = state.results.reduce((a, r) => a + r.awarded, 0);
   const max = state.results.reduce((a, r) => a + r.max, 0);
   return {

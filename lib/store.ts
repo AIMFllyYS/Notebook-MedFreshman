@@ -51,7 +51,7 @@ function domBoolean(name: string): boolean | null {
 }
 
 /** detail/recording/english 分类下的 quiz key 推导。recording/english 直接用 itemId。 */
-function deriveChapterId(categoryId: string, itemId: string): string {
+export function deriveChapterId(categoryId: string, itemId: string): string {
   if (categoryId === "recording") return itemId;
   if (categoryId === "english") return itemId;
   if (categoryId !== "detail") return "";

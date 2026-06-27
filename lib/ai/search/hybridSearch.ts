@@ -14,7 +14,7 @@ function getSearchMode(): SearchMode {
 }
 
 // RRF (Reciprocal Rank Fusion) 合并
-function rrfMerge(rankings: ScoredChunk[][], k = 60): ScoredChunk[] {
+export function rrfMerge(rankings: ScoredChunk[][], k = 60): ScoredChunk[] {
   const scoreMap = new Map<string, { score: number; chunk: ScoredChunk }>();
 
   for (const ranking of rankings) {

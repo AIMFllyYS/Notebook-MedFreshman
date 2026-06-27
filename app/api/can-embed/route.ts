@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
  * 注意：Cloudflare/Turnstile 这类「墙 B」人机挑战无法靠响应头可靠预判
  * （Cloudflare 覆盖极广且多数并不挑战），故不据此阻断；保留前端「在新标签打开」兜底。
  */
-function judge(headers: Headers): { embeddable: boolean; reason?: string } {
+export function judge(headers: Headers): { embeddable: boolean; reason?: string } {
   const xfo = headers.get("x-frame-options");
   if (xfo) {
     const v = xfo.toLowerCase();
