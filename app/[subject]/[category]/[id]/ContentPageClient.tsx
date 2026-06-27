@@ -12,6 +12,7 @@ import { useStore } from "@/lib/store";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { tabPanelVariants } from "@/lib/motion";
 import { ComponentRenderer } from "@/lib/content/componentRegistry";
+import WindowTaskbar from "@/components/window/WindowTaskbar";
 
 const QuizTab = dynamic(() => import("@/components/quiz/QuizTab"), { ssr: false });
 const ExampleTab = dynamic(() => import("@/components/examples/ExampleTab"), { ssr: false });
@@ -77,14 +78,15 @@ export default function ContentPageClient({
   const topBarCollapsed = useStore((s) => s.topBarCollapsed);
   const toggleTopBar = useStore((s) => s.toggleTopBar);
   const isMobile = useIsMobile();
-  const [isHtmlFullscreen, setIsHtmlFullscreen] = useState(false);
+  const [htmlFullscreenItem, setHtmlFullscreenItem] = useState<string | null>(null);
+  const isHtmlFullscreen = htmlFullscreenItem === itemId;
 
   // markdown 模式显示全部 Tab；html / component 模式只显示正文 Tab（无例题/测试）
   const visibleTabs = renderType === 'markdown' ? CONTENT_TABS : CONTENT_TABS.filter((t) => t.id === 'content');
 
   const tabIndex = visibleTabs.findIndex((t) => t.id === activeTab);
   const prevTabIndexRef = useRef(tabIndex);
-  const dirRef = useRef<1 | -1>(1);
+  const [tabDirection, setTabDirection] = useState<1 | -1>(1);
 
   // 正文由服务端 SSR 注入（initialContent）。客户端切换路由时 page.tsx 会重新做
   // 服务端渲染并以新 prop 下发，无需再 fetch /api/section，消除瀑布与骨架闪烁。
@@ -104,11 +106,6 @@ export default function ContentPageClient({
     }
   }, [isHtmlFullscreen]);
 
-  // 路由切换时退出全屏
-  useEffect(() => {
-    setIsHtmlFullscreen(false);
-  }, [itemId]);
-
   const handleOpenInNewTab = useCallback(() => {
     if (!content) return;
     const blob = new Blob([content], { type: "text/html" });
@@ -127,7 +124,7 @@ export default function ContentPageClient({
             key={t.id}
             onClick={() => {
             const newIdx = visibleTabs.findIndex((x) => x.id === t.id);
-            dirRef.current = newIdx >= prevTabIndexRef.current ? 1 : -1;
+            setTabDirection(newIdx >= prevTabIndexRef.current ? 1 : -1);
             prevTabIndexRef.current = newIdx;
             setActiveTab(t.id);
           }}
@@ -150,6 +147,8 @@ export default function ContentPageClient({
           </button>
         ))}
 
+        {!isMobile && topBarCollapsed && <WindowTaskbar host="content-tab" />}
+
         {!isMobile && (
           <button
             onClick={toggleTopBar}
@@ -169,7 +168,7 @@ export default function ContentPageClient({
           {activeTab === "content" && (
             <motion.div
               key="content"
-              variants={tabPanelVariants(dirRef.current)}
+              variants={tabPanelVariants(tabDirection)}
               initial="initial"
               animate="animate"
               exit="exit"
@@ -206,7 +205,7 @@ export default function ContentPageClient({
                           <ExternalLink size={14} />
                         </button>
                         <button
-                          onClick={() => setIsHtmlFullscreen(true)}
+                          onClick={() => setHtmlFullscreenItem(itemId)}
                           title="全屏"
                           className="flex h-7 w-7 items-center justify-center rounded-md text-white/90 transition-colors hover:bg-white/20"
                         >
@@ -240,7 +239,7 @@ export default function ContentPageClient({
           {activeTab === "examples" && (
             <motion.div
               key="examples"
-              variants={tabPanelVariants(dirRef.current)}
+              variants={tabPanelVariants(tabDirection)}
               initial="initial"
               animate="animate"
               exit="exit"
@@ -252,7 +251,7 @@ export default function ContentPageClient({
           {activeTab === "quiz" && (
             <motion.div
               key="quiz"
-              variants={tabPanelVariants(dirRef.current)}
+              variants={tabPanelVariants(tabDirection)}
               initial="initial"
               animate="animate"
               exit="exit"
@@ -277,7 +276,7 @@ export default function ContentPageClient({
             title={itemTitle}
           />
           <button
-            onClick={() => setIsHtmlFullscreen(false)}
+            onClick={() => setHtmlFullscreenItem(null)}
             title="退出全屏"
             className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition-colors hover:bg-black/50"
           >

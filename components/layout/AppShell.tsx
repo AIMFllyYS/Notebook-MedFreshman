@@ -25,6 +25,7 @@ import MobileTopBar from "./MobileTopBar";
 import MobileBottomNav from "./MobileBottomNav";
 import MobileChapterPicker from "./MobileChapterPicker";
 import { ChatSkeleton, PageLoader } from "@/components/shared/ResizeLoader";
+import WindowTaskbar from "@/components/window/WindowTaskbar";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const FloatingChatLayer = dynamic(() => import("@/components/chat/FloatingChatLayer"), { ssr: false });
@@ -138,7 +139,8 @@ function TopBar({
         )}
       </div>
 
-      <div className="ml-auto flex items-center gap-1">
+      <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-1">
+        {!topBarCollapsed && <WindowTaskbar host="topbar" />}
         <button
           onClick={toggleTopBar}
           title={topBarCollapsed ? "展开顶部导航栏" : "收起顶部导航栏"}
