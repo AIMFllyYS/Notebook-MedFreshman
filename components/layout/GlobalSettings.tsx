@@ -191,14 +191,10 @@ export default function GlobalSettings({
   const resetAppearance = useTheme((s) => s.resetAppearance);
   const router = useRouter();
 
-  const [entries, setEntries] = useState<ProgressEntry[]>([]);
+  const [entries, setEntries] = useState<ProgressEntry[]>(() => getAllProgress());
   const [confirmClear, setConfirmClear] = useState(false);
-  const [pos, setPos] = useState<PopoverPos>(() => computePos(anchorRef?.current ?? null));
+  const [pos, setPos] = useState<PopoverPos>(() => computePos(null));
   const panelRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setEntries(getAllProgress());
-  }, []);
 
   // 定位：打开时即算，并随窗口尺寸 / 滚动更新。
   useLayoutEffect(() => {
