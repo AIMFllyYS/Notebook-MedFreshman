@@ -309,6 +309,11 @@ export const contentTree: ContentTree = {
             { id: 'unit-1', title: '大学英语 Unit 1 · The True Value of Education', type: 'document', status: 'done' },
             { id: 'unit-2', title: '大学英语 Unit 2 · The Myth of a Dream Job', type: 'document', status: 'done' },
             { id: 'unit-3', title: '大学英语 Unit 3 · The Business of Life', type: 'document', status: 'done' },
+            { id: 'unit-4', title: '大学英语 Unit 4 · Explore the Unknown', type: 'document', status: 'done' },
+            { id: 'unit-5', title: '大学英语 Unit 5 · The Power of Language', type: 'document', status: 'done' },
+            { id: 'unit-6', title: '大学英语 Unit 6 · Technology and Human Connection', type: 'document', status: 'done' },
+            { id: 'unit-7', title: '大学英语 Unit 7 · The Art of Innovation', type: 'document', status: 'done' },
+            { id: 'unit-8', title: '大学英语 Unit 8 · Nature and Human Society', type: 'document', status: 'done' },
           ],
         },
         {

@@ -1,0 +1,170 @@
+{
+  "subjectId": "other",
+  "chapterId": "unit-7",
+  "generatedAt": "2026-06-27",
+  "examConfig": {
+    "source": "大学英语 Unit 7 · The Art of Innovation",
+    "totalPoints": 100,
+    "timeLimit": 90,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 1},
+      {"name": "Reading Comprehension", "points": 40, "questions": 4},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "points": 15,
+      "stem": "Directions: Write a short essay of about 150 words on the following topic.\n\nTopic: The Relationship Between Failure and Innovation\n\nDiscuss why failure is an essential component of the innovation process rather than its opposite. Draw on the themes and examples from Unit 7, including the innovation mindset and the garage-to-global journey.",
+      "answer": "Failure and innovation are not opposites but partners. As Unit 7 reveals, the innovation mindset is characterized by a fundamentally different relationship with failure — one that treats it as information rather than defeat.\n\nThomas Edison's famous remark captures this perfectly: 'I have not failed. I've just found 10,000 ways that won't work.' Each failure eliminates a wrong path and brings the innovator closer to the right one. In most organizations, failure is punished and stigmatized, which discourages the risk-taking that innovation requires.\n\nThe garage-to-global journey illustrates this principle. Behind every success story like Apple or Google lie hundreds of failures. Successful founders build prototypes quickly, test them with real users, and iterate based on feedback. They remain flexible, willing to pivot when the original plan fails.\n\nIn a world of accelerating change, cultivating a mindset that embraces failure as a learning opportunity may be the most valuable skill we can develop. The question is not whether we will fail, but whether we will learn from our failures.",
+      "hint": "结合 Unit 7 两篇课文的核心论点（创新思维与失败的关系、车库创业中的迭代和转向），论述失败是创新的组成部分，注意引言—主体—结论结构。",
+      "explanation": "参考答案结构：提出论点→爱迪生例证→车库创业例证→总结升华。涵盖核心词汇：mindset, failure, iterate, prototype, pivot, embrace。",
+      "scoring_criteria": [
+        "内容（5分）：观点明确，紧扣主题；结合 Unit 7 具体事例；立场前后一致。",
+        "语言（5分）：词汇丰富准确，恰当使用单元重点词汇；语法基本正确，句式有变化。",
+        "结构（5分）：引言、主体、结论清晰；逻辑连贯，使用过渡词；篇幅约150词。"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "points": 15,
+      "stem": "Choose the best option to complete each sentence.\n\n1. Innovators see failure not as something to be avoided but as _____ on the path to discovery.\n   A. an obstacle  B. information  C. a barrier  D. a risk\n\n2. Successful startups build prototypes quickly and _____ based on user feedback.\n   A. iterate  B. disrupt  C. emerge  D. pioneer\n\n3. The startup's _____ business model forced competitors to rethink their strategies.\n   A. conventional  B. superficial  C. disruptive  D. accessible\n\n4. Founders must learn to _____ when the original plan is not working.\n   A. persist  B. pivot  C. diminish  D. isolate\n\n5. Innovation is as much about being _____ as it is about being right.\n   A. novel  B. ready  C. radical  D. conventional",
+      "options": [
+        "1-B 2-A 3-C 4-B 5-B",
+        "1-A 2-B 3-D 4-C 5-A",
+        "1-C 2-D 3-A 4-D 5-C",
+        "1-B 2-C 3-D 4-A 5-D"
+      ],
+      "answer": 0,
+      "hint": "逐题分析：①信息→information；②迭代→iterate；③颠覆性的→disruptive；④转向→pivot；⑤准备就绪→ready。",
+      "explanation": "正确组合为 1-B 2-A 3-C 4-B 5-B：①information（信息）对应原文'innovators see it as information'；②iterate（迭代）对应'iterating based on feedback'；③disruptive（颠覆性的）指改变行业格局的创新模式；④pivot（转向）指根据反馈调整方向；⑤ready（准备就绪）对应'as much about being ready as it is about being right'。"
+    },
+    {
+      "id": "q003",
+      "type": "reading",
+      "section": "Reading Comprehension",
+      "points": 40,
+      "passage": "What separates innovators from the rest of us? It is not intelligence, resources, or luck — though all of these help. According to decades of research, the key difference is a particular way of thinking: the innovation mindset. This mindset is characterized by curiosity, a willingness to experiment, and perhaps most importantly, a fundamentally different relationship with failure. Where most people see failure as something to be avoided, innovators see it as information — a necessary step on the path to discovery.\n\nConsider how innovators approach problems. When faced with a challenge, most people look for conventional solutions — approaches that have worked before. Innovators, by contrast, start by questioning the problem itself. Is this the right problem to solve? Are the assumptions behind it valid? Could the problem be reframed in a way that opens up new possibilities? This habit of questioning assumptions is what allows innovators to see opportunities where others see obstacles.\n\nThe innovation mindset also involves a distinctive approach to collaboration. Innovators build diverse teams that bring together different perspectives, skills, and experiences. Research consistently shows that diverse teams outperform homogeneous ones in creative problem-solving, not because individual members are smarter, but because the friction between different viewpoints generates more novel ideas.",
+      "subQuestions": [
+        {
+          "id": "q003_1",
+          "type": "single_choice",
+          "stem": "What is the main idea of the passage?",
+          "options": [
+            "Innovation requires above-average intelligence and abundant resources.",
+            "The innovation mindset — characterized by curiosity, experimentation, and a healthy relationship with failure — is what distinguishes innovators.",
+            "Innovation can only occur in large, well-funded organizations.",
+            "Diverse teams are always less effective than homogeneous teams."
+          ],
+          "answer": 1,
+          "explanation": "主旨大意题。文章核心是创新思维的特征使创新者与众不同。A项与'It is not intelligence, resources, or luck'矛盾；C项在文中未提及；D项与原文'diverse teams outperform homogeneous ones'矛盾。B项准确概括全文主旨。",
+          "points": 10
+        },
+        {
+          "id": "q003_2",
+          "type": "single_choice",
+          "stem": "According to the passage, innovators differ from most people in that they",
+          "options": [
+            "always find conventional solutions more quickly",
+            "start by questioning the problem itself rather than seeking conventional solutions",
+            "prefer to work alone rather than in teams",
+            "avoid taking any risks in their work"
+          ],
+          "answer": 1,
+          "explanation": "细节理解题。第二段明确对比'most people look for conventional solutions'与'Innovators... start by questioning the problem itself'。A项与原文矛盾；C项与第三段'build diverse teams'矛盾；D项与全文鼓励冒险的基调矛盾。B项与原文完全一致。",
+          "points": 10
+        },
+        {
+          "id": "q003_3",
+          "type": "single_choice",
+          "stem": "The word 'counterintuitive' in the phrase 'the most counterintuitive aspect of the innovation mindset' is closest in meaning to",
+          "options": [
+            "easy to understand",
+            "contrary to what one would naturally expect",
+            "similar to common sense",
+            "irrelevant to the topic"
+          ],
+          "answer": 1,
+          "explanation": "词义猜测题。counterintuitive意为'反直觉的'，即与常识或直觉相反。A项'easy to understand'方向相反；C项'similar to common sense'方向相反；D项'irrelevant'与原文不符。B项'contrary to what one would naturally expect'最接近原文含义。",
+          "points": 10
+        },
+        {
+          "id": "q003_4",
+          "type": "single_choice",
+          "stem": "What can be inferred about the role of 'friction' in diverse teams?",
+          "options": [
+            "It is always destructive and should be eliminated.",
+            "It can be productive when it generates novel ideas through different viewpoints.",
+            "It has no effect on team performance.",
+            "It only exists in homogeneous teams."
+          ],
+          "answer": 1,
+          "explanation": "推理判断题。第三段指出'the friction between different viewpoints generates more novel ideas'，说明摩擦是有益的。A项'always destructive'与原文矛盾；C项'no effect'与原文矛盾；D项'only exists in homogeneous teams'与原文矛盾（摩擦存在于diverse teams中）。B项准确反映了原文对friction的正面定义。",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "cloze",
+      "section": "Cloze",
+      "points": 10,
+      "passage": "What separates innovators from the rest of us is not intelligence or luck but a particular way of thinking: the innovation (1) _____. This mindset is characterized by curiosity, a willingness to (2) _____, and a fundamentally different relationship with (3) _____. Where most people see failure as something to be avoided, innovators see it as (4) _____ — a necessary step on the path to discovery.\n\nWhen faced with a challenge, innovators start by (5) _____ the problem itself rather than looking for conventional solutions. They build diverse teams because the (6) _____ between different viewpoints generates more novel ideas.\n\nIn the garage-to-global journey, successful founders build prototypes quickly and (7) _____ based on feedback. They remain flexible, willing to (8) _____ when the original plan fails. The role of timing is crucial: innovation is as much about being (9) _____ as it is about being right. Ultimately, the true value of entrepreneurship lies not only in the companies it creates but in the (10) _____ it cultivates.",
+      "blanks": [
+        {"id": "b1", "options": ["mindset", "obstacle", "barrier", "failure"], "answer": 0, "explanation": "mindset（思维）是全文核心概念，指创新者的特殊思维方式。", "points": 1},
+        {"id": "b2", "options": ["experiment", "diminish", "isolate", "erode"], "answer": 0, "explanation": "experiment（实验）对应原文'a willingness to experiment'，是创新思维的特征之一。", "points": 1},
+        {"id": "b3", "options": ["success", "failure", "luck", "wealth"], "answer": 1, "explanation": "failure（失败）对应原文'a fundamentally different relationship with failure'。", "points": 1},
+        {"id": "b4", "options": ["information", "obstacle", "punishment", "barrier"], "answer": 0, "explanation": "information（信息）对应原文'innovators see it as information'。", "points": 1},
+        {"id": "b5", "options": ["questioning", "accepting", "ignoring", "avoiding"], "answer": 0, "explanation": "questioning（质疑）对应原文'start by questioning the problem itself'。", "points": 1},
+        {"id": "b6", "options": ["friction", "harmony", "agreement", "similarity"], "answer": 0, "explanation": "friction（摩擦）对应原文'the friction between different viewpoints generates more novel ideas'。", "points": 1},
+        {"id": "b7", "options": ["iterate", "diminish", "isolate", "erode"], "answer": 0, "explanation": "iterate（迭代）对应原文'iterating based on feedback rather than assumptions'。", "points": 1},
+        {"id": "b8", "options": ["pivot", "diminish", "erode", "isolate"], "answer": 0, "explanation": "pivot（转向）对应原文'willing to pivot when the original plan is not working'。", "points": 1},
+        {"id": "b9", "options": ["ready", "novel", "radical", "conventional"], "answer": 0, "explanation": "ready（准备就绪）对应原文'as much about being ready as it is about being right'。", "points": 1},
+        {"id": "b10", "options": ["mindset", "profit", "product", "revenue"], "answer": 0, "explanation": "mindset（思维）对应原文'the mindset it cultivates'，呼应全文核心概念。", "points": 1}
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "translation",
+      "section": "Translation",
+      "points": 20,
+      "items": [
+        {
+          "id": "t1",
+          "source": "大多数人将失败视为应避免之物，而创新者将其视为信息——通往发现之路的必要步骤。",
+          "reference": "Where most people see failure as something to be avoided, innovators see it as information — a necessary step on the path to discovery.",
+          "explanation": "考点：Where引导对比状语从句；see A as B（将A视为B）；不定式被动式to be avoided作后置定语；破折号后同位语。",
+          "points": 5
+        },
+        {
+          "id": "t2",
+          "source": "失败不是成功的对立面，而是成功的一部分。",
+          "reference": "Failure is not the opposite of success but a component of it.",
+          "explanation": "考点：not... but...结构表否定与肯定对比；the opposite of（……的对立面）；a component of（……的一部分）；it指代success。",
+          "points": 5
+        },
+        {
+          "id": "t3",
+          "source": "使他们成为伟大创新者的技能并不总是使他们成为伟大领导者的技能。",
+          "reference": "The skills that made them great innovators are not always the skills that make them great leaders.",
+          "explanation": "考点：两个that引导的定语从句形成对比；not always表部分否定；innovators与leaders的概念区分。",
+          "points": 5
+        },
+        {
+          "id": "t4",
+          "source": "创新既关乎准备就绪，也关乎正确。",
+          "reference": "Innovation is as much about being ready as it is about being right.",
+          "explanation": "考点：as much... as...同级比较结构；being ready（准备就绪）与being right（正确）的对比；about（关乎）。",
+          "points": 5
+        }
+      ]
+    }
+  ]
+}

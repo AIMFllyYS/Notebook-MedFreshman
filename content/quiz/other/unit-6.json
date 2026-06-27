@@ -1,0 +1,170 @@
+{
+  "subjectId": "other",
+  "chapterId": "unit-6",
+  "generatedAt": "2026-06-27",
+  "examConfig": {
+    "source": "大学英语 Unit 6 · Technology and Human Connection",
+    "totalPoints": 100,
+    "timeLimit": 90,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 1},
+      {"name": "Reading Comprehension", "points": 40, "questions": 4},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "points": 15,
+      "stem": "Directions: Write a short essay of about 150 words on the following topic.\n\nTopic: Technology and Human Connection: Friend or Foe?\n\nDiscuss whether technology brings people closer together or pushes them apart. Draw on the themes and examples from Unit 6, including Sherry Turkle's concept of 'alone together' and the digital divide.",
+      "answer": "Technology's impact on human connection is a paradox. On one hand, it has made communication more accessible than ever, allowing us to reach anyone across the globe instantly. On the other hand, as Sherry Turkle argues, we are increasingly 'alone together' — connected to devices yet disconnected from each other.\n\nThe problem is not technology itself but how we let it mediate our relationships. We text during dinner, scroll during conversations, and mistake the frequency of contact for the quality of connection. Physical proximity no longer guarantees emotional presence.\n\nFurthermore, the digital divide reveals that technology's benefits are not equally shared. While 2.6 billion people remain offline, those without internet access are effectively marginalized from full participation in society.\n\nThe solution is not to abandon technology but to use it with intentionality. By creating tech-free zones, prioritizing face-to-face conversation, and bridging the digital divide, we can ensure that technology serves human needs rather than the other way around. Technology should be a bridge, not a barrier.",
+      "hint": "结合 Unit 6 两篇课文的核心论点（群体性孤独、数字鸿沟），论述技术对人际连接的双重影响，注意引言—主体—结论结构。",
+      "explanation": "参考答案结构：提出悖论→群体性孤独例证→数字鸿沟例证→解决方案。涵盖核心词汇：accessible, authentic, engage, isolate, marginalize, intentionality。",
+      "scoring_criteria": [
+        "内容（5分）：观点明确，紧扣主题；结合 Unit 6 具体事例；立场前后一致。",
+        "语言（5分）：词汇丰富准确，恰当使用单元重点词汇；语法基本正确，句式有变化。",
+        "结构（5分）：引言、主体、结论清晰；逻辑连贯，使用过渡词；篇幅约150词。"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "points": 15,
+      "stem": "Choose the best option to complete each sentence.\n\n1. Turkle calls it 'alone together' — a state where we are connected to devices yet _____ from each other.\n   A. engaged  B. disconnected  C. accessible  D. intimate\n\n2. Social media encourages _____ connections at the expense of deep friendships.\n   A. genuine  B. authentic  C. superficial  D. overwhelming\n\n3. The digital divide _____ those who cannot afford internet access.\n   A. engages  B. compensates  C. diminishes  D. marginalizes\n\n4. Physical proximity no longer _____ emotional presence in the digital age.\n   A. guarantees  B. diminishes  C. isolates  D. erodes\n\n5. Turkle's message is a call for _____ — choosing when to connect and when to disconnect.\n   A. infrastructure  B. intentionality  C. literacy  D. participation",
+      "options": [
+        "1-B 2-C 3-D 4-A 5-B",
+        "1-A 2-B 3-C 4-D 5-A",
+        "1-C 2-D 3-A 4-B 5-C",
+        "1-B 2-A 3-D 4-C 5-D"
+      ],
+      "answer": 0,
+      "hint": "逐题分析：①断开→disconnected；②表面的→superficial；③边缘化→marginalizes；④保证→guarantees；⑤有意识→intentionality。",
+      "explanation": "正确组合为 1-B 2-C 3-D 4-A 5-B：①disconnected（断开）对应'alone together'的定义；②superficial（表面的）指社交媒体促进浅层互动；③marginalizes（边缘化）指数字鸿沟排斥弱势群体；④guarantees（保证）指物理在场不再保证情感在场；⑤intentionality（有意识）是Turkle的核心主张。"
+    },
+    {
+      "id": "q003",
+      "type": "reading",
+      "section": "Reading Comprehension",
+      "points": 40,
+      "passage": "We live in an age of unprecedented connectivity. Smartphones, social media, and instant messaging allow us to reach anyone, anywhere, at any time. Yet beneath this surface of constant connection, a quieter story is unfolding. Sherry Turkle, a psychologist at MIT, calls it \"alone together\" — a state in which we are increasingly connected to devices and disconnected from each other. We text during dinner, scroll during conversations, and check notifications during meetings. The very technology designed to bring us closer, Turkle argues, is pushing us apart.\n\nTurkle's research reveals a troubling pattern. In interviews with hundreds of families, she found that children often feel competing with a parent's phone for attention. \"My dad texts during my soccer games,\" one teenager reported. \"He's physically there, but he's not really there.\" This phrase captures the essence of the problem. Physical proximity no longer guarantees emotional presence. We can be in the same room yet inhabit different worlds, each absorbed in our own screen.\n\nThe consequences extend beyond family dynamics. In the workplace, constant connectivity erodes the boundary between work and personal life. Among friends, superficial digital interactions — likes, emojis, and brief comments — increasingly replace deeper forms of communication. We mistake the frequency of contact for the quality of connection, confusing the number of messages with the depth of understanding.",
+      "subQuestions": [
+        {
+          "id": "q003_1",
+          "type": "single_choice",
+          "stem": "What is the main idea of the passage?",
+          "options": [
+            "Technology has made human relationships stronger and deeper.",
+            "Technology designed to connect us is paradoxically pushing us apart.",
+            "Smartphones should be banned in all social settings.",
+            "Children are more affected by technology than adults."
+          ],
+          "answer": 1,
+          "explanation": "主旨大意题。文章核心句是'The very technology designed to bring us closer, Turkle argues, is pushing us apart'。A项与全文核心相反；C项'banned'过于极端，Turkle并不反对技术；D项虽提到children但只是例证之一，非主旨。B项准确概括全文的悖论主题。",
+          "points": 10
+        },
+        {
+          "id": "q003_2",
+          "type": "single_choice",
+          "stem": "The teenager's quote 'He's physically there, but he's not really there' is used to illustrate",
+          "options": [
+            "the father's busy work schedule",
+            "the difference between physical presence and emotional presence",
+            "the teenager's dislike of soccer",
+            "the importance of smartphones in daily life"
+          ],
+          "answer": 1,
+          "explanation": "细节理解题。第二段紧接引语后解释'Physical proximity no longer guarantees emotional presence'。A项'busy work schedule'在文中未提及；C项'dislike of soccer'无依据；D项与引语要表达的问题相反。B项准确解释了引语的含义。",
+          "points": 10
+        },
+        {
+          "id": "q003_3",
+          "type": "single_choice",
+          "stem": "The word 'superficial' in 'superficial digital interactions' (Paragraph 3) is closest in meaning to",
+          "options": [
+            "deep and meaningful",
+            "on the surface only, lacking depth",
+            "frequent and regular",
+            "artificial and fake"
+          ],
+          "answer": 1,
+          "explanation": "词义猜测题。superficial意为'表面的、肤浅的'，与后文'deeper forms of communication'形成对比。A项'deep'方向相反；C项'frequent'与频率有关但非superficial的含义；D项'fake'不完全准确，superficial强调缺乏深度而非虚假。B项'on the surface only, lacking depth'最接近原文含义。",
+          "points": 10
+        },
+        {
+          "id": "q003_4",
+          "type": "single_choice",
+          "stem": "What does the author mean by 'We mistake the frequency of contact for the quality of connection'?",
+          "options": [
+            "More frequent contact always leads to better relationships.",
+            "People confuse how often they communicate with how deeply they connect.",
+            "Frequency and quality are equally important in communication.",
+            "Digital communication is inherently lower quality than face-to-face."
+          ],
+          "answer": 1,
+          "explanation": "句意理解题。mistake A for B意为'将A误认为B'，即人们将联系频率误认为连接质量。A项是作者批评的错误认知；C项'equally important'偏离句意；D项'inherently'过于绝对。B项准确解释了句意。",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "cloze",
+      "section": "Cloze",
+      "points": 10,
+      "passage": "We live in an age of unprecedented connectivity, yet psychologist Sherry Turkle calls it being 'alone together' — a state where we are increasingly connected to devices and (1) _____ from each other. The very technology (2) _____ to bring us closer is pushing us apart.\n\nIn interviews with hundreds of families, Turkle found that children often feel (3) _____ with a parent's phone for attention. 'He's physically there, but he's not really there' captures the problem: physical proximity no longer (4) _____ emotional presence.\n\nAmong friends, (5) _____ digital interactions increasingly replace deeper communication. We (6) _____ the frequency of contact for the quality of connection.\n\nMeanwhile, the digital divide (7) _____ 2.6 billion people who have never used the internet. This gap is not merely an inconvenience but a form of (8) _____. Bridging it requires investment in digital (9) _____ and literacy programs. Ultimately, the digital divide is a question of (10) _____, not technology.",
+      "blanks": [
+        {"id": "b1", "options": ["connected", "disconnected", "engaged", "intimate"], "answer": 1, "explanation": "disconnected（断开的）对应原文'connected to devices and disconnected from each other'。", "points": 1},
+        {"id": "b2", "options": ["designed", "designing", "to design", "design"], "answer": 0, "explanation": "designed（被设计）为过去分词作后置定语，修饰technology，表被动。", "points": 1},
+        {"id": "b3", "options": ["competing", "engaging", "connecting", "diminishing"], "answer": 0, "explanation": "competing（竞争）对应原文'competing with a parent's phone for attention'。", "points": 1},
+        {"id": "b4", "options": ["guarantees", "diminishes", "erodes", "isolates"], "answer": 0, "explanation": "guarantees（保证）对应原文'Physical proximity no longer guarantees emotional presence'。", "points": 1},
+        {"id": "b5", "options": ["genuine", "authentic", "superficial", "intimate"], "answer": 2, "explanation": "superficial（表面的）对应原文'superficial digital interactions'，与deeper形成对比。", "points": 1},
+        {"id": "b6", "options": ["mistake", "engage", "compensate", "diminish"], "answer": 0, "explanation": "mistake（误认为）对应原文'mistake the frequency of contact for the quality of connection'。", "points": 1},
+        {"id": "b7", "options": ["connects", "marginalizes", "engages", "compensates"], "answer": 1, "explanation": "marginalizes（边缘化）指数字鸿沟将未连接者排斥在社会参与之外。", "points": 1},
+        {"id": "b8", "options": ["convenience", "marginalization", "connection", "participation"], "answer": 1, "explanation": "marginalization（边缘化）对应原文'being disconnected is not merely an inconvenience — it is a form of marginalization'。", "points": 1},
+        {"id": "b9", "options": ["infrastructure", "literacy", "devices", "barrier"], "answer": 0, "explanation": "infrastructure（基础设施）对应原文'invest in digital infrastructure'，是弥合数字鸿沟的物质基础。", "points": 1},
+        {"id": "b10", "options": ["technology", "justice", "economy", "education"], "answer": 1, "explanation": "justice（正义）对应原文'The digital divide is ultimately a question of justice, not technology'。", "points": 1}
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "translation",
+      "section": "Translation",
+      "points": 20,
+      "items": [
+        {
+          "id": "t1",
+          "source": "正是旨在拉近我们距离的技术，正在将我们推开。",
+          "reference": "The very technology designed to bring us closer is pushing us apart.",
+          "explanation": "考点：the very + 名词表强调；designed to为过去分词作后置定语；bring closer与push apart形成反义对比。",
+          "points": 5
+        },
+        {
+          "id": "t2",
+          "source": "物理上的接近不再保证情感上的在场。",
+          "reference": "Physical proximity no longer guarantees emotional presence.",
+          "explanation": "考点：physical proximity（物理接近）；no longer（不再）；guarantee（保证）；emotional presence（情感在场）。",
+          "points": 5
+        },
+        {
+          "id": "t3",
+          "source": "我们将联系的频率误认为连接的质量，将消息的数量与理解的深度混为一谈。",
+          "reference": "We mistake the frequency of contact for the quality of connection, confusing the number of messages with the depth of understanding.",
+          "explanation": "考点：mistake A for B（将A误认为B）；现在分词confusing作伴随状语；confuse A with B（将A与B混淆）；frequency与quality、number与depth的对比。",
+          "points": 5
+        },
+        {
+          "id": "t4",
+          "source": "数字鸿沟最终是一个正义问题，而非技术问题。",
+          "reference": "The digital divide is ultimately a question of justice, not technology.",
+          "explanation": "考点：ultimately（最终）；a question of justice（正义问题）；not...结构表否定对比；digital divide（数字鸿沟）。",
+          "points": 5
+        }
+      ]
+    }
+  ]
+}

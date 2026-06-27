@@ -1,0 +1,170 @@
+{
+  "subjectId": "other",
+  "chapterId": "unit-8",
+  "generatedAt": "2026-06-27",
+  "examConfig": {
+    "source": "大学英语 Unit 8 · Nature and Human Society",
+    "totalPoints": 100,
+    "timeLimit": 90,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 1},
+      {"name": "Reading Comprehension", "points": 40, "questions": 4},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "points": 15,
+      "stem": "Directions: Write a short essay of about 150 words on the following topic.\n\nTopic: Humanity's Dual Power: Destroying and Saving Nature\n\nDiscuss the idea that humans are both the cause of the environmental crisis and the only species capable of solving it. Draw on the themes and examples from Unit 8, including the sixth extinction and climate migration.",
+      "answer": "For the first time in Earth's history, a single species has the power to cause a mass extinction — and the power to prevent one. This dual power defines humanity's relationship with nature and the defining question of our age.\n\nThe sixth extinction illustrates our destructive power. Human activity — habitat destruction, pollution, climate change — is driving species to extinction at a rate 100-1,000 times the natural background. Approximately one million species face extinction, many within decades. The pace is so rapid that evolution cannot keep up.\n\nClimate migration shows the human cost. Over 200 million people could be displaced by 2050, yet those who contribute least to emissions — the poorest in the poorest nations — are most affected. This is not just an environmental crisis but a moral one.\n\nYet we also have the power to 'bend the curve' — to slow biodiversity loss, reduce emissions, and build resilience. The question is not whether we can act, but whether we will choose to. Technology, international cooperation, and moral courage are the tools. The choice is ours.",
+      "hint": "结合 Unit 8 两篇课文的核心论点（第六次灭绝的双重力量、气候移民的正义问题），论述人类既是危机的制造者也是解决者，注意引言—主体—结论结构。",
+      "explanation": "参考答案结构：提出双重力量论点→第六次灭绝例证→气候移民例证→解决方案和选择。涵盖核心词汇：extinction, biodiversity, displacement, irreversible, resilience, sustainable。",
+      "scoring_criteria": [
+        "内容（5分）：观点明确，紧扣主题；结合 Unit 8 具体事例；立场前后一致。",
+        "语言（5分）：词汇丰富准确，恰当使用单元重点词汇；语法基本正确，句式有变化。",
+        "结构（5分）：引言、主体、结论清晰；逻辑连贯，使用过渡词；篇幅约150词。"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "points": 15,
+      "stem": "Choose the best option to complete each sentence.\n\n1. Scientists warn that Earth is experiencing its sixth mass _____ event, driven by human activity.\n   A. migration  B. extinction  C. displacement  D. adaptation\n\n2. Climate change could cause the _____ of more than 200 million people by 2050.\n   A. displacement  B. biodiversity  C. resilience  D. abundance\n\n3. The loss of biodiversity is largely _____ — extinct species cannot be restored.\n   A. sustainable  B. reversible  C. irreversible  D. vulnerable\n\n4. Wealthy nations must reduce carbon _____ dramatically to address climate change.\n   A. emissions  B. extinction  C. habitat  D. species\n\n5. Building climate _____ in vulnerable communities is essential for adaptation.\n   A. degradation  B. resilience  C. threshold  D. consequence",
+      "options": [
+        "1-B 2-A 3-C 4-A 5-B",
+        "1-A 2-B 3-D 4-C 5-A",
+        "1-C 2-D 3-B 4-A 5-C",
+        "1-B 2-C 3-A 4-D 5-D"
+      ],
+      "answer": 0,
+      "hint": "逐题分析：①灭绝→extinction；②流离失所→displacement；③不可逆转的→irreversible；④排放→emissions；⑤韧性→resilience。",
+      "explanation": "正确组合为 1-B 2-A 3-C 4-A 5-B：①extinction（灭绝）指第六次大规模灭绝事件；②displacement（流离失所）指气候导致的人口流离失所；③irreversible（不可逆转的）指物种灭绝无法恢复；④emissions（排放）指温室气体排放；⑤resilience（韧性）指社区应对气候变化的适应能力。"
+    },
+    {
+      "id": "q003",
+      "type": "reading",
+      "section": "Reading Comprehension",
+      "points": 40,
+      "passage": "Earth has experienced five mass extinction events in its 4.5-billion-year history. The most famous, the Cretaceous extinction 66 million years ago, wiped out the dinosaurs and nearly 75% of all species. Each of these events was caused by natural catastrophes. Today, scientists warn that we are in the midst of a sixth mass extinction, and this time the cause is not an asteroid or a volcano. It is us.\n\nThe current extinction rate is staggering. According to the IPBES, approximately one million species face extinction, many within decades. The primary drivers are habitat destruction, overexploitation, pollution, invasive species, and climate change. What makes the sixth extinction unique is not its causes — which are familiar — but its pace. Species that evolved over millions of years are disappearing in a single human lifetime, a speed that leaves no time for evolutionary adaptation.\n\nThe consequences of biodiversity loss extend far beyond the disappearance of individual species. Ecosystems depend on complex webs of interaction, and when key species are removed, the effects cascade throughout the system. The loss of pollinators threatens global food production. The degradation of coral reefs endangers the livelihoods of 500 million people. Biodiversity is not merely a matter of preserving beautiful animals — it is the infrastructure of life itself.",
+      "subQuestions": [
+        {
+          "id": "q003_1",
+          "type": "single_choice",
+          "stem": "What is the main idea of the passage?",
+          "options": [
+            "Mass extinctions are natural events that occur regularly without human involvement.",
+            "Human activity is driving a sixth mass extinction at an unprecedented pace, threatening the infrastructure of life itself.",
+            "The Cretaceous extinction was the most destructive event and killed all dinosaurs.",
+            "Biodiversity loss only affects wild animals and has no impact on humans."
+          ],
+          "answer": 1,
+          "explanation": "主旨大意题。文章核心是人类活动驱动的第六次大规模灭绝及其对生命基础设施的威胁。A项与'the cause is... us'矛盾；C项白垩纪灭绝只是历史背景，非主旨；D项与'endangers the livelihoods of 500 million people'矛盾。B项准确概括全文主旨。",
+          "points": 10
+        },
+        {
+          "id": "q003_2",
+          "type": "single_choice",
+          "stem": "According to the passage, what makes the sixth extinction different from the previous five?",
+          "options": [
+            "It is caused by an asteroid impact, just like the Cretaceous extinction.",
+            "It is caused by human activity and occurs at a much faster pace than natural extinctions.",
+            "It only affects marine species, not terrestrial ones.",
+            "It is less severe than any of the previous extinction events."
+          ],
+          "answer": 1,
+          "explanation": "细节理解题。第一段指出前五次由自然灾难引起，第六次'It is us'；第二段指出'What makes the sixth extinction unique is not its causes... but its pace'。A项与前五次原因混淆；C项'only marine'与原文矛盾；D项'less severe'与'one million species face extinction'矛盾。B项准确概括了两个区别。",
+          "points": 10
+        },
+        {
+          "id": "q003_3",
+          "type": "single_choice",
+          "stem": "The word 'staggering' in 'The current extinction rate is staggering' (Paragraph 2) is closest in meaning to",
+          "options": [
+            "slowly decreasing",
+            "shockingly high or overwhelming",
+            "relatively stable",
+            "difficult to measure"
+          ],
+          "answer": 1,
+          "explanation": "词义猜测题。staggering意为'令人震惊的'，形容灭绝速率之高令人难以置信。A项'slowly decreasing'方向相反；C项'stable'与'one million species face extinction'矛盾；D项'difficult to measure'与'well documented'矛盾。B项'shockingly high or overwhelming'最接近原文含义。",
+          "points": 10
+        },
+        {
+          "id": "q003_4",
+          "type": "single_choice",
+          "stem": "What does the author mean by 'Biodiversity is not merely a matter of preserving beautiful animals — it is the infrastructure of life itself'?",
+          "options": [
+            "Biodiversity is only important because animals are beautiful to look at.",
+            "Biodiversity is essential for the functioning of life-supporting systems, not just an aesthetic concern.",
+            "Infrastructure projects should prioritize building animal sanctuaries.",
+            "Only beautiful animal species need protection."
+          ],
+          "answer": 1,
+          "explanation": "句意理解题。not merely... it is...结构将生物多样性从审美问题提升为生存基础设施。A项与'not merely'矛盾；C项将infrastructure字面化；D项'only beautiful species'与原文精神矛盾。B项'essential for the functioning of life-supporting systems, not just an aesthetic concern'准确解释了句意。",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "cloze",
+      "section": "Cloze",
+      "points": 10,
+      "passage": "Earth has experienced five mass (1) _____ events in its history, each caused by natural catastrophes. Today, scientists warn that we are in the midst of a sixth, and the cause is us. Approximately one million species face extinction, driven by habitat destruction, pollution, and climate change. What makes this extinction unique is its (2) _____ — species are disappearing in a single human lifetime.\n\nThe consequences are (3) _____. When key species are removed, the effects (4) _____ throughout the entire ecosystem. Biodiversity is not merely about preserving beautiful animals — it is the (5) _____ of life itself.\n\nMeanwhile, climate change is causing human (6) _____. Rising seas and droughts are making regions uninhabitable, potentially displacing 200 million people by 2050. Those who contribute least to climate change are often the most (7) _____ to its effects.\n\nAddressing these crises requires both mitigation and (8) _____. Mitigation reduces emissions; adaptation helps communities cope with impacts that are already (9) _____. The gap between what science demands and what politics delivers remains the greatest (10) _____ to effective action.",
+      "blanks": [
+        {"id": "b1", "options": ["extinction", "migration", "adaptation", "resilience"], "answer": 0, "explanation": "extinction（灭绝）对应原文'mass extinction events'。", "points": 1},
+        {"id": "b2", "options": ["pace", "cause", "scale", "cost"], "answer": 0, "explanation": "pace（速度）对应原文'not its causes... but its pace'。", "points": 1},
+        {"id": "b3", "options": ["devastating", "minimal", "beneficial", "temporary"], "answer": 0, "explanation": "devastating（毁灭性的）对应原文'devastating impact'，描述后果的严重性。", "points": 1},
+        {"id": "b4", "options": ["cascade", "diminish", "disappear", "stabilize"], "answer": 0, "explanation": "cascade（级联扩散）对应原文'the effects cascade throughout the system'。", "points": 1},
+        {"id": "b5", "options": ["infrastructure", "decoration", "beauty", "product"], "answer": 0, "explanation": "infrastructure（基础设施）对应原文'it is the infrastructure of life itself'。", "points": 1},
+        {"id": "b6", "options": ["displacement", "extinction", "biodiversity", "abundance"], "answer": 0, "explanation": "displacement（流离失所）对应原文'displacement of human populations'。", "points": 1},
+        {"id": "b7", "options": ["vulnerable", "resilient", "indifferent", "accustomed"], "answer": 0, "explanation": "vulnerable（脆弱的）对应原文'those who contribute least... are often the ones most affected'，即最易受伤害。", "points": 1},
+        {"id": "b8", "options": ["adaptation", "extinction", "degradation", "displacement"], "answer": 0, "explanation": "adaptation（适应）对应原文'both mitigation and adaptation'。", "points": 1},
+        {"id": "b9", "options": ["inevitable", "reversible", "preventable", "minor"], "answer": 0, "explanation": "inevitable（不可避免的）对应原文'impacts that are already inevitable'。", "points": 1},
+        {"id": "b10", "options": ["obstacle", "benefit", "opportunity", "advantage"], "answer": 0, "explanation": "obstacle（障碍）对应原文'the greatest obstacle to addressing climate migration effectively'。", "points": 1}
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "translation",
+      "section": "Translation",
+      "points": 20,
+      "items": [
+        {
+          "id": "t1",
+          "source": "使第六次灭绝独特的不是其原因——这些原因众所周知——而是其速度。",
+          "reference": "What makes the sixth extinction unique is not its causes — which are familiar — but its pace.",
+          "explanation": "考点：What引导主语从句；not... but...并列表语结构；非限制性定语从句which are familiar；破折号插入语。",
+          "points": 5
+        },
+        {
+          "id": "t2",
+          "source": "对气候变化贡献最小的人——最贫穷国家中最贫穷的人——往往是其后果受影响最大的人。",
+          "reference": "Those who contribute least to climate change — the poorest people in the poorest nations — are often the ones most affected by its consequences.",
+          "explanation": "考点：who引导定语从句修饰Those；破折号内同位语；the ones后接过去分词短语most affected by；contribute least与most affected的对比。",
+          "points": 5
+        },
+        {
+          "id": "t3",
+          "source": "生物多样性不仅仅是保护美丽动物的问题——它是生命本身的基础设施。",
+          "reference": "Biodiversity is not merely a matter of preserving beautiful animals — it is the infrastructure of life itself.",
+          "explanation": "考点：not merely... it is...递进结构；a matter of（……的问题）；infrastructure of life itself（生命本身的基础设施）；破折号转折。",
+          "points": 5
+        },
+        {
+          "id": "t4",
+          "source": "另一种选择——一个数亿气候移民无处可去的世界——太过可怕而不敢想象。",
+          "reference": "The alternative — a world where hundreds of millions of climate migrants have nowhere to go — is too dire to contemplate.",
+          "explanation": "考点：破折号内同位语；where引导定语从句修饰world；too... to...结构（太……而不能……）；nowhere to go（无处可去）。",
+          "points": 5
+        }
+      ]
+    }
+  ]
+}

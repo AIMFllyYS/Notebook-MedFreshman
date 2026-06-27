@@ -1,0 +1,170 @@
+{
+  "subjectId": "other",
+  "chapterId": "unit-5",
+  "generatedAt": "2026-06-27",
+  "examConfig": {
+    "source": "大学英语 Unit 5 · The Power of Language",
+    "totalPoints": 100,
+    "timeLimit": 90,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 1},
+      {"name": "Reading Comprehension", "points": 40, "questions": 4},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "points": 15,
+      "stem": "Directions: Write a short essay of about 150 words on the following topic.\n\nTopic: The Power of Language in Shaping Our Worldview\n\nDiscuss how the language(s) we speak may influence the way we perceive and think about the world. Draw on the themes and examples from Unit 5, including linguistic relativity and the cognitive benefits of bilingualism.",
+      "answer": "Language is far more than a tool for communication — it is a lens through which we perceive and interpret the world. The Sapir-Whorf hypothesis, though debated, has shown that the categories encoded in our language subtly shape what we notice and how we think.\n\nConsider how different languages handle color or spatial direction. Speakers of languages with separate terms for blue and green can distinguish between them more quickly. Speakers of Guugu Yimithirr, who use cardinal directions instead of 'left' and 'right,' maintain a constant awareness of their orientation. These examples suggest that language does not imprison thought, but it does bias it.\n\nBilingualism offers another perspective on language's power. Research shows that bilinguals develop enhanced executive function and build a cognitive reserve that delays dementia symptoms by four to five years. The bilingual brain, constantly navigating between two systems, becomes more flexible and resilient.\n\nIn our globalized world, learning a new language is not merely acquiring a skill — it is opening a new window onto reality.",
+      "hint": "结合 Unit 5 两篇课文的核心论点（语言相对论、双语认知优势），论述语言如何塑造世界观，注意引言—主体—结论结构。",
+      "explanation": "参考答案结构：提出论点→语言相对论例证→双语认知优势例证→总结升华。涵盖核心词汇：shape, perceive, linguistic, cognitive, bilingual, executive function, cognitive reserve。",
+      "scoring_criteria": [
+        "内容（5分）：观点明确，紧扣主题；结合 Unit 5 具体事例；立场前后一致。",
+        "语言（5分）：词汇丰富准确，恰当使用单元重点词汇；语法基本正确，句式有变化。",
+        "结构（5分）：引言、主体、结论清晰；逻辑连贯，使用过渡词；篇幅约150词。"
+      ]
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "points": 15,
+      "stem": "Choose the best option to complete each sentence.\n\n1. The Sapir-Whorf hypothesis suggests that language _____ the way we perceive the world.\n   A. acquires  B. shapes  C. declines  D. inhibits\n\n2. Bilinguals must constantly _____ one language while speaking the other.\n   A. inhibit  B. perceive  C. represent  D. distinguish\n\n3. Studies show that bilingualism can delay cognitive _____ by up to five years.\n   A. faculty  B. decline  C. flexibility  D. acquisition\n\n4. The _____ of bilingualism are most evident in executive function tasks.\n   A. inherent  B. subjective  C. cognitive benefits  D. tangible\n\n5. Bilingual speakers must _____ between two linguistic systems every day.\n   A. impose  B. navigate  C. represent  D. acquire",
+      "options": [
+        "1-B 2-A 3-B 4-C 5-B",
+        "1-A 2-B 3-C 4-D 5-A",
+        "1-C 2-D 3-A 4-B 5-C",
+        "1-B 2-C 3-D 4-A 5-D"
+      ],
+      "answer": 0,
+      "hint": "逐题分析：①塑造→shape；②抑制→inhibit；③衰退→decline；④认知益处→cognitive benefits；⑤切换→navigate。",
+      "explanation": "正确组合为 1-B 2-A 3-B 4-C 5-B：①shape（塑造）指语言塑造感知方式；②inhibit（抑制）指双语者抑制非目标语言；③decline（衰退）指认知衰退；④cognitive benefits（认知益处）指双语对执行功能的益处；⑤navigate（切换）指双语者在语言系统间切换。"
+    },
+    {
+      "id": "q003",
+      "type": "reading",
+      "section": "Reading Comprehension",
+      "points": 40,
+      "passage": "For centuries, philosophers and linguists have debated a deceptively simple question: does the language we speak shape the way we think? The idea that language determines thought — known as linguistic determinism — was first proposed by Benjamin Lee Whorf and his mentor Edward Sapir in the early twentieth century. Their hypothesis suggested that speakers of different languages perceive the world in fundamentally different ways because their languages impose different categories on reality.\n\nConsider how different languages describe colors. In English, the basic color terms include separate words for \"blue\" and \"green.\" In some languages, however, a single word covers both colors. Research has shown that speakers of languages with separate terms for blue and green can distinguish between the two shades more quickly than speakers whose language uses one word. This suggests that language does not merely label what we see — it actively shapes how we categorize and remember visual information.\n\nSpatial language provides another striking example. Some languages, such as Guugu Yimithirr spoken in northern Australia, do not use words like \"left\" and \"right.\" Instead, speakers use absolute directions — north, south, east, and west — even when describing the position of an object inside a room. As a result, speakers of such languages maintain a constant awareness of cardinal directions that most speakers of English or Chinese never develop.",
+      "subQuestions": [
+        {
+          "id": "q003_1",
+          "type": "single_choice",
+          "stem": "What is the main idea of the passage?",
+          "options": [
+            "All languages categorize colors and spatial directions in the same way.",
+            "Language influences how speakers perceive and categorize the world.",
+            "The Sapir-Whorf hypothesis has been completely disproven by modern research.",
+            "Bilingual speakers think more slowly than monolingual speakers."
+          ],
+          "answer": 1,
+          "explanation": "主旨大意题。文章以颜色词和空间语言为例证，说明语言影响使用者的感知和分类方式。A项与原文相反；C项过于绝对；D项在本文中未提及。B项准确概括全文主旨。",
+          "points": 10
+        },
+        {
+          "id": "q003_2",
+          "type": "single_choice",
+          "stem": "According to the passage, what advantage do speakers of languages with separate terms for blue and green have?",
+          "options": [
+            "They can see more colors than other speakers.",
+            "They can distinguish between blue and green more quickly.",
+            "They have larger vocabularies than speakers of other languages.",
+            "They are better at describing spatial directions."
+          ],
+          "answer": 1,
+          "explanation": "细节理解题。第二段明确指出'speakers of languages with separate terms for blue and green can distinguish between the two shades more quickly'。A项'see more colors'与原文矛盾，原文说的是辨别速度而非能否看到；C项在文中无依据；D项是第三段空间语言的内容，与颜色词无关。B项与原文完全一致。",
+          "points": 10
+        },
+        {
+          "id": "q003_3",
+          "type": "single_choice",
+          "stem": "The word \"impose\" in \"their languages impose different categories on reality\" (Paragraph 1) is closest in meaning to",
+          "options": [
+            "remove completely",
+            "gently suggest",
+            "force upon or apply to",
+            "explain in detail"
+          ],
+          "answer": 2,
+          "explanation": "词义猜测题。impose在语境中意为'强加、施加'，指语言将其范畴强加于现实。A项remove方向相反；B项suggest语气过弱；D项explain不如C项准确。C项force upon or apply to最接近原文含义。",
+          "points": 10
+        },
+        {
+          "id": "q003_4",
+          "type": "single_choice",
+          "stem": "What can be inferred about speakers of Guugu Yimithirr from the passage?",
+          "options": [
+            "They cannot understand the concept of 'left' and 'right.'",
+            "They have a constant awareness of cardinal directions.",
+            "They perceive colors differently from English speakers.",
+            "They are bilingual in Guugu Yimithirr and English."
+          ],
+          "answer": 1,
+          "explanation": "推理判断题。第三段指出Guugu Yimithirr使用者'maintain a constant awareness of cardinal directions that most speakers of English or Chinese never develop'。A项'cannot understand'过于绝对，原文说的是不使用而非不理解；C项颜色感知在第二段讨论，与Guugu Yimithirr无关；D项在文中未提及。B项与原文完全一致。",
+          "points": 10
+        }
+      ]
+    },
+    {
+      "id": "q004",
+      "type": "cloze",
+      "section": "Cloze",
+      "points": 10,
+      "passage": "The question of whether language (1) _____ the way we think has fascinated scholars for centuries. The Sapir-Whorf hypothesis proposed that speakers of different languages (2) _____ the world in fundamentally different ways. Modern research supports a (3) _____ version of this hypothesis: language does not imprison thought, but it does (4) _____ it.\n\nBilingualism offers a unique perspective on this question. In a bilingual brain, both languages are constantly (5) _____, even when only one is being used. This requires the brain to (6) _____ between two linguistic systems, selecting the appropriate language and (7) _____ the other.\n\nResearch shows that bilinguals enjoy (8) _____ benefits, particularly in executive function. Perhaps most remarkably, bilingualism can delay cognitive (9) _____ in old age by four to five years, creating a cognitive (10) _____ that protects the brain.",
+      "blanks": [
+        {"id": "b1", "options": ["shapes", "acquires", "declines", "inhibits"], "answer": 0, "explanation": "shape（塑造）指语言塑造思维方式，是全文核心动词。", "points": 1},
+        {"id": "b2", "options": ["perceive", "navigate", "represent", "distinguish"], "answer": 0, "explanation": "perceive（感知）指不同语言使用者以不同方式感知世界。", "points": 1},
+        {"id": "b3", "options": ["strong", "modified", "rejected", "tangible"], "answer": 1, "explanation": "modified（修正的）指弱版假说——语言影响但不决定思维。strong version已被否定。", "points": 1},
+        {"id": "b4", "options": ["determine", "imprison", "bias", "override"], "answer": 2, "explanation": "bias（使偏向）对应原文'Language does not imprison thought, but it does bias it'。", "points": 1},
+        {"id": "b5", "options": ["active", "inactive", "declining", "subjective"], "answer": 0, "explanation": "active（活跃的）对应原文'both languages are constantly active'。", "points": 1},
+        {"id": "b6", "options": ["distinguish", "navigate", "inhibit", "acquire"], "answer": 1, "explanation": "navigate（切换）指双语者在两个语言系统间切换。", "points": 1},
+        {"id": "b7", "options": ["selecting", "inhibiting", "acquiring", "shaping"], "answer": 1, "explanation": "inhibiting（抑制）对应原文'selecting the appropriate language and inhibiting the other'。", "points": 1},
+        {"id": "b8", "options": ["cognitive", "linguistic", "subjective", "tangible"], "answer": 0, "explanation": "cognitive（认知的）指双语带来的认知益处，如增强执行功能。", "points": 1},
+        {"id": "b9", "options": ["decline", "faculty", "flexibility", "acquisition"], "answer": 0, "explanation": "decline（衰退）对应原文'delay cognitive decline in old age'。", "points": 1},
+        {"id": "b10", "options": ["reserve", "faculty", "barrier", "decline"], "answer": 0, "explanation": "reserve（储备）对应原文'cognitive reserve'，指保护大脑的认知缓冲。", "points": 1}
+      ]
+    },
+    {
+      "id": "q005",
+      "type": "translation",
+      "section": "Translation",
+      "points": 20,
+      "items": [
+        {
+          "id": "t1",
+          "source": "语言并不囚禁思维，但确实会对其产生偏向。",
+          "reference": "Language does not imprison thought, but it does bias it.",
+          "explanation": "考点：not... but...结构表转折；imprison（囚禁）为比喻用法；bias作动词意为'使偏向'；does表强调。",
+          "points": 5
+        },
+        {
+          "id": "t2",
+          "source": "研究表明，双语者平均比单语者晚四到五年出现痴呆症状。",
+          "reference": "Studies have found that bilingual patients develop symptoms of dementia an average of four to five years later than monolinguals.",
+          "explanation": "考点：that引导宾语从句；develop symptoms（出现症状）；an average of（平均）；比较结构later than。",
+          "points": 5
+        },
+        {
+          "id": "t3",
+          "source": "在双语者的大脑中，两种语言始终处于活跃状态，即使只使用其中一种。",
+          "reference": "In bilinguals, both languages are constantly active, even when only one is being used.",
+          "explanation": "考点：constantly active（始终活跃）；even when引导让步状语从句；one指代one language；is being used为现在进行时被动语态。",
+          "points": 5
+        },
+        {
+          "id": "t4",
+          "source": "推广双语教育的学校不仅仅是在教授第二语言——它们还在强化学生的大脑。",
+          "reference": "Schools that promote bilingual education are not merely teaching a second language — they are strengthening their students' minds.",
+          "explanation": "考点：that引导定语从句修饰schools；not merely... they are...递进结构；promote bilingual education（推广双语教育）；strengthen minds（强化大脑）。",
+          "points": 5
+        }
+      ]
+    }
+  ]
+}
