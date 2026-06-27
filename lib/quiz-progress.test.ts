@@ -10,8 +10,12 @@ import {
   clearAllProgress,
   clearChapterProgress,
   getAllProgress,
+  saveSession,
+  getSession,
+  clearSession,
   type ProgressEntry,
   type QuizAttempt,
+  type QuizSession,
 } from "./quiz-progress.ts";
 
 // ── 纯函数（不依赖 localStorage）──────────────────────────────
@@ -240,6 +244,89 @@ test("getAllProgress：返回所有章节条目", () => {
     saveAttempt("chemistry", "ch02", makeAttempt(90));
     const all = getAllProgress();
     assert.equal(all.length, 2);
+  } finally {
+    teardownLocalStorage();
+  }
+});
+
+// ── 答题会话（session）持久化 ──────────────────────────────────
+
+function makeSession(phase: QuizSession["phase"] = "answering"): QuizSession {
+  return {
+    answers: { q1: 0, q2: "test answer" },
+    phase,
+    currentIndex: 1,
+    hintsUsed: ["q1"],
+    selfScores: { q3: 5 },
+    savedAt: "2025-01-01T00:00:00Z",
+  };
+}
+
+test("saveSession + getSession：写入后可读回", () => {
+  setupLocalStorage();
+  try {
+    const ok = saveSession("physics", "ch01", makeSession());
+    assert.equal(ok, true);
+    const session = getSession("physics", "ch01");
+    assert.ok(session);
+    assert.equal(session!.phase, "answering");
+    assert.equal(session!.currentIndex, 1);
+    assert.deepEqual(session!.answers, { q1: 0, q2: "test answer" });
+    assert.deepEqual(session!.hintsUsed, ["q1"]);
+    assert.deepEqual(session!.selfScores, { q3: 5 });
+  } finally {
+    teardownLocalStorage();
+  }
+});
+
+test("saveSession：覆盖式仅保留一份最新", () => {
+  setupLocalStorage();
+  try {
+    saveSession("physics", "ch01", makeSession("answering"));
+    saveSession("physics", "ch01", makeSession("scoring"));
+    const session = getSession("physics", "ch01");
+    assert.equal(session!.phase, "scoring");
+  } finally {
+    teardownLocalStorage();
+  }
+});
+
+test("saveSession：保留已有的 best/last/attempts", () => {
+  setupLocalStorage();
+  try {
+    saveAttempt("physics", "ch01", makeAttempt(85));
+    saveSession("physics", "ch01", makeSession());
+    const progress = getChapterProgress("physics", "ch01");
+    assert.ok(progress);
+    assert.equal(progress!.best, 85);
+    assert.equal(progress!.attempts, 1);
+    assert.ok(progress!.session);
+  } finally {
+    teardownLocalStorage();
+  }
+});
+
+test("clearSession：清除 session 但保留 best/last/attempts", () => {
+  setupLocalStorage();
+  try {
+    saveAttempt("physics", "ch01", makeAttempt(90));
+    saveSession("physics", "ch01", makeSession());
+    clearSession("physics", "ch01");
+    assert.equal(getSession("physics", "ch01"), null);
+    const progress = getChapterProgress("physics", "ch01");
+    assert.ok(progress);
+    assert.equal(progress!.best, 90);
+    assert.equal(progress!.attempts, 1);
+    assert.equal(progress!.session, undefined);
+  } finally {
+    teardownLocalStorage();
+  }
+});
+
+test("getSession：无记录返回 null", () => {
+  setupLocalStorage();
+  try {
+    assert.equal(getSession("physics", "ch99"), null);
   } finally {
     teardownLocalStorage();
   }

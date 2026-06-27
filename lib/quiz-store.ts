@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { QuizData, QuizQuestion, UserAnswer } from "@/lib/quiz/types";
 import { autoGrade, isObjective, maxPointsOf } from "@/lib/quiz/types";
-import { saveAttempt, type QuizAttempt } from "@/lib/quiz-progress";
+import { saveAttempt, saveSession, getSession, clearSession, type QuizAttempt } from "@/lib/quiz-progress";
 
 export type QuizStatus = "idle" | "loading" | "ready" | "empty" | "error";
 
@@ -69,6 +69,49 @@ const ANSWERING_DEFAULTS = {
   results: [] as QuestionResult[],
 };
 
+/** 从 results 中提取主观题自评分快照（id → awarded）。 */
+function buildSelfScores(results: QuestionResult[]): Record<string, number> {
+  const scores: Record<string, number> = {};
+  for (const r of results) {
+    if (!r.objective) scores[r.question.id] = r.awarded;
+  }
+  return scores;
+}
+
+/** 将当前做题状态持久化到 localStorage（覆盖式，仅保留一份最新）。 */
+function persistSession(state: QuizState): void {
+  if (!state.subjectId || !state.chapterId || state.status !== "ready") return;
+  saveSession(state.subjectId, state.chapterId, {
+    answers: state.answers,
+    phase: state.phase,
+    currentIndex: state.currentIndex,
+    hintsUsed: state.hintsUsed,
+    selfScores: buildSelfScores(state.results),
+    savedAt: new Date().toISOString(),
+  });
+}
+
+/**
+ * 从已保存的 session 重建 results（用于恢复 scoring/summary 阶段）。
+ * 客观题重新自动判分；主观题使用保存的自评分。
+ */
+function rebuildResults(
+  questions: QuizQuestion[],
+  answers: Record<string, UserAnswer>,
+  selfScores: Record<string, number>,
+): QuestionResult[] {
+  return questions.map((q) => {
+    const answer = answers[q.id] ?? null;
+    const max = maxPointsOf(q);
+    const objective = isObjective(q.type);
+    if (objective) {
+      const [awarded, correct] = autoGrade(q, answer);
+      return { question: q, answer, awarded, max, correct, objective };
+    }
+    return { question: q, answer, awarded: selfScores[q.id] ?? 0, max, correct: false, objective };
+  });
+}
+
 /** 由当前 results 构造一次作答记录（用于本地持久化）。 */
 export function buildAttempt(state: QuizState, stage: QuizAttempt["stage"]): QuizAttempt {
   const earned = state.results.reduce((a, r) => a + r.awarded, 0);
@@ -130,6 +173,36 @@ export const useQuizStore = create<QuizState>((set, get) => ({
         set({ status: "empty", data: null });
         return;
       }
+      // 尝试恢复上次答题会话
+      const saved = getSession(subjectId, chapterId);
+      if (saved) {
+        const currentIds = new Set(json.quiz.questions.map((q) => q.id));
+        const savedIds = Object.keys(saved.answers);
+        const matchCount = savedIds.filter((id) => currentIds.has(id)).length;
+        const matchRate = savedIds.length > 0 ? matchCount / savedIds.length : 1;
+        if (matchRate >= 0.5) {
+          // 清理已不存在的题目答案
+          const restoredAnswers = { ...saved.answers };
+          for (const id of savedIds) {
+            if (!currentIds.has(id)) delete restoredAnswers[id];
+          }
+          // 重建 results（若上次已交卷/已完成）
+          const results =
+            saved.phase === "scoring" || saved.phase === "summary"
+              ? rebuildResults(json.quiz.questions, restoredAnswers, saved.selfScores)
+              : [];
+          set({
+            status: "ready",
+            data: json.quiz,
+            answers: restoredAnswers,
+            phase: saved.phase,
+            currentIndex: Math.min(saved.currentIndex, json.quiz.questions.length - 1),
+            hintsUsed: saved.hintsUsed,
+            results,
+          });
+          return;
+        }
+      }
       set({ status: "ready", data: json.quiz, ...ANSWERING_DEFAULTS });
     } catch (e) {
       if (get().loadedKey !== key) return;
@@ -148,15 +221,20 @@ export const useQuizStore = create<QuizState>((set, get) => ({
       ...ANSWERING_DEFAULTS,
     }),
 
-  setAnswer: (id, answer) =>
-    set((s) => ({ answers: { ...s.answers, [id]: answer } })),
+  setAnswer: (id, answer) => {
+    set((s) => ({ answers: { ...s.answers, [id]: answer } }));
+    persistSession(get());
+  },
 
-  useHint: (id) =>
-    set((s) => (s.hintsUsed.includes(id) ? s : { hintsUsed: [...s.hintsUsed, id] })),
+  useHint: (id) => {
+    set((s) => (s.hintsUsed.includes(id) ? s : { hintsUsed: [...s.hintsUsed, id] }));
+    persistSession(get());
+  },
 
   goTo: (index) => {
     const total = get().data?.questions.length ?? 0;
     set({ currentIndex: Math.max(0, Math.min(index, Math.max(0, total - 1))) });
+    persistSession(get());
   },
   next: () => get().goTo(get().currentIndex + 1),
   prev: () => get().goTo(get().currentIndex - 1),
@@ -179,26 +257,37 @@ export const useQuizStore = create<QuizState>((set, get) => ({
     // 「分数首先确保存储在本地」：交卷即把客观分落地（随后才在评分页展示解析）。
     const s = get();
     saveAttempt(s.subjectId, s.chapterId, buildAttempt(s, "submitted"));
+    persistSession(s);
   },
 
-  setSelfScore: (id, awarded) =>
+  setSelfScore: (id, awarded) => {
     set((s) => ({
       results: s.results.map((r) =>
         r.question.id === id
           ? { ...r, awarded: Math.max(0, Math.min(awarded, r.max)) }
           : r,
       ),
-    })),
+    }));
+    persistSession(get());
+  },
 
   finishScoring: () => {
     set({ phase: "summary" });
     const s = get();
     // 自评完成 → 存最终成绩，更新历史最佳与作答次数。
     saveAttempt(s.subjectId, s.chapterId, buildAttempt(s, "final"));
+    persistSession(s);
   },
-  backToScoring: () => set({ phase: "scoring" }),
+  backToScoring: () => {
+    set({ phase: "scoring" });
+    persistSession(get());
+  },
 
-  restart: () => set({ ...ANSWERING_DEFAULTS }),
+  restart: () => {
+    const s = get();
+    if (s.subjectId && s.chapterId) clearSession(s.subjectId, s.chapterId);
+    set({ ...ANSWERING_DEFAULTS });
+  },
 }));
 
 // ── 派生统计（供 QuizSummary 使用，非 store 状态）───────────────

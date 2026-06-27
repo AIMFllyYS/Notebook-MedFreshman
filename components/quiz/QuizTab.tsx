@@ -6,7 +6,7 @@ import { ClipboardCheck, ChevronLeft, ChevronRight, CheckCircle2, AlertCircle, H
 import { useStore } from "@/lib/store";
 import { useQuizStore } from "@/lib/quiz-store";
 import type { UserAnswer } from "@/lib/quiz/types";
-import { getChapterProgress, type ChapterProgress } from "@/lib/quiz-progress";
+import { getChapterProgress, getSession, type ChapterProgress, type QuizSession } from "@/lib/quiz-progress";
 import QuizQuestion from "./QuizQuestion";
 import QuizScoring from "./QuizScoring";
 import QuizSummary from "./QuizSummary";
@@ -15,16 +15,32 @@ import QuizSummary from "./QuizSummary";
 function useChapterProgress(subjectId: string, chapterId: string, deps: unknown[] = []) {
   const [progress, setProgress] = useState<ChapterProgress | null>(null);
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setProgress(getChapterProgress(subjectId, chapterId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subjectId, chapterId, ...deps]);
   return progress;
 }
 
-/** 历史成绩横幅（上次 / 最佳）。 */
+/** 历史成绩横幅（上次 / 最佳 + 答题恢复提示）。 */
 function HistoryBanner({ subjectId, chapterId }: { subjectId: string; chapterId: string }) {
   const progress = useChapterProgress(subjectId, chapterId);
-  if (!progress) return null;
+  const [session, setSession] = useState<QuizSession | null>(null);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSession(getSession(subjectId, chapterId));
+  }, [subjectId, chapterId]);
+
+  if (!progress && !session) return null;
+
+  const sessionLabel = session
+    ? session.phase === "answering"
+      ? `继续答题（上次答到第 ${session.currentIndex + 1} 题）`
+      : session.phase === "scoring"
+        ? "继续评分"
+        : "查看上次成绩"
+    : null;
+
   return (
     <div
       style={{
@@ -41,11 +57,19 @@ function HistoryBanner({ subjectId, chapterId }: { subjectId: string; chapterId:
       }}
     >
       <History size={14} style={{ color: "var(--md-sys-color-primary)" }} />
-      <span>
-        历史最佳 <strong style={{ color: "var(--md-sys-color-primary)" }}>{progress.best} 分</strong>
-        <span style={{ margin: "0 8px", opacity: 0.5 }}>·</span>
-        上次 {progress.last.percent} 分（已作答 {progress.attempts} 次）
-      </span>
+      {sessionLabel ? (
+        <span style={{ color: "var(--md-sys-color-primary)", fontWeight: 600 }}>
+          {sessionLabel}
+        </span>
+      ) : null}
+      {progress && (
+        <span>
+          {sessionLabel && <span style={{ margin: "0 8px", opacity: 0.5 }}>·</span>}
+          历史最佳 <strong style={{ color: "var(--md-sys-color-primary)" }}>{progress.best} 分</strong>
+          <span style={{ margin: "0 8px", opacity: 0.5 }}>·</span>
+          上次 {progress.last.percent} 分（已作答 {progress.attempts} 次）
+        </span>
+      )}
     </div>
   );
 }

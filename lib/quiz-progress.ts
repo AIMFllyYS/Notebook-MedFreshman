@@ -1,6 +1,9 @@
 // 题目测试成绩本地持久化（localStorage）。
 // 交卷评分后，分数「首先确保存储在本地」，随后才展示详细解析；刷新/重进不丢成绩。
 // 与 useSettings 一致的轻量 load/persist 模式，纯客户端使用（SSR 安全降级）。
+// 答题会话（session）仅保留一份最新，用于恢复退出前的答题现场。
+
+import type { UserAnswer } from "@/lib/quiz/types";
 
 const LS_KEY = "gailvlun-quiz-progress-v1";
 
@@ -35,6 +38,19 @@ export interface ChapterProgress {
   last: QuizAttempt;
   /** 累计作答次数（仅统计 final）。 */
   attempts: number;
+  /** 最新答题会话（用于恢复退出前的答题现场，仅保留一份）。 */
+  session?: QuizSession;
+}
+
+/** 答题会话快照（仅保留一份最新，用于恢复退出前的答题现场）。 */
+export interface QuizSession {
+  answers: Record<string, UserAnswer>;
+  phase: "answering" | "scoring" | "summary";
+  currentIndex: number;
+  hintsUsed: string[];
+  /** 主观题自评分快照（questionId → awarded），用于恢复 scoring/summary 阶段。 */
+  selfScores: Record<string, number>;
+  savedAt: string;
 }
 
 type ProgressMap = Record<string, ChapterProgress>;
@@ -90,6 +106,51 @@ export function saveAttempt(
   const best = Math.max(prev?.best ?? 0, attempt.percent);
   const attempts = (prev?.attempts ?? 0) + (attempt.stage === "final" ? 1 : 0);
   map[k] = { best, last: attempt, attempts };
+  return persistAll(map);
+}
+
+// ── 答题会话（session）持久化 ──────────────────────────────────
+
+/** 保存最新答题会话到本地（覆盖式，仅保留一份）。 */
+export function saveSession(
+  subjectId: string,
+  chapterId: string,
+  session: QuizSession,
+): boolean {
+  if (!subjectId || !chapterId) return false;
+  const map = loadAll();
+  const k = keyOf(subjectId, chapterId);
+  const prev = map[k];
+  // 保留已有的 best/last/attempts，仅更新 session。
+  map[k] = {
+    best: prev?.best ?? 0,
+    last: prev?.last ?? { earned: 0, max: 0, percent: 0, completedAt: "", stage: "submitted" },
+    attempts: prev?.attempts ?? 0,
+    session,
+  };
+  return persistAll(map);
+}
+
+/** 读取最新答题会话（无则 null）。 */
+export function getSession(
+  subjectId: string,
+  chapterId: string,
+): QuizSession | null {
+  if (!subjectId || !chapterId) return null;
+  return loadAll()[keyOf(subjectId, chapterId)]?.session ?? null;
+}
+
+/** 清除答题会话（重做时调用，保留 best/last/attempts）。 */
+export function clearSession(
+  subjectId: string,
+  chapterId: string,
+): boolean {
+  if (!subjectId || !chapterId) return false;
+  const map = loadAll();
+  const k = keyOf(subjectId, chapterId);
+  const prev = map[k];
+  if (!prev?.session) return true;
+  map[k] = { best: prev.best, last: prev.last, attempts: prev.attempts };
   return persistAll(map);
 }
 

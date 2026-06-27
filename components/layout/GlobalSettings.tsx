@@ -2,6 +2,7 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Settings,
@@ -80,6 +81,23 @@ function groupBySubject(entries: ProgressEntry[]): SubjectGroup[] {
       avgBest,
     };
   });
+}
+
+/** 根据 subjectId + chapterId 在内容树中查找可导航的路由（categoryId + itemId）。 */
+function findChapterRoute(subjectId: string, chapterId: string): { categoryId: string; itemId: string } | null {
+  const subject = contentTree.subjects.find((s) => s.id === subjectId);
+  if (!subject) return null;
+  for (const category of subject.categories) {
+    for (const item of category.items) {
+      if (item.id === chapterId) {
+        if (item.children?.length) {
+          return { categoryId: category.id, itemId: item.children[0].id };
+        }
+        return { categoryId: category.id, itemId: chapterId };
+      }
+    }
+  }
+  return null;
 }
 
 function StatCard({
@@ -165,6 +183,7 @@ export default function GlobalSettings({
 }) {
   const theme = useTheme((s) => s.theme);
   const setTheme = useTheme((s) => s.setTheme);
+  const router = useRouter();
 
   const [entries, setEntries] = useState<ProgressEntry[]>([]);
   const [confirmClear, setConfirmClear] = useState(false);
@@ -316,15 +335,23 @@ export default function GlobalSettings({
                         className="flex flex-col overflow-hidden rounded-[var(--md-sys-shape-corner-large,16px)]"
                         style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
                       >
-                        {g.items.map((e, i) => (
+                        {g.items.map((e, i) => {
+                          const route = findChapterRoute(e.subjectId, e.chapterId);
+                          return (
                           <div
                             key={e.chapterId}
-                            className="flex items-center gap-3 px-3 py-2"
+                            onClick={() => {
+                              if (!route) return;
+                              router.push(`/${e.subjectId}/${route.categoryId}/${route.itemId}`);
+                              onClose();
+                            }}
+                            className="flex items-center gap-3 px-3 py-2 transition-colors"
                             style={{
                               background:
                                 i % 2 === 0
                                   ? "var(--md-sys-color-surface-container-lowest)"
                                   : "var(--md-sys-color-surface-container)",
+                              cursor: route ? "pointer" : "default",
                             }}
                           >
                             <span className="min-w-0 flex-1 truncate text-[12.5px] text-[var(--md-sys-color-on-surface)]">
@@ -335,7 +362,8 @@ export default function GlobalSettings({
                             </span>
                             <ScoreBadge percent={e.progress.best} />
                           </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   );
