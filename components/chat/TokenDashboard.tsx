@@ -182,7 +182,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   const ringDash = hasContextData ? `${Math.max(ratio, 0.02) * RING_C} ${RING_C}` : `0 ${RING_C}`;
   const iconSvg = hasContextData ? (
     <svg width="14" height="14" viewBox="0 0 32 32" style={{ transform: 'rotate(-90deg)' }}>
-      <circle cx="16" cy="16" r={RING_R} fill="none" stroke="var(--bg-muted)" strokeWidth="4" />
+      <circle cx="16" cy="16" r={RING_R} fill="none" stroke={ringColor} strokeWidth="4" strokeOpacity={0.15} />
       <circle
         cx="16" cy="16" r={RING_R} fill="none"
         stroke={ringColor} strokeWidth="4" strokeLinecap="round"
