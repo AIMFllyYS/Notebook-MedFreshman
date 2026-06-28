@@ -56,6 +56,20 @@ export interface ChatAttachment {
   base64: string;
 }
 
+/** Storage v2：附件正文存 chat-blob:{id}，消息内仅保留引用。 */
+export interface ChatAttachmentRef {
+  type: 'image';
+  mimeType: string;
+  id: string;
+  name?: string;
+}
+
+export type StoredChatAttachment = ChatAttachment | ChatAttachmentRef;
+
+export function isAttachmentRef(a: StoredChatAttachment): a is ChatAttachmentRef {
+  return 'id' in a && !('base64' in a);
+}
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant' | 'system' | 'tool';
@@ -65,7 +79,7 @@ export interface ChatMessage {
   toolCalls?: ToolCallBlock[];
   toolCallId?: string;
   followUpQuestions?: string[];
-  attachments?: ChatAttachment[];
+  attachments?: StoredChatAttachment[];
   metadata?: {
     thinkingEnabled?: boolean;
     searchEnabled?: boolean;

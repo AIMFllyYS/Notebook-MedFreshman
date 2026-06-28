@@ -1,13 +1,24 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
 import type { ChatMessage, ChatContext } from '@/lib/types/chat';
-import { idbStorage, PERSIST_KEYS } from '@/lib/storage/idbStorage';
 import { useArtifacts } from '@/lib/hooks/useArtifacts';
+import {
+  type SessionMeta,
+  buildSessionMeta,
+  mergeArtifactIds,
+  loadManifest,
+  saveManifest,
+  loadSessionMessages,
+  saveSessionMessages,
+  migrateFromV1IfNeeded,
+  deleteSessionData,
+  listBlobIdsForSession,
+  persistInlineAttachments,
+  hydrateAttachmentsForApi,
+} from '@/lib/storage/chatStorage';
+import { PERSIST_KEYS } from '@/lib/storage/idbStorage';
 
-// 对话历史持久化 —— 已从 localStorage 迁移至 IndexedDB（gailvlun-db）。
-// 异步存储意味着首屏 store 为空，水合完成后才有数据。
-// 消费方应通过 useHydrated(useChatHistory) 门控输入，避免水合前抢跑。
-// 会话删除时联动 useArtifacts.prune 清理孤儿 artifact。
+const MAX_LOADED_SESSIONS = 3;
+const MAX_SESSIONS = 50;
 
 export interface ChatSession {
   id: string;
@@ -16,16 +27,28 @@ export interface ChatSession {
   createdAt: number;
   updatedAt: number;
   context?: ChatContext;
-  /** 会话来源：缺省/'main' = 右侧主对话；'floating' = 划词浮窗会话（历史面板「划词」栏，可还原）。 */
   kind?: 'main' | 'floating';
+  /** Storage v2：历史列表在未加载消息体时使用 */
+  messageCount?: number;
 }
 
 interface ChatHistoryState {
-  sessions: ChatSession[];
+  sessionsMeta: SessionMeta[];
+  messagesById: Record<string, ChatMessage[]>;
   activeSessionId: string | null;
-  /** IndexedDB 异步水合完成标志；false = 首屏加载中，消费方应门控输入。 */
+  sessionLoadState: Record<string, 'idle' | 'loading' | 'loaded' | 'error'>;
+  loadedSessionIds: string[];
+  pinnedSessionIds: string[];
   _hasHydrated: boolean;
   _setHasHydrated: (v: boolean) => void;
+  /** 当前 active 会话消息已从 IDB 加载完成 */
+  _activeMessagesReady: boolean;
+  _setActiveMessagesReady: (v: boolean) => void;
+  /** 合并 meta + 已加载 messages，供历史面板等使用 */
+  getSessions: () => ChatSession[];
+  pinSession: (id: string) => void;
+  unpinSession: (id: string) => void;
+  ensureSessionLoaded: (sessionId: string) => Promise<void>;
   createSession: (context?: ChatContext, kind?: 'main' | 'floating') => string;
   deleteSession: (id: string) => void;
   switchSession: (id: string) => void;
@@ -34,134 +57,298 @@ interface ChatHistoryState {
   updateSessionTitle: (sessionId: string, title: string) => void;
 }
 
-export const useChatHistory = create<ChatHistoryState>()(
-  persist(
-    (set) => ({
-      sessions: [],
-      activeSessionId: null,
-      _hasHydrated: false,
-      _setHasHydrated: (v) => set({ _hasHydrated: v }),
+let bootstrapPromise: Promise<void> | null = null;
 
-      createSession: (context, kind) => {
-        const id = Date.now().toString();
-        const newSession: ChatSession = {
-          id,
-          title: '新对话',
-          messages: [],
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-          context,
-          ...(kind === 'floating' ? { kind } : {}),
-        };
-        // 划词会话不抢占主面板的 activeSessionId（否则会劫持当前主对话焦点）。
-        const claimActive = kind !== 'floating';
-        set((state) => {
-          // 最多保留 50 个会话，溢出的最老会话其 artifact 一并清理
-          const sessions = [newSession, ...state.sessions];
-          const capped = sessions.length > 50 ? sessions.slice(0, 50) : sessions;
-          if (sessions.length > 50) {
-            const dropped = sessions.slice(50);
-            const keepIds = collectArtifactIds(capped);
-            const droppedIds = collectArtifactIds(dropped);
-            const orphanIds = droppedIds.filter((aid) => !keepIds.includes(aid));
-            if (orphanIds.length > 0) {
-              pruneArtifacts(keepIds);
-            }
-          }
-          return claimActive ? { sessions: capped, activeSessionId: id } : { sessions: capped };
-        });
-        return id;
-      },
-
-      deleteSession: (id) => {
-        set((state) => {
-          const newSessions = state.sessions.filter((s) => s.id !== id);
-          const newActiveId =
-            state.activeSessionId === id
-              ? newSessions.length > 0
-                ? newSessions[0].id
-                : null
-              : state.activeSessionId;
-          // 清理孤儿 artifact：删除会话后，不再被任何剩余会话引用的 artifact
-          const keepIds = collectArtifactIds(newSessions);
-          pruneArtifacts(keepIds);
-          return { sessions: newSessions, activeSessionId: newActiveId };
-        });
-      },
-
-      switchSession: (id) => {
-        set({ activeSessionId: id });
-      },
-
-      addMessage: (sessionId, message) => {
-        set((state) => ({
-          sessions: state.sessions.map((s) =>
-            s.id === sessionId
-              ? { ...s, messages: [...s.messages, message], updatedAt: Date.now() }
-              : s,
-          ),
-        }));
-      },
-
-      updateMessage: (sessionId, messageId, updates) => {
-        set((state) => ({
-          sessions: state.sessions.map((s) =>
-            s.id === sessionId
-              ? {
-                  ...s,
-                  messages: s.messages.map((m) =>
-                    m.id === messageId ? { ...m, ...updates } : m,
-                  ),
-                  updatedAt: Date.now(),
-                }
-              : s,
-          ),
-        }));
-      },
-
-      updateSessionTitle: (sessionId, title) => {
-        set((state) => ({
-          sessions: state.sessions.map((s) =>
-            s.id === sessionId
-              ? { ...s, title, updatedAt: Date.now() }
-              : s,
-          ),
-        }));
-      },
-    }),
-    {
-      name: PERSIST_KEYS.chatHistory,
-      storage: createJSONStorage(() => idbStorage),
-      partialize: (s) => ({ sessions: s.sessions, activeSessionId: s.activeSessionId }),
-      onRehydrateStorage: () => (state) => {
-        state?._setHasHydrated(true);
-      },
-    },
-  ),
-);
-
-// ── 内部辅助 ────────────────────────────────────────────────────
-
-/** 从会话列表中收集所有 artifactId（避免循环依赖，延迟 import）。 */
-function collectArtifactIds(sessions: ChatSession[]): string[] {
-  const ids: string[] = [];
-  for (const s of sessions) {
-    for (const m of s.messages) {
-      if (m.toolCalls) {
-        for (const tc of m.toolCalls) {
-          if (tc.artifactId) ids.push(tc.artifactId);
-        }
-      }
-    }
-  }
-  return ids;
+function metaToChatSession(meta: SessionMeta, messages: ChatMessage[]): ChatSession {
+  return {
+    id: meta.id,
+    title: meta.title,
+    messages,
+    createdAt: meta.createdAt,
+    updatedAt: meta.updatedAt,
+    context: meta.context,
+    kind: meta.kind,
+    messageCount: meta.messageCount,
+  };
 }
 
-/** 调用 useArtifacts.prune 清理孤儿 artifact。 */
-function pruneArtifacts(keepIds: string[]): void {
+function pruneArtifactsFromMetas(metas: SessionMeta[]): void {
+  const keepIds = metas.flatMap((m) => m.artifactIds);
   try {
     useArtifacts.getState().prune(keepIds);
   } catch {
-    // useArtifacts 尚未初始化时静默跳过
+    // ignore
   }
 }
+
+function evictLoadedSessions(state: ChatHistoryState, keepIds: Set<string>): Record<string, ChatMessage[]> {
+  const next = { ...state.messagesById };
+  for (const id of state.loadedSessionIds) {
+    if (keepIds.has(id)) continue;
+    delete next[id];
+  }
+  return next;
+}
+
+export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
+  sessionsMeta: [],
+  messagesById: {},
+  activeSessionId: null,
+  sessionLoadState: {},
+  loadedSessionIds: [],
+  pinnedSessionIds: [],
+  _hasHydrated: false,
+  _activeMessagesReady: false,
+  _setHasHydrated: (v) => set({ _hasHydrated: v }),
+  _setActiveMessagesReady: (v) => set({ _activeMessagesReady: v }),
+
+  getSessions: () => {
+    const { sessionsMeta, messagesById } = get();
+    return sessionsMeta.map((meta) =>
+      metaToChatSession(meta, messagesById[meta.id] ?? []),
+    );
+  },
+
+  pinSession: (id) => {
+    set((state) => ({
+      pinnedSessionIds: state.pinnedSessionIds.includes(id)
+        ? state.pinnedSessionIds
+        : [...state.pinnedSessionIds, id],
+    }));
+  },
+
+  unpinSession: (id) => {
+    set((state) => ({
+      pinnedSessionIds: state.pinnedSessionIds.filter((x) => x !== id),
+    }));
+  },
+
+  ensureSessionLoaded: async (sessionId) => {
+    const state = get();
+    if (state.messagesById[sessionId]) {
+      set((s) => ({
+        sessionLoadState: { ...s.sessionLoadState, [sessionId]: 'loaded' },
+      }));
+      return;
+    }
+    set((s) => ({
+      sessionLoadState: { ...s.sessionLoadState, [sessionId]: 'loading' },
+    }));
+    const messages = await loadSessionMessages(sessionId);
+    if (!messages) {
+      set((s) => ({
+        sessionLoadState: { ...s.sessionLoadState, [sessionId]: 'error' },
+      }));
+      return;
+    }
+    set((s) => {
+      const keep = new Set([
+        sessionId,
+        s.activeSessionId,
+        ...s.pinnedSessionIds,
+      ].filter(Boolean) as string[]);
+      let loadedSessionIds = [...s.loadedSessionIds.filter((x) => x !== sessionId), sessionId];
+      while (loadedSessionIds.length > MAX_LOADED_SESSIONS) {
+        const candidate = loadedSessionIds.find((x) => !keep.has(x));
+        if (!candidate) break;
+        loadedSessionIds = loadedSessionIds.filter((x) => x !== candidate);
+        keep.add(sessionId);
+      }
+      const messagesById = { ...s.messagesById, [sessionId]: messages };
+      const evictKeep = new Set([...loadedSessionIds, ...s.pinnedSessionIds, s.activeSessionId].filter(Boolean) as string[]);
+      const pruned = evictLoadedSessions({ ...s, messagesById, loadedSessionIds }, evictKeep);
+      return {
+        messagesById: pruned,
+        loadedSessionIds,
+        sessionLoadState: { ...s.sessionLoadState, [sessionId]: 'loaded' },
+      };
+    });
+  },
+
+  createSession: (context, kind) => {
+    const id = Date.now().toString();
+    const now = Date.now();
+    const meta: SessionMeta = {
+      id,
+      title: '新对话',
+      createdAt: now,
+      updatedAt: now,
+      kind: kind === 'floating' ? 'floating' : undefined,
+      context,
+      messageCount: 0,
+      artifactIds: [],
+    };
+    const claimActive = kind !== 'floating';
+    set((state) => {
+      const sessionsMeta = [meta, ...state.sessionsMeta];
+      const capped = sessionsMeta.length > MAX_SESSIONS ? sessionsMeta.slice(0, MAX_SESSIONS) : sessionsMeta;
+      if (sessionsMeta.length > MAX_SESSIONS) {
+        const dropped = sessionsMeta.slice(MAX_SESSIONS);
+        for (const d of dropped) {
+          void deleteSessionData(d.id, []);
+        }
+        pruneArtifactsFromMetas(capped);
+      }
+      saveManifest({
+        version: 2,
+        activeSessionId: claimActive ? id : state.activeSessionId,
+        sessions: capped,
+      });
+      return {
+        sessionsMeta: capped,
+        messagesById: { ...state.messagesById, [id]: [] },
+        loadedSessionIds: [...state.loadedSessionIds.filter((x) => x !== id), id],
+        activeSessionId: claimActive ? id : state.activeSessionId,
+        sessionLoadState: { ...state.sessionLoadState, [id]: 'loaded' },
+        _activeMessagesReady: claimActive ? true : state._activeMessagesReady,
+      };
+    });
+    saveSessionMessages(id, []);
+    return id;
+  },
+
+  deleteSession: (id) => {
+    set((state) => {
+      const sessionsMeta = state.sessionsMeta.filter((s) => s.id !== id);
+      const newActiveId =
+        state.activeSessionId === id
+          ? sessionsMeta.length > 0
+            ? sessionsMeta[0].id
+            : null
+          : state.activeSessionId;
+      const { [id]: _drop, ...messagesById } = state.messagesById;
+      pruneArtifactsFromMetas(sessionsMeta);
+      saveManifest({ version: 2, activeSessionId: newActiveId, sessions: sessionsMeta });
+      void (async () => {
+        const blobIds = await listBlobIdsForSession(id);
+        await deleteSessionData(id, blobIds);
+      })();
+      return {
+        sessionsMeta,
+        messagesById,
+        activeSessionId: newActiveId,
+        loadedSessionIds: state.loadedSessionIds.filter((x) => x !== id),
+        sessionLoadState: { ...state.sessionLoadState, [id]: 'idle' },
+      };
+    });
+  },
+
+  switchSession: (id) => {
+    set({ activeSessionId: id, _activeMessagesReady: false });
+    void get().ensureSessionLoaded(id).then(() => {
+      if (get().activeSessionId === id) {
+        get()._setActiveMessagesReady(true);
+      }
+    });
+  },
+
+  addMessage: (sessionId, message) => {
+    set((state) => {
+      const storedMessage = persistInlineAttachments(message);
+      const prev = state.messagesById[sessionId] ?? [];
+      const messages = [...prev, storedMessage];
+      const sessionsMeta = state.sessionsMeta.map((s) =>
+        s.id === sessionId
+          ? {
+              ...s,
+              updatedAt: Date.now(),
+              messageCount: messages.length,
+              preview: storedMessage.role === 'user' ? storedMessage.content.slice(0, 80) : s.preview,
+              artifactIds: mergeArtifactIds(s.artifactIds, [storedMessage]),
+            }
+          : s,
+      );
+      saveSessionMessages(sessionId, messages);
+      saveManifest({
+        version: 2,
+        activeSessionId: state.activeSessionId,
+        sessions: sessionsMeta,
+      });
+      return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
+    });
+  },
+
+  // 性能契约：仅替换目标 session / message；未修改 session 须保留引用（供 useChat 引用相等订阅）。
+  updateMessage: (sessionId, messageId, updates) => {
+    set((state) => {
+      const prev = state.messagesById[sessionId];
+      if (!prev) return state;
+      const messages = prev.map((m) => (m.id === messageId ? { ...m, ...updates } : m));
+      const sessionsMeta = state.sessionsMeta.map((s) =>
+        s.id === sessionId
+          ? {
+              ...s,
+              updatedAt: Date.now(),
+              artifactIds: mergeArtifactIds(s.artifactIds, messages),
+            }
+          : s,
+      );
+      saveSessionMessages(sessionId, messages);
+      saveManifest({
+        version: 2,
+        activeSessionId: state.activeSessionId,
+        sessions: sessionsMeta,
+      });
+      return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
+    });
+  },
+
+  updateSessionTitle: (sessionId, title) => {
+    set((state) => {
+      const sessionsMeta = state.sessionsMeta.map((s) =>
+        s.id === sessionId ? { ...s, title, updatedAt: Date.now() } : s,
+      );
+      saveManifest({
+        version: 2,
+        activeSessionId: state.activeSessionId,
+        sessions: sessionsMeta,
+      });
+      return { sessionsMeta };
+    });
+  },
+}));
+
+/** 启动时迁移 + 加载 manifest 与当前会话（幂等）。 */
+export async function ensureChatHistoryBootstrap(): Promise<void> {
+  if (bootstrapPromise) return bootstrapPromise;
+  bootstrapPromise = (async () => {
+    if (typeof window === 'undefined') return;
+    await migrateFromV1IfNeeded();
+    const manifest = await loadManifest();
+    const store = useChatHistory.getState();
+    if (manifest) {
+      useChatHistory.setState({
+        sessionsMeta: manifest.sessions,
+        activeSessionId: manifest.activeSessionId,
+        _hasHydrated: true,
+      });
+      if (manifest.activeSessionId) {
+        await store.ensureSessionLoaded(manifest.activeSessionId);
+        useChatHistory.getState()._setActiveMessagesReady(true);
+      } else {
+        useChatHistory.getState()._setActiveMessagesReady(true);
+      }
+    } else {
+      useChatHistory.setState({ _hasHydrated: true, _activeMessagesReady: true });
+    }
+  })();
+  return bootstrapPromise;
+}
+
+// 兼容 useHydrated(useChatHistory)
+useChatHistory.persist = {
+  hasHydrated: () => useChatHistory.getState()._hasHydrated,
+  onHydrate: (fn) => {
+    fn();
+    return () => {};
+  },
+  onFinishHydration: (fn) => {
+    if (useChatHistory.getState()._hasHydrated) {
+      fn();
+      return () => {};
+    }
+    return useChatHistory.subscribe((s) => {
+      if (s._hasHydrated) fn();
+    });
+  },
+};

@@ -1,28 +1,31 @@
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { useChatHistory, ensureChatHistoryBootstrap } from '@/lib/hooks/useChatHistory';
+import { loadAllSessionsForExport } from '@/lib/storage/chatStorage';
 
 /**
  * 把全部聊天数据（主对话 + 划词会话，含消息 / 工具调用元数据 / 图片附件）导出为本地 JSON 文件。
  * 纯本地 Blob 下载，绝不外发（守安全红线）。返回导出的会话数，供 UI 提示。
  */
-export function exportAllChats(): { ok: boolean; count: number } {
-  if (typeof window === "undefined") return { ok: false, count: 0 };
-  const sessions = useChatHistory.getState().sessions;
-  if (sessions.length === 0) return { ok: false, count: 0 };
+export async function exportAllChats(): Promise<{ ok: boolean; count: number }> {
+  if (typeof window === 'undefined') return { ok: false, count: 0 };
+  const { sessionsMeta } = useChatHistory.getState();
+  if (sessionsMeta.length === 0) return { ok: false, count: 0 };
+
+  const sessions = await loadAllSessionsForExport(sessionsMeta);
 
   const payload = {
-    app: "gailvlun",
-    type: "chat-export",
+    app: 'gailvlun',
+    type: 'chat-export',
     version: 1,
     exportedAt: new Date().toISOString(),
     sessionCount: sessions.length,
     sessions,
   };
 
-  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const d = new Date();
-  const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
-  const a = document.createElement("a");
+  const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+  const a = document.createElement('a');
   a.href = url;
   a.download = `gailvlun-chat-export-${stamp}.json`;
   document.body.appendChild(a);

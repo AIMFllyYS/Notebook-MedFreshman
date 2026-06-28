@@ -432,8 +432,9 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
           </p>
           <button
             onClick={() => {
-              const r = exportAllChats();
-              setExportMsg(r.ok ? `已导出 ${r.count} 个会话` : "暂无可导出的聊天数据");
+              void exportAllChats().then((r) => {
+                setExportMsg(r.ok ? `已导出 ${r.count} 个会话` : '暂无可导出的聊天数据');
+              });
             }}
             className="press flex items-center gap-1.5 self-start rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)]"
           >

@@ -1,31 +1,75 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import type { AttachmentPreview } from "@/lib/ai/imageUtils";
-import type { ChatAttachment } from "@/lib/types/chat";
+import type { ChatAttachment, StoredChatAttachment } from "@/lib/types/chat";
+import { isAttachmentRef } from "@/lib/types/chat";
+import { loadBlobDataUrl } from "@/lib/storage/chatStorage";
 
 interface AttachmentThumbnailsProps {
   /** 前端预览列表（含 blob URL），用于输入区可删除的缩略图。 */
   previews?: AttachmentPreview[];
   /** 删除回调（仅输入模式可用）。 */
   onRemove?: (idx: number) => void;
-  /** 已发送消息的附件（base64 data-url），用于聊天历史只读展示。 */
-  readonlyAttachments?: ChatAttachment[];
+  /** 已发送消息的附件，用于聊天历史只读展示。 */
+  readonlyAttachments?: StoredChatAttachment[];
   /** 缩略图尺寸（px）。 */
   size?: number;
   /** 是否可点击放大。 */
   clickable?: boolean;
 }
 
+function ReadonlyAttachmentImg({
+  attachment,
+  size,
+  clickable,
+}: {
+  attachment: StoredChatAttachment;
+  size: number;
+  clickable: boolean;
+}) {
+  const [src, setSrc] = useState<string | null>(
+    isAttachmentRef(attachment) ? null : attachment.base64,
+  );
+
+  useEffect(() => {
+    if (!isAttachmentRef(attachment)) return;
+    let cancelled = false;
+    void loadBlobDataUrl(attachment.id).then((url) => {
+      if (!cancelled && url) setSrc(url);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [attachment]);
+
+  if (!src) {
+    return (
+      <div
+        style={{
+          width: size,
+          height: size,
+          borderRadius: 8,
+          background: "var(--bg-muted)",
+          border: "1px solid var(--line)",
+        }}
+      />
+    );
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- blob/base64 URLs not supported by next/image
+    <img
+      src={src}
+      alt=""
+      style={{ width: "100%", height: "100%", objectFit: "cover", cursor: clickable ? "pointer" : "default" }}
+    />
+  );
+}
+
 /**
  * 附件缩略图组件 —— 统一渲染图片附件预览。
- *
- * 两种模式：
- * 1. **输入模式**：传入 `previews` + `onRemove`，显示删除按钮。
- * 2. **只读模式**：传入 `readonlyAttachments`，仅展示缩略图（用于聊天历史）。
- *
- * 可被 ChatInput、ChatMessage、以及其他 AI 对话板块组件复用。
  */
 const AttachmentThumbnails: React.FC<AttachmentThumbnailsProps> = ({
   previews,
@@ -34,16 +78,18 @@ const AttachmentThumbnails: React.FC<AttachmentThumbnailsProps> = ({
   size = 56,
   clickable = false,
 }) => {
-  const items: { src: string; alt: string }[] = [];
+  const items: { src: string; alt: string; key: string }[] = [];
 
   if (previews) {
-    previews.forEach((p) => items.push({ src: p.previewUrl, alt: p.file.name }));
-  }
-  if (readonlyAttachments) {
-    readonlyAttachments.forEach((a) => items.push({ src: a.base64, alt: "" }));
+    previews.forEach((p, i) =>
+      items.push({ src: p.previewUrl, alt: p.file.name, key: `preview-${i}` }),
+    );
   }
 
-  if (items.length === 0) return null;
+  const readonly = readonlyAttachments ?? [];
+  const hasReadonly = readonly.length > 0;
+
+  if (items.length === 0 && !hasReadonly) return null;
 
   return (
     <div
@@ -59,7 +105,7 @@ const AttachmentThumbnails: React.FC<AttachmentThumbnailsProps> = ({
     >
       {items.map((item, i) => (
         <div
-          key={i}
+          key={item.key}
           style={{
             position: "relative",
             width: size,
@@ -70,7 +116,7 @@ const AttachmentThumbnails: React.FC<AttachmentThumbnailsProps> = ({
             cursor: clickable ? "pointer" : "default",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element -- blob/base64 URLs not supported by next/image */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={item.src}
             alt={item.alt}
@@ -99,6 +145,21 @@ const AttachmentThumbnails: React.FC<AttachmentThumbnailsProps> = ({
               <X size={10} />
             </button>
           )}
+        </div>
+      ))}
+      {readonly.map((a, i) => (
+        <div
+          key={isAttachmentRef(a) ? a.id : `inline-${i}`}
+          style={{
+            position: "relative",
+            width: size,
+            height: size,
+            borderRadius: 8,
+            overflow: "hidden",
+            border: "1px solid var(--line)",
+          }}
+        >
+          <ReadonlyAttachmentImg attachment={a} size={size} clickable={clickable} />
         </div>
       ))}
     </div>
