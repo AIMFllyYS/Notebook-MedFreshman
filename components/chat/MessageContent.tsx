@@ -7,7 +7,8 @@ import remarkSoftBreaks from '@/lib/markdown/remarkSoftBreaks';
 import { directiveComponents } from '@/lib/markdown/directiveComponents';
 import { normalizeDirectiveLabels } from '@/lib/markdown/normalizeDirectiveLabels';
 import 'katex/dist/katex.min.css';
-import { parseXmlTags } from '@/lib/utils/xmlParser';
+import { parseXmlTags, hasKnownCustomTags, stripUnclosedCustomTagTails, stripOrphanCustomTagMarkers, CHAT_VIZ_TAGS } from '@/lib/utils/xmlParser';
+import type { ParsedBlock } from '@/lib/types/chat';
 import { ChatMessageVisualizations } from '@/components/chat/ChatMessageVisualizations';
 import { ToolCallDashboard } from '@/components/chat/ToolCallDashboard';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
@@ -91,7 +92,7 @@ function renderMarkdownWithSvg(
   keyPrefix: string,
   remarkPlugins: typeof sharedRemarkPlugins,
 ): React.ReactNode {
-  const content = text || '';
+  const content = stripOrphanCustomTagMarkers(text || '');
   const md = (key: string, value: string) => (
     <ReactMarkdown key={key} remarkPlugins={remarkPlugins} rehypePlugins={sharedRehypePlugins} components={mdComponents}>
       {value}
@@ -122,37 +123,74 @@ function renderMarkdownWithSvg(
   return <React.Fragment key={keyPrefix}>{out}</React.Fragment>;
 }
 
+const VIZ_TAG_SET = new Set<string>(CHAT_VIZ_TAGS);
+
+/* ---- Render parsed blocks (supports nested Answer/Thinking re-parse) ---- */
+function renderBlocks(
+  blocks: ParsedBlock[],
+  keyPrefix: string,
+  enableVisualizations: boolean | undefined,
+  onFollowUpSelect: ((question: string) => void) | undefined,
+  remarkPlugins: typeof sharedRemarkPlugins,
+): React.ReactNode {
+  return blocks.map((block, idx) =>
+    renderParsedBlock(block, `${keyPrefix}-${idx}`, enableVisualizations, onFollowUpSelect, remarkPlugins),
+  );
+}
+
 /* ---- Render a single parsed block ---- */
-const renderParsedBlock = (block: any, idx: number, enableVisualizations?: boolean, onFollowUpSelect?: (question: string) => void, remarkPlugins: typeof sharedRemarkPlugins = sharedRemarkPlugins) => {
+const renderParsedBlock = (
+  block: ParsedBlock,
+  key: string,
+  enableVisualizations?: boolean,
+  onFollowUpSelect?: (question: string) => void,
+  remarkPlugins: typeof sharedRemarkPlugins = sharedRemarkPlugins,
+) => {
   if (block.type === 'markdown') {
-    return renderMarkdownWithSvg(block.content || '', `md-${idx}`, remarkPlugins);
+    const raw = block.content || '';
+    // markdown 块中若仍含已知自定义标签（嵌套拆分解耦 / 流式半截后残留），二次 parse 走组件管道。
+    if (hasKnownCustomTags(raw)) {
+      const nested = parseXmlTags(raw);
+      if (nested.some((b) => b.type === 'component')) {
+        return (
+          <React.Fragment key={key}>
+            {renderBlocks(nested, key, enableVisualizations, onFollowUpSelect, remarkPlugins)}
+          </React.Fragment>
+        );
+      }
+    }
+    return renderMarkdownWithSvg(raw, key, remarkPlugins);
   }
 
   const { tagName, props: compProps, childrenText } = block;
 
   // Visualization components
-  const vizTags = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'ManimPlayer', 'SvgDiagram'];
-  if (enableVisualizations && vizTags.includes(tagName || '')) {
+  if (enableVisualizations && tagName && VIZ_TAG_SET.has(tagName)) {
     return (
-      <VizErrorBoundary key={idx} label="图形" source={childrenText || ''}>
-        <ChatMessageVisualizations tagName={tagName!} props={compProps || {}} childrenText={childrenText || ''} />
+      <VizErrorBoundary key={key} label="图形" source={childrenText || ''}>
+        <ChatMessageVisualizations tagName={tagName} props={compProps || {}} childrenText={childrenText || ''} />
       </VizErrorBoundary>
     );
   }
 
   // Inline ToolCall
   if (tagName === 'ToolCall') {
-    return <ToolCallDashboard key={idx} toolCalls={[{ id: `inline-${idx}`, name: compProps?.name || '', arguments: compProps || {}, status: 'success' }]} />;
+    return <ToolCallDashboard key={key} toolCalls={[{ id: `inline-${key}`, name: compProps?.name || '', arguments: compProps || {}, status: 'success' }]} />;
   }
 
-  // Answer / Thinking tags rendered as markdown
+  // Answer / Thinking：内层可能含 FormulaSteps 等，必须二次 parse，不可直接 rehype-raw。
   if (tagName === 'Answer' || tagName === 'Thinking') {
-    return renderMarkdownWithSvg(childrenText || '', `at-${idx}`, remarkPlugins);
+    const innerBlocks = parseXmlTags(childrenText || '');
+    return (
+      <React.Fragment key={key}>
+        {renderBlocks(innerBlocks, key, enableVisualizations, onFollowUpSelect, remarkPlugins)}
+      </React.Fragment>
+    );
   }
 
   // Fallback: unknown tag
   return (
-    <div key={idx} style={{
+    <div key={key} style={{
       padding: '0.5rem',
       border: '1px dashed var(--md-sys-color-outline-variant)',
       color: 'var(--md-sys-color-on-surface-variant)',
@@ -174,17 +212,16 @@ const extractFollowUpQuestions = (content: string): string[] => {
   return [];
 };
 
-// 既剥离成对的 <FollowUp>…</FollowUp>，也剥离「流式输出期未闭合的尾巴」(<FollowUp>… 还没等到 </FollowUp>)。
-// 否则半截标签会漏进下游 markdown，被 rehype-raw 当作 <followup> 原始 HTML 元素 → React「unrecognized tag」告警。
+// 既剥离成对的 <FollowUp>…</FollowUp>，也剥离「流式输出期未闭合的尾巴」。
+// 自定义 viz / wrapper 标签同理，避免 rehype-raw 渲染半截 DOM → React unrecognized tag 告警。
 const getCleanedContent = (content: string): string =>
-  content
-    .replace(/<FollowUp>[\s\S]*?<\/FollowUp>/gi, '')
-    .replace(/<FollowUp>[\s\S]*$/i, '')
-    // 流式期未闭合的 <SvgDiagram> 尾巴：隐藏，待整体到齐再渲染（与 FollowUp 同理）。
-    .replace(/<SvgDiagram\b(?:(?!<\/SvgDiagram>)[\s\S])*$/i, '')
-    // 流式期未闭合的裸 <svg> 尾巴：先隐藏，待 </svg> 到齐再由 RawSvgViewer 整体渲染。
-    // 否则半截 SVG 漏进 rehype-raw → <text>/<g> 等 SVG 命名空间标签触发 React「unrecognized tag」。
-    .replace(/<svg\b(?:(?!<\/svg>)[\s\S])*$/i, '');
+  stripUnclosedCustomTagTails(
+    content
+      .replace(/<FollowUp>[\s\S]*?<\/FollowUp>/gi, '')
+      .replace(/<FollowUp>[\s\S]*$/i, '')
+      // 流式期未闭合的裸 <svg> 尾巴：先隐藏，待 </svg> 到齐再由 RawSvgViewer 整体渲染。
+      .replace(/<svg\b(?:(?!<\/svg>)[\s\S])*$/i, ''),
+  );
 
 /* ---- Main MessageContent component ---- */
 export const MessageContent: React.FC<MessageContentProps> = React.memo(({
@@ -206,9 +243,7 @@ export const MessageContent: React.FC<MessageContentProps> = React.memo(({
 
   return (
     <>
-      {blocks.map((block, idx) =>
-        renderParsedBlock(block, idx, enableVisualizations, onFollowUpSelect, remarkPlugins)
-      )}
+      {renderBlocks(blocks, 'root', enableVisualizations, onFollowUpSelect, remarkPlugins)}
       {followUps.length > 0 && onFollowUpSelect && (
         <FollowUpQuestions questions={followUps} onSelect={onFollowUpSelect} />
       )}
