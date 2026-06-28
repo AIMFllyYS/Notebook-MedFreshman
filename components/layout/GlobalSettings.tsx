@@ -20,7 +20,7 @@ import {
   ScrollText,
   Folder,
 } from "lucide-react";
-import { contentTree } from "@/lib/content-data/manifest";
+import { navTree } from "@/lib/content-data/nav";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
 import { useTheme } from "@/lib/hooks/useTheme";
 import { FONT_CHOICES } from "@/lib/theme/appearance";
@@ -46,9 +46,9 @@ const SUBJECT_ICON_MAP: Record<string, React.ComponentType<{ size?: number; styl
 };
 
 const SUBJECT_NAME: Record<string, string> = Object.fromEntries(
-  contentTree.subjects.map((s) => [s.id, s.name]),
+  navTree.subjects.map((s) => [s.id, s.name]),
 );
-const SUBJECT_ORDER: string[] = contentTree.subjects.map((s) => s.id);
+const SUBJECT_ORDER: string[] = navTree.subjects.map((s) => s.id);
 
 interface SubjectGroup {
   id: string;
@@ -87,7 +87,7 @@ function groupBySubject(entries: ProgressEntry[]): SubjectGroup[] {
 
 /** 根据 subjectId + chapterId 在内容树中查找可导航的路由（categoryId + itemId）。 */
 function findChapterRoute(subjectId: string, chapterId: string): { categoryId: string; itemId: string } | null {
-  const subject = contentTree.subjects.find((s) => s.id === subjectId);
+  const subject = navTree.subjects.find((s) => s.id === subjectId);
   if (!subject) return null;
   for (const category of subject.categories) {
     for (const item of category.items) {

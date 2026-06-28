@@ -27,7 +27,7 @@ import GlobalSettings from "./GlobalSettings";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
-import { contentTree } from "@/lib/content-data/manifest";
+import { navTree } from "@/lib/content-data/nav";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
 import { EASE } from "@/lib/motion";
 import type { SubjectId, ContentItem } from "@/lib/types/content";
@@ -227,7 +227,7 @@ export default function SubjectSidebar() {
 
             {/* 科目列表 */}
             <div ref={scrollRef} className="scroll-y flex-1" style={{ padding: "4px 0" }}>
-              {contentTree.subjects.map((subject) => {
+              {navTree.subjects.map((subject) => {
           const isSubjectExpanded = expandedIds.has(subject.id);
           const iconName = SUBJECT_ICONS[subject.id as SubjectId] ?? "Folder";
 

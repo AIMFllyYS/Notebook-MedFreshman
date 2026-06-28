@@ -1,0 +1,3034 @@
+{
+  "subjects": [
+    {
+      "id": "probability",
+      "name": "概率论与数理统计",
+      "icon": "Calculator",
+      "categories": [
+        {
+          "id": "textbook",
+          "name": "教材",
+          "items": [
+            {
+              "id": "main-textbook",
+              "title": "概率论与数理统计（教材）",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "detail",
+          "name": "详解",
+          "items": [
+            {
+              "id": "ch01",
+              "title": "随机事件与概率",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "1.1",
+                  "title": "随机试验与样本空间",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.2",
+                  "title": "事件间的关系与运算",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.3",
+                  "title": "频率与概率",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.4",
+                  "title": "古典概型与几何概型",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.5",
+                  "title": "条件概率·乘法公式·全概率与贝叶斯公式",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.6",
+                  "title": "事件的独立性",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch02",
+              "title": "随机变量及其分布",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "2.1",
+                  "title": "随机变量的概念",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "2.2",
+                  "title": "离散型随机变量与常见分布",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "2.3",
+                  "title": "随机变量的分布函数",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "2.4",
+                  "title": "连续型随机变量与常见连续分布",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "2.5",
+                  "title": "随机变量函数的分布",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch03",
+              "title": "多维随机变量及其分布",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "3.1",
+                  "title": "二维随机变量与联合分布",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.2",
+                  "title": "边缘分布",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.3",
+                  "title": "条件分布",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.4",
+                  "title": "随机变量的独立性",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.5",
+                  "title": "两个随机变量函数的分布",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch04",
+              "title": "随机变量的数字特征",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "4.1",
+                  "title": "数学期望",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "4.2",
+                  "title": "方差与标准差",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "4.3",
+                  "title": "协方差与相关系数",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "4.4",
+                  "title": "矩与协方差矩阵",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch05",
+              "title": "大数定律与中心极限定理",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "5.1",
+                  "title": "切比雪夫不等式",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "5.2",
+                  "title": "大数定律",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "5.3",
+                  "title": "中心极限定理",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch06",
+              "title": "样本及抽样分布",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "6.1",
+                  "title": "总体、样本与统计量",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "6.2",
+                  "title": "三大抽样分布",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "6.3",
+                  "title": "正态总体的抽样分布定理",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "6.4",
+                  "title": "样本分位数与顺序统计量",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch07",
+              "title": "参数估计",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "7.1",
+                  "title": "矩估计法",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.2",
+                  "title": "最大似然估计",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.3",
+                  "title": "估计量的评选标准",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.4",
+                  "title": "区间估计",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch08",
+              "title": "假设检验",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "8.1",
+                  "title": "假设检验的基本思想",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.2",
+                  "title": "正态总体均值的假设检验",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.3",
+                  "title": "正态总体方差的假设检验",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.4",
+                  "title": "两类错误与检验功效",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "recording",
+          "name": "课上录音",
+          "items": [
+            {
+              "id": "rec-01",
+              "title": "第一节·课程导论与概率史",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-02",
+              "title": "第二节·事件代数与概率公理",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-03",
+              "title": "第三节·条件概率与贝叶斯",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-04",
+              "title": "第四节·离散随机变量与常见分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-07",
+              "title": "第七节·正态分布与连续分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-08",
+              "title": "第八节·多维随机变量与联合分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-09",
+              "title": "第九节·边缘分布与条件分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-10",
+              "title": "第十节·独立性与多维函数分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-11",
+              "title": "第十一节·多维总结与期望引入",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-12",
+              "title": "第十二节·期望性质与柯西不等式",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-13",
+              "title": "第十三节·方差与标准化",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-14",
+              "title": "第十四节·相关系数与大数定律",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-15",
+              "title": "第十五节·大数定律与中心极限定理",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-16",
+              "title": "第十六节·样本与抽样分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-17",
+              "title": "第十七节·三大分布与分位点",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "summary",
+          "name": "课堂纪要",
+          "items": [
+            {
+              "id": "sum-01",
+              "title": "第一节·课程导论与概率史",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-02",
+              "title": "第二节·事件代数与概率公理",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-03",
+              "title": "第三节·条件概率与贝叶斯",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-04",
+              "title": "第四节·离散随机变量与常见分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-07",
+              "title": "第七节·正态分布与连续分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-08",
+              "title": "第八节·多维随机变量与联合分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-09",
+              "title": "第九节·边缘分布与条件分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-10",
+              "title": "第十节·独立性与多维函数分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-11",
+              "title": "第十一节·多维总结与期望引入",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-12",
+              "title": "第十二节·期望性质与柯西不等式",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-13",
+              "title": "第十三节·方差与标准化",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-14",
+              "title": "第十四节·相关系数与大数定律",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-15",
+              "title": "第十五节·大数定律与中心极限定理",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-16",
+              "title": "第十六节·样本与抽样分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-17",
+              "title": "第十七节·三大分布与分位点",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "kaoqian-moni",
+          "name": "考前模拟",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "shizhan-yanlian",
+          "name": "实战演练",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "physics",
+      "name": "大学物理",
+      "icon": "Atom",
+      "categories": [
+        {
+          "id": "textbook",
+          "name": "教材",
+          "items": [
+            {
+              "id": "main",
+              "title": "大学物理（教材）",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "detail",
+          "name": "详解",
+          "items": [
+            {
+              "id": "ch02",
+              "title": "流体运动",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "2.1",
+                  "title": "理想流体的稳定流动与连续性方程",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "2.2",
+                  "title": "伯努利方程及其应用",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "2.3",
+                  "title": "黏性流体、泊肃叶定律与血液流动",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch03",
+              "title": "振动",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "3.1",
+                  "title": "简谐振动",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.2",
+                  "title": "简谐振动的合成",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.3",
+                  "title": "阻尼振动、受迫振动和共振",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch04",
+              "title": "机械波",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "4.1",
+                  "title": "机械波的特点与平面简谐波",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "4.2",
+                  "title": "波的能量、衍射、干涉与驻波",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "4.3",
+                  "title": "多普勒效应与声波",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch05",
+              "title": "分子动理论",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "5.1",
+                  "title": "分子动理论基本概念与理想气体",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "5.2",
+                  "title": "气体分子速率分布与液体表面现象",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch07",
+              "title": "静电场",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "7.1",
+                  "title": "电荷、库仑定律与电场强度",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.2",
+                  "title": "电场线、电通量与高斯定理",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.3",
+                  "title": "静电场的环路定理、电势与场强关系",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.4",
+                  "title": "电偶极子与电偶层",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch08",
+              "title": "稳恒磁场",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "8.1",
+                  "title": "磁场与磁感应强度",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.2",
+                  "title": "电流的磁场与毕奥—萨伐尔定律",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.3",
+                  "title": "安培环路定理",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.4",
+                  "title": "磁场对运动电荷与载流导线的作用",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch09",
+              "title": "电磁感应与电磁波",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "9.1",
+                  "title": "法拉第电磁感应定律",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "9.2",
+                  "title": "动生电动势与感生电动势",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "9.3",
+                  "title": "自感、互感与磁场能量",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "9.4",
+                  "title": "麦克斯韦方程组与电磁波",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch10",
+              "title": "几何光学",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "10.1",
+                  "title": "几何光学基础与单球面折射",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "10.2",
+                  "title": "薄透镜成像与透镜组合",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "10.3",
+                  "title": "眼的光学结构与调节",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "10.4",
+                  "title": "放大镜与显微镜",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch11",
+              "title": "波动光学",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "11.1",
+                  "title": "光的相干性与干涉",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "11.2",
+                  "title": "光的衍射现象",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "11.3",
+                  "title": "光的偏振现象",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch12",
+              "title": "量子力学初步",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "12.1",
+                  "title": "黑体辐射与能量量子化",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "12.2",
+                  "title": "氢原子光谱与原子模型",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "12.3",
+                  "title": "微观粒子的波粒二象性",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "12.4",
+                  "title": "波函数与统计解释",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch13",
+              "title": "原子核和放射性",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "13.1",
+                  "title": "原子核的组成与基本性质",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "13.2",
+                  "title": "天然放射性与衰变类型",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch14",
+              "title": "X射线与激光",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "14.1",
+                  "title": "X 射线的产生与性质",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "14.2",
+                  "title": "激光的特点与发光原理",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "recording",
+          "name": "课上录音",
+          "items": [
+            {
+              "id": "rec-01",
+              "title": "第一讲·导论与质点运动学",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-02",
+              "title": "第二讲·运动学例题与牛顿运动定律",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-03",
+              "title": "第三讲·理想流体与伯努利方程",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-04",
+              "title": "第四讲·粘性流体、泊肃叶定律与简谐振动",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-06",
+              "title": "第六讲·振动能量、合成、拍与阻尼受迫振动",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-07",
+              "title": "第七讲·机械波与平面简谐波",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-08",
+              "title": "第八讲·波的干涉、驻波与多普勒效应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-09",
+              "title": "第九讲·分子动理论与麦克斯韦速率分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-10",
+              "title": "第十讲·平均自由程与液体表面现象",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-11",
+              "title": "第十一讲·电场强度、电场线与电通量",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-12",
+              "title": "第十二讲·高斯定理与电势",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-13",
+              "title": "第十三讲·电势、等势面与电偶极子",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-14",
+              "title": "第十四讲·稳恒磁场与毕奥-萨伐尔定律",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-15",
+              "title": "第十五讲·安培环路定理与洛伦兹力",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-16",
+              "title": "第十六讲·安培力、力矩与霍尔效应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-17",
+              "title": "第十七讲·电磁感应与动生感生电动势",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-19",
+              "title": "第十九讲·感生电场与互感自感",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-20",
+              "title": "第二十讲·麦克斯韦方程组与电磁波",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-21",
+              "title": "第二十一讲·透镜成像与光学仪器",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-22",
+              "title": "第二十二讲·相干性、光程差与杨氏双缝",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-23",
+              "title": "第二十三讲·光的偏振与黑体辐射、光电效应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-24",
+              "title": "第二十四讲·康普顿效应、玻尔理论与德布罗意波",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-25",
+              "title": "第二十五讲·不确定关系、波函数与薛定谔方程",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-26",
+              "title": "第二十六讲·原子核、核衰变与核能",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-27",
+              "title": "第二十七讲·X射线、激光及医学应用",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "summary",
+          "name": "课堂纪要",
+          "items": [
+            {
+              "id": "sum-01",
+              "title": "第一讲·导论与质点运动学",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-02",
+              "title": "第二讲·运动学例题与牛顿运动定律",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-03",
+              "title": "第三讲·理想流体与伯努利方程",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-04",
+              "title": "第四讲·粘性流体、泊肃叶定律与简谐振动",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-06",
+              "title": "第六讲·振动能量、合成、拍与阻尼受迫振动",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-07",
+              "title": "第七讲·机械波与平面简谐波",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-08",
+              "title": "第八讲·波的干涉、驻波与多普勒效应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-09",
+              "title": "第九讲·分子动理论与麦克斯韦速率分布",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-10",
+              "title": "第十讲·平均自由程与液体表面现象",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-11",
+              "title": "第十一讲·电场强度、电场线与电通量",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-12",
+              "title": "第十二讲·高斯定理与电势",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-13",
+              "title": "第十三讲·电势、等势面与电偶极子",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-14",
+              "title": "第十四讲·稳恒磁场与毕奥-萨伐尔定律",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-15",
+              "title": "第十五讲·安培环路定理与洛伦兹力",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-16",
+              "title": "第十六讲·安培力、力矩与霍尔效应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-17",
+              "title": "第十七讲·电磁感应与动生感生电动势",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-19",
+              "title": "第十九讲·感生电场与互感自感",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-20",
+              "title": "第二十讲·麦克斯韦方程组与电磁波",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-21",
+              "title": "第二十一讲·透镜成像与光学仪器",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-22",
+              "title": "第二十二讲·相干性、光程差与杨氏双缝",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-23",
+              "title": "第二十三讲·光的偏振与黑体辐射、光电效应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-24",
+              "title": "第二十四讲·康普顿效应、玻尔理论与德布罗意波",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-25",
+              "title": "第二十五讲·不确定关系、波函数与薛定谔方程",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-26",
+              "title": "第二十六讲·原子核、核衰变与核能",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-27",
+              "title": "第二十七讲·X射线、激光及医学应用",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "kaoqian-moni",
+          "name": "考前模拟",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "shizhan-yanlian",
+          "name": "实战演练",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chemistry",
+      "name": "有机化学",
+      "icon": "FlaskConical",
+      "categories": [
+        {
+          "id": "textbook",
+          "name": "教材",
+          "items": [
+            {
+              "id": "main",
+              "title": "有机化学（教材）",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "detail",
+          "name": "详解",
+          "items": [
+            {
+              "id": "ch01",
+              "title": "绪论与有机化学基础",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "1.1",
+                  "title": "有机化学的研究对象与价值·发展史",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.2",
+                  "title": "共价键与分子结构基础",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.3",
+                  "title": "酸碱理论与有机反应基础",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch02",
+              "title": "有机化合物的命名",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "2.1",
+                  "title": "烷基与官能团·普通命名法",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "2.2",
+                  "title": "系统命名法与顺序规则",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "2.3",
+                  "title": "烯炔环烃及各类化合物的命名",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch03",
+              "title": "分子结构与分子间作用力",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "3.1",
+                  "title": "范德华力与氢键",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.2",
+                  "title": "疏水作用与超分子组装",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.3",
+                  "title": "分子间作用力与物理性质",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch04",
+              "title": "烷烃与环烷烃",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "4.1",
+                  "title": "烷烃的结构与构造/构型/构象",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "4.2",
+                  "title": "环烷烃的构象分析",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "4.3",
+                  "title": "烷烃的自由基取代与环烷烃开环",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch05",
+              "title": "电子效应",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "5.1",
+                  "title": "诱导效应",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "5.2",
+                  "title": "共轭效应",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "5.3",
+                  "title": "超共轭与碳中间体稳定性",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch06",
+              "title": "烯烃",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "6.1",
+                  "title": "烯烃的结构与催化加氢",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "6.2",
+                  "title": "亲电加成与马氏规则",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "6.3",
+                  "title": "自由基加成与氧化反应",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch07",
+              "title": "炔烃与共轭二烯烃",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "7.1",
+                  "title": "炔烃的结构、酸性与加成",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.2",
+                  "title": "炔烃的氧化与有机金属衍生物",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.3",
+                  "title": "共轭二烯烃与 Diels-Alder 反应",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch08",
+              "title": "芳香化合物",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "8.1",
+                  "title": "芳香性与休克尔规则",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.2",
+                  "title": "亲电取代与傅克反应",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.3",
+                  "title": "定位效应与多取代规则",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.4",
+                  "title": "稠环芳烃与芳香烃的氧化加成",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch09",
+              "title": "立体化学与手性",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "9.1",
+                  "title": "对称性与手性、手性碳原子",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "9.2",
+                  "title": "对映异构、非对映、内消旋与外消旋",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "9.3",
+                  "title": "Fisher 投影式与 R/S 绝对构型",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch10",
+              "title": "卤代烃",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "10.1",
+                  "title": "亲核取代反应 SN1/SN2",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "10.2",
+                  "title": "消除反应 E1/E2 与扎伊采夫规则",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "10.3",
+                  "title": "取代与消除的竞争·金属有机化合物",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch11",
+              "title": "醇、酚、醚",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "11.1",
+                  "title": "醇的性质与反应",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "11.2",
+                  "title": "酚的结构与反应",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "11.3",
+                  "title": "醚·环氧乙烷·硫醇硫醚",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch12",
+              "title": "醛和酮",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "12.1",
+                  "title": "羰基的亲核加成",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "12.2",
+                  "title": "金属有机试剂与 Wittig 反应",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "12.3",
+                  "title": "醛酮的氧化还原与羟醛缩合",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch13",
+              "title": "羧酸及其衍生物",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "13.1",
+                  "title": "羧酸的酸性与化学性质",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "13.2",
+                  "title": "羧酸衍生物的结构与反应活性序列",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "13.3",
+                  "title": "与格氏试剂的反应及克莱森缩合",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch14",
+              "title": "含氮化合物与杂环",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "14.1",
+                  "title": "硝基苯还原·重氮盐·偶氮化合物",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "14.2",
+                  "title": "胺的碱性、鉴别与霍夫曼消除/降解",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "14.3",
+                  "title": "杂环化合物与含氮天然产物",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch15",
+              "title": "含氮有机化合物",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "ppt-15.1",
+                  "title": "硝基化合物与胺类化合物",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "ppt-15.2",
+                  "title": "胺的化学反应",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "ppt-15.3",
+                  "title": "重氮盐、偶氮化合物与霍夫曼反应",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch16",
+              "title": "芳香杂环化合物",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "ppt-16.1",
+                  "title": "五元杂环化合物",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "ppt-16.2",
+                  "title": "六元杂环化合物",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch17",
+              "title": "糖类与脂类化合物",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "ppt-17.1",
+                  "title": "单糖的结构与变旋现象",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "ppt-17.2",
+                  "title": "单糖的化学性质与双糖",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "ppt-17.3",
+                  "title": "多糖与脂类化合物",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch18",
+              "title": "含氮天然化合物",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "ppt-18.1",
+                  "title": "氨基酸的结构与性质",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "ppt-18.2",
+                  "title": "多肽与蛋白质",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "recording",
+          "name": "课上录音",
+          "items": [
+            {
+              "id": "rec-01",
+              "title": "第一讲·绪论",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-02",
+              "title": "第二讲·分子极性·酸碱理论·官能团",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-03",
+              "title": "第三讲·有机化合物的命名",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-04",
+              "title": "第四讲·分子间作用力",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-05",
+              "title": "第五讲·烷烃结构与自由基取代",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-06",
+              "title": "第六讲·环烷烃构象与诱导效应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-07",
+              "title": "第七讲·共轭与超共轭效应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-08",
+              "title": "第八讲·环己烷构象与电子效应应用",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-09",
+              "title": "第九讲·烯烃的加成反应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-10",
+              "title": "第十讲·烯烃氧化·炔烃·芳香性",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-11",
+              "title": "第十一讲·芳香亲电取代与定位效应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-12",
+              "title": "第十二讲·立体化学与手性",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-13",
+              "title": "第十三讲·烯烃炔烃加成综合",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-14",
+              "title": "第十四讲·卤代烃亲核取代",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-15",
+              "title": "第十五讲·消除反应与金属有机",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-16",
+              "title": "第十六讲·醇酚醚",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-17",
+              "title": "第十七讲·醛酮",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-18",
+              "title": "第十九讲·羧酸及其衍生物",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-19",
+              "title": "第二十一讲·芳香取代与重氮盐",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-20",
+              "title": "第二十五讲·含氮化合物与杂环",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "summary",
+          "name": "课堂纪要",
+          "items": [
+            {
+              "id": "sum-01",
+              "title": "第一讲纪要·绪论",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-02",
+              "title": "第二讲纪要·酸碱理论与命名",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-03",
+              "title": "第三讲纪要·命名",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-04",
+              "title": "第四讲纪要·分子间作用力",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-05",
+              "title": "第五讲纪要·烷烃",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-06",
+              "title": "第六讲纪要·环烷烃构象与诱导效应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-07",
+              "title": "第七讲纪要·共轭与超共轭",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-08",
+              "title": "第八讲纪要·环己烷构象与电子效应",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-09",
+              "title": "第九讲纪要·烯烃加成",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-10",
+              "title": "第十讲纪要·炔烃与芳香性",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-11",
+              "title": "第十一讲纪要·芳香亲电取代",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-12",
+              "title": "第十二讲纪要·立体化学与手性",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-13",
+              "title": "第十三讲纪要·烯炔加成综合",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-14",
+              "title": "第十四讲纪要·卤代烃亲核取代",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-16",
+              "title": "第十六讲纪要·醇酚醚",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-17",
+              "title": "第十七讲纪要·醛酮",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-18",
+              "title": "第十九讲纪要·羧酸及衍生物",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-19",
+              "title": "第二十一讲纪要·芳香取代与重氮盐",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-20",
+              "title": "第二十五讲纪要·含氮化合物",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "kaoqian-moni",
+          "name": "考前模拟",
+          "items": [
+            {
+              "id": "sim-01",
+              "title": "有机化学期末模拟试卷一",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sim-02",
+              "title": "有机化学期末模拟试卷二",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sim-03",
+              "title": "有机化学期末模拟试卷三",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-01",
+              "title": "有机化学期末真题模拟卷（一）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-02",
+              "title": "有机化学期末真题模拟卷（二）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-03",
+              "title": "有机化学期末真题模拟卷（三）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-04",
+              "title": "华中科技大学有机化学期末真题（四）2021-2022",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-05",
+              "title": "华中科技大学有机化学期末真题（五）2023-2024",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "shizhan-yanlian",
+          "name": "实战演练",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "modern-history",
+      "name": "中国近现代史纲要",
+      "icon": "BookOpen",
+      "categories": [
+        {
+          "id": "textbook",
+          "name": "教材",
+          "items": [
+            {
+              "id": "main",
+              "title": "中国近现代史纲要（教材）",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "detail",
+          "name": "详解",
+          "items": [
+            {
+              "id": "ch01",
+              "title": "课程导论：历史观与方法论",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "1.1",
+                  "title": "课程意义与教学安排",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.2",
+                  "title": "科学历史观与方法论",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch02",
+              "title": "对国家出路的早期探索：农民阶级",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "2.1",
+                  "title": "太平天国的背景：银荒与末世",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "2.2",
+                  "title": "洪秀全与拜上帝教",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "2.3",
+                  "title": "太平天国运动的兴起与失败",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch03",
+              "title": "对国家出路的早期探索：地主阶级洋务派",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "3.1",
+                  "title": "洋务运动的背景与指导思想",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.2",
+                  "title": "洋务运动的主要内容",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.3",
+                  "title": "洋务运动的历史评价与失败原因",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch04",
+              "title": "对国家出路的早期探索：早期资产阶级与维新思想",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "4.1",
+                  "title": "早期维新思想家：王韬与郑观应",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "4.2",
+                  "title": "甲午战败与民族资本主义发展",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "4.3",
+                  "title": "维新派与守旧派的论战",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch05",
+              "title": "戊戌变法的政治实践与辛亥革命的准备",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "5.1",
+                  "title": "百日维新的政治实践",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "5.2",
+                  "title": "戊戌变法的失败原因",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "5.3",
+                  "title": "辛亥革命的准备：革命团体的涌现",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch06",
+              "title": "辛亥革命与民国初年政局",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "6.1",
+                  "title": "中国同盟会的成立与三民主义",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "6.2",
+                  "title": "辛亥革命与中华民国的建立",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "6.3",
+                  "title": "民国初年政局与二次革命",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch07",
+              "title": "五四运动与马克思主义的传播",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "7.1",
+                  "title": "新文化运动与国民性改造",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.2",
+                  "title": "十月革命与马克思主义的传播",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.3",
+                  "title": "五四运动与中国共产党的成立",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch08",
+              "title": "第一次国共合作与大革命",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "8.1",
+                  "title": "中共二大与国共合作的酝酿",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.2",
+                  "title": "国民党一大与第一次国共合作",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.3",
+                  "title": "大革命的兴起与失败",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch09",
+              "title": "抗日战争：两条路线与中流砥柱",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "9.1",
+                  "title": "抗日战争的全面爆发",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "9.2",
+                  "title": "正面战场与国民党的片面抗战路线",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "9.3",
+                  "title": "敌后战场与中共的全面抗战路线",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "9.4",
+                  "title": "抗日战争的胜利",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch10",
+              "title": "解放战争与新中国成立",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "10.1",
+                  "title": "战后国际格局与国共谈判",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "10.2",
+                  "title": "解放战争的进程",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "10.3",
+                  "title": "中华人民共和国的成立",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "recording",
+          "name": "课上录音",
+          "items": [
+            {
+              "id": "rec-01",
+              "title": "第一课·课程意义与安排",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-02",
+              "title": "第三课·农民阶级（太平天国）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-03",
+              "title": "第四课·地主阶级洋务派",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-04",
+              "title": "第五课·早期资产阶级与维新思想",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-05",
+              "title": "第六课·戊戌变法政治实践",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-06",
+              "title": "第七课·辛亥革命",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-07",
+              "title": "第九课·五四运动",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-08",
+              "title": "第十二课·国共合作与大革命",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-09",
+              "title": "第十四课·抗日战争",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-10",
+              "title": "第十五课·解放战争",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "summary",
+          "name": "课堂纪要",
+          "items": [
+            {
+              "id": "sum-01",
+              "title": "第一课纪要·课程意义与安排",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-02",
+              "title": "第三课纪要·农民阶级",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-03",
+              "title": "第四课纪要·洋务派",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-04",
+              "title": "第五课纪要·维新思想",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-05",
+              "title": "第六课纪要·戊戌变法",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-06",
+              "title": "第七课纪要·辛亥革命",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-07",
+              "title": "第九课纪要·五四运动",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-08",
+              "title": "第十二课纪要·国共合作",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-09",
+              "title": "第十四课纪要·抗日战争",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-10",
+              "title": "第十五课纪要·解放战争",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "kaoqian-moni",
+          "name": "考前模拟",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "shizhan-yanlian",
+          "name": "实战演练",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "maogai",
+      "name": "毛泽东思想和中国特色社会主义理论体系概论",
+      "icon": "Scale",
+      "categories": [
+        {
+          "id": "textbook",
+          "name": "教材",
+          "items": [
+            {
+              "id": "main",
+              "title": "毛概（教材）",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "detail",
+          "name": "详解",
+          "items": [
+            {
+              "id": "ch01",
+              "title": "马克思主义中国化导论",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "1.1",
+                  "title": "课程介绍与教学安排",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.2",
+                  "title": "马克思主义中国化命题",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch02",
+              "title": "马克思主义中国化的历史进程",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "2.1",
+                  "title": "马克思主义中国化命题的提出",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "2.2",
+                  "title": "长征与遵义会议",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch03",
+              "title": "毛泽东思想及其历史地位",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "3.1",
+                  "title": "毛泽东思想的形成和发展",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.2",
+                  "title": "毛泽东思想的主要内容",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "3.3",
+                  "title": "毛泽东思想的历史地位",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch04",
+              "title": "新民主主义革命理论——历史条件",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "4.1",
+                  "title": "近代中国国情与革命任务",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "4.2",
+                  "title": "新民主主义革命的总路线",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch05",
+              "title": "新民主主义革命理论——革命理论",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "5.1",
+                  "title": "政治革命理论框架",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "5.2",
+                  "title": "新旧民主主义革命比较",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch06",
+              "title": "新民主主义革命理论——革命道路",
+              "type": "section",
+              "status": "stub"
+            },
+            {
+              "id": "ch07",
+              "title": "新民主主义革命理论——三大法宝",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "7.1",
+                  "title": "统一战线",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.2",
+                  "title": "武装斗争",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "7.3",
+                  "title": "党的建设",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch08",
+              "title": "社会主义改造理论（上）",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "8.1",
+                  "title": "新民主主义社会",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "8.2",
+                  "title": "过渡时期总路线",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch09",
+              "title": "社会主义改造理论（下）",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "9.1",
+                  "title": "农业社会主义改造",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "9.2",
+                  "title": "手工业社会主义改造",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "9.3",
+                  "title": "资本主义工商业社会主义改造",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch10",
+              "title": "社会主义建设道路的初步探索",
+              "type": "section",
+              "status": "stub"
+            },
+            {
+              "id": "ch11",
+              "title": "社会主义建设的曲折发展",
+              "type": "section",
+              "status": "stub"
+            },
+            {
+              "id": "ch12",
+              "title": "毛泽东思想活的灵魂",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "12.1",
+                  "title": "实事求是",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "12.2",
+                  "title": "群众路线",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "12.3",
+                  "title": "独立自主",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch13",
+              "title": "邓小平理论（上）",
+              "type": "section",
+              "status": "stub"
+            },
+            {
+              "id": "ch14",
+              "title": "邓小平理论（下）",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "14.1",
+                  "title": "社会主义初级阶段理论",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "14.2",
+                  "title": "改革开放理论",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch15",
+              "title": "\"一国两制\"与祖国统一",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "15.1",
+                  "title": "\"一国两制\"构想",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "15.2",
+                  "title": "祖国统一与对外关系",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
+              "id": "ch16",
+              "title": "期末复习与重点梳理",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "16.1",
+                  "title": "重点知识梳理",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "16.2",
+                  "title": "论十大关系与矛盾分析",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "recording",
+          "name": "课上录音",
+          "items": [
+            {
+              "id": "rec-01",
+              "title": "第一二节·课程导论",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-02",
+              "title": "第二节·马克思主义中国化历史进程",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-03",
+              "title": "第三节·毛泽东思想及其历史地位",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-04",
+              "title": "第四节·新民主主义革命历史条件",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-05",
+              "title": "第五节·新民主主义革命理论",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-06",
+              "title": "第七节·新民主主义革命三大法宝",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-07",
+              "title": "第八节·社会主义改造理论（上）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-08",
+              "title": "第九节·社会主义改造理论（下）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-09",
+              "title": "第十二节·毛泽东思想活的灵魂",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-10",
+              "title": "第十四节·邓小平理论",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-11",
+              "title": "第十五节·一国两制与祖国统一",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "rec-12",
+              "title": "补充课·期末复习",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "summary",
+          "name": "课堂纪要",
+          "items": [
+            {
+              "id": "sum-01",
+              "title": "第一二节纪要·课程导论",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-02",
+              "title": "第二节纪要·马克思主义中国化历史进程",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-03",
+              "title": "第三节纪要·毛泽东思想及其历史地位",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-04",
+              "title": "第四节纪要·新民主主义革命历史条件",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-05",
+              "title": "第五节纪要·新民主主义革命理论",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-06",
+              "title": "第七节纪要·新民主主义革命三大法宝",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-07",
+              "title": "第八节纪要·社会主义改造理论（上）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-08",
+              "title": "第九节纪要·社会主义改造理论（下）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-09",
+              "title": "第十二节纪要·毛泽东思想活的灵魂",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-10",
+              "title": "第十四节纪要·邓小平理论",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-11",
+              "title": "第十五节纪要·一国两制与祖国统一",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sum-12",
+              "title": "补充课纪要·期末复习",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "kaoqian-moni",
+          "name": "考前模拟",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "shizhan-yanlian",
+          "name": "实战演练",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "other",
+      "name": "其他",
+      "icon": "FolderOpen",
+      "categories": [
+        {
+          "id": "english",
+          "name": "英语练习",
+          "items": [
+            {
+              "id": "unit-1",
+              "title": "大学英语 Unit 1 · The True Value of Education",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "unit-2",
+              "title": "大学英语 Unit 2 · The Myth of a Dream Job",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "unit-3",
+              "title": "大学英语 Unit 3 · The Business of Life",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "unit-4",
+              "title": "大学英语 Unit 4 · Explore the Unknown",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "unit-5",
+              "title": "大学英语 Unit 5 · The Power of Language",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "unit-6",
+              "title": "大学英语 Unit 6 · Technology and Human Connection",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "unit-7",
+              "title": "大学英语 Unit 7 · The Art of Innovation",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "unit-8",
+              "title": "大学英语 Unit 8 · Nature and Human Society",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "misc",
+          "name": "工具",
+          "items": [
+            {
+              "id": "exam-source",
+              "title": "历届真题资源包",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "gongshi",
+          "name": "公式",
+          "items": [
+            {
+              "id": "gongshi",
+              "title": "概率论公式",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "guihua",
+          "name": "规划",
+          "items": [
+            {
+              "id": "schedule",
+              "title": "复习计划",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

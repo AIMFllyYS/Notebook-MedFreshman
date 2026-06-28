@@ -7,7 +7,7 @@ import { FileText, ClipboardCheck, Lightbulb, PanelTopClose, PanelTopOpen, Maxim
 import { AnimatePresence, motion } from "framer-motion";
 import SelectionPopover from "@/components/notes/SelectionPopover";
 import type { SubjectId, RenderType } from "@/lib/types/content";
-import type { ExampleMeta } from "@/app/api/examples/route";
+import type { ExampleListItem } from "@/lib/content/loader";
 import { useStore } from "@/lib/store";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { tabPanelVariants } from "@/lib/motion";
@@ -36,9 +36,10 @@ interface ContentPageClientProps {
   /** 服务端/构建期预渲染好的正文 React 树（仅 markdown 类型非空）；客户端不再解析 markdown */
   renderedNote?: React.ReactNode;
   /** 服务端 SSR 注入的例题列表（随路由变化重新下发） */
-  initialExamples: ExampleMeta[];
+  initialExamples: ExampleListItem[];
   /** 例题所属小节 id（detail 分类为 itemId，否则为 ""） */
   sectionId: string;
+  exampleChapterId: string;
   itemTitle: string;
   itemSummary: string;
   subjectName: string;
@@ -69,6 +70,7 @@ export default function ContentPageClient({
   renderedNote,
   initialExamples,
   sectionId,
+  exampleChapterId,
   itemTitle,
   itemSummary,
   subjectName,
@@ -263,7 +265,12 @@ export default function ContentPageClient({
               exit="exit"
               className="h-full"
             >
-              <ExampleTab initialExamples={initialExamples} sectionId={sectionId} />
+              <ExampleTab
+                initialExamples={initialExamples}
+                sectionId={sectionId}
+                subjectId={subjectId}
+                chapterId={exampleChapterId}
+              />
             </motion.div>
           )}
           {activeTab === "quiz" && (

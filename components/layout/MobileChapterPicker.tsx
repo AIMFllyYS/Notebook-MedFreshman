@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
-import { contentTree } from "@/lib/content-data/manifest";
+import { navTree } from "@/lib/content-data/nav";
 import type { SubjectId, ContentItem } from "@/lib/types/content";
 import { SUBJECTS } from "@/lib/constants/subjects";
 
@@ -58,7 +58,7 @@ export default function MobileChapterPicker() {
     }
   }, [open, activeSubject, activeCategoryId]);
 
-  const subject = contentTree.subjects.find((s) => s.id === pickerSubject);
+  const subject = navTree.subjects.find((s) => s.id === pickerSubject);
   const category = subject?.categories.find((c) => c.id === pickerCategory);
   const items = category?.items ?? [];
 
@@ -129,7 +129,7 @@ export default function MobileChapterPicker() {
 
             {/* Subject pills */}
             <div className="hide-scrollbar flex shrink-0 gap-1.5 overflow-x-auto px-4 pb-3">
-              {contentTree.subjects
+              {navTree.subjects
                 .map((s) => {
                   const Icon =
                     ICON_MAP[SUBJECT_ICON_NAMES[s.id as SubjectId]] ?? Folder;

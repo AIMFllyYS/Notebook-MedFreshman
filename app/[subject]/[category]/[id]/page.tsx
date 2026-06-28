@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { isSubjectId } from "@/lib/types/content";
 import type { ContentItem } from "@/lib/types/content";
 import { contentTree, getContentItem, getSubject, getCategory } from "@/lib/content-data";
-import { readContent, readExamples, deriveExampleKey } from "@/lib/content/loader";
+import { readContent, readExamplesMeta, deriveExampleKey } from "@/lib/content/loader";
 import { normalizeDirectiveLabels } from "@/lib/markdown/normalizeDirectiveLabels";
 import NoteRendererServer from "@/components/notes/NoteRendererServer";
 import ContentPageClient from "./ContentPageClient";
@@ -65,7 +65,7 @@ export default async function ContentPage({ params }: PageProps) {
 
   // 例题同样服务端预读（与正文一致走 SSR），避免点「例题」Tab 时再 fetch。
   const { chapterId, sectionId } = deriveExampleKey(category, id);
-  const initialExamples = readExamples(subject, chapterId, sectionId);
+  const initialExamples = readExamplesMeta(subject, chapterId, sectionId);
 
   return (
     <ContentPageClient
@@ -76,6 +76,7 @@ export default async function ContentPage({ params }: PageProps) {
       renderedNote={renderedNote}
       initialExamples={initialExamples}
       sectionId={sectionId}
+      exampleChapterId={chapterId}
       itemTitle={item?.title ?? ""}
       itemSummary={item?.summary ?? ""}
       subjectName={subjectData.name}

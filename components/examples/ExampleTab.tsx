@@ -3,12 +3,11 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import type { ExampleMeta } from "@/app/api/examples/route";
+import type { ExampleDetail, ExampleListItem } from "@/lib/content/loader";
 import { fadeInUpVariants } from "@/lib/motion";
 import LazyVisible from "@/components/ui/LazyVisible";
 import { SkeletonLine } from "@/components/notes/NoteSkeleton";
 
-// NoteRenderer 较重，例题展开时才懒加载
 const NoteRenderer = dynamic(() => import("@/components/notes/NoteRenderer"), {
   ssr: false,
   loading: () => <div className="py-8 text-center text-[13px] text-[var(--ink-faint)]">加载中…</div>,
@@ -29,21 +28,53 @@ function EmptyExamples({ sectionId }: { sectionId: string }) {
 }
 
 interface ExampleTabProps {
-  /** 服务端 SSR 预读的例题列表；随路由变化由 page.tsx 重新下发 */
-  initialExamples: ExampleMeta[];
+  initialExamples: ExampleListItem[];
   sectionId: string;
+  subjectId: string;
+  chapterId: string;
 }
 
-export default function ExampleTab({ initialExamples, sectionId }: ExampleTabProps) {
+export default function ExampleTab({
+  initialExamples,
+  sectionId,
+  subjectId,
+  chapterId,
+}: ExampleTabProps) {
   const examples = initialExamples;
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selected, setSelected] = useState<ExampleDetail | null>(null);
+  const [loadingDetail, setLoadingDetail] = useState(false);
 
-  // 路由切换（新的 sectionId / 新一批例题）时回到列表视图
   useEffect(() => {
     setSelectedId(null);
+    setSelected(null);
   }, [sectionId]);
 
-  const selected = examples.find((e) => e.id === selectedId);
+  useEffect(() => {
+    if (!selectedId) {
+      setSelected(null);
+      return;
+    }
+    let cancelled = false;
+    setLoadingDetail(true);
+    const params = new URLSearchParams({
+      chapterId,
+      sectionId,
+      subjectId,
+      id: selectedId,
+    });
+    void fetch(`/api/examples?${params}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { example?: ExampleDetail } | null) => {
+        if (!cancelled) setSelected(data?.example ?? null);
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingDetail(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedId, chapterId, sectionId, subjectId]);
 
   return (
     <div className="mx-auto w-full max-w-3xl px-8 py-10">
@@ -61,9 +92,8 @@ export default function ExampleTab({ initialExamples, sectionId }: ExampleTabPro
         <EmptyExamples sectionId={sectionId} />
       ) : (
         <div className="flex flex-col gap-3">
-          {/* 例题列表 */}
           <AnimatePresence mode="wait">
-            {!selected && (
+            {!selectedId && (
               <motion.div
                 key="list"
                 variants={fadeInUpVariants}
@@ -83,17 +113,6 @@ export default function ExampleTab({ initialExamples, sectionId }: ExampleTabPro
                     </span>
                     <div className="min-w-0 flex-1">
                       <div className="text-[15px] font-semibold text-[var(--ink)]">{ex.title}</div>
-                      <div className="mt-1 line-clamp-2 text-[13px] text-[var(--ink-faint)]">
-                        {ex.content
-                          .replace(/:::[a-zA-Z]+(\{[^}]*\})?/g, "")
-                          .replace(/:::/g, "")
-                          .replace(/^#+\s.*$/gm, "")
-                          .replace(/[#>*_`$]/g, "")
-                          .replace(/\n+/g, " ")
-                          .trim()
-                          .slice(0, 120)}
-                        …
-                      </div>
                     </div>
                     <svg
                       width="16"
@@ -114,8 +133,7 @@ export default function ExampleTab({ initialExamples, sectionId }: ExampleTabPro
               </motion.div>
             )}
 
-            {/* 单题详情 */}
-            {selected && (
+            {selectedId && (
               <motion.div
                 key="detail"
                 variants={fadeInUpVariants}
@@ -130,9 +148,13 @@ export default function ExampleTab({ initialExamples, sectionId }: ExampleTabPro
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                   返回例题列表
                 </button>
-                <div className="prose-notes animate-fade-in">
-                  <NoteRenderer content={selected.content} />
-                </div>
+                {loadingDetail || !selected ? (
+                  <div className="py-8 text-center text-[13px] text-[var(--ink-faint)]">加载例题正文…</div>
+                ) : (
+                  <div className="prose-notes animate-fade-in">
+                    <NoteRenderer content={selected.content} />
+                  </div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
