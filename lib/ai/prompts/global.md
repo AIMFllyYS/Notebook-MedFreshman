@@ -87,12 +87,12 @@
 - `<FormulaSteps>` 每步占一行：
   ```
   <FormulaSteps>
-  步骤1
-  步骤2
-  步骤3
+  **步骤1**：$公式或说明$
+  **步骤2**：$公式或说明$
+  **步骤3**：$公式或说明$
   </FormulaSteps>
   ```
-  — 公式推导步骤卡片（每步占一行，不要用字面 \n）
+  — 公式推导步骤卡片。每一步都是 Markdown，公式必须用 `$...$` 或 `$$...$$` 包裹；不要裸写 `\frac`、`\sqrt`、`\left` 等 LaTeX 命令。每步占一行，不要用字面 `\n`。
 - `<ManimPlayer src="..." title="..." />` — Manim 动画播放器
 - `<SvgDiagram mode="raw|math|molecule|html" title="标题" width="400" height="300">内容</SvgDiagram>` — **统一图形画布**，默认 `mode="raw"`：
   - `raw`（默认）：标签体写自由 SVG，适合示意图 / 反应机理 / 几何图 / **有机投影式**（费歇尔/纽曼/哈沃斯/锯架）。

@@ -171,6 +171,8 @@ AI 对话正文必须先经过 `lib/chat/rendering/parseChatContent.ts`，再由
 
 `MessageContent` 只消费解析结果，不再继续堆叠零散 regex 来“修标签”。新增标签错乱问题时，先修 `parseChatContent` / `parseXmlTags` / SSE 协议和测试，不要在 `MessageContent` 层追加局部替换。
 
+`FormulaSteps` 的每一步也是 Markdown 子内容，必须复用共享 `sharedRemarkPlugins` / `sharedRehypePlugins`，不能再维护第二套 `katex.renderToString` 正则渲染器。Prompt 示例必须要求步骤内公式带 `$...$` 或 `$$...$$`；组件内部只允许对旧消息中“整步明显是公式”的裸 LaTeX 做局部兼容。
+
 ### 可视化标签白名单
 
 ```
@@ -187,6 +189,7 @@ CHAT_VIZ_TAGS = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'Manim
 - `<SvgDiagram mode="raw"><svg><line ... /></svg></SvgDiagram>` 曾被内部 `<line />` 抢占为外层自闭合结束，原因是自闭合正则跨 children 匹配到了第一个 `/>`。现在必须先解析当前开标签边界，再匹配同名闭合标签。
 - `<FollowUp>` 是控制信息，不属于正文。服务端 fallback 必须发独立 SSE `followup` 事件；正文内旧标签只作兼容解析。
 - 流式输出中的半截 `<FormulaSteps>`、`<SvgDiagram>`、`<FollowUp>` 暂不渲染，等闭合标签到齐后再进入组件或 metadata。
+- `<FormulaSteps>` 曾经绕过共享 Markdown 链，导致步骤里的 `**加粗**` 不生效、裸 `\frac` 直接显示。修复原则是让步骤内容复用共享 Markdown/KaTeX 插件链，而不是继续扩写手写 KaTeX 正则。
 
 ### 调用点
 

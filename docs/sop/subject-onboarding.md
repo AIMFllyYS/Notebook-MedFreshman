@@ -358,6 +358,7 @@ import { FormulaSteps } from '@/components/visualizations';
 - 交互模式（`interactive=true`）：单步显示 + 上一步/下一步按钮，适合 AI 对话中逐步引导
 
 每个 step 字符串支持行内 LaTeX（`$...$`）和行间 LaTeX（`$$...$$`），由 KaTeX 渲染。
+AI 对话里的 `<FormulaSteps>` 每一步按 Markdown 子内容渲染，必须复用共享 `sharedRemarkPlugins` / `sharedRehypePlugins`。Prompt 中应要求公式写成 `$...$` 或 `$$...$$`；组件只对旧消息里“整步明显是公式”的裸 LaTeX 做兼容兜底，不允许再新增独立的 KaTeX 正则渲染链。
 
 ### 5.4 VideoPlayer
 
@@ -468,6 +469,7 @@ case 'PhysicsFreeBodyDiagram':
 - `<details><summary>...</summary></details>` 被旧解析器拆成 `<`、`details>` 等裸文本。
 - `<SvgDiagram><svg><line ... /></svg></SvgDiagram>` 被内部 `<line />` 误判为外层自闭合。
 - `:::pitfall{label=常见错误}` 一旦 label 含空格或引号可能裸露围栏；新示例统一写 `:::pitfall{label="常见错误"}`。
+- `<FormulaSteps>` 的 step 不是纯文本，必须当 Markdown 渲染；不要在新可视化原语里自建第二套公式渲染逻辑。
 
 ---
 

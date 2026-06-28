@@ -16,7 +16,7 @@ import { DiagramCanvas, isDiagramMode } from '@/components/canvas';
 // ----------------------------------------------------
 interface ChatMessageVisualizationsProps {
   tagName: string;
-  props: Record<string, any>;
+  props: Record<string, unknown>;
   childrenText: string;
 }
 
@@ -24,6 +24,12 @@ const toNum = (v: unknown): number | undefined =>
   v === undefined || v === null || v === '' ? undefined : Number(v);
 
 const toBool = (v: unknown): boolean => v === 'true' || v === true;
+
+const toStr = (v: unknown): string | undefined =>
+  typeof v === 'string' && v.trim() ? v : undefined;
+
+const toDistributionType = (v: unknown): 'normal' | 'binomial' | 'poisson' =>
+  v === 'binomial' || v === 'poisson' || v === 'normal' ? v : 'normal';
 
 export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps> = ({
   tagName,
@@ -50,7 +56,7 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
         props.lambda !== undefined;
       return (
         <DistributionChart
-          type={props.type || 'normal'}
+          type={toDistributionType(props.type)}
           params={
             hasParams
               ? {
@@ -83,9 +89,9 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
     case 'ManimPlayer':
       return (
         <VideoPlayer
-          src={props.src}
-          title={props.title}
-          poster={props.poster}
+          src={toStr(props.src) ?? ''}
+          title={toStr(props.title)}
+          poster={toStr(props.poster)}
         />
       );
 

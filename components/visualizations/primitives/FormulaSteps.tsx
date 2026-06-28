@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import katex from 'katex';
+import ReactMarkdown from 'react-markdown';
 import 'katex/dist/katex.min.css';
 import { ChevronLeft, ChevronRight, GitMerge, Sigma } from 'lucide-react';
+import { sharedRemarkPlugins, sharedRehypePlugins } from '@/lib/markdown/plugins';
 
 export interface FormulaStepsProps {
   /** 每个元素是一步（可能含 LaTeX，使用 $...$ 或 $$...$$） */
@@ -12,67 +13,39 @@ export interface FormulaStepsProps {
   interactive?: boolean;
 }
 
-/**
- * 将文本中的 $...$ 与 $$...$$ 用 KaTeX 渲染为 HTML，其余文本原样保留。
- * 返回的字符串可直接通过 dangerouslySetInnerHTML 注入。
- */
-function renderLatex(text: string): string {
-  // 先处理 $$...$$（display mode）
-  const afterDisplay = text.replace(
-    /\$\$([\s\S]+?)\$\$/g,
-    (_, math) =>
-      katex.renderToString(math, { displayMode: true, throwOnError: false })
-  );
-  // 再处理 $...$（inline mode）
-  const afterInline = afterDisplay.replace(
-    /\$([^\$]+?)\$/g,
-    (_, math) =>
-      katex.renderToString(math, { displayMode: false, throwOnError: false })
-  );
-  return afterInline;
+const LATEX_COMMAND_RE = /\\(?:frac|sqrt|left|right|sum|prod|int|lim|sin|cos|tan|log|ln|mathrm|mathbf|vec|overline|hat|tilde|cdot|times|div|leq|geq|neq|approx|to|infty|alpha|beta|gamma|rho|sigma|mu|theta|Delta|partial)\b/;
+const CJK_RE = /[\u3400-\u9fff]/;
+
+function hasMathDelimiter(text: string): boolean {
+  return /\$[^$]+\$|\$\$[\s\S]+?\$\$/.test(text);
 }
 
-/** 转义 HTML 特殊字符，避免普通文本被当作 HTML 解析 */
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+function normalizeStepMarkdown(step: string): string {
+  const trimmed = step.trim();
+  if (!trimmed || hasMathDelimiter(trimmed) || !LATEX_COMMAND_RE.test(trimmed)) {
+    return step;
+  }
+
+  // 兼容旧消息/模型偶发输出：整步明显是公式时才自动补数学定界符。
+  if (!CJK_RE.test(trimmed)) {
+    return `$${trimmed}$`;
+  }
+
+  return step;
 }
 
-/**
- * 把单步文本切成 [普通文本, 数学片段] 的序列：
- * - 普通文本需先转义再插入
- * - 数学片段用 KaTeX 渲染
- * 这样可以避免对整段文本做转义时破坏 KaTeX 输出的 HTML。
- */
-function renderStepHtml(text: string): string {
-  // 用正则同时匹配 $$...$$ 与 $...$，按出现顺序处理
-  const parts: string[] = [];
-  const regex = /\$\$([\s\S]+?)\$\$|\$([^\$]+?)\$/g;
-  let lastIndex = 0;
-  let match: RegExpExecArray | null;
-  while ((match = regex.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      parts.push(escapeHtml(text.slice(lastIndex, match.index)));
-    }
-    const display = match[1];
-    const inline = match[2];
-    if (display !== undefined) {
-      parts.push(
-        katex.renderToString(display, { displayMode: true, throwOnError: false })
-      );
-    } else if (inline !== undefined) {
-      parts.push(
-        katex.renderToString(inline, { displayMode: false, throwOnError: false })
-      );
-    }
-    lastIndex = regex.lastIndex;
-  }
-  if (lastIndex < text.length) {
-    parts.push(escapeHtml(text.slice(lastIndex)));
-  }
-  return parts.join('');
+function StepMarkdown({ children }: { children: string }) {
+  return (
+    <ReactMarkdown
+      remarkPlugins={sharedRemarkPlugins}
+      rehypePlugins={sharedRehypePlugins}
+      components={{
+        p: ({ children: paragraphChildren }) => <>{paragraphChildren}</>,
+      }}
+    >
+      {normalizeStepMarkdown(children)}
+    </ReactMarkdown>
+  );
 }
 
 /**
@@ -86,9 +59,8 @@ export const FormulaSteps: React.FC<FormulaStepsProps> = ({
 }) => {
   const [current, setCurrent] = useState(0);
 
-  // 预渲染每一步的 HTML
   const renderedSteps = useMemo(
-    () => steps.map((s) => renderStepHtml(s)),
+    () => steps.map((s) => normalizeStepMarkdown(s)),
     [steps]
   );
 
@@ -180,8 +152,9 @@ export const FormulaSteps: React.FC<FormulaStepsProps> = ({
               </span>
               <div
                 style={{ lineHeight: 1.6, flex: 1 }}
-                dangerouslySetInnerHTML={{ __html: renderedSteps[current] }}
-              />
+              >
+                <StepMarkdown>{renderedSteps[current]}</StepMarkdown>
+              </div>
             </div>
           </div>
 
@@ -237,7 +210,7 @@ export const FormulaSteps: React.FC<FormulaStepsProps> = ({
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-          {renderedSteps.map((html, idx) => (
+          {renderedSteps.map((step, idx) => (
             <div
               key={idx}
               style={{
@@ -271,8 +244,9 @@ export const FormulaSteps: React.FC<FormulaStepsProps> = ({
               </span>
               <div
                 style={{ lineHeight: 1.6, flex: 1, overflowX: 'auto' }}
-                dangerouslySetInnerHTML={{ __html: html }}
-              />
+              >
+                <StepMarkdown>{step}</StepMarkdown>
+              </div>
             </div>
           ))}
         </div>
