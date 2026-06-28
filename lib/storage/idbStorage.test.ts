@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test, beforeEach, afterEach } from "node:test";
 import {
   idbStorage,
+  setItemNow,
   flushPendingWrites,
   WRITE_DEBOUNCE_MS,
   __resetIdbStoragePendingForTests,
@@ -92,4 +93,11 @@ test("flushPendingWrites：立即落盘所有挂起 key", () => {
   assert.equal(writes, 2);
   assert.equal(storage.get("a"), "1");
   assert.equal(storage.get("b"), "2");
+});
+
+test("setItemNow：绕过防抖并返回写入结果", async () => {
+  const ok = await setItemNow("chat-manifest", '{"version":2}');
+
+  assert.equal(ok, true);
+  assert.equal(storage.get("chat-manifest"), '{"version":2}');
 });

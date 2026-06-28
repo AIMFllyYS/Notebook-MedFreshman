@@ -52,14 +52,16 @@ export const WRITE_DEBOUNCE_MS = 800;
 const pendingValues = new Map<string, string>();
 const pendingTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
-async function writeNow(name: string, value: string): Promise<void> {
+async function writeNow(name: string, value: string): Promise<boolean> {
   try {
     await idbSet(name, value, idbStore);
+    return true;
   } catch {
     try {
       localStorage.setItem(name, value);
+      return true;
     } catch {
-      // 静默失败，同项目既有行为
+      return false;
     }
   }
 }
@@ -79,6 +81,18 @@ function flushKey(name: string): void {
 /** 立即落盘所有挂起的写（卸载/隐藏/清空时调用）。 */
 export function flushPendingWrites(): void {
   for (const name of [...pendingValues.keys()]) flushKey(name);
+}
+
+/** 立即写入并等待完成；用于迁移这类必须知道成功/失败的数据安全路径。 */
+export async function setItemNow(name: string, value: string): Promise<boolean> {
+  if (!isBrowser()) return false;
+  const timer = pendingTimers.get(name);
+  if (timer) {
+    clearTimeout(timer);
+    pendingTimers.delete(name);
+  }
+  pendingValues.delete(name);
+  return writeNow(name, value);
 }
 
 /** 测试专用：清空挂起队列与计时器（node:test 用）。 */

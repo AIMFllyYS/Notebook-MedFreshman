@@ -2,13 +2,13 @@ import type { ChatContext, ChatMessage, ChatAttachment, StoredChatAttachment } f
 import type { ChatSession } from '@/lib/hooks/useChatHistory';
 import {
   idbStorage,
+  setItemNow,
   PERSIST_KEYS,
   chatSessionKey,
   chatBlobKey,
   CHAT_BLOB_KEY_PREFIX,
-  flushPendingWrites,
 } from '@/lib/storage/idbStorage';
-import { get as idbGet, set as idbSet, del as idbDel, keys as idbKeys } from 'idb-keyval';
+import { keys as idbKeys } from 'idb-keyval';
 import { createStore } from 'idb-keyval';
 
 const DB_NAME = 'gailvlun-db';
@@ -101,19 +101,23 @@ export function saveSessionMessages(sessionId: string, messages: ChatMessage[]):
   idbStorage.setItem(chatSessionKey(sessionId), JSON.stringify(messages));
 }
 
+async function saveManifestNow(manifest: ChatManifestV2): Promise<boolean> {
+  return setItemNow(PERSIST_KEYS.chatManifest, JSON.stringify(manifest));
+}
+
+async function saveSessionMessagesNow(sessionId: string, messages: ChatMessage[]): Promise<boolean> {
+  return setItemNow(chatSessionKey(sessionId), JSON.stringify(messages));
+}
+
 export async function loadBlobDataUrl(blobId: string): Promise<string | null> {
   if (!isBrowser()) return null;
-  try {
-    const val = await idbGet<string>(chatBlobKey(blobId), idbStore);
-    return val ?? null;
-  } catch {
-    return null;
-  }
+  return idbStorage.getItem(chatBlobKey(blobId));
 }
 
 export async function saveBlobFromDataUrl(blobId: string, dataUrl: string): Promise<void> {
   if (!isBrowser()) return;
-  await idbSet(chatBlobKey(blobId), dataUrl, idbStore);
+  const ok = await setItemNow(chatBlobKey(blobId), dataUrl);
+  if (!ok) throw new Error(`Failed to save chat blob: ${blobId}`);
 }
 
 export async function deleteSessionData(sessionId: string, blobIds: string[] = []): Promise<void> {
@@ -121,7 +125,7 @@ export async function deleteSessionData(sessionId: string, blobIds: string[] = [
   await idbStorage.removeItem(chatSessionKey(sessionId));
   for (const id of blobIds) {
     try {
-      await idbDel(chatBlobKey(id), idbStore);
+      await idbStorage.removeItem(chatBlobKey(id));
     } catch {
       // ignore
     }
@@ -189,14 +193,20 @@ export async function migrateFromV1IfNeeded(): Promise<boolean> {
   const activeSessionId = parsed.state?.activeSessionId ?? parsed.activeSessionId ?? null;
 
   const metas: SessionMeta[] = [];
-  for (const session of sessions) {
-    const messages = await migrateAttachmentsInMessages(session.messages);
-    saveSessionMessages(session.id, messages);
-    metas.push(buildSessionMeta({ ...session, messages }));
+  try {
+    for (const session of sessions) {
+      const messages = await migrateAttachmentsInMessages(session.messages);
+      const saved = await saveSessionMessagesNow(session.id, messages);
+      if (!saved) return false;
+      metas.push(buildSessionMeta({ ...session, messages }));
+    }
+
+    const manifestSaved = await saveManifestNow({ version: 2, activeSessionId, sessions: metas });
+    if (!manifestSaved) return false;
+  } catch {
+    return false;
   }
 
-  saveManifest({ version: 2, activeSessionId, sessions: metas });
-  flushPendingWrites();
   await idbStorage.removeItem(PERSIST_KEYS.chatHistory);
   return true;
 }
