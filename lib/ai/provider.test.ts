@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { resolveProvider, chatCompletionsUrl, thinkingBudget, ENV_MODEL_FLASH } from "./provider.ts";
+import { resolveProvider, resolveZhipuProvider, chatCompletionsUrl, thinkingBudget, ENV_MODEL_FLASH } from "./provider.ts";
 
 test("resolveProvider：custom 端点三要素齐全时用自定义", () => {
   const r = resolveProvider("custom", {
@@ -37,6 +37,19 @@ test("resolveProvider：mimo 模型走 MIMO 端点", () => {
   assert.equal(r.model, "mimo-v2.5");
   // baseUrl 应是 MIMO_BASE_URL（env 或默认）
   assert.ok(r.baseUrl.includes("xiaomimimo") || r.baseUrl === "");
+});
+
+test("resolveProvider：智谱 provider 模型走智谱端点", () => {
+  const r = resolveProvider("zai-org/GLM-Z1-AirX");
+  assert.equal(r.isCustom, false);
+  assert.equal(r.model, "zai-org/GLM-Z1-AirX");
+  assert.ok(r.baseUrl.includes("bigmodel.cn") || r.baseUrl === "");
+});
+
+test("resolveZhipuProvider：返回智谱官方端点", () => {
+  const r = resolveZhipuProvider("glm-5.2");
+  assert.equal(r.model, "glm-5.2");
+  assert.ok(r.baseUrl.includes("bigmodel.cn") || r.baseUrl === "");
 });
 
 test("resolveProvider：undefined modelId 回退到 ENV_MODEL_FLASH", () => {

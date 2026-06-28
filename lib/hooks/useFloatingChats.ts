@@ -4,7 +4,7 @@ import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import type { ChatContext } from "@/lib/types/chat";
 
-export const FLOATING_DEFAULT_MODEL = "Qwen/Qwen3.6-35B-A3B";
+export const FLOATING_DEFAULT_MODEL = "Qwen/Qwen3.6-27B";
 
 export type SeedMode = "explain" | "example" | "ask";
 

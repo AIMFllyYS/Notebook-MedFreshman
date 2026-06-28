@@ -45,27 +45,58 @@ async function rerank(
   const apiKey = process.env.AI_API_KEY || '';
   const model = process.env.AI_RERANK_MODEL || 'BAAI/bge-reranker-v2-m3';
 
-  const resp = await fetch(`${baseUrl}/rerank`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
-      query,
-      documents,
-      top_n: topN,
-      return_documents: false,
-    }),
-  });
+  try {
+    const resp = await fetch(`${baseUrl}/rerank`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        query,
+        documents,
+        top_n: topN,
+        return_documents: false,
+      }),
+    });
 
-  if (!resp.ok) {
-    throw new Error(`Rerank API error ${resp.status}`);
+    if (!resp.ok) {
+      throw new Error(`Rerank API error ${resp.status}`);
+    }
+
+    const json = await resp.json();
+    return json.results ?? [];
+  } catch (err) {
+    // 容灾降级到智谱 rerank
+    const zhipuBaseUrl = process.env.ZHIPU_BASE_URL || 'https://open.bigmodel.cn/api/paas/v4';
+    const zhipuKey = process.env.ZHIPU_API_KEY || '';
+    const zhipuModel = process.env.ZHIPU_RERANK_MODEL || 'rerank';
+    if (zhipuBaseUrl && zhipuKey) {
+      const resp = await fetch(`${zhipuBaseUrl}/rerank`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${zhipuKey}`,
+        },
+        body: JSON.stringify({
+          model: zhipuModel,
+          query,
+          documents,
+          top_n: topN,
+          return_documents: false,
+        }),
+      });
+
+      if (!resp.ok) {
+        throw new Error(`Zhipu Rerank API error ${resp.status}`);
+      }
+
+      const json = await resp.json();
+      return json.results ?? [];
+    }
+    throw err;
   }
-
-  const json = await resp.json();
-  return json.results ?? [];
 }
 
 export async function hybridSearch(

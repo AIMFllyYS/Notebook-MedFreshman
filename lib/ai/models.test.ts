@@ -58,3 +58,22 @@ test("MODELS：model id 唯一", () => {
     ids.add(m.id);
   }
 });
+
+test("MODELS：新增模型存在且带有 icon 标识", () => {
+  const qwen36 = getModelInfo("Qwen/Qwen3.6-27B");
+  assert.ok(qwen36, "Qwen3.6-27B 应存在");
+  assert.equal(qwen36?.icon, "qwen");
+
+  const minimaxM3 = getModelInfo("MiniMaxAI/MiniMax-M3");
+  assert.ok(minimaxM3, "MiniMax-M3 应存在");
+  assert.equal(minimaxM3?.icon, "minimax");
+
+  const z1AirX = getModelInfo("zai-org/GLM-Z1-AirX");
+  assert.ok(z1AirX, "GLM-Z1-AirX 应存在");
+  assert.equal(z1AirX?.icon, "zhipu");
+  assert.equal(z1AirX?.provider, "zhipu");
+
+  const flashX = getModelInfo("zai-org/GLM-4.7-FlashX");
+  assert.ok(flashX, "GLM-4.7-FlashX 应存在");
+  assert.equal(flashX?.provider, "zhipu");
+});

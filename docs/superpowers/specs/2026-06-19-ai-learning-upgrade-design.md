@@ -39,8 +39,8 @@ AI 走 OpenAI 兼容端点（`.env.local`：`AI_BASE_URL`/`AI_API_KEY`/`AI_MODEL
 - Base：`https://api.siliconflow.cn/v1`，OpenAI 兼容，Bearer 鉴权。
 - **顶尖对话/推理模型（真实存在）**：`deepseek-ai/DeepSeek-V4-Pro`（1M，旗舰推理，三档思考）、
   `deepseek-ai/DeepSeek-V4-Flash`（1M，性价比推理）、`deepseek-ai/DeepSeek-V3.2`、`zai-org/GLM-5.2`、
-  `Pro/zai-org/GLM-5.1`、`Qwen/Qwen3.6-35B-A3B`、`Qwen/Qwen3.5-397B-A17B`、`Qwen/Qwen3.5-35B-A3B`、
-  `moonshotai/Kimi-K2.7-Code`、`Pro/moonshotai/Kimi-K2.6`、`MiniMaxAI/MiniMax-M2.5`、
+  `Pro/zai-org/GLM-5.1`、`zai-org/GLM-Z1-AirX`、`zai-org/GLM-4.7-FlashX`、`Qwen/Qwen3.6-35B-A3B`、
+  `Qwen/Qwen3.6-27B`、`moonshotai/Kimi-K2.7-Code`、`Pro/moonshotai/Kimi-K2.6`、`MiniMaxAI/MiniMax-M3`、
   `deepseek-ai/DeepSeek-V3`、`deepseek-ai/DeepSeek-R1`。env 现有 V4-Pro/Flash **有效**。
 - 思维链字段：`reasoning_content`（流式 `delta.reasoning_content`）。开关：`enable_thinking` /
   `thinking_budget`（各家默认不一，需显式传）。function calling：OpenAI 格式 `tools`。

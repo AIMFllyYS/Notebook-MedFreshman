@@ -5,6 +5,7 @@ import type { ChatContext, ChatOptions } from "@/lib/types/chat";
 import { getToolDefs, runTool } from "@/lib/ai/tools";
 import {
   resolveProvider,
+  resolveZhipuProvider,
   chatCompletionsUrl,
   thinkingBudget,
   ENV_MODEL_PRO,
@@ -230,11 +231,22 @@ export async function POST(req: NextRequest) {
           ...messages.map((m) => ({ role: m.role, content: m.content })),
         ];
 
-        const endpoint = chatCompletionsUrl(provider.baseUrl);
+        let activeProvider = provider;
+        let endpoint = chatCompletionsUrl(activeProvider.baseUrl);
+        let glmFailoverAttempted = false;
+
+        // 跨工具调用轮次累加 usage：每轮向 LLM 的独立请求都产生 token 消耗，
+        // 必须全部累加才能反映真实计费。之前只发最后一轮导致工具场景少算 40%+。
+        const totalUsage: {
+          prompt_tokens: number;
+          completion_tokens: number;
+          total_tokens: number;
+          cached_tokens: number;
+        } = { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0, cached_tokens: 0 };
 
         for (let turn = 0; turn < MAX_TOOL_TURNS; turn++) {
           const reqBody: Record<string, unknown> = {
-            model: provider.model,
+            model: activeProvider.model,
             messages: convo,
             tools: toolDefs,
             tool_choice: "auto",
@@ -245,8 +257,8 @@ export async function POST(req: NextRequest) {
 
           // 深度思考参数（仅在模型支持思考时下发，避免不支持的端点报未知参数）。
           if (options.enableThinking) {
-            const info = provider.isCustom ? undefined : getModelInfo(provider.model);
-            const supportsThinking = provider.isCustom || !info || info.thinking;
+            const info = activeProvider.isCustom ? undefined : getModelInfo(activeProvider.model);
+            const supportsThinking = activeProvider.isCustom || !info || info.thinking;
             if (supportsThinking) {
               reqBody.enable_thinking = true;
               reqBody.thinking_budget = thinkingBudget(options.thinkingEffort);
@@ -256,18 +268,48 @@ export async function POST(req: NextRequest) {
           const abortCtrl = new AbortController();
           const fetchTimeoutId = setTimeout(() => abortCtrl.abort(), 45000);
 
-          const res = await fetch(endpoint, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${provider.apiKey}`,
-            },
-            body: JSON.stringify(reqBody),
-            signal: abortCtrl.signal,
-          });
-          clearTimeout(fetchTimeoutId);
+          let res: Response;
+          try {
+            res = await fetch(endpoint, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${activeProvider.apiKey}`,
+              },
+              body: JSON.stringify(reqBody),
+              signal: abortCtrl.signal,
+            });
+          } catch (err) {
+            // GLM-5.2 容灾降级：网络/超时失败时切换到智谱官方 API
+            if (modelId === "zai-org/GLM-5.2" && !glmFailoverAttempted) {
+              glmFailoverAttempted = true;
+              const zhipu = resolveZhipuProvider("glm-5.2");
+              if (zhipu.configured) {
+                activeProvider = zhipu;
+                endpoint = chatCompletionsUrl(activeProvider.baseUrl);
+                send({ type: "info", message: "SiliconFlow GLM-5.2 不可用，已降级到智谱官方 API" });
+                turn--; // 使用新的 provider 重试当前轮
+                continue;
+              }
+            }
+            throw err;
+          } finally {
+            clearTimeout(fetchTimeoutId);
+          }
 
           if (!res.ok || !res.body) {
+            // GLM-5.2 容灾降级：HTTP 错误时切换到智谱官方 API
+            if (modelId === "zai-org/GLM-5.2" && !glmFailoverAttempted) {
+              glmFailoverAttempted = true;
+              const zhipu = resolveZhipuProvider("glm-5.2");
+              if (zhipu.configured) {
+                activeProvider = zhipu;
+                endpoint = chatCompletionsUrl(activeProvider.baseUrl);
+                send({ type: "info", message: "SiliconFlow GLM-5.2 不可用，已降级到智谱官方 API" });
+                turn--; // 使用新的 provider 重试当前轮
+                continue;
+              }
+            }
             const t = await res.text().catch(() => "");
             stopHeartbeat();
             send({ type: "error", message: `接口返回 ${res.status}：${t.slice(0, 300)}` });
@@ -328,6 +370,14 @@ export async function POST(req: NextRequest) {
               }
               if (choice.finish_reason) finish = choice.finish_reason;
             }
+          }
+
+          // 累加本轮 usage 到跨轮总计（工具调用中间轮的 token 也计入）
+          if (lastUsage) {
+            totalUsage.prompt_tokens += lastUsage.prompt_tokens ?? 0;
+            totalUsage.completion_tokens += lastUsage.completion_tokens ?? 0;
+            totalUsage.total_tokens += lastUsage.total_tokens ?? 0;
+            totalUsage.cached_tokens += lastUsage.prompt_tokens_details?.cached_tokens ?? 0;
           }
 
           // 工具调用循环
@@ -486,14 +536,14 @@ export async function POST(req: NextRequest) {
             breakdown.tools + breakdown.skills + breakdown.conversation + breakdown.pages + breakdown.webSearch;
           send({ type: "context_breakdown", breakdown });
 
-          if (lastUsage) {
+          if (totalUsage.prompt_tokens > 0 || totalUsage.completion_tokens > 0) {
             send({
               type: "usage",
               usage: {
-                promptTokens: lastUsage.prompt_tokens ?? 0,
-                completionTokens: lastUsage.completion_tokens ?? 0,
-                cachedTokens: lastUsage.prompt_tokens_details?.cached_tokens ?? 0,
-                totalTokens: lastUsage.total_tokens ?? 0,
+                promptTokens: totalUsage.prompt_tokens,
+                completionTokens: totalUsage.completion_tokens,
+                cachedTokens: totalUsage.cached_tokens,
+                totalTokens: totalUsage.total_tokens || (totalUsage.prompt_tokens + totalUsage.completion_tokens),
               },
             });
           }
@@ -503,7 +553,18 @@ export async function POST(req: NextRequest) {
           return;
         }
 
-        // 超过最大工具调用轮次
+        // 超过最大工具调用轮次——仍发送已累加的 usage，避免计费丢失
+        if (totalUsage.prompt_tokens > 0 || totalUsage.completion_tokens > 0) {
+          send({
+            type: "usage",
+            usage: {
+              promptTokens: totalUsage.prompt_tokens,
+              completionTokens: totalUsage.completion_tokens,
+              cachedTokens: totalUsage.cached_tokens,
+              totalTokens: totalUsage.total_tokens || (totalUsage.prompt_tokens + totalUsage.completion_tokens),
+            },
+          });
+        }
         stopHeartbeat();
         send({ type: "done" });
         controller.close();

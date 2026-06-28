@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { ChevronDown, Check, Cpu } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { getModelGroupsWithCustom, getModelInfoWithCustom, CUSTOM_PREFIX } from "@/lib/ai/models";
+import { ModelIcon } from "@/components/icons/ModelBrandIcons";
 
 /** 模型选择下拉菜单（agent 软件风格）：硅基流动精选模型 + 自定义模型。
  *  默认读写全局 useSettings.selectedModelId；传入 value/onChange 则改为受控（供划词
@@ -106,8 +107,13 @@ export default function ModelMenu({
                         (active ? "bg-[var(--accent-weak)]" : "hover:bg-[var(--bg-muted)]")
                       }
                     >
-                      <span className="mt-0.5 w-3.5 shrink-0">
-                        {active && <Check size={13} className="text-[var(--accent-ink)]" />}
+                      <span className="relative mt-0.5 w-3.5 shrink-0">
+                        <ModelIcon brand={m.icon} size={14} className="text-[var(--ink-soft)]" />
+                        {active && (
+                          <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5 items-center justify-center rounded-full bg-[var(--accent-ink)]">
+                            <Check size={8} className="text-[var(--bg-panel)]" strokeWidth={3} />
+                          </span>
+                        )}
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="flex items-center gap-1.5">

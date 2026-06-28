@@ -14,6 +14,9 @@ const REASONING_FIELD = process.env.AI_REASONING_FIELD || "reasoning_content";
 const MIMO_BASE = process.env.MIMO_BASE_URL || "https://api.xiaomimimo.com/v1";
 const MIMO_KEY = process.env.MIMO_API_KEY || "";
 
+const ZHIPU_BASE = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
+const ZHIPU_KEY = process.env.ZHIPU_API_KEY || "";
+
 export const ENV_MODEL_PRO = process.env.AI_MODEL_PRO || "deepseek-ai/DeepSeek-V4-Pro";
 export const ENV_MODEL_FLASH = process.env.AI_MODEL_FLASH || "deepseek-ai/DeepSeek-V4-Flash";
 
@@ -74,10 +77,35 @@ export function resolveProvider(
     };
   }
 
+  if (info?.provider === "zhipu") {
+    const configured = !!(ZHIPU_BASE && ZHIPU_KEY);
+    return {
+      baseUrl: ZHIPU_BASE,
+      apiKey: ZHIPU_KEY,
+      model,
+      reasoningField: REASONING_FIELD,
+      isCustom: false,
+      configured,
+    };
+  }
+
   const configured = !!(BASE && KEY && !BASE.includes("your-endpoint"));
   return {
     baseUrl: BASE,
     apiKey: KEY,
+    model,
+    reasoningField: REASONING_FIELD,
+    isCustom: false,
+    configured,
+  };
+}
+
+/** 为指定模型构造智谱官方 provider（用于 GLM 5.2 容灾降级）。 */
+export function resolveZhipuProvider(model: string): ResolvedProvider {
+  const configured = !!(ZHIPU_BASE && ZHIPU_KEY);
+  return {
+    baseUrl: ZHIPU_BASE,
+    apiKey: ZHIPU_KEY,
     model,
     reasoningField: REASONING_FIELD,
     isCustom: false,

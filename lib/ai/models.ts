@@ -19,6 +19,8 @@ export interface ModelInfo {
   hint: string;
   /** 提供商标识，决定走哪组 env 凭证。省略 / "siliconflow" 走默认。 */
   provider?: string;
+  /** 品牌图标标识，用于模型下拉菜单显示官方 logo。 */
+  icon?: string;
   /** 定价信息（¥ / 百万 token）。 */
   pricing?: {
     input: number;
@@ -34,22 +36,24 @@ export const CUSTOM_MODEL_ID = "custom";
 
 export const MODELS: ModelInfo[] = [
   // ── 小米 MiMo（官方 API）──────────────────
-  { id: "mimo-v2.5-pro", label: "MiMo V2.5 Pro", group: "小米 MiMo", thinking: true, tools: true, contextK: 1000, hint: "旗舰推理 · 1M · 42B 激活 · Agent", provider: "mimo", pricing: { input: 3, cachedInput: 0.025, output: 6 }, cacheTtlSec: 3600 },
-  { id: "mimo-v2.5", label: "MiMo V2.5", group: "小米 MiMo", thinking: true, tools: true, vision: true, contextK: 1000, hint: "全模态 · 1M · 图片理解 · 推荐", provider: "mimo", pricing: { input: 1, cachedInput: 0.02, output: 2 }, cacheTtlSec: 3600 },
-  { id: "mimo-v2-flash", label: "MiMo V2 Flash", group: "小米 MiMo", thinking: true, tools: true, contextK: 256, hint: "极速低成本 · 256K · 限时免费", provider: "mimo", pricing: { input: 0, cachedInput: 0, output: 0 }, cacheTtlSec: 3600 },
+  { id: "mimo-v2.5-pro", label: "MiMo V2.5 Pro", group: "小米 MiMo", thinking: true, tools: true, contextK: 1000, hint: "旗舰推理 · 1M · 42B 激活 · Agent", provider: "mimo", icon: "mimo", pricing: { input: 3, cachedInput: 0.025, output: 6 }, cacheTtlSec: 3600 },
+  { id: "mimo-v2.5", label: "MiMo V2.5", group: "小米 MiMo", thinking: true, tools: true, vision: true, contextK: 1000, hint: "全模态 · 1M · 图片理解 · 推荐", provider: "mimo", icon: "mimo", pricing: { input: 1, cachedInput: 0.02, output: 2 }, cacheTtlSec: 3600 },
+  { id: "mimo-v2-flash", label: "MiMo V2 Flash", group: "小米 MiMo", thinking: true, tools: true, contextK: 256, hint: "极速低成本 · 256K · 限时免费", provider: "mimo", icon: "mimo", pricing: { input: 0, cachedInput: 0, output: 0 }, cacheTtlSec: 3600 },
   // ── DeepSeek ──────────────────────────────
-  { id: "deepseek-ai/DeepSeek-V4-Pro", label: "DeepSeek V4 Pro", group: "DeepSeek", thinking: true, tools: true, contextK: 1000, hint: "旗舰推理 · 1M 上下文 · 最强但较贵", pricing: { input: 3, cachedInput: 0.03, cacheWrite: 0.03, output: 6 }, cacheTtlSec: 7200 },
-  { id: "deepseek-ai/DeepSeek-V4-Flash", label: "DeepSeek V4 Flash", group: "DeepSeek", thinking: true, tools: true, contextK: 1000, hint: "性价比推理 · 1M · 日常首选", pricing: { input: 1, cachedInput: 0.02, cacheWrite: 0.02, output: 2 }, cacheTtlSec: 7200 },
+  { id: "deepseek-ai/DeepSeek-V4-Pro", label: "DeepSeek V4 Pro", group: "DeepSeek", thinking: true, tools: true, contextK: 1000, icon: "deepseek", hint: "旗舰推理 · 1M 上下文 · 最强但较贵", pricing: { input: 3, cachedInput: 0.03, cacheWrite: 0.03, output: 6 }, cacheTtlSec: 7200 },
+  { id: "deepseek-ai/DeepSeek-V4-Flash", label: "DeepSeek V4 Flash", group: "DeepSeek", thinking: true, tools: true, contextK: 1000, icon: "deepseek", hint: "性价比推理 · 1M · 日常首选", pricing: { input: 1, cachedInput: 0.02, cacheWrite: 0.02, output: 2 }, cacheTtlSec: 7200 },
   // ── 智谱 GLM ──────────────────────────────
-  { id: "zai-org/GLM-5.2", label: "GLM-5.2", group: "智谱 GLM", thinking: true, tools: true, contextK: 200, hint: "GLM 最新旗舰 · 中文强", pricing: { input: 9.8, cachedInput: 1.82, cacheWrite: 1.82, output: 30.8 }, cacheTtlSec: 1800 },
-  { id: "Pro/zai-org/GLM-5.1", label: "GLM-5.1 Pro", group: "智谱 GLM", thinking: true, tools: true, contextK: 128, hint: "思考默认开 · 适合长讲解", pricing: { input: 9.8, cachedInput: 1.82, cacheWrite: 1.82, output: 30.8 }, cacheTtlSec: 1800 },
+  { id: "zai-org/GLM-5.2", label: "GLM-5.2", group: "智谱 GLM", thinking: true, tools: true, contextK: 200, icon: "zhipu", hint: "GLM 最新旗舰 · 中文强", pricing: { input: 9.8, cachedInput: 1.82, cacheWrite: 1.82, output: 30.8 }, cacheTtlSec: 1800 },
+  { id: "Pro/zai-org/GLM-5.1", label: "GLM-5.1 Pro", group: "智谱 GLM", thinking: true, tools: true, contextK: 128, icon: "zhipu", hint: "思考默认开 · 适合长讲解", pricing: { input: 9.8, cachedInput: 1.82, cacheWrite: 1.82, output: 30.8 }, cacheTtlSec: 1800 },
+  { id: "zai-org/GLM-Z1-AirX", label: "GLM-Z1-AirX", group: "智谱 GLM", thinking: true, tools: true, contextK: 256, provider: "zhipu", icon: "zhipu", hint: "智谱极速推理 · 200 tok/s", pricing: { input: 0.5, cachedInput: 0.05, cacheWrite: 0.05, output: 2 }, cacheTtlSec: 1800 },
+  { id: "zai-org/GLM-4.7-FlashX", label: "GLM-4.7-FlashX", group: "智谱 GLM", thinking: false, tools: true, contextK: 128, provider: "zhipu", icon: "zhipu", hint: "智谱轻量高速 · 200K 上下文", pricing: { input: 0, cachedInput: 0, cacheWrite: 0, output: 0 }, cacheTtlSec: 1800 },
   // ── 通义 Qwen ─────────────────────────────
-  { id: "Qwen/Qwen3.6-35B-A3B", label: "Qwen3.6 35B", group: "通义 Qwen", thinking: true, tools: true, contextK: 256, hint: "MoE · 速度/成本均衡 · 推荐主力", pricing: { input: 0.4, cachedInput: 0.04, cacheWrite: 0.04, output: 3.2 }, cacheTtlSec: 1800 },
-  { id: "Qwen/Qwen3.5-397B-A17B", label: "Qwen3.5 397B", group: "通义 Qwen", thinking: true, tools: true, contextK: 128, hint: "最大 MoE · 能力上限高", pricing: { input: 1.2, cachedInput: 0.12, cacheWrite: 0.12, output: 7.2 }, cacheTtlSec: 1800 },
-  { id: "Qwen/Qwen3.5-35B-A3B", label: "Qwen3.5 35B", group: "通义 Qwen", thinking: true, tools: true, contextK: 256, hint: "均衡稳定", pricing: { input: 1.68, cachedInput: 0.168, cacheWrite: 0.168, output: 12.6 }, cacheTtlSec: 1800 },
+  { id: "Qwen/Qwen3.6-35B-A3B", label: "Qwen3.6 35B", group: "通义 Qwen", thinking: true, tools: true, contextK: 256, icon: "qwen", hint: "MoE · 速度/成本均衡 · 推荐主力", pricing: { input: 0.4, cachedInput: 0.04, cacheWrite: 0.04, output: 3.2 }, cacheTtlSec: 1800 },
+  { id: "Qwen/Qwen3.6-27B", label: "Qwen3.6 27B", group: "通义 Qwen", thinking: true, tools: true, contextK: 256, icon: "qwen", hint: "更轻量 · 速度更快 · 低成本", pricing: { input: 0.3, cachedInput: 0.03, cacheWrite: 0.03, output: 2.4 }, cacheTtlSec: 1800 },
   // ── 其他 ─────────────────────────────────
-  { id: "Pro/moonshotai/Kimi-K2.6", label: "Kimi K2.6 Pro", group: "其他旗舰", thinking: false, tools: true, contextK: 256, hint: "Agent / 多工具编排强", pricing: { input: 6.65, cachedInput: 1.12, cacheWrite: 1.12, output: 28 }, cacheTtlSec: 1800 },
-  { id: "MiniMaxAI/MiniMax-M2.5", label: "MiniMax M2.5", group: "其他旗舰", thinking: true, tools: true, contextK: 200, hint: "综合能力均衡", pricing: { input: 2.1, cachedInput: 0.21, cacheWrite: 0.21, output: 8.4 }, cacheTtlSec: 1800 },
+  { id: "Pro/moonshotai/Kimi-K2.6", label: "Kimi K2.6 Pro", group: "其他旗舰", thinking: false, tools: true, contextK: 256, icon: "kimi", hint: "Agent / 多工具编排强", pricing: { input: 6.65, cachedInput: 1.12, cacheWrite: 1.12, output: 28 }, cacheTtlSec: 1800 },
+  { id: "moonshotai/Kimi-K2.7-Code", label: "Kimi K2.7 Code", group: "其他旗舰", thinking: false, tools: true, contextK: 256, icon: "kimi", hint: "代码 Agent · 思考 token 降低 30%", pricing: { input: 6.65, cachedInput: 1.12, cacheWrite: 1.12, output: 28 }, cacheTtlSec: 1800 },
+  { id: "MiniMaxAI/MiniMax-M3", label: "MiniMax M3", group: "其他旗舰", thinking: true, tools: true, contextK: 1049, icon: "minimax", hint: "1M 上下文 · MSA · 编程/Agent 旗舰", pricing: { input: 2.1, cachedInput: 0.21, cacheWrite: 0.21, output: 8.4 }, cacheTtlSec: 1800 },
 ];
 
 export const DEFAULT_MODEL_ID = "mimo-v2.5";
