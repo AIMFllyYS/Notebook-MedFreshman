@@ -1,0 +1,38 @@
+{
+  "state": {
+    "sessions": [
+      {
+        "id": "1001",
+        "title": "测试会话",
+        "messages": [
+          {
+            "id": "m1",
+            "role": "user",
+            "content": "你好",
+            "timestamp": 1000
+          },
+          {
+            "id": "m2",
+            "role": "assistant",
+            "content": "你好！",
+            "timestamp": 1001,
+            "toolCalls": [
+              {
+                "id": "tc1",
+                "name": "renderInteractive",
+                "arguments": {},
+                "status": "success",
+                "artifactId": "art-1"
+              }
+            ]
+          }
+        ],
+        "createdAt": 1000,
+        "updatedAt": 1001,
+        "kind": "main"
+      }
+    ],
+    "activeSessionId": "1001"
+  },
+  "version": 0
+}

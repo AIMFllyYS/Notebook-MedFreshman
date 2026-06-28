@@ -203,6 +203,21 @@ pnpm test:cov    # 覆盖率
 
 完整 AI 工具可达性验证流程见 [05-content-integration.md](./05-content-integration.md)。
 
+## 性能冒烟（手动）
+
+性能相关改动合并前，在本地/Electron 执行以下检查（详见 [performance-audit-report.md](../refer/performance-audit-report.md) §九）：
+
+1. 打开含 **100+ 轮对话** 的会话 — 滚动流畅，无明显卡顿
+2. **主面板流式** + **3 个划词浮窗**（2 个最小化）— 最小化窗不应随他窗流式重渲染
+3. 最小化浮窗后切到 **视频/交互 tab** — 任务管理器内存应下降
+4. **超长讲义** — TOC 滚动与 heading 高亮正常
+5. **全局搜索** 输入 — 无明显输入卡顿
+6. 确认 `content/.index` 存在 — 生产搜索不走 substring 全库扫描
+7. Storage v2 迁移后 **Electron 重启** — 历史/图片/附件完整
+8. 开发者工具 Performance — 流式期间无持续 >50ms 长任务尖峰
+
+自动化补充：`lib/storage/idbStorage.test.ts`、`lib/chat/streamUiThrottle.test.ts`；阶段 2 后启用 `ChatThread.virtual.test.tsx`。
+
 ## 最佳实践
 
 1. **测试行为，不测实现**：断言输入→输出关系，不断言内部变量
