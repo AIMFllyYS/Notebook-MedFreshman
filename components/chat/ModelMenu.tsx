@@ -108,7 +108,7 @@ export default function ModelMenu({
                       }
                     >
                       <span className="relative mt-0.5 w-3.5 shrink-0">
-                        <ModelIcon brand={m.icon} size={14} className="text-[var(--ink-soft)]" />
+                        <ModelIcon brand={m.icon} size={14} className="text-[var(--ink)]" />
                         {active && (
                           <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5 items-center justify-center rounded-full bg-[var(--accent-ink)]">
                             <Check size={8} className="text-[var(--bg-panel)]" strokeWidth={3} />
