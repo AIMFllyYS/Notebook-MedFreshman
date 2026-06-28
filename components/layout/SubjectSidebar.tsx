@@ -16,15 +16,20 @@ import {
   ScrollText,
   PanelLeftClose,
   PanelLeft,
+  ListTree,
   Home,
 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import FileTree from "./FileTree";
+import TocTree from "./TocTree";
+import SiblingFilesPanel from "./SiblingFilesPanel";
 import GlobalSettings from "./GlobalSettings";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
 import { contentTree } from "@/lib/content-data/manifest";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
+import { EASE } from "@/lib/motion";
 import type { SubjectId, ContentItem } from "@/lib/types/content";
 
 let savedSidebarScroll = 0;
@@ -52,6 +57,8 @@ export default function SubjectSidebar() {
   // 折叠状态与 AppShell 左面板共用同一真相源（此前各持一份，导致此处的折叠按钮失效）。
   const isCollapsed = useStore((s) => s.sidebarCollapsed);
   const setCollapsed = useStore((s) => s.setSidebarCollapsed);
+  const tocMode = useStore((s) => s.tocMode);
+  const toggleTocMode = useStore((s) => s.toggleTocMode);
   const theme = useTheme((s) => s.theme);
   const toggleTheme = useTheme((s) => s.toggle);
   const hydrateTheme = useTheme((s) => s.hydrate);
@@ -95,6 +102,7 @@ export default function SubjectSidebar() {
       style={{
         background: "var(--md-sys-color-surface-container-lowest)",
         borderRight: "1px solid var(--md-sys-color-outline-variant)",
+        perspective: 1200,
       }}
     >
       {/* 顶部标题区 */}
@@ -117,50 +125,109 @@ export default function SubjectSidebar() {
         >
           期末复习栈
         </span>
-        <button
-          onClick={() => setCollapsed(!isCollapsed)}
-          className="flex items-center justify-center rounded"
-          style={{
-            width: 22,
-            height: 22,
-            color: "var(--md-sys-color-outline)",
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-          }}
-          title={isCollapsed ? "展开侧边栏" : "折叠侧边栏"}
-        >
-          {isCollapsed ? <PanelLeft size={14} /> : <PanelLeftClose size={14} />}
-        </button>
+        <div className="flex items-center gap-0.5">
+          <button
+            onClick={toggleTocMode}
+            className="flex items-center justify-center rounded"
+            style={{
+              width: 24,
+              height: 24,
+              color: tocMode
+                ? "var(--md-sys-color-primary)"
+                : "var(--md-sys-color-outline)",
+              background: tocMode
+                ? "var(--md-sys-color-primary-container)"
+                : "transparent",
+              border: "none",
+              cursor: "pointer",
+            }}
+            title="目录 / 文件树"
+            aria-pressed={tocMode}
+          >
+            <ListTree size={15} />
+          </button>
+          <button
+            onClick={() => setCollapsed(!isCollapsed)}
+            className="flex items-center justify-center rounded"
+            style={{
+              width: 24,
+              height: 24,
+              color: "var(--md-sys-color-outline)",
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+            }}
+            title={isCollapsed ? "展开侧边栏" : "折叠侧边栏"}
+          >
+            {isCollapsed ? <PanelLeft size={15} /> : <PanelLeftClose size={15} />}
+          </button>
+        </div>
       </div>
 
-      {/* 首页入口 */}
-      <button
-        onClick={() => router.push("/")}
-        className="press"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          margin: "6px 8px 2px",
-          padding: "8px 10px",
-          width: "calc(100% - 16px)",
-          borderRadius: 9,
-          border: "none",
-          background: pathname === "/" ? "var(--md-sys-color-secondary-container)" : "transparent",
-          color: pathname === "/" ? "var(--md-sys-color-on-secondary-container)" : "var(--md-sys-color-on-surface-variant)",
-          fontSize: 13,
-          fontWeight: 600,
-          cursor: "pointer",
-        }}
-        title="首页 · 书架"
-      >
-        <Home size={15} /> 首页
-      </button>
+      {/* 内容区：文件树 / 目录树 X 轴 3D 翻转切换 */}
+      <AnimatePresence mode="wait">
+        {tocMode ? (
+          <motion.div
+            key="toc-view"
+            initial={{ rotateX: 90, opacity: 0 }}
+            animate={{ rotateX: 0, opacity: 1 }}
+            exit={{ rotateX: -90, opacity: 0 }}
+            transition={{ duration: 0.35, ease: EASE.decelerate }}
+            style={{
+              transformOrigin: "center top",
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              minHeight: 0,
+            }}
+          >
+            <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+              <TocTree />
+            </div>
+            <SiblingFilesPanel />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="filetree-view"
+            initial={{ rotateX: 90, opacity: 0 }}
+            animate={{ rotateX: 0, opacity: 1 }}
+            exit={{ rotateX: -90, opacity: 0 }}
+            transition={{ duration: 0.35, ease: EASE.decelerate }}
+            style={{
+              transformOrigin: "center top",
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              minHeight: 0,
+            }}
+          >
+            {/* 首页入口 */}
+            <button
+              onClick={() => router.push("/")}
+              className="press"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                margin: "6px 8px 2px",
+                padding: "8px 10px",
+                width: "calc(100% - 16px)",
+                borderRadius: 9,
+                border: "none",
+                background: pathname === "/" ? "var(--md-sys-color-secondary-container)" : "transparent",
+                color: pathname === "/" ? "var(--md-sys-color-on-secondary-container)" : "var(--md-sys-color-on-surface-variant)",
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+              title="首页 · 书架"
+            >
+              <Home size={15} /> 首页
+            </button>
 
-      {/* 科目列表 */}
-      <div ref={scrollRef} className="scroll-y flex-1" style={{ padding: "4px 0" }}>
-        {contentTree.subjects.map((subject) => {
+            {/* 科目列表 */}
+            <div ref={scrollRef} className="scroll-y flex-1" style={{ padding: "4px 0" }}>
+              {contentTree.subjects.map((subject) => {
           const isSubjectExpanded = expandedIds.has(subject.id);
           const iconName = SUBJECT_ICONS[subject.id as SubjectId] ?? "Folder";
 
@@ -269,6 +336,9 @@ export default function SubjectSidebar() {
           );
         })}
       </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* 底部工具条：全局设置 + 主题切换 */}
       <div

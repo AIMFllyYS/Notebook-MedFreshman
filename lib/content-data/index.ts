@@ -48,3 +48,29 @@ export function getContentItem(
   }
   return category ? findItem(category.items) : undefined;
 }
+
+/** 查找 itemId 的父节点及其兄弟列表（同父节点的所有 children）。
+ *  若 itemId 本身是顶层 item（无父节点），返回 parent=null + category.items。 */
+export function getSiblings(
+  subjectId: SubjectId,
+  categoryId: string,
+  itemId: string,
+): { parent: ContentItem | null; siblings: ContentItem[] } {
+  const category = getCategory(subjectId, categoryId);
+  if (!category) return { parent: null, siblings: [] };
+
+  function findParent(items: ContentItem[], target: string): ContentItem | null {
+    for (const item of items) {
+      if (item.children?.some((child) => child.id === target)) return item;
+      if (item.children) {
+        const found = findParent(item.children, target);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+
+  const parent = findParent(category.items, itemId);
+  const siblings = parent?.children ?? category.items;
+  return { parent, siblings };
+}

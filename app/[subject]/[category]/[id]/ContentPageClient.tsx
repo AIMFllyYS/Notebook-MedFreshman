@@ -12,6 +12,7 @@ import { useStore } from "@/lib/store";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { tabPanelVariants } from "@/lib/motion";
 import { ComponentRenderer } from "@/lib/content/componentRegistry";
+import { useToc } from "@/lib/hooks/useToc";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
 import GlobalSearchButton from "@/components/search/GlobalSearchButton";
 
@@ -94,6 +95,14 @@ export default function ContentPageClient({
   const content = initialContent;
 
   // 路由→store 的同步已上移到 AppShell（覆盖所有分类），此处不再处理。
+
+  // TOC 提取：仅在正文 Tab 且 markdown 类型时扫描 DOM 标题构建目录树
+  useToc(
+    containerRef,
+    activeTab === 'content' && renderType === 'markdown',
+    itemId,
+    initialContent ?? '',
+  );
 
   useEffect(() => {
     containerRef.current?.scrollTo({ top: 0 });

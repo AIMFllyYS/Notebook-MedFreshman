@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { VideoEntry } from "@/lib/content/types";
 import type { SubjectId } from "@/lib/types/content";
+import type { TocItem } from "@/lib/types/toc";
 
 export type RightTab = "ai" | "video" | "interactive" | "browser";
 export type MobileTab = "detail" | "video" | "ai" | "interactive" | "browser";
@@ -122,6 +123,17 @@ interface AppState {
   setPipGeometry: (g: { x: number; y: number; width: number; height: number }) => void;
   openPip: (v: VideoEntry, startTime?: number) => void;
   closePip: (returnTime?: number) => void;
+
+  // ── 目录（TOC）──────────────────────────────────────────
+  /** 侧边栏视图模式：false = 文件树, true = 目录树。路由切换时重置为 false。 */
+  tocMode: boolean;
+  toggleTocMode: () => void;
+  /** 当前页面的标题树（由 useToc hook 从 DOM 提取） */
+  tocItems: TocItem[];
+  setTocItems: (items: TocItem[]) => void;
+  /** 当前可见标题的 id（由 IntersectionObserver 驱动） */
+  activeTocId: string | null;
+  setActiveTocId: (id: string | null) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -138,6 +150,7 @@ export const useStore = create<AppState>((set) => ({
       activeItemId: itemId,
       activeChapterId: deriveChapterId(categoryId, itemId),
       activeSectionId: categoryId === "detail" ? itemId : "",
+      tocMode: false,
     }),
 
   sidebarCollapsed: readBoolean(LS_KEY_SIDEBAR, false),
@@ -211,4 +224,11 @@ export const useStore = create<AppState>((set) => ({
   openPip: (v, startTime = 0) => set({ pipVideo: v, pipStartTime: startTime }),
   closePip: (returnTime) =>
     set({ pipVideo: null, pipReturnTime: returnTime ?? null }),
+
+  tocMode: false,
+  toggleTocMode: () => set((s) => ({ tocMode: !s.tocMode })),
+  tocItems: [],
+  setTocItems: (items) => set({ tocItems: items }),
+  activeTocId: null,
+  setActiveTocId: (id) => set({ activeTocId: id }),
 }));
