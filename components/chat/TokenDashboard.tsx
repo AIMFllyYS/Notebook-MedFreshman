@@ -215,7 +215,12 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
           className="press flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
         >
           {iconSvg}
-          <span className="model-menu-label model-menu-label-full">{fmtTokens(ctxTokens)}</span>
+          <span
+            className="model-menu-label model-menu-label-full"
+            style={hasContextData ? { color: ringColor, opacity: 0.85, transition: 'color 0.3s ease' } : undefined}
+          >
+            {fmtTokens(ctxTokens)}
+          </span>
         </button>
       </Tooltip>
 
