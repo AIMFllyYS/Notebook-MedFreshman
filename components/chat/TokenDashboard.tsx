@@ -365,6 +365,10 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
               <Row label="总输出" value={fmtTokens(sessionTotal.completionTokens)} />
               {pricing && <Row label="累计费用" value={fmtCost(totalCost)} accent />}
             </div>
+
+            <div style={{ marginTop: 8, fontSize: 9, color: 'var(--ink-faint)', lineHeight: 1.3 }}>
+              价格为平台参考价，实际以 API 提供商结算为准。
+            </div>
           </div>
         </div>,
         document.body,
