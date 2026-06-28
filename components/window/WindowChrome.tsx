@@ -70,12 +70,12 @@ export default function WindowChrome({
       <div
         onPointerDown={isFullscreen ? undefined : onDragStart}
         className={clsx(
-          "window-chrome-header grid min-h-8 shrink-0 grid-cols-[72px_minmax(0,1fr)_auto] items-center gap-2 border-b border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-high)] px-3",
+          "window-chrome-header relative flex min-h-8 shrink-0 items-center justify-center border-b border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-high)] px-3",
           isFullscreen ? "cursor-default" : "cursor-grab",
         )}
         style={{ userSelect: "none", touchAction: "none" }}
       >
-        <div className="flex items-center gap-2">
+        <div className="absolute left-3 top-1/2 z-10 flex -translate-y-1/2 items-center gap-2">
           <TrafficButton tone="close" title="关闭" onClick={onClose}>
             <X size={9} strokeWidth={3} />
           </TrafficButton>
@@ -87,12 +87,12 @@ export default function WindowChrome({
           </TrafficButton>
         </div>
 
-        <div className="flex min-w-0 items-center justify-center gap-1.5 pl-4 text-[13px] font-semibold text-[var(--md-sys-color-on-surface)]">
+        <div className="pointer-events-none absolute inset-x-24 top-1/2 flex min-w-0 -translate-y-1/2 items-center justify-center gap-1.5 text-[13px] font-semibold text-[var(--md-sys-color-on-surface)]">
           {icon && <span className="shrink-0 text-[var(--md-sys-color-primary)]">{icon}</span>}
           <span className="min-w-0 truncate">{title}</span>
         </div>
 
-        <div className="flex items-center justify-end gap-1">
+        <div className="absolute right-3 top-1/2 z-10 flex -translate-y-1/2 items-center justify-end gap-1">
           {actions}
           {showExternalLink && (
             <button
