@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
+import clsx from 'clsx';
 import { AlertTriangle, X, MessageSquarePlus } from 'lucide-react';
+import { useAutoHideChatHeader } from '@/lib/hooks/useAutoHideChatHeader';
 import { useChat } from '@/lib/hooks/useChat';
 import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { useFloatingChats } from '@/lib/hooks/useFloatingChats';
@@ -97,14 +99,34 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     : chatContext?.subjectId === 'physics' ? '物理'
     : '概率论';
 
+  const hasUserSent = useMemo(() => messages.some((m) => m.role === 'user'), [messages]);
+  const headerPinned = showSettings || showHistory;
+  const {
+    autoHideEnabled,
+    headerVisible,
+    onPointerEnter,
+    onPointerLeave,
+  } = useAutoHideChatHeader(hasUserSent, headerPinned);
+
   return (
-    <div className="chat-panel">
-      <ChatPanelHeader
-        topic={chatContext?.currentTopic ?? ''}
-        onOpenSettings={() => setShowSettings(true)}
-        onOpenHistory={() => setShowHistory(true)}
-        onNewChat={handleNewChat}
-      />
+    <div className={clsx('chat-panel', autoHideEnabled && 'chat-panel--auto-hide-header')}>
+      <div
+        className={clsx(
+          'chat-header-sticky',
+          autoHideEnabled && 'chat-header-sticky--overlay',
+          autoHideEnabled && !headerVisible && 'chat-header-sticky--hidden',
+        )}
+        onMouseEnter={onPointerEnter}
+        onMouseLeave={onPointerLeave}
+      >
+        {autoHideEnabled && <div className="chat-header-reveal-zone" aria-hidden />}
+        <ChatPanelHeader
+          topic={chatContext?.currentTopic ?? ''}
+          onOpenSettings={() => setShowSettings(true)}
+          onOpenHistory={() => setShowHistory(true)}
+          onNewChat={handleNewChat}
+        />
+      </div>
 
       <ChatThread
         messages={messages}

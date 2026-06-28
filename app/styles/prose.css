@@ -438,6 +438,50 @@
 }
 
 /* ── ChatPanel Header ─────────────────────────── */
+.chat-header-sticky {
+  flex-shrink: 0;
+}
+/* 对话开始后：header 脱离文档流，overlay 浮于消息区上方，隐藏/显示不挤动排版 */
+.chat-panel--auto-hide-header .chat-header-sticky--overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+}
+.chat-panel--auto-hide-header .chat-header-sticky--overlay.chat-header-sticky--hidden {
+  pointer-events: none;
+}
+.chat-header-reveal-zone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  z-index: 1;
+}
+.chat-panel--auto-hide-header .chat-header-sticky--hidden .chat-header-reveal-zone {
+  pointer-events: auto;
+}
+.chat-panel--auto-hide-header .chat-header-sticky--overlay .chat-header {
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform 360ms var(--ease-out),
+    opacity 360ms var(--ease-out),
+    box-shadow 360ms var(--ease-out);
+  box-shadow: var(--shadow-sm);
+}
+.chat-panel--auto-hide-header .chat-header-sticky--overlay.chat-header-sticky--hidden .chat-header {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: none;
+  transition:
+    transform 280ms ease-in,
+    opacity 280ms ease-in,
+    box-shadow 280ms ease-in;
+}
 .chat-header {
   display: flex;
   align-items: center;
