@@ -4,7 +4,7 @@ import { useSettings } from './useSettings';
 import { useSkills } from './useSkills';
 import { CUSTOM_PREFIX, getModelInfoWithCustom } from '@/lib/ai/models';
 import type { ChatMessage, ChatAttachment, ChatContext, ChatOptions, ToolCallBlock, WebSearchSource, ContextBreakdown } from '@/lib/types/chat';
-import { parseXmlTags } from '@/lib/utils/xmlParser';
+import { extractFollowUpQuestionsFromContent } from '@/lib/chat/rendering/parseChatContent';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { useTokenTracker } from './useTokenTracker';
 import { useFloatingTokenTracker } from './useFloatingTokenTracker';
@@ -22,6 +22,7 @@ interface ChatSseEvent {
   type?: string;
   delta?: string;
   content?: string;
+  questions?: string[];
   message?: string;
   status?: string;
   id?: string;
@@ -216,6 +217,7 @@ export function useChat(
       (async () => {
         let contentBuf = '';
         let reasoningBuf = '';
+        let followUpQuestionsFromStream: string[] = [];
         const toolCallsMap = new Map<string, ToolCallBlock>();
         let stallChecker: ReturnType<typeof setInterval> | null = null;
 
@@ -384,6 +386,19 @@ export function useChat(
                   }
                   break;
 
+                case 'followup': {
+                  const questions = Array.isArray(event.questions)
+                    ? event.questions.map((q) => String(q).trim()).filter(Boolean).slice(0, 3)
+                    : [];
+                  if (questions.length > 0) {
+                    followUpQuestionsFromStream = questions;
+                    updateMessage(sessionId!, assistantId, {
+                      followUpQuestions: questions,
+                    });
+                  }
+                  break;
+                }
+
                 case 'error':
                   setError(event.message || '发生未知错误');
                   break;
@@ -400,22 +415,10 @@ export function useChat(
           // 流结束后提取 FollowUp 追问
           if (contentBuf) {
             try {
-              let questions: string[] = [];
-              // 优先用 parseXmlTags（处理大小写归一化）
-              const blocks = parseXmlTags(contentBuf);
-              const followUpBlock = blocks.find((b) => b.tagName === 'FollowUp');
-              if (followUpBlock?.childrenText) {
-                questions = followUpBlock.childrenText
-                  .split('|')
-                  .map((q: string) => q.trim())
-                  .filter(Boolean);
-              }
-              // 兜底：正则直接提取（parseXmlTags 可能因标签格式偏差未匹配）
+              let questions: string[] = followUpQuestionsFromStream;
+              // 兼容旧模型输出：正文里已有 <FollowUp> 时只提取 metadata，不依赖正文渲染。
               if (questions.length === 0) {
-                const m = contentBuf.match(/<FollowUp>([\s\S]*?)<\/FollowUp>/i);
-                if (m) {
-                  questions = m[1].split('|').map((q) => q.trim()).filter(Boolean);
-                }
+                questions = extractFollowUpQuestionsFromContent(contentBuf);
               }
               // 前端兜底：服务端和模型都没生成 FollowUp 时，根据用户提问生成通用追问
               if (questions.length === 0) {

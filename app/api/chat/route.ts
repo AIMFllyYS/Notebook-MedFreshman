@@ -440,9 +440,14 @@ export async function POST(req: NextRequest) {
                     .replace(/\n+/g, '|')
                     .replace(/\|+/g, '|')
                     .trim();
-                  const fuDelta = `\n\n<FollowUp>${cleaned}</FollowUp>`;
-                  contentBuf += fuDelta;
-                  send({ type: "content", delta: fuDelta });
+                  const questions = cleaned
+                    .split("|")
+                    .map((q: string) => q.trim())
+                    .filter(Boolean)
+                    .slice(0, 3);
+                  if (questions.length > 0) {
+                    send({ type: "followup", questions });
+                  }
                 }
               } else {
                 console.warn("[FollowUp fallback] API returned", fuRes.status);
