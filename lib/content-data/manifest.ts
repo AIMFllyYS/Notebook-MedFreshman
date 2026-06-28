@@ -347,6 +347,8 @@ export const contentTree: ContentTree = {
             { id: 'real-01', title: '有机化学期末真题模拟卷（一）', type: 'document', status: 'done' },
             { id: 'real-02', title: '有机化学期末真题模拟卷（二）', type: 'document', status: 'done' },
             { id: 'real-03', title: '有机化学期末真题模拟卷（三）', type: 'document', status: 'done' },
+            { id: 'real-04', title: '华中科技大学有机化学期末真题（四）2021-2022', type: 'document', status: 'done' },
+            { id: 'real-05', title: '华中科技大学有机化学期末真题（五）2023-2024', type: 'document', status: 'done' },
           ],
         },
       ],
