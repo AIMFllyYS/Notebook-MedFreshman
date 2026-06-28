@@ -27,14 +27,18 @@ interface MessageContentProps {
   preserveLineBreaks?: boolean;
 }
 
+type MarkdownElementProps<T extends keyof React.JSX.IntrinsicElements> =
+  React.ComponentPropsWithoutRef<T> & { node?: unknown };
+
 /**
  * Custom <p> component: when a paragraph contains 2+ images,
  * wrap them in an ImageStrip for horizontal scrolling.
  */
-function ChatParagraph({ node, children, ...props }: any) {
+function ChatParagraph({ node: _node, children, ...props }: MarkdownElementProps<'p'>) {
+  void _node;
   const childArray = Children.toArray(children);
   const imgChildren = childArray.filter(
-    (c) => isValidElement(c) && (c.type === ChatImage || (c.props as any)?.src),
+    (c) => isValidElement<{ src?: string }>(c) && (c.type === ChatImage || Boolean(c.props.src)),
   );
 
   if (imgChildren.length >= 2) {
@@ -51,15 +55,20 @@ const mdComponents = {
   ...directiveComponents,
   img: ChatImage,
   p: ChatParagraph,
-  a: ({ node, ...props }: any) => (
+  a: ({ node: _node, ...props }: MarkdownElementProps<'a'>) => (
+    void _node,
     <a target="_blank" rel="noopener noreferrer" {...props} />
   ),
-  table: ({ node, ...props }: any) => (
+  table: ({ node: _node, ...props }: MarkdownElementProps<'table'>) => (
+    void _node,
     <div className="chat-table-scroll">
       <table {...props} />
     </div>
   ),
-  pre: ({ node, ...props }: any) => <CodeBlock {...props} />,
+  pre: ({ node: _node, className, children }: MarkdownElementProps<'pre'>) => (
+    void _node,
+    <CodeBlock className={className}>{children}</CodeBlock>
+  ),
 };
 
 /* ---- Markdown rendering that routes raw inline <svg> to the sanitized viewer ----
@@ -204,7 +213,7 @@ const renderParsedBlock = (
 };
 
 /* ---- Main MessageContent component ---- */
-export const MessageContent: React.FC<MessageContentProps> = React.memo(({
+const MessageContentComponent: React.FC<MessageContentProps> = ({
   content,
   enableVisualizations = true,
   onFollowUpSelect,
@@ -227,6 +236,9 @@ export const MessageContent: React.FC<MessageContentProps> = React.memo(({
       )}
     </>
   );
-});
+};
+
+export const MessageContent = React.memo(MessageContentComponent);
+MessageContent.displayName = 'MessageContent';
 
 export default MessageContent;
