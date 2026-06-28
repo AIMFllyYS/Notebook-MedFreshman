@@ -7,6 +7,28 @@ import {
 } from '@/lib/utils/xmlParser';
 
 describe('parseXmlTags', () => {
+  it('保留普通小写 HTML 为单个 markdown 块，不拆碎 details/summary', () => {
+    const html = '<details><summary>答案</summary>这里是答案</details>';
+    const blocks = parseXmlTags(html);
+
+    expect(blocks).toEqual([{ type: 'markdown', content: html }]);
+    expect(blocks.some((block) => block.content === '<')).toBe(false);
+    expect(blocks.some((block) => block.content === 'details>')).toBe(false);
+  });
+
+  it('SvgDiagram raw children 中的自闭合 SVG 子元素不抢占外层组件闭合', () => {
+    const blocks = parseXmlTags(
+      '<SvgDiagram mode="raw"><svg viewBox="0 0 10 10"><line x1="0" y1="0" x2="10" y2="10" /></svg></SvgDiagram>',
+    );
+
+    expect(blocks).toHaveLength(1);
+    expect(blocks[0].type).toBe('component');
+    expect(blocks[0].tagName).toBe('SvgDiagram');
+    expect(blocks[0].props?.mode).toBe('raw');
+    expect(blocks[0].childrenText).toContain('<line x1="0" y1="0" x2="10" y2="10" />');
+    expect(blocks[0].childrenText).toContain('</svg>');
+  });
+
   it('归一化小写 formulasteps 为 FormulaSteps 组件块', () => {
     const blocks = parseXmlTags('<formulasteps>\n$a+b$\n$c+d$\n</formulasteps>');
     expect(blocks).toHaveLength(1);
@@ -40,6 +62,11 @@ describe('stripUnclosedCustomTagTails', () => {
   it('剥离未闭合的 formulasteps 流式尾巴', () => {
     const input = '前文<formulasteps>\n步骤1\n';
     expect(stripUnclosedCustomTagTails(input)).toBe('前文');
+  });
+
+  it('剥离未闭合的 SvgDiagram 和 FollowUp 流式尾巴', () => {
+    expect(stripUnclosedCustomTagTails('前文<SvgDiagram mode="raw"><svg><line')).toBe('前文');
+    expect(stripUnclosedCustomTagTails('前文<FollowUp>下一问')).toBe('前文');
   });
 
   it('保留已闭合的 FormulaSteps', () => {
