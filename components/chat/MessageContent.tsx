@@ -5,9 +5,9 @@ import ReactMarkdown from 'react-markdown';
 import { sharedRemarkPlugins, sharedRehypePlugins } from '@/lib/markdown/plugins';
 import remarkSoftBreaks from '@/lib/markdown/remarkSoftBreaks';
 import { directiveComponents } from '@/lib/markdown/directiveComponents';
-import { normalizeDirectiveLabels } from '@/lib/markdown/normalizeDirectiveLabels';
 import 'katex/dist/katex.min.css';
-import { parseXmlTags, hasKnownCustomTags, stripUnclosedCustomTagTails, stripOrphanCustomTagMarkers, CHAT_VIZ_TAGS } from '@/lib/utils/xmlParser';
+import { parseXmlTags, hasKnownCustomTags, stripOrphanCustomTagMarkers, CHAT_VIZ_TAGS } from '@/lib/utils/xmlParser';
+import { parseChatContent } from '@/lib/chat/rendering/parseChatContent';
 import type { ParsedBlock } from '@/lib/types/chat';
 import { ChatMessageVisualizations } from '@/components/chat/ChatMessageVisualizations';
 import { ToolCallDashboard } from '@/components/chat/ToolCallDashboard';
@@ -203,26 +203,6 @@ const renderParsedBlock = (
   );
 };
 
-/* ---- Extract FollowUp questions from content ---- */
-// 大小写不敏感：LLM 偶尔输出 <followup>；闭合标签到齐才提取（流式期间不显示，待完整再渲染按钮）。
-const extractFollowUpQuestions = (content: string): string[] => {
-  if (!content) return [];
-  const match = content.match(/<FollowUp>([\s\S]*?)<\/FollowUp>/i);
-  if (match) return match[1].split('|').map((q) => q.trim()).filter(Boolean);
-  return [];
-};
-
-// 既剥离成对的 <FollowUp>…</FollowUp>，也剥离「流式输出期未闭合的尾巴」。
-// 自定义 viz / wrapper 标签同理，避免 rehype-raw 渲染半截 DOM → React unrecognized tag 告警。
-const getCleanedContent = (content: string): string =>
-  stripUnclosedCustomTagTails(
-    content
-      .replace(/<FollowUp>[\s\S]*?<\/FollowUp>/gi, '')
-      .replace(/<FollowUp>[\s\S]*$/i, '')
-      // 流式期未闭合的裸 <svg> 尾巴：先隐藏，待 </svg> 到齐再由 RawSvgViewer 整体渲染。
-      .replace(/<svg\b(?:(?!<\/svg>)[\s\S])*$/i, ''),
-  );
-
 /* ---- Main MessageContent component ---- */
 export const MessageContent: React.FC<MessageContentProps> = React.memo(({
   content,
@@ -231,9 +211,7 @@ export const MessageContent: React.FC<MessageContentProps> = React.memo(({
   preserveLineBreaks = false,
 }) => {
   const { followUps, blocks } = useMemo(() => {
-    const followUps = extractFollowUpQuestions(content);
-    const cleanedContent = normalizeDirectiveLabels(getCleanedContent(content));
-    return { followUps, blocks: parseXmlTags(cleanedContent) };
+    return parseChatContent(content);
   }, [content]);
 
   const remarkPlugins = useMemo(

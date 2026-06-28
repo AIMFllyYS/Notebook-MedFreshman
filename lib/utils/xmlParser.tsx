@@ -1,13 +1,14 @@
 import type { ParsedBlock } from '@/lib/types/chat';
 
 /**
- * Parse mixed markdown + custom XML tags into structured blocks.
- * Supports self-closing tags (<Tag prop={0.6} />) and
- * content tags (<Tag>children</Tag>).
+ * Parse mixed markdown + project-owned XML-ish tags into structured blocks.
+ *
+ * Important boundary:
+ * - lower-case/native HTML such as <details>, <summary>, <br>, <sub> stays in markdown;
+ * - only the project whitelist below becomes component blocks;
+ * - unknown PascalCase tags are escaped as text to avoid React unknown-DOM warnings.
  */
-// 已知自定义标签的小写变体 → PascalCase 映射表
-// LLM 有时输出全小写标签（如 <formulasteps>），此处做大小写不敏感归一化
-const KNOWN_TAGS_LOWER_TO_PASCAL: Record<string, string> = {
+export const KNOWN_TAGS_LOWER_TO_PASCAL: Record<string, string> = {
   formulasteps: 'FormulaSteps',
   interactivevenn: 'InteractiveVenn',
   inlinedistribution: 'InlineDistribution',
@@ -19,7 +20,7 @@ const KNOWN_TAGS_LOWER_TO_PASCAL: Record<string, string> = {
   followup: 'FollowUp',
 };
 
-/** 聊天可视化组件标签（MessageContent → ChatMessageVisualizations）。 */
+/** 聊天可视化组件标签（MessageContent -> ChatMessageVisualizations）。 */
 export const CHAT_VIZ_TAGS = [
   'InteractiveVenn',
   'InlineDistribution',
@@ -31,24 +32,36 @@ export const CHAT_VIZ_TAGS = [
 /** 包裹正文的自定义标签（内层需二次 parseXmlTags，不可直接 rehype-raw）。 */
 export const CHAT_WRAPPER_TAGS = ['Answer', 'Thinking'] as const;
 
-/** 流式输出时需剥离「未闭合尾巴」的标签（不含 FollowUp — 单独处理）。 */
-export const CHAT_STREAMING_STRIP_TAGS = [
+/** 控制标签：提取为 metadata，不进入正文渲染。 */
+export const CHAT_CONTROL_TAGS = ['FollowUp'] as const;
+
+/** 内联工具标签。 */
+export const CHAT_TOOL_TAGS = ['ToolCall'] as const;
+
+export const CHAT_COMPONENT_TAGS = [
   ...CHAT_VIZ_TAGS,
   ...CHAT_WRAPPER_TAGS,
-  'ToolCall',
+  ...CHAT_TOOL_TAGS,
 ] as const;
 
+/** 流式输出时需剥离「未闭合尾巴」的标签。 */
+export const CHAT_STREAMING_STRIP_TAGS = [
+  ...CHAT_COMPONENT_TAGS,
+  ...CHAT_CONTROL_TAGS,
+] as const;
+
+const KNOWN_TAG_NAMES = new Set(Object.values(KNOWN_TAGS_LOWER_TO_PASCAL));
 const CUSTOM_TAG_DETECT_RE = new RegExp(
-  `<(?:${[...CHAT_VIZ_TAGS, ...CHAT_WRAPPER_TAGS, 'ToolCall'].join('|')})\\b`,
+  `<(?:${Object.values(KNOWN_TAGS_LOWER_TO_PASCAL).join('|')})\\b`,
   'i',
 );
 
-/** 文本中是否含已知自定义组件开标签（大小写不敏感）。 */
+/** 文本中是否含已知项目标签（大小写不敏感）。 */
 export function hasKnownCustomTags(text: string): boolean {
   return CUSTOM_TAG_DETECT_RE.test(text);
 }
 
-/** 剥离流式期间未闭合的自定义标签尾巴，避免 rehype-raw 渲染半截 DOM。 */
+/** 剥离流式期间未闭合的项目标签尾巴，避免 rehype-raw 渲染半截 DOM。 */
 export function stripUnclosedCustomTagTails(content: string): string {
   let result = content;
   for (const tag of CHAT_STREAMING_STRIP_TAGS) {
@@ -61,32 +74,83 @@ export function stripUnclosedCustomTagTails(content: string): string {
 }
 
 /**
- * 清除嵌套拆分解耦后残留在 markdown 块里的 orphan 开/闭标签
- * （如 "<Answer>intro" / "outro</Answer>"），避免 rehype-raw → unrecognized tag。
+ * 清除嵌套拆分解耦后残留在 markdown 块里的 orphan 项目标签。
+ * 这里只处理项目白名单，普通 HTML 必须保留给 rehype-raw。
  */
 export function stripOrphanCustomTagMarkers(text: string): string {
   let result = text;
-  const tags = [...CHAT_WRAPPER_TAGS, ...CHAT_VIZ_TAGS];
-  for (const tag of tags) {
+  for (const tag of [...CHAT_COMPONENT_TAGS, ...CHAT_CONTROL_TAGS]) {
     result = result.replace(new RegExp(`<${tag}\\b[^>]*>`, 'gi'), '');
     result = result.replace(new RegExp(`<\\/${tag}>`, 'gi'), '');
   }
   return result;
 }
 
-function normalizeTagCase(text: string): string {
-  let result = text;
-  for (const [lower, pascal] of Object.entries(KNOWN_TAGS_LOWER_TO_PASCAL)) {
-    result = result.replace(
-      new RegExp(`<(/?)${lower}`, 'gi'),
-      (_, slash) => `<${slash}${pascal}`,
-    );
-  }
-  return result;
+function normalizeKnownTagName(name: string): string | null {
+  return KNOWN_TAGS_LOWER_TO_PASCAL[name.toLowerCase()] ?? null;
 }
 
-const CUSTOM_OPEN_TAG_RE = /^<([A-Z][A-Za-z0-9]*)([\s\S]*?)>/;
-const CUSTOM_SELF_CLOSING_RE = /^<([A-Z][A-Za-z0-9]*)([\s\S]*?)\/>/;
+function isPascalCaseTagName(name: string): boolean {
+  return /^[A-Z][A-Za-z0-9]*$/.test(name);
+}
+
+function findTagEnd(text: string, offset: number): number {
+  let quote: '"' | "'" | null = null;
+
+  for (let i = offset + 1; i < text.length; i += 1) {
+    const ch = text[i];
+    if (quote) {
+      if (ch === quote) quote = null;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      continue;
+    }
+    if (ch === '>') return i;
+  }
+
+  return -1;
+}
+
+interface TagToken {
+  name: string;
+  normalizedName: string | null;
+  tagEnd: number;
+  isClosing: boolean;
+  isSelfClosing: boolean;
+  propsText: string;
+}
+
+function readTagAt(text: string, offset: number): TagToken | null {
+  if (text[offset] !== '<') return null;
+  const tagEnd = findTagEnd(text, offset);
+  if (tagEnd === -1) return null;
+
+  const inside = text.slice(offset + 1, tagEnd).trim();
+  if (!inside || inside.startsWith('!') || inside.startsWith('?')) return null;
+
+  const isClosing = inside.startsWith('/');
+  const body = (isClosing ? inside.slice(1) : inside).trim();
+  const nameMatch = body.match(/^([A-Za-z][A-Za-z0-9]*)\b/);
+  if (!nameMatch) return null;
+
+  const name = nameMatch[1];
+  const rawPropsText = body.slice(name.length);
+  const isSelfClosing = !isClosing && rawPropsText.trimEnd().endsWith('/');
+  const propsText = isSelfClosing
+    ? rawPropsText.trimEnd().slice(0, -1)
+    : rawPropsText;
+
+  return {
+    name,
+    normalizedName: normalizeKnownTagName(name),
+    tagEnd,
+    isClosing,
+    isSelfClosing,
+    propsText,
+  };
+}
 
 function parseTagProps(propsStr: string): Record<string, unknown> {
   const props: Record<string, unknown> = {};
@@ -131,99 +195,196 @@ function parseTagProps(propsStr: string): Record<string, unknown> {
   return props;
 }
 
-/** 从 text[offset] 起提取一个 PascalCase 自定义标签（支持嵌套内层异名标签）。 */
-function extractCustomTagAt(
+function escapeHtmlText(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function findMatchingKnownClose(
   text: string,
-  offset: number,
-): { block: ParsedBlock; length: number } | null {
-  const slice = text.slice(offset);
-
-  const selfMatch = slice.match(CUSTOM_SELF_CLOSING_RE);
-  if (selfMatch) {
-    const tagName = selfMatch[1];
-    const props = parseTagProps(selfMatch[2]);
-    return {
-      block: { type: 'component', tagName, props, childrenText: '' },
-      length: selfMatch[0].length,
-    };
-  }
-
-  const openMatch = slice.match(CUSTOM_OPEN_TAG_RE);
-  if (!openMatch || openMatch[0].endsWith('/>')) return null;
-
-  const tagName = openMatch[1];
-  const props = parseTagProps(openMatch[2]);
-  const contentStart = offset + openMatch[0].length;
-  const openNeedle = `<${tagName}`;
-  const closeNeedle = `</${tagName}>`;
-
+  contentStart: number,
+  tagName: string,
+): { closeStart: number; closeEnd: number } | null {
   let depth = 1;
   let pos = contentStart;
 
-  while (pos < text.length && depth > 0) {
-    const nextClose = text.indexOf(closeNeedle, pos);
-    if (nextClose === -1) return null;
+  while (pos < text.length) {
+    const lt = text.indexOf('<', pos);
+    if (lt === -1) return null;
 
-    const nextOpen = text.indexOf(openNeedle, pos);
-    if (nextOpen !== -1 && nextOpen < nextClose) {
-      const afterOpen = nextOpen + openNeedle.length;
-      if (text[afterOpen] === '>' || text[afterOpen] === ' ' || text[afterOpen] === '/') {
-        depth += 1;
-        pos = afterOpen;
-        continue;
+    const token = readTagAt(text, lt);
+    if (!token) {
+      pos = lt + 1;
+      continue;
+    }
+
+    if (token.normalizedName !== tagName) {
+      pos = token.tagEnd + 1;
+      continue;
+    }
+
+    if (token.isClosing) {
+      depth -= 1;
+      if (depth === 0) {
+        return { closeStart: lt, closeEnd: token.tagEnd + 1 };
       }
+    } else if (!token.isSelfClosing) {
+      depth += 1;
     }
 
-    depth -= 1;
-    if (depth === 0) {
-      const childrenText = text
-        .slice(contentStart, nextClose)
-        .replace(/\\n/g, '\n');
-      return {
-        block: { type: 'component', tagName, props, childrenText },
-        length: nextClose + closeNeedle.length - offset,
-      };
-    }
-    pos = nextClose + closeNeedle.length;
+    pos = token.tagEnd + 1;
   }
 
   return null;
 }
 
+function findMatchingUnknownClose(
+  text: string,
+  contentStart: number,
+  tagName: string,
+): { closeEnd: number } | null {
+  let pos = contentStart;
+  const lower = tagName.toLowerCase();
+
+  while (pos < text.length) {
+    const lt = text.indexOf('<', pos);
+    if (lt === -1) return null;
+
+    const token = readTagAt(text, lt);
+    if (!token) {
+      pos = lt + 1;
+      continue;
+    }
+
+    if (token.isClosing && token.name.toLowerCase() === lower) {
+      return { closeEnd: token.tagEnd + 1 };
+    }
+
+    pos = token.tagEnd + 1;
+  }
+
+  return null;
+}
+
+function extractKnownTagAt(
+  text: string,
+  offset: number,
+  token: TagToken,
+): { block: ParsedBlock; length: number } | null {
+  const tagName = token.normalizedName;
+  if (!tagName || !KNOWN_TAG_NAMES.has(tagName) || token.isClosing) return null;
+
+  const props = parseTagProps(token.propsText);
+  if (token.isSelfClosing) {
+    return {
+      block: { type: 'component', tagName, props, childrenText: '' },
+      length: token.tagEnd + 1 - offset,
+    };
+  }
+
+  const contentStart = token.tagEnd + 1;
+  const close = findMatchingKnownClose(text, contentStart, tagName);
+  if (!close) return null;
+
+  return {
+    block: {
+      type: 'component',
+      tagName,
+      props,
+      childrenText: text.slice(contentStart, close.closeStart).replace(/\\n/g, '\n'),
+    },
+    length: close.closeEnd - offset,
+  };
+}
+
+function findNextSpecialTag(
+  text: string,
+  from: number,
+): { index: number; token: TagToken; kind: 'known' | 'unknown-pascal' } | null {
+  let pos = from;
+
+  while (pos < text.length) {
+    const lt = text.indexOf('<', pos);
+    if (lt === -1) return null;
+
+    const token = readTagAt(text, lt);
+    if (!token || token.isClosing) {
+      pos = lt + 1;
+      continue;
+    }
+
+    if (token.normalizedName) {
+      return { index: lt, token, kind: 'known' };
+    }
+
+    if (isPascalCaseTagName(token.name)) {
+      return { index: lt, token, kind: 'unknown-pascal' };
+    }
+
+    pos = token.tagEnd + 1;
+  }
+
+  return null;
+}
+
+function pushMarkdown(blocks: ParsedBlock[], content: string): void {
+  if (!content) return;
+  const last = blocks[blocks.length - 1];
+  if (last?.type === 'markdown') {
+    last.content = `${last.content ?? ''}${content}`;
+    return;
+  }
+  blocks.push({ type: 'markdown', content });
+}
+
 export function parseXmlTags(text: string): ParsedBlock[] {
   if (!text) return [];
 
-  text = normalizeTagCase(text);
   const blocks: ParsedBlock[] = [];
   let i = 0;
 
   while (i < text.length) {
-    const lt = text.indexOf('<', i);
-    if (lt === -1) {
-      if (i < text.length) blocks.push({ type: 'markdown', content: text.slice(i) });
+    const next = findNextSpecialTag(text, i);
+    if (!next) {
+      pushMarkdown(blocks, text.slice(i));
       break;
     }
 
-    if (lt > i) {
-      blocks.push({ type: 'markdown', content: text.slice(i, lt) });
+    if (next.index > i) {
+      pushMarkdown(blocks, text.slice(i, next.index));
     }
 
-    // 仅 PascalCase 开标签视为自定义组件；小写 HTML 标签留在 markdown 由 rehype 处理。
-    if (!/^<[A-Z]/.test(text.slice(lt))) {
-      blocks.push({ type: 'markdown', content: text[lt] });
-      i = lt + 1;
+    if (next.kind === 'unknown-pascal') {
+      if (next.token.isSelfClosing) {
+        pushMarkdown(blocks, escapeHtmlText(text.slice(next.index, next.token.tagEnd + 1)));
+        i = next.token.tagEnd + 1;
+        continue;
+      }
+
+      const contentStart = next.token.tagEnd + 1;
+      const close = findMatchingUnknownClose(text, contentStart, next.token.name);
+      if (close) {
+        pushMarkdown(blocks, escapeHtmlText(text.slice(next.index, close.closeEnd)));
+        i = close.closeEnd;
+        continue;
+      }
+
+      pushMarkdown(blocks, escapeHtmlText(text.slice(next.index, next.token.tagEnd + 1)));
+      i = next.token.tagEnd + 1;
       continue;
     }
 
-    const extracted = extractCustomTagAt(text, lt);
+    const extracted = extractKnownTagAt(text, next.index, next.token);
     if (extracted) {
       blocks.push(extracted.block);
-      i = lt + extracted.length;
+      i = next.index + extracted.length;
       continue;
     }
 
-    blocks.push({ type: 'markdown', content: text[lt] });
-    i = lt + 1;
+    pushMarkdown(blocks, escapeHtmlText(text.slice(next.index, next.token.tagEnd + 1)));
+    i = next.token.tagEnd + 1;
   }
 
   return blocks;
