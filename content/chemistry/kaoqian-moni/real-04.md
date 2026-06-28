@@ -1,4 +1,4 @@
-# 华中科技大学有机化学期末真题（四）2021-2022 学年
+﻿# 华中科技大学有机化学期末真题（四）2021-2022 学年
 
 > 来源：华中科技大学《有机化学（一）》2021-2022 学年第一学期期末试卷
 > 考试时间：120 分钟  满分：100 分
@@ -8,7 +8,7 @@
 
 ## 结构式参考图
 
-:::figure{src="/other/kaoshi-moniji/images/real-04-reference.png" alt="本卷结构式参考" caption="本卷涉及的主要化学结构式参考"}
+:::figure{src="/chemistry/kaoqian-moni/images/real-04-reference.png" alt="本卷结构式参考" caption="本卷涉及的主要化学结构式参考"}
 :::
 
 ## 一、单项选择题（每题 2 分，共 20 分）

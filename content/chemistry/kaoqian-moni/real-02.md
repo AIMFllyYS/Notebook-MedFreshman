@@ -1,4 +1,4 @@
-# 有机化学期末真题模拟卷（二）
+﻿# 有机化学期末真题模拟卷（二）
 
 > 押题方向：卤代烃、醇酚醚、醛酮、羧酸及其衍生物
 > 
@@ -8,7 +8,7 @@
 
 ## 结构式参考图
 
-:::figure{src="/other/kaoshi-moniji/images/real-02-reference.png" alt="本卷结构式参考" caption="本卷涉及的化学结构式参考（来自原卷）"}
+:::figure{src="/chemistry/kaoqian-moni/images/real-02-reference.png" alt="本卷结构式参考" caption="本卷涉及的化学结构式参考（来自原卷）"}
 :::
 
 ## 一、选择题（每题2分，共24分）

@@ -18,6 +18,7 @@
 | 05 | [05-content-integration.md](./05-content-integration.md) | 集成验证 | manifest 注册 + AI 工具可达性校验 |
 | 06 | [06-desktop-packaging-release.md](./06-desktop-packaging-release.md) | 桌面打包/发布 | Windows exe 打包 + GitHub Release 新建/更新（node_modules 双层坑、两道护栏、密钥安全、版本策略） |
 | 07 | [07-testing.md](./07-testing.md) | 测试体系 | 双运行器架构（node:test + Vitest）、测试分层、命名约定、prebuild 集成 |
+| 08 | [08-exam-paper-integration.md](./08-exam-paper-integration.md) | 考前模拟/实战演练 | Word 试卷 → 卡片化 Markdown 录入与 manifest 注册 |
 | — | [subject-onboarding.md](./subject-onboarding.md) | 新学科接入 | 从零接入一个新科目的端到端流程 |
 
 ---
@@ -110,6 +111,9 @@
 | 纪要 | `content/{subject}/summary/sum-XX.md` | `contentTree.subjects[x].categories[summary].items[]` |
 | 题目 | `content/quiz/{subject}/{chapterId}.json` | 前端 QuizTab 直接读取（无需 manifest） |
 | 例题 | `content/examples/{subject}/{chapterId}/{sectionId}/` | 通过 `readExamples()` 自动发现 |
+| 考前模拟 | `content/{subject}/kaoqian-moni/{paperId}.md` | `contentTree.subjects[x].categories[kaoqian-moni].items[]` |
+| 实战演练 | `content/{subject}/shizhan-yanlian/{paperId}.md` | `contentTree.subjects[x].categories[shizhan-yanlian].items[]` |
+| 试卷图片 | `public/{subject}/{categoryId}/images/` | Markdown 内 `/{subject}/{categoryId}/images/...` 引用 |
 
 ### 5. AI 工具可达性要求
 
@@ -131,6 +135,7 @@
 | `docs/refer/rendering-architecture.md` | Markdown 渲染架构（02-detail 引用） |
 | `.env.local` | 环境变量（Token 等，脚本运行时引用） |
 | `content/manifest.ts` | 内容目录树（05-integration 操作目标） |
+| `lib/content-data/manifest.ts` | 内容目录树（当前实际路径） |
 | `lib/ai/tools.ts` | AI 工具定义（05-integration 验证目标） |
 | `lib/content/loader.ts` | 内容加载器（路径解析逻辑） |
 

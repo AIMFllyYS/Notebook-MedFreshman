@@ -1,4 +1,4 @@
-# 华中科技大学有机化学期末真题（五）2023-2024 学年
+﻿# 华中科技大学有机化学期末真题（五）2023-2024 学年
 
 > 来源：华中科技大学《有机化学》2023-2024 学年第一学期期末试卷
 > 满分：100 分
@@ -8,7 +8,7 @@
 
 ## 结构式参考图
 
-:::figure{src="/other/kaoshi-moniji/images/real-05-reference.png" alt="本卷结构式参考" caption="本卷涉及的主要化学结构式参考"}
+:::figure{src="/chemistry/kaoqian-moni/images/real-05-reference.png" alt="本卷结构式参考" caption="本卷涉及的主要化学结构式参考"}
 :::
 
 ## 一、单项选择题（共 10 小题，每小题 2 分，共 20 分）
@@ -556,7 +556,7 @@ $$\text{双烯} + \text{亲双烯体} \rightarrow \text{六元环加成产物}$$
 :::callout{kind=insight label="解析"}
 **结构式**：
 
-:::figure{src="/other/kaoshi-moniji/images/z-3-methyl-4-ethyl-2-hexene.png" alt="(Z)-3-甲基-4-乙基-2-己烯" caption="(Z)-3-甲基-4-乙基-2-己烯结构式"}
+:::figure{src="/chemistry/kaoqian-moni/images/z-3-methyl-4-ethyl-2-hexene.png" alt="(Z)-3-甲基-4-乙基-2-己烯" caption="(Z)-3-甲基-4-乙基-2-己烯结构式"}
 :::
 
 **解析**：
@@ -569,7 +569,7 @@ $$\text{双烯} + \text{亲双烯体} \rightarrow \text{六元环加成产物}$$
 :::callout{kind=note label="题目"}
 命名化合物：
 
-:::figure{src="/other/kaoshi-moniji/images/2-methyl-3-hexanone.png" alt="化合物结构" caption="待命名化合物结构式"}
+:::figure{src="/chemistry/kaoqian-moni/images/2-methyl-3-hexanone.png" alt="化合物结构" caption="待命名化合物结构式"}
 :::
 :::
 
@@ -598,7 +598,7 @@ $$\text{双烯} + \text{亲双烯体} \rightarrow \text{六元环加成产物}$$
 :::callout{kind=insight label="解析"}
 **结构式**：
 
-:::figure{src="/other/kaoshi-moniji/images/p-nitrobenzenesulfonic-acid.png" alt="对硝基苯磺酸" caption="对硝基苯磺酸结构式"}
+:::figure{src="/chemistry/kaoqian-moni/images/p-nitrobenzenesulfonic-acid.png" alt="对硝基苯磺酸" caption="对硝基苯磺酸结构式"}
 :::
 
 **解析**：
@@ -611,7 +611,7 @@ $$\text{双烯} + \text{亲双烯体} \rightarrow \text{六元环加成产物}$$
 :::callout{kind=note label="题目"}
 命名化合物：
 
-:::figure{src="/other/kaoshi-moniji/images/1-phenyl-1-propanol.png" alt="化合物结构" caption="待命名化合物结构式"}
+:::figure{src="/chemistry/kaoqian-moni/images/1-phenyl-1-propanol.png" alt="化合物结构" caption="待命名化合物结构式"}
 :::
 :::
 
@@ -635,7 +635,7 @@ $$\text{双烯} + \text{亲双烯体} \rightarrow \text{六元环加成产物}$$
 :::callout{kind=insight label="解析"}
 **优势构象**：
 
-:::figure{src="/other/kaoshi-moniji/images/trans-1-methyl-4-tert-butylcyclohexane.png" alt="反-1-甲基-4-叔丁基环己烷" caption="反-1-甲基-4-叔丁基环己烷优势构象"}
+:::figure{src="/chemistry/kaoqian-moni/images/trans-1-methyl-4-tert-butylcyclohexane.png" alt="反-1-甲基-4-叔丁基环己烷" caption="反-1-甲基-4-叔丁基环己烷优势构象"}
 :::
 
 **解析**：

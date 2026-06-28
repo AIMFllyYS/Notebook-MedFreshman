@@ -5,6 +5,34 @@ import { organicChemistryDetailItems } from './organic-chemistry-detail';
 import { maogaiDetailItems } from './maogai-detail';
 import { physicsDetailItems } from './physics-detail';
 
+const examPlaceholderCategories = [
+  {
+    id: 'kaoqian-moni',
+    name: '考前模拟',
+    items: [
+      { id: 'placeholder', title: '敬请期待', type: 'document' as const, status: 'stub' as const },
+    ],
+  },
+  {
+    id: 'shizhan-yanlian',
+    name: '实战演练',
+    items: [
+      { id: 'placeholder', title: '敬请期待', type: 'document' as const, status: 'stub' as const },
+    ],
+  },
+];
+
+const chemistryKaoqianMoniItems = [
+  { id: 'sim-01', title: '有机化学期末模拟试卷一', type: 'document' as const, status: 'done' as const },
+  { id: 'sim-02', title: '有机化学期末模拟试卷二', type: 'document' as const, status: 'done' as const },
+  { id: 'sim-03', title: '有机化学期末模拟试卷三', type: 'document' as const, status: 'done' as const },
+  { id: 'real-01', title: '有机化学期末真题模拟卷（一）', type: 'document' as const, status: 'done' as const },
+  { id: 'real-02', title: '有机化学期末真题模拟卷（二）', type: 'document' as const, status: 'done' as const },
+  { id: 'real-03', title: '有机化学期末真题模拟卷（三）', type: 'document' as const, status: 'done' as const },
+  { id: 'real-04', title: '华中科技大学有机化学期末真题（四）2021-2022', type: 'document' as const, status: 'done' as const },
+  { id: 'real-05', title: '华中科技大学有机化学期末真题（五）2023-2024', type: 'document' as const, status: 'done' as const },
+];
+
 export const contentTree: ContentTree = {
   subjects: [
     {
@@ -66,6 +94,7 @@ export const contentTree: ContentTree = {
             { id: 'sum-17', title: '第十七节·三大分布与分位点', type: 'document', status: 'done' },
           ],
         },
+        ...examPlaceholderCategories,
       ],
     },
     {
@@ -137,6 +166,7 @@ export const contentTree: ContentTree = {
             { id: 'sum-27', title: '第二十七讲·X射线、激光及医学应用', type: 'document', status: 'done' },
           ],
         },
+        ...examPlaceholderCategories,
       ],
     },
     {
@@ -201,6 +231,12 @@ export const contentTree: ContentTree = {
             { id: 'sum-20', title: '第二十五讲纪要·含氮化合物', type: 'document', status: 'done' },
           ],
         },
+        {
+          id: 'kaoqian-moni',
+          name: '考前模拟',
+          items: chemistryKaoqianMoniItems,
+        },
+        examPlaceholderCategories[1],
       ],
     },
     {
@@ -246,6 +282,7 @@ export const contentTree: ContentTree = {
             { id: 'sum-10', title: '第十五课纪要·解放战争', type: 'document', status: 'done' },
           ],
         },
+        ...examPlaceholderCategories,
       ],
     },
     {
@@ -295,6 +332,7 @@ export const contentTree: ContentTree = {
             { id: 'sum-12', title: '补充课纪要·期末复习', type: 'document', status: 'done' },
           ],
         },
+        ...examPlaceholderCategories,
       ],
     },
     {
@@ -335,20 +373,6 @@ export const contentTree: ContentTree = {
           name: '规划',
           items: [
             { id: 'schedule', title: '复习计划', type: 'document', status: 'done', renderType: 'html' },
-          ],
-        },
-        {
-          id: 'kaoshi-moniji',
-          name: '考试模拟',
-          items: [
-            { id: 'sim-01', title: '有机化学期末模拟试卷一', type: 'document', status: 'done' },
-            { id: 'sim-02', title: '有机化学期末模拟试卷二', type: 'document', status: 'done' },
-            { id: 'sim-03', title: '有机化学期末模拟试卷三', type: 'document', status: 'done' },
-            { id: 'real-01', title: '有机化学期末真题模拟卷（一）', type: 'document', status: 'done' },
-            { id: 'real-02', title: '有机化学期末真题模拟卷（二）', type: 'document', status: 'done' },
-            { id: 'real-03', title: '有机化学期末真题模拟卷（三）', type: 'document', status: 'done' },
-            { id: 'real-04', title: '华中科技大学有机化学期末真题（四）2021-2022', type: 'document', status: 'done' },
-            { id: 'real-05', title: '华中科技大学有机化学期末真题（五）2023-2024', type: 'document', status: 'done' },
           ],
         },
       ],
