@@ -1,25 +1,21 @@
 'use client';
 
 import React from 'react';
-import { Plus, Trash2, Clock, Settings } from 'lucide-react';
+import { Plus, Clock, Settings } from 'lucide-react';
 import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 
 interface ChatPanelHeaderProps {
   topic: string;
-  hasMessages: boolean;
   onOpenSettings: () => void;
   onOpenHistory: () => void;
   onNewChat: () => void;
-  onClearCurrent: () => void;
 }
 
 const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({
   topic,
-  hasMessages,
   onOpenSettings,
   onOpenHistory,
   onNewChat,
-  onClearCurrent,
 }) => {
   return (
     <div className="chat-header">
@@ -41,12 +37,6 @@ const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({
           <Plus size={12} />
           <span className="chat-header-btn-text">新对话</span>
         </button>
-        {hasMessages && (
-          <button onClick={onClearCurrent} title="清空当前记录" className="chat-header-btn chat-header-btn-danger">
-            <Trash2 size={12} />
-            <span className="chat-header-btn-text">清空</span>
-          </button>
-        )}
       </div>
     </div>
   );

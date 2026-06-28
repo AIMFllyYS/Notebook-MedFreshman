@@ -85,10 +85,6 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     setWarnDismissed(false);
     useTokenTracker.getState().resetSession();
   };
-  const handleClearCurrent = () => {
-    stopGeneration();
-    if (activeSessionId) deleteSession(activeSessionId);
-  };
   // 删除会话：若是正开着的划词会话，先关掉对应浮窗，再删数据。
   const handleDeleteSession = (id: string) => {
     const fc = useFloatingChats.getState();
@@ -105,11 +101,9 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     <div className="chat-panel">
       <ChatPanelHeader
         topic={chatContext?.currentTopic ?? ''}
-        hasMessages={messages.length > 0}
         onOpenSettings={() => setShowSettings(true)}
         onOpenHistory={() => setShowHistory(true)}
         onNewChat={handleNewChat}
-        onClearCurrent={handleClearCurrent}
       />
 
       <ChatThread

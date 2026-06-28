@@ -500,15 +500,6 @@
   background: var(--md-sys-color-surface);
   color: var(--md-sys-color-primary);
 }
-.chat-header-btn-danger {
-  border: none;
-  background: transparent;
-  color: var(--md-sys-color-on-surface-variant);
-}
-.chat-header-btn-danger:hover {
-  background: var(--md-sys-color-surface-container-high);
-  color: var(--md-sys-color-error);
-}
 @container (max-width: 320px) {
   .chat-header-topic {
     display: none;

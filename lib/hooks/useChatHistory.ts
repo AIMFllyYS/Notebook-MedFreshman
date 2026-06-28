@@ -32,7 +32,6 @@ interface ChatHistoryState {
   addMessage: (sessionId: string, message: ChatMessage) => void;
   updateMessage: (sessionId: string, messageId: string, updates: Partial<ChatMessage>) => void;
   updateSessionTitle: (sessionId: string, title: string) => void;
-  clearHistory: () => void;
 }
 
 export const useChatHistory = create<ChatHistoryState>()(
@@ -128,12 +127,6 @@ export const useChatHistory = create<ChatHistoryState>()(
               : s,
           ),
         }));
-      },
-
-      clearHistory: () => {
-        // 清空全部会话 → 清理所有 artifact
-        pruneArtifacts([]);
-        set({ sessions: [], activeSessionId: null });
       },
     }),
     {
