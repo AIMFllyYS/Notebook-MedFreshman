@@ -104,22 +104,42 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const {
     autoHideEnabled,
     headerVisible,
-    onPointerEnter,
-    onPointerLeave,
+    headerCollapsed,
+    onRevealZoneEnter,
+    onHeaderEnter,
+    onHeaderLeave,
+    onHeaderPointerDown,
+    onHeaderPointerUp,
   } = useAutoHideChatHeader(hasUserSent, headerPinned);
 
   return (
-    <div className={clsx('chat-panel', autoHideEnabled && 'chat-panel--auto-hide-header')}>
+    <div
+      className={clsx(
+        'chat-panel',
+        autoHideEnabled && 'chat-panel--auto-hide-header',
+        headerCollapsed && 'chat-panel--header-collapsed',
+      )}
+    >
+      {/* 收起态：容器内窄感应条唤出；展开态：不渲染感应条，按钮直接可点 */}
       <div
         className={clsx(
           'chat-header-sticky',
           autoHideEnabled && 'chat-header-sticky--overlay',
-          autoHideEnabled && !headerVisible && 'chat-header-sticky--hidden',
+          headerCollapsed && 'chat-header-sticky--hidden',
         )}
-        onMouseEnter={onPointerEnter}
-        onMouseLeave={onPointerLeave}
+        aria-hidden={headerCollapsed || undefined}
+        onPointerEnter={onHeaderEnter}
+        onPointerLeave={onHeaderLeave}
+        onPointerDown={onHeaderPointerDown}
+        onPointerUp={onHeaderPointerUp}
       >
-        {autoHideEnabled && <div className="chat-header-reveal-zone" aria-hidden />}
+        {autoHideEnabled && headerCollapsed && (
+          <div
+            className="chat-header-reveal-zone"
+            aria-hidden
+            onPointerEnter={onRevealZoneEnter}
+          />
+        )}
         <ChatPanelHeader
           topic={chatContext?.currentTopic ?? ''}
           onOpenSettings={() => setShowSettings(true)}

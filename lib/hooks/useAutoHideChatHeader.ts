@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
-const HIDE_DELAY_MS = 400;
+/** 离开 header 区域后延迟收起，留足移向按钮/点击的时间（macOS 菜单栏约 400–600ms）。 */
+const HIDE_DELAY_MS = 500;
 
 function subscribeCoarsePointer(onChange: () => void) {
   const mq = window.matchMedia('(hover: none), (pointer: coarse)');
@@ -21,43 +22,88 @@ export function useCoarsePointer() {
 }
 
 /**
- * 桌面端对话开始后自动隐藏 ChatPanelHeader；顶部感应区 / header 悬停缓动唤出。
- * pinned=true（设置、历史弹窗）时强制显示。
+ * 桌面端对话开始后自动隐藏 ChatPanelHeader。
+ *
+ * 业界常见模式（VS Code 面板 / macOS 菜单栏）：
+ * - 收起：仅顶部窄感应条可交互，其余区域穿透到正文
+ * - 展开：整条 header 可点击，**无透明遮罩挡按钮**
+ * - 弹窗打开（pinned）或按下 header 时保持展开
  */
 export function useAutoHideChatHeader(hasUserSent: boolean, pinned: boolean) {
   const coarsePointer = useCoarsePointer();
   const autoHideEnabled = hasUserSent && !coarsePointer;
-  const [hovering, setHovering] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+  const [engaged, setEngaged] = useState(false);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
-    if (!autoHideEnabled) setHovering(false);
+    if (!autoHideEnabled) {
+      setRevealed(false);
+      setEngaged(false);
+    }
   }, [autoHideEnabled]);
+
+  useEffect(() => {
+    if (pinned) {
+      setRevealed(true);
+      setEngaged(false);
+    }
+  }, [pinned]);
 
   const clearHideTimer = useCallback(() => {
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
     hideTimerRef.current = undefined;
   }, []);
 
-  const onPointerEnter = useCallback(() => {
+  const scheduleHide = useCallback(() => {
     clearHideTimer();
-    setHovering(true);
+    hideTimerRef.current = setTimeout(() => {
+      setEngaged(false);
+      setRevealed(false);
+    }, HIDE_DELAY_MS);
   }, [clearHideTimer]);
 
-  const onPointerLeave = useCallback(() => {
-    if (pinned) return;
+  /** 顶部感应条 / header 区域 pointer 进入 */
+  const onRevealZoneEnter = useCallback(() => {
     clearHideTimer();
-    hideTimerRef.current = setTimeout(() => setHovering(false), HIDE_DELAY_MS);
-  }, [pinned, clearHideTimer]);
+    setRevealed(true);
+  }, [clearHideTimer]);
+
+  /** header 容器 pointer 进入（展开态） */
+  const onHeaderEnter = useCallback(() => {
+    clearHideTimer();
+    setRevealed(true);
+  }, [clearHideTimer]);
+
+  /** header 容器 pointer 离开 */
+  const onHeaderLeave = useCallback(() => {
+    if (pinned || engaged) return;
+    scheduleHide();
+  }, [pinned, engaged, scheduleHide]);
+
+  /** 在 header 上按下指针（点击按钮前保持展开，防止 leave 误触收起） */
+  const onHeaderPointerDown = useCallback(() => {
+    clearHideTimer();
+    setRevealed(true);
+    setEngaged(true);
+  }, [clearHideTimer]);
+
+  const onHeaderPointerUp = useCallback(() => {
+    setEngaged(false);
+  }, []);
 
   useEffect(() => () => clearHideTimer(), [clearHideTimer]);
 
-  const headerVisible = !autoHideEnabled || pinned || hovering;
+  const headerVisible = !autoHideEnabled || pinned || revealed;
 
   return {
     autoHideEnabled,
     headerVisible,
-    onPointerEnter,
-    onPointerLeave,
+    headerCollapsed: autoHideEnabled && !headerVisible,
+    onRevealZoneEnter,
+    onHeaderEnter,
+    onHeaderLeave,
+    onHeaderPointerDown,
+    onHeaderPointerUp,
   };
 }

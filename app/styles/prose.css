@@ -441,29 +441,52 @@
 .chat-header-sticky {
   flex-shrink: 0;
 }
-/* 对话开始后：header 脱离文档流，overlay 浮于消息区上方，隐藏/显示不挤动排版 */
+/*
+ * Auto-hide（桌面 + 已有对话）：
+ * - 收起：header 滑出视口，感应条单独负责唤出；wrapper 不拦截点击
+ * - 展开：整条 header 可交互，无透明遮罩压在按钮上
+ */
 .chat-panel--auto-hide-header .chat-header-sticky--overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 20;
+  pointer-events: auto;
 }
 .chat-panel--auto-hide-header .chat-header-sticky--overlay.chat-header-sticky--hidden {
   pointer-events: none;
 }
+/* 收起态：仅感应条接收 pointer（父级 none 时子级 auto 仍有效） */
 .chat-header-reveal-zone {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 28px;
+  height: 32px;
   z-index: 1;
-}
-.chat-panel--auto-hide-header .chat-header-sticky--hidden .chat-header-reveal-zone {
   pointer-events: auto;
+  cursor: default;
+}
+/* 收起时在面板顶部留一条极淡提示线（不可点，仅视觉引导） */
+.chat-panel--auto-hide-header.chat-panel--header-collapsed::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 19;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent),
+    transparent
+  );
 }
 .chat-panel--auto-hide-header .chat-header-sticky--overlay .chat-header {
+  position: relative;
+  z-index: 2;
   transform: translateY(0);
   opacity: 1;
   transition:
