@@ -82,3 +82,20 @@ test("taskbar window tooltip uses one responsive custom label instead of native 
   assert.match(taskbar, /whitespace-nowrap/);
   assert.match(taskbar, /max-w-\[min\(70vw,28rem\)\]/);
 });
+
+test("taskbar window tooltip is portaled above tab and toolbar stacking contexts", () => {
+  const taskbar = readWorkspaceFile("components/window/WindowTaskbar.tsx");
+
+  assert.match(
+    taskbar,
+    /createPortal/,
+    "Window tooltip should render through a body portal instead of staying inside the taskbar button.",
+  );
+  assert.match(taskbar, /position:\s*"fixed"/);
+  assert.match(taskbar, /z-\[11000\]/);
+  assert.doesNotMatch(
+    taskbar,
+    /absolute right-0 top-8 z-\[7000\]/,
+    "Inline absolute tooltip can be trapped behind the content tab bar stacking context.",
+  );
+});

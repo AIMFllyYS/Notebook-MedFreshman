@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 import { BookmarkCheck, MonitorPlay } from "lucide-react";
@@ -13,6 +14,12 @@ interface WindowTaskbarProps {
 }
 
 const ICON_SLOT = 32;
+
+type TaskbarTooltip = {
+  win: ManagedWindow;
+  right: number;
+  top: number;
+};
 
 function WindowIcon({ type }: { type: ManagedWindow["type"] }) {
   if (type === "floating-chat") return <PencilSparklesIcon size={15} />;
@@ -44,6 +51,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
   const { minimizeWindow, restoreWindow } = useWindowManager();
   const ref = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(0);
+  const [tooltip, setTooltip] = useState<TaskbarTooltip | null>(null);
 
   useEffect(() => {
     const node = ref.current;
@@ -67,50 +75,74 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
     else minimizeWindow(id);
   };
 
+  const showTooltip = (win: ManagedWindow, node: HTMLElement) => {
+    const rect = node.getBoundingClientRect();
+    setTooltip({
+      win,
+      right: Math.max(8, window.innerWidth - rect.right),
+      top: rect.bottom + 6,
+    });
+  };
+
+  const activeTooltip = tooltip && windows.some((win) => win.id === tooltip.win.id) ? tooltip : null;
+
   if (windows.length === 0) {
     return <div ref={ref} className="min-w-0 flex-1" />;
   }
 
   return (
-    <motion.div
-      ref={ref}
-      layoutId="window-taskbar"
-      className="flex min-w-0 flex-1 flex-row-reverse items-center gap-1 overflow-visible"
-      transition={{ type: "spring", stiffness: 480, damping: 38 }}
-    >
-      {overflow.length > 0 && <OverflowMenu windows={overflow} onToggle={toggle} />}
-      {visible.map((win) => (
-        <button
-          key={win.id}
-          type="button"
-          onClick={() => toggle(win.id)}
-          aria-label={win.title}
-          className={clsx(
-            "group relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-[var(--ink-soft)] shadow-sm transition-colors",
-            "border-[color-mix(in_srgb,var(--line)_88%,var(--md-sys-color-primary)_12%)] bg-[var(--bg-elevated)]",
-            "hover:border-[var(--md-sys-color-primary)] hover:bg-[var(--bg-muted)] hover:text-[var(--md-sys-color-primary)]",
-            !win.minimized && "text-[var(--md-sys-color-primary)]",
-          )}
-        >
-          <WindowIcon type={win.type} />
-          <span
+    <>
+      <motion.div
+        ref={ref}
+        layoutId="window-taskbar"
+        className="flex min-w-0 flex-1 flex-row-reverse items-center gap-1 overflow-visible"
+        transition={{ type: "spring", stiffness: 480, damping: 38 }}
+      >
+        {overflow.length > 0 && <OverflowMenu windows={overflow} onToggle={toggle} />}
+        {visible.map((win) => (
+          <button
+            key={win.id}
+            type="button"
+            onClick={() => toggle(win.id)}
+            onPointerEnter={(event) => showTooltip(win, event.currentTarget)}
+            onPointerLeave={() => setTooltip(null)}
+            onFocus={(event) => showTooltip(win, event.currentTarget)}
+            onBlur={() => setTooltip(null)}
+            aria-label={win.title}
             className={clsx(
-              "absolute bottom-0.5 left-1/2 h-0.5 -translate-x-1/2 rounded-full transition-all",
-              win.minimized
-                ? "w-4 bg-[var(--md-sys-color-primary)]"
-                : "w-2 bg-[var(--ink-faint)]",
+              "relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-[var(--ink-soft)] shadow-sm transition-colors",
+              "border-[color-mix(in_srgb,var(--line)_88%,var(--md-sys-color-primary)_12%)] bg-[var(--bg-elevated)]",
+              "hover:border-[var(--md-sys-color-primary)] hover:bg-[var(--bg-muted)] hover:text-[var(--md-sys-color-primary)]",
+              !win.minimized && "text-[var(--md-sys-color-primary)]",
             )}
-          />
-          {win.badge && win.badge > 1 && (
-            <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-[var(--md-sys-color-primary)] px-1 text-[10px] font-semibold leading-none text-[var(--md-sys-color-on-primary)]">
-              {win.badge}
-            </span>
-          )}
-          <span className="pointer-events-none absolute right-0 top-8 z-[7000] w-max max-w-[min(70vw,28rem)] translate-y-1 truncate whitespace-nowrap rounded-md border border-[var(--line)] bg-[var(--bg-panel)] px-2 py-1 text-[12px] text-[var(--ink)] opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
-            {win.title}
-          </span>
-        </button>
-      ))}
-    </motion.div>
+          >
+            <WindowIcon type={win.type} />
+            <span
+              className={clsx(
+                "absolute bottom-0.5 left-1/2 h-0.5 -translate-x-1/2 rounded-full transition-all",
+                win.minimized
+                  ? "w-4 bg-[var(--md-sys-color-primary)]"
+                  : "w-2 bg-[var(--ink-faint)]",
+              )}
+            />
+            {win.badge && win.badge > 1 && (
+              <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-[var(--md-sys-color-primary)] px-1 text-[10px] font-semibold leading-none text-[var(--md-sys-color-on-primary)]">
+                {win.badge}
+              </span>
+            )}
+          </button>
+        ))}
+      </motion.div>
+      {activeTooltip && typeof document !== "undefined" && createPortal(
+        <div
+          role="tooltip"
+          style={{ position: "fixed", right: activeTooltip.right, top: activeTooltip.top }}
+          className="pointer-events-none z-[11000] w-max max-w-[min(70vw,28rem)] truncate whitespace-nowrap rounded-md border border-[var(--line)] bg-[var(--bg-panel)] px-2 py-1 text-[12px] text-[var(--ink)] opacity-100 shadow-lg"
+        >
+          {activeTooltip.win.title}
+        </div>,
+        document.body,
+      )}
+    </>
   );
 }
