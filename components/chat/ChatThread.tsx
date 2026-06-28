@@ -58,7 +58,17 @@ export default function ChatThread({
     estimateSize: () => 120,
     overscan: 10,
     getItemKey: (index) => displayMessages[index]?.id ?? index,
+    initialRect: { width: 0, height: 480 },
   });
+  const virtualItems = virtualizer.getVirtualItems();
+  const rows =
+    virtualItems.length > 0
+      ? virtualItems
+      : displayMessages.slice(0, Math.min(displayMessages.length, 14)).map((_, index) => ({
+          index,
+          start: index * 120,
+        }));
+  const totalSize = Math.max(virtualizer.getTotalSize(), displayMessages.length * 120);
 
   const onStickScroll = useStickToBottom(scrollRef, isLoading);
 
@@ -112,12 +122,12 @@ export default function ChatThread({
           <>
             <div
               style={{
-                height: virtualizer.getTotalSize(),
+                height: totalSize,
                 width: '100%',
                 position: 'relative',
               }}
             >
-              {virtualizer.getVirtualItems().map((virtualRow) => {
+              {rows.map((virtualRow) => {
                 const msg = displayMessages[virtualRow.index];
                 if (!msg) return null;
                 return (
