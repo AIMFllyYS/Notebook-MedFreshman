@@ -205,6 +205,24 @@ async function main() {
 
   const dimension = allVectors[0]?.length ?? 1024;
 
+  const chunksMeta = {
+    builtAt: new Date().toISOString(),
+    chunks: chunks.map((c) => ({
+      id: c.id,
+      path: c.path,
+      subjectId: c.subjectId,
+      subjectName: c.subjectName,
+      categoryId: c.categoryId,
+      itemId: c.itemId,
+      title: c.title,
+      chunkIndex: c.chunkIndex,
+      text: c.text,
+    })),
+  };
+  const chunksMetaPath = path.join(indexDir, 'chunks-meta.json');
+  fs.writeFileSync(chunksMetaPath, JSON.stringify(chunksMeta));
+  console.log(`   → Chunks meta written to ${chunksMetaPath}`);
+
   const vectorIndex: VectorIndex = {
     model: process.env.AI_EMBEDDING_MODEL || 'BAAI/bge-m3',
     dimension,
@@ -244,7 +262,7 @@ async function main() {
       const COS = (await import('cos-nodejs-sdk-v5')).default;
       const cos = new COS({ SecretId: secretId, SecretKey: secretKey });
 
-      for (const filename of ['bm25.json', 'vectors.json']) {
+      for (const filename of ['bm25.json', 'vectors.json', 'chunks-meta.json']) {
         const localPath = path.join(indexDir, filename);
         const key = `index/${filename}`;
         const size = (fs.statSync(localPath).size / 1024 / 1024).toFixed(2);

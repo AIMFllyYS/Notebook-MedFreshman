@@ -137,25 +137,74 @@ export function cosineSimilarity(a: number[], b: number[]): number {
   return denom === 0 ? 0 : dot / denom;
 }
 
+/** size-K 最小堆：单遍扫描保留 top-K，避免全量 sort。 */
+class TopKMinHeap {
+  private readonly maxSize: number;
+  private heap: ScoredChunk[] = [];
+
+  constructor(maxSize: number) {
+    this.maxSize = maxSize;
+  }
+
+  push(item: ScoredChunk): void {
+    if (this.heap.length < this.maxSize) {
+      this.heap.push(item);
+      this.bubbleUp(this.heap.length - 1);
+      return;
+    }
+    if (item.score <= this.heap[0].score) return;
+    this.heap[0] = item;
+    this.bubbleDown(0);
+  }
+
+  toSortedDesc(): ScoredChunk[] {
+    return [...this.heap].sort((a, b) => b.score - a.score);
+  }
+
+  private bubbleUp(i: number): void {
+    while (i > 0) {
+      const parent = Math.floor((i - 1) / 2);
+      if (this.heap[parent].score <= this.heap[i].score) break;
+      [this.heap[parent], this.heap[i]] = [this.heap[i], this.heap[parent]];
+      i = parent;
+    }
+  }
+
+  private bubbleDown(i: number): void {
+    const n = this.heap.length;
+    while (true) {
+      let smallest = i;
+      const left = 2 * i + 1;
+      const right = 2 * i + 2;
+      if (left < n && this.heap[left].score < this.heap[smallest].score) smallest = left;
+      if (right < n && this.heap[right].score < this.heap[smallest].score) smallest = right;
+      if (smallest === i) break;
+      [this.heap[smallest], this.heap[i]] = [this.heap[i], this.heap[smallest]];
+      i = smallest;
+    }
+  }
+}
+
 export async function vectorSearch(queryEmbedding: number[], topK: number): Promise<ScoredChunk[]> {
   const index = await loadIndexAsync();
   if (!index || !index.chunks.length) return [];
 
-  const scored: ScoredChunk[] = index.chunks.map((chunk) => ({
-    id: chunk.id,
-    path: chunk.path,
-    subjectId: chunk.subjectId,
-    subjectName: chunk.subjectName,
-    categoryId: chunk.categoryId,
-    itemId: chunk.itemId,
-    title: chunk.title,
-    chunkIndex: chunk.chunkIndex,
-    text: chunk.text,
-    score: cosineSimilarity(queryEmbedding, chunk.vector),
-  }));
-
-  scored.sort((a, b) => b.score - a.score);
-  return scored.slice(0, topK);
+  const heap = new TopKMinHeap(topK);
+  for (const chunk of index.chunks) {
+    heap.push({
+      id: chunk.id,
+      path: chunk.path,
+      subjectId: chunk.subjectId,
+      subjectName: chunk.subjectName,
+      categoryId: chunk.categoryId,
+      itemId: chunk.itemId,
+      title: chunk.title,
+      chunkIndex: chunk.chunkIndex,
+      text: chunk.text,
+      score: cosineSimilarity(queryEmbedding, chunk.vector),
+    });
+  }
+  return heap.toSortedDesc();
 }
 
 export async function isVectorIndexLoaded(): Promise<boolean> {

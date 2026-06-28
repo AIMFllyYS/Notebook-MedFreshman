@@ -94,23 +94,39 @@ async function loadIndexAsync(): Promise<BM25Index | null> {
     return null;
   }
 
-  // 3. 加载 chunk 元数据（从 vectors.json）
-  let vecRaw = readJsonFromPaths([
-    path.join(LOCAL_INDEX_DIR, 'vectors.json'),
-    path.join(TMP_INDEX_DIR, 'vectors.json'),
+  // 3. 加载 chunk 元数据（优先 chunks-meta.json，避免拉取完整 vectors.json）
+  let metaRaw = readJsonFromPaths([
+    path.join(LOCAL_INDEX_DIR, 'chunks-meta.json'),
+    path.join(TMP_INDEX_DIR, 'chunks-meta.json'),
   ]);
-  if (!vecRaw) {
+  if (!metaRaw) {
     try {
-      vecRaw = await downloadFromCos('vectors.json');
+      metaRaw = await downloadFromCos('chunks-meta.json');
     } catch {
-      // vector 文件不存在时 BM25 仍可用，但结果会缺少 text 字段
+      // fallback 到 vectors.json（旧索引）
     }
   }
-  if (vecRaw) {
+  if (!metaRaw) {
+    let vecRaw = readJsonFromPaths([
+      path.join(LOCAL_INDEX_DIR, 'vectors.json'),
+      path.join(TMP_INDEX_DIR, 'vectors.json'),
+    ]);
+    if (!vecRaw) {
+      try {
+        vecRaw = await downloadFromCos('vectors.json');
+      } catch {
+        // vector 文件不存在时 BM25 仍可用，但结果会缺少 text 字段
+      }
+    }
+    if (vecRaw) metaRaw = vecRaw;
+  }
+  if (metaRaw) {
     try {
-      const vectorIndex = JSON.parse(vecRaw);
+      const parsed = JSON.parse(metaRaw);
+      const chunks = Array.isArray(parsed.chunks) ? parsed.chunks : parsed.chunks ?? [];
       _chunkMeta = new Map();
-      for (const chunk of vectorIndex.chunks) {
+      for (const chunk of chunks) {
+        if (!chunk?.id) continue;
         _chunkMeta.set(chunk.id, {
           id: chunk.id,
           path: chunk.path,
@@ -124,7 +140,7 @@ async function loadIndexAsync(): Promise<BM25Index | null> {
         });
       }
     } catch {
-      // vectors.json 解析失败，BM25 仍可用
+      // 元数据解析失败，BM25 仍可用
     }
   }
 

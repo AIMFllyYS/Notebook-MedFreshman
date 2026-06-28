@@ -133,17 +133,8 @@ export function readContent(
 
 const EXAMPLES_ROOT = path.join(process.cwd(), "content", "examples");
 
-export interface ExampleMeta {
-  id: string;
-  title: string;
-  content: string;
-}
-
 /**
  * 由 (categoryId, itemId) 推导例题所在的 (chapterId, sectionId)。
- * - detail 分类：itemId "1.1" → chapterId "ch01"、sectionId "1.1"。
- * - english 分类：chapterId = sectionId = itemId（如 "unit-1"）。
- * - 其他分类返回空串（无例题）。
  */
 export function deriveExampleKey(
   categoryId: string,
@@ -156,41 +147,91 @@ export function deriveExampleKey(
   return { chapterId: `ch${String(n).padStart(2, "0")}`, sectionId: itemId };
 }
 
-/**
- * 读取某小节下的所有例题（学科命名空间，防多科 chapterId 冲突）：
- * - probability：content/examples/{chapterId}/{sectionId}/（兼容旧路径）
- * - 其他学科：content/examples/{subjectId}/{chapterId}/{sectionId}/
- * title 提取优先级：:::example{label=...} > 第一个 # 标题 > 文件名。
- * 目录不存在或 chapterId/sectionId 为空时返回 []。
- */
-export function readExamples(
+export interface ExampleListItem {
+  id: string;
+  title: string;
+}
+
+export interface ExampleDetail extends ExampleListItem {
+  content: string;
+}
+
+/** @deprecated 使用 ExampleListItem / ExampleDetail */
+export type ExampleMeta = ExampleDetail;
+
+function exampleTitleFromContent(content: string, file: string): string {
+  const exampleLabelMatch = content.match(/:::example\{label=([^}]+)\}/);
+  const titleMatch = content.match(/^#\s+(.+)$/m);
+  return exampleLabelMatch
+    ? exampleLabelMatch[1].trim()
+    : titleMatch
+      ? titleMatch[1].trim()
+      : file.replace(/\.md$/, "");
+}
+
+function examplesDir(subjectId: string, chapterId: string, sectionId: string): string | null {
+  if (!chapterId || !sectionId) return null;
+  return subjectId && subjectId !== "probability"
+    ? path.join(EXAMPLES_ROOT, subjectId, chapterId, sectionId)
+    : path.join(EXAMPLES_ROOT, chapterId, sectionId);
+}
+
+/** 仅返回例题 id/title（SSR 列表用，不含正文）。 */
+export function readExamplesMeta(
   subjectId: string,
   chapterId: string,
   sectionId: string,
-): ExampleMeta[] {
-  if (!chapterId || !sectionId) return [];
-  const dir =
-    subjectId && subjectId !== "probability"
-      ? path.join(EXAMPLES_ROOT, subjectId, chapterId, sectionId)
-      : path.join(EXAMPLES_ROOT, chapterId, sectionId);
-
+): ExampleListItem[] {
+  const dir = examplesDir(subjectId, chapterId, sectionId);
+  if (!dir) return [];
   let files: string[];
   try {
     files = fs.readdirSync(dir).filter((f) => f.endsWith(".md")).sort();
   } catch {
     return [];
   }
-
   return files.map((file) => {
     const content = fs.readFileSync(path.join(dir, file), "utf8");
-    const exampleLabelMatch = content.match(/:::example\{label=([^}]+)\}/);
-    const titleMatch = content.match(/^#\s+(.+)$/m);
-    const title = exampleLabelMatch
-      ? exampleLabelMatch[1].trim()
-      : titleMatch
-        ? titleMatch[1].trim()
-        : file.replace(/\.md$/, "");
-    return { id: file.replace(/\.md$/, ""), title, content };
+    return {
+      id: file.replace(/\.md$/, ""),
+      title: exampleTitleFromContent(content, file),
+    };
+  });
+}
+
+/** 按 id 读取单题正文（按需加载）。 */
+export function readExampleById(
+  subjectId: string,
+  chapterId: string,
+  sectionId: string,
+  exampleId: string,
+): ExampleDetail | null {
+  const dir = examplesDir(subjectId, chapterId, sectionId);
+  if (!dir || !/^[a-zA-Z0-9_-]+$/.test(exampleId)) return null;
+  const filePath = path.join(dir, `${exampleId}.md`);
+  try {
+    const content = fs.readFileSync(filePath, "utf8");
+    return {
+      id: exampleId,
+      title: exampleTitleFromContent(content, `${exampleId}.md`),
+      content,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * 读取某小节下的所有例题（含正文；导出/兼容用）。
+ */
+export function readExamples(
+  subjectId: string,
+  chapterId: string,
+  sectionId: string,
+): ExampleMeta[] {
+  return readExamplesMeta(subjectId, chapterId, sectionId).map((meta) => {
+    const detail = readExampleById(subjectId, chapterId, sectionId, meta.id);
+    return detail ?? { ...meta, content: "" };
   });
 }
 
@@ -438,7 +479,16 @@ export async function searchAllContent(query: string, limit = 8): Promise<MultiS
     // 索引不存在或 API 不可用，fallback
   }
 
+  if (!substringSearchAllowed()) return [];
   return substringSearch(q, limit);
+}
+
+function substringSearchAllowed(): boolean {
+  if (process.env.NODE_ENV !== 'production') return true;
+  console.warn(
+    '[search] 生产环境未找到检索索引，已禁用全库子串扫描。请运行 pnpm build-index 构建索引。',
+  );
+  return false;
 }
 
 // ─────────────────────────────────────────────────────────────
