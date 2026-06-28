@@ -389,7 +389,13 @@ import { VideoPlayer } from '@/components/visualizations';
 
 ## 6. AI 对话 XML 标签扩展方法
 
-AI 对话中的可视化通过 XML 标签触发，由 `components/chat/ChatMessageVisualizations.tsx` 的 `switch` 语句分发到原语。
+AI 对话中的可视化通过项目白名单标签触发。原始模型输出先进入 `lib/chat/rendering/parseChatContent.ts`，再由 `lib/utils/xmlParser.tsx` 只识别白名单标签，最后交给 `components/chat/ChatMessageVisualizations.tsx` 的 `switch` 语句分发到原语。
+
+协议边界：
+- 普通 Markdown / 原生小写 HTML（如 `<details>`、`<summary>`、`<br>`、`<sub>`）必须留在 markdown 块里，由 `ReactMarkdown` + `rehype-raw` 处理。
+- 项目组件标签必须是白名单 PascalCase 标签，不能让未知 `<SomeNewWidget>` 直接进入 React DOM。
+- `<FollowUp>` 属于控制 metadata。服务端 fallback 优先发送 SSE `{ type: "followup", questions: [...] }`；历史正文标签只作兼容解析。
+- 不要在 `MessageContent` 中继续添加零散 regex 来修标签错乱。遇到解析问题，改 `parseChatContent` / `parseXmlTags` / SSE 协议并补测试。
 
 ### 当前支持的标签
 
@@ -399,6 +405,7 @@ AI 对话中的可视化通过 XML 标签触发，由 `components/chat/ChatMessa
 | `<InlineDistribution>` | `DistributionChart` | `type`, `mu`, `sigma`, `n`, `p`, `lambda`, `interactive` |
 | `<FormulaSteps>` | `FormulaSteps` | `steps`（来自 childrenText 按行分割）, `interactive` |
 | `<ManimPlayer>` | `VideoPlayer` | `src`, `title`, `poster` |
+| `<SvgDiagram>` | `SvgDiagram` | `mode`, `title`, `width`, `height`, `childrenText` |
 
 ### switch 分发逻辑
 
@@ -441,14 +448,26 @@ case 'PhysicsFreeBodyDiagram':
   />;
 ```
 
-3. **在 AI 系统提示词中声明该标签**：让 AI 知道何时输出该标签及可用属性（系统提示词维护在 `app/api/chat/route.ts` 或对应的 prompt 配置文件中）。
+3. **同步解析白名单**：在 `lib/utils/xmlParser.tsx` 的白名单中追加标签名。确认它只影响项目标签，不会误处理普通 HTML。
 
-4. **类型转换约定**：
+4. **在 AI 系统提示词中声明该标签**：让 AI 知道何时输出该标签及可用属性（系统提示词维护在 `lib/ai/prompts/global.md` 或对应 prompt 配置文件中）。prompt 示例必须使用稳定格式：directive 的 `label` / `title` 默认加英文双引号，如 `:::pitfall{label="易错点"}`。
+
+5. **补回归测试**：
+   - `lib/utils/xmlParser.test.tsx` 覆盖标签解析、childrenText 保留、流式未闭合尾巴。
+   - `components/chat/MessageContent.test.tsx` 覆盖 DOM 中不出现裸 `<` / `details>`、未知标签不触发 React unknown tag warning。
+   - 若标签会进入 prompt 或题目渲染链路，同步覆盖 `components/quiz/QuizMarkdown.test.tsx`。
+
+6. **类型转换约定**：
    - 数值属性用 `toNum(props.xxx)`（自动处理 undefined / 空字符串）
    - 布尔属性用 `toBool(props.xxx)`（仅 `'true'` 或 `true` 返回 true）
    - 字符串属性直接使用 `props.xxx`
 
-5. **导入新原语**：在文件顶部从 `@/components/visualizations` 导入（若已通过 `primitives/index.ts` 导出）。
+7. **导入新原语**：在文件顶部从 `@/components/visualizations` 导入（若已通过 `primitives/index.ts` 导出）。
+
+历史坑位必须避免：
+- `<details><summary>...</summary></details>` 被旧解析器拆成 `<`、`details>` 等裸文本。
+- `<SvgDiagram><svg><line ... /></svg></SvgDiagram>` 被内部 `<line />` 误判为外层自闭合。
+- `:::pitfall{label=常见错误}` 一旦 label 含空格或引号可能裸露围栏；新示例统一写 `:::pitfall{label="常见错误"}`。
 
 ---
 

@@ -153,18 +153,40 @@ micromark 属性解析失败 → 整个指令被丢弃，渲染成裸 `:::type{.
 
 | 功能 | 实现 | 说明 |
 |---|---|---|
-| XML 标签解析 | `parseXmlTags()` | 解析 `<FollowUp>`、`<InteractiveVenn>` 等标签 |
+| 聊天内容协议解析 | `parseChatContent()` | 将原始模型输出拆成 markdown、component、metadata |
+| 项目标签扫描 | `parseXmlTags()` | 只解析白名单 PascalCase 项目标签 |
 | 可视化组件 | `ChatMessageVisualizations` | 渲染 Venn 图、分布图、公式步骤、Manim 播放器、SVG 图形 |
 | 工具调用面板 | `ToolCallDashboard` | 内联 `<ToolCall>` 标签渲染 |
-| FollowUp 追问 | `FollowUpQuestions` | 从 `<FollowUp>q1|q2|q3</FollowUp>` 提取并渲染按钮 |
+| FollowUp 追问 | `FollowUpQuestions` | 优先消费 SSE `followup` metadata；兼容正文 `<FollowUp>` |
+
+### 聊天内容三类语法
+
+AI 对话正文必须先经过 `lib/chat/rendering/parseChatContent.ts`，再由 `MessageContent` 渲染。解析结果分三类：
+
+| 类别 | 示例 | 去向 |
+|---|---|---|
+| Markdown / 原生 HTML | Markdown、KaTeX、`<details>`、`<summary>`、`<br>`、`<sub>` | 保留在 markdown 块，交给 `ReactMarkdown` + `rehype-raw` |
+| 项目组件标签 | `<FormulaSteps>`、`<SvgDiagram>`、`<ToolCall>` | `parseXmlTags()` 转成 component 块，再由组件分发器渲染 |
+| 控制 metadata | SSE `{ type: "followup" }`、旧 `<FollowUp>` | 写入 `message.followUpQuestions`，不进入正文 |
+
+`MessageContent` 只消费解析结果，不再继续堆叠零散 regex 来“修标签”。新增标签错乱问题时，先修 `parseChatContent` / `parseXmlTags` / SSE 协议和测试，不要在 `MessageContent` 层追加局部替换。
 
 ### 可视化标签白名单
 
 ```
-vizTags = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'ManimPlayer', 'SvgDiagram']
+CHAT_VIZ_TAGS = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'ManimPlayer', 'SvgDiagram']
 ```
 
-新增可视化标签时，需同步修改此数组和 `ChatMessageVisualizations` 组件。
+`parseXmlTags()` 只消费项目白名单标签：`InteractiveVenn`、`InlineDistribution`、`FormulaSteps`、`ManimPlayer`、`SvgDiagram`、`ToolCall`、`Answer`、`Thinking`、`FollowUp`。普通小写 HTML 不能被它拆分，必须保留给 `rehype-raw`。未知 PascalCase 标签必须作为安全文本或 fallback 处理，不能交给 React 生成未知 DOM 标签。
+
+新增可视化标签时，需同步修改 `lib/utils/xmlParser.tsx` 白名单、`ChatMessageVisualizations` 分发器、测试和 `lib/ai/prompts/global.md`。
+
+### 历史坑位
+
+- `<details><summary>点击查看答案</summary>...</details>` 曾被旧版 `parseXmlTags()` 拆成裸文本 `<`、`details>`、`summary>`，原因是扫描器看到任意 `<` 都推进一位，没有把普通 HTML 作为 markdown 保留。
+- `<SvgDiagram mode="raw"><svg><line ... /></svg></SvgDiagram>` 曾被内部 `<line />` 抢占为外层自闭合结束，原因是自闭合正则跨 children 匹配到了第一个 `/>`。现在必须先解析当前开标签边界，再匹配同名闭合标签。
+- `<FollowUp>` 是控制信息，不属于正文。服务端 fallback 必须发独立 SSE `followup` 事件；正文内旧标签只作兼容解析。
+- 流式输出中的半截 `<FormulaSteps>`、`<SvgDiagram>`、`<FollowUp>` 暂不渲染，等闭合标签到齐后再进入组件或 metadata。
 
 ### 调用点
 
@@ -180,7 +202,7 @@ vizTags = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'ManimPlayer
 ### 5.1 Callout 指令（容器指令 `:::type`）
 
 ```markdown
-:::definition{label=正态分布}
+:::definition{label="正态分布"}
 **正态分布** 是一种连续型概率分布，其 PDF 为 ...
 
 $$
@@ -189,21 +211,21 @@ $$
 :::
 ```
 
-**语法**：`:::type{label=可选标题}` ... `:::`
+**语法**：`:::type{label="可选标题"}` ... `:::`
 
 **可用类型**：`definition` / `theorem` / `example` / `insight` / `pitfall` / `note` / `tip`
 
 ### 5.2 Derivation 指令（可折叠推导）
 
 ```markdown
-:::derivation{label=方差的推导}
+:::derivation{label="方差的推导"}
 $$
 \mathrm{Var}(X) = E[X^2] - (E[X])^2
 $$
 :::
 ```
 
-**语法**：`:::derivation{label=可选标题}` ... `:::`
+**语法**：`:::derivation{label="可选标题"}` ... `:::`
 
 渲染为 `<details>` 可折叠元素。
 
@@ -367,8 +389,9 @@ SVG Canvas 提供主题适配的矢量画布，支持函数图像绘制和自由
 ### 7.3 新增可视化标签（聊天侧）
 
 1. 在 `components/chat/ChatMessageVisualizations.tsx` 中添加渲染分支
-2. 在 `components/chat/MessageContent.tsx` 的 `vizTags` 数组中追加标签名
-3. 在 `lib/ai/prompts/global.md` 中补充标签文档
+2. 在 `lib/utils/xmlParser.tsx` 的白名单中追加标签名，并确认普通 HTML 不受影响
+3. 在 `lib/ai/prompts/global.md` 中补充标签文档，示例属性使用稳定格式
+4. 增加 `lib/utils/xmlParser.test.tsx` 与 `components/chat/MessageContent.test.tsx` 回归用例
 
 ### 7.4 新增 CSS 子模块
 
