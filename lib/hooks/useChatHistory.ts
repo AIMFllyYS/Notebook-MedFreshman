@@ -335,14 +335,20 @@ export async function ensureChatHistoryBootstrap(): Promise<void> {
   return bootstrapPromise;
 }
 
+type ChatHistoryPersistShim = {
+  hasHydrated: () => boolean;
+  onHydrate: (fn: () => void) => () => void;
+  onFinishHydration: (fn: () => void) => () => void;
+};
+
 // 兼容 useHydrated(useChatHistory)
-useChatHistory.persist = {
+(useChatHistory as typeof useChatHistory & { persist: ChatHistoryPersistShim }).persist = {
   hasHydrated: () => useChatHistory.getState()._hasHydrated,
-  onHydrate: (fn) => {
+  onHydrate: (fn: () => void) => {
     fn();
     return () => {};
   },
-  onFinishHydration: (fn) => {
+  onFinishHydration: (fn: () => void) => {
     if (useChatHistory.getState()._hasHydrated) {
       fn();
       return () => {};

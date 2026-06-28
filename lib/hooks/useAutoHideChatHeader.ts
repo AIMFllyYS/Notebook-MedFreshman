@@ -34,7 +34,7 @@ export function useAutoHideChatHeader(hasUserSent: boolean, pinned: boolean) {
   const autoHideEnabled = hasUserSent && !coarsePointer;
   const [revealed, setRevealed] = useState(false);
   const [engaged, setEngaged] = useState(false);
-  const hideTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!autoHideEnabled) {
@@ -52,7 +52,7 @@ export function useAutoHideChatHeader(hasUserSent: boolean, pinned: boolean) {
 
   const clearHideTimer = useCallback(() => {
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-    hideTimerRef.current = undefined;
+    hideTimerRef.current = null;
   }, []);
 
   const scheduleHide = useCallback(() => {

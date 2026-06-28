@@ -70,8 +70,7 @@ export function useChat(
       const sid = ovSessionId ?? s.activeSessionId;
       if (!sid) return undefined;
       return s.messagesById[sid];
-    },
-    (a, b) => a === b,
+    }
   ) ?? [];
 
   const [isLoading, setIsLoading] = useState(false);
@@ -171,7 +170,8 @@ export function useChat(
 
       // 构建请求消息（仅 user / assistant 角色），含多模态图片
       const latestMessages = useChatHistory.getState().messagesById[sessionId!] ?? [];
-      const { messages: requestMessages } = buildRequestMessages(latestMessages);
+      const { messages: requestMessagesForEstimate } = buildRequestMessages(latestMessages);
+      const requestSourceMessagesPromise = hydrateAttachmentsForApi(latestMessages);
 
       // Estimate current context tokens for the dashboard —— 主面板写全局看板，划词窗写独立看板。
       {
@@ -192,7 +192,7 @@ export function useChat(
             useTokenTracker.getState().setCurrentContext(serverCtx + newTokens, limit);
           }
         } else {
-          const allText = requestMessages.map((m) =>
+          const allText = requestMessagesForEstimate.map((m) =>
             typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
           ).join('');
           const estContextTokens = estimateTokens(allText) + 3000;
@@ -236,7 +236,8 @@ export function useChat(
           const settings = useSettings.getState();
           const isCustom = effectiveModelId.startsWith(CUSTOM_PREFIX);
           const customModelName = isCustom ? effectiveModelId.slice(CUSTOM_PREFIX.length) : undefined;
-          const hydratedMessages = await hydrateAttachmentsForApi(requestMessages);
+          const requestSourceMessages = await requestSourceMessagesPromise;
+          const { messages: hydratedMessages } = buildRequestMessages(requestSourceMessages);
           const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -407,7 +408,7 @@ export function useChat(
               }
               // 前端兜底：服务端和模型都没生成 FollowUp 时，根据用户提问生成通用追问
               if (questions.length === 0) {
-                const lastUser = requestMessages.filter((m) => m.role === 'user').pop();
+                const lastUser = requestMessagesForEstimate.filter((m) => m.role === 'user').pop();
                 const userQ = typeof lastUser?.content === 'string'
                   ? lastUser.content
                   : Array.isArray(lastUser?.content)

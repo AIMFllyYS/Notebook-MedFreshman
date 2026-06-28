@@ -27,7 +27,6 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
   const { bringToFront, commitGeometry, minimizeWindow, setFullscreen, updateWindow: updateManagedWindow } = useWindowManager();
   const sessionTitle = useChatHistory(
     (state) => state.sessionsMeta.find((item) => item.id === win.sessionId)?.title,
-    (a, b) => a === b,
   );
 
   const activeSubjectId = useStore((state) => state.activeSubjectId);

@@ -6,6 +6,7 @@ import { AlertTriangle, X, MessageSquarePlus } from 'lucide-react';
 import { useAutoHideChatHeader } from '@/lib/hooks/useAutoHideChatHeader';
 import { useChat } from '@/lib/hooks/useChat';
 import { useChatHistory, ensureChatHistoryBootstrap } from '@/lib/hooks/useChatHistory';
+import { useFloatingChats } from '@/lib/hooks/useFloatingChats';
 import { useChatReady } from '@/lib/hooks/useChatReady';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useStore } from '@/lib/store';

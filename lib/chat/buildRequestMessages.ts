@@ -1,4 +1,4 @@
-import type { ChatMessage } from '@/lib/types/chat';
+import type { ChatAttachment, ChatMessage } from '@/lib/types/chat';
 
 export const DEFAULT_MAX_TURNS = 40;
 
@@ -14,12 +14,15 @@ export interface BuildRequestMessagesResult {
 
 function toRequestMessage(m: ChatMessage): RequestMessage {
   if (m.role === 'user' && m.attachments?.length) {
-    const parts: Array<Record<string, unknown>> = [
-      { type: 'text', text: m.content || '' },
-      ...m.attachments.map((a) => ({
+    const imageParts = m.attachments
+      .filter((a): a is ChatAttachment => 'base64' in a && !!a.base64)
+      .map((a) => ({
         type: 'image_url',
         image_url: { url: a.base64 },
-      })),
+      }));
+    const parts: Array<Record<string, unknown>> = [
+      { type: 'text', text: m.content || '' },
+      ...imageParts,
     ];
     return { role: 'user', content: parts };
   }

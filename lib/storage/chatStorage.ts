@@ -151,7 +151,7 @@ async function migrateAttachmentsInMessages(messages: ChatMessage[]): Promise<Ch
     const attachments = [];
     for (const a of m.attachments) {
       if ('base64' in a && a.base64) {
-        const id = `blob-${m.id}-${attachments.length}-${Date.now()}`;
+        const id: string = `blob-${m.id}-${attachments.length}-${Date.now()}`;
         await saveBlobFromDataUrl(id, a.base64);
         attachments.push({ id, type: 'image' as const, mimeType: a.mimeType, name: undefined });
       } else {
