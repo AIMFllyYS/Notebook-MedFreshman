@@ -337,6 +337,18 @@ export const contentTree: ContentTree = {
             { id: 'schedule', title: '复习计划', type: 'document', status: 'done', renderType: 'html' },
           ],
         },
+        {
+          id: 'kaoshi-moniji',
+          name: '考试模拟',
+          items: [
+            { id: 'sim-01', title: '有机化学期末模拟试卷一', type: 'document', status: 'done' },
+            { id: 'sim-02', title: '有机化学期末模拟试卷二', type: 'document', status: 'done' },
+            { id: 'sim-03', title: '有机化学期末模拟试卷三', type: 'document', status: 'done' },
+            { id: 'real-01', title: '有机化学期末真题模拟卷（一）', type: 'document', status: 'done' },
+            { id: 'real-02', title: '有机化学期末真题模拟卷（二）', type: 'document', status: 'done' },
+            { id: 'real-03', title: '有机化学期末真题模拟卷（三）', type: 'document', status: 'done' },
+          ],
+        },
       ],
     },
   ],
