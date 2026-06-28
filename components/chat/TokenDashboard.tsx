@@ -94,7 +94,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   const recompute = useCallback(() => {
     const st = useChatHistory.getState();
     const sid = floatingSessionId ?? st.activeSessionId;
-    const msgs = st.sessions.find((s) => s.id === sid)?.messages ?? [];
+    const msgs = st.messagesById[sid ?? ''] ?? [];
     const limit = (getModelInfoWithCustom(modelId ?? useSettings.getState().selectedModelId, useSettings.getState().customModels)?.contextK ?? 128) * 1000;
 
     const serverCtx = floatingSessionId

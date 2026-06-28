@@ -5,9 +5,8 @@ import clsx from 'clsx';
 import { AlertTriangle, X, MessageSquarePlus } from 'lucide-react';
 import { useAutoHideChatHeader } from '@/lib/hooks/useAutoHideChatHeader';
 import { useChat } from '@/lib/hooks/useChat';
-import { useChatHistory } from '@/lib/hooks/useChatHistory';
-import { useFloatingChats } from '@/lib/hooks/useFloatingChats';
-import { useHydrated } from '@/lib/hooks/useHydrated';
+import { useChatHistory, ensureChatHistoryBootstrap } from '@/lib/hooks/useChatHistory';
+import { useChatReady } from '@/lib/hooks/useChatReady';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useStore } from '@/lib/store';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
@@ -34,11 +33,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const { messages, isLoading, error, sendMessage, stopGeneration, clearError } = useChat(chatContext, chatOptions);
   const outbound = useStore((s) => s.outbound);
   const clearOutbound = useStore((s) => s.clearOutbound);
-  const sessions = useChatHistory((s) => s.sessions);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
   const createSession = useChatHistory((s) => s.createSession);
-  const deleteSession = useChatHistory((s) => s.deleteSession);
-  const switchSession = useChatHistory((s) => s.switchSession);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showHistory, setShowHistory] = useState(false);
@@ -46,7 +42,11 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const [warnDismissed, setWarnDismissed] = useState(false);
   const [warnSessionId, setWarnSessionId] = useState(activeSessionId);
   const fontScale = useSettings((s) => s.fontScale);
-  const hydrated = useHydrated(useChatHistory);
+  const chatReady = useChatReady();
+
+  useEffect(() => {
+    void ensureChatHistoryBootstrap();
+  }, []);
 
   const ctxTokens = useTokenTracker((s) => s.currentContextTokens);
   const ctxLimit = useTokenTracker((s) => s.modelContextLimit);
@@ -70,11 +70,11 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   }, [stopGeneration]);
 
   useEffect(() => {
-    if (hydrated && outbound && outbound.content) {
+    if (chatReady && outbound && outbound.content) {
       sendMessage(outbound.content);
       clearOutbound();
     }
-  }, [outbound, sendMessage, clearOutbound, hydrated]);
+  }, [outbound, sendMessage, clearOutbound, chatReady]);
 
   const handleSend = (content: string, options?: { quotedText?: string; enableThinking?: boolean; enableSearch?: boolean; attachments?: ChatAttachment[] }) => {
     sendMessage(content, options);
@@ -87,14 +87,6 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     setWarnDismissed(false);
     useTokenTracker.getState().resetSession();
   };
-  // 删除会话：若是正开着的划词会话，先关掉对应浮窗，再删数据。
-  const handleDeleteSession = (id: string) => {
-    const fc = useFloatingChats.getState();
-    const win = fc.windows.find((w) => w.sessionId === id);
-    if (win) fc.closeWindow(win.id);
-    deleteSession(id);
-  };
-
   const subjectName = chatContext?.subjectId === 'chemistry' ? '化学'
     : chatContext?.subjectId === 'physics' ? '物理'
     : '概率论';
@@ -154,7 +146,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         error={error}
         onClearError={clearError}
         onFollowUpClick={handleFollowUpClick}
-        hydrated={hydrated}
+        hydrated={chatReady}
         fontScale={fontScale}
         scrollContainerRef={scrollContainerRef}
         emptyState={
@@ -215,7 +207,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
       <ChatInput
         onSend={handleSend}
         onStop={stopGeneration}
-        isLoading={isLoading || !hydrated}
+        isLoading={isLoading || !chatReady}
         chatContext={chatContext}
         onOpenSettings={() => setShowSettings(true)}
         disabled={contextFull}
@@ -227,11 +219,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
 
       {showHistory && (
         <ChatHistoryOverlay
-          sessions={sessions}
-          activeSessionId={activeSessionId}
-          onSelectMain={(id) => { switchSession(id); setShowHistory(false); }}
+          onSelectMain={(id) => { useChatHistory.getState().switchSession(id); setShowHistory(false); }}
           onRestoreFloating={(id) => { useFloatingChats.getState().restoreWindow(id); setShowHistory(false); }}
-          onDelete={handleDeleteSession}
           onClose={() => setShowHistory(false)}
         />
       )}

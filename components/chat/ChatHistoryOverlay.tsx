@@ -2,29 +2,34 @@
 
 import React, { useState } from 'react';
 import { Clock, X, Trash2, MessageSquare } from 'lucide-react';
-import type { ChatSession } from '@/lib/hooks/useChatHistory';
+import { useChatHistory } from '@/lib/hooks/useChatHistory';
+import { useFloatingChats } from '@/lib/hooks/useFloatingChats';
 import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 
 interface ChatHistoryOverlayProps {
-  sessions: ChatSession[];
-  activeSessionId: string | null;
   /** 「对话」栏行点击：切换主对话会话。 */
   onSelectMain: (sessionId: string) => void;
   /** 「划词」栏行点击：还原（重开）该划词浮窗。 */
   onRestoreFloating: (sessionId: string) => void;
-  onDelete: (sessionId: string) => void;
   onClose: () => void;
 }
 
-/** 历史记录面板：分「对话 / 划词」两栏。对话栏=切换主会话；划词栏=点击还原旧划词浮窗。 */
+/** 历史记录面板：分「对话 / 划词」两栏；仅在打开时挂载并订阅 sessions。 */
 const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
-  sessions,
-  activeSessionId,
   onSelectMain,
   onRestoreFloating,
-  onDelete,
   onClose,
 }) => {
+  const sessions = useChatHistory((s) => s.sessionsMeta);
+  const activeSessionId = useChatHistory((s) => s.activeSessionId);
+  const deleteSession = useChatHistory((s) => s.deleteSession);
+
+  const handleDelete = (id: string) => {
+    const fc = useFloatingChats.getState();
+    const win = fc.windows.find((w) => w.sessionId === id);
+    if (win) fc.closeWindow(win.id);
+    deleteSession(id);
+  };
   const [tab, setTab] = useState<'main' | 'floating'>('main');
   // 删除二次确认：记录待确认删除的会话 id（点删除先要求确认，避免误删历史）。
   const [confirmId, setConfirmId] = useState<string | null>(null);
@@ -80,7 +85,7 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
               <div className="chat-history-item-title">{session.title}</div>
               <div className="chat-history-item-meta">
                 <span>{new Date(session.updatedAt).toLocaleString()}</span>
-                <span>{session.messages.length} 条消息</span>
+                <span>{session.messageCount ?? 0} 条消息</span>
               </div>
 
               {confirmId === session.id ? (
@@ -88,7 +93,7 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
                   <span className="chat-history-confirm-label">删除？</span>
                   <button
                     className="chat-history-confirm-yes"
-                    onClick={(e) => { e.stopPropagation(); onDelete(session.id); setConfirmId(null); }}
+                    onClick={(e) => { e.stopPropagation(); handleDelete(session.id); setConfirmId(null); }}
                   >
                     删除
                   </button>

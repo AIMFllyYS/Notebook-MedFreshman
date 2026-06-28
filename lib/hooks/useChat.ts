@@ -9,6 +9,9 @@ import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { useTokenTracker } from './useTokenTracker';
 import { useFloatingTokenTracker } from './useFloatingTokenTracker';
 import { estimateTokens } from '@/lib/context/estimateTokens';
+import { buildRequestMessages } from '@/lib/chat/buildRequestMessages';
+import { createStreamUiThrottle } from '@/lib/chat/streamUiThrottle';
+import { hydrateAttachmentsForApi } from '@/lib/storage/chatStorage';
 import { buildFallbackSessionTitle, sanitizeSessionTitle } from '@/lib/chat/sessionTitle';
 
 interface SendMessageOptions {
@@ -55,15 +58,21 @@ export function useChat(
 ) {
   const ovSessionId = overrides?.sessionId;
   const ovModelId = overrides?.modelId;
-  const sessions = useChatHistory((s) => s.sessions);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
   const createSession = useChatHistory((s) => s.createSession);
   const addMessage = useChatHistory((s) => s.addMessage);
   const updateMessage = useChatHistory((s) => s.updateMessage);
   const updateSessionTitle = useChatHistory((s) => s.updateSessionTitle);
 
-  const activeSession = sessions.find((s) => s.id === (ovSessionId ?? activeSessionId));
-  const messages = activeSession?.messages || [];
+  const resolvedSessionId = ovSessionId ?? activeSessionId;
+  const messages = useChatHistory(
+    (s) => {
+      const sid = ovSessionId ?? s.activeSessionId;
+      if (!sid) return undefined;
+      return s.messagesById[sid];
+    },
+    (a, b) => a === b,
+  ) ?? [];
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -81,7 +90,10 @@ export function useChat(
     (content: string, sendOptions?: SendMessageOptions) => {
       if (!content.trim() || loadingRef.current) return;
       // 水合门控双保险：IndexedDB 异步恢复完成前禁止建会话，防止抢跑导致历史丢失
-      if (!useChatHistory.persist.hasHydrated()) return;
+      if (!useChatHistory.getState()._hasHydrated) return;
+      const st = useChatHistory.getState();
+      const sid = ovSessionId ?? st.activeSessionId;
+      if (sid && !st.messagesById[sid] && st.sessionLoadState[sid] !== 'loaded') return;
 
       // 合并 per-message 与 chat-level 选项
       const enableThinking = sendOptions?.enableThinking ?? options?.enableThinking;
@@ -111,8 +123,8 @@ export function useChat(
       };
 
       // 首条消息发送后后台生成标题；主对话和划词浮窗共用同一套轻量标题机制。
-      const currentSession = useChatHistory.getState().sessions.find((s) => s.id === sessionId);
-      const isFirstMessage = !currentSession || currentSession.messages.length === 0;
+      const currentMessages = useChatHistory.getState().messagesById[sessionId!];
+      const isFirstMessage = !currentMessages || currentMessages.length === 0;
       const fallbackTitle = isFirstMessage ? buildFallbackSessionTitle(userContent) : undefined;
 
       addMessage(sessionId, userMessage);
@@ -158,22 +170,8 @@ export function useChat(
       addMessage(sessionId, assistantMessage);
 
       // 构建请求消息（仅 user / assistant 角色），含多模态图片
-      const latestSession = useChatHistory.getState().sessions.find((s) => s.id === sessionId);
-      const requestMessages = (latestSession?.messages || [])
-        .filter((m) => m.role === 'user' || m.role === 'assistant')
-        .map((m) => {
-          if (m.role === 'user' && m.attachments?.length) {
-            const parts: Array<Record<string, unknown>> = [
-              { type: 'text', text: m.content || '' },
-              ...m.attachments.map((a) => ({
-                type: 'image_url',
-                image_url: { url: a.base64 },
-              })),
-            ];
-            return { role: m.role as 'user', content: parts };
-          }
-          return { role: m.role as 'user' | 'assistant', content: m.content || '' };
-        });
+      const latestMessages = useChatHistory.getState().messagesById[sessionId!] ?? [];
+      const { messages: requestMessages } = buildRequestMessages(latestMessages);
 
       // Estimate current context tokens for the dashboard —— 主面板写全局看板，划词窗写独立看板。
       {
@@ -221,38 +219,29 @@ export function useChat(
         const toolCallsMap = new Map<string, ToolCallBlock>();
         let stallChecker: ReturnType<typeof setInterval> | null = null;
 
-        // 流式 UI 节流：把每 token 的 updateMessage 合并为 ~60ms 一次（尾随节流）。
-        // 既减少重渲染（markdown/KaTeX 全量重解析），又降低 persist 写盘触发频率；
-        // 配合 idbStorage 写防抖，把流式 O(n²) 降到 ~O(n)。流结束/中断时强制落定最后一帧。
-        const UI_THROTTLE_MS = 60;
-        let uiTimer: ReturnType<typeof setTimeout> | null = null;
+        const uiThrottle = createStreamUiThrottle();
         const writeUi = () => {
-          updateMessage(sessionId!, assistantId, { content: contentBuf, reasoningContent: reasoningBuf });
+          updateMessage(sessionId!, assistantId, {
+            content: contentBuf,
+            reasoningContent: reasoningBuf,
+            ...(toolCallsMap.size > 0 ? { toolCalls: Array.from(toolCallsMap.values()) } : {}),
+          });
         };
-        const scheduleUi = () => {
-          if (uiTimer) return;
-          uiTimer = setTimeout(() => {
-            uiTimer = null;
-            writeUi();
-          }, UI_THROTTLE_MS);
-        };
+        const scheduleUi = () => uiThrottle.schedule(writeUi);
         const flushUiNow = () => {
-          if (uiTimer) {
-            clearTimeout(uiTimer);
-            uiTimer = null;
-          }
-          writeUi();
+          uiThrottle.flush();
         };
 
         try {
           const settings = useSettings.getState();
           const isCustom = effectiveModelId.startsWith(CUSTOM_PREFIX);
           const customModelName = isCustom ? effectiveModelId.slice(CUSTOM_PREFIX.length) : undefined;
+          const hydratedMessages = await hydrateAttachmentsForApi(requestMessages);
           const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              messages: requestMessages,
+              messages: hydratedMessages,
               modelId: effectiveModelId,
               customProvider: isCustom
                 ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: customModelName }
@@ -331,9 +320,7 @@ export function useChat(
                       if (event.args?.prompt) tc.prompt = String(event.args.prompt);
                     }
                     toolCallsMap.set(tc.id, tc);
-                    updateMessage(sessionId!, assistantId, {
-                      toolCalls: Array.from(toolCallsMap.values()),
-                    });
+                    scheduleUi();
                   } else if (event.status === 'result') {
                     const existing = event.id ? toolCallsMap.get(event.id) : undefined;
                     if (existing) {
@@ -344,9 +331,7 @@ export function useChat(
                       if (meta && typeof meta.artifactId === 'string') existing.artifactId = meta.artifactId;
                       if (meta && Array.isArray(meta.hits)) existing.hits = meta.hits;
                       if (meta && typeof meta.skill === 'string') existing.skill = meta.skill;
-                      updateMessage(sessionId!, assistantId, {
-                        toolCalls: Array.from(toolCallsMap.values()),
-                      });
+                      scheduleUi();
                     }
                   }
                   break;
@@ -471,5 +456,5 @@ export function useChat(
     [chatContext, options, ovSessionId, ovModelId, createSession, addMessage, updateMessage, updateSessionTitle],
   );
 
-  return { messages, isLoading, error, sendMessage, stopGeneration, clearError };
+  return { messages, isLoading, error, sendMessage, stopGeneration, clearError, sessionId: resolvedSessionId };
 }

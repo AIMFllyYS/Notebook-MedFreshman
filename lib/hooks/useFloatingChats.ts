@@ -90,9 +90,7 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
     const sessionId = useChatHistory.getState().createSession(currentChatContext(), "floating");
     const title = floatingTitle(opts.seedMode, opts.seedText);
     if (opts.seedText.trim()) {
-      useChatHistory.setState((state) => ({
-        sessions: state.sessions.map((session) => (session.id === sessionId ? { ...session, title } : session)),
-      }));
+      useChatHistory.getState().updateSessionTitle(sessionId, title);
     }
 
     const id = genId();
@@ -135,7 +133,8 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
       seedNonce: 0,
     };
     const { pos, size } = initialGeometry({ x: vw * 0.42, y: vh * 0.34 }, get().windows.length);
-    const sessionTitle = useChatHistory.getState().sessions.find((session) => session.id === sessionId)?.title ?? "AI 追问";
+    const sessionTitle =
+      useChatHistory.getState().sessionsMeta.find((session) => session.id === sessionId)?.title ?? "AI 追问";
     useWindowManager.getState().openWindow({
       id,
       type: "floating-chat",
@@ -152,8 +151,10 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
     useWindowManager.getState().closeWindow(id);
     set((state) => ({ windows: state.windows.filter((win) => win.id !== id) }));
     if (sessionId) {
-      const session = useChatHistory.getState().sessions.find((item) => item.id === sessionId);
-      if (session && session.messages.length === 0) useChatHistory.getState().deleteSession(sessionId);
+      const meta = useChatHistory.getState().sessionsMeta.find((item) => item.id === sessionId);
+      const msgs = useChatHistory.getState().messagesById[sessionId];
+      const empty = meta && (meta.messageCount === 0 || (msgs && msgs.length === 0));
+      if (empty) useChatHistory.getState().deleteSession(sessionId);
     }
   },
 

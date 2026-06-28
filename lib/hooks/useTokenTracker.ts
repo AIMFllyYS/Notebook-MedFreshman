@@ -15,6 +15,10 @@ export interface TokenTrackerState {
   lastTurn: TokenUsage;
   /** Client-side estimated context token count (updated before each send). */
   currentContextTokens: number;
+  /** 服务端精确的上下文 token 数（promptTokens + completionTokens），不被前端粗估覆盖。 */
+  serverContextTokens: number;
+  /** 服务端 context_breakdown.total，用于前端增量估算基线。 */
+  lastBreakdownTotal: number;
   /** Model context limit in tokens (derived from ModelInfo.contextK). */
   modelContextLimit: number;
   /** 最后一次收到 usage 事件的时间戳（Date.now()），用于 prefix cache 倒计时。 */
@@ -32,6 +36,8 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
   sessionTotal: { ...EMPTY_USAGE },
   lastTurn: { ...EMPTY_USAGE },
   currentContextTokens: 0,
+  serverContextTokens: 0,
+  lastBreakdownTotal: 0,
   modelContextLimit: 128_000,
   lastRequestTime: null,
   contextBreakdown: null,
@@ -44,9 +50,12 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
         cachedTokens: usage.cachedTokens ?? 0,
         totalTokens: usage.totalTokens ?? ((usage.promptTokens ?? 0) + (usage.completionTokens ?? 0)),
       };
+      const serverCtx = turn.promptTokens + turn.completionTokens;
       return {
         lastTurn: turn,
         lastRequestTime: Date.now(),
+        serverContextTokens: serverCtx,
+        currentContextTokens: serverCtx,
         sessionTotal: {
           promptTokens: s.sessionTotal.promptTokens + turn.promptTokens,
           completionTokens: s.sessionTotal.completionTokens + turn.completionTokens,
@@ -62,7 +71,7 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
   },
 
   setContextBreakdown(breakdown) {
-    set({ contextBreakdown: breakdown });
+    set({ contextBreakdown: breakdown, lastBreakdownTotal: breakdown.total });
   },
 
   resetSession() {
@@ -70,6 +79,8 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
       sessionTotal: { ...EMPTY_USAGE },
       lastTurn: { ...EMPTY_USAGE },
       currentContextTokens: 0,
+      serverContextTokens: 0,
+      lastBreakdownTotal: 0,
       lastRequestTime: null,
       contextBreakdown: null,
     });
