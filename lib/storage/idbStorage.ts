@@ -7,7 +7,7 @@
 // 3. SSR 安全：所有方法在 typeof window === "undefined" 时降级返回 null/no-op。
 // 4. 隐私模式/禁用 IndexedDB 时降级为 no-op，内存态仍可用（同 localStorage 失败行为）。
 
-import { createStore, get as idbGet, set as idbSet, del as idbDel } from "idb-keyval";
+import { createStore, get as idbGet, set as idbSet, del as idbDel, keys as idbKeys } from "idb-keyval";
 
 // ── 常量（单一真相源）────────────────────────────────────────────
 const DB_NAME = "gailvlun-db";
@@ -16,10 +16,22 @@ const STORE_NAME = "keyval";
 /** 各持久化 key 集中定义，禁止散落硬编码。 */
 export const PERSIST_KEYS = {
   chatHistory: "chat-history",
+  chatManifest: "chat-manifest",
   artifacts: "artifacts",
   skills: "skills",
   reviewCards: "review-cards",
 } as const;
+
+export const CHAT_SESSION_KEY_PREFIX = "chat-session:";
+export const CHAT_BLOB_KEY_PREFIX = "chat-blob:";
+
+export function chatSessionKey(sessionId: string): string {
+  return `${CHAT_SESSION_KEY_PREFIX}${sessionId}`;
+}
+
+export function chatBlobKey(blobId: string): string {
+  return `${CHAT_BLOB_KEY_PREFIX}${blobId}`;
+}
 
 // 专属 IDB store 实例（非默认 keyval-store 库）
 const idbStore = createStore(DB_NAME, STORE_NAME);
@@ -35,7 +47,8 @@ function isBrowser(): boolean {
 // 每次 setItem 都 `await idbSet(...)`（异步），高频 token 下大量写入并发在飞、各自持有
 // 一份不断变大的历史字符串 → O(n²) 活跃内存 → 渲染进程 OOM（调试器实证断在此 setItem）。
 // 方案：按 key 尾随防抖，最新值胜出，高频写合并为一次；页面卸载/隐藏时立即落盘，零丢失。
-const WRITE_DEBOUNCE_MS = 800;
+/** 流式持久化写盘防抖间隔（测试与文档引用）。 */
+export const WRITE_DEBOUNCE_MS = 800;
 const pendingValues = new Map<string, string>();
 const pendingTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
@@ -66,6 +79,13 @@ function flushKey(name: string): void {
 /** 立即落盘所有挂起的写（卸载/隐藏/清空时调用）。 */
 export function flushPendingWrites(): void {
   for (const name of [...pendingValues.keys()]) flushKey(name);
+}
+
+/** 测试专用：清空挂起队列与计时器（node:test 用）。 */
+export function __resetIdbStoragePendingForTests(): void {
+  for (const timer of pendingTimers.values()) clearTimeout(timer);
+  pendingTimers.clear();
+  pendingValues.clear();
 }
 
 if (typeof window !== "undefined") {
@@ -169,5 +189,19 @@ export async function clearAll(): Promise<void> {
     } catch {
       // ignore
     }
+  }
+  // 清理按会话 / blob 前缀写入的 key（Storage v2）
+  try {
+    const allKeys = await idbKeys(idbStore);
+    for (const key of allKeys) {
+      if (
+        typeof key === "string" &&
+        (key.startsWith(CHAT_SESSION_KEY_PREFIX) || key.startsWith(CHAT_BLOB_KEY_PREFIX))
+      ) {
+        await idbDel(key, idbStore);
+      }
+    }
+  } catch {
+    // ignore
   }
 }
