@@ -1,10 +1,11 @@
 "use client";
 
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ChevronRight,
   FileText,
+  FolderOpen,
   CircleCheck,
   CircleDashed,
   Circle,
@@ -29,73 +30,147 @@ function StatusIcon({ status }: { status?: string }) {
   return <Icon size={13} style={{ color: entry.color }} />;
 }
 
-const SiblingItem = memo(function SiblingItem({
+const SiblingNode = memo(function SiblingNode({
   item,
-  isActive,
-  onClick,
+  itemId,
+  depth,
+  expandedKeys,
+  onToggle,
+  onSelect,
 }: {
   item: ContentItem;
-  isActive: boolean;
-  onClick: () => void;
+  itemId: string;
+  depth: number;
+  expandedKeys: Set<string>;
+  onToggle: (id: string) => void;
+  onSelect: (item: ContentItem) => void;
 }) {
+  const isFolder = !!(item.children && item.children.length > 0);
+  const isExpanded = expandedKeys.has(item.id);
+  const isActive = item.id === itemId;
+  const padLeft = 12 + depth * 16;
+
   return (
-    <button
-      onClick={onClick}
-      data-sibling-active={isActive}
-      title={item.title}
-      className="flex w-full items-center gap-1 border-0 bg-transparent text-left outline-none"
-      style={{
-        paddingLeft: 12,
-        height: 28,
-        lineHeight: "28px",
-        fontSize: 13,
-        background: isActive
-          ? "var(--md-sys-color-primary-container)"
-          : undefined,
-        color: isActive
-          ? "var(--md-sys-color-on-primary-container)"
-          : "var(--md-sys-color-on-surface-variant)",
-      }}
-      onMouseEnter={(e) => {
-        if (!isActive) {
-          e.currentTarget.style.background =
-            "var(--md-sys-color-surface-container-high)";
-        }
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.background = isActive
-          ? "var(--md-sys-color-primary-container)"
-          : "";
-      }}
-    >
-      {/* 状态图标 */}
-      <span
-        className="inline-flex shrink-0 items-center justify-center"
-        style={{ width: 16, height: 16 }}
+    <div>
+      <div
+        data-sibling-active={isActive}
+        title={item.title}
+        className="flex w-full items-center gap-1"
+        style={{
+          paddingLeft: padLeft,
+          height: 28,
+          lineHeight: "28px",
+          fontSize: 13,
+          background: isActive
+            ? "var(--md-sys-color-primary-container)"
+            : undefined,
+          color: isActive
+            ? "var(--md-sys-color-on-primary-container)"
+            : "var(--md-sys-color-on-surface-variant)",
+        }}
+        onMouseEnter={(e) => {
+          if (!isActive) {
+            e.currentTarget.style.background =
+              "var(--md-sys-color-surface-container-high)";
+          }
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = isActive
+            ? "var(--md-sys-color-primary-container)"
+            : "";
+        }}
       >
-        <StatusIcon status={item.status} />
-      </span>
+        {/* 展开/折叠箭头（仅文件夹）— 独立按钮，点击仅切换展开 */}
+        {isFolder ? (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggle(item.id);
+            }}
+            className="inline-flex shrink-0 items-center justify-center border-0 bg-transparent outline-none"
+            style={{ width: 16, height: 16, cursor: "pointer" }}
+          >
+            <ChevronRight
+              size={14}
+              style={{
+                color: "var(--md-sys-color-outline)",
+                transition:
+                  "transform 0.35s cubic-bezier(0.05,0.7,0.1,1.0)",
+                transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)",
+              }}
+            />
+          </button>
+        ) : (
+          <span
+            className="inline-flex shrink-0 items-center justify-center"
+            style={{ width: 16, height: 16 }}
+          />
+        )}
 
-      {/* 文件图标 */}
-      <span
-        className="inline-flex shrink-0 items-center justify-center"
-        style={{ width: 18, height: 18 }}
-      >
-        <FileText
-          size={14}
-          style={{
-            color: isActive
-              ? "var(--md-sys-color-on-primary-container)"
-              : "var(--md-sys-color-outline)",
-          }}
-        />
-      </span>
+        {/* 导航按钮 — 点击跳转到对应板块（含文件夹节点） */}
+        <button
+          onClick={() => onSelect(item)}
+          className="flex flex-1 items-center gap-1 border-0 bg-transparent text-left outline-none"
+          style={{ height: "100%", cursor: "pointer" }}
+        >
+          {/* 状态图标 */}
+          <span
+            className="inline-flex shrink-0 items-center justify-center"
+            style={{ width: 16, height: 16 }}
+          >
+            <StatusIcon status={item.status} />
+          </span>
 
-      {/* 标题 */}
-      <span className="truncate" style={{ fontSize: 13 }}>
-        {item.title}
-      </span>
-    </button>
+          {/* 文件/文件夹图标 */}
+          <span
+            className="inline-flex shrink-0 items-center justify-center"
+            style={{ width: 18, height: 18 }}
+          >
+            {isFolder ? (
+              <FolderOpen
+                size={14}
+                style={{
+                  color: isActive
+                    ? "var(--md-sys-color-on-primary-container)"
+                    : "var(--md-sys-color-outline)",
+                }}
+              />
+            ) : (
+              <FileText
+                size={14}
+                style={{
+                  color: isActive
+                    ? "var(--md-sys-color-on-primary-container)"
+                    : "var(--md-sys-color-outline)",
+                }}
+              />
+            )}
+          </span>
+
+          {/* 标题 */}
+          <span className="truncate" style={{ fontSize: 13 }}>
+            {item.title}
+          </span>
+        </button>
+      </div>
+
+      {/* 子项（仅文件夹展开时） */}
+      {isFolder ? (
+        <AnimatedCollapse isOpen={isExpanded}>
+          {item.children!.map((child) => (
+            <SiblingNode
+              key={child.id}
+              item={child}
+              itemId={itemId}
+              depth={depth + 1}
+              expandedKeys={expandedKeys}
+              onToggle={onToggle}
+              onSelect={onSelect}
+            />
+          ))}
+        </AnimatedCollapse>
+      ) : null}
+    </div>
   );
 });
 
@@ -111,10 +186,27 @@ export default function SiblingFilesPanel() {
   );
 
   const [collapsed, setCollapsed] = useState(false);
+  const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
   const listRef = useRef<HTMLDivElement>(null);
 
   // 当前文件在兄弟列表中的索引
   const currentIndex = siblings.findIndex((s) => s.id === itemId);
+
+  const handleToggle = useCallback((id: string) => {
+    setExpandedKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  const handleSelect = useCallback(
+    (item: ContentItem) => {
+      router.push(`/${subjectId}/${categoryId}/${item.id}`);
+    },
+    [router, subjectId, categoryId],
+  );
 
   // 切换文件后自动滚动到当前文件
   useEffect(() => {
@@ -127,10 +219,6 @@ export default function SiblingFilesPanel() {
 
   // 仅 1 个兄弟（无兄弟）时不显示面板
   if (siblings.length <= 1) return null;
-
-  const handleSelect = (item: ContentItem) => {
-    router.push(`/${subjectId}/${categoryId}/${item.id}`);
-  };
 
   return (
     <div
@@ -207,11 +295,14 @@ export default function SiblingFilesPanel() {
           }}
         >
           {siblings.map((item) => (
-            <SiblingItem
+            <SiblingNode
               key={item.id}
               item={item}
-              isActive={item.id === itemId}
-              onClick={() => handleSelect(item)}
+              itemId={itemId}
+              depth={0}
+              expandedKeys={expandedKeys}
+              onToggle={handleToggle}
+              onSelect={handleSelect}
             />
           ))}
         </div>

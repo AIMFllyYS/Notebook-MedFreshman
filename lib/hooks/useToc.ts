@@ -69,13 +69,12 @@ export function useToc(
   itemId: string,
   contentKey: string,
 ): void {
-  const setTocItems = useStore((s) => s.setTocItems);
+  const setTocData = useStore((s) => s.setTocData);
   const setActiveTocId = useStore((s) => s.setActiveTocId);
 
   useEffect(() => {
     if (!enabled) {
-      setTocItems([]);
-      setActiveTocId(null);
+      setTocData([], null);
       return;
     }
 
@@ -85,9 +84,10 @@ export function useToc(
     const root: HTMLElement = container;
     let observer: IntersectionObserver | null = null;
     let retryTimer: ReturnType<typeof setTimeout> | null = null;
+    let rafId: number | null = null;
     let cancelled = false;
 
-    /** 扫描 DOM 标题，构建 TOC 树。若未找到标题则重试。 */
+    /** 扫描 DOM 标题，构建 TOC 树。若未找到标题则重试 1 次。 */
     function scanHeadings(attempt: number): void {
       if (cancelled) return;
 
@@ -96,12 +96,11 @@ export function useToc(
       );
 
       if (headingEls.length === 0) {
-        // 重试：最多 3 次，间隔递增（50ms / 100ms / 200ms）
-        if (attempt < 3) {
-          retryTimer = setTimeout(() => scanHeadings(attempt + 1), 50 * (attempt + 1));
+        // 重试：最多 1 次，间隔 50ms
+        if (attempt < 1) {
+          retryTimer = setTimeout(() => scanHeadings(attempt + 1), 50);
         } else {
-          setTocItems([]);
-          setActiveTocId(null);
+          setTocData([], null);
         }
         return;
       }
@@ -130,26 +129,28 @@ export function useToc(
       });
 
       if (headings.length === 0) {
-        setTocItems([]);
-        setActiveTocId(null);
+        setTocData([], null);
         return;
       }
 
       const tocTree = buildTocTree(headings);
-      setTocItems(tocTree);
 
-      // IntersectionObserver：跟踪当前可见标题
+      // IntersectionObserver：跟踪当前可见标题（rAF 节流）
       const obs = new IntersectionObserver(
         (entries) => {
-          const visible = entries
-            .filter((e) => e.isIntersecting)
-            .sort(
-              (a, b) =>
-                a.boundingClientRect.top - b.boundingClientRect.top,
-            );
-          if (visible.length > 0) {
-            setActiveTocId(visible[0].target.id);
-          }
+          if (cancelled) return;
+          if (rafId !== null) cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(() => {
+            const visible = entries
+              .filter((e) => e.isIntersecting)
+              .sort(
+                (a, b) =>
+                  a.boundingClientRect.top - b.boundingClientRect.top,
+              );
+            if (visible.length > 0) {
+              setActiveTocId(visible[0].target.id);
+            }
+          });
         },
         {
           root: root,
@@ -159,18 +160,20 @@ export function useToc(
       );
 
       observer = obs;
+      // 合并单次 set：TOC 树 + 初始 activeId
+      setTocData(tocTree, headings.length > 0 ? headings[0].id : null);
       headings.forEach((h) => obs.observe(h.el));
     }
 
-    // setTimeout(0) 确保在当前宏任务（React commit）完成后执行
-    retryTimer = setTimeout(() => scanHeadings(0), 0);
+    // requestAnimationFrame 确保在 paint 后执行，DOM 已稳定
+    rafId = requestAnimationFrame(() => scanHeadings(0));
 
     return () => {
       cancelled = true;
+      if (rafId !== null) cancelAnimationFrame(rafId);
       if (retryTimer) clearTimeout(retryTimer);
       observer?.disconnect();
-      setTocItems([]);
-      setActiveTocId(null);
+      // 不清空 TOC：保留旧目录直到新页面 hook 重建，避免闪烁
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, itemId, contentKey, containerRef]);

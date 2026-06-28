@@ -134,6 +134,8 @@ interface AppState {
   /** 当前可见标题的 id（由 IntersectionObserver 驱动） */
   activeTocId: string | null;
   setActiveTocId: (id: string | null) => void;
+  /** 合并更新 tocItems + activeTocId，单次 set 减少订阅者重渲染 */
+  setTocData: (items: TocItem[], activeId: string | null) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -150,7 +152,6 @@ export const useStore = create<AppState>((set) => ({
       activeItemId: itemId,
       activeChapterId: deriveChapterId(categoryId, itemId),
       activeSectionId: categoryId === "detail" ? itemId : "",
-      tocMode: false,
     }),
 
   sidebarCollapsed: readBoolean(LS_KEY_SIDEBAR, false),
@@ -231,4 +232,5 @@ export const useStore = create<AppState>((set) => ({
   setTocItems: (items) => set({ tocItems: items }),
   activeTocId: null,
   setActiveTocId: (id) => set({ activeTocId: id }),
+  setTocData: (items, activeId) => set({ tocItems: items, activeTocId: activeId }),
 }));
