@@ -90,6 +90,11 @@ function evictLoadedSessions(state: ChatHistoryState, keepIds: Set<string>): Rec
   return next;
 }
 
+function sameStringArray(a: string[], b: string[]): boolean {
+  if (a.length !== b.length) return false;
+  return a.every((value, index) => value === b[index]);
+}
+
 export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   sessionsMeta: [],
   messagesById: {},
@@ -208,14 +213,17 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   },
 
   deleteSession: (id) => {
+    let nextActiveToLoad: string | null = null;
     set((state) => {
       const sessionsMeta = state.sessionsMeta.filter((s) => s.id !== id);
+      const deletedActive = state.activeSessionId === id;
       const newActiveId =
-        state.activeSessionId === id
+        deletedActive
           ? sessionsMeta.length > 0
             ? sessionsMeta[0].id
             : null
           : state.activeSessionId;
+      nextActiveToLoad = deletedActive ? newActiveId : null;
       const { [id]: _drop, ...messagesById } = state.messagesById;
       pruneArtifactsFromMetas(sessionsMeta);
       saveManifest({ version: 2, activeSessionId: newActiveId, sessions: sessionsMeta });
@@ -229,8 +237,16 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         activeSessionId: newActiveId,
         loadedSessionIds: state.loadedSessionIds.filter((x) => x !== id),
         sessionLoadState: { ...state.sessionLoadState, [id]: 'idle' },
+        _activeMessagesReady: deletedActive ? newActiveId === null : state._activeMessagesReady,
       };
     });
+    if (nextActiveToLoad) {
+      void get().ensureSessionLoaded(nextActiveToLoad).then(() => {
+        if (get().activeSessionId === nextActiveToLoad) {
+          get()._setActiveMessagesReady(true);
+        }
+      });
+    }
   },
 
   switchSession: (id) => {
@@ -274,21 +290,28 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       const prev = state.messagesById[sessionId];
       if (!prev) return state;
       const messages = prev.map((m) => (m.id === messageId ? { ...m, ...updates } : m));
+      let shouldSaveManifest = false;
       const sessionsMeta = state.sessionsMeta.map((s) =>
-        s.id === sessionId
-          ? {
-              ...s,
-              updatedAt: Date.now(),
-              artifactIds: mergeArtifactIds(s.artifactIds, messages),
-            }
-          : s,
-      );
+        {
+          if (s.id !== sessionId) return s;
+          const artifactIds = mergeArtifactIds(s.artifactIds, messages);
+          if (!sameStringArray(s.artifactIds, artifactIds)) {
+            shouldSaveManifest = true;
+          }
+          return {
+            ...s,
+            updatedAt: Date.now(),
+            artifactIds,
+          };
+        });
       saveSessionMessages(sessionId, messages);
-      saveManifest({
-        version: 2,
-        activeSessionId: state.activeSessionId,
-        sessions: sessionsMeta,
-      });
+      if (shouldSaveManifest) {
+        saveManifest({
+          version: 2,
+          activeSessionId: state.activeSessionId,
+          sessions: sessionsMeta,
+        });
+      }
       return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
     });
   },

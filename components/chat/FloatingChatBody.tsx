@@ -30,7 +30,7 @@ export default function FloatingChatBody({ win, chatContext, onModelChange }: Fl
     chatOptions,
     { sessionId: win.sessionId, modelId: win.modelId },
   );
-  const chatReady = useChatReady();
+  const chatReady = useChatReady(win.sessionId);
   const seededRef = useRef(0);
 
   useEffect(() => {
