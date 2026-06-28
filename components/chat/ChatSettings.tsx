@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Settings, X, Eye, EyeOff, Type, Brain, Globe, BookText, Download } from "lucide-react";
+import { Settings, X, Eye, EyeOff, Type, Brain, Globe, BookText, Download, Plus, Trash2, Pencil } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
-import { CUSTOM_MODEL_ID } from "@/lib/ai/models";
+import { type CustomModelConfig } from "@/lib/ai/models";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import { exportAllChats } from "@/lib/chat/exportChats";
 import SkillsManager from "./SkillsManager";
@@ -35,12 +35,13 @@ function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
 
 /** AI 对话设置面板（作为对话区的浮层；数据落 useSettings）。 */
 export default function ChatSettings({ onClose }: { onClose?: () => void }) {
-  const selectedModelId = useSettings((s) => s.selectedModelId);
-  const setSelectedModelId = useSettings((s) => s.setSelectedModelId);
   const customBaseUrl = useSettings((s) => s.customBaseUrl);
   const customApiKey = useSettings((s) => s.customApiKey);
-  const customModelId = useSettings((s) => s.customModelId);
+  const customModels = useSettings((s) => s.customModels);
   const setCustomProvider = useSettings((s) => s.setCustomProvider);
+  const addCustomModel = useSettings((s) => s.addCustomModel);
+  const updateCustomModel = useSettings((s) => s.updateCustomModel);
+  const removeCustomModel = useSettings((s) => s.removeCustomModel);
   const fontScale = useSettings((s) => s.fontScale);
   const setFontScale = useSettings((s) => s.setFontScale);
   const disabledTools = useSettings((s) => s.disabledTools);
@@ -54,6 +55,50 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
 
   const [showKey, setShowKey] = useState(false);
   const [exportMsg, setExportMsg] = useState<string | null>(null);
+  const [showModelForm, setShowModelForm] = useState(false);
+  const [editingModelId, setEditingModelId] = useState<string | null>(null);
+  const [formModel, setFormModel] = useState({
+    id: '', label: '', contextK: '128',
+    inputPrice: '', cachedInputPrice: '', cacheWritePrice: '', outputPrice: '',
+    cacheTtlSec: '3600',
+  });
+
+  const resetForm = () => {
+    setFormModel({ id: '', label: '', contextK: '128', inputPrice: '', cachedInputPrice: '', cacheWritePrice: '', outputPrice: '', cacheTtlSec: '3600' });
+    setEditingModelId(null);
+  };
+  const startAdd = () => { resetForm(); setShowModelForm(true); };
+  const startEdit = (m: CustomModelConfig) => {
+    setFormModel({
+      id: m.id, label: m.label ?? '', contextK: String(m.contextK ?? 128),
+      inputPrice: m.pricing ? String(m.pricing.input) : '',
+      cachedInputPrice: m.pricing?.cachedInput != null ? String(m.pricing.cachedInput) : '',
+      cacheWritePrice: m.pricing?.cacheWrite != null ? String(m.pricing.cacheWrite) : '',
+      outputPrice: m.pricing ? String(m.pricing.output) : '',
+      cacheTtlSec: String(m.cacheTtlSec ?? 3600),
+    });
+    setEditingModelId(m.id);
+    setShowModelForm(true);
+  };
+  const saveModel = () => {
+    if (!formModel.id.trim() || !formModel.inputPrice.trim() || !formModel.outputPrice.trim()) return;
+    const config: CustomModelConfig = {
+      id: formModel.id.trim(),
+      label: formModel.label.trim() || undefined,
+      contextK: Number(formModel.contextK) || 128,
+      pricing: {
+        input: Number(formModel.inputPrice) || 0,
+        cachedInput: formModel.cachedInputPrice.trim() ? Number(formModel.cachedInputPrice) : undefined,
+        cacheWrite: formModel.cacheWritePrice.trim() ? Number(formModel.cacheWritePrice) : undefined,
+        output: Number(formModel.outputPrice) || 0,
+      },
+      cacheTtlSec: Number(formModel.cacheTtlSec) || 3600,
+    };
+    if (editingModelId) updateCustomModel(editingModelId, config);
+    else addCustomModel(config);
+    setShowModelForm(false);
+    resetForm();
+  };
 
   const label = "block text-[12px] font-semibold text-[var(--md-sys-color-on-surface-variant)] mb-1";
   const input =
@@ -110,7 +155,7 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
           <h3 className={h3}>自定义 API（与站点默认并存）</h3>
           <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
             站点默认 AI 由部署方在 .env 配置。你也可在此填入自己的 OpenAI 兼容端点，
-            填好后在模型菜单选「自定义模型」即可使用，不影响默认。
+            添加多个模型并配置各自定价，全部出现在模型菜单中。
           </p>
           <div>
             <label className={label}>API 端点（base URL，含 /v1）</label>
@@ -140,23 +185,163 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
               </button>
             </div>
           </div>
+
+          {/* 模型列表 */}
           <div>
-            <label className={label}>自定义模型 ID</label>
-            <input
-              type="text"
-              value={customModelId}
-              onChange={(e) => setCustomProvider({ model: e.target.value })}
-              placeholder="例如 gpt-4o-mini / your-model-id"
-              className={input}
-            />
+            <label className={label}>已添加模型（{customModels.length}）</label>
+            {customModels.length === 0 ? (
+              <p className="text-[11.5px] text-[var(--md-sys-color-on-surface-variant)] py-2">
+                暂无自定义模型，点击下方按钮添加
+              </p>
+            ) : (
+              <div className="flex flex-col gap-1.5">
+                {customModels.map((m) => (
+                  <div
+                    key={m.id}
+                    className="flex items-center gap-2 rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
+                        {m.label || m.id}
+                      </div>
+                      <div className="text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
+                        {m.id} · {m.contextK ?? 128}K
+                        {m.pricing && ` · ¥${m.pricing.input}/${m.pricing.output}`}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => startEdit(m)}
+                      className="rounded p-1 text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-container-high)]"
+                    >
+                      <Pencil size={13} />
+                    </button>
+                    <button
+                      onClick={() => removeCustomModel(m.id)}
+                      className="rounded p-1 text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-container-high)]"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          <button
-            onClick={() => setSelectedModelId(CUSTOM_MODEL_ID)}
-            disabled={!(customBaseUrl && customApiKey && customModelId)}
-            className="press self-start rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
-          >
-            {selectedModelId === CUSTOM_MODEL_ID ? "已选用自定义模型" : "选用自定义模型"}
-          </button>
+
+          {/* 添加/编辑模型表单 */}
+          {showModelForm ? (
+            <div className="flex flex-col gap-2 rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container)] p-3">
+              <span className="text-[12px] font-semibold text-[var(--md-sys-color-on-surface)]">
+                {editingModelId ? '编辑模型' : '添加模型'}
+              </span>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className={label}>模型 ID（必填）</label>
+                  <input
+                    type="text"
+                    value={formModel.id}
+                    onChange={(e) => setFormModel({ ...formModel, id: e.target.value })}
+                    placeholder="gpt-4o-mini"
+                    className={input}
+                    disabled={!!editingModelId}
+                  />
+                </div>
+                <div>
+                  <label className={label}>显示名（可选）</label>
+                  <input
+                    type="text"
+                    value={formModel.label}
+                    onChange={(e) => setFormModel({ ...formModel, label: e.target.value })}
+                    placeholder="GPT-4o mini"
+                    className={input}
+                  />
+                </div>
+                <div>
+                  <label className={label}>上下文窗口 K（默认 128）</label>
+                  <input
+                    type="number"
+                    value={formModel.contextK}
+                    onChange={(e) => setFormModel({ ...formModel, contextK: e.target.value })}
+                    className={input}
+                  />
+                </div>
+                <div>
+                  <label className={label}>缓存 TTL 秒（默认 3600）</label>
+                  <input
+                    type="number"
+                    value={formModel.cacheTtlSec}
+                    onChange={(e) => setFormModel({ ...formModel, cacheTtlSec: e.target.value })}
+                    className={input}
+                  />
+                </div>
+                <div>
+                  <label className={label}>输入价格 ¥/百万（必填）</label>
+                  <input
+                    type="number"
+                    step="0.001"
+                    value={formModel.inputPrice}
+                    onChange={(e) => setFormModel({ ...formModel, inputPrice: e.target.value })}
+                    placeholder="0"
+                    className={input}
+                  />
+                </div>
+                <div>
+                  <label className={label}>输出价格 ¥/百万（必填）</label>
+                  <input
+                    type="number"
+                    step="0.001"
+                    value={formModel.outputPrice}
+                    onChange={(e) => setFormModel({ ...formModel, outputPrice: e.target.value })}
+                    placeholder="0"
+                    className={input}
+                  />
+                </div>
+                <div>
+                  <label className={label}>缓存命中价格（可选）</label>
+                  <input
+                    type="number"
+                    step="0.001"
+                    value={formModel.cachedInputPrice}
+                    onChange={(e) => setFormModel({ ...formModel, cachedInputPrice: e.target.value })}
+                    placeholder="不填=无缓存"
+                    className={input}
+                  />
+                </div>
+                <div>
+                  <label className={label}>缓存写入价格（可选）</label>
+                  <input
+                    type="number"
+                    step="0.001"
+                    value={formModel.cacheWritePrice}
+                    onChange={(e) => setFormModel({ ...formModel, cacheWritePrice: e.target.value })}
+                    placeholder="不填=按缓存命中"
+                    className={input}
+                  />
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={saveModel}
+                  disabled={!formModel.id.trim() || !formModel.inputPrice.trim() || !formModel.outputPrice.trim()}
+                  className="press rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
+                >
+                  保存
+                </button>
+                <button
+                  onClick={() => { setShowModelForm(false); resetForm(); }}
+                  className="press rounded-lg border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-surface-variant)]"
+                >
+                  取消
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={startAdd}
+              className="press flex items-center gap-1.5 self-start rounded-lg border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-surface-variant)]"
+            >
+              <Plus size={13} /> 添加模型
+            </button>
+          )}
         </section>
 
         {/* 工具 */}

@@ -149,7 +149,7 @@ export async function POST(req: NextRequest) {
   const enableThinking: boolean = body.enableThinking === true;
   const customProvider: CustomProvider | undefined = body.customProvider;
   const modelId: string | undefined =
-    body.modelId === "custom" ? "custom" : ENV_MODEL_FLASH;
+    typeof body.modelId === "string" ? body.modelId : ENV_MODEL_FLASH;
 
   const validModes: RecordMode[] = ["excerpt", "cloze", "quiz", "custom"];
   if (!validModes.includes(mode)) {

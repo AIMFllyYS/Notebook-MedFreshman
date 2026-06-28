@@ -23,6 +23,7 @@ export interface ModelInfo {
   pricing?: {
     input: number;
     cachedInput: number;
+    cacheWrite?: number;
     output: number;
   };
   /** Prefix cache 估算 TTL（秒）。来源于官方文档，DeepSeek 为"数小时到数天"取保守下限；MiMo 未公开取业界常见值。 */
@@ -53,8 +54,74 @@ export const MODELS: ModelInfo[] = [
 
 export const DEFAULT_MODEL_ID = "mimo-v2.5";
 
+export const CUSTOM_PREFIX = "custom:";
+
+export interface CustomModelConfig {
+  id: string;
+  label?: string;
+  contextK?: number;
+  pricing?: {
+    input: number;
+    cachedInput?: number;
+    cacheWrite?: number;
+    output: number;
+  };
+  cacheTtlSec?: number;
+}
+
 export function getModelInfo(id: string): ModelInfo | undefined {
   return MODELS.find((m) => m.id === id);
+}
+
+/** 合并内置模型 + 自定义模型，供菜单和 getModelInfo 使用。 */
+export function getAllModels(customModels: CustomModelConfig[]): ModelInfo[] {
+  const custom: ModelInfo[] = customModels.map((c) => ({
+    id: CUSTOM_PREFIX + c.id,
+    label: c.label || c.id,
+    group: "自定义 API",
+    thinking: false,
+    tools: true,
+    contextK: c.contextK ?? 128,
+    hint: c.id,
+    pricing: c.pricing
+      ? {
+          input: c.pricing.input,
+          cachedInput: c.pricing.cachedInput ?? c.pricing.input,
+          cacheWrite: c.pricing.cacheWrite ?? c.pricing.cachedInput ?? c.pricing.input,
+          output: c.pricing.output,
+        }
+      : undefined,
+    cacheTtlSec: c.cacheTtlSec ?? 3600,
+  }));
+  return [...MODELS, ...custom];
+}
+
+/** 查找模型信息，支持自定义模型（custom: 前缀）。 */
+export function getModelInfoWithCustom(id: string, customModels: CustomModelConfig[]): ModelInfo | undefined {
+  if (id.startsWith(CUSTOM_PREFIX)) {
+    const rawId = id.slice(CUSTOM_PREFIX.length);
+    const cfg = customModels.find((c) => c.id === rawId);
+    if (!cfg) return undefined;
+    return {
+      id: CUSTOM_PREFIX + cfg.id,
+      label: cfg.label || cfg.id,
+      group: "自定义 API",
+      thinking: false,
+      tools: true,
+      contextK: cfg.contextK ?? 128,
+      hint: cfg.id,
+      pricing: cfg.pricing
+        ? {
+            input: cfg.pricing.input,
+            cachedInput: cfg.pricing.cachedInput ?? cfg.pricing.input,
+            cacheWrite: cfg.pricing.cacheWrite ?? cfg.pricing.cachedInput ?? cfg.pricing.input,
+            output: cfg.pricing.output,
+          }
+        : undefined,
+      cacheTtlSec: cfg.cacheTtlSec ?? 3600,
+    };
+  }
+  return getModelInfo(id);
 }
 
 /** 按 group 聚合，保持声明顺序，供菜单分区渲染。 */
@@ -62,6 +129,21 @@ export function getModelGroups(): { group: string; models: ModelInfo[] }[] {
   const order: string[] = [];
   const map = new Map<string, ModelInfo[]>();
   for (const m of MODELS) {
+    if (!map.has(m.group)) {
+      map.set(m.group, []);
+      order.push(m.group);
+    }
+    map.get(m.group)!.push(m);
+  }
+  return order.map((group) => ({ group, models: map.get(group)! }));
+}
+
+/** 按 group 聚合（含自定义模型），保持声明顺序。 */
+export function getModelGroupsWithCustom(customModels: CustomModelConfig[]): { group: string; models: ModelInfo[] }[] {
+  const all = getAllModels(customModels);
+  const order: string[] = [];
+  const map = new Map<string, ModelInfo[]>();
+  for (const m of all) {
     if (!map.has(m.group)) {
       map.set(m.group, []);
       order.push(m.group);

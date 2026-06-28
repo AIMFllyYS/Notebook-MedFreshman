@@ -1,14 +1,16 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
-import { Clock, AlertTriangle, X, Pin, RefreshCw } from 'lucide-react';
+import { Clock, AlertTriangle, X, Pin, RefreshCw, Loader2 } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
+import { useFloatingTokenTracker } from '@/lib/hooks/useFloatingTokenTracker';
 import { useSettings } from '@/lib/hooks/useSettings';
-import { getModelInfo } from '@/lib/ai/models';
+import { getModelInfoWithCustom } from '@/lib/ai/models';
 import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { estimateTokens } from '@/lib/context/estimateTokens';
 import { useDraggable } from '@/lib/hooks/useDraggable';
+import { Tooltip } from '@/components/ui/Tooltip';
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -50,24 +52,40 @@ const BREAKDOWN_CATS: { key: 'tools' | 'skills' | 'pages' | 'webSearch' | 'conve
   { key: 'conversation', label: '对话', color: '#10b981' },
 ];
 
-export default function TokenDashboard() {
+export default function TokenDashboard({ isLoading = false, floatingSessionId, modelId }: { isLoading?: boolean; floatingSessionId?: string; modelId?: string }) {
   const [open, setOpen] = useState(false);
   const [pinned, setPinned] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
 
   const [pos, setPos] = useState({ x: 0, y: 0 });
   // 拖动：rAF + transform（零重渲染），松手才提交。left 正向、bottom 反向（向上拖 = bottom 增大）。
   const { elRef, onPointerDown } = useDraggable((dx, dy) => setPos((p) => ({ x: p.x + dx, y: p.y - dy })));
 
-  const sessionTotal = useTokenTracker((s) => s.sessionTotal);
-  const lastTurn = useTokenTracker((s) => s.lastTurn);
-  const ctxTokens = useTokenTracker((s) => s.currentContextTokens);
-  const ctxLimit = useTokenTracker((s) => s.modelContextLimit);
-  const lastRequestTime = useTokenTracker((s) => s.lastRequestTime);
-  const breakdown = useTokenTracker((s) => s.contextBreakdown);
+  // 全局 tracker（主面板用）
+  const gSessionTotal = useTokenTracker((s) => s.sessionTotal);
+  const gLastTurn = useTokenTracker((s) => s.lastTurn);
+  const gCtxTokens = useTokenTracker((s) => s.currentContextTokens);
+  const gCtxLimit = useTokenTracker((s) => s.modelContextLimit);
+  const gLastRequestTime = useTokenTracker((s) => s.lastRequestTime);
+  const gBreakdown = useTokenTracker((s) => s.contextBreakdown);
+  const gServerContextTokens = useTokenTracker((s) => s.serverContextTokens);
 
-  const selectedModelId = useSettings((s) => s.selectedModelId);
-  const modelInfo = getModelInfo(selectedModelId);
+  // 浮窗 tracker（划词浮窗用，按 sessionId 隔离）
+  const fData = useFloatingTokenTracker((s) => floatingSessionId ? (s.sessions[floatingSessionId] ?? null) : null);
+
+  const sessionTotal = fData?.sessionTotal ?? gSessionTotal;
+  const lastTurn = fData?.lastTurn ?? gLastTurn;
+  const ctxTokens = fData?.currentContextTokens ?? gCtxTokens;
+  const ctxLimit = fData?.modelContextLimit ?? gCtxLimit;
+  const lastRequestTime = fData?.lastRequestTime ?? gLastRequestTime;
+  const breakdown = fData?.contextBreakdown ?? gBreakdown;
+  const serverContextTokens = fData?.serverContextTokens ?? gServerContextTokens;
+
+  const globalSelectedModelId = useSettings((s) => s.selectedModelId);
+  const customModels = useSettings((s) => s.customModels);
+  const selectedModelId = modelId ?? globalSelectedModelId;
+  const modelInfo = getModelInfoWithCustom(selectedModelId, customModels);
   const pricing = modelInfo?.pricing;
   const cacheTtlSec = modelInfo?.cacheTtlSec;
 
@@ -75,29 +93,60 @@ export default function TokenDashboard() {
   // 读 getState 不订阅 sessions，避免流式时整组件重渲染风暴。
   const recompute = useCallback(() => {
     const st = useChatHistory.getState();
-    const msgs = st.sessions.find((s) => s.id === st.activeSessionId)?.messages ?? [];
-    const text = msgs
-      .map((m) => (typeof m.content === 'string' ? m.content : JSON.stringify(m.content ?? '')))
-      .join('');
-    const est = estimateTokens(text) + 3000; // ~3K 系统提示词余量，与 useChat 估算一致
-    const limit = (getModelInfo(useSettings.getState().selectedModelId)?.contextK ?? 128) * 1000;
-    useTokenTracker.getState().setCurrentContext(est, limit);
-  }, []);
+    const sid = floatingSessionId ?? st.activeSessionId;
+    const msgs = st.sessions.find((s) => s.id === sid)?.messages ?? [];
+    const limit = (getModelInfoWithCustom(modelId ?? useSettings.getState().selectedModelId, useSettings.getState().customModels)?.contextK ?? 128) * 1000;
 
-  // 打开看板时立即估算，并每 2.5s 刷新（解决「更新不及时」）。
+    const serverCtx = floatingSessionId
+      ? useFloatingTokenTracker.getState().getSession(floatingSessionId).serverContextTokens
+      : useTokenTracker.getState().serverContextTokens;
+
+    const setCurrentContext = (tokens: number) => {
+      if (floatingSessionId) {
+        useFloatingTokenTracker.getState().setCurrentContext(floatingSessionId, tokens, limit);
+      } else {
+        useTokenTracker.getState().setCurrentContext(tokens, limit);
+      }
+    };
+
+    if (serverCtx > 0) {
+      const lastAssistantIdx = (() => {
+        for (let i = msgs.length - 1; i >= 0; i--) {
+          if (msgs[i].role === 'assistant') return i;
+        }
+        return -1;
+      })();
+      const newMsgs = lastAssistantIdx >= 0 ? msgs.slice(lastAssistantIdx + 1) : msgs;
+      const newText = newMsgs
+        .map((m) => (typeof m.content === 'string' ? m.content : JSON.stringify(m.content ?? '')))
+        .join('');
+      const newTokens = estimateTokens(newText);
+      setCurrentContext(serverCtx + newTokens);
+    } else {
+      const text = msgs
+        .map((m) => (typeof m.content === 'string' ? m.content : JSON.stringify(m.content ?? '')))
+        .join('');
+      const est = estimateTokens(text) + 3000;
+      setCurrentContext(est);
+    }
+  }, [floatingSessionId, modelId]);
+
+  // 始终定时刷新上下文估算（面板开关均运行），确保按钮数字实时更新。
+  // 面板开时 2.5s 高频刷新（展开详情需要跟手）；关时 5s 低频刷新（仅更新按钮数字）。
   useEffect(() => {
-    if (!open) return;
     recompute();
-    const id = setInterval(recompute, 2500);
+    const interval = open ? 2500 : 5000;
+    const id = setInterval(recompute, interval);
     return () => clearInterval(id);
   }, [open, recompute]);
 
   const ratio = ctxLimit > 0 ? ctxTokens / ctxLimit : 0;
   const pctText = `${Math.min(Math.round(ratio * 100), 999)}%`;
-  const barColor =
-    ratio >= 1 ? 'var(--md-sys-color-error)' :
-    ratio >= 0.8 ? 'var(--md-sys-color-tertiary)' :
-    'var(--md-sys-color-primary)';
+  const ringColor =
+    ratio > 0.7 ? 'var(--md-sys-color-error)' :
+    ratio > 0.4 ? '#f59e0b' :
+    '#10b981';
+  const barColor = ringColor;
 
   const turnCost = calcCost(lastTurn.promptTokens, lastTurn.completionTokens, lastTurn.cachedTokens, pricing);
   const totalCost = calcCost(sessionTotal.promptTokens, sessionTotal.completionTokens, sessionTotal.cachedTokens, pricing);
@@ -127,7 +176,21 @@ export default function TokenDashboard() {
     };
   }, [open, pinned, elRef]);
 
-  const iconSvg = (
+  const hasContextData = serverContextTokens > 0 || ctxTokens > 0;
+  const RING_R = 14;
+  const RING_C = 2 * Math.PI * RING_R;
+  const ringDash = hasContextData ? `${Math.max(ratio, 0.02) * RING_C} ${RING_C}` : `0 ${RING_C}`;
+  const iconSvg = hasContextData ? (
+    <svg width="14" height="14" viewBox="0 0 32 32" style={{ transform: 'rotate(-90deg)' }}>
+      <circle cx="16" cy="16" r={RING_R} fill="none" stroke="var(--bg-muted)" strokeWidth="4" />
+      <circle
+        cx="16" cy="16" r={RING_R} fill="none"
+        stroke={ringColor} strokeWidth="4" strokeLinecap="round"
+        strokeDasharray={ringDash}
+        style={{ transition: 'stroke-dasharray 0.3s ease, stroke 0.3s ease' }}
+      />
+    </svg>
+  ) : (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="3" y="3" width="18" height="18" rx="2" />
       <path d="M3 9h18" />
@@ -137,15 +200,24 @@ export default function TokenDashboard() {
 
   return (
     <>
-      <button
-        ref={btnRef}
-        onClick={() => setOpen((v) => !v)}
-        title="上下文看板"
-        className="press flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+      <Tooltip
+        content={
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            {isLoading && <Loader2 size={11} className="animate-spin" />}
+            {pctText} ({fmtTokens(ctxTokens)} / {fmtTokens(ctxLimit)}) 上下文已使用
+          </span>
+        }
+        placement="top"
       >
-        {iconSvg}
-        <span className="model-menu-label model-menu-label-full">{fmtTokens(ctxTokens)}</span>
-      </button>
+        <button
+          ref={btnRef}
+          onClick={() => setOpen((v) => !v)}
+          className="press flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+        >
+          {iconSvg}
+          <span className="model-menu-label model-menu-label-full">{fmtTokens(ctxTokens)}</span>
+        </button>
+      </Tooltip>
 
       {open && createPortal(
         <div
@@ -171,12 +243,16 @@ export default function TokenDashboard() {
             <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink)' }}>上下文看板</span>
             <span style={{ display: 'flex', gap: 4 }}>
               <button
-                onClick={() => recompute()}
+                onClick={() => {
+                  setRefreshing(true);
+                  recompute();
+                  setTimeout(() => setRefreshing(false), 600);
+                }}
                 title="刷新上下文估算"
                 data-no-drag
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: 'var(--ink-faint)' }}
               >
-                <RefreshCw size={13} />
+                <RefreshCw size={13} className={refreshing ? 'animate-spin' : undefined} />
               </button>
               <button
                 onClick={() => setPinned((v) => !v)}
@@ -222,43 +298,42 @@ export default function TokenDashboard() {
             </div>
 
             {/* Context composition (IDE 式分项构成) */}
-            {breakdown && breakdown.total > 0 && (
-              <div style={{ marginBottom: 10 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, color: 'var(--ink-soft)' }}>
-                  <span>上下文构成</span>
-                  <span style={{ fontWeight: 600 }}>{fmtTokens(breakdown.total)}</span>
-                </div>
-                <div style={{ display: 'flex', height: 8, borderRadius: 4, background: 'var(--bg-muted)', overflow: 'hidden' }}>
-                  {BREAKDOWN_CATS.map((c) => {
-                    const v = breakdown[c.key];
-                    const w = ctxLimit > 0 ? (v / ctxLimit) * 100 : 0;
-                    if (w <= 0) return null;
-                    return (
-                      <div
-                        key={c.key}
-                        title={`${c.label} ${fmtTokens(v)}`}
-                        style={{ width: `${w}%`, height: '100%', background: c.color, transition: 'width 0.3s ease' }}
-                      />
-                    );
-                  })}
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px 10px', marginTop: 6 }}>
-                  {BREAKDOWN_CATS.map((c) => {
-                    const v = breakdown[c.key];
-                    const pct = breakdown.total > 0 ? Math.round((v / breakdown.total) * 100) : 0;
-                    return (
-                      <div key={c.key} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, color: 'var(--ink-soft)' }}>
-                        <span style={{ width: 8, height: 8, borderRadius: 2, background: c.color, flexShrink: 0 }} />
-                        <span>{c.label}</span>
-                        <span style={{ color: 'var(--ink-faint)', fontVariantNumeric: 'tabular-nums' }}>
-                          {fmtTokens(v)}·{pct}%
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
+            <div style={{ marginBottom: 10 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, color: 'var(--ink-soft)' }}>
+                <span>上下文构成</span>
+                <span style={{ fontWeight: 600 }}>{fmtTokens(breakdown?.total ?? 0)}</span>
               </div>
-            )}
+              <div style={{ display: 'flex', height: 8, borderRadius: 4, background: 'var(--bg-muted)', overflow: 'hidden' }}>
+                {BREAKDOWN_CATS.map((c) => {
+                  const v = breakdown?.[c.key] ?? 0;
+                  const w = ctxLimit > 0 ? (v / ctxLimit) * 100 : 0;
+                  if (w <= 0) return null;
+                  return (
+                    <div
+                      key={c.key}
+                      title={`${c.label} ${fmtTokens(v)}`}
+                      style={{ width: `${w}%`, height: '100%', background: c.color, transition: 'width 0.3s ease' }}
+                    />
+                  );
+                })}
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px 10px', marginTop: 6 }}>
+                {BREAKDOWN_CATS.map((c) => {
+                  const v = breakdown?.[c.key] ?? 0;
+                  const total = breakdown?.total ?? 0;
+                  const pct = total > 0 ? Math.round((v / total) * 100) : 0;
+                  return (
+                    <div key={c.key} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, color: 'var(--ink-soft)' }}>
+                      <span style={{ width: 8, height: 8, borderRadius: 2, background: c.color, flexShrink: 0 }} />
+                      <span>{c.label}</span>
+                      <span style={{ color: 'var(--ink-faint)', fontVariantNumeric: 'tabular-nums' }}>
+                        {fmtTokens(v)}·{pct}%
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
 
             {/* Last turn */}
             <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
@@ -322,7 +397,27 @@ function CacheCountdown({
     return () => clearInterval(timer);
   }, [lastRequestTime, cacheTtlSec]);
 
-  if (!cacheTtlSec || !lastRequestTime) return null;
+  if (!cacheTtlSec || !lastRequestTime) {
+    return (
+      <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+          <Clock size={11} style={{ color: 'var(--ink-faint)' }} />
+          <span style={{ fontWeight: 600, color: 'var(--ink)' }}>缓存倒计时</span>
+          <span style={{ fontSize: 9, color: 'var(--ink-faint)', fontWeight: 400 }}>估算</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
+          <span>剩余时间</span>
+          <span style={{ color: 'var(--ink-faint)', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>0s</span>
+        </div>
+        <div style={{ height: 5, borderRadius: 2.5, background: 'var(--bg-muted)', overflow: 'hidden' }}>
+          <div style={{ width: '0%', height: '100%', borderRadius: 2.5, background: 'var(--ink-faint)' }} />
+        </div>
+        <div style={{ fontSize: 9, color: 'var(--ink-faint)', marginTop: 3, lineHeight: 1.3 }}>
+          等待首次对话
+        </div>
+      </div>
+    );
+  }
 
   const cacheElapsed = (now - lastRequestTime) / 1000;
   const cacheRemaining = Math.max(0, cacheTtlSec - cacheElapsed);

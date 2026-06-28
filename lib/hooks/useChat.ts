@@ -2,12 +2,12 @@ import { useState, useCallback, useRef } from 'react';
 import { useChatHistory } from './useChatHistory';
 import { useSettings } from './useSettings';
 import { useSkills } from './useSkills';
-import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
+import { CUSTOM_PREFIX, getModelInfoWithCustom } from '@/lib/ai/models';
 import type { ChatMessage, ChatAttachment, ChatContext, ChatOptions, ToolCallBlock, WebSearchSource, ContextBreakdown } from '@/lib/types/chat';
 import { parseXmlTags } from '@/lib/utils/xmlParser';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { useTokenTracker } from './useTokenTracker';
-import { getModelInfo } from '@/lib/ai/models';
+import { useFloatingTokenTracker } from './useFloatingTokenTracker';
 import { estimateTokens } from '@/lib/context/estimateTokens';
 import { buildFallbackSessionTitle, sanitizeSessionTitle } from '@/lib/chat/sessionTitle';
 
@@ -174,15 +174,35 @@ export function useChat(
           return { role: m.role as 'user' | 'assistant', content: m.content || '' };
         });
 
-      // Estimate current context tokens for the dashboard —— 仅主面板写全局看板，划词窗不污染。
-      if (!ovSessionId) {
-        const selectedModel = getModelInfo(effectiveModelId);
+      // Estimate current context tokens for the dashboard —— 主面板写全局看板，划词窗写独立看板。
+      {
+        const selectedModel = getModelInfoWithCustom(effectiveModelId, useSettings.getState().customModels);
         const contextLimitK = selectedModel?.contextK ?? 128;
-        const allText = requestMessages.map((m) =>
-          typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
-        ).join('');
-        const estContextTokens = estimateTokens(allText) + 3000; // ~3K for system prompts
-        useTokenTracker.getState().setCurrentContext(estContextTokens, contextLimitK * 1000);
+        const limit = contextLimitK * 1000;
+        const serverCtx = ovSessionId
+          ? useFloatingTokenTracker.getState().getSession(ovSessionId).serverContextTokens
+          : useTokenTracker.getState().serverContextTokens;
+        if (serverCtx > 0) {
+          const newUserText = typeof userMessage.content === 'string'
+            ? userMessage.content
+            : JSON.stringify(userMessage.content ?? '');
+          const newTokens = estimateTokens(newUserText);
+          if (ovSessionId) {
+            useFloatingTokenTracker.getState().setCurrentContext(ovSessionId, serverCtx + newTokens, limit);
+          } else {
+            useTokenTracker.getState().setCurrentContext(serverCtx + newTokens, limit);
+          }
+        } else {
+          const allText = requestMessages.map((m) =>
+            typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
+          ).join('');
+          const estContextTokens = estimateTokens(allText) + 3000;
+          if (ovSessionId) {
+            useFloatingTokenTracker.getState().setCurrentContext(ovSessionId, estContextTokens, limit);
+          } else {
+            useTokenTracker.getState().setCurrentContext(estContextTokens, limit);
+          }
+        }
       }
 
       loadingRef.current = true;
@@ -224,7 +244,8 @@ export function useChat(
 
         try {
           const settings = useSettings.getState();
-          const isCustom = effectiveModelId === CUSTOM_MODEL_ID;
+          const isCustom = effectiveModelId.startsWith(CUSTOM_PREFIX);
+          const customModelName = isCustom ? effectiveModelId.slice(CUSTOM_PREFIX.length) : undefined;
           const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -232,7 +253,7 @@ export function useChat(
               messages: requestMessages,
               modelId: effectiveModelId,
               customProvider: isCustom
-                ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: settings.customModelId }
+                ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: customModelName }
                 : undefined,
               disabledTools: settings.disabledTools,
               subjectId: chatContext.subjectId,
@@ -329,21 +350,36 @@ export function useChat(
                   break;
 
                 case 'context_breakdown':
-                  if (!ovSessionId && event.breakdown) {
-                    useTokenTracker.getState().setContextBreakdown(event.breakdown);
+                  if (event.breakdown) {
+                    if (ovSessionId) {
+                      useFloatingTokenTracker.getState().setContextBreakdown(ovSessionId, event.breakdown);
+                    } else {
+                      useTokenTracker.getState().setContextBreakdown(event.breakdown);
+                    }
                   }
                   break;
 
                 case 'usage':
-                  if (!ovSessionId && event.usage) {
-                    useTokenTracker.getState().addUsage(event.usage);
-                    // Update context estimate with real prompt tokens
-                    if (event.usage.promptTokens) {
-                      const limit = useTokenTracker.getState().modelContextLimit;
-                      useTokenTracker.getState().setCurrentContext(
-                        event.usage.promptTokens + (event.usage.completionTokens ?? 0),
-                        limit,
-                      );
+                  if (event.usage) {
+                    if (ovSessionId) {
+                      useFloatingTokenTracker.getState().addUsage(ovSessionId, event.usage);
+                      if (event.usage.promptTokens) {
+                        const limit = useFloatingTokenTracker.getState().getSession(ovSessionId).modelContextLimit;
+                        useFloatingTokenTracker.getState().setCurrentContext(
+                          ovSessionId,
+                          event.usage.promptTokens + (event.usage.completionTokens ?? 0),
+                          limit,
+                        );
+                      }
+                    } else {
+                      useTokenTracker.getState().addUsage(event.usage);
+                      if (event.usage.promptTokens) {
+                        const limit = useTokenTracker.getState().modelContextLimit;
+                        useTokenTracker.getState().setCurrentContext(
+                          event.usage.promptTokens + (event.usage.completionTokens ?? 0),
+                          limit,
+                        );
+                      }
                     }
                   }
                   break;

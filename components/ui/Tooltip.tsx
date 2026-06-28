@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 export interface TooltipProps {
   children: React.ReactNode;
-  content: string;
+  content: React.ReactNode;
   placement?: 'top' | 'bottom' | 'left' | 'right';
 }
 
@@ -33,10 +33,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
       {children}
       <div
         className={[
-          'absolute whitespace-nowrap z-[100] pointer-events-none',
+          'absolute z-[100] pointer-events-none',
           'px-2 py-1 rounded-[var(--md-sys-shape-corner-extra-small,4px)]',
           'text-[11px] font-medium leading-none',
-          'bg-[var(--md-sys-color-on-surface)] text-[var(--md-sys-color-surface)]',
+          'bg-[var(--md-sys-color-surface)] text-[var(--md-sys-color-on-surface)]',
+          'border border-[var(--md-sys-color-outline)]',
           'shadow-[var(--md-sys-elevation-level2,0_2px_4px_rgba(0,0,0,0.12))]',
           'transition-opacity duration-200',
           placementClasses[placement],

@@ -1,7 +1,7 @@
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
 import { useRecordPreviews } from "@/lib/hooks/useRecordPreviews";
 import { useSettings } from "@/lib/hooks/useSettings";
-import { CUSTOM_MODEL_ID } from "@/lib/ai/models";
+import { CUSTOM_PREFIX } from "@/lib/ai/models";
 import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
 import { parseSseJsonEvents } from "@/lib/utils/sseEvents";
@@ -20,14 +20,14 @@ function clamp(text: string): string {
 
 function aiRequestExtras() {
   const settings = useSettings.getState();
-  const isCustom = settings.selectedModelId === CUSTOM_MODEL_ID;
+  const isCustom = settings.selectedModelId.startsWith(CUSTOM_PREFIX);
   return {
-    modelId: isCustom ? "custom" : undefined,
+    modelId: isCustom ? settings.selectedModelId : undefined,
     customProvider: isCustom
       ? {
           baseUrl: settings.customBaseUrl,
           apiKey: settings.customApiKey,
-          model: settings.customModelId,
+          model: settings.selectedModelId.slice(CUSTOM_PREFIX.length),
         }
       : undefined,
   };

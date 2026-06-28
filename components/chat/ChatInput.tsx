@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
-  BrainCircuit, Globe, Send, Square, Quote, X, CheckCircle, Paperclip,
+  Lightbulb, Globe, Send, Square, Quote, X, CheckCircle, Paperclip,
 } from 'lucide-react';
 import type { ChatContext, ChatAttachment } from '@/lib/types/chat';
 import { useChatUI } from '@/lib/hooks/useChatUI';
@@ -30,11 +30,13 @@ export interface ChatInputProps {
   onModelChange?: (id: string) => void;
   /** 是否显示上下文 token 看板（划词浮窗传 false，避免显示主面板的全局统计）。默认 true。 */
   showTokenDashboard?: boolean;
+  /** 划词浮窗的 sessionId，用于独立 token 统计。不传则用全局 tracker。 */
+  floatingSessionId?: string;
   /** 禁用「引用到输入框」（划词浮窗传 true，避免全局选区引用串入浮窗）。默认 false。 */
   disableQuote?: boolean;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, disableQuote = false }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false }) => {
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [enableThinking, setEnableThinking] = useState(() => useSettings.getState().defaultThinking);
@@ -209,7 +211,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
             className={`chat-input-toggle chat-input-toggle-thinking ${enableThinking ? 'chat-input-toggle-thinking-active' : ''} ${inputDisabled ? 'chat-input-toggle-disabled' : ''}`}
             title="开启深度思考（展示推理过程）"
           >
-            <BrainCircuit size={12} />
+            <Lightbulb size={12} />
             <span className="chat-input-toggle-text">深度思考</span>
             {enableThinking && <CheckCircle size={10} />}
           </button>
@@ -227,7 +229,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         </div>
 
         <div className="chat-input-toolbar-group" style={{ gap: 4, flexShrink: 0 }}>
-          {showTokenDashboard && <TokenDashboard />}
+          {showTokenDashboard && <TokenDashboard isLoading={isLoading} floatingSessionId={floatingSessionId} modelId={modelId} />}
           <ModelMenu onOpenSettings={onOpenSettings} value={modelId} onChange={onModelChange} />
         </div>
       </div>

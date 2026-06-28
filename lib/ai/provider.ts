@@ -5,7 +5,7 @@
 //   - 否则 → 用 env 默认端点（AI_BASE_URL/AI_API_KEY），modelId 决定具体模型。
 // 仅服务端导入（读取 process.env）。
 
-import { getModelInfo } from "@/lib/ai/models";
+import { getModelInfo, CUSTOM_PREFIX } from "@/lib/ai/models";
 
 const BASE = process.env.AI_BASE_URL || "";
 const KEY = process.env.AI_API_KEY || "";
@@ -37,23 +37,29 @@ export function resolveProvider(
   modelId: string | undefined,
   custom?: CustomProvider,
 ): ResolvedProvider {
+  const isCustomModel =
+    modelId === "custom" || (modelId?.startsWith(CUSTOM_PREFIX) ?? false);
+  const customModelName = modelId?.startsWith(CUSTOM_PREFIX)
+    ? modelId.slice(CUSTOM_PREFIX.length)
+    : custom?.model;
+
   if (
-    modelId === "custom" &&
+    isCustomModel &&
     custom?.baseUrl?.trim() &&
     custom?.apiKey?.trim() &&
-    custom?.model?.trim()
+    customModelName?.trim()
   ) {
     return {
       baseUrl: custom.baseUrl.trim(),
       apiKey: custom.apiKey.trim(),
-      model: custom.model.trim(),
+      model: customModelName.trim(),
       reasoningField: REASONING_FIELD,
       isCustom: true,
       configured: true,
     };
   }
 
-  const model = modelId && modelId !== "custom" ? modelId : ENV_MODEL_FLASH;
+  const model = modelId && modelId !== "custom" && !(modelId?.startsWith(CUSTOM_PREFIX) ?? false) ? modelId : ENV_MODEL_FLASH;
   const info = getModelInfo(model);
 
   if (info?.provider === "mimo") {

@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Loader, MonitorPlay, Code2, ChevronDown, ChevronUp, AlertTriangle, ExternalLink } from 'lucide-react';
 import { useArtifacts } from '@/lib/hooks/useArtifacts';
 import { useSettings } from '@/lib/hooks/useSettings';
-import { CUSTOM_MODEL_ID } from '@/lib/ai/models';
+import { CUSTOM_PREFIX } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { MessageContent } from '@/components/chat/MessageContent';
 
@@ -77,7 +77,7 @@ export default function ArtifactCard({
     /* eslint-enable react-hooks/set-state-in-effect */
 
     const settings = useSettings.getState();
-    const isCustom = settings.selectedModelId === CUSTOM_MODEL_ID;
+    const isCustom = settings.selectedModelId.startsWith(CUSTOM_PREFIX);
 
     (async () => {
       try {
@@ -90,7 +90,7 @@ export default function ArtifactCard({
             prompt,
             modelId: settings.selectedModelId,
             customProvider: isCustom
-              ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: settings.customModelId }
+              ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: settings.selectedModelId.slice(CUSTOM_PREFIX.length) }
               : undefined,
           }),
         });

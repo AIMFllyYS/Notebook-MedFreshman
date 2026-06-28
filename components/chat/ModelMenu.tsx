@@ -2,9 +2,9 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { ChevronDown, Check, Cpu, SlidersHorizontal } from "lucide-react";
+import { ChevronDown, Check, Cpu } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
-import { getModelGroups, getModelInfo, CUSTOM_MODEL_ID } from "@/lib/ai/models";
+import { getModelGroupsWithCustom, getModelInfoWithCustom, CUSTOM_PREFIX } from "@/lib/ai/models";
 
 /** 模型选择下拉菜单（agent 软件风格）：硅基流动精选模型 + 自定义模型。
  *  默认读写全局 useSettings.selectedModelId；传入 value/onChange 则改为受控（供划词
@@ -23,18 +23,19 @@ export default function ModelMenu({
   const selectedModelId = value ?? globalSelected;
   const setSelectedModelId = onChange ?? globalSet;
   const customConfigured = useSettings(
-    (s) => !!(s.customBaseUrl && s.customApiKey && s.customModelId),
+    (s) => !!(s.customBaseUrl && s.customApiKey && s.customModels.length > 0),
   );
+  const customModels = useSettings((s) => s.customModels);
 
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ left: 0, bottom: 0 });
 
-  const current = getModelInfo(selectedModelId);
+  const current = getModelInfoWithCustom(selectedModelId, customModels);
   const label =
-    selectedModelId === CUSTOM_MODEL_ID ? "自定义模型" : current?.label ?? selectedModelId;
-  const groups = getModelGroups();
+    selectedModelId.startsWith(CUSTOM_PREFIX) ? (current?.label ?? selectedModelId.slice(CUSTOM_PREFIX.length)) : current?.label ?? selectedModelId;
+  const groups = getModelGroupsWithCustom(customModels);
 
   useLayoutEffect(() => {
     if (!open || !btnRef.current) return;
@@ -134,39 +135,6 @@ export default function ModelMenu({
               </div>
             ))}
 
-            {/* 自定义模型 */}
-            <div className="mt-1 border-t border-[var(--line)] pt-1">
-              <button
-                onClick={() => {
-                  if (onOpenSettings && !customConfigured) {
-                    setOpen(false);
-                    onOpenSettings();
-                  } else {
-                    pick(CUSTOM_MODEL_ID);
-                  }
-                }}
-                className={
-                  "flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left transition-colors " +
-                  (selectedModelId === CUSTOM_MODEL_ID
-                    ? "bg-[var(--accent-weak)]"
-                    : "hover:bg-[var(--bg-muted)]")
-                }
-              >
-                <span className="mt-0.5 w-3.5 shrink-0">
-                  {selectedModelId === CUSTOM_MODEL_ID && (
-                    <Check size={13} className="text-[var(--accent-ink)]" />
-                  )}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-[var(--ink)]">
-                    <SlidersHorizontal size={12} /> 自定义模型
-                  </span>
-                  <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">
-                    {customConfigured ? "使用你在设置里填写的端点" : "未配置，点击前往设置填写"}
-                  </span>
-                </span>
-              </button>
-            </div>
           </div>,
           document.body,
         )}

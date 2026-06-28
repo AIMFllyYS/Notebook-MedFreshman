@@ -14,6 +14,7 @@ import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useStore } from "@/lib/store";
 import { useChat } from "@/lib/hooks/useChat";
+import { useFloatingTokenTracker } from "@/lib/hooks/useFloatingTokenTracker";
 import { useDraggable } from "@/lib/hooks/useDraggable";
 import { useResizable } from "@/lib/hooks/useResizable";
 import WindowChrome from "@/components/window/WindowChrome";
@@ -119,6 +120,7 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
 
   function handleClose() {
     stopGeneration();
+    useFloatingTokenTracker.getState().resetSession(win.sessionId);
     closeFloatingWindow(win.id);
   }
 
@@ -213,7 +215,7 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
               chatContext={chatContext}
               modelId={win.modelId}
               onModelChange={(modelId) => updateFloatingWindow(win.id, { modelId })}
-              showTokenDashboard={false}
+              floatingSessionId={win.sessionId}
               disableQuote
             />
           </>

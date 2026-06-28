@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { DEFAULT_MODEL_ID } from "@/lib/ai/models";
+import { DEFAULT_MODEL_ID, type CustomModelConfig } from "@/lib/ai/models";
 
 /**
  * 全站 AI 设置（localStorage 持久化）。统一管理：
@@ -11,7 +11,9 @@ export interface SettingsState {
   selectedModelId: string;
   customBaseUrl: string;
   customApiKey: string;
+  /** @deprecated 已迁移到 customModels 数组，保留用于向后兼容读取。 */
   customModelId: string;
+  customModels: CustomModelConfig[];
 
   // ── 体验（S4）────────────────────────
   fontScale: number; // 0.85 ~ 1.35
@@ -24,7 +26,10 @@ export interface SettingsState {
   globalContext: string;
 
   setSelectedModelId: (id: string) => void;
-  setCustomProvider: (p: { baseUrl?: string; apiKey?: string; model?: string }) => void;
+  setCustomProvider: (p: { baseUrl?: string; apiKey?: string }) => void;
+  addCustomModel: (model: CustomModelConfig) => void;
+  updateCustomModel: (id: string, model: CustomModelConfig) => void;
+  removeCustomModel: (id: string) => void;
   setFontScale: (v: number) => void;
   toggleTool: (name: string, enabled: boolean) => void;
   setDefaultThinking: (v: boolean) => void;
@@ -40,6 +45,7 @@ type Persisted = Pick<
   | "customBaseUrl"
   | "customApiKey"
   | "customModelId"
+  | "customModels"
   | "fontScale"
   | "disabledTools"
   | "defaultThinking"
@@ -52,6 +58,7 @@ const DEFAULTS: Persisted = {
   customBaseUrl: "",
   customApiKey: "",
   customModelId: "",
+  customModels: [],
   fontScale: 1,
   disabledTools: [],
   defaultThinking: false,
@@ -63,7 +70,15 @@ function load(): Persisted {
   if (typeof window === "undefined") return DEFAULTS;
   try {
     const raw = localStorage.getItem(LS_KEY);
-    if (raw) return { ...DEFAULTS, ...JSON.parse(raw) };
+    if (raw) {
+      const parsed = { ...DEFAULTS, ...JSON.parse(raw) } as Persisted;
+      // 向后兼容：旧版 customModelId 非空但 customModels 为空时，自动迁移
+      if (parsed.customModelId && (!parsed.customModels || parsed.customModels.length === 0)) {
+        parsed.customModels = [{ id: parsed.customModelId }];
+      }
+      if (!parsed.customModels) parsed.customModels = [];
+      return parsed;
+    }
   } catch {
     /* ignore */
   }
@@ -78,6 +93,7 @@ function persist(get: () => SettingsState) {
     customBaseUrl: s.customBaseUrl,
     customApiKey: s.customApiKey,
     customModelId: s.customModelId,
+    customModels: s.customModels,
     fontScale: s.fontScale,
     disabledTools: s.disabledTools,
     defaultThinking: s.defaultThinking,
@@ -102,7 +118,24 @@ export const useSettings = create<SettingsState>((set, get) => ({
     set((s) => ({
       customBaseUrl: p.baseUrl ?? s.customBaseUrl,
       customApiKey: p.apiKey ?? s.customApiKey,
-      customModelId: p.model ?? s.customModelId,
+    }));
+    persist(get);
+  },
+  addCustomModel: (model) => {
+    set((s) => ({
+      customModels: [...s.customModels.filter((m) => m.id !== model.id), model],
+    }));
+    persist(get);
+  },
+  updateCustomModel: (id, model) => {
+    set((s) => ({
+      customModels: s.customModels.map((m) => (m.id === id ? model : m)),
+    }));
+    persist(get);
+  },
+  removeCustomModel: (id) => {
+    set((s) => ({
+      customModels: s.customModels.filter((m) => m.id !== id),
     }));
     persist(get);
   },
