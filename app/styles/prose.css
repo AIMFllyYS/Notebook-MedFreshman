@@ -1,6 +1,4 @@
-/* ─────────────────────────────────────────────────────────────
-   笔记排版 (.prose-notes)
-   ───────────────────────────────────────────────────────────── */
+/* (comment) */
 .prose-notes {
   color: var(--ink);
   font-size: 16px;
@@ -9,11 +7,7 @@
   margin: 0 auto;
 }
 
-/* 离屏跳过渲染：长笔记（最大 ~84KB 逐字稿）里数量多、单块重的静态区块，
-   离屏时跳过 layout/paint，显著降低低配机的常驻 paint 与内存压力。
-   contain-intrinsic-size 的 auto 关键字会记忆首次渲染后的真实尺寸，避免回滚时滚动跳动。
-   仅作用于静态重块，不含可交互的 SVG 画布（避免测量/交互异常）；
-   .katex-display 已在 globals.css 施加 contain，这里不重复。 */
+/* (comment) */
 .prose-notes .callout,
 .prose-notes .derivation,
 .prose-notes .figure-directive,
@@ -126,7 +120,7 @@
   font-weight: 640;
 }
 
-/* 图片 / Figure */
+/* (comment) */
 .prose-notes img {
   max-width: 100%;
   height: auto;
@@ -144,13 +138,9 @@
   margin-top: 0.5rem;
 }
 
-/* ⚠️ 不要给 .prose-notes/.chat-prose 加裸 `svg` 几何规则（max-width/height/margin）。
-   它会以相等特异性命中 KaTeX 内部的“拉伸 svg”（根号 \sqrt、反应箭头 ->/<=>、\xrightarrow、
-   \overbrace、\widehat、\vec 等都是内联 <svg>），用 height:auto 把 viewBox 数百:1 的扁长条
-   压成约 0.04px → 箭头消失、根号错位。作者内嵌图一律走 <img>（::figure），画布 svg 由
-   canvas.css 的 .svg-canvas-wrapper/.svg-raw-content 作用域负责。详见 rendering-architecture §8。 */
+/* (comment) */
 
-/* KaTeX 尺寸与块公式滚动 */
+/* (comment) */
 .prose-notes .katex {
   font-size: 1.06em;
 }
@@ -164,10 +154,7 @@
   font-size: 1.16em;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   AI 对话富文本排版 (.chat-prose) —— 与 .prose-notes 同设计语言，
-   em 相对单位随 --chat-fs 缩放；重点拉开上下间隔，观感更高级。
-   ───────────────────────────────────────────────────────────── */
+/* (comment) */
 .chat-prose {
   line-height: 1.75;
 }
@@ -248,7 +235,7 @@
   text-align: left;
 }
 .chat-prose th { background: var(--bg-muted); font-weight: 640; }
-/* 图片 / Figure / SVG in chat */
+/* (comment) */
 .chat-prose img {
   max-width: 100%;
   height: auto;
@@ -264,7 +251,7 @@
   opacity: 0.88;
 }
 
-/* Image scroll strip — horizontal row for multiple images */
+/* (comment) */
 .chat-image-strip {
   display: flex;
   gap: 8px;
@@ -289,6 +276,71 @@
   margin: 0;
   display: inline-block;
 }
+
+/* imageSearch image gallery block */
+.image-search-gallery {
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container);
+  overflow: hidden;
+}
+.image-search-gallery-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+.image-search-gallery-via {
+  margin-left: auto;
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--md-sys-color-outline);
+}
+.image-search-gallery .chat-image-strip {
+  margin: 0;
+  padding: 8px 10px;
+  height: 180px;
+  background: transparent;
+}
+.image-search-gallery-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.image-search-gallery-item img {
+  height: 148px;
+  width: auto;
+  max-width: 220px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  cursor: zoom-in;
+  transition: opacity 0.15s ease;
+  margin: 0;
+  display: block;
+}
+.image-search-gallery-item img:hover { opacity: 0.88; }
+.image-search-gallery-credit {
+  font-size: 0.62rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+  line-height: 1.4;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.image-search-gallery-credit a {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+}
+.image-search-gallery-credit a:hover { text-decoration: underline; }
 
 /* Image lightbox overlay */
 .image-lightbox-backdrop {
@@ -382,7 +434,7 @@
   color: var(--md-sys-color-on-surface-variant);
   margin-top: 0.4rem;
 }
-/* ⚠️ 同上：不要加 `.chat-prose svg{}` 裸几何规则——会压塌 KaTeX 拉伸 svg。见上方注释与 §8。 */
+/* (comment) */
 .chat-prose .katex { font-size: 1.04em; }
 .chat-prose .katex-display {
   margin: 0.95em 0;
@@ -392,7 +444,7 @@
 }
 .chat-prose .katex-display > .katex { font-size: 1.1em; }
 
-/* ── 可视化块错误边界降级卡（VizErrorBoundary）──────────────── */
+/* (comment) */
 .viz-error-card {
   margin: 0.6em 0;
   padding: 0.6rem 0.75rem;
@@ -424,11 +476,9 @@
   color: var(--md-sys-color-on-surface);
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Chat 组件样式（Task 6.3/6.4 — 内联样式迁移 + 审美提升）
-   ───────────────────────────────────────────────────────────── */
+/* (comment) */
 
-/* ── ChatPanel 主容器 ─────────────────────────── */
+/* (comment) */
 .chat-panel {
   display: flex;
   flex-direction: column;
@@ -437,15 +487,11 @@
   position: relative;
 }
 
-/* ── ChatPanel Header ─────────────────────────── */
+/* (comment) */
 .chat-header-sticky {
   flex-shrink: 0;
 }
-/*
- * Auto-hide（桌面 + 已有对话）：
- * - 收起：header 滑出视口，感应条单独负责唤出；wrapper 不拦截点击
- * - 展开：整条 header 可交互，无透明遮罩压在按钮上
- */
+/* (comment) */
 .chat-panel--auto-hide-header .chat-header-sticky--overlay {
   position: absolute;
   top: 0;
@@ -457,7 +503,7 @@
 .chat-panel--auto-hide-header .chat-header-sticky--overlay.chat-header-sticky--hidden {
   pointer-events: none;
 }
-/* 收起态：仅感应条接收 pointer（父级 none 时子级 auto 仍有效） */
+/* (comment) */
 .chat-header-reveal-zone {
   position: absolute;
   top: 0;
@@ -468,7 +514,7 @@
   pointer-events: auto;
   cursor: default;
 }
-/* 收起时在面板顶部留一条极淡提示线（不可点，仅视觉引导） */
+/* (comment) */
 .chat-panel--auto-hide-header.chat-panel--header-collapsed::before {
   content: '';
   position: absolute;
@@ -579,7 +625,7 @@
   }
 }
 
-/* ── Chat 消息区 ──────────────────────────────── */
+/* (comment) */
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -588,7 +634,7 @@
   padding: 12px;
 }
 
-/* ── 空状态 ───────────────────────────────────── */
+/* (comment) */
 .chat-empty-state {
   margin: auto;
   text-align: center;
@@ -630,7 +676,7 @@
   margin-top: 0.5rem;
 }
 
-/* ── 加载态 ───────────────────────────────────── */
+/* (comment) */
 .chat-loading {
   display: flex;
   align-items: center;
@@ -643,7 +689,7 @@
   animation: pulse-dot 1.5s ease-in-out infinite;
 }
 
-/* ── 错误提示 ─────────────────────────────────── */
+/* (comment) */
 .chat-error {
   color: var(--md-sys-color-error);
   padding: 12px;
@@ -664,7 +710,7 @@
   color: var(--md-sys-color-error);
 }
 
-/* ── 滚动到底部按钮 ───────────────────────────── */
+/* (comment) */
 .chat-scroll-btn {
   position: absolute;
   bottom: 100px;
@@ -695,7 +741,7 @@
   transform: scale(0.95);
 }
 
-/* ── 历史记录浮层 ─────────────────────────────── */
+/* (comment) */
 .chat-history-overlay {
   position: absolute;
   top: 0;
@@ -812,7 +858,7 @@
   cursor: pointer;
   color: var(--md-sys-color-on-surface-variant);
 }
-/* 删除二次确认浮条（覆盖在条目右上角） */
+/* (comment) */
 .chat-history-confirm {
   position: absolute;
   right: 6px;
@@ -850,7 +896,7 @@
   color: var(--md-sys-color-on-surface-variant);
 }
 
-/* ── 消息气泡 ─────────────────────────────────── */
+/* (comment) */
 .chat-message {
   width: 100%;
   max-width: 100%;
@@ -892,7 +938,7 @@
   gap: 8px;
 }
 .chat-bubble-user {
-  /* 正文经 MessageContent(markdown + 软换行) 渲染，换行由 <br>/<p> 承载，无需 pre-wrap。 */
+  /* (comment) */
   padding: 8px 12px;
   background: var(--md-sys-color-primary-container);
   border-radius: 12px;
@@ -901,7 +947,7 @@
   line-height: 1.5;
   box-shadow: var(--md-sys-elevation-level1);
 }
-/* 用户气泡内的 markdown：收紧首尾外边距，避免气泡上下出现空白。 */
+/* (comment) */
 .chat-bubble-user.chat-prose > :first-child { margin-top: 0; }
 .chat-bubble-user.chat-prose > :last-child { margin-bottom: 0; }
 .chat-bubble-assistant {
@@ -913,7 +959,7 @@
   border: 1px solid var(--md-sys-color-outline-variant);
 }
 
-/* ── ProcessingSteps ──────────────────────────── */
+/* (comment) */
 .processing-steps {
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 8px;
@@ -947,7 +993,7 @@
   background: var(--md-sys-color-surface-container);
 }
 
-/* ── FollowUpQuestions ────────────────────────── */
+/* (comment) */
 .followup-card {
   margin: 12px 0 0 0;
   padding: 12px;
@@ -1006,7 +1052,7 @@
   line-height: 1.4;
 }
 
-/* ── ChatInput ────────────────────────────────── */
+/* (comment) */
 .chat-input-container {
   padding: 8px 12px;
   background: var(--md-sys-color-surface-container);
@@ -1153,7 +1199,7 @@
   justify-content: center;
 }
 
-/* ── 底部工具栏响应式 ────────────────────────── */
+/* (comment) */
 @container (max-width: 420px) {
   .model-menu-label-full {
     display: none;

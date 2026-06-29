@@ -6,6 +6,8 @@ export interface WebSearchSource {
   snippet: string;
   icon?: string;
   media?: string;
+  /** imageSearch 专用：Unsplash 图片描述（对应 ImageSearchResult.alt）。 */
+  alt?: string;
 }
 
 export interface ToolCallBlock {

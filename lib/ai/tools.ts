@@ -13,12 +13,16 @@ import { searchImages, trackPhotoDownload } from "@/lib/ai/imageSearch";
 import type { Skill } from "@/lib/types/skill";
 import { CHEM_DRAW_GUIDE } from "@/lib/chemistry/svgTemplates";
 
+export const IMAGE_SEARCH_MAX_TOTAL = 20;
+
 export interface ToolContext {
   subjectId: string;
   categoryId: string;
   itemId: string;
   /** 本次请求携带的全部技能（含正文），供 useSkill 按名取用。 */
   skills?: Skill[];
+  /** 跨轮 imageSearch 已累计抓取张数（由 route.ts 维护，防止 AI 反复调用超出限额）。 */
+  imageSearchFetchedCount?: { value: number };
 }
 
 /** 工具执行结果：content 回灌给模型；meta 透传给前端展示（如联网来源）。 */
@@ -120,12 +124,12 @@ export const ALL_TOOLS: Record<string, ToolDefinition> = {
     function: {
       name: "imageSearch",
       description:
-        "搜索互联网图片并返回可嵌入的图片链接。当讲解需要配图（如物理实验装置、化学分子结构、生物组织图等）时调用。返回结果包含图片 URL，可直接以 Markdown 图片语法嵌入回复。",
+        "搜索互联网图片并返回可嵌入的图片链接。当讲解需要配图（如物理实验装置、化学分子结构、生物组织图等）时调用。返回结果包含图片 URL，可直接以 Markdown 图片语法嵌入回复。【重要限制】一次对话中所有 imageSearch 调用合计最多抓取 20 张图片；每次调用 numResults 建议不超过 4；若系统提示已达到限额，禁止再次调用 imageSearch。请在第一次调用时就使用精准关键词，避免因结果不满意而反复重复调用。",
       parameters: {
         type: "object",
         properties: {
           query: { type: "string", description: "图片搜索关键词，如 '高斯面示意图'" },
-          numResults: { type: "number", description: "返回图片数量，默认 3" },
+          numResults: { type: "number", description: "返回图片数量，默认 3，最大 4" },
         },
         required: ["query"],
       },
@@ -295,24 +299,38 @@ export async function runTool(
       return { content: r.content, meta: { sources: r.sources, cacheHit: r.cacheHit } };
     }
     case "imageSearch": {
-      const results = await searchImages(String(args.query ?? ""), Number(args.numResults) || 3);
+      const counter = ctx.imageSearchFetchedCount;
+      const already = counter?.value ?? 0;
+      if (already >= IMAGE_SEARCH_MAX_TOTAL) {
+        return {
+          content: `【图片搜索已达本次对话上限 ${IMAGE_SEARCH_MAX_TOTAL} 张，不再抓取新图片】请直接基于已有图片继续讲解。`,
+          meta: { sources: [], provider: "unsplash", limitReached: true },
+        };
+      }
+      const remaining = IMAGE_SEARCH_MAX_TOTAL - already;
+      const requested = Math.min(Math.max(Number(args.numResults) || 3, 1), 4);
+      const numResults = Math.min(requested, remaining);
+      const results = await searchImages(String(args.query ?? ""), numResults);
       if (!results.length) {
         return {
           content: `未找到「${args.query}」的相关图片。`,
           meta: { sources: [] },
         };
       }
+      if (counter) counter.value += results.length;
       const content = results
         .map(
           (r, i) =>
             `[${i + 1}] ${r.alt}\n![${r.alt}](${r.url})\nPhoto by [${r.author}](${r.source}) on [Unsplash](https://unsplash.com)`,
         )
         .join("\n\n");
+      const fetchedSoFar = counter?.value ?? results.length;
+      const quota = `（本次对话已累计抓取 ${fetchedSoFar}/${IMAGE_SEARCH_MAX_TOTAL} 张）`;
       for (const r of results) {
         trackPhotoDownload(r.downloadLocation);
       }
       return {
-        content,
+        content: content + `\n\n${quota}`,
         meta: { sources: results, provider: "unsplash" },
       };
     }

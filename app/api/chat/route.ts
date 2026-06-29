@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { buildSystemPrompt, buildLocationLine } from "@/lib/ai/prompts";
 import { getContextManager } from "@/lib/context";
 import type { ChatContext, ChatOptions } from "@/lib/types/chat";
-import { getToolDefs, runTool } from "@/lib/ai/tools";
+import { getToolDefs, runTool, IMAGE_SEARCH_MAX_TOTAL } from "@/lib/ai/tools";
 import {
   resolveProvider,
   resolveNextProvider,
@@ -285,11 +285,16 @@ export async function POST(req: NextRequest) {
           cached_tokens: number;
         } = { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0, cached_tokens: 0 };
 
+        const imageSearchFetchedCount = { value: 0 };
+
         for (let turn = 0; turn < MAX_TOOL_TURNS; turn++) {
+          const effectiveToolDefs = imageSearchFetchedCount.value >= IMAGE_SEARCH_MAX_TOTAL
+            ? toolDefs.filter((t) => t.function.name !== "imageSearch")
+            : toolDefs;
           const reqBody: Record<string, unknown> = {
             model: activeProvider.apiModelId,
             messages: convo,
-            tools: toolDefs,
+            tools: effectiveToolDefs,
             tool_choice: "auto",
             stream: true,
             stream_options: { include_usage: true },
@@ -503,6 +508,7 @@ export async function POST(req: NextRequest) {
                 categoryId,
                 itemId,
                 skills,
+                imageSearchFetchedCount,
               });
               send({ type: "tool", id: c.id, status: "result", meta: result.meta });
               convo.push({ role: "tool", tool_call_id: c.id, content: result.content });

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { User, BookOpen } from 'lucide-react';
-import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
+import { User, BookOpen, Images } from 'lucide-react';
+import type { ChatMessage as ChatMessageType, ToolCallBlock } from '@/lib/types/chat';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import ArtifactCard from '@/components/chat/ArtifactCard';
@@ -12,6 +12,8 @@ import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
 import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 import { extractThinkBlocksFromContent } from '@/lib/chat/rendering/parseChatContent';
+import { ImageStrip } from '@/components/chat/ImageStrip';
+import { ChatImage } from '@/components/chat/ChatImage';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -34,6 +36,16 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
       : [currentReasoning, pseudoReasoning].filter(Boolean).join('\n\n');
     return { ...message, reasoningContent };
   }, [isUser, message]);
+
+  const imageSearchSources = useMemo(() => {
+    if (isUser || isStreaming) return [];
+    const calls: ToolCallBlock[] = (message.toolCalls ?? []).filter(
+      (tc) => tc.name === 'imageSearch' && tc.status === 'success' && tc.sources && tc.sources.length > 0,
+    );
+    return calls.flatMap((tc) =>
+      (tc.sources ?? []).map((s) => ({ ...s, _provider: tc.provider ?? 'unsplash' })),
+    );
+  }, [isUser, isStreaming, message.toolCalls]);
 
   return (
     <div className={`chat-message ${isUser ? 'user' : 'assistant'}`}>
@@ -136,6 +148,29 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                   count={tc.imageGenCount}
                 />
               ))}
+            {imageSearchSources.length > 0 && (
+              <div className="image-search-gallery">
+                <div className="image-search-gallery-header">
+                  <Images size={13} style={{ color: 'var(--md-sys-color-primary)' }} />
+                  <span>本次搜索图片 · {imageSearchSources.length} 张</span>
+                  <span className="image-search-gallery-via">via Unsplash</span>
+                </div>
+                <ImageStrip>
+                  {imageSearchSources.map((s, i) => (
+                    <div key={i} className="image-search-gallery-item">
+                      <ChatImage src={s.url} alt={s.alt || s.title || `图片 ${i + 1}`} />
+                      <div className="image-search-gallery-credit">
+                        <a href={s.url} target="_blank" rel="noopener noreferrer">
+                          {s.title || s.alt || `图片 ${i + 1}`}
+                        </a>
+                        {' · '}
+                        <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>
+                      </div>
+                    </div>
+                  ))}
+                </ImageStrip>
+              </div>
+            )}
           </>
         )}
       </div>
