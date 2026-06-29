@@ -9,7 +9,7 @@
     "dev": "next dev -p 35349",
     "check:encoding": "node scripts/check-content-encoding.mjs",
     "gen:script-ids": "node scripts/gen-script-ids.mjs",
-    "prebuild": "node scripts/check-content-encoding.mjs && node scripts/gen-script-ids.mjs && node scripts/check-katex-chars.mjs && node scripts/check-media-sync.mjs && node scripts/check-prose-svg-rules.mjs && node scripts/run-unit-tests.mjs",
+    "prebuild": "node scripts/check-content-encoding.mjs && node scripts/gen-script-ids.mjs && node scripts/check-katex-chars.mjs && node scripts/check-recording-example-latex-escapes.mjs && node scripts/check-media-sync.mjs && node scripts/check-prose-svg-rules.mjs && node scripts/run-unit-tests.mjs",
     "build": "next build && node scripts/free-build-disk.mjs && node scripts/report-disk.mjs",
     "start": "next start -p 35349",
     "lint": "eslint .",
