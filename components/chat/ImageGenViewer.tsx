@@ -12,37 +12,26 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import { useLightbox } from "@/lib/stores/lightbox";
 import WindowChrome from "@/components/window/WindowChrome";
 
-/**
- * AI 生图独立弹窗：复用 WindowChrome / useDraggable / useResizable，与 ArtifactViewer 同级。
- * 三态切换：loading（即梦风格水彩加载）→ done（图片网格） / error（错误 + 重试）。
- *
- * 注意：硅基流动签名 URL 1 小时后失效；本组件不做下载转存（前端上的 fetch 受 CORS 限制），
- * 用户若需保存可右键另存为，或在窗口关闭前点下载按钮（用 fetch + blob 触发下载）。
- */
-export default function ImageGenViewer() {
-  const viewerId = useImageGen((s) => s.viewerId);
-  const session = useImageGen((s) =>
-    viewerId ? s.sessions[viewerId] : null,
-  );
+function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
+  const session = useImageGen((s) => s.sessions[sessionId] ?? null);
   const closeViewer = useImageGen((s) => s.closeViewer);
   const startLoading = useImageGen((s) => s.startLoading);
   const updateSession = useImageGen((s) => s.updateSession);
   const managed = useWindowManager((s) =>
-    viewerId ? s.windows.find((w) => w.id === imageGenWindowId(viewerId)) : undefined,
+    s.windows.find((w) => w.id === imageGenWindowId(sessionId)),
   );
-  const { bringToFront, commitGeometry, minimizeWindow, setFullscreen } =
-    useWindowManager();
+  const { bringToFront, commitGeometry, minimizeWindow, setFullscreen } = useWindowManager();
   const openLightbox = useLightbox((s) => s.open);
   const preExpandRef = useRef<{
     pos: { x: number; y: number };
     size: { width: number; height: number };
   } | null>(null);
-  const requestStartedRef = useRef<string | null>(null);
+  const requestStartedRef = useRef(false);
 
-  const winId = viewerId ? imageGenWindowId(viewerId) : "";
+  const winId = imageGenWindowId(sessionId);
 
   const { elRef, onPointerDown } = useDraggable((dx, dy) => {
-    if (!managed || !viewerId) return;
+    if (!managed) return;
     commitGeometry(winId, {
       pos: {
         x: Math.max(0, Math.min(managed.pos.x + dx, window.innerWidth - managed.size.width)),
@@ -53,19 +42,18 @@ export default function ImageGenViewer() {
   const onResizeStart = useResizable(
     elRef,
     (width, height) => {
-      if (viewerId) commitGeometry(winId, { size: { width, height } });
+      commitGeometry(winId, { size: { width, height } });
     },
     { minW: 380, minH: 360 },
   );
 
   useFullscreenTrack(winId, managed?.fullscreen ?? false);
 
-  // 触发实际生图请求（仅每个 session 一次；status 为 idle 时启动）
   const triggerGenerate = useCallback(
     async (sid: string) => {
       const cur = useImageGen.getState().sessions[sid];
       if (!cur) return;
-      requestStartedRef.current = sid;
+      requestStartedRef.current = true;
       startLoading(sid);
 
       try {
@@ -97,11 +85,7 @@ export default function ImageGenViewer() {
           updateSession(sid, { status: "error", error: "生图 API 返回格式异常" });
           return;
         }
-        updateSession(sid, {
-          status: "done",
-          images: data.images,
-          error: undefined,
-        });
+        updateSession(sid, { status: "done", images: data.images, error: undefined });
       } catch (err) {
         updateSession(sid, {
           status: "error",
@@ -113,20 +97,22 @@ export default function ImageGenViewer() {
   );
 
   useEffect(() => {
-    if (!viewerId || !session) return;
+    if (!session) return;
     if (session.status !== "idle") return;
-    if (requestStartedRef.current === viewerId) return;
-    void triggerGenerate(viewerId);
-  }, [viewerId, session, triggerGenerate]);
+    if (requestStartedRef.current) return;
+    void triggerGenerate(sessionId);
+  }, [session, sessionId, triggerGenerate]);
 
   useEffect(() => {
     if (!session) return;
-    const onKey = (event: KeyboardEvent) => event.key === "Escape" && closeViewer();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeViewer(sessionId);
+    };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [session, closeViewer]);
+  }, [session, sessionId, closeViewer]);
 
-  if (!session || !viewerId || !managed) return null;
+  if (!session || !managed) return null;
 
   function toggleFullscreen() {
     const current = useWindowManager.getState().windows.find((w) => w.id === winId);
@@ -150,8 +136,8 @@ export default function ImageGenViewer() {
   }
 
   const handleRetry = () => {
-    requestStartedRef.current = null;
-    void triggerGenerate(viewerId);
+    requestStartedRef.current = false;
+    void triggerGenerate(sessionId);
   };
 
   const downloadImage = async (url: string, idx: number) => {
@@ -201,7 +187,7 @@ export default function ImageGenViewer() {
       <WindowChrome
         title={session.title}
         icon={<ImagePlus size={15} />}
-        onClose={closeViewer}
+        onClose={() => closeViewer(sessionId)}
         onMinimize={() => minimizeWindow(winId)}
         onFullscreen={toggleFullscreen}
         isFullscreen={managed.fullscreen}
@@ -211,7 +197,6 @@ export default function ImageGenViewer() {
       >
         {!managed.minimized && (
           <div className="flex h-full min-h-0 flex-col">
-            {/* 提示词条 */}
             <div
               className="shrink-0 border-b px-4 py-2 text-[11.5px]"
               style={{
@@ -224,24 +209,18 @@ export default function ImageGenViewer() {
               <span className="break-words">{session.prompt}</span>
               <span
                 className="ml-2 inline-block rounded px-1 text-[10px]"
-                style={{
-                  background: "var(--md-sys-color-surface-container-high)",
-                }}
+                style={{ background: "var(--md-sys-color-surface-container-high)" }}
               >
                 {session.size} · {session.count} 张
               </span>
             </div>
 
-            {/* 主体 */}
             <div className="flex-1 min-h-0 overflow-auto">
               {isLoading && <WatercolorLoading count={placeholderCount} />}
 
               {isError && (
                 <div className="flex h-full flex-col items-center justify-center gap-3 px-6 py-8 text-center">
-                  <AlertTriangle
-                    size={36}
-                    style={{ color: "var(--md-sys-color-error)" }}
-                  />
+                  <AlertTriangle size={36} style={{ color: "var(--md-sys-color-error)" }} />
                   <div
                     className="text-[13px] font-semibold"
                     style={{ color: "var(--md-sys-color-on-surface)" }}
@@ -318,7 +297,6 @@ export default function ImageGenViewer() {
               )}
             </div>
 
-            {/* 底部操作 */}
             {isDone && (
               <div
                 className="shrink-0 border-t px-3 py-2"
@@ -385,10 +363,17 @@ export default function ImageGenViewer() {
   );
 }
 
-/**
- * 即梦风格水彩加载动画：多色块半透明流动 + 中央加载指示器。
- * 使用 CSS @keyframes 实现，保持 60fps 顺滑感。
- */
+export default function ImageGenViewerLayer() {
+  const openIds = useImageGen((s) => s.openIds);
+  return (
+    <>
+      {openIds.map((id) => (
+        <ImageGenViewerSingle key={id} sessionId={id} />
+      ))}
+    </>
+  );
+}
+
 function WatercolorLoading({ count }: { count: number }) {
   const cells = Array.from({ length: count });
   const cols = count === 1 ? 1 : 2;
@@ -433,7 +418,6 @@ function WatercolorLoading({ count }: { count: number }) {
             border: "1px solid var(--md-sys-color-outline-variant)",
           }}
         >
-          {/* 三个水彩色块，叠加产生流动晕染感 */}
           <div
             style={{
               position: "absolute",
@@ -479,7 +463,6 @@ function WatercolorLoading({ count }: { count: number }) {
               animationDelay: `${idx * 0.55}s`,
             }}
           />
-          {/* 中央加载指示器 */}
           <div
             style={{
               position: "absolute",
@@ -504,7 +487,8 @@ function WatercolorLoading({ count }: { count: number }) {
               className="text-[11.5px] font-medium"
               style={{
                 color: "var(--md-sys-color-on-surface)",
-                textShadow: "0 1px 2px color-mix(in srgb, var(--md-sys-color-surface) 60%, transparent)",
+                textShadow:
+                  "0 1px 2px color-mix(in srgb, var(--md-sys-color-surface) 60%, transparent)",
               }}
             >
               正在生成图片…

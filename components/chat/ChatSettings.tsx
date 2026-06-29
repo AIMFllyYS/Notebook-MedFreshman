@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import {
   Settings,
   X,
@@ -177,17 +177,25 @@ function ModelRow({
   onSetDefault,
   onEdit,
   onDelete,
+  isEditing,
 }: {
   model: CustomModelConfig;
   isDefaultImage?: boolean;
   onSetDefault?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
+  isEditing?: boolean;
 }) {
   const isImage = model.type === "image";
   return (
     <div
-      className="flex items-center gap-2 rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2"
+      className="flex items-center gap-2 rounded-lg border px-3 py-2"
+      style={{
+        borderColor: isEditing ? "var(--md-sys-color-primary)" : "var(--md-sys-color-outline-variant)",
+        background: isEditing
+          ? "color-mix(in srgb, var(--md-sys-color-primary) 6%, var(--md-sys-color-surface))"
+          : "var(--md-sys-color-surface)",
+      }}
     >
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
@@ -566,25 +574,22 @@ function ApiGroupCard({
   const [showKey, setShowKey] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState(group.name);
-  const [showForm, setShowForm] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
   const [editingModelId, setEditingModelId] = useState<string | null>(null);
-  const [formInitial, setFormInitial] = useState<ModelFormState>(EMPTY_FORM);
 
   const startAdd = () => {
-    setFormInitial(EMPTY_FORM);
     setEditingModelId(null);
-    setShowForm(true);
+    setShowAddForm(true);
   };
   const startEdit = (m: CustomModelConfig) => {
-    setFormInitial(modelToForm(m));
+    setShowAddForm(false);
     setEditingModelId(m.id);
-    setShowForm(true);
   };
   const handleSave = (config: CustomModelConfig) => {
     if (!config.id) return;
     if (editingModelId) onUpdateModel(editingModelId, config);
     else onAddModel(config);
-    setShowForm(false);
+    setShowAddForm(false);
     setEditingModelId(null);
   };
 
@@ -693,36 +698,45 @@ function ApiGroupCard({
             ) : (
               <div className="flex flex-col gap-1.5">
                 {group.models.map((m) => (
-                  <ModelRow
-                    key={m.id}
-                    model={m}
-                    isDefaultImage={
-                      m.type === "image" && defaultImageModelId === `custom:${m.id}`
-                    }
-                    onSetDefault={
-                      m.type === "image"
-                        ? () => onSetDefaultImage(`custom:${m.id}`)
-                        : undefined
-                    }
-                    onEdit={() => startEdit(m)}
-                    onDelete={() => {
-                      if (confirm(`删除模型 ${m.label || m.id}？`)) onRemoveModel(m.id);
-                    }}
-                  />
+                  <Fragment key={m.id}>
+                    <ModelRow
+                      model={m}
+                      isDefaultImage={
+                        m.type === "image" && defaultImageModelId === `custom:${m.id}`
+                      }
+                      onSetDefault={
+                        m.type === "image"
+                          ? () => onSetDefaultImage(`custom:${m.id}`)
+                          : undefined
+                      }
+                      onEdit={() => startEdit(m)}
+                      onDelete={() => {
+                        if (confirm(`删除模型 ${m.label || m.id}？`)) onRemoveModel(m.id);
+                      }}
+                      isEditing={editingModelId === m.id}
+                    />
+                    {editingModelId === m.id && (
+                      <div className="rounded-lg border border-[var(--md-sys-color-primary)] bg-[color-mix(in_srgb,var(--md-sys-color-primary)_4%,var(--md-sys-color-surface))] p-2.5">
+                        <ModelForm
+                          initial={modelToForm(m)}
+                          isEditing
+                          onSave={handleSave}
+                          onCancel={() => setEditingModelId(null)}
+                        />
+                      </div>
+                    )}
+                  </Fragment>
                 ))}
               </div>
             )}
           </div>
 
-          {showForm ? (
+          {showAddForm ? (
             <ModelForm
-              initial={formInitial}
-              isEditing={!!editingModelId}
+              initial={EMPTY_FORM}
+              isEditing={false}
               onSave={handleSave}
-              onCancel={() => {
-                setShowForm(false);
-                setEditingModelId(null);
-              }}
+              onCancel={() => setShowAddForm(false)}
             />
           ) : (
             <button
