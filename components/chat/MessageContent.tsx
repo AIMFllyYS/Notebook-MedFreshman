@@ -143,7 +143,7 @@ interface MessageRenderContext {
   messageId?: string;
   repairModelId?: string;
   topic?: string;
-  nextSvgBlockIndex?: () => number;
+  nextCanvasBlockIndex?: () => number;
 }
 
 /* ---- Render parsed blocks (supports nested Answer/Thinking re-parse) ---- */
@@ -193,7 +193,7 @@ const renderParsedBlock = (
       ? {
           sessionId: renderContext?.sessionId,
           messageId: renderContext?.messageId,
-          blockIndex: renderContext?.nextSvgBlockIndex?.(),
+          blockIndex: renderContext?.nextCanvasBlockIndex?.(),
           modelId: renderContext?.repairModelId,
           topic: renderContext?.topic,
         }
@@ -260,13 +260,13 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
     [preserveLineBreaks],
   );
 
-  const svgBlockCounter = { current: 0 };
+  const canvasBlockCounter = { current: 0 };
   const renderContext: MessageRenderContext = {
     sessionId,
     messageId,
     repairModelId,
     topic,
-    nextSvgBlockIndex: () => svgBlockCounter.current++,
+    nextCanvasBlockIndex: () => canvasBlockCounter.current++,
   };
 
   return (

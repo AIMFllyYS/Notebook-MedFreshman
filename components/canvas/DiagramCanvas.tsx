@@ -2,6 +2,7 @@
 
 import { CanvasBlockRenderer } from "./CanvasBlockRenderer";
 import { normalizeSvgDiagramBlock } from "@/lib/canvas/normalize";
+import type { CanvasBlock } from "@/lib/canvas/types";
 
 export type DiagramMode = "raw" | "math" | "molecule" | "html";
 
@@ -25,6 +26,7 @@ interface DiagramCanvasProps {
     topic?: string;
   };
   onRepairContent?: (svg: string) => void;
+  onRevisionAccepted?: (block: CanvasBlock) => void;
 }
 
 /**
@@ -36,14 +38,23 @@ interface DiagramCanvasProps {
  *
  * 控件（半透明/缩放/全屏）、错误降级各由具体体/上层 VizErrorBoundary 负责，本壳只做路由 + 标题。
  */
-export function DiagramCanvas({ mode, content, title, width, height, attrs = {}, repairContext, onRepairContent }: DiagramCanvasProps) {
-  void repairContext;
+export function DiagramCanvas({
+  mode,
+  content,
+  title,
+  width,
+  height,
+  attrs = {},
+  repairContext,
+  onRepairContent,
+  onRevisionAccepted,
+}: DiagramCanvasProps) {
   void onRepairContent;
   const block = normalizeSvgDiagramBlock({ ...attrs, mode, title, width, height }, content);
 
   return (
     <div className="diagram-canvas">
-      <CanvasBlockRenderer block={block} />
+      <CanvasBlockRenderer block={block} revisionTopic={repairContext?.topic} onRevisionAccepted={onRevisionAccepted} />
     </div>
   );
 }

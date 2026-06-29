@@ -9,7 +9,8 @@ import {
 } from '@/components/visualizations';
 import { DiagramCanvas, isDiagramMode } from '@/components/canvas';
 import { useChatHistory } from '@/lib/hooks/useChatHistory';
-import { replaceSvgDiagramBlock } from '@/lib/chat/rendering/svgBlockPatch';
+import { replaceCanvasBlock } from '@/lib/chat/rendering/canvasBlockPatch';
+import type { CanvasBlock } from '@/lib/canvas/types';
 
 // ----------------------------------------------------
 // ChatMessageVisualizations: 标签分发器
@@ -46,7 +47,7 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
   childrenText,
   repairContext,
 }) => {
-  const handleSvgRepair = useCallback((nextSvg: string) => {
+  const handleCanvasRevision = useCallback((nextBlock: CanvasBlock) => {
     const sessionId = repairContext?.sessionId;
     const messageId = repairContext?.messageId;
     const blockIndex = repairContext?.blockIndex;
@@ -56,7 +57,7 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
     const message = state.messagesById[sessionId]?.find((item) => item.id === messageId);
     if (!message) return;
 
-    const content = replaceSvgDiagramBlock(message.content, blockIndex, nextSvg);
+    const content = replaceCanvasBlock(message.content, blockIndex, nextBlock);
     if (content !== message.content) {
       state.updateMessage(sessionId, messageId, { content });
     }
@@ -137,7 +138,7 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
             modelId: repairContext?.modelId,
             topic: repairContext?.topic,
           }}
-          onRepairContent={handleSvgRepair}
+          onRevisionAccepted={handleCanvasRevision}
         />
       );
     }
