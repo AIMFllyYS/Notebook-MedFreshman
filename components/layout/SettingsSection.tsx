@@ -56,7 +56,7 @@ export default function SettingsSection({
       </button>
       {open && (
         <div
-          className="border-t px-3.5 py-3"
+          className="min-h-0 max-h-[50vh] overflow-y-auto overscroll-contain border-t px-3.5 py-3"
           style={{ borderColor: "var(--md-sys-color-outline-variant)" }}
         >
           {children}

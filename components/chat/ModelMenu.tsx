@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { ChevronDown, Check, Cpu } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { getModelGroupsWithCustom, getModelInfoWithCustom, CUSTOM_PREFIX } from "@/lib/ai/models";
 import { ModelIcon } from "@/components/icons/ModelBrandIcons";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 /** 模型选择下拉菜单（agent 软件风格）：硅基流动精选模型 + 自定义模型。
  *  默认读写全局 useSettings.selectedModelId；传入 value/onChange 则改为受控（供划词
@@ -46,6 +47,9 @@ export default function ModelMenu({
     setPos({ left, bottom: window.innerHeight - r.top + 6 });
   }, [open]);
 
+  const closeMenu = useCallback(() => setOpen(false), []);
+  useOverlayRegistration({ id: "model-menu", open, onClose: closeMenu, priority: 45 });
+
   useEffect(() => {
     if (!open) return;
     const onDown = (e: MouseEvent) => {
@@ -53,13 +57,8 @@ export default function ModelMenu({
         return;
       setOpen(false);
     };
-    const onEsc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onEsc);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onEsc);
-    };
+    return () => document.removeEventListener("mousedown", onDown);
   }, [open]);
 
   const pick = (id: string) => {

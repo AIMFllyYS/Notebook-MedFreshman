@@ -10,6 +10,7 @@ import { useDraggable } from "@/lib/hooks/useDraggable";
 import { useResizable } from "@/lib/hooks/useResizable";
 import WindowChrome from "@/components/window/WindowChrome";
 import { downloadHtmlFile } from "@/lib/utils/downloadHtml";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 function artifactWindowId(id: string) {
   return `artifact-viewer:${id}`;
@@ -44,12 +45,12 @@ export default function ArtifactViewer() {
 
   useFullscreenTrack(viewerId ? artifactWindowId(viewerId) : "", managed?.fullscreen ?? false);
 
-  useEffect(() => {
-    if (!art) return;
-    const onKey = (event: KeyboardEvent) => event.key === "Escape" && closeViewer();
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [art, closeViewer]);
+  useOverlayRegistration({
+    id: viewerId ? `artifact-viewer-${viewerId}` : "artifact-viewer",
+    open: !!art,
+    onClose: closeViewer,
+    priority: 30,
+  });
 
   if (!art || !viewerId || !managed) return null;
 

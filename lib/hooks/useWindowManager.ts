@@ -55,9 +55,16 @@ export type ManagedWindowInput<TData = ManagedWindowData> = Omit<
 > &
   Partial<Pick<ManagedWindow<TData>, "fullscreen" | "minimized">>;
 
+function pickNextActiveWindow(windows: ManagedWindow[], closedId: string): string | null {
+  const remaining = windows.filter((w) => w.id !== closedId && !w.minimized);
+  if (remaining.length === 0) return null;
+  return remaining.reduce((a, b) => (a.z >= b.z ? a : b)).id;
+}
+
 interface WindowManagerState {
   windows: ManagedWindow[];
   topZ: number;
+  activeWindowId: string | null;
   openWindow: <TData = ManagedWindowData>(win: ManagedWindowInput<TData>) => string;
   closeWindow: (id: string) => void;
   minimizeWindow: (id: string) => void;
@@ -80,6 +87,7 @@ function withBadges(windows: ManagedWindow[]): ManagedWindow[] {
 export const useWindowManager = create<WindowManagerState>((set) => ({
   windows: [],
   topZ: 5000,
+  activeWindowId: null,
 
   openWindow: (input) => {
     set((state) => {
@@ -100,15 +108,18 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
       const windows = existing
         ? state.windows.map((win) => (win.id === input.id ? { ...win, ...nextWindow } : win))
         : [...state.windows, nextWindow];
-      return { windows: withBadges(windows), topZ: z };
+      return { windows: withBadges(windows), topZ: z, activeWindowId: input.id };
     });
     return input.id;
   },
 
   closeWindow: (id) =>
-    set((state) => ({
-      windows: withBadges(state.windows.filter((win) => win.id !== id)),
-    })),
+    set((state) => {
+      const windows = withBadges(state.windows.filter((win) => win.id !== id));
+      const activeWindowId =
+        state.activeWindowId === id ? pickNextActiveWindow(state.windows, id) : state.activeWindowId;
+      return { windows, activeWindowId };
+    }),
 
   minimizeWindow: (id) =>
     set((state) => ({
@@ -122,6 +133,7 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
       const z = state.topZ + 1;
       return {
         topZ: z,
+        activeWindowId: id,
         windows: state.windows.map((win) =>
           win.id === id ? { ...win, minimized: false, z } : win,
         ),
@@ -133,6 +145,7 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
       const z = state.topZ + 1;
       return {
         topZ: z,
+        activeWindowId: on ? id : state.activeWindowId,
         windows: state.windows.map((win) => {
           if (win.id === id) return { ...win, fullscreen: on, minimized: false, z };
           if (on && win.fullscreen) return { ...win, fullscreen: false, minimized: true };
@@ -146,6 +159,7 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
       const z = state.topZ + 1;
       return {
         topZ: z,
+        activeWindowId: id,
         windows: state.windows.map((win) => (win.id === id ? { ...win, z } : win)),
       };
     }),

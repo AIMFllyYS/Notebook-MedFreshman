@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+import { useOverlayRegistration } from '@/lib/keyboard/useOverlayRegistration';
 
 export interface DropdownMenuItem {
   id: string;
@@ -33,6 +34,8 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
   const close = useCallback(() => setIsOpen(false), []);
 
+  useOverlayRegistration({ id: 'dropdown-menu', open: isOpen, onClose: close, priority: 40 });
+
   // Click outside to close
   useEffect(() => {
     if (!isOpen) return;
@@ -48,16 +51,6 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen, close]);
-
-  // Escape key to close
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close();
-    };
-    document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
   }, [isOpen, close]);
 
   // Position calculation

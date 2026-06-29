@@ -27,6 +27,9 @@ import MobileChapterPicker from "./MobileChapterPicker";
 import { ChatSkeleton, PageLoader } from "@/components/shared/ResizeLoader";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
 import GlobalSearchButton from "@/components/search/GlobalSearchButton";
+import KeyboardShortcutProvider from "@/components/keyboard/KeyboardShortcutProvider";
+import { formatShortcut } from "@/lib/keyboard/format";
+import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const FloatingChatLayer = dynamic(() => import("@/components/chat/FloatingChatLayer"), { ssr: false });
@@ -64,6 +67,7 @@ function TopBar({
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
   const topBarCollapsed = useStore((s) => s.topBarCollapsed);
   const toggleTopBar = useStore((s) => s.toggleTopBar);
+  const sidebarShortcutEnabled = useKeyboardSettings((s) => s.isEnabled("global.toggleSidebar"));
 
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -99,7 +103,11 @@ function TopBar({
     >
       <button
         onClick={toggleSidebar}
-        title={sidebarCollapsed ? "展开导航" : "收起导航"}
+        title={
+          sidebarShortcutEnabled
+            ? `${sidebarCollapsed ? "展开导航" : "收起导航"} ${formatShortcut("global.toggleSidebar")}`
+            : sidebarCollapsed ? "展开导航" : "收起导航"
+        }
         className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -216,7 +224,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // ── Mobile layout ──────────────────────────────────────────
   if (isMobile) {
     return (
-      <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]">
+      <KeyboardShortcutProvider>
+      <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]" data-subject={route?.subjectId ?? activeSubjectId ?? "probability"}>
         <MobileTopBar />
 
         <div className="min-h-0 flex-1 overflow-hidden">
@@ -259,12 +268,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <MessageContextMenu />
         <BillingDashboardLayer />
       </div>
+      </KeyboardShortcutProvider>
     );
   }
 
   // ── Desktop layout (unchanged) ─────────────────────────────
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined}>
+    <KeyboardShortcutProvider>
+    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-subject={route?.subjectId ?? activeSubjectId ?? "probability"}>
       <TopBar
         subjectId={route?.subjectId ?? "probability"}
         categoryId={route?.categoryId ?? "detail"}
@@ -328,5 +339,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <MessageContextMenu />
       <BillingDashboardLayer />
     </div>
+    </KeyboardShortcutProvider>
   );
 }

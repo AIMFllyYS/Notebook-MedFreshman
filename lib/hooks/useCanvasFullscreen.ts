@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 /**
  * 画布「放大查看」全屏态。
@@ -11,17 +12,18 @@ export function useCanvasFullscreen() {
   const toggle = useCallback(() => setFullscreen((v) => !v), []);
   const exit = useCallback(() => setFullscreen(false), []);
 
+  useOverlayRegistration({
+    id: "canvas-fullscreen",
+    open: fullscreen,
+    onClose: exit,
+    priority: 85,
+  });
+
   useEffect(() => {
     if (!fullscreen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setFullscreen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    // 全屏时锁定 body 滚动，退出/卸载时恢复（与 ContentPageClient 同策）。
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
-      window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
     };
   }, [fullscreen]);

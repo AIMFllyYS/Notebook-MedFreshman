@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { BookmarkCheck, MonitorPlay, MoreHorizontal, ImagePlus, PieChart } from "lucide-react";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 interface OverflowMenuProps {
   windows: ManagedWindow[];
@@ -35,21 +36,17 @@ export default function OverflowMenu({ windows, onToggle }: OverflowMenuProps) {
     });
   }, [open, windows.length]);
 
+  const closeMenu = useCallback(() => setOpen(false), []);
+  useOverlayRegistration({ id: "overflow-menu", open, onClose: closeMenu, priority: 35 });
+
   useEffect(() => {
     if (!open) return;
     const onPointerDown = (event: PointerEvent) => {
       const target = event.target as Node;
       if (!ref.current?.contains(target) && !buttonRef.current?.contains(target)) setOpen(false);
     };
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
     window.addEventListener("pointerdown", onPointerDown);
-    window.addEventListener("keydown", onKey);
-    return () => {
-      window.removeEventListener("pointerdown", onPointerDown);
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("pointerdown", onPointerDown);
   }, [open]);
 
   if (windows.length === 0) return null;

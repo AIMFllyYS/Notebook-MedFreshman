@@ -6,13 +6,19 @@ import { useRouter } from "next/navigation";
 import { ArrowUpRight, Command, Search, X } from "lucide-react";
 import { contentTree } from "@/lib/content-data";
 import { buildGlobalSearchIndex, searchGlobalIndex } from "@/lib/search/globalSearch";
+import { useGlobalSearch } from "@/lib/keyboard/useGlobalSearch";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { formatShortcut } from "@/lib/keyboard/format";
+import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 
 const SEARCH_LIMIT = 32;
 
 export default function GlobalSearchButton() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [open, setOpen] = useState(false);
+  const open = useGlobalSearch((s) => s.open);
+  const setOpen = useGlobalSearch((s) => s.setOpen);
+  const searchEnabled = useKeyboardSettings((s) => s.isEnabled("global.search"));
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
   const index = useMemo(() => buildGlobalSearchIndex(contentTree), []);
@@ -21,17 +27,12 @@ export default function GlobalSearchButton() {
     [deferredQuery, index],
   );
 
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
-        event.preventDefault();
-        setOpen(true);
-      }
-      if (event.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  useOverlayRegistration({
+    id: "global-search",
+    open,
+    onClose: () => setOpen(false),
+    priority: 80,
+  });
 
   useEffect(() => {
     if (!open) return;
@@ -45,20 +46,25 @@ export default function GlobalSearchButton() {
     router.push(href);
   };
 
+  const shortcutLabel = formatShortcut("global.search");
+
   return (
     <>
       <button
         type="button"
         onClick={() => setOpen(true)}
-        title="全局搜索 Ctrl+K"
+        title={searchEnabled ? `全局搜索 ${shortcutLabel}` : "全局搜索（快捷键已关闭）"}
         className="group relative flex h-8 min-w-0 items-center gap-2 overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--line)_76%,var(--md-sys-color-primary)_24%)] bg-[linear-gradient(120deg,color-mix(in_srgb,var(--bg-elevated)_92%,var(--md-sys-color-primary)_8%),var(--bg-panel))] px-3 text-[13px] text-[var(--ink-soft)] shadow-sm transition-colors hover:border-[var(--md-sys-color-primary)] hover:text-[var(--ink)]"
+        style={{ opacity: searchEnabled ? 1 : 0.72 }}
       >
         <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.18),transparent)] transition-transform duration-700 group-hover:translate-x-full" />
         <Search size={15} className="relative shrink-0" />
         <span className="relative hidden max-w-28 truncate lg:inline">全局搜索</span>
-        <span className="relative hidden items-center gap-0.5 rounded-md border border-[var(--line)] px-1.5 py-0.5 text-[10px] text-[var(--ink-faint)] xl:flex">
-          <Command size={10} /> K
-        </span>
+        {searchEnabled && (
+          <span className="relative hidden items-center gap-0.5 rounded-md border border-[var(--line)] px-1.5 py-0.5 text-[10px] text-[var(--ink-faint)] xl:flex">
+            <Command size={10} /> ⇧F
+          </span>
+        )}
       </button>
 
       {open && createPortal(

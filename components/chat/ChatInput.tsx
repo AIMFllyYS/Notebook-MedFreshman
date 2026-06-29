@@ -8,6 +8,7 @@ import type { ChatContext, ChatAttachment } from '@/lib/types/chat';
 import { useChatUI } from '@/lib/hooks/useChatUI';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
+import { useKeyboardSettings } from '@/lib/keyboard/useKeyboardSettings';
 import { getModelInfoWithCustom } from '@/lib/ai/models';
 import ModelMenu from '@/components/chat/ModelMenu';
 import TokenDashboard from '@/components/chat/TokenDashboard';
@@ -54,6 +55,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   );
   const effectiveEnableThinking = enableThinking && thinkingSupported;
   const effectiveQuote = disableQuote ? null : quotedText;
+  const sendShortcutEnabled = useKeyboardSettings((s) => s.isEnabled('chat.send'));
   const {
     attachments,
     addFiles,
@@ -94,6 +96,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
+      if (!sendShortcutEnabled) return;
       e.preventDefault();
       handleSend();
     }

@@ -10,6 +10,7 @@ import { useStore } from "@/lib/store";
 import { startRecord } from "@/lib/review/startRecord";
 import { currentRecordContext } from "@/lib/review/recordContext";
 import { copyTextToClipboard } from "@/lib/clipboard/copyText";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 const MENU_W = 168;
 
@@ -22,20 +23,16 @@ export default function MessageContextMenu() {
   const subjectOverride = useContextMenu((s) => s.subjectOverride);
   const closeMenu = useContextMenu((s) => s.closeMenu);
 
+  useOverlayRegistration({ id: "message-context-menu", open, onClose: closeMenu, priority: 60 });
+
   useEffect(() => {
     if (!open) return;
     const onDown = () => closeMenu();
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeMenu();
-    };
-    // 捕获阶段监听：点菜单内的按钮由 onClick 先执行，再冒泡到这里关闭
     window.addEventListener("pointerdown", onDown);
-    window.addEventListener("keydown", onKey);
     window.addEventListener("scroll", onDown, true);
     window.addEventListener("resize", onDown);
     return () => {
       window.removeEventListener("pointerdown", onDown);
-      window.removeEventListener("keydown", onKey);
       window.removeEventListener("scroll", onDown, true);
       window.removeEventListener("resize", onDown);
     };

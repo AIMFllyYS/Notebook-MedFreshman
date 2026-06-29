@@ -4,6 +4,7 @@ import { useEffect, useCallback, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { X, ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
 import { useLightbox } from "@/lib/stores/lightbox";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 export function ImageLightbox() {
   const { src, alt, close } = useLightbox();
@@ -13,25 +14,18 @@ export function ImageLightbox() {
   const dragStart = useRef({ x: 0, y: 0 });
   const panStart = useRef({ x: 0, y: 0 });
 
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-    },
-    [close],
-  );
+  useOverlayRegistration({ id: "image-lightbox", open: !!src, onClose: close, priority: 90 });
 
   useEffect(() => {
     if (src) {
-      document.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
       setZoom(1);
       setPan({ x: 0, y: 0 });
       return () => {
-        document.removeEventListener("keydown", handleKeyDown);
         document.body.style.overflow = "";
       };
     }
-  }, [src, handleKeyDown]);
+  }, [src]);
 
   const handleWheel = useCallback((e: React.WheelEvent) => {
     if (!e.ctrlKey && !e.metaKey) return;

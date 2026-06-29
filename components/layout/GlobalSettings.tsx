@@ -13,6 +13,7 @@ import {
   Repeat,
   Trash2,
   Palette,
+  Keyboard,
   Calculator,
   Atom,
   FlaskConical,
@@ -35,6 +36,10 @@ import {
 } from "@/lib/quiz-progress";
 import AppearanceSettingsControls, { APPEARANCE_LABELS } from "./AppearanceSettingsControls";
 import SettingsSection from "./SettingsSection";
+import KeyboardShortcutsSettings from "./KeyboardShortcutsSettings";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
+import { SHORTCUTS } from "@/lib/keyboard/shortcuts";
 
 const SUBJECT_ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
   Calculator,
@@ -196,6 +201,8 @@ export default function GlobalSettings({
   const [pos, setPos] = useState<PopoverPos>(() => computePos(null));
   const panelRef = useRef<HTMLDivElement>(null);
 
+  useOverlayRegistration({ id: "global-settings", open: true, onClose, priority: 50 });
+
   // 定位：打开时即算，并随窗口尺寸 / 滚动更新。
   useLayoutEffect(() => {
     const update = () => setPos(computePos(anchorRef?.current ?? null));
@@ -208,27 +215,21 @@ export default function GlobalSettings({
     };
   }, [anchorRef]);
 
-  // Esc 关闭 + 点击外部关闭（无遮罩层，靠监听实现，不影响页面交互）。
+  // 点击外部关闭（无遮罩层，靠监听实现，不影响页面交互）。Esc 由全局 overlay 栈处理。
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
     const onDown = (e: MouseEvent) => {
       const t = e.target as Node;
       if (panelRef.current?.contains(t)) return;
-      if (anchorRef?.current?.contains(t)) return; // 点按钮本身由其自身 toggle 处理
+      if (anchorRef?.current?.contains(t)) return;
       onClose();
     };
-    document.addEventListener("keydown", onKey);
     document.addEventListener("mousedown", onDown);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("mousedown", onDown);
-    };
+    return () => document.removeEventListener("mousedown", onDown);
   }, [onClose, anchorRef]);
 
   const summary = useMemo(() => getGlobalSummary(entries), [entries]);
   const groups = useMemo(() => groupBySubject(entries), [entries]);
+  const keyboardEnabledCount = useKeyboardSettings((s) => SHORTCUTS.length - s.disabledShortcuts.length);
 
   const handleClear = () => {
     if (!confirmClear) {
@@ -401,6 +402,14 @@ export default function GlobalSettings({
                 </button>
               </div>
             </div>
+          </SettingsSection>
+
+          <SettingsSection
+            title="快捷键"
+            icon={<Keyboard size={16} />}
+            summary={`已启用 ${keyboardEnabledCount} / ${SHORTCUTS.length}`}
+          >
+            <KeyboardShortcutsSettings />
           </SettingsSection>
 
           <SettingsSection

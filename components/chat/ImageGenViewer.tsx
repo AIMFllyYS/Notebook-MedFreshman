@@ -12,6 +12,7 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStore";
 import { useLightbox } from "@/lib/stores/lightbox";
 import WindowChrome from "@/components/window/WindowChrome";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
   const session = useImageGen((s) => s.sessions[sessionId] ?? null);
@@ -114,14 +115,13 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
     void triggerGenerate(sessionId);
   }, [session, sessionId, triggerGenerate]);
 
-  useEffect(() => {
-    if (!session) return;
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeViewer(sessionId);
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [session, sessionId, closeViewer]);
+  const handleCloseViewer = useCallback(() => closeViewer(sessionId), [closeViewer, sessionId]);
+  useOverlayRegistration({
+    id: `image-gen-viewer-${sessionId}`,
+    open: !!session,
+    onClose: handleCloseViewer,
+    priority: 30,
+  });
 
   if (!session || !managed) return null;
 

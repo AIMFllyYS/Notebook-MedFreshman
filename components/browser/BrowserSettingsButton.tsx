@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { Plus, Trash2, Star, Home, Globe } from "lucide-react";
 import { useBrowser } from "@/lib/hooks/useBrowser";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 /** 右侧 Tab 栏最右的「＋」功能按钮：新增收藏网址（生成固定 Tab）、管理收藏、设置主页。 */
 export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => void }) {
@@ -35,6 +36,9 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
     setPos({ top: r.bottom + 6, left });
   }, [open]);
 
+  const closePop = useCallback(() => setOpen(false), []);
+  useOverlayRegistration({ id: "browser-settings", open, onClose: closePop, priority: 42 });
+
   // 点击外部关闭
   useEffect(() => {
     if (!open) return;
@@ -46,13 +50,8 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
         return;
       setOpen(false);
     };
-    const onEsc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onEsc);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onEsc);
-    };
+    return () => document.removeEventListener("mousedown", onDown);
   }, [open]);
 
   const submit = () => {

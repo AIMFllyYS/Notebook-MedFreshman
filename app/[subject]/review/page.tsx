@@ -17,6 +17,8 @@ import type { ReviewCard } from "@/lib/review/types";
 import FlipCard from "@/components/review/FlipCard";
 import QuizMarkdown from "@/components/quiz/QuizMarkdown";
 import SelectionPopover from "@/components/notes/SelectionPopover";
+import { useReviewKeyboard } from "@/lib/keyboard/useReviewKeyboard";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 function downloadJSON(obj: unknown, filename: string) {
   const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
@@ -69,23 +71,18 @@ export default function ReviewBoardPage() {
     setFlipped(false);
   }, []);
 
-  // 键盘导航：←/→ 切卡，空格/回车翻面
+  const registerReviewKeys = useReviewKeyboard((s) => s.register);
+  const unregisterReviewKeys = useReviewKeyboard((s) => s.unregister);
+
   useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      const tag = (e.target as HTMLElement)?.tagName;
-      if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return;
-      if (e.key === "ArrowLeft") go(Math.max(0, safeIdx - 1));
-      else if (e.key === "ArrowRight") go(Math.min(cards.length - 1, safeIdx + 1));
-      else if (e.key === " " || e.key === "Enter") {
-        if (current?.status === "ready") {
-          e.preventDefault();
-          setFlipped((f) => !f);
-        }
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [cards.length, safeIdx, current?.status, go]);
+    registerReviewKeys({
+      onPrev: () => go(Math.max(0, safeIdx - 1)),
+      onNext: () => go(Math.min(cards.length - 1, safeIdx + 1)),
+      onFlip: () => setFlipped((f) => !f),
+      canFlip: current?.status === "ready",
+    });
+    return () => unregisterReviewKeys();
+  }, [cards.length, safeIdx, current?.status, go, registerReviewKeys, unregisterReviewKeys]);
 
   if (!subjectId) {
     return <CenterNote text="未知科目。" />;
@@ -357,20 +354,16 @@ function CardJumpControl({ count, index, onPick }: { count: number; index: numbe
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
+  const closeJump = useCallback(() => setOpen(false), []);
+  useOverlayRegistration({ id: "card-jump-control", open, onClose: closeJump, priority: 65 });
+
   useEffect(() => {
     if (!open) return;
     function onDocPointer(e: PointerEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
-    }
     window.addEventListener("pointerdown", onDocPointer);
-    window.addEventListener("keydown", onKey);
-    return () => {
-      window.removeEventListener("pointerdown", onDocPointer);
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("pointerdown", onDocPointer);
   }, [open]);
 
   return (

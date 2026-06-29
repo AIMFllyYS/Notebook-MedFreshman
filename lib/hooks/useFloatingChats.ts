@@ -26,6 +26,7 @@ interface OpenOpts {
 interface FloatingChatsState {
   windows: FloatingWin[];
   openWindow: (opts: OpenOpts) => string;
+  openBlankWindow: () => string;
   restoreWindow: (sessionId: string) => void;
   closeWindow: (id: string) => void;
   updateWindow: (id: string, patch: Partial<FloatingWin>) => void;
@@ -75,7 +76,8 @@ function initialGeometry(anchor: { x: number; y: number }, existingCount: number
   return { pos: { x, y }, size };
 }
 
-function floatingTitle(seedMode: SeedMode, seedText: string) {
+function floatingTitle(seedMode: SeedMode, seedText: string, blank = false) {
+  if (blank) return "AI 助手";
   const text = seedText.trim().replace(/\s+/g, " ");
   if (text) return text.length > 20 ? `${text.slice(0, 20)}...` : text;
   if (seedMode === "explain") return "AI 解释";
@@ -103,6 +105,35 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
       seedNonce: 1,
     };
     const { pos, size } = initialGeometry(opts.anchor, get().windows.length);
+    useWindowManager.getState().openWindow({
+      id,
+      type: "floating-chat",
+      title,
+      pos,
+      size,
+      data: { sessionId, modelId: FLOATING_DEFAULT_MODEL },
+    });
+    set((state) => ({ windows: [...state.windows, floatingWin] }));
+    return id;
+  },
+
+  openBlankWindow: () => {
+    const vw = typeof window !== "undefined" ? window.innerWidth : 1440;
+    const vh = typeof window !== "undefined" ? window.innerHeight : 900;
+    const sessionId = useChatHistory.getState().createSession(currentChatContext(), "floating");
+    const title = "AI 助手";
+    useChatHistory.getState().updateSessionTitle(sessionId, title);
+
+    const id = genId();
+    const floatingWin: FloatingWin = {
+      id,
+      sessionId,
+      modelId: FLOATING_DEFAULT_MODEL,
+      seedText: "",
+      seedMode: "ask",
+      seedNonce: 0,
+    };
+    const { pos, size } = initialGeometry({ x: vw / 2, y: vh / 2 }, get().windows.length);
     useWindowManager.getState().openWindow({
       id,
       type: "floating-chat",

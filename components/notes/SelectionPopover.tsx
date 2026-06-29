@@ -8,6 +8,7 @@ import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { startRecord } from "@/lib/review/startRecord";
 import { currentRecordContext } from "@/lib/review/recordContext";
 import { copyTextToClipboard, shouldInterceptSelectionCopy } from "@/lib/clipboard/copyText";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import type { SubjectId } from "@/lib/types/content";
 
 interface PopState {
@@ -144,6 +145,17 @@ export default function SelectionPopover({
   const actionTakenRef = useRef(false);
   const popTextRef = useRef("");
 
+  const closePopoverCallback = useCallback(() => {
+    closePopover(markRef, actionTakenRef, setPop, setCopied);
+  }, []);
+
+  useOverlayRegistration({
+    id: "selection-popover",
+    open: !!pop,
+    onClose: closePopoverCallback,
+    priority: 70,
+  });
+
   useLayoutEffect(() => {
     popTextRef.current = pop?.text ?? "";
   }, [pop?.text]);
@@ -190,19 +202,12 @@ export default function SelectionPopover({
   }, [containerRef]);
 
   useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        closePopover(markRef, actionTakenRef, setPop, setCopied);
-      }
-    }
     function onScroll() {
       closePopover(markRef, actionTakenRef, setPop, setCopied);
     }
-    document.addEventListener("keydown", onKey);
     const root = containerRef.current;
     root?.addEventListener("scroll", onScroll, true);
     return () => {
-      document.removeEventListener("keydown", onKey);
       root?.removeEventListener("scroll", onScroll, true);
     };
   }, [containerRef]);

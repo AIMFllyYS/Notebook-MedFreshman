@@ -41,6 +41,7 @@ describe("GlobalSettings", () => {
     renderSettings();
 
     expect(screen.getByRole("button", { name: /成绩/ })).toHaveAttribute("aria-expanded", "false");
+    expect(screen.getByRole("button", { name: /快捷键/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: /外观/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByText("清空全部成绩")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "彩色" })).not.toBeInTheDocument();
@@ -54,6 +55,16 @@ describe("GlobalSettings", () => {
 
     expect(await screen.findByText("已测章节")).toBeInTheDocument();
     expect(await screen.findByText("清空全部成绩")).toBeInTheDocument();
+  });
+
+  it("expands keyboard section and shows shortcut toggles", async () => {
+    const user = userEvent.setup();
+    renderSettings();
+
+    await user.click(screen.getByRole("button", { name: /快捷键/ }));
+
+    expect(await screen.findByText("全局搜索")).toBeInTheDocument();
+    expect(screen.getByLabelText("启用 全局搜索")).toBeInTheDocument();
   });
 
   it("expands appearance controls and applies custom color/font settings", async () => {

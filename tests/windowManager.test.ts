@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
 function resetWindowManager() {
-  useWindowManager.setState({ windows: [], topZ: 5000 });
+  useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
 }
 
 test("useWindowManager opens windows with z order and per-type badges", () => {
