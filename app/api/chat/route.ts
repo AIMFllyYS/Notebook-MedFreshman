@@ -5,14 +5,20 @@ import type { ChatContext, ChatOptions } from "@/lib/types/chat";
 import { getToolDefs, runTool } from "@/lib/ai/tools";
 import {
   resolveProvider,
-  resolveZhipuProvider,
+  resolveNextProvider,
   chatCompletionsUrl,
   thinkingBudget,
   ENV_MODEL_PRO,
   ENV_MODEL_FLASH,
   type CustomProvider,
+  type ResolvedProvider,
 } from "@/lib/ai/provider";
-import { getModelInfo } from "@/lib/ai/models";
+import { getModelInfo, getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
+import {
+  parseUpstreamErrorBody,
+  isRecoverableUpstreamFailure,
+  isFetchAbortError,
+} from "@/lib/ai/upstream";
 import { estimateTokens } from "@/lib/context/estimateTokens";
 import type { Skill } from "@/lib/types/skill";
 
@@ -70,6 +76,15 @@ export async function POST(req: NextRequest) {
   }
   const customProvider: CustomProvider | undefined =
     body.customProvider && typeof body.customProvider === "object" ? body.customProvider : undefined;
+  const customApiGroups: CustomApiGroup[] = Array.isArray(body.customApiGroups)
+    ? body.customApiGroups
+    : [];
+  const defaultImageModelId: string | null =
+    typeof body.defaultImageModelId === "string" ? body.defaultImageModelId : null;
+  const imageModeTextModel: string =
+    typeof body.imageModeTextModel === "string" ? body.imageModeTextModel : "mimo-v2.5";
+  const imageModeTextModelFallback: string =
+    typeof body.imageModeTextModelFallback === "string" ? body.imageModeTextModelFallback : "Pro/moonshotai/Kimi-K2.6";
   const disabledTools: string[] = Array.isArray(body.disabledTools)
     ? body.disabledTools.map(String)
     : [];
@@ -108,9 +123,19 @@ export async function POST(req: NextRequest) {
   };
 
   const chatCtx: ChatContext = { subjectId, categoryId, itemId, currentTopic };
-  const provider = resolveProvider(modelId, customProvider);
+
+  // 生图模式检测：用户选择了生图模型时，文本对话使用 imageModeTextModel
+  const selectedModelInfo = modelId
+    ? getModelInfoWithCustom(modelId, customApiGroups)
+    : undefined;
+  const isImageMode = selectedModelInfo?.type === "image";
+
+  // 实际用于 chat/completions 的 modelId：生图模式下切换到文本模型
+  const effectiveModelId = isImageMode ? imageModeTextModel : modelId;
+  const effectiveCustom = customApiGroups.length > 0 ? customApiGroups : customProvider;
+  const provider = resolveProvider(effectiveModelId, effectiveCustom);
   const reasoningField = provider.reasoningField;
-  const modelInfo = modelId ? getModelInfo(modelId) : undefined;
+  const modelInfo = effectiveModelId ? getModelInfo(effectiveModelId) : undefined;
   const toolDefs = getToolDefs({
     enableSearch: options.enableSearch ?? false,
     disabled: disabledTools,
@@ -231,9 +256,25 @@ export async function POST(req: NextRequest) {
           ...messages.map((m) => ({ role: m.role, content: m.content })),
         ];
 
-        let activeProvider = provider;
+        let activeProvider: ResolvedProvider = provider;
         let endpoint = chatCompletionsUrl(activeProvider.baseUrl);
-        let glmFailoverAttempted = false;
+        let imageModeFailoverAttempted = false;
+
+        const tryFailover = (): boolean => {
+          const next = resolveNextProvider(
+            activeProvider.registryId,
+            activeProvider.endpointIndex,
+            effectiveCustom,
+          );
+          if (!next) return false;
+          activeProvider = next;
+          endpoint = chatCompletionsUrl(activeProvider.baseUrl);
+          send({
+            type: "info",
+            message: `主端点不可用，已切换到备用 API（${next.apiModelId}）`,
+          });
+          return true;
+        };
 
         // 跨工具调用轮次累加 usage：每轮向 LLM 的独立请求都产生 token 消耗，
         // 必须全部累加才能反映真实计费。之前只发最后一轮导致工具场景少算 40%+。
@@ -246,7 +287,7 @@ export async function POST(req: NextRequest) {
 
         for (let turn = 0; turn < MAX_TOOL_TURNS; turn++) {
           const reqBody: Record<string, unknown> = {
-            model: activeProvider.model,
+            model: activeProvider.apiModelId,
             messages: convo,
             tools: toolDefs,
             tool_choice: "auto",
@@ -257,7 +298,7 @@ export async function POST(req: NextRequest) {
 
           // 深度思考参数（仅在模型支持思考时下发，避免不支持的端点报未知参数）。
           if (options.enableThinking) {
-            const info = activeProvider.isCustom ? undefined : getModelInfo(activeProvider.model);
+            const info = activeProvider.isCustom ? undefined : getModelInfo(activeProvider.registryId);
             const supportsThinking = activeProvider.isCustom || !info || info.thinking;
             if (supportsThinking) {
               reqBody.enable_thinking = true;
@@ -266,7 +307,7 @@ export async function POST(req: NextRequest) {
           }
 
           const abortCtrl = new AbortController();
-          const fetchTimeoutId = setTimeout(() => abortCtrl.abort(), 45000);
+          const fetchTimeoutId = setTimeout(() => abortCtrl.abort(), activeProvider.timeoutMs);
 
           let res: Response;
           try {
@@ -280,17 +321,21 @@ export async function POST(req: NextRequest) {
               signal: abortCtrl.signal,
             });
           } catch (err) {
-            // GLM-5.2 容灾降级：网络/超时失败时切换到智谱官方 API
-            if (modelId === "zai-org/GLM-5.2" && !glmFailoverAttempted) {
-              glmFailoverAttempted = true;
-              const zhipu = resolveZhipuProvider("glm-5.2");
-              if (zhipu.configured) {
-                activeProvider = zhipu;
+            // 生图模式文本模型容灾降级：Mimo v2.5 失败时切换到 Kimi K2.6
+            if (isImageMode && !imageModeFailoverAttempted) {
+              imageModeFailoverAttempted = true;
+              const fallbackProvider = resolveProvider(imageModeTextModelFallback, effectiveCustom);
+              if (fallbackProvider.configured) {
+                activeProvider = fallbackProvider;
                 endpoint = chatCompletionsUrl(activeProvider.baseUrl);
-                send({ type: "info", message: "SiliconFlow GLM-5.2 不可用，已降级到智谱官方 API" });
-                turn--; // 使用新的 provider 重试当前轮
+                send({ type: "info", message: `${imageModeTextModel} 不可用，已降级到 ${imageModeTextModelFallback}` });
+                turn--;
                 continue;
               }
+            }
+            if (isFetchAbortError(err) && tryFailover()) {
+              turn--;
+              continue;
             }
             throw err;
           } finally {
@@ -298,19 +343,24 @@ export async function POST(req: NextRequest) {
           }
 
           if (!res.ok || !res.body) {
-            // GLM-5.2 容灾降级：HTTP 错误时切换到智谱官方 API
-            if (modelId === "zai-org/GLM-5.2" && !glmFailoverAttempted) {
-              glmFailoverAttempted = true;
-              const zhipu = resolveZhipuProvider("glm-5.2");
-              if (zhipu.configured) {
-                activeProvider = zhipu;
+            const t = await res.text().catch(() => "");
+            const upstreamErr = parseUpstreamErrorBody(t);
+            // 生图模式文本模型容灾降级（HTTP 错误时）
+            if (isImageMode && !imageModeFailoverAttempted) {
+              imageModeFailoverAttempted = true;
+              const fallbackProvider = resolveProvider(imageModeTextModelFallback, effectiveCustom);
+              if (fallbackProvider.configured) {
+                activeProvider = fallbackProvider;
                 endpoint = chatCompletionsUrl(activeProvider.baseUrl);
-                send({ type: "info", message: "SiliconFlow GLM-5.2 不可用，已降级到智谱官方 API" });
-                turn--; // 使用新的 provider 重试当前轮
+                send({ type: "info", message: `${imageModeTextModel} 不可用，已降级到 ${imageModeTextModelFallback}` });
+                turn--;
                 continue;
               }
             }
-            const t = await res.text().catch(() => "");
+            if (isRecoverableUpstreamFailure(res.status, upstreamErr.errorCode) && tryFailover()) {
+              turn--;
+              continue;
+            }
             stopHeartbeat();
             send({ type: "error", message: `接口返回 ${res.status}：${t.slice(0, 300)}` });
             send({ type: "done" });
@@ -410,13 +460,20 @@ export async function POST(req: NextRequest) {
               // renderInteractive 的产物 id 随 tool call 下发，前端卡片拿到 title/prompt 后
               // 独立请求 /api/artifact 流式生成 HTML，不再阻塞主聊天 SSE。
               const artifactId = c.name === "renderInteractive" ? `art_${c.id}` : undefined;
+              // generateImage 同理：随 tool call 下发 imageGenId，前端展示批准卡片，
+              // 用户批准后独立请求 /api/image-gen 生图，不阻塞主聊天 SSE。
+              const imageGenId = c.name === "generateImage" ? `img_${c.id}` : undefined;
               send({
                 type: "tool",
                 id: c.id,
                 name: c.name,
                 args: parsed,
                 status: "call",
-                meta: artifactId ? { artifactId } : undefined,
+                meta: artifactId
+                  ? { artifactId }
+                  : imageGenId
+                    ? { imageGenId }
+                    : undefined,
               });
 
               if (c.name === "renderInteractive") {
@@ -426,6 +483,17 @@ export async function POST(req: NextRequest) {
                   role: "tool",
                   tool_call_id: c.id,
                   content: `交互演示「${title || "交互演示"}」已开始在前端独立生成。请用一两句话说明这个演示将帮助理解什么，然后继续你的讲解。`,
+                });
+                continue;
+              }
+
+              if (c.name === "generateImage") {
+                const title = String(parsed.title ?? "");
+                send({ type: "tool", id: c.id, status: "result", meta: { imageGenId } });
+                convo.push({
+                  role: "tool",
+                  tool_call_id: c.id,
+                  content: `生图请求「${title || "AI 生图"}」已提交，等待用户批准后才会实际生成。请用一两句话说明这张图将帮助理解什么，然后继续你的讲解。`,
                 });
                 continue;
               }
@@ -452,7 +520,7 @@ export async function POST(req: NextRequest) {
                   ? lastUserMsg!.content.filter((p): p is { type: "text"; text: string } => p.type === "text").map((p) => p.text).join(" ")
                   : "";
               const fuEndpoint = chatCompletionsUrl(provider.baseUrl);
-              const fuModel = provider.isCustom ? provider.model : ENV_MODEL_FLASH;
+              const fuModel = provider.isCustom ? provider.apiModelId : ENV_MODEL_FLASH;
               const fuCtrl = new AbortController();
               const fuTimer = setTimeout(() => fuCtrl.abort(), 10000);
               const fuRes = await fetch(fuEndpoint, {
