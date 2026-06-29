@@ -20,6 +20,7 @@ export const PERSIST_KEYS = {
   artifacts: "artifacts",
   skills: "skills",
   reviewCards: "review-cards",
+  imageGen: "image-gen",
 } as const;
 
 export const CHAT_SESSION_KEY_PREFIX = "chat-session:";

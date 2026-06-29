@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Clock, X, Trash2, MessageSquare } from 'lucide-react';
+import { Clock, X, Trash2, MessageSquare, ImagePlus } from 'lucide-react';
 import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { useFloatingChats } from '@/lib/hooks/useFloatingChats';
+import { useImageGen, type ImageGenSession } from '@/lib/hooks/useImageGen';
 import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 
 interface ChatHistoryOverlayProps {
@@ -14,7 +15,9 @@ interface ChatHistoryOverlayProps {
   onClose: () => void;
 }
 
-/** 历史记录面板：分「对话 / 划词」两栏；仅在打开时挂载并订阅 sessions。 */
+type TabType = 'main' | 'floating' | 'image';
+
+/** 历史记录面板：分「对话 / 划词 / 生图」三栏；仅在打开时挂载并订阅 sessions。 */
 const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
   onSelectMain,
   onRestoreFloating,
@@ -23,6 +26,9 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
   const sessions = useChatHistory((s) => s.sessionsMeta);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
   const deleteSession = useChatHistory((s) => s.deleteSession);
+  const imageSessions = useImageGen((s) => s.sessions);
+  const bringToFront = useImageGen((s) => s.bringToFront);
+  const removeSession = useImageGen((s) => s.removeSession);
 
   const handleDelete = (id: string) => {
     const fc = useFloatingChats.getState();
@@ -30,15 +36,27 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
     if (win) fc.closeWindow(win.id);
     deleteSession(id);
   };
-  const [tab, setTab] = useState<'main' | 'floating'>('main');
-  // 删除二次确认：记录待确认删除的会话 id（点删除先要求确认，避免误删历史）。
+  const [tab, setTab] = useState<TabType>('main');
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const mainSessions = sessions.filter((s) => s.kind !== 'floating');
   const floatingSessions = sessions.filter((s) => s.kind === 'floating');
+
+  const imageSessionList: ImageGenSession[] = Object.values(imageSessions).sort(
+    (a, b) => b.createdAt - a.createdAt,
+  );
+
   const isFloating = tab === 'floating';
+  const isImage = tab === 'image';
   const list = isFloating ? floatingSessions : mainSessions;
 
-  const switchTab = (t: 'main' | 'floating') => { setTab(t); setConfirmId(null); };
+  const switchTab = (t: TabType) => { setTab(t); setConfirmId(null); };
+
+  const statusLabel: Record<string, string> = {
+    done: '已完成',
+    loading: '生成中',
+    error: '失败',
+    idle: '待批准',
+  };
 
   return (
     <div className="chat-history-overlay">
@@ -53,7 +71,7 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
 
       <div className="chat-history-tabs">
         <button
-          className={`chat-history-tab ${!isFloating ? 'chat-history-tab-active' : ''}`}
+          className={`chat-history-tab ${tab === 'main' ? 'chat-history-tab-active' : ''}`}
           onClick={() => switchTab('main')}
         >
           <MessageSquare size={13} /> 对话{mainSessions.length ? ` · ${mainSessions.length}` : ''}
@@ -64,57 +82,137 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
         >
           <PencilSparklesIcon size={13} /> 划词{floatingSessions.length ? ` · ${floatingSessions.length}` : ''}
         </button>
+        <button
+          className={`chat-history-tab ${isImage ? 'chat-history-tab-active' : ''}`}
+          onClick={() => switchTab('image')}
+        >
+          <ImagePlus size={13} /> 生图{imageSessionList.length ? ` · ${imageSessionList.length}` : ''}
+        </button>
       </div>
 
       <div className="chat-history-list">
-        {list.length === 0 ? (
-          <div className="chat-history-empty">{isFloating ? '暂无划词记录' : '暂无历史记录'}</div>
-        ) : (
-          list.map((session) => (
-            <div
-              key={session.id}
-              className={`chat-history-item ${session.id === activeSessionId && !isFloating ? 'chat-history-item-active' : ''}`}
-              onClick={() => {
-                // 有待确认删除时，点击行先取消确认（不触发选择/还原），避免误操作。
-                if (confirmId) { setConfirmId(null); return; }
-                if (isFloating) onRestoreFloating(session.id);
-                else onSelectMain(session.id);
-              }}
-              title={isFloating ? '点击还原划词浮窗' : undefined}
-            >
-              <div className="chat-history-item-title">{session.title}</div>
-              <div className="chat-history-item-meta">
-                <span>{new Date(session.updatedAt).toLocaleString()}</span>
-                <span>{session.messageCount ?? 0} 条消息</span>
-              </div>
-
-              {confirmId === session.id ? (
-                <div className="chat-history-confirm" onClick={(e) => e.stopPropagation()}>
-                  <span className="chat-history-confirm-label">删除？</span>
-                  <button
-                    className="chat-history-confirm-yes"
-                    onClick={(e) => { e.stopPropagation(); handleDelete(session.id); setConfirmId(null); }}
-                  >
-                    删除
-                  </button>
-                  <button
-                    className="chat-history-confirm-no"
-                    onClick={(e) => { e.stopPropagation(); setConfirmId(null); }}
-                  >
-                    取消
-                  </button>
+        {isImage ? (
+          imageSessionList.length === 0 ? (
+            <div className="chat-history-empty">暂无生图记录</div>
+          ) : (
+            imageSessionList.map((s) => (
+              <div
+                key={s.id}
+                className="chat-history-item"
+                onClick={() => {
+                  if (confirmId) { setConfirmId(null); return; }
+                  bringToFront(s.id);
+                  onClose();
+                }}
+                title="点击查看生图弹窗"
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  {s.images.length > 0 && (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={s.images[0].url}
+                      alt={s.title}
+                      className="h-9 w-9 shrink-0 rounded object-cover"
+                      onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                    />
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <div className="chat-history-item-title">{s.title}</div>
+                    <div className="chat-history-item-meta">
+                      <span>{new Date(s.createdAt).toLocaleString()}</span>
+                      <span
+                        style={{
+                          color: s.status === 'done'
+                            ? 'var(--md-sys-color-tertiary)'
+                            : s.status === 'error'
+                              ? 'var(--md-sys-color-error)'
+                              : 'var(--md-sys-color-on-surface-variant)',
+                        }}
+                      >
+                        {statusLabel[s.status] ?? s.status}
+                        {s.status === 'done' && s.images.length > 0 && ` · ${s.images.length} 张`}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                <button
-                  onClick={(e) => { e.stopPropagation(); setConfirmId(session.id); }}
-                  className="chat-history-item-delete"
-                  title="删除"
-                >
-                  <Trash2 size={14} />
-                </button>
-              )}
-            </div>
-          ))
+
+                {confirmId === s.id ? (
+                  <div className="chat-history-confirm" onClick={(e) => e.stopPropagation()}>
+                    <span className="chat-history-confirm-label">删除？</span>
+                    <button
+                      className="chat-history-confirm-yes"
+                      onClick={(e) => { e.stopPropagation(); removeSession(s.id); setConfirmId(null); }}
+                    >
+                      删除
+                    </button>
+                    <button
+                      className="chat-history-confirm-no"
+                      onClick={(e) => { e.stopPropagation(); setConfirmId(null); }}
+                    >
+                      取消
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setConfirmId(s.id); }}
+                    className="chat-history-item-delete"
+                    title="删除"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                )}
+              </div>
+            ))
+          )
+        ) : (
+          list.length === 0 ? (
+            <div className="chat-history-empty">{isFloating ? '暂无划词记录' : '暂无历史记录'}</div>
+          ) : (
+            list.map((session) => (
+              <div
+                key={session.id}
+                className={`chat-history-item ${session.id === activeSessionId && !isFloating ? 'chat-history-item-active' : ''}`}
+                onClick={() => {
+                  if (confirmId) { setConfirmId(null); return; }
+                  if (isFloating) onRestoreFloating(session.id);
+                  else onSelectMain(session.id);
+                }}
+                title={isFloating ? '点击还原划词浮窗' : undefined}
+              >
+                <div className="chat-history-item-title">{session.title}</div>
+                <div className="chat-history-item-meta">
+                  <span>{new Date(session.updatedAt).toLocaleString()}</span>
+                  <span>{session.messageCount ?? 0} 条消息</span>
+                </div>
+
+                {confirmId === session.id ? (
+                  <div className="chat-history-confirm" onClick={(e) => e.stopPropagation()}>
+                    <span className="chat-history-confirm-label">删除？</span>
+                    <button
+                      className="chat-history-confirm-yes"
+                      onClick={(e) => { e.stopPropagation(); handleDelete(session.id); setConfirmId(null); }}
+                    >
+                      删除
+                    </button>
+                    <button
+                      className="chat-history-confirm-no"
+                      onClick={(e) => { e.stopPropagation(); setConfirmId(null); }}
+                    >
+                      取消
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setConfirmId(session.id); }}
+                    className="chat-history-item-delete"
+                    title="删除"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                )}
+              </div>
+            ))
+          )
         )}
       </div>
     </div>

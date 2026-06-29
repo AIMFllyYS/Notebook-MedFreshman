@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { idbStorage, PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
 export type ImageGenStatus = "idle" | "loading" | "done" | "error";
@@ -26,6 +28,8 @@ export interface ImageGenSessionInit {
 interface ImageGenState {
   openIds: string[];
   sessions: Record<string, ImageGenSession>;
+  _hasHydrated: boolean;
+  _setHasHydrated: (v: boolean) => void;
 
   openViewer: (init: ImageGenSessionInit) => void;
   closeViewer: (id: string) => void;
@@ -56,91 +60,121 @@ function imageGenWindowGeometry() {
   };
 }
 
-export const useImageGen = create<ImageGenState>((set, get) => ({
-  openIds: [],
-  sessions: {},
+export const useImageGen = create<ImageGenState>()(
+  persist(
+    (set, get) => ({
+      openIds: [],
+      sessions: {},
+      _hasHydrated: false,
+      _setHasHydrated: (v) => set({ _hasHydrated: v }),
 
-  openViewer: (init) => {
-    const id = init.id;
-    const existing = get().sessions[id];
-    const isAlreadyOpen = get().openIds.includes(id);
+      openViewer: (init) => {
+        const id = init.id;
+        const existing = get().sessions[id];
+        const isAlreadyOpen = get().openIds.includes(id);
 
-    const session: ImageGenSession = existing ?? {
-      id,
-      prompt: init.prompt,
-      title: init.title || "AI 生图",
-      size: init.size || "1024x1024",
-      count: init.count || 1,
-      status: "idle",
-      images: [],
-      createdAt: Date.now(),
-    };
+        const session: ImageGenSession = existing ?? {
+          id,
+          prompt: init.prompt,
+          title: init.title || "AI 生图",
+          size: init.size || "1024x1024",
+          count: init.count || 1,
+          status: "idle",
+          images: [],
+          createdAt: Date.now(),
+        };
 
-    const { pos, size } = imageGenWindowGeometry();
-    useWindowManager.getState().openWindow({
-      id: imageGenWindowId(id),
-      type: "image-gen-viewer",
-      title: session.title,
-      pos,
-      size,
-      data: { imageGenId: id },
-    });
+        const { pos, size } = imageGenWindowGeometry();
+        useWindowManager.getState().openWindow({
+          id: imageGenWindowId(id),
+          type: "image-gen-viewer",
+          title: session.title,
+          pos,
+          size,
+          data: { imageGenId: id },
+        });
 
-    set((state) => ({
-      openIds: isAlreadyOpen ? state.openIds : [...state.openIds, id],
-      sessions: { ...state.sessions, [id]: session },
-    }));
-  },
+        set((state) => ({
+          openIds: isAlreadyOpen ? state.openIds : [...state.openIds, id],
+          sessions: { ...state.sessions, [id]: session },
+        }));
+      },
 
-  closeViewer: (id) => {
-    useWindowManager.getState().closeWindow(imageGenWindowId(id));
-    set((state) => ({
-      openIds: state.openIds.filter((oid) => oid !== id),
-    }));
-  },
+      closeViewer: (id) => {
+        useWindowManager.getState().closeWindow(imageGenWindowId(id));
+        set((state) => ({
+          openIds: state.openIds.filter((oid) => oid !== id),
+        }));
+      },
 
-  bringToFront: (id) => {
-    const winMgr = useWindowManager.getState();
-    const win = winMgr.windows.find((w) => w.id === imageGenWindowId(id));
-    if (win?.minimized) winMgr.restoreWindow(imageGenWindowId(id));
-    else winMgr.bringToFront(imageGenWindowId(id));
+      bringToFront: (id) => {
+        const winMgr = useWindowManager.getState();
+        const win = winMgr.windows.find((w) => w.id === imageGenWindowId(id));
 
-    set((state) => ({
-      openIds: state.openIds.includes(id) ? state.openIds : [...state.openIds, id],
-    }));
-  },
+        if (!win) {
+          const session = get().sessions[id];
+          if (!session) return;
+          const { pos, size } = imageGenWindowGeometry();
+          winMgr.openWindow({
+            id: imageGenWindowId(id),
+            type: "image-gen-viewer",
+            title: session.title,
+            pos,
+            size,
+            data: { imageGenId: id },
+          });
+        } else if (win.minimized) {
+          winMgr.restoreWindow(imageGenWindowId(id));
+        } else {
+          winMgr.bringToFront(imageGenWindowId(id));
+        }
 
-  startLoading: (id) =>
-    set((state) => {
-      const cur = state.sessions[id];
-      if (!cur) return state;
-      return {
-        sessions: {
-          ...state.sessions,
-          [id]: { ...cur, status: "loading", error: undefined },
-        },
-      };
+        set((state) => ({
+          openIds: state.openIds.includes(id) ? state.openIds : [...state.openIds, id],
+        }));
+      },
+
+      startLoading: (id) =>
+        set((state) => {
+          const cur = state.sessions[id];
+          if (!cur) return state;
+          return {
+            sessions: {
+              ...state.sessions,
+              [id]: { ...cur, status: "loading", error: undefined },
+            },
+          };
+        }),
+
+      updateSession: (id, patch) =>
+        set((state) => {
+          const cur = state.sessions[id];
+          if (!cur) return state;
+          return {
+            sessions: { ...state.sessions, [id]: { ...cur, ...patch } },
+          };
+        }),
+
+      removeSession: (id) =>
+        set((state) => {
+          const next = { ...state.sessions };
+          delete next[id];
+          useWindowManager.getState().closeWindow(imageGenWindowId(id));
+          return {
+            sessions: next,
+            openIds: state.openIds.filter((oid) => oid !== id),
+          };
+        }),
     }),
-
-  updateSession: (id, patch) =>
-    set((state) => {
-      const cur = state.sessions[id];
-      if (!cur) return state;
-      return {
-        sessions: { ...state.sessions, [id]: { ...cur, ...patch } },
-      };
-    }),
-
-  removeSession: (id) =>
-    set((state) => {
-      const next = { ...state.sessions };
-      delete next[id];
-      useWindowManager.getState().closeWindow(imageGenWindowId(id));
-      return {
-        sessions: next,
-        openIds: state.openIds.filter((oid) => oid !== id),
-      };
-    }),
-}));
+    {
+      name: PERSIST_KEYS.imageGen,
+      storage: createJSONStorage(() => idbStorage),
+      partialize: (s) => ({ sessions: s.sessions }),
+      onRehydrateStorage: () => (state) => {
+        state?._setHasHydrated(true);
+      },
+    },
+  ),
+);
 
 export { imageGenWindowId };
