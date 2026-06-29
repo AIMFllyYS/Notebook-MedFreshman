@@ -1,0 +1,420 @@
+{
+  "subjectId": "physics",
+  "chapterId": "ch01",
+  "generatedAt": "2026-06-29",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md",
+    "totalPoints": 100,
+    "timeLimit": 60
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于**质点**模型，下列说法正确的是（　）。",
+      "options": [
+        "当物体的大小和形状在所研究的问题中可以忽略时，可将其抽象为质点",
+        "质点是只具有质量、没有大小和形状的实际物体",
+        "研究地球自转时，可把地球看成质点",
+        "只有做直线运动的物体才能看成质点"
+      ],
+      "answer": 0,
+      "hint": "质点是理想模型，关键看研究问题中大小和形状是否可忽略。",
+      "explanation": "A 正确。质点是忽略大小和形状、只保留质量的理想模型，当物体的大小形状可忽略或只做平动时可视为质点。B 错：质点是理想模型，不是实际物体。C 错：研究地球自转时必须考虑地球的形状和大小。D 错：曲线运动中若大小形状可忽略也可视为质点，如研究地球公转。",
+      "sourceRef": {
+        "path": "content/physics/detail/1.1.md",
+        "label": "1.1 质点运动学 · 质点模型"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "质点沿半径为 $R$ 的圆周运动一周后回到出发点，下列说法正确的是（　）。",
+      "options": [
+        "位移为零，路程为 $2\\pi R$",
+        "位移大小为 $2\\pi R$，路程为 $2\\pi R$",
+        "位移为零，路程也为零",
+        "位移大小为 $2R$，路程为 $2\\pi R$"
+      ],
+      "answer": 0,
+      "hint": "位移只看初末位置，路程看实际轨迹。",
+      "explanation": "A 正确。圆周运动一周后回到出发点，初末位置相同，位移 $\\Delta\\vec r=0$；路程为圆周周长 $2\\pi R$。B 错：位移不是 $2\\pi R$。C 错：路程不为零。D 错：位移大小为零，不是直径 $2R$；该选项把半圆与整圆混淆。",
+      "sourceRef": {
+        "path": "content/physics/detail/1.1.md",
+        "label": "1.1 质点运动学 · 位移与路程"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于速度和加速度的关系，下列说法正确的是（　）。",
+      "options": [
+        "加速度描述速度变化的快慢，与速度本身大小无直接关系",
+        "加速度减小，速度一定减小",
+        "速度很大时，加速度一定很大",
+        "速度为零时，加速度一定为零"
+      ],
+      "answer": 0,
+      "hint": "加速度反映速度的变化率，方向与速度方向的关系决定加速还是减速。",
+      "explanation": "A 正确。加速度 $\\vec a=\\mathrm d\\vec v/\\mathrm dt$ 描述速度变化的快慢和方向，与速度大小无必然联系。B 错：加速度与速度同向时，即使加速度减小，速度仍在增大。C 错：高速匀速飞行的飞机速度很大但加速度为零。D 错：竖直上抛物体到达最高点时速度为零，但加速度仍为 $g$。",
+      "sourceRef": {
+        "path": "content/physics/detail/1.1.md",
+        "label": "1.1 质点运动学 · 速度与加速度"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "质点做变速圆周运动时，加速度可分解为切向加速度 $a_t$ 和法向加速度 $a_n$，它们的作用是（　）。",
+      "options": [
+        "$a_t$ 改变速度大小，$a_n$ 改变速度方向",
+        "$a_t$ 改变速度方向，$a_n$ 改变速度大小",
+        "$a_t$ 和 $a_n$ 都改变速度大小",
+        "$a_t$ 和 $a_n$ 都改变速度方向"
+      ],
+      "answer": 0,
+      "hint": "切向沿速度方向，法向指向圆心。哪个分量与速度方向一致？",
+      "explanation": "A 正确。切向加速度 $a_t=\\mathrm dv/\\mathrm dt$ 沿速度方向，改变速度大小；法向加速度 $a_n=v^2/R$ 指向圆心，与速度垂直，只改变速度方向。B 把两者作用说反。C、D 混淆了加速度分量的物理意义。总加速度大小为 $a=\\sqrt{a_t^2+a_n^2}$。",
+      "sourceRef": {
+        "path": "content/physics/detail/1.1.md",
+        "label": "1.1 质点运动学 · 圆周运动的加速度"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于牛顿运动定律和惯性系，下列说法正确的是（　）。",
+      "options": [
+        "相对地面静止或做匀速直线运动的参考系可近似看作惯性系",
+        "牛顿第一定律在所有参考系中都成立",
+        "惯性力是真实存在的相互作用力，有反作用力",
+        "物体所受合外力为零时，一定处于静止状态"
+      ],
+      "answer": 0,
+      "hint": "惯性系中牛顿定律成立；惯性力是为在非惯性系中形式上使用牛顿定律而引入的。",
+      "explanation": "A 正确。地面及相对地面静止或匀速直线运动的参考系可近似视为惯性系。B 错：牛顿第一定律只在惯性系中成立，加速参考系中会出现假想力。C 错：惯性力不是物体间的真实相互作用，没有施力物体，也没有反作用力。D 错：合外力为零时物体保持静止或匀速直线运动状态。",
+      "sourceRef": {
+        "path": "content/physics/detail/1.2.md",
+        "label": "1.2 牛顿定律与动量 · 惯性系"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于**动量守恒定律**，下列说法正确的是（　）。",
+      "options": [
+        "系统所受合外力为零时，系统总动量保持不变",
+        "内力可以改变系统的总动量",
+        "系统动量守恒时，系统内每个质点都必须静止",
+        "只要系统内没有摩擦，系统动量就一定守恒"
+      ],
+      "answer": 0,
+      "hint": "内力成对出现、大小相等方向相反，其矢量和为零；动量守恒只看合外力。",
+      "explanation": "A 正确。由质点系动量定理，合外力为零时总动量不变。B 错：内力只能改变系统内各质点的动量分配，不能改变总动量。C 错：动量守恒时各质点仍可运动，只是总动量不变。D 错：无摩擦只是没有非保守内力，但系统若受外力（如重力、支持力）合外力不为零，动量不守恒。",
+      "sourceRef": {
+        "path": "content/physics/detail/1.2.md",
+        "label": "1.2 牛顿定律与动量 · 动量守恒定律"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于**保守力**与势能，下列说法正确的是（　）。",
+      "options": [
+        "保守力做功只与始末位置有关，与路径无关",
+        "滑动摩擦力是保守力",
+        "势能是单个质点独有的属性",
+        "保守力沿任意路径做功都大于零"
+      ],
+      "answer": 0,
+      "hint": "保守力沿闭合路径做功为零；势能属于相互作用的系统。",
+      "explanation": "A 正确。保守力做功与路径无关，只取决于初末位置，如重力、弹簧弹力、万有引力。B 错：滑动摩擦力做功与路径有关，是非保守力。C 错：势能属于系统，如重力势能属于物体—地球系统，弹性势能属于弹簧—物体系统。D 错：保守力做功可正可负，取决于力与位移方向的夹角。",
+      "sourceRef": {
+        "path": "content/physics/detail/1.3.md",
+        "label": "1.3 功、能与碰撞 · 保守力与势能"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "质量为 $m$ 的小球以速度 $v$ 与静止的质量为 $M$ 的小球发生**完全弹性对心碰撞**。若 $m=M$，则碰后两球速度分别为（　）。",
+      "options": [
+        "$m$ 静止，$M$ 以 $v$ 运动",
+        "$m$ 以 $v/2$ 运动，$M$ 以 $v/2$ 运动",
+        "$m$ 以 $-v$ 反弹，$M$ 静止",
+        "两球粘在一起以 $v/2$ 运动"
+      ],
+      "answer": 0,
+      "hint": "完全弹性碰撞 $e=1$；等质量弹性对心碰撞会交换速度。",
+      "explanation": "A 正确。对完全弹性对心碰撞，当 $m=M$ 时，入射球把全部动量和动能传给静止球，自身静止，靶球以入射球原速运动。B 是完全非弹性碰撞的结果。C 相当于靶球质量极大（如墙壁）的情形。D 也是完全非弹性碰撞（$e=0$）的结果，动量守恒但动能损失最大。",
+      "sourceRef": {
+        "path": "content/physics/detail/1.3.md",
+        "label": "1.3 功、能与碰撞 · 恢复系数与弹性碰撞"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "花样滑冰运动员收紧双臂后转速加快，其物理本质是（　）。",
+      "options": [
+        "转动惯量减小，角动量守恒使角速度增大",
+        "角动量增大，角速度增大",
+        "转动惯量增大，角速度增大",
+        "机械能守恒使角速度增大"
+      ],
+      "answer": 0,
+      "hint": "合外力矩为零时 $L=J\\omega$ 守恒；收紧双臂改变质量分布。",
+      "explanation": "A 正确。运动员所受外力矩近似为零，角动量 $L=J\\omega$ 守恒；收紧双臂使质量靠近转轴，转动惯量 $J$ 减小，因此角速度 $\\omega$ 增大。B 错：角动量守恒，不增大。C 错：收紧双臂 $J$ 减小而非增大。D 错：手臂肌肉内力做功，机械能不守恒，转动动能实际增加。",
+      "sourceRef": {
+        "path": "content/physics/detail/1.4.md",
+        "label": "1.4 刚体转动与弹性 · 角动量守恒"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "两根长度、横截面积均相同的金属丝，分别受相同拉力。已知甲的杨氏模量是乙的 $2$ 倍，则它们的伸长量之比 $\\Delta l_甲 : \\Delta l_乙$ 为（　）。",
+      "options": [
+        "$1:2$",
+        "$2:1$",
+        "$1:1$",
+        "$1:4$"
+      ],
+      "answer": 0,
+      "hint": "由 $Y = \\dfrac{l_0 F}{S \\Delta l}$，在 $F$、$l_0$、$S$ 相同的情况下，$\\Delta l$ 与 $Y$ 成反比。",
+      "explanation": "A 正确。由杨氏模量定义 $Y=\\dfrac{l_0 F}{S\\Delta l}$，得 $\\Delta l=\\dfrac{l_0 F}{SY}$。当 $l_0$、$F$、$S$ 相同时，$\\Delta l\\propto 1/Y$。因 $Y_甲=2Y_乙$，故 $\\Delta l_甲/\\Delta l_乙=Y_乙/Y_甲=1/2$。B 把正比关系说反；C 忽略了杨氏模量对形变的影响；D 误用了平方关系。",
+      "sourceRef": {
+        "path": "content/physics/detail/1.4.md",
+        "label": "1.4 刚体转动与弹性 · 杨氏模量"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 8,
+      "total_points": 8,
+      "stem": "质点沿半径 $R=2.0\\,\\mathrm{m}$ 的圆周运动，路程与时间的关系为 $s=2t+t^2$（$s$ 单位为 $\\mathrm{m}$，$t$ 单位为 $\\mathrm{s}$）。求 $t=1.0\\,\\mathrm{s}$ 时的：（1）瞬时速率；（2）切向加速度；（3）法向加速度；（4）总加速度大小。",
+      "answer": "**解：**\n\n1. 瞬时速率\n$$v=\\frac{\\mathrm{d}s}{\\mathrm{d}t}=2+2t$$\n$t=1.0\\,\\mathrm{s}$ 时，$v_1=2+2\\times1.0=4.0\\,\\mathrm{m/s}$。\n\n2. 切向加速度\n$$a_t=\\frac{\\mathrm{d}v}{\\mathrm{d}t}=2.0\\,\\mathrm{m/s^2}$$\n\n3. 法向加速度\n$$a_n=\\frac{v_1^2}{R}=\\frac{4.0^2}{2.0}=8.0\\,\\mathrm{m/s^2}$$\n\n4. 总加速度大小\n$$a=\\sqrt{a_t^2+a_n^2}=\\sqrt{2.0^2+8.0^2}=\\sqrt{68}\\approx 8.25\\,\\mathrm{m/s^2}$$\n\n**答：** $v_1=4.0\\,\\mathrm{m/s}$，$a_t=2.0\\,\\mathrm{m/s^2}$，$a_n=8.0\\,\\mathrm{m/s^2}$，$a\\approx 8.25\\,\\mathrm{m/s^2}$。",
+      "hint": "速率是路程对时间的导数；切向加速度是速率对时间的导数；法向加速度为 $v^2/R$。",
+      "explanation": "本题考查圆周运动的线量与角量关系。已知路程函数 $s(t)$，先求导得瞬时速率 $v(t)$，再求导得切向加速度 $a_t$；法向加速度由 $a_n=v^2/R$ 给出；最后合成总加速度。注意区分切向加速度（改变速度大小）和法向加速度（改变速度方向）。",
+      "scoring_criteria": [
+        "正确求出瞬时速率 $v_1=4.0\\,\\mathrm{m/s}$（2分）",
+        "正确求出切向加速度 $a_t=2.0\\,\\mathrm{m/s^2}$（2分）",
+        "正确求出法向加速度 $a_n=8.0\\,\\mathrm{m/s^2}$（2分）",
+        "正确合成总加速度 $a\\approx 8.25\\,\\mathrm{m/s^2}$（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/1.1.md",
+        "label": "1.1 质点运动学 · 圆周运动的加速度"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 8,
+      "total_points": 8,
+      "stem": "雨滴相对地面竖直下落，速度大小为 $v$。一辆汽车以速度 $u$ 在水平直路上向前行驶。求车上乘客观察到雨滴的速度大小及方向（用与竖直方向的夹角 $\\theta$ 表示）。",
+      "answer": "**解：**\n\n以地面为静止参考系 $S$，汽车为运动参考系 $S'$，$S'$ 相对 $S$ 以速度 $u$ 水平向前运动。设竖直向下为正方向，则雨滴相对地面的速度为 $\\vec v=v\\vec j$，汽车相对地面的速度为 $\\vec u=u\\vec i$。\n\n由伽利略速度变换 $\\vec v=\\vec v'+\\vec u$，得雨滴相对汽车的速度\n$$\\vec v'=\\vec v-\\vec u=v\\vec j-u\\vec i$$\n\n速度大小\n$$v'=\\sqrt{u^2+v^2}$$\n\n设 $\\vec v'$ 与竖直方向夹角为 $\\theta$，则\n$$\\tan\\theta=\\frac{u}{v},\\quad \\theta=\\arctan\\frac{u}{v}$$\n方向为斜向后下方（相对汽车观察）。\n\n**答：** 雨滴相对汽车的速度大小为 $\\sqrt{u^2+v^2}$，与竖直方向夹角 $\\theta=\\arctan(u/v)$，斜向后下方。",
+      "hint": "注意速度变换 $\\vec v=\\vec v'+\\vec u$ 是矢量式；乘客观察到的雨滴速度是相对汽车的速度。",
+      "explanation": "本题考查伽利略速度变换。地面参考系中雨滴竖直下落，汽车水平前进，因此雨滴相对汽车除了竖直向下的分速度 $v$ 外，还有水平向后的分速度 $u$。合成后速度大小为 $\\sqrt{u^2+v^2}$，方向斜向后下方。常见错误是直接把 $u$ 与 $v$ 代数相加或相减，忽略速度的矢量性。",
+      "scoring_criteria": [
+        "正确写出伽利略速度变换关系（2分）",
+        "正确给出雨滴相对汽车速度的分量表达式（2分）",
+        "正确求出速度大小 $\\sqrt{u^2+v^2}$（2分）",
+        "正确给出方向 $\\theta=\\arctan(u/v)$ 并说明斜向后下方（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/1.1.md",
+        "label": "1.1 质点运动学 · 相对运动"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "质量 $m=2.0\\,\\mathrm{kg}$ 的物体置于水平地面上，受到与水平方向成 $\\theta=37^\\circ$ 斜向上的拉力 $F=10\\,\\mathrm{N}$ 作用。物体与地面间的动摩擦因数 $\\mu=0.20$。取 $g=10\\,\\mathrm{m/s^2}$，$\\sin37^\\circ=0.6$，$\\cos37^\\circ=0.8$。求：（1）地面对物体的支持力；（2）物体所受摩擦力；（3）物体的加速度。",
+      "answer": "**解：**\n\n对物体进行受力分析：重力 $mg$ 竖直向下，拉力 $F$ 斜向上，支持力 $N$ 竖直向上，滑动摩擦力 $f$ 水平向后。\n\n1. 竖直方向合力为零：\n$$N+F\\sin\\theta=mg$$\n$$N=mg-F\\sin\\theta=2.0\\times10-10\\times0.6=14\\,\\mathrm{N}$$\n\n2. 滑动摩擦力\n$$f=\\mu N=0.20\\times14=2.8\\,\\mathrm{N}$$\n\n3. 水平方向由牛顿第二定律：\n$$F\\cos\\theta-f=ma$$\n$$a=\\frac{F\\cos\\theta-f}{m}=\\frac{10\\times0.8-2.8}{2.0}=\\frac{5.2}{2.0}=2.6\\,\\mathrm{m/s^2}$$\n方向水平向前。\n\n**答：**（1）$N=14\\,\\mathrm{N}$；（2）$f=2.8\\,\\mathrm{N}$；（3）$a=2.6\\,\\mathrm{m/s^2}$，方向水平向前。",
+      "hint": "将拉力分解为水平和竖直分量；竖直方向平衡求支持力，再用 $f=\\mu N$ 求摩擦力；水平方向用牛顿第二定律。",
+      "explanation": "本题是牛顿定律在斜向力作用下的典型应用。拉力竖直分量会减小正压力，从而减小摩擦力。解题关键是正确进行受力分析、建立水平和竖直方向的方程。常见错误：直接用 $f=\\mu mg$ 计算摩擦力，忽略了拉力竖直分量对支持力的影响。",
+      "scoring_criteria": [
+        "正确进行受力分析并画出或说明各力（2分）",
+        "正确求出支持力 $N=14\\,\\mathrm{N}$（2分）",
+        "正确求出摩擦力 $f=2.8\\,\\mathrm{N}$（2分）",
+        "正确列出水平方向牛顿第二定律方程并求得加速度 $a=2.6\\,\\mathrm{m/s^2}$（4分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/1.2.md",
+        "label": "1.2 牛顿定律与动量 · 牛顿第二定律应用"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "质量 $m=0.50\\,\\mathrm{kg}$ 的小球以水平速度 $v_0=10\\,\\mathrm{m/s}$ 射入静止在光滑水平面上的木块，木块质量 $M=2.0\\,\\mathrm{kg}$。小球嵌入木块后与木块一起运动。求：（1）碰撞后共同速度的大小；（2）碰撞过程中系统损失的机械能。",
+      "answer": "**解：**\n\n以小球和木块为系统，水平方向不受外力，动量守恒。设共同速度为 $v$，方向与 $v_0$ 相同。\n\n1. 由动量守恒\n$$mv_0=(m+M)v$$\n$$v=\\frac{mv_0}{m+M}=\\frac{0.50\\times10}{0.50+2.0}=\\frac{5.0}{2.5}=2.0\\,\\mathrm{m/s}$$\n\n2. 碰撞前系统动能\n$$E_{k1}=\\frac{1}{2}mv_0^2=\\frac{1}{2}\\times0.50\\times10^2=25\\,\\mathrm{J}$$\n\n碰撞后系统动能\n$$E_{k2}=\\frac{1}{2}(m+M)v^2=\\frac{1}{2}\\times2.5\\times2.0^2=5.0\\,\\mathrm{J}$$\n\n损失的机械能\n$$\\Delta E=E_{k1}-E_{k2}=25-5.0=20\\,\\mathrm{J}$$\n\n**答：**（1）共同速度 $v=2.0\\,\\mathrm{m/s}$；（2）损失机械能 $\\Delta E=20\\,\\mathrm{J}$。",
+      "hint": "完全非弹性碰撞动量守恒但机械能不守恒；损失的机械能等于初末动能之差。",
+      "explanation": "本题是完全非弹性碰撞（$e=0$）的典型问题。系统水平方向动量守恒，因小球嵌入木块，末态两者速度相同。碰撞中部分动能转化为内能、形变能等，机械能损失 $\\Delta E=20\\,\\mathrm{J}$。常见错误：误用机械能守恒直接求末速度，或漏算木块初始动能为零。",
+      "scoring_criteria": [
+        "正确判断水平方向动量守恒（2分）",
+        "正确列出动量守恒方程并求得共同速度 $v=2.0\\,\\mathrm{m/s}$（3分）",
+        "正确计算碰撞前、后动能（3分）",
+        "正确求出机械能损失 $\\Delta E=20\\,\\mathrm{J}$（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/1.2.md",
+        "label": "1.2 牛顿定律与动量 · 动量守恒定律"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "质量 $m=2.0\\,\\mathrm{kg}$ 的物块以初速度 $v_0=3.0\\,\\mathrm{m/s}$ 在粗糙水平面上运动，动摩擦因数 $\\mu=0.10$，随后压缩一轻弹簧。已知弹簧劲度系数 $k=200\\,\\mathrm{N/m}$，取 $g=10\\,\\mathrm{m/s^2}$。求弹簧的最大压缩量。",
+      "answer": "**解：**\n\n设弹簧最大压缩量为 $x$。从物块开始接触弹簧到弹簧压缩量最大的过程中，初态动能为 $\\frac{1}{2}mv_0^2$，末态动能为 $0$。摩擦力做负功，弹簧弹力做负功（弹性势能增加）。由功能原理\n$$\\frac{1}{2}kx^2+\\mu mgx=\\frac{1}{2}mv_0^2$$\n\n代入数据：\n$$\\frac{1}{2}\\times200\\times x^2+0.10\\times2.0\\times10\\times x=\\frac{1}{2}\\times2.0\\times3.0^2$$\n$$100x^2+2x-9=0$$\n\n解得\n$$x=\\frac{-2+\\sqrt{4+3600}}{200}=\\frac{-2+\\sqrt{3604}}{200}\\approx\\frac{-2+60.03}{200}\\approx 0.29\\,\\mathrm{m}$$\n\n（舍去负根）\n\n**答：** 弹簧最大压缩量约为 $0.29\\,\\mathrm{m}$。",
+      "hint": "最大压缩时物块速度为零；用功能原理或能量守恒（计入摩擦耗散）列方程，注意会得到一元二次方程。",
+      "explanation": "本题综合动能定理、弹性势能和摩擦力做功。由于存在摩擦力，系统机械能不守恒，应使用功能原理：初始动能转化为弹簧弹性势能和摩擦耗散。注意弹簧压缩过程中摩擦力随位移做功 $\\mu mgx$，最终得到关于 $x$ 的一元二次方程。常见错误：忽略摩擦力，直接用 $\\frac{1}{2}mv_0^2=\\frac{1}{2}kx^2$ 计算，会得出偏大的结果。",
+      "scoring_criteria": [
+        "正确分析过程并判断最大压缩时速度为零（2分）",
+        "正确写出功能原理方程 $\\frac{1}{2}kx^2+\\mu mgx=\\frac{1}{2}mv_0^2$（3分）",
+        "正确整理出一元二次方程并求解（3分）",
+        "正确舍去负根并给出结果 $x\\approx0.29\\,\\mathrm{m}$（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/1.3.md",
+        "label": "1.3 功、能与碰撞 · 功能原理与机械能守恒"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "质量 $m_1=2.0\\,\\mathrm{kg}$ 的小球以速度 $v_{10}=5.0\\,\\mathrm{m/s}$ 与静止的质量 $m_2=3.0\\,\\mathrm{kg}$ 的小球发生一维碰撞。已知恢复系数 $e=0.60$。求：（1）碰后两球的速度；（2）碰撞过程中系统损失的机械能。",
+      "answer": "**解：**\n\n取 $v_{10}$ 方向为正方向，$v_{20}=0$。\n\n1. 由动量守恒\n$$m_1v_{10}=m_1v_1+m_2v_2$$\n\n由恢复系数定义\n$$e=\\frac{v_2-v_1}{v_{10}-v_{20}}=\\frac{v_2-v_1}{v_{10}}$$\n\n联立解得\n$$v_1=v_{10}-\\frac{(1+e)m_2(v_{10}-v_{20})}{m_1+m_2}$$\n$$v_1=5.0-\\frac{1.60\\times3.0\\times5.0}{5.0}=5.0-4.8=0.20\\,\\mathrm{m/s}$$\n\n$$v_2=v_{20}+\\frac{(1+e)m_1(v_{10}-v_{20})}{m_1+m_2}$$\n$$v_2=\\frac{1.60\\times2.0\\times5.0}{5.0}=3.2\\,\\mathrm{m/s}$$\n\n$v_1$、$v_2$ 均为正，说明碰后两球都沿原 $v_{10}$ 方向运动。\n\n2. 碰撞前动能\n$$E_{k1}=\\frac{1}{2}m_1v_{10}^2=\\frac{1}{2}\\times2.0\\times5.0^2=25\\,\\mathrm{J}$$\n\n碰撞后动能\n$$E_{k2}=\\frac{1}{2}m_1v_1^2+\\frac{1}{2}m_2v_2^2$$\n$$=\\frac{1}{2}\\times2.0\\times0.20^2+\\frac{1}{2}\\times3.0\\times3.2^2$$\n$$=0.04+15.36=15.4\\,\\mathrm{J}$$\n\n损失的机械能\n$$\\Delta E=E_{k1}-E_{k2}=25-15.4=9.6\\,\\mathrm{J}$$\n\n**答：**（1）$v_1=0.20\\,\\mathrm{m/s}$，$v_2=3.2\\,\\mathrm{m/s}$，方向均与 $v_{10}$ 相同；（2）损失机械能 $\\Delta E=9.6\\,\\mathrm{J}$。",
+      "hint": "联立动量守恒和恢复系数定义求末速度；能量损失为初末动能之差。",
+      "explanation": "本题是一般非弹性碰撞问题。恢复系数 $e=0.60$ 表示分离速度为接近速度的 $0.60$ 倍。联立动量守恒与恢复系数定义可求出末速度，再计算动能损失。注意 $e=1$ 为完全弹性碰撞（无动能损失），$e=0$ 为完全非弹性碰撞（动能损失最大），本题介于两者之间。",
+      "scoring_criteria": [
+        "正确写出动量守恒方程和恢复系数定义（2分）",
+        "正确求出碰后速度 $v_1=0.20\\,\\mathrm{m/s}$、$v_2=3.2\\,\\mathrm{m/s}$（4分）",
+        "正确计算碰撞前后动能（2分）",
+        "正确求出机械能损失 $\\Delta E=9.6\\,\\mathrm{J}$（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/1.3.md",
+        "label": "1.3 功、能与碰撞 · 恢复系数与碰撞"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 8,
+      "total_points": 8,
+      "stem": "一均匀细杆长 $L=1.0\\,\\mathrm{m}$，质量 $M=2.0\\,\\mathrm{kg}$，可绕通过其一端且垂直于杆的水平光滑轴转动。杆从水平位置由静止释放。取 $g=10\\,\\mathrm{m/s^2}$。求：（1）杆绕该轴的转动惯量；（2）杆摆到竖直位置时的角速度。",
+      "answer": "**解：**\n\n1. 均匀细杆绕通过端点且垂直于杆的轴的转动惯量\n$$J=\\frac{1}{3}ML^2=\\frac{1}{3}\\times2.0\\times1.0^2=\\frac{2}{3}\\,\\mathrm{kg\\cdot m^2}\\approx0.67\\,\\mathrm{kg\\cdot m^2}$$\n\n2. 以转轴处为重力势能零点，杆水平时质心高度 $h_c=L/2$，竖直时质心高度 $h_c=0$。轴光滑，只有重力做功，机械能守恒：\n$$Mg\\frac{L}{2}=\\frac{1}{2}J\\omega^2$$\n\n解得\n$$\\omega=\\sqrt{\\frac{MgL}{J}}=\\sqrt{\\frac{2.0\\times10\\times1.0}{2/3}}=\\sqrt{30}\\approx5.5\\,\\mathrm{rad/s}$$\n\n**答：**（1）$J=\\dfrac{2}{3}\\,\\mathrm{kg\\cdot m^2}\\approx0.67\\,\\mathrm{kg\\cdot m^2}$；（2）$\\omega\\approx5.5\\,\\mathrm{rad/s}$。",
+      "hint": "记住常见转动惯量公式；杆下摆过程中机械能守恒，重力势能转化为转动动能。",
+      "explanation": "本题考查刚体定轴转动的转动惯量和机械能守恒。均匀细杆绕端点垂直轴的转动惯量为 $J=\\frac{1}{3}ML^2$。杆从水平位置下摆到竖直位置，质心下降高度 $L/2$，重力势能减少量等于转动动能增加量。常见错误：误用绕中心轴的转动惯量 $J=\\frac{1}{12}ML^2$，或把质心速度直接当作 $\\omega L$ 用平动动能公式。",
+      "scoring_criteria": [
+        "正确写出并计算转动惯量 $J=\\frac{1}{3}ML^2$（3分）",
+        "正确分析机械能守恒并列出 $MgL/2=\\frac{1}{2}J\\omega^2$（3分）",
+        "正确解出角速度 $\\omega\\approx5.5\\,\\mathrm{rad/s}$（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/1.4.md",
+        "label": "1.4 刚体转动与弹性 · 刚体定轴转动"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 6,
+      "total_points": 6,
+      "stem": "一直径 $d=2.0\\,\\mathrm{mm}$、原长 $l_0=2.0\\,\\mathrm{m}$ 的金属丝，下端悬挂质量 $m=5.0\\,\\mathrm{kg}$ 的物体。已知该金属丝的杨氏模量 $Y=2.0\\times10^{11}\\,\\mathrm{Pa}$。取 $g=10\\,\\mathrm{m/s^2}$。求金属丝的伸长量 $\\Delta l$。",
+      "answer": "**解：**\n\n1. 金属丝所受拉力\n$$F=mg=5.0\\times10=50\\,\\mathrm{N}$$\n\n2. 金属丝横截面积\n$$S=\\pi\\left(\\frac{d}{2}\\right)^2=\\pi\\times\\left(\\frac{2.0\\times10^{-3}}{2}\\right)^2=\\pi\\times10^{-6}\\,\\mathrm{m^2}$$\n\n3. 由杨氏模量定义\n$$Y=\\frac{\\sigma}{\\varepsilon}=\\frac{F/S}{\\Delta l/l_0}=\\frac{l_0F}{S\\Delta l}$$\n\n得\n$$\\Delta l=\\frac{l_0F}{SY}=\\frac{2.0\\times50}{(\\pi\\times10^{-6})\\times(2.0\\times10^{11})}$$\n$$=\\frac{100}{2\\pi\\times10^{5}}=\\frac{50}{\\pi\\times10^{5}}\\approx1.6\\times10^{-4}\\,\\mathrm{m}$$\n\n**答：** 金属丝的伸长量约为 $1.6\\times10^{-4}\\,\\mathrm{m}$（约 $0.16\\,\\mathrm{mm}$）。",
+      "hint": "先统一单位，再用杨氏模量公式 $Y=\\dfrac{l_0F}{S\\Delta l}$ 求伸长量；注意直径要换算为半径求面积。",
+      "explanation": "本题考查杨氏模量的计算。关键是正确进行单位换算：直径 $d=2.0\\,\\mathrm{mm}=2.0\\times10^{-3}\\,\\mathrm{m}$，横截面积 $S=\\pi d^2/4=\\pi\\times10^{-6}\\,\\mathrm{m^2}$。由 $Y=l_0F/(S\\Delta l)$ 解出 $\\Delta l$。常见错误：面积单位未换算为 $\\mathrm{m^2}$，或混淆直径与半径。",
+      "scoring_criteria": [
+        "正确计算拉力 $F=50\\,\\mathrm{N}$ 和横截面积 $S=\\pi\\times10^{-6}\\,\\mathrm{m^2}$（2分）",
+        "正确写出杨氏模量公式并变形求 $\\Delta l$（2分）",
+        "正确代入数据并求得 $\\Delta l\\approx1.6\\times10^{-4}\\,\\mathrm{m}$（2分）"
+      ],
+      "sourceRef": {
+        "path": "content/physics/detail/1.4.md",
+        "label": "1.4 刚体转动与弹性 · 杨氏模量"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 18,
+    "byType": {
+      "single_choice": 10,
+      "essay": 8
+    },
+    "bySource": {
+      "current_chapter": 18,
+      "review": 0
+    },
+    "byDifficulty": {
+      "basic": 13,
+      "medium": 3,
+      "hard": 2
+    }
+  }
+}
