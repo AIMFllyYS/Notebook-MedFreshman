@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 260" role="img" aria-labelledby="title desc">
+<title id="title">水平文丘里管压强差</title>
+<desc id="desc">细管处截面积小、流速大、静压低，测压管液面较低。</desc>
+
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 Z" fill="#2563eb"/>
+  </marker>
+</defs>
+<rect width="100%" height="100%" fill="#f8fafc"/>
+
+<path d="M50 120 C150 120 160 88 250 88 C340 88 350 120 470 120 L470 170 C350 170 340 138 250 138 C160 138 150 170 50 170 Z" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+<line x1="115" y1="120" x2="115" y2="50" stroke="#64748b" stroke-width="8"/>
+<line x1="305" y1="88" x2="305" y2="70" stroke="#64748b" stroke-width="8"/>
+<rect x="106" y="50" width="18" height="70" fill="#bfdbfe" opacity="0.7"/>
+<rect x="296" y="70" width="18" height="18" fill="#bfdbfe" opacity="0.7"/>
+<line x1="72" y1="145" x2="170" y2="145" stroke="#0f766e" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="240" y1="113" x2="340" y2="113" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="65" y="195" font-size="17">S₁ 大，v₁ 小，P₁ 大</text>
+<text x="286" y="195" font-size="17">S₂ 小，v₂ 大，P₂ 小</text>
+</svg>
+

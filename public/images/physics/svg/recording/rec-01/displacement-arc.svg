@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 240" role="img" aria-labelledby="title desc">
+<title id="title">四分之一圆弧中的位移和路程</title>
+<desc id="desc">质点从 A 沿四分之一圆弧到 B，弧长是路程，弦 AB 是位移。</desc>
+
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 Z" fill="#2563eb"/>
+  </marker>
+</defs>
+<rect width="100%" height="100%" fill="#f8fafc"/>
+
+<path d="M90 180 A110 110 0 0 1 200 70" fill="none" stroke="#0f766e" stroke-width="5"/>
+<line x1="90" y1="180" x2="200" y2="70" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="200" y1="180" x2="200" y2="70" stroke="#94a3b8" stroke-dasharray="6 6"/>
+<line x1="90" y1="180" x2="200" y2="180" stroke="#94a3b8" stroke-dasharray="6 6"/>
+<circle cx="90" cy="180" r="5" fill="#dc2626"/><text x="66" y="204" font-size="18">A(R,0)</text>
+<circle cx="200" cy="70" r="5" fill="#dc2626"/><text x="210" y="68" font-size="18">B(0,R)</text>
+<text x="132" y="108" font-size="17" fill="#2563eb">位移 |Δr⃗|</text>
+<text x="78" y="92" font-size="17" fill="#0f766e">路程 s=πR/2</text>
+</svg>
+

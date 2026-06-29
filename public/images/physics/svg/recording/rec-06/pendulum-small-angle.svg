@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 260" role="img" aria-labelledby="title desc">
+<title id="title">小角度单摆受力分解</title>
+<desc id="desc">重力沿切向的分量提供回复力，小角度时 sin theta 近似 theta。</desc>
+
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 Z" fill="#2563eb"/>
+  </marker>
+</defs>
+<rect width="100%" height="100%" fill="#f8fafc"/>
+
+<line x1="220" y1="42" x2="286" y2="180" stroke="#111827" stroke-width="4"/>
+<circle cx="286" cy="180" r="18" fill="#bfdbfe" stroke="#2563eb" stroke-width="3"/>
+<line x1="286" y1="180" x2="286" y2="236" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="286" y1="180" x2="255" y2="220" stroke="#0f766e" stroke-width="4" marker-end="url(#arrow)"/>
+<path d="M220 72 A42 42 0 0 1 238 79" fill="none" stroke="#111827"/>
+<text x="241" y="82" font-size="17">θ</text>
+<text x="292" y="224" font-size="17" fill="#dc2626">mg</text>
+<text x="202" y="230" font-size="17" fill="#0f766e">mg sinθ</text>
+<text x="62" y="64" font-size="18">sinθ≈θ，θ¨+(g/l)θ=0</text>
+</svg>
+

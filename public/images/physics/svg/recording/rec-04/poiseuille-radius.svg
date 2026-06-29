@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" role="img" aria-labelledby="title desc">
+<title id="title">泊肃叶定律半径四次方</title>
+<desc id="desc">圆管半径减半时，在相同压强差下流量降为原来的十六分之一。</desc>
+
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 Z" fill="#2563eb"/>
+  </marker>
+</defs>
+<rect width="100%" height="100%" fill="#f8fafc"/>
+
+<rect x="55" y="80" width="170" height="80" rx="40" fill="#dbeafe" stroke="#2563eb" stroke-width="4"/>
+<rect x="285" y="105" width="130" height="30" rx="15" fill="#fee2e2" stroke="#dc2626" stroke-width="4"/>
+<line x1="75" y1="120" x2="205" y2="120" stroke="#0f766e" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="300" y1="120" x2="398" y2="120" stroke="#0f766e" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="88" y="190" font-size="18">半径 R，流量 Q</text>
+<text x="276" y="190" font-size="18">半径 R/2，流量 Q/16</text>
+<text x="130" y="52" font-size="20">Q ∝ R⁴</text>
+</svg>
+

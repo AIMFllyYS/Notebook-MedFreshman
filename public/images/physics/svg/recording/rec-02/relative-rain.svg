@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 260" role="img" aria-labelledby="title desc">
+<title id="title">雨滴与火车相对速度三角形</title>
+<desc id="desc">雨相对车速度由雨对地速度与车对地速度矢量相减得到。</desc>
+
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 Z" fill="#2563eb"/>
+  </marker>
+</defs>
+<rect width="100%" height="100%" fill="#f8fafc"/>
+
+<line x1="90" y1="70" x2="90" y2="210" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="90" y1="70" x2="260" y2="70" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="260" y1="70" x2="90" y2="210" stroke="#0f766e" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="35" y="150" font-size="17" fill="#2563eb">v雨地</text>
+<text x="145" y="58" font-size="17" fill="#dc2626">v车地=20 m/s</text>
+<text x="185" y="160" font-size="17" fill="#0f766e">v雨车</text>
+<path d="M90 102 A32 32 0 0 0 114 91" fill="none" stroke="#111827"/>
+<text x="116" y="112" font-size="16">75°</text>
+</svg>
+

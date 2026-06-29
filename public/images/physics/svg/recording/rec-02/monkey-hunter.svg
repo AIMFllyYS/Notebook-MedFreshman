@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 260" role="img" aria-labelledby="title desc">
+<title id="title">猎人打猴子相对运动</title>
+<desc id="desc">子弹和目标同时具有相同的重力位移，瞄准初始位置即可相遇。</desc>
+
+<defs>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+    <path d="M0,0 L8,4 L0,8 Z" fill="#2563eb"/>
+  </marker>
+</defs>
+<rect width="100%" height="100%" fill="#f8fafc"/>
+
+<circle cx="82" cy="206" r="8" fill="#111827"/><text x="42" y="232" font-size="17">枪口 O</text>
+<circle cx="350" cy="76" r="8" fill="#dc2626"/><text x="360" y="77" font-size="17">目标初位置</text>
+<line x1="82" y1="206" x2="350" y2="76" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="350" y1="76" x2="350" y2="146" stroke="#ea580c" stroke-width="4" marker-end="url(#arrow)"/>
+<line x1="215" y1="141" x2="215" y2="211" stroke="#ea580c" stroke-width="4" marker-end="url(#arrow)"/>
+<path d="M82 206 Q215 104 350 146" fill="none" stroke="#0f766e" stroke-width="4"/>
+<text x="164" y="105" font-size="17" fill="#2563eb">瞄准线 v₀</text>
+<text x="248" y="184" font-size="17" fill="#0f766e">子弹轨迹</text>
+<text x="360" y="128" font-size="17" fill="#ea580c">1/2gt²</text>
+</svg>
+
