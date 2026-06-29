@@ -21,6 +21,7 @@ export const PERSIST_KEYS = {
   skills: "skills",
   reviewCards: "review-cards",
   imageGen: "image-gen",
+  billingHistory: "billing-history",
 } as const;
 
 export const CHAT_SESSION_KEY_PREFIX = "chat-session:";
