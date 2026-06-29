@@ -185,6 +185,97 @@
   line-height: 1.35;
 }
 
+.canvas-frame {
+  padding: 8px;
+  cursor: default;
+  user-select: auto;
+}
+.canvas-frame-title {
+  padding: 6px 42px 6px 34px;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+}
+.canvas-frame-body {
+  min-height: 32px;
+}
+.canvas-diagnostic-panel,
+.canvas-revision-panel,
+.canvas-source-panel {
+  margin: 8px;
+}
+.canvas-diagnostic-panel {
+  padding: 10px 12px;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+}
+.canvas-diagnostic-title {
+  font-weight: 700;
+  font-size: 0.86rem;
+  margin-bottom: 4px;
+}
+.canvas-diagnostic-message {
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.canvas-diagnostic-reason {
+  margin-top: 4px;
+  font-size: 0.72rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--font-mono, monospace);
+}
+.canvas-revision-panel {
+  padding: 8px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: var(--md-sys-color-surface-container-lowest);
+}
+.canvas-revision-panel textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 64px;
+  border-radius: 7px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  padding: 7px 8px;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.canvas-revision-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 7px;
+}
+.canvas-revision-actions button {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 7px;
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  padding: 5px 9px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.canvas-revision-actions button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+.canvas-revision-actions .canvas-revision-submit {
+  border-color: transparent;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+.canvas-revision-error {
+  margin-top: 6px;
+  color: var(--md-sys-color-error);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
 /* 「放大查看」真全屏：CanvasFullscreenPortal 把画布体 portal 到 document.body，
    脱离 .chat-messages{contain:layout} / .chat-message{content-visibility:auto} 的
    包含块陷阱，使 position:fixed 锚定真视口（详见 components/canvas/CanvasFullscreenPortal.tsx）。 */
