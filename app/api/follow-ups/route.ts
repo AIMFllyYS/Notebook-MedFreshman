@@ -1,13 +1,11 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { SUBJECTS } from "@/lib/constants/subjects";
+import { resolveProvider, ENV_MODEL_FLASH } from "@/lib/ai/provider";
+import { chatCompletionsUrl } from "@/lib/ai/provider";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const BASE = process.env.AI_BASE_URL || "";
-const KEY = process.env.AI_API_KEY || "";
-const MODEL_FLASH = process.env.AI_MODEL_FLASH || "v4-flash";
 
 interface ClientMessage {
   role: "user" | "assistant";
@@ -21,7 +19,8 @@ export async function POST(req: NextRequest) {
   const categoryId: string = String(body.categoryId ?? "detail");
   const itemId: string = String(body.itemId ?? "");
 
-  if (!BASE || !KEY || BASE.includes("your-endpoint") || messages.length === 0) {
+  const provider = resolveProvider(ENV_MODEL_FLASH);
+  if (!provider.configured || messages.length === 0) {
     return NextResponse.json({ questions: [] });
   }
 
@@ -29,14 +28,14 @@ export async function POST(req: NextRequest) {
   const recent = messages.slice(-4);
 
   try {
-    const res = await fetch(`${BASE.replace(/\/$/, "")}/chat/completions`, {
+    const res = await fetch(chatCompletionsUrl(provider.baseUrl), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${KEY}`,
+        Authorization: `Bearer ${provider.apiKey}`,
       },
       body: JSON.stringify({
-        model: MODEL_FLASH,
+        model: provider.apiModelId,
         stream: false,
         temperature: 0.8,
         messages: [

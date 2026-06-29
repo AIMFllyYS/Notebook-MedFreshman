@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Loader, MonitorPlay, Code2, ChevronDown, ChevronUp, AlertTriangle, ExternalLink } from 'lucide-react';
 import { useArtifacts } from '@/lib/hooks/useArtifacts';
 import { useSettings } from '@/lib/hooks/useSettings';
-import { CUSTOM_PREFIX } from '@/lib/ai/models';
+import { CUSTOM_PREFIX, findCustomModelGroup } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { MessageContent } from '@/components/chat/MessageContent';
 
@@ -78,6 +78,9 @@ export default function ArtifactCard({
 
     const settings = useSettings.getState();
     const isCustom = settings.selectedModelId.startsWith(CUSTOM_PREFIX);
+    const customGroup = isCustom
+      ? findCustomModelGroup(settings.customApiGroups, settings.selectedModelId)
+      : undefined;
 
     (async () => {
       try {
@@ -89,8 +92,8 @@ export default function ArtifactCard({
             title,
             prompt,
             modelId: settings.selectedModelId,
-            customProvider: isCustom
-              ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: settings.selectedModelId.slice(CUSTOM_PREFIX.length) }
+            customProvider: customGroup
+              ? { baseUrl: customGroup.group.baseUrl, apiKey: customGroup.group.apiKey, model: customGroup.model.id }
               : undefined,
           }),
         });

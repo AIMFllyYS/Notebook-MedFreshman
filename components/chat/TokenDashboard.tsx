@@ -83,9 +83,9 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   const serverContextTokens = fData?.serverContextTokens ?? gServerContextTokens;
 
   const globalSelectedModelId = useSettings((s) => s.selectedModelId);
-  const customModels = useSettings((s) => s.customModels);
+  const customApiGroups = useSettings((s) => s.customApiGroups);
   const selectedModelId = modelId ?? globalSelectedModelId;
-  const modelInfo = getModelInfoWithCustom(selectedModelId, customModels);
+  const modelInfo = getModelInfoWithCustom(selectedModelId, customApiGroups);
   const pricing = modelInfo?.pricing;
   const cacheTtlSec = modelInfo?.cacheTtlSec;
 
@@ -95,7 +95,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     const st = useChatHistory.getState();
     const sid = floatingSessionId ?? st.activeSessionId;
     const msgs = st.messagesById[sid ?? ''] ?? [];
-    const limit = (getModelInfoWithCustom(modelId ?? useSettings.getState().selectedModelId, useSettings.getState().customModels)?.contextK ?? 128) * 1000;
+    const limit = (getModelInfoWithCustom(modelId ?? useSettings.getState().selectedModelId, useSettings.getState().customApiGroups)?.contextK ?? 128) * 1000;
 
     const serverCtx = floatingSessionId
       ? useFloatingTokenTracker.getState().getSession(floatingSessionId).serverContextTokens

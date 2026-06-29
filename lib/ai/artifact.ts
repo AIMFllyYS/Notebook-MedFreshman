@@ -123,7 +123,7 @@ interface StreamInteractiveArtifactOptions {
 export async function streamInteractiveArtifact(
   options: StreamInteractiveArtifactOptions,
 ): Promise<void> {
-  const { send, artifactId, args, provider, signal, timeoutMs = 90000 } = options;
+  const { send, artifactId, args, provider, signal, timeoutMs = provider.timeoutMs } = options;
   const title = (args.title || "交互演示").slice(0, 60);
   const prompt = (args.prompt || args.title || "").trim();
 
@@ -152,7 +152,7 @@ export async function streamInteractiveArtifact(
         Authorization: `Bearer ${provider.apiKey}`,
       },
       body: JSON.stringify({
-        model: provider.model,
+        model: provider.apiModelId,
         messages: [
           { role: "system", content: ARTIFACT_SYSTEM },
           { role: "user", content: `知识点 / 需求：${prompt}\n标题：${title}` },

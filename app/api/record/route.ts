@@ -222,14 +222,14 @@ export async function POST(req: NextRequest) {
 
       try {
         const reqBody: Record<string, unknown> = {
-          model: provider.model,
+          model: provider.apiModelId,
           stream: true,
           temperature: 0.4,
           messages,
         };
 
         if (enableThinking) {
-          const info = provider.isCustom ? undefined : getModelInfo(provider.model);
+          const info = provider.isCustom ? undefined : getModelInfo(provider.registryId);
           const supportsThinking = provider.isCustom || !info || info.thinking;
           if (supportsThinking) {
             reqBody.enable_thinking = true;
@@ -238,7 +238,7 @@ export async function POST(req: NextRequest) {
         }
 
         const abortCtrl = new AbortController();
-        const fetchTimeoutId = setTimeout(() => abortCtrl.abort(), 60000);
+        const fetchTimeoutId = setTimeout(() => abortCtrl.abort(), provider.timeoutMs);
 
         const res = await fetch(chatCompletionsUrl(provider.baseUrl), {
           method: "POST",
@@ -297,7 +297,7 @@ export async function POST(req: NextRequest) {
 
         stopHeartbeat();
         const card = parseCardContent(contentBuf, mode);
-        send({ type: "result", card, model: provider.model });
+        send({ type: "result", card, model: provider.registryId });
         send({ type: "done" });
         controller.close();
       } catch (err) {
