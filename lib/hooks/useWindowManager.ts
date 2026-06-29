@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer";
+export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard";
 
 export interface WindowPoint {
   x: number;
@@ -29,7 +29,11 @@ export interface ImageGenViewerData {
   imageGenId: string;
 }
 
-export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | Record<string, unknown>;
+export interface BillingDashboardData {
+  // 可以留空，或者未来支持传入初始过滤器参数
+}
+
+export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | Record<string, unknown>;
 
 export interface ManagedWindow<TData = ManagedWindowData> {
   id: string;

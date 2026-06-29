@@ -34,6 +34,7 @@ const RecordPreviewLayer = dynamic(() => import("@/components/review/RecordPrevi
 const ArtifactViewer = dynamic(() => import("@/components/chat/ArtifactViewer"), { ssr: false });
 const ImageGenViewerLayer = dynamic(() => import("@/components/chat/ImageGenViewer"), { ssr: false });
 const MessageContextMenu = dynamic(() => import("@/components/shared/MessageContextMenu"), { ssr: false });
+const BillingDashboardLayer = dynamic(() => import("@/components/chat/BillingDashboard"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
 const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
 const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
@@ -256,6 +257,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <ArtifactViewer />
         <ImageGenViewerLayer />
         <MessageContextMenu />
+        <BillingDashboardLayer />
       </div>
     );
   }
@@ -324,6 +326,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <ArtifactViewer />
       <ImageGenViewerLayer />
       <MessageContextMenu />
+      <BillingDashboardLayer />
     </div>
   );
 }
