@@ -135,7 +135,13 @@
   cursor: default;
   user-select: text;
 }
-.svg-repair-popover textarea {
+.svg-repair-inline {
+  margin: 10px 0 8px;
+  cursor: default;
+  user-select: text;
+}
+.svg-repair-popover textarea,
+.svg-repair-inline textarea {
   width: 100%;
   resize: vertical;
   min-height: 64px;

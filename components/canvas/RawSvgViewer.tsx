@@ -89,7 +89,7 @@ export function RawSvgViewer({
     (e: RPointerEvent<HTMLDivElement>) => {
       // 守卫：按到右上角控件键时不要起拖拽 / setPointerCapture——否则指针被 wrapper 捕获，
       // 按钮的 click 会被重定向到 wrapper、永不触发（zoom/reset/maximize 全失灵的根因）。
-      if ((e.target as HTMLElement).closest(".svg-canvas-controls, .svg-repair-popover")) return;
+      if ((e.target as HTMLElement).closest(".svg-canvas-controls, .svg-repair-popover, .svg-repair-inline")) return;
       e.currentTarget.setPointerCapture(e.pointerId);
       dragRef.current = { startX: e.clientX, startY: e.clientY, panX: pan.x, panY: pan.y };
     },
@@ -176,6 +176,25 @@ export function RawSvgViewer({
   }, [displaySvg, hasOwnSvgRoot, width, height]);
   const health = useMemo(() => analyzeSvgHealth(innerHtml), [innerHtml]);
   const degraded = collapsed || !health.ok;
+  const repairForm = showRepair ? (
+    <div className={degraded ? "svg-repair-inline" : "svg-repair-popover"}>
+      <textarea
+        value={repairInstruction}
+        onChange={(e) => setRepairInstruction(e.target.value)}
+        placeholder="描述希望 AI 如何修复这张图，例如：补全可见图形、让坐标进入画布、增强标注。"
+        rows={3}
+      />
+      {repairError && <div className="svg-repair-error">{repairError}</div>}
+      <div className="svg-repair-actions">
+        <button type="button" className="press" onClick={() => setShowRepair(false)} disabled={repairing}>
+          取消
+        </button>
+        <button type="button" className="press svg-repair-submit" onClick={repairSvg} disabled={repairing}>
+          {repairing ? "修复中..." : "修复画布"}
+        </button>
+      </div>
+    </div>
+  ) : null;
 
   // 终极兜底：渲染后量一次内嵌 svg。容器已布局(宽≥4)但 svg 高度塌成 ~0（任何成因的“白屏”）
   // → 切到源码兜底卡，用户永不只看到空白；同时把源码亮出来便于定位。内容变化会重量、可自动恢复。
@@ -226,25 +245,7 @@ export function RawSvgViewer({
             </button>
           </div>
         )}
-        {showRepair && (
-          <div className="svg-repair-popover">
-            <textarea
-              value={repairInstruction}
-              onChange={(e) => setRepairInstruction(e.target.value)}
-              placeholder="描述希望 AI 如何修复这张图，例如：补全可见图形、让坐标进入画布、增强标注。"
-              rows={3}
-            />
-            {repairError && <div className="svg-repair-error">{repairError}</div>}
-            <div className="svg-repair-actions">
-              <button type="button" className="press" onClick={() => setShowRepair(false)} disabled={repairing}>
-                取消
-              </button>
-              <button type="button" className="press svg-repair-submit" onClick={repairSvg} disabled={repairing}>
-                {repairing ? "修复中..." : "修复画布"}
-              </button>
-            </div>
-          </div>
-        )}
+        {!degraded && repairForm}
         <div
           className="svg-raw-inner"
           style={{
@@ -264,6 +265,7 @@ export function RawSvgViewer({
             <div className="viz-error-body">
               这张 SVG 画布目前没有可见图形，可能是内容为空、元素超出 viewBox，或被安全清洗后失去可见元素。可使用左上角 AI 按钮手动修复。
             </div>
+            {repairForm}
             <button
               type="button"
               className="viz-error-toggle press"
