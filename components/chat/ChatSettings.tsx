@@ -20,6 +20,7 @@ import {
   ImagePlus,
   Sparkles,
   Cpu,
+  DollarSign,
 } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import {
@@ -781,6 +782,8 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
   const setDefaultSearch = useSettings((s) => s.setDefaultSearch);
   const globalContext = useSettings((s) => s.globalContext);
   const setGlobalContext = useSettings((s) => s.setGlobalContext);
+  const usdExchangeRate = useSettings((s) => s.usdExchangeRate);
+  const setUsdExchangeRate = useSettings((s) => s.setUsdExchangeRate);
 
   const [exportMsg, setExportMsg] = useState<string | null>(null);
   const [builtinExpanded, setBuiltinExpanded] = useState(false);
@@ -1224,6 +1227,37 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
           />
           <div className="self-end text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
             {globalContext.length} 字
+          </div>
+        </section>
+
+        {/* 计费与汇率 */}
+        <section className="flex flex-col gap-2">
+          <div className="flex items-center gap-1.5">
+            <DollarSign size={14} className="text-[var(--md-sys-color-primary)]" />
+            <h3 className={h3Cls}>计费与汇率</h3>
+          </div>
+          <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+            计费大盘中支持翻转卡片将人民币 (¥) 切换为美元 ($)。你可以在这里自定义兑换汇率。
+          </p>
+          <div className="flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
+            <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
+              美元汇率 (USD/CNY)
+            </div>
+            <input
+              type="number"
+              min={0.01}
+              max={10.00}
+              step={0.01}
+              value={usdExchangeRate || ""}
+              onBlur={(e) => {
+                let val = parseFloat(e.target.value);
+                if (isNaN(val)) val = 7.00;
+                val = Math.max(0.01, Math.min(10.00, val));
+                setUsdExchangeRate(Number(val.toFixed(2)));
+              }}
+              onChange={(e) => setUsdExchangeRate(e.target.value ? parseFloat(e.target.value) : 0)}
+              className="w-20 rounded border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-lowest)] px-2 py-1 text-right text-[12.5px] outline-none focus:border-[var(--md-sys-color-primary)]"
+            />
           </div>
         </section>
 
