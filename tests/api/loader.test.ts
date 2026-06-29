@@ -74,8 +74,15 @@ test("deriveExampleKey：english 分类 chapterId=sectionId=itemId", () => {
   });
 });
 
-test("deriveExampleKey：非 detail/english 分类返回空串", () => {
+test("deriveExampleKey：recording 分类映射到录音例题目录", () => {
   assert.deepEqual(deriveExampleKey("recording", "rec-01"), {
+    chapterId: "recording",
+    sectionId: "rec-01",
+  });
+});
+
+test("deriveExampleKey：非 detail/english/recording 分类返回空串", () => {
+  assert.deepEqual(deriveExampleKey("summary", "sum-01"), {
     chapterId: "",
     sectionId: "",
   });
@@ -97,6 +104,12 @@ test("readExamples：空参数返回空数组", () => {
 
 test("readExamples：不存在的目录返回空数组", () => {
   assert.deepEqual(readExamples("physics", "ch99", "99.9"), []);
+});
+
+test("readExamples：物理录音例题可按 rec 编号读取", () => {
+  const examples = readExamples("physics", "recording", "rec-01");
+  assert.ok(examples.length > 0, "physics/recording/rec-01 应有样例例题");
+  assert.ok(examples[0]!.content.includes(":::"), "录音例题正文应含 directive 围栏");
 });
 
 test("readExampleById：中文文件名可读取正文", () => {

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" role="img" aria-labelledby="title desc">
+  <title id="title">匀加速直线运动速度时间图像</title>
+  <desc id="desc">坐标轴横轴为时间 t，纵轴为速度 v，直线从初速度 v0 开始并以斜率 a 上升。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="520" height="300" rx="18" fill="none" />
+  <g fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M 70 235 H 455" marker-end="url(#arrow)" />
+    <path d="M 70 235 V 45" marker-end="url(#arrow)" />
+  </g>
+  <g stroke="currentColor" stroke-width="1.4" opacity="0.22">
+    <path d="M 70 195 H 455" />
+    <path d="M 70 155 H 455" />
+    <path d="M 70 115 H 455" />
+    <path d="M 70 75 H 455" />
+    <path d="M 150 235 V 45" />
+    <path d="M 230 235 V 45" />
+    <path d="M 310 235 V 45" />
+    <path d="M 390 235 V 45" />
+  </g>
+  <path d="M 70 205 L 420 75" fill="none" stroke="var(--accent, #2563eb)" stroke-width="4" stroke-linecap="round" />
+  <circle cx="70" cy="205" r="5" fill="var(--accent, #2563eb)" />
+  <circle cx="420" cy="75" r="5" fill="var(--accent, #2563eb)" />
+  <path d="M 278 128 L 328 109" fill="none" stroke="var(--color-success, #16a34a)" stroke-width="3" marker-end="url(#arrow)" />
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="18">
+    <text x="462" y="241">t</text>
+    <text x="54" y="38">v</text>
+    <text x="36" y="211">v0</text>
+    <text x="338" y="103">斜率 a</text>
+    <text x="207" y="267">v(t)=v0+at</text>
+  </g>
+</svg>
