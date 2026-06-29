@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { BookmarkCheck, MonitorPlay } from "lucide-react";
+import { BookmarkCheck, MonitorPlay, ImagePlus } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import OverflowMenu from "@/components/window/OverflowMenu";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
@@ -24,6 +24,7 @@ type TaskbarTooltip = {
 function WindowIcon({ type }: { type: ManagedWindow["type"] }) {
   if (type === "floating-chat") return <PencilSparklesIcon size={15} />;
   if (type === "record-preview") return <BookmarkCheck size={15} />;
+  if (type === "image-gen-viewer") return <ImagePlus size={15} />;
   return <MonitorPlay size={15} />;
 }
 

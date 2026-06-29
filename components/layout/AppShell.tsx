@@ -32,6 +32,7 @@ const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: f
 const FloatingChatLayer = dynamic(() => import("@/components/chat/FloatingChatLayer"), { ssr: false });
 const RecordPreviewLayer = dynamic(() => import("@/components/review/RecordPreviewLayer"), { ssr: false });
 const ArtifactViewer = dynamic(() => import("@/components/chat/ArtifactViewer"), { ssr: false });
+const ImageGenViewer = dynamic(() => import("@/components/chat/ImageGenViewer"), { ssr: false });
 const MessageContextMenu = dynamic(() => import("@/components/shared/MessageContextMenu"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
 const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
@@ -253,6 +254,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <FloatingChatLayer />
         <RecordPreviewLayer />
         <ArtifactViewer />
+        <ImageGenViewer />
         <MessageContextMenu />
       </div>
     );
@@ -320,6 +322,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <FloatingChatLayer />
       <RecordPreviewLayer />
       <ArtifactViewer />
+      <ImageGenViewer />
       <MessageContextMenu />
     </div>
   );

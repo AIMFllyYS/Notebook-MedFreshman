@@ -119,6 +119,17 @@ export const MiMoIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   </SvgBox>
 );
 
+// Tongyi (通义) — 阿里通义实验室，品牌紫 #615CED
+export const TongyiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
+  <SvgBox size={size} className={className} label="Tongyi">
+    <title>Tongyi</title>
+    <path
+      d="M12 2c-.4 0-.76.24-.92.61L7.2 12.3l-1.5-3.36a1 1 0 10-1.84.78l2.42 5.43a1 1 0 001.84-.01L12 5.2l4.88 10.93a1 1 0 001.84.01l2.42-5.43a1 1 0 10-1.84-.78l-1.5 3.36-3.88-9.69A1 1 0 0012 2z"
+      fill="#615CED"
+    />
+  </SvgBox>
+);
+
 // 默认图标 — 通用灰色，跟随主题文本色
 export const DefaultModelIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   <SvgBox size={size} className={className} label="Model">
@@ -135,6 +146,7 @@ const ICON_MAP: Record<string, React.FC<IconProps>> = {
   kimi: KimiIcon,
   minimax: MiniMaxIcon,
   mimo: MiMoIcon,
+  tongyi: TongyiIcon,
 };
 
 export function ModelIcon({ brand, ...props }: { brand?: string } & IconProps): React.ReactElement {

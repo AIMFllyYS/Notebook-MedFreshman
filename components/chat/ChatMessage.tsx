@@ -6,6 +6,7 @@ import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import ArtifactCard from '@/components/chat/ArtifactCard';
+import ImageGenCard from '@/components/chat/ImageGenCard';
 import ProcessingSteps from '@/components/chat/ProcessingSteps';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
@@ -103,6 +104,18 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                   title={tc.title}
                   prompt={tc.prompt}
                   autoStart={!!isStreaming}
+                />
+              ))}
+            {message.toolCalls
+              ?.filter((tc) => tc.name === 'generateImage' && tc.imageGenId)
+              .map((tc) => (
+                <ImageGenCard
+                  key={tc.imageGenId}
+                  imageGenId={tc.imageGenId!}
+                  prompt={tc.imageGenPrompt}
+                  title={tc.imageGenTitle}
+                  size={tc.imageGenSize}
+                  count={tc.imageGenCount}
                 />
               ))}
           </>
