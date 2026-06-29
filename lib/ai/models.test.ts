@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { MODELS, CUSTOM_MODEL_ID, DEFAULT_MODEL_ID, getModelInfo, getModelGroups } from "./models.ts";
+import {
+  MODELS,
+  CUSTOM_MODEL_ID,
+  DEFAULT_MODEL_ID,
+  getModelInfo,
+  getModelGroups,
+  primaryProvider,
+} from "./models.ts";
 
 test("MODELS 非空且每个模型有必需字段", () => {
   assert.ok(MODELS.length > 0);
@@ -11,6 +18,10 @@ test("MODELS 非空且每个模型有必需字段", () => {
     assert.ok(typeof m.thinking === "boolean", `thinking 是布尔: ${m.id}`);
     assert.ok(typeof m.tools === "boolean", `tools 是布尔: ${m.id}`);
     assert.ok(m.hint, `hint 非空: ${m.id}`);
+    assert.ok(m.endpoints.length > 0, `endpoints 非空: ${m.id}`);
+    for (const ep of m.endpoints) {
+      assert.ok(ep.apiModelId, `apiModelId 非空: ${m.id}`);
+    }
   }
 });
 
@@ -27,7 +38,7 @@ test("getModelInfo：存在的 id 返回 ModelInfo", () => {
   const m = getModelInfo("mimo-v2.5");
   assert.ok(m);
   assert.equal(m!.id, "mimo-v2.5");
-  assert.equal(m!.provider, "mimo");
+  assert.equal(primaryProvider(m!), "mimo");
 });
 
 test("getModelInfo：不存在的 id 返回 undefined", () => {
@@ -37,11 +48,9 @@ test("getModelInfo：不存在的 id 返回 undefined", () => {
 test("getModelGroups：按 group 聚合且保持声明顺序", () => {
   const groups = getModelGroups();
   assert.ok(groups.length > 0);
-  // 验证每个 group 至少有一个模型
   for (const g of groups) {
     assert.ok(g.models.length > 0, `group ${g.group} 至少一个模型`);
   }
-  // 验证顺序：第一个 group 应是 "小米 MiMo"
   assert.equal(groups[0].group, "小米 MiMo");
 });
 
@@ -59,21 +68,41 @@ test("MODELS：model id 唯一", () => {
   }
 });
 
-test("MODELS：新增模型存在且带有 icon 标识", () => {
-  const qwen36 = getModelInfo("Qwen/Qwen3.6-27B");
-  assert.ok(qwen36, "Qwen3.6-27B 应存在");
-  assert.equal(qwen36?.icon, "qwen");
-
-  const minimaxM3 = getModelInfo("MiniMaxAI/MiniMax-M3");
-  assert.ok(minimaxM3, "MiniMax-M3 应存在");
-  assert.equal(minimaxM3?.icon, "minimax");
-
+test("MODELS：智谱独占模型 apiModelId 不含 SiliconFlow 前缀", () => {
   const z1AirX = getModelInfo("zai-org/GLM-Z1-AirX");
   assert.ok(z1AirX, "GLM-Z1-AirX 应存在");
   assert.equal(z1AirX?.icon, "zhipu");
-  assert.equal(z1AirX?.provider, "zhipu");
+  assert.equal(primaryProvider(z1AirX!), "zhipu");
+  assert.equal(z1AirX?.endpoints[0].apiModelId, "glm-z1-airx");
+  assert.ok(!z1AirX!.endpoints[0].apiModelId.includes("/"));
 
   const flashX = getModelInfo("zai-org/GLM-4.7-FlashX");
   assert.ok(flashX, "GLM-4.7-FlashX 应存在");
-  assert.equal(flashX?.provider, "zhipu");
+  assert.equal(primaryProvider(flashX!), "zhipu");
+  assert.equal(flashX?.endpoints[0].apiModelId, "glm-4-flashx-250414");
+});
+
+test("MODELS：Qwen3.6 与 MiniMax M2.5", () => {
+  const qwen36 = getModelInfo("Qwen/Qwen3.6-27B");
+  assert.ok(qwen36, "Qwen3.6-27B 应存在");
+  assert.equal(qwen36?.icon, "qwen");
+  assert.equal(qwen36?.timeoutMs, 120_000);
+
+  const minimax = getModelInfo("MiniMaxAI/MiniMax-M2.5");
+  assert.ok(minimax, "MiniMax-M2.5 应存在");
+  assert.equal(minimax?.icon, "minimax");
+  assert.equal(minimax?.endpoints[0].apiModelId, "MiniMaxAI/MiniMax-M2.5");
+});
+
+test("getModelInfo：旧 MiniMax-M3 id 映射到 M2.5", () => {
+  const m = getModelInfo("MiniMaxAI/MiniMax-M3");
+  assert.equal(m?.id, "MiniMaxAI/MiniMax-M2.5");
+});
+
+test("MODELS：GLM-5.2 有两级端点链", () => {
+  const glm = getModelInfo("zai-org/GLM-5.2");
+  assert.ok(glm);
+  assert.equal(glm!.endpoints.length, 2);
+  assert.equal(glm!.endpoints[0].provider, "siliconflow");
+  assert.equal(glm!.endpoints[1].provider, "zhipu");
 });
