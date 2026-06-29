@@ -32,6 +32,16 @@ export interface ToolCallBlock {
   hits?: { title: string; path: string; snippet: string }[];
   /** useSkill 专用：被调用的技能名称。 */
   skill?: string;
+  /** generateImage 专用：生图会话 id（前端跨卡片/弹窗共享同一 session）。 */
+  imageGenId?: string;
+  /** generateImage 专用：AI 优化后的生图提示词。 */
+  imageGenPrompt?: string;
+  /** generateImage 专用：图片标题。 */
+  imageGenTitle?: string;
+  /** generateImage 专用：图片尺寸（如 1024x1024）。 */
+  imageGenSize?: string;
+  /** generateImage 专用：生成数量（1-4）。 */
+  imageGenCount?: number;
 }
 
 /** 上下文分项 token 统计（服务端按真实拼装精确计算，经 SSE 回传给上下文看板）。 */
