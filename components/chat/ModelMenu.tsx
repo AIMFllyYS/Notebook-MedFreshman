@@ -23,20 +23,17 @@ export default function ModelMenu({
   const globalSet = useSettings((s) => s.setSelectedModelId);
   const selectedModelId = value ?? globalSelected;
   const setSelectedModelId = onChange ?? globalSet;
-  const customConfigured = useSettings(
-    (s) => !!(s.customBaseUrl && s.customApiKey && s.customModels.length > 0),
-  );
-  const customModels = useSettings((s) => s.customModels);
+  const customApiGroups = useSettings((s) => s.customApiGroups);
 
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ left: 0, bottom: 0 });
 
-  const current = getModelInfoWithCustom(selectedModelId, customModels);
+  const current = getModelInfoWithCustom(selectedModelId, customApiGroups);
   const label =
     selectedModelId.startsWith(CUSTOM_PREFIX) ? (current?.label ?? selectedModelId.slice(CUSTOM_PREFIX.length)) : current?.label ?? selectedModelId;
-  const groups = getModelGroupsWithCustom(customModels);
+  const groups = getModelGroupsWithCustom(customApiGroups);
 
   useLayoutEffect(() => {
     if (!open || !btnRef.current) return;
@@ -128,6 +125,11 @@ export default function ModelMenu({
                           {m.vision && (
                             <span className="shrink-0 rounded bg-[color-mix(in_srgb,var(--md-sys-color-tertiary)_15%,transparent)] px-1 text-[9px] text-[var(--md-sys-color-tertiary)]">
                               视觉
+                            </span>
+                          )}
+                          {m.type === "image" && (
+                            <span className="shrink-0 rounded bg-[color-mix(in_srgb,var(--md-sys-color-secondary)_18%,transparent)] px-1 text-[9px] text-[var(--md-sys-color-secondary)]">
+                              生图
                             </span>
                           )}
                         </span>
