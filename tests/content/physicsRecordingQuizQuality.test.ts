@@ -98,3 +98,12 @@ test("validatePhysicsRecordingQuiz：校验 sourceRef 指向当前物理录音�
   });
   assert.match(result.errors.join("\n"), /sourceRef.path 应指向当前录音文件/);
 });
+
+test("validatePhysicsRecordingQuiz：禁止题库字段内写裸 SVG", () => {
+  const quiz = makeQuiz();
+  quiz.questions[0]!.stem = '<svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" /></svg>';
+  const result = validatePhysicsRecordingQuiz(quiz, {
+    filePath: "content/quiz/physics/rec-01.json",
+  });
+  assert.match(result.errors.join("\n"), /禁止内联裸 SVG/);
+});

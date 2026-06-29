@@ -16,4 +16,18 @@ describe("QuizMarkdown", () => {
     expect(container.querySelector("followup")).toBeNull();
     expect(screen.queryByText(/继续问/)).not.toBeInTheDocument();
   });
+
+  it("renders figure directives and KaTeX together", () => {
+    const { container } = render(
+      <QuizMarkdown>
+        {'速度公式为 $v=v_0+at$。\n\n::figure{src="/images/physics/svg/recording/rec-01/uniform-acceleration.svg" alt="匀加速速度图像" caption="速度-时间图像"}'}
+      </QuizMarkdown>,
+    );
+
+    expect(container.querySelector(".katex")).not.toBeNull();
+    const img = screen.getByAltText("匀加速速度图像") as HTMLImageElement;
+    expect(img.getAttribute("src")).toBe("/images/physics/svg/recording/rec-01/uniform-acceleration.svg");
+    expect(screen.getByText("速度-时间图像")).toBeInTheDocument();
+    expect(container.querySelector("figuremedia")).toBeNull();
+  });
 });

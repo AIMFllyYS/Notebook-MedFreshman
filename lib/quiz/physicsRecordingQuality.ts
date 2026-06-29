@@ -52,6 +52,8 @@ const TEACHER_STYLE_PATTERNS = [
   /课堂(?:上)?(?:说|指出|强调|讲到|提到)/,
 ];
 
+const RAW_SVG_PATTERN = /<svg\b/i;
+
 function pushIssue(list: string[], q: QuizQuestion, message: string): void {
   list.push(`${q.id}: ${message}`);
 }
@@ -73,6 +75,16 @@ function ensureRequiredText(
 
 function sourceRefPathFor(chapterId: string): string {
   return `content/physics/recording/${chapterId}.md`;
+}
+
+function textFieldsOf(q: QuizQuestion): string[] {
+  const values: string[] = [];
+  for (const value of [q.stem, q.hint, q.explanation, q.reasoning]) {
+    if (typeof value === "string") values.push(value);
+  }
+  if (typeof q.answer === "string") values.push(q.answer);
+  for (const option of q.options ?? []) values.push(option);
+  return values;
 }
 
 export function validatePhysicsRecordingQuiz(
@@ -117,6 +129,10 @@ export function validatePhysicsRecordingQuiz(
 
     if (typeof q.stem === "string" && hasAnyPattern(q.stem, BANNED_STEM_PATTERNS)) {
       pushIssue(errors, q, "题干含禁用录音依赖表达");
+    }
+
+    if (textFieldsOf(q).some((text) => RAW_SVG_PATTERN.test(text))) {
+      pushIssue(errors, q, "禁止内联裸 SVG，请改用静态 SVG 文件和 ::figure 引用");
     }
 
     const explanation = typeof q.explanation === "string" ? q.explanation : "";
