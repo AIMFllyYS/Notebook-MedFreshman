@@ -96,7 +96,7 @@ export const MODELS: ModelInfo[] = [
   { id: "moonshotai/Kimi-K2.7-Code", label: "Kimi K2.7 Code", group: "其他旗舰", thinking: false, tools: true, contextK: 256, endpoints: sf("moonshotai/Kimi-K2.7-Code"), icon: "kimi", hint: "代码 Agent · 思考 token 降低 30%", pricing: { input: 6.65, cachedInput: 1.12, cacheWrite: 1.12, output: 28 }, cacheTtlSec: 1800 },
   { id: "MiniMaxAI/MiniMax-M2.5", label: "MiniMax M2.5", group: "其他旗舰", thinking: true, tools: true, contextK: 1049, endpoints: sf("MiniMaxAI/MiniMax-M2.5"), icon: "minimax", hint: "1M 上下文 · MSA · 编程/Agent 旗舰", pricing: { input: 2.1, cachedInput: 0.21, cacheWrite: 0.21, output: 8.4 }, cacheTtlSec: 1800 },
   // ── 硅基流动生图 ──────────────────────────
-  { id: "Tongyi-MAI/Z-Image-Turbo", label: "Z-Image Turbo", group: "硅基流动生图", type: "image", thinking: false, tools: false, contextK: 0, hint: "通义生图 · ¥0.10/张 · 亚秒级 · 中英文文字", endpoints: sf("Tongyi-MAI/Z-Image-Turbo"), icon: "tongyi", imageParams: { sizes: ["1024x1024", "960x1280", "768x1024", "720x1440", "720x1280"], maxCount: 4 } },
+  { id: "Tongyi-MAI/Z-Image-Turbo", label: "Z-Image Turbo", group: "硅基流动生图", type: "image", thinking: false, tools: false, contextK: 0, hint: "通义生图 · ¥0.10/张 · 亚秒级 · 中英文文字", endpoints: sf("Tongyi-MAI/Z-Image-Turbo"), icon: "tongyi", pricing: { input: 0, cachedInput: 0, output: 0.1 }, imageParams: { sizes: ["1024x1024", "960x1280", "768x1024", "720x1440", "720x1280"], maxCount: 4 } },
 ];
 
 export const DEFAULT_MODEL_ID = "mimo-v2.5";

@@ -45,6 +45,10 @@ export interface SettingsState {
   /** 所有对话自动注入的用户自定义文本（拼入稳定系统前缀）。 */
   globalContext: string;
 
+  // ── 计费换算 ──────────────────────────
+  /** 人民币兑美元汇率，默认 7.00 */
+  usdExchangeRate: number;
+
   // ── Actions ──────────────────────────
   setSelectedModelId: (id: string) => void;
 
@@ -72,6 +76,7 @@ export interface SettingsState {
   setDefaultThinking: (v: boolean) => void;
   setDefaultSearch: (v: boolean) => void;
   setGlobalContext: (v: string) => void;
+  setUsdExchangeRate: (v: number) => void;
 }
 
 const LS_KEY = "gailvlun-settings-v1";
@@ -92,6 +97,7 @@ type Persisted = Pick<
   | "defaultThinking"
   | "defaultSearch"
   | "globalContext"
+  | "usdExchangeRate"
 >;
 
 const DEFAULTS: Persisted = {
@@ -109,6 +115,7 @@ const DEFAULTS: Persisted = {
   defaultThinking: false,
   defaultSearch: false,
   globalContext: "",
+  usdExchangeRate: 7.00,
 };
 
 function load(): Persisted {
@@ -144,6 +151,7 @@ function load(): Persisted {
       if (!parsed.defaultImageModelId) parsed.defaultImageModelId = null;
       if (!parsed.imageModeTextModel) parsed.imageModeTextModel = "mimo-v2.5";
       if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "Pro/moonshotai/Kimi-K2.6";
+      if (typeof parsed.usdExchangeRate !== "number") parsed.usdExchangeRate = 7.00;
       parsed.selectedModelId = normalizeCustomModelRegistryId(parsed.selectedModelId, parsed.customApiGroups);
       parsed.defaultImageModelId = parsed.defaultImageModelId
         ? normalizeCustomModelRegistryId(parsed.defaultImageModelId, parsed.customApiGroups)
@@ -184,6 +192,7 @@ function persist(get: () => SettingsState) {
     defaultThinking: s.defaultThinking,
     defaultSearch: s.defaultSearch,
     globalContext: s.globalContext,
+    usdExchangeRate: s.usdExchangeRate,
   };
   try {
     localStorage.setItem(LS_KEY, JSON.stringify(data));
@@ -338,6 +347,10 @@ export const useSettings = create<SettingsState>((set, get) => ({
   },
   setGlobalContext: (v) => {
     set({ globalContext: v });
+    persist(get);
+  },
+  setUsdExchangeRate: (v) => {
+    set({ usdExchangeRate: v });
     persist(get);
   },
 }));
