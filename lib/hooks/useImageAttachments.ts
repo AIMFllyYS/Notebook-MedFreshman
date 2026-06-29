@@ -135,9 +135,36 @@ export function useImageAttachments(): UseImageAttachmentsResult {
       dragCounter.current = 0;
       setIsDragging(false);
       const images = getImagesFromDragEvent(e);
-      if (images.length > 0) addFiles(images);
+      if (images.length > 0) {
+        void addFiles(images);
+        return;
+      }
+      const uriList =
+        e.dataTransfer.getData("text/uri-list") || e.dataTransfer.getData("text/plain");
+      if (!uriList) return;
+      const urls = uriList
+        .split("\n")
+        .map((u) => u.trim())
+        .filter((u) => u && !u.startsWith("#"));
+      if (urls.length === 0) return;
+      if (!checkVisionSupport()) return;
+      void (async () => {
+        for (const url of urls) {
+          try {
+            const resp = await fetch(url);
+            if (!resp.ok) continue;
+            const blob = await resp.blob();
+            if (!blob.type.startsWith("image/")) continue;
+            const filename = url.split("/").pop()?.split("?")[0] || "image.jpg";
+            const file = new File([blob], filename, { type: blob.type });
+            await addFiles([file]);
+          } catch {
+            setError("无法获取图片，请检查网络或图片地址");
+          }
+        }
+      })();
     },
-    [addFiles],
+    [addFiles, checkVisionSupport],
   );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {

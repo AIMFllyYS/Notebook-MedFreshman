@@ -6,35 +6,53 @@ interface ImageStripProps {
   children: ReactNode;
 }
 
-/**
- * Horizontal scroll strip for grouping multiple chat images in a single 200px row.
- * Supports drag-to-scroll via pointer events.
- */
+const DRAG_THRESHOLD = 4;
+
+interface DragState {
+  startX: number;
+  scrollLeft: number;
+  pointerId: number;
+  captured: boolean;
+}
+
 export function ImageStrip({ children }: ImageStripProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const dragRef = useRef<{ startX: number; scrollLeft: number } | null>(null);
+  const dragRef = useRef<DragState | null>(null);
 
   const handlePointerDown = useCallback((e: RPointerEvent<HTMLDivElement>) => {
     const el = containerRef.current;
     if (!el) return;
-    el.setPointerCapture(e.pointerId);
-    dragRef.current = { startX: e.clientX, scrollLeft: el.scrollLeft };
-    el.style.cursor = "grabbing";
+    dragRef.current = {
+      startX: e.clientX,
+      scrollLeft: el.scrollLeft,
+      pointerId: e.pointerId,
+      captured: false,
+    };
   }, []);
 
   const handlePointerMove = useCallback((e: RPointerEvent<HTMLDivElement>) => {
-    if (!dragRef.current || !containerRef.current) return;
-    const dx = e.clientX - dragRef.current.startX;
-    containerRef.current.scrollLeft = dragRef.current.scrollLeft - dx;
+    const state = dragRef.current;
+    const el = containerRef.current;
+    if (!state || !el) return;
+    const dx = e.clientX - state.startX;
+    if (!state.captured && Math.abs(dx) >= DRAG_THRESHOLD) {
+      el.setPointerCapture(state.pointerId);
+      state.captured = true;
+      el.style.cursor = "grabbing";
+    }
+    if (state.captured) {
+      el.scrollLeft = state.scrollLeft - dx;
+    }
   }, []);
 
   const handlePointerUp = useCallback((e: RPointerEvent<HTMLDivElement>) => {
-    dragRef.current = null;
+    const state = dragRef.current;
     const el = containerRef.current;
-    if (el) {
-      el.releasePointerCapture(e.pointerId);
+    if (state?.captured && el) {
+      el.releasePointerCapture(state.pointerId);
       el.style.cursor = "";
     }
+    dragRef.current = null;
   }, []);
 
   return (

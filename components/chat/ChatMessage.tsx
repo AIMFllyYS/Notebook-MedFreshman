@@ -157,7 +157,16 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                 </div>
                 <ImageStrip>
                   {imageSearchSources.map((s, i) => (
-                    <div key={i} className="image-search-gallery-item">
+                    <div
+                      key={i}
+                      className="image-search-gallery-item"
+                      draggable
+                      onDragStart={(e) => {
+                        e.dataTransfer.setData('text/uri-list', s.url);
+                        e.dataTransfer.setData('text/plain', s.url);
+                        e.dataTransfer.effectAllowed = 'copy';
+                      }}
+                    >
                       <ChatImage src={s.url} alt={s.alt || s.title || `图片 ${i + 1}`} />
                       <div className="image-search-gallery-credit">
                         <a href={s.url} target="_blank" rel="noopener noreferrer">
