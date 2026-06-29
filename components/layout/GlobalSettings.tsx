@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -198,8 +198,13 @@ export default function GlobalSettings({
 
   const [entries, setEntries] = useState<ProgressEntry[]>(() => getAllProgress());
   const [confirmClear, setConfirmClear] = useState(false);
+  const [openSection, setOpenSection] = useState<"scores" | "keyboard" | "appearance" | null>(null);
   const [pos, setPos] = useState<PopoverPos>(() => computePos(null));
   const panelRef = useRef<HTMLDivElement>(null);
+
+  const toggleSection = useCallback((id: "scores" | "keyboard" | "appearance") => {
+    setOpenSection((prev) => (prev === id ? null : id));
+  }, []);
 
   useOverlayRegistration({ id: "global-settings", open: true, onClose, priority: 50 });
 
@@ -286,6 +291,8 @@ export default function GlobalSettings({
           <SettingsSection
             title="成绩"
             icon={<Trophy size={16} />}
+            open={openSection === "scores"}
+            onToggle={() => toggleSection("scores")}
             summary={
               summary.chapters
                 ? `${summary.chapters} 章 · 平均 ${summary.avgBest} · ${summary.totalAttempts} 次`
@@ -407,6 +414,8 @@ export default function GlobalSettings({
           <SettingsSection
             title="快捷键"
             icon={<Keyboard size={16} />}
+            open={openSection === "keyboard"}
+            onToggle={() => toggleSection("keyboard")}
             summary={`已启用 ${keyboardEnabledCount} / ${SHORTCUTS.length}`}
           >
             <KeyboardShortcutsSettings />
@@ -415,6 +424,8 @@ export default function GlobalSettings({
           <SettingsSection
             title="外观"
             icon={<Palette size={16} />}
+            open={openSection === "appearance"}
+            onToggle={() => toggleSection("appearance")}
             summary={`${theme === "light" ? "浅色" : "深色"} · ${APPEARANCE_LABELS[appearance.mode]} · ${FONT_CHOICES[appearance.custom.font].label}`}
           >
             <AppearanceSettingsControls

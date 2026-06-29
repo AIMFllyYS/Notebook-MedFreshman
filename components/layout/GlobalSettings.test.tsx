@@ -67,6 +67,20 @@ describe("GlobalSettings", () => {
     expect(screen.getByLabelText("启用 全局搜索")).toBeInTheDocument();
   });
 
+  it("expands only one section at a time", async () => {
+    const user = userEvent.setup();
+    renderSettings();
+
+    await user.click(screen.getByRole("button", { name: /成绩/ }));
+    expect(await screen.findByText("已测章节")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /外观/ }));
+    expect(await screen.findByRole("button", { name: "彩色" })).toBeInTheDocument();
+    expect(screen.queryByText("已测章节")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /成绩/ })).toHaveAttribute("aria-expanded", "false");
+    expect(screen.getByRole("button", { name: /^外观$/ })).toHaveAttribute("aria-expanded", "true");
+  });
+
   it("expands appearance controls and applies custom color/font settings", async () => {
     const user = userEvent.setup();
     renderSettings();

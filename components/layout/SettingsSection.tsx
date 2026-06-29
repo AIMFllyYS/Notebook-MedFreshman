@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import clsx from "clsx";
 
@@ -9,16 +8,16 @@ export default function SettingsSection({
   icon,
   summary,
   children,
-  defaultOpen = false,
+  open,
+  onToggle,
 }: {
   title: string;
   icon: React.ReactNode;
   summary?: React.ReactNode;
   children: React.ReactNode;
-  defaultOpen?: boolean;
+  open: boolean;
+  onToggle: () => void;
 }) {
-  const [open, setOpen] = useState(defaultOpen);
-
   return (
     <section
       className="overflow-hidden rounded-[var(--md-sys-shape-corner-large,16px)]"
@@ -31,7 +30,7 @@ export default function SettingsSection({
         type="button"
         aria-expanded={open}
         aria-label={title}
-        onClick={() => setOpen((v) => !v)}
+        onClick={onToggle}
         className="flex w-full items-center gap-3 border-0 bg-transparent px-3.5 py-3 text-left"
         style={{ color: "var(--md-sys-color-on-surface)", cursor: "pointer" }}
       >
