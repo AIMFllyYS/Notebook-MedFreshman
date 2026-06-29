@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   VennDiagram,
   DistributionChart,
@@ -8,6 +8,8 @@ import {
   VideoPlayer,
 } from '@/components/visualizations';
 import { DiagramCanvas, isDiagramMode } from '@/components/canvas';
+import { useChatHistory } from '@/lib/hooks/useChatHistory';
+import { replaceSvgDiagramBlock } from '@/lib/chat/rendering/svgBlockPatch';
 
 // ----------------------------------------------------
 // ChatMessageVisualizations: 标签分发器
@@ -18,6 +20,13 @@ interface ChatMessageVisualizationsProps {
   tagName: string;
   props: Record<string, unknown>;
   childrenText: string;
+  repairContext?: {
+    sessionId?: string;
+    messageId?: string;
+    blockIndex?: number;
+    modelId?: string;
+    topic?: string;
+  };
 }
 
 const toNum = (v: unknown): number | undefined =>
@@ -35,7 +44,24 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
   tagName,
   props,
   childrenText,
+  repairContext,
 }) => {
+  const handleSvgRepair = useCallback((nextSvg: string) => {
+    const sessionId = repairContext?.sessionId;
+    const messageId = repairContext?.messageId;
+    const blockIndex = repairContext?.blockIndex;
+    if (!sessionId || !messageId || blockIndex === undefined) return;
+
+    const state = useChatHistory.getState();
+    const message = state.messagesById[sessionId]?.find((item) => item.id === messageId);
+    if (!message) return;
+
+    const content = replaceSvgDiagramBlock(message.content, blockIndex, nextSvg);
+    if (content !== message.content) {
+      state.updateMessage(sessionId, messageId, { content });
+    }
+  }, [repairContext]);
+
   switch (tagName) {
     case 'InteractiveVenn':
       return (
@@ -107,6 +133,11 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
           width={toNum(props.width)}
           height={toNum(props.height)}
           attrs={props}
+          repairContext={{
+            modelId: repairContext?.modelId,
+            topic: repairContext?.topic,
+          }}
+          onRepairContent={handleSvgRepair}
         />
       );
     }

@@ -25,6 +25,10 @@ interface MessageContentProps {
   onFollowUpSelect?: (question: string) => void;
   /** 聊天体文本（用户输入/思考过程/生成依据）启用软换行：段内单 \n 渲染为 <br>。 */
   preserveLineBreaks?: boolean;
+  sessionId?: string;
+  messageId?: string;
+  repairModelId?: string;
+  topic?: string;
 }
 
 type MarkdownElementProps<T extends keyof React.JSX.IntrinsicElements> =
@@ -134,6 +138,14 @@ function renderMarkdownWithSvg(
 
 const VIZ_TAG_SET = new Set<string>(CHAT_VIZ_TAGS);
 
+interface MessageRenderContext {
+  sessionId?: string;
+  messageId?: string;
+  repairModelId?: string;
+  topic?: string;
+  nextSvgBlockIndex?: () => number;
+}
+
 /* ---- Render parsed blocks (supports nested Answer/Thinking re-parse) ---- */
 function renderBlocks(
   blocks: ParsedBlock[],
@@ -141,9 +153,10 @@ function renderBlocks(
   enableVisualizations: boolean | undefined,
   onFollowUpSelect: ((question: string) => void) | undefined,
   remarkPlugins: typeof sharedRemarkPlugins,
+  renderContext?: MessageRenderContext,
 ): React.ReactNode {
   return blocks.map((block, idx) =>
-    renderParsedBlock(block, `${keyPrefix}-${idx}`, enableVisualizations, onFollowUpSelect, remarkPlugins),
+    renderParsedBlock(block, `${keyPrefix}-${idx}`, enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext),
   );
 }
 
@@ -154,6 +167,7 @@ const renderParsedBlock = (
   enableVisualizations?: boolean,
   onFollowUpSelect?: (question: string) => void,
   remarkPlugins: typeof sharedRemarkPlugins = sharedRemarkPlugins,
+  renderContext?: MessageRenderContext,
 ) => {
   if (block.type === 'markdown') {
     const raw = block.content || '';
@@ -163,7 +177,7 @@ const renderParsedBlock = (
       if (nested.some((b) => b.type === 'component')) {
         return (
           <React.Fragment key={key}>
-            {renderBlocks(nested, key, enableVisualizations, onFollowUpSelect, remarkPlugins)}
+            {renderBlocks(nested, key, enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext)}
           </React.Fragment>
         );
       }
@@ -175,9 +189,23 @@ const renderParsedBlock = (
 
   // Visualization components
   if (enableVisualizations && tagName && VIZ_TAG_SET.has(tagName)) {
+    const repairContext = tagName === 'SvgDiagram'
+      ? {
+          sessionId: renderContext?.sessionId,
+          messageId: renderContext?.messageId,
+          blockIndex: renderContext?.nextSvgBlockIndex?.(),
+          modelId: renderContext?.repairModelId,
+          topic: renderContext?.topic,
+        }
+      : undefined;
     return (
       <VizErrorBoundary key={key} label="图形" source={childrenText || ''}>
-        <ChatMessageVisualizations tagName={tagName} props={compProps || {}} childrenText={childrenText || ''} />
+        <ChatMessageVisualizations
+          tagName={tagName}
+          props={compProps || {}}
+          childrenText={childrenText || ''}
+          repairContext={repairContext}
+        />
       </VizErrorBoundary>
     );
   }
@@ -192,7 +220,7 @@ const renderParsedBlock = (
     const innerBlocks = parseXmlTags(childrenText || '');
     return (
       <React.Fragment key={key}>
-        {renderBlocks(innerBlocks, key, enableVisualizations, onFollowUpSelect, remarkPlugins)}
+        {renderBlocks(innerBlocks, key, enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext)}
       </React.Fragment>
     );
   }
@@ -218,6 +246,10 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
   enableVisualizations = true,
   onFollowUpSelect,
   preserveLineBreaks = false,
+  sessionId,
+  messageId,
+  repairModelId,
+  topic,
 }) => {
   const { followUps, blocks } = useMemo(() => {
     return parseChatContent(content);
@@ -228,9 +260,18 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
     [preserveLineBreaks],
   );
 
+  const svgBlockCounter = { current: 0 };
+  const renderContext: MessageRenderContext = {
+    sessionId,
+    messageId,
+    repairModelId,
+    topic,
+    nextSvgBlockIndex: () => svgBlockCounter.current++,
+  };
+
   return (
     <>
-      {renderBlocks(blocks, 'root', enableVisualizations, onFollowUpSelect, remarkPlugins)}
+      {renderBlocks(blocks, 'root', enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext)}
       {followUps.length > 0 && onFollowUpSelect && (
         <FollowUpQuestions questions={followUps} onSelect={onFollowUpSelect} />
       )}

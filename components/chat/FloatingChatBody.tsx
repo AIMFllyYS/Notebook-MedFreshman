@@ -68,6 +68,9 @@ export default function FloatingChatBody({ win, chatContext, onModelChange }: Fl
         onClearError={clearError}
         onFollowUpClick={(question) => sendMessage(question)}
         hydrated={chatReady}
+        sessionId={win.sessionId}
+        repairModelId={win.modelId}
+        topic={chatContext.currentTopic}
         emptyState={
           <div style={{ padding: 16, textAlign: "center", color: "var(--ink-soft)", fontSize: 13, lineHeight: 1.6 }}>
             {win.seedText ? "就这段选中的内容，问点什么吧。" : "开始你的提问。"}

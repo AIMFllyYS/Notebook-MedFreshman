@@ -17,9 +17,12 @@ interface ChatMessageProps {
   message: ChatMessageType;
   onFollowUpSelect: (question: string) => void;
   isStreaming?: boolean;
+  sessionId?: string;
+  repairModelId?: string;
+  topic?: string;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, isStreaming }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, isStreaming, sessionId, repairModelId, topic }) => {
   const isUser = message.role === 'user';
   const displayMessage = useMemo(() => {
     if (isUser) return message;
@@ -98,6 +101,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                   content={message.content}
                   enableVisualizations={true}
                   onFollowUpSelect={message.followUpQuestions?.length ? undefined : onFollowUpSelect}
+                  sessionId={sessionId}
+                  messageId={message.id}
+                  repairModelId={repairModelId}
+                  topic={topic}
                 />
               </div>
             )}

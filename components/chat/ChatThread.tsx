@@ -21,6 +21,9 @@ interface ChatThreadProps {
   fontScale?: number;
   /** 外部滚动容器 ref（主面板传入，供 SelectionPopover 绑定划词选区）。 */
   scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
+  sessionId?: string;
+  repairModelId?: string;
+  topic?: string;
 }
 
 /**
@@ -36,6 +39,9 @@ export default function ChatThread({
   emptyState,
   fontScale = 1,
   scrollContainerRef,
+  sessionId,
+  repairModelId,
+  topic,
 }: ChatThreadProps) {
   const internalRef = useRef<HTMLDivElement>(null);
   const scrollRef = scrollContainerRef ?? internalRef;
@@ -147,6 +153,9 @@ export default function ChatThread({
                       message={msg}
                       onFollowUpSelect={onFollowUpClick}
                       isStreaming={isLoading && msg.id === lastDisplayId && msg.role === 'assistant'}
+                      sessionId={sessionId}
+                      repairModelId={repairModelId}
+                      topic={topic}
                     />
                   </div>
                 );

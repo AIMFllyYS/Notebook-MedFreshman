@@ -31,7 +31,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     enableSearch: false,
     contextMode: 'full',
   });
-  const { messages, isLoading, error, sendMessage, stopGeneration, clearError } = useChat(chatContext, chatOptions);
+  const { messages, isLoading, error, sendMessage, stopGeneration, clearError, sessionId } = useChat(chatContext, chatOptions);
   const outbound = useStore((s) => s.outbound);
   const clearOutbound = useStore((s) => s.clearOutbound);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
@@ -43,6 +43,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const [warnDismissed, setWarnDismissed] = useState(false);
   const [warnSessionId, setWarnSessionId] = useState(activeSessionId);
   const fontScale = useSettings((s) => s.fontScale);
+  const selectedModelId = useSettings((s) => s.selectedModelId);
   const chatReady = useChatReady();
 
   useEffect(() => {
@@ -150,6 +151,9 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         hydrated={chatReady}
         fontScale={fontScale}
         scrollContainerRef={scrollContainerRef}
+        sessionId={sessionId ?? undefined}
+        repairModelId={selectedModelId}
+        topic={chatContext?.currentTopic ?? ''}
         emptyState={
           <ChatEmptyState
             topic={chatContext?.currentTopic ?? ''}

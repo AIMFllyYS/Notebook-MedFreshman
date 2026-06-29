@@ -95,6 +95,10 @@
   -webkit-backdrop-filter: blur(4px);
   z-index: 3;
 }
+.svg-canvas-controls-left {
+  left: 8px;
+  right: auto;
+}
 .svg-canvas-controls button {
   width: 18px;
   height: 18px;
@@ -115,6 +119,64 @@
 }
 .svg-canvas-controls button:active {
   transform: scale(0.94);
+}
+
+.svg-repair-popover {
+  position: absolute;
+  top: 34px;
+  left: 8px;
+  z-index: 4;
+  width: min(320px, calc(100% - 16px));
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-lowest);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  cursor: default;
+  user-select: text;
+}
+.svg-repair-popover textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 64px;
+  border-radius: 7px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  padding: 7px 8px;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.svg-repair-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 7px;
+}
+.svg-repair-actions button {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 7px;
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  padding: 5px 9px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.svg-repair-actions button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+.svg-repair-actions .svg-repair-submit {
+  border-color: transparent;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+.svg-repair-error {
+  margin-top: 6px;
+  color: var(--md-sys-color-error);
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 /* 「放大查看」真全屏：CanvasFullscreenPortal 把画布体 portal 到 document.body，

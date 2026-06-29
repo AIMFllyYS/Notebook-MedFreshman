@@ -23,6 +23,11 @@ interface DiagramCanvasProps {
   height?: number;
   /** 原始标签属性，math 模式透传给 PlotDirective（fn/xmin/xmax/label/grid…）。 */
   attrs?: Record<string, unknown>;
+  repairContext?: {
+    modelId?: string;
+    topic?: string;
+  };
+  onRepairContent?: (svg: string) => void;
 }
 
 /**
@@ -34,7 +39,7 @@ interface DiagramCanvasProps {
  *
  * 控件（半透明/缩放/全屏）、错误降级各由具体体/上层 VizErrorBoundary 负责，本壳只做路由 + 标题。
  */
-export function DiagramCanvas({ mode, content, title, width, height, attrs = {} }: DiagramCanvasProps) {
+export function DiagramCanvas({ mode, content, title, width, height, attrs = {}, repairContext, onRepairContent }: DiagramCanvasProps) {
   let body: React.ReactNode;
   switch (mode) {
     case "molecule":
@@ -48,7 +53,18 @@ export function DiagramCanvas({ mode, content, title, width, height, attrs = {} 
       break;
     case "raw":
     default:
-      body = <RawSvgViewer svg={sanitizeSvg(content)} title={title} width={width} height={height} />;
+      body = (
+        <RawSvgViewer
+          svg={sanitizeSvg(content)}
+          sourceSvg={content}
+          title={title}
+          width={width}
+          height={height}
+          topic={repairContext?.topic}
+          repairModelId={repairContext?.modelId}
+          onRepairContent={onRepairContent}
+        />
+      );
       break;
   }
 

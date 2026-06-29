@@ -72,7 +72,7 @@ export function MoleculeRenderer({ smiles, title, width = 380, height = 300 }: M
     );
   }
   return (
-    <RawSvgViewer svg={sanitizeSvg(resolved.svg)} title={title || "分子结构"} width={width} height={height} />
+    <RawSvgViewer svg={sanitizeSvg(resolved.svg)} title={title || "分子结构"} width={width} height={height} enableAiRepair={false} />
   );
 }
 
