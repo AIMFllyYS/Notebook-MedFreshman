@@ -223,6 +223,17 @@ function resolveSigning() {
 run("node scripts/gen-script-ids.mjs");
 run("node scripts/gen-icon.mjs");
 
+// 0a. Clear any prior dist-desktop before next build. lib/content/loader.ts uses dynamic
+//     paths, so Next's NFT trace follows them and would otherwise copy the entire project
+//     root — including prior build artifacts (multi-GB old exes in dist-desktop/) — into
+//     .next/standalone/, ballooning the packaged exe past GitHub's 2GB upload limit.
+//     Removing dist-desktop pre-build gives NFT nothing to trace; electron-builder
+//     recreates it as the output dir. This does NOT touch node_modules or content.
+if (existsSync("dist-desktop")) {
+  console.log("[build-desktop] clearing prior dist-desktop (prevents NFT trace pollution)…");
+  rmSync("dist-desktop", { recursive: true, force: true });
+}
+
 // 1. Standalone production build. NEXT_PUBLIC_VIDEO_CDN_BASE is inlined here.
 run("pnpm exec next build", {
   BUILD_STANDALONE: "1",
@@ -242,6 +253,19 @@ if (!existsSync(`${SA}/server.js`)) {
 copyInto(".next/static", ".next\\standalone\\.next\\static");
 copyInto("public", ".next\\standalone\\public");
 copyInto("content", ".next\\standalone\\content");
+
+// 2a. Prune directories Next's NFT trace may have pulled into standalone that must NOT
+//     ship in the exe (dist-desktop prior artifacts, .git, caches). Belt-and-suspenders
+//     alongside the pre-build clear above; does NOT touch node_modules (handled by
+//     materializeNodeModules) or content. Without this the packaged exe can balloon
+//     past GitHub's 2GB upload limit.
+for (const junk of ["dist-desktop", ".git", "node_modules/.cache"]) {
+  const p = `${SA}/${junk}`;
+  if (existsSync(p)) {
+    console.log(`[build-desktop] pruning NFT-traced junk from standalone: ${junk}`);
+    rmSync(p, { recursive: true, force: true });
+  }
+}
 
 // 2b. Trim the redundant segment prefetch caches before packaging.
 stripSegmentCaches(`${SA}/.next/server`);
