@@ -40,6 +40,7 @@ interface ChatSseEvent {
   breakdown?: ContextBreakdown;
   meta?: {
     artifactId?: unknown;
+    imageGenId?: unknown;
     sources?: WebSearchSource[];
     cacheHit?: unknown;
     hits?: { title: string; path: string; snippet: string }[];
@@ -175,7 +176,7 @@ export function useChat(
 
       // Estimate current context tokens for the dashboard —— 主面板写全局看板，划词窗写独立看板。
       {
-        const selectedModel = getModelInfoWithCustom(effectiveModelId, useSettings.getState().customModels);
+        const selectedModel = getModelInfoWithCustom(effectiveModelId, useSettings.getState().customApiGroups);
         const contextLimitK = selectedModel?.contextK ?? 128;
         const limit = contextLimitK * 1000;
         const serverCtx = ovSessionId
@@ -234,8 +235,6 @@ export function useChat(
 
         try {
           const settings = useSettings.getState();
-          const isCustom = effectiveModelId.startsWith(CUSTOM_PREFIX);
-          const customModelName = isCustom ? effectiveModelId.slice(CUSTOM_PREFIX.length) : undefined;
           const requestSourceMessages = await requestSourceMessagesPromise;
           const { messages: hydratedMessages } = buildRequestMessages(requestSourceMessages);
           const response = await fetch('/api/chat', {
@@ -244,9 +243,10 @@ export function useChat(
             body: JSON.stringify({
               messages: hydratedMessages,
               modelId: effectiveModelId,
-              customProvider: isCustom
-                ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: customModelName }
-                : undefined,
+              customApiGroups: settings.customApiGroups,
+              defaultImageModelId: settings.defaultImageModelId,
+              imageModeTextModel: settings.imageModeTextModel,
+              imageModeTextModelFallback: settings.imageModeTextModelFallback,
               disabledTools: settings.disabledTools,
               subjectId: chatContext.subjectId,
               categoryId: chatContext.categoryId,
@@ -320,6 +320,16 @@ export function useChat(
                       if (event.args?.title) tc.title = String(event.args.title);
                       if (event.args?.prompt) tc.prompt = String(event.args.prompt);
                     }
+                    // generateImage 带回 imageGenId 和参数，卡片展示批准 UI，批准后独立请求 /api/image-gen。
+                    if (event.meta && typeof event.meta.imageGenId === 'string') {
+                      tc.imageGenId = event.meta.imageGenId;
+                    }
+                    if (event.name === 'generateImage') {
+                      if (event.args?.title) tc.imageGenTitle = String(event.args.title);
+                      if (event.args?.prompt) tc.imageGenPrompt = String(event.args.prompt);
+                      if (event.args?.size) tc.imageGenSize = String(event.args.size);
+                      if (event.args?.count) tc.imageGenCount = Number(event.args.count);
+                    }
                     toolCallsMap.set(tc.id, tc);
                     scheduleUi();
                   } else if (event.status === 'result') {
@@ -330,6 +340,7 @@ export function useChat(
                       if (meta && Array.isArray(meta.sources)) existing.sources = meta.sources;
                       if (meta && typeof meta.cacheHit === 'boolean') existing.cacheHit = meta.cacheHit;
                       if (meta && typeof meta.artifactId === 'string') existing.artifactId = meta.artifactId;
+                      if (meta && typeof meta.imageGenId === 'string') existing.imageGenId = meta.imageGenId;
                       if (meta && Array.isArray(meta.hits)) existing.hits = meta.hits;
                       if (meta && typeof meta.skill === 'string') existing.skill = meta.skill;
                       scheduleUi();
