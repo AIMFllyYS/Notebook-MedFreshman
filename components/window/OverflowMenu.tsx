@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { BookmarkCheck, MonitorPlay, MoreHorizontal } from "lucide-react";
+import { BookmarkCheck, MonitorPlay, MoreHorizontal, ImagePlus, PieChart } from "lucide-react";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 
@@ -14,6 +14,8 @@ interface OverflowMenuProps {
 function WindowIcon({ type }: { type: ManagedWindow["type"] }) {
   if (type === "floating-chat") return <PencilSparklesIcon size={14} />;
   if (type === "record-preview") return <BookmarkCheck size={14} />;
+  if (type === "image-gen-viewer") return <ImagePlus size={14} />;
+  if (type === "billing-dashboard") return <PieChart size={14} />;
   return <MonitorPlay size={14} />;
 }
 
