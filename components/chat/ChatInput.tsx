@@ -92,12 +92,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     if (effectiveQuote) clearQuotedText();
   }, [input, attachments, isLoading, externalDisabled, onSend, effectiveEnableThinking, enableSearch, effectiveQuote, clearQuotedText, toChatFormat, clearAttachments]);
 
-  useEffect(() => {
-    if (!thinkingSupported && enableThinking) {
-      setEnableThinking(false);
-    }
-  }, [thinkingSupported, enableThinking]);
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();

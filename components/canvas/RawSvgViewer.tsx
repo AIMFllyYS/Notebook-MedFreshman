@@ -75,7 +75,7 @@ export function RawSvgViewer({
   const [zoom, setZoom] = useState(1);
   const [collapsed, setCollapsed] = useState(false);
   const [showSource, setShowSource] = useState(false);
-  const [displaySvg, setDisplaySvg] = useState(svg);
+  const [localRepair, setLocalRepair] = useState<{ base: string; svg: string } | null>(null);
   const [showRepair, setShowRepair] = useState(false);
   const [repairInstruction, setRepairInstruction] = useState("");
   const [repairing, setRepairing] = useState(false);
@@ -83,9 +83,7 @@ export function RawSvgViewer({
   const { fullscreen, toggle, exit } = useCanvasFullscreen();
   const dragRef = useRef<{ startX: number; startY: number; panX: number; panY: number } | null>(null);
 
-  useEffect(() => {
-    setDisplaySvg(svg);
-  }, [svg]);
+  const displaySvg = localRepair?.base === svg ? localRepair.svg : svg;
 
   const handlePointerDown = useCallback(
     (e: RPointerEvent<HTMLDivElement>) => {
@@ -146,7 +144,7 @@ export function RawSvgViewer({
       if (!cleaned.trim()) {
         throw new Error("模型返回的 SVG 被安全清洗后为空，请换一种描述重试。");
       }
-      setDisplaySvg(cleaned);
+      setLocalRepair({ base: svg, svg: cleaned });
       onRepairContent?.(cleaned);
       setShowRepair(false);
       setRepairInstruction("");
@@ -164,6 +162,7 @@ export function RawSvgViewer({
     repairing,
     selectedModelId,
     sourceSvg,
+    svg,
     title,
     topic,
   ]);
