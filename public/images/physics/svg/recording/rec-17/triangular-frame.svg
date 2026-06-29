@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <marker id="arrowB" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2196F3"/>
+    </marker>
+  </defs>
+  <!-- Background -->
+  <rect width="400" height="300" fill="#fafafa"/>
+  <!-- Magnetic field dots (B out of page) -->
+  <g fill="#2196F3" opacity="0.3">
+    <circle cx="180" cy="100" r="3"/><circle cx="220" cy="80" r="3"/>
+    <circle cx="260" cy="120" r="3"/><circle cx="200" cy="140" r="3"/>
+    <circle cx="240" cy="100" r="3"/><circle cx="300" cy="90" r="3"/>
+    <circle cx="280" cy="150" r="3"/><circle cx="320" cy="130" r="3"/>
+    <circle cx="160" cy="130" r="3"/><circle cx="350" cy="110" r="3"/>
+  </g>
+  <!-- Triangle frame COD -->
+  <line x1="100" y1="250" x2="350" y2="250" stroke="#333" stroke-width="2"/>
+  <line x1="100" y1="250" x2="100" y2="50" stroke="#333" stroke-width="2"/>
+  <!-- Rod MN -->
+  <line x1="100" y1="50" x2="100" y2="250" stroke="#333" stroke-width="2"/>
+  <line x1="100" y1="50" x2="250" y2="250" stroke="#E91E63" stroke-width="3"/>
+  <!-- Labels -->
+  <text x="90" y="40" font-size="16" font-weight="bold">O</text>
+  <text x="240" y="270" font-size="16" font-weight="bold">D</text>
+  <text x="80" y="270" font-size="16" font-weight="bold">C</text>
+  <text x="245" y="245" font-size="14" fill="#E91E63">M</text>
+  <text x="105" y="45" font-size="14" fill="#E91E63">N</text>
+  <!-- Velocity arrow -->
+  <line x1="175" y1="150" x2="225" y2="150" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="185" y="143" font-size="14" fill="#4CAF50" font-weight="bold">v</text>
+  <!-- Angle theta -->
+  <path d="M 130,250 Q 115,220 120,200" fill="none" stroke="#666" stroke-width="1"/>
+  <text x="125" y="220" font-size="14" fill="#666">θ</text>
+  <!-- B field label -->
+  <text x="310" y="75" font-size="16" fill="#2196F3" font-weight="bold">B (⊙)</text>
+  <!-- Counter-clockwise arrow for loop direction -->
+  <path d="M 200,160 Q 160,130 180,100" fill="none" stroke="#FF9800" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="155" y="105" font-size="12" fill="#FF9800">逆时针</text>
+</svg>

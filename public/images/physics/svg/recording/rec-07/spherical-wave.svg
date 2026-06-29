@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350" role="img" aria-labelledby="title desc">
+  <title id="title">球面波扩散衰减</title>
+  <desc id="desc">点波源发出同心球面波，波面面积随半径增大，振幅随半径减小。</desc>
+  <rect x="0" y="0" width="500" height="350" rx="18" fill="none"/>
+  <circle cx="100" cy="175" r="5" fill="var(--accent, #2563eb)"/>
+  <circle cx="100" cy="175" r="50" fill="none" stroke="var(--accent, #2563eb)" stroke-width="2.5"/>
+  <circle cx="100" cy="175" r="100" fill="none" stroke="var(--accent, #2563eb)" stroke-width="2" opacity="0.7"/>
+  <circle cx="100" cy="175" r="160" fill="none" stroke="var(--accent, #2563eb)" stroke-width="1.5" opacity="0.4"/>
+  <g fill="none" stroke="var(--color-success, #16a34a)" stroke-width="1.5" marker-end="url(#arrow)">
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-success, #16a34a)"/>
+    </marker>
+    <line x1="100" y1="175" x2="460" y2="175" marker-end="url(#arr)"/>
+  </g>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="14">
+    <text x="85" y="165">波源</text>
+    <text x="130" y="145">r₁ = 1 m</text>
+    <text x="180" y="100">r₂ = 5 m</text>
+    <text x="140" y="260">A₁r₁ = A₂r₂</text>
+    <text x="140" y="280">A ∝ 1/r</text>
+    <text x="460" y="170">r</text>
+  </g>
+</svg>

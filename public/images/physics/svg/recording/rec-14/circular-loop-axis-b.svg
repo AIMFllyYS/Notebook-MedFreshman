@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-180 -100 360 200" width="480" height="280">
+  <defs>
+    <marker id="arr3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+    </marker>
+  </defs>
+  <!-- Axis line -->
+  <line x1="-160" y1="0" x2="160" y2="0" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- Loop (ellipse to show perspective) -->
+  <ellipse cx="0" cy="0" rx="15" ry="60" fill="none" stroke="#e74c3c" stroke-width="3"/>
+  <!-- Current direction on loop -->
+  <polygon points="12,-55 18,-60 12,-65" fill="#e74c3c"/>
+  <text x="20" y="-55" font-size="12" fill="#e74c3c">$I$</text>
+  <!-- Center -->
+  <circle cx="0" cy="0" r="3" fill="#333"/>
+  <text x="-8" y="15" font-size="12" fill="#333">$O$</text>
+  <!-- P point on axis -->
+  <circle cx="80" cy="0" r="4" fill="#3498db"/>
+  <text x="75" y="-10" font-size="13" fill="#3498db">$P$</text>
+  <!-- R label -->
+  <line x1="0" y1="0" x2="0" y2="-60" stroke="#666" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="5" y="-30" font-size="12" fill="#666">$R$</text>
+  <!-- x label -->
+  <text x="35" y="-8" font-size="12" fill="#666">$x$</text>
+  <!-- B arrows at P -->
+  <line x1="80" y1="0" x2="140" y2="0" stroke="#3498db" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="142" y="5" font-size="13" fill="#3498db">$\vec{B}$</text>
+  <!-- Formula -->
+  <text x="-170" y="85" font-size="12" fill="#333">$B=\dfrac{\mu_0 IR^2}{2(R^2+x^2)^{3/2}}$</text>
+</svg>

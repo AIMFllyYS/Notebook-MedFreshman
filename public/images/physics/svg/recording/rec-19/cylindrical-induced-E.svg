@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="350" viewBox="0 0 400 350">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#E91E63"/>
+    </marker>
+  </defs>
+  <rect width="400" height="350" fill="#fafafa"/>
+  <!-- Cylindrical region R -->
+  <circle cx="200" cy="175" r="100" fill="none" stroke="#333" stroke-width="2"/>
+  <text x="290" y="90" font-size="14" font-weight="bold">R</text>
+  <!-- B field (into page) crosses -->
+  <g stroke="#2196F3" stroke-width="1.5" opacity="0.4">
+    <line x1="185" y1="155" x2="195" y2="165"/><line x1="195" y1="155" x2="185" y2="165"/>
+    <line x1="215" y1="145" x2="225" y2="155"/><line x1="225" y1="145" x2="215" y2="155"/>
+    <line x1="195" y1="185" x2="205" y2="195"/><line x1="205" y1="185" x2="195" y2="195"/>
+    <line x1="235" y1="175" x2="245" y2="185"/><line x1="245" y1="175" x2="235" y2="185"/>
+    <line x1="175" y1="195" x2="185" y2="205"/><line x1="185" y1="195" x2="175" y2="205"/>
+  </g>
+  <text x="205" y="170" font-size="13" fill="#2196F3" font-weight="bold">B (×)</text>
+  <text x="190" y="215" font-size="12" fill="#2196F3">dB/dt &gt; 0</text>
+  <!-- Induced E field circles (inner) -->
+  <circle cx="200" cy="175" r="40" fill="none" stroke="#E91E63" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <circle cx="200" cy="175" r="70" fill="none" stroke="#E91E63" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <!-- Arrows on circles (counter-clockwise) -->
+  <path d="M 240,175 A 40,40 0 0,0 200,135" fill="none" stroke="#E91E63" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M 270,175 A 70,70 0 0,0 200,105" fill="none" stroke="#E91E63" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- Labels -->
+  <text x="245" y="165" font-size="12" fill="#E91E63">E_i</text>
+  <text x="275" y="160" font-size="12" fill="#E91E63">E_i</text>
+  <!-- r label -->
+  <line x1="200" y1="175" x2="240" y2="175" stroke="#666" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="215" y="190" font-size="12" fill="#666">r</text>
+  <!-- Center O -->
+  <circle cx="200" cy="175" r="3" fill="#333"/>
+  <text x="195" y="170" font-size="14" font-weight="bold">O</text>
+  <!-- Outer E field circle -->
+  <circle cx="200" cy="175" r="130" fill="none" stroke="#E91E63" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+</svg>

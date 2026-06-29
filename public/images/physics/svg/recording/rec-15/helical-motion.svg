@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-120 -80 320 200" width="440" height="280">
+  <defs>
+    <marker id="arr5" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+    </marker>
+  </defs>
+  <!-- B field direction (along z axis, shown as rightward) -->
+  <line x1="0" y1="60" x2="180" y2="60" stroke="#999" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arr5)"/>
+  <text x="185" y="65" font-size="13" fill="#999">$\vec{B}$</text>
+  <!-- Helical path (projected: circle + forward motion) -->
+  <path d="M 0,0 C 15,-30 45,-30 60,0 C 75,30 105,30 120,0 C 135,-30 165,-30 180,0" fill="none" stroke="#3498db" stroke-width="2.5"/>
+  <!-- Start point -->
+  <circle cx="0" cy="0" r="5" fill="#e74c3c"/>
+  <text x="-15" y="-5" font-size="12" fill="#e74c3c">$+q$</text>
+  <!-- Velocity components -->
+  <line x1="0" y1="0" x2="0" y2="-35" stroke="#2ecc71" stroke-width="2" marker-end="url(#arr5)"/>
+  <text x="5" y="-25" font-size="11" fill="#2ecc71">$v_\perp$</text>
+  <line x1="0" y1="0" x2="35" y2="0" stroke="#e67e22" stroke-width="2" marker-end="url(#arr5)"/>
+  <text x="25" y="-8" font-size="11" fill="#e67e22">$v_\parallel$</text>
+  <!-- Pitch d -->
+  <line x1="0" y1="50" x2="120" y2="50" stroke="#999" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="50" y="55" font-size="12" fill="#999">$d=v_\parallel T$</text>
+  <!-- Radius r -->
+  <line x1="0" y1="0" x2="0" y2="30" stroke="#666" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="-25" y="18" font-size="11" fill="#666">$r$</text>
+  <!-- Formula -->
+  <text x="-110" y="80" font-size="11" fill="#333">$r=\dfrac{mv_\perp}{qB}$</text>
+  <text x="-110" y="95" font-size="11" fill="#333">$T=\dfrac{2\pi m}{qB}$</text>
+  <text x="-110" y="110" font-size="11" fill="#333">$d=v_\parallel T$</text>
+</svg>

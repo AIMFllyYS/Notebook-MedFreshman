@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="300" viewBox="0 0 500 300">
+  <defs>
+    <marker id="arr5" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+    </marker>
+  </defs>
+  <rect width="500" height="300" fill="#fafafa"/>
+  <!-- Light source S -->
+  <circle cx="50" cy="150" r="8" fill="#FFC107"/>
+  <text x="35" y="140" font-size="13" font-weight="bold">S</text>
+  <!-- Single slit -->
+  <rect x="120" y="60" width="4" height="80" fill="#333"/>
+  <rect x="120" y="160" width="4" height="80" fill="#333"/>
+  <text x="108" y="55" font-size="12">单缝</text>
+  <!-- Double slit -->
+  <rect x="250" y="60" width="4" height="110" fill="#333"/>
+  <rect x="250" y="180" width="4" height="60" fill="#333"/>
+  <text x="238" y="55" font-size="12">双缝</text>
+  <!-- S1 S2 labels -->
+  <text x="260" y="148" font-size="12" fill="#E91E63">S₁</text>
+  <text x="260" y="185" font-size="12" fill="#E91E63">S₂</text>
+  <!-- d label -->
+  <line x1="270" y1="145" x2="270" y2="180" stroke="#E91E63" stroke-width="1"/>
+  <text x="275" y="167" font-size="12" fill="#E91E63">d</text>
+  <!-- Screen -->
+  <rect x="430" y="30" width="4" height="240" fill="#666"/>
+  <text x="415" y="25" font-size="12">屏</text>
+  <!-- D label -->
+  <line x1="254" y1="270" x2="430" y2="270" stroke="#333" stroke-width="1" marker-end="url(#arr5)"/>
+  <text x="330" y="285" font-size="13" font-weight="bold">D</text>
+  <!-- Interference pattern on screen -->
+  <rect x="432" y="130" width="3" height="40" fill="#FF5722" opacity="0.8"/>
+  <rect x="440" y="105" width="2" height="25" fill="#FF5722" opacity="0.5"/>
+  <rect x="440" y="170" width="2" height="25" fill="#FF5722" opacity="0.5"/>
+  <rect x="445" y="90" width="2" height="18" fill="#FF5722" opacity="0.3"/>
+  <rect x="445" y="192" width="2" height="18" fill="#FF5722" opacity="0.3"/>
+  <rect x="448" y="80" width="1" height="12" fill="#FF5722" opacity="0.2"/>
+  <rect x="448" y="208" width="1" height="12" fill="#FF5722" opacity="0.2"/>
+  <!-- Central bright fringe label -->
+  <text x="450" y="155" font-size="11" fill="#FF5722">中央明纹</text>
+  <!-- Delta x label -->
+  <line x1="455" y1="115" x2="455" y2="145" stroke="#333" stroke-width="1" marker-end="url(#arr5)"/>
+  <line x1="455" y1="145" x2="455" y2="115" stroke="#333" stroke-width="1" marker-end="url(#arr5)"/>
+  <text x="460" y="135" font-size="12" font-weight="bold">Δx</text>
+  <!-- Rays from S1 and S2 to screen -->
+  <line x1="254" y1="145" x2="430" y2="140" stroke="#4CAF50" stroke-width="0.8" opacity="0.5"/>
+  <line x1="254" y1="180" x2="430" y2="140" stroke="#4CAF50" stroke-width="0.8" opacity="0.5"/>
+</svg>

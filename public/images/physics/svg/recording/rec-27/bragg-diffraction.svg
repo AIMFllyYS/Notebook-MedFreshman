@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 280" font-family="serif">
+  <defs>
+    <marker id="a3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0,8 3,0 6" fill="#333"/>
+    </marker>
+  </defs>
+  <line x1="50" y1="200" x2="400" y2="200" stroke="#888" stroke-width="2"/>
+  <line x1="50" y1="40" x2="50" y2="200" stroke="#888" stroke-width="2"/>
+  <text x="200" y="240" fill="#333" font-size="13">2θ (度)</text>
+  <text x="10" y="120" fill="#333" font-size="13" transform="rotate(-90,10,120)">强度</text>
+  <path d="M 80,195 Q 100,190 120,160 L 125,50 L 130,160 Q 140,185 160,195" fill="#e74c3c" fill-opacity="0.3" stroke="#e74c3c" stroke-width="1.5"/>
+  <path d="M 180,195 Q 200,185 220,150 L 225,60 L 230,150 Q 240,180 260,195" fill="#3498db" fill-opacity="0.3" stroke="#3498db" stroke-width="1.5"/>
+  <path d="M 300,195 Q 310,190 320,170 L 325,80 L 330,170 Q 340,188 360,195" fill="#2ecc71" fill-opacity="0.3" stroke="#2ecc71" stroke-width="1.5"/>
+  <text x="110" y="215" fill="#e74c3c" font-size="11">k=1</text>
+  <text x="210" y="215" fill="#3498db" font-size="11">k=2</text>
+  <text x="310" y="215" fill="#2ecc71" font-size="11">k=3</text>
+  <text x="120" y="30" fill="#333" font-size="12">2d sinθ = kλ</text>
+  <text x="50" y="20" fill="#888" font-size="11">XRD 衍射图样</text>
+</svg>

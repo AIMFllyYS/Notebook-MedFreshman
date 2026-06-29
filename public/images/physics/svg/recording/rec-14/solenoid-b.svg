@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-200 -80 400 160" width="500" height="220">
+  <!-- Solenoid body -->
+  <rect x="-150" y="-50" width="300" height="100" rx="8" fill="none" stroke="#e74c3c" stroke-width="2"/>
+  <!-- Windings (simplified) -->
+  <g stroke="#e74c3c" stroke-width="1.5" fill="none">
+    <line x1="-130" y1="-50" x2="-130" y2="50"/>
+    <line x1="-110" y1="-50" x2="-110" y2="50"/>
+    <line x1="-90" y1="-50" x2="-90" y2="50"/>
+    <line x1="-70" y1="-50" x2="-70" y2="50"/>
+    <line x1="-50" y1="-50" x2="-50" y2="50"/>
+    <line x1="-30" y1="-50" x2="-30" y2="50"/>
+    <line x1="-10" y1="-50" x2="-10" y2="50"/>
+    <line x1="10" y1="-50" x2="10" y2="50"/>
+    <line x1="30" y1="-50" x2="30" y2="50"/>
+    <line x1="50" y1="-50" x2="50" y2="50"/>
+    <line x1="70" y1="-50" x2="70" y2="50"/>
+    <line x1="90" y1="-50" x2="90" y2="50"/>
+    <line x1="110" y1="-50" x2="110" y2="50"/>
+    <line x1="130" y1="-50" x2="130" y2="50"/>
+  </g>
+  <!-- Current dots and crosses -->
+  <g fill="#e74c3c" font-size="14">
+    <text x="-130" y="-55">⊙</text>
+    <text x="-90" y="-55">⊙</text>
+    <text x="-50" y="-55">⊙</text>
+    <text x="-10" y="-55">⊙</text>
+    <text x="30" y="-55">⊙</text>
+    <text x="70" y="-55">⊙</text>
+    <text x="110" y="-55">⊙</text>
+    <text x="-110" y="62">×</text>
+    <text x="-70" y="62">×</text>
+    <text x="-30" y="62">×</text>
+    <text x="10" y="62">×</text>
+    <text x="50" y="62">×</text>
+    <text x="90" y="62">×</text>
+    <text x="130" y="62">×</text>
+  </g>
+  <!-- B field inside (uniform, left to right) -->
+  <g stroke="#3498db" stroke-width="2">
+    <line x1="-120" y1="0" x2="-80" y2="0" marker-end="url(#arr3)"/>
+    <line x1="-60" y1="0" x2="-20" y2="0" marker-end="url(#arr3)"/>
+    <line x1="0" y1="0" x2="40" y2="0" marker-end="url(#arr3)"/>
+    <line x1="60" y1="0" x2="100" y2="0" marker-end="url(#arr3)"/>
+  </g>
+  <text x="30" y="-15" font-size="14" fill="#3498db">均匀 $\vec{B}$</text>
+  <!-- Formula -->
+  <text x="-190" y="95" font-size="13" fill="#333">$B=\mu_0 nI$（管内均匀，管外≈0）</text>
+</svg>

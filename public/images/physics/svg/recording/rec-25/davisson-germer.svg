@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 250" font-family="serif">
+  <defs>
+    <marker id="a2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0,8 3,0 6" fill="#333"/>
+    </marker>
+  </defs>
+  <rect x="50" y="80" width="100" height="90" fill="#f5f5f5" stroke="#888" stroke-width="2" rx="5"/>
+  <text x="65" y="100" fill="#333" font-size="11">电子枪</text>
+  <text x="65" y="115" fill="#888" font-size="9">加热+加速</text>
+  <line x1="150" y1="125" x2="220" y2="125" stroke="#3498db" stroke-width="2" marker-end="url(#a2)"/>
+  <text x="170" y="118" fill="#3498db" font-size="10">电子束</text>
+  <rect x="220" y="100" width="40" height="50" fill="#d4a574" stroke="#8B6914" stroke-width="2"/>
+  <text x="225" y="130" fill="#333" font-size="9">Ni</text>
+  <text x="225" y="142" fill="#888" font-size="8">单晶</text>
+  <line x1="240" y1="125" x2="350" y2="70" stroke="#e74c3c" stroke-width="2" marker-end="url(#a2)"/>
+  <text x="300" y="65" fill="#e74c3c" font-size="11">反射电子</text>
+  <path d="M 240,125 L 260,115" fill="none" stroke="#888" stroke-width="1"/>
+  <path d="M 240,125 A 20,20 0 0,1 255,110" fill="none" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="260" y="118" fill="#f39c12" font-size="11">θ=50°</text>
+  <circle cx="370" cy="80" r="15" fill="#e8f4f8" stroke="#3498db" stroke-width="2"/>
+  <text x="362" y="85" fill="#3498db" font-size="10">探测器</text>
+  <text x="80" y="220" fill="#333" font-size="12">d sinθ = kλ, k=1 → λ ≈ 0.165 nm</text>
+  <text x="80" y="240" fill="#888" font-size="11">德布罗意: λ = 1.225/√U ≈ 0.167 nm ✓</text>
+</svg>

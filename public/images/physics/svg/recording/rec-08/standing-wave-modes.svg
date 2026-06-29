@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-labelledby="title desc">
+  <title id="title">两端固定弦的驻波简正模式</title>
+  <desc id="desc">展示 n=1,2,3,4 四个简正模式的驻波形状。</desc>
+  <rect x="0" y="0" width="600" height="400" rx="18" fill="none"/>
+  <line x1="50" y1="80" x2="550" y2="80" stroke="currentColor" stroke-width="2"/>
+  <line x1="50" y1="170" x2="550" y2="170" stroke="currentColor" stroke-width="2"/>
+  <line x1="50" y1="260" x2="550" y2="260" stroke="currentColor" stroke-width="2"/>
+  <line x1="50" y1="350" x2="550" y2="350" stroke="currentColor" stroke-width="2"/>
+  <path d="M 50 80 Q 175 20 300 80 Q 425 140 550 80" fill="none" stroke="var(--accent, #2563eb)" stroke-width="2.5"/>
+  <path d="M 50 170 Q 125 120 200 170 Q 275 220 350 170 Q 425 120 500 170 Q 537 195 550 170" fill="none" stroke="var(--accent, #2563eb)" stroke-width="2.5"/>
+  <path d="M 50 260 Q 108 220 167 260 Q 225 300 283 260 Q 342 220 400 260 Q 458 300 517 260 Q 533 248 550 260" fill="none" stroke="var(--accent, #2563eb)" stroke-width="2.5"/>
+  <path d="M 50 350 Q 81 320 113 350 Q 144 380 175 350 Q 206 320 238 350 Q 269 380 300 350 Q 331 320 363 350 Q 394 380 425 350 Q 456 320 488 350 Q 519 380 550 350" fill="none" stroke="var(--accent, #2563eb)" stroke-width="2.5"/>
+  <circle cx="50" cy="80" r="4" fill="#e11d48"/>
+  <circle cx="550" cy="80" r="4" fill="#e11d48"/>
+  <circle cx="300" cy="20" r="3" fill="var(--color-success, #16a34a)"/>
+  <circle cx="50" cy="170" r="4" fill="#e11d48"/>
+  <circle cx="550" cy="170" r="4" fill="#e11d48"/>
+  <circle cx="200" cy="170" r="4" fill="#e11d48"/>
+  <circle cx="500" cy="170" r="4" fill="#e11d48"/>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="14">
+    <text x="555" y="85">n=1 (基频)</text>
+    <text x="555" y="175">n=2</text>
+    <text x="555" y="265">n=3</text>
+    <text x="555" y="355">n=4</text>
+    <text x="280" y="10">波腹</text>
+    <text x="180" y="190">波节</text>
+  </g>
+  <g fill="#e11d48" font-family="system-ui, sans-serif" font-size="10">
+    <text x="35" y="95">●节</text>
+    <text x="280" y="35">●腹</text>
+  </g>
+</svg>

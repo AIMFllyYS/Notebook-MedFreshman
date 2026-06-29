@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" role="img" aria-labelledby="title desc">
+  <title id="title">麦克斯韦速率分布函数</title>
+  <desc id="desc">两条 f(v) 曲线：低温（尖峰偏左）和高温（矮胖偏右），标注最概然速率 v_p。</desc>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="500" height="300" rx="18" fill="none"/>
+  <g fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M 50 250 H 460" marker-end="url(#arrow)"/>
+    <path d="M 50 250 V 30" marker-end="url(#arrow)"/>
+  </g>
+  <path d="M 50 250 Q 80 248 110 230 Q 140 190 160 120 Q 175 60 200 40 Q 230 20 260 50 Q 300 100 350 180 Q 400 230 450 248" fill="none" stroke="var(--accent, #2563eb)" stroke-width="3"/>
+  <path d="M 50 250 Q 90 248 130 235 Q 170 200 200 140 Q 220 90 250 55 Q 290 25 340 50 Q 380 80 420 140 Q 445 190 460 220" fill="none" stroke="#e11d48" stroke-width="3" stroke-dasharray="8,4"/>
+  <line x1="175" y1="250" x2="175" y2="40" stroke="var(--accent, #2563eb)" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="250" y1="250" x2="250" y2="25" stroke="#e11d48" stroke-width="1" stroke-dasharray="4,3"/>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="14">
+    <text x="462" y="248">v</text>
+    <text x="30" y="35">f(v)</text>
+    <text x="155" y="270">v_p (低温)</text>
+    <text x="230" y="270">v_p' (高温)</text>
+    <text x="320" y="40">低温</text>
+    <text x="380" y="60">高温</text>
+    <text x="200" y="180">面积 = 1</text>
+  </g>
+  <rect x="310" y="25" width="25" height="3" fill="var(--accent, #2563eb)"/>
+  <rect x="370" y="45" width="25" height="3" fill="#e11d48" stroke-dasharray="8,4"/>
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 300" role="img" aria-labelledby="title desc">
+  <title id="title">三棱柱在均匀电场中的电通量</title>
+  <desc id="desc">三棱柱 5 个面：前后下与电场平行（通量为零），左右面通量相消。</desc>
+  <rect x="0" y="0" width="450" height="300" rx="18" fill="none"/>
+  <polygon points="100,220 300,220 200,80" fill="none" stroke="currentColor" stroke-width="2.5"/>
+  <line x1="100" y1="220" x2="100" y2="260" stroke="currentColor" stroke-width="2"/>
+  <line x1="300" y1="220" x2="300" y2="260" stroke="currentColor" stroke-width="2"/>
+  <line x1="200" y1="80" x2="200" y2="120" stroke="currentColor" stroke-width="2"/>
+  <line x1="100" y1="260" x2="300" y2="260" stroke="currentColor" stroke-width="2"/>
+  <line x1="200" y1="120" x2="300" y2="260" stroke="currentColor" stroke-width="2" opacity="0.5"/>
+  <line x1="200" y1="120" x2="100" y2="260" stroke="currentColor" stroke-width="2" opacity="0.5"/>
+  <g stroke="var(--accent, #2563eb)" stroke-width="2" marker-end="url(#arr)">
+    <line x1="30" y1="170" x2="390" y2="170"/>
+    <line x1="30" y1="150" x2="390" y2="150"/>
+    <line x1="30" y1="190" x2="390" y2="190"/>
+  </g>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent, #2563eb)"/>
+    </marker>
+  </defs>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="13">
+    <text x="395" y="175">E</text>
+    <text x="75" y="240">左面</text>
+    <text x="265" y="240">右面</text>
+    <text x="180" y="70">前面</text>
+    <text x="180" y="285">下面</text>
+    <text x="100" y="210">Φ左 = -ES左</text>
+    <text x="250" y="210">Φ右 = +ES左</text>
+    <text x="130" y="50">总 Φ = 0（内部无电荷）</text>
+  </g>
+</svg>

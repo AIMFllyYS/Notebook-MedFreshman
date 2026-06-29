@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" role="img" aria-labelledby="title desc">
+  <title id="title">波线上两点的相位差</title>
+  <desc id="desc">一条波线上标注 X₁=5 cm 和 X₂=11 cm 两点，间距为半波长。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="600" height="200" rx="18" fill="none"/>
+  <line x1="40" y1="100" x2="560" y2="100" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+  <circle cx="180" cy="100" r="6" fill="var(--accent, #2563eb)"/>
+  <circle cx="370" cy="100" r="6" fill="var(--color-success, #16a34a)"/>
+  <line x1="180" y1="75" x2="370" y2="75" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="180" y1="70" x2="180" y2="80" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="370" y1="70" x2="370" y2="80" stroke="currentColor" stroke-width="1.5"/>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="16">
+    <text x="562" y="118">x</text>
+    <text x="165" y="135">X₁ = 5 cm</text>
+    <text x="355" y="135">X₂ = 11 cm</text>
+    <text x="250" y="68">Δx = 6 cm = λ/2</text>
+    <text x="245" y="170">Δφ = 2π/λ · Δx = π（反相）</text>
+  </g>
+</svg>

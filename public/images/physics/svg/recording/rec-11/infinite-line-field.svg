@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" role="img" aria-labelledby="title desc">
+  <title id="title">无限长带电直线的电场</title>
+  <desc id="desc">无限长带电直线沿竖直方向，电场沿径向向外，大小与距离成反比。</desc>
+  <rect x="0" y="0" width="400" height="250" rx="18" fill="none"/>
+  <line x1="120" y1="20" x2="120" y2="230" stroke="var(--accent, #2563eb)" stroke-width="3"/>
+  <line x1="120" y1="120" x2="200" y2="120" stroke="var(--color-success, #16a34a)" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="120" y1="120" x2="300" y2="120" stroke="var(--color-success, #16a34a)" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="120" y1="60" x2="200" y2="60" stroke="var(--color-success, #16a34a)" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="120" y1="180" x2="200" y2="180" stroke="var(--color-success, #16a34a)" stroke-width="1.5" marker-end="url(#arr)"/>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-success, #16a34a)"/>
+    </marker>
+  </defs>
+  <line x1="120" y1="130" x2="200" y2="130" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="120" y1="125" x2="120" y2="135" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="200" y1="125" x2="200" y2="135" stroke="currentColor" stroke-width="1.5"/>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="14">
+    <text x="100" y="25">+λ</text>
+    <text x="205" y="118">r</text>
+    <text x="205" y="128">E</text>
+    <text x="230" y="50">E = λ/(2πε₀r)</text>
+    <text x="305" y="118">E</text>
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-120 -120 240 240" width="360" height="360">
+  <defs>
+    <marker id="arr4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+    </marker>
+  </defs>
+  <!-- B field (into page, represented by ×) -->
+  <text x="-110" y="-100" font-size="12" fill="#666">$\vec{B}$ 垂直纸面向里 (×)</text>
+  <!-- Particle -->
+  <circle cx="0" cy="-50" r="6" fill="#e74c3c"/>
+  <text x="10" y="-45" font-size="12" fill="#e74c3c">$+q$</text>
+  <!-- Circular path -->
+  <circle cx="0" cy="0" r="50" fill="none" stroke="#3498db" stroke-width="2" stroke-dasharray="5,3"/>
+  <!-- Velocity arrow (tangent) -->
+  <line x1="0" y1="-50" x2="30" y2="-50" stroke="#2ecc71" stroke-width="2" marker-end="url(#arr4)"/>
+  <text x="32" y="-45" font-size="12" fill="#2ecc71">$\vec{v}_0$</text>
+  <!-- Force arrow (toward center) -->
+  <line x1="0" y1="-50" x2="0" y2="-20" stroke="#e74c3c" stroke-width="2" marker-end="url(#arr4)"/>
+  <text x="5" y="-30" font-size="12" fill="#e74c3c">$\vec{F}$</text>
+  <!-- Radius r -->
+  <line x1="0" y1="0" x2="0" y2="-50" stroke="#999" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="5" y="-25" font-size="12" fill="#999">$r$</text>
+  <!-- Center -->
+  <circle cx="0" cy="0" r="2" fill="#333"/>
+  <!-- Formula -->
+  <text x="-110" y="100" font-size="12" fill="#333">$r=\dfrac{mv_0}{qB}$</text>
+  <text x="-110" y="115" font-size="12" fill="#333">$T=\dfrac{2\pi m}{qB}$</text>
+</svg>

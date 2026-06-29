@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-120 -120 240 240" width="360" height="360">
+  <defs>
+    <marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+    </marker>
+  </defs>
+  <!-- Arc (270 degrees as example) -->
+  <path d="M 0,-80 A 80,80 0 1,1 -56.6,56.6" fill="none" stroke="#e74c3c" stroke-width="3" marker-end="url(#arr2)"/>
+  <text x="-50" y="70" font-size="14" fill="#e74c3c">$I$</text>
+  <!-- Center O -->
+  <circle cx="0" cy="0" r="4" fill="#333"/>
+  <text x="5" y="15" font-size="14" fill="#333">$O$</text>
+  <!-- Radius R -->
+  <line x1="0" y1="0" x2="0" y2="-80" stroke="#666" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="5" y="-40" font-size="13" fill="#666">$R$</text>
+  <!-- Angle alpha -->
+  <path d="M 0,-25 A 25,25 0 1,1 -17.7,17.7" fill="none" stroke="#999" stroke-width="1"/>
+  <text x="-25" y="-15" font-size="12" fill="#999">$\alpha$</text>
+  <!-- B direction (into page at center) -->
+  <text x="-110" y="-100" font-size="13" fill="#333">$B=\dfrac{\mu_0 I\alpha}{4\pi R}$</text>
+  <text x="-110" y="-82" font-size="12" fill="#666">方向：垂直纸面向里 (×)</text>
+</svg>

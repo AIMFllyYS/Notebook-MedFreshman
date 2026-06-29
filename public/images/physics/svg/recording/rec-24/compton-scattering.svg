@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 250" font-family="serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0,8 3,0 6" fill="#333"/>
+    </marker>
+  </defs>
+  <circle cx="100" cy="125" r="20" fill="#f1c40f" stroke="#e67e22" stroke-width="2"/>
+  <text x="85" y="130" fill="#333" font-size="10">γ</text>
+  <line x1="120" y1="125" x2="220" y2="125" stroke="#f1c40f" stroke-width="2" marker-end="url(#arr)"/>
+  <circle cx="250" cy="125" r="15" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+  <text x="243" y="130" fill="#fff" font-size="10">e</text>
+  <line x1="265" y1="125" x2="350" y2="80" stroke="#f1c40f" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="265" y1="125" x2="370" y2="170" stroke="#3498db" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="340" y="75" fill="#f1c40f" font-size="12">γ' (λ'>λ₀)</text>
+  <text x="355" y="185" fill="#3498db" font-size="12">e⁻ (反冲)</text>
+  <text x="60" y="50" fill="#333" font-size="12">入射 γ (λ₀)</text>
+  <text x="150" y="210" fill="#333" font-size="12">Δλ = λ_c(1-cosθ)</text>
+  <text x="150" y="230" fill="#888" font-size="11">λ_c = h/(m₀c) = 2.43×10⁻³ nm</text>
+</svg>

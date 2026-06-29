@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280" font-family="serif">
+  <path d="M 50,220 Q 100,200 150,150 Q 200,100 250,80 Q 300,60 350,200" fill="none" stroke="#e74c3c" stroke-width="2"/>
+  <path d="M 50,220 Q 120,190 180,160 Q 240,130 300,120 Q 330,115 350,200" fill="none" stroke="#3498db" stroke-width="2"/>
+  <line x1="40" y1="220" x2="360" y2="220" stroke="#888" stroke-width="1"/>
+  <line x1="40" y1="20" x2="40" y2="230" stroke="#888" stroke-width="1"/>
+  <text x="180" y="250" fill="#333" font-size="13">波长 λ (μm)</text>
+  <text x="10" y="120" fill="#333" font-size="13" transform="rotate(-90,10,120)">M(λ)</text>
+  <circle cx="250" cy="80" r="4" fill="#e74c3c"/>
+  <line x1="250" y1="80" x2="250" y2="220" stroke="#e74c3c" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="245" y="235" fill="#e74c3c" font-size="11">λ_m</text>
+  <text x="100" y="40" fill="#e74c3c" font-size="11">T₁ (低)</text>
+  <text x="200" y="35" fill="#3498db" font-size="11">T₂ (高)</text>
+  <text x="280" y="30" fill="#333" font-size="11">T₂λ_m = b</text>
+</svg>

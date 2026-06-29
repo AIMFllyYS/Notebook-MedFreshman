@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-labelledby="title desc">
+  <title id="title">肥皂泡内外压强差</title>
+  <desc id="desc">肥皂泡截面，标注内径 r、内外两个表面和附加压强 4α/r。</desc>
+  <rect x="0" y="0" width="400" height="300" rx="18" fill="none"/>
+  <circle cx="200" cy="150" r="80" fill="none" stroke="var(--accent, #2563eb)" stroke-width="3"/>
+  <circle cx="200" cy="150" r="74" fill="none" stroke="var(--accent, #2563eb)" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <circle cx="200" cy="150" r="86" fill="none" stroke="var(--accent, #2563eb)" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="200" y1="150" x2="280" y2="150" stroke="currentColor" stroke-width="1.5"/>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="14">
+    <text x="225" y="145">r</text>
+    <text x="170" y="95">内表面</text>
+    <text x="170" y="220">外表面</text>
+    <text x="110" y="150">P₀</text>
+    <text x="240" y="150">P_C</text>
+    <text x="100" y="270">P_C - P₀ = 4α/r</text>
+  </g>
+  <path d="M 265 130 L 265 170" stroke="currentColor" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+</svg>

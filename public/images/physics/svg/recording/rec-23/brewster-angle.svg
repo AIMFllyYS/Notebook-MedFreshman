@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" font-family="serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+  <rect x="0" y="180" width="500" height="4" fill="#888" rx="1"/>
+  <line x1="100" y1="180" x2="200" y2="60" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="140" y="105" fill="#e74c3c" font-size="14">入射光</text>
+  <line x1="200" y1="60" x2="300" y2="180" stroke="#3498db" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="265" y="105" fill="#3498db" font-size="14">折射光</text>
+  <line x1="200" y1="60" x2="400" y2="60" stroke="#2ecc71" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="310" y="55" fill="#2ecc71" font-size="14">反射光（线偏振）</text>
+  <line x1="200" y1="180" x2="200" y2="40" stroke="#999" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="195" y="35" fill="#999" font-size="12">法线</text>
+  <path d="M 170,160 A 30,30 0 0,1 185,145" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="155" y="155" fill="#e74c3c" font-size="13">i₀</text>
+  <path d="M 215,160 A 30,30 0 0,0 235,150" fill="none" stroke="#3498db" stroke-width="1.5"/>
+  <text x="230" y="165" fill="#3498db" font-size="13">r</text>
+  <text x="150" y="290" fill="#333" font-size="13">i₀ + r = 90° 时，反射光为完全线偏振光</text>
+</svg>

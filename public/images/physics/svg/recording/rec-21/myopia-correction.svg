@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="250" viewBox="0 0 500 250">
+  <defs>
+    <marker id="arr3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+    </marker>
+    <marker id="arr4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#F44336"/>
+    </marker>
+  </defs>
+  <rect width="500" height="250" fill="#fafafa"/>
+  <!-- Optical axis -->
+  <line x1="30" y1="125" x2="470" y2="125" stroke="#999" stroke-width="1" stroke-dasharray="4,2"/>
+  <!-- Concave lens -->
+  <path d="M 200,50 Q 190,125 200,200" fill="none" stroke="#2196F3" stroke-width="2.5"/>
+  <path d="M 210,50 Q 200,125 210,200" fill="none" stroke="#2196F3" stroke-width="2.5"/>
+  <text x="195" y="40" font-size="14" fill="#2196F3" font-weight="bold">凹透镜</text>
+  <!-- Parallel rays from infinity -->
+  <line x1="40" y1="80" x2="205" y2="80" stroke="#4CAF50" stroke-width="1.5"/>
+  <line x1="205" y1="80" x2="350" y2="145" stroke="#4CAF50" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="40" y1="125" x2="205" y2="125" stroke="#4CAF50" stroke-width="1.5"/>
+  <line x1="205" y1="125" x2="350" y2="125" stroke="#4CAF50" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <!-- Dashed extension lines to virtual image point -->
+  <line x1="205" y1="80" x2="130" y2="125" stroke="#F44336" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="205" y1="125" x2="130" y2="125" stroke="#F44336" stroke-width="1" stroke-dasharray="3,3"/>
+  <!-- Virtual image point (far point) -->
+  <circle cx="130" cy="125" r="4" fill="#F44336"/>
+  <text x="115" y="115" font-size="13" fill="#F44336" font-weight="bold">远点</text>
+  <!-- Far point distance -->
+  <line x1="130" y1="195" x2="210" y2="195" stroke="#F44336" stroke-width="1.5" marker-end="url(#arr4)"/>
+  <text x="145" y="210" font-size="12" fill="#F44336">|v|=25 cm</text>
+  <!-- Infinity symbol -->
+  <text x="50" y="73" font-size="14" fill="#4CAF50">∞ (平行光)</text>
+  <!-- Eye symbol -->
+  <ellipse cx="380" cy="125" rx="40" ry="30" fill="none" stroke="#9C27B0" stroke-width="2"/>
+  <circle cx="370" cy="125" r="8" fill="#9C27B0" opacity="0.3"/>
+  <text x="365" y="170" font-size="13" fill="#9C27B0">眼睛</text>
+</svg>

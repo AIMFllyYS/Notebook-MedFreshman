@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 250" role="img" aria-labelledby="title desc">
+  <title id="title">两同相波源干涉</title>
+  <desc id="desc">两同相波源 S₁ 和 S₂ 相距 10 m，P 点在中垂线上，Q 点在 S₂ 外侧。</desc>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="550" height="250" rx="18" fill="none"/>
+  <line x1="60" y1="140" x2="490" y2="140" stroke="currentColor" stroke-width="2" marker-end="url(#arr)"/>
+  <circle cx="140" cy="140" r="8" fill="var(--accent, #2563eb)"/>
+  <circle cx="360" cy="140" r="8" fill="var(--color-success, #16a34a)"/>
+  <circle cx="250" cy="50" r="5" fill="var(--accent, #2563eb)" stroke="var(--accent, #2563eb)"/>
+  <circle cx="440" cy="140" r="5" fill="#e11d48"/>
+  <line x1="140" y1="140" x2="250" y2="50" stroke="currentColor" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="360" y1="140" x2="250" y2="50" stroke="currentColor" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="250" y1="140" x2="250" y2="50" stroke="currentColor" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="360" y1="115" x2="440" y2="115" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="360" y1="110" x2="360" y2="120" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="440" y1="110" x2="440" y2="120" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="140" y1="170" x2="440" y2="170" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="140" y1="165" x2="140" y2="175" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="440" y1="165" x2="440" y2="175" stroke="currentColor" stroke-width="1.5"/>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="14">
+    <text x="128" y="165">S₁</text>
+    <text x="365" y="165">S₂</text>
+    <text x="240" y="42">P</text>
+    <text x="445" y="135">Q</text>
+    <text x="380" y="110">S₂Q=3 m</text>
+    <text x="260" y="185">S₁Q=13 m</text>
+    <text x="235" y="78">中垂线</text>
+    <text x="220" y="210">d = 10 m</text>
+  </g>
+</svg>

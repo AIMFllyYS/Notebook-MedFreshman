@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-150 -150 300 300" width="400" height="400">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+    </marker>
+  </defs>
+  <!-- Wire (current out of page) -->
+  <circle cx="0" cy="0" r="8" fill="#e74c3c"/>
+  <text x="12" y="5" font-size="14" fill="#e74c3c">$I$ (⊙)</text>
+  <!-- Magnetic field circles -->
+  <circle cx="0" cy="0" r="40" fill="none" stroke="#3498db" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <circle cx="0" cy="0" r="80" fill="none" stroke="#3498db" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <circle cx="0" cy="0" r="120" fill="none" stroke="#3498db" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <!-- Arrows on circles (counterclockwise) -->
+  <polygon points="0,-40 5,-30 -5,-30" fill="#3498db"/>
+  <polygon points="-80,0 -70,5 -70,-5" fill="#3498db"/>
+  <polygon points="0,120 5,110 -5,110" fill="#3498db"/>
+  <!-- Distance label -->
+  <line x1="0" y1="0" x2="80" y2="0" stroke="#666" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="35" y="-8" font-size="13" fill="#666">$x$</text>
+  <!-- B direction -->
+  <text x="88" y="-5" font-size="13" fill="#3498db">$\vec{B}$</text>
+  <!-- Formula -->
+  <text x="-140" y="-135" font-size="13" fill="#333">$B=\dfrac{\mu_0 I}{2\pi x}$</text>
+</svg>

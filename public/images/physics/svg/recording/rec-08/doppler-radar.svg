@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 200" role="img" aria-labelledby="title desc">
+  <title id="title">多普勒效应测车速</title>
+  <desc id="desc">固定波源发射超声波，汽车反射信号，接收器收到频率变化。</desc>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="550" height="200" rx="18" fill="none"/>
+  <rect x="50" y="70" width="60" height="60" rx="8" fill="var(--accent, #2563eb)" opacity="0.2" stroke="var(--accent, #2563eb)" stroke-width="2"/>
+  <polygon points="400,85 440,100 400,115" fill="var(--color-success, #16a34a)" opacity="0.3" stroke="var(--color-success, #16a34a)" stroke-width="2"/>
+  <path d="M 130 100 Q 200 70 270 100" fill="none" stroke="var(--accent, #2563eb)" stroke-width="2" stroke-dasharray="5,3"/>
+  <path d="M 130 100 Q 200 90 270 100" fill="none" stroke="var(--accent, #2563eb)" stroke-width="2" stroke-dasharray="5,3"/>
+  <path d="M 130 100 Q 200 110 270 100" fill="none" stroke="var(--accent, #2563eb)" stroke-width="2" stroke-dasharray="5,3"/>
+  <path d="M 290 100 Q 350 80 400 100" fill="none" stroke="#e11d48" stroke-width="2" stroke-dasharray="5,3"/>
+  <path d="M 290 100 Q 350 100 400 100" fill="none" stroke="#e11d48" stroke-width="2" stroke-dasharray="5,3"/>
+  <line x1="270" y1="100" x2="290" y2="100" stroke="currentColor" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="440" y1="100" x2="470" y2="100" stroke="var(--color-success, #16a34a)" stroke-width="3" marker-end="url(#arr)"/>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="14">
+    <text x="60" y="160">发射器/接收器</text>
+    <text x="400" y="150">汽车 (速度 v)</text>
+    <text x="180" y="65">发射: f</text>
+    <text x="310" y="75">反射: f'</text>
+    <text x="460" y="95">→ v</text>
+    <text x="160" y="185">f'' = [(u+v)/(u-v)]·f</text>
+  </g>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280" role="img" aria-labelledby="title desc">
+  <title id="title">均匀带电圆环轴线电场</title>
+  <desc id="desc">带电圆环半径 R，轴线上 P 点距环心 x，电场沿 x 方向。</desc>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="500" height="280" rx="18" fill="none"/>
+  <ellipse cx="150" cy="140" rx="30" ry="80" fill="none" stroke="var(--accent, #2563eb)" stroke-width="3"/>
+  <circle cx="150" cy="140" r="4" fill="currentColor"/>
+  <circle cx="350" cy="140" r="5" fill="var(--accent, #2563eb)"/>
+  <line x1="150" y1="140" x2="350" y2="140" stroke="currentColor" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="150" y1="140" x2="330" cy="140" stroke="currentColor" stroke-width="1" stroke-dasharray="4,3"/>
+  <g fill="currentColor" font-family="system-ui, sans-serif" font-size="14">
+    <text x="130" y="240">O (环心)</text>
+    <text x="355" y="138">P</text>
+    <text x="240" y="130">x</text>
+    <text x="185" y="95">R</text>
+    <text x="170" y="60">Q, R</text>
+    <text x="280" y="175">E</text>
+  </g>
+  <path d="M 155 60 Q 155 200 155 60" fill="none" stroke="var(--accent, #2563eb)" stroke-width="1.5" stroke-dasharray="3,3"/>
+</svg>
