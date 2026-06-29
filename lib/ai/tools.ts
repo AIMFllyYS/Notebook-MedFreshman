@@ -152,6 +152,28 @@ export const ALL_TOOLS: Record<string, ToolDefinition> = {
       },
     },
   },
+  generateImage: {
+    type: "function",
+    function: {
+      name: "generateImage",
+      description:
+        "AI 生图工具。当 SVG/交互演示无法充分展示（需要写实风格图片、复杂场景、艺术化呈现），或用户明确要求生图时调用。调用后系统会先展示生图提示词卡片，用户批准后才会实际生成图片，生成过程在独立窗口中展示。优先使用用户配置的默认生图模型，未配置时降级使用硅基流动生图模型。不要滥用——优先使用 SVG 和交互演示，仅在确实需要真实图片时调用。",
+      parameters: {
+        type: "object",
+        properties: {
+          prompt: { type: "string", description: "优化的生图提示词（英文或中文，描述要生成的图片内容、风格、构图等）" },
+          title: { type: "string", description: "图片标题（简短中文）" },
+          size: {
+            type: "string",
+            description: "图片尺寸",
+            enum: ["1024x1024", "960x1280", "768x1024", "720x1440", "720x1280"],
+          },
+          count: { type: "number", description: "生成数量（1-4），默认 1" },
+        },
+        required: ["prompt", "title"],
+      },
+    },
+  },
   useSkill: {
     type: "function",
     function: {
@@ -184,7 +206,7 @@ export function getToolDefs(opts: {
   disabled?: string[];
   skillNames?: string[];
 }): ToolDefinition[] {
-  const names = ["getCurrentPage", "getOutline", "getSection", "searchNotes", "renderInteractive", "drawDiagram"];
+  const names = ["getCurrentPage", "getOutline", "getSection", "searchNotes", "renderInteractive", "drawDiagram", "generateImage"];
   if (opts.enableSearch) names.push("webSearch", "imageSearch");
   const disabled = new Set(opts.disabled ?? []);
   const defs = names.filter((n) => !disabled.has(n)).map((n) => ALL_TOOLS[n]);
@@ -319,6 +341,18 @@ export async function runTool(
       return {
         content: `【技能：${skill.name}】\n${head}${skill.content}`,
         meta: { skill: skill.name, found: true },
+      };
+    }
+
+    case "generateImage": {
+      const prompt = String(args.prompt ?? "");
+      const title = String(args.title ?? "");
+      const size = String(args.size ?? "1024x1024");
+      const count = Math.min(Math.max(Number(args.count) || 1, 1), 4);
+      // 不在此处调用生图 API——前端展示批准卡片，用户批准后独立请求 /api/image-gen
+      return {
+        content: `生图请求已提交，等待用户批准。提示词：${prompt.slice(0, 200)}`,
+        meta: { imageGenPrompt: prompt, imageGenTitle: title, imageGenSize: size, imageGenCount: count },
       };
     }
 
