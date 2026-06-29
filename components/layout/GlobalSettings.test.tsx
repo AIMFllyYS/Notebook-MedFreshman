@@ -1,6 +1,6 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
 import { useTheme } from "@/lib/hooks/useTheme";
@@ -76,7 +76,9 @@ describe("GlobalSettings", () => {
 
     await user.click(screen.getByRole("button", { name: /外观/ }));
     expect(await screen.findByRole("button", { name: "彩色" })).toBeInTheDocument();
-    expect(screen.queryByText("已测章节")).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText("已测章节")).not.toBeInTheDocument();
+    });
     expect(screen.getByRole("button", { name: /成绩/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: /^外观$/ })).toHaveAttribute("aria-expanded", "true");
   });

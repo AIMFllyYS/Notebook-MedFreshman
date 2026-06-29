@@ -198,16 +198,45 @@
   --subject-accent: #6f8fb4;
 }
 
-[data-appearance="colorful"] [data-subject] .prose-notes {
-  --accent: var(--subject-accent, var(--md-sys-color-primary));
-  --md-sys-color-primary: var(--subject-accent, var(--md-sys-color-primary));
+/* Apply the subject accent to the entire UI */
+[data-appearance="colorful"] [data-subject] {
+  --md-sys-color-primary: var(--subject-accent);
+  --accent: var(--subject-accent);
 }
 
+[data-appearance="colorful"][data-theme="light"] [data-subject] {
+  --md-sys-color-primary-container: color-mix(in srgb, var(--subject-accent) 15%, transparent);
+  --md-sys-color-on-primary-container: var(--subject-accent);
+}
+
+[data-appearance="colorful"][data-theme="dark"] [data-subject],
+:root[data-appearance="colorful"]:not([data-theme="light"]) [data-subject] {
+  --md-sys-color-primary-container: color-mix(in srgb, var(--subject-accent) 25%, transparent);
+  --md-sys-color-on-primary-container: color-mix(in srgb, var(--subject-accent) 15%, #ffffff);
+}
+
+/* Update prose-notes specific borders using the new generic --accent */
 [data-appearance="colorful"] [data-subject] .prose-notes h2 {
-  border-bottom-color: color-mix(in srgb, var(--subject-accent, var(--accent)) 32%, var(--line));
+  border-bottom-color: color-mix(in srgb, var(--accent) 32%, var(--line));
 }
 
 [data-appearance="colorful"] [data-subject] .prose-notes blockquote {
-  border-left-color: var(--subject-accent, var(--accent));
-  background: color-mix(in srgb, var(--subject-accent, var(--accent)) 12%, transparent);
+  border-left-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
+
+/* Colorful mode Deep Thinking button/badge override (bright watercolor orange) */
+[data-appearance="colorful"][data-theme="light"] .chat-input-toggle-thinking-active,
+[data-appearance="colorful"][data-theme="light"] .chat-message-badge-thinking {
+  background: rgba(255, 112, 0, 0.12);
+  color: #e65100;
+}
+
+[data-appearance="colorful"][data-theme="dark"] .chat-input-toggle-thinking-active,
+[data-appearance="colorful"][data-theme="dark"] .chat-message-badge-thinking,
+:root[data-appearance="colorful"]:not([data-theme="light"]) .chat-input-toggle-thinking-active,
+:root[data-appearance="colorful"]:not([data-theme="light"]) .chat-message-badge-thinking {
+  background: rgba(255, 140, 0, 0.22);
+  color: #ff9f43;
+}
+

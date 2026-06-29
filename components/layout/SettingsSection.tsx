@@ -1,7 +1,10 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import clsx from "clsx";
+import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
+import { DURATION, EASE } from "@/lib/motion";
+
+const CHEVRON_EASE = `cubic-bezier(${EASE.decelerate.join(",")})`;
 
 export default function SettingsSection({
   title,
@@ -47,20 +50,21 @@ export default function SettingsSection({
         </span>
         <ChevronDown
           size={16}
-          className={clsx(
-            "shrink-0 text-[var(--md-sys-color-on-surface-variant)] transition-transform",
-            open && "rotate-180",
-          )}
+          className="shrink-0 text-[var(--md-sys-color-on-surface-variant)]"
+          style={{
+            transition: `transform ${DURATION.sidebar}s ${CHEVRON_EASE}`,
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+          }}
         />
       </button>
-      {open && (
+      <AnimatedCollapse isOpen={open}>
         <div
           className="min-h-0 max-h-[50vh] overflow-y-auto overscroll-contain border-t px-3.5 py-3"
           style={{ borderColor: "var(--md-sys-color-outline-variant)" }}
         >
           {children}
         </div>
-      )}
+      </AnimatedCollapse>
     </section>
   );
 }
