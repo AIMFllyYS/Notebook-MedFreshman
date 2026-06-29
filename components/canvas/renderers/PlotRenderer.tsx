@@ -1,6 +1,6 @@
 "use client";
 
-import type { PlotCanvasBlock } from '@/lib/canvas/types';
+import type { CanvasBlock, PlotCanvasBlock } from '@/lib/canvas/types';
 import SvgCanvas from '../SvgCanvas';
 import { FunctionPlot } from '../FunctionPlot';
 import { CanvasFrame } from '../CanvasFrame';
@@ -8,12 +8,14 @@ import { compileMathExpr, autoRangeY } from '../canvasUtils';
 
 interface PlotRendererProps {
   block: PlotCanvasBlock;
+  revisionTopic?: string;
   onRevisionSubmit?: (instruction: string) => void | Promise<void>;
+  onRevisionAccepted?: (block: CanvasBlock) => void;
 }
 
 const PADDING = { top: 20, right: 20, bottom: 36, left: 48 };
 
-export function PlotRenderer({ block, onRevisionSubmit }: PlotRendererProps) {
+export function PlotRenderer({ block, revisionTopic, onRevisionSubmit, onRevisionAccepted }: PlotRendererProps) {
   const width = block.width ?? 600;
   const height = block.height ?? 400;
   const xMin = block.attrs.xmin ?? -10;
@@ -25,7 +27,14 @@ export function PlotRenderer({ block, onRevisionSubmit }: PlotRendererProps) {
   const plotH = height - PADDING.top - PADDING.bottom;
 
   return (
-    <CanvasFrame title={block.title} source={block.fn} onRevisionSubmit={onRevisionSubmit}>
+    <CanvasFrame
+      title={block.title}
+      source={block.fn}
+      revisionBlock={block}
+      revisionTopic={revisionTopic}
+      onRevisionSubmit={onRevisionSubmit}
+      onRevisionAccepted={onRevisionAccepted}
+    >
       <SvgCanvas
         width={width}
         height={height}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from 'react';
-import type { HtmlCanvasBlock } from '@/lib/canvas/types';
+import type { CanvasBlock, HtmlCanvasBlock } from '@/lib/canvas/types';
 import { downloadHtmlFile } from '@/lib/utils/downloadHtml';
 import { useCanvasFullscreen } from '@/lib/hooks/useCanvasFullscreen';
 import { CanvasControls } from '../CanvasControls';
@@ -10,10 +10,12 @@ import { CanvasFullscreenPortal } from '../CanvasFullscreenPortal';
 
 interface HtmlRendererProps {
   block: HtmlCanvasBlock;
+  revisionTopic?: string;
   onRevisionSubmit?: (instruction: string) => void | Promise<void>;
+  onRevisionAccepted?: (block: CanvasBlock) => void;
 }
 
-export function HtmlRenderer({ block, onRevisionSubmit }: HtmlRendererProps) {
+export function HtmlRenderer({ block, revisionTopic, onRevisionSubmit, onRevisionAccepted }: HtmlRendererProps) {
   const { fullscreen, toggle, exit } = useCanvasFullscreen();
   const title = block.title || 'HTML canvas';
   const height = block.height ?? 360;
@@ -30,7 +32,16 @@ export function HtmlRenderer({ block, onRevisionSubmit }: HtmlRendererProps) {
 
   return (
     <CanvasFullscreenPortal open={fullscreen} onExit={exit}>
-      <CanvasFrame title={block.title} source={block.source} controls={controls} className="html-canvas-layer" onRevisionSubmit={onRevisionSubmit}>
+      <CanvasFrame
+        title={block.title}
+        source={block.source}
+        controls={controls}
+        className="html-canvas-layer"
+        revisionBlock={block}
+        revisionTopic={revisionTopic}
+        onRevisionSubmit={onRevisionSubmit}
+        onRevisionAccepted={onRevisionAccepted}
+      >
         <iframe
           title={title}
           srcDoc={block.source}

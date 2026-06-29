@@ -9,21 +9,23 @@ import { HtmlRenderer } from './renderers/HtmlRenderer';
 
 interface CanvasBlockRendererProps {
   block: CanvasBlock;
+  revisionTopic?: string;
   onRevisionSubmit?: (instruction: string) => void | Promise<void>;
+  onRevisionAccepted?: (block: CanvasBlock) => void;
 }
 
-export function CanvasBlockRenderer({ block, onRevisionSubmit }: CanvasBlockRendererProps) {
+export function CanvasBlockRenderer({ block, revisionTopic, onRevisionSubmit, onRevisionAccepted }: CanvasBlockRendererProps) {
   switch (block.kind) {
     case 'raw-svg':
-      return <RawSvgRenderer block={block} onRevisionSubmit={onRevisionSubmit} />;
+      return <RawSvgRenderer block={block} revisionTopic={revisionTopic} onRevisionSubmit={onRevisionSubmit} onRevisionAccepted={onRevisionAccepted} />;
     case 'plot':
-      return <PlotRenderer block={block} onRevisionSubmit={onRevisionSubmit} />;
+      return <PlotRenderer block={block} revisionTopic={revisionTopic} onRevisionSubmit={onRevisionSubmit} onRevisionAccepted={onRevisionAccepted} />;
     case 'multi-plot':
-      return <MultiPlotRenderer block={block} onRevisionSubmit={onRevisionSubmit} />;
+      return <MultiPlotRenderer block={block} revisionTopic={revisionTopic} onRevisionSubmit={onRevisionSubmit} onRevisionAccepted={onRevisionAccepted} />;
     case 'molecule':
-      return <MoleculeRenderer block={block} onRevisionSubmit={onRevisionSubmit} />;
+      return <MoleculeRenderer block={block} revisionTopic={revisionTopic} onRevisionSubmit={onRevisionSubmit} onRevisionAccepted={onRevisionAccepted} />;
     case 'html':
-      return <HtmlRenderer block={block} onRevisionSubmit={onRevisionSubmit} />;
+      return <HtmlRenderer block={block} revisionTopic={revisionTopic} onRevisionSubmit={onRevisionSubmit} onRevisionAccepted={onRevisionAccepted} />;
   }
 }
 

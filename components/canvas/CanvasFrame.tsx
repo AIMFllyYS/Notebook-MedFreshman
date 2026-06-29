@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import type { CanvasDiagnostic } from '@/lib/canvas/types';
+import type { CanvasBlock, CanvasDiagnostic } from '@/lib/canvas/types';
 import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
 import { CanvasDiagnosticPanel } from './CanvasDiagnosticPanel';
 import { CanvasRevisionPanel } from './CanvasRevisionPanel';
@@ -19,9 +19,12 @@ interface CanvasFrameProps {
   onPointerUp?: React.PointerEventHandler<HTMLDivElement>;
   onPointerCancel?: React.PointerEventHandler<HTMLDivElement>;
   onWheel?: React.WheelEventHandler<HTMLDivElement>;
+  revisionBlock?: CanvasBlock;
+  revisionTopic?: string;
   revisionBusy?: boolean;
   revisionError?: string | null;
   onRevisionSubmit?: (instruction: string) => void | Promise<void>;
+  onRevisionAccepted?: (block: CanvasBlock) => void;
 }
 
 export function CanvasFrame({
@@ -37,9 +40,12 @@ export function CanvasFrame({
   onPointerUp,
   onPointerCancel,
   onWheel,
+  revisionBlock,
+  revisionTopic,
   revisionBusy = false,
   revisionError,
   onRevisionSubmit,
+  onRevisionAccepted,
 }: CanvasFrameProps) {
   const [showRevision, setShowRevision] = useState(false);
   const [showSource, setShowSource] = useState(false);
@@ -76,10 +82,13 @@ export function CanvasFrame({
 
       {showRevision ? (
         <CanvasRevisionPanel
+          block={revisionBlock}
+          topic={revisionTopic}
           busy={revisionBusy}
           error={revisionError}
           onCancel={() => setShowRevision(false)}
           onSubmit={onRevisionSubmit}
+          onRevisionAccepted={onRevisionAccepted}
         />
       ) : null}
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useRef, useState, type PointerEvent as RPointerEvent, type WheelEvent as RWheelEvent } from 'react';
-import type { RawSvgCanvasBlock } from '@/lib/canvas/types';
+import type { CanvasBlock, RawSvgCanvasBlock } from '@/lib/canvas/types';
 import { sanitizeSvg } from '@/lib/utils/sanitizeSvg';
 import { analyzeSvgHealth } from '@/lib/svg/svgHealth';
 import { useCanvasFullscreen } from '@/lib/hooks/useCanvasFullscreen';
@@ -11,7 +11,10 @@ import { CanvasFullscreenPortal } from '../CanvasFullscreenPortal';
 
 interface RawSvgRendererProps {
   block: RawSvgCanvasBlock;
+  revisionBlock?: CanvasBlock;
+  revisionTopic?: string;
   onRevisionSubmit?: (instruction: string) => void | Promise<void>;
+  onRevisionAccepted?: (block: CanvasBlock) => void;
 }
 
 const ZOOM_MIN = 0.25;
@@ -29,7 +32,13 @@ function ensureViewBox(markup: string, width: number, height: number): string {
   return markup.replace(tag, tag.replace(/<svg\b/i, `<svg viewBox="0 0 ${vw} ${vh}"`));
 }
 
-export function RawSvgRenderer({ block, onRevisionSubmit }: RawSvgRendererProps) {
+export function RawSvgRenderer({
+  block,
+  revisionBlock = block,
+  revisionTopic,
+  onRevisionSubmit,
+  onRevisionAccepted,
+}: RawSvgRendererProps) {
   const width = block.width ?? 400;
   const height = block.height ?? 300;
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -111,7 +120,10 @@ export function RawSvgRenderer({ block, onRevisionSubmit }: RawSvgRendererProps)
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
         onWheel={handleWheel}
+        revisionBlock={revisionBlock}
+        revisionTopic={revisionTopic}
         onRevisionSubmit={onRevisionSubmit}
+        onRevisionAccepted={onRevisionAccepted}
       >
         <div
           className="svg-raw-inner"

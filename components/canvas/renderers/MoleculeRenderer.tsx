@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import type { MoleculeCanvasBlock } from '@/lib/canvas/types';
+import type { CanvasBlock, MoleculeCanvasBlock } from '@/lib/canvas/types';
 import { loadRDKit } from '@/lib/chemistry/rdkit';
 import { CanvasFrame } from '../CanvasFrame';
 import { RawSvgRenderer } from './RawSvgRenderer';
 
 interface MoleculeRendererProps {
   block: MoleculeCanvasBlock;
+  revisionTopic?: string;
   onRevisionSubmit?: (instruction: string) => void | Promise<void>;
+  onRevisionAccepted?: (block: CanvasBlock) => void;
 }
 
 interface Resolved {
@@ -17,7 +19,7 @@ interface Resolved {
   error?: string;
 }
 
-export function MoleculeRenderer({ block, onRevisionSubmit }: MoleculeRendererProps) {
+export function MoleculeRenderer({ block, revisionTopic, onRevisionSubmit, onRevisionAccepted }: MoleculeRendererProps) {
   const input = block.source.trim();
   const [resolved, setResolved] = useState<Resolved>({ key: '' });
 
@@ -52,7 +54,10 @@ export function MoleculeRenderer({ block, onRevisionSubmit }: MoleculeRendererPr
         title={block.title}
         source={block.source}
         diagnostic={{ ok: false, reason: 'empty-molecule', message: 'Molecule source is empty.' }}
+        revisionBlock={block}
+        revisionTopic={revisionTopic}
         onRevisionSubmit={onRevisionSubmit}
+        onRevisionAccepted={onRevisionAccepted}
       >
         <div />
       </CanvasFrame>
@@ -61,7 +66,14 @@ export function MoleculeRenderer({ block, onRevisionSubmit }: MoleculeRendererPr
 
   if (resolved.key !== input) {
     return (
-      <CanvasFrame title={block.title} source={block.source} onRevisionSubmit={onRevisionSubmit}>
+      <CanvasFrame
+        title={block.title}
+        source={block.source}
+        revisionBlock={block}
+        revisionTopic={revisionTopic}
+        onRevisionSubmit={onRevisionSubmit}
+        onRevisionAccepted={onRevisionAccepted}
+      >
         <div className="molecule-status">Rendering molecule structure...</div>
       </CanvasFrame>
     );
@@ -73,7 +85,10 @@ export function MoleculeRenderer({ block, onRevisionSubmit }: MoleculeRendererPr
         title={block.title}
         source={block.source}
         diagnostic={{ ok: false, reason: 'molecule-render-error', message: resolved.error || 'Molecule rendering failed.' }}
+        revisionBlock={block}
+        revisionTopic={revisionTopic}
         onRevisionSubmit={onRevisionSubmit}
+        onRevisionAccepted={onRevisionAccepted}
       >
         <code className="molecule-smiles">{block.source}</code>
       </CanvasFrame>
@@ -83,7 +98,10 @@ export function MoleculeRenderer({ block, onRevisionSubmit }: MoleculeRendererPr
   return (
     <RawSvgRenderer
       block={{ kind: 'raw-svg', title: block.title || 'Molecule structure', width: block.width, height: block.height, source: resolved.svg }}
+      revisionBlock={block}
+      revisionTopic={revisionTopic}
       onRevisionSubmit={onRevisionSubmit}
+      onRevisionAccepted={onRevisionAccepted}
     />
   );
 }

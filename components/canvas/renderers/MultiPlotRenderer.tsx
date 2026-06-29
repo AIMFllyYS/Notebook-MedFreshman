@@ -1,6 +1,6 @@
 "use client";
 
-import type { MultiPlotCanvasBlock } from '@/lib/canvas/types';
+import type { CanvasBlock, MultiPlotCanvasBlock } from '@/lib/canvas/types';
 import SvgCanvas from '../SvgCanvas';
 import { FunctionPlot } from '../FunctionPlot';
 import { CanvasFrame } from '../CanvasFrame';
@@ -8,12 +8,14 @@ import { autoRangeY, compileMathExpr } from '../canvasUtils';
 
 interface MultiPlotRendererProps {
   block: MultiPlotCanvasBlock;
+  revisionTopic?: string;
   onRevisionSubmit?: (instruction: string) => void | Promise<void>;
+  onRevisionAccepted?: (block: CanvasBlock) => void;
 }
 
 const PADDING = { top: 20, right: 20, bottom: 36, left: 48 };
 
-export function MultiPlotRenderer({ block, onRevisionSubmit }: MultiPlotRendererProps) {
+export function MultiPlotRenderer({ block, revisionTopic, onRevisionSubmit, onRevisionAccepted }: MultiPlotRendererProps) {
   const width = block.width ?? block.attrs.width ?? 600;
   const height = block.height ?? block.attrs.height ?? 400;
   const xMin = block.attrs.xmin ?? -10;
@@ -31,7 +33,14 @@ export function MultiPlotRenderer({ block, onRevisionSubmit }: MultiPlotRenderer
   const plotH = height - PADDING.top - PADDING.bottom;
 
   return (
-    <CanvasFrame title={block.title} source={JSON.stringify(block.plots, null, 2)} onRevisionSubmit={onRevisionSubmit}>
+    <CanvasFrame
+      title={block.title}
+      source={JSON.stringify(block.plots, null, 2)}
+      revisionBlock={block}
+      revisionTopic={revisionTopic}
+      onRevisionSubmit={onRevisionSubmit}
+      onRevisionAccepted={onRevisionAccepted}
+    >
       <SvgCanvas
         width={width}
         height={height}
