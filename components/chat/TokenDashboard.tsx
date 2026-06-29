@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
-import { Clock, AlertTriangle, X, Pin, RefreshCw, Loader2 } from 'lucide-react';
+import { Clock, AlertTriangle, X, Pin, RefreshCw, Loader2, BarChart2 } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
 import { useFloatingTokenTracker } from '@/lib/hooks/useFloatingTokenTracker';
@@ -11,6 +11,7 @@ import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { estimateTokens } from '@/lib/context/estimateTokens';
 import { useDraggable } from '@/lib/hooks/useDraggable';
 import { Tooltip } from '@/components/ui/Tooltip';
+import { useWindowManager } from '@/lib/hooks/useWindowManager';
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -247,6 +248,23 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink)' }}>上下文看板</span>
             <span style={{ display: 'flex', gap: 4 }}>
+              <button
+                onClick={() => {
+                  useWindowManager.getState().openWindow({
+                    id: 'billing-dashboard-main',
+                    type: 'billing-dashboard',
+                    title: 'API 计费总览',
+                    pos: { x: window.innerWidth / 2 - 350, y: window.innerHeight / 2 - 250 },
+                    size: { width: 700, height: 500 },
+                    data: {}
+                  });
+                }}
+                title="打开计费总览"
+                data-no-drag
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: 'var(--md-sys-color-primary)' }}
+              >
+                <BarChart2 size={13} />
+              </button>
               <button
                 onClick={() => {
                   setRefreshing(true);

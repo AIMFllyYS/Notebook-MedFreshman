@@ -9,6 +9,7 @@ import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
 import { useDraggable } from "@/lib/hooks/useDraggable";
 import { useResizable } from "@/lib/hooks/useResizable";
 import { useSettings } from "@/lib/hooks/useSettings";
+import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStore";
 import { useLightbox } from "@/lib/stores/lightbox";
 import WindowChrome from "@/components/window/WindowChrome";
 
@@ -85,6 +86,16 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
           updateSession(sid, { status: "error", error: "生图 API 返回格式异常" });
           return;
         }
+        
+        // 记录生图计费
+        useBillingStore.getState().addRecord(createBillingRecord({
+          type: 'image',
+          modelId: data.model || settings.selectedModelId,
+          sessionId: sid,
+          customGroups: settings.customApiGroups,
+          imageCount: data.images.length
+        }));
+
         updateSession(sid, { status: "done", images: data.images, error: undefined });
       } catch (err) {
         updateSession(sid, {

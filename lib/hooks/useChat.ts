@@ -17,6 +17,8 @@ import { buildRequestMessages } from '@/lib/chat/buildRequestMessages';
 import { createStreamUiThrottle } from '@/lib/chat/streamUiThrottle';
 import { hydrateAttachmentsForApi } from '@/lib/storage/chatStorage';
 import { buildFallbackSessionTitle, sanitizeSessionTitle } from '@/lib/chat/sessionTitle';
+import { useBillingStore, createBillingRecord } from './useBillingStore';
+import { useFloatingChats } from './useFloatingChats';
 
 interface SendMessageOptions {
   quotedText?: string;
@@ -366,6 +368,7 @@ export function useChat(
 
                 case 'usage':
                   if (event.usage) {
+                    const settings = useSettings.getState();
                     if (ovSessionId) {
                       useFloatingTokenTracker.getState().addUsage(ovSessionId, event.usage);
                       if (event.usage.promptTokens) {
@@ -376,6 +379,22 @@ export function useChat(
                           limit,
                         );
                       }
+                      
+                      // 记录计费
+                      const fState = useFloatingChats.getState();
+                      const chatModelId = fState.windows.find((c: any) => c.sessionId === ovSessionId)?.modelId || settings.selectedModelId;
+                      useBillingStore.getState().addRecord(createBillingRecord({
+                        type: 'chat',
+                        modelId: chatModelId,
+                        sessionId: ovSessionId,
+                        customGroups: settings.customApiGroups,
+                        usage: {
+                          promptTokens: event.usage.promptTokens ?? 0,
+                          completionTokens: event.usage.completionTokens ?? 0,
+                          cachedTokens: event.usage.cachedTokens ?? 0,
+                          totalTokens: event.usage.totalTokens ?? 0
+                        }
+                      }));
                     } else {
                       useTokenTracker.getState().addUsage(event.usage);
                       if (event.usage.promptTokens) {
@@ -385,6 +404,20 @@ export function useChat(
                           limit,
                         );
                       }
+
+                      // 记录计费
+                      useBillingStore.getState().addRecord(createBillingRecord({
+                        type: 'chat',
+                        modelId: settings.selectedModelId,
+                        sessionId: sessionId!,
+                        customGroups: settings.customApiGroups,
+                        usage: {
+                          promptTokens: event.usage.promptTokens ?? 0,
+                          completionTokens: event.usage.completionTokens ?? 0,
+                          cachedTokens: event.usage.cachedTokens ?? 0,
+                          totalTokens: event.usage.totalTokens ?? 0
+                        }
+                      }));
                     }
                   }
                   break;
