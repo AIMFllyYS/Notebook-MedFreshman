@@ -3,7 +3,7 @@
 import { useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { Download, ImagePlus, RefreshCw, Loader, AlertTriangle } from "lucide-react";
-import { useImageGen, imageGenWindowId } from "@/lib/hooks/useImageGen";
+import { useImageGen, imageGenWindowId, type ImageGenImage } from "@/lib/hooks/useImageGen";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
 import { useDraggable } from "@/lib/hooks/useDraggable";
@@ -13,6 +13,13 @@ import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStor
 import { useLightbox } from "@/lib/stores/lightbox";
 import WindowChrome from "@/components/window/WindowChrome";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+
+/** 将归一化图片项转为可渲染的 src：优先 url，回退 b64_json data URL。 */
+function imageSrc(img: ImageGenImage): string {
+  if (img.url) return img.url;
+  if (img.b64_json) return `data:image/png;base64,${img.b64_json}`;
+  return "";
+}
 
 function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
   const session = useImageGen((s) => s.sessions[sessionId] ?? null);
@@ -151,9 +158,19 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
     void triggerGenerate(sessionId);
   };
 
-  const downloadImage = async (url: string, idx: number) => {
+  const downloadImage = async (src: string, idx: number) => {
     try {
-      const res = await fetch(url);
+      // b64_json data URL 直接触发下载，无需 fetch（避免大 base64 二次请求）
+      if (src.startsWith("data:")) {
+        const a = document.createElement("a");
+        a.href = src;
+        a.download = `${session.title || "image"}-${idx + 1}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+      }
+      const res = await fetch(src);
       const blob = await res.blob();
       const objUrl = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -164,7 +181,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
       document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(objUrl), 60000);
     } catch {
-      window.open(url, "_blank", "noopener");
+      window.open(src, "_blank", "noopener");
     }
   };
 
@@ -263,7 +280,9 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                   className="grid gap-3 p-4"
                   style={{ gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))` }}
                 >
-                  {session.images.map((img, idx) => (
+                  {session.images.map((img, idx) => {
+                    const src = imageSrc(img);
+                    return (
                     <div
                       key={idx}
                       className="group relative overflow-hidden rounded-xl border"
@@ -274,15 +293,15 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={img.url}
+                        src={src}
                         alt={`${session.title} ${idx + 1}`}
                         className="w-full cursor-zoom-in"
                         style={{ display: "block" }}
-                        onClick={() => openLightbox(img.url, session.title)}
+                        onClick={() => openLightbox(src, session.title)}
                       />
                       <button
                         type="button"
-                        onClick={() => downloadImage(img.url, idx)}
+                        onClick={() => downloadImage(src, idx)}
                         title="下载图片"
                         className="press absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-lg opacity-0 transition-opacity group-hover:opacity-100"
                         style={{
@@ -294,7 +313,8 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                         <Download size={13} />
                       </button>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
 
@@ -324,12 +344,14 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                 >
                   <RefreshCw size={13} /> 重新生成
                 </button>
-                <span
-                  className="ml-3 text-[10.5px]"
-                  style={{ color: "var(--md-sys-color-on-surface-variant)" }}
-                >
-                  图片 URL 1 小时后失效，请及时下载
-                </span>
+                {session.images.some((img) => img.url && !img.b64_json) && (
+                  <span
+                    className="ml-3 text-[10.5px]"
+                    style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+                  >
+                    图片 URL 1 小时后失效，请及时下载
+                  </span>
+                )}
               </div>
             )}
           </div>

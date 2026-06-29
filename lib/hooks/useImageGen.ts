@@ -5,6 +5,12 @@ import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
 export type ImageGenStatus = "idle" | "loading" | "done" | "error";
 
+export interface ImageGenImage {
+  url?: string;
+  b64_json?: string;
+  revised_prompt?: string;
+}
+
 export interface ImageGenSession {
   id: string;
   prompt: string;
@@ -12,7 +18,7 @@ export interface ImageGenSession {
   size: string;
   count: number;
   status: ImageGenStatus;
-  images: { url: string }[];
+  images: ImageGenImage[];
   error?: string;
   createdAt: number;
 }

@@ -110,7 +110,7 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
                   {s.images.length > 0 && (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
-                      src={s.images[0].url}
+                      src={s.images[0].url || (s.images[0].b64_json ? `data:image/png;base64,${s.images[0].b64_json}` : undefined)}
                       alt={s.title}
                       className="h-9 w-9 shrink-0 rounded object-cover"
                       onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
