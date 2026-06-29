@@ -1,3 +1,5 @@
+import { normalizePlotExpression } from "@/lib/canvas/plot";
+
 /**
  * SVG Canvas utility functions:
  * - Math expression parser (safe, no eval)
@@ -46,7 +48,7 @@ const MATH_CONSTS: Record<string, number> = {
  * functions and constants are available, no access to global scope.
  */
 export function compileMathExpr(expr: string): (x: number) => number {
-  const sanitized = expr
+  const sanitized = normalizePlotExpression(expr)
     .replace(/\^/g, "**")
     .replace(/(\d)([a-zA-Z(])/g, "$1*$2")  // 2x -> 2*x, 2( -> 2*(
     .replace(/\)(\d)/g, ")*$1")              // )2 -> )*2

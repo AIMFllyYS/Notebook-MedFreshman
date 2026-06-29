@@ -1,6 +1,6 @@
 "use client";
 
-import { Children, isValidElement, useMemo } from "react";
+import { Children, isValidElement } from "react";
 import SvgCanvas from "./SvgCanvas";
 import { FunctionPlot } from "./FunctionPlot";
 import { compileMathExpr, autoRangeY, getCurveColor } from "./canvasUtils";
@@ -31,7 +31,6 @@ export function CanvasDirective({ node, children }: NodeProps) {
   const plots: { fn: string; color: string; label: string; samples: number }[] = [];
   Children.forEach(children, (child) => {
     if (!isValidElement(child)) return;
-    const type = child.type;
     const childProps = child.props as Record<string, unknown>;
     const nodeProps = (childProps.node as { properties?: Record<string, unknown> })?.properties;
     if (nodeProps?.fn) {
@@ -45,7 +44,7 @@ export function CanvasDirective({ node, children }: NodeProps) {
   });
 
   // Auto-range Y from all functions if not explicitly set
-  const autoY = useMemo(() => {
+  const autoY = (() => {
     let globalMin = Infinity;
     let globalMax = -Infinity;
     for (const p of plots) {
@@ -57,8 +56,7 @@ export function CanvasDirective({ node, children }: NodeProps) {
     if (!isFinite(globalMin)) globalMin = -5;
     if (!isFinite(globalMax)) globalMax = 5;
     return { yMin: globalMin, yMax: globalMax };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plots.map((p) => p.fn).join("|"), xMin, xMax]);
+  })();
 
   const yMin = numOrDefault(props.ymin, autoY.yMin);
   const yMax = numOrDefault(props.ymax, autoY.yMax);
