@@ -2,9 +2,22 @@ import type { ContentItem } from '@/lib/types/content';
 
 /**
  * 大学物理 · 详解分类内容
- * 12 章 38 节，源自课件 PPT（第2-5、7-9、10-14章；无第1、6章课件）。
+ * 13 章 42 节，源自课件 PPT 与学习指导（第1-5、7-9、10-14章；无第6章课件）。
  */
 export const physicsDetailItems: ContentItem[] = [
+  {
+    id: 'ch01',
+    title: '力学基本定律',
+    type: 'section',
+    status: 'done',
+    summary: '质点运动学、牛顿定律、动量、功与能、刚体定轴转动、物体弹性。',
+    children: [
+      { id: '1.1', title: '质点运动学', type: 'section', status: 'done', videoIds: [], interactiveIds: [] },
+      { id: '1.2', title: '牛顿定律与动量', type: 'section', status: 'done', videoIds: [], interactiveIds: [] },
+      { id: '1.3', title: '功、能与碰撞', type: 'section', status: 'done', videoIds: [], interactiveIds: [] },
+      { id: '1.4', title: '刚体转动与弹性', type: 'section', status: 'done', videoIds: [], interactiveIds: [] },
+    ],
+  },
   {
     id: 'ch02',
     title: '流体运动',

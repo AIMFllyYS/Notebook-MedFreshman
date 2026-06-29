@@ -537,6 +537,38 @@
           "name": "详解",
           "items": [
             {
+              "id": "ch01",
+              "title": "力学基本定律",
+              "type": "section",
+              "status": "done",
+              "children": [
+                {
+                  "id": "1.1",
+                  "title": "质点运动学",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.2",
+                  "title": "牛顿定律与动量",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.3",
+                  "title": "功、能与碰撞",
+                  "type": "section",
+                  "status": "done"
+                },
+                {
+                  "id": "1.4",
+                  "title": "刚体转动与弹性",
+                  "type": "section",
+                  "status": "done"
+                }
+              ]
+            },
+            {
               "id": "ch02",
               "title": "流体运动",
               "type": "section",
