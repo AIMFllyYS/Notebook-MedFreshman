@@ -1250,12 +1250,15 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
               step={0.01}
               value={usdExchangeRate || ""}
               onBlur={(e) => {
-                let val = parseFloat(e.target.value);
-                if (isNaN(val)) val = 7.00;
-                val = Math.max(0.01, Math.min(10.00, val));
-                setUsdExchangeRate(Number(val.toFixed(2)));
+                // store 内部已 clamp，这里只做失焦兜底（NaN 回默认 + 两位小数）
+                const val = parseFloat(e.target.value);
+                setUsdExchangeRate(Number.isNaN(val) ? 7.00 : val);
               }}
-              onChange={(e) => setUsdExchangeRate(e.target.value ? parseFloat(e.target.value) : 0)}
+              onChange={(e) => {
+                // 仅在能解析出有效数字时更新；清空/无效输入暂不写 store，避免跳值
+                const v = parseFloat(e.target.value);
+                if (!Number.isNaN(v)) setUsdExchangeRate(v);
+              }}
               className="w-20 rounded border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-lowest)] px-2 py-1 text-right text-[12.5px] outline-none focus:border-[var(--md-sys-color-primary)]"
             />
           </div>

@@ -73,6 +73,7 @@ export async function POST(req: NextRequest) {
       images: data.images as { url: string }[],
       seed: data.seed,
       model: provider.apiModelId,
+      registryId: provider.registryId,
       isCustom: provider.isCustom,
     });
   } catch (err) {

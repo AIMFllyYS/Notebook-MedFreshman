@@ -151,7 +151,9 @@ function load(): Persisted {
       if (!parsed.defaultImageModelId) parsed.defaultImageModelId = null;
       if (!parsed.imageModeTextModel) parsed.imageModeTextModel = "mimo-v2.5";
       if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "Pro/moonshotai/Kimi-K2.6";
-      if (typeof parsed.usdExchangeRate !== "number") parsed.usdExchangeRate = 7.00;
+      if (typeof parsed.usdExchangeRate !== "number" || !Number.isFinite(parsed.usdExchangeRate) || parsed.usdExchangeRate <= 0) {
+        parsed.usdExchangeRate = 7.00;
+      }
       parsed.selectedModelId = normalizeCustomModelRegistryId(parsed.selectedModelId, parsed.customApiGroups);
       parsed.defaultImageModelId = parsed.defaultImageModelId
         ? normalizeCustomModelRegistryId(parsed.defaultImageModelId, parsed.customApiGroups)
@@ -350,7 +352,9 @@ export const useSettings = create<SettingsState>((set, get) => ({
     persist(get);
   },
   setUsdExchangeRate: (v) => {
-    set({ usdExchangeRate: v });
+    // 单一真相源：clamp 到 [0.01, 10]，非有限数回退默认 7.00
+    const safe = Number.isFinite(v) ? Math.max(0.01, Math.min(10, v)) : 7.00;
+    set({ usdExchangeRate: safe });
     persist(get);
   },
 }));

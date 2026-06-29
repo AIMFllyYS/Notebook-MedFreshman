@@ -87,10 +87,10 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
           return;
         }
         
-        // 记录生图计费
+        // 记录生图计费：用 registryId（custom:xxx:yyy 或内置 id）才能正确解析定价与供应商
         useBillingStore.getState().addRecord(createBillingRecord({
           type: 'image',
-          modelId: data.model || settings.selectedModelId,
+          modelId: data.registryId || data.model || settings.defaultImageModelId || settings.selectedModelId,
           sessionId: sid,
           customGroups: settings.customApiGroups,
           imageCount: data.images.length

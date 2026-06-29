@@ -192,7 +192,10 @@ export function imagesGenerationsUrl(baseUrl: string): string {
 export interface ResolvedImageProvider {
   baseUrl: string;
   apiKey: string;
+  /** 发给上游 /images/generations 的 model 字段。 */
   apiModelId: string;
+  /** 注册 id（custom:xxx:yyy 或内置 id），用于计费展示与供应商归类。 */
+  registryId: string;
   configured: boolean;
   isCustom: boolean;
 }
@@ -217,6 +220,7 @@ export function resolveImageProvider(
         baseUrl: found.group.baseUrl.trim(),
         apiKey: found.group.apiKey.trim(),
         apiModelId: found.model.id,
+        registryId: effectiveModelId,
         configured: true,
         isCustom: true,
       };
@@ -231,6 +235,7 @@ export function resolveImageProvider(
       baseUrl: cred.baseUrl,
       apiKey: cred.apiKey,
       apiModelId: info.endpoints[0]?.apiModelId ?? effectiveModelId,
+      registryId: effectiveModelId,
       configured: cred.configured,
       isCustom: false,
     };
@@ -242,6 +247,7 @@ export function resolveImageProvider(
     baseUrl: cred.baseUrl,
     apiKey: cred.apiKey,
     apiModelId: "Tongyi-MAI/Z-Image-Turbo",
+    registryId: "Tongyi-MAI/Z-Image-Turbo",
     configured: cred.configured,
     isCustom: false,
   };

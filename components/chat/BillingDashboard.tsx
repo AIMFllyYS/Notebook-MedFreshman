@@ -130,41 +130,57 @@ function BillingDashboardWindow({ winId }: { winId: string }) {
     })).sort((a, b) => b.cost - a.cost);
   }, [filteredRecords, customGroups]);
 
-  // Chart data: aggregate by day
+  // Chart data: 按日聚合（短跨度）或按月聚合（长跨度），key 含年份避免跨年碰撞
   const chartData = useMemo(() => {
     if (filteredRecords.length === 0) return [];
-    
-    // Create day buckets
-    const buckets: Record<string, number> = {};
+
     const now = Date.now();
     let days = timeRange === "7d" ? 7 : timeRange === "30d" ? 30 : 0;
-    
-    if (days === 0 && filteredRecords.length > 0) {
+
+    if (days === 0) {
       const oldest = filteredRecords[filteredRecords.length - 1].timestamp;
       days = Math.max(7, Math.ceil((now - oldest) / (1000 * 60 * 60 * 24)));
     }
 
-    for (let i = days - 1; i >= 0; i--) {
-      const d = new Date(now - i * 24 * 60 * 60 * 1000);
-      const key = `${d.getMonth() + 1}/${d.getDate()}`;
-      buckets[key] = 0;
-    }
+    // 跨度 > 60 天按月聚合，避免数百根 1px 柱无法辨认；否则按日
+    const useMonthly = days > 60;
+    const buckets: Record<string, number> = {};
 
-    for (const r of filteredRecords) {
-      const d = new Date(r.timestamp);
-      const key = `${d.getMonth() + 1}/${d.getDate()}`;
-      if (buckets[key] !== undefined) {
-        buckets[key] += r.cost;
+    if (useMonthly) {
+      const oldestTs = filteredRecords[filteredRecords.length - 1].timestamp;
+      const start = new Date(oldestTs);
+      const cur = new Date(start.getFullYear(), start.getMonth(), 1);
+      const end = new Date(now);
+      while (cur <= end) {
+        buckets[`${cur.getFullYear()}-${cur.getMonth() + 1}`] = 0;
+        cur.setMonth(cur.getMonth() + 1);
+      }
+      for (const r of filteredRecords) {
+        const d = new Date(r.timestamp);
+        const key = `${d.getFullYear()}-${d.getMonth() + 1}`;
+        if (buckets[key] !== undefined) buckets[key] += r.cost;
+      }
+    } else {
+      for (let i = days - 1; i >= 0; i--) {
+        const d = new Date(now - i * 24 * 60 * 60 * 1000);
+        const key = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        buckets[key] = 0;
+      }
+      for (const r of filteredRecords) {
+        const d = new Date(r.timestamp);
+        const key = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+        if (buckets[key] !== undefined) buckets[key] += r.cost;
       }
     }
 
     const maxVal = Math.max(...Object.values(buckets), 0.01);
-    
-    return Object.entries(buckets).map(([date, val]) => ({
-      date,
-      val,
-      pct: (val / maxVal) * 100,
-    }));
+
+    return Object.entries(buckets).map(([key, val]) => {
+      const parts = key.split("-");
+      // 月聚合显示 "YYYY/M"；日聚合显示 "M/D"（短跨度无需年份）
+      const displayDate = useMonthly ? `${parts[0]}/${parts[1]}` : `${parts[1]}/${parts[2]}`;
+      return { date: displayDate, val, pct: (val / maxVal) * 100 };
+    });
   }, [filteredRecords, timeRange]);
 
   const parentRef = React.useRef<HTMLDivElement>(null);
