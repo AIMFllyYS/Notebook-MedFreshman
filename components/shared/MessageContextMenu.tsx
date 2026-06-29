@@ -9,6 +9,7 @@ import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { useStore } from "@/lib/store";
 import { startRecord } from "@/lib/review/startRecord";
 import { currentRecordContext } from "@/lib/review/recordContext";
+import { copyTextToClipboard } from "@/lib/clipboard/copyText";
 
 const MENU_W = 168;
 
@@ -46,7 +47,7 @@ export default function MessageContextMenu() {
   const top = Math.min(y, (typeof window !== "undefined" ? window.innerHeight : 900) - 196);
 
   function handleCopy() {
-    navigator.clipboard?.writeText(text).catch(() => {});
+    void copyTextToClipboard(text);
     closeMenu();
   }
   function handleQuote() {

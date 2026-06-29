@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Lightbulb, BookmarkPlus, MessageSquare, Send } from "lucide-react";
+import { Lightbulb, BookmarkPlus, MessageSquare, Send, Copy, Check } from "lucide-react";
 import { useChatUI } from "@/lib/hooks/useChatUI";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { startRecord } from "@/lib/review/startRecord";
 import { currentRecordContext } from "@/lib/review/recordContext";
+import { copyTextToClipboard, shouldInterceptSelectionCopy } from "@/lib/clipboard/copyText";
 import type { SubjectId } from "@/lib/types/content";
 
 interface PopState {
@@ -26,11 +27,40 @@ function PopBtn({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       className="press flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-secondary-container)] hover:text-[var(--md-sys-color-on-secondary-container)]"
     >
       <Icon size={15} />
       {label}
+    </button>
+  );
+}
+
+function PopIconBtn({
+  onClick,
+  icon: Icon,
+  copiedIcon: CopiedIcon,
+  copied,
+  title,
+}: {
+  onClick: () => void;
+  icon: React.ComponentType<{ size?: number }>;
+  copiedIcon: React.ComponentType<{ size?: number }>;
+  copied: boolean;
+  title: string;
+}) {
+  const ActiveIcon = copied ? CopiedIcon : Icon;
+  const label = copied ? "已复制" : title;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      title={label}
+      aria-label={label}
+      className="press flex items-center justify-center rounded-lg p-1.5 text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-secondary-container)] hover:text-[var(--md-sys-color-on-secondary-container)]"
+    >
+      <ActiveIcon size={15} />
     </button>
   );
 }
@@ -80,6 +110,22 @@ function unwrapMark(mark: HTMLElement) {
   parent.normalize();
 }
 
+function closePopover(
+  markRef: React.RefObject<HTMLElement[] | null>,
+  actionTakenRef: React.RefObject<boolean>,
+  setPop: (v: PopState | null) => void,
+  setCopied: (v: boolean) => void,
+  unwrap = true,
+) {
+  if (unwrap && markRef.current && !actionTakenRef.current) {
+    markRef.current.forEach(unwrapMark);
+  }
+  markRef.current = null;
+  actionTakenRef.current = false;
+  setCopied(false);
+  setPop(null);
+}
+
 export default function SelectionPopover({
   containerRef,
   recordSubjectId,
@@ -91,16 +137,22 @@ export default function SelectionPopover({
   const setQuotedText = useChatUI((s) => s.setQuotedText);
   const openWindow = useFloatingChats((s) => s.openWindow);
   const [pop, setPop] = useState<PopState | null>(null);
+  const [copied, setCopied] = useState(false);
   const [boxWidth, setBoxWidth] = useState(0);
   const boxRef = useRef<HTMLDivElement>(null);
   const markRef = useRef<HTMLElement[] | null>(null);
   const actionTakenRef = useRef(false);
+  const popTextRef = useRef("");
+
+  useLayoutEffect(() => {
+    popTextRef.current = pop?.text ?? "";
+  }, [pop?.text]);
 
   useLayoutEffect(() => {
     if (boxRef.current) {
       setBoxWidth(boxRef.current.offsetWidth);
     }
-  }, [pop]);
+  }, [pop, copied]);
 
   useEffect(() => {
     function onMouseUp(e: MouseEvent) {
@@ -111,6 +163,7 @@ export default function SelectionPopover({
         }
         markRef.current = null;
         actionTakenRef.current = false;
+        setCopied(false);
 
         const sel = window.getSelection();
         if (!sel || sel.isCollapsed || sel.rangeCount === 0) {
@@ -139,17 +192,11 @@ export default function SelectionPopover({
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
-        if (markRef.current && !actionTakenRef.current) markRef.current.forEach(unwrapMark);
-        markRef.current = null;
-        actionTakenRef.current = false;
-        setPop(null);
+        closePopover(markRef, actionTakenRef, setPop, setCopied);
       }
     }
     function onScroll() {
-      if (markRef.current && !actionTakenRef.current) markRef.current.forEach(unwrapMark);
-      markRef.current = null;
-      actionTakenRef.current = false;
-      setPop(null);
+      closePopover(markRef, actionTakenRef, setPop, setCopied);
     }
     document.addEventListener("keydown", onKey);
     const root = containerRef.current;
@@ -160,9 +207,30 @@ export default function SelectionPopover({
     };
   }, [containerRef]);
 
+  useEffect(() => {
+    if (!pop) return;
+
+    function onCopy(e: ClipboardEvent) {
+      const text = popTextRef.current;
+      const selection = typeof window !== "undefined" ? window.getSelection() : null;
+      if (!shouldInterceptSelectionCopy(text, document.activeElement, selection)) return;
+      e.clipboardData?.setData("text/plain", text);
+      e.preventDefault();
+      setCopied(true);
+    }
+
+    document.addEventListener("copy", onCopy);
+    return () => document.removeEventListener("copy", onCopy);
+  }, [pop]);
+
+  const handleCopy = useCallback(async () => {
+    if (!pop) return;
+    const ok = await copyTextToClipboard(pop.text);
+    if (ok) setCopied(true);
+  }, [pop]);
+
   if (!pop) return null;
 
-  // 解释 / 举例 / 追问 都开一个独立的划词浮窗（多开、互不影响）。
   function cleanupMarks() {
     if (markRef.current) {
       const marks = markRef.current;
@@ -175,6 +243,7 @@ export default function SelectionPopover({
     if (!pop) return;
     actionTakenRef.current = true;
     openWindow({ anchor: { x: pop.x, y: pop.y }, seedMode, seedText: pop.text });
+    setCopied(false);
     setPop(null);
     cleanupMarks();
   }
@@ -183,6 +252,7 @@ export default function SelectionPopover({
     if (!pop) return;
     actionTakenRef.current = true;
     setQuotedText(pop.text);
+    setCopied(false);
     setPop(null);
     cleanupMarks();
   }
@@ -191,6 +261,7 @@ export default function SelectionPopover({
     if (!pop) return;
     actionTakenRef.current = true;
     startRecord(pop.text, currentRecordContext(recordSubjectId), { x: pop.x, y: pop.y });
+    setCopied(false);
     setPop(null);
     cleanupMarks();
   }
@@ -214,6 +285,14 @@ export default function SelectionPopover({
         className="animate-fade-up"
       >
         <div className="flex items-center gap-0.5 rounded-xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] p-1 shadow-lg">
+          <PopIconBtn
+            onClick={() => void handleCopy()}
+            icon={Copy}
+            copiedIcon={Check}
+            copied={copied}
+            title="复制"
+          />
+          <div className="mx-0.5 h-5 w-px bg-[var(--md-sys-color-outline-variant)]" />
           <PopBtn onClick={() => spawn("explain")} icon={Lightbulb} label="解释" />
           <PopBtn onClick={handleRecord} icon={BookmarkPlus} label="记录" />
           <PopBtn onClick={() => spawn("ask")} icon={MessageSquare} label="追问" />
@@ -223,6 +302,6 @@ export default function SelectionPopover({
         <div className="mx-auto h-2 w-2 -translate-y-1 rotate-45 border-b border-r border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)]" />
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }
