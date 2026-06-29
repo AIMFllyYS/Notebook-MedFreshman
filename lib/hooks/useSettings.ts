@@ -1,5 +1,10 @@
 import { create } from "zustand";
-import { DEFAULT_MODEL_ID, type CustomModelConfig, type CustomApiGroup } from "@/lib/ai/models";
+import {
+  DEFAULT_MODEL_ID,
+  normalizeCustomModelRegistryId,
+  type CustomModelConfig,
+  type CustomApiGroup,
+} from "@/lib/ai/models";
 
 /**
  * 全站 AI 设置（localStorage 持久化）。统一管理：
@@ -139,6 +144,18 @@ function load(): Persisted {
       if (!parsed.defaultImageModelId) parsed.defaultImageModelId = null;
       if (!parsed.imageModeTextModel) parsed.imageModeTextModel = "mimo-v2.5";
       if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "Pro/moonshotai/Kimi-K2.6";
+      parsed.selectedModelId = normalizeCustomModelRegistryId(parsed.selectedModelId, parsed.customApiGroups);
+      parsed.defaultImageModelId = parsed.defaultImageModelId
+        ? normalizeCustomModelRegistryId(parsed.defaultImageModelId, parsed.customApiGroups)
+        : null;
+      parsed.imageModeTextModel = normalizeCustomModelRegistryId(
+        parsed.imageModeTextModel,
+        parsed.customApiGroups,
+      );
+      parsed.imageModeTextModelFallback = normalizeCustomModelRegistryId(
+        parsed.imageModeTextModelFallback,
+        parsed.customApiGroups,
+      );
       return parsed;
     }
   } catch {

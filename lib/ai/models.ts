@@ -103,6 +103,34 @@ export const DEFAULT_MODEL_ID = "mimo-v2.5";
 
 export const CUSTOM_PREFIX = "custom:";
 
+export interface ParsedCustomModelRegistryId {
+  groupId?: string;
+  modelId: string;
+  scoped: boolean;
+}
+
+export function buildCustomModelRegistryId(groupId: string, modelId: string): string {
+  return `${CUSTOM_PREFIX}${encodeURIComponent(groupId)}:${encodeURIComponent(modelId)}`;
+}
+
+export function parseCustomModelRegistryId(id: string): ParsedCustomModelRegistryId | undefined {
+  if (!id.startsWith(CUSTOM_PREFIX)) return undefined;
+  const rest = id.slice(CUSTOM_PREFIX.length);
+  const sep = rest.indexOf(":");
+  if (sep > 0) {
+    try {
+      return {
+        groupId: decodeURIComponent(rest.slice(0, sep)),
+        modelId: decodeURIComponent(rest.slice(sep + 1)),
+        scoped: true,
+      };
+    } catch {
+      return { groupId: rest.slice(0, sep), modelId: rest.slice(sep + 1), scoped: true };
+    }
+  }
+  return { modelId: rest, scoped: false };
+}
+
 export interface CustomModelConfig {
   id: string;
   label?: string;
@@ -173,19 +201,58 @@ export function findCustomModelGroup(
 ): { group: CustomApiGroup; model: CustomModelConfig } | undefined {
   const rawId = modelId.startsWith(CUSTOM_PREFIX) ? modelId.slice(CUSTOM_PREFIX.length) : modelId;
   for (const group of groups) {
+    const encodedGroupId = encodeURIComponent(group.id);
+    const scopedPrefix = `${encodedGroupId}:`;
+    if (!rawId.startsWith(scopedPrefix)) continue;
+    const encodedModelId = rawId.slice(scopedPrefix.length);
+    let scopedModelId = encodedModelId;
+    try {
+      scopedModelId = decodeURIComponent(encodedModelId);
+    } catch {
+      // Keep the raw value as a best-effort fallback for malformed historical data.
+    }
+    const model = group.models.find((m) => m.id === scopedModelId);
+    if (model) return { group, model };
+  }
+
+  for (const group of groups) {
     const model = group.models.find((m) => m.id === rawId);
     if (model) return { group, model };
   }
   return undefined;
 }
 
+export function normalizeCustomModelRegistryId(modelId: string, groups: CustomApiGroup[]): string {
+  if (!modelId.startsWith(CUSTOM_PREFIX)) return modelId;
+
+  const found = findCustomModelGroup(groups, modelId);
+  if (!found) return modelId;
+
+  const canonical = buildCustomModelRegistryId(found.group.id, found.model.id);
+  const rawId = modelId.slice(CUSTOM_PREFIX.length);
+  const scopedPrefix = `${encodeURIComponent(found.group.id)}:`;
+  if (rawId.startsWith(scopedPrefix)) return canonical;
+
+  const legacyMatches = groups.flatMap((group) =>
+    group.models
+      .filter((model) => model.id === rawId)
+      .map((model) => ({ group, model })),
+  );
+
+  return legacyMatches.length === 1 ? canonical : modelId;
+}
+
 /** 将单个 CustomModelConfig 转换为 ModelInfo（内部辅助）。 */
-function customModelToInfo(c: CustomModelConfig, groupName: string): ModelInfo {
+function customModelToInfo(
+  c: CustomModelConfig,
+  group: Pick<CustomApiGroup, "id" | "name">,
+  options?: { scopedId?: boolean },
+): ModelInfo {
   const isImage = c.type === "image";
   return {
-    id: CUSTOM_PREFIX + c.id,
+    id: options?.scopedId === false ? CUSTOM_PREFIX + c.id : buildCustomModelRegistryId(group.id, c.id),
     label: c.label || c.id,
-    group: groupName,
+    group: group.name || "自定义 API",
     thinking: c.thinking ?? false,
     tools: c.tools ?? (isImage ? false : true),
     vision: c.vision,
@@ -209,14 +276,19 @@ function customModelToInfo(c: CustomModelConfig, groupName: string): ModelInfo {
 /** 合并内置模型 + 自定义模型，供菜单和 getModelInfo 使用。 */
 export function getAllModels(groups: CustomApiGroup[]): ModelInfo[] {
   const custom: ModelInfo[] = groups.flatMap((g) =>
-    g.models.map((c) => customModelToInfo(c, g.name || "自定义 API")),
+    g.models.map((c) => customModelToInfo(c, g)),
   );
   return [...MODELS, ...custom];
 }
 
 /** 向后兼容：接收 CustomModelConfig[] 的旧版 getAllModels。 */
 export function getAllModelsFlat(customModels: CustomModelConfig[]): ModelInfo[] {
-  return [...MODELS, ...customModels.map((c) => customModelToInfo(c, "自定义 API"))];
+  return [
+    ...MODELS,
+    ...customModels.map((c) =>
+      customModelToInfo(c, { id: "legacy", name: "自定义 API" }, { scopedId: false }),
+    ),
+  ];
 }
 
 /** 查找模型信息，支持自定义模型（custom: 前缀）。 */
@@ -224,7 +296,7 @@ export function getModelInfoWithCustom(id: string, groups: CustomApiGroup[]): Mo
   if (id.startsWith(CUSTOM_PREFIX)) {
     const found = findCustomModelGroup(groups, id);
     if (!found) return undefined;
-    return customModelToInfo(found.model, found.group.name || "自定义 API");
+    return customModelToInfo(found.model, found.group);
   }
   return getModelInfo(id);
 }

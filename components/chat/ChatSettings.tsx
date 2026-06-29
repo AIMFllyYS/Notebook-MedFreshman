@@ -27,6 +27,7 @@ import {
   type CustomApiGroup,
   MODELS,
   getAllModels,
+  buildCustomModelRegistryId,
 } from "@/lib/ai/models";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import { exportAllChats } from "@/lib/chat/exportChats";
@@ -702,11 +703,12 @@ function ApiGroupCard({
                     <ModelRow
                       model={m}
                       isDefaultImage={
-                        m.type === "image" && defaultImageModelId === `custom:${m.id}`
+                        m.type === "image" &&
+                        defaultImageModelId === buildCustomModelRegistryId(group.id, m.id)
                       }
                       onSetDefault={
                         m.type === "image"
-                          ? () => onSetDefaultImage(`custom:${m.id}`)
+                          ? () => onSetDefaultImage(buildCustomModelRegistryId(group.id, m.id))
                           : undefined
                       }
                       onEdit={() => startEdit(m)}

@@ -8,6 +8,7 @@ import {
   hasNextEndpoint,
   normalizeRegistryId,
   CUSTOM_PREFIX,
+  buildCustomModelRegistryId,
   findCustomModelGroup,
   type ProviderKind,
   type CustomApiGroup,
@@ -109,7 +110,7 @@ export function resolveProvider(
     const found = findCustomModelGroup(custom, modelId ?? "");
     if (found && found.group.baseUrl?.trim() && found.group.apiKey?.trim()) {
       const registryId = modelId?.startsWith(CUSTOM_PREFIX)
-        ? modelId
+        ? buildCustomModelRegistryId(found.group.id, found.model.id)
         : CUSTOM_PREFIX + found.model.id;
       return {
         registryId,

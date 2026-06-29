@@ -6,6 +6,11 @@ import {
   DEFAULT_MODEL_ID,
   getModelInfo,
   getModelGroups,
+  getAllModels,
+  getAllModelsFlat,
+  buildCustomModelRegistryId,
+  findCustomModelGroup,
+  normalizeCustomModelRegistryId,
   primaryProvider,
 } from "./models.ts";
 
@@ -66,6 +71,102 @@ test("MODELS：model id 唯一", () => {
     assert.ok(!ids.has(m.id), `model id 重复: ${m.id}`);
     ids.add(m.id);
   }
+});
+
+test("getAllModels：不同自定义 API 分组允许同名模型但 registry id 唯一", () => {
+  const groups = [
+    {
+      id: "openrouter",
+      name: "OpenRouter",
+      baseUrl: "https://openrouter.example/v1",
+      apiKey: "sk-a",
+      models: [{ id: "claude-sonnet-4-6", label: "Claude Sonnet 4.6" }],
+    },
+    {
+      id: "local-proxy",
+      name: "Local Proxy",
+      baseUrl: "https://proxy.example/v1",
+      apiKey: "sk-b",
+      models: [{ id: "claude-sonnet-4-6", label: "Claude Sonnet 4.6" }],
+    },
+  ];
+
+  const custom = getAllModels(groups).filter((m) => m.id.includes("claude-sonnet-4-6"));
+
+  assert.deepEqual(
+    custom.map((m) => m.id),
+    [
+      "custom:openrouter:claude-sonnet-4-6",
+      "custom:local-proxy:claude-sonnet-4-6",
+    ],
+  );
+  assert.equal(new Set(custom.map((m) => m.id)).size, custom.length);
+});
+
+test("findCustomModelGroup：scoped id 精确命中对应分组，旧 id 保持首个匹配兼容", () => {
+  const groups = [
+    {
+      id: "openrouter",
+      name: "OpenRouter",
+      baseUrl: "https://openrouter.example/v1",
+      apiKey: "sk-a",
+      models: [{ id: "vendor/model:alpha", label: "Alpha" }],
+    },
+    {
+      id: "local-proxy",
+      name: "Local Proxy",
+      baseUrl: "https://proxy.example/v1",
+      apiKey: "sk-b",
+      models: [{ id: "vendor/model:alpha", label: "Alpha" }],
+    },
+  ];
+
+  const scoped = buildCustomModelRegistryId("local-proxy", "vendor/model:alpha");
+  assert.equal(scoped, "custom:local-proxy:vendor%2Fmodel%3Aalpha");
+  assert.equal(findCustomModelGroup(groups, scoped)?.group.id, "local-proxy");
+  assert.equal(findCustomModelGroup(groups, "custom:vendor/model:alpha")?.group.id, "openrouter");
+});
+
+test("getAllModelsFlat：旧版扁平自定义模型接口保持 custom:modelId 格式", () => {
+  const custom = getAllModelsFlat([{ id: "legacy-model", label: "Legacy Model" }]).find(
+    (m) => m.label === "Legacy Model",
+  );
+
+  assert.equal(custom?.id, "custom:legacy-model");
+});
+
+test("normalizeCustomModelRegistryId：旧 custom id 仅在唯一匹配时自动升级为 scoped id", () => {
+  assert.equal(
+    normalizeCustomModelRegistryId("custom:solo-model", [
+      {
+        id: "solo",
+        name: "Solo",
+        baseUrl: "https://solo.example/v1",
+        apiKey: "sk-solo",
+        models: [{ id: "solo-model" }],
+      },
+    ]),
+    "custom:solo:solo-model",
+  );
+
+  const duplicateGroups = [
+    {
+      id: "a",
+      name: "A",
+      baseUrl: "https://a.example/v1",
+      apiKey: "sk-a",
+      models: [{ id: "same-model" }],
+    },
+    {
+      id: "b",
+      name: "B",
+      baseUrl: "https://b.example/v1",
+      apiKey: "sk-b",
+      models: [{ id: "same-model" }],
+    },
+  ];
+  assert.equal(normalizeCustomModelRegistryId("custom:same-model", duplicateGroups), "custom:same-model");
+  assert.equal(normalizeCustomModelRegistryId("mimo-v2.5", duplicateGroups), "mimo-v2.5");
 });
 
 test("MODELS：智谱独占模型 apiModelId 不含 SiliconFlow 前缀", () => {

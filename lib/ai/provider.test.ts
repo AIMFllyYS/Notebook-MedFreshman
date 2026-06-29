@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { resolveProvider, chatCompletionsUrl, thinkingBudget, ENV_MODEL_FLASH } from "./provider.ts";
+import { buildCustomModelRegistryId } from "./models.ts";
 
 test("resolveProvider：custom 端点三要素齐全时用自定义", () => {
   const r = resolveProvider("custom", {
@@ -22,6 +23,34 @@ test("resolveProvider：custom 缺少 apiKey 时不走自定义", () => {
     model: "my-model",
   });
   assert.equal(r.isCustom, false);
+});
+
+test("resolveProvider：scoped custom id 精确选择同名模型所在 API 分组", () => {
+  const groups = [
+    {
+      id: "openrouter",
+      name: "OpenRouter",
+      baseUrl: "https://openrouter.example/v1",
+      apiKey: "sk-a",
+      models: [{ id: "claude-sonnet-4-6", label: "Claude Sonnet 4.6" }],
+    },
+    {
+      id: "local-proxy",
+      name: "Local Proxy",
+      baseUrl: "https://proxy.example/v1",
+      apiKey: "sk-b",
+      models: [{ id: "claude-sonnet-4-6", label: "Claude Sonnet 4.6" }],
+    },
+  ];
+
+  const r = resolveProvider(buildCustomModelRegistryId("local-proxy", "claude-sonnet-4-6"), groups);
+
+  assert.equal(r.isCustom, true);
+  assert.equal(r.configured, true);
+  assert.equal(r.baseUrl, "https://proxy.example/v1");
+  assert.equal(r.apiKey, "sk-b");
+  assert.equal(r.apiModelId, "claude-sonnet-4-6");
+  assert.equal(r.registryId, "custom:local-proxy:claude-sonnet-4-6");
 });
 
 test("resolveProvider：mimo 模型走 MIMO 端点且 apiModelId 一致", () => {
