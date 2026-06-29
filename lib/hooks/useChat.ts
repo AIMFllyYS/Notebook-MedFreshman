@@ -4,7 +4,11 @@ import { useSettings } from './useSettings';
 import { useSkills } from './useSkills';
 import { CUSTOM_PREFIX, getModelInfoWithCustom } from '@/lib/ai/models';
 import type { ChatMessage, ChatAttachment, ChatContext, ChatOptions, ToolCallBlock, WebSearchSource, ContextBreakdown } from '@/lib/types/chat';
-import { extractFollowUpQuestionsFromContent } from '@/lib/chat/rendering/parseChatContent';
+import {
+  extractFollowUpQuestionsFromContent,
+  extractThinkBlocksFromContent,
+  stripThinkTagsFromContent,
+} from '@/lib/chat/rendering/parseChatContent';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { useTokenTracker } from './useTokenTracker';
 import { useFloatingTokenTracker } from './useFloatingTokenTracker';
@@ -95,13 +99,15 @@ export function useChat(
       const sid = ovSessionId ?? st.activeSessionId;
       if (sid && !st.messagesById[sid] && st.sessionLoadState[sid] !== 'loaded') return;
 
-      // 合并 per-message 与 chat-level 选项
-      const enableThinking = sendOptions?.enableThinking ?? options?.enableThinking;
-      const enableSearch = sendOptions?.enableSearch ?? options?.enableSearch;
-      const contextMode = options?.contextMode ?? 'full';
-
       // 该次请求使用的模型：划词窗传入 ovModelId，否则用全局选择。
       const effectiveModelId = ovModelId ?? useSettings.getState().selectedModelId;
+      const effectiveModelInfo = getModelInfoWithCustom(effectiveModelId, useSettings.getState().customApiGroups);
+
+      // 合并 per-message 与 chat-level 选项；thinking 还要受当前模型能力约束。
+      const requestedThinking = sendOptions?.enableThinking ?? options?.enableThinking;
+      const enableThinking = requestedThinking === true && effectiveModelInfo?.thinking === true;
+      const enableSearch = sendOptions?.enableSearch ?? options?.enableSearch;
+      const contextMode = options?.contextMode ?? 'full';
 
       // 获取或创建会话（划词窗已自带 ovSessionId，绝不在此新建主会话）
       const state = useChatHistory.getState();
@@ -408,6 +414,16 @@ export function useChat(
 
           // 流正常结束：落定最后一帧（节流可能还压着一次未刷新的更新）
           flushUiNow();
+
+          const pseudoReasoning = extractThinkBlocksFromContent(contentBuf).join('\n\n');
+          if (pseudoReasoning) {
+            contentBuf = stripThinkTagsFromContent(contentBuf, { streaming: false });
+            reasoningBuf = [reasoningBuf.trim(), pseudoReasoning].filter(Boolean).join('\n\n');
+            updateMessage(sessionId!, assistantId, {
+              content: contentBuf,
+              reasoningContent: reasoningBuf,
+            });
+          }
 
           // 流结束后提取 FollowUp 追问
           if (contentBuf) {

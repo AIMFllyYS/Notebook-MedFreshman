@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import {
   Lightbulb, Globe, Send, Square, Quote, X, CheckCircle, Paperclip,
 } from 'lucide-react';
@@ -8,6 +8,7 @@ import type { ChatContext, ChatAttachment } from '@/lib/types/chat';
 import { useChatUI } from '@/lib/hooks/useChatUI';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
+import { getModelInfoWithCustom } from '@/lib/ai/models';
 import ModelMenu from '@/components/chat/ModelMenu';
 import TokenDashboard from '@/components/chat/TokenDashboard';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
@@ -44,6 +45,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { quotedText, clearQuotedText } = useChatUI();
+  const globalSelectedModelId = useSettings((s) => s.selectedModelId);
+  const customApiGroups = useSettings((s) => s.customApiGroups);
+  const selectedModelId = modelId ?? globalSelectedModelId;
+  const thinkingSupported = useMemo(
+    () => getModelInfoWithCustom(selectedModelId, customApiGroups)?.thinking === true,
+    [selectedModelId, customApiGroups],
+  );
+  const effectiveEnableThinking = enableThinking && thinkingSupported;
   const effectiveQuote = disableQuote ? null : quotedText;
   const {
     attachments,
@@ -74,14 +83,20 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
     onSend(trimmed || '请描述这张图片', {
       quotedText: effectiveQuote || undefined,
-      enableThinking,
+      enableThinking: effectiveEnableThinking,
       enableSearch,
       attachments: toChatFormat(),
     });
     setInput('');
     clearAttachments();
     if (effectiveQuote) clearQuotedText();
-  }, [input, attachments, isLoading, externalDisabled, onSend, enableThinking, enableSearch, effectiveQuote, clearQuotedText, toChatFormat, clearAttachments]);
+  }, [input, attachments, isLoading, externalDisabled, onSend, effectiveEnableThinking, enableSearch, effectiveQuote, clearQuotedText, toChatFormat, clearAttachments]);
+
+  useEffect(() => {
+    if (!thinkingSupported && enableThinking) {
+      setEnableThinking(false);
+    }
+  }, [thinkingSupported, enableThinking]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -206,14 +221,16 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       <div className="chat-input-toolbar">
         <div className="chat-input-toolbar-group">
           <button
-            onClick={() => setEnableThinking(!enableThinking)}
-            disabled={inputDisabled}
-            className={`chat-input-toggle chat-input-toggle-thinking ${enableThinking ? 'chat-input-toggle-thinking-active' : ''} ${inputDisabled ? 'chat-input-toggle-disabled' : ''}`}
-            title="开启深度思考（展示推理过程）"
+            onClick={() => {
+              if (thinkingSupported) setEnableThinking(!enableThinking);
+            }}
+            disabled={inputDisabled || !thinkingSupported}
+            className={`chat-input-toggle chat-input-toggle-thinking ${effectiveEnableThinking ? 'chat-input-toggle-thinking-active' : ''} ${inputDisabled || !thinkingSupported ? 'chat-input-toggle-disabled' : ''}`}
+            title={thinkingSupported ? '开启深度思考（展示推理过程）' : '当前模型不支持深度思考'}
           >
             <Lightbulb size={12} />
             <span className="chat-input-toggle-text">深度思考</span>
-            {enableThinking && <CheckCircle size={10} />}
+            {effectiveEnableThinking && <CheckCircle size={10} />}
           </button>
 
           <button

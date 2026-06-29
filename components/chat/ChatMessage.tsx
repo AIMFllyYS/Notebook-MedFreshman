@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { User, BookOpen } from 'lucide-react';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { MessageContent } from '@/components/chat/MessageContent';
@@ -11,6 +11,7 @@ import ProcessingSteps from '@/components/chat/ProcessingSteps';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
 import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
+import { extractThinkBlocksFromContent } from '@/lib/chat/rendering/parseChatContent';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -20,6 +21,16 @@ interface ChatMessageProps {
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, isStreaming }) => {
   const isUser = message.role === 'user';
+  const displayMessage = useMemo(() => {
+    if (isUser) return message;
+    const pseudoReasoning = extractThinkBlocksFromContent(message.content).join('\n\n');
+    if (!pseudoReasoning) return message;
+    const currentReasoning = message.reasoningContent?.trim() ?? '';
+    const reasoningContent = currentReasoning.includes(pseudoReasoning)
+      ? currentReasoning
+      : [currentReasoning, pseudoReasoning].filter(Boolean).join('\n\n');
+    return { ...message, reasoningContent };
+  }, [isUser, message]);
 
   return (
     <div className={`chat-message ${isUser ? 'user' : 'assistant'}`}>
@@ -58,7 +69,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
           </>
         ) : (
           <>
-            <ProcessingSteps msg={message} streaming={isStreaming} />
+            <ProcessingSteps msg={displayMessage} streaming={isStreaming} />
             {/* searchNotes inline reference cards */}
             {message.toolCalls
               ?.filter((tc) => tc.name === 'searchNotes' && tc.hits && tc.hits.length > 0)

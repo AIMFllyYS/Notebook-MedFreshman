@@ -4,8 +4,9 @@ import { parseXmlTags, stripUnclosedCustomTagTails } from '@/lib/utils/xmlParser
 
 export interface ChatRenderMetadata {
   type: 'metadata';
-  kind: 'followup';
+  kind: 'followup' | 'reasoning';
   questions: string[];
+  content?: string;
 }
 
 export interface ParsedChatContent {
@@ -13,6 +14,7 @@ export interface ParsedChatContent {
   blocks: ParsedBlock[];
   metadata: ChatRenderMetadata[];
   followUps: string[];
+  reasoning: string[];
 }
 
 interface ParseChatContentOptions {
@@ -20,6 +22,8 @@ interface ParseChatContentOptions {
 }
 
 const COMPLETE_FOLLOWUP_RE = /<FollowUp\b[^>]*>([\s\S]*?)<\/FollowUp>/gi;
+const COMPLETE_THINK_RE = /<think\b[^>]*>([\s\S]*?)<\/think>/gi;
+const UNCLOSED_THINK_RE = /<think\b[^>]*>[\s\S]*$/i;
 const UNCLOSED_RAW_SVG_RE = /<svg\b(?:(?!<\/svg>)[\s\S])*$/i;
 
 export function parseFollowUpQuestions(text: string): string[] {
@@ -42,8 +46,30 @@ export function extractFollowUpQuestionsFromContent(content: string): string[] {
   return questions;
 }
 
+export function extractThinkBlocksFromContent(content: string): string[] {
+  if (!content) return [];
+
+  const reasoning: string[] = [];
+  COMPLETE_THINK_RE.lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = COMPLETE_THINK_RE.exec(content)) !== null) {
+    const value = match[1].trim();
+    if (value) reasoning.push(value);
+  }
+  return reasoning;
+}
+
+export function stripThinkTagsFromContent(content: string, options: ParseChatContentOptions = {}): string {
+  if (!content) return '';
+  const withoutComplete = content.replace(COMPLETE_THINK_RE, '');
+  return options.streaming === false
+    ? withoutComplete
+    : withoutComplete.replace(UNCLOSED_THINK_RE, '');
+}
+
 function prepareMarkdown(content: string, options: ParseChatContentOptions): string {
-  const withoutFollowUps = content.replace(COMPLETE_FOLLOWUP_RE, '');
+  const withoutThinking = stripThinkTagsFromContent(content, options);
+  const withoutFollowUps = withoutThinking.replace(COMPLETE_FOLLOWUP_RE, '');
   const streamingSafe = options.streaming === false
     ? withoutFollowUps
     : stripUnclosedCustomTagTails(withoutFollowUps).replace(UNCLOSED_RAW_SVG_RE, '');
@@ -55,11 +81,15 @@ export function parseChatContent(
   options: ParseChatContentOptions = {},
 ): ParsedChatContent {
   const followUps = extractFollowUpQuestionsFromContent(content);
+  const reasoning = extractThinkBlocksFromContent(content);
   const markdown = prepareMarkdown(content, options);
   const rawBlocks = parseXmlTags(markdown);
-  const metadata: ChatRenderMetadata[] = followUps.length
-    ? [{ type: 'metadata', kind: 'followup', questions: followUps }]
-    : [];
+  const metadata: ChatRenderMetadata[] = [
+    ...(followUps.length ? [{ type: 'metadata' as const, kind: 'followup' as const, questions: followUps }] : []),
+    ...(reasoning.length
+      ? reasoning.map((content) => ({ type: 'metadata' as const, kind: 'reasoning' as const, questions: [], content }))
+      : []),
+  ];
 
   const blocks = rawBlocks.filter((block) => block.tagName !== 'FollowUp');
 
@@ -68,5 +98,6 @@ export function parseChatContent(
     blocks,
     metadata,
     followUps,
+    reasoning,
   };
 }
