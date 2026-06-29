@@ -261,9 +261,15 @@ $$
 | `\ce{sp^3}` | `\mathrm{sp}^3` | `sp` 不是化学元素，需用 `\mathrm` |
 | `\ce{Cl^.}` | `\ce{Cl\cdot}` | `^.` 不是自由基符号 |
 
-### 5.5 SVG Canvas 系统
+### 5.5 CanvasBlock 画布系统
 
-SVG Canvas 提供主题适配的矢量画布，支持函数图像绘制和自由 SVG 内容。
+CanvasBlock 提供统一的聊天画布协议，覆盖自由 SVG、函数图像、多函数对比、分子结构和 HTML 沙箱。旧的 `<SvgDiagram>` 与 `::plot` / `:::canvas` 只是输入语法，进入渲染前必须先标准化为 `lib/canvas/types.ts` 中的 `CanvasBlock`。
+
+生命周期固定为：
+
+`legacy tag/directive -> normalize CanvasBlock -> diagnose -> render -> AI revise -> validate revised block -> serialize and persist full block`
+
+这条链路是防止白屏和标签错乱的主边界。不要再在 `MessageContent`、`RawSvgViewer` 或具体 renderer 里追加零散 repair regex。
 
 #### 组件架构（`components/canvas/`）
 
@@ -275,6 +281,35 @@ SVG Canvas 提供主题适配的矢量画布，支持函数图像绘制和自由
 | `PlotDirective` | `::plot` 指令渲染组件 — 单函数快速绘图 |
 | `CanvasDirective` | `:::canvas` 容器指令渲染组件 — 多函数共享坐标系 + 图例 |
 | `canvasUtils` | 数学表达式解析器 + 坐标轴刻度计算 + 函数采样 |
+| `CanvasBlockRenderer` | 按 `CanvasBlock.kind` 分发到具体 renderer |
+| `CanvasFrame` | 共享外壳：左侧 AI 修订按钮、右侧控制区、诊断、源码、修订面板 |
+| `renderers/RawSvgRenderer` | 只负责 SVG 清洗、viewBox 兜底、缩放/平移和可见性诊断 |
+| `renderers/PlotRenderer` / `MultiPlotRenderer` | 只负责函数图渲染；表达式失败时显示诊断，不输出空路径 |
+| `renderers/MoleculeRenderer` | RDKit 渲染 SMILES；修订对象保持原始 molecule block，不回写 RDKit 生成的 SVG |
+| `renderers/HtmlRenderer` | iframe `srcDoc` 沙箱，用于本地 HTML / JS / React CDN 演示 |
+
+#### AI 画布修订协议
+
+- 用户点击画布左上角 AI 按钮后，由 `CanvasRevisionPanel` 调用 `POST /api/canvas-revise`。
+- 请求包含 `{ block, instruction, topic?, modelId, customApiGroups? }`，模型使用用户当前选择的文本模型。
+- 模型必须返回一个结构化 JSON CanvasBlock；兼容旧输出 `<svg>...</svg>` 和 `<SvgDiagram>...</SvgDiagram>`，但兼容路径只在 `lib/canvas/revisionOutput.ts` 中维护。
+- 服务端先提取 block，再运行 `diagnoseCanvasBlock()`；失败返回 `{ error, rawOutput? }`，前端只显示严格错误，不覆盖当前画布。
+- 成功后通过 `replaceCanvasBlock()` 替换完整 `<SvgDiagram>` 节点，允许 `mode` 从 `math` 变成 `html`、从 `molecule` 变成 `raw` 等。
+
+#### 画布类型选择规则
+
+- `plot`：确定性函数图，支持 `normal_pdf(x,mu,sigma)`、`gaussian(x,mu,sigma)`、`phi(x)`、`sin`、`cos`、`exp`、`sqrt`、`log` 等。
+- `multi-plot`：多条曲线共享坐标系。
+- `molecule`：标准有机小分子，source 为 SMILES。
+- `raw-svg`：静态示意图、反应机理、投影式、几何图、电路图等，source 必须是完整 `<svg>...</svg>`。
+- `html`：轻量交互、动画或 JSX/React 需求。Phase 1 中 JSX 只能以 sandboxed HTML 形式返回，不能直接进入宿主 React 树。
+
+#### 历史失败点
+
+- 旧 `RawSvgViewer` 同时承担渲染、健康检查、repair API、repair 表单、局部回写，状态过多导致分子图禁用 AI、SVG 图白屏时只能做 SVG-only 修复。
+- 旧 `/api/svg-repair` 要求模型只返回完整 SVG，导致用户想“修订内容”时无法自然切换为 plot / molecule / html。
+- 函数图旧路径会在表达式编译失败时画出空 `<path d="">`，用户看到坐标轴但没有曲线。现在必须先诊断表达式并显示原因。
+- 旧 `replaceSvgDiagramBlock()` 只替换标签体，无法更新 `mode`；plot 的 self-closing `<SvgDiagram ... />` 也无法替换。现在只允许用 `replaceCanvasBlock()` 持久化完整 block。
 
 #### `::plot` 指令语法
 
@@ -396,7 +431,19 @@ SVG Canvas 提供主题适配的矢量画布，支持函数图像绘制和自由
 3. 在 `lib/ai/prompts/global.md` 中补充标签文档，示例属性使用稳定格式
 4. 增加 `lib/utils/xmlParser.test.tsx` 与 `components/chat/MessageContent.test.tsx` 回归用例
 
-### 7.4 新增 CSS 子模块
+### 7.4 新增 CanvasBlock 类型
+
+新增画布类型时必须同步以下位置：
+
+1. 在 `lib/canvas/types.ts` 增加类型定义。
+2. 在 `lib/canvas/normalize.ts` 增加旧标签 / directive 到 block 的转换。
+3. 在 `lib/canvas/serialize.ts` 增加完整 `<SvgDiagram>` 序列化，确保可持久化。
+4. 在 `lib/canvas/revisionOutput.ts` 增加提取、校验和诊断。
+5. 在 `components/canvas/CanvasBlockRenderer.tsx` 增加 renderer 分支。
+6. 在 `lib/canvas/revisionPrompt.ts` 和 `lib/ai/prompts/global.md` 更新模型可用语法。
+7. 增加 normalize、renderer、revision output、chat persistence 回归测试。
+
+### 7.5 新增 CSS 子模块
 
 1. 在 `app/styles/` 下创建新 CSS 文件
 2. 在 `app/globals.css` 顶部追加 `@import url("./styles/<file>.css");`
@@ -413,6 +460,8 @@ SVG Canvas 提供主题适配的矢量画布，支持函数图像绘制和自由
 - **不要**在化学公式中使用 `#`（三键）、`^`（气体箭头）、`sp^n`、`^.`（自由基）— KaTeX mhchem 不支持，用本文档 §5.4 中的替代写法
 - **不要**删除 `globals.css` 顶部的 `@import "tailwindcss"` — 它必须是第一行
 - **不要**绕过 `normalizeDirectiveLabels`（见 §2.5）直接把原始内容喂给 react-markdown — 否则带空格/引号的中文 callout 标签会解析失败、围栏裸露
+- **不要**在 `MessageContent`、`ChatMessageVisualizations` 或具体 canvas renderer 里继续添加零散 regex 修复画布内容 — 画布问题必须进入 `lib/canvas` 的 normalize / diagnose / revision / serialize 协议，并补测试
+- **不要**恢复 SVG-only repair 路径或只替换 `<SvgDiagram>` 的 children — 用户修订可能改变 `mode`，持久化必须替换完整 CanvasBlock
 - **不要**在 Windows 上经 PowerShell/控制台重定向（GBK/cp936）写内容文件 — 三字节汉字尾字节会被替换为 `?` 产生非法 UTF-8（乱码 + 块坍塌）。务必用 Write/Edit（UTF-8）写盘；`pnpm run check:encoding`（已挂 `prebuild`）会拦截此类损坏
 - **不要**在 `.prose-notes` / `.chat-prose` 内用**裸元素后代选择器**（`svg`/`path`/`table`/`a` 等）设几何或外观 — 这两个容器同时托管第三方渲染的 DOM（KaTeX 拉伸箭头/根号 svg、highlight.js、vidstack）。库内部 DOM 视为**黑箱**，只能用我们自己拥有的 class/wrapper 命中内容元素。典型雷区：KaTeX 的 `\sqrt`、mhchem `->`/`<=>`、`\xrightarrow`、`\overbrace`、`\widehat`、`\vec` 都是 viewBox≈数百:1 的内联拉伸 svg，可见高度**只**靠 KaTeX 自带 `.katex svg{height:inherit}`；任何 `.prose-notes svg{height:auto}` 会把它压成 ~0.04px → 箭头消失/根号错位。作者内嵌图走 `<img>`（`::figure`），画布 svg 由 `canvas.css` 作用域负责。`scripts/check-prose-svg-rules.mjs`（已挂 `prebuild`）会拦截此类规则
 

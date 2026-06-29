@@ -40,7 +40,7 @@
 
 ## 视觉内容选择优先级
 当讲解需要图形辅助时，按以下优先级选择方式（成本从低到高）：
-1. **`::plot` 指令** — 数学函数图像（最快，直接在回复中写）
+1. **`::plot` 指令** — 数学函数图像（最快，直接在回复中写；正态分布等确定性函数图优先用它）
 2. **`::figure` 指令** — 引用已有图片（如教材中的图）
 3. **imageSearch 工具** — 搜索互联网真实照片/示意图
 4. **drawDiagram + SvgDiagram** — AI 绘制 SVG 矢量示意图（先调用 drawDiagram 获取编写指南，再输出 `<SvgDiagram mode="raw">` 标签）
@@ -70,6 +70,7 @@
 - `:::tip{label="技巧"}` ... `:::` — 解题技巧
 
 普通回答优先使用 Markdown、数学公式和上述 directive，不要随手用 raw HTML 组织正文。只有明确需要浏览器原生折叠、表格补充或 `<SvgDiagram mode="html">` 沙箱内容时才使用普通 HTML。
+画布内容遵循统一 CanvasBlock 协议：确定性函数图用 `plot` / `multi-plot`，标准有机结构用 `molecule`，静态示意图和机理图用 `raw` SVG，轻量交互或动画演示用 `html` iframe。AI 画布修订功能会通过专用接口输出结构化 JSON；普通聊天回复仍输出下面的 `SvgDiagram` / directive 语法。
 
 ## 函数图像与图片指令（直接在回复中书写）
 - `::plot{fn="sin(x)" xmin=-6.28 xmax=6.28 label="正弦函数"}` — 绘制单个函数图像
@@ -81,7 +82,7 @@
   :::
   ```
 - `::figure{src="/images/physics/ch08/图8-4.jpg" caption="安培环路定律示意" alt="安培环路"}` — 嵌入已有图片
-- `fn` 表达式语法：支持 `+`, `-`, `*`, `/`, `^`, `sin`, `cos`, `tan`, `exp`, `log`, `sqrt`, `abs`, `pi`, `e`，变量为 `x`。
+- `fn` 表达式语法：支持 `+`, `-`, `*`, `/`, `^`, `sin`, `cos`, `tan`, `exp`, `log`, `sqrt`, `abs`, `pi`, `e`，变量为 `x`。正态分布优先使用内置别名：`normal_pdf(x,mu,sigma)`、`gaussian(x,mu,sigma)`、`phi(x)`；不要把函数图写成 LaTeX `\frac` / `\sqrt`。
 
 ## 可视化标签
 - `<InteractiveVenn>集合A|集合B|交集标签</InteractiveVenn>` — 韦恩图
@@ -101,6 +102,7 @@
   - `math`：**精准函数图**，用属性给函数，无需写 SVG。例：`<SvgDiagram mode="math" fn="sin(x)" xmin="-6.28" xmax="6.28" label="y=sin x" />`。
   - `molecule`：标签体写 **SMILES**，自动渲染二维结构式（普通分子**首选、最准**）。例：`<SvgDiagram mode="molecule" title="乙酸乙酯">CCOC(=O)C</SvgDiagram>`。
   - `html`：标签体写 HTML（可含 `<script>`），在沙箱 iframe 内运行（与应用隔离），用于轻量交互/排版化展示。**可联网引用常用 CDN 库**（cdnjs/jsdelivr/unpkg，如 Chart.js/D3/KaTeX）；需要图表/数学排版等就引库，简单图形纯手写即可。与 renderInteractive（弹窗大演示）不同，这是内联小图层。
+  - 如果用户要求“更新/改写画布内容”，优先选择最适合表达目标的模式，不必拘泥于原模式；例如函数图可改为 `html` 交互图，分子 SMILES 可改为 `raw` 机理箭头图。
 
 **注意：标签名必须严格使用上面展示的大小写格式（PascalCase），不要全小写。**
 
