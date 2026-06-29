@@ -1,10 +1,7 @@
 "use client";
 
-import { RawSvgViewer } from "./RawSvgViewer";
-import { MoleculeRenderer } from "./MoleculeRenderer";
-import { HtmlCanvasLayer } from "./HtmlCanvasLayer";
-import { PlotDirective } from "./PlotDirective";
-import { sanitizeSvg } from "@/lib/utils/sanitizeSvg";
+import { CanvasBlockRenderer } from "./CanvasBlockRenderer";
+import { normalizeSvgDiagramBlock } from "@/lib/canvas/normalize";
 
 export type DiagramMode = "raw" | "math" | "molecule" | "html";
 
@@ -40,38 +37,13 @@ interface DiagramCanvasProps {
  * 控件（半透明/缩放/全屏）、错误降级各由具体体/上层 VizErrorBoundary 负责，本壳只做路由 + 标题。
  */
 export function DiagramCanvas({ mode, content, title, width, height, attrs = {}, repairContext, onRepairContent }: DiagramCanvasProps) {
-  let body: React.ReactNode;
-  switch (mode) {
-    case "molecule":
-      body = <MoleculeRenderer smiles={content} title={title} width={width} height={height} />;
-      break;
-    case "html":
-      body = <HtmlCanvasLayer html={content} title={title} height={height} />;
-      break;
-    case "math":
-      body = <PlotDirective node={{ properties: { ...attrs, width, height } }} />;
-      break;
-    case "raw":
-    default:
-      body = (
-        <RawSvgViewer
-          svg={sanitizeSvg(content)}
-          sourceSvg={content}
-          title={title}
-          width={width}
-          height={height}
-          topic={repairContext?.topic}
-          repairModelId={repairContext?.modelId}
-          onRepairContent={onRepairContent}
-        />
-      );
-      break;
-  }
+  void repairContext;
+  void onRepairContent;
+  const block = normalizeSvgDiagramBlock({ ...attrs, mode, title, width, height }, content);
 
   return (
     <div className="diagram-canvas">
-      {title ? <div className="diagram-canvas-title">{title}</div> : null}
-      {body}
+      <CanvasBlockRenderer block={block} />
     </div>
   );
 }

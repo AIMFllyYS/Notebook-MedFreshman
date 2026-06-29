@@ -12,6 +12,13 @@ interface CanvasFrameProps {
   diagnostic?: CanvasDiagnostic | null;
   controls?: React.ReactNode;
   children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  onPointerDown?: React.PointerEventHandler<HTMLDivElement>;
+  onPointerMove?: React.PointerEventHandler<HTMLDivElement>;
+  onPointerUp?: React.PointerEventHandler<HTMLDivElement>;
+  onPointerCancel?: React.PointerEventHandler<HTMLDivElement>;
+  onWheel?: React.WheelEventHandler<HTMLDivElement>;
   revisionBusy?: boolean;
   revisionError?: string | null;
   onRevisionSubmit?: (instruction: string) => void | Promise<void>;
@@ -23,6 +30,13 @@ export function CanvasFrame({
   diagnostic,
   controls,
   children,
+  className,
+  style,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onPointerCancel,
+  onWheel,
   revisionBusy = false,
   revisionError,
   onRevisionSubmit,
@@ -32,7 +46,15 @@ export function CanvasFrame({
   const hasSource = Boolean(source?.trim());
 
   return (
-    <div className="svg-canvas-wrapper canvas-frame">
+    <div
+      className={`svg-canvas-wrapper canvas-frame ${className ?? ''}`}
+      style={style}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerCancel}
+      onWheel={onWheel}
+    >
       <div className="svg-canvas-controls svg-canvas-controls-left">
         <button
           type="button"
