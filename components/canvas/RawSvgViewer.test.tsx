@@ -1,32 +1,23 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { RawSvgViewer } from './RawSvgViewer';
 
-vi.mock('@/lib/hooks/useSettings', () => ({
-  useSettings: Object.assign(
-    (selector?: (state: { selectedModelId: string; customApiGroups: unknown[] }) => unknown) => {
-      const state = { selectedModelId: 'mimo-v2.5', customApiGroups: [] };
-      return selector ? selector(state) : state;
-    },
-    { getState: () => ({ selectedModelId: 'mimo-v2.5', customApiGroups: [] }) },
-  ),
-}));
-
 describe('RawSvgViewer', () => {
-  it('shows a recoverable fallback and AI repair button for invisible svg content', () => {
+  it('shows a diagnostic and AI revision button for invisible svg content', () => {
     render(<RawSvgViewer svg="<svg viewBox='0 0 100 100'></svg>" title="empty" />);
 
-    expect(screen.getByText(/SVG diagram is not visible/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /AI repair SVG/i })).toBeInTheDocument();
+    expect(screen.getByText(/Canvas diagnostic/i)).toBeInTheDocument();
+    expect(screen.getByText(/Canvas has no visible SVG content/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /AI revise canvas/i })).toBeInTheDocument();
   });
 
-  it('renders the repair form inside the fallback card when svg content is invisible', () => {
+  it('renders the shared revision form inside the canvas frame', () => {
     const { container } = render(<RawSvgViewer svg="<svg viewBox='0 0 100 100'></svg>" title="empty" />);
 
-    fireEvent.click(screen.getByRole('button', { name: /AI repair SVG/i }));
+    fireEvent.click(screen.getByRole('button', { name: /AI revise canvas/i }));
 
     const textarea = screen.getByRole('textbox');
-    expect(textarea.closest('.viz-error-card')).not.toBeNull();
-    expect(container.querySelector('.svg-repair-popover')).toBeNull();
+    expect(textarea.closest('.canvas-frame')).not.toBeNull();
+    expect(container.querySelector('.canvas-revision-panel')).not.toBeNull();
   });
 });
