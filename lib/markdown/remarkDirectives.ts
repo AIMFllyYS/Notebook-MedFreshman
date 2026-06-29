@@ -4,6 +4,7 @@ import { CALLOUTS } from "./calloutTypes";
 /**
  * 把 remark-directive 解析出的容器/叶子指令，转换为渲染器可识别的自定义元素：
  *   :::definition / theorem / example / insight / pitfall / note / tip  -> <callout kind=...>
+ *   :::callout{kind=note|insight|tip|... label=...}                    -> <callout kind=...>（SOP 08 试卷写法）
  *   :::derivation{title=...}                                       -> <derivation>
  *   ::video{id=...} / ::interactive{id=...}                        -> <mediaembed kind=... id=...>
  *
@@ -40,6 +41,13 @@ export default function remarkDirectives() {
       const attrs = node.attributes ?? {};
       const data = (node.data ??= {});
 
+      // SOP 08 试卷录入写法：:::callout{kind=note label="题目"}（kind 指定样式类型）
+      if (node.type === "containerDirective" && name === "callout") {
+        const kind = attrs.kind && CALLOUTS.has(attrs.kind) ? attrs.kind : "note";
+        data.hName = "callout";
+        data.hProperties = { kind, label: attrs.label ?? attrs.title ?? "" };
+        return;
+      }
       if (node.type === "containerDirective" && CALLOUTS.has(name)) {
         data.hName = "callout";
         data.hProperties = { kind: name, label: attrs.label ?? attrs.title ?? "" };

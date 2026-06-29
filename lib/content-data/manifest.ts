@@ -22,6 +22,15 @@ const examPlaceholderCategories = [
   },
 ];
 
+const physicsKaoqianMoniItems = [
+  { id: 'sim-01', title: '大学物理期末模拟试卷一（押题A卷）', type: 'document' as const, status: 'done' as const },
+  { id: 'sim-02', title: '大学物理期末模拟试卷二（押题B卷）', type: 'document' as const, status: 'done' as const },
+  { id: 'sim-03', title: '大学物理期末模拟试卷三（押题C卷）', type: 'document' as const, status: 'done' as const },
+  { id: 'sim-04', title: '大学物理期末模拟试卷四（华科第一套）', type: 'document' as const, status: 'done' as const },
+  { id: 'sim-05', title: '大学物理期末模拟试卷五（华科第二套）', type: 'document' as const, status: 'done' as const },
+  { id: 'sim-06', title: '大学物理期末模拟试卷六（华科第三套）', type: 'document' as const, status: 'done' as const },
+];
+
 const chemistryKaoqianMoniItems = [
   { id: 'sim-01', title: '有机化学期末模拟试卷一', type: 'document' as const, status: 'done' as const },
   { id: 'sim-02', title: '有机化学期末模拟试卷二', type: 'document' as const, status: 'done' as const },
@@ -166,7 +175,12 @@ export const contentTree: ContentTree = {
             { id: 'sum-27', title: '第二十七讲·X射线、激光及医学应用', type: 'document', status: 'done' },
           ],
         },
-        ...examPlaceholderCategories,
+        {
+          id: 'kaoqian-moni',
+          name: '考前模拟',
+          items: physicsKaoqianMoniItems,
+        },
+        examPlaceholderCategories[1],
       ],
     },
     {

@@ -43,6 +43,33 @@ function makeText(name: string) {
   };
 }
 
+test("containerDirective :::callout{kind=...} 转为 <callout>（SOP 08 试卷写法）", () => {
+  const tree = run({
+    type: "root",
+    children: [makeContainer("callout", { kind: "note", label: "题目" })],
+  });
+  const node = tree.children[0];
+  assert.equal(node.data?.hName, "callout");
+  assert.equal(node.data?.hProperties?.kind, "note");
+  assert.equal(node.data?.hProperties?.label, "题目");
+});
+
+test(":::callout 无 kind 时回退 note", () => {
+  const tree = run({
+    type: "root",
+    children: [makeContainer("callout", { label: "解析" })],
+  });
+  assert.equal(tree.children[0].data?.hProperties?.kind, "note");
+});
+
+test(":::callout 非法 kind 时回退 note", () => {
+  const tree = run({
+    type: "root",
+    children: [makeContainer("callout", { kind: "unknown", label: "题" })],
+  });
+  assert.equal(tree.children[0].data?.hProperties?.kind, "note");
+});
+
 test("containerDirective callout 类型转为 <callout>", () => {
   const tree = run({
     type: "root",

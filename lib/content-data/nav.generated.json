@@ -1179,10 +1179,40 @@
           "name": "考前模拟",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "sim-01",
+              "title": "大学物理期末模拟试卷一（押题A卷）",
               "type": "document",
-              "status": "stub"
+              "status": "done"
+            },
+            {
+              "id": "sim-02",
+              "title": "大学物理期末模拟试卷二（押题B卷）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sim-03",
+              "title": "大学物理期末模拟试卷三（押题C卷）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sim-04",
+              "title": "大学物理期末模拟试卷四（华科第一套）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sim-05",
+              "title": "大学物理期末模拟试卷五（华科第二套）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sim-06",
+              "title": "大学物理期末模拟试卷六（华科第三套）",
+              "type": "document",
+              "status": "done"
             }
           ]
         },
