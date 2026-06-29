@@ -5,6 +5,8 @@ import {
   readContentMarkdown,
   readSectionMarkdown,
   readExamples,
+  readExampleById,
+  readExamplesMeta,
   deriveExampleKey,
   locateSection,
   findChapter,
@@ -95,6 +97,32 @@ test("readExamples：空参数返回空数组", () => {
 
 test("readExamples：不存在的目录返回空数组", () => {
   assert.deepEqual(readExamples("physics", "ch99", "99.9"), []);
+});
+
+test("readExampleById：中文文件名可读取正文", () => {
+  const meta = readExamplesMeta("physics", "ch02", "2.3");
+  assert.ok(meta.length > 0, "physics/ch02/2.3 应有例题");
+  const firstId = meta[0]!.id;
+  assert.match(firstId, /[\u4e00-\u9fff]/, "物理例题 id 应含中文");
+
+  const detail = readExampleById("physics", "ch02", "2.3", firstId);
+  assert.ok(detail, "中文 id 应能读到例题正文");
+  assert.equal(detail!.id, firstId);
+  assert.ok(detail!.content.includes(":::"), "正文应含 directive 围栏");
+});
+
+test("readExampleById：路径穿越防护", () => {
+  assert.equal(readExampleById("physics", "ch02", "2.3", "../2.2/EX01"), null);
+  assert.equal(readExampleById("physics", "ch02", "2.3", "foo/bar"), null);
+  assert.equal(readExampleById("physics", "ch02", "2.3", ".."), null);
+});
+
+test("readExamples：中文 id 列表项均含非空正文", () => {
+  const examples = readExamples("physics", "ch02", "2.3");
+  assert.ok(examples.length > 0);
+  for (const ex of examples) {
+    assert.ok(ex.content.length > 0, `${ex.id} 应有正文`);
+  }
 });
 
 // ── locateSection / findChapter ────────────────────────────────

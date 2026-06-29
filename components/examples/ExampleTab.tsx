@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import type { ExampleDetail, ExampleListItem } from "@/lib/content/loader";
+import type { ExampleDetail } from "@/lib/content/loader";
 import { fadeInUpVariants } from "@/lib/motion";
 import LazyVisible from "@/components/ui/LazyVisible";
 import { SkeletonLine } from "@/components/notes/NoteSkeleton";
@@ -27,8 +27,26 @@ function EmptyExamples({ sectionId }: { sectionId: string }) {
   );
 }
 
+function ExampleDetailError({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div className="rounded-2xl border border-dashed border-[var(--line)] bg-[var(--bg-elevated)] p-8 text-center">
+      <h3 className="text-[16px] font-semibold">例题正文加载失败</h3>
+      <p className="mx-auto mt-1.5 max-w-sm text-[14px] leading-relaxed text-[var(--ink-soft)]">
+        请返回列表重试，或刷新页面后再打开本题。
+      </p>
+      <button
+        type="button"
+        onClick={onRetry}
+        className="mt-4 rounded-lg bg-[var(--accent-weak)] px-4 py-2 text-[13px] font-medium text-[var(--accent-ink)] transition-colors hover:bg-[var(--accent-weak)]/80"
+      >
+        重试
+      </button>
+    </div>
+  );
+}
+
 interface ExampleTabProps {
-  initialExamples: ExampleListItem[];
+  initialExamples: ExampleDetail[];
   sectionId: string;
   subjectId: string;
   chapterId: string;
@@ -44,19 +62,44 @@ export default function ExampleTab({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selected, setSelected] = useState<ExampleDetail | null>(null);
   const [loadingDetail, setLoadingDetail] = useState(false);
+  const [detailError, setDetailError] = useState(false);
+  const [fetchNonce, setFetchNonce] = useState(0);
+
+  const contentById = useMemo(() => {
+    const map = new Map<string, ExampleDetail>();
+    for (const ex of initialExamples) {
+      if (ex.content) map.set(ex.id, ex);
+    }
+    return map;
+  }, [initialExamples]);
 
   useEffect(() => {
     setSelectedId(null);
     setSelected(null);
+    setDetailError(false);
   }, [sectionId]);
 
   useEffect(() => {
     if (!selectedId) {
       setSelected(null);
+      setDetailError(false);
+      setLoadingDetail(false);
       return;
     }
+
+    const cached = contentById.get(selectedId);
+    if (cached?.content) {
+      setSelected(cached);
+      setDetailError(false);
+      setLoadingDetail(false);
+      return;
+    }
+
     let cancelled = false;
     setLoadingDetail(true);
+    setDetailError(false);
+    setSelected(null);
+
     const params = new URLSearchParams({
       chapterId,
       sectionId,
@@ -66,7 +109,16 @@ export default function ExampleTab({
     void fetch(`/api/examples?${params}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data: { example?: ExampleDetail } | null) => {
-        if (!cancelled) setSelected(data?.example ?? null);
+        if (cancelled) return;
+        const example = data?.example ?? null;
+        setSelected(example);
+        setDetailError(!example);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setSelected(null);
+          setDetailError(true);
+        }
       })
       .finally(() => {
         if (!cancelled) setLoadingDetail(false);
@@ -74,7 +126,7 @@ export default function ExampleTab({
     return () => {
       cancelled = true;
     };
-  }, [selectedId, chapterId, sectionId, subjectId]);
+  }, [selectedId, chapterId, sectionId, subjectId, contentById, fetchNonce]);
 
   return (
     <div className="mx-auto w-full max-w-3xl px-8 py-10">
@@ -148,8 +200,10 @@ export default function ExampleTab({
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                   返回例题列表
                 </button>
-                {loadingDetail || !selected ? (
+                {loadingDetail ? (
                   <div className="py-8 text-center text-[13px] text-[var(--ink-faint)]">加载例题正文…</div>
+                ) : detailError || !selected ? (
+                  <ExampleDetailError onRetry={() => setFetchNonce((n) => n + 1)} />
                 ) : (
                   <div className="prose-notes animate-fade-in">
                     <NoteRenderer content={selected.content} />

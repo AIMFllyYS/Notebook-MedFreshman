@@ -169,6 +169,14 @@ function exampleTitleFromContent(content: string, file: string): string {
       : file.replace(/\.md$/, "");
 }
 
+/** 允许 Unicode 文件名（如 EX01_硫酸黏度测定），仅拦截路径穿越。 */
+function isSafeExampleId(exampleId: string): boolean {
+  if (!exampleId) return false;
+  if (exampleId.includes("..")) return false;
+  if (/[\\/]/.test(exampleId)) return false;
+  return exampleId === path.basename(exampleId);
+}
+
 function examplesDir(subjectId: string, chapterId: string, sectionId: string): string | null {
   if (!chapterId || !sectionId) return null;
   return subjectId && subjectId !== "probability"
@@ -207,7 +215,7 @@ export function readExampleById(
   exampleId: string,
 ): ExampleDetail | null {
   const dir = examplesDir(subjectId, chapterId, sectionId);
-  if (!dir || !/^[a-zA-Z0-9_-]+$/.test(exampleId)) return null;
+  if (!dir || !isSafeExampleId(exampleId)) return null;
   const filePath = path.join(dir, `${exampleId}.md`);
   try {
     const content = fs.readFileSync(filePath, "utf8");

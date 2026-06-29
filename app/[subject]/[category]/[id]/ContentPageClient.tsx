@@ -7,7 +7,7 @@ import { FileText, ClipboardCheck, Lightbulb, PanelTopClose, PanelTopOpen, Maxim
 import { AnimatePresence, motion } from "framer-motion";
 import SelectionPopover from "@/components/notes/SelectionPopover";
 import type { SubjectId, RenderType } from "@/lib/types/content";
-import type { ExampleListItem } from "@/lib/content/loader";
+import type { ExampleDetail } from "@/lib/content/loader";
 import { useStore } from "@/lib/store";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { tabPanelVariants } from "@/lib/motion";
@@ -35,8 +35,8 @@ interface ContentPageClientProps {
   initialContent: string | null;
   /** 服务端/构建期预渲染好的正文 React 树（仅 markdown 类型非空）；客户端不再解析 markdown */
   renderedNote?: React.ReactNode;
-  /** 服务端 SSR 注入的例题列表（随路由变化重新下发） */
-  initialExamples: ExampleListItem[];
+  /** 服务端 SSR 注入的例题（含正文，随路由变化重新下发） */
+  initialExamples: ExampleDetail[];
   /** 例题所属小节 id（detail 分类为 itemId，否则为 ""） */
   sectionId: string;
   exampleChapterId: string;

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { isSubjectId } from "@/lib/types/content";
 import type { ContentItem } from "@/lib/types/content";
 import { contentTree, getContentItem, getSubject, getCategory } from "@/lib/content-data";
-import { readContent, readExamplesMeta, deriveExampleKey } from "@/lib/content/loader";
+import { readContent, readExamples, deriveExampleKey } from "@/lib/content/loader";
 import { normalizeDirectiveLabels } from "@/lib/markdown/normalizeDirectiveLabels";
 import NoteRendererServer from "@/components/notes/NoteRendererServer";
 import ContentPageClient from "./ContentPageClient";
@@ -63,9 +63,9 @@ export default async function ContentPage({ params }: PageProps) {
       ? <NoteRendererServer content={normalizedContent} />
       : null;
 
-  // 例题同样服务端预读（与正文一致走 SSR），避免点「例题」Tab 时再 fetch。
+  // 例题服务端预读全文（与正文一致走 SSR），点击卡片时无需再 fetch。
   const { chapterId, sectionId } = deriveExampleKey(category, id);
-  const initialExamples = readExamplesMeta(subject, chapterId, sectionId);
+  const initialExamples = readExamples(subject, chapterId, sectionId);
 
   return (
     <ContentPageClient
