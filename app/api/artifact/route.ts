@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { resolveProvider, type CustomProvider } from "@/lib/ai/provider";
 import { streamInteractiveArtifact } from "@/lib/ai/artifact";
+import { getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,9 +16,12 @@ export async function POST(req: NextRequest) {
   const title = String(body.title ?? "交互演示");
   const prompt = String(body.prompt ?? "");
   const modelId = typeof body.modelId === "string" ? body.modelId : undefined;
+  const customApiGroups: CustomApiGroup[] = Array.isArray(body.customApiGroups)
+    ? body.customApiGroups
+    : [];
   const customProvider: CustomProvider | undefined =
     body.customProvider && typeof body.customProvider === "object" ? body.customProvider : undefined;
-  const provider = resolveProvider(modelId, customProvider);
+  const provider = resolveProvider(modelId, customApiGroups.length > 0 ? customApiGroups : customProvider);
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
@@ -30,6 +34,15 @@ export async function POST(req: NextRequest) {
       try {
         if (!artifactId) {
           send({ type: "artifact", id: "", status: "error", message: "缺少 artifact id" });
+          return;
+        }
+        if (modelId && getModelInfoWithCustom(modelId, customApiGroups)?.type === "image") {
+          send({
+            type: "artifact",
+            id: artifactId,
+            status: "error",
+            message: "当前生图模型不支持 HTML 交互组件生成，请切换文本模型后重试。",
+          });
           return;
         }
         if (!provider.configured) {

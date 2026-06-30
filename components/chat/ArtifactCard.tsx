@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Loader, MonitorPlay, Code2, ChevronDown, ChevronUp, AlertTriangle, ExternalLink } from 'lucide-react';
 import { useArtifacts } from '@/lib/hooks/useArtifacts';
 import { useSettings } from '@/lib/hooks/useSettings';
-import { CUSTOM_PREFIX, findCustomModelGroup } from '@/lib/ai/models';
+import { CUSTOM_PREFIX, findCustomModelGroup, getModelInfoWithCustom } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { MessageContent } from '@/components/chat/MessageContent';
 
@@ -25,11 +25,15 @@ export default function ArtifactCard({
   artifactId,
   title: titleProp,
   prompt,
+  modelId,
+  unsupportedReason,
   autoStart = false,
 }: {
   artifactId: string;
   title?: string;
   prompt?: string;
+  modelId?: string;
+  unsupportedReason?: string;
   autoStart?: boolean;
 }) {
   const art = useArtifacts((s) => s.byId[artifactId]);
@@ -77,9 +81,16 @@ export default function ArtifactCard({
     /* eslint-enable react-hooks/set-state-in-effect */
 
     const settings = useSettings.getState();
-    const isCustom = settings.selectedModelId.startsWith(CUSTOM_PREFIX);
+    const artifactModelId = modelId || settings.selectedModelId;
+    const artifactModelInfo = getModelInfoWithCustom(artifactModelId, settings.customApiGroups);
+    if (artifactModelInfo?.type === 'image') {
+      setStatus('error');
+      setError(unsupportedReason || '当前生图模型不支持 HTML 交互组件生成，请切换文本模型后重试。');
+      return;
+    }
+    const isCustom = artifactModelId.startsWith(CUSTOM_PREFIX);
     const customGroup = isCustom
-      ? findCustomModelGroup(settings.customApiGroups, settings.selectedModelId)
+      ? findCustomModelGroup(settings.customApiGroups, artifactModelId)
       : undefined;
 
     (async () => {
@@ -91,7 +102,8 @@ export default function ArtifactCard({
             id: artifactId,
             title,
             prompt,
-            modelId: settings.selectedModelId,
+            modelId: artifactModelId,
+            customApiGroups: settings.customApiGroups,
             customProvider: customGroup
               ? { baseUrl: customGroup.group.baseUrl, apiKey: customGroup.group.apiKey, model: customGroup.model.id }
               : undefined,
@@ -143,7 +155,7 @@ export default function ArtifactCard({
         setError(err instanceof Error ? err.message : '交互演示生成失败');
       }
     })();
-  }, [artifactId, art, prompt, saveDone, title]);
+  }, [artifactId, art, modelId, prompt, saveDone, title, unsupportedReason]);
 
   const openExternal = () => {
     if (!html) return;

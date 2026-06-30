@@ -140,7 +140,7 @@ export const ALL_TOOLS: Record<string, ToolDefinition> = {
     function: {
       name: "drawDiagram",
       description:
-        "SVG 图形预处理工具：分析图形需求并返回 SVG 编写指南（推荐结构、颜色规范、模板片段）。调用后按指南在回复中编写 <SvgDiagram mode=\"raw\"> 标签输出 SVG 内容。简单函数图像仍优先用 ::plot。",
+        "SVG 图形预处理工具：分析图形需求并返回 SVG 编写指南（推荐结构、颜色规范、模板片段）。调用后按指南在回复中编写 <SvgDiagram mode=\"raw\">，标签体必须包含完整 <svg ...>...</svg> 根标签。简单函数图像仍优先用 ::plot。",
       parameters: {
         type: "object",
         properties: {
@@ -450,12 +450,14 @@ function buildDiagramGuidance(type: string, title: string, desc: string): string
 
 【输出格式】
 <SvgDiagram title="${title}" mode="raw" ${guide.dims}>
-  ...SVG 元素...
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360">
+    ...SVG 元素...
+  </svg>
 </SvgDiagram>
 
 ${DIAGRAM_GUIDANCE_COMMON}
 
 ${guide.tips}
 
-请在你的下一段回复中直接输出完整的 <SvgDiagram> 标签。`;
+请在你的下一段回复中直接输出完整的 <SvgDiagram> 标签；mode="raw" 的标签体必须是完整 <svg ...>...</svg>，不要只输出 <path>/<rect>/<text> 等 SVG 子元素。`;
 }

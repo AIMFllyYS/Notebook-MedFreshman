@@ -18,6 +18,7 @@ import { ImageStrip } from '@/components/chat/ImageStrip';
 import { RawSvgViewer } from '@/components/canvas';
 import { sanitizeSvg } from '@/lib/utils/sanitizeSvg';
 import { VizErrorBoundary } from '@/components/chat/VizErrorBoundary';
+import { ensureSvgRoot } from '@/lib/canvas/normalize';
 
 interface MessageContentProps {
   content: string;
@@ -95,6 +96,10 @@ const BARE_SVG_CHILD_RE = new RegExp(
   `</?(?:${SVG_CHILD_TAGS.join('|')})\\b[^>]*/?>`,
   'gi',
 );
+const BARE_SVG_CHILD_BLOCK_RE = new RegExp(
+  `<(?:${SVG_CHILD_TAGS.join('|')})\\b[\\s\\S]*>`,
+  'i',
+);
 
 function stripBareSvgChildren(text: string): string {
   return text.replace(BARE_SVG_CHILD_RE, '');
@@ -111,6 +116,16 @@ function renderMarkdownWithSvg(
       {value}
     </ReactMarkdown>
   );
+
+  const trimmed = content.trim();
+  if (!content.includes('<svg') && trimmed.startsWith('<') && BARE_SVG_CHILD_BLOCK_RE.test(trimmed)) {
+    const rootedSvg = ensureSvgRoot(trimmed);
+    return (
+      <VizErrorBoundary key={`${keyPrefix}-bare-svg`} label="图形" source={trimmed}>
+        <RawSvgViewer svg={sanitizeSvg(rootedSvg)} />
+      </VizErrorBoundary>
+    );
+  }
 
   if (!content.includes('<svg')) return md(keyPrefix, stripBareSvgChildren(content));
 

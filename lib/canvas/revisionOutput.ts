@@ -1,4 +1,4 @@
-import { normalizeCanvasAttrs, normalizePlotAttrs, normalizeSvgDiagramBlock } from './normalize';
+import { ensureSvgRoot, normalizeCanvasAttrs, normalizePlotAttrs, normalizeSvgDiagramBlock, SVG_ROOT_RE } from './normalize';
 import { diagnosePlotExpression } from './plot';
 import type { CanvasBlock, CanvasDiagnostic, PlotSpec } from './types';
 
@@ -7,8 +7,6 @@ export type CanvasRevisionExtractResult =
   | { ok: false; error: string; rawOutput: string };
 
 const SVG_DIAGRAM_RE = /^<SvgDiagram\b([^>]*)>([\s\S]*?)<\/SvgDiagram>$/i;
-const SVG_ROOT_RE = /^<svg\b[\s\S]*<\/svg>$/i;
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
@@ -81,7 +79,11 @@ function coerceJsonBlock(value: unknown): CanvasBlock | null {
 
   if (kind === 'raw-svg') {
     const source = text(value.source);
-    return source ? compact({ ...base, kind, source }) as CanvasBlock : null;
+    return source ? compact({
+      ...base,
+      kind,
+      source: ensureSvgRoot(source, finiteNumber(value.width), finiteNumber(value.height)),
+    }) as CanvasBlock : null;
   }
 
   if (kind === 'html') {
@@ -127,6 +129,11 @@ export function extractCanvasRevisionBlock(output: string): CanvasRevisionExtrac
     return { ok: true, block: { kind: 'raw-svg', source: trimmed } };
   }
 
+  const rootedSvg = trimmed.startsWith('<') ? ensureSvgRoot(trimmed) : trimmed;
+  if (rootedSvg !== trimmed && SVG_ROOT_RE.test(rootedSvg)) {
+    return { ok: true, block: { kind: 'raw-svg', source: rootedSvg } };
+  }
+
   const legacy = trimmed.match(SVG_DIAGRAM_RE);
   if (legacy) {
     return { ok: true, block: normalizeSvgDiagramBlock(parseAttrs(legacy[1]), legacy[2]) };
@@ -151,7 +158,8 @@ export function diagnoseCanvasBlock(block: CanvasBlock): CanvasDiagnostic[] {
     if (!block.source.trim()) {
       return [{ ok: false, reason: 'empty-svg', message: 'Raw SVG source is empty.' }];
     }
-    if (!SVG_ROOT_RE.test(block.source.trim())) {
+    const rootedSvg = ensureSvgRoot(block.source, block.width, block.height).trim();
+    if (!SVG_ROOT_RE.test(rootedSvg)) {
       return [{ ok: false, reason: 'incomplete-svg', message: 'Raw SVG must be a complete <svg>...</svg> document.' }];
     }
     return [{ ok: true, reason: 'valid-svg', message: 'Raw SVG looks complete.' }];

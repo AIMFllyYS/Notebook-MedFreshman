@@ -67,16 +67,17 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
 
       try {
         const settings = useSettings.getState();
+        const imageModelId = cur.modelId || settings.selectedModelId;
         const res = await fetch("/api/image-gen", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            modelId: settings.selectedModelId,
+            modelId: imageModelId,
             prompt: cur.prompt,
             size: cur.size,
             count: cur.count,
             customApiGroups: settings.customApiGroups,
-            defaultImageModelId: settings.defaultImageModelId,
+            defaultImageModelId: cur.modelId ? null : settings.defaultImageModelId,
           }),
         });
 
@@ -98,7 +99,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
         // 记录生图计费：用 registryId（custom:xxx:yyy 或内置 id）才能正确解析定价与供应商
         useBillingStore.getState().addRecord(createBillingRecord({
           type: 'image',
-          modelId: data.registryId || data.model || settings.defaultImageModelId || settings.selectedModelId,
+          modelId: data.registryId || data.model || imageModelId,
           sessionId: sid,
           customGroups: settings.customApiGroups,
           imageCount: data.images.length

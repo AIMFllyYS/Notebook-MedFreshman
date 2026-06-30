@@ -46,7 +46,10 @@ interface ChatSseEvent {
   breakdown?: ContextBreakdown;
   meta?: {
     artifactId?: unknown;
+    artifactModelId?: unknown;
+    artifactUnsupportedReason?: unknown;
     imageGenId?: unknown;
+    imageModelId?: unknown;
     sources?: WebSearchSource[];
     cacheHit?: unknown;
     hits?: { title: string; path: string; snippet: string }[];
@@ -324,6 +327,12 @@ export function useChat(
                     if (event.meta && typeof event.meta.artifactId === 'string') {
                       tc.artifactId = event.meta.artifactId;
                     }
+                    if (event.meta && typeof event.meta.artifactModelId === 'string') {
+                      tc.artifactModelId = event.meta.artifactModelId;
+                    }
+                    if (event.meta && typeof event.meta.artifactUnsupportedReason === 'string') {
+                      tc.artifactUnsupportedReason = event.meta.artifactUnsupportedReason;
+                    }
                     if (event.name === 'renderInteractive') {
                       if (event.args?.title) tc.title = String(event.args.title);
                       if (event.args?.prompt) tc.prompt = String(event.args.prompt);
@@ -331,6 +340,9 @@ export function useChat(
                     // generateImage 带回 imageGenId 和参数，卡片展示批准 UI，批准后独立请求 /api/image-gen。
                     if (event.meta && typeof event.meta.imageGenId === 'string') {
                       tc.imageGenId = event.meta.imageGenId;
+                    }
+                    if (event.meta && typeof event.meta.imageModelId === 'string') {
+                      tc.imageModelId = event.meta.imageModelId;
                     }
                     if (event.name === 'generateImage') {
                       if (event.args?.title) tc.imageGenTitle = String(event.args.title);
@@ -348,7 +360,10 @@ export function useChat(
                       if (meta && Array.isArray(meta.sources)) existing.sources = meta.sources;
                       if (meta && typeof meta.cacheHit === 'boolean') existing.cacheHit = meta.cacheHit;
                       if (meta && typeof meta.artifactId === 'string') existing.artifactId = meta.artifactId;
+                      if (meta && typeof meta.artifactModelId === 'string') existing.artifactModelId = meta.artifactModelId;
+                      if (meta && typeof meta.artifactUnsupportedReason === 'string') existing.artifactUnsupportedReason = meta.artifactUnsupportedReason;
                       if (meta && typeof meta.imageGenId === 'string') existing.imageGenId = meta.imageGenId;
+                      if (meta && typeof meta.imageModelId === 'string') existing.imageModelId = meta.imageModelId;
                       if (meta && Array.isArray(meta.hits)) existing.hits = meta.hits;
                       if (meta && typeof meta.skill === 'string') existing.skill = meta.skill;
                       scheduleUi();

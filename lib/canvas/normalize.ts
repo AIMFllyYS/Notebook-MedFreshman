@@ -2,6 +2,9 @@ import type { CanvasBlock, CanvasAttrs, PlotAttrs } from './types';
 
 type LegacyProps = Record<string, unknown>;
 
+export const SVG_ROOT_RE = /^<svg\b[\s\S]*<\/svg>$/i;
+export const BARE_SVG_CHILD_RE = /<(?:g|path|rect|circle|ellipse|line|polyline|polygon|text|tspan|textPath|defs|marker|stop|linearGradient|radialGradient|clipPath|mask|pattern|image|use|symbol)\b[\s\S]*>/i;
+
 function str(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim() ? value.trim() : undefined;
 }
@@ -24,6 +27,17 @@ function baseProps(props: LegacyProps): Pick<CanvasBlock, 'title' | 'width' | 'h
     width: num(props.width),
     height: num(props.height),
   };
+}
+
+export function ensureSvgRoot(source: string, width?: number, height?: number): string {
+  const trimmed = String(source ?? '').trim();
+  if (!trimmed) return '';
+  if (SVG_ROOT_RE.test(trimmed)) return trimmed;
+  if (!BARE_SVG_CHILD_RE.test(trimmed)) return trimmed;
+
+  const w = Number.isFinite(width) && width && width > 0 ? Math.round(width) : 600;
+  const h = Number.isFinite(height) && height && height > 0 ? Math.round(height) : 360;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">${trimmed}</svg>`;
 }
 
 export function normalizePlotAttrs(props: LegacyProps): PlotAttrs {
@@ -90,6 +104,6 @@ export function normalizeSvgDiagramBlock(props: LegacyProps, childrenText: strin
   return {
     ...common,
     kind: 'raw-svg',
-    source,
+    source: ensureSvgRoot(source, common.width, common.height),
   };
 }

@@ -227,6 +227,11 @@ export async function POST(req: NextRequest) {
           : "";
 
         const promptExtras: string[] = [];
+        if (isImageMode) {
+          promptExtras.push(
+            "## 生图模式硬性规则\n当前用户选择的是生图模型。无论用户输入什么，本次最终动作必须调用 generateImage 工具，把用户意图改写为清晰、可执行的生图提示词。不要用纯文字回答替代，不要调用 renderInteractive 或 drawDiagram。",
+          );
+        }
         if (globalContext) {
           promptExtras.push(`## 全局补充上下文（用户提供，始终适用）\n${globalContext}`);
         }
@@ -290,9 +295,12 @@ export async function POST(req: NextRequest) {
         const imageSearchFetchedCount = { value: 0 };
 
         for (let turn = 0; turn < MAX_TOOL_TURNS; turn++) {
-          const effectiveToolDefs = imageSearchFetchedCount.value >= IMAGE_SEARCH_MAX_TOTAL
-            ? toolDefs.filter((t) => t.function.name !== "imageSearch")
+          const baseToolDefs = isImageMode
+            ? toolDefs.filter((t) => t.function.name === "generateImage")
             : toolDefs;
+          const effectiveToolDefs = imageSearchFetchedCount.value >= IMAGE_SEARCH_MAX_TOTAL
+            ? baseToolDefs.filter((t) => t.function.name !== "imageSearch")
+            : baseToolDefs;
           const reqBody: Record<string, unknown> = {
             model: activeProvider.apiModelId,
             messages: convo,
@@ -302,7 +310,9 @@ export async function POST(req: NextRequest) {
           };
           if (modelSupportsTools && effectiveToolDefs.length > 0) {
             reqBody.tools = effectiveToolDefs;
-            reqBody.tool_choice = "auto";
+            reqBody.tool_choice = isImageMode
+              ? { type: "function", function: { name: "generateImage" } }
+              : "auto";
           }
 
           // 深度思考参数（仅在模型支持思考时下发，避免不支持的端点报未知参数）。
@@ -476,22 +486,29 @@ export async function POST(req: NextRequest) {
               // generateImage 同理：随 tool call 下发 imageGenId，前端展示批准卡片，
               // 用户批准后独立请求 /api/image-gen 生图，不阻塞主聊天 SSE。
               const imageGenId = c.name === "generateImage" ? `img_${c.id}` : undefined;
+              const artifactModelId = modelId || effectiveModelId;
+              const artifactMeta = artifactId
+                ? {
+                    artifactId,
+                    artifactModelId,
+                    ...(isImageMode
+                      ? { artifactUnsupportedReason: "当前生图模型不支持 HTML 交互组件生成，请切换文本模型后重试。" }
+                      : {}),
+                  }
+                : undefined;
+              const imageMeta = imageGenId ? { imageGenId, imageModelId: modelId } : undefined;
               send({
                 type: "tool",
                 id: c.id,
                 name: c.name,
                 args: parsed,
                 status: "call",
-                meta: artifactId
-                  ? { artifactId }
-                  : imageGenId
-                    ? { imageGenId }
-                    : undefined,
+                meta: artifactMeta ?? imageMeta,
               });
 
               if (c.name === "renderInteractive") {
                 const title = String(parsed.title ?? "");
-                send({ type: "tool", id: c.id, status: "result", meta: { artifactId } });
+                send({ type: "tool", id: c.id, status: "result", meta: artifactMeta });
                 convo.push({
                   role: "tool",
                   tool_call_id: c.id,
@@ -502,7 +519,7 @@ export async function POST(req: NextRequest) {
 
               if (c.name === "generateImage") {
                 const title = String(parsed.title ?? "");
-                send({ type: "tool", id: c.id, status: "result", meta: { imageGenId } });
+                send({ type: "tool", id: c.id, status: "result", meta: imageMeta });
                 convo.push({
                   role: "tool",
                   tool_call_id: c.id,

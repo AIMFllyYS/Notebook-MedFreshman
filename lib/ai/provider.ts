@@ -283,8 +283,14 @@ export function resolveImageProvider(
   customGroups?: CustomApiGroup[] | null,
   defaultImageModelId?: string | null,
 ): ResolvedImageProvider {
-  // 1. 优先使用默认生图模型（可能是自定义的或内置的）
-  const effectiveModelId = defaultImageModelId || modelId;
+  const selectedCustom = modelId.startsWith(CUSTOM_PREFIX) && customGroups?.length
+    ? findCustomModelGroup(customGroups, modelId)
+    : undefined;
+  const selectedIsImage =
+    selectedCustom?.model.type === "image" || getModelInfo(modelId)?.type === "image";
+
+  // 用户明确选中生图模型时必须使用该模型；默认生图模型只在当前模型不是生图模型时兜底。
+  const effectiveModelId = selectedIsImage ? modelId : (defaultImageModelId || modelId);
 
   // 2. 如果是自定义模型，在分组中查找
   if (effectiveModelId.startsWith(CUSTOM_PREFIX) && customGroups && customGroups.length > 0) {

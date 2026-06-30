@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { extractCanvasRevisionBlock } from './revisionOutput';
+import { diagnoseCanvasBlock, extractCanvasRevisionBlock } from './revisionOutput';
 
 describe('extractCanvasRevisionBlock', () => {
   it('extracts raw JSON output', () => {
@@ -23,6 +23,31 @@ describe('extractCanvasRevisionBlock', () => {
     if (result.ok) {
       expect(result.block.kind).toBe('raw-svg');
       expect(result.block.source).toContain('<svg');
+    }
+  });
+
+  it('wraps bare SVG children returned directly by the model', () => {
+    const result = extractCanvasRevisionBlock('<rect x="4" y="4" width="20" height="10" />');
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.block.kind).toBe('raw-svg');
+      expect(result.block.source).toContain('<svg');
+      expect(result.block.source).toContain('<rect');
+      expect(diagnoseCanvasBlock(result.block)[0].ok).toBe(true);
+    }
+  });
+
+  it('wraps bare SVG children inside JSON raw-svg revisions', () => {
+    const result = extractCanvasRevisionBlock(
+      '{"kind":"raw-svg","width":500,"height":260,"source":"<path d=\\"M0 0 L10 10\\" />"}',
+    );
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.block.kind).toBe('raw-svg');
+      expect(result.block.source).toContain('viewBox="0 0 500 260"');
+      expect(diagnoseCanvasBlock(result.block)[0].ok).toBe(true);
     }
   });
 

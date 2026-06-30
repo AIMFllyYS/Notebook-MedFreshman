@@ -17,12 +17,14 @@ export default function ImageGenCard({
   title,
   size,
   count,
+  modelId,
 }: {
   imageGenId: string;
   prompt?: string;
   title?: string;
   size?: string;
   count?: number;
+  modelId?: string;
 }) {
   const session = useImageGen((s) => s.sessions[imageGenId]);
   const openViewer = useImageGen((s) => s.openViewer);
@@ -46,6 +48,7 @@ export default function ImageGenCard({
       title: effectiveTitle,
       size: effectiveSize,
       count: effectiveCount,
+      modelId,
     });
   };
 

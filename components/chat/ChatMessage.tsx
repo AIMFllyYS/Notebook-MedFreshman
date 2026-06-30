@@ -133,6 +133,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                   artifactId={tc.artifactId!}
                   title={tc.title}
                   prompt={tc.prompt}
+                  modelId={tc.artifactModelId}
+                  unsupportedReason={tc.artifactUnsupportedReason}
                   autoStart={!!isStreaming}
                 />
               ))}
@@ -146,6 +148,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                   title={tc.imageGenTitle}
                   size={tc.imageGenSize}
                   count={tc.imageGenCount}
+                  modelId={tc.imageModelId}
                 />
               ))}
             {imageSearchSources.length > 0 && (

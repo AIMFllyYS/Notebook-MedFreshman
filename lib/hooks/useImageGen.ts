@@ -17,6 +17,7 @@ export interface ImageGenSession {
   title: string;
   size: string;
   count: number;
+  modelId?: string;
   status: ImageGenStatus;
   images: ImageGenImage[];
   error?: string;
@@ -29,6 +30,7 @@ export interface ImageGenSessionInit {
   title: string;
   size?: string;
   count?: number;
+  modelId?: string;
 }
 
 interface ImageGenState {
@@ -85,6 +87,7 @@ export const useImageGen = create<ImageGenState>()(
           title: init.title || "AI 生图",
           size: init.size || "1024x1024",
           count: init.count || 1,
+          modelId: init.modelId,
           status: "idle",
           images: [],
           createdAt: Date.now(),

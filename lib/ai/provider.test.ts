@@ -131,6 +131,47 @@ test("resolveImageProvider：custom 生图模型可声明 OpenAI images 格式",
   assert.equal(detectImageApiStyle(provider.apiModelId, provider.imageApiStyle), "openai");
 });
 
+test("resolveImageProvider：用户显式选中的生图模型优先于默认生图模型", () => {
+  const defaultModelId = buildCustomModelRegistryId("openai-image", "default-image-model");
+  const provider = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo", [
+    {
+      id: "openai-image",
+      name: "OpenAI Image",
+      baseUrl: "https://image.example/v1",
+      apiKey: "sk-image",
+      models: [{
+        id: "default-image-model",
+        type: "image",
+        imageApiStyle: "openai",
+      }],
+    },
+  ], defaultModelId);
+
+  assert.equal(provider.registryId, "Tongyi-MAI/Z-Image-Turbo");
+  assert.equal(provider.imageApiStyle, "siliconflow");
+});
+
+test("resolveImageProvider：用户显式选中的 custom 生图模型优先于默认生图模型", () => {
+  const selectedModelId = buildCustomModelRegistryId("openai-image", "selected-image-model");
+  const defaultModelId = buildCustomModelRegistryId("openai-image", "default-image-model");
+  const provider = resolveImageProvider(selectedModelId, [
+    {
+      id: "openai-image",
+      name: "OpenAI Image",
+      baseUrl: "https://image.example/v1",
+      apiKey: "sk-image",
+      models: [
+        { id: "selected-image-model", type: "image", imageApiStyle: "openai" },
+        { id: "default-image-model", type: "image", imageApiStyle: "siliconflow" },
+      ],
+    },
+  ], defaultModelId);
+
+  assert.equal(provider.registryId, selectedModelId);
+  assert.equal(provider.apiModelId, "selected-image-model");
+  assert.equal(provider.imageApiStyle, "openai");
+});
+
 test("resolveProvider：mimo 模型走 MIMO 端点且 apiModelId 一致", () => {
   const r = resolveProvider("mimo-v2.5");
   assert.equal(r.isCustom, false);

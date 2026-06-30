@@ -30,6 +30,10 @@ export interface ToolCallBlock {
   title?: string;
   /** renderInteractive 专用：生成时传入的 prompt 参数，用于前端展示生成依据。 */
   prompt?: string;
+  /** renderInteractive 专用：发起生成时选中的模型 id，避免后续切换模型污染 artifact 请求。 */
+  artifactModelId?: string;
+  /** renderInteractive 专用：如果当前模型不支持 HTML 交互生成，前端显示该原因且不请求 /api/artifact。 */
+  artifactUnsupportedReason?: string;
   /** searchNotes 专用：检索命中的笔记片段。 */
   hits?: { title: string; path: string; snippet: string }[];
   /** useSkill 专用：被调用的技能名称。 */
@@ -44,6 +48,8 @@ export interface ToolCallBlock {
   imageGenSize?: string;
   /** generateImage 专用：生成数量（1-4）。 */
   imageGenCount?: number;
+  /** generateImage 专用：发起时选中的生图模型 id，批准后必须使用该模型。 */
+  imageModelId?: string;
 }
 
 /** 上下文分项 token 统计（服务端按真实拼装精确计算，经 SSE 回传给上下文看板）。 */

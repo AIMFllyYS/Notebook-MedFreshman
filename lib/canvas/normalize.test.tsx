@@ -18,6 +18,21 @@ describe('canvas block normalization', () => {
     expect(block.kind === 'raw-svg' ? block.source : '').toContain('<svg');
   });
 
+  it('wraps bare raw SvgDiagram SVG children in a complete svg root', () => {
+    const block = normalizeSvgDiagramBlock(
+      { mode: 'raw', title: 'bare children', width: 800, height: 420 },
+      '<rect x="10" y="10" width="100" height="50" /><text x="20" y="40">A</text>',
+    );
+
+    expect(block.kind).toBe('raw-svg');
+    if (block.kind === 'raw-svg') {
+      expect(block.source).toContain('<svg');
+      expect(block.source).toContain('viewBox="0 0 800 420"');
+      expect(block.source).toContain('<rect');
+      expect(block.source).toContain('<text');
+    }
+  });
+
   it('normalizes molecule SvgDiagram content to molecule block', () => {
     const block = normalizeSvgDiagramBlock(
       { mode: 'molecule', title: 'nitrobenzene' },

@@ -23,7 +23,37 @@ test("chat route omits tools for models that do not support tool calling", () =>
 
   assert.match(source, /const modelSupportsTools = modelInfo\?\.tools !== false/);
   assert.match(source, /if \(modelSupportsTools && effectiveToolDefs\.length > 0\)/);
-  assert.match(source, /reqBody\.tool_choice = "auto"/);
+  assert.match(source, /: "auto"/);
+});
+
+test("image mode chat forces generateImage and does not expose artifact tools", () => {
+  const source = readWorkspaceFile("app/api/chat/route.ts");
+
+  assert.match(source, /const baseToolDefs = isImageMode[\s\S]*?toolDefs\.filter\(\(t\) => t\.function\.name === "generateImage"\)/);
+  assert.match(source, /reqBody\.tool_choice = isImageMode[\s\S]*?function: \{ name: "generateImage" \}/);
+  assert.match(source, /生图模式硬性规则/);
+});
+
+test("artifact and image generation use the model selected when the tool call was created", () => {
+  const chatRoute = readWorkspaceFile("app/api/chat/route.ts");
+  const artifactCard = readWorkspaceFile("components/chat/ArtifactCard.tsx");
+  const imageViewer = readWorkspaceFile("components/chat/ImageGenViewer.tsx");
+  const imageCard = readWorkspaceFile("components/chat/ImageGenCard.tsx");
+
+  assert.match(chatRoute, /const artifactModelId = modelId \|\| effectiveModelId/);
+  assert.match(chatRoute, /artifactUnsupportedReason/);
+  assert.match(chatRoute, /imageModelId: modelId/);
+  assert.match(artifactCard, /const artifactModelId = modelId \|\| settings\.selectedModelId/);
+  assert.match(imageCard, /modelId,/);
+  assert.match(imageViewer, /const imageModelId = cur\.modelId \|\| settings\.selectedModelId/);
+  assert.match(imageViewer, /defaultImageModelId: cur\.modelId \? null : settings\.defaultImageModelId/);
+});
+
+test("artifact route rejects image models before invoking html generation", () => {
+  const source = readWorkspaceFile("app/api/artifact/route.ts");
+
+  assert.match(source, /getModelInfoWithCustom\(modelId,\s*customApiGroups\)\?\.type === "image"/);
+  assert.match(source, /当前生图模型不支持 HTML 交互组件生成/);
 });
 
 test("image generation route honors explicit custom image API style", () => {
@@ -42,4 +72,3 @@ test("custom model settings preserve provider compatibility fields", () => {
   assert.match(source, /reasoningField: f\.reasoningField\.trim\(\) \|\| undefined/);
   assert.match(source, /imageApiStyle: f\.imageApiStyle/);
 });
-
