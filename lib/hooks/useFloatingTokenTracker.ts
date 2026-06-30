@@ -11,6 +11,9 @@ interface SessionTracker {
   serverContextTokens: number;
   lastBreakdownTotal: number;
   modelContextLimit: number;
+  sessionContextBudgetTokens: number;
+  contextTruncated: boolean;
+  contextWarning: string | null;
   lastRequestTime: number | null;
   contextBreakdown: ContextBreakdown | null;
 }
@@ -23,6 +26,9 @@ function emptySession(): SessionTracker {
     serverContextTokens: 0,
     lastBreakdownTotal: 0,
     modelContextLimit: 128_000,
+    sessionContextBudgetTokens: 0,
+    contextTruncated: false,
+    contextWarning: null,
     lastRequestTime: null,
     contextBreakdown: null,
   };
@@ -35,6 +41,7 @@ export interface FloatingTokenTrackerState {
   addUsage: (sessionId: string, usage: Partial<TokenUsage>) => void;
   setCurrentContext: (sessionId: string, tokens: number, limit: number) => void;
   setContextBreakdown: (sessionId: string, breakdown: ContextBreakdown) => void;
+  setContextWarning: (sessionId: string, truncated: boolean, warning?: string | null) => void;
   resetSession: (sessionId: string) => void;
 }
 
@@ -54,7 +61,6 @@ export const useFloatingTokenTracker = create<FloatingTokenTrackerState>((set, g
         cachedTokens: usage.cachedTokens ?? 0,
         totalTokens: usage.totalTokens ?? ((usage.promptTokens ?? 0) + (usage.completionTokens ?? 0)),
       };
-      const serverCtx = turn.promptTokens + turn.completionTokens;
       return {
         sessions: {
           ...s.sessions,
@@ -62,8 +68,6 @@ export const useFloatingTokenTracker = create<FloatingTokenTrackerState>((set, g
             ...prev,
             lastTurn: turn,
             lastRequestTime: Date.now(),
-            serverContextTokens: serverCtx,
-            currentContextTokens: serverCtx,
             sessionTotal: {
               promptTokens: prev.sessionTotal.promptTokens + turn.promptTokens,
               completionTokens: prev.sessionTotal.completionTokens + turn.completionTokens,
@@ -79,10 +83,16 @@ export const useFloatingTokenTracker = create<FloatingTokenTrackerState>((set, g
   setCurrentContext(sessionId, tokens, limit) {
     set((s) => {
       const prev = s.sessions[sessionId] ?? emptySession();
+      const fixedLimit = prev.sessionContextBudgetTokens > 0 ? prev.sessionContextBudgetTokens : limit;
       return {
         sessions: {
           ...s.sessions,
-          [sessionId]: { ...prev, currentContextTokens: tokens, modelContextLimit: limit },
+          [sessionId]: {
+            ...prev,
+            currentContextTokens: tokens,
+            modelContextLimit: fixedLimit,
+            sessionContextBudgetTokens: fixedLimit,
+          },
         },
       };
     });
@@ -94,7 +104,31 @@ export const useFloatingTokenTracker = create<FloatingTokenTrackerState>((set, g
       return {
         sessions: {
           ...s.sessions,
-          [sessionId]: { ...prev, contextBreakdown: breakdown, lastBreakdownTotal: breakdown.total },
+          [sessionId]: {
+            ...prev,
+            contextBreakdown: breakdown,
+            lastBreakdownTotal: breakdown.total,
+            serverContextTokens: breakdown.total,
+            currentContextTokens: breakdown.total,
+            contextTruncated: breakdown.truncated === true,
+            contextWarning: breakdown.warning ?? null,
+          },
+        },
+      };
+    });
+  },
+
+  setContextWarning(sessionId, truncated, warning) {
+    set((s) => {
+      const prev = s.sessions[sessionId] ?? emptySession();
+      return {
+        sessions: {
+          ...s.sessions,
+          [sessionId]: {
+            ...prev,
+            contextTruncated: truncated,
+            contextWarning: truncated ? (warning ?? null) : null,
+          },
         },
       };
     });

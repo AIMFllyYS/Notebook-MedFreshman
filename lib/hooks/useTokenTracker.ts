@@ -21,6 +21,10 @@ export interface TokenTrackerState {
   lastBreakdownTotal: number;
   /** Model context limit in tokens (derived from ModelInfo.contextK). */
   modelContextLimit: number;
+  /** Fixed per-session context budget. It is set once per session and does not change on model switch. */
+  sessionContextBudgetTokens: number;
+  contextTruncated: boolean;
+  contextWarning: string | null;
   /** 最后一次收到 usage 事件的时间戳（Date.now()），用于 prefix cache 倒计时。 */
   lastRequestTime: number | null;
   /** 服务端回传的上下文分项统计（最近一次发送）；null = 尚无数据。 */
@@ -29,6 +33,7 @@ export interface TokenTrackerState {
   addUsage(usage: Partial<TokenUsage>): void;
   setCurrentContext(tokens: number, limit: number): void;
   setContextBreakdown(breakdown: ContextBreakdown): void;
+  setContextWarning(truncated: boolean, warning?: string | null): void;
   resetSession(): void;
 }
 
@@ -39,6 +44,9 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
   serverContextTokens: 0,
   lastBreakdownTotal: 0,
   modelContextLimit: 128_000,
+  sessionContextBudgetTokens: 0,
+  contextTruncated: false,
+  contextWarning: null,
   lastRequestTime: null,
   contextBreakdown: null,
 
@@ -50,12 +58,9 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
         cachedTokens: usage.cachedTokens ?? 0,
         totalTokens: usage.totalTokens ?? ((usage.promptTokens ?? 0) + (usage.completionTokens ?? 0)),
       };
-      const serverCtx = turn.promptTokens + turn.completionTokens;
       return {
         lastTurn: turn,
         lastRequestTime: Date.now(),
-        serverContextTokens: serverCtx,
-        currentContextTokens: serverCtx,
         sessionTotal: {
           promptTokens: s.sessionTotal.promptTokens + turn.promptTokens,
           completionTokens: s.sessionTotal.completionTokens + turn.completionTokens,
@@ -67,11 +72,29 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
   },
 
   setCurrentContext(tokens, limit) {
-    set({ currentContextTokens: tokens, modelContextLimit: limit });
+    set((s) => {
+      const fixedLimit = s.sessionContextBudgetTokens > 0 ? s.sessionContextBudgetTokens : limit;
+      return {
+        currentContextTokens: tokens,
+        modelContextLimit: fixedLimit,
+        sessionContextBudgetTokens: fixedLimit,
+      };
+    });
   },
 
   setContextBreakdown(breakdown) {
-    set({ contextBreakdown: breakdown, lastBreakdownTotal: breakdown.total });
+    set({
+      contextBreakdown: breakdown,
+      lastBreakdownTotal: breakdown.total,
+      serverContextTokens: breakdown.total,
+      currentContextTokens: breakdown.total,
+      contextTruncated: breakdown.truncated === true,
+      contextWarning: breakdown.warning ?? null,
+    });
+  },
+
+  setContextWarning(truncated, warning) {
+    set({ contextTruncated: truncated, contextWarning: truncated ? (warning ?? null) : null });
   },
 
   resetSession() {
@@ -81,8 +104,11 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
       currentContextTokens: 0,
       serverContextTokens: 0,
       lastBreakdownTotal: 0,
+      sessionContextBudgetTokens: 0,
       lastRequestTime: null,
       contextBreakdown: null,
+      contextTruncated: false,
+      contextWarning: null,
     });
   },
 }));

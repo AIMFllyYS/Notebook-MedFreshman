@@ -72,6 +72,8 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   const gLastRequestTime = useTokenTracker((s) => s.lastRequestTime);
   const gBreakdown = useTokenTracker((s) => s.contextBreakdown);
   const gServerContextTokens = useTokenTracker((s) => s.serverContextTokens);
+  const gContextTruncated = useTokenTracker((s) => s.contextTruncated);
+  const gContextWarning = useTokenTracker((s) => s.contextWarning);
 
   // 浮窗 tracker（划词浮窗用，按 sessionId 隔离）
   const fData = useFloatingTokenTracker((s) => floatingSessionId ? (s.sessions[floatingSessionId] ?? null) : null);
@@ -83,6 +85,8 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   const lastRequestTime = fData?.lastRequestTime ?? gLastRequestTime;
   const breakdown = fData?.contextBreakdown ?? gBreakdown;
   const serverContextTokens = fData?.serverContextTokens ?? gServerContextTokens;
+  const contextTruncated = fData?.contextTruncated ?? gContextTruncated;
+  const contextWarning = fData?.contextWarning ?? gContextWarning;
 
   const globalSelectedModelId = useSettings((s) => s.selectedModelId);
   const customApiGroups = useSettings((s) => s.customApiGroups);
@@ -97,7 +101,11 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     const st = useChatHistory.getState();
     const sid = floatingSessionId ?? st.activeSessionId;
     const msgs = st.messagesById[sid ?? ''] ?? [];
-    const limit = (getModelInfoWithCustom(modelId ?? useSettings.getState().selectedModelId, useSettings.getState().customApiGroups)?.contextK ?? 128) * 1000;
+    const modelLimit = (getModelInfoWithCustom(modelId ?? useSettings.getState().selectedModelId, useSettings.getState().customApiGroups)?.contextK ?? 128) * 1000;
+    const tracker = floatingSessionId
+      ? useFloatingTokenTracker.getState().getSession(floatingSessionId)
+      : useTokenTracker.getState();
+    const limit = tracker.sessionContextBudgetTokens > 0 ? tracker.sessionContextBudgetTokens : modelLimit;
 
     const serverCtx = floatingSessionId
       ? useFloatingTokenTracker.getState().getSession(floatingSessionId).serverContextTokens
@@ -313,6 +321,22 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                 }} />
               </div>
             </div>
+
+            {(contextTruncated || breakdown?.cacheHit !== undefined) && (
+              <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 10 }}>
+                {breakdown?.cacheHit !== undefined && (
+                  <Row label="上下文缓存" value={breakdown.cacheHit ? '命中' : '未命中'} />
+                )}
+                {contextTruncated && (
+                  <Row label="发送策略" value="最近消息" accent />
+                )}
+                {contextWarning && (
+                  <div style={{ marginTop: 4, fontSize: 10, lineHeight: 1.35, color: 'var(--md-sys-color-error)' }}>
+                    {contextWarning}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Context composition (IDE 式分项构成) */}
             <div style={{ marginBottom: 10 }}>

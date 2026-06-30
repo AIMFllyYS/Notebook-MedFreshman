@@ -114,6 +114,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   };
 
   const inputDisabled = isLoading || !!externalDisabled;
+  const sendDisabled = !!externalDisabled || ((!input.trim() && attachments.length === 0) && !isLoading);
 
   return (
     <div
@@ -202,12 +203,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
         <button
           onClick={isLoading ? onStop : handleSend}
-          disabled={(!input.trim() && attachments.length === 0) && !isLoading}
+          disabled={sendDisabled}
           className="chat-input-send"
           style={{
             background: isLoading ? 'var(--md-sys-color-error-container)' : ((!input.trim() && attachments.length === 0) ? 'var(--md-sys-color-outline-variant)' : 'var(--md-sys-color-primary)'),
             color: isLoading ? 'var(--md-sys-color-on-error-container)' : ((!input.trim() && attachments.length === 0) ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary)'),
-            cursor: ((!input.trim() && attachments.length === 0) && !isLoading) ? 'not-allowed' : 'pointer',
+            cursor: sendDisabled ? 'not-allowed' : 'pointer',
           }}
           title={isLoading ? '停止生成' : '发送'}
         >

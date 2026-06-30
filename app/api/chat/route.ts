@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { buildSystemPrompt, buildLocationLine } from "@/lib/ai/prompts";
 import { getContextManager } from "@/lib/context";
-import type { ChatContext, ChatOptions } from "@/lib/types/chat";
+import type { ChatContext, ChatOptions, ContextBreakdown } from "@/lib/types/chat";
 import { getToolDefs, runTool, IMAGE_SEARCH_MAX_TOTAL } from "@/lib/ai/tools";
 import {
   resolveProvider,
@@ -89,6 +89,15 @@ export async function POST(req: NextRequest) {
   const disabledTools: string[] = Array.isArray(body.disabledTools)
     ? body.disabledTools.map(String)
     : [];
+  const clientContextTruncated = body.contextTruncated === true;
+  const sessionContextBudgetTokens =
+    typeof body.sessionContextBudgetTokens === "number" && Number.isFinite(body.sessionContextBudgetTokens)
+      ? Math.max(1, body.sessionContextBudgetTokens)
+      : null;
+  const clientContextTokens =
+    typeof body.clientContextTokens === "number" && Number.isFinite(body.clientContextTokens)
+      ? Math.max(0, body.clientContextTokens)
+      : null;
 
   // 全局补充上下文 + 技能库（前端本地存储，随请求携带）
   const globalContext: string =
@@ -197,22 +206,20 @@ export async function POST(req: NextRequest) {
         }
 
         // 构建上下文（从最后一条消息中提取纯文本）
-        const lastMsg = messages[messages.length - 1];
+        const lastMsg = [...messages].reverse().find((m) => m.role === "user") ?? messages[messages.length - 1];
         const lastMsgText = typeof lastMsg?.content === "string"
           ? lastMsg.content
           : Array.isArray(lastMsg?.content)
             ? lastMsg.content.filter((p): p is { type: "text"; text: string } => p.type === "text").map((p) => p.text).join(" ")
             : "";
-        const ctxManager = getContextManager(options.contextMode ?? "full");
+        const ctxManager = getContextManager(options.contextMode ?? "full", effectiveModelId);
         const ctxResult = await ctxManager.buildContext(chatCtx, lastMsgText);
-
-        if (ctxResult.overflow) {
-          stopHeartbeat();
-          send({ type: "error", message: "上下文内容过长，已超出模型处理限制，请缩小阅读范围或切换为语义检索模式。" });
-          send({ type: "done" });
-          controller.close();
-          return;
-        }
+        const contextBudget = sessionContextBudgetTokens ?? ctxResult.maxTokens;
+        const serverSoftLimitReached = contextBudget > 0 && ctxResult.tokenCount / contextBudget >= 0.8;
+        const effectiveContextTruncated = clientContextTruncated || serverSoftLimitReached || ctxResult.overflow;
+        const contextWarning = effectiveContextTruncated
+          ? "上下文已达到 80% 软上限，本次请求只发送最近消息；本地聊天历史仍完整保留。"
+          : undefined;
 
         // 稳定前缀（global + 学科），利于 prefix 缓存命中。
         const baseSystemPrompt = buildSystemPrompt(chatCtx);
@@ -249,10 +256,13 @@ export async function POST(req: NextRequest) {
 
         // 易变上下文（当前定位 + 参考材料）。
         const volatile = buildLocationLine(chatCtx) +
-          (ctxResult.context ? `\n\n【参考材料】\n${ctxResult.context}` : "");
+          (effectiveContextTruncated
+            ? "\n\n【上下文策略】当前会话达到 80% 软上限，本次省略完整参考材料，只使用最近消息继续回答。"
+            : (ctxResult.context ? `\n\n【参考材料】\n${ctxResult.context}` : ""));
 
         // 工具结果归类用：tool_call_id → 工具名（跨轮累积，供上下文分项统计）。
         const toolNameById = new Map<string, string>();
+        const loadedContextKeys = new Set<string>();
 
         // 必须只有「一条」system 消息且在最前：部分模型（如硅基流动 Qwen3）会对第二条
         // system 报 20015「System message must be at the beginning.」。故把稳定前缀与易变
@@ -536,7 +546,11 @@ export async function POST(req: NextRequest) {
                 imageSearchFetchedCount,
               });
               send({ type: "tool", id: c.id, status: "result", meta: result.meta });
-              convo.push({ role: "tool", tool_call_id: c.id, content: result.content });
+              const toolContent = result.contextKey && loadedContextKeys.has(result.contextKey)
+                ? `【上下文已加载】${c.name} 的上下文 ${result.contextKey} 已在本次对话工具链中注入过，请引用前文已加载内容，不要重复展开全文。`
+                : result.content;
+              if (result.contextKey) loadedContextKeys.add(result.contextKey);
+              convo.push({ role: "tool", tool_call_id: c.id, content: toolContent });
             }
             continue;
           }
@@ -609,7 +623,7 @@ export async function POST(req: NextRequest) {
           // 上下文分项统计（服务端按真实拼装精确计算）。system 各组成由源变量单独累计，
           // 对话与工具结果（convo[0] 为合并后的单条 system，故 i≥1）按工具名归类。
           const tk = (v: unknown) => estimateTokens(typeof v === "string" ? v : JSON.stringify(v ?? ""));
-          const breakdown = {
+          const breakdown: ContextBreakdown = {
             tools: tk(baseSystemPrompt) + tk(globalContext) + tk(JSON.stringify(toolDefs)),
             skills: tk(skillsMenuText) + tk(pinnedSkillsText),
             conversation: 0,
@@ -633,6 +647,13 @@ export async function POST(req: NextRequest) {
           }
           breakdown.total =
             breakdown.tools + breakdown.skills + breakdown.conversation + breakdown.pages + breakdown.webSearch;
+          if (clientContextTokens !== null && clientContextTokens > breakdown.total) {
+            breakdown.conversation += clientContextTokens - breakdown.total;
+            breakdown.total = clientContextTokens;
+          }
+          breakdown.truncated = effectiveContextTruncated;
+          breakdown.cacheHit = ctxResult.cacheHit;
+          if (contextWarning) breakdown.warning = contextWarning;
           send({ type: "context_breakdown", breakdown });
 
           if (totalUsage.prompt_tokens > 0 || totalUsage.completion_tokens > 0) {

@@ -65,6 +65,12 @@ export interface ContextBreakdown {
   /** 联网搜索：webSearch/imageSearch 工具结果。 */
   webSearch: number;
   total: number;
+  /** 当前请求是否因上下文达到 80% 软上限而只发送最近消息。 */
+  truncated?: boolean;
+  /** 全量页面上下文是否命中缓存。 */
+  cacheHit?: boolean;
+  /** 给 UI 持续展示的上下文警示。 */
+  warning?: string;
 }
 
 export interface ChatAttachment {

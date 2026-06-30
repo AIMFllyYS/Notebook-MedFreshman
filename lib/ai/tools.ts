@@ -28,7 +28,12 @@ export interface ToolContext {
 /** 工具执行结果：content 回灌给模型；meta 透传给前端展示（如联网来源）。 */
 export interface ToolRunResult {
   content: string;
+  contextKey?: string;
   meta?: Record<string, unknown>;
+}
+
+function normalizeContextKeyPart(value: unknown): string {
+  return String(value ?? '').trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
 export const ALL_TOOLS: Record<string, ToolDefinition> = {
@@ -259,10 +264,13 @@ export async function runTool(
 ): Promise<ToolRunResult> {
   switch (name) {
     case "getCurrentPage":
-      return { content: currentPagePayload(ctx) };
+      return {
+        content: currentPagePayload(ctx),
+        contextKey: `page:${ctx.subjectId}/${ctx.categoryId}/${ctx.itemId}`,
+      };
 
     case "getOutline":
-      return { content: getMultiSubjectOutline() };
+      return { content: getMultiSubjectOutline(), contextKey: "outline:all" };
 
     case "getSection": {
       const pathArg = String(args.path ?? "");
@@ -276,13 +284,18 @@ export async function runTool(
       if (!md) {
         return {
           content: `【${resolved.title}】未找到该页面内容${resolved.found ? "（正文尚未生成）" : "（路径无效）"}。可调用 getOutline 查看有效路径。`,
+          contextKey: `section:${resolved.subjectId}/${resolved.categoryId}/${resolved.itemId}`,
         };
       }
-      return { content: `【${resolved.title}】\n\n${md}` };
+      return {
+        content: `【${resolved.title}】\n\n${md}`,
+        contextKey: `section:${resolved.subjectId}/${resolved.categoryId}/${resolved.itemId}`,
+      };
     }
 
     case "searchNotes": {
-      const hits = await searchAllContent(String(args.query ?? ""));
+      const query = String(args.query ?? "");
+      const hits = await searchAllContent(query);
       if (!hits.length) return { content: "未检索到相关内容。可尝试更换关键词，或调用 getOutline 浏览目录。", meta: { hits: [] } };
       const lines = hits.map(
         (h) => `[${h.title}] (path: ${h.path})\n…${h.snippet}…`,
@@ -290,13 +303,15 @@ export async function runTool(
       lines.push("\n如需查看完整内容，可调用 getSection(path: \"对应路径\")。");
       return {
         content: lines.join("\n\n"),
+        contextKey: `search:${normalizeContextKeyPart(query)}`,
         meta: { hits: hits.slice(0, 5).map((h) => ({ title: h.title, path: h.path, snippet: h.snippet })) },
       };
     }
 
     case "webSearch": {
-      const r = await runWebSearchDetailed(String(args.query ?? ""), Number(args.numResults) || 5);
-      return { content: r.content, meta: { sources: r.sources, cacheHit: r.cacheHit } };
+      const query = String(args.query ?? "");
+      const r = await runWebSearchDetailed(query, Number(args.numResults) || 5);
+      return { content: r.content, contextKey: `web:${normalizeContextKeyPart(query)}`, meta: { sources: r.sources, cacheHit: r.cacheHit } };
     }
     case "imageSearch": {
       const counter = ctx.imageSearchFetchedCount;
@@ -310,7 +325,8 @@ export async function runTool(
       const remaining = IMAGE_SEARCH_MAX_TOTAL - already;
       const requested = Math.min(Math.max(Number(args.numResults) || 3, 1), 4);
       const numResults = Math.min(requested, remaining);
-      const results = await searchImages(String(args.query ?? ""), numResults);
+      const imageQuery = String(args.query ?? "");
+      const results = await searchImages(imageQuery, numResults);
       if (!results.length) {
         return {
           content: `未找到「${args.query}」的相关图片。`,
@@ -331,6 +347,7 @@ export async function runTool(
       }
       return {
         content: content + `\n\n${quota}`,
+        contextKey: `image:${normalizeContextKeyPart(imageQuery)}`,
         meta: { sources: results, provider: "unsplash" },
       };
     }
@@ -358,6 +375,7 @@ export async function runTool(
       const head = skill.description ? `${skill.description}\n\n` : "";
       return {
         content: `【技能：${skill.name}】\n${head}${skill.content}`,
+        contextKey: `skill:${skill.id || normalizeContextKeyPart(skill.name)}`,
         meta: { skill: skill.name, found: true },
       };
     }

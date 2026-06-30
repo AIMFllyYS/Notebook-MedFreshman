@@ -1,6 +1,7 @@
 import type { ChatAttachment, ChatMessage } from '@/lib/types/chat';
 
-export const DEFAULT_MAX_TURNS = 40;
+export const DEFAULT_MAX_TURNS = Number.MAX_SAFE_INTEGER;
+export const SOFT_LIMIT_MAX_TURNS = 16;
 
 export interface RequestMessage {
   role: 'user' | 'assistant';
@@ -10,6 +11,13 @@ export interface RequestMessage {
 export interface BuildRequestMessagesResult {
   messages: RequestMessage[];
   truncated: boolean;
+  truncationReason?: 'max-turns' | 'soft-limit';
+}
+
+export interface BuildRequestMessagesOptions {
+  maxTurns?: number;
+  reason?: BuildRequestMessagesResult['truncationReason'];
+  preserveAttachmentHistory?: boolean;
 }
 
 function toRequestMessage(m: ChatMessage): RequestMessage {
@@ -35,14 +43,26 @@ function toRequestMessage(m: ChatMessage): RequestMessage {
  */
 export function buildRequestMessages(
   sessionMessages: ChatMessage[],
-  maxTurns = DEFAULT_MAX_TURNS,
+  maxTurnsOrOptions: number | BuildRequestMessagesOptions = DEFAULT_MAX_TURNS,
 ): BuildRequestMessagesResult {
-  const eligible = sessionMessages.filter((m) => m.role === 'user' || m.role === 'assistant');
+  const opts: BuildRequestMessagesOptions =
+    typeof maxTurnsOrOptions === 'number' ? { maxTurns: maxTurnsOrOptions } : maxTurnsOrOptions;
+  const maxTurns = opts.maxTurns ?? DEFAULT_MAX_TURNS;
+  const preserveAttachmentHistory = opts.preserveAttachmentHistory !== false;
+  const eligible = sessionMessages.filter((m) => {
+    if (m.role !== 'user' && m.role !== 'assistant') return false;
+    if (m.role === 'assistant' && !m.content?.trim() && !m.toolCalls?.length && !m.reasoningContent?.trim()) {
+      return false;
+    }
+    return true;
+  });
   if (eligible.length <= maxTurns) {
     return { messages: eligible.map(toRequestMessage), truncated: false };
   }
 
-  const withAttachments = eligible.filter((m) => m.role === 'user' && m.attachments?.length);
+  const withAttachments = preserveAttachmentHistory
+    ? eligible.filter((m) => m.role === 'user' && m.attachments?.length)
+    : [];
   const tail = eligible.slice(-maxTurns);
   const merged = new Map<string, ChatMessage>();
   for (const m of withAttachments) merged.set(m.id, m);
@@ -52,5 +72,6 @@ export function buildRequestMessages(
   return {
     messages: ordered.map(toRequestMessage),
     truncated: ordered.length < eligible.length,
+    truncationReason: opts.reason ?? 'max-turns',
   };
 }

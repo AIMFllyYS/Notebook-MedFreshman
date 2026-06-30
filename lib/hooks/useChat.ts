@@ -13,7 +13,7 @@ import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { useTokenTracker } from './useTokenTracker';
 import { useFloatingTokenTracker } from './useFloatingTokenTracker';
 import { estimateTokens } from '@/lib/context/estimateTokens';
-import { buildRequestMessages } from '@/lib/chat/buildRequestMessages';
+import { buildRequestMessages, SOFT_LIMIT_MAX_TURNS } from '@/lib/chat/buildRequestMessages';
 import { createStreamUiThrottle } from '@/lib/chat/streamUiThrottle';
 import { hydrateAttachmentsForApi } from '@/lib/storage/chatStorage';
 import { buildFallbackSessionTitle, sanitizeSessionTitle } from '@/lib/chat/sessionTitle';
@@ -185,35 +185,34 @@ export function useChat(
       const { messages: requestMessagesForEstimate } = buildRequestMessages(latestMessages);
       const requestSourceMessagesPromise = hydrateAttachmentsForApi(latestMessages);
 
-      // Estimate current context tokens for the dashboard —— 主面板写全局看板，划词窗写独立看板。
-      {
-        const selectedModel = getModelInfoWithCustom(effectiveModelId, useSettings.getState().customApiGroups);
-        const contextLimitK = selectedModel?.contextK ?? 128;
-        const limit = contextLimitK * 1000;
-        const serverCtx = ovSessionId
-          ? useFloatingTokenTracker.getState().getSession(ovSessionId).serverContextTokens
-          : useTokenTracker.getState().serverContextTokens;
-        if (serverCtx > 0) {
-          const newUserText = typeof userMessage.content === 'string'
-            ? userMessage.content
-            : JSON.stringify(userMessage.content ?? '');
-          const newTokens = estimateTokens(newUserText);
-          if (ovSessionId) {
-            useFloatingTokenTracker.getState().setCurrentContext(ovSessionId, serverCtx + newTokens, limit);
-          } else {
-            useTokenTracker.getState().setCurrentContext(serverCtx + newTokens, limit);
-          }
-        } else {
-          const allText = requestMessagesForEstimate.map((m) =>
-            typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
-          ).join('');
-          const estContextTokens = estimateTokens(allText) + 3000;
-          if (ovSessionId) {
-            useFloatingTokenTracker.getState().setCurrentContext(ovSessionId, estContextTokens, limit);
-          } else {
-            useTokenTracker.getState().setCurrentContext(estContextTokens, limit);
-          }
-        }
+      const selectedModel = getModelInfoWithCustom(effectiveModelId, useSettings.getState().customApiGroups);
+      const selectedModelLimit = (selectedModel?.contextK ?? 128) * 1000;
+      const trackerSnapshot = ovSessionId
+        ? useFloatingTokenTracker.getState().getSession(ovSessionId)
+        : useTokenTracker.getState();
+      const fixedContextLimit =
+        trackerSnapshot.sessionContextBudgetTokens > 0
+          ? trackerSnapshot.sessionContextBudgetTokens
+          : selectedModelLimit;
+      const serverCtx = trackerSnapshot.serverContextTokens;
+      const estimatedContextTokens = serverCtx > 0
+        ? serverCtx + estimateTokens(typeof userMessage.content === 'string'
+          ? userMessage.content
+          : JSON.stringify(userMessage.content ?? ''))
+        : estimateTokens(requestMessagesForEstimate.map((m) =>
+          typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
+        ).join('')) + 3000;
+      const contextSoftLimitReached =
+        fixedContextLimit > 0 && estimatedContextTokens / fixedContextLimit >= 0.8;
+      const contextWarning = contextSoftLimitReached
+        ? '上下文已达到 80% 软上限，本次请求只发送最近消息；本地聊天历史仍完整保留。'
+        : null;
+      if (ovSessionId) {
+        useFloatingTokenTracker.getState().setCurrentContext(ovSessionId, estimatedContextTokens, fixedContextLimit);
+        useFloatingTokenTracker.getState().setContextWarning(ovSessionId, contextSoftLimitReached, contextWarning);
+      } else {
+        useTokenTracker.getState().setCurrentContext(estimatedContextTokens, fixedContextLimit);
+        useTokenTracker.getState().setContextWarning(contextSoftLimitReached, contextWarning);
       }
 
       loadingRef.current = true;
@@ -247,7 +246,13 @@ export function useChat(
         try {
           const settings = useSettings.getState();
           const requestSourceMessages = await requestSourceMessagesPromise;
-          const { messages: hydratedMessages } = buildRequestMessages(requestSourceMessages);
+          const { messages: hydratedMessages } = contextSoftLimitReached
+            ? buildRequestMessages(requestSourceMessages, {
+                maxTurns: SOFT_LIMIT_MAX_TURNS,
+                reason: 'soft-limit',
+                preserveAttachmentHistory: false,
+              })
+            : buildRequestMessages(requestSourceMessages);
           const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -266,6 +271,9 @@ export function useChat(
               enableThinking,
               enableSearch,
               contextMode,
+              contextTruncated: contextSoftLimitReached,
+              sessionContextBudgetTokens: fixedContextLimit,
+              clientContextTokens: estimatedContextTokens,
               globalContext: settings.globalContext,
               skills: useSkills.getState().skills,
             }),
@@ -386,15 +394,7 @@ export function useChat(
                     const settings = useSettings.getState();
                     if (ovSessionId) {
                       useFloatingTokenTracker.getState().addUsage(ovSessionId, event.usage);
-                      if (event.usage.promptTokens) {
-                        const limit = useFloatingTokenTracker.getState().getSession(ovSessionId).modelContextLimit;
-                        useFloatingTokenTracker.getState().setCurrentContext(
-                          ovSessionId,
-                          event.usage.promptTokens + (event.usage.completionTokens ?? 0),
-                          limit,
-                        );
-                      }
-                      
+
                       // 记录计费
                       const fState = useFloatingChats.getState();
                       const chatModelId = fState.windows.find((c: any) => c.sessionId === ovSessionId)?.modelId || settings.selectedModelId;
@@ -412,13 +412,6 @@ export function useChat(
                       }));
                     } else {
                       useTokenTracker.getState().addUsage(event.usage);
-                      if (event.usage.promptTokens) {
-                        const limit = useTokenTracker.getState().modelContextLimit;
-                        useTokenTracker.getState().setCurrentContext(
-                          event.usage.promptTokens + (event.usage.completionTokens ?? 0),
-                          limit,
-                        );
-                      }
 
                       // 记录计费
                       useBillingStore.getState().addRecord(createBillingRecord({
