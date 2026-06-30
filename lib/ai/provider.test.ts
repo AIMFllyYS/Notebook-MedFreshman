@@ -1,6 +1,15 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { resolveProvider, chatCompletionsUrl, thinkingBudget, ENV_MODEL_FLASH } from "./provider.ts";
+import {
+  resolveProvider,
+  resolveImageProvider,
+  chatCompletionsUrl,
+  thinkingBudget,
+  buildThinkingRequestParams,
+  extractReasoningDelta,
+  detectImageApiStyle,
+  ENV_MODEL_FLASH,
+} from "./provider.ts";
 import { buildCustomModelRegistryId } from "./models.ts";
 
 test("resolveProvider：custom 端点三要素齐全时用自定义", () => {
@@ -51,6 +60,75 @@ test("resolveProvider：scoped custom id 精确选择同名模型所在 API 分�
   assert.equal(r.apiKey, "sk-b");
   assert.equal(r.apiModelId, "claude-sonnet-4-6");
   assert.equal(r.registryId, "custom:local-proxy:claude-sonnet-4-6");
+});
+
+test("resolveProvider：custom 模型可配置 reasoning 字段和 thinking 请求风格", () => {
+  const groups = [
+    {
+      id: "openai-compatible",
+      name: "OpenAI Compatible",
+      baseUrl: "https://openai-compatible.example/v1",
+      apiKey: "sk-custom",
+      models: [{
+        id: "reasoning-model",
+        label: "Reasoning Model",
+        thinking: true,
+        reasoningField: "reasoning_text",
+        thinkingRequestStyle: "openai-reasoning-effort" as const,
+      }],
+    },
+  ];
+
+  const r = resolveProvider(buildCustomModelRegistryId("openai-compatible", "reasoning-model"), groups);
+
+  assert.equal(r.reasoningField, "reasoning_text");
+  assert.equal(r.thinkingRequestStyle, "openai-reasoning-effort");
+});
+
+test("extractReasoningDelta：兼容常见推理字段和 reasoning_details", () => {
+  assert.equal(extractReasoningDelta({ reasoning_text: "A" }, "reasoning_text"), "A");
+  assert.equal(extractReasoningDelta({ reasoning_content: "B" }, "reasoning_text"), "B");
+  assert.equal(extractReasoningDelta({ reasoning: "C" }, "reasoning_text"), "C");
+  assert.equal(
+    extractReasoningDelta({
+      reasoning_details: [
+        { type: "summary_text", text: "D" },
+        { type: "text", content: "E" },
+      ],
+    }, "reasoning_text"),
+    "DE",
+  );
+});
+
+test("buildThinkingRequestParams：按 provider 风格构造请求参数", () => {
+  assert.deepEqual(buildThinkingRequestParams("none", "high"), {});
+  assert.deepEqual(buildThinkingRequestParams("siliconflow", "low"), {
+    enable_thinking: true,
+    thinking_budget: 2000,
+  });
+  assert.deepEqual(buildThinkingRequestParams("openai-reasoning-effort", "max"), {
+    reasoning_effort: "high",
+  });
+});
+
+test("resolveImageProvider：custom 生图模型可声明 OpenAI images 格式", () => {
+  const modelId = buildCustomModelRegistryId("openai-image", "my-image-model");
+  const provider = resolveImageProvider(modelId, [
+    {
+      id: "openai-image",
+      name: "OpenAI Image",
+      baseUrl: "https://image.example/v1",
+      apiKey: "sk-image",
+      models: [{
+        id: "my-image-model",
+        type: "image",
+        imageApiStyle: "openai",
+      }],
+    },
+  ]);
+
+  assert.equal(provider.imageApiStyle, "openai");
+  assert.equal(detectImageApiStyle(provider.apiModelId, provider.imageApiStyle), "openai");
 });
 
 test("resolveProvider：mimo 模型走 MIMO 端点且 apiModelId 一致", () => {

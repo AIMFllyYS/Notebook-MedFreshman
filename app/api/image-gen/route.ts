@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import {
   resolveImageProvider,
   imagesGenerationsUrl,
+  detectImageApiStyle,
 } from "@/lib/ai/provider";
 import { parseUpstreamErrorBody } from "@/lib/ai/upstream";
 import type { CustomApiGroup } from "@/lib/ai/models";
@@ -16,11 +17,6 @@ export const dynamic = "force-dynamic";
  * - 其他模型（如 SiliconFlow 的 Z-Image-Turbo）走 SiliconFlow 风格：
  *   请求体用 image_size/batch_size，响应为 { images: [{url}] }。
  */
-function detectImageApiStyle(apiModelId: string): "openai" | "siliconflow" {
-  if (/^(gpt-image|dall-e)/i.test(apiModelId)) return "openai";
-  return "siliconflow";
-}
-
 /** 归一化后的图片项，兼容 OpenAI（url 或 b64_json）与 SiliconFlow（url）。 */
 interface NormalizedImage {
   url?: string;
@@ -54,7 +50,7 @@ export async function POST(req: NextRequest) {
   }
 
   const endpoint = imagesGenerationsUrl(provider.baseUrl);
-  const apiStyle = detectImageApiStyle(provider.apiModelId);
+  const apiStyle = detectImageApiStyle(provider.apiModelId, provider.imageApiStyle);
 
   // 构造请求体：OpenAI 风格用 size/n，SiliconFlow 风格用 image_size/batch_size。
   // gpt-image-1 不接受 response_format 字段（发送会 400），固定返回 b64_json；

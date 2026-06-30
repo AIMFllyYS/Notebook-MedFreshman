@@ -7,7 +7,8 @@ import {
   resolveProvider,
   resolveNextProvider,
   chatCompletionsUrl,
-  thinkingBudget,
+  buildThinkingRequestParams,
+  extractReasoningDelta,
   ENV_MODEL_PRO,
   ENV_MODEL_FLASH,
   type CustomProvider,
@@ -135,7 +136,8 @@ export async function POST(req: NextRequest) {
   const effectiveCustom = customApiGroups.length > 0 ? customApiGroups : customProvider;
   const provider = resolveProvider(effectiveModelId, effectiveCustom);
   const reasoningField = provider.reasoningField;
-  const modelInfo = effectiveModelId ? getModelInfo(effectiveModelId) : undefined;
+  const modelInfo = effectiveModelId ? getModelInfoWithCustom(effectiveModelId, customApiGroups) : undefined;
+  const modelSupportsTools = modelInfo?.tools !== false;
   const toolDefs = getToolDefs({
     enableSearch: options.enableSearch ?? false,
     disabled: disabledTools,
@@ -294,20 +296,26 @@ export async function POST(req: NextRequest) {
           const reqBody: Record<string, unknown> = {
             model: activeProvider.apiModelId,
             messages: convo,
-            tools: effectiveToolDefs,
-            tool_choice: "auto",
             stream: true,
             stream_options: { include_usage: true },
             temperature: 0.6,
           };
+          if (modelSupportsTools && effectiveToolDefs.length > 0) {
+            reqBody.tools = effectiveToolDefs;
+            reqBody.tool_choice = "auto";
+          }
 
           // 深度思考参数（仅在模型支持思考时下发，避免不支持的端点报未知参数）。
           if (options.enableThinking) {
-            const info = activeProvider.isCustom ? undefined : getModelInfo(activeProvider.registryId);
-            const supportsThinking = activeProvider.isCustom || !info || info.thinking;
+            const info = activeProvider.isCustom
+              ? getModelInfoWithCustom(activeProvider.registryId, customApiGroups)
+              : getModelInfo(activeProvider.registryId);
+            const supportsThinking = info?.thinking === true;
             if (supportsThinking) {
-              reqBody.enable_thinking = true;
-              reqBody.thinking_budget = thinkingBudget(options.thinkingEffort);
+              Object.assign(
+                reqBody,
+                buildThinkingRequestParams(activeProvider.thinkingRequestStyle, options.thinkingEffort),
+              );
             }
           }
 
@@ -402,7 +410,7 @@ export async function POST(req: NextRequest) {
               const delta: StreamDelta = choice.delta || {};
 
               // 深度思考增量
-              const reasoning = delta[reasoningField] ?? delta.reasoning;
+              const reasoning = extractReasoningDelta(delta, reasoningField);
               if (reasoning) send({ type: "reasoning", delta: reasoning });
 
               // 内容增量

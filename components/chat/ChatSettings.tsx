@@ -90,6 +90,9 @@ interface ModelFormState {
   vision: boolean;
   thinking: boolean;
   tools: boolean;
+  reasoningField: string;
+  thinkingRequestStyle: "none" | "siliconflow" | "openai-reasoning-effort";
+  imageApiStyle: "auto" | "openai" | "siliconflow";
   sizes: string[];
   maxCount: string;
 }
@@ -107,6 +110,9 @@ const EMPTY_FORM: ModelFormState = {
   vision: false,
   thinking: false,
   tools: true,
+  reasoningField: "",
+  thinkingRequestStyle: "siliconflow",
+  imageApiStyle: "auto",
   sizes: DEFAULT_SIZES.slice(),
   maxCount: "4",
 };
@@ -126,6 +132,9 @@ function modelToForm(m: CustomModelConfig): ModelFormState {
     vision: !!m.vision,
     thinking: !!m.thinking,
     tools: m.tools ?? !isImage,
+    reasoningField: m.reasoningField ?? "",
+    thinkingRequestStyle: m.thinkingRequestStyle ?? (m.thinking ? "siliconflow" : "none"),
+    imageApiStyle: m.imageApiStyle ?? "auto",
     sizes: m.imageParams?.sizes?.length ? m.imageParams.sizes : DEFAULT_SIZES.slice(),
     maxCount: String(m.imageParams?.maxCount ?? 4),
   };
@@ -139,6 +148,7 @@ function formToModel(f: ModelFormState): CustomModelConfig {
       type: "image",
       tools: false,
       thinking: false,
+      imageApiStyle: f.imageApiStyle,
       imageParams: {
         sizes: f.sizes.length ? f.sizes : DEFAULT_SIZES.slice(),
         maxCount: Number(f.maxCount) || 4,
@@ -163,6 +173,8 @@ function formToModel(f: ModelFormState): CustomModelConfig {
     vision: f.vision || undefined,
     thinking: f.thinking || undefined,
     tools: f.tools,
+    reasoningField: f.reasoningField.trim() || undefined,
+    thinkingRequestStyle: f.thinking ? f.thinkingRequestStyle : "none",
     pricing: {
       input: Number(f.inputPrice) || 0,
       output: Number(f.outputPrice) || 0,
@@ -487,6 +499,35 @@ function ModelForm({
               <span>工具调用</span>
             </label>
           </div>
+          {form.thinking && (
+            <div className="grid gap-2 md:grid-cols-2">
+              <div>
+                <label className={labelCls}>推理字段</label>
+                <input
+                  type="text"
+                  value={form.reasoningField}
+                  onChange={(e) => setForm({ ...form, reasoningField: e.target.value })}
+                  placeholder="reasoning_content"
+                  className={inputCls}
+                />
+              </div>
+              <div>
+                <label className={labelCls}>思考参数格式</label>
+                <select
+                  value={form.thinkingRequestStyle}
+                  onChange={(e) => setForm({
+                    ...form,
+                    thinkingRequestStyle: e.target.value as ModelFormState["thinkingRequestStyle"],
+                  })}
+                  className={inputCls}
+                >
+                  <option value="siliconflow">enable_thinking / thinking_budget</option>
+                  <option value="openai-reasoning-effort">reasoning_effort</option>
+                  <option value="none">不发送思考参数</option>
+                </select>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -529,6 +570,21 @@ function ModelForm({
               onChange={(e) => setForm({ ...form, maxCount: e.target.value })}
               className={inputCls}
             />
+          </div>
+          <div>
+            <label className={labelCls}>生图 API 格式</label>
+            <select
+              value={form.imageApiStyle}
+              onChange={(e) => setForm({
+                ...form,
+                imageApiStyle: e.target.value as ModelFormState["imageApiStyle"],
+              })}
+              className={inputCls}
+            >
+              <option value="auto">自动识别</option>
+              <option value="openai">OpenAI Images API</option>
+              <option value="siliconflow">SiliconFlow 图片接口</option>
+            </select>
           </div>
         </div>
       )}

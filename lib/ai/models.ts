@@ -148,6 +148,12 @@ export interface CustomModelConfig {
   thinking?: boolean;
   /** 是否支持工具调用。 */
   tools?: boolean;
+  /** 流式推理内容字段名；常见值为 reasoning_content、reasoning、reasoning_text。 */
+  reasoningField?: string;
+  /** 思考参数请求风格；OpenAI-compatible 模型可关闭或使用 reasoning_effort。 */
+  thinkingRequestStyle?: "none" | "siliconflow" | "openai-reasoning-effort";
+  /** 生图 API 格式；auto 按模型名推断，OpenAI-compatible 自定义生图可显式设为 openai。 */
+  imageApiStyle?: "auto" | "openai" | "siliconflow";
   /** 模型类型：文本对话 or 生图。默认 'text'。 */
   type?: "text" | "image";
   /** 生图模型参数（仅 type='image' 时有效）。 */

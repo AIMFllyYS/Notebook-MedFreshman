@@ -19,6 +19,9 @@ const BASE = process.env.AI_BASE_URL || "";
 const KEY = process.env.AI_API_KEY || "";
 const REASONING_FIELD = process.env.AI_REASONING_FIELD || "reasoning_content";
 
+export type ThinkingRequestStyle = "none" | "siliconflow" | "openai-reasoning-effort";
+export type ImageApiStyle = "auto" | "openai" | "siliconflow";
+
 const MIMO_BASE = process.env.MIMO_BASE_URL || "https://api.xiaomimimo.com/v1";
 const MIMO_KEY = process.env.MIMO_API_KEY || "";
 
@@ -42,11 +45,75 @@ export interface ResolvedProvider {
   baseUrl: string;
   apiKey: string;
   reasoningField: string;
+  thinkingRequestStyle: ThinkingRequestStyle;
   isCustom: boolean;
   configured: boolean;
   /** 当前使用的 endpoints 链索引 */
   endpointIndex: number;
   timeoutMs: number;
+}
+
+function normalizeThinkingRequestStyle(value: unknown, fallback: ThinkingRequestStyle): ThinkingRequestStyle {
+  return value === "none" || value === "siliconflow" || value === "openai-reasoning-effort"
+    ? value
+    : fallback;
+}
+
+function normalizeImageApiStyle(value: unknown): ImageApiStyle {
+  return value === "openai" || value === "siliconflow" || value === "auto" ? value : "auto";
+}
+
+export function extractReasoningDelta(
+  delta: Record<string, unknown>,
+  preferredField = REASONING_FIELD,
+): string | undefined {
+  const fields = [preferredField, "reasoning_content", "reasoning", "reasoning_text"]
+    .filter((field, index, arr) => field && arr.indexOf(field) === index);
+
+  for (const field of fields) {
+    const value = delta[field];
+    if (typeof value === "string" && value) return value;
+  }
+
+  const details = delta.reasoning_details;
+  if (Array.isArray(details)) {
+    const text = details
+      .map((item) => {
+        if (!item || typeof item !== "object") return "";
+        const obj = item as Record<string, unknown>;
+        return typeof obj.text === "string"
+          ? obj.text
+          : typeof obj.content === "string"
+            ? obj.content
+            : "";
+      })
+      .join("");
+    return text || undefined;
+  }
+
+  return undefined;
+}
+
+export function buildThinkingRequestParams(
+  style: ThinkingRequestStyle,
+  effort: string | undefined,
+): Record<string, unknown> {
+  if (style === "none") return {};
+  if (style === "openai-reasoning-effort") {
+    return { reasoning_effort: effort === "low" || effort === "medium" ? effort : "high" };
+  }
+  return {
+    enable_thinking: true,
+    thinking_budget: thinkingBudget(effort),
+  };
+}
+
+export function detectImageApiStyle(
+  apiModelId: string,
+  configuredStyle: ImageApiStyle = "auto",
+): "openai" | "siliconflow" {
+  if (configuredStyle === "openai" || configuredStyle === "siliconflow") return configuredStyle;
+  return /^(gpt-image|dall-e)/i.test(apiModelId) ? "openai" : "siliconflow";
 }
 
 interface ProviderCredentials {
@@ -90,6 +157,7 @@ function resolveBuiltinEndpoint(
     baseUrl: cred.baseUrl,
     apiKey: cred.apiKey,
     reasoningField: REASONING_FIELD,
+    thinkingRequestStyle: "siliconflow",
     isCustom: false,
     configured: cred.configured,
     endpointIndex: idx,
@@ -117,7 +185,11 @@ export function resolveProvider(
         apiModelId: found.model.id,
         baseUrl: found.group.baseUrl.trim(),
         apiKey: found.group.apiKey.trim(),
-        reasoningField: REASONING_FIELD,
+        reasoningField: found.model.reasoningField?.trim() || REASONING_FIELD,
+        thinkingRequestStyle: normalizeThinkingRequestStyle(
+          found.model.thinkingRequestStyle,
+          found.model.thinking ? "siliconflow" : "none",
+        ),
         isCustom: true,
         configured: true,
         endpointIndex: 0,
@@ -150,6 +222,7 @@ export function resolveProvider(
       baseUrl: customProvider.baseUrl.trim(),
       apiKey: customProvider.apiKey.trim(),
       reasoningField: REASONING_FIELD,
+      thinkingRequestStyle: "siliconflow",
       isCustom: true,
       configured: true,
       endpointIndex: 0,
@@ -198,6 +271,7 @@ export interface ResolvedImageProvider {
   registryId: string;
   configured: boolean;
   isCustom: boolean;
+  imageApiStyle: ImageApiStyle;
 }
 
 /**
@@ -223,6 +297,7 @@ export function resolveImageProvider(
         registryId: effectiveModelId,
         configured: true,
         isCustom: true,
+        imageApiStyle: normalizeImageApiStyle(found.model.imageApiStyle),
       };
     }
   }
@@ -238,6 +313,7 @@ export function resolveImageProvider(
       registryId: effectiveModelId,
       configured: cred.configured,
       isCustom: false,
+      imageApiStyle: "siliconflow",
     };
   }
 
@@ -250,6 +326,7 @@ export function resolveImageProvider(
     registryId: "Tongyi-MAI/Z-Image-Turbo",
     configured: cred.configured,
     isCustom: false,
+    imageApiStyle: "siliconflow",
   };
 }
 
