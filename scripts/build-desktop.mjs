@@ -255,11 +255,15 @@ copyInto("public", ".next\\standalone\\public");
 copyInto("content", ".next\\standalone\\content");
 
 // 2a. Prune directories Next's NFT trace may have pulled into standalone that must NOT
-//     ship in the exe (dist-desktop prior artifacts, .git, caches). Belt-and-suspenders
-//     alongside the pre-build clear above; does NOT touch node_modules (handled by
-//     materializeNodeModules) or content. Without this the packaged exe can balloon
-//     past GitHub's 2GB upload limit.
-for (const junk of ["dist-desktop", ".git", "node_modules/.cache"]) {
+//     ship in the exe (dist-desktop prior artifacts, .git, caches, manim render output).
+//     Belt-and-suspenders alongside the pre-build clear above; does NOT touch node_modules
+//     (handled by materializeNodeModules) or content. Without this the packaged exe can
+//     balloon past GitHub's 2GB upload limit.
+//     manim/ contains Python source + render intermediates (media_*/partial_movie_files/*.mp4)
+//     with paths approaching NSIS MAX_PATH (260 chars) — including them causes NSIS to fail
+//     with ERR_ELECTRON_BUILDER_CANNOT_EXECUTE. The desktop app reads media via
+//     lib/content-data/*.generated.ts + content/, never via manim/ at runtime.
+for (const junk of ["dist-desktop", ".git", "node_modules/.cache", "manim"]) {
   const p = `${SA}/${junk}`;
   if (existsSync(p)) {
     console.log(`[build-desktop] pruning NFT-traced junk from standalone: ${junk}`);
