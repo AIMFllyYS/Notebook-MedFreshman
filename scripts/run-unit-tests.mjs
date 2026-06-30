@@ -12,11 +12,22 @@ const SKIP_DIRS = new Set([
   ".next",
   ".git",
   "build",
+  "dist",
+  "dist-desktop",
   ".codex",
   ".agents",
   "manim",
-  "docs/refer/dist",
 ]);
+
+const SKIP_PATH_PREFIXES = [
+  "docs/refer/dist",
+];
+
+function shouldSkipDir(path) {
+  const normalized = relative(".", path).replace(/\\/g, "/");
+  const name = normalized.split("/").pop();
+  return SKIP_DIRS.has(name) || SKIP_PATH_PREFIXES.some((prefix) => normalized === prefix || normalized.startsWith(`${prefix}/`));
+}
 
 function findTestFiles(dir, out = []) {
   let entries;
@@ -27,8 +38,9 @@ function findTestFiles(dir, out = []) {
   }
   for (const entry of entries) {
     if (entry.isDirectory()) {
-      if (SKIP_DIRS.has(entry.name)) continue;
-      findTestFiles(join(dir, entry.name), out);
+      const next = join(dir, entry.name);
+      if (shouldSkipDir(next)) continue;
+      findTestFiles(next, out);
     } else if (
       entry.name.endsWith(".test.ts") &&
       !entry.name.endsWith(".test.tsx")
