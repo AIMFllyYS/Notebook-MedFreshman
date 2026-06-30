@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect, useRef } from "react";
+import { Component, useMemo, useState, useEffect, useRef, type ErrorInfo, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { MessageSquare, MonitorPlay, Hand, Globe, X } from "lucide-react";
@@ -11,10 +11,22 @@ import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
 import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
 import type { ChatContext } from "@/lib/types/chat";
 
-const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
-const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
-const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
-const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false });
+const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
+  ssr: false,
+  loading: () => <RightPanelTabLoading label="AI 对话" />,
+});
+const VideoTab = dynamic(() => import("@/components/video/VideoTab"), {
+  ssr: false,
+  loading: () => <RightPanelTabLoading label="动画讲解" />,
+});
+const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), {
+  ssr: false,
+  loading: () => <RightPanelTabLoading label="可交互" />,
+});
+const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), {
+  ssr: false,
+  loading: () => <RightPanelTabLoading label="浏览器" />,
+});
 
 const RIGHT_TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
   { id: "ai", label: "AI 对话", icon: <MessageSquare size={15} /> },
@@ -22,6 +34,65 @@ const RIGHT_TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
   { id: "interactive", label: "可交互", icon: <Hand size={15} /> },
   { id: "browser", label: "浏览器", icon: <Globe size={15} /> },
 ];
+
+function RightPanelTabLoading({ label }: { label: string }) {
+  return (
+    <div className="flex h-full flex-col gap-3 px-4 py-5" role="status" aria-label={`${label} 加载中`}>
+      <div className="h-4 w-24 animate-shimmer rounded bg-[var(--bg-muted)]" />
+      <div className="h-28 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
+      <div className="h-16 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
+    </div>
+  );
+}
+
+class RightPanelTabBoundary extends Component<
+  { tab: RightTab; children: ReactNode },
+  { error: Error | null }
+> {
+  state = { error: null };
+
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error("[RightPanel] tab render failed", {
+      tab: this.props.tab,
+      error,
+      componentStack: info.componentStack,
+    });
+  }
+
+  componentDidUpdate(prevProps: { tab: RightTab }) {
+    if (prevProps.tab !== this.props.tab && this.state.error) {
+      this.setState({ error: null });
+    }
+  }
+
+  render() {
+    if (!this.state.error) return this.props.children;
+
+    const tabLabel = RIGHT_TABS.find((item) => item.id === this.props.tab)?.label ?? this.props.tab;
+    return (
+      <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
+        <div className="rounded-full border border-[var(--line)] bg-[var(--bg-muted)] px-3 py-1 text-[12px] font-medium text-[var(--ink-soft)]">
+          {tabLabel}
+        </div>
+        <h3 className="text-[15px] font-semibold text-[var(--ink)]">面板加载失败</h3>
+        <p className="max-w-[320px] text-[12.5px] leading-relaxed text-[var(--ink-soft)]">
+          这个栏目遇到了运行时错误，已经拦截以避免白屏。可以重试，或切换到其他栏目继续使用。
+        </p>
+        <button
+          type="button"
+          onClick={() => this.setState({ error: null })}
+          className="press rounded-full bg-[var(--accent)] px-4 py-2 text-[13px] font-medium text-[var(--md-sys-color-on-primary)]"
+        >
+          重试
+        </button>
+      </div>
+    );
+  }
+}
 
 export default function RightPanel() {
   const tab = useStore((s) => s.rightTab);
@@ -134,26 +205,28 @@ export default function RightPanel() {
       {/* Content area */}
       <div className="min-h-0 flex-1 overflow-hidden">
         <AnimatePresence mode="wait" custom={dirRef.current}>
-          {tab === "ai" && (
-            <motion.div key="ai-chat" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
-              <ChatPanel chatContext={chatContext} />
-            </motion.div>
-          )}
-          {tab === "video" && (
-            <motion.div key="video" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
-              <VideoTab />
-            </motion.div>
-          )}
-          {tab === "interactive" && (
-            <motion.div key="interactive" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
-              <InteractiveTab />
-            </motion.div>
-          )}
-          {tab === "browser" && (
-            <motion.div key="browser" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
-              <BrowserTab />
-            </motion.div>
-          )}
+          <RightPanelTabBoundary key={tab} tab={tab}>
+            {tab === "ai" && (
+              <motion.div key="ai-chat" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
+                <ChatPanel chatContext={chatContext} />
+              </motion.div>
+            )}
+            {tab === "video" && (
+              <motion.div key="video" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
+                <VideoTab />
+              </motion.div>
+            )}
+            {tab === "interactive" && (
+              <motion.div key="interactive" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
+                <InteractiveTab />
+              </motion.div>
+            )}
+            {tab === "browser" && (
+              <motion.div key="browser" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
+                <BrowserTab />
+              </motion.div>
+            )}
+          </RightPanelTabBoundary>
         </AnimatePresence>
       </div>
     </div>
