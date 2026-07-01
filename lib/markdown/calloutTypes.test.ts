@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { CALLOUT_TYPES, CALLOUTS, CALLOUT_META, type CalloutType } from "./calloutTypes.ts";
 
-test("CALLOUT_TYPES 包含 7 种类型", () => {
-  assert.equal(CALLOUT_TYPES.length, 7);
+test("CALLOUT_TYPES 包含 8 种类型", () => {
+  assert.equal(CALLOUT_TYPES.length, 8);
 });
 
 test("CALLOUTS Set 与 CALLOUT_TYPES 一致", () => {

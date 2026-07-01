@@ -73,6 +73,146 @@
 .callout-tip .callout-label {
   color: var(--color-info);
 }
+.callout-memory {
+  border-left-color: var(--color-warning);
+  background: var(--md-sys-color-surface-container-low);
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ── 记忆卡 ─────────────────────────────────────────────────── */
+.memory-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  width: 100%;
+  padding: 0.85em 1.1em;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.memory-card-header:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+.memory-card-icon {
+  color: var(--color-warning);
+  flex-shrink: 0;
+}
+.memory-card-label {
+  font-weight: 700;
+  font-size: 0.92rem;
+  flex: 1;
+}
+.memory-card-hint {
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  margin-right: 0.3em;
+}
+.memory-card-chevron {
+  color: var(--ink-faint);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.memory-card-body {
+  overflow: hidden;
+}
+.memory-card-body > .memory-card-content {
+  padding: 0 1.1em 1em;
+}
+
+/* 挖空 */
+.memory-cloze {
+  line-height: 1.8;
+}
+.memory-cloze-blank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.2em;
+  min-height: 1.6em;
+  margin: 0 0.15em;
+  padding: 0.05em 0.5em;
+  border: 1px dashed var(--md-sys-color-outline);
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  vertical-align: middle;
+}
+.memory-cloze-blank:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+.memory-cloze-blank.revealed {
+  border-style: solid;
+  border-color: var(--color-success);
+  background: transparent;
+  cursor: default;
+}
+.memory-cloze-placeholder {
+  color: var(--ink-faint);
+  font-weight: 600;
+}
+
+/* 清单 */
+.memory-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55em;
+}
+.memory-checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65em;
+  width: 100%;
+  padding: 0.55em 0.75em;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg-elevated);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.memory-checklist-item:hover {
+  background: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+}
+.memory-checklist-item.revealed {
+  border-color: var(--color-success);
+  background: rgba(34, 197, 94, 0.08);
+  cursor: default;
+}
+.memory-checklist-box {
+  display: grid;
+  place-items: center;
+  width: 1.25em;
+  height: 1.25em;
+  margin-top: 0.15em;
+  border: 1.5px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--color-success);
+  flex-shrink: 0;
+}
+.memory-checklist-item.revealed .memory-checklist-box {
+  border-color: var(--color-success);
+}
+.memory-checklist-text {
+  flex: 1;
+  line-height: 1.6;
+}
+.memory-checklist-placeholder {
+  color: var(--ink-faint);
+  font-style: italic;
+}
 
 /* ── Callout 语义图标（SVG data URI，无 emoji 依赖） ────────── */
 .callout > .callout-label::before {

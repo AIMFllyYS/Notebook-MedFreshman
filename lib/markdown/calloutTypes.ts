@@ -6,6 +6,7 @@ export const CALLOUT_TYPES = [
   "pitfall",
   "note",
   "tip",
+  "memory",
 ] as const;
 
 export type CalloutType = (typeof CALLOUT_TYPES)[number];
@@ -20,4 +21,5 @@ export const CALLOUT_META: Record<string, { label: string; cls: string }> = {
   pitfall: { label: "易错点", cls: "callout-pitfall" },
   note: { label: "注", cls: "callout-note" },
   tip: { label: "提示", cls: "callout-tip" },
+  memory: { label: "记忆卡", cls: "callout-memory" },
 };

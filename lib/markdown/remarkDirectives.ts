@@ -41,6 +41,17 @@ export default function remarkDirectives() {
       const attrs = node.attributes ?? {};
       const data = (node.data ??= {});
 
+      // 记忆卡指令需要在 CALLOUTS 之前匹配，因为 memory 也在 CALLOUT_TYPES 中
+      // 用于样式元数据，但渲染走独立组件。
+      if (node.type === "containerDirective" && name === "memory") {
+        data.hName = "memorycard";
+        data.hProperties = {
+          kind: "memory",
+          label: attrs.label ?? attrs.title ?? "记忆卡",
+          mode: attrs.mode ?? "",
+        };
+        return;
+      }
       // SOP 08 试卷录入写法：:::callout{kind=note label="题目"}（kind 指定样式类型）
       if (node.type === "containerDirective" && name === "callout") {
         const kind = attrs.kind && CALLOUTS.has(attrs.kind) ? attrs.kind : "note";

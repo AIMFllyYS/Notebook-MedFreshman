@@ -144,6 +144,9 @@ export function deriveExampleKey(
   if (categoryId === "recording" && /^rec-\d{2}$/.test(itemId)) {
     return { chapterId: "recording", sectionId: itemId };
   }
+  if (categoryId === "textbook") {
+    return { chapterId: "textbook", sectionId: itemId };
+  }
   if (categoryId !== "detail") return { chapterId: "", sectionId: "" };
   const n = parseInt(itemId.split(".")[0], 10);
   if (Number.isNaN(n)) return { chapterId: "", sectionId: "" };

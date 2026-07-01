@@ -3,6 +3,7 @@ import { probabilityDetailItems, probabilityRecordings } from './probability-det
 import { modernHistoryDetailItems, modernHistoryRecordings } from './modern-history-detail';
 import { organicChemistryDetailItems } from './organic-chemistry-detail';
 import { maogaiDetailItems } from './maogai-detail';
+import { maogaiTextbookItems } from './maogai-textbook';
 import { physicsDetailItems } from './physics-detail';
 
 const examPlaceholderCategories = [
@@ -304,7 +305,7 @@ export const contentTree: ContentTree = {
       name: '毛泽东思想和中国特色社会主义理论体系概论',
       icon: 'Scale',
       categories: [
-        { id: 'textbook', name: '教材', items: [{ id: 'main', title: '毛概（教材）', type: 'document', status: 'stub' }] },
+        { id: 'textbook', name: '教材', items: maogaiTextbookItems },
         {
           id: 'detail',
           name: '详解',

@@ -5,6 +5,7 @@ import { MediaEmbed } from "@/components/shared/directives/MediaEmbed";
 import { Figure } from "@/components/shared/directives/Figure";
 import { PlotDirective } from "@/components/canvas/PlotDirective";
 import { CanvasDirective } from "@/components/canvas/CanvasDirective";
+import { MemoryCard } from "@/components/shared/directives/MemoryCard";
 
 export const directiveComponents = {
   callout: Callout,
@@ -13,4 +14,5 @@ export const directiveComponents = {
   figuremedia: Figure,
   functionplot: PlotDirective,
   svgcanvas: CanvasDirective,
+  memorycard: MemoryCard,
 } as unknown as Partial<Components>;
