@@ -1,0 +1,288 @@
+import { writeFileSync, readFileSync } from 'fs';
+
+const data = {
+  subjectId: "maogai",
+  chapterId: "rec-11",
+  generatedAt: "2026-07-01",
+  examConfig: {
+    source: "docs/refer/考试题型分布.md",
+    totalPoints: 100,
+    timeLimit: 50
+  },
+  questions: [
+    {
+      id: "q001", type: "single_choice", difficulty: "basic",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "「九二共识」形成于（　），是由（　）与（　）达成的。",
+      options: [
+        "1990年10月，中共中央与国民党总部",
+        "1992年10月，海峡两岸关系协会（海协会）与海峡交流基金会（海基会）",
+        "1995年1月，国务院台湾事务办公室与台湾陆委会",
+        "2005年3月，中国共产党与中国国民党领导人会谈"
+      ],
+      answer: 1,
+      hint: "九二共识是两岸两个民间授权机构达成的，不是党政机关直接谈判，注意时间是1992年。",
+      explanation: "B正确。15.2.md：1992年10月，大陆的海协会与台湾的海基会，就如何表明坚持一个中国原则的态度问题，达成了以口头方式表达的共识，这就是九二共识。A不是两党总部直接谈判；C时间和机构均不符；D是2005年国共领导人会见，是在九二共识基础上的深化，不是九二共识形成时间。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·四、对台政策核心维度·九二共识" }
+    },
+    {
+      id: "q002", type: "single_choice", difficulty: "basic",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "《反分裂国家法》由全国人民代表大会通过的时间是（　）。",
+      options: ["1995年1月", "2000年3月", "2005年3月", "2008年3月"],
+      answer: 2,
+      hint: "《反分裂国家法》与胡四点在时间上密切相关，两者在同一年发生。",
+      explanation: "C正确。15.2.md：在2005年全国人大会上，通过了《反分裂国家法》，首次以国家大法形式维护国家统一。A是江八条发表时间；B和D均不符；2005年同年还发生了胡四点，二者是对台独势力的两项强力回应。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·四、对台政策核心维度·反分裂国家法" }
+    },
+    {
+      id: "q003", type: "single_choice", difficulty: "basic",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "邓小平理论被正式确立为党的指导思想并写入党章是在（　）。",
+      options: ["1992年党的十四大", "1995年党的十四届五中全会", "1997年党的十五大", "2002年党的十六大"],
+      answer: 2,
+      hint: "区分十四大（市场经济体制目标）、十五大（邓小平理论写入党章）、十六大（三个代表写入党章）三个节点。",
+      explanation: "C正确。15.2.md：1997年党的十五大确立邓小平理论为党的指导思想并写入党章。A十四大是1992年确立市场经济体制改革目标；B十四届五中全会不是关键节点；D十六大是2002年三个代表写入党章。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·六、三个代表重要思想导读" }
+    },
+    {
+      id: "q004", type: "single_choice", difficulty: "basic",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "三个代表重要思想被写入党章作为党的指导思想是在（　）。",
+      options: ["1997年党的十五大", "2000年党的十五届五中全会", "2002年党的十六大", "2007年党的十七大"],
+      answer: 2,
+      hint: "三个代表是江泽民时期的理论贡献，写入党章的大会在2000年代初期。",
+      explanation: "C正确。15.2.md：三个代表重要思想于2002年党的十六大写入党章。A十五大写入的是邓小平理论；B不是关键节点；D十七大时科学发展观为重点，三个代表早在十六大已写入党章。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·六、三个代表重要思想导读" }
+    },
+    {
+      id: "q005", type: "single_choice", difficulty: "basic",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "下列权力中，不属于香港特别行政区独立行使的是（　）。",
+      options: ["立法权", "司法权", "财政权", "外交权"],
+      answer: 3,
+      hint: "香港高度自治范围包括立法、行政、司法、财政，外交和国防是中央保留的核心权力。",
+      explanation: "D正确（不属于香港自治的是外交权）。15.1.md：香港独立行使立法权、行政权、司法权、财政权（A/B/C）；外交权、国防权、行政长官任命权均由中央人民政府行使。外交权不属于香港自治权范畴，这是一国框架的核心体现。",
+      sourceRef: { path: "content/maogai/detail/15.1.md", label: "15.1 一国两制构想·四、香港实践中的权力关系结构" }
+    },
+    {
+      id: "q006", type: "single_choice", difficulty: "basic",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "江泽民提出「江八条」是在（　）。",
+      options: ["1992年1月", "1995年1月", "1997年7月香港回归时", "2000年3月"],
+      answer: 1,
+      hint: "江八条与台独势力和李登辉访美事件密切相关，时间早于香港回归。",
+      explanation: "B正确。15.2.md：1995年1月，江泽民发表《为促进祖国统一大业的完成而继续奋斗》，提出八项主张。A是南方讲话时间；C香港回归在1997年7月，比江八条更晚；D不符。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·一、90年代以来对台方针政策演变·江八条" }
+    },
+    {
+      id: "q007", type: "single_choice", difficulty: "medium",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "江八条的直接时代背景不包括（　）。",
+      options: [
+        "台独势力上扬，李登辉推行分裂路线",
+        "美国总统克林顿邀请李登辉访美，引发台海危机",
+        "民进党陈水扁上台执政，声称将宣布台独",
+        "第二次、第三次台海危机的紧张局势"
+      ],
+      answer: 2,
+      hint: "陈水扁执政是2000年之后的事，是胡四点的背景而非江八条的背景，注意时间线。",
+      explanation: "C不属于江八条的背景，故选C。15.2.md：江八条（1995年）时代背景——李登辉推行分裂路线（A）、美国克林顿邀台访美（B）、1995-1996年台海危机（D）。C陈水扁执政是2000年，这是胡四点（2005年）背景，不是江八条背景——两个政策时代背景混淆是高频考点。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·一、江八条·时代背景" }
+    },
+    {
+      id: "q008", type: "single_choice", difficulty: "medium",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "胡四点中，下列不属于四个「绝不」内容的是（　）。",
+      options: [
+        "坚持一个中国原则绝不动摇",
+        "争取和平统一的努力绝不放弃",
+        "允许台湾同胞赴大陆就学就业绝不设限",
+        "反对分裂活动绝不妥协"
+      ],
+      answer: 2,
+      hint: "四个绝不聚焦于原则坚守、统一方式、寄希望台湾人民、反独，C项是惠台措施内容而非政治立场宣示。",
+      explanation: "C不属于四个绝不，故选C。15.2.md：胡四点四个绝不——坚持一个中国原则绝不动摇（A）；争取和平统一绝不放弃（B）；贯彻寄希望于台湾人民方针绝不改变；反对分裂活动绝不妥协（D）。C项是2018年惠台31条内容，不是胡四点底线宣示。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·一、胡四点·四个绝不" }
+    },
+    {
+      id: "q009", type: "single_choice", difficulty: "medium",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "从江八条到习五点，经贸合作在对台政策中的地位变化是（　）。",
+      options: [
+        "从首要位置下降为次要位置，让位于政治原则宣示",
+        "始终保持次要地位，从未进入核心政策框架",
+        "从江八条的第五条位置上升为习五点的第二条位置",
+        "习五点将经贸合作从江八条第一条下调至第三条"
+      ],
+      answer: 2,
+      hint: "习五点对江八条政策重心的调整体现在经贸合作条目的顺序变化，注意是从第几条升至第几条。",
+      explanation: "C正确。15.2.md：习五点将经贸合作从江八条第五条上升到第二条，体现对台政策重心的与时俱进。A与实际变化方向相反；B不符合，江八条已有第五条；D不是从第一条下调而是从第五条上升。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·一、习五点·政策重心变化" }
+    },
+    {
+      id: "q010", type: "single_choice", difficulty: "medium",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "《反分裂国家法》是全国人大通过的所有法律中唯一没有加上「中国」二字的，其原因是（　）。",
+      options: [
+        "因为起草时技术疏漏，事后无法修改",
+        "针对民进党台湾不属于中国的论调——反的是分裂国家这个行为，而这个国家就是中国，台湾是中国的一部分",
+        "为了体现立法的中立性，避免激化两岸矛盾",
+        "全国人大常委会认为加中国二字在法律用语上是多余的"
+      ],
+      answer: 1,
+      hint: "这是立法目的和政治逻辑的考题，需要理解反分裂和一个中国的内在逻辑。",
+      explanation: "B正确。15.2.md：之所以不加中国二字，是因为针对民进党台湾不属于中国的论调——反的是分裂国家这个行为，而这个国家就是中国，台湾是中国的一部分。这种表述方式恰恰体现了一个中国原则。A技术疏漏说法错误；C、D均偏离政治意涵。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·四、对台政策核心维度·反分裂国家法" }
+    },
+    {
+      id: "q011", type: "single_choice", difficulty: "medium",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "习近平总书记明确指出香港特别行政区的定位是（　）。",
+      options: [
+        "具有高度自主权的独立行政区，自行处理内外事务",
+        "与大陆平行的联邦制地方政府，拥有独立的对外签约权",
+        "直属于中央人民政府的一个地方行政区，不是独立行政区",
+        "实行一国两制的准国家实体，在国际组织中代表自身利益"
+      ],
+      answer: 2,
+      hint: "习近平对香港定位的核心判断区分了高度自治与完全独立，关键词是直属于中央人民政府。",
+      explanation: "C正确。15.1.md：习近平指出：香港特别行政区不是一个独立的行政区，而是直属于中央人民政府的一个地方行政区。这清晰界定了一国与两制的关系——一国是前提和基础，两制从属于一国。A独立行政区说法违背一国前提；B香港不与大陆平行；D准国家实体是分裂主义表述。",
+      sourceRef: { path: "content/maogai/detail/15.1.md", label: "15.1 一国两制构想·四、香港实践中的权力关系结构" }
+    },
+    {
+      id: "q012", type: "single_choice", difficulty: "medium",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "邓小平理论作为「开篇之作」，首次比较系统地回答的根本问题是（　）。",
+      options: [
+        "如何实现中华民族伟大复兴与建设社会主义强国",
+        "什么是社会主义、怎样建设社会主义",
+        "建设什么样的党、怎样建设党",
+        "实现什么样的发展、怎样发展"
+      ],
+      answer: 1,
+      hint: "每个历史阶段的马克思主义中国化成果都有其核心问题，邓小平理论对应的是最基础的是什么、怎样建之问。",
+      explanation: "B正确。15.2.md：以邓小平同志为主要代表的中国共产党人，围绕什么是社会主义、怎样建设社会主义这个根本问题，创立了邓小平理论。A是宏观目标；C建设什么样的党、怎样建设党是三个代表的核心问题；D实现什么样的发展、怎样发展是科学发展观的核心问题——三者对应关系是考试重点。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·五、邓小平理论历史地位·开篇之作" }
+    },
+    {
+      id: "q013", type: "single_choice", difficulty: "hard",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "1982年撒切尔夫人来京谈判香港问题时，英国正与哪个国家进行战争？这一背景与中国和平谈判解决香港问题形成了鲜明对比。（　）",
+      options: [
+        "英国正与法国因欧洲共同体事务产生严重外交冲突",
+        "英国正与阿根廷因马尔维纳斯群岛（福克兰群岛）发生战争",
+        "英国正与爱尔兰因北爱尔兰独立问题陷入武装冲突",
+        "英国正与苏联因阿富汗问题在国际舞台上进行激烈博弈"
+      ],
+      answer: 1,
+      hint: "这是一个历史对比考点，体现中国以和平方式解决历史遗留问题的国际意义。",
+      explanation: "B正确。15.1.md：1982年撒切尔夫人来北京谈判香港问题时，英国正与阿根廷因马尔维纳斯群岛（福克兰群岛）发生战争。中国以和平方式解决香港问题，与英国对阿根廷动武形成鲜明对比，为国际社会解决类似争端提供了新的思路和范例——这揭示了一国两制的第三重重大意义：为解决国际争端提供了新思路。其他三个选项均不符合历史实际。",
+      sourceRef: { path: "content/maogai/detail/15.1.md", label: "15.1 一国两制构想·五、一国两制的重大意义·为解决国际争端提供新思路" }
+    },
+    {
+      id: "q014", type: "multiple_choice", difficulty: "basic",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "下列属于邓小平理论历史地位三个层面的有（　）。",
+      options: [
+        "马克思列宁主义、毛泽东思想的继承和发展",
+        "中国特色社会主义理论体系的开篇之作",
+        "新时代中国特色社会主义思想的历史前提",
+        "改革开放和社会主义现代化建设的科学指南"
+      ],
+      answer: [0, 1, 3],
+      hint: "三个历史地位对应三个角度：与前人思想关系、在理论体系中的地位、对实践的指导意义。",
+      explanation: "ABD正确。15.2.md：邓小平理论历史地位三个层面——马克思列宁主义毛泽东思想的继承和发展（A）；中国特色社会主义理论体系的开篇之作（B）；改革开放和社会主义现代化建设的科学指南（D）。C不是邓小平理论历史地位的正式三个层面之一，属于干扰选项。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·五、邓小平理论历史地位·三大历史地位" }
+    },
+    {
+      id: "q015", type: "multiple_choice", difficulty: "basic",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "根据「一国两制」的设计，中央人民政府对香港保留的权力有（　）。",
+      options: ["外交权", "国防权", "财政征税权", "行政长官任命权"],
+      answer: [0, 1, 3],
+      hint: "香港高度自治范围包括立法、行政、司法、财政，三个不属于香港自治的权力都在中央。",
+      explanation: "ABD正确。15.1.md：中央人民政府对香港保留外交权（A）、国防权（B）、行政长官任命权（D）。C财政征税权是错误选项——香港享有财政独立，中央不在香港征税，这是香港高度自治的重要体现；内地和香港两套财政体系相互独立，体现了两制的财政边界。",
+      sourceRef: { path: "content/maogai/detail/15.1.md", label: "15.1 一国两制构想·四、香港实践中的权力关系结构" }
+    },
+    {
+      id: "q016", type: "multiple_choice", difficulty: "medium",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "下列关于90年代以来对台方针政策的表述，正确的有（　）。",
+      options: [
+        "江八条的前四条均围绕一个中国原则展开，体现了原则宣示优先的政策取向",
+        "胡四点以四个绝不为核心，是在陈水扁执政台独势力严峻形势下出台的",
+        "习五点将经贸合作从第五条升至第二条，体现政策重心的与时俱进",
+        "江八条、胡四点、习五点都完全放弃了使用武力的选项，转向纯粹和平手段"
+      ],
+      answer: [0, 1, 2],
+      hint: "和平统一不等于放弃使用武力——这是历次对台政策的一贯立场，D项夸大了政策转变程度。",
+      explanation: "ABC正确。15.2.md：A正确，江八条前四条均围绕一个中国原则；B正确，胡四点背景是陈水扁执政；C正确，习五点经贸合作上升为第二条。D错误，历次对台政策均坚持不承诺放弃使用武力这一底线，这是对台独势力的威慑性设计，绝非完全放弃使用武力。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·一、90年代以来对台方针政策发展演变" }
+    },
+    {
+      id: "q017", type: "multiple_choice", difficulty: "medium",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "胡四点中四个「绝不」的内容有（　）。",
+      options: [
+        "坚持一个中国原则绝不动摇",
+        "争取和平统一的努力绝不放弃",
+        "贯彻寄希望于台湾人民的方针绝不改变",
+        "对驻台美军撤出问题绝不妥协"
+      ],
+      answer: [0, 1, 2],
+      hint: "四个绝不对应：一中原则、和平统一、寄希望台湾人民、反对分裂活动，D项偷换了第四个绝不的对象。",
+      explanation: "ABC正确。15.2.md：胡四点四个绝不——坚持一个中国原则绝不动摇（A）、争取和平统一绝不放弃（B）、贯彻寄希望于台湾人民方针绝不改变（C）、反对分裂活动绝不妥协。D错误，第四个绝不是反对分裂活动而非驻台美军问题——驻台美军是中美关系议题，不是胡四点内容。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·一、胡四点·四个绝不" }
+    },
+    {
+      id: "q018", type: "multiple_choice", difficulty: "medium",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "关于九二共识，下列表述正确的有（　）。",
+      options: [
+        "九二共识达成于1992年10月",
+        "九二共识是海协会与海基会之间达成的以口头方式表达的共识",
+        "九二共识的核心内容是海峡两岸均坚持一个中国原则",
+        "九二共识是两岸政府间以书面条约形式确认的官方协议"
+      ],
+      answer: [0, 1, 2],
+      hint: "九二共识的特征：时间（1992年10月）、机构（两个民间授权机构）、形式（口头而非书面）、内容（一个中国原则）。",
+      explanation: "ABC正确。15.2.md：九二共识形成于1992年10月（A），达成方是海协会与海基会（B），以口头方式表达（B），内容是两岸均坚持一个中国原则（C）。D错误，九二共识是口头共识，不是书面条约，也不是两岸政府间官方协议——口头而非书面是九二共识的重要特点，也是后来围绕其是否存在产生争议的根源。",
+      sourceRef: { path: "content/maogai/detail/15.2.md", label: "15.2 祖国统一与对外关系·四、对台政策核心维度·九二共识形成" }
+    },
+    {
+      id: "q019", type: "multiple_choice", difficulty: "hard",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "关于「一国两制」与联邦制、单一制的关系，下列说法正确的有（　）。",
+      options: [
+        "香港享有立法、行政、司法和财政独立，这与联邦制下地方政府的分权有相似之处",
+        "香港特别行政区直属中央人民政府，体现了单一制的特征",
+        "一国两制完全等同于联邦制，中央与特区政府是平行的分权关系",
+        "一国两制在国家结构上的创新性在于兼具联邦制和单一制的特征"
+      ],
+      answer: [0, 1, 3],
+      hint: "一国两制是创新性国家结构，既有联邦制分权色彩，又保持了单一制中央领导地方的框架，不能与任何一种完全等同。",
+      explanation: "ABD正确。15.1.md：A正确，香港独立的立法、行政、司法、财政权与联邦制地方分权有相似之处；B正确，香港直属中央体现单一制；D正确，一国两制兼具两种特征是其独创性。C错误，一国两制不等同于联邦制——联邦制下地方政府与中央是平行分权关系，而香港直属中央人民政府，两者权力来源和上下级关系有本质区别。",
+      sourceRef: { path: "content/maogai/detail/15.1.md", label: "15.1 一国两制构想·五、一国两制的重大意义·创造性发展马克思主义国家学说" }
+    },
+    {
+      id: "q020", type: "multiple_choice", difficulty: "hard",
+      source: "current_chapter", sourceChapter: "rec-11", points: 2,
+      stem: "从「一纲四目」到「一国两制」，在权力安排上发生了哪些重要变化？（　）",
+      options: [
+        "核心目标从台湾回归中国扩展为实现祖国完全统一（含港澳台）",
+        "国防权从属于台湾自治范畴变为归中央人民政府",
+        "外交权的归属从中央政府变为特别行政区自治范畴",
+        "统一方式从和平方式为主演变为坚持和平统一但不承诺放弃使用武力"
+      ],
+      answer: [0, 1, 3],
+      hint: "一纲四目到一国两制是继承加发展，国防权归属是最重要的区别点，外交权在两者中均归中央。",
+      explanation: "ABD正确。15.1.md：A正确，覆盖范围从台湾扩展到港澳台；B正确，一纲四目中国防权属台湾自治，一国两制中归中央人民政府，这是最重要的发展；D正确，统一方式表述更加严密，明确不承诺放弃使用武力。C错误，外交权在两个方案中均归中央政府（一纲四目原文：除外交权归中央政府外……），外交权从未划入自治范畴，C与史实完全相反。",
+      sourceRef: { path: "content/maogai/detail/15.1.md", label: "15.1 一国两制构想·六、一国两制与邓小平理论的继承发展关系" }
+    }
+  ]
+};
+
+writeFileSync('content/quiz/maogai/rec-11.json', JSON.stringify(data, null, 2), 'utf8');
+const verify = JSON.parse(readFileSync('content/quiz/maogai/rec-11.json', 'utf8'));
+console.log('rec-11.json written:', verify.questions.length, 'questions, generatedAt:', verify.generatedAt);
