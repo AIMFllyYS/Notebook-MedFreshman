@@ -6,11 +6,12 @@ import {
 } from 'lucide-react';
 import type { ChatContext, ChatAttachment } from '@/lib/types/chat';
 import { useChatUI } from '@/lib/hooks/useChatUI';
-import { useSettings } from '@/lib/hooks/useSettings';
+import { useSettings, type ThinkingEffort } from '@/lib/hooks/useSettings';
 import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
 import { useKeyboardSettings } from '@/lib/keyboard/useKeyboardSettings';
 import { getModelInfoWithCustom } from '@/lib/ai/models';
 import ModelMenu from '@/components/chat/ModelMenu';
+import ThinkingEffortPill from '@/components/chat/ThinkingEffortPill';
 import TokenDashboard from '@/components/chat/TokenDashboard';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 
@@ -18,6 +19,7 @@ export interface ChatInputProps {
   onSend: (content: string, options?: {
     quotedText?: string;
     enableThinking?: boolean;
+    thinkingEffort?: ThinkingEffort;
     enableSearch?: boolean;
     attachments?: ChatAttachment[];
   }) => void;
@@ -42,6 +44,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [enableThinking, setEnableThinking] = useState(() => useSettings.getState().defaultThinking);
+  const [thinkingEffort, setThinkingEffort] = useState<ThinkingEffort>(
+    () => useSettings.getState().defaultThinkingEffort,
+  );
   const [enableSearch, setEnableSearch] = useState(() => useSettings.getState().defaultSearch);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -54,6 +59,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     [selectedModelId, customApiGroups],
   );
   const effectiveEnableThinking = enableThinking && thinkingSupported;
+  const effectiveThinkingEffort = effectiveEnableThinking ? thinkingEffort : undefined;
   const effectiveQuote = disableQuote ? null : quotedText;
   const sendShortcutEnabled = useKeyboardSettings((s) => s.isEnabled('chat.send'));
   const {
@@ -86,13 +92,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     onSend(trimmed || '请描述这张图片', {
       quotedText: effectiveQuote || undefined,
       enableThinking: effectiveEnableThinking,
+      thinkingEffort: effectiveThinkingEffort,
       enableSearch,
       attachments: toChatFormat(),
     });
     setInput('');
     clearAttachments();
     if (effectiveQuote) clearQuotedText();
-  }, [input, attachments, isLoading, externalDisabled, onSend, effectiveEnableThinking, enableSearch, effectiveQuote, clearQuotedText, toChatFormat, clearAttachments]);
+  }, [input, attachments, isLoading, externalDisabled, onSend, effectiveEnableThinking, effectiveThinkingEffort, enableSearch, effectiveQuote, clearQuotedText, toChatFormat, clearAttachments]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -230,6 +237,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
             <span className="chat-input-toggle-text">深度思考</span>
             {effectiveEnableThinking && <CheckCircle size={10} />}
           </button>
+
+          {effectiveEnableThinking && (
+            <ThinkingEffortPill
+              value={thinkingEffort}
+              onChange={setThinkingEffort}
+              disabled={inputDisabled}
+            />
+          )}
 
           <button
             onClick={() => setEnableSearch(!enableSearch)}

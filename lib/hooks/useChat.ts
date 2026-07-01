@@ -6,8 +6,7 @@ import { CUSTOM_PREFIX, getModelInfoWithCustom } from '@/lib/ai/models';
 import type { ChatMessage, ChatAttachment, ChatContext, ChatOptions, ToolCallBlock, WebSearchSource, ContextBreakdown } from '@/lib/types/chat';
 import {
   extractFollowUpQuestionsFromContent,
-  extractThinkBlocksFromContent,
-  stripThinkTagsFromContent,
+  splitThinkContent,
 } from '@/lib/chat/rendering/parseChatContent';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { useTokenTracker } from './useTokenTracker';
@@ -23,6 +22,7 @@ import { useFloatingChats } from './useFloatingChats';
 interface SendMessageOptions {
   quotedText?: string;
   enableThinking?: boolean;
+  thinkingEffort?: 'low' | 'medium' | 'high' | 'max';
   enableSearch?: boolean;
   attachments?: ChatAttachment[];
 }
@@ -111,6 +111,9 @@ export function useChat(
       // 合并 per-message 与 chat-level 选项；thinking 还要受当前模型能力约束。
       const requestedThinking = sendOptions?.enableThinking ?? options?.enableThinking;
       const enableThinking = requestedThinking === true && effectiveModelInfo?.thinking === true;
+      const thinkingEffort = enableThinking
+        ? (sendOptions?.thinkingEffort ?? useSettings.getState().defaultThinkingEffort)
+        : undefined;
       const enableSearch = sendOptions?.enableSearch ?? options?.enableSearch;
       const contextMode = options?.contextMode ?? 'full';
 
@@ -232,9 +235,16 @@ export function useChat(
 
         const uiThrottle = createStreamUiThrottle();
         const writeUi = () => {
+          // contentBuf 是上游原始增量的累积（可能混有 <think> 标签）；每次刷新都重新拆分，
+          // 让内嵌在正文里的思考内容也能像独立 reasoning_content 字段一样实时进思考面板，
+          // 而不是等 </think> 闭合后才一次性甩出来。
+          const { content: visibleContent, reasoning: pseudoReasoning } = splitThinkContent(contentBuf, {
+            streaming: true,
+          });
+          const mergedReasoning = [reasoningBuf.trim(), pseudoReasoning].filter(Boolean).join('\n\n');
           updateMessage(sessionId!, assistantId, {
-            content: contentBuf,
-            reasoningContent: reasoningBuf,
+            content: visibleContent,
+            reasoningContent: mergedReasoning,
             ...(toolCallsMap.size > 0 ? { toolCalls: Array.from(toolCallsMap.values()) } : {}),
           });
         };
@@ -269,6 +279,7 @@ export function useChat(
               itemId: chatContext.itemId,
               currentTopic: chatContext.currentTopic,
               enableThinking,
+              thinkingEffort,
               enableSearch,
               contextMode,
               contextTruncated: contextSoftLimitReached,
@@ -456,9 +467,11 @@ export function useChat(
           // 流正常结束：落定最后一帧（节流可能还压着一次未刷新的更新）
           flushUiNow();
 
-          const pseudoReasoning = extractThinkBlocksFromContent(contentBuf).join('\n\n');
+          const { content: finalContent, reasoning: pseudoReasoning } = splitThinkContent(contentBuf, {
+            streaming: false,
+          });
           if (pseudoReasoning) {
-            contentBuf = stripThinkTagsFromContent(contentBuf, { streaming: false });
+            contentBuf = finalContent;
             reasoningBuf = [reasoningBuf.trim(), pseudoReasoning].filter(Boolean).join('\n\n');
             updateMessage(sessionId!, assistantId, {
               content: contentBuf,

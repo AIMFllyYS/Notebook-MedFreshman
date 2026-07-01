@@ -6,6 +6,12 @@ import {
   type CustomApiGroup,
 } from "@/lib/ai/models";
 
+export type ThinkingEffort = 'low' | 'medium' | 'high' | 'max';
+const THINKING_EFFORTS: readonly ThinkingEffort[] = ['low', 'medium', 'high', 'max'];
+function normalizeThinkingEffort(v: unknown): ThinkingEffort {
+  return THINKING_EFFORTS.includes(v as ThinkingEffort) ? (v as ThinkingEffort) : 'medium';
+}
+
 /**
  * 全站 AI 设置（localStorage 持久化）。统一管理：
  * - 选中的模型 / 自定义 API 分组（多组，每组独立 baseUrl/apiKey + 模型列表）
@@ -39,6 +45,8 @@ export interface SettingsState {
   fontScale: number; // 0.85 ~ 1.35
   disabledTools: string[]; // 被禁用的工具名
   defaultThinking: boolean;
+  /** 新对话默认思考力度（仅在 defaultThinking=true 时生效）。 */
+  defaultThinkingEffort: ThinkingEffort;
   defaultSearch: boolean;
 
   // ── 全局补充上下文 ────────────────────
@@ -74,6 +82,7 @@ export interface SettingsState {
   setFontScale: (v: number) => void;
   toggleTool: (name: string, enabled: boolean) => void;
   setDefaultThinking: (v: boolean) => void;
+  setDefaultThinkingEffort: (v: ThinkingEffort) => void;
   setDefaultSearch: (v: boolean) => void;
   setGlobalContext: (v: string) => void;
   setUsdExchangeRate: (v: number) => void;
@@ -95,6 +104,7 @@ type Persisted = Pick<
   | "fontScale"
   | "disabledTools"
   | "defaultThinking"
+  | "defaultThinkingEffort"
   | "defaultSearch"
   | "globalContext"
   | "usdExchangeRate"
@@ -113,6 +123,7 @@ const DEFAULTS: Persisted = {
   fontScale: 1,
   disabledTools: [],
   defaultThinking: false,
+  defaultThinkingEffort: 'medium',
   defaultSearch: false,
   globalContext: "",
   usdExchangeRate: 7.00,
@@ -154,6 +165,7 @@ function load(): Persisted {
       if (typeof parsed.usdExchangeRate !== "number" || !Number.isFinite(parsed.usdExchangeRate) || parsed.usdExchangeRate <= 0) {
         parsed.usdExchangeRate = 7.00;
       }
+      parsed.defaultThinkingEffort = normalizeThinkingEffort(parsed.defaultThinkingEffort);
       parsed.selectedModelId = normalizeCustomModelRegistryId(parsed.selectedModelId, parsed.customApiGroups);
       parsed.defaultImageModelId = parsed.defaultImageModelId
         ? normalizeCustomModelRegistryId(parsed.defaultImageModelId, parsed.customApiGroups)
@@ -192,6 +204,7 @@ function persist(get: () => SettingsState) {
     fontScale: s.fontScale,
     disabledTools: s.disabledTools,
     defaultThinking: s.defaultThinking,
+    defaultThinkingEffort: s.defaultThinkingEffort,
     defaultSearch: s.defaultSearch,
     globalContext: s.globalContext,
     usdExchangeRate: s.usdExchangeRate,
@@ -341,6 +354,10 @@ export const useSettings = create<SettingsState>((set, get) => ({
   },
   setDefaultThinking: (v) => {
     set({ defaultThinking: v });
+    persist(get);
+  },
+  setDefaultThinkingEffort: (v) => {
+    set({ defaultThinkingEffort: normalizeThinkingEffort(v) });
     persist(get);
   },
   setDefaultSearch: (v) => {

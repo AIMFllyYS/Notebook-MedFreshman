@@ -91,7 +91,7 @@ interface ModelFormState {
   thinking: boolean;
   tools: boolean;
   reasoningField: string;
-  thinkingRequestStyle: "none" | "siliconflow" | "openai-reasoning-effort";
+  thinkingRequestStyle: "none" | "siliconflow" | "openai-reasoning-effort" | "openrouter-reasoning" | "anthropic-thinking";
   imageApiStyle: "auto" | "openai" | "siliconflow";
   sizes: string[];
   maxCount: string;
@@ -523,6 +523,8 @@ function ModelForm({
                 >
                   <option value="siliconflow">enable_thinking / thinking_budget</option>
                   <option value="openai-reasoning-effort">reasoning_effort</option>
+                  <option value="openrouter-reasoning">reasoning.effort（OpenRouter）</option>
+                  <option value="anthropic-thinking">thinking.budget_tokens（Anthropic 原生）</option>
                   <option value="none">不发送思考参数</option>
                 </select>
               </div>
@@ -834,6 +836,8 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
   const toggleTool = useSettings((s) => s.toggleTool);
   const defaultThinking = useSettings((s) => s.defaultThinking);
   const setDefaultThinking = useSettings((s) => s.setDefaultThinking);
+  const defaultThinkingEffort = useSettings((s) => s.defaultThinkingEffort);
+  const setDefaultThinkingEffort = useSettings((s) => s.setDefaultThinkingEffort);
   const defaultSearch = useSettings((s) => s.defaultSearch);
   const setDefaultSearch = useSettings((s) => s.setDefaultSearch);
   const globalContext = useSettings((s) => s.globalContext);
@@ -1263,6 +1267,64 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
               <Toggle on={it.on} onClick={() => it.set(!it.on)} />
             </div>
           ))}
+
+          {/* 默认思考力度 segmented（仅在 defaultThinking=true 时高亮，关闭时置灰但仍可选） */}
+          <div
+            className={
+              "flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2 " +
+              (defaultThinking ? "" : "opacity-60")
+            }
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="text-[var(--md-sys-color-primary)]">
+                <Brain size={16} />
+              </span>
+              <div>
+                <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
+                  默认思考力度
+                </div>
+                <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                  新对话默认使用的思考深度（仅在开启深度思考时生效）
+                </div>
+              </div>
+            </div>
+            <div
+              role="radiogroup"
+              aria-label="默认思考力度"
+              className="flex items-center rounded-md border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-variant)] p-0.5"
+            >
+              {(["low", "medium", "high", "max"] as const).map((lvl) => {
+                const active = defaultThinkingEffort === lvl;
+                const label = lvl === "low" ? "Low" : lvl === "medium" ? "Med" : lvl === "high" ? "High" : "Max";
+                const hint = lvl === "low"
+                  ? "~8k tokens"
+                  : lvl === "medium"
+                  ? "~16k tokens"
+                  : lvl === "high"
+                  ? "~32k tokens"
+                  : "~64k tokens";
+                return (
+                  <button
+                    key={lvl}
+                    type="button"
+                    role="radio"
+                    aria-checked={active}
+                    onClick={() => setDefaultThinkingEffort(lvl)}
+                    title={hint}
+                    data-testid={`default-thinking-effort-${lvl}`}
+                    className={
+                      "px-2 py-0.5 text-[11px] font-medium rounded transition-colors " +
+                      (active
+                        ? "bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)]"
+                        : "text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface)]")
+                    }
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </section>
 
         {/* 全局补充上下文 */}
