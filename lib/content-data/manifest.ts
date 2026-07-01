@@ -43,6 +43,22 @@ const chemistryKaoqianMoniItems = [
   { id: 'real-05', title: '华中科技大学有机化学期末真题（五）2023-2024', type: 'document' as const, status: 'done' as const },
 ];
 
+const maogaiShizhanYanlianItems = [
+  { id: 'maogai-practice-unit-intro-01', title: '导论·马克思主义中国化单元真题训练', type: 'document' as const, status: 'done' as const },
+  { id: 'maogai-practice-unit-01-mao-thought-01', title: '第一章·毛泽东思想及其历史地位 单元真题训练', type: 'document' as const, status: 'done' as const },
+  { id: 'maogai-practice-unit-02-new-democracy-01', title: '第二章·新民主主义革命理论 单元真题训练', type: 'document' as const, status: 'done' as const },
+  { id: 'maogai-practice-unit-03-socialist-transform-01', title: '第三章·社会主义改造理论 单元真题训练', type: 'document' as const, status: 'done' as const },
+  { id: 'maogai-practice-unit-04-socialist-explore-01', title: '第四章·社会主义建设道路初步探索 单元真题训练', type: 'document' as const, status: 'done' as const },
+  { id: 'maogai-practice-unit-06-deng-theory-01', title: '第六章·邓小平理论 单元真题训练', type: 'document' as const, status: 'done' as const },
+  { id: 'maogai-practice-unit-08-scientific-dev-01', title: '第八章·科学发展观 单元真题训练', type: 'document' as const, status: 'done' as const },
+];
+
+const maogaiKaoqianMoniItems = [
+  { id: 'maogai-mock-final-paper-01', title: '毛概2026期末押题模拟试卷一', type: 'document' as const, status: 'done' as const },
+  { id: 'maogai-mock-final-paper-02', title: '毛概2026期末押题模拟试卷二', type: 'document' as const, status: 'done' as const },
+  { id: 'maogai-mock-final-paper-03', title: '毛概2026期末押题模拟试卷三', type: 'document' as const, status: 'done' as const },
+];
+
 export const contentTree: ContentTree = {
   subjects: [
     {
@@ -347,7 +363,16 @@ export const contentTree: ContentTree = {
             { id: 'sum-12', title: '补充课纪要·期末复习', type: 'document', status: 'done' },
           ],
         },
-        ...examPlaceholderCategories,
+        {
+          id: 'kaoqian-moni',
+          name: '考前模拟',
+          items: maogaiKaoqianMoniItems,
+        },
+        {
+          id: 'shizhan-yanlian',
+          name: '实战演练',
+          items: maogaiShizhanYanlianItems,
+        },
       ],
     },
     {

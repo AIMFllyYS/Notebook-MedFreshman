@@ -3034,10 +3034,22 @@
           "name": "考前模拟",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "maogai-mock-final-paper-01",
+              "title": "毛概2026期末押题模拟试卷一",
               "type": "document",
-              "status": "stub"
+              "status": "done"
+            },
+            {
+              "id": "maogai-mock-final-paper-02",
+              "title": "毛概2026期末押题模拟试卷二",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "maogai-mock-final-paper-03",
+              "title": "毛概2026期末押题模拟试卷三",
+              "type": "document",
+              "status": "done"
             }
           ]
         },
@@ -3046,10 +3058,46 @@
           "name": "实战演练",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "maogai-practice-unit-intro-01",
+              "title": "导论·马克思主义中国化单元真题训练",
               "type": "document",
-              "status": "stub"
+              "status": "done"
+            },
+            {
+              "id": "maogai-practice-unit-01-mao-thought-01",
+              "title": "第一章·毛泽东思想及其历史地位 单元真题训练",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "maogai-practice-unit-02-new-democracy-01",
+              "title": "第二章·新民主主义革命理论 单元真题训练",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "maogai-practice-unit-03-socialist-transform-01",
+              "title": "第三章·社会主义改造理论 单元真题训练",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "maogai-practice-unit-04-socialist-explore-01",
+              "title": "第四章·社会主义建设道路初步探索 单元真题训练",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "maogai-practice-unit-06-deng-theory-01",
+              "title": "第六章·邓小平理论 单元真题训练",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "maogai-practice-unit-08-scientific-dev-01",
+              "title": "第八章·科学发展观 单元真题训练",
+              "type": "document",
+              "status": "done"
             }
           ]
         }
