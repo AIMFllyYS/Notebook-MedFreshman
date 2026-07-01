@@ -286,7 +286,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   textbook: "教材",
 };
 
-const SEARCHABLE_CATEGORIES = new Set(["detail", "recording", "summary"]);
+const SEARCHABLE_CATEGORIES = new Set(["detail", "recording", "summary", "textbook"]);
 
 /** 从 contentTree 中按 (subjectId, categoryId, itemId) 查找内容项及其标题。 */
 export function findContentItem(
