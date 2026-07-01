@@ -176,6 +176,15 @@ test("未识别的 textDirective 还原为字面文本 :name", () => {
   assert.equal((para.children[0] as { type: string; value: string }).value, ":Nd");
 });
 
+test("memory 容器指令转为 <memorycard>", () => {
+  const tree = run({
+    type: "root",
+    children: [makeContainer("memory", { label: "本章核心要点" })],
+  });
+  assert.equal(tree.children[0].data?.hName, "memorycard");
+  assert.equal(tree.children[0].data?.hProperties?.label, "本章核心要点");
+});
+
 test("非指令节点不受影响", () => {
   const tree = run({
     type: "root",

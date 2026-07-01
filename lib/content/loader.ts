@@ -145,7 +145,8 @@ export function deriveExampleKey(
     return { chapterId: "recording", sectionId: itemId };
   }
   if (categoryId === "textbook") {
-    return { chapterId: "textbook", sectionId: itemId };
+    const chapterId = itemId.startsWith("ch") ? itemId.split("-")[0] : itemId;
+    return { chapterId: "textbook", sectionId: chapterId };
   }
   if (categoryId !== "detail") return { chapterId: "", sectionId: "" };
   const n = parseInt(itemId.split(".")[0], 10);
