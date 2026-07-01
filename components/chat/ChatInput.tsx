@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import {
-  Lightbulb, Globe, Send, Square, Quote, X, CheckCircle, Paperclip,
+  Globe, Send, Square, Quote, X, CheckCircle, Paperclip,
 } from 'lucide-react';
 import type { ChatContext, ChatAttachment } from '@/lib/types/chat';
 import { useChatUI } from '@/lib/hooks/useChatUI';
@@ -11,7 +11,7 @@ import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
 import { useKeyboardSettings } from '@/lib/keyboard/useKeyboardSettings';
 import { getModelInfoWithCustom } from '@/lib/ai/models';
 import ModelMenu from '@/components/chat/ModelMenu';
-import ThinkingEffortPill from '@/components/chat/ThinkingEffortPill';
+import ThinkingMenuButton from '@/components/chat/ThinkingMenu';
 import TokenDashboard from '@/components/chat/TokenDashboard';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 
@@ -225,26 +225,16 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
       <div className="chat-input-toolbar">
         <div className="chat-input-toolbar-group">
-          <button
-            onClick={() => {
-              if (thinkingSupported) setEnableThinking(!enableThinking);
+          <ThinkingMenuButton
+            enabled={enableThinking}
+            effort={thinkingEffort}
+            supported={thinkingSupported}
+            disabled={inputDisabled}
+            onChange={({ enabled, effort }) => {
+              setEnableThinking(enabled);
+              setThinkingEffort(effort);
             }}
-            disabled={inputDisabled || !thinkingSupported}
-            className={`chat-input-toggle chat-input-toggle-thinking ${effectiveEnableThinking ? 'chat-input-toggle-thinking-active' : ''} ${inputDisabled || !thinkingSupported ? 'chat-input-toggle-disabled' : ''}`}
-            title={thinkingSupported ? '开启深度思考（展示推理过程）' : '当前模型不支持深度思考'}
-          >
-            <Lightbulb size={12} />
-            <span className="chat-input-toggle-text">深度思考</span>
-            {effectiveEnableThinking && <CheckCircle size={10} />}
-          </button>
-
-          {effectiveEnableThinking && (
-            <ThinkingEffortPill
-              value={thinkingEffort}
-              onChange={setThinkingEffort}
-              disabled={inputDisabled}
-            />
-          )}
+          />
 
           <button
             onClick={() => setEnableSearch(!enableSearch)}

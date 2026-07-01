@@ -148,10 +148,25 @@ export interface CustomModelConfig {
   thinking?: boolean;
   /** 是否支持工具调用。 */
   tools?: boolean;
-  /** 流式推理内容字段名；常见值为 reasoning_content、reasoning、reasoning_text。 */
+  /**
+   * API 兼容格式（业界最佳实践的三选一）：
+   *  - openai：OpenAI Chat Completions（含 One-API/OpenRouter/DeepSeek/OpenAI 官方）
+   *  - anthropic：真·Anthropic Messages 协议（/v1/messages, x-api-key）
+   *  - siliconflow：硅基流动 / 原生 Qwen / 原生 GLM 的 enable_thinking 方言
+   * 若未设置，视为 openai。所有底层字段（reasoningField / thinkingRequestStyle）
+   * 由 apiProtocol 自动装配，用户无需手填。
+   */
+  apiProtocol?: "openai" | "anthropic" | "siliconflow";
+  /**
+   * @deprecated 由 apiProtocol 自动装配；仍作为高级 override 保留。
+   * 流式推理内容字段名；常见值为 reasoning_content、reasoning、reasoning_text。
+   */
   reasoningField?: string;
-  /** 思考参数请求风格；OpenAI-compatible 模型可关闭或使用 reasoning_effort。 */
-  thinkingRequestStyle?: "none" | "siliconflow" | "openai-reasoning-effort";
+  /**
+   * @deprecated 由 apiProtocol 自动装配；仍作为高级 override 保留。
+   * 思考参数请求风格；OpenAI-compatible 模型可关闭或使用 reasoning_effort。
+   */
+  thinkingRequestStyle?: "none" | "siliconflow" | "openai-reasoning-effort" | "openrouter-reasoning" | "anthropic-thinking";
   /** 生图 API 格式；auto 按模型名推断，OpenAI-compatible 自定义生图可显式设为 openai。 */
   imageApiStyle?: "auto" | "openai" | "siliconflow";
   /** 模型类型：文本对话 or 生图。默认 'text'。 */
@@ -162,6 +177,8 @@ export interface CustomModelConfig {
     maxCount?: number;
   };
 }
+
+export type CustomApiProtocol = NonNullable<CustomModelConfig["apiProtocol"]>;
 
 /** 自定义 API 分组：每组独立的 baseUrl/apiKey + 模型列表。 */
 export interface CustomApiGroup {

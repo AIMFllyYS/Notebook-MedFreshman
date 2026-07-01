@@ -8,6 +8,7 @@ import {
   buildThinkingRequestParams,
   extractReasoningDelta,
   detectImageApiStyle,
+  autoConfigFromProtocol,
   ENV_MODEL_FLASH,
 } from "./provider.ts";
 import { buildCustomModelRegistryId } from "./models.ts";
@@ -100,6 +101,25 @@ test("extractReasoningDelta：兼容常见推理字段和 reasoning_details", ()
   );
 });
 
+test("extractReasoningDelta：兼容部分中转网关把 reasoning 发成结构化对象/数组（非纯字符串）", () => {
+  // Anthropic thinking block 透传：{ type: "thinking", thinking: "..." }
+  assert.equal(
+    extractReasoningDelta({ reasoning: { type: "thinking", thinking: "F" } }, "reasoning_content"),
+    "F",
+  );
+  // 部分网关把 reasoning 包成 { content: "..." } 或 { content: [...] } 而不是纯字符串
+  assert.equal(
+    extractReasoningDelta({ reasoning: { content: "G" } }, "reasoning_content"),
+    "G",
+  );
+  assert.equal(
+    extractReasoningDelta({ reasoning: [{ text: "H" }, { thinking: "I" }] }, "reasoning_content"),
+    "HI",
+  );
+  // 未在预设字段名单里的 thinking 字段兜底
+  assert.equal(extractReasoningDelta({ thinking: "J" }, "reasoning_content"), "J");
+});
+
 test("buildThinkingRequestParams：按 provider 风格构造请求参数", () => {
   assert.deepEqual(buildThinkingRequestParams("none", "high"), {});
   assert.deepEqual(buildThinkingRequestParams("siliconflow", "low"), {
@@ -108,6 +128,12 @@ test("buildThinkingRequestParams：按 provider 风格构造请求参数", () =>
   });
   assert.deepEqual(buildThinkingRequestParams("openai-reasoning-effort", "max"), {
     reasoning_effort: "high",
+  });
+  assert.deepEqual(buildThinkingRequestParams("openrouter-reasoning", "low"), {
+    reasoning: { effort: "low" },
+  });
+  assert.deepEqual(buildThinkingRequestParams("anthropic-thinking", "high"), {
+    thinking: { type: "enabled", budget_tokens: 16000 },
   });
 });
 
@@ -237,4 +263,158 @@ test("thinkingBudget：各力度映射", () => {
 test("thinkingBudget：未知力度回退 medium", () => {
   assert.equal(thinkingBudget("unknown"), 8000);
   assert.equal(thinkingBudget(undefined), 8000);
+});
+
+// ── apiProtocol 三选一自动装配 ─────────────────────────────────────
+test("autoConfigFromProtocol：openai → openai-reasoning-effort + reasoning", () => {
+  assert.deepEqual(autoConfigFromProtocol("openai"), {
+    thinkingRequestStyle: "openai-reasoning-effort",
+    reasoningField: "reasoning",
+  });
+});
+
+test("autoConfigFromProtocol：anthropic → anthropic-thinking + thinking", () => {
+  assert.deepEqual(autoConfigFromProtocol("anthropic"), {
+    thinkingRequestStyle: "anthropic-thinking",
+    reasoningField: "thinking",
+  });
+});
+
+test("autoConfigFromProtocol：siliconflow → siliconflow + reasoning_content", () => {
+  assert.deepEqual(autoConfigFromProtocol("siliconflow"), {
+    thinkingRequestStyle: "siliconflow",
+    reasoningField: "reasoning_content",
+  });
+});
+
+test("autoConfigFromProtocol：undefined → 视为 openai", () => {
+  assert.deepEqual(autoConfigFromProtocol(undefined), {
+    thinkingRequestStyle: "openai-reasoning-effort",
+    reasoningField: "reasoning",
+  });
+});
+
+test("resolveProvider：apiProtocol=anthropic 时自动装配 thinking 字段", () => {
+  const groups = [
+    {
+      id: "claude-proxy",
+      name: "Claude Proxy",
+      baseUrl: "https://claude.example/v1",
+      apiKey: "sk-cl",
+      models: [
+        {
+          id: "claude-sonnet-4-6",
+          apiProtocol: "anthropic" as const,
+          thinking: true,
+        },
+      ],
+    },
+  ];
+  const r = resolveProvider(
+    buildCustomModelRegistryId("claude-proxy", "claude-sonnet-4-6"),
+    groups,
+  );
+  assert.equal(r.apiProtocol, "anthropic");
+  assert.equal(r.thinkingRequestStyle, "anthropic-thinking");
+  assert.equal(r.reasoningField, "thinking");
+});
+
+test("resolveProvider：apiProtocol=openai 时自动装配 openai-reasoning-effort", () => {
+  const groups = [
+    {
+      id: "one-api",
+      name: "One-API",
+      baseUrl: "https://oneapi.example/v1",
+      apiKey: "sk-x",
+      models: [
+        {
+          id: "deepseek-r1",
+          apiProtocol: "openai" as const,
+          thinking: true,
+        },
+      ],
+    },
+  ];
+  const r = resolveProvider(
+    buildCustomModelRegistryId("one-api", "deepseek-r1"),
+    groups,
+  );
+  assert.equal(r.apiProtocol, "openai");
+  assert.equal(r.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.equal(r.reasoningField, "reasoning");
+});
+
+test("resolveProvider：老配置只有 thinkingRequestStyle=anthropic-thinking 时推断 apiProtocol=anthropic", () => {
+  const groups = [
+    {
+      id: "legacy",
+      name: "Legacy",
+      baseUrl: "https://legacy.example/v1",
+      apiKey: "sk-l",
+      models: [
+        {
+          id: "claude-old",
+          thinking: true,
+          thinkingRequestStyle: "anthropic-thinking" as const,
+        },
+      ],
+    },
+  ];
+  const r = resolveProvider(
+    buildCustomModelRegistryId("legacy", "claude-old"),
+    groups,
+  );
+  assert.equal(r.apiProtocol, "anthropic");
+});
+
+test("resolveProvider：老配置 thinkingRequestStyle=siliconflow 时推断 apiProtocol=siliconflow", () => {
+  const groups = [
+    {
+      id: "legacy-sf",
+      name: "Legacy SF",
+      baseUrl: "https://sf.example/v1",
+      apiKey: "sk-s",
+      models: [
+        {
+          id: "qwen-old",
+          thinking: true,
+          thinkingRequestStyle: "siliconflow" as const,
+        },
+      ],
+    },
+  ];
+  const r = resolveProvider(
+    buildCustomModelRegistryId("legacy-sf", "qwen-old"),
+    groups,
+  );
+  assert.equal(r.apiProtocol, "siliconflow");
+});
+
+test("resolveProvider：内置模型 apiProtocol 恒为 openai", () => {
+  const r = resolveProvider("mimo-v2.5");
+  assert.equal(r.apiProtocol, "openai");
+});
+
+test("resolveProvider：用户显式 reasoningField override 优先于协议默认", () => {
+  const groups = [
+    {
+      id: "override-test",
+      name: "Override",
+      baseUrl: "https://o.example/v1",
+      apiKey: "sk-o",
+      models: [
+        {
+          id: "custom-model",
+          apiProtocol: "openai" as const,
+          thinking: true,
+          reasoningField: "reasoning_text",
+        },
+      ],
+    },
+  ];
+  const r = resolveProvider(
+    buildCustomModelRegistryId("override-test", "custom-model"),
+    groups,
+  );
+  assert.equal(r.reasoningField, "reasoning_text");
 });

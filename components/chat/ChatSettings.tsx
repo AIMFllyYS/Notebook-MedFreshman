@@ -90,8 +90,10 @@ interface ModelFormState {
   vision: boolean;
   thinking: boolean;
   tools: boolean;
+  apiProtocol: "openai" | "anthropic" | "siliconflow";
   reasoningField: string;
   thinkingRequestStyle: "none" | "siliconflow" | "openai-reasoning-effort" | "openrouter-reasoning" | "anthropic-thinking";
+  showAdvanced: boolean;
   imageApiStyle: "auto" | "openai" | "siliconflow";
   sizes: string[];
   maxCount: string;
@@ -110,12 +112,22 @@ const EMPTY_FORM: ModelFormState = {
   vision: false,
   thinking: false,
   tools: true,
+  apiProtocol: "openai",
   reasoningField: "",
   thinkingRequestStyle: "siliconflow",
+  showAdvanced: false,
   imageApiStyle: "auto",
   sizes: DEFAULT_SIZES.slice(),
   maxCount: "4",
 };
+
+/** 老配置 → 新 apiProtocol 字段的迁移推断（与 lib/ai/provider.inferProtocolFromLegacy 保持一致）。 */
+function inferApiProtocol(m: CustomModelConfig): "openai" | "anthropic" | "siliconflow" {
+  if (m.apiProtocol) return m.apiProtocol;
+  if (m.thinkingRequestStyle === "anthropic-thinking") return "anthropic";
+  if (m.thinkingRequestStyle === "siliconflow") return "siliconflow";
+  return "openai";
+}
 
 function modelToForm(m: CustomModelConfig): ModelFormState {
   const isImage = m.type === "image";
@@ -132,8 +144,10 @@ function modelToForm(m: CustomModelConfig): ModelFormState {
     vision: !!m.vision,
     thinking: !!m.thinking,
     tools: m.tools ?? !isImage,
+    apiProtocol: inferApiProtocol(m),
     reasoningField: m.reasoningField ?? "",
     thinkingRequestStyle: m.thinkingRequestStyle ?? (m.thinking ? "siliconflow" : "none"),
+    showAdvanced: !!(m.reasoningField || m.thinkingRequestStyle),
     imageApiStyle: m.imageApiStyle ?? "auto",
     sizes: m.imageParams?.sizes?.length ? m.imageParams.sizes : DEFAULT_SIZES.slice(),
     maxCount: String(m.imageParams?.maxCount ?? 4),
@@ -173,8 +187,12 @@ function formToModel(f: ModelFormState): CustomModelConfig {
     vision: f.vision || undefined,
     thinking: f.thinking || undefined,
     tools: f.tools,
-    reasoningField: f.reasoningField.trim() || undefined,
-    thinkingRequestStyle: f.thinking ? f.thinkingRequestStyle : "none",
+    apiProtocol: f.apiProtocol,
+    // 高级 override：仅当用户展开高级面板并显式填写时保留；否则清空由 apiProtocol 自动装配。
+    reasoningField: f.showAdvanced ? f.reasoningField.trim() || undefined : undefined,
+    thinkingRequestStyle: f.showAdvanced
+      ? (f.thinking ? f.thinkingRequestStyle : "none")
+      : undefined,
     pricing: {
       input: Number(f.inputPrice) || 0,
       output: Number(f.outputPrice) || 0,
@@ -499,36 +517,109 @@ function ModelForm({
               <span>工具调用</span>
             </label>
           </div>
-          {form.thinking && (
-            <div className="grid gap-2 md:grid-cols-2">
-              <div>
-                <label className={labelCls}>推理字段</label>
-                <input
-                  type="text"
-                  value={form.reasoningField}
-                  onChange={(e) => setForm({ ...form, reasoningField: e.target.value })}
-                  placeholder="reasoning_content"
-                  className={inputCls}
-                />
-              </div>
-              <div>
-                <label className={labelCls}>思考参数格式</label>
-                <select
-                  value={form.thinkingRequestStyle}
-                  onChange={(e) => setForm({
-                    ...form,
-                    thinkingRequestStyle: e.target.value as ModelFormState["thinkingRequestStyle"],
-                  })}
-                  className={inputCls}
+
+          {/* API 兼容格式（三选一） */}
+          <div className="mt-1">
+            <div className={labelCls}>API 兼容格式</div>
+            <div className="grid grid-cols-3 gap-1.5">
+              {[
+                { value: "openai", label: "OpenAI", hint: "OpenAI / DeepSeek / One-API" },
+                { value: "anthropic", label: "Anthropic", hint: "Claude 原生 /v1/messages" },
+                { value: "siliconflow", label: "SiliconFlow", hint: "硅基流动 / 原生 Qwen" },
+              ].map((opt) => (
+                <label
+                  key={opt.value}
+                  className="flex cursor-pointer flex-col gap-0.5 rounded-md border px-2 py-1.5 text-[11px]"
+                  style={{
+                    borderColor:
+                      form.apiProtocol === opt.value
+                        ? "var(--md-sys-color-primary)"
+                        : "var(--md-sys-color-outline-variant)",
+                    background:
+                      form.apiProtocol === opt.value
+                        ? "color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent)"
+                        : "transparent",
+                    color: "var(--md-sys-color-on-surface)",
+                  }}
                 >
-                  <option value="siliconflow">enable_thinking / thinking_budget</option>
-                  <option value="openai-reasoning-effort">reasoning_effort</option>
-                  <option value="openrouter-reasoning">reasoning.effort（OpenRouter）</option>
-                  <option value="anthropic-thinking">thinking.budget_tokens（Anthropic 原生）</option>
-                  <option value="none">不发送思考参数</option>
-                </select>
-              </div>
+                  <input
+                    type="radio"
+                    name={`apiProtocol-${form.id || "new"}`}
+                    value={opt.value}
+                    checked={form.apiProtocol === opt.value}
+                    onChange={() =>
+                      setForm({
+                        ...form,
+                        apiProtocol: opt.value as ModelFormState["apiProtocol"],
+                      })
+                    }
+                    className="hidden"
+                  />
+                  <span className="font-medium">{opt.label}</span>
+                  <span
+                    className="truncate"
+                    style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+                  >
+                    {opt.hint}
+                  </span>
+                </label>
+              ))}
             </div>
+            <div
+              className="mt-1 text-[10.5px]"
+              style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+            >
+              选中后：请求路径、鉴权头、图片编码、思考参数、推理字段全部自动匹配。
+            </div>
+          </div>
+
+          {/* 高级 override（默认折叠） */}
+          {form.thinking && (
+            <details
+              className="mt-1"
+              open={form.showAdvanced}
+              onToggle={(e) =>
+                setForm({ ...form, showAdvanced: (e.target as HTMLDetailsElement).open })
+              }
+            >
+              <summary
+                className="cursor-pointer text-[11px]"
+                style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+              >
+                高级：手动覆盖底层字段（多数用户无需展开）
+              </summary>
+              <div className="mt-2 grid gap-2 md:grid-cols-2">
+                <div>
+                  <label className={labelCls}>推理字段（override）</label>
+                  <input
+                    type="text"
+                    value={form.reasoningField}
+                    onChange={(e) => setForm({ ...form, reasoningField: e.target.value })}
+                    placeholder="留空=按格式自动"
+                    className={inputCls}
+                  />
+                </div>
+                <div>
+                  <label className={labelCls}>思考参数格式（override）</label>
+                  <select
+                    value={form.thinkingRequestStyle}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        thinkingRequestStyle: e.target.value as ModelFormState["thinkingRequestStyle"],
+                      })
+                    }
+                    className={inputCls}
+                  >
+                    <option value="siliconflow">enable_thinking / thinking_budget</option>
+                    <option value="openai-reasoning-effort">reasoning_effort</option>
+                    <option value="openrouter-reasoning">reasoning.effort（OpenRouter）</option>
+                    <option value="anthropic-thinking">thinking.budget_tokens（Anthropic 原生）</option>
+                    <option value="none">不发送思考参数</option>
+                  </select>
+                </div>
+              </div>
+            </details>
           )}
         </div>
       )}

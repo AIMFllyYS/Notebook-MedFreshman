@@ -69,6 +69,8 @@ test("custom model settings preserve provider compatibility fields", () => {
   assert.match(source, /reasoningField: m\.reasoningField \?\? ""/);
   assert.match(source, /thinkingRequestStyle: m\.thinkingRequestStyle/);
   assert.match(source, /imageApiStyle: m\.imageApiStyle \?\? "auto"/);
-  assert.match(source, /reasoningField: f\.reasoningField\.trim\(\) \|\| undefined/);
+  // apiProtocol 三选一是新的顶层选项；老 reasoningField/thinkingRequestStyle 收进"高级"面板
+  assert.match(source, /apiProtocol: f\.apiProtocol/);
+  assert.match(source, /f\.showAdvanced\s*\?\s*f\.reasoningField\.trim\(\)\s*\|\|\s*undefined/);
   assert.match(source, /imageApiStyle: f\.imageApiStyle/);
 });

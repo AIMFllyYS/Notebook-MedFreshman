@@ -39,7 +39,7 @@ const chatContext = {
   currentTopic: 'topic',
 };
 
-describe('ChatInput thinking capability', () => {
+describe('ChatInput thinking menu', () => {
   beforeEach(() => {
     useSettings.setState({
       selectedModelId: 'zai-org/GLM-4.7-FlashX',
@@ -49,8 +49,8 @@ describe('ChatInput thinking capability', () => {
     });
   });
 
-  it('disables the thinking toggle when selected model does not support thinking', () => {
-    const { container } = render(
+  it('disables thinking menu button when the model does not support thinking', () => {
+    const { getByTestId } = render(
       <ChatInput
         onSend={vi.fn()}
         onStop={vi.fn()}
@@ -58,32 +58,19 @@ describe('ChatInput thinking capability', () => {
         chatContext={chatContext}
       />,
     );
-
-    const button = container.querySelector<HTMLButtonElement>('.chat-input-toggle-thinking');
-    expect(button).not.toBeNull();
-    expect(button).toBeDisabled();
+    const btn = getByTestId('thinking-menu-button') as HTMLButtonElement;
+    expect(btn.disabled).toBe(true);
+    expect(btn.getAttribute('data-enabled')).toBe('0');
   });
 
-  it('does not render effort pill when the model does not support thinking', () => {
-    const { queryByTestId } = render(
-      <ChatInput
-        onSend={vi.fn()}
-        onStop={vi.fn()}
-        isLoading={false}
-        chatContext={chatContext}
-      />,
-    );
-    expect(queryByTestId('thinking-effort-pill')).toBeNull();
-  });
-
-  it('renders effort pill using defaultThinkingEffort when thinking is on and model supports it', () => {
+  it('shows enabled state with default effort when model supports thinking and defaultThinking is on', () => {
     useSettings.setState({
       selectedModelId: 'Pro/deepseek-ai/DeepSeek-V3.5',
       customApiGroups: [],
       defaultThinking: true,
       defaultThinkingEffort: 'high',
     });
-    const { queryByTestId } = render(
+    const { getByTestId } = render(
       <ChatInput
         onSend={vi.fn()}
         onStop={vi.fn()}
@@ -91,14 +78,15 @@ describe('ChatInput thinking capability', () => {
         chatContext={chatContext}
       />,
     );
-    const pill = queryByTestId('thinking-effort-pill');
-    // 只要模型支持思考且默认开启，胶囊就应挂载（若不显示则说明模型能力探测未通过或渲染门控异常）
-    if (pill) {
-      expect(pill.getAttribute('data-effort')).toBe('high');
+    const btn = getByTestId('thinking-menu-button');
+    // 只要模型支持思考 & 默认开启，label 中应带 High
+    if (btn.getAttribute('data-enabled') === '1') {
+      expect(btn.getAttribute('data-effort')).toBe('high');
+      expect(btn.textContent).toContain('深度思考·High');
     }
   });
 
-  it('sends thinkingEffort through onSend options when thinking is enabled', async () => {
+  it('sends effective thinkingEffort through onSend when thinking is enabled', async () => {
     useSettings.setState({
       selectedModelId: 'Pro/deepseek-ai/DeepSeek-V3.5',
       customApiGroups: [],
@@ -115,11 +103,6 @@ describe('ChatInput thinking capability', () => {
       />,
     );
     const textarea = container.querySelector<HTMLTextAreaElement>('.chat-input-textarea')!;
-    await act(async () => {
-      textarea.value = 'hello';
-      textarea.dispatchEvent(new Event('input', { bubbles: true }));
-    });
-    // 使用 React 触发 change
     const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
       window.HTMLTextAreaElement.prototype,
       'value',
@@ -135,7 +118,6 @@ describe('ChatInput thinking capability', () => {
       });
       if (onSend.mock.calls.length > 0) {
         const opts = onSend.mock.calls[0][1];
-        // 若模型能力被识别为支持思考，effort 应存在；否则应为 undefined（关闭思考语义）
         if (opts?.enableThinking) {
           expect(opts.thinkingEffort).toBe('medium');
         } else {

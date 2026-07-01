@@ -20,6 +20,10 @@ import {
   isRecoverableUpstreamFailure,
   isFetchAbortError,
 } from "@/lib/ai/upstream";
+import {
+  buildAnthropicRequest,
+  anthropicStreamToOpenAI,
+} from "@/lib/ai/anthropicAdapter";
 import { estimateTokens } from "@/lib/context/estimateTokens";
 import type { Skill } from "@/lib/types/skill";
 
@@ -342,15 +346,31 @@ export async function POST(req: NextRequest) {
           const abortCtrl = new AbortController();
           const fetchTimeoutId = setTimeout(() => abortCtrl.abort(), activeProvider.timeoutMs);
 
-          let res: Response;
-          try {
-            res = await fetch(endpoint, {
-              method: "POST",
-              headers: {
+          const isAnthropic = activeProvider.apiProtocol === "anthropic";
+          const anthropicReq = isAnthropic
+            ? buildAnthropicRequest({
+                baseUrl: activeProvider.baseUrl,
+                apiKey: activeProvider.apiKey,
+                openaiBody: reqBody,
+              })
+            : null;
+          const fetchUrl = anthropicReq ? anthropicReq.url : endpoint;
+          const fetchHeaders: Record<string, string> = anthropicReq
+            ? anthropicReq.headers
+            : {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${activeProvider.apiKey}`,
-              },
-              body: JSON.stringify(reqBody),
+              };
+          const fetchBody = anthropicReq
+            ? anthropicReq.body
+            : JSON.stringify(reqBody);
+
+          let res: Response;
+          try {
+            res = await fetch(fetchUrl, {
+              method: "POST",
+              headers: fetchHeaders,
+              body: fetchBody,
               signal: abortCtrl.signal,
             });
           } catch (err) {
@@ -401,7 +421,10 @@ export async function POST(req: NextRequest) {
             return;
           }
 
-          const reader = res.body.getReader();
+          const responseStream = anthropicReq
+            ? anthropicStreamToOpenAI(res.body)
+            : res.body;
+          const reader = responseStream.getReader();
           const decoder = new TextDecoder();
           let buf = "";
           let contentBuf = "";
