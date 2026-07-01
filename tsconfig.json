@@ -41,6 +41,7 @@
     "docs/refer/dist",
     "showroom",
     "exhibition-hall",
+    "dist-desktop",
     "**/*.test.ts",
     "**/*.test.tsx"
   ]
