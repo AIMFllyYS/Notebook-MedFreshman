@@ -2512,10 +2512,70 @@
           "name": "教材",
           "items": [
             {
-              "id": "main",
-              "title": "毛概（教材）",
+              "id": "toc",
+              "title": "目录",
               "type": "document",
-              "status": "stub"
+              "status": "done"
+            },
+            {
+              "id": "ch00",
+              "title": "导论 马克思主义中国化时代化的历史进程与理论成果",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch01",
+              "title": "第一章 毛泽东思想及其历史地位",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch02",
+              "title": "第二章 新民主主义革命理论",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch03",
+              "title": "第三章 社会主义改造理论",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch04",
+              "title": "第四章 社会主义建设道路初步探索的理论成果",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch05",
+              "title": "第五章 中国特色社会主义理论体系的形成发展",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch06",
+              "title": "第六章 邓小平理论",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch07",
+              "title": "第七章 “三个代表”重要思想",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch08",
+              "title": "第八章 科学发展观",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "epilogue",
+              "title": "后记与结语",
+              "type": "document",
+              "status": "done"
             }
           ]
         },

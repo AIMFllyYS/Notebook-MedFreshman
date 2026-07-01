@@ -14,6 +14,7 @@ import {
   FlaskConical,
   BookOpen,
   ScrollText,
+  Scale,
   PanelLeftClose,
   PanelLeft,
   ListTree,
@@ -40,6 +41,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: Reac
   FlaskConical,
   BookOpen,
   ScrollText,
+  Scale,
   Folder,
   FolderOpen,
 };
