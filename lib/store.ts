@@ -51,10 +51,14 @@ function domBoolean(name: string): boolean | null {
   return null;
 }
 
-/** detail/recording/english 分类下的 quiz key 推导。recording/english 直接用 itemId。 */
+/** detail/recording/english/textbook 分类下的 quiz key 推导。recording/english 直接用 itemId；textbook 映射为 tb-chXX。 */
 export function deriveChapterId(categoryId: string, itemId: string): string {
   if (categoryId === "recording") return itemId;
   if (categoryId === "english") return itemId;
+  if (categoryId === "textbook") {
+    const m = itemId.match(/^(ch\d{2})/);
+    return m ? `tb-${m[1]}` : "";
+  }
   if (categoryId !== "detail") return "";
   const n = parseInt(itemId.split(".")[0], 10);
   return Number.isNaN(n) ? "" : `ch${String(n).padStart(2, "0")}`;

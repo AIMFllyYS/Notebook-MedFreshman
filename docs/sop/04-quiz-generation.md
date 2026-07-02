@@ -287,6 +287,19 @@ node -e "JSON.parse(require('fs').readFileSync('content/quiz/{subject}/{chapterI
 
 前端 `QuizScoring` 组件对 `essay`/`fill_blank` 主观题展示参考答案 + 评分要点，并提供自评滑块，与本规范的要点式评分标准直接对应。
 
+## 毛概教材 Tab 出题专节
+
+> 毛概「教材」Tab 的题目测试与详解 Tab **完全独立**，使用 `tb-chXX` 命名空间。详见 [`docs/plans/05d-quiz-maogai-textbook.md`](../plans/05d-quiz-maogai-textbook.md)。
+
+| 维度 | 教材 Tab | 详解 Tab |
+|------|----------|----------|
+| chapterId | `tb-ch00` ~ `tb-ch08` | `ch01` ~ `ch16` |
+| 内容来源 | `content/maogai/textbook/ch{NN}-{n}.md` | `content/maogai/detail/{n}.{m}.md` |
+| 题型 | 仅 `single_choice` + `multiple_choice` | 含 essay / 材料分析等 |
+| 路由 | `deriveChapterId("textbook", itemId)` → `tb-chXX` | `deriveChapterId("detail", itemId)` → `chXX` |
+
+**禁止**混用两套章号或交叉引用 sourceRef 路径。
+
 ## 课上录音出题专节
 
 > 为课上录音板块（`content/{subject}/recording/rec-{NN}.md`）生成配套测验。题目**严格基于录音逐字稿**，不得引用详解或教材中录音未提及的内容。

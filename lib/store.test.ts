@@ -18,8 +18,15 @@ test("deriveChapterId：english 分类直接用 itemId", () => {
   assert.equal(deriveChapterId("english", "unit-4"), "unit-4");
 });
 
-test("deriveChapterId：非 detail/recording/english 返回空串", () => {
-  assert.equal(deriveChapterId("textbook", "ch01"), "");
+test("deriveChapterId：textbook 分类映射为 tb-chXX", () => {
+  assert.equal(deriveChapterId("textbook", "ch00"), "tb-ch00");
+  assert.equal(deriveChapterId("textbook", "ch01"), "tb-ch01");
+  assert.equal(deriveChapterId("textbook", "ch01-2"), "tb-ch01");
+  assert.equal(deriveChapterId("textbook", "ch08-3"), "tb-ch08");
+  assert.equal(deriveChapterId("textbook", "toc"), "");
+});
+
+test("deriveChapterId：非 detail/recording/english/textbook 返回空串", () => {
   assert.equal(deriveChapterId("summary", "sum-01"), "");
   assert.equal(deriveChapterId("quiz", "ch01"), "");
 });
