@@ -78,6 +78,9 @@ const probabilityKaoqianMoniItems = [
   { id: 'exam-04', title: '2022-2023学年第一学期期末考试A卷', type: 'document' as const, status: 'done' as const },
   { id: 'exam-05', title: '2022-2023学年第二学期期末考试A卷', type: 'document' as const, status: 'done' as const },
   { id: 'exam-06', title: '2023-2024学年第一学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'mock-ai-01', title: 'AI押题模拟卷一·ChatGPT生成', type: 'document' as const, status: 'done' as const },
+  { id: 'mock-ai-02', title: 'AI押题模拟卷二·Claude生成', type: 'document' as const, status: 'done' as const },
+  { id: 'mock-ai-03', title: 'AI押题模拟卷三·Perplexity生成', type: 'document' as const, status: 'done' as const },
 ];
 
 const probabilityShizhanYanlianItems = [
