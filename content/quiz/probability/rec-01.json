@@ -1,7 +1,7 @@
 {
   "subjectId": "probability",
   "chapterId": "rec-01",
-  "generatedAt": "2026-06-24",
+  "generatedAt": "2026-07-01",
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
@@ -11,133 +11,133 @@
     {
       "id": "rec-01-q01",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "关于本讲“课程名称”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $A,B$ 为两个事件，则 $\\overline{A\\cup B}=$（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "课程名称：概率论与数理统计（48学时），由概率论（理论基础）和数理统计（实际应用）两部分组成。"
+        "$\\overline{A}\\cup\\overline{B}$",
+        "$\\overline{A}\\cap\\overline{B}$",
+        "$A\\cap\\overline{B}$",
+        "$\\overline{A}\\cup B$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：课程名称：概率论与数理统计（48学时），由概率论（理论基础）和数理统计（实际应用）两部分组成。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "德摩根律：并的对立等于对立的交。",
+      "explanation": "由德摩根律（对偶律），$\\overline{A\\cup B}=\\overline{A}\\cap\\overline{B}$，即\"$A$ 或 $B$ 发生\"的对立事件是\"$A$ 不发生且 $B$ 不发生\"。选项A将交误写为并；选项C只取了 $A$ 不发生而 $B$ 发生的部分；选项D混淆了运算符号。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:34 · 课程名称"
+        "label": "rec-01 · 说话人1 01:26:38 · 对偶律（德摩根律）"
       }
     },
     {
       "id": "rec-01-q02",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "关于本讲“学院有配套慕课，全书切分为80多个视”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $A,B$ 为两个事件，\"$A,B$ 恰好发生一个\"可表示为（  ）。",
       "options": [
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "学院有配套慕课，全书切分为80多个视频（每视频约10分钟对应一个知识点），建议课前预习。",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$A\\cup B$",
+        "$AB$",
+        "$A\\overline{B}\\cup\\overline{A}B$",
+        "$\\overline{A}\\,\\overline{B}$"
       ],
       "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：学院有配套慕课，全书切分为80多个视频（每视频约10分钟对应一个知识点），建议课前预习。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "恰好一个发生 = $A$ 发生 $B$ 不发生，或 $B$ 发生 $A$ 不发生，且这两者互斥。",
+      "explanation": "\"恰好发生一个\"即 $A$ 发生而 $B$ 不发生，或 $B$ 发生而 $A$ 不发生，表示为 $A\\overline{B}\\cup\\overline{A}B$（也即对称差 $A\\Delta B$）。选项A是\"至少一个发生\"；选项B是\"同时发生\"；选项D是\"都不发生\"。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:34 · 学院有配套慕课，全书切分为80多个视"
+        "label": "rec-01 · 说话人1 01:31:42 · 恰好发生一个的表示"
       }
     },
     {
       "id": "rec-01-q03",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "关于本讲“作业构成”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "化简 $A\\overline{B}\\cup\\overline{A}B\\cup\\overline{A}\\,\\overline{B}$ 的结果为（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "作业构成：练习册笔写作业（必交，一周一次）、慕课题目、扫码题（建议完成，多为历年真题）。",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多"
+        "$\\overline{A}\\cup\\overline{B}$",
+        "$A\\cup B$",
+        "$\\Omega$",
+        "$\\overline{AB}$"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：作业构成：练习册笔写作业（必交，一周一次）、慕课题目、扫码题（建议完成，多为历年真题）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "三项分别对应：$A$ 发生 $B$ 不发生、$B$ 发生 $A$ 不发生、都不发生。合并后什么情况被排除了？",
+      "explanation": "三项分别表示\"只有 $A$\"、\"只有 $B$\"、\"都不发生\"，合并后恰好排除了\"$A,B$ 都发生\"即 $AB$，因此结果为 $\\overline{AB}$。又由德摩根律 $\\overline{AB}=\\overline{A}\\cup\\overline{B}$，故选项A和D等价，但化简过程直接得到 $\\overline{A}\\cup\\overline{B}$。选项B是\"至少一个发生\"，包含了 $AB$；选项C是必然事件，未排除任何情况。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:34 · 作业构成"
+        "label": "rec-01 · 说话人1 01:34:31 · 事件运算化简例题"
       }
     },
     {
       "id": "rec-01-q04",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "关于本讲“先修课程”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "下列关于互斥（互不相容）与对立（互逆）的命题，正确的是（  ）。",
       "options": [
-        "先修课程：微积分（从第二章开始大量使用，尤其是重积分、级数）、线性代数（统计部分高维问题用到矩阵向量）。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$A,B$ 互斥则 $A,B$ 对立",
+        "$A,B$ 对立则 $A,B$ 互斥",
+        "$A,B$ 互斥与 $A,B$ 对立等价",
+        "$A,B$ 对立当且仅当 $AB=\\emptyset$"
       ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：先修课程：微积分（从第二章开始大量使用，尤其是重积分、级数）、线性代数（统计部分高维问题用到矩阵向量）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "对立 = 互斥 + 并为全集。对立条件比互斥更强。",
+      "explanation": "对立事件定义要求同时满足 $AB=\\emptyset$（互斥）和 $A\\cup B=\\Omega$（并为全集），所以对立⇒互斥，但互斥⇏对立（除非并为全集），故选项B正确。选项A方向反了；选项C两者不等价，互斥是比对立更弱的条件；选项D只给了互斥条件 $AB=\\emptyset$，缺少并为全集的条件 $A\\cup B=\\Omega$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:34 · 先修课程"
+        "label": "rec-01 · 说话人1 01:10:41 · 对立事件定义"
       }
     },
     {
       "id": "rec-01-q05",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "关于本讲“第一章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $A,B$ 为事件，$A\\cup B$ 可写成 $A+B$ 的条件是（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "第一章：随机事件及概率（概念为主，高中基础）。"
+        "$A\\subset B$",
+        "$A,B$ 相互独立",
+        "$A,B$ 互不相容",
+        "$A,B$ 互为对立"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：第一章：随机事件及概率（概念为主，高中基础）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 2,
+      "hint": "$A+B$ 的记号隐含 $AB=\\emptyset$，即两者不能同时发生。",
+      "explanation": "$A+B$ 仅在 $A,B$ 互不相容（$AB=\\emptyset$）时才能使用，此时 $A\\cup B=A+B$。若 $A,B$ 不互斥，$A\\cup B\\neq A+B$，因为 $A+B$ 会重复计算 $AB$ 部分。选项D对立是互斥的特例，条件过强；选项B独立与互斥一般不同时成立。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 08:39 · 第一章"
+        "label": "rec-01 · 说话人1 01:10:41 · A+B使用条件"
       }
     },
     {
       "id": "rec-01-q06",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "关于本讲“第二章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $P(A)=0.7$，$P(B)=0.5$，$P(AB)=0.3$，则 $P(A\\overline{B})=$（  ）。",
       "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "第二章：随机变量及分布（随机变量、分布函数两个核心概念贯穿全书，一重积分）。",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$0.2$",
+        "$0.4$",
+        "$0.3$",
+        "$0.5$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：第二章：随机变量及分布（随机变量、分布函数两个核心概念贯穿全书，一重积分）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "$A\\overline{B}=A-AB$，用减法公式 $P(A-AB)=P(A)-P(AB)$。",
+      "explanation": "$A\\overline{B}$ 表示 $A$ 发生而 $B$ 不发生，即 $A-AB$。由减法公式 $P(A\\overline{B})=P(A)-P(AB)=0.7-0.3=0.4$。选项A错误地用了 $P(A)-P(B)=0.2$（减法公式不能直接减 $P(B)$，只能减 $P(AB)$）；选项C误把 $P(AB)$ 当作答案；选项D误把 $P(B)$ 当作答案。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 08:39 · 第二章"
+        "label": "rec-01 · 说话人1 01:10:41 · 差事件与减法公式"
       }
     },
     {
@@ -146,64 +146,64 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "关于本讲“第三章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $A,B$ 为事件，下列等式正确的是（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "第三章：多维随机变量（主要处理二维，重积分，为统计打基础）。",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域"
+        "$P(A-B)=P(A)-P(B)$",
+        "$P(A-B)=P(A)-P(AB)$",
+        "$P(A-B)=P(A)+P(B)-P(AB)$",
+        "$P(A-B)=P(A)\\cdot P(\\overline{B})$"
       ],
       "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：第三章：多维随机变量（主要处理二维，重积分，为统计打基础）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "$A-B=A\\overline{B}=A-AB$，且 $AB\\subset A$。",
+      "explanation": "差事件 $A-B=A\\overline{B}$，由于 $AB\\subset A$，由减法公式 $P(A-B)=P(A)-P(AB)$，选项B正确。选项A仅当 $B\\subset A$ 时成立，一般情形错误；选项C是 $P(A\\cup B)$ 的公式，不是差事件；选项D是独立条件下的公式，一般不成立。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 08:39 · 第三章"
+        "label": "rec-01 · 说话人1 01:10:41 · 差事件 $A-B=A\\cap\\overline{B}$"
       }
     },
     {
       "id": "rec-01-q08",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "关于本讲“第四章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "掷一枚骰子，观察出现的点数。设 $A=\\{\\text{偶数点}\\}$，$B=\\{\\text{点数}\\leq 3\\}$，则 $A\\cap B=$（  ）。",
       "options": [
-        "第四章：随机变量数字特征（期望、方差等，相对简单）。",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$\\{2,4,6\\}$",
+        "$\\{1,2,3\\}$",
+        "$\\{2\\}$",
+        "$\\{1,2,3,4,6\\}$"
       ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：第四章：随机变量数字特征（期望、方差等，相对简单）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 2,
+      "hint": "交集 = 同时属于 $A$ 和 $B$ 的元素。偶数且不超过3的点数。",
+      "explanation": "$A=\\{2,4,6\\}$，$B=\\{1,2,3\\}$，$A\\cap B=\\{2\\}$，即唯一同时满足\"偶数\"和\"不超过3\"的点数。选项A是 $A$ 本身；选项B是 $B$ 本身；选项D是 $A\\cup B$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 08:39 · 第四章"
+        "label": "rec-01 · 说话人1 01:10:41 · 和事件（并事件）"
       }
     },
     {
       "id": "rec-01-q09",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "关于本讲“第五章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "在区间 $[0,1]$ 上随机取一点，设 $A$ 表示\"取到 $\\frac{1}{2}$\"，则下列说法正确的是（  ）。",
       "options": [
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "第五章：大数定律与中心极限定理（一次课讲完，主要讲思想，概率论到统计的过渡）。"
+        "$P(A)=0$ 且 $A$ 是不可能事件",
+        "$P(A)=0$ 但 $A$ 不是不可能事件",
+        "$P(A)>0$ 因为 $\\frac{1}{2}\\in[0,1]$",
+        "$P(A)$ 不存在"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：第五章：大数定律与中心极限定理（一次课讲完，主要讲思想，概率论到统计的过渡）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "连续型样本空间中，单点概率为0，但该点属于样本空间。",
+      "explanation": "在连续型样本空间 $[0,1]$ 上，取到任一特定点的概率为0，即 $P(A)=0$。但 $\\frac{1}{2}\\in[0,1]$，事件 $A$ 非空集，不是不可能事件 $\\emptyset$。这说明 $P(A)=0\\nRightarrow A=\\emptyset$。选项A混淆了\"概率为0\"与\"不可能事件\"；选项C错误，连续型单点概率为0；选项D错误，概率存在且为0。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 08:39 · 第五章"
+        "label": "rec-01 · 说话人1 58:57 · 随机事件与样本空间"
       }
     },
     {
@@ -212,210 +212,194 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "关于本讲“第六章~第八章”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $A,B$ 为事件，且 $P(A)=1$，则下列结论正确的是（  ）。",
       "options": [
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "第六章~第八章：样本及抽样分布、参数估计、假设检验（统计部分，假设检验应用广泛）。",
-        "只要两个事件互斥，就一定可以推出二者独立"
+        "$A=\\Omega$（必然事件）",
+        "$P(\\overline{A})=0$",
+        "$A$ 一定发生",
+        "$P(A)>P(B)$ 对任意 $B$ 成立"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：第六章~第八章：样本及抽样分布、参数估计、假设检验（统计部分，假设检验应用广泛）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "$P(A)=1\\Rightarrow P(\\overline{A})=1-P(A)=0$。但 $P(A)=1$ 是否意味着 $A=\\Omega$？",
+      "explanation": "$P(A)=1\\Rightarrow P(\\overline{A})=1-P(A)=0$，选项B正确。但 $P(A)=1\\nRightarrow A=\\Omega$（类比 $P(A)=0\\nRightarrow A=\\emptyset$），选项A错误。选项C\"一定发生\"是必然事件的含义，$P(A)=1$ 不等于 $A$ 必然发生。选项D错误，$P(A)=1$ 不保证 $P(A)>P(B)$（如 $P(B)=1$ 时 $P(A)=P(B)$）。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:34 · 第六章~第八章"
+        "label": "rec-01 · 说话人1 58:57 · 必然事件与概率为1"
       }
     },
     {
       "id": "rec-01-q11",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\Omega$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\Omega$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $P(A)=P(B)=P(C)=\\frac{1}{3}$，$P(AB)=P(BC)=P(AC)=\\frac{1}{6}$，$P(ABC)=0$，则 $P(A\\cup B\\cup C)=$（  ）。",
+      "options": [
+        "$\\frac{3}{4}$",
+        "$\\frac{5}{8}$",
+        "$\\frac{1}{2}$",
+        "$\\frac{7}{12}$"
       ],
-      "total_points": 2,
+      "answer": 2,
+      "hint": "用三事件容斥原理：$P(A\\cup B\\cup C)=P(A)+P(B)+P(C)-P(AB)-P(BC)-P(AC)+P(ABC)$。",
+      "explanation": "由容斥原理：$P(A\\cup B\\cup C)=\\frac{1}{3}+\\frac{1}{3}+\\frac{1}{3}-\\frac{1}{6}-\\frac{1}{6}-\\frac{1}{6}+0=1-\\frac{1}{2}=\\frac{1}{2}$。选项A错误地只减去了两个交集项；选项B漏减了 $P(ABC)$ 或计算有误；选项D可能错误地多减了某项。关键在于三事件加法公式必须加减所有两两交集再加三事件交集。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 58:57 · 公式/定义填空"
+        "label": "rec-01 · 说话人1 01:26:38 · 分配律与事件运算"
       }
     },
     {
       "id": "rec-01-q12",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\emptyset$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\emptyset$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $A,B,C$ 为三个事件，\"$A,B,C$ 至少发生一个\"的对立事件是（  ）。",
+      "options": [
+        "$\\overline{A}\\,\\overline{B}\\,\\overline{C}$",
+        "$A\\cup B\\cup C$",
+        "$ABC$",
+        "$\\overline{A}\\cup\\overline{B}\\cup\\overline{C}$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "\"至少一个发生\"的对立是\"都不发生\"，用德摩根律验证。",
+      "explanation": "\"至少一个发生\"即 $A\\cup B\\cup C$，其对立事件 $\\overline{A\\cup B\\cup C}=\\overline{A}\\cap\\overline{B}\\cap\\overline{C}=\\overline{A}\\,\\overline{B}\\,\\overline{C}$（德摩根律推广），即\"都不发生\"。选项B是原事件本身；选项C是\"都发生\"；选项D是\"至少一个不发生\"，即 $\\overline{ABC}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 58:57 · 公式/定义填空"
+        "label": "rec-01 · 说话人1 01:31:42 · 至少发生一个的对立"
       }
     },
     {
       "id": "rec-01-q13",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\omega$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\omega$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $A\\subset B$，$P(A)=0.3$，$P(B)=0.7$，则 $P(B-A)=$（  ）。",
+      "options": [
+        "$0.3$",
+        "$0.4$",
+        "$0.7$",
+        "$0.2$"
       ],
-      "total_points": 2,
+      "answer": 1,
+      "hint": "$A\\subset B$ 时 $AB=A$，故 $P(B-A)=P(B)-P(AB)=P(B)-P(A)$。",
+      "explanation": "$A\\subset B$ 时 $AB=A$，故 $P(B-A)=P(B)-P(AB)=P(B)-P(A)=0.7-0.3=0.4$。选项A误把 $P(A)$ 当作答案；选项C误把 $P(B)$ 当作答案；选项D可能误用了 $P(B)-2P(A)$。关键在于包含关系下减法公式简化为 $P(B)-P(A)$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:03:56 · 公式/定义填空"
+        "label": "rec-01 · 说话人1 01:10:41 · 包含关系与差事件"
       }
     },
     {
       "id": "rec-01-q14",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\Omega=\\{HHH,HHT,HTH,HTT,THH,THT,TTH,TTT\\}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\Omega=\\{HHH,HHT,HTH,HTT,THH,THT,TTH,TTT\\}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "掷一枚骰子，$\\overline{AB}$ 表示的事件含义是（  ）。",
+      "options": [
+        "$A,B$ 都不发生",
+        "$A,B$ 至少一个不发生",
+        "$A,B$ 都发生",
+        "$A$ 不发生且 $B$ 发生"
       ],
-      "total_points": 2,
+      "answer": 1,
+      "hint": "$\\overline{AB}=\\overline{A}\\cup\\overline{B}$（德摩根律），即 $AB$ 的对立。",
+      "explanation": "$\\overline{AB}$ 是\"$A,B$ 同时发生\"的对立事件，由德摩根律 $\\overline{AB}=\\overline{A}\\cup\\overline{B}$，即\"$A$ 不发生或 $B$ 不发生\"，等价于\"至少一个不发生\"。选项A是 $\\overline{A}\\,\\overline{B}$（都不发生），比 $\\overline{AB}$ 更强；选项C是 $AB$ 本身；选项D只描述了一种情况。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 58:57 · 公式/定义填空"
+        "label": "rec-01 · 说话人1 01:26:38 · 德摩根律"
       }
     },
     {
       "id": "rec-01-q15",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$2^3=8$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $2^3=8$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $P(A)=0.6$，$P(B)=0.4$，$P(A\\cup B)=0.8$，则 $P(\\overline{A}\\,\\overline{B})=$（  ）。",
+      "options": [
+        "$0.2$",
+        "$0.8$",
+        "$0.1$",
+        "$0.4$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "$P(\\overline{A}\\,\\overline{B})=P(\\overline{A\\cup B})=1-P(A\\cup B)$。",
+      "explanation": "$\\overline{A}\\,\\overline{B}=\\overline{A\\cup B}$（德摩根律），故 $P(\\overline{A}\\,\\overline{B})=1-P(A\\cup B)=1-0.8=0.2$。选项B误把 $P(A\\cup B)$ 当作答案；选项C无依据；选项D误把 $P(B)$ 当作答案。也可先求 $P(AB)=P(A)+P(B)-P(A\\cup B)=0.6+0.4-0.8=0.2$，再由 $P(\\overline{A}\\,\\overline{B})=1-P(A)-P(B)+P(AB)=1-0.6-0.4+0.2=0.2$ 验证。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:03:56 · 公式/定义填空"
+        "label": "rec-01 · 说话人1 01:26:38 · 德摩根律与概率计算"
       }
     },
     {
       "id": "rec-01-q16",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“经典趣例”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "经典趣例：三门问题（换门后获车概率从1/3提高到2/3，100扇门极端情形更易理解）。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
-      ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：经典趣例：三门问题（换门后获车概率从1/3提高到2/3，100扇门极端情形更易理解）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "德摩根律的推广形式：$\\overline{\\bigcup_{i=1}^n A_i}=$ ______。",
+      "answer": "$\\bigcap_{i=1}^n \\overline{A_i}$",
+      "hint": "并的对立等于对立的交，符号改变方向。",
+      "explanation": "德摩根律推广：$\\overline{\\bigcup_{i=1}^n A_i}=\\bigcap_{i=1}^n \\overline{A_i}$，即\"至少一个发生\"的对立是\"都不发生\"。口诀：\"帽子断开，符号改变，帽子别丢\"。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:34 · 经典趣例"
+        "label": "rec-01 · 说话人1 01:26:38 · 对偶律（德摩根律）"
       }
     },
     {
       "id": "rec-01-q17",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“大数据四大特征”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "大数据四大特征：数据量大、快速流转、类型多样化、价值密度低（数据挖掘的必要性）。"
-      ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：大数据四大特征：数据量大、快速流转、类型多样化、价值密度低（数据挖掘的必要性）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "设 $A,B$ 为事件，加法公式为 $P(A\\cup B)=P(A)+P(B)-$______。",
+      "answer": "$P(AB)$",
+      "hint": "并集概率 = 各自概率之和减去重复计算的交集部分。",
+      "explanation": "$P(A\\cup B)=P(A)+P(B)-P(AB)$，其中 $P(AB)$ 是交集概率，被 $P(A)$ 和 $P(B)$ 各计算了一次，需减去一次。当 $A,B$ 互斥时 $P(AB)=0$，退化为 $P(A\\cup B)=P(A)+P(B)$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:34 · 大数据四大特征"
+        "label": "rec-01 · 说话人1 01:26:38 · 分配律与加法公式"
       }
     },
     {
       "id": "rec-01-q18",
-      "type": "single_choice",
-      "difficulty": "medium",
+      "type": "fill_blank",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“描述性统计局限”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "描述性统计局限：平均数易被极端值拉高（如\"村子一个千万富翁九个穷光蛋，平均百万\"无意义）。",
-        "可以脱离课堂给出的前提条件直接套用"
-      ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：描述性统计局限：平均数易被极端值拉高（如\"村子一个千万富翁九个穷光蛋，平均百万\"无意义）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "设 $P(A)=0.6$，$P(B)=0.4$，$P(A\\cup B)=0.8$，则 $P(AB)=$ ______。",
+      "answer": "$0.2$",
+      "hint": "由加法公式反解：$P(AB)=P(A)+P(B)-P(A\\cup B)$。",
+      "explanation": "由加法公式 $P(A\\cup B)=P(A)+P(B)-P(AB)$，得 $P(AB)=P(A)+P(B)-P(A\\cup B)=0.6+0.4-0.8=0.2$。此题考查加法公式的逆用，考研常见出法。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:34 · 描述性统计局限"
+        "label": "rec-01 · 说话人1 01:26:38 · 加法公式应用"
       }
     },
     {
       "id": "rec-01-q19",
       "type": "fill_blank",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\Omega=\\{0,1,2,3\\}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\Omega=\\{0,1,2,3\\}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "设 $P(A)=\\frac{1}{3}$，$P(B)=\\frac{1}{2}$，$P(\\overline{A}\\,\\overline{B})=\\frac{1}{3}$，则 $P(B|A)=$ ______。",
+      "answer": "$\\frac{1}{2}$",
+      "hint": "先由 $P(\\overline{A}\\,\\overline{B})=1-P(A\\cup B)$ 求出 $P(AB)$，再代入条件概率公式。",
+      "explanation": "$P(\\overline{A}\\,\\overline{B})=1-P(A\\cup B)=\\frac{1}{3}$，故 $P(A\\cup B)=\\frac{2}{3}$。由加法公式 $P(AB)=P(A)+P(B)-P(A\\cup B)=\\frac{1}{3}+\\frac{1}{2}-\\frac{2}{3}=\\frac{1}{6}$。$P(B|A)=\\frac{P(AB)}{P(A)}=\\frac{1/6}{1/3}=\\frac{1}{2}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 58:57 · 公式/定义填空"
+        "label": "rec-01 · 说话人1 01:26:38 · 德摩根律与条件概率综合"
       }
     },
     {
@@ -424,132 +408,30 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-01",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$A\\subset\\Omega$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $A\\subset\\Omega$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "设 $A,B$ 互为对立事件，$P(A)=\\frac{1}{3}$，则 $P(\\overline{B})=$ ______。",
+      "answer": "$\\frac{1}{3}$",
+      "hint": "对立事件 $B=\\overline{A}$，则 $\\overline{B}=A$。",
+      "explanation": "$A,B$ 互为对立，则 $B=\\overline{A}$，$\\overline{B}=A$，故 $P(\\overline{B})=P(A)=\\frac{1}{3}$。也可直接计算：$P(B)=1-P(A)=\\frac{2}{3}$，$P(\\overline{B})=1-P(B)=\\frac{1}{3}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:09:06 · 公式/定义填空"
-      }
-    },
-    {
-      "id": "rec-01-q21",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-01",
-      "points": 10,
-      "label": "计算题",
-      "stem": "抛三次硬币。分别按“记录每次正反面”和“只记录正面次数”写出样本空间。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：样本空间。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：按每次正反面记录有 $2^3=8$ 个样本点；若只记录正面次数，样本空间为 $\\{0,1,2,3\\}$。结论说明同一试验的样本空间由研究目的决定。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 54:10 · 样本空间"
-      }
-    },
-    {
-      "id": "rec-01-q22",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-01",
-      "points": 10,
-      "label": "计算题",
-      "stem": "用 $A,B,C$ 表示“恰好发生一个”和“至少发生一个”，并用德摩根律写出后者的对立事件。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：事件表示。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：恰好发生一个为 $A\\overline B\\overline C\\cup\\overline A B\\overline C\\cup\\overline A\\overline B C$；至少发生一个为 $A\\cup B\\cup C$；其对立事件为 $\\overline A\\overline B\\overline C$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:34 · 事件表示"
-      }
-    },
-    {
-      "id": "rec-01-q23",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-01",
-      "points": 10,
-      "label": "计算题",
-      "stem": "证明对立事件一定互斥，但互斥事件不一定对立。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：互斥对立。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：若 $\\overline A$ 是 $A$ 的对立事件，则 $A\\overline A=\\emptyset$ 且 $A\\cup\\overline A=\\Omega$，所以一定互斥；但两个互斥事件可能并不覆盖全集，因此不一定对立。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:34 · 互斥对立"
-      }
-    },
-    {
-      "id": "rec-01-q24",
-      "type": "essay",
-      "difficulty": "hard",
-      "source": "current_chapter",
-      "sourceChapter": "rec-01",
-      "points": 20,
-      "label": "综合计算/证明",
-      "stem": "化简 $A\\overline B\\cup\\overline A B\\cup\\overline A\\overline B$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：事件化简。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：后两项合并为 $\\overline A(B\\cup\\overline B)=\\overline A$；再与第一项合并：$A\\overline B\\cup\\overline A=(A\\cup\\overline A)(\\overline B\\cup\\overline A)=\\overline A\\cup\\overline B=\\overline{AB}$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（5分）",
-        "展开关键推导或分段计算（7分）",
-        "得到完整答案或证明结论（5分）",
-        "说明条件、定义域和易错点（3分）"
-      ],
-      "total_points": 20,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-01.md",
-        "label": "rec-01 · 说话人1 01:34 · 事件化简"
+        "label": "rec-01 · 说话人1 01:10:41 · 对立事件"
       }
     }
   ],
   "summary": {
-    "totalQuestions": 24,
+    "totalQuestions": 20,
     "byType": {
-      "single_choice": 13,
-      "fill_blank": 7,
-      "essay": 4
+      "single_choice": 15,
+      "fill_blank": 5
     },
     "bySource": {
-      "current_chapter": 24
+      "current_chapter": 20
     },
     "byDifficulty": {
-      "basic": 15,
-      "medium": 8,
-      "hard": 1
+      "basic": 1,
+      "medium": 12,
+      "hard": 7
     }
   }
 }

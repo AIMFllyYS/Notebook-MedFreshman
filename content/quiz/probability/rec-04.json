@@ -1,7 +1,7 @@
 {
   "subjectId": "probability",
   "chapterId": "rec-04",
-  "generatedAt": "2026-06-24",
+  "generatedAt": "2026-07-01",
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
@@ -11,133 +11,133 @@
     {
       "id": "rec-04-q01",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "关于本讲“分布列比分布函数更简单直观，是处理离”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设离散型随机变量 $X$ 的分布列为 $P(X=1)=P(X=2)=P(X=3)=c$，则常数 $c=$（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "分布列比分布函数更简单直观，是处理离散随机变量的主要工具。"
+        "$1$",
+        "$2$",
+        "$3$",
+        "$\\frac{1}{3}$"
       ],
       "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：分布列比分布函数更简单直观，是处理离散随机变量的主要工具。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "分布列规范性：概率之和为1。",
+      "explanation": "由规范性 $P(X=1)+P(X=2)+P(X=3)=3c=1$，故 $c=\\frac{1}{3}$。选项A、B、C均大于 $\\frac{1}{3}$，不满足规范性。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 00:00 · 分布列比分布函数更简单直观，是处理离"
+        "label": "rec-04 · 说话人1 01:10 · 分布列规范性"
       }
     },
     {
       "id": "rec-04-q02",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "关于本讲“每次试验只有两个结果”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $X\\sim B(10,0.3)$，则 $P(X=3)=$（  ）。",
       "options": [
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "每次试验只有两个结果：$A$（成功，$P(A)=p$）或$\\overline{A}$（失败，$P(\\overline{A})=1-p=q$）。",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$C_{10}^3(0.3)^3(0.7)^7$",
+        "$C_{10}^3(0.3)^7(0.7)^3$",
+        "$(0.3)^3(0.7)^7$",
+        "$C_{10}^7(0.3)^3(0.7)^7$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：每次试验只有两个结果：$A$（成功，$P(A)=p$）或$\\overline{A}$（失败，$P(\\overline{A})=1-p=q$）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "二项分布公式：$P(X=k)=C_n^k p^k (1-p)^{n-k}$。",
+      "explanation": "$P(X=3)=C_{10}^3(0.3)^3(0.7)^7$。选项B指数错误；选项C漏了组合数；选项D组合数下标错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 00:00 · 每次试验只有两个结果"
+        "label": "rec-04 · 说话人1 01:36 · 二项分布"
       }
     },
     {
       "id": "rec-04-q03",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "关于本讲“引入随机变量$X$表示n次试验中成功”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $X\\sim B(10,0.3)$，则 $X$ 的最可能值为（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "引入随机变量$X$表示n次试验中成功的次数。",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多"
+        "$2$",
+        "$3$",
+        "$4$",
+        "$5$"
       ],
       "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：引入随机变量$X$表示n次试验中成功的次数。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "最可能值 $k_0=\\lfloor(n+1)p\\rfloor$。",
+      "explanation": "$k_0=\\lfloor(10+1)\\times0.3\\rfloor=\\lfloor3.3\\rfloor=3$。选项A误算为 $\\lfloor10\\times0.3\\rfloor$；选项C、D无依据。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 01:36 · 引入随机变量$X$表示n次试验中成功"
+        "label": "rec-04 · 说话人1 11:51 · 最可能值"
       }
     },
     {
       "id": "rec-04-q04",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "关于本讲“$X$的可能取值”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $X\\sim B(n,p)$，则 $X$ 有两个最可能值的条件是（  ）。",
       "options": [
-        "$X$的可能取值：$0,1,2,\\cdots,n$。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$(n+1)p$ 为整数",
+        "$(n+1)p$ 为奇数",
+        "$(n+1)p$ 为偶数",
+        "$np$ 为整数"
       ],
       "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：$X$的可能取值：$0,1,2,\\cdots,n$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "当 $(n+1)p$ 为整数时，$k_0=(n+1)p$ 和 $k_0-1$ 都是最大值。",
+      "explanation": "当 $(n+1)p$ 为整数时，$P(X=k)$ 在 $k=(n+1)p$ 和 $k=(n+1)p-1$ 处同时达到最大值（双峰）。选项B、C奇偶性无关；选项D不是双峰条件。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 00:00 · $X$的可能取值"
+        "label": "rec-04 · 说话人1 11:51 · 最可能值双峰"
       }
     },
     {
       "id": "rec-04-q05",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "关于本讲“事件$\\{X=k\\}$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "泊松定理的条件是（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "事件$\\{X=k\\}$：n次试验成功k次，等价于从n个位置选k个放\"成功\"，剩下n-k个放\"失败\"，共$\\binom{n}{k}$种序列。"
+        "$n\\to\\infty$，$p\\to0$，$np\\to\\lambda$",
+        "$n\\to\\infty$，$p$ 固定",
+        "$n$ 固定，$p\\to0$",
+        "$np\\to0$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：事件$\\{X=k\\}$：n次试验成功k次，等价于从n个位置选k个放\"成功\"，剩下n-k个放\"失败\"，共$\\binom{n}{k}$种序列。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "泊松定理：$n$ 很大、$p$ 很小、$np$ 适中时，二项分布近似泊松分布。",
+      "explanation": "泊松定理条件：$n\\to\\infty$，$p\\to0$，$np\\to\\lambda$（常数）。此时 $C_n^k p^k(1-p)^{n-k}\\approx\\frac{\\lambda^k}{k!}e^{-\\lambda}$。选项B $p$ 固定时二项分布不近似泊松；选项C $n$ 固定时不适用；选项D $np\\to0$ 时概率趋于0。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 01:36 · 事件$\\{X=k\\}$"
+        "label": "rec-04 · 说话人1 11:51 · 泊松定理"
       }
     },
     {
       "id": "rec-04-q06",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "关于本讲“每个序列概率为$p^k q^{n-k”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $X\\sim B(100,0.01)$，用泊松近似计算 $P(X=2)\\approx$（  ）。",
       "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "每个序列概率为$p^k q^{n-k}$（试验独立，概率相乘）。",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$\\frac{e^{-1}}{2}$",
+        "$\\frac{e^{-1}}{2!}$",
+        "$\\frac{e^{-1}}{2!}\\cdot1^2$",
+        "$e^{-1}$"
       ],
       "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：每个序列概率为$p^k q^{n-k}$（试验独立，概率相乘）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "泊松近似：$\\lambda=np=1$，$P(X=2)\\approx\\frac{\\lambda^2}{2!}e^{-\\lambda}$。",
+      "explanation": "$\\lambda=np=100\\times0.01=1$，$P(X=2)\\approx\\frac{1^2}{2!}e^{-1}=\\frac{e^{-1}}{2}$。选项A漏了 $\\lambda^2$；选项B漏了 $\\lambda^2$；选项D是 $P(X=0)$ 或 $P(X=1)$ 的近似。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 00:00 · 每个序列概率为$p^k q^{n-k"
+        "label": "rec-04 · 说话人1 11:51 · 泊松逼近"
       }
     },
     {
@@ -146,276 +146,260 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "关于本讲“两个参数”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "泊松分布 $P(\\lambda)$ 的参数 $\\lambda$ 的含义是（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "两个参数：n（重复试验次数）、p（单次成功概率）。",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域"
+        "取值范围",
+        "期望和方差",
+        "最可能值",
+        "概率总和"
       ],
       "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：两个参数：n（重复试验次数）、p（单次成功概率）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "泊松分布 $E(X)=D(X)=\\lambda$。",
+      "explanation": "泊松分布的期望和方差都等于参数 $\\lambda$，即 $E(X)=D(X)=\\lambda$。选项A是取值范围（非负整数）；选项C最可能值在 $\\lfloor\\lambda\\rfloor$ 附近；选项D概率总和为1。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 06:11 · 两个参数"
+        "label": "rec-04 · 说话人1 11:51 · 泊松分布参数"
       }
     },
     {
       "id": "rec-04-q08",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "关于本讲“参数给定后，概率规律完全确定”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $X\\sim P(\\lambda)$，则 $P(X=k)=$（  ）。",
       "options": [
-        "参数给定后，概率规律完全确定。",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$\\frac{\\lambda^k}{k!}$",
+        "$\\frac{\\lambda^k}{k!}e^{-\\lambda}$",
+        "$e^{-\\lambda}$",
+        "$\\lambda^k e^{-\\lambda}$"
       ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：参数给定后，概率规律完全确定。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "泊松分布公式：$P(X=k)=\\frac{\\lambda^k}{k!}e^{-\\lambda}$。",
+      "explanation": "泊松分布公式：$P(X=k)=\\frac{\\lambda^k}{k!}e^{-\\lambda}$（$k=0,1,2,\\cdots$）。选项A漏了 $e^{-\\lambda}$；选项C是 $P(X=0)$；选项D漏了 $k!$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 00:00 · 参数给定后，概率规律完全确定"
+        "label": "rec-04 · 说话人1 11:51 · 泊松分布"
       }
     },
     {
       "id": "rec-04-q09",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "关于本讲“不依赖具体模型，只要抽象出n重独立伯”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "二项分布与泊松分布的主要区别是（  ）。",
       "options": [
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "不依赖具体模型，只要抽象出n重独立伯努利试验共性即可应用。"
+        "二项分布描述有限次试验，泊松分布描述稀有事件",
+        "二项分布参数为 $n,p$，泊松分布参数为 $\\lambda$",
+        "二项分布取值有限，泊松分布取值无限",
+        "以上都是"
       ],
       "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：不依赖具体模型，只要抽象出n重独立伯努利试验共性即可应用。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "从参数、取值范围、应用场景三方面比较。",
+      "explanation": "二项分布描述 $n$ 重伯努利试验，参数 $n,p$，取值 $0,1,\\cdots,n$（有限）；泊松分布描述稀有事件（如单位时间内事件发生次数），参数 $\\lambda$，取值 $0,1,2,\\cdots$（无限）。选项A、B、C均正确，故选D。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 00:00 · 不依赖具体模型，只要抽象出n重独立伯"
+        "label": "rec-04 · 说话人1 11:51 · 二项vs泊松"
       }
     },
     {
       "id": "rec-04-q10",
       "type": "single_choice",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "关于本讲“当$k<(n+1)p$时，比值>1，”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $X$ 服从负二项分布（等待第 $r$ 次成功所需的试验次数），则 $X$ 的取值范围是（  ）。",
       "options": [
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "当$k<(n+1)p$时，比值>1，概率递增。",
-        "只要两个事件互斥，就一定可以推出二者独立"
+        "$0,1,\\cdots,r$",
+        "$r,r+1,\\cdots$",
+        "$1,2,\\cdots$",
+        "$0,1,2,\\cdots$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：当$k<(n+1)p$时，比值>1，概率递增。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "等待第 $r$ 次成功至少需要 $r$ 次试验。",
+      "explanation": "等待第 $r$ 次成功所需的试验次数至少为 $r$，故取值范围为 $r,r+1,\\cdots$。选项A错误，下限为 $r$ 而非 0；选项C、D缺少下限 $r$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 11:51 · 当$k<(n+1)p$时，比值>1，"
+        "label": "rec-04 · 说话人1 11:51 · 负二项分布"
       }
     },
     {
       "id": "rec-04-q11",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$F(x)=P(X\\leq x)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $F(x)=P(X\\leq x)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "几何分布是负二项分布的特例，对应（  ）。",
+      "options": [
+        "$r=0$",
+        "$r=1$",
+        "$r=2$",
+        "$r\\to\\infty$"
       ],
-      "total_points": 2,
+      "answer": 1,
+      "hint": "几何分布描述等待第1次成功所需的试验次数。",
+      "explanation": "几何分布是负二项分布 $r=1$ 的特例，描述等待第1次成功所需的试验次数。选项A $r=0$ 无意义；选项C、D不符合几何分布定义。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 00:00 · 公式/定义填空"
+        "label": "rec-04 · 说话人1 11:51 · 几何分布"
       }
     },
     {
       "id": "rec-04-q12",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$X\\sim B(1,p)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $X\\sim B(1,p)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "泊松分布的稀疏性质是指（  ）。",
+      "options": [
+        "取值稀疏",
+        "小概率事件",
+        "单位时间内事件发生次数少",
+        "参数 $\\lambda$ 较小"
       ],
-      "total_points": 2,
+      "answer": 1,
+      "hint": "泊松分布常用于描述稀有事件（小概率事件）。",
+      "explanation": "泊松分布的稀疏性质指它常用于描述稀有事件（小概率事件），如单位时间内电话呼叫次数、放射性粒子衰变次数等。选项A取值不稀疏（可任意大）；选项C描述不准确；选项D $\\lambda$ 可任意大。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 01:10 · 公式/定义填空"
+        "label": "rec-04 · 说话人1 11:51 · 泊松稀疏性质"
       }
     },
     {
       "id": "rec-04-q13",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$P(X=1)=p,\\quad P(X=0)=1-p=q$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $P(X=1)=p,\\quad P(X=0)=1-p=q$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $X\\sim B(n,p)$，则 $E(X)=$（  ）。",
+      "options": [
+        "$np(1-p)$",
+        "$np$",
+        "$p$",
+        "$n$"
       ],
-      "total_points": 2,
+      "answer": 1,
+      "hint": "二项分布期望 $E(X)=np$。",
+      "explanation": "二项分布期望 $E(X)=np$。选项A是方差；选项C是一次试验成功概率；选项D是试验次数。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 01:10 · 公式/定义填空"
+        "label": "rec-04 · 说话人1 11:51 · 二项分布期望"
       }
     },
     {
       "id": "rec-04-q14",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$p=0$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $p=0$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "0-1分布（伯努利分布）是二项分布的特例，对应（  ）。",
+      "options": [
+        "$n=0$",
+        "$n=1$",
+        "$p=0$",
+        "$p=1$"
       ],
-      "total_points": 2,
+      "answer": 1,
+      "hint": "0-1分布描述单次伯努利试验。",
+      "explanation": "0-1分布是二项分布 $n=1$ 的特例，即 $B(1,p)$。选项A $n=0$ 无意义；选项C、D是退化情形。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 01:10 · 公式/定义填空"
+        "label": "rec-04 · 说话人1 01:10 · 0-1分布"
       }
     },
     {
       "id": "rec-04-q15",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$p=1$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $p=1$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $X\\sim B(10,0.5)$，则 $P(X\\leq 3)=$（  ）。",
+      "options": [
+        "$\\sum_{k=0}^3 C_{10}^k(0.5)^k(0.5)^{10-k}$",
+        "$\\sum_{k=0}^3 C_{10}^k(0.5)^{10}$",
+        "$C_{10}^3(0.5)^3(0.5)^7$",
+        "$1-\\sum_{k=4}^{10} C_{10}^k(0.5)^{10}$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "累积概率：$P(X\\leq 3)=\\sum_{k=0}^3 P(X=k)$。",
+      "explanation": "$P(X\\leq 3)=\\sum_{k=0}^3 C_{10}^k(0.5)^k(0.5)^{10-k}=\\sum_{k=0}^3 C_{10}^k(0.5)^{10}$。选项B正确但不如A直接；选项C是 $P(X=3)$；选项D是等价形式但不如A直接。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 01:10 · 公式/定义填空"
+        "label": "rec-04 · 说话人1 11:51 · 二项分布概率"
       }
     },
     {
       "id": "rec-04-q16",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“当$k>(n+1)p$时，比值<1，”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "当$k>(n+1)p$时，比值<1，概率递减。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
-      ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：当$k>(n+1)p$时，比值<1，概率递减。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "设 $X\\sim B(10,0.3)$，则 $X$ 的最可能值为 ______。",
+      "answer": "$3$",
+      "hint": "最可能值 $k_0=\\lfloor(n+1)p\\rfloor$。",
+      "explanation": "$k_0=\\lfloor(10+1)\\times0.3\\rfloor=\\lfloor3.3\\rfloor=3$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 11:51 · 当$k>(n+1)p$时，比值<1，"
+        "label": "rec-04 · 说话人1 11:51 · 最可能值"
       }
     },
     {
       "id": "rec-04-q17",
-      "type": "single_choice",
-      "difficulty": "medium",
+      "type": "fill_blank",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“抛13次均匀硬币（n=13,p=0.”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "抛13次均匀硬币（n=13,p=0.5），$(n+1)p=7$是整数，最可能看到6次或7次正面。"
-      ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：抛13次均匀硬币（n=13,p=0.5），$(n+1)p=7$是整数，最可能看到6次或7次正面。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "设 $X\\sim B(100,0.02)$，用泊松近似计算 $P(X=1)\\approx$ ______（用 $\\lambda$ 表示）。",
+      "answer": "$\\lambda e^{-\\lambda}$，其中 $\\lambda=2$",
+      "hint": "泊松近似：$\\lambda=np=2$，$P(X=1)\\approx\\frac{\\lambda^1}{1!}e^{-\\lambda}=\\lambda e^{-\\lambda}$。",
+      "explanation": "$\\lambda=np=100\\times0.02=2$，$P(X=1)\\approx\\frac{2^1}{1!}e^{-2}=2e^{-2}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 11:51 · 抛13次均匀硬币（n=13,p=0."
+        "label": "rec-04 · 说话人1 11:51 · 泊松逼近"
       }
     },
     {
       "id": "rec-04-q18",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“抛100次均匀硬币，最可能50次正面”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "抛100次均匀硬币，最可能50次正面，符合直觉。",
-        "可以脱离课堂给出的前提条件直接套用"
-      ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：抛100次均匀硬币，最可能50次正面，符合直觉。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "设 $X\\sim P(\\lambda)$，则 $E(X)=$ ______。",
+      "answer": "$\\lambda$",
+      "hint": "泊松分布期望等于参数。",
+      "explanation": "泊松分布 $E(X)=\\lambda$，且 $D(X)=\\lambda$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 11:51 · 抛100次均匀硬币，最可能50次正面"
+        "label": "rec-04 · 说话人1 11:51 · 泊松分布期望"
       }
     },
     {
       "id": "rec-04-q19",
       "type": "fill_blank",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\overline{A}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\overline{A}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "设 $X$ 服从几何分布，$P(X=k)=(1-p)^{k-1}p$（$k=1,2,\\cdots$），则 $E(X)=$ ______。",
+      "answer": "$\\frac{1}{p}$",
+      "hint": "几何分布期望 $E(X)=\\frac{1}{p}$。",
+      "explanation": "几何分布（等待第1次成功）的期望 $E(X)=\\frac{1}{p}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 01:36 · 公式/定义填空"
+        "label": "rec-04 · 说话人1 11:51 · 几何分布"
       }
     },
     {
@@ -424,132 +408,30 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-04",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$P(\\overline{A})=1-p=q$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $P(\\overline{A})=1-p=q$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "设 $X\\sim B(5,0.4)$，则 $P(X=2)=$ ______。",
+      "answer": "$C_5^2(0.4)^2(0.6)^3$",
+      "hint": "二项分布公式：$P(X=k)=C_n^k p^k (1-p)^{n-k}$。",
+      "explanation": "$P(X=2)=C_5^2(0.4)^2(0.6)^3=10\\times0.16\\times0.216=0.3456$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 01:36 · 公式/定义填空"
-      }
-    },
-    {
-      "id": "rec-04-q21",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-04",
-      "points": 10,
-      "label": "计算题",
-      "stem": "设 $X\\sim B(10,0.3)$，求 $P(X=3)$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：二项概率。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$P(X=3)=C_{10}^3(0.3)^3(0.7)^7=0.266827932$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 00:00 · 二项概率"
-      }
-    },
-    {
-      "id": "rec-04-q22",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-04",
-      "points": 10,
-      "label": "计算题",
-      "stem": "单位时间平均发生 4 次，按泊松模型求恰发生 2 次的概率。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：泊松概率。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$P(X=2)=e^{-4}4^2/2!=8e^{-4}\\approx0.146526$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 00:00 · 泊松概率"
-      }
-    },
-    {
-      "id": "rec-04-q23",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-04",
-      "points": 10,
-      "label": "计算题",
-      "stem": "设 $X\\sim B(20,0.4)$，用后项比前项判断最可能值。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：二项最可能值。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$(n+1)p=8.4$，概率在 8 附近达到峰值，枚举验证最大点为 $k=8$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 00:00 · 二项最可能值"
-      }
-    },
-    {
-      "id": "rec-04-q24",
-      "type": "essay",
-      "difficulty": "hard",
-      "source": "current_chapter",
-      "sourceChapter": "rec-04",
-      "points": 20,
-      "label": "综合计算/证明",
-      "stem": "从 $n$ 重独立伯努利试验推导二项分布公式并验证规范性。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：二项分布推导。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：恰有 $k$ 次成功需选成功位置 $C_n^k$，每个序列概率 $p^k(1-p)^{n-k}$，故 $P(X=k)=C_n^kp^k(1-p)^{n-k}$；求和由二项式定理得 1。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（5分）",
-        "展开关键推导或分段计算（7分）",
-        "得到完整答案或证明结论（5分）",
-        "说明条件、定义域和易错点（3分）"
-      ],
-      "total_points": 20,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-04.md",
-        "label": "rec-04 · 说话人1 00:00 · 二项分布推导"
+        "label": "rec-04 · 说话人1 01:36 · 二项分布"
       }
     }
   ],
   "summary": {
-    "totalQuestions": 24,
+    "totalQuestions": 20,
     "byType": {
-      "single_choice": 13,
-      "fill_blank": 7,
-      "essay": 4
+      "single_choice": 15,
+      "fill_blank": 5
     },
     "bySource": {
-      "current_chapter": 24
+      "current_chapter": 20
     },
     "byDifficulty": {
-      "basic": 15,
-      "medium": 8,
-      "hard": 1
+      "basic": 1,
+      "medium": 10,
+      "hard": 9
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "subjectId": "probability",
   "chapterId": "rec-02",
-  "generatedAt": "2026-06-24",
+  "generatedAt": "2026-07-01",
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
@@ -11,411 +11,395 @@
     {
       "id": "rec-02-q01",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "关于本讲“满足以上三点的集合族称为$\\sigm”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $\\mathcal{F}$ 是样本空间 $\\Omega$ 的子集族，下列条件中不是 $\\sigma$-域定义要求的是（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "满足以上三点的集合族称为$\\sigma$-域（$\\sigma$-代数），也叫事件域，因为其中的元素就是我们关心的事件。"
+        "$\\Omega\\in\\mathcal{F}$",
+        "若 $A\\in\\mathcal{F}$，则 $\\overline{A}\\in\\mathcal{F}$",
+        "若 $A,B\\in\\mathcal{F}$，则 $A\\cup B\\in\\mathcal{F}$",
+        "若 $A_1,A_2,\\cdots\\in\\mathcal{F}$，则 $\\bigcup_{n=1}^\\infty A_n\\in\\mathcal{F}$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：满足以上三点的集合族称为$\\sigma$-域（$\\sigma$-代数），也叫事件域，因为其中的元素就是我们关心的事件。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 2,
+      "hint": "$\\sigma$-域要求对可列并封闭，对有限并封闭是推论而非定义。",
+      "explanation": "$\\sigma$-域的三条定义是：1) $\\Omega\\in\\mathcal{F}$；2) 对补集封闭；3) 对可列并封闭。选项C只要求有限并封闭，不是定义要求（虽然可列并封闭⇒有限并封闭，但定义中是可列并）。选项A、B、D都是定义的组成部分。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 00:04 · 满足以上三点的集合族称为$\\sigm"
+        "label": "rec-02 · 说话人1 05:13 · σ域三条件"
       }
     },
     {
       "id": "rec-02-q02",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "关于本讲“概率是**集合函数”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $P(A)=0.5$，$P(B)=0.6$，则下列结论正确的是（  ）。",
       "options": [
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "概率是**集合函数**：对每个事件$A\\in\\mathcal{F}$，对应一个实数$P(A)$，满足三条公理：。",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$P(A\\cup B)=1.1$",
+        "$P(AB)\\leq 0.5$",
+        "$P(AB)\\geq 0.1$",
+        "$P(A\\cup B)\\leq 0.6$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：概率是**集合函数**：对每个事件$A\\in\\mathcal{F}$，对应一个实数$P(A)$，满足三条公理：。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "用概率公理的非负性和规范性，以及 $P(AB)\\leq P(A)$。",
+      "explanation": "由概率公理，$P(A\\cup B)\\leq 1$，故选项A错误（1.1>1）。由 $AB\\subset A$，$P(AB)\\leq P(A)=0.5$，选项B正确。选项C错误，$P(AB)$ 最小可为0（如A,B互斥）。选项D错误，$P(A\\cup B)\\geq P(B)=0.6$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 00:04 · 概率是**集合函数"
+        "label": "rec-02 · 说话人1 18:26 · 概率公理"
       }
     },
     {
       "id": "rec-02-q03",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "关于本讲“定义域”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $P(A)=0$，则下列说法正确的是（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "定义域：事件域$\\mathcal{F}$（自变量是事件$A\\in\\mathcal{F}$）。",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多"
+        "$A$ 是不可能事件",
+        "$A$ 可能发生",
+        "$P(\\overline{A})=1$",
+        "$A$ 与任意事件 $B$ 独立"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：定义域：事件域$\\mathcal{F}$（自变量是事件$A\\in\\mathcal{F}$）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 2,
+      "hint": "概率为0不等于不可能事件（连续型样本空间中单点概率为0但该点存在）。",
+      "explanation": "$P(A)=0\\Rightarrow P(\\overline{A})=1-P(A)=1$，选项C正确。选项A错误，$P(A)=0\\nRightarrow A=\\emptyset$（连续型反例：$[0,1]$上取单点概率为0但该点存在）。选项B错误，$P(A)=0$ 时A发生概率为0。选项D虽在概率论中成立（概率为0的事件与任意事件独立），但不是本题考查的重点。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 05:13 · 定义域"
+        "label": "rec-02 · 说话人1 18:26 · 概率公理与概率为0"
       }
     },
     {
       "id": "rec-02-q04",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "关于本讲“值域”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "减法公式 $P(A-B)=P(A)-P(B)$ 成立的条件是（  ）。",
       "options": [
-        "值域：$[0,1]$（概率值在0到1之间，算出大于1肯定错了，通常是排列组合算重了）。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$A,B$ 互斥",
+        "$A,B$ 独立",
+        "$B\\subset A$",
+        "$A\\subset B$"
       ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：值域：$[0,1]$（概率值在0到1之间，算出大于1肯定错了，通常是排列组合算重了）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 2,
+      "hint": "$A-B=A\\overline{B}$，当 $B\\subset A$ 时 $AB=B$，可简化减法公式。",
+      "explanation": "一般情形下 $P(A-B)=P(A)-P(AB)$。当 $B\\subset A$ 时 $AB=B$，故 $P(A-B)=P(A)-P(B)$，选项C正确。选项A互斥时 $AB=\\emptyset$，$P(A-B)=P(A)$；选项B独立时 $P(AB)=P(A)P(B)$；选项D $A\\subset B$ 时 $A-B=\\emptyset$，$P(A-B)=0$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 18:26 · 值域"
+        "label": "rec-02 · 说话人1 18:26 · 减法公式"
       }
     },
     {
       "id": "rec-02-q05",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "关于本讲“无论什么概率模型（古典、几何、统计）”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $P(A)=P(B)$，则下列结论正确的是（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "无论什么概率模型（古典、几何、统计），都必须与这三条公理兼容。"
+        "$A=B$",
+        "$P(A\\cup B)=P(A)$",
+        "$P(A\\cup B)\\geq P(A)$",
+        "$P(AB)=P(A)$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：无论什么概率模型（古典、几何、统计），都必须与这三条公理兼容。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 2,
+      "hint": "用 $P(A\\cup B)=P(A)+P(B)-P(AB)$ 和 $P(AB)\\leq P(A)$。",
+      "explanation": "$P(A\\cup B)=P(A)+P(B)-P(AB)=2P(A)-P(AB)$。由于 $P(AB)\\leq P(A)$，故 $P(A\\cup B)\\geq 2P(A)-P(A)=P(A)$，选项C正确。选项A错误，概率相等不意味着事件相同；选项B当且仅当 $P(AB)=P(A)$ 时成立；选项D当且仅当 $A\\subset B$ 时成立。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 00:04 · 无论什么概率模型（古典、几何、统计）"
+        "label": "rec-02 · 说话人1 18:26 · 概率性质"
       }
     },
     {
       "id": "rec-02-q06",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "关于本讲“⚠️ 反过来不成立”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $P(A)=0.4$，$P(B)=0.5$，$P(C)=0.3$，$P(AB)=0.2$，$P(AC)=P(BC)=0.1$，则 $P(A\\cup B\\cup C)=$（  ）。",
       "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "⚠️ 反过来不成立：概率为0的事件不一定是不可能事件。例如在$[0,1]$上任取一个实数，取到$\\frac{1}{2}$的概率是0，但它可能发生；取到有理数的概率也是0（有理数可列但测度为0）。",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$0.6$",
+        "$0.7$",
+        "$0.8$",
+        "$0.9$"
       ],
       "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：⚠️ 反过来不成立：概率为0的事件不一定是不可能事件。例如在$[0,1]$上任取一个实数，取到$\\frac{1}{2}$的概率是0，但它可能发生；取到有理数的概率也是0（有理数可列但测度为0）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "用三事件容斥原理：$P(A\\cup B\\cup C)=P(A)+P(B)+P(C)-P(AB)-P(BC)-P(AC)+P(ABC)$。设 $P(ABC)=0$。",
+      "explanation": "由容斥原理：$P(A\\cup B\\cup C)=0.4+0.5+0.3-0.2-0.1-0.1+0=0.8$。选项A误算为0.6；选项B误算为0.7；选项D误算为0.9。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 00:04 · ⚠️ 反过来不成立"
+        "label": "rec-02 · 说话人1 18:26 · 容斥原理"
       }
     },
     {
       "id": "rec-02-q07",
       "type": "single_choice",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "关于本讲“同理”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "袋中有3红2白共5个球，不放回地取2个，则两次都取到红球的概率为（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "同理：概率为1的事件也不一定是必然事件。",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域"
+        "$\\frac{3}{10}$",
+        "$\\frac{3}{5}$",
+        "$\\frac{6}{25}$",
+        "$\\frac{9}{25}$"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：同理：概率为1的事件也不一定是必然事件。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "古典概型：总排列数 $C_5^2$，有利事件数 $C_3^2$。",
+      "explanation": "不放回取2个，总取法 $C_5^2=10$ 种。两次都红：从3个红球中取2个，$C_3^2=3$ 种。概率 $\\frac{3}{10}$。选项B是放回情形（$\\frac{3}{5}\\times\\frac{3}{5}=\\frac{9}{25}$）；选项C、D无依据。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 23:52 · 同理"
+        "label": "rec-02 · 说话人1 18:26 · 古典概型"
       }
     },
     {
       "id": "rec-02-q08",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "关于本讲“技巧”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $C_n^r$ 表示组合数，则 $C_n^r=C_n^{n-r}$ 的直观含义是（  ）。",
       "options": [
-        "技巧：正面分析种类多时，从反面计算往往更简单。",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用"
+        "从n个中选r个与选n-r个不同",
+        "选r个留下n-r个，两种方式等价",
+        "组合数满足对称性",
+        "排列数满足对称性"
       ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：技巧：正面分析种类多时，从反面计算往往更简单。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "选r个等同于选剩下的n-r个。",
+      "explanation": "$C_n^r=C_n^{n-r}$ 的直观含义是：从n个中选r个，等价于选剩下的n-r个，两种方式数量相同。选项A错误，两者数量相同；选项C是结论而非直观含义；选项D讨论的是排列数。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 00:04 · 技巧"
+        "label": "rec-02 · 说话人1 18:26 · 排列组合"
       }
     },
     {
       "id": "rec-02-q09",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "关于本讲“若$B\\subset A$（B是A的”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "在 $[0,1]$ 区间上随机取一点，则该点落在 $[0.2,0.8]$ 上的概率为（  ）。",
       "options": [
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "若$B\\subset A$（B是A的子集），则$P(A-B)=P(A)-P(B)$。"
+        "$0.2$",
+        "$0.6$",
+        "$0.8$",
+        "$1$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：若$B\\subset A$（B是A的子集），则$P(A-B)=P(A)-P(B)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "几何概型：概率 = 目标区间长度 / 总区间长度。",
+      "explanation": "几何概型：$P=\\frac{0.8-0.2}{1-0}=0.6$。选项A误把 $0.2$ 当作答案；选项C误把 $0.8$ 当作答案；选项D无依据。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 23:52 · 若$B\\subset A$（B是A的"
+        "label": "rec-02 · 说话人1 18:26 · 几何概型"
       }
     },
     {
       "id": "rec-02-q10",
       "type": "single_choice",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "关于本讲“对任意$A,B$，常用形式”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $P(A)=0.6$，$P(B)=0.4$，$P(A|B)=0.5$，则 $P(B|A)=$（  ）。",
       "options": [
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "对任意$A,B$，常用形式：$P(A-B)=P(A)-P(AB)$（因为$AB\\subset A$）。",
-        "只要两个事件互斥，就一定可以推出二者独立"
+        "$\\frac{1}{3}$",
+        "$\\frac{1}{2}$",
+        "$\\frac{2}{3}$",
+        "$\\frac{3}{4}$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：对任意$A,B$，常用形式：$P(A-B)=P(A)-P(AB)$（因为$AB\\subset A$）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "先用条件概率定义求 $P(AB)$，再求 $P(B|A)$。",
+      "explanation": "$P(AB)=P(B)P(A|B)=0.4\\times0.5=0.2$。$P(B|A)=\\frac{P(AB)}{P(A)}=\\frac{0.2}{0.6}=\\frac{1}{3}$。选项B误把 $P(A|B)$ 当作答案；选项C误算为 $\\frac{0.4}{0.6}$；选项D无依据。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 23:52 · 对任意$A,B$，常用形式"
+        "label": "rec-02 · 说话人1 18:26 · 条件概率"
       }
     },
     {
       "id": "rec-02-q11",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\Omega$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\Omega$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $A,B$ 互斥，则下列等式正确的是（  ）。",
+      "options": [
+        "$P(A\\cup B)=P(A)+P(B)$",
+        "$P(AB)=P(A)P(B)$",
+        "$P(A|B)=P(A)$",
+        "$P(B|A)=P(B)$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "互斥时 $AB=\\emptyset$，$P(AB)=0$，加法公式简化。",
+      "explanation": "互斥时 $AB=\\emptyset$，$P(AB)=0$，故 $P(A\\cup B)=P(A)+P(B)-P(AB)=P(A)+P(B)$，选项A正确。选项B是独立条件下的公式；选项C、D是独立条件下的结论，互斥时条件概率可能无定义（$P(B)=0$ 时 $P(A|B)$ 无定义）。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 00:04 · 公式/定义填空"
+        "label": "rec-02 · 说话人1 18:26 · 加法公式与互斥"
       }
     },
     {
       "id": "rec-02-q12",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\mathcal{F}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\mathcal{F}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $P(A)=0.7$，$P(B)=0.8$，则 $P(AB)$ 的最大值为（  ）。",
+      "options": [
+        "$0.7$",
+        "$0.8$",
+        "$0.5$",
+        "$0.56$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "$P(AB)\\leq \\min\\{P(A),P(B)\\}$，且 $P(AB)=P(A)+P(B)-P(A\\cup B)\\geq P(A)+P(B)-1$。",
+      "explanation": "$P(AB)\\leq P(A)=0.7$，$P(AB)\\leq P(B)=0.8$，故最大值不超过0.7。当 $A\\subset B$ 时 $P(AB)=P(A)=0.7$ 可达。选项B超过 $P(A)$；选项C无依据；选项D是 $P(A)P(B)$，独立时的值但非最大值。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 05:13 · 公式/定义填空"
+        "label": "rec-02 · 说话人1 18:26 · 概率性质综合"
       }
     },
     {
       "id": "rec-02-q13",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\Omega\\in\\mathcal{F}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\Omega\\in\\mathcal{F}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "10个人排成一排，甲乙两人相邻的概率为（  ）。",
+      "options": [
+        "$\\frac{1}{10}$",
+        "$\\frac{1}{5}$",
+        "$\\frac{1}{9}$",
+        "$\\frac{2}{9}$"
       ],
-      "total_points": 2,
+      "answer": 1,
+      "hint": "把甲乙看作一个整体，用捆绑法。",
+      "explanation": "总排列数 $10!$。把甲乙捆绑成一个人，有 $9!$ 种排列，甲乙内部可交换 $2!$ 种，故有利事件数 $2\\times9!$。概率 $\\frac{2\\times9!}{10!}=\\frac{2}{10}=\\frac{1}{5}$。选项C误算为 $\\frac{1}{9}$；选项D误算为 $\\frac{2}{9}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 00:04 · 公式/定义填空"
+        "label": "rec-02 · 说话人1 18:26 · 古典概型排列"
       }
     },
     {
       "id": "rec-02-q14",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$A\\in\\mathcal{F}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $A\\in\\mathcal{F}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "概率的取值范围是（  ）。",
+      "options": [
+        "$[0,1]$",
+        "$(0,1)$",
+        "$[0,+\\infty)$",
+        "$(-\\infty,+\\infty)$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "概率公理：非负性且规范性 $P(\\Omega)=1$。",
+      "explanation": "由概率公理，$P(A)\\geq 0$ 且 $P(\\Omega)=1$，故概率取值范围为 $[0,1]$。选项B排除了0和1；选项C、D违背非负性和规范性。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 05:13 · 公式/定义填空"
+        "label": "rec-02 · 说话人1 18:26 · 概率公理"
       }
     },
     {
       "id": "rec-02-q15",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\overline{A}\\in\\mathcal{F}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\overline{A}\\in\\mathcal{F}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $P(A)=0.6$，$P(B)=0.4$，$P(\\overline{A}B)=0.2$，则 $P(AB)=$（  ）。",
+      "options": [
+        "$0.2$",
+        "$0.3$",
+        "$0.4$",
+        "$0.5$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "$B=AB\\cup\\overline{A}B$，且 $AB$ 与 $\\overline{A}B$ 互斥。",
+      "explanation": "$B=AB\\cup\\overline{A}B$，且 $AB\\cap\\overline{A}B=\\emptyset$，故 $P(B)=P(AB)+P(\\overline{A}B)$，$P(AB)=P(B)-P(\\overline{A}B)=0.4-0.2=0.2$。选项B误算为 $0.6-0.2$；选项C误把 $P(B)$ 当作答案；选项D无依据。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 00:04 · 公式/定义填空"
+        "label": "rec-02 · 说话人1 18:26 · 减法公式综合"
       }
     },
     {
       "id": "rec-02-q16",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“⚠️ 反过来不成立”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "⚠️ 反过来不成立：$P(B)\\leq P(A)$不能推出$B\\subset A$。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
-      ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：⚠️ 反过来不成立：$P(B)\\leq P(A)$不能推出$B\\subset A$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "设 $A,B$ 为事件，且 $B\\subset A$，则 $P(A-B)=$ ______。",
+      "answer": "$P(A)-P(B)$",
+      "hint": "$B\\subset A$ 时 $AB=B$，用减法公式。",
+      "explanation": "$B\\subset A$ 时 $AB=B$，故 $P(A-B)=P(A)-P(AB)=P(A)-P(B)$。这是减法公式的简化形式。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 00:04 · ⚠️ 反过来不成立"
+        "label": "rec-02 · 说话人1 18:26 · 减法公式"
       }
     },
     {
       "id": "rec-02-q17",
-      "type": "single_choice",
-      "difficulty": "medium",
+      "type": "fill_blank",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“两个事件”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "两个事件：$P(A\\cup B)=P(A)+P(B)-P(AB)$（减去重复计算的交集）。"
-      ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：两个事件：$P(A\\cup B)=P(A)+P(B)-P(AB)$（减去重复计算的交集）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "设 $P(A)=0.7$，$P(B)=0.5$，$P(A\\cup B)=0.9$，则 $P(AB)=$ ______。",
+      "answer": "$0.3$",
+      "hint": "用加法公式反解：$P(AB)=P(A)+P(B)-P(A\\cup B)$。",
+      "explanation": "$P(AB)=P(A)+P(B)-P(A\\cup B)=0.7+0.5-0.9=0.3$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 23:52 · 两个事件"
+        "label": "rec-02 · 说话人1 18:26 · 加法公式"
       }
     },
     {
       "id": "rec-02-q18",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“若$A,B$互斥，$P(AB)=0$”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "若$A,B$互斥，$P(AB)=0$，退化为有限可加性$P(A\\cup B)=P(A)+P(B)$。",
-        "可以脱离课堂给出的前提条件直接套用"
-      ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：若$A,B$互斥，$P(AB)=0$，退化为有限可加性$P(A\\cup B)=P(A)+P(B)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "袋中有5个球，3红2白，不放回取2个，则两次取到一红一白的概率为 ______。",
+      "answer": "$\\frac{3}{5}$",
+      "hint": "有利事件数：从3红中选1个，从2白中选1个。",
+      "explanation": "总取法 $C_5^2=10$。一红一白：$C_3^1\\times C_2^1=6$。概率 $\\frac{6}{10}=\\frac{3}{5}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 23:52 · 若$A,B$互斥，$P(AB)=0$"
+        "label": "rec-02 · 说话人1 18:26 · 古典概型"
       }
     },
     {
       "id": "rec-02-q19",
       "type": "fill_blank",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$A_1,A_2,\\cdots\\in\\mathcal{F}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $A_1,A_2,\\cdots\\in\\mathcal{F}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "设 $P(A)=0.8$，$P(B|A)=0.5$，则 $P(AB)=$ ______。",
+      "answer": "$0.4$",
+      "hint": "用条件概率定义：$P(AB)=P(A)P(B|A)$。",
+      "explanation": "$P(AB)=P(A)P(B|A)=0.8\\times0.5=0.4$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 05:13 · 公式/定义填空"
+        "label": "rec-02 · 说话人1 18:26 · 条件概率"
       }
     },
     {
@@ -424,132 +408,30 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-02",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\bigcup_{n=1}^\\infty A_n\\in\\mathcal{F}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\bigcup_{n=1}^\\infty A_n\\in\\mathcal{F}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "设 $A,B$ 为对立事件，$P(A)=\\frac{2}{5}$，则 $P(\\overline{B})=$ ______。",
+      "answer": "$\\frac{2}{5}$",
+      "hint": "对立事件 $B=\\overline{A}$，则 $\\overline{B}=A$。",
+      "explanation": "$A,B$ 对立，则 $B=\\overline{A}$，$\\overline{B}=A$，故 $P(\\overline{B})=P(A)=\\frac{2}{5}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 05:13 · 公式/定义填空"
-      }
-    },
-    {
-      "id": "rec-02-q21",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-02",
-      "points": 10,
-      "label": "计算题",
-      "stem": "已知 $P(A)=3/5,P(B)=1/2,P(AB)=1/5$，求 $P(A\\cup B)$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：加法公式。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：用 $P(A\\cup B)=P(A)+P(B)-P(AB)$，得 $3/5+1/2-1/5=9/10$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 23:52 · 加法公式"
-      }
-    },
-    {
-      "id": "rec-02-q22",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-02",
-      "points": 10,
-      "label": "计算题",
-      "stem": "袋中 5 白 3 黑，不放回任取 3 个，求恰有 2 个白球的概率。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：古典概型。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：总取法 $C_8^3=56$；有利取法 $C_5^2C_3^1=30$；概率 $30/56=15/28$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 04:28 · 古典概型"
-      }
-    },
-    {
-      "id": "rec-02-q23",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-02",
-      "points": 10,
-      "label": "计算题",
-      "stem": "从 $[0,1]$ 独立任取 $x,y$，求 $P(xy<1/4)$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：几何概型。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：样本空间面积为 1。对 $0<x<1/4$，所有 $y$ 均满足；对 $1/4\\le x\\le1$，有 $0<y<1/(4x)$。面积 $1/4+\\int_{1/4}^1(4x)^{-1}dx=1/4+(\\ln4)/4$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 04:28 · 几何概型"
-      }
-    },
-    {
-      "id": "rec-02-q24",
-      "type": "essay",
-      "difficulty": "hard",
-      "source": "current_chapter",
-      "sourceChapter": "rec-02",
-      "points": 20,
-      "label": "综合计算/证明",
-      "stem": "从概率公理证明 $P(\\emptyset)=0$ 和 $P(\\overline A)=1-P(A)$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：公理证明。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：由 $\\Omega\\cup\\emptyset=\\Omega$ 且互斥，得 $P(\\Omega)+P(\\emptyset)=P(\\Omega)$，故 $P(\\emptyset)=0$。又 $A\\cup\\overline A=\\Omega$、$A\\overline A=\\emptyset$，所以 $P(A)+P(\\overline A)=1$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（5分）",
-        "展开关键推导或分段计算（7分）",
-        "得到完整答案或证明结论（5分）",
-        "说明条件、定义域和易错点（3分）"
-      ],
-      "total_points": 20,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-02.md",
-        "label": "rec-02 · 说话人1 00:04 · 公理证明"
+        "label": "rec-02 · 说话人1 18:26 · 对立事件"
       }
     }
   ],
   "summary": {
-    "totalQuestions": 24,
+    "totalQuestions": 20,
     "byType": {
-      "single_choice": 13,
-      "fill_blank": 7,
-      "essay": 4
+      "single_choice": 15,
+      "fill_blank": 5
     },
     "bySource": {
-      "current_chapter": 24
+      "current_chapter": 20
     },
     "byDifficulty": {
-      "basic": 15,
-      "medium": 8,
-      "hard": 1
+      "basic": 1,
+      "medium": 10,
+      "hard": 9
     }
   }
 }
