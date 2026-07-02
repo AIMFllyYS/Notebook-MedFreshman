@@ -57,6 +57,9 @@ const maogaiKaoqianMoniItems = [
   { id: 'maogai-mock-final-paper-01', title: '毛概2026期末押题模拟试卷一', type: 'document' as const, status: 'done' as const },
   { id: 'maogai-mock-final-paper-02', title: '毛概2026期末押题模拟试卷二', type: 'document' as const, status: 'done' as const },
   { id: 'maogai-mock-final-paper-03', title: '毛概2026期末押题模拟试卷三', type: 'document' as const, status: 'done' as const },
+  { id: 'maogai-mock-final-paper-04', title: '毛概2026期末押题模拟卷·基础巩固（第一套）', type: 'document' as const, status: 'done' as const },
+  { id: 'maogai-mock-final-paper-05', title: '毛概2026期末押题模拟卷·中等难度（第二套）', type: 'document' as const, status: 'done' as const },
+  { id: 'maogai-mock-final-paper-06', title: '毛概2026期末押题模拟卷·提高冲刺（第三套）', type: 'document' as const, status: 'done' as const },
 ];
 
 export const contentTree: ContentTree = {
