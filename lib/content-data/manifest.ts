@@ -53,6 +53,47 @@ const maogaiShizhanYanlianItems = [
   { id: 'maogai-practice-unit-08-scientific-dev-01', title: '第八章·科学发展观 单元真题训练', type: 'document' as const, status: 'done' as const },
 ];
 
+const probabilityKaoqianMoniItems = [
+  { id: 'kaodian-01', title: '考点一·排列组合问题', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-02', title: '考点二·概率基本概念与计算', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-03', title: '考点三·贝叶斯公式', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-04', title: '考点四·随机变量及其分布', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-05', title: '考点五·离散型随机变量的分布', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-06', title: '考点六·连续型随机变量的分布', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-07', title: '考点七·随机变量函数的分布', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-08', title: '考点八·多维随机变量与条件分布', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-09', title: '考点九·随机变量的独立性', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-10', title: '考点十·多维随机变量函数的分布', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-11', title: '考点十一·期望与方差', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-12', title: '考点十二·协方差与相关系数', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-13', title: '考点十三·大数定律和中心极限定理', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-14', title: '考点十四·总体与样本', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-15', title: '考点十五·三大分布', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-16', title: '考点十六·矩估计和极大似然估计', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-17', title: '考点十七·区间估计', type: 'document' as const, status: 'done' as const },
+  { id: 'kaodian-18', title: '考点十八·综合题', type: 'document' as const, status: 'done' as const },
+  { id: 'exam-01', title: '2019-2020学年第二学期期末考试B卷', type: 'document' as const, status: 'done' as const },
+  { id: 'exam-02', title: '2021-2022学年第一学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'exam-03', title: '2021-2022学年第二学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'exam-04', title: '2022-2023学年第一学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'exam-05', title: '2022-2023学年第二学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'exam-06', title: '2023-2024学年第一学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+];
+
+const probabilityShizhanYanlianItems = [
+  { id: 'real-01', title: '2019-2020学年第一学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'real-02', title: '2019-2020学年第二学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'real-03', title: '2020-2021学年第二学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'real-04', title: '2021-2022学年第一学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'real-05', title: '2021-2022学年第二学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'real-06', title: '2022-2023学年第一学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'real-07', title: '2022-2023学年第二学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'real-08', title: '2023-2024学年第一学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'real-09', title: '2023-2024学年第二学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'real-10', title: '2024-2025学年第一学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+  { id: 'real-11', title: '2024-2025学年第二学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+];
+
 const maogaiKaoqianMoniItems = [
   { id: 'maogai-mock-final-paper-01', title: '毛概2026期末押题模拟试卷一', type: 'document' as const, status: 'done' as const },
   { id: 'maogai-mock-final-paper-02', title: '毛概2026期末押题模拟试卷二', type: 'document' as const, status: 'done' as const },
@@ -123,7 +164,16 @@ export const contentTree: ContentTree = {
             { id: 'sum-17', title: '第十七节·三大分布与分位点', type: 'document', status: 'done' },
           ],
         },
-        ...examPlaceholderCategories,
+        {
+          id: 'kaoqian-moni',
+          name: '考前模拟',
+          items: probabilityKaoqianMoniItems,
+        },
+        {
+          id: 'shizhan-yanlian',
+          name: '实战演练',
+          items: probabilityShizhanYanlianItems,
+        },
       ],
     },
     {
