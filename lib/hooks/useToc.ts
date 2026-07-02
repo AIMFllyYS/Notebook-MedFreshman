@@ -165,7 +165,22 @@ export function useToc(
       headings.forEach((h) => obs.observe(h.el));
     }
 
-    // requestAnimationFrame 确保在 paint 后执行，DOM 已稳定
+    // 首次扫描：优先用 requestIdleCallback 让路给正文 paint；不支持则退回 rAF。
+    // 概率论一整卷试卷可能有 200+ 标题元素，一次 querySelectorAll + assign id + 观察器注册
+    // 会占用 30~80ms 主线程；把这段工作推到浏览器空闲期，用户"看到内容"的时刻更靠前。
+    // timeout 兜底 200ms，保证低速设备也能稳定拿到 TOC，不至于永久悬置。
+    const win = typeof window !== "undefined" ? window : null;
+    const ric = win?.requestIdleCallback;
+    if (ric) {
+      const idleId = ric(() => scanHeadings(0), { timeout: 200 });
+      return () => {
+        cancelled = true;
+        win?.cancelIdleCallback?.(idleId);
+        if (rafId !== null) cancelAnimationFrame(rafId);
+        if (retryTimer) clearTimeout(retryTimer);
+        observer?.disconnect();
+      };
+    }
     rafId = requestAnimationFrame(() => scanHeadings(0));
 
     return () => {

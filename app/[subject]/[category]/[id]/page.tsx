@@ -64,8 +64,16 @@ export default async function ContentPage({ params }: PageProps) {
       : null;
 
   // 例题服务端预读全文（与正文一致走 SSR），点击卡片时无需再 fetch。
-  const { chapterId, sectionId } = deriveExampleKey(category, id);
-  const initialExamples = readExamples(subject, chapterId, sectionId);
+  // 只有会挂载 ExampleTab 的 markdown 类型才需要例题；html/component 类型不显示例题 tab。
+  // 概率论 kaoqian-moni / shizhan-yanlian / summary 分类没有例题目录，短路可减少每次切换的一次
+  // fs.readdirSync 探测（含 catch），配合 hover prefetch 后 SSR 关键路径进一步收窄。
+  const EXAMPLE_CATEGORIES = new Set(["detail", "recording", "textbook", "english"]);
+  const { chapterId, sectionId } =
+    renderType === "markdown" && EXAMPLE_CATEGORIES.has(category)
+      ? deriveExampleKey(category, id)
+      : { chapterId: "", sectionId: "" };
+  const initialExamples =
+    chapterId && sectionId ? readExamples(subject, chapterId, sectionId) : [];
 
   return (
     <ContentPageClient
