@@ -1,7 +1,7 @@
 {
   "subjectId": "probability",
   "chapterId": "rec-08",
-  "generatedAt": "2026-06-24",
+  "generatedAt": "2026-07-01",
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
@@ -11,133 +11,133 @@
     {
       "id": "rec-08-q01",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "关于本讲“多维随机变量的定义与几何意义”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "二维随机变量 $(X,Y)$ 的联合分布函数 $F(x,y)$ 定义为（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "多维随机变量的定义与几何意义。"
+        "$P\\{X=x, Y=y\\}$",
+        "$P\\{X\\leq x, Y\\leq y\\}$",
+        "$P\\{X<x, Y<y\\}$",
+        "$P\\{X\\geq x, Y\\geq y\\}$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：多维随机变量的定义与几何意义。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "联合分布函数定义：$F(x,y)=P\\{X\\leq x, Y\\leq y\\}$，逗号表示且。",
+      "explanation": "联合分布函数 $F(x,y)=P\\{X\\leq x, Y\\leq y\\}$，表示 $(X,Y)$ 落在以 $(x,y)$ 为顶点的左下方无穷矩形内的概率。选项A是联合分布列（离散型）；选项C是严格不等式；选项D是右上区域。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 00:01 · 多维随机变量的定义与几何意义"
+        "label": "rec-08 · 说话人1 00:00 · 联合分布函数定义"
       }
     },
     {
       "id": "rec-08-q02",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "关于本讲“联合分布函数的定义、性质与概率计算”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "联合分布函数 $F(x,y)$ 的性质不包括（  ）。",
       "options": [
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "联合分布函数的定义、性质与概率计算。",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "对 $x$ 和 $y$ 单调非降",
+        "右连续",
+        "矩形不等式：$F(x_2,y_2)-F(x_2,y_1)-F(x_1,y_2)+F(x_1,y_1)\\geq0$",
+        "$F(+\\infty,y)=1$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：联合分布函数的定义、性质与概率计算。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 3,
+      "hint": "单个变量取 $+\\infty$ 得到边缘分布函数，不等于1。",
+      "explanation": "$F(+\\infty,y)=F_Y(y)$（边缘分布函数），不一定等于1。只有 $F(+\\infty,+\\infty)=1$。选项A、B、C都是联合分布函数的性质。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 06:23 · 联合分布函数的定义、性质与概率计算"
+        "label": "rec-08 · 说话人1 00:00 · 联合分布函数性质"
       }
     },
     {
       "id": "rec-08-q03",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "关于本讲“边缘分布函数的求法（由联合求边缘）”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "矩形不等式 $F(x_2,y_2)-F(x_2,y_1)-F(x_1,y_2)+F(x_1,y_1)\\geq0$ 的几何含义是（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "边缘分布函数的求法（由联合求边缘）。",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多"
+        "$(X,Y)$ 落在矩形内的概率",
+        "$(X,Y)$ 落在矩形外的概率",
+        "$(X,Y)$ 落在矩形边界的概率",
+        "概率的非负性"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：边缘分布函数的求法（由联合求边缘）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "矩形不等式计算的是 $(X,Y)$ 落在矩形区域 $(x_1,x_2]\\times(y_1,y_2]$ 内的概率。",
+      "explanation": "矩形不等式计算 $P\\{x_1<X\\leq x_2, y_1<Y\\leq y_2\\}$，即 $(X,Y)$ 落在左开右闭、下开上闭矩形内的概率。选项B、C错误；选项D是结论而非几何含义。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 10:01 · 边缘分布函数的求法（由联合求边缘）"
+        "label": "rec-08 · 说话人1 00:00 · 矩形不等式"
       }
     },
     {
       "id": "rec-08-q04",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "关于本讲“二维离散型随机变量”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "由联合分布函数求边缘分布函数 $F_X(x)$ 的公式是（  ）。",
       "options": [
-        "二维离散型随机变量：联合分布列。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$F(x,0)$",
+        "$F(x,+\\infty)$",
+        "$F(0,x)$",
+        "$F(+\\infty,x)$"
       ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：二维离散型随机变量：联合分布列。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "边缘分布：让另一个变量取遍所有可能值（趋向 $+\\infty$）。",
+      "explanation": "$F_X(x)=F(x,+\\infty)=P\\{X\\leq x, Y<+\\infty\\}=P\\{X\\leq x\\}$。选项A、C无意义；选项D是 $F_Y(x)$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 00:01 · 二维离散型随机变量"
+        "label": "rec-08 · 说话人1 00:00 · 边缘分布函数"
       }
     },
     {
       "id": "rec-08-q05",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "关于本讲“二维连续型随机变量”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "区域 $G$ 面积为 $S$，二维均匀分布的联合密度 $f(x,y)=$（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "二维连续型随机变量：联合密度函数。"
+        "$S$",
+        "$\\frac{1}{S}$",
+        "$0$",
+        "$1$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：二维连续型随机变量：联合密度函数。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "均匀分布密度 = 区域面积的倒数。",
+      "explanation": "二维均匀分布密度 $f(x,y)=\\frac{1}{S}$（在 $G$ 内），$0$（在 $G$ 外）。选项A、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 40:08 · 二维连续型随机变量"
+        "label": "rec-08 · 说话人1 00:00 · 二维均匀分布"
       }
     },
     {
       "id": "rec-08-q06",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "关于本讲“二维均匀分布与二维正态分布”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "二维正态分布 $N(\\mu_1,\\mu_2,\\sigma_1^2,\\sigma_2^2,\\rho)$ 的参数个数为（  ）。",
       "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "二维均匀分布与二维正态分布。",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$3$",
+        "$4$",
+        "$5$",
+        "$6$"
       ],
       "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：二维均匀分布与二维正态分布。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "二维正态有5个参数：两个均值、两个方差、一个相关系数。",
+      "explanation": "二维正态分布有5个参数：$\\mu_1,\\mu_2,\\sigma_1^2,\\sigma_2^2,\\rho$。选项A、B数量不足；选项D过多。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 01:07:00 · 二维均匀分布与二维正态分布"
+        "label": "rec-08 · 说话人1 00:00 · 二维正态分布"
       }
     },
     {
@@ -146,276 +146,260 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "关于本讲“二维离散型的边缘分布（行和、列和）”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "联合密度 $f(x,y)$ 的规范性条件是（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "二维离散型的边缘分布（行和、列和）。",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域"
+        "$\\int_{-\\infty}^{+\\infty} f(x,y) dx = 1$",
+        "$\\int_{-\\infty}^{+\\infty} f(x,y) dy = 1$",
+        "$\\iint_{\\mathbb{R}^2} f(x,y) dx dy = 1$",
+        "$f(x,y)\\leq 1$"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：二维离散型的边缘分布（行和、列和）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 2,
+      "hint": "联合密度在全平面上的二重积分等于1。",
+      "explanation": "规范性：$\\iint_{\\mathbb{R}^2} f(x,y) dx dy = 1$。选项A、B是单重积分；选项D错误，密度可大于1。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 00:01 · 二维离散型的边缘分布（行和、列和）"
+        "label": "rec-08 · 说话人1 00:00 · 联合密度规范性"
       }
     },
     {
       "id": "rec-08-q08",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "关于本讲“定义”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设二维离散型联合分布列为 $p_{ij}$，则边缘分布列 $p_{i\\cdot}=$（  ）。",
       "options": [
-        "定义：设随机试验 $E$ 的样本空间为 $\\Omega$，$X_1, X_2, \\dots, X_n$ 是定义在 $\\Omega$ 上的随机变量，则有序组 $(X_1, X_2, \\dots, X_n)$ 称为 **n维。",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$\\sum_j p_{ij}$",
+        "$\\sum_i p_{ij}$",
+        "$p_{ii}$",
+        "$\\frac{p_{ij}}{p_{\\cdot j}}$"
       ],
       "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：定义：设随机试验 $E$ 的样本空间为 $\\Omega$，$X_1, X_2, \\dots, X_n$ 是定义在 $\\Omega$ 上的随机变量，则有序组 $(X_1, X_2, \\dots, X_n)$ 称为 **n维。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "边缘分布列 = 行和（固定i，对j求和）。",
+      "explanation": "$p_{i\\cdot}=\\sum_j p_{ij}$（行和），$p_{\\cdot j}=\\sum_i p_{ij}$（列和）。选项B是列和；选项C是对角线元素；选项D是条件分布。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 01:07 · 定义"
+        "label": "rec-08 · 说话人1 00:00 · 联合分布列求边缘"
       }
     },
     {
       "id": "rec-08-q09",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "关于本讲“引入原因”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $(X,Y)$ 在区域 $G$ 上均匀分布，则 $P\\{(X,Y)\\in D\\subset G\\}=$（  ）。",
       "options": [
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "引入原因：单个随机变量不足以描述复杂现象（如平面上粒子位置需横、纵坐标）。"
+        "$\\frac{S_D}{S_G}$",
+        "$S_D$",
+        "$S_G$",
+        "$\\frac{S_G}{S_D}$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：引入原因：单个随机变量不足以描述复杂现象（如平面上粒子位置需横、纵坐标）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "均匀分布概率 = 子区域面积 / 总区域面积。",
+      "explanation": "$P\\{(X,Y)\\in D\\}=\\frac{S_D}{S_G}$（$S_D$ 为 $D$ 的面积，$S_G$ 为 $G$ 的面积）。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 00:01 · 引入原因"
+        "label": "rec-08 · 说话人1 00:00 · 二维连续型区域概率"
       }
     },
     {
       "id": "rec-08-q10",
       "type": "single_choice",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "关于本讲“几何意义”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $F(x,y)=\\frac{1}{\\pi^2}(\\arctan x+\\frac{\\pi}{2})(\\arctan y+\\frac{\\pi}{2})$，则 $F(+\\infty,+\\infty)=$（  ）。",
       "options": [
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "几何意义：一维随机变量将样本空间映射到实轴；二维随机变量将样本空间映射到平面。",
-        "只要两个事件互斥，就一定可以推出二者独立"
+        "$0$",
+        "$\\frac{1}{2}$",
+        "$1$",
+        "$\\infty$"
       ],
       "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：几何意义：一维随机变量将样本空间映射到实轴；二维随机变量将样本空间映射到平面。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "$\\arctan(+\\infty)=\\frac{\\pi}{2}$。",
+      "explanation": "$F(+\\infty,+\\infty)=\\frac{1}{\\pi^2}(\\frac{\\pi}{2}+\\frac{\\pi}{2})(\\frac{\\pi}{2}+\\frac{\\pi}{2})=\\frac{1}{\\pi^2}\\cdot\\pi\\cdot\\pi=1$。选项A、B、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 00:01 · 几何意义"
+        "label": "rec-08 · 说话人1 00:00 · 联合分布函数极限"
       }
     },
     {
       "id": "rec-08-q11",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$X_1, X_2, \\dots, X_n$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $X_1, X_2, \\dots, X_n$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "边缘分布函数 $F_X(x)$ 本质上是（  ）。",
+      "options": [
+        "二维分布函数",
+        "一维分布函数",
+        "条件分布函数",
+        "联合密度"
       ],
-      "total_points": 2,
+      "answer": 1,
+      "hint": "边缘分布函数就是普通的一维分布函数。",
+      "explanation": "边缘分布函数 $F_X(x)$ 本质上是一维分布函数，描述单个分量 $X$ 的概率规律。选项A、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 02:01 · 公式/定义填空"
+        "label": "rec-08 · 说话人1 00:00 · 边缘分布函数定义"
       }
     },
     {
       "id": "rec-08-q12",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\Omega$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\Omega$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "二维正态分布的边缘分布是（  ）。",
+      "options": [
+        "均匀分布",
+        "正态分布",
+        "指数分布",
+        "泊松分布"
       ],
-      "total_points": 2,
+      "answer": 1,
+      "hint": "二维正态的边缘必为正态。",
+      "explanation": "二维正态分布的边缘分布是一维正态分布。选项A、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 02:01 · 公式/定义填空"
+        "label": "rec-08 · 说话人1 00:00 · 二维正态边缘"
       }
     },
     {
       "id": "rec-08-q13",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$(X_1, X_2, \\dots, X_n)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $(X_1, X_2, \\dots, X_n)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "二维离散型联合分布列的性质是（  ）。",
+      "options": [
+        "$\\sum_i p_{i\\cdot}=1$",
+        "$\\sum_j p_{\\cdot j}=1$",
+        "$\\sum_i\\sum_j p_{ij}=1$",
+        "$p_{ij}\\geq0$"
       ],
-      "total_points": 2,
+      "answer": 2,
+      "hint": "联合分布列所有概率之和为1。",
+      "explanation": "规范性：$\\sum_i\\sum_j p_{ij}=1$。选项A、B是边缘分布列的规范性；选项D是非负性，不是规范性。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 02:01 · 公式/定义填空"
+        "label": "rec-08 · 说话人1 00:00 · 离散型联合分布列性质"
       }
     },
     {
       "id": "rec-08-q14",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$F(x,y) = P\\{X \\leq x, Y \\leq y\\}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $F(x,y) = P\\{X \\leq x, Y \\leq y\\}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "二维随机变量 $(X,Y)$ 与 $(Y,X)$ 的关系是（  ）。",
+      "options": [
+        "相同",
+        "不同",
+        "有时相同有时不同",
+        "无法确定"
       ],
-      "total_points": 2,
+      "answer": 1,
+      "hint": "二维随机变量是有序的，$(X,Y)\\neq(Y,X)$。",
+      "explanation": "二维随机变量是有序的，$(X,Y)$ 与 $(Y,X)$ 是不同的二维随机变量（除非 $X$ 与 $Y$ 同分布且独立等特殊情况）。选项A错误；选项C、D不准确。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 06:23 · 公式/定义填空"
+        "label": "rec-08 · 说话人1 00:00 · 二维随机变量概念"
       }
     },
     {
       "id": "rec-08-q15",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$x, y \\in \\mathbb{R}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $x, y \\in \\mathbb{R}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $(X,Y)$ 的联合密度 $f(x,y)=\\begin{cases}2, & 0\\leq x\\leq1, 0\\leq y\\leq1-x\\\\0, & \\text{其他}\\end{cases}$，则 $P\\{X+Y\\leq1\\}=$（  ）。",
+      "options": [
+        "$1$",
+        "$\\frac{1}{2}$",
+        "$\\frac{1}{4}$",
+        "$0$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "区域 $0\\leq x\\leq1, 0\\leq y\\leq1-x$ 本身就是 $X+Y\\leq1$，概率为1。",
+      "explanation": "联合密度的非零区域恰好是 $\\{(x,y):0\\leq x\\leq1, 0\\leq y\\leq1-x\\}$，即 $X+Y\\leq1$，故 $P\\{X+Y\\leq1\\}=1$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 07:09 · 公式/定义填空"
+        "label": "rec-08 · 说话人1 00:00 · 联合密度求概率"
       }
     },
     {
       "id": "rec-08-q16",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“注意”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "注意：$(X,Y)$ 与 $(Y,X)$ 是不同的二维随机变量（有序性）。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
-      ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：注意：$(X,Y)$ 与 $(Y,X)$ 是不同的二维随机变量（有序性）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "边缘分布函数 $F_X(x)=$ ______（用联合分布函数表示）。",
+      "answer": "$F(x,+\\infty)$",
+      "hint": "边缘分布：让另一个变量趋向 $+\\infty$。",
+      "explanation": "$F_X(x)=F(x,+\\infty)=P\\{X\\leq x, Y<+\\infty\\}=P\\{X\\leq x\\}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 05:03 · 注意"
+        "label": "rec-08 · 说话人1 00:00 · 边缘分布函数"
       }
     },
     {
       "id": "rec-08-q17",
-      "type": "single_choice",
-      "difficulty": "medium",
+      "type": "fill_blank",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“定义”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "定义：对二维随机变量 $(X,Y)$，二元函数。"
-      ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：定义：对二维随机变量 $(X,Y)$，二元函数。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "矩形概率公式：$P\\{x_1<X\\leq x_2, y_1<Y\\leq y_2\\}=$ ______（用 $F$ 表示）。",
+      "answer": "$F(x_2,y_2)-F(x_2,y_1)-F(x_1,y_2)+F(x_1,y_1)$",
+      "hint": "矩形不等式：减去不需要的部分，加回重复减去的部分。",
+      "explanation": "$P\\{x_1<X\\leq x_2, y_1<Y\\leq y_2\\}=F(x_2,y_2)-F(x_2,y_1)-F(x_1,y_2)+F(x_1,y_1)$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 01:07 · 定义"
+        "label": "rec-08 · 说话人1 00:00 · 矩形概率公式"
       }
     },
     {
       "id": "rec-08-q18",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“定义域”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "定义域：$x, y \\in \\mathbb{R}$（整个平面），值域：$[0,1]$。",
-        "可以脱离课堂给出的前提条件直接套用"
-      ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：定义域：$x, y \\in \\mathbb{R}$（整个平面），值域：$[0,1]$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "设 $(X,Y)$ 在区域 $G:0\\leq x\\leq1, 0\\leq y\\leq2$ 上均匀分布，则联合密度 $f(x,y)=$ ______（在 $G$ 内）。",
+      "answer": "$\\frac{1}{2}$",
+      "hint": "均匀分布密度 = 区域面积的倒数，$S_G=1\\times2=2$。",
+      "explanation": "$S_G=2$，故 $f(x,y)=\\frac{1}{2}$（在 $G$ 内）。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 07:09 · 定义域"
+        "label": "rec-08 · 说话人1 00:00 · 二维均匀分布"
       }
     },
     {
       "id": "rec-08-q19",
       "type": "fill_blank",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\{X \\leq x\\}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\{X \\leq x\\}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "设 $F(x,y)$ 是联合分布函数，则 $F(-\\infty,y)=$ ______。",
+      "answer": "$0$",
+      "hint": "联合分布函数在任一变量趋向 $-\\infty$ 时为0。",
+      "explanation": "$F(-\\infty,y)=0$，$F(x,-\\infty)=0$，$F(-\\infty,-\\infty)=0$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 06:23 · 公式/定义填空"
+        "label": "rec-08 · 说话人1 00:00 · 联合分布函数极限"
       }
     },
     {
@@ -424,132 +408,30 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-08",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\{Y \\leq y\\}$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\{Y \\leq y\\}$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "设二维离散型联合分布列 $p_{ij}$，则边缘分布列 $p_{\\cdot j}=$ ______。",
+      "answer": "$\\sum_i p_{ij}$",
+      "hint": "边缘分布列 = 列和（固定j，对i求和）。",
+      "explanation": "$p_{\\cdot j}=\\sum_i p_{ij}$（列和）。",
       "sourceRef": {
         "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 01:02:57 · 公式/定义填空"
-      }
-    },
-    {
-      "id": "rec-08-q21",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-08",
-      "points": 10,
-      "label": "计算题",
-      "stem": "写出 $P(x_1<X\\le x_2,y_1<Y\\le y_2)$ 的联合 CDF 公式。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：矩形概率。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：公式为 $F(x_2,y_2)-F(x_2,y_1)-F(x_1,y_2)+F(x_1,y_1)$，即大矩形减下方、减左方，再加回左下角。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 00:01 · 矩形概率"
-      }
-    },
-    {
-      "id": "rec-08-q22",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-08",
-      "points": 10,
-      "label": "计算题",
-      "stem": "若 $F=A(B+\\arctan x)(C+\\arctan y)$，按边界求常数，并求 $P(0<X\\le1,0<Y\\le1)$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：arctan CDF。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：由边界得 $B=C=\\pi/2,A=1/\\pi^2$；四点公式给概率 $1/16$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 23:18 · arctan CDF"
-      }
-    },
-    {
-      "id": "rec-08-q23",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-08",
-      "points": 10,
-      "label": "计算题",
-      "stem": "矩形 $0<x<2,0<y<3$ 上均匀，求密度和 $P(X<1,Y<1)$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：二维均匀。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：区域面积 6，密度 $1/6$；目标面积 1，概率 $1/6$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 01:07:00 · 二维均匀"
-      }
-    },
-    {
-      "id": "rec-08-q24",
-      "type": "essay",
-      "difficulty": "hard",
-      "source": "current_chapter",
-      "sourceChapter": "rec-08",
-      "points": 20,
-      "label": "综合计算/证明",
-      "stem": "说明二维连续联合密度的规范条件和区域概率公式。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：联合密度规范。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：必须 $f(x,y)\\ge0$ 且全域二重积分为 1；区域 $D$ 的概率为 $\\iint_D f(x,y)dxdy$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（5分）",
-        "展开关键推导或分段计算（7分）",
-        "得到完整答案或证明结论（5分）",
-        "说明条件、定义域和易错点（3分）"
-      ],
-      "total_points": 20,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-08.md",
-        "label": "rec-08 · 说话人1 00:01 · 联合密度规范"
+        "label": "rec-08 · 说话人1 00:00 · 联合分布列求边缘"
       }
     }
   ],
   "summary": {
-    "totalQuestions": 24,
+    "totalQuestions": 20,
     "byType": {
-      "single_choice": 13,
-      "fill_blank": 7,
-      "essay": 4
+      "single_choice": 15,
+      "fill_blank": 5
     },
     "bySource": {
-      "current_chapter": 24
+      "current_chapter": 20
     },
     "byDifficulty": {
-      "basic": 15,
-      "medium": 8,
-      "hard": 1
+      "basic": 1,
+      "medium": 10,
+      "hard": 9
     }
   }
 }

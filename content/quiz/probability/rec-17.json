@@ -1,7 +1,7 @@
 {
   "subjectId": "probability",
   "chapterId": "rec-17",
-  "generatedAt": "2026-06-24",
+  "generatedAt": "2026-07-01",
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
@@ -11,133 +11,133 @@
     {
       "id": "rec-17-q01",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "关于本讲“$\\chi^2$（卡方）分布的构造定”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "上侧 $\\alpha$ 分位数 $t_\\alpha(n)$ 的定义是（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "$\\chi^2$（卡方）分布的构造定义、性质与分位点。"
+        "$P\\{t(n)>t_\\alpha(n)\\}=\\alpha$",
+        "$P\\{t(n)<t_\\alpha(n)\\}=\\alpha$",
+        "$P\\{t(n)=t_\\alpha(n)\\}=\\alpha$",
+        "$P\\{t(n)\\geq t_\\alpha(n)\\}=1-\\alpha$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：$\\chi^2$（卡方）分布的构造定义、性质与分位点。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "上侧分位数：右侧概率为 $\\alpha$。",
+      "explanation": "$P\\{t(n)>t_\\alpha(n)\\}=\\alpha$。选项B是下侧分位数；选项C无意义；选项D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 01:46 · $\\chi^2$（卡方）分布的构造定"
+        "label": "rec-17 · 说话人1 00:00 · 分位数定义"
       }
     },
     {
       "id": "rec-17-q02",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "关于本讲“$t$分布（学生氏分布）的构造定义、”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "t分布的对称性：$t_\\alpha(n)=$（  ）。",
       "options": [
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "$t$分布（学生氏分布）的构造定义、性质、渐进正态性与分位点。",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$-t_{1-\\alpha}(n)$",
+        "$t_{1-\\alpha}(n)$",
+        "$-t_\\alpha(n)$",
+        "$t_\\alpha(n)$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：$t$分布（学生氏分布）的构造定义、性质、渐进正态性与分位点。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "t分布对称，分位数满足 $t_\\alpha(n)=-t_{1-\\alpha}(n)$。",
+      "explanation": "$t_\\alpha(n)=-t_{1-\\alpha}(n)$（对称性）。选项B错误；选项C、D无意义。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · $t$分布（学生氏分布）的构造定义、"
+        "label": "rec-17 · 说话人1 00:00 · t分布分位数"
       }
     },
     {
       "id": "rec-17-q03",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "关于本讲“$F$分布的构造定义、性质、倒数关系”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "F分布的分位数关系：$F_\\alpha(n_1,n_2)=$（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "$F$分布的构造定义、性质、倒数关系与分位点。",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多"
+        "$\\frac{1}{F_{1-\\alpha}(n_2,n_1)}$",
+        "$\\frac{1}{F_\\alpha(n_2,n_1)}$",
+        "$F_{1-\\alpha}(n_1,n_2)$",
+        "$F_\\alpha(n_2,n_1)$"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：$F$分布的构造定义、性质、倒数关系与分位点。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "F分布分位数：$F_\\alpha(n_1,n_2)=1/F_{1-\\alpha}(n_2,n_1)$。",
+      "explanation": "$F_\\alpha(n_1,n_2)=\\frac{1}{F_{1-\\alpha}(n_2,n_1)}$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 33:33 · $F$分布的构造定义、性质、倒数关系"
+        "label": "rec-17 · 说话人1 00:00 · F分布分位数"
       }
     },
     {
       "id": "rec-17-q04",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "关于本讲“上$\\alpha$分位点的统一定义与”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "正态总体样本均值与样本方差的独立性是（  ）。",
       "options": [
-        "上$\\alpha$分位点的统一定义与各分布分位点的性质。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$\\bar{X}$ 与 $S^2$ 独立",
+        "$\\bar{X}$ 与 $S^2$ 不独立",
+        "$\\bar{X}$ 与 $S$ 独立",
+        "$\\bar{X}$ 与 $S^2$ 相关"
       ],
       "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：上$\\alpha$分位点的统一定义与各分布分位点的性质。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "正态总体中，样本均值与样本方差独立。",
+      "explanation": "正态总体中，$\\bar{X}$ 与 $S^2$ 独立。选项B、D错误；选项C等价于A但通常说 $S^2$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 06:11 · 上$\\alpha$分位点的统一定义与"
+        "label": "rec-17 · 说话人1 00:00 · 正态总体定理"
       }
     },
     {
       "id": "rec-17-q05",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "关于本讲“⚠️ **正态总体样本均值与样本方差”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "卡方分布 $\\chi^2(n)$ 的方差 $D[\\chi^2(n)]=$（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "⚠️ **正态总体样本均值与样本方差的分布定理**（必考核心）。"
+        "$2n$",
+        "$n$",
+        "$\\sqrt{n}$",
+        "$n^2$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：⚠️ **正态总体样本均值与样本方差的分布定理**（必考核心）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "卡方分布方差 = 2 × 自由度。",
+      "explanation": "$D[\\chi^2(n)]=2n$。选项B是期望；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · ⚠️ **正态总体样本均值与样本方差"
+        "label": "rec-17 · 说话人1 00:00 · 卡方方差"
       }
     },
     {
       "id": "rec-17-q06",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "关于本讲“设 $X_1, X_2, \\dots”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "指数分布与卡方分布的关系：若 $X\\sim\\text{Exp}(\\lambda)$，则 $2\\lambda X\\sim$（  ）。",
       "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "设 $X_1, X_2, \\dots, X_n$ 相互独立且均服从标准正态分布 $N(0,1)$，则称。",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$\\chi^2(2)$",
+        "$\\chi^2(1)$",
+        "$N(0,1)$",
+        "$t(2)$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：设 $X_1, X_2, \\dots, X_n$ 相互独立且均服从标准正态分布 $N(0,1)$，则称。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "指数分布 × 2λ 服从自由度为2的卡方分布。",
+      "explanation": "$2\\lambda X\\sim\\chi^2(2)$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 设 $X_1, X_2, \\dots"
+        "label": "rec-17 · 说话人1 00:00 · 指数卡方关系"
       }
     },
     {
@@ -146,276 +146,260 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "关于本讲“一般正态的平方不是卡方，必须先标准化”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "t分布的期望存在条件是（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "一般正态的平方不是卡方，必须先标准化：若 $X \\sim N(\\mu, \\sigma^2)$，则 $\\left(\\frac{X-\\mu}{\\sigma}\\right)^2 \\sim \\chi^2(1)$。",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域"
+        "自由度 $n>1$",
+        "自由度 $n>2$",
+        "自由度 $n>0$",
+        "自由度 $n\\geq1$"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：一般正态的平方不是卡方，必须先标准化：若 $X \\sim N(\\mu, \\sigma^2)$，则 $\\left(\\frac{X-\\mu}{\\sigma}\\right)^2 \\sim \\chi^2(1)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "t分布期望存在需自由度大于1。",
+      "explanation": "t分布期望存在需 $n>1$。选项B是方差存在条件；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 一般正态的平方不是卡方，必须先标准化"
+        "label": "rec-17 · 说话人1 00:00 · t分布期望"
       }
     },
     {
       "id": "rec-17-q08",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "关于本讲“不独立的正态平方和不是卡方”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "t分布的方差存在条件是（  ）。",
       "options": [
-        "不独立的正态平方和不是卡方：必须要求独立性。",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用"
+        "自由度 $n>2$",
+        "自由度 $n>1$",
+        "自由度 $n>0$",
+        "自由度 $n\\geq2$"
       ],
       "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：不独立的正态平方和不是卡方：必须要求独立性。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "t分布方差存在需自由度大于2。",
+      "explanation": "t分布方差存在需 $n>2$。选项B是期望存在条件；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 不独立的正态平方和不是卡方"
+        "label": "rec-17 · 说话人1 00:00 · t分布方差"
       }
     },
     {
       "id": "rec-17-q09",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "关于本讲“期望等于自由度，方差等于2倍自由度”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "正态总体定理中，$\\frac{(n-1)S^2}{\\sigma^2}\\sim$（  ）。",
       "options": [
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "期望等于自由度，方差等于2倍自由度。"
+        "$\\chi^2(n-1)$",
+        "$t(n-1)$",
+        "$N(0,1)$",
+        "$F(n-1,n-1)$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：期望等于自由度，方差等于2倍自由度。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "样本方差与总体方差之比服从卡方分布。",
+      "explanation": "$\\frac{(n-1)S^2}{\\sigma^2}\\sim\\chi^2(n-1)$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 期望等于自由度，方差等于2倍自由度"
+        "label": "rec-17 · 说话人1 00:00 · 正态总体定理"
       }
     },
     {
       "id": "rec-17-q10",
       "type": "single_choice",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "关于本讲“推导”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $X_1,\\cdots,X_n$ i.i.d. $N(\\mu,\\sigma^2)$，则 $\\frac{\\bar{X}-\\mu}{S/\\sqrt{n}}\\sim$（  ）。",
       "options": [
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "推导：利用标准正态的四阶原点矩 $E[X_i^4] = 3$（正态偶数阶矩公式：$(k-1)!!$ 当 $k$ 为偶数）。",
-        "只要两个事件互斥，就一定可以推出二者独立"
+        "$t(n-1)$",
+        "$N(0,1)$",
+        "$\\chi^2(n-1)$",
+        "$F(n-1,n-1)$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：推导：利用标准正态的四阶原点矩 $E[X_i^4] = 3$（正态偶数阶矩公式：$(k-1)!!$ 当 $k$ 为偶数）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "用样本标准差时服从t分布。",
+      "explanation": "$\\frac{\\bar{X}-\\mu}{S/\\sqrt{n}}\\sim t(n-1)$。选项B是用总体标准差时的分布；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 推导"
+        "label": "rec-17 · 说话人1 00:00 · 正态总体定理"
       }
     },
     {
       "id": "rec-17-q11",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\chi^2$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\chi^2$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "卡方分布的可加性是（  ）。",
+      "options": [
+        "独立卡方分布的和仍为卡方分布",
+        "独立卡方分布的积仍为卡方分布",
+        "独立卡方分布的差仍为卡方分布",
+        "独立卡方分布的商仍为卡方分布"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "独立卡方分布的和仍为卡方分布，自由度相加。",
+      "explanation": "独立卡方分布的和仍为卡方分布。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 01:46 · 公式/定义填空"
+        "label": "rec-17 · 说话人1 00:00 · 卡方可加性"
       }
     },
     {
       "id": "rec-17-q12",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\alpha$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\alpha$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $X_1,\\cdots,X_n$ i.i.d. $\\text{Exp}(\\lambda)$，则 $2n\\lambda\\bar{X}\\sim$（  ）。",
+      "options": [
+        "$\\chi^2(2n)$",
+        "$\\chi^2(n)$",
+        "$N(0,1)$",
+        "$t(2n)$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "指数总体样本均值的函数服从卡方分布。",
+      "explanation": "$2n\\lambda\\bar{X}=2\\lambda\\sum_{i=1}^n X_i\\sim\\chi^2(2n)$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 06:11 · 公式/定义填空"
+        "label": "rec-17 · 说话人1 00:00 · 指数样本均值"
       }
     },
     {
       "id": "rec-17-q13",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\chi^2(2)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\chi^2(2)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "分位数表的用途是（  ）。",
+      "options": [
+        "查找给定概率对应的临界值",
+        "查找给定临界值对应的概率",
+        "计算期望",
+        "计算方差"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "分位数表：给定概率，查找临界值。",
+      "explanation": "分位数表用于查找给定概率对应的临界值。选项B是分布函数；选项C、D是数字特征。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 01:46 · 公式/定义填空"
+        "label": "rec-17 · 说话人1 00:00 · 分位数表"
       }
     },
     {
       "id": "rec-17-q14",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\lambda = 1/2$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\lambda = 1/2$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "正态总体定理的核心结论是（  ）。",
+      "options": [
+        "样本均值与样本方差独立，且分布已知",
+        "样本均值与样本方差相关",
+        "样本均值服从正态分布",
+        "样本方差服从卡方分布"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "正态总体定理：样本均值与样本方差独立，且分布已知。",
+      "explanation": "正态总体定理的核心是样本均值与样本方差独立，且分布已知。选项B错误；选项C、D是部分结论。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 公式/定义填空"
+        "label": "rec-17 · 说话人1 00:00 · 正态总体定理"
       }
     },
     {
       "id": "rec-17-q15",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$X \\sim \\text{Exp}(\\lambda)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $X \\sim \\text{Exp}(\\lambda)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $X\\sim\\chi^2(8)$，查表得 $\\chi^2_{0.05}(8)=15.507$，则 $P\\{X<15.507\\}=$（  ）。",
+      "options": [
+        "$0.95$",
+        "$0.05$",
+        "$0.1$",
+        "$0.9$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "上侧分位数：$P\\{X>\\chi^2_\\alpha\\}=\\alpha$，故 $P\\{X<\\chi^2_\\alpha\\}=1-\\alpha$。",
+      "explanation": "$P\\{X<15.507\\}=1-0.05=0.95$。选项B是右侧概率；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 33:33 · 公式/定义填空"
+        "label": "rec-17 · 说话人1 00:00 · 分位数应用"
       }
     },
     {
       "id": "rec-17-q16",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“设 $X \\sim N(0,1)$，”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "设 $X \\sim N(0,1)$，$Y \\sim \\chi^2(n)$，且 $X$ 与 $Y$ 相互独立，则称。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
-      ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：设 $X \\sim N(0,1)$，$Y \\sim \\chi^2(n)$，且 $X$ 与 $Y$ 相互独立，则称。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "上侧 $\\alpha$ 分位数定义：$P\\{X>\\xi_\\alpha\\}=$ ______。",
+      "answer": "$\\alpha$",
+      "hint": "上侧分位数：右侧概率为 $\\alpha$。",
+      "explanation": "$P\\{X>\\xi_\\alpha\\}=\\alpha$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 设 $X \\sim N(0,1)$，"
+        "label": "rec-17 · 说话人1 00:00 · 分位数定义"
       }
     },
     {
       "id": "rec-17-q17",
-      "type": "single_choice",
-      "difficulty": "medium",
+      "type": "fill_blank",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“实际应用”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "实际应用：$n > 45$ 时，$t_\\alpha(n) \\approx u_\\alpha$（$u_\\alpha$ 是标准正态上$\\alpha$分位点）。"
-      ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：实际应用：$n > 45$ 时，$t_\\alpha(n) \\approx u_\\alpha$（$u_\\alpha$ 是标准正态上$\\alpha$分位点）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "t分布对称性：$t_\\alpha(n)=$ ______（用 $t_{1-\\alpha}$ 表示）。",
+      "answer": "$-t_{1-\\alpha}(n)$",
+      "hint": "t分布对称，分位数满足 $t_\\alpha(n)=-t_{1-\\alpha}(n)$。",
+      "explanation": "$t_\\alpha(n)=-t_{1-\\alpha}(n)$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 实际应用"
+        "label": "rec-17 · 说话人1 00:00 · t分布分位数"
       }
     },
     {
       "id": "rec-17-q18",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“图像对比”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "图像对比：$t$ 分布呈现**尖峰厚尾**形态——尾部比正态更厚，$n$ 较小时与正态差异明显，$n=30$时已很接近。",
-        "可以脱离课堂给出的前提条件直接套用"
-      ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：图像对比：$t$ 分布呈现**尖峰厚尾**形态——尾部比正态更厚，$n$ 较小时与正态差异明显，$n=30$时已很接近。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "设 $X\\sim\\chi^2(10)$，则 $D[X]=$ ______。",
+      "answer": "$20$",
+      "hint": "卡方分布方差 = 2 × 自由度。",
+      "explanation": "$D[X]=2\\times10=20$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 图像对比"
+        "label": "rec-17 · 说话人1 00:00 · 卡方方差"
       }
     },
     {
       "id": "rec-17-q19",
       "type": "fill_blank",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\lambda$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\lambda$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "F分布分位数关系：$F_\\alpha(n_1,n_2)=$ ______（用 $F_{1-\\alpha}$ 表示）。",
+      "answer": "$\\frac{1}{F_{1-\\alpha}(n_2,n_1)}$",
+      "hint": "F分布分位数：$F_\\alpha(n_1,n_2)=1/F_{1-\\alpha}(n_2,n_1)$。",
+      "explanation": "$F_\\alpha(n_1,n_2)=\\frac{1}{F_{1-\\alpha}(n_2,n_1)}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 公式/定义填空"
+        "label": "rec-17 · 说话人1 00:00 · F分布分位数"
       }
     },
     {
@@ -424,132 +408,30 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-17",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$2\\lambda X \\sim \\chi^2(2)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $2\\lambda X \\sim \\chi^2(2)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "正态总体中，$\\bar{X}$ 与 $S^2$ ______（独立/不独立）。",
+      "answer": "独立",
+      "hint": "正态总体中，样本均值与样本方差独立。",
+      "explanation": "正态总体中，$\\bar{X}$ 与 $S^2$ 独立。",
       "sourceRef": {
         "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 01:46 · 公式/定义填空"
-      }
-    },
-    {
-      "id": "rec-17-q21",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-17",
-      "points": 10,
-      "label": "计算题",
-      "stem": "若 $Z_1,\\dots,Z_5$ 独立标准正态，求 $\\sum Z_i^2$ 的分布、期望和方差。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：卡方构造。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：平方和服从 $\\chi^2(5)$；期望 $5$，方差 $10$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 卡方构造"
-      }
-    },
-    {
-      "id": "rec-17-q22",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-17",
-      "points": 10,
-      "label": "计算题",
-      "stem": "若 $X_i\\sim Exp(\\lambda)$，证明 $2n\\lambda\\bar X\\sim\\chi^2(2n)$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：指数卡方。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：每个 $2\\lambda X_i\\sim\\chi^2(2)$；样本独立，卡方可加；$2\\lambda\\sum X_i=2n\\lambda\\bar X\\sim\\chi^2(2n)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · 指数卡方"
-      }
-    },
-    {
-      "id": "rec-17-q23",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-17",
-      "points": 10,
-      "label": "计算题",
-      "stem": "若 $F\\sim F(4,10)$，求 $1/F$ 的分布。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：F倒数。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：由 F 分布倒数关系，$1/F\\sim F(10,4)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · F倒数"
-      }
-    },
-    {
-      "id": "rec-17-q24",
-      "type": "essay",
-      "difficulty": "hard",
-      "source": "current_chapter",
-      "sourceChapter": "rec-17",
-      "points": 20,
-      "label": "综合计算/证明",
-      "stem": "证明正态总体下 $(\\bar X-\\mu)/(S/\\sqrt n)\\sim t(n-1)$ 的构造。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：t统计量。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：分子标准化为 $N(0,1)$；$(n-1)S^2/\\sigma^2\\sim\\chi^2(n-1)$；二者独立，代入 t 分布定义。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（5分）",
-        "展开关键推导或分段计算（7分）",
-        "得到完整答案或证明结论（5分）",
-        "说明条件、定义域和易错点（3分）"
-      ],
-      "total_points": 20,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-17.md",
-        "label": "rec-17 · 说话人1 00:00 · t统计量"
+        "label": "rec-17 · 说话人1 00:00 · 正态总体定理"
       }
     }
   ],
   "summary": {
-    "totalQuestions": 24,
+    "totalQuestions": 20,
     "byType": {
-      "single_choice": 13,
-      "fill_blank": 7,
-      "essay": 4
+      "single_choice": 15,
+      "fill_blank": 5
     },
     "bySource": {
-      "current_chapter": 24
+      "current_chapter": 20
     },
     "byDifficulty": {
-      "basic": 15,
-      "medium": 8,
-      "hard": 1
+      "basic": 1,
+      "medium": 10,
+      "hard": 9
     }
   }
 }

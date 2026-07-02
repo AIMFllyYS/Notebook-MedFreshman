@@ -1,7 +1,7 @@
 {
   "subjectId": "probability",
   "chapterId": "rec-11",
-  "generatedAt": "2026-06-24",
+  "generatedAt": "2026-07-01",
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
@@ -11,133 +11,133 @@
     {
       "id": "rec-11-q01",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "关于本讲“数字特征是与随机变量分布有关的常数，”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "离散型随机变量 $X$ 的期望 $E[X]$ 定义为（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "数字特征是与随机变量分布有关的常数，刻画随机变量某一方面的突出特征。"
+        "$\\sum_{k=1}^\\infty x_k p_k$",
+        "$\\sum_{k=1}^\\infty p_k$",
+        "$\\sum_{k=1}^\\infty x_k$",
+        "$\\sum_{k=1}^\\infty x_k^2 p_k$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：数字特征是与随机变量分布有关的常数，刻画随机变量某一方面的突出特征。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "期望 = 取值 × 概率的加权和。",
+      "explanation": "$E[X]=\\sum_{k=1}^\\infty x_k p_k$（绝对收敛时）。选项B是概率和（恒为1）；选项C是取值和；选项D是二阶矩。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 数字特征是与随机变量分布有关的常数，"
+        "label": "rec-11 · 说话人1 00:00 · 离散型期望定义"
       }
     },
     {
       "id": "rec-11-q02",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "关于本讲“第四章主要数字特征”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "连续型随机变量 $X$ 的期望 $E[X]$ 定义为（  ）。",
       "options": [
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "第四章主要数字特征：期望、方差、协方差、相关系数。",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$\\int_{-\\infty}^{+\\infty} x f(x) dx$",
+        "$\\int_{-\\infty}^{+\\infty} f(x) dx$",
+        "$\\int_{-\\infty}^{+\\infty} x^2 f(x) dx$",
+        "$\\int_{-\\infty}^{+\\infty} |x| f(x) dx$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：第四章主要数字特征：期望、方差、协方差、相关系数。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "连续型期望 = x × 密度的积分。",
+      "explanation": "$E[X]=\\int_{-\\infty}^{+\\infty} x f(x) dx$（绝对收敛时）。选项B是规范性（恒为1）；选项C是二阶矩；选项D是一阶绝对矩。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 第四章主要数字特征"
+        "label": "rec-11 · 说话人1 00:00 · 连续型期望定义"
       }
     },
     {
       "id": "rec-11-q03",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "关于本讲“加权平均”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "随机变量函数期望定理（离散型）：$E[g(X)]=$（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "加权平均：$p_k$ 为权重，$E[X]$ 是加权平均分。",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多"
+        "$\\sum_{k=1}^\\infty g(x_k) p_k$",
+        "$g(\\sum_{k=1}^\\infty x_k p_k)$",
+        "$\\sum_{k=1}^\\infty x_k g(p_k)$",
+        "$g(E[X])$"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：加权平均：$p_k$ 为权重，$E[X]$ 是加权平均分。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "函数期望 = 函数值 × 概率的加权和。",
+      "explanation": "$E[g(X)]=\\sum_{k=1}^\\infty g(x_k) p_k$。选项B是 $g(E[X])$，一般不等于 $E[g(X)]$；选项C、D无意义。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 18:46 · 加权平均"
+        "label": "rec-11 · 说话人1 00:00 · 函数期望定理"
       }
     },
     {
       "id": "rec-11-q04",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "关于本讲“质心位置”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "随机变量函数期望定理（连续型）：$E[g(X)]=$（  ）。",
       "options": [
-        "质心位置：类比物理中质点系的质心，期望是概率分布的平衡点。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$\\int_{-\\infty}^{+\\infty} g(x) f(x) dx$",
+        "$g(\\int_{-\\infty}^{+\\infty} x f(x) dx)$",
+        "$\\int_{-\\infty}^{+\\infty} x g(f(x)) dx$",
+        "$g(E[X])$"
       ],
       "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：质心位置：类比物理中质点系的质心，期望是概率分布的平衡点。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "函数期望 = 函数值 × 密度的积分。",
+      "explanation": "$E[g(X)]=\\int_{-\\infty}^{+\\infty} g(x) f(x) dx$。选项B是 $g(E[X])$，一般不等于 $E[g(X)]$；选项C、D无意义。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 质心位置"
+        "label": "rec-11 · 说话人1 00:00 · 函数期望定理连续"
       }
     },
     {
       "id": "rec-11-q05",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "关于本讲“期望值不一定是随机变量的可能取值（如”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "期望的线性性：$E[aX+bY]=$（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "期望值不一定是随机变量的可能取值（如平均成绩1.8分无人得此分）。"
+        "$aE[X]+bE[Y]$",
+        "$abE[X]E[Y]$",
+        "$aE[X]bE[Y]$",
+        "$E[X]+E[Y]$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：期望值不一定是随机变量的可能取值（如平均成绩1.8分无人得此分）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "期望线性性：常数可提出，和的期望等于期望的和。",
+      "explanation": "$E[aX+bY]=aE[X]+bE[Y]$，无条件成立。选项B、C是独立时的乘积性质；选项D漏了系数。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 期望值不一定是随机变量的可能取值（如"
+        "label": "rec-11 · 说话人1 00:00 · 期望线性性"
       }
     },
     {
       "id": "rec-11-q06",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "关于本讲“期望不一定存在，要求级数**绝对收敛”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "泊松分布 $X\\sim P(\\lambda)$ 的期望 $E[X]=$（  ）。",
       "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "期望不一定存在，要求级数**绝对收敛**（保证结果与求和顺序无关）。",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$\\lambda$",
+        "$\\lambda^2$",
+        "$\\frac{1}{\\lambda}$",
+        "$e^{-\\lambda}$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：期望不一定存在，要求级数**绝对收敛**（保证结果与求和顺序无关）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "泊松分布期望等于参数。",
+      "explanation": "$E[X]=\\lambda$。选项B是方差；选项C、D无依据。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 期望不一定存在，要求级数**绝对收敛"
+        "label": "rec-11 · 说话人1 00:00 · 泊松期望"
       }
     },
     {
@@ -146,276 +146,260 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "关于本讲“泊松分布 $X\\sim P(\\lam”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "0-1分布 $X\\sim B(1,p)$ 的期望 $E[X]=$（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "泊松分布 $X\\sim P(\\lambda)$：$E[X]=\\lambda$（参数即平均发生次数）。",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域"
+        "$p$",
+        "$1-p$",
+        "$0$",
+        "$1$"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：泊松分布 $X\\sim P(\\lambda)$：$E[X]=\\lambda$（参数即平均发生次数）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "0-1分布期望等于成功概率。",
+      "explanation": "$E[X]=p$。选项B是失败概率；选项C、D无依据。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 泊松分布 $X\\sim P(\\lam"
+        "label": "rec-11 · 说话人1 00:00 · 0-1分布期望"
       }
     },
     {
       "id": "rec-11-q08",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "关于本讲“0-1分布”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "期望存在的条件是级数/积分（  ）。",
       "options": [
-        "0-1分布：$E[X]=p$。",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用"
+        "收敛",
+        "绝对收敛",
+        "条件收敛",
+        "发散"
       ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：0-1分布：$E[X]=p$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "期望要求绝对收敛，保证结果与求和顺序无关。",
+      "explanation": "期望要求级数/积分绝对收敛。选项A收敛但非绝对收敛时期望不存在；选项C条件收敛时期望不存在；选项D发散时期望不存在。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 0-1分布"
+        "label": "rec-11 · 说话人1 00:00 · 期望存在条件"
       }
     },
     {
       "id": "rec-11-q09",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "关于本讲“指数分布 $X\\sim E(\\lam”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "期望的直观含义是（  ）。",
       "options": [
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "指数分布 $X\\sim E(\\lambda)$：$E[X]=\\frac{1}{\\lambda}$（参数的倒数），串联越多平均寿命越短。"
+        "加权平均",
+        "最大值",
+        "最小值",
+        "中位数"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：指数分布 $X\\sim E(\\lambda)$：$E[X]=\\frac{1}{\\lambda}$（参数的倒数），串联越多平均寿命越短。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "期望是概率分布的平衡点，类似质心。",
+      "explanation": "期望是加权平均，概率作为权重。选项B、C、D是其他统计量。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 指数分布 $X\\sim E(\\lam"
+        "label": "rec-11 · 说话人1 00:00 · 期望直观含义"
       }
     },
     {
       "id": "rec-11-q10",
       "type": "single_choice",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "关于本讲“均匀分布 $U(a,b)$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "$E[X^2]$ 与 $(E[X])^2$ 的关系是（  ）。",
       "options": [
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "均匀分布 $U(a,b)$：$E[X]=\\frac{a+b}{2}$（区间中点，即质心）。",
-        "只要两个事件互斥，就一定可以推出二者独立"
+        "$E[X^2]=(E[X])^2$",
+        "$E[X^2]\\geq(E[X])^2$",
+        "$E[X^2]\\leq(E[X])^2$",
+        "无法比较"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：均匀分布 $U(a,b)$：$E[X]=\\frac{a+b}{2}$（区间中点，即质心）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 1,
+      "hint": "由 $D(X)=E[X^2]-(E[X])^2\\geq0$ 得出。",
+      "explanation": "$D(X)=E[X^2]-(E[X])^2\\geq0$，故 $E[X^2]\\geq(E[X])^2$。选项A仅当 $D(X)=0$ 时成立；选项C错误；选项D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 均匀分布 $U(a,b)$"
+        "label": "rec-11 · 说话人1 00:00 · 期望不等式"
       }
     },
     {
       "id": "rec-11-q11",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$N = \\min(X_1,X_2,\\dots,X_n)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $N = \\min(X_1,X_2,\\dots,X_n)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "常数 $c$ 的期望 $E[c]=$（  ）。",
+      "options": [
+        "$c$",
+        "$0$",
+        "$1$",
+        "不确定"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "常数的期望等于该常数。",
+      "explanation": "$E[c]=c$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
+        "label": "rec-11 · 说话人1 00:00 · 常数期望"
       }
     },
     {
       "id": "rec-11-q12",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\lambda = \\sum_{i=1}^n \\lambda_i$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\lambda = \\sum_{i=1}^n \\lambda_i$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $X$ 的分布列为 $P(X=0)=0.5$，$P(X=1)=0.3$，$P(X=2)=0.2$，则 $E[X]=$（  ）。",
+      "options": [
+        "$0.7$",
+        "$1$",
+        "$1.3$",
+        "$0.5$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "期望 = 取值 × 概率的加权和。",
+      "explanation": "$E[X]=0\\times0.5+1\\times0.3+2\\times0.2=0+0.3+0.4=0.7$。选项B、C、D计算错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 23:02 · 公式/定义填空"
+        "label": "rec-11 · 说话人1 00:00 · 离散期望计算"
       }
     },
     {
       "id": "rec-11-q13",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$M = \\max(X_1,X_2,\\dots,X_n)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $M = \\max(X_1,X_2,\\dots,X_n)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "期望的量纲与（  ）相同。",
+      "options": [
+        "$X$ 的量纲",
+        "概率的量纲",
+        "无量纲",
+        "方差的量纲"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "期望与随机变量同单位。",
+      "explanation": "期望的量纲与 $X$ 的量纲相同。选项B概率无量纲；选项C错误；选项D方差量纲是 $X$ 量纲的平方。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
+        "label": "rec-11 · 说话人1 00:00 · 期望量纲"
       }
     },
     {
       "id": "rec-11-q14",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$S = X_1+X_2$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $S = X_1+X_2$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "期望是（  ）。",
+      "options": [
+        "常数",
+        "随机变量",
+        "函数",
+        "分布"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "期望是数字特征，是常数。",
+      "explanation": "期望是常数，刻画随机变量的平均取值。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
+        "label": "rec-11 · 说话人1 00:00 · 期望性质"
       }
     },
     {
       "id": "rec-11-q15",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$P(Z\\leq z)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $P(Z\\leq z)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $X\\sim U(0,1)$，则 $E[X^2]=$（  ）。",
+      "options": [
+        "$\\frac{1}{2}$",
+        "$\\frac{1}{3}$",
+        "$\\frac{1}{4}$",
+        "$\\frac{1}{6}$"
       ],
-      "total_points": 2,
+      "answer": 1,
+      "hint": "用函数期望定理：$E[X^2]=\\int_0^1 x^2 dx$。",
+      "explanation": "$E[X^2]=\\int_0^1 x^2 dx = \\frac{1}{3}$。选项A是 $E[X]$；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
+        "label": "rec-11 · 说话人1 00:00 · 函数期望计算"
       }
     },
     {
       "id": "rec-11-q16",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“离散情形”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "离散情形：$E[g(X)] = \\sum_{k=1}^\\infty g(x_k) p_k$。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
-      ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：离散情形：$E[g(X)] = \\sum_{k=1}^\\infty g(x_k) p_k$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "离散型期望定义：$E[X]=$ ______（用分布列表示）。",
+      "answer": "$\\sum_{k=1}^\\infty x_k p_k$",
+      "hint": "期望 = 取值 × 概率的加权和。",
+      "explanation": "$E[X]=\\sum_{k=1}^\\infty x_k p_k$（绝对收敛时）。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 离散情形"
+        "label": "rec-11 · 说话人1 00:00 · 离散型期望定义"
       }
     },
     {
       "id": "rec-11-q17",
-      "type": "single_choice",
-      "difficulty": "medium",
+      "type": "fill_blank",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“连续情形”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "连续情形：$E[g(X)] = \\int_{-\\infty}^{+\\infty} g(x) f(x) dx$。"
-      ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：连续情形：$E[g(X)] = \\int_{-\\infty}^{+\\infty} g(x) f(x) dx$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "连续型期望定义：$E[X]=$ ______（用密度表示）。",
+      "answer": "$\\int_{-\\infty}^{+\\infty} x f(x) dx$",
+      "hint": "连续型期望 = x × 密度的积分。",
+      "explanation": "$E[X]=\\int_{-\\infty}^{+\\infty} x f(x) dx$（绝对收敛时）。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 连续情形"
+        "label": "rec-11 · 说话人1 00:00 · 连续型期望定义"
       }
     },
     {
       "id": "rec-11-q18",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“离散情形”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "离散情形：$E[g(X,Y)] = \\sum_{i}\\sum_{j} g(x_i,y_j) p_{ij}$。",
-        "可以脱离课堂给出的前提条件直接套用"
-      ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：离散情形：$E[g(X,Y)] = \\sum_{i}\\sum_{j} g(x_i,y_j) p_{ij}$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "期望线性性：$E[aX+b]=$ ______。",
+      "answer": "$aE[X]+b$",
+      "hint": "线性性：常数可提出，常数项不变。",
+      "explanation": "$E[aX+b]=aE[X]+b$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 离散情形"
+        "label": "rec-11 · 说话人1 00:00 · 期望线性性"
       }
     },
     {
       "id": "rec-11-q19",
       "type": "fill_blank",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$X\\sim P(\\lambda)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $X\\sim P(\\lambda)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "函数期望定理（离散型）：$E[g(X)]=$ ______。",
+      "answer": "$\\sum_{k=1}^\\infty g(x_k) p_k$",
+      "hint": "函数期望 = 函数值 × 概率的加权和。",
+      "explanation": "$E[g(X)]=\\sum_{k=1}^\\infty g(x_k) p_k$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
+        "label": "rec-11 · 说话人1 00:00 · 函数期望定理"
       }
     },
     {
@@ -424,132 +408,30 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-11",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$E[X]=\\lambda$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $E[X]=\\lambda$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "设 $X\\sim P(3)$，则 $E[X]=$ ______。",
+      "answer": "$3$",
+      "hint": "泊松分布期望等于参数。",
+      "explanation": "$E[X]=3$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 公式/定义填空"
-      }
-    },
-    {
-      "id": "rec-11-q21",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-11",
-      "points": 10,
-      "label": "计算题",
-      "stem": "独立指数寿命 $X_1\\sim Exp(\\lambda_1),X_2\\sim Exp(\\lambda_2)$，串联系统寿命 $N=\\min(X_1,X_2)$，求 $E[N]$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：指数串联。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：录音结论：最小值仍为指数且参数相加，$N\\sim Exp(\\lambda_1+\\lambda_2)$，故 $E[N]=1/(\\lambda_1+\\lambda_2)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 指数串联"
-      }
-    },
-    {
-      "id": "rec-11-q22",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-11",
-      "points": 10,
-      "label": "计算题",
-      "stem": "随机变量取 $1,2,3$ 的概率为 $1/2,1/3,1/6$，求期望。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：离散期望。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$E[X]=1\\cdot1/2+2\\cdot1/3+3\\cdot1/6=5/3$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 离散期望"
-      }
-    },
-    {
-      "id": "rec-11-q23",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-11",
-      "points": 10,
-      "label": "计算题",
-      "stem": "密度 $f(x)=2x,0<x<1$，求 $E[X]$ 与 $E[X^2]$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：连续期望。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$E[X]=\\int_0^1 2x^2dx=2/3$；$E[X^2]=\\int_0^1 2x^3dx=1/2$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 连续期望"
-      }
-    },
-    {
-      "id": "rec-11-q24",
-      "type": "essay",
-      "difficulty": "hard",
-      "source": "current_chapter",
-      "sourceChapter": "rec-11",
-      "points": 20,
-      "label": "综合计算/证明",
-      "stem": "推导 $X\\sim P(\\lambda)$ 的期望。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：泊松期望。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$E[X]=\\sum_{k\\ge1}k e^{-\\lambda}\\lambda^k/k!=\\lambda e^{-\\lambda}\\sum_{j\\ge0}\\lambda^j/j!=\\lambda$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（5分）",
-        "展开关键推导或分段计算（7分）",
-        "得到完整答案或证明结论（5分）",
-        "说明条件、定义域和易错点（3分）"
-      ],
-      "total_points": 20,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-11.md",
-        "label": "rec-11 · 说话人1 01:13 · 泊松期望"
+        "label": "rec-11 · 说话人1 00:00 · 泊松期望"
       }
     }
   ],
   "summary": {
-    "totalQuestions": 24,
+    "totalQuestions": 20,
     "byType": {
-      "single_choice": 13,
-      "fill_blank": 7,
-      "essay": 4
+      "single_choice": 15,
+      "fill_blank": 5
     },
     "bySource": {
-      "current_chapter": 24
+      "current_chapter": 20
     },
     "byDifficulty": {
-      "basic": 15,
-      "medium": 8,
-      "hard": 1
+      "basic": 1,
+      "medium": 10,
+      "hard": 9
     }
   }
 }

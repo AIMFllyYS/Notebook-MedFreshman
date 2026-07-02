@@ -1,7 +1,7 @@
 {
   "subjectId": "probability",
   "chapterId": "rec-15",
-  "generatedAt": "2026-06-24",
+  "generatedAt": "2026-07-01",
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
@@ -11,133 +11,133 @@
     {
       "id": "rec-15-q01",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "关于本讲“依概率收敛的概念及其与微积分收敛的区”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "简单随机抽样的特点是（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "依概率收敛的概念及其与微积分收敛的区别。"
+        "每个个体被抽中的概率相同",
+        "按顺序抽样",
+        "分层抽样",
+        "整群抽样"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：依概率收敛的概念及其与微积分收敛的区别。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "简单随机抽样：等概率抽取。",
+      "explanation": "简单随机抽样中每个个体被抽中的概率相同。选项B、C、D是其他抽样方法。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 依概率收敛的概念及其与微积分收敛的区"
+        "label": "rec-15 · 说话人1 00:00 · 简单随机抽样"
       }
     },
     {
       "id": "rec-15-q02",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "关于本讲“三大大数定律的条件与结论（切比雪夫、”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "独立同分布样本 $X_1,\\cdots,X_n$ 的联合密度为（  ）。",
       "options": [
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "三大大数定律的条件与结论（切比雪夫、伯努利、辛钦）。",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$\\prod_{i=1}^n f(x_i)$",
+        "$\\sum_{i=1}^n f(x_i)$",
+        "$f(\\sum_{i=1}^n x_i)$",
+        "$f(\\prod_{i=1}^n x_i)$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：三大大数定律的条件与结论（切比雪夫、伯努利、辛钦）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "独立同分布：联合密度 = 边缘密度乘积。",
+      "explanation": "独立同分布时联合密度 $f(x_1,\\cdots,x_n)=\\prod_{i=1}^n f(x_i)$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 三大大数定律的条件与结论（切比雪夫、"
+        "label": "rec-15 · 说话人1 00:00 · 独立同分布"
       }
     },
     {
       "id": "rec-15-q03",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "关于本讲“独立同分布中心极限定理的背景、条件与”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "经验分布函数 $F_n(x)$ 的定义是（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "独立同分布中心极限定理的背景、条件与结论。",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多"
+        "$\\frac{1}{n}\\sum_{i=1}^n I\\{X_i\\leq x\\}$",
+        "$\\sum_{i=1}^n I\\{X_i\\leq x\\}$",
+        "$\\frac{1}{n}\\sum_{i=1}^n X_i$",
+        "$\\sum_{i=1}^n X_i$"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：独立同分布中心极限定理的背景、条件与结论。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "经验分布函数 = 样本中不超过x的比例。",
+      "explanation": "$F_n(x)=\\frac{1}{n}\\sum_{i=1}^n I\\{X_i\\leq x\\}$。选项B是计数；选项C是样本均值；选项D是样本和。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 19:05 · 独立同分布中心极限定理的背景、条件与"
+        "label": "rec-15 · 说话人1 00:00 · 经验分布函数"
       }
     },
     {
       "id": "rec-15-q04",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "关于本讲“棣莫弗-拉普拉斯中心极限定理（二项分”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "Glivenko定理的结论是（  ）。",
       "options": [
-        "棣莫弗-拉普拉斯中心极限定理（二项分布的正态近似）。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$F_n(x)$ 一致收敛于 $F(x)$",
+        "$F_n(x)$ 点收敛于 $F(x)$",
+        "$F_n(x)$ 发散",
+        "$F_n(x)=F(x)$"
       ],
       "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：棣莫弗-拉普拉斯中心极限定理（二项分布的正态近似）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "Glivenko定理：经验分布函数一致收敛于真实分布函数。",
+      "explanation": "Glivenko定理：$\\sup_x|F_n(x)-F(x)|\\xrightarrow{P}0$（一致收敛）。选项B是点收敛（更弱）；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 20:21 · 棣莫弗-拉普拉斯中心极限定理（二项分"
+        "label": "rec-15 · 说话人1 00:00 · Glivenko定理"
       }
     },
     {
       "id": "rec-15-q05",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "关于本讲“中心极限定理的实际应用（近似计算）”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "样本均值 $\\bar{X}=$（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "中心极限定理的实际应用（近似计算）。"
+        "$\\frac{1}{n}\\sum_{i=1}^n X_i$",
+        "$\\sum_{i=1}^n X_i$",
+        "$\\frac{1}{n}\\sum_{i=1}^n X_i^2$",
+        "$\\sum_{i=1}^n X_i^2$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：中心极限定理的实际应用（近似计算）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "样本均值 = 样本和 / 样本量。",
+      "explanation": "$\\bar{X}=\\frac{1}{n}\\sum_{i=1}^n X_i$。选项B是样本和；选项C是二阶矩；选项D是平方和。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 05:04 · 中心极限定理的实际应用（近似计算）"
+        "label": "rec-15 · 说话人1 00:00 · 样本均值"
       }
     },
     {
       "id": "rec-15-q06",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "关于本讲“和的近似分布”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "样本方差 $S^2=$（  ）。",
       "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "和的近似分布：$\\sum_{i=1}^n X_i \\stackrel{\\cdot}{\\sim} N(n\\mu, n\\sigma^2)$。",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$\\frac{1}{n-1}\\sum_{i=1}^n (X_i-\\bar{X})^2$",
+        "$\\frac{1}{n}\\sum_{i=1}^n (X_i-\\bar{X})^2$",
+        "$\\frac{1}{n}\\sum_{i=1}^n X_i^2$",
+        "$\\frac{1}{n-1}\\sum_{i=1}^n X_i^2$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：和的近似分布：$\\sum_{i=1}^n X_i \\stackrel{\\cdot}{\\sim} N(n\\mu, n\\sigma^2)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "样本方差（无偏）= 偏差平方和 / (n-1)。",
+      "explanation": "$S^2=\\frac{1}{n-1}\\sum_{i=1}^n (X_i-\\bar{X})^2$（无偏估计）。选项B是有偏估计；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 和的近似分布"
+        "label": "rec-15 · 说话人1 00:00 · 样本方差"
       }
     },
     {
@@ -146,276 +146,260 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "关于本讲“样本均值的近似分布”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "顺序统计量 $X_{(1)}$ 表示（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "样本均值的近似分布：$\\bar{X} \\stackrel{\\cdot}{\\sim} N\\left(\\mu, \\frac{\\sigma^2}{n}\\right)$。",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域"
+        "样本最小值",
+        "样本最大值",
+        "样本中位数",
+        "样本均值"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：样本均值的近似分布：$\\bar{X} \\stackrel{\\cdot}{\\sim} N\\left(\\mu, \\frac{\\sigma^2}{n}\\right)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "顺序统计量下标1表示最小值。",
+      "explanation": "$X_{(1)}=\\min\\{X_1,\\cdots,X_n\\}$（样本最小值）。选项B是 $X_{(n)}$；选项C、D是其他统计量。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 样本均值的近似分布"
+        "label": "rec-15 · 说话人1 00:00 · 顺序统计量"
       }
     },
     {
       "id": "rec-15-q08",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "关于本讲“泊松近似”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "顺序统计量 $X_{(n)}$ 表示（  ）。",
       "options": [
-        "泊松近似：要求 $n$ 大、$p$ 小、$np$ 有极限，处理稀有事件（小概率事件）。",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用"
+        "样本最大值",
+        "样本最小值",
+        "样本中位数",
+        "样本均值"
       ],
       "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：泊松近似：要求 $n$ 大、$p$ 小、$np$ 有极限，处理稀有事件（小概率事件）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "顺序统计量下标n表示最大值。",
+      "explanation": "$X_{(n)}=\\max\\{X_1,\\cdots,X_n\\}$（样本最大值）。选项B是 $X_{(1)}$；选项C、D是其他统计量。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 泊松近似"
+        "label": "rec-15 · 说话人1 00:00 · 顺序统计量"
       }
     },
     {
       "id": "rec-15-q09",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "关于本讲“正态近似”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "样本k阶矩 $A_k=$（  ）。",
       "options": [
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "正态近似：$n$ 较大即可，$p$ 接近 $1/2$ 时效果最好（对称），$p$ 偏离 $1/2$ 时需要更大的 $n$。"
+        "$\\frac{1}{n}\\sum_{i=1}^n X_i^k$",
+        "$\\sum_{i=1}^n X_i^k$",
+        "$\\frac{1}{n}\\sum_{i=1}^n (X_i-\\bar{X})^k$",
+        "$\\sum_{i=1}^n (X_i-\\bar{X})^k$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：正态近似：$n$ 较大即可，$p$ 接近 $1/2$ 时效果最好（对称），$p$ 偏离 $1/2$ 时需要更大的 $n$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "样本k阶矩 = X^k 的样本均值。",
+      "explanation": "$A_k=\\frac{1}{n}\\sum_{i=1}^n X_i^k$。选项B是和；选项C、D是中心矩。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 正态近似"
+        "label": "rec-15 · 说话人1 00:00 · 样本矩"
       }
     },
     {
       "id": "rec-15-q10",
       "type": "single_choice",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "关于本讲“每个小球碰到钉子后以等概率（1/2）”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "样本k阶中心矩 $B_k=$（  ）。",
       "options": [
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "每个小球碰到钉子后以等概率（1/2）向左或向右滚，记向右为+1、向左为-1。",
-        "只要两个事件互斥，就一定可以推出二者独立"
+        "$\\frac{1}{n}\\sum_{i=1}^n (X_i-\\bar{X})^k$",
+        "$\\sum_{i=1}^n (X_i-\\bar{X})^k$",
+        "$\\frac{1}{n}\\sum_{i=1}^n X_i^k$",
+        "$\\sum_{i=1}^n X_i^k$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：每个小球碰到钉子后以等概率（1/2）向左或向右滚，记向右为+1、向左为-1。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "样本k阶中心矩 = (X-均值)^k 的样本均值。",
+      "explanation": "$B_k=\\frac{1}{n}\\sum_{i=1}^n (X_i-\\bar{X})^k$。选项B是和；选项C、D是原点矩。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 每个小球碰到钉子后以等概率（1/2）"
+        "label": "rec-15 · 说话人1 00:00 · 样本中心矩"
       }
     },
     {
       "id": "rec-15-q11",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$X_1, X_2, \\dots, X_n$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $X_1, X_2, \\dots, X_n$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "统计量的定义是（  ）。",
+      "options": [
+        "样本的函数",
+        "总体的函数",
+        "常数",
+        "随机变量"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "统计量 = 样本的函数（不含未知参数）。",
+      "explanation": "统计量是样本的函数（不含未知参数）。选项B是总体参数；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 08:00 · 公式/定义填空"
+        "label": "rec-15 · 说话人1 00:00 · 统计量定义"
       }
     },
     {
       "id": "rec-15-q12",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\frac{n_A}{n} \\xrightarrow{P} p \\quad (n \\to \\infty)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\frac{n_A}{n} \\xrightarrow{P} p \\quad (n \\to \\infty)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "经验分布函数的性质是（  ）。",
+      "options": [
+        "右连续阶梯函数",
+        "左连续阶梯函数",
+        "连续函数",
+        "处处间断"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "经验分布函数是右连续阶梯函数。",
+      "explanation": "经验分布函数是右连续阶梯函数（在样本点处跳跃）。选项B错误；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 15:41 · 公式/定义填空"
+        "label": "rec-15 · 说话人1 00:00 · 经验分布函数性质"
       }
     },
     {
       "id": "rec-15-q13",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$E[X_i] = \\mu$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $E[X_i] = \\mu$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "样本中位数是（  ）。",
+      "options": [
+        "顺序统计量的中间值",
+        "样本均值",
+        "样本最大值",
+        "样本最小值"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "中位数 = 顺序统计量的中间值。",
+      "explanation": "样本中位数是顺序统计量的中间值（$X_{(\\frac{n+1}{2})}$ 或 $\\frac{X_{(n/2)}+X_{(n/2+1)}}{2}$）。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 公式/定义填空"
+        "label": "rec-15 · 说话人1 00:00 · 样本中位数"
       }
     },
     {
       "id": "rec-15-q14",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\frac{1}{n}\\sum_{i=1}^n X_i \\xrightarrow{P} \\mu \\quad (n \\to \\infty)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\frac{1}{n}\\sum_{i=1}^n X_i \\xrightarrow{P} \\mu \\quad (n \\to \\infty)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "总体与样本的关系是（  ）。",
+      "options": [
+        "样本来自总体",
+        "总体来自样本",
+        "无关",
+        "相等"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "样本是从总体中抽取的。",
+      "explanation": "样本是从总体中抽取的，用于推断总体。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 15:41 · 公式/定义填空"
+        "label": "rec-15 · 说话人1 00:00 · 总体与样本"
       }
     },
     {
       "id": "rec-15-q15",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$D(X_i) = \\sigma^2 > 0$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $D(X_i) = \\sigma^2 > 0$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $X_1,\\cdots,X_n$ i.i.d. $U(0,1)$，则 $E[\\bar{X}]=$（  ）。",
+      "options": [
+        "$\\frac{1}{2}$",
+        "$0$",
+        "$1$",
+        "$\\frac{1}{n}$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "样本均值期望 = 总体期望。",
+      "explanation": "$E[\\bar{X}]=E[X_1]=\\frac{1}{2}$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 公式/定义填空"
+        "label": "rec-15 · 说话人1 00:00 · 样本均值期望"
       }
     },
     {
       "id": "rec-15-q16",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“$n$ 层钉子后小球位置是 $n$”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "$n$ 层钉子后小球位置是 $n$ 个独立同分布随机变量的和。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
-      ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：$n$ 层钉子后小球位置是 $n$ 个独立同分布随机变量的和。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "经验分布函数：$F_n(x)=$ ______（用示性函数表示）。",
+      "answer": "$\\frac{1}{n}\\sum_{i=1}^n I\\{X_i\\leq x\\}$",
+      "hint": "经验分布函数 = 样本中不超过x的比例。",
+      "explanation": "$F_n(x)=\\frac{1}{n}\\sum_{i=1}^n I\\{X_i\\leq x\\}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · $n$ 层钉子后小球位置是 $n$"
+        "label": "rec-15 · 说话人1 00:00 · 经验分布函数"
       }
     },
     {
       "id": "rec-15-q17",
-      "type": "single_choice",
-      "difficulty": "medium",
+      "type": "fill_blank",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“大量小球落下后堆积的形状近似正态分布”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "大量小球落下后堆积的形状近似正态分布——中间高、两边低，直观演示了中心极限定理。"
-      ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：大量小球落下后堆积的形状近似正态分布——中间高、两边低，直观演示了中心极限定理。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "样本均值：$\\bar{X}=$ ______。",
+      "answer": "$\\frac{1}{n}\\sum_{i=1}^n X_i$",
+      "hint": "样本均值 = 样本和 / 样本量。",
+      "explanation": "$\\bar{X}=\\frac{1}{n}\\sum_{i=1}^n X_i$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 大量小球落下后堆积的形状近似正态分布"
+        "label": "rec-15 · 说话人1 00:00 · 样本均值"
       }
     },
     {
       "id": "rec-15-q18",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“⚠️ **中心极限定理是必考内容”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "⚠️ **中心极限定理是必考内容**：独立同分布中心极限定理和棣莫弗-拉普拉斯定理的条件、结论及应用。",
-        "可以脱离课堂给出的前提条件直接套用"
-      ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：⚠️ **中心极限定理是必考内容**：独立同分布中心极限定理和棣莫弗-拉普拉斯定理的条件、结论及应用。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "顺序统计量：$X_{(1)}=$ ______（用样本表示）。",
+      "answer": "$\\min\\{X_1,\\cdots,X_n\\}$",
+      "hint": "顺序统计量下标1表示最小值。",
+      "explanation": "$X_{(1)}=\\min\\{X_1,\\cdots,X_n\\}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · ⚠️ **中心极限定理是必考内容"
+        "label": "rec-15 · 说话人1 00:00 · 顺序统计量"
       }
     },
     {
       "id": "rec-15-q19",
       "type": "fill_blank",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\frac{\\sum_{i=1}^n X_i - n\\mu}{\\sqrt{n}\\sigma} \\xrightarrow{\\text{近似}} N(0, 1)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\frac{\\sum_{i=1}^n X_i - n\\mu}{\\sqrt{n}\\sigma} \\xrightarrow{\\text{近似}} N(0, 1)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "样本方差（无偏）：$S^2=$ ______。",
+      "answer": "$\\frac{1}{n-1}\\sum_{i=1}^n (X_i-\\bar{X})^2$",
+      "hint": "样本方差（无偏）= 偏差平方和 / (n-1)。",
+      "explanation": "$S^2=\\frac{1}{n-1}\\sum_{i=1}^n (X_i-\\bar{X})^2$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 15:41 · 公式/定义填空"
+        "label": "rec-15 · 说话人1 00:00 · 样本方差"
       }
     },
     {
@@ -424,132 +408,30 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-15",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\sum_{i=1}^n X_i \\stackrel{\\cdot}{\\sim} N(n\\mu, n\\sigma^2)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\sum_{i=1}^n X_i \\stackrel{\\cdot}{\\sim} N(n\\mu, n\\sigma^2)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "统计量是 ______ 的函数（不含未知参数）。",
+      "answer": "样本",
+      "hint": "统计量 = 样本的函数。",
+      "explanation": "统计量是样本的函数（不含未知参数）。",
       "sourceRef": {
         "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 公式/定义填空"
-      }
-    },
-    {
-      "id": "rec-15-q21",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-15",
-      "points": 10,
-      "label": "计算题",
-      "stem": "20 个 $U(0,10)$ 独立变量求和，近似求 $P(V>105)$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：噪声电压。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：单个均值 5、方差 $100/12$；和的均值 100、方差 $2000/12$；标准化 $z=(105-100)/\\sqrt{2000/12}\\approx0.3873$，尾概率约 0.3492。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 37:15 · 噪声电压"
-      }
-    },
-    {
-      "id": "rec-15-q22",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-15",
-      "points": 10,
-      "label": "计算题",
-      "stem": "$X\\sim B(200,0.6)$，求最小 $N$ 使 $P(X\\le N)\\ge0.999$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：电力调度。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：Python 精确二项累计验算最小 $N=141$；正态近似给 141 到 142 附近，解析需说明近似与取整。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 41:08 · 电力调度"
-      }
-    },
-    {
-      "id": "rec-15-q23",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-15",
-      "points": 10,
-      "label": "计算题",
-      "stem": "i.i.d. 变量 $\\mu=5,\\sigma^2=4,n=100$，写出样本均值近似分布。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：样本均值 CLT。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$\\bar X\\dot\\sim N(5,4/100)=N(5,0.04)$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 00:00 · 样本均值 CLT"
-      }
-    },
-    {
-      "id": "rec-15-q24",
-      "type": "essay",
-      "difficulty": "hard",
-      "source": "current_chapter",
-      "sourceChapter": "rec-15",
-      "points": 20,
-      "label": "综合计算/证明",
-      "stem": "说明伯努利大数定律的结论和意义。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：伯努利大数。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$n_A/n\\xrightarrow{P}p$，说明频率会稳定到概率，从理论上解释用频率估计概率的合理性。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（5分）",
-        "展开关键推导或分段计算（7分）",
-        "得到完整答案或证明结论（5分）",
-        "说明条件、定义域和易错点（3分）"
-      ],
-      "total_points": 20,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-15.md",
-        "label": "rec-15 · 说话人1 04:05 · 伯努利大数"
+        "label": "rec-15 · 说话人1 00:00 · 统计量定义"
       }
     }
   ],
   "summary": {
-    "totalQuestions": 24,
+    "totalQuestions": 20,
     "byType": {
-      "single_choice": 13,
-      "fill_blank": 7,
-      "essay": 4
+      "single_choice": 15,
+      "fill_blank": 5
     },
     "bySource": {
-      "current_chapter": 24
+      "current_chapter": 20
     },
     "byDifficulty": {
-      "basic": 15,
-      "medium": 8,
-      "hard": 1
+      "basic": 1,
+      "medium": 10,
+      "hard": 9
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "subjectId": "probability",
   "chapterId": "rec-12",
-  "generatedAt": "2026-06-24",
+  "generatedAt": "2026-07-01",
   "examConfig": {
     "source": "docs/refer/考试题型分布.md",
     "totalPoints": 100,
@@ -11,133 +11,133 @@
     {
       "id": "rec-12-q01",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "关于本讲“线性含义”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "期望的线性性：$E[X+Y]=$（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "线性含义：仅涉及数乘与加法，随机变量之间相乘不属于线性运算。"
+        "$E[X]+E[Y]$",
+        "$E[X]E[Y]$",
+        "$E[X]-E[Y]$",
+        "$\\frac{E[X]+E[Y]}{2}$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：线性含义：仅涉及数乘与加法，随机变量之间相乘不属于线性运算。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "线性性无条件成立，和的期望等于期望的和。",
+      "explanation": "$E[X+Y]=E[X]+E[Y]$，无条件成立。选项B是独立时的乘积性质；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 线性含义"
+        "label": "rec-12 · 说话人1 00:00 · 期望线性性"
       }
     },
     {
       "id": "rec-12-q02",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "关于本讲“条件可减弱（后续讲不相关即可成立）”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "若 $X,Y$ 独立，则 $E[XY]=$（  ）。",
       "options": [
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "条件可减弱（后续讲不相关即可成立）。",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$E[X]E[Y]$",
+        "$E[X]+E[Y]$",
+        "$E[X]-E[Y]$",
+        "$\\frac{E[X]}{E[Y]}$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：条件可减弱（后续讲不相关即可成立）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "独立时乘积期望等于期望乘积。",
+      "explanation": "$X,Y$ 独立 $\Rightarrow E[XY]=E[X]E[Y]$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 条件可减弱（后续讲不相关即可成立）"
+        "label": "rec-12 · 说话人1 00:00 · 独立乘积期望"
       }
     },
     {
       "id": "rec-12-q03",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "关于本讲“$X\\sim B(n,p)$，引入指”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "二项分布 $X\\sim B(n,p)$ 的期望 $E[X]=$（  ）。",
       "options": [
-        "它只适用于确定性现象，与随机试验无关",
-        "$X\\sim B(n,p)$，引入指示变量 $X_i$：第i次试验成功记1，失败记0。",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多"
+        "$np$",
+        "$np(1-p)$",
+        "$p$",
+        "$n$"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：$X\\sim B(n,p)$，引入指示变量 $X_i$：第i次试验成功记1，失败记0。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "二项分布期望 = 试验次数 × 成功概率。",
+      "explanation": "$E[X]=np$。选项B是方差；选项C是一次试验成功概率；选项D是试验次数。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · $X\\sim B(n,p)$，引入指"
+        "label": "rec-12 · 说话人1 00:00 · 二项期望"
       }
     },
     {
       "id": "rec-12-q04",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "关于本讲“每个 $X_i\\sim B(1,p)”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "方差 $D(X)$ 的定义是（  ）。",
       "options": [
-        "每个 $X_i\\sim B(1,p)$（0-1分布），$E[X_i]=p$，且 $X = X_1+X_2+\\dots+X_n$。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
+        "$E[X^2]-(E[X])^2$",
+        "$E[X]^2-(E[X^2])$",
+        "$E[X^2]+(E[X])^2$",
+        "$E[X]-E[X]^2$"
       ],
       "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：每个 $X_i\\sim B(1,p)$（0-1分布），$E[X_i]=p$，且 $X = X_1+X_2+\\dots+X_n$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "方差 = 二阶矩 - 一阶矩的平方。",
+      "explanation": "$D(X)=E[X^2]-(E[X])^2$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 每个 $X_i\\sim B(1,p)"
+        "label": "rec-12 · 说话人1 00:00 · 方差定义"
       }
     },
     {
       "id": "rec-12-q05",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "关于本讲“由线性性”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "切比雪夫不等式：$P\\{|X-E[X]|\\geq\\varepsilon\\}\\leq$（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "由线性性：$E[X] = \\sum_{i=1}^n E[X_i] = np$，比直接用定义计算简单。"
+        "$\\frac{D(X)}{\\varepsilon^2}$",
+        "$\\frac{D(X)}{\\varepsilon}$",
+        "$\\frac{\\varepsilon^2}{D(X)}$",
+        "$\\frac{\\varepsilon}{D(X)}$"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：由线性性：$E[X] = \\sum_{i=1}^n E[X_i] = np$，比直接用定义计算简单。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "切比雪夫不等式：概率上界 = 方差 / 偏差平方。",
+      "explanation": "$P\\{|X-E[X]|\\geq\\varepsilon\\}\\leq\\frac{D(X)}{\\varepsilon^2}$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 由线性性"
+        "label": "rec-12 · 说话人1 00:00 · 切比雪夫不等式"
       }
     },
     {
       "id": "rec-12-q06",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "关于本讲“n个数字任意排列，$X$ 为巧合（数”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "柯西-施瓦茨不等式：$|E[XY]|\\leq$（  ）。",
       "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "n个数字任意排列，$X$ 为巧合（数字k在第k位）个数。",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$\\sqrt{E[X^2]E[Y^2]}$",
+        "$E[X^2]E[Y^2]$",
+        "$\\sqrt{E[X]E[Y]}$",
+        "$E[X]E[Y]$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：n个数字任意排列，$X$ 为巧合（数字k在第k位）个数。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "柯西-施瓦茨：乘积期望绝对值 ≤ 二阶矩乘积的平方根。",
+      "explanation": "$|E[XY]|\\leq\\sqrt{E[X^2]E[Y^2]}$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · n个数字任意排列，$X$ 为巧合（数"
+        "label": "rec-12 · 说话人1 00:00 · 柯西-施瓦茨不等式"
       }
     },
     {
@@ -146,276 +146,260 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "关于本讲“引入 $X_k$”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "几何分布 $X\\sim G(p)$ 的期望 $E[X]=$（  ）。",
       "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "引入 $X_k$：第k个数字巧合记1，否则0，$P(X_k=1)=\\frac{1}{n}$，$E[X_k]=\\frac{1}{n}$。",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域"
+        "$\\frac{1}{p}$",
+        "$p$",
+        "$1-p$",
+        "$\\frac{1}{1-p}$"
       ],
-      "answer": 1,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：引入 $X_k$：第k个数字巧合记1，否则0，$P(X_k=1)=\\frac{1}{n}$，$E[X_k]=\\frac{1}{n}$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "几何分布期望 = 1/成功概率。",
+      "explanation": "$E[X]=\\frac{1}{p}$。选项B是参数；选项C是失败概率；选项D无依据。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 引入 $X_k$"
+        "label": "rec-12 · 说话人1 00:00 · 几何期望"
       }
     },
     {
       "id": "rec-12-q08",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "关于本讲“$X = \\sum_{k=1}^n”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "负二项分布 $X\\sim NB(k,p)$ 的期望 $E[X]=$（  ）。",
       "options": [
-        "$X = \\sum_{k=1}^n X_k$，故 $E[X] = n\\cdot\\frac{1}{n}=1$，与n无关。",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用"
+        "$\\frac{k}{p}$",
+        "$kp$",
+        "$\\frac{p}{k}$",
+        "$k(1-p)$"
       ],
       "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：$X = \\sum_{k=1}^n X_k$，故 $E[X] = n\\cdot\\frac{1}{n}=1$，与n无关。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "hint": "负二项分布 = k个独立几何分布之和。",
+      "explanation": "$E[X]=\\frac{k}{p}$（k个几何分布之和）。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · $X = \\sum_{k=1}^n"
+        "label": "rec-12 · 说话人1 00:00 · 负二项期望"
       }
     },
     {
       "id": "rec-12-q09",
       "type": "single_choice",
-      "difficulty": "basic",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "关于本讲“$X\\sim NB(k,p)$（k次”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "方差 $D(X)$ 的量纲是（  ）。",
       "options": [
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "$X\\sim NB(k,p)$（k次成功所需试验次数）。"
+        "$X$ 量纲的平方",
+        "$X$ 的量纲",
+        "无量纲",
+        "概率的量纲"
       ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：$X\\sim NB(k,p)$（k次成功所需试验次数）。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "方差是偏差平方的期望，量纲是原量纲的平方。",
+      "explanation": "方差的量纲是 $X$ 量纲的平方。选项B是期望的量纲；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · $X\\sim NB(k,p)$（k次"
+        "label": "rec-12 · 说话人1 00:00 · 方差量纲"
       }
     },
     {
       "id": "rec-12-q10",
       "type": "single_choice",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "关于本讲“分解为k个独立几何分布之和”这一考点，下列说法与录音内容一致的是（ ）。",
+      "points": 5,
+      "stem": "设 $D(X)=4$，则 $D(3X+2)=$（  ）。",
       "options": [
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容",
-        "分解为k个独立几何分布之和：$X = X_1+X_2+\\dots+X_k$，$X_i\\sim G(p)$。",
-        "只要两个事件互斥，就一定可以推出二者独立"
+        "$36$",
+        "$12$",
+        "$4$",
+        "$38$"
       ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：分解为k个独立几何分布之和：$X = X_1+X_2+\\dots+X_k$，$X_i\\sim G(p)$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "answer": 0,
+      "hint": "方差性质：$D(aX+b)=a^2D(X)$。",
+      "explanation": "$D(3X+2)=9D(X)=9\\times4=36$。选项B漏了平方；选项C未乘系数；选项D加了常数项。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 分解为k个独立几何分布之和"
+        "label": "rec-12 · 说话人1 00:00 · 方差性质"
       }
     },
     {
       "id": "rec-12-q11",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$E[aX+bY] = aE[X]+bE[Y]$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $E[aX+bY] = aE[X]+bE[Y]$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "泊松分布 $X\\sim P(\\lambda)$ 的方差 $D(X)=$（  ）。",
+      "options": [
+        "$\\lambda$",
+        "$\\lambda^2$",
+        "$\\frac{1}{\\lambda}$",
+        "$e^{-\\lambda}$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "泊松分布期望 = 方差 = 参数。",
+      "explanation": "$D(X)=\\lambda$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+        "label": "rec-12 · 说话人1 00:00 · 泊松方差"
       }
     },
     {
       "id": "rec-12-q12",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$\\implies E[XY] = E[X]E[Y]$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $\\implies E[XY] = E[X]E[Y]$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "指数分布 $X\\sim \\text{Exp}(\\lambda)$ 的方差 $D(X)=$（  ）。",
+      "options": [
+        "$\\frac{1}{\\lambda^2}$",
+        "$\\frac{1}{\\lambda}$",
+        "$\\lambda$",
+        "$\\lambda^2$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "指数分布期望 = 1/λ，方差 = 1/λ²。",
+      "explanation": "$D(X)=\\frac{1}{\\lambda^2}$。选项B是期望；选项C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+        "label": "rec-12 · 说话人1 00:00 · 指数方差"
       }
     },
     {
       "id": "rec-12-q13",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$X\\geq Y$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $X\\geq Y$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "均匀分布 $X\\sim U(a,b)$ 的方差 $D(X)=$（  ）。",
+      "options": [
+        "$\\frac{(b-a)^2}{12}$",
+        "$\\frac{b-a}{2}$",
+        "$\\frac{b+a}{2}$",
+        "$b-a$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "均匀分布方差 = 区间长度的平方 / 12。",
+      "explanation": "$D(X)=\\frac{(b-a)^2}{12}$。选项B是区间长度；选项C是期望；选项D是区间长度。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+        "label": "rec-12 · 说话人1 00:00 · 均匀方差"
       }
     },
     {
       "id": "rec-12-q14",
-      "type": "fill_blank",
+      "type": "single_choice",
       "difficulty": "basic",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$E[X]\\geq E[Y]$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $E[X]\\geq E[Y]$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "方差 $D(X)$ 的取值范围是（  ）。",
+      "options": [
+        "$[0,+\\infty)$",
+        "$(-\\infty,+\\infty)$",
+        "$[0,1]$",
+        "$(-\\infty,0]$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "方差是非负的，可为任意非负数。",
+      "explanation": "$D(X)\\geq0$，取值范围为 $[0,+\\infty)$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+        "label": "rec-12 · 说话人1 00:00 · 方差性质"
       }
     },
     {
       "id": "rec-12-q15",
-      "type": "fill_blank",
-      "difficulty": "basic",
+      "type": "single_choice",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 2,
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$|E[X]| \\leq E[|X|]$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $|E[X]| \\leq E[|X|]$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（2分）"
+      "points": 5,
+      "stem": "设 $X,Y$ 独立，$D(X)=4$，$D(Y)=9$，则 $D(X-Y)=$（  ）。",
+      "options": [
+        "$13$",
+        "$5$",
+        "$1$",
+        "$25$"
       ],
-      "total_points": 2,
+      "answer": 0,
+      "hint": "独立时方差可加：$D(X\\pm Y)=D(X)+D(Y)$。",
+      "explanation": "$D(X-Y)=D(X)+D(Y)=4+9=13$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+        "label": "rec-12 · 说话人1 00:00 · 独立方差计算"
       }
     },
     {
       "id": "rec-12-q16",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“几何分布期望 $E[X_i]=\\fr”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "几何分布期望 $E[X_i]=\\frac{1}{p}$，故 $E[X]=\\frac{k}{p}$。",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "可以脱离课堂给出的前提条件直接套用",
-        "录音中明确说这不是本讲需要掌握的内容"
-      ],
-      "answer": 0,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：几何分布期望 $E[X_i]=\\frac{1}{p}$，故 $E[X]=\\frac{k}{p}$。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "方差定义：$D(X)=$ ______（用期望表示）。",
+      "answer": "$E[X^2]-(E[X])^2$",
+      "hint": "方差 = 二阶矩 - 一阶矩的平方。",
+      "explanation": "$D(X)=E[X^2]-(E[X])^2$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 几何分布期望 $E[X_i]=\\fr"
+        "label": "rec-12 · 说话人1 00:00 · 方差定义"
       }
     },
     {
       "id": "rec-12-q17",
-      "type": "single_choice",
-      "difficulty": "medium",
+      "type": "fill_blank",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“本质”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "它说明概率值可以大于 1，只要样本点足够多",
-        "它只适用于确定性现象，与随机试验无关",
-        "计算时不需要检查概率非负性、总和为 1 或定义域",
-        "本质：计算\"随机变量与期望距离平方的平均\"。"
-      ],
-      "answer": 3,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：本质：计算\"随机变量与期望距离平方的平均\"。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "切比雪夫不等式：$P\\{|X-E[X]|<\\varepsilon\\}\\geq$ ______。",
+      "answer": "$1-\\frac{D(X)}{\\varepsilon^2}$",
+      "hint": "对立事件：$P\\{|X-E[X]|<\\varepsilon\\}=1-P\\{|X-E[X]|\\geq\\varepsilon\\}$。",
+      "explanation": "$P\\{|X-E[X]|<\\varepsilon\\}\\geq1-\\frac{D(X)}{\\varepsilon^2}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 09:49 · 本质"
+        "label": "rec-12 · 说话人1 00:00 · 切比雪夫不等式"
       }
     },
     {
       "id": "rec-12-q18",
-      "type": "single_choice",
+      "type": "fill_blank",
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "关于本讲“几何含义”这一考点，下列说法与录音内容一致的是（ ）。",
-      "options": [
-        "录音中明确说这不是本讲需要掌握的内容",
-        "只要两个事件互斥，就一定可以推出二者独立",
-        "几何含义：离均差平方的期望，反映取值围绕均值的分散程度。",
-        "可以脱离课堂给出的前提条件直接套用"
-      ],
-      "answer": 2,
-      "hint": "回到录音中的定义、条件和关键词，排除省略前提或偷换对象的说法。",
-      "explanation": "正确项来自本讲录音/纪要整理的考点：几何含义：离均差平方的期望，反映取值围绕均值的分散程度。\n\n详细辨析：第一，先确认题干问的是定义、性质还是适用条件；第二，正确项保留了课堂限定，未扩大适用范围；第三，错误项分别存在省略条件、把随机现象说成确定性现象、忽略定义域/概率规范性或混淆互斥与独立等问题。",
+      "points": 5,
+      "stem": "设 $X\\sim B(10,0.3)$，则 $E[X]=$ ______。",
+      "answer": "$3$",
+      "hint": "二项分布期望 = np。",
+      "explanation": "$E[X]=10\\times0.3=3$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 39:16 · 几何含义"
+        "label": "rec-12 · 说话人1 00:00 · 二项期望"
       }
     },
     {
       "id": "rec-12-q19",
       "type": "fill_blank",
-      "difficulty": "medium",
+      "difficulty": "hard",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$E[c] = c$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $E[c] = c$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "方差性质：$D(aX+b)=$ ______。",
+      "answer": "$a^2 D(X)$",
+      "hint": "常数平移不变，数乘需平方。",
+      "explanation": "$D(aX+b)=a^2D(X)$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
+        "label": "rec-12 · 说话人1 00:00 · 方差性质"
       }
     },
     {
@@ -424,132 +408,30 @@
       "difficulty": "medium",
       "source": "current_chapter",
       "sourceChapter": "rec-12",
-      "points": 4,
-      "label": "考试重点",
-      "stem": "根据本讲录音，补全关键公式或结论：______",
-      "answer": "$X\\sim B(n,p)$",
-      "hint": "填空题只接受精确公式或关键词，注意上下标、条件竖线和分母。",
-      "explanation": "答案为 $X\\sim B(n,p)$。\n\n逐步核对：第一，确认公式中每个符号的含义；第二，检查前提条件是否来自本讲录音；第三，检查 LaTeX 书写是否完整。若只写口语化结论或漏掉条件，本题不得满分。",
-      "scoring_criteria": [
-        "写出精确答案（4分）"
-      ],
-      "total_points": 4,
+      "points": 5,
+      "stem": "设 $X\\sim U(0,1)$，则 $D(X)=$ ______。",
+      "answer": "$\\frac{1}{12}$",
+      "hint": "均匀分布方差 = (b-a)²/12。",
+      "explanation": "$D(X)=\\frac{(1-0)^2}{12}=\\frac{1}{12}$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 公式/定义填空"
-      }
-    },
-    {
-      "id": "rec-12-q21",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-12",
-      "points": 10,
-      "label": "计算题",
-      "stem": "用指示变量法证明 $B(n,p)$ 的期望。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：二项期望。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：令 $X_i$ 为第 $i$ 次成功指示变量，则 $X=\\sum X_i$，$E[X_i]=p$，线性性得 $E[X]=np$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 二项期望"
-      }
-    },
-    {
-      "id": "rec-12-q22",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-12",
-      "points": 10,
-      "label": "计算题",
-      "stem": "n 个数字随机排列，求巧合个数期望。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：巧合问题。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：令 $X_k$ 表示第 k 个数字在第 k 位，$P(X_k=1)=1/n$；$X=\\sum X_k$，故 $E[X]=1$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 巧合问题"
-      }
-    },
-    {
-      "id": "rec-12-q23",
-      "type": "essay",
-      "difficulty": "medium",
-      "source": "current_chapter",
-      "sourceChapter": "rec-12",
-      "points": 10,
-      "label": "计算题",
-      "stem": "$V\\sim Exp(\\lambda)$，$X=\\min(V,V_0)$，求 $E[X]$。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：电压表期望。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：$E[X]=\\int_0^{V_0}v\\lambda e^{-\\lambda v}dv+V_0e^{-\\lambda V_0}=(1-e^{-\\lambda V_0})/\\lambda$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（3分）",
-        "列出完整中间步骤（4分）",
-        "得到正确答案或结论（2分）",
-        "检查条件并表述清楚（1分）"
-      ],
-      "total_points": 10,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 00:03 · 电压表期望"
-      }
-    },
-    {
-      "id": "rec-12-q24",
-      "type": "essay",
-      "difficulty": "hard",
-      "source": "current_chapter",
-      "sourceChapter": "rec-12",
-      "points": 20,
-      "label": "综合计算/证明",
-      "stem": "若 $E[X]=7300,\\sigma=700$，估计 $P(|X-7300|<2100)$ 下界。",
-      "answer": "**解**：\n\n(1) 先识别本题模型：切比雪夫。\n\n(2) 写出课堂依据和所需条件，特别是独立性、定义域、划分或标准化条件。\n\n(3) 逐步计算/推导：由切比雪夫不等式，概率至少 $1-700^2/2100^2=8/9$。\n\n(4) 最后检查：概率是否在 $[0,1]$ 内，分布参数是否写全，评分标准各项是否闭合；若是近似计算，需说明近似来源。",
-      "hint": "先写模型和条件，再列式；复杂数值已用临时 Python 日志验算。",
-      "explanation": "参考答案已按“模型识别—列式—计算/证明—条件检查”展开。阅卷时应逐项对照评分标准，不能只看最终数值。",
-      "scoring_criteria": [
-        "写出适用定义/模型/定理（5分）",
-        "展开关键推导或分段计算（7分）",
-        "得到完整答案或证明结论（5分）",
-        "说明条件、定义域和易错点（3分）"
-      ],
-      "total_points": 20,
-      "sourceRef": {
-        "path": "content/probability/recording/rec-12.md",
-        "label": "rec-12 · 说话人1 01:00:32 · 切比雪夫"
+        "label": "rec-12 · 说话人1 00:00 · 均匀方差"
       }
     }
   ],
   "summary": {
-    "totalQuestions": 24,
+    "totalQuestions": 20,
     "byType": {
-      "single_choice": 13,
-      "fill_blank": 7,
-      "essay": 4
+      "single_choice": 15,
+      "fill_blank": 5
     },
     "bySource": {
-      "current_chapter": 24
+      "current_chapter": 20
     },
     "byDifficulty": {
-      "basic": 15,
-      "medium": 8,
-      "hard": 1
+      "basic": 1,
+      "medium": 10,
+      "hard": 9
     }
   }
 }
