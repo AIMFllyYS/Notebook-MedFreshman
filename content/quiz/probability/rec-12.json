@@ -46,7 +46,7 @@
       ],
       "answer": 0,
       "hint": "独立时乘积期望等于期望乘积。",
-      "explanation": "$X,Y$ 独立 $\Rightarrow E[XY]=E[X]E[Y]$。选项B、C、D错误。",
+      "explanation": "$X,Y$ 独立 $\\Rightarrow E[XY]=E[X]E[Y]$。选项B、C、D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-12.md",
         "label": "rec-12 · 说话人1 00:00 · 独立乘积期望"

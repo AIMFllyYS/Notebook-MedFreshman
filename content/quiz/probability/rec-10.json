@@ -45,8 +45,8 @@
         "$\\rho=1$"
       ],
       "answer": 2,
-      "hint": "二维正态独立 $\iff$ 相关系数 $\\rho=0$。",
-      "explanation": "二维正态分布中，$X$ 与 $Y$ 独立 $\iff \\rho=0$。选项A、B是均值方差相等，与独立无关；选项D是完全正相关，不独立。",
+      "hint": "二维正态独立 $\\iff$ 相关系数 $\\rho=0$。",
+      "explanation": "二维正态分布中，$X$ 与 $Y$ 独立 $\\iff \\rho=0$。选项A、B是均值方差相等，与独立无关；选项D是完全正相关，不独立。",
       "sourceRef": {
         "path": "content/probability/recording/rec-10.md",
         "label": "rec-10 · 说话人1 00:00 · 二维正态独立"
@@ -237,14 +237,14 @@
       "points": 5,
       "stem": "不相关与独立的关系是（  ）。",
       "options": [
-        "独立 $\iff$ 不相关",
-        "独立 $\Rightarrow$ 不相关，反之不然",
-        "不相关 $\Rightarrow$ 独立，反之不然",
+        "独立 $\\iff$ 不相关",
+        "独立 $\\Rightarrow$ 不相关，反之不然",
+        "不相关 $\\Rightarrow$ 独立，反之不然",
         "无关"
       ],
       "answer": 1,
       "hint": "独立必不相关，不相关不一定独立（二维正态例外）。",
-      "explanation": "独立 $\Rightarrow$ 不相关，但反之不成立（除非二维正态等特殊情况）。选项A错误；选项C反了；选项D错误。",
+      "explanation": "独立 $\\Rightarrow$ 不相关，但反之不成立（除非二维正态等特殊情况）。选项A错误；选项C反了；选项D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-10.md",
         "label": "rec-10 · 说话人1 00:00 · 独立与不相关"
@@ -309,7 +309,7 @@
         "不确定"
       ],
       "answer": 0,
-      "hint": "独立 $\Rightarrow$ 协方差为0。",
+      "hint": "独立 $\\Rightarrow$ 协方差为0。",
       "explanation": "独立随机变量的协方差为0。选项B、C是相关系数的极值；选项D错误。",
       "sourceRef": {
         "path": "content/probability/recording/rec-10.md",
@@ -347,8 +347,8 @@
       "points": 5,
       "stem": "二维正态独立条件：$\\rho=$ ______。",
       "answer": "$0$",
-      "hint": "二维正态独立 $\iff$ 相关系数为0。",
-      "explanation": "二维正态分布中，$X$ 与 $Y$ 独立 $\iff \\rho=0$。",
+      "hint": "二维正态独立 $\\iff$ 相关系数为0。",
+      "explanation": "二维正态分布中，$X$ 与 $Y$ 独立 $\\iff \\rho=0$。",
       "sourceRef": {
         "path": "content/probability/recording/rec-10.md",
         "label": "rec-10 · 说话人1 00:00 · 二维正态独立"
@@ -409,10 +409,10 @@
       "source": "current_chapter",
       "sourceChapter": "rec-10",
       "points": 5,
-      "stem": "独立 $\Rightarrow$ ______（填“相关”或“不相关”）。",
+      "stem": "独立 $\\Rightarrow$ ______（填“相关”或“不相关”）。",
       "answer": "不相关",
       "hint": "独立必不相关。",
-      "explanation": "独立 $\Rightarrow$ 不相关（协方差为0）。",
+      "explanation": "独立 $\\Rightarrow$ 不相关（协方差为0）。",
       "sourceRef": {
         "path": "content/probability/recording/rec-10.md",
         "label": "rec-10 · 说话人1 00:00 · 独立与不相关"

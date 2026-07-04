@@ -111,7 +111,7 @@
         "$A,B$ 独立且 $P(A)>0, P(B)>0$ 则 $A,B$ 互斥"
       ],
       "answer": 2,
-      "hint": "独立 $\implies P(AB)=P(A)P(B)$，互斥 $\implies P(AB)=0$。",
+      "hint": "独立 $\\implies P(AB)=P(A)P(B)$，互斥 $\\implies P(AB)=0$。",
       "explanation": "若 $A,B$ 互斥且 $P(A)>0, P(B)>0$，则 $P(AB)=0\\neq P(A)P(B)>0$，故不独立，选项C正确。选项A错误，互斥一般不独立（除非 $P(A)=0$ 或 $P(B)=0$）；选项B错误，独立一般不互斥；选项D错误，独立且概率非零时 $P(AB)=P(A)P(B)>0$，不互斥。",
       "sourceRef": {
         "path": "content/probability/recording/rec-03.md",
