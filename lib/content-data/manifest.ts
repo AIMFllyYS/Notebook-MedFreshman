@@ -1,6 +1,7 @@
 import type { ContentTree } from '@/lib/types/content';
 import { probabilityDetailItems, probabilityRecordings } from './probability-detail';
 import { modernHistoryDetailItems, modernHistoryRecordings } from './modern-history-detail';
+import { modernHistoryTextbookItems } from './modern-history-textbook';
 import { organicChemistryDetailItems } from './organic-chemistry-detail';
 import { maogaiDetailItems } from './maogai-detail';
 import { maogaiTextbookItems } from './maogai-textbook';
@@ -95,6 +96,15 @@ const probabilityShizhanYanlianItems = [
   { id: 'real-09', title: '2023-2024学年第二学期期末考试A卷', type: 'document' as const, status: 'done' as const },
   { id: 'real-10', title: '2024-2025学年第一学期期末考试A卷', type: 'document' as const, status: 'done' as const },
   { id: 'real-11', title: '2024-2025学年第二学期期末考试A卷', type: 'document' as const, status: 'done' as const },
+];
+
+const modernHistoryKaoqianMoniItems = [
+  { id: 'modern-history-mock-final-paper-01', title: '纲要2026期末押题模拟试卷一（Claude生成）', type: 'document' as const, status: 'done' as const },
+  { id: 'modern-history-mock-final-paper-02', title: '纲要2026期末押题模拟试卷二（Claude生成）', type: 'document' as const, status: 'done' as const },
+  { id: 'modern-history-mock-final-paper-03', title: '纲要2026期末押题模拟试卷三（Claude生成）', type: 'document' as const, status: 'done' as const },
+  { id: 'modern-history-mock-final-paper-04', title: '纲要2026期末押题冲刺卷一（Perplexity生成）', type: 'document' as const, status: 'done' as const },
+  { id: 'modern-history-mock-final-paper-05', title: '纲要2026期末押题冲刺卷二（Perplexity生成）', type: 'document' as const, status: 'done' as const },
+  { id: 'modern-history-mock-final-paper-06', title: '纲要2026期末押题冲刺卷三（Perplexity生成）', type: 'document' as const, status: 'done' as const },
 ];
 
 const maogaiKaoqianMoniItems = [
@@ -331,7 +341,7 @@ export const contentTree: ContentTree = {
       name: '中国近现代史纲要',
       icon: 'BookOpen',
       categories: [
-        { id: 'textbook', name: '教材', items: [{ id: 'main', title: '中国近现代史纲要（教材）', type: 'document', status: 'stub' }] },
+        { id: 'textbook', name: '教材', items: modernHistoryTextbookItems },
         {
           id: 'detail',
           name: '详解',
@@ -369,7 +379,18 @@ export const contentTree: ContentTree = {
             { id: 'sum-10', title: '第十五课纪要·解放战争', type: 'document', status: 'done' },
           ],
         },
-        ...examPlaceholderCategories,
+        {
+          id: 'kaoqian-moni',
+          name: '考前模拟',
+          items: modernHistoryKaoqianMoniItems,
+        },
+        {
+          id: 'shizhan-yanlian',
+          name: '实战演练',
+          items: [
+            { id: 'placeholder', title: '敬请期待', type: 'document' as const, status: 'stub' as const },
+          ],
+        },
       ],
     },
     {
