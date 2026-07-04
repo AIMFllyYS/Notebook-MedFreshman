@@ -71,3 +71,9 @@ content/.index/
 .claude/
 .trae/
 .mimocode/
+.workbuddy/
+
+# backup / typo directories
+content/probability/shizhan-yanlian/_backup_v1/
+content/probability/shizyan-yanlian/
+content/_raw/
