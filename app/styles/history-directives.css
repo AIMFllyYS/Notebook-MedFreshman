@@ -1,0 +1,479 @@
+/* ─────────────────────────────────────────────────────────────
+   历史学科专用指令样式
+   ───────────────────────────────────────────────────────────── */
+
+/* ── 通用色板 ──────────────────────────────────────────────── */
+.history-directive {
+  --history-period-old: #c3a86d;
+  --history-period-revolution: #e07a5f;
+  --history-period-war: #d95d5d;
+  --history-period-modern: #5c8a78;
+  --history-period-new: #3d8aa2;
+  --history-treaty: #9c7bb8;
+  --history-figure: #7a8cc2;
+  --history-movement: #d4a35d;
+  --history-concept: #5c8a78;
+  margin: 1.4em 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ── 重点高亮 KeyPoint ─────────────────────────────────────── */
+.keypoint {
+  position: relative;
+  margin: 1.3em 0;
+  padding: 1em 1.15em 1em 1.4em;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    var(--md-sys-color-primary-container) 0%,
+    rgba(168, 199, 250, 0.15) 100%
+  );
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-left: 4px solid var(--md-sys-color-primary);
+}
+.keypoint-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--md-sys-color-on-primary-container);
+  margin-bottom: 0.4em;
+}
+.keypoint-label::before {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z'/%3E%3Cpath d='M8 21H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h4'/%3E%3C/svg%3E");
+}
+.keypoint > :last-child {
+  margin-bottom: 0;
+}
+
+/* ── 时间轴 Timeline ───────────────────────────────────────── */
+.timeline {
+  margin: 1.5em 0;
+  padding: 1em 1.2em;
+  border-radius: 12px;
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+.timeline-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.8em;
+  padding-bottom: 0.6em;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.timeline-header::before {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolyline points='12 6 12 12 16 14'/%3E%3C/svg%3E");
+}
+.timeline-list {
+  position: relative;
+  list-style: none;
+  padding: 0 0 0 0.8em;
+  margin: 0;
+}
+.timeline-list::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.35em;
+  bottom: 0.35em;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--history-period-old) 0%,
+    var(--history-period-revolution) 35%,
+    var(--history-period-war) 65%,
+    var(--history-period-new) 100%
+  );
+  border-radius: 2px;
+}
+.timeline-item {
+  position: relative;
+  padding: 0.55em 0 0.55em 1.4em;
+  margin: 0;
+}
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -0.32em;
+  top: 0.85em;
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%;
+  background: var(--md-sys-color-surface-container-low);
+  border: 2px solid var(--history-period-revolution);
+  box-shadow: 0 0 0 2px var(--md-sys-color-surface-container-low);
+}
+.timeline-year {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--history-period-revolution);
+  background: rgba(224, 122, 95, 0.12);
+  padding: 0.15em 0.5em;
+  border-radius: 4px;
+  margin-bottom: 0.25em;
+}
+.timeline-title {
+  font-weight: 700;
+  font-size: 0.96rem;
+  color: var(--ink);
+  margin-bottom: 0.15em;
+}
+.timeline-desc {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+/* ── 事件卡片 EventCard ───────────────────────────────────── */
+.event-card {
+  margin: 1.3em 0;
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-lowest);
+  overflow: hidden;
+}
+.event-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8em;
+  padding: 0.8em 1em;
+  background: var(--md-sys-color-surface-container);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+.event-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  flex-wrap: wrap;
+}
+.event-card-year {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--history-period-revolution);
+  padding: 0.2em 0.55em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.event-card-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.event-card-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+}
+.event-card-toggle:hover {
+  background: var(--md-sys-color-surface-container-high);
+}
+.event-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.6em;
+  padding: 0.8em 1em;
+  background: rgba(255, 255, 255, 0.02);
+}
+.event-card-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+.event-card-field-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.event-card-field-value {
+  font-size: 0.88rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.event-card-body {
+  padding: 0.8em 1em 1em;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+.event-card-body > :last-child {
+  margin-bottom: 0;
+}
+
+/* ── 概念卡 ConceptCard ───────────────────────────────────── */
+.concept-card {
+  margin: 1.3em 0;
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-low);
+  overflow: hidden;
+}
+.concept-card-header {
+  width: 100%;
+  padding: 0.85em 1.1em;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  transition: background 0.15s ease;
+}
+.concept-card-header:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+.concept-card-icon {
+  display: grid;
+  place-items: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 6px;
+  background: var(--history-concept);
+  color: #fff;
+  flex-shrink: 0;
+}
+.concept-card-icon svg {
+  width: 1em;
+  height: 1em;
+}
+.concept-card-term {
+  flex: 1;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.concept-card-hint {
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+}
+.concept-card-body {
+  padding: 0 1.1em 1em;
+}
+.concept-card-body > :last-child {
+  margin-bottom: 0;
+}
+
+/* ── 对比表 CompareTable ────────────────────────────────────── */
+.compare-table {
+  margin: 1.3em 0;
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+}
+.compare-table-header {
+  padding: 0.7em 1em;
+  background: var(--md-sys-color-surface-container);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.compare-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  font-size: 0.92rem;
+}
+.compare-table th,
+.compare-table td {
+  padding: 0.7em 0.85em;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  text-align: left;
+  vertical-align: top;
+}
+.compare-table th {
+  background: var(--md-sys-color-surface-container-low);
+  font-weight: 700;
+  color: var(--ink);
+}
+.compare-table td {
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.compare-table tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* ── 因果链 CauseEffect ─────────────────────────────────────── */
+.cause-effect {
+  margin: 1.3em 0;
+  padding: 1em 1.15em;
+  border-radius: 12px;
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+.cause-effect-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-bottom: 0.8em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.cause-effect-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+.cause-effect-node {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6em;
+  padding: 0.6em 0.8em;
+  border-radius: 8px;
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.cause-effect-node.cause {
+  border-left: 3px solid var(--history-period-revolution);
+}
+.cause-effect-node.effect {
+  border-left: 3px solid var(--history-period-new);
+}
+.cause-effect-node.result {
+  border-left: 3px solid var(--color-success);
+}
+.cause-effect-node-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ink-faint);
+  flex-shrink: 0;
+  min-width: 2.5em;
+  margin-top: 0.1em;
+}
+.cause-effect-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-faint);
+  height: 1.2em;
+}
+.cause-effect-arrow svg {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+/* ── 历史地图 HistoryMap ────────────────────────────────────── */
+.history-map {
+  margin: 1.3em 0;
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-low);
+  overflow: hidden;
+}
+.history-map-header {
+  padding: 0.7em 1em;
+  background: var(--md-sys-color-surface-container);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.history-map-canvas {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  background: linear-gradient(180deg, #1a2332 0%, #16202b 100%);
+}
+.history-map-point {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2em;
+  cursor: pointer;
+}
+.history-map-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--history-period-revolution);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px rgba(217, 93, 93, 0.3);
+}
+.history-map-label {
+  font-size: 0.72rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.history-map-caption {
+  padding: 0.6em 1em;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* ── 历史学科标签（行内） ───────────────────────────────────── */
+.history-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.15em 0.5em;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin: 0 0.15em;
+}
+.history-tag.treaty {
+  background: rgba(156, 123, 184, 0.15);
+  color: var(--history-treaty);
+}
+.history-tag.figure {
+  background: rgba(122, 140, 194, 0.15);
+  color: var(--history-figure);
+}
+.history-tag.movement {
+  background: rgba(212, 163, 93, 0.15);
+  color: var(--history-movement);
+}
+.history-tag.period {
+  background: rgba(61, 138, 162, 0.15);
+  color: var(--history-period-new);
+}

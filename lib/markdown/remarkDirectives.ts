@@ -6,7 +6,9 @@ import { CALLOUTS } from "./calloutTypes";
  *   :::definition / theorem / example / insight / pitfall / note / tip  -> <callout kind=...>
  *   :::callout{kind=note|insight|tip|... label=...}                    -> <callout kind=...>（SOP 08 试卷写法）
  *   :::derivation{title=...}                                       -> <derivation>
- *   ::video{id=...} / ::interactive{id=...}                        -> <mediaembed kind=... id=...>
+ *   :::timeline{period=...} / :::event{year=...} / :::concept{term=...} / :::compare{title=...}
+ *   :::cause-effect{title=...} / :::keypoint{label=...}              -> 历史学科专用指令
+ *   ::video{id=...} / ::interactive{id=...} / ::map{points=...}      -> <mediaembed/historymap>
  *
  * 用法（笔记作者）：
  *   :::theorem{label=全概率公式}
@@ -114,6 +116,54 @@ export default function remarkDirectives() {
           ylabel: attrs.ylabel ?? "",
           grid: attrs.grid ?? "",
           axes: attrs.axes ?? "",
+        };
+        return;
+      }
+      // 历史学科专用容器指令
+      if (node.type === "containerDirective" && name === "timeline") {
+        data.hName = "timeline";
+        data.hProperties = { period: attrs.period ?? "" };
+        return;
+      }
+      if (node.type === "containerDirective" && name === "event") {
+        data.hName = "eventcard";
+        data.hProperties = {
+          year: attrs.year ?? "",
+          title: attrs.title ?? attrs.label ?? "",
+          location: attrs.location ?? "",
+          people: attrs.people ?? "",
+          result: attrs.result ?? "",
+          impact: attrs.impact ?? "",
+        };
+        return;
+      }
+      if (node.type === "containerDirective" && name === "concept") {
+        data.hName = "conceptcard";
+        data.hProperties = { term: attrs.term ?? attrs.title ?? attrs.label ?? "" };
+        return;
+      }
+      if (node.type === "containerDirective" && name === "compare") {
+        data.hName = "comparetable";
+        data.hProperties = { title: attrs.title ?? attrs.label ?? "" };
+        return;
+      }
+      if (node.type === "containerDirective" && (name === "cause-effect" || name === "causeeffect")) {
+        data.hName = "causeeffect";
+        data.hProperties = { title: attrs.title ?? attrs.label ?? "" };
+        return;
+      }
+      if (node.type === "containerDirective" && name === "keypoint") {
+        data.hName = "keypoint";
+        data.hProperties = { label: attrs.label ?? attrs.title ?? "核心要点" };
+        return;
+      }
+      // 历史地图（叶子指令）
+      if (name === "map") {
+        data.hName = "historymap";
+        data.hProperties = {
+          title: attrs.title ?? attrs.label ?? "历史地图",
+          points: attrs.points ?? "",
+          caption: attrs.caption ?? "",
         };
         return;
       }
