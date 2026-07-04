@@ -1,7 +1,6 @@
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
 import { useRecordPreviews } from "@/lib/hooks/useRecordPreviews";
 import { useSettings } from "@/lib/hooks/useSettings";
-import { CUSTOM_PREFIX, findCustomModelGroup } from "@/lib/ai/models";
 import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
 import { parseSseJsonEvents } from "@/lib/utils/sseEvents";
@@ -19,20 +18,14 @@ function clamp(text: string): string {
 }
 
 function aiRequestExtras() {
+  // 摘录功能使用独立的 recordModelId（默认内置 DeepSeek V4 Flash），
+  // 不再跟随主对话的 selectedModelId —— 避免右侧切换自定义模型时
+  // 摘录因密钥/协议不匹配而报错。customApiGroups 始终透传，
+  // resolveProvider 仅在 modelId 为 custom: 前缀时才查找分组。
   const settings = useSettings.getState();
-  const isCustom = settings.selectedModelId.startsWith(CUSTOM_PREFIX);
-  const customGroup = isCustom
-    ? findCustomModelGroup(settings.customApiGroups, settings.selectedModelId)
-    : undefined;
   return {
-    modelId: isCustom ? settings.selectedModelId : undefined,
-    customProvider: customGroup
-      ? {
-          baseUrl: customGroup.group.baseUrl,
-          apiKey: customGroup.group.apiKey,
-          model: customGroup.model.id,
-        }
-      : undefined,
+    modelId: settings.recordModelId,
+    customApiGroups: settings.customApiGroups,
   };
 }
 

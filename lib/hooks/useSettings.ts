@@ -41,6 +41,16 @@ export interface SettingsState {
   /** @deprecated 已迁移到 customApiGroups[0].models。 */
   customModels: CustomModelConfig[];
 
+  // ── 摘录与划词助手（独立模型，不跟随主对话选中模型）──
+  /** 摘录功能（划词「记录」成卡）使用的模型。独立于 selectedModelId，
+   *  避免右侧切换自定义模型时摘录因密钥/协议不匹配而报错。
+   *  默认内置 DeepSeek V4 Flash（性价比高、成卡质量稳定）。 */
+  recordModelId: string;
+  /** 划词助手（划词「解释/追问」浮窗）使用的默认模型。 */
+  floatingChatModelId: string;
+  setRecordModelId: (id: string) => void;
+  setFloatingChatModelId: (id: string) => void;
+
   // ── 体验（S4）────────────────────────
   fontScale: number; // 0.85 ~ 1.35
   disabledTools: string[]; // 被禁用的工具名
@@ -97,6 +107,8 @@ type Persisted = Pick<
   | "defaultImageModelId"
   | "imageModeTextModel"
   | "imageModeTextModelFallback"
+  | "recordModelId"
+  | "floatingChatModelId"
   | "customBaseUrl"
   | "customApiKey"
   | "customModelId"
@@ -116,6 +128,10 @@ const DEFAULTS: Persisted = {
   defaultImageModelId: null,
   imageModeTextModel: "mimo-v2.5",
   imageModeTextModelFallback: "Pro/moonshotai/Kimi-K2.6",
+  // 摘录默认用 DeepSeek V4 Flash：性价比高、成卡质量稳定，走站点内置凭证不会因自定义 API 报错。
+  recordModelId: "deepseek-ai/DeepSeek-V4-Flash",
+  // 划词助手默认模型：与此前硬编码常量保持一致，平滑迁移。
+  floatingChatModelId: "Qwen/Qwen3.6-27B",
   customBaseUrl: "",
   customApiKey: "",
   customModelId: "",
@@ -178,6 +194,15 @@ function load(): Persisted {
         parsed.imageModeTextModelFallback,
         parsed.customApiGroups,
       );
+      // 摘录 / 划词助手模型同样需要归一化，防止旧版自定义模型 ID 迁移后指向失效分组。
+      parsed.recordModelId = normalizeCustomModelRegistryId(
+        parsed.recordModelId || DEFAULTS.recordModelId,
+        parsed.customApiGroups,
+      );
+      parsed.floatingChatModelId = normalizeCustomModelRegistryId(
+        parsed.floatingChatModelId || DEFAULTS.floatingChatModelId,
+        parsed.customApiGroups,
+      );
       return parsed;
     }
   } catch {
@@ -197,6 +222,8 @@ function persist(get: () => SettingsState) {
     defaultImageModelId: s.defaultImageModelId,
     imageModeTextModel: s.imageModeTextModel,
     imageModeTextModelFallback: s.imageModeTextModelFallback,
+    recordModelId: s.recordModelId,
+    floatingChatModelId: s.floatingChatModelId,
     customBaseUrl: firstGroup?.baseUrl ?? "",
     customApiKey: firstGroup?.apiKey ?? "",
     customModelId: "",
@@ -372,6 +399,15 @@ export const useSettings = create<SettingsState>((set, get) => ({
     // 单一真相源：clamp 到 [0.01, 10]，非有限数回退默认 7.00
     const safe = Number.isFinite(v) ? Math.max(0.01, Math.min(10, v)) : 7.00;
     set({ usdExchangeRate: safe });
+    persist(get);
+  },
+
+  setRecordModelId: (id) => {
+    set({ recordModelId: id });
+    persist(get);
+  },
+  setFloatingChatModelId: (id) => {
+    set({ floatingChatModelId: id });
     persist(get);
   },
 }));

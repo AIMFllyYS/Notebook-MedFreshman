@@ -63,7 +63,7 @@ function getDistInfo(dist: DistType): DistInfo {
       variance: lambda,
       sample: () => {
         // Knuth 算法
-        let L = Math.exp(-lambda);
+        const L = Math.exp(-lambda);
         let k = 0;
         let p = 1;
         do {

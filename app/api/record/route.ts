@@ -5,9 +5,8 @@ import {
   chatCompletionsUrl,
   ENV_MODEL_FLASH,
   thinkingBudget,
-  type CustomProvider,
 } from "@/lib/ai/provider";
-import { getModelInfo } from "@/lib/ai/models";
+import { getModelInfo, type CustomApiGroup } from "@/lib/ai/models";
 
 // 「记录」成卡路由（SSE 流式）：把用户划词/右键选中的原文，按用户选择的模式流式转成复习卡片。
 // 输出纯 Markdown 富文本（===FRONT=== / ===BACK=== / ===BLANKS=== 分隔），前端流式渲染 + 思考折叠。
@@ -147,9 +146,14 @@ export async function POST(req: NextRequest) {
   const categoryName: string = String(body.categoryName ?? "");
   const itemLabel: string = String(body.itemLabel ?? "");
   const enableThinking: boolean = body.enableThinking === true;
-  const customProvider: CustomProvider | undefined = body.customProvider;
+  // 摘录功能现在传 customApiGroups（与 /api/chat 一致），resolveProvider 自动处理内置/自定义模型。
+  const customApiGroups: CustomApiGroup[] | undefined = Array.isArray(body.customApiGroups)
+    ? body.customApiGroups
+    : undefined;
   const modelId: string | undefined =
-    typeof body.modelId === "string" ? body.modelId : ENV_MODEL_FLASH;
+    typeof body.modelId === "string" && body.modelId.trim()
+      ? body.modelId
+      : ENV_MODEL_FLASH;
 
   const validModes: RecordMode[] = ["excerpt", "cloze", "quiz", "custom"];
   if (!validModes.includes(mode)) {
@@ -165,7 +169,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const provider = resolveProvider(modelId, customProvider);
+  const provider = resolveProvider(modelId, customApiGroups);
   if (!provider.configured) {
     return new Response(sse({ type: "error", message: "AI 服务未配置（请先填写密钥）" }), {
       status: 503,

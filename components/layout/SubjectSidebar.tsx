@@ -100,6 +100,18 @@ export default function SubjectSidebar() {
 
   return (
     <aside
+      // 当用户从 iframe / Electron <webview>（中栏 HTML 演示、右栏内置浏览器）移入侧栏时，
+      // 焦点仍停留在嵌入文档内。此时第一次点击仅用于将焦点转回主文档，不会触发按钮 onClick，
+      // 表现为「长时间不点击后侧栏点不动、需要点两次」。预先 blur 嵌入元素，确保下一次点击立即生效。
+      onPointerEnter={() => {
+        if (typeof document === "undefined") return;
+        const active = document.activeElement as HTMLElement | null;
+        if (!active) return;
+        const tag = active.tagName;
+        if (tag === "IFRAME" || tag === "WEBVIEW") {
+          active.blur();
+        }
+      }}
       className="flex h-full flex-col"
       style={{
         background: "var(--md-sys-color-surface-container-lowest)",

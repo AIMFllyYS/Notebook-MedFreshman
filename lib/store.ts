@@ -51,12 +51,12 @@ function domBoolean(name: string): boolean | null {
   return null;
 }
 
-/** detail/recording/english/textbook 分类下的 quiz key 推导。recording/english 直接用 itemId；textbook 映射为 tb-chXX。 */
+/** detail/recording/english/textbook 分类下的 quiz key 推导。recording/english 直接用 itemId；textbook 映射为 tb-chXX（兼容毛概 chXX 与现代史 tb-chXX 两种 itemId 命名）。 */
 export function deriveChapterId(categoryId: string, itemId: string): string {
   if (categoryId === "recording") return itemId;
   if (categoryId === "english") return itemId;
   if (categoryId === "textbook") {
-    const m = itemId.match(/^(ch\d{2})/);
+    const m = itemId.match(/^(?:tb-)?(ch\d{2})/);
     return m ? `tb-${m[1]}` : "";
   }
   if (categoryId !== "detail") return "";

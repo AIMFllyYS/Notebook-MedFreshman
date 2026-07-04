@@ -64,6 +64,12 @@ export default function AnimatedCollapse({ isOpen, children }: Props) {
       onAnimationComplete={() => {
         // 关闭动画结束后卸载 children，释放 DOM/fiber 与 layout 跟踪。
         if (!isOpen) setShouldRender(false);
+        // 安全网：framer-motion 的 layout="position" 在动画期间可能施加
+        // pointer-events: none 以防误触，若动画被中断（快速连续展开/折叠、
+        // 切换面板后回来）可能残留，导致文件夹树暂时不可点击。动画结束后强制恢复。
+        if (ref.current) {
+          ref.current.style.pointerEvents = "";
+        }
       }}
       layout="position"
       style={{ overflow: "hidden" }}

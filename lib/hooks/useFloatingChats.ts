@@ -2,9 +2,16 @@ import { create } from "zustand";
 import { useStore } from "@/lib/store";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useSettings } from "@/lib/hooks/useSettings";
 import type { ChatContext } from "@/lib/types/chat";
 
+/** 划词助手浮窗的回退默认模型（当用户未在设置中指定时使用）。 */
 export const FLOATING_DEFAULT_MODEL = "Qwen/Qwen3.6-27B";
+
+/** 从设置中读取划词助手模型，回退到硬编码常量，确保任何情况下都有可用模型。 */
+function floatingModelId(): string {
+  return useSettings.getState().floatingChatModelId || FLOATING_DEFAULT_MODEL;
+}
 
 export type SeedMode = "explain" | "example" | "ask";
 
@@ -99,7 +106,7 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
     const floatingWin: FloatingWin = {
       id,
       sessionId,
-      modelId: FLOATING_DEFAULT_MODEL,
+      modelId: floatingModelId(),
       seedText: opts.seedText,
       seedMode: opts.seedMode,
       seedNonce: 1,
@@ -111,7 +118,7 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
       title,
       pos,
       size,
-      data: { sessionId, modelId: FLOATING_DEFAULT_MODEL },
+      data: { sessionId, modelId: floatingModelId() },
     });
     set((state) => ({ windows: [...state.windows, floatingWin] }));
     return id;
@@ -128,7 +135,7 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
     const floatingWin: FloatingWin = {
       id,
       sessionId,
-      modelId: FLOATING_DEFAULT_MODEL,
+      modelId: floatingModelId(),
       seedText: "",
       seedMode: "ask",
       seedNonce: 0,
@@ -140,7 +147,7 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
       title,
       pos,
       size,
-      data: { sessionId, modelId: FLOATING_DEFAULT_MODEL },
+      data: { sessionId, modelId: floatingModelId() },
     });
     set((state) => ({ windows: [...state.windows, floatingWin] }));
     return id;
@@ -158,7 +165,7 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
     const floatingWin: FloatingWin = {
       id,
       sessionId,
-      modelId: FLOATING_DEFAULT_MODEL,
+      modelId: floatingModelId(),
       seedText: "",
       seedMode: "ask",
       seedNonce: 0,
@@ -172,7 +179,7 @@ export const useFloatingChats = create<FloatingChatsState>((set, get) => ({
       title: sessionTitle,
       pos,
       size,
-      data: { sessionId, modelId: FLOATING_DEFAULT_MODEL },
+      data: { sessionId, modelId: floatingModelId() },
     });
     set((state) => ({ windows: [...state.windows, floatingWin] }));
   },

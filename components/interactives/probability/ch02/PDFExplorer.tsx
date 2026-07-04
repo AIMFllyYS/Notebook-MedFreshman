@@ -313,7 +313,7 @@ function PDFExplorerBase() {
       if (dragging.current === "a") setIntA(parseFloat(worldX.toFixed(3)));
       else setIntB(parseFloat(worldX.toFixed(3)));
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [viewRange]
   );
 

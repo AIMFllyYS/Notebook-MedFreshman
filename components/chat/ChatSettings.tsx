@@ -21,6 +21,7 @@ import {
   Sparkles,
   Cpu,
   DollarSign,
+  BookmarkPlus,
 } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import {
@@ -921,6 +922,12 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
   const imageModeTextModelFallback = useSettings((s) => s.imageModeTextModelFallback);
   const setImageModeTextModelFallback = useSettings((s) => s.setImageModeTextModelFallback);
 
+  // 摘录与划词助手模型（独立于主对话，避免切换自定义模型时摘录报错）
+  const recordModelId = useSettings((s) => s.recordModelId);
+  const setRecordModelId = useSettings((s) => s.setRecordModelId);
+  const floatingChatModelId = useSettings((s) => s.floatingChatModelId);
+  const setFloatingChatModelId = useSettings((s) => s.setFloatingChatModelId);
+
   const fontScale = useSettings((s) => s.fontScale);
   const setFontScale = useSettings((s) => s.setFontScale);
   const disabledTools = useSettings((s) => s.disabledTools);
@@ -1231,6 +1238,52 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
               )}
             </div>
           )}
+        </section>
+
+        {/* 摘录与划词助手 */}
+        <section className="flex flex-col gap-2">
+          <div className="flex items-center gap-1.5">
+            <BookmarkPlus size={14} className="text-[var(--md-sys-color-primary)]" />
+            <h3 className={h3Cls}>摘录与划词助手</h3>
+          </div>
+          <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+            摘录（划词「记录」成卡）和划词助手（划词「解释/追问」浮窗）默认使用的模型。
+            独立于右侧主对话模型，避免因主对话切换自定义 API 而导致摘录报错。支持自定义 API 分组中的模型。
+          </p>
+          <div>
+            <label className={labelCls}>摘录模型（划词「记录」成卡）</label>
+            <select
+              value={recordModelId}
+              onChange={(e) => setRecordModelId(e.target.value)}
+              className={inputCls}
+            >
+              {allTextModels.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.label} · {m.group}
+                </option>
+              ))}
+            </select>
+            <div className="mt-1 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
+              默认内置 DeepSeek V4 Flash（性价比高、成卡稳定）。选择自定义模型时需确保对应 API 分组已配置密钥。
+            </div>
+          </div>
+          <div>
+            <label className={labelCls}>划词助手模型（「解释/追问」浮窗）</label>
+            <select
+              value={floatingChatModelId}
+              onChange={(e) => setFloatingChatModelId(e.target.value)}
+              className={inputCls}
+            >
+              {allTextModels.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.label} · {m.group}
+                </option>
+              ))}
+            </select>
+            <div className="mt-1 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
+              划词后弹出的浮窗对话使用的默认模型。可在浮窗内随时切换。
+            </div>
+          </div>
         </section>
 
         {/* 生图设置 */}

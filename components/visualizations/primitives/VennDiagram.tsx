@@ -122,7 +122,7 @@ export const VennDiagram: React.FC<VennDiagramProps> = ({
 
   // 调 P(A)：若 P(AB) > newA 则压缩 P(AB)；若违反并集约束则压缩 P(B)
   const handleA = (val: number) => {
-    let na = val;
+    const na = val;
     let nab = ab;
     let nb = b;
     if (nab > na) nab = na;
@@ -135,7 +135,7 @@ export const VennDiagram: React.FC<VennDiagramProps> = ({
 
   // 调 P(B)：对称逻辑
   const handleB = (val: number) => {
-    let nb = val;
+    const nb = val;
     let nab = ab;
     let na = a;
     if (nab > nb) nab = nb;
