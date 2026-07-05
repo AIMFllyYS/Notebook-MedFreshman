@@ -287,7 +287,14 @@ await smokeTestStandalone(SA);
 //    routinely fails with `connect ETIMEDOUT <github-ip>:443` AFTER next build + hoist +
 //    smoke test all pass — i.e. minutes of work thrown away at the last step. Default the
 //    binaries mirror to npmmirror so packaging is reliable here; an explicit env wins.
-run("pnpm exec electron-builder --win", {
+//
+//    `--publish never` is mandatory: without it electron-builder 26 auto-detects the git
+//    remote and tries to publish to GitHub Releases (needs GH_TOKEN). The EXEs are
+//    produced and signed BEFORE that publish step, so the build "fails" only at the very
+//    end with `GitHub Personal Access Token is not set` — but execSync throws on non-zero
+//    exit, so assertPackagedDeps() below never runs. The SOP publishes via `gh release`
+//    separately (Step 7), so we explicitly disable electron-builder's own publish here.
+run("pnpm exec electron-builder --win --publish never", {
   ELECTRON_BUILDER_BINARIES_MIRROR:
     process.env.ELECTRON_BUILDER_BINARIES_MIRROR ||
     "https://npmmirror.com/mirrors/electron-builder-binaries/",
