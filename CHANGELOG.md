@@ -2,6 +2,59 @@
 
 本项目所有重要变更记录于此。版本遵循语义化版本（SemVer）。
 
+## [0.4.0] - 2026-07-05
+
+本版本在 v0.3.1 基础上新增「中国近现代史纲要」学科完整内容、毛概教材题库、概率论实战演练真题模拟卷与考研录音题库重写，并在 AI 侧引入 Anthropic 适配器与思考档位菜单。题库系统按教材 Tab 独立化，整体内容覆盖显著扩大。
+
+### 新学科上线：中国近现代史纲要
+
+- **教材内容与处理脚本**：导入纲要教材内容，新增 `scripts/process-modern-history-textbook.ts` 处理脚本
+- **6 套考前模拟卷**：1f9375af 新增 6 套考前模拟卷及答案解析
+- **章节题库**：tb-ch00–10 共 11 套教材题库上线
+- **历史专用指令组件**：新增历史专用 Markdown 指令组件及样式
+- **学科注册**：modern-history 接入 SubjectId，朱红配色 + BookOpen 图标
+
+### 毛概教材板块
+
+- **2023 版毛概教材导入**：完整教材内容入库
+- **拆章为节**：将毛概教材拆分为节，AI 重写为大纲笔记
+- **教材 Tab 独立题库**：tb-ch00–08 共 9 套教材题库与路由映射，与录音题库分离
+- **考前模拟 02 押题卷**：录入 paper-04~06 三套押题卷
+- **实战演练**：录入 7 套单元卷 + 3 套考前模拟押题卷
+- **录音题库重写**：rec-01~12 全部基于详解笔记重写为考研难度
+
+### 概率论板块
+
+- **实战演练真题模拟卷**：新增 real-07~11 共 5 套真题模拟卷
+- **real-01~06 解析重写**：6 卡详细版
+- **三套 AI 押题模拟卷**：新增 + 修复 callout 换行 BUG
+- **录音题库考研重写**：rec-01~17 全部重写为考研难度，删除废弃 rec-13/14
+- **页面切换性能优化**：概率论板块导航加载性能优化
+
+### AI 适配器与思考菜单
+
+- **Anthropic 适配器**：`lib/ai/anthropicAdapter.ts` 兼容 Anthropic API，含完整测试
+- **ThinkingMenu 重构**：ThinkingEffortPill 升级为 ThinkingMenu，支持思考档位选择
+- **Provider 能力扩展**：provider/models 扩展能力声明 + 测试
+- **流式思考拆分**：聊天流式响应中思考内容实时拆分到 reasoning 块
+- **思考内联档位**：内联 thinking-effort pill + 全局默认值
+
+### 其他修复与改进
+
+- **AI 大纲与搜索覆盖教材分类**：textbook 加入 SEARCHABLE_CATEGORIES，搜索可抓取毛概/纲要教材
+- **QuizMarkdown directiveComponents 推迟运行时展开**：避免 MemoryCard 循环依赖在特定评估顺序下的 TDZ
+- **rec-09.json 非法直引号修复**
+- **组件 / hooks / 全局样式更新**
+- **Scale 图标注册到侧边栏**
+- **dist-desktop 排除 tsconfig**
+
+### 安全
+
+- API 密钥仍走服务端处理，不进入前端包；MinerU Token / 自定义 API Key 仅从 `.env.local` 读取
+- 桌面端 3 个 API Key 仍由 Windows DPAPI 加密存本机 userData，绝不进包
+
+---
+
 ## [0.3.1] - 2026-06-29
 
 本版本在 v0.3.0 基础上完成对话存储性能重构、画布运行时统一、AI 图片生成端到端落地，并新增大学物理第一章完整内容与计费仪表盘。动效层面引入折叠动画、3D 翻卡片、独占手风琴与画布 AI 修订框架，整体交互平滑度显著提升。
@@ -214,6 +267,7 @@
 - 划词追问多开悬浮窗；桌面端真实 Chromium 浏览器（保留登录态 / Cookie）；上下文看板（rAF 拖动 + 实时估算）。
 - 3 个 API 密钥用户首启填写，Windows DPAPI 加密存本机，**绝不进包**。
 
+[0.4.0]: https://github.com/AIMFllyYS/Notebook-MedFreshman/releases/tag/v0.4.0
 [0.3.1]: https://github.com/AIMFllyYS/Notebook-MedFreshman/releases/tag/v0.3.1
 [0.3.0]: https://github.com/AIMFllyYS/Notebook-MedFreshman/releases/tag/v0.3.0
 [0.2.1]: https://github.com/AIMFllyYS/Notebook-MedFreshman/releases/tag/v0.2.1
