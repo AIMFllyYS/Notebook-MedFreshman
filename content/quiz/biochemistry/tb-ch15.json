@@ -1,0 +1,322 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch15",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch15-1.md；content/biochemistry/textbook/ch15-2.md；content/biochemistry/textbook/ch15-3.md；content/biochemistry/textbook/ch15-4.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于体内 $\\mathrm{RNA}$ 合成的两条路、选择性转录以及 $\\mathrm{RNA}\\,\\mathrm{pol}$ 不需引物，下列叙述正确的是（　）。",
+      "options": [
+        "体内 $\\mathrm{RNA}$ 合成都叫转录；Temin $1970$ 年补充的是 $\\mathrm{RNA}$ 复制；一个基因的两股链都转录生成 $\\mathrm{mRNA}$；$\\mathrm{mRNA}$ 与模板链同序；$\\mathrm{RNA}\\,\\mathrm{pol}$ 也需要引物，原料是 $\\mathrm{dNTP}$",
+        "主要方式是转录（$\\mathrm{DNA}$ 指导的 $\\mathrm{RNA}$ 合成）；$\\mathrm{RNA}$ 复制是 $\\mathrm{RNA}$ 依赖的 $\\mathrm{RNA}$ 合成，见于逆转录病毒以外的 $\\mathrm{RNA}$ 病毒，本章不叙述。$1970$ 年 Temin 补充的是逆转录（$\\mathrm{RNA}\\rightarrow\\mathrm{DNA}$，第十四章第五节），不是 $\\mathrm{RNA}$ 复制。选择性：一个基因只有一股链转录生成其编码产物；模板链与 $\\mathrm{mRNA}$ 互补，编码链与 $\\mathrm{mRNA}$ 同序（$\\mathrm{T}/\\mathrm{U}$），文献一般只写编码链；不同基因的模板可以换股，但每个基因仍只让一股出编码产物。$\\mathrm{RNA}\\,\\mathrm{pol}$ 结合双链时活性最高，但只用一股为模板；能把两个 $\\mathrm{NTP}$ 直接连成磷酸二酯键，不需引物；此后仍加在 $3'$-$\\mathrm{OH}$ 上。原料 $\\mathrm{ATP}/\\mathrm{GTP}/\\mathrm{UTP}/\\mathrm{CTP}$，辅基 $\\mathrm{Mg}^{2+}$，与模板 $\\mathrm{A}$ 配对的是 $\\mathrm{U}$",
+        "转录和复制一样全基因组双链都抄；化学机制相似就可以把冈崎片段搬进转录",
+        "$\\mathrm{HIV}$ 一类逆转录病毒也走 $\\mathrm{RNA}$ 复制，酶表与流感病毒共用"
+      ],
+      "answer": 1,
+      "hint": "先分模板是 $\\mathrm{DNA}$ 还是 $\\mathrm{RNA}$；一个基因一股链；$\\mathrm{RNA}\\,\\mathrm{pol}$ 两个 $\\mathrm{NTP}$ 可直接成键。",
+      "explanation": "**B 正确。** 两条路、Temin 不是 $\\mathrm{RNA}$ 复制、模板链／编码链、不需引物、原料 $\\mathrm{NTP}$，都来自 ch15-1。\n\n**干扰项辨析**：\n- A：主要方式才叫转录；$1970$ 是逆转录；一股出编码产物；$\\mathrm{mRNA}$ 与编码链同序；不需引物，原料是 $\\mathrm{NTP}$。\n- C：选择性不是全盘双链都抄；化学相似不等于过程照搬复制。\n- D：$\\mathrm{RNA}$ 复制不包括逆转录病毒。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-1.md",
+        "label": "转录／RNA 复制 · 模板链编码链 · 不需引物 · pitfall「Temin 不是 RNA 复制」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于大肠埃希菌 $\\mathrm{RNA}\\,\\mathrm{pol}$ 全酶与核心酶，下列叙述正确的是（　）。",
+      "options": [
+        "五种亚基就是五聚体；催化在 $\\beta'$、开链在 $\\beta$；起始用核心酶、延长用全酶；$\\sigma$ 若不脱落照样前移；$4\\,000:2\\,000:2\\,000:600$ 是一个全酶里的化学计量；流产式起始就是 $\\rho$ 依赖终止",
+        "六聚体：五种亚基为 $2$ 个 $\\alpha$，以及 $\\beta$、$\\beta'$、$\\omega$、$\\sigma$，分子量 $450\\,\\mathrm{kD}$。$\\beta$ 催化，$\\beta'$ 结合模板并开链，$\\omega$ 帮助 $\\beta'$ 折叠稳定并募集 $\\sigma$，$\\sigma$ 辨认起始点（最常见 $\\sigma^{70}$）。核心酶 $\\alpha_2\\beta\\beta'\\omega$ 能聚合但起点不固定；全酶 $=$ 核心酶 $+\\sigma$，起始必需。试管：只有核心酶时 $\\mathrm{RNA}$ 能合成但起点不固定，加上 $\\sigma$ 才能在特定起点开始。第一个磷酸二酯键后 $\\sigma$ 脱落，只留核心酶延长；$\\sigma$ 若不脱落则酶停在起始位置。细胞内 $\\alpha:\\beta:\\beta':\\sigma=4\\,000:2\\,000:2\\,000:600$，$\\sigma$ 偏少可循环，不是全酶计量。流产式起始：小于 $10\\,\\mathrm{nt}$ 的短 $\\mathrm{RNA}$ 释放，发生在启动子上；超过 $10\\,\\mathrm{nt}$ 才启动子清除。转录泡覆盖 $>40\\,\\mathrm{bp}$，开链约 $17\\,\\mathrm{bp}$，杂合双链 $8\\,\\mathrm{bp}$",
+        "全酶和核心酶是两种不同的聚合酶，延长要换成 $\\mathrm{RNA}\\,\\mathrm{pol}\\,\\mathrm{II}$",
+        "$\\omega$ 可有可无；大肠埃希菌只有 $\\sigma^{70}$ 一种 $\\sigma$"
+      ],
+      "answer": 1,
+      "hint": "六聚体不是五聚体；起始全酶、延长核心酶；$\\sigma$ 必须脱落。",
+      "explanation": "**B 正确。** 六聚体、$\\beta/\\beta'$、$\\sigma$ 试管实验、循环比例、流产 $<10\\,\\mathrm{nt}$、三个长度，都按第二节。\n\n**干扰项辨析**：\n- A：种类 $5$、分子数 $6$；催化在 $\\beta$；起始用全酶；不脱落则不停在起点；比例是细胞内分子数；流产不是 $\\rho$ 终止。\n- C：同一台酶去掉 $\\sigma$，不是换真核酶。\n- D：$\\omega$ 有功能；多种 $\\sigma$ 用分子量命名。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-2.md",
+        "label": "全酶 σ · 核心酶延长 · 流产 <10 nt · 转录泡 17／8 bp"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于原核启动子 $-35/-10$ 以及闭合／开放复合体，下列叙述正确的是（　）。",
+      "options": [
+        "启动子就是结构基因；$\\mathrm{RNA}\\,\\mathrm{pol}$ 保护法留下的片段在起点下游；$-10$ 是 $\\mathrm{TTGACA}$、$-35$ 是 $\\mathrm{TATAAT}$；识别序列就是结合最牢的那段；Pribnow 盒就是真核 Hognest 盒；闭合复合体指酶还没碰到 $\\mathrm{DNA}$；解开范围等于复制叉",
+        "启动子是 $\\mathrm{RNA}\\,\\mathrm{pol}$ 结合模板、决定起点的调控序列，不是结构基因。保护法：先温育 $\\mathrm{DNA}+\\mathrm{RNA}\\,\\mathrm{pol}$，再加外切酶，留下上游 $40\\sim 60\\,\\mathrm{bp}$。$-35$ 一致性序列 $\\mathrm{TTGACA}$，是识别序列，结合松弛；$-10$ 为 $\\mathrm{TATAAT}$，$1975$ 年 Pribnow 发现，称 Pribnow 盒，结合更牢固。$-35$ 与 $-10$ 相隔 $16\\sim 18$ 个核苷酸，$-10$ 与 $+1$ 相距 $6$ 或 $7$ 个核苷酸。闭合复合体：酶已结合，双链仍完整（先 $-35$ 后 $-10$ 并跨过起点）；开放复合体：近 $-10$ 解开约 $17\\,\\mathrm{bp}$，比复制叉小得多。第一位常见 $\\mathrm{GTP}$ 或 $\\mathrm{ATP}$，产物 $5'$-$\\mathrm{pppGpN}$-$\\mathrm{OH}$-$3'$。Pribnow 不要写成真核 $\\mathrm{TATA}$（Hognest）盒",
+        "$16\\sim 18$ 是 $-10$ 到 $+1$ 的距离；翻译开始和转录 $+1$ 是同一点",
+        "$-35$ 和 $-10$ 被酶同时抓死，没有先后"
+      ],
+      "answer": 1,
+      "hint": "先认 $-35$（松）再落到 $-10$（牢）；Pribnow 是原核；解开约 $17\\,\\mathrm{bp}$。",
+      "explanation": "**B 正确。** 保护法、两套共有序列、间距、闭合／开放、$17\\,\\mathrm{bp}$，都按第二节。\n\n**干扰项辨析**：\n- A：启动子在调控序列；片段在上游；两套序列对调；识别≠最牢；Pribnow≠真核 TATA；闭合已结合；泡比复制叉小。\n- C：$16\\sim 18$ 是 $-35$ 与 $-10$ 之间；翻译开始更在下游。\n- D：先识别后牢固结合，不是同时抓死。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-2.md",
+        "label": "-35 TTGACA 识别 · -10 TATAAT Pribnow · 开放约 17 bp · pitfall「不是真核 TATA」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于原核转录终止（$\\rho$ 依赖 vs 茎环 $+$ 多聚 $\\mathrm{U}$）以及转录与翻译同步，下列叙述正确的是（　）。",
+      "options": [
+        "原核终止都要 $\\rho$；$\\rho$ 就是 $\\sigma$，分子量 $450\\,\\mathrm{kD}$，结合 $\\mathrm{DNA}$ 上的 $\\mathrm{dC}/\\mathrm{dG}$；非依赖 $\\rho$ 就是没有终止信号，茎环画在模板 $\\mathrm{DNA}$ 上；羽毛状是一个酶同时抄两股链，真核也普遍同步翻译",
+        "按要不要蛋白质因子分两类：部分基因依赖 $\\rho$，多数非依赖 $\\rho$。$\\rho$：$1969$ 年 Roberts 发现，相同亚基六聚体，亚基 $46\\,\\mathrm{kD}$；结合 $\\mathrm{RNA}$（$\\mathrm{polyC}$ 最强），对 $\\mathrm{polydC}/\\mathrm{dG}$ 的 $\\mathrm{DNA}$ 结合力低得多；产物 $3'$ 端富含有规律的 $\\mathrm{C}$，$\\rho$ 的解旋酶拆 $\\mathrm{DNA}/\\mathrm{RNA}$ 杂合体并耗 $\\mathrm{ATP}$。体外 $\\mathrm{T4}$ $\\mathrm{DNA}$ 产物偏长，加 $\\rho$ 后恢复。非依赖 $\\rho$：不需蛋白因子，但产物 $3'$ 端多聚 $\\mathrm{U}$ $+$ 上游鼓槌状茎环（富 $\\mathrm{GC}$）；茎环改酶构象，杂合短链不稳（$\\mathrm{A}=\\mathrm{U}$ 最弱），转录泡关闭。原核转录翻译同步，电镜羽毛状：同一 $\\mathrm{DNA}$ 上多个转录复合体，每条新生 $\\mathrm{mRNA}$ 上多个核糖体，满足快速增殖；真核有核膜，不能搬这张图",
+        "终止就是全酶被降解；$\\rho$ 去开复制叉",
+        "缺茎环只剩多聚 $\\mathrm{U}$，或有发夹没有一串 $\\mathrm{U}$，仍是教材写全的非依赖 $\\rho$ 信号"
+      ],
+      "answer": 1,
+      "hint": "多数走茎环 $+$ 多聚 $\\mathrm{U}$；$\\rho$ 认 $\\mathrm{RNA}$ 上的 $\\mathrm{C}$，不是 $\\sigma$。",
+      "explanation": "**B 正确。** 两类终止、$\\rho$ 六聚体、$\\mathrm{T4}$ 实验、茎环在产物上、羽毛状两层“多个”，都按第二节。\n\n**干扰项辨析**：\n- A：多数不依赖 $\\rho$；$\\rho\\neq\\sigma$，亚基 $46\\,\\mathrm{kD}$，结合 $\\mathrm{RNA}$；非依赖仍有信号；茎环在 $\\mathrm{RNA}$；羽毛不是双链同抄；真核不同步。\n- C：终止是停顿 $+\\mathrm{RNA}$ 脱落；$\\rho$ 拆杂合体。\n- D：茎环和多聚 $\\mathrm{U}$ 都要。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-2.md",
+        "label": "ρ 六聚体认 RNA 上的 C · 茎环+多聚 U · 羽毛状同步 · pitfall「ρ 不是 σ」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于真核 $\\mathrm{RNA}\\,\\mathrm{pol}$ 不直接结合模板、三种酶和 $\\mathrm{PIC}$，下列叙述正确的是（　）。",
+      "options": [
+        "真核 $\\mathrm{RNA}\\,\\mathrm{pol}$ 像原核一样直接绑 $\\mathrm{DNA}$，$\\sigma$ 认 $\\mathrm{TATA}$；$5\\mathrm{S}\\,\\mathrm{rRNA}$ 走 $\\mathrm{pol}\\,\\mathrm{I}$ 的 $45\\mathrm{S}$；三种酶都有 $\\mathrm{CTD}$；$\\mathrm{TBP}$ 就是 $\\mathrm{TF}\\,\\mathrm{II}\\mathrm{D}$；管家基因必须有 $\\mathrm{TATA}$；$\\mathrm{TF}\\,\\mathrm{II}\\mathrm{A}$ 是 $\\mathrm{PIC}$ 必备；只有 $\\mathrm{TF}\\,\\mathrm{II}\\mathrm{H}$ 能磷酸 $\\mathrm{CTD}$；真核延长与翻译同步",
+        "真核 $\\mathrm{RNA}\\,\\mathrm{pol}$ 需与辅因子结合后才结合模板。$\\mathrm{pol}\\,\\mathrm{I}$ 核仁、$45\\mathrm{S}\\,\\mathrm{rRNA}$（再成 $18\\mathrm{S}$、$5.8\\mathrm{S}$、$28\\mathrm{S}$）；$\\mathrm{pol}\\,\\mathrm{II}$ 前体 $\\mathrm{mRNA}$／$\\mathrm{lncRNA}$／$\\mathrm{miRNA}$／$\\mathrm{piRNA}$，最活跃，对 $\\alpha$-鹅膏蕈碱极敏感；$\\mathrm{pol}\\,\\mathrm{III}$ 核仁外，$\\mathrm{tRNA}$、$5\\mathrm{S}\\,\\mathrm{rRNA}$、一些 $\\mathrm{snRNA}$，中度敏感。$\\mathrm{CTD}$ 仅 $\\mathrm{pol}\\,\\mathrm{II}$ 最大亚基（$\\mathrm{RBP1}$）有：七肽 $\\mathrm{Tyr}$-$\\mathrm{Ser}$-$\\mathrm{Pro}$-$\\mathrm{Thr}$-$\\mathrm{Ser}$-$\\mathrm{Pro}$-$\\mathrm{Ser}$，酵母 $27$、哺乳动物 $52$ 个重复。核心启动子至 $-37\\,\\mathrm{bp}$ 给 $\\mathrm{PIC}$；$\\mathrm{TATA}=$ Hognest 盒，管家基因可无。$\\mathrm{TF}\\,\\mathrm{II}\\mathrm{D}=\\mathrm{TBP}+8\\sim 10\\,\\mathrm{TAF}$：$\\mathrm{TBP}$ 盖 $10\\,\\mathrm{bp}$（$20\\sim 40\\,\\mathrm{kD}$），复合物约 $700\\,\\mathrm{kD}$ 盖 $35\\,\\mathrm{bp}$。$\\mathrm{PIC}$：$\\mathrm{TBP}$（$\\mathrm{DNA}$ 弯）→ $\\mathrm{B}$（$\\mathrm{A}$ 非必需）→ $\\mathrm{pol}\\,\\mathrm{II}\\cdot\\mathrm{F}$ → $\\mathrm{E}+\\mathrm{H}$ 闭合；$\\mathrm{H}$ 解旋成开放并磷酸 $\\mathrm{CTD}$；$\\mathrm{CDK9}$（$\\mathrm{P}$-$\\mathrm{TEFb}$）也磷酸 $\\mathrm{CTD}$；约 $30\\,\\mathrm{nt}$ 后 $\\mathrm{E}/\\mathrm{H}$ 离开，$\\mathrm{F}$ 留下。延长不与翻译同步",
+        "增强子必须在基因 $5'$ 远端，不能在下游；$\\mathrm{MyoD}$、$\\mathrm{HIF}$-$1$ 属于 $\\mathrm{TF}\\,\\mathrm{II}$ 家族",
+        "植物 $\\mathrm{pol}\\,\\mathrm{IV}$ 就是核内三种酶之一，线粒体 $\\mathrm{RNA}\\,\\mathrm{pol}$ 与 $\\mathrm{pol}\\,\\mathrm{II}$ 共用 $\\mathrm{CTD}$"
+      ],
+      "answer": 1,
+      "hint": "真核酶不直接绑 $\\mathrm{DNA}$；$5\\mathrm{S}$ 走 $\\mathrm{pol}\\,\\mathrm{III}$；$\\mathrm{CTD}$ 只属于 $\\mathrm{pol}\\,\\mathrm{II}$。",
+      "explanation": "**B 正确。** 不直接结合、表15-2、七肽 $\\mathrm{CTD}$、$\\mathrm{TF}\\,\\mathrm{II}\\mathrm{D}$ 不是 $\\mathrm{TBP}$、$\\mathrm{PIC}$ 装配、$\\mathrm{CDK9}$，都按第三节。\n\n**干扰项辨析**：\n- A：要辅因子；$5\\mathrm{S}$ 不进 $45\\mathrm{S}$；I／III 无 $\\mathrm{CTD}$；$\\mathrm{TBP}\\neq\\mathrm{TF}\\,\\mathrm{II}\\mathrm{D}$；管家可无 $\\mathrm{TATA}$；$\\mathrm{A}$ 非必需；$\\mathrm{P}$-$\\mathrm{TEFb}$ 也磷酸 $\\mathrm{CTD}$；有核膜不同步。\n- C：增强子上下游都可、以上游为主；$\\mathrm{MyoD}$／$\\mathrm{HIF}$-$1$ 是可诱导因子，不冠 $\\mathrm{TF}$ 词头。\n- D：$\\mathrm{pol}\\,\\mathrm{IV}$ 在植物合成 $\\mathrm{siRNA}$；线粒体酶属单亚基家族，本节不详述。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-3.md",
+        "label": "不直接结合模板 · 三种 pol · CTD 仅 pol II · PIC／TFIID · pitfall「TBP≠TFIID」"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于真核前体 $\\mathrm{mRNA}$ 的 $5'$ 帽，下列叙述正确的是（　）。",
+      "options": [
+        "帽是普通 $3'$，$5'$-磷酸二酯键把 $\\mathrm{G}$ 接到 $5'$ 端；加帽酶不绑 $\\mathrm{CTD}$；两步甲基由同一台酶完成；$\\mathrm{pol}\\,\\mathrm{I}/\\mathrm{III}$ 产物也走这套帽；新生链一开始就加帽",
+        "新生 $\\mathrm{RNA}$ 达 $25\\sim 30$ 个核苷酸时，$5'$-端与 $7$-甲基鸟嘌呤核苷通过不常见的 $5'$，$5'$-三磷酸连接键相连。加帽酶（两亚基）在加帽过程中与 $\\mathrm{RNA}\\,\\mathrm{pol}\\,\\mathrm{II}$ 的 $\\mathrm{CTD}$ 结合：氨基端磷酸酶去 $\\gamma$-磷酸，羧基端鸟苷酸转移酶把 $\\mathrm{GTP}$ 的 $\\mathrm{GMP}$ 接上去并放 $\\mathrm{PP}_\\mathrm{i}$。随后 $S$-腺苷甲硫氨酸供甲基：鸟嘌呤 $\\mathrm{N}$-$7$ 甲基转移酶（帽1）和 $2'$-$\\mathrm{O}$ 核糖甲基转移酶（帽2）是不同的酶。帽的功能：免遭核酸酶攻击；与帽结合蛋白质复合体结合，参与 $\\mathrm{mRNA}$ 与核糖体结合、启动翻译。$\\mathrm{pol}\\,\\mathrm{I}/\\mathrm{III}$ 没有 $\\mathrm{CTD}$，不加这套帽；越过修饰点继续抄出的下游 $\\mathrm{RNA}$ 无帽，很快被降解",
+        "帽只保护 $5'$ 端，与翻译起始无关；甲基来自叶酸而不是 $\\mathrm{SAM}$",
+        "前体 $\\mathrm{mRNA}$ 不能叫 $\\mathrm{hnRNA}$；加帽在胞质里做完再核输出"
+      ],
+      "answer": 1,
+      "hint": "键是 $5'$，$5'$-三磷酸；加帽酶跟 $\\mathrm{pol}\\,\\mathrm{II}$ 的 $\\mathrm{CTD}$；两台甲基转移酶。",
+      "explanation": "**B 正确。** $25\\sim 30\\,\\mathrm{nt}$、$5'$，$5'$ 连接、加帽酶两亚基、$\\mathrm{SAM}$ 两步甲基、帽的两个功能，都按第三节。\n\n**干扰项辨析**：\n- A：不是 $3'$，$5'$；绑 $\\mathrm{CTD}$；两台甲基转移酶；I／III 无这套帽；达 $25\\sim 30\\,\\mathrm{nt}$ 才加。\n- C：帽参与核糖体结合；甲基来自 $\\mathrm{SAM}$。\n- D：前体 $\\mathrm{mRNA}$ 又称 $\\mathrm{hnRNA}$；加工主要在核内。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-3.md",
+        "label": "帽 5′,5′-三磷酸 · 加帽酶绑 CTD · SAM 两步甲基 · pitfall「不是 3′,5′」"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于剪接两次转酯、四类内含子、$\\mathrm{ApoB}$ 编辑和 $\\mathrm{NMD}$，下列叙述正确的是（　）。",
+      "options": [
+        "两次转酯每步水解 $\\mathrm{ATP}$；催化的是蛋白质核酸酶；$\\mathrm{GU}$-$\\mathrm{AG}$ 套全部四类内含子；组Ⅱ型有套索所以一定有剪接体；$\\mathrm{ApoB}$ 的 $\\mathrm{apoB}48$ 是可变剪接产物，$2\\,153$ 就是肽链长度；$\\mathrm{NMD}$ 就是图15-21 的主路脱腺苷酸化，$\\mathrm{EJC}$ 就是无义密码子；原核 $\\mathrm{mRNA}$ 也加帽、加尾、走剪接体",
+        "鸡卵清蛋白基因 $7.7\\,\\mathrm{kb}$、$8$ 个外显子，初级转录物与基因等长，成熟约 $1.2\\,\\mathrm{kb}$、编码 $386$ 氨基酸。大多数内含子接口 $5'$-$\\mathrm{GU}\\cdots\\mathrm{AG}$-$\\mathrm{OH}$-$3'$。第一次转酯：分支点 $\\mathrm{A}$ 的 $2'$-$\\mathrm{OH}$ 攻击外显子 $1$–内含子键；第二次：外显子 $1$ 的 $3'$-$\\mathrm{OH}$ 攻击内含子–外显子 $2$ 键；磷酸酯键数目不变，转酯不耗能。剪接体：$\\mathrm{U1}$–$\\mathrm{U6}$ 加 $100$ 种以上蛋白质，装配耗 $\\mathrm{ATP}$；结合金属离子的 $\\mathrm{U6}$ 催化。四类内含子：组Ⅰ（游离 $\\mathrm{G}$，线状、无套索）、组Ⅱ（套索、无剪接体）、剪接体、$\\mathrm{tRNA}$（$\\mathrm{TSEN}$＋连接酶，蛋白质催化）。体外自剪接不需蛋白质酶，体内组Ⅰ／Ⅱ需蛋白质帮助折叠。$\\mathrm{ApoB}$ 是编辑不是可变剪接：小肠胞嘧啶核苷脱氨酶把第 $2\\,153$ 位 $\\mathrm{CAA}$（Gln）的 $\\mathrm{C}$ 变为 $\\mathrm{U}$ 成 $\\mathrm{UAA}$，$\\mathrm{apoB}48$ 含 $2\\,152$ 残基。$\\mathrm{NMD}$：拼接点前出现 $\\mathrm{PTC}$，下游 $\\mathrm{EJC}$ 残留，$\\mathrm{UPF}3$ 诱导 $\\mathrm{UPF}1$ 磷酸化，募集 $\\mathrm{Dcp}1\\mathrm{a}$ 和 $\\mathrm{Xrn}1$；不是主路脱腺苷酸化。原核无剪接体，$\\mathrm{mRNA}$ 无内含子、无帽、无 $\\mathrm{poly}(\\mathrm{A})$",
+        "可变剪接、编辑、$\\mathrm{NMD}$ 是同一件事的三种叫法；人类基因仍按早期估计 $5$ 万～$10$ 万来默写",
+        "Cech $1982$ 的四膜虫实验证明细胞内组Ⅰ／组Ⅱ完全没有蛋白质参与"
+      ],
+      "answer": 1,
+      "hint": "转酯不耗能、装配耗 $\\mathrm{ATP}$；$\\mathrm{U6}$ 催化；$\\mathrm{ApoB}$ 改一个碱基；$\\mathrm{NMD}$ 走残留 $\\mathrm{EJC}$。",
+      "explanation": "**B 正确。** 卵清蛋白数字、两次转酯、四类内含子、$\\mathrm{ApoB}$ 编辑、$\\mathrm{NMD}$ 分子顺序、原核 $\\mathrm{mRNA}$ 不走这套加工，都按第三、四节。\n\n**干扰项辨析**：\n- A：转酯不耗能；催化是 $\\mathrm{U6}$；$\\mathrm{GU}$-$\\mathrm{AG}$ 只是大多数剪接体内含子；套索≠剪接体；$\\mathrm{ApoB}$ 不是可变剪接，$2\\,153$ 是终止密码子位置；$\\mathrm{NMD}\\neq$ 主路脱腺苷酸化，$\\mathrm{EJC}\\neq\\mathrm{PTC}$；原核 $\\mathrm{mRNA}$ 无帽无尾无剪接体。\n- C：三户不同；测序后约 $1.9$ 万个编码基因。\n- D：体外无四膜虫蛋白质；体内需蛋白质帮助折叠。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-3.md",
+        "label": "两次转酯 · U6 催化 · 四类内含子 · ApoB 编辑 · NMD／EJC · pitfall「转酯不耗能装配耗 ATP」"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于真核 $\\mathrm{poly}(\\mathrm{A})$ 加尾、终止修饰点以及 $\\mathrm{PABP}$ Ⅱ／胞质 $\\mathrm{PABP}$，下列叙述正确的有（　）。",
+      "options": [
+        "模板链没有 $\\mathrm{poly}\\,\\mathrm{dT}$，尾巴是转录后加上的。转录不是在 $\\mathrm{poly}(\\mathrm{A})$ 位置上终止，而是超出数百至上千个核苷酸后才停止。$\\mathrm{DNA}$ 上修饰点为可读框下游 $\\mathrm{AATAAA}$ 再下游 $\\mathrm{GT}$；前体 $\\mathrm{RNA}$ 上断裂点上游 $10\\sim 30\\,\\mathrm{nt}$ 为 $\\mathrm{AAUAAA}$，下游 $20\\sim 40\\,\\mathrm{nt}$ 富 $\\mathrm{G}/\\mathrm{U}$。先切断再加尾；加尾在核内、先于中段剪接，并与终止同时。下游无帽 $\\mathrm{RNA}$ 迅速降解",
+        "除组蛋白外都有 $\\mathrm{poly}(\\mathrm{A})$，约 $80\\sim 250$ 个腺苷酸；组蛋白无论初级或成熟都没有尾巴。胞质里见到的尾长一般 $100\\sim 200$ 个核苷酸。长度与寿命正相关，尾缩短则翻译活性下降。$\\mathrm{CPSF}$ 为 $4$ 条多肽、$360\\,\\mathrm{kD}$，先认 $\\mathrm{AAUAAA}$；再募集 $\\mathrm{CStF}$、$\\mathrm{CF}$Ⅰ、$\\mathrm{CF}$Ⅱ，$\\mathrm{CStF}$ 稳住下游 $\\mathrm{G}/\\mathrm{U}$；$\\mathrm{PAP}$ 在断裂前加入。前约 $12$ 个 $\\mathrm{A}$ 慢速，随后核内 $\\mathrm{PABP}$ Ⅱ 加速，尾足够长时使 $\\mathrm{PAP}$ 停止。$\\mathrm{PABP}$ Ⅱ 不是胞质 $\\mathrm{PABP}$；封闭环用的是胞质 $\\mathrm{PABP}$",
+        "依赖脱腺苷酸化是正常 $\\mathrm{mRNA}$ 降解的主要途径：封闭环（$\\mathrm{eIF}4\\mathrm{E}$／$\\mathrm{eIF}4\\mathrm{G}$／胞质 $\\mathrm{PABP}$）挡住降解酶；脱腺苷酸化是脱帽的前提，然后 $5'\\rightarrow 3'$ 外切（或部分不脱帽而 $3'\\rightarrow 5'$ 外切）。少部分可直接脱帽；有些被内切酶切割后再外切。$\\mathrm{RNA}\\,\\mathrm{pol}$ 缺乏 $3'\\rightarrow 5'$ 外切校读，错误率约 $10^{-5}\\sim 10^{-4}$，影响小于错误 $\\mathrm{DNA}$",
+        "真核终止就是 $\\rho$ 因子或发夹；组蛋白也必须加 $\\mathrm{poly}(\\mathrm{A})$；$\\mathrm{AATAAA}$ 和 $\\mathrm{AAUAAA}$ 写在同一条链上；$\\mathrm{PABP}$ Ⅱ 就是胞质成环用的 $\\mathrm{PABP}$；主路降解先摘帽再去尾；错误 $\\mathrm{RNA}$ 对细胞的影响大于错误 $\\mathrm{DNA}$"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "先切后加；组蛋白无尾；$\\mathrm{PABP}$ Ⅱ≠胞质 $\\mathrm{PABP}$；脱腺苷酸化是脱帽前提。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：非模板拷贝、修饰点 $\\mathrm{AATAAA}/\\mathrm{AAUAAA}$ 分链、先切后加、与终止同时，来自 ch15-3。\n- B：组蛋白例外、两档长度、$\\mathrm{CPSF}/\\mathrm{PABP}$ Ⅱ，来自 ch15-3。\n- C：封闭环、脱腺苷酸化主路、错误率，来自 ch15-3。\n- **D 错**：真核 $\\mathrm{mRNA}$ 不是 $\\rho$／发夹；组蛋白无尾；字母差一个 $\\mathrm{T}/\\mathrm{U}$；两个 $\\mathrm{PABP}$ 分户；主路先去尾；错误 $\\mathrm{RNA}$ 影响更小。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-3.md",
+        "label": "poly(A) 先切后加 · 组蛋白例外 · PABP II · 脱腺苷酸化主路"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于组成性／调控性非编码 $\\mathrm{RNA}$、$45\\mathrm{S}$、$\\mathrm{tRNA}$ 加工以及 $\\mathrm{siRNA}/\\mathrm{miRNA}/\\mathrm{piRNA}$，下列叙述正确的有（　）。",
+      "options": [
+        "人类基因组约 $3\\times 10^{9}\\,\\mathrm{bp}$，$\\mathrm{mRNA}$ 仅占少量。组成性（含量相对稳定）：$\\mathrm{rRNA}$、$\\mathrm{tRNA}$、核酶、$\\mathrm{snoRNA}$、$\\mathrm{snRNA}$、$\\mathrm{scRNA}$。调控性（随环境／性状变）：$\\mathrm{lncRNA}$、$\\mathrm{miRNA}$、$\\mathrm{siRNA}$、$\\mathrm{piRNA}$、$\\mathrm{circRNA}$。非编码 $\\mathrm{RNA}$ 在哺乳动物、真菌、细菌中广泛存在，不要全部写进表15-2 的Ⅱ列。$\\mathrm{lncRNA}$ 大多由 $\\mathrm{pol}\\,\\mathrm{II}$ 生成，多数有帽和尾，按与编码基因相对位置分五类，但不是翻译模板",
+        "$\\mathrm{rDNA}$ 属冗余基因族，可转录片段 $7\\sim 13\\,\\mathrm{kb}$，基因间隔不是内含子。$45\\mathrm{S}$ 是 $18\\mathrm{S}$、$5.8\\mathrm{S}$、$28\\mathrm{S}$ 的前身，经 $\\mathrm{snoRNP}$ 的 $2'$-$\\mathrm{O}$-核糖甲基化等修饰后再剪切；$5\\mathrm{S}\\,\\mathrm{rRNA}$ 由 $\\mathrm{pol}\\,\\mathrm{III}$ 在核仁外合成，不进 $45\\mathrm{S}$。酵母前体 $\\mathrm{tRNA}^{\\mathrm{Tyr}}$：$\\mathrm{RNase}\\,\\mathrm{P}$（核酶）切 $16\\,\\mathrm{nt}$ 的 $5'$ 前导；$\\mathrm{RNase}\\,\\mathrm{Z}$（蛋白质，有时加 $\\mathrm{RNase}\\,\\mathrm{D}$）切 $3'$ 端 $2$ 个 $\\mathrm{U}$，核苷酸转移酶加 $\\mathrm{CCA}$；稀有碱基包括 $\\mathrm{DHU}$、$\\Psi$、$\\mathrm{I}$、甲基嘌呤；反密码子环 $14\\,\\mathrm{nt}$ 内含子由 $\\mathrm{TSEN}$＋$\\mathrm{tRNA}$ 连接酶（蛋白质）处理，不走剪接体",
+        "$\\mathrm{siRNA}$ 约 $21\\sim 23\\,\\mathrm{nt}$，由 $\\mathrm{Dicer}$ 切长双链 $\\mathrm{RNA}$ 生成，与靶标完全互补引起降解，防御外源核酸。$\\mathrm{miRNA}$ $20\\sim 24\\,\\mathrm{nt}$ 单链，由 $70\\sim 90\\,\\mathrm{nt}$ 发夹前体经 $\\mathrm{Dicer}$ 加工，不完全互补，抑翻译或去 $\\mathrm{polyA}$ 尾。$\\mathrm{piRNA}$ $24\\sim 31\\,\\mathrm{nt}$，最早见于生殖细胞，依赖 $\\mathrm{PIWI}$，合成走乒乓循环（启动／应答成对），$3'$ 端 $\\mathrm{Trimmer}$ 外切、$\\mathrm{Hen}1$ 甲基化；不要把三种都答成 $\\mathrm{Dicer}$ 产物。$1982$ 年 Cech 等发现四膜虫 $\\mathrm{rRNA}$ 前体体外自剪接",
+        "非编码 $\\mathrm{RNA}$ 只存在于真核、全由 $\\mathrm{pol}\\,\\mathrm{II}$ 合成；$45\\mathrm{S}$ 是四种 $\\mathrm{rRNA}$ 的共同前体，基因间隔就是内含子；$\\mathrm{CCA}$ 是基因组抄出来的末端，$\\mathrm{tRNA}$ 内含子走 $\\mathrm{U1}$–$\\mathrm{U6}$；$\\mathrm{siRNA}$ 不完全互补、$\\mathrm{miRNA}$ 完全互补，对调后长度靠“谁更短”来分；$\\mathrm{piRNA}$ 也是 $\\mathrm{Dicer}$ 产物"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "$5\\mathrm{S}$ 不进 $45\\mathrm{S}$；$\\mathrm{RNase}\\,\\mathrm{P}$ 是核酶、$\\mathrm{TSEN}$ 是蛋白质；$\\mathrm{siRNA}$ 完全互补。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：组成性／调控性两户、$\\mathrm{lncRNA}$ 有帽有尾但不翻译，来自 ch15-4。\n- B：$45\\mathrm{S}$ 三成员、间隔≠内含子、酵母 $\\mathrm{tRNA}^{\\mathrm{Tyr}}$ 四步，来自 ch15-4。\n- C：三种小 $\\mathrm{RNA}$ 分户、乒乓循环、Cech $1982$，来自 ch15-4。\n- **D 错**：细菌也有非编码 $\\mathrm{RNA}$；酶分 I／II／III；$5\\mathrm{S}$ 不进 $45\\mathrm{S}$；间隔不能转录；$\\mathrm{CCA}$ 后加；$\\mathrm{tRNA}$ 内含子是蛋白质酶；完全／不完全互补不能对调；$\\mathrm{piRNA}$ 不走 $\\mathrm{Dicer}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-4.md",
+        "label": "组成性／调控性 · 45S 不含 5S · tRNA Tyr 四步 · siRNA／miRNA／piRNA"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "一个基因的两股链都转录生成 $\\mathrm{mRNA}$，$\\mathrm{mRNA}$ 与模板链同序；$\\mathrm{RNA}\\,\\mathrm{pol}$ 像 $\\mathrm{DNA}\\,\\mathrm{pol}$ 一样需要引物，原料是 $\\mathrm{dNTP}$；起始用核心酶、延长用全酶，$\\rho$ 就是 $\\sigma$；Pribnow 盒就是真核 Hognest 盒；原核终止都要 $\\rho$，羽毛状是一个酶同时抄两股链。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：一股出编码产物；不需引物；起始全酶；$\\rho\\neq\\sigma$；多数走茎环 $+$ 多聚 $\\mathrm{U}$。",
+      "explanation": "**该命题错误，每一分句都错。** 一个基因只有一股链产生编码产物，$\\mathrm{mRNA}$ 除 $\\mathrm{U}$ 代 $\\mathrm{T}$ 外与编码链一致。$\\mathrm{RNA}\\,\\mathrm{pol}$ 能把两个 $\\mathrm{NTP}$ 直接成键，不需引物，原料含 $\\mathrm{U}$ 不含 $\\mathrm{T}$。起始必须全酶（$\\sigma$ 辨认起点），延长只留核心酶。$\\rho$ 是另外的六聚体终止因子，结合 $\\mathrm{RNA}$ 上的 $\\mathrm{C}$，不是 $\\sigma$。Pribnow 盒是原核 $-10$ 的 $\\mathrm{TATAAT}$；真核 $\\mathrm{TATA}$／Hognest 盒是第三节。多数原核基因非依赖 $\\rho$（茎环 $+$ 多聚 $\\mathrm{U}$）。羽毛状是同一 $\\mathrm{DNA}$ 上多个转录复合体、每条 $\\mathrm{mRNA}$ 上多个核糖体，不是双链同时转录。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-1.md",
+        "label": "一股链编码 · 不需引物 · 全酶／核心酶 · ρ≠σ · Pribnow≠真核 TATA"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "真核 $\\mathrm{RNA}\\,\\mathrm{pol}$ 直接结合模板，$\\sigma$ 认 $\\mathrm{TATA}$；$5\\mathrm{S}\\,\\mathrm{rRNA}$ 来自 $45\\mathrm{S}$，三种酶都有 $\\mathrm{CTD}$；帽是 $3'$，$5'$ 键把 $\\mathrm{G}$ 接上，$\\mathrm{poly}(\\mathrm{A})$ 由模板 $\\mathrm{poly}\\,\\mathrm{dT}$ 抄出；两次转酯每步耗 $\\mathrm{ATP}$，催化的是蛋白质酶；$\\mathrm{apoB}48$ 是可变剪接产物，$\\mathrm{NMD}$ 就是主路脱腺苷酸化。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：真核酶不直接绑；$5\\mathrm{S}$ 走 $\\mathrm{pol}\\,\\mathrm{III}$；帽是 $5'$，$5'$；转酯不耗能；$\\mathrm{ApoB}$ 是编辑。",
+      "explanation": "**该命题错误，五处都错。** 真核 $\\mathrm{RNA}\\,\\mathrm{pol}$ 需与辅因子结合后才结合模板，靠 $\\mathrm{TF}\\,\\mathrm{II}\\mathrm{D}$ 的 $\\mathrm{TBP}$ 认 $\\mathrm{TATA}$，没有把 $\\sigma$ 搬过去。$5\\mathrm{S}\\,\\mathrm{rRNA}$ 由 $\\mathrm{pol}\\,\\mathrm{III}$ 合成，不进 $45\\mathrm{S}$；$\\mathrm{CTD}$ 只属于 $\\mathrm{pol}\\,\\mathrm{II}$。帽是不常见的 $5'$，$5'$-三磷酸连接；$\\mathrm{poly}(\\mathrm{A})$ 不是模板抄出来的，组蛋白还没有尾巴。两次转酯磷酸酯键数目不变故不耗能，装配剪接体才耗 $\\mathrm{ATP}$；催化成分是结合金属离子的 $\\mathrm{U6}$。$\\mathrm{apoB}48$ 由小肠胞嘧啶核苷脱氨酶把 $\\mathrm{CAA}$ 改成 $\\mathrm{UAA}$，不是可变剪接。$\\mathrm{NMD}$ 从残留 $\\mathrm{EJC}$ 和 $\\mathrm{UPF}1$ 磷酸化走 $\\mathrm{Dcp}1\\mathrm{a}/\\mathrm{Xrn}1$，不是图15-21 的主路脱腺苷酸化。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-3.md",
+        "label": "不直接结合 · 帽 5′,5′ · 转酯不耗能 · ApoB 编辑 · NMD≠脱腺苷酸化"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "原核转录起始靠全酶的 ________ 亚基辨认起点（不要写成 $\\rho$）。$-35$ 区一致性序列是 ________（识别序列，结合却更松）。无论起始还是延长，转录解开范围都只在约 ________ $\\mathrm{bp}$。真核 $5'$ 帽通过不常见的 ________ 三磷酸连接键把 $7$-甲基鸟嘌呤核苷接到新生 $\\mathrm{RNA}$。小肠 $\\mathrm{ApoB}$ $\\mathrm{mRNA}$ 第 $2\\,153$ 位密码子 ________（编码 Gln）的 $\\mathrm{C}$ 变为 $\\mathrm{U}$ 而成终止密码子 $\\mathrm{UAA}$。",
+      "answer": "σ, TTGACA, 17, 5′-5′, CAA",
+      "hint": "$\\sigma$ 认起点；$-35$ 为 $\\mathrm{TTGACA}$；泡约 $17\\,\\mathrm{bp}$；帽是 $5'$，$5'$；编辑改 $\\mathrm{CAA}$。",
+      "scoring_criteria": [
+        "第一空填“σ”（或“sigma”“σ 亚基”“σ70”）（2分）",
+        "第二空填“TTGACA”（2分）",
+        "第三空填“17”（或“17 bp”“约 17”）（2分）",
+        "第四空填“5′-5′”（或“5′,5′”“5′，5′”“5'-5'”“5′,5′-三磷酸”“5′，5′-三磷酸”）（2分）",
+        "第五空填“CAA”（或“CAA（Gln）”“CAA(Gln)”）（2分）"
+      ],
+      "explanation": "$\\sigma$ 辨认转录起始点，$\\rho$ 只管部分基因的终止。$-35$ 的 $\\mathrm{TTGACA}$ 是识别序列，结合松弛；更牢的是 $-10$ 的 $\\mathrm{TATAAT}$。转录泡解开约 $17\\,\\mathrm{bp}$，杂合双链才是 $8\\,\\mathrm{bp}$。帽的连接键是不常见的 $5'$，$5'$-三磷酸，不是普通 $3'$，$5'$。小肠编辑把 $\\mathrm{CAA}$（Gln）变成 $\\mathrm{UAA}$，肽链是 $2\\,152$ 残基，不要把 $2\\,153$ 写成长度。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-2.md",
+        "label": "σ；TTGACA；17 bp；5′,5′ 帽；ApoB 的 CAA"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "原核怎样把 $\\mathrm{DNA}$ 抄成 $\\mathrm{RNA}$？请写出：①选择性转录（模板链／编码链，$\\mathrm{mRNA}$ 与编码链同序；$\\mathrm{RNA}\\,\\mathrm{pol}$ 不需引物，原料 $\\mathrm{NTP}$，辅基 $\\mathrm{Mg}^{2+}$）；②全酶 $\\sigma\\alpha_2\\beta\\beta'\\omega$ 与核心酶，$\\sigma$ 辨认起点、延长脱落，流产式起始以 $10\\,\\mathrm{nt}$ 为界；③启动子 $-35\\,\\mathrm{TTGACA}$（识别、松）／$-10\\,\\mathrm{TATAAT}$（Pribnow，牢固），闭合→开放约 $17\\,\\mathrm{bp}$，产物 $5'$-$\\mathrm{pppGpN}$-$\\mathrm{OH}$-$3'$；④转录泡覆盖 $>40\\,\\mathrm{bp}$、开链 $\\sim 17\\,\\mathrm{bp}$、杂合 $8\\,\\mathrm{bp}$，原核转录翻译同步；⑤终止：部分靠 $\\rho$ 六聚体认 $\\mathrm{RNA}$ 上的 $\\mathrm{C}$，多数靠茎环 $+$ 多聚 $\\mathrm{U}$。",
+      "answer": "参考答案：\n\n**1. 选择性与不需引物**\n- 主要方式是转录（$\\mathrm{DNA}$ 指导）；$\\mathrm{RNA}$ 复制点到为止，不包括逆转录病毒。Temin $1970$ 是逆转录，不是 $\\mathrm{RNA}$ 复制。\n- 一个基因只有一股链产生编码产物。模板链与 $\\mathrm{mRNA}$ 互补；编码链与 $\\mathrm{mRNA}$ 同序（$\\mathrm{T}\\leftrightarrow\\mathrm{U}$）。不同基因可以换股当模板。\n- $\\mathrm{RNA}\\,\\mathrm{pol}$ 两个 $\\mathrm{NTP}$ 可直接成键，不需引物；此后仍加在 $3'$-$\\mathrm{OH}$ 上。原料四种 $\\mathrm{NTP}$，辅基 $\\mathrm{Mg}^{2+}$，$\\mathrm{A}$ 对 $\\mathrm{U}$。\n\n**2. 全酶与核心酶**\n- 六聚体 $450\\,\\mathrm{kD}$：$\\alpha_2\\beta\\beta'\\omega\\sigma$。$\\beta$ 催化，$\\beta'$ 开链结合模板，$\\omega$ 稳定 $\\beta'$ 并募集 $\\sigma$，$\\sigma$ 辨认起点（最常见 $\\sigma^{70}$）。\n- 起始用全酶；试管中核心酶能聚合但起点不固定。第一个磷酸二酯键后 $\\sigma$ 脱落，只留核心酶延长；不脱落则停在起点。$\\sigma$ 偏少可循环（$4\\,000:2\\,000:2\\,000:600$ 是细胞内分子数之比）。\n- 流产式起始：$<10\\,\\mathrm{nt}$ 释放，启动子校对；$>10\\,\\mathrm{nt}$ 启动子清除。不是 $\\rho$ 终止。\n\n**3. 启动子与开链**\n- 保护法留下上游 $40\\sim 60\\,\\mathrm{bp}$。$-35\\,\\mathrm{TTGACA}$ 识别（松），$-10\\,\\mathrm{TATAAT}$ Pribnow 牢固；$16\\sim 18$ 与 $6$ 或 $7$ 不要安错。不是真核 TATA。\n- 闭合：已结合、双链完整。开放：近 $-10$ 解开约 $17\\,\\mathrm{bp}$。第一位常见 $\\mathrm{GTP}/\\mathrm{ATP}$，产物 $5'$-$\\mathrm{pppGpN}$-$\\mathrm{OH}$-$3'$。\n\n**4. 延长与同步**\n- 转录泡：覆盖 $>40\\,\\mathrm{bp}$，开链 $\\sim 17\\,\\mathrm{bp}$，杂合 $8\\,\\mathrm{bp}$。$\\mathrm{G}\\equiv\\mathrm{C}>\\mathrm{A}=\\mathrm{T}>\\mathrm{A}=\\mathrm{U}$，$\\mathrm{RNA}$ 的 $5'$ 端伸到泡外。\n- 原核转录翻译同步，羽毛状：多个转录复合体 $+$ 多聚核糖体。真核有核膜，不能搬。\n\n**5. 终止**\n- 部分依赖 $\\rho$：六聚体，亚基 $46\\,\\mathrm{kD}$，认产物 $\\mathrm{RNA}$ 上富 $\\mathrm{C}$，解旋酶拆杂合体，$+\\mathrm{ATP}$。$1969$ Roberts，$\\mathrm{T4}$ 体外产物偏长。\n- 多数非依赖 $\\rho$：产物茎环（富 $\\mathrm{GC}$）$+$ 多聚 $\\mathrm{U}$；茎环在 $\\mathrm{RNA}$ 上。$\\rho\\neq\\sigma$。",
+      "hint": "按选择性／不需引物 → 全酶对核心酶 → $-35/-10$ → 泡与同步 → 两类终止写，点名 $17\\,\\mathrm{bp}$ 和茎环 $+$ 多聚 $\\mathrm{U}$。",
+      "scoring_criteria": [
+        "写出选择性（模板链／编码链）和不需引物、原料 NTP（3分）",
+        "写出全酶／核心酶、σ 脱落与循环、流产 <10 nt（3分）",
+        "写出 -35 TTGACA（松）／-10 TATAAT（牢）、闭合→开放约 17 bp（3分）",
+        "写出转录泡三个长度、原核同步翻译（2分）",
+        "写出 ρ 依赖（认 RNA 上的 C）与非依赖（茎环+多聚 U），多数走后者（3分）"
+      ],
+      "explanation": "本题把第 15-1、15-2 节收成“选择性—全酶—启动子—泡—终止”。易错点：两股都出 mRNA；起始用核心酶；ρ 当成 σ；Pribnow 答成真核 TATA。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-2.md",
+        "label": "选择性；全酶／核心酶；-10/-35；ρ vs 茎环+U"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "真核 $\\mathrm{mRNA}$ 怎样从启动子走到降解，非编码 $\\mathrm{RNA}$ 怎样分户？请写出：①真核酶不直接绑模板；三种 $\\mathrm{RNA}\\,\\mathrm{pol}$（$5\\mathrm{S}$ 不进 $45\\mathrm{S}$），$\\mathrm{CTD}$ 仅 $\\mathrm{pol}\\,\\mathrm{II}$；$\\mathrm{PIC}$ 装配（$\\mathrm{TBP}\\neq\\mathrm{TF}\\,\\mathrm{II}\\mathrm{D}$，$\\mathrm{A}$ 非必需，$\\mathrm{H}$ 与 $\\mathrm{CDK9}$ 磷酸 $\\mathrm{CTD}$）；延长不与翻译同步。②帽（$5'$，$5'$-三磷酸，加帽酶绑 $\\mathrm{CTD}$）、$\\mathrm{poly}(\\mathrm{A})$（先切后加，组蛋白例外，$\\mathrm{AATAAA}/\\mathrm{AAUAAA}$ 分链）、两次转酯（不耗能，$\\mathrm{U6}$ 催化，装配耗 $\\mathrm{ATP}$）、$\\mathrm{ApoB}$ 编辑（$\\mathrm{CAA}\\rightarrow\\mathrm{UAA}$，不是可变剪接）、降解主路（脱腺苷酸化为前提）与 $\\mathrm{NMD}$（$\\mathrm{PTC}+$ 残留 $\\mathrm{EJC}\\rightarrow\\mathrm{UPF}\\rightarrow\\mathrm{Dcp}1\\mathrm{a}/\\mathrm{Xrn}1$）。③$45\\mathrm{S}$ 剪切；酵母 $\\mathrm{tRNA}^{\\mathrm{Tyr}}$（$\\mathrm{RNase}\\,\\mathrm{P}$ 核酶 vs $\\mathrm{TSEN}$ 蛋白质）；四类内含子；$\\mathrm{siRNA}$ 完全互补、$\\mathrm{miRNA}$ 不完全互补、$\\mathrm{piRNA}$ 乒乓循环。",
+      "answer": "参考答案：\n\n**1. 三种酶与 PIC**\n- 真核 $\\mathrm{RNA}\\,\\mathrm{pol}$ 不直接结合模板，需转录因子。$\\mathrm{pol}\\,\\mathrm{I}$：核仁，$45\\mathrm{S}\\rightarrow 18\\mathrm{S}$、$5.8\\mathrm{S}$、$28\\mathrm{S}$。$\\mathrm{pol}\\,\\mathrm{II}$：前体 $\\mathrm{mRNA}$、$\\mathrm{lncRNA}$、$\\mathrm{miRNA}$、$\\mathrm{piRNA}$，最活跃，鹅膏蕈碱极敏感。$\\mathrm{pol}\\,\\mathrm{III}$：核仁外，$\\mathrm{tRNA}$、$5\\mathrm{S}\\,\\mathrm{rRNA}$、$\\mathrm{snRNA}$。$5\\mathrm{S}$ 不进 $45\\mathrm{S}$。\n- $\\mathrm{CTD}$ 仅 $\\mathrm{pol}\\,\\mathrm{II}$：七肽 $\\mathrm{Tyr}$-$\\mathrm{Ser}$-$\\mathrm{Pro}$-$\\mathrm{Thr}$-$\\mathrm{Ser}$-$\\mathrm{Pro}$-$\\mathrm{Ser}$；酵母 $27$，哺乳动物 $52$。\n- 核心启动子至 $-37\\,\\mathrm{bp}$；$\\mathrm{TATA}=$ Hognest，管家基因可无。$\\mathrm{TF}\\,\\mathrm{II}\\mathrm{D}=\\mathrm{TBP}+8\\sim 10\\,\\mathrm{TAF}$。$\\mathrm{PIC}$：$\\mathrm{TBP}$ → $\\mathrm{B}$（$\\mathrm{A}$ 非必需）→ $\\mathrm{pol}\\,\\mathrm{II}\\cdot\\mathrm{F}$ → $\\mathrm{E}+\\mathrm{H}$；$\\mathrm{H}$ 解旋并磷酸 $\\mathrm{CTD}$，$\\mathrm{CDK9}$（$\\mathrm{P}$-$\\mathrm{TEFb}$）也磷酸 $\\mathrm{CTD}$；约 $30\\,\\mathrm{nt}$ 后 $\\mathrm{E}/\\mathrm{H}$ 离开，$\\mathrm{F}$ 留下。延长有核膜，不与翻译同步（体外核小体移位，体内乙酰化推论一时性解聚）。\n\n**2. 加工与降解**\n- 帽：$25\\sim 30\\,\\mathrm{nt}$ 时 $5'$，$5'$-三磷酸连 $7$-甲基 $\\mathrm{G}$；加帽酶绑 $\\mathrm{CTD}$（磷酸酶 $+$ 鸟苷酸转移酶）；$\\mathrm{SAM}$ 供甲基，两台甲基转移酶。\n- $\\mathrm{poly}(\\mathrm{A})$：先切后加；$\\mathrm{DNA}$ 上 $\\mathrm{AATAAA}+\\mathrm{GT}$，$\\mathrm{RNA}$ 上 $\\mathrm{AAUAAA}$；组蛋白无尾；$\\mathrm{CPSF}$ $360\\,\\mathrm{kD}$ $4$ 条多肽；前约 $12$ 个 $\\mathrm{A}$ 慢，$\\mathrm{PABP}$ Ⅱ 加速并叫停。\n- 剪接：接口 $5'$-$\\mathrm{GU}\\cdots\\mathrm{AG}$；两次转酯不耗能；装配耗 $\\mathrm{ATP}$；$\\mathrm{U6}$ 催化。可变剪接（Ig 重链、果蝇肌球蛋白、$\\mathrm{CGRP}$）与编辑分户。\n- $\\mathrm{ApoB}$：一个基因；小肠 $\\mathrm{CAA}\\rightarrow\\mathrm{UAA}$，$\\mathrm{apoB}100$（$4\\,536$）vs $\\mathrm{apoB}48$（$2\\,152$）。$\\mathrm{GluR}$：$\\mathrm{A}\\rightarrow\\mathrm{G}$ 不过 $\\mathrm{Ca}^{2+}$。\n- 降解：封闭环保护；主路脱腺苷酸化是脱帽前提。$\\mathrm{NMD}$：$\\mathrm{PTC}+$ 残留 $\\mathrm{EJC}$ → $\\mathrm{UPF}3$／$\\mathrm{UPF}1$-P → $\\mathrm{Dcp}1\\mathrm{a}$、$\\mathrm{Xrn}1$；许多遗传病与 $\\mathrm{PTC}$ 有关。错误剪接例：某些类型地中海贫血。\n\n**3. 非编码 RNA**\n- 组成性 vs 调控性。$45\\mathrm{S}$ 经 $\\mathrm{snoRNP}$ 修饰后剪切；间隔不是内含子。\n- 酵母 $\\mathrm{tRNA}^{\\mathrm{Tyr}}$：$\\mathrm{RNase}\\,\\mathrm{P}$（核酶）切 $16\\,\\mathrm{nt}$ 前导；$\\mathrm{RNase}\\,\\mathrm{Z}$ 切 $2$ 个 $\\mathrm{U}$ 再加 $\\mathrm{CCA}$；$\\mathrm{TSEN}$＋连接酶切反密码子环 $14\\,\\mathrm{nt}$ 内含子。\n- 四类内含子：组Ⅰ（游离 $\\mathrm{G}$，线状）、组Ⅱ（套索、无剪接体）、剪接体、$\\mathrm{tRNA}$。体外自剪接不需蛋白质酶，体内需蛋白质帮助折叠。原核 $\\mathrm{mRNA}$ 无内含子、无帽、无 $\\mathrm{poly}(\\mathrm{A})$。\n- $\\mathrm{siRNA}$ $21\\sim 23\\,\\mathrm{nt}$ 完全互补降解；$\\mathrm{miRNA}$ $20\\sim 24\\,\\mathrm{nt}$ 不完全互补；$\\mathrm{piRNA}$ $24\\sim 31\\,\\mathrm{nt}$ 乒乓循环，不走 $\\mathrm{Dicer}$。",
+      "hint": "按三种酶／PIC → 帽／尾／剪接／编辑／NMD → 45S、tRNA、四类内含子、三种小 RNA 写。",
+      "scoring_criteria": [
+        "写出不直接结合、三种 pol（5S 不进 45S）、CTD 仅 pol II、PIC 要点（4分）",
+        "写出帽 5′,5′、poly(A) 先切后加（组蛋白例外）、两次转酯不耗能／U6 催化（4分）",
+        "写出 ApoB 编辑（CAA→UAA，非可变剪接）、脱腺苷酸化主路与 NMD（EJC／UPF／Dcp1a）（4分）",
+        "写出 45S／tRNA 加工分户、四类内含子、siRNA 完全互补 vs miRNA 不完全互补 vs piRNA 乒乓循环（3分）"
+      ],
+      "explanation": "本题把第 15-3、15-4 节收成“酶与 PIC—mRNA 加工降解—非编码分户”。易错点：σ 认真核 TATA；帽写成 3′,5′；转酯耗 ATP；ApoB 答成可变剪接；NMD 并进主路脱腺苷酸化；45S 含 5S。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch15-3.md",
+        "label": "三种 pol 与 PIC；帽／polyA／剪接／编辑／NMD；45S 与小 RNA"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

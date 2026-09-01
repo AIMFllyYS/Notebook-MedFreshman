@@ -1,0 +1,322 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch19",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch19-1.md；content/biochemistry/textbook/ch19-2.md；content/biochemistry/textbook/ch19-3.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{DNA}$ 重组与重组 $\\mathrm{DNA}$ 技术、纵向／横向转移以及接合／转化／转导，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{DNA}$ 重组就是用限制酶切、用连接酶连、转化进大肠埃希菌；同源、位点特异、转座只发生在体外；纵向转移是细菌之间接触传质粒；接合、转化、转导是真核普遍机制；横向转移不包括细胞器之间",
+        "$\\mathrm{DNA}$ 重组是 $\\mathrm{DNA}$ 分子内或分子间遗传信息的重新共价组合，本版类型是同源重组、位点特异性重组和转座重组，发生在细胞内、自然界。重组 $\\mathrm{DNA}$ 技术是通过体外操作把不同来源的两个或两个以上 $\\mathrm{DNA}$ 分子连起来，再在适当细胞中扩增形成新的功能分子（又名分子克隆、$\\mathrm{DNA}$ 克隆或基因工程）。基因纵向转移走亲代到子代（繁殖）；横向（水平）转移以直接接触、主动摄取或病毒感染在个体间、细胞间、细胞内不同细胞器间传递。同源、位点特异、转座：原核和真核均可发生。接合、转化、转导通常发生在原核细胞（「通常」不要改成「只」）。接合要细胞接触或桥样连接；转化是受体主动摄取；转导是噬菌体携带",
+        "第一节的转化和第二节把重组质粒导入感受态大肠埃希菌是同一本账，都叫自然界摄取",
+        "看见“$\\mathrm{DNA}$ 重组”应先默写 $\\mathrm{pUC}18$ 图谱和蓝白筛选"
+      ],
+      "answer": 1,
+      "hint": "$\\mathrm{DNA}$ 重组≠重组 $\\mathrm{DNA}$ 技术；纵向亲子、横向含细胞器；接合／转化／转导通常原核。",
+      "explanation": "**B 正确。** 两户分清、纵向／横向、前三种原核真核均可、后三种通常原核，都来自 ch19-1。\n\n**干扰项辨析**：\n- A：把自然界重组答成体外克隆；纵向横向写反；后三种不是真核普遍；横向含细胞器之间。\n- C：第一节转化是自然界敏化摄取，第二节转化是人工感受态导入重组分子。\n- D：限制酶和质粒是第二节的账。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-1.md",
+        "label": "DNA 重组≠重组 DNA 技术 · 纵向 vs 横向 · 接合转化转导通常原核"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 Holliday 模型、水平／垂直分离以及 $\\mathrm{BRCA1}/\\mathrm{BRCA2}$，下列叙述正确的是（　）。",
+      "options": [
+        "同源重组必须有 $\\mathrm{att}$ 位点；Holliday 连接本身就是已经切开的重组体；水平分离得拼接重组体，垂直分离得片段重组体；$\\mathrm{BRCA1}/\\mathrm{BRCA2}$ 是癌基因、促进增殖所以致癌；基因打靶是限制酶进细胞核把基因剪掉；$\\mathrm{Chi}$ 一切 RecBCD 重组就完成",
+        "同源重组不需要特异 $\\mathrm{DNA}$ 序列，依赖两分子之间序列的相同或相似性。Holliday 模型（$1964$）四步：对齐 $\\rightarrow$ 一条链断开并与对应链连接成十字形 Holliday 连接 $\\rightarrow$ 分支移动产生异源双链（Holliday 中间体） $\\rightarrow$ 切开并修复成两个双链重组体。水平分离：切开的链与原来断裂的是同一条链，得片段重组体（patch，两侧同一亲本）。垂直分离：切开的链并非原来断裂的链，得拼接重组体（splice，两侧不同亲本）。抑癌基因 $brca1$、$brca2$ 编码的 $\\mathrm{BRCA1}$、$\\mathrm{BRCA2}$ 与同源重组有关；缺乏则同源重组率减少、对电离辐射敏感性增加、易于患乳腺癌和卵巢癌。基因打靶（敲除／敲入）利用同源重组原理。细菌例子：$\\mathrm{RecBCD}$ 在 $\\mathrm{Chi}$（$5'$-$\\mathrm{GCTGGTGG}$-$3'$）下游切出 $3'$ 单链，$\\mathrm{RecA}$ 做链侵入，$\\mathrm{RuvC}$ 切 Holliday 连接点",
+        "Holliday 中间体只出现在同源重组，位点特异性重组绝不经过十字形结构",
+        "缺乏 $\\mathrm{BRCA}$ 使同源重组率升高，因此对辐射更耐受、不易患癌"
+      ],
+      "answer": 1,
+      "hint": "水平＝片段重组体，垂直＝拼接重组体；$\\mathrm{BRCA}$ 是抑癌基因，缺乏则辐射敏感、易乳腺癌卵巢癌。",
+      "explanation": "**B 正确。** 四步、水平／垂直、BRCA、RecBCD／Chi／RecA／RuvC，都来自 ch19-1。\n\n**干扰项辨析**：\n- A：同源不需特异短序列；连接≠重组体；水平／垂直对调；$\\mathrm{BRCA}$ 不是癌基因；打靶不是限制酶进核；$\\mathrm{Chi}$ 切一次≠完成。\n- C：位点特异性重组课文明确写了形成 Holliday 中间体。\n- D：缺乏后重组率下降、辐射敏感、易癌。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-1.md",
+        "label": "Holliday 四步 · 水平片段 vs 垂直拼接 · BRCA1/2 · Chi 5′-GCTGGTGG-3′"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于位点特异性重组、沙门菌鞭毛相转变以及转座，下列叙述正确的是（　）。",
+      "options": [
+        "位点特异与同源重组因为都经过 Holliday 中间体所以是同一种；$\\lambda$ 的 $\\mathrm{Xis}$ 管整合、$\\mathrm{Int}$ 管切除；鞭毛相倒位的是两端 $14\\,\\mathrm{bp}$ 的整段；$\\mathrm{V}$-(D)-$\\mathrm{J}$ 是同源重组或转座；$\\mathrm{Tn}$ 就是一段 $\\mathrm{IS}$；$\\mathrm{Tn}10$ 两个 $\\mathrm{IS}10$ 都能编码有功能的转座酶",
+        "位点特异性重组只限于特定短序列，也称保守的位点特异性重组；$\\mathrm{SSR}$ 认位点使 $\\mathrm{DNA}$ 断裂，可经过 Holliday 中间体完成整合、切除或倒位。差别在「认不认特定短位点」，不在「有没有十字」。$\\lambda$：$\\mathrm{attP}$（噬菌体）对 $\\mathrm{attB}$（细菌），核心 $15\\,\\mathrm{bp}$ 相同；整合用 $\\mathrm{Int}+\\mathrm{IHF}$，切除有 $\\mathrm{Xis}$ 参与。沙门菌鞭毛相转变：倒位的是 $995\\,\\mathrm{bp}$ 的 $\\mathrm{H}$ 片段，两端 $14\\,\\mathrm{bp}$ 反向 $\\mathit{hix}$；$\\mathit{hin}$ 编码倒转酶，$\\mathrm{Fis}$ 促弯曲；$\\mathrm{H2}$ 开时 $\\mathit{rH1}$ 同时开从而阻遏 $\\mathrm{H1}$。免疫球蛋白和 $\\mathrm{T}$ 细胞受体的 $\\mathrm{V}$-(D)-$\\mathrm{J}$ 重排利用位点特异性重组。转座由 $\\mathrm{IS}$ 或 $\\mathrm{Tn}$ 介导。$\\mathrm{IS}$ 两端 $\\mathrm{IR}$（$9\\sim 41\\,\\mathrm{bp}$）、中间转座酶；保守性转座是搬家，复制性转座原位仍留一份。$\\mathrm{Tn}$ 一般是复合型，中心区常带抗性基因。图19-7：$\\mathrm{Tn}3$ 含 $\\beta$-内酰胺酶；$\\mathrm{Tn}10$ 有功能的转座酶只来自其中一个 $\\mathrm{IS}10$，四环素抗性是 $\\mathit{tetA}$、$\\mathit{tetR}$",
+        "$995\\,\\mathrm{bp}$ 是 $\\mathit{hix}$ 识别位点长度，$14\\,\\mathrm{bp}$ 才是整段倒位长度",
+        "倒位后 $\\mathrm{H1}$、$\\mathrm{H2}$ 基因从基因组丢失，所以叫相转变"
+      ],
+      "answer": 1,
+      "hint": "$\\mathrm{attP}/\\mathrm{attB}$ 核心 $15\\,\\mathrm{bp}$；倒位 $995\\,\\mathrm{bp}$、两端 $14\\,\\mathrm{bp}$ $\\mathit{hix}$；$\\mathrm{Tn}\\neq$ 只有 $\\mathrm{IS}$。",
+      "explanation": "**B 正确。** 位点特异、$\\lambda$、鞭毛相、$\\mathrm{V}$-(D)-$\\mathrm{J}$、$\\mathrm{IS}/\\mathrm{Tn}$，都来自 ch19-1。\n\n**干扰项辨析**：\n- A：两类重组不要并；$\\mathrm{Int}/\\mathrm{Xis}$ 对调；$14\\,\\mathrm{bp}$ 不是整段倒位；$\\mathrm{V}$-(D)-$\\mathrm{J}$ 不是同源或转座；$\\mathrm{Tn}$ 一般是复合型；$\\mathrm{Tn}10$ 只有一个有功能转座酶。\n- C：$995$ 与 $14$ 对调。\n- D：倒位是表达调节，基因还在基因组里。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-1.md",
+        "label": "位点特异 · λ attP/attB 15bp · 995 bp 鞭毛相 · IS vs Tn"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于本版 $\\mathrm{CRISPR}/\\mathrm{Cas}$ 的分布、$\\mathrm{PAM}$ 以及治疗表述，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{CRISPR}$ 存在于 $90\\%$ 细菌和 $40\\%$ 古细菌；间隔序列来自宿主自己的基因组；新片段随机插在阵列中间；没有 $\\mathrm{PAM}$ 也能只靠引导序列互补找到靶；遗传性视网膜营养不良、杜氏肌萎缩症、$\\beta$-地中海贫血已被 $\\mathrm{CRISPR}$ 常规治愈；$\\mathrm{CRISPR}$ 是真核普遍机制",
+        "$\\mathrm{CRISPR}/\\mathrm{Cas}$ 先是原核生物抵抗噬菌体或质粒入侵的获得性免疫，后才被转化为基因编辑工具。$\\mathrm{CRISPR}$ 座：间隔序列来自外源 $\\mathrm{DNA}$，重复序列来自宿主，阵列与 $\\mathrm{Cas}$ 基因相邻。本版：存在于已测序的 $40\\%$ 细菌基因组和 $90\\%$ 古细菌基因组中（百分比以本版为准，不要对调或改综述）。新间隔序列由 $\\mathrm{Cas}1$-$\\mathrm{Cas}2$ 插到阵列第一个位点。按 $\\mathrm{Cas}$ 功能分Ⅰ／Ⅱ／Ⅲ型，应用最多的是Ⅱ型 $\\mathrm{CRISPR}/\\mathrm{Cas}9$。$\\mathrm{PAM}$（紧邻原间隔序列基序）位于 $\\mathrm{Cas}9$ 切割的靶序列下游，图19-11 常用 $\\mathrm{PAM}$ 为 $5'$-$\\mathrm{NGG}$-$3'$。工程上把 $\\mathrm{gRNA}$ 与 $\\mathrm{tracrRNA}$ 融合成 $\\mathrm{sgRNA}$，切割后细胞走 $\\mathrm{NHEJ}$ 等修复。基于 $\\mathrm{CRISPR}$ 的遗传性视网膜营养不良、杜氏肌萎缩症、$\\beta$-地中海贫血治疗「正在谨慎地推进」，不是已经常规治愈",
+        "图19-10 获得性免疫和图19-11 基因组工程是同一张图，都从 $\\mathrm{sgRNA}$ 画起",
+        "$40\\%$ 和 $90\\%$ 可以改成近年文献里的新统计，因为教材鼓励用最新综述"
+      ],
+      "answer": 1,
+      "hint": "细菌 $40\\%$、古细菌 $90\\%$；$\\mathrm{PAM}$ 在靶下游；治疗写「谨慎推进」。",
+      "explanation": "**B 正确。** 分布百分比、$\\mathrm{PAM}$、$\\mathrm{sgRNA}$、谨慎推进，都按 ch19-1 本版原文。\n\n**干扰项辨析**：\n- A：$40\\%/90\\%$ 对调；间隔序列是外源的；插在第一位；需要 $\\mathrm{PAM}$；不是已经治愈；不是真核普遍。\n- C：图19-10 电子版缺失，是免疫路径；图19-11 是工程路径，不要并图。\n- D：百分比以本版为准。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-1.md",
+        "label": "CRISPR 40%/90% · PAM 5′-NGG-3′ · sgRNA · 谨慎推进"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于限制修饰体系、Ⅱ型限制酶、黏端／平端以及同尾／同切点酶，下列叙述正确的是（　）。",
+      "options": [
+        "限制酶连自身 $\\mathrm{DNA}$ 一起切，不需要甲基化酶；重组操作里的限制酶通常指Ⅰ型，且需要 $\\mathrm{ATP}$；$\\mathrm{EcoR}\\,\\mathrm{I}$ 的罗马数字Ⅰ表示这是Ⅰ型酶；回文是一条链从左读到右等于从右读到左；$\\mathrm{Sma}\\,\\mathrm{I}$ 产生 $5'$ 黏端；同尾酶连上还能被原酶切开；Klenow 具有完整的 $5'\\rightarrow 3'$ 外切",
+        "限制性核酸内切酶与相伴存在的甲基化酶共同构成细菌的限制修饰体系：自身 $\\mathrm{DNA}$ 被甲基化保护、酶对它不起作用，仅切割外源 $\\mathrm{DNA}$。发现的酶有 $6\\,000$ 多种，分成Ⅰ、Ⅱ、Ⅲ型；重组 $\\mathrm{DNA}$ 技术中通常指Ⅱ型——不需要 $\\mathrm{ATP}$，切点在识别序列内部（或由其决定的特异位点）。$\\mathrm{EcoR}\\,\\mathrm{I}$ 的「Ⅰ」是该菌株里第一种被分出来的酶，不是「Ⅰ型酶」。回文：两条链都按 $5'\\rightarrow 3'$ 读序列完全一致（$\\mathrm{EcoR}\\,\\mathrm{I}$ 两条链从 $5'$ 读都是 $\\mathrm{GAATTC}$）。表19-2：$\\mathrm{EcoR}\\,\\mathrm{I}$、$\\mathrm{BamH}\\,\\mathrm{I}$ 为 $5'$ 黏端，$\\mathrm{Pst}\\,\\mathrm{I}$、$\\mathrm{Apa}\\,\\mathrm{I}$ 为 $3'$ 黏端，$\\mathrm{Sma}\\,\\mathrm{I}$ 为平端。同尾酶识别序列不完全相同但产生相同黏端（配伍末端，如 $\\mathrm{BamH}\\,\\mathrm{I}$ 与 $\\mathrm{Bgl}\\,\\mathrm{II}$），连上后通常两个酶都不认；同切点酶识别同一序列、切点可相同或不同。Klenow 缺乏 $5'\\rightarrow 3'$ 外切，缺口平移用全酶",
+        "多聚核苷酸激酶拆掉 $5'$ 磷酸，碱性磷酸酶给 $5'$-$\\mathrm{OH}$ 磷酸化",
+        "同尾酶问的是「认的是不是同一段」，同切点酶问的是「能不能连」"
+      ],
+      "answer": 1,
+      "hint": "限制酶＋甲基化酶＝限制修饰体系；通常指Ⅱ型；同尾能连、同切点认同一序列。",
+      "explanation": "**B 正确。** 限制修饰体系、Ⅱ型、$\\mathrm{EcoR}\\,\\mathrm{I}$ 命名、黏／平端、同尾／同切点、Klenow，都来自 ch19-2。\n\n**干扰项辨析**：\n- A：漏甲基化酶；通常指Ⅱ型且不需 $\\mathrm{ATP}$；罗马数字是发现顺序；回文落在两条链；$\\mathrm{Sma}\\,\\mathrm{I}$ 是平端；同尾连上通常不能再被原酶切；Klenow 缺 $5'\\rightarrow 3'$ 外切。\n- C：激酶加磷酸、碱性磷酸酶拆磷酸。\n- D：问能不能连看同尾酶；问认不认同一段看同切点酶。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-2.md",
+        "label": "限制修饰体系 · Ⅱ型 · 黏端/平端 · 同尾 vs 同切点 · Klenow 缺 5′→3′ 外切"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于克隆载体、$\\mathrm{pUC}18$、原核表达框架以及图19-15／16，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{pUC}18$ 同时有 $\\mathit{amp}^{\\mathrm{R}}$ 和 $\\mathit{tet}^{\\mathrm{R}}$，用来做双抗插入失活；原核表达框架没有 $\\mathrm{SD}$，图19-14 最右侧 $\\mathit{amp}^{\\mathrm{R}}$ 就是目的蛋白；所有真核表达载体都必须有整合序列；图19-15、图19-16 电子版缺失就应删掉图号；表19-3 与正文柯斯／$\\mathrm{BAC}$／$\\mathrm{YAC}$ 容量必须擅自统一成一组",
+        "克隆载体三条：至少一个复制起点、至少一个选择标志、有 $\\mathrm{MCS}$。$\\mathrm{pUC}18$：全长 $2\\,690\\,\\mathrm{bp}$，复制起点 $\\mathrm{ori}$、氨苄西林抗性 $\\mathit{amp}^{\\mathrm{R}}$、多克隆位点 $\\mathrm{MCS}$（图19-12 从 $\\mathrm{Hind}\\,\\mathrm{III}$ 到 $\\mathrm{EcoR}\\,\\mathrm{I}$），没有 $\\mathit{tet}^{\\mathrm{R}}$。原核表达载体再加启动子、$\\mathrm{SD}$ 序列、转录终止等。图19-14 框架从左到右：$\\mathrm{R}$（调节序列）-$\\mathrm{P}$（启动子）-$\\mathrm{SD}$-编码序列-$\\mathrm{TT}$-抗性；$\\mathit{amp}^{\\mathrm{R}}$ 是筛选标志，不是目的蛋白。真核表达载体另保留原核骨架，并提供真核启动子、增强子、转录终止、$\\mathrm{poly}(\\mathrm{A})$ 加尾等；不是所有真核表达载体都有整合序列。图19-15（真核表达载体）和图19-16（质粒克隆全过程）电子版为 $0$ 字节，不嵌入 $\\mathrm{src}$，正文仍保留图号。表19-3 与正文容量数字不同，两处都是本版原文，答题看题干引用的是表还是定义段",
+        "载体不必能自主复制，任何线性外源 $\\mathrm{DNA}$ 进细胞都会按质粒那样扩增",
+        "图19-17 黏－平端连接就是图19-16 的五步总流程"
+      ],
+      "answer": 1,
+      "hint": "$\\mathrm{pUC}18$ 只有 $\\mathit{amp}^{\\mathrm{R}}$；框架 $\\mathrm{R}$-$\\mathrm{P}$-$\\mathrm{SD}$-编码-$\\mathrm{TT}$-抗性；图19-15／16 缺失仍保留图号。",
+      "explanation": "**B 正确。** $\\mathrm{pUC}18$ 三件套、图19-14 框架、图19-15／16 保留图号，都来自 ch19-2。\n\n**干扰项辨析**：\n- A：$\\mathrm{pUC}18$ 不是双抗；框架有 $\\mathrm{SD}$，$\\mathit{amp}^{\\mathrm{R}}$ 不是目的蛋白；真核不必都有整合序列；缺失不删图号；容量不要擅自统一。\n- C：载体定义第一句是能够自主复制。\n- D：图19-17 只覆盖「连」这一步。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-2.md",
+        "label": "pUC18 ori/ampR/MCS · 图19-14 R-P-SD-编码-TT-抗性 · 图19-15/16 保留图号"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于蓝白筛选、插入失活、核酸杂交以及克隆连接，下列叙述正确的是（　）。",
+      "options": [
+        "有插入就蓝、空载体白；$\\alpha$ 或 $\\omega$ 单独就有酶活性；抗性平板上长出来的就是重组体；$\\mathrm{pUC}18$ 插入 $\\mathit{tet}^{\\mathrm{R}}$ 后 $\\mathrm{Amp}$ 主平板有、$\\mathrm{Tet}$ 平板无；菌落杂交认的是 $\\mathrm{X}$-gal 颜色；亲和筛选的靶仍是 $\\mathrm{DNA}$；图19-17 黏－平端在 $37^{\\circ}\\mathrm{C}$ 连接；相同黏端定向且绝不自连",
+        "蓝白（$\\alpha$ 互补）：宿主只提供 $\\omega$ 片段，载体提供 $\\alpha$ 片段（$\\mathrm{N}$-端 $146$ 残基），单独都没有酶活性；空载体在含 $\\mathrm{X}$-gal 和 $\\mathrm{IPTG}$ 的平板上为**蓝色**，插入干扰 $LacZ$ 为**白色**（图19-13）。抗生素抗性只证明至少有载体，空载体也长。插入失活以 $\\mathrm{pBR}322$ 为例：目的 $\\mathrm{DNA}$ 插入 $\\mathit{tet}^{\\mathrm{R}}$ 后，$\\mathit{amp}^{\\mathrm{R}}$ 仍在，$\\mathit{tet}^{\\mathrm{R}}$ 失活，含重组 $\\mathrm{DNA}$ 的细胞在氨苄西林培养基能长、四环素培养基不能长（图19-18，$\\mathrm{Amp}$ 主平板对 $\\mathrm{Tet}$ 影印）。菌落或噬斑核酸原位杂交认序列互补（图19-19），不是颜色也不是抗性。亲和筛选靶分子换成蛋白质，探针换成抗体／配体。蓝白 $\\neq$ 插入失活 $\\neq$ 核酸杂交。克隆五步：分、选、连、转、筛。黏－平端连接是定向克隆，效率居中，图19-17 为 $\\mathrm{T}4$ $\\mathrm{DNA}$ 连接酶、$15^{\\circ}\\mathrm{C}$。单一相同黏端可自连、反向、多拷贝，碱性磷酸酶预处理载体可减少自连",
+        "$\\lambda$ 空载体因为太短反而更容易包装成噬斑，有插入反而不能包装",
+        "酵母导入质粒称作转染；裸噬菌体 $\\mathrm{DNA}$ 进细菌称作感染"
+      ],
+      "answer": 1,
+      "hint": "空载体蓝、插入白；$\\mathrm{pBR}322$ 才是 Amp 抗 Tet 敏；黏－平端 $15^{\\circ}\\mathrm{C}$。",
+      "explanation": "**B 正确。** 三户筛选、五步、$15^{\\circ}\\mathrm{C}$，都按第二节。\n\n**干扰项辨析**：\n- A：蓝白写反；$\\alpha/\\omega$ 单独无活性；抗性≠重组体；$\\mathrm{pUC}18$ 无 $\\mathit{tet}^{\\mathrm{R}}$；杂交不是颜色；亲和筛蛋白质；温度不是 $37^{\\circ}\\mathrm{C}$；相同黏端会自连。\n- C：$\\lambda$ 包装窗口是野生型长度的 $75\\%\\sim 105\\%$，空载体太短不能包装。\n- D：酵母走转化；裸噬菌体 $\\mathrm{DNA}$ 进细菌叫转染，包装成颗粒才叫感染。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-2.md",
+        "label": "蓝白空蓝插白 · pBR322 插入失活 · 图19-19 杂交 · 黏-平端 15℃ · 五步"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于文库、连接策略、导入术语以及原核／真核表达，下列叙述正确的有（　）。",
+      "options": [
+        "基因组文库装该生物全部遗传信息（含内含子、调控区）；$\\mathrm{cDNA}$ 文库以 $\\mathrm{mRNA}$ 为模板，装该细胞当时全部 $\\mathrm{mRNA}$ 信息，不是基因组缩小版。$\\lambda\\mathrm{gt}$ 插入型适用于 $\\mathrm{cDNA}$ 克隆，$\\mathrm{EMBL}$ 置换型适用于基因组 $\\mathrm{DNA}$ 克隆。要在大肠埃希菌表达真核可读框，走 $\\mathrm{cDNA}$，因为原核缺乏转录后加工、不宜表达带内含子的基因组基因",
+        "黏端连接效率高；不同黏端可做定向克隆；平端效率低；黏－平端效率居中且可定向，图19-17 为 $15^{\\circ}\\mathrm{C}$。单一相同黏端有载体自连、双向插入、多拷贝，碱性磷酸酶去磷酸化可减少自连。$\\mathrm{T}$-$\\mathrm{A}$ 克隆依赖 $\\mathrm{Taq}$ 产物 $3'$ 端多出的 $\\mathrm{A}$，不是所有 $\\mathrm{PCR}$ 产物都能直接进 $\\mathrm{T}$ 载体",
+        "转化：外源 $\\mathrm{DNA}$ 直接导入细菌、真菌（含质粒进酵母、黏粒进细菌）。转染：直接导入真核细胞（酵母除外）；噬菌体 $\\mathrm{DNA}$ 直接导入细菌也称作转染。感染：病毒颗粒当运载体。大肠埃希菌：快、便宜、高表达，真核蛋白常形成包涵体需复性；真核体系有转录后加工和翻译后修饰，一般不形成包涵体（酵母除外）。融合标签（如 $\\mathrm{GST}$）方便纯化，但即使很小也可能影响折叠，可在标签与目的基因之间加裂解位点去掉标签",
+        "$\\mathrm{cDNA}$ 文库＝基因组文库去掉重复序列；黏－平端在 $37^{\\circ}\\mathrm{C}$ 且不能定向；酵母走转染；大肠埃希菌完全不能表达真核蛋白；真核一律无包涵体、标签越大越好永远不用切"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "文库分户；黏－平端 $15^{\\circ}\\mathrm{C}$ 定向；酵母走转化；包涵体酵母除外。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：基因组文库 vs $\\mathrm{cDNA}$ 文库、$\\lambda\\mathrm{gt}/\\mathrm{EMBL}$，来自 ch19-2。\n- B：三种连接、$15^{\\circ}\\mathrm{C}$、$\\mathrm{T}$-$\\mathrm{A}$，来自 ch19-2。\n- C：转化／转染／感染、原核优缺点、真核酵母除外、标签可切，来自 ch19-2。\n- **D 错**：逐句写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-2.md",
+        "label": "基因组文库 vs cDNA · 黏-平端 15℃ · 转化/转染/感染 · 包涵体酵母除外"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于重组人胰岛素、表19-4／表19-5、$\\mathrm{CAR}$-$\\mathrm{T}$、基因打靶以及本版 $\\mathrm{RNAi}$，下列叙述正确的有（　）。",
+      "options": [
+        "重组 $\\mathrm{DNA}$ 技术用于生物医学有两个优点：①提供传统纯化拿不到的大量物质（如干扰素、组织型纤溶酶原活化因子）；②生产药用蛋白／多肽及疫苗抗原（治疗、诊断、预防）。重组人胰岛素是世界上第一个基因工程产品，表19-4 功能为治疗糖尿病。表19-4 只列本版有的条目，不补药。组织纤溶酶原激活剂溶栓，凝血因子Ⅷ／Ⅸ促凝治血友病。$\\mathrm{VLP}$ 保留免疫原性、缺乏感染性或无核酸。人源化抗体来自人源化的小鼠杂交瘤",
+        "传统基因敲除：目的基因两侧加上待敲除基因的部分序列，进入细胞后靠同源重组替换，不是限制酶进核剪切。条件性打靶：两侧构建 $\\mathrm{Cre}$ 重组酶切割位点。$\\mathrm{CRISPR}/\\mathrm{Cas}9$ 编辑也要先构建含导向 $\\mathrm{crRNA}$ 和 $\\mathrm{Cas}9$ 编码基因的重组载体再导入。单基因缺乏理论上可替代治疗：正常副本进载体，可调控表达。体细胞基因治疗在 X-linked SCID、$\\mathrm{CLL}$、帕金森病为临床研究，不要和表19-5 已获批名单并户。$\\mathrm{CAR}$-$\\mathrm{T}$：$\\mathrm{CD}19$ 对复发／难治大 $\\mathrm{B}$ 细胞淋巴瘤，$\\mathrm{BCMA}$ 对复发／难治多发性骨髓瘤",
+        "$\\mathrm{RNAi}$ 通过 $\\mathrm{siRNA}$ 与靶 $\\mathrm{RNA}$ 结合阻止表达，不改基因组序列。$\\mathrm{siRNA}$ 可化学合成，也可把反向互补序列和 linker 克隆入载体转录小发夹。本版点名三种治疗用 $\\mathrm{siRNA}$：靶向 $\\mathrm{ATTR}$ $\\mathrm{mRNA}$ 治 $\\mathrm{hATTR}$-$\\mathrm{PN}$；靶向 $\\mathrm{HAO}1$ $\\mathrm{mRNA}$ 治 $\\mathrm{PH}1$；靶向 $\\mathrm{PCSK}9$ $\\mathrm{mRNA}$ 治成人原发性高胆固醇血症或混合型血脂异常。酵母双杂交分别克隆 $\\mathrm{DBD}$ 融合和 $\\mathrm{TAD}$ 融合，看融合部分蛋白质互作，不是核酸杂交。遗传修饰猪可望助移植、改造蚊子可望抗疟，都是「可望」",
+        "表19-4 应补教材没有的单抗药名；X-linked SCID、$\\mathrm{CLL}$、帕金森病都已批准上市；$\\mathrm{CD}19$ 对多发性骨髓瘤、$\\mathrm{BCMA}$ 对大 $\\mathrm{B}$ 细胞淋巴瘤；$\\mathrm{RNAi}$ 直接改基因组；酵母双杂交就是菌落核酸杂交；猪和蚊子已经解决器官短缺并消灭疟疾"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "胰岛素是第一号产品；表19-4 不补药；$\\mathrm{CD}19$／$\\mathrm{BCMA}$ 不要对调；本版三种 $\\mathrm{siRNA}$ 不另补。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：两个优点、第一个产品、表19-4、$\\mathrm{VLP}$、人源化抗体，来自 ch19-3。\n- B：打靶、$\\mathrm{Cre}$、$\\mathrm{CRISPR}$ 载体、临床研究 vs 已获批、$\\mathrm{CAR}$-$\\mathrm{T}$ 两靶点，来自 ch19-3。\n- C：本版三种 $\\mathrm{siRNA}$、双杂交、猪／蚊子「可望」，来自 ch19-3。\n- **D 错**：补药、名单并户、靶点对调、$\\mathrm{RNAi}$ 改基因组、双杂交并成核酸杂交、「可望」改成已经解决。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-3.md",
+        "label": "重组人胰岛素第一产品 · 表19-4 不补药 · CAR-T CD19/BCMA · 本版 ATTR/HAO1/PCSK9"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "$\\mathrm{DNA}$ 重组就是重组 $\\mathrm{DNA}$ 技术。Holliday 水平分离得拼接重组体。$\\mathrm{BRCA1}/\\mathrm{BRCA2}$ 是癌基因。$\\mathrm{CRISPR}$ 在细菌 $90\\%$、古细菌 $40\\%$。遗传性视网膜营养不良、杜氏肌萎缩症、$\\beta$-地中海贫血已被 $\\mathrm{CRISPR}$ 常规治愈。接合、转化、转导是真核普遍机制。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：重组两户分开；水平＝片段重组体；$\\mathrm{BRCA}$ 是抑癌基因；细菌 $40\\%$ 古细菌 $90\\%$。",
+      "explanation": "**该命题错误，每一分句都错。** $\\mathrm{DNA}$ 重组是体内共价重排（同源／位点特异／转座），重组 $\\mathrm{DNA}$ 技术是体外连接再扩增。水平分离得片段重组体，垂直分离得拼接重组体。$\\mathrm{BRCA1}/\\mathrm{BRCA2}$ 是抑癌基因，缺乏则同源重组率下降、对电离辐射敏感、易患乳腺癌和卵巢癌。本版 $\\mathrm{CRISPR}$：已测序基因组中细菌 $40\\%$、古细菌 $90\\%$。三种遗传病的 $\\mathrm{CRISPR}$ 治疗「正在谨慎地推进」，不是已经常规治愈。接合、转化、转导通常发生在原核细胞。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-1.md",
+        "label": "重组两户 · 水平片段 · BRCA 抑癌 · CRISPR 40%/90% · 谨慎推进"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "蓝白筛选有插入就蓝。$\\mathrm{pUC}18$ 用 $\\mathit{tet}^{\\mathrm{R}}$ 做插入失活。抗性平板上的菌落自动等于重组体。黏－平端连接在 $37^{\\circ}\\mathrm{C}$。重组人胰岛素不是第一个基因工程产品。表19-4 应补教材没有的药。$\\mathrm{CAR}$-$\\mathrm{T}$ 的 $\\mathrm{CD}19$ 对多发性骨髓瘤。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：空载体蓝、插入白；$\\mathrm{pUC}18$ 只有 $\\mathit{amp}^{\\mathrm{R}}$；黏－平端 $15^{\\circ}\\mathrm{C}$；$\\mathrm{CD}19$ 对大 $\\mathrm{B}$ 细胞淋巴瘤。",
+      "explanation": "**该命题错误，每一分句都错。** 蓝白：空载体蓝、插入白。$\\mathrm{pUC}18$ 只有 $\\mathit{amp}^{\\mathrm{R}}$，插入失活是 $\\mathrm{pBR}322$ 的 $\\mathit{amp}^{\\mathrm{R}}/\\mathit{tet}^{\\mathrm{R}}$。抗性只证明有载体，空载体也长。图19-17 黏－平端为 $15^{\\circ}\\mathrm{C}$。重组人胰岛素是世界上第一个基因工程产品。表19-4 不补药。$\\mathrm{CD}19$ 对复发或难治性大 $\\mathrm{B}$ 细胞淋巴瘤，$\\mathrm{BCMA}$ 才对复发或难治性多发性骨髓瘤。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-2.md",
+        "label": "空载体蓝 · pUC18 无 tetR · 15℃ · 胰岛素第一产品 · CD19≠骨髓瘤"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "本版 $\\mathrm{CRISPR}$ 存在于已测序的 ________ 细菌基因组和 ________ 古细菌基因组中。重组人胰岛素是世界上第 ________ 个基因工程产品。蓝白筛选中空载体菌落为 ________ 色。黏－平端连接（图19-17）所用温度为 ________ $ ^{\\circ}\\mathrm{C}$。",
+      "answer": "40%, 90%, 一, 蓝, 15",
+      "hint": "细菌 $40\\%$、古细菌 $90\\%$ 不要对调；第一号产品是胰岛素；空载体蓝；图19-17 写 $15^{\\circ}\\mathrm{C}$。",
+      "scoring_criteria": [
+        "第一空填“40%”（或“40％”“百分之四十”“40”）（2分）",
+        "第二空填“90%”（或“90％”“百分之九十”“90”）（2分）",
+        "第三空填“一”（或“1”“第一”“第一个”）（2分）",
+        "第四空填“蓝”（或“蓝色”“蓝菌落”）（2分）",
+        "第五空填“15”（或“15℃”“15 °C”）（2分）"
+      ],
+      "explanation": "百分比以本版为准：细菌 $40\\%$、古细菌 $90\\%$，不要对调或改综述。重组人胰岛素是世界上第一个基因工程产品，不是唯一产品。蓝白筛选：空载体蓝、插入白。图19-17 黏－平端连接标 $\\mathrm{T}4$ $\\mathrm{DNA}$ 连接酶、$15^{\\circ}\\mathrm{C}$，对应降低反应温度以提高平端侧连接效率。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-1.md",
+        "label": "40%；90%；第一个；蓝色；15℃"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "自然界的 $\\mathrm{DNA}$ 重组和基因转移怎样分户？请写出：①$\\mathrm{DNA}$ 重组≠重组 $\\mathrm{DNA}$ 技术；纵向 vs 横向（含细胞器之间）；同源／位点特异／转座原核真核均可，接合／转化／转导通常原核。②Holliday 四步；水平分离＝片段重组体、垂直分离＝拼接重组体；$\\mathrm{BRCA1}/\\mathrm{BRCA2}$ 缺陷→辐射敏感、乳腺癌／卵巢癌。③位点特异认短位点（$\\lambda$ $\\mathrm{attP}/\\mathrm{attB}$ 核心 $15\\,\\mathrm{bp}$；沙门菌 $995\\,\\mathrm{bp}$ 倒位、$14\\,\\mathrm{bp}$ $\\mathit{hix}$）；转座由 $\\mathrm{IS}$ 或 $\\mathrm{Tn}$ 介导。④本版 $\\mathrm{CRISPR}$：$40\\%$ 细菌、$90\\%$ 古细菌；$\\mathrm{PAM}$；治疗「谨慎推进」。",
+      "answer": "参考答案：\n\n**1. 两户与两条转移轴**\n- $\\mathrm{DNA}$ 重组：分子内或分子间遗传信息重新共价组合（同源、位点特异、转座），发生在细胞内、自然界。重组 $\\mathrm{DNA}$ 技术：体外把不同来源的两个或两个以上 $\\mathrm{DNA}$ 分子连起来再扩增，交给第二节。\n- 纵向：亲代→子代（繁殖）。横向（水平）：直接接触、主动摄取、病毒感染，含个体间、细胞间、细胞器间。\n- 同源、位点特异、转座：原核真核均可。接合、转化、转导：通常原核。接合要接触；转化是主动摄取；转导是噬菌体携带。\n\n**2. 同源重组**\n- 不需要特异短序列。Holliday $1964$ 四步：对齐→成十字连接→分支移动成异源双链→切开再连。水平分离（切原来那条）得片段重组体；垂直分离（切的不是原来那条）得拼接重组体。连接≠重组体。\n- $\\mathrm{BRCA1}/\\mathrm{BRCA2}$ 是抑癌基因，参与同源重组；缺乏则重组率下降、对电离辐射敏感、易患乳腺癌和卵巢癌。基因打靶利用同源重组。$\\mathrm{Chi}$ 为 $5'$-GCTGGTGG-$3'$。\n\n**3. 位点特异与转座**\n- 位点特异认短位点，也可经 Holliday 中间体。$\\lambda$：$\\mathrm{attP}$ 对 $\\mathrm{attB}$，核心 $15\\,\\mathrm{bp}$；$\\mathrm{Int}+\\mathrm{IHF}$ 整合，$\\mathrm{Xis}$ 参与切除。沙门菌：$995\\,\\mathrm{bp}$ 的 $\\mathrm{H}$ 片段两端 $14\\,\\mathrm{bp}$ $\\mathit{hix}$ 倒位造成鞭毛相转变。$\\mathrm{V}$-(D)-$\\mathrm{J}$ 是位点特异，不是同源或转座。\n- 转座由 $\\mathrm{IS}$ 或 $\\mathrm{Tn}$ 介导。$\\mathrm{IS}$：两端 $\\mathrm{IR}$、中间转座酶；保守性搬家，复制性原位仍留一份。$\\mathrm{Tn}$ 一般是复合型，常带抗性（$\\mathrm{Tn}3$ 的 $\\beta$-内酰胺酶；$\\mathrm{Tn}10$ 的 $\\mathit{tetA}/\\mathit{tetR}$）。\n\n**4. CRISPR**\n- 先是细菌获得性免疫。本版：已测序基因组中细菌 $40\\%$、古细菌 $90\\%$。新间隔插在阵列第一位。$\\mathrm{Cas}9$ 认 protospacer 和下游 $\\mathrm{PAM}$（图19-11 常用 $5'$-NGG-$3'$）。工程用 $\\mathrm{sgRNA}$，切割后走 $\\mathrm{NHEJ}$ 等。遗传性视网膜营养不良、杜氏肌萎缩症、$\\beta$-地中海贫血的治疗正在谨慎推进。",
+      "hint": "先把重组两户和纵向／横向钉死，再写 Holliday／BRCA，然后位点特异／转座，最后本版 CRISPR 百分比与「谨慎」。",
+      "scoring_criteria": [
+        "写出 DNA 重组≠重组 DNA 技术、纵向 vs 横向（含细胞器）、前三种原核真核均可、后三种通常原核（3分）",
+        "写出 Holliday 四步、水平＝片段重组体／垂直＝拼接重组体、BRCA 缺陷辐射敏感并易乳腺癌卵巢癌（4分）",
+        "写出位点特异认短位点、λ 15 bp、995 bp 倒位与 14 bp hix、转座由 IS 或 Tn 介导（4分）",
+        "写出 CRISPR 细菌 40%、古细菌 90%、PAM、治疗谨慎推进（3分）"
+      ],
+      "explanation": "本题把第 19-1 节收成“两户—Holliday／BRCA—位点特异与转座—本版 CRISPR”。易错点：重组两户并；水平／垂直对调；$40\\%/90\\%$ 对调；三种病写成已经治愈。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-1.md",
+        "label": "重组两户；Holliday/BRCA；位点特异与转座；CRISPR 40%/90%"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "重组 $\\mathrm{DNA}$ 技术怎样从工具做到医学应用？请写出：①限制酶＋甲基化酶＝限制修饰体系；通常指Ⅱ型；黏端／平端。②$\\mathrm{pUC}18$（$\\mathrm{ori}$、$\\mathit{amp}^{\\mathrm{R}}$、$\\mathrm{MCS}$）；原核表达框架 $\\mathrm{R}$-$\\mathrm{P}$-$\\mathrm{SD}$-编码-$\\mathrm{TT}$-抗性；图19-15／16 电子版缺失仍保留图号。③蓝白：空载体蓝、插入白；插入失活（$\\mathrm{pBR}322$）≠蓝白≠菌落杂交；克隆五步；黏－平端 $15^{\\circ}\\mathrm{C}$。④重组人胰岛素是世界上第一个基因工程产品；表19-4 不补药。⑤基因打靶靠同源重组；$\\mathrm{CAR}$-$\\mathrm{T}$ 的 $\\mathrm{CD}19$／$\\mathrm{BCMA}$ 不要对调；本版 $\\mathrm{RNAi}$ 只写 $\\mathrm{ATTR}$、$\\mathrm{HAO}1$、$\\mathrm{PCSK}9$，不要发明教材没有的药。",
+      "answer": "参考答案：\n\n**1. 工具酶**\n- 限制酶与甲基化酶共同构成限制修饰体系：自身 $\\mathrm{DNA}$ 甲基化保护，只切外源 $\\mathrm{DNA}$。重组操作通常指Ⅱ型，不需要 $\\mathrm{ATP}$。$\\mathrm{EcoR}\\,\\mathrm{I}$ 的「Ⅰ」是发现顺序不是Ⅰ型。表19-2：$\\mathrm{EcoR}\\,\\mathrm{I}$ 等 $5'$ 黏端，$\\mathrm{Pst}\\,\\mathrm{I}$ 等 $3'$ 黏端，$\\mathrm{Sma}\\,\\mathrm{I}$ 平端。同尾酶能连（连上通常不能再被原酶切），同切点酶认同一序列。\n\n**2. 载体与框架**\n- 克隆载体：ori、选择标志、MCS。$\\mathrm{pUC}18$：$2\\,690\\,\\mathrm{bp}$，只有 $\\mathit{amp}^{\\mathrm{R}}$，不是双抗。图19-14：R-P-SD-编码-TT-抗性；$\\mathit{amp}^{\\mathrm{R}}$ 不是目的蛋白。真核还要 poly(A) 等，不是都必须有整合序列。图19-15、图19-16 电子版缺失，正文保留图号。\n\n**3. 五步与三户筛选**\n- 分、选、连、转、筛。黏－平端定向、效率居中，图19-17 为 $15^{\\circ}\\mathrm{C}$。\n- 蓝白：$\\alpha$ 互补，空载体蓝、插入白。插入失活：$\\mathrm{pBR}322$ 插进 $\\mathit{tet}^{\\mathrm{R}}$ 后 Amp 抗、Tet 敏。核酸原位杂交认序列。三户不要并。抗性只证明有载体。\n\n**4. 制药**\n- 两个优点：传统纯化拿不到的量；药用蛋白／疫苗。重组人胰岛素是世界上第一个基因工程产品。表19-4 按教材列，不补药。VLP 保留免疫原性、缺乏感染性或无核酸。\n\n**5. 打靶、CAR-T、RNAi**\n- 传统敲除：两侧同源臂，同源重组替换，不是限制酶进核剪切。条件性打靶：两侧 Cre 位点。CRISPR/Cas9 编辑也要先构建重组载体再导入。\n- CAR-T：改造 T 细胞携带 CAR。CD19→复发／难治大 B 细胞淋巴瘤；BCMA→复发／难治多发性骨髓瘤。\n- RNAi：siRNA 绑靶 RNA，不改基因组。本版三种：ATTR、HAO1、PCSK9。不要发明教材没有的药。酵母双杂交看 DBD／TAD 融合蛋白互作。",
+      "hint": "按工具酶→pUC18／框架→蓝白与五步／$15^{\\circ}\\mathrm{C}$→胰岛素与表19-4→打靶／CAR-T／本版 siRNA 写。不要补药，不要把蓝白和插入失活并户。",
+      "scoring_criteria": [
+        "写出限制酶+甲基化酶构成限制修饰体系、通常指Ⅱ型、黏端/平端（3分）",
+        "写出 pUC18 的 ori/ampR/MCS、原核框架 R-P-SD-编码-TT-抗性、图19-15/16 缺失仍保留图号（3分）",
+        "写出空载体蓝插入白、pBR322 插入失活≠蓝白≠杂交、五步、黏-平端 15℃（3分）",
+        "写出重组人胰岛素是第一个基因工程产品、表19-4 不补药（2分）",
+        "写出打靶靠同源重组、CAR-T 的 CD19 对大 B 淋巴瘤/BCMA 对骨髓瘤、本版 RNAi 三种 siRNA、不发明教材没有的药（4分）"
+      ],
+      "explanation": "本题把第 19-2、19-3 节收成“工具—载体—筛选与五步—制药—打靶／CAR-T／RNAi”。易错点：pUC18 写成双抗；有插入就蓝；表19-4 补药；CD19／BCMA 对调；发明教材没有的药。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch19-2.md",
+        "label": "限制修饰体系；pUC18 与 R-P-SD 框架；蓝白/插入失活/五步 15℃；胰岛素；CAR-T/RNAi"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

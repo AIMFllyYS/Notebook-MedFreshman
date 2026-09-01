@@ -1,0 +1,322 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch24",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch24-1.md；content/biochemistry/textbook/ch24-2.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于基因诊断与广义分子诊断的分户，下列叙述正确的是（　）。",
+      "options": [
+        "基因诊断包含所有蛋白组学；分子诊断＝只测 $\\mathrm{DNA}$；蛋白质定量就是基因诊断；查出病毒 $\\mathrm{DNA}$ 等于患者自己的基因突变；开篇就要把基因治疗写完",
+        "基因诊断属于分子诊断。从广义上讲，凡是利用分子生物学技术对生物体 $\\mathrm{DNA}$ 序列及其产物（如 $\\mathrm{mRNA}$ 和蛋白质）进行的定性、定量分析，均可称为分子诊断。通常将针对 $\\mathrm{DNA}$ 和 $\\mathrm{RNA}$ 的分子诊断称为基因诊断。目前技术主要针对 $\\mathrm{DNA}$，涉及功能分析时还可定量 $\\mathrm{RNA}$（主要是 $\\mathrm{mRNA}$）和蛋白质。问蛋白质算不算，看广义分子诊断，不把蛋白质定量直接写成基因诊断。分析对象分两句：内源性基因及其表达产物是否异常，或特定外源基因是否存在。肿瘤走内源，感染走外源。甲胎蛋白是原发性肝癌的表达产物标志物之一，不是把蛋白质组学整章搬进本节。诊断是第一节，治疗是第二节",
+        "基因诊断不依赖核酸，只看临床症状和体征就可以确诊",
+        "分析 $\\mathrm{RNA}$ 时样品不必新鲜，放到第二天再抽 $\\mathrm{mRNA}$ 也一样"
+      ],
+      "answer": 1,
+      "hint": "通常针对 DNA 和 RNA；蛋白质定量属广义分子诊断；内源对肿瘤、外源对感染。",
+      "explanation": "**B 正确。** 分子诊断／基因诊断分户、内源 vs 外源、甲胎蛋白是表达产物，都来自 ch24-1。\n\n**干扰项辨析**：\n- A：把蛋白质定量并进基因诊断；内源外源并户；开篇提前写治疗。\n- C：基因诊断直接以遗传物质为对象。\n- D：分析 $\\mathrm{RNA}$ 须确保一定的样品新鲜度。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-1.md",
+        "label": "基因诊断通常针对 DNA 和 RNA · 蛋白质定量属广义分子诊断"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{Kan\\ Y.W.}$ 开创基因诊断的两件事，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{Kan\\ Y.W.}$ 只做了 $\\beta$ 地贫的 $\\mathrm{PCR}$-$\\mathrm{ASO}$；$\\alpha$ 地中海贫血查的是 $\\mathrm{RFLP}$；镰状细胞贫血查的是 $\\mathrm{ASO}$；图24-1、图24-2、图24-3 是同一户；诊断这一节已经能治",
+        "$20$ 世纪 $70$ 年代，美国加州大学旧金山分校华裔科学家 $\\mathrm{Kan\\ Y.W.}$ 首次检测了 $\\alpha$ 地中海贫血的基因缺失状态，发现了镰状细胞贫血的限制性核酸内切酶片段长度多态性（$\\mathrm{RFLP}$），开创了基因诊断的历史先河。两件事不要并成一种病、一种技术。后文图24-1 是 $\\beta$ 地贫的 $\\mathrm{PCR}$-$\\mathrm{ASO}$，图24-2 是镰贫的 $\\mathrm{PCR}$-$\\mathrm{RFLP}$，图24-3 是 $\\mathrm{STR}$ 亲权。应用点名遗传性疾病、感染性疾病、恶性肿瘤、法医学。不要把「已经能治」写进诊断这一节",
+        "地贫就是 $\\mathrm{RFLP}$，镰贫就是 $\\mathrm{ASO}$，亲子鉴定也是切 $\\mathrm{Mst}$Ⅱ",
+        "我国从未开展地中海贫血、血友病、苯丙酮尿症的诊断性检测"
+      ],
+      "answer": 1,
+      "hint": "α 地贫查缺失；镰贫查 RFLP；三张图三户，不要并。",
+      "explanation": "**B 正确。** $\\mathrm{Kan\\ Y.W.}$ 两件事、$\\alpha$ 地贫缺失 vs 镰贫 $\\mathrm{RFLP}$、三张图分户，都来自 ch24-1。\n\n**干扰项辨析**：\n- A：并户；把后文三张图提前并成一户；诊断写成治疗。\n- C：地贫／镰贫／亲权技术写反。\n- D：我国自 $20$ 世纪 $80$ 年代中期起已开展这些常见单基因病的诊断性检测。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-1.md",
+        "label": "Kan Y.W. · α 地贫缺失 · 镰贫 RFLP"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于图24-1 的 $\\mathrm{PCR}$-$\\mathrm{ASO}$，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{PCR}$-$\\mathrm{ASO}$ 认的是 $\\mathrm{Mst}$Ⅱ 酶切位点；图24-1 对着镰贫第 $6$ 密码子；$\\mathrm{A}/\\mathrm{B}/\\mathrm{C}$ 是三种探针；斑点印迹能读片段大小；杂合子只与一种探针杂交",
+        "$\\mathrm{PCR}$-$\\mathrm{ASO}$ 先 $\\mathrm{PCR}$ 扩增样品并固定，再用正常探针和突变探针分别杂交，认的是探针能不能配对。检测已知点突变、微小缺失或插入，适用于突变类型较少的遗传病。图24-1 针对 $\\beta$ 地中海贫血珠蛋白基因第 $17$ 密码子点突变：正常人只与正常探针杂交；突变纯合子只被突变探针识别；突变杂合子与两种探针都杂交。第 $1$ 行是正常探针检测孔，第 $2$ 行是突变探针检测孔；$\\mathrm{A}/\\mathrm{B}/\\mathrm{C}$ 是三种样品不是三种探针。斑点印迹无法测定目的基因大小，特异性低、易假阳性。酶切位点丢没丢是图24-2 的 $\\mathrm{PCR}$-$\\mathrm{RFLP}$",
+        "裂口 $\\mathrm{PCR}$ 和多重 $\\mathrm{PCR}$ 就是图24-1 的点杂交",
+        "反向斑点印迹把样品核酸固定在膜上，一次只能看一种突变"
+      ],
+      "answer": 1,
+      "hint": "图24-1 是 β 地贫第 17 密码子的正常／突变探针；不是 MstⅡ。",
+      "explanation": "**B 正确。** $\\mathrm{PCR}$-$\\mathrm{ASO}$ 定义、图24-1 读法、与 $\\mathrm{RFLP}$ 分户，都来自 ch24-1。\n\n**干扰项辨析**：\n- A：写成酶切；病种和密码子写错；$\\mathrm{A}/\\mathrm{B}/\\mathrm{C}$ 认成探针。\n- C：裂口 $\\mathrm{PCR}$／多重 $\\mathrm{PCR}$ 走电泳片段，不是 $\\mathrm{ASO}$ 点杂交。\n- D：$\\mathrm{RDB}$ 是多种探针固定在载体上，一次杂交同时筛多种突变。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-1.md",
+        "label": "图24-1 PCR-ASO · β 地贫第 17 密码子 · A/B/C 三种样品"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于图24-2 的 $\\mathrm{PCR}$-$\\mathrm{RFLP}$ 与镰状细胞贫血 $\\mathrm{Mst}$Ⅱ，下列叙述正确的是（　）。",
+      "options": [
+        "镰贫是第 $17$ 密码子，走图24-1 的 $\\mathrm{ASO}$；正常人一条 $110\\,\\mathrm{bp}$，患者被切成更小两段；切开是另合成一段 $\\mathrm{DNA}$；测序已经把图24-2 从教材里删掉；$\\mathrm{PIRA}$ 与天然 $\\mathrm{RFLP}$ 是同一户",
+        "镰状细胞贫血是 $\\beta$-珠蛋白基因第 $6$ 密码子 $\\mathrm{A}$-$\\mathrm{T}$ 单点突变，血红蛋白 $\\beta$ 亚基 $\\mathrm{Glu}$-$\\mathrm{Val}$，诊断走 $\\mathrm{PCR}$-$\\mathrm{RFLP}$。扩增第 $6$ 密码子区域 $110\\,\\mathrm{bp}$，再 $\\mathrm{Mst}$Ⅱ 消化。正常人：$54\\,\\mathrm{bp}+56\\,\\mathrm{bp}$ 两条带。患者：不被酶切，仅 $110\\,\\mathrm{bp}$ 一条带。杂合子：$54\\,\\mathrm{bp}$、$56\\,\\mathrm{bp}$ 和 $110\\,\\mathrm{bp}$ 三条带。$54+56=110$，切得动只是把原来的 $110\\,\\mathrm{bp}$ 切开，不是另变出一段 $\\mathrm{DNA}$。$\\mathrm{PCR}$-$\\mathrm{PIRA}$ 要人工引入酶切位点，与用天然位点的 $\\mathrm{PCR}$-$\\mathrm{RFLP}$ 不同。测序是最直接确切的方法，传统酶谱分析法基本被替代，但图24-2 仍是镰贫诊断的本版例子",
+        "亲子鉴定就是切 $\\mathrm{Mst}$Ⅱ，图24-3 可以并进图24-2",
+        "杂合子只有中间大小一条带，看不见 $110\\,\\mathrm{bp}$"
+      ],
+      "answer": 1,
+      "hint": "第 6 密码子；MstⅡ；正常 54+56，患者 110，杂合子三条带。",
+      "explanation": "**B 正确。** 镰贫分子账、$\\mathrm{Mst}$Ⅱ 三带型、$\\mathrm{PIRA}$ 区别、测序并不删图24-2，都来自 ch24-1。\n\n**干扰项辨析**：\n- A：密码子和图号写错；带型对调；切开写成另合成；$\\mathrm{PIRA}$ 并户。\n- C：$\\mathrm{STR}$ 亲权是图24-3。\n- D：杂合子三条带并存。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-1.md",
+        "label": "图24-2 PCR-RFLP · 镰贫 MstⅡ · 正常 54+56、患者 110"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于图24-3 的 $\\mathrm{STR}$ 亲权认定，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{STR}$ 就是 $\\mathrm{PCR}$-$\\mathrm{ASO}$，也是镰贫 $\\mathrm{RFLP}$；峰上的 $11$ 是第 $11$ 号染色体疾病；子女两个等位基因可以都来自父亲；「第二代」表示 $\\mathrm{RFLP}$ 已经从镰贫诊断里消失",
+        "$\\mathrm{STR}$ 是约 $2\\sim 6\\,\\mathrm{bp}$ 的较短核心序列，常以 $10\\sim 50$ 次重复串联，位于结构基因侧翼区或非编码区，是 $\\mathrm{RFLP}$ 之后的第二代遗传标记。基于 $\\mathrm{PCR}$-$\\mathrm{STR}$ 的 $\\mathrm{DNA}$ 指纹已取代传统核酸分子杂交图谱分析，用于刑侦、犯罪嫌疑人排查、亲子或亲缘关系确定。图24-3 位点 $\\mathrm{D13S317}$：父亲 $11/14$，母亲 $8/12$；女儿 $12/14$，长子 $8/14$，次子 $11/12$。每个子女的一个等位基因来自父亲、另一个来自母亲。横轴是片段大小，峰上数字是重复次数等位基因命名，不是染色体号。「第二代」说的是遗传标记世代，遗传病已知突变仍可用 $\\mathrm{PCR}$-$\\mathrm{RFLP}$",
+        "$\\mathrm{DNA}$ 指纹分析包括全部同卵双生子，序列特征并不稳定",
+        "亲子鉴定必须用 $\\mathrm{Mst}$Ⅱ 消化 $\\beta$-珠蛋白第 $6$ 密码子"
+      ],
+      "answer": 1,
+      "hint": "STR 问短重复拷贝能否按孟德尔对上；图24-3 是 D13S317，不是地贫或镰贫。",
+      "explanation": "**B 正确。** $\\mathrm{STR}$ 定义、图24-3 读峰、与 $\\mathrm{ASO}$／$\\mathrm{RFLP}$ 分户，都来自 ch24-1。\n\n**干扰项辨析**：\n- A：三户并；峰上数字读成染色体号；孟德尔分配写反。\n- C：除部分同卵双生子外，特征高度个体特异、终生稳定。\n- D：亲权走 $\\mathrm{STR}$，不是镰贫酶切。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-1.md",
+        "label": "图24-3 STR · D13S317 · 父 11/14、母 8/12"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于基因诊断的局限、病原体边界以及产前／单基因／多基因分户，下列叙述正确的是（　）。",
+      "options": [
+        "特异灵敏就等于已经替代培养、影像、病理；查出病毒核酸就知道病情和免疫状态；假阳性不必评；查出突变就必须引产；查出一个易感位点就确诊冠心病；这段局限应复制进第二节文首",
+        "基因诊断并不能取代其他临床医学诊断。针对病原体的基因诊断只能判断外源基因的有无和拷贝数的多少，难以检测病原体进入体内后机体的反应。有的结果假阳性较高，须结合临床症状、影像检查、生化诊断、病理检测等综合评估。不少疾病还没有有效切入点；同一疾病的不同技术各有利弊。产前诊断在知情同意和遗传咨询基础上由受试者决定是否终止妊娠。单基因病：基因诊断可提供最终确诊依据。多基因病：预测性诊断提供风险意见，是临床遗传咨询依据。局限写在第一节末，第二节从「以改变人遗传物质为基础」起笔",
+        "细菌培养数天、基因诊断数小时，所以培养可以一律不作",
+        "$\\mathrm{BRCA}$ 突变等于已经确诊乳腺癌，甲胎蛋白就是 $\\mathrm{PCR}$-$\\mathrm{ASO}$"
+      ],
+      "answer": 1,
+      "hint": "不能取代其他临床诊断；病原体只判有无和拷贝数；假阳性须综合评估。",
+      "explanation": "**B 正确。** 不能取代、病原体边界、假阳性综合评估、产前决定权、单基因 vs 多基因，都来自 ch24-1。\n\n**干扰项辨析**：\n- A：逐句写反，还把局限抄进第二节。\n- C：速度优势不等于培养可以不作。\n- D：$\\mathrm{BRCA}$ 提高发病风险；甲胎蛋白是表达产物标志物。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-1.md",
+        "label": "不能取代其他临床诊断 · 病原体只判有无和拷贝数 · 假阳性须综合评估"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于四种病毒载体以及图24-4 逆转录病毒生活周期，下列叙述正确的是（　）。",
+      "options": [
+        "逆转录病毒的优势是不整合所以安全；图24-4 可以不读整合那一步；慢病毒不是整合型；腺病毒整合进染色体故能长期表达；$\\mathrm{AAV}$ 能独立复制、自己在人体里传代；「长期存在」和插入突变危险不是同一件事",
+        "逆转录病毒是 $\\mathrm{RNA}$ 病毒，编码逆转录酶和整合酶。图24-4：①融合 → ②逆转录成双链 $\\mathrm{DNA}$ → ③随机整合入宿主染色体形成前病毒 → ④转录合成病毒蛋白质 → ⑤出芽。随机整合使治疗基因长期存在于宿主基因组，这是作为载体的主要优势；同一件事的另一面是插入突变、激活癌基因或破坏抑癌基因，容量也较小。慢病毒在 $\\mathrm{HIV}$-$1$ 基础上构建，仍是整合型，对分裂与非分裂细胞均能感染，容量仍有限。腺病毒是 $\\mathrm{DNA}$ 病毒（点名 $\\mathrm{C}$ 亚类 $2$、$5$ 型），不整合，较安全、包被量大，可感染静止或慢分裂细胞，但不整合故易丢失、不能长期表达，免疫原性强。$\\mathrm{AAV}$ 是单链线状 $\\mathrm{DNA}$ 缺陷型病毒，不能独立复制，需腺病毒、单纯疱疹病毒等辅助病毒；可靶向整合，兼具逆转录病毒与腺病毒两者优点，但容量小、感染效率低、可能免疫排斥",
+        "四种病毒都能长期表达，因为「都是病毒」",
+        "图24-4 属于第一节的 $\\mathrm{PCR}$-$\\mathrm{ASO}$，与载体无关"
+      ],
+      "answer": 1,
+      "hint": "图24-4 融合→逆转录→整合（前病毒）→转录→出芽；长期存在与随机整合危险是同一件事的两面。",
+      "explanation": "**B 正确。** 图24-4 五步、逆转录病毒优缺点、慢病毒／腺病毒／$\\mathrm{AAV}$ 分户，都来自 ch24-2。\n\n**干扰项辨析**：\n- A：把优势写成不整合；慢病毒、腺病毒、$\\mathrm{AAV}$ 逐户写反。\n- C：能否长期看整合，不要并成「都是病毒」。\n- D：图24-1 至图24-3 属第一节，图24-4 在第二节。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-2.md",
+        "label": "图24-4 逆转录病毒生活周期 · 四种病毒载体分户"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于基因治疗的定义、修复 vs 增强以及干扰／自杀基因，下列叙述正确的有（　）。",
+      "options": [
+        "基因治疗以改变人遗传物质为基础，通过基因转移将正常基因或有治疗作用的基因导入人体靶细胞，以修正、替代或补偿缺陷基因的功能，或干扰致病基因的异常表达。凡在核酸水平上开展的疾病治疗均可纳入。范围已从单基因遗传病拓展到恶性肿瘤、心脑血管疾病、神经系统疾病、代谢性疾病等。不要只答「补一个正常基因」，也不要从第一节「假阳性须综合评估」起笔",
+        "基因修复是精确的原位修复，不引入外源序列：修正改那几个碱基，置换是原位替换。理想策略，目前技术尚不成熟。$\\mathrm{CRISPR}$-$\\mathrm{Cas9}$ 由 $\\mathrm{Cas9}$ 核酸酶和 $\\mathrm{sgRNA}$ 组成，在 $\\mathrm{PAM}$ 附近配对，造成 $\\mathrm{DSB}$，再经供体 $\\mathrm{DNA}$ 与 $\\mathrm{HR}$ 修饰该位点，服务于基因修正，不是「随机插入一段外源基因就算修复」",
+        "基因增强是异位替代，缺陷基因并未被删除，为目前临床上使用的主要策略。本版例子：血友病导入凝血因子Ⅸ基因；也可导入本来不表达或低表达的基因（干扰素、白介素 $2$）作抗肿瘤辅助。整合位置随机，可能致新病。干扰（反义 $\\mathrm{RNA}$、核酶、$\\mathrm{miRNA}$、$\\mathrm{siRNA}$）对着过度表达；自杀基因（$\\mathrm{TK}/\\mathrm{GCV}$、旁观者效应）走前药变毒物。不要发明教材没有的已上市药名",
+        "现在主要靠 $\\mathrm{CRISPR}$ 原位修好，增强可以不写；血友病走干扰；白介素 $2$ 走自杀基因；修复就是把正常基因随机插进基因组；应补写教材未点名的商品名"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "修复＝原位、不引入外源；增强＝异位、缺陷基因还在、目前临床主策略。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：定义两件事、概念扩展、不要从诊断局限起笔，来自 ch24-2。\n- B：修复／修正／置换、$\\mathrm{CRISPR}$-$\\mathrm{Cas9}$ 机制，来自 ch24-2。\n- C：增强地位与例子、干扰与自杀基因分户、不要编药名，来自 ch24-2。\n- **D 错**：逐句写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-2.md",
+        "label": "基因治疗定义 · 修复 vs 增强 · CRISPR-Cas9 · 不要编药名"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于直接体内／间接体内、靶细胞以及本版点名的单基因病治疗账，下列叙述正确的有（　）。",
+      "options": [
+        "直接体内（in vivo）把外源基因直接导入患者体内，本版例子：无复制能力的 $\\mathrm{AAV}$ 直接应用；脂质体包埋或裸露 $\\mathrm{DNA}$ 直接注射。简便、易推广，目前尚不成熟（疗效短、免疫排斥、安全性），仍是重要研究方向。间接体内（ex vivo）先提取靶细胞，体外导入外源基因，经增殖、筛选后再输回。较安全、疗效较易控制，步骤多、技术较复杂。$\\mathrm{CAR}$-$\\mathrm{T}$ 是间接体内：提取患者 $\\mathrm{T}$ 细胞 → 体外使其表达嵌合抗原受体 → 扩增筛选 → 输回，不要写成直接把病毒打进肿瘤",
+        "目前人类基因治疗研究与应用的重点是体细胞治疗；针对人类生殖细胞的基因治疗被不同国家的法律所禁止。目前成功用于基因治疗的靶细胞有限，主要包括造血干细胞、淋巴细胞、皮肤成纤维细胞、肌细胞和肿瘤细胞等。骨髓造血干细胞含量很低，脐带血是替代的理想靶细胞。直接注射法仅限于肌组织。表24-1 的基因枪不宜内脏在体；脂质体易被网状内皮细胞吞噬。不要把仅限实验研究的细胞与「目前成功」短名单并户",
+        "$1990$ 年美国 $\\mathrm{Blaese\\ RM}$ 将正常人腺苷脱氨酶基因植入 $\\mathrm{ADA}$ 缺乏症患者淋巴结内，完成世界上首例基因治疗试验。血友病：凝血因子Ⅸ基因导入自体皮肤成纤维细胞，血浆浓度上升、出血减轻。苯丙酮尿症可采用置换、增强或编辑 $\\mathrm{PAH}$，但目前尚无获批的基因治疗实施方案。不要发明教材没有的已上市药名",
+        "$\\mathrm{CAR}$-$\\mathrm{T}$ 是直接体内；人生殖细胞可以临床常规做；直接注射可以打进任意器官；$\\mathrm{PKU}$ 已经用基因治疗常规替代饮食控制；应写出教材未点名的商品名"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "抽自己的 T 细胞出来改走间接体内；载体直接打进去走直接体内。PKU 尚无获批方案。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：in vivo / ex vivo 与 $\\mathrm{CAR}$-$\\mathrm{T}$，来自 ch24-2。\n- B：只做体细胞、靶细胞名单、直接注射只限肌组织，来自 ch24-2。\n- C：$1990$ $\\mathrm{ADA}$ 首例试验、血友病成纤维细胞、$\\mathrm{PKU}$ 尚无获批，来自 ch24-2。\n- **D 错**：逐句写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-2.md",
+        "label": "直接体内 vs 间接体内 · CAR-T · 体细胞 · 1990 ADA · PKU 尚无获批"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "基因诊断就是蛋白质定量。$\\mathrm{Kan\\ Y.W.}$ 把 $\\alpha$ 地贫和镰贫做成同一种技术。图24-1 $\\mathrm{PCR}$-$\\mathrm{ASO}$、图24-2 $\\mathrm{PCR}$-$\\mathrm{RFLP}$（$\\mathrm{Mst}$Ⅱ 正常 $54+56$、异常 $110$）、图24-3 $\\mathrm{STR}$ 亲权是同一户。基因诊断可以取代其他临床诊断；针对病原体已经能判断机体反应。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：通常针对 DNA 和 RNA；Kan 两件事不要并；三张图三户；不能取代；病原体只判有无和拷贝数。",
+      "explanation": "**该命题错误，每一分句都错。** 基因诊断通常针对 $\\mathrm{DNA}$ 和 $\\mathrm{RNA}$，蛋白质定量属广义分子诊断。$\\mathrm{Kan\\ Y.W.}$：$\\alpha$ 地贫查缺失，镰贫查 $\\mathrm{RFLP}$。图24-1 是 $\\beta$ 地贫第 $17$ 密码子的探针杂交；图24-2 是镰贫 $\\mathrm{Mst}$Ⅱ；图24-3 是 $\\mathrm{D13S317}$ 亲权峰型。基因诊断不能取代其他临床诊断；针对病原体只能判断外源基因有无和拷贝数，难以检测机体反应；假阳性须综合评估。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-1.md",
+        "label": "基因诊断≠蛋白质定量 · 三张图分户 · 不能取代其他诊断"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "基因修复就是把正常基因随机插进基因组，目前临床主要靠原位 $\\mathrm{CRISPR}$ 修好，增强可以不写。直接体内和间接体内是同一户，$\\mathrm{CAR}$-$\\mathrm{T}$ 是把病毒直接打进肿瘤。逆转录病毒的优势是不整合。应把教材没有写的已上市基因治疗药名补进答案。苯丙酮尿症已经获批常规基因治疗。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：修复＝原位不引入外源；增强才是目前临床主策略；CAR-T 是间接体内；逆转录病毒靠随机整合长期存在；不要编药名；PKU 尚无获批。",
+      "explanation": "**该命题错误，每一分句都错。** 基因修复是原位、不引入外源序列，理想但技术尚不成熟；基因增强是异位替代，缺陷基因还在，目前临床主要策略。直接体内（in vivo）把载体直接导入体内；间接体内（ex vivo）先改细胞再输回，$\\mathrm{CAR}$-$\\mathrm{T}$ 属后者。逆转录病毒随机整合故能长期存在，代价是插入突变。不要发明教材没有的已上市药名。$\\mathrm{PKU}$ 目前尚无获批的基因治疗实施方案。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-2.md",
+        "label": "修复≠增强 · in vivo≠ex vivo · 不要编药名 · PKU 尚无获批"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "基因诊断通常针对 ________ 和 $\\mathrm{RNA}$。$\\mathrm{Kan\\ Y.W.}$ 发现镰状细胞贫血的 ________。图24-2 正常人 $\\mathrm{Mst}$Ⅱ 切成 ________ $\\mathrm{bp}$ 与 $56\\,\\mathrm{bp}$。基因修复是精确的 ________ 修复，不引入外源序列。目前临床上使用的主要策略是基因 ________。",
+      "answer": "DNA, RFLP, 54, 原位, 增强",
+      "hint": "核酸不是蛋白质；镰贫是 RFLP；正常 54+56；修复在原位；临床主策略是增强。",
+      "scoring_criteria": [
+        "第一空填“DNA”（或“脱氧核糖核酸”）（2分）",
+        "第二空填“RFLP”（或“限制性片段长度多态性”“限制性核酸内切酶片段长度多态性”）（2分）",
+        "第三空填“54”（或“54 bp”）（2分）",
+        "第四空填“原位”（2分）",
+        "第五空填“增强”（或“基因增强”“gene augmentation”“异位替代”）（2分）"
+      ],
+      "explanation": "基因诊断通常针对 $\\mathrm{DNA}$ 和 $\\mathrm{RNA}$，蛋白质定量属广义分子诊断。$\\mathrm{Kan\\ Y.W.}$ 对镰贫写的是 $\\mathrm{RFLP}$。图24-2 正常人 $54+56$，患者 $110$。修复＝原位、不引入外源；目前临床主要策略是基因增强（异位替代，缺陷基因还在）。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-1.md",
+        "label": "DNA；RFLP；54；原位；增强"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "基因诊断怎样立户？请写出：①通常针对 $\\mathrm{DNA}$ 和 $\\mathrm{RNA}$，蛋白质定量属广义分子诊断；内源 vs 外源。②$\\mathrm{Kan\\ Y.W.}$：$\\alpha$ 地贫缺失、镰贫 $\\mathrm{RFLP}$。③图24-1 $\\mathrm{PCR}$-$\\mathrm{ASO}$（$\\beta$ 地贫第 $17$ 密码子）≠ 图24-2 $\\mathrm{PCR}$-$\\mathrm{RFLP}$（镰贫 $\\mathrm{Mst}$Ⅱ，正常 $54+56$、异常 $110$）≠ 图24-3 $\\mathrm{STR}$ 亲权（$\\mathrm{D13S317}$）。④不能取代其他临床诊断；病原体只判外源基因有无和拷贝数；假阳性须综合评估。",
+      "answer": "参考答案：\n\n**1. 分户**\n- 基因诊断属于分子诊断；通常针对 $\\mathrm{DNA}$ 和 $\\mathrm{RNA}$。广义分子诊断还可定量蛋白质，不要把蛋白质定量直接写成基因诊断。\n- 分析内源性基因及其表达产物是否异常，或检测特定外源基因是否存在。肿瘤走内源，感染走外源。\n\n**2. Kan Y.W.**\n- $20$ 世纪 $70$ 年代，美国加州大学旧金山分校。$\\alpha$ 地中海贫血：基因缺失。镰状细胞贫血：$\\mathrm{RFLP}$。两件事不要并成一种病、一种技术。\n\n**3. 三张图三户**\n- 图24-1 $\\mathrm{PCR}$-$\\mathrm{ASO}$：$\\beta$ 地贫第 $17$ 密码子；正常人只与正常探针杂交，纯合子只与突变探针杂交，杂合子两种都杂交。\n- 图24-2 $\\mathrm{PCR}$-$\\mathrm{RFLP}$：镰贫第 $6$ 密码子 $\\mathrm{A}$-$\\mathrm{T}$、$\\mathrm{Glu}$-$\\mathrm{Val}$；$\\mathrm{Mst}$Ⅱ；正常人 $54+56$ 两条带，患者 $110$ 一条带，杂合子三条带。\n- 图24-3 $\\mathrm{STR}$（$\\mathrm{D13S317}$）：父 $11/14$、母 $8/12$，子女各从父母得一个等位基因。不是地贫，也不是镰贫。\n\n**4. 局限**\n- 不能取代其他临床医学诊断。\n- 针对病原体只能判断外源基因有无和拷贝数，难以检测机体反应。\n- 假阳性须结合症状、影像、生化、病理综合评估。产前由受试者决定是否终止妊娠。",
+      "hint": "先钉核酸户头和 Kan 两件事，再把三张图分开，最后写不能取代、病原体边界。",
+      "scoring_criteria": [
+        "写出基因诊断通常针对 DNA 和 RNA，蛋白质定量属广义分子诊断；内源 vs 外源（3分）",
+        "写出 Kan Y.W.：α 地贫缺失、镰贫 RFLP（2分）",
+        "写出图24-1 PCR-ASO（β 地贫第 17 密码子）≠ 图24-2 PCR-RFLP（MstⅡ，54+56 / 110）≠ 图24-3 STR 亲权（5分）",
+        "写出不能取代其他临床诊断；病原体只判有无和拷贝数；假阳性须综合评估（4分）"
+      ],
+      "explanation": "本题把第 24-1 节收成“核酸户头—Kan 史实—三张图分户—诊断局限”。易错点：蛋白质并进基因诊断；三张图并户；核酸阳性＝确诊。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-1.md",
+        "label": "基因诊断分户；Kan；图24-1/24-2/24-3；不能取代"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "基因治疗怎样立户？请写出：①定义两件事与核酸水平扩展；不要从诊断局限起笔，不要编药名。②修复（原位、不引入外源；修正＋置换；$\\mathrm{CRISPR}$-$\\mathrm{Cas9}$ 服务于修正）vs 增强（异位替代，目前临床主策略；凝血因子Ⅸ）。③直接体内 in vivo vs 间接体内 ex vivo（$\\mathrm{CAR}$-$\\mathrm{T}$）；只做体细胞。④图24-4 逆转录病毒五步；长期整合与插入突变是同一件事的两面。⑤$1990$ $\\mathrm{Blaese\\ RM}$、$\\mathrm{ADA}$；血友病成纤维细胞；$\\mathrm{PKU}$ 尚无获批方案。",
+      "answer": "参考答案：\n\n**1. 定义**\n- 以改变人遗传物质为基础，导入正常或治疗基因，修正／替代／补偿缺陷，或干扰致病基因异常表达。核酸水平上的治疗均可纳入；范围已拓展到肿瘤、心脑血管、神经、代谢等。不要只答「补一个正常基因」。不要从第一节假阳性起笔。不要发明教材没有的已上市药名。\n\n**2. 修复 vs 增强**\n- 修复：原位，不引入外源序列；修正改碱基，置换原位替换。理想，技术尚不成熟。$\\mathrm{ZFN}$、$\\mathrm{TALEN}$、$\\mathrm{CRISPR}$-$\\mathrm{Cas9}$（$\\mathrm{sgRNA}+\\mathrm{Cas9}$，$\\mathrm{PAM}$，$\\mathrm{DSB}$，$\\mathrm{HR}$）服务于修正。\n- 增强：异位替代，缺陷基因并未被删除，目前临床主要策略。血友病导入凝血因子Ⅸ；也可导入干扰素、白介素 $2$。整合位置随机，可能致新病。\n\n**3. 导入途径与靶细胞**\n- 直接体内 in vivo：$\\mathrm{AAV}$、脂质体／裸 $\\mathrm{DNA}$ 直接应用；简便尚不成熟。\n- 间接体内 ex vivo：先改细胞再输回；$\\mathrm{CAR}$-$\\mathrm{T}$ 属此户。\n- 只做体细胞；人生殖细胞法律禁止。直接注射仅限肌组织。\n\n**4. 图24-4**\n- 融合 → 逆转录 → 整合（前病毒）→ 转录 → 出芽。优势是随机整合故能长期存在；代价是插入突变、激活癌基因或破坏抑癌基因。腺病毒不整合、易丢失；$\\mathrm{AAV}$ 缺陷型、可靶向整合。\n\n**5. 本版单基因病账**\n- $1990$ $\\mathrm{Blaese\\ RM}$：正常 $\\mathrm{ADA}$ 基因植入患者淋巴结，世界首例基因治疗试验。\n- 血友病：凝血因子Ⅸ基因 → 自体皮肤成纤维细胞 → 血浆浓度上升。\n- $\\mathrm{PKU}$：可置换、增强或编辑 $\\mathrm{PAH}$，目前尚无获批实施方案。",
+      "hint": "按定义→修复/增强→in vivo/ex vivo→图24-4→ADA/血友病/PKU 写。不要编药名。",
+      "scoring_criteria": [
+        "写出基因治疗定义两件事与核酸水平扩展；不从诊断局限起笔；不编药名（3分）",
+        "写出修复＝原位不引入外源、增强＝异位且目前临床主策略；CRISPR-Cas9 服务于修正；凝血因子Ⅸ（4分）",
+        "写出直接体内 vs 间接体内（CAR-T）；只做体细胞（3分）",
+        "写出图24-4 五步，以及长期整合与插入突变是同一件事的两面（3分）",
+        "写出 1990 Blaese RM / ADA、血友病成纤维细胞、PKU 尚无获批（2分）"
+      ],
+      "explanation": "本题把第 24-2 节收成“定义—修复/增强—导入途径—图24-4—本版病例”。易错点：理想写成已经是临床主策略；$\\mathrm{CAR}$-$\\mathrm{T}$ 写成直接体内；编药名；$\\mathrm{PKU}$ 写成已获批。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch24-2.md",
+        "label": "定义；修复 vs 增强；in vivo/ex vivo；图24-4；ADA/PKU"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

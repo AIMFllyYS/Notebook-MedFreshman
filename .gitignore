@@ -58,6 +58,9 @@ yarn-error.log*
 
 # Temporary files
 tmp/
+
+# Source PDFs copied for ingest (keep extracted markdown + images)
+content/_raw-src/*.pdf
 tmp_*
 .cache/
 

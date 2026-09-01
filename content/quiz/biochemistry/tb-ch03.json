@@ -1,0 +1,321 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch03",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch03-1.md；content/biochemistry/textbook/ch03-2.md；content/biochemistry/textbook/ch03-3.md；content/biochemistry/textbook/ch03-4.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{DNA}$ 与 $\\mathrm{RNA}$ 的组成（碱基、戊糖、磷酸）以及体内游离核苷酸，下列叙述正确的是（　）。",
+      "options": [
+        "核酸完全水解只放出碱基；构成 $\\mathrm{DNA}$ 的碱基是 $\\mathrm{A}$、$\\mathrm{G}$、$\\mathrm{C}$、$\\mathrm{U}$，构成 $\\mathrm{RNA}$ 的是 $\\mathrm{A}$、$\\mathrm{G}$、$\\mathrm{C}$、$\\mathrm{T}$；脱氧是把核糖上所有羟基拿掉；体内游离核苷酸多是 $2'$-或 $3'$-核苷酸；$\\mathrm{RNA}$ 绝对不能作为遗传信息载体；$\\mathrm{cAMP}$ 就是核酸链里的单体",
+        "核酸以核苷酸为基本组成单位，完全水解后放出等摩尔的碱基、戊糖和磷酸。$\\mathrm{DNA}$ 的基本单位是脱氧核糖核苷酸，碱基为 $\\mathrm{A}$、$\\mathrm{G}$、$\\mathrm{C}$、$\\mathrm{T}$，戊糖为 $\\beta$-$\\mathrm{D}$-$2'$-脱氧核糖（仅 $\\mathrm{C}$-$2'$ 为氢）；$\\mathrm{RNA}$ 的基本单位是核糖核苷酸，碱基为 $\\mathrm{A}$、$\\mathrm{G}$、$\\mathrm{C}$、$\\mathrm{U}$，戊糖为 $\\beta$-$\\mathrm{D}$-核糖。$\\mathrm{T}$ 是 $5$-甲基尿嘧啶。核苷由戊糖 $\\mathrm{C}$-$1'$ 与嘌呤 $\\mathrm{N}$-$9$ 或嘧啶 $\\mathrm{N}$-$1$ 形成 $\\beta$-$\\mathrm{N}$-糖苷键，天然构象为反式。生物体内游离核苷酸多是 $5'$-核苷酸。表3-1 为 $\\mathrm{AMP}$、$\\mathrm{GMP}$、$\\mathrm{CMP}$、$\\mathrm{UMP}$；表3-2 为 $\\mathrm{dAMP}$、$\\mathrm{dGMP}$、$\\mathrm{dCMP}$、$\\mathrm{dTMP}$。一般而言 $\\mathrm{RNA}$ 是转录产物，但某些情况下也可作遗传信息载体",
+        "嘌呤成苷走 $\\mathrm{N}$-$1$，嘧啶成苷走 $\\mathrm{N}$-$9$；天然核苷取顺式；构成 $\\mathrm{DNA}$ 的四种 $\\mathrm{dNMP}$ 含 $\\mathrm{dUMP}$；$\\mathrm{NMP}$ 就是高能磷酸化合物",
+        "$\\mathrm{DNA}$ 只存在于细胞核，线粒体没有核酸；$\\mathrm{RNA}$ 只存在于细胞质；酮–烯醇互变异构与氢键无关"
+      ],
+      "answer": 1,
+      "hint": "先锁 $\\mathrm{DNA}$ 用 $\\mathrm{T}$、$\\mathrm{RNA}$ 用 $\\mathrm{U}$，再锁游离多为 $5'$-核苷酸；脱氧只脱 $\\mathrm{C}$-$2'$。",
+      "explanation": "**B 正确。** 等摩尔碱基、戊糖、磷酸；$\\mathrm{DNA}$ 为 $\\mathrm{A}/\\mathrm{G}/\\mathrm{C}/\\mathrm{T}$ 加脱氧核糖，$\\mathrm{RNA}$ 为 $\\mathrm{A}/\\mathrm{G}/\\mathrm{C}/\\mathrm{U}$ 加核糖；游离多为 $5'$-核苷酸；$\\mathrm{RNA}$ 某些情况下也可作遗传载体。\n\n**干扰项辨析**：\n- A：完全水解三样等摩尔；$\\mathrm{DNA}/\\mathrm{RNA}$ 的 $\\mathrm{T}/\\mathrm{U}$ 写反；脱氧只脱 $\\mathrm{C}$-$2'$；游离多为 $5'$；$\\mathrm{RNA}$ 可作遗传载体；$\\mathrm{cAMP}$ 不是链上单体。\n- C：嘌呤 $\\mathrm{N}$-$9$、嘧啶 $\\mathrm{N}$-$1$；天然反式；$\\mathrm{dUMP}$ 不是构成 $\\mathrm{DNA}$ 的四种 $\\mathrm{dNMP}$；$\\mathrm{NDP}/\\mathrm{NTP}$ 才属高能。\n- D：$\\mathrm{DNA}$ 也在线粒体；$\\mathrm{RNA}$ 在细胞质、细胞核和线粒体；互变异构为氢键提供结构基础。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-1.md",
+        "label": "DNA/RNA 组成 · 游离 5′-核苷酸 · 表3-1/表3-2 · pitfall「RNA 也可作遗传载体」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $3',5'$-磷酸二酯键以及核酸一级结构按 $5'\\rightarrow 3'$ 书写，下列叙述正确的是（　）。",
+      "options": [
+        "相邻核苷酸靠 $5',5'$-磷酸二酯键连接；$\\mathrm{RNA}$ 因有 $2'$-$\\mathrm{OH}$ 故骨架改走 $2',5'$；链从 $5'$-端延长；一级结构从 $3'$ 往回念；单链用 $\\mathrm{bp}$、双链用 $\\mathrm{nt}$；一级结构已经等于双螺旋",
+        "$\\mathrm{DNA}$ 和 $\\mathrm{RNA}$ 都通过 $3',5'$-磷酸二酯键聚合：上一核苷酸的 $\\mathrm{C}$-$3'$ 羟基与下一核苷酸的 $\\mathrm{C}$-$5'$ 磷酸成键。$5'$-端为磷酸，$3'$-端为羟基。链只能从 $3'$-端延长（$3'$-羟基打游离 $\\mathrm{dNTP}$ 的 $\\alpha$-磷酸），故有 $5'\\rightarrow 3'$ 方向性。$\\mathrm{RNA}$ 虽有 $2'$-羟基，磷酸二酯键一般仍只在 $\\mathrm{C}$-$3'$ 与 $\\mathrm{C}$-$5'$ 之间形成。一级结构是从 $5'$ 至 $3'$ 的核苷酸排列，也就是碱基序列；书写默认从左到右即 $5'\\rightarrow 3'$。单链用 $\\mathrm{nt}$，双链用 $\\mathrm{bp}$ 或 $\\mathrm{kb}$；短于 $50$ 个核苷酸常称寡核苷酸。$n$ 个脱氧核苷酸有 $4^{n}$ 种排列",
+        "新链延长发生在 $5'$-端加帽；$\\mathrm{cAMP}$ 的 $3',5'$-环磷酸就是把核酸链焊成环状单体；遗传信息靠磷酸骨架花样编码",
+        "$\\mathrm{RNA}$ 与 $\\mathrm{DNA}$ 的差别是磷酸二酯键类型不同；一级结构不规定方向；人类基因组 $3\\times 10^{9}\\,\\mathrm{bp}$ 等于 $3\\times 10^{9}$ 个核苷酸"
+      ],
+      "answer": 1,
+      "hint": "键是 $3'$ 对 $5'$；延长永远在 $3'$-端；一级结构按 $5'\\rightarrow 3'$ 写；$\\mathrm{nt}$ 单链、$\\mathrm{bp}$ 双链。",
+      "explanation": "**B 正确。** $3',5'$-磷酸二酯键、$3'$-端延长、$5'\\rightarrow 3'$ 一级结构、$\\mathrm{RNA}$ 仍走 $3',5'$、$\\mathrm{nt}/\\mathrm{bp}$ 分户都按教材。\n\n**干扰项辨析**：\n- A：不是 $5',5'$ 或 $\\mathrm{RNA}$ 的 $2',5'$；不从 $5'$-端延长；不从 $3'$ 往回念；$\\mathrm{nt}/\\mathrm{bp}$ 写反；一级结构还不是双螺旋。\n- C：延长在 $3'$-端；$\\mathrm{cAMP}$ 是分子内成环；遗传信息完全靠碱基顺序。\n- D：差别是戊糖和 $\\mathrm{T}/\\mathrm{U}$，键类型相同；一级结构有方向；$100\\,\\mathrm{bp}$ 对应 $200$ 个核苷酸。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-1.md",
+        "label": "3′,5′-磷酸二酯键 · 一级结构 5′→3′ · nt 与 bp · pitfall「RNA 不改走 2′,5′」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 Chargaff 规则、$\\mathrm{A}$-$\\mathrm{T}$ 与 $\\mathrm{G}$-$\\mathrm{C}$ 氢键对数以及反向平行右手双螺旋，下列叙述正确的是（　）。",
+      "options": [
+        "Chargaff 规定四种碱基各 $25\\%$，且 $\\mathrm{A}=\\mathrm{G}$；同一个体肝 $\\mathrm{DNA}$ 和脑 $\\mathrm{DNA}$ 碱基组成不同；$\\mathrm{A}$-$\\mathrm{T}$ 三对氢键、$\\mathrm{G}$-$\\mathrm{C}$ 两对氢键；两条链同向右手螺旋；只靠氢键维系，没有碱基堆积力；直径按口诀记 $2\\,\\mathrm{nm}$、每圈 $10\\,\\mathrm{bp}$",
+        "Chargaff 规则（$1950$）：种间碱基组成不同；同一个体不同组织相同；不随年龄营养环境改变；特定生物体 $\\mathrm{A}$ 摩尔数 $=\\mathrm{T}$，$\\mathrm{G}$ 摩尔数 $=\\mathrm{C}$。表3-3 中 $\\mathrm{G}+\\mathrm{C}$ 因物种而异（酵母 $35.7\\%$，结核分枝杆菌 $70.3\\%$）。Watson-Crick 模型（$1953$ 年 $4$ 月 $25$ 日 Nature）：两条链反向平行右手螺旋，直径 $2.37\\,\\mathrm{nm}$，螺距 $3.54\\,\\mathrm{nm}$；腺嘌呤与胸腺嘧啶两对氢键，鸟嘌呤与胞嘧啶三对氢键；每螺旋 $10.5$ 个碱基对，间距 $0.34\\,\\mathrm{nm}$；亲水骨架在外、疏水碱基对在内，反向平行造成大沟和小沟。稳定力是碱基对氢键 $+$ 疏水性碱基堆积力",
+        "Chargaff 第四条已经等于画出了氢键结构；Franklin 的衍射没有螺旋推论；碱基对平面平行于螺旋轴",
+        "反向平行是两条链都自上而下 $5'\\rightarrow 3'$；大沟小沟与走向无关；人的 $\\mathrm{G}+\\mathrm{C}$ 也必须是 $50\\%$"
+      ],
+      "answer": 1,
+      "hint": "Chargaff 是 $\\mathrm{A}=\\mathrm{T}$、$\\mathrm{G}=\\mathrm{C}$ 不是各 $25\\%$；氢键 $\\mathrm{A}$-$\\mathrm{T}$ 两对、$\\mathrm{G}$-$\\mathrm{C}$ 三对；本版直径 $2.37\\,\\mathrm{nm}$、每圈 $10.5\\,\\mathrm{bp}$。",
+      "explanation": "**B 正确。** Chargaff 四条、反向平行右手双螺旋、本版参数、$\\mathrm{A}$-$\\mathrm{T}$ 两对／$\\mathrm{G}$-$\\mathrm{C}$ 三对、氢键加堆积力都按教材。\n\n**干扰项辨析**：\n- A：不是四种各 $25\\%$ 也不是 $\\mathrm{A}=\\mathrm{G}$；同一机体各组织相同；氢键对数写反；反向平行不是同向；还有碱基堆积力；不要用 $2\\,\\mathrm{nm}/10\\,\\mathrm{bp}$ 替换本版数字。\n- C：第四条只是摩尔数对应；Franklin $1951$ 年 $11$ 月已推论螺旋状；碱基对与轴近乎垂直。\n- D：一条向下一条向上；大沟小沟来自反向平行的非对称；人的 $\\mathrm{G}+\\mathrm{C}$ 为 $39.8\\%$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-2.md",
+        "label": "Chargaff 规则 · A-T 两氢键 G-C 三氢键 · 反向平行 · 表3-3 · pitfall「不要改写成 2 nm/10 bp」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{B}$ 型 $\\mathrm{DNA}$ 主要参数及其与 $\\mathrm{A}$ 型、$\\mathrm{Z}$ 型的比较，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{B}$ 型按口诀记直径 $2\\,\\mathrm{nm}$、螺距 $3.4\\,\\mathrm{nm}$、每圈 $10\\,\\mathrm{bp}$；$\\mathrm{A}$ 型是左手螺旋；$\\mathrm{Z}$ 型是右手；$\\mathrm{A}$、$\\mathrm{B}$、$\\mathrm{Z}$ 糖苷键全是反式；非 $\\mathrm{B}$ 都是试管现象，与基因表达无关",
+        "Watson-Crick 模型依据 $92\\%$ 相对湿度下的纤维衍射，是水性环境和生理条件下最稳定的结构，称为 $\\mathrm{B}$ 型：右手，直径 $2.37\\,\\mathrm{nm}$，螺距 $3.54\\,\\mathrm{nm}$，每圈 $10.5\\,\\mathrm{bp}$，间距 $0.34\\,\\mathrm{nm}$，夹角 $1^{\\circ}$，糖苷键反式，大沟宽深、小沟窄深。相对湿度降至 $75\\%$ 仍为右手，但参数变了，称为 $\\mathrm{A}$ 型：直径 $2.55\\,\\mathrm{nm}$，每圈 $11\\,\\mathrm{bp}$，螺距 $2.53\\,\\mathrm{nm}$，间距 $0.23\\,\\mathrm{nm}$，大沟窄深、小沟宽浅。$1979$ 年 Rich 等在 $\\mathrm{CGCGCG}$ 晶体中发现左手 $\\mathrm{Z}$ 型，天然 $\\mathrm{DNA}$ 中也有：直径 $1.84\\,\\mathrm{nm}$，每圈 $12\\,\\mathrm{bp}$，螺距 $4.56\\,\\mathrm{nm}$，间距 $0.38\\,\\mathrm{nm}$；嘧啶反式、嘌呤顺式交替；大沟平坦、小沟窄深。体内不同双螺旋与基因表达的调节控制相适应",
+        "$\\mathrm{A}$ 型直径最细、螺距最长；$\\mathrm{Z}$ 型直径最粗；使 $\\mathrm{B}$ 型稳定的湿度是 $75\\%$",
+        "Hoogsteen 氢键会拆掉原有 Watson-Crick 氢键；$\\mathrm{Z}$ 型就是负超螺旋；人端粒序列是 $(\\mathrm{CCCTAA})_{n}$"
+      ],
+      "answer": 1,
+      "hint": "$\\mathrm{B}$ 型按本版 $2.37/3.54/10.5$；$\\mathrm{A}$ 仍是右手，$\\mathrm{Z}$ 才是左手；糖苷键只有 $\\mathrm{Z}$ 型嘌呤取顺式。",
+      "explanation": "**B 正确。** 表3-4 三型参数、$\\mathrm{B}$ 型生理最稳、$\\mathrm{A}$ 仍右手、$\\mathrm{Z}$ 左手及体内与基因表达相适应都按教材。\n\n**干扰项辨析**：\n- A：不要用口诀约数；$\\mathrm{A}$ 是右手、$\\mathrm{Z}$ 是左手；$\\mathrm{Z}$ 型嘌呤顺式交替；多样性与调控相适应。\n- C：最粗是 $\\mathrm{A}$（$2.55\\,\\mathrm{nm}$），最细是 $\\mathrm{Z}$（$1.84\\,\\mathrm{nm}$）；$75\\%$ 是 $\\mathrm{A}$ 型，$92\\%$ 是 $\\mathrm{B}$ 型。\n- D：Hoogsteen 不破坏原有 Watson-Crick 氢键；$\\mathrm{Z}$ 型不是负超螺旋；人端粒是 $(\\mathrm{TTAGGG})_{n}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-2.md",
+        "label": "表3-4 A/B/Z · B 型参数 · pitfall「Z 型是左手，A 型仍是右手」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于核小体／染色质／染色体以及原核超螺旋，下列叙述正确的是（　）。",
+      "options": [
+        "超螺旋就是二级结构；负超螺旋等于左手 $\\mathrm{Z}$-$\\mathrm{DNA}$；$\\mathrm{H1}$ 是第八个核心组蛋白；$146\\,\\mathrm{bp}$ 是连接段；原核线性 $\\mathrm{DNA}$ 不形成类核；$\\mathrm{mtDNA}$ 也组装成核小体；平时核内就是染色体",
+        "二级结构是双螺旋，超螺旋、核小体、染色质、染色体属高级结构。体内主要是负超螺旋（盘绕方向与双螺旋相反），由拓扑异构酶形成。原核 $\\mathrm{DNA}$ 多为环状，盘绕成类核；大肠埃希菌平均每 $200$ 碱基一个负超螺旋，利于局部解链、复制和转录。人类基因组约 $3\\times 10^{9}\\,\\mathrm{bp}$、长约 $1.7\\,\\mathrm{m}$，平时为染色质，分裂期才成染色体。核小体：八聚体是 $\\mathrm{H2A}/\\mathrm{H2B}/\\mathrm{H3}/\\mathrm{H4}$ 各二；$\\mathrm{H1}$ 在 $\\mathrm{DNA}$ 进出口，不进入八聚体；约 $146\\,\\mathrm{bp}$ 盘绕 $1.75$ 圈，连接段 $0\\sim 50\\,\\mathrm{bp}$。第一次折叠 $10\\,\\mathrm{nm}$ 串珠约 $\\times 7$；第二次 $30\\,\\mathrm{nm}$ 螺线管每圈 $6$ 个核小体，达 $40\\sim 60$ 倍；总共压缩 $8000\\sim 10000$ 倍。人 $\\mathrm{mtDNA}$ 为裸露闭合双链环，$16569\\,\\mathrm{bp}$，无蛋白质结合",
+        "正超螺旋是体内主要形式；核小体压缩总共只有 $7$ 倍；着丝粒富含 $\\mathrm{GC}$，端粒序列是 $(\\mathrm{CCCTAA})_{n}$",
+        "负超螺旋的线性开链分子不必约束；$30\\,\\mathrm{nm}$ 螺线管与转录活性正相关，转录区 $\\mathrm{H1}$ 更多"
+      ],
+      "answer": 1,
+      "hint": "八聚体不含 $\\mathrm{H1}$；$146\\,\\mathrm{bp}$ 盘在核心上；原核环状负超螺旋成类核；$\\mathrm{mtDNA}$ 裸露环状。",
+      "explanation": "**B 正确。** 负超螺旋与类核、核小体数字、$10\\,\\mathrm{nm}/30\\,\\mathrm{nm}$ 压缩阶梯、$\\mathrm{mtDNA}$ 裸露环都按教材。\n\n**干扰项辨析**：\n- A：超螺旋是高级结构，不是 $\\mathrm{Z}$-$\\mathrm{DNA}$；$\\mathrm{H1}$ 不进八聚体；$146\\,\\mathrm{bp}$ 不是 linker；原核多为环状；$\\mathrm{mtDNA}$ 无组蛋白；平时是染色质。\n- C：体内主负超螺旋；总压缩 $8000\\sim 10000$ 倍；着丝粒富 $\\mathrm{AT}$；端粒是 $\\mathrm{TTAGGG}$。\n- D：负超螺旋须闭环或绑蛋白；转录区无序、$\\mathrm{H1}$ 较少，与螺线管反相关。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-2.md",
+        "label": "负超螺旋 · 类核 · 核小体 · 压缩阶梯 · mtDNA · pitfall「H1 不是第八个核心组蛋白」"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于真核 $\\mathrm{mRNA}$ 的 $5'$-帽、$\\mathrm{poly}(\\mathrm{A})$ 尾以及内含子／外显子，下列叙述正确的是（　）。",
+      "options": [
+        "编码 $\\mathrm{RNA}$ 包括 $\\mathrm{mRNA}$、$\\mathrm{tRNA}$ 和 $\\mathrm{rRNA}$；$\\mathrm{hnRNA}$ 已经能翻译；帽是普通 $3',5'$-磷酸二酯键接上去的一个 $\\mathrm{G}$，原核也有 $\\mathrm{m}^{7}\\mathrm{Gppp}$ 帽；$\\mathrm{poly}(\\mathrm{A})$ 是基因 $3'$ 端编码的一长串 $\\mathrm{A}$；成熟只要剪掉内含子；$\\mathrm{UTR}$ 是废物序列",
+        "编码 $\\mathrm{RNA}$ 仅 $\\mathrm{mRNA}$ 一种。$\\mathrm{mRNA}$ 占细胞 $\\mathrm{RNA}$ 总重量 $2\\%\\sim 5\\%$，种类约 $10^{5}$，寿命数分钟至数小时；真核初级产物为 $\\mathrm{hnRNA}$。$5'$-帽是反式 $\\mathrm{m}^{7}\\mathrm{Gppp}$，以 $5'-5'$ 三磷酸键连接，使 $5'$-端不再有磷酸基团；下游第一、第二个核苷酸 $\\mathrm{C}$-$2'$ 常甲基化；原核无此特殊帽。$3'$-$\\mathrm{poly}(\\mathrm{A})$ 尾为 $80\\sim 250$ 个腺苷酸，转录后由多聚腺苷酸聚合酶加入；约每 $20$ 个 $\\mathrm{A}$ 结合一个 $\\mathrm{PABP}$。帽和尾共同负责转运、稳定和翻译起始；去除则迅速降解。$\\mathrm{hnRNA}$ 含交替的外显子和内含子，剪接后再加帽加尾才成熟。鸡卵清蛋白：$8$ 个外显子、$7$ 个内含子，$7\\,564\\,\\mathrm{bp}\\to 1\\,872\\,\\mathrm{nt}$。成熟真核 $\\mathrm{mRNA}$：$5'$-帽、$5'$-$\\mathrm{UTR}$、编码区／$\\mathrm{ORF}$（第一个 $\\mathrm{AUG}$ 至 $\\mathrm{UAA}/\\mathrm{UAG}/\\mathrm{UGA}$）、$3'$-$\\mathrm{UTR}$、$\\mathrm{poly}(\\mathrm{A})$ 尾",
+        "原核绝对没有 $\\mathrm{poly}(\\mathrm{A})$ 尾；帽结合蛋白质只负责降解 $\\mathrm{mRNA}$；起始密码子是随便一个 $\\mathrm{AUG}$",
+        "内含子构成成熟 $\\mathrm{mRNA}$，外显子被剪掉；鸡卵清蛋白基因变长而不是变短"
+      ],
+      "answer": 1,
+      "hint": "编码账只有 $\\mathrm{mRNA}$；帽是 $5'-5'$ 的 $\\mathrm{m}^{7}\\mathrm{Gppp}$；尾是转录后加上去的；$\\mathrm{hnRNA}$ 要剪接加帽加尾。",
+      "explanation": "**B 正确。** 编码仅 $\\mathrm{mRNA}$、帽尾化学与功能、鸡卵清蛋白数字、成熟四段都按教材。\n\n**干扰项辨析**：\n- A：$\\mathrm{tRNA}/\\mathrm{rRNA}$ 非编码；$\\mathrm{hnRNA}$ 还要加工；帽是 $5'-5'$ 不是普通 $3',5'$，原核无此帽；尾非基因组编码；成熟含加帽加尾；$\\mathrm{UTR}$ 参与调控。\n- C：有些原核可有较短的尾；$\\mathrm{CBP}$ 维持稳定、出核、促翻译起始；起始密码子是第一个 $\\mathrm{AUG}$。\n- D：外显子留下、内含子剪掉；鸡卵清蛋白由 $7\\,564\\,\\mathrm{bp}$ 变成 $1\\,872\\,\\mathrm{nt}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-3.md",
+        "label": "5′-帽 · poly(A) 尾 · hnRNA 剪接 · 鸡卵清蛋白 · pitfall「编码 RNA 只有 mRNA」"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{tRNA}$ 的三叶草／倒 $\\mathrm{L}$／反密码子以及 $\\mathrm{rRNA}$ 与核糖体组成，下列叙述正确的是（　）。",
+      "options": [
+        "三叶草已经是三级结构；氨基酸挂在反密码子环上；稀有碱基是基因组第 $5$、$6$ 种编码字母；摆动配对在本节已经讲完；$\\mathrm{S}$ 可以按 $30+50=80$ 加；$5.8\\mathrm{S}$ 原核也有；$\\mathrm{U}1\\sim\\mathrm{U}7$ 全部是剪接体成分；$\\mathrm{tRNA}$、$\\mathrm{rRNA}$ 都是编码 $\\mathrm{RNA}$",
+        "$\\mathrm{tRNA}$ 约占 $\\mathrm{RNA}$ 总质量 $15\\%$，由 $74\\sim 95$ 个核苷酸组成，是分子量最小的核酸。稀有碱基（$\\mathrm{DHU}$、$\\psi$、$\\mathrm{m}^{7}\\mathrm{G}$、$\\mathrm{m}^{7}\\mathrm{A}$）占 $10\\%\\sim 20\\%$，转录后修饰；$\\psi$ 是杂环 $\\mathrm{C}5$ 与戊糖 $\\mathrm{C}$-$1'$ 相连。二级三叶草：氨基酸臂（$3'$-$\\mathrm{CCA}$，氨基酸酯连末端 $\\mathrm{A}$ 的 $\\mathrm{C}3'$）、$\\mathrm{DHU}$ 环、$\\mathrm{T}\\psi\\mathrm{C}$ 环、反密码子环、可变臂；三级倒 $\\mathrm{L}$，靠特殊氢键和碱基堆积力，$\\mathrm{DHU}$ 与 $\\mathrm{T}\\psi\\mathrm{C}$ 靠近。反密码子环 $7\\sim 9$ 核苷酸，居中 $3$ 个为反密码子；酪氨酸反密码子 $\\mathrm{GUA}$ 对密码子 $\\mathrm{UAC}$。简并性本节先写成一种氨基酸可有几种 $\\mathrm{tRNA}$；摆动写在蛋白质生物合成章。$\\mathrm{rRNA}$ 约占 $80\\%$ 以上。原核 $30\\mathrm{S}$（$16\\mathrm{S}+21$ 种蛋白）+$50\\mathrm{S}$（$23\\mathrm{S}+5\\mathrm{S}+31$ 种蛋白）；真核 $40\\mathrm{S}$（$18\\mathrm{S}$）+$60\\mathrm{S}$（$28\\mathrm{S}+5.8\\mathrm{S}+5\\mathrm{S}$），多一种 $5.8\\mathrm{S}$。$\\mathrm{S}$ 不是算术相加。$\\mathrm{A}$ 位氨酰 $\\mathrm{tRNA}$，$\\mathrm{P}$ 位肽酰-$\\mathrm{tRNA}$，$\\mathrm{E}$ 位排出空载 $\\mathrm{tRNA}$",
+        "氨基酸连在反密码子上决定携带种类；倒 $\\mathrm{L}$ 是二级结构；原核小亚基是 $40\\mathrm{S}$、$18\\mathrm{S}$",
+        "纯化的 $\\mathrm{rRNA}$ 和核糖体蛋白在试管里不能组装；茎环与蛋白结合无关；$\\mathrm{mRNA}$ 绑在大亚基外侧而不是大小亚基缝隙"
+      ],
+      "answer": 1,
+      "hint": "三叶草二级、倒 $\\mathrm{L}$ 三级；氨基酸在 $3'$-$\\mathrm{CCA}$；摆动不在本节展开；真核大亚基才有 $5.8\\mathrm{S}$，$\\mathrm{S}$ 不能加。",
+      "explanation": "**B 正确。** $\\mathrm{tRNA}$ 结构与反密码子、摆动不在本节展开、原核／真核核糖体组成、$\\mathrm{A}/\\mathrm{P}/\\mathrm{E}$ 都按教材。\n\n**干扰项辨析**：\n- A：三叶草是二级；氨基酸不挂反密码子；稀有碱基是转录后修饰；摆动在翻译章；$\\mathrm{S}$ 不能加；$5.8\\mathrm{S}$ 仅真核；$\\mathrm{U}3/\\mathrm{U}7$ 不是剪接体主力；$\\mathrm{tRNA}/\\mathrm{rRNA}$ 非编码。\n- C：氨基酸酯连 $3'$-$\\mathrm{CCA}$ 的 $\\mathrm{A}$；倒 $\\mathrm{L}$ 是三级；原核小亚基 $30\\mathrm{S}$、$16\\mathrm{S}$。\n- D：纯化组分可自动组装；茎环是蛋白结合基础；$\\mathrm{mRNA}$ 在大小亚基缝隙。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-3.md",
+        "label": "tRNA 三叶草与倒 L · 反密码子 · 表3-5 核糖体 · pitfall「摆动不在本节展开；S 不是加法」"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于编码／非编码 $\\mathrm{RNA}$、$\\mathrm{tRNA}$ 识别密码子以及核酶，下列叙述正确的有（　）。",
+      "options": [
+        "编码 $\\mathrm{RNA}$ 仅 $\\mathrm{mRNA}$ 一种。组成性非编码 $\\mathrm{RNA}$ 丰度基本恒定，教材列出 $\\mathrm{tRNA}$、$\\mathrm{rRNA}$、端粒 $\\mathrm{RNA}$、$\\mathrm{SRP}$ $\\mathrm{RNA}$ 等；调控性非编码 $\\mathrm{RNA}$ 丰度随环境和细胞性状改变，包括 $\\mathrm{miRNA}$、$\\mathrm{siRNA}$、$\\mathrm{piRNA}$、$\\mathrm{lncRNA}$、$\\mathrm{circRNA}$ 等",
+        "$\\mathrm{tRNA}$ 二级三叶草、三级倒 $\\mathrm{L}$。$3'$-端 $\\mathrm{CCA}$ 上氨基酸酯连末端 $\\mathrm{A}$ 的 $\\mathrm{C}3'$；反密码子环居中 $3$ 个核苷酸识别密码子（教材例：酪氨酸 $\\mathrm{GUA}$ 对 $\\mathrm{UAC}$）。一种氨基酸可有几种 $\\mathrm{tRNA}$ 以适应简并性；摆动配对写在蛋白质生物合成章，不要在三叶草图上当成已经讲完",
+        "核酶是具有生物催化功能的 $\\mathrm{RNA}$。$1981$ 年 Cech 发现四膜虫 $26\\mathrm{S}$ $\\mathrm{rRNA}$ 前体 $\\mathrm{IVS}$ 自行拼接；$1983$ 年 Altman 证明较高 $\\mathrm{Mg}^{2+}$ 下 $\\mathrm{RNase}$ $\\mathrm{P}$ 的 $\\mathrm{RNA}$ 组分（$\\mathrm{M1RNA}$）催化 $\\mathrm{tRNA}$ 前体成熟。剪接型既剪又接（Ⅰ／Ⅱ类内含子）；剪切型只切（锤头、发夹、$\\mathrm{HDV}$、$\\mathrm{RNase}$ $\\mathrm{P}$）",
+        "$\\mathrm{lncRNA}$ 有 $\\mathrm{poly}(\\mathrm{A})$ 和启动子，所以算编码 $\\mathrm{RNA}$；$\\mathrm{circRNA}$ 仍按线性 $\\mathrm{mRNA}$ 用帽尾那一套；$\\mathrm{RNase}$ $\\mathrm{P}$ 里干活的是蛋白质组分；摆动已经在第三节把第三位不严格配对讲完"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "编码账只有 $\\mathrm{mRNA}$；三叶草二级、倒 $\\mathrm{L}$ 三级；核酶是 $\\mathrm{RNA}$ 催化剂。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：编码仅 $\\mathrm{mRNA}$，组成性／调控性分户，来自 ch03-3。\n- B：三叶草、倒 $\\mathrm{L}$、反密码子与摆动不在本节展开，来自 ch03-3。\n- C：核酶发现与剪接型／剪切型，来自 ch03-3。\n- **D 错**：$\\mathrm{lncRNA}$ 无 $\\mathrm{ORF}$，不编码；$\\mathrm{circRNA}$ 封闭环、无 $5'/3'$ 端；$\\mathrm{RNase}$ $\\mathrm{P}$ 催化组分是 $\\mathrm{M1RNA}$；摆动在翻译章。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-3.md",
+        "label": "编码/非编码 RNA · tRNA 反密码子 · 核酶 · pitfall「lncRNA 没有可读框」"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于紫外 $260\\,\\mathrm{nm}$、$A_{260}/A_{280}$、变性／$T_\\mathrm{m}$／增色效应以及复性杂交，下列叙述正确的有（　）。",
+      "options": [
+        "嘌呤、嘧啶含共轭双键，中性条件下最大吸收在 $260\\,\\mathrm{nm}$ 附近。$A_{260}=1.0$ 对应 $50\\,\\mu\\mathrm{g}/\\mathrm{ml}$ 双链 $\\mathrm{DNA}$，或 $40\\,\\mu\\mathrm{g}/\\mathrm{ml}$ 单链 $\\mathrm{DNA}$／$\\mathrm{RNA}$，或 $20\\,\\mu\\mathrm{g}/\\mathrm{ml}$ 寡核苷酸。纯度：$\\mathrm{DNA}$ 纯品 $A_{260}/A_{280}=1.8$，$\\mathrm{RNA}$ 纯品 $=2.0$",
+        "变性断裂氢键并破坏碱基堆积力，双链→两条单链，空间结构破坏但核苷酸序列不变。内部碱基暴露使 $A_{260}$ 升高，即增色效应。$T_\\mathrm{m}$ 是 $\\Delta A_{260}$ 达最大变化一半时的温度，对应 $50\\%$ 双链解离。$\\mathrm{GC}$ 越高、$\\mathrm{DNA}$ 越长、离子强度越高，则 $T_\\mathrm{m}$ 越高。小于 $20\\,\\mathrm{bp}$：$T_\\mathrm{m}=4(G+C)+2(A+T)$",
+        "缓慢除去变性条件（热变性后缓慢冷却）为复性／退火。迅速冷却至 $4^{\\circ}\\mathrm{C}$ 来不及配对，用来保持单链。不同来源单链只要有一定程度互补即可杂交，可形成 $\\mathrm{DNA}$–$\\mathrm{DNA}$、$\\mathrm{RNA}$–$\\mathrm{RNA}$、$\\mathrm{DNA}$–$\\mathrm{RNA}$ 杂化双链。Southern、Northern、斑点印迹、原位杂交、$\\mathrm{PCR}$、基因芯片都利用这一原理",
+        "$\\mathrm{DNA}$ 纯品 $A_{260}/A_{280}$ 为 $2.0$；$T_\\mathrm{m}$ 是刚开始解链的温度；$\\mathrm{GC}$ 越高 $T_\\mathrm{m}$ 越低；变性就是把 $\\mathrm{DNA}$ 水解成核苷酸；迅速冷却到 $4^{\\circ}\\mathrm{C}$ 是快速退火；杂交必须全长完全相同"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "核酸看 $260\\,\\mathrm{nm}$，$\\mathrm{DNA}$ 纯度 $1.8$；$T_\\mathrm{m}$ 是 $50\\%$ 解离；慢冷才退火，冰浴锁单链。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：紫外定量与 $1.8/2.0$ 纯度，来自 ch03-4。\n- B：变性、增色、$T_\\mathrm{m}$ 与 $\\mathrm{G}+\\mathrm{C}$，来自 ch03-4。\n- C：复性／退火／杂交三对组合与六种技术，来自 ch03-4。\n- **D 错**：$\\mathrm{DNA}$ 纯品是 $1.8$；$T_\\mathrm{m}$ 是 $50\\%$ 解离；$\\mathrm{GC}$ 高则 $T_\\mathrm{m}$ 高；变性不改序列；速冷不能复性；杂交只需一定程度互补。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-4.md",
+        "label": "A260 与 A260/A280 · 变性 Tm 增色 · 复性杂交 · pitfall「Tm 不是开始解链的温度」"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "构成 $\\mathrm{DNA}$ 的碱基是 $\\mathrm{A}$、$\\mathrm{G}$、$\\mathrm{C}$、$\\mathrm{U}$；体内游离核苷酸多是 $2'$-核苷酸；$\\mathrm{RNA}$ 因有 $2'$-$\\mathrm{OH}$ 故磷酸二酯键改走 $2',5'$；Chargaff 规定四种碱基各 $25\\%$ 且 $\\mathrm{A}=\\mathrm{G}$；$\\mathrm{A}$-$\\mathrm{T}$ 三对氢键、$\\mathrm{G}$-$\\mathrm{C}$ 两对氢键；本版教材 $\\mathrm{B}$ 型 $\\mathrm{DNA}$ 按口诀记直径 $2\\,\\mathrm{nm}$、每圈 $10\\,\\mathrm{bp}$。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对 $\\mathrm{T}/\\mathrm{U}$、游离 $5'$、$3',5'$ 骨架、Chargaff 第四条、氢键对数、本版 $\\mathrm{B}$ 型参数。",
+      "explanation": "**该命题错误，每一分句都错。** $\\mathrm{DNA}$ 碱基是 $\\mathrm{A}$、$\\mathrm{G}$、$\\mathrm{C}$、$\\mathrm{T}$。体内游离核苷酸多是 $5'$-核苷酸。$\\mathrm{RNA}$ 磷酸二酯键一般仍在 $\\mathrm{C}$-$3'$ 与 $\\mathrm{C}$-$5'$ 之间。Chargaff 是 $\\mathrm{A}=\\mathrm{T}$、$\\mathrm{G}=\\mathrm{C}$，种间 $\\mathrm{G}+\\mathrm{C}$ 并不相同。$\\mathrm{A}$-$\\mathrm{T}$ 两对氢键，$\\mathrm{G}$-$\\mathrm{C}$ 三对氢键。本版 $\\mathrm{B}$ 型直径 $2.37\\,\\mathrm{nm}$、每圈 $10.5\\,\\mathrm{bp}$，不要改写成口诀约数。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-1.md",
+        "label": "DNA/RNA 组成 · 3′,5′-磷酸二酯键 · Chargaff · B 型参数"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "$\\mathrm{H1}$ 是第八个核心组蛋白；$146\\,\\mathrm{bp}$ 是连接段；$\\mathrm{tRNA}$ 和 $\\mathrm{rRNA}$ 也是编码 $\\mathrm{RNA}$；原核 $\\mathrm{mRNA}$ 也有 $\\mathrm{m}^{7}\\mathrm{Gppp}$ 帽；$\\mathrm{DNA}$ 纯品 $A_{260}/A_{280}$ 为 $2.0$；$T_\\mathrm{m}$ 是刚开始解链的温度，变性会把核苷酸序列水解掉；迅速冷却到 $4^{\\circ}\\mathrm{C}$ 是为了加速复性。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对八聚体成员、编码账、原核无特殊帽、$1.8/2.0$、$T_\\mathrm{m}$ 定义、冰浴锁单链。",
+      "explanation": "**该命题错误，七处都错。** 八聚体是 $\\mathrm{H2A}/\\mathrm{H2B}/\\mathrm{H3}/\\mathrm{H4}$ 各二，$\\mathrm{H1}$ 在进出口；$146\\,\\mathrm{bp}$ 盘在核心上，连接段是 $0\\sim 50\\,\\mathrm{bp}$。编码 $\\mathrm{RNA}$ 仅 $\\mathrm{mRNA}$。原核没有这种特殊 $5'$-帽。$\\mathrm{DNA}$ 纯品 $A_{260}/A_{280}$ 为 $1.8$（$\\mathrm{RNA}$ 才是 $2.0$）。$T_\\mathrm{m}$ 对应 $50\\%$ 解离；变性不改变序列。迅速冷却至 $4^{\\circ}\\mathrm{C}$ 用来保持单链，不能复性。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-2.md",
+        "label": "核小体 H1 · 编码 RNA · 帽 · A260/A280 · Tm · 复性"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "构成 $\\mathrm{DNA}$ 的四种碱基是 $\\mathrm{A}$、$\\mathrm{G}$、$\\mathrm{C}$ 和 ________。$\\mathrm{A}$-$\\mathrm{T}$ 之间形成 ________ 对氢键。本版教材 $\\mathrm{B}$ 型 $\\mathrm{DNA}$ 直径为 ________。$\\mathrm{DNA}$ 纯品的 $A_{260}/A_{280}$ 应为 ________。$T_\\mathrm{m}$ 对应 ________ 的 $\\mathrm{DNA}$ 双链解离为单链时的温度。",
+      "answer": "T，2，2.37 nm，1.8，50%",
+      "hint": "$\\mathrm{DNA}$ 用 $\\mathrm{T}$ 不用 $\\mathrm{U}$；$\\mathrm{A}$-$\\mathrm{T}$ 两对氢键；直径按本版 $2.37\\,\\mathrm{nm}$；纯度 $1.8$；$T_\\mathrm{m}$ 是一半解离。",
+      "scoring_criteria": [
+        "第一空填“T”（或“胸腺嘧啶”“thymine”）（2分）",
+        "第二空填“2”（或“两”“二”）（2分）",
+        "第三空填“2.37 nm”（或“$2.37\\,\\mathrm{nm}$”“2.37nm”）（2分）",
+        "第四空填“1.8”（2分）",
+        "第五空填“50%”（或“50％”“一半”）（2分）"
+      ],
+      "explanation": "$\\mathrm{DNA}$ 碱基为 $\\mathrm{A}$、$\\mathrm{G}$、$\\mathrm{C}$、$\\mathrm{T}$。$\\mathrm{A}$-$\\mathrm{T}$ 两对氢键，$\\mathrm{G}$-$\\mathrm{C}$ 三对。本版 $\\mathrm{B}$ 型直径 $2.37\\,\\mathrm{nm}$，不要写成 $2\\,\\mathrm{nm}$。$\\mathrm{DNA}$ 纯品 $A_{260}/A_{280}=1.8$（$\\mathrm{RNA}$ 为 $2.0$）。$T_\\mathrm{m}$ 是 $\\Delta A_{260}$ 一半、即 $50\\%$ 双链解离时的温度。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-1.md",
+        "label": "DNA 碱基 T；A-T 两氢键；B 型直径；A260/A280；Tm 50%"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "$\\mathrm{DNA}$ 与 $\\mathrm{RNA}$ 的组成、一级结构与双螺旋如何记？请写出：①碱基、戊糖、磷酸三组分，$\\mathrm{DNA}/\\mathrm{RNA}$ 字母差，体内游离多为 $5'$-核苷酸；②$3',5'$-磷酸二酯键、$5'\\rightarrow 3'$ 书写，$\\mathrm{nt}$ 与 $\\mathrm{bp}$；③Chargaff 第四条，$\\mathrm{A}$-$\\mathrm{T}$ 两氢键、$\\mathrm{G}$-$\\mathrm{C}$ 三氢键，反向平行，本版 $\\mathrm{B}$ 型直径／螺距／每圈，稳定力；④$\\mathrm{B}$ 型对 $\\mathrm{A}$ 型、$\\mathrm{Z}$ 型（谁左手、糖苷键谁顺式）。不要把 $\\mathrm{U}$ 写进 $\\mathrm{DNA}$，也不要用 $2\\,\\mathrm{nm}/10\\,\\mathrm{bp}$ 替换本版参数。",
+      "answer": "参考答案：\n\n**1. 组成**\n- 核酸以核苷酸为基本单位，完全水解得等摩尔碱基、戊糖、磷酸。\n- $\\mathrm{DNA}$：$\\mathrm{A}/\\mathrm{G}/\\mathrm{C}/\\mathrm{T}$，脱氧核糖；$\\mathrm{RNA}$：$\\mathrm{A}/\\mathrm{G}/\\mathrm{C}/\\mathrm{U}$，核糖。$\\mathrm{T}$ 是 $5$-甲基尿嘧啶。\n- 体内游离核苷酸多是 $5'$-核苷酸。$\\mathrm{RNA}$ 一般是转录产物，某些情况下也可作遗传载体。\n\n**2. 一级结构**\n- $3',5'$-磷酸二酯键连接；$5'$-端磷酸，$3'$-端羟基；只能从 $3'$-端延长，故 $5'\\rightarrow 3'$。\n- $\\mathrm{RNA}$ 虽有 $2'$-$\\mathrm{OH}$，骨架一般仍走 $3',5'$。\n- 一级结构＝从 $5'$ 至 $3'$ 的碱基序列。单链用 $\\mathrm{nt}$，双链用 $\\mathrm{bp}$。\n\n**3. 双螺旋**\n- Chargaff：$\\mathrm{A}=\\mathrm{T}$，$\\mathrm{G}=\\mathrm{C}$；种间 $\\mathrm{G}+\\mathrm{C}$ 不同。\n- 反向平行右手螺旋；$\\mathrm{A}$-$\\mathrm{T}$ 两对氢键，$\\mathrm{G}$-$\\mathrm{C}$ 三对氢键。\n- 本版 $\\mathrm{B}$ 型：直径 $2.37\\,\\mathrm{nm}$，螺距 $3.54\\,\\mathrm{nm}$，每圈 $10.5\\,\\mathrm{bp}$，间距 $0.34\\,\\mathrm{nm}$。\n- 稳定力：碱基对氢键 $+$ 疏水性碱基堆积力。大沟、小沟来自反向平行的非对称。\n\n**4. A/B/Z**\n- $\\mathrm{B}$ 型：生理最稳，$92\\%$ 湿度，右手。\n- $\\mathrm{A}$ 型：湿度降低仍右手，$75\\%$ 湿度。\n- $\\mathrm{Z}$ 型：左手；$1979$ 年 $\\mathrm{CGCGCG}$；嘧啶反式、嘌呤顺式交替。",
+      "hint": "按组成 → 磷酸二酯键与一级结构 → Chargaff 和双螺旋 → A/B/Z 写，并避开 $\\mathrm{U}$ 进 $\\mathrm{DNA}$、口诀约数两个易错点。",
+      "scoring_criteria": [
+        "写出 DNA/RNA 碱基与戊糖差别及游离多为 5′-核苷酸（3分）",
+        "写出 3′,5′-磷酸二酯键、5′→3′ 书写及 nt/bp（3分）",
+        "写出 Chargaff、A-T 两氢键 G-C 三氢键、反向平行、本版 B 型参数及稳定力（4分）",
+        "写出 B 生理最稳、A 仍右手、Z 左手及糖苷键构象（4分）"
+      ],
+      "explanation": "本题把第 03-1、03-2 节收成“组成—一级结构—双螺旋—A/B/Z”。易错点：$\\mathrm{U}$ 写进 $\\mathrm{DNA}$；口诀 $2\\,\\mathrm{nm}/10\\,\\mathrm{bp}$；把 $\\mathrm{A}$ 型写成左手。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-1.md",
+        "label": "组成与一级结构；Chargaff 与双螺旋；A/B/Z"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "核酸的高级结构、$\\mathrm{RNA}$ 三类主要分子与理化性质如何收？请写出：①核小体八聚体（不含 $\\mathrm{H1}$）、$146\\,\\mathrm{bp}$ 盘绕 $1.75$ 圈、连接段、$10\\,\\mathrm{nm}/30\\,\\mathrm{nm}$ 压缩，对原核负超螺旋／类核，不要把 $\\mathrm{mtDNA}$ 写成核小体；②真核 $\\mathrm{mRNA}$ 的 $5'$-帽（$\\mathrm{m}^{7}\\mathrm{Gppp}$、$5'-5'$）、$\\mathrm{poly}(\\mathrm{A})$ 尾、内含子外显子；③$\\mathrm{tRNA}$ 三叶草／倒 $\\mathrm{L}$／反密码子（摆动不在本节展开），以及原核／真核核糖体亚基（$5.8\\mathrm{S}$ 只在真核）；④紫外 $260\\,\\mathrm{nm}$、$A_{260}/A_{280}$，$T_\\mathrm{m}$ 与 $\\mathrm{G}+\\mathrm{C}$、增色效应，复性要慢冷、杂交只需一定程度互补。不要把编码 $\\mathrm{RNA}$ 写成三种，也不要把冰浴听成快速退火。",
+      "answer": "参考答案：\n\n**1. 高级结构**\n- 体内主负超螺旋；原核环状 $\\mathrm{DNA}$ 成类核，大肠埃希菌约每 $200$ 碱基一个负超螺旋。\n- 核小体：八聚体 $\\mathrm{H2A}/\\mathrm{H2B}/\\mathrm{H3}/\\mathrm{H4}$ 各二；$\\mathrm{H1}$ 在进出口；$146\\,\\mathrm{bp}$ 盘绕 $1.75$ 圈；linker $0\\sim 50\\,\\mathrm{bp}$。\n- $10\\,\\mathrm{nm}$ 串珠约 $\\times 7$；$30\\,\\mathrm{nm}$ 螺线管每圈 $6$ 个核小体，达 $40\\sim 60$ 倍；总共 $8000\\sim 10000$ 倍。\n- 人 $\\mathrm{mtDNA}$：$16569\\,\\mathrm{bp}$ 裸露闭合双链环，无组蛋白。\n\n**2. mRNA**\n- 编码 $\\mathrm{RNA}$ 仅 $\\mathrm{mRNA}$。真核初级产物 $\\mathrm{hnRNA}$。\n- $5'$-帽：反式 $\\mathrm{m}^{7}\\mathrm{Gppp}$，$5'-5'$ 三磷酸键；原核无此帽。\n- $\\mathrm{poly}(\\mathrm{A})$ 尾：$80\\sim 250$ 个腺苷酸，转录后加上。帽尾共同负责转运、稳定、翻译起始。\n- 内含子剪掉、外显子连接，再加帽加尾才成熟。\n\n**3. tRNA 与核糖体**\n- 三叶草二级、倒 $\\mathrm{L}$ 三级；$3'$-$\\mathrm{CCA}$ 连氨基酸；反密码子居中三联体（酪氨酸 $\\mathrm{GUA}$–$\\mathrm{UAC}$）。摆动在翻译章。\n- 原核 $30\\mathrm{S}+50\\mathrm{S}$（$16\\mathrm{S}$；$23\\mathrm{S}+5\\mathrm{S}$）；真核 $40\\mathrm{S}+60\\mathrm{S}$（$18\\mathrm{S}$；$28\\mathrm{S}+5.8\\mathrm{S}+5\\mathrm{S}$）。$\\mathrm{A}/\\mathrm{P}/\\mathrm{E}$ 三位。\n\n**4. 理化性质**\n- 最大吸收 $260\\,\\mathrm{nm}$；$\\mathrm{DNA}$ 纯度 $1.8$，$\\mathrm{RNA}$ 纯度 $2.0$。\n- 变性不改序列；增色：$A_{260}$ 升高。$T_\\mathrm{m}$：$50\\%$ 解离，$\\mathrm{GC}$ 越高 $T_\\mathrm{m}$ 越高。\n- 慢冷退火；速冷至 $4^{\\circ}\\mathrm{C}$ 保持单链。杂交需一定程度互补（$\\mathrm{DNA}$–$\\mathrm{DNA}$、$\\mathrm{RNA}$–$\\mathrm{RNA}$、$\\mathrm{DNA}$–$\\mathrm{RNA}$）。",
+      "hint": "按核小体对类核 → 帽尾剪接 → tRNA/核糖体 → 260 nm 与 Tm/杂交写，并避开三种编码 RNA、冰浴退火两个易错点。",
+      "scoring_criteria": [
+        "写出核小体八聚体（不含 H1）、146 bp、压缩阶梯及原核负超螺旋／mtDNA 裸露环（4分）",
+        "写出真核 mRNA 帽（m7Gppp、5′-5′）、poly(A) 尾及内含子外显子（4分）",
+        "写出 tRNA 三叶草／倒 L／反密码子（摆动不在本节）及原核／真核核糖体亚基（3分）",
+        "写出 260 nm、A260/A280、Tm 与 G+C、增色、慢冷复性与杂交（4分）"
+      ],
+      "explanation": "本题把第 03-2 后半、03-3、03-4 节收成“高级结构—mRNA—tRNA/核糖体—理化性质”。易错点：编码 RNA 写成三种；$\\mathrm{H1}$ 进八聚体；冰浴当成退火；$1.8/2.0$ 对调。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch03-2.md",
+        "label": "核小体与超螺旋；mRNA 帽尾；tRNA 与核糖体；紫外变性杂交"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

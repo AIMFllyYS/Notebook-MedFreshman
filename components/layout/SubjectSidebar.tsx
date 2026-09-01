@@ -19,6 +19,10 @@ import {
   PanelLeft,
   ListTree,
   Home,
+  Microscope,
+  Dna,
+  Bone,
+  Layers,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import FileTree from "./FileTree";
@@ -30,6 +34,9 @@ import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
 import { navTree } from "@/lib/content-data/nav";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
+import { filterSubjectsByYear } from "@/lib/constants/academic-year";
+import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import AcademicYearSwitcher from "./AcademicYearSwitcher";
 import { EASE } from "@/lib/motion";
 import type { SubjectId, ContentItem } from "@/lib/types/content";
 
@@ -44,6 +51,10 @@ const ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: Reac
   Scale,
   Folder,
   FolderOpen,
+  Microscope,
+  Dna,
+  Bone,
+  Layers,
 };
 
 function SubjectIcon({ name, size = 15 }: { name: string; size?: number }) {
@@ -67,6 +78,16 @@ export default function SubjectSidebar() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const settingsBtnRef = useRef<HTMLButtonElement>(null);
+  const academicYear = useAcademicYear((s) => s.year);
+  const hydrateYear = useAcademicYear((s) => s.hydrate);
+  const visibleSubjects = useMemo(
+    () => filterSubjectsByYear(navTree.subjects, academicYear),
+    [academicYear],
+  );
+
+  useEffect(() => {
+    hydrateYear();
+  }, [hydrateYear]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -239,9 +260,11 @@ export default function SubjectSidebar() {
               <Home size={15} /> 首页
             </button>
 
+            <AcademicYearSwitcher variant="compact" />
+
             {/* 科目列表 */}
             <div ref={scrollRef} className="scroll-y flex-1" style={{ padding: "4px 0" }}>
-              {navTree.subjects.map((subject) => {
+              {visibleSubjects.map((subject) => {
           const isSubjectExpanded = expandedIds.has(subject.id);
           const iconName = SUBJECT_ICONS[subject.id as SubjectId] ?? "Folder";
 

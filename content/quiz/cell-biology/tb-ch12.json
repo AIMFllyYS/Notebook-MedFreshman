@@ -1,0 +1,321 @@
+{
+  "subjectId": "cell-biology",
+  "chapterId": "tb-ch12",
+  "generatedAt": "2026-08-31",
+  "examConfig": {
+    "source": "content/cell-biology/textbook/ch12-1.md；content/cell-biology/textbook/ch12-2.md；content/cell-biology/textbook/ch12-3.md；content/cell-biology/textbook/ch12-4.md；content/cell-biology/textbook/ch12-5.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于细胞通讯的空间路径，下列叙述正确的是（　）。",
+      "options": [
+        "细胞通讯就是信号转导的别名，等于 GPCR；旁分泌必须经血液到达靶细胞，接触依赖性通讯也要释放可溶性配体",
+        "细胞通讯回答信号从谁到谁、走哪条空间路径；信号转导回答靶细胞怎样把收到的分子改写成胞内事件。分泌型通讯再分成内分泌（经血液长距离）、旁分泌（局部扩散）、神经突触传递（电—化学—电，毫秒级）和自分泌（作用于自身受体）。接触依赖性通讯把信号分子留在信号细胞质膜上，与邻细胞受体直接对接，无须释放可溶配体，Notch–Delta 是分子样板。间隙连接一般不经受体、直接共享胞质小分子；外泌体可整包投递蛋白质、mRNA 和 miRNA",
+        "间隙连接必须经膜受体转换后才能交换离子；外泌体只能在相邻细胞之间近距离起作用，不能随体液远距",
+        "肿瘤细胞的自分泌会把生长因子释放后立即灭活，从而切断增殖正反馈"
+      ],
+      "answer": 1,
+      "hint": "先问信号是否离开细胞、走多远，再问靶细胞要不要受体。",
+      "explanation": "**B 正确。** 第一节把四种通讯写成对照表：分泌型可溶、接触依赖留在膜上、间隙连接走通道、外泌体走囊泡。内分泌一份胰岛素可同时改写肝、肌和脂肪；突触是纳米级间隙的毫秒级转导；自分泌常被肿瘤细胞用来锁增殖正反馈。\n\n**干扰项辨析**：\n- A：教材 concept——通讯不等于转导；旁分泌不经血液；接触依赖不释放可溶配体。\n- C：间隙连接一般不经受体；外泌体可随体液远距。\n- D：肿瘤细胞把自己分泌的生长因子再接回来，是正反馈而不是切断。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-1.md",
+        "label": "第一节 · 四种通讯 · 内分泌/旁分泌/突触/自分泌 · 接触依赖 · concept「通讯不等于转导」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于第一信使、三类膜受体与第二信使，下列叙述正确的是（　）。",
+      "options": [
+        "亲水性配体穿过质膜认核受体；核受体是膜受体三大家族之一；第二信使都是蛋白质激酶",
+        "亲水性第一信使不能穿过脂双层，必须认细胞表面受体；亲脂性和气体性第一信使可以入胞。膜受体三大家族是离子通道耦联受体（本身既是配体结合位点又是孔道）、GPCR（人类约 700 余种，7 次穿膜，经 G 蛋白调节效应器）和酶联受体（单次穿膜，自身是酶或募集激酶）。第二信使是非蛋白小分子，公认的包括 cAMP、cGMP、$\\mathrm{Ca}^{2+}$、DAG、$\\mathrm{IP}_3$。Sutherland 提出第二信使学说：肾上腺素不进入肝细胞，经 cAMP 激活糖原磷酸化酶。配体浓度通常 $\\le 10^{-8}\\,\\mathrm{mol/L}$，靠级联放大",
+        "离子通道耦联受体就是 GPCR 下游的钾通道；酶联受体的胞内段必须自己带酶，不能募集胞质激酶",
+        "气体性信号分子必须认细胞表面 GPCR，不能直接激活效应酶"
+      ],
+      "answer": 1,
+      "hint": "先按亲水/亲脂/气体分受体位置，再把三大家族和“第二信使不是蛋白”钉住。",
+      "explanation": "**B 正确。** 膜受体在胞外认亲水性配体、在胞内改写第二信使或激酶；核受体认亲脂性配体。分子开关是 GTP/GDP 或磷酸化/去磷酸化两套计时器。\n\n**干扰项辨析**：\n- A：教材 pitfall——膜受体不等于等配体进来；核受体不是膜受体；第二信使是非蛋白小分子。\n- C：配体门控通道本身就是孔道，与 GPCR 下游通道不是同一类；细胞因子受体自身无酶活性，耦联 JAK。\n- D：NO、CO 自由扩散入胞，直接激活效应酶产生 cGMP。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-1.md",
+        "label": "第一节 · 三类化学信号 · 膜受体三大家族 · 第二信使学说 · pitfall「膜受体不等于等配体进来」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于异三聚体 G 蛋白的开关循环，下列叙述正确的是（　）。",
+      "options": [
+        "G 蛋白就是 7 次跨膜受体本身；只有 $\\mathrm{G}\\alpha$ 能作用于效应器，$\\beta\\gamma$ 只是废料；关闭只靠配体脱落",
+        "G 蛋白由 $\\alpha$、$\\beta$、$\\gamma$ 组成，经脂锚定贴在质膜胞质面。静息时 $\\mathrm{G}\\alpha$ 结合 GDP 成三聚体。配体结合 GPCR 后，螺旋 5 和 6 之间的胞内环 C3 构象改变，受体充当 GEF，GDP 被 GTP 替代，$\\mathrm{G}\\alpha$-GTP 与 $\\beta\\gamma$ 解离，二者都可以作为激活的信号输出。$\\mathrm{G}\\alpha$ 的 GTP 酶把 GTP 水解成 GDP 后重新装配三聚体，信号关闭。Rodbell 与 Gilman 因此获 1994 年诺贝尔奖。心肌 M 受体经 Gi 的 $\\beta\\gamma$ 打开 $\\mathrm{K}^+$ 通道而超极化。霍乱毒素使 $\\mathrm{Gs}\\alpha$ 失去 GTP 酶，小肠上皮 cAMP 可增加 100 倍以上",
+        "GPCR 只有一条效应器通路，即腺苷酸环化酶；视杆细胞中 G 蛋白激活后必然升高第二信使",
+        "人类 GPCR 不足 50 种，N 端在胞内、C 端在胞外，C3 环位于螺旋 1 和 2 之间"
+      ],
+      "answer": 1,
+      "hint": "受体负责换成 GTP，$\\mathrm{G}\\alpha$ 的 GTP 酶负责到点关掉；$\\beta\\gamma$ 不是废料。",
+      "explanation": "**B 正确。** 配体不进入细胞。GPCR 按效应器分成三类：AC、PLC 或离子通道。视杆的逻辑相反：光子激活 Gt–PDE，把 cGMP 拆掉，阳离子通道才关；暗处电位约 $-30\\,\\mathrm{mV}$。\n\n**干扰项辨析**：\n- A：G 蛋白是膜外周异三聚体，不是受体本身；游离 $\\beta\\gamma$ 可直接调节效应器。\n- C：效应器不限于 AC；教材 note——不要把“G 蛋白激活 = 第二信使升高”写成通例。\n- D：人类约 700 余种；N 端在外、C 端在内，C3 在螺旋 5 与 6 之间。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-2.md",
+        "label": "第二节 · G 蛋白三聚体工作循环 · Rodbell/Gilman 1994 · 心肌 M 受体 $\\beta\\gamma$ · 霍乱毒素"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 cAMP–PKA 与磷脂酰肌醇双信使，下列叙述正确的是（　）。",
+      "options": [
+        "Gs 降低 cAMP、Gi 升高 cAMP；PKA 静息时是单体催化酶；DAG 和 $\\mathrm{IP}_3$ 是同一个信使的两个名字，PKC 被 $\\mathrm{IP}_3$ 在胞质中激活",
+        "Rs 耦联 Gs 激活腺苷酸环化酶升高 cAMP，Ri 耦联 Gi 抑制该酶（游离 $\\beta\\gamma$ 还可绑住 $\\mathrm{Gs}\\alpha$）。PKA 静息时为 $\\mathrm{R}_2\\mathrm{C}_2$，4 分子 cAMP 结合 R 后释放 C。快反应：PKA 打开糖原磷酸化酶级联并关掉糖原合酶；慢反应：C 入核磷酸化 CREB，与 CBP 结合后认 CRE。PLC 水解 $\\mathrm{PIP}_2$ 产生离开膜的 $\\mathrm{IP}_3$ 和留在膜上的 DAG。$\\mathrm{IP}_3$ 打开内质网钙通道，胞质 $\\mathrm{Ca}^{2+}$ 由 $10^{-7}$ 升至 $10^{-5}\\,\\mathrm{mol/L}$；$\\mathrm{Ca}^{2+}$ 使 PKC 转位到膜，再被 DAG 激活。CaM 是可逆钙传感器，不是第二信使",
+        "cAMP 通路没有慢反应；磷脂酰肌醇通路不动员钙，只激活 PKA",
+        "终止双信使只需要配体脱落，$\\mathrm{IP}_3$ 和 $\\mathrm{Ca}^{2+}$ 不必被清除"
+      ],
+      "answer": 1,
+      "hint": "先分清 Gs 抬、Gi 压；再问 $\\mathrm{IP}_3$ 谁离开膜、DAG 谁留在膜上等 PKC。",
+      "explanation": "**B 正确。** 升血糖激素一条通路同时打开分解、关上合成。$\\mathrm{IP}_3$ 终止为 $\\mathrm{IP}_2$ 或 $\\mathrm{IP}_4$；钙由泵和 $\\mathrm{Na}^+$–$\\mathrm{Ca}^{2+}$ 交换器回收。\n\n**干扰项辨析**：\n- A：Gs/Gi 对 cAMP 的升降写反；教材 pitfall——不要把 DAG 和 $\\mathrm{IP}_3$ 写成同一个信使；PKC 在膜上被 DAG 激活，不是被 $\\mathrm{IP}_3$ 在胞质激活。\n- C：cAMP 有 CREB 慢反应；双信使要动员内质网钙。\n- D：关通路必须同时清 $\\mathrm{IP}_3$ 和抽回 $\\mathrm{Ca}^{2+}$。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-2.md",
+        "label": "第二节 · Gs vs Gi · PKA 快/慢反应 · 双信使系统 · pitfall「不要把 DAG 和 IP3 写成同一个信使」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 RTK–Ras–MAPK 通路，下列叙述正确的是（　）。",
+      "options": [
+        "RTK 是 7 次跨膜受体，未结合配体即以二聚体存在；Sos 是 GAP，促使 Ras 水解 GTP；ras 失活突变见于约 30% 癌症",
+        "RTK 是单次穿膜受体，已鉴定 7 亚族 50 余种；未结合配体时为单体失活形式，配体结合后二聚化并交叉自体磷酸化，磷酸化酪氨酸形成 SH2 停靠位点。含 SH2 的衔接蛋白结合 Sos，Sos 作为 GEF 催化膜上 Ras（190 氨基酸）释放 GDP、结合 GTP。Ras-GTP 顺次激活 MAPKKK（Raf）→ MAPKK → MAPK；MAPK 既磷酸化胞质效应蛋白，也入核磷酸化转录因子。Ras 若失去 GTP 酶、一直停在 GTP 态，级联关不掉；约 30% 癌症患者有 ras 激活突变",
+        "酶联受体主要调控细胞中间代谢，一般不改变基因表达",
+        "MAPK 三级顺序是 MAPK → MAPKK → MAPKKK，最后由 Ras 入核转录"
+      ],
+      "answer": 1,
+      "hint": "单体二聚化才能交叉磷酸化；Sos 是 GEF 不是 GAP；ras 是激活突变关不掉。",
+      "explanation": "**B 正确。** 终止靠蛋白酪氨酸磷酸酶或受体被内吞进溶酶体。Hunter 与 Sefton（1980）证明 Src 磷酸化酪氨酸；正常细胞磷酸化酪氨酸仅占 0.03%，RSV 感染后升高 10 倍。\n\n**干扰项辨析**：\n- A：RTK 单次穿膜、静息为单体；Sos 是 GEF；ras 是激活突变不是失活突变。\n- C：酶联受体通常通向基因表达，一般不调控中间代谢。\n- D：顺序写反，入核的是 MAPK 及被其磷酸化的转录因子，不是 Ras。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-2.md",
+        "label": "第二节 · RTK 自体磷酸化 · Sos 为 GEF · Raf–MAPKK–MAPK · ras 激活突变约 30%"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 JAK–STAT 与另外两条酶联通路的比较，下列叙述正确的是（　）。",
+      "options": [
+        "细胞因子受体自身具有酪氨酸激酶活性，必须经 Ras–MAPK 才能入核；TGF-$\\beta$ 受体是酪氨酸激酶，走长级联促增殖",
+        "细胞因子受体自身无酶活性，胞内段结合 JAK；配体引起受体二聚化后，JAK 交叉磷酸化，再磷酸化受体酪氨酸，STAT 经 SH2 结合并被磷酸化，两个磷酸化 STAT 同源二聚化、暴露 NLS 入核。STAT 家族有 7 个成员。与 RTK–Ras–MAPK 的长级联不同，JAK–STAT 和 TGF-$\\beta$–Smad 都是短路径：后者由 RⅢ 富集配体、RⅡ 磷酸化 RⅠ，R-Smad 与 Smad4 入核，常阻遏 c-myc 而抑制增殖。STAT3 持续活化见于人类肿瘤",
+        "STAT 没有 SH2 结构域，必须先激活 Ras 才能入核；Smad4 是抑制型 Smad",
+        "JAK 磷酸化的是 Smad，STAT 磷酸化的是 MAPKKK"
+      ],
+      "answer": 1,
+      "hint": "先问受体自己有没有酶，再问入核分子是 STAT 二聚体还是 R-Smad–Smad4。",
+      "explanation": "**B 正确。** 教材 compare 把三条酶联主路钉在一张表上：RTK 自身是酪氨酸激酶、走 Ras；TGF-$\\beta$ 自身是丝/苏氨酸激酶、走 Smad；细胞因子受体耦联 JAK、走 STAT。抑制型 Smad6/7 是 TGF-$\\beta$ 通路的负反馈刹车。\n\n**干扰项辨析**：\n- A：细胞因子受体不是 RTK；TGF-$\\beta$ 常抑制而非促进增殖。\n- C：STAT 的 N 端有 SH2 和 NLS；Smad4 是通用型，抑制型是 Smad6/7。\n- D：把两条短路径的底物完全写串。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-2.md",
+        "label": "第二节 · JAK–STAT · compare「RTK–Ras–MAPK vs TGF-β–Smad vs JAK–STAT」 · STAT3"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于核受体，下列叙述正确的是（　）。",
+      "options": [
+        "胞质受体和核受体是并列的两大类；核受体是激素的载体，N 端是激素结合域，C 端是 DNA 结合域；核受体等于膜受体的一种",
+        "细胞内受体位于胞质或核基质，因胞质受体结合配体后也转位入核，故统称核受体，本质是依赖激素激活的基因调控蛋白。结构为 N 端调节/转录激活区、中央 DNA 结合域、C 端激素结合域。未活化时与抑制性蛋白结合；激素结合后抑制蛋白解离，受体结合靶基因上的激素应答元件（HRE）。三种模式：直接结合 HRE；通过其他转录因子；被膜受体或 CDK 激活后再结合靶基因。类固醇激素基因活化分初级反应和次级放大两波",
+        "核受体只开一个启动子，没有初级和次级之分；HRE 是受体蛋白上的配体口袋",
+        "亲脂性激素不能穿过质膜，必须认 GPCR 才能改写转录"
+      ],
+      "answer": 1,
+      "hint": "抑制蛋白是插在 DNA 结合域上的销子；先停在胞质里的受体转位后仍叫核受体。",
+      "explanation": "**B 正确。** 人类核受体家族有数十个成员，与糖尿病、脂肪肝等相关。教材 concept：核受体是配体门控的转录因子，不是激素载体。\n\n**干扰项辨析**：\n- A：教材 pitfall——胞质受体不是另一套系统；结构域顺序写反；核受体不是膜受体。\n- C：初级产物再放大次级反应；HRE 是基因上的 DNA 序列。\n- D：亲脂性激素穿过质膜入胞认核受体。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-3.md",
+        "label": "第三节 · 核受体结构 · HRE · 三种转录模式 · pitfall「胞质受体不是另一套系统」"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于 NO 气体通路，下列叙述正确的有（　）。",
+      "options": [
+        "1980 年 Furchgott 提出血管舒张依赖内皮产生的信号分子；随后 Furchgott 与 Ignarro 证实该分子是 NO，获 1998 年诺贝尔奖",
+        "内皮 NOS 催化 L-精氨酸生成 NO；NO 不储存，生成即扩散。进入平滑肌后激活可溶性鸟苷酸环化酶，GTP→cGMP，再激活 PKG，引起迅速松弛。硝酸甘油在体内转变为 NO；西地那非阻断 cGMP 降解",
+        "NO 可作为 LTP 的逆行信使，弥散至突触前末梢，促进谷氨酸持续释放，对学习记忆的维持起作用",
+        "气体入胞意味着不再需要下游信号；NO 必须先结合细胞表面 GPCR，鸟苷酸环化酶位于内皮细胞而不是平滑肌"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "现产现用的自由基气体，落到平滑肌的 cGMP 上；突触里还可以往回走。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：舒血管信号分子的发现史按教材写：1980 年提出，1998 年获奖。\n- B：量取决于合成速率；两条药打的不是同一颗钉子——一个补第一信使，一个延长第二信使。\n- C：LTP 既需要正向的突触传递，也需要 NO 这类逆行反馈。\n- **D 错**：教材 note——气体信使仍要落到第二信使上；GC 在平滑肌细胞内，NO 跳过的是膜受体，不是下游信号。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-3.md",
+        "label": "第三节 · NO 舒血管链 · 硝酸甘油/西地那非 · LTP 逆行信使 · note「气体信使仍要落到第二信使上」"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于受体病与 G 蛋白/激酶异常，下列叙述正确的有（　）。",
+      "options": [
+        "家族性高胆固醇血症是遗传性受体病：LDL 受体缺陷，不能有效摄取胆固醇并据此下调自身合成",
+        "重症肌无力是自身性免疫性受体病：体内产生乙酰胆碱受体抗体，配体可仍在而突触后膜的锁被占住或破坏",
+        "霍乱毒素使 $\\mathrm{Gs}\\alpha$ ADP 核糖化、GTP 酶失活，小肠上皮 cAMP 可升高 100 倍以上；百日咳毒素使 $\\mathrm{Gi}\\alpha$ 不能换成 GTP，失去对 AC 的抑制。佛波酯类似 DAG 但难降解，持续激活 PKC",
+        "肥胖性糖尿病就是胰岛破坏、胰岛素绝对缺乏；霍乱打的是 Gi、百日咳打的是 Gs"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "先分清锁坏了、锁被抗体占了、还是锁被收走了；再问毒素卡的是 Gs 还是 Gi。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：锁本身坏了，钥匙再多也进不了细胞。\n- B：神经递质还在，化学传递被削弱。\n- C：Gs 关不掉和 Gi 开不了都会把 cAMP 写高；佛波酯是拔不掉的假钥匙。\n- **D 错**：教材 pitfall——糖尿病不都是胰岛素分泌不够。肥胖性糖尿病是高胰岛素向下调节自身受体，形成恶性循环。霍乱修饰 Gs，百日咳修饰 Gi，方向写反则开关停在哪一步整条翻掉。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-5.md",
+        "label": "第五节 · 三类受体病 · 霍乱 vs 百日咳 · 佛波酯 · pitfall「糖尿病不都是胰岛素分泌不够」"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "细胞通讯等于信号转导，也等于 GPCR；旁分泌必须经血液；接触依赖性通讯要释放可溶性配体；DAG 和 $\\mathrm{IP}_3$ 是同一个信使的两个名字，PKC 被 $\\mathrm{IP}_3$ 在胞质中激活。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "先把通讯和转导拆开，再问 $\\mathrm{IP}_3$ 谁离开膜、DAG 谁留在膜上。",
+      "explanation": "**该命题错误，每一分句都错。** 通讯回答空间路径，转导回答胞内改写；间隙连接几乎跳过转导，外泌体可整包投递 RNA。旁分泌经局部扩散、不经血液；接触依赖把配体留在信号细胞质膜上，Notch–Delta 是样板。$\\mathrm{PIP}_2$ 水解一次得到两个不同分子：$\\mathrm{IP}_3$ 去开内质网钙通道，DAG 留在膜上等 PKC 转位过来。把双信使记成“就是钙信号”，会把 PKC 和佛波酯整段漏掉。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-1.md",
+        "label": "第一节 · concept「通讯不等于转导」；第二节 · pitfall「不要把 DAG 和 IP3 写成同一个信使」"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "先停在胞质里的糖皮质激素受体不属于核受体；肥胖性糖尿病就是胰岛坏了、胰岛素绝对缺乏；霍乱毒素修饰 Gi、百日咳毒素修饰 Gs；气体入胞意味着 NO 不再需要 cGMP。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "胞质受体转位后仍叫核受体；先问是配体少了还是细胞听不见；毒素要问坏的是 Gs 还是 Gi。",
+      "explanation": "**该命题错误，四处都错。** 教材把胞质受体和本来就在核内的受体统称为核受体，因为前者结合配体后也转位入核。肥胖性糖尿病是高胰岛素向下调节自身受体，敏感性下降并恶性循环，不是一开始就没有胰岛素。霍乱卡死 $\\mathrm{Gs}\\alpha$ 的 GTP 酶，百日咳卡住 $\\mathrm{Gi}\\alpha$ 的核苷酸交换，二者都抬 cAMP 但零件不同。NO 跳过膜受体，仍经平滑肌内鸟苷酸环化酶产生 cGMP、激活 PKG。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-3.md",
+        "label": "第三节 · pitfall「胞质受体不是另一套系统」；第五节 · 继发性受体病 · 霍乱 vs 百日咳"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "分泌型通讯按作用距离分成内分泌、________、突触传递和自分泌。G 蛋白静息时 $\\mathrm{G}\\alpha$ 结合 ________。PLC 水解 $\\mathrm{PIP}_2$ 产生离开膜的 $\\mathrm{IP}_3$ 和留在膜上的 ________。RTK 自体磷酸化后供含 ________ 结构域的蛋白停靠。内皮 NOS 以 ________ 为底物生成 NO。",
+      "answer": "旁分泌，GDP，DAG，SH2，L-精氨酸",
+      "hint": "局部扩散那条路、静息核苷酸、膜上那半个双信使、停靠结构域、NO 的氨基酸底物。",
+      "scoring_criteria": [
+        "第一空填“旁分泌”（或“paracrine”“旁分泌作用”）（2分）",
+        "第二空填“GDP”（或“鸟苷二磷酸”“鸟苷二磷酸GDP”）（2分）",
+        "第三空填“DAG”（或“二酰甘油”“甘油二酯”“diacylglycerol”）（2分）",
+        "第四空填“SH2”（或“Src homology 2”）（2分）",
+        "第五空填“L-精氨酸”（或“精氨酸”“L-arginine”“arginine”）（2分）"
+      ],
+      "explanation": "第一节：分泌型四格是内分泌、旁分泌、突触、自分泌。第二节：G 蛋白静息结合 GDP；双信使中 DAG 留在膜上；RTK 磷酸化酪氨酸形成 SH2 位点。第三节：NOS 催化 L-精氨酸生成 NO。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-1.md",
+        "label": "第一节 · 旁分泌；第二节 · GDP · DAG · SH2；第三节 · L-精氨酸"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "膜受体三条主路的开关各是什么？请写出：①异三聚体 G 蛋白如何开和关，cAMP–PKA 与 $\\mathrm{IP}_3$/DAG 两条效应通路如何分流；②RTK 如何经 Ras–MAPK 把生长因子写成增殖；③JAK–STAT 为何是“无酶活性受体耦联胞质激酶”的短路径。",
+      "answer": "参考答案：\n\n**1. GPCR 与两条效应通路**\n- 异三聚体 G 蛋白 $\\alpha\\beta\\gamma$ 脂锚定于质膜胞质面。静息结合 GDP；配体结合后 C3 环改变，受体充当 GEF，GTP 置换 GDP，$\\mathrm{G}\\alpha$-GTP 与 $\\beta\\gamma$ 解离，二者都可输出；$\\mathrm{G}\\alpha$ 的 GTP 酶水解 GTP 后重新装配，信号关闭。\n- Gs 耦联 Rs 激活 AC 升 cAMP，Gi 耦联 Ri 抑制 AC。PKA 为 $\\mathrm{R}_2\\mathrm{C}_2$，cAMP 结合 R 后释放 C：快反应磷酸化糖原代谢酶（打开分解、关上合成），慢反应入核磷酸化 CREB。\n- PLC 水解 $\\mathrm{PIP}_2$ → $\\mathrm{IP}_3$（开内质网钙通道，$\\mathrm{Ca}^{2+}$ 由 $10^{-7}$ 升至 $10^{-5}\\,\\mathrm{mol/L}$）+ DAG（留在膜上，激活转位而来的 PKC）。不要把二者写成同一个信使。\n\n**2. RTK–Ras–MAPK**\n- RTK 单次穿膜，配体诱导二聚化并交叉自体磷酸化，磷酸化酪氨酸供 SH2 停靠。衔接蛋白结合 Sos（GEF），Ras 换成 GTP，顺次激活 Raf（MAPKKK）→ MAPKK → MAPK。MAPK 入核磷酸化转录因子。Ras 失去 GTP 酶则关不掉，约 30% 癌症有 ras 激活突变。\n\n**3. JAK–STAT**\n- 细胞因子受体自身无酶活性，胞内段结合 JAK。受体二聚化使 JAK 交叉磷酸化，再磷酸化受体，STAT 经 SH2 结合并被磷酸化，同源二聚化后暴露 NLS 入核。级联短，STAT 自己就是转录因子。STAT3 持续活化见于人类肿瘤。",
+      "hint": "先写 G 蛋白计时器，再把 cAMP 和双信使分成两半；Ras 是长级联的膜开关，STAT 是短路径的入核分子。",
+      "scoring_criteria": [
+        "写出 G 蛋白 GDP/GTP 循环、解离输出与 GTP 酶关闭，并区分 Gs 升 cAMP / Gi 降 cAMP 或 PKA 快慢反应（4分）",
+        "写出 $\\mathrm{PIP}_2$→$\\mathrm{IP}_3$（钙）+ DAG（膜上 PKC），可兼及钙浓度数量级（3分）",
+        "写出 RTK 二聚化自体磷酸化、SH2、Sos/GEF、Ras–Raf–MAPKK–MAPK，可兼及 ras 突变约 30%（4分）",
+        "写出细胞因子受体无酶活性、耦联 JAK、STAT 磷酸化二聚化入核（3分）"
+      ],
+      "explanation": "本题把第二节串成“G 蛋白计时器—cAMP 与双信使分流—RTK 长级联—JAK–STAT 短路径”。易错点：把 DAG 和 $\\mathrm{IP}_3$ 写成同一个信使；把 Sos 写成 GAP；把细胞因子受体写成 RTK。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-2.md",
+        "label": "第二节 · G 蛋白循环 · cAMP–PKA · IP3/DAG · RTK–Ras–MAPK · JAK–STAT"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "亲脂性和气体性信号如何在胞内改写细胞行为？请写出核受体如何结合 HRE，以及 NO 如何经 cGMP 舒张血管。信号转导异常在受体层和 G 蛋白层各如何写成疾病？请比较三类受体病，并说明霍乱毒素与百日咳毒素为何都会把 cAMP 写高。",
+      "answer": "参考答案：\n\n**1. 核受体**\n- 细胞内受体统称核受体：胞质受体结合配体后也转位入核。结构为 N 端调节区、中央 DNA 结合域、C 端激素结合域。未活化时与抑制蛋白结合；激素结合后抑制蛋白解离，受体结合靶基因 HRE。三种模式：直接结合 HRE；通过其他转录因子；被膜受体或 CDK 激活。基因活化分初级反应和次级放大。核受体是配体门控的转录因子，不是激素载体。\n\n**2. NO**\n- 内皮 NOS 催化 L-精氨酸生成 NO，不储存，生成即扩散。NO 激活平滑肌可溶性鸟苷酸环化酶，GTP→cGMP→PKG，血管平滑肌迅速松弛。硝酸甘油在体内转变为 NO；西地那非阻断 cGMP 降解。NO 在 LTP 中作为逆行信使促进突触前谷氨酸释放。气体入胞仍要落到第二信使上。\n\n**3. 三类受体病**\n- 遗传性：编码受体基因突变，如家族性高胆固醇血症（LDL 受体缺陷）。\n- 自身性免疫性：产生受体抗体，如重症肌无力（乙酰胆碱受体抗体）。\n- 继发性：后天改写受体含量或结合力，如肥胖性糖尿病——高胰岛素向下调节自身受体，敏感性下降，恶性循环。糖尿病不都是胰岛素分泌不够。\n\n**4. 霍乱与百日咳**\n- 霍乱毒素使 $\\mathrm{Gs}\\alpha$ ADP 核糖化，GTP 酶失活，Gs 持续开，小肠上皮 cAMP 可增加 100 倍以上，离子和水溢入肠腔。\n- 百日咳毒素使 $\\mathrm{Gi}\\alpha$ ADP 核糖化，GDP 不能换成 GTP，Gi 打不开，失去对 AC 的抑制，cAMP 升高，体液分泌入肺。\n- Gs 关不掉和 Gi 开不了，都会把 cAMP 写高，但坏的零件不同。",
+      "hint": "先写核受体拔销子、NO 落到 cGMP；再把锁坏了、锁被占了、锁被收走了分开；最后问毒素卡的是 Gs 还是 Gi。",
+      "scoring_criteria": [
+        "写出核受体统称、抑制蛋白解离、结合 HRE，可兼及三种模式或初级/次级两波（4分）",
+        "写出 NOS/L-精氨酸、GC–cGMP–PKG 舒血管，可兼及硝酸甘油、西地那非或 LTP（4分）",
+        "写出三类受体病及代表（FH/重症肌无力/肥胖性糖尿病）（4分）",
+        "写出霍乱打 Gs 的 GTP 酶、百日咳打 Gi 的核苷酸交换，二者都抬 cAMP（3分）"
+      ],
+      "explanation": "本题把第三、五节串成“入胞信号两条时间线—锁坏了还是听不见—Gs 关不掉和 Gi 开不了”。易错点：把胞质受体和核受体并列；把肥胖性糖尿病写成胰岛破坏；把霍乱/百日咳的 Gs/Gi 写反。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch12-3.md",
+        "label": "第三节 · 核受体 · NO；第五节 · 三类受体病 · 霍乱 vs 百日咳"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

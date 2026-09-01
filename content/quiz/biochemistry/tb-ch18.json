@@ -1,0 +1,321 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch18",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch18-1.md；content/biochemistry/textbook/ch18-2.md；content/biochemistry/textbook/ch18-3.md；content/biochemistry/textbook/ch18-4.md；content/biochemistry/textbook/ch18-5.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 Southern、Northern、Western 以及探针／抗体的识别方式，下列叙述正确的是（　）。",
+      "options": [
+        "Southern 是 $\\mathrm{RNA}$ 印迹，Northern 是 $\\mathrm{DNA}$ 印迹，Western 是核酸探针按碱基互补认蛋白质；三类都先限制酶切再走琼脂糖；Northern 比 $\\mathrm{PCR}$ 更敏感所以已经作废；一抗自己带酶显色；烘烤 $80^\\circ\\mathrm{C}$ 是变性",
+        "Southern blotting 是 $\\mathrm{DNA}$ 印迹：限制酶消化 $\\rightarrow$ 琼脂糖电泳 $\\rightarrow$ 胶中变性 $\\rightarrow$ 转 $\\mathrm{NC}$ 膜 $\\rightarrow$ $80^\\circ\\mathrm{C}$ 真空加热或紫外交联固相化 $\\rightarrow$ 核酸探针按碱基互补杂交。Northern blotting 是 $\\mathrm{RNA}$ 印迹：无须限制酶切，检测已知特异 $\\mathrm{mRNA}$ 和非编码 $\\mathrm{RNA}$ 的表达及丰度；敏感性低于 $\\mathrm{PCR}$，但特异强、假阳性低，仍是最可靠的 $\\mathrm{RNA}$ 定量方法之一。Western blotting 是蛋白质印迹／免疫印迹：$\\mathrm{PAGE}$ 后电转 $\\mathrm{NC}$ 或 $\\mathrm{PVDF}$，第一抗体认蛋白质，酶或核素标在第二抗体上。核酸探针＝已知序列 $+$ 核素／生物素／荧光，按互补杂交；抗体不是核酸杂交。Southern 是人名；Northern、Western 是方位词对齐，不要编造发现者",
+        "蛋白质印迹与核酸印迹识别原理相同，都叫杂交；斑点杂交必须先电泳",
+        "FISH 就是荧光 Southern；Southwestern 是先做一张 Southern 再做一张 Western"
+      ],
+      "answer": 1,
+      "hint": "分子对号：DNA／RNA／蛋白质；核酸走杂交，Western 走抗体。",
+      "explanation": "**B 正确。** 三类印迹的分子、胶、酶切、识别物都来自 ch18-1。\n\n**干扰项辨析**：\n- A：三类对错分子；Western 不是核酸杂交；Northern 不酶切、不走「比 PCR 更敏感所以作废」；$80^\\circ\\mathrm{C}$ 是固相化不是变性；一抗通常不直接带酶。\n- C：蛋白质走抗原－抗体；斑点杂交不经电泳。\n- D：FISH 是 ISH 的荧光版，场景是切片／涂片；Southwestern 研究蛋白质与 DNA 特异结合，不是两种印迹串联。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-1.md",
+        "label": "Southern DNA · Northern RNA · Western 抗体 · 探针按互补 · pitfall「不是核酸杂交」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{PCR}$ 的原理、引物、三步循环以及短产物，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{PCR}$ 与测序同一年得诺贝尔化学奖；一条引物从模板中间提供 $5'$-磷酸即可起始；$\\mathrm{Mg}^{2+}$ 是第四种 $\\mathrm{dNTP}$；退火法定 $55^\\circ\\mathrm{C}$；第一轮就已经等长；Taq 直接以 $\\mathrm{RNA}$ 为模板",
+        "$\\mathrm{PCR}$ 由 $\\mathrm{Mullis}\\ \\mathrm{K}.$ 于 $1983$ 年发明，试管中模拟 $\\mathrm{DNA}$ 复制。两条寡核苷酸引物分别结合拟扩增片段两侧，提供 $3'$-$\\mathrm{OH}$；特异性依赖于与模板两端互补的引物。体系五类：模板 $\\mathrm{DNA}$、特异引物、耐热酶（如 $\\mathrm{Taq}$）、$\\mathrm{dNTP}$、含 $\\mathrm{Mg}^{2+}$ 的缓冲液。三步：$95^\\circ\\mathrm{C}$ 变性（图18-3 标 $94^\\circ\\mathrm{C}$，默写跟正文、读图跟图），退火一般较 $T_\\mathrm{m}$ 低 $5^\\circ\\mathrm{C}$（图示例 $55^\\circ\\mathrm{C}$ 不是所有引物的法定温度），$72^\\circ\\mathrm{C}$ 延伸。$25\\sim 30$ 次循环扩增百万倍以上。第一轮只有 $3'$ 无固定止点的长产物；第二轮起出现两端限定在两引物 $5'$ 端之间的短产物，以后指数增加。$\\mathrm{RNA}$ 要先逆转录成 $\\mathrm{cDNA}$ 才做 $\\mathrm{PCR}$",
+        "变性只拆模板双链，引物二聚体不用管；短产物长度等于基因组全长",
+        "引物决定产量，循环次数决定特异性"
+      ],
+      "answer": 1,
+      "hint": "引物提供 $3'$-$\\mathrm{OH}$ 并决定特异；短产物从第二轮才齐。",
+      "explanation": "**B 正确。** 发明年、引物 $3'$-$\\mathrm{OH}$、五类成分、三步温度、长短产物，都来自 ch18-2。\n\n**干扰项辨析**：\n- A：$1980$ 奖发给测序不是 PCR；引物在两侧提供 $3'$-OH；Mg2+ 在缓冲液；退火不是固定 55℃；第一轮不齐；Taq 不以 RNA 为模板。\n- C：变性也拆引物局部双链；短产物等于两引物 5′ 端之间。\n- D：特异在引物，产量在循环。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-2.md",
+        "label": "引物 3′-OH · 变性退火延伸 · 短产物第二轮 · 1983 Mullis"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于终点 $\\mathrm{PCR}$ 与实时 $\\mathrm{PCR}$（$\\mathrm{qPCR}$）、$\\mathrm{SYBR\\ Green}$，下列叙述正确的是（　）。",
+      "options": [
+        "终点条带越亮起始模板一定按比例越多；real-time 与 $\\mathrm{qPCR}$ 是两种酶反应；定量看平台期；$\\mathrm{SYBR\\ Green}$ 结合后荧光 $1\\,000$ 倍就是扩增倍数；非引物探针类就是反应里取消引物；$\\mathrm{RT}$-$\\mathrm{PCR}$ 是最准确的 $\\mathrm{RNA}$ 定量；实时 $\\mathrm{PCR}$ 替代 Northern 后印迹不再可靠",
+        "常规 $\\mathrm{PCR}$ 在终点检测产物，指数增长后产物堆积，平台期抹平起始差异，故只能半定量。实时 $\\mathrm{PCR}$ 亦称 $\\mathrm{qPCR}$，每轮采集荧光，定量关系落在指数期的扩增产物量与起始模板量之间。$\\mathrm{SYBR\\ Green}$ 是最常用的非引物探针类染料，结合双螺旋小沟，只认双链 $\\mathrm{DNA}$，结合后荧光约为游离状态的 $1\\,000$ 倍（不是循环扩增倍数）；引物二聚体也会亮。引物探针类（TaqMan、分子信标、FRET）多一步互补识别，特异更高，可多色。非引物探针类仍需要 PCR 那两条引物。$\\mathrm{RT}$-$\\mathrm{PCR}$ 写的是定性／半定量；准确定量走实时 PCR。Northern 仍是「最可靠的 RNA 定量方法之一」，实时 PCR「逐渐替代」对着的是通量与速度",
+        "普通三温循环仪也能做实时曲线，因为酶已经换成定量酶",
+        "熔解曲线是 PCR 的第四步循环温度，必须写进变性－退火－延伸－熔解"
+      ],
+      "answer": 1,
+      "hint": "真正定量看指数期荧光；$\\mathrm{SYBR}$ 认双链；$1\\,000$ 倍不是扩增倍数。",
+      "explanation": "**B 正确。** 终点半定量、实时／qPCR 同一技术、SYBR 正文（图18-4 电子版缺失仍以正文为准），都来自 ch18-2。\n\n**干扰项辨析**：\n- A：终点不能精确代表起始差；两个名字是同一技术；定量不在平台期；1000 倍是染料荧光；非探针类仍有引物；RT-PCR 半定量；Northern 可靠性仍在。\n- C：需要专用实时荧光仪；酶仍是 PCR 那一套。\n- D：熔解是扩增之后缓慢加热，不是第四步循环。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-2.md",
+        "label": "终点半定量 · 指数期定量 · SYBR 1000倍 · qPCR＝实时 PCR"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于桑格－库森双脱氧法与化学降解法，下列叙述正确的是（　）。",
+      "options": [
+        "两法都是边合成边掺入 $\\mathrm{ddNTP}$；终止是因为 $\\mathrm{ddNTP}$ 没有磷酸；只加 $\\mathrm{ddNTP}$ 不加 $\\mathrm{dNTP}$ 阶梯更清晰；用琼脂糖就能差 $1\\,\\mathrm{nt}$；$1980$ 年化学奖发给 $\\mathrm{PCR}$；部分酶解是第一种 $\\mathrm{DNA}$ 测序",
+        "$1977$ 年化学降解法（马克萨姆－吉尔伯特）与桑格－库森法实现 $\\mathrm{DNA}$ 测序第一次飞跃，分享 $1980$ 年诺贝尔化学奖。桑格法：$\\mathrm{ddNTP}$ 的 $3'$－位碳缺少羟基，不能形成 $3',5'$－磷酸二酯键，链在该处终止；四管各掺一种适量 $\\mathrm{ddNTP}$（必须同时有 $\\mathrm{dNTP}$），共 $5'$ 起点、不同终点；变性聚丙烯酰胺凝胶电泳分辨 $1$ 个核苷酸。化学法：先有待测单链，碱基专一性化学修饰后随机断裂，得到四套片段；因毒性、对待测 DNA 要求高、难自动化，未广泛使用。后面高通量几乎都从桑格策略长出来。测的是排列顺序，不是「有没有这条基因」",
+        "桑格产物的共同起点是模板的 $3'$ 端；标记只能在引物上，不能改成荧光 $\\mathrm{ddNTP}$",
+        "化学降解法后来成为 Illumina 可逆终止的直接前体"
+      ],
+      "answer": 1,
+      "hint": "桑格是 $\\mathrm{ddNTP}$ 缺 $3'$-$\\mathrm{OH}$ 终止；化学法切断已有 $\\mathrm{DNA}$。",
+      "explanation": "**B 正确。** 两法分户、ddNTP 化学、变性 PAGE，来自 ch18-3。\n\n**干扰项辨析**：\n- A：化学法不是 ddNTP；缺的是 3′-OH 不是磷酸；必须同时有 dNTP；差 1 nt 用变性 PAGE；1980 奖发给测序；早期部分酶解测的是 RNA。\n- C：共同起点是引物 5′ 端；标记可在引物、ddNTP 或改成荧光。\n- D：Illumina 源于桑格策略的可逆终止 dNTP，不是化学降解。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-3.md",
+        "label": "桑格 ddNTP 终止 · 化学降解切断 · 1980 化学奖不是 PCR"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于第二代三大平台与第三代单分子测序，下列叙述正确的是（　）。",
+      "options": [
+        "第二代三大是焦磷酸、Illumina、$\\mathrm{SMRT}$；$\\mathrm{SOLiD}$ 取消了模板扩增所以是第三代；Illumina 仍用不可逆荧光 $\\mathrm{ddNTP}$；纳米孔读的是荧光 $\\mathrm{dNTP}$；三种单分子技术都能直接测 $\\mathrm{RNA}$；读长 $>1\\,000\\,\\mathrm{bp}$、$99.999\\%$ 是纳米孔的数字",
+        "第二代三大平台：$2005$ 焦磷酸（$454$，聚合酶 $+$ 一次一种 $\\mathrm{dNTP}$，焦磷酸触发硫酸化酶／荧光素酶发光）；$2006$ Illumina（可逆修饰的四色 $\\mathrm{dNTP}$，读荧光后去修饰恢复 $3'$-$\\mathrm{OH}$）；$2007$ $\\mathrm{SOLiD}$（连接酶 $+$ $8$ 碱基探针双碱基编码，仍用乳液 $\\mathrm{PCR}$，每个碱基读 $2$ 遍）。不要把 $\\mathrm{SMRT}$ 填进第二代三大。第三代无须 $\\mathrm{PCR}$ 扩增模板：HeliScope、$\\mathrm{SMRT}$（零模波导 $\\mathrm{ZMW}$，一孔固定 $1$ 个 $\\mathrm{DNA}$ 聚合酶）、纳米孔（过孔电流，可分析修饰碱基、可直接 $\\mathrm{RNA}$ 测序）。「直接 $\\mathrm{RNA}$」写在纳米孔条下，不是三种单分子的共同写法。读长超过 $1\\,000\\,\\mathrm{bp}$、准确率 $99.999\\%$ 是第一代自动激光荧光仪的数字",
+        "循环芯片测序就是第一节的基因芯片，都靠杂交读表达差异",
+        "离子半导体测序读的也是焦磷酸发光，与 $454$ 完全同一化学反应"
+      ],
+      "answer": 1,
+      "hint": "三大＝焦磷酸、Illumina、SOLiD；SMRT／纳米孔走三代、无须 PCR。",
+      "explanation": "**B 正确。** 二代三大、三代无须 PCR、SMRT 的 ZMW 一孔一酶、纳米孔电流，都来自 ch18-3。\n\n**干扰项辨析**：\n- A：三大里是 SOLiD 不是 SMRT；SOLiD 仍乳液 PCR；Illumina 是可逆 dNTP；纳米孔读电流；直接 RNA 不是三代共同写法；>1000 bp 是第一代。\n- C：基因芯片问杂交表达；循环芯片测序问碱基顺序。\n- D：离子半导体读 H+／pH，策略类似但信号不同。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-3.md",
+        "label": "二代三大 454/Illumina/SOLiD · 三代 HeliScope/SMRT/纳米孔 · pitfall「SMRT 不进第二代」"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于标签蛋白质牵拉沉淀与酵母双杂交，下列叙述正确的是（　）。",
+      "options": [
+        "牵拉沉淀在酵母核内完成，酵母双杂交在大肠埃希菌试管里完成；$\\mathrm{GSH}$ 是融合在钓饵上的酶标签，用 $\\mathrm{GST}$ 溶液洗脱；$\\mathrm{BD}$ 直接结合猎物蛋白质；拆开 $\\mathrm{GAL4}$ 后不再认 $\\mathrm{DNA}$；二者都是测序技术；本版用干扰素抑制翻译证明互作",
+        "牵拉沉淀是体外、基于亲和色谱：最常用 $\\mathrm{GST}$ 标签在大肠埃希菌表达为融合蛋白质，$\\mathrm{GST}$ 结合偶联在琼脂糖珠上的 $\\mathrm{GSH}$，待测蛋白质若与钓饵互作被间接牵下，游离 $\\mathrm{GSH}$ 竞争洗脱后电泳见共沉淀条带；也可用 $6\\times\\mathrm{His}$－镍珠。它不是免疫共沉淀的别名（后者靠抗体）。酵母双杂交在酵母细胞内：把 $\\mathrm{GAL4}$ 拆成 $\\mathrm{BD}$ 和 $\\mathrm{AD}$，分别融合诱饵与猎物，互作则重组装、下游报告基因被激活。$\\mathrm{BD}$ 认的是下游基因的 $\\mathrm{DNA}$ 不是猎物；分开后丧失激活作用，不是丧失 DNA 结合。读出是转录激活，阳性克隆随后测序是后处理。图18-7 电子版缺失仍要能默写五步。本版没有写干扰素抑制翻译",
+        "牵拉沉淀证明的是细胞内间接互作，酵母双杂交证明的是试管里直接物理结合",
+        "诱饵质粒筛 cDNA 文库之后，实验本身的读出就是芯片上的碱基阶梯"
+      ],
+      "answer": 1,
+      "hint": "GST－GSH 在管里捞；BD／AD 在酵母里拼回去。都不是测序。",
+      "explanation": "**B 正确。** GST pull-down、GAL4 BD/AD、大肠埃希菌 vs 酵母，来自 ch18-4。\n\n**干扰项辨析**：\n- A：场所写反；GST/GSH 写反；BD 不直接绑猎物；拆开不是不再认 DNA；不是测序；无干扰素。\n- C：牵拉沉淀问体外直接物理结合；酵母双杂交在细胞内。\n- D：读出是报告基因，不是测序阶梯。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-4.md",
+        "label": "GST-GSH 牵拉 · 酵母双杂交 BD/AD · 无干扰素 · 不是测序"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{EMSA}$、$\\mathrm{ChIP}$ 以及 $3\\mathrm{C}$／$4\\mathrm{C}$／$5\\mathrm{C}$／$\\mathrm{Hi}$-$\\mathrm{C}$／$\\mathrm{ChIA}$-$\\mathrm{PET}$，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{EMSA}$ 与 $\\mathrm{ChIP}$ 都是体内交联后的同一种实验；$\\mathrm{EMSA}$ 必须加 $\\mathrm{SDS}$ 才能看见滞后；胶上染的是蛋白质；$3\\mathrm{C}$ 一族五条都是 $\\mathrm{ChIP}$ 的别名，读出都是同一对引物 $\\mathrm{PCR}$；$4\\mathrm{C}$ 的环状就是纳米孔；$\\mathrm{Hi}$-$\\mathrm{C}$ 的生物素打在抗体上，$\\mathrm{ChIA}$-$\\mathrm{PET}$ 的抗体认连接位点",
+        "$\\mathrm{EMSA}$ 体外：标记探针 $+$ 核提取物，非变性 $\\mathrm{PAGE}$ 不加 $\\mathrm{SDS}$，看见的是探针滞后，也可用于蛋白质-$\\mathrm{RNA}$。$\\mathrm{ChIP}$ 体内：活细胞交联 $\\rightarrow$ 切断染色质 $\\rightarrow$ 特异性抗体沉淀 $\\rightarrow$ 序列分析；抗体认蛋白质，读出是 $\\mathrm{DNA}$。$\\mathrm{ChIP}$-chip／$\\mathrm{ChIP}$-seq 是沉淀之后接芯片或测序，不能代替「先交联、再抗体」。$3\\mathrm{C}$ 一族问空间上谁挨着谁，不是 $\\mathrm{ChIP}$ 别名：$3\\mathrm{C}$ 成对引物 $\\mathrm{PCR}$ 看局部预定位点；$4\\mathrm{C}$（circular $3\\mathrm{C}$）逆 $\\mathrm{PCR}$ $+$ 芯片；$5\\mathrm{C}$ 变性 $\\mathrm{PCR}$ $+$ 测序；$\\mathrm{Hi}$-$\\mathrm{C}$ 生物素标记连接位点、亲和素捕获、配对末端测序；$\\mathrm{ChIA}$-$\\mathrm{PET}$ 先对靶蛋白质免疫沉淀再配对末端测序。$4\\mathrm{C}$ 的环状不是纳米孔。足迹法变性胶空白区在第五节启动子，不要搬来当 $\\mathrm{ChIP}$ 原理",
+        "先做 $\\mathrm{EMSA}$ 再交联就是 $\\mathrm{ChIP}$；先做 $\\mathrm{ChIP}$ 再连接就是 $\\mathrm{Hi}$-$\\mathrm{C}$",
+        "五种构象捕获只是覆盖范围不同，实验化学完全相同，可以统称为 $\\mathrm{Hi}$-$\\mathrm{C}$"
+      ],
+      "answer": 1,
+      "hint": "体外滞后 vs 体内沉淀 vs 空间邻近；五条 3C 读出分户。",
+      "explanation": "**B 正确。** EMSA／ChIP 分户与图18-8 五条读出，来自 ch18-4。\n\n**干扰项辨析**：\n- A：EMSA 体外、不加 SDS、看探针；3C 一族不是 ChIP；4C≠纳米孔；Hi-C 捞连接事件，ChIA-PET 捞蛋白质在场。\n- C：两种策略不是前后两步；ChIP 加连接也不等于 Hi-C（还要生物素连接位点等）。\n- D：扩展指读出和覆盖范围，不是同一次 PCR。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-4.md",
+        "label": "EMSA 体外 · ChIP 体内 · 3C/4C/5C/Hi-C/ChIA-PET 分户"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于基因芯片、蛋白质芯片以及 $\\mathrm{PCR}$ 衍生技术，下列叙述正确的有（　）。",
+      "options": [
+        "基因芯片源于印迹法微型化、集成化：支持物上固定已知 $\\mathrm{DNA}$，荧光标在样品 $\\mathrm{cDNA}$ 一侧。本版正常细胞红色 $\\mathrm{Cy}3$、肿瘤细胞绿色 $\\mathrm{Cy}5$，等量混合与同一张芯片杂交；只绿＝只在肿瘤，只红＝只在正常，互补色／黄＝两边都有。不要按别的书改颜色。图18-2 的 $\\mathrm{RT}$-$\\mathrm{PCR}$ 只是给 $\\mathrm{mRNA}$ 变成带荧光的 $\\mathrm{cDNA}$",
+        "蛋白质芯片靠抗原－抗体或受体－配体等亲和反应，可同时分析上千种蛋白质，因纯化与抗体制备原因尚不能覆盖整个基因组所表达的蛋白质。类器官芯片起点是干细胞加诱导，组织芯片一般是切片，二者不要对调。循环芯片测序不是第一节的基因芯片",
+        "$\\mathrm{RT}$-$\\mathrm{PCR}$ 先逆转录再扩增，可检出单个细胞中少于 $10$ 个拷贝的特异 $\\mathrm{RNA}$，定性／半定量。原位 $\\mathrm{PCR}$ 在福尔马林固定切片或涂片的单个细胞内扩增，再用特异探针原位杂交。实时 $\\mathrm{PCR}$ 用于肿瘤、SNP、病原体；$\\mathrm{HBsAg}$ 阳性不等于知道 $\\mathrm{HBV}$ 拷贝数",
+        "芯片上自己发光；本版 $\\mathrm{Cy}5$ 必须改成红色；蛋白质芯片就是蛋白质版全基因组芯片；类器官芯片＝把器官切片贴上；原位 PCR 扩完用溴化乙啶看胶；$\\mathrm{HBsAg}$ 已经给出拷贝数"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "芯片仍是印迹微型化；Cy3 红／Cy5 绿跟本版；原位 PCR 还要原位杂交。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：基因芯片双色，来自 ch18-1。\n- B：蛋白质芯片限度、类器官 vs 组织芯片、循环芯片≠基因芯片，来自 ch18-1／ch18-3。\n- C：RT-PCR、原位 PCR、HBV 拷贝数 vs HBsAg，来自 ch18-2。\n- **D 错**：荧光在样品侧；本版 Cy3 红 Cy5 绿；蛋白质芯片不能覆盖全基因组表达产物；类器官芯片不是切片；原位 PCR 后仍要原位杂交；HBsAg 解决不了拷贝数。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-1.md",
+        "label": "基因芯片 Cy3/Cy5 · 蛋白质芯片亲和 · RT-PCR/原位 PCR · HBV vs HBsAg"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于基因表达分析：先查库、TSS、$\\mathrm{mRNA}$-$\\mathrm{DD}$、转录物组与蛋白质组，下列叙述正确的有（　）。",
+      "options": [
+        "一般策略先查表18-1：三大综合库 $\\mathrm{NCBI}$、$\\mathrm{EBI}$、$\\mathrm{DDBJ}$，中国 $\\mathrm{CNGBdb}$（第四大综合）与 $\\mathrm{CNCB}$，再用实时 $\\mathrm{PCR}$、基因芯片等验证。$\\mathrm{BLAST}$ 给出参考信息和预测，不是实验验证本身。$\\mathrm{TSS}$ 不是启动子也不是起始密码子。$5'$-$\\mathrm{RACE}$ 定 $\\mathrm{TSS}$：先 $\\mathrm{CIAP}$ 再 $\\mathrm{TAP}$ 去帽接头，随机 $9$ 核苷酸引物逆转录，巢式 $\\mathrm{PCR}$ 的 $\\mathrm{GSP}$ 才是基因特异性引物",
+        "$\\mathrm{DNase}\\ \\mathrm{I}$ 足迹法写在本节启动子：末端标记、蛋白保护、酶切、变性胶上空白区即结合区；足迹法胶是变性胶，$\\mathrm{EMSA}$ 是非变性胶，不要搬回第四节当 $\\mathrm{ChIP}$ 原理。$\\mathrm{mRNA}$-$\\mathrm{DD}$：$5'$ 随机引物 $+$ $3'$ 锚定引物（$\\mathrm{T}_{11}$）$\\mathrm{RT}$-$\\mathrm{PCR}$ 后 $\\mathrm{PAGE}$ 比较差异条带；优点是量少、较快、高低表达都能看到；缺陷是假阳性高达 $70\\%$、片段太短",
+        "转录物组包括 $\\mathrm{mRNA}$、$\\mathrm{rRNA}$、$\\mathrm{tRNA}$ 及其他非编码 $\\mathrm{RNA}$，相对基因组最大特点是动态可变。蛋白质组是特定时间空间上表达的所有蛋白质，含修饰、定位、互作，不是基因组的简单翻译。质谱靠 $\\mathrm{PMF}$ 或串联质谱搜库。空间转录物组＝原位鉴定 $+$ 单细胞测序，不是「纳米孔等于空间转录物组」。本版不要发明干扰素抑制翻译，也不要把第十九章重组 $\\mathrm{DNA}$ 克隆五步当本章主考点",
+        "先做芯片再查库；$\\mathrm{BLAST}$ 已经测完表达；$\\mathrm{TSS}=$ 启动子 $=$ 起始密码子；$\\mathrm{CIAP}$ 与 $\\mathrm{TAP}$ 可对调；足迹法就是 $\\mathrm{ChIP}$；$\\mathrm{mRNA}$-$\\mathrm{DD}$ 用实时 $\\mathrm{PCR}$ 特异一对引物；转录物组只统计 $\\mathrm{mRNA}$；有多少基因就有多少蛋白质；纳米孔＝空间转录物组；用干扰素抑制翻译"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "先查库再验证；5′-RACE 定 TSS；70% 假阳性；转录物组≠只 mRNA。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：先查库、BLAST、5′-RACE 流程，来自 ch18-5。\n- B：足迹法在启动子、mRNA-DD 与 70%，来自 ch18-5。\n- C：转录物组／蛋白质组定义、空间转录物组、无干扰素、不写重组五步，来自 ch18-5。\n- **D 错**：策略顺序、TSS 三位置、CIAP→TAP、足迹≠ChIP、引物类型、组学定义全部写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-5.md",
+        "label": "先查库 · 5′-RACE · 足迹法 · mRNA-DD 70% · 转录物组 vs 蛋白质组"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "Southern 是 $\\mathrm{RNA}$ 印迹，Western 用核酸探针按碱基互补认蛋白质；Northern 必须先限制酶切。基因芯片是与膜无关的另一套理论，本版 $\\mathrm{Cy}5$ 标正常细胞为红色。常规 $\\mathrm{PCR}$ 终点条带可精确代表起始拷贝数；引物从模板中间提供 $5'$ 磷酸即可；$\\mathrm{SYBR\\ Green}$ 结合后荧光 $1\\,000$ 倍就是扩增倍数。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：Southern＝DNA；Western＝抗体；定量看指数期不是终点。",
+      "explanation": "**该命题错误，每一分句都错。** Southern 是 DNA 印迹，Northern 是 RNA 且无须酶切，Western 用抗体不是核酸杂交。基因芯片源于印迹微型化；本版 Cy3 红（正常）、Cy5 绿（肿瘤）。终点 PCR 只能半定量；引物在两侧提供 3′-OH；SYBR 的 1000 倍是结合后相对游离染料的荧光，PCR 扩增「百万倍以上」才是循环产量。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-1.md",
+        "label": "三类印迹分户 · 芯片微型化 · 终点半定量 · SYBR 1000倍≠扩增倍数"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "第二代三大平台是焦磷酸、Illumina、$\\mathrm{SMRT}$；$\\mathrm{SOLiD}$ 无须 $\\mathrm{PCR}$ 所以是第三代；纳米孔读荧光。酵母双杂交就是测序；$3\\mathrm{C}$、$4\\mathrm{C}$、$5\\mathrm{C}$、$\\mathrm{Hi}$-$\\mathrm{C}$、$\\mathrm{ChIA}$-$\\mathrm{PET}$ 是同一种技术。本版用干扰素抑制翻译研究互作；重组 $\\mathrm{DNA}$ 克隆五步是本章主考点。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：三大里是 SOLiD 不是 SMRT；3C 一族要分户；无干扰素。",
+      "explanation": "**该命题错误，每一分句都错。** 第二代三大是焦磷酸（454）、Illumina、SOLiD；SMRT 属第三代（ZMW 一孔一酶）。SOLiD 仍用乳液 PCR。纳米孔读的是过孔电流。酵母双杂交读出是 GAL4 BD/AD 重组装后的报告基因，不是测序。3C 一族共享交联，但 PCR／逆 PCR＋芯片／变性 PCR＋测序／生物素连接位点／免疫沉淀读出必须分户。本版没有写干扰素抑制翻译；重组 DNA 克隆五步在第十九章，不是本章主考点。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-3.md",
+        "label": "二代三大≠SMRT · 3C 分户 · 无干扰素 · 克隆五步不在本章"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "$\\mathrm{DNA}$ 印迹法又称 ________ 印迹法。$\\mathrm{PCR}$ 引物提供 ________ 末端。桑格法因 ________ 的 $3'$ 位碳缺少羟基而终止延伸。第二代三大平台中用连接酶代替聚合酶的是 ________。鉴定真核转录起点（$\\mathrm{TSS}$）时，专门扩增 $\\mathrm{cDNA}$ $5'$ 末端的方法是 ________。",
+      "answer": "Southern, 3′-OH, ddNTP, SOLiD, 5′-RACE",
+      "hint": "方位词对 DNA；引物给 3′-OH；终止物是 ddNTP；三大里连接酶那家是 SOLiD；TSS 走 5′-RACE。",
+      "scoring_criteria": [
+        "第一空填“Southern”（或“Southern blotting”“Southern 印迹”）（2分）",
+        "第二空填“3′-OH”（或“3'-OH”“3′羟基”“3′-羟基”）（2分）",
+        "第三空填“ddNTP”（或“2',3'-双脱氧核苷三磷酸”“双脱氧核苷三磷酸”）（2分）",
+        "第四空填“SOLiD”（或“连接酶测序”“寡核苷酸连接检测”）（2分）",
+        "第五空填“5′-RACE”（或“5'-RACE”“cDNA 末端快速扩增”“5′末端快速扩增”）（2分）"
+      ],
+      "explanation": "Southern 是 DNA 印迹的人名来源，不要答 Northern。引物提供 3′-OH 不是 5′ 磷酸。桑格终止物是 ddNTP，不要答 dNTP 或化学试剂。第二代三大是焦磷酸、Illumina、SOLiD，不要填 SMRT。鉴定 TSS 走 5′-RACE（CIAP→TAP→接头→巢式 PCR），不要答成启动子克隆或足迹法。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-1.md",
+        "label": "Southern；3′-OH；ddNTP；SOLiD；5′-RACE"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "从「看见分子」写到「读出碱基顺序」：①Southern／Northern／Western 的分子、识别方式（抗体不是核酸杂交）和基因芯片作为印迹微型化（本版 $\\mathrm{Cy}3$ 红、$\\mathrm{Cy}5$ 绿）；②$\\mathrm{PCR}$：引物提供 $3'$-$\\mathrm{OH}$，变性－退火－延伸，短产物从第二轮出现；终点半定量 vs 实时荧光指数期，$\\mathrm{SYBR\\ Green}$ 认双链；③桑格 $\\mathrm{ddNTP}$ 终止 $\\neq$ 化学降解；第二代三大（焦磷酸、Illumina、$\\mathrm{SOLiD}$）vs 第三代无须 $\\mathrm{PCR}$（HeliScope／$\\mathrm{SMRT}$ 的 $\\mathrm{ZMW}$ 一孔一酶／纳米孔电流，可直接 $\\mathrm{RNA}$）。不要把 $\\mathrm{SMRT}$ 填进第二代三大平台。",
+      "answer": "参考答案：\n\n**1. 印迹与芯片**\n- Southern＝DNA 印迹：限制酶＋琼脂糖＋胶中变性＋NC 膜＋核酸探针杂交。Northern＝RNA 印迹：不酶切，看转录丰度；敏感性低于 PCR，仍是最可靠 RNA 定量之一。Western＝蛋白质印迹：PAGE＋电转 NC/PVDF，一抗认蛋白质，酶或核素在二抗上，不是核酸杂交。\n- 基因芯片是印迹微型化：已知 DNA 固定，荧光在样品侧。本版正常细胞 Cy3 红、肿瘤细胞 Cy5 绿，等量混合同一张芯片；只绿只在肿瘤，只红只在正常，互补色两边都有。蛋白质芯片走亲和，上千种，不能覆盖全基因组表达产物。循环芯片测序不是基因芯片。\n\n**2. PCR**\n- 1983 Mullis。引物两侧提供 3′-OH，特异在引物。体系：模板、引物、Taq、dNTP、含 Mg2+ 缓冲液。变性 95℃（图 94℃）、退火约 Tm−5℃、延伸 72℃；25～30 循环，百万倍以上。第一轮长产物，第二轮起短产物指数增加。RNA 先逆转录。\n- 终点法产物堆积只能半定量；实时 PCR＝qPCR，看指数期荧光。SYBR Green 结合双链，荧光约 1000 倍于游离染料（不是扩增倍数）；探针类更特异、可多色。\n\n**3. 测序**\n- 桑格：ddNTP 缺 3′-OH，不能成 3′,5′-磷酸二酯键；四管共 5′ 起点；变性 PAGE 差 1 nt。化学降解：碱基专一切断已有 DNA，毒性、难自动化，未广泛用。1980 化学奖发给测序不是 PCR。\n- 二代三大：454 焦磷酸发光；Illumina 可逆荧光 dNTP；SOLiD 连接酶＋双碱基，仍乳液 PCR。三代无须 PCR：HeliScope；SMRT（ZMW 一孔一酶）；纳米孔（电流，可直接 RNA、看修饰）。不要把 SMRT 填进第二代三大。",
+      "hint": "先三类印迹和芯片，再 PCR 三步与定量，最后桑格／二代三大／三代。SMRT 不要进第二代。",
+      "scoring_criteria": [
+        "写出 Southern=DNA、Northern=RNA、Western=抗体不是杂交，并点名基因芯片是印迹微型化或本版 Cy3 红/Cy5 绿（4分）",
+        "写出引物提供 3′-OH、变性–退火–延伸、短产物第二轮或 25～30 次百万倍（3分）",
+        "写出终点半定量、实时/qPCR 看指数期、SYBR 认双链或 1000 倍不是扩增倍数（3分）",
+        "写出桑格 ddNTP≠化学降解；二代三大含焦磷酸、Illumina、SOLiD；三代无须 PCR，点名 SMRT 的 ZMW 或纳米孔电流；明确 SMRT 不进第二代（4分）"
+      ],
+      "explanation": "本题把第 18-1 至 18-3 节收成“印迹—PCR—测序”。易错点：Western 答成杂交；SMRT 填进二代三大；SYBR 1000 倍当成扩增倍数。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-1.md",
+        "label": "三类印迹与芯片；PCR 三步与定量；桑格与二代三代"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "从「谁和谁绑」写到「表达了多少」：①蛋白质–蛋白质：GST 牵拉（体外，GST－GSH，大肠埃希菌）vs 酵母双杂交（GAL4 的 BD/AD 重组装），都不是测序，不要发明干扰素抑制翻译。②蛋白质–DNA：EMSA 体外非变性滞后 vs ChIP 体内交联＋抗体；3C／4C／5C／Hi-C／ChIA-PET 读出分户，不要并成一种技术。③表达分析：先查 NCBI／EBI／DDBJ／CNGBdb 再验证；5′-RACE 定 TSS（CIAP→TAP）；DNase I 足迹在本节启动子（变性胶空白区）。④mRNA-DD 看 PAGE 差异条带、假阳性约 70%；转录物组＝全部 RNA（含非编码），蛋白质组＝特定时空全部蛋白质。不要把重组 DNA 克隆五步写成本章主考点。",
+      "answer": "参考答案：\n\n**1. 蛋白质–蛋白质**\n- 牵拉沉淀：体外，GST 融合蛋白质在大肠埃希菌表达，GST 绑 GSH－珠，互作伴侣被间接牵下，游离 GSH 竞争洗脱，电泳共沉淀。不是免疫共沉淀的别名。6×His－镍是另一标签。\n- 酵母双杂交：GAL4 的 BD 与 AD 分开则不能激活；分别融合诱饵与猎物，互作则重组装、报告基因亮。BD 认 DNA 不是猎物。读出是转录激活，随后测序是后处理。本版无干扰素抑制翻译。\n\n**2. 蛋白质–DNA 与三维接触**\n- EMSA：标记探针＋核提取物，非变性 PAGE 不加 SDS，看探针滞后。\n- ChIP：活细胞交联→切断→抗体沉淀→序列分析。ChIP-seq 不能代替先交联再抗体。\n- 3C：局部成对引物 PCR。4C：逆 PCR＋芯片。5C：变性 PCR＋测序。Hi-C：生物素打在连接位点，配对末端测序。ChIA-PET：抗体认靶蛋白质，再配对末端测序。4C 的环状不是纳米孔。不要五条并户。\n\n**3. 先查库、TSS、启动子**\n- 先查 NCBI、EBI、DDBJ、CNGBdb 等，再实时 PCR、芯片验证。BLAST 是预测不是验证。\n- TSS≠启动子≠起始密码子。5′-RACE：CIAP 去磷酸保留带帽全长 mRNA，TAP 去帽接头，GSP 做巢式 PCR。\n- DNase I 足迹在第五节启动子：变性胶空白区＝结合区，不要搬回 ChIP。\n\n**4. 差异与组学**\n- mRNA-DD：5′ 随机＋3′ 锚定（T11）RT-PCR，PAGE 差异条带；假阳性约 70%，片段短。\n- 转录物组＝mRNA、rRNA、tRNA 及其他非编码 RNA，动态可变。蛋白质组＝特定时间空间全部蛋白质，含修饰定位互作；质谱 PMF 或串联质谱搜库。空间转录物组＝原位鉴定＋单细胞测序，≠纳米孔。重组 DNA 克隆五步在第十九章。",
+      "hint": "按牵拉／双杂交 → EMSA／ChIP／3C 分户 → 查库与 5′-RACE、足迹 → mRNA-DD 与两组学写。不要补干扰素，不要写克隆五步。",
+      "scoring_criteria": [
+        "写出 GST 牵拉体外（GST-GSH 或大肠埃希菌）与酵母双杂交 BD/AD，点名不是测序或无干扰素（4分）",
+        "写出 EMSA 体外非变性滞后、ChIP 体内交联抗体；3C 一族至少三条读出分户（4分）",
+        "写出先查库（点名 NCBI 或三大库）再验证；5′-RACE 定 TSS（可点 CIAP/TAP）；足迹法在启动子或变性胶空白区（4分）",
+        "写出 mRNA-DD 差异条带或 70% 假阳性；转录物组含非编码 RNA 或动态可变；蛋白质组是特定时空全部蛋白质（3分）"
+      ],
+      "explanation": "本题把第 18-4、18-5 节收成“互作—构象—查库与 TSS—组学”。易错点：3C 并户；足迹法搬去 ChIP；转录物组只写 mRNA；补干扰素或重组克隆五步。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch18-4.md",
+        "label": "GST/酵母双杂交；EMSA/ChIP/3C 分户；5′-RACE 与足迹；转录物组 vs 蛋白质组"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

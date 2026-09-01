@@ -1,0 +1,321 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch14",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch14-1.md；content/biochemistry/textbook/ch14-2.md；content/biochemistry/textbook/ch14-3.md；content/biochemistry/textbook/ch14-4.md；content/biochemistry/textbook/ch14-5.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于体内 $\\mathrm{DNA}$ 合成的三本账以及复制的四条规律，下列叙述正确的是（　）。",
+      "options": [
+        "体内所有 $\\mathrm{DNA}$ 合成都叫 replication；高保真是与半保留、双向、半不连续并列的第四种互斥复制方式；修复合成和逆转录都在本章按复制过程展开",
+        "体内 $\\mathrm{DNA}$ 合成三本账：①复制——以 $\\mathrm{DNA}$ 为模板合成 $\\mathrm{DNA}$，抄基因组（本章第一至第四节）；②修复合成——校正损伤或错配，章首交给第二十三章（高保真处复制后修复另见第二十一章）；③逆转录——以 $\\mathrm{RNA}$ 为模板合成 $\\mathrm{DNA}$，本章第五节。复制化学本质是酶促 $\\mathrm{dNTP}$ 聚合。四条规律：半保留、双向、半不连续、高保真（错配约 $10^{-10}$）。高保真是保真程度，不是第四种复制方式。问子代怎样留下亲代一股链走复制；问 $\\mathrm{RNA}$ 病毒基因组怎样进宿主染色体走逆转录；问嘧啶二聚体怎样切掉重补走修复",
+        "忠实复制只靠碱基配对，酶促修复系统与本章无关；原核和真核共用一张酶表，$\\mathrm{oriC}$、$\\mathrm{DnaA}$、$\\mathrm{pol}\\,\\mathrm{III}$ 可原样搬到真核",
+        "质粒、$\\mathrm{mtDNA}$ 和逆转录病毒都是 $\\mathrm{RNA}$ 基因组，三种特殊复制画成同一张图"
+      ],
+      "answer": 1,
+      "hint": "三本账分模板；高保真不是第四种方式；修复见第二十三章，复制后修复见第二十一章。",
+      "explanation": "**B 正确。** 三本账、四条规律、高保真是程度不是方式、两处修复章号按教材，都来自 ch14-1。\n\n**干扰项辨析**：\n- A：不是所有 $\\mathrm{DNA}$ 合成都叫复制；高保真不是互斥方式；修复合成不在本章展开。\n- C：规律在前、校正在后才是忠实；原核真核细节不共用一张酶表。\n- D：质粒和 $\\mathrm{mtDNA}$ 仍是 $\\mathrm{DNA}$；三种特殊复制机制不同。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-1.md",
+        "label": "三本账 · 四条规律 · pitfall「不是所有 DNA 合成都叫复制」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于半保留复制和 Meselson-Stahl 实验，下列叙述正确的是（　）。",
+      "options": [
+        "第一代离心应同时出现高密度带和低密度带；第二代画出高、中、低三条带；中密度带会一代代连续变轻；半保留意味着子代永远等于亲代",
+        "自然界是半保留：每个子代双链都是一股亲代链 $+$ 一股新链。$1958$ 年 Meselson 与 Stahl 用 $^{15}\\mathrm{N}\\rightarrow ^{14}\\mathrm{N}$ 密度梯度离心：全 $^{15}\\mathrm{N}$ 一条高密度带；转入 $^{14}\\mathrm{N}$ 后第一代只有一条中密度杂交带（排除全保留）；第二代中密度 $+$ 低密度两条带、不再出现全重带；再传代低密度增强、中密度带位置不变（排除混合式）。每一代约 $20$ 分钟。保守性是相对的：流感多毒株；除单卵双胞胎外两个人基因型不可能完全一样",
+        "全保留、半保留、混合三种都叫半保留，因为都用了亲代信息",
+        "第一代“一半重带一半轻带”才符合半保留；混合式会长期保留一条位置固定的中密度带"
+      ],
+      "answer": 1,
+      "hint": "第一代只有中密度带；第二代两条不是三条；中密度位置不变排除混合式。",
+      "explanation": "**B 正确。** 三代带型、$20$ 分钟世代、相对保守，都按教材。\n\n**干扰项辨析**：\n- A：那是全保留的第一代预言；第二代不要三条带；中密度变轻是混合式；半保留不是绝对不变。\n- C：只有中间那种叫半保留。\n- D：一半重一半轻是全保留；混合式不会保留固定中密度带。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-1.md",
+        "label": "Meselson-Stahl · 第一代仅中密度 · pitfall「第二代不要三条带」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于双向复制、复制叉和复制子，下列叙述正确的是（　）。",
+      "options": [
+        "双向复制必须有两个 $\\mathrm{ori}$；真核改成单向；复制叉的头部是尚未解旋的双链；复制子就是一条染色体",
+        "原核环状基因组只有一个复制起点，从该点向两个方向解链，形成 $2$ 个延伸方向相反的复制叉，汇合于 $\\mathrm{ter}$（单点起始双向复制）。双向不是两个起点。复制叉是 $\\mathrm{Y}$ 形：头＝已解旋模板单链 $+$ 正在合成的新链，尾＝尚未解旋的双链。真核多条线性染色体，每条染色体多个起点，每个起点仍然双向。复制子是含一个复制起点、独立完成复制的功能单位；高等生物数以万计，长度约 $13\\sim 900\\,\\mathrm{kb}$。第四节还写每个染色体有上千个复制子，不是“一条染色体一个起点再乘染色体数”",
+        "原核和真核都是随机开口，没有固定 origin",
+        "复制叉头尾可以画反，不影响半不连续那一节的“解链方向只有一个”"
+      ],
+      "answer": 1,
+      "hint": "一个 ori 往两边走；真核每个起点仍双向；复制子 $13\\sim 900\\,\\mathrm{kb}$。",
+      "explanation": "**B 正确。** 单点双向、叉的头尾、真核多复制子数字，都按教材。\n\n**干扰项辨析**：\n- A：双向 $\\neq$ 两个起点；真核不改单向；头不是未解旋双链；复制子不是整条染色体。\n- C：复制不是随机起始。\n- D：头尾画反会对不上“解链方向只有一个”。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-1.md",
+        "label": "单点双向 · 复制叉 Y 形 · 复制子 13～900 kb · pitfall「双向不是两个起点」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于半不连续复制和冈崎片段，下列叙述正确的是（　）。",
+      "options": [
+        "后随链沿 $3'\\rightarrow 5'$ 连续合成，所以不需要冈崎片段；半不连续就是两条链都不连续；冈崎片段两条链上都有；真核片段 $1\\,000\\sim 2\\,000$ 核苷酸、原核 $100\\sim 200$ 核苷酸",
+        "聚合酶只能 $5'\\rightarrow 3'$ 合成；同一复制叉解链方向只有一个。前导链与解链同向、连续合成；后随链与解链反向，分段从 $5'\\rightarrow 3'$ 引发并延长。半不连续 $=$ 前导连续 $+$ 后随不连续。冈崎片段只出现于同一复制叉的一股链上：真核约 $100\\sim 200$ 核苷酸，原核约 $1\\,000\\sim 2\\,000$ 核苷酸（不要对调）。后随链引物生成和子链延长都迟一些，两股不对称。完成后：去引物、填空隙、连接成整链。第三节后随链模板绕环让两股由同一个 $\\mathrm{pol}\\,\\mathrm{III}$ 催化，不取消不对称。不要发明 $3'\\rightarrow 5'$ 的 $\\mathrm{DNA}$ 聚合酶",
+        "前导链也画满短片段；斜线框是反向聚合的标记，不是引物",
+        "真核冈崎片段与核小体无关，前导链从端粒连到另一个端粒"
+      ],
+      "answer": 1,
+      "hint": "两股都是 $5'\\rightarrow 3'$；冈崎只在后随链；真核更短。",
+      "explanation": "**B 正确。** 方向限制、前导／后随、冈崎两档数字、绕环不取消不对称，都按教材。\n\n**干扰项辨析**：\n- A：解法不是换聚合方向；不是两条都不连续；片段不在两股上都有；两档数字抄反。\n- C：短片段只在一股；斜线框是引物。\n- D：第四节把真核片段钉到核小体 $135\\,\\mathrm{bp}$；前导链只连续半个复制子。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-1.md",
+        "label": "半不连续 · 冈崎真核 100～200／原核 1000～2000 · pitfall「不要发明 3′→5′ 聚合酶」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于原核 $\\mathrm{DNA}\\,\\mathrm{pol}\\,\\mathrm{I}$ 与 $\\mathrm{pol}\\,\\mathrm{III}$ 以及真核聚合酶转换，下列叙述正确的是（　）。",
+      "options": [
+        "Kornberg $1958$ 发现的酶就是细胞内延长主酶；$\\mathrm{pol}\\,\\mathrm{I}$ 基因缺陷就不能复制；填空隙、去引物都由 $\\mathrm{pol}\\,\\mathrm{III}$ 完成；Klenow 片段有 $\\mathrm{pol}\\,\\mathrm{I}$ 的全部活性包括 $5'\\rightarrow 3'$ 外切；$\\mathrm{pol}\\,\\alpha$ 是真核的 $\\mathrm{pol}\\,\\mathrm{III}$",
+        "$1958$ 年 Kornberg 发现的酶后称 $\\mathrm{pol}\\,\\mathrm{I}$：试管内需模板、$\\mathrm{dNTP}$、引物；基因缺陷菌株仍能复制。活细胞内 $\\mathrm{pol}\\,\\mathrm{I}$ 主要校对、填空隙、去引物，只能延长约 $20$ 个核苷酸，是五种酶里唯一兼有 $5'\\rightarrow 3'$ 外切者。Klenow 是大片段 $604$ 氨基酸，聚合 $+$ $3'\\rightarrow 5'$ 外切，没有 $5'\\rightarrow 3'$ 外切（小片段 $323$ 氨基酸才有）。$\\mathrm{pol}\\,\\mathrm{III}$ 由 $\\mathrm{pol}\\,C$ 编码，每分钟可至 $10^{5}$ 次聚合，速率 $250\\sim 1\\,000$ 核苷酸/s，是原核延长真正起催化作用的酶；全酶正文写 $10$ 种（$17$ 个）亚基（核心 $\\alpha\\varepsilon\\theta$、$\\beta$ 滑动夹、$\\gamma$-复合物），表14-2 亚基类型写 $9$，两处按教材并存。填 gap 用 $\\mathrm{pol}\\,\\mathrm{I}$ 不用 $\\mathrm{pol}\\,\\mathrm{III}$。真核：$\\alpha$ 引物后被 $\\delta$（后随）、$\\varepsilon$（前导）替换，称为聚合酶转换",
+        "$\\mathrm{pol}\\,\\mathrm{IV}$、$\\mathrm{pol}\\,\\mathrm{V}$ 是延长主酶，有很强的 $3'\\rightarrow 5'$ 外切",
+        "表14-2 的 $9$ 和正文 $10/17$ 必须改成同一个数才允许默写"
+      ],
+      "answer": 1,
+      "hint": "最先发现的不是主酶；$\\mathrm{III}$ 延长、$\\mathrm{I}$ 填空隙；Klenow 无 $5'\\rightarrow 3'$ 外切。",
+      "explanation": "**B 正确。** $\\mathrm{pol}\\,\\mathrm{I}/\\mathrm{III}$ 分工、Klenow 两段、全酶数字并存、聚合酶转换，都按教材。\n\n**干扰项辨析**：\n- A：Kornberg 的酶不是延长主酶；缺陷仍能复制；填空隙不是 $\\mathrm{III}$；Klenow 无 $5'\\rightarrow 3'$ 外切；$\\alpha$ 不是真核主酶。\n- C：$\\mathrm{IV}/\\mathrm{V}$ 跨损伤、无校对外切、速率极低。\n- D：本版两处数字不同，不要自行改齐。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-2.md",
+        "label": "pol I 辅助／Klenow · pol III 真正延长 · pitfall「填空隙不是 pol III」"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $E.coli$ 的 $\\mathrm{oriC}$、DnaA／DnaB 以及引物，下列叙述正确的是（　）。",
+      "options": [
+        "复制在基因组上随机开口；$\\mathrm{oriC}$ 里 $5\\times 13\\,\\mathrm{bp}$ 是 $\\mathrm{DUE}$、$3\\times 9\\,\\mathrm{bp}$ 是 $\\mathrm{R}$ 位点；DnaA 自己就是解旋酶；引物是一小段 $\\mathrm{DNA}$；利福平抑制引发酶所以复制无法起始",
+        "复制有固定起点 $\\mathrm{oriC}$，跨度 $245\\,\\mathrm{bp}$：含 $3$ 个 $13\\,\\mathrm{bp}$ 串联重复（富 $\\mathrm{AT}$ 的 $\\mathrm{DUE}$）和 $5$ 个 $9\\,\\mathrm{bp}$ 重复（DnaA 主结合的 $\\mathrm{R}$ 位点），另有 $\\mathrm{IHF}$、$\\mathrm{FIS}$、$\\mathrm{I}$ 位点。DnaA 是同源四聚体，辨认反向重复并促使 $\\mathrm{AT}$ 区解链，随后被解旋酶 DnaB（DnaC 协同）逐步置换。$\\mathrm{DNA}\\,\\mathrm{pol}$ 不能连两个游离 $\\mathrm{dNTP}$，引发酶（DnaG）按模板 $5'\\rightarrow 3'$ 聚合 $\\mathrm{NTP}$ 生成约 $5\\sim 10$ 核苷酸的 $\\mathrm{RNA}$ 引物。利福平抑制转录用 $\\mathrm{RNA}\\,\\mathrm{pol}$，引发酶对利福平不敏感。同一 $\\mathrm{pol}\\,\\mathrm{III}$ 催化两股，后随链模板绕环对齐。去引物、填 gap 用 $\\mathrm{pol}\\,\\mathrm{I}$；Tus 反解旋酶单向挡住 DnaB，汇合可偏 $200\\,\\mathrm{bp}$ 以内",
+        "一个叉上有两台互不相干的 $\\mathrm{pol}\\,\\mathrm{III}$ 各抄一股；绕环让后随链变成连续合成",
+        "$E.coli$ 每秒 $3\\,800$ 个核苷酸就是表14-2 里单个 $\\mathrm{pol}\\,\\mathrm{III}$ 的 $250\\sim 1\\,000\\,\\mathrm{nt/s}$，两处必须换算成同一个标准值"
+      ],
+      "answer": 1,
+      "hint": "$245\\,\\mathrm{bp}=3\\times 13\\,\\mathrm{DUE}+5\\times 9\\,\\mathrm{R}$；DnaB 才是解旋酶；引物是 $\\mathrm{RNA}$。",
+      "explanation": "**B 正确。** $\\mathrm{oriC}$ 两套重复、DnaA／DnaB 分工、$\\mathrm{RNA}$ 引物、利福平不敏感、绕环、Tus，都按教材。\n\n**干扰项辨析**：\n- A：不是随机开口；两套重复对调；DnaA 不是 helicase；引物不是 $\\mathrm{DNA}$；利福平不打引发酶。\n- C：同一个 $\\mathrm{pol}\\,\\mathrm{III}$；绕环不取消半不连续。\n- D：本版两处数字都保留，不要混成一句。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-3.md",
+        "label": "oriC 245 bp · DnaA 非解旋酶 · RNA 引物 5～10 nt · pitfall「利福平不挡引发酶」"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于真核复制（聚合酶转换、$\\mathrm{S}$ 期只一次、端粒酶爬行）以及相关数字，下列叙述正确的是（　）。",
+      "options": [
+        "真核酶催化速率就是表14-2 的 $250\\sim 1\\,000$ 核苷酸/s，所以比原核更快；$\\mathrm{pol}\\,\\alpha$ 是延长主力；$\\mathrm{PCNA}$ 是又一种 $\\mathrm{DNA}$ 聚合酶；“每个周期只一次”等于每条染色体只有一个起点；端粒酶直接把 $\\mathrm{dNTP}$ 填进子链 $5'$ 引物空隙；肿瘤端粒酶活性增高所以端粒一定更长；图14-15 说明人的染色体每复制一次必然缩短到消失",
+        "就酶的催化速率而言真核约 $50$ 个 $\\mathrm{dNTP}/\\mathrm{s}$，远比原核 $\\mathrm{pol}\\,\\mathrm{III}$ 慢，但每条染色体上千个复制子分组激活，总体不慢。聚合酶转换：$\\alpha$ 做引物后被 $\\delta$（后随）、$\\varepsilon$（前导）替换；冈崎片段大致与一个核小体 $\\mathrm{DNA}$ $135\\,\\mathrm{bp}$ 或其若干倍相等；前导链连续也只限于半个复制子。$\\mathrm{PCNA}$ 是同源三聚体滑动夹，功能／构象类似 $E.coli$ $\\mathrm{pol}\\,\\mathrm{III}$ 的 $\\beta$ 亚基，由 $\\mathrm{RFC}$ 加载，使 $\\mathrm{pol}\\,\\delta$ 获得持续合成能力，本身不催化聚合。真核 $\\mathrm{RNA}$ 引物由 $\\mathrm{FEN}1$ 和 $\\mathrm{RNase}\\,\\mathrm{H}$ 等去除，不要把 $\\mathrm{pol}\\,\\mathrm{I}$ 安过来。“只一次”指每个复制基因位点一轮细胞周期只被激活一次，不是只有一个起点：$\\mathrm{G}_1$ 装尚未激活的 $\\mathrm{pre}$-$\\mathrm{RC}$（$\\mathrm{ORC}\\rightarrow\\mathrm{CDC}6\\rightarrow\\mathrm{CDT}1\\rightarrow$ 两套 $\\mathrm{MCM}2$-$7$），$\\mathrm{S}$ 期细胞周期蛋白 $\\mathrm{A}$–$\\mathrm{CDK}2$ 磷酸化后才募集聚合酶。端粒 $\\mathrm{TxGy}$ 帽子；酶由 $\\mathrm{hTR}$（约 $150\\,\\mathrm{nt}$）、$\\mathrm{hTP}1$、$\\mathrm{hTRT}$ 组成；爬行模型先以 $\\mathrm{CyAx}$ 认母链 $\\mathrm{TxGy}$ 逆转录延长母链 $3'$ 端，再另做引物填子链。图14-15 是某些低等生物少数特例；细胞水平老化与酶活性下降有关，个体老化非单因素；肿瘤酶活性常增高，长度不一定成正比",
+        "酵母 $\\mathrm{ARS}$ 的 $11\\,\\mathrm{bp}$ 核心就是人的复制起点全长；$\\mathrm{replicator}$ 是编码 $\\mathrm{MCM}$ 的蛋白质基因；$\\mathrm{mtDNA}$ 也按端粒酶复制、不需要引物",
+        "着丝粒就是端粒的别名，都在染色体两端膨大成粒；$\\mathrm{CyAx}$ 配的是母链 $\\mathrm{TxGy}$ 写反也没关系"
+      ],
+      "answer": 1,
+      "hint": "酶慢总体不慢；$\\alpha\\rightarrow\\delta/\\varepsilon$；爬行先延长母链 $3'$；只一次 $\\neq$ 一个起点。",
+      "explanation": "**B 正确。** $50$ 个 $\\mathrm{dNTP}/\\mathrm{s}$、转换与 $135\\,\\mathrm{bp}$、$\\mathrm{PCNA}$ 夹子、$\\mathrm{pre}$-$\\mathrm{RC}$ 两步、爬行模型、肿瘤长度不一定成正比，都按第四节。\n\n**干扰项辨析**：\n- A：真核酶更慢不是更快；$\\alpha$ 不是主力；$\\mathrm{PCNA}$ 不是聚合酶；只一次不是单起点；酶不直接填 $5'$ 空隙；活性与长度不成正比；图14-15 是特例。\n- C：$\\mathrm{ARS}$ 不是所有真核起点的长度；复制基因是 $\\mathrm{DNA}$ 序列；$\\mathrm{mtDNA}$ 走 $\\mathrm{D}$ 环且需要引物。\n- D：端粒不是着丝粒；$\\mathrm{CyAx}$ 配 $\\mathrm{TxGy}$ 不能写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-4.md",
+        "label": "50 dNTP/s · 聚合酶转换 · 爬行模型 · pre-RC 只一次 · pitfall「活性不一定与长度成正比」"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于碱基选择与校对、拓扑酶和连接酶，下列叙述正确的有（　）。",
+      "options": [
+        "保真在酶上分两步：碱基选择（掺入时尽量只接对的 $\\mathrm{dNTP}$）和校读（接错了用 $3'\\rightarrow 5'$ 外切拿掉再补）。$\\mathrm{poly}(\\mathrm{dA})_{21}$ 模板 $+$ $\\mathrm{poly}(\\mathrm{dT})_{20}$ 引物：四种 $\\mathrm{dNTP}$ 都在时第 $21$ 位只上 $\\mathrm{T}$；去掉 $\\varepsilon$ 亚基则错配升高。图14-7：模板 $\\mathrm{G}$、错配 $\\mathrm{A}$ 被切掉并补回 $\\mathrm{C}$；配对正确时 $3'\\rightarrow 5'$ 外切不表现。教材在此处把校对又称错配修复，这是聚合酶即时校读，不是复制全部完成之后另套修复系统",
+        "拓扑酶 $\\mathrm{I}$ 切断双链中的一股，无须 $\\mathrm{ATP}$；拓扑酶 $\\mathrm{II}$（促旋酶）切断正超螺旋双链，再连接用 $\\mathrm{ATP}$，起始阶段把正超螺旋变为负超螺旋（负的模板更好）。解链反向旋转达 $100$ 次/s。复制全过程都需要拓扑酶。拓扑酶不是解旋酶 DnaB（DnaB 用 $\\mathrm{ATP}$ 把双链分成单链）",
+        "连接酶连 $3'$-$\\mathrm{OH}$ 与相邻 $5'$-$\\mathrm{P}$，耗 $\\mathrm{ATP}$，只能连双链中的单链缺口（nick），不能连游离单链或 $\\mathrm{RNA}$ 单链。gap 缺一段核苷酸，由 $\\mathrm{pol}\\,\\mathrm{I}$ 用 $\\mathrm{dNTP}$ 填；填完留下 nick 再由连接酶封。聚合酶、拓扑酶、连接酶都生成 $3'$，$5'$-磷酸二酯键，但底物和场景不同",
+        "$\\varepsilon$ 亚基就是催化磷酸二酯键的聚合亚基；校对是复制结束后再巡视一遍基因组；$\\mathrm{pol}\\,\\mathrm{I}$ 的 $3'\\rightarrow 5'$ 与 $5'\\rightarrow 3'$ 外切是同一种活性；拓扑酶只在起始用一次；连接酶可以聚合一段 $\\mathrm{DNA}$ 去填 gap，也可以把两条游离单链糊在一起；凡是连磷酸二酯键都不耗能"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "选择在 $\\varepsilon$、校对当下切；拓扑酶 $\\mathrm{I}/\\mathrm{II}$ 能量不同；gap 填、nick 封。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：碱基选择与校对、$\\varepsilon$、$\\mathrm{poly}(\\mathrm{dA})_{21}$ 实验、即时校读，来自 ch14-2。\n- B：拓扑酶 $\\mathrm{I}/\\mathrm{II}$、全过程需要、不是解旋酶，来自 ch14-2／ch14-3。\n- C：连接酶只封 nick、gap／nick 分户、思考题第 $4$ 问，来自 ch14-2。\n- **D 错**：聚合是 $\\alpha$ 不是 $\\varepsilon$；校对在延长的 $3'$ 末端当下进行；两种外切分户；拓扑酶全过程需要；连接酶不填 gap、不连游离单链；拓扑酶 $\\mathrm{I}$ 封口不耗 $\\mathrm{ATP}$，连接酶和拓扑酶 $\\mathrm{II}$ 再连接要 $\\mathrm{ATP}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-2.md",
+        "label": "ε 碱基选择 · 校对图14-7 · 拓扑酶 I／II · 连接酶只封 nick"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于逆转录三步、$\\mathrm{cDNA}$ 法以及 $\\mathrm{mtDNA}$ 的 $\\mathrm{D}$ 环复制，下列叙述正确的有（　）。",
+      "options": [
+        "并非所有 $\\mathrm{RNA}$ 病毒都是逆转录病毒。$1970$ 年 Temin 与 Baltimore 分别发现逆转录酶。三步：$\\mathrm{RNA}$ 模板 $\\rightarrow\\mathrm{RNA}/\\mathrm{DNA}$ 杂化双链 $\\rightarrow\\mathrm{RNase}\\,\\mathrm{H}$（酶自身或细胞，$\\mathrm{H}=\\mathrm{Hybrid}$）去 $\\mathrm{RNA}\\rightarrow$ 单链 $\\mathrm{DNA}$ 模板 $\\rightarrow$ 双链 $\\mathrm{DNA}$ 前病毒。三种活性：$\\mathrm{RNA}$ 依赖 $\\mathrm{DNA}$ 聚合、$\\mathrm{DNA}$ 依赖 $\\mathrm{DNA}$ 聚合、$\\mathrm{RNase}\\,\\mathrm{H}$；辅因子 $\\mathrm{Zn}^{2+}$；仍 $5'\\rightarrow 3'$。第一步产物不是前病毒。前病毒可独立繁殖或经基因重组整合，二者都可致病。这是对中心法则的拓展，不是作废",
+        "试管内 $\\mathrm{cDNA}$ 法：人基因组 $3.2\\times 10^{9}\\,\\mathrm{bp}$ 难直接选基因，先抽 $\\mathrm{RNA}$。第一链用逆转录酶得杂化双链；酶或碱去 $\\mathrm{RNA}$（碱水解是体外方法，不要写进病毒生活史）；第二链由 $\\mathrm{DNA}\\,\\mathrm{pol}$ Ⅰ 的 Klenow 片段催化，单链 $3'$ 发夹可作引物；$\\mathrm{S}1$ 酶切发夹。$\\mathrm{cDNA}$ 是 complementary $\\mathrm{DNA}$，对应已表达的编码序列，不是基因组随机片段，文库不是人基因组文库。细胞内第二链可用逆转录酶，病毒 $\\mathrm{tRNA}$ 可作引物",
+        "$\\mathrm{D}$ 环是 $\\mathrm{mtDNA}$ 的复制方式：闭合环状，需引物；第一引物以内环为模板，至第二起点再反向以外环为模板，两起点不在同一位点。聚合酶是 $\\mathrm{pol}\\,\\gamma$，不要放进核复制叉。人 $\\mathrm{mtDNA}$ $37$ 个基因 $=13$ 个 $\\mathrm{ATP}$ 合成相关蛋白质／酶 $+22$ 个 $\\mathrm{tRNA}+2$ 个 $\\mathrm{rRNA}$。环状免除端粒问题，但不免除 $3'$-$\\mathrm{OH}$。易突变、修复较困难；线粒体遗传密码与通用密码有差别",
+        "所有 $\\mathrm{RNA}$ 病毒都走前病毒整合；杂化双链已经可以整合；逆转录从 $3'$ 往 $5'$ 长；辅因子改成 $\\mathrm{Mg}^{2+}$；只有 $\\mathrm{HIV}$ 才有逆转录酶；试管内第二链默认仍用逆转录酶；$\\mathrm{D}$ 环是只复制一股、永远停在置换环，也不需要引物；$24$ 个基因都编码蛋白质"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "三步停在杂化双链还不是前病毒；试管第二链是 Klenow；$\\mathrm{D}$ 环两起点、$\\mathrm{pol}\\,\\gamma$、$37=13+22+2$。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：并非所有 $\\mathrm{RNA}$ 病毒、三步三种活性、前病毒两条去向、拓展中心法则，来自 ch14-5。\n- B：图14-19（a）（b）分户、Klenow、$3.2\\times 10^{9}\\,\\mathrm{bp}$，来自 ch14-5。\n- C：$\\mathrm{D}$ 环、两起点、$\\mathrm{pol}\\,\\gamma$、$37$ 拆分，来自 ch14-4。\n- **D 错**：并非所有 $\\mathrm{RNA}$ 病毒；第一步不是前病毒；仍 $5'\\rightarrow 3'$；辅因子 $\\mathrm{Zn}^{2+}$；$\\mathrm{HIV}$ 只是例子；试管第二链是 Klenow；$\\mathrm{D}$ 环最后两个双链环且需引物；$24$ 是 $\\mathrm{tRNA}+\\mathrm{rRNA}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-5.md",
+        "label": "逆转录三步 · cDNA／Klenow · D 环 37=13+22+2 · pitfall「杂化双链不是前病毒」"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "半保留第一代离心是一半重带一半轻带，第二代有高、中、低三条带；半不连续是两条链都不连续，冈崎片段两条链上都有且真核比原核更长；双向复制必须有两个 $\\mathrm{ori}$，真核改成单向；体内所有 $\\mathrm{DNA}$ 合成都叫复制。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：第一代只有中密度带；冈崎只在后随链、真核更短；一个 ori 往两边走；三本账不要并。",
+      "explanation": "**该命题错误，每一分句都错。** 半保留第一代全部是杂交分子，只有一条中密度带；第二代是中密度 $+$ 低密度两条，全重带不再出现。半不连续是前导连续、后随不连续；冈崎片段只在一股上，真核约 $100\\sim 200$ 核苷酸、原核约 $1\\,000\\sim 2\\,000$ 核苷酸。双向是一个起点往两个方向走，真核每个起点仍然双向。复制只是体内 $\\mathrm{DNA}$ 合成三本账里以 $\\mathrm{DNA}$ 为模板抄基因组的那一种，修复合成和逆转录不要答成 replication。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-1.md",
+        "label": "第一代仅中密度 · 冈崎一股 · 双向不是两个 ori · 三本账"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "Kornberg 发现的 $\\mathrm{pol}\\,\\mathrm{I}$ 就是原核延长主酶，填空隙也由 $\\mathrm{pol}\\,\\mathrm{III}$ 完成；DnaA 自己当解旋酶，引物是 $\\mathrm{DNA}$ 短片段；端粒酶直接填子链 $5'$ 空隙，$\\mathrm{CyAx}$ 与 $\\mathrm{TxGy}$ 写反也行；逆转录第一步产物就是可整合的前病毒，发现把中心法则作废。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：$\\mathrm{III}$ 延长、$\\mathrm{I}$ 填空隙；DnaB 才解旋；爬行先延长母链 $3'$；杂化双链不是前病毒。",
+      "explanation": "**该命题错误，五处都错。** $\\mathrm{pol}\\,\\mathrm{I}$ 基因缺陷仍能复制，延长主酶是 $\\mathrm{pol}\\,\\mathrm{III}$；去引物、填 gap 用 $\\mathrm{pol}\\,\\mathrm{I}$ 不用 $\\mathrm{pol}\\,\\mathrm{III}$。DnaA 辨认 $\\mathrm{oriC}$ 的反向重复，解旋酶是 DnaB；引物是引发酶做的短链 $\\mathrm{RNA}$。端粒酶先以 $\\mathrm{hTR}$ 为模板延长母链 $3'$ 端（$\\mathrm{CyAx}$ 认 $\\mathrm{TxGy}$），再另做引物填子链，不能写反。逆转录第一步只得到 $\\mathrm{RNA}/\\mathrm{DNA}$ 杂化双链，前病毒是三步走完的双链 $\\mathrm{DNA}$；发现是拓展中心法则，不是作废。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-2.md",
+        "label": "pol I 非主酶 · DnaA 非解旋酶 · 爬行先延长母链 · 杂化双链不是前病毒"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "细菌从 $^{15}\\mathrm{N}$ 转入 $^{14}\\mathrm{N}$ 后第一代离心只见一条 ________ 带（不要写成高密度加低密度）。原核生物冈崎片段约 ________ 核苷酸（不要写成真核的 $100\\sim 200$）。$E.coli$ 固定复制起点称为 ________，跨度 $245\\,\\mathrm{bp}$。人类端粒酶 $\\mathrm{RNA}$（$\\mathrm{hTR}$）约 ________ $\\mathrm{nt}$。逆转录酶作用需 ________ 为辅因子（不要改成 $\\mathrm{Mg}^{2+}$ 口诀）。",
+      "answer": "中密度, 1000～2000, oriC, 150, Zn2+",
+      "hint": "第一代只有杂交中密度带；原核冈崎更长；$\\mathrm{oriC}$；$\\mathrm{hTR}\\sim 150\\,\\mathrm{nt}$；辅因子 $\\mathrm{Zn}^{2+}$。",
+      "scoring_criteria": [
+        "第一空填“中密度”（或“中密度带”“杂交带”“15N/14N 杂交”“中密度杂交带”）（2分）",
+        "第二空填“1000～2000”（或“1 000～2 000”“1000-2000”“1 000～2 000 核苷酸”）（2分）",
+        "第三空填“oriC”（或“ori C”“复制起点 oriC”）（2分）",
+        "第四空填“150”（或“约 150”“150 nt”）（2分）",
+        "第五空填“Zn2+”（或“Zn²⁺”“锌离子”“Zn^{2+}”）（2分）"
+      ],
+      "explanation": "第一代全部是 $^{15}\\mathrm{N}/^{14}\\mathrm{N}$ 杂交分子，只有一条中密度带。冈崎片段原核约 $1\\,000\\sim 2\\,000$ 核苷酸，真核约 $100\\sim 200$。$\\mathrm{oriC}$ 跨度 $245\\,\\mathrm{bp}$。人端粒酶三部分里 $\\mathrm{hTR}$ 约 $150\\,\\mathrm{nt}$。逆转录酶辅因子按教材记 $\\mathrm{Zn}^{2+}$，不要用普通 $\\mathrm{DNA}$ 聚合酶的 $\\mathrm{Mg}^{2+}$ 口诀覆盖。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-1.md",
+        "label": "中密度带；原核冈崎 1000～2000；oriC；hTR 150 nt；Zn2+"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "复制怎样抄、酶怎样接、错怎样改、结怎样打开？请写出：①体内 $\\mathrm{DNA}$ 合成三本账；四条规律（半保留／Meselson-Stahl 第一代仅中密度带，双向原核单起点真核多复制子，半不连续冈崎真核 $100\\sim 200$／原核 $1\\,000\\sim 2\\,000$，高保真约 $10^{-10}$ 不是第四种方式）；②$\\mathrm{pol}\\,\\mathrm{I}$ 不是延长主酶（约 $20$ 核苷酸，去引物填空隙，Klenow 无 $5'\\rightarrow 3'$ 外切），$\\mathrm{pol}\\,\\mathrm{III}$ 真正延长（$250\\sim 1\\,000\\,\\mathrm{nt/s}$，核心 $\\alpha\\varepsilon\\theta$）；③碱基选择在 $\\varepsilon$，校对 $3'\\rightarrow 5'$ 当下切错再补；④拓扑酶 $\\mathrm{I}/\\mathrm{II}$ 与连接酶分户（gap 填、nick 封；三者都生成磷酸二酯键但场景不同）。",
+      "answer": "参考答案：\n\n**1. 三本账与四条规律**\n- 复制：以 $\\mathrm{DNA}$ 为模板抄基因组（第一至第四节）。修复合成：章首第二十三章（复制后修复另见第二十一章）。逆转录：以 $\\mathrm{RNA}$ 为模板，第五节。不是所有 $\\mathrm{DNA}$ 合成都叫复制。\n- 半保留：每个子代一股亲链 $+$ 一股新链。Meselson-Stahl（$1958$）：$^{15}\\mathrm{N}\\rightarrow ^{14}\\mathrm{N}$，每代约 $20$ 分钟；第一代仅中密度杂交带，第二代中 $+$ 低，中密度位置不变。保守性相对。\n- 双向：原核一个 $\\mathrm{ori}$ 往两边走到 $\\mathrm{ter}$；真核每条染色体多个起点，每个仍双向；复制子 $13\\sim 900\\,\\mathrm{kb}$。双向 $\\neq$ 两个起点。\n- 半不连续：聚合酶只 $5'\\rightarrow 3'$；前导连续、后随分段；冈崎只在一股，真核 $100\\sim 200\\,\\mathrm{nt}$、原核 $1\\,000\\sim 2\\,000\\,\\mathrm{nt}$。不要发明 $3'\\rightarrow 5'$ 聚合酶。\n- 高保真：错配约 $10^{-10}$，是程度不是第四种方式。四机制：半保留、严格配对、复制叉结构、外切校读 $+$ 复制后修复。\n\n**2. pol I 与 pol III**\n- Kornberg $1958$ 的酶后称 $\\mathrm{pol}\\,\\mathrm{I}$，缺陷仍能复制。活细胞内校对、填空隙、去引物；唯一兼 $5'\\rightarrow 3'$ 外切；延长约 $20$ 个核苷酸。Klenow（$604$ 氨基酸）聚合 $+$ $3'\\rightarrow 5'$ 外切，无 $5'\\rightarrow 3'$ 外切。\n- $\\mathrm{pol}\\,\\mathrm{III}$ 真正延长：每分钟可至 $10^{5}$ 次，$250\\sim 1\\,000\\,\\mathrm{nt/s}$。全酶 $10$ 种（$17$ 个）亚基；核心 $\\alpha\\varepsilon\\theta$，$\\beta$ 滑动夹，$\\gamma$-复合物。填 gap 不用 $\\mathrm{III}$。\n\n**3. 选择与校对**\n- $\\varepsilon$ 执行碱基选择（$\\mathrm{poly}(\\mathrm{dA})_{21}/\\mathrm{poly}(\\mathrm{dT})_{20}$）并有 $3'\\rightarrow 5'$ 外切；聚合是 $\\alpha$。\n- 校对：模板 $\\mathrm{G}$ 错配 $\\mathrm{A}$，切 $\\mathrm{A}$ 补 $\\mathrm{C}$；配对正确则 $3'\\rightarrow 5'$ 外切不表现。即时校读，不是复制后再巡视。\n\n**4. 拓扑酶与连接酶**\n- 拓扑酶 $\\mathrm{I}$：切一股，无须 $\\mathrm{ATP}$。拓扑酶 $\\mathrm{II}$（促旋酶）：切两股，再连接用 $\\mathrm{ATP}$，正 $\\rightarrow$ 负超螺旋。全过程需要。不是 DnaB。\n- 连接酶：封 nick（$3'$-$\\mathrm{OH}$ 对 $5'$-$\\mathrm{P}$），耗 $\\mathrm{ATP}$，只连双链中的单链缺口。gap 由 $\\mathrm{pol}\\,\\mathrm{I}$ 填。三者都生成 $3'$，$5'$-磷酸二酯键，底物场景不同。",
+      "hint": "按三本账／四规律 → pol I 对 III → ε 与校对 → 拓扑酶和连接酶写，点名第一代中密度带和 gap／nick。",
+      "scoring_criteria": [
+        "写出三本账、四条规律（含 Meselson-Stahl 第一代仅中密度、双向非两个 ori、冈崎两档数字、高保真不是方式）（4分）",
+        "写出 pol I 非主酶／Klenow 无 5′→3′ 外切、pol III 真正延长及核心亚基（4分）",
+        "写出 ε 碱基选择、3′→5′ 当下校对（3分）",
+        "写出拓扑酶 I／II 能量与切股、连接酶只封 nick、gap 由 pol I 填（3分）"
+      ],
+      "explanation": "本题把第 14-1、14-2 节收成“规律—主酶—校对—拓扑／连接”。易错点：所有合成都叫复制；第一代一半重一半轻；pol I 当主酶；连接酶去填 gap。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-1.md",
+        "label": "四条规律；pol I／III；校对；拓扑酶与连接酶"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "原核从 $\\mathrm{oriC}$ 怎样走到整环，真核怎样补末端并保证只一次，逆转录怎样写成双链 $\\mathrm{DNA}$？请写出：①$\\mathrm{oriC}$ $245\\,\\mathrm{bp}$（$3\\times 13\\,\\mathrm{DUE}+5\\times 9\\,\\mathrm{R}$），DnaA 不是解旋酶，引物 $\\mathrm{RNA}$ $5\\sim 10\\,\\mathrm{nt}$ 对利福平不敏感，同一 $\\mathrm{pol}\\,\\mathrm{III}$ 绕环催化两股，$\\mathrm{pol}\\,\\mathrm{I}$ 填 gap、连接酶封 nick，Tus 单向挡 DnaB；②真核 $\\mathrm{S}$ 期、转换 $\\alpha\\rightarrow\\delta/\\varepsilon$、$50$ 个 $\\mathrm{dNTP}/\\mathrm{s}$ 靠多复制子补速度、$\\mathrm{pre}$-$\\mathrm{RC}$ 选择与激活分离；端粒酶爬行先延长母链 $3'$（$\\mathrm{hTR}/\\mathrm{hTP}1/\\mathrm{hTRT}$，$\\mathrm{CyAx}$ 认 $\\mathrm{TxGy}$），肿瘤酶活性与长度不成正比；$\\mathrm{mtDNA}$ 走 $\\mathrm{D}$ 环、$\\mathrm{pol}\\,\\gamma$、$37=13+22+2$；③逆转录三步（杂化双链不是前病毒），三种活性，$\\mathrm{Zn}^{2+}$，拓展中心法则，$\\mathrm{cDNA}$ 法试管内第二链交给 Klenow。",
+      "answer": "参考答案：\n\n**1. 原核三阶段**\n- 起始：$\\mathrm{oriC}$ $245\\,\\mathrm{bp}$，$3\\times 13\\,\\mathrm{bp}$ 的 $\\mathrm{DUE}$（AT 富集）$+$ $5\\times 9\\,\\mathrm{bp}$ 的 $\\mathrm{R}$ 位点。DnaA 四聚体认反向重复，促使 $\\mathrm{AT}$ 区解链；DnaB 在 DnaC 协同下前移并置换 DnaA；SSB 维持叉长；拓扑酶 $\\mathrm{II}$ 正 $\\rightarrow$ 负超螺旋。引发酶做 $\\mathrm{RNA}$ 引物约 $5\\sim 10\\,\\mathrm{nt}$（$\\mathrm{NTP}$，$5'\\rightarrow 3'$），对利福平不敏感。$\\mathrm{DNA}\\,\\mathrm{pol}$ 不能连两个游离 $\\mathrm{dNTP}$。\n- 延长：同一 $\\mathrm{pol}\\,\\mathrm{III}$ 催化两股，后随链模板绕环对齐。$E.coli$ 约 $4\\,600\\,\\mathrm{kb}$、$20$ 分钟一代，约 $3\\,800$ 核苷酸/s（不要和表14-2 的 $250\\sim 1\\,000$ 混成一句）。\n- 终止：Tus 反解旋酶单向挡 DnaB，汇合可偏 $200\\,\\mathrm{bp}$ 以内。$\\mathrm{pol}\\,\\mathrm{I}$ 去引物、填 gap；连接酶封 nick。前导链引物空隙由环上最后的 $3'$-$\\mathrm{OH}$ 填平。\n\n**2. 真核：S 期、末端、只一次、D 环**\n- 每条染色体上千复制子，分组激活；转录活性高的早复制，卫星 $\\mathrm{DNA}$／着丝粒／端粒晚复制。转换：$\\alpha$ 引物 $\\rightarrow\\delta$ 后随、$\\varepsilon$ 前导；$\\mathrm{PCNA}$ 夹子由 $\\mathrm{RFC}$ 加载。冈崎 $\\approx 135\\,\\mathrm{bp}$。酶约 $50$ 个 $\\mathrm{dNTP}/\\mathrm{s}$，多复制子故总体不慢。$\\mathrm{FEN}1$、$\\mathrm{RNase}\\,\\mathrm{H}$ 去引物。\n- 端粒 $\\mathrm{TxGy}$ 帽子。酶：$\\mathrm{hTR}$（约 $150\\,\\mathrm{nt}$）$+\\mathrm{hTP}1+\\mathrm{hTRT}$。爬行：$\\mathrm{CyAx}$ 认 $\\mathrm{TxGy}$ $\\rightarrow$ 逆转录延长母链 $3'$ $\\rightarrow$ 移位再逆转录 $\\rightarrow$ 引物酶 $+$ $\\mathrm{DNA}\\,\\mathrm{pol}$ 填子链。不要直接填 $5'$ 空隙。细胞老化与酶活性下降有关；个体老化非单因素；肿瘤酶活性常增高，长度不一定成正比。\n- 只一次：$\\mathrm{G}_1$ 装 $\\mathrm{pre}$-$\\mathrm{RC}$（$\\mathrm{ORC}$ 似 DnaA $\\rightarrow\\mathrm{CDC}6\\rightarrow\\mathrm{CDT}1\\rightarrow$ 两套 $\\mathrm{MCM}2$-$7$ 似 DnaB），未激活；$\\mathrm{S}$ 期细胞周期蛋白 $\\mathrm{A}$–$\\mathrm{CDK}2$ 磷酸化后激活。不是“只有一个起点”。\n- $\\mathrm{mtDNA}$：$\\mathrm{D}$ 环，两起点错开，$\\mathrm{pol}\\,\\gamma$；$37=13+22+2$；需引物；易突变。\n\n**3. 逆转录与 cDNA**\n- 并非所有 $\\mathrm{RNA}$ 病毒都是逆转录病毒。三步：杂化双链 $\\rightarrow$ 去 $\\mathrm{RNA}\\rightarrow$ 第二链。三种活性，$\\mathrm{Zn}^{2+}$，$5'\\rightarrow 3'$。第一步不是前病毒。前病毒可独立繁殖或整合，都可致病。拓展中心法则，不是作废。$70$ 年代初从逆转录病毒发现癌基因；$\\mathrm{HIV}$ 是例子不是唯一。\n- $\\mathrm{cDNA}$ 法：避开 $3.2\\times 10^{9}\\,\\mathrm{bp}$ 先抽 $\\mathrm{RNA}$；试管内第二链交给 Klenow，发夹引物，碱水解是体外方法。文库是表达基因，不是基因组文库。",
+      "hint": "按 oriC 三阶段 → S 期／爬行／pre-RC／D 环 → 逆转录三步和 cDNA 法写。",
+      "scoring_criteria": [
+        "写出 oriC 245 bp 两套重复、DnaA／DnaB、RNA 引物、绕环、pol I 填 gap、Tus（4分）",
+        "写出转换 α→δ/ε、50 dNTP/s 与多复制子、pre-RC 两步分离（4分）",
+        "写出端粒酶三部分与爬行先延长母链 3′、肿瘤活性与长度不成正比、D 环 37=13+22+2（4分）",
+        "写出逆转录三步三种活性、拓展中心法则、cDNA 法 Klenow（3分）"
+      ],
+      "explanation": "本题把第 14-3 至 14-5 节收成“oriC 机器—真核末端与一次—逆转录／cDNA”。易错点：DnaA 当解旋酶；端粒酶直接填空隙；只一次听成单起点；杂化双链当成前病毒；试管第二链仍写逆转录酶。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch14-3.md",
+        "label": "oriC 过程；端粒酶爬行与只一次；逆转录三步与 cDNA"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

@@ -1,0 +1,321 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch09",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch09-1.md；content/biochemistry/textbook/ch09-2.md；content/biochemistry/textbook/ch09-3.md；content/biochemistry/textbook/ch09-4.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于氮平衡、蛋白质三本账以及九种营养必需氨基酸，下列叙述正确的是（　）。",
+      "options": [
+        "氮平衡就是血尿素一项化验；正平衡等于营养过剩，负平衡等于吃素；每天吃 $20\\,\\mathrm{g}$ 蛋白质即推荐量；必需氨基酸本版八种不含组氨酸，精氨酸是第十种必需；谷类和豆类互补的是蛋氨酸",
+        "氮平衡是每日氮的摄入量与排出量之间的代谢状态，蛋白质平均含氮 $16\\%$。总平衡（摄入 $=$ 排出）见于正常成人；正平衡（摄入 $>$ 排出，合成 $>$ 分解）见于儿童、孕妇及恢复期病人；负平衡见于饥饿、严重烧伤、出血及消耗性疾病。$60\\,\\mathrm{kg}$ 成人最低分解约 $20\\,\\mathrm{g}$，维持总平衡的最低生理需要量 $30\\sim 50\\,\\mathrm{g}$，我国营养学会推荐 $80\\,\\mathrm{g}$。本版必需氨基酸 $9$ 种含组氨酸；精氨酸有人归为半必需，不要加成第十种。营养价值取决于必需氨基酸的种类和比例；谷类赖低色高、豆类赖高色低，混合即互补",
+        "非必需氨基酸生理上可有可无；素食一律负平衡；正平衡只见于肥胖",
+        "蛋白质平均含氮 $8\\%$；推荐量就是最低分解量 $20\\,\\mathrm{g}$"
+      ],
+      "answer": 1,
+      "hint": "九种含组氨酸；$20\\,\\mathrm{g}$、$30\\sim 50\\,\\mathrm{g}$、$80\\,\\mathrm{g}$ 三本账不要并户。",
+      "explanation": "**B 正确。** 氮平衡户头、三种平衡点名、$20/30\\sim 50/80$ 三本账、九种含组氨酸、精氨酸半必需、谷豆互补赖氨酸和色氨酸，都按教材。\n\n**干扰项辨析**：\n- A：氮平衡不是血尿素一项；正平衡不是营养过剩；$20\\,\\mathrm{g}$ 是最低分解不是推荐；本版 $9$ 种含组氨酸；互补不是蛋氨酸。\n- C：非必需不是不需要；素食种类比例够仍可总平衡。\n- D：含氮 $16\\%$；$20\\,\\mathrm{g}$ 不是推荐量。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-1.md",
+        "label": "氮平衡三本账 · 九种必需含组氨酸 · pitfall「精氨酸不是第十种必需」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于胃蛋白酶原／胰蛋白酶原激活级联以及小肠蛋白酶专一性，下列叙述正确的是（　）。",
+      "options": [
+        "消化主场在胃，胃酸一次切成二十种氨基酸；胰蛋白酶原第一把钥匙也是盐酸；羧肽酶 $\\mathrm{A}$ 切碱性末端；肠腔必须全部变成游离氨基酸才能吸收",
+        "消化由胃开始、主场在小肠。胃蛋白酶原由主细胞分泌，盐酸激活后自身催化，最适 $\\mathrm{pH}$ $1.5\\sim 2.5$，可凝乳。胰蛋白酶原的第一激活剂是肠激酶：从氨基末端切掉一分子六肽；胰蛋白酶再激活糜蛋白酶原、弹性蛋白酶原和羧肽酶原，自身激活较弱；胰液有胰蛋白酶抑制剂。胰蛋白酶切碱性、糜蛋白酶切芳香族、弹性蛋白酶主要切脂肪族；羧肽酶 $\\mathrm{A}$ 排除脯、精、赖，羧肽酶 $\\mathrm{B}$ 切碱性末端。胃 $+$ 胰液后约 $1/3$ 氨基酸、$2/3$ 寡肽；黏膜细胞内氨肽酶、二肽酶收尾。七种转运蛋白含二肽、三肽转运蛋白",
+        "肠激酶激活胃蛋白酶原；胰蛋白酶强烈自身激活即可启动级联，不需要肠激酶",
+        "胰蛋白酶切芳香族，糜蛋白酶切碱性；羧肽酶 $\\mathrm{A}$ 切一切末端"
+      ],
+      "answer": 1,
+      "hint": "胃：盐酸；胰：肠激酶切六肽。不要把酶原激活一律写成自身催化。",
+      "explanation": "**B 正确。** 主场小肠、两把钥匙不同、专一性分户、$2/3$ 寡肽、二肽／三肽可整段进黏膜，都按教材。\n\n**干扰项辨析**：\n- A：主场小肠；胰蛋白酶原钥匙是肠激酶；羧肽酶 $\\mathrm{B}$ 切碱性末端；二肽三肽可整段吸收。\n- C：肠激酶作用于胰蛋白酶原不是胃蛋白酶原；自身激活较弱，启动步不能改记成自己激活自己。\n- D：胰蛋白酶切碱性，糜蛋白酶切芳香族；羧肽酶 $\\mathrm{A}$ 排除脯、精、赖。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-1.md",
+        "label": "肠激酶切六肽 · 胰蛋白酶级联 · pitfall「第一把钥匙不是同一种」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于溶酶体途径与泛素–蛋白酶体途径以及氨基酸代谢库分布，下列叙述正确的是（　）。",
+      "options": [
+        "两条途径都要泛素化、都消耗 $\\mathrm{ATP}$；溶酶体专降解异常短寿命蛋白质；$26\\mathrm{S}$ 表示二十六聚体；血浆占代谢库一半以上",
+        "溶酶体含组织蛋白酶，不消耗 $\\mathrm{ATP}$，选择性较差，主要降解细胞外来的蛋白质、膜蛋白和胞内长寿命蛋白质。泛素 $76$ 个氨基酸，经 $\\mathrm{E}_1$、$\\mathrm{E}_2$、$\\mathrm{E}_3$ 消耗 $\\mathrm{ATP}$ 做成泛素链；蛋白酶体主要降解异常蛋白质和短寿命蛋白质，切成约 $7\\sim 9$ 残基肽。$26\\mathrm{S}$ 复合物由 $20\\mathrm{S}$ 核心颗粒和 $19\\mathrm{S}$ 调节颗粒组成，$26\\mathrm{S}$、$20\\mathrm{S}$、$19\\mathrm{S}$ 是沉降系数不是亚基数；水解活性在 $\\beta$ 环。代谢库：骨骼肌 $50\\%$ 以上，肝约 $10\\%$，肾约 $4\\%$，血浆 $1\\%\\sim 6\\%$。成人每天降解体蛋白 $1\\%\\sim 2\\%$，约 $70\\%\\sim 80\\%$ 再合成",
+        "泛素化不耗 $\\mathrm{ATP}$；$\\mathrm{CP}$ 活性位点在 $\\alpha$ 环；血浆是代谢库大头",
+        "溶酶体走 $\\mathrm{ATP}$ 依赖；蛋白酶体不需要泛素"
+      ],
+      "answer": 1,
+      "hint": "溶酶体不耗 $\\mathrm{ATP}$；$26\\mathrm{S}$ 是沉降系数；血浆不是代谢库大头。",
+      "explanation": "**B 正确。** 两条途径分户、泛素 $76$ 氨基酸、沉降系数、代谢库分布和 $70\\%\\sim 80\\%$ 再合成，都按教材。\n\n**干扰项辨析**：\n- A：溶酶体无泛素化、不耗 $\\mathrm{ATP}$；短寿命走蛋白酶体；$26\\mathrm{S}$ 不是二十六聚体；血浆只占 $1\\%\\sim 6\\%$。\n- C：泛素化耗 $\\mathrm{ATP}$；活性在 $\\beta$ 环；骨骼肌才是大头。\n- D：依赖关系写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-1.md",
+        "label": "溶酶体 ATP 非依赖 · 26S=20S CP+19S RP · pitfall「不是二十六聚体」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于转氨基不等于真正脱氨以及 $\\mathrm{ALT}$/$\\mathrm{AST}$，下列叙述正确的是（　）。",
+      "options": [
+        "转氨基已经把氨卸到血液里；$\\mathrm{GPT}$ 和 $\\mathrm{ALT}$ 是两种酶；肝炎看 $\\mathrm{GOT}$，心梗看 $\\mathrm{GPT}$；赖氨酸、苏氨酸在人体内不分解",
+        "转氨基只是把氨基转移给 $\\alpha$-酮戊二酸或其他 $\\alpha$-酮酸，并没有真正实现脱氨基。平衡常数接近 $1.0$，完全可逆，既分解也合成。不转氨基：赖氨酸、苏氨酸、脯氨酸、羟脯氨酸。$\\mathrm{GPT}$ 即 $\\mathrm{ALT}$：丙氨酸 $\\rightleftharpoons$ 丙酮酸；$\\mathrm{GOT}$ 即 $\\mathrm{AST}$：天冬氨酸 $\\rightleftharpoons$ 草酰乙酸；都对 $\\alpha$-酮戊二酸／谷氨酸。辅基磷酸吡哆醛（维生素 $\\mathrm{B}_6$ 磷酸酯）经 Schiff 碱传氨基，Schiff 碱不是终产物。表9-1 肝 $\\mathrm{GPT}$ 最高 $44\\,000$，心 $\\mathrm{GOT}$ 最高 $156\\,000$；急性肝炎血清 $\\mathrm{GPT}$ 升高，心肌梗死血清 $\\mathrm{GOT}$ 升高",
+        "肝 $\\mathrm{GOT}$ 也很高，所以肝炎应改挂 $\\mathrm{GOT}$；血清转氨酶升高是血液自己诱导合成",
+        "鸟氨酸的 $\\delta$-氨基不能转氨基；羟脯氨酸是九种必需之一"
+      ],
+      "answer": 1,
+      "hint": "转氨基不放 $\\mathrm{NH}_3$；肝炎 $\\mathrm{GPT}$，心梗 $\\mathrm{GOT}$；两套名字是同一对酶。",
+      "explanation": "**B 正确。** 转氨基不等于脱氨、四种不转、$\\mathrm{ALT}$/$\\mathrm{AST}$ 反应、磷酸吡哆醛、肝炎／心梗分户，都按教材。\n\n**干扰项辨析**：\n- A：没有真正脱氨；$\\mathrm{GPT}=\\mathrm{ALT}$；肝炎看 $\\mathrm{GPT}$；赖、苏只是不走转氨基。\n- C：教材仍把 $\\mathrm{GPT}$ 最高写给肝；升高是酶从细胞漏出。\n- D：鸟氨酸 $\\delta$-氨基可以转；羟脯氨酸不在必需名单。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-2.md",
+        "label": "转氨基≠脱氨 · ALT/AST · pitfall「肝炎不要改挂 GOT」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于联合脱氨基以及 $L$-谷氨酸脱氢酶，下列叙述正确的是（　）。",
+      "options": [
+        "联合脱氨基净产物是谷氨酸；谷氨酸脱氢酶只认 $\\mathrm{NAD}^{+}$，$\\mathrm{ATP}$ 是激活剂；氧化脱氨基一律答成 $L$-氨基酸氧化酶",
+        "联合脱氨基（转氨脱氨）：氨基转移酶先把其他氨基酸的氨基转给 $\\alpha$-酮戊二酸生成 $L$-谷氨酸，再由 $L$-谷氨酸脱氢酶氧化脱氨放出 $\\mathrm{NH}_3$ 并再生 $\\alpha$-酮戊二酸，净得相应 $\\alpha$-酮酸 $+\\mathrm{NH}_3$。$L$-谷氨酸是唯一能以相当高速率氧化脱氨的氨基酸；酶在肝、肾、脑，不需氧，六聚体，$\\mathrm{ATP}$/$\\mathrm{GTP}$ 抑制、$\\mathrm{ADP}$/$\\mathrm{GDP}$ 激活，唯一既能用 $\\mathrm{NAD}^{+}$ 又能用 $\\mathrm{NADP}^{+}$ 的酶。大多数 $L$-$\\alpha$-氨基酸释放的氨走这条。肝肾还有黄素酶 $L$-氨基酸氧化酶（$\\mathrm{FMN}$/$\\mathrm{FAD}$），经 $\\alpha$-亚氨基酸放铵并生成 $\\mathrm{H}_2\\mathrm{O}_2$",
+        "谷氨酸脱氢酶在脂肪细胞活性最高，需分子氧直接生成 $\\mathrm{H}_2\\mathrm{O}_2$",
+        "第一步转氨已经放出游离氨，不需要第二步"
+      ],
+      "answer": 1,
+      "hint": "净产物是 $\\alpha$-酮酸 $+\\mathrm{NH}_3$，不要停在谷氨酸；$\\mathrm{NAD}^{+}$ 与 $\\mathrm{NADP}^{+}$ 都能用。",
+      "explanation": "**B 正确。** 两步联合、净氨、别构方向、双辅酶、氧化酶另户，都按教材。\n\n**干扰项辨析**：\n- A：净产物不是谷氨酸；$\\mathrm{NAD}^{+}$ 与 $\\mathrm{NADP}^{+}$ 都能用；$\\mathrm{ATP}$ 抑制；氧化酶不是脱氢酶。\n- C：酶在肝、肾、脑；不需氧；生 $\\mathrm{H}_2\\mathrm{O}_2$ 的是氧化酶。\n- D：转氨基没有真正脱氨。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-2.md",
+        "label": "联合脱氨基 · 谷氨酸脱氢酶 · pitfall「净产物不是谷氨酸」"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于血氨正常值、来源三笔以及氨的两种转运形式，下列叙述正确的是（　）。",
+      "options": [
+        "正常血氨 $47\\sim 65\\,\\mathrm{mmol/L}$；三本来源都是氨基酸脱氨基；高血氨用碱性肥皂水灌肠；游离氨是主要运输形式；肌自己把丙酮酸异生成血糖",
+        "正常生理血氨 $47\\sim 65\\,\\mu\\mathrm{mol/L}$，不要改写成 $\\mathrm{mmol}$ 档。来源：氨基酸脱氨基（主）及胺类分解；肠道细菌腐败及尿素酶，每天约 $4\\,\\mathrm{g}$，结肠吸收；$\\mathrm{NH}_3$ 比 $\\mathrm{NH}_4^{+}$ 易过膜，禁碱性灌肠、禁碱性利尿，弱酸性液结肠透析。肾小管氨来自谷氨酰胺，碱性尿则回流入血。转运：骨骼肌走丙氨酸-葡萄糖循环（肝糖异生把葡萄糖运回，肌不能就地异生）；脑和骨骼肌等走谷氨酰胺（合成酶耗 $\\mathrm{ATP}$，与谷氨酰胺酶不是一对可逆酶）。去路主要在肝写尿素，正常占排氮 $80\\%\\sim 90\\%$",
+        "丙氨酸-葡萄糖循环主要从脑运氨；谷氨酰胺合成酶倒开即可水解",
+        "肠道偏碱减少吸氨；肝硬化腹水首选碱性利尿药"
+      ],
+      "answer": 1,
+      "hint": "单位是 $\\mu\\mathrm{mol/L}$；肌走丙氨酸，脑走谷氨酰胺；禁碱性灌肠。",
+      "explanation": "**B 正确。** $\\mu\\mathrm{mol}$ 档、来源三笔、膜通透、两路转运、尿素占排氮，都按教材。\n\n**干扰项辨析**：\n- A：不是 $\\mathrm{mmol}$；来源不只脱氨基；禁肥皂水灌肠；不以游离氨运输；肌不能异生。\n- C：脑走谷氨酰胺；两酶不可逆。\n- D：偏碱吸收增强；禁碱性利尿。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-3.md",
+        "label": "血氨 47～65 μmol/L · 丙氨酸循环 vs 谷氨酰胺 · pitfall「不要写成 mmol」"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于鸟氨酸循环五步定位、$\\mathrm{CPS}$ Ⅰ 与 $\\mathrm{AGA}$、尿素两氮来源，下列叙述正确的是（　）。",
+      "options": [
+        "五步都在线粒体；$\\mathrm{CPS}$ Ⅰ 不需要 $\\mathrm{AGA}$，只耗 $1\\,\\mathrm{ATP}$；两个氮都来自游离 $\\mathrm{NH}_3$；赖氨酸与鸟氨酸一样能催化尿素合成；鸟氨酸是尿素的碳架来源",
+        "线粒体两步：①$\\mathrm{CPS}$ Ⅰ（关键酶，不可逆）催化 $\\mathrm{NH}_3+\\mathrm{CO}_2+2\\,\\mathrm{ATP}$ 生成氨基甲酰磷酸，必须有别构激活剂 $N$-乙酰谷氨酸和 $\\mathrm{Mg}^{2+}$；②$\\mathrm{OCT}$ 生成瓜氨酸。胞质三步：③精氨酸代琥珀酸合成酶（酶系中活性最低）写入天冬氨酸，产物 $\\mathrm{AMP}+\\mathrm{PP}_\\mathrm{i}$；④裂解酶生成精氨酸和延胡索酸，延胡索酸可经柠檬酸循环中间步骤重生天冬氨酸；⑤精氨酸酶放出尿素并再生鸟氨酸，鸟氨酸经载体回线粒体。第一氮来自游离 $\\mathrm{NH}_3$，第二氮来自天冬氨酸，$\\mathrm{CO}_2$ 提供碳。总反应 $2\\mathrm{NH}_3+\\mathrm{CO}_2+3\\mathrm{ATP}+3\\mathrm{H}_2\\mathrm{O}\\to$ 尿素 $+2\\mathrm{ADP}+\\mathrm{AMP}+4\\mathrm{P}_\\mathrm{i}$。精氨酸激活 $\\mathrm{AGA}$ 合酶从而激活 $\\mathrm{CPS}$ Ⅰ。$1932$ 年 Krebs、Henseleit 提出；赖氨酸无催化作用",
+        "精氨酸代琥珀酸合成酶在线粒体；$\\mathrm{CPS}$ Ⅰ 在胞质；第二氮来自鸟氨酸",
+        "高蛋白膳食尿素占排出氮降至 $60\\%$；$\\mathrm{AGA}$ 抑制 $\\mathrm{CPS}$ Ⅰ"
+      ],
+      "answer": 1,
+      "hint": "线粒体 $\\mathrm{CPS}$ Ⅰ 需 $\\mathrm{AGA}$、耗 $2\\,\\mathrm{ATP}$；第二氮是天冬氨酸不是又一个游离氨。",
+      "explanation": "**B 正确。** 五步定位、两氮来源、总反应 $3\\,\\mathrm{ATP}$、精氨酸经 $\\mathrm{AGA}$ 打开 $\\mathrm{CPS}$ Ⅰ、赖氨酸不能催化，都按教材。\n\n**干扰项辨析**：\n- A：前两步线粒体、后三步胞质；$\\mathrm{CPS}$ Ⅰ 需 $\\mathrm{AGA}$、耗 $2\\,\\mathrm{ATP}$；第二氮来自天冬氨酸；赖氨酸无作用；碳来自 $\\mathrm{CO}_2$。\n- C：定位写反；第二氮不是鸟氨酸。\n- D：高蛋白尿素可占 $90\\%$，低蛋白约 $60\\%$；$\\mathrm{AGA}$ 激活 $\\mathrm{CPS}$ Ⅰ。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-3.md",
+        "label": "CPS Ⅰ · AGA · 第二氮天冬氨酸 · pitfall「简图 NH3 不是第二氮」"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于氨的转运、高血氨／肝性脑病以及假神经递质，下列叙述正确的有（　）。",
+      "options": [
+        "骨骼肌以丙酮酸为氨基受体生成丙氨酸运往肝，肝联合脱氨基释氨进尿素循环，丙酮酸糖异生为葡萄糖运回肌肉再酵解——丙氨酸-葡萄糖循环。肌缺葡萄糖-6-磷酸酶，不能就地异生。谷氨酰胺从脑和骨骼肌等运往肝或肾；合成耗 $\\mathrm{ATP}$，与谷氨酰胺酶不是一对可逆酶。天冬酰胺酶降低血中天冬酰胺，用于白血病细胞自身合成不足",
+        "高血氨症关键是肝写尿素这一条去路断了（肝严重损伤或尿素合成酶遗传缺陷）。氨与脑中 $\\alpha$-酮戊二酸结合成谷氨酸，再结合成谷氨酰胺，$\\alpha$-酮戊二酸减少使三羧酸循环减弱、$\\mathrm{ATP}$ 减少；另一种可能是谷氨酸、谷氨酰胺增多引起脑水肿。外周给谷氨酸盐是固定血中游离氨；不能把脑里的谷氨酰胺再拆成游离氨当治疗。精氨酸既是循环中间物，又激活 $\\mathrm{AGA}$ 合酶从而激活 $\\mathrm{CPS}$ Ⅰ",
+        "肝损时酪胺、苯乙胺入脑经 $\\beta$-羟化酶变成 $\\beta$-羟酪胺和苯乙醇胺，结构像儿茶酚胺，称为假神经递质，可能参与肝性脑病。组胺、尸胺毒性写在降血压，不是假神经递质前体。高血氨：弱酸性液结肠透析，禁止碱性肥皂水灌肠；肝硬化腹水不用碱性利尿药",
+        "游离氨是血液主要运输形式；假神经递质前体是组胺和尸胺；谷氨酸盐与脑水肿两笔互相否定，因此禁补谷氨酸盐；肌肝各写一半葡萄糖"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "肌走丙氨酸、脑走谷氨酰胺；假神经递质前体是酪胺和苯乙胺。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：丙氨酸-葡萄糖循环、肌不能异生、谷氨酰胺两酶、天冬酰胺酶，来自 ch09-3。\n- B：高血氨机制两说、谷氨酸盐与脑水肿不矛盾、精氨酸经 $\\mathrm{AGA}$ 打开循环，来自 ch09-3。\n- C：假神经递质前体、禁碱性灌肠／利尿，来自 ch09-1 与 ch09-3。\n- **D 错**：不以游离氨运输；前体不是组胺／尸胺；两笔不矛盾；肌不能自己异生。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-3.md",
+        "label": "丙氨酸循环 · 谷氨酰胺 · 肝性脑病 · 假神经递质 · pitfall「前体不是组胺尸胺」"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于一碳单位、$\\mathrm{SAM}$ 甲硫氨酸循环以及生糖／生酮分类，下列叙述正确的有（　）。",
+      "options": [
+        "一碳单位包括甲基、亚甲基、次甲基、甲酰基及亚氨甲基，不能游离存在，由 $\\mathrm{FH}_4$ 转运。叶酸经二氢叶酸还原酶两步 $\\mathrm{NADPH}$ 还原成 $\\mathrm{FH}_4$。主要来自丝、甘、组、色；苏氨酸间接经甘氨酸。$N^{5}$-甲基 $\\mathrm{FH}_4$ 生成不可逆。一碳单位主要参与嘌呤和嘧啶合成。磺胺抑细菌二氢叶酸合成；甲氨蝶呤抑 $\\mathrm{FH}_4$ 生成",
+        "$\\mathrm{SAM}$ 是体内最重要的甲基直接供体（约 $50$ 余种物质需要）；$N^{5}$-$\\mathrm{CH}_3$-$\\mathrm{FH}_4$ 是间接供体。甲硫氨酸循环能再生甲硫氨酸，但同型半胱氨酸只能由甲硫氨酸变来，故不能净合成甲硫氨酸，甲硫氨酸仍是营养必需。甲硫氨酸合成酶辅酶是维生素 $\\mathrm{B}_{12}$；$\\mathrm{B}_{12}$ 缺乏时甲基转不出，游离 $\\mathrm{FH}_4$ 减少，可致巨幼细胞贫血。肌酸：甘氨酸骨架 $+$ 精氨酸脒基 $+\\mathrm{SAM}$ 甲基，主要在肝合成",
+        "纯生酮只有亮氨酸和赖氨酸；生糖兼生酮五种：异亮氨酸、苯丙氨酸、酪氨酸、苏氨酸、色氨酸。酪氨酸兼类但不是营养必需。丙酮酸、草酰乙酸、$\\alpha$-酮戊二酸氨基化只能写出非必需氨基酸。支链氨基酸分解主要在骨骼肌：缬氨酸生糖、亮氨酸生酮、异亮氨酸兼有。糖不能变成必需氨基酸的碳架",
+        "一碳单位以游离甲醛在血中转运；$N^{5}$-甲基 $\\mathrm{FH}_4$ 可逆生成；$\\mathrm{SAM}$ 循环等于体内净合成甲硫氨酸；支链氨基酸一律生糖；酪氨酸是营养必需氨基酸"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "载体是 $\\mathrm{FH}_4$；$\\mathrm{SAM}$ 直接供体；纯生酮只有亮、赖。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：一碳单位定义、来源、$N^{5}$-甲基不可逆、磺胺／甲氨蝶呤，来自 ch09-4。\n- B：$\\mathrm{SAM}$ 直接／$N^{5}$-$\\mathrm{CH}_3$-$\\mathrm{FH}_4$ 间接、不能净合成、$\\mathrm{B}_{12}$、肌酸三家原料，来自 ch09-4。\n- C：表9-2 名单、氨基化限制、支链在骨骼肌，来自 ch09-2 与 ch09-4。\n- **D 错**：不能游离；$N^{5}$-甲基生成不可逆；循环不净合成；亮氨酸生酮；酪氨酸非必需。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-4.md",
+        "label": "FH4 · SAM · 生酮只有亮赖 · pitfall「循环不能净合成甲硫氨酸」"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "氮平衡就是血尿素一项化验；本版必需氨基酸八种不含组氨酸；转氨基已经把氨卸到血液里；正常血氨 $47\\sim 65\\,\\mathrm{mmol/L}$；溶酶体降解异常短寿命蛋白质且必须泛素化；$26\\mathrm{S}$ 表示二十六聚体。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：氮平衡测全日氮；$9$ 种含组氨酸；转氨基不放氨；单位是 $\\mu\\mathrm{mol}$；溶酶体不耗 $\\mathrm{ATP}$。",
+      "explanation": "**该命题错误，每一分句都错。** 氮平衡是摄入氮对排出氮，不是血尿素一项。本版必需氨基酸 $9$ 种，组氨酸在名单内。转氨基没有真正脱氨。血氨正常 $47\\sim 65\\,\\mu\\mathrm{mol/L}$，不是 $\\mathrm{mmol}$。溶酶体 $\\mathrm{ATP}$ 非依赖、无泛素化，主要降解外来／膜／长寿命蛋白。$26\\mathrm{S}$ 是沉降系数。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-1.md",
+        "label": "氮平衡 · 九种含组氨酸 · 转氨基≠脱氨 · 血氨 μmol · 溶酶体"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "联合脱氨基净产物是谷氨酸；$\\mathrm{CPS}$ Ⅰ 不需要 $\\mathrm{AGA}$，尿素两个氮都来自游离 $\\mathrm{NH}_3$；甲硫氨酸循环等于体内净合成甲硫氨酸；纯生酮氨基酸有亮氨酸、异亮氨酸和缬氨酸；假神经递质前体是组胺和尸胺。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对净氨、$\\mathrm{AGA}$、第二氮天冬氨酸、$\\mathrm{SAM}$ 循环、表9-2、酪胺／苯乙胺。",
+      "explanation": "**该命题错误，五处都错。** 联合脱氨基净得 $\\alpha$-酮酸 $+\\mathrm{NH}_3$，不是停在谷氨酸。$\\mathrm{CPS}$ Ⅰ 必须有 $\\mathrm{AGA}$；第一氮游离 $\\mathrm{NH}_3$，第二氮来自天冬氨酸。循环周转甲基，不能净合成甲硫氨酸。纯生酮只有亮氨酸和赖氨酸；缬氨酸生糖，异亮氨酸兼有。假神经递质前体是酪胺和苯乙胺。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-3.md",
+        "label": "联合脱氨基净氨 · CPS Ⅰ/AGA · 第二氮 · 不能净合成甲硫氨酸 · 假神经递质"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "本版营养必需氨基酸为 ________ 种（含组氨酸）。正常血氨 $47\\sim 65$ ________（不要写成 $\\mathrm{mmol/L}$）。鸟氨酸循环启动关键酶是 ________（需 $N$-乙酰谷氨酸）。尿素分子中第二个氮来自 ________。体内最重要的甲基直接供体是 ________。",
+      "answer": "9，μmol/L，CPS-I，天冬氨酸，SAM",
+      "hint": "九种含组氨酸；单位微摩尔；启动酶 $\\mathrm{CPS}$ Ⅰ；第二氮不是游离氨；直接供体不是 $N^{5}$-甲基 $\\mathrm{FH}_4$。",
+      "scoring_criteria": [
+        "第一空填“9”（或“九”）（2分）",
+        "第二空填“μmol/L”（或“µmol/L”“μmol／L”“微摩尔/升”“微摩尔每升”）（2分）",
+        "第三空填“CPS-I”（或“CPS Ⅰ”“CPS-Ⅰ”“氨基甲酰磷酸合成酶Ⅰ”“氨基甲酰磷酸合成酶I”）（2分）",
+        "第四空填“天冬氨酸”（或“Asp”“天冬氨酸的氨基”）（2分）",
+        "第五空填“SAM”（或“S-腺苷甲硫氨酸”“活性甲硫氨酸”“S-腺苷蛋氨酸”）（2分）"
+      ],
+      "explanation": "本版必需氨基酸 $9$ 种，组氨酸在内。血氨正常 $47\\sim 65\\,\\mu\\mathrm{mol/L}$，不要改写成 $\\mathrm{mmol}$。$\\mathrm{CPS}$ Ⅰ 是启动关键酶，需别构激活剂 $\\mathrm{AGA}$。尿素第一氮来自游离 $\\mathrm{NH}_3$，第二氮来自天冬氨酸。$\\mathrm{SAM}$ 是甲基直接供体，$N^{5}$-$\\mathrm{CH}_3$-$\\mathrm{FH}_4$ 只是间接供体。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-3.md",
+        "label": "九种；μmol/L；CPS Ⅰ；天冬氨酸；SAM"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "氨基酸从营养账到真正脱氨怎样记？请写出：①氮平衡三种类型与 $20\\,\\mathrm{g}$／$30\\sim 50\\,\\mathrm{g}$／$80\\,\\mathrm{g}$ 三本账；九种必需含组氨酸，精氨酸不是第十种；②肠激酶切胰蛋白酶原氨基末端六肽，胃蛋白酶原第一把钥匙是盐酸；溶酶体 $\\mathrm{ATP}$ 非依赖对泛素–蛋白酶体；③转氨基不等于真正脱氨，$\\mathrm{ALT}$/$\\mathrm{AST}$ 与肝炎／心梗分户；④联合脱氨基净得 $\\alpha$-酮酸 $+\\mathrm{NH}_3$，$L$-谷氨酸脱氢酶 $\\mathrm{NAD}^{+}$ 与 $\\mathrm{NADP}^{+}$ 都能用。",
+      "answer": "参考答案：\n\n**1. 营养账**\n- 氮平衡：摄入氮对排出氮，蛋白质平均含氮 $16\\%$。总平衡＝正常成人；正平衡＝儿童／孕妇／恢复期；负平衡＝饥饿／烧伤／出血／消耗性疾病。\n- $53\\,\\mathrm{mg}$ 氮／千克／天 → $60\\,\\mathrm{kg}$ 成人最低分解约 $20\\,\\mathrm{g}$；生理需要 $30\\sim 50\\,\\mathrm{g}$；推荐 $80\\,\\mathrm{g}$。$20\\,\\mathrm{g}$ 不是推荐量。\n- 必需 $9$ 种：亮、异亮、苏、缬、赖、甲硫、苯丙、色、组。非必需不是不需要；精氨酸有人归半必需，不要加成第十种。谷类赖低色高、豆类赖高色低，混合即互补。\n\n**2. 消化与内源降解**\n- 胃蛋白酶原：盐酸激活，随后自身催化。胰蛋白酶原：肠激酶切氨基末端六肽；胰蛋白酶再激活其他酶原，自身激活较弱。\n- 溶酶体：组织蛋白酶，不耗 $\\mathrm{ATP}$，外来／膜／长寿命。泛素 $76$ 氨基酸，$\\mathrm{E}_1\\mathrm{E}_2\\mathrm{E}_3$ 耗 $\\mathrm{ATP}$；$26\\mathrm{S}=20\\mathrm{S}\\,\\mathrm{CP}+19\\mathrm{S}\\,\\mathrm{RP}$（沉降系数）。\n\n**3. 转氨基与联合脱氨基**\n- 转氨基完全可逆，不放出游离氨。$\\mathrm{GPT}=\\mathrm{ALT}$，肝最高，肝炎升高；$\\mathrm{GOT}=\\mathrm{AST}$，心最高，心梗升高。辅基磷酸吡哆醛。\n- 联合脱氨基：转氨 $+L$-谷氨酸氧化脱氨，净得 $\\alpha$-酮酸 $+\\mathrm{NH}_3$。酶六聚体，$\\mathrm{ATP}$/$\\mathrm{GTP}$ 抑制，$\\mathrm{ADP}$/$\\mathrm{GDP}$ 激活；$\\mathrm{NAD}^{+}$ 与 $\\mathrm{NADP}^{+}$ 都能用。不要停在“生成谷氨酸”。",
+      "hint": "按氮平衡／九种 → 肠激酶对盐酸、溶酶体对蛋白酶体 → 转氨基不放氨 → 联合脱氨基净氨写。",
+      "scoring_criteria": [
+        "写出三种氮平衡及 20 g／30～50 g／80 g，九种必需含组氨酸（4分）",
+        "写出肠激酶启动胰酶原、盐酸启动胃蛋白酶原；溶酶体不耗 ATP 对泛素–蛋白酶体（4分）",
+        "写出转氨基不等于脱氨，ALT 肝炎／AST 心梗（3分）",
+        "写出联合脱氨基净得 α-酮酸+NH3，谷氨酸脱氢酶 NAD+ 与 NADP+ 都能用（3分）"
+      ],
+      "explanation": "本题把第 09-1 至 09-2 节收成“营养—消化与降解—转氨—联合脱氨基”。易错点：漏组氨酸；胰蛋白酶原写成自身催化；转氨基当成已脱氨；联合脱氨基停在谷氨酸。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-2.md",
+        "label": "氮平衡；肠激酶；溶酶体对蛋白酶体；转氨基≠脱氨；联合脱氨基"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "氨怎样运、怎样写成尿素、一碳和生酮怎样收？请写出：①血氨 $47\\sim 65\\,\\mu\\mathrm{mol/L}$ 不是 $\\mathrm{mmol}$；骨骼肌走丙氨酸-葡萄糖循环，脑走谷氨酰胺；②鸟氨酸循环 $\\mathrm{CPS}$ Ⅰ 需 $\\mathrm{AGA}$、耗 $2\\,\\mathrm{ATP}$，第二氮来自天冬氨酸，总反应 $3\\,\\mathrm{ATP}$；③高血氨抽走脑 $\\alpha$-酮戊二酸和／或脑水肿，假神经递质前体是酪胺和苯乙胺；④一碳单位由 $\\mathrm{FH}_4$ 转运，$\\mathrm{SAM}$ 是甲基直接供体，循环不能净合成甲硫氨酸；纯生酮只有亮氨酸和赖氨酸。不要把第二氮写成又一个游离 $\\mathrm{NH}_3$，也不要把血氨单位写成 $\\mathrm{mmol}$。",
+      "answer": "参考答案：\n\n**1. 血氨与转运**\n- 正常 $47\\sim 65\\,\\mu\\mathrm{mol/L}$。来源：脱氨基（主）、肠道约 $4\\,\\mathrm{g/d}$、肾小管谷氨酰胺。$\\mathrm{NH}_3$ 易过膜：弱酸透析，禁碱性灌肠和碱性利尿。\n- 丙氨酸-葡萄糖循环：肌 → 肝运氨，肝把葡萄糖送回；肌不能就地异生。谷氨酰胺：脑和骨骼肌 → 肝或肾；合成耗 $\\mathrm{ATP}$，两酶不可逆。尿素占排氮 $80\\%\\sim 90\\%$。\n\n**2. 鸟氨酸循环**\n- 线粒体：$\\mathrm{CPS}$ Ⅰ（需 $\\mathrm{AGA}$，$2\\,\\mathrm{ATP}$）→ $\\mathrm{OCT}$ → 瓜氨酸。胞质：精氨酸代琥珀酸合成酶（第二氮＝天冬氨酸，活性最低）→ 裂解酶 → 精氨酸酶。总反应 $2\\mathrm{NH}_3+\\mathrm{CO}_2+3\\mathrm{ATP}+3\\mathrm{H}_2\\mathrm{O}\\to$ 尿素 $+2\\mathrm{ADP}+\\mathrm{AMP}+4\\mathrm{P}_\\mathrm{i}$。精氨酸激活 $\\mathrm{AGA}$ 合酶从而激活 $\\mathrm{CPS}$ Ⅰ。\n\n**3. 高血氨／肝性脑病**\n- 去路断在肝写尿素。氨 $+\\alpha$-酮戊二酸 → 谷氨酸 → 谷氨酰胺，三羧酸循环减弱、$\\mathrm{ATP}$ 减少；或渗透压脑水肿。假神经递质：酪胺、苯乙胺 → $\\beta$-羟酪胺、苯乙醇胺，不是组胺、尸胺。\n\n**4. 一碳、SAM、生酮**\n- 一碳单位不能游离，载体 $\\mathrm{FH}_4$；$N^{5}$-甲基 $\\mathrm{FH}_4$ 生成不可逆。$\\mathrm{SAM}$ 直接供体，$N^{5}$-$\\mathrm{CH}_3$-$\\mathrm{FH}_4$ 间接供体；$\\mathrm{B}_{12}$ 是甲硫氨酸合成酶辅酶。循环不净合成甲硫氨酸。纯生酮：亮氨酸、赖氨酸。",
+      "hint": "按 μmol 血氨／两路转运 → CPS Ⅰ 与两氮 → 肝性脑病与假神经递质 → FH4/SAM/亮赖 写。",
+      "scoring_criteria": [
+        "写出血氨 47～65 μmol/L 及丙氨酸循环对谷氨酰胺（4分）",
+        "写出 CPS Ⅰ 需 AGA、第二氮来自天冬氨酸、总反应 3 ATP（4分）",
+        "写出高血氨抽走 α-酮戊二酸／脑水肿，假神经递质前体是酪胺和苯乙胺（3分）",
+        "写出 FH4 运一碳、SAM 为直接供体、纯生酮只有亮氨酸和赖氨酸（4分）"
+      ],
+      "explanation": "本题把第 09-2 后半至 09-4 节收成“运氨—尿素—高血氨—一碳与生酮”。易错点：血氨写成 $\\mathrm{mmol}$；第二氮写成游离氨；假神经递质前体写错；循环听成净合成甲硫氨酸。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch09-4.md",
+        "label": "血氨 μmol；CPS Ⅰ/AGA；肝性脑病；FH4；SAM；生酮亮赖"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

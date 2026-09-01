@@ -163,12 +163,48 @@ async function main() {
     process.exit(1);
   }
 
-  // ── BM25 索引 ──
+  // ── BM25 索引（不依赖 embedding，必须先落盘）──
   console.log('📑 Building BM25 inverted index...');
   const bm25Index = buildBM25Index(chunks);
   const bm25Path = path.join(indexDir, 'bm25.json');
   fs.writeFileSync(bm25Path, JSON.stringify(bm25Index));
   console.log(`   → BM25 index written to ${bm25Path} (${(fs.statSync(bm25Path).size / 1024 / 1024).toFixed(2)} MB)`);
+
+  const chunksMeta = {
+    builtAt: new Date().toISOString(),
+    chunks: chunks.map((c) => ({
+      id: c.id,
+      path: c.path,
+      subjectId: c.subjectId,
+      subjectName: c.subjectName,
+      categoryId: c.categoryId,
+      itemId: c.itemId,
+      title: c.title,
+      chunkIndex: c.chunkIndex,
+      text: c.text,
+    })),
+  };
+  const chunksMetaPath = path.join(indexDir, 'chunks-meta.json');
+  fs.writeFileSync(chunksMetaPath, JSON.stringify(chunksMeta));
+  console.log(`   → Chunks meta written to ${chunksMetaPath}`);
+
+  const sophomoreCount = chunks.filter((c) =>
+    ['anatomy', 'histology', 'cell-biology', 'biochemistry'].includes(c.subjectId),
+  ).length;
+  console.log(`   → Sophomore textbook/detail chunks: ${sophomoreCount}`);
+
+  const skipVectors = process.argv.includes('--bm25-only');
+  if (skipVectors) {
+    const staleVectors = path.join(indexDir, 'vectors.json');
+    if (fs.existsSync(staleVectors)) {
+      fs.unlinkSync(staleVectors);
+      console.log('   → Removed stale vectors.json so hybrid search uses BM25 only');
+    }
+    console.log('\n✅ BM25-only index build complete!');
+    console.log(`   Chunks: ${chunks.length}`);
+    console.log(`   BM25 terms: ${Object.keys(bm25Index.invertedIndex).length}`);
+    return;
+  }
 
   // ── 向量索引 ──
   console.log('🧠 Generating embeddings via SiliconFlow API...');
@@ -192,8 +228,16 @@ async function main() {
       const pct = ((processedCount / textsToEmbed.length) * 100).toFixed(1);
       process.stdout.write(`\r   → Progress: ${processedCount}/${textsToEmbed.length} (${pct}%)`);
     } catch (err) {
-      console.error(`\n❌ Embedding API error at batch starting index ${i}:`, err);
-      process.exit(1);
+      console.error(`\n⚠ Embedding API error at batch starting index ${i}:`, err);
+      const staleVectors = path.join(indexDir, 'vectors.json');
+      if (fs.existsSync(staleVectors)) {
+        fs.unlinkSync(staleVectors);
+        console.log('   → Removed stale vectors.json; hybrid search will use BM25 + chunks-meta');
+      }
+      console.log('\n✅ BM25 index is usable without vectors.');
+      console.log(`   Chunks: ${chunks.length}`);
+      console.log(`   BM25 terms: ${Object.keys(bm25Index.invertedIndex).length}`);
+      return;
     }
 
     // Rate limit: brief pause between batches
@@ -204,24 +248,6 @@ async function main() {
   console.log('');
 
   const dimension = allVectors[0]?.length ?? 1024;
-
-  const chunksMeta = {
-    builtAt: new Date().toISOString(),
-    chunks: chunks.map((c) => ({
-      id: c.id,
-      path: c.path,
-      subjectId: c.subjectId,
-      subjectName: c.subjectName,
-      categoryId: c.categoryId,
-      itemId: c.itemId,
-      title: c.title,
-      chunkIndex: c.chunkIndex,
-      text: c.text,
-    })),
-  };
-  const chunksMetaPath = path.join(indexDir, 'chunks-meta.json');
-  fs.writeFileSync(chunksMetaPath, JSON.stringify(chunksMeta));
-  console.log(`   → Chunks meta written to ${chunksMetaPath}`);
 
   const vectorIndex: VectorIndex = {
     model: process.env.AI_EMBEDDING_MODEL || 'BAAI/bge-m3',

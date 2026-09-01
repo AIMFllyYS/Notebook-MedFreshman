@@ -18,6 +18,10 @@ test("SUBJECTS 覆盖所有 SubjectId", () => {
   assert.ok(ids.includes("modern-history"));
   assert.ok(ids.includes("maogai"));
   assert.ok(ids.includes("other"));
+  assert.ok(ids.includes("cell-biology"));
+  assert.ok(ids.includes("biochemistry"));
+  assert.ok(ids.includes("anatomy"));
+  assert.ok(ids.includes("histology"));
 });
 
 test("SUBJECTS 每个值是中文名称", () => {

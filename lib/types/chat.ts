@@ -116,6 +116,8 @@ export interface ChatContext {
   categoryId: string;
   itemId: string;
   currentTopic: string;
+  /** 当前 UI 学年。智能体默认检索范围；可经工具 crossYear 放开。 */
+  academicYear?: string;
 }
 
 export interface ChatOptions {

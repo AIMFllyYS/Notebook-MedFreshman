@@ -1,0 +1,323 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch22",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch22-1.md；content/biochemistry/textbook/ch22-2.md；content/biochemistry/textbook/ch22-3.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于疾病相关基因的分户以及早期／现在的鉴定策略，下列叙述正确的是（　）。",
+      "options": [
+        "疾病相关基因就是致病基因；复杂疾病没有遗传因素；早期定位克隆已经过时可以不写；现在鉴定疾病基因就是做 $\\mathrm{GWAS}$，全外显子组测序不必并列；开篇就要把分子医学、精准医学、转化医学写完",
+        "疾病相关基因是影响疾病发生发展的基因总称。致病基因：表型与基因型直接对应，该基因异常是直接原因，主要落在单基因病／孟德尔遗传病。疾病易感基因：单一变异仅增加易感性，落在复杂疾病／多基因病（微效相加或基因间互作，还叠加环境）。早期：基于连锁分析的定位克隆在单基因病致病基因上取得很大成功。现在：基于 $\\mathrm{SNP}$ 的全基因组关联研究、全外显子组测序加关联／连锁分析，作用越来越重要。不要写成「现在只有 $\\mathrm{GWAS}$」。分子医学／精准医学／转化医学开篇只点到加速发展，展开是第三节",
+        "所有单碱基改变都叫 $\\mathrm{SNP}$，罕见变异只是 $\\mathrm{SNP}$ 的别名",
+        "$\\mathrm{CNV}$、$\\mathrm{STR}$、$\\mathrm{SNP}$ 都是大的染色体数目或结构变异，效应显著甚至致死，不能当遗传标记"
+      ],
+      "answer": 1,
+      "hint": "总称先立；致病对易感；早期定位克隆对单基因病；现在是 GWAS 和全外显子组测序并列。",
+      "explanation": "**B 正确。** 疾病相关基因／致病基因／易感基因分户，以及「早期定位克隆对单基因病；现在 $\\mathrm{SNP}$ 的 $\\mathrm{GWAS}$、全外显子组测序加关联／连锁」，都来自 ch22-1。\n\n**干扰项辨析**：\n- A：并户；复杂病仍有遗传；现在不是只有 $\\mathrm{GWAS}$；三个医学概念不要提前写完。\n- C：$\\mathrm{SNP}$ 频率 $1\\%$ 以上；罕见变异通常 $<1/1\\,000$，是单基因病原因。\n- D：大变异是数目／结构改变；标记是更小的 $\\mathrm{CNV}$、$\\mathrm{STR}$、$\\mathrm{SNP}$ 等。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-1.md",
+        "label": "疾病相关基因 vs 致病基因 vs 易感基因 · 早期定位克隆 vs 现在 GWAS+WES"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于鉴定原则、图22-1 多路互补以及候选基因交汇，下列叙述正确的是（　）。",
+      "options": [
+        "有病人就测序，不必先看表型同质和遗传度；图22-1 只画 $\\mathrm{GWAS}$ 一条路；连锁分析定位到某条染色体就等于鉴定出致病基因；从 $2$ 万个基因降到 $10\\sim 30$ 个就等于找到了；功能克隆就是定位克隆的别名；计算机模拟克隆搜到序列就是鉴定完毕",
+        "鉴定原则三句：关键是确定疾病表型和基因间的实质联系（诊断准、表型同质；家系／孪生子／领养／同胞罹患率看遗传度）；手段是多途径互补（图22-1）；核心是交汇到候选基因，明晰序列改变和表型的关系。图22-1 上方三路入口是数据库、动物模型、病例家系。家系连锁／关联和细胞遗传学先到候选染色体区域；功能克隆、表型克隆、动物模型同源基因、$\\mathrm{EST}$ 可以不经过「候选染色体区域」。位点内还有数个到数十个基因，要测序才能发现突变。基因组计划把搜索空间从 $2$ 万降到 $10\\sim 30$，仍缺乏预测出那一个的能力，需要逐个排除。功能克隆是从蛋白质到 $\\mathrm{DNA}$；in silico cloning 往往是电子辅助，还要实验证实",
+        "表型克隆三种策略都只比较基因组 $\\mathrm{DNA}$，与 $\\mathrm{mRNA}$ 无关",
+        "本版镰状细胞贫血的功能克隆写的是 $\\beta$ 珠蛋白定位于第 $11$ 号染色体，应改掉第一节的 $\\alpha$ 珠蛋白／$16$ 号染色体"
+      ],
+      "answer": 1,
+      "hint": "原则三句；图22-1 多路；2 万→10～30 仍要逐个排除；功能克隆≠定位克隆。",
+      "explanation": "**B 正确。** 原则三句、图22-1 入口与是否经过候选区域、候选基因交汇，都来自 ch22-1。\n\n**干扰项辨析**：\n- A：跳过遗传度；把多路写成只有 $\\mathrm{GWAS}$；染色体≠致病基因；$10\\sim 30$ 还要排除；功能克隆≠定位克隆；in silico≠已经克隆。\n- C：第一种比 $\\mathrm{DNA}$，第二种比已知基因表达，第三种比全部 $\\mathrm{mRNA}$。\n- D：第一节本版原句是 $\\alpha$ 珠蛋白、$16$ 号染色体；第二节原位杂交才另写 $\\alpha$→$16$ 号、$\\beta$→$11$ 号。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-1.md",
+        "label": "原则三句 · 图22-1 多路互补 · 候选基因 2 万→10～30"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于瘦素基因克隆的本版数字以及半克隆小鼠，下列叙述正确的是（　）。",
+      "options": [
+        "小鼠瘦蛋白基因在 $7\\mathrm{q}31$，人的在 $6$ 号染色体；同源性 $167\\%$，编码 $84$ 个氨基酸的膜受体；人的定位是先在人染色体上做完连锁再回头命名瘦素；这段数字应挂在第二节文首；类精子干细胞就是普通 $\\mathrm{XY}$ 精子",
+        "突变的肥胖近交系小鼠，定位克隆得到位于小鼠 $6$ 号染色体的瘦蛋白基因；依据小鼠基因侧翼标记，人的瘦蛋白基因定位于 $7\\mathrm{q}31$。小鼠与人同源性 $84\\%$，编码 $167$ 个氨基酸残基的分泌性蛋白——瘦蛋白，主要功能是控制食物摄入、促进能量消耗。肥胖小鼠和一些遗传性肥胖症患者均有该基因缺损。这是第一节动物模型例，第二节开头不再重复。类精子干细胞（$\\mathrm{AG}$-$\\mathrm{haESCs}$）来源于小鼠孤雄囊胚，仅含父源遗传物质，性染色体为 $\\mathrm{X}$；与 $\\mathrm{CRISPR}$ 结合可一步获得无嵌合的半克隆小鼠",
+        "瘦蛋白是核内转录因子，不分泌",
+        "半克隆小鼠一定有嵌合现象，原代不能用于研究"
+      ],
+      "answer": 1,
+      "hint": "小鼠 6 号 → 人 7q31；84% 同源；167 氨基酸分泌蛋白；靠侧翼标记落到人。",
+      "explanation": "**B 正确。** 瘦素四个数字、分泌蛋白功能、半克隆 $\\mathrm{AG}$-$\\mathrm{haESCs}$ 性染色体为 $\\mathrm{X}$，都来自 ch22-1。\n\n**干扰项辨析**：\n- A：染色体和数字对调；分泌蛋白写成膜受体；定位路径写反；不要挂到第二节；不是 $\\mathrm{XY}$ 精子。\n- C：本版写分泌性蛋白。\n- D：教材写无嵌合，原代即可用。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-1.md",
+        "label": "瘦素 小鼠6号→人7q31 · 84% · 167 氨基酸 · AG-haESCs 性染色体 X"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于定位克隆的定义、基因定位四法以及三步流程，下列叙述正确的是（　）。",
+      "options": [
+        "定位克隆等于已经拿到致病基因，与 $\\mathrm{GWAS}$、$\\mathrm{RNA}$-$\\mathrm{seq}$、$\\mathrm{WGS}$ 是同一户；体细胞杂交丢人染色体是实验失败；$\\mathrm{TK}$ 在 $16$ 号、$\\alpha$ 珠蛋白在 $17$ 号；Down 综合征 $\\mathrm{SOD}$-$1$ 活性高 $1.5$ 倍说明所有基因都能靠剂量定位；paralog 和 ortholog 是同一个词",
+        "定位克隆是仅根据疾病基因在染色体上的大体位置鉴定克隆疾病相关基因，起点是基因定位。经典流程：标记 → contig → 比较患者与正常人。基因组计划后的定位候选克隆：定位到区域后按该区域基因、$\\mathrm{EST}$ 或模式生物同源区已知基因直接突变筛查，可用 Ensembl 或 the Santa Cruz 阅览器读基因列表，仍要检查拼装。四法：体细胞杂交（人染色体逐步丢失把活性扣到剩下的那条，$\\mathrm{TK}$→$17$ 号）；原位杂交／$\\mathrm{FISH}$（$1978$ 年 $\\alpha$→$16$ 号、$\\beta$→$11$ 号）；染色体异常有时可替代连锁（$\\mathrm{HLA}$ 与 $6$ 号短臂远侧区；Down 综合征 $\\mathrm{SOD}$-$1$ 高 $1.5$ 倍→$21$ 号，但并非所有基因都有明显剂量效应）；连锁分析用重组率（$\\mathrm{cM}$）。三步：缩小候选区域、构建基因列表、优先基因选择及突变检测。第一个成功例是 $\\mathrm{X}$ 连锁慢性肉芽肿病基因，$\\mathrm{DMD}$ 更彰显优势。定位克隆 ≠ $\\mathrm{GWAS}$ ≠ $\\mathrm{RNA}$-$\\mathrm{seq}$ ≠ $\\mathrm{WGS}$",
+        "优先基因必须特征性表达于成人病变组织，神经管缺损基因应只在成人神经组织表达",
+        "现在已无须检查重叠拼装，阅览器显示的基因列表一定正确"
+      ],
+      "answer": 1,
+      "hint": "仅根据大体位置；TK/17、α/16、β/11；三步仍要缩小区域和优先测序。",
+      "explanation": "**B 正确。** 定义、四法钉子、三步、与 $\\mathrm{GWAS}$／$\\mathrm{RNA}$-$\\mathrm{seq}$／$\\mathrm{WGS}$ 分户，都来自 ch22-2。\n\n**干扰项辨析**：\n- A：大体位置≠已经拿到基因；四户不要并；丢染色体是方法关键；$\\mathrm{TK}$／珠蛋白染色体记错；剂量法不是普遍；paralog（与人间接同源）≠ ortholog（与其他种直接同源）。\n- C：不一定特征性表达于病变组织；神经管缺损应在闭锁前即胚胎 $3\\sim 4$ 周表达。\n- D：教材写不能完全依赖，要检查重叠拼装是否正确。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-2.md",
+        "label": "定位克隆定义 · 四法 · 三步 · 不等于 GWAS/RNA-seq/WGS"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于全基因组关联研究（$\\mathrm{GWAS}$），下列叙述正确的是（　）。",
+      "options": [
+        "连锁分析对复杂疾病总体很理想，所以不需要 $\\mathrm{GWAS}$；$\\mathrm{GWAS}$ 必须先指定一个候选基因；它是单基因致病基因的唯一鉴定法，连罕见变异一并覆盖；$\\mathrm{GWAS}$ catalog 就是做实验本身；$2005$ 年只出现第一款二代测序仪，与 $\\mathrm{GWAS}$ 无关",
+        "$\\mathrm{GWAS}$ 从 $2005$ 年以来基于连锁不平衡理论发展而来，在复杂疾病易感基因鉴定中发挥巨大作用。连锁分析在单基因病定位克隆上成功，复杂疾病即使用罹患姊妹对（$\\mathrm{ASP}$）也总体不理想。$\\mathrm{GWAS}$ 在无假说驱动条件下扫描整个基因组 $\\mathrm{SNP}$s，比较患者与对照的基因频率差异，按 $p$ 值筛选关联位点。$2005$ 年第一篇鉴定年龄相关性黄斑变性（$\\mathrm{ARMD}$）易感基因。限度：只要常见等位基因；假阳性多；对经济实力、合作性和生信要求高。罕见变异、单基因病仍走家系连锁或外显子测序。$\\mathrm{GWAS}$ catalog 是把已发表 $\\mathrm{GWAS}$ 结果收成库，不是实验本身。$2005$ 年同时出现 $\\mathrm{GWAS}$ 第一篇和罗氏 $454$",
+        "$\\mathrm{GWAS}$ 材料是 $\\mathrm{RNA}$，产物是差异表达基因，与图22-2 是同一张图",
+        "我国科学家从未开展 $\\mathrm{GWAS}$"
+      ],
+      "answer": 1,
+      "hint": "无假说扫全基因组 SNP；找复杂病易感基因；只要常见等位基因；2005 年 ARMD。",
+      "explanation": "**B 正确。** $\\mathrm{GWAS}$ 定义、无假说、$2005$ 年 $\\mathrm{ARMD}$、限度、与 catalog 分户，都来自 ch22-2。\n\n**干扰项辨析**：\n- A：复杂病连锁总体不理想；无假说不是先指定基因；不是单基因唯一法；catalog≠实验；$2005$ 两条线都进账。\n- C：那是 $\\mathrm{RNA}$-$\\mathrm{seq}$。\n- D：本版写我国科学家在银屑病、精神病和冠心病等方面开展了 $\\mathrm{GWAS}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-2.md",
+        "label": "GWAS 连锁不平衡 · 2005 ARMD · 只要常见等位基因 · catalog≠实验"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于图22-2 的 $\\mathrm{RNA}$-$\\mathrm{seq}$ 五步及其与 $\\mathrm{WGS}$ 的分户，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{RNA}$-$\\mathrm{seq}$ 就是 $\\mathrm{WGS}$ 的别名，材料都是基因组 $\\mathrm{DNA}$；五步可以跳到「上机」结束；差异一定来自基因结构改变；它等于定位克隆，也等于 $\\mathrm{GWAS}$",
+        "$\\mathrm{RNA}$-$\\mathrm{seq}$ 属于表型克隆针对未知基因的这一路：比较疾病与正常组织全部 $\\mathrm{mRNA}$ 的种类和含量。图22-2 五步：①样本准备（收集、提 $\\mathrm{RNA}$、质控）；②文库制备（逆转录、序列特异性连接、$\\mathrm{PCR}$）；③高通量测序（本版点名 Illumina HiSeq、NovaSeq）；④数据分析（质控、比对、表达量、差异、注释）；⑤结果解读和验证（通路富集；实时定量 $\\mathrm{PCR}$ 或免疫印迹）。差异可能源于基因结构改变，也可能源于表达调控机制改变。图22-2 材料是 $\\mathrm{RNA}$、产物是表达量／差异基因；图22-3 材料是基因组 $\\mathrm{DNA}$、产物是 $\\mathrm{SNP}$／$\\mathrm{InDel}$ 等变异。定位克隆 ≠ $\\mathrm{GWAS}$ ≠ $\\mathrm{RNA}$-$\\mathrm{seq}$ ≠ $\\mathrm{WGS}$",
+        "目前转录组方法仍以 $\\mathrm{mRNA}$-$\\mathrm{DD}$、$\\mathrm{SSH}$、$\\mathrm{SAGE}$ 为主，芯片和 $\\mathrm{RNA}$-$\\mathrm{seq}$ 已经不用",
+        "第五步验证不能用实时定量 $\\mathrm{PCR}$，因为那是第一节「已知基因比表达」的专属方法，与 $\\mathrm{RNA}$-$\\mathrm{seq}$ 无关"
+      ],
+      "answer": 1,
+      "hint": "图22-2 按样本—文库—测序—分析—验证读；材料是 RNA，不是 WGS。",
+      "explanation": "**B 正确。** $\\mathrm{RNA}$-$\\mathrm{seq}$ 五步、差异可来自调控、与 $\\mathrm{WGS}$ 分户，都来自 ch22-2／ch22-1。\n\n**干扰项辨析**：\n- A：四户不要并；五步不能跳到上机；差异不一定是结构改变。\n- C：早前是 $\\mathrm{mRNA}$-$\\mathrm{DD}$／$\\mathrm{SSH}$／$\\mathrm{SAGE}$，目前主要是芯片和 $\\mathrm{RNA}$-$\\mathrm{seq}$。\n- D：第五步把实时定量 $\\mathrm{PCR}$ 收回来当验证。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-2.md",
+        "label": "图22-2 RNA-seq 五步 · 材料是 RNA · 不等于 WGS"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{WES}$／$\\mathrm{WGS}$／$\\mathrm{WGRS}$、四种变异以及图22-3，下列叙述正确的是（　）。",
+      "options": [
+        "外显子占基因组 $85\\%$，致病突变 $1\\%$ 在外显子；$\\mathrm{WES}$ 有了就取消定位克隆思想；$\\mathrm{WGRS}$ 是第三种化学测序原理；图22-3 与图22-2 材料相同；临床现在一律做 $\\mathrm{WGS}$；四种变异里没有 $\\mathrm{CNV}$",
+        "全外显子组测序（$\\mathrm{WES}$）用序列捕获富集外显子后高通量测序。人类外显子只占基因组的 $1\\%$，但 $85\\%$ 的致病突变都在外显子区域；性价比高，对常见和罕见变异都较灵敏，可实现定位克隆，但只测一部分，重要信息可能遗漏。人 $\\mathrm{WGS}$：$10\\sim 20$ 倍覆盖率，准确率可高达 $99.99\\%$，在 $\\mathrm{SNP}$／$\\mathrm{InDel}$ 上更有优势。$\\mathrm{WGRS}$ 是已知参考基因组物种在不同样本（如家系成员）上重复做 $\\mathrm{WGS}$，不是第三种化学原理。三种都在找四种变异：$\\mathrm{SNV}$（同义／非同义）、$\\mathrm{InDel}$、$\\mathrm{SV}$（$50\\,\\mathrm{bp}$ 以上 big indel、串联重复、倒位、易位等）、$\\mathrm{CNV}$。图22-3 左列是 $\\mathrm{DNA}$ 片段化—$\\mathrm{A}$ 突出—接头—$\\mathrm{PCR}$—深度测序，右列分基因变异／肿瘤／群体三支。临床根据家系和患者选路，不是默认全基因组。$2005$ 年罗氏 $454$ 为第一款二代测序仪",
+        "$\\mathrm{WES}$ 不能发现与蛋白质功能相关的变异，只测非编码区",
+        "图22-3 肿瘤那一支等于把第二十三章癌症整章搬进本节"
+      ],
+      "answer": 1,
+      "hint": "外显子约 1%、致病突变约 85%；WGS 10～20 倍；四种变异；图22-3 材料是基因组 DNA。",
+      "explanation": "**B 正确。** $1\\%$／$85\\%$、$10\\sim 20$ 倍、$\\mathrm{WGRS}$ 定义、四种变异、图22-3、临床选路，都来自 ch22-2。\n\n**干扰项辨析**：\n- A：$1\\%$ 与 $85\\%$ 写反；$\\mathrm{WES}$ 不取消定位思想；$\\mathrm{WGRS}$ 不是第三种化学；图22-3≠图22-2；不是一律 $\\mathrm{WGS}$；$\\mathrm{CNV}$ 是第四种。\n- C：$\\mathrm{WES}$ 正是为了蛋白质功能相关变异。\n- D：肿瘤支是 $\\mathrm{WGS}$ 应用分叉，不是搬进癌症专章。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-2.md",
+        "label": "WES 1%/85% · WGS 10～20 倍 99.99% · 四种变异 · 图22-3"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于分子医学、开篇组学四户以及药物基因组学，下列叙述正确的有（　）。",
+      "options": [
+        "分子医学从分子水平阐述疾病状态下基因组、基因、基因表达（转录与翻译）变化及其调控规律，推进高效预测、预防、诊断和治疗。基础是疾病基因组学、转录组学、蛋白质组学、代谢物组学。本版 $\\mathrm{HGP}$ 英文是 human genome program，不要改成别的展开。不要外补表观基因组学、微生物组学。分子医学 ≠ 第一节的分子病",
+        "疾病基因组学两大任务：疾病相关基因；疾病易感性的遗传学基础。$\\mathrm{APOE}$ 单个碱基变异与阿尔茨海默病相关；$\\mathrm{CCR}5$ 单纯缺失突变导致对 $\\mathrm{HIV}$ 的抗性，不是易感增加。转录组学：Corus $\\mathrm{CAD}$ 基于 $23$ 个基因表达谱；血清 $\\mathrm{miRNA}$ 名单按本版；$\\mathrm{miRNA}$-$182$ 反义寡聚核苷酸用于黑色素瘤肝转移。蛋白质组学发现和鉴别药物新靶点，信号通路串联效应可以不受基因调节而自发产生。代谢组学：脂蛋白／胆碱；不饱和度与相互作用强度而非脂质绝对含量；尿嘌呤嘧啶图谱",
+        "药物基因组学是功能基因组学与分子药理学的有机结合，以药物效应和安全性为目标，使药物治疗模式由诊断定向治疗转为基因定向治疗。预测患病人群对药物的反应，指导临床试验和药物开发。思考题第 $4$ 题（同一靶点药有人极佳、有人无效）对着这一户",
+        "分子医学就是基因治疗；组学应补表观基因组学和微生物组学；$\\mathrm{HGP}$ 应改成别的英文展开；$\\mathrm{CCR}5$ 缺失使人更容易得艾滋病；药物基因组学只研究肝药酶 $\\mathrm{CYP}$；高血压那一例就是看胆固醇定量"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "分子医学定义；组学只四户；HGP 英文钉死；CCR5 是抗性；药物基因组学是效应+安全性。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：分子医学定义、组学四户、$\\mathrm{HGP}$ 英文、与分子病分户，来自 ch22-3。\n- B：疾病基因组学两大任务、$\\mathrm{APOE}$／$\\mathrm{CCR}5$、转录／蛋白质／代谢组学本版例，来自 ch22-3。\n- C：药物基因组学定义与基因定向治疗，来自 ch22-3。\n- **D 错**：逐句写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-3.md",
+        "label": "分子医学 · 组学四户 · human genome program · 药物基因组学 · CCR5 抗性"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于精准医学、转化医学以及本版六个基因—疾病数据库，下列叙述正确的有（　）。",
+      "options": [
+        "精准医学是测序进步以及生物信息与大数据交叉下的新型医学概念和医疗模式，将个人基因、环境与生活习惯差异考虑在内。本质含六个精确；目的是量体裁衣（tailored），疗效最大、副作用最小。短期目标是癌症治疗（伊马替尼—$\\mathrm{BCR}$-$\\mathrm{ABL}$；克唑替尼—$\\mathrm{ALK}$／$\\mathrm{NSCLC}$），长期目标是健康管理。四个层面缺一不可。简单地说，精准医疗是精确诊断和靶向治疗的结合。不要用 $2015$ 国情咨文新闻稿替换定义",
+        "转化医学以临床问题为导向，基础—临床联合攻关，把分子生物学成果转化为可在临床实际应用的理论、方法、技术和药物。背景四条：脱节、成本、数据待解析、三者需整合。核心是 $\\mathrm{B}2\\mathrm{B}$（bench to bedside）快速通道，出口到临床和公共卫生。分子医学 ≠ 精准医学 ≠ 转化医学，不要并成「都是测序」",
+        "本版点名的基因—疾病数据库六户：$\\mathrm{OMIM}$（$1987$，囊性纤维化例 $\\%603855$、$19\\mathrm{q}13.2$-$\\mathrm{q}13.4$）、$\\mathrm{GWAS}$ catalog（截至 $2021$ 年 $11$ 月 $5$ 日 $5\\,457$ 出版物、$318\\,587$ 关联）、Orphanet（罕见病，Orpha 编码）、$\\mathrm{DisGeNET}$（$\\mathrm{v}7.0$ 的 $\\mathrm{GDA}$／$\\mathrm{VDA}$）、$\\mathrm{HGMD}$（Cardiff，核基因突变谱）、GeneCards（$1997$ 魏斯曼；五个子库）。只写这些，不外补。$\\mathrm{GWAS}$ catalog 不是 $\\mathrm{GWAS}$ 实验本身",
+        "精准医学＝测完个人基因组；长期目标＝把所有癌症治好；转化医学＝把论文发表就算转化；$\\mathrm{B}2\\mathrm{B}$ 只到专科病房；数据库应外补全网名单；$\\mathrm{GWAS}$ catalog 就是做 $\\mathrm{GWAS}$ 实验"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "精准医学算基因+环境+生活习惯；转化医学是 B2B；数据库只写六户。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：精准医学定义、六个精确、短期／长期、四个层面，来自 ch22-3。\n- B：转化医学定义、$\\mathrm{B}2\\mathrm{B}$、三户分家，来自 ch22-3。\n- C：六个数据库户头与钉子，来自 ch22-2／本章小结。\n- **D 错**：逐句写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-3.md",
+        "label": "精准医学 tailored · 转化医学 B2B · OMIM/GWAS catalog/Orphanet/DisGeNET/HGMD/GeneCards"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "现在鉴定疾病相关基因只有 $\\mathrm{GWAS}$ 一条路。定位克隆、$\\mathrm{GWAS}$、$\\mathrm{RNA}$-$\\mathrm{seq}$、$\\mathrm{WGS}$ 是同一户。瘦素是小鼠 $7\\mathrm{q}31$ 到人 $6$ 号染色体。本版 $\\mathrm{HGP}$ 英文应改成别的展开。分子医学、精准医学、转化医学、药物基因组学是同一个词。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：现在是 GWAS 和全外显子组测序并列；四法分户；瘦素小鼠 6 号→人 7q31；HGP 是 human genome program；四个医学概念分户。",
+      "explanation": "**该命题错误，每一分句都错。** 现在并列的是基于 $\\mathrm{SNP}$ 的 $\\mathrm{GWAS}$ 和全外显子组测序加关联／连锁，图22-1 还有家系连锁、细胞遗传、功能克隆、动物同源、$\\mathrm{EST}$。定位克隆问大体位置；$\\mathrm{GWAS}$ 问常见 $\\mathrm{SNP}$ 关联；$\\mathrm{RNA}$-$\\mathrm{seq}$ 问表达差异；$\\mathrm{WGS}$ 问全部核苷酸变异。瘦素：小鼠 $6$ 号染色体 → 人 $7\\mathrm{q}31$，$84\\%$ 同源，$167$ 氨基酸分泌蛋白。本版 $\\mathrm{HGP}$ 英文是 human genome program。分子医学看哪一层组学；精准医学按基因／环境／生活习惯量体裁衣；转化医学是 $\\mathrm{B}2\\mathrm{B}$ 通道；药物基因组学是效应＋安全性。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-1.md",
+        "label": "现在≠只有 GWAS · 四法分户 · 瘦素 6 号→7q31 · human genome program"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "$\\mathrm{RNA}$-$\\mathrm{seq}$ 就是 $\\mathrm{WGS}$，图22-2 与图22-3 可以并成一张。外显子占基因组 $85\\%$，致病突变只有 $1\\%$ 在外显子。$\\mathrm{CCR}5$ 缺失使人更容易感染 $\\mathrm{HIV}$。组学开篇应补表观基因组学。数据库可以外补教材未点名的全称。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：RNA-seq 材料是 RNA；1% 与 85% 不要对调；CCR5 缺失是抗性；组学只四户；数据库只写六户。",
+      "explanation": "**该命题错误，每一分句都错。** 图22-2 材料是 $\\mathrm{RNA}$，图22-3 材料是基因组 $\\mathrm{DNA}$。人类外显子只占基因组的 $1\\%$，但 $85\\%$ 的致病突变都在外显子区域。$\\mathrm{CCR}5$ 单纯缺失突变导致对 $\\mathrm{HIV}$ 的抗性。开篇组学四户是疾病基因组学、转录组学、蛋白质组学、代谢物组学，不要外补。数据库只写 $\\mathrm{OMIM}$、$\\mathrm{GWAS}$ catalog、Orphanet、$\\mathrm{DisGeNET}$、$\\mathrm{HGMD}$、GeneCards。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-2.md",
+        "label": "RNA-seq≠WGS · WES 1%/85% · CCR5 抗性 · 组学四户 · 数据库六户"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "早期连锁分析的定位克隆对 ________ 病致病基因取得很大成功；现在基于 $\\mathrm{SNP}$ 的 ________ 与全外显子组测序加关联／连锁并重。人瘦蛋白基因定位于 ________。小鼠与人瘦蛋白基因同源性 ________ $\\%$。本版人类基因组计划英文是 human genome ________。",
+      "answer": "单基因, GWAS, 7q31, 84, program",
+      "hint": "早期对单基因病；现在 GWAS 和全外显子组并列；人 7q31；同源性 84%；英文是 program 不是别的展开。",
+      "scoring_criteria": [
+        "第一空填“单基因”（或“单基因病”“孟德尔遗传”）（2分）",
+        "第二空填“GWAS”（或“全基因组关联研究”“全基因组关联分析”“genome-wide association study”）（2分）",
+        "第三空填“7q31”（或“7q31 区”“人染色体 7q31”）（2分）",
+        "第四空填“84”（或“84%”）（2分）",
+        "第五空填“program”（或“human genome program”）（2分）"
+      ],
+      "explanation": "早期定位克隆对单基因病；现在不是只有 $\\mathrm{GWAS}$，还要并列全外显子组测序。瘦素：人 $7\\mathrm{q}31$，同源性 $84\\%$（另记小鼠 $6$ 号、$167$ 氨基酸）。本版 $\\mathrm{HGP}$ 英文是 human genome program，不要改成别的展开。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-1.md",
+        "label": "单基因；GWAS；7q31；84%；program"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "疾病相关基因怎样鉴定？请写出：①致病基因 vs 易感基因；早期定位克隆对单基因病，现在 $\\mathrm{SNP}$ 的 $\\mathrm{GWAS}$ 加全外显子组测序（不要写成只有 $\\mathrm{GWAS}$）。②原则三句与图22-1 多路（家系连锁、细胞遗传、功能克隆、动物同源、$\\mathrm{EST}$）。③瘦素四个数字。④定位克隆 ≠ $\\mathrm{GWAS}$ ≠ $\\mathrm{RNA}$-$\\mathrm{seq}$（图22-2 五步）≠ $\\mathrm{WGS}$（图22-3）。",
+      "answer": "参考答案：\n\n**1. 分户与时代账**\n- 疾病相关基因：影响发生发展。致病基因：表型—基因型直接对应，主要单基因／孟德尔。易感基因：只增加易感性，复杂病微效或互作。\n- 早期：连锁分析的定位克隆对单基因病致病基因取得很大成功。现在：基于 $\\mathrm{SNP}$ 的 $\\mathrm{GWAS}$、全外显子组测序加关联／连锁。不是只有 $\\mathrm{GWAS}$。\n\n**2. 原则与图22-1**\n- 关键：表型同质＋遗传度（家系／孪生子／领养／同胞罹患率）。手段：多途径互补。核心：交汇候选基因（$2$ 万 $\\rightarrow$ $10\\sim 30$ 仍要逐个排除）。\n- 图22-1：数据库、动物模型、病例家系三路入口。连锁／细胞遗传先到候选染色体区域；功能克隆、表型克隆、动物同源、$\\mathrm{EST}$ 可不靠位置。\n\n**3. 瘦素**\n- 小鼠 $6$ 号染色体 → 人 $7\\mathrm{q}31$；同源性 $84\\%$；$167$ 个氨基酸残基的分泌蛋白；控摄食、促耗能。靠小鼠侧翼标记落到人，不要挂到第二节文首。\n\n**4. 四法不要并户**\n- 定位克隆：仅根据大体位置；四法（$\\mathrm{TK}$／$17$ 号；$\\alpha$→$16$ 号、$\\beta$→$11$ 号；异常核型；连锁 $\\mathrm{cM}$）＋三步。\n- $\\mathrm{GWAS}$：无假说扫 $\\mathrm{SNP}$，复杂病易感基因；$2005$ 年 $\\mathrm{ARMD}$；只要常见等位基因。\n- $\\mathrm{RNA}$-$\\mathrm{seq}$ 图22-2：样本—文库—测序—分析—验证；材料是 $\\mathrm{RNA}$。\n- $\\mathrm{WGS}$ 图22-3：全基因组 $\\mathrm{DNA}$；$\\mathrm{WES}$ 约 $1\\%$ 覆盖约 $85\\%$ 致病突变；$10\\sim 20$ 倍，准确率可高达 $99.99\\%$。临床按家系和患者选路。",
+      "hint": "先钉早期 vs 现在和致病/易感，再写图22-1 与瘦素数字，最后四法分户。",
+      "scoring_criteria": [
+        "写出致病基因 vs 易感基因，以及早期定位克隆对单基因病、现在 GWAS 与全外显子组测序并列（3分）",
+        "写出原则三句和图22-1 多路（家系连锁、细胞遗传、功能克隆、动物同源、EST）（3分）",
+        "写出瘦素：小鼠 6 号、人 7q31、84%、167 氨基酸分泌蛋白（3分）",
+        "写出定位克隆 ≠ GWAS ≠ RNA-seq（图22-2 五步）≠ WGS（图22-3）（3分）",
+        "点明不要写成现在只有 GWAS，临床按家系和患者选路（2分）"
+      ],
+      "explanation": "本题把第 22-1、22-2 节收成“分户—原则—瘦素—方法分户”。易错点：现在只有 $\\mathrm{GWAS}$；四法并成测序；瘦素染色体记反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-1.md",
+        "label": "致病/易感；图22-1；瘦素数字；定位克隆/GWAS/RNA-seq/WGS"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "分子医学、精准医学、转化医学、药物基因组学怎样分户？请写出：①分子医学定义；组学开篇四户（不要外补）；$\\mathrm{HGP}$ 英文 human genome program。②疾病基因组学两大任务；$\\mathrm{APOE}$／$\\mathrm{CCR}5$；药物基因组学（效应＋安全性，诊断定向 → 基因定向）。③精准医学：基因＋环境＋生活习惯；短期癌症、长期健康管理；四个层面；精准医疗＝精确诊断＋靶向治疗。④转化医学：临床问题导向；$\\mathrm{B}2\\mathrm{B}$。⑤数据库只写本版六户。",
+      "answer": "参考答案：\n\n**1. 分子医学与组学四户**\n- 从分子水平阐述疾病状态下基因组、基因、基因表达（转录与翻译）变化及其调控，推进高效预测、预防、诊断和治疗。\n- 基础：疾病基因组学、转录组学、蛋白质组学、代谢物组学。不要外补表观基因组学等。\n- 本版 $\\mathrm{HGP}$ 英文是 human genome program。分子医学 ≠ 分子病。\n\n**2. 疾病基因组学与药物基因组学**\n- 两大任务：疾病相关基因；易感性遗传学基础。$\\mathrm{APOE}$—$\\mathrm{AD}$；$\\mathrm{CCR}5$ 缺失—$\\mathrm{HIV}$ 抗性（不是易感增加）。\n- 药物基因组学：功能基因组学 × 分子药理学；效应＋安全性；诊断定向 → 基因定向；指导临床试验和药物开发。\n- 转录组学例：Corus $\\mathrm{CAD}$ 为 $23$ 个基因。蛋白质组学：靶点＋通路可不受基因调节。代谢组学：不饱和度与相互作用，而非脂质绝对含量。\n\n**3. 精准医学**\n- 测序＋生物信息＋大数据；个人基因、环境、生活习惯。量体裁衣（tailored）。六个精确。\n- 短期：癌症治疗（伊马替尼—$\\mathrm{BCR}$-$\\mathrm{ABL}$；克唑替尼—$\\mathrm{ALK}$／$\\mathrm{NSCLC}$）。长期：健康管理。\n- 四个层面缺一不可。精准医疗＝精确诊断＋靶向治疗。不要用 $2015$ 新闻稿替换定义。\n\n**4. 转化医学**\n- 临床问题导向，成果变成能用的理论、方法、技术和药物。\n- 背景：脱节、成本、数据待解析、三者需整合。核心 $\\mathrm{B}2\\mathrm{B}$（bench to bedside），出口到临床和公共卫生。\n\n**5. 数据库六户**\n- $\\mathrm{OMIM}$、$\\mathrm{GWAS}$ catalog、Orphanet、$\\mathrm{DisGeNET}$、$\\mathrm{HGMD}$、GeneCards。只写这些。",
+      "hint": "按分子医学→药物基因组学→精准医学→转化医学→数据库六户写。组学不要外补，HGP 英文钉死 program。",
+      "scoring_criteria": [
+        "写出分子医学定义、组学开篇四户、HGP 英文 human genome program（3分）",
+        "写出疾病基因组学两大任务、APOE/CCR5（抗性）、药物基因组学效应+安全性及基因定向（3分）",
+        "写出精准医学（基因+环境+生活习惯）、短期癌症/长期健康管理、四个层面、精确诊断+靶向治疗（4分）",
+        "写出转化医学临床问题导向与 B2B（2分）",
+        "写出本版六个数据库，不外补（3分）"
+      ],
+      "explanation": "本题把第 22-3 节收成“四个医学概念—组学四户—数据库六户”。易错点：三户并成测序；$\\mathrm{HGP}$ 改英文；组学外补；数据库外补；$\\mathrm{CCR}5$ 写成易感增加。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch22-3.md",
+        "label": "分子医学；精准医学；转化医学；药物基因组学；数据库六户"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

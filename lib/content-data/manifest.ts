@@ -6,6 +6,11 @@ import { organicChemistryDetailItems } from './organic-chemistry-detail';
 import { maogaiDetailItems } from './maogai-detail';
 import { maogaiTextbookItems } from './maogai-textbook';
 import { physicsDetailItems } from './physics-detail';
+import { sophomoreCategorySkeleton } from './sophomore-categories';
+import { cellBiologyTextbookItems } from './cell-biology-textbook';
+import { biochemistryTextbookItems } from './biochemistry-textbook';
+import { anatomyTextbookItems } from './anatomy-textbook';
+import { histologyTextbookItems } from './histology-textbook';
 
 const examPlaceholderCategories = [
   {
@@ -451,6 +456,30 @@ export const contentTree: ContentTree = {
           items: maogaiShizhanYanlianItems,
         },
       ],
+    },
+    {
+      id: 'cell-biology',
+      name: '医学细胞生物学',
+      icon: 'Microscope',
+      categories: sophomoreCategorySkeleton(cellBiologyTextbookItems),
+    },
+    {
+      id: 'biochemistry',
+      name: '生物化学与分子生物学',
+      icon: 'Dna',
+      categories: sophomoreCategorySkeleton(biochemistryTextbookItems),
+    },
+    {
+      id: 'anatomy',
+      name: '系统解剖学',
+      icon: 'Bone',
+      categories: sophomoreCategorySkeleton(anatomyTextbookItems),
+    },
+    {
+      id: 'histology',
+      name: '组织学与胚胎学',
+      icon: 'Layers',
+      categories: sophomoreCategorySkeleton(histologyTextbookItems),
     },
     {
       id: 'other',

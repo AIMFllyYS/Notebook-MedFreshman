@@ -1,0 +1,322 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch16",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch16-1.md；content/biochemistry/textbook/ch16-2.md；content/biochemistry/textbook/ch16-3.md；content/biochemistry/textbook/ch16-4.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于蛋白质必须自身合成、翻译模板以及合成体系，下列叙述正确的是（　）。",
+      "options": [
+        "不同种属蛋白质可以互相替代；某一时刻约需数千种就是基因组编码总数；翻译模板是基因组 $\\mathrm{DNA}$；$64$ 个密码子都编码氨基酸；$\\mathrm{AUG}$ 只当起始、内部不编码甲硫氨酸；体系里每个肽键已经算好 $4$ 个高能磷酸键；离开核糖体即成熟蛋白质",
+        "蛋白质有高度种属特异性，不同种属间不能互相替代，必须由机体自身合成。某一特定时刻约需数千种，是当时正在用的那一套，不是基因组编码总数。翻译以 $\\mathrm{mRNA}$ 为模板把遗传信息译成氨基酸顺序；$64=61+3$，$\\mathrm{UAA}/\\mathrm{UAG}/\\mathrm{UGA}$ 不编码氨基酸，$\\mathrm{AUG}$ 编码甲硫氨酸并在起始部位兼作起始密码子（原核起始掺入甲酰甲硫氨酸）。体系五类：氨基酸、$\\mathrm{mRNA}$、$\\mathrm{tRNA}$、核糖体、酶与蛋白质因子，供能先记 $\\mathrm{ATP}$ 或 $\\mathrm{GTP}$；每肽键至少 $4$ 个高能磷酸键是第二节的账。新生肽链通常无生物活性，折叠、切除、定位属第三节。机制高度保守，哺乳类线粒体密码例外不要推翻这句",
+        "转录和翻译都以 $\\mathrm{DNA}$ 为模板；线粒体例外说明细胞质也不用表16-1",
+        "种属特异只针对酶不针对结构蛋白，借来的肽链只要折叠对就能用"
+      ],
+      "answer": 1,
+      "hint": "种间不能替代；模板是 $\\mathrm{mRNA}$；$64=61+3$；体系先记 $\\mathrm{ATP}$ 或 $\\mathrm{GTP}$。",
+      "explanation": "**B 正确。** 自身合成、数千种是当时需求、模板 $\\mathrm{mRNA}$、$64=61+3$、$\\mathrm{AUG}$ 兼起始、五类角色、新生肽链无活性，都来自 ch16-1。\n\n**干扰项辨析**：\n- A：种间不能替代；数千种不是基因组总数；模板不是 $\\mathrm{DNA}$；终止密码子不编码；$\\mathrm{AUG}$ 内部仍是甲硫氨酸；$4$ 个高能磷酸键在第二节；离开核糖体尚未成熟。\n- C：翻译模板是 $\\mathrm{mRNA}$；线粒体例外不改细胞质表16-1。\n- D：种属特异针对蛋白质，不能种间替代。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-1.md",
+        "label": "自身合成 · 翻译模板 mRNA · 64=61+3 · 体系五类 · pitfall「模板不是 DNA」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于核糖体 $\\mathrm{A}/\\mathrm{P}/\\mathrm{E}$ 三位以及哺乳动物线粒体核糖体，下列叙述正确的是（　）。",
+      "options": [
+        "核糖体沿 $\\mathrm{mRNA}$ $3'\\rightarrow 5'$ 移动；$\\mathrm{A}$ 位排空载 $\\mathrm{tRNA}$，$\\mathrm{E}$ 位是肽链出口；起始氨酰 $\\mathrm{tRNA}$ 进 $\\mathrm{A}$ 位；只有附着核糖体能成肽；线粒体也是 $70\\mathrm{S}$，$82$ 个蛋白质全是线粒体特有，翻译全部细胞质蛋白",
+        "原核、真核核糖体都有 $\\mathrm{A}$ 位（氨酰位，延长时新的氨酰 $\\mathrm{tRNA}$ 进入）、$\\mathrm{P}$ 位（肽酰位，起始氨酰 $\\mathrm{tRNA}$ 直接结合于此）、$\\mathrm{E}$ 位（排出位，释放空载 $\\mathrm{tRNA}$）。沿 $\\mathrm{mRNA}$ $5'\\rightarrow 3'$ 移动；图16-3 从 $5'$ 到 $3'$ 正好是 $\\mathrm{E}$、$\\mathrm{P}$、$\\mathrm{A}$，肽链从 $\\mathrm{P}$ 位向上长出，$\\mathrm{N}$ 端在远端。游离与附着核糖体都能成肽。起始时 $\\mathrm{A}$ 位被 $\\mathrm{IF}1$ 占据，$\\mathrm{fMet}$-$\\mathrm{tRNA}^{\\mathrm{fMet}}$ 不进 $\\mathrm{A}$ 位。哺乳动物线粒体核糖体 $55\\mathrm{S}$（$39\\mathrm{S}+28\\mathrm{S}$），共 $82$ 个蛋白质，其中 $36$ 个线粒体特异性（大亚基 $22$、小亚基 $14$）；$\\mathrm{rRNA}$ 比例偏低，特异性蛋白质代偿部分功能；翻译仅限于氧化磷酸化复合物的几个关键亚基",
+        "$\\mathrm{E}$ 位和肽酰转移酶中心是同一出口；线粒体成肽一定不需要 $\\mathrm{RNA}$",
+        "三位只有原核有，真核靠核酶在细胞质自由成肽"
+      ],
+      "answer": 1,
+      "hint": "E-P-A 从 $5'$ 到 $3'$；起始进 $\\mathrm{P}$ 位；线粒体 $55\\mathrm{S}$，$36/82$ 特有。",
+      "explanation": "**B 正确。** $\\mathrm{A}/\\mathrm{P}/\\mathrm{E}$ 定义、移动方向、起始不进 $\\mathrm{A}$ 位、$55\\mathrm{S}$ 数字，都按第一节。\n\n**干扰项辨析**：\n- A：方向写反；$\\mathrm{A}$ 是进位入口，$\\mathrm{E}$ 排出空载 $\\mathrm{tRNA}$ 不是肽链出口；起始进 $\\mathrm{P}$；两类核糖体都能成肽；不是 $70\\mathrm{S}$，不是 $82$ 个全特有，不翻译全部细胞质蛋白。\n- C：$\\mathrm{E}$ 不是肽链出口；$\\mathrm{rRNA}$ 少不等于没有 $\\mathrm{RNA}$。\n- D：真核同样有三位。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-1.md",
+        "label": "A 氨酰 · P 肽酰 · E 排出 · 55S 线粒体核糖体 · pitfall「起始不进 A 位」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于氨酰 $\\mathrm{tRNA}$ 合成酶、活化反应和「搭错车」，下列叙述正确的是（　）。",
+      "options": [
+        "正好 $20$ 种酶对 $20$ 种氨基酸；产物是 $\\mathrm{ADP}+\\mathrm{P_i}$；氨酰-$\\mathrm{AMP}$ 直接进核糖体；一种 $\\mathrm{tRNA}$ 可挂多种氨基酸，氨基酸结合在反密码子上；核糖体核氨基酸侧链；校对误差 $10^{-10}$；真核起始是 $\\mathrm{fMet}$",
+        "至少 $23$ 种酶：常见 $20$ 种氨基酸里赖氨酸对应两种，其余各一种，另有识别磷酸化丝氨酸和吡咯赖氨酸的酶。总反应：氨基酸 $+\\mathrm{tRNA}+\\mathrm{ATP}\\rightarrow$ 氨酰 $\\mathrm{tRNA}+\\mathrm{AMP}+\\mathrm{PP_i}$（$\\mathrm{Mg}^{2+}$），消耗 $2$ 个高能磷酸键；中间物氨酰-$\\mathrm{AMP}$-酶在酶上，进 $\\mathrm{A}$ 位的是氨酰 $\\mathrm{tRNA}$。酯键连 $3'$-$\\mathrm{CCA}$ 末端腺苷酸核糖的 $2'$ 或 $3'$ 羟基。一种 $\\mathrm{tRNA}$ 只转运一种氨基酸；密码子—反密码子配对认 $\\mathrm{tRNA}$ 不认氨基酸，「搭错车」仍按反密码子掺入。合成酶校对把错氨基酸水解，误差 $<10^{-4}$。原核起始 $\\mathrm{fMet}$-$\\mathrm{tRNA}^{\\mathrm{fMet}}$，真核 $\\mathrm{Met}$-$\\mathrm{tRNA}_{\\mathrm{i}}^{\\mathrm{Met}}$，内部 $\\mathrm{AUG}$ 走延长套",
+        "活化不耗能；校对发生在核糖体 $\\mathrm{A}$ 位核对侧链",
+        "起始 $\\mathrm{tRNA}$ 不携带甲硫氨酸，另用一种专用氨基酸"
+      ],
+      "answer": 1,
+      "hint": "至少 $23$ 种；$\\mathrm{ATP}\\rightarrow\\mathrm{AMP}+\\mathrm{PP_i}$；核糖体认 $\\mathrm{tRNA}$ 不认氨基酸。",
+      "explanation": "**B 正确。** $23$ 种算法、活化反应式、搭错车、校对 $<10^{-4}$、两套起始 $\\mathrm{tRNA}$，都按第二节。\n\n**干扰项辨析**：\n- A：不是正好 $20$ 种；产物不是 $\\mathrm{ADP}$；氨酰-$\\mathrm{AMP}$ 不进核糖体；一种 $\\mathrm{tRNA}$ 一种氨基酸，挂在 $\\mathrm{CCA}$；不核侧链；误差不是 $10^{-10}$；真核不是 $\\mathrm{fMet}$。\n- C：活化耗 $2$ 个高能磷酸键；侧链校对在合成酶上。\n- D：起始 $\\mathrm{tRNA}$ 都携带甲硫氨酸（原核再甲酰化）。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-2.md",
+        "label": "至少 23 种合成酶 · AMP+PPi · 校对 <10⁻⁴ · 搭错车 · pitfall「真核起始不是 fMet」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于原核 $\\mathrm{SD}$ 序列、起始 $\\mathrm{tRNA}$ 进 $\\mathrm{P}$ 位以及真核 $43\\mathrm{S}/48\\mathrm{S}$，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{SD}$ 在 $\\mathrm{AUG}$ 下游，与 $23\\mathrm{S}\\,\\mathrm{rRNA}$ 互补，真核也用 $-\\mathrm{AGGAGG}$- 配 $18\\mathrm{S}$；$\\mathrm{IRES}$ 就是真核 $\\mathrm{SD}$；起始 $\\mathrm{tRNA}$ 进 $\\mathrm{A}$ 位；$\\mathrm{IF}2$ 送内部 $\\mathrm{Met}$-$\\mathrm{tRNA}$；$43\\mathrm{S}$ 已经带 $\\mathrm{mRNA}$ 并对准 $\\mathrm{AUG}$；$\\mathrm{eIF}4\\mathrm{E}$ 是解旋酶",
+        "原核 $\\mathrm{RBS}$ 中距起始 $\\mathrm{AUG}$ 上游约 $10$ 个核苷酸处通常为 $-\\mathrm{AGGAGG}$-（$\\mathrm{SD}$ 序列），与 $16\\mathrm{S}\\,\\mathrm{rRNA}$ 互补，把 $30\\mathrm{S}$ 对准起始 $\\mathrm{AUG}$ 而不认内部 $\\mathrm{AUG}$。$\\mathrm{IF}1$、$\\mathrm{IF}3$ 帮助亚基分离，$\\mathrm{IF}3$ 防止重新聚合。$\\mathrm{IF}2$-$\\mathrm{GTP}$ 送 $\\mathrm{fMet}$-$\\mathrm{tRNA}^{\\mathrm{fMet}}$ 直接进 $\\mathrm{P}$ 位，$\\mathrm{IF}1$ 占据 $\\mathrm{A}$ 位；$\\mathrm{GTP}$ 水解后三种 $\\mathrm{IF}$ 释放，$50\\mathrm{S}$ 加入成 $70\\mathrm{S}$ 起始复合物。$\\mathrm{SD}$ 不是真核机制。真核：$5'$ 帽和 $3'$ 多聚 $(\\mathrm{A})$ 尾都必需；起始 $\\mathrm{tRNA}$ 先于 $\\mathrm{mRNA}$ 上小亚基成 $43\\mathrm{S}$（尚无 $\\mathrm{mRNA}$），$\\mathrm{eIF}4\\mathrm{F}$（$\\mathrm{eIF}4\\mathrm{E}$ 认帽、$\\mathrm{eIF}4\\mathrm{A}$ 解旋、$\\mathrm{eIF}4\\mathrm{G}$ 搭桥 $\\mathrm{PABP}$）介导结合后成 $48\\mathrm{S}$，从 $5'$ 向 $3'$ 扫描。$\\mathrm{IRES}$ 不依赖帽，需 $\\mathrm{ITAFs}$ 等，不是 $\\mathrm{SD}$ 别名",
+        "没有 $\\mathrm{IF}3$ 大小亚基也能稳定分开；真核两次 $\\mathrm{GTP}$ 水解是同一次",
+        "原核小亚基先结合起始 $\\mathrm{tRNA}$ 再找 $\\mathrm{mRNA}$，与真核 $43\\mathrm{S}$ 顺序相同"
+      ],
+      "answer": 1,
+      "hint": "$\\mathrm{SD}=\\mathrm{AGGAGG}$ 配 $16\\mathrm{S}$；起始进 $\\mathrm{P}$ 位；$43\\mathrm{S}$ 还没有 $\\mathrm{mRNA}$。",
+      "explanation": "**B 正确。** $\\mathrm{SD}$、$\\mathrm{IF}1/2/3$、起始进 $\\mathrm{P}$ 位、$43\\mathrm{S}\\rightarrow 48\\mathrm{S}$、$\\mathrm{IRES}\\neq\\mathrm{SD}$，都按第二节。\n\n**干扰项辨析**：\n- A：$\\mathrm{SD}$ 在上游，配 $16\\mathrm{S}$；真核不用 $\\mathrm{SD}$；$\\mathrm{IRES}$ 不是 $\\mathrm{SD}$；起始进 $\\mathrm{P}$；$\\mathrm{IF}2$ 只送 $\\mathrm{fMet}$；$43\\mathrm{S}$ 无 $\\mathrm{mRNA}$；解旋的是 $\\mathrm{eIF}4\\mathrm{A}$。\n- C：无 $\\mathrm{IF}3$ 亚基极易重新聚合；$\\mathrm{eIF}2$ 与 $\\mathrm{eIF}5\\mathrm{B}$ 各水解一次 $\\mathrm{GTP}$。\n- D：原核先 $\\mathrm{mRNA}$（$\\mathrm{SD}$），真核先起始 $\\mathrm{tRNA}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-2.md",
+        "label": "SD AGGAGG · 16S rRNA · 起始 tRNA 进 P 位 · 43S/48S · pitfall「SD 不是真核」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于肽链延长（进位—成肽—转位）、每肽键能耗以及终止，下列叙述正确的是（　）。",
+      "options": [
+        "进位用 $\\mathrm{EF}$-$\\mathrm{G}$、转位用 $\\mathrm{EF}$-$\\mathrm{Tu}$；肽酰转移酶是蛋白质，原核催化 $\\mathrm{RNA}$ 是 $16\\mathrm{S}$；成肽也耗 $\\mathrm{GTP}$，二肽留在 $\\mathrm{P}$ 位；每肽键 $4$ 个 $\\mathrm{ATP}$；$\\mathrm{RF}$ 自己切肽键；三种 $\\mathrm{RF}$ 各认一种终止密码子；多聚核糖体把一条肽接力延长；真核边转录边翻译",
+        "进位：$\\mathrm{GTP}$-$\\mathrm{EF}$-$\\mathrm{Tu}$ 送氨酰 $\\mathrm{tRNA}$ 进 $\\mathrm{A}$ 位（时限内不能配对则解离）；成肽：肽酰转移酶是核酶，原核 $23\\mathrm{S}\\,\\mathrm{rRNA}$、真核 $28\\mathrm{S}\\,\\mathrm{rRNA}$，不耗 $\\mathrm{GTP}$，二肽酰-$\\mathrm{tRNA}$ 出现在 $\\mathrm{A}$ 位；转位：$\\mathrm{EF}$-$\\mathrm{G}$ 水解 $\\mathrm{GTP}$，空载 $\\mathrm{tRNA}$ $\\mathrm{P}\\rightarrow\\mathrm{E}$，肽酰-$\\mathrm{tRNA}$ $\\mathrm{A}\\rightarrow\\mathrm{P}$，$\\mathrm{A}$ 位对准下一密码子。真核 $\\mathrm{eEF}1\\alpha/\\mathrm{eEF}1\\beta\\gamma/\\mathrm{eEF}2$ 对应 $\\mathrm{Tu}/\\mathrm{Ts}/\\mathrm{G}$。每肽键至少 $4$ 个高能磷酸键（活化 $2$ $+$ 进位、转位各 $1$ 个 $\\mathrm{GTP}$），不是 $4\\mathrm{ATP}$。终止：$\\mathrm{RF}$ 进 $\\mathrm{A}$ 位，肽酰转移酶变酯酶，水解肽与 $\\mathrm{tRNA}$ 之间的酯键。$\\mathrm{RF}1$ 认 $\\mathrm{UAA}/\\mathrm{UAG}$，$\\mathrm{RF}2$ 认 $\\mathrm{UAA}/\\mathrm{UGA}$，$\\mathrm{RF}3$ 是 $\\mathrm{GTPase}$ 不认密码子；真核一种 $\\mathrm{eRF}$。一条 $\\mathrm{mRNA}$ 附着 $10\\sim 100$ 个核糖体，各做完整的同一条肽；原核转录翻译偶联，真核分隔",
+        "进位校正核的是氨基酸侧链；终止耗的 $\\mathrm{GTP}$ 必须算进每肽键 $4$ 个里",
+        "真核 $\\mathrm{E}$ 位排出空载 $\\mathrm{tRNA}$ 与原核完全同一机制，没有别构"
+      ],
+      "answer": 1,
+      "hint": "成肽不耗 $\\mathrm{GTP}$、核酶是 $23\\mathrm{S}$；二肽在 $\\mathrm{A}$ 位；$\\mathrm{RF}$ 切酯键。",
+      "explanation": "**B 正确。** 三步因子、核酶、$4$ 个高能磷酸键、$\\mathrm{RF}$ 分工、多聚核糖体、偶联／分隔，都按第二节。\n\n**干扰项辨析**：\n- A：$\\mathrm{Tu}$ 进位、$\\mathrm{G}$ 转位；核酶不是蛋白质，不是 $16\\mathrm{S}$；成肽不耗 $\\mathrm{GTP}$，二肽在 $\\mathrm{A}$；不是 $4\\mathrm{ATP}$；$\\mathrm{RF}$ 切酯键；$\\mathrm{UAA}$ 共享、$\\mathrm{RF}3$ 不认密码子；不是接力；真核不偶联。\n- C：进位核反密码子；教材的 $4$ 是活化 $2+$ 进位转位 $2$，终止另计。\n- D：真核新氨酰 $\\mathrm{tRNA}$ 进 $\\mathrm{A}$ 位后别构，把空载 $\\mathrm{tRNA}$ 从 $\\mathrm{E}$ 位排出。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-2.md",
+        "label": "进位 Tu · 成肽 23S 核酶 · 转位 G · 每肽键 4 个高能磷酸键 · RF 变酯酶"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于信号肽三段式、分泌六步以及表16-5 分拣信号，下列叙述正确的是（　）。",
+      "options": [
+        "分泌蛋白质一开始就在内质网上合成；$10\\sim 15$ 是整条信号肽；$\\mathrm{NLS}$ 在 N- 端、入核后切除；线粒体前导肽走 $\\mathrm{SRP}$–内质网；滞留信号在 N- 端；停止转移序列就是切点；核输入因子 $\\alpha$ 先于 $\\beta$ 解离",
+        "分泌／膜蛋白质 N- 端信号肽 $13\\sim 36$ 残基：N- 端碱性、中段 $10\\sim 15$ 个疏水残基、C- 端极性短侧链邻近裂解位点，成熟时由信号肽酶切除。合成与靶向同时发生：游离核糖体先做出信号肽 $\\rightarrow\\mathrm{SRP}$ 识别并结合核糖体 $\\rightarrow\\mathrm{SRP}$ 受体对接 $\\rightarrow$ 肽转位复合物成孔进腔 $\\rightarrow\\mathrm{SRP}$ 脱离后肽链继续延长 $\\rightarrow$ 腔内切信号肽 $\\rightarrow$ 出芽／高尔基／分泌。核：$\\mathrm{NLS}$ $4\\sim 8$ 残基，连续 $\\mathrm{Arg}/\\mathrm{Lys}$，位置不固定，定位后保留；importin $\\alpha/\\beta$ 识别，$\\mathrm{Ran}$ 水解 $\\mathrm{GTP}$ 经核孔，$\\beta$ 然后 $\\alpha$ 先后解离。内质网驻留：C- 端 $\\mathrm{Lys}$-$\\mathrm{Asp}$-$\\mathrm{Glu}$-$\\mathrm{Leu}$，先到高尔基再运回。核编码线粒体蛋白超过 $95\\%$、约 $1\\,100$ 种，前导肽 $20\\sim 35$，未折叠保送，进基质后才切。溶酶体：$\\mathrm{Man}$-$6$-$\\mathrm{P}$。停止转移序列是疏水跨膜段，不是切点",
+        "所有蛋白质都进内质网；质膜蛋白质最后分泌到细胞外",
+        "信号序列一律在 N- 端、成熟时一律切除"
+      ],
+      "answer": 1,
+      "hint": "整段 $13\\sim 36$，疏水核 $10\\sim 15$；从游离核糖体起步；$\\mathrm{NLS}$ 不切。",
+      "explanation": "**B 正确。** 三段式、分泌六步、表16-5 五户、$\\mathrm{NLS}$ 不切、停止转移不是切点，都按第三节。\n\n**干扰项辨析**：\n- A：第一步在游离核糖体；$10\\sim 15$ 只是中段；$\\mathrm{NLS}$ 位置不固定且不切；线粒体不走 $\\mathrm{SRP}$；滞留在 C- 端；停止转移不是切点；$\\beta$ 先解离。\n- C：细胞质驻留蛋白不必走 $\\mathrm{ER}$；质膜蛋白与细胞膜融合，不分泌到胞外。\n- D：核、ER 滞留、溶酶体都不是「N- 端肽、一律切」。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-3.md",
+        "label": "信号肽 13～36 三段式 · SRP 六步 · 表16-5 · NLS 不切 · pitfall「不是一开始就在 ER 上」"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于抑制蛋白质合成的抗生素、白喉毒素、蓖麻毒蛋白和三尖杉类，下列叙述正确的是（　）。",
+      "options": [
+        "所有抗生素对真核完全无作用；四环素抑制肽酰转移酶；链霉素只抑起始；放线菌酮是一线抗菌药；嘌呤霉素专一抗菌；大观霉素与四环素都只挡 $\\mathrm{A}$ 位；白喉毒素水解 $\\mathrm{eEF}2$ 或修饰 $\\mathrm{eEF}1$；蓖麻毒蛋白 A 链水解肽链；本版用干扰素经 $\\mathrm{PKR}$ 抑制翻译",
+        "原核／真核差别提供抗菌靶点，但「无明显影响」不是「完全无作用」。表16-6：伊短菌素阻碍起始复合物（原核和真核小亚基，抗病毒）；四环素结合原核 $30\\mathrm{S}$ 的 $\\mathrm{A}$ 位挡进位；链霉素／新霉素／巴龙霉素引起读码错误、高浓度抑起始；氯霉素／林可霉素／红霉素打原核大亚基成肽；放线菌酮专一抑真核肽酰转移酶（医学研究）；嘌呤霉素冒充酪氨酰 $\\mathrm{tRNA}$ 进 $\\mathrm{A}$ 位，肽酰基转到它的氨基上、肽链脱落（原核和真核，抗肿瘤）；夫西地酸／微球菌素抑 $\\mathrm{EF}$-$\\mathrm{G}$ 转位；大观霉素结合 $30\\mathrm{S}$ 阻小亚基变构而抑转位。白喉毒素是修饰酶，使 $\\mathrm{eEF}2$ 发生 $\\mathrm{ADP}$ 核糖基化而失活（对应原核 $\\mathrm{EF}$-$\\mathrm{G}$）。蓖麻毒蛋白 A 链使真核 $28\\mathrm{S}\\,\\mathrm{rRNA}$ 一个腺苷酸脱嘌呤，大亚基失活。三尖杉紫碱／高三尖杉紫碱抑真核起始并使多聚核糖体解聚。本版第四节没有干扰素",
+        "小亚基在表16-6 出现四次，原理都是挡 $\\mathrm{A}$ 位进位",
+        "晚霉素结合 $16\\mathrm{S}\\,\\mathrm{rRNA}$；粉霉素、黄色霉素与四环素手法相同"
+      ],
+      "answer": 1,
+      "hint": "先问原核还是真核，再问卡在起始、进位、读码、成肽还是转位；白喉打 $\\mathrm{eEF}2$。",
+      "explanation": "**B 正确。** 表16-6 八行分户、白喉 $\\mathrm{ADP}$ 核糖基化、$28\\mathrm{S}$ 脱嘌呤、三尖杉解聚、无干扰素，都按第四节。\n\n**干扰项辨析**：\n- A：伊短菌素／嘌呤霉素两端都抑；四环素是 $\\mathrm{A}$ 位；链霉素低浓度读错；放线菌酮不是抗菌；嘌呤霉素抗肿瘤；大观霉素是转位；白喉不水解、不打 $\\mathrm{eEF}1$；蓖麻不切肽键；本版无干扰素。\n- C：小亚基四次原理分别是起始复合物、进位、读码／抑起始、转位。\n- D：晚霉素绑 $23\\mathrm{S}$，阻 $\\mathrm{fMet}$-$\\mathrm{tRNA}$ 转位；粉霉素降 $\\mathrm{EF}$-$\\mathrm{Tu}$ 的 $\\mathrm{GTPase}$，黄色霉素不让 $\\mathrm{EF}$-$\\mathrm{Tu}$ 释出。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-4.md",
+        "label": "表16-6 八行 · 白喉毒素 ADP 核糖基化 eEF2 · 蓖麻 28S 脱嘌呤 · 无干扰素"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于遗传密码的方向性、连续性、简并性、摆动性、通用性以及移码，下列叙述正确的有（　）。",
+      "options": [
+        "阅读只能 $5'\\rightarrow 3'$，对应肽链 $\\mathrm{N}$ 端 $\\rightarrow\\mathrm{C}$ 端；不要把转录沿模板 $3'\\rightarrow 5'$ 搬进翻译。密码子之间无间隔。插入或缺失非 $3$ 倍数核苷酸造成移码，后续分组全部改组，蛋白质彻底丧失或改变原有功能；连续 $3$ 个核苷酸只增减 $1$ 个残基，不移位。图16-1b 插入一个 $\\mathrm{C}$，插入点前 $\\mathrm{Met}$-$\\mathrm{Gly}$-$\\mathrm{Leu}$ 仍在，原 $\\mathrm{UGA}$ 终止分组被拆掉。点突变换一个碱基通常不是移码",
+        "简并：有的氨基酸可由多个密码子编码，不是一个密码子对多种氨基酸。多数同义密码子前两位相同，特异性主要由前两位决定，第三位改变往往不改氨基酸，但不是「怎么变都不改」（$\\mathrm{UAU}\\rightarrow\\mathrm{UAA}$ 即终止）。丝氨酸六个密码子里 $\\mathrm{AGU}/\\mathrm{AGC}$ 前两位不是 $\\mathrm{UC}$。$\\mathrm{UGG}$、$\\mathrm{AUG}$ 各只给 $\\mathrm{Trp}$、$\\mathrm{Met}$。摆动在反密码子第 $1$ 位与密码子第 $3$ 位：$\\mathrm{I}$ 对 $\\mathrm{A}/\\mathrm{C}/\\mathrm{U}$（不对 $\\mathrm{G}$），$\\mathrm{U}$ 对 $\\mathrm{A}/\\mathrm{G}$，$\\mathrm{G}$ 对 $\\mathrm{C}/\\mathrm{U}$。简并写在密码表，摆动写在 $\\mathrm{tRNA}$ 识别，不是别名",
+        "通用性：细菌到人同一套，可用细菌制造人类蛋白质。哺乳类线粒体例外：$\\mathrm{UGA}$ 除终止外也代表色氨酸，$\\mathrm{AUA}$ 改为甲硫氨酸；例外不要推广到细胞质。一种 $\\mathrm{tRNA}$ 只转运一种氨基酸；一种氨基酸通常对应多种 $\\mathrm{tRNA}$",
+        "简并就是摆动；$\\mathrm{I}$ 可配四种碱基；插入三个碱基＝移码；线粒体 $\\mathrm{UGA}$ 在大肠埃希菌里也按色氨酸翻译；$64$ 个密码子都编码氨基酸"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "先数插入个数是不是 $3$ 的倍数；摆动只在反密码子第 $1$ 位；$\\mathrm{I}$ 不对 $\\mathrm{G}$。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：方向性、连续性、移码 vs 连续 $3$ 个、图16-1b、点突变不是移码，来自 ch16-1。\n- B：简并方向、丝氨酸例外、$\\mathrm{Trp}/\\mathrm{Met}$ 单密码子、摆动三对、$\\mathrm{I}$ 不对 $\\mathrm{G}$，来自 ch16-1。\n- C：通用性与线粒体例外、一种 $\\mathrm{tRNA}$ 一种氨基酸，来自 ch16-1。\n- **D 错**：简并≠摆动；$\\mathrm{I}$ 不对 $\\mathrm{G}$；连续 $3$ 个不是移码；线粒体例外不进细胞质；$64=61+3$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-1.md",
+        "label": "五特点 · 移码非 3 倍数 · 摆动 I/U/G · 线粒体 UGA/AUA"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于翻译后加工（折叠、水解、修饰、聚合）以及硒半胱氨酸，下列叙述正确的有（　）。",
+      "options": [
+        "大多数天然蛋白质折叠不是自发的。$\\mathrm{Hsp}70$ 约 $70\\,\\mathrm{kD}$，结合疏水区，防变性、防过早折叠、跨膜前保持未折叠，需 $\\mathrm{ATP}+\\mathrm{Hsp}40$ 循环；不是只在发烧时出现。$\\mathrm{GroEL}$：$14$ 个相同亚基成桶；$\\mathrm{GroES}$：$7$ 个相同亚基成盖；大肠埃希菌约 $10\\%\\sim 15\\%$（热激 $30\\%$）依赖，真核类似物是 $\\mathrm{Hsp}60$。$\\mathrm{PDI}$ 管二硫键，$\\mathrm{PPI}$ 管脯氨酸处顺反，不是水解酶，也不是脯氨酸羟化酶",
+        "离开核糖体后 N- 端甲硫氨酸大部分要切。原核约半数只脱甲酰基留 $\\mathrm{Met}$，其余氨基肽酶去掉整个 $\\mathrm{fMet}$。胰岛素原、胰蛋白酶原是无活性前体，靠水解激活，不是折叠失败。$\\mathrm{POMC}$ 切出 $9$ 种活性肽，切点 $\\mathrm{Arg}$-$\\mathrm{Lys}$／$\\mathrm{Lys}$-$\\mathrm{Arg}$／$\\mathrm{Lys}$-$\\mathrm{Lys}$，编号以 $\\mathrm{ACTH}$ 的 N 端为 $1$，信号肽不算进 $9$ 种。表16-4：磷酸化 $\\mathrm{Ser}/\\mathrm{Thr}/\\mathrm{Tyr}$；N- 糖基化只有 $\\mathrm{Asn}$；O- 糖基化 $\\mathrm{Ser}/\\mathrm{Thr}$；羟基化 $\\mathrm{Pro}/\\mathrm{Lys}$。硒半胱氨酸是第 $21$ 种氨基酸，有自己的 $\\mathrm{tRNA}$；有 $\\mathrm{SECIS}$ 时 $\\mathrm{UGA}$ 编码它，缺硒则在 $\\mathrm{UGA}$ 处中止",
+        "成人血红蛋白：$\\alpha$ 链先脱离核糖体，结合尚未释放的 $\\beta$ 链成游离 $\\alpha\\beta$ 二聚体，再结合线粒体内生成的血红素，最后 $\\alpha_2\\beta_2+4$ 个血红素才有功能。内质网和高尔基体是加工及分选的主要场所，但不是一切蛋白质都在 $\\mathrm{ER}$ 上合成",
+        "分子伴侣催化肽键；$\\mathrm{GroEL}$ 是 $14$ 种不同亚基；$\\mathrm{Hsp}60$ 就是大肠埃希菌的 $\\mathrm{GroEL}$；$\\mathrm{POMC}$ 编号 $1$ 从信号肽算起；硒化仍是表16-4 的翻译后修饰；$\\alpha\\beta$ 二聚体已经是有功能的血红蛋白"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "伴侣管折叠不管肽键；$\\mathrm{SECIS}$ 把 $\\mathrm{UGA}$ 改成第 $21$ 种氨基酸；$\\alpha\\beta$ 二聚体还要加血红素。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：$\\mathrm{Hsp}70$／$\\mathrm{GroEL}$-$\\mathrm{GroES}$／$\\mathrm{PDI}$／$\\mathrm{PPI}$，来自 ch16-3。\n- B：N- 端两种切法、前体水解、$\\mathrm{POMC}$、表16-4、$\\mathrm{SECIS}$，来自 ch16-3。\n- C：血红蛋白装配顺序、$\\mathrm{ER}$／高尔基是主场但不是一切蛋白都进 $\\mathrm{ER}$，来自 ch16-3。\n- **D 错**：伴侣不成肽；$14$ 个相同亚基；$\\mathrm{Hsp}60$ 是真核类似物；编号 $1$ 是 $\\mathrm{ACTH}$ 的 N 端；硒半胱氨酸是第 $21$ 种氨基酸；二聚体还要血红素才有功能。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-3.md",
+        "label": "Hsp70 / GroEL · POMC · 表16-4 · SECIS · Hb α2β2"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "不同种属蛋白质可以互相替代；翻译模板是 $\\mathrm{DNA}$，$64$ 个密码子都编码氨基酸；阅读方向 $3'\\rightarrow 5'$；简并是一个密码子编码多种氨基酸；摆动发生在密码子第 $1$ 位，$\\mathrm{I}$ 可与 $\\mathrm{G}$ 配对；起始氨酰 $\\mathrm{tRNA}$ 进 $\\mathrm{A}$ 位，$\\mathrm{E}$ 位是肽链出口；线粒体核糖体就是 $70\\mathrm{S}$。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：种间不能替代；模板 $\\mathrm{mRNA}$；读 $5'\\rightarrow 3'$；起始进 $\\mathrm{P}$ 位；线粒体 $55\\mathrm{S}$。",
+      "explanation": "**该命题错误，每一分句都错。** 蛋白质种属特异，必须自身合成。翻译模板是 $\\mathrm{mRNA}$，$64=61+3$。阅读只能 $5'\\rightarrow 3'$，对应肽链 $\\mathrm{N}\\rightarrow\\mathrm{C}$。简并是一个氨基酸对多个密码子。摆动在反密码子第 $1$ 位与密码子第 $3$ 位，$\\mathrm{I}$ 对 $\\mathrm{A}/\\mathrm{C}/\\mathrm{U}$、不对 $\\mathrm{G}$。起始氨酰 $\\mathrm{tRNA}$ 直接进 $\\mathrm{P}$ 位；$\\mathrm{E}$ 位排出空载 $\\mathrm{tRNA}$，不是肽链出口。哺乳动物线粒体核糖体是 $55\\mathrm{S}$，不是 $70\\mathrm{S}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-1.md",
+        "label": "自身合成 · 模板 mRNA · 五特点 · 起始进 P 位 · 55S"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "氨酰化产物是 $\\mathrm{ADP}+\\mathrm{P_i}$，核糖体核氨基酸侧链；$\\mathrm{SD}$ 在 $\\mathrm{AUG}$ 下游并用于真核起始；成肽耗 $\\mathrm{GTP}$，肽酰转移酶是蛋白质酶，二肽留在 $\\mathrm{P}$ 位；$\\mathrm{RF}$ 水解肽键，三种 $\\mathrm{RF}$ 各认一种终止密码子；分泌蛋白质一开始就在 $\\mathrm{ER}$ 上合成，$\\mathrm{NLS}$ 入核后切除；白喉毒素水解 $\\mathrm{eEF}2$，本版用干扰素抑制翻译。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：$\\mathrm{AMP}+\\mathrm{PP_i}$；$\\mathrm{SD}$ 只属于原核；成肽是 $23\\mathrm{S}$ 核酶；$\\mathrm{RF}$ 切酯键；$\\mathrm{NLS}$ 不切。",
+      "explanation": "**该命题错误，五处都错。** 活化产物是 $\\mathrm{AMP}+\\mathrm{PP_i}$；核糖体认反密码子不认侧链。$\\mathrm{SD}$（$-\\mathrm{AGGAGG}$-）在 $\\mathrm{AUG}$ 上游约 $10$ 个核苷酸，与 $16\\mathrm{S}\\,\\mathrm{rRNA}$ 互补，不是真核机制。成肽不耗 $\\mathrm{GTP}$，催化本质是 $23\\mathrm{S}/28\\mathrm{S}\\,\\mathrm{rRNA}$，二肽酰-$\\mathrm{tRNA}$ 在 $\\mathrm{A}$ 位。$\\mathrm{RF}$ 把肽酰转移酶变成酯酶，切的是肽与 $\\mathrm{tRNA}$ 之间的酯键；$\\mathrm{RF}1/\\mathrm{RF}2$ 共享 $\\mathrm{UAA}$，$\\mathrm{RF}3$ 不认密码子。分泌蛋白质从游离核糖体起步；$\\mathrm{NLS}$ 定位后保留。白喉毒素做 $\\mathrm{ADP}$ 核糖基化，不是蛋白酶；本版第四节没有干扰素。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-2.md",
+        "label": "AMP+PPi · SD 非真核 · 成肽核酶 · 酯酶 · NLS 不切 · 无干扰素"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "原核 $\\mathrm{SD}$ 序列通常为 ________，与 $16\\mathrm{S}\\,\\mathrm{rRNA}$ 互补。起始氨酰 $\\mathrm{tRNA}$ 直接进入核糖体 ________ 位。肽酰转移酶的化学本质是原核 ________ $\\mathrm{rRNA}$（核酶）。每生成一个肽键至少消耗 ________ 个高能磷酸键。白喉毒素使真核延长因子 ________ 发生 $\\mathrm{ADP}$ 核糖基化而失活。",
+      "answer": "AGGAGG, P, 23S, 4, eEF2",
+      "hint": "$\\mathrm{SD}$ 写成 $-\\mathrm{AGGAGG}$-；起始进 $\\mathrm{P}$ 位；成肽是 $23\\mathrm{S}$；活化 $2+$ 进位转位 $2$；白喉打转位因子 $\\mathrm{eEF}2$。",
+      "scoring_criteria": [
+        "第一空填“AGGAGG”（或“-AGGAGG-”“Shine-Dalgarno”“SD 序列 AGGAGG”）（2分）",
+        "第二空填“P”（或“P 位”“肽酰位”“peptidyl site”）（2分）",
+        "第三空填“23S”（或“23S rRNA”）（2分）",
+        "第四空填“4”（或“4 个”“至少 4”）（2分）",
+        "第五空填“eEF2”（或“eEF-2”）（2分）"
+      ],
+      "explanation": "$\\mathrm{SD}$ 通常为 $-\\mathrm{AGGAGG}$-，距 $\\mathrm{AUG}$ 上游约 $10$ 个核苷酸，与 $16\\mathrm{S}\\,\\mathrm{rRNA}$ 互补；不要写成 $23\\mathrm{S}$ 或画到下游。起始把 $\\mathrm{fMet}$-$\\mathrm{tRNA}^{\\mathrm{fMet}}$ 直接放进 $\\mathrm{P}$ 位，$\\mathrm{A}$ 位留给第二个密码子。肽酰转移酶是核酶，原核 $23\\mathrm{S}$、真核 $28\\mathrm{S}$，成肽不耗 $\\mathrm{GTP}$。每肽键至少 $4$ 个高能磷酸键＝活化 $\\mathrm{ATP}\\rightarrow\\mathrm{AMP}+\\mathrm{PP_i}$ 算 $2$ 个 $+$ 进位、转位各 $1$ 个 $\\mathrm{GTP}$，不要写成 $4\\mathrm{ATP}$。白喉毒素修饰的是 $\\mathrm{eEF}2$（对应原核 $\\mathrm{EF}$-$\\mathrm{G}$），不是 $\\mathrm{eEF}1$，也不是把 $\\mathrm{eEF}2$ 水解掉。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-2.md",
+        "label": "AGGAGG；P 位；23S；4 个高能磷酸键；eEF2"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "原核怎样把氨基酸按密码子排成肽链？请写出：①自身合成与体系（模板 $\\mathrm{mRNA}$，$64=61+3$，五特点里点名方向性 $5'\\rightarrow 3'$ 和连续性／移码）；②氨酰 $\\mathrm{tRNA}$ 合成酶（至少 $23$ 种，$\\mathrm{ATP}\\rightarrow\\mathrm{AMP}+\\mathrm{PP_i}$，校对 $<10^{-4}$，搭错车仍按 $\\mathrm{tRNA}$ 掺入）；③起始：$\\mathrm{SD}$（$-\\mathrm{AGGAGG}$- 配 $16\\mathrm{S}\\,\\mathrm{rRNA}$），$\\mathrm{fMet}$-$\\mathrm{tRNA}^{\\mathrm{fMet}}$ 由 $\\mathrm{IF}2$-$\\mathrm{GTP}$ 送进 $\\mathrm{P}$ 位，$\\mathrm{IF}1$ 占 $\\mathrm{A}$ 位，$\\mathrm{GTP}$ 水解后 $50\\mathrm{S}$ 加入；④延长：进位 $\\mathrm{EF}$-$\\mathrm{Tu}$、成肽 $23\\mathrm{S}$ 核酶（二肽在 $\\mathrm{A}$ 位）、转位 $\\mathrm{EF}$-$\\mathrm{G}$，每肽键至少 $4$ 个高能磷酸键；⑤终止：$\\mathrm{RF}$ 进 $\\mathrm{A}$ 位，肽酰转移酶变酯酶，切酯键；$\\mathrm{RF}1/\\mathrm{RF}2/\\mathrm{RF}3$ 分工；多聚核糖体 $10\\sim 100$，转录翻译偶联。",
+      "answer": "参考答案：\n\n**1. 自身合成与密码**\n- 蛋白质种属特异，不能种间替代，必须自身合成。模板是 $\\mathrm{mRNA}$，不是 $\\mathrm{DNA}$。体系：氨基酸、$\\mathrm{mRNA}$、$\\mathrm{tRNA}$、核糖体、酶与因子，$\\mathrm{ATP}$ 或 $\\mathrm{GTP}$ 供能。\n- $64=61+3$。阅读 $5'\\rightarrow 3'$，肽链 $\\mathrm{N}\\rightarrow\\mathrm{C}$。密码子连续无间隔；非 $3$ 倍数插入／缺失才移码，连续 $3$ 个只加减一个残基。\n\n**2. 活化**\n- 至少 $23$ 种氨酰 $\\mathrm{tRNA}$ 合成酶（赖氨酸两种，另有磷酸化丝氨酸、吡咯赖氨酸）。$\\mathrm{ATP}\\rightarrow\\mathrm{AMP}+\\mathrm{PP_i}$，消耗 $2$ 个高能磷酸键。校对误差 $<10^{-4}$。\n- 核糖体认反密码子不认氨基酸；「搭错车」仍按该 $\\mathrm{tRNA}$ 掺入。\n\n**3. 起始**\n- $\\mathrm{IF}1$、$\\mathrm{IF}3$ 帮助 $70\\mathrm{S}$ 解离；$\\mathrm{SD}$ 通常 $-\\mathrm{AGGAGG}$-，距 $\\mathrm{AUG}$ 上游约 $10$ 个核苷酸，与 $16\\mathrm{S}\\,\\mathrm{rRNA}$ 互补。\n- $\\mathrm{IF}2$-$\\mathrm{GTP}$ 送 $\\mathrm{fMet}$-$\\mathrm{tRNA}^{\\mathrm{fMet}}$ 进 $\\mathrm{P}$ 位，$\\mathrm{IF}1$ 占 $\\mathrm{A}$ 位。$\\mathrm{GTP}$ 水解，三种 $\\mathrm{IF}$ 释放，$50\\mathrm{S}$ 加入。\n\n**4. 延长**\n- 进位：$\\mathrm{EF}$-$\\mathrm{Tu}$ 耗 $\\mathrm{GTP}$。成肽：$23\\mathrm{S}\\,\\mathrm{rRNA}$ 核酶，不耗 $\\mathrm{GTP}$，二肽酰-$\\mathrm{tRNA}$ 在 $\\mathrm{A}$ 位。转位：$\\mathrm{EF}$-$\\mathrm{G}$ 耗 $\\mathrm{GTP}$，空载 $\\mathrm{tRNA}$ 出 $\\mathrm{E}$ 位，肽酰-$\\mathrm{tRNA}$ 回 $\\mathrm{P}$ 位。\n- 每肽键至少 $4$ 个高能磷酸键（活化 $2+$ 进位转位各 $1$ 个 $\\mathrm{GTP}$），不是 $4\\mathrm{ATP}$。\n\n**5. 终止与效率**\n- $\\mathrm{RF}1$：$\\mathrm{UAA}/\\mathrm{UAG}$；$\\mathrm{RF}2$：$\\mathrm{UAA}/\\mathrm{UGA}$；$\\mathrm{RF}3$：$\\mathrm{GTPase}$，不认密码子。肽酰转移酶变酯酶，水解肽与 $\\mathrm{tRNA}$ 之间的酯键。\n- 一条 $\\mathrm{mRNA}$ 上 $10\\sim 100$ 个核糖体，各做完整同一条肽。原核转录未完即可翻译。",
+      "hint": "按活化 → $\\mathrm{SD}$ 与 $\\mathrm{P}$ 位 → 进位／成肽／转位 → 酯酶终止写，点名 $23\\mathrm{S}$ 和每肽键 $4$ 个高能磷酸键。",
+      "scoring_criteria": [
+        "写出自身合成、模板 mRNA、64=61+3、方向性与移码（非 3 倍数）（3分）",
+        "写出合成酶至少 23 种、ATP→AMP+PPi、校对与搭错车（2分）",
+        "写出 SD（AGGAGG 配 16S）、起始 tRNA 进 P 位、IF1 占 A 位（3分）",
+        "写出进位 Tu、成肽 23S 核酶（二肽在 A）、转位 G、每肽键至少 4 个高能磷酸键（3分）",
+        "写出 RF 进 A 位、肽酰转移酶变酯酶、RF1/RF2/RF3 分工、多聚核糖体与偶联（3分）"
+      ],
+      "explanation": "本题把第 16-1、16-2 节收成“体系—活化—起始—延长—终止”。易错点：模板答 DNA；起始进 A 位；成肽耗 GTP；RF 切肽键。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-2.md",
+        "label": "活化；SD；P 位起始；进位-成肽-转位；RF 酯酶"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "新生肽链怎样变成有活性、在对的地方的蛋白质？原核／真核翻译差别怎样变成药和毒素靶点？请写出：①折叠：$\\mathrm{Hsp}70$ 绑疏水区；$\\mathrm{GroEL}$（$14$ 相同亚基）／$\\mathrm{GroES}$（$7$ 相同亚基）；$\\mathrm{PDI}$、$\\mathrm{PPI}$。②水解：原核 N- 端两种切法；信号肽 $13\\sim 36$ 要切；$\\mathrm{POMC}$ 九种活性肽；表16-4 磷酸化／N-、O- 糖基化；$\\mathrm{SECIS}$ 让 $\\mathrm{UGA}$ 编码第 $21$ 种氨基酸；血红蛋白 $\\alpha$ 接 $\\beta$ 再加血红素。③表16-5：信号肽三段式与 $\\mathrm{SRP}$ 六步（从游离核糖体起步）；$\\mathrm{NLS}$ 不切；$\\mathrm{ER}$ 滞留 C- 端 $\\mathrm{Lys}$-$\\mathrm{Asp}$-$\\mathrm{Glu}$-$\\mathrm{Leu}$；线粒体前导肽 $20\\sim 35$，核编码超过 $95\\%$；停止转移序列不是切点。④表16-6 按起始／进位／读码／成肽／转位分户；白喉毒素 $\\mathrm{ADP}$ 核糖基化 $\\mathrm{eEF}2$；蓖麻毒蛋白 $28\\mathrm{S}$ 脱嘌呤；三尖杉类解聚多聚核糖体；本版无干扰素。",
+      "answer": "参考答案：\n\n**1. 折叠**\n- 新生肽链无活性。$\\mathrm{Hsp}70$ 结合疏水区，防变性、防过早折叠、跨膜前保持未折叠；$\\mathrm{ATP}+\\mathrm{Hsp}40$ 循环。\n- $\\mathrm{GroEL}$ $14$ 个相同亚基成桶，$\\mathrm{GroES}$ $7$ 个相同亚基成盖；大肠埃希菌 $10\\%\\sim 15\\%$（热激 $30\\%$）依赖；真核类似物 $\\mathrm{Hsp}60$。$\\mathrm{PDI}$ 管二硫键，$\\mathrm{PPI}$ 管脯氨酸顺反。\n\n**2. 水解、修饰、聚合**\n- 原核约半数只脱甲酰基留 $\\mathrm{Met}$，其余氨基肽酶去掉 $\\mathrm{fMet}$。胰岛素原、胰蛋白酶原靠水解激活。$\\mathrm{POMC}$ 切点成对碱性残基，切出 $9$ 种活性肽，编号以 $\\mathrm{ACTH}$ 的 N 端为 $1$。\n- 磷酸化 $\\mathrm{Ser}/\\mathrm{Thr}/\\mathrm{Tyr}$；N- 糖基化 $\\mathrm{Asn}$；O- 糖基化 $\\mathrm{Ser}/\\mathrm{Thr}$。硒半胱氨酸是第 $21$ 种氨基酸，有 $\\mathrm{SECIS}$ 时 $\\mathrm{UGA}$ 编码它。\n- 血红蛋白：$\\alpha$ 先下机接 $\\beta\\rightarrow\\alpha\\beta$ 二聚体 $\\rightarrow$ 线粒体血红素 $\\rightarrow\\alpha_2\\beta_2+4$ 个血红素。\n\n**3. 靶向**\n- 信号肽 $13\\sim 36$：碱性 N- 端、疏水中段 $10\\sim 15$、极性短侧链邻近切点。六步：游离核糖体 $\\rightarrow\\mathrm{SRP}\\rightarrow$ 对接蛋白 $\\rightarrow$ 肽转位复合物 $\\rightarrow\\mathrm{SRP}$ 脱落肽链继续延长 $\\rightarrow$ 信号肽酶 $\\rightarrow$ 出芽／高尔基／分泌。\n- $\\mathrm{NLS}$ $4\\sim 8$ 连续碱性、位置不固定、不切；$\\mathrm{Ran}$ 水解 $\\mathrm{GTP}$，$\\beta$ 先解离、$\\alpha$ 后解离。$\\mathrm{ER}$ 滞留 C- 端 $\\mathrm{Lys}$-$\\mathrm{Asp}$-$\\mathrm{Glu}$-$\\mathrm{Leu}$。线粒体前导肽 $20\\sim 35$，核编码超过 $95\\%$、约 $1\\,100$ 种，进基质后切。停止转移序列把跨膜蛋白锚在膜上，不是切点。溶酶体：$\\mathrm{Man}$-$6$-$\\mathrm{P}$。\n\n**4. 药物与毒素**\n- 仅原核：抗菌（四环素挡 $30\\mathrm{S}$ $\\mathrm{A}$ 位；氨基糖苷读码／抑起始；氯霉素等 $50\\mathrm{S}$ 成肽；夫西地酸打 $\\mathrm{EF}$-$\\mathrm{G}$；大观霉素 $30\\mathrm{S}$ 转位）。伊短菌素两端都抑，表中抗病毒；嘌呤霉素两端都抑，抗肿瘤；放线菌酮专一真核，医学研究。\n- 白喉毒素：$\\mathrm{eEF}2$ 的 $\\mathrm{ADP}$ 核糖基化。蓖麻毒蛋白：A 链使 $28\\mathrm{S}$ 一个腺苷酸脱嘌呤。三尖杉类：抑真核起始，多聚核糖体解聚。本版无干扰素。",
+      "hint": "按折叠／水解修饰／五户信号 → 表16-6 分户和三种真核毒素写。不要补干扰素。",
+      "scoring_criteria": [
+        "写出 Hsp70、GroEL14/GroES7、PDI/PPI（3分）",
+        "写出 N- 端切法、POMC、表16-4 要点、SECIS/UGA、Hb 装配顺序（4分）",
+        "写出信号肽三段式与 SRP 六步、NLS 不切、线粒体前导肽、停止转移不是切点（4分）",
+        "写出表16-6 按步骤分户（四环素进位、氯霉素成肽、夫西地酸/大观霉素转位等）、白喉 eEF2、蓖麻 28S、三尖杉解聚、无干扰素（4分）"
+      ],
+      "explanation": "本题把第 16-3、16-4 节收成“加工分选—抗菌靶点—真核毒素”。易错点：分泌蛋白质一开始就在 ER；NLS 切除；白喉水解 eEF2；补干扰素。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch16-3.md",
+        "label": "折叠／POMC／表16-5；表16-6 与白喉／蓖麻／三尖杉"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

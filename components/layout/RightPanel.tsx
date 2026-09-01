@@ -10,6 +10,7 @@ import { tabPanelVariants } from "@/lib/motion";
 import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
 import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
 import type { ChatContext } from "@/lib/types/chat";
+import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
   ssr: false,
@@ -120,12 +121,14 @@ export default function RightPanel() {
   useEffect(() => setMounted(true), []);
   const safeBookmarks = mounted ? bookmarks : [];
 
+  const academicYear = useAcademicYear((s) => s.year);
   const chatContext: ChatContext = useMemo(() => ({
     subjectId: activeSubjectId,
     categoryId: activeCategoryId,
     itemId: activeItemId,
     currentTopic: `${activeSubjectId} ${activeCategoryId} ${activeItemId}`,
-  }), [activeSubjectId, activeCategoryId, activeItemId]);
+    academicYear,
+  }), [activeSubjectId, activeCategoryId, activeItemId, academicYear]);
 
   return (
     <div className="flex h-full flex-col border-l border-[var(--line)] bg-[var(--bg-panel)]">

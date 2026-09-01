@@ -1,0 +1,321 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch13",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch13-1.md；content/biochemistry/textbook/ch13-2.md；content/biochemistry/textbook/ch13-3.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于基因的定义、$\\mathrm{RNA}$ 病毒例外以及基因组与基因组学，下列叙述正确的是（　）。",
+      "options": [
+        "基因就是从起始密码子到终止密码子的开放阅读框，不含启动子和增强子；某些 $\\mathrm{RNA}$ 病毒例外把真核基因的物质基础改写成 $\\mathrm{RNA}$；基因组就是两万个蛋白质编码基因的名单，不含线粒体 $\\mathrm{DNA}$",
+        "基因是能够编码蛋白质或 $\\mathrm{RNA}$ 等具有特定功能产物、负载遗传信息的基本单位；除某些以 $\\mathrm{RNA}$ 为基因组的 $\\mathrm{RNA}$ 病毒外，基因指存储编码序列以及表达这些信息所必需的全部核苷酸序列。$\\mathrm{DNA}$ 是基因的物质基础，$\\mathrm{RNA}$ 病毒只是例外，不要把真核基因改写成 $\\mathrm{RNA}$。基因的功能实际是产物的功能。三项功能：用 $4$ 种碱基排列荷载信息；通过复制传给子代（复制中随机突变是进化基础）；作为表达模板。基因组是一套完整单体的遗传信息总和，人＝核染色体 $\\mathrm{DNA}$（常染色体和性染色体）$+\\mathrm{mtDNA}$。基因组学阐明整个基因组结构、结构与功能关系以及基因之间相互作用，按目的分为结构、功能、比较三户",
+        "基因的功能就是 $\\mathrm{DNA}$ 序列本身，与编码的蛋白质或 $\\mathrm{RNA}$ 无关；忠实复制意味着永远不变",
+        "问卵清蛋白有几个外显子、人编码序列占百分之几、$\\mathrm{HGP}$ 四张图，都走“基因组学”这一户"
+      ],
+      "answer": 1,
+      "hint": "基因＝编码序列 $+$ 表达所需序列；$\\mathrm{RNA}$ 病毒是例外不是改写真核基因；人基因组含 $\\mathrm{mtDNA}$。",
+      "explanation": "**B 正确。** 定义含调控序列、$\\mathrm{RNA}$ 病毒例外、三项功能、基因组含核 $\\mathrm{DNA}$ 和 $\\mathrm{mtDNA}$、基因组学三户，都按教材。\n\n**干扰项辨析**：\n- A：基因不只是开放阅读框；真核基因物质基础仍是 $\\mathrm{DNA}$；基因组不是蛋白质基因名单，含 $\\mathrm{mtDNA}$。\n- C：功能实际是产物的功能；突变写在复制这一条里，忠实不等于永远不变。\n- D：外显子个数走基因，编码序列占比走基因组，四张图走基因组学，三户不要并。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-1.md",
+        "label": "基因定义 · RNA 病毒例外 · 基因组含 mtDNA · pitfall「不只是 ORF」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于断裂基因、外显子与内含子以及鸡卵清蛋白例子，下列叙述正确的是（　）。",
+      "options": [
+        "真核基因最突出特点是连续性；内含子数目等于外显子；鸡卵清蛋白 $8$ 个内含子；外显子就是从 $\\mathrm{ATG}$ 到终止密码子；$+1$ 就是起始密码子",
+        "真核基因结构最突出的特点是不连续性，称为断裂基因（split gene）或割裂基因（interrupted gene）。外显子是出现在成熟 $\\mathrm{mRNA}$ 上的序列（两端还带着 $5'$、$3'$ 非翻译区）；内含子对应剪接中被删除的间隔。每个基因的内含子数目比外显子少 $1$ 个。鸡卵清蛋白基因全长 $7.7\\,\\mathrm{kb}$，$8$ 个外显子、$7$ 个内含子；$\\mathrm{mRNA}$ 前体与基因等长，切掉内含子后成熟 $\\mathrm{mRNA}$ 仅 $1.2\\,\\mathrm{kb}$。原核基本无内含子；高等真核编码蛋白基因绝大部分有，组蛋白编码基因例外；$\\mathrm{rRNA}$ 和一些 $\\mathrm{tRNA}$ 基因有内含子。接头共有序列：内含子 $5'$ 大多数以 $\\mathrm{GT}$ 开始、$3'$ 大多数以 $\\mathrm{AG}$ 结束。$+1$ 是转录起点对应的碱基，不是起始密码子；没有 $0$ 号碱基",
+        "所有真核编码蛋白质的基因都有内含子，组蛋白也不例外；前体比基因短，因为转录时跳过内含子",
+        "$\\mathrm{GT}$-$\\mathrm{AG}$ 是每一个内含子的绝对定律；外显子较易变、内含子较保守"
+      ],
+      "answer": 1,
+      "hint": "不连续＝断裂基因；内含子数 $=$ 外显子数 $-1$；卵清蛋白 $7.7\\,\\mathrm{kb}/8$ 外显子 $7$ 内含子 $\\rightarrow 1.2\\,\\mathrm{kb}$。",
+      "explanation": "**B 正确。** 断裂基因定义、外显子／内含子、$n-1$、卵清蛋白数字、组蛋白例外、$\\mathrm{GT}$-$\\mathrm{AG}$ 大多数、$+1$ 编号，都按教材。\n\n**干扰项辨析**：\n- A：最突出是不连续；内含子少 $1$；卵清蛋白 $7$ 个内含子；外显子含 $\\mathrm{UTR}$ 侧序列；$+1$ 不是 $\\mathrm{ATG}$。\n- C：组蛋白是点名例外；前体与基因等长，内含子先被转录再被切掉。\n- D：教材用“大多数”；外显子较保守、内含子较易变。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-1.md",
+        "label": "断裂基因 · 卵清蛋白 7.7 kb · GT-AG · pitfall「内含子少 1 个」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于真核三类启动子及其对应的 $\\mathrm{RNA}$ 聚合酶，下列叙述正确的是（　）。",
+      "options": [
+        "启动子是一类调节蛋白；所有启动子永远不被转录；$\\mathrm{TATA}$ 盒安在Ⅰ类 $18\\mathrm{S}/28\\mathrm{S}\\,\\mathrm{rRNA}$ 基因上；$5\\mathrm{S}\\,\\mathrm{rRNA}$ 与 $18\\mathrm{S}$ 同走Ⅰ类；$\\mathrm{U6}\\,\\mathrm{snRNA}$ 有 $\\mathrm{TATA}$ 所以改挂Ⅱ类",
+        "启动子是 $\\mathrm{DNA}$ 上与 $\\mathrm{RNA}$ 聚合酶及其辅因子结合、提供转录起始信号的保守序列。大部分位于 $+1$ 上游，本身通常不被转录；编码 $\\mathrm{tRNA}$ 的启动子可在起点下游并被转录。三类对应三种聚合酶：Ⅰ类服务 $18\\mathrm{S}$、$5.8\\mathrm{S}$、$28\\mathrm{S}\\,\\mathrm{rRNA}$，核心启动子 $+\\mathrm{UPE}$，均富含 $\\mathrm{GC}$；Ⅱ类服务 $\\mathrm{mRNA}$ 编码蛋白质的基因和一些 $\\mathrm{snRNA}$，$\\mathrm{TATA}(\\mathrm{A/T})\\mathrm{A}(\\mathrm{A/T})$ 决定 $\\mathrm{RNA}$ 合成起点，可有 $\\mathrm{CAAT}$ 盒、$\\mathrm{GC}$ 盒、$\\mathrm{Inr}$，或 $\\mathrm{Inr}+\\mathrm{DPE}$（并非所有Ⅱ类都有 $\\mathrm{TATA}$）；Ⅲ类包括 $\\mathrm{A}$ 盒、$\\mathrm{B}$ 盒、$\\mathrm{C}$ 盒，服务 $5\\mathrm{S}\\,\\mathrm{rRNA}$、$\\mathrm{tRNA}$、$\\mathrm{U6}\\,\\mathrm{snRNA}$。$5\\mathrm{S}$ 走Ⅲ类；$\\mathrm{U6}$ 虽画有 $\\mathrm{TATA}$，户头仍是Ⅲ类。$\\mathrm{TATA}$ 决定的是 $\\mathrm{RNA}$ 合成起点，不是翻译起点",
+        "Ⅱ类启动子的 $\\mathrm{A}$ 盒、$\\mathrm{B}$ 盒写在编码蛋白质基因上；Ⅰ类没有核心元件",
+        "顺式作用元件是转录出来的调节 $\\mathrm{RNA}$，不是同一条 $\\mathrm{DNA}$ 上的序列"
+      ],
+      "answer": 1,
+      "hint": "三类对三种聚合酶；$5\\mathrm{S}$ 走Ⅲ类、$18\\mathrm{S}/28\\mathrm{S}$ 走Ⅰ类；$\\mathrm{U6}$ 有 $\\mathrm{TATA}$ 仍挂Ⅲ类。",
+      "explanation": "**B 正确。** 启动子定义、三类元件与基因名单、$\\mathrm{tRNA}$ 可被转录、$\\mathrm{TATA}$ 定 $\\mathrm{RNA}$ 起点，都按教材。\n\n**干扰项辨析**：\n- A：启动子是 $\\mathrm{DNA}$ 序列；“通常”不是“永远”；$\\mathrm{TATA}$ 不在Ⅰ类；$5\\mathrm{S}$ 走Ⅲ类；$\\mathrm{U6}$ 仍是Ⅲ类。\n- C：$\\mathrm{A}/\\mathrm{B}/\\mathrm{C}$ 盒是Ⅲ类；Ⅰ类有核心 $+\\mathrm{UPE}$。\n- D：顺式元件是同一条 $\\mathrm{DNA}$ 上的序列，不是调节 $\\mathrm{RNA}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-1.md",
+        "label": "三类启动子 · TATA 盒 · 5S 走Ⅲ类 · pitfall「U6 仍挂Ⅲ类」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于增强子、沉默子和绝缘子，下列叙述正确的是（　）。",
+      "options": [
+        "增强子只能写在基因前面、必须紧挨启动子，和 $\\mathrm{CAAT}/\\mathrm{GC}$ 盒是同一个盒子；内含子里不能有增强子",
+        "增强子是对基因表达有增强作用的 $\\mathrm{DNA}$ 调控元件，可相对于启动子在任何方向、任何位置（上游或下游）起作用，但大部分位于上游；近则几十个碱基对，远可达几千个碱基对；常成簇，有时位于内含子中。沉默子是可抑制基因转录的特定 $\\mathrm{DNA}$ 序列，结合反式作用因子后阻遏转录，本身不是阻遏蛋白。绝缘子阻碍增强子对启动子的作用，或保护基因不受附近异染色质等环境的影响；酵母 $\\mathrm{RAP1}$、脊椎动物 $\\mathrm{CTCF}$ 结合于绝缘子，可能通过使 $\\mathrm{DNA}$ 弯曲或成环挡住增强子。绝缘子不是沉默子的别名：一个是负调节元件，一个是边界元件",
+        "沉默子就是阻遏蛋白；绝缘子等于沉默子，都是“关掉基因”的同一句话",
+        "顺式作用元件是一类调节蛋白；增强子必须转录成 $\\mathrm{RNA}$ 才有功能"
+      ],
+      "answer": 1,
+      "hint": "增强子方向位置不限；沉默子是 $\\mathrm{DNA}$；绝缘子挡增强子或挡异染色质，不是沉默子。",
+      "explanation": "**B 正确。** 增强子“任何方向和任何位置”、可在内含子、沉默子结合反式因子后阻遏、绝缘子 $\\mathrm{RAP1}/\\mathrm{CTCF}$，都按教材。\n\n**干扰项辨析**：\n- A：不是必须紧挨启动子；不要和 $\\mathrm{CAAT}/\\mathrm{GC}$ 并户；增强子可在内含子。\n- C：沉默子是 $\\mathrm{DNA}$ 序列；绝缘子不是沉默子别名。\n- D：顺式元件是 $\\mathrm{DNA}$ 序列；大部分启动子通常不被转录。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-1.md",
+        "label": "增强子任何方向位置 · 沉默子 · 绝缘子 RAP1/CTCF · pitfall「绝缘子不是沉默子」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于人基因组编码序列比例、可变剪接以及“约两万个基因”，下列叙述正确的是（　）。",
+      "options": [
+        "真核更复杂所以编码序列占比更高；人编码序列占全基因组 $5\\%$、占一个基因 $1.5\\%$；表13-1 的 $59\\,444$ 全是蛋白质编码基因",
+        "真核结构基因数量远多于原核，但编码区比例远小于原核。人编码序列仅占全基因组 $1.5\\%$，占一个基因全部序列的 $5\\%$——两个百分比分母不同。图13-4：核 $3\\,100\\,\\mathrm{Mb}$ 中编码蛋白基因序列约 $27.4\\%$＝外显子约 $1.5\\%$ $+$ 内含子约 $25.9\\%$，基因外约 $72.6\\%$；线粒体 $16.6\\,\\mathrm{kb}$。大约 $60\\%$ 的人基因发生可变剪接，$80\\%$ 的可变剪接会改变蛋白质序列。蛋白质编码基因 $20\\,080$ 个（章末“约两万个基因”），基因和假基因合计 $59\\,444$。不能只根据基因组大小或基因数量判断复杂性：线虫基因数 $46\\,927$、小鼠 $50\\,562$ 都可高于人的蛋白质编码基因",
+        "重复序列不到人基因组的 $10\\%$；非编码序列都是没有功能的垃圾",
+        "$\\mathrm{mRNA}$ $136\\,180$ 条就是基因个数；把 $20\\,080$、$21\\,954$、$59\\,444$ 加成另一套基因组即可"
+      ],
+      "answer": 1,
+      "hint": "$1.5\\%$ 对全基因组、$5\\%$ 对一个基因；约两万是蛋白质编码，不是 $59\\,444$。",
+      "explanation": "**B 正确。** 编码区比例更小、$1.5\\%$ 与 $5\\%$ 分母不同、可变剪接两个人类数字、约两万蛋白质基因、不能只比大小／基因数，都按教材。\n\n**干扰项辨析**：\n- A：更复杂不是编码占比更高；两个百分比抄反；$59\\,444$ 含假基因。\n- C：重复序列占 $50\\%$ 以上；不编码不等于无功能。\n- D：$\\mathrm{mRNA}$ 条数因可变剪接多于基因数；三套数字不要乱加。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-2.md",
+        "label": "编码序列 1.5% · 单基因 5% · 约两万蛋白质基因 · pitfall「分母不同」"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于人线粒体基因组以及叶绿体 $\\mathrm{DNA}$，下列叙述正确的是（　）。",
+      "options": [
+        "人 $\\mathrm{mtDNA}$ 也有几千兆碱基，编码核基因组那样的两万个基因；能独立复制等于完全不受核基因控制；所有真核细胞、所有植物细胞都必有线粒体或叶绿体",
+        "人线粒体基因组全长 $16\\,569\\,\\mathrm{bp}$（图13-4 写成 $16.6\\,\\mathrm{kb}$），共编码 $37$ 个基因：$13$ 个呼吸链多酶体系多肽、$22$ 个 $\\mathrm{mt}$-$\\mathrm{tRNA}$、$2$ 个 $\\mathrm{mt}$-$\\mathrm{rRNA}$（$16\\mathrm{S}$ 和 $12\\mathrm{S}$）。结构与原核 $\\mathrm{DNA}$ 类似，为环状分子。能够单独复制、转录及合成蛋白质，但自身结构和生命活动仍需核基因参与并受其控制。并非所有真核细胞都有线粒体：蛔虫成虫阶段体细胞没有；部分高度木质化的根冠细胞没有。高等植物 $\\mathrm{cpDNA}$ 为双链闭合环状，约 $120\\sim 217\\,\\mathrm{kb}$，每个叶绿体通常十几个拷贝；并非所有植物细胞都含叶绿体",
+        "$2$ 个 $\\mathrm{mt}$-$\\mathrm{rRNA}$ 是 $18\\mathrm{S}$ 和 $28\\mathrm{S}$；核 $3\\,100\\,\\mathrm{Mb}$ 与线粒体 $16.6\\,\\mathrm{kb}$ 是同一数量级",
+        "章末写“独立编码”就应删掉“受核控制”那一句"
+      ],
+      "answer": 1,
+      "hint": "$16\\,569\\,\\mathrm{bp}$、$37=13+22+2$；独立复制仍受核控制。",
+      "explanation": "**B 正确。** 全长与 $37$ 个基因拆分、环状、受核控制、蛔虫／根冠例外、$\\mathrm{cpDNA}$ 长度，都按教材。\n\n**干扰项辨析**：\n- A：线粒体是 $16.6\\,\\mathrm{kb}$ 不是几千兆；$37$ 不是两万；独立复制不等于不受核控制；不是每个细胞必有。\n- C：$\\mathrm{mt}$-$\\mathrm{rRNA}$ 是 $16\\mathrm{S}$ 和 $12\\mathrm{S}$；数量级差开。\n- D：章末与第二节正文两句一起背。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-2.md",
+        "label": "mtDNA 16569 bp · 37=13+22+2 · pitfall「独立复制仍受核控制」"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于人染色体非均匀分布、基因密度、沙漠区以及能否用基因组大小判断复杂性，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{Y}$ 染色体又最短、密度又最大；表13-1 的 $59\\,444$ 全是蛋白质编码基因；基因组越大、基因越多，生物一定越复杂；唐氏综合征相关基因在第 $1$ 号染色体",
+        "人染色体 $22$ 对常染色体 $+1$ 对性染色体，大小 $46\\sim 249\\,\\mathrm{Mb}$。最长是第 $1$ 号（约 $248.96\\,\\mathrm{Mb}$，$5\\,485$ 个确定基因），最小是第 $21$ 号（约 $46.71\\,\\mathrm{Mb}$，$679$ 个基因）；阿尔茨海默病、肌萎缩性侧索硬化症、唐氏综合征等相关基因位于 $21$ 号。基因密度最大是第 $19$ 号（平均每百万碱基 $42$ 个基因），最小是 $\\mathrm{Y}$ 染色体（将近 $10$ 个基因／$\\mathrm{Mb}$）——$\\mathrm{Y}$ 密度最小，不是最短。沙漠区：连续 $500\\,\\mathrm{kb}$ 无蛋白质编码基因，约占基因组 $20\\%$。蛋白质编码基因 $20\\,080$；基因和假基因合计 $59\\,444$。表13-1 的 $23$ 是单倍体染色体数。人基因组最大、最复杂，但蛋白质编码基因不是最多（线虫 $46\\,927$、小鼠 $50\\,562$）；果蝇基因组大于线虫，基因数却更少。不能只根据基因组大小或基因数量判断复杂程度",
+        "第 $21$ 号既最短又最密；基因沙漠目前机制和意义已经完全清楚",
+        "体细胞染色体总数就是表13-1 的 $23$；细菌行也应填一条染色体数"
+      ],
+      "answer": 1,
+      "hint": "最长 $1$ 号、最小 $21$ 号、最密 $19$ 号、最疏 $\\mathrm{Y}$；约两万蛋白质基因；复杂性不能只比大小。",
+      "explanation": "**B 正确。** 最长／最小／最密／最疏分户、沙漠区、$20\\,080$ 对 $59\\,444$、单倍体 $23$、思考题第 $4$ 问，都按教材。\n\n**干扰项辨析**：\n- A：$\\mathrm{Y}$ 不是最短也不是最密；$59\\,444$ 含假基因；大小／基因数不能单独判断复杂性；唐氏在 $21$ 号。\n- C：$21$ 号最小不是最密；沙漠区如何形成、有何意义目前尚不清楚。\n- D：$23$ 是单倍体；细菌行写“无”。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-2.md",
+        "label": "1 号最长 · 21 号最小 · 19 号最密 · Y 最疏 · pitfall「不能只比基因组大小」"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于真核基因组重复序列、$\\mathrm{Alu}$ 家族以及 $\\mathrm{rRNA}$ 基因定位，下列叙述正确的有（　）。",
+      "options": [
+        "人基因组中重复序列占长度的 $50\\%$ 以上。高度重复频率 $10^{3}\\sim 10^{7}$，长度 $5\\sim 500\\,\\mathrm{bp}$，不编码蛋白质或 $\\mathrm{RNA}$，约占 $20\\%$；反向重复约占 $5\\%$（单位约 $300\\,\\mathrm{bp}$，多数散在）；卫星 $\\mathrm{DNA}$ 占 $10\\%$ 以上，主要在着丝粒区，通常不被转录，因氯化铯离心出现“卫星”条带而得名。高度重复有复制调节、表达调控、染色体配对三项功能，不编码不等于无功能",
+        "中度重复频率 $10\\sim 10^{4}$，人约 $20\\%$。$\\mathrm{SINEs}$ 平均 $70\\sim 300\\,\\mathrm{bp}$。$\\mathrm{Alu}$ 是哺乳类含量最丰富的短散在重复：每 $6\\,\\mathrm{kb}$ 一个，约 $50$ 万拷贝，约占基因组 $10\\%$；约 $300\\,\\mathrm{bp}$，因限制酶 $\\mathrm{Alu}$ 切点 $\\mathrm{AG}{\\downarrow}\\mathrm{CT}$ 切成 $130+170$ 而得名，不是编码 $\\mathrm{Alu}$ 酶的基因。$\\mathrm{LINEs}$ 约 $6\\,000\\sim 7\\,000\\,\\mathrm{bp}$，常具转座活性",
+        "$\\mathrm{rRNA}$ 基因属中度重复，各单位相同、成簇于核仁组织区：$13$、$14$、$15$、$21$、$22$ 号，每区平均 $50$ 个重复单位；$5\\mathrm{S}\\,\\mathrm{rRNA}$ 几乎全部在 $1\\mathrm{q}42$-$43$，单倍体约 $1\\,000$ 个。$\\mathrm{tRNA}$ 基因也属中度重复。单拷贝／低度重复含大多数编码蛋白质的基因，也包括 $\\mathrm{miRNA}$、$\\mathrm{lncRNA}$、无／未知功能序列、突变基因或假基因",
+        "卫星 $\\mathrm{DNA}$ 就是染色体随体；$\\mathrm{Alu}$ 是编码 $\\mathrm{Alu}$ 酶的结构基因；$5\\mathrm{S}$ 与 $18\\mathrm{S}/28\\mathrm{S}$ 写在同一串核仁组织区染色体上；高度重复是垃圾没有功能；重复序列不到基因组的 $10\\%$"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "重复过半；卫星来自离心条带；$\\mathrm{Alu}$ 因酶得名；$5\\mathrm{S}$ 在 $1$ 号。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：高度重复份额、反向重复与卫星 $\\mathrm{DNA}$、三项功能，来自 ch13-2。\n- B：$\\mathrm{SINEs}/\\mathrm{Alu}/\\mathrm{LINEs}$ 数字与命名，来自 ch13-2。\n- C：$\\mathrm{rRNA}$ 成簇定位、$5\\mathrm{S}$ 分家、单拷贝不只是结构基因，来自 ch13-2。\n- **D 错**：卫星不是染色体随体；$\\mathrm{Alu}$ 因酶切点得名；$5\\mathrm{S}$ 在 $1\\mathrm{q}42$-$43$；不编码不等于无功能；重复序列 $50\\%$ 以上。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-2.md",
+        "label": "重复序列 50% 以上 · Alu · rRNA 核仁组织区 · pitfall「卫星不是染色体随体」"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于基因组学三户、$\\mathrm{HGP}$ 四张图以及种内 $\\mathrm{SNP}$，下列叙述正确的有（　）。",
+      "options": [
+        "结构基因组学通过作图和序列测定揭示全部 $\\mathrm{DNA}$ 序列及其组成。$\\mathrm{HGP}$ 四张图：遗传图谱（连锁，单位 $\\mathrm{cM}$；$1\\%$ 重组 $=1\\,\\mathrm{cM}\\approx 1\\,000\\,\\mathrm{kb}$；标志 $\\mathrm{RFLP}$、$\\mathrm{VNTR}$、$\\mathrm{SNP}$，$\\mathrm{SNP}$ 精确度最高 $0.5\\sim 1.0\\,\\mathrm{kb}$）；物理图谱（$\\mathrm{bp}/\\mathrm{kb}$；$\\mathrm{FISH}$、限制酶切、克隆重叠群最重要；$\\mathrm{STS}$ 是单拷贝能 $\\mathrm{PCR}$，每 $100\\,\\mathrm{kb}$ 一个，$\\mathrm{Alu}$ 不能当 $\\mathrm{STS}$）",
+        "转录图谱以 $\\mathrm{EST}$ 为位标：$\\mathrm{EST}$ 是 $\\mathrm{cDNA}$ 的 $5'$ 或 $3'$ 端一部分，一般 $300\\sim 500\\,\\mathrm{bp}$，不是全长 $\\mathrm{cDNA}$ 也不是鸟枪法基因组读段。同一套基因组，成年特定组织一般只有 $10\\%$ 的基因表达。序列图谱：$\\mathrm{BAC}$ 文库 $+$ 鸟枪法随机测序 $+$ 生物信息学拼接＝基因组组装，不是对着染色体逐碱基从头读到尾",
+        "功能基因组学鉴定所有基因（含非编码）的功能：扫描外显子／内含子衔接和 $\\mathrm{ORF}$（找到 $\\mathrm{ORF}$ 不等于已证明功能）；$\\mathrm{BLAST}$ 同源搜索（同源可推测功能，不是功能一定相同）；转基因／过表达／敲除／敲减／沉默结合表型；转录物组 $+$ 蛋白质组。比较：种间鉴别编码／调控／物种独有序列；种内阐明变异多态，$\\mathrm{SNP}$ 最大限度代表个体遗传差异，连到疾病易感性和个体化用药。表观基因组学重点是 $\\mathrm{DNA}$ 甲基化和组蛋白修饰；宏基因组学对象是环境微生物群体基因组",
+        "功能基因组学只研究编码蛋白质的基因；宏基因组学就是把人的核基因组再测一遍；$1\\,\\mathrm{cM}=1\\,\\mathrm{bp}$；$\\mathrm{EST}$ 是全长 $\\mathrm{mRNA}$；$\\mathrm{SNP}$ 是最粗的遗传标志；种内比较就是人和小鼠比"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "四张图分户；功能含非编码；种内 $\\mathrm{SNP}$ 连用药。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：结构基因组学、遗传图与物理图、$\\mathrm{STS}$，来自 ch13-3。\n- B：转录图 $\\mathrm{EST}$、$10\\%$ 表达、鸟枪法组装，来自 ch13-3。\n- C：功能四路径、种间／种内、表观与宏，来自 ch13-3。\n- **D 错**：功能含非编码；宏基因组学是环境微生物；$1\\,\\mathrm{cM}\\approx 1\\,000\\,\\mathrm{kb}$；$\\mathrm{EST}$ 只是端序列；$\\mathrm{SNP}$ 精确度最高；人和小鼠比是种间。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-3.md",
+        "label": "HGP 四张图 · 功能含非编码 · 种内 SNP · pitfall「宏基因组学不是人核基因组」"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "基因只是从起始密码子到终止密码子的开放阅读框；$\\mathrm{RNA}$ 病毒例外把真核基因物质基础改成 $\\mathrm{RNA}$；基因组就是两万个蛋白质编码基因的名单、不含线粒体 $\\mathrm{DNA}$；外显子等于只编码蛋白质的区段；内含子数目与外显子相等。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：基因含调控序列；真核仍是 $\\mathrm{DNA}$；基因组含 $\\mathrm{mtDNA}$；外显子出现在成熟 $\\mathrm{mRNA}$；内含子少 $1$ 个。",
+      "explanation": "**该命题错误，每一分句都错。** 基因含编码序列以及表达所需的全部核苷酸序列（启动子、增强子等）。$\\mathrm{RNA}$ 病毒只是例外，其余情况下基因是 $\\mathrm{DNA}$，不要把真核基因物质基础改成 $\\mathrm{RNA}$。基因组是一套完整单体的遗传信息总和，人＝核染色体 $\\mathrm{DNA}+\\mathrm{mtDNA}$，不是蛋白质基因名单。外显子是出现在成熟 $\\mathrm{mRNA}$ 上的序列，两端还有非翻译区。内含子数目比外显子少 $1$ 个。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-1.md",
+        "label": "基因定义 · RNA 病毒例外 · 外显子／内含子 n−1"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "人编码序列占全基因组 $5\\%$、占一个基因 $1.5\\%$；$\\mathrm{mtDNA}$ 能独立复制故完全不受核基因控制；$\\mathrm{Y}$ 染色体是最短的染色体；绝缘子就是沉默子的别名；$5\\mathrm{S}\\,\\mathrm{rRNA}$ 走Ⅰ类启动子并与 $18\\mathrm{S}/28\\mathrm{S}$ 写在同一串核仁组织区染色体上。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：$1.5\\%$ 对全基因组；独立复制仍受核控制；最短是 $21$ 号；绝缘子是边界；$5\\mathrm{S}$ 走Ⅲ类、在 $1$ 号。",
+      "explanation": "**该命题错误，五处都错。** 编码序列占全基因组 $1.5\\%$，占一个基因全部序列约 $5\\%$。$\\mathrm{mtDNA}$ 能单独复制、转录及合成蛋白质，但并不意味着完全不受核基因控制。最短（最小）是第 $21$ 号，$\\mathrm{Y}$ 是基因密度最小。绝缘子挡增强子或挡异染色质，沉默子才是负调节元件，二者不是别名。$5\\mathrm{S}\\,\\mathrm{rRNA}$ 走Ⅲ类启动子，几乎全部在 $1\\mathrm{q}42$-$43$；$18\\mathrm{S}/5.8\\mathrm{S}/28\\mathrm{S}$ 走Ⅰ类，在 $13$、$14$、$15$、$21$、$22$ 号核仁组织区。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-2.md",
+        "label": "1.5% vs 5% · mtDNA 受核控制 · Y 不是最短 · 5S 分家"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "除某些以 $\\mathrm{RNA}$ 为基因组的 ________ 外，基因通常是 $\\mathrm{DNA}$ 序列。真核基因结构最突出的特点是不连续性，称为 ________（又称割裂基因）。人编码序列仅占全基因组的 ________（不要写成单基因内的 $5\\%$）。人线粒体基因组全长 ________ $\\mathrm{bp}$，共编码 ________ 个基因（$13$ 个呼吸链多肽 $+22$ 个 $\\mathrm{tRNA}+2$ 个 $\\mathrm{rRNA}$）。",
+      "answer": "RNA 病毒，断裂基因，1.5%，16569，37",
+      "hint": "例外是 $\\mathrm{RNA}$ 病毒；不连续＝断裂基因；$1.5\\%$ 对全基因组；$16\\,569\\,\\mathrm{bp}$、$37$ 个基因。",
+      "scoring_criteria": [
+        "第一空填“RNA 病毒”（或“RNA病毒”“以 RNA 为基因组的病毒”）（2分）",
+        "第二空填“断裂基因”（或“割裂基因”“split gene”“interrupted gene”）（2分）",
+        "第三空填“1.5%”（或“1.5％”“1.5”）（2分）",
+        "第四空填“16569”（或“16 569”“16,569”“16 569 bp”）（2分）",
+        "第五空填“37”（或“三十七”）（2分）"
+      ],
+      "explanation": "$\\mathrm{RNA}$ 病毒是例外，不要据此把真核基因改写成 $\\mathrm{RNA}$。不连续称为断裂基因／割裂基因。$1.5\\%$ 的分母是全基因组，$5\\%$ 的分母才是一个基因的全部序列。人 $\\mathrm{mtDNA}$ $16\\,569\\,\\mathrm{bp}$、$37=13+22+2$，不要把核基因组的两万基因抄过来。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-1.md",
+        "label": "RNA 病毒例外；断裂基因；1.5%；mtDNA 16569 bp／37 基因"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "真核基因怎样定义、怎样断裂、怎样提供起始和调节信号？请写出：①基因含编码序列与表达所需序列，$\\mathrm{RNA}$ 病毒例外，三项功能，基因组（人＝核 $\\mathrm{DNA}+\\mathrm{mtDNA}$）与基因组学三户不要并词；②断裂基因：外显子出现在成熟 $\\mathrm{mRNA}$，内含子少 $1$ 个，鸡卵清蛋白 $7.7\\,\\mathrm{kb}$／$8$ 外显子 $7$ 内含子、$\\mathrm{mRNA}$ 前体等长、成熟 $1.2\\,\\mathrm{kb}$，组蛋白例外，$\\mathrm{GT}$-$\\mathrm{AG}$ 大多数，$+1$ 是转录起点；③三类启动子对应三种 $\\mathrm{RNA}$ 聚合酶（Ⅰ类 $18\\mathrm{S}/5.8\\mathrm{S}/28\\mathrm{S}$ 富含 $\\mathrm{GC}$；Ⅱ类 $\\mathrm{TATA}$ 定 $\\mathrm{RNA}$ 起点；$5\\mathrm{S}/\\mathrm{tRNA}/\\mathrm{U6}$ 走Ⅲ类）；④增强子任何方向位置，沉默子结合反式因子后阻遏，绝缘子挡增强子或挡异染色质（$\\mathrm{RAP1}$、$\\mathrm{CTCF}$）。",
+      "answer": "参考答案：\n\n**1. 基因、基因组、基因组学**\n- 基因：编码蛋白质或 $\\mathrm{RNA}$ 等产物、负载遗传信息的基本单位；含编码序列 $+$ 表达所需全部核苷酸序列。除某些 $\\mathrm{RNA}$ 病毒外，物质基础是 $\\mathrm{DNA}$。功能实际是产物的功能。三项功能：荷载、$4$ 种碱基排列；复制（突变是进化基础）；作为表达模板。\n- 基因组：一套完整单体的遗传信息总和。人＝核染色体 $\\mathrm{DNA}$（常染色体 $+$ 性染色体）$+\\mathrm{mtDNA}$。不是“两万蛋白质基因名单”。\n- 基因组学：结构／功能／比较三户。问外显子个数走基因，问编码序列占比走基因组，问 $\\mathrm{HGP}$ 四张图走基因组学。\n\n**2. 断裂基因**\n- 真核最突出特点：不连续＝断裂基因／割裂基因。外显子出现在成熟 $\\mathrm{mRNA}$（含两侧 $\\mathrm{UTR}$）；内含子对应被剪掉的间隔；内含子数 $=$ 外显子数 $-1$。\n- 鸡卵清蛋白：$7.7\\,\\mathrm{kb}$，$8$ 外显子 $7$ 内含子；前体与基因等长；成熟 $\\mathrm{mRNA}$ $1.2\\,\\mathrm{kb}$。\n- 原核基本无内含子；高等真核编码蛋白基因绝大部分有，组蛋白例外；$\\mathrm{rRNA}$ 和一些 $\\mathrm{tRNA}$ 基因有内含子。接头：内含子 $5'$ 多 $\\mathrm{GT}$，$3'$ 多 $\\mathrm{AG}$。$5'$ 上游、$3'$ 下游；$+1$ 为转录起点，无 $0$ 号碱基。\n\n**3. 三类启动子**\n- 启动子：与聚合酶及辅因子结合，提供起始信号。大部分在 $+1$ 上游，通常不被转录；$\\mathrm{tRNA}$ 等可在下游并被转录。\n- Ⅰ类：$\\mathrm{RNApol}$ Ⅰ，$18\\mathrm{S}/5.8\\mathrm{S}/28\\mathrm{S}$，核心 $+\\mathrm{UPE}$，富含 $\\mathrm{GC}$。Ⅱ类：$\\mathrm{RNApol}$ Ⅱ，$\\mathrm{mRNA}$／蛋白质基因和一些 $\\mathrm{snRNA}$，$\\mathrm{TATA}(\\mathrm{A/T})\\mathrm{A}(\\mathrm{A/T})$ 定 $\\mathrm{RNA}$ 起点，可有 $\\mathrm{CAAT}$、$\\mathrm{GC}$、$\\mathrm{Inr}$、$\\mathrm{DPE}$。Ⅲ类：$\\mathrm{RNApol}$ Ⅲ，$5\\mathrm{S}\\,\\mathrm{rRNA}$、$\\mathrm{tRNA}$、$\\mathrm{U6}\\,\\mathrm{snRNA}$；$\\mathrm{A}/\\mathrm{B}/\\mathrm{C}$ 盒。$5\\mathrm{S}$ 不要和 $18\\mathrm{S}/28\\mathrm{S}$ 并户；$\\mathrm{U6}$ 有 $\\mathrm{TATA}$ 仍挂Ⅲ类。\n\n**4. 增强子、沉默子、绝缘子**\n- 增强子：任何方向、上下游，大部分上游；几十至几千 $\\mathrm{bp}$；可成簇、可在内含子。\n- 沉默子：负调节 $\\mathrm{DNA}$，结合反式作用因子后阻遏。\n- 绝缘子：挡增强子或挡异染色质；$\\mathrm{RAP1}$、$\\mathrm{CTCF}$；可能弯曲／成环。不是沉默子的别名。",
+      "hint": "按定义／断裂／三类启动子／四元件写，点名卵清蛋白数字和 $5\\mathrm{S}$ 分户。",
+      "scoring_criteria": [
+        "写出基因含编码＋调控、RNA 病毒例外、三项功能、基因组含 mtDNA、基因组学三户（4分）",
+        "写出断裂基因、外显子／内含子 n−1、卵清蛋白 7.7 kb／8 和 7／成熟 1.2 kb、组蛋白例外、GT-AG、+1（4分）",
+        "写出三类启动子与三种聚合酶，5S 走Ⅲ类、TATA 定 RNA 起点（3分）",
+        "写出增强子方向位置不限、沉默子结合反式因子、绝缘子 RAP1/CTCF 且不是沉默子（3分）"
+      ],
+      "explanation": "本题把第 13-1 节收成“定义—断裂—启动子—四元件”。易错点：基因缩成 ORF；内含子数写反；$5\\mathrm{S}$ 并到Ⅰ类；绝缘子与沉默子并户。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-1.md",
+        "label": "基因定义；断裂基因；三类启动子；增强子／沉默子／绝缘子"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "真核基因组怎样排、基因组学怎样读？请写出：①人编码序列占全基因组 $1.5\\%$、占一个基因约 $5\\%$，重复序列过半；$\\mathrm{Alu}$ 每 $6\\,\\mathrm{kb}$、约 $50$ 万拷贝、约 $10\\%$；约 $60\\%$ 基因可变剪接；②人 $\\mathrm{mtDNA}$ $16\\,569\\,\\mathrm{bp}$、$37$ 个基因（$13+22+2$），能独立复制但仍受核控制；③蛋白质编码基因约两万（$20\\,080$），不要和 $59\\,444$ 并户；染色体非均匀（$1$ 号最长、$21$ 号最小、$19$ 号最密、$\\mathrm{Y}$ 最疏）；不能只根据基因组大小或基因数量判断复杂性；④结构基因组学四张图（遗传 $\\mathrm{cM}$、物理 $\\mathrm{kb}$、$\\mathrm{EST}$ 转录图、鸟枪法序列图）；功能基因组学含非编码（扫描 $\\mathrm{ORF}$、$\\mathrm{BLAST}$、实验、组学）；比较分种间与种内，$\\mathrm{SNP}$ 连疾病易感性和个体化用药。",
+      "answer": "参考答案：\n\n**1. 编码少、重复多**\n- 真核结构基因更多，但编码区比例更小。人：编码序列占全基因组 $1.5\\%$，占一个基因全部序列约 $5\\%$（分母不同）。核 $3\\,100\\,\\mathrm{Mb}$：编码蛋白基因序列约 $27.4\\%$＝外显子 $1.5\\%$ $+$ 内含子 $25.9\\%$。重复序列占 $50\\%$ 以上。约 $60\\%$ 人基因可变剪接，$80\\%$ 的可变剪接改蛋白质序列。\n- 高度重复约 $20\\%$（反向重复约 $5\\%$；卫星 $\\mathrm{DNA}$ $10\\%$ 以上，着丝粒，离心得名）。中度人约 $20\\%$：$\\mathrm{Alu}$ 每 $6\\,\\mathrm{kb}$ 一个、约 $50$ 万拷贝、约占 $10\\%$、约 $300\\,\\mathrm{bp}$ 切成 $130+170$。$\\mathrm{rRNA}$ 成簇在 $13/14/15/21/22$ 号；$5\\mathrm{S}$ 在 $1\\mathrm{q}42$-$43$。\n\n**2. 核外基因组**\n- 人 $\\mathrm{mtDNA}$ $16\\,569\\,\\mathrm{bp}$，$37$ 基因 $=13$ 个呼吸链多肽 $+22$ 个 $\\mathrm{tRNA}+2$ 个 $\\mathrm{rRNA}$（$16\\mathrm{S}$、$12\\mathrm{S}$）。环状，能单独复制／转录／翻译，但受核基因控制。蛔虫成虫、部分根冠细胞可无线粒体。$\\mathrm{cpDNA}$ 约 $120\\sim 217\\,\\mathrm{kb}$。\n\n**3. 约两万与非均匀分布**\n- 蛋白质编码基因 $20\\,080$（章末约两万）；基因和假基因 $59\\,444$。假基因约 $2$ 万，已加工无内含子、非加工有内含子。\n- 最长第 $1$ 号 $248.96\\,\\mathrm{Mb}$；最小第 $21$ 号 $46.71\\,\\mathrm{Mb}$（唐氏等相关基因在此）；密度最大第 $19$ 号 $42/\\mathrm{Mb}$；最小 $\\mathrm{Y}$ 将近 $10/\\mathrm{Mb}$。沙漠区 $500\\,\\mathrm{kb}$ 无蛋白基因，约占 $20\\%$。\n- 不能只根据基因组大小或基因数判断复杂性：人最复杂但蛋白质基因不是最多；线虫基因数可高于人。\n\n**4. 基因组学三户**\n- 结构：$\\mathrm{HGP}$ 四张图。遗传图单位 $\\mathrm{cM}$，$1\\,\\mathrm{cM}\\approx 1\\,000\\,\\mathrm{kb}$，$\\mathrm{SNP}$ 精确度最高。物理图 $\\mathrm{bp}/\\mathrm{kb}$，克隆重叠群最重要，$\\mathrm{STS}$ 每 $100\\,\\mathrm{kb}$。转录图以 $\\mathrm{EST}$（$300\\sim 500\\,\\mathrm{bp}$）为位标，成年组织约 $10\\%$ 表达。序列图：$\\mathrm{BAC}+$ 鸟枪法 $+$ 组装。\n- 功能：含非编码。扫描 $\\mathrm{ORF}$；$\\mathrm{BLAST}$；转基因／过表达／敲除／敲减／沉默；转录物组 $+$ 蛋白质组。\n- 比较：种间比编码／调控／物种独有；种内比变异多态，$\\mathrm{SNP}$ $\\rightarrow$ 易感性与个体化用药。表观：甲基化、组蛋白修饰。宏基因组学：环境微生物群体，不是人核基因组。",
+      "hint": "按 1.5%／重复／Alu → mtDNA 37 → 约两万与染色体分户 → 四张图和三户基因组学写。",
+      "scoring_criteria": [
+        "写出 1.5% 与 5% 分母不同、重复过半、Alu 三个数、可变剪接（4分）",
+        "写出 mtDNA 16569 bp、37=13+22+2、独立复制仍受核控制（3分）",
+        "写出约两万蛋白质基因、1 号最长／21 号最小／19 号最密／Y 最疏、不能只比大小或基因数（4分）",
+        "写出结构四张图、功能含非编码四路径、比较种间种内与 SNP（4分）"
+      ],
+      "explanation": "本题把第 13-2 至 13-3 节收成“编码少／重复多—mtDNA—染色体账—基因组学”。易错点：$1.5\\%$ 与 $5\\%$ 换分母；$\\mathrm{mtDNA}$ 不受核控制；$\\mathrm{Y}$ 当成最短；$59\\,444$ 当成蛋白质基因；宏基因组学并到人核基因组。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch13-3.md",
+        "label": "1.5%/重复/mtDNA；约两万与染色体；HGP 与三户基因组学"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

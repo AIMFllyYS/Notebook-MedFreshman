@@ -1,0 +1,321 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch23",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch23-1.md；content/biochemistry/textbook/ch23-2.md；content/biochemistry/textbook/ch23-3.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于癌症、肿瘤、癌以及三类非上皮恶性肿瘤的分户，下列叙述正确的是（　）。",
+      "options": [
+        "癌症就是癌；肿瘤只含恶性；肉瘤、白血病、胶质母细胞瘤都叫 carcinoma；cancer 和 carcinoma 是同一个词；$80\\%$ 以上癌症相关死亡由肉瘤造成",
+        "临床和研究工作中，「癌症」（cancer）泛指一切恶性肿瘤。肿瘤（tumor）是局部组织细胞异常增殖形成的新生物，分成良性肿瘤和恶性肿瘤。上皮组织发生的恶性肿瘤才称为癌（carcinoma），$80\\%$ 以上的癌症相关死亡由此造成。非上皮恶性肿瘤三户：肉瘤（sarcoma，间充质来源，如成纤维、脂肪、成骨、肌细胞）；造血系统恶性肿瘤（如白血病和淋巴瘤）；神经外胚层恶性肿瘤（如胶质母细胞瘤和神经母细胞瘤）。三户都是癌症，都不是 carcinoma。问「白血病算不算癌」——算癌症，不算 carcinoma",
+        "良性肿瘤也叫癌症，因为都是新生物",
+        "cancer 一词源于组织学分型，专指上皮来源"
+      ],
+      "answer": 1,
+      "hint": "癌症＝恶性肿瘤总称；癌＝上皮来源 carcinoma，造成 80% 以上癌症相关死亡。",
+      "explanation": "**B 正确。** 癌症／肿瘤／癌分户、非上皮三户、$80\\%$ 以上死亡由 carcinoma 造成，都来自 ch23-1。\n\n**干扰项辨析**：\n- A：并户；把 sarcoma、白血病也叫癌；$80\\%$ 安到肉瘤上。\n- C：良性叫肿瘤，不叫癌症。\n- D：cancer 源于希波克拉底以螃蟹之形称恶性肿瘤，是词源不是组织学分型。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-1.md",
+        "label": "癌症泛指恶性肿瘤 · 癌＝上皮来源 carcinoma · 非上皮三户"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于癌症发生的多病因、多基因、多阶段以及外因／内因，下列叙述正确的是（　）。",
+      "options": [
+        "癌症是单一毒物、单一基因、一步癌变；外因基础、内因始动；$90\\%$ 的肿瘤都是化学致癌；$80\\%$ 与 $90\\%$ 是同一个数；图23-1 应改排成另一张肿瘤特征总表",
+        "癌症的发生是多病因长期作用、多基因协同参与、多阶段逐步发展的过程。外部环境因素是始动因素，机体内在因素是发生的基础。约 $80\\%$ 以上人类肿瘤可能由环境因素引起或与环境因素相关；化学因素约占环境因素的 $90\\%$。两个百分数不要并户。图23-1 左侧：外因＋内因 → 基因异常（原癌／抑癌）→ 产物异常 → 通路／代谢异常 → 细胞行为失序 → 癌变转移；右侧才是精准医学／分子诊断／靶向治疗。不要用别的综述清单替换图结构，也不要把右侧提前写成第二十四章操作",
+        "只导入一个活化 $\\mathrm{RAS}$ 就足以使原代大鼠胚胎成纤维细胞恶性变成瘤",
+        "内在因素就是免疫低下，种系突变和易感多态性可以不写"
+      ],
+      "answer": 1,
+      "hint": "三句并列；外因始动、内因基础；80% 对肿瘤，90% 对环境因素内部。",
+      "explanation": "**B 正确。** 多病因多基因多阶段、外因始动内因基础、$80\\%$／$90\\%$ 分户、图23-1 结构，都来自 ch23-1。\n\n**干扰项辨析**：\n- A：写成单基因一步癌变；外因内因对调；两个百分数并户。\n- C：仅导入活化突变 $\\mathrm{RAS}$ 形态改变，不能无限传代及成瘤；要 $\\mathrm{C}$-$\\mathrm{MYC}$＋$\\mathrm{N}$-$\\mathrm{RAS}$ 协同。\n- D：内因并列遗传、免疫、营养、激素；遗传再分种系突变和易感多态性。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-1.md",
+        "label": "多病因多基因多阶段 · 外因始动内因基础 · 图23-1"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于原癌基因、癌基因以及病毒是否一定含病毒癌基因，下列叙述正确的是（　）。",
+      "options": [
+        "癌基因是人体里本来就有的坏基因；原癌基因正常条件下就有致癌活性；活化是功能失去突变；病毒有致癌能力就一定含病毒癌基因；$\\mathrm{HPV}$ 的 $\\mathrm{E}6$／$\\mathrm{E}7$ 是从细胞原癌基因劫持来的",
+        "原癌基因是人类基因组中具有正常功能的基因，高度保守，编码蛋白质在正常条件下并不具致癌活性。癌基因是能导致细胞恶性转化和诱发癌症的基因：绝大多数由原癌基因突变或表达水平异常升高转变而来，某些病毒也携带。从原癌基因转变为癌基因称为原癌基因活化，属于功能获得突变。病毒有致癌能力并不意味着其一定含有病毒癌基因：急性转化逆转录病毒含癌基因、几天内诱发肿瘤；慢性转化不含癌基因、插入激活宿主原癌基因、常需数月甚至数年。$\\mathrm{RNA}$ 病毒癌基因对病毒基因组不是必需的；$\\mathrm{DNA}$ 病毒癌基因（$\\mathrm{HPV}$ 的 $\\mathrm{E}6$ 和 $\\mathrm{E}7$）对病毒复制是必需的，目前没有证据表明有同源的原癌基因",
+        "基因组维护基因直接抑制细胞增殖，不能归入抑癌基因",
+        "三类基因里没有原癌基因，只有癌基因和抑癌基因"
+      ],
+      "answer": 1,
+      "hint": "原癌基因正常时不致癌；活化＝功能获得；病毒致癌 ≠ 一定含病毒癌基因。",
+      "explanation": "**B 正确。** 原癌基因是正常功能基因、活化是功能获得、病毒致癌不等于含病毒癌基因、急性／慢性、$\\mathrm{HPV}$ $\\mathrm{E}6$／$\\mathrm{E}7$ 无同源原癌基因证据，都来自 ch23-1／ch23-2。\n\n**干扰项辨析**：\n- A：逐句写反。\n- C：基因组维护基因不直接抑制增殖，失活走间接路线，本版说也可归属于抑癌基因。\n- D：三类是原癌基因、抑癌基因、基因组维护基因。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-2.md",
+        "label": "原癌基因正常时不致癌 · 活化＝功能获得 · 病毒致癌≠一定含病毒癌基因"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于图23-2 第 $1$ 格点突变以及膀胱癌 $\\mathrm{H}$-$\\mathrm{RAS}$ $\\mathrm{Gly}12\\mathrm{Val}$，下列叙述正确的是（　）。",
+      "options": [
+        "图上是 $\\mathrm{N}$-$\\mathrm{MYC}$ 扩增；膀胱癌是 $\\mathrm{K}$-$\\mathrm{RAS}$ 的 $\\mathrm{LTR}$ 插入；$\\mathrm{GTP}$ 酶丧失就是 $\\mathrm{RAS}$ 功能丢了，应并进抑癌基因；$81\\%$ 胰腺癌是第 $1$ 格的画面标签；$\\mathrm{RAS}$ 主要靠扩增活化",
+        "图23-2 第 $1$ 格： $\\mathrm{K}$-$\\mathrm{Ras}$ 突变失去 $\\mathrm{GTP}$ 酶活性，以 $\\mathrm{GTP}$ 结合方式持续活化，Ras-$\\mathrm{GTP}$ 走 $\\mathrm{MAPK}$ 通路促进细胞增殖。正文举例：膀胱癌中 $\\mathrm{H}$-$\\mathrm{RAS}$ 的 $\\mathrm{GGC}$ 突变为 $\\mathrm{GTC}$，第 $12$ 位甘氨酸变为缬氨酸（$\\mathrm{Gly}12\\mathrm{Val}$），同样丧失 $\\mathrm{GTP}$ 酶、锁定活性形式。图例和句例都是 $\\mathrm{RAS}$ 家族点突变，不要并成只有一个基因。丢的是把 $\\mathrm{GTP}$ 水解成 $\\mathrm{GDP}$ 的能力，对增殖而言是功能获得，不是 $\\mathrm{RAS}$ 失活。$\\mathrm{K}$-$\\mathrm{RAS}$ 在 $81\\%$ 胰腺癌可检测到，是家族总论的流行病学句子，不是第 $1$ 格画面标签。$\\mathrm{RAS}$ 激活方式主要是点突变；$\\mathrm{C}$-$\\mathrm{MYC}$ 很少见到点突变",
+        "点突变改的是拷贝数，扩增改的是氨基酸开关",
+        "$\\mathrm{H}$-$\\mathrm{RAS}$ 第 $12$ 位是谷氨酸变为缬氨酸，走 $\\mathrm{PI3K}$ 而不是 $\\mathrm{MAPK}$"
+      ],
+      "answer": 1,
+      "hint": "图上 K-Ras 失 GTP 酶；句例是膀胱癌 H-RAS Gly12Val；GTP 酶丢了仍是功能获得。",
+      "explanation": "**B 正确。** 图23-2 第 $1$ 格、$\\mathrm{H}$-$\\mathrm{RAS}$ $\\mathrm{Gly}12\\mathrm{Val}$、功能获得而非失活、$81\\%$ 不是画面标签，都来自 ch23-2。\n\n**干扰项辨析**：\n- A：图例写错；并户；功能获得写成失去。\n- C：点突变改活性开关，扩增改拷贝数。\n- D：本版是甘氨酸→缬氨酸；图上下游是 $\\mathrm{MAPK}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-2.md",
+        "label": "图23-2 第1格 K-Ras 失 GTP 酶 · 膀胱癌 H-RAS Gly12Val"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于图23-2 第 $2$ 格基因扩增，下列叙述正确的是（　）。",
+      "options": [
+        "图上是 $\\mathrm{K}$-$\\mathrm{Ras}$ 点突变；应把 $\\mathrm{N}$-$\\mathrm{MYC}$ 改写成 $\\mathrm{C}$-$\\mathrm{MYC}$；扩增就是点突变的一种；$\\mathrm{HER}2$ 在乳腺癌走 $\\mathrm{V}600\\mathrm{E}$ 点突变，药是威罗菲尼",
+        "图23-2 第 $2$ 格：神经母细胞瘤 $1$ 号染色体上 $\\mathrm{N}$-$\\mathrm{MYC}$ 拷贝明显增多。基因扩增使拷贝数升高几十甚至上千倍不等，机制目前尚不清楚，后果是编码产物过量表达。正文另举：小细胞肺癌中 $\\mathrm{C}$-$\\mathrm{MYC}$ 扩增；乳腺癌中 $\\mathrm{HER}2$ 扩增。图例和句例不要并成一个基因。扩增改的是拷贝数和表达量，不是点突变。$\\mathrm{C}$-$\\mathrm{MYC}$ 很少见到点突变，走扩增和易位。$30\\%$ 乳腺癌中 $\\mathrm{HER}2$ 扩增或过度表达，靶向药是单克隆抗体赫赛汀，不是 $\\mathrm{BRAF}$ 那种点突变",
+        "扩增只发生在 $\\mathrm{RAS}$ 家族",
+        "$\\mathrm{N}$-$\\mathrm{MYC}$、$\\mathrm{C}$-$\\mathrm{MYC}$、$\\mathrm{HER}2$ 都画在图23-2 第 $2$ 格里，必须三个一起答才算图例"
+      ],
+      "answer": 1,
+      "hint": "图上是神经母细胞瘤 1 号染色体 N-MYC；句例才是 C-MYC 与 HER2。",
+      "explanation": "**B 正确。** 图23-2 第 $2$ 格 $\\mathrm{N}$-$\\mathrm{MYC}$、正文 $\\mathrm{C}$-$\\mathrm{MYC}$／$\\mathrm{HER}2$、扩增≠点突变、$\\mathrm{HER}2$／赫赛汀，都来自 ch23-2。\n\n**干扰项辨析**：\n- A：图例写错；扩增并进点突变；$\\mathrm{HER}2$ 写成 $\\mathrm{BRAF}$ $\\mathrm{V}600\\mathrm{E}$。\n- C：$\\mathrm{RAS}$ 主要是点突变。\n- D：图上只画 $\\mathrm{N}$-$\\mathrm{MYC}$，另外两个是句例。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-2.md",
+        "label": "图23-2 第2格 N-MYC · 小细胞肺癌 C-MYC · 乳腺癌 HER2"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于染色体易位、$\\mathrm{BCR}$-$\\mathrm{ABL}$ 与费城染色体，下列叙述正确的是（　）。",
+      "options": [
+        "易位只有融合基因一条路；图第 $3$ 格画的是 Burkitt；$\\mathrm{BCR}$ 在 $9$ 号、$\\mathrm{ABL}$ 在 $22$ 号；费城染色体是异常 $9$ 号染色体；伊马替尼是单抗；Burkitt 应并进第四种 $\\mathrm{LTR}$",
+        "染色体易位致癌有两条路：①原癌基因易位至强启动子或增强子附近，转录大大提高；②产生新的融合基因。图23-2 第 $3$ 格画的是 $\\mathrm{CML}$ 中 $22$ 号 $\\mathrm{BCR}$ 与 $9$ 号 $\\mathrm{ABL}$ 融合成 $\\mathrm{BCR}$-$\\mathrm{ABL}$，酪氨酸激酶持续增高。较小的异常 $22$ 号染色体于 $1960$ 年在费城发现，称费城染色体／$\\mathrm{Ph}$ 染色体，是 $\\mathrm{CML}$ 的标志染色体。$95\\%$ 的 $\\mathrm{CML}$ 伴随该融合基因，靶向药伊马替尼 $2001$ 年被 $\\mathrm{FDA}$ 批准。Burkitt：$8$ 号 $\\mathrm{C}$-$\\mathrm{MYC}$ 移位到 $14$ 号免疫球蛋白重链基因增强子附近，是易位的第一条路，画面不画这一例，也不要并进第四种前病毒 $\\mathrm{LTR}$",
+        "易位改的只是点突变的氨基酸",
+        "$\\mathrm{BCR}$-$\\mathrm{ABL}$ 是抑癌基因二次打击，两个等位基因都要失活"
+      ],
+      "answer": 1,
+      "hint": "图上是 BCR-ABL；Burkitt 是易位换调控，不要并进 LTR 那一格。",
+      "explanation": "**B 正确。** 易位两条路、图23-2 第 $3$ 格、$\\mathrm{Ph}$ 染色体、伊马替尼、Burkitt 不并进第四种，都来自 ch23-2。\n\n**干扰项辨析**：\n- A：只答一条路；图例写成 Burkitt；染色体号对调；药写成单抗。\n- C：易位不是点突变。\n- D：$\\mathrm{BCR}$-$\\mathrm{ABL}$ 是原癌基因融合、功能获得，一个融合基因就够。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-2.md",
+        "label": "图23-2 第3格 BCR-ABL · 费城染色体 · Burkitt 不并进第四种"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于图23-2 四种活化机制的分户，以及第四种 $\\mathrm{LTR}$ 与 Burkitt 的界限，下列叙述正确的是（　）。",
+      "options": [
+        "四种机制可以并户，图上四格随便换标签；Burkitt 就是第 $4$ 格；$\\mathrm{LTR}$ 使 $\\mathrm{C}$-$\\mathrm{MYC}$ 高出 $1000$ 倍；慢性转化逆转录病毒自带癌基因；功能获得应改成功能失去",
+        "原癌基因活化属于功能获得突变。图23-2 四格必须分开：①基因突变——$\\mathrm{K}$-$\\mathrm{Ras}$ 失 $\\mathrm{GTP}$ 酶、持续 $\\mathrm{GTP}$ 结合、$\\mathrm{MAPK}$；②基因扩增——神经母细胞瘤 $1$ 号染色体 $\\mathrm{N}$-$\\mathrm{MYC}$；③染色体易位——$\\mathrm{BCR}$-$\\mathrm{ABL}$／$\\mathrm{CML}$；④获得启动子或增强子——前病毒 $\\mathrm{LTR}$ 接到 $\\mathrm{C}$-$\\mathrm{MYC}$。第四种开头「如前所述，染色体易位可使原癌基因获得增强子」是回指易位第一条路（Burkitt），第四种自己的例子是鸡白细胞增生病毒的 $\\mathrm{LTR}$ 整合到宿主 $\\mathrm{C}$-$\\mathrm{MYC}$ 附近，表达比正常高出 $30\\sim 100$ 倍。Burkitt 仍记在易位户下，不要并进第 $4$ 格。$\\mathrm{LTR}$ 插入对着慢性转化逆转录病毒（不含癌基因、插入激活）。句例（膀胱癌 $\\mathrm{H}$-$\\mathrm{RAS}$、小细胞肺癌 $\\mathrm{C}$-$\\mathrm{MYC}$、乳腺癌 $\\mathrm{HER}2$、Burkitt）不要把图例改掉",
+        "一种癌基因必须四种激活方式平均使用，$\\mathrm{C}$-$\\mathrm{MYC}$ 主要靠点突变",
+        "问「图上四格」可以只答正文句例，不必指到 $\\mathrm{K}$-$\\mathrm{Ras}$、$\\mathrm{N}$-$\\mathrm{MYC}$、$\\mathrm{BCR}$-$\\mathrm{ABL}$、$\\mathrm{LTR}$-$\\mathrm{C}$-$\\mathrm{MYC}$"
+      ],
+      "answer": 1,
+      "hint": "四格钉死 K-Ras、N-MYC、BCR-ABL、LTR-C-MYC；Burkitt 不进第四格；倍数 30～100。",
+      "explanation": "**B 正确。** 图23-2 四格分户、Burkitt 不并进第四种、$30\\sim 100$ 倍、$\\mathrm{LTR}$ 对着慢性转化，都来自 ch23-2。\n\n**干扰项辨析**：\n- A：并户；倍数改掉；慢性转化写成自带癌基因。\n- C：$\\mathrm{C}$-$\\mathrm{MYC}$ 少见点突变；$\\mathrm{RAS}$ 主要点突变；不是四种平均使用。\n- D：问图上四格必须能指到四个图例标签。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-2.md",
+        "label": "图23-2 四格 · LTR-C-MYC 30～100 倍 · Burkitt 不并进第四种"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于病毒癌基因、生长因子三种作用模式以及四个分子靶点，下列叙述正确的有（　）。",
+      "options": [
+        "$1910$ 年 Rous 发现病毒可导致鸡肉瘤。比较具备转化和不具备转化特性的 $\\mathrm{RSV}$ 基因组发现 $src$。$1976$ 年 Varmus 与 Bishop：$\\mathrm{v}$-$src$ 来源于宿主 $\\mathrm{C}$-$\\mathrm{SRC}$。写法：$\\mathrm{v}$-$src$（小写斜体）对 $\\mathrm{C}$-$\\mathrm{SRC}$（大写斜体）。三大家族：$\\mathrm{SRC}$（膜内侧 $\\mathrm{Tyr}$ 激酶）、$\\mathrm{RAS}$（低分子量 $\\mathrm{G}$ 蛋白，失 $\\mathrm{GTP}$ 酶）、$\\mathrm{MYC}$（$49\\,\\mathrm{kDa}$，$\\mathrm{MYC}$-$\\mathrm{MAX}$）",
+        "生长因子三种作用模式：内分泌、旁分泌、自分泌，以后两种为主。旁分泌作用于邻近的其他类型细胞，自身缺受体所以不管自己；自分泌才是管自己。四类原癌基因产物按细胞外生长因子 → 跨膜受体 → 胞内转导分子 → 核内转录因子排。$\\mathrm{AP}$-$1$＝$\\mathrm{FOS}$＋$\\mathrm{JUN}$。不要把生长因子写成一律促癌：$\\mathrm{HGF}$ 对肝癌细胞是抑制，$\\mathrm{TGF}$-$\\beta$ 对多种细胞是抑制",
+        "四个本版靶点不要并成都是单抗：$\\mathrm{BRAF}$ $\\mathrm{V}600\\mathrm{E}$（约 $60\\%$ 黑素瘤）→ 威罗菲尼；$\\mathrm{EGFR}$ 外显子 $19$ 缺失／$\\mathrm{L}858\\mathrm{R}$（东亚 NSCLC $30\\%\\sim 50\\%$，高加索约 $10\\%$）→ 吉非替尼；$\\mathrm{HER}2$ 扩增或过表达（$30\\%$ 乳腺癌）→ 赫赛汀；$\\mathrm{BCR}$-$\\mathrm{ABL}$（$95\\%$ $\\mathrm{CML}$）→ 伊马替尼（$2001$ 年 $\\mathrm{FDA}$）。基因治疗操作不在本章",
+        "病毒有致癌能力就一定含病毒癌基因；旁分泌就是自己分泌给自己；四种药都是单抗；$30\\%\\sim 50\\%$ 和 $10\\%$ 应并成一个肺癌频率；$\\mathrm{AP}$-$1$ 是 $\\mathrm{MYC}$-$\\mathrm{MAX}$"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "v-src 来自 C-SRC；旁分泌≠自分泌；四个靶点突变类型和药物不要并。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：$1910$／$1976$、写法、三大家族，来自 ch23-2。\n- B：三种作用模式、四类产物、$\\mathrm{AP}$-$1$，来自 ch23-2。\n- C：四个靶点分户，来自 ch23-2。\n- **D 错**：逐句写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-2.md",
+        "label": "v-src 来自 C-SRC · 旁分泌 vs 自分泌 · BRAF/EGFR/HER2/BCR-ABL 四个靶点"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于抑癌基因失活、$\\mathrm{RB}$-$\\mathrm{E2F}$、$\\mathrm{p}53$ 以及图23-5 结肠癌多步，下列叙述正确的有（　）。",
+      "options": [
+        "癌基因作用往往是显性（一个等位基因激活就够）；抑癌基因作用往往是隐性（两个等位基因都失活才完全丧失功能）。二次打击：散发性单侧视网膜母细胞瘤，同一 $\\mathrm{RB}$ 的两次体细胞突变，不要写成任意两个基因各打一次。例外：单倍体不足（$\\mathrm{p}27^{\\mathrm{Kip}1}$）；显性负效（突变 $\\mathrm{p}53$ 压住野生型）。失活三种方式：功能失去突变、$\\mathrm{LOH}$、启动子高度甲基化",
+        "低磷酸化／去磷酸化 $\\mathrm{RB}$ 才是活性型：口袋结构域结合 $\\mathrm{E2F}$-$1$ 并使之失活，$\\mathrm{S}$ 期必需产物（二氢叶酸还原酶、胸苷激酶、$\\mathrm{DNA}$ 聚合酶 $\\alpha$）合成受限，过不了 $\\mathrm{G}_1/\\mathrm{S}$ 限制点 $\\mathrm{R}$。cyclin $\\mathrm{D}1$-$\\mathrm{CDK}4$ 把 $\\mathrm{RB}$ 磷酸化后关卡放开；图23-3 在 $\\mathrm{R}$ 点之后还有 cyclin $\\mathrm{E}$-$\\mathrm{CDK}2$。不要写成磷酸化越多越抑癌",
+        "野生型 $\\mathrm{p}53$ 是基因组卫士，结构域含转录激活、$\\mathrm{DNA}$ 结合、寡聚等；体内四聚体，多数突变在 $\\mathrm{DNA}$ 结合结构域。图23-4 野生型走 $\\mathrm{p}21$（$\\mathrm{G}_1$ 阻滞）与 $\\mathrm{Bax}$（凋亡），正文再加 $\\mathrm{GADD}45$ 修复；不要只答促凋亡。图23-5：$\\mathrm{APC}$ 双拷贝失活 → $\\mathrm{K}$-$\\mathrm{RAS}$ 突变 → $\\mathrm{DCC}$ 双拷贝丢失 → $\\mathrm{TP}53$ 丢失 → 其他改变／转移。晚期腺瘤在图上仍为良性。不要改成别的综述顺序，也不要用 $\\mathrm{FAP}$／$\\mathrm{MCC}$／低甲基化／$\\mathrm{NM}23$ 替换图序",
+        "抑癌基因都要两次突变，没有例外；高磷酸化 $\\mathrm{RB}$ 才是活性型；$\\mathrm{p}53$ 就是自杀开关；图23-5 应改成 $\\mathrm{TP}53$ 最先、晚期腺瘤已经是恶性；Burkitt 并进 $\\mathrm{LTR}$ 那一格"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "二次打击打同一基因两个拷贝；低磷酸化 RB 结合 E2F-1；野生型 p53 走 p21 与 Bax；图23-5 按 APC→K-RAS→DCC→TP53。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：显性／隐性、二次打击、单倍体不足、显性负效、三种失活，来自 ch23-3。\n- B：$\\mathrm{RB}$ 低磷酸化结合 $\\mathrm{E2F}$-$1$、$\\mathrm{D}1$-$\\mathrm{CDK}4$ 与图上 $\\mathrm{E}$-$\\mathrm{CDK}2$，来自 ch23-3。\n- C：$\\mathrm{p}53$ 结构域与 $\\mathrm{p}21$／$\\mathrm{Bax}$、图23-5 顺序，来自 ch23-3。\n- **D 错**：逐句写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-3.md",
+        "label": "二次打击 · RB-E2F-1 · p53 走 p21 与 Bax · 图23-5 APC→K-RAS→DCC→TP53"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "癌症就是癌，cancer 和 carcinoma 是同一个词。肉瘤、白血病、神经母细胞瘤都叫癌。原癌基因是人体里本来就有的坏基因，正常条件下就有致癌活性。病毒有致癌能力就一定含病毒癌基因。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：癌症泛指恶性肿瘤；癌＝上皮来源；原癌基因正常时不致癌；病毒致癌 ≠ 一定含病毒癌基因。",
+      "explanation": "**该命题错误，每一分句都错。** 癌症（cancer）泛指一切恶性肿瘤；癌（carcinoma）专指上皮来源，造成 $80\\%$ 以上癌症相关死亡。肉瘤、造血系统恶性肿瘤、神经外胚层恶性肿瘤是非上皮三户，算癌症、不算 carcinoma。原癌基因是正常、保守、正常时不致癌的功能基因，变成癌基因要经过活化（功能获得）。病毒有致癌能力并不意味着其一定含有病毒癌基因：慢性转化逆转录病毒就不含癌基因。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-1.md",
+        "label": "癌症≠癌 · 原癌基因不是本来就有的坏基因 · 病毒致癌≠含病毒癌基因"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "Burkitt 淋巴瘤的 $\\mathrm{C}$-$\\mathrm{MYC}$ 易位应并进第四种「获得启动子或增强子」。图23-5 结肠癌应改成 $\\mathrm{TP}53$ 最先、然后 $\\mathrm{K}$-$\\mathrm{RAS}$，晚期腺瘤已经是恶性。高磷酸化 $\\mathrm{RB}$ 才是活性型。野生型 $\\mathrm{p}53$ 只走凋亡，不必写 $\\mathrm{p}21$。$\\mathrm{GTP}$ 酶丧失说明 $\\mathrm{RAS}$ 功能失去。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：Burkitt 记在易位户；图23-5 是 APC→K-RAS→DCC→TP53；低磷酸化 RB 结合 E2F-1；野生型走 p21 与 Bax；GTP 酶丢了仍是功能获得。",
+      "explanation": "**该命题错误，每一分句都错。** Burkitt 是染色体易位第一条路（$8$ 号 $\\mathrm{C}$-$\\mathrm{MYC}$ → $14$ 号 $\\mathrm{Ig}$ 增强子），第四种自己的例子是前病毒 $\\mathrm{LTR}$ 接到 $\\mathrm{C}$-$\\mathrm{MYC}$。图23-5：$\\mathrm{APC}$ 双拷贝失活 → $\\mathrm{K}$-$\\mathrm{RAS}$ → $\\mathrm{DCC}$ 双拷贝丢失 → $\\mathrm{TP}53$ 丢失 → 转移；晚期腺瘤在图上仍为良性。低磷酸化 $\\mathrm{RB}$ 才是活性型，结合 $\\mathrm{E2F}$-$1$。野生型 $\\mathrm{p}53$ 先走 $\\mathrm{p}21$ 阻滞，修失败才走 $\\mathrm{Bax}$ 凋亡。$\\mathrm{RAS}$ 失 $\\mathrm{GTP}$ 酶导致持续活化，对增殖是功能获得。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-3.md",
+        "label": "Burkitt≠LTR · 图23-5 顺序 · 低磷酸化 RB · p21 与 Bax · RAS 功能获得"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "癌症（cancer）泛指一切 ________。癌（carcinoma）是 ________ 组织来源的恶性肿瘤。原癌基因活化属于 ________ 突变。低磷酸化 $\\mathrm{RB}$ 结合转录因子 ________。图23-5 结肠癌第一步是 $\\mathrm{APC}$ 基因 ________。",
+      "answer": "恶性肿瘤, 上皮, 功能获得, E2F-1, 双拷贝失活",
+      "hint": "总称是恶性肿瘤；癌点上皮；活化是获得不是失去；RB 扣住 E2F-1；APC 是双拷贝失活。",
+      "scoring_criteria": [
+        "第一空填“恶性肿瘤”（或“一切恶性肿瘤”）（2分）",
+        "第二空填“上皮”（或“上皮组织”）（2分）",
+        "第三空填“功能获得”（或“gain-of-function”“获得功能”）（2分）",
+        "第四空填“E2F-1”（或“E2F1”“E2F”）（2分）",
+        "第五空填“双拷贝失活”（或“双拷贝失活/丢失”“两次失活”）（2分）"
+      ],
+      "explanation": "癌症泛指恶性肿瘤；癌是上皮来源的 carcinoma。原癌基因活化是功能获得突变。低磷酸化 $\\mathrm{RB}$ 结合 $\\mathrm{E2F}$-$1$ 负调节周期。图23-5 第一步是 $\\mathrm{APC}$ 基因双拷贝失活到早期腺瘤，不要改成别的综述顺序。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-1.md",
+        "label": "恶性肿瘤；上皮；功能获得；E2F-1；APC 双拷贝失活"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "原癌基因怎样变成癌基因？请写出：①原癌基因是正常功能基因，不是人体里本来就有的坏基因；活化＝功能获得。②病毒有致癌能力 ≠ 一定含病毒癌基因（急性含、慢性不含）。③图23-2 四种机制必须分户：$\\mathrm{K}$-$\\mathrm{Ras}$ 失 $\\mathrm{GTP}$ 酶；$\\mathrm{N}$-$\\mathrm{MYC}$ 扩增；$\\mathrm{BCR}$-$\\mathrm{ABL}$ 易位；$\\mathrm{LTR}$-$\\mathrm{C}$-$\\mathrm{MYC}$。④句例另记：膀胱癌 $\\mathrm{H}$-$\\mathrm{RAS}$ $\\mathrm{Gly}12\\mathrm{Val}$；$\\mathrm{C}$-$\\mathrm{MYC}$／$\\mathrm{HER}2$ 扩增；Burkitt 不并进第四种。",
+      "answer": "参考答案：\n\n**1. 户头**\n- 原癌基因是人类基因组中具有正常功能的基因，高度保守，正常条件下编码产物并不具致癌活性。\n- 癌基因能导致细胞恶性转化。绝大多数由原癌基因突变或过表达而来，某些病毒也携带。\n- 活化＝从原癌基因转变为癌基因，属于功能获得突变。不是「人体里本来就有的坏基因」。\n\n**2. 病毒**\n- 病毒有致癌能力并不意味着其一定含有病毒癌基因。\n- 急性转化：含癌基因，几天内诱发肿瘤。慢性转化：不含癌基因，插入激活宿主原癌基因，常需数月甚至数年。\n- $1976$：$\\mathrm{v}$-$src$ 来自 $\\mathrm{C}$-$\\mathrm{SRC}$。$\\mathrm{HPV}$ 的 $\\mathrm{E}6$／$\\mathrm{E}7$ 是 $\\mathrm{DNA}$ 病毒癌基因，对病毒复制必需，目前无同源原癌基因证据。\n\n**3. 图23-2 四格**\n- 基因突变：$\\mathrm{K}$-$\\mathrm{Ras}$ 失 $\\mathrm{GTP}$ 酶，持续 $\\mathrm{GTP}$ 结合，走 $\\mathrm{MAPK}$。丢 $\\mathrm{GTP}$ 酶仍是功能获得。\n- 基因扩增：神经母细胞瘤 $1$ 号染色体 $\\mathrm{N}$-$\\mathrm{MYC}$。\n- 染色体易位：$22$ 号 $\\mathrm{BCR}$ 与 $9$ 号 $\\mathrm{ABL}$ 融合成 $\\mathrm{BCR}$-$\\mathrm{ABL}$（$\\mathrm{CML}$，费城染色体）。\n- 获得启动子或增强子：前病毒 $\\mathrm{LTR}$ 接到 $\\mathrm{C}$-$\\mathrm{MYC}$（鸡白细胞增生病毒，$30\\sim 100$ 倍）。\n\n**4. 句例不要改图**\n- 点突变句例：膀胱癌 $\\mathrm{H}$-$\\mathrm{RAS}$ $\\mathrm{GGC}\\rightarrow\\mathrm{GTC}$，$\\mathrm{Gly}12\\mathrm{Val}$。\n- 扩增句例：小细胞肺癌 $\\mathrm{C}$-$\\mathrm{MYC}$；乳腺癌 $\\mathrm{HER}2$。\n- 易位另一条路：Burkitt 的 $\\mathrm{C}$-$\\mathrm{MYC}$ 到 $\\mathrm{Ig}$ 增强子，仍记在易位户，不要并进第 $4$ 种。",
+      "hint": "先钉「正常基因、功能获得、病毒≠一定含癌基因」，再按图23-2 四格写，最后把 Burkitt 留在易位户。",
+      "scoring_criteria": [
+        "写出原癌基因是正常功能基因、活化＝功能获得，不是本来就有的坏基因（3分）",
+        "写出病毒有致癌能力 ≠ 一定含病毒癌基因；急性含、慢性不含（3分）",
+        "写出图23-2 四格：K-Ras 失 GTP 酶、N-MYC 扩增、BCR-ABL 易位、LTR-C-MYC（5分）",
+        "写出句例与 Burkitt 不并进第四种（3分）"
+      ],
+      "explanation": "本题把第 23-2 节收成“户头—病毒—图23-2 四格—句例分户”。易错点：坏基因；功能失去；Burkitt 并进 $\\mathrm{LTR}$；图例改成句例。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-2.md",
+        "label": "原癌基因活化；图23-2 四格；Burkitt 不并进第四种"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "抑癌基因怎样负调控，结肠癌多步按哪张图？请写出：①癌基因显性、抑癌基因往往隐性；二次打击打同一基因两个拷贝；单倍体不足与显性负效不要并。②$\\mathrm{RB}$：低磷酸化结合 $\\mathrm{E2F}$-$1$。③$\\mathrm{p}53$：转录激活／$\\mathrm{DNA}$ 结合／寡聚；野生型走 $\\mathrm{p}21$ 与 $\\mathrm{Bax}$。④图23-5：$\\mathrm{APC}$ 双拷贝失活 → $\\mathrm{K}$-$\\mathrm{RAS}$ → $\\mathrm{DCC}$ 双拷贝丢失 → $\\mathrm{TP}53$ 丢失 → 转移；晚期腺瘤仍为良性；不要改成别的综述顺序。",
+      "answer": "参考答案：\n\n**1. 显性／隐性与三次例外不要并**\n- 原癌基因两个等位基因激活一个就能促癌（显性）。抑癌基因往往两个都失活，功能才完全丧失（隐性）。\n- 二次打击（$1971$ Knudson）：散发性单侧视网膜母细胞瘤，同一 $\\mathrm{RB}$ 两次体细胞突变。不要写成任意两个基因各打一次。遗传性：第一次是生殖细胞突变，第二次是 $\\mathrm{LOH}$。\n- 例外：单倍体不足（$\\mathrm{p}27^{\\mathrm{Kip}1}$，一个正常拷贝不够）；显性负效（突变 $\\mathrm{p}53$ 压住野生型，四聚体被带坏）。\n- 失活三种方式：功能失去突变、$\\mathrm{LOH}$、启动子高度甲基化。\n\n**2. RB**\n- $105\\,\\mathrm{kDa}$。低磷酸化／去磷酸化才是活性型。\n- 口袋结合转录因子 $\\mathrm{E2F}$-$1$ 并使之失活；$\\mathrm{S}$ 期必需产物（二氢叶酸还原酶、胸苷激酶、$\\mathrm{DNA}$ 聚合酶 $\\alpha$）合成受限；过不了 $\\mathrm{G}_1/\\mathrm{S}$ 限制点 $\\mathrm{R}$。\n- cyclin $\\mathrm{D}1$-$\\mathrm{CDK}4$ 磷酸化 $\\mathrm{RB}$ 后关卡放开；图23-3 在 $\\mathrm{R}$ 点之后还有 cyclin $\\mathrm{E}$-$\\mathrm{CDK}2$。高磷酸化不能结合 $\\mathrm{E2F}$-$1$。\n\n**3. p53**\n- $393$ 氨基酸，体内四聚体。结构域：转录激活、$\\mathrm{DNA}$ 结合、寡聚等；多数突变在 $\\mathrm{DNA}$ 结合结构域。\n- 野生型是基因组卫士。图23-4：走 $\\mathrm{p}21$（阻滞于 $\\mathrm{G}_1$）与 $\\mathrm{Bax}$（凋亡）；正文再加 $\\mathrm{GADD}45$ 修复。不要只答促凋亡。突变型功能失活 → 损伤累积 → 基因组不稳定 → 癌变。$1989$ 年才分清：起癌基因作用的是突变型，野生型是抑癌基因。\n\n**4. 图23-5**\n- $\\mathrm{APC}$ 基因双拷贝失活 → 早期腺瘤 → $\\mathrm{K}$-$\\mathrm{RAS}$ 基因突变 → 中期腺瘤 → $\\mathrm{DCC}$ 基因双拷贝丢失 → 晚期腺瘤（仍为良性） → $\\mathrm{TP}53$ 丢失 → 腺癌（恶性） → 其他改变 → 转移。\n- $\\mathrm{APC}$／$\\mathrm{DCC}$ 是抑癌基因二次打击，$\\mathrm{K}$-$\\mathrm{RAS}$ 是原癌基因功能获得。\n- 正文六阶段另记 $\\mathrm{FAP}$／$\\mathrm{MCC}$、低甲基化、$\\mathrm{NM}23$，不要用来替换图序，也不要改成别的综述名单。",
+      "hint": "按隐性/二次打击 → RB-E2F → p53 的 p21/Bax → 图23-5 顺序写。不要改结肠癌图序。",
+      "scoring_criteria": [
+        "写出癌基因显性、抑癌基因往往隐性；二次打击打同一基因两个拷贝；单倍体不足与显性负效分户（4分）",
+        "写出低磷酸化 RB 结合 E2F-1，高磷酸化才过限制点 R（3分）",
+        "写出 p53 转录激活／DNA 结合／寡聚；野生型走 p21 与 Bax（4分）",
+        "写出图23-5：APC 双拷贝失活 → K-RAS → DCC 双拷贝丢失 → TP53 丢失 → 转移；晚期腺瘤仍为良性；不改综述顺序（4分）"
+      ],
+      "explanation": "本题把第 23-3 节收成“剂量机制—RB—p53—图23-5”。易错点：二次打击写成两个不同基因；磷酸化越多越抑癌；$\\mathrm{p}53$ 只答凋亡；结肠癌改序或把晚期腺瘤提前写成恶性。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch23-3.md",
+        "label": "二次打击；RB-E2F-1；p53 走 p21 与 Bax；图23-5"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

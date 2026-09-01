@@ -1,0 +1,322 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch01",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch01-1.md；content/biochemistry/textbook/ch01-2.md；content/biochemistry/textbook/ch01-3.md；content/biochemistry/textbook/ch01-4.md；content/biochemistry/textbook/ch01-5.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{L}$-$\\alpha$-氨基酸通式、$20$ 种编码氨基酸及其分类，下列叙述正确的是（　）。",
+      "options": [
+        "参与蛋白质合成的氨基酸一般有 $300$ 余种，通常是 $\\mathrm{D}$-$\\alpha$-氨基酸；甘氨酸 $\\alpha$-碳也是手性碳；鸟氨酸、瓜氨酸是第 $21$、$22$ 种编码氨基酸；硒半胱氨酸就是表1-1 的成员；分类按 $\\alpha$-氨基和 $\\alpha$-羧基",
+        "人体内蛋白质以 $20$ 种氨基酸为原料合成多聚体，参与蛋白质合成的氨基酸一般有 $20$ 种，通常是 $\\mathrm{L}$-$\\alpha$-氨基酸（除甘氨酸外）。通式写成兼性离子 ${}^{+}\\mathrm{H}_3\\mathrm{N}-\\mathrm{C}_\\alpha\\mathrm{H}(\\mathrm{R})-\\mathrm{COO}^{-}$，$\\alpha$-碳同时连接氨基、羧基、氢和侧链 $\\mathrm{R}$，不同氨基酸的差别就在 $\\mathrm{R}$。甘氨酸 $\\mathrm{R}=\\mathrm{H}$，$\\alpha$-碳不再是手性碳。$20$ 种按侧链分成非极性脂肪族、极性中性、芳香族、酸性、碱性五类。硒半胱氨酸可出现于少数天然蛋白质，但不是表1-1 的成员；鸟氨酸、瓜氨酸不参与蛋白质合成；$\\mathrm{D}$ 型氨基酸不是人体蛋白质的常规单体",
+        "通式应先写成不带电荷的中性分子；$20$ 种编码氨基酸都有手性碳；羟脯氨酸是第 $21$ 个密码子；五类划分看主链不看侧链",
+        "编码氨基酸只有酸性、碱性两类；脯氨酸不能形成肽键；胱氨酸是第 $21$ 种编码氨基酸"
+      ],
+      "answer": 1,
+      "hint": "先锁 $20$ 种、$\\mathrm{L}$-$\\alpha$（除 Gly），再把鸟氨酸、硒半胱氨酸从编码表拿掉。",
+      "explanation": "**B 正确。** 编码氨基酸一般 $20$ 种，通常 $\\mathrm{L}$-$\\alpha$（除甘氨酸）。通式是兼性离子，分类看 $\\mathrm{R}$。硒半胱氨酸、鸟氨酸、瓜氨酸都不要并进表1-1。\n\n**干扰项辨析**：\n- A：$300$ 余种是自然界氨基酸，不是编码氨基酸；构型是 $\\mathrm{L}$ 不是 $\\mathrm{D}$；Gly 无手性；鸟氨酸、瓜氨酸不参与合成；硒半胱氨酸不是表1-1 成员；分类看侧链。\n- C：通式写成兼性离子；Gly 无手性；羟脯氨酸是翻译后修饰，不是密码子；分类看侧链。\n- D：五类不是两类；脯氨酸亚氨基仍能形成肽键；胱氨酸是两个半胱氨酸脱氢产物，不是编码表新成员。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-1.md",
+        "label": "L-α-氨基酸通式 · 20种编码 · 五类划分 · pitfall「鸟氨酸、瓜氨酸不是编码氨基酸」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于氨基酸的两性解离、等电点 $\\mathrm{pI}$ 以及三个可解离基团时的取法，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{pI}$ 是分子上没有任何电荷时的 $\\mathrm{pH}$；中性氨基酸把三个 $\\mathrm{p}K$ 加起来除以 $3$；酸性氨基酸 $\\mathrm{pI}$ 接近 $10$；兼性离子就是不再解离",
+        "氨基酸含碱性 $\\alpha$-氨基和酸性 $\\alpha$-羧基，是两性电解质。酸性溶液中与 $\\mathrm{H}^{+}$ 结合呈阳离子（$-\\mathrm{NH}_3^{+}$），碱性溶液中失去质子呈阴离子（$-\\mathrm{COO}^{-}$）。等电点 $\\mathrm{pI}$ 是兼性离子呈电中性、净电荷为零时溶液的 $\\mathrm{pH}$，不是“分子上没有任何电荷”。中性氨基酸 $\\mathrm{pI}=(\\mathrm{p}K_1+\\mathrm{p}K_2)/2$，如丙氨酸 $(2.34+9.69)/2=6.02$。有三个可解离基团时，写出电离式，找到净电荷为零的兼性离子，取其两边两个 $\\mathrm{p}K$ 的平均值，不要把三个 $\\mathrm{p}K$ 全部加起来再除以 $3$。酸性氨基酸 $\\mathrm{pI}$ 明显低于 $6$，碱性氨基酸 $\\mathrm{pI}$ 明显高于 $7$",
+        "等电点等于 $\\alpha$-羧基的 $\\mathrm{p}K$；体液 $\\mathrm{pH}\\,7.4$ 时大多数蛋白质带正电荷；蛋白质 $\\mathrm{pI}$ 与氨基酸 $\\mathrm{pI}$ 是同一句话",
+        "兼性离子净电荷为正；Asp、Glu 的 $\\mathrm{pI}$ 按两个较高 $\\mathrm{p}K$ 平均；His、Lys、Arg 的 $\\mathrm{pI}$ 按两个较低 $\\mathrm{p}K$ 平均"
+      ],
+      "answer": 1,
+      "hint": "净电荷为零不等于没有电荷；两个基团取平均，三个基团取兼性离子两边的两个 $\\mathrm{p}K$。",
+      "explanation": "**B 正确。** $\\mathrm{pI}$ 是净电荷为零时的 $\\mathrm{pH}$。中性氨基酸两个 $\\mathrm{p}K$ 平均；三个基团不除以 $3$。\n\n**干扰项辨析**：\n- A：兼性离子仍带正负电荷；不能三个 $\\mathrm{p}K$ 除以 $3$；酸性氨基酸 $\\mathrm{pI}$ 低。\n- C：$\\mathrm{pI}$ 不是单个 $\\mathrm{p}K$；体液 $\\mathrm{pH}\\,7.4$、大多数蛋白 $\\mathrm{pI}\\approx 5.0$，故大多数带负电；蛋白质 $\\mathrm{pI}$ 还要算侧链。\n- D：兼性离子净电荷为零；酸性取较低两个 $\\mathrm{p}K$，碱性取较高两个 $\\mathrm{p}K$，该项写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-1.md",
+        "label": "两性解离 · 等电点 · 丙氨酸 pI · pitfall「不要三个 pK 除以 3」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于肽键平面、寡肽与蛋白质（胰岛素 $51$ 对促肾上腺皮质激素 $39$），下列叙述正确的是（　）。",
+      "options": [
+        "肽键是可以绕 $\\mathrm{C}-\\mathrm{N}$ 任意转的单键；$6$ 个原子不共面；残基数过 $20$ 就称蛋白质；促肾上腺皮质激素 $39$ 个残基是蛋白质，胰岛素 $51$ 个残基仍是多肽",
+        "肽键是连接两个氨基酸的酰胺键，由一分子氨基酸的 $\\alpha$-羧基与另一分子 $\\alpha$-氨基脱水缩合而成。参与肽键的 $6$ 个原子 $\\mathrm{C}_{\\alpha 1}$、$\\mathrm{C}$、$\\mathrm{O}$、$\\mathrm{N}$、$\\mathrm{H}$、$\\mathrm{C}_{\\alpha 2}$ 位于同一平面，构成肽单元。肽键 $\\mathrm{C}-\\mathrm{N}$ 键长 $0.132\\,\\mathrm{nm}$，介于单键与双键之间，有部分双键性，不能自由旋转；能转的是 $\\mathrm{C}_\\alpha$ 两侧的单键（$\\phi$、$\\psi$）。由 $2\\sim 20$ 个氨基酸相连称为寡肽，更多称为多肽；通常 $50$ 个残基以上且折叠成特定空间结构并有特定生物学功能者称蛋白质。教材把 $39$ 个残基的促肾上腺皮质激素称作多肽，把 $51$ 个残基、分子量 $5733$ 的胰岛素称作蛋白质",
+        "寡肽是 $50$ 个以上；多肽没有 $\\mathrm{N}$-端；$\\phi$、$\\psi$ 转的是肽键本身；甘氨酰甘氨酸不是肽",
+        "蛋白质只凭分子量定义，与空间结构和功能无关；肽单元可以绕肽键随意翻转"
+      ],
+      "answer": 1,
+      "hint": "肽键共面、不能自由旋转；$39$ 是多肽，$51$ 才称蛋白质。",
+      "explanation": "**B 正确。** 肽单元 $6$ 原子共面，肽键有部分双键性。残基数和功能层次：$2\\sim 20$ 寡肽，$50$ 以下常仍称多肽，胰岛素 $51$ 称蛋白质。\n\n**干扰项辨析**：\n- A：肽键不能任意转；$6$ 原子共面；$20$ 是寡肽上限不是蛋白质门槛；$39$ 与 $51$ 写反。\n- C：寡肽是 $2\\sim 20$；多肽有 $\\mathrm{N}$-端、$\\mathrm{C}$-端；$\\phi$、$\\psi$ 不是肽键本身；甘氨酰甘氨酸是最简单的二肽。\n- D：蛋白质还要有特定空间结构与功能；肽单元不能绕肽键翻转。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-1.md",
+        "label": "肽键与肽单元 · 寡肽/多肽/蛋白质 · 胰岛素51 · ACTH39"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于蛋白质一级结构以及牛胰岛素 $\\mathrm{A}21$、$\\mathrm{B}30$ 与二硫键，下列叙述正确的是（　）。",
+      "options": [
+        "一级结构只包括肽键，二硫键位置属于四级结构；$\\mathrm{A}$ 链 $30$ 个残基、$\\mathrm{B}$ 链 $21$ 个残基；三个二硫键都是链间；Sanger 测定的是血红蛋白",
+        "蛋白质一级结构是从 $\\mathrm{N}$-端至 $\\mathrm{C}$-端的氨基酸排列顺序，主要化学键是肽键，所有二硫键的位置也属于一级结构范畴。牛胰岛素是第一个被测定一级结构的蛋白质，Sanger F. 于 $1953$ 年完成，$1958$ 年获诺贝尔化学奖。胰岛素有 $\\mathrm{A}$、$\\mathrm{B}$ 两条链：$\\mathrm{A}$ 链 $21$ 个残基，$\\mathrm{B}$ 链 $30$ 个残基，编号从氨基末端为 $1$ 号。$3$ 个二硫键：链内 $\\mathrm{A}6$—$\\mathrm{A}11$，另 $2$ 个为 $\\mathrm{A}$、$\\mathrm{B}$ 链间二硫键。一级结构是空间构象和功能的基础，但不是决定空间构象的唯一因素",
+        "二硫键位置只写在三级结构里，一级结构不算；胰岛素只有一条肽链；$1953$ 年测定的是核糖核酸酶",
+        "一级结构已经唯一决定全部高级结构，不需要分子伴侣；链内二硫键在 $\\mathrm{B}$ 链"
+      ],
+      "answer": 1,
+      "hint": "记 $\\mathrm{A}21$、$\\mathrm{B}30$、链内 $\\mathrm{A}6$—$\\mathrm{A}11$，二硫键位置也属一级结构。",
+      "explanation": "**B 正确。** 一级结构 = 序列 + 二硫键位置。胰岛素 $\\mathrm{A}21$、$\\mathrm{B}30$，三对二硫键中一对链内。Sanger $1953$ 年。\n\n**干扰项辨析**：\n- A：二硫键位置属一级结构；残基数写反；有链内也有链间；Sanger 测的是胰岛素。\n- C：一级结构要算二硫键位置；胰岛素两条链；$1953$ 年是胰岛素不是核糖核酸酶。\n- D：一级结构不是唯一决定因素；链内二硫键在 $\\mathrm{A}$ 链。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-2.md",
+        "label": "一级结构 · 牛胰岛素 A21 B30 · 链内 A6—A11 · Sanger 1953"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于蛋白质二级结构中 $\\alpha$-螺旋氢键、$\\beta$-折叠与 $\\beta$-转角，下列叙述正确的是（　）。",
+      "options": [
+        "二级结构包括侧链构象；$\\alpha$-螺旋是左手螺旋，每圈 $5$ 个残基，氢键靠侧链维持；$\\beta$-转角的氢键就是 $\\alpha$-螺旋那一套 $i$ 到 $i+4$；$\\Omega$-环等于无规卷曲",
+        "二级结构是某一段肽链的局部空间结构，即主链骨架原子的相对空间位置，并不涉及侧链构象，主要包括 $\\alpha$-螺旋、$\\beta$-折叠、$\\beta$-转角和 $\\Omega$-环。$\\alpha$-螺旋为右手螺旋，每 $3.6$ 个残基一圈，螺距 $0.54\\,\\mathrm{nm}$，侧链伸向外侧；每个肽键的 $\\mathrm{N}-\\mathrm{H}$ 和第四个肽键的羰基氧形成氢键，氢键与长轴基本平行。$\\beta$-折叠呈折纸状，每段一般 $5\\sim 8$ 个残基，平行重复 $0.65\\,\\mathrm{nm}$、反平行 $0.70\\,\\mathrm{nm}$，靠肽链间氢键稳定。$\\beta$-转角通常 $4$ 个残基，第 $1$ 残基羰基对第 $4$ 残基氨基形成氢键，第 $2$ 位常为脯氨酸。$\\Omega$-环在表面、亲水，不是无规卷曲的别名",
+        "$\\alpha$-螺旋氢键与长轴垂直；脯氨酸最容易形成 $\\alpha$-螺旋；$\\beta$-折叠没有氢键；蚕丝蛋白几乎全是 $\\alpha$-螺旋",
+        "二级结构就是整条肽链全部原子的三维排布；$\\beta$-转角由 $8$ 个残基组成；平行 $\\beta$-折叠重复节段比反平行更长"
+      ],
+      "answer": 1,
+      "hint": "二级不涉及侧链；$\\alpha$-螺旋 $3.6$ 残基/圈、主链氢键；$\\beta$-转角 $1$—$4$ 氢键不要并成螺旋圈内氢键。",
+      "explanation": "**B 正确。** 四种二级结构、右手螺旋 $3.6/0.54$、$\\beta$-折叠链间氢键、$\\beta$-转角 $1$—$4$ 氢键，都按教材。\n\n**干扰项辨析**：\n- A：不涉及侧链；右手不是左手；氢键在主链；$\\beta$-转角与螺旋“第四”对象不同；$\\Omega$-环 $\\neq$ 无规卷曲。\n- C：氢键与长轴基本平行；Pro 打断螺旋；折叠靠链间氢键；蚕丝几乎全是 $\\beta$-折叠。\n- D：整条链全部原子是三级结构；转角通常 $4$ 个残基；反平行重复 $0.70\\,\\mathrm{nm}$ 大于平行 $0.65\\,\\mathrm{nm}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-2.md",
+        "label": "二级结构 · α-螺旋 3.6/0.54 nm · β-折叠 · β-转角 · Ω-环"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于蛋白质变性、沉淀、凝固以及紫外 $280\\,\\mathrm{nm}$ 吸收，下列叙述正确的是（　）。",
+      "options": [
+        "变性就是水解肽键，一级结构一定被破坏；沉淀一定伴随变性；凝固可以再溶于强酸强碱；$280\\,\\mathrm{nm}$ 是肽键的吸收，三种芳香族氨基酸都有强吸收",
+        "变性主要发生二硫键和非共价键的破坏，不涉及氨基酸序列的改变；有序构象变成无序，活性丧失，溶解度降低、黏度增加、结晶能力消失、易被蛋白酶水解。变性者易沉淀，但沉淀不一定变性，盐析即可在保留构象的前提下析出。凝固是强酸强碱变性后调至 $\\mathrm{pI}$ 成絮、再加热形成不易再溶的坚固凝块，是变性进一步发展的不可逆结果。程度轻者去除变性因素后可复性。蛋白质因含共轭双键的酪氨酸和色氨酸，在 $280\\,\\mathrm{nm}$ 有特征吸收，$A_{280}$ 与浓度成正比；苯丙氨酸在此区间吸收很弱，$280\\,\\mathrm{nm}$ 不是肽键的吸收",
+        "盐析一定使蛋白质变性；复性不需要一级结构还在；双缩脲反应是氨基酸的呈色；茚三酮测的是肽键",
+        "凝固就是盐析的别名；$A_{280}$ 对不含 Tyr、Trp 的蛋白质也完全准确；变性因素不能用于消毒灭菌"
+      ],
+      "answer": 1,
+      "hint": "变性不毁一级结构；沉淀可以不变性；凝固不可逆；$280\\,\\mathrm{nm}$ 记 Tyr 和 Trp。",
+      "explanation": "**B 正确。** 变性、沉淀、凝固三本账要分开；$A_{280}$ 来自 Tyr、Trp。\n\n**干扰项辨析**：\n- A：变性一般不毁一级结构；沉淀可不变性；凝固凝块不易再溶；$280\\,\\mathrm{nm}$ 不是肽键，Phe 几乎走平。\n- C：盐析常不变性；复性必须一级结构还在；双缩脲是肽键，茚三酮是氨基酸，方向相反。\n- D：凝固 $\\neq$ 盐析；$A_{280}$ 对不含 Tyr/Trp 的蛋白会偏低；变性因素常用于消毒灭菌。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-4.md",
+        "label": "变性 · 沉淀 · 凝固 · 复性 · A280（Tyr/Trp）"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于肌红蛋白与血红蛋白的氧解离曲线、$\\mathrm{T}/\\mathrm{R}$ 态、正协同、别构及 $2,3\\text{-BPG}$，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{Mb}$ 与 $\\mathrm{Hb}$ 的氧解离曲线都是 $\\mathrm{S}$ 形，都能运输氧；单独亚基亲和力低但更能放氧；$\\mathrm{T}$ 态亲和力大，$\\mathrm{R}$ 态亲和力小；$2,3\\text{-BPG}$ 稳定 $\\mathrm{R}$ 态、帮助结合氧；脱氧时 $\\mathrm{Fe}^{2+}$ 已落入卟啉孔",
+        "$\\mathrm{Mb}$ 氧解离曲线为直角双曲线，易与 $\\mathrm{O}_2$ 结合，适合贮氧；$\\mathrm{Hb}$ 为 $\\mathrm{S}$ 状曲线，低分压时结合较难。$\\mathrm{S}$ 形来自正协同：$4$ 个亚基 $4$ 个不同平衡常数，末一个最大；第一亚基结合 $\\mathrm{O}_2$ 促进后续亚基结合。未结合 $\\mathrm{O}_2$ 时为紧张态（$\\mathrm{T}$ 态），结构紧密、亲和力小；随着 $\\mathrm{O}_2$ 结合，亚基羧基末端盐键断裂，$\\alpha_1/\\beta_1$ 与 $\\alpha_2/\\beta_2$ 长轴成 $15^{\\circ}$ 夹角，转为松弛态（$\\mathrm{R}$ 态），亲和力增大。脱氧时 $\\mathrm{Fe}^{2+}$ 高出卟啉平面 $0.04\\,\\mathrm{nm}$，氧合后落入孔中牵动 $\\mathrm{F}$ 肽段。$\\mathrm{O}_2$ 是别构剂，$\\mathrm{Hb}$ 是别构蛋白。$2,3\\text{-BPG}$ 与 $\\beta$ 亚基正电基团成盐，稳定 $\\mathrm{T}$ 态，增加组织放氧，不是让 $\\mathrm{Hb}$ 更爱氧。单独亚基虽可结合氧且亲和力增强，但组织中难于释放氧",
+        "正协同是负协同的别名；$\\mathrm{T}\\to\\mathrm{R}$ 是四分子氧同时到位；$2,3\\text{-BPG}$ 结合 $\\alpha$ 亚基；高原适应要降低 $2,3\\text{-BPG}$",
+        "$\\mathrm{Mb}$ 有四级结构才能贮氧；$\\mathrm{Hb}$ 没有血红素；别构效应只发生在血红蛋白，酶与受体都没有"
+      ],
+      "answer": 1,
+      "hint": "先分双曲线/$\\mathrm{S}$ 形，再问此刻是 $\\mathrm{T}$ 还是 $\\mathrm{R}$；$2,3\\text{-BPG}$ 拉住 $\\mathrm{T}$ 态促放氧。",
+      "explanation": "**B 正确。** $\\mathrm{Mb}$ 双曲线贮氧，$\\mathrm{Hb}$ $\\mathrm{S}$ 形运氧；正协同、$\\mathrm{T}/\\mathrm{R}$、$\\mathrm{Fe}^{2+}$ 位移、$2,3\\text{-BPG}$ 稳定 $\\mathrm{T}$ 态都要按教材写。\n\n**干扰项辨析**：\n- A：曲线形状不同；$\\mathrm{Mb}$ 贮氧不运氧；单独亚基难放氧；$\\mathrm{T}/\\mathrm{R}$ 亲和力写反；$2,3\\text{-BPG}$ 不帮助结合氧；脱氧时 $\\mathrm{Fe}^{2+}$ 高出平面。\n- C：正协同 $\\neq$ 负协同；$\\mathrm{T}\\to\\mathrm{R}$ 逐个结合氧；$2,3\\text{-BPG}$ 结合 $\\beta$ 亚基；高原升高而非降低 $2,3\\text{-BPG}$。\n- D：$\\mathrm{Mb}$ 无四级结构；$\\mathrm{Hb}$ 每亚基一个血红素；别构有普遍生物学意义。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-3.md",
+        "label": "Mb/Hb 氧解离曲线 · T/R · 正协同 · 别构 · 2,3-BPG"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于三级结构的维持键、四级结构亚基以及肌红蛋白与血红蛋白的层次，下列叙述正确的有（　）。",
+      "options": [
+        "三级结构是整条肽链全部氨基酸残基（全部原子）的相对空间位置，把侧链也算进来。形成和稳定主要靠疏水键、盐键、氢键和范德华力；二硫键是共价键，位置属一级结构，成键后参与稳定构象。肌红蛋白 $153$ 个残基、单链、$1$ 个血红素，$\\alpha$-螺旋约占 $75\\%$，构成 $\\mathrm{A}$ 至 $\\mathrm{H}$ $8$ 个螺旋区，没有四级结构",
+        "亚基是具有完整三级结构的一条多肽链。四级结构是各亚基的空间排布及接触部位的布局和相互作用，亚基间结合力主要是氢键和离子键。一条肽链只有一、二、三级结构；两条或两条以上肽链才有四级结构。成人血红蛋白 $\\alpha_{141}$、$\\beta_{146}$，四聚体经 $8$ 个离子键相连；单独亚基虽可结合氧且亲和力增强，但组织中难于释放氧",
+        "结构域是分子量较大的蛋白质中紧密、稳定、各行其功能的区域，多为连续 $100\\sim 200$ 个残基，限制性蛋白酶水解后常仍保持构象与功能。超二级结构不具备“切下来仍保持功能”的特点。$3$-磷酸甘油醛脱氢酶是 $2$ 个亚基，每个亚基再有 $2$ 个结构域，层次不要把结构域写成亚基的别名",
+        "肌红蛋白是四聚体，血红蛋白是单链；三级结构不涉及侧链；亚基间主要靠肽键相连；结构域就是超二级结构，也就是亚基"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "按三级次级键、四级亚基、结构域三本账核对，把整段写反的那一项拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：三级结构与肌红蛋白，来自 ch01-2。\n- B：亚基、四级结构与血红蛋白，来自 ch01-2。\n- C：结构域与超二级结构、GAPDH 例子，来自 ch01-2。\n- **D 错**：Mb 单链、Hb 四聚体；三级把侧链算进来；亚基间主要是氢键和离子键；结构域 $\\neq$ 超二级结构 $\\neq$ 亚基。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-2.md",
+        "label": "三级结构次级键 · 四级结构亚基 · 肌红蛋白 · 血红蛋白 · 结构域"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于 $\\mathrm{SDS}$-$\\mathrm{PAGE}$、离子交换层析与凝胶过滤如何分开蛋白质，下列叙述正确的有（　）。",
+      "options": [
+        "分离纯化通常采取盐析、透析、电泳、层析及超速离心等不损伤空间构象的物理方法。$\\mathrm{SDS}$-$\\mathrm{PAGE}$ 中 $\\mathrm{SDS}$ 使蛋白质表面覆盖负电荷，分子间电荷差异消失，泳动速率仅与颗粒大小有关，加上凝胶分子筛效应，不再按原有 $\\mathrm{pI}$ 排队。等电聚焦才是按 $\\mathrm{pI}$：蛋白质到达 $\\mathrm{pH}=\\mathrm{pI}$ 处净电荷为零而停下。双向电泳第一向 $\\mathrm{IEE}$、第二向 $\\mathrm{SDS}$-$\\mathrm{PAGE}$",
+        "阴离子交换树脂带正电荷，吸引溶液中的阴离子。用含 $\\mathrm{Cl}^{-}$ 的溶液洗柱：负电量小的蛋白质首先被洗脱，增加 $\\mathrm{Cl}^{-}$ 浓度后负电量多的随后洗脱。洗脱图用 $A_{280}$ 监测。离子交换依据的是特定 $\\mathrm{pH}$ 下各蛋白质的电荷量及性质",
+        "凝胶过滤又称分子筛层析，柱内为带小孔的葡聚糖颗粒。小分子进入孔内滞留时间较长，大分子不能进入孔内而径直流出，故大分子先流出、小分子后流出。不要做成电泳里“分子量小的跑得快”那一套",
+        "三种方法都是沉淀；凝胶过滤是小分子先出来；$\\mathrm{SDS}$-$\\mathrm{PAGE}$ 仍按等电点分离；阴离子交换时负电量多的先被稀 $\\mathrm{Cl}^{-}$ 洗下"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "分别按大小（SDS-PAGE / 凝胶过滤出峰顺序相反）、电荷（离子交换）核对，把整段写反的那一项拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：$\\mathrm{SDS}$-$\\mathrm{PAGE}$、等电聚焦与 $2$-$\\mathrm{DE}$，来自 ch01-5。\n- B：阴离子交换洗脱顺序与 $A_{280}$，来自 ch01-5。\n- C：凝胶过滤大分子先出，来自 ch01-5。\n- **D 错**：不是都沉淀；凝胶过滤大分子先出；$\\mathrm{SDS}$-$\\mathrm{PAGE}$ 按大小；负电量小的先洗下。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-5.md",
+        "label": "SDS-PAGE · 离子交换层析 · 凝胶过滤 · pitfall「大分子先出来」"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "谷胱甘肽的第一个肽键是普通 $\\alpha$-肽键，主要功能基团是甘氨酸的羧基；$\\mathrm{TRH}$ 是没有修饰的 Glu-His-Pro 直链三肽；促肾上腺皮质激素 $39$ 个残基应称作蛋白质，胰岛素 $51$ 个残基仍是多肽；肽键可以绕 $\\mathrm{C}-\\mathrm{N}$ 任意旋转。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对 $\\mathrm{GSH}$ 的 $\\gamma$-肽键、$\\mathrm{TRH}$ 端基修饰，以及 $39/51$ 和肽键平面。",
+      "explanation": "**该命题错误，每一分句都错。** $\\mathrm{GSH}$ 第一个肽键是谷氨酸 $\\gamma$-羧基与半胱氨酸氨基相连的非 $\\alpha$ 肽键，主要功能基团是半胱氨酸巯基。$\\mathrm{TRH}$ 的 $\\mathrm{N}$-端为焦谷氨酸、$\\mathrm{C}$-端为脯氨酰胺。教材把 $39$ 残基的促肾上腺皮质激素称作多肽，把 $51$ 残基的胰岛素称作蛋白质。肽键有部分双键性，不能自由旋转。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-1.md",
+        "label": "GSH γ-肽键 · TRH · 胰岛素51 vs ACTH39 · 肽键平面"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "Anfinsen 实验中尿素和 $\\beta$-巯基乙醇把肽键水解掉，一级结构不在也能复性；$4$ 对二硫键重配对的 $105$ 种方式都有活性；镰状细胞贫血是一级结构不变的构象病，朊蛋白 $\\mathrm{PrP}^{\\mathrm{C}}\\to\\mathrm{PrP}^{\\mathrm{Sc}}$ 是基因突变导致残基替换的分子病；$2,3\\text{-BPG}$ 稳定 $\\mathrm{R}$ 态、帮助血红蛋白结合氧。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对 Anfinsen 拆的是哪类键、分子病与构象病、$2,3\\text{-BPG}$ 稳定哪一态。",
+      "explanation": "**该命题错误，四处都错。** 尿素（或盐酸胍）破次级键，$\\beta$-巯基乙醇破二硫键，肽键和一级结构仍在，这才谈得上复性；唯有与天然酶完全相同的配对才有活性。镰状细胞贫血是 $\\beta 6$ 谷氨酸→缬氨酸的分子病（一级结构变了）；$\\mathrm{PrP}^{\\mathrm{C}}$ 与 $\\mathrm{PrP}^{\\mathrm{Sc}}$ 一级结构完全相同，是构象病。$2,3\\text{-BPG}$ 稳定 $\\mathrm{T}$ 态，增加组织放氧，不是帮助结合氧。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-3.md",
+        "label": "Anfinsen 复性 · 分子病 vs 构象病 · 2,3-BPG 稳定 T 态"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "组成蛋白质的编码氨基酸通常为 ________（除甘氨酸外）。牛胰岛素 $\\mathrm{A}$ 链 ____ 个残基、$\\mathrm{B}$ 链 ____ 个残基。$\\alpha$-螺旋每圈 ____ 个氨基酸残基、螺距 $0.54\\,\\mathrm{nm}$。蛋白质因酪氨酸和色氨酸在 ____ $\\mathrm{nm}$ 波长处有特征性吸收峰。",
+      "answer": "L-α-氨基酸，21，30，3.6，280",
+      "hint": "通式是 $\\mathrm{L}$-$\\alpha$；胰岛素 $\\mathrm{A}21$、$\\mathrm{B}30$；螺旋 $3.6$ 残基/圈；$A_{280}$。",
+      "scoring_criteria": [
+        "第一空填“L-α-氨基酸”（或“L-α氨基酸”“L型α-氨基酸”）（2分）",
+        "第二空填“21”（2分）",
+        "第三空填“30”（2分）",
+        "第四空填“3.6”（或“3.6个”）（2分）",
+        "第五空填“280”（或“280 nm”）（2分）"
+      ],
+      "explanation": "编码氨基酸通常为 $\\mathrm{L}$-$\\alpha$-氨基酸（除甘氨酸外）。牛胰岛素 $\\mathrm{A}21$、$\\mathrm{B}30$。$\\alpha$-螺旋每圈 $3.6$ 个残基、螺距 $0.54\\,\\mathrm{nm}$。$280\\,\\mathrm{nm}$ 特征吸收来自 Tyr 和 Trp，不是肽键，也不是苯丙氨酸的强吸收。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-1.md",
+        "label": "L-α-氨基酸；胰岛素 A21 B30；α-螺旋 3.6；A280"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "蛋白质的分子组成与四级结构层次如何记？请写出：①$\\mathrm{L}$-$\\alpha$-氨基酸通式、$20$ 种编码、两性解离与 $\\mathrm{pI}$（含三个基团时不把三个 $\\mathrm{p}K$ 除以 $3$）；②肽键平面、寡肽与蛋白质（胰岛素 $51$ 对促肾上腺皮质激素 $39$），以及 $\\mathrm{GSH}$ 的 $\\gamma$-肽键、$\\mathrm{TRH}$ 的端基修饰；③一级结构（胰岛素 $\\mathrm{A}21$、$\\mathrm{B}30$，链内 $\\mathrm{A}6$—$\\mathrm{A}11$，二硫键位置也属一级结构）；④二级结构（$\\alpha$-螺旋氢键、$\\beta$-折叠、$\\beta$-转角，不涉及侧链）；⑤三级维持键对四级亚基（肌红蛋白单链无四级，血红蛋白 $\\alpha_2\\beta_2$，单独亚基难于释氧）。不要把鸟氨酸写成编码氨基酸，也不要把二硫键只写成三级结构的稳定因素。",
+      "answer": "参考答案：\n\n**1. 组成与 pI**\n- 通式：${}^{+}\\mathrm{H}_3\\mathrm{N}-\\mathrm{C}_\\alpha\\mathrm{H}(\\mathrm{R})-\\mathrm{COO}^{-}$；编码氨基酸一般 $20$ 种，通常 $\\mathrm{L}$-$\\alpha$（除甘氨酸）。\n- 按侧链分五类；硒半胱氨酸、鸟氨酸、瓜氨酸都不进表1-1 的编码表。\n- 两性解离； $\\mathrm{pI}$ 是净电荷为零时的 $\\mathrm{pH}$，不是没有电荷。中性氨基酸 $\\mathrm{pI}=(\\mathrm{p}K_1+\\mathrm{p}K_2)/2$；三个基团取兼性离子两边两个 $\\mathrm{p}K$ 平均。\n\n**2. 肽键与活性肽**\n- 肽键是酰胺键，$6$ 原子共面； $\\mathrm{C}-\\mathrm{N}$ 有部分双键性，不能自由旋转。\n- $2\\sim 20$ 为寡肽；通常 $50$ 以上且有特定空间结构与功能称蛋白质。ACTH $39$ 称多肽，胰岛素 $51$ 称蛋白质。\n- $\\mathrm{GSH}$：Glu-Cys-Gly，第一键为 $\\gamma$-肽键，巯基是主要功能基团。$\\mathrm{TRH}$：焦谷氨酸-组氨酸-脯氨酰胺。\n\n**3. 一级结构**\n- $\\mathrm{N}$-端至 $\\mathrm{C}$-端序列；主要化学键是肽键，二硫键位置也属一级结构。\n- 胰岛素 $\\mathrm{A}21$、$\\mathrm{B}30$；链内 $\\mathrm{A}6$—$\\mathrm{A}11$，另 $2$ 个链间。Sanger $1953$ 年测定。\n\n**4. 二级结构**\n- 局部主链，不涉及侧链：$\\alpha$-螺旋、$\\beta$-折叠、$\\beta$-转角、$\\Omega$-环。\n- $\\alpha$-螺旋：右手，$3.6$ 残基/圈，螺距 $0.54\\,\\mathrm{nm}$，主链氢键与长轴平行。\n- $\\beta$-折叠：链间氢键； $\\beta$-转角：$4$ 残基，$1$—$4$ 氢键，第 $2$ 位常为 Pro。\n\n**5. 三级与四级**\n- 三级：整条链全部原子；次级键为疏水键、盐键、氢键、范德华力；二硫键参与稳定。\n- Mb：$153$ 残基、单链、无四级。Hb：$\\alpha_{141}\\beta_{146}$ 四聚体，$8$ 个离子键；单独亚基难于释氧。",
+      "hint": "按通式/pI → 肽与活性肽 → 胰岛素一级结构 → 二级四种 → Mb/Hb 层次写，并把编码表和二硫键两本账分开。",
+      "scoring_criteria": [
+        "写出 L-α 通式、$20$ 种编码、pI 定义及三个基团取法（3分）",
+        "写出肽键平面、寡肽/蛋白质口径及 GSH γ-肽键、TRH 修饰（3分）",
+        "写出一级结构定义及胰岛素 A21、B30、链内 A6—A11（3分）",
+        "写出二级结构四种及 α-螺旋氢键、β-折叠、β-转角要点（3分）",
+        "写出三级次级键、四级亚基及 Mb 单链 vs Hb 四聚体（2分）"
+      ],
+      "explanation": "本题把第 01-1、01-2 节收成“组成—肽—一级—二级—三四级”。易错点：鸟氨酸算编码氨基酸；二硫键只写成三级；胰岛素与 ACTH 口径写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-1.md",
+        "label": "分子组成；肽与活性肽；一级至四级结构"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "蛋白质结构与功能、理化性质和分离纯化如何收？请写出：①Anfinsen 核糖核酸酶如何证明一级结构是高级结构与功能的基础（尿素/$\\beta$-巯基乙醇、$105$ 种配对、透析复性），并区分分子病与构象病；②$\\mathrm{Hb}$ 与 $\\mathrm{Mb}$ 氧解离曲线、$\\mathrm{T}/\\mathrm{R}$ 态、正协同与 $2,3\\text{-BPG}$；③变性、沉淀、凝固如何分开，以及 $A_{280}$ 来自 Tyr、Trp；④$\\mathrm{SDS}$-$\\mathrm{PAGE}$、离子交换层析、凝胶过滤各按什么依据分开，凝胶过滤为什么是大分子先出来。不要把 $2,3\\text{-BPG}$ 写成帮助结合氧，也不要把三种层析/电泳都听成沉淀。",
+      "answer": "参考答案：\n\n**1. Anfinsen 与两种病**\n- 核糖核酸酶 $\\mathrm{A}$：$124$ 残基，$4$ 对二硫键。尿素（或盐酸胍）破次级键，$\\beta$-巯基乙醇破二硫键；肽键和一级结构仍在，活性丧失。\n- $4$ 对二硫键重配对理论上 $105$ 种，唯天然配对有活性。透析去除变性剂后循序列重折叠，活性恢复。证明：功能依赖三级结构，三级结构以序列为基础。\n- 分子病：一级结构变了，如镰状细胞贫血 $\\beta 6$ 谷氨酸→缬氨酸。构象病：一级结构可以不变，如 $\\mathrm{PrP}^{\\mathrm{C}}$（$\\alpha$-螺旋）→ $\\mathrm{PrP}^{\\mathrm{Sc}}$（$\\beta$-折叠）。\n\n**2. Hb 与 Mb**\n- $\\mathrm{Mb}$ 直角双曲线，易结合氧，贮氧； $\\mathrm{Hb}$ $\\mathrm{S}$ 形，正协同运氧。\n- $\\mathrm{T}$ 态紧密、低亲和；$\\mathrm{R}$ 态盐键断裂、$15^{\\circ}$ 夹角、高亲和。脱氧 $\\mathrm{Fe}^{2+}$ 高出平面 $0.04\\,\\mathrm{nm}$。\n- $2,3\\text{-BPG}$ 与 $\\beta$ 亚基正电基团成盐，稳定 $\\mathrm{T}$ 态，增加组织放氧，不是帮助结合氧。\n\n**3. 变性、沉淀、凝固与 $A_{280}$**\n- 变性：构象无序、活性丧失，一般不毁一级结构。\n- 沉淀：变性者易沉淀，盐析可以不变性。\n- 凝固：变性后调 $\\mathrm{pI}$ 成絮再加热，不可逆。\n- $A_{280}$ 来自 Tyr、Trp 的共轭双键，不是肽键，Phe 在此区间吸收很弱。\n\n**4. 三种分开方法**\n- $\\mathrm{SDS}$-$\\mathrm{PAGE}$：$\\mathrm{SDS}$ 抹平电荷，按颗粒大小分。\n- 阴离子交换：按负电量，负电量小的先被稀 $\\mathrm{Cl}^{-}$ 洗下。\n- 凝胶过滤：大分子不进孔先流出，小分子进孔后流出。不要与电泳“小的跑得快”并成一套。",
+      "hint": "按 Anfinsen/两种病 → 氧解离与 BPG → 变性三本账与 A280 → 三种分离依据写，并把帮助结合氧、都是沉淀两个易错点避开。",
+      "scoring_criteria": [
+        "写出 Anfinsen 实验步骤、$105$ 种配对及复性结论，并区分分子病与构象病（4分）",
+        "写出 Mb/Hb 曲线、T/R、正协同及 2,3-BPG 稳定 T 态（4分）",
+        "写出变性、沉淀、凝固的区分及 A280 来自 Tyr/Trp（3分）",
+        "写出 SDS-PAGE、离子交换、凝胶过滤的分开依据及大分子先出（4分）"
+      ],
+      "explanation": "本题把第 01-3、01-4、01-5 节收成“一级决定高级—运氧别构—理化三本账—分离按电荷或大小”。易错点：$2,3\\text{-BPG}$ 帮助结合氧；凝胶过滤小分子先出；分子病与构象病并户。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch01-3.md",
+        "label": "Anfinsen；Hb/Mb 与 2,3-BPG；变性沉淀凝固；SDS-PAGE/离子交换/凝胶过滤"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

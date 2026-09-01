@@ -1,0 +1,322 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch20",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch20-1.md；content/biochemistry/textbook/ch20-2.md；content/biochemistry/textbook/ch20-3.md；content/biochemistry/textbook/ch20-4.md；content/biochemistry/textbook/ch20-5.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于细胞通信与信号转导，下列叙述正确的是（　）。",
+      "options": [
+        "细胞通信就是信号转导；看见本章应先默写七次跨膜和三级激酶；通信的关键词是 $\\mathrm{cAMP}$ 激活 $\\mathrm{PKA}$；转导的必经结局是凋亡；$\\mathrm{DNA}$ 损伤、活性氧、低氧因为没有外来配体所以不算转导；膜结合性信号分子就是脂溶性信号分子",
+        "细胞通信是多细胞生物中细胞间或细胞内高度精确、高效地发送与接收信息，并通过放大机制引起快速的细胞生理反应。信号转导是细胞对外来刺激作出反应，经多种分子有序作用把胞外信息传递到细胞内，并据以调节代谢、增殖、分化、功能活动和凋亡。通信管「谁发给谁、怎样放大」；转导管「进了细胞之后发生哪些有序化学反应」。外源信号主要是化学信号（也可感受物理信号）；化学信号分可溶性和膜结合性。可溶性按溶解性分水溶／脂溶，按距离分神经分泌、内分泌、旁分泌及自分泌。$\\mathrm{DNA}$ 损伤、$\\mathrm{ROS}$、低氧等细胞内事件也可以启动转导。凋亡只是「在某些情况下」的一种可能结局，不是必经",
+        "细胞通信只发生在细胞与细胞之间，绝不发生在细胞内；转导的产物直接就是细胞长得快，不必先写分子数量、分布或活性变化",
+        "膜结合性信号分子穿过脂双层找胞内受体；孔道交换和表面分子接触已被高等动物淘汰"
+      ],
+      "answer": 1,
+      "hint": "通信≠转导；发送／接收／放大 vs 胞外信息变成胞内有序事件。",
+      "explanation": "**B 正确。** 两户分清、化学信号两种形式、胞内事件也可启动转导，都来自 ch20-1。\n\n**干扰项辨析**：\n- A：把通信与转导并户；提前默写第三节途径；凋亡写成必经；胞内事件不算转导；膜结合并成脂溶。\n- C：通信对象也可以发生在细胞内；转导先写分子账再写细胞行为。\n- D：膜结合是接触通讯，不是脂溶进核；孔道和接触「至今仍然是」重要方式。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-1.md",
+        "label": "细胞通信≠信号转导 · 可溶 vs 膜结合 · DNA损伤/ROS/低氧也可启动"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于水溶性／脂溶性化学信号及其受体位置，下列叙述正确的是（　）。",
+      "options": [
+        "水溶性信号自由穿过质膜找核受体；脂溶性名单只有类固醇；内分泌激素全部走胞内受体；胰岛素进细胞核；膜结合性等于脂溶性；受体只负责结合、不转换信号；可饱和性是体液里配体用尽",
+        "水溶性信号分子和膜结合性信号分子不能进入靶细胞，受体位于细胞质膜表面。脂溶性信号分子走细胞内受体（细胞质或胞核）。本版正文点名类固醇激素、甲状腺激素、视黄酸等；图20-1 脂溶性名单还有前列腺素、维生素 $\\mathrm{A}$、维生素 $\\mathrm{D}$、脂类和气体，不要缩成「只有类固醇」。表20-1 内分泌的受体位置是「膜或胞内受体」：胰岛素是膜受体例子，甲状腺激素可以走胞内受体。受体两件事：识别结合，以及转换成胞内分子可识别的信号。五个共同特点：专一、高亲和、可饱和、可逆、特定作用模式。可饱和性饱和的是受体一侧（数目有限）",
+        "神经递质（乙酰胆碱、谷氨酸）也可以走胞内受体；旁分泌与内分泌一样走血循环、距离是 $\\mathrm{m}$",
+        "自分泌是内分泌、旁分泌、神经递质之外另开的第四大距离类型"
+      ],
+      "answer": 1,
+      "hint": "水溶→膜受体；脂溶（本版名单含维A／维D等）→胞内受体；内分泌可以是膜或胞内。",
+      "explanation": "**B 正确。** 水溶／脂溶分户、本版名单、表20-1「膜或胞内受体」，都来自 ch20-1。\n\n**干扰项辨析**：\n- A：水溶进核；名单缩成只有类固醇；激素都走核受体；膜结合＝脂溶；受体不转换；饱和答成配体用尽。\n- C：神经分泌只写膜受体；旁分泌距离是 $\\mathrm{mm}$。\n- D：自分泌挂在旁分泌这一列，不是另造距离。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-1.md",
+        "label": "水溶膜受体 · 脂溶胞内受体 · 图20-1 维A/维D · 表20-1 膜或胞内"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{cAMP}$-$\\mathrm{PKA}$、四分子 $\\mathrm{cAMP}$ 以及环核苷酸下游，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{cAMP}$ 直接磷酸化下游蛋白质；$\\mathrm{PKA}$ 是相同亚基的二聚体；$\\mathrm{PKG}$ 也是 $2\\mathrm{C}+2\\mathrm{R}$，四分子 $\\mathrm{cGMP}$ 解开催化亚基；$\\mathrm{cGAMP}$ 的下游是 $\\mathrm{PKA}$；磷酸二酯酶绝对只水解一种环核苷酸；$\\mathrm{cAMP}$ 产生之后一直维持高浓度；磷酸化一律激活",
+        "$\\mathrm{PKA}$ 是 $2$ 个催化亚基 $\\mathrm{C}$ 加 $2$ 个调节亚基 $\\mathrm{R}$ 的四聚体，$\\mathrm{R}$ 抑制 $\\mathrm{C}$。图20-3 标明 $4$ 分子 $\\mathrm{cAMP}$ 结合 $\\mathrm{R}$ 亚基，使其变构，释放游离的、有催化活性的 $\\mathrm{C}$ 亚基。$\\mathrm{cAMP}$ 是别构激活剂，不直接磷酸化下游。游离 $\\mathrm{C}$ 把磷酸化酶 $\\mathrm{b}$ 激酶磷酸化，同时糖原合酶被加上磷酸，糖原分解增强、血糖升高。$\\mathrm{PKG}$ 是相同亚基的二聚体，调节结构域和催化结构域在同一个亚基内。$\\mathrm{cGAMP}$ 的下游是 $\\mathrm{STING}$，主要诱导Ⅰ型干扰素，不是蛋白质激酶。$\\mathrm{PDE}$ 催化环核苷酸水解，具有相对特异性；脂肪细胞里胰高血糖素可一边升 $\\mathrm{cAMP}$ 一边开 $\\mathrm{PDE}$。只有上游酶持续被激活，小分子信使才能维持在一定浓度。磷酸化可能提高也可能降低活性",
+        "$\\mathrm{AC}$ 存在于细胞质、含血红素辅基、直接受 $\\mathrm{NO}$ 激活；膜结合型 $\\mathrm{GC}$ 才是 $\\mathrm{cAMP}$ 的上游",
+        "蛋白质激酶不是 $\\mathrm{cAMP}$ 和 $\\mathrm{cGMP}$ 的靶分子，离子通道才是唯一靶分子"
+      ],
+      "answer": 1,
+      "hint": "四分子 $\\mathrm{cAMP}$ 解开 $\\mathrm{C}$ 亚基；$\\mathrm{PKG}$ 不是 $2\\mathrm{C}+2\\mathrm{R}$；$\\mathrm{cGAMP}\\rightarrow\\mathrm{STING}$。",
+      "explanation": "**B 正确。** 四分子、$\\mathrm{PKA}/\\mathrm{PKG}/\\mathrm{STING}$、$\\mathrm{PDE}$，都来自 ch20-2。\n\n**干扰项辨析**：\n- A：直接磷酸化；聚体写反；$\\mathrm{cGAMP}$ 走激酶；$\\mathrm{PDE}$ 绝对特异；浓度自己维持；磷酸化一律激活。\n- C：含血红素、受 $\\mathrm{NO}$ 激活的是胞质 $\\mathrm{GC}$，不是 $\\mathrm{AC}$。\n- D：蛋白质激酶是主要靶分子，但不是唯一；离子通道也可被别构调节。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-2.md",
+        "label": "4分子cAMP解开PKA · PKG二聚体 · cGAMP→STING · PDE"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于图20-4 的 $\\mathrm{PLC}$ 与 $\\mathrm{PI3K}$、以及 $\\mathrm{DAG}/\\mathrm{IP}_3/\\mathrm{Ca}^{2+}$，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{PLC}$ 和 $\\mathrm{PI3K}$ 是同一种酶，都在肌醇环 $3$ 位加磷酸；$\\mathrm{DAG}$ 扩散进胞质深处，$\\mathrm{IP}_3$ 留在质膜上激活 $\\mathrm{PKC}$；$\\mathrm{IP}_3$ 的受体是核内转录因子；钙库只写溶酶体；$\\mathrm{CaM}$ 本身就是激酶；磷脂酰肌醇激酶名单只有 $\\mathrm{PI3K}$",
+        "图20-4 上行是 $\\mathrm{PLC}$ 裂解 $\\mathrm{PIP}_2$（也可裂解 $\\mathrm{PI}$、$\\mathrm{PIP}$）得到 $\\mathrm{DAG}$ 加相应肌醇磷酸（$\\mathrm{PIP}_2$ 时为 $\\mathrm{IP}_3$）；下行是 $\\mathrm{PI3K}$ 在 $3$ 位磷酸化，得到 $3$-磷酸肌醇。中轴 $\\mathrm{PI}\\rightarrow\\mathrm{PIP}\\rightarrow\\mathrm{PIP}_2$ 用 $\\mathrm{PI4K}$、$\\mathrm{PIP5K}$。$\\mathrm{DAG}$ 脂溶性、仍留在质膜上；$\\mathrm{IP}_3$ 水溶性，扩散到内质网或肌质网膜，$\\mathrm{Ca}^{2+}$ 通道是 $\\mathrm{IP}_3$ 的受体。$\\mathrm{PKC}$ 是 $\\mathrm{DAG}$ 和钙的靶分子之一；$\\mathrm{PKB}$ 受 $\\mathrm{PIP}_3$ 调控。细胞内 $\\mathrm{Ca}^{2+}$ 有 $90\\%$ 以上储存在内质网和线粒体；通道开是放钙进胞质，钙泵（$\\mathrm{Ca}^{2+}$-$\\mathrm{ATP}$ 酶）泵回去。$\\mathrm{CaM}$ 四个结构域，本身无活性，形成 $\\mathrm{Ca}^{2+}/\\mathrm{CaM}$ 后才有调节功能",
+        "$\\mathrm{PKC}$ 听 $\\mathrm{PIP}_3$，$\\mathrm{PKB}$ 听 $\\mathrm{DAG}+\\mathrm{IP}_3$，两路激酶对调不影响得分",
+        "钙泵就是钙通道的另一种叫法，方向相同"
+      ],
+      "answer": 1,
+      "hint": "$\\mathrm{PLC}$ 切出 $\\mathrm{DAG}+\\mathrm{IP}_3$；$\\mathrm{PI3K}$ 做 $3$-磷酸肌醇；两路不要并户。",
+      "explanation": "**B 正确。** 图20-4 上下两路、$\\mathrm{DAG}$ 留膜、$\\mathrm{IP}_3$ 开钙库、钙库写内质网和线粒体，都来自 ch20-2。\n\n**干扰项辨析**：\n- A：并户；落点对调；$\\mathrm{IP}_3$ 受体写成核受体；钙库写错；$\\mathrm{CaM}$ 当成激酶；名单缩成只有 $\\mathrm{PI3K}$。\n- C：$\\mathrm{PKC}$ 对 $\\mathrm{PLC}$ 上行，$\\mathrm{PKB}$ 对 $\\mathrm{PI3K}$ 下行。\n- D：通道开、泵关，方向相反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-2.md",
+        "label": "PLC上行切PIP2 · PI3K下行3-磷酸肌醇 · DAG留膜 · IP3开钙库"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于蛋白质相互作用结构域（表20-4、图20-5），下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{SH2}$ 认富含脯氨酸，$\\mathrm{SH3}$ 认磷酸化酪氨酸；$\\mathrm{SH2}$ 与 $\\mathrm{PTB}$ 是同一个结构域；必须把其他书的 $\\mathrm{PDZ}$、$\\mathrm{SAM}$ 补进必考名单；$\\mathrm{Grb2}$ 有催化区；这些结构域都有酶活性；衔接蛋白质就是支架蛋白质",
+        "表20-4 主要举例：$\\mathrm{SH2}$ 认含磷酸化酪氨酸模体（图上 $\\mathrm{pY}$-$\\mathrm{X}$-$\\mathrm{X}$-$\\mathrm{Hy}$）；$\\mathrm{SH3}$ 认富含脯氨酸模体（图上 $\\mathrm{P}$-$\\mathrm{X}$-$\\mathrm{X}$-$\\mathrm{P}$-$\\mathrm{X}$）；$\\mathrm{PH}$ 认磷脂衍生物；$\\mathrm{PTB}$ 也认含磷酸化酪氨酸模体（图上 $\\mathrm{Hy}$-$\\mathrm{X}$-$\\mathrm{N}$-$\\mathrm{P}$-$\\mathrm{X}$-$\\mathrm{pY}$），与 $\\mathrm{SH2}$ 不是同一结构域。这些结构域没有催化活性。图20-5 另见 $\\mathrm{WW}$（认 $\\mathrm{P}$-$\\mathrm{P}$-$\\mathrm{X}$-$\\mathrm{Y}$），看图能指认即可，不要把教材没有列为主要举例的结构域补充成必考清单。$\\mathrm{Grb2}$ 由 $1$ 个 $\\mathrm{SH2}$ 和 $2$ 个 $\\mathrm{SH3}$ 构成、没有催化区，连接 $\\mathrm{EGFR}$ 和 $\\mathrm{SOS}$。衔接蛋白质是接头；支架蛋白质把同一途径分子组织成群、隔离途径以维持特异",
+        "一个信号分子只能含一种蛋白质相互作用结构域；同一类结构域只能存在于一种分子中",
+        "先有 $\\mathrm{SH2}$ 结合，受体才发生酪氨酸磷酸化"
+      ],
+      "answer": 1,
+      "hint": "按图20-5：$\\mathrm{SH2}/\\mathrm{PTB}$ 都认 $\\mathrm{pY}$ 但不是同一域；$\\mathrm{SH3}$ 认脯氨酸；不补教材没有的结构域。",
+      "explanation": "**B 正确。** 表20-4、图20-5、$\\mathrm{Grb2}$、衔接 vs 支架，都来自 ch20-2。\n\n**干扰项辨析**：\n- A：认的模体对调；$\\mathrm{SH2}/\\mathrm{PTB}$ 并户；补其他书结构域；$\\mathrm{Grb2}$ 写成有催化区；结构域有酶活性；衔接＝支架。\n- C：一个分子可含两种以上；同一类可存在于不同分子。\n- D：先有磷酸化位点，$\\mathrm{SH2}$ 才靠得上。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-2.md",
+        "label": "SH2/SH3/PH/PTB · 图20-5 WW可指认 · Grb2 1个SH2+2个SH3 · 不补必考名单"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于本版受体分类以及离子通道型／胞内受体，下列叙述正确的是（　）。",
+      "options": [
+        "受体分成四大类平级：核受体、离子通道、$\\mathrm{GPCR}$、酶偶联、再加蛋白质激酶偶联；酶偶联与蛋白质激酶偶联是两类；$\\mathrm{N}$ 型乙酰胆碱受体是七次跨膜单体，结合后通道一直开到配体被水解；表20-5 要把细胞内受体填进「跨膜区段数」；自身没有激酶活性就只能是 $\\mathrm{GPCR}$",
+        "各种细胞内受体归为一类。膜受体三种：离子通道（寡聚体，$4$ 次跨膜，化学信号变电信号）、$\\mathrm{GPCR}$（单体，$7$ 次跨膜，激活 $\\mathrm{G}$ 蛋白）、酶偶联／蛋白质激酶偶联（单体，$1$ 次跨膜，激活蛋白质激酶）。酶偶联与蛋白质激酶偶联是同一类的两种叫法。表20-5 标题是「三类膜受体」，细胞内受体不在表里。「偶联」有两种形式：自身有激酶，或通过蛋白质相互作用激活某种激酶；自身没有催化活性仍可属这一型。$\\mathrm{N}$ 型乙酰胆碱受体：$2\\alpha+\\beta+\\gamma+\\delta$，两分子乙酰胆碱使通道开放，但开放只维持几十毫微秒。图20-7 电子版缺失，正文保留图号。胞内受体多为转录因子，未结合时往往与热激蛋白（图上 $\\mathrm{Hsp90}$）成复合物；配体：类固醇激素、甲状腺激素、维甲酸和维生素 $\\mathrm{D}$ 等",
+        "$\\mathrm{GPCR}$ 是寡聚体四次跨膜；离子通道是单体七次跨膜；酶偶联必须自身带激酶否则不算",
+        "胞内受体全部位于细胞质，结合配体后基因立刻开放，不必经热激蛋白解离和激素反应元件"
+      ],
+      "answer": 1,
+      "hint": "胞内一类、膜受体三种；酶偶联＝蛋白质激酶偶联；图20-7 电子版缺失。",
+      "explanation": "**B 正确。** 本版分类、表20-5、$\\mathrm{N}$ 型乙酰胆碱受体、胞内受体 $\\mathrm{Hsp90}$，都来自 ch20-3。\n\n**干扰项辨析**：\n- A：四大类平级；两种叫法拆开；$\\mathrm{N}$ 型结构写错；表20-5 加成核受体；无激酶就改答 $\\mathrm{GPCR}$。\n- C：跨膜次数对调；「或不具有催化活性」被删。\n- D：有一些受体已在核内；中间还有与抑制蛋白分离、入核、结合激素反应元件。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-3.md",
+        "label": "胞内一类·膜受体三种·酶偶联即蛋白质激酶偶联·N型AChR·图20-7缺失"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{G}_{\\mathrm{s}}$ 与 $\\mathrm{G}_{\\mathrm{q}}$、$\\mathrm{G}$ 蛋白循环以及表20-7，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{G}_{\\mathrm{s}}$ 和 $\\mathrm{G}_{\\mathrm{q}}$ 是同一条途径；静止时 $\\mathrm{G}\\alpha$ 结合 $\\mathrm{GTP}$；$\\beta\\gamma$ 解离后被扔掉；$\\alpha_{\\mathrm{t}}$ 使 $\\mathrm{cGMP}$ 升高；胰高血糖素走 $\\mathrm{PLC}$；只有 $\\mathrm{DAG}$ 就能激活 $\\mathrm{PKC}$；$\\mathrm{CRE}$ 是转录因子蛋白质",
+        "$\\mathrm{G}_{\\mathrm{s}}$ 走 $\\mathrm{AC}\\rightarrow\\mathrm{cAMP}\\rightarrow\\mathrm{PKA}$（胰高血糖素、肾上腺素、促肾上腺皮质激素）；$\\mathrm{G}_{\\mathrm{q}}$ 走 $\\mathrm{PLC}\\rightarrow\\mathrm{DAG}/\\mathrm{IP}_3\\rightarrow\\mathrm{PKC}$（促甲状腺素释放激素、去甲肾上腺素、抗利尿激素），不要并户。$\\mathrm{G}$ 蛋白循环：静止时 $\\mathrm{G}\\alpha$ 结合 $\\mathrm{GDP}$ 并与 $\\beta\\gamma$ 成三聚体；活化受体促进 $\\mathrm{GTP}$-$\\mathrm{GDP}$ 交换；$\\mathrm{G}\\alpha$-$\\mathrm{GTP}$ 激活效应分子，$\\beta\\gamma$ 解离但不是被扔掉；$\\mathrm{GTP}$ 酶把 $\\mathrm{GTP}$ 水解成 $\\mathrm{GDP}$ 后重新装配，可再次接受受体信号。表20-7：$\\alpha_{\\mathrm{s}}$ 开 $\\mathrm{AC}$ 升 $\\mathrm{cAMP}$；$\\alpha_{\\mathrm{i}}$ 关 $\\mathrm{AC}$ 降 $\\mathrm{cAMP}$；$\\alpha_{\\mathrm{q}}$ 开 $\\mathrm{PLC}$ 升 $\\mathrm{Ca}^{2+}/\\mathrm{IP}_3/\\mathrm{DAG}$；$\\alpha_{\\mathrm{t}}$ 开 $\\mathrm{cGMP}$-$\\mathrm{PDE}$ 因而 $\\mathrm{cGMP}$ 降低、$\\mathrm{Na}^{+}$ 通道关闭。激活 $\\mathrm{PKC}$ 需要质膜上的 $\\mathrm{DAG}$、磷脂酰丝氨酸与 $\\mathrm{Ca}^{2+}$ 共同作用。$\\mathrm{CRE}$ 是 $\\mathrm{DNA}$，$\\mathrm{CREB}$ 是蛋白质",
+        "所有 $\\mathrm{GPCR}$ 升钙都必须先切 $\\mathrm{PIP}_2$；图20-9 只有 $\\mathrm{G}_{\\mathrm{s}}$ 一条",
+        "$\\mathrm{G}$ 蛋白循环一旦走到 $\\mathrm{G}\\alpha$-$\\mathrm{GTP}$ 就不能再回到三聚体，所以细胞只能响应一次"
+      ],
+      "answer": 1,
+      "hint": "$\\mathrm{G}_{\\mathrm{s}}$≠$\\mathrm{G}_{\\mathrm{q}}$；循环是 $\\mathrm{GDP}$ 静止、$\\mathrm{GTP}$ 活化、水解再装配；$\\alpha_{\\mathrm{t}}$ 降 $\\mathrm{cGMP}$。",
+      "explanation": "**B 正确。** $\\mathrm{G}_{\\mathrm{s}}/\\mathrm{G}_{\\mathrm{q}}$ 分户、图20-8 循环、表20-7 四种 $\\mathrm{G}\\alpha$，都来自 ch20-3。\n\n**干扰项辨析**：\n- A：并户；核苷酸状态写反；$\\beta\\gamma$ 扔掉；$\\alpha_{\\mathrm{t}}$ 升 $\\mathrm{cGMP}$；配体走错路；$\\mathrm{CRE}$ 当成蛋白质。\n- C：$\\mathrm{GPCR}$ 升钙至少三种方式；图20-9 有 $\\mathrm{G}_{\\mathrm{s}}$、$\\mathrm{G}_{\\mathrm{q}}$ 和右侧升钙。\n- D：循环的意义就是可终止并再次接受信号。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-3.md",
+        "label": "Gs-AC-cAMP-PKA vs Gq-PLC-DAG/IP3-PKC · 图20-8循环 · 表20-7 αs/i/q/t"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于 $\\mathrm{MAPK}$、图20-10／图20-11 以及蛋白质激酶偶联受体，下列叙述正确的有（　）。",
+      "options": [
+        "$\\mathrm{MAPK}$ 至少有 $12$ 种，分属于 $\\mathrm{ERK}$、$\\mathrm{p38}$、$\\mathrm{JNK}$ 三大家族，组成和细胞内效应见图20-10。$\\mathrm{p38}/\\mathrm{JNK}$ 画面指向凋亡、炎症、应激；$\\mathrm{ERK}$ 指向增殖、转化、分化。不要把 $\\mathrm{MAPK}$ 写成只有 $\\mathrm{ERK}$",
+        "了解最清楚的是 $\\mathrm{Ras}/\\mathrm{MAPK}$ 途径，完整图为图20-11（电子版缺失，正文保留图号，六步以文字为准）。$\\mathrm{EGFR}$ 六步：二聚化→自身 $\\mathrm{Tyr}$ 磷酸化→$\\mathrm{Grb2}$→$\\mathrm{SOS}$→$\\mathrm{Ras}$-$\\mathrm{GTP}$→$\\mathrm{MAPKKK}$→$\\mathrm{MAPKK}$→$\\mathrm{MAPK}$ 入核。不要把图20-10 改口成图20-11，也不要用其他教材口诀替换这三级。受体自身磷酸化造 $\\mathrm{SH2}$ 位点，不是受体直接磷酸化 $\\mathrm{MAPK}$。$\\mathrm{EGFR}$ 还可募集其他含 $\\mathrm{SH2}$ 的分子，走 $\\mathrm{PLC}$、$\\mathrm{PI3K}$",
+        "酶偶联与蛋白质激酶偶联是同一类。许多单次跨膜受体可以激活 $\\mathrm{Ras}/\\mathrm{MAPK}$；甚至 $\\mathrm{GPCR}$ 也可以通过调节分子汇入。$\\mathrm{N}$ 型乙酰胆碱受体是离子通道型（$2\\alpha+\\beta+\\gamma+\\delta$），图20-7 电子版缺失，不要把它写成七次跨膜或把结局答成入核调转录",
+        "图20-10 就是 $\\mathrm{EGFR}$ 全图，应改标为图20-11；$\\mathrm{MAPK}$ 只有 $\\mathrm{ERK1/2}$；酶偶联是第四大类平级受体；$\\mathrm{GPCR}$ 是四次跨膜寡聚体；级数名单以其他教材为准"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "图20-10＝三大家族；图20-11＝EGFR（电子版缺失）；级联写 MAPKKK→MAPKK→MAPK。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：至少 $12$ 种、三大家族、图20-10 结局，来自 ch20-3。\n- B：图20-11 电子版缺失、六步、不要改口、还可走 $\\mathrm{PLC}/\\mathrm{PI3K}$，来自 ch20-3。\n- C：两种叫法同一类；$\\mathrm{GPCR}$ 也可汇入；$\\mathrm{N}$ 型乙酰胆碱受体分户，来自 ch20-3。\n- **D 错**：逐句写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-3.md",
+        "label": "图20-10三大家族 · 图20-11 EGFR缺失 · MAPKKK→MAPKK→MAPK · 酶偶联＝蛋白质激酶偶联"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于信号转导的基本规律（数量／分布／活性、级联、通用与专一、多样性），下列叙述正确的有（　）。",
+      "options": [
+        "上游引起下游的数量、分布或活性状态变化，是转导的基本机制。数量如 $\\mathrm{cAMP}$ 生成增多；分布如 $\\mathrm{Ca}^{2+}$ 从钙库释放到细胞质；活性如蛋白质磷酸化或 $\\mathrm{G}$ 蛋白换上 $\\mathrm{GTP}$。双向反应： $\\mathrm{AC}$／磷酸二酯酶、$\\mathrm{Ca}^{2+}$ 释放／泵、$\\mathrm{PLC}$ 切 $\\mathrm{PIP}_2$／再合成；蛋白质则结合／解离或磷酸化／去磷酸化。传递和终止可以同时存在，不是「先全部传完再全部关掉」",
+        "细胞对外源信号进行转换和传递时，大都具有逐级放大的效应。本版点名的两套典型级联是 $\\mathrm{GPCR}$ 介导的过程和蛋白质激酶偶联受体介导的 $\\mathrm{MAPK}$ 途径。「大都」不是「全部」：离子通道型受体把化学信号变成电信号，不是靠三级激酶放大。不要把级联只记成 $\\mathrm{MAPK}$",
+        "通用性：分子和途径常常被不同受体共用，有限分子满足多种受体。专一性：配体－受体－途径－效应蛋白的特定组合。多样性五方面：一种信号分子可走不同途径（$\\mathrm{IL}$-$1\\beta$）；一种受体可同时开几条（$\\mathrm{PDGF}$），一条途径也可被多种受体激活（$\\mathrm{PI3K}$）；一种分子可参与多条（$\\mathrm{GPCR}$ 的 $\\beta\\gamma$ 接 $\\mathrm{MAPK}$）；途径互相调节（$\\mathrm{ERK}$ 磷酸化 $\\mathrm{Smad2/3}$ 特定位点是削弱入核；$\\mathrm{PKC}$ 改 $\\mathrm{EGFR}/\\mathrm{Ras}/\\mathrm{Raf}$-$1$）；不同途径可调控同一效应（趋化因子受体是 $\\mathrm{GPCR}$，途径不同但都参与趋化运动）",
+        "逐级放大是所有受体的必经步骤；每个受体都有专用途径；通用性等于所有细胞对同一配体反应相同；$\\mathrm{ERK}$ 磷酸化 $\\mathrm{Smad2/3}$ 一定激活 $\\mathrm{Smad}$；趋化因子受体应改写成酶偶联受体；$\\mathrm{TSH}$ 抗体和 $RAS$ 突变是本节多样性的主账"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "三类变化；GPCR 与 MAPK 都是级联；零件共用、组合专一。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：三类变化与双向反应，来自 ch20-4。\n- B：两套级联、「大都」不是全部，来自 ch20-4。\n- C：通用／专一／多样性五方面，来自 ch20-4。\n- **D 错**：逐句写反；疾病例子是第五节的账。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-4.md",
+        "label": "数量/分布/活性 · GPCR与MAPK级联 · 通用又专一 · 多样性五方面"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "细胞通信就是信号转导。水溶性信号进细胞核找核受体。$\\mathrm{cAMP}$ 直接磷酸化下游。$\\mathrm{PLC}$ 与 $\\mathrm{PI3K}$ 是同一种酶。图20-10 应改口成图20-11。酶偶联与蛋白质激酶偶联是两类平级受体。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：通信≠转导；水溶走膜受体；四分子 $\\mathrm{cAMP}$ 解开 $\\mathrm{C}$ 亚基；$\\mathrm{PLC}$ 切、$\\mathrm{PI3K}$ 加磷酸；图20-10≠图20-11。",
+      "explanation": "**该命题错误，每一分句都错。** 细胞通信是发送／接收／放大；信号转导是胞外信息变成胞内有序事件。水溶性不能进靶细胞，走膜受体。$4$ 分子 $\\mathrm{cAMP}$ 结合 $\\mathrm{PKA}$ 的 $\\mathrm{R}$ 亚基，释放催化亚基 $\\mathrm{C}$，$\\mathrm{cAMP}$ 不直接磷酸化。$\\mathrm{PLC}$ 裂解 $\\mathrm{PIP}_2$ 得 $\\mathrm{DAG}+\\mathrm{IP}_3$，$\\mathrm{PI3K}$ 在 $3$ 位磷酸化。图20-10 是 $\\mathrm{MAPK}$ 三大家族；图20-11 才是 $\\mathrm{EGFR}$ 途径（电子版缺失）。酶偶联与蛋白质激酶偶联是同一类膜受体的两种叫法。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-1.md",
+        "label": "通信≠转导 · 水溶膜受体 · 四分子cAMP · PLC≠PI3K · 图20-10≠图20-11"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "$\\mathrm{TSH}$ 受体刺激性抗体和阻断性抗体是同一种。$ERB$-$B$ 是对 $\\mathrm{EGF}$ 亲和力升高。$RAS$ 突变的残基是 $\\mathrm{G}\\alpha$ 的 $201$、$227$。霍乱毒素作用于 $\\mathrm{GPCR}$ 的配体结合部位。胰岛素受体 $735$ 位是 $\\mathrm{PTK}$ 活性下降、$1\\,008$ 位是亲和力下降。肾性尿崩症是下丘脑做不出抗利尿激素。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "两种抗体作用相反；$RAS$ 是 $12/13/61$；霍乱坏在 $\\mathrm{G}\\alpha$；$735$ 亲和力、$1\\,008$ 的 $\\mathrm{RTK}$。",
+      "explanation": "**该命题错误，每一分句都错。** 刺激性抗体模拟 $\\mathrm{TSH}$ 激活受体（自身免疫性甲状腺病）；阻断性抗体抑制受体与 $\\mathrm{TSH}$ 结合，可致甲状腺功能减退。$ERB$-$B$ 缺乏胞外配体结合区，胞内区已活化，不依赖 $\\mathrm{EGF}$。$RAS$ 是 $12$ 或 $13$ 位甘氨酸、$61$ 位谷氨酰胺被取代，$\\mathrm{GTP}$ 酶降低，使 $\\mathrm{MAPK}$ 持续激活、肿瘤细胞持续增殖；$201$、$227$ 是三聚体 $\\mathrm{G}\\alpha$。霍乱毒素 $\\mathrm{A}$ 亚基直接结合 $\\mathrm{G}\\alpha$ 做 $\\mathrm{ADP}$-核糖化。$735$ 位 $\\mathrm{Arg}\\rightarrow\\mathrm{Ser}$ 是亲和力下降；$1\\,008$ 位 $\\mathrm{Gly}\\rightarrow\\mathrm{Val}$ 是 $\\mathrm{RTK}$ 活性降低。肾性尿崩症坏的是肾上的 $\\mathrm{ADH}$ $\\mathrm{V2}$ 受体。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-5.md",
+        "label": "TSH刺激性≠阻断性 · ERB-B无胞外区 · RAS 12/13/61 · 霍乱Gα · 735/1008"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "本版：________ 分子 $\\mathrm{cAMP}$ 结合 $\\mathrm{PKA}$ 的 $\\mathrm{R}$ 亚基，释放催化亚基。膜受体分成离子通道、________ 和蛋白质激酶偶联受体三类。$\\mathrm{MAPK}$ 三大家族见图 ________，不要改口成图20-11。$\\mathrm{G}_{\\mathrm{s}}$ 走 $\\mathrm{AC}\\rightarrow\\mathrm{cAMP}\\rightarrow\\mathrm{PKA}$，$\\mathrm{G}_{\\mathrm{q}}$ 走 ________。自身免疫性甲状腺病中，$\\mathrm{TSH}$ 受体的 ________ 抗体可模拟 $\\mathrm{TSH}$。",
+      "answer": "4, G蛋白偶联受体, 20-10, PLC→DAG/IP3→PKC, 刺激性",
+      "hint": "四分子 $\\mathrm{cAMP}$；膜受体第三亚类与酶偶联同一类；图20-10≠图20-11；$\\mathrm{G}_{\\mathrm{q}}$ 走 $\\mathrm{PLC}$；刺激性抗体模拟 $\\mathrm{TSH}$。",
+      "scoring_criteria": [
+        "第一空填“4”（或“四”“四个”）（2分）",
+        "第二空填“G蛋白偶联受体”（或“GPCR”“G 蛋白偶联型受体”“七次跨膜受体”）（2分）",
+        "第三空填“20-10”（或“图20-10”“20－10”）（2分）",
+        "第四空填“PLC→DAG/IP3→PKC”（或“PLC-DAG/IP3-PKC”“磷脂酶C→DAG和IP3→PKC”“PLC切PIP2得DAG和IP3再激活PKC”）（2分）",
+        "第五空填“刺激性”（或“刺激性抗体”）（2分）"
+      ],
+      "explanation": "图20-3 标明 $4$ 分子 $\\mathrm{cAMP}$ 解开 $\\mathrm{PKA}$。章末小结：膜受体三个亚类为离子通道型、$\\mathrm{G}$ 蛋白偶联型、蛋白质激酶偶联；酶偶联与后者同一类。图20-10 是 $\\mathrm{MAPK}$ 三大家族，图20-11 才是 $\\mathrm{EGFR}$（电子版缺失）。$\\mathrm{G}_{\\mathrm{s}}$ 与 $\\mathrm{G}_{\\mathrm{q}}$ 不要并户。刺激性抗体模拟 $\\mathrm{TSH}$，阻断性抗体抑制结合。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-2.md",
+        "label": "4分子cAMP；GPCR；图20-10；Gq走PLC；刺激性抗体"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "细胞怎样发信、收信并把信号交到下游？请写出：①细胞通信≠信号转导。②水溶性→膜受体；脂溶性（类固醇／甲状腺素／维A／维D等本版名单）→胞内受体。③本版受体：细胞内受体一类；膜受体三种——离子通道、$\\mathrm{GPCR}$（七次跨膜）、酶偶联／蛋白质激酶偶联（单次跨膜，两种叫法同一类）。④$\\mathrm{G}_{\\mathrm{s}}\\rightarrow\\mathrm{AC}\\rightarrow\\mathrm{cAMP}\\rightarrow\\mathrm{PKA}$ vs $\\mathrm{G}_{\\mathrm{q}}\\rightarrow\\mathrm{PLC}\\rightarrow\\mathrm{DAG}/\\mathrm{IP}_3\\rightarrow\\mathrm{PKC}$，不要并户；并写出 $\\mathrm{G}$ 蛋白循环（$\\mathrm{GTP}/\\mathrm{GDP}$）。",
+      "answer": "参考答案：\n\n**1. 通信≠转导**\n- 细胞通信：精确高效地发送与接收信息，并通过放大引起快速生理反应。\n- 信号转导：多种分子有序作用，把胞外信息传到胞内，调节代谢、增殖、分化、功能活动和凋亡。\n- 不要并成一句话。$\\mathrm{DNA}$ 损伤、$\\mathrm{ROS}$、低氧也可在细胞内启动转导。\n\n**2. 水溶／脂溶与受体位置**\n- 水溶性和膜结合性不能进靶细胞，走膜受体。\n- 脂溶性走胞内受体。本版：类固醇激素、甲状腺激素、视黄酸／维甲酸、维生素 $\\mathrm{A}$、维生素 $\\mathrm{D}$ 等；图20-1 还有前列腺素、脂类和气体。不要缩成只有类固醇。\n- 表20-1 内分泌是「膜或胞内受体」：胰岛素走膜受体，甲状腺激素可走胞内受体。\n\n**3. 本版受体分类**\n- 细胞内受体归为一类（多为转录因子，未结合时与热激蛋白如 $\\mathrm{Hsp90}$ 成复合物）。\n- 膜受体三种：离子通道（寡聚体、$4$ 次跨膜）；$\\mathrm{GPCR}$（单体、$7$ 次跨膜）；酶偶联／蛋白质激酶偶联（单体、$1$ 次跨膜）。两种叫法同一类，不要拆成第四大类。\n- $\\mathrm{N}$ 型乙酰胆碱受体是离子通道型典型代表；图20-7 电子版缺失。\n\n**4. Gs vs Gq 与 G 循环**\n- $\\mathrm{G}_{\\mathrm{s}}$：$\\mathrm{AC}\\rightarrow\\mathrm{cAMP}\\rightarrow\\mathrm{PKA}$（胰高血糖素、肾上腺素、促肾上腺皮质激素）。\n- $\\mathrm{G}_{\\mathrm{q}}$：$\\mathrm{PLC}\\rightarrow\\mathrm{DAG}/\\mathrm{IP}_3\\rightarrow\\mathrm{PKC}$（促甲状腺素释放激素、去甲肾上腺素、抗利尿激素）。\n- 循环：静止 $\\mathrm{G}\\alpha$-$\\mathrm{GDP}$ 三聚体→受体促进交换→$\\mathrm{G}\\alpha$-$\\mathrm{GTP}$ 激活效应分子、$\\beta\\gamma$ 解离→$\\mathrm{GTP}$ 酶水解后重新装配，可再次接受信号。",
+      "hint": "先钉死通信≠转导和水溶／脂溶，再写本版四户受体，最后 Gs 与 Gq 分户加循环。",
+      "scoring_criteria": [
+        "写出细胞通信≠信号转导，并点出发送／接收／放大 vs 胞外信息变成胞内有序事件（3分）",
+        "写出水溶性→膜受体、脂溶性本版名单→胞内受体，内分泌可以是膜或胞内（3分）",
+        "写出细胞内受体一类、膜受体三种，酶偶联与蛋白质激酶偶联同一类（4分）",
+        "写出 Gs-AC-cAMP-PKA 与 Gq-PLC-DAG/IP3-PKC 不要并户，并写出 GTP/GDP 循环（4分）"
+      ],
+      "explanation": "本题把第 20-1、20-3 节收成“两户—溶解性与受体位置—本版分类—Gs/Gq 与循环”。易错点：通信转导并户；脂溶名单缩成类固醇；四大类平级；Gs 与 Gq 并户。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-1.md",
+        "label": "通信≠转导；水溶/脂溶；本版受体分类；Gs vs Gq 与G循环"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "细胞内分子、基本规律和疾病怎样按本版分户？请写出：①四分子 $\\mathrm{cAMP}$ 解开 $\\mathrm{PKA}$ 的 $\\mathrm{C}$ 亚基；$\\mathrm{PLC}$ 切 $\\mathrm{PIP}_2$ 得 $\\mathrm{DAG}+\\mathrm{IP}_3$，$\\mathrm{PI3K}$ 做 $3$-磷酸肌醇，两路不要并户。②结构域按图20-5：$\\mathrm{SH2}/\\mathrm{SH3}/\\mathrm{PTB}/\\mathrm{WW}$，不补充教材没有的结构域当必考。③$\\mathrm{MAPK}$ 看图20-10，不要改口成图20-11；$\\mathrm{EGFR}$ 图电子版缺失。④规律：数量／分布／活性三类变化；级联（$\\mathrm{GPCR}$ 与 $\\mathrm{MAPK}$）；途径共用又专一。⑤疾病：受体异常 vs 分子异常；$\\mathrm{TSH}$ 受体刺激性／阻断性抗体；$RAS$ 突变（$12/13/61$）持续增殖。",
+      "answer": "参考答案：\n\n**1. 第二信使两路**\n- $\\mathrm{PKA}$：$2\\mathrm{C}+2\\mathrm{R}$，$4$ 分子 $\\mathrm{cAMP}$ 结合 $\\mathrm{R}$，游离出 $\\mathrm{C}$。$\\mathrm{cAMP}$ 不直接磷酸化。$\\mathrm{PKG}$ 不是 $2\\mathrm{C}+2\\mathrm{R}$；$\\mathrm{cGAMP}\\rightarrow\\mathrm{STING}$。\n- $\\mathrm{PLC}$ 裂解 $\\mathrm{PIP}_2$ 得 $\\mathrm{DAG}+\\mathrm{IP}_3$（$\\mathrm{DAG}$ 留膜，$\\mathrm{IP}_3$ 开钙库→$\\mathrm{PKC}$）。$\\mathrm{PI3K}$ 在 $3$ 位磷酸化得 $3$-磷酸肌醇（$\\mathrm{PIP}_3$ 调 $\\mathrm{PKB}$）。两路不要并户。\n\n**2. 结构域**\n- 表20-4：$\\mathrm{SH2}$ 认磷酸酪氨酸，$\\mathrm{SH3}$ 认脯氨酸，$\\mathrm{PH}$ 认磷脂衍生物，$\\mathrm{PTB}$ 也认磷酸酪氨酸但不是 $\\mathrm{SH2}$。图20-5 另见 $\\mathrm{WW}$。没有催化活性。不要把教材未列为主要举例的结构域补成必考。$\\mathrm{Grb2}$：$1$ 个 $\\mathrm{SH2}+2$ 个 $\\mathrm{SH3}$。\n\n**3. MAPK 与图号**\n- 图20-10：$\\mathrm{ERK}/\\mathrm{p38}/\\mathrm{JNK}$，至少 $12$ 种。图20-11：$\\mathrm{EGFR}$ 六步，电子版缺失。级联写 $\\mathrm{MAPKKK}\\rightarrow\\mathrm{MAPKK}\\rightarrow\\mathrm{MAPK}$，不要换成其他书口诀。\n\n**4. 规律**\n- 数量、分布、活性三类变化。双向可同时存在。\n- 级联：$\\mathrm{GPCR}$ 过程与 $\\mathrm{MAPK}$ 途径都是典型；「大都」不是全部。\n- 通用性：有限分子被不同受体共用。专一性：配体－受体－途径－效应蛋白的特定组合。\n\n**5. 疾病两层**\n- 受体异常：$ERB$-$B$ 无胞外区持续开 $\\mathrm{MAPK}$；$\\mathrm{TSH}$ 刺激性抗体模拟 $\\mathrm{TSH}$（自身免疫性甲状腺病）；阻断性抗体抑制结合，可致甲状腺功能减退。\n- 分子异常：$RAS$ 的 $12/13$ 位 $\\mathrm{Gly}$、$61$ 位 $\\mathrm{Gln}$，$\\mathrm{GTP}$ 酶降低→$\\mathrm{MAPK}$ 持续激活→肿瘤细胞持续增殖。不要与 $\\mathrm{G}\\alpha$ 的 $201/227$ 对调。霍乱毒素 $\\mathrm{ADP}$-核糖化的是 $\\mathrm{G}\\alpha$，不是受体配体部位。",
+      "hint": "按 cAMP 四分子与 PLC/PI3K → 结构域 → 图20-10/11 → 三类变化与级联 → TSH/RAS 写。不要并户，不要补教材没有的结构域。",
+      "scoring_criteria": [
+        "写出四分子cAMP解开PKA、PLC切PIP2得DAG+IP3、PI3K做3-磷酸肌醇、两路不要并户（3分）",
+        "写出SH2/SH3/PTB/WW按图20-5，不补充教材没有的结构域当必考（2分）",
+        "写出MAPK看图20-10、不要改口成图20-11、EGFR图电子版缺失（3分）",
+        "写出数量/分布/活性三类变化、GPCR与MAPK都是级联、途径共用又专一（3分）",
+        "写出受体异常vs分子异常、TSH刺激性/阻断性抗体、RAS突变12/13/61持续增殖（4分）"
+      ],
+      "explanation": "本题把第 20-2 至 20-5 节收成“信使两路—结构域—图号—规律—疾病两层”。易错点：PLC 与 PI3K 并户；补其他书结构域；图20-10 改口；TSH 两种抗体并成一种；RAS 残基与 Gα 对调。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch20-2.md",
+        "label": "四分子cAMP与PLC/PI3K；图20-5结构域；图20-10/11；三类变化；TSH/RAS"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

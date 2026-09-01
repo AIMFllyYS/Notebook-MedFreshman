@@ -16,7 +16,7 @@ export interface ContentChunk {
   contextPrefix: string; // 文档级摘要（前 100 token，用于上下文化嵌入）
 }
 
-const SEARCHABLE_CATEGORIES = new Set(['detail', 'recording', 'summary']);
+const SEARCHABLE_CATEGORIES = new Set(['detail', 'recording', 'summary', 'textbook']);
 const TARGET_CHUNK_TOKENS = 300;
 const MAX_CHUNK_TOKENS = 400;
 const MIN_SPLIT_TOKENS = 100;

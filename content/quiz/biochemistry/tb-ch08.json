@@ -1,0 +1,321 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch08",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch08-1.md；content/biochemistry/textbook/ch08-2.md；content/biochemistry/textbook/ch08-3.md；content/biochemistry/textbook/ch08-4.md；content/biochemistry/textbook/ch08-5.md；content/biochemistry/textbook/ch08-6.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于脂质不由基因编码、不易溶于水以及脂肪与类脂分户，下列叙述正确的是（　）。",
+      "options": [
+        "脂质由基因直接编码，与蛋白质、核酸同一套遗传信息系统；最基本特性是易溶于水；脂肪包括磷脂和胆固醇；糖原才是体内主要储能；$1\\,\\mathrm{g}$ 甘油三酯彻底氧化按口诀净得 $38\\,\\mathrm{ATP}$",
+        "脂质是脂肪和类脂的总称。分子不由基因编码，独立于从基因到蛋白质的遗传信息系统之外。不易溶于水是最基本的特性。脂肪即甘油三酯；类脂包括固醇及其酯、磷脂和糖脂等。$1\\,\\mathrm{g}$ 甘油三酯彻底氧化产生 $38\\,\\mathrm{kJ}$，蛋白质或碳水化合物为 $17\\,\\mathrm{kJ}$；白色脂肪组织是专门脂库。$38\\,\\mathrm{kJ/g}$ 是单位质量产能，不是软脂酸净 $\\mathrm{ATP}$，也不是葡萄糖口诀 $38$",
+        "高等动植物脂肪酸多为奇数碳；$\\Delta$ 编码从甲基碳计，$\\omega$ 编码从羧基碳计；$\\omega$-$3$、$\\omega$-$6$、$\\omega$-$9$ 簇可在体内互转",
+        "植物富含胆固醇；动员出的游离脂肪酸自己溶在血浆里运输"
+      ],
+      "answer": 1,
+      "hint": "不由基因编码；不易溶于水；脂肪＝甘油三酯；$38\\,\\mathrm{kJ/g}$ 不是 $\\mathrm{ATP}$ 口诀。",
+      "explanation": "**B 正确。** 不由基因编码、不易溶于水、脂肪／类脂分户、$38\\,\\mathrm{kJ}$ 对 $17\\,\\mathrm{kJ}$、不要把 $38$ 听成 $\\mathrm{ATP}$，都按教材。\n\n**干扰项辨析**：\n- A：脂质不由基因编码；不易溶于水；脂肪不是磷脂／胆固醇；储能主要是甘油三酯；$38\\,\\mathrm{kJ/g}$ 不是净 $\\mathrm{ATP}$。\n- C：多为 $14\\sim 20$ 碳、偶数；$\\Delta$ 从羧基计、$\\omega$ 从甲基计；三簇不能互转。\n- D：植物不含胆固醇而含 $\\beta$-谷固醇；游离脂肪酸靠清蛋白（每分子结合 $7$ 分子）。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-1.md",
+        "label": "脂质不由基因编码 · 不易溶于水 · 38 kJ/g · pitfall「不是基因表达产物」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于必需脂肪酸以及人体去饱和酶名单，下列叙述正确的是（　）。",
+      "options": [
+        "人体连 $\\Delta^{9}$ 都没有，油酸也必须吃；花生四烯酸完全不能由亚油酸合成；吃亚油酸可以补 $\\alpha$-亚麻酸；甘油磷脂 $2$ 位多不饱和链可由糖转化写成",
+        "必需脂肪酸是人体自身不能合成、必须由食物提供的脂肪酸。本版点名亚油酸（$18{:}2$，$\\Delta^{9,12}$，$\\omega$-$6$）和 $\\alpha$-亚麻酸（$18{:}3$，$\\Delta^{9,12,15}$，$\\omega$-$3$），须从植物食物获得。人体只含 $\\Delta^{4}$、$\\Delta^{5}$、$\\Delta^{8}$、$\\Delta^{9}$ 去饱和酶，缺乏 $\\Delta^{9}$ 以上去饱和酶，故能合成软油酸和油酸，不能合成亚油酸、$\\alpha$-亚麻酸及花生四烯酸。花生四烯酸能以亚油酸为原料合成，但消耗必需脂肪酸。$\\omega$-$3$、$\\omega$-$6$、$\\omega$-$9$ 簇不能体内互转。甘油磷脂 $2$ 位多不饱和脂肪酸是必需脂肪酸，只能从植物油摄取",
+        "花生酸就是花生四烯酸；植物没有 $\\Delta^{12}$、$\\Delta^{15}$ 去饱和酶",
+        "软油酸、油酸也是本版点名的硬必需脂肪酸"
+      ],
+      "answer": 1,
+      "hint": "硬必需是亚油酸和 $\\alpha$-亚麻酸；人体有 $\\Delta^{9}$、缺 $\\Delta^{9}$ 以上；三簇不能互转。",
+      "explanation": "**B 正确。** 两分子硬必需、去饱和酶名单、花生四烯酸可自亚油酸合成但消耗必需脂肪酸、三簇不能互转、$2$ 位链来自植物油，都按教材。\n\n**干扰项辨析**：\n- A：人体有 $\\Delta^{9}$，能做油酸；花生四烯酸可由亚油酸合成；三簇不能互转；$2$ 位多不饱和不是糖转化。\n- C：花生酸是饱和 $20{:}0$，花生四烯酸是 $20{:}4$；植物有 $\\Delta^{9}$、$\\Delta^{12}$、$\\Delta^{15}$。\n- D：软油酸、油酸人体能做，不是硬必需。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-1.md",
+        "label": "必需脂肪酸 · Δ4/5/8/9 · pitfall「花生四烯酸不是完全不能合成」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于脂肪动员三步 $\\mathrm{ATGL}/\\mathrm{HSL}/\\mathrm{MGL}$ 以及脂解激素，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{HSL}$ 催化甘油三酯水解第一步，是动员唯一关键酶；不需要 $\\mathrm{Perilipin}$-$1$；胰岛素是脂解激素；游离脂肪酸自己溶在血浆里；脂肪细胞甘油激酶很高，动员出的甘油就地再酯化",
+        "脂肪动员是白色脂肪细胞内脂肪逐步水解，释放游离脂肪酸和甘油供其他组织利用。本版第一步主要是 $\\mathrm{ATGL}$，生成 $1,3$-和 $2,3$-甘油二酯及脂肪酸；第二步 $\\mathrm{HSL}$ 主要切甘油二酯 $\\mathrm{sn}$-$3$，生成甘油一酯和脂肪酸；第三步 $\\mathrm{MGL}$ 生成甘油和脂肪酸。脂解激素（肾上腺素、去甲肾上腺素、胰高血糖素）经 $\\mathrm{cAMP}$、$\\mathrm{PKA}$ 使 $\\mathrm{Perilipin}$-$1$ 和 $\\mathrm{HSL}$ 磷酸化：磷酸化 $\\mathrm{Perilipin}$-$1$ 激活 $\\mathrm{ATGL}$，并把活化 $\\mathrm{HSL}$ 转到脂滴表面。抗脂解：胰岛素、$\\mathrm{PGE}_2$。每分子清蛋白可结合 $7$ 分子游离脂肪酸。甘油主要被肝的甘油激酶利用，脂肪及骨骼肌该酶活性很低",
+        "动员发生在棕色脂肪；三步都由 $\\mathrm{HSL}$ 完成；清蛋白不参与转运",
+        "$\\mathrm{ATGL}$ 切甘油一酯；$\\mathrm{MGL}$ 切甘油三酯第一步"
+      ],
+      "answer": 1,
+      "hint": "第一步 $\\mathrm{ATGL}$，第二步 $\\mathrm{HSL}$ 切 $\\mathrm{sn}$-$3$，第三步 $\\mathrm{MGL}$；不要默写旧说法。",
+      "explanation": "**B 正确。** 三步酶、磷酸化 $\\mathrm{Perilipin}$-$1$、$\\mathrm{cAMP}$ 级联、清蛋白 $7$ 分子、甘油回肝，都按教材。\n\n**干扰项辨析**：\n- A：旧说法把 $\\mathrm{HSL}$ 写成第一步；需要 $\\mathrm{Perilipin}$-$1$；胰岛素抗脂解；脂肪酸靠清蛋白；脂肪细胞甘油激酶很低。\n- C：白色脂肪；三步三种酶；清蛋白转运。\n- D：酶的底物写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-3.md",
+        "label": "ATGL → HSL → MGL · pitfall「HSL 不是第一步」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于肉碱穿梭、$\\mathrm{CPT}$-Ⅰ 限速以及丙二酸单酰 $\\mathrm{CoA}$ 抑制，下列叙述正确的是（　）。",
+      "options": [
+        "长链脂肪酰 $\\mathrm{CoA}$ 直接透过线粒体内膜；限速酶是脂肪酰 $\\mathrm{CoA}$ 脱氢酶；活化只耗 $1\\,\\mathrm{ATP}$（产物 $\\mathrm{ADP}$）；脑既能氧化脂肪酸也能用酮体；饱食时 $\\mathrm{CPT}$-Ⅰ 活性最高",
+        "催化脂肪酸氧化的酶系在线粒体基质。长链脂肪酰 $\\mathrm{CoA}$ 不能直接透过内膜，需肉碱（$\\mathrm{L}$-$\\beta$ 羟-$\\gamma$-三甲氨基丁酸）穿梭：外膜 $\\mathrm{CPT}$-Ⅰ 做成脂肪酰肉碱，转位酶与等分子肉碱对向转运，内膜内侧 $\\mathrm{CPT}$-Ⅱ 变回脂肪酰 $\\mathrm{CoA}$。脂肪酰 $\\mathrm{CoA}$ 进入线粒体是 $\\beta$-氧化的限速步骤，$\\mathrm{CPT}$-Ⅰ 是关键酶。丙二酸单酰 $\\mathrm{CoA}$ 抑制 $\\mathrm{CPT}$-Ⅰ。活化由脂肪酰 $\\mathrm{CoA}$ 合成酶生成 $\\mathrm{AMP}+\\mathrm{PP}_\\mathrm{i}$，$\\mathrm{PP}_\\mathrm{i}$ 水解，实际耗 $2$ 个高能磷酸键。除脑外大多数组织能氧化脂肪酸；脑不能氧化脂肪酸，能用酮体。饥饿、高脂低糖、糖尿病时 $\\mathrm{CPT}$-Ⅰ 活性增加",
+        "羧化酶和 $\\mathrm{CPT}$-Ⅰ 是同一个关键酶；丙二酸单酰 $\\mathrm{CoA}$ 激活 $\\mathrm{CPT}$-Ⅰ",
+        "短链也必须走肉碱穿梭；$\\mathrm{CPT}$-Ⅰ 在内膜内侧"
+      ],
+      "answer": 1,
+      "hint": "限速是进线粒体，关键酶 $\\mathrm{CPT}$-Ⅰ；丙二酸单酰 $\\mathrm{CoA}$ 抑制它；活化减 $2$。",
+      "explanation": "**B 正确。** 肉碱三件套、$\\mathrm{CPT}$-Ⅰ 限速、丙二酸单酰 $\\mathrm{CoA}$ 抑制、活化耗 $2$、脑不能氧化脂肪酸，都按教材。\n\n**干扰项辨析**：\n- A：不能直接透过内膜；限速不是基质脱氢酶；活化 $\\mathrm{AMP}+\\mathrm{PP}_\\mathrm{i}$ 耗 $2$；脑不能氧化脂肪酸；饱食 $\\mathrm{CPT}$-Ⅰ 被抑制。\n- C：羧化酶是合成关键酶，$\\mathrm{CPT}$-Ⅰ 是分解关键酶；丙二酸单酰 $\\mathrm{CoA}$ 抑制 $\\mathrm{CPT}$-Ⅰ。\n- D：$\\mathrm{CPT}$-Ⅰ 在外膜。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-3.md",
+        "label": "CPT-I · 肉碱穿梭 · pitfall「限速不是基质四步里某一个」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\beta$-氧化四步以及烯中间体构型，下列叙述正确的是（　）。",
+      "options": [
+        "四步是缩合、还原、脱水、再还原；第一次脱氢受氢体是 $\\mathrm{NAD}^{+}$；羟中间体是 $\\mathrm{D}$ 型；烯中间体是天然顺式双键；过氧化酶体第一步氢走呼吸链按 $1.5\\,\\mathrm{ATP}$ 计",
+        "$\\beta$-氧化在线粒体基质，从脂肪酰基 $\\beta$-碳开始，按脱氢、加水、再脱氢、硫解四步，每次缩短 $2$ 碳，放出乙酰 $\\mathrm{CoA}$、$\\mathrm{FADH}_2$、$\\mathrm{NADH}$。①脂肪酰 $\\mathrm{CoA}$ 脱氢酶，$\\mathrm{FAD}\\rightarrow\\mathrm{FADH}_2$（$1.5\\,\\mathrm{ATP}$），得反式-$\\Delta^{2}$-烯脂肪酰 $\\mathrm{CoA}$；②水化酶加水得 $\\mathrm{L}$-$\\beta$-羟脂肪酰 $\\mathrm{CoA}$；③$\\beta$-羟脂肪酰 $\\mathrm{CoA}$ 脱氢酶，$\\mathrm{NAD}^{+}\\rightarrow\\mathrm{NADH}$（$2.5\\,\\mathrm{ATP}$）；④硫解酶加 $\\mathrm{CoASH}$。不饱和脂肪酸：顺式 $\\Delta^{3}$ 用异构酶，顺式 $\\Delta^{2}$ 水化得 $\\mathrm{D}$ 型用表异构酶。过氧化酶体超长链第一步氢交给 $\\mathrm{O}_2$ 成 $\\mathrm{H}_2\\mathrm{O}_2$，不产 $\\mathrm{ATP}$。奇数碳末端丙酰 $\\mathrm{CoA}$ 经羧化、异构成琥珀酰 $\\mathrm{CoA}$",
+        "合成软脂酸的羟中间体是 $\\mathrm{L}$ 型，氧化的是 $\\mathrm{D}$ 型",
+        "$\\omega$-氧化在线粒体基质，从羧基端开始"
+      ],
+      "answer": 1,
+      "hint": "脱氢（$\\mathrm{FAD}$）、加水、再脱氢（$\\mathrm{NAD}^{+}$）、硫解；反式-$\\Delta^{2}$；$\\mathrm{L}$ 型羟中间体。",
+      "explanation": "**B 正确。** 四步顺序、辅因子、$1.5/2.5$、反式-$\\Delta^{2}$、$\\mathrm{L}$ 型、不饱和两条补丁、过氧化酶体不产 $\\mathrm{ATP}$，都按教材。\n\n**干扰项辨析**：\n- A：那是合成一轮；第一次脱氢是 $\\mathrm{FAD}$；氧化羟中间体是 $\\mathrm{L}$ 型；烯是反式-$\\Delta^{2}$；过氧化酶体第一步不走呼吸链。\n- C：合成是 $\\mathrm{D}$ 型，氧化是 $\\mathrm{L}$ 型。\n- D：$\\omega$-氧化在内质网，从甲基端开始。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-3.md",
+        "label": "β-氧化四步 · 反式-Δ2 · pitfall「不是天然顺式」"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于本版软脂酸彻底氧化净 $\\mathrm{ATP}$，下列叙述正确的是（　）。",
+      "options": [
+        "按 $\\mathrm{NADH}=3$、$\\mathrm{FADH}_2=2$ 加成毛产 $131$ 再减 $2$ 得 $129$；或把第一节 $1\\,\\mathrm{g}$ 甘油三酯 $38\\,\\mathrm{kJ}$、葡萄糖口诀 $38\\,\\mathrm{ATP}$ 写成软脂酸净得",
+        "本版与第七章同一套标准条件：$\\mathrm{NADH}\\,2.5$、$\\mathrm{FADH}_2\\,1.5$、乙酰 $\\mathrm{CoA}\\,10$。$1$ 分子软脂酸（$16$ 碳）需 $7$ 次 $\\beta$-氧化，生成 $7\\,\\mathrm{FADH}_2$、$7\\,\\mathrm{NADH}$、$8$ 分子乙酰 $\\mathrm{CoA}$。毛产额 $(7\\times 1.5)+(7\\times 2.5)+(8\\times 10)=108$。活化 $\\mathrm{ATP}\\rightarrow\\mathrm{AMP}+\\mathrm{PP}_\\mathrm{i}$ 且 $\\mathrm{PP}_\\mathrm{i}$ 水解，减 $2$，净生成 $106$ 分子 $\\mathrm{ATP}$。不要写 $129$、$131$ 或 $38$。活化减 $2$ 与碳链长度无关",
+        "软脂酸 $8$ 次 $\\beta$-氧化得 $7$ 个乙酰 $\\mathrm{CoA}$；活化只减 $1$",
+        "本版葡萄糖有氧氧化净 $38$，软脂酸净 $129$，两本账不要混"
+      ],
+      "answer": 1,
+      "hint": "本版 $108-2=106$，不要写 $129$ 或把 $38\\,\\mathrm{kJ/g}$ 听成 $\\mathrm{ATP}$。",
+      "explanation": "**B 正确。** $7$ 次、$7+7+8$、$1.5/2.5/10$、毛 $108$、净 $106$，都按教材。\n\n**干扰项辨析**：\n- A：旧口诀 $129$ 与本版对不上；$38\\,\\mathrm{kJ/g}$ 和葡萄糖口诀 $38$ 都不是软脂酸净 $\\mathrm{ATP}$。\n- C：次数是碳数 $/2-1=7$，乙酰 $\\mathrm{CoA}$ 是 $8$；活化减 $2$。\n- D：葡萄糖本版净 $30$ 或 $32$，软脂酸净 $106$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-3.md",
+        "label": "软脂酸净 106 ATP · pitfall「不要默写成 129 或 38」"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于柠檬酸-丙酮酸循环出乙酰 $\\mathrm{CoA}$、乙酰 $\\mathrm{CoA}$ 羧化酶与 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 还原酶分户，下列叙述正确的是（　）。",
+      "options": [
+        "乙酰 $\\mathrm{CoA}$ 直接透过线粒体内膜进胞质；脂肪酸合成关键酶是 $\\mathrm{CPT}$-Ⅰ；胆固醇关键酶是 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 合酶或裂解酶；线粒体和胞质 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 去路相同；羧化酶磷酸化后活化，还原酶磷酸化后也活化",
+        "软脂酸在胞质溶胶由脂肪酸合酶复合体合成，肝是主场（活性较脂肪组织大 $8\\sim 9$ 倍）。线粒体乙酰 $\\mathrm{CoA}$ 不能自由透过内膜，经柠檬酸-丙酮酸循环运出：$\\mathrm{ATP}$-柠檬酸裂解酶裂出乙酰 $\\mathrm{CoA}$ 和草酰乙酸；苹果酸酶可提供少量 $\\mathrm{NADPH}$，主要还原力仍来自戊糖磷酸途径。乙酰 $\\mathrm{CoA}$ 羧化酶（生物素、$\\mathrm{Mn}^{2+}$）是脂肪酸合成关键酶，产物丙二酸单酰 $\\mathrm{CoA}$ 既供 $7$ 轮延长，又抑制 $\\mathrm{CPT}$-Ⅰ。$1$ 软脂酸 $=1$ 乙酰 $\\mathrm{CoA}+7$ 丙二酸单酰 $\\mathrm{CoA}$。胞质 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 被内质网 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 还原酶还原成甲羟戊酸，是胆固醇合成关键酶；线粒体 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 被裂解酶写成酮体。羧化酶与还原酶磷酸化后均失活。胆固醇物料账是 $18$ 乙酰 $\\mathrm{CoA}$、$36\\,\\mathrm{ATP}$、$16\\,\\mathrm{NADPH}$，母核不能拆，主去路是肝写胆汁酸",
+        "胰岛素经 $\\mathrm{AMPK}$ 磷酸化关掉羧化酶；胰高血糖素去磷酸化打开还原酶；甲亢因不能合成胆固醇而血清胆固醇升高",
+        "延长软脂酸仍走脂肪酸合酶复合体；内质网延长用乙酰 $\\mathrm{CoA}$，线粒体延长用丙二酸单酰 $\\mathrm{CoA}$"
+      ],
+      "answer": 1,
+      "hint": "乙酰 $\\mathrm{CoA}$ 出线粒体走柠檬酸；合成关键酶是羧化酶；胆固醇关键酶是还原酶；线粒体 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 写酮体。",
+      "explanation": "**B 正确。** 柠檬酸-丙酮酸循环、羧化酶与 $\\mathrm{CPT}$-Ⅰ 分户、还原酶对裂解酶、磷酸化均失活、$18/36/16$、胆汁酸主去路，都按教材。\n\n**干扰项辨析**：\n- A：不能直接出内膜；合成关键酶不是 $\\mathrm{CPT}$-Ⅰ；胆固醇关键酶是还原酶不是合酶／裂解酶；两处 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 去路不同；磷酸化关掉羧化酶和还原酶。\n- C：胰岛素去磷酸化开羧化酶并诱导还原酶；胰高血糖素磷酸化关掉二者；甲亢血清胆固醇低是因为促转胆汁酸。\n- D：合酶复合体停在软脂酸；内质网用丙二酸单酰 $\\mathrm{CoA}$，线粒体用乙酰 $\\mathrm{CoA}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-3.md",
+        "label": "柠檬酸-丙酮酸循环 · 羧化酶 · HMG-CoA 还原酶 · pitfall「线粒体写酮体、胞质写胆固醇」"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于酮体的生成与利用以及磷脂酶 $\\mathrm{A}_2$ 对 $\\mathrm{C}$，下列叙述正确的有（　）。",
+      "options": [
+        "酮体包括乙酰乙酸（$30\\%$）、$\\beta$-羟丁酸（$70\\%$）和丙酮（微量），在肝线粒体由乙酰 $\\mathrm{CoA}$ 经 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 生成。肝有较强合成酶系，但缺乏利用酶系，必须经血运到肝外。乙酰乙酸活化：琥珀酰 $\\mathrm{CoA}$ 转硫酶在心、肾、脑及骨骼肌；硫激酶在肾、心和脑（教材没把硫激酶写给骨骼肌）。脑不能氧化脂肪酸，能用酮体；糖不足时酮体是脑的主要能源。心肌、肾皮质用酮体能力大于用葡萄糖。正常血酮 $0.03\\sim 0.5\\,\\mathrm{mmol/L}$",
+        "磷脂酶 $\\mathrm{A}_2$ 切甘油磷脂 $\\mathrm{sn}$-$2$ 脂肪酰酯键，产物溶血磷脂 $1$ 有较强表面活性，可引起溶血；磷脂酶 $\\mathrm{B}_1$ 再切 $1$ 位后毒性消失。磷脂酶 $\\mathrm{C}$ 切甘油与磷酸之间的磷酸酯键，产物是甘油二酯 $+$ 磷酸头基，不是切脂肪酰。鞘磷脂酶属磷脂酶 $\\mathrm{C}$ 类，溶酶体；缺乏则鞘磷脂沉积（肝、脾大及痴呆）。胰 $\\mathrm{PLA}_2$ 同样切磷脂 $2$ 位，协助做成混合微团",
+        "糖不足时脂肪酸氧化增强且草酰乙酸减少，乙酰 $\\mathrm{CoA}$ 进不了三羧酸循环，肝走酮体生成。丙二酸单酰 $\\mathrm{CoA}$ 抑制 $\\mathrm{CPT}$-Ⅰ，饱食时 $\\beta$-氧化和酮体一起被掐。严重糖尿病酮体可高出正常人数十倍，致酮症酸中毒、酮尿；丙酮经呼吸道有烂苹果气味",
+        "肝自己把酮体彻底氧化；磷脂酶 $\\mathrm{C}$、$\\mathrm{D}$ 都切掉脂肪酸；鞘磷脂酶属磷脂酶 $\\mathrm{A}$，沉积的是溶血磷脂；脑既不能用脂肪酸也不能用酮体"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "肝有生成、无能利用；$\\mathrm{A}_2$ 切 $2$ 位脂肪酰，$\\mathrm{C}$ 切磷酸酯。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：酮体组成、肝不能利用、两条活化组织名单、脑用酮体，来自 ch08-3。\n- B：$\\mathrm{A}_2$ 对 $\\mathrm{C}$、溶血磷脂、鞘磷脂酶属 $\\mathrm{C}$ 类，来自 ch08-4（及 ch08-2 胰 $\\mathrm{PLA}_2$）。\n- C：草酰乙酸少、丙二酸单酰 $\\mathrm{CoA}$ 闸门、酮症酸中毒，来自 ch08-3。\n- **D 错**：肝缺乏利用酶系；$\\mathrm{C}$ 切甘油－磷酸、$\\mathrm{D}$ 切磷酸－$\\mathrm{X}$；鞘磷脂酶属 $\\mathrm{C}$ 类，积存的是鞘磷脂；脑能用酮体。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-3.md",
+        "label": "肝生成酮体不能利用 · 磷脂酶 A2 vs C · pitfall「不要写成肝自己氧化酮体」"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于 $\\mathrm{CM}/\\mathrm{VLDL}/\\mathrm{LDL}/\\mathrm{HDL}$ 与 apo、$\\mathrm{LDL}$ 受体以及 $\\mathrm{HDL}$ 逆向转运，下列叙述正确的有（　）。",
+      "options": [
+        "密度由小到大：$\\mathrm{CM}\\rightarrow\\mathrm{VLDL}\\rightarrow\\mathrm{LDL}\\rightarrow\\mathrm{HDL}$，电泳从原点到阳极：$\\mathrm{CM}$（不泳动）→ $\\beta$ → 前 $\\beta$ → $\\alpha$。$\\mathrm{CM}$ 转运外源甘油三酯及胆固醇，特征 $\\mathrm{apo\\,B}48$，小肠组装经淋巴，半衰期 $5\\sim 15$ 分钟，空腹 $12\\sim 14$ 小时血浆不应检出。$\\mathrm{VLDL}$ 转运内源甘油三酯，肝组装，$\\mathrm{apo\\,B}100$，半衰期 $6\\sim 12$ 小时。$\\mathrm{LDL}$ 转运内源胆固醇，在血浆由 $\\mathrm{VLDL}$ 经 $\\mathrm{IDL}$ 转变，几乎只含 $\\mathrm{apo\\,B}100$，不是肝直接分泌。$\\mathrm{HDL}$ 逆向转运胆固醇，主力 $\\mathrm{apo\\,A\\,I}$、$\\mathrm{A\\,II}$。$\\mathrm{apo\\,C\\,II}$ 激活 $\\mathrm{LPL}$（$10\\sim 50$ 倍），$\\mathrm{apo\\,A\\,I}$ 激活 $\\mathrm{LCAT}$；$\\mathrm{HDL}$ 是 $\\mathrm{apo\\,C\\,II}$ 贮存库",
+        "$\\mathrm{LDL}$ 受体（$839$ 氨基酸，分子质量 $160\\,000$）即 $\\mathrm{apo\\,B/E}$ 受体，认 $\\mathrm{B}100$ 或 $\\mathrm{E}$，不认 $\\mathrm{B}48$。$\\mathrm{CM}$ 残粒靠 $\\mathrm{LRP}$ 认 $\\mathrm{apo\\,E}$ 入肝。正常人每天清约 $45\\%$ 血浆 $\\mathrm{LDL}$，$2/3$ 受体途径、$1/3$ 清道夫受体（$\\mathrm{ox}$-$\\mathrm{LDL}$）。入胞游离胆固醇：关 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 还原酶、关受体转录、开 $\\mathrm{ACAT}$。家族性高胆固醇血症：$\\mathrm{LDL}$ 受体缺陷，常显；纯合 $600\\sim 800\\,\\mathrm{mg/dl}$，杂合 $300\\sim 400\\,\\mathrm{mg/dl}$",
+        "$\\mathrm{RCT}$：肝外细胞经 $\\mathrm{SR\\text{-}BI}$、$\\mathrm{ABCA}1$、$\\mathrm{ABCG}1$ 把胆固醇交给盘状前 $\\beta_1$-$\\mathrm{HDL}$；血浆 $\\mathrm{LCAT}$（肝合成）把卵磷脂 $2$ 位脂肪酰转到胆固醇 $3$ 位羟基，盘状胀成球状；$\\mathrm{CETP}$ 交换 $\\mathrm{HDL}$ 的 $\\mathrm{CE}$ 与 $\\mathrm{VLDL}$ 的 $\\mathrm{TG}$；成熟 $\\mathrm{HDL}$ 经肝 $\\mathrm{SR\\text{-}BI}$ 选择性摄取 $\\mathrm{CE}$，或 $\\mathrm{CE}$ 随 $\\mathrm{LDL}$ 入肝。$\\mathrm{ACAT}$ 在细胞内用脂肪酰 $\\mathrm{CoA}$ 写贮存；$\\mathrm{LCAT}$ 在血浆写 $\\mathrm{HDL}$ 内核。清道夫 $\\mathrm{SR}$ 清 $\\mathrm{ox}$-$\\mathrm{LDL}$，与 $\\mathrm{SR\\text{-}BI}$ 接 $\\mathrm{HDL}$ 不要并户",
+        "$\\mathrm{LDL}$ 由肝直接分泌，受体认 $\\mathrm{apo\\,B}48$；前 $\\beta$ 比 $\\beta$ 更靠近原点；$\\mathrm{LCAT}$ 就是细胞内的 $\\mathrm{ACAT}$；$\\mathrm{SR\\text{-}BI}$ 是又一条吃 $\\mathrm{ox}$-$\\mathrm{LDL}$ 的受体；人全部 $\\mathrm{IDL}$ 都变成 $\\mathrm{LDL}$"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "$\\mathrm{CM}$ 外源／$\\mathrm{B}48$，$\\mathrm{VLDL}$ 内源 $\\mathrm{TG}$，$\\mathrm{LDL}$ 血浆生成认 $\\mathrm{B}100$，$\\mathrm{HDL}$ 走 $\\mathrm{RCT}$。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：四类颗粒功能、apo、半衰期、空腹无 $\\mathrm{CM}$，$\\mathrm{LDL}$ 非肝直接分泌，来自 ch08-6。\n- B：$\\mathrm{LDL}$ 受体结构、不认 $\\mathrm{B}48$、游离胆固醇三件事、家族性高胆固醇血症数字，来自 ch08-6。\n- C：$\\mathrm{RCT}$ 三步、$\\mathrm{LCAT}$ 对 $\\mathrm{ACAT}$、$\\mathrm{SR}$ 对 $\\mathrm{SR\\text{-}BI}$，来自 ch08-6。\n- **D 错**：$\\mathrm{LDL}$ 在血浆生成，不认 $\\mathrm{B}48$；前 $\\beta$ 夹在 $\\beta$ 与 $\\alpha$ 之间；$\\mathrm{LCAT}\\neq\\mathrm{ACAT}$；$\\mathrm{SR\\text{-}BI}$ 接 $\\mathrm{HDL}$；人约 $50\\%$ $\\mathrm{IDL}$ 变成 $\\mathrm{LDL}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-6.md",
+        "label": "CM/VLDL/LDL/HDL · apo B48/B100/AI · LDL 受体 · RCT · pitfall「LDL 不是肝直接分泌」"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "脂质由基因编码且易溶于水；$\\mathrm{HSL}$ 催化脂肪动员第一步；长链脂肪酰 $\\mathrm{CoA}$ 直接透过线粒体内膜，$\\beta$-氧化限速酶是脂肪酰 $\\mathrm{CoA}$ 脱氢酶；本版软脂酸净 $\\mathrm{ATP}$ 按口诀为 $129$ 或 $38$；肝自己把酮体彻底氧化；脑既不能用脂肪酸也不能用酮体。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：不由基因编码、ATGL 第一步、$\\mathrm{CPT}$-Ⅰ、净 $106$、肝不能利用、脑能用酮体。",
+      "explanation": "**该命题错误，每一分句都错。** 脂质不由基因编码、不易溶于水。动员第一步主要是 $\\mathrm{ATGL}$，不是 $\\mathrm{HSL}$。长链须肉碱穿梭，$\\mathrm{CPT}$-Ⅰ 是限速关键酶。本版软脂酸净 $106\\,\\mathrm{ATP}$，不是口诀 $129$ 或把 $38\\,\\mathrm{kJ/g}$ 听成 $\\mathrm{ATP}$。肝能生成酮体但不能利用。脑不能氧化脂肪酸，却能有效利用酮体。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-3.md",
+        "label": "不由基因编码 · ATGL · CPT-I · 净106 · 肝不能利用酮体"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "乙酰 $\\mathrm{CoA}$ 直接出线粒体；脂肪酸合成关键酶是 $\\mathrm{CPT}$-Ⅰ；胆固醇关键酶是 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 裂解酶，母核可 $\\beta$-氧化；磷脂酶 $\\mathrm{C}$ 切的是 $2$ 位脂肪酰；$\\mathrm{LDL}$ 由肝直接分泌，受体认 $\\mathrm{apo\\,B}48$；$\\mathrm{HDL}$ 主要转运外源性甘油三酯。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对柠檬酸穿梭、羧化酶、还原酶、磷脂酶 $\\mathrm{C}$、$\\mathrm{LDL}$ 血浆生成、$\\mathrm{HDL}$ 走 $\\mathrm{RCT}$。",
+      "explanation": "**该命题错误，六处都错。** 乙酰 $\\mathrm{CoA}$ 经柠檬酸-丙酮酸循环出线粒体。脂肪酸合成关键酶是乙酰 $\\mathrm{CoA}$ 羧化酶。胆固醇关键酶是内质网 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 还原酶，母核不能降解，主去路是胆汁酸。磷脂酶 $\\mathrm{C}$ 切甘油－磷酸键，切 $2$ 位脂肪酰的是 $\\mathrm{A}_2$。$\\mathrm{LDL}$ 在血浆由 $\\mathrm{VLDL}$ 经 $\\mathrm{IDL}$ 生成，受体认 $\\mathrm{B}100/\\mathrm{E}$ 不认 $\\mathrm{B}48$。$\\mathrm{HDL}$ 主要逆向转运胆固醇，外源甘油三酯走 $\\mathrm{CM}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-5.md",
+        "label": "柠檬酸-丙酮酸 · 羧化酶 · 还原酶 · PLA2 vs C · LDL 受体 · RCT"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "脂肪动员第一步主要由 ________ 催化，不是 $\\mathrm{HSL}$。长链脂肪酰 $\\mathrm{CoA}$ 进入线粒体的关键酶是 ________。本版 $1$ 分子软脂酸彻底氧化净生成 ________ 分子 $\\mathrm{ATP}$（不是口诀 $129$）。肝能生成酮体，但 ________。胆固醇合成的关键酶是内质网 ________。",
+      "answer": "ATGL，CPT-I，106，不能利用，HMG-CoA还原酶",
+      "hint": "第一步 $\\mathrm{ATGL}$；限速 $\\mathrm{CPT}$-Ⅰ；净 $106$；肝缺利用酶系；还原酶不是合酶／裂解酶。",
+      "scoring_criteria": [
+        "第一空填“ATGL”（或“脂肪组织甘油三酯脂肪酶”“adipose triglyceride lipase”）（2分）",
+        "第二空填“CPT-I”（或“CPT-Ⅰ”“肉碱脂肪酰转移酶Ⅰ”“肉碱脂酰转移酶I”）（2分）",
+        "第三空填“106”（2分）",
+        "第四空填“不能利用”（或“缺乏利用酶系”“无能利用”“不能氧化利用”）（2分）",
+        "第五空填“HMG-CoA还原酶”（或“HMG-CoA reductase”“羟甲基戊二酸单酰CoA还原酶”）（2分）"
+      ],
+      "explanation": "本版动员第一步是 $\\mathrm{ATGL}$，不是旧说法的 $\\mathrm{HSL}$。$\\mathrm{CPT}$-Ⅰ 位于线粒体外膜，是 $\\beta$-氧化关键酶。软脂酸毛 $108$、活化减 $2$、净 $106$，不要写 $129$ 或 $38$。肝有酮体合成酶系、缺乏利用酶系。胆固醇关键酶是内质网 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 还原酶，不是合酶或线粒体裂解酶。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-3.md",
+        "label": "ATGL；CPT-I；净106；肝不能利用酮体；HMG-CoA还原酶"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "甘油三酯分解怎样记？请写出：①脂质不由基因编码、不易溶于水；必需脂肪酸是亚油酸和 $\\alpha$-亚麻酸（人体缺 $\\Delta^{9}$ 以上去饱和酶）；②动员三步 $\\mathrm{ATGL}\\rightarrow\\mathrm{HSL}$（切 $\\mathrm{sn}$-$3$）$\\rightarrow\\mathrm{MGL}$，不要把 $\\mathrm{HSL}$ 写成第一步；③活化耗 $2$ 个高能磷酸键，长链经肉碱穿梭，$\\mathrm{CPT}$-Ⅰ 限速，丙二酸单酰 $\\mathrm{CoA}$ 抑制；④$\\beta$-氧化四步：脱氢（$\\mathrm{FAD}$）、加水、再脱氢（$\\mathrm{NAD}^{+}$）、硫解，烯中间体反式-$\\Delta^{2}$；⑤本版软脂酸净 $106\\,\\mathrm{ATP}$（$1.5/2.5/10$，不是口诀 $129$ 或 $38$）；⑥肝能生成酮体不能利用，脑不能氧化脂肪酸却能用酮体。",
+      "answer": "参考答案：\n\n**1. 脂质户头与必需脂肪酸**\n- 脂质不由基因编码，不易溶于水。脂肪＝甘油三酯；类脂＝固醇及其酯、磷脂、糖脂。$1\\,\\mathrm{g}$ 甘油三酯 $38\\,\\mathrm{kJ}$（不是 $\\mathrm{ATP}$ 口诀）。\n- 必需脂肪酸：亚油酸、$\\alpha$-亚麻酸。人体有 $\\Delta^{4}$、$\\Delta^{5}$、$\\Delta^{8}$、$\\Delta^{9}$，缺 $\\Delta^{9}$ 以上。花生四烯酸可由亚油酸合成但消耗必需脂肪酸。三簇不能互转。\n\n**2. 动员**\n- 白色脂肪。第一步 $\\mathrm{ATGL}$，第二步 $\\mathrm{HSL}$ 切甘油二酯 $\\mathrm{sn}$-$3$，第三步 $\\mathrm{MGL}$。$\\mathrm{Perilipin}$-$1$ 磷酸化后激活 $\\mathrm{ATGL}$ 并转运 $\\mathrm{HSL}$。脂解激素走 $\\mathrm{cAMP}$；胰岛素、$\\mathrm{PGE}_2$ 抗脂解。清蛋白每分子结合 $7$ 分子游离脂肪酸。甘油主要被肝利用。\n\n**3. 活化与肉碱**\n- 脂肪酰 $\\mathrm{CoA}$ 合成酶：$\\mathrm{ATP}\\rightarrow\\mathrm{AMP}+\\mathrm{PP}_\\mathrm{i}$，实际耗 $2$。$\\mathrm{CPT}$-Ⅰ（外膜，关键酶）→ 转位酶 → $\\mathrm{CPT}$-Ⅱ。丙二酸单酰 $\\mathrm{CoA}$ 抑制 $\\mathrm{CPT}$-Ⅰ。脑不能氧化脂肪酸。\n\n**4. $\\beta$-氧化与净 $\\mathrm{ATP}$**\n- 基质四步：脱氢（$\\mathrm{FAD}$，$1.5$）、加水（$\\mathrm{L}$ 型）、再脱氢（$\\mathrm{NAD}^{+}$，$2.5$）、硫解。反式-$\\Delta^{2}$。\n- 软脂酸：$7$ 次，$7\\,\\mathrm{FADH}_2+7\\,\\mathrm{NADH}+8$ 乙酰 $\\mathrm{CoA}$，毛 $108$、净 $106$。不要写 $129$ 或 $38$。\n\n**5. 酮体**\n- 乙酰乙酸 $30\\%$、$\\beta$-羟丁酸 $70\\%$、丙酮微量。肝线粒体经 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 生成；肝缺利用酶系。脑能用酮体；正常血酮 $0.03\\sim 0.5\\,\\mathrm{mmol/L}$。",
+      "hint": "按不溶于水／必需脂肪酸 → ATGL 三步 → CPT-I → 四步与净 106 → 肝不能利用酮体写，并避开口诀 129。",
+      "scoring_criteria": [
+        "写出脂质不由基因编码／不溶于水及必需脂肪酸亚油酸、α-亚麻酸（3分）",
+        "写出动员 ATGL→HSL→MGL，HSL 不是第一步（3分）",
+        "写出 CPT-I 限速、肉碱穿梭、活化减 2（3分）",
+        "写出 β-氧化四步及本版软脂酸净 106（不是 129/38），肝生成酮体不能利用、脑能用酮体（5分）"
+      ],
+      "explanation": "本题把第 08-1 至 08-3 节收成“户头—动员—穿梭—四步与 106—酮体”。易错点：口诀 $129$；$\\mathrm{HSL}$ 第一步；肝自己用酮体；脑既不能用脂肪酸也不能用酮体。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-3.md",
+        "label": "动员三步；CPT-I；β-氧化；净106；酮体肝不能利用"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "脂肪酸合成、胆固醇、磷脂酶与脂蛋白怎样收？请写出：①柠檬酸-丙酮酸循环把乙酰 $\\mathrm{CoA}$ 运出线粒体，$\\mathrm{NADPH}$ 主要来自戊糖磷酸途径，乙酰 $\\mathrm{CoA}$ 羧化酶是合成关键酶（生物素），丙二酸单酰 $\\mathrm{CoA}$ 抑制 $\\mathrm{CPT}$-Ⅰ，$1+7$ 分子、$7$ 轮；②$\\mathrm{HMG}$-$\\mathrm{CoA}$ 还原酶是胆固醇合成关键酶（内质网），线粒体 $\\mathrm{HMG}$-$\\mathrm{CoA}$ 写酮体，母核不能拆、主去路胆汁酸，$18/36/16$；③磷脂酶 $\\mathrm{A}_2$ 切 $2$ 位脂肪酰（溶血磷脂），$\\mathrm{C}$ 切甘油－磷酸（甘油二酯）；④$\\mathrm{CM}/\\mathrm{VLDL}/\\mathrm{LDL}/\\mathrm{HDL}$ 与 $\\mathrm{apo\\,B}48/\\mathrm{B}100/\\mathrm{A\\,I}$，$\\mathrm{LDL}$ 受体（不认 $\\mathrm{B}48$）入胞关还原酶，$\\mathrm{HDL}$ 经 $\\mathrm{LCAT}/\\mathrm{CETP}/\\mathrm{SR\\text{-}BI}$ 逆向转运。不要把 $\\mathrm{LDL}$ 写成肝直接分泌，也不要把还原酶写成裂解酶。",
+      "answer": "参考答案：\n\n**1. 软脂酸合成**\n- 胞质溶胶；肝主场（较脂肪组织大 $8\\sim 9$ 倍）。乙酰 $\\mathrm{CoA}$ 不能直接出线粒体，走柠檬酸-丙酮酸循环（$\\mathrm{ATP}$-柠檬酸裂解酶）。$\\mathrm{NADPH}$ 主要戊糖磷酸途径，少量苹果酸酶。\n- 关键酶：乙酰 $\\mathrm{CoA}$ 羧化酶（生物素、$\\mathrm{Mn}^{2+}$）→ 丙二酸单酰 $\\mathrm{CoA}$。柠檬酸促聚合；长链脂肪酰 $\\mathrm{CoA}$ 促解聚；$\\mathrm{AMPK}$ 磷酸化失活。丙二酸单酰 $\\mathrm{CoA}$ 抑制 $\\mathrm{CPT}$-Ⅰ。\n- $1$ 乙酰 $\\mathrm{CoA}+7$ 丙二酸单酰 $\\mathrm{CoA}$，$7$ 轮缩合－还原－脱水－再还原。胰岛素开合成。\n\n**2. 胆固醇**\n- 每天约 $1\\,\\mathrm{g}$；肝 $70\\%\\sim 80\\%$，小肠 $10\\%$；成年脑、成熟红细胞不合成。唯一碳源乙酰 $\\mathrm{CoA}$；$18$ 乙酰 $\\mathrm{CoA}$、$36\\,\\mathrm{ATP}$、$16\\,\\mathrm{NADPH}$。\n- 线粒体 $\\mathrm{HMG}$-$\\mathrm{CoA}$ → 酮体（裂解酶）；胞质 $\\mathrm{HMG}$-$\\mathrm{CoA}$ → 甲羟戊酸（内质网还原酶，关键酶）。磷酸化失活。母核不能降解；主去路肝 → 胆汁酸。$\\mathrm{ACAT}$ 写细胞内 $\\mathrm{CE}$ 贮存。\n\n**3. 磷脂酶**\n- $\\mathrm{A}_2$ 切 $\\mathrm{sn}$-$2$ → 溶血磷脂 $1$（可溶血）。$\\mathrm{C}$ 切甘油－磷酸 → 甘油二酯 $+$ 磷酸头基。鞘磷脂酶属 $\\mathrm{C}$ 类，溶酶体。\n\n**4. 脂蛋白**\n- $\\mathrm{CM}$：外源 $\\mathrm{TG}$，$\\mathrm{B}48$，淋巴，半衰期 $5\\sim 15$ 分钟。$\\mathrm{VLDL}$：内源 $\\mathrm{TG}$，肝，$\\mathrm{B}100$。$\\mathrm{LDL}$：内源胆固醇，血浆中由 $\\mathrm{VLDL}\\rightarrow\\mathrm{IDL}$ 生成，几乎只含 $\\mathrm{B}100$。$\\mathrm{HDL}$：逆向转运，$\\mathrm{A\\,I}$ 激活 $\\mathrm{LCAT}$。\n- $\\mathrm{LDL}$ 受体认 $\\mathrm{B}100/\\mathrm{E}$，不认 $\\mathrm{B}48$；入胞游离胆固醇关还原酶、关受体转录、开 $\\mathrm{ACAT}$。$\\mathrm{RCT}$：$\\mathrm{LCAT}$ 酯化、$\\mathrm{CETP}$ 交换、肝 $\\mathrm{SR\\text{-}BI}$ 摄取。$\\mathrm{SR}$ 清 $\\mathrm{ox}$-$\\mathrm{LDL}$，不要与 $\\mathrm{SR\\text{-}BI}$ 并户。",
+      "hint": "按柠檬酸穿梭／羧化酶 → 还原酶与胆汁酸 → A2 对 C → 四类颗粒、LDL 受体、RCT 写。",
+      "scoring_criteria": [
+        "写出柠檬酸-丙酮酸循环、羧化酶为合成关键酶、丙二酸单酰 CoA 抑制 CPT-I（4分）",
+        "写出 HMG-CoA 还原酶为胆固醇关键酶、线粒体写酮体、母核不能拆、主去路胆汁酸（4分）",
+        "写出磷脂酶 A2 切 2 位脂肪酰、C 切磷酸酯（2分）",
+        "写出 CM/VLDL/LDL/HDL 与 apo、LDL 受体不认 B48、HDL 逆向转运（5分）"
+      ],
+      "explanation": "本题把第 08-3 后半至 08-6 节收成“合成—胆固醇—磷脂酶—脂蛋白”。易错点：乙酰 $\\mathrm{CoA}$ 直接出线粒体；还原酶写成裂解酶；$\\mathrm{LDL}$ 肝直接分泌；受体认 $\\mathrm{B}48$；$\\mathrm{A}_2$ 与 $\\mathrm{C}$ 并户。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch08-6.md",
+        "label": "柠檬酸-丙酮酸；HMG-CoA还原酶；PLA2 vs C；CM/VLDL/LDL/HDL；RCT"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

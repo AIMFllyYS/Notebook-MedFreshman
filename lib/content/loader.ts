@@ -5,6 +5,10 @@ import path from "node:path";
 import { manifest, contentTree } from "@/lib/content-data/manifest";
 import type { ContentItem } from "@/lib/types/content";
 import type { ChapterRef, SectionRef } from "@/lib/content/types";
+import {
+  subjectVisibleToAgent,
+  type AcademicYearId,
+} from "@/lib/constants/academic-year";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content", "chapters");
 
@@ -169,11 +173,12 @@ export type ExampleMeta = ExampleDetail;
 function exampleTitleFromContent(content: string, file: string): string {
   const exampleLabelMatch = content.match(/:::example\{label=([^}]+)\}/);
   const titleMatch = content.match(/^#\s+(.+)$/m);
-  return exampleLabelMatch
+  const raw = exampleLabelMatch
     ? exampleLabelMatch[1].trim()
     : titleMatch
       ? titleMatch[1].trim()
       : file.replace(/\.md$/, "");
+  return raw.replace(/^["']|["']$/g, "");
 }
 
 /** 允许 Unicode 文件名（如 EX01_硫酸黏度测定），仅拦截路径穿越。 */
@@ -315,12 +320,15 @@ export function findContentItem(
   return undefined;
 }
 
-/** 生成全科目大纲文本，供 AI 的 getOutline 工具。 */
-export function getMultiSubjectOutline(): string {
+export type ContentSearchScope = AcademicYearId | "all";
+
+/** 生成全科目大纲文本，供 AI 的 getOutline 工具。默认可按学年过滤，cross-year 传 "all"。 */
+export function getMultiSubjectOutline(scope: ContentSearchScope = "all"): string {
   const lines: string[] = [];
 
   for (const subject of contentTree.subjects) {
     if (subject.id === "other") continue;
+    if (!subjectVisibleToAgent(subject.id, scope)) continue;
     lines.push(`\n=== ${subject.name} (${subject.id}) ===`);
 
     for (const cat of subject.categories) {
@@ -408,7 +416,11 @@ export interface MultiSearchHit {
  * 在全部科目的 detail/recording/summary 中做关键词检索（子串匹配 fallback）。
  * detail 命中优先排在前面。多关键词按空格拆分做 OR 匹配。
  */
-function substringSearch(query: string, limit = 8): MultiSearchHit[] {
+function substringSearch(
+  query: string,
+  limit = 8,
+  scope: ContentSearchScope = "all",
+): MultiSearchHit[] {
   const q = query.trim();
   if (!q) return [];
   const keywords = q.split(/\s+/).filter(Boolean);
@@ -419,6 +431,7 @@ function substringSearch(query: string, limit = 8): MultiSearchHit[] {
 
   for (const subject of contentTree.subjects) {
     if (subject.id === "other") continue;
+    if (!subjectVisibleToAgent(subject.id, scope)) continue;
     for (const cat of subject.categories) {
       if (!SEARCHABLE_CATEGORIES.has(cat.id)) continue;
       const isDetail = cat.id === "detail";
@@ -478,24 +491,44 @@ function substringSearch(query: string, limit = 8): MultiSearchHit[] {
   return [...detailHits, ...otherHits].slice(0, limit);
 }
 
+export interface SearchAllContentOptions {
+  limit?: number;
+  /** 默认 all：跨学年。智能体默认传入当前学年；crossYear 时传 all。 */
+  academicYear?: ContentSearchScope;
+  /**
+   * 索引未命中时是否回退全库子串扫描。默认跟 substringSearchAllowed()。
+   * 测试可显式设为 false，证明 hybrid/BM25 索引本身能检索大二教材。
+   */
+  allowSubstring?: boolean;
+}
+
 /**
  * 在全部科目中做语义+关键词混合检索。
  * 索引存在时使用 hybridSearch（BM25 + 向量 + rerank），否则 fallback 到子串匹配。
  */
-export async function searchAllContent(query: string, limit = 8): Promise<MultiSearchHit[]> {
+export async function searchAllContent(
+  query: string,
+  limitOrOpts: number | SearchAllContentOptions = 8,
+): Promise<MultiSearchHit[]> {
   const q = query.trim();
   if (!q) return [];
+  const opts: SearchAllContentOptions =
+    typeof limitOrOpts === "number" ? { limit: limitOrOpts } : limitOrOpts;
+  const limit = opts.limit ?? 8;
+  const scope: ContentSearchScope = opts.academicYear ?? "all";
 
   try {
     const { hybridSearch } = await import('@/lib/ai/search/hybridSearch');
-    const results = await hybridSearch(q, limit);
-    if (results.length > 0) return results;
+    const results = await hybridSearch(q, Math.max(limit * 3, 16));
+    const filtered = results.filter((hit) => subjectVisibleToAgent(hit.subjectId, scope));
+    if (filtered.length > 0) return filtered.slice(0, limit);
   } catch {
     // 索引不存在或 API 不可用，fallback
   }
 
-  if (!substringSearchAllowed()) return [];
-  return substringSearch(q, limit);
+  const allowSubstring = opts.allowSubstring ?? substringSearchAllowed();
+  if (!allowSubstring) return [];
+  return substringSearch(q, limit, scope);
 }
 
 function substringSearchAllowed(): boolean {

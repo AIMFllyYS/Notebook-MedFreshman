@@ -12,6 +12,11 @@ import { runWebSearchDetailed } from "@/lib/ai/webSearch";
 import { searchImages, trackPhotoDownload } from "@/lib/ai/imageSearch";
 import type { Skill } from "@/lib/types/skill";
 import { CHEM_DRAW_GUIDE } from "@/lib/chemistry/svgTemplates";
+import {
+  DEFAULT_ACADEMIC_YEAR,
+  type AcademicYearId,
+} from "@/lib/constants/academic-year";
+import type { ContentSearchScope } from "@/lib/content/loader";
 
 export const IMAGE_SEARCH_MAX_TOTAL = 20;
 
@@ -23,6 +28,8 @@ export interface ToolContext {
   skills?: Skill[];
   /** 跨轮 imageSearch 已累计抓取张数（由 route.ts 维护，防止 AI 反复调用超出限额）。 */
   imageSearchFetchedCount?: { value: number };
+  /** 当前 UI 学年。getOutline / searchNotes 默认只搜该学年，crossYear 可放开。 */
+  academicYear?: AcademicYearId;
 }
 
 /** 工具执行结果：content 回灌给模型；meta 透传给前端展示（如联网来源）。 */
@@ -51,8 +58,17 @@ export const ALL_TOOLS: Record<string, ToolDefinition> = {
     function: {
       name: "getOutline",
       description:
-        "获取全部科目的完整课程目录（包括概率论、物理、化学、近代史、毛概的详解/录音/纪要分类）。需要了解课程全貌、各章关系，或把某知识点定位到哪一小节时调用。返回的每个条目后附有复合路径（如 physics/detail/2.1），可直接传给 getSection 获取全文。",
-      parameters: { type: "object", properties: {}, required: [] },
+        "获取课程目录。默认返回当前学年科目（大二上：细胞生物学/生物化学/系统解剖学/组织学；大一下：概率论/物理/有机化学/近现代史/毛概）。需要了解课程全貌、各章关系，或把某知识点定位到哪一小节时调用。返回的每个条目后附有复合路径（如 anatomy/textbook/ch01-1），可直接传给 getSection 获取全文。跨学年知识（如大一化学与大二生化）把 crossYear 设为 true。",
+      parameters: {
+        type: "object",
+        properties: {
+          crossYear: {
+            type: "boolean",
+            description: "true 时返回全部学年目录。默认 false，只返回当前学年。",
+          },
+        },
+        required: [],
+      },
     },
   },
   getSection: {
@@ -82,11 +98,15 @@ export const ALL_TOOLS: Record<string, ToolDefinition> = {
     function: {
       name: "searchNotes",
       description:
-        "在全部课程内容（所有科目的详解、录音、纪要）中按关键词检索，返回带上下文的相关片段及其所在位置。不确定教材是否讲过某点时先检索。返回结果的 path 字段可直接传给 getSection 获取完整内容。",
+        "在课程内容（教材、详解、录音、纪要）中按关键词检索，返回带上下文的相关片段及其所在位置。默认只搜当前学年；不确定教材是否讲过某点、或知识点可能跨学年时先检索。返回结果的 path 字段可直接传给 getSection 获取完整内容。",
       parameters: {
         type: "object",
         properties: {
-          query: { type: "string", description: "检索关键词，如 '贝叶斯公式'、'马氏规则'" },
+          query: { type: "string", description: "检索关键词，如 '贝叶斯公式'、'线粒体'、'肝小叶'" },
+          crossYear: {
+            type: "boolean",
+            description: "true 时跨学年检索（大一与大二都搜）。医学基础常与大一化学/物理交叉，此时应打开。",
+          },
         },
         required: ["query"],
       },
@@ -269,8 +289,14 @@ export async function runTool(
         contextKey: `page:${ctx.subjectId}/${ctx.categoryId}/${ctx.itemId}`,
       };
 
-    case "getOutline":
-      return { content: getMultiSubjectOutline(), contextKey: "outline:all" };
+    case "getOutline": {
+      const crossYear = args.crossYear === true;
+      const scope: ContentSearchScope = crossYear
+        ? "all"
+        : (ctx.academicYear ?? DEFAULT_ACADEMIC_YEAR);
+      const key = crossYear ? "outline:all" : `outline:${scope}`;
+      return { content: getMultiSubjectOutline(scope), contextKey: key };
+    }
 
     case "getSection": {
       const pathArg = String(args.path ?? "");
@@ -295,7 +321,11 @@ export async function runTool(
 
     case "searchNotes": {
       const query = String(args.query ?? "");
-      const hits = await searchAllContent(query);
+      const crossYear = args.crossYear === true;
+      const scope: ContentSearchScope = crossYear
+        ? "all"
+        : (ctx.academicYear ?? DEFAULT_ACADEMIC_YEAR);
+      const hits = await searchAllContent(query, { limit: 8, academicYear: scope });
       if (!hits.length) return { content: "未检索到相关内容。可尝试更换关键词，或调用 getOutline 浏览目录。", meta: { hits: [] } };
       const lines = hits.map(
         (h) => `[${h.title}] (path: ${h.path})\n…${h.snippet}…`,

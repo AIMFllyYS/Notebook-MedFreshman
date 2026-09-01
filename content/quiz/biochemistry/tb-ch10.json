@@ -1,0 +1,321 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch10",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch10-1.md；content/biochemistry/textbook/ch10-2.md；content/biochemistry/textbook/ch10-3.md；content/biochemistry/textbook/ch10-4.md；content/biochemistry/textbook/ch10-5.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于生物氧化与体外燃烧以及线粒体／过氧化物酶体分户，下列叙述正确的是（　）。",
+      "options": [
+        "生物氧化就是体外燃烧搬进细胞，一次烧完放出光和热；过氧化物酶体和内质网的加氧也走呼吸链产 $\\mathrm{ATP}$；电位高的组分能量高、排在呼吸链最前；$\\mathrm{NAD}^{+}/\\mathrm{NADH}$ 约 $+0.816\\,\\mathrm{V}$ 排在最后",
+        "生物氧化是有机物质在生物体内的氧化过程，氧化还原总是相伴而行。线粒体消耗 $\\mathrm{O}_2$，产物是 $\\mathrm{CO}_2$ 和 $\\mathrm{H}_2\\mathrm{O}$，释放的能量用于生成 $\\mathrm{ATP}$；过氧化物酶体、内质网等处主要对底物氧化修饰，并不生成 $\\mathrm{ATP}$。氧化有失电子、加氧、脱氢三种形式。$E^{\\circ}$ 高则对电子亲和力强、排在下游；电子从低电位流向高电位，$\\mathrm{NAD}^{+}/\\mathrm{NADH}$ 约 $-0.32\\,\\mathrm{V}$ 在最前，$1/2\\,\\mathrm{O}_2/\\mathrm{H}_2\\mathrm{O}$ 约 $+0.816\\,\\mathrm{V}$ 在最后。体内逐步酶促，常温常压中性 $\\mathrm{pH}$；彻底氧化释放的总能量与体外燃烧完全相同，差别在形式和节奏：热能 $+$ 装进 $\\mathrm{ATP}$ 的化学能",
+        "体内释放的总能量比体外燃烧少一截，因为酶催化效率低；高 $E^{\\circ}$ 等于高能磷酸键那种高",
+        "只有加氧才叫氧化；递电子体不能传递 $\\mathrm{H}\\leftrightarrow\\mathrm{H}^{+}+\\mathrm{e}^{-}$"
+      ],
+      "answer": 1,
+      "hint": "总量相同，形式和节奏不同；线粒体产 $\\mathrm{ATP}$，过氧化物酶体／内质网不产；高电位排在后。",
+      "explanation": "**B 正确。** 生物氧化定义、两本账分户、三种氧化形式、电子从低电位到高电位、总量相同形式不同，都按教材。\n\n**干扰项辨析**：\n- A：不是一次烧完；过氧化物酶体／内质网不产 $\\mathrm{ATP}$；高电位排在后；$\\mathrm{NADH}$ 是 $-0.32\\,\\mathrm{V}$ 在最前。\n- C：总量相同；高 $E^{\\circ}$ 不是高能磷酸键。\n- D：氧化还有脱氢、失电子；递电子体／递氢体传递 $\\mathrm{H}\\leftrightarrow\\mathrm{H}^{+}+\\mathrm{e}^{-}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-1.md",
+        "label": "生物氧化 vs 体外燃烧 · 线粒体产 ATP · pitfall「高电位不是排在前面」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{ATP}$ 高能磷酸键、能量货币以及磷酸肌酸缓冲，下列叙述正确的是（　）。",
+      "options": [
+        "～$\\mathrm{P}$ 是键里藏着一份正能量，剪开就喷出 $30.5\\,\\mathrm{kJ}$；葡萄糖-6-磷酸也是能量货币；乙酰 $\\mathrm{CoA}$ 是高能磷酸键；磷酸肌酸直接驱动肌球蛋白；$\\mathrm{UTP}$、$\\mathrm{CTP}$、$\\mathrm{GTP}$ 都从氧化磷酸化平行产出",
+        "本版把释放的 $\\Delta G^{\\prime\\circ}>25\\,\\mathrm{kJ/mol}$ 称为高能化合物。$\\mathrm{ATP}$ 末端磷酸酯键 $-30.5\\,\\mathrm{kJ/mol}$ 是高能磷酸键；葡萄糖-6-磷酸 $-13.8\\,\\mathrm{kJ/mol}$ 是普通磷酸酯键；葡萄糖-1-磷酸 $-20.9\\,\\mathrm{kJ/mol}$ 未达高能阈值。所谓“高能”，是水解后产物自由能更低，不是键内藏能。乙酰 $\\mathrm{CoA}$ 是高能硫酯。标准比较用 $-30.5$，细胞内可达 $52.3\\,\\mathrm{kJ/mol}$ 不是另立标准。约 $40\\%$ 的分解能量用于生成 $\\mathrm{ATP}$。腺苷酸激酶：$2\\,\\mathrm{ADP}\\rightleftharpoons\\mathrm{ATP}+\\mathrm{AMP}$；核苷二磷酸激酶从 $\\mathrm{ATP}$ 给 $\\mathrm{UDP}/\\mathrm{CDP}/\\mathrm{GDP}$ 充值。$\\mathrm{ATP}$ 寿命仅数分钟、不储存，称能量货币。磷酸肌酸 $-43.1\\,\\mathrm{kJ/mol}$，经肌酸激酶与 $\\mathrm{ATP}$ 互转，储存在骨骼肌、心肌和脑，是短期储库不是第二种货币，不能直接驱动大多数耗能反应",
+        "高能阈值是 $>30.5\\,\\mathrm{kJ/mol}$；细胞内 $52.3$ 应改写表10-1；$\\mathrm{ATP}$ 在细胞中大量囤积",
+        "磷酸肌酸水解 $-13.8\\,\\mathrm{kJ/mol}$，储存在肝和脂肪组织"
+      ],
+      "answer": 1,
+      "hint": "～$\\mathrm{P}$ 不是弹簧；乙酰 $\\mathrm{CoA}$ 是硫酯；$\\mathrm{ATP}$ 是货币，$\\mathrm{CP}$ 是缓冲。",
+      "explanation": "**B 正确。** 高能阈值、$\\mathrm{ATP}$ 对葡萄糖-6-磷酸、～$\\mathrm{P}$ 不是键内藏能、乙酰 $\\mathrm{CoA}$ 硫酯、两套激酶、$\\mathrm{ATP}$ 不储存、磷酸肌酸缓冲，都按教材。\n\n**干扰项辨析**：\n- A：～$\\mathrm{P}$ 不是弹簧；葡萄糖-6-磷酸不是货币；乙酰 $\\mathrm{CoA}$ 是硫酯；$\\mathrm{CP}$ 不直接做功；$\\mathrm{NTP}$ 靠核苷二磷酸激酶从 $\\mathrm{ATP}$ 转来。\n- C：阈值是 $>25$；考试比较用 $-30.5$；$\\mathrm{ATP}$ 不储存。\n- D：磷酸肌酸 $-43.1$，储存在骨骼肌、心肌、脑。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-1.md",
+        "label": "高能磷酸键 -30.5 · 磷酸肌酸缓冲 · pitfall「不是键内藏能」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{NADH}$ 进呼吸链、$\\mathrm{NADPH}$ 走合成还原以及还原当量分户，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{NAD}^{+}$ 一次把两个氢原子都钉在烟酰胺环上；$\\mathrm{NADH}$ 和 $\\mathrm{NADPH}$ 都是递氢体所以都进呼吸链产 $\\mathrm{ATP}$；$\\mathrm{FAD}$ 是 NADH 呼吸链的入口辅基；$\\mathrm{FMNH}_2$ 是游离的呼吸链底物",
+        "$\\mathrm{NAD}^{+}$ 烟酰胺环接受 $2$ 个电子和 $1$ 个 $\\mathrm{H}^{+}$，另一个 $\\mathrm{H}^{+}$ 留在介质中，还原型写 $\\mathrm{NADH}+\\mathrm{H}^{+}$。$\\mathrm{NADP}^{+}$ 是与腺苷相连的核糖 $2$ 位羟基被磷酸化的产物，加氢机制相同，但 $\\mathrm{NADPH}$ 的磷酸基团被生物合成酶识别，主要用于还原性生物合成，不参与能量代谢。$\\mathrm{NADH}$ 是呼吸链底物，从复合体Ⅰ进入。$\\mathrm{NADH}$、$\\mathrm{NADPH}$、$\\mathrm{FMNH}_2$、$\\mathrm{FADH}_2$ 都携带还原当量，只有 $\\mathrm{NADH}$ 和 $\\mathrm{FADH}_2$ 是呼吸链产能底物。$\\mathrm{FMN}$ 在复合体Ⅰ，$\\mathrm{FAD}$ 在复合体Ⅱ；黄素经半醌衔接双电子与单电子",
+        "$\\mathrm{NADP}^{+}$ 的磷酸加在烟酰胺核糖上；$\\mathrm{NADPH}$ 从复合体Ⅰ进呼吸链，比 $\\mathrm{NADH}$ 多产 $\\mathrm{ATP}$",
+        "四种还原当量都按 $2.5\\,\\mathrm{ATP}$ 计；半醌可有可无"
+      ],
+      "answer": 1,
+      "hint": "$\\mathrm{NADH}$ 产能，$\\mathrm{NADPH}$ 合成还原；不要并成同一种能量货币。",
+      "explanation": "**B 正确。** $\\mathrm{NADH}+\\mathrm{H}^{+}$ 写法、$2'$ 磷酸、$\\mathrm{NADPH}$ 不产能、只有 $\\mathrm{NADH}/\\mathrm{FADH}_2$ 是呼吸链底物、$\\mathrm{FMN}$／$\\mathrm{FAD}$ 分户，都按教材。\n\n**干扰项辨析**：\n- A：环上只收 $1$ 个 $\\mathrm{H}^{+}$；$\\mathrm{NADPH}$ 不进呼吸链；$\\mathrm{FMN}$ 才是复合体Ⅰ入口；$\\mathrm{FMNH}_2$ 是内部辅基态。\n- C：磷酸在腺苷核糖 $2'$；$\\mathrm{NADPH}$ 不走复合体Ⅰ。\n- D：不要四种都乘 $2.5$；半醌不是可有可无。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-2.md",
+        "label": "NADH 进呼吸链 · NADPH 合成还原 · pitfall「两本账不并户」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于呼吸链四个复合体以及可移动的 $\\mathrm{Q}$ 和 $\\mathrm{Cyt}\\,c$，下列叙述正确的是（　）。",
+      "options": [
+        "呼吸链就是Ⅰ→Ⅱ→Ⅲ→Ⅳ一条直线；$\\mathrm{Q}$ 固定在复合体Ⅰ里；人体泛醌只写辅酶 $\\mathrm{Q}$ 即可；$\\mathrm{Cyt}\\,c$ 是复合体Ⅲ的固定亚基；三个偶联部位各泵 $4\\mathrm{H}^{+}$",
+        "呼吸链 $=4$ 个复合体 $+$ 可移动的 $\\mathrm{Q}$ 和 $\\mathrm{Cyt}\\,c$。人体泛醌是 $\\mathrm{Q}_{10}$，脂溶、在内膜中扩散，经半醌可做双电子和单电子传递。$\\mathrm{Cyt}\\,c$ 是唯一的水溶性球状蛋白，疏松结合于内膜外表面，不包含在四种复合体中，从 $\\mathrm{Cyt}\\,c_1$ 得电子交给复合体Ⅳ。复合体Ⅰ：$\\mathrm{NADH}\\rightarrow\\mathrm{FMN}\\rightarrow\\mathrm{Fe}$-$\\mathrm{S}\\rightarrow\\mathrm{Q}$，每对电子泵 $4\\mathrm{H}^{+}$。复合体Ⅱ：琥珀酸 $\\rightarrow\\mathrm{FAD}\\rightarrow\\mathrm{Fe}$-$\\mathrm{S}\\rightarrow\\mathrm{Q}$，不泵质子，血红素 $b$ 防漏电子。复合体Ⅲ经 Q 循环每 $2\\mathrm{e}^{-}$ 向膜间隙释放 $4\\mathrm{H}^{+}$。复合体Ⅳ：$\\mathrm{Cyt}\\,c\\rightarrow\\mathrm{Cu}_\\mathrm{A}\\rightarrow\\mathrm{Cyt}\\,a\\rightarrow a_3$-$\\mathrm{Cu}_\\mathrm{B}\\rightarrow\\mathrm{O}_2$，每 $2\\mathrm{e}^{-}$ 泵 $2\\mathrm{H}^{+}$；还原 $1$ 分子 $\\mathrm{O}_2$ 需 $4\\mathrm{e}^{-}$ 生成 $2$ 分子 $\\mathrm{H}_2\\mathrm{O}$。两条链在 $\\mathrm{Q}$ 汇合，Ⅱ不是Ⅰ的下游",
+        "Q 循环里 $\\mathrm{QH}_2$ 的两个电子沿 $\\mathrm{Cyt}\\,b\\rightarrow\\mathrm{Fe}$-$\\mathrm{S}\\rightarrow c_1\\rightarrow c$ 同一条直线走完；传 $2\\mathrm{e}^{-}$ 就生成 $2\\,\\mathrm{H}_2\\mathrm{O}$",
+        "复合体Ⅳ是呼吸链漏活性氧的主出口，中间物通常泄漏"
+      ],
+      "answer": 1,
+      "hint": "四个复合体 $+\\mathrm{Q}+\\mathrm{Cyt}\\,c$；Ⅱ不泵质子；Ⅳ泵 $2\\mathrm{H}^{+}$ 不是 $4$。",
+      "explanation": "**B 正确。** 固定与流动组分、$\\mathrm{Q}_{10}$、$\\mathrm{Cyt}\\,c$ 水溶、四个复合体路径和泵质子数、两条链在 $\\mathrm{Q}$ 汇合，都按教材。\n\n**干扰项辨析**：\n- A：不是Ⅰ→Ⅱ→Ⅲ→Ⅳ；$\\mathrm{Q}$ 可移动；人体写 $\\mathrm{Q}_{10}$；$\\mathrm{Cyt}\\,c$ 不在复合体里；复合体Ⅳ泵 $2\\mathrm{H}^{+}$。\n- C：两个电子在 $\\mathrm{Q}_\\mathrm{P}$ 处分道；还原 $1$ 分子 $\\mathrm{O}_2$ 需 $4\\mathrm{e}^{-}$。\n- D：中间物通常与双核中心紧密结合。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-2.md",
+        "label": "复合体Ⅰ–Ⅳ · Q10 · Cyt c · pitfall「不要写成Ⅰ→Ⅱ→Ⅲ→Ⅳ」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 NADH 呼吸链与琥珀酸呼吸链以及本版 $2.5/1.5$，下列叙述正确的是（　）。",
+      "options": [
+        "两条链串联：Ⅰ→Ⅱ→Ⅲ→Ⅳ；NADH 链 $3\\,\\mathrm{ATP}$，琥珀酸链 $2\\,\\mathrm{ATP}$；鱼藤酮卡住后琥珀酸也不能进 $\\mathrm{Q}$；抑制剂阻断点以前处于氧化态",
+        "NADH 呼吸链：$\\mathrm{NADH}\\rightarrow$ 复合体Ⅰ $\\rightarrow\\mathrm{Q}\\rightarrow$ 复合体Ⅲ $\\rightarrow\\mathrm{Cyt}\\,c\\rightarrow$ 复合体Ⅳ $\\rightarrow\\mathrm{O}_2$，本版一对电子约 $2.5\\,\\mathrm{ATP}$。琥珀酸（$\\mathrm{FADH}_2$）呼吸链：琥珀酸 $\\rightarrow$ 复合体Ⅱ $\\rightarrow\\mathrm{Q}\\rightarrow$ 复合体Ⅲ $\\rightarrow\\mathrm{Cyt}\\,c\\rightarrow$ 复合体Ⅳ $\\rightarrow\\mathrm{O}_2$，约 $1.5\\,\\mathrm{ATP}$。两条链在泛醌汇合，复合体Ⅱ与复合体Ⅰ并联不是串联，入口不泵质子所以少 $1$ 个 $\\mathrm{ATP}$ 当量。脂酰 $\\mathrm{CoA}$ 脱氢酶、甘油-3-磷酸脱氢酶、胆碱脱氢酶也可经 $\\mathrm{FAD}$ 把氢交给 $\\mathrm{Q}$。鱼藤酮阻断复合体Ⅰ的铁硫中心 $\\rightarrow\\mathrm{Q}$，琥珀酸仍可从Ⅱ进 $\\mathrm{Q}$。排序靠 $E^{\\circ}$、抑制剂（阻断点以前还原、以后氧化）、给氧光谱和拆开重组；$\\mathrm{NAD}^{+}/\\mathrm{NADH}$ $-0.32\\,\\mathrm{V}$，氧 $+0.816\\,\\mathrm{V}$",
+        "汇合点是复合体Ⅱ；本版仍用口诀 $3$ 和 $2$，与第七、第八章无关",
+        "琥珀酸入口也泵 $4\\mathrm{H}^{+}$，所以两条链 $\\mathrm{ATP}$ 相同"
+      ],
+      "answer": 1,
+      "hint": "两条链在 $\\mathrm{Q}$ 汇合；本版 $2.5$ 和 $1.5$，不要写回 $3$ 和 $2$。",
+      "explanation": "**B 正确。** 两条链顺序、汇合点 $\\mathrm{Q}$、本版 $2.5/1.5$、鱼藤酮后琥珀酸仍可进、抑制剂实验上游还原，都按教材。\n\n**干扰项辨析**：\n- A：不是串联；不要口诀 $3/2$；鱼藤酮后琥珀酸链仍可走；阻断点以前是还原态。\n- C：汇合点是 $\\mathrm{Q}$；本版与第七、第八章对齐。\n- D：复合体Ⅱ不泵质子。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-2.md",
+        "label": "NADH 链 2.5 · 琥珀酸链 1.5 · pitfall「Ⅱ不是Ⅰ的下游」"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于细胞质 $\\mathrm{NADH}$ 穿梭以及本版葡萄糖 $30$ 或 $32\\,\\mathrm{ATP}$，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{NADH}$ 经转运蛋白直接进入基质；脑肌走苹果酸穿梭按 $2.5$ 计，肝心肾走甘油穿梭按 $1.5$ 计；本版葡萄糖净 $36$ 或 $38\\,\\mathrm{ATP}$；分叉取决于有没有氧",
+        "$\\mathrm{NADH}$ 不能自由穿过线粒体内膜，穿梭运的是还原当量不是 $\\mathrm{NADH}$ 分子本身。甘油-3-磷酸穿梭主要在脑和肌：内膜间隙侧 $\\mathrm{FAD}$ 同工酶把氢交给 $\\mathrm{Q}$，按 $\\mathrm{FADH}_2$ 入口计 $1.5\\,\\mathrm{ATP}$。苹果酸-天冬氨酸穿梭主要在肝、肾、心肌：经苹果酸-$\\alpha$-酮戊二酸转运蛋白和天冬氨酸-谷氨酸转运蛋白，基质重新生成 $\\mathrm{NADH}$ 走复合体Ⅰ，计 $2.5\\,\\mathrm{ATP}$。$2$ 分子细胞质 $\\mathrm{NADH}$ 相差 $2\\,\\mathrm{ATP}$，这就是 $1\\,\\mathrm{mol}$ 葡萄糖 $30$ 或 $32\\,\\mathrm{mol}\\,\\mathrm{ATP}$ 的分叉。总账中 $26$ 或 $28\\,\\mathrm{mol}$ 来自 $\\mathrm{NADH}$ 和 $\\mathrm{FADH}_2$ 的氧化，差额 $4\\,\\mathrm{mol}$ 来自底物水平磷酸化。不要默写口诀 $36/38$",
+        "甘油穿梭仍按 $2.5$ 计，因为起点是细胞质 $\\mathrm{NADH}$；苹果酸穿梭不需要内膜载体",
+        "本版葡萄糖一律 $32\\,\\mathrm{ATP}$，穿梭只改变水的生成量"
+      ],
+      "answer": 1,
+      "hint": "脑肌甘油穿梭 $1.5$，肝心肾苹果酸穿梭 $2.5$；葡萄糖 $30$ 或 $32$。",
+      "explanation": "**B 正确。** 不能过内膜、两条穿梭组织与当量、葡萄糖 $30$ 或 $32$、$26/28$ 加大头、$4$ 底物水平，都按教材。\n\n**干扰项辨析**：\n- A：没有 $\\mathrm{NADH}$ 转运蛋白；组织对调了；不是 $36/38$；分叉不是有没有氧。\n- C：甘油穿梭按 $1.5$；苹果酸穿梭需要两对载体。\n- D：穿梭决定 $30$ 还是 $32$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-2.md",
+        "label": "甘油穿梭 1.5 · 苹果酸穿梭 2.5 · 葡萄糖 30 或 32"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于化学渗透、偶联部位、$\\mathrm{P/O}$ $2.5/1.5$ 以及每分子 $\\mathrm{ATP}$ 按 $4$ 个 $\\mathrm{H}^{+}$ 计，下列叙述正确的是（　）。",
+      "options": [
+        "偶联部位是复合体Ⅱ和 $\\mathrm{ATP}$ 合酶；本版 $\\mathrm{P/O}$ 仍是 $3$ 和 $2$；三个复合体各泵 $4\\mathrm{H}^{+}$；合酶转一周 $3$ 个 $\\mathrm{ATP}$ 就是 $\\mathrm{P/O}$；$\\mathrm{F}_\\mathrm{o}$ 读作 $\\mathrm{F}_0$ 氧化部分；内膜破了电子还能照写 $\\mathrm{ATP}$",
+        "氧化磷酸化是 $\\mathrm{NADH}/\\mathrm{FADH}_2$ 氧化与 $\\mathrm{ADP}$ 磷酸化偶联，人体约 $90\\%$ 的 $\\mathrm{ATP}$ 走这条。Mitchell 化学渗透：复合体Ⅰ、Ⅲ、Ⅳ把 $\\mathrm{H}^{+}$ 从基质泵到膜间隙，内膜对质子不通透形成电化学梯度，质子经 $\\mathrm{ATP}$ 合酶回流驱动磷酸化；需完整封闭内膜。偶联部位是Ⅰ、Ⅲ、Ⅳ，不是合酶本身，也不是复合体Ⅱ。$\\mathrm{P/O}$：NADH 链接近 $2.5$，琥珀酸链接近 $1.5$，不要默写 $3$ 和 $2$。一对电子泵出 $4+4+2=10\\mathrm{H}^{+}$（Ⅳ只泵 $2$），琥珀酸不经Ⅰ泵 $6\\mathrm{H}^{+}$。合成 $1$ 分子 $\\mathrm{ATP}$ 需 $4\\mathrm{H}^{+}$：$3$ 个走合酶，$1$ 个走 $\\mathrm{ADP}/\\mathrm{P}_\\mathrm{i}/\\mathrm{ATP}$ 转运；$10/4\\approx 2.5$，$6/4=1.5$。$\\mathrm{ATP}$ 合酶＝复合体Ⅴ；$\\mathrm{F}_1$ 亲水催化，$\\mathrm{F}_\\mathrm{o}$ 对寡霉素敏感。Boyer 结合变构：$\\beta$ 的 $\\mathrm{T}/\\mathrm{L}/\\mathrm{O}$，一周 $3$ 分子 $\\mathrm{ATP}$ 是合酶计量不是 $\\mathrm{P/O}$。转位酶 $\\mathrm{ADP}^{3-}$ 进、$\\mathrm{ATP}^{4-}$ 出",
+        "化学渗透把能量存在高能磷酸键里，与质子梯度无关；抗坏血酸经 $\\mathrm{Cyt}\\,c$ 的 $\\mathrm{P/O}$ 接近 $2.5$",
+        "磷酸盐转运蛋白把丙酮酸和苹果酸对向转运；$\\mathrm{ATP}^{4-}$ 进基质、$\\mathrm{ADP}^{3-}$ 出"
+      ],
+      "answer": 1,
+      "hint": "偶联部位Ⅰ、Ⅲ、Ⅳ；每分子 $\\mathrm{ATP}$ $4\\mathrm{H}^{+}$ 才对上 $2.5/1.5$；不要把一周 $3$ 个 $\\mathrm{ATP}$ 当成 $\\mathrm{P/O}$。",
+      "explanation": "**B 正确。** 化学渗透三句话、偶联部位、本版 $\\mathrm{P/O}$、泵质子 $4+4+2$、$4\\mathrm{H}^{+}/\\mathrm{ATP}$、$\\mathrm{F}_\\mathrm{o}$ 寡霉素、结合变构、转位酶电荷，都按教材。\n\n**干扰项辨析**：\n- A：偶联部位不是Ⅱ和合酶；不要 $3$ 和 $2$；Ⅳ泵 $2\\mathrm{H}^{+}$；一周 $3$ 不是 $\\mathrm{P/O}$；$\\mathrm{F}_\\mathrm{o}$ 是寡霉素；内膜破了梯度就散。\n- C：能量存在质子电化学梯度；抗坏血酸 $\\mathrm{P/O}\\approx 1$。\n- D：磷酸盐转运蛋白是 $\\mathrm{H}^{+}$ 与 $\\mathrm{H}_2\\mathrm{PO}_4^{-}$ 同向；$\\mathrm{ADP}^{3-}$ 进、$\\mathrm{ATP}^{4-}$ 出。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-3.md",
+        "label": "化学渗透 · P/O 2.5/1.5 · 4H+/ATP · pitfall「一周 3 个 ATP 不是 P/O」"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于氧化磷酸化的生理调速、呼吸链／合酶抑制剂以及解偶联，下列叙述正确的有（　）。",
+      "options": [
+        "$\\mathrm{ADP}$ 是调节氧化磷酸化速率的主要因素，只有 $\\mathrm{ADP}$ 和 $\\mathrm{P}_\\mathrm{i}$ 充足时电子传递和耗氧才提高。$\\mathrm{ATP}/\\mathrm{ADP}$ 低则氧化磷酸化加速，并带动糖酵解、柠檬酸循环多产还原当量；$\\mathrm{ATP}$ 高则别构抑制上游产能途径。耗氧不是由氧浓度随便决定的",
+        "鱼藤酮、粉蝶霉素 $\\mathrm{A}$、异戊巴比妥抑制复合体Ⅰ，阻断铁硫中心到泛醌，琥珀酸仍可从复合体Ⅱ进 $\\mathrm{Q}$。抗霉素 $\\mathrm{A}$ 阻断 $\\mathrm{Cyt}\\,b\\rightarrow\\mathrm{Q}_\\mathrm{N}$（复合体Ⅲ），不是细胞色素氧化酶。$\\mathrm{CN}^{-}$、$\\mathrm{N}_3^{-}$ 结合氧化型 $\\mathrm{Cyt}\\,a_3$；$\\mathrm{CO}$ 结合还原型 $\\mathrm{Cyt}\\,a_3$。复合体Ⅳ被卡，两条链都到不了氧。室内火灾可同时出现 $\\mathrm{CO}$ 与 $\\mathrm{HCN}$",
+        "寡霉素、$\\mathrm{DCCD}$ 结合 $\\mathrm{F}_\\mathrm{o}$，质子不能回流，梯度堆高反过来抑制电子传递，耗氧下降。解偶联剂（$\\mathrm{DNP}$）使电子照传、梯度被破坏，不驱动合酶，耗氧常升高、$\\mathrm{ATP}$ 下降、能量变热。$\\mathrm{UCP}1$ 是棕色脂肪 $2\\times 32\\,\\mathrm{kD}$ 二聚体质子通道，产热御寒；新生儿缺棕色脂肪可致硬肿症。$\\mathrm{UCP}2$、$\\mathrm{UCP}3$ 无解偶联作用。甲状腺激素诱导解偶联蛋白并诱导 $\\mathrm{Na}^{+},\\mathrm{K}^{+}$-$\\mathrm{ATP}$ 酶，甲亢基础代谢率增高",
+        "$\\mathrm{DNP}$ 抑制复合体Ⅰ–Ⅳ；氰化物是解偶联剂；$\\mathrm{UCP}2$ 也是棕色脂肪产热蛋白；寡霉素只停磷酸化、电子传递和耗氧加快；$\\mathrm{ADP}$ 不调节耗氧"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "抑制剂耗氧降，解偶联耗氧升；$\\mathrm{CN}^{-}$ 结合氧化型 $a_3$，$\\mathrm{CO}$ 结合还原型。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：$\\mathrm{ADP}$ 主开关、同时调节上游，来自 ch10-4。\n- B：鱼藤酮／抗霉素／$\\mathrm{CN}^{-}$／$\\mathrm{CO}$ 位点与价态，来自 ch10-4。\n- C：寡霉素氧账、$\\mathrm{DNP}$、$\\mathrm{UCP}1$ 对 $\\mathrm{UCP}2/3$、甲状腺激素两点，来自 ch10-4。\n- **D 错**：$\\mathrm{DNP}$ 不卡复合体；氰化物是呼吸链末端抑制剂；$\\mathrm{UCP}2/3$ 无解偶联作用；寡霉素随后连电子传递和耗氧也下降；教材把开关写成 $\\mathrm{ADP}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-4.md",
+        "label": "ADP 调速 · 鱼藤酮/抗霉素/CN · DNP/UCP1 · pitfall「解偶联不是抑制电子传递」"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于呼吸链漏电子、$\\mathrm{ROS}$ 以及抗氧化／非线粒体氧化，下列叙述正确的有（　）。",
+      "options": [
+        "$\\mathrm{ROS}$ 是未被完全还原的含氧分子：超氧阴离子、$\\mathrm{H}_2\\mathrm{O}_2$、羟自由基，不是分子氧本身，也不是呼吸链正常产物水。主要来源是呼吸链，尤其复合体Ⅲ Q 循环中半醌 $\\mathrm{QH}\\cdot$ 非酶促漏给 $\\mathrm{O}_2$；复合体Ⅳ仍有少量氧只接到 $1$ 或 $2$ 个电子；复合体Ⅱ等也可产生 $\\mathrm{ROS}$。黄嘌呤氧化酶、单胺氧化酶也产 $\\mathrm{H}_2\\mathrm{O}_2$，远低于呼吸链",
+        "少量 $\\mathrm{ROS}$ 能促进细胞增殖，大量累积则损伤甚至死亡。$\\cdot\\mathrm{O}_2^{-}$ 可氧化顺乌头酸酶的 $\\mathrm{Fe}$-$\\mathrm{S}$，并与 $\\mathrm{NO}$ 生成 $\\mathrm{ONOO}^{-}$。$\\mathrm{SOD}$：$2\\cdot\\mathrm{O}_2^{-}+2\\mathrm{H}^{+}\\rightarrow\\mathrm{H}_2\\mathrm{O}_2+\\mathrm{O}_2$，胞质 $\\mathrm{Cu}/\\mathrm{Zn}$-$\\mathrm{SOD}$、线粒体 $\\mathrm{Mn}$-$\\mathrm{SOD}$；$\\mathrm{Cu}/\\mathrm{Zn}$-$\\mathrm{SOD}$ 缺陷可致肌萎缩性侧索硬化症。过氧化氢酶在过氧化酶体把 $2\\mathrm{H}_2\\mathrm{O}_2$ 写成 $2\\mathrm{H}_2\\mathrm{O}+\\mathrm{O}_2$。$\\mathrm{GPx}$ 用 $\\mathrm{GSH}$ 还原 $\\mathrm{H}_2\\mathrm{O}_2$ 和 $\\mathrm{ROOH}$，还原酶用 $\\mathrm{NADPH}$ 再生 $\\mathrm{GSH}$。$\\mathrm{SOD}$ 产物仍是 $\\mathrm{ROS}$，不是终点",
+        "需氧脱氢酶以 $\\mathrm{O}_2$ 为直接受氢体，产物 $\\mathrm{H}_2\\mathrm{O}_2$。不需氧脱氢酶不以氧为直接受氢体，不是“只在无氧时工作”。细胞色素 $\\mathrm{P}450$ 单加氧酶（混合功能氧化酶／羟化酶）：$\\mathrm{RH}+\\mathrm{NADPH}+\\mathrm{H}^{+}+\\mathrm{O}_2\\rightarrow\\mathrm{ROH}+\\mathrm{NADP}^{+}+\\mathrm{H}_2\\mathrm{O}$，一个氧羟化、一个氧成水，不作为 $\\mathrm{ATP}$ 主来源。生物氧化不等于氧化磷酸化",
+        "$\\mathrm{ROS}$ 就是分子氧；$\\mathrm{SOD}$ 把超氧直接写成水即彻底解毒；$\\mathrm{P}450$ 走呼吸链按 $2.5\\,\\mathrm{ATP}$ 计；复合体Ⅳ绝对不漏；不需氧脱氢酶只在厌氧时出现"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "漏电子主场在Ⅲ的 $\\mathrm{QH}\\cdot$；$\\mathrm{SOD}$ 产物是 $\\mathrm{H}_2\\mathrm{O}_2$ 不是水。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：$\\mathrm{ROS}$ 定义与漏位点，来自 ch10-5。\n- B：双重作用、$\\mathrm{SOD}$／过氧化氢酶／$\\mathrm{GPx}$ 分工，$\\mathrm{SOD}$ 不是终点，来自 ch10-5。\n- C：需氧／不需氧脱氢酶、$\\mathrm{P}450$ 反应式、生物氧化不等于氧化磷酸化，来自 ch10-5。\n- **D 错**：$\\mathrm{ROS}$ 不是分子氧；$\\mathrm{SOD}$ 产物是 $\\mathrm{H}_2\\mathrm{O}_2+\\mathrm{O}_2$；$\\mathrm{P}450$ 不产能；Ⅳ仍可少量漏；不需氧＝不以氧为直接受体。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-5.md",
+        "label": "ROS 漏电子 · SOD 不是终点 · P450 · pitfall「生物氧化不等于氧化磷酸化」"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "生物氧化就是体外燃烧一次烧完；$\\mathrm{NADH}$ 和 $\\mathrm{NADPH}$ 都进呼吸链产 $\\mathrm{ATP}$；呼吸链写成Ⅰ→Ⅱ→Ⅲ→Ⅳ；本版 $\\mathrm{P/O}$ 是 $3$ 和 $2$，葡萄糖净 $36$ 或 $38\\,\\mathrm{ATP}$；磷酸肌酸直接驱动肌收缩。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：总量相同形式不同；NADPH 不产能；两条链在 Q 汇合；本版 $2.5/1.5$ 与 $30$ 或 $32$；$\\mathrm{CP}$ 只给 $\\mathrm{ADP}$ 回充。",
+      "explanation": "**该命题错误，每一分句都错。** 体内逐步酶促，总量与体外燃烧相同，形式是热能 $+$ $\\mathrm{ATP}$，不是一次烧完。$\\mathrm{NADPH}$ 走合成还原，不参与能量代谢。两条链在 $\\mathrm{Q}$ 汇合，复合体Ⅱ不是Ⅰ的下游。本版 NADH 链约 $2.5$、琥珀酸链约 $1.5$，葡萄糖 $30$ 或 $32$，不要默写 $3/2$ 与 $36/38$。磷酸肌酸是短期储库，不能直接驱动大多数耗能反应。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-1.md",
+        "label": "生物氧化≠燃烧 · NADH/NADPH 分户 · 2.5/1.5 · 葡萄糖 30 或 32"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "偶联部位是复合体Ⅱ和 $\\mathrm{ATP}$ 合酶；鱼藤酮抑制复合体Ⅳ；$\\mathrm{DNP}$ 抑制电子传递；$\\mathrm{UCP}2$、$\\mathrm{UCP}3$ 也是解偶联产热蛋白；$\\mathrm{SOD}$ 把超氧直接写成水；$\\mathrm{mtDNA}$ 按父系遗传。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对偶联部位ⅠⅢⅣ、鱼藤酮卡Ⅰ、解偶联不卡电子、$\\mathrm{UCP}1$ 才解偶联、$\\mathrm{SOD}$ 产物 $\\mathrm{H}_2\\mathrm{O}_2$、母系遗传。",
+      "explanation": "**该命题错误，六处都错。** 偶联部位是复合体Ⅰ、Ⅲ、Ⅳ，不是Ⅱ，也不是合酶本身。鱼藤酮卡复合体Ⅰ（铁硫中心 $\\rightarrow\\mathrm{Q}$）。$\\mathrm{DNP}$ 是解偶联剂，电子照传、梯度被破坏。$\\mathrm{UCP}1$ 才解偶联产热；$\\mathrm{UCP}2$、$\\mathrm{UCP}3$ 无解偶联作用。$\\mathrm{SOD}$ 把两分子超氧歧化成 $\\mathrm{H}_2\\mathrm{O}_2+\\mathrm{O}_2$，不是直接写成水。$\\mathrm{mtDNA}$ 母系遗传居多（卵几十万 vs 精子几百）。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-4.md",
+        "label": "偶联部位ⅠⅢⅣ · 鱼藤酮卡Ⅰ · DNP 解偶联 · UCP1 · SOD · mtDNA 母系"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "本版 NADH 呼吸链 $\\mathrm{P/O}$ 约 ________（不要写成 $3$）。琥珀酸呼吸链 $\\mathrm{P/O}$ 约 ________（不要写成 $2$）。$1\\,\\mathrm{mol}$ 葡萄糖彻底氧化生成 ________ $\\mathrm{mol}\\,\\mathrm{ATP}$（取决于穿梭，不要写成 $36$ 或 $38$）。一对电子经复合体Ⅰ、Ⅲ、Ⅳ分别泵出 ________ 个 $\\mathrm{H}^{+}$（写成 $4$、$4$、$2$）。合成 $1$ 分子 $\\mathrm{ATP}$ 按 ________ 个 $\\mathrm{H}^{+}$ 计（$3$ 个走合酶、$1$ 个走转运）。",
+      "answer": "2.5，1.5，30或32，4、4、2，4",
+      "hint": "本版 $2.5/1.5$；葡萄糖 $30$ 或 $32$；Ⅳ只泵 $2\\mathrm{H}^{+}$；每分子 $\\mathrm{ATP}$ 是 $4\\mathrm{H}^{+}$ 不是只数合酶的 $3$。",
+      "scoring_criteria": [
+        "第一空填“2.5”（或“约2.5”“2.5 ATP”）（2分）",
+        "第二空填“1.5”（或“约1.5”“1.5 ATP”）（2分）",
+        "第三空填“30或32”（或“30／32”“30或32 ATP”“30、32”）（2分）",
+        "第四空填“4、4、2”（或“4，4，2”“4+4+2”“10（4+4+2）”）（2分）",
+        "第五空填“4”（或“4个”“4 H+”）（2分）"
+      ],
+      "explanation": "本版 NADH 链 $\\mathrm{P/O}\\approx 2.5$，琥珀酸链 $\\approx 1.5$，不要默写口诀 $3$ 和 $2$。葡萄糖 $30$ 或 $32$，看细胞质 $\\mathrm{NADH}$ 走甘油穿梭还是苹果酸穿梭。质子泵：Ⅰ $4$、Ⅲ $4$、Ⅳ $2$，共 $10$；琥珀酸不经Ⅰ则 $6$。每分子 $\\mathrm{ATP}$ 需 $4\\mathrm{H}^{+}$（$3$ 合酶 $+1$ 转运），故 $10/4=2.5$、$6/4=1.5$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-3.md",
+        "label": "P/O 2.5/1.5；葡萄糖 30 或 32；4+4+2；4 H+/ATP"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "生物氧化怎样把化学能装进 $\\mathrm{ATP}$？请写出：①体内生物氧化与体外燃烧总量相同、形式和节奏不同；线粒体产 $\\mathrm{CO}_2$、$\\mathrm{H}_2\\mathrm{O}$、$\\mathrm{ATP}$，过氧化物酶体／内质网修饰不产 $\\mathrm{ATP}$；②$\\mathrm{ATP}$ 是能量货币（末端 $-30.5\\,\\mathrm{kJ/mol}$，不储存），磷酸肌酸是骨骼肌／心肌／脑的短期储库，不是第二种货币；③$\\mathrm{NADH}$ 进呼吸链，$\\mathrm{NADPH}$ 走合成还原，两本账不并户；④NADH 呼吸链约 $2.5\\,\\mathrm{ATP}$、琥珀酸链约 $1.5\\,\\mathrm{ATP}$，两条链在 $\\mathrm{Q}$ 汇合；细胞质 $\\mathrm{NADH}$ 甘油穿梭 $1.5$、苹果酸穿梭 $2.5$，故葡萄糖 $30$ 或 $32$，不要默写 $36/38$。",
+      "answer": "参考答案：\n\n**1. 生物氧化对燃烧**\n- 生物氧化：体内有机物的氧化还原，相伴进行。线粒体消耗 $\\mathrm{O}_2$，产 $\\mathrm{CO}_2$、$\\mathrm{H}_2\\mathrm{O}$、$\\mathrm{ATP}$；过氧化物酶体／内质网氧化修饰，不产 $\\mathrm{ATP}$。\n- 氧化三种形式：失电子、加氧、脱氢。电子从低 $E^{\\circ}$ 流向高 $E^{\\circ}$（$\\mathrm{NADH}$ $-0.32\\,\\mathrm{V}$ → 氧 $+0.816\\,\\mathrm{V}$）。\n- 体内逐步酶促，常温常压中性 $\\mathrm{pH}$；总量与体外燃烧相同，形式是热能 $+$ $\\mathrm{ATP}$。细胞受不了一次烧完。\n\n**2. ATP 中心与磷酸肌酸**\n- 高能化合物：释放 $\\Delta G^{\\prime\\circ}>25\\,\\mathrm{kJ/mol}$。$\\mathrm{ATP}$ 末端 $-30.5$，葡萄糖-6-磷酸 $-13.8$ 是普通磷酸酯键。～$\\mathrm{P}$ 不是键内藏能。乙酰 $\\mathrm{CoA}$ 是高能硫酯。\n- $\\mathrm{ATP}$ 寿命数分钟、不储存，称能量货币。腺苷酸激酶 $2\\,\\mathrm{ADP}\\rightleftharpoons\\mathrm{ATP}+\\mathrm{AMP}$；核苷二磷酸激酶从 $\\mathrm{ATP}$ 给其他 $\\mathrm{NTP}$ 充值。\n- 磷酸肌酸 $-43.1$，经肌酸激酶与 $\\mathrm{ATP}$ 互转，储存在骨骼肌、心肌、脑；只给 $\\mathrm{ADP}$ 回充，不直接做功。\n\n**3. NADH 对 NADPH**\n- $\\mathrm{NAD}^{+}$ 收 $2\\mathrm{e}^{-}+1\\mathrm{H}^{+}$，还原型 $\\mathrm{NADH}+\\mathrm{H}^{+}$。$\\mathrm{NADP}^{+}$ 是腺苷核糖 $2'$ 磷酸化。$\\mathrm{NADH}$ 从复合体Ⅰ进呼吸链产能；$\\mathrm{NADPH}$ 走合成还原，不参与能量代谢。\n\n**4. 两条呼吸链与穿梭**\n- NADH 链：Ⅰ→$\\mathrm{Q}$→Ⅲ→$\\mathrm{Cyt}\\,c$→Ⅳ→$\\mathrm{O}_2$，约 $2.5\\,\\mathrm{ATP}$。琥珀酸链：Ⅱ→$\\mathrm{Q}$→Ⅲ→$\\mathrm{Cyt}\\,c$→Ⅳ→$\\mathrm{O}_2$，约 $1.5\\,\\mathrm{ATP}$。Ⅱ不是Ⅰ的下游。\n- 细胞质 $\\mathrm{NADH}$ 不能过内膜。脑肌甘油-3-磷酸穿梭按 $1.5$；肝心肾苹果酸-天冬氨酸穿梭按 $2.5$。葡萄糖 $30$ 或 $32$（$26$ 或 $28$ 来自还原当量 $+4$ 底物水平），不要写 $36/38$。",
+      "hint": "按燃烧对照／ATP 与 CP／NADH 对 NADPH／两条链与穿梭 $30$ 或 $32$ 写。",
+      "scoring_criteria": [
+        "写出体内逐步酶促、总量与燃烧相同；线粒体产 ATP，过氧化物酶体／内质网不产（4分）",
+        "写出 ATP 为能量货币（-30.5，不储存），磷酸肌酸为短期储库不能直接做功（3分）",
+        "写出 NADH 进呼吸链、NADPH 走合成还原（3分）",
+        "写出两条链 2.5/1.5、在 Q 汇合，穿梭 1.5/2.5，葡萄糖 30 或 32（4分）"
+      ],
+      "explanation": "本题把第 10-1 至 10-2 节收成“生物氧化—ATP 中心—NADH/NADPH—两条链与穿梭”。易错点：一次烧完；NADPH 并进呼吸链；Ⅰ→Ⅱ→Ⅲ→Ⅳ；口诀 $36/38$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-2.md",
+        "label": "生物氧化对燃烧；ATP/CP；NADH 对 NADPH；两条链与穿梭 30 或 32"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "氧化磷酸化怎样偶联、怎样被拆开、漏电子怎样清？请写出：①化学渗透：Ⅰ、Ⅲ、Ⅳ泵质子（$4+4+2=10$），质子回流经 $\\mathrm{ATP}$ 合酶写成 $\\mathrm{ATP}$；每分子 $\\mathrm{ATP}$ 按 $4$ 个 $\\mathrm{H}^{+}$ 计，故 $\\mathrm{P/O}$ 为 $2.5$ 和 $1.5$，不要默写 $3$ 和 $2$；②抑制剂：鱼藤酮卡复合体Ⅰ，抗霉素 $\\mathrm{A}$ 卡Ⅲ（$\\mathrm{Cyt}\\,b\\rightarrow\\mathrm{Q}_\\mathrm{N}$），$\\mathrm{CN}^{-}$ 结合氧化型 $\\mathrm{Cyt}\\,a_3$、$\\mathrm{CO}$ 结合还原型，寡霉素卡 $\\mathrm{F}_\\mathrm{o}$ 使耗氧也降；③解偶联：$\\mathrm{DNP}$、$\\mathrm{UCP}1$ 让质子抄近道，电子照传、$\\mathrm{ATP}$ 下降、产热；$\\mathrm{UCP}2/3$ 无解偶联作用；④呼吸链漏电子产 $\\mathrm{ROS}$（尤其Ⅲ的 $\\mathrm{QH}\\cdot$），$\\mathrm{SOD}$ 先把超氧写成 $\\mathrm{H}_2\\mathrm{O}_2$ 不是终点。不要把解偶联写成抑制电子传递，也不要把 $\\mathrm{P/O}$ 写回 $3$ 和 $2$。",
+      "answer": "参考答案：\n\n**1. 化学渗透与 P/O**\n- Mitchell：电子传递释能，Ⅰ、Ⅲ、Ⅳ把 $\\mathrm{H}^{+}$ 从基质泵到膜间隙（$4+4+2=10$；琥珀酸不经Ⅰ则 $6$）；内膜不通透，形成电化学梯度；质子经 $\\mathrm{ATP}$ 合酶（复合体Ⅴ）回流驱动 $\\mathrm{ADP}+\\mathrm{P}_\\mathrm{i}\\rightarrow\\mathrm{ATP}$。需完整封闭内膜。\n- 偶联部位是Ⅰ、Ⅲ、Ⅳ，不是合酶，也不是Ⅱ。$\\mathrm{F}_1$ 亲水催化，$\\mathrm{F}_\\mathrm{o}$ 寡霉素敏感。Boyer：$\\beta$ 的 $\\mathrm{T}/\\mathrm{L}/\\mathrm{O}$，一周 $3$ 个 $\\mathrm{ATP}$ 是合酶计量。\n- 每分子 $\\mathrm{ATP}$ 需 $4\\mathrm{H}^{+}$（$3$ 合酶 $+1$ 转运）。$10/4\\approx 2.5$，$6/4=1.5$。不要默写 $3$ 和 $2$，也不要把一周 $3$ 当成 $\\mathrm{P/O}$。\n\n**2. 抑制剂**\n- 复合体Ⅰ：鱼藤酮、粉蝶霉素 $\\mathrm{A}$、异戊巴比妥（铁硫中心 $\\rightarrow\\mathrm{Q}$）；琥珀酸仍可从Ⅱ进。\n- 复合体Ⅲ：抗霉素 $\\mathrm{A}$（$\\mathrm{Cyt}\\,b\\rightarrow\\mathrm{Q}_\\mathrm{N}$）。\n- 复合体Ⅳ：$\\mathrm{CN}^{-}$、$\\mathrm{N}_3^{-}$ 结合氧化型 $\\mathrm{Cyt}\\,a_3$；$\\mathrm{CO}$ 结合还原型 $\\mathrm{Cyt}\\,a_3$。末端阻断无旁路。\n- 合酶：寡霉素、$\\mathrm{DCCD}$ 结合 $\\mathrm{F}_\\mathrm{o}$，梯度堆高，电子传递和耗氧随后下降。\n\n**3. 解偶联**\n- $\\mathrm{DNP}$：脂溶性，基质侧放 $\\mathrm{H}^{+}$、胞质侧绑 $\\mathrm{H}^{+}$，梯度短路；电子照传，耗氧常升，$\\mathrm{ATP}$ 降，能变热。\n- $\\mathrm{UCP}1$：棕色脂肪 $2\\times 32\\,\\mathrm{kD}$ 二聚体质子通道，产热御寒；新生儿缺棕色脂肪→硬肿症。$\\mathrm{UCP}2$、$\\mathrm{UCP}3$ 无解偶联作用。甲状腺激素诱导解偶联蛋白 $+$ $\\mathrm{Na}^{+},\\mathrm{K}^{+}$-$\\mathrm{ATP}$ 酶。\n\n**4. ROS**\n- 漏单电子给氧→$\\cdot\\mathrm{O}_2^{-}$、$\\mathrm{H}_2\\mathrm{O}_2$、$\\cdot\\mathrm{OH}$。主场呼吸链，尤其Ⅲ的 $\\mathrm{QH}\\cdot$；Ⅳ、Ⅱ也可漏。\n- $\\mathrm{SOD}$：$2\\cdot\\mathrm{O}_2^{-}\\rightarrow\\mathrm{H}_2\\mathrm{O}_2+\\mathrm{O}_2$，不是终点。过氧化氢酶、$\\mathrm{GPx}$（$\\mathrm{GSH}/\\mathrm{NADPH}$）接着拆 $\\mathrm{H}_2\\mathrm{O}_2$。",
+      "hint": "按化学渗透与 $4\\mathrm{H}^{+}$ → 抑制剂位点与氧账 → DNP/UCP1 → ROS/SOD 写。",
+      "scoring_criteria": [
+        "写出化学渗透、泵质子 4+4+2、每分子 ATP 4 个 H+、P/O 为 2.5 和 1.5（4分）",
+        "写出鱼藤酮卡Ⅰ、抗霉素卡Ⅲ、CN-/CO 卡Ⅳ价态不同、寡霉素卡 Fo 耗氧也降（4分）",
+        "写出 DNP/UCP1 解偶联电子照传，UCP2/3 无解偶联作用（3分）",
+        "写出呼吸链漏电子产 ROS，SOD 先清超氧产物仍是 H2O2（4分）"
+      ],
+      "explanation": "本题把第 10-3 至 10-5 节收成“化学渗透—抑制剂—解偶联—ROS”。易错点：P/O 写回 $3/2$；解偶联写成抑制电子传递；CN-/CO 价态并户；SOD 写成彻底解毒。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch10-5.md",
+        "label": "化学渗透；P/O 2.5/1.5；抑制剂；DNP/UCP1；ROS/SOD"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

@@ -130,7 +130,7 @@ interface ExtractResult {
   data_id?: string;
 }
 
-async function pollBatchResults(batchId: string, timeoutMs = 300000): Promise<ExtractResult[]> {
+async function pollBatchResults(batchId: string, timeoutMs = 1800000): Promise<ExtractResult[]> {
   const start = Date.now();
   const interval = 5000;
 

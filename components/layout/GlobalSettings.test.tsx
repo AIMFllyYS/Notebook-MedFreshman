@@ -8,6 +8,7 @@ import GlobalSettings from "./GlobalSettings";
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),
+  usePathname: () => "/",
 }));
 
 function renderSettings() {
@@ -81,6 +82,18 @@ describe("GlobalSettings", () => {
     });
     expect(screen.getByRole("button", { name: /成绩/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: /^外观$/ })).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("renders 切换学年 and switching years persists the academic year", async () => {
+    const user = userEvent.setup();
+    renderSettings();
+    expect(screen.getByRole("group", { name: "切换学年" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "大一下学期" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "大二上学期" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "大一下学期" }));
+    const { useAcademicYear } = await import("@/lib/hooks/useAcademicYear");
+    expect(useAcademicYear.getState().year).toBe("freshman-2");
+    expect(localStorage.getItem("gailvlun-academic-year")).toBe("freshman-2");
   });
 
   it("expands appearance controls and applies custom color/font settings", async () => {

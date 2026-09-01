@@ -1,0 +1,324 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch21",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch21-1.md；content/biochemistry/textbook/ch21-2.md；content/biochemistry/textbook/ch21-3.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{DNA}$ 损伤的定义、两种后果以及损伤与突变的关系，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{DNA}$ 损伤就是突变；看见损伤应先默写切除酶名单；两种后果只需答突变；损伤发生后修复另开一轮才启动；一损伤细胞就凋亡；遗传物质绝对稳定才是好事",
+        "$\\mathrm{DNA}$ 损伤是各种体内体外因素所导致的 $\\mathrm{DNA}$ 组成与结构的变化，户头落在「组成与结构被改掉」，还不是「已经变成可遗传的等位基因」。两种后果必须分开：①结构发生永久性改变，即突变；②失去作为复制和／或转录模板的功能。损伤不等于突变：一部分被正确修复，一部分走凋亡，一部分不完全修复才变成突变或染色体畸变。损伤的同时即伴有修复系统启动。修对则细胞维持正常；不能有效修复可通过凋亡清除；不完全修复可致突变、畸变、衰老与恶性转化。绝对稳定则生物失去进化基础，多样性依赖于损伤与修复之间的良好平衡",
+        "只答「复制停了」就已经覆盖两种后果，突变和进化那一户可以不写",
+        "光复活酶、$\\mathrm{DNA}$ 糖苷酶、$\\mathrm{XP}$、$\\mathrm{MRN}$、$\\mathrm{LexA}$-$\\mathrm{RecA}$ 都应写进第一节损伤定义里"
+      ],
+      "answer": 1,
+      "hint": "损伤＝组成与结构变化；两种后果是突变对失去模板功能；损伤≠突变。",
+      "explanation": "**B 正确。** 定义、两种后果、损伤≠突变、修复同时启动、转归三路、绝对稳定则无进化，都来自 ch21-1。\n\n**干扰项辨析**：\n- A：把损伤写成突变；漏模板功能；修复写成另开一轮；凋亡写成必经；绝对稳定写成好事。\n- C：两种后果必须两句都答。\n- D：酶名单是第二节的账。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-1.md",
+        "label": "损伤≠突变 · 永久性改变 vs 失去模板功能 · 修对/凋亡/不完全修复"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于体内／体外因素、电离辐射与紫外线嘧啶二聚体，下列叙述正确的是（　）。",
+      "options": [
+        "「自发」损伤没有体内来源；体内与体外可以截然分开；紫外线属于电离辐射；$\\mathrm{TT}$ 是两条链上的 $\\mathrm{A}$-$\\mathrm{T}$ 氢键变成共价；图21-2 左上应改标成图21-1；$\\mathrm{UVA}$ 因为较弱所以不算非电离辐射",
+        "体内因素（活性代谢物、复制错配、热不稳定性）可导致 $\\mathrm{DNA}$「自发」损伤；体外因素主要包括辐射、化学毒物、药物、病毒、植物及微生物活性代谢产物。体内与体外往往不能截然分开，通常体外因素通过体内因素起作用。电离辐射（$\\alpha$、$\\beta$、$\\mathrm{X}$、$\\gamma$）能直接或间接引起组织电离，直接断键（断裂或交联）并间接激发自由基。紫外线属非电离辐射。$\\mathrm{UVA}$（$321\\sim 400\\,\\mathrm{nm}$）一般不造成生物大分子损伤；$260\\,\\mathrm{nm}$ 左右靠近吸收峰。低波长紫外线使同一条链上相邻两个胸腺嘧啶以共价键连成 $\\mathrm{TT}$（环丁烷型嘧啶二聚体），也可形成 $\\mathrm{CT}$、$\\mathrm{CC}$，使链弯曲扭结、复制转录受阻；还可链间交联或断裂。图21-1 电子版缺失，图21-2 左上是二聚体结构插图，不要整张改标成图21-1",
+        "复制打滑和 $5$-溴尿嘧啶掺入是同一种机制，都只改配对身份",
+        "臭氧层吸收全部紫外线，$\\mathrm{UVA}$ 也在被挡住的那一段里"
+      ],
+      "answer": 1,
+      "hint": "体内三户称「自发」；UV 做同一条链上共价嘧啶二聚体；图21-1 缺失不要改标图21-2。",
+      "explanation": "**B 正确。** 体内外因素、电离／非电离、$\\mathrm{TT}$ 链内共价、图号，都来自 ch21-1。\n\n**干扰项辨析**：\n- A：自发仍有体内来源；体内外不能截然分开；紫外线非电离；$\\mathrm{TT}$ 不是链间氢键；左上不要改标；$\\mathrm{UVA}$ 仍属非电离。\n- C：打滑改短重复拷贝数；类似物改配对身份。\n- D：臭氧层吸收 $320\\,\\mathrm{nm}$ 以下的大部分，不是全部紫外线。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-1.md",
+        "label": "体内自发三户 · 电离 vs 紫外线 · TT 链内共价 · 图21-1 缺失"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于化学因素（脱氨基、烷基化、类似物、嵌入染料）以及图21-2 的苯并芘，下列叙述正确的是（　）。",
+      "options": [
+        "化学因素只有烷化剂一种；$5$-$\\mathrm{BU}$ 是把原有碱基的氨基切掉；溴化乙锭是胸腺嘧啶类似物按模板掺入；苯并芘因正文无专段应删掉；黄曲霉素是噬菌体转导；烷化剂只造成 $\\mathrm{O}^{6}$-甲基鸟嘌呤这一种后果",
+        "化学因素四类：自由基、碱基类似物、碱基修饰物（含烷化剂）和嵌入染料。自由基（电离辐射产生 $\\cdot\\mathrm{OH}$、$\\cdot\\mathrm{H}$；体内代谢也可产生活性氧）打碱基、核糖和磷酸基。$5$-溴尿嘧啶是胸腺嘧啶类似物，酮式与 $\\mathrm{A}$ 配对、烯醇式与 $\\mathrm{G}$ 配对，导致 $\\mathrm{AT}\\leftrightarrow\\mathrm{GC}$。亚硝酸脱氨基：$\\mathrm{A}\\rightarrow\\mathrm{I}$ 改与 $\\mathrm{C}$ 配，$\\mathrm{C}\\rightarrow\\mathrm{U}$ 改与 $\\mathrm{A}$ 配。烷化剂（氮芥、硫芥、二乙基亚硝胺）使碱基氮原子烷基化，后果包括电荷变化、配对改变、鸟嘌呤脱落成 $\\mathrm{AP}$ 位点、$\\mathrm{G}$ 二聚体、交联与断裂，并可阻止正常修复。嵌入染料（溴化乙锭、吖啶橙）插入碱基对使间距增大一倍，复制时引发缺失、移码或插入。图21-2 另画苯并芘诱变衍生物，看图补这一户，不要删，也不要外补代谢活化全套。黄曲霉素属生物因素（霉菌毒素），不是转导",
+        "类似物和嵌入染料都是「假冒某个碱基按模板掺入」",
+        "自发脱氨基（$\\mathrm{C}\\rightarrow\\mathrm{U}$、$\\mathrm{A}\\rightarrow\\mathrm{I}$）和亚硝酸脱氨基产物名单不同，所以不是同一类化学反应"
+      ],
+      "answer": 1,
+      "hint": "四类化学因素分户；苯并芘在图21-2 上不要删；烷化剂名单以本版为准。",
+      "explanation": "**B 正确。** 自由基／类似物／脱氨基／烷化剂／嵌入染料／苯并芘／黄曲霉素，都来自 ch21-1。\n\n**干扰项辨析**：\n- A：不是只有烷化剂；$5$-$\\mathrm{BU}$ 是掺入；嵌入染料不是类似物；苯并芘不要删；黄曲霉素不是转导；烷化剂后果不止加甲基。\n- C：类似物掺入，嵌入染料拉开间距。\n- D：产物名单可以相同（$\\mathrm{C}\\rightarrow\\mathrm{U}$、$\\mathrm{A}\\rightarrow\\mathrm{I}$），户头不同（自发 vs 化学因素）。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-1.md",
+        "label": "自由基/5-BU/亚硝酸/氮芥硫芥二乙基亚硝胺/嵌入染料 · 图21-2 苯并芘"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于转换／颠换、错义／无义／同义以及 $\\mathrm{B}$-$\\mathrm{Raf}^{\\mathrm{V600E}}$ 记法，下列叙述正确的是（　）。",
+      "options": [
+        "转换颠换问的就是氨基酸变不变；$\\mathrm{V600E}$ 是无义突变，表示第 $600$ 位变成终止密码子；同义突变等于没有突变；简并性说明置换一定无害；错义／无义／同义应放到第二节开头再写",
+        "转换是嘌呤被另一种嘌呤取代或嘧啶被另一种嘧啶取代；颠换是嘌呤与嘧啶互换。这是碱基置换的分类，还不是错义／无义／同义。由于密码子简并性，置换并非一定改变氨基酸编码：错义突变（missense）造成氨基酸编码改变；无义突变（nonsense）把密码子变成终止密码子；同义突变（same sense mutation）不改变氨基酸编码——$\\mathrm{DNA}$ 序列已经变了，基因型可以变、表型可以不变。教科书和文献对错义突变用氨基酸单字母符号和位置注明：$\\mathrm{B}$-$\\mathrm{Raf}$ 第 $600$ 位缬氨酸突变为谷氨酸写为 $\\mathrm{V600E}$，标示为 $\\mathrm{B}$-$\\mathrm{Raf}^{\\mathrm{V600E}}$，是错义不是无义。简并性解释「置换不一定改氨基酸」，不是「置换一定无害」。插入／缺失可引起移码。这些记法写在第一节末",
+        "同义突变是「什么都没发生」，所以不能用于解释基因多态性",
+        "$\\mathrm{V600E}$ 中的 $\\mathrm{V}$ 和 $\\mathrm{E}$ 是碱基单字母，不是氨基酸"
+      ],
+      "answer": 1,
+      "hint": "转换／颠换≠错义／无义／同义；$\\mathrm{V600E}$ 是错义；$\\mathrm{DNA}$ 变了氨基酸可以不变。",
+      "explanation": "**B 正确。** 两套分类、$\\mathrm{V600E}$ 记法、同义≠没有突变，都来自 ch21-1。\n\n**干扰项辨析**：\n- A：两套词并户；$\\mathrm{V600E}$ 不是无义；同义不是没突变；简并性不是一定无害；记法在第一节末。\n- C：同义是氨基酸编码不变，序列已变；第三节多态性就落在这一方向。\n- D：$\\mathrm{V}$ 是缬氨酸，$\\mathrm{E}$ 是谷氨酸。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-1.md",
+        "label": "转换 vs 颠换 · 错义/无义/同义 · B-Raf V600E"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于光复活修复，下列叙述正确的是（　）。",
+      "options": [
+        "光复活是切除修复，光裂合酶把二聚体切掉再由聚合酶填补；用的仍是紫外线；哺乳动物细胞主要靠光复活修 $\\mathrm{TT}$；两个生色基团是 $\\mathrm{NADH}$ 和细胞色素；表21-1 不应单独列出光复活",
+        "嘧啶二聚体的直接修复又称光复活修复或光复活作用。光复活酶识别并结合嘧啶二聚体，在可见光（$400\\,\\mathrm{nm}$）激发下将二聚体解聚为原来的单体核苷酸，不切除、不另合成一段 $\\mathrm{DNA}$。两个生色基团是次甲基四氢叶酸和 $\\mathrm{FADH}_{2}$：前者吸光后激活后者，再把电子交给二聚体使其还原。损伤用紫外线，修复用可见光。最初在低等生物中发现；鸟类等高等生物虽有酶，但光复活并不是高等生物修嘧啶二聚体的主要方式；哺乳动物细胞缺乏光复活酶，高等生物主要靠核苷酸切除。表21-1 把光复活单独成行，正文归在直接修复下，两处都要认。图21-3 是 $\\mathrm{UV}$ 做二聚体、可见光拆开的一个圈",
+        "嘧啶二聚体只能走光复活，不能走核苷酸切除",
+        "直接修复只有光复活一户，没有烷基转移和连接酶封口"
+      ],
+      "answer": 1,
+      "hint": "可见光约 $400\\,\\mathrm{nm}$＋光裂合酶解聚；哺乳动物缺此酶；不是切除。",
+      "explanation": "**B 正确。** 光复活定义、生色基团、物种差异、图21-3，都来自 ch21-2。\n\n**干扰项辨析**：\n- A：不是切除；不是紫外线修好；哺乳动物缺酶；生色基团不是 $\\mathrm{NADH}$；表里单独成行。\n- C：嘧啶二聚体也可以走 $\\mathrm{NER}$，对象重叠、机制不重叠。\n- D：直接修复还有烷基转移和连接酶封单链切口。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-2.md",
+        "label": "光复活 400 nm · 次甲基四氢叶酸与 FADH2 · 哺乳动物缺酶"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于烷基化碱基的直接修复与碱基切除修复（$\\mathrm{BER}$），下列叙述正确的是（　）。",
+      "options": [
+        "烷基转移酶把烷基水解掉后同一分子酶循环使用；图21-4 电子版缺失就应删掉图号；$\\mathrm{BER}$ 一次切掉含损伤的寡核苷酸；$\\mathrm{AP}$ 位点就是链断裂；$\\mathrm{p}53$ 自己是糖苷酶；连接酶封单链切口就是同源重组；两户都应写成「都是切除」",
+        "烷基转移酶把烷基从烷基化核苷酸直接转移到酶蛋白自身肽链上，$\\mathrm{DNA}$ 恢复结构，酶不可逆失活。人类 $\\mathrm{O}^{6}$-甲基鸟嘌呤-$\\mathrm{DNA}$ 甲基转移酶把 $\\mathrm{O}^{6}$ 位甲基转到自身半胱氨酸残基上。图21-4 电子版缺失，不嵌入 $\\mathrm{src}$，正文仍保留图号。连接酶催化单链切口处 $5'$-磷酸与 $3'$-羟基成磷酸二酯键，对面互补链还在，不是同源重组。$\\mathrm{BER}$ 依赖特异 $\\mathrm{DNA}$ 糖苷酶：识别水解受损碱基产生 $\\mathrm{AP}$ 位点 $\\rightarrow$ $\\mathrm{AP}$ 核酸内切酶切开并去掉磷酸核糖 $\\rightarrow$ 聚合酶以互补链填补 $\\rightarrow$ 连接酶封口（图21-5）。$\\mathrm{AP}$ 位点是位子空了，内切酶再切才造成链断裂。$\\mathrm{p}53$ 调控 $\\mathrm{BER}$ 速度，不是糖苷酶。烷基化碱基可以走直接修复，也可以走 $\\mathrm{BER}$，不要并成「都是切除」",
+        "糖苷酶切的是一段寡核苷酸，$\\mathrm{AP}$ 内切酶切的是碱基",
+        "直接修复必须切 $\\mathrm{DNA}$ 链，否则不算修复"
+      ],
+      "answer": 1,
+      "hint": "烷基搬到酶自己身上、酶不可逆失活；BER 先掉碱基再掉磷酸核糖；图21-4 缺失仍保留图号。",
+      "explanation": "**B 正确。** 烷基转移酶、$\\mathrm{BER}$ 四步、图21-4／21-5、$\\mathrm{p}53$，都来自 ch21-2。\n\n**干扰项辨析**：\n- A：酶不可逆失活；缺失不删图号；$\\mathrm{BER}$ 不是一次切寡核苷酸；$\\mathrm{AP}$≠断链；$\\mathrm{p}53$ 不是糖苷酶；连接酶≠同源重组；不要并成切除。\n- C：顺序反了。\n- D：直接修复的定义就是酶直接作用于受损 $\\mathrm{DNA}$ 使之恢复原来结构，不切链。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-2.md",
+        "label": "O6-甲基鸟嘌呤甲基转移酶不可逆失活 · 图21-4 缺失 · BER 图21-5"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于核苷酸切除修复（$\\mathrm{NER}$）与碱基切除修复（$\\mathrm{BER}$）的分户、人类 $\\mathrm{XP}$ 蛋白以及错配修复，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{BER}$ 认螺旋扭曲并切一段寡核苷酸，$\\mathrm{NER}$ 只换一个碱基；人细胞用 $\\mathrm{UvrA}$-$\\mathrm{D}$；$\\mathrm{XPF}$ 在 $3'$、$\\mathrm{XPG}$ 在 $5'$；着色性干皮病是光复活酶缺陷；表21-2 应补外校的 $\\mathrm{XPV}$／$\\mathrm{CSA}$ 顶替本版七行；错配修复就是图21-5 那一套糖苷酶；细菌切的是已甲基化的母链",
+        "$\\mathrm{BER}$ 认具体受损碱基（糖苷酶特异），先切碱基再切磷酸核糖，换一个核苷酸。$\\mathrm{NER}$ 不识别具体是哪一种损伤，识别的是损伤对双螺旋造成的扭曲，两侧切开去掉一段受损寡核苷酸。「不局限于某种特殊原因」「一套蛋白修一系列性质各异的损伤」主要给 $\\mathrm{NER}$。大肠埃希菌 $\\mathrm{NER}$ 蛋白是 $\\mathrm{UvrA}$、$\\mathrm{UvrB}$、$\\mathrm{UvrC}$、$\\mathrm{UvrD}$；人是 $\\mathrm{XPA}$–$\\mathrm{XPG}$ 等，约 $30$ 种蛋白。人类五步：$\\mathrm{XPC}$／$\\mathrm{XPA}$ 等加 $\\mathrm{SSB}$ 结合 $\\rightarrow$ $\\mathrm{XPB}$／$\\mathrm{XPD}$ 解旋成凸起 $\\rightarrow$ $\\mathrm{XPG}$ 在 $3'$、$\\mathrm{XPF}$ 在 $5'$ 切开，经 $\\mathrm{PCNA}$ 释放寡核苷酸 $\\rightarrow$ 聚合酶 $\\delta$ 或 $\\varepsilon$ 填补 $\\rightarrow$ 连接酶。遗传性着色性干皮病因 $\\mathrm{NER}$ 系统基因缺陷致病，表21-2 以本版 $\\mathrm{XPA}$–$\\mathrm{XPG}$ 七行为准；$\\mathrm{XPV}$ 是第三节变种，户头是复制后修复／损伤耐受。转录偶联修复由 $\\mathrm{RNA}$ 聚合酶识别正在转录的模板链损伤。错配修复可看作 $\\mathrm{BER}$ 的特殊形式，但酶是 $\\mathrm{MutS}$／$\\mathrm{L}$／$\\mathrm{H}$ 和人的 $\\mathrm{MLH}1$、$\\mathrm{MSH}2$ 等；细菌母链 $\\mathrm{A}$ 已甲基化、子链尚未甲基化，应在子链上切除错配",
+        "全基因组 $\\mathrm{NER}$ 和转录偶联修复的第一步识别蛋白完全相同，都是 $\\mathrm{XPC}$／$\\mathrm{XPA}$",
+        "$\\mathrm{MSH}4$、$\\mathrm{MSH}5$ 在表21-3 里也只写「错配修复」，功能与 $\\mathrm{MSH}2$ 完全一样"
+      ],
+      "answer": 1,
+      "hint": "NER 认扭曲、切寡核苷酸；XPG 在 3′、XPF 在 5′；人用 XP 不用 Uvr；细菌切未甲基化子链。",
+      "explanation": "**B 正确。** $\\mathrm{BER}$／$\\mathrm{NER}$ 分户、人 $\\mathrm{XP}$ 五步、$\\mathrm{XPF}$／$\\mathrm{XPG}$、错配修复甲基化区分，都来自 ch21-2。\n\n**干扰项辨析**：\n- A：认什么／切多长写反；人不用 $\\mathrm{Uvr}$；$5'$／$3'$ 记反；$\\mathrm{XP}$ 不是光复活缺陷；不要外补表21-2；错配≠图21-5；切的是未甲基化子链。\n- C：转录偶联由 $\\mathrm{RNA}$ 聚合酶识别。\n- D：表21-3 里 $\\mathrm{MSH}4$、$\\mathrm{MSH}5$ 的功能写成染色体重组。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-2.md",
+        "label": "BER vs NER · XPG 3′/XPF 5′ · XP 着色性干皮病 · MutS/L/H 甲基化分母子链"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于双链断裂的同源重组修复、$\\mathrm{BRCA}$ 以及非同源末端连接，下列叙述正确的有（　）。",
+      "options": [
+        "双链断裂没有互补链可言，不能及时直接提供序列信息。同源重组要求相当长范围内序列相同或十分相近（$\\ge 200\\,\\mathrm{bp}$），真核以未受损姐妹染色单体为模板，主要发生在 $\\mathrm{S}$ 和 $\\mathrm{G}_{2}$ 期，保真度较高。四阶段：末端切除 $\\rightarrow$ 单链入侵成 $\\mathrm{D}$-loop $\\rightarrow$ 第二断端捕获并连接成 $\\mathrm{dHJ}$ $\\rightarrow$ 解离。$\\mathrm{MRN}$ 是 $\\mathrm{MRE}11$-$\\mathrm{RAD}50$-$\\mathrm{NBS}1$，与 $\\mathrm{CtIP}$ 切出 $3'$-$\\mathrm{ssDNA}$；$\\mathrm{RAD}51$ 是细菌 $\\mathrm{RecA}$ 的真核同源物。图21-6 黑链是受伤者、浅蓝色是供体。$\\mathrm{dHJ}$ 解离可以有交叉也可以无交叉",
+        "$\\mathrm{BRCA}$ 基因参与损伤修复启动与细胞周期调控。失活则对辐射敏感性增加、双链断裂修复能力下降。$\\mathrm{BRCA}1$ 在 $70\\%$ 的家族遗传性乳腺癌和卵巢癌病例中突变失活。表21-4 遗传性乳腺癌、Bloom 综合征走同源重组。范科尼贫血表内写「重组跨越损伤修复」，不要改写成图21-6 的 $\\mathrm{dHJ}$",
+        "非同源末端连接不需要同源模板，对 $\\mathrm{DSB}$ 进行容易出错的修复，是整个细胞周期双链断裂修复的主要途径。顺序：$\\mathrm{Ku}70$-$\\mathrm{Ku}80$ 结合断端 $\\rightarrow$ $\\mathrm{DNA}\\ \\mathrm{PKcs}$ 使末端保持接近 $\\rightarrow$ $\\mathrm{Artemis}$ 加工 $\\rightarrow$ $\\mathrm{LIG}4$ 与 $\\mathrm{XRCC}4$ 连接。忠实性差，可能丧失或获得核苷酸造成染色体畸变。也可把未连接的片段连成新组合（$\\mathrm{B}$／$\\mathrm{T}$ 受体、免疫球蛋白基因构建）。同源重组与 $\\mathrm{NHEJ}$ 相互协调，不是「有同源重组就不用 $\\mathrm{NHEJ}$」",
+        "所有「断了」都交给连接酶原位封口；同源重组是整个细胞周期的主要途径；$\\mathrm{NHEJ}$ 与同源重组同样高保真；$\\mathrm{BRCA}1/2$ 是癌基因、促进增殖所以致癌；范科尼贫血就是图21-6；$\\mathrm{dHJ}$ 一定交叉互换"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "HR 在 S/G2、MRN/BRCA/RAD51、dHJ 可无交叉；NHEJ 全周期易错；范科尼走重组跨越。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：DSB 严重性、HR 四阶段、$\\mathrm{MRN}$、$\\mathrm{RAD}51$、图21-6、$\\mathrm{dHJ}$ 可无交叉，来自 ch21-2。\n- B：$\\mathrm{BRCA}$、$70\\%$、表21-4 分户，来自 ch21-2／ch21-3。\n- C：$\\mathrm{NHEJ}$ 蛋白顺序、易错、生理性重组，来自 ch21-2。\n- **D 错**：逐句写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-2.md",
+        "label": "MRN/RAD51/BRCA · 图21-6 dHJ · NHEJ Ku-DNA-PKcs-Artemis-LIG4 · 范科尼≠图21-6"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于跨越损伤、$\\mathrm{SOS}$、双重效应以及修复缺陷与疾病，下列叙述正确的有（　）。",
+      "options": [
+        "大范围损伤或复制叉已解开时，先跨过损伤部位复制，再设法修，是保留差错的方式。重组跨越：$\\mathrm{RecA}$ 把健康母链对应序列填到子链缺口，损伤并未真正修掉，只是转移到另一个子代分子。合成跨越：诱导聚合酶Ⅳ或Ⅴ替换聚合酶Ⅲ，随机插入正确甚至错误的核苷酸越过损伤，Ⅳ／Ⅴ通常无校对。不要把跨越写成「已经修好再复制」，也不要把重组跨越并成图21-6 修 $\\mathrm{DSB}$",
+        "$\\mathrm{SOS}$ 由 $\\mathrm{RecA}$ 与 $\\mathrm{LexA}$ 相互作用引发，近 $30$ 个相关基因参与。完好时 $\\mathrm{LexA}$ 结合共同操纵序列 $5'$-$\\mathrm{CTG}$-$\\mathrm{N}_{10}$-$\\mathrm{CAG}$-$3'$ 阻遏 $\\mathrm{SOS}$ 基因；严重损伤时 $\\mathrm{RecA}$ 激活 $\\mathrm{LexA}$ 自水解，阻遏解除；修完 $\\mathrm{LexA}$ 重新合成，基因再关。图21-7 电子版缺失，用这段散文。$\\mathrm{SOS}$ 不是第五种切除酶；问 $\\mathrm{RecA}$ 调节 $\\mathrm{SOS}$ 不要答成 $\\mathrm{RAD}51$ 修 $\\mathrm{DSB}$",
+        "损伤具有双重效应：永久性改变（突变）可能只改编码或调控序列，细胞尚可无明显功能障碍并存活，突变是进化的分子基础；失去模板功能则明显障碍甚至死亡。绝对一成不变则失去进化基础，不要答「修复越彻底越好」。表21-4 按修复系统记病：着色性干皮病走 $\\mathrm{NER}$；$\\mathrm{HNPCC}$ 走错配＋转录偶联（$\\mathrm{MLH}1$／$\\mathrm{MSH}2$，$622$ 位 $\\mathrm{C}/\\mathrm{T}$、Pro$\\rightarrow$Leu 最常见）；遗传性乳腺癌走同源重组。先天性修复缺陷易癌变，已癌变细胞修复功能往往显著升高，能修掉化疗造成的损伤，是多数抗肿瘤药物不能奏效的原因之一",
+        "跨越＝无错切除；$\\mathrm{SOS}$＝第五种切除修复；$\\mathrm{LexA}$ 是激活酶、$\\mathrm{RecA}$ 结合操纵序列阻遏；修复越彻底越好；肿瘤细胞都不会修 $\\mathrm{DNA}$；表21-4 应改成定位克隆和全基因组关联"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "先复制再设法修；LexA-RecA 开关；双重效应两句都答；癌细胞修复常升高。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：重组跨越 vs 合成跨越，来自 ch21-2。\n- B：$\\mathrm{LexA}$-$\\mathrm{RecA}$ 开关、图21-7 缺失，来自 ch21-2。\n- C：双重效应、表21-4、$\\mathrm{HNPCC}$、癌细胞修复升高，来自 ch21-3。\n- **D 错**：逐句写反。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-2.md",
+        "label": "重组跨越损伤转移 · Pol IV/V · LexA-RecA · 双重效应 · 癌细胞修复升高"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "$\\mathrm{DNA}$ 损伤就是突变。紫外线 $\\mathrm{TT}$ 二聚体是两条链之间的氢键。光复活、烷基转移、$\\mathrm{BER}$、$\\mathrm{NER}$、同源重组、$\\mathrm{SOS}$ 都是切除修复。$\\mathrm{B}$-$\\mathrm{Raf}^{\\mathrm{V600E}}$ 是无义突变。修复越彻底越好，因为绝对稳定才有进化。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：损伤≠突变；TT 是链内共价；途径不要并成切除；V600E 是错义；绝对稳定则无进化。",
+      "explanation": "**该命题错误，每一分句都错。** 损伤是组成与结构变化，不等于突变。$\\mathrm{TT}$ 是同一条链上相邻嘧啶以共价键连接的链内交联。光复活是可见光下解聚；烷基转移把烷基搬到酶自己身上；只有 $\\mathrm{BER}$ 和 $\\mathrm{NER}$ 才叫切除修复；同源重组修双链断裂；$\\mathrm{SOS}$ 是 $\\mathrm{LexA}$-$\\mathrm{RecA}$ 应急跨越。$\\mathrm{V600E}$ 是缬氨酸变成谷氨酸，属错义。绝对稳定则失去进化基础，不要答「修复越彻底越好」。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-1.md",
+        "label": "损伤≠突变 · TT 链内共价 · 途径分户 · V600E 错义 · 绝对稳定无进化"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "哺乳动物细胞主要靠光复活修嘧啶二聚体。烷基转移酶修完可循环使用。图21-4、图21-7 电子版缺失就应删掉图号。人 $\\mathrm{NER}$ 用 $\\mathrm{Uvr}$ 蛋白，$\\mathrm{XPF}$ 切 $3'$ 端。已癌变细胞的 $\\mathrm{DNA}$ 修复功能低下，所以化疗一定奏效。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：哺乳动物缺光复活酶；烷基转移酶不可逆失活；缺失仍保留图号；人用 XP，XPF 在 5′；癌细胞修复常升高。",
+      "explanation": "**该命题错误，每一分句都错。** 哺乳动物细胞缺乏光复活酶，高等生物修嘧啶二聚体主要靠核苷酸切除。烷基转移酶把烷基转移到自身肽链后不可逆失活。图21-4、图21-7 电子版为 $0$ 字节，不嵌入 $\\mathrm{src}$，正文仍保留图号。人 $\\mathrm{NER}$ 是 $\\mathrm{XPA}$–$\\mathrm{XPG}$ 等，大肠埃希菌才是 $\\mathrm{Uvr}$；$\\mathrm{XPF}$ 在 $5'$ 端，$\\mathrm{XPG}$ 在 $3'$ 端。先天性修复缺陷易发生肿瘤，但已癌变细胞修复功能往往显著升高，能充分修复化疗药物引起的损伤，是多数抗肿瘤药物不能奏效的直接原因之一。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-2.md",
+        "label": "哺乳动物缺光复活酶 · 烷基转移酶不可逆失活 · 图号保留 · XPF 5′ · 癌细胞修复升高"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "$\\mathrm{DNA}$ 损伤的两种后果：结构发生永久性改变即 ________，或失去作为复制和／或转录的 ________ 功能。低波长紫外线使同一条链上相邻嘧啶形成 ________。光复活需要约 ________ $\\mathrm{nm}$ 的可见光。$\\mathrm{B}$-$\\mathrm{Raf}$ 第 $600$ 位缬氨酸变为谷氨酸记为 ________。",
+      "answer": "突变, 模板, 嘧啶二聚体, 400, V600E",
+      "hint": "两种后果分开写；二聚体是嘧啶二聚体；可见光约 400 nm；记法是 V600E。",
+      "scoring_criteria": [
+        "第一空填“突变”（或“基因突变”）（2分）",
+        "第二空填“模板”（或“模板的”“复制和/或转录模板”）（2分）",
+        "第三空填“嘧啶二聚体”（或“胸腺嘧啶二聚体”“TT 二聚体”“环丁烷型嘧啶二聚体”）（2分）",
+        "第四空填“400”（或“400 nm”“400nm”）（2分）",
+        "第五空填“V600E”（或“B-RafV600E”“B-Raf^V600E”）（2分）"
+      ],
+      "explanation": "两种后果必须分开：突变对失去模板功能。紫外线主账是同一条链上的嘧啶二聚体（$\\mathrm{TT}$／$\\mathrm{CT}$／$\\mathrm{CC}$）。光复活用可见光约 $400\\,\\mathrm{nm}$，不是紫外线。$\\mathrm{V600E}$ 是错义突变记法，不是无义。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-1.md",
+        "label": "突变；模板；嘧啶二聚体；400 nm；V600E"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "$\\mathrm{DNA}$ 损伤怎样分户？请写出：①损伤≠突变；两种后果（永久性改变即突变 vs 失去复制／转录模板功能）。②体内「自发」三户与体外物理／化学／生物；体内外不能截然分开。③紫外线→同一条链上嘧啶二聚体（图21-1 可能缺失）；电离辐射直接＋自由基。④化学：脱氨基、烷基化（氮芥、硫芥、二乙基亚硝胺）、$5$-$\\mathrm{BU}$、嵌入染料；图21-2 含苯并芘。⑤转换／颠换对错义／无义／同义；$\\mathrm{B}$-$\\mathrm{Raf}^{\\mathrm{V600E}}$ 是错义。",
+      "answer": "参考答案：\n\n**1. 损伤≠突变，两种后果**\n- 损伤：体内外因素导致 $\\mathrm{DNA}$ 组成与结构变化。不等于突变。\n- 两种后果：①结构发生永久性改变，即突变；②失去作为复制和／或转录模板的功能。必须两句都答。\n- 损伤的同时修复就启动。修对→正常；不能有效修复→可凋亡；不完全修复→突变、畸变、衰老、恶性转化。绝对稳定则无进化。\n\n**2. 体内外因素**\n- 体内「自发」：复制错配（约 $1/10^{10}$）与打滑（亨廷顿病／脆性 $\\mathrm{X}$／肌强直性营养不良）；自身不稳定（脱嘌呤最普遍，$\\mathrm{C}\\rightarrow\\mathrm{U}$、$\\mathrm{A}\\rightarrow\\mathrm{I}$）；$\\mathrm{ROS}\\rightarrow 8$-羟基脱氧鸟嘌呤。\n- 体外：辐射、化学毒物、药物、病毒、植物及微生物活性代谢产物。往往不能截然分开，通常体外通过体内起作用。\n\n**3. 物理因素**\n- 电离（$\\alpha$、$\\beta$、$\\mathrm{X}$、$\\gamma$）：直接断键（断裂或交联）＋间接自由基。链断裂是主要形式，不是唯一形式。\n- 紫外线属非电离。低波长使同一条链相邻嘧啶共价连成 $\\mathrm{TT}$（环丁烷型）及 $\\mathrm{CT}$、$\\mathrm{CC}$，弯曲扭结使复制转录受阻；也可链间交联或断裂。图21-1 电子版缺失；图21-2 左上是结构插图，不要改标。\n\n**4. 化学与生物**\n- 自由基；$5$-$\\mathrm{BU}$ 酮式／烯醇式致 $\\mathrm{AT}\\leftrightarrow\\mathrm{GC}$；亚硝酸脱氨基；烷化剂（氮芥、硫芥、二乙基亚硝胺）可改配对、$\\mathrm{AP}$ 位点、交联断裂并阻止修复；嵌入染料（溴化乙锭、吖啶橙）间距加倍→缺失／移码／插入。图21-2 含苯并芘诱变衍生物，不要删。生物因素点名黄曲霉素，不是转导。\n\n**5. 置换落到密码子**\n- 转换／颠换问嘌呤嘧啶怎么换；错义／无义／同义问密码子编不编同一个氨基酸。$\\mathrm{V600E}$ 是错义，不是无义。同义是氨基酸不变，$\\mathrm{DNA}$ 已经变了。",
+      "hint": "先钉损伤≠突变和两种后果，再写体内外与 UV 二聚体，然后本版化学名单和 V600E。",
+      "scoring_criteria": [
+        "写出损伤≠突变、两种后果必须分开（3分）",
+        "写出体内自发三户、体外三类、体内外不能截然分开（3分）",
+        "写出 UV 同一条链嘧啶二聚体、电离直接＋自由基、图21-1 可能缺失（3分）",
+        "写出脱氨基、烷化剂本版名单、类似物、嵌入染料、图21-2 苯并芘（3分）",
+        "写出转换/颠换≠错义/无义/同义，V600E 是错义（2分）"
+      ],
+      "explanation": "本题把第 21-1 节收成“两种后果—体内外—UV／电离—化学名单—密码子分类”。易错点：损伤＝突变；$\\mathrm{TT}$ 写成链间氢键；苯并芘删掉；$\\mathrm{V600E}$ 写成无义。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-1.md",
+        "label": "两种后果；体内外与 UV 二聚体；化学名单；错义/无义/同义与 V600E"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "$\\mathrm{DNA}$ 损伤修复怎样分户，意义怎样答？请写出：①不要并成「都是切除」；光复活（可见光＋光裂合酶；哺乳动物缺酶）。②直接修复（烷基转移酶不可逆失活；图21-4 可能缺失）对 $\\mathrm{BER}$（糖苷酶$\\rightarrow\\mathrm{AP}$，图21-5）。③$\\mathrm{NER}$ 认扭曲、切寡核苷酸（人 $\\mathrm{XP}$，$\\mathrm{XPG}$ 在 $3'$、$\\mathrm{XPF}$ 在 $5'$）。④同源重组（图21-6：$\\mathrm{MRN}$、$\\mathrm{BRCA}$、$\\mathrm{RAD}51$、$\\mathrm{dHJ}$；主要 $\\mathrm{S}/\\mathrm{G}_{2}$）对 $\\mathrm{NHEJ}$（全周期、易错）。⑤$\\mathrm{SOS}$（$\\mathrm{LexA}$-$\\mathrm{RecA}$；图21-7 可能缺失；聚合酶Ⅳ／Ⅴ保留差错）。⑥双重效应：有害 vs 进化的分子基础；绝对稳定则无进化；不要答「修复越彻底越好」。",
+      "answer": "参考答案：\n\n**1. 不要并成切除；光复活**\n- 表21-1 六行：光复活、碱基切除、核苷酸切除、错配、重组、损伤跨越。一种损伤可通过多种途径修。\n- 光复活：光复活酶结合嘧啶二聚体，可见光约 $400\\,\\mathrm{nm}$ 解聚为单体。次甲基四氢叶酸和 $\\mathrm{FADH}_{2}$。哺乳动物细胞缺乏光复活酶。不是切除。\n\n**2. 烷基直接修复 vs BER**\n- 烷基转移酶把烷基搬到自身肽链，酶不可逆失活。点名 $\\mathrm{O}^{6}$-甲基鸟嘌呤-$\\mathrm{DNA}$ 甲基转移酶，甲基转到半胱氨酸。图21-4 电子版缺失，保留图号。\n- $\\mathrm{BER}$：糖苷酶水解受损碱基产生 $\\mathrm{AP}$ 位点 $\\rightarrow$ $\\mathrm{AP}$ 内切酶去掉磷酸核糖 $\\rightarrow$ 聚合酶填补 $\\rightarrow$ 连接。图21-5。$\\mathrm{p}53$ 调控速度，不是糖苷酶。\n\n**3. NER**\n- 认螺旋扭曲，两侧切开去掉一段寡核苷酸。人约 $30$ 种蛋白，$\\mathrm{XPA}$–$\\mathrm{XPG}$。$\\mathrm{XPG}$ 切 $3'$，$\\mathrm{XPF}$ 切 $5'$。大肠埃希菌是 $\\mathrm{Uvr}$。着色性干皮病是 $\\mathrm{NER}$ 缺陷。转录偶联由 $\\mathrm{RNA}$ 聚合酶识别。\n\n**4. DSB：同源重组 vs NHEJ**\n- 同源重组：$\\ge 200\\,\\mathrm{bp}$ 同源，姐妹染色单体，主要 $\\mathrm{S}/\\mathrm{G}_{2}$。$\\mathrm{MRN}$（$\\mathrm{MRE}11$-$\\mathrm{RAD}50$-$\\mathrm{NBS}1$）、$\\mathrm{BRCA}1/2$、$\\mathrm{RAD}51$（$\\mathrm{RecA}$ 真核同源物）、$\\mathrm{dHJ}$（可交叉或无交叉）。图21-6。$\\mathrm{BRCA}1$ 约 $70\\%$ 家族性乳腺／卵巢癌失活。\n- $\\mathrm{NHEJ}$：$\\mathrm{Ku}70$-$\\mathrm{Ku}80$、$\\mathrm{DNA}\\ \\mathrm{PKcs}$、$\\mathrm{Artemis}$、$\\mathrm{LIG}4$、$\\mathrm{XRCC}4$。不需同源模板，全周期主要途径，容易出错。\n\n**5. SOS**\n- 先跨越再设法修。重组跨越：损伤转移到另一子代分子，并未真正修掉。合成跨越：聚合酶Ⅳ／Ⅴ替换Ⅲ，无校对。$\\mathrm{LexA}$ 结合 $5'$-$\\mathrm{CTG}$-$\\mathrm{N}_{10}$-$\\mathrm{CAG}$-$3'$ 阻遏；严重损伤时 $\\mathrm{RecA}$ 激活 $\\mathrm{LexA}$ 自水解。图21-7 可能缺失。不是第五种切除。\n\n**6. 双重效应**\n- 有害：失去模板功能可致明显障碍甚至死亡；也是遗传病和肿瘤的基础。\n- 不只有害：突变是进化的分子基础；可只改基因型；多态性用于亲子鉴定等。\n- 绝对稳定则无进化。不要答「修复越彻底越好」。已癌变细胞修复常升高→化疗耐药。表21-4 按修复系统记病，不要改成基因鉴定流程。",
+      "hint": "按光复活→直接修复/BER→NER→HR/NHEJ→SOS→双重效应写。不要并成切除，不要答修得越彻底越好。",
+      "scoring_criteria": [
+        "写出不要并成都是切除、光复活为可见光+光裂合酶、哺乳动物缺酶（3分）",
+        "写出烷基转移酶不可逆失活（图21-4 可能缺失）和 BER 糖苷酶→AP（图21-5）（3分）",
+        "写出 NER 认扭曲、切寡核苷酸、XPG 在 3′/XPF 在 5′（2分）",
+        "写出同源重组 MRN/BRCA/RAD51/dHJ（S/G2）对 NHEJ 全周期易错（3分）",
+        "写出 SOS 的 LexA-RecA、Pol IV/V 保留差错、图21-7 可能缺失（2分）",
+        "写出双重效应（有害 vs 进化分子基础）、绝对稳定则无进化、不要答修复越彻底越好（2分）"
+      ],
+      "explanation": "本题把第 21-2、21-3 节收成“途径分户—双重效应”。易错点：六行并成切除；哺乳动物靠光复活；烷基转移酶循环使用；XPF／XPG 记反；SOS 写成切除；修复越彻底越好。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch21-2.md",
+        "label": "光复活；直接修复 vs BER；NER；HR/NHEJ；SOS；双重效应"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

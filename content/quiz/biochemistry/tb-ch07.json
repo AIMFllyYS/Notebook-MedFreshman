@@ -1,0 +1,321 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch07",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch07-1.md；content/biochemistry/textbook/ch07-2.md；content/biochemistry/textbook/ch07-3.md；content/biochemistry/textbook/ch07-4.md；content/biochemistry/textbook/ch07-5.md；content/biochemistry/textbook/ch07-6.md；content/biochemistry/textbook/ch07-7.md；content/biochemistry/textbook/ch07-8.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于糖的消化吸收、$\\mathrm{SGLT}$ 与 $\\mathrm{GLUT}1\\sim 5$ 以及 $\\mathrm{GLUT}4$ 的胰岛素转位，下列叙述正确的是（　）。",
+      "options": [
+        "淀粉消化主场在口腔；$\\mathrm{SGLT}$ 是被动扩散、不伴 $\\mathrm{Na}^{+}$；组织摄取也走 $\\mathrm{SGLT}$；人体有 $\\beta$-葡萄糖苷酶故纤维素可供能；本版 $\\mathrm{GLUT}$ 只发现 $5$ 种；$\\mathrm{GLUT}4$ 是胰岛素把膜通道打开；$1$ 型糖尿病与转位无关；乳糖不耐受是牛奶蛋白质过敏",
+        "淀粉消化的主要场所是小肠。人体缺少 $\\beta$-葡萄糖苷酶，不能消化纤维素，但纤维素刺激肠蠕动，仍是维持健康所必需的糖类。单糖进入小肠黏膜（及肾小管上皮）依赖 $\\mathrm{SGLT}$：耗能主动转运，伴 $\\mathrm{Na}^{+}$。血中葡萄糖进入组织细胞换 $\\mathrm{GLUT}$：本版已发现 $12$ 种，功能明确的是 $\\mathrm{GLUT}1\\sim 5$。$\\mathrm{GLUT}1/3$ 亲和力高、基本摄取；$\\mathrm{GLUT}2$ 在肝和胰 $\\beta$ 细胞、亲和力低，赶上餐后高峰；$\\mathrm{GLUT}4$ 在肌和脂肪，胰岛素触发囊泡转位至细胞膜；$\\mathrm{GLUT}5$ 在小肠转运果糖。$1$ 型糖尿病胰岛素分泌不足，无法触发 $\\mathrm{GLUT}4$ 转位。乳糖不耐受是缺乏乳糖酶",
+        "$\\mathrm{GLUT}2$ 亲和力最高所以空腹就大量摄取；$\\mathrm{GLUT}4$ 主要在肝；$\\mathrm{SGLT}$ 只存在于肌细胞；纤维素无任何生理作用",
+        "耐力训练减少肌细胞膜 $\\mathrm{GLUT}4$；胰 $\\beta$ 细胞感知血糖用 $\\mathrm{GLUT}4$ 而不是 $\\mathrm{GLUT}2$"
+      ],
+      "answer": 1,
+      "hint": "小肠进黏膜走 $\\mathrm{SGLT}$（耗能、伴 $\\mathrm{Na}^{+}$）；组织进细胞走 $\\mathrm{GLUT}$；$\\mathrm{GLUT}4$ 是转位不是开通道；人体无 $\\beta$-葡萄糖苷酶。",
+      "explanation": "**B 正确。** 淀粉消化主场小肠、无 $\\beta$-葡萄糖苷酶但纤维仍有用、$\\mathrm{SGLT}$ 对 $\\mathrm{GLUT}$、$\\mathrm{GLUT}1\\sim 5$ 分户、$\\mathrm{GLUT}4$ 囊泡转位、$1$ 型糖尿病转位触发不了、乳糖酶缺乏，都按教材。\n\n**干扰项辨析**：\n- A：主场不在口腔；$\\mathrm{SGLT}$ 耗能伴 $\\mathrm{Na}^{+}$；组织走 $\\mathrm{GLUT}$；无 $\\beta$-葡萄糖苷酶；本版 $12$ 种；$\\mathrm{GLUT}4$ 是转位；乳糖不耐受不是蛋白过敏。\n- C：$\\mathrm{GLUT}2$ 亲和力低；$\\mathrm{GLUT}4$ 在肌和脂肪；$\\mathrm{SGLT}$ 在小肠黏膜和肾小管；纤维素刺激肠蠕动。\n- D：耐力训练增加肌细胞膜 $\\mathrm{GLUT}4$ 数量；$\\beta$ 细胞用 $\\mathrm{GLUT}2$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-1.md",
+        "label": "SGLT · GLUT1～5 · GLUT4 转位 · pitfall「人体没有 β-葡萄糖苷酶」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于糖酵解三个关键酶、净 $2\\,\\mathrm{ATP}$ 以及乳酸发酵与有氧氧化的分户，下列叙述正确的是（　）。",
+      "options": [
+        "糖酵解等于无氧氧化，一定产乳酸；三个关键酶是醛缩酶、烯醇化酶、乳酸脱氢酶；产能阶段生成 $4\\,\\mathrm{ATP}$ 就是净得 $4$；有氧氧化绕开糖酵解；葡萄糖激酶受葡萄糖-6-磷酸反馈抑制，$K_\\mathrm{m}$ 约 $0.2\\,\\mathrm{mmol/L}$",
+        "糖酵解是一分子葡萄糖在细胞质裂解为两分子丙酮酸，有氧、无氧共用起始。无氧氧化（乳酸发酵）＝糖酵解 $+$ 丙酮酸在细胞质被乳酸脱氢酶还原成乳酸，氢来自第 $6$ 步 $\\mathrm{NADH}$，目的是再生 $\\mathrm{NAD}^{+}$。十步里三步不可逆、三个关键酶：己糖激酶（肝为葡萄糖激酶）、磷酸果糖激酶-1（首要调节点）、丙酮酸激酶。耗能阶段 $-2\\,\\mathrm{ATP}$，两处底物水平磷酸化按两分子丙糖生成 $4\\,\\mathrm{ATP}$，净得 $2\\,\\mathrm{mol}\\,\\mathrm{ATP}/\\mathrm{mol}$ 葡萄糖。葡萄糖激酶 $K_\\mathrm{m}\\approx 10\\,\\mathrm{mmol/L}$，不受葡萄糖-6-磷酸反馈抑制。有氧时丙酮酸进线粒体彻底氧化",
+        "果糖-2,6-二磷酸是糖酵解中间产物；$\\mathrm{PFK}$-$1$ 上低浓度 $\\mathrm{ATP}$ 即别构抑制；成熟红细胞因有线粒体故不走无氧氧化",
+        "净得应写成有氧的 $30$ 或 $32$；乳酸脱氢酶的氢来自线粒体呼吸链"
+      ],
+      "answer": 1,
+      "hint": "酵解只走到丙酮酸；三关键酶是己糖激酶／葡萄糖激酶、$\\mathrm{PFK}$-$1$、丙酮酸激酶；净得 $2$ 不是 $4$。",
+      "explanation": "**B 正确。** 酵解≠无氧氧化、三关键酶、净 $2\\,\\mathrm{ATP}$、葡萄糖激酶数字、$\\mathrm{LDH}$ 再生 $\\mathrm{NAD}^{+}$ 都按教材。\n\n**干扰项辨析**：\n- A：酵解不等于无氧氧化；关键酶不是醛缩酶等；净得是 $2$ 不是 $4$；有氧第一阶段仍是酵解；葡萄糖激酶 $K_\\mathrm{m}\\approx 10$，不受 $\\mathrm{G}$-$6$-$\\mathrm{P}$ 抑制。\n- C：$\\mathrm{F}$-$2,6$-$\\mathrm{BP}$ 不是中间产物；低浓度 $\\mathrm{ATP}$ 是底物；成熟红细胞无线粒体，被动无氧氧化。\n- D：无氧净 $2$，有氧才是 $30$ 或 $32$；$\\mathrm{LDH}$ 的氢来自第 $6$ 步胞质 $\\mathrm{NADH}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-2.md",
+        "label": "三关键酶 · 净 2 ATP · 乳酸发酵 · pitfall「糖酵解不等于无氧氧化」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于丙酮酸脱氢酶复合体的三酶、五辅因子和五步连锁，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{PDH}$ 在细胞质；只有一种酶、一种辅因子 $\\mathrm{NAD}^{+}$；中间产物全部游离到溶液里；硫辛酸不连酶蛋白；$\\alpha$-酮戊二酸脱氢酶复合体机制完全不同",
+        "丙酮酸脱氢酶复合体位于线粒体，催化丙酮酸不可逆氧化脱羧生成乙酰 $\\mathrm{CoA}$。三酶：$\\mathrm{E}_1$ 丙酮酸脱氢酶（辅因子 $\\mathrm{TPP}$，维生素 $\\mathrm{B}_1$）、$\\mathrm{E}_2$ 二氢硫辛酰胺转乙酰基酶（硫辛酸、$\\mathrm{CoA}$）、$\\mathrm{E}_3$ 二氢硫辛酰胺脱氢酶（$\\mathrm{FAD}$、$\\mathrm{NAD}^{+}$）。哺乳动物 $60$ 个 $\\mathrm{E}_2$ 为核心。硫辛酸经 $\\mathrm{E}_2$ 赖氨酸 $\\varepsilon$-氨基连成柔性长臂。五步连锁中间产物不离开复合体。$\\alpha$-酮戊二酸脱氢酶复合体组成和机制类似",
+        "五辅因子是生物素、磷酸吡哆醛、$\\mathrm{THF}$、钴胺素和维生素 C；$\\mathrm{E}_1$ 用 $\\mathrm{FAD}$，$\\mathrm{E}_3$ 用 $\\mathrm{TPP}$",
+        "反应可逆，不是限速步骤；乙酰 $\\mathrm{CoA}$ 在细胞质生成后再运进线粒体"
+      ],
+      "answer": 1,
+      "hint": "线粒体；三酶五辅因子（$\\mathrm{TPP}$、硫辛酸、$\\mathrm{CoA}$、$\\mathrm{FAD}$、$\\mathrm{NAD}^{+}$）；中间产物不离开复合体。",
+      "explanation": "**B 正确。** 部位、三酶五辅因子、长臂、五步不离开复合体、与 $\\alpha$-酮戊二酸脱氢酶复合体类似，都按教材。\n\n**干扰项辨析**：\n- A：在线粒体；三酶五辅因子；中间产物不离开；硫辛酸是 $\\mathrm{E}_2$ 长臂；机制类似。\n- C：五辅因子不是那一组维生素；$\\mathrm{E}_1$ 用 $\\mathrm{TPP}$，$\\mathrm{E}_3$ 用 $\\mathrm{FAD}/\\mathrm{NAD}^{+}$。\n- D：不可逆、限速；丙酮酸进线粒体后才生成乙酰 $\\mathrm{CoA}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-3.md",
+        "label": "PDH 三酶五辅因子 · 五步连锁 · pitfall「中间产物不离开复合体」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于本版葡萄糖有氧氧化净得 $\\mathrm{ATP}$ 以及三羧酸循环的还原当量账，下列叙述正确的是（　）。",
+      "options": [
+        "线粒体内 $\\mathrm{NADH}$ 按 $3$、$\\mathrm{FADH}_2$ 按 $2$ 计，葡萄糖净得口诀 $38$ 或 $36$；一轮循环主要靠那一次底物水平磷酸化产能；$2$ 个 $\\mathrm{CO}_2$ 的碳来自当轮乙酰 $\\mathrm{CoA}$；瓦尔堡效应就是缺氧所以酵解",
+        "本版线粒体内 $\\mathrm{NADH}$ 按 $2.5$、$\\mathrm{FADH}_2$ 按 $1.5$ 计。一轮三羧酸循环：$4$ 次脱氢（$3\\,\\mathrm{NADH}+1\\,\\mathrm{FADH}_2$）、$2$ 次脱羧、$1$ 次底物水平磷酸化；大量 $\\mathrm{ATP}$ 来自还原当量走电子传递链。乙酰 $\\mathrm{CoA}\\rightarrow 10\\,\\mathrm{ATP}$；丙酮酸 $\\rightarrow 12.5\\,\\mathrm{ATP}$。胞质 $\\mathrm{NADH}$ 两种穿梭分别按 $2.5$ 或 $1.5$，两分子即 $+5$ 或 $+3$，故 $1\\,\\mathrm{mol}$ 葡萄糖净生成 $30$ 或 $32\\,\\mathrm{mol}\\,\\mathrm{ATP}$（表7-1），不是口诀 $36/38$。释出的 $2$ 个 $\\mathrm{CO}_2$ 碳来自草酰乙酸。巴斯德：有氧抑制无氧；瓦尔堡：有氧仍产乳酸",
+        "琥珀酸脱氢酶在细胞质、辅因子是 $\\mathrm{NAD}^{+}$；柠檬酸合酶可逆；中间产物可从乙酰 $\\mathrm{CoA}$ 经循环净合成",
+        "有氧氧化绕开糖酵解；肌组织没有巴斯德效应"
+      ],
+      "answer": 1,
+      "hint": "本版 $\\mathrm{NADH}=2.5$、$\\mathrm{FADH}_2=1.5$，净 $30$ 或 $32$，不要写 $38$；$\\mathrm{CO}_2$ 碳来自草酰乙酸。",
+      "explanation": "**B 正确。** $2.5/1.5$、$10/12.5$、$30$ 或 $32$、同位素碳账、巴斯德／瓦尔堡都按教材。\n\n**干扰项辨析**：\n- A：不要用 $3$ 和 $2$ 加成 $36/38$；底物水平磷酸化每轮只有一次；碳来自草酰乙酸；瓦尔堡即使有氧也产乳酸。\n- C：琥珀酸脱氢酶在内膜、辅因子 $\\mathrm{FAD}$；柠檬酸合酶不可逆；中间产物不能从乙酰 $\\mathrm{CoA}$ 净合成。\n- D：第一阶段仍是酵解；肌组织也有巴斯德效应。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-3.md",
+        "label": "表7-1 30或32 ATP · pitfall「不要默写成 36 或 38」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于戊糖磷酸途径不产能、$\\mathrm{NADPH}$ 以及葡萄糖-6-磷酸脱氢酶缺陷与蚕豆病，下列叙述正确的是（　）。",
+      "options": [
+        "戊糖磷酸途径是第三条供能通路，氧化阶段的氢交给 $\\mathrm{NAD}^{+}$ 走呼吸链；流量看 $\\mathrm{ATP}/\\mathrm{AMP}$；限速酶是转酮醇酶；蚕豆病是晶状体山梨醇堆积",
+        "戊糖磷酸途径从葡萄糖-6-磷酸旁路出去，全部在细胞质，不产能，目的是提供 $\\mathrm{NADPH}$ 和核糖磷酸。氧化阶段按 $1$ 分子葡萄糖-6-磷酸记：$2\\,\\mathrm{NADPH}$、$1$ 核糖-5-磷酸、$1\\,\\mathrm{CO}_2$；葡萄糖-6-磷酸脱氢酶不可逆、限速，受氢体是 $\\mathrm{NADP}^{+}$。基团转移：$3\\,\\mathrm{C}_5\\rightarrow 2\\,\\mathrm{C}_6+1\\,\\mathrm{C}_3$。流量看 $\\mathrm{NADPH}/\\mathrm{NADP}^{+}$。人体核糖主要靠氧化阶段；肌缺葡萄糖-6-磷酸脱氢酶则走基团转移。$\\mathrm{G6PD}$ 缺陷时红细胞 $\\mathrm{NADPH}$ 不足，$\\mathrm{GSH}$ 不能维持还原态，食用蚕豆（强氧化剂）诱发溶血性黄疸，称为蚕豆病",
+        "转酮醇酶移 $3$ 碳、转醛醇酶移 $2$ 碳；总反应按 $1$ 分子葡萄糖-6-磷酸生成 $6\\,\\mathrm{NADPH}$",
+        "$\\mathrm{NADPH}$ 走电子传递链产能；$\\mathrm{NADH}$ 别构抑制葡萄糖-6-磷酸脱氢酶"
+      ],
+      "answer": 1,
+      "hint": "不产能；产品是 $\\mathrm{NADPH}$ 和核糖磷酸；开关是 $\\mathrm{NADPH}/\\mathrm{NADP}^{+}$；蚕豆病落在红细胞膜，不是晶状体。",
+      "explanation": "**B 正确。** 不产能、氧化阶段账、基团转移系数、$\\mathrm{G6PD}$ 限速、蚕豆病机制都按教材。\n\n**干扰项辨析**：\n- A：不产能；受氢体 $\\mathrm{NADP}^{+}$；流量不看 $\\mathrm{ATP}$；限速酶是 $\\mathrm{G6PD}$；蚕豆病不是山梨醇白内障。\n- C：转酮醇酶 $2$ 碳、转醛醇酶 $3$ 碳；$6\\,\\mathrm{NADPH}$ 是按 $3$ 分子葡萄糖-6-磷酸的总反应。\n- D：$\\mathrm{NADPH}$ 不走呼吸链；抑制 $\\mathrm{G6PD}$ 的是 $\\mathrm{NADPH}$ 不是 $\\mathrm{NADH}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-4.md",
+        "label": "戊糖磷酸不产能 · G6PD · 蚕豆病 · pitfall「不是第三条供能通路」"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于糖原合酶与糖原磷酸化酶的磷酸化修饰方向相反，下列叙述正确的是（　）。",
+      "options": [
+        "增减葡萄糖单位发生在还原性末端；引物是游离葡萄糖；每延长 $1$ 个葡萄糖基消耗 $3\\,\\mathrm{ATP}$；分解是合成的逆反应；磷酸化后合酶活化、磷酸化酶失活；$\\mathrm{a}$ 型一律带磷酸；肌有葡萄糖-6-磷酸酶故肌糖原直接补血糖",
+        "糖原直链 $\\alpha$-$1,4$、分支 $\\alpha$-$1,6$，增减都在非还原性末端。活性葡萄糖是 $\\mathrm{UDPG}$；引物是糖原蛋白酪氨酸上的八糖。合酶只延 $\\alpha$-$1,4$；磷酸化酶磷酸解 $\\alpha$-$1,4$ 得葡萄糖-1-磷酸，不是水解，也不是合成倒着走。磷酸化：磷酸化酶 $\\mathrm{a}$（磷酸化、有活性），合酶 $\\mathrm{a}$（去磷酸化、有活性）——机制相同、效应相反。肝听胰高血糖素，肌听肾上腺素，胰岛素经蛋白质磷酸酶-1 去磷酸化。肌无葡萄糖-6-磷酸酶，肌糖原不能补血糖，一个糖原葡萄糖基无氧净 $3\\,\\mathrm{ATP}$。每延长 $1$ 个葡萄糖基消耗 $2\\,\\mathrm{ATP}$",
+        "脱支酶就是磷酸化酶；$\\mathrm{PKA}$ 只磷酸化合酶、不管磷酸化酶；肝磷酸化酶主要被 $\\mathrm{Ca}^{2+}$ 激活",
+        "糖原是体内主要储能形式，动用比脂肪慢"
+      ],
+      "answer": 1,
+      "hint": "磷酸化酶磷酸化后开、合酶磷酸化后关；肌无葡萄糖-6-磷酸酶；每残基 $2\\,\\mathrm{ATP}$。",
+      "explanation": "**B 正确。** 非还原末端、$\\mathrm{UDPG}$ 与糖原蛋白、磷酸解、$\\mathrm{a}/\\mathrm{b}$ 方向相反、肝／肌激素、肌净 $3\\,\\mathrm{ATP}$、每残基 $2\\,\\mathrm{ATP}$ 都按教材。\n\n**干扰项辨析**：\n- A：非还原末端；引物不是游离葡萄糖；消耗 $2$ 不是 $3$；分解不是逆反应；磷酸化效应写反；$\\mathrm{a}$ 型先问是哪个酶；肌无葡萄糖-6-磷酸酶。\n- C：脱支酶＝转移酶 $+\\alpha$-$1,6$-葡萄糖苷酶；$\\mathrm{PKA}$ 两边都磷酸化；肝磷酸化酶主要被葡萄糖抑制。\n- D：摄入糖类大部分成脂肪；糖原动用更快。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-5.md",
+        "label": "合酶 vs 磷酸化酶 · a/b 相反 · pitfall「肌糖原补不了血糖」"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于糖异生四个关键酶绕过酵解三步不可逆、$6\\,\\mathrm{ATP}$ 账以及草酰乙酸转运，下列叙述正确的是（　）。",
+      "options": [
+        "异生就是把三个酵解关键酶倒着开；丙酮酸羧化酶在细胞质、辅因子是 $\\mathrm{TPP}$；乳酸和生糖氨基酸一律经苹果酸出线粒体；两个磷酸酶水解生成 $\\mathrm{ATP}$；$2$ 丙酮酸 → $1$ 葡萄糖只耗 $2\\,\\mathrm{ATP}$；乙酰 $\\mathrm{CoA}$ 可净异生成糖；肾和小肠与肝平分对外供糖",
+        "糖酵解三步不可逆（丙酮酸激酶、$\\mathrm{PFK}$-$1$、己糖激酶／葡萄糖激酶），异生用四个关键酶绕过：丙酮酸羧化酶（仅线粒体、生物素、耗 $\\mathrm{ATP}$）和磷酸烯醇式丙酮酸羧激酶（耗 $\\mathrm{GTP}$）绕过丙酮酸激酶；果糖二磷酸酶-1、葡萄糖-6-磷酸酶水解磷酸酯，不生成 $\\mathrm{ATP}$，不是激酶的逆反应。$2$ 分子丙酮酸 → $1$ 分子葡萄糖消耗 $6\\,\\mathrm{ATP}$。草酰乙酸不能直接出线粒体：乳酸已在胞质生成 $\\mathrm{NADH}$，走天冬氨酸；丙酮酸或生糖氨基酸走苹果酸以运出 $\\mathrm{NADH}$。乙酰 $\\mathrm{CoA}$ 激活丙酮酸羧化酶、抑制 $\\mathrm{PDH}$，本身不能净生成糖。主器官是肝；禁食 $18\\sim 24$ 小时肾约占 $10\\%$，约 $7$ 天才净输出",
+        "果糖-2,6-二磷酸激活果糖二磷酸酶-1 并抑制 $\\mathrm{PFK}$-$1$；胰高血糖素升高果糖-2,6-二磷酸以促进异生",
+        "三碳途径就是第五节 $\\mathrm{UDPG}$ 接到引物；葡萄糖激酶 $K_\\mathrm{m}$ 很低所以刚进餐肝立刻大量摄取葡萄糖"
+      ],
+      "answer": 1,
+      "hint": "四个酶不是三个；羧化在线粒体、生物素；乳酸走天冬氨酸；水解不生成 $\\mathrm{ATP}$；合计 $6\\,\\mathrm{ATP}$。",
+      "explanation": "**B 正确。** 四关键酶、$6\\,\\mathrm{ATP}$、苹果酸／天冬氨酸分原料、乙酰 $\\mathrm{CoA}$ 是开关、肾 $10\\%$／约 $7$ 天都按教材。\n\n**干扰项辨析**：\n- A：不是倒开三个酶；羧化酶在线粒体、生物素；乳酸走天冬氨酸；水解不产能；耗 $6$ 不是 $2$；乙酰 $\\mathrm{CoA}$ 不能净成糖；肝是主器官。\n- C：$\\mathrm{F}$-$2,6$-$\\mathrm{BP}$ 激活 $\\mathrm{PFK}$-$1$、抑制果糖二磷酸酶-1；胰高血糖素降低其水平。\n- D：三碳途径绕开葡萄糖激酶；该酶 $K_\\mathrm{m}$ 很高，刚进餐摄取能力低。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-6.md",
+        "label": "四关键酶 · 6 ATP · 苹果酸/天冬氨酸 · pitfall「不是三个酶倒着开」"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于乳酸循环（$\\mathrm{Cori}$）以及糖异生与糖酵解的两个底物循环，下列叙述正确的有（　）。",
+      "options": [
+        "乳酸循环：肌无氧氧化生成乳酸 → 入血 → 肝异生成葡萄糖 → 再被肌摄取。肌异生活性低且无葡萄糖-6-磷酸酶，不能就地成糖。肌侧净 $2\\,\\mathrm{ATP}$，肝侧耗 $6\\,\\mathrm{ATP}$，循环整体耗能。意义：回收乳酸碳架、避免酸中毒。肾上腺素分解肌糖原要升血糖必须绕这一圈",
+        "反向调节主要针对两个底物循环：果糖-6-磷酸 $\\rightleftharpoons$ 果糖-1,6-二磷酸，以及磷酸烯醇式丙酮酸 $\\rightleftharpoons$ 丙酮酸。果糖-2,6-二磷酸和 $\\mathrm{AMP}$ 激活 $\\mathrm{PFK}$-$1$、抑制果糖二磷酸酶-1。胰高血糖素降低果糖-2,6-二磷酸，饥饿时肝异生增强、酵解减弱",
+        "剧烈运动时糖异生的主要原料是乳酸；饥饿时主要是生糖氨基酸（丙氨酸、谷氨酰胺）和甘油。心肌等组织也可直接有氧氧化乳酸。三碳途径：饥饿后进食初期绕开葡萄糖激酶，餐后 $2\\sim 3$ 小时肝仍保持较高异生活性",
+        "肌可以把乳酸在细胞内直接异生成糖原；$\\mathrm{Cori}$ 循环整体净产 $\\mathrm{ATP}$；乙酰 $\\mathrm{CoA}$ 经三羧酸循环净生成葡萄糖；三个底物循环平均用力，己糖激酶／葡萄糖-6-磷酸酶是本节主攻点"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "肌不能就地异生；循环耗能（$6$ 换 $2$）；$\\mathrm{F}$-$2,6$-$\\mathrm{BP}$ 开酵解、关异生。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：乳酸循环定义、酶差别、$6$ 换 $2$、两笔意义，来自 ch07-6。\n- B：两个底物循环与果糖-2,6-二磷酸，来自 ch07-6（接 ch07-2）。\n- C：运动／饥饿原料、心肌氧化乳酸、三碳途径，来自 ch07-6。\n- **D 错**：肌不能就地异生；循环耗能；乙酰 $\\mathrm{CoA}$ 不能净成糖；教材写明调节主攻两处，不是三处平均。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-6.md",
+        "label": "乳酸循环 · 两个底物循环 · 三碳途径 · pitfall「肌不能就地异生」"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于多元醇途径（山梨醇与白内障）以及空腹血糖 $3.9\\sim 6.0\\,\\mathrm{mmol/L}$ 的激素调节，下列叙述正确的有（　）。",
+      "options": [
+        "多元醇途径：醛糖还原酶以 $\\mathrm{NADPH}$ 把葡萄糖还原为山梨醇，多元醇脱氢酶以 $\\mathrm{NAD}^{+}$ 把山梨醇脱氢为果糖。醛糖还原酶对葡萄糖亲和力极低（约 $200\\,\\mathrm{mmol/L}$），正常空腹血糖 $3.9\\sim 6.0\\,\\mathrm{mmol/L}$ 时比例极小。糖尿病时晶状体山梨醇堆积、渗透压升高 → 白内障；精液果糖 $>10\\,\\mathrm{mmol/L}$ 供精子用。不要与 $\\mathrm{G6PD}$ 缺陷蚕豆病并户",
+        "糖醛酸途径所占比例很小，$\\mathrm{UDPG}$ 脱氢酶生成 $\\mathrm{UDPGA}$（活化葡萄糖醛酸），用于糖胺聚糖和肝结合反应；末端木酮糖-5-磷酸汇入戊糖磷酸途径，是出口不是目的",
+        "空腹血糖 $3.9\\sim 6.0\\,\\mathrm{mmol/L}$。胰岛素（$\\beta$ 细胞）降糖：$\\mathrm{GLUT}4$、激活磷酸二酯酶降 $\\mathrm{cAMP}$、开 $\\mathrm{PDH}$、关异生、促脂肪酸合成。胰高血糖素（$\\alpha$ 细胞）经 $\\mathrm{cAMP}$ 升糖。肾上腺素：肝直接成葡萄糖，肌经乳酸循环间接。$\\beta$ 细胞感知用 $\\mathrm{GLUT}2$ 和葡萄糖激酶。$\\mathrm{OGTT}$ 成人 $75\\,\\mathrm{g}$；正常人 $2$ 小时 $<7.8\\,\\mathrm{mmol/L}$，糖尿病 $2$ 小时可 $>11.1$；肾糖阈约 $10\\,\\mathrm{mmol/L}$。低血糖 $<2.8$，空腹高血糖 $>7$。$\\mathrm{GHB}>6.5\\%$ 诊断异常，治疗目标 $<7\\%$，反映 $8\\sim 12$ 周",
+        "多元醇途径是常规供能通路；白内障是果糖堆积或缺 $\\mathrm{ATP}$；胰岛素激活腺苷酸环化酶升高 $\\mathrm{cAMP}$；$\\beta$ 细胞用 $\\mathrm{GLUT}4$；空腹就是饥饿、血糖都来自糖异生；$2$ 型糖尿病是胰岛完全不分泌胰岛素"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "山梨醇渗透性白内障；空腹 $3.9\\sim 6.0$；胰岛素降 $\\mathrm{cAMP}$ 不是升。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：多元醇两步、亲和力 $200$、$3.9\\sim 6.0$、山梨醇白内障与蚕豆病分户，来自 ch07-7／ch07-8。\n- B：$\\mathrm{UDPGA}$ 两件活与木酮糖-5-磷酸出口，来自 ch07-7。\n- C：血糖范围、胰岛素／胰高血糖素／肾上腺素、$\\mathrm{OGTT}$ 与 $\\mathrm{GHB}$ 数字，来自 ch07-8。\n- **D 错**：正常几乎不走多元醇；堆积的是山梨醇；胰岛素降 $\\mathrm{cAMP}$；$\\beta$ 细胞用 $\\mathrm{GLUT}2$；空腹≠饥饿；$2$ 型是抵抗／受体缺陷。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-8.md",
+        "label": "多元醇山梨醇白内障 · 空腹 3.9～6.0 · 胰岛素/胰高血糖素 · GHB 6.5%/7%"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "人体有 $\\beta$-葡萄糖苷酶故纤维素可供能；$\\mathrm{SGLT}$ 与 $\\mathrm{GLUT}$ 是同一套载体；$\\mathrm{GLUT}4$ 是胰岛素把通道打开；糖酵解等于无氧氧化、净得 $4\\,\\mathrm{ATP}$；本版有氧氧化按口诀净得 $38\\,\\mathrm{ATP}$；戊糖磷酸途径是第三条供能通路，产品是 $\\mathrm{ATP}$ 不是 $\\mathrm{NADPH}$。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对无 $\\beta$-葡萄糖苷酶、$\\mathrm{SGLT}$ 对 $\\mathrm{GLUT}$、转位、净 $2$、$30$ 或 $32$、戊糖磷酸不产能。",
+      "explanation": "**该命题错误，每一分句都错。** 人体缺少 $\\beta$-葡萄糖苷酶，不能消化纤维素。小肠进黏膜走 $\\mathrm{SGLT}$，组织进细胞走 $\\mathrm{GLUT}$。$\\mathrm{GLUT}4$ 是囊泡转位至细胞膜，不是开通道。糖酵解只走到丙酮酸，无氧氧化净得 $2\\,\\mathrm{ATP}$。本版有氧氧化净 $30$ 或 $32\\,\\mathrm{ATP}$，不是口诀 $38$。戊糖磷酸途径不产能，产品是 $\\mathrm{NADPH}$ 和核糖磷酸。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-1.md",
+        "label": "无 β-葡萄糖苷酶 · SGLT/GLUT · 净 2 · 30或32 · 戊糖磷酸不产能"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "磷酸化后糖原合酶活化、糖原磷酸化酶失活；肌有葡萄糖-6-磷酸酶故肌糖原直接补血糖；糖异生就是三个酵解关键酶倒着开，$2$ 丙酮酸只耗 $2\\,\\mathrm{ATP}$；肌可把乳酸就地异生成糖；$\\mathrm{Cori}$ 循环整体净产 $\\mathrm{ATP}$；糖尿病白内障是果糖堆积，与蚕豆病同一机制；空腹血糖范围是 $7\\sim 11.1\\,\\mathrm{mmol/L}$，胰岛素激活腺苷酸环化酶升高 $\\mathrm{cAMP}$。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对合酶／磷酸化酶方向、肌无葡萄糖-6-磷酸酶、四酶 $6\\,\\mathrm{ATP}$、$\\mathrm{Cori}$ 耗能、山梨醇对蚕豆病、$3.9\\sim 6.0$ 与降 $\\mathrm{cAMP}$。",
+      "explanation": "**该命题错误，七处都错。** 磷酸化后磷酸化酶活化、合酶失活。肌无葡萄糖-6-磷酸酶，肌糖原不能补血糖。异生用四个关键酶绕过三步不可逆，$2$ 丙酮酸 → $1$ 葡萄糖耗 $6\\,\\mathrm{ATP}$。肌不能就地异生；$\\mathrm{Cori}$ 循环耗能。糖尿病白内障是山梨醇渗透压，蚕豆病是 $\\mathrm{G6PD}$ 缺陷溶血。空腹血糖 $3.9\\sim 6.0\\,\\mathrm{mmol/L}$；胰岛素激活磷酸二酯酶降低 $\\mathrm{cAMP}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-5.md",
+        "label": "磷酸化方向相反 · 四酶绕行 · Cori · 山梨醇白内障 · 空腹 3.9～6.0"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "人体缺少 ________，不能消化纤维素。$1$ 分子葡萄糖经无氧氧化净生成 ________ 分子 $\\mathrm{ATP}$。本版 $1\\,\\mathrm{mol}$ 葡萄糖有氧氧化净生成 ________ $\\mathrm{mol}\\,\\mathrm{ATP}$（不是口诀 $38$）。戊糖磷酸途径不产能，氧化阶段的主要还原产物是 ________。空腹血糖始终维持在 ________ $\\mathrm{mmol/L}$。",
+      "answer": "β-葡萄糖苷酶，2，30或32，NADPH，3.9～6.0",
+      "hint": "无 $\\beta$-葡萄糖苷酶；无氧净 $2$；有氧 $30$ 或 $32$；戊糖磷酸出 $\\mathrm{NADPH}$；空腹 $3.9\\sim 6.0$。",
+      "scoring_criteria": [
+        "第一空填“β-葡萄糖苷酶”（或“β-glucosidase”“β葡萄糖苷酶”）（2分）",
+        "第二空填“2”（或“两”）（2分）",
+        "第三空填“30或32”（或“30 或 32”“30／32”）（2分）",
+        "第四空填“NADPH”（或“还原型辅酶II”）（2分）",
+        "第五空填“3.9～6.0”（或“3.9-6.0”“3.9~6.0”）（2分）"
+      ],
+      "explanation": "人体无 $\\beta$-葡萄糖苷酶。无氧氧化净 $2\\,\\mathrm{ATP}$。本版有氧氧化净 $30$ 或 $32\\,\\mathrm{ATP}$（胞质 $\\mathrm{NADH}$ 穿梭不同），不要写 $38$。戊糖磷酸途径氧化阶段生成 $\\mathrm{NADPH}$（及核糖磷酸、$\\mathrm{CO}_2$）。空腹血糖 $3.9\\sim 6.0\\,\\mathrm{mmol/L}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-1.md",
+        "label": "β-葡萄糖苷酶；净2 ATP；30或32；NADPH；空腹3.9～6.0"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "葡萄糖进入细胞后的分解三条路如何记？请写出：①摄取：$\\mathrm{SGLT}$ 对 $\\mathrm{GLUT}1\\sim 5$、$\\mathrm{GLUT}4$ 胰岛素转位，人体无 $\\beta$-葡萄糖苷酶；②无氧：糖酵解三关键酶、乳酸发酵再生 $\\mathrm{NAD}^{+}$、净 $2\\,\\mathrm{ATP}$（不要把酵解听成一定产乳酸）；③有氧：$\\mathrm{PDH}$ 三酶五辅因子，本版净 $30$ 或 $32\\,\\mathrm{ATP}$（$\\mathrm{NADH}\\,2.5$、$\\mathrm{FADH}_2\\,1.5$，不是口诀 $38$）；④戊糖磷酸：不产能，$\\mathrm{NADPH}$／核糖磷酸，$\\mathrm{G6PD}$ 限速与蚕豆病。不要把戊糖磷酸写成第三条供能通路。",
+      "answer": "参考答案：\n\n**1. 摄取**\n- 淀粉消化主场在小肠。人体无 $\\beta$-葡萄糖苷酶，不能消化纤维素，但纤维仍刺激肠蠕动。\n- $\\mathrm{SGLT}$：小肠黏膜、肾小管；耗能主动转运，伴 $\\mathrm{Na}^{+}$。\n- $\\mathrm{GLUT}$：本版 $12$ 种，功能明确 $1\\sim 5$。$\\mathrm{GLUT}4$ 在肌和脂肪，胰岛素触发囊泡转位；$1$ 型糖尿病转位触发不了。\n\n**2. 无氧氧化**\n- 糖酵解：细胞质，葡萄糖 → $2$ 丙酮酸；有氧、无氧共用起始。三关键酶：己糖激酶／葡萄糖激酶、$\\mathrm{PFK}$-$1$、丙酮酸激酶。\n- 乳酸发酵：$\\mathrm{LDH}$ 用第 $6$ 步 $\\mathrm{NADH}$ 还原丙酮酸，再生 $\\mathrm{NAD}^{+}$。净 $2\\,\\mathrm{ATP}$（生成 $4$、消耗 $2$）。\n\n**3. 有氧氧化**\n- 三阶段：酵解 → 线粒体 $\\mathrm{PDH}$ → 三羧酸循环＋氧化磷酸化。\n- $\\mathrm{PDH}$：三酶五辅因子（$\\mathrm{TPP}$、硫辛酸、$\\mathrm{CoA}$、$\\mathrm{FAD}$、$\\mathrm{NAD}^{+}$）；中间产物不离开复合体。\n- 本版：$\\mathrm{NADH}\\,2.5$、$\\mathrm{FADH}_2\\,1.5$；乙酰 $\\mathrm{CoA}\\rightarrow 10$；丙酮酸 $\\rightarrow 12.5$；葡萄糖净 $30$ 或 $32$（胞质 $\\mathrm{NADH}$ 穿梭）。不要写 $38$。\n\n**4. 戊糖磷酸途径**\n- 不产能；细胞质；从 $\\mathrm{G}$-$6$-$\\mathrm{P}$ 旁路。氧化阶段：$2\\,\\mathrm{NADPH}+$ 核糖-5-磷酸 $+\\mathrm{CO}_2$。流量看 $\\mathrm{NADPH}/\\mathrm{NADP}^{+}$。\n- $\\mathrm{G6PD}$ 缺陷＋蚕豆 → 红细胞溶血（蚕豆病）。",
+      "hint": "按摄取 → 无氧净 2 → 有氧 30 或 32 与 PDH 五辅因子 → 戊糖磷酸 NADPH／蚕豆病写，并避开口诀 38、第三条供能通路。",
+      "scoring_criteria": [
+        "写出 SGLT 对 GLUT、GLUT4 转位及无 β-葡萄糖苷酶（3分）",
+        "写出三关键酶、乳酸发酵再生 NAD+、净 2 ATP（3分）",
+        "写出 PDH 三酶五辅因子及本版 30 或 32（不是 38）（4分）",
+        "写出戊糖磷酸不产能、NADPH／G6PD／蚕豆病（4分）"
+      ],
+      "explanation": "本题把第 07-1 至 07-4 节收成“摄取—无氧—有氧—戊糖磷酸”。易错点：口诀 $38$；酵解＝产乳酸；戊糖磷酸产能；无 $\\beta$-葡萄糖苷酶听成纤维无用。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-1.md",
+        "label": "摄取与 GLUT4；酵解净2；PDH与30或32；戊糖磷酸NADPH"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "糖原、糖异生、乳酸循环与血糖如何收？请写出：①糖原合酶与磷酸化酶磷酸化方向相反（$\\mathrm{a}/\\mathrm{b}$ 先问是哪个酶），肝补血糖、肌无葡萄糖-6-磷酸酶；②糖异生四个关键酶绕过三步不可逆，$2$ 丙酮酸耗 $6\\,\\mathrm{ATP}$，乳酸走天冬氨酸、丙酮酸／生糖氨基酸走苹果酸；③乳酸循环（$\\mathrm{Cori}$）耗能，肌不能就地异生；④多元醇：山梨醇堆积 → 糖尿病白内障（不要并成蚕豆病）；空腹血糖 $3.9\\sim 6.0\\,\\mathrm{mmol/L}$，胰岛素降、$\\mathrm{cAMP}$ 降，胰高血糖素升。不要把肌糖原写成直接升血糖，也不要把有氧净得写成 $38$。",
+      "answer": "参考答案：\n\n**1. 糖原**\n- 直链 $\\alpha$-$1,4$、分支 $\\alpha$-$1,6$；增减在非还原末端。活性葡萄糖 $\\mathrm{UDPG}$；引物是糖原蛋白。\n- 磷酸化酶：磷酸化 $=\\mathrm{a}$ 型有活性。合酶：去磷酸化 $=\\mathrm{a}$ 型有活性。同一套磷酸化，效应相反。\n- 肝有葡萄糖-6-磷酸酶，空腹补血糖；肌无此酶，糖原供收缩，无氧净 $3\\,\\mathrm{ATP}$。肝听胰高血糖素，肌听肾上腺素。\n\n**2. 糖异生**\n- 四关键酶：丙酮酸羧化酶（线粒体、生物素）、磷酸烯醇式丙酮酸羧激酶、果糖二磷酸酶-1、葡萄糖-6-磷酸酶。\n- $2$ 丙酮酸 → $1$ 葡萄糖耗 $6\\,\\mathrm{ATP}$。乳酸走天冬氨酸（胞质已有 $\\mathrm{NADH}$）；丙酮酸／生糖氨基酸走苹果酸（运 $\\mathrm{NADH}$）。\n- 乙酰 $\\mathrm{CoA}$ 是开关不是碳源。主器官肝；禁食 $16\\sim 24$ 小时肝糖原耗尽后靠异生。\n\n**3. 乳酸循环**\n- 肌产乳酸 → 肝异生（耗 $6\\,\\mathrm{ATP}$）→ 葡萄糖回肌。整体耗能。肌不能就地异生。意义：回收碳架、避免酸中毒。\n\n**4. 多元醇与血糖**\n- 醛糖还原酶（$\\mathrm{NADPH}$）→ 山梨醇；亲和力约 $200\\,\\mathrm{mmol/L}$，正常几乎不走。糖尿病晶状体山梨醇堆积 → 渗透性白内障。≠ 蚕豆病。\n- 空腹血糖 $3.9\\sim 6.0\\,\\mathrm{mmol/L}$。胰岛素：$\\mathrm{GLUT}4$、降 $\\mathrm{cAMP}$、开氧化、关异生。胰高血糖素：$\\mathrm{cAMP}$ 磷酸化，开肝糖原和异生。肾上腺素：肝直接、肌经乳酸循环间接。",
+      "hint": "按合酶／磷酸化酶相反 → 四酶 $6\\,\\mathrm{ATP}$ → Cori 耗能 → 山梨醇白内障与空腹 3.9～6.0 写。",
+      "scoring_criteria": [
+        "写出合酶与磷酸化酶磷酸化方向相反及肝／肌葡萄糖-6-磷酸酶差别（4分）",
+        "写出四个关键酶、6 ATP、苹果酸／天冬氨酸分原料（4分）",
+        "写出乳酸循环耗能、肌不能就地异生（3分）",
+        "写出山梨醇白内障（与蚕豆病分户）及空腹 3.9～6.0、胰岛素降／胰高血糖素升（4分）"
+      ],
+      "explanation": "本题把第 07-5 至 07-8 节收成“糖原—异生—Cori—血糖／多元醇”。易错点：$\\mathrm{a}$ 型一律带磷酸；肌糖原直接升血糖；口诀 $38$；白内障并成蚕豆病；胰岛素升高 $\\mathrm{cAMP}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch07-5.md",
+        "label": "糖原磷酸化相反；四酶绕行；Cori；山梨醇；空腹血糖激素"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

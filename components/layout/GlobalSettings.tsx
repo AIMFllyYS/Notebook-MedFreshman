@@ -20,7 +20,11 @@ import {
   BookOpen,
   ScrollText,
   Folder,
+  Microscope,
+  Dna,
+  Bone,
 } from "lucide-react";
+import AcademicYearSwitcher from "./AcademicYearSwitcher";
 import { navTree } from "@/lib/content-data/nav";
 import { SUBJECT_ICONS } from "@/lib/constants/subjects";
 import { useTheme } from "@/lib/hooks/useTheme";
@@ -48,6 +52,10 @@ const SUBJECT_ICON_MAP: Record<string, React.ComponentType<{ size?: number; styl
   BookOpen,
   ScrollText,
   Folder,
+  Microscope,
+  Dna,
+  Bone,
+  Layers,
 };
 
 const SUBJECT_NAME: Record<string, string> = Object.fromEntries(
@@ -288,6 +296,8 @@ export default function GlobalSettings({
         </div>
 
         <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
+          <AcademicYearSwitcher />
+
           <SettingsSection
             title="成绩"
             icon={<Trophy size={16} />}

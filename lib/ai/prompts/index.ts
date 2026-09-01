@@ -12,6 +12,10 @@ const SUBJECT_FILE: Record<string, string> = {
   probability: "subjects/probability.md",
   physics: "subjects/physics.md",
   chemistry: "subjects/chemistry.md",
+  "cell-biology": "subjects/cell-biology.md",
+  biochemistry: "subjects/biochemistry.md",
+  anatomy: "subjects/anatomy.md",
+  histology: "subjects/histology.md",
 };
 
 const cache = new Map<string, string>();

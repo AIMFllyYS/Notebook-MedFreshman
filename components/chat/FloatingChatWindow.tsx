@@ -13,6 +13,7 @@ import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useStore } from "@/lib/store";
+import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { useFloatingTokenTracker } from "@/lib/hooks/useFloatingTokenTracker";
 import { useDraggable } from "@/lib/hooks/useDraggable";
 import { useResizable } from "@/lib/hooks/useResizable";
@@ -32,14 +33,16 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
   const activeSubjectId = useStore((state) => state.activeSubjectId);
   const activeCategoryId = useStore((state) => state.activeCategoryId);
   const activeItemId = useStore((state) => state.activeItemId);
+  const academicYear = useAcademicYear((state) => state.year);
   const chatContext = useMemo(
     () => ({
       subjectId: activeSubjectId,
       categoryId: activeCategoryId,
       itemId: activeItemId,
       currentTopic: `${activeSubjectId} ${activeCategoryId} ${activeItemId}`,
+      academicYear,
     }),
-    [activeSubjectId, activeCategoryId, activeItemId],
+    [activeSubjectId, activeCategoryId, activeItemId, academicYear],
   );
 
   const preExpandRef = useRef<{ pos: { x: number; y: number }; size: { width: number; height: number } } | null>(null);

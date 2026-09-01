@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { ArrowUpRight, Command, Search, X } from "lucide-react";
 import { contentTree } from "@/lib/content-data";
 import { buildGlobalSearchIndex, searchGlobalIndex } from "@/lib/search/globalSearch";
+import { filterContentTreeByYear } from "@/lib/constants/academic-year";
+import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { useGlobalSearch } from "@/lib/keyboard/useGlobalSearch";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { formatShortcut } from "@/lib/keyboard/format";
@@ -21,7 +23,11 @@ export default function GlobalSearchButton() {
   const searchEnabled = useKeyboardSettings((s) => s.isEnabled("global.search"));
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
-  const index = useMemo(() => buildGlobalSearchIndex(contentTree), []);
+  const academicYear = useAcademicYear((s) => s.year);
+  const index = useMemo(
+    () => buildGlobalSearchIndex(filterContentTreeByYear(contentTree, academicYear)),
+    [academicYear],
+  );
   const results = useMemo(
     () => searchGlobalIndex(index, deferredQuery, SEARCH_LIMIT),
     [deferredQuery, index],

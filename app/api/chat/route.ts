@@ -26,6 +26,7 @@ import {
 } from "@/lib/ai/anthropicAdapter";
 import { estimateTokens } from "@/lib/context/estimateTokens";
 import type { Skill } from "@/lib/types/skill";
+import { DEFAULT_ACADEMIC_YEAR, isAcademicYearId } from "@/lib/constants/academic-year";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -136,7 +137,10 @@ export async function POST(req: NextRequest) {
     contextMode: body.contextMode === "semantic" ? "semantic" : "full",
   };
 
-  const chatCtx: ChatContext = { subjectId, categoryId, itemId, currentTopic };
+  const academicYear = isAcademicYearId(body.academicYear)
+    ? body.academicYear
+    : DEFAULT_ACADEMIC_YEAR;
+  const chatCtx: ChatContext = { subjectId, categoryId, itemId, currentTopic, academicYear };
 
   // 生图模式检测：用户选择了生图模型时，文本对话使用 imageModeTextModel
   const selectedModelInfo = modelId
@@ -567,6 +571,7 @@ export async function POST(req: NextRequest) {
                 itemId,
                 skills,
                 imageSearchFetchedCount,
+                academicYear,
               });
               send({ type: "tool", id: c.id, status: "result", meta: result.meta });
               const toolContent = result.contextKey && loadedContextKeys.has(result.contextKey)

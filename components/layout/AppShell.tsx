@@ -14,6 +14,7 @@ import clsx from "clsx";
 import { PanelTopClose, PanelTopOpen, Maximize, Minimize } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import type { SubjectId } from "@/lib/types/content";
 import { isSubjectId } from "@/lib/types/content";
@@ -211,14 +212,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     else if (!sidebarCollapsed && panel.isCollapsed()) panel.expand();
   }, [sidebarCollapsed]);
 
+  const academicYear = useAcademicYear((s) => s.year);
   const chatContext: ChatContext = useMemo(
     () => ({
       subjectId: activeSubjectId,
       categoryId: activeCategoryId,
       itemId: activeItemId,
       currentTopic: `${activeSubjectId} ${activeCategoryId} ${activeItemId}`,
+      academicYear,
     }),
-    [activeSubjectId, activeCategoryId, activeItemId],
+    [activeSubjectId, activeCategoryId, activeItemId, academicYear],
   );
 
   // ── Mobile layout ──────────────────────────────────────────

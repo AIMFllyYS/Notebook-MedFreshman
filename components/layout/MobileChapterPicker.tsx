@@ -13,17 +13,23 @@ import {
   BookOpen,
   ScrollText,
   Folder,
+  Microscope,
+  Dna,
+  Bone,
+  Layers,
 } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
 import { navTree } from "@/lib/content-data/nav";
 import type { SubjectId, ContentItem } from "@/lib/types/content";
 import { SUBJECTS } from "@/lib/constants/subjects";
+import { filterSubjectsByYear } from "@/lib/constants/academic-year";
+import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 
 const ICON_MAP: Record<
   string,
   React.ComponentType<{ size?: number; className?: string }>
-> = { Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder };
+> = { Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder, Microscope, Dna, Bone, Layers };
 
 const SUBJECT_ICON_NAMES: Record<SubjectId, string> = {
   probability: "Calculator",
@@ -32,6 +38,10 @@ const SUBJECT_ICON_NAMES: Record<SubjectId, string> = {
   "modern-history": "BookOpen",
   maogai: "ScrollText",
   other: "Folder",
+  "cell-biology": "Microscope",
+  biochemistry: "Dna",
+  anatomy: "Bone",
+  histology: "Layers",
 };
 
 export default function MobileChapterPicker() {
@@ -47,6 +57,13 @@ export default function MobileChapterPicker() {
     activeCategoryId || "detail",
   );
   const activeRef = useRef<HTMLButtonElement>(null);
+  const academicYear = useAcademicYear((s) => s.year);
+  const hydrateYear = useAcademicYear((s) => s.hydrate);
+  const visibleSubjects = filterSubjectsByYear(navTree.subjects, academicYear);
+
+  useEffect(() => {
+    hydrateYear();
+  }, [hydrateYear]);
 
   useEffect(() => {
     if (open) {
@@ -129,7 +146,7 @@ export default function MobileChapterPicker() {
 
             {/* Subject pills */}
             <div className="hide-scrollbar flex shrink-0 gap-1.5 overflow-x-auto px-4 pb-3">
-              {navTree.subjects
+              {visibleSubjects
                 .map((s) => {
                   const Icon =
                     ICON_MAP[SUBJECT_ICON_NAMES[s.id as SubjectId]] ?? Folder;

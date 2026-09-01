@@ -1,0 +1,321 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch17",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch17-1.md；content/biochemistry/textbook/ch17-2.md；content/biochemistry/textbook/ch17-3.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于基因表达的产物、基因组基因数以及时间／空间特异性，下列叙述正确的是（　）。",
+      "options": [
+        "基因表达一定合成蛋白质，$\\mathrm{rRNA}$、$\\mathrm{tRNA}$ 不算表达；人类约 $2$ 万是全部转录物；细菌约 $400$ 个基因；大肠埃希菌只有约 $5\\%$ 的基因存在于基因组；甲胎蛋白（$\\mathrm{AFP}$）是空间特异性的代表；胰岛素基因只在胰腺、胰蛋白酶基因只在肠道；胰岛细胞基因组没有胰蛋白酶基因",
+        "基因表达是转录及翻译、遗传信息表现为表型的过程；蛋白质编码基因还要翻译并装配加工成最终蛋白质。$\\mathrm{rRNA}$、$\\mathrm{tRNA}$ 编码基因转录产生 $\\mathrm{RNA}$ 也属于表达。细菌基因组一般约含 $4\\,000$ 个基因；人类约 $2$ 万个蛋白质编码基因（非编码 $\\mathrm{RNA}$ 不在此约数）。某一特定时期只有小部分基因表达：大肠埃希菌通常只有约 $5\\%$ 的基因处于高水平转录活性状态，其余仍在基因组里、关闭或极低表达。时间特异性按顺序开闭：霍乱弧菌感染后 $44$ 种基因上调、$193$ 种受抑制；$\\mathrm{AFP}$ 在胎儿肝活跃、成年几乎测不到、肝癌再激活（血浆 $\\mathrm{AFP}$ 可作肝癌早期诊断），不要写成空间特异性。空间特异性又称细胞／组织特异性：胰岛素基因只在胰岛 $\\beta$ 细胞表达，胰蛋白酶基因在胰腺腺泡细胞高水平、在胰岛细胞几乎不表达。决定细胞类型的是表达模式，不是基因本身",
+        "时间特异性专属于胚胎发育，细菌感染没有时间特异性；$5\\%$ 是人类蛋白质编码基因占基因组的比例",
+        "成年后 $\\mathrm{AFP}$ 基因从基因组消失，肝癌时再插入一套新基因"
+      ],
+      "answer": 1,
+      "hint": "表达含 $\\mathrm{rRNA}/\\mathrm{tRNA}$；$2$ 万是蛋白质编码基因；$5\\%$ 是高水平转录；$\\mathrm{AFP}$ 走时间轴。",
+      "explanation": "**B 正确。** 产物含蛋白质也含 $\\mathrm{rRNA}/\\mathrm{tRNA}$、约 $4\\,000$／约 $2$ 万、$5\\%$ 是高水平转录、$\\mathrm{AFP}$ 时间特异性、胰岛素 vs 胰蛋白酶空间特异性，都来自 ch17-1。\n\n**干扰项辨析**：\n- A：$\\mathrm{rRNA}/\\mathrm{tRNA}$ 也算表达；$2$ 万不是全部转录物；细菌约 $4\\,000$ 不是 $400$；$5\\%$ 不是「基因不存在」；$\\mathrm{AFP}$ 不是空间特异性；胰蛋白酶对比在腺泡细胞不是肠道；基因组可以有不表达的基因。\n- C：所有生物都有时间特异性；$5\\%$ 是大肠埃希菌高水平转录。\n- D：成年关掉不等于基因消失，肝癌是重新激活。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-1.md",
+        "label": "表达含 rRNA/tRNA · 4000/2万 · 5% 高水平转录 · AFP 时间特异性 · 胰岛素空间特异性"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于管家基因、组成性表达、诱导／阻遏以及协同表达，下列叙述正确的是（　）。",
+      "options": [
+        "管家基因绝对一成不变、零调节；柠檬酸循环酶基因是诱导酶；诱导是从无到有造出新基因；阻遏是基因缺失；诱导和阻遏是两套互不相干的遗传学；协同表达是第四种开关类型，要求三个酶分子数绝对相等",
+        "管家基因产物对生命全过程必需，在几乎所有细胞中持续表达，或称基本表达；本版例子是柠檬酸循环各阶段反应酶的编码基因。组成性（基本）表达主要受启动子和 $\\mathrm{RNA}$ 聚合酶影响，基本不受其他机制调节，但「不变」是相对的，并非绝对一成不变。可诱导基因在特定信号下被激活、产物增加（如 $\\mathrm{DNA}$ 损伤时修复酶基因）；可阻遏基因被抑制、产物降低（如色氨酸充足时色氨酸合成酶基因）。诱导和阻遏是同一事物的两种形式，乳糖操纵子是认识二者的经典模型。协同表达：功能相关的一组基因无论何种表达方式均需协调一致、共同表达，要的是比例适当，不是第四种开关，也不是等摩尔",
+        "组成性表达完全不受启动子影响；经常饮酒者醇氧化酶升高说明高等生物没有适应性表达",
+        "果蝇最早期是三组母本效应基因，然后才是一组分节基因"
+      ],
+      "answer": 1,
+      "hint": "柠檬酸循环酶是管家基因；诱导／阻遏是同一事物的两种形式；协同是剂量匹配。",
+      "explanation": "**B 正确。** 管家／组成性、诱导与阻遏、协同，都来自 ch17-1。\n\n**干扰项辨析**：\n- A：组成性相对恒定不是零调节；柠檬酸循环酶不是诱导酶；诱导不是造新基因；阻遏不是缺失；二者不是互不相干；协同不是第四种开关也不是等摩尔。\n- C：组成性主要受启动子和 $\\mathrm{RNA}$ 聚合酶影响；高等生物也有适应性表达（醇氧化酶）。\n- D：一组母本效应基因，然后三组分节基因。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-1.md",
+        "label": "管家组成性 · 诱导阻遏同一事物 · 协同表达 · pitfall「不是零调节」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于顺式作用元件、反式作用因子以及转录起始是基本控制点，下列叙述正确的是（　）。",
+      "options": [
+        "本节 $\\mathrm{CRE}$ 就是 $\\mathrm{cAMP}$ 反应元件；阻遏蛋白编码基因 $\\mathrm{I}$ 本身是顺式元件；反式因子必须调另一条染色体，不能调同一条 $\\mathrm{DNA}$ 上的结构基因；调节分子只有蛋白质；大沟本身是一类元件；调控只发生在转录起始",
+        "顺式作用元件（cis-acting element，又称 cis-regulator element，$\\mathrm{CRE}$）一般与被调控编码序列位于同一条 $\\mathrm{DNA}$ 链上。反式作用因子是调节蛋白质：既能调同一条 $\\mathrm{DNA}$ 上的结构基因，也能调不在一条 $\\mathrm{DNA}$ 上的结构基因，「反式」强调通过产物、可跨分子。还有调节 $\\mathrm{RNA}$。蛋白质-$\\mathrm{DNA}$ 以及蛋白质-蛋白质相互作用是分子基础；大沟是调节蛋白质最容易与 $\\mathrm{DNA}$ 作用的部位，不是又一类元件。调控是多层次全过程（遗传信息水平：扩增、重排、甲基化；转录及转录后：加工、转运、选择性剪接、$\\mathrm{RNA}$ 编辑、$\\mathrm{miRNA}$ 等；翻译及翻译后是快速反应），但转录起始是基因表达的基本控制点——「基本控制点」与「多层次」必须同卷出现",
+        "真核所有调节蛋白质都直接结合 $\\mathrm{DNA}$，从不先形成蛋白质复合物",
+        "改变翻译环节不会导致基因表达变化，因为只有转录起始才算调控"
+      ],
+      "answer": 1,
+      "hint": "顺式在同链 $\\mathrm{DNA}$；反式靠产物跨分子；基本控制点不是唯一层次。",
+      "explanation": "**B 正确。** $\\mathrm{CRE}$ 定义、反式可同链、调节 $\\mathrm{RNA}$、多层次与基本控制点，都来自 ch17-1。\n\n**干扰项辨析**：\n- A：本节 $\\mathrm{CRE}$ 是 cis-regulator element；$\\mathrm{I}$ 是调节基因不是顺式元件；反式不是必须在另一条染色体；还有调节 $\\mathrm{RNA}$；大沟不是元件；调控不是只有转录起始。\n- C：真核有些调节蛋白质先形成复合物再结合 $\\mathrm{DNA}$。\n- D：改变任何环节都会导致表达变化。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-1.md",
+        "label": "顺式 CRE · 反式因子 · 调节 RNA · 转录起始是基本控制点 · 多层次"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于操纵子三组成以及原核启动子共有序列，下列叙述正确的是（　）。",
+      "options": [
+        "原核全部基因都是单拷贝；结构基因约占 $50\\%$ 是重复序列占比；操纵子只要一串结构基因；多顺反子就是一条 $\\mathrm{mRNA}$ 上挂多个核糖体；Pribnow 盒是真核 $\\mathrm{TATA}$（Hognest）盒，$-10$ 是 $\\mathrm{TTGACA}$、$-35$ 是 $\\mathrm{TATAAT}$；$\\mathrm{lac}$ 的 $-10$ 就是标准 $\\mathrm{TATAAT}$；操纵元件编码阻遏蛋白；负性调节就是没有蛋白质去管",
+        "原核基因组：很少重复序列；蛋白质结构基因连续编码、多为单拷贝，但 $\\mathrm{rRNA}$ 基因仍为多拷贝；结构基因约占基因组 $50\\%$；许多结构基因以操纵子为单位。操纵子由结构基因、调控序列和调节基因组成。数个功能关联结构基因共用一个启动子和一个终止信号，转录出多顺反子 $\\mathrm{mRNA}$（一条 $\\mathrm{mRNA}$ 携带几条多肽链的编码信息，不是多聚核糖体）。$E.\\ coli$ 启动子共有序列：$-10$ 为 $\\mathrm{TATAAT}$，又称 Pribnow 盒；$-35$ 为 $\\mathrm{TTGACA}$。Pribnow 不要写成真核 $\\mathrm{TATA}$（Hognest）盒。图17-1 中 $\\mathrm{lac}$ 的 $-10$ 是 $\\mathrm{TATGTT}$ 不是标准 $\\mathrm{TATAAT}$，与野生型 $\\mathrm{lac}$ 启动子很弱一致。操纵元件是阻遏蛋白结合的 $\\mathrm{DNA}$ 位点，不是编码阻遏蛋白的调节基因；负性调节的执行者是阻遏蛋白结合 $\\mathrm{O}$",
+        "间隔 $\\mathrm{N}16/\\mathrm{N}17$ 是天冬酰胺密码子；转录起点 $\\mathrm{A}$ 就是操纵元件",
+        "$\\sigma$ 在延长时脱落就是操纵子的开关机制"
+      ],
+      "answer": 1,
+      "hint": "三块缺一不叫完整操纵子；Pribnow $= -10\\,\\mathrm{TATAAT}$，不是真核 $\\mathrm{TATA}$。",
+      "explanation": "**B 正确。** 四条结构特点、操纵子三组成、Pribnow／$-35$、$\\mathrm{lac}$ 的 $-10$ 是 $\\mathrm{TATGTT}$，都按第二节。\n\n**干扰项辨析**：\n- A：$\\mathrm{rRNA}$ 仍多拷贝；$50\\%$ 是结构基因占比；三块都要；多顺反子≠多聚核糖体；$-10/-35$ 对调且 Pribnow≠真核 TATA；$\\mathrm{lac}$ 的 $-10$ 不是 $\\mathrm{TATAAT}$；$\\mathrm{O}$ 不是调节基因；负性不是「不管」。\n- C：$\\mathrm{N}$ 是任意核苷酸间隔；起点 $\\mathrm{A}$ 是 $\\mathrm{RNA}$ 第一位。\n- D：$\\sigma$ 脱落是第十五章延长的账，不是操纵子开关。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-2.md",
+        "label": "操纵子三组成 · Pribnow -10 TATAAT · -35 TTGACA · pitfall「不是真核 TATA」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于乳糖操纵子的诱导剂、$\\mathrm{CAP}$ 以及强诱导条件，下列叙述正确的是（　）。",
+      "options": [
+        "无乳糖时 $\\mathrm{Z}$、$\\mathrm{Y}$、$\\mathrm{A}$ 从基因组丢失；真正的诱导剂是乳糖本身，直接结合阻遏蛋白；阻遏绝对为零，细胞里一个酶分子也没有；$\\mathrm{IPTG}$ 是另一种碳源；$1\\,000$ 倍是 $\\mathrm{CAP}$ 刺激转录活性的倍数；有乳糖无论有没有葡萄糖都全开；分解代谢阻遏就是 $\\mathrm{Lac}$ 阻遏蛋白的别名",
+        "$\\mathrm{Z}$ 编码 $\\beta$-半乳糖苷酶，$\\mathrm{Y}$ 编码通透酶，$\\mathrm{A}$ 编码乙酰基转移酶；$\\mathrm{I}$ 有独立启动子 $\\mathrm{PI}$。无乳糖时阻遏蛋白占 $\\mathrm{O}$，关闭不是基因丢失。阻遏并非绝对：偶有与 $\\mathrm{O}$ 解聚，每个细胞可有寥寥数个 $\\beta$-半乳糖苷酶、通透酶，才能把乳糖变成别乳糖。真正的诱导剂并非乳糖本身，而是别乳糖（allolactose）；$\\mathrm{IPTG}$ 是别乳糖类似物，不被细菌代谢，实验上常用。去阻遏可使 $\\beta$-半乳糖苷酶增加达 $1\\,000$ 倍。$\\mathrm{CAP}$ 是同二聚体，缺葡萄糖时 $\\mathrm{cAMP}$ 升高，$\\mathrm{cAMP}$-$\\mathrm{CAP}$ 结合 $\\mathrm{CAP}$ 位点，转录活性提高 $50$ 倍。野生型 $\\mathrm{lac}$ 启动子很弱，$\\mathrm{CAP}$ 必不可少。强诱导必须去阻遏 $+$ 缺葡萄糖同时满足。有乳糖仍有葡萄糖时已去阻遏仍几无转录。分解代谢阻遏走葡萄糖 $\\rightarrow$ $\\mathrm{cAMP}$ $\\downarrow$ $\\rightarrow$ $\\mathrm{CAP}$ 不能结合，不是 $\\mathrm{Lac}$ 阻遏蛋白的别名",
+        "$\\mathrm{CAP}$ 是葡萄糖受体，同二聚体上没有 $\\mathrm{cAMP}$ 结合位点",
+        "$\\mathrm{I}$ 画进 $\\mathrm{Z}$-$\\mathrm{Y}$-$\\mathrm{A}$ 那条多顺反子，阻遏蛋白随乳糖诱导一起暴增"
+      ],
+      "answer": 1,
+      "hint": "真正的诱导剂是别乳糖；强诱导＝去阻遏 $+$ 缺葡萄糖；$1\\,000$ 倍与 $50$ 倍不要对调。",
+      "explanation": "**B 正确。** 别乳糖／$\\mathrm{IPTG}$、阻遏并非绝对、$\\mathrm{cAMP}$-$\\mathrm{CAP}$ $50$ 倍、分解代谢阻遏、图17-3 三态，都按第二节。\n\n**干扰项辨析**：\n- A：关闭不是丢失；诱导剂不是乳糖本身；阻遏并非绝对；$\\mathrm{IPTG}$ 不是碳源；$1\\,000$ 倍是酶分子数；去阻遏≠强表达；分解代谢阻遏走 $\\mathrm{CAP}$。\n- C：$\\mathrm{CAP}$ 不直接吃葡萄糖，有 $\\mathrm{cAMP}$ 结合位点。\n- D：$\\mathrm{I}$ 单独经 $\\mathrm{PI}$ 转录。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-2.md",
+        "label": "别乳糖 · 阻遏并非绝对 · cAMP-CAP 50倍 · 强诱导两条件 · 分解代谢阻遏"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于色氨酸操纵子的辅阻遏物与衰减，下列叙述正确的是（　）。",
+      "options": [
+        "色氨酸是诱导剂，也是阻遏蛋白本身；无色氨酸时 $\\mathrm{I}$ 基因不表达；衰减是又一种阻遏蛋白；前导肽 $162$ 个氨基酸，只有第 $10$ 位是色氨酸；$2/3$ 发夹是终止结构；衰减依赖 $\\rho$；$1/2$ 发夹最强所以低 $\\mathrm{Trp}$ 时走终止",
+        "色氨酸操纵子是可阻遏操纵子：无色氨酸时阻遏蛋白不能与操纵序列结合（蛋白可以在），操纵子开放；色氨酸浓度高时作为辅阻遏物与阻遏蛋白形成复合物，结合操纵序列而关闭。衰减利用转录翻译偶联和前导序列 $\\mathrm{L}$：前导 $\\mathrm{mRNA}$ $162\\,\\mathrm{nt}$、四个短序列；前导肽 $14$ 残基，第 $10$ 和 $11$ 位都是色氨酸。发夹能力 $1/2>2/3>3/4$；序列 $4$ 下游连续 $\\mathrm{U}$ 是不依赖 $\\rho$ 的终止信号。低 $\\mathrm{Trp}$：核糖体停在序列 $1$，$2/3$ 发夹，转录继续。高 $\\mathrm{Trp}$：核糖体到序列 $2$，$3/4$ 发夹 $+$ 多聚 $\\mathrm{U}$，转录中途终止。阻遏是粗调，衰减子是精调；$\\mathrm{phe}$、$\\mathrm{his}$、$\\mathrm{leu}$、$\\mathrm{thr}$ 等也有类似衰减",
+        "衰减把已经开始的转录再开大，与阻遏作用方向相反",
+        "色氨酸单独就是 $\\mathrm{DNA}$ 结合蛋白质，不需要阻遏蛋白"
+      ],
+      "answer": 1,
+      "hint": "色氨酸是辅阻遏物；低 $\\mathrm{Trp}$ 走 $2/3$ 继续，高 $\\mathrm{Trp}$ 走 $3/4$ 终止。",
+      "explanation": "**B 正确。** 可阻遏型、辅阻遏物、$162\\,\\mathrm{nt}$／$14$ 肽／第 $10/11$ 位、$2/3$ vs $3/4$、粗调／精调，都按第二节。\n\n**干扰项辨析**：\n- A：色氨酸不是诱导剂也不是阻遏蛋白；无 $\\mathrm{Trp}$ 不是没有阻遏蛋白；衰减不是阻遏蛋白；$162$ 是核苷酸；两位都是 $\\mathrm{Trp}$；$2/3$ 不是终止；不依赖 $\\rho$；$1/2$ 最强不是低 $\\mathrm{Trp}$ 终止结构。\n- C：衰减是进一步加强关闭。\n- D：关闭 $\\mathrm{O}$ 的是色氨酸 $+$ 阻遏蛋白复合物。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-2.md",
+        "label": "辅阻遏物 · 衰减 10/11 位 · 2/3 继续 vs 3/4 终止 · 阻遏粗调衰减精调"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于真核顺式四元件、转录因子模体以及 $\\mathrm{PIC}$，下列叙述正确的是（　）。",
+      "options": [
+        "启动子倒置仍能工作，增强子倒置则失效；增强子可以代替启动子并跳到另一条染色体；沉默子就是阻遏蛋白；绝缘子是沉默子的别名；管家基因没有启动子；锌离子直接认碱基；亮氨酸拉链本身认碱基序列；$\\mathrm{bHLH}$ 碱性区在 $\\mathrm{C}$ 端、$\\mathrm{bZIP}$ 亮氨酸在 $\\mathrm{N}$ 端；$\\mathrm{PIC}$ 装好就已经在延长；本版写出了诱导多能干细胞那 $4$ 种因子的名字",
+        "真核启动子一般在起始点上游约 $100\\sim 200\\,\\mathrm{bp}$；$\\mathrm{TATA}$ 盒共有序列 $\\mathrm{TATAAAA}$，通常在 $-25\\sim -30\\,\\mathrm{bp}$，是 $\\mathrm{TF}\\,\\mathrm{II}\\mathrm{D}$ 结合位点，控制转录起始的准确性及频率（不是翻译起点）。管家基因常走富 $\\mathrm{GC}$、多 $\\mathrm{SP1}$ 的无 $\\mathrm{TATA}$ 启动子，不是没有启动子。增强子约 $200\\,\\mathrm{bp}$，可使旁侧基因转录提高 $100$ 倍或更多：与靶基因同链；要有组织特异性转录因子才表现活性；上／下游均可，通常 $1\\sim 4\\,\\mathrm{kb}$、个别 $30\\,\\mathrm{kb}$；方向倒置仍能工作（启动子倒置则不能）；没有启动子则无活性，也不能跳染色体。沉默子是负性 $\\mathrm{DNA}$ 元件，结合特异蛋白后阻遏转录。绝缘子挡增强子或沉默子对启动子，或挡异染色质，不是沉默子别名。锌指：$\\alpha$-螺旋伸入大沟认碱基（不是锌离子），常见 $2$ 个 $\\beta$ 上的 $\\mathrm{Cys}$ 加 $\\alpha$ 上 $2$ 个 $\\mathrm{His}$ 或 $\\mathrm{Cys}$ 配位 $\\mathrm{Zn}^{2+}$。$\\mathrm{bHLH}$：碱性区在一个螺旋的 $\\mathrm{N}$ 端，二聚体间距约 $3.4\\,\\mathrm{nm}$。$\\mathrm{bZIP}$：$\\mathrm{C}$ 端每隔 $6$ 残基一个 $\\mathrm{Leu}$ 疏水扣合，认 $\\mathrm{DNA}$ 的是 $\\mathrm{N}$ 端碱性区。$\\mathrm{pol}\\,\\mathrm{II}$ 不能单独认启动子；先由 $\\mathrm{TF}\\,\\mathrm{II}\\mathrm{D}$ 结合，再与其他 $\\mathrm{TF}\\,\\mathrm{II}$ 及 $\\mathrm{pol}\\,\\mathrm{II}$ 装成 $\\mathrm{PIC}$；$\\mathrm{PIC}$ 装好不等于已经延长，还要 $\\mathrm{TF}\\,\\mathrm{II}\\mathrm{H}$ 磷酸化 $\\mathrm{CTD}$。本版 $\\mathrm{iPS}$ 只写 $4$ 种转录因子，没有写出名字",
+        "通用转录因子有组织特异性，决定时空选择性；特异转录因子对所有基因都必需",
+        "增强子和启动子是同一段序列的两种叫法，绝缘子结合后把该基因关掉"
+      ],
+      "answer": 1,
+      "hint": "四元件分户；锌指用 $\\alpha$-螺旋认碱基；拉链不认碱基；$\\mathrm{PIC}\\neq$ 延长。",
+      "explanation": "**B 正确。** 启动子／增强子／沉默子／绝缘子、锌指／$\\mathrm{bHLH}$／$\\mathrm{bZIP}$、$\\mathrm{PIC}$ 装配，都按第三节。\n\n**干扰项辨析**：\n- A：方向性写反；增强子不能代替启动子、不能跳染色体；沉默子是 $\\mathrm{DNA}$；绝缘子≠沉默子；管家基因有启动子；锌离子不认碱基；拉链不认碱基；碱性区／亮氨酸端对调；$\\mathrm{PIC}\\neq$ 延长；本版未写出 $4$ 种因子名字。\n- C：通用 $\\mathrm{TF}$ 无组织特异性；特异 $\\mathrm{TF}$ 决定时空。\n- D：四元件不要并户；绝缘子保护的那一侧可以继续开。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-3.md",
+        "label": "启动子增强子沉默子绝缘子 · 锌指/bHLH/bZIP · PIC≠延长"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于原核翻译水平调控以及真核染色质／表观遗传，下列叙述正确的有（　）。",
+      "options": [
+        "翻译一般在起始和终止受调节，尤其起始。自我控制：调节蛋白质结合自身 $\\mathrm{mRNA}$ 起始区，不是再占一次操纵元件 $\\mathrm{O}$。$\\mathrm{S}8$ 是小亚基蛋白、认 $16\\mathrm{S}$ $\\mathrm{rRNA}$ 茎环；$16\\mathrm{S}$ 不足时多余 $\\mathrm{S}8$ 结合 $\\mathrm{L}5$ $\\mathrm{mRNA}$，阻遏大亚基蛋白 $\\mathrm{L}5$。反义 $\\mathrm{RNA}$ 与翻译起始部位杂交，阻断 $30\\mathrm{S}$ 认 $\\mathrm{AUG}$ 及结合 $\\mathrm{SD}$，不是 $\\mathrm{miRNA}$ 的原核别名。$\\mathrm{dnaG}$ 编码引物酶，稀有密码子使翻译慢；除 $\\mathrm{Trp}$、$\\mathrm{Met}$ 外其余氨基酸才有 $2$ 个或以上密码子",
+        "真核先问染色质开没开。活性染色质出现对 $\\mathrm{DNase}\\,\\mathrm{I}$ 超敏的裸露 $\\mathrm{DNA}$，通常在活化基因 $5'$-侧翼 $1\\,\\mathrm{kb}$ 内。表观遗传：$\\mathrm{DNA}$ 序列不改变。核小体核心是 $\\mathrm{H2A}/\\mathrm{H2B}/\\mathrm{H3}/\\mathrm{H4}$ 各 $2$ 个，$\\mathrm{H1}$ 不在八聚体里。乙酰化中和正电荷、松开染色质；甲基化不是一律关闭（$\\mathrm{H3}\\,\\mathrm{Lys}$-$4$ 甲基化是激活，$\\mathrm{Lys}$-$9$ 甲基化是浓缩）。$\\mathrm{HAT}$ 是辅激活因子，$\\mathrm{HDAC}$ 是辅抑制因子，它们改组蛋白状态，不是自己去认启动子",
+        "$\\mathrm{CpG}$ 岛是成簇的非甲基化 $\\mathrm{CG}$，$\\mathrm{GC}$ 含量可达 $60\\%$，长度 $300\\sim 3\\,000\\,\\mathrm{bp}$，主要在启动子和第一外显子。$\\mathrm{DNMT}$ 以 $\\mathrm{SAM}$ 为甲基供体，把胞嘧啶第 $5$ 位碳甲基化。甲基化并不直接导致转录抑制，且可逆（抑制 $\\mathrm{DNMT}$，或去掉／切除甲基化胞嘧啶再修复）。管家基因的岛甲基化水平较低。单顺反子意味着相关蛋白甚至不同亚基都要另做协调；$90\\%$ 非编码功能多不清楚、可能参与调控，不是全是垃圾",
+        "自我控制的靶是操纵元件 $\\mathrm{O}$；$\\mathrm{S}8$ 属大亚基、认 $23\\mathrm{S}$；反义 $\\mathrm{RNA}$ 就是 $\\mathrm{miRNA}$；$\\mathrm{dnaG}$ 限制整台复制体；甲基化一律关闭且一旦甲基化终身关闭；$\\mathrm{CpG}$ 岛是甲基化最密集的地方；$\\mathrm{HAT}$ 自己认启动子；$90\\%$ 非编码全是垃圾"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "翻译四条分户；先问染色质；$\\mathrm{HAT}$ 辅激活；$\\mathrm{CpG}$ 甲基化不直接等于关闭。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：自我控制、$\\mathrm{S}8/\\mathrm{L}5$、反义 $\\mathrm{RNA}$、$\\mathrm{dnaG}$ 稀有密码子，来自 ch17-2。\n- B：活性染色质／超敏、表观遗传、核小体、$\\mathrm{HAT}/\\mathrm{HDAC}$，来自 ch17-3。\n- C：$\\mathrm{CpG}$ 岛定义、甲基化不直接关闭且可逆、单顺反子要协调，来自 ch17-3。\n- **D 错**：自我控制靶是 $\\mathrm{mRNA}$；$\\mathrm{S}8$ 属小亚基认 $16\\mathrm{S}$；反义 $\\mathrm{RNA}\\neq\\mathrm{miRNA}$；$\\mathrm{dnaG}$ 限制引物酶；甲基化不一律关、可逆；岛是成簇非甲基化 $\\mathrm{CG}$；$\\mathrm{HAT}$ 改组蛋白；$90\\%$ 不是垃圾。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-2.md",
+        "label": "自我控制 · S8/L5 · 反义 RNA · dnaG · HAT/HDAC · CpG 可逆"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于 $\\mathrm{IRE}$、起始因子磷酸化以及 $\\mathrm{miRNA}/\\mathrm{siRNA}/\\mathrm{RNAi}$，下列叙述正确的有（　）。",
+      "options": [
+        "$\\mathrm{TfR}\\,\\mathrm{mRNA}$ 的 $\\mathrm{IRE}$ 在 $3'$-$\\mathrm{UTR}$（约 $30\\,\\mathrm{bp}$ 柄－环，环上 $5$ 个特异核苷酸并富含 $\\mathrm{A}$-$\\mathrm{U}$）：铁足量降解加快，铁不足时 $\\mathrm{IRE}$-$\\mathrm{BP}$ 结合使寿命延长。铁蛋白和 $\\mathrm{ALA}$ 合酶 $\\mathrm{mRNA}$ 的 $\\mathrm{IRE}$ 在 $5'$-$\\mathrm{UTR}$，无 $\\mathrm{A}$-$\\mathrm{U}$ 富含区、不促降解：低铁时 $\\mathrm{IRE}$-$\\mathrm{BP}$ 挡 $40\\mathrm{S}$ 结合起始部位。不要把 $\\mathrm{TfR}$ 的 $\\mathrm{IRE}$ 写成 $5'$-$\\mathrm{UTR}$",
+        "$\\mathrm{eIF}$-$2\\alpha$ 磷酸化**抑制**翻译起始（$\\mathrm{cAMP}$ 依赖性蛋白质激酶）；血红素抑制该激酶活化，防止或减少 $\\mathrm{eIF}$-$2$ 失活，促进珠蛋白合成；病毒感染时 $\\mathrm{dsRNA}$ 激活一种蛋白质激酶使 $\\mathrm{eIF}$-$2\\alpha$ 磷酸化。$\\mathrm{eIF}$-$4\\mathrm{E}$ 磷酸化**激活**翻译起始，绑帽力是非磷酸化的 $4$ 倍；胰岛素及其他生长因子增加 $\\mathrm{eIF}$-$4\\mathrm{E}$ 磷酸化，还使抑制物蛋白磷酸化而解离。本版没有发明干扰素抑制翻译",
+        "$\\mathrm{lin}$-$4$（$1993$，靶 $\\mathrm{lin}$-$14$ 的 $3'$-$\\mathrm{UTR}$，抑制翻译不影响转录）和 $\\mathrm{let}$-$7$（$2000$，$21$ 个碱基，促进幼虫向成虫转变）是 $\\mathrm{miRNA}$ 经典。$\\mathrm{miRNA}$：约 $22\\,\\mathrm{nt}$ 单链，$\\mathrm{pol}\\,\\mathrm{II}$ 转录，发夹前体经 $\\mathrm{Dicer}$ 成 $20\\sim 24\\,\\mathrm{nt}$，入 $\\mathrm{RISC}$，对 $3'$-$\\mathrm{UTR}$ 不必完全互补，降解或抑制翻译。$\\mathrm{siRNA}$：$21\\sim 23$ 个碱基，长 $\\mathrm{dsRNA}$ 酶切，双链，与靶完全互补导致降解。二者都由 $\\mathrm{Dicer}$ 产生、长度约 $22$ 碱基、都入 $\\mathrm{RISC}$，但不要写成同一件事。$\\mathrm{RNAi}$ 是 $\\mathrm{siRNA}$ **和** $\\mathrm{miRNA}$ 都可以介导的基因表达抑制",
+        "$\\mathrm{eIF}$-$2\\alpha$ 磷酸化激活翻译起始；$\\mathrm{eIF}$-$4\\mathrm{E}$ 磷酸化抑制绑帽；$\\mathrm{TfR}$ 的 $\\mathrm{IRE}$ 在 $5'$-$\\mathrm{UTR}$；$\\mathrm{lin}$-$4$／$\\mathrm{let}$-$7$ 是 $\\mathrm{siRNA}$；$\\mathrm{miRNA}$ 与 $\\mathrm{siRNA}$ 完全是同一件事；$\\mathrm{RNAi}$ 只有 $\\mathrm{siRNA}$；本版用干扰素经蛋白质激酶抑制翻译"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "$3'$ 管 $\\mathrm{TfR}$ 寿命、$5'$ 挡铁蛋白起始；$\\mathrm{eIF}$-$2\\alpha$-$\\mathrm{P}$ 关、$\\mathrm{eIF}$-$4\\mathrm{E}$-$\\mathrm{P}$ 开；$\\mathrm{miRNA}\\neq\\mathrm{siRNA}$。把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：$\\mathrm{IRE}$ 位置分户，来自 ch17-3。\n- B：$\\mathrm{eIF}$-$2\\alpha$ 抑制 vs $\\mathrm{eIF}$-$4\\mathrm{E}$ 激活，无干扰素，来自 ch17-3。\n- C：$\\mathrm{lin}$-$4$／$\\mathrm{let}$-$7$、$\\mathrm{miRNA}$ vs $\\mathrm{siRNA}$、$\\mathrm{RNAi}$ 定义，来自 ch17-3。\n- **D 错**：磷酸化方向写反；$\\mathrm{IRE}$ 位置写反；$\\mathrm{lin}$-$4$／$\\mathrm{let}$-$7$ 是 $\\mathrm{miRNA}$；二者不要并户；$\\mathrm{RNAi}$ 含 $\\mathrm{miRNA}$；本版无干扰素。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-3.md",
+        "label": "IRE 3′ vs 5′ · eIF-2α 抑制 · eIF-4E 激活 · lin-4/let-7 · miRNA≠siRNA · 无干扰素"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "人类约 $2$ 万个蛋白质编码基因就是全部转录物；大肠埃希菌只有约 $5\\%$ 的基因存在于基因组；$\\mathrm{AFP}$ 是空间特异性的代表，胰岛素基因是时间特异性；乳糖本身是 $\\mathrm{lac}$ 真正的诱导剂，阻遏绝对为零；Pribnow 盒就是真核 $\\mathrm{TATA}$ 盒；去阻遏等于 $\\mathrm{lac}$ 强表达。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：$5\\%$ 是高水平转录；$\\mathrm{AFP}$ 走时间轴；真正诱导剂是别乳糖；Pribnow 是原核 $-10\\,\\mathrm{TATAAT}$。",
+      "explanation": "**该命题错误，每一分句都错。** 人类约 $2$ 万是蛋白质编码基因，不含 $\\mathrm{rRNA}/\\mathrm{tRNA}$ 及非编码 $\\mathrm{RNA}$。大肠埃希菌约 $5\\%$ 是某一时刻处于高水平转录，其余基因仍在基因组里。$\\mathrm{AFP}$ 是时间特异性（胎儿肝活跃 $\\rightarrow$ 成年几乎测不到 $\\rightarrow$ 肝癌再激活）；空间特异性例子是胰岛素基因 vs 胰蛋白酶基因。真正的诱导剂是别乳糖不是乳糖本身；阻遏并非绝对，偶有解聚留下寥寥数个酶分子。Pribnow 盒 $= -10$ 区 $\\mathrm{TATAAT}$，不是真核 $\\mathrm{TATA}$（Hognest）盒。有乳糖仍有葡萄糖时已去阻遏仍几无转录，强诱导还要缺葡萄糖（$\\mathrm{cAMP}$-$\\mathrm{CAP}$）。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-1.md",
+        "label": "2万蛋白质编码 · 5% 高水平转录 · AFP 时间特异性 · 别乳糖 · Pribnow≠真核 TATA"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "色氨酸是诱导剂；$2/3$ 发夹使转录终止；衰减依赖 $\\rho$。$\\mathrm{eIF}$-$2\\alpha$ 磷酸化激活翻译起始，$\\mathrm{eIF}$-$4\\mathrm{E}$ 磷酸化抑制绑帽。$\\mathrm{TfR}$ 的 $\\mathrm{IRE}$ 在 $5'$-$\\mathrm{UTR}$。$\\mathrm{PIC}$ 装好就已经在延长。$\\mathrm{miRNA}$ 与 $\\mathrm{siRNA}$ 完全是同一件事；本版用干扰素抑制翻译。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：色氨酸是辅阻遏物；$3/4+$ 多聚 $\\mathrm{U}$ 才终止；$\\mathrm{eIF}$-$2\\alpha$-$\\mathrm{P}$ 关；$\\mathrm{IRE}$ 在 $3'$-$\\mathrm{UTR}$。",
+      "explanation": "**该命题错误，每一分句都错。** 色氨酸是辅阻遏物，不是诱导剂。低 $\\mathrm{Trp}$ 走 $2/3$ 发夹使转录继续，高 $\\mathrm{Trp}$ 走 $3/4$ 发夹 $+$ 多聚 $\\mathrm{U}$ 才终止；该终止不依赖 $\\rho$。$\\mathrm{eIF}$-$2\\alpha$ 磷酸化抑制翻译起始；$\\mathrm{eIF}$-$4\\mathrm{E}$ 磷酸化激活（绑帽力 $\\times 4$）。$\\mathrm{TfR}\\,\\mathrm{mRNA}$ 的 $\\mathrm{IRE}$ 在 $3'$-$\\mathrm{UTR}$，铁蛋白／$\\mathrm{ALA}$ 合酶才在 $5'$-$\\mathrm{UTR}$。$\\mathrm{PIC}$ 是前起始复合物，装好不等于已经延长，还要 $\\mathrm{TF}\\,\\mathrm{II}\\mathrm{H}$ 磷酸化 $\\mathrm{CTD}$。$\\mathrm{miRNA}$ 与 $\\mathrm{siRNA}$ 前体、单双链、完全互补与否都要分户。本版没有发明干扰素抑制翻译。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-3.md",
+        "label": "辅阻遏物 · 2/3 vs 3/4 · eIF-2α 抑制 · IRE 3′-UTR · PIC≠延长 · 无干扰素"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "人类基因组约含 ________ 个蛋白质编码基因。乳糖操纵子真正的诱导剂是 ________（不是乳糖本身）。Pribnow 盒是原核启动子 $-10$ 区共有序列 ________。色氨酸操纵子前导肽第 ________ 位都是色氨酸密码子。$\\mathrm{eIF}$-$2\\alpha$ 磷酸化的效果是 ________ 翻译起始。",
+      "answer": "2万, 别乳糖, TATAAT, 10和11, 抑制",
+      "hint": "约 $2$ 万不是全部转录物；别乳糖／allolactose；Pribnow≠真核 TATA；两位都是 $\\mathrm{Trp}$；$\\mathrm{eIF}$-$2\\alpha$-$\\mathrm{P}$ 关而不是开。",
+      "scoring_criteria": [
+        "第一空填“2万”（或“约2万”“20000”“2 万”）（2分）",
+        "第二空填“别乳糖”（或“allolactose”“别乳糖（allolactose）”）（2分）",
+        "第三空填“TATAAT”（或“-10 TATAAT”）（2分）",
+        "第四空填“10和11”（或“10/11”“第10位和第11位”）（2分）",
+        "第五空填“抑制”（或“抑制起始”“降低活性从而抑制”）（2分）"
+      ],
+      "explanation": "人类约 $2$ 万个蛋白质编码基因，不要写成全部转录物或细菌的 $4\\,000$。真正的诱导剂是别乳糖，乳糖要经通透酶和少数 $\\beta$-半乳糖苷酶转变；$\\mathrm{IPTG}$ 是实验用类似物。Pribnow 盒 $= -10$ $\\mathrm{TATAAT}$，不要答成真核 $\\mathrm{TATA}$（$\\mathrm{TATAAAA}$，Hognest 盒）。前导肽 $14$ 残基，第 $10$ 和 $11$ 位都是色氨酸，不要只写第 $10$ 位。$\\mathrm{eIF}$-$2\\alpha$ 磷酸化抑制翻译起始，不要与 $\\mathrm{eIF}$-$4\\mathrm{E}$ 磷酸化激活对调。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-1.md",
+        "label": "2万；别乳糖；TATAAT；10/11；eIF-2α 抑制"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "原核怎样把「转录起始是基本控制点」落到操纵子上？请写出：①操纵子三组成、多顺反子、Pribnow 盒（$-10$ $\\mathrm{TATAAT}$）与 $-35$ $\\mathrm{TTGACA}$（不要写成真核 $\\mathrm{TATA}$）；②$\\mathrm{lac}$：真正的诱导剂是别乳糖（实验可用 $\\mathrm{IPTG}$），阻遏并非绝对，强诱导必须去阻遏 $+$ 缺葡萄糖（$\\mathrm{cAMP}$-$\\mathrm{CAP}$），分解代谢阻遏；③$\\mathrm{trp}$：色氨酸是辅阻遏物；衰减靠前导肽第 $10/11$ 位色氨酸密码子和 $2/3$（继续）或 $3/4+$ 多聚 $\\mathrm{U}$（终止）；阻遏粗调、衰减精调。",
+      "answer": "参考答案：\n\n**1. 操纵子与启动子**\n- 操纵子 $=$ 结构基因 $+$ 调控序列 $+$ 调节基因。功能关联结构基因共用启动子和终止信号，转录出多顺反子 $\\mathrm{mRNA}$（一条 $\\mathrm{mRNA}$ 携带几条多肽链信息，不是多聚核糖体）。\n- $\\sigma$ 识别启动序列。$-10$ 共有序列 $\\mathrm{TATAAT}$，又称 Pribnow 盒；$-35$ 为 $\\mathrm{TTGACA}$。Pribnow 不是真核 $\\mathrm{TATA}$（Hognest）盒。图17-1 中 $\\mathrm{lac}$ 的 $-10$ 是 $\\mathrm{TATGTT}$，野生型启动子很弱。操纵元件结合阻遏蛋白做负性调节；激活蛋白（如 $\\mathrm{CAP}$）做正性调节。\n\n**2. 乳糖操纵子**\n- $\\mathrm{PI}$-$\\mathrm{I}$-$\\mathrm{CAP}$-$\\mathrm{P}$-$\\mathrm{O}$-$\\mathrm{Z}$-$\\mathrm{Y}$-$\\mathrm{A}$。$\\mathrm{Z}/\\mathrm{Y}/\\mathrm{A}$ 分别编码 $\\beta$-半乳糖苷酶、通透酶、乙酰基转移酶。\n- 无乳糖：阻遏蛋白占 $\\mathrm{O}$。阻遏并非绝对，寥寥数个酶分子把乳糖变成别乳糖。真正的诱导剂是别乳糖不是乳糖本身；$\\mathrm{IPTG}$ 是稳定、不被代谢的类似物。去阻遏可使 $\\beta$-半乳糖苷酶达 $1\\,000$ 倍。\n- 缺葡萄糖：$\\mathrm{cAMP}$ 升高，$\\mathrm{cAMP}$-$\\mathrm{CAP}$ 提高转录活性 $50$ 倍。有葡萄糖则分解代谢阻遏。强诱导必须去阻遏 $+$ 缺葡萄糖；去阻遏不等于强表达。\n\n**3. 色氨酸操纵子**\n- 可阻遏型：无色氨酸时阻遏蛋白不能占 $\\mathrm{O}$（不是没有阻遏蛋白）；色氨酸作辅阻遏物，复合物占 $\\mathrm{O}$ 而关闭。\n- 前导 $\\mathrm{mRNA}$ $162\\,\\mathrm{nt}$，前导肽 $14$ 残基，第 $10/11$ 位都是 $\\mathrm{Trp}$。低 $\\mathrm{Trp}$：核糖体占序列 $1$，$2/3$ 发夹，转录继续。高 $\\mathrm{Trp}$：核糖体到序列 $2$，$3/4$ 发夹 $+$ 多聚 $\\mathrm{U}$（不依赖 $\\rho$），衰减终止。\n- 阻遏粗调、衰减子精调。",
+      "hint": "先写三组成和 Pribnow，再写 $\\mathrm{lac}$ 两枚开关，最后写 $\\mathrm{trp}$ 辅阻遏 $+$ 衰减 $10/11$、$2/3$ vs $3/4$。",
+      "scoring_criteria": [
+        "写出操纵子三组成、多顺反子、Pribnow=-10 TATAAT、-35 TTGACA、不是真核 TATA（3分）",
+        "写出 lac 结构（Z/Y/A、I 有 PI）、别乳糖才是诱导剂、阻遏并非绝对、IPTG（3分）",
+        "写出 cAMP-CAP、50 倍与 1000 倍分户、强诱导两条件、分解代谢阻遏（4分）",
+        "写出色氨酸是辅阻遏物、前导肽第 10/11 位、低 Trp 走 2/3、高 Trp 走 3/4、阻遏粗调衰减精调（4分）"
+      ],
+      "explanation": "本题把第 17-2 节收成“操纵子—lac 双重调节—trp 阻遏加衰减”。易错点：Pribnow 写成真核 TATA；乳糖当真正诱导剂；$2/3$ 答成终止。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-2.md",
+        "label": "操纵子三组成；lac 别乳糖与 CAP；trp 辅阻遏与衰减"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "真核怎样从染色质一直管到小分子 $\\mathrm{RNA}$？请写出：①六个基因组特点与单顺反子；先问染色质开没开；$\\mathrm{HAT}$ 辅激活／$\\mathrm{HDAC}$ 辅抑制；$\\mathrm{CpG}$ 岛甲基化不直接等于关闭且可逆。②启动子／增强子／沉默子／绝缘子不要并户；锌指／$\\mathrm{bHLH}$／$\\mathrm{bZIP}$；$\\mathrm{PIC}$ 装好 $\\neq$ 已经延长。③$\\mathrm{TfR}$ $\\mathrm{mRNA}$ 的 $\\mathrm{IRE}$ 在 $3'$-$\\mathrm{UTR}$；$\\mathrm{eIF}$-$2\\alpha$ 磷酸化抑制、$\\mathrm{eIF}$-$4\\mathrm{E}$ 磷酸化激活；本版不要发明干扰素。④$\\mathrm{lin}$-$4$／$\\mathrm{let}$-$7$ 是 $\\mathrm{miRNA}$ 经典；$\\mathrm{siRNA}$ 与 $\\mathrm{RNAi}$；$\\mathrm{miRNA}$ 与 $\\mathrm{siRNA}$ 不要写成同一件事。",
+      "answer": "参考答案：\n\n**1. 基因组与染色质**\n- 六个特点：更大；哺乳类约 $10\\%$ 编码、$90\\%$ 可能参与调控（不是垃圾）；基因不连续要剪接；单顺反子，相关蛋白甚至不同亚基需多基因协调；染色质；核 $\\mathrm{DNA}$ 与线粒体 $\\mathrm{DNA}$ 既独立又需协调。多层次调控，转录起始较为关键，但不是唯一环节。\n- 疏松或紧密决定聚合酶能不能碰到 $\\mathrm{DNA}$。活性染色质出现 $\\mathrm{DNase}\\,\\mathrm{I}$ 超敏位点（裸露 $\\mathrm{DNA}$）。表观遗传：序列不变。$\\mathrm{HAT}$ 乙酰化→辅激活；$\\mathrm{HDAC}$ 去乙酰化→辅抑制。$\\mathrm{CpG}$ 岛是成簇非甲基化 $\\mathrm{CG}$（$300\\sim 3\\,000\\,\\mathrm{bp}$，$\\mathrm{GC}$ 可达 $60\\%$）；$\\mathrm{DNMT}+\\mathrm{SAM}$ 甲基化胞嘧啶 C5。甲基化不直接关闭，可逆。\n\n**2. 顺式元件、模体与 PIC**\n- 启动子约 $100\\sim 200\\,\\mathrm{bp}$，控制准确性及频率；$\\mathrm{TATA}$ 盒 $\\mathrm{TATAAAA}$ 在 $-25\\sim -30\\,\\mathrm{bp}$。增强子约 $200\\,\\mathrm{bp}$，可提高 $100$ 倍或更多，方向无关，通常 $1\\sim 4\\,\\mathrm{kb}$，要有启动子才有活性。沉默子结合蛋白后阻遏。绝缘子挡增强子／沉默子或挡异染色质，不是沉默子别名。\n- 锌指：$\\alpha$-螺旋进大沟认碱基。$\\mathrm{bHLH}$：$\\mathrm{N}$ 端碱性区，二聚体间距 $3.4\\,\\mathrm{nm}$。$\\mathrm{bZIP}$：$\\mathrm{C}$ 端亮氨酸拉链二聚化，$\\mathrm{N}$ 端碱性区绑磷酸骨架（拉链本身不认碱基）。\n- $\\mathrm{pol}\\,\\mathrm{II}$ 不能单独认启动子；$\\mathrm{TF}\\,\\mathrm{II}\\mathrm{D}$ 先结合，再装 $\\mathrm{PIC}$。$\\mathrm{PIC}$ 装好不等于已经延长。\n\n**3. 翻译水平**\n- $\\mathrm{TfR}\\,\\mathrm{mRNA}$：$\\mathrm{IRE}$ 在 $3'$-$\\mathrm{UTR}$，铁足量降解加快，铁不足 $\\mathrm{IRE}$-$\\mathrm{BP}$ 结合使寿命延长。铁蛋白／$\\mathrm{ALA}$ 合酶：$\\mathrm{IRE}$ 在 $5'$-$\\mathrm{UTR}$，低铁挡 $40\\mathrm{S}$。\n- $\\mathrm{eIF}$-$2\\alpha$-$\\mathrm{P}$ 抑制起始；$\\mathrm{eIF}$-$4\\mathrm{E}$-$\\mathrm{P}$ 激活（绑帽力 $\\times 4$）。本版无干扰素。\n\n**4. 小分子 RNA**\n- $\\mathrm{miRNA}$：约 $22\\,\\mathrm{nt}$ 单链，发夹前体经 $\\mathrm{Dicer}$ 入 $\\mathrm{RISC}$，对 $3'$-$\\mathrm{UTR}$ 不必完全互补，降解或抑制翻译。经典：$\\mathrm{lin}$-$4$／$\\mathrm{let}$-$7$。\n- $\\mathrm{siRNA}$：$21\\sim 23\\,\\mathrm{nt}$ 双链，长 $\\mathrm{dsRNA}$ 酶切，完全互补导致降解。$\\mathrm{RNAi}$：$\\mathrm{siRNA}$ 和 $\\mathrm{miRNA}$ 都可以介导。不要把二者写成同一件事。",
+      "hint": "按染色质／四元件／$\\mathrm{PIC}$ → $\\mathrm{IRE}$ 与两个 $\\mathrm{eIF}$ → $\\mathrm{miRNA}/\\mathrm{siRNA}$ 写。不要补干扰素，不要把 $\\mathrm{AFP}$ 或乳糖并进来。",
+      "scoring_criteria": [
+        "写出六个特点或单顺反子、先问染色质、HAT 辅激活/HDAC 辅抑制、CpG 甲基化不直接关闭且可逆（4分）",
+        "写出启动子/增强子/沉默子/绝缘子分户，点名锌指或 bHLH 或 bZIP，PIC 装好≠延长（4分）",
+        "写出 TfR 的 IRE 在 3′-UTR、eIF-2α-P 抑制、eIF-4E-P 激活、无干扰素（4分）",
+        "写出 lin-4/let-7 是 miRNA、siRNA 完全互补降解、RNAi 含二者、miRNA≠siRNA（3分）"
+      ],
+      "explanation": "本题把第 17-3 节收成“染色质—顺式元件与 PIC—翻译起始—小 RNA”。易错点：甲基化一律关闭；绝缘子＝沉默子；eIF-2α 磷酸化写成激活；补干扰素；miRNA 与 siRNA 并户。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch17-3.md",
+        "label": "染色质/HAT-HDAC/CpG；四元件与 PIC；IRE 与 eIF；miRNA/siRNA"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

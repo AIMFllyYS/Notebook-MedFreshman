@@ -1,0 +1,321 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "tb-ch11",
+  "generatedAt": "2026-09-01",
+  "examConfig": {
+    "source": "content/biochemistry/textbook/ch11-1.md；content/biochemistry/textbook/ch11-2.md；content/biochemistry/textbook/ch11-3.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于核苷酸是否营养必需以及细胞内核苷酸库，下列叙述正确的是（　）。",
+      "options": [
+        "核苷酸是营养必需物质，必须从膳食摄取现成碱基才能写核酸；细胞内以 $3'$-核苷酸为主，$5'$-$\\mathrm{GTP}$ 最多；核糖核苷酸和脱氧核苷酸都在毫摩尔范围且随周期同步涨落；$\\mathrm{GTP}$ 是与 $\\mathrm{ATP}$ 平行的主要能量形式",
+        "人体内的核苷酸主要由自身合成，因此不属于营养必需物质。“不属于营养必需”指膳食不必专门供给现成核苷酸，不是细胞内可以没有核苷酸。食物来源的嘌呤和嘧啶碱很少被机体利用。细胞内主要以 $5'$-核苷酸形式存在，$5'$-$\\mathrm{ATP}$ 含量最多；核糖核苷酸约在毫摩尔范围、浓度相对稳定，脱氧核苷酸只在微摩尔水平、细胞周期中波动较大。作为核酸合成的原料是最主要功能；$\\mathrm{ATP}$ 是主要能量形式，此外 $\\mathrm{GTP}$ 等也可以提供能量",
+        "食物核蛋白被吸收后，嘌呤、嘧啶碱直接装进人体核酸，所以核苷酸是营养必需的",
+        "把 $\\mathrm{mmol}$ 档的 $\\mathrm{NTP}$ 直接抄到 $\\mathrm{dTTP}/\\mathrm{dATP}$ 即可，因为两类核苷酸库容相同"
+      ],
+      "answer": 1,
+      "hint": "不是营养必需 ≠ 细胞不需要；以 $5'$-$\\mathrm{ATP}$ 为主；$\\mathrm{NTP}$ 毫摩尔、$\\mathrm{dNTP}$ 微摩尔。",
+      "explanation": "**B 正确。** 自身合成故非营养必需、膳食碱基很少用、$5'$-$\\mathrm{ATP}$ 最多、$\\mathrm{NTP}/\\mathrm{dNTP}$ 数量级分户、原料是最主要功能，都按教材。\n\n**干扰项辨析**：\n- A：不是营养必需；是 $5'$ 不是 $3'$；$\\mathrm{ATP}$ 最多不是 $\\mathrm{GTP}$；$\\mathrm{dNTP}$ 只在微摩尔；$\\mathrm{GTP}$ 不替代 $\\mathrm{ATP}$ 当主账。\n- C：食物嘌呤、嘧啶碱主要分解后排出，很少被机体利用。\n- D：数量级差三个档，不要把 $\\mathrm{NTP}$ 抄成 $\\mathrm{dNTP}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-1.md",
+        "label": "核苷酸不是营养必需 · 5′-ATP 最多 · pitfall「不等于细胞不需要」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于核苷酸从头合成与补救合成以及食物核酸消化，下列叙述正确的是（　）。",
+      "options": [
+        "从头和补救都是先写游离碱基再接核糖；补救原料就是刚吃进去的食物碱基；脑、骨髓是嘌呤从头的主场；限制性核酸内切酶就是消化液里所有内切酶",
+        "从头合成利用氨基酸、一碳单位及 $\\mathrm{CO}_2$ 等简单物质新写含氮杂环；补救合成利用体内游离的碱基或核苷。一般以从头为主要途径。嘌呤从头主要在肝（其次小肠黏膜和胸腺），补救主要在脑、骨髓等——这些组织缺乏从头酶系。食物核蛋白经胃酸分开，胰 $\\mathrm{DNase}/\\mathrm{RNase}$ 切成寡核苷酸和部分单核苷酸，黏膜二酯酶／核苷酸酶切到核苷和磷酸；核苷被动扩散。戊糖可进戊糖代谢，食物嘌呤、嘧啶碱很少被机体利用。补救原料不是餐桌上的核蛋白。两条途径都要 $\\mathrm{PRPP}$",
+        "标题“分解产物部分可被重新利用”指膳食碱基直接装进人体核酸",
+        "嘧啶补救的磷酸核糖转移酶对胞嘧啶、尿嘧啶、胸腺嘧啶同样起作用"
+      ],
+      "answer": 1,
+      "hint": "从头写杂环、补救拣体内游离碱基；食物碱基很少用；脑骨髓靠补救。",
+      "explanation": "**B 正确。** 两条途径定义、组织分工、消化顺序、戊糖再利用而碱基很少用、$\\mathrm{PRPP}$ 共同节点，都按教材。\n\n**干扰项辨析**：\n- A：嘌呤从头是环在核糖上装配；补救不是食物碱基；脑、骨髓缺从头酶；限制酶只是有序列特异性的那一类内切酶。\n- C：能进代谢的主要是戊糖。\n- D：嘧啶磷酸核糖转移酶对胞嘧啶不起作用。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-1.md",
+        "label": "从头 vs 补救 · 食物碱基很少被利用 · pitfall「补救不是刚吃进去的碱基」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{PRPP}$、$\\mathrm{PRA}$ 以及 $\\mathrm{IMP}$ 的 $11$ 步与嘌呤环元素来源，下列叙述正确的是（　）。",
+      "options": [
+        "嘌呤从头的关键步骤是生成 $\\mathrm{PRPP}$；$\\mathrm{PRA}$ 很稳定；$\\mathrm{IMP}$ 是核酸的主要组成单位；甘氨酸只提供一个氮；$\\mathrm{C}$-$2$、$\\mathrm{C}$-$8$ 来自 $\\mathrm{CO}_2$",
+        "$\\mathrm{PRPP}$ 由 $\\mathrm{PRPP}$ 合成酶把 $\\mathrm{ATP}$ 上的焦磷酸转到核糖-$5$-磷酸的 $\\mathrm{C}$-$1$，核糖-$5$-磷酸来自戊糖磷酸途径。嘌呤从头的关键步骤是酰胺转移酶生成 $\\mathrm{PRA}$（谷氨酰胺酰胺基取代焦磷酸），$\\mathrm{PRA}$ 在 $\\mathrm{pH}\\,7.5$ 半衰期 $30$ 秒。$\\mathrm{IMP}$ 经 $11$ 步在细胞质合成，不是核酸的主要组成单位。元素：甘氨酸贡献 $\\mathrm{C}$-$4$、$\\mathrm{C}$-$5$、$\\mathrm{N}$-$7$；谷氨酰胺 $\\mathrm{N}$-$9$、$\\mathrm{N}$-$3$；$N^{10}$-甲酰四氢叶酸写 $\\mathrm{C}$-$8$、$\\mathrm{C}$-$2$；天冬氨酸 $\\mathrm{N}$-$1$；$\\mathrm{CO}_2$ 写 $\\mathrm{C}$-$6$。嘌呤环在磷酸核糖上逐步写成，中间物一直带着核苷酸",
+        "调节账里酰胺转移酶二聚体有活性、单体无活性；$\\mathrm{PRPP}$ 抑制酰胺转移酶",
+        "一碳单位只出现一次，甲氨蝶呤不能卡住嘌呤环"
+      ],
+      "answer": 1,
+      "hint": "关键步是 $\\mathrm{PRA}$ 不是 $\\mathrm{PRPP}$；甘氨酸三原子；两处甲酰基是 $\\mathrm{C}$-$8$、$\\mathrm{C}$-$2$。",
+      "explanation": "**B 正确。** $\\mathrm{PRPP}$ 生成、$\\mathrm{PRA}$ 为关键步、$11$ 步在胞质、$\\mathrm{IMP}$ 不是核酸单位、五类原子来源、环长在磷酸核糖上，都按教材。\n\n**干扰项辨析**：\n- A：关键步是 $\\mathrm{PRA}$；$\\mathrm{PRA}$ 极不稳定；$\\mathrm{IMP}$ 不是核酸主要组成单位；甘氨酸三原子；$\\mathrm{C}$-$2/\\mathrm{C}$-$8$ 来自甲酰基。\n- C：单体有活性、二聚体无活性；$\\mathrm{PRPP}$ 促进酰胺转移酶。\n- D：两处甲酰基，$\\mathrm{MTX}$ 卡 $\\mathrm{C}$-$8$ 及 $\\mathrm{C}$-$2$。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-2.md",
+        "label": "PRPP · PRA 关键步 · IMP 11 步元素来源 · pitfall「关键步不是生成 PRPP」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{IMP}\\rightarrow\\mathrm{AMP}/\\mathrm{GMP}$ 以及交叉调节，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{IMP}\\rightarrow\\mathrm{AMP}$ 用谷氨酰胺供氨基、花 $\\mathrm{ATP}$，中间物是 $\\mathrm{XMP}$；$\\mathrm{IMP}\\rightarrow\\mathrm{GMP}$ 用天冬氨酸、花 $\\mathrm{GTP}$；过量 $\\mathrm{AMP}$ 连 $\\mathrm{GMP}$ 支路一起压",
+        "$\\mathrm{IMP}\\rightarrow\\mathrm{AMP}$：天冬氨酸提供氨基，由 $\\mathrm{GTP}$ 供能，中间物腺苷酸代琥珀酸，裂解放出延胡索酸。$\\mathrm{IMP}\\rightarrow\\mathrm{GMP}$：先被 $\\mathrm{NAD}^{+}$ 氧化成 $\\mathrm{XMP}$，再由谷氨酰胺提供氨基，$\\mathrm{ATP}\\rightarrow\\mathrm{AMP}+\\mathrm{PP}_\\mathrm{i}$。$\\mathrm{GTP}$ 促进 $\\mathrm{AMP}$ 生成，$\\mathrm{ATP}$ 促进 $\\mathrm{GMP}$ 生成；过量 $\\mathrm{AMP}$ 只控制 $\\mathrm{AMP}$ 生成，过量 $\\mathrm{GMP}$ 只控制 $\\mathrm{GMP}$ 生成，交叉调节维持 $\\mathrm{ATP}$ 与 $\\mathrm{GTP}$ 平衡。$\\mathrm{AMP}$、$\\mathrm{GMP}$ 也可变回 $\\mathrm{IMP}$。腺苷酸激酶使 $\\mathrm{AMP}\\rightarrow\\mathrm{ADP}$，再经糖酵解或氧化磷酸化生成 $\\mathrm{ATP}$",
+        "写 $\\mathrm{AMP}$ 当然花 $\\mathrm{ATP}$，写 $\\mathrm{GMP}$ 当然花 $\\mathrm{GTP}$，教材把交叉供能写反了",
+        "$\\mathrm{IMP}$ 是核酸里的第五种碱基，不能变成 $\\mathrm{AMP}$ 或 $\\mathrm{GMP}$"
+      ],
+      "answer": 1,
+      "hint": "写 $\\mathrm{AMP}$ 花 $\\mathrm{GTP}$、写 $\\mathrm{GMP}$ 花 $\\mathrm{ATP}$；过量产物只压自己那条支路。",
+      "explanation": "**B 正确。** 两侧氮源、能量、中间物、交叉调节、$\\mathrm{AMP}/\\mathrm{GMP}$ 可回 $\\mathrm{IMP}$、腺苷酸激酶，都按教材。\n\n**干扰项辨析**：\n- A：氮源、能量、中间物全部对调；过量 $\\mathrm{AMP}$ 不压 $\\mathrm{GMP}$。\n- C：交叉供能是平衡器，不是写反。\n- D：$\\mathrm{IMP}$ 不是核酸主要组成单位，正是分支点。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-2.md",
+        "label": "IMP→AMP 需 GTP · IMP→GMP 需 ATP · 交叉调节"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于嘧啶先环后糖、$\\mathrm{CPS}$ Ⅱ 对 $\\mathrm{CPS}$ Ⅰ 以及 $\\mathrm{CTP}$ 生成，下列叙述正确的是（　）。",
+      "options": [
+        "嘧啶也是环在磷酸核糖上逐步写成；哺乳类主要调节酶是天冬氨酸氨基甲酰转移酶；$\\mathrm{CPS}$ Ⅱ 在线粒体以 $\\mathrm{NH}_3$ 为氮源；$\\mathrm{CTP}$ 在 $\\mathrm{UMP}$ 水平上氨基化；乳清酸就是尿嘧啶",
+        "嘧啶从头先合成含嘧啶六元环的乳清酸，再与 $\\mathrm{PRPP}$ 相连，这与嘌呤“环在磷酸核糖上逐步写成”相反。主要在肝，过程在细胞质和线粒体中进行。$\\mathrm{CPS}$ Ⅱ 在细胞质以谷氨酰胺为氮源写氨基甲酰磷酸；尿素循环的 $\\mathrm{CPS}$ Ⅰ 在肝线粒体，氮源是 $\\mathrm{NH}_3$。哺乳类主要调节酶是 $\\mathrm{CPS}$ Ⅱ，受 $\\mathrm{UMP}$ 抑制；细菌才以天冬氨酸氨基甲酰转移酶为主。乳清酸不是构成核酸的嘧啶碱，$\\mathrm{OMP}$ 脱羧得 $\\mathrm{UMP}$。$\\mathrm{CTP}$ 合成酶在 $\\mathrm{UTP}$ 水平上从谷氨酰胺接受氨基。嘧啶磷酸核糖转移酶对胞嘧啶不起作用",
+        "甘氨酸贡献嘧啶环的三个原子；一碳单位写入嘧啶六元环的 $\\mathrm{C}$-$2$",
+        "真核前三个酶散在三条肽链上，没有多功能酶"
+      ],
+      "answer": 1,
+      "hint": "嘧啶先环后糖；人体调节酶是细胞质 $\\mathrm{CPS}$ Ⅱ，不要抄细菌 $\\mathrm{ATCase}$ 或第九章 $\\mathrm{CPS}$ Ⅰ。",
+      "explanation": "**B 正确。** 先乳清酸再接 $\\mathrm{PRPP}$、$\\mathrm{CPS}$ Ⅰ／Ⅱ 分户、哺乳类 $\\mathrm{CPS}$ Ⅱ 受 $\\mathrm{UMP}$ 抑制、乳清酸不是核酸碱基、$\\mathrm{CTP}$ 在 $\\mathrm{UTP}$ 水平、胞嘧啶不能 $+$ $\\mathrm{PRPP}$，都按教材。\n\n**干扰项辨析**：\n- A：顺序写反；人体不是 $\\mathrm{ATCase}$；$\\mathrm{CPS}$ Ⅱ 在胞质用谷氨酰胺；$\\mathrm{CTP}$ 不在 $\\mathrm{UMP}$ 水平；乳清酸不是 $\\mathrm{U}$。\n- C：甘氨酸不参与嘧啶环；一碳单位留给 $\\mathrm{dTMP}$。\n- D：前三酶约 $200\\,\\mathrm{kD}$ 同一条多肽，后两酶另一条。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-3.md",
+        "label": "嘧啶先环后糖 · CPS Ⅱ vs CPS Ⅰ · pitfall「不要把细菌 ATCase 抄到人体」"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于脱氧核苷酸在 $\\mathrm{NDP}$ 水平还原以及 $\\mathrm{dTMP}$ 由胸苷酸合酶生成，下列叙述正确的是（　）。",
+      "options": [
+        "脱氧核糖先形成再接碱基；还原发生在 $\\mathrm{NTP}$ 水平；$\\mathrm{dTMP}$ 由 $\\mathrm{TDP}$ 还原而来；甲基供体是 $N^{10}$-甲酰四氢叶酸；$5$-$\\mathrm{FU}$ 本身直接抑制核糖核苷酸还原酶",
+        "脱氧核糖由相应核糖核苷酸直接还原：氢取代 $\\mathrm{C}$-$2'$ 羟基。除 $\\mathrm{dTMP}$ 外都在 $\\mathrm{NDP}$ 水平由核糖核苷酸还原酶催化（两亚基结合且有 $\\mathrm{Mg}^{2+}$ 才有活性），电子经硫氧还蛋白从 $\\mathrm{NADPH}$ 传入。$\\mathrm{ATP}$ 促进 $\\mathrm{CDP}/\\mathrm{UDP}$ 还原，$\\mathrm{dATP}$ 几乎抑制所有作用物。$\\mathrm{dTMP}$ 由胸苷酸合酶给 $\\mathrm{dUMP}$ 加甲基，供体是 $N^{5},N^{10}$-亚甲四氢叶酸；$\\mathrm{dUMP}$ 主要来自 $\\mathrm{dCMP}$ 脱氨基。$5$-$\\mathrm{FU}$ 须变成 $\\mathrm{FdUMP}$ 才抑制胸苷酸合酶；甲氨蝶呤抑制二氢叶酸还原酶，嘌呤 $\\mathrm{C}$-$8/\\mathrm{C}$-$2$ 和 $\\mathrm{dTMP}$ 甲基化一起停。阿糖胞苷抑制 $\\mathrm{CDP}\\rightarrow\\mathrm{dCDP}$",
+        "$\\mathrm{dUMP}$ 主要来自 $\\mathrm{dUDP}$ 去磷酸；胸苷激酶在正常肝中活性很高、肿瘤中反而下降",
+        "四种 $\\mathrm{dNTP}$ 都按同一别构信号齐步生成，不需要表11-1"
+      ],
+      "answer": 1,
+      "hint": "还原在 $\\mathrm{NDP}$；$\\mathrm{dTMP}$ 是 $\\mathrm{dUMP}$ 甲基化，不是 $\\mathrm{TDP}$ 还原。",
+      "explanation": "**B 正确。** $\\mathrm{NDP}$ 水平还原、硫氧还蛋白、$\\mathrm{dATP}$ 总闸、$\\mathrm{dTMP}$ 甲基化、$\\mathrm{dUMP}$ 主来自 $\\mathrm{dCMP}$、$5$-$\\mathrm{FU}/\\mathrm{MTX}/$ 阿糖胞苷刀口，都按教材。\n\n**干扰项辨析**：\n- A：不是先做脱氧核糖；不是 $\\mathrm{NTP}$；$\\mathrm{dTMP}$ 例外；甲基供体不是甲酰基；$5$-$\\mathrm{FU}$ 本身无活性且不卡还原酶。\n- C：主来源是 $\\mathrm{dCMP}$ 脱氨基；胸苷激酶正常肝很低、恶性肿瘤升高。\n- D：表11-1 用不同 $\\mathrm{NTP}$ 把四种 $\\mathrm{dNTP}$ 配平。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-2.md",
+        "label": "NDP 水平还原 · dTMP 胸苷酸合酶 · pitfall「dTMP 不是 TDP 还原」"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于别嘌呤醇、黄嘌呤氧化酶、痛风以及它和 $6$-$\\mathrm{MP}$ 都像次黄嘌呤却刀口不同，下列叙述正确的是（　）。",
+      "options": [
+        "别嘌呤醇把已经生成的尿酸从血里洗掉；次黄嘌呤、黄嘌呤比尿酸更易结晶；$6$-$\\mathrm{MP}$ 和别嘌呤醇都是抗肿瘤抗代谢物；人体嘌呤分解继续开环成尿素；肾排泄障碍用别嘌呤醇就能把尿酸排出去",
+        "人体嘌呤分解终产物是水溶性较差的尿酸。黄嘌呤氧化酶催化次黄嘌呤 $\\rightarrow$ 黄嘌呤 $\\rightarrow$ 尿酸，主要在肝、小肠及肾。高尿酸可来自高嘌呤饮食、体内核酸大量分解或肾排泄障碍；本章小结把痛风主因写成尿酸生成过多。别嘌呤醇是次黄嘌呤类似物（$\\mathrm{N}$-$7$ 与 $\\mathrm{C}$-$8$ 互换）：①抑制黄嘌呤氧化酶，少生成尿酸，中间物水溶性较大不易结晶；②与 $\\mathrm{PRPP}$ 生成别嘌呤核苷酸而消耗 $\\mathrm{PRPP}$；③别嘌呤核苷酸像 $\\mathrm{IMP}$，反馈抑制从头合成酶。它不是把已生成尿酸洗掉，也不是抗肿瘤名单里的第四类。$6$-$\\mathrm{MP}$ 是 $\\mathrm{C}$-$6$ 巯基取代，卡 $\\mathrm{HGPRT}$、$\\mathrm{IMP}$ 分支和酰胺转移酶",
+        "别嘌呤醇只抑制黄嘌呤氧化酶这一件事，不消耗 $\\mathrm{PRPP}$、也不反馈抑从头",
+        "$\\mathrm{AMP}$ 走鸟嘌呤、$\\mathrm{GMP}$ 走次黄嘌呤，两条路不汇合"
+      ],
+      "answer": 1,
+      "hint": "别嘌呤醇三件事：抑酶、耗 $\\mathrm{PRPP}$、反馈抑从头；不要写成洗尿酸，也不要和 $6$-$\\mathrm{MP}$ 并户。",
+      "explanation": "**B 正确。** 尿酸终产物、黄嘌呤氧化酶两步、高尿酸三来源、别嘌呤醇三重机制、与 $6$-$\\mathrm{MP}$ 刀口分户，都按教材。\n\n**干扰项辨析**：\n- A：不是洗尿酸；中间物更易溶；$6$-$\\mathrm{MP}$ 才是抗肿瘤；嘌呤不停在尿素；排泄障碍酶抑制剂解决不了排不出去。\n- C：教材写了三件事，不是只抑酶。\n- D：$\\mathrm{AMP}$ 经次黄嘌呤、$\\mathrm{GMP}$ 经鸟嘌呤，在黄嘌呤汇合。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-2.md",
+        "label": "别嘌呤醇三件事 · 黄嘌呤氧化酶 · pitfall「不是把尿酸洗掉」"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于核苷酸抗代谢物的类型和刀口，下列叙述正确的有（　）。",
+      "options": [
+        "$6$-$\\mathrm{MP}$ 结构与次黄嘌呤相似（$\\mathrm{C}$-$6$ 巯基取代）。体内磷酸核糖化成 $6$-$\\mathrm{MP}$ 核苷酸后抑制 $\\mathrm{IMP}\\rightarrow\\mathrm{AMP}$ 及 $\\mathrm{GMP}$，竞争性抑制 $\\mathrm{HGPRT}$ 阻断补救，并因与 $\\mathrm{IMP}$ 相似反馈抑制酰胺转移酶、阻断从头。氮杂丝氨酸类似谷氨酰胺，干扰嘌呤合成中需谷氨酰胺的步骤，并抑制 $\\mathrm{CTP}$ 生成",
+        "甲氨蝶呤竞争性抑制二氢叶酸还原酶，嘌呤分子中来自一碳单位的 $\\mathrm{C}$-$8$ 及 $\\mathrm{C}$-$2$ 得不到供应；同一把酶也使 $\\mathrm{dUMP}$ 不能甲基化生成 $\\mathrm{dTMP}$。$5$-$\\mathrm{FU}$ 结构与胸腺嘧啶相似，本身无生物学活性，须变成 $\\mathrm{FdUMP}$ 抑制胸苷酸合酶、变成 $\\mathrm{FUTP}$ 以 $\\mathrm{FUMP}$ 形式掺入 $\\mathrm{RNA}$",
+        "阿糖胞苷是改变了核糖结构的核苷类似物，抑制 $\\mathrm{CDP}$ 还原成 $\\mathrm{dCDP}$，影响 $\\mathrm{DNA}$ 合成。上述药物缺乏对肿瘤细胞的选择性，对增殖旺盛的正常组织亦有杀伤，毒副作用较大。别嘌呤醇像次黄嘌呤但用于痛风，不要写进抗肿瘤抗代谢物名单",
+        "$5$-$\\mathrm{FU}$ 本身就是胸苷酸合酶抑制剂并掺入 $\\mathrm{DNA}$；阿糖胞苷抑制胸苷酸合酶；甲氨蝶呤只卡嘌呤不卡 $\\mathrm{dTMP}$；抗代谢物只杀肿瘤细胞；别嘌呤醇是嘧啶类似物"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "按“像谁”分类再对刀口；$5$-$\\mathrm{FU}$ 须体内转化；把整段写反的拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：$6$-$\\mathrm{MP}$ 三刀与氮杂丝氨酸，来自 ch11-2、ch11-3。\n- B：$\\mathrm{MTX}$ 两头都卡、$5$-$\\mathrm{FU}$ 须变成 $\\mathrm{FdUMP}/\\mathrm{FUTP}$，来自 ch11-2、ch11-3。\n- C：阿糖胞苷卡 $\\mathrm{CDP}\\rightarrow\\mathrm{dCDP}$、无肿瘤选择性、别嘌呤醇不进抗肿瘤名单，来自 ch11-2、ch11-3。\n- **D 错**：$5$-$\\mathrm{FU}$ 本身无活性，教材点名的是 $\\mathrm{RNA}$ 掺入不是只掺 $\\mathrm{DNA}$；阿糖胞苷不卡胸苷酸合酶；$\\mathrm{MTX}$ 两头都卡；无肿瘤选择性；别嘌呤醇是次黄嘌呤类似物、治痛风。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-3.md",
+        "label": "6-MP / MTX / 5-FU / 阿糖胞苷 · pitfall「抗代谢物没有肿瘤选择性」"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于嘌呤／嘧啶补救、分解终产物以及 $\\beta$-氨基异丁酸，下列叙述正确的有（　）。",
+      "options": [
+        "$\\mathrm{APRT}$ 催化腺嘌呤 $+\\mathrm{PRPP}\\rightarrow\\mathrm{AMP}$，受 $\\mathrm{AMP}$ 反馈抑制。$\\mathrm{HGPRT}$ 催化次黄嘌呤 $\\rightarrow\\mathrm{IMP}$、鸟嘌呤 $\\rightarrow\\mathrm{GMP}$，受 $\\mathrm{IMP}$ 与 $\\mathrm{GMP}$ 反馈抑制。体内除腺苷激酶外不存在作用其他嘌呤核苷的激酶。$\\mathrm{HGPRT}$ 完全缺失为莱施-奈恩综合征。补救可节省能量和氨基酸，对脑、骨髓更重要",
+        "嘌呤分解终产物是水溶性较差的尿酸；嘧啶分解产物是易溶的 $\\mathrm{NH}_3$、$\\mathrm{CO}_2$、$\\beta$-丙氨酸和 $\\beta$-氨基异丁酸。胞嘧啶先脱氨基成尿嘧啶，最终得 $\\beta$-丙氨酸；胸腺嘧啶分解成 $\\beta$-氨基异丁酸。高 $\\mathrm{DNA}$ 饮食或放化疗后尿中 $\\beta$-氨基异丁酸增多。痛风相关产物是尿酸，不是 $\\beta$-氨基异丁酸",
+        "嘧啶磷酸核糖转移酶利用尿嘧啶、胸腺嘧啶及乳清酸，对胞嘧啶不起作用。胸苷激酶催化脱氧胸苷生成 $\\mathrm{dTMP}$，正常肝中活性很低，恶性肿瘤中明显升高并与恶性程度有关。嘧啶分解主要在肝进行",
+        "补救原料是食物碱基；$\\mathrm{APRT}$ 缺失就是 Lesch-Nyhan；嘧啶分解也产尿酸；$\\beta$-氨基异丁酸难溶导致痛风；胞嘧啶可直接 $+\\mathrm{PRPP}$ 补救"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "Lesch-Nyhan 点名 $\\mathrm{HGPRT}$；痛风绑尿酸；胞嘧啶不能走磷酸核糖转移酶。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：$\\mathrm{APRT}/\\mathrm{HGPRT}$、腺苷激酶、Lesch-Nyhan，来自 ch11-2。\n- B：嘌呤尿酸 vs 嘧啶 $\\beta$-氨基酸、胸腺嘧啶 $\\rightarrow\\beta$-氨基异丁酸、痛风只绑尿酸，来自 ch11-1、ch11-3。\n- C：嘧啶补救底物范围、胸苷激酶与肿瘤、分解在肝，来自 ch11-3。\n- **D 错**：补救用体内游离碱基；Lesch-Nyhan 是 $\\mathrm{HGPRT}$；嘧啶不产尿酸；$\\beta$-氨基异丁酸易溶；胞嘧啶不能走该转移酶。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-3.md",
+        "label": "APRT/HGPRT · 尿酸 vs β-氨基异丁酸 · pitfall「嘧啶分解不产尿酸」"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "核苷酸是营养必需物质；细胞内以 $3'$-核苷酸为主；嘌呤和嘧啶的从头合成都是先写游离碱基再接 $\\mathrm{PRPP}$；嘌呤从头的关键步骤是生成 $\\mathrm{PRPP}$；$\\mathrm{IMP}$ 是核酸的主要组成单位。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：自身合成故非必需；$5'$-$\\mathrm{ATP}$ 最多；嘌呤环在核糖上装配；关键步是 $\\mathrm{PRA}$；$\\mathrm{IMP}$ 只是分支点。",
+      "explanation": "**该命题错误，每一分句都错。** 核苷酸主要由自身合成，不属于营养必需物质。细胞内以 $5'$-核苷酸为主，$5'$-$\\mathrm{ATP}$ 最多。嘌呤从头是环在磷酸核糖上逐步写成；嘧啶才是先写乳清酸再接 $\\mathrm{PRPP}$。嘌呤从头的关键步骤是酰胺转移酶生成 $\\mathrm{PRA}$，不是生成 $\\mathrm{PRPP}$。$\\mathrm{IMP}$ 不是核酸分子的主要组成单位，是 $\\mathrm{AMP}/\\mathrm{GMP}$ 的前体。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-1.md",
+        "label": "非营养必需 · 5′-核苷酸 · 嘌呤在核糖上装配 · PRA 关键步"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "哺乳类嘧啶合成的调节酶是线粒体 $\\mathrm{CPS}$ Ⅰ；$\\mathrm{dTMP}$ 由 $\\mathrm{TDP}$ 在 $\\mathrm{NDP}$ 水平还原而来；$5$-$\\mathrm{FU}$ 本身有活性；$\\mathrm{CPS}$ Ⅱ 以 $\\mathrm{NH}_3$ 为氮源；嘧啶分解终产物是尿酸，痛风由 $\\beta$-氨基异丁酸沉积引起。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：$\\mathrm{CPS}$ Ⅱ 在胞质、谷氨酰胺；$\\mathrm{dTMP}$ 是甲基化；$5$-$\\mathrm{FU}$ 须转化；痛风绑尿酸。",
+      "explanation": "**该命题错误，五处都错。** 哺乳类主要调节酶是细胞质 $\\mathrm{CPS}$ Ⅱ（受 $\\mathrm{UMP}$ 抑制），不是线粒体 $\\mathrm{CPS}$ Ⅰ。$\\mathrm{dTMP}$ 由胸苷酸合酶给 $\\mathrm{dUMP}$ 加甲基，不是 $\\mathrm{TDP}$ 还原。$5$-$\\mathrm{FU}$ 本身无生物学活性，须变成 $\\mathrm{FdUMP}$、$\\mathrm{FUTP}$。$\\mathrm{CPS}$ Ⅱ 氮源是谷氨酰胺，$\\mathrm{CPS}$ Ⅰ 才用 $\\mathrm{NH}_3$。嘧啶分解产物易溶（$\\mathrm{NH}_3$、$\\mathrm{CO}_2$、$\\beta$-丙氨酸、$\\beta$-氨基异丁酸）；痛风相关产物是尿酸。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-3.md",
+        "label": "CPS Ⅱ · dTMP 甲基化 · 5-FU 无活性 · 嘧啶不产尿酸"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "嘌呤、嘧啶两类核苷酸、两条合成途径的共同磷酸核糖供体是 ________（焦磷酸接到核糖-$5$-磷酸 $\\mathrm{C}$-$1$）。嘌呤核苷酸从头合成的关键步骤是酰胺转移酶生成 ________（不要写成 $\\mathrm{PRPP}$）。$\\mathrm{IMP}$ 的合成经过 ________ 步反应。哺乳类嘧啶核苷酸合成的主要调节酶是 ________（细胞质，受 $\\mathrm{UMP}$ 抑制；不要写成 $\\mathrm{CPS}$ Ⅰ 或细菌的天冬氨酸氨基甲酰转移酶）。人体嘌呤核苷酸分解代谢的终产物是 ________（不要写成尿素）。",
+      "answer": "PRPP，PRA，11，CPS Ⅱ，尿酸",
+      "hint": "共同节点 $\\mathrm{PRPP}$；关键步 $\\mathrm{PRA}$；$11$ 步；哺乳类 $\\mathrm{CPS}$ Ⅱ；嘌呤终产物尿酸。",
+      "scoring_criteria": [
+        "第一空填“PRPP”（或“5-磷酸核糖-1-焦磷酸”“磷酸核糖焦磷酸”）（2分）",
+        "第二空填“PRA”（或“5-磷酸核糖胺”“磷酸核糖胺”）（2分）",
+        "第三空填“11”（或“十一步”“11步”）（2分）",
+        "第四空填“CPS Ⅱ”（或“CPS-II”“CPS II”“氨基甲酰磷酸合成酶Ⅱ”“氨基甲酰磷酸合成酶II”）（2分）",
+        "第五空填“尿酸”（或“uric acid”）（2分）"
+      ],
+      "explanation": "$\\mathrm{PRPP}$ 是两类核苷酸、两条途径的共同节点。嘌呤从头的关键步骤写在酰胺转移酶生成 $\\mathrm{PRA}$，不要倒过来写成生成 $\\mathrm{PRPP}$。$\\mathrm{IMP}$ 经 $11$ 步在细胞质合成。哺乳类嘧啶调节酶是 $\\mathrm{CPS}$ Ⅱ（$\\mathrm{UMP}$ 抑制），细菌才是天冬氨酸氨基甲酰转移酶；$\\mathrm{CPS}$ Ⅰ 是尿素循环。人体嘌呤分解停在尿酸，不是尿素。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-2.md",
+        "label": "PRPP；PRA；IMP 11 步；CPS Ⅱ；尿酸"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "核苷酸怎样写成？请写出：①核苷酸不是营养必需，细胞内以 $5'$-核苷酸为主、$5'$-$\\mathrm{ATP}$ 最多；食物碱基很少被利用；②合成分从头与补救，$\\mathrm{PRPP}$ 是共同节点；嘌呤环在核糖-$5$-磷酸上逐步写成，$11$ 步得 $\\mathrm{IMP}$，关键步是 $\\mathrm{PRA}$；③$\\mathrm{IMP}\\rightarrow\\mathrm{AMP}$ 要 $\\mathrm{GTP}$（天冬氨酸），$\\mathrm{IMP}\\rightarrow\\mathrm{GMP}$ 要 $\\mathrm{ATP}$（谷氨酰胺），交叉调节维持 $\\mathrm{ATP}/\\mathrm{GTP}$；④嘧啶先写乳清酸再接 $\\mathrm{PRPP}$，哺乳类调节酶是细胞质 $\\mathrm{CPS}$ Ⅱ（谷氨酰胺为氮源，受 $\\mathrm{UMP}$ 抑制），不要和尿素循环的 $\\mathrm{CPS}$ Ⅰ 并户。",
+      "answer": "参考答案：\n\n**1. 户头：不是营养必需，$5'$-$\\mathrm{ATP}$ 最多**\n- 人体核苷酸主要由自身合成，不属于营养必需物质。缺的是“食物碱基直接装进核酸”，不是细胞内没有核苷酸。\n- 细胞内以 $5'$-核苷酸为主，$5'$-$\\mathrm{ATP}$ 最多；$\\mathrm{NTP}$ 约毫摩尔、相对稳，$\\mathrm{dNTP}$ 约微摩尔、随周期涨落。最主要功能是作为核酸合成的原料。\n- 食物核蛋白经消化，戊糖可再利用；嘌呤、嘧啶碱很少被机体利用。补救原料是体内游离碱基或核苷。\n\n**2. 从头、补救与 $\\mathrm{PRPP}$**\n- 从头：氨基酸、一碳单位、$\\mathrm{CO}_2$ 写含 $\\mathrm{N}$ 杂环。补救：拣体内游离碱基／核苷。一般以从头为主。嘌呤从头主要在肝，补救在脑、骨髓（缺从头酶；$\\mathrm{HGPRT}$ 缺失为 Lesch-Nyhan）。\n- $\\mathrm{PRPP}$：核糖-$5$-磷酸 $+\\mathrm{ATP}$，焦磷酸接到 $\\mathrm{C}$-$1$。嘌呤、嘧啶、从头、补救都要用。\n- 嘌呤环在磷酸核糖上逐步写成。关键步：酰胺转移酶生成 $\\mathrm{PRA}$（半衰期 $30$ 秒）。$11$ 步得 $\\mathrm{IMP}$（不是核酸主要组成单位）。甘氨酸 $\\mathrm{C}4\\mathrm{C}5\\mathrm{N}7$，谷氨酰胺 $\\mathrm{N}9\\mathrm{N}3$，一碳 $\\mathrm{C}8\\mathrm{C}2$，天冬氨酸 $\\mathrm{N}1$，$\\mathrm{CO}_2$ $\\mathrm{C}6$。\n\n**3. $\\mathrm{IMP}$ 分支**\n- $\\mathrm{IMP}\\rightarrow\\mathrm{AMP}$：天冬氨酸，$\\mathrm{GTP}$，腺苷酸代琥珀酸，脱延胡索酸。\n- $\\mathrm{IMP}\\rightarrow\\mathrm{GMP}$：$\\mathrm{NAD}^{+}$ 氧化成 $\\mathrm{XMP}$，谷氨酰胺，$\\mathrm{ATP}\\rightarrow\\mathrm{AMP}+\\mathrm{PP}_\\mathrm{i}$。\n- $\\mathrm{GTP}$ 促进 $\\mathrm{AMP}$，$\\mathrm{ATP}$ 促进 $\\mathrm{GMP}$；过量产物只压自己那条支路。\n\n**4. 嘧啶先环后糖与 $\\mathrm{CPS}$ Ⅱ**\n- 先写乳清酸（六元环），再与 $\\mathrm{PRPP}$ 相连得 $\\mathrm{OMP}$，脱羧得 $\\mathrm{UMP}$。乳清酸不是构成核酸的嘧啶碱。\n- $\\mathrm{CPS}$ Ⅱ：细胞质，谷氨酰胺为氮源；哺乳类主要调节酶，受 $\\mathrm{UMP}$ 抑制。$\\mathrm{CPS}$ Ⅰ：肝线粒体，$\\mathrm{NH}_3$，尿素循环。不要把细菌 $\\mathrm{ATCase}$ 抄到人体。$\\mathrm{CTP}$ 在 $\\mathrm{UTP}$ 水平上氨基化。",
+      "hint": "按非必需／$5'$-$\\mathrm{ATP}$ → $\\mathrm{PRPP}$ 与 $\\mathrm{IMP}$ $11$ 步 → $\\mathrm{AMP}/\\mathrm{GMP}$ 交叉 → 嘧啶先环与 $\\mathrm{CPS}$ Ⅱ 写。",
+      "scoring_criteria": [
+        "写出核苷酸非营养必需、$5'$-ATP 最多、食物碱基很少被利用（3分）",
+        "写出从头/补救分户、PRPP 共同节点、嘌呤环在核糖上装配、关键步 PRA、IMP 11 步（4分）",
+        "写出 IMP→AMP 需 GTP、IMP→GMP 需 ATP 及交叉调节（3分）",
+        "写出嘧啶先环后糖、CPS Ⅱ 对 CPS Ⅰ（部位、氮源、UMP 抑制）（4分）"
+      ],
+      "explanation": "本题把第 11-1 至 11-3 节收成“户头—PRPP/IMP—AMP/GMP—嘧啶 CPS Ⅱ”。易错点：营养必需；从头画成游离碱基 $+\\mathrm{PRPP}$；关键步写成 $\\mathrm{PRPP}$；$\\mathrm{CPS}$ Ⅰ／Ⅱ 并户。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-2.md",
+        "label": "非必需；PRPP/PRA/IMP；AMP/GMP 交叉；嘧啶 CPS Ⅱ"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "核苷酸怎样拆掉、抗代谢物卡在哪？请写出：①嘌呤分解终产物是尿酸（黄嘌呤氧化酶；肝、小肠、肾）；别嘌呤醇像次黄嘌呤（$\\mathrm{N}$-$7$ 与 $\\mathrm{C}$-$8$ 互换），三件事是抑酶、耗 $\\mathrm{PRPP}$、反馈抑从头，不是把已生成尿酸洗掉；痛风主因是尿酸生成过多；②嘧啶分解产物易溶：$\\mathrm{NH}_3$、$\\mathrm{CO}_2$、$\\beta$-丙氨酸、$\\beta$-氨基异丁酸；胸腺嘧啶 $\\rightarrow\\beta$-氨基异丁酸（高 $\\mathrm{DNA}$、放化疗后尿中增多），不要和痛风绑在一起；③脱氧在 $\\mathrm{NDP}$ 水平，$\\mathrm{dTMP}$ 由胸苷酸合酶给 $\\mathrm{dUMP}$ 加甲基（$N^{5},N^{10}$-亚甲四氢叶酸）；④抗代谢物：$6$-$\\mathrm{MP}$、$5$-$\\mathrm{FU}$（须变成 $\\mathrm{FdUMP}/\\mathrm{FUTP}$）、$\\mathrm{MTX}$、阿糖胞苷、氮杂丝氨酸；无肿瘤选择性。不要把别嘌呤醇写进抗肿瘤名单。",
+      "answer": "参考答案：\n\n**1. 嘌呤分解与别嘌呤醇**\n- 核苷酸酶、核苷磷酸化酶切到碱基和核糖-$1$-磷酸。$\\mathrm{AMP}$ 经次黄嘌呤、$\\mathrm{GMP}$ 经鸟嘌呤，在黄嘌呤汇合；黄嘌呤氧化酶写成尿酸。主要在肝、小肠、肾。人体停在尿酸，不开环成尿素。\n- 高尿酸：高嘌呤饮食、核酸大量分解、肾排泄障碍。痛风主因：尿酸生成过多。\n- 别嘌呤醇：次黄嘌呤类似物（$\\mathrm{N}$-$7$ 与 $\\mathrm{C}$-$8$ 互换）。①抑黄嘌呤氧化酶，少生成尿酸，次黄嘌呤／黄嘌呤更易溶；②与 $\\mathrm{PRPP}$ 生成别嘌呤核苷酸，耗 $\\mathrm{PRPP}$；③别嘌呤核苷酸像 $\\mathrm{IMP}$，反馈抑从头。不是把已生成尿酸洗掉。\n\n**2. 嘧啶分解与 $\\beta$-氨基异丁酸**\n- 终产物：$\\mathrm{NH}_3$、$\\mathrm{CO}_2$、$\\beta$-丙氨酸、$\\beta$-氨基异丁酸，均易溶。主要在肝。\n- 胞嘧啶 $\\rightarrow$ 尿嘧啶 $\\rightarrow\\beta$-丙氨酸；胸腺嘧啶 $\\rightarrow\\beta$-氨基异丁酸（可随尿排出）。高 $\\mathrm{DNA}$ 饮食、放疗、化疗后尿中 $\\beta$-氨基异丁酸增多，反映核酸分解加快，不写成结晶病。痛风相关产物是尿酸。\n\n**3. 脱氧与 $\\mathrm{dTMP}$**\n- 除 $\\mathrm{dTMP}$ 外，在 $\\mathrm{NDP}$ 水平由核糖核苷酸还原酶还原（$\\mathrm{NADPH}$、硫氧还蛋白、$\\mathrm{Mg}^{2+}$）。\n- $\\mathrm{dTMP}$：胸苷酸合酶，$\\mathrm{dUMP}$ 甲基化，供体 $N^{5},N^{10}$-亚甲四氢叶酸；$\\mathrm{dUMP}$ 主要来自 $\\mathrm{dCMP}$ 脱氨基。\n\n**4. 抗代谢物**\n- $6$-$\\mathrm{MP}$：像次黄嘌呤，三刀（酰胺转移酶、$\\mathrm{HGPRT}$、$\\mathrm{IMP}$ 分支）。\n- $5$-$\\mathrm{FU}$：像胸腺嘧啶，本身无活性 $\\rightarrow\\mathrm{FdUMP}$ 抑胸苷酸合酶、$\\mathrm{FUTP}/\\mathrm{FUMP}$ 掺入 $\\mathrm{RNA}$。\n- $\\mathrm{MTX}$：抑二氢叶酸还原酶，嘌呤 $\\mathrm{C}$-$8/\\mathrm{C}$-$2$ 与 $\\mathrm{dTMP}$ 一起停。\n- 阿糖胞苷：抑 $\\mathrm{CDP}\\rightarrow\\mathrm{dCDP}$。氮杂丝氨酸：像谷氨酰胺，抑嘌呤合成和 $\\mathrm{CTP}$ 生成。\n- 无肿瘤选择性，毒副作用较大。别嘌呤醇治痛风，不进抗肿瘤名单。",
+      "hint": "按尿酸／别嘌呤醇三件事 → 嘧啶 $\\beta$-氨基酸 → $\\mathrm{NDP}$ 与 $\\mathrm{dTMP}$ → 抗代谢物类型与刀口写。",
+      "scoring_criteria": [
+        "写出嘌呤→尿酸、黄嘌呤氧化酶、别嘌呤醇三件事且不是洗尿酸（4分）",
+        "写出嘧啶易溶终产物、胸腺嘧啶→β-氨基异丁酸、痛风只绑尿酸（4分）",
+        "写出脱氧在 NDP 水平、dTMP 由胸苷酸合酶甲基化（3分）",
+        "写出 6-MP、5-FU（须转化）、MTX、阿糖胞苷等类型与刀口，无肿瘤选择性（4分）"
+      ],
+      "explanation": "本题把第 11-2 至 11-3 节收成“尿酸／别嘌呤醇—嘧啶分解—dTMP—抗代谢物”。易错点：别嘌呤醇洗尿酸；痛风绑 $\\beta$-氨基异丁酸；$\\mathrm{dTMP}$ 写成还原；$5$-$\\mathrm{FU}$ 本身有活性。",
+      "sourceRef": {
+        "path": "content/biochemistry/textbook/ch11-3.md",
+        "label": "尿酸/别嘌呤醇；β-氨基异丁酸；dTMP；抗代谢物"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

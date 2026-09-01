@@ -1,0 +1,321 @@
+{
+  "subjectId": "cell-biology",
+  "chapterId": "tb-ch16",
+  "generatedAt": "2026-08-31",
+  "examConfig": {
+    "source": "content/cell-biology/textbook/ch16-1.md；content/cell-biology/textbook/ch16-2.md；content/cell-biology/textbook/ch16-3.md；content/cell-biology/textbook/ch16-4.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于细胞衰老与静息态，下列叙述正确的是（　）。",
+      "options": [
+        "细胞衰老等于细胞已经死亡，代谢停止；静息态是不可召回的 $\\mathrm{G}_0$ 停滞；SA-$\\beta$-gal 单阳性即可判决衰老；70 岁老年人的每一个细胞都已衰老",
+        "细胞衰老是本具有分裂能力的细胞丧失增殖能力（即使营养充分）的状态：脱离周期、不可逆增殖停滞，但仍保持一定水平的代谢活性，是个体老化的基础。静息态稳定处于 $\\mathrm{G}_0$，RNA 合成极低，生长因子等可召回 $\\mathrm{G}_1$；成体组织干细胞和幼稚 T 细胞是典型例子。衰老与静息都停在周期外，能否被召回是分界。标志靠 SA-$\\beta$-gal、p16、p21、SAHF 和 SASP 的组合。老化是群体账本，70 岁生精细胞仍可活跃",
+        "静息细胞分泌大量 IL-6、IL-8；衰老细胞可被生长因子召回 $\\mathrm{G}_1$；神经元和心肌细胞因不再分裂，不可能出现衰老表型",
+        "促衰老基因是 $Sirt1$、$Klotho$、$FoxO3$；抑衰老基因是 $p53$、$p16$、$p21$；Lamin B1 在衰老细胞中显著升高"
+      ],
+      "answer": 1,
+      "hint": "先问停在周期外之后还能不能被生长因子召回，再问衰老细胞代谢还在不在。",
+      "explanation": "**B 正确。** 第一节 definition 把衰老写成不可逆增殖停滞但仍有代谢；静息写成可召回的 $\\mathrm{G}_0$。教材 concept：老化是群体账本，不是每一格都停工。\n\n**干扰项辨析**：\n- A：衰老细胞还活着；静息可召回；标志是组合；70 岁生精细胞仍可活跃。\n- C：SASP 属于衰老而非静息；召回方向写反；神经元（顺铂）和心肌细胞（端粒损伤）也可出现衰老表型。\n- D：促/抑衰老基因写反；Lamin B1 显著下降。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-1.md",
+        "label": "第一节 · 细胞衰老 vs 静息态 · compare「细胞衰老 vs 静息态」 · concept「老化是群体账本」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 Hayflick 极限与复制性衰老，下列叙述正确的是（　）。",
+      "options": [
+        "体外传代上限来自培养基耗尽；胚胎成纤维细胞约 $15\\sim 30$ 代停滞，成体约 $50$ 代；HGPS 由 WRN 解旋酶突变引起",
+        "1961 年 Hayflick 和 Moorehead 发现人胚胎成纤维细胞约传代 $50$ 次、成体成纤维细胞约 $15\\sim 30$ 代后生长停滞。复制性衰老是细胞因自身分裂次数达到上限而丧失增殖能力；Hayflick 极限即体外培养可分裂次数的上限，随供体年龄和种属而变。HGPS 由 $LMNA$ 突变致 Lamin A 功能缺失，$12\\sim 18$ 岁过早死亡；Werner 综合征与 WRN 解旋酶突变相关，约 $39$ 岁出现衰老、$47$ 岁左右生命结束，成纤维细胞寿命仅为正常人的 $1/8\\sim 1/3$",
+        "Hayflick 极限是体内每一个细胞的绝对日历寿命；诱导肿瘤细胞衰老是一劳永逸的治疗，SASP 只会抑制肿瘤",
+        "复制性衰老由坏死复合体执行；成体成纤维细胞可比胚胎细胞分裂更多代"
+      ],
+      "answer": 1,
+      "hint": "先数胚胎约 $50$ 代、成体约 $15\\sim 30$ 代，再对 HGPS 的 $LMNA$ 和 Werner 的 WRN。",
+      "explanation": "**B 正确。** 第一节把 Hayflick 极限写成复制性衰老的操作定义；早老症把衰老提前写进时间表。\n\n**干扰项辨析**：\n- A：停滞是细胞自身特性；代数写反；HGPS 是 $LMNA$ 不是 WRN。\n- C：极限是分裂次数上限而非日历年龄；SASP 长期促进慢性炎症、免疫抑制和 EMT。\n- D：复制性衰老走 DDR/端粒，不是坏死复合体；成体上限更短。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-1.md",
+        "label": "第一节 · 复制性衰老 · Hayflick 极限 · HGPS/$LMNA$ · Werner/WRN"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于端粒缩短、DDR 与癌基因诱导的衰老，下列叙述正确的是（　）。",
+      "options": [
+        "必须所有端粒都耗尽才进入复制性衰老；终末分化细胞不会因端粒而衰老；OIS 只能走 p53，不能走 p16–Rb",
+        "端粒随每一轮复制缩短，短到临界时保护性二级结构和封端因子缺失，结构上像双链断裂，从而触发 DDR；一个或少数几个过度缩短的端粒即足以进入复制性衰老。端粒区修复效率低，未显著缩短的终末分化细胞也可因端粒损伤而衰老。持续 DDR 经 ATM → p53 → p21 把检查点写成不可逆停滞。OIS 由癌基因过度增殖带来复制压力（尤其端粒区）造成持续 DDR，既可走 p53–p21，也可走不依赖 DDR/p53 的 p16–Rb；$PTEN$ 丢失有类似效果",
+        "ROS 只能损伤脂质，不能上调 p53 或 p16；MiDAS 与代谢改变无关",
+        "DDR 修好损伤后仍永久阻滞周期；一个过短端粒绝不足以引起衰老"
+      ],
+      "answer": 1,
+      "hint": "先问一个或少数几个过短端粒够不够，再问 OIS 是否必须依赖 p53。",
+      "explanation": "**B 正确。** 教材 cause-effect：端粒一短，细胞就按双链断裂来处理。OIS 可走 p53–p21 或 p16–Rb。\n\n**干扰项辨析**：\n- A：不必整套端粒耗尽；终末分化细胞可因端粒损伤衰老；OIS 可独立于 p53。\n- C：ROS 经 p38–MAPK 上调 p53–p21 和 p16；MiDAS 与代谢改变、脂肪细胞分化异常有关。\n- D：损伤修好则检查点解除；一个或少数几个过短端粒即足够。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-1.md",
+        "label": "第一节 · 端粒缩短和损伤 · ATM–p53–p21 · OIS · derivation「持续 DDR 怎样把检查点写成衰老」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于细胞坏死与细胞凋亡，下列叙述正确的是（　）。",
+      "options": [
+        "凋亡细胞肿胀、质膜破裂、内容物外溢并引发炎症；坏死细胞皱缩形成凋亡小体；坏死 DNA 电泳呈 $180\\sim 200\\,\\mathrm{bp}$ 梯状条带",
+        "凋亡是特定信号触发死亡级联的主动性死亡：细胞皱缩，染色质固缩呈半月状贴核膜，膜保持完整，内容物被包成凋亡小体后吞噬，一般不引发炎症；内源性核酸酶在核小体连接段切断 DNA，形成 $180\\sim 200\\,\\mathrm{bp}$ 整数倍片段，电泳呈 DNA ladder。坏死是致病因子强行终止生命活动的病理性、被动性死亡：细胞肿胀，质膜和细胞器膜破裂，内容物外溢引发炎症，DNA 随机断裂呈 smear。肿胀、膜破、炎症的外表也可以是可被抑制剂逆转的坏死性凋亡",
+        "凋亡累及大片组织，坏死只发生在单个散在细胞；凋亡过程中没有蛋白质合成",
+        "电泳 smear 是凋亡 ladder 没有跑开；磷脂酰丝氨酸外翻是坏死的特异标志"
+      ],
+      "answer": 1,
+      "hint": "先对皱缩/肿胀和膜完不完整，再问 ladder 的 $180\\sim 200\\,\\mathrm{bp}$ 与 smear。",
+      "explanation": "**B 正确。** 第二、三节 compare 把凋亡写成封好的自杀，把坏死写成膜破致炎；pitfall：坏死的外表不等于没有程序。\n\n**干扰项辨析**：\n- A：把凋亡和坏死的形态、电泳全部写反。\n- C：范围写反；凋亡有基因调控和蛋白质合成。\n- D：smear 来自随机断裂；PS 外翻是凋亡小体被识别吞噬的信号。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-2.md",
+        "label": "第二节 · compare「细胞坏死 vs 细胞凋亡」；第三节 · DNA 片段化 · pitfall「坏死的外表，不等于没有程序」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于外源性与内源性凋亡途径，下列叙述正确的是（　）。",
+      "options": [
+        "外源性途径的激活平台是凋亡体，起始 caspase 是 caspase-9；内源性途径的激活平台是 DISC，起始 caspase 是 caspase-8；两条路永不相交",
+        "外源性（死亡受体）途径：TNF-$\\alpha$、FasL、TRAIL 等结合 TNFR1、Fas/CD95、DR-4/5，装配 DISC（受体–FADD–caspase-8），活化 caspase-8。内源性（线粒体）途径：DNA 损伤、氧化剂、药物等激活 Bax/Bak，线粒体外膜通透（MOMP）释放细胞色素 c，与 Apaf-1、dATP 和 caspase-9 酶原装配凋亡体。两条路在执行 caspase-3、6、7 汇合；caspase-8 切割 Bid 生成 tBid，插入线粒体，把外源信号灌进内源途径",
+        "MOMP 是线粒体内膜电位塌陷、放出 $\\mathrm{Ca}^{2+}$；DISC 由细胞色素 c 与 caspase-9 组成",
+        "死亡受体一旦结合配体就只能走凋亡，与 caspase-8 是否被抑制无关"
+      ],
+      "answer": 1,
+      "hint": "先把 DISC–caspase-8 和凋亡体–caspase-9 对上号，再问 tBid 这座桥。",
+      "explanation": "**B 正确。** 第三节 compare「外源性途径 vs 内源性途径」；tBid 是桥梁。\n\n**干扰项辨析**：\n- A：两条路的平台和起始 caspase 全部写反。\n- C：内膜电位塌陷是 mPT，不是 MOMP；DISC 不是凋亡体。\n- D：caspase-8 被抑制时，同一扇 TNF/Fas 的门改写成坏死性凋亡。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-3.md",
+        "label": "第三节 · DISC · 凋亡体 · MOMP · tBid · compare「外源性途径 vs 内源性途径」"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 caspase 家族及其级联，下列叙述正确的是（　）。",
+      "options": [
+        "caspase 依赖丝氨酸催化、在赖氨酸后剪切；起始者是 caspase-3、6、7，执行者是 caspase-8、9；炎症成员不存在",
+        "caspase 是半胱氨酸依赖、在天冬氨酸后剪切底物的蛋白酶。凋亡相关成员包括起始 caspase-2、8、9 和执行/效应 caspase-3、6、7；炎症相关成员为 caspase-1、4、5、11。酶原经去前域、大小亚基分开、二聚再装配成活性四聚体。起始者在 DISC 或凋亡体上互相激活，再剪切执行者；执行者剪切 ICAD（释放 CAD 造成 DNA ladder）、PARP-1、微丝和核纤层。线虫 $1\\,090$ 个细胞中 $131$ 个 PCD，$ced$-$3$≈caspase-3、$ced$-$4$≈Apaf-1、$ced$-$9$≈Bcl-2",
+        "有 caspase 活性就等于已经发生凋亡；炎症 caspase 也走核碎裂和凋亡小体",
+        "CAD 直接以酶原形式水解 DNA；ICAD 被剪切后抑制更强，ladder 不会出现"
+      ],
+      "answer": 1,
+      "hint": "先钉住 Cys 催化、Asp 后剪切，再分清起始 2/8/9 与执行 3/6/7。",
+      "explanation": "**B 正确。** 教材 concept：起始 caspase 切同类，执行 caspase 切全场。线虫 $ced$ 基因把程序性死亡写成分子。\n\n**干扰项辨析**：\n- A：催化残基、剪切位点和起始/执行分工都写错。\n- C：炎症 caspase 走焦亡，切 GSDMD 而不是 ICAD。\n- D：ICAD 被切后解除对 CAD 的抑制，CAD 才水解 DNA。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-3.md",
+        "label": "第三节 · 胱天蛋白酶 · 酶原活化 · ICAD/CAD · 线虫 $ced$ 基因"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于坏死性凋亡，下列叙述正确的是（　）。",
+      "options": [
+        "坏死性凋亡依赖 caspase-3 剪切 ICAD；Nec-1 抑制 gasdermin；形态上形成凋亡小体、不引发炎症",
+        "坏死性凋亡又称程序性坏死：具有肿胀、膜破、内容物外溢和炎症的坏死样形态，但不依赖 caspase，而依赖 RIPK1/RIPK3/MLKL 坏死复合体。最先见于感染牛痘病毒的猪肾细胞。TNF/FasL 等在 caspase-8 被抑制时不组装 DISC，改为 RIPK1 与 RIPK3 相互磷酸化，催化 MLKL 磷酸化；p-MLKL 结合磷脂酰肌醇、插入并寡聚于膜，离子和水内流使质膜胀破。Nec-1 抑制 RIPK1 可逆转。IFN、LPS–TLR4、ZBP1 也可激活坏死复合体",
+        "死亡受体结合后只能走凋亡；程序性坏死不可能出现在发育过程中，因此不是 PCD",
+        "MLKL 是起始 caspase；RIPK1 被磷酸化后直接剪切 GSDMD"
+      ],
+      "answer": 1,
+      "hint": "先问 caspase-8 还能不能装配，再对 RIPK1/RIPK3 磷酸化 MLKL 和 Nec-1 的靶点。",
+      "explanation": "**B 正确。** 第四节 definition 和 derivation：caspase-8 被抑制时 TNF 改写成坏死。教材 concept：同一扇 TNF 的门，通向凋亡或坏死性凋亡。\n\n**干扰项辨析**：\n- A：不依赖 caspase；Nec-1 抑制 RIPK1；形态是坏死样并致炎。\n- C：死亡受体在 caspase-8 被卡住时可走坏死性凋亡；它既可是发育中的 PCD，也可放大组织损伤炎症。\n- D：MLKL 是效应分子；GSDMD 是焦亡的执行器。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-4.md",
+        "label": "第四节 · 坏死性凋亡 · 坏死复合体 · Nec-1 · concept「同一扇 TNF 的门」"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于 Bcl-2 家族、p53 与 IAP 对凋亡的调控，下列叙述正确的有（　）。",
+      "options": [
+        "Bcl-2 家族调控 MOMP：抗凋亡成员包括 Bcl-2、Bcl-XL、Mcl-1，促凋亡成员包括 Bax、Bak、Bok 以及 Bad、Bid、Bim 等。Bcl-2 阻止细胞色素 c 释放，Bax 促进释放；二者相互拮抗",
+        "p53 在 DNA 损伤后既激活周期检查点促进修复，又转录 $NOXA$、$PUMA$ 触发 MOMP。损伤可逆则停在 $\\mathrm{G}_1$ 修复，不可逆则走线粒体凋亡。$p53$ 是肿瘤中突变频率最高的基因；放化疗诱导凋亡也依赖它",
+        "IAP（cIAP1、cIAP2、xIAP）以泛素 E3 连接酶活性促进 caspase-9、3、7 降解从而抑制凋亡；线粒体释放的 Smac/Diablo 和 Omi 抑制 IAP，为 caspase 激活设置阈值",
+        "Bcl-2 只存在于 B 细胞淋巴瘤；IAP 是促凋亡蛋白；MOMP 与 mPT 是同一个孔；凋亡过低只写成肿瘤，与 SLE 无关"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "先把抗凋亡/促凋亡成员拆开，再问 p53 的两条出路和 IAP/Smac 这道刹车。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：教材 definition 把 Bcl-2 家族写成 MOMP 开关。\n- B：衰老和凋亡是 p53 对同一损伤的两条出路。\n- C：IAP 与 Smac/Omi 相互拮抗。\n- **D 错**：$Bcl$-$2$ 见于几乎所有正常组织；IAP 抑制凋亡；MOMP 是外膜 Bax/Bak 成孔，mPT 是内膜电位塌陷；Fas 缺陷引起 SLE。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-3.md",
+        "label": "第三节 · Bcl-2 家族 · p53–NOXA/PUMA · IAP/Smac · 凋亡与疾病"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于焦亡、铁死亡与自噬性细胞死亡，下列叙述正确的有（　）。",
+      "options": [
+        "焦亡由 gasdermin 在膜上打孔：经典途径为 NLRP3–ASC–caspase-1 炎症小体，非经典途径为胞内 LPS 直接激活小鼠 caspase-11 或人 caspase-4/5。这些 caspase 剪切 GSDMD，N 端寡聚打孔，并剪切 IL-1$\\beta$、IL-18 经孔释放。核保持完整，DNA 无完全片段化",
+        "铁死亡依赖铁离子和脂质过氧化，可被铁螯合剂抑制。游离铁经芬顿反应产生 ROS，多不饱和脂肪酸和磷脂酰乙醇胺过氧化。Xc$^{-}$（SLC7A11+SLC3A2）输入胱氨酸以合成 GSH，GPX4 还原过氧化脂质；FSP1–辅酶 Q10 是不依赖 GPX4 的刹车。形态以线粒体皱缩、嵴消失为主，核完整、膜不发泡",
+        "自噬性细胞死亡必须在分子上严格依赖自噬（如 ULK1、Atg5、Atg7、LC3-II），抑制这些成分后死亡可被逆转，且其他 RCD 没有顶上来。仅仅看见自噬泡，或自噬降解铁蛋白/cIAP2 后再走铁死亡/凋亡，都不算",
+        "焦亡就是 caspase-1 介导的特殊凋亡，电泳呈典型 DNA ladder；铁死亡依赖执行 caspase-3；自噬染色阳性即可诊断自噬性死亡；四种 RCD 可用同一个小分子互相顶替"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "先对 GSDMD 孔和 GPX4 刹车，再问自噬性死亡的判决是不是“看见自噬泡”。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：焦亡曾被误认为特殊凋亡，因 IL-1$\\beta$ 才被分出；核仍完整。\n- B：2003 年抗肿瘤筛选中发现；两套刹车互为独立。\n- C：教材 pitfall——看见自噬泡不等于死于自噬。\n- **D 错**：焦亡无完全片段化；铁死亡不依赖 caspase；自噬相关不等于自噬性死亡；Nec-1、自噬抑制剂、GSDM、铁螯合剂/GPX4 不能混用。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-4.md",
+        "label": "第四节 · 焦亡/GSDMD · 铁死亡/GPX4 · 自噬性死亡判决 · compare「四种其他调控性死亡」"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "细胞衰老等于细胞已经死亡；静息态不可被生长因子召回；Hayflick 极限来自培养技术失败；必须所有端粒耗尽才进入复制性衰老；SA-$\\beta$-gal 单阳性即可给细胞下衰老判决。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句问：还活不活、能不能召回、上限从哪来、几个过短端粒够不够、标志是不是组合。",
+      "explanation": "**该命题错误，每一分句都错。** 衰老细胞脱离周期但仍有代谢活性。静息态稳定于 $\\mathrm{G}_0$，生长因子可召回 $\\mathrm{G}_1$。Hayflick 极限是细胞自身分裂次数上限（胚胎约 $50$ 代、成体约 $15\\sim 30$ 代）。一个或少数几个过度缩短的端粒即足以复制性衰老。标志靠 SA-$\\beta$-gal、p16/p21、Lamin B1 下降、SAHF 和 SASP 的组合，不是一张蓝染通行证。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-1.md",
+        "label": "第一节 · 衰老 vs 静息 · Hayflick · 端粒 · note「标志物是组合」"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "肿胀、膜破、炎症自动等同于意外性死亡；PCD 是凋亡的别名；DISC 激活 caspase-9 而凋亡体激活 caspase-8；看见自噬泡就等于自噬性细胞死亡；焦亡细胞核碎裂并出现典型 DNA ladder。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "先问坏死外表能不能被 Nec-1 关掉，再把 DISC/凋亡体和焦亡的核形态对回去。",
+      "explanation": "**该命题错误，五处都错。** 坏死外表可以是 ACD，也可以是可被 Nec-1 逆转的坏死性凋亡。PCD 是生理条件下的 RCD，可以是凋亡，也可以是自噬依赖性死亡或程序性坏死。DISC 激活 caspase-8，凋亡体激活 caspase-9。自噬性死亡必须证明抑制自噬后不再死亡且无其他 RCD 参与。焦亡核保持完整，染色质仅轻度凝集，DNA 无完全片段化。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-2.md",
+        "label": "第二节 · ACD vs RCD · PCD；第三节 · DISC/凋亡体；第四节 · 自噬性死亡判决 · 焦亡形态"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "人胚胎成纤维细胞体外传代约________次后进入复制性衰老。凋亡时内源性核酸酶在核小体连接段切断 DNA，形成________bp 整数倍片段。外源性途径在 DISC 上激活的起始 caspase 是________。内源性途径凋亡体激活的起始 caspase 是________。焦亡中 caspase 剪切________，其 N 端片段在膜上打孔。",
+      "answer": "50，180～200，caspase-8，caspase-9，GSDMD",
+      "hint": "Hayflick 的胚胎代数；ladder 的核小体间距；DISC vs 凋亡体的起始酶；焦亡的打孔蛋白。",
+      "scoring_criteria": [
+        "第一空填“50”（或“五十”“约50”“$50$”）（2分）",
+        "第二空填“180～200”（或“180-200”“180~200”“180至200”）（2分）",
+        "第三空填“caspase-8”（或“Caspase-8”“半胱天冬酶-8”“胱天蛋白酶-8”）（2分）",
+        "第四空填“caspase-9”（或“Caspase-9”“半胱天冬酶-9”“胱天蛋白酶-9”）（2分）",
+        "第五空填“GSDMD”（或“gasdermin D”“Gasdermin D”“消皮素 D”）（2分）"
+      ],
+      "explanation": "第一节：Hayflick 极限下胚胎成纤维细胞约 $50$ 代。第三节：DNA 片段化 $180\\sim 200\\,\\mathrm{bp}$；DISC–caspase-8，凋亡体–caspase-9。第四节：caspase-1/4/5/11 剪切 GSDMD，N 端打孔。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-1.md",
+        "label": "第一节 · Hayflick $50$ 代；第三节 · DNA ladder · DISC/凋亡体；第四节 · GSDMD"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "细胞怎样从“还会分裂”写成“不可逆停滞”？请写出：①衰老与静息如何分界，个体老化是否等于每一个细胞都衰老；②Hayflick 极限和复制性衰老的操作定义；③端粒缩短或损伤如何经 DDR 维持衰老，OIS 可走哪两条执行通路；④标志物为何必须组合使用，诱导肿瘤细胞衰老为何是双刃剑。",
+      "answer": "参考答案：\n\n**1. 衰老 vs 静息**\n- 衰老：本具有分裂能力的细胞丧失增殖能力（即使营养充分）；脱离周期、不可逆停滞，仍有代谢活性；是个体老化的基础。\n- 静息：稳定于 $\\mathrm{G}_0$，RNA 合成极低，生长因子可召回 $\\mathrm{G}_1$（成体组织干细胞、幼稚 T 细胞）。能否被召回是分界。\n- 老化是群体账本：70 岁生精细胞仍可活跃；局部衰老不一定缩短寿命。神经元、心肌细胞虽不再分裂，仍可出现类衰老表型。\n\n**2. Hayflick**\n- 1961 年胚胎成纤维细胞约 $50$ 代、成体约 $15\\sim 30$ 代后停滞。复制性衰老 = 分裂次数达到上限；Hayflick 极限 = 体外可分裂次数上限，随供体年龄和种属而变。\n- HGPS：$LMNA$/Lamin A，$12\\sim 18$ 岁死亡。Werner：WRN，约 $39$ 岁衰老、$47$ 岁死亡，成纤维细胞寿命为正常的 $1/8\\sim 1/3$。\n\n**3. 端粒与 OIS**\n- 端粒缩短至临界，保护性结构丢失，像 DSB，触发 DDR；一个或少数几个过短端粒即足以复制性衰老。终末分化细胞可因端粒损伤（未必缩短）而衰老。持续 DDR：ATM → p53 → p21。\n- OIS：癌基因过度增殖 → 复制压力 → 持续 DDR；既可走 p53–p21，也可走不依赖 DDR/p53 的 p16–Rb。\n\n**4. 标志与肿瘤**\n- 组合：SA-$\\beta$-gal、p16/p21、Lamin B1 下降、SAHF、SASP（IL-6、IL-8）。\n- 衰老抑制恶性进展；放化疗、Cdk 抑制剂和表观遗传药物可诱导肿瘤细胞衰老。SASP 短期招募免疫、限制邻近增殖，长期造成慢性炎症、免疫抑制和 EMT，故须及时清除衰老细胞。",
+      "hint": "先用“能否召回”把衰老和静息拆开，再写 $50$ 代/$15\\sim 30$ 代和 ATM–p53–p21，最后补上 SASP 的后半句。",
+      "scoring_criteria": [
+        "写出衰老为不可逆增殖停滞但仍有代谢、静息为可召回的 $\\mathrm{G}_0$，并指出个体老化不等于每个细胞都衰老（4分）",
+        "写出胚胎约 $50$ 代、成体约 $15\\sim 30$ 代及复制性衰老/Hayflick 极限的含义（3分）",
+        "写出端粒缩短像 DSB、一个或少数几个过短端粒即足够，以及 ATM–p53–p21；OIS 可走 p53–p21 或 p16–Rb（4分）",
+        "写出标志须组合使用，并说明诱导肿瘤衰老后 SASP 的双刃剑（3分）"
+      ],
+      "explanation": "本题把第一节串成“分界—上限—分子写法—医学双刃剑”。易错点：把衰老写成死亡；把 Hayflick 听成培养失败；以为必须所有端粒耗尽；把诱导衰老当成一劳永逸。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-1.md",
+        "label": "第一节 · 衰老 vs 静息 · Hayflick · 端粒/DDR/OIS · SASP 双刃剑"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "死亡怎样先问可控、再问哪一台机器？请写出：①ACD 与 RCD（及 PCD）如何分家，坏死外表为何不等于没有程序；②凋亡的形态/生化判据，外源性与内源性途径如何在执行 caspase 汇合，Bcl-2 家族如何决定细胞色素 c 是否释放；③坏死性凋亡、焦亡、铁死亡和自噬性死亡的执行器及关键干预各是什么。",
+      "answer": "参考答案：\n\n**1. 可控性分家**\n- 2015 年起 NCCD 按是否可控分为 ACD 和 RCD。ACD：剧烈创伤/烧伤/剧毒，不可避免、无特异蛋白质机器。RCD：温和损伤或生理过程，有遗传编码的蛋白质装置，可被遗传或药物逆转；包括凋亡、程序性坏死、自噬性死亡、焦亡、铁死亡。\n- PCD 是生理条件下的 RCD，不是凋亡的别名。坏死外表（肿胀、膜破、炎症）既可以是 ACD，也可以是可被 Nec-1 逆转的坏死性凋亡。\n\n**2. 凋亡两条路**\n- 形态：皱缩、新月状染色质、膜完整、PS 外翻、凋亡小体、无炎症。生化：DNA ladder（$180\\sim 200\\,\\mathrm{bp}$ 整数倍）与 caspase 级联。\n- 外源：TNF-$\\alpha$/FasL/TRAIL → DISC → caspase-8。内源：Bax/Bak 成孔（MOMP）→ cyt c + Apaf-1 + dATP + caspase-9 = 凋亡体。共同终点是 caspase-3、6、7 剪切 ICAD、PARP-1、核纤层和微丝。caspase-8 切 Bid 得 tBid，插入线粒体沟通两条路。\n- Bcl-2/Bcl-XL/Mcl-1 抗凋亡，Bax/Bak/Bok/Bad/Bid/Bim 促凋亡，拮抗决定 cyt c 是否释放。p53 经 NOXA/PUMA 接到线粒体；IAP 与 Smac/Diablo、Omi 给 caspase 设阈值。\n\n**3. 其他 RCD**\n- 坏死性凋亡：caspase-8 被抑制后 RIPK1/RIPK3 磷酸化 MLKL；Nec-1 抑制 RIPK1。\n- 焦亡：炎症小体（或胞内 LPS）激活 caspase-1/4/5/11，剪切 GSDMD 打孔，IL-1$\\beta$/IL-18 经孔释放；核仍完整。\n- 铁死亡：铁–芬顿反应 + 脂质过氧化；Xc$^{-}$–GSH–GPX4 与 FSP1–CoQ10 是两套刹车；铁螯合剂可抑制。\n- 自噬性死亡：必须证明抑制 ULK1/Atg5/Atg7/LC3-II 等后死亡停止，且无其他 RCD 参与；看见自噬泡不够。四条路靶点不能混用。",
+      "hint": "先用“有没有可关掉的机器”上户籍，再写 DISC 与凋亡体，最后按 RIPK/GSDMD/脂质过氧化/ATG 把另外四台机器分开。",
+      "scoring_criteria": [
+        "写出 ACD/RCD 按可控性分家，PCD 不是凋亡别名，并指出坏死外表可是坏死性凋亡（4分）",
+        "写出凋亡形态或 DNA ladder，并正确对照 DISC–caspase-8 与凋亡体–caspase-9，提到 tBid 或执行 caspase 汇合（4分）",
+        "写出 Bcl-2 家族拮抗决定细胞色素 c 释放，或 p53/IAP 中至少一层调控（2分）",
+        "分别写出坏死性凋亡（RIPK1/RIPK3/MLKL 或 Nec-1）、焦亡（GSDMD）、铁死亡（铁/脂质过氧化或 GPX4）、自噬性死亡的判决标准（5分）"
+      ],
+      "explanation": "本题把第二、三、四节约成“户籍—凋亡样板—其他执行器”。易错点：把 PCD 写成凋亡别名；把 DISC 和凋亡体写串；把焦亡当成核碎裂；看见自噬泡就下判决。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch16-2.md",
+        "label": "第二节 · ACD/RCD/PCD；第三节 · 凋亡两条路 · Bcl-2；第四节 · 四种其他 RCD"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

@@ -18,6 +18,7 @@ import { hydrateAttachmentsForApi } from '@/lib/storage/chatStorage';
 import { buildFallbackSessionTitle, sanitizeSessionTitle } from '@/lib/chat/sessionTitle';
 import { useBillingStore, createBillingRecord } from './useBillingStore';
 import { useFloatingChats } from './useFloatingChats';
+import { useAcademicYear } from './useAcademicYear';
 
 interface SendMessageOptions {
   quotedText?: string;
@@ -278,6 +279,7 @@ export function useChat(
               categoryId: chatContext.categoryId,
               itemId: chatContext.itemId,
               currentTopic: chatContext.currentTopic,
+              academicYear: chatContext.academicYear ?? useAcademicYear.getState().year,
               enableThinking,
               thinkingEffort,
               enableSearch,

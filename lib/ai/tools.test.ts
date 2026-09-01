@@ -33,4 +33,10 @@ test("ALL_TOOLS getSection 接受 path 和 sectionId 参数", () => {
 test("ALL_TOOLS searchNotes 接受 query 参数", () => {
   const params = ALL_TOOLS.searchNotes.function.parameters;
   assert.ok(params.properties?.query, "searchNotes 应有 query 参数");
+  assert.ok(params.properties?.crossYear, "searchNotes 应有 crossYear 参数");
+});
+
+test("ALL_TOOLS getOutline 接受 crossYear 参数", () => {
+  const params = ALL_TOOLS.getOutline.function.parameters;
+  assert.ok(params.properties?.crossYear, "getOutline 应有 crossYear 参数");
 });

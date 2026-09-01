@@ -1,0 +1,321 @@
+{
+  "subjectId": "cell-biology",
+  "chapterId": "tb-ch09",
+  "generatedAt": "2026-08-31",
+  "examConfig": {
+    "source": "content/cell-biology/textbook/ch09-1.md；content/cell-biology/textbook/ch09-2.md；content/cell-biology/textbook/ch09-3.md；content/cell-biology/textbook/ch09-4.md；content/cell-biology/textbook/ch09-5.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于中心法则与逆转录，下列叙述正确的是（　）。",
+      "options": [
+        "逆转录证明中心法则已被推翻，细胞日常把蛋白质倒写成核酸",
+        "主干是 DNA 经半保留复制传给子代 DNA，经转录写成 RNA，再经翻译写成蛋白质。逆转录酶能以 RNA 为模板合成 DNA，某些 RNA 病毒还能以 RNA 为模板复制 RNA，二者是补充而不是推翻。蛋白质→核酸的信息流至今未被证实；基因表达的终产物可以是蛋白质或功能 RNA",
+        "基因表达的终产物一定是蛋白质；rRNA 和 tRNA 必须先翻译成蛋白才能工作",
+        "逆转录酶以 DNA 为模板合成 RNA，只是转录的另一种名字"
+      ],
+      "answer": 1,
+      "hint": "先把主干写成 DNA 储存、RNA 传递、蛋白质执行，再把逆转录和 RNA 复制钉成“补充”。",
+      "explanation": "**B 正确。** 第一节定义中心法则：DNA 经半保留复制传给子代 DNA，经转录写成 RNA，再经翻译写成蛋白质。逆转录和 RNA 复制解释了 RNA 病毒如何把信息写进 DNA 或直接复制 RNA，并不意味着细胞日常把蛋白质倒写成核酸。rRNA、tRNA、snRNA、miRNA 本身就是功能分子，不要把“终产物一定是蛋白质”写成绝对句。\n\n**干扰项辨析**：\n- A：教材 pitfall——逆转录没有取消 DNA→RNA→蛋白质。\n- C：功能 RNA 不被翻译，却是表达终产物。\n- D：逆转录是 RNA→DNA，方向与转录相反。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-1.md",
+        "label": "第一节 · 中心法则 · 逆转录是补充 · pitfall「没有取消主干」 · 功能 RNA"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于断裂基因与内含子，下列叙述正确的是（　）。",
+      "options": [
+        "真核基因编码序列连续、没有内含子，与原核结构基因相同",
+        "断裂基因的编码序列被内含子隔断。外显子被转录且能指导蛋白质合成，内含子被转录但不能指导蛋白质合成。剪接边界在 DNA 上写 GT-AG、在 RNA 上写 GU-AG，是同一对边界。1977 年 Sharp 与 Roberts 用腺病毒 hexon mRNA 与基因组 DNA 电镜杂交，看到 5′ 端与上游 3 个短序列配对、中间隔着单链 DNA 环",
+        "内含子从不被转录，属于垃圾 DNA；GT-AG 与 GU-AG 是两套互斥规则",
+        "基因就是从起始密码子到终止密码子的一段不间断 DNA，不含启动子、终止子和 UTR"
+      ],
+      "answer": 1,
+      "hint": "先把“转录了但不留在成熟 mRNA 里”钉给内含子，再把 GT-AG/GU-AG 写成同一对边界的两种字母。",
+      "explanation": "**B 正确。** 真核结构基因一般由若干外显子和内含子间隔排列，完整基因还包括上游启动子和末端终止子。成熟 mRNA 两端还有 UTR。人 $\\beta$-珠蛋白基因约 $1\\,700\\,\\mathrm{bp}$，DMD 基因可达 $2\\,300\\,\\mathrm{kb}$。电镜杂交中 3 个大的单链 DNA 环把 hexon mRNA 5′ 端来源的短序列与主体编码区隔开，证明编码序列在基因组上不连续。\n\n**干扰项辨析**：\n- A：那是原核结构基因。\n- C：教材 pitfall——内含子不是垃圾 DNA；GT-AG 与 GU-AG 不是两套规则。\n- D：教材 concept——基因不是一段连续的蛋白质配方。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-1.md",
+        "label": "第一节 · 断裂基因 · GT-AG/GU-AG · Sharp/Roberts 1977 · pitfall「不是两套规则」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于真核三种 RNA 聚合酶，下列叙述正确的是（　）。",
+      "options": [
+        "原核也有三种 RNA 聚合酶；5S 与 18S、5.8S、28S 都由 Pol Ⅰ 在 NOR 上转录成 45S 前体",
+        "转录沿 $5'\\rightarrow 3'$、不需要引物。Pol Ⅰ（核仁）转录 5.8S、18S、28S rRNA；Pol Ⅱ（核质）转录编码蛋白基因、snoRNA 和多数 snRNA；Pol Ⅲ（核质）转录 tRNA、5S rRNA 和 U6 等。45S 前体切出三种 rRNA，5S 不在这条前体上",
+        "转录需要引物，也可沿 $3'\\rightarrow 5'$ 延长；所有 snRNA 包括 U6 都由 Pol Ⅱ 合成",
+        "Pol Ⅰ 做 mRNA，Pol Ⅱ 做全部 rRNA，Pol Ⅲ 只做 miRNA；模板链永远固定在同一条单链上"
+      ],
+      "answer": 1,
+      "hint": "先背分工表，再把 5S 和 U6 两条例外单独钉住。",
+      "explanation": "**B 正确。** 原核只有一种 RNA 聚合酶。人体单倍体约 200 个 rRNA 基因拷贝，Pol Ⅰ 转录 45S，再切成 28S、18S、5.8S。5S 由核仁外基因、Pol Ⅲ 转录，无内含子，运入核仁组装大亚基。剪接体五种 snRNA 里只有 U6 由 Pol Ⅲ 转录。模板链按基因区段选择，称为不对称转录。\n\n**干扰项辨析**：\n- A：教材 pitfall——5S 不要算进 45S。\n- C：转录不需要引物，也不能 $3'\\rightarrow 5'$；U6 是 Pol Ⅲ 的例外。\n- D：三种酶的产物写反；模板链不固定。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-2.md",
+        "label": "第二节 · 三种 RNA 聚合酶 · 45S · 5S 与 U6 例外 · 转录不需引物"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 hnRNA 的剪接，下列叙述正确的是（　）。",
+      "options": [
+        "hnRNA 只需切去 $5'$ 和 $3'$ 多余序列，编码区在基因组上本来就是连续的",
+        "剪接体约 60S，由 U1、U2、U4、U5、U6 等 snRNP 组装。必需序列为 $5'$ GU、$3'$ AG 和距 $3'$ 端约 30 个碱基的分支点保守 A。U1 认 $5'$ 位点，U2 认分支点（需 ATP），U4/U5/U6 加入后排出 U4；两步转酯形成套索。$\\beta$-珠蛋白剪接点突变不能形成成熟 mRNA，导致 $\\beta$-珠蛋白生成障碍性贫血",
+        "分支点是 G；剪接在胞质进行；U4 始终留在活性剪接体中",
+        "戴帽是在 $3'$ 端接 $\\mathrm{m}^{7}\\mathrm{G}$，加尾是在 $5'$ 端接 $200\\sim 250$ 个 U"
+      ],
+      "answer": 1,
+      "hint": "三要素：GU–AG–分支点 A；装配后必须排出 U4；贫血钉在剪接点而不是随便一个错义突变。",
+      "explanation": "**B 正确。** hnRNA 是 Pol Ⅱ 转录的 mRNA 前体，还需 $5'$ 戴帽（$\\mathrm{m}^{7}\\mathrm{Gppp}$，RNA 达 $25\\sim 30\\,\\mathrm{nt}$ 即开始）和 $3'$ 加尾（poly A $200\\sim 250$，信号为 AAUAAA）。第一步转酯让内含子 $5'$ 端与分支点 A 共价连接成套索；第二步让两个外显子相连。四膜虫 L19 RNA 是核酶，与需要 snRNP 的 mRNA 剪接体不同。\n\n**干扰项辨析**：\n- A：那是发现内含子之前的主流设想。\n- C：分支点是 A；剪接在核内；排出 U4 才激活。\n- D：帽在 $5'$、尾在 $3'$，且尾是 A 不是 U。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-2.md",
+        "label": "第二节 · 剪接体 60S · GU-AG-分支点 A · 套索 · $\\beta$-珠蛋白贫血"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于遗传密码的简并与摆动，下列叙述正确的是（　）。",
+      "options": [
+        "64 个密码子都编码氨基酸，UAA 是第 21 种氨基酸",
+        "61 个有义密码子编码 20 种氨基酸，UAA、UAG、UGA 为终止，AUG 编码甲硫氨酸并兼作起始。简并多发生在第三位。摆动指反密码子 $5'$ 碱基可与密码子第三位非严格配对：丙氨酸 tRNA 反密码子 $3'$-CGC-$5'$ 可对 $5'$-GCG-$3'$ 和 $5'$-GCU-$3'$。氨基酸是否挂对应由氨酰 tRNA 合成酶保证",
+        "简并发生在第一位；一种氨基酸只有一个密码子；摆动发生在密码子 $5'$ 端",
+        "人线粒体密码与核密码完全相同，UGA 在线粒体里仍是终止密码子"
+      ],
+      "answer": 1,
+      "hint": "简并看密码子第三位；摆动看反密码子 5′ 端；真正把氨基酸挂对的是合成酶。",
+      "explanation": "**B 正确。** 遗传密码还有通用性、连续性（移码一个核苷酸则读框全错）和方向性（$5'\\rightarrow 3'$，肽链 N→C）。密码子–反密码子配对只保证“这个 tRNA 对上了那个三联体”；酶一旦挂错，核糖体仍会按反密码子把错的氨基酸嵌进肽链。总反应：氨基酸 + tRNA + ATP → 氨酰 tRNA + AMP + PP$_\\mathrm{i}$。\n\n**干扰项辨析**：\n- A：教材 pitfall——终止密码子不编码氨基酸。\n- C：简并和摆动的位置都写反了。\n- D：人线粒体 UGA 编码色氨酸，AGA/AGG 反而是终止密码子。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-3.md",
+        "label": "第三节 · 64 密码子 · 简并 · 摆动 · 氨酰 tRNA 合成酶 · 终止密码子不编码"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于核糖体循环，下列叙述正确的是（　）。",
+      "options": [
+        "起始 tRNA 进入 A 位；成肽后肽链一直留在 P 位；真核靠 SD 序列把 AUG 对准",
+        "无论原核还是真核，起始 tRNA 都先占据 P 位。原核 SD 序列 $5'$-AGGAGGU-$3'$ 与 16S rRNA $3'$ 端互补；真核小亚基认帽后扫描至 AUG。延长循环为进位（EF-Tu/GTP）→ 成肽（转肽酶把肽接到 A 位）→ 转位（EF-G 使肽酰 tRNA 从 A 位到 P 位）。RF1 认 UAA/UAG，RF2 认 UAA/UGA；真核 eRF1 认三种终止密码子",
+        "真核胞质核糖体是 70S，原核是 80S；起始氨基酸一定保留在成熟蛋白 N 端",
+        "多聚核糖体是一条 mRNA 上多个核糖体合作合成一条更长的融合多肽"
+      ],
+      "answer": 1,
+      "hint": "起始占 P 位；肽在 A 位长长再搬回 P 位；SD 只属于原核。",
+      "explanation": "**B 正确。** 原核 70S = 30S + 50S，真核 80S = 40S + 60S。原核起始 tRNA 为 fMet-tRNA$^{\\mathrm{fMet}}$（IF1/2/3），真核为 Met-tRNA$^{\\mathrm{Met}}$（eIF），poly A 促进起始。真核延长因子为 eEF1$\\alpha$、eEF1$\\beta\\gamma$、eEF2。一条 mRNA 可串多个核糖体，各自独立合成一条相同多肽。\n\n**干扰项辨析**：\n- A：教材 concept——肽链在 A 位长长；SD 不是真核的停靠站。\n- C：70S/80S 写反；起始 Met 在成熟蛋白里常常已经不在。\n- D：每个核糖体独立做一条相同多肽，不是融合成一条更长的链。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-3.md",
+        "label": "第三节 · 70S/80S · SD 与帽扫描 · 进位成肽转位 · 释放因子"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于增强子、锌指与信息传递异常，下列叙述正确的是（　）。",
+      "options": [
+        "增强子就是远一点的启动子，必须位于上游且与转录同向；锌指用铁离子配位；心手综合征是端粒酶基因突变",
+        "增强子本身不能起始转录，无方向限制，可位于上、下游并远至数千至数万碱基对。锌指由 Cys/His 与锌配位，C 端 $\\alpha$ 螺旋插入 DNA 大沟；SP1 含 3 个锌指并结合 GC 盒。TBX5 显性突变致心手综合征（拇指异常 + 房间隔/室间隔缺损）；锌指转录因子 GATA3 突变致血 PTH 降低、感觉神经性耳聋和肾脏发育不良。克-雅病（朊蛋白）与 UPS 降解异常有关",
+        "组蛋白乙酰化关闭转录，启动子 CpG 高甲基化则促进转录；蛋白酶体抑制剂的本质是关闭核糖体循环",
+        "转录因子突变只造成单一酶缺陷；朊蛋白病与蛋白质降解无关"
+      ],
+      "answer": 1,
+      "hint": "增强子是加油器不是第二个 TATA；锌指钉 Cys/His–Zn；HOS 钉 TBX5，甲状旁腺–耳–肾钉 GATA3；朊蛋白钉 UPS。",
+      "explanation": "**B 正确。** 顺式作用元件只影响同一 DNA 分子上的基因；反式作用因子由别的基因编码后再过来结合。锌指约 23 个氨基酸，N 端 $\\beta$ 片层、C 端 $\\alpha$ 螺旋。PAX3 显性突变致 Waardenburg 综合征Ⅰ型；NKX2-1 突变累及脑–甲状腺–肺。亨廷顿病的多聚谷氨酰胺蛋白聚集、AD 的 NFT 与 A$\\beta$ 老年斑，同样接到 UPS 清除失败。\n\n**干扰项辨析**：\n- A：教材 pitfall——增强子不是远一点的启动子；金属和疾病都记串。\n- C：乙酰化多数促进转录，CpG 高甲基化常关闭基因；蛋白酶体抑制剂干扰的是降解不是翻译。\n- D：转录因子管一组基因，常表现为多系统综合征。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-4.md",
+        "label": "第四节 · 增强子 · 锌指/SP1；第五节 · TBX5/GATA3 · 克-雅病与 UPS"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于启动子、基因家族与转录起始，下列叙述正确的有（　）。",
+      "options": [
+        "原核启动子约 $55\\,\\mathrm{bp}$：$-35$ 区 TTGACA 由 $\\sigma$ 因子识别，$-10$ 区 TATAAT 为普里布诺框，A/T 丰富利于解链",
+        "真核 TATA 盒（$-25\\sim -35$）定起点；CAAT 盒（$-70\\sim -80$）和 GC 盒（$-80\\sim -110$）主要控制转录起始频率",
+        "基因家族成员可成簇（组蛋白、rRNA）或分散（干扰素、珠蛋白）；假基因不能产生有功能产物。人 Alu 长 $300\\,\\mathrm{bp}$、约 30 万拷贝、占基因组 3%～6%",
+        "终止子就是终止密码子，写在 mRNA 上管肽链何时释放；闭合复合体已经开始合成 RNA"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "原核两段框、真核“TATA 定起点、上游定频率”；终止子和终止密码子不是同一个信号。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：两段合在一起才构成可用的原核启动子；普里布诺框解决的是开口，不是单独决定转不转录。\n- B：TATA 盒缺失时转录仍可能发生，但 RNA 的 $5'$ 端会漂移。通用转录因子包括 TFⅡA、B、D、E、F、H；TFⅡD = TBP + 11 种 TAF。TFⅡH 解旋使闭合复合体变为开放复合体。\n- C：中度重复 $10^{1}\\sim 10^{5}$ 次；高度重复 $>10^{5}$ 次，如卫星 DNA，常在着丝粒和端部。\n- **D 错**：终止子在基因末端的 DNA 上，转录物发夹促使 RNA 聚合酶脱离；终止密码子在 mRNA 上管翻译停止。闭合复合体中 DNA 仍是双螺旋，还不能抄 RNA。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-1.md",
+        "label": "第一节 · 原核/真核启动子 · 基因家族与 Alu；第二节 · TFⅡH 开链 · 终止子≠终止密码子"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于翻译装置、蛋白降解与调控，下列叙述正确的有（　）。",
+      "options": [
+        "原核核糖体 70S = 30S + 50S，真核胞质 80S = 40S + 60S；线粒体核糖体近于 70S。游离核糖体合成基础蛋白，附着核糖体合成分泌蛋白和膜蛋白",
+        "UPS 中泛素含 76 个氨基酸，经 E1、E2、E3 接到底物赖氨酸上，一般至少 5 个泛素后进入 26S 蛋白酶体；溶酶体途径不耗 ATP，主要降解膜蛋白和长寿命蛋白",
+        "cyclin A 通过 M 期必须被降解，否则细胞停滞于中期；约 10% 肿瘤中降解 p53 的 E3 酶 Mdm2 过表达。抑制 26S 蛋白酶体可选择性抑制某些肿瘤细胞增殖",
+        "管家基因完全不受调控；病毒感染时 dsRNA 激活激酶使 eIF-2$\\alpha$ 磷酸化，从而促进翻译起始"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "70S/80S 对照表、UPS 的 76/E1–E3/≥5、cyclin A 太慢与 p53 太快方向相反；磷酸化 eIF-2α 是关起始不是开起始。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：70S 小亚基为 16S rRNA + 21 种蛋白，大亚基为 23S、5S + 34 种蛋白；80S 小亚基为 18S + 33 种蛋白，大亚基为 28S、5.8S、5S + 约 49 种蛋白。RNA 约占 60%，蛋白质约占 40%。\n- B：蛋白酶体本身不会挑底物，只认已被泛素化的蛋白。\n- C：肿瘤里降解可以太慢（cyclin A）也可以太快（p53）。蛋白酶体抑制剂卡的是销毁，不是翻译。\n- **D 错**：管家基因持续表达，强弱仍可被调节；eIF-2$\\alpha$ 磷酸化抑制蛋白质合成起始。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-3.md",
+        "label": "第三节 · 70S/80S · UPS vs 溶酶体；第四节 · eIF-2α；第五节 · cyclin A 与 Mdm2/p53"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "逆转录推翻了中心法则，细胞可以把蛋白质倒写成核酸；UAA、UAG、UGA 编码第 21 种氨基酸。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "主干没被推翻；三个终止密码子是“停”，不是新的氨基酸。",
+      "explanation": "**该命题错误，两处都错。** 中心法则的主干仍是 DNA 储存、RNA 传递、蛋白质执行。逆转录和 RNA 复制是补充，蛋白质→核酸的信息流至今未被证实。64 个密码子中 61 个编码氨基酸，UAA、UAG、UGA 为终止密码子，简并性只发生在有义密码子上。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-1.md",
+        "label": "第一节 · 逆转录是补充；第三节 · 终止密码子不编码氨基酸"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "增强子是远一点的启动子；5S rRNA 由 RNA 聚合酶Ⅰ转录，是 45S 前体切下的第四段。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "增强子自己不能起始转录；5S 走 Pol Ⅲ、核仁外，不进 45S。",
+      "explanation": "**该命题错误，两处都错。** 启动子缺了，聚合酶不知道从哪里起抄；增强子缺了往往还能维持较低的基础转录，只是升不上去。增强子无方向限制，可位于下游或内含子中，并可远距离作用。45S 由 Pol Ⅰ 切出 18S、5.8S、28S；5S 由核仁外基因、Pol Ⅲ 转录，无内含子，运入核仁参与大亚基组装。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-4.md",
+        "label": "第四节 · pitfall「增强子不是远一点的启动子」；第二节 · 5S 不在 45S"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "RNA 聚合酶Ⅰ定位于 ________。剪接分支点是高度保守的 ________。摆动发生在反密码子的 ________ 端。SP1 含 ________ 个锌指并结合 GC 盒。泛素由 ________ 个氨基酸组成。",
+      "answer": "核仁，A，5'，3，76",
+      "hint": "Pol Ⅰ 在核仁；分支点是 A；摆动看反密码子 5′；SP1 三个锌指；泛素 76 氨基酸。",
+      "scoring_criteria": [
+        "第一空填“核仁”（或“核仁内”）（2分）",
+        "第二空填“A”（或“腺苷酸”“腺嘌呤”“保守 A”）（2分）",
+        "第三空填“5'”（或“5′端”“5 端”）（2分）",
+        "第四空填“3”（或“三个”）（2分）",
+        "第五空填“76”（或“76 个”）（2分）"
+      ],
+      "explanation": "第二节：Pol Ⅰ 在核仁转录 5.8S、18S、28S rRNA。剪接必需 $5'$ GU、$3'$ AG 和距 $3'$ 端约 30 个碱基的分支点保守 A。第三节：摆动发生在反密码子的 $5'$ 碱基（对应密码子第三位）。第四节：与 GC 盒结合的 SP1 含 3 个重复锌指。第三节：泛素含 76 个氨基酸，经 E1、E2、E3 多泛素化后进入 26S 蛋白酶体。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-2.md",
+        "label": "第二节 · Pol Ⅰ 核仁 · 分支点 A；第三节 · 摆动 5′ · 泛素 76；第四节 · SP1 三个锌指"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "中心法则的主干和补充各是什么？断裂基因的外显子与内含子有何不同、剪接边界如何书写？真核三种 RNA 聚合酶如何分工，5S 与 U6 为何是例外？剪接体如何识别位点并完成两步转酯，$\\beta$-珠蛋白剪接点突变如何致病？",
+      "answer": "参考答案：\n\n**1. 中心法则**\n- 主干：DNA 经半保留复制传给子代 DNA，经转录写成 RNA，再经翻译写成蛋白质。\n- 补充：逆转录酶以 RNA 为模板合成 DNA；某些 RNA 病毒以 RNA 为模板复制 RNA。\n- 蛋白质→核酸至今未被证实。表达终产物可以是蛋白质或功能 RNA（rRNA、tRNA 等）。\n\n**2. 断裂基因**\n- 真核编码序列被内含子隔断。外显子被转录且能指导蛋白质合成；内含子被转录但不能指导蛋白质合成，成熟 mRNA 中被切除。\n- DNA 上写 GT-AG，RNA 上写 GU-AG，是同一对边界。1977 年 Sharp/Roberts 用腺病毒 hexon mRNA–DNA 电镜杂交发现单链 DNA 环。\n\n**3. 三种聚合酶**\n- Pol Ⅰ（核仁）：5.8S、18S、28S（45S 前体）。\n- Pol Ⅱ（核质）：编码蛋白基因、snoRNA、多数 snRNA。\n- Pol Ⅲ（核质）：tRNA、5S rRNA、U6 等。\n- 5S 不在 45S 上，由核仁外基因、Pol Ⅲ 转录后运入核仁；U6 是剪接体 snRNA 中唯一由 Pol Ⅲ 转录者。转录 $5'\\rightarrow 3'$，不需引物。\n\n**4. 剪接**\n- 剪接体约 60S。U1 认 $5'$ GU，U2 认分支点 A（需 ATP），U4/U5/U6 加入后排出 U4。两步转酯形成套索，外显子相连。\n- $\\beta$-珠蛋白 hnRNA 剪接点突变 → 不能形成成熟 mRNA → 肽链合成不足 → $\\beta$-珠蛋白生成障碍性贫血。",
+      "hint": "先写“主干+补充”，再写“转录了但不编码”的内含子，然后用一张三分表收住聚合酶，最后用 GU–AG–A 和套索收住剪接。",
+      "scoring_criteria": [
+        "写出中心法则主干（复制/转录/翻译）并指出逆转录和 RNA 复制是补充、蛋白质→核酸未被证实（3分）",
+        "区分外显子与内含子，并写出 GT-AG/GU-AG 为同一对边界或内含子发现实验（3分）",
+        "写出 Pol Ⅰ/Ⅱ/Ⅲ 的主要产物，并指出 5S 不在 45S 或 U6 由 Pol Ⅲ 转录（4分）",
+        "写出剪接体识别 GU/AG/分支点 A、两步转酯/套索，以及 $\\beta$-珠蛋白剪接点突变致病（4分）"
+      ],
+      "explanation": "本题把第一、二节串成“信息流向—基因结构—抄写分工—加工”。易错点：把逆转录写成推翻；把内含子当成未转录垃圾；把 5S 写进 45S；漏写排出 U4 或套索。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-1.md",
+        "label": "第一节 · 中心法则与断裂基因；第二节 · 三种聚合酶与剪接"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "遗传密码为何简并、摆动发生在何处？核糖体循环三步如何把肽链加长？增强子与启动子有何不同，锌指如何结合 DNA？TBX5、GATA3 突变以及朊蛋白病分别打击信息链的哪一层？",
+      "answer": "参考答案：\n\n**1. 简并与摆动**\n- 61 个有义密码子编码 20 种氨基酸，简并多在第三位；UAA、UAG、UGA 终止，AUG 为起始/Met。\n- 摆动：反密码子 $5'$ 碱基与密码子第三位允许非标准配对。丙氨酸 tRNA $3'$-CGC-$5'$ 可对 GCG 和 GCU。\n- 氨基酸身份由氨酰 tRNA 合成酶保证。\n\n**2. 核糖体循环**\n- 起始 tRNA 占 P 位。原核靠 SD 序列与 16S 配对，真核靠帽识别后扫描 AUG。\n- 进位：EF-Tu/GTP 送氨酰 tRNA 入 A 位。\n- 成肽：转肽酶把 P 位氨基酸接到 A 位上。\n- 转位：EF-G 使核糖体向 $3'$ 移动一个密码子，肽酰 tRNA 从 A 到 P。\n- RF1 认 UAA/UAG，RF2 认 UAA/UGA；eRF1 认三种。一条 mRNA 可形成多聚核糖体。\n\n**3. 增强子与锌指**\n- 启动子决定起始，聚合酶结合所必需；增强子本身不能起始，无方向限制，可远距离、可在下游，常有组织特异性。\n- 锌指：Cys/His 配位 Zn，C 端 $\\alpha$ 螺旋插入大沟。SP1 含 3 个锌指，结合 GC 盒。\n\n**4. 疾病入口**\n- TBX5 显性突变：心手综合征，拇指异常 + 房间隔/室间隔缺损——打击的是发育转录网络。\n- GATA3（锌指）突变：血 PTH 降低、感觉神经性耳聋、肾脏发育不良。\n- 克-雅病等朊蛋白病、亨廷顿病多聚 Q 聚集、AD 的 NFT 与 A$\\beta$ 斑：错误折叠蛋白不能被 UPS 有效清除——打击的是蛋白质降解/质量控制。",
+      "hint": "密码写第三位简并和反密码子 5′ 摆动；循环写“进 A、肽在 A 长、搬回 P”；增强子写“不能起始、可反向可远”；疾病把 TBX5/GATA3 和朊蛋白/UPS 分成两层。",
+      "scoring_criteria": [
+        "写出简并（第三位/61 对 20）和摆动（反密码子 5′ 端），或指出合成酶保证氨基酸身份（3分）",
+        "写出核糖体循环进位、成肽、转位，并指出起始 tRNA 占 P 位或肽接到 A 位（4分）",
+        "对比启动子（决定起始）与增强子（不能起始、无方向/可远距离），并写出锌指 Cys/His–Zn 或 SP1 三指结合 GC 盒（4分）",
+        "指出 TBX5 致心手综合征或 GATA3 致甲状旁腺–耳–肾表型，以及朊蛋白/神经退行性疾病与 UPS 清除失败有关（4分）"
+      ],
+      "explanation": "本题把第三、四、五节串成“密码—装配循环—转录调控—临床入口”。易错点：摆动位置写反；肽链写在 P 位不走转位；把增强子写成第二个启动子；把 HOS 和 GATA3 器官谱记串，或把朊蛋白病写成与降解无关。",
+      "sourceRef": {
+        "path": "content/cell-biology/textbook/ch09-3.md",
+        "label": "第三节 · 简并与核糖体循环；第四节 · 增强子/锌指；第五节 · 转录因子病与朊蛋白"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}
