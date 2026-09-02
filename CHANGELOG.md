@@ -2,6 +2,35 @@
 
 本项目所有重要变更记录于此。版本遵循语义化版本（SemVer）。
 
+## [0.5.0] - 2026-09-02
+
+本版本把「大二上学期」做成学年开关，并上线五本教材的富文本复习：医学细胞生物学、组织学与胚胎学、生物化学与分子生物学、系统解剖学，以及季一兵《仪器分析》。大一内容只按学年隐藏，不删除。
+
+### 学年切换
+
+- 学年值 `freshman-2` / `sophomore-1`，存储键 `gailvlun-academic-year`，默认大二上
+- 书架、侧栏、搜索、AI 大纲均按学年过滤；未知科目回退大一下，避免误藏旧内容
+
+### 大二上四科医学教材
+
+- 医学细胞生物学 ch01–ch18、组织学与胚胎学 ch01–ch28、生物化学 ch00–ch27、系统解剖学 ch00–ch09
+- 教材走 NoteRenderer 自定义指令（definition / compare / pitfall 等）+ 章内插图
+- 每章 10 道例题 + `tb-chXX` 题目测试（100 分 / 45 分钟）
+- 详解 / 课上录音 / 课堂纪要 / 考前模拟 / 实战演练仍为 stub
+
+### 新学科：仪器分析
+
+- 季一兵主编、高等教育出版社 2020 年第 1 版；扫描版 OCR 入库 15 章
+- 科目 id `instrumental-analysis`，蓝色 + ScanLine 图标
+- 每章 10 道例题 + `tb-ch01`–`tb-ch15`；页图为整页 JPG，正文只嵌有谱图/仪器结构的页
+- 未摄入附录、书末参考文献、索引
+
+### 安全
+
+- API 密钥仍走服务端 / 桌面端 DPAPI，不进入安装包
+
+---
+
 ## [0.4.0] - 2026-07-05
 
 本版本在 v0.3.1 基础上新增「中国近现代史纲要」学科完整内容、毛概教材题库、概率论实战演练真题模拟卷与考研录音题库重写，并在 AI 侧引入 Anthropic 适配器与思考档位菜单。题库系统按教材 Tab 独立化，整体内容覆盖显著扩大。
@@ -267,6 +296,7 @@
 - 划词追问多开悬浮窗；桌面端真实 Chromium 浏览器（保留登录态 / Cookie）；上下文看板（rAF 拖动 + 实时估算）。
 - 3 个 API 密钥用户首启填写，Windows DPAPI 加密存本机，**绝不进包**。
 
+[0.5.0]: https://github.com/AIMFllyYS/Notebook-MedFreshman/releases/tag/v0.5.0
 [0.4.0]: https://github.com/AIMFllyYS/Notebook-MedFreshman/releases/tag/v0.4.0
 [0.3.1]: https://github.com/AIMFllyYS/Notebook-MedFreshman/releases/tag/v0.3.1
 [0.3.0]: https://github.com/AIMFllyYS/Notebook-MedFreshman/releases/tag/v0.3.0
