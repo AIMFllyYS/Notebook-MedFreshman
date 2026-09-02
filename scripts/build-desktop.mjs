@@ -271,6 +271,17 @@ for (const junk of ["dist-desktop", ".git", "node_modules/.cache", "manim"]) {
   }
 }
 
+// robocopy copies the whole content/ and public/ trees. PDFs and local videos must not
+// ship: they blow the NSIS 2GB mmap limit (`error mmapping datablock`) and videos already
+// stream from NEXT_PUBLIC_VIDEO_CDN_BASE. Search index in content/.index stays.
+for (const junk of ["content/_raw-src", "content/_raw", "public/media/videos"]) {
+  const p = `${SA}/${junk}`;
+  if (existsSync(p)) {
+    console.log(`[build-desktop] pruning unpackaged source from standalone: ${junk}`);
+    rmSync(p, { recursive: true, force: true });
+  }
+}
+
 // 2b. Trim the redundant segment prefetch caches before packaging.
 stripSegmentCaches(`${SA}/.next/server`);
 
