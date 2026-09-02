@@ -1,0 +1,321 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch05",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch05-1.md；content/instrumental-analysis/textbook/ch05-2.md；content/instrumental-analysis/textbook/ch05-3.md；content/instrumental-analysis/textbook/ch05-4.md；content/instrumental-analysis/textbook/ch05-5.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于分子发光分析法、光致发光／生物发光／化学发光以及荧光与磷光，下列叙述正确的是（　）。",
+      "options": [
+        "分子发光分析法测的是分子吸收光谱；生物发光就是化学发光的别名；荧光和磷光都从激发三重态回到基态；本章主线是 X 射线荧光",
+        "分子发光分析法（molecular luminescence analysis）通过测量分子的特征发射光谱来研究物质结构和测定化学组成。光致发光（PL）吸收光能，生物发光（BL）吸收生物体内有酶参与的化学反应释放的能量，化学发光（CL）吸收化学反应的化学能。荧光从激发态最低振动能级回基态，磷光从激发三重态最低振动能级回基态。分子发光主要包括分子荧光、磷光和化学发光分析法，本章主要介绍荧光分析法，对象是紫外–可见光激发的有机分子",
+        "荧光分析法只做定量、不做定性；磷光在室温下比荧光更常见；红外荧光是本章定量主线",
+        "激发能量只能来自光能；原子荧光和分子荧光是同一种方法"
+      ],
+      "answer": 1,
+      "hint": "测发射光谱；BL 必须有酶；荧光对单重态、磷光对三重态；本章是分子荧光。",
+      "explanation": "**B 正确。** 定义、三种发光来源、荧光／磷光出发能级和本章范围都按第 1 节。\n\n**干扰项辨析**：\n- A：测的是发射不是吸收；BL 不是 CL 的别名；荧光不是从三重态出发；XRF 不并进本章操作。\n- C：荧光谱线特性及其强度既定性也定量；室温很少磷光；红外荧光不是本章主线。\n- D：热能、电能本版也点名；原子荧光是另一户头。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-1.md",
+        "label": "分子发光分析法 · 光致发光生物发光化学发光 · 荧光与磷光 · pitfall「不要把 X 射线荧光并进本章」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于单重态／三重态、自旋禁阻和六条去活化途径，下列叙述正确的是（　）。",
+      "options": [
+        "基态分子可以直接跃迁到 $\\mathrm{T}_1$；振动弛豫需要 $10^{-4}\\,\\mathrm{s}$；磷光比荧光更快；荧光从 $\\mathrm{T}_1$ 最低振动能级发射",
+        "$S=0$ 为单重态 $M=1$（$\\mathrm{S}_0$、$\\mathrm{S}_1$、$\\mathrm{S}_2$），$S=1$ 为三重态 $M=3$（$\\mathrm{T}_1$、$\\mathrm{T}_2$）。洪德规则使激发三重态能级低于激发单重态。自旋禁阻：吸收只能到激发单重态，不能直接到三重态。振动弛豫约 $10^{-12}\\,\\mathrm{s}$（同一电子能级内）；内转换把各激发单重态送到 $\\mathrm{S}_1$ 最低振动能级；荧光 $10^{-9}\\sim 10^{-7}\\,\\mathrm{s}$ 从 $\\mathrm{S}_1$ 最低振动能级回 $\\mathrm{S}_0$；外转换 $10^{-9}\\sim 10^{-7}\\,\\mathrm{s}$ 降荧光；体系间跨越 $\\mathrm{S}_1\\to\\mathrm{T}_1$（碘、溴、氧促进）；磷光 $10^{-4}\\sim 10\\,\\mathrm{s}$ 或更长，从 $\\mathrm{T}_1$ 最低振动能级发射，室温很少，需冷冻或固定化",
+        "激发三重态比激发单重态能量更高，所以磷光更蓝；体系间跨越会增强荧光",
+        "无论电子最初在哪一个激发单重态，都不能回到 $\\mathrm{S}_1$ 最低振动能级"
+      ],
+      "answer": 1,
+      "hint": "吸收只能到 S；荧光从 S₁，磷光从 T₁；时间数量级不要对调。",
+      "explanation": "**B 正确。** 多重态、选律、六条途径和时间数量级都按第 2 节。\n\n**干扰项辨析**：\n- A：不能直接到 $\\mathrm{T}_1$；振动弛豫是 $10^{-12}\\,\\mathrm{s}$；磷光更迟；荧光从 $\\mathrm{S}_1$。\n- C：三重态更低，磷光更红；跨越减弱甚至熄灭荧光。\n- D：内转换加振动弛豫使所有分子可回到 $\\mathrm{S}_1$ 最低振动能级。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-2.md",
+        "label": "单重态三重态 · 图5-2 六条途径 · pitfall「不要把激发直接画到 T₁」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于激发光谱、发射光谱、斯托克斯位移和镜像对称，下列叙述正确的是（　）。",
+      "options": [
+        "激发光谱扫描 $\\lambda_\\mathrm{em}$、固定激发；发射光谱扫描 $\\lambda_\\mathrm{ex}$；荧光波长总小于激发光波长；镜像对称是波长对称",
+        "激发光谱：不同 $\\lambda_\\mathrm{ex}$ 引起某一波长荧光，$F$ 对 $\\lambda_\\mathrm{ex}$，形状与吸收光谱极为相似。发射光谱（荧光光谱）：固定激发，扫 $\\lambda_\\mathrm{em}$。图 5-3 硫酸奎宁虚线激发、实线发射。斯托克斯位移：荧光波长总大于激发光波长，1852 年斯托克斯首次观察到，主要因内转换和振动弛豫先到 $\\mathrm{S}_1$ 最低振动能级。荧光通常只有一个发射带，形状与激发波长无关。镜像对称是频率或波数对称而不是波长对称；不是镜像的峰表示散射光或杂质荧光",
+        "换一个激发波长，荧光发射带的形状必须跟着变，因为可以从 $\\mathrm{S}_2$ 直接发射",
+        "图 5-3 实线是激发光谱，虚线是发射光谱；选波长时应把两条曲线的峰对调"
+      ],
+      "answer": 1,
+      "hint": "激发扫 λex，发射扫 λem；荧光更红；镜像看波数。",
+      "explanation": "**B 正确。** 两种光谱的测法、斯托克斯位移、形状与激发无关、波数镜像都按第 2 节。\n\n**干扰项辨析**：\n- A：扫的轴对调了；位移方向反了；不是波长对称。\n- C：发射都从 $\\mathrm{S}_1$ 最低振动能级出发，形状通常与激发波长无关。\n- D：虚线激发、实线发射，不要对调。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-2.md",
+        "label": "激发光谱 · 发射光谱 · 斯托克斯位移 · 镜像对称 · pitfall「不要对调」"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于荧光寿命、荧光效率以及能发荧光的分子结构，下列叙述正确的是（　）。",
+      "options": [
+        "$\\varphi_\\mathrm{f}$ 可以大于 1；有强紫外吸收就一定有强荧光；主要跃迁是 $\\mathrm{n}\\to\\pi^{*}$ 的 R 带；碘苯相对强度为 10",
+        "荧光寿命 $\\tau_\\mathrm{f}$ 是除去激发光源后强度降到最大强度的 $1/\\mathrm{e}$（约 $37\\%$）所需时间，$F_t=F_0\\mathrm{e}^{-t/\\tau_\\mathrm{f}}$。$\\varepsilon_\\mathrm{max}$ 在 $10^{3}\\sim 10^{5}$ 时 $\\tau_\\mathrm{f}$ 常为 $10^{-10}\\sim 10^{-8}\\,\\mathrm{s}$。$\\varphi_\\mathrm{f}=$ 发射荧光光子数／吸收激发光光子数，范围 $0\\sim 1$。本版：荧光素钠（水）$0.92$，荧光素（水）$0.65$，蒽（乙醇）$0.30$，菲（乙醇）$0.10$。能发荧光须同时有强紫外–可见吸收和一定 $\\varphi_\\mathrm{f}$，主要是共轭 $\\pi\\to\\pi^{*}$（K 带）；长共轭、刚性平面提高效率。表 5-1 碘苯、硝基苯相对强度为 $0$",
+        "苯、萘、蒽的 $\\varphi_\\mathrm{f}$ 随共轭增长而减小；联苯 $\\varphi_\\mathrm{f}=1.0$，芴为 $0.2$",
+        "给电子取代基使荧光熄灭；顺式 1,2-二苯乙烯有强烈荧光，反式没有"
+      ],
+      "answer": 1,
+      "hint": "两个条件；K 带；本版量子产率；表 5-1 碘苯硝基苯是 0。",
+      "explanation": "**B 正确。** 寿命定义、式（5-6）数量级、式（5-7）、四个 $\\varphi_\\mathrm{f}$ 例子、结构条件和表 5-1 都按第 2 节。\n\n**干扰项辨析**：\n- A：$\\varphi_\\mathrm{f}\\le 1$；吸收不等于荧光；主跃迁是 $\\pi\\to\\pi^{*}$；碘苯是 $0$。\n- C：苯／萘／蒽为 $0.11$、$0.29$、$0.36$；联苯 $0.2$、芴 $1.0$，写反了。\n- D：给电子增敏；反式有荧光、顺式没有。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-2.md",
+        "label": "荧光寿命 · 荧光效率 · 表5-1 · 联苯与芴 · pitfall「有强紫外吸收不等于强荧光」"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于温度、溶剂、pH、熄灭和散射光，下列叙述正确的是（　）。",
+      "options": [
+        "温度升高荧光一定增强；苯胺在 $\\mathrm{pH}>13$ 发蓝色荧光；瑞利光波长比入射光更长；硫酸奎宁应选 $350\\,\\mathrm{nm}$ 激发以避开拉曼",
+        "一般温度升高，$\\varphi_\\mathrm{f}$ 和强度降低。荧光素钠乙醇溶液在 $0^\\circ\\mathrm{C}$ 以下每降 $10^\\circ\\mathrm{C}$，$\\varphi_\\mathrm{f}$ 增 $3\\%$，$-80^\\circ\\mathrm{C}$ 时 $\\varphi_\\mathrm{f}=1$。极性增大常使荧光红移并增强；巯基喹啉氯仿 $398\\,\\mathrm{nm}/0.041$，乙醇 $410\\,\\mathrm{nm}/0.064$。苯胺在 $\\mathrm{pH}\\,7\\sim 12$ 分子形式发蓝色荧光，$\\mathrm{pH}<2$ 或 $>13$ 为离子、不发光。熄灭包括碰撞、不发光配合物、溴／碘跨越、溶解氧；自熄灭浓度超过 $1\\,\\mathrm{g}\\cdot\\mathrm{L}^{-1}$。瑞利光与入射同波长；长波拉曼更易干扰。奎宁荧光峰钉在 $448\\,\\mathrm{nm}$，应选 $320\\,\\mathrm{nm}$ 激发（拉曼 $360\\,\\mathrm{nm}$ 不干扰），不要选 $350\\,\\mathrm{nm}$（拉曼 $400\\,\\mathrm{nm}$ 干扰）",
+        "$\\alpha$-萘酚分子形式有荧光、离子化后无荧光；四氯化碳的拉曼最容易干扰",
+        "荧光熄灭只能造成误差，不能用来测定熄灭剂"
+      ],
+      "answer": 1,
+      "hint": "苯胺只在 pH 7～12 亮；奎宁选 320 nm；自熄灭 1 g·L⁻¹。",
+      "explanation": "**B 正确。** 温度、溶剂、苯胺 pH、熄灭、自熄灭和奎宁选波长都按第 2 节。\n\n**干扰项辨析**：\n- A：温度升高一般降荧光；过碱苯胺不亮；瑞利与入射同波长；应选 $320\\,\\mathrm{nm}$。\n- C：$\\alpha$-萘酚分子无荧光、离子化后有；$\\mathrm{CCl}_4$ 拉曼几乎不干扰。\n- D：强度减小与熄灭剂浓度线性时可用熄灭法，如测微量氧。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-2.md",
+        "label": "温度溶剂pH · 荧光熄灭 · 图5-6 奎宁 320 nm · 表5-2"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于荧光强度与浓度以及定量方法，下列叙述正确的是（　）。",
+      "options": [
+        "荧光应在透射方向测定；任何浓度都有 $F=Kc$；放大检测器不能提高荧光灵敏度；比例法不需要曲线过原点",
+        "因激发光一部分被透过，一般在与激发光源垂直的方向观测。$I_\\mathrm{f}=\\varphi_\\mathrm{f} I_\\mathrm{a}$，$I=I_0 10^{-\\varepsilon cl}$，故 $I_\\mathrm{f}=\\varphi_\\mathrm{f}(I_0-I_0 10^{-\\varepsilon cl})$。当 $\\varepsilon cl<0.05$ 时 $F=2.303\\,\\varphi_\\mathrm{f} I_0\\varepsilon cl=Kc$，此为定量基本关系式；$\\varepsilon cl\\geqslant 0.05$ 不呈线性。荧光测弱背景下的发射，增大检测器灵敏度可以提高检测能力；紫外–可见测 $I/I_0$，放大比值不变。一般用标准曲线法；曲线通过原点时才可用比例法，并按式（5-12）、（5-13）扣空白",
+        "荧光定量就是第 4 章的 $A=Elc$，不必另写 $F=Kc$",
+        "空白调不到零时仍可把 $F_x/F_\\mathrm{s}$ 直接当 $c_x/c_\\mathrm{s}$"
+      ],
+      "answer": 1,
+      "hint": "垂直观测；线性条件 εcl＜0.05；比例法要过原点并扣 F₀。",
+      "explanation": "**B 正确。** 式（5-8）～（5-13）、$90^\\circ$ 观测、灵敏度比较和两种定量法都按第 3 节。\n\n**干扰项辨析**：\n- A：不能在透射方向测；线性有 $\\varepsilon cl<0.05$ 条件；放大检测器对荧光有用；比例法要过原点。\n- C：测的是发射不是吸光度。\n- D：调不到零必须扣 $F_0$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-3.md",
+        "label": "式（5-11）F＝Kc · 图5-7 垂直观测 · 标准曲线法与比例法"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于荧光分光光度计、校正和其他荧光分析技术，下列叙述正确的是（　）。",
+      "options": [
+        "光电荧光计用氙弧灯和两台光栅单色器画光谱；荧光分光光度计沿透射方向取光，光源是高压汞灯",
+        "光电荧光计：高压汞灯（线光谱）、滤光片、光电管，不能测光谱但可定量。荧光分光光度计：氙弧灯连续光谱 $230\\sim 720\\,\\mathrm{nm}$（$300\\sim 400\\,\\mathrm{nm}$ 强度几乎相等，需稳压），激发单色器＋发射单色器（光栅），光电倍增管，与激发光成 $90^\\circ$ 测定以消除透射和反射。灵敏度校正最常用硫酸奎宁；波长用汞灯标准谱线；表观光谱单光束要校正光源和检测器，双光束用参比。激光诱导灵敏度提高 $2\\sim 10$ 倍甚至单分子；时间分辨用脉冲激光按寿命分开；同步荧光 $F_\\mathrm{sp}=Kc F_\\mathrm{ex}F_\\mathrm{em}$；胶束对芘：水中 $(5.2\\sim 8.5)\\times 10^{-7}\\,\\mathrm{mol}\\cdot\\mathrm{L}^{-1}$，SDS 胶束中 $0.043\\,\\mathrm{mol}\\cdot\\mathrm{L}^{-1}$",
+        "时间分辨就是把扫描速度放慢；胶束只增溶不增敏；同步荧光不能定量",
+        "荧光分光光度计与紫外–可见光度计光路完全相同，都是一台单色器、沿直线取光"
+      ],
+      "answer": 1,
+      "hint": "氙灯 230～720 nm；两台单色器；90°；奎宁校正；四项技术本版数字。",
+      "explanation": "**B 正确。** 两类仪器、氙灯范围、$90^\\circ$、三项校正和四项技术都按第 4 节。\n\n**干扰项辨析**：\n- A：把两类仪器的光源和单色器对调了。\n- C：时间分辨是激发与检测之间延缓；胶束有增溶、增敏、增稳；同步峰高与 $c$ 线性。\n- D：荧光计两台单色器、侧面 $90^\\circ$，与第 4 章吸收仪不同。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-4.md",
+        "label": "图5-8 图5-9 · 氙弧灯 · 90° · 激光诱导时间分辨同步胶束"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于激发光谱与发射光谱、斯托克斯位移以及硫酸奎宁选激发波长，下列叙述正确的有（　）。",
+      "options": [
+        "激发光谱固定发射、扫 $\\lambda_\\mathrm{ex}$，形状像吸收光谱；发射光谱固定激发、扫 $\\lambda_\\mathrm{em}$。图 5-3 虚线激发、实线发射",
+        "斯托克斯位移：荧光波长总大于激发光波长（1852）。荧光通常只有一个发射带，形状与激发波长无关，因为都从 $\\mathrm{S}_1$ 最低振动能级出发",
+        "镜像对称是频率或波数对称。奎宁荧光峰总在 $448\\,\\mathrm{nm}$；$320\\,\\mathrm{nm}$ 激发时溶剂拉曼 $360\\,\\mathrm{nm}$ 不干扰，$350\\,\\mathrm{nm}$ 激发时拉曼 $400\\,\\mathrm{nm}$ 干扰，故选 $320\\,\\mathrm{nm}$",
+        "激发光谱和发射光谱可以随意对调来选测定波长；换激发波长就会换出新的发射带形状"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "不要对调两条曲线；奎宁钉在 448 nm，选 320 nm。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：两种光谱的测法，来自 ch05-2。\n- B：斯托克斯位移和形状与激发无关，来自 ch05-2。\n- C：波数镜像和奎宁选波长，来自 ch05-2 图 5-6。\n- **D 错**：教材明确不要对调；形状通常与激发波长无关。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-2.md",
+        "label": "激发／发射光谱 · 斯托克斯位移 · 图5-6 奎宁 320 nm"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于荧光定量、仪器光路和应用实例，下列叙述正确的有（　）。",
+      "options": [
+        "$\\varepsilon cl<0.05$ 时 $F=2.303\\,\\varphi_\\mathrm{f} I_0\\varepsilon cl=Kc$；与激发光垂直观测；荧光测弱背景发射所以比测 $I/I_0$ 更灵",
+        "光电荧光计不能画光谱；荧光分光光度计氙灯 $230\\sim 720\\,\\mathrm{nm}$，两台光栅单色器，与激发光成 $90^\\circ$",
+        "荧光胺 $390/480\\,\\mathrm{nm}$ 打伯胺且水解产物不显荧光；OPA $340/455\\,\\mathrm{nm}$ 需 2-巯基乙醇、$\\mathrm{pH}\\,9\\sim 10$；丹酰氯 $365/500\\,\\mathrm{nm}$，水解产物呈蓝色荧光。$\\mathrm{Al}^{3+}$–8-羟基喹啉 $\\lambda_\\mathrm{ex}=520\\,\\mathrm{nm}$、$\\lambda_\\mathrm{em}=570\\,\\mathrm{nm}$，铝 $0.002\\sim 0.24\\,\\mu\\mathrm{g}\\cdot\\mathrm{mL}^{-1}$。利血平片 $400/500\\,\\mathrm{nm}$",
+        "荧光应沿透射方向测定；丹酰氯水解产物不显荧光；把 $\\mathrm{Al}^{3+}$ 的 $520/570\\,\\mathrm{nm}$ 改成紫外区才符合“常理”"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "F＝Kc 有稀溶液条件；90°；试剂波长以本版为准。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：第 3 节基本关系式和灵敏度比较。\n- B：第 4 节两类仪器和 $90^\\circ$。\n- C：第 5 节试剂和铝、利血平本版数字。\n- **D 错**：不能沿透射方向；丹酰氯水解产物蓝色荧光；波长以印刷为准，不要改。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-3.md",
+        "label": "F＝Kc · 90° 光路 · 荧光胺 OPA 丹酰氯 · 铝与利血平"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "基态分子可以直接跃迁到激发三重态并发磷光；激发光谱扫描的是发射波长；斯托克斯位移是指荧光比激发光更蓝；荧光光谱形状随激发波长改变而必须出现多个发射带。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "自旋禁阻；激发扫 λex；荧光更红；通常一个发射带。",
+      "explanation": "**该命题错误，四句都错。** 自旋禁阻禁止直接到三重态。激发光谱扫 $\\lambda_\\mathrm{ex}$。斯托克斯位移是荧光波长总大于激发光波长。无论用哪一波长激发，发射都从 $\\mathrm{S}_1$ 最低振动能级出发，通常只有一个发射带、形状与激发波长无关。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-2.md",
+        "label": "自旋禁阻 · 激发／发射光谱 · 斯托克斯位移 · 形状与激发无关"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "任何浓度下荧光强度都与浓度成正比；荧光应在透射光方向测定；荧光分光光度计与紫外–可见光度计一样沿直线取光、只用一台单色器；比例法不要求标准曲线通过原点。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "εcl＜0.05；垂直观测；两台单色器 90°；比例法要过原点。",
+      "explanation": "**该命题错误，四句都错。** 仅当 $\\varepsilon cl<0.05$ 时 $F=Kc$；$\\varepsilon cl\\geqslant 0.05$ 或浓度超过 $1\\,\\mathrm{g}\\cdot\\mathrm{L}^{-1}$ 自熄灭都会偏离。不能在透射方向测荧光，一般与激发光垂直。荧光分光光度计有激发和发射两台单色器，与激发光成 $90^\\circ$。比例法要求曲线通过原点，并在线性范围内，空白调不到零要扣 $F_0$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-3.md",
+        "label": "式（5-11） · 垂直观测 · 图5-9 90° · 比例法前提"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "荧光效率 $\\varphi_\\mathrm{f}$ 的取值范围是 ________。稀溶液线性条件是 ________ 时 $F=Kc$。荧光分光光度计一般在与激发光成 ________ 的方向上测定。氙弧灯连续光谱波长范围是 ________。硫酸奎宁无论用 $320\\,\\mathrm{nm}$ 还是 $350\\,\\mathrm{nm}$ 激发，荧光峰总在 ________。",
+      "answer": "0～1，εcl＜0.05，90°，230～720 nm，448 nm",
+      "hint": "量子产率 0～1；εcl＜0.05；90°；氙灯 230～720 nm；奎宁 448 nm。",
+      "scoring_criteria": [
+        "第一空填“0～1”（或“0~1”“0—1”）（2分）",
+        "第二空填“εcl＜0.05”（或“εcl<0.05”“εcl 小于 0.05”）（2分）",
+        "第三空填“90°”（或“90度”“直角”）（2分）",
+        "第四空填“230～720 nm”（或“230-720 nm”“230~720 nm”）（2分）",
+        "第五空填“448 nm”（或“448nm”）（2分）"
+      ],
+      "explanation": "$\\varphi_\\mathrm{f}$ 只能在 $0\\sim 1$。$\\varepsilon cl<0.05$ 时 $F=Kc$。为消除透射和反射，与激发光成 $90^\\circ$ 测定。氙弧灯 $230\\sim 720\\,\\mathrm{nm}$。奎宁荧光峰钉在 $448\\,\\mathrm{nm}$，与激发波长无关。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-2.md",
+        "label": "φf 0～1；εcl＜0.05；90°；氙灯 230～720 nm；奎宁 448 nm"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "荧光怎样产生、两种特征光谱有何差别、结构上怎样才容易发荧光？请写出：①吸收只能到单重态，经振动弛豫和内转换落到 $\\mathrm{S}_1$ 最低振动能级后发荧光，磷光则经体系间跨越从 $\\mathrm{T}_1$ 发射，并给出本版主要时间数量级；②激发光谱与发射光谱怎样测，斯托克斯位移、形状与激发无关、波数镜像各说什么；③能发荧光的两个条件，长共轭、刚性平面、取代基三类如何影响，并点名苯／萘／蒽或联苯／芴或表 5-1 碘苯为 0 中至少一组本版数字。不要把激发光谱和发射光谱对调，也不要把吸收直接画到 $\\mathrm{T}_1$。",
+      "answer": "参考答案：\n\n**1. 产生过程**\n- 吸收：自旋禁阻，只能 $\\mathrm{S}_0\\to\\mathrm{S}_1$ 或 $\\mathrm{S}_2$，约 $10^{-15}\\,\\mathrm{s}$。\n- 振动弛豫约 $10^{-12}\\,\\mathrm{s}$；内转换把各激发单重态送到 $\\mathrm{S}_1$ 最低振动能级。\n- 荧光：$\\mathrm{S}_1$ 最低振动能级 $\\to\\mathrm{S}_0$ 任一振动能级，$10^{-9}\\sim 10^{-7}\\,\\mathrm{s}$，波长比激发光更长。\n- 外转换降荧光；体系间跨越 $\\mathrm{S}_1\\to\\mathrm{T}_1$（重原子、氧促进）；磷光从 $\\mathrm{T}_1$ 最低振动能级发射，$10^{-4}\\sim 10\\,\\mathrm{s}$ 或更长，室温很少。\n\n**2. 两种光谱**\n- 激发光谱：扫 $\\lambda_\\mathrm{ex}$，固定发射，像吸收光谱。\n- 发射光谱：固定激发，扫 $\\lambda_\\mathrm{em}$。\n- 斯托克斯位移（1852）：荧光更红，主因内转换＋振动弛豫。\n- 通常一个发射带，形状与激发波长无关。镜像是波数／频率对称；多峰疑散射或杂质。\n\n**3. 结构**\n- 两个条件：强紫外–可见吸收＋一定 $\\varphi_\\mathrm{f}$；主跃迁共轭 $\\pi\\to\\pi^{*}$。\n- 长共轭红移增效（苯／萘／蒽：$205/278/0.11$，$286/321/0.29$，$356/404/0.36$）。\n- 刚性平面：联苯 $0.2$，芴 $1.0$。\n- 给电子增敏，吸电子减弱，重原子荧光↓磷光↑；表 5-1 碘苯、硝基苯相对强度 $0$。",
+      "hint": "按产生 → 两种光谱 → 结构写，避开对调和直接到 T₁。",
+      "scoring_criteria": [
+        "写出吸收只能到单重态、荧光从 S₁、磷光从 T₁ 及主要时间数量级（4分）",
+        "写出激发／发射光谱测法、斯托克斯位移、形状与激发无关、波数镜像（4分）",
+        "写出两个条件、长共轭／刚性／取代基，并给出至少一组本版数字（4分）",
+        "未对调两种光谱、未把吸收画到 T₁（2分）"
+      ],
+      "explanation": "本题把第 2 节收成“产生—光谱—结构”。易错点：激发／发射对调；吸收直接到三重态；用别的书的量子产率替换本版数字。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-2.md",
+        "label": "图5-2 去活化；激发／发射光谱；结构与表5-1"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "荧光怎样定量、仪器光路与紫外光度计差在哪、应用上无机／有机各怎么入手？请写出：① $\\varepsilon cl<0.05$ 时 $F=Kc$ 的来历，为什么要比紫外–可见更灵，标准曲线与比例法的前提；② 光电荧光计与荧光分光光度计的光源／单色／检测，为何 $90^\\circ$，氙灯 $230\\sim 720\\,\\mathrm{nm}$；③ 荧光胺／OPA／丹酰氯三组波长，铝的 8-羟基喹啉 $520/570\\,\\mathrm{nm}$，以及猝灭法与间接法不要并户。不要把荧光读数听成吸光度，也不要把荧光计画成直线光路。",
+      "answer": "参考答案：\n\n**1. 定量**\n- $I_\\mathrm{f}=\\varphi_\\mathrm{f} I_\\mathrm{a}$，代入朗伯–比尔，$\\varepsilon cl<0.05$ 时 $F=2.303\\,\\varphi_\\mathrm{f} I_0\\varepsilon cl=Kc$。\n- 测弱背景下的发射，放大检测器有用；紫外–可见测 $I/I_0$，放大商不变。\n- 一般标准曲线（空白调零或相减；维生素 $\\mathrm{B}_1$ 可用硫酸奎宁作基准）。曲线过原点才用比例法，扣 $F_0$：$c_x=(F_x-F_0)/(F_\\mathrm{s}-F_0)\\times c_\\mathrm{s}$。\n\n**2. 仪器**\n- 光电荧光计：高压汞灯、滤光片、光电管，不能画光谱。\n- 荧光分光光度计：氙弧灯 $230\\sim 720\\,\\mathrm{nm}$（$300\\sim 400\\,\\mathrm{nm}$ 几乎相等），两台光栅单色器，光电倍增管，可画激发／发射光谱。\n- 与激发光成 $90^\\circ$，消除透射和反射。灵敏度常用硫酸奎宁校正。\n\n**3. 应用**\n- 荧光胺 $390/480\\,\\mathrm{nm}$ 打伯胺，水解产物不显荧光；OPA $340/455\\,\\mathrm{nm}$，2-巯基乙醇、$\\mathrm{pH}\\,9\\sim 10$；丹酰氯 $365/500\\,\\mathrm{nm}$，水解产物蓝色荧光。\n- 无机很少自身发荧光。直接法：铝–8-羟基喹啉氯仿萃取液，$520/570\\,\\mathrm{nm}$，$0.002\\sim 0.24\\,\\mu\\mathrm{g}\\cdot\\mathrm{mL}^{-1}$。\n- 猝灭法读荧光下降；间接法释放发光配体。二者不要并户。",
+      "hint": "按 F＝Kc → 90° 两台单色器 → 试剂和铝的本版波长写。",
+      "scoring_criteria": [
+        "写出 εcl＜0.05 时 F＝Kc、灵敏度高于紫外–可见的原因、两种定量法前提（4分）",
+        "写出两类仪器差别、90°、氙灯 230～720 nm（4分）",
+        "写出三种试剂波长及铝 520／570 nm（4分）",
+        "指出猝灭法与间接法不同，且未把荧光当吸光度、未画直线光路（3分）"
+      ],
+      "explanation": "本题把第 3～5 节收成“定量—光路—应用”。易错点：任何浓度都 $F=Kc$；直线光路；试剂波长对调；猝灭与间接并户。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch05-3.md",
+        "label": "定量基本式；图5-8 图5-9；荧光试剂与无机四法"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

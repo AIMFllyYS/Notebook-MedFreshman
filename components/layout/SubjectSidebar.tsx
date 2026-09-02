@@ -23,6 +23,7 @@ import {
   Dna,
   Bone,
   Layers,
+  ScanLine,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import FileTree from "./FileTree";
@@ -55,6 +56,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: Reac
   Dna,
   Bone,
   Layers,
+  ScanLine,
 };
 
 function SubjectIcon({ name, size = 15 }: { name: string; size?: number }) {

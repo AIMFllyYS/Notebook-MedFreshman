@@ -26,6 +26,7 @@ export const SOPHOMORE_SUBJECT_IDS = [
   "biochemistry",
   "anatomy",
   "histology",
+  "instrumental-analysis",
 ] as const;
 
 const SOPHOMORE_SET = new Set<string>(SOPHOMORE_SUBJECT_IDS);

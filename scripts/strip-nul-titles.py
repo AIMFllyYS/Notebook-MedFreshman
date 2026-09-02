@@ -9,6 +9,7 @@ TARGETS = [
     REPO / "lib" / "content-data" / "anatomy-textbook.ts",
     REPO / "lib" / "content-data" / "cell-biology-textbook.ts",
     REPO / "lib" / "content-data" / "biochemistry-textbook.ts",
+    REPO / "lib" / "content-data" / "instrumental-analysis-textbook.ts",
     REPO / "lib" / "content-data" / "nav.generated.json",
 ]
 
@@ -28,7 +29,7 @@ def main() -> None:
             path.write_text(updated, encoding="utf-8")
             n += 1
             print(f"stripped {path.relative_to(REPO)}")
-    for subject in ["histology", "anatomy", "cell-biology", "biochemistry"]:
+    for subject in ["histology", "anatomy", "cell-biology", "biochemistry", "instrumental-analysis"]:
         folder = REPO / "content" / subject / "textbook"
         if not folder.exists():
             continue

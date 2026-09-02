@@ -1,0 +1,322 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch15",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch15-1.md；content/instrumental-analysis/textbook/ch15-2.md；content/instrumental-analysis/textbook/ch15-3.md；content/instrumental-analysis/textbook/ch15-4.md；content/instrumental-analysis/textbook/ch15-5.md；content/instrumental-analysis/textbook/ch15-6.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于高效毛细管电泳法（HPCE）的定位、简史和柱效来源，下列叙述正确的是（　）。",
+      "options": [
+        "HPCE 是第 14 章 HPLC 的一种毛细管柱型；驱动力是高压泵；流型是抛物线层流，所以柱效低于填充柱",
+        "CE／HPCE 与色谱方法并列。1981 年 Jorgenson 和 Lukacs 用内径 $75\\,\\mu\\mathrm{m}$ 石英毛细管、$30\\,\\mathrm{kV}$ 自由溶液电泳，柱效高于每米 $40$ 万理论板数。高效来自细管限制焦耳热、柱上检测消除柱外效应、电渗扁平塞流不扩张区带。Tiselius 1937 年分离人血清蛋白，1948 年诺贝尔化学奖，不是 1981 年才获奖",
+        "中性分子一律用 CZE 按淌度差分开；概述「能用于中性分子的测定」就是 CZE 的机制",
+        "每米几十万到上百万板与 HPLC 填充柱每米 $4$ 万～$8$ 万是同一档数字"
+      ],
+      "answer": 1,
+      "hint": "并列不是柱型；塞流；1981 年 $75\\,\\mu\\mathrm{m}$、$30\\,\\mathrm{kV}$、$40$ 万板／米。",
+      "explanation": "**B 正确。** 定义、1981 年数字和高效三笔都按第 1、2 节。\n\n**干扰项辨析**：\n- A：把本章答成 HPLC；流型写反。\n- C：CZE 分不开中性溶质，中性测定靠整套模式。\n- D：板数不是同一档。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-1.md",
+        "label": "HPCE 定义 · Jorgenson 1981 · 塞流"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于石英毛细管双电层和 Zeta 电位，下列叙述正确的是（　）。",
+      "options": [
+        "任何 $\\mathrm{pH}$ 下石英表面都带正电；紧密层在电泳中整体向阴极迁移；Zeta 电位是体相溶液的电位",
+        "碱性和微酸性（$\\mathrm{pH}>2.5$）时硅羟基电离成 $\\mathrm{SiO}^{-}$，表面负电。Stern 层（紧密层）电泳过程中不移动；扩散层会迁移。剪切面上的电位是 Zeta 电位 $\\zeta$，式（15-1）$\\zeta=4\\pi\\delta e/\\varepsilon$。$\\mathrm{pH}<2.5$ 时硅羟基基本不解离，EOF 接近于零。图 15-1、15-2",
+        "式（15-1）的 $e$ 是元电荷，$\\varepsilon$ 是真空介电常数 $\\varepsilon_{0}$，与式（15-4）符号完全相同",
+        "扩散层贴在管壁上不动，紧密层被电场拖走形成电渗"
+      ],
+      "answer": 1,
+      "hint": "$\\mathrm{pH}>2.5$ 壁负；紧密层不动；$\\zeta$ 在剪切面。",
+      "explanation": "**B 正确。** 双电层两层、式（15-1）和 $\\mathrm{pH}<2.5$ 近零都按第 2 节。\n\n**干扰项辨析**：\n- A：表面是负电；紧密层不移动。\n- C：$e$ 是单位面积电荷数；$\\varepsilon_{0}$ 出现在式（15-4）。\n- D：会动的是扩散层。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-2.md",
+        "label": "双电层 · 式（15-1） · 图15-1"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于电泳淌度、电渗淌度和实验测定，下列叙述正确的是（　）。",
+      "options": [
+        "中性化合物不进毛细管；电渗标记物必须用苯甲酸；$u_{\\mathrm{eo}}$ 用总长 $L_{\\mathrm{t}}$ 去除以 $t_{0}$",
+        "电泳是荷电粒子向相反电极迁移，$v=\\varepsilon\\zeta E/(6\\pi\\eta)$，$\\mu_{\\mathrm{ep}}=v/E$。电渗是整管溶剂在轴向电场下定向流动。石英、$\\mathrm{pH}>2.5$：水合阳离子向阴极，带动溶液形成 EOF。$\\mu_{\\mathrm{eo}}=\\varepsilon_{0}\\varepsilon\\zeta_{\\mathrm{w}}/\\eta$；$u_{\\mathrm{eo}}=L_{\\mathrm{d}}/t_{0}$，$\\mu_{\\mathrm{eo}}=L_{\\mathrm{d}}L_{\\mathrm{t}}/(t_{0}U)$。通常用中性粒子作标记物。本版用「淌度」",
+        "电渗流型与 HPLC 压力流相同，都是抛物线层流，这是 CE 柱效高的原因",
+        "电场强度增加时 EOF 永远严格线性，与焦耳热无关"
+      ],
+      "answer": 1,
+      "hint": "中性物测 $t_{0}$；分子是 $L_{\\mathrm{d}}$；塞流不是层流。",
+      "explanation": "**B 正确。** 式（15-2）～（15-7）和第 2 节电渗定义。\n\n**干扰项辨析**：\n- A：中性物随 EOF 走；分子是 $L_{\\mathrm{d}}$。\n- C：EOF 是扁平塞流，HPLC 才是层流。\n- D：电压太高因焦耳热偏离线性。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-2.md",
+        "label": "电泳／电渗淌度 · 式（15-2）～（15-7）"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于表观淌度和 CZE 阴极检测的流出顺序，下列叙述正确的是（　）。",
+      "options": [
+        "阴离子从正极端窗口出去；中性分子停在进样端；阳离子最后出峰",
+        "典型操作正极进样、负极检测。$\\mu_{\\mathrm{app}}=\\mu_{\\mathrm{ep}}+\\mu_{\\mathrm{eo}}=L_{\\mathrm{d}}L_{\\mathrm{t}}/(tU)$。阳离子 $\\mu_{\\mathrm{ep}}+\\mu_{\\mathrm{eo}}$ 先出，中性 $=\\mu_{\\mathrm{eo}}$，阴离子 $\\mu_{\\mathrm{eo}}-\\mu_{\\mathrm{ep}}$ 后出。电渗绝对值一般大于电泳，阴离子仍被拖过负极检测窗。有效淌度就是 $\\mu_{\\mathrm{ep}}$。图 15-5",
+        "分开靠电渗差，推动靠电泳；中性分子之间靠 CZE 淌度差即可拆开",
+        "本版「荷质比」应按质谱 $m/z$ 理解成质量越大的阳离子越先出"
+      ],
+      "answer": 1,
+      "hint": "阳 → 中性 → 阴；EOF 是驱动力；电泳差才分开。",
+      "explanation": "**B 正确。** 式（15-8）（15-9）和阴极检测顺序按第 2 节。\n\n**干扰项辨析**：\n- A：阴离子净位移仍向负极。\n- C：分开靠电泳差；CZE 分不开中性物。\n- D：荷质比大（电荷多、质量小）的阳离子先出。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-2.md",
+        "label": "表观淌度 · 图15-5 · 阴极检测顺序"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于石英毛细管 EOF 随 $\\mathrm{pH}$、离子强度、甲醇和表面活性剂的变化，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{pH}<2.5$ 时 EOF 最大；$\\mathrm{pH}>8.5$ 时 EOF 随 $\\mathrm{pH}$ 继续线性猛增；甲醇增大 EOF；阳离子表面活性剂（小于 CMC）使 EOF 增加",
+        "石英：$\\mathrm{pH}<2.5$，硅羟基基本不解离，EOF 近零；$\\mathrm{pH}\\,3.0\\sim 8.5$ 迅速增强；$\\mathrm{pH}>8.5$ 解离基本完全，EOF 变化很小。离子强度增加则双电层变薄、EOF 下降，过高产生大量焦耳热。甲醇等有机溶剂可大幅度减小 EOF。小于 CMC 的阴离子表面活性剂使 EOF 增加，阳离子使 EOF 降低甚至反向。大于 CMC 形成胶束，那是 MEKC",
+        "升温使黏度上升、EOF 下降；管壁涂层不能控制硅羟基",
+        "图 15-4 只有石英一种管材，玻璃和聚四氟乙烯不会出现"
+      ],
+      "answer": 1,
+      "hint": "pH 三段；甲醇减 EOF；小于 CMC 才调管壁。",
+      "explanation": "**B 正确。** EOF 七因素和第 2 节 pH 三段。\n\n**干扰项辨析**：\n- A：pH 三段写反；甲醇和阳离子添加剂方向写反。\n- C：升温 EOF 提高；涂层就是为了改硅羟基。\n- D：图 15-4 有玻璃、石英、聚四氟乙烯。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-2.md",
+        "label": "EOF 七因素 · pH 三段 · 图15-4"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 CZE、MEKC 和 CEC 的分离机制，下列叙述正确的是（　）。",
+      "options": [
+        "CZE 能拆开中性溶质；MEKC 必须把表面活性剂浓度控制在 CMC 以下；CEC 的管只提供通道、不参与分配",
+        "CZE 以缓冲电解质为载体，按淌度差分离，中性溶质随电渗流出、不能用 CZE 分开，是最基础、最广泛的模式。MEKC 在大于 CMC 时形成胶束准固定相，中性分子按疏水性分配，兼具电泳与色谱。CEC 以样品与固定相相互作用为分离机制，以电渗流或电渗流结合压力为驱动力；开管 CEC 的主力量是管壁固定相",
+        "填充柱 CEC 两端不必加塞子，气泡不是问题；整体柱必须两端加塞",
+        "概述六种和第 3 节六种名单完全相同，都含 CITP、CIEF 操作专段"
+      ],
+      "answer": 1,
+      "hint": "CZE 管离子；MEKC 管中性；CEC 管固定相。",
+      "explanation": "**B 正确。** 第 3 节 CZE／MEKC／CEC 定义。\n\n**干扰项辨析**：\n- A：CZE 分不开中性；MEKC 要大于 CMC；开管 CEC 管壁就是固定相。\n- C：填充柱要塞子、易气泡；整体柱无塞。\n- D：两份名单不同；CITP、CIEF 无专段。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-3.md",
+        "label": "CZE · MEKC · CEC · 两份名单"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于毛细管电泳仪的管、进样、电源和检测，下列叙述正确的是（　）。",
+      "options": [
+        "最常用金属填充柱，内径 $2\\sim 4\\,\\mathrm{mm}$；用液相六通阀进样；电源 $0.2\\,\\mathrm{A}$；必须柱后流通池",
+        "最常用外有聚酰亚胺涂层的石英毛细管，内径 $20\\sim 75\\,\\mu\\mathrm{m}$，有效长度 $50\\sim 75\\,\\mathrm{cm}$。整柱一般 $4\\sim 5\\,\\mu\\mathrm{L}$，样品区带几纳升，管端浸入样品瓶。电动进样有歧视（淌度大进得多），压力进样无歧视，扩散进样 $10\\sim 60\\,\\mathrm{s}$。电源 $30\\,\\mathrm{kV}$、$200\\sim 300\\,\\mu\\mathrm{A}$，最好双极性。柱上检测。UV 光程短，浓度灵敏度不及 HPLC；LIF 目前最灵敏；CE-MS 受非挥发性盐限制。图 15-8",
+        "风冷控温禁止使用，必须液冷；检测窗不必去掉聚酰亚胺",
+        "定性只用绝对迁移时间，定量首选外标一点法，因为 CE 重现性优于 HPLC"
+      ],
+      "answer": 1,
+      "hint": "石英细管、浸入式进样、柱上检测、$30\\,\\mathrm{kV}$ 微安级。",
+      "explanation": "**B 正确。** 第 4 节仪器四块和第 5 节定量方针。\n\n**干扰项辨析**：\n- A：把气相填充柱和液相阀搬进来。\n- C：一般气冷已够；检测窗要去掉涂层。\n- D：CE 重现性不如 HPLC，宜内标或叠加。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-4.md",
+        "label": "仪器四块 · 三种进样 · 图15-8"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于谱带展宽、柱效和分离度，下列叙述正确的有（　）。",
+      "options": [
+        "焦耳热造成径向温度／黏度梯度，破坏扁平流型；常用内径 $25\\sim 75\\,\\mu\\mathrm{m}$；可用 Tris 等低淌度缓冲液；气冷或液冷温控",
+        "Einstein $\\sigma_{\\mathrm{dif}}^{2}=2Dt_{\\mathrm{m}}$，$D$ 随相对分子质量增加而降低，故大分子柱效更高。吸附来自阳离子–负电管壁和疏水作用，$2/R$ 越大越易吸附",
+        "式（15-11）$N=5.54(t_{\\mathrm{R}}/(2\\Delta t_{1/2}))^{2}$，$H=L_{\\mathrm{d}}/N$；式（15-13）可化为 $N=L_{\\mathrm{d}}^{2}/(2Dt_{\\mathrm{m}})$。分离度式（15-14）（15-15）",
+        "内径越小吸附一定越轻；电压越高柱效一定越高，与焦耳热无关；半峰宽符号里的 $2$ 可以丢掉"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "热／扩散／吸附三户；$N$ 用 $L_{\\mathrm{d}}$；细管对吸附不利。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A、B、C：第 2 节展宽和式（15-10）～（15-15）。\n- **D 错**：细管吸附更重；热不可忽略时电压升高柱效下降；本版半峰宽就是 $2\\Delta t_{1/2}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-2.md",
+        "label": "焦耳热 · Einstein · 式（15-11）～（15-15）"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于 NACE、MEEKC、CGE 和 CEC 柱型，下列叙述正确的有（　）。",
+      "options": [
+        "NACE 用非水溶剂，可分析疏水难溶物、放大 $\\mathrm{p}K_{\\mathrm{a}}$ 差；最常用电解质是 Tris；改变溶剂可改变 EOF 方向和大小",
+        "MEEKC 为水相–油相分配＋电泳；四组分是油、水、表面活性剂、共表面活性剂；正丁醇是最常用共表面活性剂。本版把英文 W/O、O/W 写在中文名称后时对调了，答题以中文水包油／油包水为准",
+        "CGE 凝胶起分子筛作用，按相对分子质量分离，特别适用于质荷比不随分子大小改变的大分子；介质含聚丙烯酰胺、琼脂糖、葡聚糖、PEG",
+        "填充柱 CEC 无气泡问题；开管 CEC 比表面最高；整体柱必须两端加塞子"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "NACE 用 Tris；MEEKC 四组分；CGE 分子筛。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A、B、C：第 3 节其他模式和 CEC。\n- **D 错**：填充柱塞子和颗粒是气泡主因；开管比表面较低；整体柱无塞。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-3.md",
+        "label": "NACE · MEEKC · CGE · CEC 三柱"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "HPCE 就是 HPLC 毛细管柱；石英管壁在任何 pH 都带正电；CZE 能拆开所有中性分子；电动进样没有歧视；CE 定量重现性优于 HPLC 故首选外标一点法。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "并列不是柱型；壁负；$\\mathrm{CZE}$ 分不开中性；电动有歧视；宜内标。",
+      "explanation": "**该命题错误，五句都错。** HPCE 与色谱并列，驱动力是电渗不是高压泵。$\\mathrm{pH}>2.5$ 时壁负。CZE 中性溶质随 EOF 走。电动进样淌度大的组分进得更多。CE 重现性不如 HPLC，宜内标对比或叠加对比。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-1.md",
+        "label": "并列定位 · CZE 中性 · 进样歧视 · 内标"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "甲醇增大 EOF；小于 CMC 的阳离子表面活性剂使 EOF 增加；式（15-11）应写成 $5.54(t_{\\mathrm{R}}/\\Delta t_{1/2})^{2}$ 并丢掉 $2$；塔板高度用总长 $L_{\\mathrm{t}}/N$；LIF 的浓度灵敏度不及普通紫外。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "甲醇减 EOF；阳离子减 EOF；半峰宽是 $2\\Delta t_{1/2}$；$H=L_{\\mathrm{d}}/N$；LIF 最灵。",
+      "explanation": "**该命题错误，五句都错。** 甲醇大幅度减小 EOF。小于 CMC 的阳离子表面活性剂使 EOF 降低甚至反向。本版 $N=5.54(t_{\\mathrm{R}}/(2\\Delta t_{1/2}))^{2}$。$H=L_{\\mathrm{d}}/N$。LIF 是目前 CE 灵敏度最高的检测器。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-2.md",
+        "label": "甲醇 · 添加剂 · 式（15-11） · LIF"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "电渗淌度实验式写成 $\\mu_{\\mathrm{eo}}=$ ________。阴极检测时流出顺序是阳离子、________、阴离子。石英毛细管 $\\mathrm{pH}<$ ________ 时 EOF 接近于零。自动进样定量重复性 $\\le$ ________ % 可达到一般要求。Jorgenson 和 Lukacs 所用石英毛细管内径是 ________ $\\mu\\mathrm{m}$。",
+      "answer": "LdLt/(t0U)，中性分子，2.5，3，75",
+      "hint": "式（15-7）；阳→中性→阴；$\\mathrm{pH}<2.5$；$\\le 3\\%$；$75\\,\\mu\\mathrm{m}$。",
+      "scoring_criteria": [
+        "第一空填“LdLt/(t0U)”（或“$L_{\\mathrm{d}}L_{\\mathrm{t}}/(t_{0}U)$”“Ld·Lt/(t0·U)”）（2分）",
+        "第二空填“中性分子”（或“中性粒子”“中性溶质”）（2分）",
+        "第三空填“2.5”（2分）",
+        "第四空填“3”（或“3%”的 3）（2分）",
+        "第五空填“75”（2分）"
+      ],
+      "explanation": "式（15-7）$\\mu_{\\mathrm{eo}}=L_{\\mathrm{d}}L_{\\mathrm{t}}/(t_{0}U)$。阴极检测：阳 → 中性 → 阴。$\\mathrm{pH}<2.5$ 时硅羟基基本不解离。自动进样 $\\le 3\\%$。1981 年内径 $75\\,\\mu\\mathrm{m}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-2.md",
+        "label": "式（15-7）；流出顺序；pH 2.5；≤3%；75 μm"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "试比较 HPCE 与 HPLC 在驱动力和分离机理上的差异，以及 HPCE 柱效高于 HPLC 的原因（思考题 1）。什么是焦耳热、如何避免（思考题 2）？写出电泳／电渗／表观淌度定义和阴极检测三类溶质的 $\\mu_{\\mathrm{app}}$（思考题 3、4）。影响 EOF 的因素及控制手段（思考题 5）要点即可。",
+      "answer": "参考答案：\n\n**1. HPCE 对 HPLC**\n- 驱动力：HPCE 为电渗流（可叠加电泳）；HPLC 为高压泵压力流。\n- 分离机理：典型 CZE 靠淌度差；HPLC 靠样品与固定相相互作用。CEC 才把 HPLC 固定相借进毛细管。\n- 柱效：EOF 扁平塞流不扩张区带，HPLC 抛物线层流中心速度为平均速度的两倍（图 15-3）；细管内径限制焦耳热；柱上检测消除柱外效应。\n\n**2. 焦耳热**\n- 电流通过缓冲液的自热 → 径向温度／黏度梯度 → 破坏扁平流型。\n- 避免：常用内径 $25\\sim 75\\,\\mu\\mathrm{m}$；降功率（电压或离子强度／离子淌度）；Tris 等低淌度缓冲液；气冷或液冷。不要只靠降电压。\n\n**3. 淌度**\n- 电泳：$\\mu_{\\mathrm{ep}}=v/E$，$v=\\varepsilon\\zeta E/(6\\pi\\eta)$。\n- 电渗：$\\mu_{\\mathrm{eo}}=\\varepsilon_{0}\\varepsilon\\zeta_{\\mathrm{w}}/\\eta=L_{\\mathrm{d}}L_{\\mathrm{t}}/(t_{0}U)$。\n- 表观：$\\mu_{\\mathrm{app}}=\\mu_{\\mathrm{ep}}+\\mu_{\\mathrm{eo}}$。阴极检测：阳离子 $\\mu_{\\mathrm{ep}}+\\mu_{\\mathrm{eo}}$ ＞ 中性 $\\mu_{\\mathrm{eo}}$ ＞ 阴离子 $\\mu_{\\mathrm{eo}}-\\mu_{\\mathrm{ep}}$。\n\n**4. EOF 控制**\n- 直接：电场、黏度、介电常数、Zeta；间接：温度、缓冲液组成和 pH、管壁。\n- 调 pH（三段）、离子强度、甲醇（减小）、小于 CMC 的阴／阳离子表面活性剂、涂层。",
+      "hint": "按驱动力／流型／热／淌度／EOF 七因素写。",
+      "scoring_criteria": [
+        "写出驱动力差异和塞流对层流（4分）",
+        "写出焦耳热机制和至少三条避免办法（3分）",
+        "写出电泳、电渗、表观淌度及阳／中／阴顺序（4分）",
+        "写出 EOF 直接／间接因素及至少两条控制手段（3分）"
+      ],
+      "explanation": "本题把思考题 1～5 收在一起。易错点：把电渗听成电泳；把层流写成 CE 的优点；阴离子从正极窗口出峰。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-2.md",
+        "label": "思考题 1～5 · 塞流 · 表观淌度"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "为什么 MEKC 可分离中性分子？CZE 与 CEC 的分离机理有何区别（思考题 7）？定性三条和定量两条本版怎么写？例 15-1～15-3 各用什么模式？习题 1：总长 $25\\,\\mathrm{cm}$、有效长度 $21\\,\\mathrm{cm}$、$20\\,\\mathrm{kV}$、硫脲 $1.5\\,\\mathrm{min}$，电渗淌度等于多少？",
+      "answer": "参考答案：\n\n**1. 模式**\n- MEKC：大于 CMC 的胶束作准固定相，中性物按疏水性分配，兼具电泳与色谱。\n- CZE：管是通道，分离靠淌度差，中性溶质分不开。\n- CEC：分离靠样品与固定相相互作用；驱动力是电渗或电渗结合压力。开管 CEC 的主力量就是管壁固定相。\n\n**2. 定性／定量**\n- 定性：相对迁移时间与对照品对比（一般）；DAD 紫外光谱（特征性较差）；CE-MS（最有前途，非挥发性盐限制）。\n- 定量：CE 重现性不如 HPLC，宜内标对比或叠加对比。自动进样重复性 $\\le 3\\%$。\n\n**3. 示例**\n- 例 15-1 CZE 单抗电荷异质性；$214\\,\\mathrm{nm}$。\n- 例 15-2 HPCE＋羧甲基-$\\beta$-环糊精拆盐酸昂丹司琼，$\\mathrm{pH}\\,2.2$（EOF 近零）。\n- 例 15-3 MEKC（SDS＋乙醇）新疆紫草指纹。\n\n**4. 习题 1**\n- $t_{0}=90\\,\\mathrm{s}$。$\\mu_{\\mathrm{eo}}=L_{\\mathrm{d}}L_{\\mathrm{t}}/(t_{0}U)=21\\times 25/(90\\times 2.0\\times 10^{4})=2.92\\times 10^{-4}\\,\\mathrm{cm}^{2}\\cdot\\mathrm{V}^{-1}\\cdot\\mathrm{s}^{-1}$。\n- 亦可报 $u_{\\mathrm{eo}}=0.233\\,\\mathrm{cm}\\cdot\\mathrm{s}^{-1}$；教材把「电渗流大小」优先定义为淌度。",
+      "hint": "MEKC 分配；CEC 固定相；相对 t 和内标；硫脲代入式（15-7）。",
+      "scoring_criteria": [
+        "写出 MEKC 准固定相／疏水性分配（3分）",
+        "写出 CZE 淌度差对 CEC 固定相作用（3分）",
+        "写出定性三条、定量内标或叠加、$\\le 3\\%$（4分）",
+        "点名三则示例的模式（2分）",
+        "习题 1 算出 $2.92\\times 10^{-4}\\,\\mathrm{cm}^{2}\\cdot\\mathrm{V}^{-1}\\cdot\\mathrm{s}^{-1}$（3分）"
+      ],
+      "explanation": "思考题 7、第 5 节和第 6 节示例／习题 1。易错点：用总长去除以 $t_{0}$；把例 15-3 答成 CZE。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch15-6.md",
+        "label": "思考题 7 · 定性定量 · 习题 1"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

@@ -1,0 +1,321 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch14",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch14-1.md；content/instrumental-analysis/textbook/ch14-2.md；content/instrumental-analysis/textbook/ch14-3.md；content/instrumental-analysis/textbook/ch14-4.md；content/instrumental-analysis/textbook/ch14-5.md；content/instrumental-analysis/textbook/ch14-6.md；content/instrumental-analysis/textbook/ch14-7.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于高效液相色谱法的名称、四高以及表 14-1，下列叙述正确的是（　）。",
+      "options": [
+        "公认名称是高压液相色谱法；粒度 $75\\sim 500\\,\\mu\\mathrm{m}$；柱入口压强与经典液相相同",
+        "公认名称是高效液相色谱法（high performance liquid chromatography，HPLC）。也曾叫 HSLC、高压液相色谱法（英文缩写也印成 HPLC）、HRLC。高压一般 $150\\times 10^{5}\\sim 350\\times 10^{5}\\,\\mathrm{Pa}$；粒度 $3\\sim 10\\,\\mu\\mathrm{m}$；每米塔板 $4\\times 10^{4}\\sim 8\\times 10^{4}$；紫外检测限 $10^{-9}\\,\\mathrm{g}$、荧光 $10^{-12}\\,\\mathrm{g}$。表 14-1：经典粒度 $75\\sim 500\\,\\mu\\mathrm{m}$、压强 $0.001\\sim 0.1\\,\\mathrm{MPa}$、柱效每米 $10\\sim 100$；HPLC 分析型压强 $10\\sim 40\\,\\mathrm{MPa}$、柱效 $(3\\sim 8)\\times 10^{4}\\,\\mathrm{m^{-1}}$。机理与经典液相没有本质区别",
+        "20 世纪 40 年代由 Martin 发明；UPLC 的 $1\\sim 2\\,\\mu\\mathrm{m}$ 必须写进概述",
+        "四高已经等于毛细管电泳，第 15 章可以不学"
+      ],
+      "answer": 1,
+      "hint": "高效不是高压；表 14-1 粒度、压强、柱效；机理同、装备不同。",
+      "explanation": "**B 正确。** 名称、四高数字和表 14-1 都按第 1 节。\n\n**干扰项辨析**：\n- A：公认名称是高效；那档粒度、压强是经典液相。\n- C：本版写 60 年代末；UPLC 在第 7 节。\n- D：电泳在第 15 章，概述禁止提前写满。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-1.md",
+        "label": "高效液相色谱法 · 四高 · 表14-1"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 HPLC 与 GC 的差别，下列叙述正确的是（　）。",
+      "options": [
+        "液体扩散比气体大约 $10^{5}$ 倍，所以柱外效应可以忽略；GC 能分析约 $80\\%$ 有机物",
+        "液体扩散性比气体小 $10^{5}$ 倍，传质慢，柱外效应特别重要。GC 载气惰性、不参与分配，约 $20\\%$ 能气化的有机物可做；HPLC 流动相与固定相争夺样品分子，不受挥发性和热稳定性限制，约 $70\\%\\sim 80\\%$。HPLC 通常室温操作，尚缺乏通用检测器，两者互补",
+        "HPLC 全面优于 GC，已经有 FID 那样的通用检测器",
+        "第 1 节的 $70\\%\\sim 80\\%$ 就是反相键合相的任务占比，不必再记第 3 节那一笔"
+      ],
+      "answer": 1,
+      "hint": "扩散小 $10^{5}$；流动相参与分配；20% 对 70%～80%；缺通用检测器。",
+      "explanation": "**B 正确。** 柱外效应、样品范围、流动相参与分配和短处都按第 1 节。\n\n**干扰项辨析**：\n- A：扩散是小不是大；20% 是 GC。\n- C：本版写缺乏通用检测器。\n- D：第 1 节是能分析的有机物占比，第 3 节 $70\\%\\sim 80\\%$ 是反相键合相任务占比，两笔不要并。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-1.md",
+        "label": "柱外效应 · HPLC 对 GC · 70%～80%"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 HPLC 的 van Deemter 方程和三条分离条件，下列叙述正确的是（　）。",
+      "options": [
+        "液相必须完整保留 $H=A+B/u+Cu$；$B/u$ 是主项；乙醇黏度低所以首选",
+        "$A=2\\lambda d_{\\mathrm{p}}$，$B=2\\gamma D_{\\mathrm{m}}$。液体 $D_{\\mathrm{m}}$ 约小 $10^{5}$ 倍、黏度大约 100 倍、室温、实际流速常是 $u_{\\mathrm{opt}}$ 的 $3\\sim 5$ 倍，故 $B/u$ 可忽略，$H=A+Cu$。键合相单分子层 $C_{\\mathrm{s}}$ 可忽略，$C_{\\mathrm{m}}$、$C_{\\mathrm{sm}}\\propto d_{\\mathrm{p}}^{2}/D_{\\mathrm{m}}$，式（14-5）为 $H=A+C_{\\mathrm{m}}u+C_{\\mathrm{sm}}u$。甲醇 $\\eta=0.54$、乙腈 $0.34$、乙醇 $1.08\\,\\mathrm{mPa\\cdot s}$；分析型约 $1\\,\\mathrm{mL\\cdot min^{-1}}$；柱温 $25\\sim 30\\,^{\\circ}\\mathrm{C}$。图 14-1 中 HPLC 近似直线",
+        "图 14-2（e）厚液膜是键合相的主项；柱温越高越好，按气相程序升温操作",
+        "$\\lambda$ 是检测波长；匀浆装柱是为了加大涡流扩散"
+      ],
+      "answer": 1,
+      "hint": "丢掉 $B/u$ 和键合相的 $C_{\\mathrm{s}}$；甲醇／乙腈；图 14-1 近似直线。",
+      "explanation": "**B 正确。** 式（14-1）、（14-5）、三个 $\\eta$ 和三条条件都按第 2 节。\n\n**干扰项辨析**：\n- A：$B/u$ 可忽略；乙醇黏度最大、很少用。\n- C：（e）是涂渍厚液膜；柱温过高起泡。\n- D：$\\lambda$ 是填充不规则因子；匀浆是为了降 $\\lambda$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-2.md",
+        "label": "式（14-1） · 式（14-5） · 三条分离条件 · 图14-1"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于正相和反相的极性关系与出峰顺序，下列叙述正确的是（　）。",
+      "options": [
+        "正相就是用水作流动相，所以极性大的组分先出；$C_{18}$ 加水会加快冲洗",
+        "正相：流动相极性小于固定相极性，极性小的先出、极性大的后出。反相：流动相极性大于固定相极性，极性大的先出、极性小的后出。反相键合相一般用 ODS／$C_{18}$、$C_8$ 加甲醇－水或乙腈－水；$70\\%\\sim 80\\%$ 的 HPLC 任务走反相键合相。反相加水使流动相极性增强，$k$ 变大。氨基键合相是分析糖类最重要的正相柱",
+        "键合相色谱法就是液液分配色谱法的别名；涂渍固定液不会流失",
+        "氰基柱极性大于硅胶，同一条件下保留时间更长"
+      ],
+      "answer": 1,
+      "hint": "正相流动相极性更小；反相极性大的先出；加水在反相是加保留。",
+      "explanation": "**B 正确。** 定义、出峰顺序、ODS 份额和氨基糖柱都按第 3 节。\n\n**干扰项辨析**：\n- A：用水 $+$ $C_{18}$ 是反相；反相加水 $k$ 变大。\n- C：本版明确不宜再称液液分配；涂渍会流失。\n- D：氰基极性小于硅胶，$t_{\\mathrm{R}}$ 更短。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-3.md",
+        "label": "正相 · 反相 · ODS · 氨基柱"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于化学键合相的键型、窗口和封尾，下列叙述正确的是（　）。",
+      "options": [
+        "目前最广泛的是硅酸酯型；$\\mathrm{pH}=1\\sim 14$ 都能用；残余硅醇基越多峰越对称",
+        "四种键型：硅酸酯 $\\mathrm{Si{-}O{-}C}$、硅氮 $\\mathrm{Si{-}N}$、硅碳 $\\mathrm{Si{-}C}$（格氏）、硅氧烷 $\\mathrm{Si{-}O{-}Si{-}C}$（目前最广泛）。硅氧烷窗口：一般 $70\\,^{\\circ}\\mathrm{C}$ 以下、$\\mathrm{pH}=2\\sim 8$。ODS 含碳量 $5\\%\\sim 40\\%$。残余硅醇基减弱疏水性、引起次级吸附，用三甲基氯硅烷封尾（end-capping）",
+        "薄壳型 $30\\sim 40\\,\\mu\\mathrm{m}$ 仍是分析柱主力；堆积硅珠已经不用",
+        "$\\mathrm{pH}>8$ 只是峰形略差，硅胶不会溶解"
+      ],
+      "answer": 1,
+      "hint": "硅氧烷最广；pH 2～8；封尾打残余硅醇基。",
+      "explanation": "**B 正确。** 四种键型、窗口、含碳量和封尾都按第 3 节。\n\n**干扰项辨析**：\n- A：最广的是硅氧烷；pH 窗口不是 1～14；残余硅醇基会拖尾。\n- C：薄壳现多作保护柱；堆积硅珠 $5\\sim 10\\,\\mu\\mathrm{m}$ 目前最广泛。\n- D：$\\mathrm{pH}>8$ 可能溶硅胶。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-3.md",
+        "label": "四种键型 · pH 2～8 · 封尾"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于离子对、离子抑制和离子色谱，下列叙述正确的是（　）。",
+      "options": [
+        "离子对要抑制解离，离子抑制要让样品全部离子化；两者 pH 策略相同",
+        "反相离子对：流动相加反离子，样品离子生成中性离子对后在 ODS 上增加 $k$。酸用季铵盐（TBA、CTAB），碱用烷基磺酸盐（$\\mathrm{PICB_5}\\sim\\mathrm{PICB_8}$、SDS），$3\\sim 10\\,\\mathrm{mmol\\cdot L^{-1}}$。ISC 适用 $3.0\\le\\mathrm{p}K_{\\mathrm{a}}\\le 7.0$ 的弱酸和 $7.0\\le\\mathrm{p}K_{\\mathrm{a}}\\le 8.0$ 的弱碱，调 pH 压解离；弱酸 $\\mathrm{pH}<\\mathrm{p}K_{\\mathrm{a}}$ 时分子为主、$k$ 大。IC 是抑制柱 $+$ 电导，阴离子分析时本底变成水、组分变成 $\\mathrm{HX}$。IEC、IC、PIC、ISC 四户不要并名",
+        "离子色谱就是离子对色谱的别名；抑制柱是再分离一次",
+        "ISC 的流动相 pH 可以大于 8，做完缓冲盐可以留在泵里"
+      ],
+      "answer": 1,
+      "hint": "PIC 成对、ISC 压解离、IC 双柱电导；pKa 窗户。",
+      "explanation": "**B 正确。** 试剂配对、$\\mathrm{p}K_{\\mathrm{a}}$ 窗口、抑制柱反应和四户分界都按第 3 节。\n\n**干扰项辨析**：\n- A：pH 策略写反。\n- C：IC 不是 PIC；抑制柱把 $\\mathrm{NaOH}$ 变成水。\n- D：pH 锁在 $2\\sim 7.5$；做完必须用不含缓冲盐的流动相冲洗。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-3.md",
+        "label": "反相离子对 · 离子抑制 · 离子色谱"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于流动相选择、$P'$、$S$ 和洗脱方式，下列叙述正确的是（　）。",
+      "options": [
+        "溶剂种类主要影响 $k$，配比主要影响 $\\alpha$；水在正相和反相都是最强洗脱剂",
+        "$k$ 可用 $1\\sim 10$、最好 $2\\sim 5$。种类管 $\\alpha$、配比管 $k$；$\\alpha=1$ 时改配比也分不开。排阻的 $K$ 只看孔径和分子尺寸。Snyder 的 $P'$ 根据 Rohrschneider 数据：正相 $P'$ 越大洗得越快，水 $10.2$ 最强；反相用 $S$，水 $0.0$ 最弱、甲醇 $3.0$、乙腈 $3.2$。等度简便重复性好；梯度改配比不是程序升温。RID 不能做梯度。中孔径 $2\\sim 50\\,\\mathrm{nm}$",
+        "中孔径是 $250\\,\\mathrm{nm}$；薄壳型仍是分析柱主力",
+        "紫外检测可以不管截止波长，氯仿能在 $220\\,\\mathrm{nm}$ 当流动相"
+      ],
+      "answer": 1,
+      "hint": "种类管 α、配比管 k；水的 P′=10.2、S=0；RID 不能梯度。",
+      "explanation": "**B 正确。** $k$ 范围、$P'$／$S$、等度／梯度和中孔径都按第 4 节。\n\n**干扰项辨析**：\n- A：种类和配比写反；水在反相最弱。\n- C：中孔径 $2\\sim 50\\,\\mathrm{nm}$；薄壳作保护柱。\n- D：氯仿截止 $245\\,\\mathrm{nm}$，不能在 $220\\,\\mathrm{nm}$ 检测。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-4.md",
+        "label": "种类管 α · P′ 与 S · 等度与梯度"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于高效液相色谱仪的泵、阀和检测器，下列叙述正确的有（　）。",
+      "options": [
+        "目前多用恒流柱塞往复泵：压力 $14.7\\sim 49\\,\\mathrm{MPa}$，流量 RSD $<0.5\\%$。高压梯度是二元泵泵后混合，可不配脱气机；低压梯度常压混合必须在线脱气",
+        "六通阀 load 时样品进贮样管、inject 时带进柱。进样 $\\ge 10\\,\\mu\\mathrm{L}$ 且阀定量，故外标在液相比气相更常用。分析柱内径 $2\\sim 4.6\\,\\mathrm{mm}$，保护柱约 $50\\,\\mathrm{mm}$。系统适用性含理论塔板数、分离度、拖尾因子、重复性",
+        "紫外是应用最广的专属型检测器，Z 形池 $1\\sim 10\\,\\mu\\mathrm{L}$，可用于梯度。DAD 复合光先过池再分光。RID、ELSD 是通用型；RID 不能梯度。液相 ECD 是电化学检测器，不要和气相电子捕获并户",
+        "TCD 和 FID 是液相最常用检测器；RID 特别适合梯度洗脱；液相 ECD 就是电子捕获"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "恒流柱塞泵；六通阀外标；UV／DAD／RID／ELSD；液相 ECD≠气相 ECD。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：泵性能和两种梯度，来自第 5 节。\n- B：六通阀、外标理由、柱尺寸和系统适用性，来自第 5、6 节。\n- C：紫外、DAD、通用型和 ECD 撞名，来自第 5 节。\n- **D 错**：TCD／FID 在第 13 章；RID 不能梯度；液相 ECD 是电化学。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-5.md",
+        "label": "高压泵 · 六通阀 · 紫外与 DAD · RID／ELSD"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于 UPLC 和 LC-MS 接口，下列叙述正确的有（　）。",
+      "options": [
+        "UPLC：Waters ACQUITY，粒径 $<2\\,\\mu\\mathrm{m}$。式（14-12）$H=Ad_{\\mathrm{p}}+C_{\\mathrm{m}}d_{\\mathrm{p}}^{2}u+C_{\\mathrm{sm}}d_{\\mathrm{p}}^{2}u$。粒径减小则最佳线速度升高、优化区变宽，但柱压升高，需要超高压泵",
+        "表 14-6：UPLC 柱长 $30\\sim 100\\,\\mathrm{mm}$、内径 $2.1\\,\\mathrm{mm}$、粒度 $1.5\\sim 2.0\\,\\mu\\mathrm{m}$、柱压 $40\\sim 100\\,\\mathrm{MPa}$、流量 $0.1\\sim 0.7\\,\\mathrm{mL\\cdot min^{-1}}$、进样 $<10\\,\\mu\\mathrm{L}$，对 HPLC 的 $100\\sim 300\\,\\mathrm{mm}$、$3\\sim 5\\,\\mathrm{mm}$、$3\\sim 10\\,\\mu\\mathrm{m}$、$5\\sim 20\\,\\mathrm{MPa}$",
+        "LC-MS 曾被认为不可能：真空不相容、EI／CI 要气化、缓冲剂干扰。API（ESI 和 APCI，ESI 最广）兼接口和离子源。ESI 多电荷适合蛋白、肽、糖；$M_{\\mathrm{r}}=10000$ 带 10 电荷则 $m/z=1000$。APCI 先气化再电晕放电，主要单电荷，一般 $M_{\\mathrm{r}}<1000$",
+        "UPLC 柱更长、流量更大；把 EI 灯丝装在液相出口即可；ESI 是硬电离、APCI 专打蛋白质多电荷"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "降粒径同时抬最佳流速和柱压；ESI 多电荷、APCI 单电荷。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：UPLC 定义和式（14-12），来自第 7 节。\n- B：表 14-6，来自第 7 节。\n- C：不可能的三条原因、API／ESI／APCI，来自第 7 节。\n- **D 错**：UPLC 柱更短更细、流量更小；EI 不能搬到液相出口；ESI 软电离打大分子，APCI 打小分子。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-7.md",
+        "label": "UPLC · 表14-6 · ESI · APCI"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "正相流动相极性大于固定相，所以极性大的组分先出；反相 $C_{18}$ 加水使 $k$ 变小；键合相色谱法应称为液液分配色谱法；糖分析首选 ODS。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "正相流动相极性更小；反相加水 k 变大；不宜再叫液液分配；糖走氨基柱。",
+      "explanation": "**该命题错误，四句都错。** 正相：流动相极性小于固定相，极性大的后出。反相加水极性增强，$k$ 变大。键合相不宜再称为液液分配。氨基键合相才是分析糖类最重要的柱。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-3.md",
+        "label": "正相 · 反相加水 · 不宜称液液分配 · 氨基糖柱"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "HPLC 可用 Kovats 保留指数定性；外标一点法不必看工作曲线是否过原点；RID 最适合梯度洗脱；液相检测器名单以 TCD、FID 为主。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "没有保留指数；一点法必须过原点；RID 不能梯度；TCD／FID 在第 13 章。",
+      "explanation": "**该命题错误，四句都错。** 液相没有 Kovats，只能用 $t_{\\mathrm{R}}$、相对保留值或对照品。外标一点法要求工作曲线过原点。RID 是整体性质检测器，不能用于梯度。TCD／FID 属于气相；液相最常用紫外。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-6.md",
+        "label": "无保留指数 · 外标一点法 · RID 不能梯度"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "HPLC 固定相粒度一般为 ________ $\\mu\\mathrm{m}$。流动相要求 $k$ 在 ________（可用范围），最好 $2\\sim 5$。正相溶剂极性参数中水的 $P'=$ ________。氯仿的紫外截止波长为 ________ $\\mathrm{nm}$。UPLC 填料粒度约为 ________ $\\mu\\mathrm{m}$。",
+      "answer": "3～10，1～10，10.2，245，1.5～2.0",
+      "hint": "粒度 3～10；k 1～10；水 P′=10.2；氯仿 245；UPLC 1.5～2.0。",
+      "scoring_criteria": [
+        "第一空填“3～10”或“3-10”或“3~10”（2分）",
+        "第二空填“1～10”或“1-10”或“1~10”（2分）",
+        "第三空填“10.2”（2分）",
+        "第四空填“245”（2分）",
+        "第五空填“1.5～2.0”或“<2”或“1.5-2.0”或“1～2”（2分）"
+      ],
+      "explanation": "第 1 节／表 14-1 粒度 $3\\sim 10\\,\\mu\\mathrm{m}$。第 4 节 $k$ 可用 $1\\sim 10$、最好 $2\\sim 5$。表 14-4 水 $P'=10.2$。第 5 节氯仿截止 $245\\,\\mathrm{nm}$。表 14-6 UPLC 粒度 $1.5\\sim 2.0\\,\\mu\\mathrm{m}$（第 7 节也写 $<2\\,\\mu\\mathrm{m}$）。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-1.md",
+        "label": "粒度 3～10 · k 1～10 · P′=10.2 · 氯仿 245 · UPLC 1.5～2.0"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "从正反相写到键合相。请写出：①正相、反相的极性定义和出峰顺序；②为什么涂渍固定液要被键合相取代，键合相为什么不宜再叫液液分配；③四种键型及目前最广泛者，pH／温度窗口和封尾；④反相键合相常用固定相／流动相、疏溶剂理论要点，以及氰基柱、氨基柱的差别。不要把正相答成用水，也不要把糖分析答成 ODS。",
+      "answer": "参考答案：\n\n**1. 正反相**\n- 正相：流动相极性小于固定相极性。极性小的先出，极性大的后出。\n- 反相：流动相极性大于固定相极性。极性大的先出，极性小的后出。\n\n**2. 从涂渍到键合**\n- 涂渍固定液会溶解、受机械冲击而流失，前置柱和预饱和不能根治。70 年代初发展化学键合相。\n- 键合相由液液分配发展而来，但机理和固定相特性已明显不同，不宜再称为液液分配色谱法。$70\\%\\sim 80\\%$ 的 HPLC 任务走反相键合相。\n\n**3. 键型与封尾**\n- 硅酸酯 $\\mathrm{Si{-}O{-}C}$、硅氮 $\\mathrm{Si{-}N}$、硅碳 $\\mathrm{Si{-}C}$（格氏）、硅氧烷 $\\mathrm{Si{-}O{-}Si{-}C}$（目前最广泛）。\n- 窗口：一般 $70\\,^{\\circ}\\mathrm{C}$ 以下、$\\mathrm{pH}=2\\sim 8$。ODS 含碳量 $5\\%\\sim 40\\%$。残余硅醇基引起次级吸附，用三甲基氯硅烷封尾。\n\n**4. 反相键合与正相键合**\n- 反相：ODS／$C_{18}$、$C_8$ $+$ 甲醇－水、乙腈－水。疏溶剂理论（Horváth，1976）：烷基分子毛疏水，非极性部分缔合保留，极性部分被流动相解缔；反相加水 $k$ 变大。\n- 氰基：选择性与硅胶相似、极性更小。氨基：碱性，分析糖类最重要（碳水化合物柱）。",
+      "hint": "按极性定义 → 流失与不宜称分配 → 四键型／封尾 → ODS 与氰基／氨基写，并避开用水当正相、糖走 C18。",
+      "scoring_criteria": [
+        "写出正反相极性定义和出峰顺序（4分）",
+        "说明涂渍流失以及不宜再称液液分配（3分）",
+        "写出四种键型、窗口和封尾（4分）",
+        "写出 ODS／疏溶剂理论和氰基、氨基差别，并点明糖走氨基柱（3分）"
+      ],
+      "explanation": "本题把第 3 节收成“谁极性大谁先出—为什么改键合—键怎么接—$C_{18}$ 和糖柱”。易错点：正相答成用水；反相加水当加快冲洗；糖分析写 ODS。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-3.md",
+        "label": "正相与反相 · 化学键合相 · 疏溶剂理论 · 氨基糖柱"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "把速率方程、离子相关四法和定量收在一起。请写出：①为什么液相丢掉 $B/u$ 和键合相的 $C_{\\mathrm{s}}$，式（14-1）、（14-5）和三条分离条件；②种类为何管 $\\alpha$、配比为何管 $k$，水的 $P'$ 与 $S$ 为何方向相反；③IEC、IC、PIC、ISC 的差别和 ISC 的 $\\mathrm{p}K_{\\mathrm{a}}$ 窗口；④为什么较少归一化、外标一点法前提、主成分自身对照两条路。不要把第 15 章电泳写进来，也不要把 TCD／FID 当液相检测器。",
+      "answer": "参考答案：\n\n**1. 速率方程**\n- $A=2\\lambda d_{\\mathrm{p}}$。$B=2\\gamma D_{\\mathrm{m}}$，液体 $D_{\\mathrm{m}}$ 约小 $10^{5}$ 倍，实际流速常是 $u_{\\mathrm{opt}}$ 的 $3\\sim 5$ 倍，$B/u$ 可忽略，$H=A+Cu$。\n- 键合相单分子层 $C_{\\mathrm{s}}$ 可忽略。$C_{\\mathrm{m}}$、$C_{\\mathrm{sm}}\\propto d_{\\mathrm{p}}^{2}/D_{\\mathrm{m}}$，故 $H=A+C_{\\mathrm{m}}u+C_{\\mathrm{sm}}u$。\n- 条件：小粒径球形键合相、匀浆装柱；甲醇或乙腈，约 $1\\,\\mathrm{mL\\cdot min^{-1}}$；柱温 $25\\sim 30\\,^{\\circ}\\mathrm{C}$。\n\n**2. $\\alpha$ 与 $k$、水的两面**\n- 换溶剂种类改分子间作用力，$\\alpha$ 变；改配比改洗脱强度，$k$ 变。$\\alpha=1$ 时加柱长或改配比都分不开。排阻的 $K$ 只看孔径。\n- 正相 $P'$：水 $10.2$ 最强。反相 $S$：水 $0.0$ 最弱。\n\n**3. 四户离子相关**\n- IEC：离子交换，有机离子常用紫外。IC：抑制柱 $+$ 电导，冲无机离子，本底变成水。PIC：反相加反离子成中性对。ISC：调 pH 压解离。\n- ISC：$3.0\\le\\mathrm{p}K_{\\mathrm{a}}\\le 7.0$ 弱酸，$7.0\\le\\mathrm{p}K_{\\mathrm{a}}\\le 8.0$ 弱碱；更强的酸、碱改走 PIC 或 IEC。pH 锁在 $2\\sim 7.5$。\n\n**4. 定量**\n- 较少归一化：紫外常有组分不出峰。六通阀 $+$ $\\ge 10\\,\\mu\\mathrm{L}$，外标常用。一点法必须工作曲线过原点。内标对比不需校正因子。杂质：无对照品则供试品稀释到限度自身对照；有对照品则先乘校正因子。检测器主力是紫外，不是 TCD／FID。",
+      "hint": "按范氏口径 → 种类／配比和水的 P′／S → 四户离子法 → 外标／自身对照写，并避开电泳和气相检测器。",
+      "scoring_criteria": [
+        "写出丢掉 B/u、$C_{\\mathrm{s}}$ 的理由、两式和三条条件（4分）",
+        "说明种类管 α、配比管 k，以及水的 P′ 与 S 相反（3分）",
+        "写出 IEC／IC／PIC／ISC 差别和 ISC 的 pKa 窗口（4分）",
+        "写出较少归一化、一点法过原点、自身对照两条路，并点明不要用 TCD／FID（4分）"
+      ],
+      "explanation": "本题把第 2、3、4、6 节收成“动力学怎么改条件—溶剂怎么改选择性—离子样品走哪一户—定量为什么爱外标”。易错点：PIC／ISC 的 pH 对调；一点法不过原点；把 FID 写进液相。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch14-2.md",
+        "label": "式（14-5） · 种类与配比 · PIC／ISC／IC · 外标与自身对照"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

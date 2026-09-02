@@ -17,6 +17,7 @@ import {
   Dna,
   Bone,
   Layers,
+  ScanLine,
 } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
@@ -29,7 +30,7 @@ import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 const ICON_MAP: Record<
   string,
   React.ComponentType<{ size?: number; className?: string }>
-> = { Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder, Microscope, Dna, Bone, Layers };
+> = { Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder, Microscope, Dna, Bone, Layers, ScanLine };
 
 const SUBJECT_ICON_NAMES: Record<SubjectId, string> = {
   probability: "Calculator",
@@ -42,6 +43,7 @@ const SUBJECT_ICON_NAMES: Record<SubjectId, string> = {
   biochemistry: "Dna",
   anatomy: "Bone",
   histology: "Layers",
+  "instrumental-analysis": "ScanLine",
 };
 
 export default function MobileChapterPicker() {

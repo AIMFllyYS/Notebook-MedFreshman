@@ -1,0 +1,321 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch02",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch02-1.md；content/instrumental-analysis/textbook/ch02-2.md；content/instrumental-analysis/textbook/ch02-3.md；content/instrumental-analysis/textbook/ch02-4.md；content/instrumental-analysis/textbook/ch02-5.md；content/instrumental-analysis/textbook/ch02-6.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于电化学分析法的分类以及本章展开范围，下列叙述正确的是（　）。",
+      "options": [
+        "电化学分析法只测 $\\mathrm{pH}$；永停滴定法是电位滴定的别名；极谱法的工作电极是玻碳电极；库仑滴定读的是电动势突跃",
+        "电化学分析法以样品溶液和适当电极构成化学电池，按所测参数分为电位、电解、电导、伏安四类。电位分析法含直接电位法与电位滴定法；电解分析法含电重量法、库仑法与库仑滴定法；电导分析法含直接电导法与电导滴定法；伏安法含极谱法、溶出法与电流滴定法。极谱法以滴汞电极为极化电极。永停滴定法属电流滴定法，两支相同铂电极、外加约几十毫伏、读 $i$–$V$。本章展开直接电位法、电位滴定法及永停滴定法",
+        "四类方法都只读电位；溶出法没有富集步骤；电流滴定不固定电压",
+        "本章要把库仑、电导滴定和极谱都写成操作专节；永停滴定测量的是电池电动势"
+      ],
+      "answer": 1,
+      "hint": "先按所测参数分四户，再把永停放进电流滴定，不要放进电位滴定。",
+      "explanation": "**B 正确。** 操作单元是化学电池；四类按电位、电解、电导、伏安分户；永停属电流滴定；本章三节专论是直接电位、电位滴定、永停。\n\n**干扰项辨析**：\n- A：不是只测 $\\mathrm{pH}$；永停不是电位滴定别名；极谱用滴汞电极；库仑滴定读电荷量。\n- C：四类读的参数不同；溶出法先富集再溶出；电流滴定固定微小电压。\n- D：电解、电导、极谱只在概述立户；永停读电流。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-1.md",
+        "label": "四类电化学分析法 · 永停属电流滴定 · 本章三户"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于相界电位、液接电位和盐桥，下列叙述正确的是（　）。",
+      "options": [
+        "相界电位就是液接电位；盐桥把两种溶液混成一相；液接电位约 $100\\,\\mathrm{mV}$，无法抵消",
+        "$\\mathrm{Zn}$ 插入 $\\mathrm{ZnSO_4}$ 时金属带负电，$\\mathrm{Ag}$ 插入 $\\mathrm{AgNO_3}$ 时金属带正电；相界电位是双电层平衡后的稳定电位差即电极电位。液接电位由离子扩散速率差异引起：两种浓度不同的 $\\mathrm{AgNO_3}$ 接触时 $\\mathrm{NO_3}^{-}$ 扩散快于 $\\mathrm{Ag}^{+}$，低浓侧带负电。盐桥用含 $3\\%$ 琼脂的高浓度 $\\mathrm{KCl}$ 填充，$\\mathrm{K}^{+}$ 与 $\\mathrm{Cl}^{-}$ 迁移速率相近，液接电位 $1\\sim 2\\,\\mathrm{mV}$，两端方向相反互相抵消。盐桥阻止混合、只提供离子通道",
+        "金属越活泼、离子越浓，电极电位越负；盐桥消除的是电极本身的相界电位",
+        "图2-1 中低浓侧因 $\\mathrm{Ag}^{+}$ 过量而带正电"
+      ],
+      "answer": 1,
+      "hint": "相界在金属/溶液，液接在两溶液界面；盐桥压到 $1\\sim 2\\,\\mathrm{mV}$ 且两端抵消。",
+      "explanation": "**B 正确。** 双电层符号、液接电位成因、盐桥 $3\\%$ 琼脂高浓度 $\\mathrm{KCl}$、$1\\sim 2\\,\\mathrm{mV}$ 都按本版。\n\n**干扰项辨析**：\n- A：两个界面不是同一个；盐桥不混合溶液；不是 $100\\,\\mathrm{mV}$。\n- C：离子越稀电位越负；盐桥消的是液接电位。\n- D：低浓侧是 $\\mathrm{NO_3}^{-}$ 过量带负电。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-2.md",
+        "label": "化学双电层 · 液接电位图2-1 · 盐桥 1～2 mV"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于电极分类以及饱和甘汞电极、银–氯化银电极的电位，下列叙述正确的是（　）。",
+      "options": [
+        "第一类电极有 2 个相界面；第二类对阴离子取 $+0.0592\\,\\mathrm{V}\\,\\lg a_{\\mathrm{Cl}^{-}}$；SCE 饱和电位是 $0.199\\,\\mathrm{V}$；膜电极靠电子转移",
+        "金属–金属离子电极（第一类，1 个相界面）电位取决于 $a_{\\mathrm{M}^{n+}}$；金属–难溶盐电极（第二类，2 个相界面）电位随阴离子活度变，$25^{\\circ}\\mathrm{C}$ 为 $\\varphi=\\varphi^{\\ominus}-0.0592\\,\\mathrm{V}\\,\\lg a_{\\mathrm{Cl}^{-}}$；惰性金属电极（零类）电位取决于氧化型/还原型活度比。膜电极响应基于离子交换和扩散。指示电极电位随待测活度变，参比电极基本固定。$25^{\\circ}\\mathrm{C}$ 甘汞：$0.1\\,\\mathrm{mol}\\cdot\\mathrm{L}^{-1}$ 为 $0.334\\,\\mathrm{V}$，$1\\,\\mathrm{mol}\\cdot\\mathrm{L}^{-1}$ 为 $0.280\\,\\mathrm{V}$，饱和 SCE 为 $0.241\\,\\mathrm{V}$；银–氯化银对应 $0.288$、$0.222$、$0.199\\,\\mathrm{V}$，常用作内参比",
+        "斜率按口诀写成 $0.059\\,\\mathrm{V}$；零类电极铂参与电极反应",
+        "指示电极电位必须固定；SCE 不能兼盐桥作用"
+      ],
+      "answer": 1,
+      "hint": "第一类 1 个界面、第二类取负号；$0.0592\\,\\mathrm{V}$；SCE $0.241\\,\\mathrm{V}$，饱和 $\\mathrm{Ag/AgCl}$ $0.199\\,\\mathrm{V}$。",
+      "explanation": "**B 正确。** 三类金属基、膜电极机制、SCE 与 $\\mathrm{Ag/AgCl}$ 三档电位都按本版。\n\n**干扰项辨析**：\n- A：第一类是 1 个界面；第二类取负号；饱和 $\\mathrm{Ag/AgCl}$ 才是 $0.199\\,\\mathrm{V}$；膜电极不靠电子转移。\n- C：本版写 $0.0592\\,\\mathrm{V}$；惰性金属不参与反应。\n- D：指示电极随活度变；SCE 下部微孔兼盐桥。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-2.md",
+        "label": "三类金属基电极 · SCE 0.241 V · Ag/AgCl 0.199 V"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于丹聂尔电池、电池电动势测量以及可逆电极，下列叙述正确的是（　）。",
+      "options": [
+        "$E=\\varphi_{(-)}-\\varphi_{(+)}$；锌、铜电位按口诀 $-0.76$、$0.34\\,\\mathrm{V}$；可用普通伏特计；可逆电极与永停滴定的可逆电对是同一判据",
+        "电池表示式左氧化、右还原，盐桥用 $||$。$\\varphi^{\\ominus}_{\\mathrm{Zn}^{2+}/\\mathrm{Zn}}=-0.763\\,\\mathrm{V}$，$\\varphi^{\\ominus}_{\\mathrm{Cu}^{2+}/\\mathrm{Cu}}=0.337\\,\\mathrm{V}$，$E=\\varphi_{(+)}-\\varphi_{(-)}=1.100\\,\\mathrm{V}$。$E>0$ 为原电池。外加反向电压 $>1.100\\,\\mathrm{V}$ 后锌极改为阴极还原、铜极改为阳极氧化，成为电解池。单个电极电位不能直接测，$E=\\varphi_{\\mathrm{R}}-\\varphi_{x}+\\varphi_{\\mathrm{j}}+iR$，盐桥和高阻抗电子电位计使后两项可忽略。可逆电极反应在无限小反向电流下互为逆反应且快，如 $\\mathrm{Fe}^{3+}/\\mathrm{Fe}^{2+}$、$\\mathrm{I_2}/\\mathrm{I}^{-}$；不可逆如 $\\mathrm{MnO_4}^{-}/\\mathrm{Mn}^{2+}$。永停滴定的可逆电对另有操作定义",
+        "区分原电池和电解池只看电极材料结构，与工作状态无关",
+        "测量电池一般把参比电极接负极、指示电极接正极"
+      ],
+      "answer": 1,
+      "hint": "本版 $E=1.100\\,\\mathrm{V}$；不能用伏特计；可逆电极与永停可逆电对不是同一句。",
+      "explanation": "**B 正确。** 丹聂尔数字、原电池/电解池对调、式（2-2）（2-3）、可逆名单都按教材。\n\n**干扰项辨析**：\n- A：电动势定义是正减负；不要改口诀约数；伏特计 $iR$ 不能忽略；两本“可逆”判据不同。\n- C：看工作状态不看结构。\n- D：指示电极一般为负极，参比一般为正极。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-2.md",
+        "label": "丹聂尔 1.100 V · E=φR−φx · 可逆电极"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $\\mathrm{pH}$ 玻璃电极、两次测量法以及碱差与酸差，下列叙述正确的是（　）。",
+      "options": [
+        "玻璃电极靠 $\\mathrm{H}^{+}+\\mathrm{e}^{-}\\rightarrow \\tfrac12\\mathrm{H_2}$ 交换电子；碱差使 $\\mathrm{pH}$ 读数偏高；不对称电位必须校正到 $0$；可用检流计测 $100\\,\\mathrm{M}\\Omega$ 电极",
+        "球膜为 $\\mathrm{Na_2O}$、$\\mathrm{CaO}$、$\\mathrm{SiO_2}$，厚度小于 $0.1\\,\\mathrm{mm}$，内充 $\\mathrm{pH}$ $4$ 或 $7$ 的 $\\mathrm{KCl}$ 缓冲，内参比为银–氯化银，内阻约 $100\\,\\mathrm{M}\\Omega$。膜电位来自 $\\mathrm{H}^{+}$ 交换扩散，$25^{\\circ}\\mathrm{C}$ 时 $\\varphi_{\\text{玻璃}}=K''-0.0592\\,\\mathrm{V}\\,\\mathrm{pH}$。两次测量法 $\\mathrm{pH}_{x}=\\mathrm{pH}_{s}+(E_{x}-E_{s})/0.0592\\,\\mathrm{V}$，消掉 $K''$。碱差（$\\mathrm{pH}>9$）读数偏低，酸差（$\\mathrm{pH}<1$）读数偏高。不对称电位为几毫伏，已进常数项，怕的是变动。$10^{-9}\\,\\mathrm{A}$ 时 $iR=0.1\\,\\mathrm{V}\\approx 1.6\\,\\mathrm{pH}$，必须用高阻抗 $\\mathrm{pH}$ 计",
+        "表2-1 中 $25^{\\circ}\\mathrm{C}$ 硼砂 $\\mathrm{pH}$ 是 $4.008$；残余液接电位要求 $\\mathrm{pH}_{s}$ 尽量远离 $\\mathrm{pH}_{x}$",
+        "转换系数理论值按口诀 $59\\,\\mathrm{mV}$；玻璃电极使用温度没有上限"
+      ],
+      "answer": 1,
+      "hint": "无电子交换；两次测量消 $K''$；钠差读数偏低；高阻抗把电流降到 $10^{-12}\\,\\mathrm{A}$。",
+      "explanation": "**B 正确。** 结构、式（2-9）（2-14）、碱差酸差、不对称电位、$iR$ 数量级都按教材。\n\n**干扰项辨析**：\n- A：无电子交换；碱差读数偏低；不对称电位怕变；检流计电流太大。\n- C：硼砂 $25^{\\circ}\\mathrm{C}$ 为 $9.180$；$\\mathrm{pH}_{s}$ 要靠近 $\\mathrm{pH}_{x}$。\n- D：本版 $59.2\\,\\mathrm{mV}$；使用范围 $0\\sim 95^{\\circ}\\mathrm{C}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-3.md",
+        "label": "玻璃电极 · 两次测量法 · 碱差酸差 · pH 计阻抗"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于离子选择电极的分类、TISAB、定量方法和测量误差，下列叙述正确的是（　）。",
+      "options": [
+        "$K_{\\mathrm{H,Na}}=10^{-1}$；标准加入必须加 TISAB；$\\pm 1\\,\\mathrm{mV}$ 对一价离子误差 $0.1\\%$；比较适宜的浓度是 $10^{-1}\\,\\mathrm{mol}\\cdot\\mathrm{L}^{-1}$",
+        "ISE 电位来自膜上离子交换和扩散。氟电极敏感膜为掺 $\\mathrm{EuF_2}$ 的 $\\mathrm{LaF_3}$ 单晶，内充 $0.1\\,\\mathrm{mol}\\cdot\\mathrm{L}^{-1}\\,\\mathrm{NaF}+\\mathrm{NaCl}$。$\\mathrm{Na}^{+}$ 玻璃组成为 $11\\%\\,\\mathrm{Na_2O}$、$18\\%\\,\\mathrm{Al_2O_3}$、$71\\%\\,\\mathrm{SiO_2}$。$K_{\\mathrm{H,Na}}=10^{-11}$ 仅供选电极不宜定量校正。TISAB 含 $\\mathrm{pH}$ 缓冲剂、辅助络合剂和高浓度惰性电解质。标准加入 $c_{x}=c_{s}V_{s}/[(V_{x}+V_{s})\\times 10^{\\Delta E/S}-V_{x}]$，不必 TISAB。$\\Delta c/c\\approx 39n\\Delta E$，$\\pm 1\\,\\mathrm{mV}$ 对一价 $\\pm 4\\%$、二价 $\\pm 8\\%$、三价 $\\pm 12\\%$，与浓度高低无关，比较适宜 $10^{-6}\\sim 10^{-5}\\,\\mathrm{mol}\\cdot\\mathrm{L}^{-1}$",
+        "气敏电极不是完整电池；PVC 膜溶剂按其他教材改写",
+        "线性范围多数是 $10^{-12}\\sim 10^{-8}\\,\\mathrm{mol}\\cdot\\mathrm{L}^{-1}$；选择性系数可直接作定量校正"
+      ],
+      "answer": 1,
+      "hint": "$K_{\\mathrm{H,Na}}=10^{-11}$；标准加入不必 TISAB；$\\pm 1\\,\\mathrm{mV}$ 一价 $\\pm 4\\%$。",
+      "explanation": "**B 正确。** 氟电极、$\\mathrm{Na}^{+}$ 玻璃、$K_{\\mathrm{X,Y}}$、TISAB、式（2-28）、式（2-29）都按本版。\n\n**干扰项辨析**：\n- A：是 $10^{-11}$；标准加入不必 TISAB；一价是 $\\pm 4\\%$；适宜区间不是 $10^{-1}$。\n- C：气敏电极本身是完整电池；溶剂写四氢呋喃或环己酮。\n- D：线性范围多数 $10^{-6}\\sim 10^{-1}$；$K_{\\mathrm{X,Y}}$ 不宜定量校正。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-3.md",
+        "label": "ISE 分类 · TISAB · 标准加入 · 39nΔE"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "把电位滴定终点处理、永停三条曲线和第 6 节边界放在一起，下列叙述正确的是（　）。",
+      "options": [
+        "电位滴定终点是预先规定的毫伏值；一阶导数横坐标用后一个 $V$；永停“永停”对应碘滴定硫代硫酸钠的升起曲线；超微电极尺寸按其他教材改成 $25\\,\\mu\\mathrm{m}$；卡尔·费歇尔的 $F$ 是法拉第常数",
+        "电位滴定终点是电位变化率最大点。表2-2 二阶微商从 $24.30\\,\\mathrm{mL}$ 的 $+4.4$ 内插到 $24.40\\,\\mathrm{mL}$ 的 $-5.9$，得 $V_{\\mathrm{ep}}=24.34\\,\\mathrm{mL}$；一阶导数对 $\\overline{V}$ 作图。永停：碘滴定硫代硫酸钠为终点前近零、终点后升起；硫代硫酸钠滴定碘为降至零并停住（得名来源）；铈滴定亚铁为 V 形最低点。外加 $10\\sim 200\\,\\mathrm{mV}$。例2-1 $w_{\\mathrm{H_2O}}=1.72\\%$。第 6 节只简介：CME（1975 年 Miller 和 Murray）、超微电极 $<100\\,\\mu\\mathrm{m}$、纳米电分析、联用；纳米 $\\mathrm{PbO_2}$ 测 COD 检出限 $20\\,\\mathrm{mg}\\cdot\\mathrm{L}^{-1}$。不要把四块写成纳米传感器综述",
+        "银量法可把 SCE 直接插入含 $\\mathrm{Cl}^{-}$ 的滴定液；EDTA 络合滴定用普通金属电极作指示电极即可",
+        "活体伏安法必须先取样再测定；EQCM 只读质量、不读电流和电荷"
+      ],
+      "answer": 1,
+      "hint": "$V_{\\mathrm{ep}}=24.34\\,\\mathrm{mL}$；永停得名对应降到零并停住；超微 $<100\\,\\mu\\mathrm{m}$；$F$ 是滴定度。",
+      "explanation": "**B 正确。** 三种终点法、三条 $i$–$V$、例2-1、第 6 节边界和 COD $20\\,\\mathrm{mg}\\cdot\\mathrm{L}^{-1}$ 都按教材。\n\n**干扰项辨析**：\n- A：终点不是固定毫伏；一阶用 $\\overline{V}$；得名对应（b）不是（a）；尺寸 $<100\\,\\mu\\mathrm{m}$；$F$ 是滴定度。\n- C：银量法要用 $\\mathrm{KNO_3}$ 盐桥；EDTA 用 $\\mathrm{pM}$ 汞电极。\n- D：活体伏安现场测定不必取样；EQCM 同时读质量、电流、电荷。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-4.md",
+        "label": "Vep=24.34 mL · 永停三条曲线 · 超微电极 <100 μm"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "下列关于参比电极、玻璃电极常数和 $\\mathrm{pH}$ 测量准确度的叙述，正确的有（　）。",
+      "options": [
+        "$25^{\\circ}\\mathrm{C}$ 饱和甘汞电极电位为 $0.241\\,\\mathrm{V}$",
+        "饱和银–氯化银电极电位为 $0.199\\,\\mathrm{V}$，常用作内参比",
+        "待测溶液 $\\mathrm{pH}_{x}$ 的准确度一般只能达到 $\\pm 0.02\\,\\mathrm{pH}$ 单位，约相当于 $4.5\\%\\,a_{\\mathrm{H}^{+}}$",
+        "用水溶液标准缓冲校准后测定非水溶液，得到的是真 $\\mathrm{pH}$ 而不是表观 $\\mathrm{pH}$"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "SCE $0.241\\,\\mathrm{V}$、饱和 $\\mathrm{Ag/AgCl}$ $0.199\\,\\mathrm{V}$；$\\mathrm{pH}_{x}$ 一般 $\\pm 0.02$；非水是表观 $\\mathrm{pH}$。",
+      "explanation": "**A、B、C 正确。** D 错误：非水测得的是表观 $\\mathrm{pH}$，残余液接电位大，只在指示变化（如非水滴定）时仍可使用。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-3.md",
+        "label": "SCE 与 Ag/AgCl 电位 · pH 准确度 ±0.02 · 表观 pH"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "下列关于电位滴定指示电极选择和永停滴定终点的叙述，正确的有（　）。",
+      "options": [
+        "酸碱电位滴定常用玻璃电极为指示电极、SCE 为参比电极；一元弱酸半中和点 $\\mathrm{p}K_{\\mathrm{a}}=\\mathrm{pH}$",
+        "银量法、汞量法中 $\\mathrm{Cl}^{-}$ 有干扰，不宜直接插入 SCE，常用 $\\mathrm{KNO_3}$ 盐桥隔开",
+        "EDTA 络合电位滴定主要采用 $\\mathrm{pM}$ 汞电极，溶液中加微量 $\\mathrm{Hg}$–EDTA",
+        "硫代硫酸钠滴定碘时，终点后电流升起来不再回零，这就是“永停”一词的来源"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "四类滴定选对电极；永停得名是电流降到零并停住，对应硫代硫酸钠滴定碘。",
+      "explanation": "**A、B、C 正确。** D 把图2-18（a）和（b）写反：硫代硫酸钠滴定碘是降至零并停住才得名；碘滴定硫代硫酸钠才是终点后升起。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-4.md",
+        "label": "四类指示电极 · 永停图2-18（b）得名"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "单个电极电位可以直接用伏特计测量；盐桥的作用是把两种溶液混合；SCE 在 $25^{\\circ}\\mathrm{C}$ 的电位是 $0.199\\,\\mathrm{V}$；玻璃电极内阻很低所以可用检流计；$K_{\\mathrm{H,Na}}=10^{-1}$ 表示对 $\\mathrm{Na}^{+}$ 的响应比对 $\\mathrm{H}^{+}$ 强。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "逐句核对：不能单独测、$1\\sim 2\\,\\mathrm{mV}$ 盐桥、SCE $0.241\\,\\mathrm{V}$、$100\\,\\mathrm{M}\\Omega$、$K_{\\mathrm{H,Na}}=10^{-11}$。",
+      "explanation": "**该命题错误，五处都错。** 单个电位不能直接测，要用指示电极 + 参比电极和电子电位计。盐桥阻止混合。SCE 饱和电位是 $0.241\\,\\mathrm{V}$（$0.199\\,\\mathrm{V}$ 是饱和银–氯化银）。玻璃电极内阻约 $100\\,\\mathrm{M}\\Omega$，检流计 $10^{-9}\\,\\mathrm{A}$ 会造成 $1.6\\,\\mathrm{pH}$ 误差。$K_{\\mathrm{H,Na}}=10^{-11}$，对 $\\mathrm{H}^{+}$ 的响应是对 $\\mathrm{Na}^{+}$ 的 $10^{11}$ 倍。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-2.md",
+        "label": "不能单独测电位 · 盐桥 · SCE · 玻璃电极阻抗 · K_H,Na"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "电位滴定的终点是预先规定的毫伏值；一阶导数曲线的横坐标是后一个滴定体积 $V$；永停滴定用指示电极加参比电极读电动势；卡尔·费歇尔计算水分不必减空白；第 6 节应扩写成化学修饰电极综述。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "终点是变化率最大；一阶用 $\\overline{V}$；永停是双铂电流；水分公式减空白；第 6 节只简介。",
+      "explanation": "**该命题错误，五处都错。** 电位滴定终点是电位变化率最大点。一阶导数对平均体积 $\\overline{V}$ 作图。永停是两支相同铂电极、外加小电压、读电流。含水量 $w=(A-B)F/m\\times 100\\%$ 必须减空白。第 6 节明确只作简要介绍。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-4.md",
+        "label": "电位滴定终点 · 一阶 V̄ · 永停双铂 · KF 空白 · 第6节简介"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "$25^{\\circ}\\mathrm{C}$ 饱和甘汞电极的电位为 ________ $\\mathrm{V}$。玻璃电极 $25^{\\circ}\\mathrm{C}$ 的能斯特斜率为 ________ $\\mathrm{V}$ 每 $\\mathrm{pH}$ 单位。表2-2 二阶微商内插得到的终点体积 $V_{\\mathrm{ep}}=$ ________ $\\mathrm{mL}$。某玻璃电极 $K_{\\mathrm{H,Na}}=$ ________，表示对 $\\mathrm{H}^{+}$ 的响应是对 $\\mathrm{Na}^{+}$ 的 $10^{11}$ 倍。例2-1 阿莫西林颗粒水分含量为 ________。",
+      "answer": "0.241，0.0592，24.34，10^{-11}，1.72%",
+      "hint": "SCE $0.241$；斜率 $0.0592$；内插 $24.34\\,\\mathrm{mL}$；$K_{\\mathrm{H,Na}}=10^{-11}$；例2-1 为 $1.72\\%$。",
+      "scoring_criteria": [
+        "第一空填“0.241”（或“0.241 V”）（2分）",
+        "第二空填“0.0592”（或“0.0592 V”“59.2 mV”）（2分）",
+        "第三空填“24.34”（或“24.34 mL”）（2分）",
+        "第四空填“10^{-11}”（或“$10^{-11}$”“1e-11”）（2分）",
+        "第五空填“1.72%”（或“1.72％”）（2分）"
+      ],
+      "explanation": "SCE 饱和 $0.241\\,\\mathrm{V}$（不要写成银–氯化银的 $0.199\\,\\mathrm{V}$）。转换系数理论值 $0.0592\\,\\mathrm{V}$。表2-2 内插 $V_{\\mathrm{ep}}=24.34\\,\\mathrm{mL}$。$K_{\\mathrm{H,Na}}=10^{-11}$ 不是 $10^{-1}$。例2-1：$(2.75-2.10)\\times 3.45/130.6\\times 100\\%=1.72\\%$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-2.md",
+        "label": "SCE 0.241；斜率 0.0592；Vep 24.34；K_H,Na；例2-1 1.72%"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "直接电位法测 $\\mathrm{pH}$ 如何收？请写出：①玻璃电极结构（球膜组成与厚度、内充液、内参比、内阻）及膜电位来自 $\\mathrm{H}^{+}$ 交换扩散、电极上无电子交换；②两次测量法公式，$25^{\\circ}\\mathrm{C}$ 斜率 $0.0592\\,\\mathrm{V}$，残余液接电位要求 $\\mathrm{pH}_{s}$ 靠近 $\\mathrm{pH}_{x}$；③碱差与酸差的方向和原因，不对称电位怕变不怕有；④$\\mathrm{pH}$ 计为何必须高阻抗（$100\\,\\mathrm{M}\\Omega$、$10^{-9}\\,\\mathrm{A}$ 与 $10^{-12}\\,\\mathrm{A}$）。不要把玻璃电极写成氢电极那样交换电子，也不要用普通伏特计。",
+      "answer": "参考答案：\n\n**1. 结构与膜电位**\n- 球膜：$\\mathrm{Na_2O}$、$\\mathrm{CaO}$、$\\mathrm{SiO_2}$，厚度小于 $0.1\\,\\mathrm{mm}$；内充一定浓度 $\\mathrm{KCl}$、$\\mathrm{pH}$ 为 $4$ 或 $7$ 的缓冲；内参比银–氯化银；内阻约 $100\\,\\mathrm{M}\\Omega$。\n- 水化凝胶层中 $\\mathrm{Na}^{+}$ 与 $\\mathrm{H}^{+}$ 交换；膜电位由 $\\mathrm{H}^{+}$ 扩散平衡形成。阴离子及高价阳离子难以进膜，电极上无电子交换。\n- $25^{\\circ}\\mathrm{C}$：$\\varphi_{\\text{玻璃}}=K''-0.0592\\,\\mathrm{V}\\,\\mathrm{pH}$。\n\n**2. 两次测量法**\n- $\\mathrm{pH}_{x}=\\mathrm{pH}_{s}+(E_{x}-E_{s})/0.0592\\,\\mathrm{V}$，消掉 $K''$。\n- 残余液接电位要求 $\\mathrm{pH}_{s}$ 尽量接近 $\\mathrm{pH}_{x}$。$\\mathrm{pH}_{x}$ 一般 $\\pm 0.02$。\n\n**3. 性能**\n- 碱差（$\\mathrm{pH}>9$）：读数偏低，$\\mathrm{Na}^{+}$ 占凝胶层点位。\n- 酸差（$\\mathrm{pH}<1$）：读数偏高，水分子活度变小。\n- 不对称电位几毫伏，已进常数项；怕腐蚀、污染、脱水使之变动。使用温度 $0\\sim 95^{\\circ}\\mathrm{C}$。\n\n**4. pH 计**\n- $100\\,\\mathrm{M}\\Omega$、$10^{-9}\\,\\mathrm{A}$ 时 $iR=0.1\\,\\mathrm{V}\\approx 1.6\\,\\mathrm{pH}$。\n- 高阻抗把电流降到 $10^{-12}\\,\\mathrm{A}$ 以下，$iR\\approx 0.002\\,\\mathrm{pH}$。温度调节器对准 $2.303RT/F$，定位调节器对准 $\\mathrm{pH}_{s}$。",
+      "hint": "按结构→两次测量→碱差酸差不对称电位→阻抗写，避开氢电极电子交换和伏特计。",
+      "scoring_criteria": [
+        "写出球膜组成厚度、内充液、内参比、内阻及无电子交换（4分）",
+        "写出两次测量法公式、0.0592 V 及 pHs 靠近 pHx（3分）",
+        "写出碱差偏低、酸差偏高及不对称电位怕变（4分）",
+        "写出 100 MΩ 时 10⁻⁹ A 与 10⁻¹² A 的 iR 对比（3分）"
+      ],
+      "explanation": "本题把第 3 节前半收成“结构—两次测量—误差—仪表”。易错点：写成氢电极电子交换；用伏特计；钠差方向写反。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-3.md",
+        "label": "玻璃电极结构 · 两次测量法 · 碱差酸差 · pH 计"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "电位滴定与永停滴定如何对读？请写出：①电位滴定终点判据、三种处理（$E$–$V$、$\\Delta E/\\Delta V$–$\\overline{V}$、二阶过零）及表2-2 内插 $24.34\\,\\mathrm{mL}$；②四类反应的指示电极（玻璃 / 银或汞 / $\\mathrm{pM}$ 汞 / 铂）及银量法不用 SCE 直插的原因；③永停的双铂、外加 $10\\sim 200\\,\\mathrm{mV}$、可逆与不可逆电对，以及图2-18 三条曲线谁得名；④重氮化终点的 $\\mathrm{HNO_2}/\\mathrm{NO}$ 与卡尔·费歇尔 $w=(A-B)F/m\\times 100\\%$（例2-1 为 $1.72\\%$）。不要把永停写成电位滴定别名，也不要把 $F$ 写成法拉第常数。",
+      "answer": "参考答案：\n\n**1. 电位滴定终点**\n- 化学计量点处电位变化率最大即终点，不是预先规定的毫伏值。\n- $E$–$V$：S 形拐点，$45^{\\circ}$ 切线法。\n- 一阶导数：$\\Delta E/\\Delta V$ 对 $\\overline{V}$ 作峰。\n- 二阶导数过零；表2-2 从 $+4.4$（$24.30\\,\\mathrm{mL}$）内插到 $-5.9$（$24.40\\,\\mathrm{mL}$），$V_{\\mathrm{ep}}=24.34\\,\\mathrm{mL}$。\n\n**2. 指示电极**\n- 酸碱：玻璃–SCE；半中和点 $\\mathrm{p}K_{\\mathrm{a}}=\\mathrm{pH}$。\n- 沉淀：银丝或汞电极；$\\mathrm{Cl}^{-}$ 干扰，用 $\\mathrm{KNO_3}$ 盐桥，勿让 SCE 直插。\n- 络合 EDTA：$\\mathrm{pM}$ 汞电极 + 微量 $\\mathrm{Hg}$–EDTA。\n- 氧化还原：光亮铂电极。\n\n**3. 永停**\n- 两支相同铂电极，外加 $10\\sim 200\\,\\mathrm{mV}$，读电流，属电流滴定法。\n- 可逆电对（$\\mathrm{I_2}/\\mathrm{I}^{-}$）有电流，半滴定点最大；不可逆（$\\mathrm{S_4O_6}^{2-}/\\mathrm{S_2O_3}^{2-}$）近零。\n- （a）碘滴定硫代硫酸钠：终点后升起；（b）硫代硫酸钠滴定碘：降至零并停住，得名来源；（c）铈滴定亚铁：V 形最低点。\n\n**4. 药学应用**\n- 重氮化：终点前近零，稍过量后 $\\mathrm{HNO_2}/\\mathrm{NO}$ 可逆，指针不再回零。\n- 卡尔·费歇尔：$w=(A-B)F/m\\times 100\\%$，$F$ 是滴定度。例2-1 得 $1.72\\%$。",
+      "hint": "按电位滴定三种终点→四类电极→永停三条曲线→重氮化与 KF 写，并避开永停=电位滴定、$F$=法拉第。",
+      "scoring_criteria": [
+        "写出电位滴定终点判据、三种处理及 Vep=24.34 mL（4分）",
+        "写出四类指示电极及银量法 KNO3 盐桥（4分）",
+        "写出永停双铂小电压、可逆/不可逆及三条曲线得名（4分）",
+        "写出重氮化 HNO2/NO 与卡尔·费歇尔公式及 1.72%（3分）"
+      ],
+      "explanation": "本题把第 4、5 节收成“电位滴定对永停”。易错点：永停写成电位滴定别名；一阶横坐标用错；KF 的 $F$ 写成法拉第常数。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch02-4.md",
+        "label": "电位滴定三种终点 · 四类电极 · 永停三条曲线 · 例2-1"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

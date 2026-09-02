@@ -1,0 +1,321 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch10",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch10-1.md；content/instrumental-analysis/textbook/ch10-2.md；content/instrumental-analysis/textbook/ch10-3.md；content/instrumental-analysis/textbook/ch10-4.md；content/instrumental-analysis/textbook/ch10-5.md；content/instrumental-analysis/textbook/ch10-6.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于质谱分析法的定义、质荷比以及“过程相似、机理不同”，下列叙述正确的是（　）。",
+      "options": [
+        "质谱分析法英文是一个词 massspectrometry；横坐标用分子量；它是四大波谱里的第四种吸收光谱",
+        "质谱分析法（mass spectrometry，MS）将样品中的分子或原子离子化成气相离子，再根据各种离子的质荷比 $m/z$ 及其丰度做定性、定量分析。严格说来它既不是光谱也不是波谱，而是质量谱。离子源相当于光谱仪的光源，质量分析器相当于单色器",
+        "质谱测的是能级跃迁对电磁辐射的吸收；离子源相当于单色器，质量分析器相当于光源",
+        "质荷比写成 mass-to-chargeratio 一个词；$m/z$ 就是相对分子质量"
+      ],
+      "answer": 1,
+      "hint": "英文分词；质量谱不是吸收光谱；离子源≡光源，质量分析器≡单色器。",
+      "explanation": "**B 正确。** 定义、$m/z$、“过程相似、机理不同”都按第 1 节。\n\n**干扰项辨析**：\n- A：英文是分词；横坐标是 $m/z$；质谱不是吸收光谱。\n- C：测的是气相离子按 $m/z$ 分开后的丰度；离子源对光源，质量分析器对单色器，不要对调。\n- D：mass-to-charge ratio 分词；$m/z$ 不是分子量。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-1.md",
+        "label": "质谱分析法 · 质荷比 · 过程相似机理不同"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于质谱仪五块、两级真空以及直接导入型接口，下列叙述正确的是（　）。",
+      "options": [
+        "五块顺序是光源 → 单色器 → 吸收池 → 检测器；离子源和质量分析器真空度都是 $10^{-3}\\,\\mathrm{Pa}$",
+        "五块：样品导入系统、离子源、质量分析器、检测器、数据处理系统。第一级 $1\\sim 3$ 个旋片泵到几帕；第二级 $2\\sim 3$ 个涡轮泵。离子源 $10^{-3}\\sim 10^{-4}\\,\\mathrm{Pa}$，质量分析器 $10^{-6}\\sim 10^{-5}\\,\\mathrm{Pa}$。GC-MS 直接导入型接口温度应高于柱温或接近柱最高使用温度，流量 $0.7\\sim 1.0\\,\\mathrm{mL}\\cdot\\mathrm{min}^{-1}$",
+        "热储罐适用于一切固体；直接导入型接口温度低于柱温以免样品分解；LC-MS 也把毛细管直接捅进离子源",
+        "质量分析器真空比离子源更“稀”是错的；旋片泵接质量分析器"
+      ],
+      "answer": 1,
+      "hint": "五块不是紫外光路；两档真空不要并户；接口温度不能低于柱温。",
+      "explanation": "**B 正确。** 五块、两级真空和直接导入型接口都按第 2 节。\n\n**干扰项辨析**：\n- A：那是紫外光度计光路；两档真空不能写成同一档。\n- C：热储罐只适用于较高蒸气压气体或液体；接口温度低于柱温会凝在柱末端；LC-MS 必须先去流动相。\n- D：质量分析器比离子源更空；涡轮泵接离子源和质量分析器。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-2.md",
+        "label": "质谱仪五块 · 两级真空 · 直接导入型接口"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于电子轰击源和化学电离源，下列叙述正确的是（　）。",
+      "options": [
+        "有机分子电离能就是 $70\\,\\mathrm{eV}$；EI 离子化效率约 $10\\%$；CI 是硬电离",
+        "EI 灯丝电子 $50\\sim 100\\,\\mathrm{eV}$（通常 $70\\,\\mathrm{eV}$），有机分子电离能 $8\\sim 15\\,\\mathrm{eV}$，所以 $70\\,\\mathrm{eV}$ 打完还有余能出碎片。离子化效率 $0.001\\%\\sim 0.01\\%$，加速 $1\\sim 10\\,\\mathrm{kV}$。EI 硬电离、CI 软电离；反应气体浓度比样品高 $1000\\sim 10\\,000$ 倍。图 10-8 氨气 CI 的 $214$ 是 $\\mathrm{M}+\\mathrm{NH_4^+}$，不是 $\\mathrm{M}^{+\\,\\cdot}$",
+        "CI 的最高 $m/z$ 一定是分子离子；质子亲和力差越大电离越好",
+        "EI 分子离子总比碎片强，所以最适于测相对分子质量"
+      ],
+      "answer": 1,
+      "hint": "$70\\,\\mathrm{eV}$ 不是电离能；氨气 CI 会出 $\\mathrm{M}+\\mathrm{NH_4^+}$。",
+      "explanation": "**B 正确。** EI 数字、硬／软、图 10-8 都按第 2 节。\n\n**干扰项辨析**：\n- A：电离能 $8\\sim 15\\,\\mathrm{eV}$；效率 $0.001\\%\\sim 0.01\\%$；CI 是软电离。\n- C：最高峰可能是加合离子；质子亲和力差太大反而电离不起来。\n- D：EI 分子离子往往弱，测相对分子质量更常走 CI。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-2.md",
+        "label": "电子轰击源 · 化学电离源 · 图10-8"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于四种质量分析器和式（10-1）（10-3）（10-4）（10-5），下列叙述正确的是（　）。",
+      "options": [
+        "$mv^{2}=zV$（没有 $1/2$）；四极杆分辨率最高；TOF 分辨率也无限；离子阱定量最准",
+        "动能 $\\dfrac{1}{2}mv^{2}=zV$，$m/z=H^{2}r^{2}/(2V)$。双聚焦分辨率约 10 倍于单聚焦。四极杆射频例最高 $1200\\,\\mathrm{V}$、直流最高 $200\\,\\mathrm{V}$，分辨率和 $m/z$ 范围有限。TOF：$v=\\sqrt{2zV/m}$，$t=L\\sqrt{m/(2zV)}$，轻的先到；理论上 $m/z$ 范围无限，分辨率靠加长或反射器。本书离子阱只介绍四极离子阱，定量准确度低",
+        "TOF 重的先到检测器；$t$ 与 $m/z$ 一次方成正比",
+        "双聚焦是在检测器后面再加一块磁铁"
+      ],
+      "answer": 1,
+      "hint": "不要丢掉 $1/2$；四极杆不是最高分辨；TOF 轻的先到。",
+      "explanation": "**B 正确。** 四套工作式和短板都按第 2 节。\n\n**干扰项辨析**：\n- A：必须有 $1/2$；四极杆分辨率有限；TOF $m/z$ 范围无限不等于分辨率无限；离子阱定量准确度低。\n- C：轻的先到；$t\\propto\\sqrt{m/z}$。\n- D：静电场质量分析器加在单聚焦和检测器之间做能量色散。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-2.md",
+        "label": "式（10-1）（10-3）（10-4）（10-5） · 四种质量分析器"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于分子离子、氮规则、亚稳离子和氯溴同位素，下列叙述正确的是（　）。",
+      "options": [
+        "分子离子可以是偶电子离子；不含氮时奇电子质量为奇数；亚稳峰 $m/z$ 一定是整数",
+        "分子离子是 $\\mathrm{M}^{+\\,\\cdot}$，从来不是 $\\mathrm{EE}^{+}$。不含氮时奇电子质量为偶数。氮规则：不含氮或偶数个氮，相对分子质量为偶数；奇数个氮为奇数。亚稳 $m^{*}=m_{2}^{2}/m_{1}$，峰钝、$m/z$ 通常不是整数。一个 Cl 的 $M:(M+2)\\approx 3:1$，一个 Br $\\approx 1:1$；$\\mathrm{CHCl_3}$ 按 $(3+1)^{3}$ 得 $27:27:9:1$",
+        "氯约 $1:1$，溴约 $3:1$；甲醇的 $31$ 是分子离子",
+        "基峰一定是分子离子；多巴胺基峰就是 $153$"
+      ],
+      "answer": 1,
+      "hint": "分子离子是奇电子；氯 3:1、溴 1:1；亚稳用 $m_{2}^{2}/m_{1}$。",
+      "explanation": "**B 正确。** 分子离子、氮规则、式（10-9）和同位素峰簇都按第 3、5 节。\n\n**干扰项辨析**：\n- A：分子离子从来不是 $\\mathrm{EE}^{+}$；不含氮时奇电子为偶数；亚稳 $m/z$ 通常不是整数。\n- C：氯溴对调了；甲醇 $31$ 是 $\\mathrm{CH_2OH^{+}}$ 碎片，$32$ 才是 $\\mathrm{M}$。\n- D：多巴胺基峰 $124$，$M$ 是 $153$；可卡因基峰 $82$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-3.md",
+        "label": "分子离子 · 氮规则 · 式（10-9） · 氯溴同位素"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于本版麦氏重排以及 $\\sigma$、$\\alpha$、$\\beta$ 裂解，下列叙述正确的是（　）。",
+      "options": [
+        "麦氏重排不需要 $\\gamma\\text{-}\\mathrm{H}$；醛的麦氏离子是 $58$，酮是 $44$",
+        "本版广义麦氏重排：$\\gamma\\text{-}\\mathrm{H}$ 经六元环转到电荷位点，引起 $\\beta$ 键断裂失烯烃。条件：A、B 以双键相连；A、B、D 可以是 C 或杂原子；至少有一个 $\\gamma\\text{-}\\mathrm{H}$。醛 $44$、酮 $58$ 或 $58+14n$、酸 $60$、甲酯 $74$、端基烯 $42$、烷基苯 $92$。$\\sigma$ 键裂解几乎总会在；$\\alpha$ 裂解要杂原子；$\\beta$ 裂解给烷基苯草鎓 $91$",
+        "$\\sigma$ 键裂解就是 $\\alpha$ 裂解；有麦氏重排时 $\\sigma$ 键裂解完全消失",
+        "正丁醛基峰 $44$ 是简单裂解的奇数峰"
+      ],
+      "answer": 1,
+      "hint": "麦氏三条条件以本版为准；醛 44、酮 58 不要对调。",
+      "explanation": "**B 正确。** 麦氏重排条件和三类裂解都按第 3、4 节。\n\n**干扰项辨析**：\n- A：必须有 $\\gamma\\text{-}\\mathrm{H}$；醛 $44$、酮 $58$，不要对调。\n- C：$\\sigma$ 与 $\\alpha$ 不是同一件事；即使有麦氏重排、$\\alpha$ 裂解，$\\sigma$ 键裂解也不会完全消失。\n- D：正丁醛 $15$、$29$、$43$ 才是简单裂解奇数峰；$44$ 是麦氏重排基峰。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-3.md",
+        "label": "麦氏重排（本版） · σ 键裂解 · α 裂解 · β 裂解"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于烃、醇醚、羰基和胺的典型峰，下列叙述正确的是（　）。",
+      "options": [
+        "直链烷烃一定有强 $\\mathrm{M}^{+\\,\\cdot}$ 和明显 $M-15$；醚和醇一样都有 $M-18$",
+        "烷烃 $\\mathrm{M}$ 可消失，基峰常 $43$ 或 $57$，直链通常无 $M-15$。烯烃 $\\mathrm{M}$ 明显，$41$ 系列，端基烯麦氏 $42$。烷基苯 $91$、$77$、$65$、$51$，麦氏 $92$。醇有 $31$ 系列和 $M-18$；醚无明显 $M-18$。醛麦氏 $44$ 兼 $M-1$、$29$；酮 $\\mathrm{M}$ 强、麦氏 $58$；酸 $60$；甲酯 $74$。伯胺基峰常 $30$",
+        "正二十六烷的 $57$ 一定是叔丁基；看见 $30$ 就一定是伯胺",
+        "芳香烃分子离子很弱；酮的 $\\mathrm{M}$ 一定消失"
+      ],
+      "answer": 1,
+      "hint": "四类化合物的身份证峰按第 4 节；醚没有明显失水峰。",
+      "explanation": "**B 正确。** 烃／醇醚／羰基／胺都按第 4 节。\n\n**干扰项辨析**：\n- A：长链烷烃 $\\mathrm{M}$ 可消失，直链无 $M-15$；醚无明显 $M-18$。\n- C：正二十六烷的 $57$ 是伯碳 $\\mathrm{C_4H_9^+}$；仲、叔胺经 $\\beta\\text{-}\\mathrm{H}$ 重排也可出较弱的 $30$。\n- D：芳香烃 $\\mathrm{M}$ 非常强；酮 $\\mathrm{M}$ 强。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-4.md",
+        "label": "烷烃烯烃芳香烃 · 醇醚 · 醛酮酸酯 · 胺"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于五种离子源，下列叙述正确的有（　）。",
+      "options": [
+        "EI 是硬电离，碎片丰富、分子离子往往弱，样品要有一定挥发性；CI 是软电离，反应气体为甲烷、异丁烷或氨气，利于测相对分子质量",
+        "FAB 用 Ar 或 Xe 高能原子束，$4\\sim 8\\,\\mathrm{kV}$，样品溶在甘油等基质中不必先变成气相；MALDI 是 1988 年 Karas 和 Hillenkamp 提出，紫外脉冲激光打在基质晶体上",
+        "ESI 是 LC-MS 最常用的软电离，毛细管 $2\\sim 5\\,\\mathrm{kV}$，产生多电荷离子，扩大可测相对分子质量范围",
+        "MALDI 的激光直接烧蛋白质分子；ESI 不能产生多电荷离子；FAB 必须先把样品汽化再 EI"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "EI／CI／FAB／MALDI／ESI 分户；D 三句都反了。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：硬／软和用途，来自第 2 节。\n- B：FAB 和 MALDI 本版数字与人名，来自第 2 节。\n- C：ESI $2\\sim 5\\,\\mathrm{kV}$ 与多电荷，来自第 2 节。\n- **D 错**：激光先被基质吸收；ESI 正是靠多电荷；FAB 样品不必先变成气相。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-2.md",
+        "label": "五种离子源 compare"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于分子离子辨认、式（10-10）（10-11）以及例 10-1、例 10-2，下列叙述正确的有（　）。",
+      "options": [
+        "分子离子应是最高 $m/z$（同位素、准分子离子除外），必须是奇电子；出现 $(M-5)\\sim(M-14)$、$(M-21)\\sim(M-25)$ 则不是 $\\mathrm{M}$。稳定性从芳香族降到支链烷烃",
+        "只含 C、H、O 时 $(M+1)/M\\times 100=1.1\\,n_{\\mathrm{C}}$，$(M+2)/M\\times 100=0.006\\,n_{\\mathrm{C}}^{2}+0.20\\,n_{\\mathrm{O}}$。$M=150$、$100:9.9:0.9$ 得 $\\mathrm{C_9H_{10}O_2}$。有 Cl、Br 时不要只用这两式",
+        "例 10-1 用 $72$ 的 $\\mathrm{OE}^{+\\,\\cdot}$（失 $42$）把 2-庚酮（麦氏 $58$）和 4-庚酮（麦氏 $86$）划掉，定为 3-庚酮。例 10-2 $U=5$、$91$ 串加 $43$，结构为乙酸苄酯，$108$ 是失乙烯酮",
+        "软电离最高峰一定是 $\\mathrm{M}^{+\\,\\cdot}$；有氯仍只用式（10-10）；看见 $57$ 就写成丁基正离子"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "五条辨认 + 丰度法 + 两则例题；D 三句都错。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：分子离子五条，来自第 5 节。\n- B：式（10-10）（10-11）和 $150$ 那道例，来自第 5 节。\n- C：例 10-1、例 10-2，来自第 5 节。\n- **D 错**：软电离最高峰可能是加合离子；有卤素走二项式；酮的 $57$ 也可以是 $\\mathrm{C_2H_5CO^{+}}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-5.md",
+        "label": "分子离子峰五条 · 式（10-10）（10-11） · 例10-1 · 例10-2"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "电子倍增管一个离子产生约 $10^{2}$ 个电子；MCP 管径 $10\\,\\mathrm{mm}$；法拉第杯响应最快所以用于 TOF；四极杆射频例最高 $200\\,\\mathrm{V}$、直流最高 $1200\\,\\mathrm{V}$。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "电子倍增管 $\\sim 10^{5}$；MCP $10\\sim 100\\,\\mu\\mathrm{m}$；TOF 用 MCP；射频／直流数字对调了。",
+      "explanation": "**该命题错误，四句都错。** 一个离子约 $10^{5}$ 个电子甚至更多。MCP 管径 $10\\sim 100\\,\\mu\\mathrm{m}$ 不是 $\\mathrm{mm}$。法拉第杯灵敏度低、响应慢，TOF 特别适合 MCP。四极杆射频例最高 $1200\\,\\mathrm{V}$、直流最高 $200\\,\\mathrm{V}$，命题把二者对调。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-2.md",
+        "label": "电子倍增管 · MCP · 法拉第杯 · 四极杆电压"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "例 10-3 印刷验证句的 $m/z=120$ 就是丙酸乙酯的分子离子；例 10-4 没有 $2720$、$2820\\,\\mathrm{cm}^{-1}$ 仍应写成醛；综合解析必须把红外光谱全图指认完；本章习题要按第 11 章塔板理论作答。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "$\\mathrm{C_5H_{10}O_2}=102$；无醛 C–H 是酮；综合解析不必全图；不要吞第 11 章。",
+      "explanation": "**该命题错误，四句都错。** $\\mathrm{C_5H_{10}O_2}$ 质量是 $102$，图上也标 $\\mathrm{M}$（$102$），印刷 $120$ 与分子式不符。例 10-4 无 $2720$、$2820$ 明确写“可能为酮”。综合解析通常不需要解析红外全图。本章习题止于习题 5 的四谱，不要把第 11 章色谱写进来。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-6.md",
+        "label": "例10-3 的 102 · 例10-4 是酮 · 不必全图 · 不要吞第11章"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "EI 通常用 ________ $\\mathrm{eV}$ 电子。离子源真空度 ________ $\\mathrm{Pa}$。亚稳离子表观质量 $m^{*}=$ ________。有 $\\gamma\\text{-}\\mathrm{H}$ 的醛麦氏重排离子 $m/z=$ ________。烷基苯 $\\beta$ 裂解扩环后的草鎓正离子 $m/z=$ ________。",
+      "answer": "70，10^{-3}～10^{-4}，m_2^2/m_1，44，91",
+      "hint": "$70\\,\\mathrm{eV}$；离子源 $10^{-3}\\sim 10^{-4}\\,\\mathrm{Pa}$；$m_{2}^{2}/m_{1}$；醛 $44$；草鎓 $91$。",
+      "scoring_criteria": [
+        "第一空填“70”（2分）",
+        "第二空填“10^{-3}～10^{-4}”或“10-3～10-4”或“10^{-3}\\sim 10^{-4}”（2分）",
+        "第三空填“m_2^2/m_1”或“m2²/m1”或“m_{2}^{2}/m_{1}”（2分）",
+        "第四空填“44”（2分）",
+        "第五空填“91”（2分）"
+      ],
+      "explanation": "第 2 节 EI 通常 $70\\,\\mathrm{eV}$，离子源 $10^{-3}\\sim 10^{-4}\\,\\mathrm{Pa}$。第 3 节式（10-9）$m^{*}=m_{2}^{2}/m_{1}$。第 3、4 节醛麦氏 $44$、烷基苯草鎓 $91$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-2.md",
+        "label": "70 eV · 离子源真空 · 式（10-9） · 醛44 · 草鎓91"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "从离子类型写到裂解规律。请写出：①分子离子为什么是奇电子、不含氮时质量奇偶、甲醇 $32$ 和 $31$ 各是什么；②亚稳离子式（10-9）和对氨基茴香醚两根亚稳峰；③本版麦氏重排三条条件及醛／酮／酸／甲酯的重排质量；④$\\sigma$ 键裂解、$\\alpha$ 裂解、$\\beta$ 裂解怎样分户，2,2-二甲基庚烷为什么 $57>71$。不要把 $\\sigma$ 写成 c，也不要把氯的 $3:1$ 和溴的 $1:1$ 对调。",
+      "answer": "参考答案：\n\n**1. 分子离子**\n- $\\mathrm{M}+\\mathrm{e}^{-}\\to\\mathrm{M}^{+\\,\\cdot}+2\\mathrm{e}^{-}$，是 $\\mathrm{OE}^{+\\,\\cdot}$，从来不是 $\\mathrm{EE}^{+}$。不含氮：奇电子质量偶数，偶电子奇数。甲醇 $\\mathrm{CH_3OH}^{+\\,\\cdot}$ $32$ 是分子离子，$\\mathrm{CH_2OH^{+}}$ $31$ 是碎片。\n\n**2. 亚稳**\n- 在质量分析器里裂解。$m^{*}=m_{2}^{2}/m_{1}$。对氨基茴香醚 $108^{2}/123=94.8$，$80^{2}/108=59.3$，证明 $123\\xrightarrow{-\\cdot\\mathrm{CH_3}}108\\xrightarrow{-\\mathrm{CO}}80$。峰宽 $2\\sim 5$ 单位，钝，丰度约 $1\\%\\sim 3\\%$，通常非整数。\n\n**3. 麦氏重排**\n- 广义：$\\gamma\\text{-}\\mathrm{H}$ 经六元环转到电荷位点，$\\beta$ 键断裂失烯烃。条件：A=B 双键；A、B、D 可以是 C 或杂原子；至少一个 $\\gamma\\text{-}\\mathrm{H}$。醛 $44$，酮 $58$ 或 $58+14n$，酸 $60$，甲酯 $74$。\n\n**4. 三类裂解**\n- $\\sigma$ 键裂解几乎总会在，大自由基优先失；碳正离子稳定性苄基 $>$ 烯丙基 $>$ 叔 $>$ 仲 $>$ 伯。2,2-二甲基庚烷失 $\\cdot\\mathrm{C_5H_{11}}$ 得 $57$，高于 $71$。$\\alpha$ 裂解要杂原子（2-丁酮 $43$）。$\\beta$ 裂解给烷基苯草鎓 $91$。氯约 $3:1$、溴约 $1:1$，不要对调。",
+      "hint": "按分子离子→亚稳→麦氏三条→σ/α/β 写，并避开 c 键和氯溴对调。",
+      "scoring_criteria": [
+        "写出分子离子是奇电子、甲醇 32/31（3分）",
+        "写出式（10-9）和对氨基茴香醚两根亚稳峰（4分）",
+        "写出麦氏三条条件和醛酮酸酯质量（4分）",
+        "写出 σ/α/β 分户和 57>71（3分）"
+      ],
+      "explanation": "本题把第 3 节收成“谁还是分子—亚稳钉裂解链—麦氏本版条件—三种键怎么断”。易错点：31 当分子量；醛 44 与酮 58 对调；σ 与 α 并户。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-3.md",
+        "label": "分子离子 · 亚稳 · 麦氏重排 · σ α β 裂解"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "未知物怎样从分子离子走到综合解析？请写出：①分子离子五条和氮规则；②式（10-10）（10-11），并算 $M=150$、$100:9.9:0.9$ 的分子式；③例 10-1 为何是 3-庚酮、例 10-2 为何是乙酸苄酯；④综合解析六步，例 10-3 为何是丙酸乙酯（不要用印刷的 $120$）、例 10-4 为何是酮不是醛。不要先猜结构再改分子式，也不要吞第 11 章。",
+      "answer": "参考答案：\n\n**1. 认 M**\n- 稳定性芳族＞…＞支链烷烃；应是最高 $m/z$（同位素、准分子离子除外）；必须是奇电子；丢失在表 10-3 里说得通，$(M-5)\\sim(M-14)$、$(M-21)\\sim(M-25)$ 则不是 M；服从氮规则（无氮或偶氮→偶质量，奇氮→奇质量）。软电离最高峰也不保证是 M。\n\n**2. 分子式**\n- 只含 C、H、O：$(M+1)/M\\times 100=1.1 n_{\\mathrm{C}}$，$(M+2)/M\\times 100=0.006 n_{\\mathrm{C}}^{2}+0.20 n_{\\mathrm{O}}$。$9.9=1.1 n_{\\mathrm{C}}\\Rightarrow n_{\\mathrm{C}}=9$；$0.9=0.006\\times 81+0.20 n_{\\mathrm{O}}\\Rightarrow n_{\\mathrm{O}}\\approx 2$；$n_{\\mathrm{H}}=10$，得 $\\mathrm{C_9H_{10}O_2}$。有 Cl、Br 走二项式。\n\n**3. 两则质谱例**\n- 例 10-1：$M=114$，基峰 $57$，麦氏失 $42$ 得 $72$。2-庚酮麦氏 $58$、4-庚酮麦氏 $86$，只有 3-庚酮给出 $57$、$85$ 和 $72$。例 10-2：$U=5$，$91$ 串示苄基，$43$ 为 $\\mathrm{CH_3CO^{+}}$，乙酸苄酯；$108$ 失乙烯酮。\n\n**4. 综合解析**\n- 纯度 $>98\\%$ → MS 分子式和 $U$ → UV 不饱和类型 → IR 官能团 → $^{1}\\mathrm{H\\ NMR}$ → 拼结构并用 MS 裂解验证。例 10-3：$U=1$，弱 UV，$1740+1200$ 无羟基，氢谱 $3:3:2:2$，丙酸乙酯，$\\mathrm{M}=102$ 不是 $120$。例 10-4：$\\mathrm{C_9H_{10}O}$，$U=5$，B 带 $256\\,\\mathrm{nm}$，IR $1700$ 且无 $2720$、$2820$，三单峰 $3:2:5$，苯基丙酮不是醛。不要把第 11 章色谱写进来。",
+      "hint": "按认 M→丰度法→两则质谱例→综合六步和两则四谱例写，并避开 120 和醛。",
+      "scoring_criteria": [
+        "写出分子离子五条和氮规则（4分）",
+        "写出两式并算得 C9H10O2（3分）",
+        "写出例 10-1 为 3-庚酮、例 10-2 为乙酸苄酯的关键峰（4分）",
+        "写出六步，例 10-3 用 102、例 10-4 是酮（4分）"
+      ],
+      "explanation": "本题把第 5、6 节收成“先认出 M—写出分子式—两则质谱例—四谱综合”。易错点：印刷 120；例 10-4 写成醛；先猜结构再改分子式。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch10-5.md",
+        "label": "分子离子五条 · 式（10-10） · 例10-1 · 例10-2 · 例10-3 · 例10-4"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

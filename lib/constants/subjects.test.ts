@@ -22,6 +22,7 @@ test("SUBJECTS 覆盖所有 SubjectId", () => {
   assert.ok(ids.includes("biochemistry"));
   assert.ok(ids.includes("anatomy"));
   assert.ok(ids.includes("histology"));
+  assert.ok(ids.includes("instrumental-analysis"));
 });
 
 test("SUBJECTS 每个值是中文名称", () => {

@@ -12,6 +12,7 @@ BOOKS = [
     ("biochemistry", "biochemistry.pdf"),
     ("anatomy", "anatomy.pdf"),
     ("histology", "histology.pdf"),
+    ("instrumental-analysis", "instrumental-analysis.pdf"),
 ]
 
 def main() -> None:

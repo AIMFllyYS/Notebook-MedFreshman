@@ -6,7 +6,7 @@ import { contentTree, getCategory } from "@/lib/content-data";
 import { readContentMarkdown } from "@/lib/content/loader";
 import type { ContentItem } from "@/lib/types/content";
 
-const SOPHOMORE = ["cell-biology", "biochemistry", "anatomy", "histology"] as const;
+const SOPHOMORE = ["cell-biology", "biochemistry", "anatomy", "histology", "instrumental-analysis"] as const;
 const BLOCKS = ["textbook", "detail", "recording", "summary", "kaoqian-moni", "shizhan-yanlian"];
 const ROOT = process.cwd();
 const PUBLIC = path.join(ROOT, "public");
@@ -124,7 +124,7 @@ test("有图题的教材叶子必须嵌入真实图片", () => {
 });
 
 test("解剖/组胚/细胞/生化：带插图的章不能把图丢掉", () => {
-  const mustHaveFigures = ["anatomy", "histology", "cell-biology", "biochemistry"] as const;
+  const mustHaveFigures = ["anatomy", "histology", "cell-biology", "biochemistry", "instrumental-analysis"] as const;
   for (const id of mustHaveFigures) {
     const cat = getCategory(id, "textbook");
     const leaves = walkLeaves(cat!.items).filter((item) => item.status === "done" && item.id !== "toc");

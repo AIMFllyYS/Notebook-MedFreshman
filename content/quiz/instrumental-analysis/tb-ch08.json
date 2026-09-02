@@ -1,0 +1,319 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch08",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch08-1.md；content/instrumental-analysis/textbook/ch08-2.md；content/instrumental-analysis/textbook/ch08-3.md；content/instrumental-analysis/textbook/ch08-4.md；content/instrumental-analysis/textbook/ch08-5.md；content/instrumental-analysis/textbook/ch08-6.md；content/instrumental-analysis/textbook/ch08-7.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于本版核磁共振（NMR）、核磁共振波谱法以及它与紫外–可见、红外的分户，下列叙述正确的是（　）。",
+      "options": [
+        "NMR 吸的是紫外光，引起电子能级跃迁；英文是一个词 nuclearmagneticresonance",
+        "核磁共振（nuclear magnetic resonance，NMR）是分子的某些原子核在外加磁场中吸收频率 $4\\sim 1000\\,\\mathrm{MHz}$ 的无线电波，引起原子核自旋方向改变。核磁共振波谱法（nuclear magnetic resonance spectroscopy）据此做定性、定量和结构鉴定。所吸无线电波能量低，只动自旋轴，不足以引起电子、振动或转动能级跃迁。扫频改照射频率，扫场改外磁场强度，横轴是化学位移",
+        "频率范围应写成第 5 节超导磁体的 $600\\,\\mathrm{MHz}$；NMR 属于振–转光谱",
+        "核磁共振波谱纵轴是化学位移，横轴是响应信号；只能做结构鉴定，不能定量"
+      ],
+      "answer": 1,
+      "hint": "频率 $4\\sim 1000\\,\\mathrm{MHz}$；只动自旋轴；扫频／扫场；定性定量结构鉴定。",
+      "explanation": "**B 正确。** 定义、频率、只动自旋轴、扫频／扫场都按第 1 节。\n\n**干扰项辨析**：\n- A：吸的是无线电波不是紫外；英文是分词。\n- C：$600\\,\\mathrm{MHz}$ 是第 5 节 $14\\,\\mathrm{T}$ 超导磁体相当于的质子频率，不要并进现象定义；NMR 不是振–转光谱。\n- D：纵轴是响应信号，横轴是化学位移；方法包括定性、定量和结构鉴定。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-1.md",
+        "label": "核磁共振 · 核磁共振波谱法 · NMR 是吸收光谱但只动自旋轴"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于表8-1 自旋量子数、$I=1/2$ 为何是主要对象，以及共振条件，下列叙述正确的是（　）。",
+      "options": [
+        "$^{12}\\mathrm{C}$、$^{16}\\mathrm{O}$ 的 $I=1/2$，是碳谱主要核；$^{2}\\mathrm{H}$ 的 $I=1/2$",
+        "质量数和原子序数都偶数则 $I=0$，不能产生核磁共振。质量数奇数则 $I$ 为半整数，如 $^{1}\\mathrm{H}(1/2)$、$^{13}\\mathrm{C}(1/2)$、$^{19}\\mathrm{F}(1/2)$。$I=1/2$ 电荷均匀分布成球体，是核磁共振主要研究对象。共振条件 $\\nu=\\nu_0=\\gamma H_0/(2\\pi)$，本版 $\\gamma(^1\\mathrm{H})=2.68\\times 10^{8}\\,\\mathrm{rad}\\cdot\\mathrm{T}^{-1}\\cdot\\mathrm{s}^{-1}$，$H_0=4.69\\,\\mathrm{T}$ 时为 $200\\,\\mathrm{MHz}$",
+        "能级差 $\\Delta E$ 与 $H_0$ 无关；选律是 $\\Delta m=0$",
+        "表8-2 在 $1.4092\\,\\mathrm{T}$ 时 $^{13}\\mathrm{C}$ 也是 $60.00\\,\\mathrm{MHz}$，与 $^{1}\\mathrm{H}$ 同一根数"
+      ],
+      "answer": 1,
+      "hint": "$I=0$ 不能共振；$I=1/2$ 是主要对象；$\\nu=\\gamma H_0/(2\\pi)$；$4.69\\,\\mathrm{T}\\to 200\\,\\mathrm{MHz}$。",
+      "explanation": "**B 正确。** 表8-1、共振条件和例题数字都按第 2 节。\n\n**干扰项辨析**：\n- A：$^{12}\\mathrm{C}$、$^{16}\\mathrm{O}$ 的 $I=0$；$^{2}\\mathrm{H}$ 的 $I=1$。碳谱用 $^{13}\\mathrm{C}$。\n- C：$\\Delta E=\\gamma\\hbar H_0$，与 $H_0$ 成正比；选律 $\\Delta m=\\pm 1$。\n- D：$1.4092\\,\\mathrm{T}$ 时 $^{1}\\mathrm{H}$ 是 $60.00\\,\\mathrm{MHz}$，$^{13}\\mathrm{C}$ 是 $15.08\\,\\mathrm{MHz}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-2.md",
+        "label": "表8-1 · I=1/2 是主要研究对象 · 核磁共振条件 · 4.69 T 例题"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于化学位移定义、TMS、$\\mathrm{CH_3Br}$ 的 $2.70$ 以及谱图左右，下列叙述正确的是（　）。",
+      "options": [
+        "$\\sigma$ 越大 $\\delta$ 越大，峰出在谱图左端高场",
+        "扫频 $\\delta=(\\nu_{\\mathrm{S}}-\\nu_{\\mathrm{R}})/\\nu_{\\mathrm{R}}\\times 10^{6}$，扫场 $\\delta=(H_{\\mathrm{R}}-H_{\\mathrm{S}})/H_{\\mathrm{R}}\\times 10^{6}$。$\\delta$ 量纲一，与外磁场无关。$\\mathrm{CH_3Br}$ 在 $60\\,\\mathrm{MHz}$（$+162\\,\\mathrm{Hz}$）和 $100\\,\\mathrm{MHz}$（$+270\\,\\mathrm{Hz}$）的 $\\delta$ 都是 $2.70$。谱图右端高场低频、左端低场高频。TMS 十二条等价质子、屏蔽更大、沸点 $27^{\\circ}\\mathrm{C}$",
+        "$\\delta$ 随仪器磁场成比例增大，所以 $100\\,\\mathrm{MHz}$ 上 $\\mathrm{CH_3Br}$ 的 $\\delta$ 是 $4.50$",
+        "扫场公式分子也是 $H_{\\mathrm{S}}-H_{\\mathrm{R}}$，与扫频分子次序相同"
+      ],
+      "answer": 1,
+      "hint": "扫场分子是 $H_{\\mathrm{R}}-H_{\\mathrm{S}}$；右高场低频；$\\mathrm{CH_3Br}$ 的 $\\delta=2.70$ 与磁场无关。",
+      "explanation": "**B 正确。** 式（8-16）（8-17）、$\\mathrm{CH_3Br}$ 例和 TMS 都按第 3 节。\n\n**干扰项辨析**：\n- A：$\\sigma$ 大则 $\\nu$ 小、$\\delta$ 小，出在右边高场。\n- C：$\\delta$ 与磁场无关；变的是赫兹差。\n- D：扫场分子是 $H_{\\mathrm{R}}-H_{\\mathrm{S}}$，与扫频 $\\nu_{\\mathrm{S}}-\\nu_{\\mathrm{R}}$ 次序相反。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-3.md",
+        "label": "式（8-16）（8-17） · CH3Br 的 2.70 · TMS · 右高场低频"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于本版 $n+1$ 律、碘乙烷裂分以及 $\\Delta\\nu/J$，下列叙述正确的是（　）。",
+      "options": [
+        "$n+1$ 的 $n$ 是该基团自己的氢数；碘乙烷甲基是四重峰",
+        "某种质子在与该基团相连的邻近碳原子中含有 $n$ 个质子时，裂成 $n+1$ 重峰，与自身数目无关；强度比是 $(a+b)^{n}$ 的系数。它是 $I=1/2$ 时 $2nI+1$ 的特例。碘乙烷甲基（3H）是 $1:2:1$ 三重峰，亚甲基（2H）是 $1:3:3:1$ 四重峰，自旋系统 $\\mathrm{A_2X_3}$。$\\Delta\\nu/J>10$ 为一级谱（弱耦合），$\\Delta\\nu$ 必须用 Hz",
+        "耦合与外磁场成正比，裂距就是 $\\delta$ 差",
+        "$\\Delta\\nu/J<10$ 才服从 $n+1$，裂距等于 $J$"
+      ],
+      "answer": 1,
+      "hint": "$n$ 是邻近碳上的质子；$\\mathrm{A_2X_3}$；一级谱 $\\Delta\\nu/J>10$。",
+      "explanation": "**B 正确。** $n+1$、碘乙烷和一级／二级分界都按第 4 节。\n\n**干扰项辨析**：\n- A：$n$ 不是自己的氢数；甲基是三重峰。\n- C：耦合与外磁场无关，裂距单位是 Hz。\n- D：一级谱才是 $\\Delta\\nu/J>10$、服从 $n+1$、裂距 $=J$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-4.md",
+        "label": "n+1 律 · 碘乙烷 A2X3 · 一级谱图与二级谱图"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于连续波与 PFT-NMR、制样和超导磁体，下列叙述正确的是（　）。",
+      "options": [
+        "第一台商品化高分辨是 1971 年 JEOL；超导磁体只用液氮；样品必须克级",
+        "1953 年 Varian 第一台商品化高分辨；1971 年 JEOL 第一台 PFT-NMR。CW 六块：样品管、探头、磁体、射频发射器、接收器、记录仪；三套线圈垂直。制样固体 $5\\sim 10\\,\\mathrm{mg}$ 或液体 $10\\,\\mu\\mathrm{L}$，$0.5\\,\\mathrm{mL}$ 溶剂，常用 $\\mathrm{CDCl_3}$ 加 TMS。超导磁体高达 $14\\,\\mathrm{T}$，相当于质子 $600\\,\\mathrm{MHz}$，液氦在内、液氮在外。PFT 同时激发全部磁性核，FID 经傅里叶变换；CW 一张谱 $5\\sim 10\\,\\mathrm{min}$，PFT 几秒钟",
+        "CW 同时激发所有质子；PFT 每次只激发一种化学环境",
+        "“$600\\,\\mathrm{MHz}$ 仪器”指的是 $^{13}\\mathrm{C}$ 的共振频率"
+      ],
+      "answer": 1,
+      "hint": "1953 Varian、1971 JEOL；$14\\,\\mathrm{T}\\equiv 600\\,\\mathrm{MHz}$ 质子；PFT 同时激发。",
+      "explanation": "**B 正确。** 商品化年份、六块、制样、超导和 PFT 优点都按第 5 节。\n\n**干扰项辨析**：\n- A：年份对调；超导靠液氦，液氮在外减少损失；样品是毫克／微升级。\n- C：激发方式说反了。\n- D：仪器标称频率指质子。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-5.md",
+        "label": "CW-NMR 六块 · 样品管与制样 · 超导磁体 · PFT-NMR 与 FID"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于积分曲线、例8-1 乙酸丙酯和例8-2 苯乙酸乙酯，下列叙述正确的是（　）。",
+      "options": [
+        "积分高度直接等于氢的绝对个数；例8-1 在 $\\delta\\,10\\sim 12$ 有羧基峰",
+        "峰面积与质子数成正比，积分只给相对数目，须乘分子式总氢。醋酸苄酯 $55+22+32=109$，归一得 $5\\mathrm{H}$、$2\\mathrm{H}$、$3\\mathrm{H}$。例8-1 $\\mathrm{C_5H_{10}O_2}$，$U=1$，无 $\\delta\\,10\\sim 12$，为乙酸丙酯，自旋 $\\mathrm{A_3}$、$\\mathrm{A_2MX_3}$。例8-2 $\\mathrm{C_{10}H_{12}O_2}$，$U=5$，IR $1735\\,\\mathrm{cm}^{-1}$，为苯乙酸乙酯，自旋 $\\mathrm{A_5}$、$\\mathrm{A_2}$、$\\mathrm{A_2X_3}$。多重性 $\\ge 5$ 本版可写 m",
+        "例8-2 的 $U=5$ 只来自一个苯环；单取代苯不能看起来像单峰",
+        "FT 谱峰下打印的 $1.92$ 就是绝对 $2$ 个氢，不必再算"
+      ],
+      "answer": 1,
+      "hint": "相对积分 $\\times$ 总氢；例8-1 酯不是酸；例8-2 $U=5$ 含苯环加酯羰基。",
+      "explanation": "**B 正确。** 积分、两则例题和 m 的用法都按第 6 节。\n\n**干扰项辨析**：\n- A：积分是相对值；例8-1 无羧基峰，是酯。\n- C：$U=5$ 是苯环 $4$ 加酯羰基 $1$；单取代苯在较低场仪器上常像单峰。\n- D：打印值仍是相对积分。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-6.md",
+        "label": "积分曲线 · 氢分布 · 例8-1 乙酸丙酯 · 例8-2 苯乙酸乙酯"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 $^{13}\\mathrm{C}$ 谱特点、去耦技术和例8-3，下列叙述正确的是（　）。",
+      "options": [
+        "$^{13}\\mathrm{C}$ 丰度 $99\\%$，峰强可定量；宽带去耦按 $n+1$ 分伯仲叔季；例8-3 谱线多于碳数才说明对称",
+        "$^{13}\\mathrm{C}$ 天然丰度 $1.1\\%$，$\\gamma$ 约 $^{1}\\mathrm{H}$ 的 $1/4$，相对灵敏度 $1/5800$；$\\delta$ $0\\sim 220$，分辨率约氢谱 20 倍。$T_1$ 为 $0.1\\sim 100\\,\\mathrm{s}$。NOE 增益 $\\mathrm{CH_3}\\ge\\mathrm{CH_2}\\ge\\mathrm{CH}>\\mathrm{C}$，去耦谱峰强不能定量。宽带去耦使化学等价碳出单峰、丢失连氢信息；偏共振保留 $^{1}J$，按 $n+1$ 分 $\\mathrm{CH_3}$ 四重、$\\mathrm{CH_2}$ 三重、$\\mathrm{CH}$ 二重、季碳单峰。例8-3 $\\mathrm{C_8H_8O}$ 谱线少于 8 个碳，有对称，为苯乙酮（$\\delta\\,26.3\\,\\mathrm{q}$，$197.8\\,\\mathrm{s}$）。DEPT 是极化转移，二维只按教材点到 COSY",
+        "乙炔 $\\delta_{\\mathrm{C}}=123.7$，落在烯烃区；羰基 $\\delta$ 通常 $<100$",
+        "$^{13}\\mathrm{C}$–$^{13}\\mathrm{C}$ 耦合很常见，不必去耦；季碳在 $^{13}\\mathrm{C}$–$^{1}\\mathrm{H}$ COSY 上有强交叉峰"
+      ],
+      "answer": 1,
+      "hint": "丰度 $1.1\\%$、灵敏度 $1/5800$；宽带丢级数、偏共振留 $^{1}J$；谱线少于碳数才对称。",
+      "explanation": "**B 正确。** 六条特点、两种去耦、例8-3 和二维点到都按第 7 节。\n\n**干扰项辨析**：\n- A：丰度是 $1.1\\%$ 不是 $99\\%$；分伯仲叔季的是偏共振；对称是谱线少于碳数。\n- C：乙烷 $5.7$、乙烯 $123.7$、乙炔 $71.9$；羰基可达 $200$ 左右。\n- D：$^{13}\\mathrm{C}$–$^{13}\\mathrm{C}$ 几乎不耦合；季碳在异核 COSY 上无点。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-7.md",
+        "label": "13C 特点 · 质子宽带去耦 · 质子偏共振去耦 · 例8-3 苯乙酮"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于饱和、$T_1$／$T_2$、电负性与磁各向异性，下列叙述正确的有（　）。",
+      "options": [
+        "$4.69\\,\\mathrm{T}$、$293\\,\\mathrm{K}$ 时 $N_j/N_0=0.99997$，激发态 $100\\,000$ 则基态 $100\\,003$。基态核数等于激发态时吸收信号为零，称为饱和。弛豫必须快过激发",
+        "$T_1$ 是纵向、自旋–晶格，能量交给晶格变热；晶状固体 $T_1$ 较大。$T_2$ 是横向、自旋–自旋，总能量不变；固体／黏稠液体 $T_2\\approx 10^{-4}\\,\\mathrm{s}$，运动快的液体约 $1\\,\\mathrm{s}$",
+        "表8-3：$\\mathrm{CHCl_3}$ $\\delta=7.27$，$\\mathrm{CH_4}$ $\\delta=0.23$。乙烯 $\\delta\\approx 5.8$（去屏蔽），乙炔 $\\delta\\approx 2.9$（沿键轴屏蔽），苯环 $\\delta\\approx 7.3$（环外去屏蔽），醛氢 $\\delta\\approx 10$。分子内氢键与浓度无关",
+        "固体的 $T_1$ 和 $T_2$ 都大；炔氢一定落在 $\\delta>5$；氢键 $\\delta$ 与浓度一律无关"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "布居差极小必须弛豫；固体 $T_1$ 大而 $T_2$ 小；炔沿轴屏蔽。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：玻耳兹曼数字和饱和，来自第 2 节。\n- B：$T_1$／$T_2$ 分户，来自第 2 节。\n- C：表8-3 和三种 $\\pi$ 体系 $\\delta$，来自第 3 节。\n- **D 错**：固体 $T_2$ 反而小；炔氢 $\\approx 2.9$；分子间氢键随浓度变，分子内不变。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-2.md",
+        "label": "饱和 · T1 与 T2 · 表8-3 · 烯炔苯各向异性"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于耦合常数、Karplus、化学等价／磁等价和常见自旋系统，下列叙述正确的有（　）。",
+      "options": [
+        "$^{2}J$ 多为负值，$-20\\sim +40\\,\\mathrm{Hz}$；甲烷型 $-12.4\\,\\mathrm{Hz}$，乙烯 $+2.5\\,\\mathrm{Hz}$。$^{3}J$ 一般正，$0\\sim 16\\,\\mathrm{Hz}$。Karplus：$^{3}J=A+B\\cos\\phi+C\\cos 2\\phi$，$A=4.22$，$B=-0.5$，$C=4.5$。反式 1,2-二氯乙烯 $12.1\\,\\mathrm{Hz}$，顺式 $5.3\\,\\mathrm{Hz}$",
+        "磁等价必须化学等价，与组外 $J$ 相等，组内有耦合但不分裂。对硝基苯酚是 $\\mathrm{AA'BB'}$，对二氯苯是 $\\mathrm{A_4}$，$\\mathrm{CH_3CHO}$ 是 $\\mathrm{AX_3}$",
+        "一级谱 $\\Delta\\nu/J>10$：服从 $n+1$，裂距 $=J$，$\\delta$ 在多重峰中间。$\\Delta\\nu$ 和 $J$ 都取绝对值，$\\Delta\\nu$ 用 Hz。高场仪器同一对核更容易看起来像一级谱",
+        "化学等价一定磁等价；对硝基苯酚应写成 $\\mathrm{A_2B_2}$；远程耦合本版范围是 $10\\sim 20\\,\\mathrm{Hz}$"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "$^{3}J_{\\mathrm{trans}}>^{3}J_{\\mathrm{cis}}$；化学等价 $\\neq$ 磁等价；$\\Delta\\nu$ 用 Hz。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：$^{2}J$／$^{3}J$ 和 Karplus、顺反数字，来自第 4 节。\n- B：磁等价三点与命名例子，来自第 4 节。\n- C：一级谱四条和 $\\Delta\\nu$ 单位，来自第 4 节。\n- **D 错**：化学等价不一定磁等价；对硝基苯酚是 $\\mathrm{AA'BB'}$；远程多数 $0.1\\sim 3.0\\,\\mathrm{Hz}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-4.md",
+        "label": "偕耦邻耦 · Karplus · 磁等价 · 一级谱图 · AA'BB'"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "玻璃样品管不能用于核磁共振；最常用溶剂是普通氯仿而不是 $\\mathrm{CDCl_3}$；超导磁体 $14\\,\\mathrm{T}$ 相当于 $^{13}\\mathrm{C}$ 的 $600\\,\\mathrm{MHz}$；PFT 一张谱仍需 $5\\sim 10\\,\\mathrm{min}$，连续波只需几秒钟。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "常用玻璃／Pyrex 管；$\\mathrm{CDCl_3}$；$14\\,\\mathrm{T}\\equiv$ 质子 $600\\,\\mathrm{MHz}$；时间账对调了。",
+      "explanation": "**该命题错误，四句都错。** 常用样品管就是玻璃或 Pyrex，长约 $20\\,\\mathrm{cm}$、外径 $5\\,\\mathrm{mm}$。最常用溶剂是氘代氯仿 $\\mathrm{CDCl_3}$。$14\\,\\mathrm{T}$ 相当于质子 $600\\,\\mathrm{MHz}$。CW 一张谱 $5\\sim 10\\,\\mathrm{min}$，PFT 只需几秒钟。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-5.md",
+        "label": "样品管与制样 · 超导磁体 14 T · CW 对 PFT 时间"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "$^{13}\\mathrm{C}$ 谱峰强度与碳原子数成正比，可直接定量；NOE 增益顺序是季碳最大；宽带去耦保留 $n+1$ 裂分；二维 COSY 的季碳在 $^{13}\\mathrm{C}$–$^{1}\\mathrm{H}$ 谱上一定有交叉峰。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "峰强不能定量；NOE 是 $\\mathrm{CH_3}\\ge\\mathrm{CH_2}\\ge\\mathrm{CH}>\\mathrm{C}$；宽带去耦出单峰；无氢碳无点。",
+      "explanation": "**该命题错误，四句都错。** $^{13}\\mathrm{C}$ 的 $T_1$ 长且 NOE 增益不同，峰强不能当定量参数。NOE 顺序是 $\\mathrm{CH_3}\\ge\\mathrm{CH_2}\\ge\\mathrm{CH}>\\mathrm{C}$。宽带去耦消除全部 $^{1}\\mathrm{H}$–$^{13}\\mathrm{C}$ 耦合，出单峰；留 $n+1$ 的是偏共振。季碳、羰基等无氢碳在 $^{13}\\mathrm{C}$–$^{1}\\mathrm{H}$ COSY 上无点。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-7.md",
+        "label": "峰强度不成比例 · NOE · 宽带去耦 · 13C-1H COSY"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "本版核磁共振吸收的无线电波频率范围为 ________ $\\mathrm{MHz}$。$^{1}\\mathrm{H}$ 的磁旋比 $\\gamma=2.68\\times 10^{8}\\,\\mathrm{rad}\\cdot\\mathrm{T}^{-1}\\cdot\\mathrm{s}^{-1}$，当 $H_0=4.69\\,\\mathrm{T}$ 时共振频率为 ________ $\\mathrm{MHz}$。扫频法化学位移 $\\delta=(\\nu_{\\mathrm{S}}-\\nu_{\\mathrm{R}})/\\nu_{\\mathrm{R}}\\times$ ________。一级谱图要求 $\\Delta\\nu/J>$ ________。$^{13}\\mathrm{C}$ 谱相对灵敏度约为 $^{1}\\mathrm{H}$ 谱的 ________。",
+      "answer": "4～1000，200，10^6，10，1/5800",
+      "hint": "频率不是 600；例题 200 MHz；δ 乘 10^6；一级谱 >10；灵敏度 1/5800。",
+      "scoring_criteria": [
+        "第一空填“4～1000”或“4-1000”（2分）",
+        "第二空填“200”（2分）",
+        "第三空填“10^6”或“10^{6}”或“一百万”（2分）",
+        "第四空填“10”（2分）",
+        "第五空填“1/5800”或“1∶5800”（2分）"
+      ],
+      "explanation": "现象定义是 $4\\sim 1000\\,\\mathrm{MHz}$（不要填第 5 节的 $600$）。例题 $4.69\\,\\mathrm{T}\\to 200\\,\\mathrm{MHz}$。$\\delta$ 定义乘 $10^{6}$。一级谱 $\\Delta\\nu/J>10$。$^{13}\\mathrm{C}$ 相对灵敏度 $1/5800$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-1.md",
+        "label": "4–1000 MHz · 200 MHz · δ×10^6 · Δν/J>10 · 1/5800"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "核磁共振怎样从自旋写到共振条件，又怎样用屏蔽定义化学位移？请写出：①表8-1 三条和 $I=1/2$ 为何是主要对象；② $\\Delta E=\\gamma\\hbar H_0$、$\\nu=\\gamma H_0/(2\\pi)$、$4.69\\,\\mathrm{T}\\to 200\\,\\mathrm{MHz}$，以及饱和与 $T_1$／$T_2$；③式（8-15）（8-16），TMS，$\\mathrm{CH_3Br}$ 的 $2.70$，右高场低频。不要漏 $2\\pi$，也不要把 $\\sigma$ 大说成 $\\delta$ 大。",
+      "answer": "参考答案：\n\n**1. 自旋**\n- 质量数、原子序数都偶数 $\\to I=0$，不能共振。质量数奇数 $\\to I$ 半整数。质量数偶数、原子序数奇数 $\\to I$ 整数。\n- $I=1/2$ 电荷均匀、像陀螺，C、H 是主要组成，是主要研究对象。\n\n**2. 共振与弛豫**\n- $E=-\\gamma m\\hbar H_0$，$^{1}\\mathrm{H}$ 两能级差 $\\Delta E=\\gamma\\hbar H_0$。共振 $\\nu=\\nu_0=\\gamma H_0/(2\\pi)$。本版 $\\gamma=2.68\\times 10^{8}\\,\\mathrm{rad}\\cdot\\mathrm{T}^{-1}\\cdot\\mathrm{s}^{-1}$，$4.69\\,\\mathrm{T}$ 得 $200\\,\\mathrm{MHz}$。选律 $\\Delta m=\\pm 1$。\n- $N_j/N_0=0.99997$（$4.69\\,\\mathrm{T}$，$293\\,\\mathrm{K}$），激发态 $100\\,000$ 则基态 $100\\,003$。布居相等则饱和。$T_1$ 纵向、交给晶格；$T_2$ 横向、交给同类核。固体 $T_1$ 大、$T_2\\approx 10^{-4}\\,\\mathrm{s}$。\n\n**3. 化学位移**\n- $\\nu=\\gamma(1-\\sigma)H_0/(2\\pi)$。扫频 $\\delta=(\\nu_{\\mathrm{S}}-\\nu_{\\mathrm{R}})/\\nu_{\\mathrm{R}}\\times 10^{6}$。$\\delta$ 与磁场无关。$\\mathrm{CH_3Br}$ 在 $60$ 和 $100\\,\\mathrm{MHz}$ 都是 $2.70$。右高场低频（$\\sigma$ 大、$\\delta$ 小）。TMS：12 等价质子、屏蔽大、沸点 $27^{\\circ}\\mathrm{C}$。",
+      "hint": "按表8-1 → 共振式和饱和／弛豫 → δ 定义和 TMS 写，并避开漏 2π、σ 大则 δ 大。",
+      "scoring_criteria": [
+        "写出 I 的三条和 I=1/2 是主要对象（3分）",
+        "写出 ν=γH0/(2π)、200 MHz 例题、饱和与 T1/T2 分户（6分）",
+        "写出式（8-15）（8-16）、CH3Br 的 2.70、右高场低频和 TMS（5分）"
+      ],
+      "explanation": "本题把第 2、3 节收成“自旋—共振／弛豫—化学位移”。易错点：漏 2π；σ 与 δ 同向；固体 T1、T2 都说成大。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-2.md",
+        "label": "表8-1 · 共振条件 · 饱和与弛豫 · 化学位移 · TMS"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "氢谱怎样按 $n+1$ 和积分读结构，碳谱怎样用去耦补氢谱？请写出：① $n+1$ 三条、碘乙烷 $\\mathrm{A_2X_3}$、一级谱 $\\Delta\\nu/J>10$；②积分只给相对数目、例8-1 乙酸丙酯和例8-2 苯乙酸乙酯的 $U$ 与自旋系统；③ $^{13}\\mathrm{C}$ 丰度／灵敏度／$\\delta$ 范围、宽带去耦与偏共振、$\\mathrm{CH_3}\\ge\\mathrm{CH_2}\\ge\\mathrm{CH}>\\mathrm{C}$、例8-3 苯乙酮。不要把 $n$ 写成自己的氢数，也不要用碳谱峰高定量。",
+      "answer": "参考答案：\n\n**1. 裂分**\n- 邻近碳上 $n$ 个质子 $\\to n+1$ 重峰，与自身数目无关；强度 $(a+b)^{n}$；$I=1/2$ 时即 $2nI+1$。\n- 碘乙烷：甲基三重 $1:2:1$，亚甲基四重 $1:3:3:1$，$\\mathrm{A_2X_3}$。$\\Delta\\nu/J>10$ 一级谱，裂距 $=J$，$\\delta$ 在多重峰中间；$\\Delta\\nu$ 用 Hz。\n\n**2. 积分与两例**\n- 面积 $\\propto$ 质子数，须乘分子式总氢。醋酸苄酯 $55/109\\times 9\\approx 5$ 等。\n- 例8-1 $\\mathrm{C_5H_{10}O_2}$，$U=1$，乙酸丙酯，$\\mathrm{A_3}$、$\\mathrm{A_2MX_3}$。例8-2 $\\mathrm{C_{10}H_{12}O_2}$，$U=5$，IR $1735\\,\\mathrm{cm}^{-1}$，苯乙酸乙酯，$\\mathrm{A_5}$、$\\mathrm{A_2}$、$\\mathrm{A_2X_3}$。\n\n**3. 碳谱**\n- 丰度 $1.1\\%$，$\\gamma$ 约 $1/4$，相对灵敏度 $1/5800$；$\\delta$ $0\\sim 220$，分辨率约 20 倍。\n- 宽带去耦：全部 $^{1}\\mathrm{H}$–$^{13}\\mathrm{C}$ 耦合为零，单峰，丢级数。偏共振：留 $^{1}J$，按 $n+1$ 分伯仲叔季。NOE $\\mathrm{CH_3}\\ge\\mathrm{CH_2}\\ge\\mathrm{CH}>\\mathrm{C}$，峰强不能定量。\n- 例8-3 $\\mathrm{C_8H_8O}$ 谱线少于碳数，有对称；$\\delta\\,26.3\\,\\mathrm{q}$ 为 $\\mathrm{CH_3}$，$197.8\\,\\mathrm{s}$ 为羰基，苯乙酮。二维只点到 COSY 交叉峰。",
+      "hint": "按 n+1 和碘乙烷 → 积分两例 → 碳谱去耦和例8-3 写，并避开 n 用自身氢数、碳谱定量。",
+      "scoring_criteria": [
+        "写出 n+1、碘乙烷峰形和一级谱 Δν/J>10（4分）",
+        "写出积分相对性及例8-1、例8-2 的结构与自旋系统（5分）",
+        "写出 13C 灵敏度/δ 范围、宽带与偏共振、NOE 顺序和例8-3（6分）"
+      ],
+      "explanation": "本题把第 4、6、7 节收成“裂分—氢谱解析—碳谱去耦”。易错点：n 用自身氢数；积分当绝对个数；宽带去耦当偏共振；碳谱峰高定量。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch08-4.md",
+        "label": "n+1 律 · 例8-1 · 例8-2 · 宽带去耦 · 偏共振 · 例8-3"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

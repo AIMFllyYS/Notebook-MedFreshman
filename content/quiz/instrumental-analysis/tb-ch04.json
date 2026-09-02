@@ -1,0 +1,321 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch04",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch04-1.md；content/instrumental-analysis/textbook/ch04-2.md；content/instrumental-analysis/textbook/ch04-3.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于本版紫外–可见光区、紫外–可见分光光度法（UV-Vis）及其作为电子光谱的灵敏度，下列叙述正确的是（　）。",
+      "options": [
+        "紫外–可见光区指 $200\\sim 400\\,\\mathrm{nm}$；UV-Vis 只测定有色溶液的颜色深度；灵敏度与电子光谱无关",
+        "本版把紫外–可见光区写成 $200\\sim 760\\,\\mathrm{nm}$，其中 $200\\sim 360\\,\\mathrm{nm}$ 为紫外光，$360\\sim 760\\,\\mathrm{nm}$ 为可见光。紫外–可见分光光度法（ultraviolet-visible spectrophotometry，UV-Vis）根据物质分子对这一光区电磁波的吸收特性进行定性和定量分析。紫外–可见吸收光谱属于电子光谱，灵敏度高，一般可达到 $10^{-7}\\sim 10^{-4}\\,\\mathrm{g}\\cdot\\mathrm{mL}^{-1}$ 或更低，适用于微量和痕量组分",
+        "仪器波长范围一般为 $200\\sim 800\\,\\mathrm{nm}$，应并进光区定义；英文是一个词 ultravioletvisiblespectrophotometry",
+        "UV-Vis 属于第 5 章分子荧光；电子光谱强度小，只适合常量分析"
+      ],
+      "answer": 1,
+      "hint": "光区 $200\\sim 760\\,\\mathrm{nm}$；紫外 $200\\sim 360$，可见 $360\\sim 760$；电子光谱，$10^{-7}\\sim 10^{-4}\\,\\mathrm{g}\\cdot\\mathrm{mL}^{-1}$。",
+      "explanation": "**B 正确。** 光区、紫外／可见分界、英文、电子光谱和灵敏度数量级都按第 1 节。\n\n**干扰项辨析**：\n- A：光区不是 $200\\sim 400\\,\\mathrm{nm}$；无色样品在紫外区也可测。\n- C：$200\\sim 800\\,\\mathrm{nm}$ 是第 2 节仪器波长范围，不要并进光区定义；英文是带连字符的 ultraviolet-visible spectrophotometry。\n- D：分子荧光是第 5 章；电子光谱强度较大，适于微量痕量。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-1.md",
+        "label": "紫外-可见光区 · 紫外-可见分光光度法 · 电子光谱强度大所以灵敏度高"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于价电子四种基本跃迁、能级次序以及 R、K、B、E 吸收带，下列叙述正确的是（　）。",
+      "options": [
+        "能级次序是 $\\mathrm{n}<\\sigma<\\pi$；饱和烃的 $\\sigma\\to\\sigma^{*}$ 都在常规紫外区出峰；R 带是强吸收",
+        "电荷转移跃迁 $\\varepsilon<100$，配位场跃迁 $\\varepsilon_{\\max}>10^{4}$，二者就是第五、第六种价电子跃迁",
+        "五种轨道能级 $\\sigma<\\pi<\\mathrm{n}<\\pi^{*}<\\sigma^{*}$；能量顺序 $\\sigma\\to\\sigma^{*}>\\mathrm{n}\\to\\sigma^{*}\\ge\\pi\\to\\pi^{*}>\\mathrm{n}\\to\\pi^{*}$。饱和烃 $\\sigma\\to\\sigma^{*}$ 一般小于 $150\\,\\mathrm{nm}$，超出一般仪器测定范围。R 带由 $\\mathrm{n}\\to\\pi^{*}$ 引起，$250\\sim 500\\,\\mathrm{nm}$，$\\varepsilon<100$；K 带由共轭 $\\pi\\to\\pi^{*}$ 引起，$\\varepsilon>10^{4}$；B、E 带是芳香族特征。电荷转移和配位场是四种基本跃迁之外另立的两本账",
+        "丙酮的 $\\mathrm{n}\\to\\pi^{*}$ 是强吸收；$\\varepsilon=21\\,000$ 的丁二烯属于 R 带"
+      ],
+      "answer": 2,
+      "hint": "能级 $\\sigma<\\pi<\\mathrm{n}<\\pi^{*}<\\sigma^{*}$；R 弱、K 强；电荷转移／配位场另立。",
+      "explanation": "**C 正确。** 能级次序、能量顺序、远紫外 $\\sigma\\to\\sigma^{*}$、四带归属和“四种之外另立”都按第 1 节。\n\n**干扰项辨析**：\n- A：能级次序写反；饱和烃一般看不到；$\\mathrm{R}$ 带弱。\n- B：$\\varepsilon$ 对调了；二者不是价电子四种基本跃迁的延续编号。\n- D：丙酮 $\\mathrm{n}\\to\\pi^{*}$ 弱吸收（约 $280\\,\\mathrm{nm}$，$\\varepsilon=10\\sim 30$）；丁二烯是 K 带。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-1.md",
+        "label": "五种轨道的能级次序 · 四种价电子跃迁 · R/K/B/E 带 · 电荷转移与配位场"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于朗伯–比尔定律本版符号、$T$ 与 $A$ 的关系、吸光系数换算以及例 4-1，下列叙述正确的是（　）。",
+      "options": [
+        "$A=\\lg T$；$T$ 与浓度成正比；浓度加倍则 $T$ 减半",
+        "本版 $A=-\\lg T=Elc$，$T=10^{-A}=10^{-Elc}$。浓度增大一倍时透光率从 $T$ 降至 $T^{2}$，吸光度加倍。$\\varepsilon=(M/10)E_{1\\,\\mathrm{cm}}^{1\\%}$。氯霉素例：$T=24.3\\%$，$A=0.614$，$E_{1\\,\\mathrm{cm}}^{1\\%}=307$，$\\varepsilon=9\\,921$。$E_{1\\,\\mathrm{cm}}^{1\\%}$ 的 $c$ 以 $\\mathrm{g}/100\\,\\mathrm{mL}$ 计",
+        "$\\varepsilon$ 就是 $E_{1\\,\\mathrm{cm}}^{1\\%}$，分母没有 10；$E_{1\\,\\mathrm{cm}}^{1\\%}$ 的 $c$ 用 $\\mathrm{mol}\\cdot\\mathrm{L}^{-1}$",
+        "加和性在有解离、缔合时仍然无条件成立；定律不要求单色光"
+      ],
+      "answer": 1,
+      "hint": "$A=-\\lg T=Elc$；浓度加倍 $T$ 变平方；$\\varepsilon=(M/10)E_{1\\,\\mathrm{cm}}^{1\\%}$。",
+      "explanation": "**B 正确。** 式（4-2）（4-3）（4-7）和例 4-1 都按第 1 节。\n\n**干扰项辨析**：\n- A：漏了负号；$T$ 对 $c$ 是指数关系。\n- C：换算分母是 10；$E_{1\\,\\mathrm{cm}}^{1\\%}$ 对应 $1\\%$（$\\mathrm{g}/100\\,\\mathrm{mL}$）。\n- D：加和性要求组分间无相互作用；定律假设单色光和稀溶液。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-1.md",
+        "label": "朗伯-比尔定律 · 透光率 · ε 与 E1%1cm 的换算 · 例4-1 氯霉素"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于偏离朗伯–比尔定律的因素、选 $\\lambda_{\\max}$、暗噪声适宜区以及杂散光应落在哪一节，下列叙述正确的是（　）。",
+      "options": [
+        "本版把杂散光、非单色光、化学因素并列为定律偏离的三条；定量波长应选末端吸收",
+        "暗噪声下 $A$ 越大越好；信号噪声使高吸光度区相对误差急剧上升",
+        "亚甲蓝浓度增大时 $660\\,\\mathrm{nm}$ 增强、$610\\,\\mathrm{nm}$ 减弱，说明定律在浓溶液更准",
+        "推导假设单色光和稀溶液，主要偏离因素是光学（非单色光，$E_1\\ne E_2$ 则非线性）和化学（粒子相互作用；解离、缔合、溶剂化、配合物组成改变）。测定应选较纯单色光和 $\\lambda_{\\max}$（峰顶平坦、$E$ 大）。暗噪声下 $A=0.2\\sim 0.7$（$T=65\\%\\sim 20\\%$）较适宜。杂散光是第 2 节仪器指标（弱信号波长处一般 $\\le 0.5\\%$），本版未把它写进定律偏离的主要因素"
+      ],
+      "answer": 3,
+      "hint": "光学＋化学两本账；选 $\\lambda_{\\max}$；$A=0.2\\sim 0.7$；杂散光在仪器指标。",
+      "explanation": "**D 正确。** 偏离两本账、选 $\\lambda_{\\max}$、暗噪声适宜区和杂散光的户头都按第 1、2 节。\n\n**干扰项辨析**：\n- A：不要用其他教材把杂散光补成第三条；不选末端。\n- B：暗噪声两端 $\\Delta c/c$ 上升；信号噪声虚线在高 $A$ 区较有利。\n- C：亚甲蓝单体 $660\\,\\mathrm{nm}$、二聚体 $610\\,\\mathrm{nm}$，浓度增大则 $660$ 减弱、$610$ 增强。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-1.md",
+        "label": "偏离因素只写光学和化学 · 非单色光 · 暗噪声与适宜吸光度范围 · 杂散光"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于紫外–可见分光光度计的光源、吸收池、单光束／双光束／双波长，下列叙述正确的是（　）。",
+      "options": [
+        "光路顺序是检测器 → 吸收池 → 单色器 → 光源；紫外区用玻璃吸收池",
+        "钨灯／卤钨灯为可见光源（$350\\sim 1\\,000\\,\\mathrm{nm}$），强度与供电电压的 $3\\sim 4$ 次方成正比；氢灯／氘灯为紫外光源，使用范围 $200\\sim 360\\,\\mathrm{nm}$，氘灯比氢灯强 $4\\sim 5$ 倍。可见区用玻璃池、紫外区用石英池，一对池透光率之差应小于 $0.5\\%$。单光束空白和样品先后测；双光束斩光器把同一波长交替过空白和样品；双波长是两个单色器、两束不同波长交替过同一份样品",
+        "双波长就是双光束的别名；单光束不能用于吸光系数测定",
+        "现在仪器多用氖灯作紫外连续光源；一对池校正对调后差值也应小于 $0.5\\%$"
+      ],
+      "answer": 1,
+      "hint": "钨灯可见、氘灯紫外；玻璃／石英；单光束先后、双光束同一波长两路、双波长两波长同一份样品。",
+      "explanation": "**B 正确。** 光源、吸收池和三种光路分户都按第 2 节。\n\n**干扰项辨析**：\n- A：顺序反了；紫外只能石英。\n- C：双波长不是双光束别名；单光束可用于吸光系数测定。\n- D：是氘灯不是氖灯；对调校正吸光度差值应小于 $1\\%$，与一对池 $T$ 差 $<0.5\\%$ 不是同一本账。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-2.md",
+        "label": "钨灯与卤钨灯 · 氢灯与氘灯 · 吸收池 · 单光束／双光束／双波长"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于单组分定量的吸光系数法、标准曲线法和对照法，下列叙述正确的是（　）。",
+      "options": [
+        "三种方法的 $K$ 或 $E$ 都可以拿到另一台仪器上作定性依据",
+        "吸光系数法 $c=A/(El)$，常用 $E_{1\\,\\mathrm{cm}}^{1\\%}$，条件不引起定律偏离。单色光不纯时 $A$ 随仪器变化不定，不宜硬用文献 $E$ 值，可固定一台仪器作标准曲线 $A=Kc$ 或 $A\\approx Kc$，此时 $K$ 不是物质常数、不能定性、不能通用。对照法 $c_{\\text{样}}=c_{\\text{标}}A_{\\text{样}}/A_{\\text{标}}$，对照浓度宜与样品接近。定量通常选吸收峰，一般不选靠近短波长末端的吸收峰",
+        "标准曲线法要求仪器比吸光系数法更精密；对照溶液浓度应远低于样品",
+        "例 4-2 维生素 $\\mathrm{B_{12}}$ 的 $E_{1\\,\\mathrm{cm}}^{1\\%}$ 本版没有给出数字"
+      ],
+      "answer": 1,
+      "hint": "吸光系数法用 $E$；标准曲线的 $K$ 不能定性；对照浓度宜接近；选 $\\lambda_{\\max}$。",
+      "explanation": "**B 正确。** 三种单组分方法和选波长都按第 3 节。\n\n**干扰项辨析**：\n- A：$K$ 只是个别条件下的比例常数。\n- C：标准曲线对仪器要求不高，尤宜比色；对照浓度宜接近样品。\n- D：例 4-2 明确 $361\\,\\mathrm{nm}$ 处 $E_{1\\,\\mathrm{cm}}^{1\\%}=207$，$A=0.414$ 得 $20.0\\,\\mu\\mathrm{g}/\\mathrm{mL}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-3.md",
+        "label": "吸光系数法 · 标准曲线法中的 K · 对照法 · 定量波长三条"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于二极管阵列光路、等吸收双波长消去法、系数倍率法以及比色法显色剂用量，下列叙述正确的是（　）。",
+      "options": [
+        "HP8452A 仍把单色器放在吸收池之前，顺序扫描 $316\\,\\mathrm{s}$ 才能得全谱；等吸收双波长要求欲测组分等吸收；系数倍率 $K$ 越大越好；图 4-22（c）是最理想的定量曲线，$\\mathrm{Fe^{3+}}$–$\\mathrm{SCN^{-}}$ 是标准定量方法",
+        "阵列光路是多色光先过样品再色散；HP8452A 在 $190\\sim 820\\,\\mathrm{nm}$ 由 $316$ 个二极管并行，$0.1\\,\\mathrm{s}$ 得全谱。等吸收双波长：干扰组分 $\\Delta A=0$，欲测组分 $\\Delta A$ 足够大；浑浊可视为各波长等吸收而消去。系数倍率法在找不到等吸收点时用，$K$ 称掩蔽系数或倍率因子，一般以 $5\\sim 7$ 倍为限。图 4-22（a）选平坦区间 $a\\sim b$；（c）型 $A$ 一直增大，一般不能定量；$\\mathrm{Fe^{3+}}$–$\\mathrm{SCN^{-}}$ 配位数随 $\\mathrm{SCN^{-}}$ 变，一般仅用于定性",
+        "双波长选波长只需欲测组分 $\\Delta A$ 大，干扰组分不必等吸收；特效显色剂实际上很多",
+        "有色化合物与显色剂 $\\lambda_{\\max}$ 之差不必限制；二甲酚橙应在 $\\mathrm{pH}>6.3$ 测定以免试剂呈黄色"
+      ],
+      "answer": 1,
+      "hint": "阵列先过样品、$0.1\\,\\mathrm{s}$ 全谱；干扰等吸收；$K$ 以 $5\\sim 7$ 为限；（c）型和硫氰酸铁一般不定量。",
+      "explanation": "**B 正确。** HP8452A 数字、双波长两个基本条件、$K$ 的上限和图 4-22／硫氰酸铁都按第 2、3 节。\n\n**干扰项辨析**：\n- A：阵列是反向光路、并行 $0.1\\,\\mathrm{s}$；等吸收的是干扰组分；$K$ 不能过大；（c）型和 $\\mathrm{Fe(SCN)_n}$ 一般不定量。\n- C：两个基本条件都要；特效显色剂实际上没有。\n- D：一般要求 $\\Delta\\lambda_{\\max}$ 在 $60\\,\\mathrm{nm}$ 以上；二甲酚橙测定只能在 $\\mathrm{pH}<6$，避免试剂红紫色干扰。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-2.md",
+        "label": "HP8452A · 等吸收双波长消去法 · 系数倍率法 · 图4-22 · 硫氰酸铁"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于生色团／助色团、溶剂效应、位阻与跨环，下列叙述正确的有（　）。",
+      "options": [
+        "生色团如 $\\gt\\mathrm{C{=}\\,C}\\lt$、$\\gt\\mathrm{C{=}\\,O}$、$-\\mathrm{C{\\equiv}\\,C}-$，能在紫外–可见区产生吸收；助色团如 $-\\mathrm{OH}$、$-\\mathrm{NH_2}$ 及卤素，使峰向长波移动并增加强度。红移即长移，蓝移即短移",
+        "改用极性较大的溶剂：$\\pi\\to\\pi^{*}$ 长移（激发态极性大、能级差变小），$\\mathrm{n}\\to\\pi^{*}$ 短移（基态与极性溶剂成较强氢键、能级差变大）。苯酚 $210.5$、$270\\,\\mathrm{nm}$，酚氧负离子 $235$、$287\\,\\mathrm{nm}$",
+        "二苯乙烯顺式 $\\lambda_{\\max}=280\\,\\mathrm{nm}$、$\\varepsilon=10\\,500$，反式 $295.5\\,\\mathrm{nm}$、$\\varepsilon=29\\,000$；位阻妨碍共平面从而减弱共轭，不是生色团消失。跨环效应中双键与酮基并不共轭",
+        "极性溶剂使所有吸收峰一律红移；跨环效应等于共轭双键已经形成；顺式二苯乙烯没有苯环"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "生色团自己吸收；极性溶剂两种跃迁走反方向；位阻破坏共平面。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：生色团／助色团和红移蓝移，来自第 1 节。\n- B：溶剂效应方向和酚的例子，来自第 1 节。\n- C：二苯乙烯数字、位阻和跨环，来自第 1 节。\n- **D 错**：$\\mathrm{n}\\to\\pi^{*}$ 是短移；跨环恰恰是“并不共轭”；位阻不消灭生色团。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-1.md",
+        "label": "生色团 · 助色团 · 溶剂效应 · 二苯乙烯 · 跨环效应"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于定性鉴别、纯度检测以及维生素 $\\mathrm{B_{12}}$／肾上腺酮／碘磷定的本版数字，下列叙述正确的有（　）。",
+      "options": [
+        "定性最常用 $\\lambda_{\\max}$ 和 $\\varepsilon_{\\max}$ 或 $E_{1\\,\\mathrm{cm}}^{1\\%}$。光谱相同不能直接宣判同一物质，应换溶剂或酸碱性再比；光谱有明显差别则可肯定不是同一物质。甲基睾丸酮与丙酸睾丸素 $\\lambda_{\\max}$ 都是 $240\\,\\mathrm{nm}$，$E_{1\\,\\mathrm{cm}}^{1\\%}$ 分别为 $540$ 和 $460$",
+        "维生素 $\\mathrm{B_{12}}$ 三峰 $278$、$361$、$550\\,\\mathrm{nm}$，《中国药典》（2015 年版）$A_{361}/A_{278}=1.70\\sim 1.88$，$A_{361}/A_{550}=3.15\\sim 3.45$。比值在范围内可考虑结构基本相同，不是单独鉴定到唯一结构",
+        "乙醇中苯 $\\lambda_{\\max}=256\\,\\mathrm{nm}$，含量低达 $0.001\\%$ 也能检查出来。肾上腺素成品用 $0.05\\,\\mathrm{mol}\\cdot\\mathrm{L}^{-1}\\,\\mathrm{HCl}$ 配成 $2\\,\\mathrm{mg}\\cdot\\mathrm{mL}^{-1}$，在 $310\\,\\mathrm{nm}$ 测 $A$ 不得超过 $0.05$，相当于酮体不超过 $0.06\\%$（酮的 $E_{1\\,\\mathrm{cm}}^{1\\%}=435$）。纯品碘磷定 $A_{294}/A_{262}=3.39$",
+        "光谱相同即可一锤定音；肾上腺酮应在肾上腺素自己的 $\\lambda_{\\max}$ 上检测；碘磷定杂质抬的是峰而不是谷"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "相同不能定、差别可以否；药典比值；$310\\,\\mathrm{nm}$ 测酮、$A_{294}/A_{262}$ 限杂质。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：定性参数、光谱相同的局限和睾丸素例子，来自第 3 节。\n- B：$\\mathrm{B_{12}}$ 药典比值，来自第 3 节。\n- C：乙醇中苯、肾上腺酮限量、碘磷定峰谷比，来自第 3 节。\n- **D 错**：相同只是可能；选 $310\\,\\mathrm{nm}$ 正因为素几乎无吸收；杂质抬谷使比值变小。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-3.md",
+        "label": "定性鉴别的常用参数 · 维生素B12比值 · 肾上腺酮限量 · 峰谷吸光度比"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "玻璃吸收池可用于紫外光区；空白对比只要用蒸馏水，不必与样品基体相同；一对吸收池透光率之差应小于 $1\\%$，对调校正的吸光度差值应小于 $0.5\\%$；氢灯校正线 $486.13$、$656.28\\,\\mathrm{nm}$ 与氘灯 $486.02$、$656.10\\,\\mathrm{nm}$ 是同一对，可以随便混用。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "紫外用石英；空白须与样品相同只是不含待测物；$T$ 差 $<0.5\\%$、对调 $A$ 差 $<1\\%$；氢灯／氘灯线不要并户。",
+      "explanation": "**该命题错误，四句都错。** 玻璃不能透过紫外光，紫外区只能用石英吸收池。空白是与样品完全相同的溶液和容器，只是不含待测物质。一对池透光率之差应小于 $0.5\\%$；对调校正吸光度差值应小于 $1\\%$。氢灯与氘灯的 F／C 类谱线波长不同，校正一节分开登记。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-1.md",
+        "label": "石英池 · 空白对比 · 吸收池 0.5% 与校正 1% · 氢灯与氘灯校正线"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "$220\\sim 800\\,\\mathrm{nm}$ 无吸收的化合物一定含醛酮和苯环；看见 $260\\,\\mathrm{nm}$ 就只报苯，不必问强、中强还是弱；顺式异构体一般比反式波长更长、$\\varepsilon$ 更大；紫外光谱能推出维生素 $\\mathrm{K_1}$ 侧链上每一个甲基，不必与 $1,4$-萘醌骨架对照。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "无吸收名单不含醛酮苯环；强度分户；顺式更短更弱；紫外认发色团骨架。",
+      "explanation": "**该命题错误，四句都错。** $220\\sim 800\\,\\mathrm{nm}$ 无吸收可能是脂肪族饱和碳氢化合物、胺、腈、醇、醚、氯代烃和氟代烃，不含共轭、没有醛酮。$250\\sim 300\\,\\mathrm{nm}$ 弱吸收提示羰基，中强很可能苯环，强吸收可能 $3\\sim 5$ 个共轭双键。顺式一般比反式波长短且 $\\varepsilon$ 小。维生素 $\\mathrm{K_1}$ 与 $1,4$-萘醌及 $2,3$-二烷基-$1,4$-萘醌对照，推定的是发色团骨架。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-3.md",
+        "label": "初步推断官能团 · 顺反异构体 · 维生素K1推定骨架"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "本版紫外–可见光区为 ________ $\\mathrm{nm}$。朗伯–比尔定律写作 $A=-\\lg T=$ ________。摩尔吸光系数与比吸光系数的关系为 $\\varepsilon=$ ________。暗噪声下测定较为适宜的吸光度范围是 ________。HP8452A 二极管阵列可在 ________ $\\mathrm{s}$ 内获得 $190\\sim 820\\,\\mathrm{nm}$ 的全光光谱。",
+      "answer": "200～760，Elc（或 Ecl），(M/10)E_{1cm}^{1%}，0.2～0.7，0.1",
+      "hint": "光区不是 200～800；A=Elc；换算分母 10；适宜区 0.2～0.7；阵列 0.1 s。",
+      "scoring_criteria": [
+        "第一空填“200～760”或“200-760”（2分）",
+        "第二空填“Elc”或“Ecl”或“$Elc$”（2分）",
+        "第三空填“(M/10)E_{1cm}^{1%}”或“M/10×E1%”或等价写法（2分）",
+        "第四空填“0.2～0.7”或“0.2-0.7”（2分）",
+        "第五空填“0.1”（2分）"
+      ],
+      "explanation": "光区定义是 $200\\sim 760\\,\\mathrm{nm}$（仪器范围 $200\\sim 800\\,\\mathrm{nm}$ 不要填进第一空）。$A=-\\lg T=Elc$。$\\varepsilon=(M/10)E_{1\\,\\mathrm{cm}}^{1\\%}$。暗噪声适宜 $A=0.2\\sim 0.7$。HP8452A 并行 $0.1\\,\\mathrm{s}$ 得全谱。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-1.md",
+        "label": "光区 200–760 · A=Elc · ε=(M/10)E1% · A=0.2–0.7 · HP8452A 0.1 s"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "朗伯–比尔定律怎样从假设写到定量式，偏离和测量误差怎样分户？请写出：①定律的文字定义、本版式 $A=-\\lg T=Elc$ 以及 $T$ 对 $c$ 的指数关系、加和性前提；②光学因素（非单色光、$E_1$ 与 $E_2$、为何选 $\\lambda_{\\max}$）和化学因素（稀溶液、亚甲蓝两峰、$\\mathrm{Cr(VI)}$ 平衡、显色条件）；③暗噪声适宜区 $A=0.2\\sim 0.7$，并说明杂散光为什么不要写成第三条定律偏离条款。不要把 $T$ 当直线内插，也不要把空白听成随便一杯蒸馏水。",
+      "answer": "参考答案：\n\n**1. 定律**\n- 描述物质对单色光吸收的强弱与厚度、浓度的关系。$T=I/I_0$，$A=-\\lg T=Elc$，$T=10^{-Elc}$。浓度加倍，$T$ 变成平方，$A$ 加倍。\n- 组分间无相互作用时 $A_{\\text{总}}=A_{\\mathrm{a}}+A_{\\mathrm{b}}+\\cdots$。推导假设：单色光、稀溶液。\n\n**2. 偏离**\n- 光学：单色器给出窄光带；仅当 $E_1=E_2$ 时仍线性。选较纯单色光和 $\\lambda_{\\max}$（峰顶平坦、$E$ 大）。\n- 化学：浓溶液粒子相互作用；解离、缔合、溶剂化、配合物组成改变。亚甲蓝单体 $660\\,\\mathrm{nm}$、二聚体 $610\\,\\mathrm{nm}$；$\\mathrm{Cr_2O_7^{2-}}$／$\\mathrm{CrO_4^{2-}}$ 比值随总浓度变。须控显色条件，保持吸光能力相同的形式。\n\n**3. 测量误差与杂散光**\n- 暗噪声：$\\Delta T$ 可视为常量，$A=0.2\\sim 0.7$（$T=65\\%\\sim 20\\%$）较适宜。信号噪声虚线在高 $A$ 区较有利。\n- 杂散光是第 2 节仪器指标（弱信号波长处一般 $\\le 0.5\\%$），本版未列入定律偏离的主要因素。\n- 空白须与样品相同只是不含待测物，先调 $A=0$、$T=100\\%$。",
+      "hint": "按定义与公式 → 光学／化学 → 适宜区和杂散光户头写，并避开 T 直线、蒸馏水空白。",
+      "scoring_criteria": [
+        "写出 A=-lg T=Elc、T 的指数关系和加和性前提（4分）",
+        "写出光学（非单色光、选 λmax）和化学（稀溶液、存在形式）及本版例子（5分）",
+        "写出暗噪声适宜区，并说明杂散光是仪器指标不是定律第三条（3分）",
+        "点明空白对比排除溶剂、容器、散射和界面反射（2分）"
+      ],
+      "explanation": "本题把第 1 节收成“公式—偏离两本账—测量误差／杂散光户头”。易错点：杂散光补条款；$T$ 当直线；空白用蒸馏水凑合。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-1.md",
+        "label": "朗伯-比尔定律 · 光学与化学偏离 · 暗噪声适宜区 · 杂散光 · 空白对比"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "光度计光路与定性定量方法如何收？请写出：①五块顺序及钨灯／氘灯、石英／玻璃池；②单光束、双光束、双波长、二极管阵列怎样分户（含 HP8452A 的 $0.1\\,\\mathrm{s}$、$316$ 管）；③单组分三种定量公式及 $K$ 不能定性；④等吸收双波长两个基本条件和系数倍率 $K$ 以 $5\\sim 7$ 为限；⑤比色法 $\\varepsilon>10^{4}$、$\\Delta\\lambda_{\\max}\\ge 60\\,\\mathrm{nm}$，以及图 4-22（c）／硫氰酸铁为何一般不定量。不要把双波长写成双光束，也不要在肾上腺素自己的 $\\lambda_{\\max}$ 上测酮体。",
+      "answer": "参考答案：\n\n**1. 部件**\n- 光源 → 单色器 → 吸收池 → 检测器 → 显示。钨灯／卤钨灯 $350\\sim 1\\,000\\,\\mathrm{nm}$；氢灯／氘灯使用 $200\\sim 360\\,\\mathrm{nm}$，氘灯强 $4\\sim 5$ 倍。可见玻璃池、紫外石英池；一对池 $T$ 差 $<0.5\\%$。\n\n**2. 类型**\n- 单光束：同一束先后测，光源要稳，可测吸光系数。\n- 双光束：同一波长，斩光器交替过空白和样品。\n- 双波长：两个单色器，两波长过同一份样品，测 $\\Delta A$。\n- 阵列：多色光先过样品；HP8452A 在 $190\\sim 820\\,\\mathrm{nm}$ 共 $316$ 管，并行 $0.1\\,\\mathrm{s}$ 全谱。\n\n**3. 单组分**\n- 吸光系数法 $c=A/(El)$；标准曲线 $A=Kc$，$K$ 不能定性、不能通用；对照法 $c_{\\text{样}}=c_{\\text{标}}A_{\\text{样}}/A_{\\text{标}}$。选 $\\lambda_{\\max}$，不选末端。\n\n**4. 多组分**\n- 等吸收双波长：干扰组分等吸收，欲测组分 $\\Delta A$ 足够大；可消浑浊。\n- 系数倍率：$K$ 把干扰 $\\Delta A$ 调零，一般以 $5\\sim 7$ 倍为限。\n\n**5. 比色**\n- $\\varepsilon>10^{4}$ 可认为较灵敏；有色化合物与显色剂 $\\lambda_{\\max}$ 之差一般 $\\ge 60\\,\\mathrm{nm}$；特效显色剂实际上没有。图 4-22（c）和 $\\mathrm{Fe^{3+}}$–$\\mathrm{SCN^{-}}$ 一般不能定量。肾上腺酮在 $310\\,\\mathrm{nm}$（酮有峰、素几乎无吸收）限量，不是在肾上腺素自己的峰上测。",
+      "hint": "按五块与光源池 → 四种光路 → 三种单组分 → 双波长／K → 比色限制写，并避开并户和测错波长。",
+      "scoring_criteria": [
+        "写出五块顺序、钨灯／氘灯和石英／玻璃池（3分）",
+        "写出单光束、双光束、双波长、阵列分户及 HP8452A 数字（4分）",
+        "写出三种单组分公式及 K 不能定性（3分）",
+        "写出等吸收两个条件和 K 以 5～7 为限，以及（c）型／硫氰酸铁不定量、310 nm 测酮（5分）"
+      ],
+      "explanation": "本题把第 2、3 节收成“光路—单组分—双波长—比色限制”。易错点：双波长／双光束并户；K 开太大；硫氰酸铁当定量；在肾上腺素 $\\lambda_{\\max}$ 上测酮。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch04-2.md",
+        "label": "光路五块 · 四种类型 · 单组分三种方法 · 双波长 · 比色法 · 肾上腺酮 310 nm"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

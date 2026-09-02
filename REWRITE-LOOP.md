@@ -1,6 +1,6 @@
 # 教材富文本改写循环
 
-这份文档把「大二上四本医学教材」这一轮改写里真正能复用的做法写死。给两类读者：
+这份文档把「大二上教材富文本改写」里真正能复用的做法写死。给两类读者：
 
 1. **编排智能体**：拆任务、打包原料、验收截图、在会话压缩后从磁盘恢复。
 2. **章节子智能体**：把 PDF dump 写成 NoteRenderer 能渲染的教材正文，再写例题和题目测试，并自己做浏览器端测。
@@ -34,6 +34,7 @@
 | 组织学与胚胎学 `histology` | ch01–ch28（28） | 28/28 | 28/28 | tb-ch01–tb-ch28 | **整科完成** |
 | 生物化学与分子生物学 `biochemistry` | 绪论 ch00 + ch01–ch27（28） | 28/28 | 28/28 | tb-ch00–tb-ch27 | **整科完成** |
 | 系统解剖学 `anatomy` | 绪论 ch00 + ch01–ch09（10） | 10/10 | 10/10 | tb-ch00–tb-ch09 | **整科完成** |
+| 仪器分析 `instrumental-analysis` | ch01–ch15（15） | 15/15 | 15/15 | tb-ch01–tb-ch15 | **整科完成**（扫描版 OCR；季一兵，高教社 2020） |
 
 生物化学细目（磁盘为准，2026-09-02）：**整科完成。** ch00–ch27 各 10 道例题 + `tb-ch00`–`tb-ch27`。`bio-ch06-1.png` 仍是 3680 黑图，合格重拍是 `bio-ch06-1b.png`。
 
@@ -45,7 +46,7 @@
 - 例题：`content/examples/biochemistry/textbook/ch03/`、`content/examples/maogai/textbook/ch01/`
 - 测验：`content/quiz/biochemistry/tb-ch03.json`、`content/quiz/histology/tb-ch18.json`
 
-大二上四科教材改写循环（细胞生物学 → 组织学 → 生物化学 → 系统解剖学）**已整科收口。** 详解 / 课上录音 / 课堂纪要 / 考前模拟 / 实战演练仍是 stub，不要编造。视频与可交互 HTML 仍按章评估、默认跳过。编排端最多同时 2–3 个 `general-purpose` 子智能体。编排端**禁止**代写章节正文。金标正文现可再加解剖学 `ch03-1.md`、`ch07-1.md`、`ch09-1.md`。
+大二上四科医学教材改写循环（细胞生物学 → 组织学 → 生物化学 → 系统解剖学）**已整科收口。** 仪器分析（季一兵，高教社 2020，扫描版 OCR）**已整科收口**（ch01–ch15 正文 + 每章 10 道例题 + `tb-ch01`–`tb-ch15`）。详解 / 课上录音 / 课堂纪要 / 考前模拟 / 实战演练仍是 stub，不要编造。视频与可交互 HTML 仍按章评估、默认跳过。编排端最多同时 2–3 个 `general-purpose` 子智能体。编排端**禁止**代写章节正文。金标正文现可再加解剖学 `ch03-1.md`、`ch07-1.md`、`ch09-1.md` 以及仪器分析 `ch04-1.md`、`ch11-3.md`。仪器分析页图是整页 JPG，改写时只嵌有图的页；未摄入附录/参考文献/索引。
 
 ---
 
@@ -68,7 +69,7 @@
 - 0 字节 PNG 禁止 `::figure`；正文保留图号 + `:::note{label="电子版缺失"}`
 
 ## 槽（编排端填写）
-- subjectId: {cell-biology|biochemistry|histology|anatomy}
+- subjectId: {cell-biology|biochemistry|histology|anatomy|instrumental-analysis}
 - 中文课名: {…}
 - 章号与标题: {chXX 第X章 …}
 - 本任务文件（保持路径和 H1）:
@@ -184,7 +185,8 @@
 ### 2.4 学年、路径、ID
 
 - 学年：`freshman-2` / `sophomore-1`；存储键 `gailvlun-academic-year`；默认大二上。切换只过滤，不删文件。
-- 大二科目：`cell-biology` `biochemistry` `anatomy` `histology`（`lib/constants/academic-year.ts`）。
+- 大二科目：`cell-biology` `biochemistry` `anatomy` `histology` `instrumental-analysis`（`lib/constants/academic-year.ts`）。
+- 仪器分析是扫描版：dump 来自 RapidOCR；页图是 `pXXXX_01.jpg` 整页扫描，改写时只嵌真正有谱图/仪器结构的页面，不要 400 张整页全塞进去。不要摄入附录/参考文献/索引。
 - 例题目录：`content/examples/{subject}/textbook/chXX/`。
 - 测验：`content/quiz/{subject}/tb-chXX.json`。`ch00` 绪论 → `tb-ch00`。
 - 插图 URL 前缀：`/images/{subject}/textbook/`。

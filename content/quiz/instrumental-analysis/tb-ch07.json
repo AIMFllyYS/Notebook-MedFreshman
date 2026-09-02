@@ -1,0 +1,321 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch07",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch07-1.md；content/instrumental-analysis/textbook/ch07-2.md；content/instrumental-analysis/textbook/ch07-3.md；content/instrumental-analysis/textbook/ch07-4.md；content/instrumental-analysis/textbook/ch07-5.md；content/instrumental-analysis/textbook/ch07-6.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于本版原子吸收分光光度法（AAS）的定义、章名以及分子吸收与原子吸收的分户，下列叙述正确的是（　）。",
+      "options": [
+        "章名应改成原子吸收光谱法；英文是一个词 atomicabsorptionspectrometry；原子吸收是宽带，可用连续光源",
+        "原子吸收分光光度法（atomic absorption spectrometry，AAS）基于蒸气相中被测元素的基态原子对其原子共振辐射的吸收来测定该元素含量。章名以目录为准叫分光光度法。分子吸收是宽带（$0.1\\sim 1\\,\\mathrm{nm}$ 甚至更宽，可用连续光源）；原子吸收是窄带／谱线吸收，宽度仅 $10^{-3}\\,\\mathrm{nm}$，通常用锐线光源。火焰检出限 $10^{-9}$ 数量级，石墨炉 $10^{-10}\\sim 10^{-14}$ 数量级",
+        "火焰 RSD 一般为 $3\\%\\sim 5\\%$，石墨炉 RSD 可低于 $1\\%$；可测元素一次进样同时报 70 种",
+        "难熔、稀土及非金属的灵敏度已经令人满意；多元素测定没有换灯问题"
+      ],
+      "answer": 1,
+      "hint": "章名分光光度法；原子窄带 $10^{-3}\\,\\mathrm{nm}$；火焰 $10^{-9}$、石墨炉 $10^{-10}\\sim 10^{-14}$。",
+      "explanation": "**B 正确。** 定义、英文、章名、宽带／窄带和检出限数量级都按第 1 节。\n\n**干扰项辨析**：\n- A：不要用内容提要改章名；英文三个词；原子是窄带，通常锐线光源。\n- C：RSD 对调了；70 多种是可测种数，不是一次同时测。\n- D：这两条正是本版写出的局限。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-1.md",
+        "label": "原子吸收分光光度法 · 分子吸收对原子吸收 · 火焰与石墨炉检出限"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于共振吸收线、钠双线以及分析线的选用，下列叙述正确的是（　）。",
+      "options": [
+        "共振线是任意两条发射线；钠 $589.0\\,\\mathrm{nm}$ 对应 $3^{2}\\mathrm{S}_{1/2}\\to 3^{2}\\mathrm{P}_{1/2}$",
+        "永远必须选用最灵敏的共振线；高浓度样品更要选最强线把 $A$ 做大",
+        "共振吸收线是基态到第一激发态的吸收线，一般最灵敏，常常选作分析线。钠双线：$589.0\\,\\mathrm{nm}$ 为 $3^{2}\\mathrm{S}_{1/2}\\to 3^{2}\\mathrm{P}_{3/2}$，$589.6\\,\\mathrm{nm}$ 为 $3^{2}\\mathrm{S}_{1/2}\\to 3^{2}\\mathrm{P}_{1/2}$。$\\mathrm{Hg}$、$\\mathrm{As}$、$\\mathrm{Se}$ 共振线在远紫外、火焰组分明显吸收，或有谱线干扰、或高浓度要适度吸收时，可改用非共振或较弱的线",
+        "本节 $\\mathrm{Cu}\\,324.7\\,\\mathrm{nm}$ 必须改成表 7-1 的 $324.8\\,\\mathrm{nm}$，否则算印错"
+      ],
+      "answer": 2,
+      "hint": "基态→第一激发态；钠 $589.0$／$\\mathrm{P}_{3/2}$、$589.6$／$\\mathrm{P}_{1/2}$；远紫外和高浓度可改线。",
+      "explanation": "**C 正确。** 共振线定义、钠双线和分析线例外都按第 2、5 节。\n\n**干扰项辨析**：\n- A：不是任意发射线；把 $589.0$ 和 $\\mathrm{P}_{1/2}$ 配错了。\n- B：“常常”不是“永远”；高浓度有时改用较弱线。\n- D：两处印刷都保留，不要用 Wikipedia 并户。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-2.md",
+        "label": "共振吸收线 · 钠双线 · 分析线例外"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于光谱项记号以及钠、镁的基态与第一激发态，下列叙述正确的是（　）。",
+      "options": [
+        "电子量子数就是 $n$、$L$、$S$、$J$；光谱项写作 $n_{2S+1}L^{J}$",
+        "光谱项写作 $n^{2S+1}L_{J}$。钠基态 $3^{2}\\mathrm{S}_{1/2}$，第一激发态 $3^{2}\\mathrm{P}_{1/2}$ 和 $3^{2}\\mathrm{P}_{3/2}$。镁基态 $3^{1}\\mathrm{S}_{0}$；激发为单重态 $3^{1}\\mathrm{P}_{1}$ 和三重态 $3^{3}\\mathrm{P}_{2}$、$3^{3}\\mathrm{P}_{1}$、$3^{3}\\mathrm{P}_{0}$。$L\\ge S$ 时 $J$ 有 $2S+1$ 个取值",
+        "镁三重态只有一个光谱项 $3^{3}\\mathrm{P}$；$L$ 的中心符号从 0 开始是 P、D、F、G",
+        "图 7-1 基态能量取电离势；相邻能级差与 $n$ 成正比，所以 $n$ 越大越疏"
+      ],
+      "answer": 1,
+      "hint": "光谱项 $n^{2S+1}L_J$；钠 $^{2}\\mathrm{S}$／$^{2}\\mathrm{P}$；镁单重 $+$ 三重。",
+      "explanation": "**B 正确。** 光谱项写法、钠镁例子和 $J$ 的个数都按第 2 节。\n\n**干扰项辨析**：\n- A：电子用 $n$、$l$、$m_l$、$m_s$，光谱项才用 $n$、$L$、$S$、$J$。\n- C：三重态三个 $J$；中心符号从 $L=0$ 起是 S、P、D、F。\n- D：基态 $E=0$；相邻能级差与 $n^{2}$ 成反比，$n$ 越大越密。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-2.md",
+        "label": "光谱项 · 钠和镁光谱项 · 图7-1"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于玻耳兹曼分布、表 7-1 以及特征吸收线数目，下列叙述正确的是（　）。",
+      "options": [
+        "$3000\\,\\mathrm{K}$ 时激发态已经占一半，所以 AAS 主要测激发态吸收",
+        "通常原子化温度约 $3000\\,\\mathrm{K}$，最强共振线大多低于 $600\\,\\mathrm{nm}$，$N_j$ 相对 $N_0$ 可忽略，$N_0$ 可看作总原子数。紫外–可见区每种元素仅 $3\\sim 4$ 根特征吸收线。表 7-1 中钠 $3000\\,\\mathrm{K}$ 的 $N_j/N_0=5.88\\times 10^{-4}$，锌为 $5.50\\times 10^{-10}$。$k=1.38\\times 10^{-23}\\,\\mathrm{J}\\cdot\\mathrm{K}^{-1}$",
+        "$N_j/N_0$ 随温度线性增大；共振线越短，$N_j/N_0$ 越大",
+        "特征吸收线有 $3\\sim 4$ 根说明方法选择性差、灵敏度低"
+      ],
+      "answer": 1,
+      "hint": "$N_0\\approx N$；每元素 $3\\sim 4$ 根线；钠 $5.88\\times 10^{-4}$ 仍远小于 1。",
+      "explanation": "**B 正确。** 玻耳兹曼近似、线数目和表 7-1 都按第 2 节。\n\n**干扰项辨析**：\n- A：即使钠在 $3000\\,\\mathrm{K}$ 也只有 $5.88\\times 10^{-4}$，吸收在基态。\n- C：指数关系；共振线越长（$\\Delta E$ 越小）$N_j/N_0$ 越大。\n- D：线少正是抗干扰强、灵敏度高的来源。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-2.md",
+        "label": "玻耳兹曼分布定律 · 表7-1 · 3～4根特征吸收线"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于谱线变宽，下列叙述正确的是（　）。",
+      "options": [
+        "自然变宽约 $10^{-3}\\,\\mathrm{nm}$，是日常主因；赫兹马克变宽在稀溶液里最严重",
+        "多普勒变宽是与其他粒子碰撞；洛伦兹变宽是热运动",
+        "自然变宽约 $10^{-5}\\,\\mathrm{nm}$。多普勒（热）变宽和洛伦兹变宽约 $10^{-3}\\,\\mathrm{nm}$，一般 AAS 条件下吸收线变宽主要受这两项影响。赫兹马克是同种原子碰撞（共振变宽），待测浓度低时可忽略。洛伦兹是与其他粒子碰撞",
+        "本版把 Holtzmark 改写成 Wikipedia 的 Holtsmark；自吸变宽无法校正"
+      ],
+      "answer": 2,
+      "hint": "主因多普勒 $+$ 洛伦兹；赫兹马克可忽略；自然宽度更窄。",
+      "explanation": "**C 正确。** 四种变宽的分户和数量级都按第 2 节。\n\n**干扰项辨析**：\n- A：自然宽度约 $10^{-5}\\,\\mathrm{nm}$；赫兹马克可忽略。\n- B：多普勒／洛伦兹对调了。\n- D：本版写作 Holtzmark；自吸在严格操作下可校正。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-2.md",
+        "label": "多普勒变宽 · 洛伦兹变宽 · 赫兹马克变宽"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于空心阴极灯、单色器位置和检测器，下列叙述正确的是（　）。",
+      "options": [
+        "HCL 是连续光源；阴极内径约 $20\\,\\mathrm{mm}$；窗口一律用普通玻璃；单色器必须放在原子化器前面",
+        "空心阴极灯是理想锐线光源：阴极内径约 $2\\,\\mathrm{mm}$，电压 $200\\sim 500\\,\\mathrm{V}$，$370\\,\\mathrm{nm}$ 以下必须石英。低气压和小电流把碰撞变宽和多普勒变宽压住。单色器（光栅 $600\\sim 2800$ 条 $/\\mathrm{mm}$）通常在原子化器以后，防止吸收池辐射不加选择地进入检测器。PMT 一般 $190\\sim 900\\,\\mathrm{nm}$。多元素灯强度、灵敏度、寿命均不如单元素灯，尚不普遍",
+        "多元素空心阴极灯已经全面替代单元素灯；PMT 只能看到可见区",
+        "紫外–可见和 AAS 的单色器位置相同，因为都是吸收光谱"
+      ],
+      "answer": 1,
+      "hint": "HCL $2\\,\\mathrm{mm}$、$370\\,\\mathrm{nm}$、$200\\sim 500\\,\\mathrm{V}$；单色器在原子化器后。",
+      "explanation": "**B 正确。** 灯参数、变宽被压住、单色器位置和 PMT 波段都按第 3 节。\n\n**干扰项辨析**：\n- A：锐线不是连续；内径约 $2\\,\\mathrm{nm}$ 量级的是谱线宽度，阴极内径是约 $2\\,\\mathrm{mm}$；短波必须石英；单色器在后面。\n- C：多元素灯尚不普遍；PMT $190\\sim 900\\,\\mathrm{nm}$。\n- D：紫外–可见单色器在吸收池前，AAS 在原子化器后。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-3.md",
+        "label": "空心阴极灯 · 单色器的作用与位置 · 检测系统"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于积分吸收与峰值吸收、$A=K'c$ 的前提，以及火焰／石墨炉本版参数，下列叙述正确的是（　）。",
+      "options": [
+        "积分吸收半宽 $10^{-3}\\sim 10^{-2}\\,\\mathrm{nm}$ 已能日常测准；连续光源即可；$K'$ 是物质常数，可拿到另一台仪器上定性",
+        "1955 年 Walsh 证明：锐线光源、温度不太高而稳定的火焰下，$K_0$ 与 $N_0$ 线性。准确测峰值要求发射半宽远小于吸收半宽且中心频率重合。$A=K'c$ 的前提是锐线（发射宽度小于吸收线宽度）且最大发射／吸收波长重叠。预混合型约 $10\\%$ 被原子化。石墨管约 $50\\,\\mathrm{mm}\\times 5\\,\\mathrm{mm}$，$2000\\sim 3000^{\\circ}\\mathrm{C}$，液体 $1\\sim 50\\,\\mu\\mathrm{L}$，固体 $0.1\\sim 10\\,\\mathrm{mg}$；原子化阶段应停止通氩气（通常 $1\\sim 5\\,\\mathrm{L}\\cdot\\mathrm{min}^{-1}$）",
+        "石墨炉精密度一定优于火焰；预混合型样品几乎全部参与吸收",
+        "式（7-11）的 $0.4343$ 应改成 $2.303$；石墨炉保护气全程不能停"
+      ],
+      "answer": 1,
+      "hint": "Walsh 峰值吸收；$A=K'c$ 两前提；火焰约 $10\\%$；石墨炉停气、管 $50\\times 5\\,\\mathrm{mm}$。",
+      "explanation": "**B 正确。** 峰值吸收、定量前提和本版火焰／石墨炉数字都按第 2、3、5 节。\n\n**干扰项辨析**：\n- A：积分面积测不到；$K'$ 与实验条件有关。\n- C：石墨炉精密度不如火焰；几乎全部参与吸收的是石墨炉。\n- D：$0.4343$ 按本版；$A=-\\lg(I/I_0)=0.4343 K_\\nu L$。原子化阶段应停保护气。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-2.md",
+        "label": "峰值吸收法 · A=K'c 的两个前提 · 预混合型 · 管式石墨炉"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于三种定量方法、例 7-1 和标准加入的限度，下列叙述正确的有（　）。",
+      "options": [
+        "标准曲线法要相同基体、直线范围、组成接近样品，适于组成简单样品。《中国药典》（2015 年版）通则规定标准曲线应至少配制 5 个不同浓度的标准溶液",
+        "标准加入适用于基体影响大又没有纯净基体空白，或测纯物质中极微量元素。计算法 $c_x=A_x c_s/(A_s-A_x)$；作图外推到横轴得 $c_x$。它主要克服基体效应，不能消除分子和背景吸收",
+        "例 7-1 中 $9.00\\,\\mathrm{mL}$ 试液加 $1.00\\,\\mathrm{mL}$ $100\\,\\mathrm{mg}\\cdot\\mathrm{L}^{-1}$ 标准，$A_1=0.435$、$A_2=0.835$，必须计入稀释到 $10\\,\\mathrm{mL}$，得 $c_x=9.81\\,\\mathrm{mg}\\cdot\\mathrm{L}^{-1}$。内标法用吸光度比，适于双／多波道，内标元素原子化特性应相似",
+        "标准加入可以代替背景校正；例 7-1 应把 $c_s=100$ 直接代入式（7-18）；本章定量方法还包括第 4 章的对照法"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "三种方法分户；例 7-1 要写稀释；加入法不消背景。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：标准曲线条件和 2015 年版 5 点，来自第 4、6 节。\n- B：适用场合、公式和外推，以及消不了背景，来自第 4 节。\n- C：例 7-1 的稀释和 $9.81$，内标法条件，来自第 4 节。\n- **D 错**：标准加入不消分子／背景；例 7-1 必须写 $10\\,\\mathrm{mL}$；不要把紫外对照法塞进名单。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-4.md",
+        "label": "标准曲线法 · 标准加入法 · 例7-1 · 内标法"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于分析线、火焰类型、石墨炉四段以及四类干扰，下列叙述正确的有（　）。",
+      "options": [
+        "$\\mathrm{Hg}$、$\\mathrm{As}$、$\\mathrm{Se}$ 共振线在远紫外，火焰组分明显吸收，不宜选共振线；高浓度样品有时改用较弱的线。$\\mathrm{Se}$、$\\mathrm{P}$ 等 $<200\\,\\mathrm{nm}$ 不宜乙炔、宜氢焰；$\\mathrm{B}$、$\\mathrm{Al}$、$\\mathrm{Zr}$ 宜高温富燃；碱金属、碱土金属不宜高温火焰",
+        "石墨炉：干燥稍低于沸点；灰化在无损失前提下尽量高；原子化用最大信号的最低温度；净化高于原子化。氩气 $1\\sim 5\\,\\mathrm{L}\\cdot\\mathrm{min}^{-1}$，原子化阶段停气。$\\mathrm{Hg}$、$\\mathrm{As}$、$\\mathrm{Cd}$、$\\mathrm{Pd}$、$\\mathrm{Se}$ 不宜干法灰化",
+        "物理干扰非选择性，用组成相似的标准或标准加入。化学干扰选择性，用释放剂、保护剂、基体改进剂等。电离干扰加碱金属作消电离剂。光谱干扰含分子吸收和光散射背景，靠仪器条件或背景校正",
+        "物理干扰是选择性的；标准加入可以消除光谱背景；碱金属一律不能出现在火焰里"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "改线／选焰／四段停气；四类干扰分户。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：分析线和火焰类型，来自第 5 节。\n- B：石墨炉四段、停气和不宜干法灰化的元素，来自第 5 节。\n- C：四类干扰及抑制，来自第 5 节。\n- **D 错**：物理干扰非选择性；标准加入消不了背景；碱金属测自身时不宜高温，作添加剂时是消电离剂。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-5.md",
+        "label": "分析线 · 火焰类型怎样选 · 石墨炉四段温度 · 四类干扰"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "空心阴极灯阴极内径约 $20\\,\\mathrm{mm}$，窗口一律石英；预混合型原子化效率约 $90\\%$；石墨管长约 $5\\,\\mathrm{mm}$、内径约 $50\\,\\mathrm{mm}$，液体进样 $1\\sim 50\\,\\mathrm{mL}$；单色器放在原子化器前面是为了先把连续光源切窄。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "内径约 $2\\,\\mathrm{mm}$；约 $10\\%$ 被原子化；管 $50\\times 5\\,\\mathrm{mm}$；单色器在后面。",
+      "explanation": "**该命题错误，四句都错。** 阴极内径约 $2\\,\\mathrm{mm}$；$370\\,\\mathrm{nm}$ 以下才必须石英。预混合型约 $10\\%$ 被原子化、约 $90\\%$ 走废液。石墨管长约 $50\\,\\mathrm{mm}$、内径约 $5\\,\\mathrm{mm}$，液体 $1\\sim 50\\,\\mu\\mathrm{L}$ 不是 $\\mathrm{mL}$。AAS 用锐线光源，单色器在原子化器后面，防止原子化器辐射灌进检测器。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-3.md",
+        "label": "空心阴极灯的结构 · 预混合型约10% · 管式石墨炉 · 单色器位置"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "《中国药典》（2005 年版）已经规定标准曲线至少 5 点；明胶空心胶囊铬的石墨炉测定是 2005 年版一部的内容；例 7-2 水质铅用石墨炉、$247.6\\,\\mathrm{nm}$；例 7-4 雷米普利钯的空白是一杯蒸馏水，限度不得过 $0.02\\%$。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "5 点是 2015 通则；铬在 2010 二部；水质铅火焰 $283.3\\,\\mathrm{nm}$；钯空白是硝酸镁，$0.02\\text{‰}$。",
+      "explanation": "**该命题错误，四句都错。** 标准曲线至少 5 个浓度是 2015 年版通则。明胶空心胶囊铬是 2010 年版二部，密闭微波消解－石墨炉 AAS。例 7-2 水质铅是空气–乙炔火焰、$283.3\\,\\mathrm{nm}$；$247.6\\,\\mathrm{nm}$ 是例 7-4 的钯。例 7-4 空白是 $0.15\\,\\mathrm{g}$ 硝酸镁／$0.3\\%$ 硝酸，钯不得过 $0.02\\text{‰}$ 不是 $0.02\\%$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-6.md",
+        "label": "药典沿革 · 例7-2 · 例7-4 雷米普利中钯的检查"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "原子吸收是窄带吸收，宽度仅 ________ $\\mathrm{nm}$。火焰原子吸收法检出限为 ________ 数量级。钠基态光谱项为 ________。空心阴极灯两极电压为 ________ $\\mathrm{V}$。例 7-1 计入稀释后未知试液中 $\\mathrm{M}$ 的浓度为 ________ $\\mathrm{mg}\\cdot\\mathrm{L}^{-1}$。",
+      "answer": "10^{-3}，10^{-9}，3^{2}S_{1/2}（或 3²S1/2），200～500，9.81",
+      "hint": "窄带 $10^{-3}$；火焰 $10^{-9}$；钠 $3^{2}\\mathrm{S}_{1/2}$；灯 $200\\sim 500\\,\\mathrm{V}$；例 7-1 得 $9.81$。",
+      "scoring_criteria": [
+        "第一空填“10^{-3}”或“10-3”（2分）",
+        "第二空填“10^{-9}”或“10-9”（2分）",
+        "第三空填“3^{2}S_{1/2}”或“3²S1/2”或“32S1/2”（2分）",
+        "第四空填“200～500”或“200-500”（2分）",
+        "第五空填“9.81”（2分）"
+      ],
+      "explanation": "第 1 节把原子线宽写成 $10^{-3}\\,\\mathrm{nm}$，火焰检出限 $10^{-9}$ 数量级。第 2 节钠基态 $3^{2}\\mathrm{S}_{1/2}$。第 3 节 HCL 电压 $200\\sim 500\\,\\mathrm{V}$。第 4 节例 7-1 得 $9.81\\,\\mathrm{mg}\\cdot\\mathrm{L}^{-1}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-1.md",
+        "label": "窄带10-3 nm · 火焰10-9 · 钠3²S1/2 · HCL 200–500 V · 例7-1 的9.81"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "原子吸收分光光度法的定量怎样从共振线写到 $A=K'c$？请写出：①共振线定义、钠双线波长与光谱项；②玻耳兹曼分布下为什么 $N_0\\approx N$，以及紫外–可见区每元素仅 $3\\sim 4$ 根特征吸收线；③一般条件下主要的变宽效应及数量级；④为什么积分吸收测不到、Walsh 峰值吸收的两个几何条件；$A=K'c$ 的两个前提。不要把 $3000\\,\\mathrm{K}$ 听成激发态已占一半，也不要把连续光源当日常定量光源。",
+      "answer": "参考答案：\n\n**1. 共振线**\n- 基态→第一激发态的吸收线，一般最灵敏。钠 $589.0\\,\\mathrm{nm}$（$3^{2}\\mathrm{S}_{1/2}\\to 3^{2}\\mathrm{P}_{3/2}$）、$589.6\\,\\mathrm{nm}$（$3^{2}\\mathrm{S}_{1/2}\\to 3^{2}\\mathrm{P}_{1/2}$）。\n\n**2. 玻耳兹曼**\n- $N_j/N_0=(g_j/g_0)\\mathrm{e}^{-\\Delta E/kT}$，$k=1.38\\times 10^{-23}\\,\\mathrm{J}\\cdot\\mathrm{K}^{-1}$。约 $3000\\,\\mathrm{K}$、最强共振线大多 $<600\\,\\mathrm{nm}$ 时 $N_j\\ll N_0$，$N_0\\approx N$，吸收在基态。因此每元素仅 $3\\sim 4$ 根特征吸收线，选择性好。\n\n**3. 变宽**\n- 一般条件下主要是多普勒（热）变宽和洛伦兹变宽，约 $10^{-3}\\,\\mathrm{nm}$。自然变宽约 $10^{-5}\\,\\mathrm{nm}$；赫兹马克（同种原子）浓度低时可忽略。\n\n**4. 积分→峰值→工作式**\n- 积分 $\\int K_\\nu\\mathrm{d}\\nu\\propto N$，但半宽 $10^{-3}\\sim 10^{-2}\\,\\mathrm{nm}$，面积测不到。Walsh（1955）：锐线＋不太高而稳定的火焰下 $K_0\\propto N_0$。几何条件：发射半宽 $\\ll$ 吸收半宽；中心频率重合。$A=K'c$ 前提：①锐线，发射宽度小于吸收线宽度；②最大发射／吸收波长重叠。$K'$ 与实验条件有关。",
+      "hint": "按共振线→玻耳兹曼→变宽→积分／峰值／$A=K'c$ 写，并避开激发态占一半、连续光源定量。",
+      "scoring_criteria": [
+        "写出共振线定义和钠双线（3分）",
+        "写出 $N_0\\approx N$ 的条件和 $3\\sim 4$ 根特征吸收线（3分）",
+        "写出一般条件下主因是多普勒和洛伦兹，约 $10^{-3}\\,\\mathrm{nm}$（3分）",
+        "写出积分测不到、Walsh 两条件和 $A=K'c$ 两前提（5分）"
+      ],
+      "explanation": "本题把第 2 节收成“谁在吸—为什么基态够用—线有多宽—为什么只能测峰高”。易错点：$3000\\,\\mathrm{K}$ 激发一半；连续光源；把 $K'$ 当物质常数。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-2.md",
+        "label": "共振线 · 玻耳兹曼 · 变宽 · 峰值吸收 · A=K'c"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "仪器、定量和干扰如何收？请写出：①四块顺序及空心阴极灯本版数字（内径、窗口、$200\\sim 500\\,\\mathrm{V}$），并说明单色器为什么在原子化器后面；②火焰预混合约 $10\\%$ 对石墨炉管长／内径／温度／用样量，以及原子化阶段停氩气；③标准曲线／标准加入／内标分户，例 7-1 为何得 $9.81\\,\\mathrm{mg}\\cdot\\mathrm{L}^{-1}$；④物理、化学、电离、光谱四类干扰及标准加入消不了背景。不要把单色器位置和第 4 章并户，也不要把水质铅的火焰条件套到血镉或钯检查上。",
+      "answer": "参考答案：\n\n**1. 仪器**\n- 光源→原子化系统→单色器→检测系统。HCL：阴极内径约 $2\\,\\mathrm{mm}$，$370\\,\\mathrm{nm}$ 以下石英，$200\\sim 500\\,\\mathrm{V}$。单色器在原子化器后，阻止原子化器辐射不加选择地进入检测器（PMT $190\\sim 900\\,\\mathrm{nm}$）。紫外–可见用连续光源，单色器在吸收池前，不要并户。\n\n**2. 原子化**\n- 预混合型约 $10\\%$ 被原子化。石墨管约 $50\\,\\mathrm{mm}$、内径约 $5\\,\\mathrm{mm}$，$2000\\sim 3000^{\\circ}\\mathrm{C}$，固体 $0.1\\sim 10\\,\\mathrm{mg}$、液体 $1\\sim 50\\,\\mu\\mathrm{L}$。氩气 $1\\sim 5\\,\\mathrm{L}\\cdot\\mathrm{min}^{-1}$，原子化阶段停气。\n\n**3. 定量**\n- 标准曲线：简单样品，基体接近，直线范围；2015 年版通则至少 5 点。标准加入：基体差、无纯净空白或纯物质极微量；作图外推；不消分子／背景。内标：双／多波道，特性相似。例 7-1 必须写稀释到 $10\\,\\mathrm{mL}$，得 $9.81\\,\\mathrm{mg}\\cdot\\mathrm{L}^{-1}$。\n\n**4. 干扰**\n- 物理非选择：匹配标准或标准加入。化学选择：释放剂、保护剂、基体改进剂等。电离：碱金属作消电离剂、富燃等。光谱（含背景）：选条件或背景校正。水质铅火焰 $283.3\\,\\mathrm{nm}$，血镉石墨炉 $228.8\\,\\mathrm{nm}$，钯 $247.6\\,\\mathrm{nm}$，三套条件不要并成一张表。",
+      "hint": "按四块与 HCL→火焰／石墨炉→三种定量和例 7-1→四类干扰写，并避开光路并户和套错波长。",
+      "scoring_criteria": [
+        "写出四块、HCL 数字和单色器在后的理由（4分）",
+        "写出预混合约 10% 和石墨炉本版参数、原子化停气（3分）",
+        "写出三种定量分户和例 7-1 的 9.81（4分）",
+        "写出四类干扰，并点明标准加入不消背景、三则示例波长不要并户（4分）"
+      ],
+      "explanation": "本题把第 3–6 节收成“灯和光路—原子化—校准—干扰”。易错点：单色器位置并户；例 7-1 忘稀释；标准加入扣背景；铅／镉／钯波长乱套。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch07-3.md",
+        "label": "四块 · HCL · 火焰对石墨炉 · 三种定量 · 四类干扰 · 三则示例"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

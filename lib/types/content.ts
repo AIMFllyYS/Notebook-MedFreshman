@@ -10,7 +10,8 @@ export type SubjectId =
   | 'cell-biology'
   | 'biochemistry'
   | 'anatomy'
-  | 'histology';
+  | 'histology'
+  | 'instrumental-analysis';
 export type CategoryId = string;
 
 export type RenderType = 'markdown' | 'html' | 'component';
@@ -27,6 +28,7 @@ export const SUBJECT_IDS: readonly SubjectId[] = [
   'biochemistry',
   'anatomy',
   'histology',
+  'instrumental-analysis',
 ];
 
 export function isSubjectId(value: string | undefined | null): value is SubjectId {

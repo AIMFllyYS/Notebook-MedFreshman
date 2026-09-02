@@ -11,6 +11,7 @@ import { cellBiologyTextbookItems } from './cell-biology-textbook';
 import { biochemistryTextbookItems } from './biochemistry-textbook';
 import { anatomyTextbookItems } from './anatomy-textbook';
 import { histologyTextbookItems } from './histology-textbook';
+import { instrumentalAnalysisTextbookItems } from './instrumental-analysis-textbook';
 
 const examPlaceholderCategories = [
   {
@@ -480,6 +481,12 @@ export const contentTree: ContentTree = {
       name: '组织学与胚胎学',
       icon: 'Layers',
       categories: sophomoreCategorySkeleton(histologyTextbookItems),
+    },
+    {
+      id: 'instrumental-analysis',
+      name: '仪器分析',
+      icon: 'ScanLine',
+      categories: sophomoreCategorySkeleton(instrumentalAnalysisTextbookItems),
     },
     {
       id: 'other',

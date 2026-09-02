@@ -17,10 +17,11 @@ describe("HomeBookshelf year filter", () => {
     useAcademicYear.setState({ year: DEFAULT_ACADEMIC_YEAR, hydrated: true });
   });
 
-  it("大二上学期只显示四本新书", () => {
+  it("大二上学期只显示大二新书", () => {
     render(<HomeBookshelf />);
     expect(screen.getByText("系统解剖学")).toBeInTheDocument();
     expect(screen.getByText("医学细胞生物学")).toBeInTheDocument();
+    expect(screen.getByText("仪器分析")).toBeInTheDocument();
     expect(screen.queryByText("概率论与数理统计")).not.toBeInTheDocument();
     expect(screen.queryByText("大学物理")).not.toBeInTheDocument();
   });

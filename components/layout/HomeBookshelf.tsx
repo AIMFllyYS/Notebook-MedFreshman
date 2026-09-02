@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import {
   Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder,
-  GraduationCap, BookOpenCheck, Microscope, Dna, Bone, Layers,
+  GraduationCap, BookOpenCheck, Microscope, Dna, Bone, Layers, ScanLine,
 } from "lucide-react";
 import { contentTree } from "@/lib/content-data/manifest";
 import { subjectColor } from "@/lib/constants/subjects";
@@ -14,7 +14,7 @@ import type { ContentItem, Subject } from "@/lib/types/content";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
 
 const ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
-  Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder, Microscope, Dna, Bone, Layers,
+  Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder, Microscope, Dna, Bone, Layers, ScanLine,
 };
 
 function firstUsableItem(items: ContentItem[]): ContentItem | null {

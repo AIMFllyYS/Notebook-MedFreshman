@@ -1,0 +1,321 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch11",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch11-1.md；content/instrumental-analysis/textbook/ch11-2.md；content/instrumental-analysis/textbook/ch11-3.md；content/instrumental-analysis/textbook/ch11-4.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于色谱法的起源、三个基本名词以及本版时间线，下列叙述正确的是（　）。",
+      "options": [
+        "色谱只分离有色物质；茨维特 1952 年用硅胶和甲醇淋洗；固定相是移动的液体",
+        "茨维特（Mikhail S. Tswett）1906 年用细颗粒碳酸钙柱、石油醚淋洗植物色素，命名 chromatography。固定相（stationary phase）不动，流动相（mobile phase）携带样品移动，色谱柱（column）放置固定相。名称沿用，对象后来不限有色物质。Martin 与 Synge 1941 年发明分配色谱并提出塔板理论，1952 年获诺贝尔化学奖。本版超临界流体色谱缩写印成 SPC",
+        "发明分配色谱和获诺贝尔奖都是 1941 年；本版缩写必须改成 SFC；Kuhn 分出的是叶绿素而不是胡萝卜素",
+        "概述必须把第 13 章高压泵和第 14 章毛细管进样写满，否则不算色谱"
+      ],
+      "answer": 1,
+      "hint": "1906 碳酸钙／石油醚；1941 发明、1952 获奖；本版 SPC。",
+      "explanation": "**B 正确。** 色带实验、三个名词、名称沿用和 1941／1952 都按第 1 节。\n\n**干扰项辨析**：\n- A：后来不限有色；填充物是碳酸钙、淋洗液是石油醚；固定相不动。\n- C：获奖是 1952；本版印 SPC；Kuhn 分胡萝卜素。\n- D：泵和进样留给第 13、14 章，导论禁止提前写满。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-1.md",
+        "label": "色谱法 · 固定相／流动相／色谱柱 · 1941／1952 · SPC"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于本版色谱法的三条分类轴，下列叙述正确的是（　）。",
+      "options": [
+        "气相、薄层、分配是同一层的三个选项；气相色谱不再按固定相细分",
+        "三条轴正交：①聚集状态 → GC／LC／超临界流体色谱，气相再分 GSC 与 GLC，液相再分 LSC 与 LLC；②操作形式 → 柱色谱（填充、毛细管、整体、开管）、平面色谱（薄层、纸、薄膜）、逆流色谱（螺旋管两相逆流，避免不可逆吸附，适合天然活性成分）；③机理 → 分配、吸附、IEC、MEC、AC",
+        "逆流色谱就是 LLC 的别名；整体柱属于平面色谱；HPLC 应答成气相色谱的一种",
+        "扫描稿在 GSC 处断行，所以气液色谱可以不写"
+      ],
+      "answer": 1,
+      "hint": "三轴正交；GSC／GLC、LSC／LLC；柱／平面／逆流；五类机理。",
+      "explanation": "**B 正确。** 三条轴和各轴名单都按第 1 节。\n\n**干扰项辨析**：\n- A：气相是聚集状态，薄层是操作形式，分配是机理，不能并层。\n- C：逆流是操作形式，LLC 是聚集状态；整体柱是柱色谱再分；HPLC 仍是 LC。\n- D：断行是 OCR 问题，四个组合要写全。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-1.md",
+        "label": "按聚集状态分类 · 按操作形式分类 · 按分离机理分类"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于色谱过程、流出曲线、基线和噪声，下列叙述正确的是（　）。",
+      "options": [
+        "样品在柱里走一遍就分开；流出曲线横轴是柱长；图 11-1 就是第 3 节 $K_{\\mathrm{A}}=2$ 的分配模型",
+        "色谱过程是组分分子在两相间多次“分配”平衡。图 11-1 是吸附柱色谱：洗脱、反复吸附–解吸附，差速迁移，谱带有宽度。流出曲线又称色谱图，横轴是时间。基线是柱后无组分时的信号–时间曲线；噪声是偶然因素引起的基线起伏",
+        "被吸附能力强的 A 先出柱；谱带没有宽度；基线就是噪声",
+        "检测器画的是空间分布，不能接到时间轴上"
+      ],
+      "answer": 1,
+      "hint": "多次分配；图 11-1 吸附柱；横轴时间；基线水平、噪声起伏。",
+      "explanation": "**B 正确。** 过程、图 11-1、流出曲线和基线／噪声都按第 2 节。\n\n**干扰项辨析**：\n- A：是多次分配不是走一遍；横轴是时间；图 11-6 才是分配模型。\n- C：吸附弱的 A 先出；谱带因空间扩展而有宽度；基线不是噪声。\n- D：图 11-1 下半就是把空间谱带接到时间轴。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-2.md",
+        "label": "色谱过程 · 差速迁移 · 色谱流出曲线 · 基线 · 噪声"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于色谱峰、对称因子和三种区域宽度，下列叙述正确的是（　）。",
+      "options": [
+        "定量主要依据峰高；式（11-1）的 $A$ 就是峰面积；$f_{\\mathrm{s}}>1.05$ 为前延峰",
+        "$\\sigma$ 是基线全宽；$W_{1/2}=4\\sigma$；$W=2.355\\sigma$；第 3 节 $N=5.54(t_{\\mathrm{R}}/W)^{2}$",
+        "峰面积是定量主要依据。$f_{\\mathrm{s}}=W_{0.05h}/(2A)=(A+B)/(2A)$，在 $0.05h$ 处量；$0.95\\sim 1.05$ 对称，$<0.95$ 前延，$>1.05$ 拖尾。$W_{1/2}=2.355\\sigma$，$W=4\\sigma$。$N=5.54(t_{\\mathrm{R}}/W_{1/2})^{2}=16(t_{\\mathrm{R}}/W)^{2}$ 的 $5.54$、$16$ 由此而来",
+        "拖尾峰前沿平缓后沿陡；对称因子改到半峰处量"
+      ],
+      "answer": 2,
+      "hint": "面积定量；$0.05h$；$W_{1/2}=2.355\\sigma$，$W=4\\sigma$。",
+      "explanation": "**C 正确。** 峰面积、对称因子区间和三种宽度都按第 2 节，塔板公式系数按第 3 节。\n\n**干扰项辨析**：\n- A：定量主要依据面积；式（11-1）的 $A$ 是 $0.05h$ 左侧宽度；$>1.05$ 是拖尾。\n- B：宽度公式对调；$N$ 的 $5.54$ 配 $W_{1/2}$、$16$ 配 $W$。\n- D：那是前延峰的外形；对称因子在 $0.05h$ 处量。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-2.md",
+        "label": "对称因子 · 半峰宽 · 峰宽 · 标准偏差"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于保留值、死体积和例 11-1 的 Kovats 指数，下列叙述正确的是（　）。",
+      "options": [
+        "死时间是组分在固定相中的停留时间；Kovats 指数代入 $t_{\\mathrm{R}}$ 的对数；正构烷烃的指数等于保留时间乘 100",
+        "$t_{\\mathrm{R}}$ 从进样到峰顶点；$t_0$ 是不被固定相保留的组分到峰顶点，亦即流动相到达检测器的时间；$t'_{\\mathrm{R}}=t_{\\mathrm{R}}-t_0$。$V_{\\mathrm{R}}=t_{\\mathrm{R}}F_{\\mathrm{c}}$。死体积一般包括进样器至柱间导管、固定相及颗粒孔隙、柱出口导管及检测器空腔。例 11-1：阿皮松 L（Apeizon L）、$100^{\\circ}\\mathrm{C}$，乙酸正丁酯 $t'_{\\mathrm{R}}=310\\,\\mathrm{s}$，正庚烷 $174\\,\\mathrm{s}$，正辛烷 $373.4\\,\\mathrm{s}$，得 $I=775.6$",
+        "例 11-1 的 $310$、$174$、$373.4$ 是未扣除死时间的 $t_{\\mathrm{R}}$；本版拼写必须改成 Apiezon",
+        "调整保留体积不等于 $t'_{\\mathrm{R}}\\cdot F_{\\mathrm{c}}$；死体积只等于柱管几何体积"
+      ],
+      "answer": 1,
+      "hint": "死时间＝流动相时间；Kovats 用 $\\lg t'_{\\mathrm{R}}$；例 11-1 得 775.6。",
+      "explanation": "**B 正确。** 三项时间／体积、死体积组成和例 11-1 都按第 2 节。\n\n**干扰项辨析**：\n- A：死时间是流动相时间；必须用 $t'_{\\mathrm{R}}$；正构烷烃指数是碳数乘 100。\n- C：例 11-1 给的已是调整保留时间；本版印 Apeizon L。\n- D：$V'_{\\mathrm{R}}=t'_{\\mathrm{R}}F_{\\mathrm{c}}$；死体积含柱外空腔。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-2.md",
+        "label": "保留时间 · 死时间 · 死体积 · 例11-1 Kovats 指数"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于分配系数、保留因子、色谱过程方程和例 11-2，下列叙述正确的是（　）。",
+      "options": [
+        "$K$ 是质量比，$k$ 是浓度比；$k=t_{\\mathrm{R}}/t_0$；$K$ 大的组分先出柱",
+        "$K=c_{\\mathrm{s}}/c_{\\mathrm{m}}$，$k=m_{\\mathrm{s}}/m_{\\mathrm{m}}=K V_{\\mathrm{s}}/V_{\\mathrm{m}}=t'_{\\mathrm{R}}/t_0$，$t_{\\mathrm{R}}=t_0(1+k)$。过程方程 $t_{\\mathrm{R}}=t_0(1+K V_{\\mathrm{s}}/V_{\\mathrm{m}})$。$K$ 或 $k$ 不等是分离的前提，$k$ 比 $K$ 易测。例 11-2：$k=4.5$，$V_0=48\\,\\mathrm{mL}$，$V'_{\\mathrm{R}}=2.2\\times 10^{2}\\,\\mathrm{mL}$，$K=1.0\\times 10^{2}$。思考题第 8 题 $t_0=30\\,\\mathrm{s}$、$k=4$ 则 $t_{\\mathrm{R}}=150\\,\\mathrm{s}$",
+        "例 11-2 必须用峰宽 $0.50\\,\\mathrm{min}$ 去算 $N$；忽略柱外时也不能把 $V_0$ 当作 $V_{\\mathrm{m}}$",
+        "思考题第 8 题应选 $120\\,\\mathrm{s}$，因为 $30\\times 4=120$"
+      ],
+      "answer": 1,
+      "hint": "$k=t'_{\\mathrm{R}}/t_0$；例 11-2 得 4.5、48、$2.2\\times 10^{2}$、$1.0\\times 10^{2}$；$t_{\\mathrm{R}}=t_0(1+k)$。",
+      "explanation": "**B 正确。** $K$／$k$ 分户、过程方程、例 11-2 和 $t_{\\mathrm{R}}=t_0(1+k)$ 都按第 2 节。\n\n**干扰项辨析**：\n- A：浓度比是 $K$、质量比是 $k$；必须用 $t'_{\\mathrm{R}}$；$K$ 大后出。\n- C：本例四问用不到 $W$；题目写忽略柱外才让 $V_0=V_{\\mathrm{m}}$。\n- D：$t_{\\mathrm{R}}=30\\times(1+4)=150\\,\\mathrm{s}$，不是 $30\\times 4$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-2.md",
+        "label": "分配系数 · 保留因子 · 色谱过程方程 · 例11-2"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于分离度、分离因子、式（11-28）和例 11-4，下列叙述正确的是（　）。",
+      "options": [
+        "$R=1$ 已经完全分开，可以定量；$\\alpha$ 用 $t_{\\mathrm{R}2}/t_{\\mathrm{R}1}$ 且可以小于 1；柱长加倍则 $R$ 也加倍",
+        "$R=2(t_{\\mathrm{R}2}-t_{\\mathrm{R}1})/(W_1+W_2)$，$W$ 是基线宽度。$R=1$ 为 $4\\sigma$ 分离，重叠约 $4.6\\%$；$R=1.5$ 为 $6\\sigma$ 分离，交叠 $0.3\\%$，定量通常 $R\\ge 1.5$。$\\alpha=K_2/K_1=k_2/k_1=t'_{\\mathrm{R}2}/t'_{\\mathrm{R}1}>1$ 是前提。$R=\\sqrt{N_2}/4\\cdot(\\alpha-1)/\\alpha\\cdot k_2/(1+k_2)$；$N$ 管胖瘦、$\\alpha$ 管间距、$k$ 管峰位。$\\alpha=1$ 时加柱长也分不开。$H$ 不变时 $R\\propto\\sqrt{L}$，柱长加倍 $R$ 变为约 $1.4$ 倍。例 11-4：$k_{\\text{甲苯}}=9.5$，$N=1203$，$\\alpha=1.15$，$t_{\\text{苯}}=1.9\\,\\mathrm{min}$，从 $R=1.0$ 到 $1.5$ 需 $4.5\\,\\mathrm{m}$。一般 $k$ 取 $1\\sim 10$",
+        "例 11-4 从 $R=1$ 到 $1.5$，柱长变为 $1.5$ 倍即 $3.0\\,\\mathrm{m}$；$k$ 越大越好，没有上限",
+        "分离因子又称峰宽比；$R$ 定义里的 $W$ 是半峰宽"
+      ],
+      "answer": 1,
+      "hint": "$4\\sigma$／$6\\sigma$；式（11-28）；$L_2/L_1=(R_2/R_1)^{2}$；例 11-4 得 4.5 m。",
+      "explanation": "**B 正确。** $R$ 与 $\\alpha$、三因子公式、柱长关系和例 11-4 都按第 2、3 节。\n\n**干扰项辨析**：\n- A：$R=1$ 仍重叠约 $4.6\\%$；$\\alpha$ 用调整保留且必须 $>1$；$R\\propto\\sqrt{L}$ 不是正比。\n- C：$(1.5/1)^{2}=2.25$ 倍得 $4.5\\,\\mathrm{m}$；$k$ 常取 $1\\sim 10$。\n- D：$\\alpha$ 是分配系数比；$W$ 是基线宽度。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-3.md",
+        "label": "分离度 · 4σ／6σ · 式（11-28） · 例11-4"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于塔板理论与速率理论的适用边界，下列叙述正确的有（　）。",
+      "options": [
+        "塔板理论四条假设包括：填充均匀、流动相脉冲进入、瞬时平衡且 $K$ 与浓度无关、忽略纵向扩散。它能评价柱效、解释峰形和极大点位置，但不能解释流速与柱效、也未阐述 $H$ 的原因",
+        "图 11-6 中 $K_{\\mathrm{A}}=2$ 的极大在第 1 块板，$K_{\\mathrm{B}}=0.5$ 的极大在第 3 块板；$K$ 小的走得快。$N>50$ 接近正态，实际柱 $N$ 常在 $10^{3}$ 以上。例 11-3 半峰宽 $0.20\\,\\mathrm{cm}$ 须先除纸速 $2.0\\,\\mathrm{cm}\\cdot\\mathrm{min}^{-1}$，得 $N=1247$、$H=1.6\\,\\mathrm{mm}$",
+        "速率理论由 van Deemter 提出，$H=A+B/u+Cu$。塔板理论排除了流动相速度，忽视扩散和传质动力学，所以解释不了 $H$–$u$ 曲线",
+        "塔板理论完全错误，评价柱效也不能用；图 11-7 偏态说明正态公式作废；$K$ 大的组分先出柱"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "四条假设排除了动力学；例 11-3 先除纸速；范氏方程补流速。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：假设和成败边界，来自第 3 节。\n- B：图 11-6、正态条件和例 11-3，来自第 3 节。\n- C：范氏方程针对塔板理论缺流速和动力学，来自第 3 节。\n- **D 错**：本版先承认评价柱效成功；图 11-7 是塔板数太少的反例；$K$ 大后出。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-3.md",
+        "label": "塔板理论四条假设 · 图11-6 · 例11-3 · 速率理论的针对性"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于 van Deemter 三项、$H$–$u$ 曲线和第 4 节简介边界，下列叙述正确的有（　）。",
+      "options": [
+        "$A=2\\lambda d_{\\mathrm{p}}$ 与流速无关，细而匀可缩小，过细则阻力过大。$B=2\\gamma D_{\\mathrm{g}}$。本版：$D_{\\mathrm{g}}$ 与温度成正比，与流动相黏度成正比，黏度又与相对分子质量平方根成反比；氢气中 $D_{\\mathrm{g}}$ 大于氮气。气液色谱 $C\\approx C_{\\mathrm{l}}\\propto d_{\\mathrm{f}}^{2}/D_{\\mathrm{l}}$，主要降液膜厚度",
+        "$u_{\\mathrm{opt}}=\\sqrt{B/C}$，$H_{\\min}=A+2\\sqrt{BC}$。$u\\ge u_{\\mathrm{opt}}$ 时 $Cu$ 控制（低流速、薄液膜、较高柱温）；$u\\le u_{\\mathrm{opt}}$ 时 $B/u$ 控制（较高流速、较低柱温、较大相对分子质量流动相）。思考题第 7 题高流速选传质阻抗",
+        "第 4 节：整体柱（monoliths）誉为第四代；粒径已小于 $2\\,\\mu\\mathrm{m}$ 产生超高效液相；芯片实验室本版英文 chip on lab；2019-04-01 检索总发文世界第一，CE／GC／HPLC 的 SCI 世界第三。不要扩成第 13、14 章专章",
+        "高流速主要是纵向扩散；世界第一和世界第三是同一句话；chip on lab 必须改成 lab-on-a-chip 才算对"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "三项公式；$H$–$u$ 两侧不要写反；第 4 节只点户头和本版数字。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：涡流、纵向、传质本版公式，来自第 3 节。\n- B：$u_{\\mathrm{opt}}$、$H_{\\min}$ 和两侧对策，来自第 3 节。\n- C：整体柱、粒径、$<2\\,\\mu\\mathrm{m}$、chip on lab 和论文排名，来自第 4 节。\n- **D 错**：高流速是 $Cu$；总发文第一、SCI 第三不是同一句；简介按印刷 chip on lab。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-3.md",
+        "label": "涡流扩散 · 纵向扩散 · 传质阻抗 · H–u 曲线 · 第4节新进展"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "组分在流动相中的停留时间是调整保留时间；对称因子 $>1.05$ 为前延峰；Kovats 指数代入未扣除死时间的 $t_{\\mathrm{R}}$；思考题第 9 题 $K_{\\mathrm{A}}>K_{\\mathrm{B}}>K_{\\mathrm{C}}$ 则保留时间 $\\mathrm{A}<\\mathrm{B}<\\mathrm{C}$。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "流动相停留时间是死时间；$>1.05$ 拖尾；用 $t'_{\\mathrm{R}}$；$K$ 大后出。",
+      "explanation": "**该命题错误，四句都错。** 组分在流动相中的停留时间是死时间 $t_0$（思考题第 6 题）。$f_{\\mathrm{s}}>1.05$ 为拖尾峰，$<0.95$ 才是前延峰。Kovats 必须用 $\\lg t'_{\\mathrm{R}}$。$K$ 大则固定相中浓度高、后出柱，顺序是 $\\mathrm{A}>\\mathrm{B}>\\mathrm{C}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-2.md",
+        "label": "死时间 · 对称因子区间 · Kovats · K 与出峰顺序"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "塔板理论已经包含流动相速度，所以不必再学 van Deemter；$A$ 随流速线性增大；例 11-3 半峰宽 $0.20\\,\\mathrm{cm}$ 可直接当 $0.20\\,\\mathrm{min}$ 代入；第 4 节要把 HPLC 泵压曲线和毛细管固定液名单写进导论。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "塔板排除了流速；$A$ 与 $u$ 无关；先除纸速；第 4 节只是简介。",
+      "explanation": "**该命题错误，四句都错。** 塔板理论排除了流动相速度，才有范氏方程。$A=2\\lambda d_{\\mathrm{p}}$ 与流速无关。例 11-3 须用 $0.20/2.0=0.10\\,\\mathrm{min}$。第 4 节是新进展简介，禁止扩成第 13、14 章专章。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-3.md",
+        "label": "塔板理论的缺陷 · 涡流扩散与流速无关 · 例11-3 · 第4节边界"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "定量常用分离度门槛 $R\\ge$ ________。半峰宽 $W_{1/2}=$ ________ $\\sigma$。例 11-1 乙酸正丁酯的保留指数 $I=$ ________。例 11-2 的保留因子 $k=$ ________。兼顾分析时间与分离度，一般 $k$ 值范围为 ________。",
+      "answer": "1.5，2.355，775.6，4.5，1～10",
+      "hint": "$R\\ge 1.5$；$W_{1/2}=2.355\\sigma$；例 11-1 得 775.6；例 11-2 得 4.5；$k$ 常取 $1\\sim 10$。",
+      "scoring_criteria": [
+        "第一空填“1.5”或“1.5（6σ）”（2分）",
+        "第二空填“2.355”（2分）",
+        "第三空填“775.6”（2分）",
+        "第四空填“4.5”（2分）",
+        "第五空填“1～10”或“1-10”或“1~10”（2分）"
+      ],
+      "explanation": "第 2 节把定量门槛写成 $R\\ge 1.5$（$6\\sigma$），$W_{1/2}=2.355\\sigma$。例 11-1 得 $I=775.6$。例 11-2 得 $k=4.5$。第 3 节为兼顾时间与分离度，一般 $k$ 取 $1\\sim 10$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-2.md",
+        "label": "R≥1.5 · W1/2=2.355σ · 例11-1 的775.6 · 例11-2 的4.5 · k 取 1～10"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "从流出曲线上的保留值写到分离的前提。请写出：① $t_{\\mathrm{R}}$、$t_0$、$t'_{\\mathrm{R}}$ 及对应体积；② $K$ 与 $k$ 的定义、互算和 $t_{\\mathrm{R}}=t_0(1+k)$、过程方程；③ 为什么 $k$ 比 $K$ 易测、为什么 $K$ 或 $k$ 不等才是分离前提；④ $R$ 的定义、$4\\sigma$／$6\\sigma$ 和 $\\alpha$ 三个等价写法。不要把死时间答成调整保留，也不要把 $K$ 大答成先出柱。",
+      "answer": "参考答案：\n\n**1. 保留值**\n- $t_{\\mathrm{R}}$：进样到峰顶点。$t_0$：不被固定相保留的组分到峰顶点，即流动相到达检测器的时间。$t'_{\\mathrm{R}}=t_{\\mathrm{R}}-t_0$。\n- $V_{\\mathrm{R}}=t_{\\mathrm{R}}F_{\\mathrm{c}}$，$V_0=t_0 F_{\\mathrm{c}}$，$V'_{\\mathrm{R}}=t'_{\\mathrm{R}}F_{\\mathrm{c}}$。死体积含进样器至柱间导管、孔隙、柱出口导管及检测器空腔。\n\n**2. $K$ 与 $k$**\n- $K=c_{\\mathrm{s}}/c_{\\mathrm{m}}$（浓度比）；$k=m_{\\mathrm{s}}/m_{\\mathrm{m}}=K V_{\\mathrm{s}}/V_{\\mathrm{m}}=t'_{\\mathrm{R}}/t_0$（质量比）。\n- $t_{\\mathrm{R}}=t_0(1+k)$；过程方程 $t_{\\mathrm{R}}=t_0(1+K V_{\\mathrm{s}}/V_{\\mathrm{m}})$。\n\n**3. 易测与前提**\n- $k$ 只要色谱图上的 $t_{\\mathrm{R}}$、$t_0$；$K$ 还要 $V_{\\mathrm{s}}$、$V_{\\mathrm{m}}$。流量和两相体积一定时 $t_{\\mathrm{R}}$ 只随 $K$ 变，$K$ 相同则峰重合。\n\n**4. $R$ 与 $\\alpha$**\n- $R=2(t_{\\mathrm{R}2}-t_{\\mathrm{R}1})/(W_1+W_2)$。$R=1$ 为 $4\\sigma$，重叠约 $4.6\\%$；$R=1.5$ 为 $6\\sigma$，交叠 $0.3\\%$，定量通常 $\\ge 1.5$。\n- $\\alpha=K_2/K_1=k_2/k_1=t'_{\\mathrm{R}2}/t'_{\\mathrm{R}1}>1$ 是前提，不等于已经分开。$K$ 大后出。",
+      "hint": "按时间／体积 → $K$、$k$、过程方程 → 易测与前提 → $R$ 与 $\\alpha$ 写，并避开死时间／出峰顺序写反。",
+      "scoring_criteria": [
+        "写出 $t_{\\mathrm{R}}$、$t_0$、$t'_{\\mathrm{R}}$ 及体积关系（3分）",
+        "写出 $K$、$k$ 定义、互算和过程方程（4分）",
+        "说明 $k$ 易测以及 $K$ 不等才是分离前提（3分）",
+        "写出 $R$ 定义、$4\\sigma$／$6\\sigma$ 和 $\\alpha$ 三式，并点明 $K$ 大后出（4分）"
+      ],
+      "explanation": "本题把第 2 节收成“时间轴上量什么—两相平衡用哪个参数—怎样才算分开”。易错点：死时间与调整保留对调；$k=t_{\\mathrm{R}}/t_0$；$K$ 大先出。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-2.md",
+        "label": "保留值 · 分配系数与保留因子 · 分离度与分离因子"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "塔板理论、速率理论和提高分离度怎样收？请写出：①塔板四条假设、$N$ 的三个公式、例 11-3 为何先除纸速；②塔板理论成功与失败处，范氏方程三项及本版 $A$、$B$、$C$ 公式；③ $u_{\\mathrm{opt}}$、$H_{\\min}$ 以及 $H$–$u$ 两侧对策（不要写反）；④式（11-28）三项各管什么，$k$ 为何取 $1\\sim 10$，柱长加倍 $R$ 变成几倍，例 11-4 从 $R=1$ 到 $1.5$ 柱长为何是 $4.5\\,\\mathrm{m}$。不要把第 4 节扩成 HPLC／GC 专章。",
+      "answer": "参考答案：\n\n**1. 塔板**\n- 假设：填充均匀；脉冲进样；瞬时平衡且 $K$ 为常数；忽略纵向扩散。\n- $N=(t_{\\mathrm{R}}/\\sigma)^{2}=5.54(t_{\\mathrm{R}}/W_{1/2})^{2}=16(t_{\\mathrm{R}}/W)^{2}$，$H=L/N$。有效塔板用 $t'_{\\mathrm{R}}$。\n- 例 11-3：$0.20\\,\\mathrm{cm}$ 须除纸速 $2.0\\,\\mathrm{cm}\\cdot\\mathrm{min}^{-1}$，得 $N=1247$、$H=1.6\\,\\mathrm{mm}$。\n\n**2. 成败与范氏三项**\n- 成功：评价柱效、解释峰形和极大点。失败：排除流速，忽视扩散和传质。\n- $H=A+B/u+Cu$。$A=2\\lambda d_{\\mathrm{p}}$；$B=2\\gamma D_{\\mathrm{g}}$；气液色谱 $C\\approx C_{\\mathrm{l}}=\\dfrac{2k}{3(1+k)^{2}}\\cdot\\dfrac{d_{\\mathrm{f}}^{2}}{D_{\\mathrm{l}}}$。\n\n**3. $H$–$u$**\n- $u_{\\mathrm{opt}}=\\sqrt{B/C}$，$H_{\\min}=A+2\\sqrt{BC}$。\n- $u\\ge u_{\\mathrm{opt}}$：$Cu$ 控制，宜低流速、薄液膜、较高柱温。$u\\le u_{\\mathrm{opt}}$：$B/u$ 控制，宜较高流速、较低柱温、较大相对分子质量流动相。高流速不是纵向扩散。\n\n**4. 提高 $R$**\n- $R=\\sqrt{N_2}/4\\cdot(\\alpha-1)/\\alpha\\cdot k_2/(1+k_2)$。$N$ 管胖瘦，$\\alpha$ 管间距，$k$ 管峰位。$\\alpha=1$ 时加柱长也分不开。$k$ 常取 $1\\sim 10$。\n- $H$ 不变时 $R\\propto\\sqrt{L}$，柱长加倍 $R$ 变为约 $1.4$ 倍。例 11-4：$L_2=2.0\\times(1.5/1.0)^{2}=4.5\\,\\mathrm{m}$。第 4 节只点多维平台、整体柱、微流控和预处理，不写泵压和固定液名单。",
+      "hint": "按假设与 $N$ → 范氏三项 → $H$–$u$ 两侧 → 式（11-28）和例 11-4 写，并避开两侧对策写反、把第 4 节写成专章。",
+      "scoring_criteria": [
+        "写出四条假设、$N$ 公式和例 11-3 先除纸速（4分）",
+        "写出塔板成败和 $A$、$B$、$C$ 本版公式（4分）",
+        "写出 $u_{\\mathrm{opt}}$、$H_{\\min}$ 和两侧对策且不写反（3分）",
+        "写出式（11-28）、$k$ 范围、$R\\propto\\sqrt{L}$ 和例 11-4 的 $4.5\\,\\mathrm{m}$，并点明第 4 节边界（4分）"
+      ],
+      "explanation": "本题把第 3、4 节收成“平衡模型能评柱效—动力学解释流速—三因子对症改条件”。易错点：高流速答纵向扩散；柱长与 $R$ 当成正比；把简介写成 HPLC 专章。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch11-3.md",
+        "label": "塔板理论 · van Deemter 方程 · 式（11-28） · 例11-4 · 第4节简介边界"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

@@ -5,16 +5,17 @@ import path from "node:path";
 import { academicYearOfSubject } from "@/lib/constants/academic-year";
 import { getMultiSubjectOutline, searchAllContent, readContentMarkdown } from "@/lib/content/loader";
 
-test("getOutline 大二上学期可见四本教材路径", () => {
+test("getOutline 大二上学期可见教材路径", () => {
   const outline = getMultiSubjectOutline("sophomore-1");
   assert.ok(outline.includes("cell-biology/textbook/"));
   assert.ok(outline.includes("biochemistry/textbook/"));
   assert.ok(outline.includes("anatomy/textbook/"));
   assert.ok(outline.includes("histology/textbook/"));
+  assert.ok(outline.includes("instrumental-analysis/textbook/"));
   assert.equal(outline.includes("probability/"), false);
 });
 
-test("searchAllContent 学年=大二上：命中来自四本教材", async () => {
+test("searchAllContent 学年=大二上：命中来自大二教材", async () => {
   const queries: Array<{ q: string; subject: string }> = [
     { q: "解剖学姿势", subject: "anatomy" },
     { q: "被覆上皮", subject: "histology" },
@@ -46,7 +47,7 @@ test("hybrid 索引含大二教材，关闭子串回退仍能命中", async () =
   const meta = JSON.parse(fs.readFileSync(metaPath, "utf8")) as {
     chunks: Array<{ subjectId: string; path: string; text: string }>;
   };
-  const sophomore = new Set(["anatomy", "histology", "cell-biology", "biochemistry"]);
+  const sophomore = new Set(["anatomy", "histology", "cell-biology", "biochemistry", "instrumental-analysis"]);
   const sophChunks = meta.chunks.filter((c) => sophomore.has(c.subjectId));
   assert.ok(sophChunks.length > 0, "索引 chunks 必须包含大二科目");
   for (const id of sophomore) {

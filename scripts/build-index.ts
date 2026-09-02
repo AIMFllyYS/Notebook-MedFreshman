@@ -189,7 +189,7 @@ async function main() {
   console.log(`   → Chunks meta written to ${chunksMetaPath}`);
 
   const sophomoreCount = chunks.filter((c) =>
-    ['anatomy', 'histology', 'cell-biology', 'biochemistry'].includes(c.subjectId),
+    ['anatomy', 'histology', 'cell-biology', 'biochemistry', 'instrumental-analysis'].includes(c.subjectId),
   ).length;
   console.log(`   → Sophomore textbook/detail chunks: ${sophomoreCount}`);
 

@@ -1,0 +1,321 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch06",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch06-1.md；content/instrumental-analysis/textbook/ch06-2.md；content/instrumental-analysis/textbook/ch06-3.md；content/instrumental-analysis/textbook/ch06-4.md；content/instrumental-analysis/textbook/ch06-5.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于红外吸收光谱法的定义、红外辐射范围以及表6-1 三区划分，下列叙述正确的是（　）。",
+      "options": [
+        "红外吸收光谱法英文是一个词 infraredabsorptionspectroscopy；红外辐射波长是 $400\\sim 700\\,\\mathrm{nm}$；本章主讲近红外定量",
+        "红外吸收光谱法（infrared absorption spectroscopy，IR）利用红外辐射照射样品分子，引起分子振动、转动能级跃迁而产生红外吸收光谱，据此做定性、定量及结构分析，可简称红外光谱法。红外辐射波长 $0.76\\sim 1000\\,\\mathrm{\\mu m}$。表6-1：近红外 $0.76\\sim 2.50\\,\\mathrm{\\mu m}$（$13\\,158\\sim 4000\\,\\mathrm{cm}^{-1}$）为 OH、NH 及 CH 倍频，定量；中红外 $2.5\\sim 25\\,\\mathrm{\\mu m}$（$4000\\sim 400\\,\\mathrm{cm}^{-1}$）振动伴随转动，定性定量，本章主讲；远红外 $25\\sim 1000\\,\\mathrm{\\mu m}$（$400\\sim 10\\,\\mathrm{cm}^{-1}$）转动，定性",
+        "中红外波数是 $4000\\sim 4000\\,\\mathrm{cm}^{-1}$；远红外下沿写到 $400\\,\\mathrm{cm}^{-1}$ 就停；近红外没有倍频",
+        "红外只能做定量，不能做结构分析；三区都以电子跃迁为主"
+      ],
+      "answer": 1,
+      "hint": "英文分词；波长 $0.76\\sim 1000\\,\\mathrm{\\mu m}$；中红外 $4000\\sim 400\\,\\mathrm{cm}^{-1}$ 是本章主战场。",
+      "explanation": "**B 正确。** 定义、波长和表6-1 三区都按第 1 节。\n\n**干扰项辨析**：\n- A：英文是分词；$400\\sim 700\\,\\mathrm{nm}$ 是别的书的可见光口诀；本章主讲中红外。\n- C：中红外 $4000\\sim 400\\,\\mathrm{cm}^{-1}$；远红外写到 $10\\,\\mathrm{cm}^{-1}$；近红外是倍频区。\n- D：红外做定性、定量和结构分析；中红外是振–转，不是电子跃迁。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-1.md",
+        "label": "红外吸收光谱法 · 红外辐射 · 表6-1 红外光的区划"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于红外吸收光谱的表示方法、式（6-1）以及图6-1 三种曲线，下列叙述正确的是（　）。",
+      "options": [
+        "现在最常用 $A$–$\\lambda$ 正峰，横轴用纳米；没有线性波数标尺这件事",
+        "红外吸收光谱也称振–转光谱。纵坐标用透光率 $T$ 或吸光度 $A$，横坐标用波数 $\\sigma$（$\\mathrm{cm}^{-1}$）或波长 $\\lambda$（$\\mathrm{\\mu m}$）。式（6-1）：$\\sigma\\,(\\mathrm{cm}^{-1})=1/\\lambda\\,(\\mathrm{cm})=10^{4}/\\lambda\\,(\\mathrm{\\mu m})$。现在最常用 $T$–$\\sigma$ 倒峰； $T$–$\\lambda$ 前密后疏、$T$–$\\sigma$ 前疏后密；线性波数标尺，多以 $2000\\,\\mathrm{cm}^{-1}$ 为界换比例尺；$A$–$\\sigma$ 为正峰。图6-1（b）虚线是饱和与不饱和碳氢伸缩分界，不是羰基口诀",
+        "$T$–$\\sigma$ 是正峰；$2000\\,\\mathrm{cm}^{-1}$ 就是羰基；不要用波数",
+        "式（6-1）是 $\\sigma=10^{2}/\\lambda\\,(\\mathrm{nm})$；苯的三张图形状完全一样"
+      ],
+      "answer": 1,
+      "hint": "现在最常用 $T$–$\\sigma$ 倒峰；式（6-1）与第3章式（3-1）同一换算。",
+      "explanation": "**B 正确。** 振–转光谱、式（6-1）、三种曲线和 $2000\\,\\mathrm{cm}^{-1}$ 换尺都按第 1 节。\n\n**干扰项辨析**：\n- A：$A$–$\\lambda$ 是紫外习惯；红外现在最常用 $T$–$\\sigma$。\n- C：$T$–$\\sigma$ 是倒峰；$2000$ 是换尺界兼靠近饱和／不饱和碳氢分界，不是羰基。\n- D：换算用厘米或微米，不是 $\\mathrm{nm}$ 除 $10^{2}$；三张图形状不同。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-1.md",
+        "label": "式（6-1） · T–λ、T–σ 与 A–σ · pitfall「不要把紫外的 A–λ 习惯套到红外图上」"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于红外与紫外的区别以及醋酸可的松／醋酸泼尼松，下列叙述正确的是（　）。",
+      "options": [
+        "二者都是电子光谱；红外不适于饱和有机物；紫外固体最方便",
+        "紫外 $\\lambda_{\\max}$ 不同就能完全代替红外鉴别甾体；药典从未规定用红外",
+        "紫外吸收光谱由电子能级跃迁引起，属电子光谱，光谱简单；红外由振动–转动能级跃迁引起，光谱复杂。紫外只适用于芳族或共轭不饱和脂肪族及某些无机物，不适于饱和有机物，测定以溶液为主；红外在中红外几乎能测所有有机物，气液固都可以，固体最方便，还可做结构分析。醋酸可的松 $\\mathrm{C_{23}H_{30}O_{6}}$ 与醋酸泼尼松 $\\mathrm{C_{23}H_{28}O_{6}}$ 乙醇溶液紫外 $\\lambda_{\\max}$ 都是 $(238\\pm 1)\\,\\mathrm{nm}$，难以用紫外鉴别，图6-2 红外光谱有明显区别。《中国药典》从 1977 年版起规定甾体类用红外吸收光谱法鉴别",
+        "醋酸泼尼松分子式是 $\\mathrm{C_{23}H_{28}O}$；$\\lambda_{\\max}$ 本版没有数字"
+      ],
+      "answer": 2,
+      "hint": "电子光谱 vs 振–转光谱；甾体紫外 $\\lambda_{\\max}$ 同为 $(238\\pm 1)\\,\\mathrm{nm}$；药典 1977。",
+      "explanation": "**C 正确。** 机制、对象、特征性和药典 1977 都按第 1 节。\n\n**干扰项辨析**：\n- A：红外不是电子光谱；饱和有机物紫外不适用、红外能测；固体最方便的是红外。\n- B：二者紫外 $\\lambda_{\\max}$ 相同，正要靠红外；药典 1977 年起规定。\n- D：本版是 $\\mathrm{C_{23}H_{28}O_{6}}$，OCR 的 $\\mathrm{C_{23}H_{28}O}$ 不要用；$\\lambda_{\\max}$ 是 $(238\\pm 1)\\,\\mathrm{nm}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-1.md",
+        "label": "紫外属电子光谱 · 红外属振动-转动光谱 · 醋酸可的松与醋酸泼尼松"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于振动自由度、$\\mathrm{H_2O}$／$\\mathrm{CO_2}$ 以及红外光谱产生的两个条件，下列叙述正确的是（　）。",
+      "options": [
+        "线性和非线性都用 $3N-6$；$\\mathrm{CO_2}$ 图上应有 4 个基频峰",
+        "只要能量匹配就能出峰，与偶极矩无关",
+        "非线性分子振动自由度 $=3N-6$，线性 $=3N-5$。水 $3\\times 3-6=3$，本版三峰 $3756$、$3652$、$1595\\,\\mathrm{cm}^{-1}$，与自由度一致。$\\mathrm{CO_2}$ $3\\times 3-5=4$，图上只有 $2349$ 和 $667\\,\\mathrm{cm}^{-1}$：对称伸缩 $1388\\,\\mathrm{cm}^{-1}$ 为红外非活性（$\\Delta\\mu=0$）；面内与面外弯曲简并在 $667\\,\\mathrm{cm}^{-1}$。产生条件： $\\nu_{\\mathrm{L}}=\\Delta V\\times\\nu$，且 $\\Delta\\mu\\neq 0$，缺一不可",
+        "平动能改变产生中红外光谱；转动跃迁也在中红外出峰"
+      ],
+      "answer": 2,
+      "hint": "$3N-6$／$3N-5$；$\\mathrm{CO_2}$ 两峰；$\\Delta\\mu\\neq 0$。",
+      "explanation": "**C 正确。** 自由度、水与二氧化碳、两个条件都按第 2 节。\n\n**干扰项辨析**：\n- A：线性用 $3N-5$；$\\mathrm{CO_2}$ 看得见的基频是 2 个。\n- B：还要 $\\Delta\\mu\\neq 0$。\n- D：平动不产生光谱；转动产生远红外光谱，中红外只考虑振动。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-2.md",
+        "label": "3N−6 与 3N−5 · 简并 · 红外活性与红外非活性 · 两个条件"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于式（6-9）、诱导／共轭／氢键以及特征区与指纹区，下列叙述正确的是（　）。",
+      "options": [
+        "特征区是 $1300\\sim 400\\,\\mathrm{cm}^{-1}$，指纹区是 $4000\\sim 1300\\,\\mathrm{cm}^{-1}$；饱和 $\\mathrm{C-H}>3000\\,\\mathrm{cm}^{-1}$",
+        "$\\sigma=1302\\sqrt{K/\\mu'}$。单、双、三键 $K$ 近似 $5$、$10$、$15\\,\\mathrm{N}\\cdot\\mathrm{cm}^{-1}$。诱导使羰基向高频（酮 $1715\\rightarrow$ 酰氯 $1800$），共轭向低频（$1715\\rightarrow 1685\\rightarrow 1670$）；饱和酯 $1735$ 诱导占主导，硫酯 $1690$ 共轭占主导。气态羧酸 $\\mathrm{C=O}$ 在 $1760$，液固态二聚在 $1710$。特征区 $4000\\sim 1300\\,\\mathrm{cm}^{-1}$，指纹区 $1300\\sim 400\\,\\mathrm{cm}^{-1}$。饱和 $\\mathrm{C-H}<3000$，不饱和 $>3000$；$2000\\,\\mathrm{cm}^{-1}$ 是换尺界，不是饱和／不饱和分界",
+        "共轭使频率升高，诱导使频率降低；酯一律比酮低",
+        "倍频峰严格等于基频的整数倍；HCl 二倍频必须是 $5772\\,\\mathrm{cm}^{-1}$"
+      ],
+      "answer": 1,
+      "hint": "诱导向高频、共轭向低频；特征区 $4000\\sim 1300$；饱和 $\\mathrm{C-H}<3000$。",
+      "explanation": "**B 正确。** 式（6-9）、三种效应、特征区／指纹区和 $3000$ 分界都按第 2 节。\n\n**干扰项辨析**：\n- A：特征区／指纹区写反；饱和 $\\mathrm{C-H}$ 小于 $3000$。\n- C：方向写反；饱和酯 $1735$ 比酮高。\n- D：非谐振使倍频略小于整数倍，HCl 二倍频本版是 $5668.0\\,\\mathrm{cm}^{-1}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-2.md",
+        "label": "式（6-9） · 诱导效应 · 共轭效应 · 氢键效应 · 特征区 · 指纹区"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于表6-6 羰基基准值以及酮／醛／酯／酸／酐的相关峰，下列叙述正确的是（　）。",
+      "options": [
+        "羰基一律在 $1700\\,\\mathrm{cm}^{-1}$，表6-6 可以不记",
+        "表6-6 $\\nu_{\\mathrm{C=O}}$ 基准值（$\\mathrm{cm}^{-1}$）：酸酐 I $1810$、酰氯 $1800$、酸酐 II $1760$、酯 $1735$、醛 $1725$、酮 $1715$、羧酸 $1710$、酰胺 $1690$。醛另有 $\\nu_{\\mathrm{CH(O)}}$ 双峰 $2820$、$2720$（$2720$ 最特征）；酯另有 $\\nu_{\\mathrm{C-O}}\\,1280\\sim 1100$；羧酸有以 $3000$ 为中心的宽 $\\nu_{\\mathrm{OH}}$；酸酐呈耦合双峰且无羟基。特征区顺序：酰卤 $>$ 酸酐 $>$ 酯 $>$ 酮、醛 $>$ 酸 $>$ 酰胺",
+        "醛没有 $2720$ 那根峰；酸酐只有单峰；羧酸没有宽羟基",
+        "酮的二倍频约 $3430\\,\\mathrm{cm}^{-1}$（vw）应当成 $\\mathrm{O-H}$"
+      ],
+      "answer": 1,
+      "hint": "表6-6 从 $1810$ 降到 $1690$；醛看 $2720$，酯看 $\\mathrm{C-O-C}$，酸看宽羟基，酐看双峰。",
+      "explanation": "**B 正确。** 表6-6 和相关峰分户都按第 3 节。\n\n**干扰项辨析**：\n- A：口诀 1700 不能替代表。\n- C：醛氢 $2720$ 最特征；酸酐耦合双峰；羧酸有 $3000$ 宽峰。\n- D：酮的 $3430$ 是羰基二倍频（vw），不要当成羟基。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-3.md",
+        "label": "表6-6 · 醛氢双峰 · 酯的两个特征峰 · 酸酐双峰 · 羧酸相关峰"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于光栅红外分光光度计与 FTIR、药典 2015 校正以及 KBr 压片，下列叙述正确的是（　）。",
+      "options": [
+        "红外光栅仪样品放在单色器之后，与紫外完全相同；棱镜仪器仍是主流；FTIR 一次扫描要几分钟",
+        "KBr 压片取样品 $100\\,\\mathrm{mg}$ 加 $1\\,\\mathrm{g}$ $\\mathrm{KBr}$；水溶液可以直接测中红外；药典不用聚苯乙烯薄膜",
+        "MCT 灵敏度低于 DTGS；能斯特灯工作温度约 $200\\,^{\\circ}\\mathrm{C}$",
+        "光栅红外分光光度计由光源、样品池、单色器、检测器及工作站组成，样品放在光源和单色器之间（紫外在单色器之后）。棱镜已淘汰；光栅仍用但扫描较慢；20 世纪 70 年代 FTIR 用迈克耳孙干涉仪，一次全程扫描小于 $0.1\\,\\mathrm{s}$。能斯特灯约 $1800\\,^{\\circ}\\mathrm{C}$、$7100\\,\\mathrm{cm}^{-1}$；硅碳棒 $1200\\sim 1500\\,^{\\circ}\\mathrm{C}$、$5500\\sim 5000\\,\\mathrm{cm}^{-1}$。FTIR 用 DTGS 或 MCT（MCT 灵敏度约为 DTGS 的十几倍）。药典 2015 用约 $0.04\\,\\mathrm{mm}$ 聚苯乙烯薄膜：$3110\\sim 2850\\,\\mathrm{cm}^{-1}$ 清晰 7 峰；峰 $2851$ 与谷 $2870$ 深度 $\\geqslant 18\\%\\,T$；FTIR 在 $3000$ 附近误差 $\\leqslant\\pm 5\\,\\mathrm{cm}^{-1}$、$1000$ 附近 $\\leqslant\\pm 1\\,\\mathrm{cm}^{-1}$。KBr 压片：$1\\sim 2\\,\\mathrm{mg}$ 样品 $+200\\,\\mathrm{mg}$ $\\mathrm{KBr}$，片厚约 $1\\,\\mathrm{mm}$。样品纯度 $>98\\%$、必须无水"
+      ],
+      "answer": 3,
+      "hint": "样品在单色器前；FTIR $<0.1\\,\\mathrm{s}$；压片 $1\\sim 2\\,\\mathrm{mg}+200\\,\\mathrm{mg}$；药典聚苯乙烯薄膜。",
+      "explanation": "**D 正确。** 光路、三代仪器、光源、检测器、药典 2015 和压片都按第 4 节。\n\n**干扰项辨析**：\n- A：红外样品在单色器之前；棱镜已淘汰；FTIR 全程扫描小于 $0.1\\,\\mathrm{s}$。\n- B：压片是 $1\\sim 2\\,\\mathrm{mg}+200\\,\\mathrm{mg}$；不得水溶液；药典用聚苯乙烯薄膜。\n- C：MCT 更灵敏；能斯特灯约 $1800\\,^{\\circ}\\mathrm{C}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-4.md",
+        "label": "光栅红外分光光度计 · 三代仪器 · 能斯特灯 · 药典 2015 · KBr 压片法"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于特征峰、相关峰、峰强以及烷／烯／炔／芳的典型峰，下列叙述正确的有（　）。",
+      "options": [
+        "特征峰用于鉴别官能团；正癸腈比正癸烷多出的 $2247\\,\\mathrm{cm}^{-1}$ 为 $\\mathrm{C\\equiv N}$；1-正癸烯多出 $3079$、$1642$、$991$、$910\\,\\mathrm{cm}^{-1}$ 为端基乙烯基。相关峰是一个官能团的一组相互依存的特征峰，端基烯必须四峰一组，羧基相关峰包括 $\\nu_{\\mathrm{OH}}$、$\\nu_{\\mathrm{C=O}}$、$\\nu_{\\mathrm{C-O}}$、$\\beta_{\\mathrm{OH}}$、$\\gamma_{\\mathrm{OH}}$ 五个",
+        "峰强用 $\\varepsilon$ 分五档：vs $>100$，s $20\\sim 100$，m $10\\sim 20$，w $1\\sim 10$，vw $<1$。乙酸烯丙酯 $1745$ 的 $\\nu_{\\mathrm{C=O}}$ 强于 $1650$ 的 $\\nu_{\\mathrm{C=C}}$，因为 $\\Delta\\mu$ 更大；四氯乙烯完全对称，无 $\\nu_{\\mathrm{C=C}}$",
+        "烷烃 $\\nu_{\\mathrm{CH}}\\,3000\\sim 2850\\,\\mathrm{cm}^{-1}$（张力环除外）；烯烃不饱和 $\\mathrm{C-H}>3000$；炔烃 $\\nu_{\\equiv\\mathrm{CH}}\\,3300$、$\\nu_{\\mathrm{C\\equiv C}}\\,2200$；芳烃主看 $\\nu_{\\mathrm{\\phi-H}}$、骨架 $1600$／$1500$ 和 $\\gamma_{\\mathrm{\\phi-H}}\\,910\\sim 665$。异丙基 $\\delta^{\\mathrm{s}}$ 双峰裂距约 $10\\,\\mathrm{cm}^{-1}$ 强度近等，叔丁基裂距约 $20\\,\\mathrm{cm}^{-1}$ 且 $1370$ 约为 $1390$ 的两倍",
+        "看见一根峰就可以肯定官能团；对称烯烃也必须在 $1650\\,\\mathrm{cm}^{-1}$ 有强峰；芳氢和烯氢都在 $3000$ 以上，所以不必再看骨架和 $\\gamma$"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "相关峰一组；$\\Delta\\mu$ 管强度；叔丁基不等双峰。把“一根峰就够”拿掉。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：特征峰／相关峰及端基烯四峰、羧基五峰，来自 ch06-2。\n- B：五档 $\\varepsilon$ 和 $\\Delta\\mu$，来自 ch06-2。\n- C：烷烯炔芳和第3节异丙基／叔丁基，来自 ch06-3。\n- **D 错**：不能孤立解析；对称烯 $\\nu_{\\mathrm{C=C}}$ 可消失；芳氢要靠骨架和 $\\gamma$ 与烯氢分户。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-2.md",
+        "label": "特征峰 · 相关峰 · 峰强五级 · 烷烃／烯烃／炔烃／芳烃典型峰"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于不饱和度式（6-10）和“四先、四后、相关法”，以及例6-3～例6-5，下列叙述正确的有（　）。",
+      "options": [
+        "$U=(2+2n_4+n_3-n_1)/2$。$U=0$ 为链状饱和；双键或脂环 $=1$；三键 $=2$；苯环 $=4$。樟脑 $\\mathrm{C_{10}H_{16}O}$ 的 $U=3$；苯甲酰胺 $\\mathrm{C_7H_7NO}$ 的 $U=5$。氧是二价，不出现在公式里",
+        "四先四后：先特征区后指纹区；先最强后次强；先粗查后细找；先否定后肯定。并用一组相关峰确认官能团。吸收峰不存在对否定官能团更有力",
+        "例6-3 $\\mathrm{C_4H_{10}O}$，$U=0$，$1395$／$1363$ 不等双峰为叔丁基，$3360$ 宽钝峰为醇 $\\nu_{\\mathrm{OH}}$，结构叔丁醇。例6-4 $\\mathrm{C_6H_{12}}$，$U=1$，$3080$、$1642$、$993$、$910$ 为端基烯，结构 1-己烯。例6-5 $\\mathrm{C_8H_8O}$，$U=5$，无醛氢、无羟基、无氮，$1685$ 为共轭羰基，$760$、$690$ 单取代，结构苯乙酮",
+        "苯环不饱和度是 3；解析应从指纹区密峰开始；例6-5 有 $1685$ 就可以不否定醛和酸"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "苯环 $U=4$；先特征区第一强峰；例6-3 叔丁醇、例6-4 1-己烯、例6-5 苯乙酮。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：式（6-10）和四句规律、例6-2，来自 ch06-5。\n- B：四先四后相关法，来自 ch06-5。\n- C：三道解析例题，来自 ch06-5。\n- **D 错**：苯环是 4；不要从指纹区猜；例6-5 正是靠连续否定醛、酸、酰胺才落到共轭酮。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-5.md",
+        "label": "不饱和度 · 四先、四后、相关法 · 例6-3 · 例6-4 · 例6-5"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "红外光谱现在最常用 $A$–$\\lambda$ 正峰；中红外波数是 $400\\sim 10\\,\\mathrm{cm}^{-1}$；红外光栅仪样品放在单色器之后，与紫外相同；HCl 倍频必须严格等于基频的整数倍。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "$T$–$\\sigma$ 倒峰；中红外 $4000\\sim 400$；样品在单色器前；倍频略小于整数倍。",
+      "explanation": "**该命题错误，四句都错。** 现在最常用 $T$–$\\sigma$ 倒峰。中红外是 $4000\\sim 400\\,\\mathrm{cm}^{-1}$，$400\\sim 10$ 是远红外。光栅红外样品在光源和单色器之间。非谐振使倍频略小于整数倍，HCl 二倍频本版 $5668.0$ 不是 $2\\times 2885.9$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-1.md",
+        "label": "T–σ 倒峰 · 表6-1 · 光栅样品位置 · HCl 倍频"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "$\\mathrm{CO_2}$ 有 4 种振动所以红外图上必有 4 个基频峰；看见 $1700\\,\\mathrm{cm}^{-1}$ 附近一根峰就可以肯定是酮，不必看相关峰；苯环不饱和度是 3；KBr 压片可以用水溶液样品。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "简并＋非活性；相关峰一组；苯环 $U=4$；样品必须无水。",
+      "explanation": "**该命题错误，四句都错。** $\\mathrm{CO_2}$ 图上只有 $2349$ 和 $667$ 两峰。不能由单一特征峰肯定官能团。苯环 $U=4$。样品应不含水分，更不得是水溶液。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-2.md",
+        "label": "CO2 两峰 · 相关峰 · 苯环 U=4 · 样品两项要求"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "中红外波数范围是 ________ $\\mathrm{cm}^{-1}$。非线性分子振动自由度是 ________，线性分子是 ________。HCl 基频峰本版取整为 ________ $\\mathrm{cm}^{-1}$。表6-6 脂肪酮 $\\nu_{\\mathrm{C=O}}$ 基准值是 ________ $\\mathrm{cm}^{-1}$。",
+      "answer": "4000～400，3N−6，3N−5，2886，1715",
+      "hint": "表6-1 中红外；自由度两式；HCl $2886$；表6-6 酮 $1715$。",
+      "scoring_criteria": [
+        "第一空填“4000～400”（或“4000-400”“$4000\\sim 400$”）（2分）",
+        "第二空填“3N−6”（或“$3N-6$”“3N-6”）（2分）",
+        "第三空填“3N−5”（或“$3N-5$”“3N-5”）（2分）",
+        "第四空填“2886”（或“2885.9”）（2分）",
+        "第五空填“1715”（2分）"
+      ],
+      "explanation": "中红外 $4000\\sim 400\\,\\mathrm{cm}^{-1}$。非线性 $3N-6$，线性 $3N-5$。HCl 正文 $2886\\,\\mathrm{cm}^{-1}$（表 $2885.9$）。脂肪酮基准 $1715\\,\\mathrm{cm}^{-1}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-1.md",
+        "label": "表6-1；3N−6／3N−5；HCl 2886；表6-6 酮 1715；KBr 压片"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "红外吸收光谱怎样从“是什么、怎么画、和紫外差在哪”收到“峰在什么条件下出现”？请写出：①定义、英文、表6-1 三区（含中红外 $4000\\sim 400\\,\\mathrm{cm}^{-1}$）以及 $T$–$\\sigma$ 倒峰、式（6-1）、$2000\\,\\mathrm{cm}^{-1}$ 换尺；②与紫外在机制、对象、特征性上的三点不同，并点名醋酸可的松／醋酸泼尼松 $\\lambda_{\\max}\\,(238\\pm 1)\\,\\mathrm{nm}$ 和药典 1977；③两个产生条件、$3N-6$／$3N-5$、$\\mathrm{H_2O}$ 三峰与 $\\mathrm{CO_2}$ 两峰（含 $1388$ 非活性和 $667$ 简并）；④HCl 基频 $2886\\,\\mathrm{cm}^{-1}$ 以及倍频不是整数倍。不要把红外写成电子光谱，也不要答 $\\mathrm{CO_2}$ 有 4 个峰。",
+      "answer": "参考答案：\n\n**1. 定义、三区与作图**\n- 红外吸收光谱法（infrared absorption spectroscopy，IR）：红外辐射引起振动、转动能级跃迁，做定性、定量及结构分析。\n- 红外辐射 $0.76\\sim 1000\\,\\mathrm{\\mu m}$。近红外 $13\\,158\\sim 4000\\,\\mathrm{cm}^{-1}$（OH／NH／CH 倍频，定量）；中红外 $4000\\sim 400\\,\\mathrm{cm}^{-1}$（振–转，定性定量，本章主讲）；远红外 $400\\sim 10\\,\\mathrm{cm}^{-1}$（转动，定性）。\n- 式（6-1）$\\sigma=1/\\lambda(\\mathrm{cm})=10^{4}/\\lambda(\\mathrm{\\mu m})$。现在最常用 $T$–$\\sigma$ 倒峰、线性波数标尺，多以 $2000\\,\\mathrm{cm}^{-1}$ 换尺。\n\n**2. 与紫外**\n- 紫外：电子光谱，简单；不适于饱和有机物；溶液为主。红外：振–转光谱，复杂；几乎所有有机物；固体最方便；还可结构分析。\n- 醋酸可的松／醋酸泼尼松紫外 $\\lambda_{\\max}$ 同为 $(238\\pm 1)\\,\\mathrm{nm}$，红外能分；药典 1977 年起甾体用红外鉴别。\n\n**3. 两个条件与自由度**\n- $\\nu_{\\mathrm{L}}=\\Delta V\\times\\nu$ 且 $\\Delta\\mu\\neq 0$。\n- 非线性 $3N-6$，线性 $3N-5$。水 3 峰与自由度一致（$3756$、$3652$、$1595$）。$\\mathrm{CO_2}$ 自由度 4，图上 2 峰：$2349$、$667$；$1388$ 非活性；$667$ 简并。\n\n**4. 基频与倍频**\n- HCl 基频 $2886\\,\\mathrm{cm}^{-1}$（表 $2885.9$）。非谐振使倍频略小于整数倍，二倍频 $5668.0$ 不是 $2\\times 2885.9$。",
+      "hint": "按定义／作图 → 与紫外 → 两个条件与 CO2 → HCl 倍频写，并避开电子光谱、4 个峰两个易错点。",
+      "scoring_criteria": [
+        "写出定义、表6-1 三区和 $T$–$\\sigma$／式（6-1）（4分）",
+        "写出与紫外三点不同及甾体 $(238\\pm 1)\\,\\mathrm{nm}$、药典 1977（3分）",
+        "写出两个条件、$3N-6$／$3N-5$、水三峰与 CO2 两峰原因（4分）",
+        "写出 HCl $2886$ 及倍频非整数倍（3分）"
+      ],
+      "explanation": "本题把第 1、2 节收成“定义作图—与紫外—活性条件—基频倍频”。易错点：红外写成电子光谱；$\\mathrm{CO_2}$ 答 4 个峰；倍频按整数倍默写。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-1.md",
+        "label": "表6-1；T–σ；与紫外；3N−6／3N−5；两个条件；HCl"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "拿到一张中红外图怎样解析，仪器和制样要注意什么？请写出：①特征区／指纹区范围、表6-6 羰基序列、醛／酯／酸／酐怎样用相关峰分户，以及烷烯炔芳、醇醚、胺腈的关键峰位（以本版表为准）；②四先、四后、相关法和式（6-10），例6-3 叔丁醇、例6-4 1-己烯、例6-5 苯乙酮怎样落到结构；③光栅仪样品位置、FTIR 迈克耳孙、$<0.1\\,\\mathrm{s}$、药典 2015 聚苯乙烯薄膜要点；④KBr 压片 $1\\sim 2\\,\\mathrm{mg}+200\\,\\mathrm{mg}$，样品 $>98\\%$、无水。不要用口诀 1700 替代表6-6，也不要从指纹区密峰开始猜结构。",
+      "answer": "参考答案：\n\n**1. 典型峰**\n- 特征区 $4000\\sim 1300\\,\\mathrm{cm}^{-1}$，指纹区 $1300\\sim 400\\,\\mathrm{cm}^{-1}$。饱和 $\\mathrm{C-H}<3000$，不饱和 $>3000$。\n- 表6-6：$1810$、$1800$、$1760$、$1735$、$1725$、$1715$、$1710$、$1690$。醛加 $2720$ 双峰；酯加 $\\mathrm{C-O-C}\\,1280\\sim 1100$；酸加 $3000$ 宽羟基；酐为耦合双峰。\n- 烷烃 $3000\\sim 2850$；烯 $3100\\sim 3000$、$1650$、$1010\\sim 650$；炔 $3300$、$2200$；芳烃骨架 $1600$／$1500$，$\\gamma\\,910\\sim 665$。醇有 $\\nu_{\\mathrm{OH}}$，醚无。伯胺 $\\mathrm{N-H}$ 双峰；腈 $2260\\sim 2215$。\n\n**2. 解析程序**\n- $U=(2+2n_4+n_3-n_1)/2$；苯环 $=4$。四先四后相关法；没有峰更有力。\n- 例6-3：$U=0$，$1395$／$1363$ 不等双峰＋$3360$ 钝峰 → 叔丁醇。\n- 例6-4：$U=1$，$3080$、$1642$、$993$、$910$ → 1-己烯。\n- 例6-5：$U=5$，否定醛／酸／酰胺，$1685$ 共轭羰基＋$760$、$690$ 单取代 → 苯乙酮。\n\n**3. 仪器**\n- 光栅仪样品在光源和单色器之间。FTIR 用迈克耳孙干涉仪，全程扫描小于 $0.1\\,\\mathrm{s}$。药典 2015：约 $0.04\\,\\mathrm{mm}$ 聚苯乙烯薄膜，$3110\\sim 2850$ 分辨 7 峰；FTIR $3000$ 附近 $\\leqslant\\pm 5\\,\\mathrm{cm}^{-1}$。\n\n**4. 制样**\n- KBr 压片 $1\\sim 2\\,\\mathrm{mg}$ 样品 $+200\\,\\mathrm{mg}$ $\\mathrm{KBr}$，约 $1\\,\\mathrm{mm}$。纯度 $>98\\%$，必须无水，不得水溶液。",
+      "hint": "按典型峰 → 四先四后三例 → FTIR／药典 → 压片写，并避开 1700 口诀和指纹区开猜。",
+      "scoring_criteria": [
+        "写出特征区／指纹区和表6-6 序列及醛酯酸酐分户（4分）",
+        "写出式（6-10）、四先四后及三道例题落点（4分）",
+        "写出光栅样品位置、FTIR 干涉仪与药典校正要点（4分）",
+        "写出 KBr 压片用量和纯度／无水要求（3分）"
+      ],
+      "explanation": "本题把第 3、4、5 节收成“典型峰—解析程序—仪器—制样”。易错点：口诀 1700；从指纹区猜；苯环 $U=3$；压片用量默写错。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch06-5.md",
+        "label": "表6-6；四先四后；例6-3～6-5；FTIR；KBr 压片"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

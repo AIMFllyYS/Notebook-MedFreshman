@@ -1,0 +1,323 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch12",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch12-1.md；content/instrumental-analysis/textbook/ch12-2.md；content/instrumental-analysis/textbook/ch12-3.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于经典液相色谱法与现代液相色谱法的分界，以及本章不要写成第 14 章 HPLC、也不要吞第 13 章气相，下列叙述正确的是（　）。",
+      "options": [
+        "经典液相就是高效液相的别名；固定相必须是 $C_{18}$ 键合相，流动相靠高压泵，柱出口必须有在线紫外检测器",
+        "按固定相种类和规格、流动相输送方式、柱效、分离周期和检测灵敏度，液相色谱法分为经典液相色谱法和现代液相色谱法。经典液相指常压液相色谱技术，包括经典柱色谱、常规薄层色谱、纸色谱等：普通规格固定相、常压输送、一般不具备在线检测器；分离周期比较长、分离效率比较低，但设备简单、费用低，能同时分析多个样品，预处理要求不高，样品不受沸点、热稳定性限制。今天较少用于纯粹分析，仍用于样品制备、纯化、实验条件优化；薄层在有机合成、化学工业、药物筛选、临床检验、生化分析中常作初始手段。HPLC 在第 14 章，气相在第 13 章。1906 年茨维特分离植物色素是最原始、最典型的经典液相柱色谱",
+        "经典方法已经淘汰，基本要求不必掌握吸附机理和 $R_{\\mathrm{f}}$；「分析速度快」是指一根常压柱比 HPLC 线速度更快",
+        "本章应展开载气、毛细管进样口和程序升温，因为样品不受沸点限制"
+      ],
+      "answer": 1,
+      "hint": "五项分界；常压＋普通固定相＋多半离线；HPLC 第 14 章，GC 第 13 章。",
+      "explanation": "**B 正确。** 定义、三项用途、茨维特落点和两章边界都按第 1 节。\n\n**干扰项辨析**：\n- A：把经典写成 HPLC。\n- C：较少用于纯分析不是淘汰；「快」指可并行多样品。\n- D：不受沸点限制是相对气相而言，不要吞第 13 章。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-1.md",
+        "label": "经典液相色谱法 · 五项分界 · pitfall「不要答成第 14 章」"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于吸附色谱法的分离机理、吸附系数和流出顺序，下列叙述正确的是（　）。",
+      "options": [
+        "吸附是溶质溶解进固体内部；极性强的物质 $K_{\\mathrm{a}}$ 小，先出柱；式（12-2）分母用固定相体积 $V_{\\mathrm{s}}$",
+        "吸附色谱以固体吸附剂为固定相，组分争夺表面活性吸附中心。平衡 $\\mathrm{X}_{\\mathrm{m}}+n\\mathrm{Y}_{\\mathrm{a}}\\rightleftharpoons\\mathrm{X}_{\\mathrm{a}}+n\\mathrm{Y}_{\\mathrm{m}}$。式（12-1）为吸附系数 $K_{\\mathrm{a}}$；因流动相分子数量巨大且吸附只发生在表面，简化为式（12-2）$K_{\\mathrm{a}}=[\\mathrm{X}_{\\mathrm{a}}]/[\\mathrm{X}_{\\mathrm{m}}]=[n(X_{\\mathrm{a}})/S_{\\mathrm{a}}]/[n(X_{\\mathrm{m}})/V_{\\mathrm{m}}]$。极性强则 $K_{\\mathrm{a}}$ 大，保留值大，后出柱。茨维特原法及大部分 GSC、LSC 属于吸附色谱。图 12-1",
+        "吸附系数就是第 11 章的分配系数 $K$，图 12-1 和 图 12-2 可以互换",
+        "GSC 的热导、氢焰检测器必须在本节默写，否则不算吸附色谱"
+      ],
+      "answer": 1,
+      "hint": "抢表面；$K_{\\mathrm{a}}$ 大后出柱；$S_{\\mathrm{a}}$ 和 $V_{\\mathrm{m}}$。",
+      "explanation": "**B 正确。** 机理、两式、极性顺序和图 12-1 都按第 2 节。\n\n**干扰项辨析**：\n- A：吸附不是进内部；极性强 $K_{\\mathrm{a}}$ 大后出；分母是 $V_{\\mathrm{m}}$。\n- C：$K_{\\mathrm{a}}$ 与 $K$ 下标不同；图 12-2 是进固定相内部。\n- D：GSC 只挂名，仪器在第 13 章。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-2.md",
+        "label": "吸附系数 · 式（12-1）（12-2） · 图12-1"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于硅胶、氧化铝的含水量与活性以及吸附条件三要素，下列叙述正确的是（　）。",
+      "options": [
+        "含水量越高活性级数越高，吸附能力越强；硅胶应加热到 $500^{\\circ}\\mathrm{C}$ 才叫活化；弱极性样品用弱吸附剂加甲醇冲柱",
+        "表 12-1：硅胶含水量 $0$、$5$、$15$、$25$、$38\\%$ 对应活性 I–V，氧化铝为 $0$、$3$、$6$、$10$、$15\\%$。含水量越高，活性级数越高，吸附能力越弱。硅胶 $17\\%$ 以上吸附极低。柱用硅胶活化：$105\\sim 110^{\\circ}\\mathrm{C}$ 加热 $30\\,\\mathrm{min}$；加热至 $500^{\\circ}\\mathrm{C}$ 结构水不可逆失去，硅醇基变硅氧烷，吸附显著下降。碱性氧化铝 $\\mathrm{pH}\\,9\\sim 10$、酸性 $\\mathrm{pH}\\,4\\sim 5$、中性 $\\mathrm{pH}\\,7.5$。弱极性样品选强吸附剂＋弱极性洗脱剂；强极性样品选弱吸附剂＋强极性洗脱剂。石油醚最弱，水最强",
+        "活性级数高就是吸附更强；中性氧化铝不能分离生物碱",
+        "大孔吸附树脂骨架上必须有磺酸基，否则不能纯化皂苷"
+      ],
+      "answer": 1,
+      "hint": "活性级数高＝吸附弱；$500^{\\circ}\\mathrm{C}$ 不是活化；三要素对着调。",
+      "explanation": "**B 正确。** 表 12-1、活化／结构水、三种氧化铝 pH 和三要素都按第 2 节。\n\n**干扰项辨析**：\n- A：级数高是吸附弱；$500^{\\circ}\\mathrm{C}$ 毁掉活性中心；弱极性样品要用弱洗脱剂。\n- C：中性氧化铝可以分生物碱。\n- D：大孔吸附树脂不含交换基团。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-2.md",
+        "label": "表12-1 · 活化 · 三要素对着调"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于离子交换树脂的类型、交联度、再生和选择性系数，下列叙述正确的是（　）。",
+      "options": [
+        "阳离子树脂交联度约 $4\\%$、阴离子约 $8\\%$；阳树脂用稀 $\\mathrm{NaOH}$ 再生；弱酸性 $\\mathrm{R-COOH}$ 在任何 pH 都能交换",
+        "最常用聚苯乙烯型：苯乙烯为单体、二乙烯苯为交联剂。强酸性阳离子 $\\mathrm{R-SO_3H}$，用酸再生；强碱性阴离子 $\\mathrm{R-N}(\\mathrm{CH_3})_3^{+}\\mathrm{OH}^{-}$，用稀 $\\mathrm{NaOH}$ 再生。弱酸性 $\\mathrm{R-COOH}$ 要 $\\mathrm{pH}>4$ 才有交换能力。交联度：阳树脂约 $8\\%$，阴树脂约 $4\\%$；过大则网眼太小，速率慢甚至容量下降。交换容量一般 $1\\sim 10\\,\\mathrm{mmol}\\cdot\\mathrm{g}^{-1}$。$K_{\\mathrm{A/B}}$ 大则树脂抓 $\\mathrm{A}^{+}$ 更牢，$\\mathrm{B}^{+}$ 先出柱。价数越高、水合离子半径越小，亲和力越大。图 12-3",
+        "$K_{\\mathrm{A/B}}$ 大则 $\\mathrm{A}^{+}$ 先出柱；固定离子随流动相走",
+        "离子交换的流动相必须是纯有机溶剂，不能用水缓冲液"
+      ],
+      "answer": 1,
+      "hint": "阳 $8\\%$／阴 $4\\%$；酸再生阳、稀碱再生阴；$K_{\\mathrm{A/B}}$ 大则 A 后出。",
+      "explanation": "**B 正确。** 树脂、交联度、再生、式（12-5）都按第 2 节。\n\n**干扰项辨析**：\n- A：$8\\%$／$4\\%$ 对调；再生试剂对调。\n- C：$K_{\\mathrm{A/B}}$ 大则 A 后出；固定离子不走。\n- D：流动相大多为水溶液，调 pH 和离子强度。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-2.md",
+        "label": "交联度 8%／4% · 再生 · 式（12-5）"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于分子排阻色谱法的渗透系数、流出顺序和 Sephadex 的 G 值，下列叙述正确的是（　）。",
+      "options": [
+        "大分子进孔隙后出柱；$K_{\\mathrm{p}}$ 经常大于 $10$；G-25 表示排阻限度 $25$ 万；靠改甲醇比例即可颠倒流出顺序",
+        "固定相是化学惰性多孔凝胶，与溶质不存在相互作用。小分子进孔隙滞留长，大分子不进孔隙先出柱。式（12-6）$K_{\\mathrm{p}}=(V_{\\mathrm{R}}-V_{0})/V_{\\mathrm{i}}$。$V_{\\mathrm{R}}=V_{0}$ 则 $K_{\\mathrm{p}}=0$ 完全排除；$V_{\\mathrm{R}}-V_{0}=V_{\\mathrm{i}}$ 则 $K_{\\mathrm{p}}=1$ 完全渗透。$K_{\\mathrm{p}}$ 一般总是小于 $1$，分离与流动相性质没有直接关系。Sephadex 的 G 值是吸水量的 10 倍，G-25 每克吸水 $2.5\\,\\mathrm{g}$。Bio-Gel P 的 P 数 $\\times 1000$ 相当于排阻限度。图 12-4",
+        "排阻色谱的 $K_{\\mathrm{p}}$ 和分配系数 $K$ 可以比大小，蛋白质的 $K$ 常取 $440$",
+        "琼脂糖凝胶在 $80^{\\circ}\\mathrm{C}$ 最稳定；Styrogel 不能用甲基亚砜"
+      ],
+      "answer": 1,
+      "hint": "大分子先出；$K_{\\mathrm{p}}=0\\sim 1$；G 值是吸水不是排阻限度。",
+      "explanation": "**B 正确。** 式（12-6）、G 值和惰性固定相都按第 2 节。\n\n**干扰项辨析**：\n- A：大小分子走反；G-25 不是 25 万；与流动相无直接关系。\n- C：$K_{\\mathrm{p}}$ 不要和分配 $K$ 比；$440$ 是思考题 9 的薄层分配系数。\n- D：琼脂糖 $40^{\\circ}\\mathrm{C}$ 以上熔化；Styrogel 可用甲基亚砜。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-2.md",
+        "label": "渗透系数 · 图12-4 · Sephadex G 值"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于平面色谱的比移值、相对比移值、与 $k$ 的关系和分离度，下列叙述正确的是（　）。",
+      "options": [
+        "$R_{\\mathrm{f}}$ 是保留时间比；适宜范围是 $1.2\\sim 2.0$；$K$ 大则 $R_{\\mathrm{f}}$ 大；平面分离度必须 $\\ge 1.5$，与柱色谱完全同一标准",
+        "展开后组分仍在固定相上，时间保留值不易准。$R_{\\mathrm{f}}=L_{i}/L_{0}$，式（12-7），范围 $0\\sim 1$，适宜 $0.2\\sim 0.8$，最佳 $0.3\\sim 0.5$。$R_{\\mathrm{r}}=R_{\\mathrm{f}(i)}/R_{\\mathrm{f}(s)}=L_{i}/L_{s}$，式（12-8），可大于 $1$。$R_{\\mathrm{f}}=1/(1+k)$，$k=(1-R_{\\mathrm{f}})/R_{\\mathrm{f}}$；$K$ 或 $k$ 大则 $R_{\\mathrm{f}}$ 小。分离度 $R=2d/(W_{1}+W_{2})$，一般要求 $R>1.0$。面效 $N=16(L/W)^{2}$，$H=L_{0}/N$。图 12-5、图 12-6。思考题 12：$R_{\\mathrm{f}}$ 不随展开时间加倍",
+        "原点应从板的底边量起；$W$ 用斑点横向直径",
+        "相对比移值必须小于 $1$，习题 2 的 $1.5$ 是印刷错误"
+      ],
+      "answer": 1,
+      "hint": "$R_{\\mathrm{f}}=L_i/L_0$；$K$ 大则 $R_{\\mathrm{f}}$ 小；平面 $R>1.0$。",
+      "explanation": "**B 正确。** 式（12-7）～（12-13）和思考题 12 都按第 3 节。\n\n**干扰项辨析**：\n- A：$R_{\\mathrm{f}}$ 是距离比；$K$ 大则 $R_{\\mathrm{f}}$ 小；本节印刷是 $R>1.0$。\n- C：从原点量；$W$ 是纵向直径。\n- D：$R_{\\mathrm{r}}$ 可以大于 $1$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-3.md",
+        "label": "比移值 · 式（12-7）～（12-13） · 图12-5 图12-6"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于高效薄层色谱、薄层扫描是否服从朗伯–比尔定律，以及纸色谱取哪一层，下列叙述正确的是（　）。",
+      "options": [
+        "HPTLC 就是 HPLC；吸收扫描完全服从朗伯–比尔定律；正丁醇–乙酸–水（$4:1:5$）取下层作展开剂；纸上可喷硫酸",
+        "HPTLC 颗粒 $5\\sim 7\\,\\mu\\mathrm{m}$、层厚 $100\\sim 200\\,\\mu\\mathrm{m}$，仍是平面常压毛细展开，不是第 14 章高压液相。表 12-2。吸收扫描常用反射法，式（12-15）；薄层有散射，吸光度与浓度不服从朗伯–比尔定律，须按散射参数校直。荧光扫描点样量很小时 $F=Kc$，灵敏度高 $1\\sim 3$ 个数量级。定量方法：外标、内标、归一化。纸色谱属分配，固定相是纸上的水；正丁醇–乙酸–水（$4:1:5$）分层后取上层；不可用硫酸等腐蚀性显色剂",
+        "经典薄层点样 $0.1\\sim 0.2\\,\\mu\\mathrm{L}$，高效薄层点样 $1\\sim 5\\,\\mu\\mathrm{L}$",
+        "实际工作中常用透射法，因为玻璃板透过紫外光且不受厚度影响"
+      ],
+      "answer": 1,
+      "hint": "HPTLC≠HPLC；吸收扫描要校散射；氨基酸展开剂取上层。",
+      "explanation": "**B 正确。** 表 12-2、式（12-14）（12-15）、思考题 8、11 都按第 3 节。\n\n**干扰项辨析**：\n- A：HPTLC 不是 HPLC；不服从朗伯–比尔；取上层；纸上禁硫酸。\n- C：点样体积对调。\n- D：常用反射法；玻璃不透过紫外。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-3.md",
+        "label": "表12-2 · 不服从朗伯–比尔定律 · 纸色谱取上层"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于经典柱色谱四本账的固定相、系数和流出顺序，下列叙述正确的有（　）。",
+      "options": [
+        "吸附：固体吸附剂，抢表面活性中心，$K_{\\mathrm{a}}$ 大后出柱；硅胶、氧化铝、聚酰胺、大孔吸附树脂常用",
+        "分配：固定液涂在惰性载体上，$K=c_{\\mathrm{s}}/c_{\\mathrm{m}}$，$K$ 大后出柱；一定温度下 $K$ 是定值",
+        "离子交换：树脂上换反离子，$K_{\\mathrm{s}}$、$K_{\\mathrm{A/B}}$ 大则结合牢、后出柱；排阻：多孔凝胶，$K_{\\mathrm{p}}=0\\sim 1$，大分子先出，与流动相性质无直接关系",
+        "四本账都是系数越大越先出柱；大孔吸附树脂就是磺酸基阳离子交换树脂"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "吸附／分配／离子交换：系数大后出；排阻：大分子 $K_{\\mathrm{p}}=0$ 先出。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A、B、C：第 2 节四本账对照表。\n- **D 错**：排阻方向相反；大孔吸附树脂不含交换基团。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-2.md",
+        "label": "四种柱色谱的系数和流出顺序 · 大孔树脂"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于薄层操作、边缘效应、Stahl 三角和纸色谱适用对象，下列叙述正确的有（　）。",
+      "options": [
+        "薄层四步：制板、点样、展开、显色。分析板约 $250\\,\\mu\\mathrm{m}$，活化 $105\\sim 110^{\\circ}\\mathrm{C}$、$0.5\\sim 1\\,\\mathrm{h}$。上行液面 $\\le 5\\,\\mathrm{mm}$，斑点不得浸入展开剂。图 12-8",
+        "边缘效应是边缘斑点 $R_{\\mathrm{f}}$ 大于中心；预饱和 $15\\sim 30\\,\\mathrm{min}$ 时板不与液体接触。Stahl 三角：A 指极性样品则 B 指低活度吸附剂、C 指极性展开剂",
+        "纸色谱适合无机盐、氨基酸、多羟基糖；葡萄糖羟基最多 $R_{\\mathrm{f}}$ 最小，洋地黄毒糖羟基最少 $R_{\\mathrm{f}}$ 最大",
+        "点样溶剂首选水；预饱和就是先把薄层板泡进展开剂 $15\\,\\mathrm{min}$；碱性物质在硅胶 $\\mathrm{pH}\\approx 5$ 的板上最合适"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "四步＋预饱和不泡板；纸色谱看羟基数。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：操作数字来自第 3 节。\n- B：边缘效应与 Stahl 三角。\n- C：纸色谱分配＋六碳糖三例。\n- **D 错**：尽量不用水点样；饱和是蒸气饱和；碱性物质在硅胶上拖尾甚至停在原点。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-3.md",
+        "label": "薄层四步 · 边缘效应 · Stahl 三角 · 纸色谱六碳糖"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "经典液相就是 HPLC；活性级数高则硅胶吸附更强；阳离子交换树脂交联度以 $4\\%$ 为宜并用稀碱再生；排阻色谱大分子后出柱且 $K_{\\mathrm{p}}$ 常大于 $1$。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "经典≠HPLC；级数高＝吸附弱；阳 $8\\%$ 用酸再生；大分子先出 $K_{\\mathrm{p}}\\le 1$。",
+      "explanation": "**该命题错误，四句都错。** 经典液相是常压档，HPLC 在第 14 章。表 12-1 含水量高、活性级数高、吸附弱。阳树脂交联度约 $8\\%$、用酸再生；阴树脂约 $4\\%$、用稀 $\\mathrm{NaOH}$。排阻大分子 $K_{\\mathrm{p}}=0$ 先出柱，$K_{\\mathrm{p}}$ 一般总是小于 $1$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-1.md",
+        "label": "经典对现代 · 表12-1 · 交联度 · 排阻流出顺序"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "$R_{\\mathrm{f}}$ 随展开时间加倍；$K$ 大则薄层 $R_{\\mathrm{f}}$ 大；光吸收薄层扫描服从朗伯–比尔定律故不必校直；正丁醇–乙酸–水（$4:1:5$）取下层，纸上可喷 $10\\%$ 硫酸乙醇。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "$R_{\\mathrm{f}}$ 是距离比；$K$ 大则 $R_{\\mathrm{f}}$ 小；要校散射；取上层且纸上禁硫酸。",
+      "explanation": "**该命题错误，四句都错。** 思考题 12：$R_{\\mathrm{f}}$ 不变。式（12-9）：$K$ 大则 $R_{\\mathrm{f}}$ 小。薄层有散射，不服从朗伯–比尔定律。思考题 11 取上层；纸色谱不可用腐蚀性显色剂。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-3.md",
+        "label": "思考题 12、8、11 · 式（12-9）"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "比移值式（12-7）写成 ________。阳离子交换树脂交联度约 ________ %，阴离子约 ________ %。渗透系数 $K_{\\mathrm{p}}=0$ 表示组分被完全 ________。薄层板活化温度是 ________ $^{\\circ}\\mathrm{C}$。",
+      "answer": "Rf＝Li/L0，8，4，排除，105～110",
+      "hint": "$R_{\\mathrm{f}}=L_i/L_0$；阳 $8$ 阴 $4$；完全排除；活化 $105\\sim 110$。",
+      "scoring_criteria": [
+        "第一空填“Rf＝Li/L0”（或“$R_{\\mathrm{f}}=L_{i}/L_{0}$”“Rf=Li/L0”）（2分）",
+        "第二空填“8”（2分）",
+        "第三空填“4”（2分）",
+        "第四空填“排除”（或“完全排除”）（2分）",
+        "第五空填“105～110”（或“105-110”“$105\\sim 110$”）（2分）"
+      ],
+      "explanation": "式（12-7）$R_{\\mathrm{f}}=L_{i}/L_{0}$。交联度阳约 $8\\%$、阴约 $4\\%$。$V_{\\mathrm{R}}=V_{0}$ 时 $K_{\\mathrm{p}}=0$ 完全排除。薄层板 $105\\sim 110^{\\circ}\\mathrm{C}$ 活化 $0.5\\sim 1\\,\\mathrm{h}$（柱用硅胶活化是 $30\\,\\mathrm{min}$，温度同一档）。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-3.md",
+        "label": "式（12-7）；交联度；Kp=0；薄层活化"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "经典液相色谱依据分离机理有哪些主要类型？各类的固定相和适用对象有何不同（思考题 1）？吸附色谱怎样按样品极性和固定相活性选择流动相（思考题 2）？请写出：①经典／现代分界，不要答成 HPLC 或气相；②吸附 $K_{\\mathrm{a}}$、表 12-1、三要素和极性顺序；③分配 $K$、载体与固定液；④离子交换树脂类型、交联度、再生；⑤排阻 $K_{\\mathrm{p}}$、大分子先出、G 值读法。",
+      "answer": "参考答案：\n\n**1. 分界**\n- 经典液相：常压、普通固定相、一般无在线检测器；包括经典柱、常规薄层、纸色谱。HPLC 第 14 章，GC 第 13 章。\n- 柱色谱按固定相分四类。\n\n**2. 吸附**\n- 固体吸附剂，抢表面活性中心。$K_{\\mathrm{a}}$ 大、极性强，后出柱。\n- 硅胶含水量↑则活性级数↑、吸附↓；活化 $105\\sim 110^{\\circ}\\mathrm{C}$，勿至 $500^{\\circ}\\mathrm{C}$。\n- 弱极性样品：强吸附剂＋弱洗脱剂；强极性样品相反。石油醚＜…＜水。\n\n**3. 分配**\n- 固定液涂在惰性载体（常用硅藻土）上。$K=c_{\\mathrm{s}}/c_{\\mathrm{m}}$，$K$ 大后出。一定温度 $K$ 是定值。\n\n**4. 离子交换**\n- 阳：$\\mathrm{R-SO_3H}$，酸再生，交联度约 $8\\%$。阴：$\\mathrm{R-N}(\\mathrm{CH_3})_3^{+}\\mathrm{OH}^{-}$，稀碱再生，约 $4\\%$。对象：离子型化合物。\n\n**5. 排阻**\n- 多孔凝胶，与溶质无相互作用。$K_{\\mathrm{p}}=(V_{\\mathrm{R}}-V_{0})/V_{\\mathrm{i}}$，$0$＝完全排除，$1$＝完全渗透。大分子先出。G-25 表示每克吸水 $2.5\\,\\mathrm{g}$，不是排阻限度 25 万。用于蛋白质、多糖等相对分子质量及其分布。",
+      "hint": "按经典分界→吸附三要素→分配载体→阳8阴4→大分子先出写，并避开 HPLC 泵和气相进样口。",
+      "scoring_criteria": [
+        "写出经典／现代分界且不答成 HPLC／GC（3分）",
+        "写出吸附 $K_{\\mathrm{a}}$、表 12-1 方向和三要素（4分）",
+        "写出分配 $K$ 与惰性载体（2分）",
+        "写出阳／阴树脂、交联度与再生（3分）",
+        "写出 $K_{\\mathrm{p}}$、大分子先出和 G 值读法（2分）"
+      ],
+      "explanation": "本题把思考题 1、2 和第 2 节四本账收在一起。易错点：答成 HPLC；活性级数方向写反；$8\\%$／$4\\%$ 对调；G-25 当排阻限度。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-2.md",
+        "label": "思考题 1、2 · 四本账 · 表12-1"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "为什么硅胶和氧化铝薄层板制备后要活化、条件是什么（思考题 3）？同一展开剂下 $R_{\\mathrm{f}}$ 从 $0.50$ 降到 $0.40$ 哪块板活度大（思考题 4）？纸色谱为何常用三元展开剂、正丁醇–乙酸–水取哪一层（思考题 6、11）？薄层扫描三种定量方法、吸收扫描是否符合朗伯–比尔定律（思考题 8）？请一并写出 $R_{\\mathrm{f}}$、$k$、分离度公式、边缘效应对策，以及烟酰胺有关物质检查是限量不是含量测定。",
+      "answer": "参考答案：\n\n**1. 活化与活度**\n- 水合硅醇基使硅胶失活；水分使氧化铝脱活性。薄层板 $105\\sim 110^{\\circ}\\mathrm{C}$、$0.5\\sim 1\\,\\mathrm{h}$。勿加热到 $500^{\\circ}\\mathrm{C}$。\n- 同一展开剂 $R_{\\mathrm{f}}$ 更小 → 吸附更强 → B 板活度大。\n\n**2. 参数**\n- $R_{\\mathrm{f}}=L_{i}/L_{0}$，适宜 $0.2\\sim 0.8$，最佳 $0.3\\sim 0.5$。$k=(1-R_{\\mathrm{f}})/R_{\\mathrm{f}}$；$K$ 大则 $R_{\\mathrm{f}}$ 小。$R=2d/(W_{1}+W_{2})$，一般 $>1.0$。\n\n**3. 展开**\n- 预饱和 $15\\sim 30\\,\\mathrm{min}$，板不接触液体，克服边缘效应（边缘 $R_{\\mathrm{f}}$ 大于中心）。上行液面 $\\le 5\\,\\mathrm{mm}$。Stahl 三角与柱色谱三要素同一句。\n\n**4. 纸色谱**\n- 三元：水饱和有机溶剂＋少量酸或碱＋少量醇调极性。$4:1:5$ 分层取上层。不可用硫酸。\n\n**5. 扫描与药典例**\n- 外标、内标、归一化。吸收扫描因散射不服从朗伯–比尔定律，要校直。常用反射法。\n- 烟酰胺：供试品 $40\\,\\mathrm{mg}\\cdot\\mathrm{mL}^{-1}$、对照 $0.2\\,\\mathrm{mg}\\cdot\\mathrm{mL}^{-1}$，各 $5\\,\\mu\\mathrm{L}$，硅胶 $\\mathrm{GF}_{254}$，氯仿–无水乙醇–水 $48:45:4$，$254\\,\\mathrm{nm}$，杂质斑点不得更深——限量检查。残留分析走气相，有关物质含量分析常走 HPLC。",
+      "hint": "按活化／活度→Rf 公式→边缘效应→三元取上层→校散射和烟酰胺限量写。",
+      "scoring_criteria": [
+        "写出活化条件、勿 $500^{\\circ}\\mathrm{C}$，并判断 B 板活度大（3分）",
+        "写出 $R_{\\mathrm{f}}$、$k$、$R$ 公式及适宜范围（4分）",
+        "写出边缘效应、预饱和、Stahl 三角（3分）",
+        "写出纸色谱三元、取上层、禁硫酸（2分）",
+        "写出三种定量、不服从朗伯–比尔、烟酰胺限量（3分）"
+      ],
+      "explanation": "本题把思考题 3、4、6、8、11 和第 3 节操作收在一起。易错点：活化写成 $500^{\\circ}\\mathrm{C}$；取下层；把烟酰胺答成含量测定。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch12-3.md",
+        "label": "思考题 3、4、6、8、11 · 烟酰胺限量检查"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

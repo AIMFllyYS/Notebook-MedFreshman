@@ -16,6 +16,7 @@ const SUBJECT_FILE: Record<string, string> = {
   biochemistry: "subjects/biochemistry.md",
   anatomy: "subjects/anatomy.md",
   histology: "subjects/histology.md",
+  "instrumental-analysis": "subjects/instrumental-analysis.md",
 };
 
 const cache = new Map<string, string>();

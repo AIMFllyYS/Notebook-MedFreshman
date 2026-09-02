@@ -24,20 +24,23 @@ test("学年值存在：大一下学期 / 大二上学期", () => {
   assert.equal(ACADEMIC_YEAR_LABELS["sophomore-1"], "大二上学期");
 });
 
-test("切换到大二上学期后导航树只有四本新书，不含大一科目", () => {
+test("切换到大二上学期后导航树只有大二新书，不含大一科目", () => {
   const subjects = filterSubjectsByYear(contentTree.subjects, "sophomore-1");
   const ids = subjects.map((s) => s.id).sort();
-  assert.deepEqual(ids, ["anatomy", "biochemistry", "cell-biology", "histology"].sort());
+  assert.deepEqual(
+    ids,
+    ["anatomy", "biochemistry", "cell-biology", "histology", "instrumental-analysis"].sort(),
+  );
   const names = subjects.map((s) => s.name).join(" ");
   for (const forbidden of ["概率论", "大学物理", "有机化学", "近现代史", "毛概"]) {
     assert.equal(names.includes(forbidden), false, `大二上不应出现 ${forbidden}`);
   }
-  for (const expected of ["医学细胞生物学", "生物化学与分子生物学", "系统解剖学", "组织学与胚胎学"]) {
+  for (const expected of ["医学细胞生物学", "生物化学与分子生物学", "系统解剖学", "组织学与胚胎学", "仪器分析"]) {
     assert.ok(names.includes(expected), `大二上应包含 ${expected}`);
   }
 });
 
-test("切换到大一下学期后导航树是原科目，不含四本新书", () => {
+test("切换到大一下学期后导航树是原科目，不含大二新书", () => {
   const subjects = filterSubjectsByYear(contentTree.subjects, "freshman-2");
   const ids = new Set(subjects.map((s) => s.id));
   assert.ok(ids.has("probability"));
@@ -49,6 +52,7 @@ test("切换到大一下学期后导航树是原科目，不含四本新书", ()
   assert.equal(ids.has("biochemistry"), false);
   assert.equal(ids.has("cell-biology"), false);
   assert.equal(ids.has("histology"), false);
+  assert.equal(ids.has("instrumental-analysis"), false);
 });
 
 test("学年切换只隐藏大一内容，磁盘文件仍在", () => {
@@ -66,7 +70,7 @@ test("学年切换只隐藏大一内容，磁盘文件仍在", () => {
 
 test("filterContentTreeByYear 从真实 contentTree 出发过滤", () => {
   const soph = filterContentTreeByYear(contentTree, "sophomore-1");
-  assert.equal(soph.subjects.length, 4);
+  assert.equal(soph.subjects.length, 5);
   const fresh = filterContentTreeByYear(contentTree, "freshman-2");
   assert.ok(fresh.subjects.some((s) => s.id === "probability"));
   assert.ok(contentTree.subjects.length > soph.subjects.length);

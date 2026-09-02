@@ -15,6 +15,7 @@ import {
   Dna,
   Bone,
   Layers,
+  ScanLine,
 } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
@@ -26,7 +27,7 @@ import BrandLogo from "./BrandLogo";
 const ICON_MAP: Record<
   string,
   React.ComponentType<{ size?: number; className?: string }>
-> = { Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder, Microscope, Dna, Bone, Layers };
+> = { Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder, Microscope, Dna, Bone, Layers, ScanLine };
 
 const SHORT_NAMES: Partial<Record<SubjectId, string>> = {
   probability: "概率论",
@@ -38,6 +39,7 @@ const SHORT_NAMES: Partial<Record<SubjectId, string>> = {
   biochemistry: "生化",
   anatomy: "系统解剖",
   histology: "组胚",
+  "instrumental-analysis": "仪分",
 };
 
 function SubjectIcon({
@@ -58,6 +60,7 @@ function SubjectIcon({
     biochemistry: "Dna",
     anatomy: "Bone",
     histology: "Layers",
+    "instrumental-analysis": "ScanLine",
   };
   const Icon = ICON_MAP[mapping[subjectId]] ?? Folder;
   return <Icon size={size} />;

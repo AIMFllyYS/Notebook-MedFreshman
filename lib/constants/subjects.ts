@@ -11,6 +11,7 @@ export const SUBJECTS: Record<SubjectId, string> = {
   'biochemistry': '生物化学与分子生物学',
   'anatomy': '系统解剖学',
   'histology': '组织学与胚胎学',
+  'instrumental-analysis': '仪器分析',
 };
 
 /** 默认分类模板，仅供新科目初始化参考，不再作为运行时校验约束。 */
@@ -32,6 +33,7 @@ export const SUBJECT_ICONS: Record<SubjectId, string> = {
   'biochemistry': 'Dna',
   'anatomy': 'Bone',
   'histology': 'Layers',
+  'instrumental-analysis': 'ScanLine',
 };
 
 /** 每个学科的专属主色（书架封面书脊/图标/水印取色，告别统一同色）。 */
@@ -46,6 +48,7 @@ export const SUBJECT_COLORS: Record<SubjectId, string> = {
   'biochemistry': '#ec4899',    // 粉
   'anatomy': '#f97316',         // 橙
   'histology': '#14b8a6',       // 青
+  'instrumental-analysis': '#2563eb', // 蓝
 };
 
 /** 取学科主色（缺省回退石板灰）。 */

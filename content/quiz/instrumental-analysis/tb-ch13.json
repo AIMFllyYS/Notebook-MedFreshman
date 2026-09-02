@@ -1,0 +1,321 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "tb-ch13",
+  "generatedAt": "2026-09-02",
+  "examConfig": {
+    "source": "content/instrumental-analysis/textbook/ch13-1.md；content/instrumental-analysis/textbook/ch13-2.md；content/instrumental-analysis/textbook/ch13-3.md；content/instrumental-analysis/textbook/ch13-4.md；content/instrumental-analysis/textbook/ch13-5.md；content/instrumental-analysis/textbook/ch13-6.md；content/instrumental-analysis/textbook/ch13-7.md",
+    "totalPoints": 100,
+    "timeLimit": 45
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于气相色谱法的定义、分类以及能直接分析的比例，下列叙述正确的是（　）。",
+      "options": [
+        "气相色谱法英文是一个词 gaschromatography；气固色谱属于分配色谱，气液色谱属于吸附色谱；能直接分析全部有机物",
+        "气相色谱法（gas chromatography，GC）以气体作为流动相，该气体称为载气。按固定相聚集状态分为气固色谱（GSC，吸附）和气液色谱（GLC，分配），本版写气液应用更广。填充柱内径常为 $2\\sim 4\\,\\mathrm{mm}$，毛细管将固定液涂布或键合在内径 $0.1\\sim 1.0\\,\\mathrm{mm}$ 的内壁上，称开管柱。受蒸气压限制，能直接分析的有机物约占 $20\\%$",
+        "开管柱中心空所以没有固定相；GLC 是指液体样品的气相色谱",
+        "毛细管内径本节与第 6 节必须写成同一个数字 $0.53\\,\\mathrm{mm}$；弱点是没有检测器"
+      ],
+      "answer": 1,
+      "hint": "英文分词；GSC 吸附、GLC 分配；直接分析约 20%。",
+      "explanation": "**B 正确。** 定义、GSC／GLC、填充／开管和 $20\\%$ 都按第 1 节。\n\n**干扰项辨析**：\n- A：英文是分词；吸附／分配对调了；不能直接分析全部有机物。\n- C：开管内壁有固定液或多孔层；GLC 的“液”是固定液。\n- D：第 1 节 $0.1\\sim 1.0\\,\\mathrm{mm}$、第 6 节 $0.1\\sim 0.5\\,\\mathrm{mm}$ 是两处口径；弱点是蒸气压限制。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-1.md",
+        "label": "气相色谱法 · GSC/GLC · 开管柱 · 20%"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于相对极性 $P$、表 13-1 以及苯与环己烷选柱，下列叙述正确的是（　）。",
+      "options": [
+        "角鲨烷 $P=100$，氧二丙腈 $P=0$；OV-17 因苯基 $50\\%$ 标 $+3$；PEG-20M 是 $+5$",
+        "Rohrschneider 规定 $\\beta,\\beta'$-氧二丙腈 $P=100$、角鲨烷（异三十烷）$P=0$，每 20 个相对极性为一级。表 13-1：OV-1 $+1$，OV-17 $+2$，PEG-20M $+4$，氧二丙腈 $+5$。苯 $80.1\\,^{\\circ}\\mathrm{C}$ 与环己烷 $80.7\\,^{\\circ}\\mathrm{C}$ 沸点差 $0.6\\,^{\\circ}\\mathrm{C}$，极性差别是主要矛盾；非极性柱很难分开，改用 DNP 则苯的 $t_{\\mathrm{R}}$ 是环己烷的 $1.5$ 倍",
+        "相似相溶意味着沸点差别为主时必须选强极性柱",
+        "本版把 McReynold 改写成 McReynolds；相对极性 $P$ 已经包含全部作用力"
+      ],
+      "answer": 1,
+      "hint": "标尺零点是角鲨烷；OV-17 是 +2；苯／环己烷用中等极性柱。",
+      "explanation": "**B 正确。** $P$ 的定义、表 13-1 和苯／环己烷都按第 2 节。\n\n**干扰项辨析**：\n- A：零点和一百对调了；OV-17 是 $+2$；PEG-20M 是 $+4$。\n- C：沸点差别为主选非极性固定液。\n- D：本版写 McReynold；相对极性主要反映诱导力，所以才有罗氏、麦氏常数。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-2.md",
+        "label": "相对极性 P · 表13-1 · 苯与环己烷"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于红色载体、白色载体和液担比，下列叙述正确的是（　）。",
+      "options": [
+        "红色载体加了 $\\mathrm{Na_2CO_3}$，适合极性样品；白色载体孔径约 $1\\,\\mu\\mathrm{m}$，配非极性固定液",
+        "红、白是同一硅藻土的两种烧法。红：约 $900\\,^{\\circ}\\mathrm{C}$，$\\mathrm{Fe_2O_3}$ 呈红，孔径平均约 $1\\,\\mu\\mathrm{m}$，比表面积大、负荷高，表面有活性中心，配非极性固定液。白：加 $\\mathrm{Na_2CO_3}$，大于 $900\\,^{\\circ}\\mathrm{C}$，表面较惰性，配极性固定液。液担比一般 $3\\%\\sim 20\\%$，硅藻土下限可为 $1\\%$ 但需回流涂渍",
+        "载体和担体是两种填料；液担比是体积比，下限一律 $0.1\\%$",
+        "高分子多孔微球亲水，水最后出峰，约 $80\\,^{\\circ}\\mathrm{C}$ 就不能用"
+      ],
+      "answer": 1,
+      "hint": "红色配非极性；液担比 3%～20%；GDX 疏水。",
+      "explanation": "**B 正确。** 红白载体和液担比都按第 2 节。\n\n**干扰项辨析**：\n- A：助熔剂在白色载体上；红白配伍写反了。\n- C：载体＝担体；液担比是质量比。\n- D：高分子微球疏水，水往往先出，约 $250\\,^{\\circ}\\mathrm{C}$ 可长期使用。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-2.md",
+        "label": "红色载体 · 白色载体 · 液担比"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 TCD 的 $\\Delta\\lambda$、表 13-3 以及开关顺序，下列叙述正确的是（　）。",
+      "options": [
+        "TCD 是质量型；氮气与空气 $\\lambda$ 不同所以氮气载空气出强峰；不通载气也可以加桥电流",
+        "TCD 是浓度型通用检测器。四臂灵敏度是双臂的二倍。表 13-3（$373\\,\\mathrm{K}$）：氢气 $224.3$，氦气 $174.7$，空气与氮气都是 $31.5$，甲烷 $45.8$，丙烷 $26.5$。氮气载空气因 $\\lambda$ 相等不出峰；甲烷相对丙烷会出倒峰。开：先通载气再开检测器；关：先关检测器再关载气。扫描页“表 11－3”是笔误",
+        "氢气 $\\lambda$ 最小所以 TCD 不能用氢；氦气最不安全",
+        "峰面积与载气流量无关，所以 TCD 定量不必稳流"
+      ],
+      "answer": 1,
+      "hint": "氮气＝空气＝31.5；先通气再加桥电流。",
+      "explanation": "**B 正确。** 表 13-3、倒峰和开关顺序都按第 3 节。\n\n**干扰项辨析**：\n- A：TCD 是浓度型；氮气与空气 $\\lambda$ 相等；不通载气加桥电流会烧热丝。\n- C：氢气 $\\lambda$ 最大，TCD 常用氢或氦；氢气才易燃。\n- D：进样量一定时 TCD 峰面积与载气流量成反比。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-3.md",
+        "label": "TCD · 表13-3 · 开关顺序"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于 FID 和 ECD，下列叙述正确的是（　）。",
+      "options": [
+        "FID 对水信号很强，所以例 13-2 用氢焰测微量水；ECD 是质量型，线性范围 $10^{7}$",
+        "FID 是质量型，灵敏度可达 $10^{-12}\\,\\mathrm{g\\cdot s^{-1}}$，线性 $10^{7}$ 以上，对水几乎无信号。本版普遍接受化学电离：$6\\mathrm{CH}\\cdot+3\\mathrm{O_2}\\cdot\\to 6\\mathrm{CHO}^{+}+6\\mathrm{e}^{-}$。$\\mathrm{N_2}:\\mathrm{H_2}=1:1\\sim 1:1.5$，$\\mathrm{H_2}:$空气 $=1:5\\sim 1:10$。ECD 是浓度型，只对电负性大的元素灵敏，可达 $10^{-14}\\,\\mathrm{g\\cdot mL^{-1}}$，线性约 $10^{3}$，放射源 $^{3}\\mathrm{H}$ 或 $^{63}\\mathrm{Ni}$，基流被捕获后下降",
+        "FID 关机先降温再熄火；ECD 极化电压越高捕获越好",
+        "FID 的离子化本版以热电离为准；ECD 对烃类响应与 FID 相同"
+      ],
+      "answer": 1,
+      "hint": "FID 不测水；ECD 线性约 10³；化学电离不是热电离。",
+      "explanation": "**B 正确。** FID／ECD 原理、数字和三气比例都按第 3 节。\n\n**干扰项辨析**：\n- A：水在 FID 上几乎无信号，测水用 TCD；ECD 是浓度型，线性约 $10^{3}$。\n- C：FID 先熄火再降温；极化电压过高电子反而不易捕获。\n- D：本版普遍接受化学电离；ECD 对烃类几乎无响应。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-3.md",
+        "label": "FID 化学电离 · ECD 基流 · 三气比例"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于柱温、程序升温和例 13-1，下列叙述正确的是（　）。",
+      "options": [
+        "柱温越高选择性越好；恒温折中一个温度就等于程序升温；例 13-1 的 $R=1.5$",
+        "原则是：最难分离组分尽可能好的分离前提下尽可能较低柱温，以不拖尾、时间适宜为度，且不高于固定液最高使用温度。改 $20\\,^{\\circ}\\mathrm{C}$ 就可能完全分开。图 13-6 中 $45\\,^{\\circ}\\mathrm{C}$ 重组分不出、$120\\,^{\\circ}\\mathrm{C}$ 轻组分重叠，程序升温 $30\\sim 180\\,^{\\circ}\\mathrm{C}$ 才都出尖峰。例 13-1：$R=\\sqrt{8100}/4\\times 15/800=0.42$，完全分离需 $N=1.0\\times 10^{5}$",
+        "高沸点 $300\\sim 400\\,^{\\circ}\\mathrm{C}$ 样品柱温要高于沸点 $100\\,^{\\circ}\\mathrm{C}$，液担比 $25\\%$",
+        "分离度差一点点应先把柱长加倍，因为 $R$ 与 $L$ 成正比"
+      ],
+      "answer": 1,
+      "hint": "低柱温有利于选择性；例 13-1 的 R 是 0.42。",
+      "explanation": "**B 正确。** 柱温原则、图 13-6 和例 13-1 都按第 4 节。\n\n**干扰项辨析**：\n- A：提高柱温使选择性降低；$R=0.42$ 不是 $1.5$。\n- C：高沸点样品柱温低于沸点 $100\\sim 200\\,^{\\circ}\\mathrm{C}$，液担比 $1\\%\\sim 3\\%$。\n- D：$R\\propto\\sqrt{L}$，时间 $\\propto L$；差一点点先降温。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-4.md",
+        "label": "柱温原则 · 图13-6 · 例13-1"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "关于毛细管柱分类、Golay 方程和分流进样，下列叙述正确的是（　）。",
+      "options": [
+        "微填充柱内径 $<1\\,\\mathrm{mm}$ 所以就是 WCOT；Golay 方程保留 $A=2\\lambda d_{\\mathrm{p}}$；分流比越小越准",
+        "Golay 方程 $H=B/u+Cu$，$A=0$，$\\gamma=1$ 故 $B=2D_{\\mathrm{g}}$。WCOT 液膜很薄，$C\\approx C_{\\mathrm{g}}\\propto r^{2}/D_{\\mathrm{g}}$，常采用氢气增大 $D_{\\mathrm{g}}$。SCOT 是当前最广的壁处理柱。微填充柱渗透性差、常需 $10\\,\\mathrm{kg\\cdot cm^{-2}}$ 以上，不属于毛细管柱。分流比一般 $1/200\\sim 1/50$，单个组分约 $0.5\\,\\mu\\mathrm{g}$ 即达极限，检测最常用 FID",
+        "毛细管固定液有几十克，进样量可以按填充柱 $40\\,\\mu\\mathrm{L}$ 打",
+        "PLOT 是把固定液直接涂在光滑石英壁上的商品名"
+      ],
+      "answer": 1,
+      "hint": "A=0；微填充不是毛细管；分流比 1/200～1/50。",
+      "explanation": "**B 正确。** Golay 方程、SCOT／微填充和分流都按第 6 节。\n\n**干扰项辨析**：\n- A：微填充不是开管柱；$A=0$；分流比过小失真。\n- C：固定液只有几毫克，进样必须很小。\n- D：PLOT 是多孔层开管柱，不是光滑壁直接涂液（那是 WCOT）。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-6.md",
+        "label": "Golay 方程 · SCOT · 微填充 · 分流比"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于载气选择和三种检测器的配伍，下列叙述正确的有（　）。",
+      "options": [
+        "应用最多的是安全、价廉的氮气，但热导系数小，TCD 灵敏度低；氢气热导系数大适用于 TCD，易燃；氦气相对分子质量小、热导系数大、黏度小，比氢安全，常用于 GC-MS",
+        "流速较小时 $B/u$ 主导，宜用 $\\mathrm{N_2}$、$\\mathrm{Ar}$；流速较大时 $Cu$ 主导，宜用 $\\mathrm{H_2}$、$\\mathrm{He}$。实际流速往往稍高于 $u_{\\mathrm{opt}}$",
+        "FID 多用氮气为载气；ECD 一般用高纯氮并脱氧脱水；毛细管为增大 $D_{\\mathrm{g}}$ 常采用氢气",
+        "无论检测器是什么都固定用氮气；TCD 用氮载空气也能出峰，因为表 13-3 里二者 $\\lambda$ 不同"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "氮气不是万能载气；TCD 看 Δλ；流速高低换轻重载气。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：四种载气评价，来自第 2 节。\n- B：按 van Deemter 选轻重载气，来自第 4 节。\n- C：FID／ECD／毛细管各自的载气，来自第 3、6 节。\n- **D 错**：氮气与空气 $\\lambda$ 都是 $31.5$，氮气载空气不出峰；检测器不同载气不同。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-2.md",
+        "label": "载气 · B/u 与 Cu · TCD/FID/ECD 配伍"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 8,
+      "stem": "关于定性、定量三条路以及例 13-2、例 13-3，下列叙述正确的有（　）。",
+      "options": [
+        "单柱保留值一致不能完全肯定是同一物质；双柱极性要有较大差别；添加对照品看峰是否增高。GC-MS 是目前最成功的联用；光栅红外不能在线",
+        "归一化要求组分全出峰且都有响应，与进样量重复性无关，但不宜微量杂质；外标受气相进样精密度限制，一点法假定曲线过原点；内标较准确，内标物须是样品中没有、加入量接近、峰在附近、理化性质相近",
+        "例 13-2 用 TCD 和 GDX 类固定相测水，$f_{\\mathrm{H_2O}}=0.70$，$f_{\\text{甲醇}}=0.75$，得 $w=0.22\\%$、$\\rho=1.8\\times 10^{-3}\\,\\mathrm{g\\cdot mL^{-1}}$。例 13-3 内标对比得含醇量 $42\\%\\,(V/V)$",
+        "等量物质峰面积一定相等，所以都可以不用校正因子；测水首选 FID"
+      ],
+      "answer": [0, 1, 2],
+      "hint": "单柱不够；气相更常内标；测水用 TCD。",
+      "explanation": "**ABC 正确，D 错误。**\n\n- A：定性三条和联用，来自第 5 节。\n- B：归一化／外标／内标短板，来自第 5 节。\n- C：例 13-2、例 13-3 数字，来自第 5 节。\n- **D 错**：等量物质峰面积往往不相等；水在 FID 上几乎无信号。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-5.md",
+        "label": "保留值定性 · 三法定量 · 例13-2 · 例13-3"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "检测限就是最小检测量；灵敏度很高就一定能做痕量；ECD 的线性范围按 FID 的 $10^{7}$ 来记；表 13-4 里 TCD 检测限的单位是 $\\mathrm{g\\cdot s^{-1}}$。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "检测限只看检测器；ECD 线性约 10³；TCD 单位是 mg·mL⁻¹。",
+      "explanation": "**该命题错误，四句都错。** 检测限 $D=3N/S$ 只与检测器有关；最小检测量看整套色谱体系。放大器把噪声一起放大，灵敏度高但噪声大时检测限并不低。ECD 线性约 $10^{3}$（表中 $10^{2}\\sim 10^{4}$），$10^{7}$ 是 FID。TCD 检测限是 $2\\times 10^{-6}\\,\\mathrm{mg\\cdot mL^{-1}}$，不是 $\\mathrm{g\\cdot s^{-1}}$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-3.md",
+        "label": "式（13-1）（13-2） · 最小检测量 · 表13-4"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 5,
+      "stem": "静态顶空第一次和第二次取样结果相同，可以当平行样；$\\beta=V_{\\mathrm{s}}/V_{\\mathrm{g}}$；例 13-4、例 13-5、例 13-6 都用外标法定量；CBZ 的 GC-MS 载气应选氮气。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "静态只能一次平衡；三例定量路不同；GC-MS 用氦。",
+      "explanation": "**该命题错误，四句都错。** 静态顶空第一次取样后组成已变，第二次不能当平行。$\\beta=V_{\\mathrm{g}}/V_{\\mathrm{s}}$。例 13-4 外标、例 13-5 内标对比、例 13-6 质谱图库定性。氦气常用于气质联用，本版例 13-6 载气是高纯氦气。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-6.md",
+        "label": "静态顶空 · 式（13-13） · 例13-4 · 例13-5 · 例13-6"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "角鲨烷的相对极性 $P=$ ________。液担比一般为 ________。FID 的 $\\mathrm{N_2}:\\mathrm{H_2}$ 约为 ________。ECD 检测限可达 ________ $\\mathrm{g\\cdot mL^{-1}}$。Golay 方程中涡流扩散项 $A=$ ________。",
+      "answer": "0，3%～20%，1:1～1:1.5，10^{-14}，0",
+      "hint": "P=0；液担比 3%～20%；三气第一档；ECD 10^{-14}；开管柱 A=0。",
+      "scoring_criteria": [
+        "第一空填“0”（2分）",
+        "第二空填“3%～20%”或“3%～20％”或“3%～20”（2分）",
+        "第三空填“1:1～1:1.5”或“1:1~1:1.5”或“1∶1～1∶1.5”（2分）",
+        "第四空填“10^{-14}”或“10-14”或“10^{−14}”（2分）",
+        "第五空填“0”（2分）"
+      ],
+      "explanation": "第 2 节角鲨烷 $P=0$，液担比一般 $3\\%\\sim 20\\%$。第 3 节 $\\mathrm{N_2}:\\mathrm{H_2}=1:1\\sim 1:1.5$，ECD 可达 $10^{-14}\\,\\mathrm{g\\cdot mL^{-1}}$。第 6 节 Golay 方程 $A=0$。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-2.md",
+        "label": "P=0 · 液担比 · FID 三气 · ECD 检测限 · A=0"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 14,
+      "total_points": 14,
+      "stem": "从固定液极性写到三种检测器。请写出：①相对极性 $P$ 的两个端点和五级口径，表 13-1 中 OV-1、OV-17、PEG-20M 的级别，以及苯／环己烷为什么改用 DNP；②红色载体和白色载体怎样配伍；③TCD、FID、ECD 各是浓度型还是质量型，各看什么样品，氮气载空气、FID 测水、ECD 测烃类为什么不行。不要把 OV-17 升成 $+3$，也不要把红白配伍写反。",
+      "answer": "参考答案：\n\n**1. 固定液极性**\n- $\\beta,\\beta'$-氧二丙腈 $P=100$，角鲨烷 $P=0$。每 20 为一级：$0\\sim 20$ 为 $+1$，$21\\sim 40$ 为 $+2$，以此类推到 $+5$。OV-1 $+1$，OV-17 $+2$，PEG-20M $+4$。\n- 苯与环己烷沸点只差 $0.6\\,^{\\circ}\\mathrm{C}$，极性差别是主要矛盾。非极性柱很难分开；DNP 上苯的 $t_{\\mathrm{R}}$ 是环己烷的 $1.5$ 倍。\n\n**2. 载体**\n- 红色：无助熔剂，孔径约 $1\\,\\mu\\mathrm{m}$，活性中心多，配非极性固定液、分析非极性物质。白色：加 $\\mathrm{Na_2CO_3}$，表面较惰性，配极性固定液、分析强极性组分。\n\n**3. 三种检测器**\n- TCD 浓度型、通用，看 $\\Delta\\lambda$；氮气＝空气 $=31.5$，氮气载空气不出峰。FID 质量型、含碳有机物，水几乎无信号。ECD 浓度型、电负性大的元素，烃类几乎无响应。测水用 TCD，农药走 ECD，烃类走 FID。",
+      "hint": "按 P 五级→红白载体→TCD/FID/ECD 分户写，并避开 OV-17=+3 和红白对调。",
+      "scoring_criteria": [
+        "写出 P 端点、五级和 OV-1/OV-17/PEG-20M 级别（4分）",
+        "写出苯／环己烷用 DNP 的理由和 1.5 倍（3分）",
+        "写出红白载体配伍（3分）",
+        "写出三种检测器类型、对象和三个反例（4分）"
+      ],
+      "explanation": "本题把第 2、3 节收成“极性怎么分级—担体怎么配—检测器怎么选”。易错点：OV-17 升档；红色配极性；FID 测水。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-2.md",
+        "label": "相对极性 · 红白载体 · TCD/FID/ECD"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 15,
+      "total_points": 15,
+      "stem": "未知混合物怎样从分离条件走到定量？请写出：①柱温原则、宽沸程为什么必须程序升温，气化室和检测室相对柱温的区间；②例 13-1 的 $R$ 和完全分离所需 $N$；③归一化、外标、内标的前提与短板，例 13-2 的 $0.22\\%$ 怎样来；④毛细管为什么 $A=0$，分流比区间，静态顶空式（13-13）和第二次取样为什么不能当平行。不要把程序升温写成 HPLC 梯度，也不要吞第 14 章。",
+      "answer": "参考答案：\n\n**1. 分离条件**\n- 最难分离组分尽可能好的前提下尽可能低柱温，不拖尾、时间适宜，不高于固定液最高使用温度。恒温 $45\\,^{\\circ}\\mathrm{C}$ 重组分不出、$120\\,^{\\circ}\\mathrm{C}$ 轻组分重叠，必须程序升温。气化室一般比柱温高 $30\\sim 70\\,^{\\circ}\\mathrm{C}$，检测室高 $30\\sim 50\\,^{\\circ}\\mathrm{C}$。改的是柱箱温度，不是流动相组成。\n\n**2. 例 13-1**\n- $R=\\sqrt{8100}/4\\times(815-800)/800=0.42$。完全分离 $R=1.5$ 时 $N=8100\\times(1.5/0.42)^{2}=1.0\\times 10^{5}$。差一点点先降温，不要先把柱长加倍（$R\\propto\\sqrt{L}$）。\n\n**3. 定量**\n- 归一化：全出峰且都有响应，与进样量无关，不宜微量杂质。外标：气相进样精密度差，一点法假定过原点。内标：较准确，须找合适内标。例 13-2：$w=(0.635\\times 0.70)/(0.856\\times 0.75)\\times 0.2572/79.37\\times 100\\%=0.22\\%$，检测器必须是 TCD。\n\n**4. 毛细管与顶空**\n- 开管柱无多路径，$A=0$，$H=B/u+Cu$。分流比一般 $1/200\\sim 1/50$。$c_{0}=(K+\\beta)c_{\\mathrm{g}}$，$\\beta=V_{\\mathrm{g}}/V_{\\mathrm{s}}$。静态顶空一次取样后组成已变。不要把残留溶剂改成 $C_{18}$ 液相。",
+      "hint": "按柱温→例13-1→三法+例13-2→Golay 与顶空写，并避开梯度洗脱。",
+      "scoring_criteria": [
+        "写出柱温原则、程序升温和两个温度区间（4分）",
+        "写出例 13-1 的 0.42 和 1.0e5（3分）",
+        "写出三法短板和例 13-2 的 0.22%（4分）",
+        "写出 A=0、分流比和顶空式（13-13）（4分）"
+      ],
+      "explanation": "本题把第 4–6 节收成“先把峰分开—算出 R—选定量路—毛细管和顶空的限制”。易错点：程序升温当梯度；例 13-1 用错分母；静态顶空两次取样当平行。",
+      "sourceRef": {
+        "path": "content/instrumental-analysis/textbook/ch13-4.md",
+        "label": "柱温 · 例13-1 · 三法定量 · Golay · 顶空"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 14,
+    "byType": {
+      "single_choice": 7,
+      "multiple_choice": 2,
+      "true_false": 2,
+      "fill_blank": 1,
+      "essay": 2
+    },
+    "bySource": {
+      "current_chapter": 14
+    },
+    "byDifficulty": {
+      "basic": 10,
+      "medium": 3,
+      "hard": 1
+    }
+  }
+}

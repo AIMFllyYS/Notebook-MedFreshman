@@ -18,6 +18,7 @@ BOOKS = {
     "biochemistry": "biochemistryTextbookItems",
     "anatomy": "anatomyTextbookItems",
     "histology": "histologyTextbookItems",
+    "instrumental-analysis": "instrumentalAnalysisTextbookItems",
 }
 
 SKIP_TITLE = re.compile(

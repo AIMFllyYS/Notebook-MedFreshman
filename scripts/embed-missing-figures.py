@@ -12,6 +12,7 @@ BOOKS = {
     "anatomy": REPO / "content" / "_raw-src" / "anatomy.pdf",
     "histology": REPO / "content" / "_raw-src" / "histology.pdf",
     "cell-biology": REPO / "content" / "_raw-src" / "cell-biology.pdf",
+    "instrumental-analysis": REPO / "content" / "_raw-src" / "instrumental-analysis.pdf",
 }
 FIG_RE = re.compile(r"图\s*(\d+)\s*[-－—]\s*(\d+)")
 IMG_RE = re.compile(r"!\[\]\(/images/[^)]+\)|::figure\{[^}]*src=\"/images/[^\"]+\"")
