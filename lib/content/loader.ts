@@ -2,39 +2,16 @@
 // 仅可在服务端（route handler / server component）导入。
 import fs from "node:fs";
 import path from "node:path";
-import { manifest, contentTree } from "@/lib/content-data/manifest";
-import { STANDARD_CATEGORIES, type CategoryTemplate } from "@/lib/content-data/category-templates";
-import { deriveExampleKeyFor, hasCapability } from "@/lib/content/categoryKeys";
+import { contentTree } from "@/lib/content-data/manifest";
+import { hasCapability } from "@/lib/content/categoryKeys";
 import type { Category, ContentItem } from "@/lib/types/content";
-import type { ChapterRef, SectionRef } from "@/lib/content/types";
 import {
   subjectVisibleToAgent,
   type AcademicYearId,
 } from "@/lib/constants/academic-year";
+import { getSubjectMeta } from "@/lib/content-data/subjects.registry";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content", "chapters");
-
-export function getManifest() {
-  return manifest;
-}
-
-export function findChapter(chapterId: string): ChapterRef | undefined {
-  return manifest.chapters.find((c) => c.id === chapterId);
-}
-
-export interface LocatedSection {
-  chapter: ChapterRef;
-  section: SectionRef;
-}
-
-/** 在全书范围内按小节 id 定位（小节 id 全局唯一，如 "1.4"） */
-export function locateSection(sectionId: string): LocatedSection | undefined {
-  for (const chapter of manifest.chapters) {
-    const section = chapter.sections.find((s) => s.id === sectionId);
-    if (section) return { chapter, section };
-  }
-  return undefined;
-}
 
 /** 读取某小节的 markdown 正文；不存在则返回 null。 */
 export function readSectionMarkdown(
@@ -53,7 +30,7 @@ export function readSectionMarkdown(
  * 按 (subjectId, categoryId, itemId) 读取内容 markdown；不存在返回 null。
  * 供 page.tsx 做 SSR 首屏渲染与 /api/section 客户端回退共用，统一路径解析逻辑。
  *
- * - probability/detail：复用 content/chapters 目录结构（itemId "1.1" → ch01/1.1.md，
+ * - registry 中声明 contentRoot.detail="chapters" 的学科：复用 content/chapters 目录结构（itemId "1.1" → ch01/1.1.md，
  *   章级 id "ch01" → ch01/index.md）。
  * - 其他科目/分类：content/{subjectId}/{categoryId}/{itemId}.md。
  */
@@ -62,7 +39,7 @@ export function readContentMarkdown(
   categoryId: string,
   itemId: string,
 ): string | null {
-  if (subjectId === "probability" && categoryId === "detail") {
+  if (getSubjectMeta(subjectId)?.contentRoot?.detail === "chapters" && categoryId === "detail") {
     const chapterMatch = itemId.match(/^(\d+)\./);
     if (chapterMatch) {
       const chapterNum = parseInt(chapterMatch[1], 10);
@@ -138,23 +115,6 @@ export function readContent(
 // ─────────────────────────────────────────────────────────────
 
 const EXAMPLES_ROOT = path.join(process.cwd(), "content", "examples");
-
-/**
- * @deprecated 请改用 deriveExampleKeyFor(category, itemId)（lib/content/categoryKeys.ts）。
- * 旧签名只有 categoryId，这里按「标准板块模板」查策略，无法感知学科私有板块。
- */
-export function deriveExampleKey(
-  categoryId: string,
-  itemId: string,
-): { chapterId: string; sectionId: string } {
-  const tpl = (STANDARD_CATEGORIES as Record<string, CategoryTemplate | undefined>)[categoryId];
-  const cat = tpl
-    ? { id: categoryId, capabilities: tpl.capabilities, keyStrategy: tpl.keyStrategy }
-    : categoryId === "english"
-      ? { id: categoryId, capabilities: ["examples"] as const, keyStrategy: "item" as const }
-      : undefined;
-  return deriveExampleKeyFor(cat, itemId);
-}
 
 export interface ExampleListItem {
   id: string;
@@ -531,56 +491,4 @@ function substringSearchAllowed(): boolean {
     '[search] 生产环境未找到检索索引，已禁用全库子串扫描。请运行 pnpm build-index 构建索引。',
   );
   return false;
-}
-
-// ─────────────────────────────────────────────────────────────
-// @deprecated — 旧版函数，仅保留给历史消费方。新代码请用上面的多科版本。
-// ─────────────────────────────────────────────────────────────
-
-/** @deprecated 仅覆盖概率论。请使用 getMultiSubjectOutline()。 */
-export function getOutlineText(): string {
-  const lines: string[] = [`课程：${manifest.course}`];
-  for (const ch of manifest.chapters) {
-    lines.push(`\n第${ch.number}章 ${ch.title}（${ch.id}）`);
-    if (ch.summary) lines.push(`  概要：${ch.summary}`);
-    for (const s of ch.sections) {
-      const flag = s.status === "done" ? "" : "（待完善）";
-      lines.push(`  - ${s.id} ${s.title}${flag}${s.summary ? "：" + s.summary : ""}`);
-    }
-  }
-  return lines.join("\n");
-}
-
-export interface SearchHit {
-  chapterId: string;
-  sectionId: string;
-  title: string;
-  snippet: string;
-}
-
-/** @deprecated 仅覆盖概率论。请使用 searchAllContent()。 */
-export function searchNotes(query: string, limit = 6): SearchHit[] {
-  const q = query.trim();
-  if (!q) return [];
-  const hits: SearchHit[] = [];
-  for (const ch of manifest.chapters) {
-    for (const s of ch.sections) {
-      const md = readSectionMarkdown(ch.id, s.id);
-      if (!md) continue;
-      const text = stripMarkdown(md);
-      const idx = text.indexOf(q);
-      if (idx >= 0) {
-        const start = Math.max(0, idx - 80);
-        const end = Math.min(text.length, idx + q.length + 120);
-        hits.push({
-          chapterId: ch.id,
-          sectionId: s.id,
-          title: `${s.id} ${s.title}`,
-          snippet: (start > 0 ? "…" : "") + text.slice(start, end) + (end < text.length ? "…" : ""),
-        });
-      }
-      if (hits.length >= limit) return hits;
-    }
-  }
-  return hits;
 }

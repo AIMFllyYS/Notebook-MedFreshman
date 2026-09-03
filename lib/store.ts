@@ -3,8 +3,8 @@ import type { VideoEntry } from "@/lib/content/types";
 import type { SubjectId } from "@/lib/types/content";
 import type { TocItem } from "@/lib/types/toc";
 import { getCategory } from "@/lib/content-data";
-import { STANDARD_CATEGORIES, type CategoryTemplate } from "@/lib/content-data/category-templates";
 import { deriveActiveKeys } from "@/lib/content/categoryKeys";
+import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 
 export type RightTab = "ai" | "video" | "interactive" | "browser";
 export type MobileTab = "detail" | "video" | "ai" | "interactive" | "browser";
@@ -52,20 +52,6 @@ function domBoolean(name: string): boolean | null {
   if (v === "true") return true;
   if (v === "false") return false;
   return null;
-}
-
-/**
- * @deprecated 请改用 deriveActiveKeys(category, itemId)（lib/content/categoryKeys.ts）。
- * 旧签名只有 categoryId，这里按标准板块模板查策略；english 是「其他」学科私有板块，单独兼容。
- */
-export function deriveChapterId(categoryId: string, itemId: string): string {
-  const tpl = (STANDARD_CATEGORIES as Record<string, CategoryTemplate | undefined>)[categoryId];
-  const cat = tpl
-    ? { id: categoryId, capabilities: tpl.capabilities, keyStrategy: tpl.keyStrategy }
-    : categoryId === "english"
-      ? { id: categoryId, capabilities: ["quiz"] as const, keyStrategy: "item" as const }
-      : undefined;
-  return deriveActiveKeys(cat, itemId).activeChapterId;
 }
 
 interface AppState {
@@ -147,7 +133,7 @@ interface AppState {
 }
 
 export const useStore = create<AppState>((set) => ({
-  activeSubjectId: "probability",
+  activeSubjectId: DEFAULT_SUBJECT,
   activeCategoryId: "detail",
   activeItemId: "1.1",
   activeChapterId: "ch01",
@@ -198,7 +184,7 @@ export const useStore = create<AppState>((set) => ({
   },
 
   // 初始展开：概率论科目 + 其详解分类（catId 规则为 `${subjectId}-${categoryId}`）。
-  expandedIds: new Set(["probability", "probability-detail"]),
+  expandedIds: new Set([DEFAULT_SUBJECT, `${DEFAULT_SUBJECT}-detail`]),
   toggleExpand: (id) =>
     set((s) => {
       const next = new Set(s.expandedIds);

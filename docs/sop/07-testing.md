@@ -147,7 +147,6 @@ pnpm test:cov    # 覆盖率
 │   │   └── types.test.ts     # autoGrade 等运行时函数
 │   ├── quiz-progress.test.ts
 │   ├── quiz-store.test.ts          # quiz store buildAttempt
-│   ├── store.test.ts               # deriveChapterId
 │   ├── motion.test.ts              # 动画常量与 Variants
 │   ├── constants/
 │   │   ├── prompts.test.ts         # QUICK_PROMPTS 结构
@@ -189,7 +188,6 @@ pnpm test:cov    # 覆盖率
 | `lib/ai/search/vectorStore.ts` | `cosineSimilarity` | 相似度计算 |
 | `lib/ai/search/hybridSearch.ts` | `rrfMerge` | RRF 合并 |
 | `app/api/can-embed/route.ts` | `judge` | iframe 嵌入判定 |
-| `lib/store.ts` | `deriveChapterId` | quiz key 推导 |
 | `lib/quiz-store.ts` | `buildAttempt` | 作答记录构造 |
 
 这些导出不影响运行时行为，仅暴露已有函数供测试调用。

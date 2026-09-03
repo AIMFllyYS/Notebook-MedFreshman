@@ -394,20 +394,3 @@ export const probabilityDetailItems: ContentItem[] = [
     ],
   },
 ];
-
-/** @deprecated 仅供旧 manifest.chapters 使用；新代码请读取 probabilityLectures.source。 */
-export const probabilityRecordings: Record<string, string[]> = {
-  ch01: [
-    '概率论与数理统计-第一节.txt',
-    '概率论-第二节.txt',
-    '概率论-第三节.txt',
-    '概率论-第四节.txt',
-  ],
-  ch02: ['概率论-第7节.txt', '概率论-第8节.txt'],
-  ch03: ['概率论-第九节.txt', '概率论第十节多维随机变量分布讲解.txt', '概率论第十一节.txt', '概率论第十二节.txt'],
-  ch04: ['概率论第13节 随机变量期望方差性质讲解.txt', '概率论第14节 相关系数与大数定律讲解.txt'],
-  ch05: ['概率论第15节 概率论数理统计.txt'],
-  ch06: ['概率论第16节 统计课程之样本与分布讲解.txt', '概率论-第17节.txt'],
-  ch07: [],
-  ch08: [],
-};

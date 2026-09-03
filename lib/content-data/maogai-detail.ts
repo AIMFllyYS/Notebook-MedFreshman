@@ -411,19 +411,3 @@ export const maogaiDetailItems: ContentItem[] = [
     ],
   },
 ];
-
-/** @deprecated 仅供旧 manifest.chapters 使用；新代码请读取 maogaiLectures.source。 */
-export const maogaiRecordings: Record<string, string[]> = {
-  ch01: ['毛概-第一二节-学习计划与安排.txt'],
-  ch02: ['毛概-第二节-含重要通知.txt'],
-  ch03: ['第三节毛泽东思想及毛泽东个人介绍课程.txt'],
-  ch04: ['毛概-第四节.txt'],
-  ch05: ['毛概-第五节.txt'],
-  ch07: ['毛概第七节（有划重点）.txt'],
-  ch08: ['毛概第八节-社会主义改造理论与过渡路线分析.txt'],
-  ch09: ['毛概第9节.txt'],
-  ch12: ['第12节毛泽东思想与邓小平理论讲解.txt'],
-  ch14: ['毛概第14节.txt'],
-  ch15: ['第15节毛概.txt'],
-  ch16: ['毛概补充课（有划重点）.txt'],
-};

@@ -1,7 +1,7 @@
 import type { ContentTree } from '@/lib/types/content';
 import { subjectHeader } from './subjects.registry';
 import { category, stubCategory, stubTextbookItem } from './category-templates';
-import { probabilityDetailItems, probabilityRecordings } from './probability-detail';
+import { probabilityDetailItems } from './probability-detail';
 import { modernHistoryDetailItems } from './modern-history-detail';
 import { modernHistoryTextbookItems } from './modern-history-textbook';
 import { organicChemistryDetailItems } from './organic-chemistry-detail';
@@ -240,28 +240,3 @@ export const contentTree: ContentTree = {
     },
   ],
 };
-
-/**
- * @deprecated 仅覆盖概率论 detail 分类。新代码应直接使用 contentTree。
- * 保留此导出供页面路由等旧消费方兼容。
- */
-export const manifest = {
-  course: '概率论与数理统计',
-  chapters: contentTree.subjects[0].categories[1].items.map((ch) => ({
-    id: ch.id,
-    number: parseInt(ch.id.replace('ch', '')),
-    title: ch.title,
-    summary: ch.summary || '',
-    sections: (ch.children || []).map((sec) => ({
-      id: sec.id,
-      title: sec.title,
-      summary: sec.summary || '',
-      status: sec.status || 'stub',
-      videoIds: sec.videoIds || [],
-      interactiveIds: sec.interactiveIds || [],
-    })),
-    recordings: probabilityRecordings[ch.id] || [],
-  })),
-};
-
-export default manifest;

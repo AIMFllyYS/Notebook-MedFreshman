@@ -14,8 +14,6 @@ import {
   stubCategory,
 } from "@/lib/content-data/category-templates";
 import { contentTree } from "@/lib/content-data/manifest";
-import { deriveExampleKey } from "@/lib/content/loader";
-import { deriveChapterId } from "@/lib/store";
 import type { Category } from "@/lib/types/content";
 
 const detail = category("detail", []);
@@ -131,18 +129,4 @@ test("manifest：现有全部 item 在其板块策略下的推导结果不为「
     }
   }
   assert.deepEqual(problems, [], `以下 item 声明了能力但推不出 key:\n${problems.join("\n")}`);
-});
-
-test("兼容包装：deriveExampleKey / deriveChapterId 旧签名结果不变", () => {
-  assert.deepEqual(deriveExampleKey("detail", "1.1"), { chapterId: "ch01", sectionId: "1.1" });
-  assert.deepEqual(deriveExampleKey("recording", "rec-01"), { chapterId: "recording", sectionId: "rec-01" });
-  assert.deepEqual(deriveExampleKey("english", "unit-1"), { chapterId: "unit-1", sectionId: "unit-1" });
-  assert.deepEqual(deriveExampleKey("summary", "sum-01"), { chapterId: "", sectionId: "" });
-  assert.equal(deriveChapterId("detail", "1.1"), "ch01");
-  assert.equal(deriveChapterId("textbook", "ch01-2"), "tb-ch01");
-  assert.equal(deriveChapterId("textbook", "toc"), "");
-  assert.equal(deriveChapterId("recording", "rec-12"), "rec-12");
-  assert.equal(deriveChapterId("english", "unit-4"), "unit-4");
-  assert.equal(deriveChapterId("summary", "sum-01"), "");
-  assert.equal(deriveChapterId("quiz", "ch01"), "");
 });

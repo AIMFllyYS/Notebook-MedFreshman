@@ -1,4 +1,4 @@
-export { contentTree, manifest } from './manifest';
+export { contentTree } from './manifest';
 export type {
   ContentTree,
   Subject,

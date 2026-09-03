@@ -16,6 +16,7 @@ import { useStore } from "@/lib/store";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
+import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 import type { SubjectId } from "@/lib/types/content";
 import { isSubjectId } from "@/lib/types/content";
 import type { ChatContext } from "@/lib/types/chat";
@@ -228,7 +229,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   if (isMobile) {
     return (
       <KeyboardShortcutProvider>
-      <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]" data-subject={route?.subjectId ?? activeSubjectId ?? "probability"}>
+      <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]" data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT}>
         <MobileTopBar />
 
         <div className="min-h-0 flex-1 overflow-hidden">
@@ -278,9 +279,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // ── Desktop layout (unchanged) ─────────────────────────────
   return (
     <KeyboardShortcutProvider>
-    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-subject={route?.subjectId ?? activeSubjectId ?? "probability"}>
+    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT}>
       <TopBar
-        subjectId={route?.subjectId ?? "probability"}
+        subjectId={route?.subjectId ?? DEFAULT_SUBJECT}
         categoryId={route?.categoryId ?? "detail"}
         itemId={route?.itemId ?? ""}
       />

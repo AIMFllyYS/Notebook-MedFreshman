@@ -7,9 +7,6 @@ import {
   readExamples,
   readExampleById,
   readExamplesMeta,
-  deriveExampleKey,
-  locateSection,
-  findChapter,
 } from "@/lib/content/loader";
 
 // ── readQuiz ───────────────────────────────────────────────────
@@ -54,47 +51,6 @@ test("readSectionMarkdown：不存在的章节返回 null", () => {
   assert.equal(readSectionMarkdown("ch99", "99.9"), null);
 });
 
-// ── deriveExampleKey ───────────────────────────────────────────
-
-test("deriveExampleKey：detail 分类从 itemId 推导 chapterId", () => {
-  assert.deepEqual(deriveExampleKey("detail", "1.1"), {
-    chapterId: "ch01",
-    sectionId: "1.1",
-  });
-  assert.deepEqual(deriveExampleKey("detail", "12.3"), {
-    chapterId: "ch12",
-    sectionId: "12.3",
-  });
-});
-
-test("deriveExampleKey：english 分类 chapterId=sectionId=itemId", () => {
-  assert.deepEqual(deriveExampleKey("english", "unit-1"), {
-    chapterId: "unit-1",
-    sectionId: "unit-1",
-  });
-});
-
-test("deriveExampleKey：recording 分类映射到录音例题目录", () => {
-  assert.deepEqual(deriveExampleKey("recording", "rec-01"), {
-    chapterId: "recording",
-    sectionId: "rec-01",
-  });
-});
-
-test("deriveExampleKey：非 detail/english/recording 分类返回空串", () => {
-  assert.deepEqual(deriveExampleKey("summary", "sum-01"), {
-    chapterId: "",
-    sectionId: "",
-  });
-});
-
-test("deriveExampleKey：itemId 无数字前缀返回空串", () => {
-  assert.deepEqual(deriveExampleKey("detail", "abc"), {
-    chapterId: "",
-    sectionId: "",
-  });
-});
-
 // ── readExamples ───────────────────────────────────────────────
 
 test("readExamples：空参数返回空数组", () => {
@@ -136,20 +92,4 @@ test("readExamples：中文 id 列表项均含非空正文", () => {
   for (const ex of examples) {
     assert.ok(ex.content.length > 0, `${ex.id} 应有正文`);
   }
-});
-
-// ── locateSection / findChapter ────────────────────────────────
-
-test("findChapter：存在的章节", () => {
-  const ch = findChapter("ch01");
-  // ch01 可能在 manifest 中
-  if (ch) {
-    assert.equal(ch.id, "ch01");
-    assert.ok(ch.title);
-    assert.ok(Array.isArray(ch.sections));
-  }
-});
-
-test("locateSection：不存在的 sectionId 返回 undefined", () => {
-  assert.equal(locateSection("999.999"), undefined);
 });

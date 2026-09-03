@@ -377,17 +377,3 @@ export const modernHistoryDetailItems: ContentItem[] = [
     ],
   },
 ];
-
-/** @deprecated 仅供旧 manifest.chapters 使用；新代码请读取 modernHistoryLectures.source。 */
-export const modernHistoryRecordings: Record<string, string[]> = {
-  ch01: ['中国近现代史纲要-第一课-课程意义与安排.txt', '中国近现代史2课学习要点分析.txt'],
-  ch02: ['纲要-第三节.txt'],
-  ch03: ['近现代史纲要-第四节.txt'],
-  ch04: ['纲要-第五节-戊戌变法思想背景及论战分析.txt'],
-  ch05: ['纲要第六节戊戌变法与辛亥革命教学分析.txt'],
-  ch06: ['纲要第七节辛亥革命相关知识教学分析.txt'],
-  ch07: ['中国近现代史纲要-第9节-五四运动.txt'],
-  ch08: ['第12章近现代史纲要.txt'],
-  ch09: ['第14章抗日战争国共抗战策略分析.txt'],
-  ch10: ['第15节近现代史纲要.txt'],
-};

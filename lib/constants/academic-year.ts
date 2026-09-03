@@ -19,11 +19,6 @@ const SUBJECTS_BY_YEAR: Record<AcademicYearId, Set<string>> = {
   "sophomore-1": new Set(SUBJECT_REGISTRY.filter((s) => s.year === "sophomore-1").map((s) => s.id)),
 };
 
-/** @deprecated 请用 subjectsOfYear("freshman-2")；保留以兼容旧 import。 */
-export const FRESHMAN_SUBJECT_IDS: readonly string[] = [...SUBJECTS_BY_YEAR["freshman-2"]];
-/** @deprecated 请用 subjectsOfYear("sophomore-1")；保留以兼容旧 import。 */
-export const SOPHOMORE_SUBJECT_IDS: readonly string[] = [...SUBJECTS_BY_YEAR["sophomore-1"]];
-
 export function isAcademicYearId(value: unknown): value is AcademicYearId {
   return typeof value === "string" && (ACADEMIC_YEAR_IDS as readonly string[]).includes(value);
 }
