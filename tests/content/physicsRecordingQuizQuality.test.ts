@@ -5,6 +5,7 @@ import {
   PHYSICS_RECORDING_IDS,
   validatePhysicsRecordingQuiz,
 } from "@/lib/quiz/physicsRecordingQuality";
+import { getCategory } from "@/lib/content-data";
 
 function makeQuiz(overrides: Partial<QuizData> = {}): QuizData {
   return {
@@ -51,12 +52,11 @@ function makeQuiz(overrides: Partial<QuizData> = {}): QuizData {
   };
 }
 
-test("PHYSICS_RECORDING_IDS：只覆盖当前存在的 25 讲", () => {
-  assert.equal(PHYSICS_RECORDING_IDS.length, 25);
+test("PHYSICS_RECORDING_IDS：与 manifest physics/recording 板块的 item 集合一致", () => {
+  const manifestIds = getCategory("physics", "recording")!.items.map((i) => i.id);
+  assert.deepEqual([...PHYSICS_RECORDING_IDS], manifestIds);
   assert.ok(PHYSICS_RECORDING_IDS.includes("rec-01"));
-  assert.ok(PHYSICS_RECORDING_IDS.includes("rec-27"));
-  assert.ok(!PHYSICS_RECORDING_IDS.includes("rec-05"));
-  assert.ok(!PHYSICS_RECORDING_IDS.includes("rec-18"));
+  assert.ok(!PHYSICS_RECORDING_IDS.includes("rec-05"), "缺讲不应被凭空生成");
 });
 
 test("validatePhysicsRecordingQuiz：合格录音题库无错误", () => {

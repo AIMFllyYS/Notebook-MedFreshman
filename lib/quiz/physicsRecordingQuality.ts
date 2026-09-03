@@ -1,32 +1,9 @@
 import type { QuizData, QuizQuestion } from "@/lib/quiz/types";
+import { physicsLectures } from "@/lib/content-data/physics-lectures";
+import { recordingIds } from "@/lib/content-data/recordings";
 
-export const PHYSICS_RECORDING_IDS = [
-  "rec-01",
-  "rec-02",
-  "rec-03",
-  "rec-04",
-  "rec-06",
-  "rec-07",
-  "rec-08",
-  "rec-09",
-  "rec-10",
-  "rec-11",
-  "rec-12",
-  "rec-13",
-  "rec-14",
-  "rec-15",
-  "rec-16",
-  "rec-17",
-  "rec-19",
-  "rec-20",
-  "rec-21",
-  "rec-22",
-  "rec-23",
-  "rec-24",
-  "rec-25",
-  "rec-26",
-  "rec-27",
-] as const;
+/** 物理录音题库允许的 chapterId：直接取自 manifest 的讲次声明，不再手抄白名单。 */
+export const PHYSICS_RECORDING_IDS: readonly string[] = recordingIds(physicsLectures);
 
 export interface PhysicsRecordingQuizQualityOptions {
   filePath: string;
@@ -99,8 +76,8 @@ export function validatePhysicsRecordingQuiz(
     errors.push(`subjectId 应为 physics，实际为 ${quiz.subjectId}`);
   }
 
-  if (!PHYSICS_RECORDING_IDS.includes(quiz.chapterId as (typeof PHYSICS_RECORDING_IDS)[number])) {
-    errors.push(`chapterId 不在本轮 25 讲范围内: ${quiz.chapterId}`);
+  if (!PHYSICS_RECORDING_IDS.includes(quiz.chapterId)) {
+    errors.push(`chapterId 不在 physics-lectures.ts 声明的讲次内: ${quiz.chapterId}`);
   }
 
   if (!Array.isArray(quiz.questions)) {
