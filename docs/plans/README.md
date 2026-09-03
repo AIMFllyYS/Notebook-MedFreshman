@@ -74,6 +74,8 @@
 | [08-svg-content-authoring.md](./08-svg-content-authoring.md) | 独立 Chat · 依赖 06+07 | 跨学科 SVG 内容创作 | 06+07 完成后 |
 | [09-probability-recording.md](./09-probability-recording.md) | Chat H · 第1步 | 概率论录音清洗+纪要生成（15讲） | 无 |
 | [10-probability-recording-quiz.md](./10-probability-recording-quiz.md) | Chat H · 第2步 | 概率论录音随堂测试（理工科适配） | 09 完成后 |
+| [11-physics-recording-examples-quiz-rewrite.md](./11-physics-recording-examples-quiz-rewrite.md) | 独立 Chat | 物理录音例题与题库重写 | 无 |
+| [12-content-registry-consolidation.md](./12-content-registry-consolidation.md) | 独立 Chat · 阶段 A 先行，B/C/D 可并行 | 学科/板块/录音注册表收敛，实现"只写 MD + 改注册表"的零代码接入；SOP 对齐 | 无（建议在新增内容任务前完成） |
 
 ## 全局规范
 
