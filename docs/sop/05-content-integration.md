@@ -35,7 +35,7 @@
 
 ### Step 2：manifest 注册
 
-编辑 `content/manifest.ts` 中 `contentTree` 对应科目的对应 category：
+编辑 `lib/content-data/manifest.ts` 中 `contentTree` 对应科目的对应 category：
 
 #### 注册规则
 
@@ -47,7 +47,7 @@
 #### 示例
 
 ```typescript
-// content/manifest.ts 中对应位置
+// lib/content-data/manifest.ts 中对应位置
 {
   id: 'textbook',
   name: '教材',
@@ -72,15 +72,11 @@
 
 3. **验证命令**：
    ```bash
-   # 在项目根目录运行
-   node -e "
-     const { readContentMarkdown } = require('./lib/content/loader');
-     const result = readContentMarkdown('{subjectId}', '{categoryId}', '{itemId}');
-     console.log(result ? '✓ 可读取 (' + result.length + ' chars)' : '✗ 返回 null');
-   "
+   # 在项目根目录运行，统一检查 registry、manifest 与文件路径
+   pnpm check:registry
    ```
 
-   注意：由于 TypeScript，实际验证可通过 `npx tsx` 运行或在 dev server 启动后通过 API 验证。
+   如需单独查看某页正文，可在 dev server 启动后访问对应路由；服务端读取统一经过 `lib/content/loader.ts` 的 `readContentMarkdown()`。
 
 ### Step 4：AI 工具链验证
 
@@ -93,44 +89,28 @@
 
 #### 4.2 getOutline
 
-- AI 调用 `getOutline` 应包含新注册的章节
-- **当前已知限制**：`getOutlineText()` 只遍历概率论的旧 `manifest.chapters`，不覆盖 `contentTree` 中其他科目
-- **临时解决**：对非概率论科目，AI 通过 `getCurrentPage` + 用户路由上下文（`subjectId/categoryId/itemId`）定位内容
-- **长期 TODO**：扩展 `getOutlineText()` 支持多科目
+- AI 调用 `getOutline` 通过 `getMultiSubjectOutline()` 遍历 `contentTree`，返回当前学年的全部可检索学科与板块；传 `crossYear=true` 时包含全部学年。
 
 #### 4.3 getSection
 
-- AI 调用 `getSection(sectionId)` 能跨小节读取
-- **当前已知限制**：`getSection` 写死 `categoryId = "detail"`，只能读详解板块
-- **影响**：AI 暂无法从详解页面跨板块引用教材/录音内容
-- **长期 TODO**：扩展 `getSection` 支持 categoryId 参数
+- AI 调用 `getSection` 可通过 `subject/category/itemId` 复合路径读取任意科目的任意板块；只传 `sectionId` 时默认读取当前科目的 `detail` 板块。
 
 #### 4.4 searchNotes
 
-- AI 调用 `searchNotes(query)` 能检索到新内容中的关键词
-- **当前已知限制**：只检索概率论 `content/chapters/` 下的文件
-- **长期 TODO**：扩展为遍历所有科目的所有 category
+- AI 调用 `searchNotes(query)` 通过 `searchAllContent()` 检索全部学科中声明了 `search` 能力的板块，默认按当前学年过滤；返回的 `path` 可直接交给 `getSection`。
 
 ### Step 5：TypeScript 编译验证
 
 ```bash
-npx tsc --noEmit
+pnpm check:registry
+pnpm exec tsc --noEmit
 ```
 
 确保 manifest 修改不引入类型错误。
 
-### Step 6：记录已知缺口
-
-在完成验证后，记录以下信息供后续修复：
-
-- [ ] `getOutline` 需扩展支持多科目
-- [ ] `searchNotes` 需扩展支持多科目多板块
-- [ ] `getSection` 需支持 categoryId 参数
-- [ ] 题目测试需新增 `getQuizData` AI 工具
-
 ## 产出规范
 
-本 SOP 的产出是对 `content/manifest.ts` 的修改（新增 items），无独立文件产出。
+本 SOP 的产出是对 `lib/content-data/manifest.ts` 的修改（新增 items），无独立文件产出。
 
 ## AI 工具可达性验证
 
@@ -138,7 +118,7 @@ npx tsc --noEmit
 
 ## 参考文件
 
-- [content/manifest.ts](../../content/manifest.ts) — 操作目标
+- [lib/content-data/manifest.ts](../../lib/content-data/manifest.ts) — 操作目标
 - [lib/content/loader.ts](../../lib/content/loader.ts) — 路径解析逻辑
 - [lib/ai/tools.ts](../../lib/ai/tools.ts) — AI 工具定义
 - [README.md](./README.md) — SOP 全局规范

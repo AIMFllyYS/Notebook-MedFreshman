@@ -48,7 +48,7 @@ pnpm render:chapter ch01     # 仅渲染第一章
 python manim/render.py --force --quality h   # 强制高画质重渲
 ```
 
-产物输出到 `public/media/videos/<ch>/<id>.mp4`，并自动写入 `content/media.generated.ts`。
+产物输出到 `public/media/videos/<ch>/<id>.mp4`，并自动写入 `lib/content-data/media.generated.ts`。
 
 ## 功能特性
 
@@ -104,10 +104,10 @@ python manim/render.py --force --quality h   # 强制高画质重渲
 ## 目录结构
 
 ```
-app/                 # Next App Router（页面 + /api 路由 + manifest.ts PWA 清单）
+app/                 # Next App Router（页面 + /api 路由）
 components/           # 布局 / 笔记渲染 / 对话 / 视频 / 交互
-lib/                 # store、内容加载器、AI 工具
-content/             # manifest + 各小节 .md 笔记 + 媒体清单
+lib/                 # store、内容注册表、内容加载器、AI 工具
+content/             # 各小节 .md 笔记与内容资源
 manim/               # Manim 场景与渲染脚本
 docs/                # 逐字稿、纪要、SOP、设计文档
 scripts/             # 内容提取、海报生成、工作流脚本
@@ -125,7 +125,7 @@ public/              # 静态资源（视频、图片、海报、PWA 图标）
 - **状态管理** - Zustand 全局状态管理导航、播放、对话等跨组件状态；对话历史与交互演示产物持久化至 IndexedDB，设置/主题等小数据保留 localStorage（详见 `docs/refer/storage-architecture.md`）
 
 ### 关键技术组件
-- **内容树** - `content/manifest.ts` 定义多学科内容结构
+- **内容树** - `lib/content-data/manifest.ts` 定义多学科内容结构
 - **路由系统** - 动态路由 `/[subject]/[category]/[id]` 支持多学科访问
 - **AI 集成** - 可配置的 OpenAI 兼容端点，支持上下文感知对话
 - **可视化引擎** - 基于 Manim 的数学动画 + React 可交互组件
@@ -178,17 +178,20 @@ pnpm lint:fix
 
 # 类型检查
 pnpm exec tsc --noEmit
+
+# 注册表、manifest 与内容文件一致性检查
+pnpm check:registry
 ```
 
 ### 接入新学科
 
-详细步骤请参考 `docs/sop/subject-onboarding.md`：
+详细步骤请参考 [`docs/sop/subject-onboarding.md`](docs/sop/subject-onboarding.md)：
 
-1. 在 `lib/types/content.ts` 添加新的 `SubjectId`
-2. 创建目录结构（`content/{subject}/`, `components/interactives/{subject}/`）
-3. 在 `content/manifest.ts` 添加学科配置
-4. 在 `components/interactives/registry.ts` 注册交互组件
-5. 在 `content/media.generated.ts` 添加视频条目
+1. 在 `lib/content-data/subjects.registry.ts` 注册学科元数据
+2. 用教材提取/导入脚本生成 `lib/content-data/{subject}-textbook.ts`
+3. 在 `lib/content-data/manifest.ts` 挂载 `contentTree` 与教材条目
+4. 按约定放置 `content/{subject}/{category}/` 正文，可选添加学科提示词
+5. 运行 `pnpm check:registry`、`pnpm exec tsc --noEmit` 并访问首个路由验证
 
 ## 技术栈
 
@@ -257,7 +260,7 @@ AI_MODEL_PRO=你的模型id
 注意：`$$` 必须独占一行，否则会导致渲染崩溃。
 
 ### 视频无法播放
-确认视频文件存在于 `public/media/videos/` 对应目录，且 `content/media.generated.ts` 中有条目记录。
+确认视频文件存在于 `public/media/videos/` 对应目录，且 `lib/content-data/media.generated.ts` 中有条目记录。
 
 ### Manim 渲染失败
 确保 Python 环境配置正确，已安装 Manim 和 ffmpeg。LaTeX/MiKTeX 用于公式渲染。

@@ -299,7 +299,8 @@ Quiz 不再追求 CET-4 全真套卷，而是**每类题型一道大题**，共 
 - [ ] `content/examples/other/unit-X/unit-X/` 下存在 4 个 `.md` 文件，命名符合规范。
 - [ ] `content/quiz/other/unit-X.json` 存在且 JSON 格式合法。
 - [ ] `lib/content-data/manifest.ts` 已注册该 Unit。
-- [ ] `npm run build`（或等效构建命令）可成功通过。
+- [ ] `pnpm check:registry` 通过（0 error）。
+- [ ] `pnpm exec tsc --noEmit` 通过。
 - [ ] 本地访问 `http://localhost:3000/other/english/unit-X` 时：
   - [ ] 正文 Tab 正常显示。
   - [ ] 例题 Tab 显示 4 套例题。

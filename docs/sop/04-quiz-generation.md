@@ -209,9 +209,11 @@ Writer subagent 将组卷结果写入 `content/quiz/{subject}/{chapterId}.json`�
 
 对**计算/推导类复杂大题**（概率论的解答题、有机化学的机理/合成题等），应在 `manimVideoId` 关联一个 Manim 动画讲解，前端解析区会内嵌播放：
 
-- 视频由 `manim/render.py`（概率论）/ `manim/render_chemistry.py`（化学）渲染，写入 `content/media*.generated.ts`，`id` 全局唯一。
+- 视频由 `manim/render.py`（概率论）/ `manim/render_chemistry.py`（化学）渲染，写入 `lib/content-data/media*.generated.ts`，`id` 全局唯一。
 - 出题时先占位 `manimVideoId`（命名约定如 `quiz-prob-ch05-q07`），视频可后续补渲染；前端在视频未就绪时显示「生成中」占位。
 - 详见各科出题计划（概率论见 `docs/plans/05c-quiz-probability.md`）。
+
+Quiz 生效的前提是所属板块在 manifest 中声明了 `quiz` 能力；标准板块已由 `lib/content-data/category-templates.ts` 统一声明，学科私有板块需在自己的 Category 对象中明确加入该能力。
 
 ## AI 工具可达性验证
 
@@ -224,6 +226,9 @@ Writer subagent 将组卷结果写入 `content/quiz/{subject}/{chapterId}.json`�
 ```bash
 # 验证 JSON 格式合法
 node -e "JSON.parse(require('fs').readFileSync('content/quiz/{subject}/{chapterId}.json','utf8'))"
+
+# 验证注册表、manifest 与内容文件一致
+pnpm check:registry
 ```
 
 ## 人文科出题特殊指导（近现代史 / 毛概等）

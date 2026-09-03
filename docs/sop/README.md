@@ -19,6 +19,7 @@
 | 06 | [06-desktop-packaging-release.md](./06-desktop-packaging-release.md) | 桌面打包/发布 | Windows exe 打包 + GitHub Release 新建/更新（node_modules 双层坑、两道护栏、密钥安全、版本策略） |
 | 07 | [07-testing.md](./07-testing.md) | 测试体系 | 双运行器架构（node:test + Vitest）、测试分层、命名约定、prebuild 集成 |
 | 08 | [08-exam-paper-integration.md](./08-exam-paper-integration.md) | 考前模拟/实战演练 | Word 试卷 → 卡片化 Markdown 录入与 manifest 注册 |
+| 09 | [09-english-unit-content.md](./09-english-unit-content.md) | 大学英语 Unit | 课文精读、例题与 Quiz 内容生成和注册 |
 | — | [subject-onboarding.md](./subject-onboarding.md) | 新学科接入 | 从零接入一个新科目的端到端流程 |
 
 ---
@@ -103,17 +104,26 @@
 
 ### 4. 内容路径约定
 
-| 板块 | 最终产出路径 | manifest 注册位置 |
-|------|-------------|-------------------|
-| 教材 | `content/{subject}/textbook/{chapterId}.md` | `contentTree.subjects[x].categories[textbook].items[]` |
-| 详解 | `content/{subject}/detail/{itemId}.md`（概率论例外：`content/chapters/`） | `contentTree.subjects[x].categories[detail].items[]` |
-| 录音 | `content/{subject}/recording/rec-XX.md` | `contentTree.subjects[x].categories[recording].items[]` |
-| 纪要 | `content/{subject}/summary/sum-XX.md` | `contentTree.subjects[x].categories[summary].items[]` |
-| 题目 | `content/quiz/{subject}/{chapterId}.json` | 前端 QuizTab 直接读取（无需 manifest） |
-| 例题 | `content/examples/{subject}/{chapterId}/{sectionId}/` | 通过 `readExamples()` 自动发现 |
-| 考前模拟 | `content/{subject}/kaoqian-moni/{paperId}.md` | `contentTree.subjects[x].categories[kaoqian-moni].items[]` |
-| 实战演练 | `content/{subject}/shizhan-yanlian/{paperId}.md` | `contentTree.subjects[x].categories[shizhan-yanlian].items[]` |
-| 试卷图片 | `public/{subject}/{categoryId}/images/` | Markdown 内 `/{subject}/{categoryId}/images/...` 引用 |
+| 板块 | 最终产出路径 | 能力（capabilities） | manifest 注册位置 |
+|------|-------------|---------------------|-------------------|
+| 教材 | `content/{subject}/textbook/{chapterId}.md` | `examples`, `quiz`, `search` | `contentTree.subjects[x].categories[textbook].items[]` |
+| 详解 | `content/{subject}/detail/{itemId}.md`（概率论例外：`content/chapters/`） | `examples`, `quiz`, `search`, `media` | `contentTree.subjects[x].categories[detail].items[]` |
+| 录音 | `content/{subject}/recording/rec-XX.md` | `examples`, `quiz`, `search` | `contentTree.subjects[x].categories[recording].items[]` |
+| 纪要 | `content/{subject}/summary/sum-XX.md` | `search` | `contentTree.subjects[x].categories[summary].items[]` |
+| 题目 | `content/quiz/{subject}/{chapterId}.json` | — | 前端 QuizTab 直接读取（无需 manifest） |
+| 例题 | `content/examples/{subject}/{chapterId}/{sectionId}/` | — | 通过 `readExamples()` 自动发现 |
+| 考前模拟 | `content/{subject}/kaoqian-moni/{paperId}.md` | — | `contentTree.subjects[x].categories[kaoqian-moni].items[]` |
+| 实战演练 | `content/{subject}/shizhan-yanlian/{paperId}.md` | — | `contentTree.subjects[x].categories[shizhan-yanlian].items[]` |
+| 试卷图片 | `public/{subject}/{categoryId}/images/` | — | Markdown 内 `/{subject}/{categoryId}/images/...` 引用 |
+
+`other` 学科目前有 4 个私有板块，能力以 manifest 中的完整声明为准：
+
+| 板块 | 内容路径 | 能力（capabilities） |
+|------|---------|---------------------|
+| `english` | `content/other/english/unit-X.md` | `examples`, `quiz` |
+| `misc` | `content/other/misc/exam-source.html` | — |
+| `gongshi` | `content/other/gongshi/gongshi.html` | — |
+| `guihua` | `content/other/guihua/schedule.html` | — |
 
 ### 5. AI 工具可达性要求
 
@@ -134,7 +144,6 @@
 | `docs/refer/MinerU文档解析教程.md` | MinerU API 完整文档（00-infrastructure 引用） |
 | `docs/refer/rendering-architecture.md` | Markdown 渲染架构（02-detail 引用） |
 | `.env.local` | 环境变量（Token 等，脚本运行时引用） |
-| `content/manifest.ts` | 内容目录树（05-integration 操作目标） |
 | `lib/content-data/manifest.ts` | 内容目录树（当前实际路径） |
 | `lib/ai/tools.ts` | AI 工具定义（05-integration 验证目标） |
 | `lib/content/loader.ts` | 内容加载器（路径解析逻辑） |
@@ -147,3 +156,10 @@
 ```
 MinerU API → marker（Python 开源） → 按类型选库 → 智能体直读
 ```
+
+### 8. 新增板块
+
+- 标准板块：在 `lib/content-data/category-templates.ts` 的 `STANDARD_CATEGORIES` 增加模板，并同步加入 `STANDARD_CATEGORY_ORDER`。
+- 学科私有板块：直接在 `lib/content-data/manifest.ts` 写完整 Category 对象，明确声明 `capabilities` / `keyStrategy`。
+- 例题、Quiz、搜索是否生效由板块的 `capabilities` 决定；不要新增 `categoryId` 硬编码开关。
+- 所有 SOP 的集成验证统一执行 `pnpm check:registry`，再按对应 SOP 补充专项检查。

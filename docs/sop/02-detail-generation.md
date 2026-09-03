@@ -213,9 +213,9 @@ Animator subagent 编写 Manim 场景：
 
 参照 [05-content-integration.md](./05-content-integration.md)，统一更新：
 
-1. `content/manifest.ts` — 小节 status 改为 `"done"`，添加 `videoIds` / `interactiveIds`
+1. `lib/content-data/manifest.ts` — 小节 status 改为 `"done"`，添加 `videoIds` / `interactiveIds`
 2. `components/interactives/registry.ts` — 注册新交互组件
-3. `content/media.generated.ts` — 添加视频条目（或运行 render 脚本自动生成）
+3. `lib/content-data/media.generated.ts` — 添加视频条目（或运行 render 脚本自动生成）
 
 ## 文档解析规范
 

@@ -288,7 +288,8 @@ $$P(A \cup B) = P(A) + P(B) - P(AB)$$
 ### Step 5：验证
 
 ```bash
-npx tsc --noEmit
+pnpm check:registry
+pnpm exec tsc --noEmit
 npm run check:encoding
 npm run test:unit
 ```
@@ -378,27 +379,22 @@ content/maogai/kaoqian-moni/sim-01.md
 
 ### 当前行为说明
 
-试卷分类（`kaoqian-moni` / `shizhan-yanlian`）**默认不参与** AI 语义检索索引。`lib/ai/indexing/chunker.ts` 与 `lib/content/loader.ts` 的 `SEARCHABLE_CATEGORIES` 仅含 `detail` / `recording` / `summary`。
+考前模拟和实战演练板块默认没有 `search` 能力，因此默认不进入 AI 语义检索索引；页面正文仍可通过 `getCurrentPage` 读取。
 
 ### 验证项
 
 | 工具 | 验证方式 | 预期 |
 |------|---------|------|
 | `getCurrentPage` | 浏览试卷页 → AI Tab 问「第一题答案是什么」 | 能读取当前页内容 |
-| `getOutline` | AI 调用 getOutline | 大纲中**暂不包含**试卷分类（已知限制） |
-| `searchNotes` | 搜索试卷内关键词 | **暂不命中**试卷内容（已知限制） |
+| `getOutline` | AI 调用 getOutline | 目录按板块能力决定是否包含试卷分类 |
+| `searchNotes` | 搜索试卷内关键词 | 仅在板块声明 `search` 能力并重建索引后命中 |
 
 ### 可选增强：让试卷可被 AI 检索
 
-如需启用，修改以下两处 `SEARCHABLE_CATEGORIES`：
-
-- `lib/content/loader.ts`
-- `lib/ai/indexing/chunker.ts`
-
-加入 `'kaoqian-moni'` 和 `'shizhan-yanlian'`，并在 `CATEGORY_LABEL`（仅 `loader.ts`）中补充中文标签，然后重建索引（需 Embedding API）：
+如需让试卷参与 AI 检索，在 `lib/content-data/category-templates.ts` 给对应模板的 `capabilities` 加上 `'search'`，然后重跑索引（需 Embedding API）：
 
 ```bash
-npm run build-index
+pnpm build-index
 ```
 
 ---

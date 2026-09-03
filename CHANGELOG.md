@@ -2,6 +2,14 @@
 
 本项目所有重要变更记录于此。版本遵循语义化版本（SemVer）。
 
+## [Unreleased]
+
+- 学科元数据收敛到 `lib/content-data/subjects.registry.ts`，学科名称、短名、学年、图标和提示词配置由单一注册表派生。
+- 板块能力与 key 推导策略改为 manifest 声明，标准板块统一由 `lib/content-data/category-templates.ts` 提供。
+- 课堂录音与课堂纪要改为各学科 `*-lectures.ts` 单点声明，`rec-*` / `sum-*` 条目自动派生。
+- 新增 registry 一致性校验，并接入 `prebuild` 与桌面构建流程。
+- 图标按 UI 实际值调整：`maogai` 使用 `Scale`（天平），`other` 使用 `FolderOpen`（打开的文件夹）。
+
 ## [0.5.0] - 2026-09-02
 
 本版本把「大二上学期」做成学年开关，并上线五本教材的富文本复习：医学细胞生物学、组织学与胚胎学、生物化学与分子生物学、系统解剖学，以及季一兵《仪器分析》。大一内容只按学年隐藏，不删除。

@@ -25,9 +25,17 @@
 
 ## 步骤流程
 
-### Step 1：文档解析
+### Step 1：原始文件解析
 
 参照 [00-infrastructure.md](./00-infrastructure.md) 执行：
+
+教材 PDF 先用专用脚本产出教材原文和 TOC：
+
+```bash
+python scripts/extract-textbook-pdf.py --pdf <pdf路径> --subject {subjectId} --basename textbook
+```
+
+该步骤产出 `content/_raw/{subject}/textbook.md`、`content/_raw/{subject}/textbook.toc.json` 和教材图片。若还有 PPT 或其他辅助文件，再运行通用解析脚本：
 
 ```bash
 npx tsx scripts/parse-docs.ts --subject {subjectId} --files "{教材路径},{PPT路径}"
@@ -128,15 +136,17 @@ $$
 :::
 ```
 
-### Step 5：manifest 注册
+### Step 5：生成教材条目、manifest 挂载与验证
 
 参照 [05-content-integration.md](./05-content-integration.md)：
 
-1. 在 `content/manifest.ts` 的对应科目 `textbook` category 中注册 items
-2. 每章一个 item，格式：
-   ```typescript
-   { id: '{chapterId}', title: '第X章 {章标题}', type: 'document', status: 'done' }
+1. 在 Step 1 完成后运行：
+   ```bash
+   python scripts/ingest-sophomore-textbooks.py --subject {subjectId}
    ```
+2. 脚本生成 `lib/content-data/{subject}-textbook.ts`，导出 `{subjectCamelCase}TextbookItems`，并按教材 TOC 生成“章 → 节”两级条目树及 `content/{subject}/textbook/` 正文。
+3. 在 `lib/content-data/manifest.ts` import 该导出，并将对应学科挂载为 `sophomoreCategorySkeleton({subjectCamelCase}TextbookItems)`；只有特殊布局才手写 category。
+4. 完成挂载后运行 `pnpm check:registry`，必须为 0 error。
 
 ## 文档解析规范
 

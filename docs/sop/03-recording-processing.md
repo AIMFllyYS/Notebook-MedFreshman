@@ -185,19 +185,25 @@ Summarizer subagent 从清洗后的录音 + DOCX 纪要（若有）生成结构�
 4. **考试重点**：教师明确暗示的考试内容（"这个一定会考"、"往年都考过"）必须保留
 5. **互动**：保留有教学价值的 Q&A
 
-### Step 5：manifest 注册
+### Step 5：声明讲次并生成录音/纪要板块
 
-参照 [05-content-integration.md](./05-content-integration.md)：
-
-在 `content/manifest.ts` 对应科目的 `recording` 和 `summary` categories 中注册：
+在 `lib/content-data/{subject}-lectures.ts` 追加每一讲的声明：
 
 ```typescript
-// recording
-{ id: 'rec-01', title: '第一讲·{主题}', type: 'document', status: 'done' }
+import type { LectureMeta } from './recordings';
 
-// summary
-{ id: 'sum-01', title: '第一讲·{主题}', type: 'document', status: 'done' }
+export const chemistryLectures: readonly LectureMeta[] = [
+  {
+    id: '01',
+    title: '第一讲·绪论',
+    summaryTitle: '第一讲纪要·绪论',
+    source: { transcript: '逐字稿.txt', minutes: '智能纪要.docx' },
+  },
+  { id: '02', title: '第二讲·主题', hasSummary: false },
+];
 ```
+
+`id` 写数字讲次，`title` 写录音标题；纪要标题不同于录音标题时填写 `summaryTitle`，没有纪要时填写 `hasSummary: false`。`source` 可记录逐字稿和智能纪要源文件名。然后在 `lib/content-data/manifest.ts` 使用 `recordingItems(xxxLectures)` 与 `summaryItems(xxxLectures)`；`rec-XX` / `sum-XX` 条目会自动生成，不要再手写两个数组。
 
 ## 文档解析规范
 
@@ -209,10 +215,13 @@ Summarizer subagent 从清洗后的录音 + DOCX 纪要（若有）生成结构�
 
 | 产出 | 路径 | 命名规则 |
 |------|------|---------|
-| 清洗后录音 | `content/{subject}/recording/rec-{NN}.md` | NN 为两位数讲次编号 |
-| 结构化纪要 | `content/{subject}/summary/sum-{NN}.md` | 与 rec 一一对应 |
+| 清洗后录音 | `content/{subject}/recording/rec-{NN}.md` | 由 lectures 声明生成 recording item，数字 id 会按需补零 |
+| 结构化纪要 | `content/{subject}/summary/sum-{NN}.md` | `hasSummary` 不是 `false` 时生成 summary item |
 
-**命名映射**：`rec-01` 对应 `sum-01`，始终一一配对。
+**命名映射**：有纪要时 `rec-01` 对应 `sum-01`；允许某一讲只有录音、没有对应纪要。
+
+录音和纪要文件完成后，在项目根目录运行 `pnpm build-index` 重建检索索引。
+随后运行 `pnpm check:registry`，确认 lectures 派生条目、正文文件和 manifest 保持一致。
 
 ## AI 工具可达性验证
 
