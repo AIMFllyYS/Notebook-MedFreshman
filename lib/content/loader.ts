@@ -3,7 +3,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { manifest, contentTree } from "@/lib/content-data/manifest";
-import type { ContentItem } from "@/lib/types/content";
+import { STANDARD_CATEGORIES, type CategoryTemplate } from "@/lib/content-data/category-templates";
+import { deriveExampleKeyFor, hasCapability } from "@/lib/content/categoryKeys";
+import type { Category, ContentItem } from "@/lib/types/content";
 import type { ChapterRef, SectionRef } from "@/lib/content/types";
 import {
   subjectVisibleToAgent,
@@ -138,24 +140,20 @@ export function readContent(
 const EXAMPLES_ROOT = path.join(process.cwd(), "content", "examples");
 
 /**
- * 由 (categoryId, itemId) 推导例题所在的 (chapterId, sectionId)。
+ * @deprecated 请改用 deriveExampleKeyFor(category, itemId)（lib/content/categoryKeys.ts）。
+ * 旧签名只有 categoryId，这里按「标准板块模板」查策略，无法感知学科私有板块。
  */
 export function deriveExampleKey(
   categoryId: string,
   itemId: string,
 ): { chapterId: string; sectionId: string } {
-  if (categoryId === "english") return { chapterId: itemId, sectionId: itemId };
-  if (categoryId === "recording" && /^rec-\d{2}$/.test(itemId)) {
-    return { chapterId: "recording", sectionId: itemId };
-  }
-  if (categoryId === "textbook") {
-    const chapterId = itemId.startsWith("ch") ? itemId.split("-")[0] : itemId;
-    return { chapterId: "textbook", sectionId: chapterId };
-  }
-  if (categoryId !== "detail") return { chapterId: "", sectionId: "" };
-  const n = parseInt(itemId.split(".")[0], 10);
-  if (Number.isNaN(n)) return { chapterId: "", sectionId: "" };
-  return { chapterId: `ch${String(n).padStart(2, "0")}`, sectionId: itemId };
+  const tpl = (STANDARD_CATEGORIES as Record<string, CategoryTemplate | undefined>)[categoryId];
+  const cat = tpl
+    ? { id: categoryId, capabilities: tpl.capabilities, keyStrategy: tpl.keyStrategy }
+    : categoryId === "english"
+      ? { id: categoryId, capabilities: ["examples"] as const, keyStrategy: "item" as const }
+      : undefined;
+  return deriveExampleKeyFor(cat, itemId);
 }
 
 export interface ExampleListItem {
@@ -285,14 +283,10 @@ export function readQuiz(subjectId: string, chapterId: string): unknown | null {
 // 多科目 AI 工具函数（基于 contentTree，覆盖全部科目/分类）
 // ─────────────────────────────────────────────────────────────
 
-const CATEGORY_LABEL: Record<string, string> = {
-  detail: "详解",
-  recording: "录音",
-  summary: "纪要",
-  textbook: "教材",
-};
-
-const SEARCHABLE_CATEGORIES = new Set(["detail", "recording", "summary", "textbook"]);
+/** 板块是否参与 AI 检索 / 大纲：由 manifest 的 capabilities 声明。 */
+function isSearchable(cat: Category): boolean {
+  return hasCapability(cat, "search");
+}
 
 /** 从 contentTree 中按 (subjectId, categoryId, itemId) 查找内容项及其标题。 */
 export function findContentItem(
@@ -332,7 +326,7 @@ export function getMultiSubjectOutline(scope: ContentSearchScope = "all"): strin
     lines.push(`\n=== ${subject.name} (${subject.id}) ===`);
 
     for (const cat of subject.categories) {
-      if (!SEARCHABLE_CATEGORIES.has(cat.id)) continue;
+      if (!isSearchable(cat)) continue;
       if (!cat.items.length) continue;
 
       for (const item of cat.items) {
@@ -346,7 +340,7 @@ export function getMultiSubjectOutline(scope: ContentSearchScope = "all"): strin
             lines.push(`    - ${sec.id} ${sec.title}${flag} (${p})`);
           }
         } else {
-          const label = CATEGORY_LABEL[cat.id] || cat.id;
+          const label = cat.name || cat.id;
           const flag = item.status === "done" ? "" : "（待完善）";
           const p = `${subject.id}/${cat.id}/${item.id}`;
           lines.push(`  [${label}] ${item.id} ${item.title}${flag} (${p})`);
@@ -433,7 +427,7 @@ function substringSearch(
     if (subject.id === "other") continue;
     if (!subjectVisibleToAgent(subject.id, scope)) continue;
     for (const cat of subject.categories) {
-      if (!SEARCHABLE_CATEGORIES.has(cat.id)) continue;
+      if (!isSearchable(cat)) continue;
       const isDetail = cat.id === "detail";
 
       const leafItems: { item: ContentItem; parentTitle?: string }[] = [];

@@ -2,6 +2,9 @@ import { create } from "zustand";
 import type { VideoEntry } from "@/lib/content/types";
 import type { SubjectId } from "@/lib/types/content";
 import type { TocItem } from "@/lib/types/toc";
+import { getCategory } from "@/lib/content-data";
+import { STANDARD_CATEGORIES, type CategoryTemplate } from "@/lib/content-data/category-templates";
+import { deriveActiveKeys } from "@/lib/content/categoryKeys";
 
 export type RightTab = "ai" | "video" | "interactive" | "browser";
 export type MobileTab = "detail" | "video" | "ai" | "interactive" | "browser";
@@ -51,17 +54,18 @@ function domBoolean(name: string): boolean | null {
   return null;
 }
 
-/** detail/recording/english/textbook 分类下的 quiz key 推导。recording/english 直接用 itemId；textbook 映射为 tb-chXX（兼容毛概 chXX 与现代史 tb-chXX 两种 itemId 命名）。 */
+/**
+ * @deprecated 请改用 deriveActiveKeys(category, itemId)（lib/content/categoryKeys.ts）。
+ * 旧签名只有 categoryId，这里按标准板块模板查策略；english 是「其他」学科私有板块，单独兼容。
+ */
 export function deriveChapterId(categoryId: string, itemId: string): string {
-  if (categoryId === "recording") return itemId;
-  if (categoryId === "english") return itemId;
-  if (categoryId === "textbook") {
-    const m = itemId.match(/^(?:tb-)?(ch\d{2})/);
-    return m ? `tb-${m[1]}` : "";
-  }
-  if (categoryId !== "detail") return "";
-  const n = parseInt(itemId.split(".")[0], 10);
-  return Number.isNaN(n) ? "" : `ch${String(n).padStart(2, "0")}`;
+  const tpl = (STANDARD_CATEGORIES as Record<string, CategoryTemplate | undefined>)[categoryId];
+  const cat = tpl
+    ? { id: categoryId, capabilities: tpl.capabilities, keyStrategy: tpl.keyStrategy }
+    : categoryId === "english"
+      ? { id: categoryId, capabilities: ["quiz"] as const, keyStrategy: "item" as const }
+      : undefined;
+  return deriveActiveKeys(cat, itemId).activeChapterId;
 }
 
 interface AppState {
@@ -154,8 +158,8 @@ export const useStore = create<AppState>((set) => ({
       activeSubjectId: subjectId,
       activeCategoryId: categoryId,
       activeItemId: itemId,
-      activeChapterId: deriveChapterId(categoryId, itemId),
-      activeSectionId: categoryId === "detail" ? itemId : "",
+      // Quiz / 视频 / 交互 Tab 的查找 key 由板块声明的 capabilities + keyStrategy 决定。
+      ...deriveActiveKeys(getCategory(subjectId, categoryId), itemId),
     }),
 
   sidebarCollapsed: readBoolean(LS_KEY_SIDEBAR, false),

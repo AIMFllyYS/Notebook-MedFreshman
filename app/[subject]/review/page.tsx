@@ -10,7 +10,7 @@ import {
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
 import { useRecordPreviews } from "@/lib/hooks/useRecordPreviews";
 import { useStore } from "@/lib/store";
-import { getSubject } from "@/lib/content-data";
+import { getSubject, firstLearnHref } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
 import { retryRecord } from "@/lib/review/startRecord";
 import type { ReviewCard } from "@/lib/review/types";
@@ -87,7 +87,9 @@ export default function ReviewBoardPage() {
   if (!subjectId) {
     return <CenterNote text="未知科目。" />;
   }
-  const subjectName = getSubject(subjectId)?.name ?? subjectId;
+  const subject = getSubject(subjectId);
+  const subjectName = subject?.name ?? subjectId;
+  const learnHref = subject ? firstLearnHref(subject) : null;
 
   function handleDeleteCurrent() {
     if (!current) return;
@@ -117,14 +119,11 @@ export default function ReviewBoardPage() {
         </div>
 
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
-          <Link
-            href={`/${subjectId}/detail/${getSubject(subjectId)?.categories.find((c) => c.id === "detail")?.items[0]?.id ?? "1.1"}`}
-            className="press"
-            style={pillBtn(false)}
-            title="开始学习"
-          >
-            <GraduationCap size={14} /> 学习
-          </Link>
+          {learnHref && (
+            <Link href={learnHref} className="press" style={pillBtn(false)} title="开始学习">
+              <GraduationCap size={14} /> 学习
+            </Link>
+          )}
           <Link href="/" className="press" style={pillBtn(false)} title="返回首页">
             <Home size={14} /> 首页
           </Link>

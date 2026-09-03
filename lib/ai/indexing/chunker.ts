@@ -1,6 +1,7 @@
 // 内容分块管道：遍历 contentTree 全部可搜索叶节点，读取 md，按语义边界分块。
 import { contentTree } from '@/lib/content-data/manifest';
 import { readContentMarkdown, findContentItem, stripMarkdown } from '@/lib/content/loader';
+import { hasCapability } from '@/lib/content/categoryKeys';
 import type { ContentItem } from '@/lib/types/content';
 
 export interface ContentChunk {
@@ -16,7 +17,6 @@ export interface ContentChunk {
   contextPrefix: string; // 文档级摘要（前 100 token，用于上下文化嵌入）
 }
 
-const SEARCHABLE_CATEGORIES = new Set(['detail', 'recording', 'summary', 'textbook']);
 const TARGET_CHUNK_TOKENS = 300;
 const MAX_CHUNK_TOKENS = 400;
 const MIN_SPLIT_TOKENS = 100;
@@ -121,7 +121,7 @@ export function generateChunks(): ContentChunk[] {
     if (subject.id === 'other') continue;
 
     for (const cat of subject.categories) {
-      if (!SEARCHABLE_CATEGORIES.has(cat.id)) continue;
+      if (!hasCapability(cat, 'search')) continue;
 
       const leafItems: { item: ContentItem; parentTitle?: string }[] = [];
       for (const item of cat.items) {

@@ -49,6 +49,33 @@ export function getContentItem(
   return category ? findItem(category.items) : undefined;
 }
 
+function firstUsableItem(items: ContentItem[]): ContentItem | null {
+  for (const item of items) {
+    if (item.children?.length) {
+      const child = firstUsableItem(item.children);
+      if (child) return child;
+    }
+    if (item.id === 'toc') continue;
+    if (item.status !== 'stub') return item;
+  }
+  return items[0] ?? null;
+}
+
+/** 该科「开始学习」落点：优先教材/详解中非 stub 项，再退到任一有内容的板块。不硬编码 /detail/。 */
+export function firstLearnHref(subject: Subject): string | null {
+  const preferred = ['textbook', 'detail'];
+  for (const id of preferred) {
+    const cat = subject.categories.find((c) => c.id === id);
+    if (!cat) continue;
+    const item = firstUsableItem(cat.items);
+    if (item) return `/${subject.id}/${cat.id}/${item.id}`;
+  }
+  const cat = subject.categories.find((c) => c.items.length > 0);
+  if (!cat) return null;
+  const item = firstUsableItem(cat.items);
+  return item ? `/${subject.id}/${cat.id}/${item.id}` : null;
+}
+
 /** 查找 itemId 的父节点及其兄弟列表（同父节点的所有 children）。
  *  若 itemId 本身是顶层 item（无父节点），返回 parent=null + category.items。 */
 export function getSiblings(

@@ -5,9 +5,10 @@ import path from "node:path";
 import { contentTree, getCategory } from "@/lib/content-data";
 import { readContentMarkdown } from "@/lib/content/loader";
 import type { ContentItem } from "@/lib/types/content";
+import { STANDARD_CATEGORY_ORDER } from "@/lib/content-data/category-templates";
 
 const SOPHOMORE = ["cell-biology", "biochemistry", "anatomy", "histology", "instrumental-analysis"] as const;
-const BLOCKS = ["textbook", "detail", "recording", "summary", "kaoqian-moni", "shizhan-yanlian"];
+const BLOCKS = [...STANDARD_CATEGORY_ORDER];
 const ROOT = process.cwd();
 const PUBLIC = path.join(ROOT, "public");
 

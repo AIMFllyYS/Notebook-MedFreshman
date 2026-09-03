@@ -4,39 +4,15 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { GraduationCap, BookOpenCheck } from "lucide-react";
 import { contentTree } from "@/lib/content-data/manifest";
+import { firstLearnHref } from "@/lib/content-data";
 import { subjectColor } from "@/lib/content-data/subjects.registry";
 import SubjectIcon from "@/components/shared/SubjectIcon";
 import { filterSubjectsByYear } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
-import type { ContentItem, Subject } from "@/lib/types/content";
+import type { Subject } from "@/lib/types/content";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
 
-function firstUsableItem(items: ContentItem[]): ContentItem | null {
-  for (const item of items) {
-    if (item.children?.length) {
-      const child = firstUsableItem(item.children);
-      if (child) return child;
-    }
-    if (item.id === "toc") continue;
-    if (item.status !== "stub") return item;
-  }
-  return items[0] ?? null;
-}
-
-/** 该科「开始学习」落点：优先教材/详解中非 stub 项。 */
-export function firstLearnHref(subject: Subject): string | null {
-  const preferred = ["textbook", "detail"];
-  for (const id of preferred) {
-    const cat = subject.categories.find((c) => c.id === id);
-    if (!cat) continue;
-    const item = firstUsableItem(cat.items);
-    if (item) return `/${subject.id}/${cat.id}/${item.id}`;
-  }
-  const cat = subject.categories.find((c) => c.items.length > 0);
-  if (!cat) return null;
-  const item = firstUsableItem(cat.items);
-  return item ? `/${subject.id}/${cat.id}/${item.id}` : null;
-}
+export { firstLearnHref };
 
 function overlayBtn(primary: boolean): React.CSSProperties {
   return {

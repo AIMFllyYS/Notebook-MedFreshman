@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import { isSubjectId } from "@/lib/types/content";
 import type { ContentItem } from "@/lib/types/content";
 import { contentTree, getContentItem, getSubject, getCategory } from "@/lib/content-data";
-import { readContent, readExamples, deriveExampleKey } from "@/lib/content/loader";
+import { readContent, readExamples } from "@/lib/content/loader";
+import { deriveExampleKeyFor } from "@/lib/content/categoryKeys";
 import { normalizeDirectiveLabels } from "@/lib/markdown/normalizeDirectiveLabels";
 import NoteRendererServer from "@/components/notes/NoteRendererServer";
 import ContentPageClient from "./ContentPageClient";
@@ -65,12 +66,11 @@ export default async function ContentPage({ params }: PageProps) {
 
   // 例题服务端预读全文（与正文一致走 SSR），点击卡片时无需再 fetch。
   // 只有会挂载 ExampleTab 的 markdown 类型才需要例题；html/component 类型不显示例题 tab。
-  // 概率论 kaoqian-moni / shizhan-yanlian / summary 分类没有例题目录，短路可减少每次切换的一次
-  // fs.readdirSync 探测（含 catch），配合 hover prefetch 后 SSR 关键路径进一步收窄。
-  const EXAMPLE_CATEGORIES = new Set(["detail", "recording", "textbook", "english"]);
+  // 是否有例题由板块在 manifest 中声明的 capabilities 决定（deriveExampleKeyFor 对无 examples 能力的板块返回空），
+  // 短路可减少每次切换的一次 fs.readdirSync 探测（含 catch），配合 hover prefetch 后 SSR 关键路径进一步收窄。
   const { chapterId, sectionId } =
-    renderType === "markdown" && EXAMPLE_CATEGORIES.has(category)
-      ? deriveExampleKey(category, id)
+    renderType === "markdown"
+      ? deriveExampleKeyFor(categoryData, id)
       : { chapterId: "", sectionId: "" };
   const initialExamples =
     chapterId && sectionId ? readExamples(subject, chapterId, sectionId) : [];

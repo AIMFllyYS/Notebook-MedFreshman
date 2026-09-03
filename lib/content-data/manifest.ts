@@ -1,5 +1,6 @@
 import type { ContentTree } from '@/lib/types/content';
 import { subjectHeader } from './subjects.registry';
+import { category, stubCategory, stubTextbookItem } from './category-templates';
 import { probabilityDetailItems, probabilityRecordings } from './probability-detail';
 import { modernHistoryDetailItems, modernHistoryRecordings } from './modern-history-detail';
 import { modernHistoryTextbookItems } from './modern-history-textbook';
@@ -14,22 +15,6 @@ import { anatomyTextbookItems } from './anatomy-textbook';
 import { histologyTextbookItems } from './histology-textbook';
 import { instrumentalAnalysisTextbookItems } from './instrumental-analysis-textbook';
 
-const examPlaceholderCategories = [
-  {
-    id: 'kaoqian-moni',
-    name: '考前模拟',
-    items: [
-      { id: 'placeholder', title: '敬请期待', type: 'document' as const, status: 'stub' as const },
-    ],
-  },
-  {
-    id: 'shizhan-yanlian',
-    name: '实战演练',
-    items: [
-      { id: 'placeholder', title: '敬请期待', type: 'document' as const, status: 'stub' as const },
-    ],
-  },
-];
 
 const physicsKaoqianMoniItems = [
   { id: 'sim-01', title: '大学物理期末模拟试卷一（押题A卷）', type: 'document' as const, status: 'done' as const },
@@ -128,22 +113,11 @@ export const contentTree: ContentTree = {
     {
       ...subjectHeader('probability'),
       categories: [
-        {
-          id: 'textbook',
-          name: '教材',
-          items: [
+        category('textbook', [
             { id: 'main-textbook', title: '概率论与数理统计（教材）', type: 'document', status: 'stub' },
-          ],
-        },
-        {
-          id: 'detail',
-          name: '详解',
-          items: probabilityDetailItems,
-        },
-        {
-          id: 'recording',
-          name: '课上录音',
-          items: [
+          ]),
+        category('detail', probabilityDetailItems),
+        category('recording', [
             { id: 'rec-01', title: '第一节·课程导论与概率史', type: 'document', status: 'done' },
             { id: 'rec-02', title: '第二节·事件代数与概率公理', type: 'document', status: 'done' },
             { id: 'rec-03', title: '第三节·条件概率与贝叶斯', type: 'document', status: 'done' },
@@ -159,12 +133,8 @@ export const contentTree: ContentTree = {
             { id: 'rec-15', title: '第十五节·大数定律与中心极限定理', type: 'document', status: 'done' },
             { id: 'rec-16', title: '第十六节·样本与抽样分布', type: 'document', status: 'done' },
             { id: 'rec-17', title: '第十七节·三大分布与分位点', type: 'document', status: 'done' },
-          ],
-        },
-        {
-          id: 'summary',
-          name: '课堂纪要',
-          items: [
+          ]),
+        category('summary', [
             { id: 'sum-01', title: '第一节·课程导论与概率史', type: 'document', status: 'done' },
             { id: 'sum-02', title: '第二节·事件代数与概率公理', type: 'document', status: 'done' },
             { id: 'sum-03', title: '第三节·条件概率与贝叶斯', type: 'document', status: 'done' },
@@ -180,29 +150,17 @@ export const contentTree: ContentTree = {
             { id: 'sum-15', title: '第十五节·大数定律与中心极限定理', type: 'document', status: 'done' },
             { id: 'sum-16', title: '第十六节·样本与抽样分布', type: 'document', status: 'done' },
             { id: 'sum-17', title: '第十七节·三大分布与分位点', type: 'document', status: 'done' },
-          ],
-        },
-        {
-          id: 'kaoqian-moni',
-          name: '考前模拟',
-          items: probabilityKaoqianMoniItems,
-        },
-        {
-          id: 'shizhan-yanlian',
-          name: '实战演练',
-          items: probabilityShizhanYanlianItems,
-        },
+          ]),
+        category('kaoqian-moni', probabilityKaoqianMoniItems),
+        category('shizhan-yanlian', probabilityShizhanYanlianItems),
       ],
     },
     {
       ...subjectHeader('physics'),
       categories: [
-        { id: 'textbook', name: '教材', items: [{ id: 'main', title: '大学物理（教材）', type: 'document', status: 'stub' }] },
-        { id: 'detail', name: '详解', items: physicsDetailItems },
-        {
-          id: 'recording',
-          name: '课上录音',
-          items: [
+        category('textbook', [stubTextbookItem('大学物理（教材）')]),
+        category('detail', physicsDetailItems),
+        category('recording', [
             { id: 'rec-01', title: '第一讲·导论与质点运动学', type: 'document', status: 'done' },
             { id: 'rec-02', title: '第二讲·运动学例题与牛顿运动定律', type: 'document', status: 'done' },
             { id: 'rec-03', title: '第三讲·理想流体与伯努利方程', type: 'document', status: 'done' },
@@ -228,12 +186,8 @@ export const contentTree: ContentTree = {
             { id: 'rec-25', title: '第二十五讲·不确定关系、波函数与薛定谔方程', type: 'document', status: 'done' },
             { id: 'rec-26', title: '第二十六讲·原子核、核衰变与核能', type: 'document', status: 'done' },
             { id: 'rec-27', title: '第二十七讲·X射线、激光及医学应用', type: 'document', status: 'done' },
-          ],
-        },
-        {
-          id: 'summary',
-          name: '课堂纪要',
-          items: [
+          ]),
+        category('summary', [
             { id: 'sum-01', title: '第一讲·导论与质点运动学', type: 'document', status: 'done' },
             { id: 'sum-02', title: '第二讲·运动学例题与牛顿运动定律', type: 'document', status: 'done' },
             { id: 'sum-03', title: '第三讲·理想流体与伯努利方程', type: 'document', status: 'done' },
@@ -259,29 +213,17 @@ export const contentTree: ContentTree = {
             { id: 'sum-25', title: '第二十五讲·不确定关系、波函数与薛定谔方程', type: 'document', status: 'done' },
             { id: 'sum-26', title: '第二十六讲·原子核、核衰变与核能', type: 'document', status: 'done' },
             { id: 'sum-27', title: '第二十七讲·X射线、激光及医学应用', type: 'document', status: 'done' },
-          ],
-        },
-        {
-          id: 'kaoqian-moni',
-          name: '考前模拟',
-          items: physicsKaoqianMoniItems,
-        },
-        examPlaceholderCategories[1],
+          ]),
+        category('kaoqian-moni', physicsKaoqianMoniItems),
+        stubCategory('shizhan-yanlian'),
       ],
     },
     {
       ...subjectHeader('chemistry'),
       categories: [
-        { id: 'textbook', name: '教材', items: [{ id: 'main', title: '有机化学（教材）', type: 'document', status: 'stub' }] },
-        {
-          id: 'detail',
-          name: '详解',
-          items: organicChemistryDetailItems,
-        },
-        {
-          id: 'recording',
-          name: '课上录音',
-          items: [
+        category('textbook', [stubTextbookItem('有机化学（教材）')]),
+        category('detail', organicChemistryDetailItems),
+        category('recording', [
             { id: 'rec-01', title: '第一讲·绪论', type: 'document', status: 'done' },
             { id: 'rec-02', title: '第二讲·分子极性·酸碱理论·官能团', type: 'document', status: 'done' },
             { id: 'rec-03', title: '第三讲·有机化合物的命名', type: 'document', status: 'done' },
@@ -302,12 +244,8 @@ export const contentTree: ContentTree = {
             { id: 'rec-18', title: '第十九讲·羧酸及其衍生物', type: 'document', status: 'done' },
             { id: 'rec-19', title: '第二十一讲·芳香取代与重氮盐', type: 'document', status: 'done' },
             { id: 'rec-20', title: '第二十五讲·含氮化合物与杂环', type: 'document', status: 'done' },
-          ],
-        },
-        {
-          id: 'summary',
-          name: '课堂纪要',
-          items: [
+          ]),
+        category('summary', [
             { id: 'sum-01', title: '第一讲纪要·绪论', type: 'document', status: 'done' },
             { id: 'sum-02', title: '第二讲纪要·酸碱理论与命名', type: 'document', status: 'done' },
             { id: 'sum-03', title: '第三讲纪要·命名', type: 'document', status: 'done' },
@@ -327,29 +265,17 @@ export const contentTree: ContentTree = {
             { id: 'sum-18', title: '第十九讲纪要·羧酸及衍生物', type: 'document', status: 'done' },
             { id: 'sum-19', title: '第二十一讲纪要·芳香取代与重氮盐', type: 'document', status: 'done' },
             { id: 'sum-20', title: '第二十五讲纪要·含氮化合物', type: 'document', status: 'done' },
-          ],
-        },
-        {
-          id: 'kaoqian-moni',
-          name: '考前模拟',
-          items: chemistryKaoqianMoniItems,
-        },
-        examPlaceholderCategories[1],
+          ]),
+        category('kaoqian-moni', chemistryKaoqianMoniItems),
+        stubCategory('shizhan-yanlian'),
       ],
     },
     {
       ...subjectHeader('modern-history'),
       categories: [
-        { id: 'textbook', name: '教材', items: modernHistoryTextbookItems },
-        {
-          id: 'detail',
-          name: '详解',
-          items: modernHistoryDetailItems,
-        },
-        {
-          id: 'recording',
-          name: '课上录音',
-          items: [
+        category('textbook', modernHistoryTextbookItems),
+        category('detail', modernHistoryDetailItems),
+        category('recording', [
             { id: 'rec-01', title: '第一课·课程意义与安排', type: 'document', status: 'done' },
             { id: 'rec-02', title: '第三课·农民阶级（太平天国）', type: 'document', status: 'done' },
             { id: 'rec-03', title: '第四课·地主阶级洋务派', type: 'document', status: 'done' },
@@ -360,12 +286,8 @@ export const contentTree: ContentTree = {
             { id: 'rec-08', title: '第十二课·国共合作与大革命', type: 'document', status: 'done' },
             { id: 'rec-09', title: '第十四课·抗日战争', type: 'document', status: 'done' },
             { id: 'rec-10', title: '第十五课·解放战争', type: 'document', status: 'done' },
-          ],
-        },
-        {
-          id: 'summary',
-          name: '课堂纪要',
-          items: [
+          ]),
+        category('summary', [
             { id: 'sum-01', title: '第一课纪要·课程意义与安排', type: 'document', status: 'done' },
             { id: 'sum-02', title: '第三课纪要·农民阶级', type: 'document', status: 'done' },
             { id: 'sum-03', title: '第四课纪要·洋务派', type: 'document', status: 'done' },
@@ -376,35 +298,19 @@ export const contentTree: ContentTree = {
             { id: 'sum-08', title: '第十二课纪要·国共合作', type: 'document', status: 'done' },
             { id: 'sum-09', title: '第十四课纪要·抗日战争', type: 'document', status: 'done' },
             { id: 'sum-10', title: '第十五课纪要·解放战争', type: 'document', status: 'done' },
-          ],
-        },
-        {
-          id: 'kaoqian-moni',
-          name: '考前模拟',
-          items: modernHistoryKaoqianMoniItems,
-        },
-        {
-          id: 'shizhan-yanlian',
-          name: '实战演练',
-          items: [
+          ]),
+        category('kaoqian-moni', modernHistoryKaoqianMoniItems),
+        category('shizhan-yanlian', [
             { id: 'placeholder', title: '敬请期待', type: 'document' as const, status: 'stub' as const },
-          ],
-        },
+          ]),
       ],
     },
     {
       ...subjectHeader('maogai'),
       categories: [
-        { id: 'textbook', name: '教材', items: maogaiTextbookItems },
-        {
-          id: 'detail',
-          name: '详解',
-          items: maogaiDetailItems,
-        },
-        {
-          id: 'recording',
-          name: '课上录音',
-          items: [
+        category('textbook', maogaiTextbookItems),
+        category('detail', maogaiDetailItems),
+        category('recording', [
             { id: 'rec-01', title: '第一二节·课程导论', type: 'document', status: 'done' },
             { id: 'rec-02', title: '第二节·马克思主义中国化历史进程', type: 'document', status: 'done' },
             { id: 'rec-03', title: '第三节·毛泽东思想及其历史地位', type: 'document', status: 'done' },
@@ -417,12 +323,8 @@ export const contentTree: ContentTree = {
             { id: 'rec-10', title: '第十四节·邓小平理论', type: 'document', status: 'done' },
             { id: 'rec-11', title: '第十五节·一国两制与祖国统一', type: 'document', status: 'done' },
             { id: 'rec-12', title: '补充课·期末复习', type: 'document', status: 'done' },
-          ],
-        },
-        {
-          id: 'summary',
-          name: '课堂纪要',
-          items: [
+          ]),
+        category('summary', [
             { id: 'sum-01', title: '第一二节纪要·课程导论', type: 'document', status: 'done' },
             { id: 'sum-02', title: '第二节纪要·马克思主义中国化历史进程', type: 'document', status: 'done' },
             { id: 'sum-03', title: '第三节纪要·毛泽东思想及其历史地位', type: 'document', status: 'done' },
@@ -435,18 +337,9 @@ export const contentTree: ContentTree = {
             { id: 'sum-10', title: '第十四节纪要·邓小平理论', type: 'document', status: 'done' },
             { id: 'sum-11', title: '第十五节纪要·一国两制与祖国统一', type: 'document', status: 'done' },
             { id: 'sum-12', title: '补充课纪要·期末复习', type: 'document', status: 'done' },
-          ],
-        },
-        {
-          id: 'kaoqian-moni',
-          name: '考前模拟',
-          items: maogaiKaoqianMoniItems,
-        },
-        {
-          id: 'shizhan-yanlian',
-          name: '实战演练',
-          items: maogaiShizhanYanlianItems,
-        },
+          ]),
+        category('kaoqian-moni', maogaiKaoqianMoniItems),
+        category('shizhan-yanlian', maogaiShizhanYanlianItems),
       ],
     },
     {
@@ -471,10 +364,13 @@ export const contentTree: ContentTree = {
     },
     {
       ...subjectHeader('other'),
+      // 「其他」是杂项容器，板块非标准，直接声明完整 Category（含 capabilities）。
       categories: [
         {
           id: 'english',
           name: '英语练习',
+          capabilities: ['examples', 'quiz'],
+          keyStrategy: 'item',
           items: [
             { id: 'unit-1', title: '大学英语 Unit 1 · The True Value of Education', type: 'document', status: 'done' },
             { id: 'unit-2', title: '大学英语 Unit 2 · The Myth of a Dream Job', type: 'document', status: 'done' },

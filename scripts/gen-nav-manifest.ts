@@ -24,6 +24,8 @@ const nav = {
     categories: subject.categories.map((cat) => ({
       id: cat.id,
       name: cat.name,
+      ...(cat.capabilities?.length ? { capabilities: cat.capabilities } : {}),
+      ...(cat.keyStrategy ? { keyStrategy: cat.keyStrategy } : {}),
       items: cat.items.map(slimItem),
     })),
   })),

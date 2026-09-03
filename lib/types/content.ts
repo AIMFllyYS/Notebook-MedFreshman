@@ -16,10 +16,32 @@ export interface Subject {
   categories: Category[];
 }
 
+/**
+ * 板块能力：由 manifest 声明，替代散落在 page / loader / store / chunker 里的 categoryId 判断。
+ * - examples：右侧「例题」Tab，从 content/examples/{subject}/{chapterId}/{sectionId}/ 读取
+ * - quiz：右侧「题目测试」Tab，从 content/quiz/{subject}/{quizId}.json 读取
+ * - search：进入 AI 全文检索 / 混合索引 / getOutline 大纲
+ * - media：右侧「动画」「可交互」Tab 按 (chapterId, sectionId) 查找视频与交互组件
+ */
+export type CategoryCapability = 'examples' | 'quiz' | 'search' | 'media';
+
+/**
+ * itemId → (chapterId, sectionId, quizId) 的推导策略。见 lib/content/categoryKeys.ts。
+ * - section-dot：itemId 形如 "3.2" → chapter ch03 / section 3.2 / quiz ch03（详解）
+ * - item：chapter = section = quiz = itemId（英语 unit）
+ * - category-item：chapter = 板块 id，section = quiz = itemId（课堂录音）
+ * - chapter-prefix：itemId 形如 ch05-2 / tb-ch05 → section ch05 / quiz tb-ch05（教材）
+ */
+export type CategoryKeyStrategy = 'section-dot' | 'item' | 'category-item' | 'chapter-prefix';
+
 export interface Category {
   id: string;
   name: string;
   items: ContentItem[];
+  /** 缺省 = 无（只读正文 + AI 当前页）。 */
+  capabilities?: readonly CategoryCapability[];
+  /** 缺省 = 不推导（chapterId / sectionId / quizId 全为空）。 */
+  keyStrategy?: CategoryKeyStrategy;
 }
 
 export interface ContentItem {
