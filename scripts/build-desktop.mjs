@@ -220,6 +220,8 @@ function resolveSigning() {
 
 // 0. Regenerate derived assets the app/package imports (normally prebuild steps; we call
 //    `next build` directly, so run them explicitly here): script-id manifest + app icons.
+run("npx tsx scripts/gen-nav-manifest.ts");
+run("npx tsx scripts/check-registry-consistency.ts");
 run("node scripts/gen-script-ids.mjs");
 run("node scripts/gen-icon.mjs");
 
