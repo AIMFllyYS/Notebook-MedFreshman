@@ -19,7 +19,7 @@ import { execFileSync } from "node:child_process";
 const SRC_DIR = "D:\\飞书文档保存\\有机化学课程及录音";
 const OUT_ROOT = path.join(process.cwd(), "public", "images", "chemistry");
 
-// sumId → 源 docx 文件名（与 content/organic-chemistry-detail.ts 的 organicChemistrySummaries 保持一致；第15讲无 docx）
+// sumId → 源 docx 文件名（与 lib/content-data/chemistry-lectures.ts 的 source.minutes 保持一致；第15讲无 docx）
 const SUMMARIES = {
   "sum-01": "有机化学-第一节-绪论 2026年3月2日 (1).docx",
   "sum-02": "智能纪要：有机化学-第二节-绪论结束兼初步有机命名 2026年3月4日.docx",

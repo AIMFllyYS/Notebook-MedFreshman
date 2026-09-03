@@ -412,7 +412,7 @@ export const maogaiDetailItems: ContentItem[] = [
   },
 ];
 
-/** 各章录音文件映射（12 个章有录音，4 个 stub 章无录音） */
+/** @deprecated 仅供旧 manifest.chapters 使用；新代码请读取 maogaiLectures.source。 */
 export const maogaiRecordings: Record<string, string[]> = {
   ch01: ['毛概-第一二节-学习计划与安排.txt'],
   ch02: ['毛概-第二节-含重要通知.txt'],

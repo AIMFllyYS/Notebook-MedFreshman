@@ -99,9 +99,10 @@ function contentFileFor(subject: Subject, cat: Category, item: ContentItem): str
     if (!SUBJECT_REGISTRY.some((s) => s.year === y)) warn('registry.year', `学年 '${y}' 下没有任何学科`);
   }
   for (const s of SUBJECT_REGISTRY) {
-    const rel = s.promptFile ?? `subjects/${s.id}.md`;
+    const promptFile = 'promptFile' in s && typeof s.promptFile === 'string' ? s.promptFile : undefined;
+    const rel = promptFile ?? `subjects/${s.id}.md`;
     if (!fs.existsSync(path.join(ROOT, 'lib', 'ai', 'prompts', rel))) {
-      (s.promptFile ? err : warn)('registry.prompt', `学科 '${s.id}' 的提示词 lib/ai/prompts/${rel} 不存在${s.promptFile ? '' : '（AI 将只用 global.md）'}`);
+      (promptFile ? err : warn)('registry.prompt', `学科 '${s.id}' 的提示词 lib/ai/prompts/${rel} 不存在${promptFile ? '' : '（AI 将只用 global.md）'}`);
     }
   }
 }
@@ -153,7 +154,7 @@ for (const subject of contentTree.subjects) {
       }
     }
   }
-  const subjectDirs = new Set(contentTree.subjects.map((s) => s.id));
+  const subjectDirs = new Set<string>(contentTree.subjects.map((s) => s.id));
   for (const top of fs.readdirSync(CONTENT, { withFileTypes: true })) {
     if (!top.isDirectory() || ORPHAN_SKIP_TOP.has(top.name) || ORPHAN_SKIP_DIR.test(top.name)) continue;
     if (!subjectDirs.has(top.name)) {

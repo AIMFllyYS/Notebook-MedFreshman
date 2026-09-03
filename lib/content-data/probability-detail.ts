@@ -395,7 +395,7 @@ export const probabilityDetailItems: ContentItem[] = [
   },
 ];
 
-/** 各章录音文件映射（保留原始 recordings 数据，供兼容导出使用） */
+/** @deprecated 仅供旧 manifest.chapters 使用；新代码请读取 probabilityLectures.source。 */
 export const probabilityRecordings: Record<string, string[]> = {
   ch01: [
     '概率论与数理统计-第一节.txt',

@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { recordingItems, summaryItems, recordingIds, type LectureMeta } from "@/lib/content-data/recordings";
+import { chemistryLectures } from "@/lib/content-data/chemistry-lectures";
+import { maogaiLectures } from "@/lib/content-data/maogai-lectures";
+import { modernHistoryLectures } from "@/lib/content-data/modern-history-lectures";
 import { physicsLectures } from "@/lib/content-data/physics-lectures";
+import { probabilityLectures } from "@/lib/content-data/probability-lectures";
 import { getCategory } from "@/lib/content-data";
 
 const lectures: LectureMeta[] = [
@@ -31,4 +35,24 @@ test("physics：manifest 中 recording / summary 板块由 physicsLectures 派�
     physicsLectures.filter((l) => l.hasSummary !== false).map((l) => `sum-${l.id}`),
   );
   for (const l of physicsLectures) assert.ok(/^\d{2,}$/.test(l.id), `讲次 id 应为纯数字: ${l.id}`);
+});
+
+test("probability：manifest 中 recording / summary 板块由 probabilityLectures 派生", () => {
+  assert.deepEqual(getCategory("probability", "recording")!.items, recordingItems(probabilityLectures));
+  assert.deepEqual(getCategory("probability", "summary")!.items, summaryItems(probabilityLectures));
+});
+
+test("chemistry：manifest 中 recording / summary 板块由 chemistryLectures 派生", () => {
+  assert.deepEqual(getCategory("chemistry", "recording")!.items, recordingItems(chemistryLectures));
+  assert.deepEqual(getCategory("chemistry", "summary")!.items, summaryItems(chemistryLectures));
+});
+
+test("modern-history：manifest 中 recording / summary 板块由 modernHistoryLectures 派生", () => {
+  assert.deepEqual(getCategory("modern-history", "recording")!.items, recordingItems(modernHistoryLectures));
+  assert.deepEqual(getCategory("modern-history", "summary")!.items, summaryItems(modernHistoryLectures));
+});
+
+test("maogai：manifest 中 recording / summary 板块由 maogaiLectures 派生", () => {
+  assert.deepEqual(getCategory("maogai", "recording")!.items, recordingItems(maogaiLectures));
+  assert.deepEqual(getCategory("maogai", "summary")!.items, summaryItems(maogaiLectures));
 });

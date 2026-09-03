@@ -378,7 +378,7 @@ export const modernHistoryDetailItems: ContentItem[] = [
   },
 ];
 
-/** 各章录音文件映射 */
+/** @deprecated 仅供旧 manifest.chapters 使用；新代码请读取 modernHistoryLectures.source。 */
 export const modernHistoryRecordings: Record<string, string[]> = {
   ch01: ['中国近现代史纲要-第一课-课程意义与安排.txt', '中国近现代史2课学习要点分析.txt'],
   ch02: ['纲要-第三节.txt'],
