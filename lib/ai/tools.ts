@@ -17,8 +17,21 @@ import {
   type AcademicYearId,
 } from "@/lib/constants/academic-year";
 import type { ContentSearchScope } from "@/lib/content/loader";
+import { ACADEMIC_YEAR_IDS, ACADEMIC_YEAR_LABELS } from "@/lib/constants/academic-year";
+import { subjectsOfYear } from "@/lib/content-data/subjects.registry";
 
 export const IMAGE_SEARCH_MAX_TOTAL = 20;
+
+/** 由 registry 拼出「大二上：细胞生物/生化/…；大一下：概率论/物理/…」，新增学科无需改此处。 */
+function describeSubjectsByYear(): string {
+  return ACADEMIC_YEAR_IDS.map((year) => {
+    const names = subjectsOfYear(year)
+      .filter((s) => s.id !== "other")
+      .map((s) => s.shortName)
+      .join("/");
+    return `${ACADEMIC_YEAR_LABELS[year].replace("学期", "")}：${names}`;
+  }).join("；");
+}
 
 export interface ToolContext {
   subjectId: string;
@@ -58,7 +71,7 @@ export const ALL_TOOLS: Record<string, ToolDefinition> = {
     function: {
       name: "getOutline",
       description:
-        "获取课程目录。默认返回当前学年科目（大二上：细胞生物学/生物化学/系统解剖学/组织学；大一下：概率论/物理/有机化学/近现代史/毛概）。需要了解课程全貌、各章关系，或把某知识点定位到哪一小节时调用。返回的每个条目后附有复合路径（如 anatomy/textbook/ch01-1），可直接传给 getSection 获取全文。跨学年知识（如大一化学与大二生化）把 crossYear 设为 true。",
+        `获取课程目录。默认返回当前学年科目（${describeSubjectsByYear()}）。需要了解课程全貌、各章关系，或把某知识点定位到哪一小节时调用。返回的每个条目后附有复合路径（如 anatomy/textbook/ch01-1），可直接传给 getSection 获取全文。跨学年知识（如大一化学与大二生化）把 crossYear 设为 true。`,
       parameters: {
         type: "object",
         properties: {

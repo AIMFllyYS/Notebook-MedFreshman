@@ -11,6 +11,7 @@ import {
   filterContentTreeByYear,
   subjectVisibleToAgent,
 } from "@/lib/constants/academic-year";
+import { subjectsOfYear } from "@/lib/content-data/subjects.registry";
 import {
   getMultiSubjectOutline,
   searchAllContent,
@@ -29,8 +30,9 @@ test("切换到大二上学期后导航树只有大二新书，不含大一科�
   const ids = subjects.map((s) => s.id).sort();
   assert.deepEqual(
     ids,
-    ["anatomy", "biochemistry", "cell-biology", "histology", "instrumental-analysis"].sort(),
+    subjectsOfYear("sophomore-1").map((s) => s.id).sort(),
   );
+  assert.ok(ids.includes("anatomy") && ids.includes("cell-biology"));
   const names = subjects.map((s) => s.name).join(" ");
   for (const forbidden of ["概率论", "大学物理", "有机化学", "近现代史", "毛概"]) {
     assert.equal(names.includes(forbidden), false, `大二上不应出现 ${forbidden}`);
@@ -70,7 +72,7 @@ test("学年切换只隐藏大一内容，磁盘文件仍在", () => {
 
 test("filterContentTreeByYear 从真实 contentTree 出发过滤", () => {
   const soph = filterContentTreeByYear(contentTree, "sophomore-1");
-  assert.equal(soph.subjects.length, 5);
+  assert.equal(soph.subjects.length, subjectsOfYear("sophomore-1").length);
   const fresh = filterContentTreeByYear(contentTree, "freshman-2");
   assert.ok(fresh.subjects.some((s) => s.id === "probability"));
   assert.ok(contentTree.subjects.length > soph.subjects.length);

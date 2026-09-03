@@ -2,27 +2,19 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   SUBJECTS,
-  DEFAULT_CATEGORIES,
   SUBJECT_ICONS,
   SUBJECT_COLORS,
   subjectColor,
   DEFAULT_SUBJECT,
   DEFAULT_CATEGORY,
 } from "./subjects.ts";
+import { SUBJECT_REGISTRY } from "@/lib/content-data/subjects.registry";
 
-test("SUBJECTS 覆盖所有 SubjectId", () => {
-  const ids = Object.keys(SUBJECTS);
-  assert.ok(ids.includes("probability"));
-  assert.ok(ids.includes("physics"));
-  assert.ok(ids.includes("chemistry"));
-  assert.ok(ids.includes("modern-history"));
-  assert.ok(ids.includes("maogai"));
-  assert.ok(ids.includes("other"));
-  assert.ok(ids.includes("cell-biology"));
-  assert.ok(ids.includes("biochemistry"));
-  assert.ok(ids.includes("anatomy"));
-  assert.ok(ids.includes("histology"));
-  assert.ok(ids.includes("instrumental-analysis"));
+test("SUBJECTS 与 registry 一一对应", () => {
+  assert.deepEqual(
+    Object.entries(SUBJECTS).sort(),
+    SUBJECT_REGISTRY.map((s) => [s.id, s.name] as const).sort(),
+  );
 });
 
 test("SUBJECTS 每个值是中文名称", () => {
@@ -59,17 +51,10 @@ test("subjectColor：未知 id 回退石板灰", () => {
   assert.equal(subjectColor("nonexistent"), "#64748b");
 });
 
-test("DEFAULT_SUBJECT 是 probability", () => {
-  assert.equal(DEFAULT_SUBJECT, "probability");
+test("DEFAULT_SUBJECT 是 registry 第一个学科", () => {
+  assert.equal(DEFAULT_SUBJECT, SUBJECT_REGISTRY[0].id);
 });
 
 test("DEFAULT_CATEGORY 是 detail", () => {
   assert.equal(DEFAULT_CATEGORY, "detail");
-});
-
-test("DEFAULT_CATEGORIES 有 4 个分类", () => {
-  assert.ok(DEFAULT_CATEGORIES.textbook);
-  assert.ok(DEFAULT_CATEGORIES.detail);
-  assert.ok(DEFAULT_CATEGORIES.recording);
-  assert.ok(DEFAULT_CATEGORIES.summary);
 });

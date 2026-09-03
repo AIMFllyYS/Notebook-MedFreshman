@@ -11,6 +11,7 @@ import { useChatReady } from '@/lib/hooks/useChatReady';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useStore } from '@/lib/store';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
+import { subjectShortName } from '@/lib/content-data/subjects.registry';
 import SelectionPopover from '@/components/notes/SelectionPopover';
 import ChatThread from '@/components/chat/ChatThread';
 import ChatInput from '@/components/chat/ChatInput';
@@ -81,9 +82,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     createSession(chatContext);
     useTokenTracker.getState().resetSession();
   };
-  const subjectName = chatContext?.subjectId === 'chemistry' ? '化学'
-    : chatContext?.subjectId === 'physics' ? '物理'
-    : '概率论';
+  const subjectName = subjectShortName(chatContext?.subjectId);
 
   const hasUserSent = useMemo(() => messages.some((m) => m.role === 'user'), [messages]);
   const headerPinned = showSettings || showHistory;

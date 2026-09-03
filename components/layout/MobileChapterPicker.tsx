@@ -3,48 +3,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  X,
-  ChevronRight,
-  Check,
-  Calculator,
-  Atom,
-  FlaskConical,
-  BookOpen,
-  ScrollText,
-  Folder,
-  Microscope,
-  Dna,
-  Bone,
-  Layers,
-  ScanLine,
-} from "lucide-react";
+import { X, ChevronRight, Check } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
 import { navTree } from "@/lib/content-data/nav";
 import type { SubjectId, ContentItem } from "@/lib/types/content";
-import { SUBJECTS } from "@/lib/constants/subjects";
+import { subjectName } from "@/lib/content-data/subjects.registry";
+import SubjectIcon from "@/components/shared/SubjectIcon";
 import { filterSubjectsByYear } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
-
-const ICON_MAP: Record<
-  string,
-  React.ComponentType<{ size?: number; className?: string }>
-> = { Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder, Microscope, Dna, Bone, Layers, ScanLine };
-
-const SUBJECT_ICON_NAMES: Record<SubjectId, string> = {
-  probability: "Calculator",
-  physics: "Atom",
-  chemistry: "FlaskConical",
-  "modern-history": "BookOpen",
-  maogai: "ScrollText",
-  other: "Folder",
-  "cell-biology": "Microscope",
-  biochemistry: "Dna",
-  anatomy: "Bone",
-  histology: "Layers",
-  "instrumental-analysis": "ScanLine",
-};
 
 export default function MobileChapterPicker() {
   const router = useRouter();
@@ -150,8 +117,6 @@ export default function MobileChapterPicker() {
             <div className="hide-scrollbar flex shrink-0 gap-1.5 overflow-x-auto px-4 pb-3">
               {visibleSubjects
                 .map((s) => {
-                  const Icon =
-                    ICON_MAP[SUBJECT_ICON_NAMES[s.id as SubjectId]] ?? Folder;
                   const active = pickerSubject === s.id;
                   return (
                     <button
@@ -169,8 +134,8 @@ export default function MobileChapterPicker() {
                           : "bg-[var(--bg-muted)] text-[var(--ink-soft)]",
                       )}
                     >
-                      <Icon size={13} />
-                      {SUBJECTS[s.id as SubjectId] ?? s.name}
+                      <SubjectIcon subjectId={s.id} size={13} />
+                      {subjectName(s.id) || s.name}
                     </button>
                   );
                 })}

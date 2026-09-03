@@ -3,21 +3,17 @@
 // 利于上游 prefix 缓存命中；易变上下文（当前页/检索结果）由 route 放在前缀之后的消息里。
 import fs from "node:fs";
 import path from "node:path";
-import { SUBJECTS } from "@/lib/constants/subjects";
+import { getSubjectMeta, subjectName } from "@/lib/content-data/subjects.registry";
 import type { ChatContext } from "@/lib/types/chat";
 
 const PROMPT_ROOT = path.join(process.cwd(), "lib", "ai", "prompts");
 
-const SUBJECT_FILE: Record<string, string> = {
-  probability: "subjects/probability.md",
-  physics: "subjects/physics.md",
-  chemistry: "subjects/chemistry.md",
-  "cell-biology": "subjects/cell-biology.md",
-  biochemistry: "subjects/biochemistry.md",
-  anatomy: "subjects/anatomy.md",
-  histology: "subjects/histology.md",
-  "instrumental-analysis": "subjects/instrumental-analysis.md",
-};
+/** 学科提示词文件：registry 可显式指定 promptFile，缺省约定为 subjects/{id}.md；文件不存在时 readMd 返回空串。 */
+function subjectPromptFile(subjectId: string): string | undefined {
+  const meta = getSubjectMeta(subjectId);
+  if (!meta) return undefined;
+  return meta.promptFile ?? `subjects/${meta.id}.md`;
+}
 
 const cache = new Map<string, string>();
 
@@ -38,17 +34,15 @@ function readMd(rel: string): string {
 
 /** 稳定 system 前缀：global（{subjectName} 已替换）+ 学科专门化段。 */
 export function buildSystemPrompt(ctx: ChatContext): string {
-  const subjectName = SUBJECTS[ctx.subjectId as keyof typeof SUBJECTS] || ctx.subjectId;
-  const global = readMd("global.md").replace(/\{subjectName\}/g, subjectName);
-  const subjectRel = SUBJECT_FILE[ctx.subjectId];
+  const global = readMd("global.md").replace(/\{subjectName\}/g, subjectName(ctx.subjectId));
+  const subjectRel = subjectPromptFile(ctx.subjectId);
   const subject = subjectRel ? readMd(subjectRel) : "";
   return subject ? `${global}\n\n---\n\n${subject}` : global;
 }
 
 /** 当前定位行（轻量、相对易变，放前缀之后的消息里）。 */
 export function buildLocationLine(ctx: ChatContext): string {
-  const subjectName = SUBJECTS[ctx.subjectId as keyof typeof SUBJECTS] || ctx.subjectId;
-  let s = `【当前位置】科目：${subjectName} ｜ 分类：${ctx.categoryId} ｜ 内容项：${ctx.itemId}`;
+  let s = `【当前位置】科目：${subjectName(ctx.subjectId)} ｜ 分类：${ctx.categoryId} ｜ 内容项：${ctx.itemId}`;
   if (ctx.currentTopic) s += ` ｜ 主题：${ctx.currentTopic}`;
   return s;
 }

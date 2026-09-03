@@ -188,9 +188,8 @@ async function main() {
   fs.writeFileSync(chunksMetaPath, JSON.stringify(chunksMeta));
   console.log(`   → Chunks meta written to ${chunksMetaPath}`);
 
-  const sophomoreCount = chunks.filter((c) =>
-    ['anatomy', 'histology', 'cell-biology', 'biochemistry', 'instrumental-analysis'].includes(c.subjectId),
-  ).length;
+  const { academicYearOfSubject } = await import('../lib/constants/academic-year');
+  const sophomoreCount = chunks.filter((c) => academicYearOfSubject(c.subjectId) === 'sophomore-1').length;
   console.log(`   → Sophomore textbook/detail chunks: ${sophomoreCount}`);
 
   const skipVectors = process.argv.includes('--bm25-only');

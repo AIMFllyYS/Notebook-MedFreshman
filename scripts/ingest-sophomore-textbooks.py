@@ -1,8 +1,15 @@
 """Split extracted textbook markdown by TOC 章/节, write content files + TS trees.
 
 Usage (after extract-textbook-pdf.py):
-    python scripts/ingest-sophomore-textbooks.py
     python scripts/ingest-sophomore-textbooks.py --subject anatomy
+    python scripts/ingest-sophomore-textbooks.py --all      # 处理 content/_raw 下所有有 textbook.toc.json 的学科
+
+Output:
+    content/{subject}/textbook/*.md
+    lib/content-data/{subject}-textbook.ts   exporting {camelCase(subject)}TextbookItems
+
+学科不需要在此脚本登记；导出名由 subject id 机械推导（cell-biology -> cellBiologyTextbookItems），
+接入 manifest 时 import 同名即可。
 """
 from __future__ import annotations
 
@@ -13,13 +20,18 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 
-BOOKS = {
-    "cell-biology": "cellBiologyTextbookItems",
-    "biochemistry": "biochemistryTextbookItems",
-    "anatomy": "anatomyTextbookItems",
-    "histology": "histologyTextbookItems",
-    "instrumental-analysis": "instrumentalAnalysisTextbookItems",
-}
+
+def export_name(subject: str) -> str:
+    parts = [p for p in re.split(r"[-_\s]+", subject) if p]
+    camel = parts[0] + "".join(p[:1].upper() + p[1:] for p in parts[1:])
+    return f"{camel}TextbookItems"
+
+
+def discover_subjects() -> list[str]:
+    raw = REPO / "content" / "_raw"
+    if not raw.exists():
+        return []
+    return sorted(p.parent.name for p in raw.glob("*/textbook.toc.json"))
 
 SKIP_TITLE = re.compile(
     r"(封面|书名页|版权|编委|新形态|序言|修订说明|规划教材|主编简介|副主编简介|主审简介|前言|目录|索引|参考文献)"
@@ -249,7 +261,7 @@ def write_ts(subject: str, export_name: str, items: list[dict]) -> None:
 
 
 def ingest_subject(subject: str) -> None:
-    export_name = BOOKS[subject]
+    ts_export = export_name(subject)
     data = load_toc(subject)
     toc = data["toc"]
     total_pages = int(data["pages"])
@@ -340,14 +352,20 @@ def ingest_subject(subject: str) -> None:
             )
         print(f"  {cid} {title} kids={len(children_items)} pages={start}-{end}")
 
-    write_ts(subject, export_name, items)
+    write_ts(subject, ts_export, items)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--subject", default="")
+    parser.add_argument("--subject", default="", help="学科 id，如 anatomy")
+    parser.add_argument("--all", action="store_true", help="处理 content/_raw 下所有已抽取的教材")
     args = parser.parse_args()
-    subjects = [args.subject] if args.subject else list(BOOKS)
+    if args.subject:
+        subjects = [args.subject]
+    elif args.all:
+        subjects = discover_subjects()
+    else:
+        parser.error("请指定 --subject <id> 或 --all")
     for s in subjects:
         ingest_subject(s)
 

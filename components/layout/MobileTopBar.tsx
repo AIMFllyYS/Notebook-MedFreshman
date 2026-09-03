@@ -1,70 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import {
-  ChevronDown,
-  Sun,
-  Moon,
-  Calculator,
-  Atom,
-  FlaskConical,
-  BookOpen,
-  ScrollText,
-  Folder,
-  Microscope,
-  Dna,
-  Bone,
-  Layers,
-  ScanLine,
-} from "lucide-react";
+import { ChevronDown, Sun, Moon } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
-import { getSubject, getContentItem } from "@/lib/content-data";
-import type { SubjectId } from "@/lib/types/content";
+import { getContentItem } from "@/lib/content-data";
+import { subjectShortName } from "@/lib/content-data/subjects.registry";
+import SubjectIcon from "@/components/shared/SubjectIcon";
 import BrandLogo from "./BrandLogo";
-
-const ICON_MAP: Record<
-  string,
-  React.ComponentType<{ size?: number; className?: string }>
-> = { Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder, Microscope, Dna, Bone, Layers, ScanLine };
-
-const SHORT_NAMES: Partial<Record<SubjectId, string>> = {
-  probability: "概率论",
-  physics: "物理",
-  chemistry: "有机",
-  "modern-history": "近代史",
-  maogai: "毛概",
-  "cell-biology": "细胞生物",
-  biochemistry: "生化",
-  anatomy: "系统解剖",
-  histology: "组胚",
-  "instrumental-analysis": "仪分",
-};
-
-function SubjectIcon({
-  subjectId,
-  size = 16,
-}: {
-  subjectId: SubjectId;
-  size?: number;
-}) {
-  const mapping: Record<SubjectId, string> = {
-    probability: "Calculator",
-    physics: "Atom",
-    chemistry: "FlaskConical",
-    "modern-history": "BookOpen",
-    maogai: "ScrollText",
-    other: "Folder",
-    "cell-biology": "Microscope",
-    biochemistry: "Dna",
-    anatomy: "Bone",
-    histology: "Layers",
-    "instrumental-analysis": "ScanLine",
-  };
-  const Icon = ICON_MAP[mapping[subjectId]] ?? Folder;
-  return <Icon size={size} />;
-}
 
 export default function MobileTopBar() {
   const subjectId = useStore((s) => s.activeSubjectId);
@@ -80,7 +24,7 @@ export default function MobileTopBar() {
   }, [hydrateTheme]);
 
   const item = getContentItem(subjectId, categoryId, itemId);
-  const shortSubject = SHORT_NAMES[subjectId] ?? getSubject(subjectId)?.name ?? subjectId;
+  const shortSubject = subjectShortName(subjectId);
   const sectionLabel = item
     ? `${itemId} ${item.title}`
     : itemId;

@@ -2,20 +2,14 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import {
-  Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder,
-  GraduationCap, BookOpenCheck, Microscope, Dna, Bone, Layers, ScanLine,
-} from "lucide-react";
+import { GraduationCap, BookOpenCheck } from "lucide-react";
 import { contentTree } from "@/lib/content-data/manifest";
-import { subjectColor } from "@/lib/constants/subjects";
+import { subjectColor } from "@/lib/content-data/subjects.registry";
+import SubjectIcon from "@/components/shared/SubjectIcon";
 import { filterSubjectsByYear } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import type { ContentItem, Subject } from "@/lib/types/content";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
-
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
-  Calculator, Atom, FlaskConical, BookOpen, ScrollText, Folder, Microscope, Dna, Bone, Layers, ScanLine,
-};
 
 function firstUsableItem(items: ContentItem[]): ContentItem | null {
   for (const item of items) {
@@ -63,7 +57,6 @@ function overlayBtn(primary: boolean): React.CSSProperties {
 }
 
 function BookCard({ subject }: { subject: Subject }) {
-  const Icon = ICON_MAP[subject.icon] ?? BookOpen;
   const learnHref = firstLearnHref(subject);
   const chapterCount = subject.categories.reduce((n, c) => n + c.items.length, 0);
   const color = subjectColor(subject.id);
@@ -98,7 +91,8 @@ function BookCard({ subject }: { subject: Subject }) {
             pointerEvents: "none",
           }}
         />
-        <Icon
+        <SubjectIcon
+          iconName={subject.icon}
           size={150}
           style={{
             position: "absolute",
@@ -110,7 +104,7 @@ function BookCard({ subject }: { subject: Subject }) {
           }}
         />
         <div style={{ position: "relative", zIndex: 1 }}>
-          <Icon size={30} style={{ color }} />
+          <SubjectIcon iconName={subject.icon} size={30} style={{ color }} />
         </div>
         <div style={{ marginTop: "auto", position: "relative", zIndex: 1 }}>
           <div style={{ fontSize: 16.5, fontWeight: 700, color: "var(--ink)", lineHeight: 1.25 }}>

@@ -1,4 +1,5 @@
 import type { ContentTree } from '@/lib/types/content';
+import { subjectHeader } from './subjects.registry';
 import { probabilityDetailItems, probabilityRecordings } from './probability-detail';
 import { modernHistoryDetailItems, modernHistoryRecordings } from './modern-history-detail';
 import { modernHistoryTextbookItems } from './modern-history-textbook';
@@ -125,9 +126,7 @@ const maogaiKaoqianMoniItems = [
 export const contentTree: ContentTree = {
   subjects: [
     {
-      id: 'probability',
-      name: '概率论与数理统计',
-      icon: 'Calculator',
+      ...subjectHeader('probability'),
       categories: [
         {
           id: 'textbook',
@@ -196,9 +195,7 @@ export const contentTree: ContentTree = {
       ],
     },
     {
-      id: 'physics',
-      name: '大学物理',
-      icon: 'Atom',
+      ...subjectHeader('physics'),
       categories: [
         { id: 'textbook', name: '教材', items: [{ id: 'main', title: '大学物理（教材）', type: 'document', status: 'stub' }] },
         { id: 'detail', name: '详解', items: physicsDetailItems },
@@ -273,9 +270,7 @@ export const contentTree: ContentTree = {
       ],
     },
     {
-      id: 'chemistry',
-      name: '有机化学',
-      icon: 'FlaskConical',
+      ...subjectHeader('chemistry'),
       categories: [
         { id: 'textbook', name: '教材', items: [{ id: 'main', title: '有机化学（教材）', type: 'document', status: 'stub' }] },
         {
@@ -343,9 +338,7 @@ export const contentTree: ContentTree = {
       ],
     },
     {
-      id: 'modern-history',
-      name: '中国近现代史纲要',
-      icon: 'BookOpen',
+      ...subjectHeader('modern-history'),
       categories: [
         { id: 'textbook', name: '教材', items: modernHistoryTextbookItems },
         {
@@ -400,9 +393,7 @@ export const contentTree: ContentTree = {
       ],
     },
     {
-      id: 'maogai',
-      name: '毛泽东思想和中国特色社会主义理论体系概论',
-      icon: 'Scale',
+      ...subjectHeader('maogai'),
       categories: [
         { id: 'textbook', name: '教材', items: maogaiTextbookItems },
         {
@@ -459,39 +450,27 @@ export const contentTree: ContentTree = {
       ],
     },
     {
-      id: 'cell-biology',
-      name: '医学细胞生物学',
-      icon: 'Microscope',
+      ...subjectHeader('cell-biology'),
       categories: sophomoreCategorySkeleton(cellBiologyTextbookItems),
     },
     {
-      id: 'biochemistry',
-      name: '生物化学与分子生物学',
-      icon: 'Dna',
+      ...subjectHeader('biochemistry'),
       categories: sophomoreCategorySkeleton(biochemistryTextbookItems),
     },
     {
-      id: 'anatomy',
-      name: '系统解剖学',
-      icon: 'Bone',
+      ...subjectHeader('anatomy'),
       categories: sophomoreCategorySkeleton(anatomyTextbookItems),
     },
     {
-      id: 'histology',
-      name: '组织学与胚胎学',
-      icon: 'Layers',
+      ...subjectHeader('histology'),
       categories: sophomoreCategorySkeleton(histologyTextbookItems),
     },
     {
-      id: 'instrumental-analysis',
-      name: '仪器分析',
-      icon: 'ScanLine',
+      ...subjectHeader('instrumental-analysis'),
       categories: sophomoreCategorySkeleton(instrumentalAnalysisTextbookItems),
     },
     {
-      id: 'other',
-      name: '其他',
-      icon: 'FolderOpen',
+      ...subjectHeader('other'),
       categories: [
         {
           id: 'english',

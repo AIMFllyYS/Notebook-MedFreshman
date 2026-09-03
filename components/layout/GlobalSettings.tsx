@@ -14,19 +14,10 @@ import {
   Trash2,
   Palette,
   Keyboard,
-  Calculator,
-  Atom,
-  FlaskConical,
-  BookOpen,
-  ScrollText,
-  Folder,
-  Microscope,
-  Dna,
-  Bone,
 } from "lucide-react";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
 import { navTree } from "@/lib/content-data/nav";
-import { SUBJECT_ICONS } from "@/lib/constants/subjects";
+import SubjectIcon from "@/components/shared/SubjectIcon";
 import { useTheme } from "@/lib/hooks/useTheme";
 import { FONT_CHOICES } from "@/lib/theme/appearance";
 import {
@@ -45,19 +36,6 @@ import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 import { SHORTCUTS } from "@/lib/keyboard/shortcuts";
 
-const SUBJECT_ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
-  Calculator,
-  Atom,
-  FlaskConical,
-  BookOpen,
-  ScrollText,
-  Folder,
-  Microscope,
-  Dna,
-  Bone,
-  Layers,
-};
-
 const SUBJECT_NAME: Record<string, string> = Object.fromEntries(
   navTree.subjects.map((s) => [s.id, s.name]),
 );
@@ -66,7 +44,6 @@ const SUBJECT_ORDER: string[] = navTree.subjects.map((s) => s.id);
 interface SubjectGroup {
   id: string;
   name: string;
-  iconName: string;
   items: ProgressEntry[];
   avgBest: number;
 }
@@ -91,7 +68,6 @@ function groupBySubject(entries: ProgressEntry[]): SubjectGroup[] {
     return {
       id,
       name: SUBJECT_NAME[id] ?? id,
-      iconName: SUBJECT_ICONS[id as keyof typeof SUBJECT_ICONS] ?? "Folder",
       items,
       avgBest,
     };
@@ -333,11 +309,10 @@ export default function GlobalSettings({
               ) : (
                 <div className="flex flex-col gap-3.5">
                   {groups.map((g) => {
-                    const Icon = SUBJECT_ICON_MAP[g.iconName] ?? Folder;
                     return (
                       <div key={g.id} className="flex flex-col gap-1.5">
                         <div className="flex items-center gap-2 px-0.5">
-                          <Icon size={15} style={{ color: "var(--md-sys-color-primary)" }} />
+                          <SubjectIcon subjectId={g.id} size={15} style={{ color: "var(--md-sys-color-primary)" }} />
                           <span className="text-[13px] font-bold text-[var(--md-sys-color-on-surface)]">
                             {g.name}
                           </span>

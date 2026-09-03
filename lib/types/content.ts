@@ -1,39 +1,13 @@
 // 多科内容树类型定义 —— 科目 / 分类 / 内容项层级，驱动多科导航与 AI 工具。
+// SubjectId 与合法学科列表由 lib/content-data/subjects.registry.ts 派生，此处仅 re-export 保持旧 import 路径可用。
 
-export type SubjectId =
-  | 'probability'
-  | 'physics'
-  | 'chemistry'
-  | 'modern-history'
-  | 'maogai'
-  | 'other'
-  | 'cell-biology'
-  | 'biochemistry'
-  | 'anatomy'
-  | 'histology'
-  | 'instrumental-analysis';
+export type { SubjectId } from '@/lib/content-data/subjects.registry';
+export { SUBJECT_IDS, isSubjectId } from '@/lib/content-data/subjects.registry';
+import type { SubjectId } from '@/lib/content-data/subjects.registry';
+
 export type CategoryId = string;
 
 export type RenderType = 'markdown' | 'html' | 'component';
-
-/** 合法科目的单一真相源，供路由运行时校验复用。 */
-export const SUBJECT_IDS: readonly SubjectId[] = [
-  'probability',
-  'physics',
-  'chemistry',
-  'modern-history',
-  'maogai',
-  'other',
-  'cell-biology',
-  'biochemistry',
-  'anatomy',
-  'histology',
-  'instrumental-analysis',
-];
-
-export function isSubjectId(value: string | undefined | null): value is SubjectId {
-  return value != null && (SUBJECT_IDS as readonly string[]).includes(value);
-}
 
 export interface Subject {
   id: SubjectId;

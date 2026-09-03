@@ -9,21 +9,10 @@ import {
   Sun,
   Moon,
   Settings,
-  Calculator,
-  Atom,
-  FlaskConical,
-  BookOpen,
-  ScrollText,
-  Scale,
   PanelLeftClose,
   PanelLeft,
   ListTree,
   Home,
-  Microscope,
-  Dna,
-  Bone,
-  Layers,
-  ScanLine,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import FileTree from "./FileTree";
@@ -34,35 +23,14 @@ import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
 import { navTree } from "@/lib/content-data/nav";
-import { SUBJECT_ICONS } from "@/lib/constants/subjects";
 import { filterSubjectsByYear } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
+import SubjectIcon from "@/components/shared/SubjectIcon";
 import { EASE } from "@/lib/motion";
-import type { SubjectId, ContentItem } from "@/lib/types/content";
+import type { ContentItem } from "@/lib/types/content";
 
 let savedSidebarScroll = 0;
-
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
-  Calculator,
-  Atom,
-  FlaskConical,
-  BookOpen,
-  ScrollText,
-  Scale,
-  Folder,
-  FolderOpen,
-  Microscope,
-  Dna,
-  Bone,
-  Layers,
-  ScanLine,
-};
-
-function SubjectIcon({ name, size = 15 }: { name: string; size?: number }) {
-  const Icon = ICON_MAP[name] ?? Folder;
-  return <Icon size={size} />;
-}
 
 export default function SubjectSidebar() {
   const router = useRouter();
@@ -268,7 +236,6 @@ export default function SubjectSidebar() {
             <div ref={scrollRef} className="scroll-y flex-1" style={{ padding: "4px 0" }}>
               {visibleSubjects.map((subject) => {
           const isSubjectExpanded = expandedIds.has(subject.id);
-          const iconName = SUBJECT_ICONS[subject.id as SubjectId] ?? "Folder";
 
           return (
             <div key={subject.id}>
@@ -304,7 +271,7 @@ export default function SubjectSidebar() {
                   <ChevronRight size={14} />
                 </span>
                 <span className="inline-flex shrink-0 items-center justify-center" style={{ width: 18, height: 18 }}>
-                  <SubjectIcon name={iconName} />
+                  <SubjectIcon subjectId={subject.id} size={15} />
                 </span>
                 <span className="truncate">{subject.name}</span>
               </button>
