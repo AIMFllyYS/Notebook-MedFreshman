@@ -1,30 +1,38 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useId } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { GraduationCap } from "lucide-react";
+import { motion } from "framer-motion";
 import {
-  ACADEMIC_YEAR_IDS,
+  ACADEMIC_YEAR_GRADES,
   ACADEMIC_YEAR_LABELS,
   academicYearOfSubject,
+  gradeOfAcademicYear,
+  termOfAcademicYear,
+  type AcademicTerm,
+  type AcademicYearGrade,
   type AcademicYearId,
 } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { DURATION, EASE } from "@/lib/motion";
 
 /**
- * 「切换学年」控件。设置面板用完整样式，侧栏用紧凑样式。
- * 切到另一学年时，若当前路由属于被隐藏科目，回到首页（不删文件）。
+ * 两级学年选择：先年级（大一～大五），再学期（上 / 下）。
+ * 书架用与学科卡相同的列宽横滑对齐；设置面板用紧凑五列。
  */
 export default function AcademicYearSwitcher({
-  variant = "full",
+  variant = "compact",
 }: {
-  variant?: "full" | "compact";
+  variant?: "shelf" | "compact";
 }) {
   const year = useAcademicYear((s) => s.year);
   const setYear = useAcademicYear((s) => s.setYear);
   const hydrate = useAcademicYear((s) => s.hydrate);
   const router = useRouter();
   const pathname = usePathname();
+  const motionId = useId();
+  const currentGrade = gradeOfAcademicYear(year);
+  const currentTerm = termOfAcademicYear(year);
 
   useEffect(() => {
     hydrate();
@@ -39,104 +47,158 @@ export default function AcademicYearSwitcher({
     }
   };
 
-  if (variant === "compact") {
-    return (
-      <div
-        role="group"
-        aria-label="切换学年"
-        style={{
-          display: "flex",
-          gap: 4,
-          margin: "4px 8px 6px",
-          padding: 3,
-          borderRadius: 9,
-          background: "var(--md-sys-color-surface-container)",
-          border: "1px solid var(--md-sys-color-outline-variant)",
-        }}
-      >
-        {ACADEMIC_YEAR_IDS.map((id) => {
-          const active = year === id;
-          return (
-            <button
-              key={id}
-              type="button"
-              aria-pressed={active}
-              onClick={() => applyYear(id)}
-              className="press"
-              style={{
-                flex: 1,
-                border: "none",
-                cursor: "pointer",
-                borderRadius: 7,
-                padding: "5px 6px",
-                fontSize: 11.5,
-                fontWeight: 650,
-                background: active ? "var(--md-sys-color-primary)" : "transparent",
-                color: active
-                  ? "var(--md-sys-color-on-primary)"
-                  : "var(--md-sys-color-on-surface-variant)",
-              }}
-            >
-              {ACADEMIC_YEAR_LABELS[id]}
-            </button>
-          );
-        })}
-      </div>
-    );
-  }
+  const applyGrade = (group: AcademicYearGrade) => {
+    applyYear(currentTerm === "fall" ? group.fall : group.spring);
+  };
+
+  const applyTerm = (term: AcademicTerm) => {
+    applyYear(term === "fall" ? currentGrade.fall : currentGrade.spring);
+  };
+
+  const thumbTransition = {
+    duration: DURATION.normal,
+    ease: EASE.decelerate,
+  };
+
+  const shelf = variant === "shelf";
 
   return (
     <div
       role="group"
       aria-label="切换学年"
+      className={shelf ? "year-switcher-shelf" : undefined}
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: 8,
-        padding: "12px 12px 10px",
-        borderRadius: "var(--md-sys-shape-corner-large,16px)",
-        background: "var(--md-sys-color-surface-container)",
-        border: "1px solid var(--md-sys-color-outline-variant)",
+        gap: 12,
       }}
     >
       <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          color: "var(--md-sys-color-on-surface)",
-        }}
+        role="radiogroup"
+        aria-label="年级"
+        className={shelf ? "hide-scrollbar year-switcher-shelf-grades" : "hide-scrollbar"}
+        style={
+          shelf
+            ? undefined
+            : {
+                display: "grid",
+                gridTemplateColumns: "repeat(5, minmax(56px, 1fr))",
+                gap: 8,
+                overflowX: "auto",
+              }
+        }
       >
-        <GraduationCap size={16} />
-        <span style={{ fontSize: 13, fontWeight: 700 }}>切换学年</span>
-      </div>
-      <div style={{ display: "flex", gap: 6 }}>
-        {ACADEMIC_YEAR_IDS.map((id) => {
-          const active = year === id;
+        {ACADEMIC_YEAR_GRADES.map((group) => {
+          const selected = group.grade === currentGrade.grade;
           return (
             <button
-              key={id}
+              key={group.grade}
               type="button"
-              aria-pressed={active}
-              onClick={() => applyYear(id)}
-              className="press"
+              role="radio"
+              aria-checked={selected}
+              aria-label={group.shortLabel}
+              onClick={() => applyGrade(group)}
+              className="press year-switcher-term"
               style={{
-                flex: 1,
+                position: "relative",
+                isolation: "isolate",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: shelf ? "flex-start" : "center",
+                height: shelf ? 48 : 40,
                 border: "none",
                 cursor: "pointer",
-                borderRadius: 999,
-                padding: "7px 10px",
-                fontSize: 12.5,
-                fontWeight: 650,
-                background: active
-                  ? "var(--md-sys-color-primary)"
-                  : "var(--md-sys-color-surface-container-highest)",
-                color: active
-                  ? "var(--md-sys-color-on-primary)"
-                  : "var(--md-sys-color-on-surface)",
+                borderRadius: 12,
+                padding: shelf ? "0 16px" : 0,
+                fontSize: shelf ? 20 : 14,
+                fontWeight: selected ? 800 : 650,
+                letterSpacing: 0,
+                color: "var(--ink)",
+                background: "var(--md-sys-color-surface-container-high)",
+                boxShadow: "inset 0 0 0 1px var(--line)",
               }}
             >
-              {ACADEMIC_YEAR_LABELS[id]}
+              {selected && (
+                <motion.span
+                  layoutId={`${motionId}-grade`}
+                  transition={thumbTransition}
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    borderRadius: 12,
+                    background: "var(--md-sys-color-primary-container)",
+                    boxShadow: "inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 28%, var(--line))",
+                    zIndex: 0,
+                    pointerEvents: "none",
+                  }}
+                />
+              )}
+              <span style={{ position: "relative", zIndex: 1 }}>{group.shortLabel}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div
+        role="radiogroup"
+        aria-label="学期"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 8,
+          padding: 4,
+          borderRadius: 14,
+          background: "var(--md-sys-color-surface-container)",
+          border: "1px solid var(--line)",
+        }}
+      >
+        {(
+          [
+            { term: "fall" as const, short: "上学期", id: currentGrade.fall },
+            { term: "spring" as const, short: "下学期", id: currentGrade.spring },
+          ] as const
+        ).map((item) => {
+          const selected = currentTerm === item.term;
+          return (
+            <button
+              key={item.term}
+              type="button"
+              role="radio"
+              aria-checked={selected}
+              aria-label={ACADEMIC_YEAR_LABELS[item.id]}
+              onClick={() => applyTerm(item.term)}
+              className="press year-switcher-term"
+              style={{
+                position: "relative",
+                isolation: "isolate",
+                height: 42,
+                border: "none",
+                cursor: "pointer",
+                borderRadius: 10,
+                padding: 0,
+                fontSize: 14,
+                fontWeight: selected ? 750 : 600,
+                letterSpacing: 0,
+                color: "var(--ink)",
+                background: "transparent",
+              }}
+            >
+              {selected && (
+                <motion.span
+                  layoutId={`${motionId}-term`}
+                  transition={thumbTransition}
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    borderRadius: 10,
+                    background: "var(--md-sys-color-surface-container-lowest)",
+                    boxShadow: "0 1px 3px color-mix(in srgb, var(--ink) 14%, transparent)",
+                    zIndex: 0,
+                    pointerEvents: "none",
+                  }}
+                />
+              )}
+              <span style={{ position: "relative", zIndex: 1 }}>{item.short}</span>
             </button>
           );
         })}

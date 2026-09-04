@@ -4,12 +4,16 @@ import fs from "node:fs";
 import path from "node:path";
 import { contentTree } from "@/lib/content-data/manifest";
 import {
+  ACADEMIC_YEAR_GRADES,
   ACADEMIC_YEAR_IDS,
   ACADEMIC_YEAR_LABELS,
   academicYearOfSubject,
+  bookshelfColumnWidth,
   filterSubjectsByYear,
   filterContentTreeByYear,
+  gradeOfAcademicYear,
   subjectVisibleToAgent,
+  termOfAcademicYear,
 } from "@/lib/constants/academic-year";
 import { subjectsOfYear } from "@/lib/content-data/subjects.registry";
 import {
@@ -19,10 +23,33 @@ import {
 
 const ROOT = process.cwd();
 
-test("学年值存在：大一下学期 / 大二上学期", () => {
-  assert.deepEqual([...ACADEMIC_YEAR_IDS], ["freshman-2", "sophomore-1"]);
+test("学年值覆盖大一到大五上下学期", () => {
+  assert.deepEqual([...ACADEMIC_YEAR_IDS], [
+    "freshman-1",
+    "freshman-2",
+    "sophomore-1",
+    "sophomore-2",
+    "junior-1",
+    "junior-2",
+    "senior-1",
+    "senior-2",
+    "fifth-1",
+    "fifth-2",
+  ]);
   assert.equal(ACADEMIC_YEAR_LABELS["freshman-2"], "大一下学期");
   assert.equal(ACADEMIC_YEAR_LABELS["sophomore-1"], "大二上学期");
+  assert.equal(ACADEMIC_YEAR_LABELS["fifth-2"], "大五下学期");
+  assert.equal(ACADEMIC_YEAR_GRADES.length, 5);
+  assert.equal(gradeOfAcademicYear("sophomore-1").shortLabel, "大二");
+  assert.equal(bookshelfColumnWidth(663), (663 - 40) / 3);
+  assert.equal(termOfAcademicYear("sophomore-1"), "fall");
+  assert.equal(termOfAcademicYear("freshman-2"), "spring");
+});
+
+test("空学期过滤结果为空，且不误伤已有学期", () => {
+  const empty = filterSubjectsByYear(contentTree.subjects, "junior-1");
+  assert.equal(empty.length, 0);
+  assert.ok(filterSubjectsByYear(contentTree.subjects, "sophomore-1").length > 0);
 });
 
 test("切换到大二上学期后导航树只有大二新书，不含大一科目", () => {

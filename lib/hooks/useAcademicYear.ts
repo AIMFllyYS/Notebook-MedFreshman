@@ -36,8 +36,8 @@ interface AcademicYearState {
 }
 
 /**
- * 当前学年单一真相源。设置面板与侧栏共用；落地 localStorage。
- * 默认大二上学期（当前学期），切换回大一下学期只是隐藏大二科目。
+ * 当前学年单一真相源。书架顶栏与设置共用；落地 localStorage。
+ * 默认大二上学期（当前学期）；切到尚无教材的学期只显示空书架。
  */
 export const useAcademicYear = create<AcademicYearState>((set) => ({
   year: DEFAULT_ACADEMIC_YEAR,

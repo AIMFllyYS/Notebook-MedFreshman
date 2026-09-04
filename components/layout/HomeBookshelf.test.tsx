@@ -29,9 +29,18 @@ describe("HomeBookshelf year filter", () => {
   it("切换学年 to 大一下学期 restores freshman books", async () => {
     const user = userEvent.setup();
     render(<HomeBookshelf />);
-    await user.click(screen.getByRole("button", { name: "大一下学期" }));
+    await user.click(screen.getByRole("radio", { name: "大一" }));
+    await user.click(screen.getByRole("radio", { name: "大一下学期" }));
     expect(screen.getByText("概率论与数理统计")).toBeInTheDocument();
     expect(screen.getByText("有机化学")).toBeInTheDocument();
+    expect(screen.queryByText("系统解剖学")).not.toBeInTheDocument();
+  });
+
+  it("空学期显示空书架说明", async () => {
+    const user = userEvent.setup();
+    render(<HomeBookshelf />);
+    await user.click(screen.getByRole("radio", { name: "大三" }));
+    expect(screen.getByText("这一学期还没有课程")).toBeInTheDocument();
     expect(screen.queryByText("系统解剖学")).not.toBeInTheDocument();
   });
 });

@@ -393,6 +393,59 @@ body {
   display: none;
 }
 
+.year-switcher-term:focus {
+  outline: none;
+}
+
+.year-switcher-term:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 与书架 auto-fill minmax(186px, 1fr) + gap 20 同一套列数断点 */
+.year-switcher-shelf {
+  container-type: inline-size;
+  container-name: year-shelf;
+}
+
+.year-switcher-shelf-grades {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 36px), transparent);
+}
+
+.year-switcher-shelf-grades > .year-switcher-term {
+  flex: 0 0 calc(100cqi);
+  scroll-snap-align: start;
+}
+
+@container year-shelf (min-width: 392px) {
+  .year-switcher-shelf-grades > .year-switcher-term {
+    flex: 0 0 calc((100cqi - 20px) / 2);
+  }
+}
+
+@container year-shelf (min-width: 598px) {
+  .year-switcher-shelf-grades > .year-switcher-term {
+    flex: 0 0 calc((100cqi - 40px) / 3);
+  }
+}
+
+@container year-shelf (min-width: 804px) {
+  .year-switcher-shelf-grades > .year-switcher-term {
+    flex: 0 0 calc((100cqi - 60px) / 4);
+  }
+}
+
+@container year-shelf (min-width: 1010px) {
+  .year-switcher-shelf-grades > .year-switcher-term {
+    flex: 0 0 calc((100cqi - 80px) / 5);
+  }
+}
+
 /* ── 动画工具类 ────────────────────────────── */
 .animate-fade-up {
   animation: fadeUp var(--duration-normal) var(--ease-out) both;

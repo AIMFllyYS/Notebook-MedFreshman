@@ -32,14 +32,14 @@ test("registry：icon 全部在白名单内", () => {
   }
 });
 
-test("registry：year 合法且每个学年至少一门学科", () => {
+test("registry：year 合法；已有内容的学期都有学科", () => {
   for (const s of SUBJECT_REGISTRY) {
     assert.ok((ACADEMIC_YEAR_IDS as readonly string[]).includes(s.year), `${s.id} year 非法`);
     assert.equal(academicYearOfSubject(s.id), s.year);
   }
-  for (const y of ACADEMIC_YEAR_IDS) {
-    assert.ok(subjectsOfYear(y).length > 0, `学年 ${y} 没有学科`);
-  }
+  assert.ok(subjectsOfYear("freshman-2").length > 0, "大一下应有学科");
+  assert.ok(subjectsOfYear("sophomore-1").length > 0, "大二上应有学科");
+  assert.equal(subjectsOfYear("junior-1").length, 0, "大三上尚无学科是合法空学期");
 });
 
 test("registry ↔ manifest：学科集合一致，name/icon 由 registry 派生", () => {

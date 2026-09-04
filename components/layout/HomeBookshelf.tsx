@@ -7,7 +7,7 @@ import { contentTree } from "@/lib/content-data/manifest";
 import { firstLearnHref } from "@/lib/content-data";
 import { subjectColor } from "@/lib/content-data/subjects.registry";
 import SubjectIcon from "@/components/shared/SubjectIcon";
-import { filterSubjectsByYear } from "@/lib/constants/academic-year";
+import { BOOKSHELF_GRID_COLUMNS, BOOKSHELF_GRID_GAP, filterSubjectsByYear } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import type { Subject } from "@/lib/types/content";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
@@ -137,31 +137,47 @@ export default function HomeBookshelf() {
   return (
     <div className="scroll-y" style={{ height: "100%", background: "var(--bg-app)" }}>
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "40px 28px 56px" }}>
-        <header style={{ marginBottom: 20, display: "flex", flexWrap: "wrap", gap: 16, alignItems: "flex-end", justifyContent: "space-between" }}>
-          <div>
-            <h1 style={{ fontSize: 26, fontWeight: 800, color: "var(--ink)", letterSpacing: "-0.01em" }}>
-              期末复习工作站
-            </h1>
-            <p style={{ fontSize: 14, color: "var(--ink-soft)", marginTop: 8, lineHeight: 1.7 }}>
-              选一本书：<b>开始学习</b> 进入正文，<b>开始复习</b> 翻看你划词 / 右键「记录」生成的记忆卡。
-            </p>
-          </div>
-          <div style={{ minWidth: 280, flex: "0 1 320px" }}>
-            <AcademicYearSwitcher />
-          </div>
+        <header style={{ marginBottom: 22 }}>
+          <h1 style={{ fontSize: 26, fontWeight: 800, color: "var(--ink)", letterSpacing: "-0.01em" }}>
+            期末复习工作站
+          </h1>
+          <p style={{ fontSize: 14, color: "var(--ink-soft)", marginTop: 8, lineHeight: 1.7 }}>
+            选一本书：<b>开始学习</b> 进入正文，<b>开始复习</b> 翻看你划词 / 右键「记录」生成的记忆卡。
+          </p>
         </header>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(186px, 1fr))",
-            gap: 20,
-          }}
-        >
-          {subjects.map((subject) => (
-            <BookCard key={subject.id} subject={subject} />
-          ))}
+        <div style={{ marginBottom: BOOKSHELF_GRID_GAP }}>
+          <AcademicYearSwitcher variant="shelf" />
         </div>
+
+        {subjects.length === 0 ? (
+          <div
+            style={{
+              padding: "28px 22px",
+              borderRadius: 16,
+              border: "1px dashed var(--line)",
+              background: "var(--md-sys-color-surface-container-low)",
+              color: "var(--ink)",
+            }}
+          >
+            <div style={{ fontSize: 16, fontWeight: 750 }}>这一学期还没有课程</div>
+            <p style={{ fontSize: 13.5, color: "var(--ink-soft)", marginTop: 8, lineHeight: 1.7 }}>
+              点选上方年级和学期。大一、大二的课仍在磁盘上，不会被删掉。
+            </p>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: BOOKSHELF_GRID_COLUMNS,
+              gap: BOOKSHELF_GRID_GAP,
+            }}
+          >
+            {subjects.map((subject) => (
+              <BookCard key={subject.id} subject={subject} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

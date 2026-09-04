@@ -25,7 +25,6 @@ import { useTheme } from "@/lib/hooks/useTheme";
 import { navTree } from "@/lib/content-data/nav";
 import { filterSubjectsByYear } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
-import AcademicYearSwitcher from "./AcademicYearSwitcher";
 import SubjectIcon from "@/components/shared/SubjectIcon";
 import { EASE } from "@/lib/motion";
 import type { ContentItem } from "@/lib/types/content";
@@ -229,8 +228,6 @@ export default function SubjectSidebar() {
             >
               <Home size={15} /> 首页
             </button>
-
-            <AcademicYearSwitcher variant="compact" />
 
             {/* 科目列表 */}
             <div ref={scrollRef} className="scroll-y flex-1" style={{ padding: "4px 0" }}>

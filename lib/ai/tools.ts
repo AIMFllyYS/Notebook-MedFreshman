@@ -22,15 +22,17 @@ import { subjectsOfYear } from "@/lib/content-data/subjects.registry";
 
 export const IMAGE_SEARCH_MAX_TOTAL = 20;
 
-/** 由 registry 拼出「大二上：细胞生物/生化/…；大一下：概率论/物理/…」，新增学科无需改此处。 */
+/** 由 registry 拼出「大二上：细胞生物/生化/…；大一下：概率论/物理/…」。空学期不写入提示词。 */
 function describeSubjectsByYear(): string {
   return ACADEMIC_YEAR_IDS.map((year) => {
     const names = subjectsOfYear(year)
       .filter((s) => s.id !== "other")
-      .map((s) => s.shortName)
-      .join("/");
-    return `${ACADEMIC_YEAR_LABELS[year].replace("学期", "")}：${names}`;
-  }).join("；");
+      .map((s) => s.shortName);
+    if (names.length === 0) return null;
+    return `${ACADEMIC_YEAR_LABELS[year].replace("学期", "")}：${names.join("/")}`;
+  })
+    .filter((part): part is string => part !== null)
+    .join("；");
 }
 
 export interface ToolContext {

@@ -88,9 +88,10 @@ describe("GlobalSettings", () => {
     const user = userEvent.setup();
     renderSettings();
     expect(screen.getByRole("group", { name: "切换学年" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "大一下学期" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "大二上学期" })).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "大一下学期" }));
+    expect(screen.getByRole("radio", { name: "大二上学期" })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "大五" })).toBeInTheDocument();
+    await user.click(screen.getByRole("radio", { name: "大一" }));
+    await user.click(screen.getByRole("radio", { name: "大一下学期" }));
     const { useAcademicYear } = await import("@/lib/hooks/useAcademicYear");
     expect(useAcademicYear.getState().year).toBe("freshman-2");
     expect(localStorage.getItem("gailvlun-academic-year")).toBe("freshman-2");
