@@ -53,7 +53,7 @@ export default function ChatThread({
   };
 
   const displayMessages = useMemo(
-    () => messages.filter((m) => m.role !== 'tool'),
+    () => messages.filter((m) => m.role !== 'system'),
     [messages],
   );
   const lastDisplayId = displayMessages[displayMessages.length - 1]?.id;

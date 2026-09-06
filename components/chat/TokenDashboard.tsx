@@ -9,6 +9,7 @@ import { useSettings } from '@/lib/hooks/useSettings';
 import { getModelInfoWithCustom } from '@/lib/ai/models';
 import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { estimateTokens } from '@/lib/context/estimateTokens';
+import { getMessageText } from '@/lib/chat/messageParts';
 import { useDraggable } from '@/lib/hooks/useDraggable';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { useOverlayRegistration } from '@/lib/keyboard/useOverlayRegistration';
@@ -128,13 +129,13 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
       })();
       const newMsgs = lastAssistantIdx >= 0 ? msgs.slice(lastAssistantIdx + 1) : msgs;
       const newText = newMsgs
-        .map((m) => (typeof m.content === 'string' ? m.content : JSON.stringify(m.content ?? '')))
+        .map((m) => getMessageText(m))
         .join('');
       const newTokens = estimateTokens(newText);
       setCurrentContext(serverCtx + newTokens);
     } else {
       const text = msgs
-        .map((m) => (typeof m.content === 'string' ? m.content : JSON.stringify(m.content ?? '')))
+        .map((m) => getMessageText(m))
         .join('');
       const est = estimateTokens(text) + 3000;
       setCurrentContext(est);

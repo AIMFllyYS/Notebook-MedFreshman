@@ -10,6 +10,7 @@ import {
 import { DiagramCanvas, isDiagramMode } from '@/components/canvas';
 import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { replaceCanvasBlock } from '@/lib/chat/rendering/canvasBlockPatch';
+import { getAnswerText, withAnswerText } from '@/lib/chat/messageParts';
 import type { CanvasBlock } from '@/lib/canvas/types';
 
 // ----------------------------------------------------
@@ -57,9 +58,10 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
     const message = state.messagesById[sessionId]?.find((item) => item.id === messageId);
     if (!message) return;
 
-    const content = replaceCanvasBlock(message.content, blockIndex, nextBlock);
-    if (content !== message.content) {
-      state.updateMessage(sessionId, messageId, { content });
+    const current = getAnswerText(message);
+    const content = replaceCanvasBlock(current, blockIndex, nextBlock);
+    if (content !== current) {
+      state.updateMessage(sessionId, messageId, { parts: withAnswerText(message, content) });
     }
   }, [repairContext]);
 

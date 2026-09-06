@@ -1,12 +1,11 @@
-import type { ChatAttachment, ChatMessage } from '@/lib/types/chat';
+import type { ChatAttachment, ChatMessage, ChatMessagePart } from '@/lib/types/chat';
+import { hasVisibleContent } from '@/lib/chat/messageParts';
 
 export const DEFAULT_MAX_TURNS = Number.MAX_SAFE_INTEGER;
 export const SOFT_LIMIT_MAX_TURNS = 16;
 
-export interface RequestMessage {
-  role: 'user' | 'assistant';
-  content: string | Array<Record<string, unknown>>;
-}
+/** 发给 /api/chat 的消息：UIMessage 形状，图片附件已转成 file part（data URL）。 */
+export type RequestMessage = Pick<ChatMessage, 'id' | 'role' | 'parts'>;
 
 export interface BuildRequestMessagesResult {
   messages: RequestMessage[];
@@ -20,21 +19,21 @@ export interface BuildRequestMessagesOptions {
   preserveAttachmentHistory?: boolean;
 }
 
+/**
+ * 历史消息只保留 text / file parts：思考、工具调用、data 等不回灌模型，
+ * 与迁移前「只发 user/assistant 文本」的 token 行为一致，也利于 prefix 缓存。
+ */
 function toRequestMessage(m: ChatMessage): RequestMessage {
-  if (m.role === 'user' && m.attachments?.length) {
-    const imageParts = m.attachments
+  const parts: ChatMessagePart[] = m.parts.filter(
+    (p) => (p.type === 'text' && p.text.trim().length > 0) || p.type === 'file',
+  );
+  if (m.role === 'user') {
+    const imageParts: ChatMessagePart[] = (m.attachments ?? [])
       .filter((a): a is ChatAttachment => 'base64' in a && !!a.base64)
-      .map((a) => ({
-        type: 'image_url',
-        image_url: { url: a.base64 },
-      }));
-    const parts: Array<Record<string, unknown>> = [
-      { type: 'text', text: m.content || '' },
-      ...imageParts,
-    ];
-    return { role: 'user', content: parts };
+      .map((a) => ({ type: 'file', mediaType: a.mimeType, url: a.base64 }));
+    parts.push(...imageParts);
   }
-  return { role: m.role as 'user' | 'assistant', content: m.content || '' };
+  return { id: m.id, role: m.role, parts };
 }
 
 /**
@@ -51,9 +50,7 @@ export function buildRequestMessages(
   const preserveAttachmentHistory = opts.preserveAttachmentHistory !== false;
   const eligible = sessionMessages.filter((m) => {
     if (m.role !== 'user' && m.role !== 'assistant') return false;
-    if (m.role === 'assistant' && !m.content?.trim() && !m.toolCalls?.length && !m.reasoningContent?.trim()) {
-      return false;
-    }
+    if (m.role === 'assistant' && !hasVisibleContent(m)) return false;
     return true;
   });
   if (eligible.length <= maxTurns) {

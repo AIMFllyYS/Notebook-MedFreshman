@@ -10,6 +10,7 @@ import {
 } from '@/lib/storage/idbStorage';
 import { keys as idbKeys } from 'idb-keyval';
 import { createStore } from 'idb-keyval';
+import { getMessageText, getToolPartsByName, normalizeStoredMessages } from '@/lib/chat/messageParts';
 
 const DB_NAME = 'gailvlun-db';
 const STORE_NAME = 'keyval';
@@ -40,9 +41,8 @@ function isBrowser(): boolean {
 export function collectArtifactIdsFromMessages(messages: ChatMessage[]): string[] {
   const ids: string[] = [];
   for (const m of messages) {
-    if (!m.toolCalls) continue;
-    for (const tc of m.toolCalls) {
-      if (tc.artifactId) ids.push(tc.artifactId);
+    for (const part of getToolPartsByName(m, 'renderInteractive')) {
+      if (part.state === 'output-available' && part.output.artifactId) ids.push(part.output.artifactId);
     }
   }
   return ids;
@@ -58,7 +58,7 @@ export function buildSessionMeta(session: ChatSession): SessionMeta {
     kind: session.kind,
     context: session.context,
     messageCount: session.messages.length,
-    preview: lastUser?.content?.slice(0, 80),
+    preview: lastUser ? getMessageText(lastUser).slice(0, 80) : undefined,
     artifactIds: collectArtifactIdsFromMessages(session.messages),
   };
 }
@@ -91,7 +91,11 @@ export async function loadSessionMessages(sessionId: string): Promise<ChatMessag
   const raw = await idbStorage.getItem(chatSessionKey(sessionId));
   if (!raw) return null;
   try {
-    return JSON.parse(raw) as ChatMessage[];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return null;
+    // 旧扁平结构（content / reasoningContent / toolCalls）在读取时就地迁移为 parts；
+    // 下次保存自然写回新形状，无需单独的存储版本迁移。
+    return normalizeStoredMessages(parsed);
   } catch {
     return null;
   }
@@ -195,7 +199,9 @@ export async function migrateFromV1IfNeeded(): Promise<boolean> {
   const metas: SessionMeta[] = [];
   try {
     for (const session of sessions) {
-      const messages = await migrateAttachmentsInMessages(session.messages);
+      const messages = await migrateAttachmentsInMessages(
+        normalizeStoredMessages(session.messages as unknown[]),
+      );
       const saved = await saveSessionMessagesNow(session.id, messages);
       if (!saved) return false;
       metas.push(buildSessionMeta({ ...session, messages }));

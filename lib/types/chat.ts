@@ -1,4 +1,8 @@
-// AI 对话完整类型定义 —— 1:1 参考原 refer/dist/src/types/chat.ts，扩展多科上下文。
+// AI 对话完整类型定义。消息主体采用 AI SDK 的 UIMessage（有序 parts），
+// 在其上附加本项目的持久化字段（timestamp / attachments / followUpQuestions）。
+
+import type { UIMessage, UIMessagePart } from 'ai';
+import type { StudyTools } from '@/lib/ai/agent/toolTypes';
 
 export interface WebSearchSource {
   title: string;
@@ -10,47 +14,36 @@ export interface WebSearchSource {
   alt?: string;
 }
 
-export interface ToolCallBlock {
-  index?: number;
-  id: string;
-  name: string;
-  argumentsStr?: string;
-  arguments: Record<string, any>;
-  status: 'running' | 'success' | 'error';
-  result?: string;
-  executionTime?: number;
-  /** webSearch 专用：联网来源 + 是否命中缓存。 */
-  sources?: WebSearchSource[];
-  cacheHit?: boolean;
-  /** imageSearch 专用：图片来源提供者（如 'unsplash'）。 */
-  provider?: string;
-  /** renderInteractive 专用：生成的交互产物 id（点击「查看」打开弹窗）。 */
-  artifactId?: string;
-  /** renderInteractive 专用：演示标题。 */
-  title?: string;
-  /** renderInteractive 专用：生成时传入的 prompt 参数，用于前端展示生成依据。 */
-  prompt?: string;
-  /** renderInteractive 专用：发起生成时选中的模型 id，避免后续切换模型污染 artifact 请求。 */
-  artifactModelId?: string;
-  /** renderInteractive 专用：如果当前模型不支持 HTML 交互生成，前端显示该原因且不请求 /api/artifact。 */
-  artifactUnsupportedReason?: string;
-  /** searchNotes 专用：检索命中的笔记片段。 */
-  hits?: { title: string; path: string; snippet: string }[];
-  /** useSkill 专用：被调用的技能名称。 */
-  skill?: string;
-  /** generateImage 专用：生图会话 id（前端跨卡片/弹窗共享同一 session）。 */
-  imageGenId?: string;
-  /** generateImage 专用：AI 优化后的生图提示词。 */
-  imageGenPrompt?: string;
-  /** generateImage 专用：图片标题。 */
-  imageGenTitle?: string;
-  /** generateImage 专用：图片尺寸（如 1024x1024）。 */
-  imageGenSize?: string;
-  /** generateImage 专用：生成数量（1-4）。 */
-  imageGenCount?: number;
-  /** generateImage 专用：发起时选中的生图模型 id，批准后必须使用该模型。 */
-  imageModelId?: string;
+/** 单次请求的 token 用量（跨工具轮次已累加）。 */
+export interface UsageSummary {
+  promptTokens: number;
+  completionTokens: number;
+  cachedTokens: number;
+  totalTokens: number;
 }
+
+/** 服务端经 UI Message Stream 下发的自定义 data parts。 */
+export type StudyDataParts = {
+  /** 瞬时提示（如端点切换），不落库。 */
+  info: { message: string };
+  'context-breakdown': ContextBreakdown;
+  usage: UsageSummary;
+  followup: { questions: string[] };
+};
+
+/** UIMessage.metadata：本条消息的运行元信息。 */
+export interface StudyMessageMetadata {
+  thinkingEnabled?: boolean;
+  searchEnabled?: boolean;
+  cacheHit?: boolean;
+  /** 发起本条回复时选中的模型 id。 */
+  modelId?: string;
+  usage?: UsageSummary;
+  /** 从发送到流结束的耗时，供思考链头部展示「已思考 N 秒」。 */
+  durationMs?: number;
+}
+
+export type ChatMessagePart = UIMessagePart<StudyDataParts, StudyTools>;
 
 /** 上下文分项 token 统计（服务端按真实拼装精确计算，经 SSE 回传给上下文看板）。 */
 export interface ContextBreakdown {
@@ -94,21 +87,14 @@ export function isAttachmentRef(a: StoredChatAttachment): a is ChatAttachmentRef
   return 'id' in a && !('base64' in a);
 }
 
-export interface ChatMessage {
-  id: string;
-  role: 'user' | 'assistant' | 'system' | 'tool';
-  content: string;
+/**
+ * 会话消息 = AI SDK UIMessage（id / role / parts / metadata）+ 本项目持久化字段。
+ * 思考、工具调用、正文都按时间顺序存在 parts 里，渲染层据此生成思考链。
+ */
+export interface ChatMessage extends UIMessage<StudyMessageMetadata, StudyDataParts, StudyTools> {
   timestamp: number;
-  reasoningContent?: string;
-  toolCalls?: ToolCallBlock[];
-  toolCallId?: string;
   followUpQuestions?: string[];
   attachments?: StoredChatAttachment[];
-  metadata?: {
-    thinkingEnabled?: boolean;
-    searchEnabled?: boolean;
-    cacheHit?: boolean;
-  };
 }
 
 export interface ChatContext {

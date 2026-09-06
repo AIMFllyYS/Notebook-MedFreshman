@@ -38,7 +38,12 @@ function installBrowserMocks() {
 }
 
 function msg(id: string, content: string): ChatMessage {
-  return { id, role: "assistant", content, timestamp: Number(id.replace(/\D/g, "")) || 1 };
+  return { id, role: "assistant", parts: [{ type: "text", text: content }], timestamp: Number(id.replace(/\D/g, "")) || 1 };
+}
+
+function textOf(m: ChatMessage | undefined): string | undefined {
+  const part = m?.parts.find((p) => p.type === "text");
+  return part && part.type === "text" ? part.text : undefined;
 }
 
 function meta(id: string): SessionMeta {
@@ -103,7 +108,7 @@ test("deleteSession：删除 active 会话后加载新的 active 会话消息", 
   assert.equal(state.activeSessionId, "s2");
   assert.equal(state.sessionLoadState.s2, "loaded");
   assert.equal(state._activeMessagesReady, true);
-  assert.equal(state.messagesById.s2?.[0]?.content, "loaded");
+  assert.equal(textOf(state.messagesById.s2?.[0]), "loaded");
 });
 
 test("updateMessage：content-only 流式更新只写 session，不写 manifest", async () => {
@@ -119,10 +124,10 @@ test("updateMessage：content-only 流式更新只写 session，不写 manifest"
     _activeMessagesReady: true,
   });
 
-  useChatHistory.getState().updateMessage("s1", "m1", { content: "new" });
+  useChatHistory.getState().updateMessage("s1", "m1", { parts: [{ type: "text", text: "new" }] });
   await waitForPendingWrites();
 
-  assert.equal(JSON.parse(storage.get(chatSessionKey("s1")) ?? "[]")[0].content, "new");
+  assert.equal(textOf(JSON.parse(storage.get(chatSessionKey("s1")) ?? "[]")[0]), "new");
   assert.equal(storage.get(PERSIST_KEYS.chatManifest), undefined);
 });
 
@@ -140,7 +145,15 @@ test("updateMessage：新增 artifactId 时写 manifest 供冷 prune 使用", as
   });
 
   useChatHistory.getState().updateMessage("s1", "m1", {
-    toolCalls: [{ id: "tc1", name: "renderInteractive", arguments: {}, status: "success", artifactId: "a1" }],
+    parts: [
+      {
+        type: "tool-renderInteractive",
+        toolCallId: "tc1",
+        state: "output-available",
+        input: { title: "t", prompt: "p" },
+        output: { text: "", artifactId: "a1", title: "t", prompt: "p" },
+      },
+    ],
   });
   await waitForPendingWrites();
 

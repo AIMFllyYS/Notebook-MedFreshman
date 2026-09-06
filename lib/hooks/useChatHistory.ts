@@ -16,6 +16,7 @@ import {
   hydrateAttachmentsForApi,
 } from '@/lib/storage/chatStorage';
 import { PERSIST_KEYS } from '@/lib/storage/idbStorage';
+import { getMessageText } from '@/lib/chat/messageParts';
 
 const MAX_LOADED_SESSIONS = 3;
 const MAX_SESSIONS = 50;
@@ -269,7 +270,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
               ...s,
               updatedAt: Date.now(),
               messageCount: messages.length,
-              preview: storedMessage.role === 'user' ? storedMessage.content.slice(0, 80) : s.preview,
+              preview: storedMessage.role === 'user' ? getMessageText(storedMessage).slice(0, 80) : s.preview,
               artifactIds: mergeArtifactIds(s.artifactIds, [storedMessage]),
             }
           : s,

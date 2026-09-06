@@ -83,7 +83,8 @@ test("migrateFromV1IfNeeded：v1 单体 JSON 拆分为 manifest + per-session", 
   const messages = await loadSessionMessages("s1");
   assert.ok(messages);
   assert.equal(messages!.length, 1);
-  assert.equal(messages![0].content, "hi");
+  // v1 旧扁平结构在迁移时同时转成 parts
+  assert.deepEqual(messages![0].parts, [{ type: "text", text: "hi", state: "done" }]);
 
   assert.equal(storage.get(PERSIST_KEYS.chatHistory), undefined);
 

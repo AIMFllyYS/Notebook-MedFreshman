@@ -1,10 +1,18 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildRequestMessages } from "./buildRequestMessages.ts";
+import { buildRequestMessages, type RequestMessage } from "./buildRequestMessages.ts";
 import type { ChatMessage } from "@/lib/types/chat";
 
 function msg(id: string, role: ChatMessage["role"], content: string, extra?: Partial<ChatMessage>): ChatMessage {
-  return { id, role, content, timestamp: Number(id), ...extra };
+  return { id, role, parts: content ? [{ type: "text", text: content }] : [], timestamp: Number(id), ...extra };
+}
+
+function textOf(m: RequestMessage): string {
+  return m.parts.filter((p) => p.type === "text").map((p) => (p as { text: string }).text).join("");
+}
+
+function hasFile(m: RequestMessage): boolean {
+  return m.parts.some((p) => p.type === "file");
 }
 
 test("buildRequestMessages：短历史不截断", () => {
@@ -28,7 +36,39 @@ test("buildRequestMessages：过滤流式中的空 assistant 占位", () => {
   assert.equal(truncated, false);
   assert.equal(out.length, 1);
   assert.equal(out[0].role, "user");
-  assert.equal(out[0].content, "latest question");
+  assert.equal(textOf(out[0]), "latest question");
+});
+
+test("buildRequestMessages：历史 assistant 只保留 text，剥离 reasoning / tool / step-start", () => {
+  const assistant: ChatMessage = {
+    id: "2",
+    role: "assistant",
+    timestamp: 2,
+    parts: [
+      { type: "reasoning", text: "thinking…", state: "done" },
+      { type: "tool-getCurrentPage", toolCallId: "c1", state: "output-available", input: {}, output: { text: "page", contextKey: "page:x" } },
+      { type: "step-start" },
+      { type: "text", text: "answer", state: "done" },
+    ],
+  };
+  const { messages: out } = buildRequestMessages([msg("1", "user", "q"), assistant]);
+  assert.equal(out.length, 2);
+  assert.deepEqual(out[1].parts.map((p) => p.type), ["text"]);
+  assert.equal(textOf(out[1]), "answer");
+});
+
+test("buildRequestMessages：只有工具调用没有正文的 assistant 仍算有内容但请求里为空 parts", () => {
+  const assistant: ChatMessage = {
+    id: "2",
+    role: "assistant",
+    timestamp: 2,
+    parts: [
+      { type: "tool-getCurrentPage", toolCallId: "c1", state: "output-available", input: {}, output: { text: "page", contextKey: "page:x" } },
+    ],
+  };
+  const { messages: out } = buildRequestMessages([msg("1", "user", "q"), assistant]);
+  assert.equal(out.length, 2);
+  assert.equal(out[1].parts.length, 0);
 });
 
 test("buildRequestMessages：超长历史截断尾部", () => {
@@ -40,10 +80,10 @@ test("buildRequestMessages：超长历史截断尾部", () => {
   const { messages: out, truncated } = buildRequestMessages(messages, 10);
   assert.equal(truncated, true);
   assert.equal(out.length, 10);
-  assert.equal(out[0].content, "u95");
+  assert.equal(textOf(out[0]), "u95");
 });
 
-test("buildRequestMessages：含附件的早期 user 消息保留", () => {
+test("buildRequestMessages：含附件的早期 user 消息保留并转成 file part", () => {
   const messages: ChatMessage[] = [];
   for (let i = 0; i < 50; i++) {
     messages.push(msg(String(i), "user", `u${i}`));
@@ -53,10 +93,11 @@ test("buildRequestMessages：含附件的早期 user 消息保留", () => {
   });
   const { messages: out, truncated } = buildRequestMessages(messages, 5);
   assert.equal(truncated, true);
-  const hasImage = out.some(
-    (m) => m.role === "user" && Array.isArray(m.content) && m.content.some((p) => p.type === "image_url"),
-  );
-  assert.ok(hasImage);
+  const img = out.find(hasFile);
+  assert.ok(img);
+  const file = img!.parts.find((p) => p.type === "file") as { mediaType: string; url: string };
+  assert.equal(file.mediaType, "image/png");
+  assert.equal(file.url, "data:image/png;base64,abc");
 });
 
 test("buildRequestMessages：默认保留完整会话历史", () => {
@@ -89,6 +130,6 @@ test("buildRequestMessages：软上限截断只发送最近消息且不保留早
   assert.equal(truncated, true);
   assert.equal(truncationReason, "soft-limit");
   assert.equal(out.length, 8);
-  assert.equal(out[0].content, "m32");
-  assert.equal(out.some((m) => Array.isArray(m.content)), false);
+  assert.equal(textOf(out[0]), "m32");
+  assert.equal(out.some(hasFile), false);
 });
