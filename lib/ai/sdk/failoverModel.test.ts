@@ -107,7 +107,41 @@ test("failover：链末尾也失败时抛出最后一个错误", async () => {
   await assert.rejects(model.doStream(callOptions), (e: unknown) => APICallError.isInstance(e) && e.statusCode === 504);
 });
 
-test("failover：单候选直接返回原模型", () => {
+test("failover：单候选且无超时配置时直接返回原模型", () => {
   const only = okModel("x");
   assert.equal(createFailoverLanguageModel([{ model: only, label: "only" }]), only);
+});
+
+test("failover：首字节超时 → 切换到备用；用户主动 abort 不切换", async () => {
+  const hang = new MockLanguageModelV4({
+    doStream: ({ abortSignal }) =>
+      new Promise((_, reject) => {
+        abortSignal?.addEventListener("abort", () => reject(abortSignal.reason), { once: true });
+      }),
+  });
+  const events: string[] = [];
+  const model = createFailoverLanguageModel(
+    [
+      { model: hang, label: "slow" },
+      { model: okModel("fast"), label: "backup" },
+    ],
+    { firstChunkTimeoutMs: 20, onFailover: (next) => events.push(next.label) },
+  );
+  const { stream } = await model.doStream(callOptions);
+  const parts = await convertReadableStreamToArray(stream);
+  assert.deepEqual(events, ["backup"]);
+  assert.ok(parts.some((p) => p.type === "text-delta" && p.delta === "fast"));
+
+  // 用户 abort：不得切换
+  const userCtrl = new AbortController();
+  const model2 = createFailoverLanguageModel(
+    [
+      { model: hang, label: "slow" },
+      { model: okModel("never"), label: "backup" },
+    ],
+    { firstChunkTimeoutMs: 5000 },
+  );
+  const pending = model2.doStream({ ...callOptions, abortSignal: userCtrl.signal });
+  userCtrl.abort(new DOMException("user", "AbortError"));
+  await assert.rejects(pending, (e: unknown) => e instanceof DOMException && e.name === "AbortError");
 });

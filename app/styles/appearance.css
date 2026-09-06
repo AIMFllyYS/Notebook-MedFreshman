@@ -155,7 +155,6 @@
 }
 
 [data-appearance="colorful"] .followup-card,
-[data-appearance="colorful"] .processing-steps,
 [data-appearance="colorful"] .search-hit-inline-cards,
 [data-appearance="colorful"] .code-block-wrapper {
   background: color-mix(in srgb, var(--appearance-card-bg-b) 82%, var(--bg-panel));

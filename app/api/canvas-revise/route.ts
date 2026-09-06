@@ -1,6 +1,8 @@
 import type { NextRequest } from 'next/server';
+import { generateText } from 'ai';
+import { APICallError } from '@ai-sdk/provider';
 import { getModelInfoWithCustom, type CustomApiGroup } from '@/lib/ai/models';
-import { chatCompletionsUrl, resolveProvider } from '@/lib/ai/provider';
+import { resolveLanguageModel } from '@/lib/ai/sdk/languageModel';
 import { buildCanvasRevisionMessages } from '@/lib/canvas/revisionPrompt';
 import { diagnoseCanvasBlock, extractCanvasRevisionBlock } from '@/lib/canvas/revisionOutput';
 import type { CanvasBlock } from '@/lib/canvas/types';
@@ -14,10 +16,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function hasUsableBlock(value: unknown): value is CanvasBlock {
   return isRecord(value) && typeof value.kind === 'string';
-}
-
-async function readUpstreamText(res: Response): Promise<string> {
-  return res.text().then((text) => text.slice(0, 300)).catch(() => '');
 }
 
 export async function POST(req: NextRequest) {
@@ -45,38 +43,36 @@ export async function POST(req: NextRequest) {
     return Response.json({ error: 'The selected model is an image model. Choose a text chat model for canvas revision.' }, { status: 400 });
   }
 
-  const provider = resolveProvider(modelId, customApiGroups);
+  const { model, provider } = resolveLanguageModel(modelId, customApiGroups);
   if (!provider.configured) {
     return Response.json({ error: 'The selected model API is not configured.' }, { status: 400 });
   }
 
-  const upstream = await fetch(chatCompletionsUrl(provider.baseUrl), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${provider.apiKey}`,
-    },
-    body: JSON.stringify({
-      model: provider.apiModelId,
+  let output: string;
+  try {
+    const result = await generateText({
+      model,
       messages: buildCanvasRevisionMessages({
         block: body.block,
         instruction,
         topic,
       }),
+      // This shared business prompt returns system+user messages in fixed order.
+      allowSystemInMessages: true,
       temperature: 0.2,
-      max_tokens: 6000,
-      stream: false,
-    }),
-    signal: AbortSignal.timeout(provider.timeoutMs),
-  });
-
-  if (!upstream.ok) {
-    const text = await readUpstreamText(upstream);
-    return Response.json({ error: `Canvas revision request failed: ${upstream.status} ${text}` }, { status: 502 });
+      maxOutputTokens: 6000,
+      maxRetries: 0,
+      abortSignal: req.signal,
+      timeout: provider.timeoutMs,
+    });
+    output = result.text.trim();
+  } catch (err) {
+    const detail = APICallError.isInstance(err) && err.statusCode
+      ? `${err.statusCode} ${(err.responseBody ?? '').slice(0, 300)}`
+      : String((err as Error)?.message ?? err);
+    return Response.json({ error: `Canvas revision request failed: ${detail}` }, { status: 502 });
   }
 
-  const json = await upstream.json().catch(() => null);
-  const output = String(json?.choices?.[0]?.message?.content ?? '').trim();
   const extracted = extractCanvasRevisionBlock(output);
   if (!extracted.ok) {
     return Response.json({ error: extracted.error, rawOutput: extracted.rawOutput }, { status: 422 });

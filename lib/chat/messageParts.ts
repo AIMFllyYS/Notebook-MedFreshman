@@ -163,7 +163,24 @@ function parseLegacyArgs(tc: LegacyToolCallBlock): Record<string, unknown> {
 
 function legacyToolOutput(tc: LegacyToolCallBlock): Record<string, unknown> {
   const out: Record<string, unknown> = { text: tc.result ?? '' };
-  if (tc.sources) out.sources = tc.sources;
+  if (tc.sources) {
+    // 旧 imageSearch 直接落库 Unsplash 原始结果（url/thumbnail/author/source/alt），归一为 WebSearchSource。
+    out.sources = tc.name === 'imageSearch'
+      ? (tc.sources as Array<Record<string, unknown>>).map((s) =>
+          'title' in s
+            ? s
+            : {
+                title: String(s.alt ?? s.author ?? ''),
+                url: String(s.url ?? ''),
+                snippet: '',
+                media: typeof s.thumbnail === 'string' ? s.thumbnail : undefined,
+                alt: typeof s.alt === 'string' ? s.alt : undefined,
+                author: typeof s.author === 'string' ? s.author : undefined,
+                authorUrl: typeof s.source === 'string' ? s.source : undefined,
+              },
+        )
+      : tc.sources;
+  }
   if (tc.cacheHit != null) out.cacheHit = tc.cacheHit;
   if (tc.provider) out.provider = tc.provider;
   if (tc.hits) out.hits = tc.hits;

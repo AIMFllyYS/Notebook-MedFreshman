@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ImagePlus, Sparkles, Check, X, ImageIcon } from "lucide-react";
+import { AgentImageIcon, AgentFileIcon, AgentCheckIcon, AgentCloseIcon } from "@/components/icons/AgentIcons";
 import { useImageGen } from "@/lib/hooks/useImageGen";
 import { MessageContent } from "@/components/chat/MessageContent";
 
@@ -70,7 +70,7 @@ export default function ImageGenCard({
           color: "var(--md-sys-color-on-surface-variant)",
         }}
       >
-        <X size={14} />
+        <AgentCloseIcon size={14} />
         <span>已取消生图请求：{effectiveTitle}</span>
       </div>
     );
@@ -87,7 +87,7 @@ export default function ImageGenCard({
     >
       {/* 头部 */}
       <div className="flex flex-wrap items-center gap-2 px-3 py-2.5">
-        <ImagePlus
+        <AgentImageIcon
           size={15}
           className="shrink-0"
           style={{ color: "var(--md-sys-color-tertiary)" }}
@@ -121,7 +121,7 @@ export default function ImageGenCard({
           }}
         >
           <span style={{ fontWeight: 600 }}>
-            <Sparkles size={11} className="inline align-text-bottom" /> 生图提示词：
+            <AgentFileIcon size={11} className="inline align-text-bottom" /> 生图提示词：
           </span>
           <MessageContent content={effectivePrompt} enableVisualizations={false} preserveLineBreaks />
         </div>
@@ -145,7 +145,7 @@ export default function ImageGenCard({
                 color: "var(--md-sys-color-on-tertiary)",
               }}
             >
-              <Check size={13} /> 批准生成
+              <AgentCheckIcon size={13} /> 批准生成
             </button>
             <button
               type="button"
@@ -156,7 +156,7 @@ export default function ImageGenCard({
                 color: "var(--md-sys-color-on-surface-variant)",
               }}
             >
-              <X size={13} /> 取消
+              <AgentCloseIcon size={13} /> 取消
             </button>
             <span
               className="ml-auto text-[10.5px]"
@@ -176,7 +176,7 @@ export default function ImageGenCard({
                 color: "var(--md-sys-color-on-tertiary)",
               }}
             >
-              <ImageIcon size={13} />{" "}
+              <AgentImageIcon size={13} />{" "}
               {status === "loading" && "生成中…"}
               {status === "done" && (hasImages ? "查看图片" : "已生成")}
               {status === "error" && "查看错误"}

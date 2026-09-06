@@ -1,0 +1,194 @@
+import { DefaultChatTransport, isToolUIPart, readUIMessageStream, type UIMessageChunk } from 'ai';
+import type { RequestMessage } from '@/lib/chat/buildRequestMessages';
+import type { ChatMessage, ChatMessagePart, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
+
+/** SDK 负责 SSE/UTF-8 解码；只在原始字节层观察活动，注释心跳也能续期。 */
+export function createStudyChatTransport(onActivity: () => void) {
+  return new DefaultChatTransport<RequestMessage>({
+    api: '/api/chat',
+    fetch: async (input, init) => {
+      const response = await fetch(input, init);
+      if (!response.ok) {
+        const detail = await response.text().catch(() => '');
+        throw new Error(`API 请求失败: ${response.status} ${response.statusText}${detail ? ` - ${detail.slice(0, 200)}` : ''}`);
+      }
+      if (!response.body) throw new Error('流读取失败');
+      onActivity();
+      return new Response(response.body.pipeThrough(new TransformStream({
+        transform(chunk, controller) {
+          onActivity();
+          controller.enqueue(chunk);
+        },
+      })), { status: response.status, statusText: response.statusText, headers: response.headers });
+    },
+  });
+}
+
+function objectValue(value: unknown): Record<string, unknown> | undefined {
+  return value != null && typeof value === 'object' ? value as Record<string, unknown> : undefined;
+}
+
+function readUsage(value: unknown): UsageSummary | undefined {
+  const usage = objectValue(value);
+  if (!usage) return undefined;
+  const finiteToken = (key: string) => typeof usage[key] === 'number'
+    && Number.isFinite(usage[key]) && usage[key] >= 0;
+  if (!finiteToken('promptTokens') || !finiteToken('completionTokens')) return undefined;
+  const promptTokens = usage.promptTokens as number;
+  const completionTokens = usage.completionTokens as number;
+  return {
+    promptTokens,
+    completionTokens,
+    cachedTokens: finiteToken('cachedTokens') ? usage.cachedTokens as number : 0,
+    totalTokens: finiteToken('totalTokens') ? usage.totalTokens as number : promptTokens + completionTokens,
+  };
+}
+
+function readBreakdown(value: unknown): ContextBreakdown | undefined {
+  const data = objectValue(value);
+  if (!data || !['tools', 'skills', 'conversation', 'pages', 'webSearch', 'total'].every(
+    (key) => typeof data[key] === 'number' && Number.isFinite(data[key]) && data[key] >= 0,
+  )) return undefined;
+  return {
+    tools: data.tools as number, skills: data.skills as number,
+    conversation: data.conversation as number, pages: data.pages as number,
+    webSearch: data.webSearch as number, total: data.total as number,
+    ...(typeof data.truncated === 'boolean' ? { truncated: data.truncated } : {}),
+    ...(typeof data.cacheHit === 'boolean' ? { cacheHit: data.cacheHit } : {}),
+    ...(typeof data.warning === 'string' ? { warning: data.warning } : {}),
+  };
+}
+
+export interface ConsumeStudyStreamOptions {
+  stream: ReadableStream<UIMessageChunk>;
+  message: ChatMessage;
+  abortSignal?: AbortSignal;
+  onMessage: (message: ChatMessage) => void;
+  onUsage?: (usage: UsageSummary) => void;
+  onContextBreakdown?: (breakdown: ContextBreakdown) => void;
+  onInfo?: (message: string) => void;
+}
+
+/**
+ * SDK 还原有序 parts；此处只适配项目的 data/metadata 和生命周期，不维护第二份聊天历史。
+ * readUIMessageStream 会在后台消费输入，取消它的输出不会关闭网络，因此显式管理输入 reader。
+ */
+export async function consumeStudyStream({
+  stream, message, abortSignal, onMessage, onUsage, onContextBreakdown, onInfo,
+}: ConsumeStudyStreamOptions): Promise<ChatMessage> {
+  const source = stream.getReader();
+  let inputController: ReadableStreamDefaultController<UIMessageChunk>;
+  let stopped = false;
+  let completed = false;
+  let failure: unknown;
+  let latest = structuredClone(message);
+  let dataUsage: UsageSummary | undefined;
+  let questions = message.followUpQuestions;
+  const startedAt = Date.now();
+  const stop = (reason: unknown) => {
+    if (stopped) return;
+    stopped = true;
+    inputController.error(reason);
+    void source.cancel(reason).catch(() => {});
+  };
+  const abort = () => stop(abortSignal?.reason ?? new DOMException('生成被中断', 'AbortError'));
+  const input = new ReadableStream<UIMessageChunk>({
+    start(controller) { inputController = controller; },
+    async pull(controller) {
+      try {
+        const result = await source.read();
+        if (stopped) return;
+        if (result.done) {
+          stopped = true;
+          controller.close();
+          return;
+        }
+        const chunk = result.value;
+        if (chunk.type === 'abort') {
+          stop(new DOMException('生成被中断', 'AbortError'));
+          return;
+        }
+        if (chunk.type === 'finish') completed = true;
+        if (chunk.type === 'data-usage') dataUsage = readUsage(chunk.data) ?? dataUsage;
+        if (chunk.type === 'data-context-breakdown') {
+          const breakdown = readBreakdown(chunk.data);
+          if (breakdown) onContextBreakdown?.(breakdown);
+        }
+        if (chunk.type === 'data-followup') {
+          const candidates = objectValue(chunk.data)?.questions;
+          if (Array.isArray(candidates)) {
+            const next = candidates.filter((q): q is string => typeof q === 'string')
+              .map((q) => q.trim()).filter(Boolean).slice(0, 3);
+            if (next.length > 0) questions = next;
+          }
+        }
+        if (chunk.type === 'data-info') {
+          const info = objectValue(chunk.data)?.message;
+          if (typeof info === 'string') onInfo?.(info);
+        }
+        controller.enqueue(chunk);
+      } catch (error) { stop(error); }
+    },
+    cancel(reason) {
+      stopped = true;
+      void source.cancel(reason).catch(() => {});
+    },
+  }, { highWaterMark: 0 });
+  abortSignal?.addEventListener('abort', abort, { once: true });
+  if (abortSignal?.aborted) abort();
+
+  try {
+    for await (const snapshot of readUIMessageStream<ChatMessage>({
+      // SDK 会原地更新传入的 message，不能把 Zustand 中的对象直接交给它。
+      message: structuredClone(message), stream: input, terminateOnError: true,
+      onError(error) { failure ??= error; stop(error); },
+    })) {
+      latest = {
+        ...snapshot,
+        // 服务端 start 的 id 不得替换本地占位的主键。
+        id: message.id, followUpQuestions: questions,
+      };
+      onMessage(latest);
+    }
+    if (failure) throw failure;
+  } catch (error) {
+    failure = error;
+    throw error;
+  } finally {
+    abortSignal?.removeEventListener('abort', abort);
+    // cancel 不能阻塞错误/停止路径的最终 UI 落盘。
+    void source.cancel(failure).catch(() => {});
+    source.releaseLock();
+    const usage = dataUsage ?? readUsage(latest.metadata?.usage);
+    const wasAborted = abortSignal?.aborted === true || objectValue(failure)?.name === 'AbortError';
+    const endedNormally = completed && failure == null && !wasAborted;
+    latest = {
+      ...latest, followUpQuestions: questions,
+      metadata: {
+        ...latest.metadata,
+        ...(usage ? { usage } : {}),
+        durationMs: latest.metadata?.durationMs ?? Date.now() - startedAt,
+      },
+      parts: latest.parts.map((part) => {
+        // SDK 的 state 描述 part 是否收到了结束帧，不等于 hook 当前是否仍在运行。
+        // 停止/失败时保留 streaming；Trace 结合 isStreaming=false 显示「已停止」，
+        // 历史消息也可辨认中断。部分正文照常可读，不能伪装成完整思考。
+        if (part.type === 'text' || part.type === 'reasoning') {
+          return endedNormally ? { ...part, state: 'done' as const } : part;
+        }
+        if (isToolUIPart(part) && (part.state === 'input-streaming' || part.state === 'input-available')) {
+          if (wasAborted || (failure == null && !completed)) return part;
+          return {
+            ...part, state: 'output-error' as const,
+            errorText: failure instanceof Error ? failure.message : '工具未返回结果',
+          } as ChatMessagePart;
+        }
+        return part;
+      }),
+    };
+    onMessage(latest);
+    // data-usage 与 metadata 都携带用量；每个请求仅在终结时结算一次。
+    if (usage) onUsage?.(usage);
+  }
+  return latest;
+}

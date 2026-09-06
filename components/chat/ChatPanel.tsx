@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
-import { AlertTriangle, MessageSquarePlus } from 'lucide-react';
+import { AgentAlertIcon, AgentPlusIcon } from '@/components/icons/AgentIcons';
 import { useAutoHideChatHeader } from '@/lib/hooks/useAutoHideChatHeader';
 import { useChat } from '@/lib/hooks/useChat';
 import { useChatHistory, ensureChatHistoryBootstrap } from '@/lib/hooks/useChatHistory';
@@ -32,7 +32,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     enableSearch: false,
     contextMode: 'full',
   });
-  const { messages, isLoading, error, sendMessage, stopGeneration, clearError, sessionId } = useChat(chatContext, chatOptions);
+  const { messages, isLoading, error, info, sendMessage, stopGeneration, clearError, clearInfo, sessionId } = useChat(chatContext, chatOptions);
   const outbound = useStore((s) => s.outbound);
   const clearOutbound = useStore((s) => s.clearOutbound);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
@@ -41,6 +41,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showHistory, setShowHistory] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [composerInset, setComposerInset] = useState(150);
   const fontScale = useSettings((s) => s.fontScale);
   const selectedModelId = useSettings((s) => s.selectedModelId);
   const chatReady = useChatReady();
@@ -66,11 +67,15 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   }, [stopGeneration]);
 
   useEffect(() => {
-    if (chatReady && outbound && outbound.content) {
-      sendMessage(outbound.content);
-      clearOutbound();
-    }
-  }, [outbound, sendMessage, clearOutbound, chatReady]);
+    if (!chatReady || isLoading || !outbound?.content.trim()) return;
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled || useStore.getState().outbound !== outbound) return;
+      // busy/hydration 的同步门控可能在 effect 排队后变化；被拒绝的项仍等待下一次就绪。
+      if (sendMessage(outbound.content) && useStore.getState().outbound === outbound) clearOutbound();
+    });
+    return () => { cancelled = true; };
+  }, [outbound, sendMessage, clearOutbound, chatReady, isLoading]);
 
   const handleSend = (content: string, options?: { quotedText?: string; enableThinking?: boolean; enableSearch?: boolean; attachments?: ChatAttachment[] }) => {
     sendMessage(content, options);
@@ -88,7 +93,6 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const headerPinned = showSettings || showHistory;
   const {
     autoHideEnabled,
-    headerVisible,
     headerCollapsed,
     onRevealZoneEnter,
     onHeaderEnter,
@@ -138,9 +142,12 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         isLoading={isLoading}
         error={error}
         onClearError={clearError}
+        info={info}
+        onClearInfo={clearInfo}
         onFollowUpClick={handleFollowUpClick}
         hydrated={chatReady}
         fontScale={fontScale}
+        bottomInset={composerInset}
         scrollContainerRef={scrollContainerRef}
         sessionId={sessionId ?? undefined}
         repairModelId={selectedModelId}
@@ -154,39 +161,35 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         }
       />
 
-      {/* 上下文软上限警告：不再禁用输入，只提示本次请求会自动截断为最近消息。 */}
-      {showWarning && (
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 8,
-          padding: '8px 12px', margin: '0 8px 4px',
-          borderRadius: 10, fontSize: 12,
-          background: 'var(--md-sys-color-error-container)',
-          color: 'var(--md-sys-color-on-error-container)',
-        }}>
-          <AlertTriangle size={14} style={{ flexShrink: 0 }} />
-          <span style={{ flex: 1 }}>
-            {contextWarning || `上下文已使用 ${Math.round(ctxRatio * 100)}%，之后请求会自动只发送最近消息；你仍然可以继续输入。`}
-          </span>
-          <button
-            onClick={handleNewChat}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 4,
-              padding: '4px 10px', borderRadius: 8, border: 'none',
-              background: 'var(--md-sys-color-error)', color: 'var(--md-sys-color-on-error)',
-              fontSize: 11, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap',
-            }}
-          >
-            <MessageSquarePlus size={12} /> 新建对话
-          </button>
-        </div>
-      )}
-
       <ChatInput
         onSend={handleSend}
         onStop={stopGeneration}
         isLoading={isLoading || !chatReady}
         chatContext={chatContext}
         onOpenSettings={() => setShowSettings(true)}
+        onComposerInsetChange={setComposerInset}
+        notice={showWarning ? (
+          <div role="status" style={{
+            display: 'flex', alignItems: 'center', gap: 8,
+            padding: '8px 12px', marginBottom: 8,
+            borderRadius: 10, fontSize: 12,
+            background: 'var(--md-sys-color-error-container)',
+            color: 'var(--md-sys-color-on-error-container)',
+          }}>
+            <AgentAlertIcon size={14} style={{ flexShrink: 0 }} />
+            <span style={{ flex: 1 }}>
+              {contextWarning || `上下文已使用 ${Math.round(ctxRatio * 100)}%，之后请求会自动只发送最近消息；你仍然可以继续输入。`}
+            </span>
+            <button type="button" onClick={handleNewChat} style={{
+              display: 'flex', alignItems: 'center', gap: 4,
+              padding: '4px 10px', borderRadius: 8, border: 'none',
+              background: 'var(--md-sys-color-error)', color: 'var(--md-sys-color-on-error)',
+              fontSize: 11, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap',
+            }}>
+              <AgentPlusIcon size={12} /> 新建对话
+            </button>
+          </div>
+        ) : null}
       />
 
       {showSettings && <ChatSettings onClose={() => setShowSettings(false)} />}

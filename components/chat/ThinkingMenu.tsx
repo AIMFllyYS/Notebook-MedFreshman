@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Check, Lightbulb, LightbulbOff } from "lucide-react";
+import { AgentCheckIcon, AgentLoopIcon, AgentPauseIcon } from "@/components/icons/AgentIcons";
 import type { ThinkingEffort } from "@/lib/hooks/useSettings";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
@@ -30,9 +30,9 @@ export interface ThinkingMenuButtonProps {
 }
 
 /**
- * 深度思考按钮 —— 灯泡即菜单：
- *  - 未开启：灯泡 + "深度思考"
- *  - 已开启：亮灯泡 + "深度思考·<档位>"
+ * 深度思考按钮 —— 单色循环标记 + 档位菜单：
+ *  - 未开启：循环标记 + "深度思考"
+ *  - 已开启：单色高对比标记 + "深度思考·<档位>"
  *  - 点击弹出菜单：Off / Low / Med / High / Max
  *  - 模型不支持时按钮置灰，tooltip 提示原因
  */
@@ -101,6 +101,7 @@ export default function ThinkingMenuButton({
         className={`chat-input-toggle chat-input-toggle-thinking ${
           enabled && supported ? "chat-input-toggle-thinking-active" : ""
         } ${trulyDisabled ? "chat-input-toggle-disabled" : ""}`}
+        style={enabled && supported ? { background: "var(--bg-muted)", color: "var(--ink)" } : undefined}
         title={title}
         aria-label="深度思考"
         aria-haspopup="menu"
@@ -109,7 +110,7 @@ export default function ThinkingMenuButton({
         data-enabled={enabled && supported ? "1" : "0"}
         data-effort={activeLabel ? effort : ""}
       >
-        <Lightbulb size={12} />
+        <AgentLoopIcon size={12} />
         <span className="chat-input-toggle-text">
           {activeLabel ? `深度思考·${activeLabel}` : "深度思考"}
         </span>
@@ -135,15 +136,15 @@ export default function ThinkingMenuButton({
               data-testid="thinking-menu-option-off"
               className={
                 "flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left transition-colors " +
-                (!enabled ? "bg-[var(--accent-weak)]" : "hover:bg-[var(--bg-muted)]")
+                (!enabled ? "bg-[var(--bg-muted)]" : "hover:bg-[var(--bg-muted)]")
               }
             >
               <span className="mt-0.5 w-3.5 shrink-0">
-                {!enabled && <Check size={12} className="text-[var(--accent-ink)]" strokeWidth={3} />}
+                {!enabled && <AgentCheckIcon size={12} className="text-[var(--ink)]" />}
               </span>
               <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-[var(--ink)]">
-                  <LightbulbOff size={11} />
+                  <AgentPauseIcon size={11} />
                   关闭
                 </span>
                 <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">
@@ -166,11 +167,11 @@ export default function ThinkingMenuButton({
                   data-testid={`thinking-menu-option-${opt.value}`}
                   className={
                     "flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left transition-colors " +
-                    (active ? "bg-[var(--accent-weak)]" : "hover:bg-[var(--bg-muted)]")
+                    (active ? "bg-[var(--bg-muted)]" : "hover:bg-[var(--bg-muted)]")
                   }
                 >
                   <span className="mt-0.5 w-3.5 shrink-0">
-                    {active && <Check size={12} className="text-[var(--accent-ink)]" strokeWidth={3} />}
+                    {active && <AgentCheckIcon size={12} className="text-[var(--ink)]" />}
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block text-[12.5px] font-medium text-[var(--ink)]">

@@ -64,6 +64,8 @@ python manim/render.py --force --quality h   # 强制高画质重渲
 ### 📚 智能学习体验
 - **详尽原创笔记** - 基于课堂录音的深度解析，完美数学公式渲染（KaTeX）
 - **AI 对话助手** - 上下文感知的智能问答，支持划词提问、图片附件、联网搜索
+- **Agent 执行时间轴** - reasoning、工具与中间说明按消息 parts 的时序展示，运行时展开、结束时收拢，最终回答与引用/产物卡片独立保留；停止生成后可继续查看已接收内容
+- **舒适的聊天布局** - 透明悬浮输入区，上置思考/搜索/上下文/模型控件；用户消息靠右、AI 靠左，执行过程分层缩进；桌面、手机和划词浮窗共享自绘图标与动态滚动避让
 - **多 Provider 适配器** - 内置 OpenAI 兼容 / Anthropic 适配器，思考档位（ThinkingMenu）可全局与逐会话调节
 - **AI 图片搜索** - 集成 Unsplash API，AI 对话可搜索并插入高质量配图（配置 `UNSPLASH_ACCESS_KEY` 启用）
 - **AI 图片生成** - 复用 OpenAI 兼容端点生成图片，独立查看器、会话持久化、画廊汇总，与对话工具链打通
@@ -127,14 +129,14 @@ public/              # 静态资源（视频、图片、海报、PWA 图标）
 ### 关键技术组件
 - **内容树** - `lib/content-data/manifest.ts` 定义多学科内容结构
 - **路由系统** - 动态路由 `/[subject]/[category]/[id]` 支持多学科访问
-- **AI 集成** - 可配置的 OpenAI 兼容端点，支持上下文感知对话
+- **AI 集成** - AI SDK 7 `ToolLoopAgent` + UIMessage Stream；保留原 provider/模型注册表，兼容 OpenAI-compatible 与 Anthropic，前端 transport/stream 只负责传输，Zustand + IndexedDB 继续负责历史与持久化。迁移边界及验收见 [Agent SDK / Trace UI 记录](docs/plans/13-agent-sdk-trace-ui.md)
 - **可视化引擎** - 基于 Manim 的数学动画 + React 可交互组件
 - **公式渲染** - KaTeX 实现完美的数学公式显示
 
 ## 开发指南
 
 ### 环境要求
-- Node.js 18+
+- Node.js 22+（本次迁移在 Node 24 上验证）
 - pnpm 8+
 - Python 3.8+（用于 Manim 动画渲染）
 - LaTeX/MiKTeX（用于数学公式渲染）

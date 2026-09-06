@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
-import { resolveProvider, type CustomProvider } from "@/lib/ai/provider";
+import type { CustomProvider } from "@/lib/ai/provider";
+import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { streamInteractiveArtifact } from "@/lib/ai/artifact";
 import { getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
 
@@ -21,12 +22,17 @@ export async function POST(req: NextRequest) {
     : [];
   const customProvider: CustomProvider | undefined =
     body.customProvider && typeof body.customProvider === "object" ? body.customProvider : undefined;
-  const provider = resolveProvider(modelId, customApiGroups.length > 0 ? customApiGroups : customProvider);
+  const { model, provider } = resolveLanguageModel(modelId, customApiGroups.length > 0 ? customApiGroups : customProvider);
 
   const encoder = new TextEncoder();
+  const abortController = new AbortController();
+  const signal = AbortSignal.any([req.signal, abortController.signal]);
+  let cancelled = false;
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
-      const send = (o: unknown) => controller.enqueue(encoder.encode(sse(o)));
+      const send = (o: unknown) => {
+        if (!cancelled) controller.enqueue(encoder.encode(sse(o)));
+      };
       const pingTimer = setInterval(() => {
         send({ type: "ping", t: Date.now() });
       }, 15000);
@@ -60,7 +66,8 @@ export async function POST(req: NextRequest) {
           artifactId,
           args: { title, prompt },
           provider,
-          signal: req.signal,
+          model,
+          signal,
         });
       } catch (err) {
         send({
@@ -71,8 +78,12 @@ export async function POST(req: NextRequest) {
         });
       } finally {
         clearInterval(pingTimer);
-        controller.close();
+        if (!cancelled) controller.close();
       }
+    },
+    cancel(reason) {
+      cancelled = true;
+      abortController.abort(reason);
     },
   });
 

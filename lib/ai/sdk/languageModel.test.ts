@@ -8,6 +8,31 @@ import {
 } from "./languageModel.ts";
 import type { ResolvedProvider } from "./../provider.ts";
 import { buildCustomModelRegistryId, type CustomApiGroup } from "./../models.ts";
+import type { LanguageModelV4StreamPart } from "@ai-sdk/provider";
+
+function fixtureModel(reasoningField?: string) {
+  const groups: CustomApiGroup[] = [{
+    id: "fixture", name: "Local fixture", baseUrl: "https://fixture.invalid/v1", apiKey: "fixture-only",
+    models: [{ id: "fixture-model", apiProtocol: "openai", thinking: true, reasoningField }],
+  }];
+  return resolveLanguageModel(buildCustomModelRegistryId("fixture", "fixture-model"), groups);
+}
+
+const fixturePrompt = [{ role: "user" as const, content: [{ type: "text" as const, text: "你好" }] }];
+
+async function readParts(stream: ReadableStream<LanguageModelV4StreamPart>) {
+  const reader = stream.getReader();
+  const parts: LanguageModelV4StreamPart[] = [];
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) return parts;
+      parts.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+}
 
 function fakeProvider(over: Partial<ResolvedProvider>): ResolvedProvider {
   return {
@@ -96,4 +121,96 @@ test("resolveLanguageModel：不支持思考的模型 thinkingSettings 返回空
   const r = resolveLanguageModel("Pro/moonshotai/Kimi-K2.6");
   assert.equal(r.supportsThinking, false);
   assert.deepEqual(r.thinkingSettings("high"), {});
+});
+
+test("resolveLanguageModel：真实 SDK 对默认/标准配置的结构化思考与别名流均可消费", async (t) => {
+  for (const field of [undefined, "reasoning", "reasoning_content"]) {
+    const resolved = fixtureModel(field);
+    const reasoningChunks = [
+      { reasoning: { type: "thinking", thinking: "甲" } },
+      { reasoning_content: [{ type: "text", text: "乙" }] },
+      { reasoning_content: { content: [{ text: "丙" }] }, reasoning: { text: "备用，不重复输出" } },
+      { thinking: "丁" },
+      { reasoning_details: [{ type: "reasoning.text", text: "戊" }] },
+      { reasoning_text: "己" },
+    ];
+    const events = [
+      ...reasoningChunks.map((delta) => ({ choices: [{ delta }] })),
+      { choices: [{ delta: { content: "答案" } }] },
+      { choices: [{ delta: {}, finish_reason: "stop" }], usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 } },
+    ];
+    const fetchMock = t.mock.method(globalThis, "fetch", async (input: string | URL | Request, init?: RequestInit) => {
+      assert.equal(String(input), "https://fixture.invalid/v1/chat/completions");
+      assert.equal(JSON.parse(String(init?.body)).model, "fixture-model");
+      return new Response(events.map((event) => `data: ${JSON.stringify(event)}\n\n`).join("") + "data: [DONE]\n\n", {
+        headers: { "content-type": "text/event-stream" },
+      });
+    });
+    try {
+      const result = await resolved.model.doStream({ prompt: fixturePrompt });
+      const parts = await readParts(result.stream);
+      assert.deepEqual(parts.filter((part) => part.type === "error"), []);
+      assert.equal(parts.filter((part) => part.type === "reasoning-delta").map((part) => part.delta).join(""), "甲乙丙丁戊己");
+      assert.equal(parts.filter((part) => part.type === "text-delta").map((part) => part.delta).join(""), "答案");
+      const finish = parts.find((part) => part.type === "finish");
+      assert.equal(finish?.finishReason.unified, "stop");
+      assert.equal(finish?.usage.inputTokens.total, 10);
+      assert.equal(finish?.usage.outputTokens.total, 5);
+    } finally {
+      fetchMock.mock.restore();
+    }
+  }
+});
+
+test("resolveLanguageModel：真实 SDK 非流式标准结构化字段同时规范化且保留文本", async (t) => {
+  t.mock.method(globalThis, "fetch", async () => new Response(JSON.stringify({
+    choices: [{ message: { role: "assistant", content: "答案", reasoning_content: [{ text: "主思考" }], reasoning: { thinking: "别名" } }, finish_reason: "stop" }],
+    usage: { prompt_tokens: 4, completion_tokens: 8 },
+  }), { headers: { "content-type": "application/json" } }));
+  const result = await fixtureModel("reasoning_content").model.doGenerate({ prompt: fixturePrompt });
+  assert.equal(result.content.filter((part) => part.type === "reasoning").map((part) => part.text).join(""), "主思考");
+  assert.equal(result.content.filter((part) => part.type === "text").map((part) => part.text).join(""), "答案");
+  assert.equal(result.finishReason.unified, "stop");
+});
+
+test("resolveLanguageModel：真实 SDK 仍拒绝未知思考结构及畸形工具帧", async (t) => {
+  for (const delta of [
+    { reasoning: { unexpected: "invalid" }, thinking: "must not mask" },
+    { reasoning_content: [{ text: "known" }, { unexpected: "invalid" }], thinking: "must not mask" },
+    { tool_calls: [{ index: 0, id: "call_a" }] },
+  ]) {
+    const fetchMock = t.mock.method(globalThis, "fetch", async () => new Response(
+      `data: ${JSON.stringify({ choices: [{ delta }] })}\n\ndata: ${JSON.stringify({ choices: [{ delta: {}, finish_reason: "stop" }] })}\n\ndata: [DONE]\n\n`,
+      { headers: { "content-type": "text/event-stream" } },
+    ));
+    try {
+      const result = await fixtureModel().model.doStream({ prompt: fixturePrompt });
+      const parts = await readParts(result.stream);
+      const error = parts.find((part) => part.type === "error");
+      assert.ok(error?.error instanceof Error);
+      assert.equal(error.error.name, "AI_TypeValidationError");
+    } finally {
+      fetchMock.mock.restore();
+    }
+  }
+});
+
+test("resolveLanguageModel：真实 SDK 保留上游显式错误与缺失完成信号的失败", async (t) => {
+  for (const events of [
+    [{ error: { message: "fixture upstream error", type: "server_error", code: "fixture_error" } }],
+    [{ choices: [{ delta: { thinking: "尚未完成" } }] }],
+  ]) {
+    const fetchMock = t.mock.method(globalThis, "fetch", async () => new Response(
+      events.map((event) => `data: ${JSON.stringify(event)}\n\n`).join("") + "data: [DONE]\n\n",
+      { headers: { "content-type": "text/event-stream" } },
+    ));
+    try {
+      const result = await fixtureModel().model.doStream({ prompt: fixturePrompt });
+      const parts = await readParts(result.stream);
+      assert.ok(parts.some((part) => part.type === "error"));
+      assert.equal(parts.find((part) => part.type === "finish")?.finishReason.unified, "error");
+    } finally {
+      fetchMock.mock.restore();
+    }
+  }
 });

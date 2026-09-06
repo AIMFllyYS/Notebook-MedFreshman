@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 // Mock QuizMarkdown to avoid pulling in react-markdown/katex chain
@@ -43,6 +43,12 @@ describe("FollowUpQuestions", () => {
       <FollowUpQuestions questions={["q"]} onSelect={() => {}} />,
     );
     expect(screen.getByText("你可能还想问")).toBeInTheDocument();
+  });
+
+  it("使用轻量自绘箭头而非彩色嵌套卡片和灯泡图标", () => {
+    const { container } = render(<FollowUpQuestions questions={["继续了解"]} onSelect={() => {}} />);
+    expect(container.querySelector('[data-agent-icon="arrow-up-right"]')).not.toBeNull();
+    expect(container.querySelector('.followup-card, .lucide')).toBeNull();
   });
 
   it("点击按钮调用 onSelect 并传入问题文本", async () => {

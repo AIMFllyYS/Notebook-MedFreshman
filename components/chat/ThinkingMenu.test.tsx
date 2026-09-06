@@ -31,6 +31,11 @@ describe('ThinkingMenuButton', () => {
     expect(btn.getAttribute('data-enabled')).toBe('1');
     expect(btn.getAttribute('data-effort')).toBe('high');
     expect(btn.textContent).toContain('深度思考·High');
+    expect(btn.querySelector('[data-agent-icon="loop"]')).not.toBeNull();
+    expect(btn.querySelector('[data-agent-icon="loop"]')?.getAttribute('aria-hidden')).toBe('true');
+    expect(btn.style.color).toBe('var(--ink)');
+    expect(btn.style.background).toBe('var(--bg-muted)');
+    expect(btn.querySelector('.lucide')).toBeNull();
   });
 
   it('opens menu on click and shows Off + 4 effort options', async () => {
@@ -50,6 +55,8 @@ describe('ThinkingMenuButton', () => {
     expect(queryByTestId('thinking-menu-option-medium')).not.toBeNull();
     expect(queryByTestId('thinking-menu-option-high')).not.toBeNull();
     expect(queryByTestId('thinking-menu-option-max')).not.toBeNull();
+    expect(getByTestId('thinking-menu-option-off').querySelector('[data-agent-icon="pause"]')).not.toBeNull();
+    expect(getByTestId('thinking-menu-option-medium').querySelector('[data-agent-icon="check"]')).not.toBeNull();
   });
 
   it('picking a level enables thinking and closes menu', async () => {

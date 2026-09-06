@@ -1,7 +1,11 @@
 // 交互式 HTML 产物生成：用一次独立的 LLM 流式调用产出一个自包含 HTML 文档。
 // 本模块只负责把上游 HTML delta 转换成 artifact 事件，由 /api/artifact 独立 SSE 路由消费。
-import { chatCompletionsUrl, type ResolvedProvider } from "@/lib/ai/provider";
-import { parseSseJsonEvents } from "@/lib/utils/sseEvents";
+import type { LanguageModel } from "ai";
+import { APICallError } from "@ai-sdk/provider";
+import type { ResolvedProvider } from "@/lib/ai/provider";
+import { buildCustomModelRegistryId } from "@/lib/ai/models";
+import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
+import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
 
 const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一任务是输出一个完整、自包含的 HTML 文档。
 
@@ -98,20 +102,13 @@ export type ArtifactStreamEvent =
   | { type: "artifact"; id: string; status: "done"; html: string }
   | { type: "artifact"; id: string; status: "error"; message: string };
 
-interface StreamChoice {
-  delta?: { content?: string };
-  finish_reason?: string;
-}
-
-interface StreamChunk {
-  choices?: StreamChoice[];
-}
-
 interface StreamInteractiveArtifactOptions {
   send: (event: ArtifactStreamEvent) => void;
   artifactId: string;
   args: { title?: string; prompt?: string };
   provider: ResolvedProvider;
+  /** The route passes its resolved model so endpoint failover remains intact. */
+  model?: LanguageModel;
   signal?: AbortSignal;
   timeoutMs?: number;
 }
@@ -134,77 +131,38 @@ export async function streamInteractiveArtifact(
     return;
   }
 
-  const abortCtrl = new AbortController();
-  let fetchTimeoutId: ReturnType<typeof setTimeout> | undefined;
-  const resetFetchTimeout = () => {
-    if (fetchTimeoutId) clearTimeout(fetchTimeoutId);
-    fetchTimeoutId = setTimeout(() => abortCtrl.abort(), timeoutMs);
-  };
-  resetFetchTimeout();
-  const onAbort = () => abortCtrl.abort(signal?.reason);
-  signal?.addEventListener("abort", onAbort, { once: true });
-
   try {
-    const res = await fetch(chatCompletionsUrl(provider.baseUrl), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${provider.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: provider.apiModelId,
-        messages: [
-          { role: "system", content: ARTIFACT_SYSTEM },
-          { role: "user", content: `知识点 / 需求：${prompt}\n标题：${title}` },
-        ],
-        stream: true,
-        temperature: 0.4,
-        max_tokens: 4096,
-      }),
-      signal: abortCtrl.signal,
+    // Preserve the helper's older provider-only callers, including explicit
+    // Anthropic endpoints, without resolving their credentials a second time.
+    const model = options.model ?? resolveLanguageModel(
+      buildCustomModelRegistryId("artifact", provider.apiModelId),
+      [{
+        id: "artifact", name: "Artifact", baseUrl: provider.baseUrl, apiKey: provider.apiKey,
+        models: [{ id: provider.apiModelId, apiProtocol: provider.apiProtocol, thinking: false }],
+      }],
+    ).model;
+    const result = await streamRouteText({
+      model,
+      instructions: ARTIFACT_SYSTEM,
+      prompt: `知识点 / 需求：${prompt}\n标题：${title}`,
+      temperature: 0.4,
+      maxOutputTokens: 4096,
+      abortSignal: signal,
+      idleTimeoutMs: timeoutMs,
+      onText: (delta) => send({ type: "artifact", id: artifactId, status: "delta", delta }),
     });
 
-    if (!res.ok || !res.body) {
-      send({ type: "artifact", id: artifactId, status: "error", message: `生成失败 ${res.status}` });
-      return;
-    }
-
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let buf = "";
-    let raw = "";
-    let finish = "";
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      resetFetchTimeout();
-      buf += decoder.decode(value, { stream: true });
-      const parsed = parseSseJsonEvents<StreamChunk>(buf);
-      buf = parsed.remaining;
-      for (const json of parsed.events) {
-        const choice = json.choices?.[0];
-        const delta = choice?.delta?.content;
-        if (delta) {
-          raw += delta;
-          send({ type: "artifact", id: artifactId, status: "delta", delta });
-        }
-        if (choice?.finish_reason) finish = choice.finish_reason;
-      }
-    }
-
     // finish_reason === "length" 表示达到 max_tokens 被截断 → 收尾时补救闭合标签。
-    const html = finalizeHtml(raw, finish === "length");
+    const html = finalizeHtml(result.text, result.finishReason === "length");
     send({ type: "artifact", id: artifactId, status: "done", html });
   } catch (e) {
-    const isAbort = e instanceof Error && e.name === "AbortError";
+    const isAbort = e instanceof Error && (e.name === "AbortError" || e.name === "TimeoutError");
     send({
       type: "artifact",
       id: artifactId,
       status: "error",
-      message: isAbort ? "生成超时，请重试" : String((e as Error)?.message ?? e),
+      message: isAbort ? "生成超时，请重试" : APICallError.isInstance(e) && e.statusCode
+        ? `生成失败 ${e.statusCode}` : String((e as Error)?.message ?? e),
     });
-  } finally {
-    if (fetchTimeoutId) clearTimeout(fetchTimeoutId);
-    signal?.removeEventListener("abort", onAbort);
   }
 }

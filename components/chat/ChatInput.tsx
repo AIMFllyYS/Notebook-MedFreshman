@@ -2,8 +2,9 @@
 
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import {
-  Globe, Send, Square, Quote, X, CheckCircle, Paperclip,
-} from 'lucide-react';
+  AgentGlobeIcon, AgentArrowUpIcon, AgentStopIcon, AgentQuoteIcon,
+  AgentCloseIcon, AgentCheckIcon, AgentPaperclipIcon,
+} from '@/components/icons/AgentIcons';
 import type { ChatContext, ChatAttachment } from '@/lib/types/chat';
 import { useChatUI } from '@/lib/hooks/useChatUI';
 import { useSettings, type ThinkingEffort } from '@/lib/hooks/useSettings';
@@ -38,9 +39,13 @@ export interface ChatInputProps {
   floatingSessionId?: string;
   /** 禁用「引用到输入框」（划词浮窗传 true，避免全局选区引用串入浮窗）。默认 false。 */
   disableQuote?: boolean;
+  /** 浮动输入区占用的底部安全距离（高度 + 实际底距 + 呼吸间距），供会话滚动区避让。 */
+  onComposerInsetChange?: (inset: number) => void;
+  /** 可选上下文警告等内容：与输入区一起测量，避免被底部浮层遮住。 */
+  notice?: React.ReactNode;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice }) => {
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [enableThinking, setEnableThinking] = useState(() => useSettings.getState().defaultThinking);
@@ -49,6 +54,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   );
   const [enableSearch, setEnableSearch] = useState(() => useSettings.getState().defaultSearch);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const composerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { quotedText, clearQuotedText } = useChatUI();
   const globalSelectedModelId = useSettings((s) => s.selectedModelId);
@@ -84,6 +90,24 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       el.style.height = `${Math.min(el.scrollHeight, 150)}px`;
     }
   }, [input]);
+
+  useEffect(() => {
+    const composer = composerRef.current;
+    if (!composer || !onComposerInsetChange) return;
+    const reportInset = () => {
+      const bottom = Number.parseFloat(window.getComputedStyle(composer).bottom) || 0;
+      onComposerInsetChange(Math.ceil(composer.getBoundingClientRect().height + bottom + 16));
+    };
+    reportInset();
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(reportInset);
+    observer?.observe(composer);
+    window.addEventListener('resize', reportInset);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', reportInset);
+      // 保留最后测量值；StrictMode effect 重放时不先清零，避免滚动区短暂失去避让空间。
+    };
+  }, [onComposerInsetChange]);
 
   const handleSend = useCallback(() => {
     const trimmed = input.trim();
@@ -125,6 +149,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
   return (
     <div
+      ref={composerRef}
       className="chat-input-container"
       onDrop={handleDrop}
       onDragOver={handleDragOver}
@@ -136,6 +161,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         borderRadius: '12px',
       } : undefined}
     >
+      {notice}
       {attachError && (
         <div style={{
           padding: '6px 12px', fontSize: '11px', color: 'var(--md-sys-color-error)',
@@ -151,9 +177,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
       {effectiveQuote && (
         <div className="chat-input-quote">
-          <Quote size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--md-sys-color-tertiary)' }} />
+          <AgentQuoteIcon size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--md-sys-color-tertiary)' }} />
           <div className="chat-input-quote-label">
-            <Quote size={10} />
+            <AgentQuoteIcon size={10} />
             <span>引用自当前页面</span>
           </div>
           <div className="chat-input-quote-text">
@@ -164,10 +190,41 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
             className="chat-input-quote-close"
             title="移除引用"
           >
-            <X size={14} />
+            <AgentCloseIcon size={14} />
           </button>
         </div>
       )}
+
+      <div className="chat-input-toolbar" aria-label="对话选项">
+        <div className="chat-input-toolbar-group">
+          <ThinkingMenuButton
+            enabled={enableThinking}
+            effort={thinkingEffort}
+            supported={thinkingSupported}
+            disabled={inputDisabled}
+            onChange={({ enabled, effort }) => {
+              setEnableThinking(enabled);
+              setThinkingEffort(effort);
+            }}
+          />
+
+          <button
+            onClick={() => setEnableSearch(!enableSearch)}
+            disabled={inputDisabled}
+            className={`chat-input-toggle chat-input-toggle-search ${enableSearch ? 'chat-input-toggle-search-active' : ''} ${inputDisabled ? 'chat-input-toggle-disabled' : ''}`}
+            title="联网搜索（需配置搜索API）"
+          >
+            <AgentGlobeIcon size={12} />
+            <span className="chat-input-toggle-text">联网搜索</span>
+            {enableSearch && <AgentCheckIcon size={10} />}
+          </button>
+        </div>
+
+        <div className="chat-input-toolbar-group chat-input-toolbar-models">
+          {showTokenDashboard && <TokenDashboard isLoading={isLoading} floatingSessionId={floatingSessionId} modelId={modelId} />}
+          <ModelMenu onOpenSettings={onOpenSettings} value={modelId} onChange={onModelChange} />
+        </div>
+      </div>
 
       <div className={`chat-input-row ${isFocused ? 'chat-input-row-focused' : ''}`}>
         <textarea
@@ -205,7 +262,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           }}
           title="上传图片附件"
         >
-          <Paperclip size={14} />
+          <AgentPaperclipIcon size={14} />
         </button>
 
         <button
@@ -219,40 +276,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           }}
           title={isLoading ? '停止生成' : '发送'}
         >
-          {isLoading ? <Square size={14} /> : <Send size={14} style={{ marginLeft: '1px' }} />}
+          {isLoading ? <AgentStopIcon size={14} /> : <AgentArrowUpIcon size={14} />}
         </button>
       </div>
 
-      <div className="chat-input-toolbar">
-        <div className="chat-input-toolbar-group">
-          <ThinkingMenuButton
-            enabled={enableThinking}
-            effort={thinkingEffort}
-            supported={thinkingSupported}
-            disabled={inputDisabled}
-            onChange={({ enabled, effort }) => {
-              setEnableThinking(enabled);
-              setThinkingEffort(effort);
-            }}
-          />
-
-          <button
-            onClick={() => setEnableSearch(!enableSearch)}
-            disabled={inputDisabled}
-            className={`chat-input-toggle chat-input-toggle-search ${enableSearch ? 'chat-input-toggle-search-active' : ''} ${inputDisabled ? 'chat-input-toggle-disabled' : ''}`}
-            title="联网搜索（需配置搜索API）"
-          >
-            <Globe size={12} />
-            <span className="chat-input-toggle-text">联网搜索</span>
-            {enableSearch && <CheckCircle size={10} />}
-          </button>
-        </div>
-
-        <div className="chat-input-toolbar-group" style={{ gap: 4, flexShrink: 0 }}>
-          {showTokenDashboard && <TokenDashboard isLoading={isLoading} floatingSessionId={floatingSessionId} modelId={modelId} />}
-          <ModelMenu onOpenSettings={onOpenSettings} value={modelId} onChange={onModelChange} />
-        </div>
-      </div>
     </div>
   );
 };

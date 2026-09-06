@@ -3,10 +3,14 @@
 // @ai-sdk/openai-compatible 只识别 delta.reasoning_content / delta.reasoning。部分中转网关
 // （尤其把 Claude extended thinking 转成 OpenAI 格式的代理）会把思考放在 delta.thinking、
 // delta.reasoning_details，甚至是 { type: "thinking", thinking: "..." } 这类结构化对象或数组。
-// 这里用一个包装 fetch 在 SSE 层把这些字段改写成 reasoning_content，其余字节原样透传，
-// 让 provider 之上的所有逻辑保持标准。
+// 字段名是标准的，也不代表字段值一定是字符串。所有 OpenAI 兼容响应都经过这个轻量
+// fetch 包装；只转换可识别的思考结构，不掩盖其他协议错误，未改动的 SSE 行保留原始字节。
 
-const STANDARD_FIELDS = new Set(["reasoning_content", "reasoning"]);
+const STANDARD_FIELDS = ["reasoning_content", "reasoning"] as const;
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
 
 /** 从字符串 / 数组 / {text|thinking|content} 对象里抽出纯文本思考增量。 */
 export function extractReasoningText(value: unknown): string {
@@ -22,14 +26,48 @@ export function extractReasoningText(value: unknown): string {
   return "";
 }
 
-/** 是否需要包装：只有字段名不在标准集合内时才启用（避免无谓的流改写开销）。 */
-export function needsReasoningNormalization(field: string | undefined): field is string {
-  return !!field && !STANDARD_FIELDS.has(field);
+/** 标准字段受 SDK 类型校验：数组的每一项都须可识别，不能把未知数据静默丢弃。 */
+function readStructuredReasoning(value: unknown): string | undefined {
+  if (typeof value === "string") return value;
+  if (Array.isArray(value)) {
+    const parts = value.map(readStructuredReasoning);
+    return parts.every((part) => part !== undefined) ? parts.join("") : undefined;
+  }
+  if (isRecord(value)) {
+    if (typeof value.text === "string") return value.text;
+    if (typeof value.thinking === "string") return value.thinking;
+    if (typeof value.content === "string") return value.content;
+    if (Array.isArray(value.content)) return readStructuredReasoning(value.content);
+  }
+  return undefined;
 }
 
 /** 改写单个 delta / message 对象；返回是否有改动。 */
 export function normalizeReasoningObject(target: Record<string, unknown>, field: string): boolean {
-  if (typeof target.reasoning_content === "string" && target.reasoning_content) return false;
+  let changed = false;
+  for (const key of STANDARD_FIELDS) {
+    const value = target[key];
+    if (value == null || typeof value === "string") continue;
+    const text = readStructuredReasoning(value);
+    if (text !== undefined) {
+      target[key] = text;
+      changed = true;
+    }
+  }
+
+  const primary = target.reasoning_content;
+  if (typeof primary === "string" && primary) return changed;
+  // 不能用别名覆盖格式错误的标准字段；应交给 SDK 报告真正的协议错误。
+  if (primary != null && typeof primary !== "string") return changed;
+  if (target.reasoning != null && typeof target.reasoning !== "string") return changed;
+  if (typeof target.reasoning === "string" && target.reasoning) {
+    // SDK 原生识别 reasoning，无需在标准字符串响应中重复注入字段。
+    if (primary == null) return changed;
+    // SDK 使用 ?? 选择字段；空 reasoning_content 会挡住有效的 reasoning。
+    target.reasoning_content = target.reasoning;
+    return true;
+  }
+
   const candidates = [field, "reasoning_details", "thinking", "reasoning_text"];
   for (const key of candidates) {
     if (!(key in target)) continue;
@@ -39,7 +77,7 @@ export function normalizeReasoningObject(target: Record<string, unknown>, field:
       return true;
     }
   }
-  return false;
+  return changed;
 }
 
 /** 改写一条 SSE `data:` 行的 JSON 载荷；解析失败或无改动时返回原行。 */
@@ -47,36 +85,74 @@ export function normalizeSseLine(line: string, field: string): string {
   if (!line.startsWith("data:")) return line;
   const payload = line.slice(5).trim();
   if (!payload || payload === "[DONE]") return line;
-  let json: { choices?: Array<{ delta?: Record<string, unknown>; message?: Record<string, unknown> }> };
+  let json: unknown;
   try {
     json = JSON.parse(payload);
   } catch {
     return line;
   }
+  if (!isRecord(json) || "error" in json || !Array.isArray(json.choices)) return line;
   let changed = false;
-  for (const choice of json.choices ?? []) {
-    if (choice.delta && normalizeReasoningObject(choice.delta, field)) changed = true;
-    if (choice.message && normalizeReasoningObject(choice.message, field)) changed = true;
+  for (const choice of json.choices) {
+    if (!isRecord(choice)) continue;
+    if (isRecord(choice.delta) && normalizeReasoningObject(choice.delta, field)) changed = true;
+    if (isRecord(choice.message) && normalizeReasoningObject(choice.message, field)) changed = true;
   }
-  return changed ? `data: ${JSON.stringify(json)}` : line;
+  return changed ? `data: ${JSON.stringify(json)}${line.endsWith("\r") ? "\r" : ""}` : line;
 }
 
 function createSseNormalizeTransform(field: string): TransformStream<Uint8Array, Uint8Array> {
-  const decoder = new TextDecoder();
+  const decoder = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
   const encoder = new TextEncoder();
-  let buffer = "";
+  let buffer: Uint8Array = new Uint8Array(0);
+
+  function normalizeLine(bytes: Uint8Array, lineEnd: number): Uint8Array {
+    // 非 data 行（注释、心跳、event/id 等）不需要解码。
+    if (bytes[0] !== 100 || bytes[1] !== 97 || bytes[2] !== 116 || bytes[3] !== 97 || bytes[4] !== 58) return bytes;
+    let line: string;
+    try {
+      line = decoder.decode(bytes.subarray(0, lineEnd));
+    } catch {
+      // 非法 UTF-8 留给 SDK 处理，不能用替换字符改写响应。
+      return bytes;
+    }
+    const normalized = normalizeSseLine(line, field);
+    if (normalized === line) return bytes;
+    const data = encoder.encode(normalized);
+    const result = new Uint8Array(data.length + bytes.length - lineEnd);
+    result.set(data);
+    result.set(bytes.subarray(lineEnd), data.length);
+    return result;
+  }
+
   return new TransformStream({
     transform(chunk, controller) {
-      buffer += decoder.decode(chunk, { stream: true });
-      let nl: number;
-      while ((nl = buffer.indexOf("\n")) >= 0) {
-        const line = buffer.slice(0, nl);
-        buffer = buffer.slice(nl + 1);
-        controller.enqueue(encoder.encode(normalizeSseLine(line, field) + "\n"));
+      if (buffer.length > 0) {
+        const joined = new Uint8Array(buffer.length + chunk.length);
+        joined.set(buffer);
+        joined.set(chunk, buffer.length);
+        buffer = joined;
+      } else {
+        buffer = chunk;
       }
+      let start = 0;
+      for (let i = 0; i < buffer.length; i++) {
+        const byte = buffer[i];
+        if (byte !== 10 && byte !== 13) continue;
+        // CRLF 可以被拆到两个网络 chunk；保留末尾 CR 到下一次读取。
+        if (byte === 13 && i === buffer.length - 1) break;
+        const end = byte === 13 && buffer[i + 1] === 10 ? i + 2 : i + 1;
+        controller.enqueue(normalizeLine(buffer.subarray(start, end), i - start));
+        start = end;
+        i = end - 1;
+      }
+      buffer = buffer.subarray(start);
     },
     flush(controller) {
-      if (buffer) controller.enqueue(encoder.encode(normalizeSseLine(buffer, field)));
+      if (buffer.length > 0) {
+        const lineEnd = buffer[buffer.length - 1] === 13 ? buffer.length - 1 : buffer.length;
+        controller.enqueue(normalizeLine(buffer, lineEnd));
+      }
     },
   });
 }
@@ -86,11 +162,11 @@ function createSseNormalizeTransform(field: string): TransformStream<Uint8Array,
  * 传给 createOpenAICompatible({ fetch })。
  */
 export function createReasoningNormalizingFetch(
-  field: string,
-  baseFetch: typeof fetch = fetch,
+  field = "reasoning_content",
+  baseFetch?: typeof fetch,
 ): typeof fetch {
   return async (input, init) => {
-    const res = await baseFetch(input, init);
+    const res = await (baseFetch ?? fetch)(input, init);
     if (!res.ok || !res.body) return res;
     const contentType = res.headers.get("content-type") ?? "";
     // 正文被改写后长度/编码已变，不能沿用这两个头。

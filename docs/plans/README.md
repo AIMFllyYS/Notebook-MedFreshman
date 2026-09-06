@@ -76,6 +76,8 @@
 | [10-probability-recording-quiz.md](./10-probability-recording-quiz.md) | Chat H · 第2步 | 概率论录音随堂测试（理工科适配） | 09 完成后 |
 | [11-physics-recording-examples-quiz-rewrite.md](./11-physics-recording-examples-quiz-rewrite.md) | 独立 Chat | 物理录音例题与题库重写 | 无 |
 | [12-content-registry-consolidation.md](./12-content-registry-consolidation.md) | 独立 Chat · 阶段 A 先行，B/C/D 可并行 | 学科/板块/录音注册表收敛，实现"只写 MD + 改注册表"的零代码接入；SOP 对齐 | 无（建议在新增内容任务前完成） |
+| [13-agent-sdk-trace-ui.md](./13-agent-sdk-trace-ui.md) | SDK / 消息模型基线之上，客户端、Trace 与其他路由按独立模块并行 | Agent SDK 7 接入、时间轴 UI、持久化/计费回归、清理与验收记录 | 保留已完成 SDK/provider 基础设施与未提交 Step 3；稳定层待修项另见记录 |
+| [14-chat-runtime-and-icons.md](./14-chat-runtime-and-icons.md) | 真实请求诊断 + 共享界面返修 | EACCES 运行环境、脱敏错误处理、自绘图标、透明悬浮输入区、消息左右对齐与 Trace 层级缩进 | 13 的后续修复与用户反馈 |
 
 ## 全局规范
 

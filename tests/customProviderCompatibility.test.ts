@@ -9,40 +9,45 @@ function readWorkspaceFile(path: string) {
   return readFileSync(join(root, path), "utf8");
 }
 
-test("chat route uses provider helpers for custom reasoning and thinking params", () => {
-  const source = readWorkspaceFile("app/api/chat/route.ts");
+test("SDK adapter normalizes custom reasoning and builds provider thinking settings", () => {
+  const source = readWorkspaceFile("lib/ai/sdk/languageModel.ts");
 
-  assert.match(source, /extractReasoningDelta\(delta,\s*reasoningField\)/);
-  assert.match(source, /buildThinkingRequestParams\(activeProvider\.thinkingRequestStyle/);
+  assert.match(source, /extractReasoningMiddleware\(\{ tagName: "think" \}\)/);
+  assert.match(source, /createReasoningNormalizingFetch\(p\.reasoningField\)/);
+  assert.match(source, /buildThinkingSettings\(primary, effort\)/);
+  assert.match(source, /switch \(p\.thinkingRequestStyle\)/);
   assert.doesNotMatch(source, /reqBody\.enable_thinking\s*=\s*true/);
   assert.doesNotMatch(source, /reqBody\.thinking_budget\s*=/);
 });
 
-test("chat route omits tools for models that do not support tool calling", () => {
-  const source = readWorkspaceFile("app/api/chat/route.ts");
+test("study agent omits tools for models that do not support tool calling", () => {
+  const route = readWorkspaceFile("app/api/chat/route.ts");
+  const adapter = readWorkspaceFile("lib/ai/sdk/languageModel.ts");
+  const agent = readWorkspaceFile("lib/ai/agent/studyAgent.ts");
 
-  assert.match(source, /const modelSupportsTools = modelInfo\?\.tools !== false/);
-  assert.match(source, /if \(modelSupportsTools && effectiveToolDefs\.length > 0\)/);
-  assert.match(source, /: "auto"/);
+  assert.match(adapter, /const supportsTools = info\?\.tools !== false/);
+  assert.match(route, /modelSupportsTools: resolved\.supportsTools/);
+  assert.match(agent, /const tools = modelSupportsTools\s*\? buildStudyTools\([\s\S]*?: \{\}/);
 });
 
 test("image mode chat forces generateImage and does not expose artifact tools", () => {
-  const source = readWorkspaceFile("app/api/chat/route.ts");
+  const source = readWorkspaceFile("lib/ai/agent/studyAgent.ts");
 
-  assert.match(source, /const baseToolDefs = isImageMode[\s\S]*?toolDefs\.filter\(\(t\) => t\.function\.name === "generateImage"\)/);
-  assert.match(source, /reqBody\.tool_choice = isImageMode[\s\S]*?function: \{ name: "generateImage" \}/);
+  assert.match(source, /stepNumber === 0[\s\S]*?activeTools: \["generateImage"\], toolChoice: \{ type: "tool", toolName: "generateImage" \}/);
+  assert.match(source, /activeTools: \[\], toolChoice: "none"/);
   assert.match(source, /生图模式硬性规则/);
 });
 
 test("artifact and image generation use the model selected when the tool call was created", () => {
   const chatRoute = readWorkspaceFile("app/api/chat/route.ts");
+  const tools = readWorkspaceFile("lib/ai/agent/tools.ts");
   const artifactCard = readWorkspaceFile("components/chat/ArtifactCard.tsx");
   const imageViewer = readWorkspaceFile("components/chat/ImageGenViewer.tsx");
   const imageCard = readWorkspaceFile("components/chat/ImageGenCard.tsx");
 
-  assert.match(chatRoute, /const artifactModelId = modelId \|\| effectiveModelId/);
-  assert.match(chatRoute, /artifactUnsupportedReason/);
-  assert.match(chatRoute, /imageModelId: modelId/);
+  assert.match(chatRoute, /selectedModelId: modelId \?\? effectiveModelId/);
+  assert.match(tools, /unsupportedReason: ctx\.artifactUnsupportedReason/);
+  assert.equal([...tools.matchAll(/modelId: ctx\.modelId/g)].length, 2);
   assert.match(artifactCard, /const artifactModelId = modelId \|\| settings\.selectedModelId/);
   assert.match(imageCard, /modelId,/);
   assert.match(imageViewer, /const imageModelId = cur\.modelId \|\| settings\.selectedModelId/);

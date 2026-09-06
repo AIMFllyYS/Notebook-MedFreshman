@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Plus, Clock, Settings } from 'lucide-react';
-import PencilSparklesIcon from '@/components/icons/PencilSparklesIcon';
+import { AgentPlusIcon, AgentHistoryIcon, AgentSettingsIcon, AgentLoopIcon } from '@/components/icons/AgentIcons';
 
 interface ChatPanelHeaderProps {
   topic: string;
@@ -20,21 +19,21 @@ const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({
   return (
     <div className="chat-header">
       <div className="chat-header-left">
-        <PencilSparklesIcon size={14} style={{ color: 'var(--md-sys-color-primary)' }} />
+        <AgentLoopIcon size={14} style={{ color: 'var(--ink-soft)' }} />
         <span className="chat-header-title">AI 助教</span>
         {topic && <span className="chat-header-topic">{topic}</span>}
       </div>
       <div className="chat-header-actions">
         <button onClick={onOpenSettings} title="AI 设置" className="chat-header-btn">
-          <Settings size={12} />
+          <AgentSettingsIcon size={12} />
           <span className="chat-header-btn-text">设置</span>
         </button>
         <button onClick={onOpenHistory} title="历史记录" className="chat-header-btn">
-          <Clock size={12} />
+          <AgentHistoryIcon size={12} />
           <span className="chat-header-btn-text">历史</span>
         </button>
         <button onClick={onNewChat} title="开启新对话" className="chat-header-btn chat-header-btn-primary">
-          <Plus size={12} />
+          <AgentPlusIcon size={12} />
           <span className="chat-header-btn-text">新对话</span>
         </button>
       </div>

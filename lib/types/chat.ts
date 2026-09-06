@@ -12,6 +12,9 @@ export interface WebSearchSource {
   media?: string;
   /** imageSearch 专用：Unsplash 图片描述（对应 ImageSearchResult.alt）。 */
   alt?: string;
+  /** imageSearch 专用：摄影师名与主页链接（Unsplash 署名要求）。 */
+  author?: string;
+  authorUrl?: string;
 }
 
 /** 单次请求的 token 用量（跨工具轮次已累加）。 */

@@ -9,7 +9,7 @@
 //
 // 仅服务端导入。
 
-import type { LanguageModelV4 } from "@ai-sdk/provider";
+import type { LanguageModelV4, SharedV4ProviderOptions } from "@ai-sdk/provider";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { wrapLanguageModel, extractReasoningMiddleware } from "ai";
@@ -22,7 +22,7 @@ import {
 } from "@/lib/ai/provider";
 import { getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
 import { createFailoverLanguageModel, type FailoverCandidate } from "@/lib/ai/sdk/failoverModel";
-import { createReasoningNormalizingFetch, needsReasoningNormalization } from "@/lib/ai/sdk/reasoningNormalizer";
+import { createReasoningNormalizingFetch } from "@/lib/ai/sdk/reasoningNormalizer";
 
 /** openai-compatible 实例统一用这个名字，providerOptions 也用同一个 key（无需按上游区分）。 */
 export const UPSTREAM_PROVIDER_NAME = "upstream";
@@ -33,7 +33,7 @@ export type ThinkingEffort = "low" | "medium" | "high" | "max";
 
 /** 思考相关的调用参数：providerOptions 按协议装配；Anthropic 还需要显式抬高 maxOutputTokens。 */
 export interface ThinkingCallSettings {
-  providerOptions?: Record<string, Record<string, unknown>>;
+  providerOptions?: SharedV4ProviderOptions;
   maxOutputTokens?: number;
 }
 
@@ -71,9 +71,8 @@ function buildBaseModel(p: ResolvedProvider): LanguageModelV4 {
     baseURL: p.baseUrl.replace(/\/+$/, ""),
     apiKey: p.apiKey,
     includeUsage: true,
-    fetch: needsReasoningNormalization(p.reasoningField)
-      ? createReasoningNormalizingFetch(p.reasoningField)
-      : undefined,
+    // 标准字段名也可能携带结构化值；归一化只改可识别的思考内容，其余协议仍由 SDK 校验。
+    fetch: createReasoningNormalizingFetch(p.reasoningField),
   });
   return wrapLanguageModel({
     model: upstream(p.apiModelId),
@@ -152,6 +151,8 @@ export function resolveLanguageModel(
 
   const model = createFailoverLanguageModel(candidates, {
     onFailover: (next, _index, error) => options.onFailover?.({ label: next.label }, error),
+    // 与旧实现一致：首字节超时视为端点不可用（慢模型如 MoE 冷启动在 models.ts 单独放宽）。
+    firstChunkTimeoutMs: primary.timeoutMs,
   });
 
   return {

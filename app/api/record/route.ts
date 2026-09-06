@@ -1,12 +1,10 @@
 import type { NextRequest } from "next/server";
 import type { RecordCardAI, RecordMode } from "@/lib/review/types";
-import {
-  resolveProvider,
-  chatCompletionsUrl,
-  ENV_MODEL_FLASH,
-  thinkingBudget,
-} from "@/lib/ai/provider";
-import { getModelInfo, type CustomApiGroup } from "@/lib/ai/models";
+import { APICallError } from "@ai-sdk/provider";
+import { ENV_MODEL_FLASH } from "@/lib/ai/provider";
+import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
+import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
+import type { CustomApiGroup } from "@/lib/ai/models";
 
 // 「记录」成卡路由（SSE 流式）：把用户划词/右键选中的原文，按用户选择的模式流式转成复习卡片。
 // 输出纯 Markdown 富文本（===FRONT=== / ===BACK=== / ===BLANKS=== 分隔），前端流式渲染 + 思考折叠。
@@ -19,15 +17,6 @@ const MAX_INPUT = 6000;
 
 function sse(obj: unknown): string {
   return `data: ${JSON.stringify(obj)}\n\n`;
-}
-
-interface StreamDelta {
-  content?: string;
-  reasoning?: string;
-  [key: string]: unknown;
-}
-interface StreamChunk {
-  choices?: Array<{ delta?: StreamDelta; finish_reason?: string }>;
 }
 
 const MODE_PROMPTS: Record<RecordMode, string> = {
@@ -169,7 +158,8 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const provider = resolveProvider(modelId, customApiGroups);
+  const resolved = resolveLanguageModel(modelId, customApiGroups);
+  const { provider } = resolved;
   if (!provider.configured) {
     return new Response(sse({ type: "error", message: "AI 服务未配置（请先填写密钥）" }), {
       status: 503,
@@ -199,22 +189,22 @@ export async function POST(req: NextRequest) {
       (userInstruction ? `\n\n用户补充要求：${userInstruction}` : "");
   }
 
-  const messages = [
-    { role: "system", content: systemPrompt },
-    { role: "user", content: userMessage },
-  ];
-
   const encoder = new TextEncoder();
+  const abortController = new AbortController();
+  const signal = AbortSignal.any([req.signal, abortController.signal]);
+  let cancelled = false;
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
-      const send = (o: unknown) => controller.enqueue(encoder.encode(sse(o)));
+      const send = (o: unknown) => {
+        if (!cancelled) controller.enqueue(encoder.encode(sse(o)));
+      };
 
       let heartbeatTimer: ReturnType<typeof setInterval> | null = null;
       let firstContentSent = false;
       const startHeartbeat = () => {
         if (heartbeatTimer) return;
         heartbeatTimer = setInterval(() => {
-          if (!firstContentSent) {
+          if (!firstContentSent && !cancelled) {
             controller.enqueue(encoder.encode(": heartbeat\n\n"));
           }
         }, 15000);
@@ -225,93 +215,38 @@ export async function POST(req: NextRequest) {
       startHeartbeat();
 
       try {
-        const reqBody: Record<string, unknown> = {
-          model: provider.apiModelId,
-          stream: true,
+        const result = await streamRouteText({
+          model: resolved.model,
+          instructions: systemPrompt,
+          prompt: userMessage,
           temperature: 0.4,
-          messages,
-        };
-
-        if (enableThinking) {
-          const info = provider.isCustom ? undefined : getModelInfo(provider.registryId);
-          const supportsThinking = provider.isCustom || !info || info.thinking;
-          if (supportsThinking) {
-            reqBody.enable_thinking = true;
-            reqBody.thinking_budget = thinkingBudget("medium");
-          }
-        }
-
-        const abortCtrl = new AbortController();
-        const fetchTimeoutId = setTimeout(() => abortCtrl.abort(), provider.timeoutMs);
-
-        const res = await fetch(chatCompletionsUrl(provider.baseUrl), {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${provider.apiKey}`,
+          ...(enableThinking ? resolved.thinkingSettings("medium") : {}),
+          abortSignal: signal,
+          idleTimeoutMs: provider.timeoutMs,
+          onReasoning: (delta) => send({ type: "reasoning", delta }),
+          onText: (delta) => {
+            firstContentSent = true;
+            stopHeartbeat();
+            send({ type: "content", delta });
           },
-          body: JSON.stringify(reqBody),
-          signal: abortCtrl.signal,
         });
-        clearTimeout(fetchTimeoutId);
-
-        if (!res.ok || !res.body) {
-          const t = await res.text().catch(() => "");
-          stopHeartbeat();
-          send({ type: "error", message: `接口返回 ${res.status}：${t.slice(0, 300)}` });
-          send({ type: "done" });
-          controller.close();
-          return;
-        }
-
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-        let buf = "";
-        let contentBuf = "";
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          buf += decoder.decode(value, { stream: true });
-          let nl: number;
-          while ((nl = buf.indexOf("\n")) >= 0) {
-            const line = buf.slice(0, nl).trim();
-            buf = buf.slice(nl + 1);
-            if (!line.startsWith("data:")) continue;
-            const data = line.slice(5).trim();
-            if (!data || data === "[DONE]") continue;
-            let json: StreamChunk;
-            try { json = JSON.parse(data); } catch { continue; }
-
-            const choice = json.choices?.[0];
-            if (!choice) continue;
-            const delta: StreamDelta = choice.delta || {};
-
-            const reasoning = delta[provider.reasoningField] ?? delta.reasoning;
-            if (reasoning) send({ type: "reasoning", delta: reasoning });
-
-            if (delta.content) {
-              firstContentSent = true;
-              stopHeartbeat();
-              contentBuf += delta.content;
-              send({ type: "content", delta: delta.content });
-            }
-          }
-        }
-
-        stopHeartbeat();
-        const card = parseCardContent(contentBuf, mode);
+        const card = parseCardContent(result.text, mode);
         send({ type: "result", card, model: provider.registryId });
         send({ type: "done" });
-        controller.close();
       } catch (err) {
+        const message = APICallError.isInstance(err) && err.statusCode
+          ? `接口返回 ${err.statusCode}：${(err.responseBody ?? "").slice(0, 300)}`
+          : String((err as Error)?.message ?? err);
+        send({ type: "error", message });
+        send({ type: "done" });
+      } finally {
         stopHeartbeat();
-        try {
-          send({ type: "error", message: String((err as Error)?.message ?? err) });
-          send({ type: "done" });
-          controller.close();
-        } catch { /* already closed */ }
+        if (!cancelled) controller.close();
       }
+    },
+    cancel(reason) {
+      cancelled = true;
+      abortController.abort(reason);
     },
   });
 

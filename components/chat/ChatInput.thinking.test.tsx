@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest';
-import { render, act } from '@testing-library/react';
+import { render, act, fireEvent } from '@testing-library/react';
 import ChatInput from './ChatInput';
 import { useSettings } from '@/lib/hooks/useSettings';
 
@@ -49,6 +49,28 @@ describe('ChatInput thinking menu', () => {
     });
   });
 
+  it('custom send/stop/attachment glyphs preserve keyboard actions and floating model thinking override', () => {
+    useSettings.setState({ defaultThinking: true, defaultThinkingEffort: 'high' });
+    const onSend = vi.fn();
+    const onStop = vi.fn();
+    const props = { onSend, onStop, isLoading: false, chatContext, modelId: 'mimo-v2.5', onModelChange: vi.fn() };
+    const { container, getByTitle, getByRole, getByTestId, rerender } = render(<ChatInput {...props} />);
+    expect(getByTestId('thinking-menu-button')).not.toBeDisabled();
+    expect(getByTitle('发送').querySelector('[data-agent-icon="arrow-up"]')).not.toBeNull();
+    expect(getByTitle('上传图片附件').querySelector('[data-agent-icon="paperclip"]')).not.toBeNull();
+    expect(getByTitle('联网搜索（需配置搜索API）').querySelector('[data-agent-icon="globe"]')).not.toBeNull();
+    fireEvent.change(getByRole('textbox'), { target: { value: '解释这一页' } });
+    fireEvent.keyDown(getByRole('textbox'), { key: 'Enter' });
+    expect(onSend).toHaveBeenCalledOnce();
+    expect(onSend).toHaveBeenCalledWith('解释这一页', expect.objectContaining({ enableThinking: true, thinkingEffort: 'high' }));
+    expect(useSettings.getState().selectedModelId).toBe('zai-org/GLM-4.7-FlashX');
+    rerender(<ChatInput {...props} isLoading />);
+    expect(getByTitle('停止生成').querySelector('[data-agent-icon="stop"]')).not.toBeNull();
+    fireEvent.click(getByTitle('停止生成'));
+    expect(onStop).toHaveBeenCalledOnce();
+    expect(container.querySelector('.lucide')).toBeNull();
+  });
+
   it('disables thinking menu button when the model does not support thinking', () => {
     const { getByTestId } = render(
       <ChatInput
@@ -65,7 +87,7 @@ describe('ChatInput thinking menu', () => {
 
   it('shows enabled state with default effort when model supports thinking and defaultThinking is on', () => {
     useSettings.setState({
-      selectedModelId: 'Pro/deepseek-ai/DeepSeek-V3.5',
+      selectedModelId: 'mimo-v2.5',
       customApiGroups: [],
       defaultThinking: true,
       defaultThinkingEffort: 'high',
@@ -79,16 +101,14 @@ describe('ChatInput thinking menu', () => {
       />,
     );
     const btn = getByTestId('thinking-menu-button');
-    // 只要模型支持思考 & 默认开启，label 中应带 High
-    if (btn.getAttribute('data-enabled') === '1') {
-      expect(btn.getAttribute('data-effort')).toBe('high');
-      expect(btn.textContent).toContain('深度思考·High');
-    }
+    expect(btn.getAttribute('data-enabled')).toBe('1');
+    expect(btn.getAttribute('data-effort')).toBe('high');
+    expect(btn.textContent).toContain('深度思考·High');
   });
 
   it('sends effective thinkingEffort through onSend when thinking is enabled', async () => {
     useSettings.setState({
-      selectedModelId: 'Pro/deepseek-ai/DeepSeek-V3.5',
+      selectedModelId: 'mimo-v2.5',
       customApiGroups: [],
       defaultThinking: true,
       defaultThinkingEffort: 'medium',
@@ -103,27 +123,13 @@ describe('ChatInput thinking menu', () => {
       />,
     );
     const textarea = container.querySelector<HTMLTextAreaElement>('.chat-input-textarea')!;
-    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-      window.HTMLTextAreaElement.prototype,
-      'value',
-    )!.set!;
-    nativeInputValueSetter.call(textarea, 'hello');
-    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    fireEvent.change(textarea, { target: { value: 'hello' } });
 
     const sendBtn = Array.from(container.querySelectorAll<HTMLButtonElement>('.chat-input-send'))
       .find((b) => b.title === '发送' || b.title === '停止生成');
-    if (sendBtn) {
-      await act(async () => {
-        sendBtn.click();
-      });
-      if (onSend.mock.calls.length > 0) {
-        const opts = onSend.mock.calls[0][1];
-        if (opts?.enableThinking) {
-          expect(opts.thinkingEffort).toBe('medium');
-        } else {
-          expect(opts.thinkingEffort).toBeUndefined();
-        }
-      }
-    }
+    expect(sendBtn).toBeDefined();
+    await act(async () => { sendBtn!.click(); });
+    expect(onSend).toHaveBeenCalledOnce();
+    expect(onSend).toHaveBeenCalledWith('hello', expect.objectContaining({ enableThinking: true, thinkingEffort: 'medium' }));
   });
 });

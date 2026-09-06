@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+- 修复聊天流内错误被统一隐藏成 `An error occurred.`、错误后仍调用追问并写入成功收尾的问题；区分网络权限、认证、超时与协议错误，脱敏后在聊天区提示，已处理的请求失败不再触发 Next 开发错误遮罩。
+- 修复缺省学年请求校验与旧 customProvider 追问凭证继承；恢复默认 reasoning 字段中的对象/数组及历史别名兼容，保留真正的协议错误校验。
+- 聊天执行过程改为紧凑单色活动列表：22 个本地自绘 SVG 图标替代思考链及主要聊天控件的旧图库，移除彩色状态徽章、重复步骤计数与嵌套追问卡片，完成时长统一显示“已处理”。
+- AI 输入区改为透明底部悬浮布局，思考/搜索/上下文/模型控件上置；按实际输入区高度动态避让消息与错误提示。用户消息/头像右对齐、AI 左对齐，思考步骤和工具详情分层缩进，覆盖手机、桌面及划词浮窗。
+
+- Agent 主对话接入 AI SDK 7 `ToolLoopAgent` / UIMessage Stream；客户端使用 SDK transport 与 stream reader，保持 Zustand + IndexedDB 为消息真相源，历史扁平消息懒迁移为有序 parts。
+- 新增 Agent Trace 时间轴：思考、工具调用与中间说明按序排列，完成自动折叠、取消保留部分内容，支持键盘折叠与 reduced-motion；引用、图片画廊、交互产物及生图批准卡置于最终回答下方。
+- 保留流式 UI 节流、SSE 心跳活动检测、取消/卸载清理、标题和追问生成、图片附件水合、上下文软上限，以及主会话/划词浮窗独立的模型、Token 与计费归属；data/metadata 用量每请求只结算一次。
+- artifact、record、chat-title、follow-ups、canvas-revise 统一通过 SDK 模型工厂调用，保留各自的客户端响应契约；专用 image-gen 协议不变。
+- 移除无消费者的旧 Anthropic 手写翻译器、旧消息/思考组件及嵌套处理卡片 CSS；补充真实 SDK 协议、hook、Trace 与浏览器回归。完整验收边界与待修复稳定层问题见 `docs/plans/13-agent-sdk-trace-ui.md`。
+
 - 学科元数据收敛到 `lib/content-data/subjects.registry.ts`，学科名称、短名、学年、图标和提示词配置由单一注册表派生。
 - 板块能力与 key 推导策略改为 manifest 声明，标准板块统一由 `lib/content-data/category-templates.ts` 提供。
 - 课堂录音与课堂纪要改为各学科 `*-lectures.ts` 单点声明，`rec-*` / `sum-*` 条目自动派生。

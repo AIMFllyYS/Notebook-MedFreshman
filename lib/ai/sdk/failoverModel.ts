@@ -1,5 +1,5 @@
 // endpoints 链容灾：把多个 LanguageModelV4 串成一个模型，主端点在「尚未产出任何 chunk」
-// 时失败（可恢复的 5xx / 特定 400 code / 超时）则切到下一个；一旦开始流式输出就不再切换，
+// 时失败（可恢复的 5xx / 特定 400 code / 首字节超时）则切到下一个；一旦开始流式输出就不再切换，
 // 避免把两个端点的半截回答拼在一起。
 //
 // 也承载生图模式「文本模型不可用 → 降级到备用文本模型」的场景（链就是 [primary, fallback]）。
@@ -23,23 +23,47 @@ export interface FailoverCandidate {
 export interface FailoverOptions {
   /** 切换到下一候选时触发；index 为新候选在链中的下标。 */
   onFailover?: (next: FailoverCandidate, index: number, error: unknown) => void;
-  /** 自定义可恢复判定；默认按 upstream.ts 的规则 + 超时 abort。 */
+  /** 自定义可恢复判定；默认按 upstream.ts 的规则。 */
   isRecoverable?: (error: unknown) => boolean;
+  /**
+   * 首字节超时（毫秒）：doStream 在该时间内未拿到首个 chunk（doGenerate 未返回）视为端点不可用，
+   * 切到下一候选。与用户主动取消区分：只有本模型内部触发的超时才算可恢复。
+   */
+  firstChunkTimeoutMs?: number;
 }
 
-/** 默认判定：上游 502/503/504、智谱/SF 的可恢复 400 code、以及超时导致的 abort。 */
+/** 默认判定：上游 502/503/504、智谱/SF 的可恢复 400 code、以及网络层错误。 */
 export function defaultIsRecoverable(error: unknown): boolean {
   if (APICallError.isInstance(error)) {
     const status = error.statusCode ?? 0;
     const code = error.responseBody ? parseUpstreamErrorBody(error.responseBody).errorCode : undefined;
     return isRecoverableUpstreamFailure(status, code);
   }
-  // fetch 层面的网络错误 / 超时（AbortSignal.timeout 触发的是 TimeoutError，也视为可恢复）
-  if (isFetchAbortError(error)) return true;
-  if (error instanceof Error && (error.name === "TimeoutError" || /fetch failed|ECONNRESET|ENOTFOUND/i.test(error.message))) {
+  if (error instanceof Error && /fetch failed|ECONNRESET|ENOTFOUND|ECONNREFUSED/i.test(error.message)) {
     return true;
   }
   return false;
+}
+
+interface Attempt {
+  signal: AbortSignal | undefined;
+  timedOut: () => boolean;
+  clear: () => void;
+}
+
+function startAttempt(userSignal: AbortSignal | undefined, timeoutMs: number | undefined): Attempt {
+  if (!timeoutMs) return { signal: userSignal, timedOut: () => false, clear: () => {} };
+  const ctrl = new AbortController();
+  let fired = false;
+  const timer = setTimeout(() => {
+    fired = true;
+    ctrl.abort(new DOMException("首字节超时", "TimeoutError"));
+  }, timeoutMs);
+  return {
+    signal: userSignal ? AbortSignal.any([userSignal, ctrl.signal]) : ctrl.signal,
+    timedOut: () => fired,
+    clear: () => clearTimeout(timer),
+  };
 }
 
 export function createFailoverLanguageModel(
@@ -47,14 +71,19 @@ export function createFailoverLanguageModel(
   options: FailoverOptions = {},
 ): LanguageModelV4 {
   if (candidates.length === 0) throw new Error("createFailoverLanguageModel: 至少需要一个候选模型");
-  if (candidates.length === 1) return candidates[0].model;
+  if (candidates.length === 1 && !options.firstChunkTimeoutMs) return candidates[0].model;
 
   const primary = candidates[0].model;
   const isRecoverable = options.isRecoverable ?? defaultIsRecoverable;
 
-  // 用户主动取消不应触发切换：只有非用户 abort 才算可恢复。
-  const shouldFailover = (error: unknown, signal: AbortSignal | undefined, index: number) =>
-    index < candidates.length - 1 && !(signal?.aborted && isFetchAbortError(error)) && isRecoverable(error);
+  // 用户主动取消不触发切换；本模型内部的首字节超时或可恢复的上游错误才切换。
+  const shouldFailover = (error: unknown, attempt: Attempt, userSignal: AbortSignal | undefined, index: number) => {
+    if (index >= candidates.length - 1) return false;
+    if (userSignal?.aborted) return false;
+    if (attempt.timedOut()) return true;
+    if (isFetchAbortError(error)) return false;
+    return isRecoverable(error);
+  };
 
   return {
     specificationVersion: "v4",
@@ -65,12 +94,15 @@ export function createFailoverLanguageModel(
     async doGenerate(callOptions: LanguageModelV4CallOptions): Promise<LanguageModelV4GenerateResult> {
       let lastError: unknown;
       for (let i = 0; i < candidates.length; i++) {
+        const attempt = startAttempt(callOptions.abortSignal, options.firstChunkTimeoutMs);
         try {
-          return await candidates[i].model.doGenerate(callOptions);
+          return await candidates[i].model.doGenerate({ ...callOptions, abortSignal: attempt.signal });
         } catch (err) {
           lastError = err;
-          if (!shouldFailover(err, callOptions.abortSignal, i)) throw err;
+          if (!shouldFailover(err, attempt, callOptions.abortSignal, i)) throw err;
           options.onFailover?.(candidates[i + 1], i + 1, err);
+        } finally {
+          attempt.clear();
         }
       }
       throw lastError;
@@ -79,21 +111,26 @@ export function createFailoverLanguageModel(
     async doStream(callOptions: LanguageModelV4CallOptions): Promise<LanguageModelV4StreamResult> {
       let lastError: unknown;
       for (let i = 0; i < candidates.length; i++) {
+        const attempt = startAttempt(callOptions.abortSignal, options.firstChunkTimeoutMs);
         let result: LanguageModelV4StreamResult;
+        let first: ReadableStreamReadResult<LanguageModelV4StreamPart>;
+        let reader: ReadableStreamDefaultReader<LanguageModelV4StreamPart>;
         try {
-          result = await candidates[i].model.doStream(callOptions);
+          result = await candidates[i].model.doStream({ ...callOptions, abortSignal: attempt.signal });
+          // doStream 成功返回并不代表上游已开始输出：部分 provider 把 HTTP 错误延后成流内 error part，
+          // 因此窥探首个 chunk（首字节超时也覆盖到这里）。
+          reader = result.stream.getReader();
+          first = await reader.read();
         } catch (err) {
+          attempt.clear();
           lastError = err;
-          if (!shouldFailover(err, callOptions.abortSignal, i)) throw err;
+          if (!shouldFailover(err, attempt, callOptions.abortSignal, i)) throw err;
           options.onFailover?.(candidates[i + 1], i + 1, err);
           continue;
         }
+        attempt.clear();
 
-        // doStream 成功返回并不代表上游已开始输出：部分 provider 把 HTTP 错误延后成流内 error part。
-        // 因此还要窥探首个 chunk——若首个 chunk 就是 error 且可恢复，同样切换。
-        const reader = result.stream.getReader();
-        const first = await reader.read();
-        if (!first.done && first.value.type === "error" && shouldFailover(first.value.error, callOptions.abortSignal, i)) {
+        if (!first.done && first.value.type === "error" && shouldFailover(first.value.error, attempt, callOptions.abortSignal, i)) {
           reader.releaseLock();
           await result.stream.cancel().catch(() => {});
           lastError = first.value.error;
@@ -103,8 +140,9 @@ export function createFailoverLanguageModel(
 
         // 把窥探过的首个 chunk 放回流头。
         const replayed = new ReadableStream<LanguageModelV4StreamPart>({
-          async start(controller) {
+          start(controller) {
             if (!first.done) controller.enqueue(first.value);
+            else controller.close();
           },
           async pull(controller) {
             const { done, value } = await reader.read();

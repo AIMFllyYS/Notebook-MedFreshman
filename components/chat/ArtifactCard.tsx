@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Loader, MonitorPlay, Code2, ChevronDown, ChevronUp, AlertTriangle, ExternalLink } from 'lucide-react';
+import { AgentLoopIcon, AgentTerminalIcon, AgentFileIcon, AgentChevronIcon, AgentAlertIcon, AgentArrowUpRightIcon } from '@/components/icons/AgentIcons';
 import { useArtifacts } from '@/lib/hooks/useArtifacts';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { CUSTOM_PREFIX, findCustomModelGroup, getModelInfoWithCustom } from '@/lib/ai/models';
@@ -177,11 +177,11 @@ export default function ArtifactCard({
       {/* 头部：状态 + 主操作 */}
       <div className="flex flex-wrap items-center gap-2 px-3 py-2.5">
         {streaming || preparing ? (
-          <Loader size={15} className="animate-spin shrink-0" style={{ color: 'var(--md-sys-color-primary)' }} />
+          <AgentLoopIcon size={15} className="animate-pulse motion-reduce:animate-none shrink-0" style={{ color: 'var(--md-sys-color-primary)' }} />
         ) : errored || expired ? (
-          <AlertTriangle size={15} className="shrink-0" style={{ color: 'var(--md-sys-color-error)' }} />
+          <AgentAlertIcon size={15} className="shrink-0" style={{ color: 'var(--md-sys-color-error)' }} />
         ) : (
-          <MonitorPlay size={15} className="shrink-0" style={{ color: 'var(--md-sys-color-primary)' }} />
+          <AgentTerminalIcon size={15} className="shrink-0" style={{ color: 'var(--md-sys-color-primary)' }} />
         )}
         <span
           className="min-w-0 flex-1 truncate text-[12.5px] font-semibold"
@@ -203,7 +203,7 @@ export default function ArtifactCard({
             className="press inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-semibold"
             style={{ background: 'var(--md-sys-color-primary)', color: 'var(--md-sys-color-on-primary)' }}
           >
-            <MonitorPlay size={14} /> 打开演示
+            <AgentTerminalIcon size={14} /> 打开演示
           </button>
         )}
       </div>
@@ -235,8 +235,8 @@ export default function ArtifactCard({
             className="inline-flex items-center gap-1 text-[11.5px] font-medium"
             style={{ color: 'var(--md-sys-color-on-primary-container)', background: 'transparent', border: 'none', cursor: 'pointer' }}
           >
-            <Code2 size={13} /> {showCode ? '隐藏源码' : '查看源码'}
-            {showCode ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+            <AgentFileIcon size={13} /> {showCode ? '隐藏源码' : '查看源码'}
+            <AgentChevronIcon size={13} style={{ transform: showCode ? 'rotate(180deg)' : undefined }} />
           </button>
           <span className="text-[11px]" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
             {streaming || preparing ? `生成中 · 已写入 ${codeChars} 字符` : `${codeChars} 字符`}
@@ -249,7 +249,7 @@ export default function ArtifactCard({
               className="ml-auto inline-flex items-center gap-1 text-[11.5px] font-medium"
               style={{ color: 'var(--md-sys-color-primary)', background: 'transparent', border: 'none', cursor: 'pointer' }}
             >
-              <ExternalLink size={13} /> 新标签打开
+              <AgentArrowUpRightIcon size={13} /> 新标签打开
             </button>
           )}
         </div>

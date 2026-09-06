@@ -1,0 +1,52 @@
+/** Public error text only: never serialize provider request bodies, headers or raw responses. */
+export function toChatErrorMessage(error: unknown, secrets: string[] = []): string {
+  const chain: Record<string, unknown>[] = [];
+  const seen = new Set<unknown>();
+  let current = error;
+  while (current && typeof current === 'object' && !seen.has(current) && chain.length < 8) {
+    seen.add(current);
+    const item = current as Record<string, unknown>;
+    chain.push(item);
+    current = item.lastError ?? item.cause ?? (Array.isArray(item.errors) ? item.errors.at(-1) : undefined);
+  }
+  const messages = chain.map((item) => typeof item.message === 'string' ? item.message : '').join(' ');
+  const code = chain.map((item) => item.code).find((value) => typeof value === 'string')
+    ?? messages.match(/\b(EACCES|EPERM|ENOTFOUND|EAI_AGAIN|ECONNREFUSED|ECONNRESET|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT)\b/)?.[1];
+
+  if (code === 'EACCES' || code === 'EPERM') {
+    return `无法连接模型服务（${code}）：网络访问被系统或启动环境拒绝。请检查开发服务的网络权限与代理，或在普通终端重新启动 pnpm dev。`;
+  }
+  if (code === 'ENOTFOUND' || code === 'EAI_AGAIN') {
+    return '无法解析模型服务地址，请检查 API 地址、DNS 和代理连接。';
+  }
+  if (code === 'ECONNREFUSED' || code === 'ECONNRESET') {
+    return '模型服务连接被拒绝或中断，请检查 API 地址、服务状态和代理后重试。';
+  }
+  if (code === 'ETIMEDOUT' || code === 'UND_ERR_CONNECT_TIMEOUT' || chain.some((item) => item.name === 'TimeoutError')) {
+    return '连接模型服务超时，请检查网络或稍后重试。';
+  }
+  if (chain.some((item) => item.name === 'AbortError')) return '生成已取消。';
+  if (chain.some((item) => /TypeValidationError|JSONParseError/.test(String(item.name)))) {
+    return '模型返回的数据格式与配置的接口协议不匹配，请核对 OpenAI-compatible / Anthropic 协议设置。';
+  }
+
+  const status = chain.map((item) => item.statusCode).find((value): value is number => typeof value === 'number');
+  if (status === 401 || status === 403) return `模型服务拒绝认证（HTTP ${status}），请检查 API 密钥和模型访问权限。`;
+  if (status === 404) return '模型接口不存在（HTTP 404），请检查 API 地址和模型名称。';
+  if (status === 429) return '模型请求受限（HTTP 429），请检查服务额度或稍后重试。';
+
+  const leaf = [...chain].reverse().find((item) => typeof item.message === 'string' && item.message.trim());
+  let detail = typeof leaf?.message === 'string' ? leaf.message : typeof error === 'string' ? error : '';
+  for (const secret of secrets.filter(Boolean)) detail = detail.split(secret).join('[已隐藏]');
+  detail = detail
+    .replace(/https?:\/\/[^\s"<>]+/gi, '[API 地址]')
+    .replace(/\bBearer\s+[^\s,"'\]}]+/gi, 'Bearer [已隐藏]')
+    .replace(/\bsk-[a-zA-Z0-9_-]+/g, '[已隐藏]')
+    .replace(/(["']?(?:api[-_]?key|authorization|token|password)["']?\s*[:=]\s*)["']?[^\s,"'\]}]+["']?/gi, '$1[已隐藏]')
+    .split(/\r?\n/)[0].trim().slice(0, 240);
+  if (status) return `模型接口请求失败（HTTP ${status}）${detail ? `：${detail}` : '，请稍后重试。'}`;
+  if (!detail || /^(An error occurred\.?|fetch failed)$/i.test(detail)) {
+    return '模型请求失败，请检查 API 配置与网络连接后重试。';
+  }
+  return detail;
+}

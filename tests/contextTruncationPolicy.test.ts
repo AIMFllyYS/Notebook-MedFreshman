@@ -60,21 +60,21 @@ test("chat route uses last user message, selected model context manager, and sof
 
   assert.match(source, /reverse\(\)\.find\(\(m\) => m\.role === "user"\)/);
   assert.match(source, /getContextManager\(options\.contextMode \?\? "full", effectiveModelId\)/);
-  assert.match(source, /clientContextTruncated/);
-  assert.match(source, /clientContextTokens/);
-  assert.match(source, /breakdown\.truncated = effectiveContextTruncated/);
-  assert.match(source, /breakdown\.cacheHit = ctxResult\.cacheHit/);
+  assert.match(source, /body\.contextTruncated \|\| serverSoftLimitReached \|\| ctxResult\.overflow/);
+  assert.match(source, /clientContextTokens: body\.clientContextTokens \?\? null/);
+  assert.match(source, /truncated: contextTruncated/);
+  assert.match(source, /cacheHit: ctxResult\.cacheHit/);
 });
 
 test("dynamic tool context uses contextKey de-duplication", () => {
-  const route = readWorkspaceFile("app/api/chat/route.ts");
-  const tools = readWorkspaceFile("lib/ai/tools.ts");
+  const tools = readWorkspaceFile("lib/ai/agent/tools.ts");
 
   assert.match(tools, /contextKey\?: string/);
   assert.match(tools, /contextKey: `page:/);
   assert.match(tools, /contextKey: `skill:/);
-  assert.match(route, /const loadedContextKeys = new Set<string>\(\)/);
-  assert.match(route, /loadedContextKeys\.has\(result\.contextKey\)/);
+  assert.match(tools, /loadedContextKeys: new Set\(\)/);
+  assert.match(tools, /runtime\.loadedContextKeys\.has\(output\.contextKey\)/);
+  assert.match(tools, /runtime\.loadedContextKeys\.add\(output\.contextKey\)/);
 });
 
 test("chat panel warns at 80 percent but does not disable input", () => {
