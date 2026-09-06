@@ -15,8 +15,14 @@ interface Props {
  * 用 useAnimationControls 手动驱动 height 动画；收起时先 set 锁定像素高度再 animate 到 0，消除 1 帧闪动。
  *
  * 性能：折叠态在「关闭动画结束后」卸载 children（shouldRender=false），不再「始终挂载 DOM」。
- * 这样未展开的学科/分类不会把整棵 FileTree 常驻在 DOM 与 framer-motion 的 layout 跟踪里，
+ * 这样未展开的学科/分类不会把整棵 FileTree 常驻在 DOM 里，
  * 大幅降低侧栏的常驻节点数（默认仅当前学科展开）。开/关动画期间 children 始终在场，动画不破。
+ *
+ * ⚠️ 禁止给本组件加 layout / layoutId：AnimatedCollapse 嵌在 SubjectSidebar 的
+ * AnimatePresence(mode="wait") 退场子树里，layout 投影节点会注册进 presence 完成追踪；
+ * 侧栏树较大时（如大一下学期含默认展开的概率论）exit 永不判定完成，
+ * mode="wait" 便永不挂载目录视图，侧栏内容区白屏（无任何报错的静默死锁）。
+ * 兄弟行的位移动画由 height 动画本身逐帧推动，无需 layout 参与。
  */
 export default function AnimatedCollapse({ isOpen, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
@@ -62,16 +68,9 @@ export default function AnimatedCollapse({ isOpen, children }: Props) {
       initial={isOpen ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
       animate={controls}
       onAnimationComplete={() => {
-        // 关闭动画结束后卸载 children，释放 DOM/fiber 与 layout 跟踪。
+        // 关闭动画结束后卸载 children，释放 DOM/fiber。
         if (!isOpen) setShouldRender(false);
-        // 安全网：framer-motion 的 layout="position" 在动画期间可能施加
-        // pointer-events: none 以防误触，若动画被中断（快速连续展开/折叠、
-        // 切换面板后回来）可能残留，导致文件夹树暂时不可点击。动画结束后强制恢复。
-        if (ref.current) {
-          ref.current.style.pointerEvents = "";
-        }
       }}
-      layout="position"
       style={{ overflow: "hidden" }}
     >
       {shouldRender ? children : null}

@@ -197,10 +197,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   const route = useMemo(() => parseRoute(pathname), [pathname]);
   const setActiveRoute = useStore((s) => s.setActiveRoute);
+  const setTocData = useStore((s) => s.setTocData);
 
   useEffect(() => {
     if (route) setActiveRoute(route.subjectId, route.categoryId, route.itemId);
   }, [route, setActiveRoute]);
+
+  // TOC 数据只由内容页的 useToc 产出；离开内容页（首页 / review 等）时清掉，
+  // 否则目录视图会残留上一页的标题树，点击也无法滚动（目标 DOM 已不存在）。
+  // 内容页 → 内容页导航不清空，由新页面 hook 重建，避免闪烁。
+  useEffect(() => {
+    if (!route) setTocData([], null);
+  }, [route, setTocData]);
 
   useEffect(() => {
     hydrateLayout();

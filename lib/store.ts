@@ -119,7 +119,8 @@ interface AppState {
   closePip: (returnTime?: number) => void;
 
   // ── 目录（TOC）──────────────────────────────────────────
-  /** 侧边栏视图模式：false = 文件树, true = 目录树。路由切换时重置为 false。 */
+  /** 侧边栏视图模式：false = 文件树, true = 目录树。作为用户视图偏好保留，不随路由重置；
+   *  TOC 数据本身由内容页 useToc 重建，非内容页由 AppShell 清空。 */
   tocMode: boolean;
   toggleTocMode: () => void;
   /** 当前页面的标题树（由 useToc hook 从 DOM 提取） */
