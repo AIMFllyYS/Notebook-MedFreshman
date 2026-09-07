@@ -242,6 +242,17 @@ test("artifact: OpenAI-compatible stream retains event schema, prompt order and 
   assert.equal(contentText(calls[0].body.messages[1].content), `知识点 / 需求：概率滑块\n标题：${"题".repeat(60)}`);
 });
 
+test("artifact: reasoning deltas are forwarded and HTML trapped in reasoning is recovered", async (t) => {
+  const html = "<!DOCTYPE html><html><body>图</body></html>";
+  upstream(t, () => openAiStream("", "stop", `先规划结构\n${html}`));
+  const data = await events(await artifact.POST(request({ ...config(), id: "art_think", title: "演示", prompt: "概率滑块" })));
+  assert.equal(data[0].status, "start");
+  const reasoning = data.filter((part) => part.status === "reasoning").map((part) => part.delta).join("");
+  assert.match(reasoning, /先规划结构/);
+  assert.equal(data.at(-1)?.status, "done");
+  assert.equal(data.at(-1)?.html, html);
+});
+
 test("artifact: length termination repairs truncated HTML for both supported protocols", async (t) => {
   const raw = "<!DOCTYPE html><html><body><script>console.log(1)<scr";
   upstream(t, ({ url }) => url.endsWith("/messages") ? anthropicStream(raw, undefined, "max_tokens") : openAiStream(raw, "length"));
@@ -250,6 +261,13 @@ test("artifact: length termination repairs truncated HTML for both supported pro
     assert.equal(data.at(-1)?.status, "done");
     assert.equal(data.at(-1)?.html, "<!DOCTYPE html><html><body><script>console.log(1)\n</script>\n</body>\n</html>");
   }
+});
+
+test("artifact: non-html output is an error rather than an empty success", async (t) => {
+  upstream(t, () => openAiStream("抱歉，这次只用文字说明"));
+  const data = await events(await artifact.POST(request({ ...config(), id: "art_empty", title: "演示", prompt: "需求" })));
+  assert.equal(data.at(-1)?.status, "error");
+  assert.match(data.at(-1)?.message ?? "", /未输出可渲染的 HTML/);
 });
 
 test("artifact: missing id/prompt and image models never request generation", async (t) => {

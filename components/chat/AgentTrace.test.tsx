@@ -184,6 +184,16 @@ describe('ordered AgentTrace', () => {
     expect(container.firstChild).toBeNull();
   });
 
+  it('shows a compact thinking placeholder while streaming before any parts arrive', () => {
+    const { getByTestId, queryByRole, rerender } = render(
+      <AgentTrace trace={buildTrace(message([]), true)} isStreaming />,
+    );
+    expect(getByTestId('agent-trace-thinking')).toHaveTextContent('正在思考…');
+    expect(queryByRole('button')).toBeNull();
+    rerender(<AgentTrace trace={buildTrace(message([]))} />);
+    expect(queryByRole('status')).toBeNull();
+  });
+
   it('labels total processing duration without implying every second was reasoning', () => {
     const trace = buildTrace(message([tool]));
     const { rerender } = render(<AgentTrace trace={trace} durationMs={600} />);

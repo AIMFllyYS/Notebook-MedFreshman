@@ -189,6 +189,7 @@ test("MODELS：主力四模型走 relay，硅基流动仅保留生图", () => {
   assert.deepEqual(glm!.thinkingLevels, ["low", "high", "max"]);
   assert.equal(glm!.endpoints[0].apiModelId, "z-ai/glm-5.3-flash");
   assert.equal(glm!.endpoints[1]?.provider, "mimo");
+  assert.equal(glm!.timeoutMs, 120_000);
 
   const qwen = getModelInfo("Qwen/Qwen3.8-27B");
   assert.ok(qwen);
@@ -201,6 +202,7 @@ test("MODELS：主力四模型走 relay，硅基流动仅保留生图", () => {
   assert.equal(gemini?.icon, "gemini");
   assert.equal(gemini?.thinkingRequired, true);
   assert.deepEqual(gemini!.thinkingLevels, ["low", "medium", "high"]);
+  assert.equal(gemini?.timeoutMs, 120_000);
 
   const ds = getModelInfo("deepseek/deepseek-v4-flash");
   assert.ok(ds);

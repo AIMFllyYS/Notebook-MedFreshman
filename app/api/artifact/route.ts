@@ -22,7 +22,12 @@ export async function POST(req: NextRequest) {
     : [];
   const customProvider: CustomProvider | undefined =
     body.customProvider && typeof body.customProvider === "object" ? body.customProvider : undefined;
-  const { model, provider } = resolveLanguageModel(modelId, customApiGroups.length > 0 ? customApiGroups : customProvider);
+  const resolved = resolveLanguageModel(modelId, customApiGroups.length > 0 ? customApiGroups : customProvider);
+  const { model, provider } = resolved;
+  const info = getModelInfoWithCustom(provider.registryId, customApiGroups);
+  // 思考不可关的模型不带 reasoning_effort 会空转或拒请；其余模型保持 thinking off 以便尽快出 HTML。
+  const thinking = info?.thinkingRequired ? resolved.thinkingSettings("low") : undefined;
+  const timeoutMs = info?.thinkingRequired ? Math.max(provider.timeoutMs, 90_000) : provider.timeoutMs;
 
   const encoder = new TextEncoder();
   const abortController = new AbortController();
@@ -68,6 +73,8 @@ export async function POST(req: NextRequest) {
           provider,
           model,
           signal,
+          timeoutMs,
+          thinking,
         });
       } catch (err) {
         send({
