@@ -10,8 +10,8 @@ import {
 
 const root = process.cwd();
 
-test("session title generator defaults to SiliconFlow cheap Qwen3-8B model", () => {
-  assert.equal(DEFAULT_SESSION_TITLE_MODEL, "Qwen/Qwen3-8B");
+test("session title generator defaults to relay GLM-5.3 Flash", () => {
+  assert.equal(DEFAULT_SESSION_TITLE_MODEL, "z-ai/glm-5.3-flash");
 });
 
 test("sanitizeSessionTitle returns one-line plain text around twenty Chinese characters", () => {

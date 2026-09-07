@@ -19,13 +19,13 @@ const net = require("node:net");
 const http = require("node:http");
 const BAKED = require("./config");
 
-// Only AI_API_KEY (SiliconFlow) is required for the core AI features; MiMo / Zhipu /
-// Unsplash are optional and only unlock their own features.
+// RELAY_API_KEY is required for the core chat models; SiliconFlow / MiMo / Zhipu /
+// Unsplash are optional and only unlock image gen, embeddings, MiMo, and search.
 // Adding a key here is the whole upgrade story for returning users: the "设置" window
 // reopens any time, prefills the keys they already saved, and a new field just rides
 // along into the same DPAPI-encrypted keys.enc — no plaintext env file to hand-edit.
-const REQUIRED_KEYS = ["AI_API_KEY"];
-const KEY_NAMES = ["AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY", "UNSPLASH_ACCESS_KEY"];
+const REQUIRED_KEYS = ["RELAY_API_KEY"];
+const KEY_NAMES = ["RELAY_API_KEY", "AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY", "UNSPLASH_ACCESS_KEY"];
 
 const KEYS_FILE = path.join(app.getPath("userData"), "keys.enc");
 
@@ -134,6 +134,7 @@ async function startServer(keys) {
   const env = {
     ...process.env,
     ...BAKED,
+    RELAY_API_KEY: keys.RELAY_API_KEY || "",
     AI_API_KEY: keys.AI_API_KEY || "",
     MIMO_API_KEY: keys.MIMO_API_KEY || "",
     ZHIPU_API_KEY: keys.ZHIPU_API_KEY || "",
@@ -348,6 +349,7 @@ ipcMain.handle("setup:test", async (_e, keys) => {
       return { label: "Unsplash", status: `error: ${String(e && e.message ? e.message : e)}` };
     }
   };
+  result.RELAY_API_KEY = await tryModels(BAKED.RELAY_BASE_URL, keys.RELAY_API_KEY, "自有中转");
   result.AI_API_KEY = await tryModels(BAKED.AI_BASE_URL, keys.AI_API_KEY, "硅基流动");
   result.MIMO_API_KEY = await tryModels(BAKED.MIMO_BASE_URL, keys.MIMO_API_KEY, "小米 MiMo");
   // Zhipu web-search uses a different API surface; we only check non-empty.

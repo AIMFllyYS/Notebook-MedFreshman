@@ -10,17 +10,19 @@ import { resolveLanguageModel, UPSTREAM_PROVIDER_NAME } from "@/lib/ai/sdk/langu
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const DEFAULT_SILICONFLOW_BASE_URL = "https://api.siliconflow.cn/v1";
+const DEFAULT_RELAY_BASE_URL = "https://relay.protocom.org/v1";
 
 function titleProvider() {
   return {
     baseUrl:
-      process.env.SILICONFLOW_BASE_URL ||
       process.env.AI_TITLE_BASE_URL ||
-      DEFAULT_SILICONFLOW_BASE_URL,
+      process.env.RELAY_BASE_URL ||
+      process.env.SILICONFLOW_BASE_URL ||
+      DEFAULT_RELAY_BASE_URL,
     apiKey:
-      process.env.SILICONFLOW_API_KEY ||
       process.env.AI_TITLE_API_KEY ||
+      process.env.RELAY_API_KEY ||
+      process.env.SILICONFLOW_API_KEY ||
       process.env.AI_API_KEY ||
       "",
     model: process.env.AI_TITLE_MODEL || DEFAULT_SESSION_TITLE_MODEL,
@@ -47,7 +49,7 @@ export async function POST(req: NextRequest) {
       prompt: `请为这次 AI 对话生成标题：\n${content.slice(0, 1800)}`,
       temperature: 0.2,
       maxOutputTokens: 48,
-      providerOptions: { [UPSTREAM_PROVIDER_NAME]: { enable_thinking: false } },
+      providerOptions: { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "low" } },
       maxRetries: 0,
       abortSignal: req.signal,
       timeout: resolved.provider.timeoutMs,

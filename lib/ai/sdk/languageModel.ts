@@ -20,7 +20,13 @@ import {
   type CustomProvider,
   type ResolvedProvider,
 } from "@/lib/ai/provider";
-import { getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
+import {
+  getModelInfo,
+  getModelInfoWithCustom,
+  wireThinkingEffort,
+  type CustomApiGroup,
+  type ThinkingEffort,
+} from "@/lib/ai/models";
 import { createFailoverLanguageModel, type FailoverCandidate } from "@/lib/ai/sdk/failoverModel";
 import { createReasoningNormalizingFetch } from "@/lib/ai/sdk/reasoningNormalizer";
 
@@ -29,7 +35,7 @@ export const UPSTREAM_PROVIDER_NAME = "upstream";
 
 const ANTHROPIC_THINKING_MAX_TOKENS_MIN = 16_000;
 
-export type ThinkingEffort = "low" | "medium" | "high" | "max";
+export type { ThinkingEffort };
 
 /** 思考相关的调用参数：providerOptions 按协议装配；Anthropic 还需要显式抬高 maxOutputTokens。 */
 export interface ThinkingCallSettings {
@@ -105,7 +111,8 @@ function collectCandidates(
 
 export function buildThinkingSettings(p: ResolvedProvider, effort: ThinkingEffort | undefined): ThinkingCallSettings {
   const budget = thinkingBudget(effort);
-  const effortStr = effort === "low" || effort === "medium" ? effort : "high";
+  const info = p.isCustom ? undefined : getModelInfo(p.registryId);
+  const effortStr = wireThinkingEffort(info, effort);
   switch (p.thinkingRequestStyle) {
     case "none":
       return {};

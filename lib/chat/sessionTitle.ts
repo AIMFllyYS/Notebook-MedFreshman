@@ -1,4 +1,4 @@
-export const DEFAULT_SESSION_TITLE_MODEL = "Qwen/Qwen3-8B";
+export const DEFAULT_SESSION_TITLE_MODEL = "z-ai/glm-5.3-flash";
 export const SESSION_TITLE_MAX_CHARS = 20;
 
 const LEADING_CONTEXT_RE = /^针对当前页面这段原文：\s*/;

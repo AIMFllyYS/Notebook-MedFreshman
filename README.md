@@ -28,11 +28,14 @@ pnpm dev                     # http://localhost:35349
 编辑 `.env.local`：
 
 ```
-AI_BASE_URL=https://你的端点/v1
+RELAY_BASE_URL=https://relay.protocom.org/v1
+RELAY_API_KEY=sk-xxx
+AI_MODEL_FLASH=z-ai/glm-5.3-flash
+AI_MODEL_PRO=Qwen/Qwen3.8-27B
+AI_BASE_URL=https://api.siliconflow.cn/v1   # 生图 + 向量
 AI_API_KEY=sk-xxx
-AI_MODEL_PRO=你的-v4-pro-模型id
-AI_MODEL_FLASH=你的-v4-flash-模型id
-AI_REASONING_FIELD=reasoning_content   # 思考流字段，按端点而定
+MIMO_BASE_URL=https://token-plan-cn.xiaomimimo.com/v1
+MIMO_API_KEY=tp-xxx
 UNSPLASH_ACCESS_KEY=（可选）在 unsplash.com/oauth/applications 申请，启用 AI 图片搜索
 ```
 

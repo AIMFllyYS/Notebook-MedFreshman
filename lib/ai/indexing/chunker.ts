@@ -136,6 +136,7 @@ export function generateChunks(): ContentChunk[] {
 
       for (const { item, parentTitle } of leafItems) {
         if (item.status === 'stub') continue;
+        if (item.id === 'toc' || item.id.endsWith('-toc')) continue;
         const md = readContentMarkdown(subject.id, cat.id, item.id);
         if (!md) continue;
 
