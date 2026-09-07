@@ -216,7 +216,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
               effort={displayEffort}
               supported={thinkingSupported}
               disabled={inputDisabled}
-              levels={thinkingEffortSupported ? thinkingLevels : undefined}
+              levels={thinkingLevels}
               allowOff={thinkingAllowOff}
               onChange={({ enabled, effort }) => {
                 setEnableThinking(selectedModelInfo?.thinkingRequired ? true : enabled);

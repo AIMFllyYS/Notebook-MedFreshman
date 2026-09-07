@@ -8,6 +8,22 @@ export type ProviderKind = "siliconflow" | "mimo" | "zhipu" | "relay";
 /** 对话输入可选的思考强度档位（UI 值）。各模型的实际上游取值见 thinkingEffortMap。 */
 export type ThinkingEffort = "low" | "medium" | "high" | "max";
 
+export const THINKING_EFFORT_VALUES: readonly ThinkingEffort[] = ["low", "medium", "high", "max"];
+
+export const THINKING_EFFORT_LABELS: Record<ThinkingEffort, string> = {
+  low: "低",
+  medium: "中",
+  high: "高",
+  max: "最强",
+};
+
+/** 保留声明顺序，丢掉未知值。 */
+export function normalizeThinkingLevels(levels: unknown): ThinkingEffort[] {
+  if (!Array.isArray(levels)) return [];
+  const allowed = new Set(levels);
+  return THINKING_EFFORT_VALUES.filter((v) => allowed.has(v));
+}
+
 export type ThinkingRequestStyle =
   | "none"
   | "siliconflow"
@@ -79,6 +95,15 @@ export const CUSTOM_MODEL_ID = "custom";
 
 /** 桌面「自由中转」：用户自填 URL / API Key / 模型 ID，registry id 固定，上游 apiModelId 来自 env。 */
 export const CUSTOM_OPENAI_MODEL_ID = "custom-openai";
+
+/** 网页模型菜单 / 设置内置列表不展示桌面专用「自由中转」；resolveProvider 仍识别该 id。 */
+export function isPickerHiddenModel(id: string): boolean {
+  return id === CUSTOM_OPENAI_MODEL_ID;
+}
+
+export function modelsForPicker(models: ModelInfo[]): ModelInfo[] {
+  return models.filter((m) => !isPickerHiddenModel(m.id));
+}
 
 /** 已下架注册 id → 当前注册 id（用户本地设置兼容） */
 export const LEGACY_REGISTRY_ALIASES: Record<string, string> = {
@@ -355,6 +380,18 @@ export interface CustomModelConfig {
   vision?: boolean;
   /** 是否支持思考链。 */
   thinking?: boolean;
+  /**
+   * 该模型支持的思考强度档位。
+   *  - 缺省且 thinking=true：视为四档全开（兼容旧配置，菜单/请求才能按强度工作）
+   *  - 空数组：仅 on/off，不展示强度
+   */
+  thinkingLevels?: ThinkingEffort[];
+  /** true 时思考不可关闭。 */
+  thinkingRequired?: boolean;
+  /** UI 档位 → 上游 reasoning_effort / thinking_level 取值。 */
+  thinkingEffortMap?: Partial<Record<ThinkingEffort, string>>;
+  /** 选中该模型时的默认思考档位。 */
+  defaultThinkingEffort?: ThinkingEffort;
   /** 是否支持工具调用。 */
   tools?: boolean;
   /**
@@ -474,6 +511,20 @@ export function normalizeCustomModelRegistryId(modelId: string, groups: CustomAp
   return legacyMatches.length === 1 ? canonical : modelId;
 }
 
+function customThinkingLevels(c: CustomModelConfig): ThinkingEffort[] | undefined {
+  if (!c.thinking) return undefined;
+  if (c.thinkingLevels === undefined) return [...THINKING_EFFORT_VALUES];
+  const levels = normalizeThinkingLevels(c.thinkingLevels);
+  return levels.length > 0 ? levels : undefined;
+}
+
+function customDefaultEffort(c: CustomModelConfig, levels: ThinkingEffort[] | undefined): ThinkingEffort | undefined {
+  if (!c.thinking || !levels?.length) return undefined;
+  if (c.defaultThinkingEffort && levels.includes(c.defaultThinkingEffort)) return c.defaultThinkingEffort;
+  if (levels.includes("medium")) return "medium";
+  return levels[0];
+}
+
 /** 将单个 CustomModelConfig 转换为 ModelInfo（内部辅助）。 */
 function customModelToInfo(
   c: CustomModelConfig,
@@ -481,11 +532,18 @@ function customModelToInfo(
   options?: { scopedId?: boolean },
 ): ModelInfo {
   const isImage = c.type === "image";
+  const thinking = c.thinking ?? false;
+  const levels = customThinkingLevels(c);
   return {
     id: options?.scopedId === false ? CUSTOM_PREFIX + c.id : buildCustomModelRegistryId(group.id, c.id),
     label: c.label || c.id,
     group: group.name || "自定义 API",
-    thinking: c.thinking ?? false,
+    thinking,
+    thinkingLevels: levels,
+    thinkingRequired: thinking ? !!c.thinkingRequired : undefined,
+    thinkingEffortMap: c.thinkingEffortMap,
+    defaultThinkingEffort: customDefaultEffort(c, levels),
+    thinkingRequestStyle: c.thinkingRequestStyle,
     tools: c.tools ?? (isImage ? false : true),
     vision: c.vision,
     contextK: c.contextK ?? 128,
@@ -510,13 +568,13 @@ export function getAllModels(groups: CustomApiGroup[]): ModelInfo[] {
   const custom: ModelInfo[] = groups.flatMap((g) =>
     g.models.map((c) => customModelToInfo(c, g)),
   );
-  return [...MODELS, ...custom];
+  return [...modelsForPicker(MODELS), ...custom];
 }
 
 /** 向后兼容：接收 CustomModelConfig[] 的旧版 getAllModels。 */
 export function getAllModelsFlat(customModels: CustomModelConfig[]): ModelInfo[] {
   return [
-    ...MODELS,
+    ...modelsForPicker(MODELS),
     ...customModels.map((c) =>
       customModelToInfo(c, { id: "legacy", name: "自定义 API" }, { scopedId: false }),
     ),
@@ -537,7 +595,7 @@ export function getModelInfoWithCustom(id: string, groups: CustomApiGroup[]): Mo
 export function getModelGroups(): { group: string; models: ModelInfo[] }[] {
   const order: string[] = [];
   const map = new Map<string, ModelInfo[]>();
-  for (const m of MODELS) {
+  for (const m of modelsForPicker(MODELS)) {
     if (!map.has(m.group)) {
       map.set(m.group, []);
       order.push(m.group);

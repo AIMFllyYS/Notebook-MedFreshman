@@ -27,14 +27,18 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import {
   type CustomModelConfig,
   type CustomApiGroup,
+  type ThinkingEffort,
   MODELS,
+  THINKING_EFFORT_VALUES,
+  THINKING_EFFORT_LABELS,
+  normalizeThinkingLevels,
+  isPickerHiddenModel,
   getAllModels,
   buildCustomModelRegistryId,
 } from "@/lib/ai/models";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import { exportAllChats } from "@/lib/chat/exportChats";
 import SkillsManager from "./SkillsManager";
-
 const TOOLS: { name: string; label: string; desc: string }[] = [
   { name: "getCurrentPage", label: "读取当前页", desc: "让 AI 获取你正在阅读的页面内容" },
   { name: "getOutline", label: "课程大纲", desc: "让 AI 查看全部科目的章节大纲" },
@@ -90,6 +94,8 @@ interface ModelFormState {
   outputPrice: string;
   vision: boolean;
   thinking: boolean;
+  thinkingLevels: ThinkingEffort[];
+  thinkingRequired: boolean;
   tools: boolean;
   apiProtocol: "openai" | "anthropic" | "siliconflow";
   reasoningField: string;
@@ -112,6 +118,8 @@ const EMPTY_FORM: ModelFormState = {
   outputPrice: "",
   vision: false,
   thinking: false,
+  thinkingLevels: [...THINKING_EFFORT_VALUES],
+  thinkingRequired: false,
   tools: true,
   apiProtocol: "openai",
   reasoningField: "",
@@ -144,6 +152,10 @@ function modelToForm(m: CustomModelConfig): ModelFormState {
     outputPrice: m.pricing ? String(m.pricing.output) : "",
     vision: !!m.vision,
     thinking: !!m.thinking,
+    thinkingLevels: m.thinking
+      ? (m.thinkingLevels === undefined ? [...THINKING_EFFORT_VALUES] : normalizeThinkingLevels(m.thinkingLevels))
+      : [],
+    thinkingRequired: !!m.thinkingRequired,
     tools: m.tools ?? !isImage,
     apiProtocol: inferApiProtocol(m),
     reasoningField: m.reasoningField ?? "",
@@ -187,6 +199,8 @@ function formToModel(f: ModelFormState): CustomModelConfig {
     cacheTtlSec: Number(f.cacheTtlSec) || 3600,
     vision: f.vision || undefined,
     thinking: f.thinking || undefined,
+    thinkingLevels: f.thinking ? normalizeThinkingLevels(f.thinkingLevels) : undefined,
+    thinkingRequired: f.thinking && f.thinkingRequired ? true : undefined,
     tools: f.tools,
     apiProtocol: f.apiProtocol,
     // 高级 override：仅当用户展开高级面板并显式填写时保留；否则清空由 apiProtocol 自动装配。
@@ -254,7 +268,12 @@ function ModelRow({
                 color: "var(--md-sys-color-on-surface-variant)",
               }}
             >
-              思考
+              {model.thinkingRequired ? "思考不可关" : "思考"}
+              {normalizeThinkingLevels(model.thinkingLevels).length > 0
+                ? ` · ${normalizeThinkingLevels(model.thinkingLevels).map((l) => THINKING_EFFORT_LABELS[l]).join("/")}`
+                : model.thinkingLevels === undefined
+                  ? ` · ${THINKING_EFFORT_VALUES.map((l) => THINKING_EFFORT_LABELS[l]).join("/")}`
+                  : ""}
             </span>
           )}
           {model.vision && (
@@ -505,7 +524,19 @@ function ModelForm({
               <input
                 type="checkbox"
                 checked={form.thinking}
-                onChange={(e) => setForm({ ...form, thinking: e.target.checked })}
+                data-testid="custom-model-thinking-toggle"
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    thinking: e.target.checked,
+                    thinkingLevels: e.target.checked
+                      ? form.thinkingLevels.length
+                        ? form.thinkingLevels
+                        : [...THINKING_EFFORT_VALUES]
+                      : [],
+                    thinkingRequired: e.target.checked ? form.thinkingRequired : false,
+                  })
+                }
               />
               <span>深度思考</span>
             </label>
@@ -518,6 +549,60 @@ function ModelForm({
               <span>工具调用</span>
             </label>
           </div>
+
+          {form.thinking && (
+            <div className="mt-1.5 flex flex-col gap-1.5" data-testid="custom-model-thinking-levels">
+              <div className={labelCls}>思考强度（勾选该模型实际支持的档位）</div>
+              <div className="flex flex-wrap gap-2">
+                {THINKING_EFFORT_VALUES.map((level) => {
+                  const on = form.thinkingLevels.includes(level);
+                  return (
+                    <label
+                      key={level}
+                      className="inline-flex cursor-pointer items-center gap-1 rounded-md border px-2 py-1 text-[11px]"
+                      style={{
+                        borderColor: on
+                          ? "var(--md-sys-color-primary)"
+                          : "var(--md-sys-color-outline-variant)",
+                        background: on
+                          ? "color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent)"
+                          : "transparent",
+                        color: "var(--md-sys-color-on-surface)",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={on}
+                        data-testid={`custom-model-thinking-level-${level}`}
+                        onChange={() =>
+                          setForm({
+                            ...form,
+                            thinkingLevels: on
+                              ? form.thinkingLevels.filter((v) => v !== level)
+                              : [...form.thinkingLevels, level],
+                          })
+                        }
+                        className="hidden"
+                      />
+                      {THINKING_EFFORT_LABELS[level]}
+                    </label>
+                  );
+                })}
+              </div>
+              <p className="text-[10.5px]" style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
+                勾选的档位会出现在模型菜单和输入栏「深度思考」里，并按所选档位发给上游。一个都不勾则只保留思考开关，不发送强度。
+              </p>
+              <label className="inline-flex items-center gap-1.5 text-[12px] text-[var(--md-sys-color-on-surface)]">
+                <input
+                  type="checkbox"
+                  checked={form.thinkingRequired}
+                  data-testid="custom-model-thinking-required"
+                  onChange={(e) => setForm({ ...form, thinkingRequired: e.target.checked })}
+                />
+                <span>思考不可关（如 GLM / Gemini 强制思考）</span>
+              </label>
+            </div>
+          )}
 
           {/* API 兼容格式（三选一） */}
           <div className="mt-1">
@@ -687,6 +772,7 @@ function ModelForm({
         <button
           onClick={() => onSave(formToModel(form))}
           disabled={!canSave}
+          data-testid="custom-model-form-save"
           className="press rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
         >
           保存
@@ -751,6 +837,7 @@ function ApiGroupCard({
       <div className="flex items-center gap-1.5 px-3 py-2">
         <button
           onClick={() => setExpanded((v) => !v)}
+          data-testid={`custom-api-group-toggle-${group.id}`}
           className="flex h-6 w-6 items-center justify-center rounded text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-container-high)]"
         >
           {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
@@ -894,6 +981,7 @@ function ApiGroupCard({
           ) : (
             <button
               onClick={startAdd}
+              data-testid="custom-api-add-model"
               className="press flex items-center gap-1.5 self-start rounded-lg border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-surface-variant)]"
             >
               <Plus size={13} /> 添加模型
@@ -969,7 +1057,8 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
 
   // 内置生图模型（用于「设为默认生图」toggle）
   const builtinImageModels = MODELS.filter((m) => m.type === "image");
-  const builtinTextModels = MODELS.filter((m) => m.type !== "image");
+  const builtinTextModels = MODELS.filter((m) => m.type !== "image" && !isPickerHiddenModel(m.id));
+  const builtinVisibleCount = builtinTextModels.length + builtinImageModels.length;
   // 文本模型下拉选项（含自定义）
   const allTextModels = getAllModels(customApiGroups).filter((m) => m.type !== "image");
 
@@ -1029,7 +1118,7 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
             {builtinExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
             <h3 className={h3Cls}>内置模型（站点默认）</h3>
             <span className="text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
-              · {MODELS.length} 个
+              · {builtinVisibleCount} 个
             </span>
           </button>
           {builtinExpanded && (
