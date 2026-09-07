@@ -1,6 +1,6 @@
 // 内容分块管道：遍历 contentTree 全部可搜索叶节点，读取 md，按语义边界分块。
 import { contentTree } from '@/lib/content-data/manifest';
-import { readContentMarkdown, findContentItem, stripMarkdown } from '@/lib/content/loader';
+import { readContentMarkdown, stripMarkdown } from '@/lib/content/loader';
 import { hasCapability } from '@/lib/content/categoryKeys';
 import type { ContentItem } from '@/lib/types/content';
 
@@ -104,14 +104,18 @@ function buildChunks(plainText: string, maxTokens: number): string[] {
   return chunks.length ? chunks : [plainText.slice(0, 2000)];
 }
 
+function firstParagraph(plainText: string, maxChars = 120): string {
+  const para = (plainText.split(/\n{2,}/)[0] || plainText).replace(/\s+/g, " ").trim();
+  return para.slice(0, maxChars);
+}
+
 function buildContextPrefix(
   subjectName: string,
   categoryId: string,
   title: string,
   plainText: string,
 ): string {
-  const firstLine = plainText.split('\n')[0]?.slice(0, 80) || '';
-  return `[${subjectName}/${categoryId}] ${title} | ${firstLine}`;
+  return `[${subjectName}/${categoryId}] ${title} | ${firstParagraph(plainText)}`;
 }
 
 export function generateChunks(): ContentChunk[] {
@@ -143,7 +147,6 @@ export function generateChunks(): ContentChunk[] {
         const plainText = stripMarkdown(md);
         if (!plainText.trim()) continue;
 
-        const found = findContentItem(subject.id, cat.id, item.id);
         const titleParts = [subject.name, cat.name];
         if (parentTitle) titleParts.push(parentTitle);
         titleParts.push(`${item.id} ${item.title}`);
@@ -173,6 +176,20 @@ export function generateChunks(): ContentChunk[] {
             contextPrefix,
           });
         }
+
+        const lead = firstParagraph(plainText);
+        allChunks.push({
+          id: `${basePath}#title`,
+          path: basePath,
+          subjectId: subject.id,
+          subjectName: subject.name,
+          categoryId: cat.id,
+          itemId: item.id,
+          title: fullTitle,
+          chunkIndex: -1,
+          text: `${fullTitle}\n${lead}`,
+          contextPrefix: `[${subject.name}/${cat.id}] ${fullTitle}`,
+        });
       }
     }
   }

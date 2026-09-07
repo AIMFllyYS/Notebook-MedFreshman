@@ -4,7 +4,7 @@
 
 将「期末复习工作站」打包为 **Windows 桌面 exe**，并**发布或更新** GitHub Release。适用于：新功能/新内容上线、紧急 bug 修复热更、正式里程碑发版。
 
-> 架构定论：EdgeOne Pages 因 SSR 云函数 **128MiB 硬限**无法承载本应用 376 个预渲染页（架构不适配，非磁盘问题），已**放弃云部署**，改为本地 Electron 桌面 exe，功能与本地一致。云部署相关弯路见 `scripts/free-build-disk.mjs` 注释，本 SOP 只覆盖桌面打包链路。
+> 架构定论（**历史**）：EdgeOne Pages 因 SSR 云函数 128MiB 硬限无法承载本应用，已改为自托管 Node + Electron 桌面 exe。旧的 tmpfs 清理脚本在 `scripts/legacy/`。检索索引随 `content/.index/` 打进桌面包，运行时不再从 COS 回退。本 SOP 只覆盖桌面打包链路。
 
 ## 架构速览
 

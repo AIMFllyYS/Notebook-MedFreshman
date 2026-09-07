@@ -1,7 +1,7 @@
 // Builds the Gailvlun desktop app end-to-end:
 //   1. `next build` in standalone mode (BUILD_STANDALONE=1 flips next.config).
 //   2. Copy the pieces Next standalone does NOT include by itself:
-//        .next/static, public/, and the FULL content/ (incl. the 307MB .index
+//        .next/static, public/, and the FULL content/ (incl. search .index
 //        and examples) -> into .next/standalone/ for full offline use.
 //   3. Run electron-builder to produce the portable .exe + NSIS installer.
 //
@@ -251,7 +251,7 @@ if (!existsSync(`${SA}/server.js`)) {
 
 // 2. Bring in the runtime assets Next standalone omits / may exclude.
 //    (Content is largely placed by the trace already; robocopy fills the rest:
-//     the 307MB .index, examples, etc. — overwriting read-only files safely.)
+//     the search .index, examples, etc. — overwriting read-only files safely.)
 copyInto(".next/static", ".next\\standalone\\.next\\static");
 copyInto("public", ".next\\standalone\\public");
 copyInto("content", ".next\\standalone\\content");

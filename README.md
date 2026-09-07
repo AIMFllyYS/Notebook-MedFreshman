@@ -41,6 +41,10 @@ UNSPLASH_ACCESS_KEY=（可选）在 unsplash.com/oauth/applications 申请，启
 
 未配置时，框架其余部分（笔记、动画小窗、交互、划词）照常可用，AI 对话会给出"未配置"提示。
 
+### 检索索引分发
+
+`searchNotes` 只读本地 `content/.index/`（不随 git 入库）。开发机执行 `pnpm build-index` 生成；部署时把该目录作为产物同步到服务器同路径，重启 Node 进程后 `GET /api/health/search` 应返回 `ok: true`。详见 `docs/sop/10-search-index-lifecycle.md` 与 `docs/plans/15-search-index-distribution-and-rag-quality.md`。
+
 ## 渲染动画（Manim）
 
 需要 Python + Manim + ffmpeg；公式渲染需 LaTeX（MiKTeX）。

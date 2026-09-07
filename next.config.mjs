@@ -2,19 +2,17 @@
 const nextConfig = {
   reactStrictMode: true,
   // 桌面打包(Electron)：仅当 BUILD_STANDALONE=1 时产出自包含 standalone server，
-  // 并关闭图片优化(免 sharp 原生依赖，便于离线打包)。Web/本地/EdgeOne 构建不受影响。
+  // 并关闭图片优化(免 sharp 原生依赖，便于离线打包)。Web/本地构建不受影响。
   ...(process.env.BUILD_STANDALONE === "1"
     ? { output: "standalone", images: { unoptimized: true } }
     : {}),
-  // content/ 下的 .md/.json/.html 通过 outputFileTracingIncludes 打包进 standalone，
-  // 供 serverless 运行时读取。但 content/.index/ (307MB 向量索引) 必须排除，
-  // 否则 EdgeOne 复制 standalone 到 /dev/shm (64MB) 会 ENOSPC。
-  // .index/ 改为运行时从 COS 下载到 /tmp 缓存（见 vectorStore.ts / bm25Store.ts）。
+  // content/ 下的笔记与检索索引随 standalone 落盘（自托管 / 桌面）。
+  // _raw 与 examples 仍排除以控制体积。
   outputFileTracingIncludes: {
     "/api/**": ["./content/**/*", "./lib/ai/prompts/**/*"],
   },
   outputFileTracingExcludes: {
-    "/api/**": ["./content/.index/**/*", "./content/_raw/**/*", "./content/examples/**/*"],
+    "/api/**": ["./content/_raw/**/*", "./content/examples/**/*"],
   },
   // 重型依赖按需加载，减少首屏 bundle 体积。lucide-react 有 18 处具名图标导入，
   // 加入后 Next 会把 barrel 导入改写为按图标深层导入，显著减小图标库体积。

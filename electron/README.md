@@ -58,4 +58,4 @@ pnpm run desktop:dev    # electron . —— 走真实主进程：弹密钥设置
 
 - 未做代码签名：首次运行 Windows SmartScreen/杀软可能提示，「仍要运行」即可（或后续配置签名）。
 - 图标可选：放 `build/icon.ico` 后在 `electron-builder.yml` 取消 `icon` 注释。
-- `next.config.mjs` 仅当 `BUILD_STANDALONE=1` 才切到 standalone + 关图片优化，**不影响 Web/EdgeOne 构建**。
+- `next.config.mjs` 仅当 `BUILD_STANDALONE=1` 才切到 standalone + 关图片优化，**不影响本地 / 自托管 Web 构建**。检索索引随 `content/.index/` 打进包内。
