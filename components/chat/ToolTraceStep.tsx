@@ -24,6 +24,9 @@ export const ToolTraceStep = React.memo(function ToolTraceStep({ step }: { step:
             <pre className="m-0 max-h-40 overflow-auto whitespace-pre-wrap break-words py-1 font-mono text-[11px] leading-relaxed [overflow-wrap:anywhere]">{typeof input === 'string' ? input : JSON.stringify(input, null, 2)}</pre>
           </div>
         ) : null}
+        {diagnosticsLine(part) ? (
+          <p className="text-[10px] leading-relaxed text-[var(--md-sys-color-outline)]">{diagnosticsLine(part)}</p>
+        ) : null}
         {output ? (
           <div className="agent-trace-subdetail">
             <p className={`mb-1 text-[10px] font-medium ${step.status === 'error' ? 'text-[var(--md-sys-color-error)]' : 'text-[var(--md-sys-color-outline)]'}`}>{step.status === 'error' ? '调用失败' : '返回结果'}</p>
@@ -35,6 +38,22 @@ export const ToolTraceStep = React.memo(function ToolTraceStep({ step }: { step:
     </AgentTraceStep>
   );
 });
+
+function diagnosticsLine(part: ToolStep['part']): string | null {
+  const output = 'output' in part && part.output && typeof part.output === 'object'
+    ? part.output as { diagnostics?: { bm25Hits?: number; vecHits?: number; ms?: number; indexBuiltAt?: string; embedError?: string; mode?: string } }
+    : undefined;
+  const d = output?.diagnostics;
+  if (!d) return null;
+  const bits = [
+    typeof d.bm25Hits === 'number' ? `BM25 ${d.bm25Hits}` : null,
+    typeof d.vecHits === 'number' ? `向量 ${d.vecHits}` : null,
+    typeof d.ms === 'number' ? `${d.ms}ms` : null,
+    d.indexBuiltAt ? `索引 ${d.indexBuiltAt.slice(0, 10)}` : null,
+    d.embedError ? `embed ${d.embedError}` : null,
+  ].filter(Boolean);
+  return bits.length ? bits.join(' · ') : null;
+}
 
 function ToolIcon({ name }: { name: string }) {
   if (name === 'webSearch' || name === 'searchNotes' || name === 'imageSearch') return <AgentSearchIcon />;

@@ -342,19 +342,37 @@ export async function runTool(
       const query = String(args.query ?? "");
       const crossYear = args.crossYear === true;
       const subjectId = String(args.subjectId ?? "").trim() || undefined;
+      const { getIndexHealth } = await import("@/lib/ai/search/indexHealth");
+      const health = getIndexHealth();
+      if (!health.ok) {
+        return { content: `检索索引未加载：${health.reason}`, meta: { hits: [] } };
+      }
+      const found = findContentItem(ctx.subjectId, ctx.categoryId, ctx.itemId);
+      const queryContext = found
+        ? `${found.subjectName} ${found.parentTitle ?? ""} ${found.item.title}`.replace(/\s+/g, " ").trim()
+        : undefined;
       const scope: ContentSearchScope = crossYear
         ? "all"
         : (ctx.academicYear ?? DEFAULT_ACADEMIC_YEAR);
-      const hits = await searchAllContent(query, {
-        limit: 8,
-        academicYear: scope,
-        subjectId,
-        preferSubjectId: subjectId ? undefined : ctx.subjectId,
-      });
+      const run = (year: ContentSearchScope) =>
+        searchAllContent(query, {
+          limit: 8,
+          academicYear: year,
+          subjectId,
+          preferSubjectId: subjectId ? undefined : ctx.subjectId,
+          queryContext,
+        });
+      let hits = await run(scope);
+      let widened = false;
+      if (!hits.length && scope !== "all") {
+        hits = await run("all");
+        widened = hits.length > 0;
+      }
       if (!hits.length) return { content: "未检索到相关内容。可尝试更换关键词，或调用 getOutline 浏览目录。", meta: { hits: [] } };
       const lines = hits.map(
         (h) => `[${h.title}] (path: ${h.path})\n…${h.snippet}…`,
       );
+      if (widened) lines.unshift("（当前学年无命中，以下为跨学年结果）");
       lines.push("\n如需查看完整内容，可调用 getSection(path: \"对应路径\")。");
       return {
         content: lines.join("\n\n"),

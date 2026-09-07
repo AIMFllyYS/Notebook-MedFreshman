@@ -1,15 +1,13 @@
-// 向量存储：优先加载 vectors.bin（与 chunks-meta 按 id 对齐），提供余弦相似度 top-K。
-// 本地已有 BM25/chunks-meta 时绝不去拉 COS 上另一代 vectors.json（会卡死首次检索并混入过期大一向量）。
+// 向量存储：只加载本地 content/.index/vectors.bin（与 chunks-meta 按 id 对齐）。
 import type { ScoredChunk } from "./vectorStoreTypes";
 import type { SearchFilter } from "./searchScope";
 import { chunkInScope } from "./searchScope";
 import {
   INDEX_FILES,
-  hasLocalSearchIndex,
-  logSearchIndexOnce,
-  readIndexFile,
+  parseManifest,
   readLocalIndexFile,
 } from "./indexIo";
+import { searchLogOnce } from "./searchLog";
 
 export type { ScoredChunk } from "./vectorStoreTypes";
 
@@ -154,11 +152,12 @@ function loadBinaryIndex(bin: Buffer, idsRaw: Buffer, metaById: Map<string, Chun
   const matrix = float32FromBuffer(bin);
   const dimension = Math.floor(matrix.length / ids.length);
   if (dimension < 8 || dimension * ids.length !== matrix.length) {
-    logSearchIndexOnce(`vectors.bin 长度与 ids 不对齐（ids=${ids.length}, floats=${matrix.length}），跳过向量索引`);
+    searchLogOnce("error", "search.index.missing", `vectors.bin 长度与 ids 不对齐（ids=${ids.length}, floats=${matrix.length}），跳过向量索引`);
     return null;
   }
+  const manifest = parseManifest(readLocalIndexFile(INDEX_FILES.manifest));
   return {
-    model: process.env.AI_EMBEDDING_MODEL || "BAAI/bge-m3",
+    model: manifest?.embeddingModel || process.env.AI_EMBEDDING_MODEL || "BAAI/bge-m3",
     dimension,
     ids,
     metaById,
@@ -179,7 +178,9 @@ function loadLegacyJsonIndex(raw: Buffer, localMeta: Map<string, ChunkRow>): Vec
     if (localMeta.size > 0) {
       const overlap = chunks.filter((c) => localMeta.has(c.id)).length;
       if (overlap < chunks.length * 0.8) {
-        logSearchIndexOnce(
+        searchLogOnce(
+          "warn",
+          "search.index.loaded",
           `跳过 vectors.json：与本地 chunks-meta 重叠过低（${overlap}/${chunks.length}），避免混入过期向量`,
         );
         return null;
@@ -226,9 +227,7 @@ async function loadIndexAsync(): Promise<VectorIndex | null> {
   if (_loadAttempted) return _vectorIndex;
   _loadAttempted = true;
 
-  const metaRows = parseChunkRows(
-    readLocalIndexFile(INDEX_FILES.chunksMeta) ?? (await readIndexFile(INDEX_FILES.chunksMeta)),
-  );
+  const metaRows = parseChunkRows(readLocalIndexFile(INDEX_FILES.chunksMeta));
   const metaById = metaMapFromRows(metaRows);
 
   const localBin = readLocalIndexFile(INDEX_FILES.vectorsBin);
@@ -236,47 +235,26 @@ async function loadIndexAsync(): Promise<VectorIndex | null> {
   if (localBin && localIds) {
     _vectorIndex = loadBinaryIndex(localBin, localIds, metaById);
     if (_vectorIndex) {
-      logSearchIndexOnce(
+      searchLogOnce(
+        "info",
+        "search.index.loaded",
         `向量索引 vectors.bin 已加载：${_vectorIndex.ids.length} 条 × ${_vectorIndex.dimension} 维`,
+        { file: INDEX_FILES.vectorsBin, count: _vectorIndex.ids.length, dimension: _vectorIndex.dimension },
       );
       return _vectorIndex;
     }
   }
 
-  if (hasLocalSearchIndex()) {
-    const legacy = readLocalIndexFile(INDEX_FILES.vectorsJson);
-    if (legacy) {
-      _vectorIndex = loadLegacyJsonIndex(legacy, metaById);
-      if (_vectorIndex) {
-        logSearchIndexOnce(`向量索引 vectors.json（旧格式）已加载：${_vectorIndex.ids.length} 条`);
-        return _vectorIndex;
-      }
-    }
-    logSearchIndexOnce(
-      "本地无可用向量索引（缺 vectors.bin）。已禁止从 COS 拉取过期向量；当前走 BM25。请运行 pnpm build-index 生成向量。",
-    );
-    return null;
-  }
-
-  const remoteBin = await readIndexFile(INDEX_FILES.vectorsBin);
-  const remoteIds = await readIndexFile(INDEX_FILES.vectorsIds);
-  if (remoteBin && remoteIds) {
-    _vectorIndex = loadBinaryIndex(remoteBin, remoteIds, metaById);
+  const legacy = readLocalIndexFile(INDEX_FILES.vectorsJson);
+  if (legacy) {
+    _vectorIndex = loadLegacyJsonIndex(legacy, metaById);
     if (_vectorIndex) {
-      logSearchIndexOnce(`从 COS/缓存加载 vectors.bin：${_vectorIndex.ids.length} 条`);
+      searchLogOnce("info", "search.index.loaded", `向量索引 vectors.json（旧格式）已加载：${_vectorIndex.ids.length} 条`);
       return _vectorIndex;
     }
   }
 
-  const remoteLegacy = await readIndexFile(INDEX_FILES.vectorsJson);
-  if (remoteLegacy) {
-    _vectorIndex = loadLegacyJsonIndex(remoteLegacy, metaById);
-    if (_vectorIndex) {
-      logSearchIndexOnce(`从 COS/缓存加载 vectors.json：${_vectorIndex.ids.length} 条`);
-      return _vectorIndex;
-    }
-  }
-
+  searchLogOnce("error", "search.index.missing", "本地无可用向量索引（缺 vectors.bin）。请运行 pnpm build-index。");
   return null;
 }
 
@@ -288,7 +266,9 @@ export async function vectorSearch(
   const index = await loadIndexAsync();
   if (!index || !index.ids.length) return [];
   if (queryEmbedding.length !== index.dimension) {
-    logSearchIndexOnce(
+    searchLogOnce(
+      "error",
+      "search.embed.error",
       `查询向量维度 ${queryEmbedding.length} 与索引 ${index.dimension} 不一致，跳过向量检索`,
     );
     return [];

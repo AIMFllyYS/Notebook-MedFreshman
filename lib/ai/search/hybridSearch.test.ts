@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { rrfMerge } from "./hybridSearch.ts";
+import { expandShortQuery, rrfMerge } from "./hybridSearch.ts";
 import type { ScoredChunk } from "./vectorStore.ts";
 
 function makeChunk(id: string, path: string): ScoredChunk {
@@ -17,6 +17,12 @@ function makeChunk(id: string, path: string): ScoredChunk {
     score: 0,
   };
 }
+
+test("expandShortQuery：两字中文查询拼上当前页标题", () => {
+  assert.equal(expandShortQuery("绪论", "医学细胞生物学 第一章 绪论"), "医学细胞生物学 第一章 绪论 绪论");
+  assert.equal(expandShortQuery("被覆上皮", "组织学"), "被覆上皮");
+  assert.equal(expandShortQuery("绪论", undefined), "绪论");
+});
 
 test("rrfMerge：单路排序直接返回（分数为 RRF 值）", () => {
   const a = makeChunk("a", "path-a");

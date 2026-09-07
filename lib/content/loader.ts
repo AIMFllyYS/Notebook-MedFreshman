@@ -454,8 +454,10 @@ export interface SearchAllContentOptions {
   academicYear?: ContentSearchScope;
   /** 硬过滤到某一科目（如 histology）。 */
   subjectId?: string;
-  /** 软加权当前正在阅读的科目。 */
+  /** 当前正在阅读的科目：先在该科目内搜，不足 3 条再放开学年。 */
   preferSubjectId?: string;
+  /** 当前页面标题，供短查询向量扩展。 */
+  queryContext?: string;
   /**
    * 索引未命中时是否回退全库子串扫描。默认跟 substringSearchAllowed()。
    * 测试可显式设为 false，证明 hybrid/BM25 索引本身能检索大二教材。
@@ -485,18 +487,26 @@ export async function searchAllContent(
       academicYear: scope,
       subjectId: opts.subjectId,
       preferSubjectId: opts.preferSubjectId,
+      queryContext: opts.queryContext,
     });
     const filtered = results.filter((hit) => {
       if (opts.subjectId && hit.subjectId !== opts.subjectId) return false;
       return subjectVisibleToAgent(hit.subjectId, scope);
     });
     if (filtered.length > 0) return filtered.slice(0, limit);
-  } catch {
-    // 索引不存在或 API 不可用，fallback
+  } catch (err) {
+    const { searchLog } = await import('@/lib/ai/search/searchLog');
+    searchLog.error('search.query', { message: String((err as Error).message), query: q.slice(0, 80) });
   }
 
   const allowSubstring = opts.allowSubstring ?? substringSearchAllowed();
-  if (!allowSubstring) return [];
+  if (!allowSubstring) {
+    const { searchLog } = await import('@/lib/ai/search/searchLog');
+    searchLog.warn('search.fallback.disabled', { env: process.env.NODE_ENV, query: q.slice(0, 80) });
+    return [];
+  }
+  const { searchLog } = await import('@/lib/ai/search/searchLog');
+  searchLog.info('search.fallback.substring', { env: process.env.NODE_ENV, query: q.slice(0, 80) });
   return substringSearch(q, limit, scope, opts.subjectId);
 }
 
