@@ -20,6 +20,7 @@
 | 07 | [07-testing.md](./07-testing.md) | 测试体系 | 双运行器架构（node:test + Vitest）、测试分层、命名约定、prebuild 集成 |
 | 08 | [08-exam-paper-integration.md](./08-exam-paper-integration.md) | 考前模拟/实战演练 | Word 试卷 → 卡片化 Markdown 录入与 manifest 注册 |
 | 09 | [09-english-unit-content.md](./09-english-unit-content.md) | 大学英语 Unit | 课文精读、例题与 Quiz 内容生成和注册 |
+| 10 | [10-search-index-lifecycle.md](./10-search-index-lifecycle.md) | 检索索引 | 重建、随部署分发、health 冒烟与回滚 |
 | — | [subject-onboarding.md](./subject-onboarding.md) | 新学科接入 | 从零接入一个新科目的端到端流程 |
 
 ---

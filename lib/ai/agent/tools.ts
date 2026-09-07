@@ -39,6 +39,8 @@ import type {
   UseSkillOutput,
   TextToolOutput,
 } from "@/lib/ai/agent/toolTypes";
+import { getIndexHealth } from "@/lib/ai/search/indexHealth";
+import { getLastSearchDiagnostics } from "@/lib/ai/search/hybridSearch";
 
 export const IMAGE_SEARCH_MAX_TOTAL = 20;
 export const MAX_TOOL_STEPS = 6;
@@ -209,22 +211,51 @@ export function buildStudyTools(
         subjectId: z.string().optional().describe("限定科目 id，如 histology、biochemistry、anatomy、cell-biology、instrumental-analysis。不传则搜当前学年全部科目。"),
       }),
       execute: async ({ query, crossYear, subjectId }): Promise<SearchNotesOutput> => {
+        const health = getIndexHealth();
+        if (!health.ok) {
+          return { text: `检索索引未加载：${health.reason}`, hits: [] };
+        }
+        const found = findContentItem(ctx.subjectId, ctx.categoryId, ctx.itemId);
+        const queryContext = found
+          ? `${found.subjectName} ${found.parentTitle ?? ""} ${found.item.title}`.replace(/\s+/g, " ").trim()
+          : undefined;
         const scope: ContentSearchScope = crossYear ? "all" : ctx.academicYear;
-        const hits = await searchAllContent(query, {
-          limit: 8,
-          academicYear: scope,
-          subjectId: subjectId || undefined,
-          preferSubjectId: subjectId ? undefined : ctx.subjectId,
-        });
+        const run = (year: ContentSearchScope) =>
+          searchAllContent(query, {
+            limit: 8,
+            academicYear: year,
+            subjectId: subjectId || undefined,
+            preferSubjectId: subjectId ? undefined : ctx.subjectId,
+            queryContext,
+          });
+        let hits = await run(scope);
+        let widened = false;
+        if (!hits.length && scope !== "all") {
+          hits = await run("all");
+          widened = hits.length > 0;
+        }
+        const diag = getLastSearchDiagnostics();
+        const diagnostics = diag
+          ? {
+              bm25Hits: diag.bm25Hits,
+              vecHits: diag.vecHits,
+              mode: diag.mode,
+              indexBuiltAt: diag.indexBuiltAt || health.manifest?.builtAt,
+              ms: diag.ms,
+              embedError: diag.embedError,
+            }
+          : undefined;
         if (!hits.length) {
-          return { text: "未检索到相关内容。可尝试更换关键词，或调用 getOutline 浏览目录。", hits: [] };
+          return { text: "未检索到相关内容。可尝试更换关键词，或调用 getOutline 浏览目录。", hits: [], diagnostics };
         }
         const lines = hits.map((h) => `[${h.title}] (path: ${h.path})\n…${h.snippet}…`);
+        if (widened) lines.unshift("（当前学年无命中，以下为跨学年结果）");
         lines.push('\n如需查看完整内容，可调用 getSection(path: "对应路径")。');
         return dedupeByContextKey(runtime, "searchNotes", {
           text: lines.join("\n\n"),
           contextKey: `search:${normalizeContextKeyPart(query)}`,
           hits: hits.slice(0, 5).map((h) => ({ title: h.title, path: h.path, snippet: h.snippet })),
+          diagnostics,
         });
       },
       toModelOutput: ({ output }) => toText(output),

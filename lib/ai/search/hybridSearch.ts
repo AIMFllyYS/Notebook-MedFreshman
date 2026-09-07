@@ -1,18 +1,40 @@
 // 混合检索 + Rerank：并行 BM25 + 向量 → RRF 合并 → rerank API 精排 → MultiSearchHit[]
-import { bm25Search, isBM25IndexLoaded } from "./bm25Store";
+import { bm25Search, getBm25BuiltAt, isBM25IndexLoaded } from "./bm25Store";
 import { vectorSearch, isVectorIndexLoaded, getVectorIndexModel } from "./vectorStore";
 import type { ScoredChunk } from "./vectorStoreTypes";
 import { getQueryEmbeddingClient } from "@/lib/ai/embedding";
 import type { MultiSearchHit } from "@/lib/content/loader";
 import { normalizeSearchQuery } from "./queryNormalize";
+import { shortTitleForIndex } from "@/lib/ai/indexing/bm25Index";
 import type { SearchFilter } from "./searchScope";
+import { searchLog } from "./searchLog";
 
 export type { SearchFilter } from "./searchScope";
 
 type SearchMode = "hybrid" | "vector" | "keyword";
 
-const PREFER_SUBJECT_BOOST = 1.12;
+const PREFER_SUBJECT_MIN_HITS = 3;
 const SNIPPET_CHARS = 400;
+
+export interface SearchDiagnostics {
+  mode: SearchMode;
+  bm25Hits: number;
+  vecHits: number;
+  merged: number;
+  reranked: number;
+  final: number;
+  filter: SearchFilter;
+  ms: number;
+  indexBuiltAt?: string;
+  embedError?: string;
+  rerankError?: string;
+}
+
+let lastDiagnostics: SearchDiagnostics | null = null;
+
+export function getLastSearchDiagnostics(): SearchDiagnostics | null {
+  return lastDiagnostics;
+}
 
 function getSearchMode(): SearchMode {
   const mode = process.env.AI_SEARCH_MODE?.toLowerCase();
@@ -22,16 +44,19 @@ function getSearchMode(): SearchMode {
 
 export interface HybridSearchOptions extends SearchFilter {
   topK?: number;
+  /** 当前页面标题，用于短查询向量扩展（不拼入 BM25）。 */
+  queryContext?: string;
 }
 
 function resolveOptions(
   topKOrOpts?: number | HybridSearchOptions,
-): { topK: number; filter: SearchFilter } {
+): { topK: number; filter: SearchFilter; queryContext?: string } {
   if (typeof topKOrOpts === "number" || topKOrOpts === undefined) {
     return { topK: topKOrOpts ?? 5, filter: {} };
   }
   return {
     topK: topKOrOpts.topK ?? 5,
+    queryContext: topKOrOpts.queryContext,
     filter: {
       academicYear: topKOrOpts.academicYear,
       subjectId: topKOrOpts.subjectId,
@@ -40,7 +65,15 @@ function resolveOptions(
   };
 }
 
-// RRF (Reciprocal Rank Fusion) 合并
+/** ≤2 个汉字的查询把当前页标题拼进向量侧，避免「绪论」这类标题词漂到别的科目。 */
+export function expandShortQuery(query: string, pageTitle?: string): string {
+  const q = query.trim();
+  if (!pageTitle) return q;
+  const han = q.replace(/[^\u4e00-\u9fff]/g, "");
+  if (han.length > 0 && han.length <= 2) return `${pageTitle} ${q}`.trim();
+  return q;
+}
+
 export function rrfMerge(rankings: ScoredChunk[][], k = 60): ScoredChunk[] {
   const scoreMap = new Map<string, { score: number; chunk: ScoredChunk }>();
 
@@ -62,18 +95,6 @@ export function rrfMerge(rankings: ScoredChunk[][], k = 60): ScoredChunk[] {
     .map((entry) => ({ ...entry.chunk, score: entry.score }));
 }
 
-function applyPreferSubject(chunks: ScoredChunk[], preferSubjectId?: string): ScoredChunk[] {
-  if (!preferSubjectId) return chunks;
-  return chunks
-    .map((chunk) =>
-      chunk.subjectId === preferSubjectId
-        ? { ...chunk, score: chunk.score * PREFER_SUBJECT_BOOST }
-        : chunk,
-    )
-    .sort((a, b) => b.score - a.score);
-}
-
-// Rerank API 调用
 async function rerank(
   query: string,
   documents: string[],
@@ -136,75 +157,16 @@ async function rerank(
   }
 }
 
-export async function hybridSearch(
-  query: string,
-  topKOrOpts: number | HybridSearchOptions = 5,
-): Promise<MultiSearchHit[]> {
-  const { topK, filter } = resolveOptions(topKOrOpts);
-  const mode = getSearchMode();
-  const hasVectorIndex = await isVectorIndexLoaded();
-  const hasBM25Index = await isBM25IndexLoaded();
-
-  if (!hasVectorIndex && !hasBM25Index) {
-    return [];
-  }
-
-  const retrievalQuery = normalizeSearchQuery(query);
-  const rankings: ScoredChunk[][] = [];
-
-  if (mode !== "vector" && hasBM25Index) {
-    const bm25Results = await bm25Search(retrievalQuery, 40, filter);
-    if (bm25Results.length) rankings.push(bm25Results);
-  }
-
-  if (mode !== "keyword" && hasVectorIndex) {
-    try {
-      const indexModel = await getVectorIndexModel();
-      const embeddingClient = getQueryEmbeddingClient(indexModel);
-      const queryVector = await embeddingClient.embed(retrievalQuery);
-      const vecResults = await vectorSearch(queryVector, 40, filter);
-      if (vecResults.length) rankings.push(vecResults);
-    } catch {
-      // embedding API 失败时仅用 BM25
-    }
-  }
-
-  if (!rankings.length) return [];
-
-  let merged = applyPreferSubject(rrfMerge(rankings), filter.preferSubjectId);
-  const candidates = merged.slice(0, 40);
-
-  if (!candidates.length) return [];
-
-  let finalChunks: ScoredChunk[];
-  if (mode !== "keyword") {
-    try {
-      const rerankResults = await rerank(
-        retrievalQuery,
-        candidates.map((c) => c.text),
-        Math.max(topK, 8),
-      );
-      finalChunks = rerankResults.map((r) => ({
-        ...candidates[r.index],
-        score: r.relevance_score,
-      }));
-    } catch {
-      finalChunks = candidates.slice(0, topK);
-    }
-  } else {
-    finalChunks = candidates.slice(0, topK);
-  }
-
+function toHits(chunks: ScoredChunk[], topK: number): MultiSearchHit[] {
   const seenPaths = new Set<string>();
   const deduped: ScoredChunk[] = [];
-  for (const chunk of finalChunks) {
+  for (const chunk of chunks) {
     if (!seenPaths.has(chunk.path)) {
       seenPaths.add(chunk.path);
       deduped.push(chunk);
     }
     if (deduped.length >= topK) break;
   }
-
   return deduped.map((chunk) => ({
     subjectId: chunk.subjectId,
     subjectName: chunk.subjectName,
@@ -214,4 +176,156 @@ export async function hybridSearch(
     snippet: chunk.text.slice(0, SNIPPET_CHARS),
     path: chunk.path,
   }));
+}
+
+async function retrieve(
+  retrievalQuery: string,
+  vectorQuery: string,
+  topK: number,
+  filter: SearchFilter,
+  mode: SearchMode,
+): Promise<{ hits: MultiSearchHit[]; diagnostics: Omit<SearchDiagnostics, "ms" | "filter" | "mode"> }> {
+  const hasVectorIndex = await isVectorIndexLoaded();
+  const hasBM25Index = await isBM25IndexLoaded();
+  if (!hasVectorIndex && !hasBM25Index) {
+    return {
+      hits: [],
+      diagnostics: { bm25Hits: 0, vecHits: 0, merged: 0, reranked: 0, final: 0, indexBuiltAt: undefined },
+    };
+  }
+
+  const rankings: ScoredChunk[][] = [];
+  let bm25Hits = 0;
+  let vecHits = 0;
+  let embedError: string | undefined;
+  let rerankError: string | undefined;
+
+  if (mode !== "vector" && hasBM25Index) {
+    const bm25Results = await bm25Search(retrievalQuery, 40, filter);
+    bm25Hits = bm25Results.length;
+    if (bm25Results.length) rankings.push(bm25Results);
+  }
+
+  if (mode !== "keyword" && hasVectorIndex) {
+    try {
+      const indexModel = await getVectorIndexModel();
+      const embeddingClient = getQueryEmbeddingClient(indexModel);
+      const queryVector = await embeddingClient.embed(vectorQuery);
+      const vecResults = await vectorSearch(queryVector, 40, filter);
+      vecHits = vecResults.length;
+      if (vecResults.length) rankings.push(vecResults);
+    } catch (err) {
+      embedError = err instanceof Error ? err.message : String(err);
+      const statusMatch = embedError.match(/\b(\d{3})\b/);
+      searchLog.error("search.embed.error", {
+        model: await getVectorIndexModel(),
+        status: statusMatch ? Number(statusMatch[1]) : undefined,
+        message: embedError,
+        queryLen: vectorQuery.length,
+      });
+    }
+  }
+
+  if (!rankings.length) {
+    return {
+      hits: [],
+      diagnostics: {
+        bm25Hits,
+        vecHits,
+        merged: 0,
+        reranked: 0,
+        final: 0,
+        indexBuiltAt: await getBm25BuiltAt(),
+        embedError,
+      },
+    };
+  }
+
+  const merged = rrfMerge(rankings);
+  const candidates = merged.slice(0, 40);
+  let finalChunks: ScoredChunk[];
+  let reranked = 0;
+
+  if (mode !== "keyword") {
+    try {
+      const rerankResults = await rerank(
+        retrievalQuery,
+        candidates.map((c) => `${shortTitleForIndex(c.title)}\n${c.text}`),
+        Math.max(topK, 8),
+      );
+      finalChunks = rerankResults.map((r) => ({
+        ...candidates[r.index],
+        score: r.relevance_score,
+      }));
+      reranked = finalChunks.length;
+    } catch (err) {
+      rerankError = err instanceof Error ? err.message : String(err);
+      const statusMatch = rerankError.match(/\b(\d{3})\b/);
+      searchLog.error("search.rerank.error", {
+        model: process.env.AI_RERANK_MODEL || "BAAI/bge-reranker-v2-m3",
+        status: statusMatch ? Number(statusMatch[1]) : undefined,
+        message: rerankError,
+        candidates: candidates.length,
+      });
+      finalChunks = candidates.slice(0, topK);
+    }
+  } else {
+    finalChunks = candidates.slice(0, topK);
+  }
+
+  const hits = toHits(finalChunks, topK);
+  return {
+    hits,
+    diagnostics: {
+      bm25Hits,
+      vecHits,
+      merged: merged.length,
+      reranked,
+      final: hits.length,
+      indexBuiltAt: await getBm25BuiltAt(),
+      embedError,
+      rerankError,
+    },
+  };
+}
+
+export async function hybridSearch(
+  query: string,
+  topKOrOpts: number | HybridSearchOptions = 5,
+): Promise<MultiSearchHit[]> {
+  const started = Date.now();
+  const { topK, filter, queryContext } = resolveOptions(topKOrOpts);
+  const mode = getSearchMode();
+  const retrievalQuery = normalizeSearchQuery(query);
+  const vectorQuery = expandShortQuery(retrievalQuery, queryContext);
+
+  const run = (nextFilter: SearchFilter) => retrieve(retrievalQuery, vectorQuery, topK, nextFilter, mode);
+
+  let result;
+  if (filter.preferSubjectId && !filter.subjectId) {
+    const preferred = await run({ ...filter, subjectId: filter.preferSubjectId, preferSubjectId: undefined });
+    result = preferred.hits.length >= PREFER_SUBJECT_MIN_HITS ? preferred : await run(filter);
+  } else {
+    result = await run(filter);
+  }
+
+  lastDiagnostics = {
+    mode,
+    filter,
+    ms: Date.now() - started,
+    ...result.diagnostics,
+  };
+  searchLog.info("search.query", {
+    mode,
+    bm25Hits: lastDiagnostics.bm25Hits,
+    vecHits: lastDiagnostics.vecHits,
+    merged: lastDiagnostics.merged,
+    reranked: lastDiagnostics.reranked,
+    final: lastDiagnostics.final,
+    filter,
+    ms: lastDiagnostics.ms,
+    embedError: lastDiagnostics.embedError,
+    rerankError: lastDiagnostics.rerankError,
+  });
+  return result.hits;
 }

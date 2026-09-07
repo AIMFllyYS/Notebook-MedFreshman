@@ -23,6 +23,4 @@ module.exports = {
   // Video CDN is client-inlined at BUILD time (NEXT_PUBLIC_*); kept here so the
   // build script can pass it to `next build`. Also harmless at runtime.
   NEXT_PUBLIC_VIDEO_CDN_BASE: "https://qimo1b-1392708216.cos.ap-nanjing.myqcloud.com",
-  // Index is bundled offline; this stays as a remote fallback only.
-  COS_INDEX_BASE_URL: "https://qimo1b-1392708216.cos.ap-nanjing.myqcloud.com/index/",
 };

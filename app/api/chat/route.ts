@@ -94,6 +94,13 @@ export async function POST(req: NextRequest) {
   const isImageMode = selectedModelInfo?.type === "image";
   const effectiveModelId = isImageMode ? body.imageModeTextModel : modelId;
 
+  try {
+    const { getIndexHealth } = await import("@/lib/ai/search/indexHealth");
+    getIndexHealth();
+  } catch {
+    /* 索引体检失败不阻断对话 */
+  }
+
   const options: ChatOptions = {
     enableThinking: body.enableThinking,
     enableSearch: body.enableSearch,
