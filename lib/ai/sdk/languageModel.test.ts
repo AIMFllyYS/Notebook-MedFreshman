@@ -137,6 +137,46 @@ test("buildThinkingSettings：Qwen3.8 的 high 映射为 xhigh", () => {
   assert.deepEqual(s.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "xhigh" } });
 });
 
+test("buildThinkingSettings：自定义模型勾选的 max 档原样下发 reasoningEffort", () => {
+  const groups: CustomApiGroup[] = [
+    {
+      id: "or",
+      name: "OpenRouter",
+      baseUrl: "https://openrouter.example/v1",
+      apiKey: "sk",
+      models: [{
+        id: "gpt-think",
+        thinking: true,
+        thinkingLevels: ["low", "medium", "high", "max"],
+        apiProtocol: "openai",
+      }],
+    },
+  ];
+  const r = resolveLanguageModel(buildCustomModelRegistryId("or", "gpt-think"), groups);
+  assert.equal(r.supportsThinking, true);
+  assert.deepEqual(r.thinkingSettings("max").providerOptions, {
+    [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "max" },
+  });
+  assert.deepEqual(r.thinkingSettings("low").providerOptions, {
+    [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "low" },
+  });
+});
+
+test("buildThinkingSettings：自定义模型未勾选思考时 thinkingSettings 为空", () => {
+  const groups: CustomApiGroup[] = [
+    {
+      id: "or",
+      name: "OpenRouter",
+      baseUrl: "https://openrouter.example/v1",
+      apiKey: "sk",
+      models: [{ id: "gpt-plain", apiProtocol: "openai" }],
+    },
+  ];
+  const r = resolveLanguageModel(buildCustomModelRegistryId("or", "gpt-plain"), groups);
+  assert.equal(r.supportsThinking, false);
+  assert.deepEqual(r.thinkingSettings("high"), {});
+});
+
 test("resolveLanguageModel：真实 SDK 对默认/标准配置的结构化思考与别名流均可消费", async (t) => {
   for (const field of [undefined, "reasoning", "reasoning_content"]) {
     const resolved = fixtureModel(field);

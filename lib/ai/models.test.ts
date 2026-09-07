@@ -7,7 +7,11 @@ import {
   CUSTOM_OPENAI_MODEL_ID,
   getModelInfo,
   getModelGroups,
+  getModelGroupsWithCustom,
   getAllModels,
+  getModelInfoWithCustom,
+  normalizeThinkingLevels,
+  THINKING_EFFORT_VALUES,
   getAllModelsFlat,
   buildCustomModelRegistryId,
   findCustomModelGroup,
@@ -62,19 +66,21 @@ test("getModelInfo：不存在的 id 返回 undefined", () => {
   assert.equal(getModelInfo("nonexistent-model"), undefined);
 });
 
-test("getModelGroups：按 group 聚合且保持声明顺序", () => {
+test("getModelGroups：按 group 聚合且保持声明顺序，不展示桌面「自由中转」", () => {
   const groups = getModelGroups();
   assert.ok(groups.length > 0);
   for (const g of groups) {
     assert.ok(g.models.length > 0, `group ${g.group} 至少一个模型`);
+    assert.notEqual(g.group, "自由中转");
+    assert.ok(!g.models.some((m) => m.id === CUSTOM_OPENAI_MODEL_ID));
   }
-  assert.equal(groups[0].group, "自由中转");
+  assert.equal(groups[0].group, "主力模型");
 });
 
-test("getModelGroups：所有模型都被分组覆盖", () => {
+test("getModelGroups：菜单模型都被分组覆盖（不含桌面自由中转）", () => {
   const groups = getModelGroups();
   const totalModels = groups.reduce((sum, g) => sum + g.models.length, 0);
-  assert.equal(totalModels, MODELS.length);
+  assert.equal(totalModels, MODELS.filter((m) => m.id !== CUSTOM_OPENAI_MODEL_ID).length);
 });
 
 test("MODELS：model id 唯一", () => {
@@ -245,4 +251,53 @@ test("思考强度：生图模型不支持档位，GLM 把 medium 钳到 high �
   const qwen = getModelInfo("Qwen/Qwen3.8-27B");
   assert.equal(wireThinkingEffort(qwen, "high"), "xhigh");
   assert.equal(clampThinkingEffort(qwen, "max"), "high");
+});
+
+test("getAllModels / 菜单：不含桌面自由中转，自定义思考档位进入 ModelInfo", () => {
+  assert.ok(getModelInfo(CUSTOM_OPENAI_MODEL_ID));
+  assert.equal(
+    getAllModels([]).some((m) => m.id === CUSTOM_OPENAI_MODEL_ID),
+    false,
+  );
+  assert.deepEqual(normalizeThinkingLevels(["high", "nope", "low", "high"]), ["low", "high"]);
+
+  const groups = [
+    {
+      id: "or",
+      name: "OpenRouter",
+      baseUrl: "https://openrouter.example/v1",
+      apiKey: "sk",
+      models: [
+        {
+          id: "think-max",
+          label: "Think Max",
+          thinking: true,
+          thinkingLevels: ["low", "max"] as const,
+          thinkingRequired: true,
+        },
+        { id: "think-legacy", label: "Think Legacy", thinking: true },
+        { id: "plain", label: "Plain" },
+      ],
+    },
+  ];
+
+  const max = getModelInfoWithCustom(buildCustomModelRegistryId("or", "think-max"), groups);
+  assert.equal(max?.thinking, true);
+  assert.equal(max?.thinkingRequired, true);
+  assert.deepEqual(max?.thinkingLevels, ["low", "max"]);
+  assert.equal(modelSupportsThinkingEffort(max), true);
+  assert.equal(clampThinkingEffort(max, "medium"), "low");
+  assert.equal(wireThinkingEffort(max, "max"), "max");
+
+  const legacy = getModelInfoWithCustom(buildCustomModelRegistryId("or", "think-legacy"), groups);
+  assert.deepEqual(legacy?.thinkingLevels, [...THINKING_EFFORT_VALUES]);
+  assert.equal(modelSupportsThinkingEffort(legacy), true);
+
+  const plain = getModelInfoWithCustom(buildCustomModelRegistryId("or", "plain"), groups);
+  assert.equal(plain?.thinking, false);
+  assert.equal(modelSupportsThinkingEffort(plain), false);
+
+  const menu = getModelGroupsWithCustom(groups);
+  assert.equal(menu.some((g) => g.group === "自由中转"), false);
+  assert.ok(menu.some((g) => g.group === "OpenRouter"));
 });
