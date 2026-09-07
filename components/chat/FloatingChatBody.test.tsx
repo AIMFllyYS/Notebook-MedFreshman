@@ -28,7 +28,7 @@ vi.mock('@/components/chat/ChatInput', () => ({ default: ({ onSend, onStop }: {
 
 const context = { subjectId: 'cell-biology', categoryId: 'textbook', itemId: 'ch01', currentTopic: '细胞' };
 const initialSettings = useSettings.getState();
-const seed = (mode: SeedMode = 'explain') => ({ id: 'window', sessionId: 'floating', modelId: 'Qwen/Qwen3.6-27B', seedMode: mode, seedText: '被选中的教材原文', seedNonce: 1 });
+const seed = (mode: SeedMode = 'explain') => ({ id: 'window', sessionId: 'floating', modelId: 'Qwen/Qwen3.8-27B', seedMode: mode, seedText: '被选中的教材原文', seedNonce: 1 });
 let requests: Array<Record<string, unknown>>;
 
 function Host({ visible = true }: { visible?: boolean }) {
@@ -95,7 +95,7 @@ describe('FloatingChatBody automatic seed lifecycle with real useChat', () => {
     render(<StrictMode><Host /></StrictMode>);
     await settle();
     expect(requests).toHaveLength(1);
-    expect(requests[0]).toMatchObject({ id: 'floating', modelId: 'Qwen/Qwen3.6-27B' });
+    expect(requests[0]).toMatchObject({ id: 'floating', modelId: 'Qwen/Qwen3.8-27B' });
     expect(floatingMessages()).toHaveLength(2);
     expect(getMessageText(floatingMessages()[0])).toContain('> 被选中的教材原文');
     expect(getMessageText(floatingMessages()[0])).toContain(mode === 'explain' ? '通俗易懂' : '具体、贴近的例子');
@@ -105,7 +105,7 @@ describe('FloatingChatBody automatic seed lifecycle with real useChat', () => {
     expect(useTokenTracker.getState().sessionTotal.totalTokens).toBe(0);
     expect(useFloatingTokenTracker.getState().getSession('floating').sessionTotal.totalTokens).toBe(15);
     expect(useBillingStore.getState().records).toHaveLength(1);
-    expect(useBillingStore.getState().records[0]).toMatchObject({ sessionId: 'floating', modelId: 'Qwen/Qwen3.6-27B' });
+    expect(useBillingStore.getState().records[0]).toMatchObject({ sessionId: 'floating', modelId: 'Qwen/Qwen3.8-27B' });
     expect(screen.getByTestId('loading')).toHaveTextContent('false');
     expect(screen.getByTestId('info')).toHaveTextContent('备用端点提示');
     fireEvent.click(screen.getByText('清除提示'));

@@ -37,13 +37,17 @@
     <h1>填写 API 密钥</h1>
     <p class="sub">密钥仅保存在本机（加密存储），不会上传、不在安装包内。只填你有的即可。</p>
 
-    <label>硅基流动 SiliconFlow <span class="req">必填</span></label>
-    <input id="AI_API_KEY" type="password" placeholder="sk-..." autocomplete="off" />
-    <div class="hint">解锁 AI 对话、语义搜索（embedding + rerank）、追问、生成。</div>
+    <label>自有中转 Relay <span class="req">必填</span></label>
+    <input id="RELAY_API_KEY" type="password" placeholder="sk-..." autocomplete="off" />
+    <div class="hint">解锁主力对话模型（GLM / Qwen / Gemini / DeepSeek）。</div>
 
-    <label>小米 MiMo <span class="opt">可选</span></label>
-    <input id="MIMO_API_KEY" type="password" placeholder="留空则不启用 MiMo 模型" autocomplete="off" />
-    <div class="hint">解锁 MiMo 系模型对话。</div>
+    <label>硅基流动 SiliconFlow <span class="opt">可选</span></label>
+    <input id="AI_API_KEY" type="password" placeholder="留空则生图与向量检索不可用" autocomplete="off" />
+    <div class="hint">解锁生图、语义搜索（embedding + rerank）。</div>
+
+    <label>小米 MiMo Token Plan <span class="opt">可选</span></label>
+    <input id="MIMO_API_KEY" type="password" placeholder="tp-... 留空则不启用 MiMo 模型" autocomplete="off" />
+    <div class="hint">解锁 MiMo 系模型对话。密钥在 Token Plan 页面获取。</div>
 
     <label>智谱 Zhipu <span class="opt">可选</span></label>
     <input id="ZHIPU_API_KEY" type="password" placeholder="留空则联网搜索不可用" autocomplete="off" />
@@ -61,7 +65,7 @@
 
     <script>
       const $ = (id) => document.getElementById(id);
-      const fields = ["AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY", "UNSPLASH_ACCESS_KEY"];
+      const fields = ["RELAY_API_KEY", "AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY", "UNSPLASH_ACCESS_KEY"];
       const collect = () => Object.fromEntries(fields.map((f) => [f, $(f).value]));
       const status = (msg, cls) => { const s = $("status"); s.textContent = msg; s.className = cls || "muted"; };
 
@@ -71,14 +75,14 @@
       })();
 
       $("test").onclick = async () => {
-        if (!$("AI_API_KEY").value.trim()) return status("请先填写硅基流动密钥（必填）", "bad");
+        if (!$("RELAY_API_KEY").value.trim()) return status("请先填写中转站密钥（必填）", "bad");
         status("测试中…", "muted");
         $("test").disabled = true;
         try {
           const r = await window.setupAPI.test(collect());
           const line = (x) => `${x.label}: ${x.status}`;
-          const ok = r.AI_API_KEY.status === "ok";
-          status([line(r.AI_API_KEY), line(r.MIMO_API_KEY), line(r.ZHIPU_API_KEY), line(r.UNSPLASH_ACCESS_KEY)].join("\n"), ok ? "ok" : "bad");
+          const ok = r.RELAY_API_KEY.status === "ok";
+          status([line(r.RELAY_API_KEY), line(r.AI_API_KEY), line(r.MIMO_API_KEY), line(r.ZHIPU_API_KEY), line(r.UNSPLASH_ACCESS_KEY)].join("\n"), ok ? "ok" : "bad");
         } catch (e) {
           status("测试失败：" + e, "bad");
         } finally {
@@ -87,7 +91,7 @@
       };
 
       $("save").onclick = async () => {
-        if (!$("AI_API_KEY").value.trim()) return status("硅基流动密钥为必填项", "bad");
+        if (!$("RELAY_API_KEY").value.trim()) return status("中转站密钥为必填项", "bad");
         status("保存并启动服务中…（首次稍慢）", "muted");
         $("save").disabled = true;
         try {

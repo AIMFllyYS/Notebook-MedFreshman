@@ -6,7 +6,7 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import type { ChatContext } from "@/lib/types/chat";
 
 /** 划词助手浮窗的回退默认模型（当用户未在设置中指定时使用）。 */
-export const FLOATING_DEFAULT_MODEL = "Qwen/Qwen3.6-27B";
+export const FLOATING_DEFAULT_MODEL = "Qwen/Qwen3.8-27B";
 
 /** 从设置中读取划词助手模型，回退到硬编码常量，确保任何情况下都有可用模型。 */
 function floatingModelId(): string {

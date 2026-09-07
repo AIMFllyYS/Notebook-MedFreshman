@@ -7,7 +7,7 @@ import type { RecordCardAI } from "../../lib/review/types.ts";
 
 // Import the routes only after setting fake environment credentials. No test can
 // hit a real provider: every generation test replaces global fetch with a fixture.
-const envNames = ["AI_BASE_URL", "AI_API_KEY", "AI_MODEL_FLASH", "SILICONFLOW_BASE_URL", "SILICONFLOW_API_KEY", "AI_TITLE_BASE_URL", "AI_TITLE_API_KEY", "AI_TITLE_MODEL"] as const;
+const envNames = ["AI_BASE_URL", "AI_API_KEY", "AI_MODEL_FLASH", "RELAY_BASE_URL", "RELAY_API_KEY", "SILICONFLOW_BASE_URL", "SILICONFLOW_API_KEY", "AI_TITLE_BASE_URL", "AI_TITLE_API_KEY", "AI_TITLE_MODEL"] as const;
 const originalEnv = Object.fromEntries(envNames.map((name) => [name, process.env[name]]));
 let record: typeof import("../../app/api/record/route.ts");
 let artifact: typeof import("../../app/api/artifact/route.ts");
@@ -18,12 +18,14 @@ let canvas: typeof import("../../app/api/canvas-revise/route.ts");
 before(async () => {
   process.env.AI_BASE_URL = "https://builtin.invalid/v1";
   process.env.AI_API_KEY = "builtin-test-key";
-  process.env.AI_MODEL_FLASH = "deepseek-ai/DeepSeek-V4-Flash";
-  process.env.SILICONFLOW_BASE_URL = "https://title-priority.invalid/v1";
-  process.env.SILICONFLOW_API_KEY = "title-priority-key";
-  process.env.AI_TITLE_BASE_URL = "https://title-fallback.invalid/v1";
-  process.env.AI_TITLE_API_KEY = "title-fallback-key";
+  process.env.AI_MODEL_FLASH = "z-ai/glm-5.3-flash";
+  process.env.RELAY_BASE_URL = "https://title-priority.invalid/v1";
+  process.env.RELAY_API_KEY = "title-priority-key";
+  process.env.SILICONFLOW_BASE_URL = "https://title-fallback.invalid/v1";
+  process.env.SILICONFLOW_API_KEY = "title-fallback-key";
   process.env.AI_TITLE_MODEL = "title-unknown-model";
+  delete process.env.AI_TITLE_BASE_URL;
+  delete process.env.AI_TITLE_API_KEY;
   [record, artifact, title, followUps, canvas] = await Promise.all([
     import("../../app/api/record/route.ts"), import("../../app/api/artifact/route.ts"),
     import("../../app/api/chat-title/route.ts"), import("../../app/api/follow-ups/route.ts"),
@@ -317,7 +319,7 @@ test("chat-title: independent credentials/model precedence, input limit and outp
   assert.equal(new Headers(calls[0].init.headers).get("Authorization"), "Bearer title-priority-key");
   assert.equal(calls[0].body.model, "title-unknown-model");
   assert.equal(calls[0].body.max_tokens, 48);
-  assert.equal(calls[0].body.enable_thinking, false);
+  assert.equal(calls[0].body.reasoning_effort, "low");
   assert.equal(contentText(calls[0].body.messages[1].content), `请为这次 AI 对话生成标题：\n${"长".repeat(1800)}`);
 });
 
@@ -334,7 +336,7 @@ test("follow-ups: exact course context + last four messages in order, loose JSON
   const messages = Array.from({ length: 6 }, (_, index) => ({ role: index % 2 ? "assistant" : "user", content: `message-${index}` }));
   const res = await followUps.POST(request({ messages, subjectId: "probability", categoryId: "detail", itemId: "1.2" }));
   assert.deepEqual(await res.json(), { questions: ["问题一", "2", "问题三"] });
-  assert.equal(calls[0].body.model, "deepseek-ai/DeepSeek-V4-Flash");
+  assert.equal(calls[0].body.model, "z-ai/glm-5.3-flash");
   assert.equal(calls[0].body.temperature, 0.8);
   assert.match(contentText(calls[0].body.messages[0].content), /分类 detail，内容项 1.2/);
   assert.deepEqual(calls[0].body.messages.slice(1, -1).map((message) => contentText(message.content)), ["message-2", "message-3", "message-4", "message-5"]);

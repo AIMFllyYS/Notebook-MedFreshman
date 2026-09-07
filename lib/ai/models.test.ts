@@ -12,6 +12,9 @@ import {
   findCustomModelGroup,
   normalizeCustomModelRegistryId,
   primaryProvider,
+  modelSupportsThinkingEffort,
+  clampThinkingEffort,
+  wireThinkingEffort,
 } from "./models.ts";
 
 test("MODELS 非空且每个模型有必需字段", () => {
@@ -40,10 +43,10 @@ test("DEFAULT_MODEL_ID 存在于 MODELS", () => {
 });
 
 test("getModelInfo：存在的 id 返回 ModelInfo", () => {
-  const m = getModelInfo("mimo-v2.5");
+  const m = getModelInfo("z-ai/glm-5.3-flash");
   assert.ok(m);
-  assert.equal(m!.id, "mimo-v2.5");
-  assert.equal(primaryProvider(m!), "mimo");
+  assert.equal(m!.id, "z-ai/glm-5.3-flash");
+  assert.equal(primaryProvider(m!), "relay");
 });
 
 test("getModelInfo：不存在的 id 返回 undefined", () => {
@@ -56,7 +59,7 @@ test("getModelGroups：按 group 聚合且保持声明顺序", () => {
   for (const g of groups) {
     assert.ok(g.models.length > 0, `group ${g.group} 至少一个模型`);
   }
-  assert.equal(groups[0].group, "小米 MiMo");
+  assert.equal(groups[0].group, "主力模型");
 });
 
 test("getModelGroups：所有模型都被分组覆盖", () => {
@@ -169,41 +172,66 @@ test("normalizeCustomModelRegistryId：旧 custom id 仅在唯一匹配时自动
   assert.equal(normalizeCustomModelRegistryId("mimo-v2.5", duplicateGroups), "mimo-v2.5");
 });
 
-test("MODELS：智谱独占模型 apiModelId 不含 SiliconFlow 前缀", () => {
-  const z1AirX = getModelInfo("zai-org/GLM-Z1-AirX");
-  assert.ok(z1AirX, "GLM-Z1-AirX 应存在");
-  assert.equal(z1AirX?.icon, "zhipu");
-  assert.equal(primaryProvider(z1AirX!), "zhipu");
-  assert.equal(z1AirX?.endpoints[0].apiModelId, "glm-z1-airx");
-  assert.ok(!z1AirX!.endpoints[0].apiModelId.includes("/"));
-
-  const flashX = getModelInfo("zai-org/GLM-4.7-FlashX");
-  assert.ok(flashX, "GLM-4.7-FlashX 应存在");
-  assert.equal(primaryProvider(flashX!), "zhipu");
-  assert.equal(flashX?.endpoints[0].apiModelId, "glm-4-flashx-250414");
-});
-
-test("MODELS：Qwen3.6 与 MiniMax M2.5", () => {
-  const qwen36 = getModelInfo("Qwen/Qwen3.6-27B");
-  assert.ok(qwen36, "Qwen3.6-27B 应存在");
-  assert.equal(qwen36?.icon, "qwen");
-  assert.equal(qwen36?.timeoutMs, 120_000);
-
-  const minimax = getModelInfo("MiniMaxAI/MiniMax-M2.5");
-  assert.ok(minimax, "MiniMax-M2.5 应存在");
-  assert.equal(minimax?.icon, "minimax");
-  assert.equal(minimax?.endpoints[0].apiModelId, "MiniMaxAI/MiniMax-M2.5");
-});
-
-test("getModelInfo：旧 MiniMax-M3 id 映射到 M2.5", () => {
-  const m = getModelInfo("MiniMaxAI/MiniMax-M3");
-  assert.equal(m?.id, "MiniMaxAI/MiniMax-M2.5");
-});
-
-test("MODELS：GLM-5.2 有两级端点链", () => {
-  const glm = getModelInfo("zai-org/GLM-5.2");
+test("MODELS：主力四模型走 relay，硅基流动仅保留生图", () => {
+  const glm = getModelInfo("z-ai/glm-5.3-flash");
   assert.ok(glm);
-  assert.equal(glm!.endpoints.length, 2);
-  assert.equal(glm!.endpoints[0].provider, "siliconflow");
-  assert.equal(glm!.endpoints[1].provider, "zhipu");
+  assert.equal(primaryProvider(glm!), "relay");
+  assert.equal(glm!.thinkingRequired, true);
+  assert.deepEqual(glm!.thinkingLevels, ["low", "high", "max"]);
+  assert.equal(glm!.endpoints[0].apiModelId, "z-ai/glm-5.3-flash");
+  assert.equal(glm!.endpoints[1]?.provider, "mimo");
+
+  const qwen = getModelInfo("Qwen/Qwen3.8-27B");
+  assert.ok(qwen);
+  assert.equal(qwen?.icon, "qwen");
+  assert.equal(qwen?.timeoutMs, 120_000);
+  assert.equal(qwen?.vision, true);
+
+  const gemini = getModelInfo("google/gemini-3.7-flash");
+  assert.ok(gemini);
+  assert.equal(gemini?.icon, "gemini");
+  assert.equal(gemini?.thinkingRequired, true);
+  assert.deepEqual(gemini!.thinkingLevels, ["low", "medium", "high"]);
+
+  const ds = getModelInfo("deepseek/deepseek-v4-flash");
+  assert.ok(ds);
+  assert.equal(primaryProvider(ds!), "relay");
+
+  const image = getModelInfo("Tongyi-MAI/Z-Image-Turbo");
+  assert.ok(image);
+  assert.equal(image?.type, "image");
+  assert.equal(primaryProvider(image!), "siliconflow");
+
+  assert.equal(MODELS.filter((m) => m.type !== "image" && primaryProvider(m) === "siliconflow").length, 0);
+  assert.equal(MODELS.filter((m) => primaryProvider(m) === "zhipu").length, 0);
+});
+
+test("getModelInfo：旧硅基流动/智谱 id 映射到中转站等价模型", () => {
+  assert.equal(getModelInfo("deepseek-ai/DeepSeek-V4-Flash")?.id, "deepseek/deepseek-v4-flash");
+  assert.equal(getModelInfo("Qwen/Qwen3.6-27B")?.id, "Qwen/Qwen3.8-27B");
+  assert.equal(getModelInfo("zai-org/GLM-5.2")?.id, "z-ai/glm-5.3-flash");
+  assert.equal(getModelInfo("MiniMaxAI/MiniMax-M3")?.id, "Qwen/Qwen3.8-27B");
+  assert.equal(getModelInfo("mimo-v2-flash")?.id, "mimo-v2.5");
+});
+
+test("MODELS：MiMo 走 Token Plan provider", () => {
+  const mimo = getModelInfo("mimo-v2.5");
+  assert.ok(mimo);
+  assert.equal(primaryProvider(mimo!), "mimo");
+  assert.deepEqual(mimo!.thinkingLevels, ["low", "medium", "high", "max"]);
+});
+
+test("思考强度：生图模型不支持档位，GLM 把 medium 钳到 high 并原样下发 max", () => {
+  const image = getModelInfo("Tongyi-MAI/Z-Image-Turbo");
+  assert.equal(modelSupportsThinkingEffort(image), false);
+
+  const glm = getModelInfo("z-ai/glm-5.3-flash");
+  assert.equal(modelSupportsThinkingEffort(glm), true);
+  assert.equal(clampThinkingEffort(glm, "medium"), "high");
+  assert.equal(wireThinkingEffort(glm, "max"), "max");
+  assert.equal(wireThinkingEffort(glm, "medium"), "high");
+
+  const qwen = getModelInfo("Qwen/Qwen3.8-27B");
+  assert.equal(wireThinkingEffort(qwen, "high"), "xhigh");
+  assert.equal(clampThinkingEffort(qwen, "max"), "high");
 });

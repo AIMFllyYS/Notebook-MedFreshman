@@ -11,6 +11,10 @@ let POST: typeof import('@/app/api/chat/route')['POST'];
 before(async () => {
   process.env.AI_BASE_URL = 'https://primary.invalid/v1';
   process.env.AI_API_KEY = 'test-only';
+  process.env.RELAY_BASE_URL = 'https://primary.invalid/v1';
+  process.env.RELAY_API_KEY = 'test-only';
+  process.env.MIMO_BASE_URL = 'https://backup.invalid/v1';
+  process.env.MIMO_API_KEY = 'test-only';
   process.env.ZHIPU_BASE_URL = 'https://backup.invalid/v1';
   process.env.ZHIPU_API_KEY = 'test-only';
   ({ POST } = await import('@/app/api/chat/route'));
@@ -244,7 +248,7 @@ test('chat SDK: 503 switches registry endpoint and sends transient info before s
     urls.push(String(url));
     return urls.length === 1 ? new Response('{"error":{"message":"unavailable"}}', { status: 503 }) : openAiStep();
   });
-  const { chunks, message } = await chat({ modelId: 'zai-org/GLM-5.2', customApiGroups: [] });
+  const { chunks, message } = await chat({ modelId: 'z-ai/glm-5.3-flash', customApiGroups: [] });
   assert.deepEqual(urls, ['https://primary.invalid/v1/chat/completions', 'https://backup.invalid/v1/chat/completions']);
   const info = chunks.find((c) => c.type === 'data-info');
   assert.ok(info && 'transient' in info && info.transient);
@@ -255,7 +259,7 @@ test('chat SDK: 503 switches registry endpoint and sends transient info before s
 
 test('chat SDK: authentication errors remain errors, never fail over or become success usage', async (t) => {
   const fetch = t.mock.method(globalThis, 'fetch', async () => new Response('{"error":{"message":"test unauthorized"}}', { status: 401 }));
-  const { chunks } = await chat({ modelId: 'zai-org/GLM-5.2', customApiGroups: [] });
+  const { chunks } = await chat({ modelId: 'z-ai/glm-5.3-flash', customApiGroups: [] });
   assert.equal(fetch.mock.callCount(), 1);
   assert.ok(chunks.some((c) => c.type === 'error'));
   assert.equal(chunks.some((c) => c.type === 'data-info' || c.type === 'data-usage'), false);

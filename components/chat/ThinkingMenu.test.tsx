@@ -59,6 +59,25 @@ describe('ThinkingMenuButton', () => {
     expect(getByTestId('thinking-menu-option-medium').querySelector('[data-agent-icon="check"]')).not.toBeNull();
   });
 
+  it('hides Off and unsupported levels when allowOff is false and levels are limited', async () => {
+    const { getByTestId, queryByTestId } = render(
+      <ThinkingMenuButton
+        enabled
+        effort="high"
+        onChange={vi.fn()}
+        supported
+        allowOff={false}
+        levels={['low', 'high', 'max']}
+      />,
+    );
+    await act(async () => {
+      getByTestId('thinking-menu-button').click();
+    });
+    expect(queryByTestId('thinking-menu-option-off')).toBeNull();
+    expect(queryByTestId('thinking-menu-option-medium')).toBeNull();
+    expect(queryByTestId('thinking-menu-option-high')).not.toBeNull();
+  });
+
   it('picking a level enables thinking and closes menu', async () => {
     const onChange = vi.fn();
     const { getByTestId, queryByTestId } = render(

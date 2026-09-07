@@ -158,13 +158,13 @@ describe('useChat SDK transport regression', () => {
     const second = controlledResponse();
     mockResponses((body) => body.id === 'float-a' ? first.response : body.id === 'float-b' ? second.response : main.response);
     const { result } = renderHook(() => ({
-      main: useChat(context), a: useChat(context, undefined, { sessionId: 'float-a', modelId: 'Qwen/Qwen3.6-27B' }),
-      b: useChat(context, undefined, { sessionId: 'float-b', modelId: 'deepseek-ai/DeepSeek-V4-Flash' }),
+      main: useChat(context), a: useChat(context, undefined, { sessionId: 'float-a', modelId: 'Qwen/Qwen3.8-27B' }),
+      b: useChat(context, undefined, { sessionId: 'float-b', modelId: 'deepseek/deepseek-v4-flash' }),
     }));
     act(() => { result.current.main.sendMessage('主'); result.current.a.sendMessage('浮一'); result.current.b.sendMessage('浮二'); });
     await settle();
     expect(requests).toHaveLength(3);
-    expect(requests.find((r) => r.body.id === 'float-a')?.body.modelId).toBe('Qwen/Qwen3.6-27B');
+    expect(requests.find((r) => r.body.id === 'float-a')?.body.modelId).toBe('Qwen/Qwen3.8-27B');
     expect(new Set(['main', 'float-a', 'float-b'].flatMap((id) => messagesFor(id).map((m) => m.id))).size).toBe(6);
     first.emit({ type: 'text-start', id: 't' }, { type: 'text-delta', id: 't', delta: '浮窗已收到' });
     await settle();
@@ -191,7 +191,7 @@ describe('useChat SDK transport regression', () => {
     expect(useFloatingTokenTracker.getState().getSession('float-b').sessionTotal).toEqual(usage);
     expect(useFloatingTokenTracker.getState().getSession('float-a').sessionTotal.totalTokens).toBe(0);
     expect(useBillingStore.getState().records).toHaveLength(2);
-    expect(useBillingStore.getState().records.find((r) => r.sessionId === 'float-b')?.modelId).toBe('deepseek-ai/DeepSeek-V4-Flash');
+    expect(useBillingStore.getState().records.find((r) => r.sessionId === 'float-b')?.modelId).toBe('deepseek/deepseek-v4-flash');
   });
 
   it('60ms 尾随节流且用户停止保留末帧，之后可以重新发送', async () => {

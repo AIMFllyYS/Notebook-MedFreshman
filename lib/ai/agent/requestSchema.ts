@@ -54,7 +54,7 @@ export const chatRequestSchema = z.object({
   customApiGroups: z.array(customApiGroupSchema).default([]),
   defaultImageModelId: z.string().nullable().optional(),
   imageModeTextModel: z.string().default("mimo-v2.5"),
-  imageModeTextModelFallback: z.string().default("Pro/moonshotai/Kimi-K2.6"),
+  imageModeTextModelFallback: z.string().default("mimo-v2.5-pro"),
   disabledTools: z.array(z.string()).default([]),
   contextTruncated: z.boolean().default(false),
   sessionContextBudgetTokens: finiteNumber.optional().nullable(),
