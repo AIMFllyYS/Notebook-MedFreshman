@@ -25,6 +25,7 @@ import {
   getModelInfoWithCustom,
   wireThinkingEffort,
   type CustomApiGroup,
+  type ModelInfo,
   type ThinkingEffort,
 } from "@/lib/ai/models";
 import { createFailoverLanguageModel, type FailoverCandidate } from "@/lib/ai/sdk/failoverModel";
@@ -109,10 +110,14 @@ function collectCandidates(
   return list;
 }
 
-export function buildThinkingSettings(p: ResolvedProvider, effort: ThinkingEffort | undefined): ThinkingCallSettings {
+export function buildThinkingSettings(
+  p: ResolvedProvider,
+  effort: ThinkingEffort | undefined,
+  info?: ModelInfo,
+): ThinkingCallSettings {
   const budget = thinkingBudget(effort);
-  const info = p.isCustom ? undefined : getModelInfo(p.registryId);
-  const effortStr = wireThinkingEffort(info, effort);
+  const modelInfo = info ?? (p.isCustom ? undefined : getModelInfo(p.registryId));
+  const effortStr = wireThinkingEffort(modelInfo, effort);
   switch (p.thinkingRequestStyle) {
     case "none":
       return {};
@@ -167,6 +172,6 @@ export function resolveLanguageModel(
     provider: primary,
     supportsThinking,
     supportsTools,
-    thinkingSettings: (effort) => (supportsThinking ? buildThinkingSettings(primary, effort) : {}),
+    thinkingSettings: (effort) => (supportsThinking ? buildThinkingSettings(primary, effort, info) : {}),
   };
 }

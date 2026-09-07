@@ -56,7 +56,7 @@ export default function ThinkingMenuButton({
 
   const options = THINKING_EFFORT_OPTIONS.filter((o) => !levels || levels.includes(o.value));
   const current = options.find((o) => o.value === effort) ?? options[0] ?? THINKING_EFFORT_OPTIONS[1];
-  const activeLabel = enabled ? current.label : null;
+  const activeLabel = enabled ? (options.length ? current.label : "开") : null;
   const trulyDisabled = disabled || !supported;
 
   const closeMenu = useCallback(() => setOpen(false), []);
@@ -164,6 +164,33 @@ export default function ThinkingMenuButton({
 
                 <div className="my-1 h-px bg-[var(--line)]/60" />
               </>
+            )}
+
+            {options.length === 0 && (
+              <button
+                type="button"
+                role="menuitemradio"
+                aria-checked={enabled}
+                onClick={() => {
+                  onChange({ enabled: true, effort });
+                  setOpen(false);
+                }}
+                data-testid="thinking-menu-option-on"
+                className={
+                  "flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left transition-colors " +
+                  (enabled ? "bg-[var(--bg-muted)]" : "hover:bg-[var(--bg-muted)]")
+                }
+              >
+                <span className="mt-0.5 w-3.5 shrink-0">
+                  {enabled && <AgentCheckIcon size={12} className="text-[var(--ink)]" />}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[12.5px] font-medium text-[var(--ink)]">开启</span>
+                  <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">
+                    启用推理链，不区分强度档位
+                  </span>
+                </span>
+              </button>
             )}
 
             {options.map((opt) => {

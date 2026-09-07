@@ -14,7 +14,7 @@ test("SDK adapter normalizes custom reasoning and builds provider thinking setti
 
   assert.match(source, /extractReasoningMiddleware\(\{ tagName: "think" \}\)/);
   assert.match(source, /createReasoningNormalizingFetch\(p\.reasoningField\)/);
-  assert.match(source, /buildThinkingSettings\(primary, effort\)/);
+  assert.match(source, /buildThinkingSettings\(primary, effort, info\)/);
   assert.match(source, /switch \(p\.thinkingRequestStyle\)/);
   assert.doesNotMatch(source, /reqBody\.enable_thinking\s*=\s*true/);
   assert.doesNotMatch(source, /reqBody\.thinking_budget\s*=/);
@@ -47,7 +47,7 @@ test("artifact and image generation use the model selected when the tool call wa
 
   assert.match(chatRoute, /selectedModelId: modelId \?\? effectiveModelId/);
   assert.match(tools, /unsupportedReason: ctx\.artifactUnsupportedReason/);
-  assert.equal([...tools.matchAll(/modelId: ctx\.modelId/g)].length, 2);
+  assert.equal([...tools.matchAll(/modelId: ctx\.modelId/g)].length, 3);
   assert.match(artifactCard, /const artifactModelId = modelId \|\| settings\.selectedModelId/);
   assert.match(imageCard, /modelId,/);
   assert.match(imageViewer, /const imageModelId = cur\.modelId \|\| settings\.selectedModelId/);
@@ -78,4 +78,7 @@ test("custom model settings preserve provider compatibility fields", () => {
   assert.match(source, /apiProtocol: f\.apiProtocol/);
   assert.match(source, /f\.showAdvanced\s*\?\s*f\.reasoningField\.trim\(\)\s*\|\|\s*undefined/);
   assert.match(source, /imageApiStyle: f\.imageApiStyle/);
+  assert.match(source, /thinkingLevels: f\.thinking \? normalizeThinkingLevels\(f\.thinkingLevels\) : undefined/);
+  assert.match(source, /data-testid=\{`custom-model-thinking-level-\$\{level\}`\}/);
+  assert.match(source, /data-testid="custom-model-thinking-toggle"/);
 });

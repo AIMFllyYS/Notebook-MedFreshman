@@ -54,6 +54,48 @@ describe('ModelMenu thinking submenu', () => {
     expect(queryByTestId('model-thinking-option-max')).not.toBeNull();
   });
 
+  it('does not list the desktop 自由中转 model', async () => {
+    const { getByTestId, queryByTestId } = render(<ModelMenu />);
+    await act(async () => {
+      getByTestId('model-menu-button').click();
+    });
+    expect(queryByTestId('model-menu-item-custom-openai')).toBeNull();
+    expect(getByTestId('model-menu-panel').textContent).not.toContain('自由中转');
+  });
+
+  it('shows custom-provider thinking levels in the flyout', async () => {
+    useSettings.setState({
+      selectedModelId: 'z-ai/glm-5.3-flash',
+      customApiGroups: [
+        {
+          id: 'or',
+          name: 'OpenRouter',
+          baseUrl: 'https://openrouter.example/v1',
+          apiKey: 'sk',
+          models: [
+            {
+              id: 'gpt-think',
+              label: 'GPT Think',
+              thinking: true,
+              thinkingLevels: ['low', 'max'],
+            },
+          ],
+        },
+      ],
+    });
+    const { getByTestId, queryByTestId } = render(<ModelMenu />);
+    await act(async () => {
+      getByTestId('model-menu-button').click();
+    });
+    expect(getByTestId('model-menu-panel').textContent).toContain('OpenRouter');
+    fireEvent.mouseEnter(getByTestId('model-menu-item-custom:or:gpt-think'));
+    expect(queryByTestId('model-thinking-submenu')).not.toBeNull();
+    expect(queryByTestId('model-thinking-option-low')).not.toBeNull();
+    expect(queryByTestId('model-thinking-option-max')).not.toBeNull();
+    expect(queryByTestId('model-thinking-option-medium')).toBeNull();
+    expect(queryByTestId('model-thinking-option-off')).not.toBeNull();
+  });
+
   it('selecting an effort picks the model and reports thinking change', async () => {
     const onChange = vi.fn();
     const onThinkingChange = vi.fn();
