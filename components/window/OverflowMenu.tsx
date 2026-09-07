@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { BookmarkCheck, MonitorPlay, MoreHorizontal, ImagePlus, PieChart } from "lucide-react";
+import { BookmarkCheck, MonitorPlay, MoreHorizontal, ImagePlus, PieChart, FileText } from "lucide-react";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
@@ -17,6 +17,7 @@ function WindowIcon({ type }: { type: ManagedWindow["type"] }) {
   if (type === "record-preview") return <BookmarkCheck size={14} />;
   if (type === "image-gen-viewer") return <ImagePlus size={14} />;
   if (type === "billing-dashboard") return <PieChart size={14} />;
+  if (type === "document-viewer") return <FileText size={14} />;
   return <MonitorPlay size={14} />;
 }
 

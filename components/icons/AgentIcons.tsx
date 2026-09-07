@@ -113,3 +113,18 @@ export function AgentHistoryIcon(props: AgentIconProps) {
 export function AgentExpandIcon(props: AgentIconProps) {
   return <IconFrame {...props} data-agent-icon="expand"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4" /></IconFrame>;
 }
+
+/** Clipboard with a ticked option row: quiz / structured questions. */
+export function AgentQuizIcon(props: AgentIconProps) {
+  return <IconFrame {...props} data-agent-icon="quiz"><rect x="3.5" y="3.5" width="13" height="14" rx="2.2" /><path d="M7.5 2.5h5v2.4h-5z" /><path d="m6.3 9.4 1.2 1.2 2.1-2.3M11.5 9.8h2.4" /><path d="m6.3 13.6 1.2 1.2 2.1-2.3M11.5 14h2.4" /></IconFrame>;
+}
+
+/** Long page with a ruled body and a folded corner: document writing. */
+export function AgentDocumentIcon(props: AgentIconProps) {
+  return <IconFrame {...props} data-agent-icon="document"><path d="M12 2.5H5.5A1.5 1.5 0 0 0 4 4v12a1.5 1.5 0 0 0 1.5 1.5h9A1.5 1.5 0 0 0 16 16V6.5z" /><path d="M12 2.5v4h4" /><path d="M6.6 8.6h3M6.6 11.2h6.8M6.6 13.8h6.8" /></IconFrame>;
+}
+
+/** Two stacked frames: image gallery / figures already in the notes. */
+export function AgentGalleryIcon(props: AgentIconProps) {
+  return <IconFrame {...props} data-agent-icon="gallery"><rect x="2.5" y="5.5" width="12" height="11" rx="2" /><path d="M6 2.5h9.5A2 2 0 0 1 17.5 4.5v9" /><circle cx="6.3" cy="9" r="1.1" /><path d="m3 14 3.4-3.2 3 2.9 1.8-1.7 3.3 3.2" /></IconFrame>;
+}

@@ -79,6 +79,7 @@
 | [13-agent-sdk-trace-ui.md](./13-agent-sdk-trace-ui.md) | SDK / 消息模型基线之上，客户端、Trace 与其他路由按独立模块并行 | Agent SDK 7 接入、时间轴 UI、持久化/计费回归、清理与验收记录 | 保留已完成 SDK/provider 基础设施与未提交 Step 3；稳定层待修项另见记录 |
 | [14-chat-runtime-and-icons.md](./14-chat-runtime-and-icons.md) | 真实请求诊断 + 共享界面返修 | EACCES 运行环境、脱敏错误处理、自绘图标、透明悬浮输入区、消息左右对齐与 Trace 层级缩进 | 13 的后续修复与用户反馈 |
 | [15-search-index-distribution-and-rag-quality.md](./15-search-index-distribution-and-rag-quality.md) | 分析报告 + 6 阶段修复计划（阶段 0 止血可独立先行） | `searchNotes` 失效根因（索引分发断裂 / 标题不入索引 / 零可观测性）、EdgeOne→自托管平台归位、COS 残留清洗清单 | 无；阶段 3 需在阶段 1 之后 |
+|| [16-agent-tool-workspace-handoff.md](./16-agent-tool-workspace-handoff.md) | 独立 Chat | Agent 结构化工具（createQuiz / searchNoteImages / writeDocument）与 UI 卡片基础实现；含 docx/PDF/测试待办 | 在 SDK/Trace 基建完成后 |
 
 ## 全局规范
 

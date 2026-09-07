@@ -35,6 +35,9 @@ interface QuizQuestionProps {
   answer: UserAnswer;
   onChange?: (a: UserAnswer) => void;
   result?: QuestionResult;
+  /** 可选：外部控制提示状态；未提供时使用全局 quiz store。 */
+  hintsUsed?: string[];
+  onUseHint?: (id: string) => void;
 }
 
 function Chip({ children, tone }: { children: React.ReactNode; tone?: "review" | "exam" }) {
@@ -166,8 +169,7 @@ function OptionRow({
 }
 
 /** 交卷前的「提示」按钮（不泄露答案）。 */
-function HintBlock({ q, onUse }: { q: Q; onUse: () => void }) {
-  const used = useQuizStore((s) => s.hintsUsed.includes(q.id));
+function HintBlock({ q, onUse, used }: { q: Q; onUse: () => void; used: boolean }) {
   if (!q.hint) return null;
   return (
     <div style={{ marginTop: "14px" }}>
@@ -367,6 +369,8 @@ export default function QuizQuestion({
   answer,
   onChange,
   result,
+  hintsUsed: hintsUsedProp,
+  onUseHint: onUseHintProp,
 }: QuizQuestionProps) {
   const reviewing = mode === "review";
 
@@ -526,10 +530,11 @@ export default function QuizQuestion({
     />
   );
 
-  const useHint = useQuizStore((s) => s.useHint);
+  const storeHintsUsed = useQuizStore((s) => s.hintsUsed);
+  const storeUseHint = useQuizStore((s) => s.useHint);
+  const used = (hintsUsedProp ?? storeHintsUsed).includes(q.id);
   const handleUseHint = () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useHint(q.id);
+    (onUseHintProp ?? storeUseHint)(q.id);
   };
 
   const compositeRecord = (
@@ -890,7 +895,7 @@ export default function QuizQuestion({
       )}
 
       {/* 交卷前提示 / 交卷后深度解析 */}
-      {!reviewing && <HintBlock q={q} onUse={handleUseHint} />}
+      {!reviewing && <HintBlock q={q} onUse={handleUseHint} used={used} />}
       {reviewing && <ReviewExplain q={q} />}
     </div>
   );

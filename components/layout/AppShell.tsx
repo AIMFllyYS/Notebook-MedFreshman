@@ -38,6 +38,7 @@ const FloatingChatLayer = dynamic(() => import("@/components/chat/FloatingChatLa
 const RecordPreviewLayer = dynamic(() => import("@/components/review/RecordPreviewLayer"), { ssr: false });
 const ArtifactViewer = dynamic(() => import("@/components/chat/ArtifactViewer"), { ssr: false });
 const ImageGenViewerLayer = dynamic(() => import("@/components/chat/ImageGenViewer"), { ssr: false });
+const DocumentViewerLayer = dynamic(() => import("@/components/chat/DocumentViewer"), { ssr: false });
 const MessageContextMenu = dynamic(() => import("@/components/shared/MessageContextMenu"), { ssr: false });
 const BillingDashboardLayer = dynamic(() => import("@/components/chat/BillingDashboard"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
@@ -277,6 +278,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <RecordPreviewLayer />
         <ArtifactViewer />
         <ImageGenViewerLayer />
+        <DocumentViewerLayer />
         <MessageContextMenu />
         <BillingDashboardLayer />
       </div>
