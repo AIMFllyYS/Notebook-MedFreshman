@@ -236,7 +236,7 @@ test("artifact: OpenAI-compatible stream retains event schema, prompt order and 
   assert.equal(data.at(-1)?.status, "done");
   assert.equal(data.at(-1)?.html, html);
   assert.ok(data.every((part) => part.type === "artifact" && part.id === "art_test"));
-  assert.equal(calls[0].body.max_tokens, 4096);
+  assert.equal(calls[0].body.max_tokens, 49152);
   assert.equal(calls[0].body.temperature, 0.4);
   assert.match(contentText(calls[0].body.messages[0].content), /^你是交互式教学演示生成专家/);
   assert.equal(contentText(calls[0].body.messages[1].content), `知识点 / 需求：概率滑块\n标题：${"题".repeat(60)}`);
@@ -261,6 +261,18 @@ test("artifact: length termination repairs truncated HTML for both supported pro
     assert.equal(data.at(-1)?.status, "done");
     assert.equal(data.at(-1)?.html, "<!DOCTYPE html><html><body><script>console.log(1)\n</script>\n</body>\n</html>");
   }
+});
+
+test("artifact: truncated HTML buried in thinking prose is extracted instead of erroring", async (t) => {
+  const raw = "先画坐标轴再写滑块\n```html\n<!DOCTYPE html>\n<html>\n<body><div id='demo'>";
+  upstream(t, () => openAiStream("", "length", raw));
+  const data = await events(await artifact.POST(request({ ...config(), id: "art_trunc", title: "演示", prompt: "滑块" })));
+  assert.equal(data.at(-1)?.status, "done");
+  const html = data.at(-1)?.html ?? "";
+  assert.ok(html.startsWith("<!DOCTYPE html>"));
+  assert.ok(!html.includes("先画坐标轴"));
+  assert.ok(html.includes("</body>"));
+  assert.ok(html.includes("</html>"));
 });
 
 test("artifact: non-html output is an error rather than an empty success", async (t) => {

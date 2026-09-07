@@ -59,6 +59,8 @@ test("artifact route rejects image models before invoking html generation", () =
 
   assert.match(source, /getModelInfoWithCustom\(modelId,\s*customApiGroups\)\?\.type === "image"/);
   assert.match(source, /当前生图模型不支持 HTML 交互组件生成/);
+  assert.match(source, /ARTIFACT_IDLE_TIMEOUT_MS/);
+  assert.match(source, /maxDuration = 720/);
 });
 
 test("image generation route honors explicit custom image API style", () => {

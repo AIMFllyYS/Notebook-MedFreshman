@@ -60,6 +60,8 @@ export interface ResolveLanguageModelOptions {
   onFailover?: (next: { label: string }, error: unknown) => void;
   /** 额外的整模型降级链（如生图模式：主文本模型 → imageModeTextModelFallback）。 */
   fallbackModelIds?: string[];
+  /** 覆盖 failover 首字节超时。交互 HTML 生成要把深度思考等完，需远大于对话默认。 */
+  firstChunkTimeoutMs?: number;
 }
 
 /** 兼容用户填 https://api.anthropic.com、…/v1、以及各种 One-API 中转（如 https://xxx.com/anthropic）。 */
@@ -164,7 +166,7 @@ export function resolveLanguageModel(
   const model = createFailoverLanguageModel(candidates, {
     onFailover: (next, _index, error) => options.onFailover?.({ label: next.label }, error),
     // 与旧实现一致：首字节超时视为端点不可用（慢模型如 MoE 冷启动在 models.ts 单独放宽）。
-    firstChunkTimeoutMs: primary.timeoutMs,
+    firstChunkTimeoutMs: options.firstChunkTimeoutMs ?? primary.timeoutMs,
   });
 
   return {
