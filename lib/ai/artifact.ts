@@ -13,6 +13,7 @@ const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一�
 - 只输出 HTML 代码本身。不要输出任何解释、说明、注释、问候或总结文字。
 - 不要使用 \`\`\` 代码围栏包裹输出。
 - 第一个字符必须是 <!DOCTYPE html>，最后一个字符应是 </html>。
+- 思考过程里不要写 HTML 正文；完整文档必须出现在最终输出里。
 - 如果你输出了 HTML 以外的任何内容，系统将无法渲染演示，用户将看到空白。
 
 ## HTML 结构要求
@@ -45,6 +46,11 @@ const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一�
 </body>
 </html>`;
 
+/** 交互 HTML 生成：深度思考常要数分钟，滑动超时 / 首字节超时都按这个量级。 */
+export const ARTIFACT_IDLE_TIMEOUT_MS = 12 * 60 * 1000;
+export const ARTIFACT_MAX_OUTPUT_TOKENS = 32_768;
+export const ARTIFACT_THINKING_MAX_OUTPUT_TOKENS = 49_152;
+
 export function stripFences(s: string): string {
   let t = s.trim();
   // 去掉可能的 ```html ... ``` 围栏
@@ -52,19 +58,59 @@ export function stripFences(s: string): string {
   return t.trim();
 }
 
+function looksLikeHtmlFragment(s: string): boolean {
+  return /<!doctype\s+html/i.test(s) || /<html[\s>]/i.test(s) || /<body[\s>]/i.test(s);
+}
+
+function htmlStartIndex(s: string): number {
+  const doctype = s.search(/<!DOCTYPE\s+html/i);
+  const htmlTag = s.search(/<html[\s>]/i);
+  if (doctype < 0) return htmlTag;
+  if (htmlTag < 0) return doctype;
+  return Math.min(doctype, htmlTag);
+}
+
+/** 取出混在解释文字里的 ```html 围栏；截断时允许围栏未闭合。 */
+function extractFencedHtml(raw: string): string | undefined {
+  const re = /```(?:html|htm|xml)?\s*([\s\S]*?)```/gi;
+  let best: string | undefined;
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(raw))) {
+    const body = match[1].trim();
+    if (looksLikeHtmlFragment(body) && (!best || body.length > best.length)) best = body;
+  }
+  if (best) return best;
+  const open = raw.match(/```(?:html|htm|xml)?\s*([\s\S]*)$/i);
+  if (open) {
+    const body = open[1].replace(/```\s*$/, "").trim();
+    if (looksLikeHtmlFragment(body)) return body;
+  }
+  return undefined;
+}
+
+function completeDocument(src: string): string | undefined {
+  const full = src.match(/<!DOCTYPE\s+html\b[\s\S]*<\/html>/i);
+  if (full) return full[0].trim();
+  const html = src.match(/<html\b[\s\S]*<\/html>/i);
+  if (html) return html[0].trim();
+  return undefined;
+}
+
 /**
  * 从原始输出中提取 HTML 文档部分。
- * 优先匹配 <!DOCTYPE html>...</html>，回退到 <html...</html>，再回退到原文。
- * 这层防护确保即使 LLM 在 HTML 前后输出了解释文字，也能正确提取。
+ * 完整文档优先；截断时从第一个 <!DOCTYPE html> / <html> 截到末尾，并识别围栏内的 HTML。
  */
 export function extractHtml(raw: string): string {
-  const fullMatch = raw.match(/<!DOCTYPE\s+html>[\s\S]*<\/html>/i);
-  if (fullMatch) return fullMatch[0].trim();
-
-  const htmlMatch = raw.match(/<html[\s\S]*?<\/html>/i);
-  if (htmlMatch) return htmlMatch[0].trim();
-
-  return raw;
+  if (!raw) return raw;
+  const fenced = extractFencedHtml(raw);
+  for (const src of fenced ? [fenced, raw] : [raw]) {
+    const complete = completeDocument(src);
+    if (complete) return complete;
+  }
+  const from = fenced ?? raw;
+  const start = htmlStartIndex(from);
+  if (start >= 0) return from.slice(start).trim();
+  return stripFences(raw);
 }
 
 /**
@@ -72,10 +118,8 @@ export function extractHtml(raw: string): string {
  * 避免未闭合的 <script>/<body>/<html> 导致 iframe 渲染整段空白。
  */
 export function finalizeHtml(raw: string, truncated: boolean): string {
-  let html = extractHtml(raw);
-  html = stripFences(html);
+  let html = stripFences(extractHtml(raw));
   if (!html) return html;
-  const lower = html.toLowerCase();
 
   // 截断时，若停在某个标签中途（最后一个 '<' 之后没有匹配的 '>'），丢弃这半截标签。
   if (truncated) {
@@ -84,22 +128,35 @@ export function finalizeHtml(raw: string, truncated: boolean): string {
     if (lt > gt) html = html.slice(0, lt);
   }
 
+  let lower = html.toLowerCase();
+
   // 平衡 <script>：未闭合会把后续内容全部当脚本吞掉。
   const openScript = (lower.match(/<script\b/g) || []).length;
   const closeScript = (lower.match(/<\/script>/g) || []).length;
   for (let i = 0; i < openScript - closeScript; i++) html += "\n</script>";
 
-  // 补全 body / html 闭合标签。
+  lower = html.toLowerCase();
+  if (!/<html[\s>]/i.test(html) && (/<!doctype\s+html/i.test(html) || /<body[\s>]/i.test(html))) {
+    const doctype = html.match(/<!DOCTYPE\s+html[^>]*>/i);
+    html = doctype
+      ? html.replace(doctype[0], `${doctype[0]}\n<html lang="zh">`)
+      : `<html lang="zh">\n${html}`;
+  }
+
+  lower = html.toLowerCase();
   if (lower.includes("<body") && !lower.includes("</body>")) html += "\n</body>";
-  if (lower.includes("<html") && !lower.includes("</html>")) html += "\n</html>";
+  if (/<html[\s>]/i.test(html) && !/<\/html>/i.test(html)) html += "\n</html>";
 
   return html;
 }
 
 /** True when the string looks like an HTML document rather than leftover prose. */
 export function looksLikeHtmlDocument(s: string): boolean {
+  if (!s?.trim()) return false;
   const t = s.trim().toLowerCase();
-  return t.startsWith("<!doctype html") || /<html[\s>]/.test(t);
+  if (t.startsWith("<!doctype html") || t.startsWith("<html")) return true;
+  if (/<!doctype\s+html/i.test(s) || /<html[\s>]/i.test(s)) return true;
+  return /<body[\s>]/i.test(s) && /<(?:style|script|div|svg|canvas|input|button)[\s>]/i.test(s);
 }
 
 export type ArtifactStreamEvent =
@@ -161,8 +218,11 @@ export async function streamInteractiveArtifact(
       instructions: ARTIFACT_SYSTEM,
       prompt: `知识点 / 需求：${prompt}\n标题：${title}`,
       temperature: 0.4,
-      // 思考不可关时 reasoning 会计入 max_tokens；4096 会被想完，正文只剩空串。
-      maxOutputTokens: Math.max(4096, thinking.maxOutputTokens ?? 0, thinkingOn ? 12_288 : 0),
+      // 思考 delta 会计入 max_tokens；给足额度，避免想完后正文被截成空串。
+      maxOutputTokens: Math.max(
+        thinkingOn ? ARTIFACT_THINKING_MAX_OUTPUT_TOKENS : ARTIFACT_MAX_OUTPUT_TOKENS,
+        thinking.maxOutputTokens ?? 0,
+      ),
       ...(thinking.providerOptions ? { providerOptions: thinking.providerOptions } : {}),
       abortSignal: signal,
       idleTimeoutMs: timeoutMs,
@@ -175,11 +235,14 @@ export async function streamInteractiveArtifact(
 
     // finish_reason === "length" 表示达到 max_tokens 被截断 → 收尾时补救闭合标签。
     const truncated = result.finishReason === "length";
-    let html = finalizeHtml(result.text, truncated);
-    // 思考不可关的模型偶尔把 HTML 写进 reasoning；正文为空时从思考链里抢救。
-    if (!looksLikeHtmlDocument(html) && reasoning) {
-      const recovered = finalizeHtml(reasoning, truncated);
-      if (looksLikeHtmlDocument(recovered)) html = recovered;
+    const sources = [result.text, reasoning, `${reasoning}\n${result.text}`];
+    let html = "";
+    for (const src of sources) {
+      const candidate = finalizeHtml(src, truncated);
+      if (looksLikeHtmlDocument(candidate)) {
+        html = candidate;
+        break;
+      }
     }
     if (!looksLikeHtmlDocument(html)) {
       send({

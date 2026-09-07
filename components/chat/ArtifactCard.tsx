@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { AgentLoopIcon, AgentTerminalIcon, AgentFileIcon, AgentChevronIcon, AgentAlertIcon, AgentArrowUpRightIcon } from '@/components/icons/AgentIcons';
+import { AgentLoopIcon, AgentTerminalIcon, AgentFileIcon, AgentChevronIcon, AgentAlertIcon, AgentArrowUpRightIcon, AgentQuoteIcon } from '@/components/icons/AgentIcons';
 import { useArtifacts } from '@/lib/hooks/useArtifacts';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { CUSTOM_PREFIX, findCustomModelGroup, getModelInfoWithCustom } from '@/lib/ai/models';
@@ -72,7 +72,7 @@ export default function ArtifactCard({
   // artifact 一次性生成：startedRef 保证只发一次请求。
   // 关键：不在 cleanup 里 abort —— 否则 React StrictMode 的 setup→cleanup→setup 会掐断首个
   // 请求且因 startedRef 已置位而不再重发（dev 下「永远生成不出来」的真凶）；主聊天结束
-  // (autoStart 翻转) 也会误中断尚在生成的演示。请求时长由服务端滑动超时(90s)+maxDuration 收口。
+  // (autoStart 翻转) 也会误中断尚在生成的演示。请求时长由服务端 12 分钟滑动超时收口。
   useEffect(() => {
     if (startedRef.current) return;
     if (!shouldAutoGen) return; // 历史消息里的旧卡片：不自动重生成
@@ -242,6 +242,7 @@ export default function ArtifactCard({
             className="flex w-full items-center gap-1 px-3 py-1.5 text-left text-[11.5px] font-medium"
             style={{ color: onContainer, background: 'transparent', border: 'none', cursor: 'pointer' }}
           >
+            <AgentQuoteIcon size={13} className="shrink-0" />
             生成依据
             <AgentChevronIcon size={13} style={{ transform: showPrompt ? 'rotate(180deg)' : undefined }} />
           </button>
