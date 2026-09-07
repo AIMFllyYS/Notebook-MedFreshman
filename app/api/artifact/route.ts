@@ -1,11 +1,13 @@
 import type { NextRequest } from "next/server";
 import type { CustomProvider } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
-import { streamInteractiveArtifact } from "@/lib/ai/artifact";
-import { getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
+import { ARTIFACT_IDLE_TIMEOUT_MS, streamInteractiveArtifact } from "@/lib/ai/artifact";
+import { defaultEffortFor, getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+/** 自托管平台若读取该字段：给足深度思考 + 写 HTML 的时间。 */
+export const maxDuration = 720;
 
 function sse(obj: unknown): string {
   return `data: ${JSON.stringify(obj)}\n\n`;
@@ -22,12 +24,18 @@ export async function POST(req: NextRequest) {
     : [];
   const customProvider: CustomProvider | undefined =
     body.customProvider && typeof body.customProvider === "object" ? body.customProvider : undefined;
-  const resolved = resolveLanguageModel(modelId, customApiGroups.length > 0 ? customApiGroups : customProvider);
+  const resolved = resolveLanguageModel(
+    modelId,
+    customApiGroups.length > 0 ? customApiGroups : customProvider,
+    { firstChunkTimeoutMs: ARTIFACT_IDLE_TIMEOUT_MS },
+  );
   const { model, provider } = resolved;
   const info = getModelInfoWithCustom(provider.registryId, customApiGroups);
-  // 思考不可关的模型不带 reasoning_effort 会空转或拒请；其余模型保持 thinking off 以便尽快出 HTML。
-  const thinking = info?.thinkingRequired ? resolved.thinkingSettings("low") : undefined;
-  const timeoutMs = info?.thinkingRequired ? Math.max(provider.timeoutMs, 90_000) : provider.timeoutMs;
+  // 会思考的模型必须带思考参数（尤其 thinkingRequired），并给 12 分钟滑动超时。
+  const thinking = resolved.supportsThinking
+    ? resolved.thinkingSettings(defaultEffortFor(info))
+    : undefined;
+  const timeoutMs = ARTIFACT_IDLE_TIMEOUT_MS;
 
   const encoder = new TextEncoder();
   const abortController = new AbortController();

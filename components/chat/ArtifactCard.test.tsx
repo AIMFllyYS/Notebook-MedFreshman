@@ -33,6 +33,8 @@ describe('ArtifactCard', () => {
 
     expect(await screen.findByTestId('artifact-thinking-toggle')).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getByTestId('artifact-thinking-body')).toHaveTextContent('正在思考生成方案');
+    expect(screen.getByTestId('artifact-prompt-toggle').querySelector('[data-agent-icon="quote"]')).not.toBeNull();
+    expect(screen.getByTestId('artifact-thinking-toggle').querySelector('[data-agent-icon="loop"]')).not.toBeNull();
     expect(screen.queryByTestId('artifact-prompt-body')).toBeNull();
 
     await act(async () => {
