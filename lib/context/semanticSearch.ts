@@ -4,6 +4,7 @@ import type { ChatContext } from '@/lib/types/chat';
 import { readContentMarkdown } from '@/lib/content/loader';
 import { getContentItem } from '@/lib/content-data';
 import type { SubjectId, CategoryId } from '@/lib/types/content';
+import { isAcademicYearId } from '@/lib/constants/academic-year';
 import { estimateTokens } from './estimateTokens';
 
 // ── 预留接口定义 ──
@@ -59,7 +60,12 @@ export class SemanticSearchManager implements ContextManager {
     // 2. 语义检索相关 chunk
     try {
       const { hybridSearch } = await import('@/lib/ai/search/hybridSearch');
-      const hits = await hybridSearch(userMessage, 5);
+      const year = chatContext.academicYear;
+      const hits = await hybridSearch(userMessage, {
+        topK: 5,
+        academicYear: year === "all" || !isAcademicYearId(year) ? "all" : year,
+        preferSubjectId: chatContext.subjectId,
+      });
       if (hits.length > 0) {
         const searchLines = hits.map(
           (h) => `### ${h.title}\npath: ${h.path}\n${h.snippet}`,

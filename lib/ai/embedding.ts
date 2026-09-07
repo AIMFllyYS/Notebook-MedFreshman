@@ -11,7 +11,7 @@ interface EmbeddingResponse {
 export class SiliconFlowEmbedding implements EmbeddingProvider {
   private baseUrl: string;
   private apiKey: string;
-  private model: string;
+  readonly model: string;
 
   constructor() {
     this.baseUrl = process.env.AI_BASE_URL || 'https://api.siliconflow.cn/v1';
@@ -67,7 +67,7 @@ const ZHIPU_BATCH_SIZE = 64; // 智谱单次最多 64 条
 export class ZhipuEmbedding implements EmbeddingProvider {
   private baseUrl: string;
   private apiKey: string;
-  private model: string;
+  readonly model: string;
 
   constructor() {
     this.baseUrl = process.env.ZHIPU_BASE_URL || 'https://open.bigmodel.cn/api/paas/v4';
@@ -150,4 +150,17 @@ let _instance: FailoverEmbedding | null = null;
 export function getEmbeddingClient(): FailoverEmbedding {
   if (!_instance) _instance = new FailoverEmbedding();
   return _instance;
+}
+
+/**
+ * 查询向量必须与索引构建模型一致。智谱 embedding-3 与 bge-m3 维度不同，
+ * 不能作为检索查询的静默降级，否则余弦相似度全是噪声。
+ */
+export function getQueryEmbeddingClient(indexModel?: string | null): SiliconFlowEmbedding | ZhipuEmbedding {
+  const wanted = (indexModel || process.env.AI_EMBEDDING_MODEL || "BAAI/bge-m3").toLowerCase();
+  const silicon = new SiliconFlowEmbedding();
+  if (silicon.model.toLowerCase() === wanted) return silicon;
+  const zhipu = new ZhipuEmbedding();
+  if (zhipu.configured && zhipu.model.toLowerCase() === wanted) return zhipu;
+  return silicon;
 }

@@ -1,7 +1,11 @@
-// 离线索引构建脚本：生成 vectors.json + bm25.json 到 content/.index/
-// 用法: npx tsx scripts/build-index.ts
+// 离线索引构建脚本：生成 bm25.json + chunks-meta.json + vectors.bin 到 content/.index/
+// 用法:
+//   npx tsx scripts/build-index.ts              # BM25 + 增量补齐向量
+//   npx tsx scripts/build-index.ts --bm25-only  # 只重建关键词索引
+//   npx tsx scripts/build-index.ts --vectors    # 只补齐缺失向量
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { createHash } from 'node:crypto';
 
 // 手动加载 .env.local（Next.js 不在 CLI 脚本中自动加载）
 function loadEnvFile(filePath: string) {
@@ -83,24 +87,6 @@ interface ChunkData {
   contextPrefix: string;
 }
 
-interface VectorIndex {
-  model: string;
-  dimension: number;
-  builtAt: string;
-  chunks: Array<{
-    id: string;
-    path: string;
-    subjectId: string;
-    subjectName: string;
-    categoryId: string;
-    itemId: string;
-    title: string;
-    chunkIndex: number;
-    text: string;
-    vector: number[];
-  }>;
-}
-
 interface BM25Index {
   builtAt: string;
   avgDocLen: number;
@@ -140,6 +126,158 @@ function buildBM25Index(chunks: ChunkData[]): BM25Index {
     invertedIndex,
     docLengths,
   };
+}
+
+function hashText(text: string): string {
+  return createHash('sha1').update(text).digest('hex').slice(0, 16);
+}
+
+function contentHashOf(chunks: ChunkData[]): string {
+  const h = createHash('sha256');
+  for (const c of chunks) {
+    h.update(c.id);
+    h.update('\n');
+    h.update(c.text);
+    h.update('\n');
+  }
+  return h.digest('hex');
+}
+
+interface EmbedCache {
+  model: string;
+  dimension: number;
+  hashes: Record<string, string>;
+  vectors: Map<string, number[]>;
+}
+
+function readJsonIfExists<T>(filePath: string): T | null {
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf8')) as T;
+  } catch {
+    return null;
+  }
+}
+
+function loadEmbedCache(indexDir: string): EmbedCache {
+  const cache: EmbedCache = {
+    model: process.env.AI_EMBEDDING_MODEL || 'BAAI/bge-m3',
+    dimension: 0,
+    hashes: {},
+    vectors: new Map(),
+  };
+
+  const progressMeta = readJsonIfExists<{
+    model?: string;
+    dimension?: number;
+    hashes?: Record<string, string>;
+  }>(path.join(indexDir, 'embed-cache.meta.json'));
+  const progressIds = readJsonIfExists<string[]>(path.join(indexDir, 'embed-cache.ids.json'));
+  const progressBin = (() => {
+    try {
+      return fs.readFileSync(path.join(indexDir, 'embed-cache.bin'));
+    } catch {
+      return null;
+    }
+  })();
+
+  if (progressMeta?.hashes) cache.hashes = progressMeta.hashes;
+  if (progressMeta?.model) cache.model = progressMeta.model;
+
+  const ingest = (ids: string[], buf: Buffer, dimensionHint?: number) => {
+    const copy = new Uint8Array(buf.byteLength);
+    copy.set(buf);
+    const floats = new Float32Array(copy.buffer);
+    const dim = dimensionHint || (ids.length > 0 ? Math.floor(floats.length / ids.length) : 0);
+    if (!dim || dim * ids.length !== floats.length) return;
+    cache.dimension = dim;
+    for (let i = 0; i < ids.length; i++) {
+      cache.vectors.set(ids[i], Array.from(floats.subarray(i * dim, (i + 1) * dim)));
+    }
+  };
+
+  if (progressIds && progressBin) ingest(progressIds, progressBin, progressMeta?.dimension);
+
+  const finalIds = readJsonIfExists<string[]>(path.join(indexDir, 'vectors.ids.json'));
+  const finalBin = (() => {
+    try {
+      return fs.readFileSync(path.join(indexDir, 'vectors.bin'));
+    } catch {
+      return null;
+    }
+  })();
+  if (finalIds && finalBin) ingest(finalIds, finalBin);
+
+  return cache;
+}
+
+function writeFloat32Bin(filePath: string, rows: number[][]): void {
+  if (!rows.length) {
+    fs.writeFileSync(filePath, Buffer.alloc(0));
+    return;
+  }
+  const dim = rows[0].length;
+  const buf = Buffer.allocUnsafe(rows.length * dim * 4);
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    for (let d = 0; d < dim; d++) {
+      buf.writeFloatLE(row[d] ?? 0, (i * dim + d) * 4);
+    }
+  }
+  fs.writeFileSync(filePath, buf);
+}
+
+function persistCache(indexDir: string, cache: EmbedCache, orderedIds: string[]): void {
+  const ids = orderedIds.filter((id) => cache.vectors.has(id));
+  const rows = ids.map((id) => cache.vectors.get(id)!);
+  writeFloat32Bin(path.join(indexDir, 'embed-cache.bin'), rows);
+  fs.writeFileSync(path.join(indexDir, 'embed-cache.ids.json'), JSON.stringify(ids));
+  fs.writeFileSync(
+    path.join(indexDir, 'embed-cache.meta.json'),
+    JSON.stringify({ model: cache.model, dimension: cache.dimension, hashes: cache.hashes }),
+  );
+}
+
+async function embedBatchWithRetry(
+  embedding: { embedBatch: (texts: string[]) => Promise<number[][]> },
+  texts: string[],
+  retries = 6,
+): Promise<number[][]> {
+  let delay = 2000;
+  let lastErr: unknown;
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      return await embedding.embedBatch(texts);
+    } catch (err) {
+      lastErr = err;
+      const msg = String(err);
+      const rateLimited = msg.includes('429') || /rate limit|TPM limit/i.test(msg);
+      if (!rateLimited || attempt === retries - 1) throw err;
+      console.warn(`\n   ⏳ rate limited, retry ${attempt + 1}/${retries} after ${delay}ms`);
+      await new Promise((r) => setTimeout(r, delay));
+      delay = Math.min(delay * 2, 60000);
+    }
+  }
+  throw lastErr;
+}
+
+function finalizeVectors(indexDir: string, chunks: ChunkData[], cache: EmbedCache, contentHash: string): number {
+  const ids = chunks.filter((c) => cache.vectors.has(c.id)).map((c) => c.id);
+  const rows = ids.map((id) => cache.vectors.get(id)!);
+  const dimension = cache.dimension || rows[0]?.length || 0;
+  writeFloat32Bin(path.join(indexDir, 'vectors.bin'), rows);
+  fs.writeFileSync(path.join(indexDir, 'vectors.ids.json'), JSON.stringify(ids));
+  const manifest = {
+    version: 2 as const,
+    builtAt: new Date().toISOString(),
+    embeddingModel: cache.model,
+    dimension,
+    chunkCount: chunks.length,
+    vectorCount: ids.length,
+    contentHash,
+    files: ['bm25.json', 'chunks-meta.json', 'vectors.bin', 'vectors.ids.json', 'manifest.json'],
+  };
+  fs.writeFileSync(path.join(indexDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
+  return ids.length;
 }
 
 // ── 主流程 ──
@@ -192,88 +330,99 @@ async function main() {
   const sophomoreCount = chunks.filter((c) => academicYearOfSubject(c.subjectId) === 'sophomore-1').length;
   console.log(`   → Sophomore textbook/detail chunks: ${sophomoreCount}`);
 
+  const contentHash = contentHashOf(chunks);
   const skipVectors = process.argv.includes('--bm25-only');
+  const staleJson = path.join(indexDir, 'vectors.json');
+  if (fs.existsSync(staleJson)) {
+    fs.unlinkSync(staleJson);
+    console.log('   → Removed legacy vectors.json (改用 vectors.bin，避免与 BM25 混代)');
+  }
+
   if (skipVectors) {
-    const staleVectors = path.join(indexDir, 'vectors.json');
-    if (fs.existsSync(staleVectors)) {
-      fs.unlinkSync(staleVectors);
-      console.log('   → Removed stale vectors.json so hybrid search uses BM25 only');
-    }
-    console.log('\n✅ BM25-only index build complete!');
+    const cache = loadEmbedCache(indexDir);
+    const kept = finalizeVectors(indexDir, chunks, cache, contentHash);
+    console.log(`\n✅ BM25-only index build complete! 保留已有向量 ${kept}/${chunks.length}`);
     console.log(`   Chunks: ${chunks.length}`);
     console.log(`   BM25 terms: ${Object.keys(bm25Index.invertedIndex).length}`);
     return;
   }
 
-  // ── 向量索引 ──
+  // ── 向量索引（增量：只 embed 缺失或正文已变的 chunk；大二优先）──
   console.log('🧠 Generating embeddings via SiliconFlow API...');
   console.log(`   Model: ${process.env.AI_EMBEDDING_MODEL || 'BAAI/bge-m3'}`);
   console.log(`   API: ${process.env.AI_BASE_URL || '(not set)'}`);
   const embedding = new SiliconFlowEmbedding();
+  const cache = loadEmbedCache(indexDir);
+  cache.model = process.env.AI_EMBEDDING_MODEL || cache.model || 'BAAI/bge-m3';
 
-  const textsToEmbed = chunks.map((c) => c.contextPrefix + '\n' + c.text);
+  const sophomoreFirst = [
+    ...chunks.filter((c) => academicYearOfSubject(c.subjectId) === 'sophomore-1'),
+    ...chunks.filter((c) => academicYearOfSubject(c.subjectId) !== 'sophomore-1'),
+  ];
+  const missing = sophomoreFirst.filter((c) => {
+    const hash = hashText(c.contextPrefix + '\n' + c.text);
+    const cached = cache.vectors.get(c.id);
+    return !cached || cache.hashes[c.id] !== hash;
+  });
+  console.log(`   → Cached vectors: ${cache.vectors.size}; to embed: ${missing.length}`);
+
   const batchSize = 32;
-  const allVectors: number[][] = new Array(textsToEmbed.length);
-  let processedCount = 0;
-
-  for (let i = 0; i < textsToEmbed.length; i += batchSize) {
-    const batch = textsToEmbed.slice(i, i + batchSize);
+  let embedded = 0;
+  let failedBatches = 0;
+  for (let i = 0; i < missing.length; i += batchSize) {
+    const batch = missing.slice(i, i + batchSize);
+    const texts = batch.map((c) => c.contextPrefix + '\n' + c.text);
     try {
-      const vectors = await embedding.embedBatch(batch);
-      for (let j = 0; j < vectors.length; j++) {
-        allVectors[i + j] = vectors[j];
+      const vectors = await embedBatchWithRetry(embedding, texts);
+      if (!cache.dimension && vectors[0]?.length) cache.dimension = vectors[0].length;
+      for (let j = 0; j < batch.length; j++) {
+        if (!vectors[j]?.length) continue;
+        cache.vectors.set(batch[j].id, vectors[j]);
+        cache.hashes[batch[j].id] = hashText(texts[j]);
       }
-      processedCount += batch.length;
-      const pct = ((processedCount / textsToEmbed.length) * 100).toFixed(1);
-      process.stdout.write(`\r   → Progress: ${processedCount}/${textsToEmbed.length} (${pct}%)`);
+      embedded += batch.length;
+      failedBatches = 0;
+      const pct = missing.length ? ((embedded / missing.length) * 100).toFixed(1) : '100.0';
+      process.stdout.write(`\r   → Progress: ${embedded}/${missing.length} (${pct}%)`);
+      if (embedded % (batchSize * 8) === 0 || i + batchSize >= missing.length) {
+        persistCache(indexDir, cache, sophomoreFirst.map((c) => c.id));
+        console.log(`\n   → checkpoint ${embedded}/${missing.length} vectors=${cache.vectors.size}`);
+      }
     } catch (err) {
+      failedBatches += 1;
       console.error(`\n⚠ Embedding API error at batch starting index ${i}:`, err);
-      const staleVectors = path.join(indexDir, 'vectors.json');
-      if (fs.existsSync(staleVectors)) {
-        fs.unlinkSync(staleVectors);
-        console.log('   → Removed stale vectors.json; hybrid search will use BM25 + chunks-meta');
+      persistCache(indexDir, cache, sophomoreFirst.map((c) => c.id));
+      if (failedBatches >= 5) {
+        console.error('   → 连续失败过多，停止请求；已写入的向量会保留，下次可续跑。');
+        break;
       }
-      console.log('\n✅ BM25 index is usable without vectors.');
-      console.log(`   Chunks: ${chunks.length}`);
-      console.log(`   BM25 terms: ${Object.keys(bm25Index.invertedIndex).length}`);
-      return;
     }
-
-    // Rate limit: brief pause between batches
-    if (i + batchSize < textsToEmbed.length) {
-      await new Promise((r) => setTimeout(r, 200));
+    if (i + batchSize < missing.length) {
+      await new Promise((r) => setTimeout(r, 400));
     }
   }
   console.log('');
 
-  const dimension = allVectors[0]?.length ?? 1024;
+  const vectorCount = finalizeVectors(indexDir, chunks, cache, contentHash);
+  const vectorBinPath = path.join(indexDir, 'vectors.bin');
+  const vectorSize = fs.existsSync(vectorBinPath)
+    ? (fs.statSync(vectorBinPath).size / 1024 / 1024).toFixed(2)
+    : '0';
+  console.log(`   → Vector index written to ${vectorBinPath} (${vectorSize} MB, ${vectorCount} vectors)`);
 
-  const vectorIndex: VectorIndex = {
-    model: process.env.AI_EMBEDDING_MODEL || 'BAAI/bge-m3',
-    dimension,
-    builtAt: new Date().toISOString(),
-    chunks: chunks.map((c, i) => ({
-      id: c.id,
-      path: c.path,
-      subjectId: c.subjectId,
-      subjectName: c.subjectName,
-      categoryId: c.categoryId,
-      itemId: c.itemId,
-      title: c.title,
-      chunkIndex: c.chunkIndex,
-      text: c.text,
-      vector: allVectors[i],
-    })),
-  };
-
-  const vectorPath = path.join(indexDir, 'vectors.json');
-  fs.writeFileSync(vectorPath, JSON.stringify(vectorIndex));
-  console.log(`   → Vector index written to ${vectorPath} (${(fs.statSync(vectorPath).size / 1024 / 1024).toFixed(2)} MB)`);
+  for (const leftover of ['embed-cache.bin', 'embed-cache.ids.json', 'embed-cache.meta.json']) {
+    const p = path.join(indexDir, leftover);
+    if (fs.existsSync(p) && vectorCount === chunks.length) fs.unlinkSync(p);
+  }
 
   console.log('\n✅ Index build complete!');
   console.log(`   Chunks: ${chunks.length}`);
-  console.log(`   Dimension: ${dimension}`);
+  console.log(`   Vectors: ${vectorCount}`);
+  console.log(`   Dimension: ${cache.dimension || 'n/a'}`);
   console.log(`   BM25 terms: ${Object.keys(bm25Index.invertedIndex).length}`);
+  if (vectorCount < chunks.length) {
+    console.log(`⚠ PARTIAL vectors: ${vectorCount}/${chunks.length} — rerun pnpm build-index to resume`);
+  }
 
   // ── 上传到 COS（可选）──
   const secretId = process.env.COS_SECRET_ID;
@@ -287,8 +436,12 @@ async function main() {
       const COS = (await import('cos-nodejs-sdk-v5')).default;
       const cos = new COS({ SecretId: secretId, SecretKey: secretKey });
 
-      for (const filename of ['bm25.json', 'vectors.json', 'chunks-meta.json']) {
+      for (const filename of ['bm25.json', 'chunks-meta.json', 'vectors.bin', 'vectors.ids.json', 'manifest.json']) {
         const localPath = path.join(indexDir, filename);
+        if (!fs.existsSync(localPath)) {
+          console.log(`   · skip ${filename} (missing)`);
+          continue;
+        }
         const key = `index/${filename}`;
         const size = (fs.statSync(localPath).size / 1024 / 1024).toFixed(2);
         await new Promise<void>((resolve, reject) => {
@@ -298,7 +451,7 @@ async function main() {
               Region: region,
               Key: key,
               Body: fs.createReadStream(localPath),
-              ContentType: 'application/json',
+              ContentType: filename.endsWith('.bin') ? 'application/octet-stream' : 'application/json',
             },
             (err: unknown, _data: unknown) => {
               if (err) reject(err);

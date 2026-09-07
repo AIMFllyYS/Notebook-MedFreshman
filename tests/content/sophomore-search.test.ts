@@ -79,3 +79,31 @@ test("readContentMarkdown 读大二教材叶子", () => {
   const ana = readContentMarkdown("anatomy", "textbook", "ch00-5");
   assert.ok(ana && (ana.includes("解剖学姿势") || ana.includes("方位")));
 });
+
+test("searchAllContent 自然语言问句归一化后仍能命中大二教材", async () => {
+  const hits = await searchAllContent("什么是核糖体", {
+    limit: 8,
+    academicYear: "sophomore-1",
+    allowSubstring: false,
+  });
+  assert.ok(hits.length > 0, "「什么是核糖体」应命中教材");
+  assert.ok(
+    hits.every((h) => academicYearOfSubject(h.subjectId) === "sophomore-1"),
+    "学年过滤后不应出现大一",
+  );
+  assert.ok(
+    hits.some((h) => h.subjectId === "cell-biology" || h.subjectId === "biochemistry"),
+    `核糖体应命中细胞生物或生化，实际 ${hits.map((h) => h.path).join(",")}`,
+  );
+});
+
+test("searchAllContent 可限定单科", async () => {
+  const hits = await searchAllContent("氨基酸", {
+    limit: 8,
+    academicYear: "sophomore-1",
+    subjectId: "biochemistry",
+    allowSubstring: false,
+  });
+  assert.ok(hits.length > 0);
+  assert.ok(hits.every((h) => h.subjectId === "biochemistry"));
+});

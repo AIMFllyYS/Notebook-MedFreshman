@@ -47,6 +47,8 @@ export interface GetSectionOutput extends TextToolOutput {
 export interface SearchNotesInput {
   query: string;
   crossYear?: boolean;
+  /** 限定科目 id，如 histology。不传则搜当前学年全部科目。 */
+  subjectId?: string;
 }
 export interface SearchNotesOutput extends TextToolOutput {
   contextKey?: string;
