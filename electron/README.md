@@ -7,9 +7,10 @@ API 密钥作为环境变量注入。**Next 应用代码零改动。**
 ## 密钥与配置的边界
 
 - **用户自填的密钥**（加密存于 `userData/keys.enc`，**绝不进安装包**）：
-  - `AI_API_KEY`（硅基流动，必填）— AI 对话 / 语义搜索 embedding+rerank / 追问 / 生成
-  - `MIMO_API_KEY`（小米，可选）— MiMo 模型
-  - `ZHIPU_API_KEY`（智谱，可选）— 联网搜索
+  - `RELAY_API_KEY`（自有中转，必填）— 主力对话模型
+  - `AI_API_KEY`（硅基流动，可选）— 生图 / 语义搜索 embedding+rerank
+  - `MIMO_API_KEY`（小米 Token Plan，可选）— MiMo 模型
+  - `ZHIPU_API_KEY`（智谱，可选）— 联网搜索 / 向量容灾
   - `UNSPLASH_ACCESS_KEY`（Unsplash，可选）— 对话配图 / 图片搜索
   - **升级补填**：老用户升级后无需重装、也无需找文件——`keys.enc` 是 DPAPI 加密的二进制，
     不可手改。打开「应用 → API 密钥设置…」，已存的密钥会自动带出，只需在新增栏补填后

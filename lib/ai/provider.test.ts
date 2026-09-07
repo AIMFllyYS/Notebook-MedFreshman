@@ -9,6 +9,7 @@ import {
   extractReasoningDelta,
   detectImageApiStyle,
   autoConfigFromProtocol,
+  normalizeOpenAIBaseUrl,
   ENV_MODEL_FLASH,
 } from "./provider.ts";
 import { buildCustomModelRegistryId } from "./models.ts";
@@ -206,34 +207,33 @@ test("resolveProvider：mimo 模型走 MIMO 端点且 apiModelId 一致", () => 
   assert.ok(r.baseUrl.includes("xiaomimimo") || r.baseUrl === "");
 });
 
-test("resolveProvider：智谱独占模型 apiModelId 与注册 id 分离", () => {
-  const r = resolveProvider("zai-org/GLM-Z1-AirX");
-  assert.equal(r.registryId, "zai-org/GLM-Z1-AirX");
-  assert.equal(r.apiModelId, "glm-z1-airx");
-  assert.notEqual(r.apiModelId, r.registryId);
-  assert.ok(r.baseUrl.includes("bigmodel.cn") || r.baseUrl === "");
+test("resolveProvider：主力 GLM 走 relay，备用端点为 mimo", () => {
+  const r = resolveProvider("z-ai/glm-5.3-flash", undefined, 0);
+  assert.equal(r.registryId, "z-ai/glm-5.3-flash");
+  assert.equal(r.apiModelId, "z-ai/glm-5.3-flash");
+  assert.equal(r.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.ok(r.baseUrl.includes("relay.protocom.org") || r.baseUrl === "" || r.baseUrl.includes("invalid"));
+
+  const backup = resolveProvider("z-ai/glm-5.3-flash", undefined, 1);
+  assert.equal(backup.apiModelId, "mimo-v2.5");
+  assert.equal(backup.endpointIndex, 1);
 });
 
-test("resolveProvider：GLM-4.7-FlashX 使用智谱 api id", () => {
-  const r = resolveProvider("zai-org/GLM-4.7-FlashX");
-  assert.equal(r.apiModelId, "glm-4-flashx-250414");
-});
-
-test("resolveProvider：GLM-5.2 端点链 index 0 为 SiliconFlow", () => {
+test("resolveProvider：旧 GLM-5.2 id 归一到 glm-5.3-flash", () => {
   const r = resolveProvider("zai-org/GLM-5.2", undefined, 0);
-  assert.equal(r.apiModelId, "zai-org/GLM-5.2");
-  assert.equal(r.endpointIndex, 0);
+  assert.equal(r.registryId, "z-ai/glm-5.3-flash");
+  assert.equal(r.apiModelId, "z-ai/glm-5.3-flash");
 });
 
-test("resolveProvider：GLM-5.2 端点链 index 1 为智谱 glm-5.2", () => {
-  const r = resolveProvider("zai-org/GLM-5.2", undefined, 1);
-  assert.equal(r.apiModelId, "glm-5.2");
-  assert.equal(r.endpointIndex, 1);
-});
-
-test("resolveProvider：Qwen3.6-35B 超时加长", () => {
-  const r = resolveProvider("Qwen/Qwen3.6-35B-A3B");
+test("resolveProvider：Qwen3.8-27B 超时加长", () => {
+  const r = resolveProvider("Qwen/Qwen3.8-27B");
   assert.equal(r.timeoutMs, 120_000);
+  assert.equal(r.thinkingRequestStyle, "openai-reasoning-effort");
+});
+
+test("normalizeOpenAIBaseUrl：补 /v1", () => {
+  assert.equal(normalizeOpenAIBaseUrl("https://relay.protocom.org/"), "https://relay.protocom.org/v1");
+  assert.equal(normalizeOpenAIBaseUrl("https://relay.protocom.org/v1"), "https://relay.protocom.org/v1");
 });
 
 test("resolveProvider：undefined modelId 回退到 ENV_MODEL_FLASH", () => {

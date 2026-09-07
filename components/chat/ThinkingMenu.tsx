@@ -12,21 +12,25 @@ interface EffortOption {
   hint: string;
 }
 
-const OPTIONS: EffortOption[] = [
-  { value: "low", label: "Low", hint: "~8k tokens · 快速回答" },
-  { value: "medium", label: "Med", hint: "~16k tokens · 平衡（默认）" },
-  { value: "high", label: "High", hint: "~32k tokens · 深入推理" },
-  { value: "max", label: "Max", hint: "~64k tokens · 极致思考" },
+export const THINKING_EFFORT_OPTIONS: EffortOption[] = [
+  { value: "low", label: "Low", hint: "轻量推理 · 更快更省" },
+  { value: "medium", label: "Med", hint: "平衡（多数任务默认）" },
+  { value: "high", label: "High", hint: "加强推理 · 复杂题" },
+  { value: "max", label: "Max", hint: "最深思考 · 最贵" },
 ];
 
 export interface ThinkingMenuButtonProps {
   enabled: boolean;
   effort: ThinkingEffort;
   onChange: (next: { enabled: boolean; effort: ThinkingEffort }) => void;
-  /** 当前所选模型是否支持思考。false 时按钮置灰、点击无响应。 */
+  /** 当前所选模型是否支持思考。false 时不渲染（由父级控制）；仍传入时按钮置灰。 */
   supported: boolean;
   /** 请求级禁用（发送中 / 输入禁用等）。 */
   disabled?: boolean;
+  /** 该模型实际支持的档位；缺省为四档。 */
+  levels?: ThinkingEffort[];
+  /** 是否允许关闭思考。思考不可关的模型为 false。 */
+  allowOff?: boolean;
 }
 
 /**
@@ -42,13 +46,16 @@ export default function ThinkingMenuButton({
   onChange,
   supported,
   disabled = false,
+  levels,
+  allowOff = true,
 }: ThinkingMenuButtonProps) {
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ left: 0, bottom: 0 });
 
-  const current = OPTIONS.find((o) => o.value === effort) ?? OPTIONS[1];
+  const options = THINKING_EFFORT_OPTIONS.filter((o) => !levels || levels.includes(o.value));
+  const current = options.find((o) => o.value === effort) ?? options[0] ?? THINKING_EFFORT_OPTIONS[1];
   const activeLabel = enabled ? current.label : null;
   const trulyDisabled = disabled || !supported;
 
@@ -128,34 +135,38 @@ export default function ThinkingMenuButton({
               深度思考
             </div>
 
-            <button
-              type="button"
-              role="menuitemradio"
-              aria-checked={!enabled}
-              onClick={pickOff}
-              data-testid="thinking-menu-option-off"
-              className={
-                "flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left transition-colors " +
-                (!enabled ? "bg-[var(--bg-muted)]" : "hover:bg-[var(--bg-muted)]")
-              }
-            >
-              <span className="mt-0.5 w-3.5 shrink-0">
-                {!enabled && <AgentCheckIcon size={12} className="text-[var(--ink)]" />}
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-[var(--ink)]">
-                  <AgentPauseIcon size={11} />
-                  关闭
-                </span>
-                <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">
-                  不启用推理链，直接回答
-                </span>
-              </span>
-            </button>
+            {allowOff && (
+              <>
+                <button
+                  type="button"
+                  role="menuitemradio"
+                  aria-checked={!enabled}
+                  onClick={pickOff}
+                  data-testid="thinking-menu-option-off"
+                  className={
+                    "flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left transition-colors " +
+                    (!enabled ? "bg-[var(--bg-muted)]" : "hover:bg-[var(--bg-muted)]")
+                  }
+                >
+                  <span className="mt-0.5 w-3.5 shrink-0">
+                    {!enabled && <AgentCheckIcon size={12} className="text-[var(--ink)]" />}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-[var(--ink)]">
+                      <AgentPauseIcon size={11} />
+                      关闭
+                    </span>
+                    <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">
+                      不启用推理链，直接回答
+                    </span>
+                  </span>
+                </button>
 
-            <div className="my-1 h-px bg-[var(--line)]/60" />
+                <div className="my-1 h-px bg-[var(--line)]/60" />
+              </>
+            )}
 
-            {OPTIONS.map((opt) => {
+            {options.map((opt) => {
               const active = enabled && opt.value === effort;
               return (
                 <button

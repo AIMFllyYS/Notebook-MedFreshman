@@ -2,11 +2,13 @@ import { create } from "zustand";
 import {
   DEFAULT_MODEL_ID,
   normalizeCustomModelRegistryId,
+  normalizeRegistryId,
   type CustomModelConfig,
   type CustomApiGroup,
+  type ThinkingEffort,
 } from "@/lib/ai/models";
 
-export type ThinkingEffort = 'low' | 'medium' | 'high' | 'max';
+export type { ThinkingEffort };
 const THINKING_EFFORTS: readonly ThinkingEffort[] = ['low', 'medium', 'high', 'max'];
 function normalizeThinkingEffort(v: unknown): ThinkingEffort {
   return THINKING_EFFORTS.includes(v as ThinkingEffort) ? (v as ThinkingEffort) : 'medium';
@@ -127,11 +129,11 @@ const DEFAULTS: Persisted = {
   customApiGroups: [],
   defaultImageModelId: null,
   imageModeTextModel: "mimo-v2.5",
-  imageModeTextModelFallback: "Pro/moonshotai/Kimi-K2.6",
-  // 摘录默认用 DeepSeek V4 Flash：性价比高、成卡质量稳定，走站点内置凭证不会因自定义 API 报错。
-  recordModelId: "deepseek-ai/DeepSeek-V4-Flash",
-  // 划词助手默认模型：与此前硬编码常量保持一致，平滑迁移。
-  floatingChatModelId: "Qwen/Qwen3.6-27B",
+  imageModeTextModelFallback: "mimo-v2.5-pro",
+  // 摘录默认用中转站 DeepSeek V4 Flash：性价比高、成卡质量稳定。
+  recordModelId: "deepseek/deepseek-v4-flash",
+  // 划词助手默认：Qwen3.8 27B（视觉 + 混合思考）。
+  floatingChatModelId: "Qwen/Qwen3.8-27B",
   customBaseUrl: "",
   customApiKey: "",
   customModelId: "",
@@ -177,30 +179,33 @@ function load(): Persisted {
       }
       if (!parsed.defaultImageModelId) parsed.defaultImageModelId = null;
       if (!parsed.imageModeTextModel) parsed.imageModeTextModel = "mimo-v2.5";
-      if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "Pro/moonshotai/Kimi-K2.6";
+      if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "mimo-v2.5-pro";
       if (typeof parsed.usdExchangeRate !== "number" || !Number.isFinite(parsed.usdExchangeRate) || parsed.usdExchangeRate <= 0) {
         parsed.usdExchangeRate = 7.00;
       }
       parsed.defaultThinkingEffort = normalizeThinkingEffort(parsed.defaultThinkingEffort);
-      parsed.selectedModelId = normalizeCustomModelRegistryId(parsed.selectedModelId, parsed.customApiGroups);
+      parsed.selectedModelId = normalizeCustomModelRegistryId(
+        normalizeRegistryId(parsed.selectedModelId),
+        parsed.customApiGroups,
+      );
       parsed.defaultImageModelId = parsed.defaultImageModelId
-        ? normalizeCustomModelRegistryId(parsed.defaultImageModelId, parsed.customApiGroups)
+        ? normalizeCustomModelRegistryId(normalizeRegistryId(parsed.defaultImageModelId), parsed.customApiGroups)
         : null;
       parsed.imageModeTextModel = normalizeCustomModelRegistryId(
-        parsed.imageModeTextModel,
+        normalizeRegistryId(parsed.imageModeTextModel),
         parsed.customApiGroups,
       );
       parsed.imageModeTextModelFallback = normalizeCustomModelRegistryId(
-        parsed.imageModeTextModelFallback,
+        normalizeRegistryId(parsed.imageModeTextModelFallback),
         parsed.customApiGroups,
       );
       // 摘录 / 划词助手模型同样需要归一化，防止旧版自定义模型 ID 迁移后指向失效分组。
       parsed.recordModelId = normalizeCustomModelRegistryId(
-        parsed.recordModelId || DEFAULTS.recordModelId,
+        normalizeRegistryId(parsed.recordModelId || DEFAULTS.recordModelId),
         parsed.customApiGroups,
       );
       parsed.floatingChatModelId = normalizeCustomModelRegistryId(
-        parsed.floatingChatModelId || DEFAULTS.floatingChatModelId,
+        normalizeRegistryId(parsed.floatingChatModelId || DEFAULTS.floatingChatModelId),
         parsed.customApiGroups,
       );
       return parsed;

@@ -118,9 +118,23 @@ test("resolveLanguageModel：自定义 anthropic 分组 → anthropic provider",
 });
 
 test("resolveLanguageModel：不支持思考的模型 thinkingSettings 返回空", () => {
-  const r = resolveLanguageModel("Pro/moonshotai/Kimi-K2.6");
+  const r = resolveLanguageModel("Tongyi-MAI/Z-Image-Turbo");
   assert.equal(r.supportsThinking, false);
   assert.deepEqual(r.thinkingSettings("high"), {});
+});
+
+test("buildThinkingSettings：GLM-5.3 Flash 的 max 原样下发", () => {
+  const r = resolveLanguageModel("z-ai/glm-5.3-flash");
+  const s = r.thinkingSettings("max");
+  assert.deepEqual(s.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "max" } });
+  const med = r.thinkingSettings("medium");
+  assert.deepEqual(med.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "high" } });
+});
+
+test("buildThinkingSettings：Qwen3.8 的 high 映射为 xhigh", () => {
+  const r = resolveLanguageModel("Qwen/Qwen3.8-27B");
+  const s = r.thinkingSettings("high");
+  assert.deepEqual(s.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "xhigh" } });
 });
 
 test("resolveLanguageModel：真实 SDK 对默认/标准配置的结构化思考与别名流均可消费", async (t) => {

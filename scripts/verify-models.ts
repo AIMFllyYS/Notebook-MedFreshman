@@ -76,6 +76,10 @@ async function main() {
   console.log("=== 模型注册表 API 探测 ===\n");
 
   for (const m of MODELS) {
+    if (m.type === "image") {
+      console.log(`○ ${m.id} [image] skip chat probe`);
+      continue;
+    }
     for (let i = 0; i < m.endpoints.length; i++) {
       const ep = m.endpoints[i];
       const r = await probe(m.id, i);

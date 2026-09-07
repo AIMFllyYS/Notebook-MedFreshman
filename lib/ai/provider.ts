@@ -13,6 +13,7 @@ import {
   type ProviderKind,
   type CustomApiGroup,
   type CustomApiProtocol,
+  type ThinkingRequestStyle,
 } from "@/lib/ai/models";
 import { DEFAULT_CHAT_TIMEOUT_MS } from "@/lib/ai/upstream";
 
@@ -20,13 +21,15 @@ const BASE = process.env.AI_BASE_URL || "";
 const KEY = process.env.AI_API_KEY || "";
 const REASONING_FIELD = process.env.AI_REASONING_FIELD || "reasoning_content";
 
-export type ThinkingRequestStyle =
-  | "none"
-  | "siliconflow"
-  | "openai-reasoning-effort"
-  | "openrouter-reasoning"
-  | "anthropic-thinking";
+export type { ThinkingRequestStyle };
 export type ImageApiStyle = "auto" | "openai" | "siliconflow";
+
+/** OpenAI 兼容网关：保证 base 以 /v1 结尾，避免拼出 /chat/completions 落到根路径。 */
+export function normalizeOpenAIBaseUrl(url: string): string {
+  const trimmed = url.trim().replace(/\/+$/, "");
+  if (!trimmed) return "";
+  return /\/v1$/i.test(trimmed) ? trimmed : `${trimmed}/v1`;
+}
 
 /**
  * 三选一协议 → 底层 style/reasoningField 自动装配。
@@ -49,14 +52,17 @@ export function autoConfigFromProtocol(protocol: CustomApiProtocol | undefined):
   }
 }
 
-const MIMO_BASE = process.env.MIMO_BASE_URL || "https://api.xiaomimimo.com/v1";
+const MIMO_BASE = process.env.MIMO_BASE_URL || "https://token-plan-cn.xiaomimimo.com/v1";
 const MIMO_KEY = process.env.MIMO_API_KEY || "";
 
 const ZHIPU_BASE = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
 const ZHIPU_KEY = process.env.ZHIPU_API_KEY || "";
 
-export const ENV_MODEL_PRO = process.env.AI_MODEL_PRO || "deepseek-ai/DeepSeek-V4-Pro";
-export const ENV_MODEL_FLASH = process.env.AI_MODEL_FLASH || "deepseek-ai/DeepSeek-V4-Flash";
+const RELAY_BASE = normalizeOpenAIBaseUrl(process.env.RELAY_BASE_URL || "https://relay.protocom.org/v1");
+const RELAY_KEY = process.env.RELAY_API_KEY || "";
+
+export const ENV_MODEL_PRO = process.env.AI_MODEL_PRO || "Qwen/Qwen3.8-27B";
+export const ENV_MODEL_FLASH = process.env.AI_MODEL_FLASH || "z-ai/glm-5.3-flash";
 
 export interface CustomProvider {
   baseUrl?: string;
@@ -182,6 +188,8 @@ function credentialsFor(provider: ProviderKind): ProviderCredentials {
       return { baseUrl: MIMO_BASE, apiKey: MIMO_KEY, configured: !!(MIMO_BASE && MIMO_KEY) };
     case "zhipu":
       return { baseUrl: ZHIPU_BASE, apiKey: ZHIPU_KEY, configured: !!(ZHIPU_BASE && ZHIPU_KEY) };
+    case "relay":
+      return { baseUrl: RELAY_BASE, apiKey: RELAY_KEY, configured: !!(RELAY_BASE && RELAY_KEY) };
     default:
       return {
         baseUrl: BASE,
@@ -211,7 +219,7 @@ function resolveBuiltinEndpoint(
     baseUrl: cred.baseUrl,
     apiKey: cred.apiKey,
     reasoningField: REASONING_FIELD,
-    thinkingRequestStyle: "siliconflow",
+    thinkingRequestStyle: effectiveInfo?.thinkingRequestStyle ?? "siliconflow",
     apiProtocol: "openai",
     isCustom: false,
     configured: cred.configured,

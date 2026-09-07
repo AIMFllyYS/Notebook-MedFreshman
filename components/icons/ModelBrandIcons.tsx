@@ -130,6 +130,17 @@ export const TongyiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   </SvgBox>
 );
 
+// Gemini — Google 四色星标简化
+export const GeminiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
+  <SvgBox size={size} className={className} label="Gemini">
+    <title>Gemini</title>
+    <path d="M12 2.2l1.15 6.4L20 10l-6.85 1.4L12 17.8l-1.15-6.4L4 10l6.85-1.4L12 2.2z" fill="#4285F4" />
+    <path d="M12 6.2l.55 3.05L16 10l-3.45.75L12 13.8l-.55-3.05L8 10l3.45-.75L12 6.2z" fill="#EA4335" />
+    <circle cx="12" cy="10" r="1.4" fill="#FBBC05" />
+    <circle cx="12" cy="10" r="0.7" fill="#34A853" />
+  </SvgBox>
+);
+
 // 默认图标 — 通用灰色，跟随主题文本色
 export const DefaultModelIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   <SvgBox size={size} className={className} label="Model">
@@ -147,6 +158,7 @@ const ICON_MAP: Record<string, React.FC<IconProps>> = {
   minimax: MiniMaxIcon,
   mimo: MiMoIcon,
   tongyi: TongyiIcon,
+  gemini: GeminiIcon,
 };
 
 export function ModelIcon({ brand, ...props }: { brand?: string } & IconProps): React.ReactElement {

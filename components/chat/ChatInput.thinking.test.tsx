@@ -42,7 +42,7 @@ const chatContext = {
 describe('ChatInput thinking menu', () => {
   beforeEach(() => {
     useSettings.setState({
-      selectedModelId: 'zai-org/GLM-4.7-FlashX',
+      selectedModelId: 'Tongyi-MAI/Z-Image-Turbo',
       customApiGroups: [],
       defaultThinking: true,
       defaultThinkingEffort: 'medium',
@@ -63,7 +63,7 @@ describe('ChatInput thinking menu', () => {
     fireEvent.keyDown(getByRole('textbox'), { key: 'Enter' });
     expect(onSend).toHaveBeenCalledOnce();
     expect(onSend).toHaveBeenCalledWith('解释这一页', expect.objectContaining({ enableThinking: true, thinkingEffort: 'high' }));
-    expect(useSettings.getState().selectedModelId).toBe('zai-org/GLM-4.7-FlashX');
+    expect(useSettings.getState().selectedModelId).toBe('Tongyi-MAI/Z-Image-Turbo');
     rerender(<ChatInput {...props} isLoading />);
     expect(getByTitle('停止生成').querySelector('[data-agent-icon="stop"]')).not.toBeNull();
     fireEvent.click(getByTitle('停止生成'));
@@ -71,8 +71,8 @@ describe('ChatInput thinking menu', () => {
     expect(container.querySelector('.lucide')).toBeNull();
   });
 
-  it('disables thinking menu button when the model does not support thinking', () => {
-    const { getByTestId } = render(
+  it('hides thinking menu button when the model does not support thinking', () => {
+    const { queryByTestId } = render(
       <ChatInput
         onSend={vi.fn()}
         onStop={vi.fn()}
@@ -80,9 +80,7 @@ describe('ChatInput thinking menu', () => {
         chatContext={chatContext}
       />,
     );
-    const btn = getByTestId('thinking-menu-button') as HTMLButtonElement;
-    expect(btn.disabled).toBe(true);
-    expect(btn.getAttribute('data-enabled')).toBe('0');
+    expect(queryByTestId('thinking-menu-button')).toBeNull();
   });
 
   it('shows enabled state with default effort when model supports thinking and defaultThinking is on', () => {

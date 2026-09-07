@@ -10,7 +10,13 @@ import { useChatUI } from '@/lib/hooks/useChatUI';
 import { useSettings, type ThinkingEffort } from '@/lib/hooks/useSettings';
 import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
 import { useKeyboardSettings } from '@/lib/keyboard/useKeyboardSettings';
-import { getModelInfoWithCustom } from '@/lib/ai/models';
+import {
+  getModelInfoWithCustom,
+  modelSupportsThinkingEffort,
+  modelAllowsDisableThinking,
+  modelThinkingLevels,
+  clampThinkingEffort,
+} from '@/lib/ai/models';
 import ModelMenu from '@/components/chat/ModelMenu';
 import ThinkingMenuButton from '@/components/chat/ThinkingMenu';
 import TokenDashboard from '@/components/chat/TokenDashboard';
@@ -60,12 +66,19 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const globalSelectedModelId = useSettings((s) => s.selectedModelId);
   const customApiGroups = useSettings((s) => s.customApiGroups);
   const selectedModelId = modelId ?? globalSelectedModelId;
-  const thinkingSupported = useMemo(
-    () => getModelInfoWithCustom(selectedModelId, customApiGroups)?.thinking === true,
+  const selectedModelInfo = useMemo(
+    () => getModelInfoWithCustom(selectedModelId, customApiGroups),
     [selectedModelId, customApiGroups],
   );
-  const effectiveEnableThinking = enableThinking && thinkingSupported;
-  const effectiveThinkingEffort = effectiveEnableThinking ? thinkingEffort : undefined;
+  const thinkingSupported = selectedModelInfo?.thinking === true;
+  const thinkingLevels = modelThinkingLevels(selectedModelInfo);
+  const thinkingEffortSupported = modelSupportsThinkingEffort(selectedModelInfo);
+  const thinkingAllowOff = modelAllowsDisableThinking(selectedModelInfo);
+  const displayEffort = thinkingEffortSupported
+    ? clampThinkingEffort(selectedModelInfo, thinkingEffort)
+    : thinkingEffort;
+  const effectiveEnableThinking = (enableThinking || !!selectedModelInfo?.thinkingRequired) && thinkingSupported;
+  const effectiveThinkingEffort = effectiveEnableThinking ? displayEffort : undefined;
   const effectiveQuote = disableQuote ? null : quotedText;
   const sendShortcutEnabled = useKeyboardSettings((s) => s.isEnabled('chat.send'));
   const {
@@ -197,16 +210,20 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
       <div className="chat-input-toolbar" aria-label="对话选项">
         <div className="chat-input-toolbar-group">
-          <ThinkingMenuButton
-            enabled={enableThinking}
-            effort={thinkingEffort}
-            supported={thinkingSupported}
-            disabled={inputDisabled}
-            onChange={({ enabled, effort }) => {
-              setEnableThinking(enabled);
-              setThinkingEffort(effort);
-            }}
-          />
+          {thinkingSupported && (
+            <ThinkingMenuButton
+              enabled={effectiveEnableThinking}
+              effort={displayEffort}
+              supported={thinkingSupported}
+              disabled={inputDisabled}
+              levels={thinkingEffortSupported ? thinkingLevels : undefined}
+              allowOff={thinkingAllowOff}
+              onChange={({ enabled, effort }) => {
+                setEnableThinking(selectedModelInfo?.thinkingRequired ? true : enabled);
+                setThinkingEffort(thinkingEffortSupported ? clampThinkingEffort(selectedModelInfo, effort) : effort);
+              }}
+            />
+          )}
 
           <button
             onClick={() => setEnableSearch(!enableSearch)}
@@ -222,7 +239,17 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
         <div className="chat-input-toolbar-group chat-input-toolbar-models">
           {showTokenDashboard && <TokenDashboard isLoading={isLoading} floatingSessionId={floatingSessionId} modelId={modelId} />}
-          <ModelMenu onOpenSettings={onOpenSettings} value={modelId} onChange={onModelChange} />
+          <ModelMenu
+            onOpenSettings={onOpenSettings}
+            value={modelId}
+            onChange={onModelChange}
+            thinkingEnabled={effectiveEnableThinking}
+            thinkingEffort={displayEffort}
+            onThinkingChange={({ enabled, effort }) => {
+              setEnableThinking(enabled);
+              setThinkingEffort(effort);
+            }}
+          />
         </div>
       </div>
 
