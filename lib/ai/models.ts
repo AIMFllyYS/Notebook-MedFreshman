@@ -77,6 +77,9 @@ export interface ModelInfo {
 
 export const CUSTOM_MODEL_ID = "custom";
 
+/** 桌面「自由中转」：用户自填 URL / API Key / 模型 ID，registry id 固定，上游 apiModelId 来自 env。 */
+export const CUSTOM_OPENAI_MODEL_ID = "custom-openai";
+
 /** 已下架注册 id → 当前注册 id（用户本地设置兼容） */
 export const LEGACY_REGISTRY_ALIASES: Record<string, string> = {
   "MiniMaxAI/MiniMax-M3": "Qwen/Qwen3.8-27B",
@@ -113,7 +116,22 @@ function sf(id: string): ModelEndpoint[] {
 const MIMO_LEVELS: ThinkingEffort[] = ["low", "medium", "high", "max"];
 
 export const MODELS: ModelInfo[] = [
-  // ── 主力模型（自有中转 relay.protocom.org）──────────────────
+  // ── 自由中转（用户自填 OpenAI 兼容端点，不必使用项目默认中转站）──
+  {
+    id: CUSTOM_OPENAI_MODEL_ID,
+    label: "自由中转",
+    group: "自由中转",
+    thinking: true,
+    thinkingLevels: ["low", "medium", "high", "max"],
+    defaultThinkingEffort: "medium",
+    thinkingRequestStyle: "openai-reasoning-effort",
+    tools: true,
+    vision: true,
+    contextK: 128,
+    hint: "自定义 OpenAI 兼容端点 · 在桌面设置中填写 URL / 模型 ID / API Key",
+    endpoints: [ep(RELAY, CUSTOM_OPENAI_MODEL_ID)],
+  },
+  // ── 主力模型（项目中转站；仅当 RELAY_* 指向该站时可用）──────────────────
   {
     id: "z-ai/glm-5.3-flash",
     label: "GLM-5.3 Flash",

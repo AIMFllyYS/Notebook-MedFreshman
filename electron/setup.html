@@ -34,12 +34,20 @@
     </style>
   </head>
   <body>
-    <h1>填写 API 密钥</h1>
-    <p class="sub">密钥仅保存在本机（加密存储），不会上传、不在安装包内。只填你有的即可。</p>
+    <h1>填写 API 设置</h1>
+    <p class="sub">仅保存在本机（加密存储），不会上传、不在安装包内。自由中转可填任意 OpenAI 兼容网关，不必使用项目默认中转站。</p>
 
-    <label>自有中转 Relay <span class="req">必填</span></label>
+    <label>自由中转 · 接口 URL <span class="req">必填</span></label>
+    <input id="RELAY_BASE_URL" type="url" placeholder="https://your-gateway.example/v1" autocomplete="off" />
+    <div class="hint">OpenAI 兼容 /chat/completions 的上一级，通常以 /v1 结尾。</div>
+
+    <label>自由中转 · API 密钥 <span class="req">必填</span></label>
     <input id="RELAY_API_KEY" type="password" placeholder="sk-..." autocomplete="off" />
-    <div class="hint">解锁主力对话模型（GLM / Qwen / Gemini / DeepSeek）。</div>
+    <div class="hint">该网关的 Bearer Token。</div>
+
+    <label>自由中转 · 模型 ID <span class="req">必填</span></label>
+    <input id="RELAY_MODEL_ID" type="text" placeholder="your-model-id" autocomplete="off" />
+    <div class="hint">发给上游的 model 字段，例如 gpt-4o、deepseek-chat。保存后请在对话里选择「自由中转」。</div>
 
     <label>硅基流动 SiliconFlow <span class="opt">可选</span></label>
     <input id="AI_API_KEY" type="password" placeholder="留空则生图与向量检索不可用" autocomplete="off" />
@@ -65,9 +73,11 @@
 
     <script>
       const $ = (id) => document.getElementById(id);
-      const fields = ["RELAY_API_KEY", "AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY", "UNSPLASH_ACCESS_KEY"];
+      const fields = ["RELAY_BASE_URL", "RELAY_API_KEY", "RELAY_MODEL_ID", "AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY", "UNSPLASH_ACCESS_KEY"];
       const collect = () => Object.fromEntries(fields.map((f) => [f, $(f).value]));
       const status = (msg, cls) => { const s = $("status"); s.textContent = msg; s.className = cls || "muted"; };
+      const customReady = () =>
+        $("RELAY_BASE_URL").value.trim() && $("RELAY_API_KEY").value.trim() && $("RELAY_MODEL_ID").value.trim();
 
       (async () => {
         const cur = await window.setupAPI.getKeys();
@@ -75,7 +85,7 @@
       })();
 
       $("test").onclick = async () => {
-        if (!$("RELAY_API_KEY").value.trim()) return status("请先填写中转站密钥（必填）", "bad");
+        if (!customReady()) return status("请完整填写自由中转的 URL、API 密钥和模型 ID", "bad");
         status("测试中…", "muted");
         $("test").disabled = true;
         try {
@@ -91,7 +101,7 @@
       };
 
       $("save").onclick = async () => {
-        if (!$("RELAY_API_KEY").value.trim()) return status("中转站密钥为必填项", "bad");
+        if (!customReady()) return status("请完整填写自由中转的 URL、API 密钥和模型 ID", "bad");
         status("保存并启动服务中…（首次稍慢）", "muted");
         $("save").disabled = true;
         try {
