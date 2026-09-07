@@ -2,7 +2,7 @@
 //
 // Lifecycle:
 //   ready -> load encrypted keys from userData
-//          -> if AI_API_KEY missing, show native setup window (blocks)
+//          -> if 自由中转 (URL+Key+Model) missing, show native setup window (blocks)
 //          -> spawn the Next standalone server as a child (Electron-as-Node),
 //             injecting baked config + the user's 3 keys as env
 //          -> wait for the local port, then open the app window on 127.0.0.1:PORT
@@ -19,13 +19,29 @@ const net = require("node:net");
 const http = require("node:http");
 const BAKED = require("./config");
 
-// RELAY_API_KEY is required for the core chat models; SiliconFlow / MiMo / Zhipu /
-// Unsplash are optional and only unlock image gen, embeddings, MiMo, and search.
+// 自由中转 = 用户自填的 OpenAI 兼容端点（URL + API Key + 模型 ID），不必使用项目中转站。
+// SiliconFlow / MiMo / Zhipu / Unsplash 仍为可选。
 // Adding a key here is the whole upgrade story for returning users: the "设置" window
 // reopens any time, prefills the keys they already saved, and a new field just rides
 // along into the same DPAPI-encrypted keys.enc — no plaintext env file to hand-edit.
-const REQUIRED_KEYS = ["RELAY_API_KEY"];
-const KEY_NAMES = ["RELAY_API_KEY", "AI_API_KEY", "MIMO_API_KEY", "ZHIPU_API_KEY", "UNSPLASH_ACCESS_KEY"];
+const KEY_NAMES = [
+  "RELAY_BASE_URL",
+  "RELAY_API_KEY",
+  "RELAY_MODEL_ID",
+  "AI_API_KEY",
+  "MIMO_API_KEY",
+  "ZHIPU_API_KEY",
+  "UNSPLASH_ACCESS_KEY",
+];
+
+function hasRequiredKeys(keys) {
+  return !!(
+    keys &&
+    String(keys.RELAY_BASE_URL || "").trim() &&
+    String(keys.RELAY_API_KEY || "").trim() &&
+    String(keys.RELAY_MODEL_ID || "").trim()
+  );
+}
 
 const KEYS_FILE = path.join(app.getPath("userData"), "keys.enc");
 
@@ -58,10 +74,6 @@ function saveKeys(keys) {
     : Buffer.from(json, "utf8");
   fs.writeFileSync(KEYS_FILE, data);
   return clean;
-}
-
-function hasRequiredKeys(keys) {
-  return !!keys && REQUIRED_KEYS.every((k) => keys[k] && String(keys[k]).trim());
 }
 
 // ---------- server orchestration ----------
@@ -134,7 +146,9 @@ async function startServer(keys) {
   const env = {
     ...process.env,
     ...BAKED,
+    RELAY_BASE_URL: keys.RELAY_BASE_URL || "",
     RELAY_API_KEY: keys.RELAY_API_KEY || "",
+    RELAY_MODEL_ID: keys.RELAY_MODEL_ID || "",
     AI_API_KEY: keys.AI_API_KEY || "",
     MIMO_API_KEY: keys.MIMO_API_KEY || "",
     ZHIPU_API_KEY: keys.ZHIPU_API_KEY || "",
@@ -215,6 +229,25 @@ function createMainWindow() {
     delete webPreferences.preload;
   });
   mainWindow.loadURL(`http://127.0.0.1:${serverPort}/`);
+  // 首次保存自由中转后，把对话默认模型切到「自由中转」，避免仍打到内置模型 ID。
+  mainWindow.webContents.once("did-finish-load", () => {
+    const modelId = String(loadKeys().RELAY_MODEL_ID || "").trim();
+    if (!modelId) return;
+    mainWindow.webContents
+      .executeJavaScript(
+        `(() => { try {
+          const k = "gailvlun-settings-v1";
+          const s = JSON.parse(localStorage.getItem(k) || "{}");
+          if (!s._desktopCustomBound) {
+            s.selectedModelId = "custom-openai";
+            s._desktopCustomBound = true;
+            localStorage.setItem(k, JSON.stringify(s));
+            location.reload();
+          }
+        } catch (e) {} })()`,
+      )
+      .catch(() => {});
+  });
   // open external links in the system browser, keep app links internal
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith("http://127.0.0.1")) return { action: "allow" };
@@ -233,7 +266,7 @@ function openSetupWindow() {
   }
   setupWindow = new BrowserWindow({
     width: 560,
-    height: 680,
+    height: 820,
     resizable: false,
     title: "Gailvlun · API 密钥设置",
     parent: mainWindow || undefined,
@@ -325,10 +358,17 @@ ipcMain.handle("setup:save", async (_e, keys) => {
 // Best-effort validation: GET {base}/models with the SiliconFlow key.
 ipcMain.handle("setup:test", async (_e, keys) => {
   const result = {};
+  const withV1 = (base) => {
+    const t = String(base || "").trim().replace(/\/+$/, "");
+    if (!t) return t;
+    return /\/v1$/i.test(t) ? t : `${t}/v1`;
+  };
   const tryModels = async (base, key, label) => {
     if (!key || !key.trim()) return { label, status: "empty" };
+    const url = withV1(base);
+    if (!url) return { label, status: "empty" };
     try {
-      const resp = await fetch(`${base.replace(/\/+$/, "")}/models`, {
+      const resp = await fetch(`${url}/models`, {
         headers: { Authorization: `Bearer ${key.trim()}` },
       });
       return { label, status: resp.ok ? "ok" : `http ${resp.status}` };
@@ -349,7 +389,10 @@ ipcMain.handle("setup:test", async (_e, keys) => {
       return { label: "Unsplash", status: `error: ${String(e && e.message ? e.message : e)}` };
     }
   };
-  result.RELAY_API_KEY = await tryModels(BAKED.RELAY_BASE_URL, keys.RELAY_API_KEY, "自有中转");
+  const relayBase = String(keys.RELAY_BASE_URL || "").trim();
+  result.RELAY_API_KEY = relayBase
+    ? await tryModels(relayBase, keys.RELAY_API_KEY, "自由中转")
+    : { label: "自由中转", status: "empty" };
   result.AI_API_KEY = await tryModels(BAKED.AI_BASE_URL, keys.AI_API_KEY, "硅基流动");
   result.MIMO_API_KEY = await tryModels(BAKED.MIMO_BASE_URL, keys.MIMO_API_KEY, "小米 MiMo");
   // Zhipu web-search uses a different API surface; we only check non-empty.

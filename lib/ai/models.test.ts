@@ -4,6 +4,7 @@ import {
   MODELS,
   CUSTOM_MODEL_ID,
   DEFAULT_MODEL_ID,
+  CUSTOM_OPENAI_MODEL_ID,
   getModelInfo,
   getModelGroups,
   getAllModels,
@@ -37,6 +38,14 @@ test("CUSTOM_MODEL_ID 是 'custom'", () => {
   assert.equal(CUSTOM_MODEL_ID, "custom");
 });
 
+test("CUSTOM_OPENAI_MODEL_ID 在 MODELS 且为自由中转分组", () => {
+  const m = getModelInfo(CUSTOM_OPENAI_MODEL_ID);
+  assert.ok(m);
+  assert.equal(m!.id, CUSTOM_OPENAI_MODEL_ID);
+  assert.equal(m!.group, "自由中转");
+  assert.equal(m!.label, "自由中转");
+});
+
 test("DEFAULT_MODEL_ID 存在于 MODELS", () => {
   const found = getModelInfo(DEFAULT_MODEL_ID);
   assert.ok(found, `DEFAULT_MODEL_ID ${DEFAULT_MODEL_ID} 应在 MODELS 中`);
@@ -59,7 +68,7 @@ test("getModelGroups：按 group 聚合且保持声明顺序", () => {
   for (const g of groups) {
     assert.ok(g.models.length > 0, `group ${g.group} 至少一个模型`);
   }
-  assert.equal(groups[0].group, "主力模型");
+  assert.equal(groups[0].group, "自由中转");
 });
 
 test("getModelGroups：所有模型都被分组覆盖", () => {

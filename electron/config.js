@@ -1,8 +1,7 @@
 // Baked, NON-SECRET runtime config for the desktop build.
 // These are URLs / model names / modes — safe to ship inside the .exe.
-// The secrets (RELAY_API_KEY / AI_API_KEY / MIMO_API_KEY / ZHIPU_API_KEY / UNSPLASH_ACCESS_KEY)
-// are NEVER here; the user enters them in the 设置 window and they are stored encrypted
-// (DPAPI) in userData/keys.enc.
+// Secrets and the user's 自由中转 URL/model are NEVER here; they are entered in
+// the 设置 window and stored encrypted (DPAPI) in userData/keys.enc.
 // Values mirror the project's .env.local (non-secret fields only). Edit & rebuild
 // if your endpoints/models change.
 module.exports = {
@@ -12,7 +11,6 @@ module.exports = {
   // 旧数据被永久孤立（这正是"重启后记录全没"的根因）。须与 package.json 的
   // dev/start 脚本（next -p 35349）保持一致，让网页端与桌面端同源。
   APP_PORT: 35349,
-  RELAY_BASE_URL: "https://relay.protocom.org/v1",
   AI_BASE_URL: "https://api.siliconflow.cn/v1",
   AI_MODEL_PRO: "Qwen/Qwen3.8-27B",
   AI_MODEL_FLASH: "z-ai/glm-5.3-flash",

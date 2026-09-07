@@ -7,7 +7,7 @@ API 密钥作为环境变量注入。**Next 应用代码零改动。**
 ## 密钥与配置的边界
 
 - **用户自填的密钥**（加密存于 `userData/keys.enc`，**绝不进安装包**）：
-  - `RELAY_API_KEY`（自有中转，必填）— 主力对话模型
+  - `RELAY_BASE_URL` / `RELAY_API_KEY` / `RELAY_MODEL_ID`（自由中转，必填）— 任意 OpenAI 兼容网关，不必使用项目默认中转站
   - `AI_API_KEY`（硅基流动，可选）— 生图 / 语义搜索 embedding+rerank
   - `MIMO_API_KEY`（小米 Token Plan，可选）— MiMo 模型
   - `ZHIPU_API_KEY`（智谱，可选）— 联网搜索 / 向量容灾

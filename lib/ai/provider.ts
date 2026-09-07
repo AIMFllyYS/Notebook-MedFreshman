@@ -8,6 +8,7 @@ import {
   hasNextEndpoint,
   normalizeRegistryId,
   CUSTOM_PREFIX,
+  CUSTOM_OPENAI_MODEL_ID,
   buildCustomModelRegistryId,
   findCustomModelGroup,
   type ProviderKind,
@@ -58,8 +59,13 @@ const MIMO_KEY = process.env.MIMO_API_KEY || "";
 const ZHIPU_BASE = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
 const ZHIPU_KEY = process.env.ZHIPU_API_KEY || "";
 
-const RELAY_BASE = normalizeOpenAIBaseUrl(process.env.RELAY_BASE_URL || "https://relay.protocom.org/v1");
+// 桌面端会显式注入 RELAY_BASE_URL（可能为空字符串）。空字符串必须视为「未配置」，
+// 不能回落到项目中转站，否则用户无法使用自己的网关。
+const RELAY_BASE = normalizeOpenAIBaseUrl(
+  "RELAY_BASE_URL" in process.env ? process.env.RELAY_BASE_URL || "" : "https://relay.protocom.org/v1",
+);
 const RELAY_KEY = process.env.RELAY_API_KEY || "";
+const RELAY_MODEL_ID = (process.env.RELAY_MODEL_ID || "").trim();
 
 export const ENV_MODEL_PRO = process.env.AI_MODEL_PRO || "Qwen/Qwen3.8-27B";
 export const ENV_MODEL_FLASH = process.env.AI_MODEL_FLASH || "z-ai/glm-5.3-flash";
@@ -211,7 +217,10 @@ function resolveBuiltinEndpoint(
   const idx = endpoints.length > 0 ? Math.min(endpointIndex, endpoints.length - 1) : 0;
   const endpoint = endpoints[idx];
   const cred = endpoint ? credentialsFor(endpoint.provider) : credentialsFor("siliconflow");
-  const apiModelId = endpoint?.apiModelId ?? effectiveId;
+  const isCustomOpenai = effectiveId === CUSTOM_OPENAI_MODEL_ID;
+  const apiModelId = isCustomOpenai
+    ? (RELAY_MODEL_ID || endpoint?.apiModelId || effectiveId)
+    : (endpoint?.apiModelId ?? effectiveId);
 
   return {
     registryId: effectiveId,
@@ -222,7 +231,7 @@ function resolveBuiltinEndpoint(
     thinkingRequestStyle: effectiveInfo?.thinkingRequestStyle ?? "siliconflow",
     apiProtocol: "openai",
     isCustom: false,
-    configured: cred.configured,
+    configured: isCustomOpenai ? cred.configured && !!RELAY_MODEL_ID : cred.configured,
     endpointIndex: idx,
     timeoutMs: getFetchTimeoutMs(effectiveId),
   };
