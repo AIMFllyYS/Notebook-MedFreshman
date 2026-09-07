@@ -39,16 +39,7 @@ import {
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import { exportAllChats } from "@/lib/chat/exportChats";
 import SkillsManager from "./SkillsManager";
-const TOOLS: { name: string; label: string; desc: string }[] = [
-  { name: "getCurrentPage", label: "读取当前页", desc: "让 AI 获取你正在阅读的页面内容" },
-  { name: "getOutline", label: "课程大纲", desc: "让 AI 查看全部科目的章节大纲" },
-  { name: "getSection", label: "读取指定页面", desc: "让 AI 调取任意科目的任意小节正文" },
-  { name: "searchNotes", label: "全文检索", desc: "让 AI 在全部课程笔记中按关键词检索" },
-  { name: "webSearch", label: "联网搜索", desc: "需配置 Bocha key；联网获取实时信息" },
-  { name: "renderInteractive", label: "交互演示", desc: "让 AI 生成可交互的 HTML 讲解（横幅/弹窗查看）" },
-  { name: "drawDiagram", label: "SVG 绘图", desc: "让 AI 绘制矢量示意图（分子/电路/光路/几何等）" },
-  { name: "generateImage", label: "AI 生图", desc: "让 AI 生成图片（需用户批准，优先 SVG，仅必要时使用）" },
-];
+import { TOGGLEABLE_TOOLS as TOOLS } from "@/lib/chat/toolPresentation";
 
 const SIZE_OPTIONS = ["1024x1024", "960x1280", "768x1024", "720x1440", "720x1280"];
 const DEFAULT_SIZES = ["1024x1024", "960x1280", "768x1024"];

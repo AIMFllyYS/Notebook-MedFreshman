@@ -31,6 +31,7 @@ import type {
   GetOutlineOutput,
   GetSectionOutput,
   SearchNotesOutput,
+  SearchNoteImagesOutput,
   WebSearchOutput,
   ImageSearchOutput,
   RenderInteractiveOutput,
@@ -38,9 +39,16 @@ import type {
   GenerateImageOutput,
   UseSkillOutput,
   TextToolOutput,
+  CreateQuizInput,
+  CreateQuizOutput,
+  WriteDocumentInput,
+  WriteDocumentOutput,
 } from "@/lib/ai/agent/toolTypes";
 import { getIndexHealth } from "@/lib/ai/search/indexHealth";
 import { getLastSearchDiagnostics } from "@/lib/ai/search/hybridSearch";
+import { createQuizInputSchema, normalizeQuiz, describeQuizForModel } from "@/lib/ai/agent/quizTool";
+import { searchNoteImages, describeNoteImagesForModel } from "@/lib/content/noteImages";
+import { validateDocumentSpec, documentSpecSchema } from "@/lib/ai/agent/documentTool";
 
 export const IMAGE_SEARCH_MAX_TOTAL = 20;
 export const MAX_TOOL_STEPS = 6;
@@ -327,6 +335,75 @@ export function buildStudyTools(
       toModelOutput: ({ output }) => toText(output),
     }),
 
+    searchNoteImages: tool({
+      description:
+        "检索课程笔记中已经存在的图片（教材插图、课堂板书示意图等）。当讲解需要引用教材已有图示、或学生问“书里的图/笔记里的图”时调用。返回站内根相对路径，可直接以 ::figure 指令嵌入回复。",
+      inputSchema: z.object({
+        query: z.string().describe("图片检索短语，如图注关键词、知识点名称，如 '肝小叶' '凸透镜成像' '被覆上皮'。"),
+        crossYear: z.boolean().optional().describe("true 时跨学年检索。医学基础常与大一大二化学/物理交叉，此时应打开。"),
+        subjectId: z.string().optional().describe("限定科目 id，如 histology、biochemistry、anatomy。"),
+        limit: z.number().optional().describe("返回图片数量，默认 6，最大 12。"),
+      }),
+      execute: async ({ query, crossYear, subjectId, limit }): Promise<SearchNoteImagesOutput> => {
+        const images = searchNoteImages(query, {
+          academicYear: crossYear ? "all" : ctx.academicYear,
+          subjectId,
+          preferSubjectId: subjectId ? undefined : ctx.subjectId,
+          limit: Number(limit) || undefined,
+        });
+        return dedupeByContextKey<SearchNoteImagesOutput>(runtime, "searchNoteImages", {
+          text: describeNoteImagesForModel(query, images),
+          contextKey: `note-img:${normalizeContextKeyPart(query)}`,
+          images,
+        });
+      },
+      toModelOutput: ({ output }) => toText(output),
+    }),
+
+    createQuiz: tool({
+      description:
+        "把即时检验题/诊断题/练习题/章节小测渲染为可作答的题目卡片。调用后前端直接展示结构化题目，学生可作答、查看提示、提交后自动判分并查看解析。不要再在正文里重复题干、选项、提示或答案。",
+      inputSchema: createQuizInputSchema,
+      execute: async (input, { toolCallId }): Promise<CreateQuizOutput> => {
+        const quizId = `quiz_${toolCallId}`;
+        const normalized = normalizeQuiz(input as CreateQuizInput, quizId);
+        return {
+          text: describeQuizForModel(input.title, normalized),
+          quizId,
+          title: input.title,
+          intent: input.intent ?? "practice",
+          questions: normalized.questions,
+          droppedCount: normalized.droppedCount,
+        };
+      },
+      toModelOutput: ({ output }) => toText(output),
+    }),
+
+    writeDocument: tool({
+      description:
+        "撰写长文章、论文、报告或复习讲义。调用后前端会展示文档生成卡片并分节流式生成；导出支持 Markdown / Word / LaTeX / PDF。用于需要一次性产出较长、结构化文档的场景（如课程论文、章节总结、实验报告）。",
+      inputSchema: documentSpecSchema,
+      execute: async (input, { toolCallId }): Promise<WriteDocumentOutput> => {
+        const validated = validateDocumentSpec(input);
+        const spec = validated.ok ? validated.spec : (input as WriteDocumentInput);
+        if (!validated.ok) {
+          return {
+            text: `文档参数校验未通过：${validated.error}。请修正后重新调用 writeDocument。`,
+            documentId: `doc_${toolCallId}`,
+            spec,
+            unsupportedReason: validated.error,
+          };
+        }
+        return {
+          text: `长文档「${spec.title}」已生成任务卡片，将在前端分节生成。请用一句话说明这篇文档将帮助学生做什么，然后继续你的讲解。`,
+          documentId: `doc_${toolCallId}`,
+          spec,
+          modelId: ctx.modelId,
+        };
+      },
+      toModelOutput: ({ output }) => toText(output),
+    }),
+
     renderInteractive: tool({
       description:
         "当一个概念用静态文字难以讲清、且交互能显著提升理解时，调用本工具在后台生成一个可交互的 HTML 演示（例如：可拖动滑块看概率分布随参数变化、物理受力/矢量合成、分子构象翻转/反应机理分步等）。生成后用户可在对话中点击「查看」打开。仅在交互确有必要时调用，不要滥用。",
@@ -414,7 +491,18 @@ export function buildStudyTools(
     }),
   } satisfies Record<StudyToolName, unknown>;
 
-  const names: StudyToolName[] = ["getCurrentPage", "getOutline", "getSection", "searchNotes", "renderInteractive", "drawDiagram", "generateImage"];
+  const names: StudyToolName[] = [
+    "getCurrentPage",
+    "getOutline",
+    "getSection",
+    "searchNotes",
+    "searchNoteImages",
+    "renderInteractive",
+    "drawDiagram",
+    "generateImage",
+    "createQuiz",
+    "writeDocument",
+  ];
   if (opts.enableSearch) names.push("webSearch", "imageSearch");
   if (menuSkillNames.length > 0) names.push("useSkill");
 
