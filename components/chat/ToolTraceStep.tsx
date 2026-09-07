@@ -1,9 +1,19 @@
 'use client';
 
 import React from 'react';
-import { AgentFileIcon, AgentImageIcon, AgentLoopIcon, AgentSearchIcon, AgentTerminalIcon } from '@/components/icons/AgentIcons';
+import {
+  AgentDocumentIcon,
+  AgentFileIcon,
+  AgentGalleryIcon,
+  AgentImageIcon,
+  AgentLoopIcon,
+  AgentQuizIcon,
+  AgentSearchIcon,
+  AgentTerminalIcon,
+} from '@/components/icons/AgentIcons';
 import { AgentTraceStep } from '@/components/chat/AgentTraceStep';
 import { getTraceToolOutput, type TraceToolStep as ToolStep } from '@/lib/chat/buildTrace';
+import { getToolPresentation, type ToolIconKind } from '@/lib/chat/toolPresentation';
 
 export const ToolTraceStep = React.memo(function ToolTraceStep({ step }: { step: ToolStep }) {
   const { part } = step;
@@ -24,9 +34,6 @@ export const ToolTraceStep = React.memo(function ToolTraceStep({ step }: { step:
             <pre className="m-0 max-h-40 overflow-auto whitespace-pre-wrap break-words py-1 font-mono text-[11px] leading-relaxed [overflow-wrap:anywhere]">{typeof input === 'string' ? input : JSON.stringify(input, null, 2)}</pre>
           </div>
         ) : null}
-        {diagnosticsLine(part) ? (
-          <p className="text-[10px] leading-relaxed text-[var(--md-sys-color-outline)]">{diagnosticsLine(part)}</p>
-        ) : null}
         {output ? (
           <div className="agent-trace-subdetail">
             <p className={`mb-1 text-[10px] font-medium ${step.status === 'error' ? 'text-[var(--md-sys-color-error)]' : 'text-[var(--md-sys-color-outline)]'}`}>{step.status === 'error' ? '调用失败' : '返回结果'}</p>
@@ -39,28 +46,20 @@ export const ToolTraceStep = React.memo(function ToolTraceStep({ step }: { step:
   );
 });
 
-function diagnosticsLine(part: ToolStep['part']): string | null {
-  const output = 'output' in part && part.output && typeof part.output === 'object'
-    ? part.output as { diagnostics?: { bm25Hits?: number; vecHits?: number; ms?: number; indexBuiltAt?: string; embedError?: string; mode?: string } }
-    : undefined;
-  const d = output?.diagnostics;
-  if (!d) return null;
-  const bits = [
-    typeof d.bm25Hits === 'number' ? `BM25 ${d.bm25Hits}` : null,
-    typeof d.vecHits === 'number' ? `向量 ${d.vecHits}` : null,
-    typeof d.ms === 'number' ? `${d.ms}ms` : null,
-    d.indexBuiltAt ? `索引 ${d.indexBuiltAt.slice(0, 10)}` : null,
-    d.embedError ? `embed ${d.embedError}` : null,
-  ].filter(Boolean);
-  return bits.length ? bits.join(' · ') : null;
-}
+const ICONS: Record<ToolIconKind, React.ReactElement> = {
+  search: <AgentSearchIcon />,
+  file: <AgentFileIcon />,
+  image: <AgentImageIcon />,
+  gallery: <AgentGalleryIcon />,
+  skill: <AgentLoopIcon />,
+  terminal: <AgentTerminalIcon />,
+  quiz: <AgentQuizIcon />,
+  document: <AgentDocumentIcon />,
+};
 
-function ToolIcon({ name }: { name: string }) {
-  if (name === 'webSearch' || name === 'searchNotes' || name === 'imageSearch') return <AgentSearchIcon />;
-  if (name === 'getCurrentPage' || name === 'getOutline' || name === 'getSection') return <AgentFileIcon />;
-  if (name === 'generateImage' || name === 'drawDiagram') return <AgentImageIcon />;
-  if (name === 'useSkill') return <AgentLoopIcon />;
-  return <AgentTerminalIcon />;
+/** 图标来自 toolPresentation 注册表；未知（dynamic-tool）工具回落到终端图标。 */
+export function ToolIcon({ name }: { name: string }) {
+  return ICONS[getToolPresentation(name)?.icon ?? 'terminal'];
 }
 
 export default ToolTraceStep;

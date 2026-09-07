@@ -40,11 +40,14 @@ const TOOL_LABELS: Record<string, string> = {
   getOutline: '查阅课程大纲',
   getSection: '读取笔记章节',
   searchNotes: '检索笔记',
+  searchNoteImages: '检索笔记图片',
   webSearch: '搜索网页',
   imageSearch: '搜索图片',
   renderInteractive: '创建交互演示',
   drawDiagram: '绘制图示',
   generateImage: '准备生成图片',
+  createQuiz: '出题',
+  writeDocument: '撰写长文档',
   useSkill: '调用技能',
 };
 
@@ -102,6 +105,13 @@ export function buildToolTraceStep(part: TraceToolPart, partIndex: number, isStr
     summary = '等待批准后继续';
   } else if (output.deduped) {
     summary = '已在上下文中，复用已加载内容';
+  } else if (Array.isArray(output.images)) {
+    summary = `找到 ${output.images.length} 张笔记图片`;
+  } else if (Array.isArray(output.questions)) {
+    summary = `${output.questions.length} 道题${output.title ? ` · ${output.title}` : ''}`;
+  } else if (output.documentId) {
+    const docTitle = typeof output.spec === 'object' && output.spec ? (output.spec as Record<string, unknown>).title : undefined;
+    summary = `文档：${typeof docTitle === 'string' ? docTitle : '未命名'}`;
   } else if (Array.isArray(output.sources)) {
     summary = `${output.sources.length} ${name === 'imageSearch' ? '张图片' : '条来源'}${output.cacheHit ? ' · 缓存命中' : ''}`;
   } else if (Array.isArray(output.hits)) {

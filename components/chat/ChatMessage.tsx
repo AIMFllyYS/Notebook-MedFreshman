@@ -7,6 +7,9 @@ import { MessageContent } from '@/components/chat/MessageContent';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import ArtifactCard from '@/components/chat/ArtifactCard';
 import ImageGenCard from '@/components/chat/ImageGenCard';
+import ChatQuizCard from '@/components/chat/ChatQuizCard';
+import NoteImageGallery from '@/components/chat/NoteImageGallery';
+import DocumentCard from '@/components/chat/DocumentCard';
 import { AgentTrace } from '@/components/chat/AgentTrace';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
@@ -161,6 +164,32 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
               );
               return null;
             })}
+            {getToolPartsByName(message, 'createQuiz').map((part) => part.state === 'output-available' && !part.preliminary && part.output.questions?.length
+              ? (
+                <ChatQuizCard
+                  key={`quiz:${part.output.quizId}`}
+                  title={part.output.title}
+                  questions={part.output.questions}
+                  intent={part.output.intent}
+                  droppedCount={part.output.droppedCount}
+                />
+              )
+              : null)}
+            {getToolPartsByName(message, 'searchNoteImages').map((part) => part.state === 'output-available' && !part.preliminary && part.output.images?.length
+              ? <NoteImageGallery key={`note-img:${part.toolCallId}`} images={part.output.images} query={typeof part.input === 'object' && part.input ? String(((part.input as unknown) as Record<string, unknown>).query ?? '') : ''} />
+              : null)}
+            {getToolPartsByName(message, 'writeDocument').map((part) => part.state === 'output-available' && !part.preliminary
+              ? (
+                <DocumentCard
+                  key={`doc:${part.output.documentId}`}
+                  documentId={part.output.documentId}
+                  spec={part.output.spec}
+                  modelId={part.output.modelId}
+                  unsupportedReason={part.output.unsupportedReason}
+                  autoStart={!!isStreaming}
+                />
+              )
+              : null)}
             {imageSearchSources.length > 0 && (
               <div className="image-search-gallery">
                 <div className="image-search-gallery-header">
