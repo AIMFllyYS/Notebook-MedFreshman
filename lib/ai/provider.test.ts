@@ -231,6 +231,15 @@ test("resolveProvider：Qwen3.8-27B 超时加长", () => {
   assert.equal(r.thinkingRequestStyle, "openai-reasoning-effort");
 });
 
+test("resolveProvider：自由中转未配置模型 ID 时 configured=false", () => {
+  const r = resolveProvider("custom-openai");
+  assert.equal(r.registryId, "custom-openai");
+  if (!process.env.RELAY_MODEL_ID) {
+    assert.equal(r.configured, false);
+    assert.equal(r.apiModelId, "custom-openai");
+  }
+});
+
 test("normalizeOpenAIBaseUrl：补 /v1", () => {
   assert.equal(normalizeOpenAIBaseUrl("https://relay.protocom.org/"), "https://relay.protocom.org/v1");
   assert.equal(normalizeOpenAIBaseUrl("https://relay.protocom.org/v1"), "https://relay.protocom.org/v1");
