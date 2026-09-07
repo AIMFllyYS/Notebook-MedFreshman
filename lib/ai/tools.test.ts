@@ -34,6 +34,7 @@ test("ALL_TOOLS searchNotes 接受 query 参数", () => {
   const params = ALL_TOOLS.searchNotes.function.parameters;
   assert.ok(params.properties?.query, "searchNotes 应有 query 参数");
   assert.ok(params.properties?.crossYear, "searchNotes 应有 crossYear 参数");
+  assert.ok(params.properties?.subjectId, "searchNotes 应有 subjectId 参数");
 });
 
 test("ALL_TOOLS getOutline 接受 crossYear 参数", () => {

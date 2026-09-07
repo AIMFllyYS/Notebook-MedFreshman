@@ -10,6 +10,7 @@ import {
   type AcademicYearId,
 } from "@/lib/constants/academic-year";
 import { getSubjectMeta } from "@/lib/content-data/subjects.registry";
+import { normalizeSearchQuery } from "@/lib/ai/search/queryNormalize";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content", "chapters");
 
@@ -374,6 +375,7 @@ function substringSearch(
   query: string,
   limit = 8,
   scope: ContentSearchScope = "all",
+  subjectId?: string,
 ): MultiSearchHit[] {
   const q = query.trim();
   if (!q) return [];
@@ -385,6 +387,7 @@ function substringSearch(
 
   for (const subject of contentTree.subjects) {
     if (subject.id === "other") continue;
+    if (subjectId && subject.id !== subjectId) continue;
     if (!subjectVisibleToAgent(subject.id, scope)) continue;
     for (const cat of subject.categories) {
       if (!isSearchable(cat)) continue;
@@ -449,6 +452,10 @@ export interface SearchAllContentOptions {
   limit?: number;
   /** 默认 all：跨学年。智能体默认传入当前学年；crossYear 时传 all。 */
   academicYear?: ContentSearchScope;
+  /** 硬过滤到某一科目（如 histology）。 */
+  subjectId?: string;
+  /** 软加权当前正在阅读的科目。 */
+  preferSubjectId?: string;
   /**
    * 索引未命中时是否回退全库子串扫描。默认跟 substringSearchAllowed()。
    * 测试可显式设为 false，证明 hybrid/BM25 索引本身能检索大二教材。
@@ -464,7 +471,7 @@ export async function searchAllContent(
   query: string,
   limitOrOpts: number | SearchAllContentOptions = 8,
 ): Promise<MultiSearchHit[]> {
-  const q = query.trim();
+  const q = normalizeSearchQuery(query.trim()) || query.trim();
   if (!q) return [];
   const opts: SearchAllContentOptions =
     typeof limitOrOpts === "number" ? { limit: limitOrOpts } : limitOrOpts;
@@ -473,8 +480,16 @@ export async function searchAllContent(
 
   try {
     const { hybridSearch } = await import('@/lib/ai/search/hybridSearch');
-    const results = await hybridSearch(q, Math.max(limit * 3, 16));
-    const filtered = results.filter((hit) => subjectVisibleToAgent(hit.subjectId, scope));
+    const results = await hybridSearch(q, {
+      topK: Math.max(limit * 3, 16),
+      academicYear: scope,
+      subjectId: opts.subjectId,
+      preferSubjectId: opts.preferSubjectId,
+    });
+    const filtered = results.filter((hit) => {
+      if (opts.subjectId && hit.subjectId !== opts.subjectId) return false;
+      return subjectVisibleToAgent(hit.subjectId, scope);
+    });
     if (filtered.length > 0) return filtered.slice(0, limit);
   } catch {
     // 索引不存在或 API 不可用，fallback
@@ -482,7 +497,7 @@ export async function searchAllContent(
 
   const allowSubstring = opts.allowSubstring ?? substringSearchAllowed();
   if (!allowSubstring) return [];
-  return substringSearch(q, limit, scope);
+  return substringSearch(q, limit, scope, opts.subjectId);
 }
 
 function substringSearchAllowed(): boolean {

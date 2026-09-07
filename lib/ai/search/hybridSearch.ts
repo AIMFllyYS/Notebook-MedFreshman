@@ -1,16 +1,43 @@
 // 混合检索 + Rerank：并行 BM25 + 向量 → RRF 合并 → rerank API 精排 → MultiSearchHit[]
-import { bm25Search, isBM25IndexLoaded } from './bm25Store';
-import { vectorSearch, isVectorIndexLoaded } from './vectorStore';
-import type { ScoredChunk } from './vectorStore';
-import { getEmbeddingClient } from '@/lib/ai/embedding';
-import type { MultiSearchHit } from '@/lib/content/loader';
+import { bm25Search, isBM25IndexLoaded } from "./bm25Store";
+import { vectorSearch, isVectorIndexLoaded, getVectorIndexModel } from "./vectorStore";
+import type { ScoredChunk } from "./vectorStoreTypes";
+import { getQueryEmbeddingClient } from "@/lib/ai/embedding";
+import type { MultiSearchHit } from "@/lib/content/loader";
+import { normalizeSearchQuery } from "./queryNormalize";
+import type { SearchFilter } from "./searchScope";
 
-type SearchMode = 'hybrid' | 'vector' | 'keyword';
+export type { SearchFilter } from "./searchScope";
+
+type SearchMode = "hybrid" | "vector" | "keyword";
+
+const PREFER_SUBJECT_BOOST = 1.12;
+const SNIPPET_CHARS = 400;
 
 function getSearchMode(): SearchMode {
   const mode = process.env.AI_SEARCH_MODE?.toLowerCase();
-  if (mode === 'vector' || mode === 'keyword') return mode;
-  return 'hybrid';
+  if (mode === "vector" || mode === "keyword") return mode;
+  return "hybrid";
+}
+
+export interface HybridSearchOptions extends SearchFilter {
+  topK?: number;
+}
+
+function resolveOptions(
+  topKOrOpts?: number | HybridSearchOptions,
+): { topK: number; filter: SearchFilter } {
+  if (typeof topKOrOpts === "number" || topKOrOpts === undefined) {
+    return { topK: topKOrOpts ?? 5, filter: {} };
+  }
+  return {
+    topK: topKOrOpts.topK ?? 5,
+    filter: {
+      academicYear: topKOrOpts.academicYear,
+      subjectId: topKOrOpts.subjectId,
+      preferSubjectId: topKOrOpts.preferSubjectId,
+    },
+  };
 }
 
 // RRF (Reciprocal Rank Fusion) 合并
@@ -35,21 +62,32 @@ export function rrfMerge(rankings: ScoredChunk[][], k = 60): ScoredChunk[] {
     .map((entry) => ({ ...entry.chunk, score: entry.score }));
 }
 
+function applyPreferSubject(chunks: ScoredChunk[], preferSubjectId?: string): ScoredChunk[] {
+  if (!preferSubjectId) return chunks;
+  return chunks
+    .map((chunk) =>
+      chunk.subjectId === preferSubjectId
+        ? { ...chunk, score: chunk.score * PREFER_SUBJECT_BOOST }
+        : chunk,
+    )
+    .sort((a, b) => b.score - a.score);
+}
+
 // Rerank API 调用
 async function rerank(
   query: string,
   documents: string[],
   topN: number,
 ): Promise<Array<{ index: number; relevance_score: number }>> {
-  const baseUrl = process.env.AI_BASE_URL || 'https://api.siliconflow.cn/v1';
-  const apiKey = process.env.AI_API_KEY || '';
-  const model = process.env.AI_RERANK_MODEL || 'BAAI/bge-reranker-v2-m3';
+  const baseUrl = process.env.AI_BASE_URL || "https://api.siliconflow.cn/v1";
+  const apiKey = process.env.AI_API_KEY || "";
+  const model = process.env.AI_RERANK_MODEL || "BAAI/bge-reranker-v2-m3";
 
   try {
     const resp = await fetch(`${baseUrl}/rerank`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
@@ -68,15 +106,14 @@ async function rerank(
     const json = await resp.json();
     return json.results ?? [];
   } catch (err) {
-    // 容灾降级到智谱 rerank
-    const zhipuBaseUrl = process.env.ZHIPU_BASE_URL || 'https://open.bigmodel.cn/api/paas/v4';
-    const zhipuKey = process.env.ZHIPU_API_KEY || '';
-    const zhipuModel = process.env.ZHIPU_RERANK_MODEL || 'rerank';
+    const zhipuBaseUrl = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
+    const zhipuKey = process.env.ZHIPU_API_KEY || "";
+    const zhipuModel = process.env.ZHIPU_RERANK_MODEL || "rerank";
     if (zhipuBaseUrl && zhipuKey) {
       const resp = await fetch(`${zhipuBaseUrl}/rerank`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${zhipuKey}`,
         },
         body: JSON.stringify({
@@ -101,8 +138,9 @@ async function rerank(
 
 export async function hybridSearch(
   query: string,
-  topK = 5,
+  topKOrOpts: number | HybridSearchOptions = 5,
 ): Promise<MultiSearchHit[]> {
+  const { topK, filter } = resolveOptions(topKOrOpts);
   const mode = getSearchMode();
   const hasVectorIndex = await isVectorIndexLoaded();
   const hasBM25Index = await isBM25IndexLoaded();
@@ -111,20 +149,20 @@ export async function hybridSearch(
     return [];
   }
 
+  const retrievalQuery = normalizeSearchQuery(query);
   const rankings: ScoredChunk[][] = [];
 
-  // BM25 检索
-  if (mode !== 'vector' && hasBM25Index) {
-    const bm25Results = await bm25Search(query, 30);
+  if (mode !== "vector" && hasBM25Index) {
+    const bm25Results = await bm25Search(retrievalQuery, 40, filter);
     if (bm25Results.length) rankings.push(bm25Results);
   }
 
-  // 向量检索
-  if (mode !== 'keyword' && hasVectorIndex) {
+  if (mode !== "keyword" && hasVectorIndex) {
     try {
-      const embeddingClient = getEmbeddingClient();
-      const queryVector = await embeddingClient.embed(query);
-      const vecResults = await vectorSearch(queryVector, 30);
+      const indexModel = await getVectorIndexModel();
+      const embeddingClient = getQueryEmbeddingClient(indexModel);
+      const queryVector = await embeddingClient.embed(retrievalQuery);
+      const vecResults = await vectorSearch(queryVector, 40, filter);
       if (vecResults.length) rankings.push(vecResults);
     } catch {
       // embedding API 失败时仅用 BM25
@@ -133,34 +171,30 @@ export async function hybridSearch(
 
   if (!rankings.length) return [];
 
-  // RRF 合并
-  const merged = rrfMerge(rankings);
-  const candidates = merged.slice(0, 30);
+  let merged = applyPreferSubject(rrfMerge(rankings), filter.preferSubjectId);
+  const candidates = merged.slice(0, 40);
 
   if (!candidates.length) return [];
 
-  // Rerank 精排
   let finalChunks: ScoredChunk[];
-  if (mode !== 'keyword') {
+  if (mode !== "keyword") {
     try {
       const rerankResults = await rerank(
-        query,
+        retrievalQuery,
         candidates.map((c) => c.text),
-        topK,
+        Math.max(topK, 8),
       );
       finalChunks = rerankResults.map((r) => ({
         ...candidates[r.index],
         score: r.relevance_score,
       }));
     } catch {
-      // rerank 失败时直接用 RRF 结果
       finalChunks = candidates.slice(0, topK);
     }
   } else {
     finalChunks = candidates.slice(0, topK);
   }
 
-  // 去重：同一 path 只保留最高分的 chunk
   const seenPaths = new Set<string>();
   const deduped: ScoredChunk[] = [];
   for (const chunk of finalChunks) {
@@ -168,6 +202,7 @@ export async function hybridSearch(
       seenPaths.add(chunk.path);
       deduped.push(chunk);
     }
+    if (deduped.length >= topK) break;
   }
 
   return deduped.map((chunk) => ({
@@ -176,7 +211,7 @@ export async function hybridSearch(
     categoryId: chunk.categoryId,
     itemId: chunk.itemId,
     title: chunk.title,
-    snippet: chunk.text.slice(0, 200),
+    snippet: chunk.text.slice(0, SNIPPET_CHARS),
     path: chunk.path,
   }));
 }

@@ -5,7 +5,9 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
-import type { ScoredChunk } from './vectorStore';
+import type { ScoredChunk } from './vectorStoreTypes';
+import type { SearchFilter } from './searchScope';
+import { chunkInScope } from './searchScope';
 
 interface BM25Index {
   builtAt: string;
@@ -193,7 +195,11 @@ export function tokenize(text: string): string[] {
 const K1 = 1.5;
 const B = 0.75;
 
-export async function bm25Search(query: string, topK: number): Promise<ScoredChunk[]> {
+export async function bm25Search(
+  query: string,
+  topK: number,
+  filter?: SearchFilter,
+): Promise<ScoredChunk[]> {
   const index = await loadIndexAsync();
   if (!index) return [];
 
@@ -210,6 +216,8 @@ export async function bm25Search(query: string, topK: number): Promise<ScoredChu
     const idf = Math.log((docCount - entry.df + 0.5) / (entry.df + 0.5) + 1);
 
     for (const posting of entry.postings) {
+      const meta = _chunkMeta?.get(posting.id);
+      if (filter && !chunkInScope(meta?.subjectId ?? "", filter)) continue;
       const docLen = docLengths[posting.id] || 1;
       const tf = posting.tf;
       const tfNorm = (tf * (K1 + 1)) / (tf + K1 * (1 - B + B * (docLen / avgDocLen)));

@@ -1,12 +1,19 @@
-// 向量存储：惰性加载 vectors.json，提供余弦相似度 top-K 查询。
-// 加载顺序：本地 content/.index/ → /tmp 缓存 → COS 远程下载。
-// 307MB 索引不打包进 serverless 函数（outputFileTracingExcludes 排除），
-// EdgeOne 运行时从 COS 下载到 /tmp 缓存，本地开发直接读本地文件。
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-import * as os from 'node:os';
+// 向量存储：优先加载 vectors.bin（与 chunks-meta 按 id 对齐），提供余弦相似度 top-K。
+// 本地已有 BM25/chunks-meta 时绝不去拉 COS 上另一代 vectors.json（会卡死首次检索并混入过期大一向量）。
+import type { ScoredChunk } from "./vectorStoreTypes";
+import type { SearchFilter } from "./searchScope";
+import { chunkInScope } from "./searchScope";
+import {
+  INDEX_FILES,
+  hasLocalSearchIndex,
+  logSearchIndexOnce,
+  readIndexFile,
+  readLocalIndexFile,
+} from "./indexIo";
 
-export interface ScoredChunk {
+export type { ScoredChunk } from "./vectorStoreTypes";
+
+interface ChunkRow {
   id: string;
   path: string;
   subjectId: string;
@@ -16,122 +23,50 @@ export interface ScoredChunk {
   title: string;
   chunkIndex: number;
   text: string;
-  score: number;
-}
-
-interface VectorEntry {
-  id: string;
-  path: string;
-  subjectId: string;
-  subjectName: string;
-  categoryId: string;
-  itemId: string;
-  title: string;
-  chunkIndex: number;
-  text: string;
-  vector: number[];
 }
 
 interface VectorIndex {
   model: string;
   dimension: number;
-  builtAt: string;
-  chunks: VectorEntry[];
+  ids: string[];
+  metaById: Map<string, ChunkRow>;
+  matrix: Float32Array;
 }
 
 let _vectorIndex: VectorIndex | null = null;
 let _loadAttempted = false;
 
-const LOCAL_INDEX_DIR = path.join(process.cwd(), 'content', '.index');
-const TMP_INDEX_DIR = path.join(os.tmpdir(), '.search-index');
-
-function getCosIndexBaseUrl(): string {
-  return process.env.COS_INDEX_BASE_URL || '';
-}
-
-function loadFromLocal(): string | null {
-  const indexPath = path.join(LOCAL_INDEX_DIR, 'vectors.json');
-  try {
-    return fs.readFileSync(indexPath, 'utf8');
-  } catch {
-    return null;
-  }
-}
-
-function loadFromTmpCache(): string | null {
-  const cachePath = path.join(TMP_INDEX_DIR, 'vectors.json');
-  try {
-    return fs.readFileSync(cachePath, 'utf8');
-  } catch {
-    return null;
-  }
-}
-
-async function downloadFromCos(): Promise<string | null> {
-  const baseUrl = getCosIndexBaseUrl();
-  if (!baseUrl) return null;
-  const url = baseUrl.endsWith('/')
-    ? baseUrl + 'vectors.json'
-    : baseUrl + '/vectors.json';
-  const resp = await fetch(url);
-  if (!resp.ok) throw new Error(`COS fetch ${resp.status}: ${url}`);
-  const text = await resp.text();
-  try {
-    fs.mkdirSync(TMP_INDEX_DIR, { recursive: true });
-    fs.writeFileSync(path.join(TMP_INDEX_DIR, 'vectors.json'), text);
-  } catch {
-    // /tmp 写入失败不影响内存使用
-  }
-  return text;
-}
-
-async function loadIndexAsync(): Promise<VectorIndex | null> {
-  if (_loadAttempted) return _vectorIndex;
-  _loadAttempted = true;
-
-  let raw = loadFromLocal();
-  if (!raw) raw = loadFromTmpCache();
-  if (!raw) {
-    try {
-      raw = await downloadFromCos();
-    } catch {
-      return null;
-    }
-  }
-  if (!raw) return null;
-
-  try {
-    _vectorIndex = JSON.parse(raw);
-    return _vectorIndex;
-  } catch {
-    return null;
-  }
-}
-
-function loadIndex(): VectorIndex | null {
-  if (_loadAttempted) return _vectorIndex;
-  _loadAttempted = true;
-
-  let raw = loadFromLocal();
-  if (!raw) raw = loadFromTmpCache();
-  if (!raw) return null;
-
-  try {
-    _vectorIndex = JSON.parse(raw);
-    return _vectorIndex;
-  } catch {
-    return null;
-  }
-}
-
-export function cosineSimilarity(a: number[], b: number[]): number {
+export function cosineSimilarity(a: ArrayLike<number>, b: ArrayLike<number>): number {
   let dot = 0;
   let normA = 0;
   let normB = 0;
-  for (let i = 0; i < a.length; i++) {
-    dot += a[i] * b[i];
-    normA += a[i] * a[i];
-    normB += b[i] * b[i];
+  const n = Math.min(a.length, b.length);
+  for (let i = 0; i < n; i++) {
+    const x = a[i];
+    const y = b[i];
+    dot += x * y;
+    normA += x * x;
+    normB += y * y;
+  }
+  const denom = Math.sqrt(normA) * Math.sqrt(normB);
+  return denom === 0 ? 0 : dot / denom;
+}
+
+export function cosineSimilarityRow(
+  query: ArrayLike<number>,
+  matrix: Float32Array,
+  rowOffset: number,
+  dim: number,
+): number {
+  let dot = 0;
+  let normA = 0;
+  let normB = 0;
+  for (let i = 0; i < dim; i++) {
+    const x = query[i] ?? 0;
+    const y = matrix[rowOffset + i];
+    dot += x * y;
+    normA += x * x;
+    normB += y * y;
   }
   const denom = Math.sqrt(normA) * Math.sqrt(normB);
   return denom === 0 ? 0 : dot / denom;
@@ -185,23 +120,198 @@ class TopKMinHeap {
   }
 }
 
-export async function vectorSearch(queryEmbedding: number[], topK: number): Promise<ScoredChunk[]> {
+function parseChunkRows(raw: Buffer | null): ChunkRow[] {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw.toString("utf8"));
+    const chunks = Array.isArray(parsed?.chunks) ? parsed.chunks : Array.isArray(parsed) ? parsed : [];
+    return chunks.filter((c: ChunkRow) => c?.id);
+  } catch {
+    return [];
+  }
+}
+
+function metaMapFromRows(rows: ChunkRow[]): Map<string, ChunkRow> {
+  const map = new Map<string, ChunkRow>();
+  for (const row of rows) map.set(row.id, row);
+  return map;
+}
+
+function float32FromBuffer(buf: Buffer): Float32Array {
+  const copy = new Uint8Array(buf.byteLength);
+  copy.set(buf);
+  return new Float32Array(copy.buffer);
+}
+
+function loadBinaryIndex(bin: Buffer, idsRaw: Buffer, metaById: Map<string, ChunkRow>): VectorIndex | null {
+  let ids: string[];
+  try {
+    ids = JSON.parse(idsRaw.toString("utf8"));
+  } catch {
+    return null;
+  }
+  if (!Array.isArray(ids) || ids.length === 0) return null;
+  const matrix = float32FromBuffer(bin);
+  const dimension = Math.floor(matrix.length / ids.length);
+  if (dimension < 8 || dimension * ids.length !== matrix.length) {
+    logSearchIndexOnce(`vectors.bin 长度与 ids 不对齐（ids=${ids.length}, floats=${matrix.length}），跳过向量索引`);
+    return null;
+  }
+  return {
+    model: process.env.AI_EMBEDDING_MODEL || "BAAI/bge-m3",
+    dimension,
+    ids,
+    metaById,
+    matrix,
+  };
+}
+
+function loadLegacyJsonIndex(raw: Buffer, localMeta: Map<string, ChunkRow>): VectorIndex | null {
+  try {
+    const parsed = JSON.parse(raw.toString("utf8")) as {
+      model?: string;
+      dimension?: number;
+      chunks?: Array<ChunkRow & { vector?: number[] }>;
+    };
+    const chunks = parsed.chunks ?? [];
+    if (!chunks.length || !chunks[0]?.vector?.length) return null;
+
+    if (localMeta.size > 0) {
+      const overlap = chunks.filter((c) => localMeta.has(c.id)).length;
+      if (overlap < chunks.length * 0.8) {
+        logSearchIndexOnce(
+          `跳过 vectors.json：与本地 chunks-meta 重叠过低（${overlap}/${chunks.length}），避免混入过期向量`,
+        );
+        return null;
+      }
+    }
+
+    const dimension = parsed.dimension || chunks[0].vector.length;
+    const ids: string[] = [];
+    const matrix = new Float32Array(chunks.length * dimension);
+    const metaById = new Map<string, ChunkRow>(localMeta);
+    for (let i = 0; i < chunks.length; i++) {
+      const chunk = chunks[i];
+      if (!chunk.vector || chunk.vector.length !== dimension) continue;
+      ids.push(chunk.id);
+      matrix.set(chunk.vector, ids.length * dimension - dimension);
+      if (!metaById.has(chunk.id)) {
+        metaById.set(chunk.id, {
+          id: chunk.id,
+          path: chunk.path,
+          subjectId: chunk.subjectId,
+          subjectName: chunk.subjectName,
+          categoryId: chunk.categoryId,
+          itemId: chunk.itemId,
+          title: chunk.title,
+          chunkIndex: chunk.chunkIndex,
+          text: chunk.text,
+        });
+      }
+    }
+    if (!ids.length) return null;
+    return {
+      model: parsed.model || process.env.AI_EMBEDDING_MODEL || "BAAI/bge-m3",
+      dimension,
+      ids,
+      metaById,
+      matrix: ids.length === chunks.length ? matrix : matrix.subarray(0, ids.length * dimension),
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function loadIndexAsync(): Promise<VectorIndex | null> {
+  if (_loadAttempted) return _vectorIndex;
+  _loadAttempted = true;
+
+  const metaRows = parseChunkRows(
+    readLocalIndexFile(INDEX_FILES.chunksMeta) ?? (await readIndexFile(INDEX_FILES.chunksMeta)),
+  );
+  const metaById = metaMapFromRows(metaRows);
+
+  const localBin = readLocalIndexFile(INDEX_FILES.vectorsBin);
+  const localIds = readLocalIndexFile(INDEX_FILES.vectorsIds);
+  if (localBin && localIds) {
+    _vectorIndex = loadBinaryIndex(localBin, localIds, metaById);
+    if (_vectorIndex) {
+      logSearchIndexOnce(
+        `向量索引 vectors.bin 已加载：${_vectorIndex.ids.length} 条 × ${_vectorIndex.dimension} 维`,
+      );
+      return _vectorIndex;
+    }
+  }
+
+  if (hasLocalSearchIndex()) {
+    const legacy = readLocalIndexFile(INDEX_FILES.vectorsJson);
+    if (legacy) {
+      _vectorIndex = loadLegacyJsonIndex(legacy, metaById);
+      if (_vectorIndex) {
+        logSearchIndexOnce(`向量索引 vectors.json（旧格式）已加载：${_vectorIndex.ids.length} 条`);
+        return _vectorIndex;
+      }
+    }
+    logSearchIndexOnce(
+      "本地无可用向量索引（缺 vectors.bin）。已禁止从 COS 拉取过期向量；当前走 BM25。请运行 pnpm build-index 生成向量。",
+    );
+    return null;
+  }
+
+  const remoteBin = await readIndexFile(INDEX_FILES.vectorsBin);
+  const remoteIds = await readIndexFile(INDEX_FILES.vectorsIds);
+  if (remoteBin && remoteIds) {
+    _vectorIndex = loadBinaryIndex(remoteBin, remoteIds, metaById);
+    if (_vectorIndex) {
+      logSearchIndexOnce(`从 COS/缓存加载 vectors.bin：${_vectorIndex.ids.length} 条`);
+      return _vectorIndex;
+    }
+  }
+
+  const remoteLegacy = await readIndexFile(INDEX_FILES.vectorsJson);
+  if (remoteLegacy) {
+    _vectorIndex = loadLegacyJsonIndex(remoteLegacy, metaById);
+    if (_vectorIndex) {
+      logSearchIndexOnce(`从 COS/缓存加载 vectors.json：${_vectorIndex.ids.length} 条`);
+      return _vectorIndex;
+    }
+  }
+
+  return null;
+}
+
+export async function vectorSearch(
+  queryEmbedding: number[],
+  topK: number,
+  filter?: SearchFilter,
+): Promise<ScoredChunk[]> {
   const index = await loadIndexAsync();
-  if (!index || !index.chunks.length) return [];
+  if (!index || !index.ids.length) return [];
+  if (queryEmbedding.length !== index.dimension) {
+    logSearchIndexOnce(
+      `查询向量维度 ${queryEmbedding.length} 与索引 ${index.dimension} 不一致，跳过向量检索`,
+    );
+    return [];
+  }
 
   const heap = new TopKMinHeap(topK);
-  for (const chunk of index.chunks) {
+  const { ids, matrix, dimension, metaById } = index;
+  for (let i = 0; i < ids.length; i++) {
+    const id = ids[i];
+    const meta = metaById.get(id);
+    if (!meta) continue;
+    if (!chunkInScope(meta.subjectId, filter)) continue;
     heap.push({
-      id: chunk.id,
-      path: chunk.path,
-      subjectId: chunk.subjectId,
-      subjectName: chunk.subjectName,
-      categoryId: chunk.categoryId,
-      itemId: chunk.itemId,
-      title: chunk.title,
-      chunkIndex: chunk.chunkIndex,
-      text: chunk.text,
-      score: cosineSimilarity(queryEmbedding, chunk.vector),
+      id: meta.id,
+      path: meta.path,
+      subjectId: meta.subjectId,
+      subjectName: meta.subjectName,
+      categoryId: meta.categoryId,
+      itemId: meta.itemId,
+      title: meta.title,
+      chunkIndex: meta.chunkIndex,
+      text: meta.text,
+      score: cosineSimilarityRow(queryEmbedding, matrix, i * dimension, dimension),
     });
   }
   return heap.toSortedDesc();
@@ -209,4 +319,15 @@ export async function vectorSearch(queryEmbedding: number[], topK: number): Prom
 
 export async function isVectorIndexLoaded(): Promise<boolean> {
   return (await loadIndexAsync()) !== null;
+}
+
+export async function getVectorIndexModel(): Promise<string | null> {
+  const index = await loadIndexAsync();
+  return index?.model ?? null;
+}
+
+/** 测试用：清空惰性缓存。 */
+export function resetVectorIndexCache(): void {
+  _vectorIndex = null;
+  _loadAttempted = false;
 }

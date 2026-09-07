@@ -202,14 +202,20 @@ export function buildStudyTools(
 
     searchNotes: tool({
       description:
-        "在课程内容（教材、详解、录音、纪要）中按关键词检索，返回带上下文的相关片段及其所在位置。默认只搜当前学年；不确定教材是否讲过某点、或知识点可能跨学年时先检索。返回结果的 path 字段可直接传给 getSection 获取完整内容。",
+        "在课程内容（教材、详解、录音、纪要）中做语义+关键词检索，返回带上下文的相关片段及其所在位置。默认只搜当前学年；不确定教材是否讲过某点、或知识点可能跨学年时先检索。查询用知识点短语（如「核糖体」「被覆上皮」），不要用「什么是…」整句。返回结果的 path 字段可直接传给 getSection 获取完整内容；片段不够时必须再调 getSection。",
       inputSchema: z.object({
-        query: z.string().describe("检索关键词，如 '贝叶斯公式'、'线粒体'、'肝小叶'"),
+        query: z.string().describe("检索短语，如 '贝叶斯公式'、'线粒体'、'肝小叶'、'被覆上皮'。用知识点本身，不要用完整问句。"),
         crossYear: z.boolean().optional().describe("true 时跨学年检索（大一与大二都搜）。医学基础常与大一化学/物理交叉，此时应打开。"),
+        subjectId: z.string().optional().describe("限定科目 id，如 histology、biochemistry、anatomy、cell-biology、instrumental-analysis。不传则搜当前学年全部科目。"),
       }),
-      execute: async ({ query, crossYear }): Promise<SearchNotesOutput> => {
+      execute: async ({ query, crossYear, subjectId }): Promise<SearchNotesOutput> => {
         const scope: ContentSearchScope = crossYear ? "all" : ctx.academicYear;
-        const hits = await searchAllContent(query, { limit: 8, academicYear: scope });
+        const hits = await searchAllContent(query, {
+          limit: 8,
+          academicYear: scope,
+          subjectId: subjectId || undefined,
+          preferSubjectId: subjectId ? undefined : ctx.subjectId,
+        });
         if (!hits.length) {
           return { text: "未检索到相关内容。可尝试更换关键词，或调用 getOutline 浏览目录。", hits: [] };
         }

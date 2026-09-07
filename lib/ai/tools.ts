@@ -113,14 +113,18 @@ export const ALL_TOOLS: Record<string, ToolDefinition> = {
     function: {
       name: "searchNotes",
       description:
-        "在课程内容（教材、详解、录音、纪要）中按关键词检索，返回带上下文的相关片段及其所在位置。默认只搜当前学年；不确定教材是否讲过某点、或知识点可能跨学年时先检索。返回结果的 path 字段可直接传给 getSection 获取完整内容。",
+        "在课程内容（教材、详解、录音、纪要）中做语义+关键词检索，返回带上下文的相关片段及其所在位置。默认只搜当前学年；不确定教材是否讲过某点、或知识点可能跨学年时先检索。查询用知识点短语（如「核糖体」「被覆上皮」），不要用「什么是…」整句。返回结果的 path 字段可直接传给 getSection 获取完整内容；片段不够时必须再调 getSection。",
       parameters: {
         type: "object",
         properties: {
-          query: { type: "string", description: "检索关键词，如 '贝叶斯公式'、'线粒体'、'肝小叶'" },
+          query: { type: "string", description: "检索短语，如 '贝叶斯公式'、'线粒体'、'肝小叶'、'被覆上皮'。用知识点本身，不要用完整问句。" },
           crossYear: {
             type: "boolean",
             description: "true 时跨学年检索（大一与大二都搜）。医学基础常与大一化学/物理交叉，此时应打开。",
+          },
+          subjectId: {
+            type: "string",
+            description: "限定科目 id，如 histology、biochemistry、anatomy、cell-biology、instrumental-analysis。不传则搜当前学年全部科目。",
           },
         },
         required: ["query"],
@@ -337,10 +341,16 @@ export async function runTool(
     case "searchNotes": {
       const query = String(args.query ?? "");
       const crossYear = args.crossYear === true;
+      const subjectId = String(args.subjectId ?? "").trim() || undefined;
       const scope: ContentSearchScope = crossYear
         ? "all"
         : (ctx.academicYear ?? DEFAULT_ACADEMIC_YEAR);
-      const hits = await searchAllContent(query, { limit: 8, academicYear: scope });
+      const hits = await searchAllContent(query, {
+        limit: 8,
+        academicYear: scope,
+        subjectId,
+        preferSubjectId: subjectId ? undefined : ctx.subjectId,
+      });
       if (!hits.length) return { content: "未检索到相关内容。可尝试更换关键词，或调用 getOutline 浏览目录。", meta: { hits: [] } };
       const lines = hits.map(
         (h) => `[${h.title}] (path: ${h.path})\n…${h.snippet}…`,
