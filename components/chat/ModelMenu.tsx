@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { ChevronDown, ChevronLeft, ChevronRight, Check, Cpu } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronUp, Check, Cpu } from "lucide-react";
 import { useSettings, type ThinkingEffort } from "@/lib/hooks/useSettings";
 import {
   getModelGroupsWithCustom,
@@ -20,8 +20,15 @@ import { AgentCheckIcon, AgentPauseIcon } from "@/components/icons/AgentIcons";
 import { THINKING_EFFORT_OPTIONS } from "@/components/chat/ThinkingMenu";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
-const PRIMARY_WIDTH = 264;
-const SECONDARY_WIDTH = 220;
+const PRIMARY_WIDTH = 248;
+const SECONDARY_WIDTH = 240;
+
+function formatContextWindow(k?: number): string | null {
+  if (!k || k <= 0) return null;
+  if (k % 1000 === 0) return `${k / 1000}M`;
+  if (k >= 1000) return `${(k / 1000).toFixed(1).replace(/\.0$/, "")}M`;
+  return `${k}K`;
+}
 
 export default function ModelMenu({
   value,
@@ -61,7 +68,7 @@ export default function ModelMenu({
       : current?.label ?? selectedModelId;
   const groups = getModelGroupsWithCustom(customApiGroups);
   const flyoutModel = flyoutId ? getModelInfoWithCustom(flyoutId, customApiGroups) : undefined;
-  const showFlyout = !!(flyoutModel && modelSupportsThinkingEffort(flyoutModel));
+  const showFlyout = !!flyoutModel;
 
   const closeMenu = useCallback(() => {
     setOpen(false);
@@ -147,7 +154,7 @@ export default function ModelMenu({
   };
 
   const onRowClick = (m: ModelInfo) => {
-    if (modelSupportsThinkingEffort(m) && (isMobile || !onThinkingChange)) {
+    if (isMobile) {
       setFlyoutId((cur) => (cur === m.id ? null : m.id));
       return;
     }
@@ -157,6 +164,10 @@ export default function ModelMenu({
         enabled: m.thinkingRequired ? true : thinkingEnabled,
         effort,
       });
+      return;
+    }
+    if (modelSupportsThinkingEffort(m) && !onThinkingChange) {
+      setFlyoutId((cur) => (cur === m.id ? null : m.id));
       return;
     }
     pickModel(m.id);
@@ -183,7 +194,7 @@ export default function ModelMenu({
             <div
               ref={popRef}
               style={{ left: pos.left, bottom: pos.bottom, width: PRIMARY_WIDTH }}
-              className="fixed z-[9999] max-h-[360px] overflow-y-auto rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-1.5 shadow-lg animate-[dropdown-in_0.15s_ease-out]"
+              className="hide-scrollbar fixed z-[9999] max-h-[360px] overflow-y-auto rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-1.5 shadow-lg animate-[dropdown-in_0.15s_ease-out]"
               data-testid="model-menu-panel"
               onMouseLeave={() => {
                 if (!isMobile) scheduleCloseFlyout();
@@ -196,7 +207,6 @@ export default function ModelMenu({
                   </div>
                   {g.models.map((m) => {
                     const active = m.id === selectedModelId;
-                    const hasEffort = modelSupportsThinkingEffort(m);
                     const flyoutOpen = flyoutId === m.id;
                     return (
                       <button
@@ -205,15 +215,17 @@ export default function ModelMenu({
                         data-testid={`model-menu-item-${m.id}`}
                         onClick={() => onRowClick(m)}
                         onMouseEnter={() => {
-                          if (!isMobile && hasEffort) openFlyout(m.id);
-                          else if (!isMobile) setFlyoutId(null);
+                          if (!isMobile) openFlyout(m.id);
                         }}
                         className={
-                          "flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left transition-colors " +
+                          "flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors " +
                           (active || flyoutOpen ? "bg-[var(--accent-weak)]" : "hover:bg-[var(--bg-muted)]")
                         }
                       >
-                        <span className="relative mt-0.5 w-3.5 shrink-0">
+                        <span className="shrink-0 text-[var(--ink-faint)]" aria-hidden>
+                          {isMobile ? <ChevronUp size={12} /> : <ChevronLeft size={12} />}
+                        </span>
+                        <span className="relative w-3.5 shrink-0">
                           <ModelIcon brand={m.icon} size={14} className="text-[var(--ink)]" />
                           {active && (
                             <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5 items-center justify-center rounded-full bg-[var(--accent-ink)]">
@@ -221,41 +233,9 @@ export default function ModelMenu({
                             </span>
                           )}
                         </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="flex items-center gap-1.5">
-                            <span className="truncate text-[12.5px] font-medium text-[var(--ink)]">
-                              {m.label}
-                            </span>
-                            {m.thinking && (
-                              <span className="shrink-0 rounded bg-[var(--bg-muted)] px-1 text-[9px] text-[var(--ink-soft)]">
-                                思考
-                              </span>
-                            )}
-                            {hasEffort && (
-                              <span className="shrink-0 rounded bg-[var(--bg-muted)] px-1 text-[9px] text-[var(--ink-soft)]">
-                                强度
-                              </span>
-                            )}
-                            {m.vision && (
-                              <span className="shrink-0 rounded bg-[color-mix(in_srgb,var(--md-sys-color-tertiary)_15%,transparent)] px-1 text-[9px] text-[var(--md-sys-color-tertiary)]">
-                                视觉
-                              </span>
-                            )}
-                            {m.type === "image" && (
-                              <span className="shrink-0 rounded bg-[color-mix(in_srgb,var(--md-sys-color-secondary)_18%,transparent)] px-1 text-[9px] text-[var(--md-sys-color-secondary)]">
-                                生图
-                              </span>
-                            )}
-                          </span>
-                          <span className="block truncate text-[10.5px] text-[var(--ink-faint)]">
-                            {m.hint}
-                          </span>
+                        <span className="min-w-0 flex-1 truncate text-[12.5px] font-medium text-[var(--ink)]">
+                          {m.label}
                         </span>
-                        {hasEffort && (
-                          <span className="mt-0.5 shrink-0 text-[var(--ink-faint)]" aria-hidden>
-                            {isMobile ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
-                          </span>
-                        )}
                       </button>
                     );
                   })}
@@ -267,26 +247,111 @@ export default function ModelMenu({
               <div
                 ref={subRef}
                 style={{ left: subPos.left, bottom: subPos.bottom, width: subPos.width }}
-                className="fixed z-[10000] rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-1.5 shadow-lg animate-[dropdown-in_0.15s_ease-out]"
-                data-testid="model-thinking-submenu"
+                className="hide-scrollbar fixed z-[10000] max-h-[min(420px,70vh)] overflow-y-auto rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-1.5 shadow-lg animate-[dropdown-in_0.15s_ease-out]"
+                data-testid="model-submenu"
                 data-placement={subPos.place}
                 onMouseEnter={() => flyoutId && openFlyout(flyoutId)}
                 onMouseLeave={() => {
                   if (!isMobile) scheduleCloseFlyout();
                 }}
               >
-                <ThinkingSubmenu
+                <ModelDetails
                   model={flyoutModel}
-                  selected={flyoutModel.id === selectedModelId}
-                  thinkingEnabled={thinkingEnabled}
-                  thinkingEffort={thinkingEffort}
-                  onPick={(next) => pickModel(flyoutModel.id, next)}
+                  onUse={() => {
+                    if (modelSupportsThinkingEffort(flyoutModel) && onThinkingChange) {
+                      pickModel(flyoutModel.id, {
+                        enabled: flyoutModel.thinkingRequired ? true : thinkingEnabled,
+                        effort: clampThinkingEffort(flyoutModel, thinkingEffort),
+                      });
+                      return;
+                    }
+                    pickModel(flyoutModel.id);
+                  }}
                 />
+                {modelSupportsThinkingEffort(flyoutModel) && (
+                  <div data-testid="model-thinking-submenu">
+                    <ThinkingSubmenu
+                      model={flyoutModel}
+                      selected={flyoutModel.id === selectedModelId}
+                      thinkingEnabled={thinkingEnabled}
+                      thinkingEffort={thinkingEffort}
+                      onPick={(next) => pickModel(flyoutModel.id, next)}
+                    />
+                  </div>
+                )}
               </div>
             )}
           </>,
           document.body,
         )}
+    </>
+  );
+}
+
+function ModelDetails({
+  model,
+  onUse,
+}: {
+  model: ModelInfo;
+  onUse: () => void;
+}) {
+  const ctx = formatContextWindow(model.contextK);
+  const badges: { key: string; label: string; className: string }[] = [];
+  if (model.vision) {
+    badges.push({
+      key: "vision",
+      label: "视觉",
+      className: "bg-[color-mix(in_srgb,var(--md-sys-color-tertiary)_15%,transparent)] text-[var(--md-sys-color-tertiary)]",
+    });
+  }
+  if (ctx) {
+    badges.push({
+      key: "ctx",
+      label: `上下文 ${ctx}`,
+      className: "bg-[var(--bg-muted)] text-[var(--ink-soft)]",
+    });
+  }
+  if (model.thinking) {
+    badges.push({
+      key: "think",
+      label: model.thinkingRequired ? "思考不可关" : "思考",
+      className: "bg-[var(--bg-muted)] text-[var(--ink-soft)]",
+    });
+  }
+  if (model.type === "image") {
+    badges.push({
+      key: "image",
+      label: "生图",
+      className: "bg-[color-mix(in_srgb,var(--md-sys-color-secondary)_18%,transparent)] text-[var(--md-sys-color-secondary)]",
+    });
+  }
+
+  return (
+    <>
+      <div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
+        模型信息
+      </div>
+      <div className="px-2 pb-2">
+        <div className="text-[12.5px] font-medium text-[var(--ink)]">{model.label}</div>
+        <div className="mt-0.5 text-[10.5px] leading-relaxed text-[var(--ink-faint)]">{model.hint}</div>
+        {badges.length > 0 && (
+          <div className="mt-1.5 flex flex-wrap gap-1">
+            {badges.map((b) => (
+              <span key={b.key} className={`rounded px-1 py-0.5 text-[9px] ${b.className}`}>
+                {b.label}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+      <button
+        type="button"
+        data-testid="model-submenu-use"
+        onClick={onUse}
+        className="mb-1 flex w-full items-center rounded-lg px-2 py-1.5 text-left text-[12.5px] font-medium text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+      >
+        选用此模型
+      </button>
     </>
   );
 }
@@ -311,8 +376,9 @@ function ThinkingSubmenu({
 
   return (
     <>
+      <div className="my-1 h-px bg-[var(--line)]/60" />
       <div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
-        思考强度 · {model.label}
+        思考强度
       </div>
       {allowOff && (
         <>

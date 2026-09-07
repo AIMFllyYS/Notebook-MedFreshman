@@ -64,13 +64,18 @@ export default function ChatThread({
     () => messages.filter((m) => m.role === 'user' || m.role === 'assistant'),
     [messages],
   );
-  const lastDisplayId = displayMessages[displayMessages.length - 1]?.id;
+  const lastDisplay = displayMessages[displayMessages.length - 1];
+  const lastDisplayId = lastDisplay?.id;
   const safeBottomInset = Number.isFinite(bottomInset) ? Math.max(0, bottomInset) : 0;
+  // Keep the estimate close to a compact header + thinking line. A 120px floor
+  // used to park 「AI 正在思考中」 far below 「AI 助教」 on the first streamed row.
+  const MESSAGE_ESTIMATE_PX = 72;
+  const showThreadLoading = isLoading && lastDisplay?.role !== 'assistant';
 
   const virtualizer = useVirtualizer({
     count: displayMessages.length,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => 120,
+    estimateSize: () => MESSAGE_ESTIMATE_PX,
     overscan: 10,
     getItemKey: (index) => displayMessages[index]?.id ?? index,
     initialRect: { width: 0, height: 480 },
@@ -82,9 +87,9 @@ export default function ChatThread({
       ? virtualItems
       : displayMessages.slice(0, Math.min(displayMessages.length, 14)).map((_, index) => ({
           index,
-          start: index * 120,
+          start: index * MESSAGE_ESTIMATE_PX,
         }));
-  const totalSize = Math.max(virtualizer.getTotalSize(), displayMessages.length * 120);
+  const totalSize = virtualizer.getTotalSize() || displayMessages.length * MESSAGE_ESTIMATE_PX;
 
   const onStickScroll = useStickToBottom(scrollRef, isLoading);
 
@@ -174,8 +179,8 @@ export default function ChatThread({
                 );
               })}
             </div>
-            {isLoading && (
-              <div className="chat-loading">
+            {showThreadLoading && (
+              <div className="chat-loading" data-testid="chat-thread-loading">
                 <AgentLoopIcon size={16} className="animate-pulse motion-reduce:animate-none" style={{ color: 'var(--ink-soft)' }} />
                 <span className="chat-loading-text">AI 正在思考中...</span>
               </div>

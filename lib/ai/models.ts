@@ -150,6 +150,7 @@ export const MODELS: ModelInfo[] = [
     icon: "zhipu",
     pricing: { input: 1.05, cachedInput: 0.21, output: 3.5 },
     cacheTtlSec: 1800,
+    timeoutMs: 120_000,
   },
   {
     id: "Qwen/Qwen3.8-27B",
@@ -188,6 +189,7 @@ export const MODELS: ModelInfo[] = [
     icon: "gemini",
     pricing: { input: 1.05, cachedInput: 0.21, output: 4.2 },
     cacheTtlSec: 3600,
+    timeoutMs: 120_000,
   },
   {
     id: "deepseek/deepseek-v4-flash",

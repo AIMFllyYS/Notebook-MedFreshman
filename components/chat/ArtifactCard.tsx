@@ -7,17 +7,19 @@ import { useSettings } from '@/lib/hooks/useSettings';
 import { CUSTOM_PREFIX, findCustomModelGroup, getModelInfoWithCustom } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { MessageContent } from '@/components/chat/MessageContent';
+import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
 
 type ArtifactApiEvent =
   | { type: 'ping'; t?: number }
   | { type: 'artifact'; id: string; status: 'start'; title?: string }
+  | { type: 'artifact'; id: string; status: 'reasoning'; delta?: string }
   | { type: 'artifact'; id: string; status: 'delta'; delta?: string }
   | { type: 'artifact'; id: string; status: 'done'; html?: string }
   | { type: 'artifact'; id: string; status: 'error'; message?: string };
 
 /**
  * 消息内的交互演示卡片：直接挂在对话气泡里（用户视线所在处），而非顶部独立横幅。
- * - 生成中：实时流式显示 HTML 源码 + 进度，让用户看到"正在写代码"；
+ * - 生成中：思考块实时展开 + 可选 HTML 源码，避免「0 字符像挂死」；
  * - 完成后：常驻、显眼的「打开演示」按钮（不会被折叠面板藏起来）。
  * artifact HTML 通过独立 /api/artifact SSE 流生成，完成后才持久化到 useArtifacts。
  */
@@ -41,21 +43,26 @@ export default function ArtifactCard({
   const saveDone = useArtifacts((s) => s.saveDone);
   const [status, setStatus] = useState<'idle' | 'streaming' | 'done' | 'error'>('idle');
   const [streamHtml, setStreamHtml] = useState('');
+  const [reasoning, setReasoning] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [showCode, setShowCode] = useState(autoStart);
+  const [showCode, setShowCode] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(false);
   const preRef = useRef<HTMLPreElement>(null);
   const startedRef = useRef(false);
-  // 捕获"卡片随正在流式的消息首次出现"这一意图：仅此时自动生成。用 ref 锁定 autoStart 的首帧值，
-  // 这样主聊天结束 isStreaming→false 导致 autoStart 翻转时，不会触发 effect 重跑/中断生成。
-  const autoGenRef = useRef(autoStart);
+  const [runId, setRunId] = useState(0);
+  // 只取首帧 autoStart：主聊天结束导致 autoStart 翻转时，不中断或误标「数据缺失」。
+  const [shouldAutoGen, setShouldAutoGen] = useState(autoStart);
 
   const title = titleProp || art?.title || '交互演示';
   const html = streamHtml || art?.html || '';
   const streaming = status === 'streaming';
-  const preparing = autoStart && !art && status === 'idle';
+  const preparing = shouldAutoGen && !art && status === 'idle';
   const done = status === 'done' || art?.status === 'done';
   const errored = status === 'error';
-  const expired = !art && !streaming && !preparing && !done && !autoStart;
+  const expired = !art && !streaming && !preparing && !done && !shouldAutoGen;
+  const thinkingActive = streaming || preparing;
+  const [showThinking, setShowThinking] = useProcessingDisclosure(thinkingActive);
+  const showThinkingSection = thinkingActive || reasoning.length > 0;
 
   // 流式时自动滚到底部
   useEffect(() => {
@@ -68,16 +75,17 @@ export default function ArtifactCard({
   // (autoStart 翻转) 也会误中断尚在生成的演示。请求时长由服务端滑动超时(90s)+maxDuration 收口。
   useEffect(() => {
     if (startedRef.current) return;
-    if (!autoGenRef.current) return; // 历史消息里的旧卡片：不自动重生成
+    if (!shouldAutoGen) return; // 历史消息里的旧卡片：不自动重生成
     if (art || !prompt) return;      // 已有产物 / prompt 尚未就绪
     startedRef.current = true;
     // 一次性进入流式态：本 effect 的职责就是把生成请求这一外部异步系统挂起来，
     // 同步置初始 UI 态是必要的且只发生一次（startedRef 守卫），非级联渲染反模式。
     /* eslint-disable react-hooks/set-state-in-effect */
     setStatus('streaming');
-    setShowCode(true);
+    setShowCode(false);
     setError(null);
     setStreamHtml('');
+    setReasoning('');
     /* eslint-enable react-hooks/set-state-in-effect */
 
     const settings = useSettings.getState();
@@ -119,6 +127,8 @@ export default function ArtifactCard({
         const decoder = new TextDecoder('utf-8');
         let buffer = '';
         let htmlBuf = '';
+        let reasoningBuf = '';
+        let terminal = false;
 
         while (true) {
           const { done: streamDone, value } = await reader.read();
@@ -132,11 +142,15 @@ export default function ArtifactCard({
             if (event.type !== 'artifact' || event.id !== artifactId) continue;
             if (event.status === 'start') {
               setStatus('streaming');
-              setShowCode(true);
+            } else if (event.status === 'reasoning') {
+              reasoningBuf += event.delta || '';
+              setReasoning(reasoningBuf);
             } else if (event.status === 'delta') {
               htmlBuf += event.delta || '';
               setStreamHtml(htmlBuf);
+              setShowCode(true);
             } else if (event.status === 'done') {
+              terminal = true;
               const finalHtml = event.html || htmlBuf;
               htmlBuf = finalHtml;
               setStreamHtml(finalHtml);
@@ -144,10 +158,15 @@ export default function ArtifactCard({
               setShowCode(true);
               saveDone(artifactId, title, finalHtml);
             } else if (event.status === 'error') {
+              terminal = true;
               setStatus('error');
               setError(event.message || '交互演示生成失败');
             }
           }
+        }
+        if (!terminal) {
+          setStatus('error');
+          setError('生成中断，请重试');
         }
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') return;
@@ -155,7 +174,7 @@ export default function ArtifactCard({
         setError(err instanceof Error ? err.message : '交互演示生成失败');
       }
     })();
-  }, [artifactId, art, modelId, prompt, saveDone, title, unsupportedReason]);
+  }, [artifactId, art, modelId, prompt, saveDone, title, unsupportedReason, runId, shouldAutoGen]);
 
   const openExternal = () => {
     if (!html) return;
@@ -165,6 +184,7 @@ export default function ArtifactCard({
   };
 
   const codeChars = html.length;
+  const onContainer = expired ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary-container)';
 
   return (
     <div
@@ -185,7 +205,7 @@ export default function ArtifactCard({
         )}
         <span
           className="min-w-0 flex-1 truncate text-[12.5px] font-semibold"
-          style={{ color: expired ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary-container)' }}
+          style={{ color: onContainer }}
         >
           {streaming || preparing
             ? `正在生成交互演示：${title}…`
@@ -208,18 +228,70 @@ export default function ArtifactCard({
         )}
       </div>
 
-      {/* 生成依据（prompt 参数展示）：复用全量富文本渲染（markdown + 公式 + 软换行） */}
       {prompt && (streaming || preparing || done) && (
         <div
-          className="chat-prose px-3 py-1.5 text-[11px]"
           style={{
-            color: 'var(--md-sys-color-on-surface-variant)',
-            background: 'color-mix(in srgb, var(--md-sys-color-primary) 6%, transparent)',
             borderBottom: '1px solid color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent)',
           }}
         >
-          <span style={{ fontWeight: 600 }}>生成依据：</span>
-          <MessageContent content={prompt} enableVisualizations={false} preserveLineBreaks />
+          <button
+            type="button"
+            data-testid="artifact-prompt-toggle"
+            aria-expanded={showPrompt}
+            onClick={() => setShowPrompt((v) => !v)}
+            className="flex w-full items-center gap-1 px-3 py-1.5 text-left text-[11.5px] font-medium"
+            style={{ color: onContainer, background: 'transparent', border: 'none', cursor: 'pointer' }}
+          >
+            生成依据
+            <AgentChevronIcon size={13} style={{ transform: showPrompt ? 'rotate(180deg)' : undefined }} />
+          </button>
+          {showPrompt && (
+            <div
+              data-testid="artifact-prompt-body"
+              className="chat-prose px-3 pb-2 text-[11px]"
+              style={{
+                color: 'var(--md-sys-color-on-surface-variant)',
+                background: 'color-mix(in srgb, var(--md-sys-color-primary) 6%, transparent)',
+              }}
+            >
+              <MessageContent content={prompt} enableVisualizations={false} preserveLineBreaks />
+            </div>
+          )}
+        </div>
+      )}
+
+      {showThinkingSection && (
+        <div
+          style={{
+            borderBottom: '1px solid color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent)',
+          }}
+        >
+          <button
+            type="button"
+            data-testid="artifact-thinking-toggle"
+            aria-expanded={showThinking}
+            onClick={() => setShowThinking((v) => !v)}
+            className="flex w-full items-center gap-1 px-3 py-1.5 text-left text-[11.5px] font-medium"
+            style={{ color: onContainer, background: 'transparent', border: 'none', cursor: 'pointer' }}
+          >
+            <AgentLoopIcon
+              size={13}
+              className={thinkingActive ? 'animate-pulse motion-reduce:animate-none' : undefined}
+            />
+            {thinkingActive ? '思考中' : '思考过程'}
+            <AgentChevronIcon size={13} style={{ transform: showThinking ? 'rotate(180deg)' : undefined }} />
+          </button>
+          {showThinking && (
+            <div
+              data-testid="artifact-thinking-body"
+              className="chat-prose max-h-48 overflow-auto px-3 pb-2 text-[11px] leading-relaxed"
+              style={{ color: 'var(--md-sys-color-on-surface-variant)' }}
+            >
+              {reasoning
+                ? <MessageContent content={reasoning} enableVisualizations={false} preserveLineBreaks />
+                : '正在思考生成方案…'}
+            </div>
+          )}
         </div>
       )}
 
@@ -272,9 +344,33 @@ export default function ArtifactCard({
         </pre>
       )}
 
-      {errored && (
-        <div className="px-3 pb-3 text-[12px]" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
-          {error || '该演示生成出错，可让助教重新生成，或改用文字讲解。'}
+      {(errored || expired) && (
+        <div className="flex items-center gap-2 px-3 pb-3 text-[12px]" style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
+          <span className="min-w-0 flex-1">
+            {errored
+              ? (error || '该演示生成出错，可让助教重新生成，或改用文字讲解。')
+              : '交互演示数据缺失（可重新生成，或让助教再调用一次）。'}
+          </span>
+          {prompt && (
+            <button
+              type="button"
+              data-testid="artifact-retry"
+              onClick={() => {
+                startedRef.current = false;
+                setShouldAutoGen(true);
+                setStatus('idle');
+                setError(null);
+                setStreamHtml('');
+                setReasoning('');
+                setShowCode(false);
+                setRunId((n) => n + 1);
+              }}
+              className="shrink-0 rounded-lg px-2 py-1 text-[11.5px] font-medium"
+              style={{ background: 'var(--md-sys-color-primary)', color: 'var(--md-sys-color-on-primary)', border: 'none', cursor: 'pointer' }}
+            >
+              重新生成
+            </button>
+          )}
         </div>
       )}
     </div>

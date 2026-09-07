@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { stripFences, extractHtml, finalizeHtml } from "./artifact.ts";
+import { stripFences, extractHtml, finalizeHtml, looksLikeHtmlDocument } from "./artifact.ts";
 
 // ── stripFences ────────────────────────────────────────────────
 
@@ -86,6 +86,13 @@ test("finalizeHtml：未截断时不补全已闭合的标签", () => {
 
 test("finalizeHtml：空字符串返回空", () => {
   assert.equal(finalizeHtml("", false), "");
+});
+
+test("looksLikeHtmlDocument：识别完整文档并拒绝纯文本", () => {
+  assert.equal(looksLikeHtmlDocument("<!DOCTYPE html><html></html>"), true);
+  assert.equal(looksLikeHtmlDocument("<html lang=\"zh\"><body>hi</body></html>"), true);
+  assert.equal(looksLikeHtmlDocument("just text"), false);
+  assert.equal(looksLikeHtmlDocument(""), false);
 });
 
 test("finalizeHtml：去围栏 + 提取 + 补全组合", () => {
