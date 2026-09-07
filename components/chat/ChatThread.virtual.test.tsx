@@ -125,6 +125,43 @@ describe('ChatThread virtualizer', () => {
     expect(queryByText('hidden system payload')).toBeNull();
   });
 
+  it('shows the thread loading line only before the assistant row exists', () => {
+    const userOnly: ChatMessage[] = [
+      { id: 'u1', role: 'user', parts: [{ type: 'text', text: 'visible user' }], timestamp: 1 },
+    ];
+    const withAssistant: ChatMessage[] = [
+      ...userOnly,
+      { id: 'a1', role: 'assistant', parts: [], timestamp: 2 },
+    ];
+    const { getByText, getByTestId, queryByTestId, rerender } = render(
+      <div style={{ height: 480, display: 'flex', flexDirection: 'column' }}>
+        <ChatThread
+          messages={userOnly}
+          isLoading
+          error={null}
+          onClearError={() => {}}
+          onFollowUpClick={() => {}}
+          hydrated
+        />
+      </div>,
+    );
+    expect(getByTestId('chat-thread-loading')).toHaveTextContent('AI 正在思考中...');
+    rerender(
+      <div style={{ height: 480, display: 'flex', flexDirection: 'column' }}>
+        <ChatThread
+          messages={withAssistant}
+          isLoading
+          error={null}
+          onClearError={() => {}}
+          onFollowUpClick={() => {}}
+          hydrated
+        />
+      </div>,
+    );
+    expect(queryByTestId('chat-thread-loading')).toBeNull();
+    expect(getByText('正在思考…')).toBeTruthy();
+  });
+
   it('assigns the external scrollContainerRef to the real scroll viewport', () => {
     const scrollRef = React.createRef<HTMLDivElement>();
 

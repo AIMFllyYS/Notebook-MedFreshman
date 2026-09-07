@@ -4,7 +4,7 @@ import type { LanguageModel } from "ai";
 import { APICallError } from "@ai-sdk/provider";
 import type { ResolvedProvider } from "@/lib/ai/provider";
 import { buildCustomModelRegistryId } from "@/lib/ai/models";
-import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
+import { resolveLanguageModel, type ThinkingCallSettings } from "@/lib/ai/sdk/languageModel";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
 
 const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一任务是输出一个完整、自包含的 HTML 文档。
@@ -96,8 +96,15 @@ export function finalizeHtml(raw: string, truncated: boolean): string {
   return html;
 }
 
+/** True when the string looks like an HTML document rather than leftover prose. */
+export function looksLikeHtmlDocument(s: string): boolean {
+  const t = s.trim().toLowerCase();
+  return t.startsWith("<!doctype html") || /<html[\s>]/.test(t);
+}
+
 export type ArtifactStreamEvent =
   | { type: "artifact"; id: string; status: "start"; title: string }
+  | { type: "artifact"; id: string; status: "reasoning"; delta: string }
   | { type: "artifact"; id: string; status: "delta"; delta: string }
   | { type: "artifact"; id: string; status: "done"; html: string }
   | { type: "artifact"; id: string; status: "error"; message: string };
@@ -111,6 +118,11 @@ interface StreamInteractiveArtifactOptions {
   model?: LanguageModel;
   signal?: AbortSignal;
   timeoutMs?: number;
+  /**
+   * thinkingRequired 模型必须带上思考参数，否则上游可能空转/拒请；
+   * 思考 delta 通过 reasoning 事件交给前端，避免卡片长时间 0 字符像挂死。
+   */
+  thinking?: ThinkingCallSettings;
 }
 
 /**
@@ -141,19 +153,43 @@ export async function streamInteractiveArtifact(
         models: [{ id: provider.apiModelId, apiProtocol: provider.apiProtocol, thinking: false }],
       }],
     ).model;
+    const thinking = options.thinking ?? {};
+    const thinkingOn = !!thinking.providerOptions;
+    let reasoning = "";
     const result = await streamRouteText({
       model,
       instructions: ARTIFACT_SYSTEM,
       prompt: `知识点 / 需求：${prompt}\n标题：${title}`,
       temperature: 0.4,
-      maxOutputTokens: 4096,
+      // 思考不可关时 reasoning 会计入 max_tokens；4096 会被想完，正文只剩空串。
+      maxOutputTokens: Math.max(4096, thinking.maxOutputTokens ?? 0, thinkingOn ? 12_288 : 0),
+      ...(thinking.providerOptions ? { providerOptions: thinking.providerOptions } : {}),
       abortSignal: signal,
       idleTimeoutMs: timeoutMs,
       onText: (delta) => send({ type: "artifact", id: artifactId, status: "delta", delta }),
+      onReasoning: (delta) => {
+        reasoning += delta;
+        send({ type: "artifact", id: artifactId, status: "reasoning", delta });
+      },
     });
 
     // finish_reason === "length" 表示达到 max_tokens 被截断 → 收尾时补救闭合标签。
-    const html = finalizeHtml(result.text, result.finishReason === "length");
+    const truncated = result.finishReason === "length";
+    let html = finalizeHtml(result.text, truncated);
+    // 思考不可关的模型偶尔把 HTML 写进 reasoning；正文为空时从思考链里抢救。
+    if (!looksLikeHtmlDocument(html) && reasoning) {
+      const recovered = finalizeHtml(reasoning, truncated);
+      if (looksLikeHtmlDocument(recovered)) html = recovered;
+    }
+    if (!looksLikeHtmlDocument(html)) {
+      send({
+        type: "artifact",
+        id: artifactId,
+        status: "error",
+        message: truncated ? "生成被截断且未得到完整 HTML，请重试" : "模型未输出可渲染的 HTML，请重试",
+      });
+      return;
+    }
     send({ type: "artifact", id: artifactId, status: "done", html });
   } catch (e) {
     const isAbort = e instanceof Error && (e.name === "AbortError" || e.name === "TimeoutError");

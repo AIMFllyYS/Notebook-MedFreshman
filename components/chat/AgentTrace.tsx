@@ -31,7 +31,29 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
   const contentId = useId();
   const reducedMotion = useReducedMotion();
   const [expanded, setExpanded] = useProcessingDisclosure(isStreaming);
-  if (trace.steps.length === 0) return null;
+  const pulse = isStreaming && !reducedMotion && !trace.waitingCount;
+
+  if (trace.steps.length === 0) {
+    if (!isStreaming) return null;
+    return (
+      <section className="agent-trace mb-1 min-w-0" aria-label="Agent 处理过程">
+        <p
+          role="status"
+          aria-live="polite"
+          data-testid="agent-trace-thinking"
+          className="flex min-h-9 max-w-full items-center rounded-md py-1.5 text-left text-[13px] leading-5 text-[var(--md-sys-color-on-surface-variant)]"
+        >
+          <motion.span
+            className="min-w-0 [overflow-wrap:anywhere]"
+            animate={pulse ? { opacity: [0.6, 1, 0.6] } : { opacity: 1 }}
+            transition={pulse ? { duration: 2.4, repeat: Infinity } : { duration: 0 }}
+          >
+            正在思考…
+          </motion.span>
+        </p>
+      </section>
+    );
+  }
 
   const activeStep = trace.steps.findLast((step) => step.status === 'running');
   const title = isStreaming
