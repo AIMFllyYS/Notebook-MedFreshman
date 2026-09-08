@@ -1067,6 +1067,19 @@
   align-items: center;
   gap: 6px;
   margin-bottom: 10px;
+  min-width: 0;
+}
+.followup-sources {
+  margin-left: auto;
+  flex-shrink: 0;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 35%, var(--md-sys-color-outline-variant));
+  border-radius: 999px;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-primary);
+  font-size: 11px;
+  font-weight: 650;
+  padding: 4px 10px;
+  cursor: pointer;
 }
 .followup-header svg {
   display: inline-block;
@@ -1109,8 +1122,10 @@
 }
 .followup-btn-text {
   flex: 1;
+  min-width: 0;
   pointer-events: none;
   line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 /* (comment) */
@@ -1322,48 +1337,4 @@
 }
 .model-menu-label-short {
   display: none;
-}
-
-/* searchNotes inline reference cards (above assistant bubble) */
-.search-hit-inline-cards {
-  margin-bottom: 6px;
-  padding: 8px 10px;
-  background: var(--md-sys-color-surface-container);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: 10px;
-  font-size: 0.76rem;
-}
-.search-hit-inline-header {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--md-sys-color-secondary);
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-.search-hit-inline-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-.search-hit-inline-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  background: var(--md-sys-color-surface-container-high);
-  border-radius: 6px;
-  line-height: 1.6;
-}
-.search-hit-inline-title {
-  font-weight: 500;
-  color: var(--md-sys-color-on-surface);
-}
-.search-hit-inline-path {
-  font-family: var(--font-mono, monospace);
-  font-size: 0.68rem;
-  color: var(--md-sys-color-outline);
-  background: var(--md-sys-color-surface-container);
-  padding: 0 4px;
-  border-radius: 3px;
 }

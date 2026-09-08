@@ -13,6 +13,8 @@ export interface Artifact {
   title: string;
   html: string;
   status: "done";
+  /** 生成时的思考过程，刷新后仍要能展开查看。 */
+  reasoning?: string;
 }
 
 interface ArtifactsState {
@@ -24,7 +26,7 @@ interface ArtifactsState {
   _hasHydrated: boolean;
   _setHasHydrated: (v: boolean) => void;
 
-  saveDone: (id: string, title: string, html: string) => void;
+  saveDone: (id: string, title: string, html: string, reasoning?: string) => void;
   openViewer: (id: string) => void;
   closeViewer: () => void;
   /** 删除不在 keepIds 中的 artifact，用于跨 store 孤儿清理。 */
@@ -56,15 +58,22 @@ export const useArtifacts = create<ArtifactsState>()(
       _hasHydrated: false,
       _setHasHydrated: (v) => set({ _hasHydrated: v }),
 
-      saveDone: (id, title, html) =>
+      saveDone: (id, title, html, reasoning) =>
         set((s) => {
           const exists = s.byId[id];
           const order = exists ? s.order : [...s.order, id];
+          const prev = s.byId[id];
           return {
             order,
             byId: {
               ...s.byId,
-              [id]: { id, title, html, status: "done" },
+              [id]: {
+                id,
+                title,
+                html,
+                status: "done",
+                reasoning: reasoning || prev?.reasoning || "",
+              },
             },
           };
         }),
