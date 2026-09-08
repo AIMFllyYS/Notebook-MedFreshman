@@ -1,0 +1,212 @@
+{
+  "subjectId": "medical-english",
+  "chapterId": "tb-ch12",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/medical-english/textbook/ch12.md",
+    "totalPoints": 100,
+    "timeLimit": 90,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 1},
+      {"name": "Reading Comprehension", "points": 40, "questions": 4},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "Writing",
+      "points": 15,
+      "total_points": 15,
+      "stem": "Write about 150 words on \"When Less Information Is More\".\n\nUse Lesson 12. Explain why autonomy must be balanced with beneficence and non-maleficence; give two clinical examples (incidental cyst, panic and QT, blast cell, hospice metastases); state the simple principles (if asked, tell; if anxious about discovery, reconsider; if uncertain, consult).",
+      "answer": "Epstein, Korones and Quill value truth-telling, yet they refuse the slogan that more information is always more autonomy. Facts can raise cognitive and emotional burden and steal time from decisions and adherence. Autonomy must sit beside beneficence and non-maleficence.\n\nSome withholding is easy to defend: no capacity, a rupturing aneurysm, a patient who changes the subject. The grey zone is a capable patient who has not refused. Here an incidental liver cyst can crowd out a lung nodule; a possible QT change can inflame panic; a meaningless blast cell can devastate parents without changing a decision.\n\nIf the patient asks, tell the truth. If you fear the secret exploding, reconsider. Watch racial bias and incentives that pay for procedures, not conversations. Relational autonomy means finding, interpreting and acting on information together — not dumping a printout and leaving.",
+      "hint": "Less is more 的对象是无益处的细节，不是诊断本身。三原则和三句操作原则都要出现。",
+      "scoring_criteria": [
+        "内容（5分）：三原则均衡、至少两例、问则告/怕拆穿则重想。",
+        "语言（5分）：withhold, autonomy, incidental, overload 等。",
+        "结构（5分）：原则—例子—清单；约150词。"
+      ],
+      "explanation": "写成「可以骗病人」会严重跑题。刹车必须在。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch12.md",
+        "label": "三原则 · 灰色地带 · 收束原则"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 15,
+      "stem": "A benign liver cyst found while scanning a suspected pulmonary nodule is an _____ finding: true, but the wrong agenda if it crowds out talk of the serious disease.",
+      "options": [
+        "incidental",
+        "alkaline",
+        "pandemic",
+        "hierarchical"
+      ],
+      "answer": 0,
+      "hint": "附带发现：不是这次检查的目的。",
+      "explanation": "A incidental finding。B 碱性尘属 Lesson 8。C 大流行属 Lesson 7。D 等级制属 Lesson 7 词汇。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch12.md",
+        "label": "incidental finding 肝囊肿例"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "reading",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 40,
+      "hint": "三许可两刹车；关系性自主；种族偏颇在控制教育收入之后仍在。",
+      "passage": "Autonomy suggests patients should always be fully informed. Information, however, can confuse and burden, so it must be balanced with beneficence and non-maleficence. Accepted withholding includes lack of capacity, emergency (ruptured aneurysm), and refusal — with a proxy informed. Direct requests, or disagreement between patient and family, require reconsideration.\n\nIn the grey zone, weigh instrumental and relational benefits against overload. Incidental cysts, improbable side-effect lists, meaningless blast cells, and extra metastases in hospice can steal the visit. More facts may paradoxically weaken decisions. Distrust drives still more searching; isolation feels like abandonment. Relational autonomy is joint interpretation.\n\nBias persists: even after education and income are accounted for, Black patients receive less information. Incentives reward intervention, not talk about limits. If the patient asks, tell. If you are anxious the secret will out, reconsider. If uncertain, consult a trusted person in the patient's circle or a colleague.",
+      "subQuestions": [
+        {
+          "id": "q003_1",
+          "type": "single_choice",
+          "stem": "The essay's main thesis is that ________.",
+          "options": [
+            "doctors should never speak",
+            "truth-telling remains a value, but dumping every fact can harm autonomy and other duties",
+            "families always outrank patients",
+            "bias is imaginary"
+          ],
+          "answer": 1,
+          "explanation": "重视告知 + however burden + 灰色地带尺子 + 刹车。A、C、D 与原文相反。",
+          "points": 10
+        },
+        {
+          "id": "q003_2",
+          "type": "single_choice",
+          "stem": "Which situation is listed as requiring that withholding be reconsidered?",
+          "options": [
+            "The patient has no cognitive capacity and a surrogate is informed.",
+            "A ruptured aneurysm needs immediate action.",
+            "The patient directly requests the information.",
+            "The patient changes the subject and a proxy is informed while reasons are explored."
+          ],
+          "answer": 2,
+          "explanation": "Direct requests ... require reconsideration。其余为可接受情形。",
+          "points": 10
+        },
+        {
+          "id": "q003_3",
+          "type": "single_choice",
+          "stem": "\"Relational autonomy\" is closest to ________.",
+          "options": [
+            "leaving the patient alone with a printout",
+            "patients, intimates and clinicians finding, interpreting and acting on information together",
+            "telling only the insurance company",
+            "abolishing consent"
+          ],
+          "answer": 1,
+          "explanation": "joint interpretation；alone → abandoned。",
+          "points": 10
+        },
+        {
+          "id": "q003_4",
+          "type": "true_false",
+          "stem": "According to the passage, less information to Black patients disappears once education and socio-economic status are accounted for.",
+          "options": ["False", "True"],
+          "answer": 0,
+          "explanation": "even after accounting for... 仍然少给。命题为假。",
+          "points": 10
+        }
+      ],
+      "answer": "",
+      "explanation": "主旨、刹车细节、关系性自主、种族偏颇未消失。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch12.md",
+        "label": "许可与刹车 · 关系性自主 · 偏颇"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "cloze",
+      "section": "Cloze",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "hint": "beneficence / non-maleficence；surrogate；incidental；relational。",
+      "passage": "Autonomy must be balanced against (1) ____ (doing good) and (2) ____ (doing no harm). If a patient lacks capacity, inform a (3) ____. A rambling list of rare side-effects can produce cognitive (4) ____. A benign liver cyst found on a lung scan is an (5) ____ finding. Too many facts may (6) ____ weaken decision-making. The ideal is (7) ____ autonomy. Physicians still give less information to (8) ____ patients even after education and income are controlled. If the patient asks, (9) ____ the truth. If you are anxious the secret will be discovered, (10) ____.",
+      "blanks": [
+        {"id": "b1", "options": ["beneficence", "bureaucracy", "bronchitis", "barter"], "answer": 0, "explanation": "有利原则。", "points": 1},
+        {"id": "b2", "options": ["non-maleficence", "nephr/o", "nostalgia", "negligence awards"], "answer": 0, "explanation": "不伤害。", "points": 1},
+        {"id": "b3", "options": ["surrogate", "snail", "spirometer", "stockholder"], "answer": 0, "explanation": "代理人知情。", "points": 1},
+        {"id": "b4", "options": ["overload", "oath", "ozone", "output"], "answer": 0, "explanation": "cognitive overload。", "points": 1},
+        {"id": "b5", "options": ["incidental", "intentional", "international", "infantile"], "answer": 0, "explanation": "附带发现。", "points": 1},
+        {"id": "b6", "options": ["paradoxically", "parentally", "partially never", "politely never"], "answer": 0, "explanation": "paradoxically weaken。", "points": 1},
+        {"id": "b7", "options": ["relational", "royal", "random", "rural"], "answer": 0, "explanation": "relational autonomy。", "points": 1},
+        {"id": "b8", "options": ["Black", "only wealthy", "only paediatric", "only hospice"], "answer": 0, "explanation": "课文：相对白人患者，黑人患者获得更少信息。", "points": 1},
+        {"id": "b9", "options": ["tell", "bury", "bill", "delay always"], "answer": 0, "explanation": "If the patient asks, tell。", "points": 1},
+        {"id": "b10", "options": ["reconsider", "relocate", "retweet", "retail"], "answer": 0, "explanation": "reconsider the decision to withhold。", "points": 1}
+      ],
+      "answer": "",
+      "explanation": "三原则、代理人、超负荷、附带发现、悖论、关系性自主、偏颇、两句操作原则。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch12.md",
+        "label": "全文关键词链"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "translation",
+      "section": "Translation",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "hint": "rather than clarity；relational autonomy 冒号结构；if the patient asks。",
+      "items": [
+        {
+          "id": "t1",
+          "source": "自主权需要与有利原则和不伤害原则的道德责任相均衡。",
+          "reference": "Autonomy needs to be balanced against the moral responsibilities of beneficence and non-maleficence.",
+          "explanation": "考点：balanced against；一对原则名词。",
+          "points": 5
+        },
+        {
+          "id": "t2",
+          "source": "知情有时会增加患者的认知和情感负担，导致更大的困惑而不是更清楚。",
+          "reference": "Information can sometimes increase patients' cognitive and emotional burden and lead to greater confusion rather than clarity.",
+          "explanation": "考点：cognitive and emotional burden；rather than。",
+          "points": 5
+        },
+        {
+          "id": "t3",
+          "source": "理想或许是「关系性自主」：病人、亲人和医生一起寻找、解释并按照信息行动。",
+          "reference": "The ideal may be relational autonomy: patients, those close to them, and physicians work together to find information, interpret it, and act on it.",
+          "explanation": "考点：relational autonomy 与三个并列动词。",
+          "points": 5
+        },
+        {
+          "id": "t4",
+          "source": "如果患者要求，医生应该告以实情；如果担心隐瞒被发现，就应重新考虑。",
+          "reference": "If the patient asks, the physician should tell the truth; if anxious that the withholding will be discovered, the physician should reconsider.",
+          "explanation": "考点：两条操作原则的条件句。",
+          "points": 5
+        }
+      ],
+      "answer": "",
+      "explanation": "均衡句、负担句、关系性自主、问则告。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch12.md",
+        "label": "长难句与收束原则"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 5,
+    "byType": { "essay": 1, "single_choice": 1, "reading": 1, "cloze": 1, "translation": 1 },
+    "bySource": { "current_chapter": 5 },
+    "byDifficulty": { "medium": 5 }
+  }
+}

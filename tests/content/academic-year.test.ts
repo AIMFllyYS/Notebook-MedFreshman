@@ -64,7 +64,15 @@ test("切换到大二上学期后导航树只有大二新书，不含大一科�
   for (const forbidden of ["概率论", "大学物理", "有机化学", "近现代史", "毛概"]) {
     assert.equal(names.includes(forbidden), false, `大二上不应出现 ${forbidden}`);
   }
-  for (const expected of ["医学细胞生物学", "生物化学与分子生物学", "系统解剖学", "组织学与胚胎学", "仪器分析"]) {
+  for (const expected of [
+    "医学细胞生物学",
+    "生物化学与分子生物学",
+    "系统解剖学",
+    "组织学与胚胎学",
+    "仪器分析",
+    "医学英语",
+    "医学统计学",
+  ]) {
     assert.ok(names.includes(expected), `大二上应包含 ${expected}`);
   }
 });
@@ -82,6 +90,8 @@ test("切换到大一下学期后导航树是原科目，不含大二新书", ()
   assert.equal(ids.has("cell-biology"), false);
   assert.equal(ids.has("histology"), false);
   assert.equal(ids.has("instrumental-analysis"), false);
+  assert.equal(ids.has("medical-english"), false);
+  assert.equal(ids.has("medical-statistics"), false);
 });
 
 test("学年切换只隐藏大一内容，磁盘文件仍在", () => {
