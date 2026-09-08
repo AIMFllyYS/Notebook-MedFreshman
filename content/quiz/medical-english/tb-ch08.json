@@ -1,0 +1,212 @@
+{
+  "subjectId": "medical-english",
+  "chapterId": "tb-ch08",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/medical-english/textbook/ch08.md",
+    "totalPoints": 100,
+    "timeLimit": 90,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 1},
+      {"name": "Reading Comprehension", "points": 40, "questions": 4},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "Writing",
+      "points": 15,
+      "total_points": 15,
+      "stem": "Write about 150 words on \"What 9/11 Taught Disaster Medicine\".\n\nUse Lesson 8. Distinguish probable PTSD from diagnosis; contrast national television stress with Manhattan and firefighter burdens; mention the FEV1 drop of 372 mL; list the three intervention types (outreach, respirators, shorter shifts).",
+      "answer": "The Lancet review of 9/11 refuses to mix three populations into one scare headline. Directly exposed rescue workers, residents and passers-by are not the same as a television audience. Screening checklists yield probable PTSD, not a diagnosis. Forty-four percent of U.S. adults felt substantial stress within days, yet television-only exposure ranked lowest in PTSD risk among 32 traumas. In Manhattan south of 110th Street, PTSD was 7.5% at one to two months and later fell.\n\nFirefighters, a rostered cohort, showed WTC cough at 54% versus 4% before, and a 372 mL FEV1 loss equal to about twelve years of ageing. Arrival time predicted the first-year hit; host factors shaped the later slope.\n\nWhat may help in the short and medium term is immediate outreach and targeted treatment, respirators when dust cannot be controlled, and shift rotation so that rescue work is shorter. Courage is not a respirator.",
+      "hint": "不要把 44% 写成全国 PTSD；消防员队列的方法学优势要提一句。",
+      "scoring_criteria": [
+        "内容（5分）：三组人群或 probable PTSD、一组精神数字、FEV1、三件干预。",
+        "语言（5分）：exposure, spirometry, sequela 等课内词。",
+        "结构（5分）：区分—证据—干预；约150词。"
+      ],
+      "explanation": "把电视 1% 与消防员 54% 写成同一句话会严重失分。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch08.md",
+        "label": "三组人群 · 消防员 FEV1 · 干预"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 15,
+      "stem": "High scores on a PTSD checklist are called _____ PTSD because the instrument is not _____.",
+      "options": [
+        "probable; diagnostic",
+        "definite; alkaline",
+        "chronic; a respirator",
+        "national; spirometry"
+      ],
+      "answer": 0,
+      "hint": "课文反复强调筛查 ≠ 诊断。",
+      "explanation": "A 正确：probable PTSD；instruments are not diagnostic。B alkaline 是粉尘。C 慢性 PTSD 是另一现象。D 肺量计不诊断 PTSD。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch08.md",
+        "label": "probable PTSD"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "reading",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 40,
+      "hint": "儿童最常见的不是 PTSD；372 mL 是第一刀；自杀未必上升。",
+      "passage": "More than 150 studies document 9/11 mental-health effects. Checklists yield probable PTSD. Nationally, 44% of adults reported substantial stress at 3–5 days. Indirect television experience had a 1% PTSD risk, the lowest of 32 events. In 988 Manhattan residents south of 110th Street, PTSD was 7.5% and depression about 9% at 1–2 months, then declined by six months. Suicide did not clearly rise; some studies found a fall with communal support.\n\nAmong 8236 students aged 9–21, 29% had at least one of six disorders; agoraphobia 15% exceeded PTSD 11%. Parental distress and graphic images correlated with severity.\n\nIn 10 378 firefighters, first-year daily cough was 54% versus 4% before. FEV1 fell 372 mL by a median of three months, about twelve years of ageing. Early arrival predicted that drop, not the later slope. Interventions: outreach, respirators, shorter shifts.",
+      "subQuestions": [
+        {
+          "id": "q003_1",
+          "type": "single_choice",
+          "stem": "Which statement best captures the review's method?",
+          "options": [
+            "All Americans had clinical PTSD at 44%.",
+            "Separate populations and probable versus diagnosed illness, then add objective lung data.",
+            "Only children were studied.",
+            "Suicide proved a nationwide epidemic."
+          ],
+          "answer": 1,
+          "explanation": "分层 + probable + FEV1。A 混淆压力与 PTSD。C、D 与课文相反。",
+          "points": 10
+        },
+        {
+          "id": "q003_2",
+          "type": "single_choice",
+          "stem": "In the school sample, the most prevalent of the listed disorders was ________.",
+          "options": [
+            "PTSD at 29%",
+            "probable agoraphobia at 15%",
+            "COPD",
+            "delayed-onset cancer"
+          ],
+          "answer": 1,
+          "explanation": "agoraphobia 15%；29% 是至少一种。",
+          "points": 10
+        },
+        {
+          "id": "q003_3",
+          "type": "single_choice",
+          "stem": "\"Albeit diminished\" FEV1 means values that were ________.",
+          "options": [
+            "higher than before 9/11",
+            "still mostly normal, though lower than each person's baseline",
+            "unmeasurable",
+            "identical to 372 mL every subsequent year"
+          ],
+          "answer": 1,
+          "explanation": "normal, albeit diminished compared with pre-disaster levels。",
+          "points": 10
+        },
+        {
+          "id": "q003_4",
+          "type": "true_false",
+          "stem": "Early arrival at the WTC site predicted the first-year FEV1 decrease but not FEV1 at the end of follow-up.",
+          "options": ["False", "True"],
+          "answer": 1,
+          "explanation": "命题正确：暴露管一年，宿主管以后。",
+          "points": 10
+        }
+      ],
+      "answer": "",
+      "explanation": "方法分层、儿童病种、albeit、到达时间的时间窗。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch08.md",
+        "label": "精神数字 · 儿童 · FEV1 长难句"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "cloze",
+      "section": "Cloze",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "hint": "碱性尘；probable；54%；372 mL；respirators。",
+      "passage": "Destroyed monitors made it hard to (1) ____ dust exposure. The dust was highly (2) ____ and full of particulate matter. Screening high scores are (3) ____ PTSD, not a diagnosis. Two months later, people outside New York were less likely to have probable PTSD than those (4) ____. Firefighter daily cough rose to (5) ____ percent versus 4 percent before. FEV1 fell (6) ____ mL, equal to about (7) ____ years of ageing. Later, never-smokers declined about 26 mL per (8) ____. Children with (9) ____ distress had more severe reactions. When hazards cannot be controlled, use (10) ____ early and consistently.",
+      "blanks": [
+        {"id": "b1", "options": ["quantify", "qualify", "quote", "quit"], "answer": 0, "explanation": "difficult to quantify exposure。", "points": 1},
+        {"id": "b2", "options": ["alkaline", "acidic only", "frozen", "silent"], "answer": 0, "explanation": "highly alkaline dust。", "points": 1},
+        {"id": "b3", "options": ["probable", "absolute", "legal", "surgical"], "answer": 0, "explanation": "probable PTSD。", "points": 1},
+        {"id": "b4", "options": ["inside", "asleep", "unborn", "offshore only"], "answer": 0, "explanation": "inside the metropolitan area。", "points": 1},
+        {"id": "b5", "options": ["54", "1", "99", "7.5"], "answer": 0, "explanation": "54% of 10378 firefighters。7.5 是曼哈顿 PTSD。", "points": 1},
+        {"id": "b6", "options": ["372", "26", "150", "2001"], "answer": 0, "explanation": "average decrease of 372 mL。", "points": 1},
+        {"id": "b7", "options": ["12", "44", "29", "6"], "answer": 0, "explanation": "12 years of normal ageing。", "points": 1},
+        {"id": "b8", "options": ["year", "hour", "decade only", "shift"], "answer": 0, "explanation": "26 mL per year。", "points": 1},
+        {"id": "b9", "options": ["parental", "planetary", "postal", "partial"], "answer": 0, "explanation": "parental distress。", "points": 1},
+        {"id": "b10", "options": ["respirators", "placebos", "oaths", "snails"], "answer": 0, "explanation": "appropriate respirators。", "points": 1}
+      ],
+      "answer": "",
+      "explanation": "暴露定量、碱性、筛查、消防员数字、FEV1、父母、呼吸器。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch08.md",
+        "label": "导论尘 · 消防员数字 · 干预"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "translation",
+      "section": "Translation",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "hint": "probable PTSD；albeit；sequelae。",
+      "items": [
+        {
+          "id": "t1",
+          "source": "清单上的高分通常称为可能的创伤后应激障碍，因为这些工具并不能诊断该疾病。",
+          "reference": "High scores on the checklist are often referred to as probable PTSD because these instruments are not diagnostic for the disorder.",
+          "explanation": "考点：probable PTSD；not diagnostic。",
+          "points": 5
+        },
+        {
+          "id": "t2",
+          "source": "肺量检查显示第一秒用力呼气容积平均下降 372 毫升，相当于正常老化 12 年的损失。",
+          "reference": "Spirometry showed an average decrease of 372 mL in FEV1, which is equal to the loss expected in 12 years of normal ageing.",
+          "explanation": "考点：FEV1；equal to ... ageing。",
+          "points": 5
+        },
+        {
+          "id": "t3",
+          "source": "大多数人的 FEV1 仍正常，尽管低于灾前水平。",
+          "reference": "Most had normal, albeit diminished, FEV1 values compared with pre-disaster levels.",
+          "explanation": "考点：albeit diminished。",
+          "points": 5
+        },
+        {
+          "id": "t4",
+          "source": "对高危人群进行筛查和治疗，以防止长期精神健康后遗症。",
+          "reference": "Screen and treat high-risk populations to prevent long-term mental health sequelae.",
+          "explanation": "考点：sequelae；high-risk populations。",
+          "points": 5
+        }
+      ],
+      "answer": "",
+      "explanation": "筛查定义、FEV1 比喻、albeit、后遗症干预。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch08.md",
+        "label": "术语与干预句"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 5,
+    "byType": { "essay": 1, "single_choice": 1, "reading": 1, "cloze": 1, "translation": 1 },
+    "bySource": { "current_chapter": 5 },
+    "byDifficulty": { "medium": 5 }
+  }
+}

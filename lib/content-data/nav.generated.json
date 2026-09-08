@@ -5557,10 +5557,28 @@
           "keyStrategy": "section-dot",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "1.1",
+              "title": "医学生物化学学习指南",
               "type": "document",
-              "status": "stub"
+              "status": "done"
+            },
+            {
+              "id": "1.2",
+              "title": "名词解释",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "1.3",
+              "title": "专业英语与常考单词",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "1.4",
+              "title": "三大物质代谢知识模块",
+              "type": "document",
+              "status": "done"
             }
           ]
         },
@@ -5590,10 +5608,10 @@
           ],
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "sum-01",
+              "title": "生化讨论课笔记",
               "type": "document",
-              "status": "stub"
+              "status": "done"
             }
           ]
         },
@@ -5602,10 +5620,22 @@
           "name": "考前模拟",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "sim-01",
+              "title": "生化习题（完整版）",
               "type": "document",
-              "status": "stub"
+              "status": "done"
+            },
+            {
+              "id": "sim-02",
+              "title": "生物化学练习题",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sim-03",
+              "title": "选择题·简答题·补充题",
+              "type": "document",
+              "status": "done"
             }
           ]
         },
@@ -5614,10 +5644,64 @@
           "name": "实战演练",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "real-01",
+              "title": "03 级生化试题及答案",
               "type": "document",
-              "status": "stub"
+              "status": "done"
+            },
+            {
+              "id": "real-02",
+              "title": "12 级五年制生化",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-03",
+              "title": "2017 级临五等专业生化考试",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-04",
+              "title": "2022 年上半年生化考试",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-05",
+              "title": "2004 级八年制生化试卷（A）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-06",
+              "title": "2016 级临床等专业生化",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-07",
+              "title": "18 临五·影像·口腔等生化",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-08",
+              "title": "13 级生化试题",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-09",
+              "title": "2021 秋季期末考试回忆版（生化）",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-10",
+              "title": "生化历年试题汇编",
+              "type": "document",
+              "status": "done"
             }
           ]
         }
@@ -5972,10 +6056,34 @@
           "keyStrategy": "section-dot",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "1.1",
+              "title": "系统解剖学名词解释",
               "type": "document",
-              "status": "stub"
+              "status": "done"
+            },
+            {
+              "id": "1.2",
+              "title": "复习提纲与考点",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "1.3",
+              "title": "解剖学英文单词",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "1.4",
+              "title": "教学大纲与实验指导",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "1.5",
+              "title": "人卫课堂课件精要",
+              "type": "document",
+              "status": "done"
             }
           ]
         },
@@ -6017,10 +6125,16 @@
           "name": "考前模拟",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "sim-01",
+              "title": "系统解剖学简答题",
               "type": "document",
-              "status": "stub"
+              "status": "done"
+            },
+            {
+              "id": "sim-02",
+              "title": "2021 级系统解剖学标本考试",
+              "type": "document",
+              "status": "done"
             }
           ]
         },
@@ -6029,10 +6143,22 @@
           "name": "实战演练",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "real-01",
+              "title": "系解试卷 1",
               "type": "document",
-              "status": "stub"
+              "status": "done"
+            },
+            {
+              "id": "real-02",
+              "title": "系解试卷 2",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-03",
+              "title": "2021 秋季期末考试回忆版（系解）",
+              "type": "document",
+              "status": "done"
             }
           ]
         }
@@ -7065,10 +7191,10 @@
           "keyStrategy": "section-dot",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "1.1",
+              "title": "组织学与胚胎学学习与解题指南",
               "type": "document",
-              "status": "stub"
+              "status": "done"
             }
           ]
         },
@@ -7110,10 +7236,16 @@
           "name": "考前模拟",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "sim-01",
+              "title": "组胚小书 2010 年版习题",
               "type": "document",
-              "status": "stub"
+              "status": "done"
+            },
+            {
+              "id": "sim-02",
+              "title": "组胚小书习题 2",
+              "type": "document",
+              "status": "done"
             }
           ]
         },
@@ -7122,10 +7254,10 @@
           "name": "实战演练",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "real-01",
+              "title": "2021 秋季期末考试回忆版（组胚）",
               "type": "document",
-              "status": "stub"
+              "status": "done"
             }
           ]
         }
@@ -7791,6 +7923,262 @@
               "title": "敬请期待",
               "type": "document",
               "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "shizhan-yanlian",
+          "name": "实战演练",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "medical-english",
+      "name": "医学英语",
+      "icon": "Languages",
+      "categories": [
+        {
+          "id": "textbook",
+          "name": "教材",
+          "capabilities": [
+            "examples",
+            "quiz",
+            "search"
+          ],
+          "keyStrategy": "chapter-prefix",
+          "items": [
+            {
+              "id": "ch01",
+              "title": "Lesson 1 · Medical Professionalism / 词根入门",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch06",
+              "title": "Lesson 6 · Gender, climate change and health",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch07",
+              "title": "Lesson 7 · Social Medicine",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch08",
+              "title": "Lesson 8 · Health effects of 9/11",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch12",
+              "title": "Lesson 12 · Medical Ethics",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "detail",
+          "name": "详解",
+          "capabilities": [
+            "examples",
+            "quiz",
+            "search",
+            "media"
+          ],
+          "keyStrategy": "section-dot",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "recording",
+          "name": "课上录音",
+          "capabilities": [
+            "examples",
+            "quiz",
+            "search"
+          ],
+          "keyStrategy": "category-item",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "summary",
+          "name": "课堂纪要",
+          "capabilities": [
+            "search"
+          ],
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "kaoqian-moni",
+          "name": "考前模拟",
+          "items": [
+            {
+              "id": "sim-01",
+              "title": "15 级医学英语样题",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sim-02",
+              "title": "Examination Paper 样题",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sim-03",
+              "title": "MedEnglish 样题",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sim-04",
+              "title": "MedEnglish 样题 2018.11",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "sim-05",
+              "title": "医学英语试卷扫描 Paper",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "shizhan-yanlian",
+          "name": "实战演练",
+          "items": [
+            {
+              "id": "real-01",
+              "title": "医学英语 2021 试卷",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "real-02",
+              "title": "医学英语历年真题",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "medical-statistics",
+      "name": "医学统计学",
+      "icon": "ChartColumn",
+      "categories": [
+        {
+          "id": "textbook",
+          "name": "教材",
+          "capabilities": [
+            "examples",
+            "quiz",
+            "search"
+          ],
+          "keyStrategy": "chapter-prefix",
+          "items": [
+            {
+              "id": "main",
+              "title": "医学统计学（教材）",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "detail",
+          "name": "详解",
+          "capabilities": [
+            "examples",
+            "quiz",
+            "search",
+            "media"
+          ],
+          "keyStrategy": "section-dot",
+          "items": [
+            {
+              "id": "1.1",
+              "title": "人卫第七版课后答案精要",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "recording",
+          "name": "课上录音",
+          "capabilities": [
+            "examples",
+            "quiz",
+            "search"
+          ],
+          "keyStrategy": "category-item",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "summary",
+          "name": "课堂纪要",
+          "capabilities": [
+            "search"
+          ],
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "kaoqian-moni",
+          "name": "考前模拟",
+          "items": [
+            {
+              "id": "sim-01",
+              "title": "医学统计学计算题",
+              "type": "document",
+              "status": "done"
             }
           ]
         },

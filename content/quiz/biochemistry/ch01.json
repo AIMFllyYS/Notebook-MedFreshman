@@ -1,0 +1,501 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "ch01",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md；content/biochemistry/detail/1.1.md；content/biochemistry/detail/1.2.md；content/biochemistry/detail/1.3.md；content/biochemistry/detail/1.4.md",
+    "totalPoints": 100,
+    "timeLimit": 90
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 4,
+      "stem": "关于生物化学的概念及其与分子生物学的关系，下列叙述正确的是（　）。",
+      "options": [
+        "生物化学只研究物质代谢，分子生物学是一门完全独立、互不隶属的学科",
+        "生物化学是研究生物体内化学分子与化学反应的基础生命科学，从分子水平探讨生命现象的本质；分子生物学研究核酸、蛋白质等大分子的结构、功能及基因表达与调控，从广义上是生物化学的重要组成部分，也被视作其发展和延续",
+        "人类基因组计划不属于绪论要求掌握的内容",
+        "当代生物化学只研究基因信息传递，不再讨论代谢调节"
+      ],
+      "answer": 1,
+      "hint": "先锁「分子水平研究体内分子与反应」，再锁分子生物学是生物化学的组成部分。",
+      "explanation": "**B 正确。** 学习指南掌握生物化学概念，并明确分子生物学是其重要组成部分和发展延续。当代研究内容包括生物分子结构与功能、物质代谢及其调节、基因信息传递及其调控三块。\n\n**干扰项辨析**：\n- A：把分子生物学写成门外学科，与指南关系句相反。\n- C：绪论要求掌握 human genome project, HGP。\n- D：三块研究内容缺一不可，代谢调节仍是主干。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.1.md",
+        "label": "1.1 生物化学概念与分子生物学分户"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 4,
+      "stem": "关于蛋白质的含氮量、四级结构与变性，下列叙述正确的是（　）。",
+      "options": [
+        "蛋白质平均含氮量为 $10\\%$；变性就是肽键断裂；所有蛋白质都有四级结构",
+        "大多数蛋白质含氮量接近，平均 $16\\%$，可用含氮量推算蛋白含量。一级结构是 $\\mathrm{N}$ 端至 $\\mathrm{C}$ 端氨基酸顺序（可含二硫键）；二级是局部主链构象，主要靠氢键；三级是整条肽链全部原子的三维排布；四级是亚基的空间排布。变性破坏空间构象，不改变氨基酸序列",
+        "组成人体蛋白质的 $20$ 种氨基酸都是有手性的 $\\mathrm{D}$-氨基酸",
+        "蛋白质紫外特征吸收在 $260\\,\\mathrm{nm}$，与核酸相同"
+      ],
+      "answer": 1,
+      "hint": "含氮量 $16\\%$；变性不改序列；甘氨酸除外才是 $\\mathrm{L}$-$\\alpha$-氨基酸。",
+      "explanation": "**B 正确。** 含氮量 $16\\%$、四级结构化学键分户、变性不改一级序列，均按学习指南。\n\n**干扰项辨析**：\n- A：不是 $10\\%$；变性不是水解肽键；只有含两条及以上肽链的蛋白质才谈四级。\n- C：均为 $\\mathrm{L}$-$\\alpha$－氨基酸，甘氨酸除外（无手性），不是 $\\mathrm{D}$ 型。\n- D：蛋白质特征吸收 $280\\,\\mathrm{nm}$，核酸 $260\\,\\mathrm{nm}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.1.md",
+        "label": "1.1 蛋白质：从含氮量到四级结构"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 4,
+      "stem": "关于 $\\mathrm{DNA}$ 双螺旋与 $T_\\mathrm{m}$，下列叙述正确的是（　）。",
+      "options": [
+        "$\\mathrm{DNA}$ 碱基是 $\\mathrm{A}$、$\\mathrm{G}$、$\\mathrm{C}$、$\\mathrm{U}$；$\\mathrm{A}$-$\\mathrm{T}$ 三对氢键；$T_\\mathrm{m}$ 与 $\\mathrm{AT}$ 含量正相关",
+        "$\\mathrm{DNA}$ 是反向平行右手双螺旋；$\\mathrm{A}$-$\\mathrm{T}$ 两对氢键、$\\mathrm{G}$-$\\mathrm{C}$ 三对氢键；疏水作用力与氢键共同维持稳定。变性是碱基对氢键断裂、双链变单链，不改核苷酸序列。$T_\\mathrm{m}$ 是 $\\Delta A_{260}$ 达最大变化一半时的温度，与 $\\mathrm{GC}$ 含量和链长相关。核酸紫外最大吸收约 $260\\,\\mathrm{nm}$",
+        "体内游离核苷酸多是 $2'$-或 $3'$-核苷酸；核酸一级结构从 $3'$ 往 $5'$ 书写",
+        "核酶的化学本质是蛋白质"
+      ],
+      "answer": 1,
+      "hint": "$\\mathrm{DNA}$ 用 $\\mathrm{T}$；氢键 $\\mathrm{A}$-$\\mathrm{T}$ 两对、$\\mathrm{G}$-$\\mathrm{C}$ 三对；$T_\\mathrm{m}$ 随 $\\mathrm{GC}$ 升高。",
+      "explanation": "**B 正确。** 反向平行右手螺旋、氢键对数、$T_\\mathrm{m}$ 定义与 $\\mathrm{GC}$ 关系、$260\\,\\mathrm{nm}$ 均按指南。\n\n**干扰项辨析**：\n- A：$\\mathrm{DNA}$ 用 $\\mathrm{T}$ 不用 $\\mathrm{U}$；氢键对数写反；$T_\\mathrm{m}$ 与 $\\mathrm{GC}$ 正相关。\n- C：游离多为 $5'$-核苷酸；一级结构 $5'\\rightarrow 3'$。\n- D：核酶是有催化作用的 $\\mathrm{RNA}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.1.md",
+        "label": "1.1 核酸：双螺旋、Tm 与核酶"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 4,
+      "stem": "关于 $K_\\mathrm{m}$ 与三种可逆抑制的动力学，下列叙述正确的是（　）。",
+      "options": [
+        "竞争性抑制使 $K_\\mathrm{m}$ 不变、$V_{\\max}$ 降低",
+        "$K_\\mathrm{m}$ 等于酶促反应速率为最大速率一半时的底物浓度。竞争性抑制与底物竞争活性中心：$K_\\mathrm{m}$ 增大、$V_{\\max}$ 不变。非竞争性抑制 $K_\\mathrm{m}$ 不变、$V_{\\max}$ 降低。反竞争性抑制只与 $\\mathrm{ES}$ 结合，$K_\\mathrm{m}$ 与 $V_{\\max}$ 均降低。抑制剂降低催化活性但不引起酶蛋白变性",
+        "$K_\\mathrm{m}$ 就是 $V_{\\max}$；酶原激活是辅基结合",
+        "同工酶是同一个酶分子上的两个活性中心"
+      ],
+      "answer": 1,
+      "hint": "竞争抬 $K_\\mathrm{m}$、不压 $V_{\\max}$；抑制剂不是变性剂。",
+      "explanation": "**B 正确。** 米氏定义与三型可逆抑制动力学、抑制剂定义均按指南。\n\n**干扰项辨析**：\n- A：那是非竞争性抑制的标志。\n- C：$K_\\mathrm{m}$ 不是 $V_{\\max}$；酶原激活是肽键断裂形成或暴露活性中心。\n- D：同工酶是催化相同反应但结构/理化/免疫不同的一组酶。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.1.md",
+        "label": "1.1 酶：Km 与三种可逆抑制"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 4,
+      "stem": "学习指南关于葡萄糖彻底氧化生成 $\\mathrm{ATP}$ 的数量，正确的是（　）。",
+      "options": [
+        "$1\\,\\mathrm{mol}$ 葡萄糖彻底氧化净生成 $38\\,\\mathrm{mol}\\,\\mathrm{ATP}$（口诀数字）",
+        "$1\\,\\mathrm{mol}$ 葡萄糖彻底氧化可净生成 $30$ 或 $32\\,\\mathrm{mol}\\,\\mathrm{ATP}$；数字分叉来自胞液 $\\mathrm{NADH}$ 进入线粒体的两种穿梭",
+        "有氧氧化不经过糖酵解途径，直接在线粒体把葡萄糖裂解",
+        "指南同时给出了软脂酸净 $\\mathrm{ATP}$ 为 $129$ 的口诀，必须默写"
+      ],
+      "answer": 1,
+      "hint": "只采用指南写明的 $30$ 或 $32$，不要用口诀 $38$。",
+      "explanation": "**B 正确。** 学习指南掌握句：$1\\,\\mathrm{mol}$ 葡萄糖彻底氧化可净生成 $30$ 或 $32\\,\\mathrm{mol}\\,\\mathrm{ATP}$。胞液 $\\mathrm{NADH}$ 经 $\\alpha$-磷酸甘油穿梭或苹果酸-天冬氨酸穿梭，还原当量入呼吸链后 $\\mathrm{ATP}$ 不同。\n\n**干扰项辨析**：\n- A：口诀 $38$ 不在本指南账上。\n- C：有氧氧化第一阶段仍是胞浆的糖酵解途径。\n- D：指南只要求掌握 $\\beta$-氧化每轮产物，未给出软脂酸净 $\\mathrm{ATP}$ 口诀，不得发明 $129$。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.1.md",
+        "label": "1.1 能量账：葡萄糖净 30 或 32 ATP"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 4,
+      "stem": "关于酮体，下列叙述正确的是（　）。",
+      "options": [
+        "酮体就是乙酰 $\\mathrm{CoA}$；主要在肌细胞生成、肝细胞利用",
+        "酮体包括乙酰乙酸、$\\beta$-羟丁酸和丙酮，是脂酸在肝细胞 $\\beta$-氧化时产生的特有中间产物，经血液运至肝外组织氧化利用，是肝向肝外输出能量的一种方式",
+        "酮体三成员是胆绿素、胆红素和胆素",
+        "肝既生成酮体也主要依靠酮体供能"
+      ],
+      "answer": 1,
+      "hint": "三成员写全；肝内生成、肝外利用。",
+      "explanation": "**B 正确。** 名解与学习指南一致：三成员、肝线粒体生成、肝外利用、输出能量。过多可致酮血症、酮尿症、酮症酸中毒。\n\n**干扰项辨析**：\n- A：不是乙酰 $\\mathrm{CoA}$ 本身；部位写反。\n- C：那是胆色素成员。\n- D：肝能生成、缺乏利用酮体的酶系。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.2.md",
+        "label": "1.2 名词解释 · 酮体"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 4,
+      "stem": "成人营养必需氨基酸的正确名单是（　）。",
+      "options": [
+        "全部 $20$ 种编码氨基酸",
+        "赖氨酸、色氨酸、蛋（甲硫）氨酸、苏氨酸、缬氨酸、亮氨酸、异亮氨酸、苯丙氨酸（八种）",
+        "只有甘氨酸和丙氨酸",
+        "亚油酸、$\\alpha$-亚麻酸、花生四烯酸"
+      ],
+      "answer": 1,
+      "hint": "学习指南成人八种：赖、色、甲硫、苏、缬、亮、异亮、苯丙。",
+      "explanation": "**B 正确。** 指南掌握：人体不能合成、必须由食物供给；成人八种即该名单。蛋白质营养价值取决于必需氨基酸的种类和数量。\n\n**干扰项辨析**：\n- A：非必需氨基酸体内能合成碳架。\n- C：甘、丙是非必需。\n- D：那是必需脂酸名单，不是氨基酸。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.1.md",
+        "label": "1.1 成人八种必需氨基酸"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 4,
+      "stem": "关于顺式作用元件、反式作用因子、启动子与操纵子，下列叙述正确的是（　）。",
+      "options": [
+        "顺式作用元件是蛋白质，反式作用因子是 $\\mathrm{DNA}$ 序列",
+        "顺式作用元件是可影响自身基因表达的真核 $\\mathrm{DNA}$ 序列；反式作用因子是与顺式元件作用、调节另一基因转录的蛋白质因子；启动子是介导 $\\mathrm{RNA}$ 聚合酶结合的 $\\mathrm{DNA}$ 序列，多数在上游且不转录；操纵子是原核基本转录单位，由结构基因加上游启动子和操纵基因构成",
+        "启动子就是转录因子；操纵子是真核 $\\mathrm{mRNA}$ 的别名",
+        "质粒是细菌染色体上的一段结构基因"
+      ],
+      "answer": 1,
+      "hint": "元件是 $\\mathrm{DNA}$，因子是蛋白质；启动子多数不转录。",
+      "explanation": "**B 正确。** 化学本质与操纵子构件均按名解和学习指南。考卷若印刷「反式作用元件」而定义是蛋白质因子，仍按蛋白质答。\n\n**干扰项辨析**：\n- A：顺反化学本质写反。\n- C：启动子是 $\\mathrm{DNA}$；操纵子是原核转录单位。\n- D：质粒是染色体外小型环状双链 $\\mathrm{DNA}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.2.md",
+        "label": "1.2 顺式元件、反式因子、启动子、操纵子"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 4,
+      "stem": "关于三大营养素互相转变的硬边界，下列叙述正确的是（　）。",
+      "options": [
+        "偶数碳脂酸 $\\beta$-氧化产生的乙酰 $\\mathrm{CoA}$ 可以净转变成葡萄糖",
+        "糖可转变成脂肪（提供乙酰 $\\mathrm{CoA}$ 和 $\\mathrm{NADPH}$）；偶数碳脂酸不能转变成糖，因为乙酰 $\\mathrm{CoA}$ 不能生成丙酮酸，三羧酸循环没有净增加草酰乙酸；甘油和生糖氨基酸可以异生成糖；蛋白质营养不能被糖、脂替代",
+        "脂类都能转变成氨基酸；糖不能变成脂肪",
+        "脑和成熟红细胞主要依靠脂酸 $\\beta$-氧化供能"
+      ],
+      "answer": 1,
+      "hint": "乙酰 $\\mathrm{CoA}$ 进 $\\mathrm{TCA}$ 不等于脂酸能成糖；甘油例外。",
+      "explanation": "**B 正确。** 学习指南第九章硬边界：糖→脂可以；偶数脂酸→糖不能；甘油可成糖；蛋白质营养不可被糖脂替代。\n\n**干扰项辨析**：\n- A：循环两碳进、两 $\\mathrm{CO}_2$ 出，无净增草酰乙酸。\n- C：脂不能成氨基酸（甘油例外）；糖能成脂。\n- D：脑几乎以葡萄糖为唯一供能；成熟红细胞无线粒体，靠糖酵解。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.4.md",
+        "label": "1.4 糖脂氨基酸互相转变的硬边界"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 4,
+      "stem": "关于器官代谢特色，下列叙述正确的是（　）。",
+      "options": [
+        "肝不能生成酮体，尿素主要在肌合成",
+        "肝是物质代谢枢纽；脑静息耗氧可占全身 $20\\%$、几乎以葡萄糖为唯一供能；成熟红细胞无线粒体，能量主要来自糖酵解；肾可进行糖异生和生成酮体；肌通常氧化脂酸",
+        "肌糖原是空腹血糖的主要来源，肝糖原只供肝自己用",
+        "心脏不能利用酮体和乳酸"
+      ],
+      "answer": 1,
+      "hint": "脑靠葡萄糖，红细胞靠酵解，肝是枢纽。",
+      "explanation": "**B 正确。** 指南第九章器官特色原句。\n\n**干扰项辨析**：\n- A：酮体在肝生成；尿素在肝合成。\n- C：肝糖原补血糖；肌糖原供收缩、不能直接补血糖。\n- D：心以有氧氧化为主，酮体、乳酸、脂酸、葡萄糖都可用。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.4.md",
+        "label": "1.4 器官代谢特色"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "从广义上理解，分子生物学是生物化学的重要组成部分，也被视作生物化学的发展和延续。",
+      "options": ["错误", "正确"],
+      "answer": 1,
+      "hint": "看绪论「掌握 / 熟悉」里对两门课关系的原句。",
+      "explanation": "**命题正确。** 学习指南明确这一关系，不要把分子生物学写成门外学科。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.1.md",
+        "label": "1.1 生物化学与分子生物学的关系"
+      }
+    },
+    {
+      "id": "q012",
+      "type": "true_false",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "往年名解「糖酵解」的标准答案是：缺氧情况下葡萄糖在胞浆生成乳酸的过程。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "名解.txt 走到丙酮酸；第 7 版指南把「生成乳酸」叫糖酵解、把到丙酮酸叫糖酵解途径。本题问的是名解。",
+      "explanation": "**命题错误。** 名解原文：一分子葡萄糖在胞质中裂解为两分子丙酮酸，是有氧氧化和无氧氧化的共同起始途径。第 7 版指南另把缺氧生成乳酸叫做糖酵解。本板块名解以名解原文为准，不能把指南用语直接当成名解答案。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.2.md",
+        "label": "1.2 糖酵解名解与指南用语对照"
+      }
+    },
+    {
+      "id": "q013",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "氧化磷酸化就是底物水平磷酸化的别名，不必经过呼吸链。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "氧化磷酸化必须偶联电子传递。",
+      "explanation": "**命题错误。** 氧化磷酸化：代谢物脱下的氢经呼吸链电子传递释能，偶联 $\\mathrm{ADP}$ 磷酸化成 $\\mathrm{ATP}$。底物水平磷酸化是底物高能键直接转移给 $\\mathrm{ADP}$，如糖酵解中磷酸甘油酸激酶、丙酮酸激酶催化的反应。两本账不能并户。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.2.md",
+        "label": "1.2 氧化磷酸化名解"
+      }
+    },
+    {
+      "id": "q014",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "启动子是蛋白质转录因子，本身随 $\\mathrm{mRNA}$ 一起被转录。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "启动子是 $\\mathrm{DNA}$ 序列，多数在上游、不转录。",
+      "explanation": "**命题错误。** 启动子是 $\\mathrm{DNA}$ 上介导 $\\mathrm{RNA}$ 聚合酶结合并形成转录起始复合体的序列，大多数在转录起始上游，不能转录。蛋白质那一本账是反式作用因子 / 转录因子。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.2.md",
+        "label": "1.2 启动子名解"
+      }
+    },
+    {
+      "id": "q015",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "参与氧化分解代谢的脱氢酶常以 $\\mathrm{NAD}^{+}$ 为辅酶，参与还原性合成代谢的还原酶多以 $\\mathrm{NADPH}$ 为辅酶；磷酸戊糖途径产生的 $\\mathrm{NADPH}$ 为脂酸、胆固醇等合成提供还原当量。",
+      "options": ["错误", "正确"],
+      "answer": 1,
+      "hint": "分解走 $\\mathrm{NADH}$ 账，合成走 $\\mathrm{NADPH}$ 账。",
+      "explanation": "**命题正确。** 学习指南第九章掌握句。不要把 $\\mathrm{NADPH}$ 写成呼吸链主链产能的氢供体。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.4.md",
+        "label": "1.4 NADH 与 NADPH 分户"
+      }
+    },
+    {
+      "id": "q016",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 4,
+      "total_points": 4,
+      "stem": "大多数蛋白质含氮量很接近，平均为 ________。蛋白质变性主要破坏空间构象，________（改变 / 不改变）氨基酸序列。核酸紫外最大吸收约在 ________ $\\mathrm{nm}$。",
+      "answer": "16%，不改变，260",
+      "hint": "含氮量用来推算蛋白含量；变性不是水解；核酸与蛋白质紫外峰不同。",
+      "scoring_criteria": [
+        "第一空填“16%”（或“16％”“16”）（2分）",
+        "第二空填“不改变”（1分）",
+        "第三空填“260”（1分）"
+      ],
+      "explanation": "平均含氮量 $16\\%$ 是指南掌握点。变性破二硫键和非共价键，一级序列仍在。核酸 $260\\,\\mathrm{nm}$，蛋白质特征吸收在 $280\\,\\mathrm{nm}$，不要对调。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.1.md",
+        "label": "1.1 蛋白质含氮量、变性；核酸紫外"
+      }
+    },
+    {
+      "id": "q017",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 4,
+      "total_points": 4,
+      "stem": "酮体的三成员是乙酰乙酸、________ 和丙酮。糖异生需绕过酵解三步不可逆，催化这四步的酶是丙酮酸羧化酶、________、果糖双磷酸酶-$1$ 和葡萄糖-$6$-磷酸酶。$\\beta$-氧化的限速酶是 ________。",
+      "answer": "β-羟丁酸，磷酸烯醇式丙酮酸羧激酶，肉碱脂酰转移酶I",
+      "hint": "酮体不要写成胆色素；糖异生绕过丙酮酸激酶要用两步；限速在进线粒体。",
+      "scoring_criteria": [
+        "第一空填“β-羟丁酸”（或“β-羟基丁酸”）（1分）",
+        "第二空填“磷酸烯醇式丙酮酸羧激酶”（或“PEP羧激酶”“PEPCK”）（2分）",
+        "第三空填“肉碱脂酰转移酶I”（或“CPT-I”“肉碱脂酰基转移酶Ⅰ”）（1分）"
+      ],
+      "explanation": "酮体三成员必须含 $\\beta$-羟丁酸。糖异生四酶：丙酮酸羧化酶、$\\mathrm{PEP}$ 羧激酶、果糖双磷酸酶-$1$、葡萄糖-$6$-磷酸酶。肉碱脂酰转移酶 $\\mathrm{I}$ 是脂酸 $\\beta$-氧化限速酶，不要写成激素敏感性脂酶（那是动员）。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.4.md",
+        "label": "1.4 酮体、糖异生四酶、β-氧化限速酶"
+      }
+    },
+    {
+      "id": "q018",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "英汉互译",
+      "points": 4,
+      "total_points": 4,
+      "stem": "英译中：transcription ________；plasmid ________。中译英：生物化学 ________；聚合酶链式反应 ________。",
+      "answer": "转录，质粒，biochemistry，polymerase chain reaction（PCR）",
+      "hint": "transcription 不是翻译；PCR 要写得出全称或公认缩写。",
+      "scoring_criteria": [
+        "transcription → 转录（1分）",
+        "plasmid → 质粒（1分）",
+        "生物化学 → biochemistry（1分）",
+        "聚合酶链式反应 → polymerase chain reaction 或 PCR（1分）"
+      ],
+      "explanation": "往年互译高频。transcription 转录，translation 才是翻译，replication 是复制。plasmid 质粒，transformation 才是转化。biochemistry 生物化学。$\\mathrm{PCR}$ 全称 polymerase chain reaction。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.3.md",
+        "label": "1.3 往年互译高频词"
+      }
+    },
+    {
+      "id": "q019",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "英汉互译",
+      "points": 4,
+      "total_points": 4,
+      "stem": "写出中文：glycolysis ________；gluconeogenesis ________；cis-acting element ________；biotransformation ________。",
+      "answer": "糖酵解，糖异生，顺式作用元件，生物转化",
+      "hint": "glyco 四个动词里 lysis 是裂解、neo-genesis 是新生成葡萄糖；元件是 $\\mathrm{DNA}$。",
+      "scoring_criteria": [
+        "glycolysis → 糖酵解（1分）",
+        "gluconeogenesis → 糖异生（1分）",
+        "cis-acting element → 顺式作用元件（1分）",
+        "biotransformation → 生物转化（1分）"
+      ],
+      "explanation": "不要把 glycolysis 写成糖原分解（glycogenolysis），不要把 gluconeogenesis 写成糖原合成（glycogenesis）。cis-acting element 是 $\\mathrm{DNA}$，trans-acting factor 才是蛋白质。biotransformation 不是 biological oxidation。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.3.md",
+        "label": "1.3 glyco 词族与顺反式、生物转化"
+      }
+    },
+    {
+      "id": "q020",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "填空题",
+      "points": 4,
+      "total_points": 4,
+      "stem": "一碳单位的运载体是 ________。体内最重要的甲基供体是 ________。嘌呤核苷酸分解的终产物是 ________。嘧啶从头合成的关键酶之一是胞液中的 ________（与尿素循环的线粒体酶分户）。",
+      "answer": "四氢叶酸（FH4），SAM（S-腺苷甲硫氨酸），尿酸，CPS-II（氨甲酰磷酸合成酶II）",
+      "hint": "一碳单位不是 $\\mathrm{CO}_2$；嘌呤终产物不是尿素；两种 $\\mathrm{CPS}$ 部位不同。",
+      "scoring_criteria": [
+        "第一空填“四氢叶酸”或“FH4”或“THFA”（1分）",
+        "第二空填“SAM”或“S-腺苷甲硫氨酸”或“活性甲硫氨酸”（1分）",
+        "第三空填“尿酸”（1分）",
+        "第四空填“CPS-II”或“氨甲酰磷酸合成酶II”（1分）"
+      ],
+      "explanation": "一碳单位载体是 $\\mathrm{FH}_4$，功用是参与嘌呤、嘧啶合成。$\\mathrm{SAM}$ 是活性甲基供体。人体嘌呤分解终产物是尿酸。尿素循环用线粒体 $\\mathrm{CPS}$-$\\mathrm{I}$（需 $\\mathrm{AGA}$），嘧啶合成用胞液 $\\mathrm{CPS}$-$\\mathrm{II}$。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.4.md",
+        "label": "1.4 一碳单位、尿酸、两种 CPS"
+      }
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "名词解释",
+      "points": 10,
+      "total_points": 10,
+      "stem": "解释下列名词（各 2 分）：①三羧酸循环；②脂肪动员；③半保留复制；④生物转化；⑤同工酶。",
+      "answer": "参考答案：\n\n1. **三羧酸循环**：由乙酰 $\\mathrm{CoA}$ 与草酰乙酸缩合成柠檬酸开始，经反复脱氢、脱羧再生成草酰乙酸的循环反应过程。\n2. **脂肪动员**：储存在脂肪细胞中的甘油三酯被脂解酶逐步水解为游离脂酸及甘油并释放入血液，运输至其他组织氧化利用的过程。\n3. **半保留复制**：$\\mathrm{DNA}$ 复制时解开的双链各自作为模板合成新的互补链；子代 $\\mathrm{DNA}$ 一股来自亲代，另一股新合成。\n4. **生物转化**：非营养物质在体内进行代谢转变，使其水溶性提高、极性增强，易于通过胆汁或尿液排出体外的过程。\n5. **同工酶**：催化相同反应，但酶的结构、理化性质乃至免疫学性质都不同的一组酶。",
+      "hint": "每条名解按「部位 / 原料 / 产物 / 意义」把构件写全，不要只写「是一种循环 / 一种酶」。",
+      "scoring_criteria": [
+        "三羧酸循环写出乙酰CoA与草酰乙酸缩合成柠檬酸、脱氢脱羧再生草酰乙酸（2分）",
+        "脂肪动员写出甘油三酯水解为FFA和甘油并入血供其他组织（2分）",
+        "半保留复制写出子代一股亲代一股新链（2分）",
+        "生物转化写出非营养物质、水溶性/极性提高、经胆汁或尿排出（2分）",
+        "同工酶写出同反应、不同结构/理化/免疫（2分）"
+      ],
+      "explanation": "五条都是往年名解原文。易漏：三羧酸循环不写再生草酰乙酸；脂肪动员不写入血；生物转化写成「解毒」；同工酶写成同一个酶的两个活性中心。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.2.md",
+        "label": "1.2 三羧酸循环、脂肪动员、半保留复制、生物转化、同工酶"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "比较糖酵解途径的三个关键酶与糖异生绕过不可逆反应的四个酶，并说明肝糖原与肌糖原在补充血糖上的差别。",
+      "answer": "参考答案：\n\n**1. 糖酵解途径三关键酶（不可逆）**\n- 己糖激酶（肝为葡萄糖激酶）\n- $6$-磷酸果糖激酶-$1$（$\\mathrm{PFK}$-$1$）\n- 丙酮酸激酶\n\n**2. 糖异生四酶（绕过上述三步）**\n- 葡萄糖-$6$-磷酸酶 绕过己糖激酶\n- 果糖双磷酸酶-$1$ 绕过 $\\mathrm{PFK}$-$1$\n- 丙酮酸羧化酶 + 磷酸烯醇式丙酮酸羧激酶 两步绕过丙酮酸激酶\n原料为乳酸、甘油、生糖氨基酸等非糖物质。\n\n**3. 肝糖原与肌糖原**\n- 合成关键酶都是糖原合酶，分解关键酶都是糖原磷酸化酶。\n- 肝有葡萄糖-$6$-磷酸酶，肝糖原分解可释放葡萄糖补充血糖。\n- 肌没有该酶，肌糖原主要供肌收缩急需，不能直接补充血糖。",
+      "hint": "三对一不够，绕过丙酮酸激酶要用两步；肌糖原缺葡萄糖-6-磷酸酶。",
+      "scoring_criteria": [
+        "写出酵解三关键酶：己糖激酶/葡萄糖激酶、PFK-1、丙酮酸激酶（3分）",
+        "写出糖异生四酶及与三步不可逆的对应（4分）",
+        "写出肝糖原可补血糖、肌糖原不能直接补血糖及酶学原因（3分）"
+      ],
+      "explanation": "本题把第四章掌握点收成「关键酶对照 + 两组织糖原」。偶数脂酸不是糖异生原料。有氧氧化 $\\mathrm{ATP}$ 只写 $30$ 或 $32$，本题不要求。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.4.md",
+        "label": "1.4 糖模块：三关键酶、四异生酶、肝肌糖原"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "案例分析题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "材料：某同学尝试极低碳水、高脂肪饮食，数日后出现恶心、呼气有烂苹果味，尿酮阳性。\n\n请回答：\n（1）酮体的定义（三成员）及生成部位。\n（2）为什么酮体是「肝内生成、肝外利用」？\n（3）结合三大物质代谢联系，说明为什么脂肪分解的顺利进行有赖于糖代谢；偶数碳脂酸能否净转变成葡萄糖？",
+      "answer": "参考答案：\n\n**（1）定义与部位**\n酮体包括乙酰乙酸、$\\beta$-羟丁酸和丙酮，是脂酸在肝细胞线粒体 $\\beta$-氧化时产生的特有中间产物。合成原料是大量乙酰 $\\mathrm{CoA}$。\n\n**（2）肝内生成、肝外利用**\n肝有生成酮体的酶系，但缺乏利用酮体的酶系，故酮体经血液运至肝外（脑、肌等）氧化，是肝向肝外输出能量的一种方式。生成过多可致酮血症、酮尿症及酮症酸中毒，呼气烂苹果味来自丙酮。\n\n**（3）依赖糖代谢；偶数脂酸不能成糖**\n糖代谢为三羧酸循环提供草酰乙酸等中间物。糖供应不足时，脂动员加强，$\\beta$-氧化产生大量乙酰 $\\mathrm{CoA}$，不能顺利进入循环，转而在肝生成酮体。偶数碳脂酸 $\\beta$-氧化产生的乙酰 $\\mathrm{CoA}$ 不能生成丙酮酸，循环没有净增加草酰乙酸，故不能净转变成葡萄糖。只有甘油可异生成糖。指南强调：从能量供应角度三大营养素可互相代替并制约，但这一分子边界不能破。",
+      "hint": "先写三成员和肝线粒体，再写肝缺利用酶系，最后落到乙酰 CoA 不能净成糖、分解依赖草酰乙酸。",
+      "scoring_criteria": [
+        "写出酮体三成员及肝细胞线粒体生成（3分）",
+        "说明肝能生成、不能利用，经血到肝外供能；过多致酮症（3分）",
+        "说明脂肪分解依赖糖代谢（草酰乙酸）及偶数脂酸不能净成糖（3分）",
+        "条理清楚、与材料呼应（1分）"
+      ],
+      "explanation": "此题对应往年「酮体定义 + 肝内生成肝外利用」案例，并用第九章硬边界解释极低碳水高脂肪为何易酮症。不要发明软脂酸 $\\mathrm{ATP}$ 口诀数字。",
+      "sourceRef": {
+        "path": "content/biochemistry/detail/1.4.md",
+        "label": "1.4 酮体、偶数脂酸不能成糖、脂肪分解依赖糖代谢"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 23,
+    "byType": {
+      "single_choice": 10,
+      "true_false": 5,
+      "fill_blank": 5,
+      "essay": 3
+    },
+    "bySource": {
+      "current_chapter": 23
+    },
+    "byDifficulty": {
+      "basic": 14,
+      "medium": 7,
+      "hard": 2
+    }
+  }
+}

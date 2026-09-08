@@ -1,0 +1,212 @@
+{
+  "subjectId": "medical-english",
+  "chapterId": "tb-ch06",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/medical-english/textbook/ch06.md",
+    "totalPoints": 100,
+    "timeLimit": 90,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 1},
+      {"name": "Reading Comprehension", "points": 40, "questions": 4},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "Writing",
+      "points": 15,
+      "total_points": 15,
+      "stem": "Write about 150 words on \"Why Climate Health Is Gendered\".\n\nUse Lesson 6. Include:\n- the two proportions (severity; women's socio-economic status);\n- at least two concrete chains (heatwave Europe vs Chicago; Bangladesh waterlogging; biomass fuel and COPD; drought and male suicide);\n- what equity requires (disaggregated data; accessible gender-equal systems).",
+      "answer": "Climate change does not issue the same invoice to every body. Extreme events generally kill more women, or kill them younger, in proportion to disaster severity and inversely to women's socio-economic and political status. Where status is similar, deaths are almost equal — so physiology is not a sufficient story.\n\nHeatwaves illustrate the switch. In Europe 2003 more women died; in Chicago 1995 isolated elderly men were at higher risk. In southwestern Bangladesh, women who cook, fetch water and stay in contaminated waterlogging develop gynaecological harm while men leave for work. Some 2.4 billion people rely on biomass fuels, raising COPD in those — mostly women — who collect fuel, and also warming the planet. Drought, meanwhile, has been linked to suicide among rural men bound by stoicism.\n\nEquity is impossible without recognising these different vulnerabilities. We need data broken down by age and sex, and health systems that actually reach the poorest across the life course.",
+      "hint": "两条比例必须出现；例子不要全写成「只有女受害」。芝加哥老年男性和澳大利亚男性自杀要能对上。",
+      "scoring_criteria": [
+        "内容（5分）：两条比例 + 至少两个具体链条 + 分列数据/可及系统。",
+        "语言（5分）：vulnerability, heatwave, COPD, disaggregated 等用得准。",
+        "结构（5分）：定律—例证—对策；约150词。"
+      ],
+      "explanation": "切题关键是 gendered，不是复述「地球变暖」。减产、钉螺、内涝、生物燃料、自杀都是零件，比例句才是骨架。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch06.md",
+        "label": "Lesson 6 · 两条比例与段 15 公平"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 15,
+      "stem": "In China, a 2°C rise would allow a 50–100% increase in the geographic distribution of water snails, and hence the potential transmission of _____, endangering many tens of millions. The disease name is built from schisto- (split) + -some (body) + _____.",
+      "options": [
+        "schistosomiasis; -iasis",
+        "hepatitis; -ectomy",
+        "eclampsia; -oma",
+        "COPD; -tomy"
+      ],
+      "answer": 0,
+      "hint": "钉螺是血吸虫中间宿主；-iasis 表病态/寄生虫病。",
+      "explanation": "A 正确：schistosomiasis；后缀 -iasis。B 肝炎/切除对不上钉螺。C 子痫是另一段气象—妊娠。D COPD 属于生物燃料段。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch06.md",
+        "label": "词根 schisto- / 中国钉螺句"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "reading",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 40,
+      "hint": "147 国否定纯生理；欧洲女高不等于芝加哥男高；24 亿是生物燃料。",
+      "passage": "A 147-country study highlighted that physical differences are unlikely to explain gendered disaster deaths; social norms may. Disasters reduced women's life expectancy more than men's and so narrowed the usual longevity gap. Effects were strongest where women's status was low.\n\nA 2°C rise may cut cereal yields 5–20% in South Asia, South-East Asia and sub-Saharan Africa. The same rise could expand water-snail range in China by 50–100% and thus schistosomiasis risk. The 2003 European heatwave killed more women; Chicago 1995 showed isolated elderly men at high risk. Social contact protected in U.S. case-control studies.\n\nIn Bangladesh, women trapped in waterlogging drink unsafe water while men leave for work. About 2.4 billion people cook and heat with biomass, raising COPD while exacerbating warming. Drought has been linked to suicide among Australian men associated with stoicism. Equity requires data disaggregated by age and sex and systems that reach the poorest.",
+      "subQuestions": [
+        {
+          "id": "q003_1",
+          "type": "single_choice",
+          "stem": "The 147-country study mainly supports which claim?",
+          "options": [
+            "Women die more in disasters solely because of body size.",
+            "Social norms and status, not mere physiology, help explain the death gap.",
+            "Disasters lengthen women's lives more than men's.",
+            "Heatwaves never kill men."
+          ],
+          "answer": 1,
+          "explanation": "physical differences unlikely; social norms may; status low → strongest effects。C 与 reduced women's life expectancy more 相反。",
+          "points": 10
+        },
+        {
+          "id": "q003_2",
+          "type": "single_choice",
+          "stem": "Chicago 1995 is cited to show that ________.",
+          "options": [
+            "European findings apply unchanged to every U.S. city",
+            "social isolation can put elderly men at higher heat risk",
+            "biomass fuel caused the heatwave",
+            "schistosomiasis reached Lake Michigan"
+          ],
+          "answer": 1,
+          "explanation": "isolated elderly men。不是把欧洲女高复制到芝加哥。",
+          "points": 10
+        },
+        {
+          "id": "q003_3",
+          "type": "single_choice",
+          "stem": "\"Disaggregated\" data are data that are ________.",
+          "options": [
+            "averaged so that sex disappears",
+            "broken down, here by age and sex, to allow gender analysis",
+            "collected only after emissions treaties",
+            "limited to hospital men"
+          ],
+          "answer": 1,
+          "explanation": "disaggregated by age and sex。",
+          "points": 10
+        },
+        {
+          "id": "q003_4",
+          "type": "true_false",
+          "stem": "The passage claims that 2.4 billion people rely on biomass fuels, with effects on COPD and on global warming at once.",
+          "options": ["False", "True"],
+          "answer": 1,
+          "explanation": "命题正确：raising COPD while exacerbating warming。true_false 的 1 = 正确。",
+          "points": 10
+        }
+      ],
+      "answer": "",
+      "explanation": "主旨打社会规范；细节打芝加哥隔离；词义打 disaggregated；判断打 24 亿生物燃料双账。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch06.md",
+        "label": "147 国、热浪对照、生物燃料、公平"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "cloze",
+      "section": "Cloze",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "hint": "两条比例；钉螺；子痫；COPD；分列数据。",
+      "passage": "Gendered disaster deaths are in (1) ____ to severity and inversely related to women's socio-economic (2) ____. A study of 147 countries found (3) ____ differences unlikely to explain the gap. In China, warming may widen the range of water (4) ____ and thus (5) ____. Heatwave deaths in Europe 2003 were higher in (6) ____; in Chicago, isolated elderly (7) ____ were at risk. Biomass fuels used by some 2.4 billion people raise the risk of (8) ____ while (9) ____ global warming. Equity needs data (10) ____ by age and sex.",
+      "blanks": [
+        {"id": "b1", "options": ["proportion", "opposition", "fiction", "silence"], "answer": 0, "explanation": "in proportion to severity。", "points": 1},
+        {"id": "b2", "options": ["status", "stature", "statute", "station"], "answer": 0, "explanation": "socio-economic status。", "points": 1},
+        {"id": "b3", "options": ["physical", "fictional", "musical", "naval"], "answer": 0, "explanation": "physical differences unlikely。", "points": 1},
+        {"id": "b4", "options": ["snails", "eagles", "trucks", "glaciers"], "answer": 0, "explanation": "water snails 钉螺。", "points": 1},
+        {"id": "b5", "options": ["schistosomiasis", "influenza only", "myopia", "otitis"], "answer": 0, "explanation": "血吸虫病潜在传播。", "points": 1},
+        {"id": "b6", "options": ["women", "infants only", "soldiers only", "fish"], "answer": 0, "explanation": "2003 欧洲女高。", "points": 1},
+        {"id": "b7", "options": ["men", "snails", "tourists only", "physicians"], "answer": 0, "explanation": "芝加哥老年男性。", "points": 1},
+        {"id": "b8", "options": ["COPD", "myopia", "caries", "tinnitus"], "answer": 0, "explanation": "chronic obstructive pulmonary disease。", "points": 1},
+        {"id": "b9", "options": ["exacerbating", "erasing", "ignoring", "translating"], "answer": 0, "explanation": "同时加剧变暖。", "points": 1},
+        {"id": "b10", "options": ["disaggregated", "decorated", "deleted", "delayed"], "answer": 0, "explanation": "按年龄性别分列。", "points": 1}
+      ],
+      "answer": "",
+      "explanation": "完形按课文定律—钉螺—热浪对照—生物燃料—数据分层走一遍。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch06.md",
+        "label": "课文四块关键词"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "translation",
+      "section": "Translation",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "hint": "in proportion to / inversely；endangering 分词；disaggregated by。",
+      "items": [
+        {
+          "id": "t1",
+          "source": "这些差异与灾难的严重程度成比例，也与妇女的社会经济地位相关。",
+          "reference": "These differences are in proportion to the severity of the disasters and are also related to women's socio-economic status.",
+          "explanation": "考点：in proportion to；socio-economic status。",
+          "points": 5
+        },
+        {
+          "id": "t2",
+          "source": "在中国，气温升高 2°C 会使钉螺的地理分布增加 50%–100%，从而带来血吸虫病的潜在传播，危及数千万人。",
+          "reference": "In China, a 2°C temperature rise would allow a 50–100% increase in the geographic distribution of water snails, and hence the potential transmission of schistosomiasis, endangering many tens of millions of people.",
+          "explanation": "考点：would allow；and hence；endangering。",
+          "points": 5
+        },
+        {
+          "id": "t3",
+          "source": "目前约 24 亿人依赖生物燃料烹调与取暖，这增加了慢性阻塞性肺疾病的风险，同时加剧全球变暖。",
+          "reference": "An estimated 2.4 billion people currently rely on biomass fuels for cooking and heating, increasing the risk of COPD while simultaneously exacerbating global warming.",
+          "explanation": "考点：2.4 billion；COPD；while simultaneously exacerbating。",
+          "points": 5
+        },
+        {
+          "id": "t4",
+          "source": "我们迫切需要收集、分析和报告按年龄和性别分列的数据。",
+          "reference": "We urgently need to collect, analyse and report data disaggregated by age and sex.",
+          "explanation": "考点：disaggregated by age and sex。",
+          "points": 5
+        }
+      ],
+      "answer": "",
+      "explanation": "四句覆盖比例定律、钉螺长难句、生物燃料、分列数据。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch06.md",
+        "label": "长难句与政策句"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 5,
+    "byType": { "essay": 1, "single_choice": 1, "reading": 1, "cloze": 1, "translation": 1 },
+    "bySource": { "current_chapter": 5 },
+    "byDifficulty": { "medium": 5 }
+  }
+}

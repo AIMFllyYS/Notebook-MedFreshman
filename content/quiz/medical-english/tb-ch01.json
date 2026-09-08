@@ -1,0 +1,212 @@
+{
+  "subjectId": "medical-english",
+  "chapterId": "tb-ch01",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/medical-english/textbook/ch01.md",
+    "totalPoints": 100,
+    "timeLimit": 90,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 1},
+      {"name": "Reading Comprehension", "points": 40, "questions": 4},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "Writing",
+      "points": 15,
+      "total_points": 15,
+      "stem": "Write a short essay of about 150 words on the topic: \"Modify the Words, Keep the Tenets\".\n\nDraw on Lesson 1 (the Hippocratic Oath as a medical ideal). Your essay should include:\n- why the original wording collides with modern practice (give at least two examples: placebo, triage, insurance, high-dose chemotherapy, or euthanasia);\n- the three main tenets that modern versions still share;\n- your view of the oath as a code of practice and a dividing line between healers and killers.",
+      "answer": "The Hippocratic Oath remains medicine's most quoted tradition, but its original words cannot be copied into a twenty-first-century ward. A literal duty to cure regardless of circumstances would forbid placebo controls in double-blind trials, forbid triage when survival chances differ, and forbid assisted euthanasia even to relieve incurable suffering. Modification is therefore unavoidable.\n\nWhat must not be modified out are the tenets shared by the Declaration of Geneva, the Prayer of Maimonides, the Oath of Lasagna and the Reinstatement: treat patients to the best of one's abilities, never cause intentional harm, and maintain confidentiality. Today's graduation oath is usually a code of practice and a symbol of commitment to healing, not a licence test sworn before deities.\n\nG. E. R. Lloyd said the name Hippocrates stands for an ideal. That ideal is a gold standard drawing a line between healers and killers. We may forget the writer's name; we may not forget the line.",
+      "hint": "先写必须改的现代冲突点，再默写三条信条，最后用 dividing line / code of practice 收束。不要把 invalid 写成「医学可以没有伦理」。",
+      "scoring_criteria": [
+        "内容（5分）：能指出原文与现代实践的冲突，并写出尽所能、不故意伤害、保密三条信条。",
+        "语言（5分）：准确使用 oath, tenets, placebo/triage/confidentiality 等课内词，语法基本正确。",
+        "结构（5分）：提出问题—展开—收束；约150词。"
+      ],
+      "explanation": "评分看三点是否到账：改字的理由（安慰剂、分诊等）、三条 tenets、理想金标准/医治者与杀手。堆砌金句但不提 tenets 不能拿满分。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch01.md",
+        "label": "Lesson 1 · 当代困境与四版本三条信条"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 15,
+      "stem": "Choose the best completion.\n\nA combining vowel is usually kept between two roots even if the second root begins with a vowel, as in gastr/o/enter/itis; it is often dropped before a suffix beginning with a vowel, as in mamm/itis. The suffix that means surgical removal (excision), not mere incision, is _____; a student who writes nephrectomy for \"opening the kidney\" has confused it with _____. The inflammation suffix _____ is always pronounced /ˈaɪtɪs/.\n\nWhich option fills the three blanks in order?",
+      "options": [
+        "-ectomy; -tomy; -itis",
+        "-tomy; -stomy; -oma",
+        "-stomy; -itis; -ectomy",
+        "-oma; -ectomy; -tomy"
+      ],
+      "answer": 0,
+      "hint": "切开是 -tomy，切掉是 -ectomy，造口是 -stomy；-itis 读 /ˈaɪtɪs/。",
+      "explanation": "A 正确。-ectomy = excision（nephrectomy 切肾）；与之混淆的是 -tomy（切开）；-itis 炎症，读 /ˈaɪtɪs/。\n\n干扰项：B 把切除写成切开，且 -oma 是肿瘤；C、D 三件零件全错位。课件曾把 -ectomy 误标为 Incision，本题就是卡那一笔。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch01.md",
+        "label": "词根入门 · -tomy vs -ectomy · pitfall"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "reading",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 40,
+      "hint": "先分清「作者存疑」与「信条仍在」；纽伦堡针对人体受试者；现代誓言多为执业守则。",
+      "passage": "Perhaps the most enduring tradition in the history of medicine is the Hippocratic Oath. Named after Hippocrates of Cos, it was written as a guideline for medical ethics. Little is known about the man himself. Over 60 treatises of the Hippocratic Corpus have been attributed to him, yet their conflicting contents and dates (c. 510–300 BC) mean they could not all be his. Penmanship of the Oath is still in question; the contents nonetheless reflect his ethical views.\n\nAfter a Western decline following Rome, tenets survived through Arabian medical writings and returned via Latin translations. Percival's 1794 code, adopted by the AMA in 1846, turned professional ethics into an organisational gold standard. The Nuremberg Code (1947) answered crimes against human subjects; the Declaration of Geneva followed in 1948.\n\nThe original duty to cure regardless of circumstances would forbid placebo-controlled trials, triage, unequal insurance-based care, some high-dose chemotherapy, and assisted euthanasia. Modern versions — Geneva, Maimonides, Lasagna, Reinstatement — differ in wording but share three tenets: best abilities, no intentional harm, confidentiality. Unlike the original, the new oath is usually a code of practice, not a precondition of licensure. Lloyd said the name Hippocrates has always stood for an ideal: a dividing line between healers and killers.",
+      "subQuestions": [
+        {
+          "id": "q003_1",
+          "type": "single_choice",
+          "stem": "What is the main idea of the passage?",
+          "options": [
+            "Hippocrates wrote every treatise in the Corpus, so the original oath can never change.",
+            "Authorship and wording are unsettled, yet an ethical ideal survived, was recoded, and still draws a line between healing and killing.",
+            "The Nuremberg Code abolished confidentiality.",
+            "Arabian authorities invented triage."
+          ],
+          "answer": 1,
+          "explanation": "主旨：作者存疑、原文与现代冲突、三条信条、金标准分界。A 与 could not all be his 矛盾；C 保密仍是信条；D 无中生有。",
+          "points": 10
+        },
+        {
+          "id": "q003_2",
+          "type": "single_choice",
+          "stem": "The Nuremberg Code is presented as a response to ________.",
+          "options": [
+            "Percival's refusal to write any code",
+            "crimes of experimentation on prisoners / human subjects",
+            "the invention of double-blind trials in ancient Cos",
+            "AMA's rejection of Latin translations"
+          ],
+          "answer": 1,
+          "explanation": "细节：Nuremberg Code (1947) answered crimes against human subjects。A、C、D 年代或事实不符。",
+          "points": 10
+        },
+        {
+          "id": "q003_3",
+          "type": "single_choice",
+          "stem": "In this passage, \"penmanship\" is closest in meaning to ________.",
+          "options": [
+            "calligraphic beauty",
+            "who actually wrote the text",
+            "the AMA membership list",
+            "a surgical incision"
+          ],
+          "answer": 1,
+          "explanation": "词义：Penmanship of the Oath is still in question 与作者问题并列。不是书法或切开。",
+          "points": 10
+        },
+        {
+          "id": "q003_4",
+          "type": "true_false",
+          "stem": "According to the passage, modern graduation oaths typically require a doctor to swear before practising, just as the original did.",
+          "options": ["False", "True"],
+          "answer": 0,
+          "explanation": "判断：Unlike the original, the new oath is usually a code of practice, not a precondition of licensure. 命题为假。options 中 0=False。",
+          "points": 10
+        }
+      ],
+      "answer": "",
+      "explanation": "四小题分别打主旨、纽伦堡细节、penmanship、现代誓言是否作为执照前提。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch01.md",
+        "label": "Text A 精讲 · 作者、纽伦堡、现代版本"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "cloze",
+      "section": "Cloze",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "hint": "连接元音两条铁律；三条信条；纽伦堡/日内瓦年份；placebo 与 triage。",
+      "passage": "Medical terms are built from Greek and Latin parts. A combining vowel is kept between two (1) ____ even if the second begins with a vowel, as in gastr/o/enter/itis, but often dropped before a suffix beginning with a (2) ____, as in mamm/itis. The suffix (3) ____ means inflammation and is pronounced /ˈaɪtɪs/; (4) ____ means a tumour; (5) ____ means excision, not incision.\n\nThe Hippocratic Oath is an ethical (6) ____ rather than a biography we can fully verify. Its modern versions share three tenets: treat to the best of one's abilities, never cause intentional (7) ____, and maintain (8) ____. Placebos in (9) ____ trials and (10) ____ in disasters show why a literal original duty to cure regardless of circumstances cannot govern every ward.",
+      "blanks": [
+        {"id": "b1", "options": ["roots", "prefixes", "deities", "insurers"], "answer": 0, "explanation": "两词根之间保留连接元音。", "points": 1},
+        {"id": "b2", "options": ["vowel", "consonant", "digit", "hyphen"], "answer": 0, "explanation": "元音开头的后缀前常丢掉连接元音。", "points": 1},
+        {"id": "b3", "options": ["-itis", "-ectomy", "-stomy", "-scope"], "answer": 0, "explanation": "-itis 炎症，读 /ˈaɪtɪs/。", "points": 1},
+        {"id": "b4", "options": ["-oma", "-tomy", "-ian", "-ac"], "answer": 0, "explanation": "-oma 肿瘤。", "points": 1},
+        {"id": "b5", "options": ["-ectomy", "-tomy", "-itis", "-ia"], "answer": 0, "explanation": "-ectomy 切除；-tomy 才是切开。", "points": 1},
+        {"id": "b6", "options": ["ideal", "invoice", "epidemic", "spirometer"], "answer": 0, "explanation": "Lloyd: stood for an ideal。", "points": 1},
+        {"id": "b7", "options": ["harm", "research", "translation", "billing"], "answer": 0, "explanation": "never cause intentional harm。", "points": 1},
+        {"id": "b8", "options": ["confidentiality", "celebrity", "triage", "placebo"], "answer": 0, "explanation": "第三条信条：保密。", "points": 1},
+        {"id": "b9", "options": ["double-blind", "single-handed", "open-label only", "medieval"], "answer": 0, "explanation": "placebos in double-blind trials。", "points": 1},
+        {"id": "b10", "options": ["triage", "calligraphy", "nephrectomy", "utopia"], "answer": 0, "explanation": "战争或灾害中的检伤分类。", "points": 1}
+      ],
+      "answer": "",
+      "explanation": "全文把词根规则与誓言信条焊在同一课：零件拼对，三条信条不丢，安慰剂与分诊说明为何必须改字。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch01.md",
+        "label": "词根规则 + 三条信条 + 当代困境"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "translation",
+      "section": "Translation",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "hint": "注意 It was through ... that 强调句；tenets 用复数；healers and killers 的分界。",
+      "items": [
+        {
+          "id": "t1",
+          "source": "正是凭借东方坚持不懈的探索精神，希波克拉底医学的信条才在这一恶化时期幸存下来。",
+          "reference": "It was through the perseverance of the spirit of inquiry in the East that the tenets of Hippocratic medicine survived this period of deterioration.",
+          "explanation": "考点：It was through X that Y survived Z；tenets；deterioration。",
+          "points": 5
+        },
+        {
+          "id": "t2",
+          "source": "现代诸版本措辞不同，但主要信条相同：尽己所能治疗病人、永不故意伤害、保守病人秘密。",
+          "reference": "Although the modern versions differ in wording, the main tenets are the same: treat patients to the best of one's abilities, never cause intentional harm, and maintain patient confidentiality.",
+          "explanation": "考点：Although 让步；three tenets 并列。",
+          "points": 5
+        },
+        {
+          "id": "t3",
+          "source": "原始誓言也会禁止按生存机会安排治疗优先次序的检伤分类。",
+          "reference": "The original oath would also forbid triage, in which treatment is prioritised based on patients' survival chances.",
+          "explanation": "考点：triage；would forbid；prioritised based on。",
+          "points": 5
+        },
+        {
+          "id": "t4",
+          "source": "这份誓言代表着一条把医治者与杀手分开的明确分界线。",
+          "reference": "The oath represents a clear dividing line separating healers and killers.",
+          "explanation": "考点：dividing line separating A and B。",
+          "points": 5
+        }
+      ],
+      "answer": "",
+      "explanation": "四句分别打知识史强调句、三条信条、triage、healers/killers。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch01.md",
+        "label": "长难句与信条默写"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 5,
+    "byType": { "essay": 1, "single_choice": 1, "reading": 1, "cloze": 1, "translation": 1 },
+    "bySource": { "current_chapter": 5 },
+    "byDifficulty": { "medium": 5 }
+  }
+}
