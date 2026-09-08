@@ -1,13 +1,19 @@
 import React from 'react';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import NoteCitationCard from './NoteCitationCard';
 import { useNoteCitations } from '@/lib/hooks/useNoteCitations';
+import { useNoteLocator } from '@/lib/hooks/useNoteLocator';
 import { useWindowManager } from '@/lib/hooks/useWindowManager';
+
+const nav = vi.hoisted(() => ({ push: vi.fn() }));
+vi.mock('next/navigation', () => ({ useRouter: () => nav }));
 
 afterEach(() => {
   cleanup();
+  nav.push.mockReset();
   useNoteCitations.getState().closeViewer();
+  useNoteLocator.setState({ request: null });
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
 });
 
@@ -24,11 +30,23 @@ describe('NoteCitationCard', () => {
     expect(screen.queryByText(/很长的笔记片段/)).not.toBeInTheDocument();
   });
 
-  it('expands to title rows only and opens the Mac viewer without inlining bodies', () => {
+  it('puts the chevron at the far right of the header', () => {
+    const { container } = render(<NoteCitationCard hits={hits} />);
+    const header = container.querySelector('.agent-fold-header')!;
+    expect(header.lastElementChild).toHaveClass('agent-fold-chevron');
+  });
+
+  it('expands without snippets, jumps to the note, and 查看 opens the Mac viewer', () => {
     render(<NoteCitationCard hits={hits} />);
     fireEvent.click(screen.getByRole('button', { name: /引用笔记 · 2 条/ }));
     expect(screen.getByText('贝叶斯公式')).toBeVisible();
     expect(screen.queryByText(/很长的笔记片段/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText('贝叶斯公式'));
+    expect(nav.push).toHaveBeenCalledWith('/probability/detail/1.4');
+    expect(useNoteLocator.getState().request).toMatchObject({
+      path: 'probability/detail/1.4',
+      snippet: '很长的笔记片段不应该出现在折叠块里',
+    });
     fireEvent.click(screen.getByRole('button', { name: '查看' }));
     expect(useNoteCitations.getState().activePath).toBe('probability/detail/1.4');
     expect(useWindowManager.getState().windows.some((w) => w.type === 'note-citation-viewer')).toBe(true);

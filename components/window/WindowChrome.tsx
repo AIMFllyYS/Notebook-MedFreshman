@@ -15,6 +15,7 @@ interface WindowChromeProps {
   children: ReactNode;
   onDragStart?: (event: React.PointerEvent) => void;
   showExternalLink?: boolean;
+  externalLinkLabel?: string;
   onExternalLink?: () => void;
   actions?: ReactNode;
   className?: string;
@@ -60,6 +61,7 @@ export default function WindowChrome({
   children,
   onDragStart,
   showExternalLink,
+  externalLinkLabel,
   onExternalLink,
   actions,
   className,
@@ -99,10 +101,16 @@ export default function WindowChrome({
               type="button"
               data-no-drag
               onClick={onExternalLink}
-              title="在新标签页打开"
-              className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]"
+              title={externalLinkLabel || "在新标签页打开"}
+              className={clsx(
+                "press flex h-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]",
+                externalLinkLabel
+                  ? "gap-1 px-2 text-[12px] font-medium text-[var(--md-sys-color-on-surface)]"
+                  : "w-7",
+              )}
             >
-              <ExternalLink size={15} />
+              <ExternalLink size={externalLinkLabel ? 13 : 15} />
+              {externalLinkLabel ? <span>{externalLinkLabel}</span> : null}
             </button>
           )}
         </div>

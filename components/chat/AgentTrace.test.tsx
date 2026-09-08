@@ -22,6 +22,7 @@ vi.mock('framer-motion', async () => {
   return { motion: { span: motionElement('span'), div: motionElement('div'), ol: motionElement('ol') }, useReducedMotion: () => motionPreference.reduced };
 });
 
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock('@/lib/hooks/useContextMenu', () => ({ openMessageMenu }));
 vi.mock('@/components/chat/MessageContent', () => ({
   MessageContent: ({ content, sessionId, messageId, repairModelId }: { content: string; sessionId?: string; messageId?: string; repairModelId?: string }) => (
@@ -306,9 +307,11 @@ describe('ChatMessage trace migration', () => {
     ]);
     const { container } = render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} isStreaming />);
     const answer = container.querySelector('.chat-bubble-assistant')!;
-    for (const card of [screen.getByTestId('note-citation-card'), screen.getByRole('link', { name: /大学课程资料/ }), screen.getByRole('link', { name: /补充来源/ }), screen.getByTestId('artifact-card'), screen.getByTestId('image-gen-card')]) {
+    for (const card of [screen.getByTestId('note-citation-card'), ...screen.getAllByTestId('web-source-fold'), screen.getByTestId('artifact-card'), screen.getByTestId('image-gen-card')]) {
       expect(answer.compareDocumentPosition(card) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     }
+    expect(screen.getByText(/联网来源 · 1 条/)).toBeVisible();
+    expect(screen.queryByText('公开课程摘要')).not.toBeInTheDocument();
     expect(screen.getByText(/引用笔记 · 1 条/)).toBeVisible();
     expect(screen.queryByText('公式讲解')).not.toBeInTheDocument();
     expect(screen.getAllByTestId('artifact-card')).toHaveLength(1);

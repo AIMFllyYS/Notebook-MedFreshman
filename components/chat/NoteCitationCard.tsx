@@ -1,49 +1,50 @@
 'use client';
 
 import React, { useState } from 'react';
-import { AgentChevronIcon, AgentFileIcon } from '@/components/icons/AgentIcons';
+import { useRouter } from 'next/navigation';
+import { AgentFileIcon } from '@/components/icons/AgentIcons';
 import type { SearchHit } from '@/lib/ai/agent/toolTypes';
 import { useNoteCitations } from '@/lib/hooks/useNoteCitations';
+import { requestCitedNote } from '@/lib/notes/openCitedNote';
+import AgentFoldHeader from '@/components/chat/AgentFoldHeader';
 
 export default function NoteCitationCard({ hits }: { hits: SearchHit[] }) {
   const [expanded, setExpanded] = useState(false);
   const openViewer = useNoteCitations((s) => s.openViewer);
+  const router = useRouter();
 
   if (!hits.length) return null;
 
+  const openInNotes = (path: string, snippet: string) => {
+    const href = requestCitedNote(path, snippet);
+    if (href) router.push(href);
+  };
+
   return (
-    <div className="note-citation-card" data-testid="note-citation-card">
-      <div className="note-citation-card-header">
-        <button
-          type="button"
-          aria-expanded={expanded}
-          onClick={() => setExpanded((open) => !open)}
-          className="note-citation-card-toggle"
-        >
-          <AgentFileIcon size={16} className="shrink-0" />
-          <span className="min-w-0 flex-1 truncate">引用笔记 · {hits.length} 条</span>
-          <AgentChevronIcon
-            size={14}
-            className="shrink-0 opacity-70"
-            style={{ transform: expanded ? 'rotate(180deg)' : undefined }}
-          />
-        </button>
-        <button
-          type="button"
-          className="note-citation-card-open"
-          onClick={() => openViewer(hits, hits[0]?.path)}
-        >
-          查看
-        </button>
-      </div>
+    <div className="note-citation-card agent-fold" data-testid="note-citation-card">
+      <AgentFoldHeader
+        icon={<AgentFileIcon size={16} className="shrink-0" />}
+        title={`引用笔记 · ${hits.length} 条`}
+        expanded={expanded}
+        onToggle={() => setExpanded((open) => !open)}
+        action={(
+          <button
+            type="button"
+            className="agent-fold-action"
+            onClick={() => openViewer(hits, hits[0]?.path)}
+          >
+            查看
+          </button>
+        )}
+      />
       {expanded ? (
-        <ul className="note-citation-card-list">
+        <ul className="agent-fold-list hide-scrollbar">
           {hits.map((hit, index) => (
             <li key={`${hit.path}:${index}`}>
               <button
                 type="button"
                 className="note-citation-card-item"
-                onClick={() => openViewer(hits, hit.path)}
+                onClick={() => openInNotes(hit.path, hit.snippet)}
               >
                 <span className="note-citation-card-title">{hit.title}</span>
                 <span className="note-citation-card-path">{hit.path}</span>

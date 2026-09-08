@@ -6,6 +6,7 @@ import { autoGrade, isObjective, maxPointsOf } from '@/lib/quiz/types';
 import type { QuestionResult } from '@/lib/quiz-store';
 import QuizQuestion from '@/components/quiz/QuizQuestion';
 import { AgentQuizIcon } from '@/components/icons/AgentIcons';
+import AgentFoldHeader from '@/components/chat/AgentFoldHeader';
 
 interface ChatQuizCardProps {
   title: string;
@@ -50,6 +51,7 @@ function revealLabel(type: QuestionType): string {
 }
 
 export default function ChatQuizCard({ title, questions, intent, droppedCount }: ChatQuizCardProps) {
+  const [expanded, setExpanded] = useState(false);
   const [answers, setAnswers] = useState<Record<string, UserAnswer>>({});
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [hintsUsed, setHintsUsed] = useState<string[]>([]);
@@ -80,66 +82,70 @@ export default function ChatQuizCard({ title, questions, intent, droppedCount }:
 
   const revealedCount = questions.filter((q) => revealed[q.id]).length;
 
+  const intentLabel = intent ? INTENT_LABEL[intent] || intent : '练习';
+
   return (
-    <div className="chat-quiz-card my-3 min-w-0 overflow-hidden rounded-2xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container)] p-4">
-      <div className="mb-3 flex min-w-0 items-center gap-2 text-[13px] font-semibold text-[var(--md-sys-color-on-surface)]">
-        <AgentQuizIcon size={18} className="shrink-0" />
-        <span className="min-w-0 truncate">{title}</span>
-        <span className="ml-auto shrink-0 text-[11px] font-normal text-[var(--md-sys-color-on-surface-variant)]">
-          {intent ? INTENT_LABEL[intent] || intent : '练习'} · {questions.length} 题
-        </span>
-      </div>
+    <div className="chat-quiz-card agent-fold my-3" data-testid="chat-quiz-card">
+      <AgentFoldHeader
+        icon={<AgentQuizIcon size={16} className="shrink-0" />}
+        title={`${title} · ${questions.length} 题`}
+        expanded={expanded}
+        onToggle={() => setExpanded((open) => !open)}
+        action={<span className="shrink-0 text-[11px] text-[var(--md-sys-color-on-surface-variant)]">{intentLabel}</span>}
+      />
 
-      <div className="space-y-5">
-        {questions.map((q, i) => {
-          const open = !!revealed[q.id];
-          const needsConfirm = !isInstantChoice(q.type);
-          return (
-            <div key={q.id} className="min-w-0">
-              <QuizQuestion
-                question={q}
-                index={i}
-                total={questions.length}
-                mode={open ? 'review' : 'answer'}
-                answer={answers[q.id] ?? null}
-                onChange={(a) => onAnswer(q, a)}
-                result={results[q.id]}
-                hintsUsed={hintsUsed}
-                onUseHint={(id) => setHintsUsed((prev) => (prev.includes(id) ? prev : [...prev, id]))}
-              />
-              {needsConfirm && !open ? (
-                <button
-                  type="button"
-                  disabled={!isAnswered(answers[q.id])}
-                  onClick={() => reveal(q.id)}
-                  className="mt-3 rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
-                >
-                  {revealLabel(q.type)}
-                </button>
-              ) : null}
+      {expanded ? (
+        <div className="chat-quiz-body space-y-5">
+          {questions.map((q, i) => {
+            const open = !!revealed[q.id];
+            const needsConfirm = !isInstantChoice(q.type);
+            return (
+              <div key={q.id} className="min-w-0">
+                <QuizQuestion
+                  question={q}
+                  index={i}
+                  total={questions.length}
+                  mode={open ? 'review' : 'answer'}
+                  answer={answers[q.id] ?? null}
+                  onChange={(a) => onAnswer(q, a)}
+                  result={results[q.id]}
+                  hintsUsed={hintsUsed}
+                  onUseHint={(id) => setHintsUsed((prev) => (prev.includes(id) ? prev : [...prev, id]))}
+                />
+                {needsConfirm && !open ? (
+                  <button
+                    type="button"
+                    disabled={!isAnswered(answers[q.id])}
+                    onClick={() => reveal(q.id)}
+                    className="mt-3 rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
+                  >
+                    {revealLabel(q.type)}
+                  </button>
+                ) : null}
+              </div>
+            );
+          })}
+
+          {revealedCount > 0 ? (
+            <div className="mt-4 flex items-center gap-3 text-[13px]">
+              <span className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                已反馈 {revealedCount} / {questions.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => { setAnswers({}); setHintsUsed([]); setRevealed({}); }}
+                className="ml-auto rounded-lg border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 text-[12px] hover:bg-[var(--md-sys-color-surface-container-high)]"
+              >
+                重做
+              </button>
             </div>
-          );
-        })}
-      </div>
+          ) : null}
 
-      {revealedCount > 0 ? (
-        <div className="mt-4 flex items-center gap-3 text-[13px]">
-          <span className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-            已反馈 {revealedCount} / {questions.length}
-          </span>
-          <button
-            type="button"
-            onClick={() => { setAnswers({}); setHintsUsed([]); setRevealed({}); }}
-            className="ml-auto rounded-lg border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 text-[12px] hover:bg-[var(--md-sys-color-surface-container-high)]"
-          >
-            重做
-          </button>
-        </div>
-      ) : null}
-
-      {droppedCount ? (
-        <div className="mt-3 text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-          （有 {droppedCount} 道题因结构不完整被丢弃）
+          {droppedCount ? (
+            <div className="mt-3 text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+              （有 {droppedCount} 道题因结构不完整被丢弃）
+            </div>
+          ) : null}
         </div>
       ) : null}
     </div>

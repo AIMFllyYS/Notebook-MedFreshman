@@ -1,14 +1,15 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { AgentArrowUpRightIcon, AgentFileIcon, AgentGlobeIcon, AgentImageIcon, AgentLoopIcon, AgentUserIcon } from '@/components/icons/AgentIcons';
-import type { ChatMessage as ChatMessageType, WebSearchSource } from '@/lib/types/chat';
+import { AgentFileIcon, AgentImageIcon, AgentLoopIcon, AgentUserIcon } from '@/components/icons/AgentIcons';
+import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import ArtifactCard from '@/components/chat/ArtifactCard';
 import ImageGenCard from '@/components/chat/ImageGenCard';
 import ChatQuizCard from '@/components/chat/ChatQuizCard';
 import NoteCitationCard from '@/components/chat/NoteCitationCard';
+import WebSourceFold from '@/components/chat/WebSourceFold';
 import NoteImageGallery from '@/components/chat/NoteImageGallery';
 import DocumentCard from '@/components/chat/DocumentCard';
 import { AgentTrace } from '@/components/chat/AgentTrace';
@@ -16,6 +17,7 @@ import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
 import { buildTrace } from '@/lib/chat/buildTrace';
 import { getMessageText, getToolPartsByName } from '@/lib/chat/messageParts';
+import { collectMessageSources } from '@/lib/chat/traceSources';
 import { ImageStrip } from '@/components/chat/ImageStrip';
 import { ChatImage } from '@/components/chat/ChatImage';
 
@@ -47,6 +49,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
   const directSources = useMemo(() => parts.flatMap((part) => part.type === 'source-url'
     ? [{ title: part.title || sourceHost(part.url), url: part.url, snippet: '' }]
     : []), [parts]);
+
+  const traceSources = useMemo(() => isUser ? [] : collectMessageSources(parts), [isUser, parts]);
 
   // One card per artifact ID, even if a restored tool result references it again.
   const resultCards = useMemo(() => {
@@ -118,9 +122,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
               ? <NoteCitationCard key={part.toolCallId} hits={part.output.hits} />
               : null)}
             {getToolPartsByName(message, 'webSearch').map((part) => part.state === 'output-available' && !part.preliminary && part.output.sources?.length
-              ? <SourceCards key={part.toolCallId} sources={part.output.sources} cacheHit={part.output.cacheHit} />
+              ? <WebSourceFold key={part.toolCallId} sources={part.output.sources} cacheHit={part.output.cacheHit} />
               : null)}
-            {directSources.length ? <SourceCards sources={directSources} label="参考来源" /> : null}
+            {directSources.length ? <WebSourceFold sources={directSources} label="参考来源" /> : null}
             {parts.map((part) => part.type === 'source-document' ? (
               <div key={part.sourceId} className="my-2 flex min-w-0 items-center gap-2 rounded-lg bg-[var(--md-sys-color-surface-container)] px-3 py-2 text-[12px] text-[var(--md-sys-color-on-surface-variant)]">
                 <AgentFileIcon size={16} className="shrink-0" /><span className="min-w-0 break-words">{part.title || part.filename || '参考文档'}</span>
@@ -210,7 +214,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                 </ImageStrip>
               </div>
             )}
-            {!isStreaming && followUpQuestions.length > 0 ? <FollowUpQuestions questions={followUpQuestions} onSelect={onFollowUpSelect} /> : null}
+            {!isStreaming && (followUpQuestions.length > 0 || traceSources.length > 0) ? (
+              <FollowUpQuestions questions={followUpQuestions} onSelect={onFollowUpSelect} sources={traceSources} />
+            ) : null}
           </>
         )}
       </div>
@@ -222,29 +228,4 @@ export default React.memo(ChatMessage);
 
 function sourceHost(url: string): string {
   try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return url; }
-}
-
-function SourceCards({ sources, cacheHit, label = '联网来源' }: { sources: WebSearchSource[]; cacheHit?: boolean; label?: string }) {
-  return (
-    <div className="my-3 min-w-0 space-y-1.5" aria-label={label}>
-      <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-        <AgentGlobeIcon size={16} />
-        <span>{label} · {sources.length} 条</span>
-        {cacheHit ? <span className="text-[var(--md-sys-color-outline)]">· 来自缓存</span> : null}
-      </div>
-      {sources.map((source, index) => (
-        <a
-          key={`${source.url}:${index}`}
-          href={source.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex min-w-0 flex-col gap-1 rounded-xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container)] px-3 py-2 no-underline transition-colors hover:bg-[var(--md-sys-color-surface-container-high)] focus-visible:outline-2 focus-visible:outline-[var(--md-sys-color-primary)] motion-reduce:transition-none"
-        >
-          <span className="flex min-w-0 items-center gap-1.5 text-[12px] font-medium text-[var(--md-sys-color-on-surface)]"><span className="min-w-0 flex-1 truncate">{index + 1}. {source.title || sourceHost(source.url)}</span><AgentArrowUpRightIcon size={14} className="shrink-0" /></span>
-          {source.snippet ? <span className="line-clamp-2 text-[11px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">{source.snippet}</span> : null}
-          <span className="truncate text-[10px] text-[var(--md-sys-color-outline)]">{sourceHost(source.url)}</span>
-        </a>
-      ))}
-    </div>
-  );
 }

@@ -16,8 +16,13 @@ test("citation and document viewers are mounted in the global app shell window l
   const appShell = readWorkspaceFile("components/layout/AppShell.tsx");
 
   assert.doesNotMatch(chatPanel, /NoteCitationViewer/, "Citation windows must outlive the AI tab.");
+  assert.doesNotMatch(chatPanel, /SourcePreviewViewer/, "Source preview windows must outlive the AI tab.");
   assert.match(appShell, /components\/chat\/NoteCitationViewer/);
   assert.match(appShell, /<NoteCitationViewer\s*\/>/);
+  assert.match(appShell, /components\/chat\/SourceTraceViewer/);
+  assert.match(appShell, /<SourceTraceViewer\s*\/>/);
+  assert.match(appShell, /components\/chat\/SourcePreviewViewer/);
+  assert.match(appShell, /<SourcePreviewViewer\s*\/>/);
   assert.match(appShell, /components\/chat\/DocumentViewer/);
   assert.match(appShell, /<DocumentViewerLayer\s*\/>/);
 });

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { noteBreadcrumb, noteHref, parseNotePath } from "./notePath.ts";
+import { noteBreadcrumb, noteHref, notePathEquals, parseNotePath } from "./notePath.ts";
 
 test("parseNotePath accepts subject/category/item and two-segment legacy paths", () => {
   assert.deepEqual(parseNotePath("anatomy/textbook/ch09-4"), {
@@ -15,6 +15,13 @@ test("parseNotePath accepts subject/category/item and two-segment legacy paths",
   });
   assert.equal(parseNotePath(""), null);
   assert.equal(parseNotePath("only-id"), null);
+});
+
+test("notePathEquals matches parsed composite and legacy two-segment paths", () => {
+  const loc = { subjectId: "probability", categoryId: "detail", itemId: "1.4" };
+  assert.equal(notePathEquals("probability/detail/1.4", loc), true);
+  assert.equal(notePathEquals("probability/1.4", loc), true);
+  assert.equal(notePathEquals("probability/detail/1.3", loc), false);
 });
 
 test("noteHref and breadcrumb keep the composite route readable", () => {

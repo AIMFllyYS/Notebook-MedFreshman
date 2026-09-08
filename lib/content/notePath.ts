@@ -25,6 +25,16 @@ export function noteHref(parsed: ParsedNotePath): string {
   return `/${parsed.subjectId}/${parsed.categoryId}/${parsed.itemId}`;
 }
 
+export function notePathEquals(path: string, loc: ParsedNotePath): boolean {
+  const parsed = parseNotePath(path);
+  return Boolean(
+    parsed &&
+      parsed.subjectId === loc.subjectId &&
+      parsed.categoryId === loc.categoryId &&
+      parsed.itemId === loc.itemId,
+  );
+}
+
 export function noteBreadcrumb(parsed: ParsedNotePath, fallbackTitle?: string): string {
   if (!isSubjectId(parsed.subjectId)) return fallbackTitle || parsed.itemId;
   const subject = getSubject(parsed.subjectId);

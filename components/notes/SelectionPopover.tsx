@@ -9,6 +9,7 @@ import { startRecord } from "@/lib/review/startRecord";
 import { currentRecordContext } from "@/lib/review/recordContext";
 import { copyTextToClipboard, shouldInterceptSelectionCopy } from "@/lib/clipboard/copyText";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { unwrapMark, wrapRange } from "@/lib/notes/crayonHighlight";
 import type { SubjectId } from "@/lib/types/content";
 
 interface PopState {
@@ -64,51 +65,6 @@ function PopIconBtn({
       <ActiveIcon size={15} />
     </button>
   );
-}
-
-function wrapRange(range: Range): HTMLElement[] {
-  const marks: HTMLElement[] = [];
-  const root = range.commonAncestorContainer;
-
-  const walker = document.createTreeWalker(
-    root.nodeType === Node.ELEMENT_NODE ? (root as Element) : (root.parentElement as Element),
-    NodeFilter.SHOW_TEXT,
-  );
-
-  const textNodes: Text[] = [];
-  let node: Node | null;
-  while ((node = walker.nextNode())) {
-    const tn = node as Text;
-    if (range.intersectsNode(tn)) {
-      const start = tn === range.startContainer ? range.startOffset : 0;
-      const end = tn === range.endContainer ? range.endOffset : tn.length;
-      if (start < end) textNodes.push(tn);
-    }
-  }
-
-  for (const tn of textNodes) {
-    const start = tn === range.startContainer ? range.startOffset : 0;
-    const end = tn === range.endContainer ? range.endOffset : tn.length;
-    const selected = tn.splitText(start);
-    if (end - start < selected.length) selected.splitText(end - start);
-    const mark = document.createElement("mark");
-    mark.className = "crayon-highlight";
-    selected.parentNode!.insertBefore(mark, selected);
-    mark.appendChild(selected);
-    marks.push(mark);
-  }
-
-  return marks;
-}
-
-function unwrapMark(mark: HTMLElement) {
-  const parent = mark.parentNode;
-  if (!parent) return;
-  while (mark.firstChild) {
-    parent.insertBefore(mark.firstChild, mark);
-  }
-  parent.removeChild(mark);
-  parent.normalize();
 }
 
 function closePopover(
