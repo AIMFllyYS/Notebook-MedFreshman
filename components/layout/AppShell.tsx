@@ -39,6 +39,7 @@ const RecordPreviewLayer = dynamic(() => import("@/components/review/RecordPrevi
 const ArtifactViewer = dynamic(() => import("@/components/chat/ArtifactViewer"), { ssr: false });
 const ImageGenViewerLayer = dynamic(() => import("@/components/chat/ImageGenViewer"), { ssr: false });
 const DocumentViewerLayer = dynamic(() => import("@/components/chat/DocumentViewer"), { ssr: false });
+const NoteCitationViewer = dynamic(() => import("@/components/chat/NoteCitationViewer"), { ssr: false });
 const MessageContextMenu = dynamic(() => import("@/components/shared/MessageContextMenu"), { ssr: false });
 const BillingDashboardLayer = dynamic(() => import("@/components/chat/BillingDashboard"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
@@ -279,6 +280,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <ArtifactViewer />
         <ImageGenViewerLayer />
         <DocumentViewerLayer />
+        <NoteCitationViewer />
         <MessageContextMenu />
         <BillingDashboardLayer />
       </div>
@@ -350,6 +352,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <RecordPreviewLayer />
       <ArtifactViewer />
       <ImageGenViewerLayer />
+      <DocumentViewerLayer />
+      <NoteCitationViewer />
       <MessageContextMenu />
       <BillingDashboardLayer />
     </div>

@@ -1,0 +1,221 @@
+/* Agent 结构化工具结果：引用笔记折叠块 / Mac 弹窗、出题卡片。
+   与 .prose-notes / .chat-prose 排版令牌无关，不进 prose.css。 */
+
+.note-citation-card,
+.chat-quiz-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.note-citation-card {
+  margin: 4px 0 2px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  background: var(--md-sys-color-surface-container);
+}
+
+.note-citation-card-header {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px 6px 10px;
+}
+
+.note-citation-card-toggle {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.note-citation-card-open {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 8px;
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.note-citation-card-list {
+  margin: 0;
+  padding: 0 8px 8px;
+  max-height: 9.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.note-citation-card-item {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+  margin: 0;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 8px;
+  background: var(--md-sys-color-surface-container-high);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.note-citation-card-list li + li {
+  margin-top: 4px;
+}
+
+.note-citation-card-title,
+.note-citation-card-path,
+.note-citation-nav-title,
+.note-citation-nav-path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.note-citation-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.note-citation-card-path,
+.note-citation-nav-path {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  color: var(--md-sys-color-outline);
+}
+
+.note-citation-window {
+  min-width: 0;
+  min-height: 0;
+}
+
+.note-citation-layout {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.note-citation-sidebar {
+  display: flex;
+  width: 13.5rem;
+  min-width: 0;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 4px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 8px;
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container);
+}
+
+.note-citation-nav-item {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.note-citation-nav-item.is-active {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.note-citation-nav-title {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.note-citation-body {
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 16px 20px 28px;
+}
+
+.note-citation-snippet {
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.note-citation-snippet-label {
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.note-citation-snippet p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface);
+  overflow-wrap: anywhere;
+}
+
+.note-citation-status {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.note-citation-status.is-error {
+  color: var(--md-sys-color-error);
+}
+
+.note-citation-prose {
+  max-width: none;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 720px) {
+  .note-citation-layout {
+    flex-direction: column;
+  }
+  .note-citation-sidebar {
+    width: 100%;
+    max-height: 8rem;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: none;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+  .note-citation-nav-item {
+    min-width: 9.5rem;
+  }
+}

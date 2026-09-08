@@ -8,6 +8,7 @@ import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import ArtifactCard from '@/components/chat/ArtifactCard';
 import ImageGenCard from '@/components/chat/ImageGenCard';
 import ChatQuizCard from '@/components/chat/ChatQuizCard';
+import NoteCitationCard from '@/components/chat/NoteCitationCard';
 import NoteImageGallery from '@/components/chat/NoteImageGallery';
 import DocumentCard from '@/components/chat/DocumentCard';
 import { AgentTrace } from '@/components/chat/AgentTrace';
@@ -113,23 +114,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
               </div>
             )}
             {/* Rich results remain available below the answer when the trace collapses. */}
-            {getToolPartsByName(message, 'searchNotes').map((part) => part.state === 'output-available' && !part.preliminary && part.output.hits?.length ? (
-              <div key={part.toolCallId} className="search-hit-inline-cards">
-                <div className="search-hit-inline-header">
-                  <AgentFileIcon size={16} />
-                  <span>引用笔记 · {part.output.hits.length} 条</span>
-                </div>
-                <div className="search-hit-inline-list">
-                  {part.output.hits.map((hit, index) => (
-                    <div key={`${hit.path}:${index}`} className="search-hit-inline-item">
-                      <span className="search-hit-inline-title">{hit.title}</span>
-                      <span className="search-hit-inline-path break-all">{hit.path}</span>
-                      {hit.snippet ? <span className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">{hit.snippet}</span> : null}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : null)}
+            {getToolPartsByName(message, 'searchNotes').map((part) => part.state === 'output-available' && !part.preliminary && part.output.hits?.length
+              ? <NoteCitationCard key={part.toolCallId} hits={part.output.hits} />
+              : null)}
             {getToolPartsByName(message, 'webSearch').map((part) => part.state === 'output-available' && !part.preliminary && part.output.sources?.length
               ? <SourceCards key={part.toolCallId} sources={part.output.sources} cacheHit={part.output.cacheHit} />
               : null)}

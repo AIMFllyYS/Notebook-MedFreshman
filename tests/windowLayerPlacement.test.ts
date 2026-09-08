@@ -11,6 +11,17 @@ function readWorkspaceFile(path: string) {
   return readFileSync(join(root, path), "utf8");
 }
 
+test("citation and document viewers are mounted in the global app shell window layer", () => {
+  const chatPanel = readWorkspaceFile("components/chat/ChatPanel.tsx");
+  const appShell = readWorkspaceFile("components/layout/AppShell.tsx");
+
+  assert.doesNotMatch(chatPanel, /NoteCitationViewer/, "Citation windows must outlive the AI tab.");
+  assert.match(appShell, /components\/chat\/NoteCitationViewer/);
+  assert.match(appShell, /<NoteCitationViewer\s*\/>/);
+  assert.match(appShell, /components\/chat\/DocumentViewer/);
+  assert.match(appShell, /<DocumentViewerLayer\s*\/>/);
+});
+
 test("artifact viewer is mounted in the global app shell window layer", () => {
   const chatPanel = readWorkspaceFile("components/chat/ChatPanel.tsx");
   const appShell = readWorkspaceFile("components/layout/AppShell.tsx");
