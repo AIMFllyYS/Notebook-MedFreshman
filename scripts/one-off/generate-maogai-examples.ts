@@ -2,7 +2,7 @@
  * 从毛概教材各章末尾提取课后思考题，生成例题文件。
  *
  * 用法：
- *   npx tsx scripts/generate-maogai-examples.ts
+ *   npx tsx scripts/one-off/generate-maogai-examples.ts
  *
  * 输入：
  *   content/maogai/textbook/ch{NN}.md

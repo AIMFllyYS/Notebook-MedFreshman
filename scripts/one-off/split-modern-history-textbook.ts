@@ -2,7 +2,7 @@
  * 中国近现代史纲要教材 · 合并前后 PDF + 切分小节脚本
  *
  * 用法：
- *   npx tsx scripts/split-modern-history-textbook.ts
+ *   npx tsx scripts/one-off/split-modern-history-textbook.ts
  *
  * 输入：
  *   scripts/temp/modern-history-textbook/raw/{slug}/full.md  （MinerU 解析产出）
@@ -209,7 +209,7 @@ function main() {
 
   if (!fs.existsSync(RAW_DIR)) {
     console.error(`ERROR: RAW_DIR not found: ${RAW_DIR}`);
-    console.error("请先执行: npx tsx scripts/process-modern-history-textbook.ts");
+    console.error("请先执行: npx tsx scripts/one-off/process-modern-history-textbook.ts");
     process.exit(1);
   }
 

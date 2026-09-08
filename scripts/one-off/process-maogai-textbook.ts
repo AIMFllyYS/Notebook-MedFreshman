@@ -1,19 +1,19 @@
 /**
- * 中国近现代史纲要教材 PDF → MinerU 解析脚本
+ * 毛概教材 PDF → MinerU 解析脚本
  *
  * 用法：
- *   npx tsx scripts/process-modern-history-textbook.ts
+ *   npx tsx scripts/one-off/process-maogai-textbook.ts
  *
  * 环境变量（从 .env.local 自动加载）：
  *   MinerU_API_Token
  *
  * 输入：
- *   C:\Users\AIMFl\OneDrive\文档\课程文件\中国近现代史纲要课程及录音\课文\*.pdf
+ *   C:\Users\AIMFl\OneDrive\文档\课程文件\毛概\教材\*.pdf
  *
  * 产出：
- *   scripts/temp/modern-history-textbook/raw/{slug}/full.md
- *   scripts/temp/modern-history-textbook/raw/{slug}/images/*
- *   scripts/temp/modern-history-textbook/raw/_meta.json
+ *   scripts/temp/maogai-textbook/raw/{slug}/full.md
+ *   scripts/temp/maogai-textbook/raw/{slug}/images/*
+ *   scripts/temp/maogai-textbook/raw/_meta.json
  */
 
 import * as fs from "node:fs";
@@ -51,27 +51,22 @@ const HEADERS = {
 
 // ─── Configuration ──────────────────────────────────────────────────────────
 
-const PDF_DIR = path.normalize("C:/Users/AIMFl/OneDrive/文档/课程文件/中国近现代史纲要课程及录音/课文");
-const OUTPUT_ROOT = path.join(process.cwd(), "scripts", "temp", "modern-history-textbook", "raw");
+const PDF_DIR = path.normalize("C:/Users/AIMFl/OneDrive/文档/课程文件/毛概/教材");
+const OUTPUT_ROOT = path.join(process.cwd(), "scripts", "temp", "maogai-textbook", "raw");
 const META_FILE = path.join(OUTPUT_ROOT, "_meta.json");
 
 const SLUG_MAP: Record<string, string> = {
-  "导言": "ch00",
-  "第一章 进入近代后中华民族的磨难与抗争": "ch01-front",
-  "第一章 进入近代后中华民族的磨难与抗争(后)": "ch01-back",
-  "第二章不同社会力量对国家出路的早期探索": "ch02-front",
-  "第二章不同社会力量对国家出路的早期探索(后)": "ch02-back",
-  "第三章 辛亥革命与君主专制制度的终结": "ch03",
-  "第四章中国共产党成立和中国革命新局面": "ch04-front",
-  "第四章中国共产党成立和中国革命新局面(后)": "ch04-back",
-  "第五章中国革命的新道路": "ch05",
-  "第六章中华民族的抗日战争": "ch06-front",
-  "第六章中华民族的抗日战争（后）": "ch06-back",
-  "第七章为建立新中国而奋斗": "ch07",
-  "第八章中华人民共和国的成立与中国社会主义建设道路的探索": "ch08",
-  "第九章 改革开放与中国特色社会主义的开创和发展": "ch09-front",
-  "第九章 改革开放与中国特色社会主义的开创和发展(后)": "ch09-back",
-  "第十章中国特色社会主义进入新时代": "ch10",
+  "毛概-教材-目录": "toc",
+  "毛概-教材-导论马克思主义中国化时代化的历史进程与理论成果": "ch00",
+  "毛概-教材-第一章-毛泽东思想及其历史地位": "ch01",
+  "毛概-教材-第二章-新民主主义革命理论": "ch02",
+  "毛概-教材-第三章-社会主义改造理论": "ch03",
+  "毛概-教材-第四章-社会主义建设道路初步探索的理论成果": "ch04",
+  "毛概-教材-第五章-中国特色社会主义理论体系的形式发展": "ch05",
+  "毛概-教材-第六章-邓小平理论": "ch06",
+  "毛概-教材-第七章-三个代表重要思想": "ch07",
+  "毛概-教材-第八章-科学发展观": "ch08",
+  "毛概-教材-后记与结语": "epilogue",
 };
 
 const BATCH_SIZE = 50;
@@ -272,7 +267,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`=== 中国近现代史纲要教材 MinerU 解析 ===`);
+  console.log(`=== 毛概教材 MinerU 解析 ===`);
   console.log(`PDF 目录: ${PDF_DIR}`);
   console.log(`发现 ${pdfFiles.length} 个 PDF\n`);
 

@@ -2,7 +2,7 @@
  * 毛概教材 raw markdown → 项目格式转换脚本
  *
  * 用法：
- *   npx tsx scripts/convert-maogai-textbook.ts
+ *   npx tsx scripts/one-off/convert-maogai-textbook.ts
  *
  * 输入：
  *   scripts/temp/maogai-textbook/raw/{slug}/full.md

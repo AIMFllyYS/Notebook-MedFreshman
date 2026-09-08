@@ -38,7 +38,7 @@ const ORPHAN_SKIP_DIR = /^_backup/;
  * 处置后请从此处删除，让规则重新对它们生效：
  * - probability/shizyan-yanlian/：拼写错误的历史目录（应为 shizhan-yanlian），需人工确认内容后合并或删除
  * - chemistry/detail/ppt-*.md：早期按 PPT 切分的详解草稿，manifest 只登记了 ppt-15~18；其余 41 个未挂载
- * - {maogai,modern-history}/detail/chXX-examples.md：出题脚本的工作文件（scripts/gen_maogai_quiz_*.py 引用），
+ * - {maogai,modern-history}/detail/chXX-examples.md：出题脚本的工作文件（scripts/one-off/gen_maogai_quiz_*.py 引用），
  *   不在 UI 展示；建议移入 content/_raw/{subject}/ 或注册为 detail 子项
  */
 const KNOWN_ORPHANS = new Set<string>(['probability/shizyan-yanlian']);
