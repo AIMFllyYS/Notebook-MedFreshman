@@ -1,0 +1,546 @@
+{
+  "subjectId": "medical-statistics",
+  "chapterId": "ch01",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md；content/medical-statistics/detail/1.1.md；人卫第七版课后答案",
+    "totalPoints": 100,
+    "timeLimit": 90
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于统计量与参数，下列叙述正确的是（　）。",
+      "options": [
+        "$\\bar{X}$、$S$、$p$ 都是总体参数，可由样本直接叫作 $\\mu$、$\\sigma$、$\\pi$",
+        "统计量描述样本特征、由样本数据算得；参数描述总体分布特征。统计推断包括参数估计和假设检验，$P$ 值依据样本统计量的概率分布得到",
+        "系统误差就是抽样误差，随机测量误差可以忽略",
+        "统计描述的任务是计算 $P$ 值，统计推断的任务是画统计图"
+      ],
+      "answer": 1,
+      "hint": "先问这个指标是样本算出来的还是总体的；再问 $P$ 值从哪里来。",
+      "explanation": "**B 正确。** 答案册第一章：统计量描述样本，参数描述总体；推断包括参数估计和假设检验；$P$ 值来自样本统计量的概率分布。\n\n**干扰项辨析**：\n- A：把统计量与参数并户。\n- C：三类误差是系统误差、随机测量误差、抽样误差，不能并。\n- D：描述用指标/表/图，推断用可信区间和 $P$ 值，说反了。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 一、绪论：统计量、参数与三类误差"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "抗体滴度呈等比稀释，比较肝癌病人与正常人 HBsAg 水平，应优先选用（　）。",
+      "options": [
+        "算术均数",
+        "几何均数，答案算得正常人约 $1:16$、肝癌病人约 $1:40$",
+        "只报标准差，不报集中趋势",
+        "把滴度当作二分类率做 $\\chi^2$"
+      ],
+      "answer": 1,
+      "hint": "稀释倍数、滴度走哪一种均数？",
+      "explanation": "**B 正确。** $G=\\lg^{-1}(\\sum f\\lg X/n)$。答案 $G_1\\approx 16$、$G_2\\approx 40$，滴度 $1:16$ 与 $1:40$。\n\n**干扰项辨析**：\n- A：等比资料用算术均数会被大稀释倍数拽偏。\n- C：本题问集中趋势。\n- D：滴度仍是定量（等比），不是四格表。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 二、几何均数（HBsAg 滴度）"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "血催乳素术前 $\\bar{X}=672.4$、$S=564.65$，术后 $\\bar{X}=127.2$、$S=101.27$。比较手术前后变异，较合适的是（　）。",
+      "options": [
+        "直接比标准差，因为术前 $S$ 更大所以术前一定离散得多",
+        "用变异系数：$CV_{\\text{术前}}=83.98\\%$，$CV_{\\text{术后}}\\approx 79.6\\%$；均数水平不同时比 $S$ 会夸大术前变异",
+        "两份资料都只能报中位数，因为有标准差就不能用均数",
+        "变异系数的分母是标准误"
+      ],
+      "answer": 1,
+      "hint": "均数差一个数量级时，离散该用 $S$ 还是 $S/\\bar{X}$？",
+      "explanation": "**B 正确。** $CV=S/\\bar{X}\\times 100\\%$。术前均数远大于术后，只比 $S$ 会夸大术前变异。\n\n**干扰项辨析**：\n- A：正是答案点名的错误。\n- C：本题未判断偏态，焦点是变异指标。\n- D：分母是 $\\bar{X}$，不是 $S_{\\bar{X}}$。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 二、变异系数"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "12 岁健康男童体重近似正态，$\\bar{X}=36.3\\,\\mathrm{kg}$，$S=6.19\\,\\mathrm{kg}$。双侧 $95\\%$ 参考值范围与「总体均数 $95\\%$ 可信区间」的差别是（　）。",
+      "options": [
+        "两者公式相同，都是 $\\bar{X}\\pm 1.96S$",
+        "参考值范围描述个体值，用 $\\bar{X}\\pm 1.96S=(24.17,48.43)\\,\\mathrm{kg}$；均数可信区间描述 $\\mu$，分母换成 $\\sqrt{n}$，用标准误",
+        "参考值范围必须用百分位数，正态资料也不能用 $\\bar{X}\\pm 1.96S$",
+        "可信区间的 $1.96$ 要改成 $t_{0.05/2,\\infty}=2.58$"
+      ],
+      "answer": 1,
+      "hint": "$S$ 管个体离散，管均数抽样误差的是哪一个？",
+      "explanation": "**B 正确。** 答案男童体重参考值 $\\bar{X}\\pm 1.96S=(24.17,48.43)$。红细胞均数 CI 用 $S/\\sqrt{450}$。\n\n**干扰项辨析**：\n- A：把参考值当成 CI。\n- C：近似正态可以用正态分布法；偏态、单侧异常才改百分位数。\n- D：$u_{0.05/2}=1.96$，不是 $2.58$。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 三、参考值范围与六、可信区间"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "比较两地死亡率或两矿尘肺患病率，年龄（工龄）构成不同时，正确做法是（　）。",
+      "options": [
+        "直接比粗率，构成不同可以忽略",
+        "用死亡人数占死亡总数的构成比代替率",
+        "选定标准人口做直接法标准化：预期事件数之和除以标准人口合计。答案中甲矿标化患病率 $3.29\\%$、乙矿 $1.88\\%$",
+        "标准化之后构成比就可以当率用"
+      ],
+      "answer": 2,
+      "hint": "内部构成不同，先把人口结构拉齐再比总率。",
+      "explanation": "**C 正确。** 直接法：$P'=\\sum$ 预期事件数 / 标准人口。尘肺题 $814/24764=3.29\\%$，$466/24764=1.88\\%$。\n\n**干扰项辨析**：\n- A：构成不同时粗率不可比。\n- B：答案连续三题都判「构成比当率」不正确。\n- D：标准化解决的是率的可比性，并不把构成比变成率。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 四、率、构成比、标准化"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "两独立小样本比较均数。先得 $F=S^2_{\\text{大}}/S^2_{\\text{小}}=3.82$，大于 $F_{0.05}$ 界值；再算 $t'=1.53$，$t'_{0.05/2}=2.009$。正确结论是（　）。",
+      "options": [
+        "方差齐，用成组 $t$，$\\nu=n_1+n_2-2$",
+        "方差不齐，改用 $t'$；$t'<t'_{0.05/2}$，$P>0.05$，尚不能认为两组 GSH-Px 有差别",
+        "$F$ 显著说明均数一定不同，不必再算 $t'$",
+        "$P>0.05$ 证明两总体均数相等"
+      ],
+      "answer": 1,
+      "hint": "先齐性，不齐换哪一个 $t$？$P>0.05$ 能写成「相等」吗？",
+      "explanation": "**B 正确。** 答案 GSH-Px 题：$F=3.82$ 不齐，走 $t'=1.53<2.009$，不拒绝均数相等的 $H_0$。\n\n**干扰项辨析**：\n- A：不齐不能成组 $t$。\n- C：$F$ 检验的是方差，不是均数。\n- D：$P>\\alpha$ 只能写「尚不能认为有差别」。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 七、t' 检验"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "四格表 $\\chi^2$ 检验，理论频数出现 $1\\le T<5$ 且 $n>40$ 时，应选用（　）。",
+      "options": [
+        "仍用未校正专用公式",
+        "连续性校正 $\\chi_c^2$；答案预防佝偻病题 $\\chi_c^2=1.05$，$P>0.05$",
+        "直接报确切概率，因为 $T<5$ 一律 Fisher",
+        "改用配对 $t$ 检验"
+      ],
+      "answer": 1,
+      "hint": "$T$ 分三档：都大 / $1\\le T<5$ / $T<1$。",
+      "explanation": "**B 正确。** $1\\le T<5$ 且 $n>40$ 校正；答案 $\\chi_c^2=1.05$，不拒绝。$T<1$ 才强制确切概率。\n\n**干扰项辨析**：\n- A：不校正会偏大。\n- C：$T$ 在 $1$ 到 $5$ 之间走校正，不是一律 Fisher。\n- D：率的比较不是配对 $t$。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 九、校正四格表"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "Wilcoxon 两样本秩和检验，$T$ 应取（　）。",
+      "options": [
+        "例数较大一组的秩和",
+        "例数较小一组的秩和；铅作业 $n_1=7$、$T=93.5$ 超出 $42\\sim 84$ 则 $P<0.05$",
+        "两组秩和之差",
+        "必须取 $T_+$、$T_-$ 中较小者（那是符号秩的规则）"
+      ],
+      "answer": 1,
+      "hint": "成组秩和与符号秩的 $T$ 定义不同。",
+      "explanation": "**B 正确。** 两样本 $T=$ 较小 $n$ 的秩和，超出界值范围则拒绝。符号秩才是 $T=\\min(T_+,T_-)$。\n\n**干扰项辨析**：\n- A：取错组。\n- C：不是差。\n- D：把配对符号秩的定义套到成组。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 十、两样本秩和"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "已知 $r=0.74$，$S_X=8.61$，$S_Y=6.67$。由身高推体重的 $b_1$ 与由体重推身高的 $b_2$（　）。",
+      "options": [
+        "互为倒数，因为回归可以双向代入",
+        "$b_1=r S_Y/S_X=0.573$，$b_2=r S_X/S_Y=0.955$，两条不同直线，$b_1 b_2=r^2$",
+        "$b_1=b_2=r$",
+        "相关显著就可以说身高导致体重增加"
+      ],
+      "answer": 1,
+      "hint": "自变量换人，回归系数换一条直线。",
+      "explanation": "**B 正确。** 答案明确写出 $b_1=0.573$、$b_2=0.955$。相关不是因果。\n\n**干扰项辨析**：\n- A：取倒数是常见错。\n- C：$r$ 无量纲，$b$ 有单位。\n- D：把相关写成因果。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 十一、两条回归线"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "患病率 $\\pi=0.005$，灵敏度 $Se=0.95$，特异度 $Sp=0.90$。阳性预测值 $PV_+$ 约为（　）。",
+      "options": [
+        "$0.95$，因为灵敏度就是阳性者有病的概率",
+        "$0.90$，因为特异度已经很高",
+        "$0.0455$，低患病率下 $PV_+=\\pi Se/\\,[\\pi Se+(1-\\pi)(1-Sp)]$",
+        "$0.995$，用 $1-\\pi$ 近似"
+      ],
+      "answer": 2,
+      "hint": "$PV_+$ 的分母里有一大笔假阳性：$(1-\\pi)(1-Sp)$。",
+      "explanation": "**C 正确。** 答案：$0.005\\times 0.95 / [0.005\\times 0.95+0.995\\times 0.10]=0.0455$。特异度 $90\\%$ 时，未患病的 $99.5\\%$ 里仍有 $10\\%$ 假阳性，淹没真阳性。\n\n**干扰项辨析**：\n- A：把 $Se$ 当成 $PV_+$。\n- B：把 $Sp$ 当成 $PV_+$。\n- D：$1-\\pi$ 是未患病率，不是预测值。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 十五、阳性预测值"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "统计量由样本计算，参数描述总体；抽样误差是样本统计量与总体参数因抽样而产生的差异。",
+      "answer": 1,
+      "hint": "对照绪论对统计量、参数、三类误差的原句。",
+      "explanation": "**正确。** 与答案册第一章简答题第 4、5 题一致。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 一、统计量与三类误差"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "只要给出患病职工中男女所占百分比，就可以判断男职工是否比女职工更容易患病。",
+      "answer": 0,
+      "hint": "这个百分比是率还是构成比？分母是谁？",
+      "explanation": "**错误。** 答案第四章计算题 1：该百分比是构成比，不是率；必须有全体男女职工分母才能算患病率。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 四、构成比当率"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "医学参考值范围 $\\bar{X}\\pm 1.96S$ 就是总体均数的 $95\\%$ 可信区间。",
+      "answer": 0,
+      "hint": "一个用 $S$，一个用 $S/\\sqrt{n}$。",
+      "explanation": "**错误。** 参考值描述个体值，CI 描述 $\\mu$。男童体重用 $1.96S$；红细胞均数 CI 用 $1.96S/\\sqrt{450}$。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 三与六、参考值 vs 可信区间"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "血铅含量仅过大为异常且资料正偏态时，应采用百分位数法计算只有上限的单侧 $95\\%$ 参考值范围（$P_{95}$）。",
+      "answer": 1,
+      "hint": "偏态 + 单侧异常，正态双侧公式还用不用？",
+      "explanation": "**正确。** 答案第三章第 2 题：$P_{95}=1.80\\,\\mu\\mathrm{mol/L}$，写成小于 $1.80$。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 三、血铅单侧百分位数"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "两独立样本均数比较，只要直接做成组 $t$ 即可，不必先做方差齐性 $F$ 检验。",
+      "answer": 0,
+      "hint": "答案里的成组题第一步写的是哪条 $H_0$？",
+      "explanation": "**错误。** 答案先检验 $\\sigma_1^2=\\sigma_2^2$。齐用成组 $t$，不齐用 $t'$。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 七、成组 t 与 t'"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "假设检验 $P>0.05$ 说明已经证明两总体均数相等。",
+      "answer": 0,
+      "hint": "答案结论句用「尚不能认为」还是「证明相同」？",
+      "explanation": "**错误。** 不拒绝 $H_0$ 只能写「尚不能认为有差别」，证据不足不等于证明 $H_0$。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 收口：假设检验结论句"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q017",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "配对四格表比较两种培养基阳性率，统计量是 $(b-c)^2/(b+c)$，一致对 $a$、$d$ 不进入该检验。",
+      "answer": 1,
+      "hint": "McNemar 看的是哪两个格子？",
+      "explanation": "**正确。** 答案 $b=36$、$c=15$，$\\chi^2=8.65$，$P<0.01$。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 九、配对 χ²"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q018",
+      "type": "true_false",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "符号秩检验中，$T$ 落在 $T_{\\alpha}(n)$ 界值范围内应拒绝 $H_0$；$T$ 恰好落在界点上则不拒绝。",
+      "answer": 0,
+      "hint": "对照痛阈 $T=17$ 与棉酚 $T=3$ 两道题的查表规则。",
+      "explanation": "**错误。** 范围内 $P>\\alpha$，不拒绝（痛阈 $T=17$）。超出范围或落在界点 $P=\\alpha$ 时按 $\\alpha=0.05$ 拒绝（棉酚 $T=3$）。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 十、符号秩界值"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "相关系数 $r$ 经 $t$ 检验显著，即可认为 $X$ 与 $Y$ 存在因果关系。",
+      "answer": 0,
+      "hint": "碘含量与甲状腺肿患病率 $r=-0.914$ 显著，答案怎么措辞？",
+      "explanation": "**错误。** 只能说存在线性相关。因果需要设计与专业机制，相关检验给不了。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 十一、相关不是因果"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "1:1 匹配的病例对照资料，答案用分层 Cox（strata=对子号）实现条件 logistic，不能把对子拆开做成组二分类 logistic。",
+      "answer": 1,
+      "hint": "匹配编号在 SPSS 菜单里进的是哪一项？",
+      "explanation": "**正确。** 答案第十三章第 3 题：Time=$2-Y$，Cox + Strata=配对编号。高血压与肥胖的 $P$ 均 $>0.05$，尚不能认为是糖尿病危险因素。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 十三、匹配条件 logistic"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "essay",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "10 例定量观测（单位 $\\mathrm{mmol/L}$）：$3.43,\\,2.96,\\,4.43,\\,3.03,\\,4.53,\\,5.25,\\,5.64,\\,3.82,\\,4.28,\\,5.25$。\n\n（1）计算算术均数 $\\bar{X}$ 与中位数 $M$。\n（2）若这批资料来自近似正态总体，集中趋势应报哪一个？若改为抗体滴度（等比稀释），应改报什么？",
+      "answer": "（1）$\\bar{X}=(3.43+2.96+4.43+3.03+4.53+5.25+5.64+3.82+4.28+5.25)/10=4.26\\,\\mathrm{mmol/L}$。\n从小到大后第 5、6 位为 $4.28$ 与 $4.43$，$M=(4.28+4.43)/2=4.36\\,\\mathrm{mmol/L}$。\n\n（2）近似正态报均数。等比滴度改几何均数 $G=\\lg^{-1}(\\sum f\\lg X/n)$，答案示例为 $1:16$ 与 $1:40$。",
+      "hint": "偶数例数的中位数是中间两个的平均；滴度不要用算术均数。",
+      "scoring_criteria": [
+        "均数 $4.26$（3分）",
+        "中位数取中间两数平均得 $4.36$（3分）",
+        "正态报均数（2分）",
+        "滴度改几何均数（2分）"
+      ],
+      "explanation": "数字来自答案册第二章第 1 题。偶数 $n$ 的中位数不是排序后随便取一个。滴度题在同章第 3 题，必须取对数再还原。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 二、10 例均数与中位数；几何均数"
+      }
+    },
+    {
+      "id": "q022",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "12 岁健康男童体重近似服从正态分布，$\\bar{X}=36.3\\,\\mathrm{kg}$，$S=6.19\\,\\mathrm{kg}$。已知 $\\Phi(-2.21)=0.0136$，$\\Phi(-1.02)=0.1539$，$\\Phi(-0.60)=0.2743$。\n\n（1）估计体重 $\\geqslant 50\\,\\mathrm{kg}$ 者所占比例。\n（2）估计体重在 $30\\sim 40\\,\\mathrm{kg}$ 者所占比例。\n（3）给出双侧 $95\\%$ 医学参考值范围，并说明它与总体均数可信区间的差别。",
+      "answer": "（1）$z=(50-36.3)/6.19=2.21$。右尾面积 $=\\Phi(-2.21)=0.0136$，即 $1.36\\%$。\n\n（2）$z_{30}=-1.02$，$z_{40}=0.60$。\n$\\Phi(0.60)-\\Phi(-1.02)=(1-0.2743)-0.1539=0.5718$，即 $57.18\\%$。\n\n（3）参考值范围 $36.3\\pm 1.96\\times 6.19=(24.17,48.43)\\,\\mathrm{kg}$，描述个体值。总体均数 CI 使用标准误 $S/\\sqrt{n}$，宽度小得多。",
+      "hint": "先标准化，面积用 $\\Phi$ 的对称性；参考值用 $S$ 不是 $S/\\sqrt{n}$。",
+      "scoring_criteria": [
+        "$z=2.21$ 及比例 $1.36\\%$（3分）",
+        "$30\\sim 40\\,\\mathrm{kg}$ 比例 $57.18\\%$（3分）",
+        "参考值 $(24.17,48.43)$（2分）",
+        "指出与均数 CI 的对象/尺子不同（2分）"
+      ],
+      "explanation": "步骤与数字均来自答案册第三章第 1 题。$\\Phi(0.60)=1-\\Phi(-0.60)$ 是面积拼法的关键。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 三、12 岁男童体重"
+      }
+    },
+    {
+      "id": "q023",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "某厂抽 $n=30$ 名成年男子，血红蛋白 $\\bar{X}=125\\,\\mathrm{g/L}$，$S=15\\,\\mathrm{g/L}$。一般成年男子总体均数 $\\mu_0=140\\,\\mathrm{g/L}$。已知 $t_{0.05/2,29}=2.045$。\n\n请完成单样本 $t$ 检验：写出 $H_0/H_1$、$\\alpha$、统计量、界值比较与结论句。",
+      "answer": "$H_0:\\mu=140$（该厂均数与一般成年男子相同）；$H_1:\\mu\\neq 140$；$\\alpha=0.05$。\n\n$$t=\\frac{|125-140|}{15/\\sqrt{30}}=5.48,\\quad \\nu=29$$\n\n$t>2.045$，$P<0.05$，拒绝 $H_0$，可认为该厂成年男子血红蛋白均数低于一般成年男子。",
+      "hint": "单样本 $t=(\\bar{X}-\\mu_0)/(S/\\sqrt{n})$，自由度 $n-1$。",
+      "scoring_criteria": [
+        "正确写出双侧假设与 $\\alpha=0.05$（2分）",
+        "统计量 $t=5.48$，$\\nu=29$（4分）",
+        "与 $t_{0.05/2,29}=2.045$ 比较，$P<0.05$（2分）",
+        "结论写「低于一般成年男子」，不写证明相等（2分）"
+      ],
+      "explanation": "答案第七章第 1 题原文。因为 $125<140$ 且已拒绝 $H_0$，结论可指明方向为低于。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 七、单样本 t"
+      }
+    },
+    {
+      "id": "q024",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "计算题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "西医疗法：102 例，死亡 13，存活 89。西医加中医：189 例，死亡 9，存活 180。\n\n（1）列出四格表并计算病死率。\n（2）用专用公式计算 $\\chi^2$（结果取答案值 $6.04$），$\\nu$ 是多少？\n（3）若 $P<0.01$，结论如何写？何种情况下必须改校正或 Fisher？",
+      "answer": "（1）西医病死率 $13/102=12.75\\%$，中西医 $9/189=4.76\\%$，合计 $22/291=7.56\\%$。\n\n（2）$\\chi^2=(13\\times 180-89\\times 9)^2\\times 291/(22\\times 269\\times 102\\times 189)=6.04$，$\\nu=1$。\n\n（3）拒绝 $H_0$，可认为两总体病死率不等，单纯西医组较高。$1\\le T<5$ 且 $n>40$ 要校正；$T<1$ 或 $n$ 很小走确切概率。",
+      "hint": "四格表专用公式分子是 $(ad-bc)^2 n$；先确认不是配对表。",
+      "scoring_criteria": [
+        "四格表与三个病死率（3分）",
+        "$\\chi^2=6.04$，$\\nu=1$（3分）",
+        "拒绝 $H_0$、西医组病死率较高（2分）",
+        "指出校正与 Fisher 的 $T$ 条件（2分）"
+      ],
+      "explanation": "答案第九章第 1 题。同章第 2、5 题分别演示确切概率与校正，作为选型对照。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 九、四格表专用公式"
+      }
+    },
+    {
+      "id": "q025",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "计算分析题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "请为下列资料各选一种检验（或区间）方法，并写一句理由。不要编造教材未给出的公式。\n\n（1）小样本、正态、与已知 $\\mu_0$ 比均数。\n（2）同一人前后定量差值，差值偏态。\n（3）两独立样本均数，正态但 $F$ 检验显示方差不齐。\n（4）两独立样本率，四格表有一格 $T=4$，$n>40$。\n（5）三组等级疗效（变差/不变/进步/恢复）。\n（6）有截尾的两组生存曲线。\n（7）二分类疗效 + 病情、药物（药物三水平）。",
+      "answer": "（1）单样本 $t$：小样本、$\\sigma$ 未知、与 $\\mu_0$ 比。\n（2）Wilcoxon 符号秩：配对差值非正态。\n（3）$t'$：正态但不齐，不能成组 $t$。\n（4）校正 $\\chi_c^2$：$1\\le T<5$ 且 $n>40$。\n（5）Wilcoxon 秩和（两组）或 Kruskal–Wallis $H_c$（多组等级、结多要校正）。\n（6）K-M + log-rank（或 Breslow）；多因素再 Cox。\n（7）二分类 logistic，药物设哑变量并以甲药为对照，$OR=\\mathrm{e}^{b}$。",
+      "hint": "先定资料类型，再定设计（单样本/配对/成组/多组），再看正态、齐性、$T$、截尾。",
+      "scoring_criteria": [
+        "（1）单样本 $t$（1分）",
+        "（2）符号秩（2分）",
+        "（3）$t'$（2分）",
+        "（4）校正 $\\chi^2$（1分）",
+        "（5）秩和或 $H/H_c$（2分）",
+        "（6）log-rank / Cox（1分）",
+        "（7）logistic + 哑变量（1分）"
+      ],
+      "explanation": "对应详解收口总表与第七、九、十、十三、十四章答案选型。选对方法往往比把数字算到小数点后三位更值钱。",
+      "sourceRef": {
+        "path": "content/medical-statistics/detail/1.1.md",
+        "label": "1.1 · 收口：t / u / 卡方选方法总表"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 25,
+    "byType": {
+      "single_choice": 10,
+      "true_false": 10,
+      "essay": 5
+    },
+    "bySource": {
+      "current_chapter": 25
+    },
+    "byDifficulty": {
+      "basic": 17,
+      "medium": 6,
+      "hard": 2
+    }
+  }
+}

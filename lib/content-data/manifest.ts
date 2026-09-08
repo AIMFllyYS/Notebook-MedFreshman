@@ -14,12 +14,17 @@ import { physicsLectures } from './physics-lectures';
 import { probabilityLectures } from './probability-lectures';
 import { modernHistoryLectures } from './modern-history-lectures';
 import { recordingItems, summaryItems } from './recordings';
-import { sophomoreCategorySkeleton } from './sophomore-categories';
+import { sophomoreCategorySkeleton, sophomoreCategories } from './sophomore-categories';
 import { cellBiologyTextbookItems } from './cell-biology-textbook';
 import { biochemistryTextbookItems } from './biochemistry-textbook';
 import { anatomyTextbookItems } from './anatomy-textbook';
 import { histologyTextbookItems } from './histology-textbook';
 import { instrumentalAnalysisTextbookItems } from './instrumental-analysis-textbook';
+import { medicalEnglishTextbookItems, medicalEnglishKaoqianItems, medicalEnglishShizhanItems } from './medical-english-items';
+import { medicalStatisticsTextbookItems, medicalStatisticsDetailItems, medicalStatisticsKaoqianItems } from './medical-statistics-items';
+import { biochemistryDetailItems, biochemistrySummaryItems, biochemistryKaoqianItems, biochemistryShizhanItems } from './biochemistry-extras';
+import { anatomyDetailItems, anatomyKaoqianItems, anatomyShizhanItems } from './anatomy-extras';
+import { histologyDetailItems, histologyKaoqianItems, histologyShizhanItems } from './histology-extras';
 
 
 const physicsKaoqianMoniItems = [
@@ -181,19 +186,51 @@ export const contentTree: ContentTree = {
     },
     {
       ...subjectHeader('biochemistry'),
-      categories: sophomoreCategorySkeleton(biochemistryTextbookItems),
+      categories: sophomoreCategories({
+        textbook: biochemistryTextbookItems,
+        detail: biochemistryDetailItems,
+        summary: biochemistrySummaryItems,
+        kaoqianMoni: biochemistryKaoqianItems,
+        shizhanYanlian: biochemistryShizhanItems,
+      }),
     },
     {
       ...subjectHeader('anatomy'),
-      categories: sophomoreCategorySkeleton(anatomyTextbookItems),
+      categories: sophomoreCategories({
+        textbook: anatomyTextbookItems,
+        detail: anatomyDetailItems,
+        kaoqianMoni: anatomyKaoqianItems,
+        shizhanYanlian: anatomyShizhanItems,
+      }),
     },
     {
       ...subjectHeader('histology'),
-      categories: sophomoreCategorySkeleton(histologyTextbookItems),
+      categories: sophomoreCategories({
+        textbook: histologyTextbookItems,
+        detail: histologyDetailItems,
+        kaoqianMoni: histologyKaoqianItems,
+        shizhanYanlian: histologyShizhanItems,
+      }),
     },
     {
       ...subjectHeader('instrumental-analysis'),
       categories: sophomoreCategorySkeleton(instrumentalAnalysisTextbookItems),
+    },
+    {
+      ...subjectHeader('medical-english'),
+      categories: sophomoreCategories({
+        textbook: medicalEnglishTextbookItems,
+        kaoqianMoni: medicalEnglishKaoqianItems,
+        shizhanYanlian: medicalEnglishShizhanItems,
+      }),
+    },
+    {
+      ...subjectHeader('medical-statistics'),
+      categories: sophomoreCategories({
+        textbook: medicalStatisticsTextbookItems,
+        detail: medicalStatisticsDetailItems,
+        kaoqianMoni: medicalStatisticsKaoqianItems,
+      }),
     },
     {
       ...subjectHeader('other'),

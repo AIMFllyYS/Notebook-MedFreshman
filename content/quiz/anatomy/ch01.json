@@ -1,0 +1,700 @@
+{
+  "subjectId": "anatomy",
+  "chapterId": "ch01",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "docs/refer/考试题型分布.md；content/anatomy/detail/1.1.md；content/anatomy/detail/1.2.md；content/anatomy/detail/1.3.md；content/anatomy/detail/1.4.md；content/anatomy/detail/1.5.md",
+    "totalPoints": 100,
+    "timeLimit": 90
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于胸骨角，下列叙述正确的是（　）。",
+      "options": [
+        "胸骨体与剑突连接处微向前突，两侧平对第 1 肋，向后平对第 2 胸椎体上缘",
+        "胸骨柄与体连接处微向前突，两侧平对第 2 肋，向后平对第 4 胸椎体下缘，是计数肋的重要标志",
+        "两侧平对第 3 肋，只用来听诊主动脉瓣，与计数肋无关",
+        "向后平对第 7 胸椎，是胸廓下口的标志"
+      ],
+      "answer": 1,
+      "hint": "先锁「柄与体交界」，再锁平对哪一根肋、哪一节胸椎。",
+      "explanation": "**B 正确。** 胸骨角是胸骨柄与体连接处微向前突；两侧平对第 2 肋，向后平对第 4 胸椎体下缘，用来计数肋。\n\n**干扰项辨析**：\n- A：不是体与剑突；不是第 1 肋、T2。\n- C：平对第 2 肋，不是第 3；功能首先是计数肋。\n- D：T7 和胸廓下口都不是胸骨角的户头。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 系统解剖学名词解释 · 胸骨角"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于斜角肌间隙，下列叙述正确的是（　）。",
+      "options": [
+        "由前斜角肌、中斜角肌与第 1 肋围成，有臂丛和锁骨下动脉通过；锁骨下静脉走在前斜角肌前方，不进该间隙",
+        "由前、中、后斜角肌围成，锁骨下动、静脉和臂丛全部通过",
+        "由胸锁乳突肌与第 1 肋围成，只走膈神经",
+        "由前斜角肌与胸骨围成，只走锁骨下静脉"
+      ],
+      "answer": 0,
+      "hint": "三边是前、中斜角肌加第 1 肋；静脉不进间隙。",
+      "explanation": "**A 正确。** 前斜角肌、中斜角肌与第 1 肋围成；内容是臂丛和锁骨下动脉。锁骨下静脉在前斜角肌前方。\n\n**干扰项辨析**：\n- B：后斜角肌不是围成间隙的边；静脉不进间隙。\n- C：不是胸锁乳突肌围成，膈神经走前斜角肌前面，不是间隙内容。\n- D：静脉不在间隙内。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · 斜角肌间隙"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "肾蒂内结构的排列，从前向后依次是（　）。",
+      "options": [
+        "肾动脉、肾静脉、肾盂",
+        "肾盂、肾动脉、肾静脉",
+        "肾静脉、肾动脉、肾盂",
+        "肾动脉、肾盂、肾静脉"
+      ],
+      "answer": 2,
+      "hint": "前→后记「静、动、盂」；上→下才是动脉在上。",
+      "explanation": "**C 正确。** 前→后：肾静脉、肾动脉、肾盂。上→下：肾动脉、肾静脉、肾盂。两套顺序不要并成一套。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · 肾蒂"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于大脑动脉环（Willis 环），下列叙述正确的是（　）。",
+      "options": [
+        "由两侧大脑中动脉、大脑前动脉和前交通动脉构成，正常时两侧血液充分混合",
+        "两侧大脑前动脉、颈内动脉、大脑后动脉借前交通动脉、后交通动脉构成；大脑中动脉不参与成环；正常时两侧血液不混合，而是潜在代偿装置",
+        "只连接椎–基底动脉系，与颈内动脉系不通",
+        "位于小脑扁桃体下方，环绕延髓"
+      ],
+      "answer": 1,
+      "hint": "成环名单里没有大脑中动脉；位置在蝶鞍上方。",
+      "explanation": "**B 正确。** 成环：大脑前、颈内、大脑后 + 前、后交通。大脑中动脉是颈内动脉延续，不构成环的一段。环在蝶鞍上方，绕视交叉、灰结节、乳头体。正常两侧不混合。\n\n**干扰项辨析**：\n- A：把大脑中动脉写进去，又把「不混合」写成充分混合。\n- C：环正是沟通颈内动脉系与椎–基底动脉系。\n- D：位置不是延髓、不是小脑扁桃体下方。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · 大脑动脉环（Willis 环）"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "肱骨头容易向哪个方向脱位？主要解剖学原因是（　）。",
+      "options": [
+        "向上，因为关节囊上壁最薄弱",
+        "向前下方，因为关节囊下壁最薄弱；向上有喙肩弓挡住",
+        "向后上方，因为关节盂朝后",
+        "向内侧，因为喙肱韧带缺如"
+      ],
+      "answer": 1,
+      "hint": "盂浅囊松，薄弱壁在下；喙肩弓管向上。",
+      "explanation": "**B 正确。** 肩关节头大盂浅、囊薄而松弛，下壁最薄弱，故易前下方脱位。喙肩弓（喙肩韧带 + 喙突 + 肩峰）防止肱骨头向上脱位。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.2.md",
+        "label": "1.2 · 肩关节与髋关节对照"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "食管三个生理性狭窄距中切牙的距离，以及气管异物易坠入右肺的原因，正确的是（　）。",
+      "options": [
+        "10、20、30 cm；因为右肺体积大",
+        "15、25、40 cm；右主支气管短、陡、粗，隆嵴略偏左",
+        "15、25、40 cm；左主支气管更陡所以异物偏左",
+        "25、40、60 cm；与支气管形态无关"
+      ],
+      "answer": 1,
+      "hint": "15 / 25 / 40；异物偏右是右主支气管的形态，不是肺体积。",
+      "explanation": "**B 正确。** 起始处约 15 cm（平 C6），交叉左主支气管约 25 cm，穿膈约 40 cm（平 T10）。右主支气管短、陡、粗，异物易坠入右肺。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.2.md",
+        "label": "1.2 · 食管三狭窄；右主支气管"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "英文 periosteum、pleura、ureter、urethra 的正确中文对应是（　）。",
+      "options": [
+        "骨质；肺；尿道；输尿管",
+        "骨膜；胸膜；输尿管；尿道",
+        "骨髓；胸膜腔；输尿管；尿道",
+        "骨膜；肺；尿道；输尿管"
+      ],
+      "answer": 1,
+      "hint": "peri- 是「周围」：骨膜。ureter 管尿从肾来，urethra 管尿出体外。",
+      "explanation": "**B 正确。** periosteum 骨膜，pleura 胸膜，ureter 输尿管，urethra 尿道。\n\n**干扰项辨析**：骨质是 compact / spongy bone，骨髓是 bone marrow，胸膜腔是 pleural cavity，肺是 lung。ureter / urethra 对调是往年高频错。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.3.md",
+        "label": "1.3 · 往年互译易错对"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "本课教学大纲中的学时与成绩构成，正确的是（　）。",
+      "options": [
+        "总学时 64，全部为理论；成绩 100% 理论考试",
+        "总学时 96，学分 4.5，理论 48 + 实验 48；平时 10% + 标本考试 20% + 理论考试 70%",
+        "实验 21 学时、理论 75 学时；标本考试占 70%",
+        "学分 3.0；平时 30% + 理论 70%，没有标本考试"
+      ],
+      "answer": 1,
+      "hint": "96 学时对半切；标本单独 20%。",
+      "explanation": "**B 正确。** BMS0514，96 学时、4.5 学分，理论与实验各 48。评价：平时 10%、标本 20%、理论 70%。运动系统实习 21 学时是实习里最重的一块，不是整门课只有 21 实验学时。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.4.md",
+        "label": "1.4 · 学时表与成绩构成"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关节（滑膜关节）的基本构造是（　）。",
+      "options": [
+        "关节面、关节囊、关节腔",
+        "关节面、韧带、半月板",
+        "关节软骨、滑膜囊、关节盘",
+        "关节头、关节窝、肌腱"
+      ],
+      "answer": 0,
+      "hint": "三件套：面、囊、腔。韧带和盘是辅助结构。",
+      "explanation": "**A 正确。** 课件和名词解释都把基本构造锁成关节面、关节囊、关节腔。韧带、关节盘、关节唇、滑膜襞和滑膜囊是辅助结构。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.5.md",
+        "label": "1.5 · 关节的基本构造"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 3,
+      "stem": "关于臂丛和膈神经，下列叙述正确的是（　）。",
+      "options": [
+        "臂丛由 C1～C4 前支构成，走前斜角肌前方；膈神经由 C5～T1 构成，支配前锯肌",
+        "臂丛由 C5～T1 前支构成，经斜角肌间隙出，入腋窝夹持腋动脉；膈神经来自颈丛，经前斜角肌前面、肺根前方至膈",
+        "后束发出肌皮神经和尺神经；胸长神经支配膈",
+        "臂丛只含感觉纤维；膈神经损伤出现翼状肩"
+      ],
+      "answer": 1,
+      "hint": "臂丛 C5–T1 走间隙；膈神经是颈丛，走前斜角肌前面和肺根前方。",
+      "explanation": "**B 正确。** 臂丛 C5～T1，斜角肌间隙，包腋动脉。膈神经颈丛发出，前斜角肌前面下行，肺根前方至膈。\n\n**干扰项辨析**：\n- A：把颈丛和臂丛的节段写反。\n- C：后束出腋神经、桡神经等；肌皮在外侧束，尺神经在内侧束；胸长神经管前锯肌，不管膈。\n- D：脊神经是混合性；翼状肩是胸长神经，膈神经损伤是同侧膈肌瘫痪。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.5.md",
+        "label": "1.5 · 臂丛与膈神经；1.2 · 臂丛三束终支"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "锁骨下静脉与锁骨下动脉、臂丛一同穿过斜角肌间隙。",
+      "answer": 0,
+      "hint": "静脉在前斜角肌的哪一侧？",
+      "explanation": "**错误。** 斜角肌间隙只走臂丛和锁骨下动脉。锁骨下静脉走在前斜角肌前方，不进间隙。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · pitfall「斜角肌间隙只走动脉和臂丛」"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "肺动脉内流动的是静脉血，肺静脉内流动的是动脉血。",
+      "answer": 1,
+      "hint": "动脉按离心定义，不按含氧量。",
+      "explanation": "**正确。** 肺动脉离心，走静脉血；肺静脉回心，走动脉血。体循环才是动脉里走动脉血。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · pitfall「肺动脉里走的是静脉血」"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "true_false",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "大脑中动脉参与构成大脑动脉环。",
+      "answer": 0,
+      "hint": "成环名单写的是大脑前、颈内、大脑后。",
+      "explanation": "**错误。** Willis 环不含大脑中动脉。大脑中动脉是颈内动脉的直接延续，供血范围大，但不构成环的一段。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · pitfall「Willis 环不含大脑中动脉」"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q014",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "胆汁由胆囊制造，经胆囊管直接排入十二指肠上部。",
+      "answer": 0,
+      "hint": "谁产生胆汁？开口在十二指肠哪一部？",
+      "explanation": "**错误。** 胆汁由肝细胞产生，胆囊只贮存浓缩。排入肠时走胆总管，与胰管汇合开口于十二指肠大乳头（降部），不是上部。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.2.md",
+        "label": "1.2 · pitfall「胆汁不是胆囊制造的」"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q015",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "骨学互译中 axis 首先应译为枢椎。",
+      "answer": 1,
+      "hint": "同一词在方位术语里才是「轴」。",
+      "explanation": "**正确。** 骨学卷面 axis 是枢椎（C2，有齿突）。运动轴那一笔出现在方位术语里，不要在骨名单里只写「轴」。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.3.md",
+        "label": "1.3 · pitfall「axis、fundus、medulla 必须看上下文」"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "本课成绩构成中标本考试占 20%，理论考试占 70%。",
+      "answer": 1,
+      "hint": "三块是平时、标本、理论。",
+      "explanation": "**正确。** 平时 10% + 标本考试 20% + 理论考试 70%。标本考试是独立评价。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.4.md",
+        "label": "1.4 · 成绩构成"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q017",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "韧带属于滑膜关节的基本构造。",
+      "answer": 0,
+      "hint": "基本构造只有三件。",
+      "explanation": "**错误。** 基本构造是关节面、关节囊、关节腔。韧带是辅助结构。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.5.md",
+        "label": "1.5 · pitfall「基本构造不要把辅助结构写进去」"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q018",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "心约 2/3 位于正中面左侧，心尖由左心室构成。",
+      "answer": 1,
+      "hint": "位置偏左；心尖是哪一个室？",
+      "explanation": "**正确。** 课件：心约 2/3 在正中面左侧；心尖由左心室构成，朝左前下。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.5.md",
+        "label": "1.5 · 心的位置与外形"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "视神经盘是感光最敏锐区，黄斑是生理性盲点。",
+      "answer": 0,
+      "hint": "谁无感光细胞，谁有中央凹？",
+      "explanation": "**错误。** 两户写反。黄斑中央凹是感光最敏锐区；视神经盘无感光细胞，是生理性盲点。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · 黄斑与视神经盘对照"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q020",
+      "type": "true_false",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "除胸神经前支在胸腹部保持明显节段性分布外，其余脊神经前支交织成颈丛、臂丛、腰丛和骶丛。",
+      "answer": 1,
+      "hint": "哪一组前支不结丛？",
+      "explanation": "**正确。** 课件：前支粗大；胸神经前支保持节段性，其余成四丛。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.5.md",
+        "label": "1.5 · 脊神经分支"
+      },
+      "options": [
+        "错误",
+        "正确"
+      ]
+    },
+    {
+      "id": "q021",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "翼点由额、顶、颞、蝶四骨会合，常成 “H” 形缝，内面有______通过。",
+      "answer": "脑膜中动脉前支",
+      "hint": "要写到「哪条动脉的哪一支」。",
+      "explanation": "翼点深面是脑膜中动脉前支。外力易撕破该支，形成硬膜外血肿。只写「脑膜中动脉」不完整。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · 翼点（Pterion）"
+      },
+      "scoring_criteria": [
+        "写出脑膜中动脉前支（2分）；只写脑膜中动脉给 1 分"
+      ],
+      "total_points": 2
+    },
+    {
+      "id": "q022",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "海氏三角由腹直肌外侧缘、腹股沟韧带和______围成，腹腔内容物由此膨出形成腹股沟______疝。",
+      "answer": "腹壁下动脉；直",
+      "hint": "第三条边是一条动脉；直疝还是斜疝？",
+      "explanation": "第三条边是腹壁下动脉。海氏三角是直疝出口；斜疝走腹股沟管。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · 海氏三角"
+      },
+      "scoring_criteria": [
+        "腹壁下动脉（1分）",
+        "直疝（1分）"
+      ],
+      "total_points": 2
+    },
+    {
+      "id": "q023",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "膈的三个裂孔：主动脉裂孔约平____，食管裂孔约平____并有迷走神经通过，腔静脉裂孔约平____。",
+      "answer": "T12；T10；T8",
+      "hint": "从下往上数裂孔，椎序递减。",
+      "explanation": "T12 主动脉（及胸导管），T10 食管和迷走神经，T8 下腔静脉。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.2.md",
+        "label": "1.2 · 膈三个裂孔"
+      },
+      "scoring_criteria": [
+        "T12、T10、T8 各对一空给分，全对 2 分；错一空 1 分；错两空及以上 0 分"
+      ],
+      "total_points": 2
+    },
+    {
+      "id": "q024",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "肝门静脉由______静脉与______静脉在胰颈后方汇合。",
+      "answer": "肠系膜上；脾",
+      "hint": "两条大属支，不是肠系膜下静脉。",
+      "explanation": "肠系膜上静脉 + 脾静脉，在胰颈后方。肠系膜下静脉多注入脾静脉或汇合处，不作为「合成的两条」。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.2.md",
+        "label": "1.2 · 门静脉合成"
+      },
+      "scoring_criteria": [
+        "肠系膜上静脉（1分）",
+        "脾静脉（1分）"
+      ],
+      "total_points": 2
+    },
+    {
+      "id": "q025",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "英文 diaphragm 译为______；thoracic duct 译为______。",
+      "answer": "膈；胸导管",
+      "hint": "diaphragm surface 才是膈面。",
+      "explanation": "diaphragm 是膈。thoracic duct 是胸导管，注入左静脉角。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.3.md",
+        "label": "1.3 · 肌学与淋巴英文"
+      },
+      "scoring_criteria": [
+        "膈（1分）",
+        "胸导管（1分）"
+      ],
+      "total_points": 2
+    },
+    {
+      "id": "q026",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "九条淋巴干中不成对的是______；胸导管注入______静脉角。",
+      "answer": "肠干；左",
+      "hint": "成对四组加一条不成对；导管分左右。",
+      "explanation": "不成对的是肠干。胸导管注左静脉角，右淋巴导管注右静脉角。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.5.md",
+        "label": "1.5 · 淋巴管道四级"
+      },
+      "scoring_criteria": [
+        "肠干（1分）",
+        "左静脉角（1分）"
+      ],
+      "total_points": 2
+    },
+    {
+      "id": "q027",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "关节腔由关节囊的______层和关节面共同围成，腔内呈______压。",
+      "answer": "滑膜；负",
+      "hint": "囊分纤维膜和滑膜，哪一层围腔？",
+      "explanation": "关节腔 = 滑膜层 + 关节面。腔内负压，含少量滑液，对稳固有一定作用。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.5.md",
+        "label": "1.5 · 关节腔"
+      },
+      "scoring_criteria": [
+        "滑膜（1分）",
+        "负压（1分）"
+      ],
+      "total_points": 2
+    },
+    {
+      "id": "q028",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "内囊位于背侧丘脑、尾状核和豆状核之间，端脑水平切面上呈______形，分前肢、______和后肢。",
+      "answer": "<；膝",
+      "hint": "像一个开口向外侧的尖括号。",
+      "explanation": "水平切面呈 “<” 形（左侧；右侧为 >，教材常写 “<” 形概括）。三部：前肢、膝、后肢。膝部走皮质核束。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · 内囊"
+      },
+      "scoring_criteria": [
+        "“<” 形或「尖括号形」（1分）",
+        "膝（1分）"
+      ],
+      "total_points": 2
+    },
+    {
+      "id": "q029",
+      "type": "fill_blank",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "解剖学姿势要求双上肢下垂于躯干两侧，______向前。",
+      "answer": "掌心",
+      "hint": "生活姿势里朝向大腿的那一面，在解剖姿势里必须翻过来。",
+      "explanation": "掌心向前。省掉这一笔，尺骨桡骨的内侧外侧会写反。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · 解剖学姿势"
+      },
+      "scoring_criteria": [
+        "掌心（2分）"
+      ],
+      "total_points": 2
+    },
+    {
+      "id": "q030",
+      "type": "fill_blank",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 2,
+      "stem": "课件点名的终动脉例子包括视网膜中央动脉和______动脉；功能性终动脉点名脑、脾和______动脉。",
+      "answer": "阑尾；肾",
+      "hint": "一个在消化管，一个在成对实质性器官。",
+      "explanation": "终动脉：视网膜中央动脉、阑尾动脉。功能性终动脉：脑、脾、肾动脉。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.5.md",
+        "label": "1.5 · 血管吻合与终动脉"
+      },
+      "scoring_criteria": [
+        "阑尾动脉（1分）",
+        "肾动脉（1分）"
+      ],
+      "total_points": 2
+    },
+    {
+      "id": "q031",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "名词解释",
+      "points": 10,
+      "total_points": 10,
+      "stem": "解释下列名词（每词 5 分）：（1）膀胱三角；（2）静脉角。",
+      "answer": "（1）膀胱三角：膀胱底内面，两侧输尿管口与尿道内口围成的三角形区域。缺少黏膜下层，无论充盈或空虚都保持平滑。是肿瘤、结核、炎症好发区。\n\n（2）静脉角：锁骨下静脉与颈内静脉在胸锁关节后方汇合成头臂静脉，汇合部称静脉角。胸导管注入左静脉角，右淋巴导管注入右静脉角。",
+      "hint": "三角写三点 + 黏膜特点 + 好发疾病；静脉角写两条静脉 + 淋巴导管注入。",
+      "explanation": "名词解释按位置、构成、临床给分。膀胱三角不要写成膀胱的外形三角。静脉角不要写成「两条静脉交叉」而不写汇合成头臂静脉和淋巴导管注入。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · 膀胱三角；静脉角"
+      },
+      "scoring_criteria": [
+        "膀胱三角：三点围成（2分）",
+        "缺少黏膜下层、始终平滑（2分）",
+        "肿瘤/结核/炎症好发（1分）",
+        "静脉角：锁骨下静脉 + 颈内静脉汇合（2分）",
+        "胸锁关节后方、成头臂静脉（1分）",
+        "淋巴导管注入（2分）"
+      ]
+    },
+    {
+      "id": "q032",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "试述体循环与肺循环的途径和主要特点，并列出心传导系的组成。",
+      "answer": "体循环：左心室搏出动脉血 → 主动脉及分支 → 全身毛细血管进行物质和气体交换 → 上、下腔静脉及冠状窦 → 右心房。特点：路程长、范围广，以动脉血滋养全身并运回代谢产物和二氧化碳。\n\n肺循环：右心室搏出静脉血 → 肺动脉干及分支 → 肺泡毛细血管气体交换 → 肺静脉 → 左心房。特点：路程短，只通过肺，使静脉血转变成氧饱和的动脉血。\n\n心传导系：窦房结、结间束、房室交界区、房室束、左右束支、Purkinje 纤维网。由特殊心肌细胞构成，产生并传导兴奋。",
+      "hint": "先写谁从哪个心室出发；再写路程长短；传导系按窦房结往下数。",
+      "explanation": "体循环左室出、肺循环右室出。肺动脉走静脉血不要写反。传导系是特化心肌，不是植物神经。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.1.md",
+        "label": "1.1 · 体循环、肺循环、心传导系"
+      },
+      "scoring_criteria": [
+        "体循环路径：左室→主动脉→毛细血管→腔静脉/冠状窦→右房（2分）",
+        "体循环特点：长、广（1分）",
+        "肺循环路径：右室→肺动脉→肺泡毛细血管→肺静脉→左房（2分）",
+        "肺循环特点：短、只通过肺、静脉血变动脉血（1分）",
+        "传导系组成列全（3分）",
+        "特化心肌、产生传导兴奋（1分）"
+      ]
+    },
+    {
+      "id": "q033",
+      "type": "essay",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "label": "简答题",
+      "points": 10,
+      "total_points": 10,
+      "stem": "（1）写出滑膜关节的基本构造和辅助结构。（2）比较肩关节与髋关节的构成、结构特点和常见脱位方向。",
+      "answer": "（1）基本构造：关节面、关节囊、关节腔。关节囊分纤维膜和滑膜；关节腔由滑膜层和关节面围成，负压，含少量滑液。辅助结构：韧带、关节盘和关节唇、滑膜襞和滑膜囊。\n\n（2）肩关节：肱骨头 + 关节盂，头大盂浅，囊薄而松弛，下壁最薄弱，易向前下方脱位；全身最灵活，可作三轴运动及环转。向上有喙肩弓防止脱位。髋关节：股骨头 + 髋臼，髋臼深有髋臼唇，囊坚韧有髂股韧带等，稳度大于肩、灵活度较小。",
+      "hint": "基本构造只有三件；肩髋对照头窝匹配和囊的厚薄。",
+      "explanation": "课件把三件套和辅助结构分户。肩易前下脱位是下壁薄弱；髋臼深所以稳。不要把半月板写进「所有关节的基本构造」。",
+      "sourceRef": {
+        "path": "content/anatomy/detail/1.5.md",
+        "label": "1.5 · 关节三件套；1.2 · 肩髋对照"
+      },
+      "scoring_criteria": [
+        "基本构造三件（2分）",
+        "辅助结构：韧带、盘/唇、滑膜襞/囊（2分）",
+        "肩：肱骨头+关节盂，盂浅囊松（2分）",
+        "肩易前下方脱位、下壁薄弱（2分）",
+        "髋：股骨头+髋臼，臼深更稳（2分）"
+      ]
+    }
+  ],
+  "summary": {
+    "totalQuestions": 33,
+    "byType": {
+      "single_choice": 10,
+      "true_false": 10,
+      "fill_blank": 10,
+      "essay": 3
+    },
+    "bySource": {
+      "current_chapter": 33
+    },
+    "byDifficulty": {
+      "basic": 24,
+      "medium": 7,
+      "hard": 2
+    }
+  }
+}

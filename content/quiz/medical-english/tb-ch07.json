@@ -1,0 +1,212 @@
+{
+  "subjectId": "medical-english",
+  "chapterId": "tb-ch07",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/medical-english/textbook/ch07.md",
+    "totalPoints": 100,
+    "timeLimit": 90,
+    "sections": [
+      {"name": "Writing", "points": 15, "questions": 1},
+      {"name": "Vocabulary & Grammar", "points": 15, "questions": 1},
+      {"name": "Reading Comprehension", "points": 40, "questions": 4},
+      {"name": "Cloze", "points": 10, "questions": 10},
+      {"name": "Translation", "points": 20, "questions": 4}
+    ]
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "essay",
+      "section": "Writing",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "label": "Writing",
+      "points": 15,
+      "total_points": 15,
+      "stem": "Write about 150 words on \"What Social Medicine Still Asks Us to Do\".\n\nUse Lesson 7. Include the three common principles; Virchow (cells and society; attorneys of the poor); why market reform is \"an emperor without clothes\"; and education with its daughters liberty and prosperity.",
+      "answer": "Social medicine is not a charity booth outside the hospital. It rests on three principles: social and economic conditions shape health, disease and practice; the health of the population is a social concern; society must promote health by individual and social means.\n\nVirchow, founder for many, read typhus in 1848 through poverty, education and democracy even as he mapped disease in cells. He called such outbreaks artificial epidemics, and named physicians the natural attorneys of the poor. The AIDS cocktail showed the same split: biomedicine can treat, patents can trump public health.\n\nTwo decades of U.S. market reform have not delivered affordable care; the emperor has no clothes. More computers and faster discharges will not suffice. The old prescription still stands: education, with its daughters liberty and prosperity.",
+      "hint": "三条原则要完整；皇帝新衣对准市场改革；daughters 的母亲是 education。",
+      "scoring_criteria": [
+        "内容（5分）：三条原则、Virchow、市场失败、教育药方。",
+        "语言（5分）：germane, trump, disparity, hierarchical 等能用则用，忌空洞。",
+        "结构（5分）：定义—历史—当下；约150词。"
+      ],
+      "explanation": "缺任何一条原则或把魏尔肖只写成病理学家，内容分会扣。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch07.md",
+        "label": "三条原则 · Virchow · 段 16–19"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "section": "Vocabulary & Grammar",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 15,
+      "stem": "Late-nineteenth-century advances in pathology and microbiology made social factors seem less _____ in the etiology of disease. The missing word means \"relevant and to the point\".",
+      "options": [
+        "germane",
+        "prescient",
+        "hierarchical",
+        "alkaline"
+      ],
+      "answer": 0,
+      "hint": "课件固定 germane to；课文原句 less germane in the etiology。",
+      "explanation": "A germane = 切题、相关。prescient 有先见（魏尔肖论艾滋病那段）。hierarchical 等级制。alkaline 是 9/11 粉尘，不是本课。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch07.md",
+        "label": "germane · 建制医学慢半拍"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "reading",
+      "section": "Reading Comprehension",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 40,
+      "hint": "双重否定 has not gone unchallenged；trump 是压过；Alma-Ata 不仅仅是无病。",
+      "passage": "The corporate agenda in U.S. health care has expanded: access is turned over to insurers; advertising disguised as education sells drugs of dubious efficacy; record spending still leaves life expectancy 27th. This agenda has not gone unchallenged. Social medicine's principles are that social conditions shape disease, population health is a social concern, and society must use both individual and social means.\n\nVirchow linked cellular pathology to poverty and democracy. AIDS treatments exist, yet intellectual property has trumped public health. Community-oriented primary care uses teams — doctor, nurse, health educator — and reads diagnoses epidemiologically. Alma-Ata (1978) defined health as complete physical, mental and social well-being, not merely the absence of disease or infirmity. Market reform has not clothed the emperor. Virchow's answer remains education, with liberty and prosperity as her daughters.",
+      "subQuestions": [
+        {
+          "id": "q003_1",
+          "type": "single_choice",
+          "stem": "The author's primary purpose is to ________.",
+          "options": [
+            "defend pharmaceutical advertising as education",
+            "define social medicine against corporate care and recover Virchow's social prescription",
+            "prove that life expectancy ranks first in the United States",
+            "deny that cells matter in pathology"
+          ],
+          "answer": 1,
+          "explanation": "公司化批判 + 三条原则 + Virchow/Alma-Ata/皇帝。A 与 disguised 相反；C 是 27th；D 魏尔肖同时做细胞。",
+          "points": 10
+        },
+        {
+          "id": "q003_2",
+          "type": "single_choice",
+          "stem": "\"Has not gone unchallenged\" means the corporate agenda ________.",
+          "options": [
+            "has never been criticised",
+            "has in fact been opposed",
+            "is required by Alma-Ata",
+            "exists only in Latin America"
+          ],
+          "answer": 1,
+          "explanation": "双重否定 = 已被挑战。",
+          "points": 10
+        },
+        {
+          "id": "q003_3",
+          "type": "single_choice",
+          "stem": "In \"intellectual property has trumped public health\", trumped means ________.",
+          "options": [
+            "photographed",
+            "overridden or beaten",
+            "cured",
+            "translated"
+          ],
+          "answer": 1,
+          "explanation": "课文动词：压过、胜过。",
+          "points": 10
+        },
+        {
+          "id": "q003_4",
+          "type": "true_false",
+          "stem": "Alma-Ata defines health as merely the absence of disease or infirmity.",
+          "options": ["False", "True"],
+          "answer": 0,
+          "explanation": "not merely the absence... 命题为假。",
+          "points": 10
+        }
+      ],
+      "answer": "",
+      "explanation": "主旨、双重否定、trump、阿拉木图定义。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch07.md",
+        "label": "公司议程 · 原则 · Alma-Ata"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "cloze",
+      "section": "Cloze",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "hint": "三条原则；epidemic vs pandemic；angi/o；皇帝新衣。",
+      "passage": "Social medicine holds that social and economic conditions (1) ____ health; that population health is a matter of social (2) ____; and that society should promote health through both (3) ____ and social means. Virchow read a (4) ____ epidemic as an \"artificial\" product of poverty. An outbreak across continents affecting a very high proportion of people is a (5) ____. Combining form (6) ____ means blood vessel, as in angiography; (7) ____ means clot. Drugs of (8) ____ efficacy are sold by advertising disguised as education. The U.S. market-reform (9) ____ has no clothes. Virchow's prescription was (10) ____, with liberty and prosperity as her daughters.",
+      "blanks": [
+        {"id": "b1", "options": ["impact", "ignore", "invent", "import"], "answer": 0, "explanation": "profoundly impact health。", "points": 1},
+        {"id": "b2", "options": ["concern", "costume", "coupon", "cough"], "answer": 0, "explanation": "a matter of social concern。", "points": 1},
+        {"id": "b3", "options": ["individual", "industrial", "invisible", "imperial"], "answer": 0, "explanation": "individual and social means。", "points": 1},
+        {"id": "b4", "options": ["typhus", "tinnitus", "tetanus only", "trachoma only"], "answer": 0, "explanation": "1848 typhus。", "points": 1},
+        {"id": "b5", "options": ["pandemic", "placebo", "proxy", "premise"], "answer": 0, "explanation": "pan- + dem：大流行。", "points": 1},
+        {"id": "b6", "options": ["angi/o", "derm/o", "ot/o", "rhin/o"], "answer": 0, "explanation": "angiography 血管造影。", "points": 1},
+        {"id": "b7", "options": ["thromb/o", "spir/o", "thym/o", "laryng/o"], "answer": 0, "explanation": "thrombus / thrombosis。", "points": 1},
+        {"id": "b8", "options": ["dubious", "divine", "double", "dental"], "answer": 0, "explanation": "dubious efficacy。", "points": 1},
+        {"id": "b9", "options": ["emperor", "empire's nurse", "ambulance", "spirometer"], "answer": 0, "explanation": "This emperor has no clothes。", "points": 1},
+        {"id": "b10", "options": ["education", "excavation", "extinction", "exemption"], "answer": 0, "explanation": "education, with its daughters...。", "points": 1}
+      ],
+      "answer": "",
+      "explanation": "原则、魏尔肖斑疹伤寒、pandemic、词根、广告、讽喻、药方。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch07.md",
+        "label": "原则、词根、收束"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "translation",
+      "section": "Translation",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "hint": "writ large/small；not merely；daughters 指代 education。",
+      "items": [
+        {
+          "id": "t1",
+          "source": "社会经济条件深刻影响健康、疾病以及医疗实践。",
+          "reference": "Social and economic conditions profoundly impact health, disease, and the practice of medicine.",
+          "explanation": "考点：第一条原则的完整三项宾语。",
+          "points": 5
+        },
+        {
+          "id": "t2",
+          "source": "如果政治是大写的医疗，那么很明显医疗是小写的政治。",
+          "reference": "If politics is medicine writ large, it is also apparent that medicine is politics writ small.",
+          "explanation": "考点：writ large / writ small。",
+          "points": 5
+        },
+        {
+          "id": "t3",
+          "source": "健康是一种身体上、精神上和社会适应上的完好状态，而不仅仅是没有疾病和虚弱。",
+          "reference": "Health is a state of complete physical, mental and social well-being, and not merely the absence of disease or infirmity.",
+          "explanation": "考点：Alma-Ata / WHO 定义。",
+          "points": 5
+        },
+        {
+          "id": "t4",
+          "source": "一个简单的答案是：教育，以及她的女儿——自由与繁荣。",
+          "reference": "The simple answer is education, with its daughters liberty and prosperity.",
+          "explanation": "考点：its daughters 的先行词是 education。",
+          "points": 5
+        }
+      ],
+      "answer": "",
+      "explanation": "原则句、writ 修辞、WHO 定义、上西里西亚药方。",
+      "sourceRef": {
+        "path": "content/medical-english/textbook/ch07.md",
+        "label": "原则句与长难句"
+      }
+    }
+  ],
+  "summary": {
+    "totalQuestions": 5,
+    "byType": { "essay": 1, "single_choice": 1, "reading": 1, "cloze": 1, "translation": 1 },
+    "bySource": { "current_chapter": 5 },
+    "byDifficulty": { "medium": 5 }
+  }
+}
