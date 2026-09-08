@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, FileText } from "lucide-react";
+import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, FileText, BookOpen, Globe } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import OverflowMenu from "@/components/window/OverflowMenu";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
@@ -27,6 +27,8 @@ function WindowIcon({ type }: { type: ManagedWindow["type"] }) {
   if (type === "image-gen-viewer") return <ImagePlus size={15} />;
   if (type === "billing-dashboard") return <PieChart size={15} />;
   if (type === "document-viewer") return <FileText size={15} />;
+  if (type === "note-citation-viewer" || type === "source-trace-viewer") return <BookOpen size={15} />;
+  if (type === "source-preview") return <Globe size={15} />;
   return <MonitorPlay size={15} />;
 }
 

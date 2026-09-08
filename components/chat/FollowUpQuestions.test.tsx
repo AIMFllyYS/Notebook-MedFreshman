@@ -1,6 +1,7 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
 // Mock QuizMarkdown to avoid pulling in react-markdown/katex chain
 vi.mock("@/components/quiz/QuizMarkdown", () => ({
@@ -8,6 +9,10 @@ vi.mock("@/components/quiz/QuizMarkdown", () => ({
 }));
 
 import { FollowUpQuestions } from "./FollowUpQuestions";
+
+afterEach(() => {
+  useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
+});
 
 describe("FollowUpQuestions", () => {
   it("空问题列表时不渲染", () => {
@@ -45,10 +50,11 @@ describe("FollowUpQuestions", () => {
     expect(screen.getByText("你可能还想问")).toBeInTheDocument();
   });
 
-  it("使用轻量自绘箭头而非彩色嵌套卡片和灯泡图标", () => {
+  it("使用稳定版追问卡片：灯泡标题 + 问号按钮", () => {
     const { container } = render(<FollowUpQuestions questions={["继续了解"]} onSelect={() => {}} />);
-    expect(container.querySelector('[data-agent-icon="arrow-up-right"]')).not.toBeNull();
-    expect(container.querySelector('.followup-card, .lucide')).toBeNull();
+    expect(container.querySelector(".followup-card")).not.toBeNull();
+    expect(container.querySelector(".followup-btn")).not.toBeNull();
+    expect(container.querySelector(".lucide-lightbulb, .lucide")).not.toBeNull();
   });
 
   it("点击按钮调用 onSelect 并传入问题文本", async () => {
@@ -61,11 +67,22 @@ describe("FollowUpQuestions", () => {
     expect(onSelect).toHaveBeenCalledWith("什么是概率？");
   });
 
-  it("每个按钮都是 type=button（非 submit）", () => {
+  it("每个追问按钮都是 type=button（非 submit）", () => {
     render(
       <FollowUpQuestions questions={["q1"]} onSelect={() => {}} />,
     );
-    const btn = screen.getByRole("button");
-    expect(btn).toHaveAttribute("type", "button");
+    expect(screen.getByRole("button", { name: "q1" })).toHaveAttribute("type", "button");
+  });
+
+  it("shows a source-trace action that opens the Mac viewer", () => {
+    render(
+      <FollowUpQuestions
+        questions={["继续"]}
+        onSelect={() => {}}
+        sources={[{ kind: "web", title: "课程", url: "https://example.edu", snippet: "" }]}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /来源 · 1/ }));
+    expect(useWindowManager.getState().windows.some((w) => w.type === "source-trace-viewer")).toBe(true);
   });
 });

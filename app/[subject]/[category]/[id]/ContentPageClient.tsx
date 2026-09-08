@@ -13,6 +13,7 @@ import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { tabPanelVariants } from "@/lib/motion";
 import { ComponentRenderer } from "@/lib/content/componentRegistry";
 import { useToc } from "@/lib/hooks/useToc";
+import { useCitationLocator } from "@/lib/hooks/useCitationLocator";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
 import GlobalSearchButton from "@/components/search/GlobalSearchButton";
 
@@ -106,9 +107,15 @@ export default function ContentPageClient({
     initialContent ?? '',
   );
 
-  useEffect(() => {
-    containerRef.current?.scrollTo({ top: 0 });
-  }, [itemId]);
+  const switchToContentTab = useCallback(() => setActiveTab("content"), []);
+  useCitationLocator({
+    containerRef,
+    subjectId,
+    categoryId,
+    itemId,
+    enabled: activeTab === "content" && renderType === "markdown",
+    onNeedContentTab: switchToContentTab,
+  });
 
   // HTML 全屏时锁定 body 滚动，退出时恢复。
   useEffect(() => {

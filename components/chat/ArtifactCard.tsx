@@ -39,7 +39,7 @@ export default function ArtifactCard({
   autoStart?: boolean;
 }) {
   const art = useArtifacts((s) => s.byId[artifactId]);
-  const openViewer = useArtifacts((s) => s.openViewer);
+  const hydrated = useArtifacts((s) => s._hasHydrated);
   const saveDone = useArtifacts((s) => s.saveDone);
   const [status, setStatus] = useState<'idle' | 'streaming' | 'done' | 'error'>('idle');
   const [streamHtml, setStreamHtml] = useState('');
@@ -55,14 +55,16 @@ export default function ArtifactCard({
 
   const title = titleProp || art?.title || '交互演示';
   const html = streamHtml || art?.html || '';
+  const reasoningText = reasoning || art?.reasoning || '';
   const streaming = status === 'streaming';
   const preparing = shouldAutoGen && !art && status === 'idle';
+  const restoring = !hydrated && !art && !shouldAutoGen && status === 'idle';
   const done = status === 'done' || art?.status === 'done';
   const errored = status === 'error';
-  const expired = !art && !streaming && !preparing && !done && !shouldAutoGen;
+  const expired = hydrated && !art && !streaming && !preparing && !done && !shouldAutoGen;
   const thinkingActive = streaming || preparing;
   const [showThinking, setShowThinking] = useProcessingDisclosure(thinkingActive);
-  const showThinkingSection = thinkingActive || reasoning.length > 0;
+  const showThinkingSection = thinkingActive || reasoningText.length > 0;
 
   // 流式时自动滚到底部
   useEffect(() => {
@@ -156,7 +158,7 @@ export default function ArtifactCard({
               setStreamHtml(finalHtml);
               setStatus('done');
               setShowCode(true);
-              saveDone(artifactId, title, finalHtml);
+              saveDone(artifactId, title, finalHtml, reasoningBuf);
             } else if (event.status === 'error') {
               terminal = true;
               setStatus('error');
@@ -189,46 +191,55 @@ export default function ArtifactCard({
   return (
     <div
       className="artifact-card my-2 overflow-hidden rounded-xl border"
+      data-testid="artifact-card"
       style={{
         borderColor: errored || expired ? 'var(--md-sys-color-error)' : 'var(--md-sys-color-primary)',
         background: expired ? 'var(--md-sys-color-surface-container-high)' : 'var(--md-sys-color-primary-container)',
       }}
     >
-      {/* 头部：状态 + 主操作 */}
-      <div className="flex flex-wrap items-center gap-2 px-3 py-2.5">
-        {streaming || preparing ? (
-          <AgentLoopIcon size={15} className="animate-pulse motion-reduce:animate-none shrink-0" style={{ color: 'var(--md-sys-color-primary)' }} />
-        ) : errored || expired ? (
-          <AgentAlertIcon size={15} className="shrink-0" style={{ color: 'var(--md-sys-color-error)' }} />
-        ) : (
-          <AgentTerminalIcon size={15} className="shrink-0" style={{ color: 'var(--md-sys-color-primary)' }} />
-        )}
-        <span
-          className="min-w-0 flex-1 truncate text-[12.5px] font-semibold"
-          style={{ color: onContainer }}
-        >
-          {streaming || preparing
-            ? `正在生成交互演示：${title}…`
-            : errored
-              ? '交互演示生成失败'
-              : expired
-                ? '交互演示数据缺失（可让助教重新生成）'
-                : `交互演示已就绪：${title}`}
-        </span>
+      {/* 头部：状态 + 右上角常驻「打开演示」。必须 wrap，窄栏也不能把按钮裁掉。 */}
+      <div className="artifact-card-header" data-testid="artifact-card-header">
+        <div className="artifact-card-heading">
+          {streaming || preparing ? (
+            <AgentLoopIcon size={15} className="animate-pulse motion-reduce:animate-none shrink-0" style={{ color: 'var(--md-sys-color-primary)' }} />
+          ) : errored || expired ? (
+            <AgentAlertIcon size={15} className="shrink-0" style={{ color: 'var(--md-sys-color-error)' }} />
+          ) : (
+            <AgentTerminalIcon size={15} className="shrink-0" style={{ color: 'var(--md-sys-color-primary)' }} />
+          )}
+          <span
+            className="min-w-0 flex-1 truncate text-[12.5px] font-semibold"
+            style={{ color: onContainer }}
+          >
+            {streaming || preparing
+              ? `正在生成交互演示：${title}…`
+              : restoring
+                ? `正在恢复交互演示：${title}…`
+                : errored
+                  ? '交互演示生成失败'
+                  : expired
+                    ? '交互演示数据缺失（可让助教重新生成）'
+                    : `交互演示已就绪：${title}`}
+          </span>
+        </div>
 
-        {done && (
+        {(done || !!html) && !errored ? (
           <button
             type="button"
-            onClick={() => openViewer(artifactId)}
-            className="press inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-semibold"
+            data-testid="artifact-open-demo"
+            onClick={() => {
+              if (html) saveDone(artifactId, title, html, reasoningText);
+              useArtifacts.getState().openViewer(artifactId);
+            }}
+            className="artifact-open-demo press inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-semibold"
             style={{ background: 'var(--md-sys-color-primary)', color: 'var(--md-sys-color-on-primary)' }}
           >
             <AgentTerminalIcon size={14} /> 打开演示
           </button>
-        )}
+        ) : null}
       </div>
 
-      {prompt && (streaming || preparing || done) && (
+      {prompt && (streaming || preparing || restoring || done) && (
         <div
           style={{
             borderBottom: '1px solid color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent)',
@@ -288,8 +299,8 @@ export default function ArtifactCard({
               className="chat-prose max-h-48 overflow-auto px-3 pb-2 text-[11px] leading-relaxed"
               style={{ color: 'var(--md-sys-color-on-surface-variant)' }}
             >
-              {reasoning
-                ? <MessageContent content={reasoning} enableVisualizations={false} preserveLineBreaks />
+              {reasoningText
+                ? <MessageContent content={reasoningText} enableVisualizations={false} preserveLineBreaks />
                 : '正在思考生成方案…'}
             </div>
           )}
@@ -297,7 +308,7 @@ export default function ArtifactCard({
       )}
 
       {/* 生成进度（流式时）/ 代码切换条 */}
-      {(streaming || preparing || done) && (
+      {(streaming || preparing || restoring || done) && (
         <div
           className="flex items-center gap-2 border-t px-3 py-1.5"
           style={{ borderColor: 'color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent)' }}
