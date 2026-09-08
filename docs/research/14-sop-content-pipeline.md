@@ -460,8 +460,8 @@ SOP 体系是 **全自动化平台改造的核心资产**——已固化的流�
 - `docs/sop/07-testing.md` — 测试体系
 - `docs/sop/08-exam-paper-integration.md` — 考试试卷录入与卡片化集成
 - `docs/sop/subject-onboarding.md` — 多学科接入 SOP
-- `docs/refer/考试题型分布.md` — 各科目考试题型配比
-- `docs/refer/MinerU文档解析教程.md` — MinerU API 完整文档
+- `docs/refer/exam-type-distribution.md` — 各科目考试题型配比
+- `docs/refer/mineru-parsing-guide.md` — MinerU API 完整文档
 - `docs/refer/rendering-architecture.md` — Markdown 渲染架构
 
 ### 实现源码

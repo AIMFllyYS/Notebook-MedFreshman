@@ -177,5 +177,5 @@ $$
 
 - [00-infrastructure.md](./00-infrastructure.md) — 文档解析脚本
 - [05-content-integration.md](./05-content-integration.md) — 集成验证
-- [docs/refer/考试题型分布.md](../refer/考试题型分布.md) — 确认科目题型，辅助例题归类
+- [docs/refer/exam-type-distribution.md](../refer/exam-type-distribution.md) — 确认科目题型，辅助例题归类
 - [docs/refer/rendering-architecture.md](../refer/rendering-architecture.md) — Markdown 指令块渲染规范

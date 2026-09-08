@@ -580,8 +580,8 @@ docs/research/
 | `docs/refer/rendering-architecture.md` | 渲染架构规范 | 深化 |
 | `docs/refer/storage-architecture.md` | 存储架构规范 | 深化 |
 | `docs/refer/performance-audit-report.md` | 性能审计报告 | 补充 |
-| `docs/refer/考试题型分布.md` | 考试题型分布 | 引用 |
-| `docs/refer/MinerU文档解析教程.md` | MinerU 教程 | 引用 |
+| `docs/refer/exam-type-distribution.md` | 考试题型分布 | 引用 |
+| `docs/refer/mineru-parsing-guide.md` | MinerU 教程 | 引用 |
 | `docs/refer/modern-history-textbook-format.md` | 近代史格式 | 引用 |
 | `docs/superpowers/specs/2026-06-16-prob-stats-learning-app-design.md` | 学习应用设计 | 引用 |
 | `docs/superpowers/specs/2026-06-17-probability-output-integration-design.md` | 概率论输出集成设计 | 引用 |

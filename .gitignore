@@ -53,8 +53,9 @@ yarn-error.log*
 /scripts/transcripts/
 /scripts/handoffs/
 
-# ZIP files
+# ZIP / tarball archives
 *.zip
+*.tar.gz
 
 # Temporary files
 tmp/
