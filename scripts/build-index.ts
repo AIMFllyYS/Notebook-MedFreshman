@@ -265,12 +265,23 @@ async function main() {
     ...chunks.filter((c) => academicYearOfSubject(c.subjectId) === 'sophomore-1'),
     ...chunks.filter((c) => academicYearOfSubject(c.subjectId) !== 'sophomore-1'),
   ];
+  // 无 hash 的旧向量视为仍有效，避免 embed-cache.meta 被清掉后整库重嵌。
+  let reusedWithoutHash = 0;
   const missing = sophomoreFirst.filter((c) => {
     const hash = hashText(c.contextPrefix + '\n' + c.text);
     const cached = cache.vectors.get(c.id);
-    return !cached || cache.hashes[c.id] !== hash;
+    if (!cached) return true;
+    const prev = cache.hashes[c.id];
+    if (!prev) {
+      cache.hashes[c.id] = hash;
+      reusedWithoutHash += 1;
+      return false;
+    }
+    return prev !== hash;
   });
-  console.log(`   → Cached vectors: ${cache.vectors.size}; to embed: ${missing.length}`);
+  console.log(
+    `   → Cached vectors: ${cache.vectors.size}; reused without hash: ${reusedWithoutHash}; to embed: ${missing.length}`,
+  );
 
   const batchSize = 32;
   let embedded = 0;
