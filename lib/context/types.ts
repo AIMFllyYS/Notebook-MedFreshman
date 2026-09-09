@@ -1,4 +1,5 @@
 import type { ChatContext } from '@/lib/types/chat';
+import { MODELS, getModelInfo } from '@/lib/ai/models';
 
 export type ContextMode = 'full' | 'semantic';
 
@@ -16,18 +17,16 @@ export interface BuildContextResult {
   overflow: boolean;
 }
 
-export const MODEL_TOKEN_LIMITS: Record<string, number> = {
-  'deepseek-chat': 1_000_000,
-  'deepseek-reasoner': 1_000_000,
-  'z-ai/glm-5.3-flash': 1_000_000,
-  'Qwen/Qwen3.8-27B': 256_000,
-  'google/gemini-3.7-flash': 1_000_000,
-  'deepseek/deepseek-v4-flash': 1_000_000,
-  'mimo-v2.5-pro': 1_000_000,
-  'mimo-v2.5': 1_000_000,
-  'default': 128_000,
-};
+/** 由 `lib/ai/models.ts` 的 `contextK`（千 token）派生，不再单独维护一份上限表。 */
+export const MODEL_TOKEN_LIMITS: Record<string, number> = Object.fromEntries([
+  ...MODELS
+    .filter((m) => (m.contextK ?? 0) > 0)
+    .map((m) => [m.id, (m.contextK as number) * 1000]),
+  ['default', 128_000],
+]);
 
 export function getMaxTokens(model: string): number {
-  return MODEL_TOKEN_LIMITS[model] ?? MODEL_TOKEN_LIMITS['default'];
+  const k = getModelInfo(model)?.contextK;
+  if (typeof k === 'number' && k > 0) return k * 1000;
+  return MODEL_TOKEN_LIMITS.default;
 }

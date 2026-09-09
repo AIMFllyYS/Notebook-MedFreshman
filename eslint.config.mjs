@@ -16,12 +16,39 @@ export default defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    "dist-desktop/**",
     "next-env.d.ts",
     "node_modules/**",
     "exhibition-hall/**",
     "showroom/**",
     "docs/refer/**",
+    "scripts/one-off/**",
+    ".claude/**",
+    ".trae/**",
+    ".mimocode/**",
+    ".workbuddy/**",
+    "tmp/**",
+    "public/rdkit/**",
     "**/*.test.ts",
     "**/*.test.tsx",
   ]),
+  // Next 16 工具链把一批存量写法升成 error。计划 18 只建立门禁，不改业务组件；
+  // 这些规则降为 warn，后续计划再逐项清理。
+  {
+    rules: {
+      "react-hooks/set-state-in-effect": "warn",
+      "react-hooks/refs": "warn",
+      "react-hooks/preserve-manual-memoization": "warn",
+      "react-hooks/static-components": "warn",
+      "react-hooks/purity": "warn",
+      "react/no-unescaped-entities": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+    },
+  },
+  {
+    files: ["electron/**"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 ]);

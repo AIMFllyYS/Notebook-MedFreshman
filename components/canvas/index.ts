@@ -6,8 +6,6 @@ export { CanvasFullscreenPortal } from "./CanvasFullscreenPortal";
 export { PlotDirective } from "./PlotDirective";
 export { CanvasDirective } from "./CanvasDirective";
 export { DiagramCanvas, isDiagramMode, type DiagramMode } from "./DiagramCanvas";
-export { MoleculeRenderer } from "./MoleculeRenderer";
-export { HtmlCanvasLayer } from "./HtmlCanvasLayer";
 export { CanvasFrame } from "./CanvasFrame";
 export { CanvasBlockRenderer } from "./CanvasBlockRenderer";
 export {

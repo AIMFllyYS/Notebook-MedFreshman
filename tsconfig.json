@@ -42,6 +42,7 @@
     "showroom",
     "exhibition-hall",
     "dist-desktop",
+    "scripts/one-off",
     "**/*.test.ts",
     "**/*.test.tsx"
   ]

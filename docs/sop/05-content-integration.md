@@ -120,5 +120,5 @@ pnpm exec tsc --noEmit
 
 - [lib/content-data/manifest.ts](../../lib/content-data/manifest.ts) — 操作目标
 - [lib/content/loader.ts](../../lib/content/loader.ts) — 路径解析逻辑
-- [lib/ai/tools.ts](../../lib/ai/tools.ts) — AI 工具定义
+- [lib/ai/agent/tools.ts](../../lib/ai/agent/tools.ts) — AI 工具定义
 - [README.md](./README.md) — SOP 全局规范
