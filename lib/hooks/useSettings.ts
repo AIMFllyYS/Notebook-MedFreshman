@@ -9,6 +9,7 @@ import {
 } from "@/lib/ai/models";
 
 export type { ThinkingEffort };
+export type ArtifactFullscreenTarget = "notes" | "viewport";
 const THINKING_EFFORTS: readonly ThinkingEffort[] = ['low', 'medium', 'high', 'max'];
 function normalizeThinkingEffort(v: unknown): ThinkingEffort {
   return THINKING_EFFORTS.includes(v as ThinkingEffort) ? (v as ThinkingEffort) : 'medium';
@@ -60,6 +61,8 @@ export interface SettingsState {
   /** 新对话默认思考力度（仅在 defaultThinking=true 时生效）。 */
   defaultThinkingEffort: ThinkingEffort;
   defaultSearch: boolean;
+  /** Artifact 浮窗全屏对齐：笔记栏或整个视口。默认笔记栏，保持历史行为。 */
+  artifactFullscreenTarget: ArtifactFullscreenTarget;
 
   // ── 全局补充上下文 ────────────────────
   /** 所有对话自动注入的用户自定义文本（拼入稳定系统前缀）。 */
@@ -96,6 +99,7 @@ export interface SettingsState {
   setDefaultThinking: (v: boolean) => void;
   setDefaultThinkingEffort: (v: ThinkingEffort) => void;
   setDefaultSearch: (v: boolean) => void;
+  setArtifactFullscreenTarget: (v: ArtifactFullscreenTarget) => void;
   setGlobalContext: (v: string) => void;
   setUsdExchangeRate: (v: number) => void;
 }
@@ -120,6 +124,7 @@ type Persisted = Pick<
   | "defaultThinking"
   | "defaultThinkingEffort"
   | "defaultSearch"
+  | "artifactFullscreenTarget"
   | "globalContext"
   | "usdExchangeRate"
 >;
@@ -143,6 +148,7 @@ const DEFAULTS: Persisted = {
   defaultThinking: false,
   defaultThinkingEffort: 'medium',
   defaultSearch: false,
+  artifactFullscreenTarget: "notes",
   globalContext: "",
   usdExchangeRate: 7.00,
 };
@@ -184,6 +190,8 @@ function load(): Persisted {
         parsed.usdExchangeRate = 7.00;
       }
       parsed.defaultThinkingEffort = normalizeThinkingEffort(parsed.defaultThinkingEffort);
+      parsed.artifactFullscreenTarget =
+        parsed.artifactFullscreenTarget === "viewport" ? "viewport" : "notes";
       parsed.selectedModelId = normalizeCustomModelRegistryId(
         normalizeRegistryId(parsed.selectedModelId),
         parsed.customApiGroups,
@@ -238,6 +246,7 @@ function persist(get: () => SettingsState) {
     defaultThinking: s.defaultThinking,
     defaultThinkingEffort: s.defaultThinkingEffort,
     defaultSearch: s.defaultSearch,
+    artifactFullscreenTarget: s.artifactFullscreenTarget,
     globalContext: s.globalContext,
     usdExchangeRate: s.usdExchangeRate,
   };
@@ -394,6 +403,10 @@ export const useSettings = create<SettingsState>((set, get) => ({
   },
   setDefaultSearch: (v) => {
     set({ defaultSearch: v });
+    persist(get);
+  },
+  setArtifactFullscreenTarget: (v) => {
+    set({ artifactFullscreenTarget: v === "viewport" ? "viewport" : "notes" });
     persist(get);
   },
   setGlobalContext: (v) => {

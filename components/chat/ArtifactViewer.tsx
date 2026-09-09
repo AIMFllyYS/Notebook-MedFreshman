@@ -7,6 +7,7 @@
  */
 import { Download, MonitorPlay } from "lucide-react";
 import { useArtifacts } from "@/lib/hooks/useArtifacts";
+import { useSettings } from "@/lib/hooks/useSettings";
 import { downloadHtmlFile } from "@/lib/utils/downloadHtml";
 import { openHtmlInNewTab } from "@/lib/utils/openHtmlInNewTab";
 import ManagedWindow from "@/components/window/ManagedWindow";
@@ -19,6 +20,7 @@ export default function ArtifactViewer() {
   const viewerId = useArtifacts((s) => s.viewerId);
   const art = useArtifacts((s) => (s.viewerId ? s.byId[s.viewerId] : null));
   const closeViewer = useArtifacts((s) => s.closeViewer);
+  const fullscreenTarget = useSettings((s) => s.artifactFullscreenTarget);
 
   if (!art || !viewerId) return null;
 
@@ -28,7 +30,7 @@ export default function ArtifactViewer() {
       title={art.title}
       icon={<MonitorPlay size={15} />}
       onClose={closeViewer}
-      fullscreenTarget="notes"
+      fullscreenTarget={fullscreenTarget}
       overlayId={`artifact-viewer-${viewerId}`}
       externalLink={{ onOpen: () => openHtmlInNewTab(art.html) }}
       actions={
