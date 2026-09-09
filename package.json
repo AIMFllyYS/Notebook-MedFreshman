@@ -9,7 +9,7 @@
     "dev": "next dev -p 35349",
     "check:encoding": "node scripts/check-content-encoding.mjs",
     "gen:script-ids": "node scripts/gen-script-ids.mjs",
-    "prebuild": "node scripts/check-content-encoding.mjs && npx tsx scripts/gen-nav-manifest.ts && npx tsx scripts/check-registry-consistency.ts && node scripts/gen-script-ids.mjs && node scripts/check-katex-chars.mjs && node scripts/check-recording-example-latex-escapes.mjs && node scripts/check-media-sync.mjs && node scripts/check-prose-svg-rules.mjs && node scripts/run-unit-tests.mjs",
+    "prebuild": "node scripts/check-content-encoding.mjs && npx tsx scripts/gen-nav-manifest.ts && npx tsx scripts/check-registry-consistency.ts && node scripts/gen-script-ids.mjs && node scripts/check-katex-chars.mjs && node scripts/check-recording-example-latex-escapes.mjs && node scripts/check-media-sync.mjs && node scripts/check-prose-svg-rules.mjs && node scripts/run-unit-tests.mjs --filter=code",
     "check:registry": "npx tsx scripts/check-registry-consistency.ts",
     "build": "next build",
     "start": "next start -p 35349",
@@ -23,11 +23,13 @@
     "render:chapter": "python manim/render.py --chapter",
     "desktop:build": "node scripts/build-desktop.mjs",
     "desktop:dev": "electron .",
-    "test": "node scripts/run-unit-tests.mjs && vitest run --passWithNoTests",
-    "test:unit": "node scripts/run-unit-tests.mjs",
+    "test": "node scripts/run-all-tests.mjs",
+    "test:unit": "node scripts/run-unit-tests.mjs --filter=code",
+    "test:content": "node scripts/run-unit-tests.mjs --filter=content",
     "test:react": "vitest run --passWithNoTests",
+    "test:all": "node scripts/run-all-tests.mjs --include-content",
     "test:watch": "vitest",
-    "test:cov": "node scripts/run-unit-tests.mjs && vitest run --coverage --passWithNoTests"
+    "test:cov": "node scripts/run-unit-tests.mjs --filter=code && vitest run --coverage --passWithNoTests"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "4.0.46",

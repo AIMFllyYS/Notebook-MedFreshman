@@ -21,6 +21,7 @@
 - `build-index.ts` — 语义检索索引（`pnpm build-index`）
 - `build-desktop.mjs` — Electron 桌面包（`pnpm desktop:build`）
 - `gen-icon.mjs` — 桌面图标生成
+- `run-all-tests.mjs` — `pnpm test`：代码单测 + vitest，取最差退出码（`--include-content` 时含内容校验）
 
 ## 内容 SOP 工具（可复用）
 

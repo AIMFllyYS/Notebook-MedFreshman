@@ -108,6 +108,8 @@ pnpm exec tsc --noEmit
 
 确保 manifest 修改不引入类型错误。
 
+合入内容后必须 `pnpm test:content`。内容缺图等问题不会阻塞 `pnpm build` / `pnpm test`，但必须在内容合入流程里单独拦下。
+
 ## 产出规范
 
 本 SOP 的产出是对 `lib/content-data/manifest.ts` 的修改（新增 items），无独立文件产出。
