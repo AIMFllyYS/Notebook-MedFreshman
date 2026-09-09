@@ -15,7 +15,7 @@ import { getMessageText, getToolPartsByName } from '@/lib/chat/messageParts';
 import { collectMessageSources } from '@/lib/chat/traceSources';
 import { ImageStrip } from '@/components/chat/ImageStrip';
 import { ChatImage } from '@/components/chat/ChatImage';
-import { ToolResultCards } from '@/lib/ai/agent/tools/resultCards';
+import { ToolResultCards } from '@/components/chat/toolCards/ToolResultCards';
 
 interface ChatMessageProps {
   message: ChatMessageType;

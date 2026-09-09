@@ -1,7 +1,7 @@
 import React from "react";
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import WriteDocumentResultCard from "./ResultCard";
+import WriteDocumentResultCard from "./writeDocumentCard";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { ToolPart } from "@/lib/ai/agent/tools/registry";
 

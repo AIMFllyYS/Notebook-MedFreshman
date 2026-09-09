@@ -3,7 +3,7 @@
 import type { ChatMessage } from "@/lib/types/chat";
 import { getToolPartsByName } from "@/lib/chat/messageParts";
 import type { StudyToolName } from "@/lib/ai/agent/tools/names";
-import { TOOL_RESULT_CARDS } from "@/lib/ai/agent/tools/catalog";
+import { TOOL_RESULT_CARDS } from "@/components/chat/toolCards/registry";
 
 function dedupBy<T>(keyFn: (item: T) => string | null) {
   const seen = new Set<string>();

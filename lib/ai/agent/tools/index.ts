@@ -32,5 +32,3 @@ export type {
 } from "@/lib/ai/agent/tools/registry";
 /** @public 客户端展示契约入口；ChatSettings / ToolTraceStep 仍走 toolPresentation 兼容层。 */
 export { TOOL_PRESENTATION, TOGGLEABLE_TOOLS, getToolPresentation } from "@/lib/ai/agent/tools/presentations";
-/** @public 结果卡片注册表。ChatMessage 从 resultCards 取用，避免类型桶误拉组件。 */
-export { TOOL_REGISTRY, TOOL_RESULT_CARDS, RESULT_CARD_ORDER } from "@/lib/ai/agent/tools/catalog";

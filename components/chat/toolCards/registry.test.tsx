@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";
-import { TOOL_REGISTRY, TOOL_RESULT_CARDS } from "@/lib/ai/agent/tools/catalog";
+import { TOOL_REGISTRY, TOOL_RESULT_CARDS } from "@/components/chat/toolCards/registry";
 
 describe("tool registry", () => {
   it("matches STUDY_TOOL_NAMES and requires ResultCard when resultKey exists", () => {

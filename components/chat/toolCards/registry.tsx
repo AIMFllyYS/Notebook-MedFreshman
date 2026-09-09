@@ -2,13 +2,13 @@ import type { ComponentType } from "react";
 import type { StudyToolName } from "@/lib/ai/agent/tools/names";
 import type { ResultCardProps, ToolModule, ToolPart, ToolPresentation } from "@/lib/ai/agent/tools/registry";
 import { TOOL_PRESENTATION } from "@/lib/ai/agent/tools/presentations";
-import SearchNotesResultCard from "@/lib/ai/agent/tools/searchNotes/ResultCard";
-import WebSearchResultCard from "@/lib/ai/agent/tools/webSearch/ResultCard";
-import RenderInteractiveResultCard from "@/lib/ai/agent/tools/renderInteractive/ResultCard";
-import GenerateImageResultCard from "@/lib/ai/agent/tools/generateImage/ResultCard";
-import CreateQuizResultCard from "@/lib/ai/agent/tools/createQuiz/ResultCard";
-import SearchNoteImagesResultCard from "@/lib/ai/agent/tools/searchNoteImages/ResultCard";
-import WriteDocumentResultCard from "@/lib/ai/agent/tools/writeDocument/ResultCard";
+import SearchNotesResultCard from "@/components/chat/toolCards/searchNotesCard";
+import WebSearchResultCard from "@/components/chat/toolCards/webSearchCard";
+import RenderInteractiveResultCard from "@/components/chat/toolCards/renderInteractiveCard";
+import GenerateImageResultCard from "@/components/chat/toolCards/generateImageCard";
+import CreateQuizResultCard from "@/components/chat/toolCards/createQuizCard";
+import SearchNoteImagesResultCard from "@/components/chat/toolCards/searchNoteImagesCard";
+import WriteDocumentResultCard from "@/components/chat/toolCards/writeDocumentCard";
 
 function moduleOf<N extends StudyToolName>(
   name: N,
