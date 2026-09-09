@@ -25,7 +25,8 @@ function cleanControlTags(content: string): string {
     .replace(/<FollowUp>[\s\S]*$/i, "");
 }
 
-const blockComponents: Partial<Components> = {
+/** 导出供求值顺序回归测试读取；渲染只把它们交给 ReactMarkdown。 */
+export const blockComponents: Partial<Components> = {
   ...directiveComponents,
   table: ({ node, ...props }: MarkdownComponentProps<"table">) => {
     void node;
@@ -38,7 +39,8 @@ const blockComponents: Partial<Components> = {
   img: ContentImage,
 };
 
-const inlineComponents: Partial<Components> = {
+/** 导出供求值顺序回归测试读取；渲染只把它们交给 ReactMarkdown。 */
+export const inlineComponents: Partial<Components> = {
   ...directiveComponents,
   p: ({ node, ...props }: MarkdownComponentProps<"p">) => {
     void node;
