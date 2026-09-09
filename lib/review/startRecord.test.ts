@@ -20,6 +20,7 @@ test("processRecord passes AbortSignal to fetch and keeps processing state on Ab
         subjectId: "probability",
         categoryId: "detail",
         itemId: "01",
+        sourceLabel: "概率论 / 详解 / 01",
         originalText: "样本文本",
         cardType: "qa",
         front: "",

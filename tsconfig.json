@@ -13,6 +13,7 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
@@ -42,8 +43,6 @@
     "showroom",
     "exhibition-hall",
     "dist-desktop",
-    "scripts/one-off",
-    "**/*.test.ts",
-    "**/*.test.tsx"
+    "scripts/one-off"
   ]
 }

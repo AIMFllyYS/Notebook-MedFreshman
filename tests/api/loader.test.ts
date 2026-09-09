@@ -12,7 +12,7 @@ import {
 // ── readQuiz ───────────────────────────────────────────────────
 
 test("readQuiz：读取存在的 quiz 文件", () => {
-  const quiz = readQuiz("modern-history", "ch01");
+  const quiz = readQuiz("modern-history", "ch01") as { subjectId?: string; questions?: unknown } | null;
   assert.ok(quiz, "modern-history/ch01.json 应存在");
   assert.ok(quiz.subjectId, "应有 subjectId");
   assert.ok(quiz.questions, "应有 questions 数组");

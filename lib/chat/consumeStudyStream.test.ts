@@ -192,7 +192,7 @@ test('DefaultChatTransport 解析跨 UTF-8 分片/心跳/[DONE]，透传 UIMessa
   });
   const transport = createStudyChatTransport(() => { activities++; });
   const messages = [{ id: 'user', role: 'user' as const, parts: [{ type: 'text' as const, text: '问题' }] }];
-  const stream = await transport.sendMessages({ chatId: 'session', trigger: 'submit-message', messages,
+  const stream = await transport.sendMessages({ chatId: 'session', messageId: 'user', trigger: 'submit-message', messages,
     abortSignal: undefined, body: { modelId: 'custom:model', contextTruncated: true } });
   const result = await consumeStudyStream({ stream, message: initial(), onMessage() {} });
   assert.equal(getMessageText(result), '中文💡');
@@ -204,7 +204,7 @@ test('DefaultChatTransport 解析跨 UTF-8 分片/心跳/[DONE]，透传 UIMessa
 
 test('HTTP 非成功状态与空响应体提供可读错误', async (t) => {
   const mock = t.mock.method(globalThis, 'fetch', async () => new Response('bad gateway', { status: 503, statusText: 'Service Unavailable' }));
-  const send = () => createStudyChatTransport(() => {}).sendMessages({ chatId: 's', messages: [], trigger: 'submit-message', abortSignal: undefined });
+  const send = () => createStudyChatTransport(() => {}).sendMessages({ chatId: 's', messageId: 'm', messages: [], trigger: 'submit-message', abortSignal: undefined });
   await assert.rejects(send(), /503 Service Unavailable - bad gateway/);
   mock.mock.mockImplementation(async () => new Response(null));
   await assert.rejects(send(), /流读取失败/);

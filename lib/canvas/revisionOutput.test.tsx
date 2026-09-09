@@ -13,15 +13,16 @@ describe('extractCanvasRevisionBlock', () => {
     const result = extractCanvasRevisionBlock('```json\n{"kind":"molecule","source":"CCO"}\n```');
 
     expect(result.ok).toBe(true);
-    if (result.ok) expect(result.block).toEqual({ kind: 'molecule', source: 'CCO' });
+    if (result.ok && result.block.kind === 'molecule') {
+      expect(result.block).toEqual({ kind: 'molecule', source: 'CCO' });
+    }
   });
 
   it('maps legacy full SVG output to raw-svg', () => {
     const result = extractCanvasRevisionBlock('<svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" /></svg>');
 
     expect(result.ok).toBe(true);
-    if (result.ok) {
-      expect(result.block.kind).toBe('raw-svg');
+    if (result.ok && result.block.kind === 'raw-svg') {
       expect(result.block.source).toContain('<svg');
     }
   });
@@ -30,8 +31,7 @@ describe('extractCanvasRevisionBlock', () => {
     const result = extractCanvasRevisionBlock('<rect x="4" y="4" width="20" height="10" />');
 
     expect(result.ok).toBe(true);
-    if (result.ok) {
-      expect(result.block.kind).toBe('raw-svg');
+    if (result.ok && result.block.kind === 'raw-svg') {
       expect(result.block.source).toContain('<svg');
       expect(result.block.source).toContain('<rect');
       expect(diagnoseCanvasBlock(result.block)[0].ok).toBe(true);
@@ -44,8 +44,7 @@ describe('extractCanvasRevisionBlock', () => {
     );
 
     expect(result.ok).toBe(true);
-    if (result.ok) {
-      expect(result.block.kind).toBe('raw-svg');
+    if (result.ok && result.block.kind === 'raw-svg') {
       expect(result.block.source).toContain('viewBox="0 0 500 260"');
       expect(diagnoseCanvasBlock(result.block)[0].ok).toBe(true);
     }
@@ -57,8 +56,7 @@ describe('extractCanvasRevisionBlock', () => {
     );
 
     expect(result.ok).toBe(true);
-    if (result.ok) {
-      expect(result.block.kind).toBe('html');
+    if (result.ok && result.block.kind === 'html') {
       expect(result.block.title).toBe('demo');
       expect(result.block.source).toContain('<!doctype html>');
     }

@@ -5,7 +5,7 @@ import type { LanguageModelV4, LanguageModelV4StreamPart } from "@ai-sdk/provide
 import { MockLanguageModelV4, convertArrayToReadableStream, convertReadableStreamToArray } from "ai/test";
 import { createFailoverLanguageModel, defaultIsRecoverable } from "./failoverModel.ts";
 
-const callOptions = { prompt: [{ role: "user" as const, content: [{ type: "text" as const, text: "hi" }] }] };
+const callOptions = { prompt: [{ role: "user" as const, content: [{ type: "text" as const, text: "hi" }] }] } as Parameters<LanguageModelV4["doStream"]>[0];
 
 function apiError(statusCode: number, body = ""): APICallError {
   return new APICallError({
@@ -23,7 +23,7 @@ function textStream(text: string): ReadableStream<LanguageModelV4StreamPart> {
     { type: "text-start", id: "t" },
     { type: "text-delta", id: "t", delta: text },
     { type: "text-end", id: "t" },
-    { type: "finish", finishReason: { unified: "stop", raw: "stop" }, usage: { inputTokens: 1, inputTokenDetails: { noCacheTokens: 1, cacheReadTokens: 0, cacheWriteTokens: 0 }, outputTokens: 1, outputTokenDetails: { textTokens: 1, reasoningTokens: 0 } } },
+    { type: "finish", finishReason: { unified: "stop", raw: "stop" }, usage: { inputTokens: { total: 1, noCache: 1, cacheRead: 0, cacheWrite: 0 }, outputTokens: { total: 1, text: 1, reasoning: 0 } } } as LanguageModelV4StreamPart,
   ]);
 }
 
@@ -68,7 +68,7 @@ test("failover：不可恢复错误（401）直接抛出，不切换", async () 
     { model: throwingModel(apiError(401)), label: "primary" },
     { model: okModel("nope"), label: "backup" },
   ]);
-  await assert.rejects(model.doStream(callOptions), (e: unknown) => APICallError.isInstance(e) && e.statusCode === 401);
+  await assert.rejects(() => Promise.resolve(model.doStream(callOptions)), (e: unknown) => APICallError.isInstance(e) && e.statusCode === 401);
 });
 
 test("failover：首个 chunk 为可恢复 error part 时也切换", async () => {
@@ -104,7 +104,7 @@ test("failover：链末尾也失败时抛出最后一个错误", async () => {
     { model: throwingModel(apiError(503)), label: "a" },
     { model: throwingModel(apiError(504)), label: "b" },
   ]);
-  await assert.rejects(model.doStream(callOptions), (e: unknown) => APICallError.isInstance(e) && e.statusCode === 504);
+  await assert.rejects(() => Promise.resolve(model.doStream(callOptions)), (e: unknown) => APICallError.isInstance(e) && e.statusCode === 504);
 });
 
 test("failover：单候选且无超时配置时直接返回原模型", () => {
@@ -143,5 +143,5 @@ test("failover：首字节超时 → 切换到备用；用户主动 abort 不切
   );
   const pending = model2.doStream({ ...callOptions, abortSignal: userCtrl.signal });
   userCtrl.abort(new DOMException("user", "AbortError"));
-  await assert.rejects(pending, (e: unknown) => e instanceof DOMException && e.name === "AbortError");
+  await assert.rejects(() => Promise.resolve(pending), (e: unknown) => e instanceof DOMException && e.name === "AbortError");
 });
