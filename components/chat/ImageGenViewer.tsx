@@ -1,18 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import { createPortal } from "react-dom";
 import { Download, ImagePlus, RefreshCw, Loader, AlertTriangle } from "lucide-react";
 import { useImageGen, imageGenWindowId, type ImageGenImage } from "@/lib/hooks/useImageGen";
-import { useWindowManager } from "@/lib/hooks/useWindowManager";
-import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
-import { useDraggable } from "@/lib/hooks/useDraggable";
-import { useResizable } from "@/lib/hooks/useResizable";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStore";
 import { useLightbox } from "@/lib/stores/lightbox";
-import WindowChrome from "@/components/window/WindowChrome";
-import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import ManagedWindow from "@/components/window/ManagedWindow";
 
 /** 将归一化图片项转为可渲染的 src：优先 url，回退 b64_json data URL。 */
 function imageSrc(img: ImageGenImage): string {
@@ -26,37 +20,10 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
   const closeViewer = useImageGen((s) => s.closeViewer);
   const startLoading = useImageGen((s) => s.startLoading);
   const updateSession = useImageGen((s) => s.updateSession);
-  const managed = useWindowManager((s) =>
-    s.windows.find((w) => w.id === imageGenWindowId(sessionId)),
-  );
-  const { bringToFront, commitGeometry, minimizeWindow, setFullscreen } = useWindowManager();
   const openLightbox = useLightbox((s) => s.open);
-  const preExpandRef = useRef<{
-    pos: { x: number; y: number };
-    size: { width: number; height: number };
-  } | null>(null);
   const requestStartedRef = useRef(false);
 
   const winId = imageGenWindowId(sessionId);
-
-  const { elRef, onPointerDown } = useDraggable((dx, dy) => {
-    if (!managed) return;
-    commitGeometry(winId, {
-      pos: {
-        x: Math.max(0, Math.min(managed.pos.x + dx, window.innerWidth - managed.size.width)),
-        y: Math.max(0, Math.min(managed.pos.y + dy, window.innerHeight - managed.size.height)),
-      },
-    });
-  });
-  const onResizeStart = useResizable(
-    elRef,
-    (width, height) => {
-      commitGeometry(winId, { size: { width, height } });
-    },
-    { minW: 380, minH: 360 },
-  );
-
-  useFullscreenTrack(winId, managed?.fullscreen ?? false);
 
   const triggerGenerate = useCallback(
     async (sid: string) => {
@@ -95,7 +62,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
           updateSession(sid, { status: "error", error: "生图 API 返回格式异常" });
           return;
         }
-        
+
         // 记录生图计费：用 registryId（custom:xxx:yyy 或内置 id）才能正确解析定价与供应商
         useBillingStore.getState().addRecord(createBillingRecord({
           type: 'image',
@@ -124,35 +91,8 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
   }, [session, sessionId, triggerGenerate]);
 
   const handleCloseViewer = useCallback(() => closeViewer(sessionId), [closeViewer, sessionId]);
-  useOverlayRegistration({
-    id: `image-gen-viewer-${sessionId}`,
-    open: !!session,
-    onClose: handleCloseViewer,
-    priority: 30,
-  });
 
-  if (!session || !managed) return null;
-
-  function toggleFullscreen() {
-    const current = useWindowManager.getState().windows.find((w) => w.id === winId);
-    if (!current) return;
-    if (current.fullscreen) {
-      const snap = preExpandRef.current;
-      if (snap) commitGeometry(winId, { pos: snap.pos, size: snap.size });
-      preExpandRef.current = null;
-      setFullscreen(winId, false);
-      return;
-    }
-    preExpandRef.current = { pos: current.pos, size: current.size };
-    const rect = document.getElementById("notes-panel")?.getBoundingClientRect();
-    if (rect && rect.width > 0 && rect.height > 0) {
-      commitGeometry(winId, {
-        pos: { x: rect.left, y: rect.top },
-        size: { width: rect.width, height: rect.height },
-      });
-    }
-    setFullscreen(winId, true);
-  }
+  if (!session) return null;
 
   const handleRetry = () => {
     requestStartedRef.current = false;
@@ -192,208 +132,150 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
   const placeholderCount = Math.max(1, session.count || 1);
   const gridCols = placeholderCount === 1 ? 1 : 2;
 
-  return createPortal(
-    <div
-      ref={elRef}
-      onPointerDownCapture={() => bringToFront(winId)}
-      style={{
-        position: "fixed",
-        left: managed.pos.x,
-        top: managed.pos.y,
-        width: managed.size.width,
-        height: managed.size.height,
-        background: "var(--bg-panel)",
-        borderRadius: managed.fullscreen ? 0 : 14,
-        overflow: "hidden",
-        display: managed.minimized ? "none" : "flex",
-        flexDirection: "column",
-        boxShadow: managed.fullscreen
-          ? "0 0 0 1px var(--line)"
-          : "0 16px 48px rgba(0,0,0,0.3), 0 0 0 1px var(--line)",
-        zIndex: managed.z,
-      }}
+  return (
+    <ManagedWindow
+      windowId={winId}
+      title={session.title}
+      icon={<ImagePlus size={15} />}
+      onClose={handleCloseViewer}
+      fullscreenTarget="notes"
+      minSize={{ minW: 380, minH: 360 }}
+      overlayId={`image-gen-viewer-${sessionId}`}
+      bodyClassName="flex flex-col"
+      unmountWhenMinimized
     >
-      <WindowChrome
-        title={session.title}
-        icon={<ImagePlus size={15} />}
-        onClose={() => closeViewer(sessionId)}
-        onMinimize={() => minimizeWindow(winId)}
-        onFullscreen={toggleFullscreen}
-        isFullscreen={managed.fullscreen}
-        isMinimized={managed.minimized}
-        onDragStart={onPointerDown}
-        bodyClassName="flex flex-col"
-      >
-        {!managed.minimized && (
-          <div className="flex h-full min-h-0 flex-col">
+      <div className="flex h-full min-h-0 flex-col">
+        <div
+          className="shrink-0 border-b px-4 py-2 text-[11.5px]"
+          style={{
+            borderColor: "var(--md-sys-color-outline-variant)",
+            background: "var(--md-sys-color-surface-container-low)",
+            color: "var(--md-sys-color-on-surface-variant)",
+          }}
+        >
+          <span style={{ fontWeight: 600 }}>提示词：</span>
+          <span className="break-words">{session.prompt}</span>
+          <span
+            className="ml-2 inline-block rounded px-1 text-[10px]"
+            style={{ background: "var(--md-sys-color-surface-container-high)" }}
+          >
+            {session.size} · {session.count} 张
+          </span>
+        </div>
+
+        <div className="flex-1 min-h-0 overflow-auto">
+          {isLoading && <WatercolorLoading count={placeholderCount} />}
+
+          {isError && (
+            <div className="flex h-full flex-col items-center justify-center gap-3 px-6 py-8 text-center">
+              <AlertTriangle size={36} style={{ color: "var(--md-sys-color-error)" }} />
+              <div
+                className="text-[13px] font-semibold"
+                style={{ color: "var(--md-sys-color-on-surface)" }}
+              >
+                生图失败
+              </div>
+              <div
+                className="max-w-md text-[12px] leading-relaxed"
+                style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+              >
+                {session.error || "未知错误"}
+              </div>
+              <button
+                type="button"
+                onClick={handleRetry}
+                className="press inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-semibold"
+                style={{
+                  background: "var(--md-sys-color-primary)",
+                  color: "var(--md-sys-color-on-primary)",
+                }}
+              >
+                <RefreshCw size={13} /> 重试
+              </button>
+            </div>
+          )}
+
+          {isDone && session.images.length > 0 && (
             <div
-              className="shrink-0 border-b px-4 py-2 text-[11.5px]"
+              className="grid gap-3 p-4"
+              style={{ gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))` }}
+            >
+              {session.images.map((img, idx) => {
+                const src = imageSrc(img);
+                return (
+                <div
+                  key={idx}
+                  className="group relative overflow-hidden rounded-xl border"
+                  style={{
+                    borderColor: "var(--md-sys-color-outline-variant)",
+                    background: "var(--md-sys-color-surface-container-low)",
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={src}
+                    alt={`${session.title} ${idx + 1}`}
+                    className="w-full cursor-zoom-in"
+                    style={{ display: "block" }}
+                    onClick={() => openLightbox(src, session.title)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => downloadImage(src, idx)}
+                    title="下载图片"
+                    className="press absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-lg opacity-0 transition-opacity group-hover:opacity-100"
+                    style={{
+                      background: "var(--md-sys-color-surface)",
+                      color: "var(--md-sys-color-on-surface)",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.18)",
+                    }}
+                  >
+                    <Download size={13} />
+                  </button>
+                </div>
+                );
+              })}
+            </div>
+          )}
+
+          {isDone && session.images.length === 0 && (
+            <div
+              className="flex h-full items-center justify-center text-[12px]"
+              style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+            >
+              生图完成，但未返回任何图片
+            </div>
+          )}
+        </div>
+
+        {isDone && (
+          <div
+            className="shrink-0 border-t px-3 py-2"
+            style={{ borderColor: "var(--md-sys-color-outline-variant)" }}
+          >
+            <button
+              type="button"
+              onClick={handleRetry}
+              className="press inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[12px] font-medium"
               style={{
                 borderColor: "var(--md-sys-color-outline-variant)",
-                background: "var(--md-sys-color-surface-container-low)",
                 color: "var(--md-sys-color-on-surface-variant)",
               }}
             >
-              <span style={{ fontWeight: 600 }}>提示词：</span>
-              <span className="break-words">{session.prompt}</span>
+              <RefreshCw size={13} /> 重新生成
+            </button>
+            {session.images.some((img) => img.url && !img.b64_json) && (
               <span
-                className="ml-2 inline-block rounded px-1 text-[10px]"
-                style={{ background: "var(--md-sys-color-surface-container-high)" }}
+                className="ml-3 text-[10.5px]"
+                style={{ color: "var(--md-sys-color-on-surface-variant)" }}
               >
-                {session.size} · {session.count} 张
+                图片 URL 1 小时后失效，请及时下载
               </span>
-            </div>
-
-            <div className="flex-1 min-h-0 overflow-auto">
-              {isLoading && <WatercolorLoading count={placeholderCount} />}
-
-              {isError && (
-                <div className="flex h-full flex-col items-center justify-center gap-3 px-6 py-8 text-center">
-                  <AlertTriangle size={36} style={{ color: "var(--md-sys-color-error)" }} />
-                  <div
-                    className="text-[13px] font-semibold"
-                    style={{ color: "var(--md-sys-color-on-surface)" }}
-                  >
-                    生图失败
-                  </div>
-                  <div
-                    className="max-w-md text-[12px] leading-relaxed"
-                    style={{ color: "var(--md-sys-color-on-surface-variant)" }}
-                  >
-                    {session.error || "未知错误"}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleRetry}
-                    className="press inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-semibold"
-                    style={{
-                      background: "var(--md-sys-color-primary)",
-                      color: "var(--md-sys-color-on-primary)",
-                    }}
-                  >
-                    <RefreshCw size={13} /> 重试
-                  </button>
-                </div>
-              )}
-
-              {isDone && session.images.length > 0 && (
-                <div
-                  className="grid gap-3 p-4"
-                  style={{ gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))` }}
-                >
-                  {session.images.map((img, idx) => {
-                    const src = imageSrc(img);
-                    return (
-                    <div
-                      key={idx}
-                      className="group relative overflow-hidden rounded-xl border"
-                      style={{
-                        borderColor: "var(--md-sys-color-outline-variant)",
-                        background: "var(--md-sys-color-surface-container-low)",
-                      }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={src}
-                        alt={`${session.title} ${idx + 1}`}
-                        className="w-full cursor-zoom-in"
-                        style={{ display: "block" }}
-                        onClick={() => openLightbox(src, session.title)}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => downloadImage(src, idx)}
-                        title="下载图片"
-                        className="press absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-lg opacity-0 transition-opacity group-hover:opacity-100"
-                        style={{
-                          background: "var(--md-sys-color-surface)",
-                          color: "var(--md-sys-color-on-surface)",
-                          boxShadow: "0 2px 8px rgba(0,0,0,0.18)",
-                        }}
-                      >
-                        <Download size={13} />
-                      </button>
-                    </div>
-                    );
-                  })}
-                </div>
-              )}
-
-              {isDone && session.images.length === 0 && (
-                <div
-                  className="flex h-full items-center justify-center text-[12px]"
-                  style={{ color: "var(--md-sys-color-on-surface-variant)" }}
-                >
-                  生图完成，但未返回任何图片
-                </div>
-              )}
-            </div>
-
-            {isDone && (
-              <div
-                className="shrink-0 border-t px-3 py-2"
-                style={{ borderColor: "var(--md-sys-color-outline-variant)" }}
-              >
-                <button
-                  type="button"
-                  onClick={handleRetry}
-                  className="press inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[12px] font-medium"
-                  style={{
-                    borderColor: "var(--md-sys-color-outline-variant)",
-                    color: "var(--md-sys-color-on-surface-variant)",
-                  }}
-                >
-                  <RefreshCw size={13} /> 重新生成
-                </button>
-                {session.images.some((img) => img.url && !img.b64_json) && (
-                  <span
-                    className="ml-3 text-[10.5px]"
-                    style={{ color: "var(--md-sys-color-on-surface-variant)" }}
-                  >
-                    图片 URL 1 小时后失效，请及时下载
-                  </span>
-                )}
-              </div>
             )}
           </div>
         )}
-      </WindowChrome>
-      {!managed.fullscreen && !managed.minimized && (
-        <div
-          data-no-drag
-          onPointerDown={onResizeStart}
-          title="拖拽缩放窗口"
-          style={{
-            position: "absolute",
-            right: 1,
-            bottom: 1,
-            width: 18,
-            height: 18,
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "flex-end",
-            padding: 2,
-            color: "var(--md-sys-color-outline)",
-            cursor: "nwse-resize",
-            touchAction: "none",
-          }}
-        >
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.3"
-            strokeLinecap="round"
-          >
-            <path d="M11 4 L4 11" />
-            <path d="M11 8 L8 11" />
-          </svg>
-        </div>
-      )}
-    </div>,
-    document.body,
+      </div>
+    </ManagedWindow>
   );
 }
 
