@@ -6,20 +6,9 @@
 
 import type { StudyToolName } from '@/lib/ai/agent/toolTypes';
 import { STUDY_TOOL_NAMES } from '@/lib/ai/agent/toolTypes';
+import type { ToolIconKind, ToolPresentation } from '@/lib/ai/agent/tools/registry';
 
-export type ToolIconKind = 'search' | 'file' | 'image' | 'gallery' | 'skill' | 'terminal' | 'quiz' | 'document';
-
-export interface ToolPresentation {
-  /** 思考链步骤标题（动词短语）。 */
-  label: string;
-  /** 设置面板开关名。 */
-  settingsLabel: string;
-  /** 设置面板描述。 */
-  description: string;
-  icon: ToolIconKind;
-  /** 是否在设置面板中提供开关；imageSearch 随「联网搜索」开关，useSkill 随技能库。 */
-  toggleable: boolean;
-}
+export type { ToolIconKind, ToolPresentation };
 
 export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
   getCurrentPage: {

@@ -50,13 +50,40 @@ export default defineConfig([
     },
   },
   {
-    files: ["components/notes/**", "components/layout/RightPanel.tsx", "components/interactives/**"],
+    files: ["components/**", "lib/hooks/**"],
     rules: {
       "no-restricted-imports": ["error", {
         patterns: [{
-          group: ["@/components/chat/*", "@/lib/hooks/useArtifacts", "@/lib/hooks/useDocuments", "@/lib/hooks/useImageGen"],
-          message: "AI 对话产物（artifact/document/imageGen）只能由 components/chat 与 AppShell 的全局窗口层渲染，不得在笔记区/右侧 tab 直接引用。见 docs/plans/17 §5。",
+          group: [
+            "@/lib/ai/agent/tools/**/tool",
+            "@/lib/ai/agent/tools/server",
+            "**/lib/ai/agent/tools/**/tool",
+            "**/lib/ai/agent/tools/server",
+          ],
+          message: "客户端不得导入 Agent 工具的服务端定义（tool.ts / server.ts），以免把 fs 与密钥打进浏览器 bundle。请从 @/lib/ai/agent/tools 导入类型、presentation 或 ResultCard。",
         }],
+      }],
+    },
+  },
+  {
+    files: ["components/notes/**", "components/layout/RightPanel.tsx", "components/interactives/**"],
+    rules: {
+      "no-restricted-imports": ["error", {
+        patterns: [
+          {
+            group: ["@/components/chat/*", "@/lib/hooks/useArtifacts", "@/lib/hooks/useDocuments", "@/lib/hooks/useImageGen"],
+            message: "AI 对话产物（artifact/document/imageGen）只能由 components/chat 与 AppShell 的全局窗口层渲染，不得在笔记区/右侧 tab 直接引用。见 docs/plans/17 §5。",
+          },
+          {
+            group: [
+              "@/lib/ai/agent/tools/**/tool",
+              "@/lib/ai/agent/tools/server",
+              "**/lib/ai/agent/tools/**/tool",
+              "**/lib/ai/agent/tools/server",
+            ],
+            message: "客户端不得导入 Agent 工具的服务端定义（tool.ts / server.ts），以免把 fs 与密钥打进浏览器 bundle。",
+          },
+        ],
       }],
     },
   },
@@ -64,7 +91,18 @@ export default defineConfig([
     files: ["components/canvas/**"],
     rules: {
       "no-restricted-imports": ["error", {
-        patterns: [{ group: ["@/components/chat/*"], message: "canvas 是纯渲染层，不得反向依赖 chat。" }],
+        patterns: [
+          { group: ["@/components/chat/*"], message: "canvas 是纯渲染层，不得反向依赖 chat。" },
+          {
+            group: [
+              "@/lib/ai/agent/tools/**/tool",
+              "@/lib/ai/agent/tools/server",
+              "**/lib/ai/agent/tools/**/tool",
+              "**/lib/ai/agent/tools/server",
+            ],
+            message: "客户端不得导入 Agent 工具的服务端定义（tool.ts / server.ts），以免把 fs 与密钥打进浏览器 bundle。",
+          },
+        ],
       }],
     },
   },
@@ -74,6 +112,26 @@ export default defineConfig([
       // 存量：lib/markdown 的指令映射仍从 components 拉渲染组件（16 处）。计划 22 再拆，本计划不改业务。
       "no-restricted-imports": ["warn", {
         patterns: [{ group: ["@/components/*"], message: "lib 不得依赖 components。" }],
+      }],
+    },
+  },
+  {
+    // 必须排在 lib/** 之后：扁平配置同名规则按后写覆盖，否则 hooks 会丢掉 tool.ts 边界。
+    files: ["lib/hooks/**"],
+    rules: {
+      "no-restricted-imports": ["error", {
+        patterns: [
+          { group: ["@/components/*"], message: "lib 不得依赖 components。" },
+          {
+            group: [
+              "@/lib/ai/agent/tools/**/tool",
+              "@/lib/ai/agent/tools/server",
+              "**/lib/ai/agent/tools/**/tool",
+              "**/lib/ai/agent/tools/server",
+            ],
+            message: "客户端不得导入 Agent 工具的服务端定义（tool.ts / server.ts），以免把 fs 与密钥打进浏览器 bundle。",
+          },
+        ],
       }],
     },
   },
