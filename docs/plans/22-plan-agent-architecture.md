@@ -331,7 +331,7 @@ Commit：`docs(agent): document tool registry and store layout`
 
 | Hash | 说明 |
 |------|------|
-| （本 commit） | `docs(agent): document tool registry and store layout` |
+| `cc626cec` | `docs(agent): document tool registry and store layout` |
 
 ### 2. 实际改动与计划的偏差
 
