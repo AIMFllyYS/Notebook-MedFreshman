@@ -16,7 +16,7 @@ import {
  * 侧栏底部的快捷切换与「设置」面板共用此 store，避免两处状态各自漂移。
  * 落地 localStorage；首屏由 app/layout.tsx 内联脚本在 paint 前应用，杜绝闪烁。
  */
-export type { ThemeMode, AppearanceMode, AppearanceSettings, CustomAppearanceSettings };
+export type { ThemeMode };
 
 const LS_KEY = "gailvlun-theme";
 

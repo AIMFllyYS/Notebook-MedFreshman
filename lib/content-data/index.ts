@@ -1,10 +1,10 @@
 export { contentTree } from './manifest';
+/** @public 内容树类型的兼容入口。 */
 export type {
   ContentTree,
   Subject,
   Category,
   ContentItem,
-  ContentRoute,
   SubjectId,
   CategoryId,
   RenderType,

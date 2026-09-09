@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import normalizeDirectiveLabels from "./normalizeDirectiveLabels.ts";
+import { normalizeDirectiveLabels } from "./normalizeDirectiveLabels.ts";
 
 test("含空格的 label 用 ASCII 双引号定界（LF）", () => {
   assert.equal(

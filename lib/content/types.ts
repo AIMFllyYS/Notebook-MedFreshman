@@ -33,7 +33,7 @@ export interface ChapterRef {
   sections: SectionRef[];
 }
 
-export interface Manifest {
+interface Manifest {
   course: string;
   chapters: ChapterRef[];
 }

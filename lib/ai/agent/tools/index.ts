@@ -3,6 +3,7 @@
  * 只导出类型、展示元数据与结果卡片；不要从这里 re-export tool.ts / server.ts。
  */
 
+/** @public 各工具 Input/Output 与 StudyTools 联合，兼容旧 import。 */
 export type { TextToolOutput } from "@/lib/ai/agent/tools/_types";
 export type { GetCurrentPageInput, GetCurrentPageOutput } from "@/lib/ai/agent/tools/getCurrentPage/types";
 export type { GetOutlineInput, GetOutlineOutput } from "@/lib/ai/agent/tools/getOutline/types";
@@ -20,6 +21,7 @@ export type { UseSkillInput, UseSkillOutput } from "@/lib/ai/agent/tools/useSkil
 export type { StudyTools, StudyToolName } from "@/lib/ai/agent/tools/names";
 /** @public 兼容旧 import 路径；设置面板与思考链从 presentations / toolPresentation 取用。 */
 export { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";
+/** @public 注册表与结果卡片的客户端类型。 */
 export type {
   ResultCardContext,
   ResultCardProps,
