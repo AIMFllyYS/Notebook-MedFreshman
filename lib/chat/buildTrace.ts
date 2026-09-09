@@ -1,6 +1,7 @@
 import type { ChatMessage, ChatMessagePart } from '@/lib/types/chat';
 import type { ChatToolPart } from '@/lib/chat/messageParts';
 import { splitThinkContent } from '@/lib/chat/rendering/parseChatContent';
+import { getToolPresentation } from '@/lib/ai/agent/tools/presentations';
 
 export type TraceStatus = 'running' | 'complete' | 'error' | 'interrupted' | 'waiting';
 export type TraceToolPart = ChatToolPart | Extract<ChatMessagePart, { type: 'dynamic-tool' }>;
@@ -34,22 +35,6 @@ export interface AgentTraceModel {
   interruptedCount: number;
   waitingCount: number;
 }
-
-const TOOL_LABELS: Record<string, string> = {
-  getCurrentPage: '阅读当前页面',
-  getOutline: '查阅课程大纲',
-  getSection: '读取笔记章节',
-  searchNotes: '检索笔记',
-  searchNoteImages: '检索笔记图片',
-  webSearch: '搜索网页',
-  imageSearch: '搜索图片',
-  renderInteractive: 'HTML 演示',
-  drawDiagram: '绘制图示',
-  generateImage: '准备生成图片',
-  createQuiz: '出题',
-  writeDocument: '撰写长文档',
-  useSkill: '调用技能',
-};
 
 export function isTraceToolPart(part: ChatMessagePart): part is TraceToolPart {
   return part.type === 'dynamic-tool' || part.type.startsWith('tool-');
@@ -134,7 +119,7 @@ export function buildToolTraceStep(part: TraceToolPart, partIndex: number, isStr
     kind: 'tool',
     status,
     name,
-    title: TOOL_LABELS[name] ?? part.title ?? name,
+    title: getToolPresentation(name)?.label ?? part.title ?? name,
     summary: preview(summary),
     part,
   };

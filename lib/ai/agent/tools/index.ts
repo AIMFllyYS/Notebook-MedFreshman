@@ -18,6 +18,7 @@ export type { CreateQuizInput, CreateQuizOutput, CreateQuizQuestionInput } from 
 export type { WriteDocumentInput, WriteDocumentOutput } from "@/lib/ai/agent/tools/writeDocument/types";
 export type { UseSkillInput, UseSkillOutput } from "@/lib/ai/agent/tools/useSkill/types";
 export type { StudyTools, StudyToolName } from "@/lib/ai/agent/tools/names";
+/** @public 兼容旧 import 路径；设置面板与思考链从 presentations / toolPresentation 取用。 */
 export { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";
 export type {
   ResultCardContext,
@@ -27,3 +28,5 @@ export type {
   ToolPart,
   ToolPresentation,
 } from "@/lib/ai/agent/tools/registry";
+/** @public 客户端展示契约入口；ChatSettings / ToolTraceStep 仍走 toolPresentation 兼容层。 */
+export { TOOL_PRESENTATION, TOGGLEABLE_TOOLS, getToolPresentation } from "@/lib/ai/agent/tools/presentations";

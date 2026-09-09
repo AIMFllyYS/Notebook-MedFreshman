@@ -45,4 +45,5 @@ export type {
   StudyTools,
   StudyToolName,
 } from "@/lib/ai/agent/tools/index";
+/** @public 兼容旧 import 路径。 */
 export { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/index";
