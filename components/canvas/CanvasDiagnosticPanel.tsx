@@ -16,4 +16,3 @@ export function CanvasDiagnosticPanel({ diagnostic }: CanvasDiagnosticPanelProps
   );
 }
 
-export default CanvasDiagnosticPanel;

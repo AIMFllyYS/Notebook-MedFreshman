@@ -37,4 +37,3 @@ export function CanvasFullscreenPortal({ open, onExit, children }: CanvasFullscr
   );
 }
 
-export default CanvasFullscreenPortal;

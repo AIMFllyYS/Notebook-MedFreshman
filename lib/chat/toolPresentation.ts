@@ -124,6 +124,6 @@ export function getToolPresentation(name: string): ToolPresentation | undefined 
   return (TOOL_PRESENTATION as Record<string, ToolPresentation | undefined>)[name];
 }
 
-export function toolLabel(name: string): string | undefined {
+function toolLabel(name: string): string | undefined {
   return getToolPresentation(name)?.label;
 }

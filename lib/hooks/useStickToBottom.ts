@@ -47,4 +47,3 @@ export function useStickToBottom(
   return onScroll;
 }
 
-export default useStickToBottom;

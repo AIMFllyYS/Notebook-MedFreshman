@@ -41,4 +41,3 @@ function ReasoningContent({ step }: { step: TraceTextStep }) {
   );
 }
 
-export default ReasoningTraceStep;

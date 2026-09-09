@@ -77,4 +77,3 @@ export const AgentTraceStep = React.memo(function AgentTraceStep({ id, kind, tit
   );
 });
 
-export default AgentTraceStep;

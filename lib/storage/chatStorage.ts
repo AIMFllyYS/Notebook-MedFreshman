@@ -278,7 +278,7 @@ export function persistInlineAttachments(message: ChatMessage): ChatMessage {
   return { ...message, attachments };
 }
 
-export function persistMessagesAttachments(messages: ChatMessage[]): ChatMessage[] {
+function persistMessagesAttachments(messages: ChatMessage[]): ChatMessage[] {
   return messages.map(persistInlineAttachments);
 }
 
@@ -288,7 +288,7 @@ export async function listBlobIdsForSession(sessionId: string): Promise<string[]
   return extractBlobIdsFromMessages(messages);
 }
 
-export async function listAllChatKeys(): Promise<string[]> {
+async function listAllChatKeys(): Promise<string[]> {
   if (!isBrowser()) return [];
   const all = await idbKeys(idbStore);
   return all.filter(

@@ -63,4 +63,3 @@ export function PlotRenderer({ block, revisionTopic, onRevisionSubmit, onRevisio
   );
 }
 
-export default PlotRenderer;

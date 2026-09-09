@@ -104,4 +104,3 @@ export function CanvasFrame({
   );
 }
 
-export default CanvasFrame;

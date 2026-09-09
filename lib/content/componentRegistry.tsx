@@ -8,7 +8,7 @@ function key(subjectId: string, categoryId: string, itemId: string): string {
   return `${subjectId}/${categoryId}/${itemId}`;
 }
 
-export function registerComponent(
+function registerComponent(
   subjectId: string,
   categoryId: string,
   itemId: string,

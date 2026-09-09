@@ -10,7 +10,7 @@ export function downloadAsMarkdown(markdown: string, title: string): void {
   setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
-export function downloadAsLaTeX(markdown: string, title: string): void {
+function downloadAsLaTeX(markdown: string, title: string): void {
   // TODO: 将 Markdown / KaTeX 转换为 LaTeX 源码后提供 .tex 下载。
   void markdown;
   void title;

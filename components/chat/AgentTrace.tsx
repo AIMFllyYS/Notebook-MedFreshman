@@ -99,4 +99,3 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
   );
 });
 
-export default AgentTrace;

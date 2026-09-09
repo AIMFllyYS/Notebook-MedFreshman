@@ -39,7 +39,7 @@ export function readFileIfExists(filePath: string): Buffer | null {
   }
 }
 
-export function hasLocalSearchIndex(): boolean {
+function hasLocalSearchIndex(): boolean {
   return (
     fs.existsSync(localIndexFile(INDEX_FILES.chunksMeta)) ||
     fs.existsSync(localIndexFile(INDEX_FILES.bm25))

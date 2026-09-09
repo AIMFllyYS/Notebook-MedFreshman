@@ -12,7 +12,7 @@ export function isChatToolPart(part: ChatMessagePart): part is ChatToolPart {
   return isToolUIPart(part);
 }
 
-export function toolPartName(part: ChatToolPart): string {
+function toolPartName(part: ChatToolPart): string {
   return getToolName(part);
 }
 

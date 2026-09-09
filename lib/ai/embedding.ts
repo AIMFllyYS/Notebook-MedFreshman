@@ -147,7 +147,7 @@ class FailoverEmbedding implements EmbeddingProvider {
 
 let _instance: FailoverEmbedding | null = null;
 
-export function getEmbeddingClient(): FailoverEmbedding {
+function getEmbeddingClient(): FailoverEmbedding {
   if (!_instance) _instance = new FailoverEmbedding();
   return _instance;
 }

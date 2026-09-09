@@ -21,4 +21,3 @@ export function downloadHtmlFile(html: string, title?: string) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export default downloadHtmlFile;

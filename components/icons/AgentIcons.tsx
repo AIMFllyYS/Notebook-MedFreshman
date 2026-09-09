@@ -110,7 +110,7 @@ export function AgentHistoryIcon(props: AgentIconProps) {
   return <IconFrame {...props} data-agent-icon="history"><path d="M3.2 7.2A7 7 0 1 1 3 12M3 3v4.5h4.5M10 5.8v4.6l3 1.9" /></IconFrame>;
 }
 
-export function AgentExpandIcon(props: AgentIconProps) {
+function AgentExpandIcon(props: AgentIconProps) {
   return <IconFrame {...props} data-agent-icon="expand"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4" /></IconFrame>;
 }
 

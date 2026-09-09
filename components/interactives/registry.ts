@@ -16,7 +16,7 @@ export interface InteractiveMeta {
  * 交互组件注册表。每个条目以 id 唯一标识，可被笔记内 ::interactive{id=...}
  * 内联引用，也会出现在右侧「可交互」Tab 中。后续 SOP 子智能体在此追加条目。
  */
-export const interactives: InteractiveMeta[] = [
+const interactives: InteractiveMeta[] = [
   {
     subjectId: "probability",
     id: "ch01-1.1-events",

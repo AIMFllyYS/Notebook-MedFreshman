@@ -42,4 +42,3 @@ export function RawSvgViewer({
   );
 }
 
-export default RawSvgViewer;

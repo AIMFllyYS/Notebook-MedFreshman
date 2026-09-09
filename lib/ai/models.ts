@@ -347,7 +347,7 @@ export function buildCustomModelRegistryId(groupId: string, modelId: string): st
   return `${CUSTOM_PREFIX}${encodeURIComponent(groupId)}:${encodeURIComponent(modelId)}`;
 }
 
-export function parseCustomModelRegistryId(id: string): ParsedCustomModelRegistryId | undefined {
+function parseCustomModelRegistryId(id: string): ParsedCustomModelRegistryId | undefined {
   if (!id.startsWith(CUSTOM_PREFIX)) return undefined;
   const rest = id.slice(CUSTOM_PREFIX.length);
   const sep = rest.indexOf(":");
@@ -459,7 +459,7 @@ export function hasNextEndpoint(registryId: string, currentIndex: number): boole
 }
 
 /** 展平所有分组的自定义模型为单一数组（向后兼容辅助）。 */
-export function getAllCustomModels(groups: CustomApiGroup[]): CustomModelConfig[] {
+function getAllCustomModels(groups: CustomApiGroup[]): CustomModelConfig[] {
   return groups.flatMap((g) => g.models);
 }
 

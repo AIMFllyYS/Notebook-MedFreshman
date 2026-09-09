@@ -60,4 +60,3 @@ export function DiagramCanvas({
   );
 }
 
-export default DiagramCanvas;

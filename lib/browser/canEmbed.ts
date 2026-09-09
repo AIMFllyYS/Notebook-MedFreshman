@@ -9,7 +9,7 @@ export function getCachedEmbed(url: string): EmbedVerdict | undefined {
   return embedCache.get(url);
 }
 
-export function setCachedEmbed(url: string, verdict: EmbedVerdict) {
+function setCachedEmbed(url: string, verdict: EmbedVerdict) {
   embedCache.set(url, verdict);
 }
 
