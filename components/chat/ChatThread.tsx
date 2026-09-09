@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { AgentArrowUpIcon, AgentLoopIcon, AgentAlertIcon, AgentInfoIcon, AgentCloseIcon } from '@/components/icons/AgentIcons';
 import ChatMessage from '@/components/chat/ChatMessage';
-import { useStickToBottom } from '@/lib/hooks/useStickToBottom';
+import { STICK_THRESHOLD_PX, useStickToBottom } from '@/lib/hooks/useStickToBottom';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 
 interface ChatThreadProps {
@@ -55,6 +55,9 @@ export default function ChatThread({
   const scrollRef = scrollContainerRef ?? internalRef;
   const [isAtBottom, setIsAtBottom] = useState(true);
   const isAtBottomRef = useRef(true);
+  const isLoadingRef = useRef(isLoading);
+  isLoadingRef.current = isLoading;
+  const wasLoadingRef = useRef(isLoading);
   const setAtBottom = (v: boolean) => {
     isAtBottomRef.current = v;
     setIsAtBottom(v);
@@ -81,6 +84,11 @@ export default function ChatThread({
     initialRect: { width: 0, height: 480 },
     scrollPaddingEnd: safeBottomInset,
   });
+  // v3.17 把该回调放在 instance 上，不是 useVirtualizer options（计划 19 B3）。
+  virtualizer.shouldAdjustScrollPositionOnItemSizeChange = (item, _delta, instance) => {
+    if (isLoadingRef.current && item.index === instance.options.count - 1) return false;
+    return true;
+  };
   const virtualItems = virtualizer.getVirtualItems();
   const rows =
     virtualItems.length > 0
@@ -91,26 +99,27 @@ export default function ChatThread({
         }));
   const totalSize = virtualizer.getTotalSize() || displayMessages.length * MESSAGE_ESTIMATE_PX;
 
-  const onStickScroll = useStickToBottom(scrollRef, isLoading);
+  const onStickScroll = useStickToBottom(scrollRef, isLoading, STICK_THRESHOLD_PX, [safeBottomInset]);
 
   const handleScroll = () => {
     onStickScroll();
     const el = scrollRef.current;
     if (!el) return;
-    setAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < 100);
+    setAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < STICK_THRESHOLD_PX);
   };
 
-  // 非流式：新消息且贴底时滚到末尾
+  // 非流式：新消息且贴底时滚到末尾。流式刚结束对齐一次（无 smooth）。
   useEffect(() => {
+    const finishedStreaming = wasLoadingRef.current && !isLoading;
+    wasLoadingRef.current = isLoading;
     if (isLoading || !isAtBottomRef.current || displayMessages.length === 0) return;
-    virtualizer.scrollToIndex(displayMessages.length - 1, { align: 'end', behavior: 'smooth' });
-  }, [displayMessages.length, isLoading, safeBottomInset, virtualizer]);
-
-  // 流式：钉住最后一条（高度变化时 measureElement + stick-to-bottom 协同）
-  useEffect(() => {
-    if (!isLoading || !isAtBottomRef.current || displayMessages.length === 0) return;
-    virtualizer.scrollToIndex(displayMessages.length - 1, { align: 'end' });
-  }, [messages, isLoading, displayMessages.length, safeBottomInset, virtualizer]);
+    virtualizer.scrollToIndex(
+      displayMessages.length - 1,
+      finishedStreaming ? { align: 'end' } : { align: 'end', behavior: 'smooth' },
+    );
+    // virtualizer 引用稳定；safeBottomInset 变化由 stick-to-bottom deps 重启循环处理。
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- 计划 19 B2：故意收窄依赖
+  }, [displayMessages.length, isLoading]);
 
   const jumpToBottom = () => {
     if (displayMessages.length > 0) {
