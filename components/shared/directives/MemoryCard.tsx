@@ -3,7 +3,8 @@
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, Brain } from "lucide-react";
-import QuizMarkdown from "@/components/quiz/QuizMarkdown";
+// 叶子渲染器，不经过 QuizMarkdown → registry，避免与本文件成环。
+import QuizMarkdownBase from "@/components/quiz/QuizMarkdownBase";
 
 interface NodeProps {
   node?: { properties?: Record<string, unknown> };
@@ -37,7 +38,7 @@ export function MemoryCard({ node, children }: NodeProps) {
   const [open, setOpen] = useState(false);
 
   // children 是经过 react-markdown 处理后的 React 节点；为了支持 cloze 与 checklist 交互，
-  // 我们把它当作字符串重新由 QuizMarkdown 渲染。这样可以在渲染阶段做挖空/清单处理。
+  // 我们把它当作字符串重新由 QuizMarkdownBase 渲染。这样可以在渲染阶段做挖空/清单处理。
   const rawText = useMemo(() => {
     if (!children) return "";
     // 从 React 节点中尽量提取文本；若已是字符串则直接返回。
@@ -138,9 +139,9 @@ function ClozeText({ text }: { text: string }) {
     <div className="memory-cloze">
       {segments.map((seg, idx) =>
         seg.type === "text" ? (
-          <QuizMarkdown key={idx} inline className="chat-prose">
+          <QuizMarkdownBase key={idx} inline className="chat-prose">
             {seg.value}
-          </QuizMarkdown>
+          </QuizMarkdownBase>
         ) : (
           <button
             key={idx}
@@ -155,9 +156,9 @@ function ClozeText({ text }: { text: string }) {
             className={`memory-cloze-blank ${revealed.has(seg.index) ? "revealed" : ""}`}
           >
             {revealed.has(seg.index) ? (
-              <QuizMarkdown inline className="chat-prose">
+              <QuizMarkdownBase inline className="chat-prose">
                 {seg.value}
-              </QuizMarkdown>
+              </QuizMarkdownBase>
             ) : (
               <span className="memory-cloze-placeholder">?</span>
             )}
@@ -195,16 +196,16 @@ function ChecklistMarkdown({ text }: { text: string }) {
 
   if (items.length === 0) {
     // 没有清单项时，直接渲染原文
-    return <QuizMarkdown className="chat-prose">{text}</QuizMarkdown>;
+    return <QuizMarkdownBase className="chat-prose">{text}</QuizMarkdownBase>;
   }
 
   return (
     <div className="memory-checklist">
       {items.map((item, idx) =>
         item.type === "text" ? (
-          <QuizMarkdown key={idx} className="chat-prose">
+          <QuizMarkdownBase key={idx} className="chat-prose">
             {item.value}
-          </QuizMarkdown>
+          </QuizMarkdownBase>
         ) : (
           <button
             key={idx}
@@ -223,9 +224,9 @@ function ChecklistMarkdown({ text }: { text: string }) {
             </span>
             <span className="memory-checklist-text">
               {checked.has(item.index) ? (
-                <QuizMarkdown inline className="chat-prose">
+                <QuizMarkdownBase inline className="chat-prose">
                   {item.value}
-                </QuizMarkdown>
+                </QuizMarkdownBase>
               ) : (
                 <span className="memory-checklist-placeholder">点击显示要点</span>
               )}
