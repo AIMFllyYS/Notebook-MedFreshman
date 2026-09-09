@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { AgentArrowUpIcon, AgentLoopIcon, AgentAlertIcon, AgentInfoIcon, AgentCloseIcon } from '@/components/icons/AgentIcons';
 import ChatMessage from '@/components/chat/ChatMessage';
@@ -53,15 +53,9 @@ export default function ChatThread({
 }: ChatThreadProps) {
   const internalRef = useRef<HTMLDivElement>(null);
   const scrollRef = scrollContainerRef ?? internalRef;
-  const [isAtBottom, setIsAtBottom] = useState(true);
-  const isAtBottomRef = useRef(true);
   const isLoadingRef = useRef(isLoading);
   isLoadingRef.current = isLoading;
   const wasLoadingRef = useRef(isLoading);
-  const setAtBottom = (v: boolean) => {
-    isAtBottomRef.current = v;
-    setIsAtBottom(v);
-  };
 
   const displayMessages = useMemo(
     () => messages.filter((m) => m.role === 'user' || m.role === 'assistant'),
@@ -98,20 +92,18 @@ export default function ChatThread({
         }));
   const totalSize = virtualizer.getTotalSize() || displayMessages.length * MESSAGE_ESTIMATE_PX;
 
-  const onStickScroll = useStickToBottom(scrollRef, isLoading, STICK_THRESHOLD_PX, [safeBottomInset]);
-
-  const handleScroll = () => {
-    onStickScroll();
-    const el = scrollRef.current;
-    if (!el) return;
-    setAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < STICK_THRESHOLD_PX);
-  };
+  const { onScroll, isAtBottom, setWantStick, wantStickRef } = useStickToBottom(
+    scrollRef,
+    isLoading,
+    STICK_THRESHOLD_PX,
+    [safeBottomInset],
+  );
 
   // 非流式：新消息且贴底时滚到末尾。流式刚结束对齐一次（无 smooth）。
   useEffect(() => {
     const finishedStreaming = wasLoadingRef.current && !isLoading;
     wasLoadingRef.current = isLoading;
-    if (isLoading || !isAtBottomRef.current || displayMessages.length === 0) return;
+    if (isLoading || !wantStickRef.current || displayMessages.length === 0) return;
     virtualizer.scrollToIndex(
       displayMessages.length - 1,
       finishedStreaming ? { align: 'end' } : { align: 'end', behavior: 'smooth' },
@@ -124,14 +116,14 @@ export default function ChatThread({
     if (displayMessages.length > 0) {
       virtualizer.scrollToIndex(displayMessages.length - 1, { align: 'end', behavior: 'smooth' });
     }
-    setAtBottom(true);
+    setWantStick(true);
   };
 
   return (
     <>
       <div
         ref={scrollRef}
-        onScroll={handleScroll}
+        onScroll={onScroll}
         className="chat-messages"
         style={{
           ['--chat-fs' as string]: `${Math.round(13 * fontScale)}px`,

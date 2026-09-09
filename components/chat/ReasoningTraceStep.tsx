@@ -27,7 +27,7 @@ export const ReasoningTraceStep = React.memo(function ReasoningTraceStep({ step 
 // requestAnimationFrame scroll-follow loop alive during a long streamed answer.
 function ReasoningContent({ step }: { step: TraceTextStep }) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const onScroll = useStickToBottom(scrollRef, step.status === 'running');
+  const { onScroll } = useStickToBottom(scrollRef, step.status === 'running');
 
   return (
     <div
