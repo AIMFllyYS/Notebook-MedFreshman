@@ -155,11 +155,13 @@ pnpm test:react
 
 - **`lib/**` 不得 import `components/**`。** `eslint.config.mjs` 里那条 `no-restricted-imports` 已是 **`error` 且零例外**（原为 `warn`，27 处存量已清零）。要加豁免就是在破坏这条规则存在的理由——真 UI 一律放 `components`，`lib` 只放 types / presentation / tool。
 - **扁平配置的块序不可打乱**：`files: ["lib/**"]`（第 97 行附近）必须排在 `files: ["lib/hooks/**"]`（第 106 行附近）**之前**，否则 hooks 会丢掉 `tool.ts` 边界。四个边界块（`components/** + lib/hooks/**`、`components/notes/** + RightPanel + interactives`、`components/canvas/**`、`lib/hooks/**`）目前全为 `error`。
-- **存在一个活跃的循环依赖，改 `QuizMarkdown` / 指令注册表前必看：**
+- **指令注册表的环已断，不要把它接回去。** 曾经存在的环是：
   `components/quiz/QuizMarkdown.tsx` → `components/shared/directives/registry.ts` → `components/shared/directives/MemoryCard.tsx` → 回到 `QuizMarkdown.tsx`。
-  计划 `23` 删掉了 `QuizMarkdown` 里那段 `useMemo` 延迟展开的绕行，改为**模块顶层**展开 `directiveComponents`。这在当前入口顺序下不报错，但环没断：一旦某个入口先求值 `registry.ts`（`MessageContent.tsx` / `NoteRenderer.tsx` / `NoteRendererServer.tsx` 都直接导入它），求值顺序会变成 registry → MemoryCard → QuizMarkdown 模块体，此时 `directiveComponents` 尚未初始化。历史报错原文是 `Cannot access 'directiveComponents' before initialization`。
-  **两种失败形态都要防**：抛 TDZ（崩溃），或被降级成 CJS getter 时拿到 `undefined` 导致 `{...undefined}` 静默变成**空指令映射**（指令不渲染，更难发现）。
-  真正的修法是断环（让 `MemoryCard` 不再依赖完整的 `QuizMarkdown`），不是恢复绕行。断环前不要给这条链加新的顶层展开。
+  计划 `23` 删掉了 `QuizMarkdown` 里 `useMemo` 延迟展开的绕行、改成模块顶层展开，当时没报错所以判定安全——**但那是运气**。事后用求值顺序测试实测：**先求值 `registry.ts` 时 `blockComponents` 只剩 `table` / `img`，14 个指令组件被静默丢弃**（顶层展开访问到未初始化的 `const`，而 `{...undefined}` 合法），控制台干净、页面不报错。历史上同一个环还以 `Cannot access 'directiveComponents' before initialization` 的崩溃形态出现过一次。
+  现在的结构（`fdce7907`）：`components/quiz/QuizMarkdownBase.tsx` 是**叶子**渲染器，**永不 import 指令 registry**；`QuizMarkdown` = Base + `directiveComponents`；`MemoryCard` 只 import Base。
+  **红线**：`QuizMarkdownBase` 不得 import `components/shared/directives/registry`（直接或间接均不可，注意 `ContentImage` 那条链也要保持干净）；`MemoryCard` 不得改回 import `QuizMarkdown`。MemoryCard 内部若要支持嵌套指令，用 props 注入指令映射，**不要**重新 import registry。
+  **护栏**：`components/shared/directives/registry.evaluation-order.test.tsx` 按四种求值顺序断言 14 个指令键齐全且每个值都是函数——它同时抓崩溃与静默空映射两种形态。**不要削弱这个测试**（尤其不要只断言键存在而不断言是函数，占位符会漏过去）。
+  已量化：全量 3201 个正文文件、711 个 `:::memory` 块内**零处**嵌套指令，故断环带来的「MemoryCard 内不支持嵌套指令」对现有正文零影响。
 
 **"右侧 Agent 里那个可视化 HTML"的唯一入口**
 
