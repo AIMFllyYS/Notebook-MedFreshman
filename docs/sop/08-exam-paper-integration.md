@@ -425,4 +425,4 @@ pnpm build-index
 | [docs/sop/00-infrastructure.md](./00-infrastructure.md) | 文档解析基础设施 |
 | [docs/sop/05-content-integration.md](./05-content-integration.md) | manifest 注册与验证 |
 | [docs/sop/07-testing.md](./07-testing.md) | 测试体系 |
-| [docs/refer/考试题型分布.md](../refer/考试题型分布.md) | 各科目题型配比 |
+| [docs/refer/exam-type-distribution.md](../refer/exam-type-distribution.md) | 各科目题型配比 |

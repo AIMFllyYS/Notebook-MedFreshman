@@ -29,6 +29,6 @@ export function searchLogOnce(
   emit(level, event, { message, ...fields });
 }
 
-export function resetSearchLogOnce(): void {
+function resetSearchLogOnce(): void {
   seenMessages.clear();
 }

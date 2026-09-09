@@ -53,4 +53,4 @@ export const useRecordPreviews = create<RecordPreviewsState>((set, get) => ({
   },
 }));
 
-export const RECORD_PREVIEW_SIZE = { width: WIDTH, height: HEIGHT, minWidth: MIN_W, minHeight: MIN_H };
+const RECORD_PREVIEW_SIZE = { width: WIDTH, height: HEIGHT, minWidth: MIN_W, minHeight: MIN_H };

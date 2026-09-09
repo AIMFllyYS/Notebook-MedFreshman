@@ -1,0 +1,141 @@
+{
+  "subjectId": "cell-biology-lab",
+  "chapterId": "tb-ch03",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/cell-biology-lab/textbook/ch03.md；实验三 细胞膜的特性",
+    "totalPoints": 100,
+    "timeLimit": 40
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "抗 A 凝集、抗 B 不凝集，血型是（　）。",
+      "options": ["O 型", "B 型", "AB 型", "A 型"],
+      "answer": 3,
+      "hint": "哪侧凝就有哪种抗原。",
+      "explanation": "**D 正确。** 膜上只有 A 凝集原。两侧都凝是 AB，都不凝是 O。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch03.md", "label": "ABO 血型鉴定" }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "溶血实验的观察终点是（　）。",
+      "options": [
+        "出现凝集块",
+        "溶液变成红色透明，能隔着离心管看清书本上的字",
+        "细胞全部贴壁",
+        "台盼蓝全部着色"
+      ],
+      "answer": 1,
+      "hint": "红且透明。",
+      "explanation": "**B 正确。** 血红蛋白释出后悬液由浑变清。凝集是血型实验的终点，不要串台。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch03.md", "label": "通透性观察" }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "8 支试管中蒸馏水这一管的角色最接近（　）。",
+      "options": [
+        "等渗阴性对照，不应溶血",
+        "低渗阳性对照，水大量进入红细胞，溶血最快",
+        "固定液，防止溶血",
+        "抗 A 试剂"
+      ],
+      "answer": 1,
+      "hint": "低渗胀破。",
+      "explanation": "**B 正确。** 蒸馏水不是等渗。等渗管比的是溶质进膜的速度。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch03.md", "label": "溶血计时" }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "镜下浅黄色椭圆形有核的细胞是（　）。",
+      "options": [
+        "小鼠红细胞",
+        "鸡血细胞",
+        "已吞噬台盼蓝淀粉的巨噬细胞",
+        "HeLa 细胞核"
+      ],
+      "answer": 1,
+      "hint": "鸡红细胞有核。",
+      "explanation": "**B 正确。** 巨噬细胞体积大、胞质淡蓝；小鼠红细胞较小双凹无核。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch03.md", "label": "吞噬活动观察" }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "吞噬实验三日前腹腔注射的是（　）。",
+      "options": [
+        "1% 鸡红细胞",
+        "6% 淀粉肉汤（含台盼蓝）",
+        "抗 A 抗体",
+        "0.25% 胰酶"
+      ],
+      "answer": 1,
+      "hint": "先招巨噬细胞。",
+      "explanation": "**B 正确。** 淀粉肉汤刺激巨噬细胞聚集；实验前 30 min 才注射鸡红细胞。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch03.md", "label": "吞噬实验步骤" }
+    },
+    {
+      "id": "q006",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "血型鉴定时同一根牙签可以先在抗 A 侧蘸血，再伸进抗 B 侧，以节省耗材。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "交叉污染。",
+      "explanation": "**错误。** 牙签只蘸一次，避免把抗体带到另一侧造成假凝集。接触人血器材按人体标本处理。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch03.md", "label": "血型注意事项" }
+    },
+    {
+      "id": "q007",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "等渗溶液中的红细胞一定不会溶血。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "溶质若能进细胞呢？",
+      "explanation": "**错误。** 讲义：即使外液等渗，溶质粒子能进细胞时膜两侧渗透压仍会变，也可溶血；溶血时间用来比较进入速度。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch03.md", "label": "通透性原理" }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "label": "简答",
+      "stem": "写出 ABO 四种血型的凝集格局（抗 A / 抗 B），并说明吞噬实验中为何充分揉搓腹腔、又要避开血管。",
+      "answer": "A：抗A+ 抗B−；B：抗A− 抗B+；AB：两侧+；O：两侧−。揉搓是为了把巨噬细胞冲洗下来；避开血管是避免出血，小鼠红细胞会淹没吞噬视野。",
+      "hint": "四格表 + 冲洗 vs 出血。",
+      "scoring_criteria": [
+        "四种血型格局正确（12 分）",
+        "揉搓：冲下巨噬细胞（4 分）",
+        "避血管：防止出血干扰（4 分）"
+      ],
+      "explanation": "不要把凝集写成溶血。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch03.md", "label": "血型格局与吞噬注意事项" }
+    }
+  ]
+}

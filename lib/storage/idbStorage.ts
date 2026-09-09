@@ -182,7 +182,7 @@ export const idbStorage = {
 // ── 工具函数 ────────────────────────────────────────────────────
 
 /** 估算 IndexedDB 中某 key 的数据大小（字节）。 */
-export async function estimateSize(key: string): Promise<number> {
+async function estimateSize(key: string): Promise<number> {
   if (!isBrowser()) return 0;
   try {
     const val = await idbGet<string>(key, idbStore);
@@ -194,7 +194,7 @@ export async function estimateSize(key: string): Promise<number> {
 }
 
 /** 清空全部持久化数据（设置面板"清空所有"可复用）。 */
-export async function clearAll(): Promise<void> {
+async function clearAll(): Promise<void> {
   if (!isBrowser()) return;
   // 先取消所有挂起写，避免清空后被旧值写回
   for (const timer of pendingTimers.values()) clearTimeout(timer);

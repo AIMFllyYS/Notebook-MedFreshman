@@ -1,0 +1,146 @@
+{
+  "subjectId": "cell-biology-lab",
+  "chapterId": "tb-ch04",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/cell-biology-lab/textbook/ch04.md；实验四 细胞器荧光染色",
+    "totalPoints": 100,
+    "timeLimit": 40
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "罗丹明 123 能留在线粒体里，依赖的是（　）。",
+      "options": [
+        "溶酶体酸性腔",
+        "外正内负的内膜电位，阳离子染料被吸住",
+        "与 G-actin 共价交联",
+        "先用多聚甲醛固定"
+      ],
+      "answer": 1,
+      "hint": "活线粒体的膜电位。",
+      "explanation": "**B 正确。** 质子泵造成外正内负。DNP 瓦解梯度后染料 1–5 min 弥散，荧光消失。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch04.md", "label": "罗丹明 123" }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "LysoTracker 长时间孵育的主要副作用是（　）。",
+      "options": [
+        "微管解聚",
+        "溶酶体被碱化、pH 升高",
+        "线粒体嵴消失",
+        "细胞膜 PS 外翻"
+      ],
+      "answer": 1,
+      "hint": "向酸性探针用久了。",
+      "explanation": "**B 正确。** 原理段写成像前通常 1–5 min；本课操作写 30 min，课上跟现场方案，但副作用考点是碱化。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch04.md", "label": "LysoTracker" }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "FITC-鬼笔环肽结合的是（　）。",
+      "options": [
+        "肌动蛋白单体 G-actin",
+        "仅聚合的微丝 F-actin，不与单体结合",
+        "DNA 双螺旋小沟",
+        "粗面内质网腔"
+      ],
+      "answer": 1,
+      "hint": "毒伞素只绑聚合微丝。",
+      "explanation": "**B 正确。** 结合后抑制微丝解体。本路需要 4% 多聚甲醛固定 20 min。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch04.md", "label": "鬼笔环肽" }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "三种染色里，需要先固定再标记的是（　）。",
+      "options": [
+        "罗丹明 123",
+        "LysoTracker red DND-99",
+        "FITC-鬼笔环肽",
+        "三种都必须活细胞染色"
+      ],
+      "answer": 2,
+      "hint": "骨架那一路。",
+      "explanation": "**C 正确。** 前两种是活细胞探针；鬼笔环肽在固定后染 F-actin。固定会毁掉线粒体膜电位。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch04.md", "label": "操作对比" }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "临时封片剂的比例是（　）。",
+      "options": [
+        "纯甘油",
+        "甘油 PBS（1∶9）",
+        "纯二甲苯",
+        "50% PEG"
+      ],
+      "answer": 1,
+      "hint": "甘油少、PBS 多。",
+      "explanation": "**B 正确。** 三种荧光实验均用甘油∶PBS = 1∶9 临时封片。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch04.md", "label": "封片" }
+    },
+    {
+      "id": "q006",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "罗丹明 123、LysoTracker、鬼笔环肽均无细胞毒性，可以不戴手套操作。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "讲义注意事项。",
+      "explanation": "**错误。** 三种荧光标记物均具细胞毒性，需戴手套并注意皮肤和眼部防护。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch04.md", "label": "注意事项" }
+    },
+    {
+      "id": "q007",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "加入 DNP 后，罗丹明 123 会更牢固地锁在线粒体嵴上。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "质子载体。",
+      "explanation": "**错误。** DNP 瓦解质子梯度，染料弥散到细胞质，荧光迅速消失。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch04.md", "label": "罗丹明 123 与 DNP" }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "label": "简答",
+      "stem": "用一句话分别说明三种探针「凭什么」标记线粒体、溶酶体、F-actin。",
+      "answer": "罗丹明 123：阳离子染料被外正内负的线粒体膜电位吸住。LysoTracker：弱碱性探针聚集在酸性溶酶体腔。鬼笔环肽：只与聚合微丝结合、不与 G-actin 结合。",
+      "hint": "电位 / 酸性 / 聚合微丝。",
+      "scoring_criteria": [
+        "线粒体：膜电位或阳离子（7 分）",
+        "溶酶体：酸性腔（7 分）",
+        "F-actin：只绑聚合微丝（6 分）"
+      ],
+      "explanation": "不要只答颜色通道。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch04.md", "label": "三种探针机制" }
+    }
+  ]
+}

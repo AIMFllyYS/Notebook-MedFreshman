@@ -1,0 +1,141 @@
+{
+  "subjectId": "cell-biology-lab",
+  "chapterId": "tb-ch08",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/cell-biology-lab/textbook/ch08.md；实验八 融合与 EdU",
+    "totalPoints": 100,
+    "timeLimit": 40
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "PEG 诱导融合的两个机制是（　）。",
+      "options": [
+        "核酸酶切割和蛋白变性",
+        "扰膜使脂双层重排合并，以及与水形成氢键导致脱水",
+        "只靠钙离子把两细胞焊在一起",
+        "必须先病毒感染"
+      ],
+      "answer": 1,
+      "hint": "扰膜 + 脱水。",
+      "explanation": "**B 正确。** 接触部位磷脂疏散重排，表面张力使质膜修复时合并；高浓度 PEG 夺去自由水。哺乳动物常用 38–40 ℃，本课用 37 ℃ 的 50% PEG 4000。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch08.md", "label": "PEG 机制" }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "本课 PEG 处理的时间窗口是（　）。",
+      "options": ["30 秒–2 分钟", "20–30 分钟", "过夜", "直到所有细胞漂浮"],
+      "answer": 0,
+      "hint": "到点立刻血清培养液洗。",
+      "explanation": "**A 正确。** 刚覆盖细胞即可，超时脱水过度。用含血清培养液迅速洗 2–3 次除尽 PEG。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch08.md", "label": "融合步骤" }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "如何判断贴壁融合成功？（　）。",
+      "options": [
+        "培养液变黄",
+        "同一细胞轮廓里同时出现弥散绿荧光和颗粒状红线粒体",
+        "所有细胞都只剩红色",
+        "台盼蓝全部着色"
+      ],
+      "answer": 1,
+      "hint": "双色同室。",
+      "explanation": "**B 正确。** 两种 HeLa 预先分别带 EGFP-N1（弥散绿）和 DsRed-Mito（线粒体红）。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch08.md", "label": "双色标记" }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "EdU 标记的是（　）。",
+      "options": [
+        "所有细胞膜",
+        "正在复制 DNA 的 S 期细胞",
+        "只有凋亡小体",
+        "溶酶体酸性腔"
+      ],
+      "answer": 1,
+      "hint": "胸腺嘧啶类似物。",
+      "explanation": "**B 正确。** EdU 掺入正在复制的 DNA。后续 Apollo 显色；Hoechst 标全部核。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch08.md", "label": "EdU 定义" }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "EdU 实验中甘氨酸一步的作用是（　）。",
+      "options": [
+        "诱导融合",
+        "固定后猝灭残余甲醛，减少非特异荧光",
+        "代替 Hoechst 染核",
+        "配制 PEG"
+      ],
+      "answer": 1,
+      "hint": "多聚甲醛之后。",
+      "explanation": "**B 正确。** 4% 多聚甲醛固定 15 min 后，2 mg/ml 甘氨酸 5 min，再 PBS、Apollo。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch08.md", "label": "EdU 步骤" }
+    },
+    {
+      "id": "q006",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "Apollo 反应液可以提前一周配好，室温敞口放置。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "现配现用、避光。",
+      "explanation": "**错误。** 讲义：1× Apollo 现配现用、按顺序加入；孵育避光 30 min。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch08.md", "label": "Apollo 反应液" }
+    },
+    {
+      "id": "q007",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "Hoechst 33342 具有细胞毒性，操作需戴手套并注意皮肤和眼部防护。",
+      "options": ["错误", "正确"],
+      "answer": 1,
+      "hint": "讲义注意事项原句。",
+      "explanation": "**正确。** 与 PI、7-AAD、DAPI 一样，核酸染料当毒物处理。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch08.md", "label": "EdU 注意事项" }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "label": "简答",
+      "stem": "按顺序列出 EdU 检出 S 期的关键步骤（掺入、固定、显色、总核），并说明为何 PEG 必须限时。",
+      "answer": "活细胞 50 μM EdU 孵育 2 h → 多聚甲醛固定 → 甘氨酸 → Apollo 避光显色 → Triton 通透 → Hoechst 标全部核。PEG 既扰膜又脱水，超过 30 s–2 min 细胞大量死亡，融合无法判读。",
+      "hint": "EdU→固定→Apollo→Hoechst；PEG 窗口窄。",
+      "scoring_criteria": [
+        "EdU 掺入在固定之前（6 分）",
+        "Apollo 显色 + Hoechst 总核（8 分）",
+        "PEG 限时：扰膜/脱水，超时致死（6 分）"
+      ],
+      "explanation": "不要先固定再加 EdU。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch08.md", "label": "EdU 顺序与 PEG 窗口" }
+    }
+  ]
+}

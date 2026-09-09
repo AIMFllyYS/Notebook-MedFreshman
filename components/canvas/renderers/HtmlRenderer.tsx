@@ -54,4 +54,3 @@ export function HtmlRenderer({ block, revisionTopic, onRevisionSubmit, onRevisio
   );
 }
 
-export default HtmlRenderer;

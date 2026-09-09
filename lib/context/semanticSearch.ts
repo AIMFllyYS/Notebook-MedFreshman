@@ -1,5 +1,6 @@
 import type { ContextManager, BuildContextResult } from './types';
 import { getMaxTokens } from './types';
+import { DEFAULT_MODEL_ID } from '@/lib/ai/models';
 import type { ChatContext } from '@/lib/types/chat';
 import { readContentMarkdown } from '@/lib/content/loader';
 import { getContentItem } from '@/lib/content-data';
@@ -30,7 +31,7 @@ export class SemanticSearchManager implements ContextManager {
   mode = 'semantic' as const;
   private model: string;
 
-  constructor(model = 'deepseek-chat') {
+  constructor(model = DEFAULT_MODEL_ID) {
     this.model = model;
   }
 

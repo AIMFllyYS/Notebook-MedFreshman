@@ -14,6 +14,7 @@ test("getOutline 大二上学期可见教材路径", () => {
   assert.ok(outline.includes("instrumental-analysis/textbook/"));
   assert.ok(outline.includes("medical-english/"));
   assert.ok(outline.includes("medical-statistics/"));
+  assert.ok(outline.includes("cell-biology-lab/"));
   assert.equal(outline.includes("probability/"), false);
 });
 

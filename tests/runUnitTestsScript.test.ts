@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
+import { applyFilter } from "../scripts/run-unit-tests.mjs";
 
 test("run-unit-tests excludes generated desktop/build artifacts", () => {
   const source = readFileSync(join(process.cwd(), "scripts/run-unit-tests.mjs"), "utf8");
@@ -17,6 +18,16 @@ test("vitest excludes generated desktop/build artifacts", () => {
 
   assert.match(source, /"dist-desktop\/\*\*"/);
   assert.match(source, /"dist\/\*\*"/);
+});
+
+test("filter=code excludes tests/content paths", () => {
+  const files = ["lib/foo.test.ts", "tests/content/bar.test.ts", "tests/api/baz.test.ts"];
+  assert.deepEqual(applyFilter(files, "code"), ["lib/foo.test.ts", "tests/api/baz.test.ts"]);
+});
+
+test("filter=content keeps only tests/content paths", () => {
+  const files = ["lib/foo.test.ts", "tests/content/bar.test.ts", "tests/api/baz.test.ts"];
+  assert.deepEqual(applyFilter(files, "content"), ["tests/content/bar.test.ts"]);
 });
 
 test("pnpm workspace allows required desktop build scripts", () => {

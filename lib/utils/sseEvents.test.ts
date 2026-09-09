@@ -24,7 +24,7 @@ test("[DONE] 哨兵被跳过不计入 events", () => {
 });
 
 test("多行 data 事件全部解析", () => {
-  const parsed = parseSseJsonEvents(
+  const parsed = parseSseJsonEvents<{ type: string }>(
     'data: {"type":"a"}\ndata: {"type":"b"}\ndata: {"type":"c"}\n',
   );
   assert.equal(parsed.events.length, 3);
@@ -45,7 +45,7 @@ test("非 data: 前缀行被忽略", () => {
 });
 
 test("畸形 JSON 行被跳过不抛错", () => {
-  const parsed = parseSseJsonEvents('data: {bad json}\ndata: {"type":"ok"}\n');
+  const parsed = parseSseJsonEvents<{ type: string }>('data: {bad json}\ndata: {"type":"ok"}\n');
   assert.equal(parsed.events.length, 1);
   assert.equal(parsed.events[0].type, "ok");
 });

@@ -146,7 +146,7 @@ export function getNoteImageIndex(): NoteImageIndex {
   return cached;
 }
 
-export function invalidateNoteImageIndex(): void {
+function invalidateNoteImageIndex(): void {
   cached = null;
 }
 

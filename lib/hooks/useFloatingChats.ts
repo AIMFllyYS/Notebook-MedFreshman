@@ -212,4 +212,4 @@ export function persistFloatingSize(size: { width: number; height: number }): vo
   }
 }
 
-export { MIN_W as FLOATING_MIN_W, MIN_H as FLOATING_MIN_H, MAX_W as FLOATING_MAX_W, MAX_H as FLOATING_MAX_H };
+export { MIN_W as FLOATING_MIN_W, MIN_H as FLOATING_MIN_H };

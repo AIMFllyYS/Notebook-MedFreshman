@@ -30,11 +30,12 @@ interface DiagramCanvasProps {
 }
 
 /**
- * 统一画布壳：按 mode 把 AI 内容路由到合适的渲染体，四种能力同壳：
- *  - raw      自由 SVG（含投影式模板）          → RawSvgViewer
- *  - math     精准函数图                         → PlotDirective(SvgCanvas + FunctionPlot)
- *  - molecule SMILES 结构式                      → MoleculeRenderer(RDKit → RawSvgViewer)
- *  - html     沙箱 HTML                          → HtmlCanvasLayer(iframe)
+ * 统一画布壳：按 mode 把 AI 内容路由到合适的渲染体，四种能力同壳，
+ * 全部经由 CanvasBlockRenderer 分发：
+ *  - raw      自由 SVG（含投影式模板）          → renderers/RawSvgRenderer
+ *  - math     精准函数图                         → renderers/PlotRenderer | MultiPlotRenderer
+ *  - molecule SMILES 结构式                      → renderers/MoleculeRenderer
+ *  - html     沙箱 HTML                          → renderers/HtmlRenderer
  *
  * 控件（半透明/缩放/全屏）、错误降级各由具体体/上层 VizErrorBoundary 负责，本壳只做路由 + 标题。
  */
@@ -59,4 +60,3 @@ export function DiagramCanvas({
   );
 }
 
-export default DiagramCanvas;

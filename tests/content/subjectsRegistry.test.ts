@@ -12,6 +12,7 @@ import {
   subjectIconName,
   subjectHeader,
   subjectsOfYear,
+  getSubjectMeta,
 } from "@/lib/content-data/subjects.registry";
 import { isSubjectIconName } from "@/lib/ui/subjectIcons";
 import { ACADEMIC_YEAR_IDS, academicYearOfSubject } from "@/lib/constants/academic-year";
@@ -55,8 +56,9 @@ test("registry ↔ manifest：学科集合一致，name/icon 由 registry 派生
 test("registry：promptFile 若显式指定则文件必须存在；缺省约定文件存在时可被发现", () => {
   const root = path.join(process.cwd(), "lib", "ai", "prompts");
   for (const s of SUBJECT_REGISTRY) {
-    if (s.promptFile) {
-      assert.ok(fs.existsSync(path.join(root, s.promptFile)), `${s.id} promptFile 不存在: ${s.promptFile}`);
+    const promptFile = getSubjectMeta(s.id)?.promptFile;
+    if (promptFile) {
+      assert.ok(fs.existsSync(path.join(root, promptFile)), `${s.id} promptFile 不存在: ${promptFile}`);
     }
   }
   assert.ok(fs.existsSync(path.join(root, "subjects", "physics.md")));

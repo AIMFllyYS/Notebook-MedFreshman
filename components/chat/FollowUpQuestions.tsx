@@ -55,4 +55,3 @@ export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({
   );
 };
 
-export default FollowUpQuestions;

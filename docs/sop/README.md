@@ -141,12 +141,12 @@
 
 | 文件 | 用途 |
 |------|------|
-| `docs/refer/考试题型分布.md` | 各科目考试题型配比（04-quiz 引用） |
-| `docs/refer/MinerU文档解析教程.md` | MinerU API 完整文档（00-infrastructure 引用） |
+| `docs/refer/exam-type-distribution.md` | 各科目考试题型配比（04-quiz 引用） |
+| `docs/refer/mineru-parsing-guide.md` | MinerU API 完整文档（00-infrastructure 引用） |
 | `docs/refer/rendering-architecture.md` | Markdown 渲染架构（02-detail 引用） |
 | `.env.local` | 环境变量（Token 等，脚本运行时引用） |
 | `lib/content-data/manifest.ts` | 内容目录树（当前实际路径） |
-| `lib/ai/tools.ts` | AI 工具定义（05-integration 验证目标） |
+| `lib/ai/agent/tools.ts` | AI 工具定义（05-integration 验证目标） |
 | `lib/content/loader.ts` | 内容加载器（路径解析逻辑） |
 
 ### 7. 容灾降级策略

@@ -19,26 +19,30 @@ function walkLeaves(items: ContentItem[]): ContentItem[] {
   return out;
 }
 
-test("大二上包含医学英语与医学统计学，大一下排除", () => {
+test("大二上包含医学英语、医学统计学与细胞生物学实验，大一下排除", () => {
   const sophIds = subjectsOfYear("sophomore-1").map((s) => s.id);
   assert.ok(sophIds.includes("medical-english"));
   assert.ok(sophIds.includes("medical-statistics"));
+  assert.ok(sophIds.includes("cell-biology-lab"));
   assert.equal(academicYearOfSubject("medical-english"), "sophomore-1");
   assert.equal(academicYearOfSubject("medical-statistics"), "sophomore-1");
+  assert.equal(academicYearOfSubject("cell-biology-lab"), "sophomore-1");
 
   const soph = filterSubjectsByYear(contentTree.subjects, "sophomore-1");
   const names = soph.map((s) => s.name);
   assert.ok(names.includes("医学英语"));
   assert.ok(names.includes("医学统计学"));
+  assert.ok(names.includes("细胞生物学实验"));
 
   const fresh = filterSubjectsByYear(contentTree.subjects, "freshman-2");
   const freshIds = new Set(fresh.map((s) => s.id));
   assert.equal(freshIds.has("medical-english"), false);
   assert.equal(freshIds.has("medical-statistics"), false);
+  assert.equal(freshIds.has("cell-biology-lab"), false);
 });
 
 test("新课使用标准六板块顺序", () => {
-  for (const id of ["medical-english", "medical-statistics"] as const) {
+  for (const id of ["medical-english", "medical-statistics", "cell-biology-lab"] as const) {
     const subject = contentTree.subjects.find((s) => s.id === id);
     assert.ok(subject, `missing ${id}`);
     assert.deepEqual(subject!.categories.map((c) => c.id), [...STANDARD_CATEGORY_ORDER]);
@@ -58,6 +62,21 @@ test("医学英语至少一篇非 stub 叶子含记忆卡（内容落地后）",
     if (md!.includes(":::memory")) found = true;
   }
   assert.ok(found, "至少一篇医学英语正文含 :::memory");
+});
+
+test("细胞生物学实验教材非 stub 且含记忆卡", () => {
+  const cat = getCategory("cell-biology-lab", "textbook");
+  assert.ok(cat);
+  const leaves = walkLeaves(cat!.items).filter((item) => item.status === "done");
+  assert.ok(leaves.length >= 8, "细胞生物学实验应有 8 个实验叶子");
+  let found = false;
+  for (const item of leaves) {
+    const md = readContentMarkdown("cell-biology-lab", "textbook", item.id);
+    assert.ok(md && md.trim(), `cell-biology-lab/textbook/${item.id} 应非空`);
+    assert.ok(/^#\s+/m.test(md!), `${item.id} 应有标题`);
+    if (md!.includes(":::memory")) found = true;
+  }
+  assert.ok(found, "至少一篇细胞生物学实验正文含 :::memory");
 });
 
 test("生化 / 系解 / 组胚至少各有一个非 stub 的详解或考前模拟或实战演练叶子", () => {

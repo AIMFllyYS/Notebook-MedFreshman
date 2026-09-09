@@ -1,8 +1,30 @@
 import React from 'react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { fireEvent, render } from '@testing-library/react';
-import ChatThread from './ChatThread';
 import type { ChatMessage } from '@/lib/types/chat';
+
+const scrollDriver = vi.hoisted(() => ({
+  scrollToIndex: vi.fn(),
+  lastOptions: null as Record<string, unknown> | null,
+  interceptScroll: false,
+}));
+
+vi.mock('@tanstack/react-virtual', async () => {
+  const actual = await vi.importActual<typeof import('@tanstack/react-virtual')>('@tanstack/react-virtual');
+  return {
+    ...actual,
+    useVirtualizer: (options: Parameters<typeof actual.useVirtualizer>[0]) => {
+      scrollDriver.lastOptions = options as unknown as Record<string, unknown>;
+      const virtualizer = actual.useVirtualizer(options);
+      if (scrollDriver.interceptScroll) {
+        virtualizer.scrollToIndex = scrollDriver.scrollToIndex as typeof virtualizer.scrollToIndex;
+      }
+      return virtualizer;
+    },
+  };
+});
+
+import ChatThread from './ChatThread';
 
 function makeMessages(n: number): ChatMessage[] {
   return Array.from({ length: n }, (_, i) => ({
@@ -14,15 +36,22 @@ function makeMessages(n: number): ChatMessage[] {
 }
 
 describe('ChatThread virtualizer', () => {
+  beforeEach(() => {
+    scrollDriver.interceptScroll = false;
+    scrollDriver.scrollToIndex.mockClear();
+  });
+
   it('reserves dynamic bottom space for a floating composer without changing message content', () => {
     const { container, rerender } = render(<ChatThread messages={makeMessages(2)} isLoading={false} error={null}
       onClearError={() => {}} onFollowUpClick={() => {}} bottomInset={180} />);
     const viewport = container.querySelector('.chat-messages') as HTMLElement;
     expect(viewport.style.paddingBottom).toBe('180px');
-    expect(viewport.style.scrollPaddingBottom).toBe('180px');
+    expect(viewport.style.scrollPaddingBottom).toBe('');
+    expect(viewport.style.overflowAnchor).toBe('none');
     rerender(<ChatThread messages={makeMessages(2)} isLoading={false} error={null}
       onClearError={() => {}} onFollowUpClick={() => {}} bottomInset={240} />);
     expect(viewport.style.paddingBottom).toBe('240px');
+    expect(viewport.style.scrollPaddingBottom).toBe('');
     expect(container.querySelectorAll('.chat-message').length).toBe(2);
   });
 
@@ -162,6 +191,48 @@ describe('ChatThread virtualizer', () => {
     expect(getByText('正在思考…')).toBeTruthy();
   });
 
+  it('pins to bottom when composer inset grows while sticking', () => {
+    const { container, rerender } = render(
+      <div style={{ height: 480, display: 'flex', flexDirection: 'column' }}>
+        <ChatThread
+          messages={makeMessages(4)}
+          isLoading={false}
+          error={null}
+          onClearError={() => {}}
+          onFollowUpClick={() => {}}
+          hydrated
+          bottomInset={80}
+        />
+      </div>,
+    );
+    const viewport = container.querySelector('.chat-messages') as HTMLElement;
+    let scrollTop = 50;
+    Object.defineProperty(viewport, 'scrollHeight', { configurable: true, get: () => 600 });
+    Object.defineProperty(viewport, 'clientHeight', { configurable: true, get: () => 400 });
+    Object.defineProperty(viewport, 'scrollTop', {
+      configurable: true,
+      get: () => scrollTop,
+      set: (value: number) => {
+        scrollTop = Number(value);
+      },
+    });
+    rerender(
+      <div style={{ height: 480, display: 'flex', flexDirection: 'column' }}>
+        <ChatThread
+          messages={makeMessages(4)}
+          isLoading={false}
+          error={null}
+          onClearError={() => {}}
+          onFollowUpClick={() => {}}
+          hydrated
+          bottomInset={180}
+        />
+      </div>,
+    );
+    expect(scrollTop).toBe(200);
+    expect(viewport.style.paddingBottom).toBe('180px');
+  });
+
   it('assigns the external scrollContainerRef to the real scroll viewport', () => {
     const scrollRef = React.createRef<HTMLDivElement>();
 
@@ -181,5 +252,45 @@ describe('ChatThread virtualizer', () => {
 
     expect(scrollRef.current).toBeTruthy();
     expect(scrollRef.current?.classList.contains('chat-messages')).toBe(true);
+  });
+});
+
+describe('ChatThread scroll driver', () => {
+  const base = {
+    error: null as string | null,
+    onClearError: () => {},
+    onFollowUpClick: () => {},
+    hydrated: true,
+  };
+
+  beforeEach(() => {
+    scrollDriver.scrollToIndex.mockClear();
+    scrollDriver.lastOptions = null;
+    scrollDriver.interceptScroll = true;
+  });
+
+  it('does not register a streaming scrollToIndex effect', () => {
+    const { rerender } = render(
+      <ChatThread messages={[makeMessages(2)[0], { ...makeMessages(2)[1], parts: [{ type: 'text', text: 'a' }] }]} isLoading {...base} />,
+    );
+    expect(scrollDriver.scrollToIndex).not.toHaveBeenCalled();
+    rerender(<ChatThread messages={[makeMessages(2)[0], { ...makeMessages(2)[1], parts: [{ type: 'text', text: 'ab' }] }]} isLoading {...base} />);
+    rerender(<ChatThread messages={[makeMessages(2)[0], { ...makeMessages(2)[1], parts: [{ type: 'text', text: 'abc' }] }]} isLoading {...base} />);
+    rerender(<ChatThread messages={[makeMessages(2)[0], { ...makeMessages(2)[1], parts: [{ type: 'text', text: 'abcd' }] }]} isLoading {...base} />);
+    expect(scrollDriver.scrollToIndex).not.toHaveBeenCalled();
+  });
+
+  it('aligns to bottom exactly once when streaming ends', () => {
+    const messages = makeMessages(2);
+    const { rerender } = render(<ChatThread messages={messages} isLoading {...base} />);
+    expect(scrollDriver.scrollToIndex).not.toHaveBeenCalled();
+    rerender(<ChatThread messages={messages} isLoading={false} {...base} />);
+    expect(scrollDriver.scrollToIndex).toHaveBeenCalledTimes(1);
+    expect(scrollDriver.scrollToIndex.mock.calls[0][1]).not.toEqual(expect.objectContaining({ behavior: 'smooth' }));
+  });
+
+  it('does not pass scrollPaddingEnd to the virtualizer', () => {
+    render(<ChatThread messages={makeMessages(2)} isLoading={false} bottomInset={180} {...base} />);
+    expect(scrollDriver.lastOptions).not.toHaveProperty('scrollPaddingEnd');
   });
 });

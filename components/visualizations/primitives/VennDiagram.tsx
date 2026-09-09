@@ -433,4 +433,3 @@ const SliderRow: React.FC<{
   </div>
 );
 
-export default VennDiagram;

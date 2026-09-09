@@ -9,7 +9,7 @@
 | 物料 | 路径 | 说明 |
 |------|------|------|
 | 章节详解 | `content/{subject}/detail/{itemId}.md` | 本章知识点来源 |
-| 考试题型分布 | `docs/refer/考试题型分布.md` | **动态引用**，不可硬编码 |
+| 考试题型分布 | `docs/refer/exam-type-distribution.md` | **动态引用**，不可硬编码 |
 | 前序章节详解 | 同上路径，前面章节的文件 | 滚动复习题来源 |
 | 教材板块（可选） | `content/{subject}/textbook/{chapterId}.md` | 补充知识点 |
 
@@ -31,7 +31,7 @@
 
 ### Step 1：读取题型分布配置
 
-从 `docs/refer/考试题型分布.md` 读取对应科目的考试题型。
+从 `docs/refer/exam-type-distribution.md` 读取对应科目的考试题型。
 
 **重要**：该文件由用户动态维护，SOP 执行时必须实时读取，绝不硬编码任何题型配比。
 
@@ -51,7 +51,7 @@ Explorer subagent 读取：
 
 QuizGen-Current subagent 根据知识点清单生成题目：
 
-**题目类型**（根据 `docs/refer/考试题型分布.md` 确定）：
+**题目类型**（根据 `docs/refer/exam-type-distribution.md` 确定）：
 - `single_choice` — 单项选择
 - `multiple_choice` — 多项选择
 - `true_false` — 判断题
@@ -83,7 +83,7 @@ Assembler subagent 合并两部分题目：
 
 1. **排序**：按题型分组（选择 → 判断 → 填空 → 大题），组内按难度升序
 2. **编号**：统一重新编号 q001, q002, ...
-3. **总分计算**：按 `docs/refer/考试题型分布.md` 中的分值比例分配
+3. **总分计算**：按 `docs/refer/exam-type-distribution.md` 中的分值比例分配
 4. **评分标准**：
    - 客观题：系统自动评分（answer 字段为正确选项索引或正确答案）
    - 主观题：给出参考答案 + scoring_criteria（每个得分点及分值）
@@ -107,7 +107,7 @@ Writer subagent 将组卷结果写入 `content/quiz/{subject}/{chapterId}.json`�
   "chapterId": "string — 章节 ID，如 ch01",
   "generatedAt": "string — 生成日期 YYYY-MM-DD",
   "examConfig": {
-    "source": "docs/refer/考试题型分布.md",
+    "source": "docs/refer/exam-type-distribution.md",
     "totalPoints": "number — 百分制总分",
     "timeLimit": "number — 建议答题时间（分钟）"
   },
@@ -233,7 +233,7 @@ pnpm check:registry
 
 ## 人文科出题特殊指导（近现代史 / 毛概等）
 
-人文社科类科目（如中国近现代史纲要、毛概）的考试以**闭卷**为主，**没有计算题**。题型须**实时读取 `docs/refer/考试题型分布.md`**（如近现代史现为 单选/多选/辨析/简答/材料分析/论述六类，已不含纯判断题）。出题时除遵循上文通用流程外，还须满足以下专项规范。
+人文社科类科目（如中国近现代史纲要、毛概）的考试以**闭卷**为主，**没有计算题**。题型须**实时读取 `docs/refer/exam-type-distribution.md`**（如近现代史现为 单选/多选/辨析/简答/材料分析/论述六类，已不含纯判断题）。出题时除遵循上文通用流程外，还须满足以下专项规范。
 
 ### 1. 各题型考查重点
 
@@ -315,7 +315,7 @@ pnpm check:registry
 |------|------|------|
 | 课上录音 | `content/{subject}/recording/rec-{NN}.md` | **主要来源**，清洗后逐字稿 |
 | 课堂纪要 | `content/{subject}/summary/sum-{NN}.md` | **辅助理解**，提取知识结构 |
-| 考试题型分布 | `docs/refer/考试题型分布.md` | 动态引用 |
+| 考试题型分布 | `docs/refer/exam-type-distribution.md` | 动态引用 |
 
 ### 产出路径
 
@@ -379,7 +379,7 @@ pnpm check:registry
 
 ## 参考文件
 
-- [docs/refer/考试题型分布.md](../refer/考试题型分布.md) — **核心引用**，题型配比来源
+- [docs/refer/exam-type-distribution.md](../refer/exam-type-distribution.md) — **核心引用**，题型配比来源
 - [00-infrastructure.md](./00-infrastructure.md) — 文档解析（若需解析题库 PDF）
 - [05-content-integration.md](./05-content-integration.md) — 集成验证
 - [02-detail-generation.md](./02-detail-generation.md) — 详解格式（出题时需读取）

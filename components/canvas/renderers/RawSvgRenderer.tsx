@@ -141,4 +141,3 @@ export function RawSvgRenderer({
   );
 }
 
-export default RawSvgRenderer;

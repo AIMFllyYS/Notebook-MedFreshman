@@ -16,12 +16,65 @@ export default defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    "dist-desktop/**",
     "next-env.d.ts",
     "node_modules/**",
     "exhibition-hall/**",
     "showroom/**",
     "docs/refer/**",
-    "**/*.test.ts",
-    "**/*.test.tsx",
+    "scripts/one-off/**",
+    ".claude/**",
+    ".trae/**",
+    ".mimocode/**",
+    ".workbuddy/**",
+    "tmp/**",
+    "public/rdkit/**",
   ]),
+  // Next 16 工具链把一批存量写法升成 error。计划 18 只建立门禁，不改业务组件；
+  // 这些规则降为 warn，后续计划再逐项清理。
+  {
+    rules: {
+      "react-hooks/set-state-in-effect": "warn",
+      "react-hooks/refs": "warn",
+      "react-hooks/preserve-manual-memoization": "warn",
+      "react-hooks/static-components": "warn",
+      "react-hooks/purity": "warn",
+      "react/no-unescaped-entities": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+    },
+  },
+  {
+    files: ["electron/**"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+  {
+    files: ["components/notes/**", "components/layout/RightPanel.tsx", "components/interactives/**"],
+    rules: {
+      "no-restricted-imports": ["error", {
+        patterns: [{
+          group: ["@/components/chat/*", "@/lib/hooks/useArtifacts", "@/lib/hooks/useDocuments", "@/lib/hooks/useImageGen"],
+          message: "AI 对话产物（artifact/document/imageGen）只能由 components/chat 与 AppShell 的全局窗口层渲染，不得在笔记区/右侧 tab 直接引用。见 docs/plans/17 §5。",
+        }],
+      }],
+    },
+  },
+  {
+    files: ["components/canvas/**"],
+    rules: {
+      "no-restricted-imports": ["error", {
+        patterns: [{ group: ["@/components/chat/*"], message: "canvas 是纯渲染层，不得反向依赖 chat。" }],
+      }],
+    },
+  },
+  {
+    files: ["lib/**"],
+    rules: {
+      // 存量：lib/markdown 的指令映射仍从 components 拉渲染组件（16 处）。计划 22 再拆，本计划不改业务。
+      "no-restricted-imports": ["warn", {
+        patterns: [{ group: ["@/components/*"], message: "lib 不得依赖 components。" }],
+      }],
+    },
+  },
 ]);

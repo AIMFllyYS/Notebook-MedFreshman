@@ -80,12 +80,21 @@
 | [14-chat-runtime-and-icons.md](./14-chat-runtime-and-icons.md) | 真实请求诊断 + 共享界面返修 | EACCES 运行环境、脱敏错误处理、自绘图标、透明悬浮输入区、消息左右对齐与 Trace 层级缩进 | 13 的后续修复与用户反馈 |
 | [15-search-index-distribution-and-rag-quality.md](./15-search-index-distribution-and-rag-quality.md) | 分析报告 + 6 阶段修复计划（阶段 0 止血可独立先行） | `searchNotes` 失效根因（索引分发断裂 / 标题不入索引 / 零可观测性）、EdgeOne→自托管平台归位、COS 残留清洗清单 | 无；阶段 3 需在阶段 1 之后 |
 | [16-agent-tool-workspace-handoff.md](./16-agent-tool-workspace-handoff.md) | 独立 Chat | Agent 结构化工具（createQuiz / searchNoteImages / writeDocument）与 UI 卡片基础实现；含 docx/PDF/测试待办 | 在 SDK/Trace 基建完成后 |
-| [17-code-quality-audit-2026-09.md](./17-code-quality-audit-2026-09.md) | 交接文档 | 2026-09 全量代码质量审查：多套并存实现、注释脱节、滚动抖动、内容布局、工程基线 | 执行步骤拆到 18–22 |
-| [18-plan-engineering-baseline.md](./18-plan-engineering-baseline.md) | 独立 Chat | 工程基线：tsc/eslint 覆盖测试、仓库卫生、prebuild 与内容校验解耦 | 建议先于 19–22 |
-| [19-plan-chat-thread-scroll.md](./19-plan-chat-thread-scroll.md) | 独立 Chat | 对话面板滚动/布局四套机制收敛，消除流式抖动 | 可与 20 并行 |
-| [20-plan-window-artifact-system.md](./20-plan-window-artifact-system.md) | 独立 Chat | 窗口拖拽缩放全屏与 HTML 沙箱去重 | 可与 19 并行 |
-| [21-plan-content-layout-profiles.md](./21-plan-content-layout-profiles.md) | 独立 Chat | 内容展示按 manifest `capabilities` 分型，避免纯文档硬套三栏四 tab | 依赖 registry 已收敛 |
-| [22-plan-agent-architecture.md](./22-plan-agent-architecture.md) | 独立 Chat | Agent 工具定义新旧两份收敛、架构对齐 | 与 16 交接相关 |
+| [17-code-quality-audit-2026-09.md](./17-code-quality-audit-2026-09.md) | 交接文档（只读） | 2026-09 全量代码质量审查：质量基线、Git 卫生、死代码清单、对话抖动根因、artifact 组件归属混乱根因、Agent 架构、内容展示层 | 无；是 18–22 的事实依据 |
+| [18-plan-engineering-baseline.md](./18-plan-engineering-baseline.md) | 独立 Chat · **先行** | 工程基线体系：untrack 工具元数据与大归档、一次性脚本归档、6 项死代码删除、knip + import 边界 + 测试纳入 tsc/eslint、内容测试与代码测试分离 | 无；19–22 依赖它 |
+| [19-plan-chat-thread-scroll.md](./19-plan-chat-thread-scroll.md) | 独立 Chat · 需真机验证 | 对话流式渲染体系：消除 CSS/JS 双虚拟化冲突、单一滚动驱动、底部内边距单源、overflow-anchor | 18 |
+| [20-plan-window-artifact-system.md](./20-plan-window-artifact-system.md) | 独立 Chat | 窗口 / Artifact 体系：`ManagedWindow` 抽取、8 个浮窗迁移、artifact 全屏目标显式化、术语与路径地图 | 18；与 21 可并行 |
+| [21-plan-content-layout-profiles.md](./21-plan-content-layout-profiles.md) | 独立 Chat | 内容展示体系：`layoutProfile` 档位、`capabilities` 驱动 tab 与右栏、loader 路径解析声明化、纯文档课件 SOP | 18；与 20 可并行 |
+| [22-plan-agent-architecture.md](./22-plan-agent-architecture.md) | 独立 Chat · 改动面最大 | Agent 架构体系：工具注册表（每工具一目录）、28 个 store 收敛到 `lib/stores/`、`useChat.sendMessage` 拆分、`ChatSettings` 拆分 | 18、20；建议在 19/21 之后 |
+
+### 2026-09 代码清洗拓扑
+
+```
+18 ──┬── 19（抖动）
+     ├── 20（窗口/Artifact）──┐
+     └── 21（内容展示）        ├── 22（Agent 架构）
+                              ┘
+```
 
 ## 全局规范
 

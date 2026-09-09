@@ -170,4 +170,3 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
   );
 };
 
-export default ChatMessageVisualizations;

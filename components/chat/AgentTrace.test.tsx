@@ -1,7 +1,7 @@
 import React from 'react';
 import { readFileSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { buildTrace } from '@/lib/chat/buildTrace';
 import type { ChatMessage as ChatMessageType, ChatMessagePart } from '@/lib/types/chat';
@@ -346,12 +346,16 @@ describe('ChatMessage trace migration', () => {
     expect(openMessageMenu.mock.calls[0][1]).toBe('请解释附件');
   });
 
-  it('shows data-followup questions only when finished and invokes the original callback', () => {
+  it('shows data-followup questions only when finished and invokes the original callback', async () => {
     const onSelect = vi.fn();
     const msg = message([{ type: 'text', text: '答案' }, { type: 'data-followup', data: { questions: ['为什么？'] } }]);
     const { rerender } = render(<ChatMessage message={msg} onFollowUpSelect={onSelect} isStreaming />);
     expect(screen.queryByTestId('followups')).not.toBeInTheDocument();
     rerender(<ChatMessage message={msg} onFollowUpSelect={onSelect} />);
+    expect(screen.queryByTestId('followups')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('followups')).toBeInTheDocument();
+    });
     fireEvent.click(screen.getByRole('button', { name: '为什么？' }));
     expect(onSelect).toHaveBeenCalledWith('为什么？');
     rerender(<ChatMessage message={{ ...msg, followUpQuestions: ['另一问题'] }} onFollowUpSelect={onSelect} />);

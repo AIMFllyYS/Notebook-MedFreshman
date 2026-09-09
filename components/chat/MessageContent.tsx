@@ -297,4 +297,3 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
 export const MessageContent = React.memo(MessageContentComponent);
 MessageContent.displayName = 'MessageContent';
 
-export default MessageContent;

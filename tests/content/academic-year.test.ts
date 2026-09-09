@@ -52,6 +52,22 @@ test("空学期过滤结果为空，且不误伤已有学期", () => {
   assert.ok(filterSubjectsByYear(contentTree.subjects, "sophomore-1").length > 0);
 });
 
+test("大二上学科按课程全名字数从短到长", () => {
+  const names = filterSubjectsByYear(contentTree.subjects, "sophomore-1").map((s) => s.name);
+  assert.deepEqual(names, [
+    "医学英语",
+    "仪器分析",
+    "系统解剖学",
+    "医学统计学",
+    "细胞生物学实验",
+    "医学细胞生物学",
+    "组织学与胚胎学",
+    "生物化学与分子生物学",
+  ]);
+  const lengths = names.map((n) => [...n].length);
+  assert.deepEqual(lengths, [...lengths].sort((a, b) => a - b));
+});
+
 test("切换到大二上学期后导航树只有大二新书，不含大一科目", () => {
   const subjects = filterSubjectsByYear(contentTree.subjects, "sophomore-1");
   const ids = subjects.map((s) => s.id).sort();
@@ -72,6 +88,7 @@ test("切换到大二上学期后导航树只有大二新书，不含大一科�
     "仪器分析",
     "医学英语",
     "医学统计学",
+    "细胞生物学实验",
   ]) {
     assert.ok(names.includes(expected), `大二上应包含 ${expected}`);
   }
@@ -92,6 +109,7 @@ test("切换到大一下学期后导航树是原科目，不含大二新书", ()
   assert.equal(ids.has("instrumental-analysis"), false);
   assert.equal(ids.has("medical-english"), false);
   assert.equal(ids.has("medical-statistics"), false);
+  assert.equal(ids.has("cell-biology-lab"), false);
 });
 
 test("学年切换只隐藏大一内容，磁盘文件仍在", () => {

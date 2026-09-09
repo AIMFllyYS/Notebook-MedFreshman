@@ -21,7 +21,7 @@ export interface QuestionResult {
   objective: boolean;
 }
 
-interface QuizState {
+export interface QuizState {
   // ── 数据加载 ───────────────────────────────
   status: QuizStatus;
   data: QuizData | null;

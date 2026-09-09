@@ -193,7 +193,7 @@
 
 ## 5. 批量改写脚本
 
-`scripts/transform-modern-history-textbook.py` 提供批量改写能力，为每节自动添加：
+`scripts/one-off/transform-modern-history-textbook.py` 提供批量改写能力，为每节自动添加：
 
 - 章节概览时间轴
 - 核心概念卡片（按内置章节配置）
@@ -203,7 +203,7 @@
 运行方式：
 
 ```bash
-python scripts/transform-modern-history-textbook.py
+python scripts/one-off/transform-modern-history-textbook.py
 ```
 
 脚本会跳过已包含 `::timeline` 或 `::memory` 的文件（如已手动精修的样章）。

@@ -709,7 +709,7 @@ export const organicChemistryDetailItems: ContentItem[] = [
  * 各章详解的源讲次（recording id）映射。
  * 用于 Phase 4 详解撰写：每章子智能体输入对应讲次的精简录音 + 纪要。
  */
-export const organicChemistryChapterSources: Record<string, string[]> = {
+const organicChemistryChapterSources: Record<string, string[]> = {
   ch01: ['rec-01', 'rec-02'],
   ch02: ['rec-03'],
   ch03: ['rec-04'],

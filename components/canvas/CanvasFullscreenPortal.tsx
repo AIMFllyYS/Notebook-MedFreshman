@@ -12,7 +12,7 @@ interface CanvasFullscreenPortalProps {
  * 画布「真全屏」覆盖层。
  *
  * 为何必须 portal 到 document.body：聊天滚动容器 `.chat-messages{contain:layout}` 与
- * 消息体 `.chat-message{content-visibility:auto}` 都会为 `position:fixed` 后代建立**包含块**，
+ * 虚拟列表行上的 `transform: translateY()` 都会为 `position:fixed` 后代建立**包含块**，
  * 若用原地 `.is-fullscreen` class 切换，fixed 会锚定到窄窄的消息列而非视口 → 全屏被裁在气泡里。
  * portal 把画布体挂到 body 子树，彻底脱离这些祖先（与 ArtifactViewer / ContentPageClient 同策）。
  *
@@ -37,4 +37,3 @@ export function CanvasFullscreenPortal({ open, onExit, children }: CanvasFullscr
   );
 }
 
-export default CanvasFullscreenPortal;

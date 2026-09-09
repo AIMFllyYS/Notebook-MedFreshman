@@ -1,0 +1,146 @@
+{
+  "subjectId": "cell-biology-lab",
+  "chapterId": "tb-ch02",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/cell-biology-lab/textbook/ch02.md；实验二 传代、计数、冻存",
+    "totalPoints": 100,
+    "timeLimit": 40
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "贴壁细胞传代时，消化适度的镜下标志是（　）。",
+      "options": [
+        "细胞完全成片浮起并破碎",
+        "胞质回缩、细胞之间不再连接成片",
+        "细胞核全部台盼蓝着色",
+        "培养液变黄即可消化过夜"
+      ],
+      "answer": 1,
+      "hint": "回缩、不再成片，立刻终止。",
+      "explanation": "**B 正确。** 一旦胞质回缩、连接变松散或成片浮起应立即终止。浮起破碎已经过度。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch02.md", "label": "胰蛋白酶消化" }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "台盼蓝鉴别死活的原理是（　）。",
+      "options": [
+        "活细胞主动泵入台盼蓝而呈蓝色",
+        "台盼蓝不能透过完整活细胞膜，活细胞不着色；死细胞膜通透性升高而呈蓝色",
+        "台盼蓝只染线粒体",
+        "台盼蓝使 DNA 发出绿色荧光"
+      ],
+      "answer": 1,
+      "hint": "完整膜挡染料。",
+      "explanation": "**B 正确。** 折光强而不着色为活细胞，蓝色为死细胞。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch02.md", "label": "细胞计数、细胞活力测定" }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "计数板四大格活细胞均数为 40，与 0.4% 台盼蓝 1∶1 混合。每 ml 悬液细胞数是（　）。",
+      "options": [
+        "$4.0\\times 10^4$",
+        "$4.0\\times 10^5$",
+        "$8.0\\times 10^5$",
+        "$8.0\\times 10^6$"
+      ],
+      "answer": 2,
+      "hint": "均数 ×10000 ×稀释倍数 2。",
+      "explanation": "**C 正确。** $40\\times 10000\\times 2=8.0\\times 10^5$/ml。漏乘 2 会错成 B。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch02.md", "label": "计数的换算" }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "本课 HeLa 冻存液的配制是（　）。",
+      "options": [
+        "1 ml 纯 DMSO",
+        "0.9 ml 30% 血清培养基 + 0.1 ml DMSO",
+        "0.1 ml 血清 + 0.9 ml DMSO",
+        "无血清 PBS + 50% 甘油"
+      ],
+      "answer": 1,
+      "hint": "十分之一体积 DMSO。",
+      "explanation": "**B 正确。** 终浓度约 10% DMSO，高血清保护。讲义另列常见冻存液为含 10% 甘油或 10% DMSO 的培养液。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch02.md", "label": "细胞的冻存" }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "复苏时讲义要求的水浴是（　）。",
+      "options": [
+        "4 ℃ 过夜慢融",
+        "40 ℃ 水浴快速融化，1 分钟内完成",
+        "100 ℃ 煮沸 10 秒",
+        "直接在超净台室温放置 1 小时"
+      ],
+      "answer": 1,
+      "hint": "快融。",
+      "explanation": "**B 正确。** 慢冻快融：伤害区在 0～−20 ℃ 的针状冰晶。复苏 40 ℃、1 min 内。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch02.md", "label": "细胞的复苏" }
+    },
+    {
+      "id": "q006",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "压线细胞的计数规则是计上不计下、计右不计左。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "下和左。",
+      "explanation": "**错误。** 讲义：计下线不计上线，计左线不计右线。成团按一个细胞计。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch02.md", "label": "计数方法" }
+    },
+    {
+      "id": "q007",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "悬浮型细胞传代必须先加胰酶，否则无法分瓶。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "谁需要酶消化？",
+      "explanation": "**错误。** 悬浮型直接分瓶（离心换液后按比例转移）。贴壁细胞才需要酶消化脱离器皿。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch02.md", "label": "传代细胞培养" }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "label": "简答",
+      "stem": "写出细胞数/ml 的公式（含稀释倍数），并说明为什么冻存要慢、复苏要快（各一句）。",
+      "answer": "细胞数/ml =（四大格细胞总数/4）×10000×稀释倍数。0～−20 ℃ 针状冰晶易刺破细胞，故需保护剂并缓慢越过该区间；复苏时快速融化（40 ℃、1 min 内）缩短在该危险区停留的时间。",
+      "hint": "均数×10^4×稀释；针状冰晶。",
+      "scoring_criteria": [
+        "公式含四大格均数、×10000、稀释倍数（10 分）",
+        "慢冻：0～−20 ℃ 针状冰晶 / 保护剂（5 分）",
+        "快融：40 ℃、1 min 或缩短危险区停留（5 分）"
+      ],
+      "explanation": "台盼蓝 1∶1 时稀释倍数为 2，公式里不要丢掉。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch02.md", "label": "换算与冻存原理" }
+    }
+  ]
+}

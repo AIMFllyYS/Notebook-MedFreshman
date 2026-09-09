@@ -5,7 +5,7 @@ import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 /**
  * 画布「放大查看」全屏态。
- * 各画布体（RawSvgViewer / SvgCanvas / HtmlCanvasLayer）共用，统一 Esc 退出。
+ * 各画布体（RawSvgViewer / SvgCanvas / renderers/HtmlRenderer）共用，统一 Esc 退出。
  */
 export function useCanvasFullscreen() {
   const [fullscreen, setFullscreen] = useState(false);

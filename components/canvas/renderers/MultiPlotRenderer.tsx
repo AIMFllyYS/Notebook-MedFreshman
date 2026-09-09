@@ -73,4 +73,3 @@ export function MultiPlotRenderer({ block, revisionTopic, onRevisionSubmit, onRe
   );
 }
 
-export default MultiPlotRenderer;

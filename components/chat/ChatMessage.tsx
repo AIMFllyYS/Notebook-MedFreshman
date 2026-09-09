@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import { AgentFileIcon, AgentImageIcon, AgentLoopIcon, AgentUserIcon } from '@/components/icons/AgentIcons';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { MessageContent } from '@/components/chat/MessageContent';
@@ -12,7 +13,7 @@ import NoteCitationCard from '@/components/chat/NoteCitationCard';
 import WebSourceFold from '@/components/chat/WebSourceFold';
 import NoteImageGallery from '@/components/chat/NoteImageGallery';
 import DocumentCard from '@/components/chat/DocumentCard';
-import { AgentTrace } from '@/components/chat/AgentTrace';
+import { AgentTrace, TRACE_COLLAPSE_MS } from '@/components/chat/AgentTrace';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
 import { buildTrace } from '@/lib/chat/buildTrace';
@@ -33,6 +34,30 @@ interface ChatMessageProps {
 const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, isStreaming, sessionId, repairModelId, topic }) => {
   const isUser = message.role === 'user';
   const parts = message.parts;
+  const reducedMotion = useReducedMotion();
+  const streaming = !!isStreaming;
+  const [revealFollowups, setRevealFollowups] = useState(!streaming);
+  const [prevStreaming, setPrevStreaming] = useState(streaming);
+  const [revealNonce, setRevealNonce] = useState(0);
+  if (prevStreaming !== streaming) {
+    setPrevStreaming(streaming);
+    if (streaming) {
+      setRevealFollowups(false);
+      setRevealNonce(0);
+    } else if (reducedMotion) {
+      setRevealFollowups(true);
+      setRevealNonce(0);
+    } else {
+      setRevealFollowups(false);
+      setRevealNonce((n) => n + 1);
+    }
+  }
+
+  useEffect(() => {
+    if (revealNonce === 0) return;
+    const timer = window.setTimeout(() => setRevealFollowups(true), TRACE_COLLAPSE_MS);
+    return () => window.clearTimeout(timer);
+  }, [revealNonce]);
   const trace = useMemo(() => buildTrace({ parts }, !!isStreaming), [parts, isStreaming]);
   const userText = useMemo(() => isUser ? getMessageText({ parts }) : '', [isUser, parts]);
   const followUpQuestions = message.followUpQuestions?.length
@@ -214,7 +239,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                 </ImageStrip>
               </div>
             )}
-            {!isStreaming && (followUpQuestions.length > 0 || traceSources.length > 0) ? (
+            {revealFollowups && !isStreaming && (followUpQuestions.length > 0 || traceSources.length > 0) ? (
               <FollowUpQuestions questions={followUpQuestions} onSelect={onFollowUpSelect} sources={traceSources} />
             ) : null}
           </>

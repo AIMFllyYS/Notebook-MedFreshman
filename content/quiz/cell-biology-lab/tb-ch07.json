@@ -1,0 +1,141 @@
+{
+  "subjectId": "cell-biology-lab",
+  "chapterId": "tb-ch07",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/cell-biology-lab/textbook/ch07.md；实验七 瞬时转染",
+    "totalPoints": 100,
+    "timeLimit": 40
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "阳离子脂质体转染的基本过程是（　）。",
+      "options": [
+        "DNA 预先包在中性囊里，与细胞膜脂质交换进入",
+        "负电 DNA 结合正电脂质体成复合物，吸附到负电细胞膜，经内吞进入",
+        "DNA 直接穿过核孔，不需要载体",
+        "必须用电穿孔才能把 Lipofectamine 打进去"
+      ],
+      "answer": 1,
+      "hint": "正负电吸附 + 内吞。",
+      "explanation": "**B 正确。** 中性脂质体才是「膜包裹 DNA」。Lipofectamine 2000 走阳离子复合物路径。讲义称效率高于磷酸钙 5–100 倍。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch07.md", "label": "脂质体转染定义" }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "形成复合物时培养基的要求是（　）。",
+      "options": [
+        "10% 血清 + 双抗，保护细胞",
+        "无血清、无抗生素 DMEM",
+        "纯 DMSO",
+        "含 50% PEG"
+      ],
+      "answer": 1,
+      "hint": "血清和抗生素都干扰复合物。",
+      "explanation": "**B 正确。** A 液、B 液和转染当时的 800 μl 补液都是无血清/无抗生素；4–6 h 后换回正常培养基。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch07.md", "label": "瞬时转染步骤" }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "本课 DNA 与 Lipofectamine 2000 的用量是（　）。",
+      "options": [
+        "10 μg DNA + 50 μl 脂质体",
+        "1 μg 质粒 + 2 μl Lipofectamine 2000",
+        "等体积混合原液，不计量",
+        "只加 DNA，不加脂质体"
+      ],
+      "answer": 1,
+      "hint": "1 μg ∶ 2 μl。",
+      "explanation": "**B 正确。** 各自溶于 100 μl 无血清培养基，静置 5 min，B 入 A 再静置 25 min。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch07.md", "label": "A 液 B 液" }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "转染时细胞汇合度应约为（　）。",
+      "options": ["刚种下即可，越稀越好", "60%–80%", "必须 100% 铺满", "必须先消化成单细胞悬液在离心管里转"],
+      "answer": 1,
+      "hint": "爬片 24 h。",
+      "explanation": "**B 正确。** 35 mm 皿，2 ml 含 2×10^5 个细胞，24 h 至 60%–80% 汇合。铺满后转染毒性大、效率差。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch07.md", "label": "细胞培养" }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "质粒小提加完 P2 后（　）。",
+      "options": [
+        "涡旋 10 min 保证裂解",
+        "立即温和颠倒，室温至清亮，时间 < 5 min",
+        "煮沸 5 min",
+        "直接上柱，不必中和"
+      ],
+      "answer": 1,
+      "hint": "碱裂解不能超时。",
+      "explanation": "**B 正确。** 超时或剧烈震荡使基因组断裂混入。随后加 N3 中和离心，上清上柱，勿吸蛋白沉淀。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch07.md", "label": "质粒提取" }
+    },
+    {
+      "id": "q006",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "瞬时转染要求质粒整合进基因组，否则 24 h 内看不到 GFP。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "瞬时 vs 稳定。",
+      "explanation": "**错误。** 瞬时表达不要求整合；24 h 看荧光说明已进核并翻译。稳定株才需要筛选，本课不做。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch07.md", "label": "为什么叫瞬时" }
+    },
+    {
+      "id": "q007",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "转染后 4–6 小时换为正常培养基，24 小时后观察荧光。",
+      "options": ["错误", "正确"],
+      "answer": 1,
+      "hint": "讲义时间轴。",
+      "explanation": "**正确。** 4–6 h 换液由老师完成；24 h 荧光显微镜观察 GFP 表达和定位。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch07.md", "label": "时间轴" }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "label": "简答",
+      "stem": "写出 A 液、B 液的成分与静置时间，以及为何复合物阶段必须无血清、无抗生素。",
+      "answer": "A：1 μg pEGFP-N1 + 100 μl 无血清/无抗生素培养基，5 min。B：2 μl Lipofectamine 2000 + 100 μl 同样培养基，5 min。B 入 A 再静置 25 min。血清蛋白和抗生素干扰阳离子脂质体–DNA 复合物的形成与吸附。",
+      "hint": "1 μg / 2 μl / 5+5+25 min。",
+      "scoring_criteria": [
+        "A、B 成分正确（8 分）",
+        "5 min、5 min、25 min（6 分）",
+        "血清/抗生素干扰复合物（6 分）"
+      ],
+      "explanation": "不要把换液时间写成立刻或 24 h 才换。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch07.md", "label": "A/B 液与无血清" }
+    }
+  ]
+}

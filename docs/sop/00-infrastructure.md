@@ -377,6 +377,6 @@ python scripts/fallback-docx.py "D:\纪要\纪要1.docx" "content/_raw/modern-hi
 
 ## 参考文件
 
-- [MinerU 文档解析教程](../refer/MinerU文档解析教程.md) — API 完整文档
+- [MinerU 文档解析教程](../refer/mineru-parsing-guide.md) — API 完整文档
 - `.env.local`（项目根目录） — `MinerU_API_Token` + `ZHIPU_API_KEY` 所在位置
 - [README.md](./README.md) — SOP 全局规范

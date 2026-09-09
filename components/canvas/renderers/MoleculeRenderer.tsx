@@ -106,4 +106,3 @@ export function MoleculeRenderer({ block, revisionTopic, onRevisionSubmit, onRev
   );
 }
 
-export default MoleculeRenderer;

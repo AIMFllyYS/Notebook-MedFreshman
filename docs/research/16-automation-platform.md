@@ -204,7 +204,7 @@ flowchart TB
 | 项 | 当前 | 目标 |
 |----|------|------|
 | 出题者 | subagent | LLM（按题型分布配比） |
-| 题型分布 | subagent 读 `docs/refer/考试题型分布.md` | LLM 内嵌题型分布配置 |
+| 题型分布 | subagent 读 `docs/refer/exam-type-distribution.md` | LLM 内嵌题型分布配置 |
 | 评分标准 | subagent 编写 | LLM 生成 + 自动校验得分点 |
 | 滚动复习 | subagent 读前序章节 | LLM 自动从前序章节抽取知识点 |
 | 校验 | JSON schema + 人工 | JSON schema + LLM 自评 + 自动试做 |
@@ -393,7 +393,7 @@ flowchart TB
 
 #### 6.1.2 题目生成 LLM 化
 
-- **新增** `lib/ai/prompts/quiz-generation.ts`：按 SOP-04 + `docs/refer/考试题型分布.md` 生成题目 prompt
+- **新增** `lib/ai/prompts/quiz-generation.ts`：按 SOP-04 + `docs/refer/exam-type-distribution.md` 生成题目 prompt
 - **新增** `app/api/generate-quiz/route.ts`：POST 接收 `{ subjectId, chapterId, knowledgePoints }`，返回 JSON
 - **新增** `lib/quiz/auto-validate.ts`：JSON schema 校验 + LLM 自评（让另一个 LLM 试做并打分）
 - **预期成本下降**：3-6 小时/章 → 1-2 小时/章（含审核）

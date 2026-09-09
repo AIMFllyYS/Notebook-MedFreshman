@@ -6,12 +6,8 @@
 
 import type { StudyToolName } from '@/lib/ai/agent/toolTypes';
 import { STUDY_TOOL_NAMES } from '@/lib/ai/agent/toolTypes';
-import { TYPE_LABELS as QUIZ_TYPE_LABELS, type QuestionType } from '@/lib/quiz/types';
-import { DOCUMENT_FORMAT_LABELS, DOCUMENT_GENRE_LABELS, type DocumentFormat, type DocumentGenre } from '@/lib/documents/types';
 
 export type ToolIconKind = 'search' | 'file' | 'image' | 'gallery' | 'skill' | 'terminal' | 'quiz' | 'document';
-
-type Rec = Record<string, unknown>;
 
 export interface ToolPresentation {
   /** 思考链步骤标题（动词短语）。 */
@@ -23,14 +19,6 @@ export interface ToolPresentation {
   icon: ToolIconKind;
   /** 是否在设置面板中提供开关；imageSearch 随「联网搜索」开关，useSkill 随技能库。 */
   toggleable: boolean;
-  /** 折叠态一行摘要；返回 undefined 时回落到 buildTrace 的通用规则。 */
-  summarize?: (input: Rec, output: Rec) => string | undefined;
-}
-
-function countBy<T extends string>(values: T[]): Map<T, number> {
-  const map = new Map<T, number>();
-  for (const v of values) map.set(v, (map.get(v) ?? 0) + 1);
-  return map;
 }
 
 export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
@@ -68,8 +56,6 @@ export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
     description: '让 AI 检索并直接引用课程笔记里已有的插图',
     icon: 'gallery',
     toggleable: true,
-    summarize: (_input, output) =>
-      Array.isArray(output.images) ? `找到 ${output.images.length} 张笔记图片` : undefined,
   },
   webSearch: {
     label: '搜索网页',
@@ -112,18 +98,6 @@ export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
     description: '让 AI 用题库组件出可作答、可判分的题目（替代折叠文本）',
     icon: 'quiz',
     toggleable: true,
-    summarize: (input, output) => {
-      const questions = Array.isArray(output.questions) ? output.questions : Array.isArray(input.questions) ? input.questions : null;
-      if (!questions) return undefined;
-      const types = countBy(
-        questions
-          .map((q) => (q && typeof q === 'object' ? (q as Rec).type : undefined))
-          .filter((t): t is QuestionType => typeof t === 'string' && t in QUIZ_TYPE_LABELS),
-      );
-      const breakdown = [...types.entries()].map(([t, n]) => `${QUIZ_TYPE_LABELS[t]} ${n}`).join(' · ');
-      const title = typeof output.title === 'string' && output.title ? `${output.title}：` : '';
-      return `${title}${questions.length} 道题${breakdown ? `（${breakdown}）` : ''}`;
-    },
   },
   writeDocument: {
     label: '撰写长文档',
@@ -131,14 +105,6 @@ export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
     description: '让 AI 分节撰写长文章/论文/报告，可导出 Markdown / Word / LaTeX / PDF',
     icon: 'document',
     toggleable: true,
-    summarize: (input, output) => {
-      const spec = (output.spec ?? input) as Rec;
-      const title = typeof spec.title === 'string' ? spec.title : '';
-      const genre = typeof spec.genre === 'string' && spec.genre in DOCUMENT_GENRE_LABELS ? DOCUMENT_GENRE_LABELS[spec.genre as DocumentGenre] : '';
-      const format = typeof spec.format === 'string' && spec.format in DOCUMENT_FORMAT_LABELS ? DOCUMENT_FORMAT_LABELS[spec.format as DocumentFormat] : '';
-      const meta = [genre, format].filter(Boolean).join(' · ');
-      return title ? `${title}${meta ? `（${meta}）` : ''}` : undefined;
-    },
   },
   useSkill: {
     label: '调用技能',
@@ -158,6 +124,6 @@ export function getToolPresentation(name: string): ToolPresentation | undefined 
   return (TOOL_PRESENTATION as Record<string, ToolPresentation | undefined>)[name];
 }
 
-export function toolLabel(name: string): string | undefined {
+function toolLabel(name: string): string | undefined {
   return getToolPresentation(name)?.label;
 }

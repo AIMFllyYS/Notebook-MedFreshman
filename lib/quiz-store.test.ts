@@ -97,6 +97,7 @@ test("buildAttempt：perQuestion 结构正确", () => {
     { awarded: 12, max: 20, correct: false, objective: false, q: q2 },
   ]);
   const attempt = buildAttempt(state, "final");
+  assert.ok(attempt.perQuestion);
   assert.equal(attempt.perQuestion.length, 2);
   assert.equal(attempt.perQuestion[0].id, "q1");
   assert.equal(attempt.perQuestion[0].correct, true);

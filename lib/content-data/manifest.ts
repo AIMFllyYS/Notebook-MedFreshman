@@ -22,6 +22,7 @@ import { histologyTextbookItems } from './histology-textbook';
 import { instrumentalAnalysisTextbookItems } from './instrumental-analysis-textbook';
 import { medicalEnglishTextbookItems, medicalEnglishKaoqianItems, medicalEnglishShizhanItems } from './medical-english-items';
 import { medicalStatisticsTextbookItems, medicalStatisticsDetailItems, medicalStatisticsKaoqianItems } from './medical-statistics-items';
+import { cellBiologyLabTextbookItems } from './cell-biology-lab-items';
 import { biochemistryDetailItems, biochemistrySummaryItems, biochemistryKaoqianItems, biochemistryShizhanItems } from './biochemistry-extras';
 import { anatomyDetailItems, anatomyKaoqianItems, anatomyShizhanItems } from './anatomy-extras';
 import { histologyDetailItems, histologyKaoqianItems, histologyShizhanItems } from './histology-extras';
@@ -181,18 +182,16 @@ export const contentTree: ContentTree = {
       ],
     },
     {
-      ...subjectHeader('cell-biology'),
-      categories: sophomoreCategorySkeleton(cellBiologyTextbookItems),
+      ...subjectHeader('medical-english'),
+      categories: sophomoreCategories({
+        textbook: medicalEnglishTextbookItems,
+        kaoqianMoni: medicalEnglishKaoqianItems,
+        shizhanYanlian: medicalEnglishShizhanItems,
+      }),
     },
     {
-      ...subjectHeader('biochemistry'),
-      categories: sophomoreCategories({
-        textbook: biochemistryTextbookItems,
-        detail: biochemistryDetailItems,
-        summary: biochemistrySummaryItems,
-        kaoqianMoni: biochemistryKaoqianItems,
-        shizhanYanlian: biochemistryShizhanItems,
-      }),
+      ...subjectHeader('instrumental-analysis'),
+      categories: sophomoreCategorySkeleton(instrumentalAnalysisTextbookItems),
     },
     {
       ...subjectHeader('anatomy'),
@@ -204,6 +203,22 @@ export const contentTree: ContentTree = {
       }),
     },
     {
+      ...subjectHeader('medical-statistics'),
+      categories: sophomoreCategories({
+        textbook: medicalStatisticsTextbookItems,
+        detail: medicalStatisticsDetailItems,
+        kaoqianMoni: medicalStatisticsKaoqianItems,
+      }),
+    },
+    {
+      ...subjectHeader('cell-biology-lab'),
+      categories: sophomoreCategorySkeleton(cellBiologyLabTextbookItems),
+    },
+    {
+      ...subjectHeader('cell-biology'),
+      categories: sophomoreCategorySkeleton(cellBiologyTextbookItems),
+    },
+    {
       ...subjectHeader('histology'),
       categories: sophomoreCategories({
         textbook: histologyTextbookItems,
@@ -213,23 +228,13 @@ export const contentTree: ContentTree = {
       }),
     },
     {
-      ...subjectHeader('instrumental-analysis'),
-      categories: sophomoreCategorySkeleton(instrumentalAnalysisTextbookItems),
-    },
-    {
-      ...subjectHeader('medical-english'),
+      ...subjectHeader('biochemistry'),
       categories: sophomoreCategories({
-        textbook: medicalEnglishTextbookItems,
-        kaoqianMoni: medicalEnglishKaoqianItems,
-        shizhanYanlian: medicalEnglishShizhanItems,
-      }),
-    },
-    {
-      ...subjectHeader('medical-statistics'),
-      categories: sophomoreCategories({
-        textbook: medicalStatisticsTextbookItems,
-        detail: medicalStatisticsDetailItems,
-        kaoqianMoni: medicalStatisticsKaoqianItems,
+        textbook: biochemistryTextbookItems,
+        detail: biochemistryDetailItems,
+        summary: biochemistrySummaryItems,
+        kaoqianMoni: biochemistryKaoqianItems,
+        shizhanYanlian: biochemistryShizhanItems,
       }),
     },
     {

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "app/**/{page,layout,route,manifest,not-found,error,loading}.{ts,tsx}",
+    "electron/**/*.{js,mjs,ts}",
+    "scripts/*.{ts,mjs,js}",
+    "**/*.test.{ts,tsx}"
+  ],
+  "project": ["app/**", "components/**", "lib/**", "electron/**", "scripts/*.{ts,mjs,js}"],
+  "ignoreDependencies": [
+    "electron-builder",
+    "docx",
+    "remark-parse",
+    "unified",
+    "@types/mdast"
+  ],
+  "ignoreBinaries": ["robocopy"],
+  "ignoreMembers": ["default"],
+  "ignoreExportsUsedInFile": true,
+  "ignoreIssues": {
+    "**": ["types", "duplicates"]
+  },
+  "treatConfigHintsAsErrors": false,
+  "next": true,
+  "vitest": true
+}

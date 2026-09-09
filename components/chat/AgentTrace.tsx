@@ -1,12 +1,15 @@
 'use client';
 
-import React, { useId } from 'react';
+import React, { useId, useLayoutEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { AgentChevronIcon } from '@/components/icons/AgentIcons';
 import type { AgentTraceModel } from '@/lib/chat/buildTrace';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
 import { ToolTraceStep } from '@/components/chat/ToolTraceStep';
 import { ReasoningTraceStep } from '@/components/chat/ReasoningTraceStep';
+
+/** 折叠高度过渡时长。ChatMessage 用同一窗口错开 FollowUpQuestions 插入。 */
+export const TRACE_COLLAPSE_MS = 160;
 
 export interface AgentTraceProps {
   trace: AgentTraceModel;
@@ -31,7 +34,43 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
   const contentId = useId();
   const reducedMotion = useReducedMotion();
   const [expanded, setExpanded] = useProcessingDisclosure(isStreaming);
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const [bodyMounted, setBodyMounted] = useState(expanded);
+  const [maxHeight, setMaxHeight] = useState<number | 'none'>(expanded ? 'none' : 0);
   const pulse = isStreaming && !reducedMotion && !trace.waitingCount;
+
+  useLayoutEffect(() => {
+    if (expanded) setBodyMounted(true);
+  }, [expanded]);
+
+  useLayoutEffect(() => {
+    const el = bodyRef.current;
+    if (expanded) {
+      if (!el || reducedMotion || el.scrollHeight <= 0) {
+        setMaxHeight('none');
+        return;
+      }
+      setMaxHeight(el.scrollHeight);
+      const timer = window.setTimeout(() => setMaxHeight('none'), TRACE_COLLAPSE_MS);
+      return () => window.clearTimeout(timer);
+    }
+
+    if (!el || reducedMotion || el.scrollHeight <= 0) {
+      setBodyMounted(false);
+      setMaxHeight(0);
+      return;
+    }
+
+    setMaxHeight(el.scrollHeight);
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setMaxHeight(0));
+    });
+    const timer = window.setTimeout(() => setBodyMounted(false), TRACE_COLLAPSE_MS);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+    };
+  }, [expanded, bodyMounted, reducedMotion]);
 
   if (trace.steps.length === 0) {
     if (!isStreaming) return null;
@@ -80,8 +119,17 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
         </motion.span>
         <span aria-hidden="true" className={`shrink-0 transition-transform motion-reduce:transition-none ${expanded ? 'rotate-180' : ''}`}><AgentChevronIcon size={15} /></span>
       </button>
-      <div id={contentId} hidden={!expanded}>
-        {expanded ? (
+      <div
+        id={contentId}
+        ref={bodyRef}
+        hidden={!expanded && !bodyMounted}
+        style={{
+          maxHeight: maxHeight === 'none' ? undefined : maxHeight,
+          overflow: 'hidden',
+          transition: reducedMotion ? undefined : `max-height ${TRACE_COLLAPSE_MS}ms ease-out`,
+        }}
+      >
+        {bodyMounted ? (
           <motion.ol
             aria-label="按执行顺序排列的步骤"
             initial={reducedMotion ? false : { opacity: 0 }}
@@ -99,4 +147,3 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
   );
 });
 
-export default AgentTrace;

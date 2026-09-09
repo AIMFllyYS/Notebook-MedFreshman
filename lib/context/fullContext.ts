@@ -1,5 +1,6 @@
 import type { ContextManager, BuildContextResult } from './types';
 import { getMaxTokens } from './types';
+import { DEFAULT_MODEL_ID } from '@/lib/ai/models';
 import type { ChatContext } from '@/lib/types/chat';
 import { contentTree } from '@/lib/content-data/manifest';
 import { getContentItem } from '@/lib/content-data';
@@ -45,7 +46,7 @@ export class FullContextManager implements ContextManager {
   mode = 'full' as const;
   private model: string;
 
-  constructor(model = 'deepseek-chat') {
+  constructor(model = DEFAULT_MODEL_ID) {
     this.model = model;
   }
 

@@ -179,7 +179,27 @@ Commit：`refactor(chat): split ChatSettings into section panels`
 
 ---
 
-## 阶段 E · 收尾
+## 阶段 E · 偿还 `18` 遗留的门禁降级债
+
+计划 18 为了"建立门禁但不改业务组件"，把 7 条规则从 error 降为 warn。验收实测（见 `18` 文末执行记录）：去掉降级后 **53 条 error，全部在生产代码，测试文件 0 条**。分布：
+
+- `react/no-unescaped-entities` 24 条 —— 集中在 `components/interactives/**`，改法是把裸 `'` `"` 换成实体或用 `{'…'}`，纯文本改动
+- `react-hooks/set-state-in-effect` 17 条 —— 含 `RightPanel.tsx`、`BrowserTab.tsx`、`useAutoHideChatHeader.ts`、`VideoTab.tsx`
+- `react-hooks/refs` 4 条、`@typescript-eslint/no-explicit-any` 3 条、`react-hooks/preserve-manual-memoization` 3 条、`react-hooks/purity` 1 条、`react-hooks/static-components` 1 条
+
+做法：先 `pnpm exec eslint . -f json` 导出完整清单（按规则分组），**按规则逐条修、逐条把该规则从全局 warn 块里删掉**，每修完一条规则跑一次 `pnpm lint` + `pnpm test:react`，单独提交。`no-unescaped-entities` 与 `no-explicit-any` 最安全、先做；`react-hooks/*` 涉及行为，需谨慎，改完必须真机验证对应组件（右侧面板 tab 切换、浏览器 tab、视频 tab、聊天头部自动隐藏）。
+
+注意：`react-hooks/set-state-in-effect` 里若有 `ChatThread.tsx` / `useStickToBottom.ts` 的条目，先查 `19` 的执行记录——那里可能已列为"已知既有 error"，不要与 `19` 的改动冲突。
+
+同时收紧 `18` 留下的两处配置妥协：
+
+- `knip.json` 的 `$schema` 从 knip@5 改为 knip@6（安装的是 `knip ^6.34.0`）
+- `knip.json` 的 `ignoreIssues: { "**": ["types", "duplicates"] }`：先去掉看数量（`18` 首跑是 types 89 / duplicates 28），能清则清，清不完的收窄到具体目录而不是 `**`
+- `knip.json` 的 `entry` 补 `tests/helpers/vitest-setup.ts`
+
+Commit：每条规则一个 `fix(lint): restore <rule> to error` + 一个 `chore(lint): tighten knip config`
+
+## 阶段 F · 收尾
 
 - `lib/ai/agent/toolTypes.ts:3` 注释更新为真实目录结构。
 - `docs/refer/framework-extension.md`（或新建 `docs/refer/adding-an-agent-tool.md`）：新增一个工具的完整步骤 = 新建 `lib/ai/agent/tools/<name>/` 四个文件 + 在 `STUDY_TOOL_NAMES` 加一项，附一个最小示例。
@@ -208,11 +228,13 @@ Commit：`docs(agent): document tool registry and store layout`
 - `useChat.ts` ≤ 120 行且 `lib/chat/` 新增 ≥ 7 个纯函数各带测试。
 - `ChatSettings.tsx` ≤ 150 行。
 - 新增工具的文档存在。
+- `eslint.config.mjs` 里 `18` 加的全局 warn 规则块**已清空**（7 条全部修回 error 级默认），`pnpm lint` 仍为 0 error；若有个别规则确实无法在本计划内清完，必须收窄到具体文件/目录 override 并在执行记录里列出剩余条数与原因，不允许继续以全局 `rules` 块的形式存在。
 
 ## 风险与回滚
 
 - **阶段 A 的服务端/客户端边界是最大风险**：一旦 `index.ts` 间接导出了 `tool.ts`，Next 会在客户端 bundle 里报 `fs` 找不到或直接把密钥读取逻辑打进浏览器。A1 的 ESLint 规则必须在 A2 第 3 步之前落地；每步之后跑一次 `pnpm build`（不只是 `tsc`）。
 - **阶段 B 的 persist name**：任何一个写错都会让用户看到"空白历史/设置重置"。执行记录里的 name 清单是唯一防线；搬家 commit 里 diff 必须能看到 `name:` 行未变。
 - **阶段 C 改变了闭包捕获**：`sendMessage` 目前依赖 `[chatContext, options, ovSessionId, ovModelId]`，拆出的纯函数以参数接收所有输入，不能偷懒用 `getState()` 之外的模块级状态。`lib/hooks/useChat.test.tsx` 与 `useChatHistory.lifecycle.test.ts` 是回归护栏。
-- 五个阶段严格顺序执行，各自可独立 revert；不要跨阶段合并 commit。
+- **阶段 E 的 `react-hooks/*` 修复涉及运行时行为**（`set-state-in-effect` 的修法通常是把 effect 里的 setState 改成派生 state 或事件驱动），17 条里每一条都要单独判断，不能机械套模板。改到 `RightPanel.tsx` / `VideoTab.tsx` / `BrowserTab.tsx` 时注意 `21` 可能已经改过同一批文件（tab 列表由能力驱动），先读最新代码。
+- 六个阶段严格顺序执行，各自可独立 revert；不要跨阶段合并 commit。阶段 E 与 A–D 无耦合，若时间紧可作为独立后续任务，但不得从验收标准里删掉。
 - 若阶段 B 中途发现某个 store 被 Electron 主进程或 `scripts/` 直接 import（非 React 上下文），保留原路径 re-export 永久存在并注明原因，不要强搬。

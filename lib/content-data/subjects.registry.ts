@@ -43,12 +43,9 @@ export const SUBJECT_REGISTRY = [
     year: "freshman-2",
   },
   { id: "other", name: "其他", shortName: "其他", icon: "FolderOpen", color: "#64748b", year: "freshman-2" },
-  { id: "cell-biology", name: "医学细胞生物学", shortName: "细胞生物", icon: "Microscope", color: "#a855f7", year: "sophomore-1" },
-  { id: "biochemistry", name: "生物化学与分子生物学", shortName: "生化", icon: "Dna", color: "#ec4899", year: "sophomore-1" },
-  { id: "anatomy", name: "系统解剖学", shortName: "系统解剖", icon: "Bone", color: "#f97316", year: "sophomore-1" },
-  { id: "histology", name: "组织学与胚胎学", shortName: "组胚", icon: "Layers", color: "#14b8a6", year: "sophomore-1" },
-  { id: "instrumental-analysis", name: "仪器分析", shortName: "仪分", icon: "ScanLine", color: "#2563eb", year: "sophomore-1" },
   { id: "medical-english", name: "医学英语", shortName: "医学英语", icon: "Languages", color: "#8b5cf6", year: "sophomore-1" },
+  { id: "instrumental-analysis", name: "仪器分析", shortName: "仪分", icon: "ScanLine", color: "#2563eb", year: "sophomore-1" },
+  { id: "anatomy", name: "系统解剖学", shortName: "系统解剖", icon: "Bone", color: "#f97316", year: "sophomore-1" },
   {
     id: "medical-statistics",
     name: "医学统计学",
@@ -57,6 +54,17 @@ export const SUBJECT_REGISTRY = [
     color: "#0891b2",
     year: "sophomore-1",
   },
+  {
+    id: "cell-biology-lab",
+    name: "细胞生物学实验",
+    shortName: "细胞实验",
+    icon: "ScrollText",
+    color: "#0f766e",
+    year: "sophomore-1",
+  },
+  { id: "cell-biology", name: "医学细胞生物学", shortName: "细胞生物", icon: "Microscope", color: "#a855f7", year: "sophomore-1" },
+  { id: "histology", name: "组织学与胚胎学", shortName: "组胚", icon: "Layers", color: "#14b8a6", year: "sophomore-1" },
+  { id: "biochemistry", name: "生物化学与分子生物学", shortName: "生化", icon: "Dna", color: "#ec4899", year: "sophomore-1" },
 ] as const satisfies readonly SubjectMeta[];
 
 export type SubjectId = (typeof SUBJECT_REGISTRY)[number]["id"];

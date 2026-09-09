@@ -31,4 +31,3 @@ export function ToolCallDashboard({ toolCalls, isProcessing = false }: { toolCal
   );
 }
 
-export default ToolCallDashboard;

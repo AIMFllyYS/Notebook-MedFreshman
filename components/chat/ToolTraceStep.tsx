@@ -62,4 +62,3 @@ export function ToolIcon({ name }: { name: string }) {
   return ICONS[getToolPresentation(name)?.icon ?? 'terminal'];
 }
 
-export default ToolTraceStep;

@@ -26,7 +26,7 @@ function SvgBox({
 }
 
 // DeepSeek — 官方鲸鱼图标，品牌蓝 #4D6BFE
-export const DeepSeekIcon: React.FC<IconProps> = ({ size = 14, className }) => (
+const DeepSeekIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   <SvgBox size={size} className={className} label="DeepSeek">
     <title>DeepSeek</title>
     <path
@@ -38,7 +38,7 @@ export const DeepSeekIcon: React.FC<IconProps> = ({ size = 14, className }) => (
 );
 
 // Qwen — 官方品牌图标，紫渐变 #6336E7 → #6F69F7
-export const QwenIcon: React.FC<IconProps> = ({ size = 14, className }) => {
+const QwenIcon: React.FC<IconProps> = ({ size = 14, className }) => {
   const id = useId();
   const gradientId = `qwen-gradient-${id}`;
   return (
@@ -60,7 +60,7 @@ export const QwenIcon: React.FC<IconProps> = ({ size = 14, className }) => {
 };
 
 // Zhipu / GLM — 官方品牌图标，品牌蓝 #3859FF
-export const ZhipuIcon: React.FC<IconProps> = ({ size = 14, className }) => (
+const ZhipuIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   <SvgBox size={size} className={className} label="Zhipu">
     <title>Zhipu</title>
     <path
@@ -72,7 +72,7 @@ export const ZhipuIcon: React.FC<IconProps> = ({ size = 14, className }) => (
 );
 
 // Kimi — 官方品牌图标，蓝点 #1783FF + 主体跟随主题色（currentColor）
-export const KimiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
+const KimiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   <SvgBox size={size} className={className} label="Kimi">
     <title>Kimi</title>
     <path
@@ -87,7 +87,7 @@ export const KimiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
 );
 
 // MiniMax — 官方品牌图标，粉橙渐变 #E2167E → #FE603C
-export const MiniMaxIcon: React.FC<IconProps> = ({ size = 14, className }) => {
+const MiniMaxIcon: React.FC<IconProps> = ({ size = 14, className }) => {
   const id = useId();
   const gradientId = `minimax-gradient-${id}`;
   return (
@@ -109,7 +109,7 @@ export const MiniMaxIcon: React.FC<IconProps> = ({ size = 14, className }) => {
 };
 
 // MiMo — 官方品牌图标，使用小米橙 #FF6700
-export const MiMoIcon: React.FC<IconProps> = ({ size = 14, className }) => (
+const MiMoIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   <SvgBox size={size} className={className} label="MiMo">
     <title>MiMo</title>
     <path
@@ -120,7 +120,7 @@ export const MiMoIcon: React.FC<IconProps> = ({ size = 14, className }) => (
 );
 
 // Tongyi (通义) — 阿里通义实验室，品牌紫 #615CED
-export const TongyiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
+const TongyiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   <SvgBox size={size} className={className} label="Tongyi">
     <title>Tongyi</title>
     <path
@@ -131,7 +131,7 @@ export const TongyiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
 );
 
 // Gemini — Google 四色星标简化
-export const GeminiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
+const GeminiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   <SvgBox size={size} className={className} label="Gemini">
     <title>Gemini</title>
     <path d="M12 2.2l1.15 6.4L20 10l-6.85 1.4L12 17.8l-1.15-6.4L4 10l6.85-1.4L12 2.2z" fill="#4285F4" />
@@ -142,7 +142,7 @@ export const GeminiIcon: React.FC<IconProps> = ({ size = 14, className }) => (
 );
 
 // 默认图标 — 通用灰色，跟随主题文本色
-export const DefaultModelIcon: React.FC<IconProps> = ({ size = 14, className }) => (
+const DefaultModelIcon: React.FC<IconProps> = ({ size = 14, className }) => (
   <SvgBox size={size} className={className} label="Model">
     <title>Model</title>
     <rect x="3" y="7" width="7" height="10" rx="1.5" fill="currentColor" fillOpacity="0.25" />

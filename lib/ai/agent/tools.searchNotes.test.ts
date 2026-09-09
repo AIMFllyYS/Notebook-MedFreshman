@@ -23,11 +23,11 @@ test("searchNotes：索引缺失时返回「检索索引未加载」而不是「
         academicYear: "sophomore-1",
       },
       createToolRuntime(),
-      {},
+      { enableSearch: false },
     );
     const result = await tools.searchNotes.execute!(
       { query: "绪论" },
-      { toolCallId: "t1", messages: [], abortSignal: new AbortController().signal },
+      { toolCallId: "t1", messages: [], abortSignal: new AbortController().signal, context: {} },
     );
     assert.match(result.text, /检索索引未加载/);
     assert.equal(result.hits.length, 0);

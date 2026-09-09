@@ -255,4 +255,3 @@ export const FormulaSteps: React.FC<FormulaStepsProps> = ({
   );
 };
 
-export default FormulaSteps;

@@ -71,4 +71,3 @@ export class VizErrorBoundary extends React.Component<
   }
 }
 
-export default VizErrorBoundary;

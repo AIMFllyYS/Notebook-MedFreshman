@@ -80,7 +80,7 @@ pnpm dev
 
 - `components/`
 - `app/`
-- `lib/ai/tools.ts`
+- `lib/ai/agent/tools.ts`
 - `lib/constants/`
 - 任何 `ICON_MAP`
 

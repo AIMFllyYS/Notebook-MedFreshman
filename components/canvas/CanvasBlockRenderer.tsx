@@ -29,4 +29,3 @@ export function CanvasBlockRenderer({ block, revisionTopic, onRevisionSubmit, on
   }
 }
 
-export default CanvasBlockRenderer;

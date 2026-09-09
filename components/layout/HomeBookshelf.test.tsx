@@ -24,6 +24,7 @@ describe("HomeBookshelf year filter", () => {
     expect(screen.getByText("仪器分析")).toBeInTheDocument();
     expect(screen.getByText("医学英语")).toBeInTheDocument();
     expect(screen.getByText("医学统计学")).toBeInTheDocument();
+    expect(screen.getByText("细胞生物学实验")).toBeInTheDocument();
     expect(screen.queryByText("概率论与数理统计")).not.toBeInTheDocument();
     expect(screen.queryByText("大学物理")).not.toBeInTheDocument();
   });

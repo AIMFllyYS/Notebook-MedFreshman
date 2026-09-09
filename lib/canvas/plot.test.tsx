@@ -23,6 +23,6 @@ describe('plot diagnostics', () => {
     const result = diagnosePlotExpression('\\frac{1}{x}', { xmin: -1, xmax: 1 });
 
     expect(result.ok).toBe(false);
-    expect(result.reason).toBe('unsupported-syntax');
+    if (!result.ok) expect(result.reason).toBe('unsupported-syntax');
   });
 });

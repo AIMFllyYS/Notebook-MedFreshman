@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { AgentArrowUpIcon, AgentLoopIcon, AgentAlertIcon, AgentInfoIcon, AgentCloseIcon } from '@/components/icons/AgentIcons';
 import ChatMessage from '@/components/chat/ChatMessage';
-import { useStickToBottom } from '@/lib/hooks/useStickToBottom';
+import { TRACE_COLLAPSE_MS } from '@/components/chat/AgentTrace';
+import { pinScrollToBottom, STICK_THRESHOLD_PX, useStickToBottom } from '@/lib/hooks/useStickToBottom';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 
 interface ChatThreadProps {
@@ -53,12 +54,11 @@ export default function ChatThread({
 }: ChatThreadProps) {
   const internalRef = useRef<HTMLDivElement>(null);
   const scrollRef = scrollContainerRef ?? internalRef;
-  const [isAtBottom, setIsAtBottom] = useState(true);
-  const isAtBottomRef = useRef(true);
-  const setAtBottom = (v: boolean) => {
-    isAtBottomRef.current = v;
-    setIsAtBottom(v);
-  };
+  const [stickActive, setStickActive] = useState(isLoading);
+  if (isLoading && !stickActive) setStickActive(true);
+  const isLoadingRef = useRef(isLoading);
+  isLoadingRef.current = isLoading || stickActive;
+  const wasLoadingRef = useRef(isLoading);
 
   const displayMessages = useMemo(
     () => messages.filter((m) => m.role === 'user' || m.role === 'assistant'),
@@ -70,16 +70,15 @@ export default function ChatThread({
   // Keep the estimate close to a compact header + thinking line. A 120px floor
   // used to park 「AI 正在思考中」 far below 「AI 助教」 on the first streamed row.
   const MESSAGE_ESTIMATE_PX = 72;
-  const showThreadLoading = isLoading && lastDisplay?.role !== 'assistant';
+  const reserveThreadLoading = lastDisplay?.role !== 'assistant';
 
   const virtualizer = useVirtualizer({
     count: displayMessages.length,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => MESSAGE_ESTIMATE_PX,
-    overscan: 10,
+    overscan: 4,
     getItemKey: (index) => displayMessages[index]?.id ?? index,
     initialRect: { width: 0, height: 480 },
-    scrollPaddingEnd: safeBottomInset,
   });
   const virtualItems = virtualizer.getVirtualItems();
   const rows =
@@ -91,39 +90,59 @@ export default function ChatThread({
         }));
   const totalSize = virtualizer.getTotalSize() || displayMessages.length * MESSAGE_ESTIMATE_PX;
 
-  const onStickScroll = useStickToBottom(scrollRef, isLoading);
+  const { onScroll, isAtBottom, setWantStick, wantStickRef } = useStickToBottom(
+    scrollRef,
+    isLoading || stickActive,
+    STICK_THRESHOLD_PX,
+    [safeBottomInset],
+  );
 
-  const handleScroll = () => {
-    onStickScroll();
+  useEffect(() => {
+    if (isLoading) return;
+    const timer = window.setTimeout(() => setStickActive(false), TRACE_COLLAPSE_MS + 48);
+    return () => window.clearTimeout(timer);
+  }, [isLoading]);
+
+  // v3.17 把该回调放在 instance 上，不是 useVirtualizer options（计划 19 B3）。
+  useLayoutEffect(() => {
+    virtualizer.shouldAdjustScrollPositionOnItemSizeChange = (item, _delta, instance) => {
+      if (isLoadingRef.current && item.index === instance.options.count - 1) return false;
+      return true;
+    };
+  }, [virtualizer]);
+
+  // 非流式输入框增高：rAF 循环只在 isLoading 时跑，贴底时直接钉一次。
+  useLayoutEffect(() => {
     const el = scrollRef.current;
-    if (!el) return;
-    setAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < 100);
-  };
+    if (!el || !wantStickRef.current) return;
+    pinScrollToBottom(el);
+  }, [safeBottomInset, scrollRef, wantStickRef]);
 
-  // 非流式：新消息且贴底时滚到末尾
+  // 非流式：新消息且贴底时滚到末尾。流式刚结束对齐一次（无 smooth）。
   useEffect(() => {
-    if (isLoading || !isAtBottomRef.current || displayMessages.length === 0) return;
-    virtualizer.scrollToIndex(displayMessages.length - 1, { align: 'end', behavior: 'smooth' });
-  }, [displayMessages.length, isLoading, safeBottomInset, virtualizer]);
-
-  // 流式：钉住最后一条（高度变化时 measureElement + stick-to-bottom 协同）
-  useEffect(() => {
-    if (!isLoading || !isAtBottomRef.current || displayMessages.length === 0) return;
-    virtualizer.scrollToIndex(displayMessages.length - 1, { align: 'end' });
-  }, [messages, isLoading, displayMessages.length, safeBottomInset, virtualizer]);
+    const finishedStreaming = wasLoadingRef.current && !isLoading;
+    wasLoadingRef.current = isLoading;
+    if (isLoading || !wantStickRef.current || displayMessages.length === 0) return;
+    virtualizer.scrollToIndex(
+      displayMessages.length - 1,
+      finishedStreaming ? { align: 'end' } : { align: 'end', behavior: 'smooth' },
+    );
+    // virtualizer 引用稳定；safeBottomInset 变化由 stick-to-bottom deps 重启循环处理。
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- 计划 19 B2：故意收窄依赖
+  }, [displayMessages.length, isLoading]);
 
   const jumpToBottom = () => {
     if (displayMessages.length > 0) {
       virtualizer.scrollToIndex(displayMessages.length - 1, { align: 'end', behavior: 'smooth' });
     }
-    setAtBottom(true);
+    setWantStick(true);
   };
 
   return (
     <>
       <div
         ref={scrollRef}
-        onScroll={handleScroll}
+        onScroll={onScroll}
         className="chat-messages"
         style={{
           ['--chat-fs' as string]: `${Math.round(13 * fontScale)}px`,
@@ -131,7 +150,7 @@ export default function ChatThread({
           minHeight: 0,
           overflowY: 'auto',
           paddingBottom: safeBottomInset || undefined,
-          scrollPaddingBottom: safeBottomInset || undefined,
+          overflowAnchor: 'none',
         } as React.CSSProperties}
       >
         {!hydrated ? (
@@ -179,8 +198,13 @@ export default function ChatThread({
                 );
               })}
             </div>
-            {showThreadLoading && (
-              <div className="chat-loading" data-testid="chat-thread-loading">
+            {reserveThreadLoading && (
+              <div
+                className="chat-loading"
+                data-testid="chat-thread-loading"
+                style={{ visibility: isLoading ? 'visible' : 'hidden' }}
+                aria-hidden={!isLoading}
+              >
                 <AgentLoopIcon size={16} className="animate-pulse motion-reduce:animate-none" style={{ color: 'var(--ink-soft)' }} />
                 <span className="chat-loading-text">AI 正在思考中...</span>
               </div>

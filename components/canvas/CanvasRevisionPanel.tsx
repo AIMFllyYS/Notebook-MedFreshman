@@ -96,4 +96,3 @@ export function CanvasRevisionPanel({
   );
 }
 
-export default CanvasRevisionPanel;

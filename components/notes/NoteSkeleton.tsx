@@ -36,7 +36,8 @@ export function SkeletonBlock({ height = 80, className = "" }: BlockProps) {
 }
 
 /** 完整文章形状骨架，模拟：面包屑 → 标题 → 摘要 → 两节正文 + callout + 公式块 */
-export default function NoteSkeleton() {
+/** @public 笔记页加载骨架，供路由 loading 与占位复用。 */
+export function NoteSkeleton() {
   return (
     <div className="mx-auto w-full max-w-3xl px-8 py-10">
       {/* 面包屑 */}

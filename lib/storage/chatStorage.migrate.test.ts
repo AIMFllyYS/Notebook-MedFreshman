@@ -155,5 +155,6 @@ test("migrateFromV1IfNeeded：inline 图片迁移为 blob ref 且可 hydrate 回
   assert.equal("base64" in stored![0].attachments![0], false);
 
   const hydrated = await hydrateAttachmentsForApi(stored!);
-  assert.equal(hydrated[0].attachments?.[0].base64, dataUrl);
+  const first = hydrated[0].attachments?.[0];
+  assert.equal(first && "base64" in first ? first.base64 : undefined, dataUrl);
 });

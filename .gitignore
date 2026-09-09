@@ -53,8 +53,9 @@ yarn-error.log*
 /scripts/transcripts/
 /scripts/handoffs/
 
-# ZIP files
+# ZIP / tarball archives
 *.zip
+*.tar.gz
 
 # Temporary files
 tmp/
@@ -80,3 +81,6 @@ content/.index/
 content/probability/shizhan-yanlian/_backup_v1/
 content/probability/shizyan-yanlian/
 content/_raw/
+
+# plan verification artifacts (screenshots, probe dumps)
+docs/plans/**/verify/
