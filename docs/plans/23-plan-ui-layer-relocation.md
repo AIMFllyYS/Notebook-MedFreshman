@@ -1,0 +1,147 @@
+# 23 · UI 层归位（让分层规则可强制）
+
+> 前置：`22` 已完成并通过端测。本计划由**一次 AI 会话**独立完成。
+> 起因：`22` 的验收中，主智能体发现 `lib → components` 的反向依赖从 16 处涨到 27 处，且 `eslint.config.mjs` 里那条 `no-restricted-imports` 仍是 `warn`，注释还写着"计划 22 再拆"。
+
+---
+
+## 为什么必须做（不是架构洁癖）
+
+**这个分层倒置已经造成过一次真实崩溃。** `components/quiz/QuizMarkdown.tsx:34-36` 的注释原文：
+
+> 不能在模块顶层展开 `directiveComponents`。因为 `MemoryCard` 属于 `directiveComponents`……入口顺序下触发 TDZ（`Cannot access 'directiveComponents' before initialization`）。
+
+当时的处理是把展开推迟到函数内部**绕过**环，而不是消除环。只要 `lib/markdown/*` 继续 import `components/*`，同类 TDZ 随时可能在别的入口顺序下复现，而且每次都表现为难以定位的"某个组件 undefined"。
+
+**第二个理由：`warn` 等于没有护栏。** 仓库当前有 150 条 warning，一条埋在里面的 `warn` 不会被任何人看见。规则要么是 `error`，要么删掉——留成 `warn` 只是自欺。
+
+**第三个理由：桶里有个还没引爆的地雷。** `lib/ai/agent/tools/index.ts` 自述是"类型、展示元数据与结果卡片"的客户端入口，却**值导出**了 `TOOL_REGISTRY` / `TOOL_RESULT_CARDS`（转发自 `catalog.ts`，而 `catalog.ts` 饥饿导入 7 个 React 卡片）。服务端路由里一句 `import { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools"` 就会把整条聊天 UI 依赖图拖进服务端 bundle。实测当前**零处**引用这个桶——这正是危险所在：它是留给下一个加工具的人的陷阱，今天没人踩不等于明天没人踩。
+
+## 判断依据（实测）
+
+- `git grep "@/components" -- lib` = **27 处**：`lib/ai/agent/tools/**/ResultCard.tsx` 7 处 + 其 `ResultCard.test.tsx` mock 4 处 + `lib/markdown/directiveComponents.ts` 14 处 + `lib/markdown/noteComponents.tsx` 2 处。
+- `lib/ai/agent/tools/` 的设计其实九成是对的：`server.ts`（76 行）已独立装配服务端；`presentations.ts`（38 行）是纯数据（`icon` 是字符串联合 `ToolIconKind`，不是 JSX）；`registry.ts`（36 行）是纯类型。**缺陷只集中在客户端渲染三件**：`catalog.ts`（82 行）、`resultCards.tsx`（47 行）、7 个 `ResultCard.tsx`。
+- 7 个 `ResultCard.tsx` 都是**十行左右的适配器**，把 typed tool part 映射到已存在的 `components/chat/*Card` 上，真 UI 不在 `lib` 里。
+- `RESULT_CARD_ORDER` 的注释自陈是"现网 ChatMessage 卡片顺序（不是 STUDY_TOOL_NAMES）"——这是渲染决策，不是工具属性。
+- `TOOL_RESULT_CARDS` 的消费方只有 `lib/ai/agent/tools/resultCards.tsx` 与 `registry.test.tsx`；Agent 运行时（`studyAgent.ts` / `server.ts`）一个都不消费。
+- `lib/markdown` 两个映射表很小：`directiveComponents.ts` 31 行、`noteComponents.tsx` 11 行。消费方四处：`components/chat/MessageContent.tsx`、`components/notes/NoteRenderer.tsx`、`components/notes/NoteRendererServer.tsx`、`components/quiz/QuizMarkdown.tsx`。
+
+## 为什么不选"放宽规则"
+
+放宽 `lib/ai/agent/tools/**` 可以导入 `components/chat/**` 是最小改动，但它让例外变成常态：下一个加工具的人看到这条豁免，自然的下一步就是把真 UI 写进 `lib`，规则从此不再保护它存在的理由。而且它不解决 TDZ 环，也不拆掉桶里的地雷。
+
+---
+
+## 目标
+
+1. `lib/**` 不再 import `components/**`，`no-restricted-imports` 那条规则设为 **`error` 且零例外**。
+2. 消除 `QuizMarkdown` 的 TDZ 绕行，模块顶层可以正常展开。
+3. `lib/ai/agent/tools/index.ts` 变成真正安全的同构桶：只导出类型与 presentation，任何服务端文件都能放心 import。
+4. 新增一个工具的成本仍然是"一个目录 + 一行"，并且**不引入计划 20 那类"找不到文件"**。
+
+## 非目标
+
+- 不改任何工具的行为、schema、id（`renderInteractive` 等工具 id 已持久化进 IndexedDB，**绝对不改名**）。
+- 不改 `ChatMessage` 的卡片渲染顺序与去重语义（`RESULT_CARD_ORDER` 逐字保持，`resultKey` / `shouldRender` 逐个保持）。
+- 不动 `server.ts`、`presentations.ts`、`registry.ts`、`names.ts`、各工具的 `types.ts` / `presentation.ts` / `tool.ts`。
+- 不动 markdown 渲染管线本身（`remark`/`rehype` 插件链、`prose.css`），只搬"名字 → 组件"的映射表。
+- 不顺手拆 `lib/markdown` 的其他文件。
+
+---
+
+## 目标结构
+
+```
+lib/ai/agent/tools/                    ← 服务端 + 同构契约，永不 import components
+  names.ts  registry.ts  presentations.ts  _types.ts  _shared.ts
+  server.ts                            ← 服务端装配（不动）
+  index.ts                             ← 只导出类型 + presentation（收回 catalog 的值导出）
+  <name>/{types.ts, presentation.ts, tool.ts}
+
+components/chat/toolCards/             ← 客户端渲染层，方向正确地依赖 lib
+  <name>Card.tsx                       ← 原 lib/.../<name>/ResultCard.tsx（7 个）
+  <name>Card.test.tsx                  ← 原 ResultCard.test.tsx（4 个）
+  registry.tsx                         ← 原 catalog.ts 的客户端部分 + RESULT_CARD_ORDER
+  ToolResultCards.tsx                  ← 原 lib/.../resultCards.tsx
+  README.md                            ← 加一个工具卡片的步骤
+
+components/shared/directives/
+  registry.ts                          ← 原 lib/markdown/directiveComponents.ts
+components/notes/
+  noteComponents.tsx                   ← 原 lib/markdown/noteComponents.tsx
+```
+
+---
+
+## 阶段 A · 工具卡片归位
+
+1. 建 `components/chat/toolCards/`。把 7 个 `lib/ai/agent/tools/<name>/ResultCard.tsx` 搬为 `components/chat/toolCards/<name>Card.tsx`，内容除 import 路径外**逐字不动**（都带 `"use client"`，保留）。4 个 `ResultCard.test.tsx` 一并搬为 `<name>Card.test.tsx`，`vi.mock` 路径同步。
+2. `catalog.ts` 拆成两半：
+   - 纯数据部分（`TOOL_REGISTRY` 里 `name` + `presentation` + `resultKey` + `shouldRender`）如果 Agent 运行时确实需要，留在 `lib`；**实测 `studyAgent.ts` / `server.ts` 不消费 `TOOL_REGISTRY`**，所以整体搬到 `components/chat/toolCards/registry.tsx`。搬之前**再确认一次**没有 `lib` 侧消费方，若有则只搬带 `ResultCard` 的那部分。
+   - `RESULT_CARD_ORDER`、`ToolResultCardEntry`、`TOOL_RESULT_CARDS` 一并进 `registry.tsx`。
+3. `lib/ai/agent/tools/resultCards.tsx` 搬为 `components/chat/toolCards/ToolResultCards.tsx`，更新 `ChatMessage.tsx` 的 import。
+4. `lib/ai/agent/tools/registry.test.tsx` 里断言卡片顺序的用例随 `registry.tsx` 搬到 `components/chat/toolCards/registry.test.tsx`；**断言的顺序数组逐字不变**（它是防止渲染顺序回退的唯一护栏）。
+5. 删除 `lib/ai/agent/tools/catalog.ts` 与 `resultCards.tsx`。
+
+Commit：`refactor(agent): relocate tool result cards to components/chat/toolCards`
+
+## 阶段 B · 收紧工具桶
+
+1. `lib/ai/agent/tools/index.ts` 删掉 `export { TOOL_REGISTRY, TOOL_RESULT_CARDS, RESULT_CARD_ORDER }` 那一行，并把文件头注释改成"只导出类型与展示元数据；客户端渲染层在 `components/chat/toolCards/`"。
+2. 确认桶导入后不再拉任何 React 组件：`pnpm exec tsc --noEmit` 后，在某个 `app/api/**` 里临时 `import { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools"`，跑 `pnpm build`，确认服务端 chunk 里不出现 `components/chat` 的痕迹；**测完撤销这个临时 import，不要留在工作区**。
+
+Commit：`refactor(agent): keep tool barrel free of client components`
+
+## 阶段 C · markdown 映射表归位与消除 TDZ
+
+1. `lib/markdown/directiveComponents.ts` → `components/shared/directives/registry.ts`（导出名 `directiveComponents` 保持不变，减少调用方改动面）。
+2. `lib/markdown/noteComponents.tsx` → `components/notes/noteComponents.tsx`（导出名 `noteComponents` 不变）。
+3. 更新四处调用方 import：`components/chat/MessageContent.tsx`、`components/notes/NoteRenderer.tsx`、`components/notes/NoteRendererServer.tsx`、`components/quiz/QuizMarkdown.tsx`。
+4. **消除 TDZ 绕行**：`QuizMarkdown.tsx:34-43` 那段"不能在模块顶层展开"的注释与延迟展开，在环消除后应当不再必要。改回模块顶层展开，**并真机验证 quiz 页面（含 `MemoryCard` 指令的题目）不报 `Cannot access ... before initialization`**。若改回后仍报错，说明还有别的环，**保留绕行并在执行记录里写清真实环路**，不要硬改。
+5. `NoteRendererServer.tsx` 是服务端组件，搬完后确认它仍能 SSR（`pnpm build` 通过即可）。
+
+Commit：`refactor(markdown): move component maps to UI layer and drop TDZ workaround`
+
+## 阶段 D · 规则归位与路径地图
+
+1. `eslint.config.mjs`：`files: ["lib/**"]` 那条 `no-restricted-imports` 从 `warn` 改 **`error`**，删掉"存量：lib/markdown……计划 22 再拆"的注释。**注意扁平配置的后写覆盖**：`lib/hooks/**` 那块必须仍排在 `lib/**` 之后，否则 hooks 会丢掉 `tool.ts` 边界（这个坑 `22` 已经踩过并在注释里标注了，不要打乱顺序）。
+2. `pnpm lint` 必须 0 error。若仍有 `lib → components` 命中，说明漏搬，补完再改规则——**不允许加豁免把它压下去**。
+3. 路径地图（防止再出现计划 20 那类"改错文件"）：
+   - 每个 `lib/ai/agent/tools/<name>/presentation.ts` 顶部加一行注释：该工具的结果卡片在 `components/chat/toolCards/<name>Card.tsx`。
+   - `components/chat/toolCards/README.md`：加一个工具卡片的完整步骤（建 `<name>Card.tsx` + 在 `registry.tsx` 加一行 + 若需去重加 `resultKey`），并写明 `lib` 侧只放 types / presentation / tool。
+   - `docs/refer/rendering-architecture.md` 的"四条渲染路径"一节同步新路径。
+   - 更新 `22` 文末执行记录提到的 `lib/stores/README.md` 同级说明（若有引用旧路径）。
+
+Commit：`chore(lint): enforce lib-must-not-import-components` + `docs(agent): document tool card layer`
+
+---
+
+## 验证
+
+- `pnpm exec tsc --noEmit`、`pnpm lint`（**0 error**）、`pnpm test:react`、完整 `pnpm test`、完整 `pnpm build`（基线 1210 页）。
+- `git grep "@/components" -- lib` **零命中**。
+- `git grep -n "TOOL_REGISTRY\|TOOL_RESULT_CARDS" -- lib` 零命中。
+- `components/chat/toolCards/registry.test.tsx` 的顺序断言与搬迁前逐字一致。
+- 真机：
+  1. 触发 7 个有卡片的工具（`searchNotes` / `webSearch` / `renderInteractive` / `generateImage` / `createQuiz` / `searchNoteImages` / `writeDocument`），确认卡片都出现、**顺序与搬迁前一致**、`renderInteractive` 与 `generateImage` 的去重仍生效（同一 artifactId 不重复出卡）。
+  2. 打开带 `:::memory` / `::video` 等指令的正文与 quiz 题目，确认指令组件正常渲染、控制台无 TDZ 报错。
+  3. 笔记区正文渲染正常（`NoteRenderer` 与 `NoteRendererServer` 两条路径都看）。
+
+## 验收标准
+
+- `lib/**` 零 `components` 依赖，规则为 `error` 且**无任何新增豁免**。
+- 13 个工具的 `types.ts` / `presentation.ts` / `tool.ts` 未被改动（`git diff --stat` 可证）。
+- 工具 id 与 `RESULT_CARD_ORDER` 逐字未变。
+- `QuizMarkdown` 的 TDZ 绕行已删除且真机无报错（或保留并写清真实环路）。
+- 加工具的步骤文档存在且与真实目录一致。
+
+## 风险与回滚
+
+- **最大风险是卡片顺序与去重语义被无意改动**。`registry.test.tsx` 的顺序断言是唯一自动护栏，搬迁时不要"顺手整理"数组。四个阶段各自可独立 revert。
+- 阶段 C 改回模块顶层展开是唯一有运行时行为变化的改动，必须真机验证；不确定就保留绕行并记录。
+- `NoteRendererServer` 是服务端组件，搬到 `components/notes/` 后若误加 `"use client"` 会破坏 SSR——搬迁时**不要**给它加。
+- 本计划不碰 store、不碰滚动、不碰窗口层，与 `19`/`20` 的既成不变量无交集；但仍须遵守 `00-execution-contract.md` 第六节（尤其不要退回 `getElementById("notes-panel")` 字面量、不要手写浮窗 portal）。
+
+## 并发避让
+
+内容 Agent 的作业域是 `content/**`、`public/images|media/**`、`lib/content-data/**` 的数据条目。本计划只碰 `lib/ai/agent/tools/**`、`lib/markdown/**`、`components/**`、`eslint.config.mjs`、`docs/**`，与之零重叠。Git 纪律照 `00-execution-contract.md` 第二节：只用显式路径提交，留在 `dev`，不推送，对方的在途脏文件原样留着。
