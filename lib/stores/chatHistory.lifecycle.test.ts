@@ -66,7 +66,7 @@ beforeEach(async () => {
   storage.clear();
   __resetIdbStoragePendingForTests();
   installBrowserMocks();
-  const { useChatHistory } = await import("./useChatHistory.ts");
+  const { useChatHistory } = await import("./chatHistory.ts");
   useChatHistory.setState({
     sessionsMeta: [],
     messagesById: {},
@@ -88,7 +88,7 @@ afterEach(() => {
 });
 
 test("deleteSession：删除 active 会话后加载新的 active 会话消息", async () => {
-  const { useChatHistory } = await import("./useChatHistory.ts");
+  const { useChatHistory } = await import("./chatHistory.ts");
   storage.set(chatSessionKey("s2"), JSON.stringify([msg("m2", "loaded")]));
   useChatHistory.setState({
     sessionsMeta: [meta("s1"), meta("s2")],
@@ -112,7 +112,7 @@ test("deleteSession：删除 active 会话后加载新的 active 会话消息", 
 });
 
 test("updateMessage：content-only 流式更新只写 session，不写 manifest", async () => {
-  const { useChatHistory } = await import("./useChatHistory.ts");
+  const { useChatHistory } = await import("./chatHistory.ts");
   useChatHistory.setState({
     sessionsMeta: [meta("s1")],
     messagesById: { s1: [msg("m1", "old")] },
@@ -132,7 +132,7 @@ test("updateMessage：content-only 流式更新只写 session，不写 manifest"
 });
 
 test("updateMessage：新增 artifactId 时写 manifest 供冷 prune 使用", async () => {
-  const { useChatHistory } = await import("./useChatHistory.ts");
+  const { useChatHistory } = await import("./chatHistory.ts");
   useChatHistory.setState({
     sessionsMeta: [meta("s1")],
     messagesById: { s1: [msg("m1", "old")] },

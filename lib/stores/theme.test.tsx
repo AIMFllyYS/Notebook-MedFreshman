@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { act, renderHook } from "@testing-library/react";
 import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
-import { useTheme } from "./useTheme";
+import { useTheme } from "./theme";
+
 
 const THEME_KEY = "gailvlun-theme";
 const APPEARANCE_KEY = "gailvlun-appearance-v1";
