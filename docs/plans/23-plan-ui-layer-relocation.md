@@ -237,7 +237,26 @@ components/shared/directives/MemoryCard.tsx → @/components/quiz/QuizMarkdown
 
 真机补充证据（断环修复落盘于 01:59:15，截图 02:22:17，晚 23 分钟）：`NoteRendererServer` 正文页上 `:::pitfall` 告警框带样式渲染、comparetable 是真表格、**记忆卡「融合与 S 期」可展开并显示「点击收起」**。
 
-剩余需浏览器的项（cloze 挖空点击、checklist 点击、聊天侧 `MessageContent` 路径、工具卡片顺序、滚动与窗口契约抽查）由独立验收智能体执行。
+### 交互项验收（2026-09-10）与两个 P0 的归因
+
+独立验收智能体跑完交互项后判「不通过」，报出两个 P0：记忆卡的 cloze 挖空整体失效、卡内正文丢失加粗与公式。**主智能体归因结论：两者都是既存缺陷，与计划 23 及断环修复无关。** 依据如下，计划 23 本身判定**通过**。
+
+**通过项：**
+
+- **聊天侧 `MessageContent` 路径**（SSR 审计唯一没覆盖到的一条）：让模型输出 `:::definition` + `:::memory`，气泡内渲染出 `.callout.callout-definition` 与 `.memory-card-header`，`$\mathrm{pH}$` 出 1 个 `.katex`，可见文本里 0 处裸 `:::`。指令映射在四条路径上全部成立。
+- **工具卡片顺序**：同一回复实际打出 searchNotes + webSearch + renderInteractive + createQuiz，DOM y 序 `note-citation-card`(150) → `web-source-fold`(207) → `artifact-card`(267) → `chat-quiz-card`(437)，与 `RESULT_CARD_ORDER` 一致。
+- **窗口契约**：artifact 浮窗拖拽正常；全屏时**当场**读取的 `#notes-panel` 与浮窗 rect 精确相等（`{264,48,695×758}`）。
+- **`FollowUpQuestions`**、题目测试 tab 正常（走 `QuizMarkdown inline`）。
+- 卡体内**没有**裸露的嵌套指令，与「全站 711 处 memory 块零嵌套」一致。
+
+**未能验证：** 复习翻卡 `FlipCard` 与 `RecordPreviewWindow`——`/cell-biology-lab/review`、`/biochemistry/review` 都是「0 张记忆卡」，没有可翻的卡。滚动探针只采到流式已停之后的 42 秒（`drops=0`、`oscGrowOrSame=0`、无「跟随最新输出」），**没采到真正的增高过程**，算有条件通过；窗口几何已完整验过。
+
+**两个 P0 的归因证据（都是既存，非回归）：**
+
+1. `lib/markdown/normalizeDirectiveLabels.ts` 在 `master..dev` 区间只被改过一次（`c3828533`），内容是**删掉一行没人用的 `export default`**；解析逻辑在 master 与 dev 之间**逐字相同**。
+2. `MemoryCard.tsx` 的 `extract()` / `ClozeText` / `ChecklistMarkdown` 逻辑**未被本区间改动**——断环那次只把 `<QuizMarkdown>` 换成 `<QuizMarkdownBase>`，两者用的是同一套 `sharedRemarkPlugins` / `sharedRehypePlugins`，markdown 与 KaTeX 行为一致。
+
+已立 `docs/plans/24-plan-memory-card-directives.md` 专门修这两条，详细根因与影响面量化见该文档。
 
 ---
 

@@ -13,7 +13,8 @@
 | `19` | 聊天流滚动与抖动 | 已执行、已验收、已修复（三轮） |
 | `20` | 窗口 / Artifact 体系收敛 | 已执行、已验收（判定通过，无必须修复项） |
 | `22` | Agent 架构与 lint 欠账 | 已执行、**已验收（三批全通过）** |
-| `23` | UI 层归位（`lib` 不再依赖 `components`） | 已执行，端测中（`lib → components` 已 27→0，规则已 `error`） |
+| `23` | UI 层归位（`lib` 不再依赖 `components`） | 已执行、**已验收**（含事后断环修复） |
+| `24` | 记忆卡与指令属性解析（**既存 P0**，非回归） | 待执行 |
 | `21` | 内容页布局档位 | 待执行（**排最后**） |
 
 **为什么 `22` 插到 `21` 前面：** 内容 Agent 的改动集中在 `lib/content-data/manifest.ts`、`nav.generated.json`、`subjects.registry.ts`，而这正是计划 `21` 的正面战场；它当前正在改 `docs/refer/mineru-parsing-guide.md`，说明下一批课件导入在路上，落地时必然再动这三个文件。计划 `22` 动的是 `lib/ai/**`、`lib/stores/**`、`components/chat/**`，与内容 Agent 零重叠，先做没有冲突成本。计划 `21` 尽量等这批导入落地后再动。
