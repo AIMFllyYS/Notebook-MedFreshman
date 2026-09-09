@@ -274,4 +274,4 @@ CSS 落地确认（修复后 computed）：`.chat-message` 的 `content-visibili
 - 停止生成后在输入框敲三行：composer 增高，列表未整列跳走。
 - 划词「解释」打开浮动聊天窗（复用 `ChatThread`），已开窗并开始生成；未对浮窗单独再跑 30s 探针。
 
-截图：`docs/plans/19-verify/before-send.png`、`streaming-before.png`、`after-stream.png`、`after-floating.png`。
+过程截图（发送前 / 流式中 / 流式后 / 划词浮窗）已从仓库移除，见后续「深度修复」记录。

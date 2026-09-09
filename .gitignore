@@ -81,3 +81,6 @@ content/.index/
 content/probability/shizhan-yanlian/_backup_v1/
 content/probability/shizyan-yanlian/
 content/_raw/
+
+# plan verification artifacts (screenshots, probe dumps)
+docs/plans/**/verify/
