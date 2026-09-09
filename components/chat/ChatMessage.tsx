@@ -35,20 +35,29 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
   const isUser = message.role === 'user';
   const parts = message.parts;
   const reducedMotion = useReducedMotion();
-  const [revealFollowups, setRevealFollowups] = useState(!isStreaming);
+  const streaming = !!isStreaming;
+  const [revealFollowups, setRevealFollowups] = useState(!streaming);
+  const [prevStreaming, setPrevStreaming] = useState(streaming);
+  const [revealNonce, setRevealNonce] = useState(0);
+  if (prevStreaming !== streaming) {
+    setPrevStreaming(streaming);
+    if (streaming) {
+      setRevealFollowups(false);
+      setRevealNonce(0);
+    } else if (reducedMotion) {
+      setRevealFollowups(true);
+      setRevealNonce(0);
+    } else {
+      setRevealFollowups(false);
+      setRevealNonce((n) => n + 1);
+    }
+  }
 
   useEffect(() => {
-    if (isStreaming) {
-      setRevealFollowups(false);
-      return;
-    }
-    if (reducedMotion) {
-      setRevealFollowups(true);
-      return;
-    }
+    if (revealNonce === 0) return;
     const timer = window.setTimeout(() => setRevealFollowups(true), TRACE_COLLAPSE_MS);
     return () => window.clearTimeout(timer);
-  }, [isStreaming, reducedMotion]);
+  }, [revealNonce]);
   const trace = useMemo(() => buildTrace({ parts }, !!isStreaming), [parts, isStreaming]);
   const userText = useMemo(() => isUser ? getMessageText({ parts }) : '', [isUser, parts]);
   const followUpQuestions = message.followUpQuestions?.length
