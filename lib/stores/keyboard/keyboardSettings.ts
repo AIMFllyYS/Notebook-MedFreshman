@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { SHORTCUTS } from "./shortcuts";
+import { SHORTCUTS } from "@/lib/keyboard/shortcuts";
 
 const LS_KEY = "gailvlun-disabled-shortcuts";
 
