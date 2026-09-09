@@ -543,7 +543,7 @@ function VarianceExplorerBase() {
         >
           <span className="font-semibold text-[var(--ink)]">关键洞察：</span>
           平移 b = {fmt(linB, 1)} 改变了均值，但方差
-          <b className="text-[var(--ink)]"> 不变</b>——方差度量的是"离散程度"，
+          <b className="text-[var(--ink)]"> 不变</b>——方差度量的是{'"离散程度"'}，
           整体移动不影响数据之间的相对距离。
           而缩放 a = {fmt(linA, 1)} 让方差变为原来的
           <b style={{ color: BLUE_MID }}> {fmt(linA ** 2, 3)}</b> 倍。

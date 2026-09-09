@@ -201,7 +201,7 @@ function AcylReactivityBase() {
           <Pill label="酰胺" color="#16a34a" />
         </div>
         <p className="mt-2 text-sm text-[var(--ink-soft)]">
-          例如酰氯醇解可生成酯（R-CO-Cl + R'OH → R-CO-OR' + HCl），因为生成物（酯）活性更低、反应趋势有利；而由酯直接转回酰氯则很困难，需特殊试剂。一般只能由活性高的衍生物制备活性低的衍生物，不能逆向自发进行。
+          例如酰氯醇解可生成酯（R-CO-Cl + {"R'OH"} → {"R-CO-OR'"} + HCl），因为生成物（酯）活性更低、反应趋势有利；而由酯直接转回酰氯则很困难，需特殊试剂。一般只能由活性高的衍生物制备活性低的衍生物，不能逆向自发进行。
         </p>
       </div>
     </div>

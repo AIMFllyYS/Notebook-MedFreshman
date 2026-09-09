@@ -740,10 +740,10 @@ function MLEExplorerBase() {
       {/* 直觉说明 */}
       <div className="rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] px-3 py-2.5 text-[12px] text-[var(--ink-soft)] leading-relaxed">
         <span className="font-semibold text-[var(--ink)]">直觉：</span>
-        极大似然估计寻找"使当前样本出现概率最大"的参数 θ̂。
+        极大似然估计寻找{'"使当前样本出现概率最大"'}的参数 θ̂。
         对数似然曲线的<strong style={{ color: MLE_COLOR }}>峰值</strong>就是该最优点——
         拖动黄色游标线，你会发现越靠近 θ̂，对数似然越高；
-        偏离时似然值迅速下降，这正是 MLE 的"几何直觉"。
+        偏离时似然值迅速下降，这正是 MLE 的{'"几何直觉"'}。
       </div>
     </div>
   );

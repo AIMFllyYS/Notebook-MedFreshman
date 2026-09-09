@@ -39,7 +39,7 @@ export default defineConfig([
       "react-hooks/preserve-manual-memoization": "warn",
       "react-hooks/static-components": "warn",
       "react-hooks/purity": "warn",
-      "react/no-unescaped-entities": "warn",
+      // react/no-unescaped-entities 已清完，恢复默认 error
       "@typescript-eslint/no-explicit-any": "warn",
     },
   },

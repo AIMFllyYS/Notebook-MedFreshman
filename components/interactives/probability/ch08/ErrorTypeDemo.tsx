@@ -551,11 +551,11 @@ function ErrorTypeDemoBase() {
       {/* 直觉洞察 */}
       <div className="rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] px-3 py-2.5 text-[12px] text-[var(--ink-soft)] leading-relaxed">
         <span className="font-bold text-[var(--ink)]">核心直觉：</span>
-        α 与 β 是一对"此消彼长"的矛盾——
+        α 与 β 是一对{'"此消彼长"'}的矛盾——
         在<b className="text-[var(--ink)]">固定 n 和 δ</b> 时，缩小 α（拒绝域变窄）必然让 β 增大；扩大 α 则 β 减小。
         唯有<b className="text-[var(--ink)]">增大 n</b>（样本量）或<b className="text-[var(--ink)]">增大 δ</b>（效应量）才能在
         保持 α 的同时降低 β，提升检验功效。
-        这正是"检验功效分析"在实验设计中的核心价值。
+        这正是{'"检验功效分析"'}在实验设计中的核心价值。
       </div>
     </div>
   );

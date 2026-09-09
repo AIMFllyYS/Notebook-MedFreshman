@@ -905,7 +905,7 @@ function MarginalExplorerBase() {
           {/* 结论 */}
           <div className="rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] px-3 py-2.5 text-[12px] text-[var(--ink-soft)] leading-relaxed">
             <span className="font-semibold text-[var(--ink)]">结论：</span>
-            边缘分布是联合分布的"影子"——它丢失了 X 与 Y 之间的<b className="text-[var(--ink)]">相关结构</b>（协方差、独立性信息等）。
+            边缘分布是联合分布的{'"影子"'}——它丢失了 X 与 Y 之间的<b className="text-[var(--ink)]">相关结构</b>（协方差、独立性信息等）。
             只有当 X 与 Y <b className="text-[var(--ink)]">相互独立</b>时，边缘分布才能完全恢复联合分布（此时
             <span className="font-mono ml-1">p(xᵢ,yⱼ) = P(X=xᵢ)·P(Y=yⱼ)</span>）。
           </div>
