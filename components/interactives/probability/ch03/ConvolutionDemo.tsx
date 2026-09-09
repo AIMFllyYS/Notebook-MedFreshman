@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useCallback } from "react";
+import { memo, useState } from "react";
 
 // ─── 设计常量 ──────────────────────────────────────────────────
 const ACCENT = "#5b46e5";
@@ -546,7 +546,7 @@ function ConvolutionDemoBase() {
     (yDist.type === "uniform" && yDist.p2 <= yDist.p1)
   );
 
-  const simulate = useCallback(() => {
+  const simulate = () => {
     if (!canSimulate || isRunning) return;
     setIsRunning(true);
 
@@ -573,7 +573,7 @@ function ConvolutionDemoBase() {
     setSimCount((c) => c + 1);
     setIsRunning(false);
     void zs; // 消除未使用变量警告
-  }, [safeXDist, safeYDist, canSimulate, isRunning]);
+  };
 
   const hasResult = bins.length > 0;
   const hasPdf = showPdf && hasAnalyticConvPDF(xDist.type, yDist.type);

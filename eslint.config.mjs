@@ -37,7 +37,7 @@ export default defineConfig([
       "react-hooks/set-state-in-effect": "warn",
       "react-hooks/refs": "warn",
       "react-hooks/preserve-manual-memoization": "warn",
-      "react-hooks/static-components": "warn",
+      // react-hooks/static-components 已清完，恢复默认 error
       // react-hooks/purity 已清完，恢复默认 error
       // react/no-unescaped-entities、no-explicit-any 已清完，恢复默认 error
     },
