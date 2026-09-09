@@ -39,10 +39,6 @@ export function useManagedWindowChrome({
   const managed = useWindowManager((s) => s.windows.find((w) => w.id === windowId));
   const { bringToFront, commitGeometry, minimizeWindow, setFullscreen } = useWindowManager();
   const preExpandRef = useRef<{ pos: { x: number; y: number }; size: WindowSize } | null>(null);
-  const targetRef = useRef(fullscreenTarget);
-  targetRef.current = fullscreenTarget;
-  const onResizeRef = useRef(onResize);
-  onResizeRef.current = onResize;
 
   const { elRef, onPointerDown } = useDraggable((dx, dy) => {
     const current = useWindowManager.getState().windows.find((w) => w.id === windowId);
@@ -59,7 +55,7 @@ export function useManagedWindowChrome({
     elRef,
     (width, height) => {
       commitGeometry(windowId, { size: { width, height } });
-      onResizeRef.current?.({ width, height });
+      onResize?.({ width, height });
     },
     minSize,
   );
@@ -84,7 +80,7 @@ export function useManagedWindowChrome({
       return;
     }
     preExpandRef.current = { pos: current.pos, size: current.size };
-    const rect = resolveFullscreenRect(targetRef.current);
+    const rect = resolveFullscreenRect(fullscreenTarget);
     if (rect && rect.width > 0 && rect.height > 0) {
       commitGeometry(windowId, {
         pos: { x: rect.left, y: rect.top },
@@ -92,7 +88,7 @@ export function useManagedWindowChrome({
       });
     }
     setFullscreen(windowId, true);
-  }, [commitGeometry, setFullscreen, windowId]);
+  }, [commitGeometry, fullscreenTarget, setFullscreen, windowId]);
 
   return {
     managed,

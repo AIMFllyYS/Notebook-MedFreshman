@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import {
   useFloatingChats,
   persistFloatingSize,
@@ -64,6 +64,12 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
     return () => window.removeEventListener("resize", onResize);
   }, [commitGeometry, managed, win.id]);
 
+  const fullscreenTarget = useCallback((): DOMRect | null => {
+    const rect = document.getElementById(NOTES_PANEL_ID)?.getBoundingClientRect();
+    if (rect && rect.width > 0 && rect.height > 0) return rect;
+    return new DOMRect(0, 48, Math.floor(window.innerWidth / 2), window.innerHeight - 48);
+  }, []);
+
   if (!managed) return null;
 
   function handleClose() {
@@ -86,11 +92,7 @@ export default function FloatingChatWindow({ win }: { win: FloatingWin }) {
       title={titleLabel}
       icon={<PencilSparklesIcon size={15} />}
       onClose={handleClose}
-      fullscreenTarget={() => {
-        const rect = document.getElementById(NOTES_PANEL_ID)?.getBoundingClientRect();
-        if (rect && rect.width > 0 && rect.height > 0) return rect;
-        return new DOMRect(0, 48, Math.floor(window.innerWidth / 2), window.innerHeight - 48);
-      }}
+      fullscreenTarget={fullscreenTarget}
       minSize={{ minW: FLOATING_MIN_W, minH: FLOATING_MIN_H }}
       registerOverlay={false}
       onResize={(size) => persistFloatingSize(size)}

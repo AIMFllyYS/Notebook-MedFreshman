@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { resolveFullscreenRect, type FullscreenTarget } from "@/lib/constants/layout";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
@@ -13,15 +13,11 @@ export function useFullscreenTrack(
   enabled: boolean,
   target: FullscreenTarget = "notes",
 ) {
-  const targetRef = useRef(target);
-  targetRef.current = target;
-  const targetKey = typeof target === "function" ? "fn" : target;
-
   useEffect(() => {
     if (!enabled || !windowId) return;
 
     const sync = () => {
-      const rect = resolveFullscreenRect(targetRef.current);
+      const rect = resolveFullscreenRect(target);
       if (!rect || rect.width <= 0 || rect.height <= 0) return;
       useWindowManager.getState().commitGeometry(windowId, {
         pos: { x: rect.left, y: rect.top },
@@ -32,5 +28,5 @@ export function useFullscreenTrack(
     sync();
     window.addEventListener("resize", sync);
     return () => window.removeEventListener("resize", sync);
-  }, [enabled, windowId, targetKey]);
+  }, [enabled, windowId, target]);
 }
