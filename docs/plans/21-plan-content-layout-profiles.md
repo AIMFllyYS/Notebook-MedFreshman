@@ -23,6 +23,27 @@
 
 ---
 
+## 并发避让（2026-09 新增，执行前必读）
+
+内容 Agent 在本计划排期期间**正在改动**以下文件，且可能处于未提交状态：
+
+- `lib/content-data/manifest.ts`
+- `lib/content-data/subjects.registry.ts`
+- `lib/content-data/nav.generated.json`（生成物）
+- `lib/constants/academic-year.ts`
+- `tests/content/academic-year.test.ts`、`components/layout/{HomeBookshelf,SubjectSidebar}.test.tsx`
+
+这与本计划的阶段 A3（给 `category-templates.ts` / manifest 加 `layoutProfile`）和阶段 C1（改 `subjects.registry.ts` 的 `contentRoot.detail` 枚举）**直接重叠**。
+
+执行规则：
+
+1. 开工第一件事跑 `git status --short`，记录哪些文件是对方的在途脏文件。
+2. 编辑上述任何文件**之前**都必须用 Read 工具重新读一遍最新内容，绝不依赖早先的读取结果或计划里的行号。
+3. 只做**加字段**的改动，绝不修改任何已有条目的数据值（学科名、items 数组、录音清单、学年常量）。
+4. `nav.generated.json` 是生成物，不要手改；若你的改动需要它更新，跑 `pnpm gen-nav`，且**只在它本身不是对方脏文件时**才这么做。
+5. 提交时 `git add` 只写你自己改的文件路径；若对方的脏文件与你要改的是同一个文件，把你的改动做完后**只提交该文件**，并在报告里明确说明"该文件在提交时可能同时包含对方的在途改动"，让主智能体判断。
+6. 若发现 `subjects.registry.ts` 正被对方大改（diff 很大），阶段 C 可以推迟并在报告里说明，不要强行改。
+
 ## 现状（执行前核对）
 
 - `lib/types/content.ts:42`：`Category.capabilities?: readonly CategoryCapability[]`，四种能力 `examples | quiz | search | media`。`lib/content-data/category-templates.ts:13-18` 为六个标准板块声明了子集，其中 `summary: ['search']`、`kaoqian-moni: []`、`shizhan-yanlian: []`。
