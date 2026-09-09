@@ -202,3 +202,45 @@ Commit：`docs(sop): document-only courseware integration with layout profiles`
 - 阶段 B3 触碰 `AppShell` 的 `react-resizable-panels` 布局，这是全站骨架。改动前先跑一次现有 `tests/windowLayerPlacement.test.ts`，改动后必须通过——它保证浮窗层仍挂在全局层而非被挤进某个 Panel。
 - 右栏折叠时 `#notes-panel` 宽度变化会触发 `[data-resizing]` 之外的 reflow；`globals.css:529-547` 的拖拽冻结策略不覆盖"程序性折叠"。若真机看到折叠瞬间闪烁，给 AppShell 的折叠动作包一层 `document.documentElement.dataset.resizing = '1'` → 下一帧删除。
 - 不要在本计划里顺手把 `ContentPageClient` 的 `renderType='html'` iframe 合并进 `ManagedWindow`——那是 `20` 完成后的可选项，混做会让两份计划的 commit 互相依赖。
+
+---
+
+## 派发前校准（2026-09-09，主智能体实测）
+
+本计划正文写于计划 `20`、`22` 之前，「现状（执行前核对）」一节的**路径和行号已经漂移**。下面是实测的当前锚点，以本节为准；但**编辑任何文件前仍必须用 Read 重读**（并发避让规则不变）。
+
+**最重要的一条漂移：`lib/store.ts` 已经不是 store 了。**
+
+计划 `22` 把全部 Zustand store 搬到了 `lib/stores/`。现在：
+
+- `lib/store.ts` 只剩 2 行 —— `@public @deprecated` 的 `export * from "@/lib/stores/ui"` 转发壳。
+- 真身是 **`lib/stores/ui.ts`（198 行）**，正文提到的 `lib/store.ts:148` 那个 capabilities 消费点现在在 **`lib/stores/ui.ts:148`**。
+- 本计划要改这个消费点时，**改 `lib/stores/ui.ts`，不要改转发壳**；否则会出现"改了没反应"，正是计划 `20` 刚收拾掉的那类问题。
+
+**其余锚点的当前位置**
+
+| 正文写的 | 实测当前 |
+|----------|----------|
+| `lib/store.ts:148`（capabilities 消费） | `lib/stores/ui.ts:148` |
+| `RightPanel.tsx:32` 的 `RIGHT_TABS` | `components/layout/RightPanel.tsx:33`（全文 218 行） |
+| `AppShell.tsx:187-364` 三栏布局 | `AppShell.tsx` 全文只有 **342 行**，该区间已越界；`#notes-panel` 两处在 **`:251`（桌面）** 与 **`:333`（移动）** |
+| `ContentPageClient.tsx:90` 的 `visibleTabs` | 未漂移，仍在 `:90` |
+| `lib/content/layoutProfile.ts` | **尚不存在**，由本计划新建 |
+
+- `AppShell.tsx` 里的 `#notes-panel` 现在通过 `lib/constants/layout.ts` 的 **`NOTES_PANEL_ID`** 常量引用（`AppShell.tsx:20` 导入）。这是计划 `20` 的既成不变量：**不要写回 `id="notes-panel"` 字面量**。
+- `lib/content-data/category-templates.ts` 的六个模板声明（`summary: ['search']`、`kaoqian-moni: []`、`shizhan-yanlian: []`）**与正文一致，未被改动**，阶段 A3 的前提成立。
+- `lib/types/content.ts` 现 52 行；`lib/content/categoryKeys.ts` 现 57 行；`lib/content/loader.ts` 现 446 行。
+
+**必须遵守的既成不变量（`00-execution-contract.md` 第六节）**
+
+本计划要改 `AppShell` / `RightPanel` / `ContentPageClient`，与前序计划的成果同处一片区域：
+
+1. **滚动契约（计划 `19`）**：`ChatThread.tsx` / `useStickToBottom.ts` 不在本计划范围内，**不要碰**。若阶段 B 的折叠动画影响到聊天区高度，也不要去改滚动逻辑，改自己这侧并在报告里说明。
+2. **窗口层契约（计划 `20`）**：浮窗必须留在 `AppShell` 的全局窗口层、`createPortal` 到 `document.body`。阶段 B3 动 `react-resizable-panels` 时，`tests/windowLayerPlacement.test.ts` 是唯一防线，改动前后各跑一次。右栏折叠不得把浮窗层挤进某个 Panel（那会让 `ManagedWindow` 的 `position: fixed` 落进新的包含块，全部浮窗定位错乱）。
+3. 新增浮层一律复用 `components/window/ManagedWindow.tsx`，不要手写 portal。
+
+**并发状态（派发时实测）**
+
+- 内容 Agent 最近一次代码提交是 `cdec28da`（按课程名长度排序大二学科），此后整个计划 `20`、`22` 期间未再提交代码。
+- 但它当前有两个在途脏文件：`docs/refer/exam-type-distribution.md`、`docs/refer/mineru-parsing-guide.md`。后者是文档解析指南，**说明下一批课件导入在路上**，落地时会再动 `manifest.ts` / `nav.generated.json` / `subjects.registry.ts`。
+- 所以并发避让那一节的六条规则**照旧全部有效**，尤其第 6 条：若发现 `subjects.registry.ts` 正被大改，阶段 C 可以推迟并在报告里说明。
