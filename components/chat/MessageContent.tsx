@@ -227,7 +227,7 @@ const renderParsedBlock = (
 
   // Inline ToolCall
   if (tagName === 'ToolCall') {
-    return <ToolCallDashboard key={key} toolCalls={[{ id: `inline-${key}`, name: compProps?.name || '', arguments: compProps || {}, status: 'success' }]} />;
+    return <ToolCallDashboard key={key} toolCalls={[{ id: `inline-${key}`, name: typeof compProps?.name === 'string' ? compProps.name : '', arguments: compProps || {}, status: 'success' }]} />;
   }
 
   // Answer / Thinking：内层可能含 FormulaSteps 等，必须二次 parse，不可直接 rehype-raw。

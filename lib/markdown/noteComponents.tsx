@@ -1,4 +1,5 @@
-import type { Components } from "react-markdown";
+import type { HTMLAttributes } from "react";
+import type { Components, ExtraProps } from "react-markdown";
 import { directiveComponents } from "@/lib/markdown/directiveComponents";
 import CodeBlock from "@/components/shared/CodeBlock";
 import { ContentImage } from "@/components/shared/ContentImage";
@@ -10,5 +11,5 @@ import { ContentImage } from "@/components/shared/ContentImage";
 export const noteComponents = {
   ...directiveComponents,
   img: ContentImage,
-  pre: ({ node, ...props }: any) => <CodeBlock {...props} />,
+  pre: ({ node: _node, ...props }: HTMLAttributes<HTMLPreElement> & ExtraProps) => <CodeBlock {...props} />,
 } as unknown as Components;

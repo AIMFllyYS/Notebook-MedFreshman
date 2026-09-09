@@ -120,6 +120,6 @@ export interface ParsedBlock {
   type: 'markdown' | 'component';
   content?: string;
   tagName?: string;
-  props?: Record<string, any>;
+  props?: Record<string, unknown>;
   childrenText?: string;
 }

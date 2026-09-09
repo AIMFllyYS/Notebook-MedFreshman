@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ImgHTMLAttributes } from "react";
 import { ImageOff } from "lucide-react";
 import { useLightbox } from "@/lib/stores/lightbox";
 
-export function ChatImage({ src, alt, title, node, ...rest }: any) {
+export function ChatImage({ src, alt, title, ...rest }: ImgHTMLAttributes<HTMLImageElement>) {
   const [errored, setErrored] = useState(false);
   const openLightbox = useLightbox((s) => s.open);
 
