@@ -45,5 +45,5 @@ export type {
   StudyTools,
   StudyToolName,
 } from "@/lib/ai/agent/tools/index";
-/** @public 兼容旧 import 路径。 */
-export { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/index";
+/** @public 兼容旧 import 路径。从 names 取，避免经 index 拉进 ResultCard。 */
+export { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";

@@ -21,30 +21,38 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
   const { create, openViewer, setSections, setSectionStatus, setSectionMarkdown, setStatus } = useDocuments();
   const [reasoning, setReasoning] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [generating, setGenerating] = useState(false);
   const startedRef = useRef(false);
-  const abortRef = useRef<AbortController | null>(null);
+  // 只取首帧 autoStart：主聊天结束导致 autoStart 翻转时，不中断正在生成的文档。
+  const [shouldAutoGen] = useState(autoStart);
 
   useEffect(() => {
-    /* eslint-disable react-hooks/set-state-in-effect */
     if (startedRef.current) return;
-    if (!autoStart) return;
-    if (doc) return;
+    if (!shouldAutoGen) return;
+    const existing = useDocuments.getState().byId[documentId];
+    if (existing?.status === 'done' || existing?.status === 'error') return;
     startedRef.current = true;
-    create(documentId, spec, modelId);
-    const abort = new AbortController();
-    abortRef.current = abort;
+    if (!existing) create(documentId, spec, modelId);
 
     const settings = useSettings.getState();
     const docModelId = modelId || settings.selectedModelId;
     const docModelInfo = getModelInfoWithCustom(docModelId, settings.customApiGroups);
     if (docModelInfo?.type === 'image') {
+      /* eslint-disable react-hooks/set-state-in-effect */
       setStatus(documentId, 'error', unsupportedReason || '当前生图模型不支持长文档撰写，请切换文本模型后重试。');
       setError(unsupportedReason || '当前生图模型不支持长文档撰写。');
+      /* eslint-enable react-hooks/set-state-in-effect */
       return;
     }
     const isCustom = docModelId.startsWith(CUSTOM_PREFIX);
     const customGroup = isCustom ? findCustomModelGroup(settings.customApiGroups, docModelId) : undefined;
 
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setGenerating(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
+
+    // 不在 cleanup 里 abort：create() 会写入 store，若 effect 依赖 doc 会 setup→cleanup→setup，
+    // 把首个请求掐掉且 startedRef 已置位，进度永远停在 0/N（与 ArtifactCard 同一类坑）。
     const run = async () => {
       try {
         setStatus(documentId, 'outlining');
@@ -62,7 +70,6 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
               ? { baseUrl: customGroup.group.baseUrl, apiKey: customGroup.group.apiKey, model: customGroup.model.id }
               : undefined,
           }),
-          signal: abort.signal,
         });
         if (!outlineRes.ok) throw new Error(`大纲请求失败: ${outlineRes.status}`);
         const outline = await consumeOutline(outlineRes, documentId, (r) => setReasoning(r));
@@ -72,7 +79,6 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
         setStatus(documentId, 'writing');
 
         for (let i = 0; i < outline.length; i++) {
-          if (abort.signal.aborted) return;
           const previousMarkdown = getDocumentMarkdown(documentId) || '';
           const sectionRes = await fetch('/api/document', {
             method: 'POST',
@@ -90,7 +96,6 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
                 ? { baseUrl: customGroup.group.baseUrl, apiKey: customGroup.group.apiKey, model: customGroup.model.id }
                 : undefined,
             }),
-            signal: abort.signal,
           });
           if (!sectionRes.ok) throw new Error(`第 ${i + 1} 节请求失败: ${sectionRes.status}`);
           await consumeSection(sectionRes, documentId, i, setSectionStatus, setSectionMarkdown);
@@ -102,16 +107,13 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
         const message = err instanceof Error ? err.message : '文档生成失败';
         setStatus(documentId, 'error', message);
         setError(message);
+      } finally {
+        setGenerating(false);
       }
     };
 
     void run();
-
-    /* eslint-enable react-hooks/set-state-in-effect */
-    return () => {
-      abort.abort();
-    };
-  }, [documentId, spec, modelId, autoStart, doc, create, openViewer, setSections, setSectionStatus, setSectionMarkdown, setStatus, unsupportedReason]);
+  }, [documentId, spec, modelId, shouldAutoGen, create, setSections, setSectionStatus, setSectionMarkdown, setStatus, unsupportedReason]);
 
   if (unsupportedReason) {
     return (
@@ -125,7 +127,8 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
     );
   }
 
-  const isStreaming = doc?.status === 'outlining' || doc?.status === 'writing';
+  const inFlight = generating;
+  const isStreaming = inFlight;
   const done = doc?.status === 'done';
   const errored = doc?.status === 'error' || error;
   const progressText = doc ? `${doc.sections.filter((s) => s.status === 'done' || s.status === 'streaming').length} / ${doc.sections.length} 节` : '';
@@ -136,7 +139,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
         <AgentDocumentIcon size={18} className={isStreaming ? 'animate-pulse' : ''} />
         <span className="text-[13px] font-semibold text-[var(--md-sys-color-on-surface)] truncate">{spec.title}</span>
         <span className="ml-auto text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-          {isStreaming ? progressText : done ? '已完成' : errored ? '生成失败' : '准备中'}
+          {isStreaming ? progressText : done ? '已完成' : errored ? '生成失败' : (progressText || '准备中')}
         </span>
       </div>
       {doc?.error ? (
@@ -145,7 +148,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
       {isStreaming && reasoning ? (
         <div className="mt-2 text-[11px] text-[var(--md-sys-color-on-surface-variant)] line-clamp-2">{reasoning}</div>
       ) : null}
-      {done || (doc?.sections.length && !isStreaming) ? (
+      {done || (doc && !inFlight) ? (
         <button
           type="button"
           onClick={() => openViewer(documentId)}

@@ -6,13 +6,7 @@ import { AgentFileIcon, AgentImageIcon, AgentLoopIcon, AgentUserIcon } from '@/c
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
-import ArtifactCard from '@/components/chat/ArtifactCard';
-import ImageGenCard from '@/components/chat/ImageGenCard';
-import ChatQuizCard from '@/components/chat/ChatQuizCard';
-import NoteCitationCard from '@/components/chat/NoteCitationCard';
 import WebSourceFold from '@/components/chat/WebSourceFold';
-import NoteImageGallery from '@/components/chat/NoteImageGallery';
-import DocumentCard from '@/components/chat/DocumentCard';
 import { AgentTrace, TRACE_COLLAPSE_MS } from '@/components/chat/AgentTrace';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
@@ -21,6 +15,7 @@ import { getMessageText, getToolPartsByName } from '@/lib/chat/messageParts';
 import { collectMessageSources } from '@/lib/chat/traceSources';
 import { ImageStrip } from '@/components/chat/ImageStrip';
 import { ChatImage } from '@/components/chat/ChatImage';
+import { ToolResultCards } from '@/lib/ai/agent/tools/resultCards';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -77,19 +72,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
 
   const traceSources = useMemo(() => isUser ? [] : collectMessageSources(parts), [isUser, parts]);
 
-  // One card per artifact ID, even if a restored tool result references it again.
-  const resultCards = useMemo(() => {
-    const seen = new Set<string>();
-    return parts.filter((part) => {
-      if (part.type !== 'tool-renderInteractive' && part.type !== 'tool-generateImage') return false;
-      if (part.state !== 'output-available' || part.preliminary) return false;
-      const id = part.type === 'tool-renderInteractive' ? part.output.artifactId : part.output.imageGenId;
-      if (!id || seen.has(`${part.type}:${id}`)) return false;
-      seen.add(`${part.type}:${id}`);
-      return true;
-    });
-  }, [parts]);
-
   return (
     <div className={`chat-message ${isUser ? 'user' : 'assistant'}`} data-message-role={message.role}>
       <div className="chat-message-header">
@@ -143,69 +125,14 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
               </div>
             )}
             {/* Rich results remain available below the answer when the trace collapses. */}
-            {getToolPartsByName(message, 'searchNotes').map((part) => part.state === 'output-available' && !part.preliminary && part.output.hits?.length
-              ? <NoteCitationCard key={part.toolCallId} hits={part.output.hits} />
-              : null)}
-            {getToolPartsByName(message, 'webSearch').map((part) => part.state === 'output-available' && !part.preliminary && part.output.sources?.length
-              ? <WebSourceFold key={part.toolCallId} sources={part.output.sources} cacheHit={part.output.cacheHit} />
-              : null)}
+            <ToolResultCards message={message} isStreaming={isStreaming} names={['searchNotes', 'webSearch']} />
             {directSources.length ? <WebSourceFold sources={directSources} label="参考来源" /> : null}
             {parts.map((part) => part.type === 'source-document' ? (
               <div key={part.sourceId} className="my-2 flex min-w-0 items-center gap-2 rounded-lg bg-[var(--md-sys-color-surface-container)] px-3 py-2 text-[12px] text-[var(--md-sys-color-on-surface-variant)]">
                 <AgentFileIcon size={16} className="shrink-0" /><span className="min-w-0 break-words">{part.title || part.filename || '参考文档'}</span>
               </div>
             ) : null)}
-            {resultCards.map((part) => {
-              if (part.type === 'tool-renderInteractive' && part.state === 'output-available') return (
-                <ArtifactCard
-                  key={`artifact:${part.output.artifactId}`}
-                  artifactId={part.output.artifactId}
-                  title={part.output.title}
-                  prompt={part.output.prompt}
-                  modelId={part.output.modelId}
-                  unsupportedReason={part.output.unsupportedReason}
-                  autoStart={!!isStreaming}
-                />
-              );
-              if (part.type === 'tool-generateImage' && part.state === 'output-available') return (
-                <ImageGenCard
-                  key={`image:${part.output.imageGenId}`}
-                  imageGenId={part.output.imageGenId}
-                  prompt={part.output.prompt}
-                  title={part.output.title}
-                  size={part.output.size}
-                  count={part.output.count}
-                  modelId={part.output.modelId}
-                />
-              );
-              return null;
-            })}
-            {getToolPartsByName(message, 'createQuiz').map((part) => part.state === 'output-available' && !part.preliminary && part.output.questions?.length
-              ? (
-                <ChatQuizCard
-                  key={`quiz:${part.output.quizId}`}
-                  title={part.output.title}
-                  questions={part.output.questions}
-                  intent={part.output.intent}
-                  droppedCount={part.output.droppedCount}
-                />
-              )
-              : null)}
-            {getToolPartsByName(message, 'searchNoteImages').map((part) => part.state === 'output-available' && !part.preliminary && part.output.images?.length
-              ? <NoteImageGallery key={`note-img:${part.toolCallId}`} images={part.output.images} query={typeof part.input === 'object' && part.input ? String(((part.input as unknown) as Record<string, unknown>).query ?? '') : ''} />
-              : null)}
-            {getToolPartsByName(message, 'writeDocument').map((part) => part.state === 'output-available' && !part.preliminary
-              ? (
-                <DocumentCard
-                  key={`doc:${part.output.documentId}`}
-                  documentId={part.output.documentId}
-                  spec={part.output.spec}
-                  modelId={part.output.modelId}
-                  unsupportedReason={part.output.unsupportedReason}
-                  autoStart={!!isStreaming}
-                />
-              )
-              : null)}
+            <ToolResultCards message={message} isStreaming={isStreaming} names={['renderInteractive', 'generateImage', 'createQuiz', 'searchNoteImages', 'writeDocument']} />
             {imageSearchSources.length > 0 && (
               <div className="image-search-gallery">
                 <div className="image-search-gallery-header">
