@@ -30,18 +30,6 @@ export default defineConfig([
     "tmp/**",
     "public/rdkit/**",
   ]),
-  // Next 16 工具链把一批存量写法升成 error。计划 18 只建立门禁，不改业务组件；
-  // 这些规则降为 warn，后续计划再逐项清理。
-  {
-    rules: {
-      "react-hooks/set-state-in-effect": "warn",
-      "react-hooks/refs": "warn",
-      // react-hooks/preserve-manual-memoization 已清完，恢复默认 error
-      // react-hooks/static-components 已清完，恢复默认 error
-      // react-hooks/purity 已清完，恢复默认 error
-      // react/no-unescaped-entities、no-explicit-any 已清完，恢复默认 error
-    },
-  },
   {
     files: ["electron/**"],
     rules: {

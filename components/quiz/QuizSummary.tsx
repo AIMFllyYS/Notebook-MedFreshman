@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { RotateCcw, ArrowLeft, Trophy, Check } from "lucide-react";
 import { useQuizStore, computeBreakdown } from "@/lib/quiz-store";
 import { getChapterProgress } from "@/lib/quiz-progress";
+import { useIsClient } from "@/lib/hooks/useIsClient";
 
 const TYPE_LABELS: Record<string, string> = {
   single_choice: "单选题",
@@ -102,10 +103,8 @@ export default function QuizSummary() {
   const grade = gradeOf(breakdown.percent);
 
   // finishScoring 已把成绩写入 localStorage；mounted 后读回展示「已保存 + 历史最佳」。
-  const [best, setBest] = useState<number | null>(null);
-  useEffect(() => {
-    setBest(getChapterProgress(subjectId, chapterId)?.best ?? null);
-  }, [subjectId, chapterId]);
+  const mounted = useIsClient();
+  const best = mounted ? getChapterProgress(subjectId, chapterId)?.best ?? null : null;
 
   return (
     <div className="mx-auto w-full max-w-3xl px-8 py-10">

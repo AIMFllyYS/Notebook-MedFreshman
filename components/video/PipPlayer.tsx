@@ -70,22 +70,20 @@ export default function PipPlayer() {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [initialized, setInitialized] = useState(false);
 
-  useEffect(() => {
-    if (!video || initialized) return;
-    let g;
-    if (pipGeometry) {
-      g = clampGeometry(pipGeometry.x, pipGeometry.y, pipGeometry.width, pipGeometry.height);
-    } else {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      g = clampGeometry(vw - DEFAULT_WIDTH - MARGIN, vh - DEFAULT_HEIGHT - MARGIN, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    }
+  if (typeof window !== "undefined" && video && !initialized) {
+    const g = pipGeometry
+      ? clampGeometry(pipGeometry.x, pipGeometry.y, pipGeometry.width, pipGeometry.height)
+      : clampGeometry(
+          window.innerWidth - DEFAULT_WIDTH - MARGIN,
+          window.innerHeight - DEFAULT_HEIGHT - MARGIN,
+          DEFAULT_WIDTH,
+          DEFAULT_HEIGHT,
+        );
     setWidth(g.width);
     setHeight(g.height);
     setPos({ x: g.x, y: g.y });
-    posRef.current = g;
     setInitialized(true);
-  }, [video, pipGeometry, initialized]);
+  }
 
   useEffect(() => {
     if (!initialized) return;

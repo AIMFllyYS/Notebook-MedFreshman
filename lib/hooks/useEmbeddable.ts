@@ -4,27 +4,22 @@ import { useEffect, useState } from "react";
 import { getCachedEmbed, probeCanEmbed } from "@/lib/browser/canEmbed";
 
 export function useEmbeddable(url: string | null) {
-  const [blocked, setBlocked] = useState(false);
-  const [reason, setReason] = useState<string | undefined>();
   const [forced, setForced] = useState<string | null>(null);
+  const [probe, setProbe] = useState<{ url: string; embeddable: boolean; reason?: string } | null>(null);
+
+  const skip = !url || forced === url;
+  const cached = !skip && url ? getCachedEmbed(url) : undefined;
+  const live = cached ?? (probe && url && probe.url === url
+    ? { embeddable: probe.embeddable, reason: probe.reason }
+    : undefined);
 
   useEffect(() => {
-    if (!url || forced === url) {
-      setBlocked(false);
-      return;
-    }
-    const cached = getCachedEmbed(url);
-    if (cached) {
-      setBlocked(!cached.embeddable);
-      setReason(cached.reason);
-      return;
-    }
-    setBlocked(false);
+    if (!url || forced === url) return;
+    if (getCachedEmbed(url)) return;
     let alive = true;
     probeCanEmbed(url).then((verdict) => {
       if (!alive || forced === url) return;
-      setBlocked(!verdict.embeddable);
-      setReason(verdict.reason);
+      setProbe({ url, embeddable: verdict.embeddable, reason: verdict.reason });
     });
     return () => {
       alive = false;
@@ -32,8 +27,8 @@ export function useEmbeddable(url: string | null) {
   }, [url, forced]);
 
   return {
-    blocked: blocked && forced !== url,
-    reason,
+    blocked: skip ? false : live ? !live.embeddable : false,
+    reason: skip ? undefined : live?.reason,
     forceEmbed: () => {
       if (url) setForced(url);
     },

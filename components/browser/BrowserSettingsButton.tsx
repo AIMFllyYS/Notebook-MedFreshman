@@ -19,12 +19,15 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const [home, setHome] = useState(homeUrl);
+  const [prevHomeUrl, setPrevHomeUrl] = useState(homeUrl);
+  if (homeUrl !== prevHomeUrl) {
+    setPrevHomeUrl(homeUrl);
+    setHome(homeUrl);
+  }
 
   const btnRef = useRef<HTMLButtonElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ top: 0, left: 0 });
-
-  useEffect(() => setHome(homeUrl), [homeUrl]);
 
   // 定位（按钮下方右对齐）
   useLayoutEffect(() => {

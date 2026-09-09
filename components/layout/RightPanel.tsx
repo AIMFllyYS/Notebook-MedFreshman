@@ -1,6 +1,7 @@
 "use client";
 
-import { Component, useMemo, useState, useEffect, useRef, type ErrorInfo, type ReactNode } from "react";
+import { Component, useMemo, useState, useRef, type ErrorInfo, type ReactNode } from "react";
+import { useIsClient } from "@/lib/hooks/useIsClient";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { MessageSquare, MonitorPlay, Hand, Globe, X } from "lucide-react";
@@ -124,8 +125,7 @@ export default function RightPanel() {
 
   // 避免 hydration mismatch：bookmarks 源自 localStorage，SSR 时使用默认值，
   // 客户端 hydrate 后才使用 localStorage 的真实数据。
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
   const safeBookmarks = mounted ? bookmarks : [];
 
   const academicYear = useAcademicYear((s) => s.year);
