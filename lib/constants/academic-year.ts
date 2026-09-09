@@ -96,12 +96,23 @@ export function academicYearOfSubject(subjectId: string): AcademicYearId {
   return getSubjectMeta(subjectId)?.year ?? "freshman-2";
 }
 
+/** 课程全名字数升序；同字数再按 zh-CN。侧栏 / 书架大二上用。 */
+export function compareByCourseNameLength(aId: string, bId: string): number {
+  const an = getSubjectMeta(aId)?.name ?? aId;
+  const bn = getSubjectMeta(bId)?.name ?? bId;
+  const byLen = [...an].length - [...bn].length;
+  if (byLen !== 0) return byLen;
+  return an.localeCompare(bn, "zh-CN");
+}
+
 export function filterSubjectsByYear<T extends { id: string }>(
   subjects: readonly T[],
   year: AcademicYearId,
 ): T[] {
   const allowed = SUBJECTS_BY_YEAR[year];
-  return subjects.filter((subject) => allowed.has(subject.id));
+  const filtered = subjects.filter((subject) => allowed.has(subject.id));
+  if (year !== "sophomore-1") return filtered;
+  return [...filtered].sort((a, b) => compareByCourseNameLength(a.id, b.id));
 }
 
 export function filterContentTreeByYear(

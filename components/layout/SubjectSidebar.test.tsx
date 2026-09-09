@@ -29,9 +29,24 @@ describe("SubjectSidebar year filter", () => {
     expect(screen.getByText("组织学与胚胎学")).toBeInTheDocument();
     expect(screen.getByText("医学英语")).toBeInTheDocument();
     expect(screen.getByText("医学统计学")).toBeInTheDocument();
+    expect(screen.getByText("细胞生物学实验")).toBeInTheDocument();
     expect(screen.queryByText("概率论与数理统计")).not.toBeInTheDocument();
     expect(screen.queryByText("大学物理")).not.toBeInTheDocument();
     expect(screen.queryByText("有机化学")).not.toBeInTheDocument();
+    const order = [
+      "医学英语",
+      "仪器分析",
+      "系统解剖学",
+      "医学统计学",
+      "细胞生物学实验",
+      "医学细胞生物学",
+      "组织学与胚胎学",
+      "生物化学与分子生物学",
+    ];
+    for (let i = 1; i < order.length; i++) {
+      const pos = screen.getByText(order[i - 1]).compareDocumentPosition(screen.getByText(order[i]));
+      expect(pos & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    }
   });
 
   it("store year change to 大一下学期 restores freshman subjects", () => {
