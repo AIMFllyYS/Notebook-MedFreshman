@@ -3,6 +3,7 @@
 import { useCallback } from 'react';
 import type { CanvasBlock, HtmlCanvasBlock } from '@/lib/canvas/types';
 import { downloadHtmlFile } from '@/lib/utils/downloadHtml';
+import { openHtmlInNewTab } from '@/lib/utils/openHtmlInNewTab';
 import { useCanvasFullscreen } from '@/lib/hooks/useCanvasFullscreen';
 import { CanvasControls } from '../CanvasControls';
 import { CanvasFrame } from '../CanvasFrame';
@@ -20,9 +21,7 @@ export function HtmlRenderer({ block, revisionTopic, onRevisionSubmit, onRevisio
   const title = block.title || 'HTML canvas';
   const height = block.height ?? 360;
   const openExternal = useCallback(() => {
-    const url = URL.createObjectURL(new Blob([block.source], { type: 'text/html' }));
-    window.open(url, '_blank', 'noopener');
-    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    openHtmlInNewTab(block.source);
   }, [block.source]);
   const download = useCallback(() => downloadHtmlFile(block.source, title), [block.source, title]);
 

@@ -8,6 +8,7 @@ import { CUSTOM_PREFIX, findCustomModelGroup, getModelInfoWithCustom } from '@/l
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
+import { openHtmlInNewTab } from '@/lib/utils/openHtmlInNewTab';
 
 type ArtifactApiEvent =
   | { type: 'ping'; t?: number }
@@ -180,9 +181,7 @@ export default function ArtifactCard({
 
   const openExternal = () => {
     if (!html) return;
-    const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
-    window.open(url, '_blank', 'noopener');
-    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    openHtmlInNewTab(html);
   };
 
   const codeChars = html.length;
