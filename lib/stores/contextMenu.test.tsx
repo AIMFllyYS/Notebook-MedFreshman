@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { useContextMenu } from "./useContextMenu";
+import { useContextMenu } from "./contextMenu";
 
 describe("useContextMenu", () => {
   beforeEach(() => {
