@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from "react";
 import type { Components, ExtraProps } from "react-markdown";
-import { directiveComponents } from "@/lib/markdown/directiveComponents";
+import { directiveComponents } from "@/components/shared/directives/registry";
 import CodeBlock from "@/components/shared/CodeBlock";
 import { ContentImage } from "@/components/shared/ContentImage";
 

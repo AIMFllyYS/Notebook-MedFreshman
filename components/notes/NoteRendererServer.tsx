@@ -1,6 +1,6 @@
 import { MarkdownAsync } from "react-markdown";
 import { sharedRemarkPlugins, sharedRehypePlugins } from "@/lib/markdown/plugins";
-import { noteComponents } from "@/lib/markdown/noteComponents";
+import { noteComponents } from "@/components/notes/noteComponents";
 
 /**
  * 服务端正文渲染器（React Server Component）。

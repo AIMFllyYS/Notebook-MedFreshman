@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import { sharedRemarkPlugins, sharedRehypePlugins } from "@/lib/markdown/plugins";
-import { directiveComponents } from "@/lib/markdown/directiveComponents";
+import { directiveComponents } from "@/components/shared/directives/registry";
 import { normalizeDirectiveLabels } from "@/lib/markdown/normalizeDirectiveLabels";
 import { ContentImage } from "@/components/shared/ContentImage";
 import "katex/dist/katex.min.css";
@@ -25,46 +25,35 @@ function cleanControlTags(content: string): string {
     .replace(/<FollowUp>[\s\S]*$/i, "");
 }
 
+const blockComponents: Partial<Components> = {
+  ...directiveComponents,
+  table: ({ node, ...props }: MarkdownComponentProps<"table">) => {
+    void node;
+    return (
+      <div style={{ overflowX: "auto" }}>
+        <table {...props} />
+      </div>
+    );
+  },
+  img: ContentImage,
+};
+
+const inlineComponents: Partial<Components> = {
+  ...directiveComponents,
+  p: ({ node, ...props }: MarkdownComponentProps<"p">) => {
+    void node;
+    return <span {...props} />;
+  },
+  img: ContentImage,
+};
+
 /**
  * 题目测试专用的轻量 Markdown + KaTeX 渲染器。
  * 复用全站共享的 remark/rehype 插件（remark-math + rehype-katex + mhchem），
  * 支持 $...$ / $$...$$ 公式与基础 Markdown，但不挂载可视化/工具调用等重型逻辑。
- *
- * 注意：blockComponents / inlineComponents 必须在组件函数内通过 useMemo 构造，
- * 不能在模块顶层展开 directiveComponents。因为 MemoryCard 属于 directiveComponents，
- * 而 MemoryCard 内部又使用 QuizMarkdown，顶层展开会形成循环依赖并在 Turbopack 某些
- * 入口顺序下触发 TDZ（Cannot access 'directiveComponents' before initialization）。
  */
 export default function QuizMarkdown({ children, inline, className }: QuizMarkdownProps) {
   const content = normalizeDirectiveLabels(cleanControlTags(children ?? ""));
-
-  const blockComponents = useMemo<Partial<Components>>(
-    () => ({
-      ...directiveComponents,
-      table: ({ node, ...props }: MarkdownComponentProps<"table">) => {
-        void node;
-        return (
-          <div style={{ overflowX: "auto" }}>
-            <table {...props} />
-          </div>
-        );
-      },
-      img: ContentImage,
-    }),
-    [],
-  );
-
-  const inlineComponents = useMemo<Partial<Components>>(
-    () => ({
-      ...directiveComponents,
-      p: ({ node, ...props }: MarkdownComponentProps<"p">) => {
-        void node;
-        return <span {...props} />;
-      },
-      img: ContentImage,
-    }),
-    [],
-  );
 
   if (inline) {
     return (

@@ -4,7 +4,7 @@ import React, { useMemo, Children, isValidElement } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { sharedRemarkPlugins, sharedRehypePlugins } from '@/lib/markdown/plugins';
 import remarkSoftBreaks from '@/lib/markdown/remarkSoftBreaks';
-import { directiveComponents } from '@/lib/markdown/directiveComponents';
+import { directiveComponents } from '@/components/shared/directives/registry';
 import 'katex/dist/katex.min.css';
 import { parseXmlTags, hasKnownCustomTags, stripOrphanCustomTagMarkers, CHAT_VIZ_TAGS } from '@/lib/utils/xmlParser';
 import { parseChatContent } from '@/lib/chat/rendering/parseChatContent';
