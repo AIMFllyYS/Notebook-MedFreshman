@@ -145,7 +145,7 @@ pnpm test:react
 
 **Agent 与状态契约（计划 `22` 建立，经三批端测验证）**
 
-- **工具目录是唯一真相源。** 每个工具一个 `lib/ai/agent/tools/<name>/` 目录（13 个），有 UI 的再配 `ResultCard.tsx`（7 个）。卡片顺序由 `lib/ai/agent/tools/catalog.ts` 的 `RESULT_CARD_ORDER` 决定；`components/chat/ChatMessage.tsx` 里**不得再出现工具名字面量**（已清零，别写回去）。
+- **工具目录是唯一真相源。** 每个工具一个 `lib/ai/agent/tools/<name>/` 目录（13 个：`types.ts` / `presentation.ts` / `tool.ts`），有 UI 的再配 `components/chat/toolCards/<name>Card.tsx`（7 个）。卡片顺序由 `components/chat/toolCards/registry.tsx` 的 `RESULT_CARD_ORDER` 决定；`components/chat/ChatMessage.tsx` 里**不得再出现工具名字面量**（已清零，别写回去）。
 - **客户端不得导入任何 `tool.ts` / `server.ts`。** 六处 `no-restricted-imports` 规则（`components/**`、`lib/hooks/**`、`components/notes/**`、`RightPanel.tsx`、`components/interactives/**`、`components/canvas/**`）均为 `error`，已实测能拦住。破了这条会把密钥读取逻辑打进浏览器 bundle 或报 `fs` 找不到；`lib/ai/agent/tools/index.ts` 的公共再导出（标了 `@public`）**不要顺手把 `tool.ts` 挂上去**。
 - **store 清点口径（28 个）：** `lib/stores/` 下排除测试与 `_persist.ts` 共 28 个文件 = `from "zustand"` 的 `create(` **22** 个 + `createPersistedStore` 包装 **6** 个（artifacts / documents / imageGen / skills / reviewCards / billing）。只用 `git grep 'from "zustand"'` 会漏掉 `chatHistory` / `chatUI` / `tokenTracker` / `floatingTokenTracker` 这 4 个（写法不统一）。以后清点必须按这个口径，否则会误判"store 变少了"。
 - **persist 名不得改。** 所有 `persist` 的 key 都已落在用户的 localStorage / IndexedDB 里，改名等于让用户数据凭空消失；计划 `22` 搬家 28 个 store 时逐个核对过 key 未变（第一批端测实测无数据丢失）。

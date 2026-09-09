@@ -5,7 +5,8 @@
  * 每个工具一个目录：
  * ```
  * lib/ai/agent/tools/<name>/
- *   types.ts  presentation.ts  tool.ts  [ResultCard.tsx]
+ *   types.ts  presentation.ts  tool.ts
+ * 有卡片时：components/chat/toolCards/<name>Card.tsx
  * ```
  * 13 个目录：getCurrentPage / getOutline / getSection / searchNotes /
  * searchNoteImages / webSearch / imageSearch / renderInteractive / drawDiagram /
@@ -16,7 +17,7 @@
  * input / output 拿到强类型数据（来源、命中、artifactId 等）。
  *
  * 新增步骤见 `docs/refer/adding-an-agent-tool.md`。
- * 客户端只从 `tools/index.ts` 取类型 / presentation / ResultCard；
+ * 客户端只从 `tools/index.ts` 取类型 / presentation；卡片在 `components/chat/toolCards/`；
  * `tool.ts` 与 `server.ts` 仅服务端可导入。
  *
  * 约定：每个 output 都有 `text`——这是回灌给模型的唯一内容（tool.toModelOutput），

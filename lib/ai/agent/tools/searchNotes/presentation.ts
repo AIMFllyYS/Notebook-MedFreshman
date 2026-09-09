@@ -1,3 +1,4 @@
+/** 结果卡片：`components/chat/toolCards/searchNotesCard.tsx` */
 import type { ToolPresentation } from "@/lib/ai/agent/tools/registry";
 
 export const presentation: ToolPresentation = {

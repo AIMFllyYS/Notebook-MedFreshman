@@ -11,7 +11,11 @@ lib/ai/agent/tools/<name>/
   types.ts           # Input / Output（客户端安全，禁止 import fs / 密钥 / tool.ts）
   presentation.ts    # label / icon / 设置文案 / toggleable
   tool.ts            # tool() 定义（仅服务端）
-  ResultCard.tsx     # 可选；有结果卡片的工具才加
+
+components/chat/toolCards/
+  <name>Card.tsx     # 可选；有结果卡片的工具才加（不要写回 lib）
+  registry.tsx       # TOOL_REGISTRY / TOOL_RESULT_CARDS / RESULT_CARD_ORDER
+  ToolResultCards.tsx
 ```
 
 汇总文件（新工具都要登记）：
@@ -20,24 +24,24 @@ lib/ai/agent/tools/<name>/
 |------|------|
 | `names.ts` | `StudyTools` 联合 + `STUDY_TOOL_NAMES` |
 | `presentations.ts` | 汇总各工具 `presentation` |
-| `catalog.ts` | `TOOL_REGISTRY` / `TOOL_RESULT_CARDS` / `RESULT_CARD_ORDER` |
 | `server.ts` | `buildStudyTools` 里挂上 `createXxxTool` |
-| `index.ts` | 客户端入口：类型 + presentation + 卡片。**禁止** re-export `tool.ts` / `server.ts` |
+| `index.ts` | 同构桶：只导出类型 + presentation。**禁止** re-export `tool.ts` / `server.ts` / 卡片 |
+| `components/chat/toolCards/registry.tsx` | 客户端卡片注册表与顺序 |
 
 旧路径 `lib/ai/agent/toolTypes.ts`、`lib/chat/toolPresentation.ts` 只是兼容 re-export。
 
 ## 服务端 / 客户端边界
 
-`components/**` 与 `lib/hooks/**` 不得 import `tool.ts` 或 `server.ts`（ESLint `no-restricted-imports`）。一旦 `index.ts` 间接导出了 `tool.ts`，Next 会把 `fs` 或密钥读取打进浏览器 bundle。
+`components/**` 与 `lib/hooks/**` 不得 import `tool.ts` 或 `server.ts`（ESLint `no-restricted-imports`）。一旦 `index.ts` 间接导出了 `tool.ts`，Next 会把 `fs` 或密钥读取打进浏览器 bundle。`lib/**` 也不得 import `components/**`（error）。
 
-卡片可以放在工具目录里、再映射到 `components/chat/*` 的现有卡片（`lib → components` 是已知 warning，不要为此把卡片搬进 `components` 硬编码分发）。
+结果卡片只放 `components/chat/toolCards/`，步骤见该目录 `README.md`。
 
 ## 步骤
 
-1. 新建 `lib/ai/agent/tools/<name>/types.ts`、`presentation.ts`、`tool.ts`。有卡片再加 `ResultCard.tsx`。
+1. 新建 `lib/ai/agent/tools/<name>/types.ts`、`presentation.ts`、`tool.ts`。有卡片再加 `components/chat/toolCards/<name>Card.tsx`。
 2. 在 `names.ts` 的 `StudyTools` 与 `STUDY_TOOL_NAMES` 各加一项。
 3. 在 `presentations.ts` import 并写入 `TOOL_PRESENTATION`。
-4. 在 `catalog.ts` 的 `TOOL_REGISTRY` 登记；有卡片则写入 `RESULT_CARD_ORDER`（顺序按现网卡片，不是 `STUDY_TOOL_NAMES`）。
+4. 在 `components/chat/toolCards/registry.tsx` 的 `TOOL_REGISTRY` 登记；有卡片则写入 `RESULT_CARD_ORDER`（顺序按现网卡片，不是 `STUDY_TOOL_NAMES`）。
 5. 在 `server.ts` 的 `all` 与 `names` 里挂上工厂函数（搜索类工具仍受 `enableSearch` 控制）。
 6. 在 `index.ts` 加 `export type { XxxInput, XxxOutput }`。
 7. 跑 `pnpm exec tsc --noEmit` 与 **`pnpm build`**（不只是 tsc），确认客户端 bundle 不报 `fs`。
@@ -107,7 +111,7 @@ export const STUDY_TOOL_NAMES = [
 ] as const;
 ```
 
-有结果卡片时，`ResultCard.tsx` 只做 props 映射，本体仍放 `components/chat/`：
+有结果卡片时，`components/chat/toolCards/<name>Card.tsx` 只做 props 映射，本体仍放 `components/chat/`：
 
 ```tsx
 "use client";
@@ -120,4 +124,4 @@ export default function ExampleResultCard({ part }: ResultCardProps<"exampleTool
 }
 ```
 
-然后把它挂进 `catalog.ts` 的 `TOOL_REGISTRY` 与 `RESULT_CARD_ORDER`。`ChatMessage.tsx` 会经 registry 自动渲染，不用再写 `getToolPartsByName(message, 'exampleTool')`。
+然后把它挂进 `components/chat/toolCards/registry.tsx` 的 `TOOL_REGISTRY` 与 `RESULT_CARD_ORDER`。`ChatMessage.tsx` 会经 `ToolResultCards` 自动渲染，不用再写 `getToolPartsByName(message, 'exampleTool')`。

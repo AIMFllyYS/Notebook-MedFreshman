@@ -47,7 +47,7 @@ export default defineConfig([
             "**/lib/ai/agent/tools/**/tool",
             "**/lib/ai/agent/tools/server",
           ],
-          message: "客户端不得导入 Agent 工具的服务端定义（tool.ts / server.ts），以免把 fs 与密钥打进浏览器 bundle。请从 @/lib/ai/agent/tools 导入类型、presentation 或 ResultCard。",
+          message: "客户端不得导入 Agent 工具的服务端定义（tool.ts / server.ts），以免把 fs 与密钥打进浏览器 bundle。请从 @/lib/ai/agent/tools 导入类型与 presentation；结果卡片在 components/chat/toolCards/。",
         }],
       }],
     },
@@ -96,8 +96,7 @@ export default defineConfig([
   {
     files: ["lib/**"],
     rules: {
-      // 存量：lib/markdown 的指令映射仍从 components 拉渲染组件（16 处）。计划 22 再拆，本计划不改业务。
-      "no-restricted-imports": ["warn", {
+      "no-restricted-imports": ["error", {
         patterns: [{ group: ["@/components/*"], message: "lib 不得依赖 components。" }],
       }],
     },

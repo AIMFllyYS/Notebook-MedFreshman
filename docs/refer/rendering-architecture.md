@@ -15,16 +15,14 @@
 │  ├─ sharedRemarkPlugins  (GFM + Math + Directive + 自定义)      │
 │  └─ sharedRehypePlugins  (rehype-raw + KaTeX + highlight.js)   │
 │                                                                 │
-│  directiveComponents.ts                                         │
-│  ├─ Callout       (components/shared/directives/Callout.tsx)    │
-│  ├─ Derivation    (components/shared/directives/Derivation.tsx) │
-│  ├─ MediaEmbed    (components/shared/directives/MediaEmbed.tsx) │
-│  ├─ Figure        (components/shared/directives/Figure.tsx)     │
-│  ├─ PlotDirective (components/canvas/PlotDirective.tsx)         │
-│  └─ CanvasDirective (components/canvas/CanvasDirective.tsx)     │
-│                                                                 │
 │  calloutTypes.ts   ── CALLOUT_META 单一数据源                    │
 │  remarkDirectives.ts ── 解析 :::callout / ::figure 等指令       │
+│                                                                 │
+│  指令组件映射已归 UI 层（lib 不得 import components）：            │
+│  components/shared/directives/registry.ts                       │
+│  ├─ Callout / Derivation / MediaEmbed / Figure / MemoryCard …   │
+│  ├─ PlotDirective / CanvasDirective                             │
+│  components/notes/noteComponents.tsx  ── 笔记侧映射              │
 │                                                                 │
 │  components/shared/CodeBlock.tsx    ── 代码块（复制 + 语言标签） │
 │  components/shared/ContentImage.tsx ── 统一图片组件（错误兜底） │
@@ -60,7 +58,7 @@
 
 **禁止**在 `NoteRenderer` 或 `MessageContent` 中直接内联插件配置。必须从此文件导入。
 
-### 2.2 指令组件 (`lib/markdown/directiveComponents.ts`)
+### 2.2 指令组件 (`components/shared/directives/registry.ts`)
 
 | 键名 | 组件 | 来源 |
 |---|---|---|
@@ -421,7 +419,7 @@ CanvasBlock 提供统一的聊天画布协议，覆盖自由 SVG、函数图像�
 
 1. 在 `components/shared/directives/` 下创建新组件文件
 2. 在 `components/shared/directives/index.ts` 中 re-export
-3. 在 `lib/markdown/directiveComponents.ts` 中注册键名
+3. 在 `components/shared/directives/registry.ts` 中注册键名
 4. 在 `lib/markdown/remarkDirectives.ts` 中添加解析逻辑（如果需要自定义 node 属性）
 
 ### 7.3 新增可视化标签（聊天侧）
@@ -457,7 +455,7 @@ CanvasBlock 提供统一的聊天画布协议，覆盖自由 SVG、函数图像�
 
 1. **Artifact 浮窗（「撰写可视化 HTML」所指的那条）**  
    工具 id 仍叫 `renderInteractive`（已写入用户 IndexedDB 聊天历史，**不要改 id**）。  
-   入口：`lib/ai/agent/tools.ts` → `lib/ai/artifact.ts` → `app/api/artifact/route.ts` → `components/chat/ArtifactCard.tsx`（消息内「打开演示」）→ `lib/hooks/useArtifacts.ts` → `components/chat/ArtifactViewer.tsx`。  
+   入口：`lib/ai/agent/tools/renderInteractive/tool.ts` → `lib/ai/artifact.ts` → `app/api/artifact/route.ts` → `components/chat/toolCards/renderInteractiveCard.tsx`（适配器）→ `components/chat/ArtifactCard.tsx`（消息内「打开演示」）→ `lib/hooks/useArtifacts.ts` → `components/chat/ArtifactViewer.tsx`。  
    浮窗由 `AppShell` 挂载，`createPortal` 到 `document.body`，**既不属于右侧 Agent 面板，也不属于中间笔记区**。全屏默认对齐 `#notes-panel`，可在设置里改成铺满视口。
 
 2. **消息内联 HTML 画布**  
