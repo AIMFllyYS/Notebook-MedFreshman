@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildAttempt, type QuizState } from "./quiz-store.ts";
+import { buildAttempt, type QuizState } from "./quiz.ts";
+
 import type { QuizQuestion, UserAnswer } from "@/lib/quiz/types";
 
 function makeQuestion(id: string, points: number): QuizQuestion {
