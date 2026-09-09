@@ -8,10 +8,13 @@
  * 属性解析就会失败 → 整个指令被丢弃，渲染成字面文本 `:::definition{...}`
  *  （callout 框消失、::: 围栏裸露、块结构坍塌）。
  *
- * 处理策略（仅作用于指令起始行的 `{label=…}` / `{title=…}`，代码块内一律跳过）：
- *   1. 把值里成对的 ASCII 直引号 `"`/`'` 转为中文弯引号 `“”`/`‘’`（更符合中文排版）；
- *   2. 用 ASCII 双引号把整个值「定界」包起来 → `{label="σ-p 超共轭"}`，
+ * 处理策略（仅作用于花括号**以** `label=` / `title=` 开头的指令行，代码块内一律跳过）：
+ *   1. 只改第一个 label/title 的值，其后属性（如 `mode=cloze`）原样拼回；
+ *   2. 把值里成对的 ASCII 直引号 `"`/`'` 转为中文弯引号 `“”`/`‘’`（更符合中文排版）；
+ *   3. 用 ASCII 双引号把该值「定界」包起来 → `{label="σ-p 超共轭"}`，
  *      这样空格、斜杠等字符都能被 micromark 正确接受。
+ * 未加引号的值边界是「下一个 `\s+[\w-]+=`」之前；已加引号的值按成对引号切分，
+ * 因此 `{label="… A260=1.0"}` 里的公式不会被误判成第二个属性。
  *
  * 该规范化同时作用于笔记侧（NoteRenderer）与聊天侧（MessageContent），
  * 因此既修复既有内容（所有学科），也兜底 AI 生成内容与未来作者的笔误。
@@ -25,19 +28,67 @@
 // 含空格/引号的 label 在 CRLF 文件里得不到归一 → remark-directive 解析失败 → callout 泄漏成裸文本。
 // [^\n] 可匹配并保留行尾 \r，修复 CRLF 行尾下的指令归一。
 const DIRECTIVE_OPEN = /^(\s*:{1,4}[A-Za-z][\w-]*)(\{[^}\n]*\})([^\n]*)$/;
-// 仅处理 {label=…} 或 {title=…} 这种单属性花括号
-const LABEL_BRACE = /^\{(label|title)=([\s\S]*)\}$/;
+const LABEL_KEY = /^(label|title)=/;
+const NEXT_ATTR = /\s+[\w-]+=/;
 
+function normalizeLabelValue(raw: string): string {
+  let v = raw.trim();
+  // 成对的 ASCII 引号 → 中文弯引号；残留奇数个统一转左引号，避免破坏定界
+  v = v.replace(/"([^"]*)"/g, "“$1”").replace(/"/g, "“");
+  v = v.replace(/'([^']*)'/g, "‘$1’").replace(/'/g, "‘");
+  return v;
+}
+
+/**
+ * 只改花括号里第一个 label=/title= 的值，其余属性原样拼回。
+ * `{kind=note label=…}` 不以 label= 开头，整段跳过（保持既有行为）。
+ */
 function fixBraces(braces: string): string {
-  return braces.replace(LABEL_BRACE, (_m, key: string, rawVal: string) => {
-    let v = rawVal.trim();
-    // 去掉已有的一层 ASCII 双引号定界（幂等：避免重复包裹）
-    if (v.length >= 2 && v.startsWith('"') && v.endsWith('"')) v = v.slice(1, -1);
-    // 成对的 ASCII 引号 → 中文弯引号；残留奇数个统一转左引号，避免破坏定界
-    v = v.replace(/"([^"]*)"/g, "“$1”").replace(/"/g, "“");
-    v = v.replace(/'([^']*)'/g, "‘$1’").replace(/'/g, "‘");
-    return `{${key}="${v}"}`;
-  });
+  if (braces.length < 2 || braces[0] !== "{" || braces[braces.length - 1] !== "}") {
+    return braces;
+  }
+  const inner = braces.slice(1, -1);
+  const keyMatch = inner.match(LABEL_KEY);
+  if (!keyMatch) return braces;
+
+  const key = keyMatch[1];
+  const afterEq = inner.slice(keyMatch[0].length);
+  let value: string;
+  let rest: string;
+
+  if (afterEq.startsWith('"')) {
+    const end = afterEq.indexOf('"', 1);
+    if (end === -1) {
+      value = afterEq;
+      rest = "";
+    } else {
+      value = afterEq.slice(1, end);
+      rest = afterEq.slice(end + 1);
+    }
+  } else if (afterEq.startsWith("'")) {
+    const end = afterEq.indexOf("'", 1);
+    if (end === -1) {
+      value = afterEq;
+      rest = "";
+    } else {
+      value = afterEq.slice(1, end);
+      rest = afterEq.slice(end + 1);
+    }
+  } else {
+    const next = NEXT_ATTR.exec(afterEq);
+    if (next && next.index > 0) {
+      value = afterEq.slice(0, next.index);
+      rest = afterEq.slice(next.index);
+    } else if (next && next.index === 0) {
+      value = "";
+      rest = afterEq;
+    } else {
+      value = afterEq;
+      rest = "";
+    }
+  }
+
+  return `{${key}="${normalizeLabelValue(value)}"${rest}}`;
 }
 
 export function normalizeDirectiveLabels(src: string): string {

@@ -44,3 +44,75 @@ test("无 label/title 的指令与普通文本保持不变", () => {
 test("无 :: 的文本走快速返回", () => {
   assert.equal(normalizeDirectiveLabels("纯文本无指令"), "纯文本无指令");
 });
+
+test('label 后的 mode="cloze" 不被吞进标题', () => {
+  assert.equal(
+    normalizeDirectiveLabels(':::memory{label="氨基酸等电点" mode="cloze"}'),
+    ':::memory{label="氨基酸等电点" mode="cloze"}',
+  );
+});
+
+test("label 后的 mode=cloze（值不带引号）不被吞进标题", () => {
+  assert.equal(
+    normalizeDirectiveLabels(':::memory{label="名词解释答题三问" mode=cloze}'),
+    ':::memory{label="名词解释答题三问" mode=cloze}',
+  );
+});
+
+test("单属性含空格的 memory label 原样（已定界）", () => {
+  assert.equal(
+    normalizeDirectiveLabels(':::memory{label="融合与 S 期"}'),
+    ':::memory{label="融合与 S 期"}',
+  );
+});
+
+test("单属性含特殊字符的 definition label 原样", () => {
+  assert.equal(
+    normalizeDirectiveLabels(':::definition{label="σ-p 超共轭"}'),
+    ':::definition{label="σ-p 超共轭"}',
+  );
+});
+
+test("不以 label= 开头的多属性花括号整段跳过", () => {
+  assert.equal(
+    normalizeDirectiveLabels(':::callout{kind=note label="题目"}'),
+    ':::callout{kind=note label="题目"}',
+  );
+});
+
+test("label 值内的公式 X= 不被误判成后续属性", () => {
+  assert.equal(
+    normalizeDirectiveLabels(':::derivation{label="核酸定量 A260=1.0"}'),
+    ':::derivation{label="核酸定量 A260=1.0"}',
+  );
+});
+
+test("未加引号的 label 后跟 mode=cloze 时只定界 label", () => {
+  assert.equal(
+    normalizeDirectiveLabels(":::memory{label=不带引号的标题 mode=cloze}"),
+    ':::memory{label="不带引号的标题" mode=cloze}',
+  );
+});
+
+test("多属性形状幂等：f(f(x)) === f(x)", () => {
+  const samples = [
+    ':::memory{label="氨基酸等电点" mode="cloze"}',
+    ':::memory{label="名词解释答题三问" mode=cloze}',
+    ":::memory{label=不带引号的标题 mode=cloze}",
+    ':::memory{label="融合与 S 期"}',
+    ':::callout{kind=note label="题目"}',
+    ':::derivation{label="核酸定量 A260=1.0"}',
+  ];
+  for (const src of samples) {
+    const once = normalizeDirectiveLabels(src);
+    assert.equal(normalizeDirectiveLabels(once), once, src);
+  }
+});
+
+test("CRLF 行尾下多属性 memory 指令仍保留 mode", () => {
+  const out = normalizeDirectiveLabels(':::memory{label="氨基酸等电点" mode="cloze"}\r\n**pH**\r\n:::\r\n');
+  assert.ok(
+    out.startsWith(':::memory{label="氨基酸等电点" mode="cloze"}\r\n'),
+    `CRLF 多属性归一失败，实际首行：${JSON.stringify(out.split("\n")[0])}`,
+  );
+});
