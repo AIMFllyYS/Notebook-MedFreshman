@@ -45,6 +45,7 @@ const customApiGroupSchema: z.ZodType<CustomApiGroup, unknown> = z.object({
 
 const finiteNumber = z.number().refine((n) => Number.isFinite(n));
 
+/** 客户端 body 字段见 `lib/chat/buildChatRequestBody.ts` 的 `ChatRequestBody`（messages 由 transport 另传）。 */
 export const chatRequestSchema = z.object({
   messages: z.array(uiMessageSchema).default([]),
   modelId: z.string().optional(),
