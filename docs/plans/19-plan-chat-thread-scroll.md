@@ -204,6 +204,14 @@ setTimeout(() => { clearInterval(id); console.log({ drops, maxDropPx: max }); },
 - `rg "content-visibility" app/globals.css` 不再命中 `.chat-message` 规则。
 - `rg "scrollPaddingEnd|scrollPaddingBottom" components/chat` 零命中。
 - `pnpm lint`（含 knip）通过。
+- **本计划自带的 lint 缺口补偿**：计划 18 把 `react-hooks/set-state-in-effect`、`react-hooks/refs`、`react-hooks/preserve-manual-memoization`、`react-hooks/purity`、`react-hooks/static-components` 从 error 降为 warn（存量 53 条生产 error，见 `18` 的执行记录与验收报告）。这意味着**本计划新引入的同类问题不会被门禁拦住**，而本计划恰好在改 effect 与 ref。因此必须额外自查：
+
+  ```powershell
+  pnpm exec eslint components/chat lib/hooks/useStickToBottom.ts `
+    --rule '{"react-hooks/set-state-in-effect":"error","react-hooks/refs":"error","react-hooks/preserve-manual-memoization":"error","react-hooks/purity":"error","react-hooks/static-components":"error"}'
+  ```
+
+  记录改动前后的 error 条数：**本计划不允许让这个数字变大**。若既有 error 数不为 0，把清单写进执行记录留给 `22`。
 
 ## 风险与回滚
 
