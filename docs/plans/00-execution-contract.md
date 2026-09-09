@@ -13,7 +13,7 @@
 | `19` | 聊天流滚动与抖动 | 已执行、已验收、已修复（三轮） |
 | `20` | 窗口 / Artifact 体系收敛 | 已执行、已验收（判定通过，无必须修复项） |
 | `22` | Agent 架构与 lint 欠账 | 已执行、**已验收（三批全通过）** |
-| `23` | UI 层归位（`lib` 不再依赖 `components`） | **执行中** |
+| `23` | UI 层归位（`lib` 不再依赖 `components`） | 已执行，端测中（`lib → components` 已 27→0，规则已 `error`） |
 | `21` | 内容页布局档位 | 待执行（**排最后**） |
 
 **为什么 `22` 插到 `21` 前面：** 内容 Agent 的改动集中在 `lib/content-data/manifest.ts`、`nav.generated.json`、`subjects.registry.ts`，而这正是计划 `21` 的正面战场；它当前正在改 `docs/refer/mineru-parsing-guide.md`，说明下一批课件导入在路上，落地时必然再动这三个文件。计划 `22` 动的是 `lib/ai/**`、`lib/stores/**`、`components/chat/**`，与内容 Agent 零重叠，先做没有冲突成本。计划 `21` 尽量等这批导入落地后再动。
@@ -151,11 +151,23 @@ pnpm test:react
 - **persist 名不得改。** 所有 `persist` 的 key 都已落在用户的 localStorage / IndexedDB 里，改名等于让用户数据凭空消失；计划 `22` 搬家 28 个 store 时逐个核对过 key 未变（第一批端测实测无数据丢失）。
 - `chat-history` 键不存在是 v2 的预期形态（manifest + 分片），**不是数据丢失**。
 
+**分层契约（计划 `23` 建立）**
+
+- **`lib/**` 不得 import `components/**`。** `eslint.config.mjs` 里那条 `no-restricted-imports` 已是 **`error` 且零例外**（原为 `warn`，27 处存量已清零）。要加豁免就是在破坏这条规则存在的理由——真 UI 一律放 `components`，`lib` 只放 types / presentation / tool。
+- **扁平配置的块序不可打乱**：`files: ["lib/**"]`（第 97 行附近）必须排在 `files: ["lib/hooks/**"]`（第 106 行附近）**之前**，否则 hooks 会丢掉 `tool.ts` 边界。四个边界块（`components/** + lib/hooks/**`、`components/notes/** + RightPanel + interactives`、`components/canvas/**`、`lib/hooks/**`）目前全为 `error`。
+- **存在一个活跃的循环依赖，改 `QuizMarkdown` / 指令注册表前必看：**
+  `components/quiz/QuizMarkdown.tsx` → `components/shared/directives/registry.ts` → `components/shared/directives/MemoryCard.tsx` → 回到 `QuizMarkdown.tsx`。
+  计划 `23` 删掉了 `QuizMarkdown` 里那段 `useMemo` 延迟展开的绕行，改为**模块顶层**展开 `directiveComponents`。这在当前入口顺序下不报错，但环没断：一旦某个入口先求值 `registry.ts`（`MessageContent.tsx` / `NoteRenderer.tsx` / `NoteRendererServer.tsx` 都直接导入它），求值顺序会变成 registry → MemoryCard → QuizMarkdown 模块体，此时 `directiveComponents` 尚未初始化。历史报错原文是 `Cannot access 'directiveComponents' before initialization`。
+  **两种失败形态都要防**：抛 TDZ（崩溃），或被降级成 CJS getter 时拿到 `undefined` 导致 `{...undefined}` 静默变成**空指令映射**（指令不渲染，更难发现）。
+  真正的修法是断环（让 `MemoryCard` 不再依赖完整的 `QuizMarkdown`），不是恢复绕行。断环前不要给这条链加新的顶层展开。
+
 **"右侧 Agent 里那个可视化 HTML"的唯一入口**
 
 用户曾因为找错文件反复改动无效。正确链路是单一的一条，改动前先认准：
 
-`lib/ai/agent/tools.ts` 的 `renderInteractive` → `lib/ai/artifact.ts` → `/api/artifact` → `components/chat/ArtifactCard.tsx` → `lib/hooks/useArtifacts.ts` → **`components/chat/ArtifactViewer.tsx`**（全局浮窗，最终呈现）
+`lib/ai/agent/tools/renderInteractive/tool.ts`（服务端定义）→ `lib/ai/artifact.ts` → `/api/artifact` → `components/chat/toolCards/renderInteractiveCard.tsx`（结果卡片）→ `components/chat/ArtifactCard.tsx` → `lib/hooks/useArtifacts.ts` → **`components/chat/ArtifactViewer.tsx`**（全局浮窗，最终呈现）
+
+> 路径已两次变动：计划 `22` 把单文件 `lib/ai/agent/tools.ts` 拆成了 `lib/ai/agent/tools/<name>/` 目录，计划 `23` 又把结果卡片从 `lib/.../ResultCard.tsx` 移到了 `components/chat/toolCards/<name>Card.tsx`。**`lib` 侧现在只有 types / presentation / tool，任何 UI 都在 `components`。**
 
 搜索时用「可视化 HTML」「HTML 演示」或 `renderInteractive` 这三个词之一。**只搜「可视化」两个字会误入** `components/interactives/registry.ts` 里一堆「××可视化」和 `ChatMessageVisualizations.tsx`；只搜 `interactive` 会进右侧「可交互」tab。
 
