@@ -61,6 +61,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const [enableSearch, setEnableSearch] = useState(() => useSettings.getState().defaultSearch);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const composerRef = useRef<HTMLDivElement>(null);
+  const lastInsetRef = useRef<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { quotedText, clearQuotedText } = useChatUI();
   const globalSelectedModelId = useSettings((s) => s.selectedModelId);
@@ -109,7 +110,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     if (!composer || !onComposerInsetChange) return;
     const reportInset = () => {
       const bottom = Number.parseFloat(window.getComputedStyle(composer).bottom) || 0;
-      onComposerInsetChange(Math.ceil(composer.getBoundingClientRect().height + bottom + 16));
+      const next = Math.ceil(composer.getBoundingClientRect().height + bottom + 16);
+      if (lastInsetRef.current !== null && Math.abs(next - lastInsetRef.current) < 2) return;
+      lastInsetRef.current = next;
+      onComposerInsetChange(next);
     };
     reportInset();
     const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(reportInset);

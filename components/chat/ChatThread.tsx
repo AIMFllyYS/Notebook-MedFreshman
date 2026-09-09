@@ -82,7 +82,6 @@ export default function ChatThread({
     overscan: 4,
     getItemKey: (index) => displayMessages[index]?.id ?? index,
     initialRect: { width: 0, height: 480 },
-    scrollPaddingEnd: safeBottomInset,
   });
   // v3.17 把该回调放在 instance 上，不是 useVirtualizer options（计划 19 B3）。
   virtualizer.shouldAdjustScrollPositionOnItemSizeChange = (item, _delta, instance) => {
@@ -140,7 +139,7 @@ export default function ChatThread({
           minHeight: 0,
           overflowY: 'auto',
           paddingBottom: safeBottomInset || undefined,
-          scrollPaddingBottom: safeBottomInset || undefined,
+          overflowAnchor: 'none',
         } as React.CSSProperties}
       >
         {!hydrated ? (

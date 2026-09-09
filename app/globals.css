@@ -547,6 +547,7 @@ body {
 }
 .chat-messages {
   contain: layout;
+  overflow-anchor: none;
 }
 /* 消息条目：只做 paint/style 隔离，不做 size/layout 隔离——
    高度必须由 tanstack measureElement 真实测得，见 docs/plans/19。 */
