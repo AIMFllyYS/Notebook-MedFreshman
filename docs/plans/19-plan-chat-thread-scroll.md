@@ -218,3 +218,60 @@ setTimeout(() => { clearInterval(id); console.log({ drops, maxDropPx: max }); },
 - 每阶段独立 commit。阶段 A 删掉 `content-visibility` 后，超长历史（>500 条）的首屏 paint 可能变慢——但 tanstack 本来就只渲染视口 + overscan 条，实际 DOM 数量不变，影响应可忽略；若真机 Performance 面板显示首屏 >200ms 退化，把 `overscan` 再降到 2。
 - 阶段 B3 的 `shouldAdjustScrollPositionOnItemSizeChange` 是 tanstack v3 API，先 `rg "shouldAdjustScrollPositionOnItemSizeChange" node_modules/@tanstack/virtual-core/dist` 确认当前版本存在；不存在则跳过 B3，仅靠 B1 已能消除大部分冲突。
 - 不要顺手"优化"`useChat` 的节流或 `MessageContent` 的渲染——那会把抖动问题与渲染性能问题混在一个 commit 里，无法二分定位。
+
+---
+
+## 执行记录
+
+执行日期：2026-09-09。全程留在 `dev`（契约禁止切分支；用户提示写的是 master，以真实分支为准）。未 push。未改 `content/**`。阶段 D 未做（见下）。
+
+### 1. 各阶段 commit
+
+| 阶段 | hash | 说明 |
+|------|------|------|
+| A | `690b4736` | 去掉 `.chat-message` 的 `content-visibility`；overscan 10→4；同步 portal 注释 |
+| B | `1748320a` | 删除流式 `scrollToIndex` effect；stick-to-bottom 独占流式滚动；B3 走 instance 属性 |
+| C | `ace0e875` | 只留 `paddingBottom`；`overflow-anchor: none`；composerInset 亚像素不上报 |
+| D | （未做） | 修复后计划探针 `drops=1`，未再做 Trace 折叠过渡 / loading 占位 |
+| 记录 | （本小节） | 真机数字、lint 自查、偏差 |
+
+### 2. 实际改动与计划的偏差
+
+- **分支是 `dev` 不是 master。** 契约禁止切分支，全程未切换。
+- **B3 没有跳过，但接线方式与计划不同。** `@tanstack/react-virtual@3.14.4` → `@tanstack/virtual-core@3.17.2`。`shouldAdjustScrollPositionOnItemSizeChange` **不是** `useVirtualizer` options 字段（tsc `TS2353`），而是 `Virtualizer` **实例属性**。按意图在 `useVirtualizer(...)` 之后赋值；非流式 / 非末项仍 `return true`。
+- **`useStickToBottom` 测试写成 `.test.tsx`。** 计划文件名是 `.test.ts`，但 `vitest.config.ts` 的 `include` 只有 `**/*.test.tsx`，`.ts` 不会进 `pnpm test:react`。
+- **`handleScroll` 阈值 100→80。** 按计划与 `STICK_THRESHOLD_PX` 对齐。
+- **`rg "scrollPaddingEnd|scrollPaddingBottom" components/chat` 在测试文件仍有命中。** 生产 `ChatThread.tsx` / `ChatInput.tsx` 已删掉这两项；命中来自断言「不再设置它们」。
+- **真机基线：纯计划探针在改代码前测到的自然流式 `drops` 是 0，不是两位数。** 前 30s 几乎耗在 `chat-title` + 深度思考，高度几乎不涨；随后一次「末条 DOM 增高 + 真实流式」30s 也是 `drops=0`（`scrollTop` 单调上升）。两位数来自**离屏首条 `minHeight` 72↔480 振荡**（模拟 content-visibility 尺寸翻动），不是计划原文那种「只看流式 `scrollTop`」的同一实验。验收数字因此分两行记，不混成一对 before/after。
+- **阶段 D 未做。** 修复后「真实流式 + 末条增高」`drops=1`（允许 ≤1）。离屏振荡压测修复后仍高，那是 tanstack 对「视口上方条目改高度」的默认视口稳定补偿，B3 只关末条，不视为本计划失败。
+
+### 3. 计划要求记录的数据
+
+**真机 `drops`（agent-browser，`/probability/detail/1.1`，端口 35349）**
+
+| 实验 | 时机 | drops | maxDropPx | 备注 |
+|------|------|-------|-----------|------|
+| 计划探针 30s（自然流式，多在思考） | 修复前 | 0 | 0 | `scrollHeight` 758→2057，但前半段几乎不增高 |
+| 末条增高 + 真实流式 30s | 修复前 | 0 | 0 | `heightChanges=500`，`scrollTop` 22470→45887 单调 |
+| 离屏首条高度振荡 30s | 修复前 | **133** | 589 | 模拟 content-visibility 72px↔真实高度 |
+| 计划探针 + 末条增高 + 真实流式 30s | 修复后 | **1** | 240 | 满足「允许 ≤1」；发生在贴底恢复后的前几帧 |
+| 离屏首条高度振荡 30s | 修复后 | 186 | 373 | 非计划指标；上方条目改高时 virtualizer 仍会补偿 |
+
+CSS 落地确认（修复后 computed）：`.chat-message` 的 `content-visibility` 为 `visible`、`contain` 为 `style paint`；`.chat-messages` 的 `overflow-anchor` 为 `none`。
+
+**lint 自查**（计划验收命令，改动前后都是）：
+
+- **error 1 / warning 13**（未变大）
+- 唯一 error：`components/chat/SourcePreviewViewer.tsx:48` `react-hooks/set-state-in-effect`（`setLoadFailed(false)`），本计划未改，留给 22
+
+**B3：** 未跳过；以 instance 属性实现（见偏差）。
+
+**门禁：** `pnpm exec tsc --noEmit` 0；`pnpm lint` 0（152 warning / 0 error）；`pnpm test:react` 0（52 文件 / 225 例，其中 `ChatThread.virtual.test.tsx` 12 例）。
+
+### 4. 真机其余步骤
+
+- 流式期间上滑：出现「跟随最新输出」，点击后恢复贴底。
+- 停止生成后在输入框敲三行：composer 增高，列表未整列跳走。
+- 划词「解释」打开浮动聊天窗（复用 `ChatThread`），已开窗并开始生成；未对浮窗单独再跑 30s 探针。
+
+截图：`docs/plans/19-verify/before-send.png`、`streaming-before.png`、`after-stream.png`、`after-floating.png`。
