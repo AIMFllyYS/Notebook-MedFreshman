@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useStore } from "@/lib/store";
 import { getVideosForSection } from "@/lib/content-data/media";
@@ -30,16 +30,16 @@ export default function VideoTab() {
   const [expandedScripts, setExpandedScripts] = useState<Record<string, boolean>>({});
   // 讲稿正文按需加载：首次展开任意讲稿时才 dynamic import ~388KB 的本体，不进首屏堆。
   const [scripts, setScripts] = useState<Record<string, string> | null>(null);
+  const [resumeAt, setResumeAt] = useState<number | undefined>(undefined);
   const scriptIdSet = useMemo(() => new Set(videoScriptIds), []);
-  const startTimeRef = useRef<number | undefined>(undefined);
+  if (pipReturnTime != null && resumeAt !== pipReturnTime) {
+    setResumeAt(pipReturnTime);
+  }
 
-  // InlinePlayer 挂载后清除 pipReturnTime，避免在渲染过程中调用 closePip
+  // InlinePlayer 读到 startTime 后再清 store，避免在渲染过程中调用 closePip
   useEffect(() => {
-    if (pipReturnTime !== null && playingId !== null) {
-      startTimeRef.current = pipReturnTime;
-      closePip();
-    }
-  }, [pipReturnTime, playingId, closePip]);
+    if (pipReturnTime !== null) closePip();
+  }, [pipReturnTime, closePip]);
 
   const toggleScript = async (id: string) => {
     // 首次展开时按需加载讲稿本体（独立 chunk），加载完成后再展开。
@@ -52,7 +52,7 @@ export default function VideoTab() {
 
   const handlePip = (v: (typeof videos)[number], currentTime: number) => {
     setPlayingId(null);
-    startTimeRef.current = undefined;
+    setResumeAt(undefined);
     openPip(v, currentTime);
   };
 
@@ -91,7 +91,7 @@ export default function VideoTab() {
                   <div className="group aspect-video w-full bg-black">
                     <InlinePlayer
                       video={v}
-                      startTime={startTimeRef.current}
+                      startTime={resumeAt}
                       onPip={(currentTime) => handlePip(v, currentTime)}
                     />
                   </div>
