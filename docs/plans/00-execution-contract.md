@@ -12,8 +12,8 @@
 | `18` | 工程基线（Git 卫生、死代码、护栏） | 已执行、已验收 |
 | `19` | 聊天流滚动与抖动 | 已执行、已验收、已修复（三轮） |
 | `20` | 窗口 / Artifact 体系收敛 | 已执行、已验收（判定通过，无必须修复项） |
-| `22` | Agent 架构与 lint 欠账 | 已执行，端测中（分三批：数据完整性 / 工具卡片 / 契约与门禁） |
-| `23` | UI 层归位（`lib` 不再依赖 `components`） | 待执行（`22` 端测通过后） |
+| `22` | Agent 架构与 lint 欠账 | 已执行、**已验收（三批全通过）** |
+| `23` | UI 层归位（`lib` 不再依赖 `components`） | **执行中** |
 | `21` | 内容页布局档位 | 待执行（**排最后**） |
 
 **为什么 `22` 插到 `21` 前面：** 内容 Agent 的改动集中在 `lib/content-data/manifest.ts`、`nav.generated.json`、`subjects.registry.ts`，而这正是计划 `21` 的正面战场；它当前正在改 `docs/refer/mineru-parsing-guide.md`，说明下一批课件导入在路上，落地时必然再动这三个文件。计划 `22` 动的是 `lib/ai/**`、`lib/stores/**`、`components/chat/**`，与内容 Agent 零重叠，先做没有冲突成本。计划 `21` 尽量等这批导入落地后再动。
@@ -135,10 +135,21 @@ pnpm test:react
   - 例外：`components/chat/BillingDashboard.tsx` 有意未迁移，它是 `absolute` + 自定义拖拽，不是 portal 浮窗（配套入口 `lib/window/openBillingDashboard.ts`）。它是 `components` 下唯一还留着 `useResizable(` 的窗口类组件，扫死代码时不要误判。
 - 笔记栏容器 id 只能通过 `lib/constants/layout.ts` 的 `NOTES_PANEL_ID` 引用，不要再出现 `getElementById("notes-panel")` 字面量。
 - `fullscreenTarget` 的默认值是 **`notes`**（对齐笔记栏），不是 viewport。这是迁移前八个 viewer 的既有行为，计划 `20` 按现网行为保留；用户可在设置里切成整窗（`artifactFullscreenTarget`）。
-  验收实测（1440×900 视口）：`notes` 精确等于 `#notes-panel` 的 `{274, 48, 719×852}` 且 `borderRadius: 0`；`viewport` 是 `{0, 0, 1440×900}`，走 `resolveFullscreenRect` 的整窗矩形，**不是空实现**；退出全屏会还原到全屏前几何。改动这块必须保住这三条。
+  不变量是「`notes` 全屏的矩形**精确等于验收当场** `#notes-panel` 的 rect 且 `borderRadius: 0`」，**不是某个固定数字**——侧栏宽度、学年布局一变它就会漂。验收时必须先当场读一次 `#notes-panel` 的 rect 再对比，不要拿别轮的数字判回退。
+  两轮实测（均为 1440×900 视口）：计划 `20` 当时 notes 是 `{274, 48, 719×852}`，计划 `22` 第三批当时是 `{267, 48, 702×852}`，两轮各自都与当场 rect 精确相等 —— 数字不同，契约未破。
+  另两条要一起保住：`viewport` 是 `{0, 0, 1440×900}`，走 `resolveFullscreenRect` 的整窗矩形，**不是空实现**；退出全屏会还原到全屏前几何。
+  已知现码行为（不是漏配）：划词浮窗走自己的 notes 回调，**不受 `artifactFullscreenTarget` 设置影响**；切"整个窗口"只作用于 artifact / document。
 - `FloatingChatWindow` 传 `registerOverlay={false}`——它不进 overlay 栈，Esc 不关它，这是忠实于迁移前的行为，**不是漏配**。实测 Esc 链不会因此卡住，后面的窗仍按 z 序逐个关闭。
 - 两个窗口同时全屏时，后全屏的会把前一个自动最小化（护栏用例：`tests/windowManager.test.ts` 的 `fullscreen auto-minimizes other fullscreen windows`）。
 - **工具 id `renderInteractive` 不得改名。** 它已随聊天历史持久化进 IndexedDB，改名需要配套存储迁移。UI 文案统一叫"HTML 演示"，但 id 冻结。
+
+**Agent 与状态契约（计划 `22` 建立，经三批端测验证）**
+
+- **工具目录是唯一真相源。** 每个工具一个 `lib/ai/agent/tools/<name>/` 目录（13 个），有 UI 的再配 `ResultCard.tsx`（7 个）。卡片顺序由 `lib/ai/agent/tools/catalog.ts` 的 `RESULT_CARD_ORDER` 决定；`components/chat/ChatMessage.tsx` 里**不得再出现工具名字面量**（已清零，别写回去）。
+- **客户端不得导入任何 `tool.ts` / `server.ts`。** 六处 `no-restricted-imports` 规则（`components/**`、`lib/hooks/**`、`components/notes/**`、`RightPanel.tsx`、`components/interactives/**`、`components/canvas/**`）均为 `error`，已实测能拦住。破了这条会把密钥读取逻辑打进浏览器 bundle 或报 `fs` 找不到；`lib/ai/agent/tools/index.ts` 的公共再导出（标了 `@public`）**不要顺手把 `tool.ts` 挂上去**。
+- **store 清点口径（28 个）：** `lib/stores/` 下排除测试与 `_persist.ts` 共 28 个文件 = `from "zustand"` 的 `create(` **22** 个 + `createPersistedStore` 包装 **6** 个（artifacts / documents / imageGen / skills / reviewCards / billing）。只用 `git grep 'from "zustand"'` 会漏掉 `chatHistory` / `chatUI` / `tokenTracker` / `floatingTokenTracker` 这 4 个（写法不统一）。以后清点必须按这个口径，否则会误判"store 变少了"。
+- **persist 名不得改。** 所有 `persist` 的 key 都已落在用户的 localStorage / IndexedDB 里，改名等于让用户数据凭空消失；计划 `22` 搬家 28 个 store 时逐个核对过 key 未变（第一批端测实测无数据丢失）。
+- `chat-history` 键不存在是 v2 的预期形态（manifest + 分片），**不是数据丢失**。
 
 **"右侧 Agent 里那个可视化 HTML"的唯一入口**
 

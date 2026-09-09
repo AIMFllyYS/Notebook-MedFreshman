@@ -13,18 +13,20 @@
 
 当时的处理是把展开推迟到函数内部**绕过**环，而不是消除环。只要 `lib/markdown/*` 继续 import `components/*`，同类 TDZ 随时可能在别的入口顺序下复现，而且每次都表现为难以定位的"某个组件 undefined"。
 
-**第二个理由：`warn` 等于没有护栏。** 仓库当前有 150 条 warning，一条埋在里面的 `warn` 不会被任何人看见。规则要么是 `error`，要么删掉——留成 `warn` 只是自欺。
+**第二个理由：`warn` 等于没有护栏。** 仓库当前有 108 条 warning，一条埋在里面的 `warn` 不会被任何人看见。规则要么是 `error`，要么删掉——留成 `warn` 只是自欺。
 
 **第三个理由：桶里有个还没引爆的地雷。** `lib/ai/agent/tools/index.ts` 自述是"类型、展示元数据与结果卡片"的客户端入口，却**值导出**了 `TOOL_REGISTRY` / `TOOL_RESULT_CARDS`（转发自 `catalog.ts`，而 `catalog.ts` 饥饿导入 7 个 React 卡片）。服务端路由里一句 `import { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools"` 就会把整条聊天 UI 依赖图拖进服务端 bundle。实测当前**零处**引用这个桶——这正是危险所在：它是留给下一个加工具的人的陷阱，今天没人踩不等于明天没人踩。
 
-## 判断依据（实测）
+## 判断依据（实测，2026-09-10 派发前复测）
 
-- `git grep "@/components" -- lib` = **27 处**：`lib/ai/agent/tools/**/ResultCard.tsx` 7 处 + 其 `ResultCard.test.tsx` mock 4 处 + `lib/markdown/directiveComponents.ts` 14 处 + `lib/markdown/noteComponents.tsx` 2 处。
-- `lib/ai/agent/tools/` 的设计其实九成是对的：`server.ts`（76 行）已独立装配服务端；`presentations.ts`（38 行）是纯数据（`icon` 是字符串联合 `ToolIconKind`，不是 JSX）；`registry.ts`（36 行）是纯类型。**缺陷只集中在客户端渲染三件**：`catalog.ts`（82 行）、`resultCards.tsx`（47 行）、7 个 `ResultCard.tsx`。
+- `git grep "@/components" -- lib` = **27 处 / 9 个文件**：`lib/ai/agent/tools/**/ResultCard.tsx` 7 处 + 其中 4 个 `ResultCard.test.tsx` 的 `vi.mock` 4 处 + `lib/markdown/directiveComponents.ts` 14 处 + `lib/markdown/noteComponents.tsx` 2 处。
+- **ESLint 只报 23 条**，因为测试文件不在 `lib/**` 那条规则的作用域内。两个数字都对，不要以为有一处漏搬：`27 = 23 + 4 个测试 mock`。搬完后**两个数字都必须归零**。
+- **卡片测试是 7 个而不是 4 个**（计划 `22` 给 7 个卡片都补了测试）。阶段 A 要搬 **7 个** `ResultCard.test.tsx`，其中只有 4 个（`searchNoteImages` / `createQuiz` / `generateImage` / `renderInteractive`）含需要改路径的 `vi.mock`。
+- `lib/ai/agent/tools/` 的设计其实九成是对的：`server.ts` 已独立装配服务端；`presentations.ts` 是纯数据（`icon` 是字符串联合 `ToolIconKind`，不是 JSX）；`registry.ts` 是纯类型。**缺陷只集中在客户端渲染三件**：`catalog.ts`（**87** 行）、`resultCards.tsx`（**51** 行）、7 个 `ResultCard.tsx`。桶 `index.ts` **34** 行。
 - 7 个 `ResultCard.tsx` 都是**十行左右的适配器**，把 typed tool part 映射到已存在的 `components/chat/*Card` 上，真 UI 不在 `lib` 里。
 - `RESULT_CARD_ORDER` 的注释自陈是"现网 ChatMessage 卡片顺序（不是 STUDY_TOOL_NAMES）"——这是渲染决策，不是工具属性。
 - `TOOL_RESULT_CARDS` 的消费方只有 `lib/ai/agent/tools/resultCards.tsx` 与 `registry.test.tsx`；Agent 运行时（`studyAgent.ts` / `server.ts`）一个都不消费。
-- `lib/markdown` 两个映射表很小：`directiveComponents.ts` 31 行、`noteComponents.tsx` 11 行。消费方四处：`components/chat/MessageContent.tsx`、`components/notes/NoteRenderer.tsx`、`components/notes/NoteRendererServer.tsx`、`components/quiz/QuizMarkdown.tsx`。
+- `lib/markdown` 两个映射表很小：`directiveComponents.ts` **32** 行、`noteComponents.tsx` **12** 行。消费方四处：`components/chat/MessageContent.tsx`、`components/notes/NoteRenderer.tsx`、`components/notes/NoteRendererServer.tsx`、`components/quiz/QuizMarkdown.tsx`。
 
 ## 为什么不选"放宽规则"
 
@@ -75,7 +77,7 @@ components/notes/
 
 ## 阶段 A · 工具卡片归位
 
-1. 建 `components/chat/toolCards/`。把 7 个 `lib/ai/agent/tools/<name>/ResultCard.tsx` 搬为 `components/chat/toolCards/<name>Card.tsx`，内容除 import 路径外**逐字不动**（都带 `"use client"`，保留）。4 个 `ResultCard.test.tsx` 一并搬为 `<name>Card.test.tsx`，`vi.mock` 路径同步。
+1. 建 `components/chat/toolCards/`。把 7 个 `lib/ai/agent/tools/<name>/ResultCard.tsx` 搬为 `components/chat/toolCards/<name>Card.tsx`，内容除 import 路径外**逐字不动**（都带 `"use client"`，保留）。**7 个** `ResultCard.test.tsx` 一并搬为 `<name>Card.test.tsx`，其中 4 个的 `vi.mock` 路径同步。用 `git mv` 搬，保住文件历史。
 2. `catalog.ts` 拆成两半：
    - 纯数据部分（`TOOL_REGISTRY` 里 `name` + `presentation` + `resultKey` + `shouldRender`）如果 Agent 运行时确实需要，留在 `lib`；**实测 `studyAgent.ts` / `server.ts` 不消费 `TOOL_REGISTRY`**，所以整体搬到 `components/chat/toolCards/registry.tsx`。搬之前**再确认一次**没有 `lib` 侧消费方，若有则只搬带 `ResultCard` 的那部分。
    - `RESULT_CARD_ORDER`、`ToolResultCardEntry`、`TOOL_RESULT_CARDS` 一并进 `registry.tsx`。
@@ -118,8 +120,10 @@ Commit：`chore(lint): enforce lib-must-not-import-components` + `docs(agent): d
 
 ## 验证
 
-- `pnpm exec tsc --noEmit`、`pnpm lint`（**0 error**）、`pnpm test:react`、完整 `pnpm test`、完整 `pnpm build`（基线 1210 页）。
-- `git grep "@/components" -- lib` **零命中**。
+- `pnpm exec tsc --noEmit`、`pnpm lint`（**0 error**）、`pnpm test:react`、完整 `pnpm test`、完整 `pnpm build`。
+- 基线（计划 `22` 第三批实测，退出码全 0）：`pnpm test` = node **535** + vitest **245**；`pnpm build` = **1210** 页；`pnpm lint` = 0 error / **108** warning。搬迁后 test 数不应减少（搬测试文件不改用例数），warning 应从 108 降约 23。
+- `git grep "@/components" -- lib` **零命中**（含测试；见上文 27 vs 23 的口径说明）。
+- `pnpm test:content` 的失败**只记录不修**，那是内容 Agent 的作业域。
 - `git grep -n "TOOL_REGISTRY\|TOOL_RESULT_CARDS" -- lib` 零命中。
 - `components/chat/toolCards/registry.test.tsx` 的顺序断言与搬迁前逐字一致。
 - 真机：
