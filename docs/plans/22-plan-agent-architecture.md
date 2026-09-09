@@ -241,6 +241,42 @@ Commit：`docs(agent): document tool registry and store layout`
 
 ---
 
+## 端测遗留问题（2026-09-09/10，三批验收发现，均非本计划回归）
+
+前两批端测已通过（数据完整性、工具卡片与 `writeDocument` 按钮）。下面这些是**顺带暴露**的问题，不属于计划 22 的回归，但都是真实缺陷，记录在此以免丢失。
+
+### 1. `writeDocument` 生成的正文逐节漂移（用户可见，优先级最高）
+
+计划 22 修好了「进度卡在 `0/N`、按钮不露出」之后，**这个功能的输出第一次被人看到**——此前 IndexedDB 的 `documents` 表一直是 **0 条**，说明历史上从来没有一篇文档成功落库。
+
+实测（第二批）：一篇 6 节的「细胞膜的化学组成与流动性」，第 **3、4、6** 节是正经讲义（定义框、运动方式表、必背数字），第 **1、2、5** 节却是「他沉默片刻……」这类散文灌水，且只有 **70 / 125 / 178 字**，远低于 `buildSectionInstructions` 里 `perSection = max(250, targetWords/total)` 的要求。
+
+已排除的原因：
+
+- **不是提示词缺约束**。`lib/documents/prompts.ts:67` 明确写了「本节约 N 字；写完自然收束，不要为凑字数注水」。
+- **不是体裁选错**。`DocumentSpec.genre` 是模型填的必填字段，一篇文档内恒定；若整篇走了 `essay`（体裁指引是「篇幅精炼」、`DEFAULT_TARGET_WORDS.essay = 1200`）就该整篇偏散文，而实测是**同一篇里三节讲义、三节散文**。
+
+剩下的可疑源头（留给修复方核实，不要凭猜就改）：
+
+1. **outline 阶段给 1/2/5 节写的 `brief` 本身偏叙事**。`buildOutlinePrompt` 只给标题与写作要求，没有约束 `brief` 的文体；`brief` 会原样进 `buildSectionPrompt` 的「要点」。
+2. **`previousTail` 把散文腔带下去**。`buildSectionPrompt` 会把前文结尾 1200 字作为衔接上下文，一旦第 1 节跑偏，后面容易被带着走。
+3. 单节字数下限没有服务端校验：节明显短于 `perSection` 时既不重试也不告警。
+
+复现与诊断建议：触发一次 `writeDocument`，从 IndexedDB 取出该 `StoredDocument`，先看 `spec.genre` 与 `spec.brief`，再逐节看 `sections[i].brief` 与 `markdown`，判断是 outline 的 `brief` 就跑偏了、还是 section 阶段没守住。修复方向大概率在 `lib/documents/prompts.ts`（给 `brief` 与单节正文加文体约束、按体裁给出正/负样例），必要时在 `app/api/document/route.ts` 加「节过短则重写一次」的兜底。
+
+### 2. IndexedDB 里约 50 份孤立会话（存储卫生，非回归）
+
+第一批实测：`chat-session:*` 有 **53 个键**，但 `chat-manifest`（v2）只列 **3** 条会话；`chat-blob:*` 14 个。也就是约 50 份会话正文留在库里但界面上已无入口，`chat-history` 键不存在（v2 预期，不是丢失）。搬家前后一致，**不是计划 22 造成的**。需要一个「按 manifest 回收孤立 session/blob」的清理流程，或在设置的数据分区里给用户一个入口。
+
+### 3. 其余观察（低优先级）
+
+- `imageSearch` 返回的 4 张是无关库存图（图库/检索质量，卡片本身正常）。
+- 控制台警告 `Encountered a script tag while rendering React component`（HTML 演示进 React 树），无红屏。
+- 关闭深度思考后，Qwen3.8 27B 的思考链里仍会出现英文思考步，单次 7–20s，未堵住工具调用。
+- 结果卡去重（`resultKey` 按 `artifactId` / `imageGenId`）**未能在流式中构造出重复 part**，只做了代码级确认（`resultCards.tsx` 的 `dedupBy`）。如需真机证据，得注入伪造的 tool part。
+
+---
+
 ## 派发前校准（2026-09-09，主智能体实测）
 
 本计划正文写于计划 `18` 之前，其间 `18`/`19`/`20` 已落地，下面这些数字以本节为准。
