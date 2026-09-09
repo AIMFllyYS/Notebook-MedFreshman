@@ -76,7 +76,7 @@ export default function ChatThread({
     count: displayMessages.length,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => MESSAGE_ESTIMATE_PX,
-    overscan: 10,
+    overscan: 4,
     getItemKey: (index) => displayMessages[index]?.id ?? index,
     initialRect: { width: 0, height: 480 },
     scrollPaddingEnd: safeBottomInset,

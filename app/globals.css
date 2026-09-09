@@ -548,10 +548,10 @@ body {
 .chat-messages {
   contain: layout;
 }
-/* 聊天消息按条目跳过离屏渲染，大幅减少初次挂载和滚动时的 paint。 */
+/* 消息条目：只做 paint/style 隔离，不做 size/layout 隔离——
+   高度必须由 tanstack measureElement 真实测得，见 docs/plans/19。 */
 .chat-message {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 72px;
+  contain: style paint;
 }
 /* 笔记内容中的 KaTeX 块公式施加 paint 包含，避免拖拽时重绘扩散 */
 .prose-notes .katex-display {
