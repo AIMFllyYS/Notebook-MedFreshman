@@ -208,7 +208,36 @@ components/shared/directives/MemoryCard.tsx → @/components/quiz/QuizMarkdown
 | `pnpm test`（node + vitest） | 535 + 245 | 退出码 0，vitest 249 |
 | `pnpm build` | 1210 页 | 退出码 0 |
 
-真机验证（记忆卡展开、题目测试、`NoteRenderer` 与 `NoteRendererServer` 两条路径、控制台无 TDZ 且指令未静默丢失）由独立验收智能体执行，结论见下。
+### 指令未静默丢失的直接证据（SSR HTML 审计，2026-09-10 主智能体实测）
+
+**方法学要点：这个失效模式是按模块图整体发生的**——`blockComponents` 要么带全部指令、要么只剩 `table` / `img`，不存在「丢一半」。所以不必逐个枚举 14 个指令，**每条渲染路径各证一次「映射非空」即可**。又因为 Next 对客户端组件同样做 SSR，直接抓 HTML 就能覆盖三条路径，不需要浏览器，比 CDP 会话可靠得多。
+
+对运行中的 dev server（`localhost:35349`，起于本次修复提交之后，Turbopack 按请求现编译，故服务的是当前代码）抓页：
+
+| 页面 | 路径 | 命中的指令组件 |
+|---|---|---|
+| `/anatomy/textbook/ch00-2` | `NoteRendererServer` | 7 个：callout / memorycard / timeline / conceptcard / comparetable / causeeffect / keypoint |
+| `/modern-history/textbook/tb-ch01-1` | `NoteRendererServer` | 8 个：上面 7 个 + eventcard |
+| `/anatomy/detail/1.1` | `NoteRenderer`（客户端） | 4 个：callout / memorycard / comparetable / keypoint |
+| `/biochemistry/detail/1.2` | `NoteRenderer` | 4 个（同上） |
+| `/anatomy/kaoqian-moni/sim-01` | `QuizMarkdown` | callout / memorycard |
+| `/anatomy/shizhan-yanlian/real-01` | `QuizMarkdown` | callout / memorycard |
+
+**数量精确匹配（排除部分丢失）：**
+
+| 页面 | 源码 `:::memory` | DOM `memory-card-header` |
+|---|---|---|
+| `/anatomy/textbook/ch00-2` | 1 | **1** |
+| `/biochemistry/detail/1.2` | 38 | **38** |
+| `/anatomy/kaoqian-moni/sim-01` | 2 | **2** |
+
+**一处探针假阳性，已否证：** 首轮扫描在每页都报「裸露的未解析指令」（`:::definition` / `:::insight` / `:::timeline` / `:::callout`）。剥掉 `<script>` / `<template>` 后复核：**可见区 0 处**，整页那 52 / 89 / 207 处全部位于 Next 的 RSC 载荷（序列化的 markdown 原文）。不是缺陷。记在这里是因为后续任何人用同样手法抓页都会踩这个坑——**判「指令泄漏成裸文本」必须先剥 script**。
+
+未在这些页面出现的 6 个（`derivation` / `historymap` / `functionplot` / `svgcanvas` / `mediaembed` / `figuremedia`）都是懒加载或 canvas / 媒体类组件，SSR 不吐特征 class，**不构成失败证据**；按上面的整体性判据，同一模块图里 callout 等能渲染就说明映射非空。
+
+真机补充证据（断环修复落盘于 01:59:15，截图 02:22:17，晚 23 分钟）：`NoteRendererServer` 正文页上 `:::pitfall` 告警框带样式渲染、comparetable 是真表格、**记忆卡「融合与 S 期」可展开并显示「点击收起」**。
+
+剩余需浏览器的项（cloze 挖空点击、checklist 点击、聊天侧 `MessageContent` 路径、工具卡片顺序、滚动与窗口契约抽查）由独立验收智能体执行。
 
 ---
 
