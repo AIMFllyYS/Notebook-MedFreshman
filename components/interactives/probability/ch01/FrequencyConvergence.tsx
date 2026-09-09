@@ -7,6 +7,10 @@ const H = 160;
 const P = 26;
 const MAX_POINTS = 600;
 
+function tossFairCoin() {
+  return Math.random() < 0.5;
+}
+
 function FrequencyConvergenceBase() {
   const [total, setTotal] = useState(0);
   const [heads, setHeads] = useState(0);
@@ -19,7 +23,7 @@ function FrequencyConvergenceBase() {
     for (let i = 0; i < k; i++) {
       t += 1;
       // 客户端模拟，使用 Math.random 抛硬币
-      if (Math.random() < 0.5) h += 1;
+      if (tossFairCoin()) h += 1;
       pts.push(h / t);
     }
     while (pts.length > MAX_POINTS) {
