@@ -1,0 +1,141 @@
+{
+  "subjectId": "cell-biology-lab",
+  "chapterId": "tb-ch06",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/cell-biology-lab/textbook/ch06.md；实验六 BMSC",
+    "totalPoints": 100,
+    "timeLimit": 40
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "BMSC 原代接种密度和首次换液时间是（　）。",
+      "options": [
+        "$5\\times 10^3$/ml，一周后换液",
+        "$5\\times 10^5$/ml，24 小时换液去除未贴壁细胞",
+        "不计数，满瓶即可",
+        "P5 才允许第一次换液"
+      ],
+      "answer": 1,
+      "hint": "贴壁筛选。",
+      "explanation": "**B 正确。** 24 h 换液是第一次纯化：造血细胞多数不贴壁。以后每 3 天换液。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch06.md", "label": "原代培养" }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "取股骨时讲义特别强调（　）。",
+      "options": [
+        "必须保证两侧股骨头完整",
+        "必须在超净台外打开骨髓腔以节省时间",
+        "股骨应连同肌肉一起接种",
+        "只需取一侧股骨头的软骨"
+      ],
+      "answer": 0,
+      "hint": "讲义加粗的那句。",
+      "explanation": "**A 正确。** 外室取骨、酒精中转，到无菌室再剪两端冲骨髓。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch06.md", "label": "分离步骤" }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "表面标志鉴定在第几代？（　）。",
+      "options": ["原代当天", "第 3 代", "第 5 代", "冻存复苏后立刻"],
+      "answer": 1,
+      "hint": "P3 鉴定，P5 诱导。",
+      "explanation": "**B 正确。** 第 3 代做 CD34/45/19/44/29；第 5 代才做 BME 神经诱导。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch06.md", "label": "鉴定" }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "向神经样细胞诱导的 BME 浓度阶梯是（　）。",
+      "options": [
+        "全程 10 mM",
+        "预诱导 1 mM × 24 h，再转入 5 mM",
+        "预诱导 5 mM，再降到 1 mM",
+        "只用 FBS，不加 BME"
+      ],
+      "answer": 1,
+      "hint": "先低后高。",
+      "explanation": "**B 正确。** DMEM-LG / 20% FBS / 1 mM BME 24 h，再换 5 mM。观察 NSE、GFAP。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch06.md", "label": "神经诱导" }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "传代时机是（　）。",
+      "options": [
+        "刚接种即可 1 瓶分 10 瓶",
+        "细胞达 80% 融合后，胰酶 2–3 min，1 瓶分 2 瓶",
+        "必须等细胞全部漂浮",
+        "每小时传代一次"
+      ],
+      "answer": 1,
+      "hint": "80% 融合。",
+      "explanation": "**B 正确。** 突起缩回、间隙增大、接近圆形时用全培养液终止。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch06.md", "label": "传代培养" }
+    },
+    {
+      "id": "q006",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "离心后应保留上清中的脂肪层，因为脂肪细胞也是 BMSC。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "弃上清及脂肪层。",
+      "explanation": "**错误。** 1000 rpm × 5 min 后弃上清液及脂肪层，再加含 10% FBS 的 DMEM-LG。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch06.md", "label": "冲骨髓后离心" }
+    },
+    {
+      "id": "q007",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "BMSC 在 β-巯基乙醇诱导下可以跨胚层分化为神经细胞。",
+      "options": ["错误", "正确"],
+      "answer": 1,
+      "hint": "讲义开篇定义。",
+      "explanation": "**正确。** 讲义明确写「甚至还可以分化为来源于不同胚层的神经细胞（如在 β-巯基乙醇的诱导下）」。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch06.md", "label": "BMSC 定义" }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "label": "简答",
+      "stem": "按时间顺序列出：处死方式、何处剪开骨髓腔、首次换液目的、P3 与 P5 分别做什么。",
+      "answer": "颈髓离断处死。外室取完整股骨，无菌室内再剪两端暴露骨髓腔并冲出。24 h 换液去除未贴壁细胞（贴壁筛选）。P3 免疫细胞化学看表面标志；P5 用 1 mM→5 mM BME 诱神经，看 NSE/GFAP。",
+      "hint": "离断 / 室内剪骨 / 24 h / P3 标志 / P5 诱导。",
+      "scoring_criteria": [
+        "颈髓离断+室内暴露骨髓腔（6 分）",
+        "24 h 换液去悬浮（5 分）",
+        "P3 鉴定 vs P5 诱导（9 分）"
+      ],
+      "explanation": "不要在超净台外打开骨髓腔。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch06.md", "label": "全流程" }
+    }
+  ]
+}

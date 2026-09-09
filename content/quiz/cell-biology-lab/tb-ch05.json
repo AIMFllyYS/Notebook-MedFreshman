@@ -1,0 +1,141 @@
+{
+  "subjectId": "cell-biology-lab",
+  "chapterId": "tb-ch05",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/cell-biology-lab/textbook/ch05.md；实验五 细胞凋亡",
+    "totalPoints": 100,
+    "timeLimit": 40
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "凋亡早期、早于膜通透性增加的膜事件是（　）。",
+      "options": [
+        "磷脂酰丝氨酸（PS）外翻",
+        "细胞壁溶解",
+        "核膜与质膜融合",
+        "全部染色体排出细胞"
+      ],
+      "answer": 0,
+      "hint": "PS 本来在胞质面。",
+      "explanation": "**A 正确。** 正常 PS 只在脂双层胞质面；外翻早于皱缩、染色质浓缩、DNA 片段化和膜通透性增加。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch05.md", "label": "PS 外翻" }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "Annexin V 阳性、7-AAD 阴性表示（　）。",
+      "options": [
+        "活细胞",
+        "早期凋亡（膜完整）",
+        "晚期凋亡或坏死（膜已破）",
+        "一定是实验失败"
+      ],
+      "answer": 1,
+      "hint": "单阳性。",
+      "explanation": "**B 正确。** Annexin V 标外翻 PS；7-AAD/PI 进不了完整膜。双阳性才是晚凋/坏死。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch05.md", "label": "Annexin V 与 7-AAD" }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "本课诱导凋亡使用的是（　）。",
+      "options": [
+        "PEG 4000 处理 30 秒",
+        "放线菌素 D 0.5 μg/ml 作用 20 小时",
+        "40 ℃ 水浴 1 分钟",
+        "75% 酒精泡 5 秒"
+      ],
+      "answer": 1,
+      "hint": "试剂盒流程里「已完成」的那一步。",
+      "explanation": "**B 正确。** 讲义注明凋亡组经放线菌素 D 工作浓度 0.5 μg/ml 作用 20 h（已完成）。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch05.md", "label": "流式步骤" }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "加样顺序符合讲义的是（　）。",
+      "options": [
+        "先加 7-AAD 孵育 15 min，上机前再加 Annexin V",
+        "Annexin V-PE 室温避光 15 min，上机前 5 min 再加 7-AAD",
+        "两种染料必须与多聚甲醛同时加入",
+        "先 DAPI 再上流失细胞仪"
+      ],
+      "answer": 1,
+      "hint": "Annexin 先，7-AAD 临上机。",
+      "explanation": "**B 正确。** 讲义步骤 7–8。不要把 DAPI 核染和流式混成同一次上机。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch05.md", "label": "加样顺序" }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "DAPI 与哪类碱基结合后荧光更强？（　）。",
+      "options": ["G-C", "A-T", "只与 RNA", "只与蛋白质"],
+      "answer": 1,
+      "hint": "A-T 偏好。",
+      "explanation": "**B 正确。** 与 A-T 结合荧光远强于 G-C；蓝色，330–430 / 400–500 nm。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch05.md", "label": "DAPI" }
+    },
+    {
+      "id": "q006",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "PI 和 7-AAD 能自由透过所有活细胞的完整细胞膜并染核。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "完整膜挡核酸染料。",
+      "explanation": "**错误。** 二者都不能透过完整细胞膜；膜通透性增加后才能染核。这也是区分早凋与晚凋的基础。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch05.md", "label": "PI / 7-AAD" }
+    },
+    {
+      "id": "q007",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "流式染色的细胞数应不低于 1×10^6。",
+      "options": ["错误", "正确"],
+      "answer": 1,
+      "hint": "讲义原句。",
+      "explanation": "**正确。** 包括阴性对照在内，进行染色的细胞数不低于 1×10^6。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch05.md", "label": "细胞收集" }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "label": "简答",
+      "stem": "解释为何 Annexin V 单阳性对应早凋、双阳性对应晚凋/坏死；并写出 DAPI 步骤中的固定液。",
+      "answer": "早凋 PS 外翻但膜仍完整，Annexin V 能结合外侧 PS，7-AAD/PI 进不去，故单阳性。晚凋/坏死膜通透性升高，核酸染料进入，故双阳性。DAPI 用 75% 乙醇固定 10 min。",
+      "hint": "膜完整性分界；乙醇固定。",
+      "scoring_criteria": [
+        "早凋：PS 外翻+膜完整（8 分）",
+        "双阳性：膜破、核酸染料进入（8 分）",
+        "75% 乙醇固定（4 分）"
+      ],
+      "explanation": "不要把 DAPI 固定写成多聚甲醛（那是鬼笔环肽/EdU 的固定）。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch05.md", "label": "象限与 DAPI 步骤" }
+    }
+  ]
+}

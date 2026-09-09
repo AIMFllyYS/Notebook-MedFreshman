@@ -1,0 +1,146 @@
+{
+  "subjectId": "cell-biology-lab",
+  "chapterId": "tb-ch01",
+  "generatedAt": "2026-09-09",
+  "examConfig": {
+    "source": "content/cell-biology-lab/textbook/ch01.md；同济基础医学院《细胞生物学实验讲义》实验一",
+    "totalPoints": 100,
+    "timeLimit": 40
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "关于原代培养，下列叙述正确的是（　）。",
+      "options": [
+        "只要细胞已经离开动物体，就算传代培养",
+        "原代指成功传代之前的培养；此时细胞保持原有基本性质，正常体细胞仍为二倍体",
+        "原代培养只能用组织块法，消化法属于传代",
+        "原代细胞一定是多倍体肿瘤细胞"
+      ],
+      "answer": 1,
+      "hint": "先锁「传代成功之前」，再锁核型。",
+      "explanation": "**B 正确。** 讲义定义：直接从机体获得的细胞；较严格地说是成功传代之前，正常体细胞仍为二倍体。消化法与组织块法都是原代手段。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch01.md", "label": "原代培养定义" }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "消化培养法终止胰酶，讲义使用的是（　）。",
+      "options": [
+        "无血清 PBS 反复吹打",
+        "蒸馏水稀释",
+        "含血清的培养液吹打",
+        "75% 酒精喷壶"
+      ],
+      "answer": 2,
+      "hint": "血清里有大量蛋白底物。",
+      "explanation": "**C 正确。** 加入 3 ml 含血清培养液吹打以终止胰酶。PBS 是洗涤液，酒精是消毒，都不能当终止液。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch01.md", "label": "消化离散细胞" }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "组织块培养法在取材之后，正确的贴壁顺序是（　）。",
+      "options": [
+        "立刻加满培养液淹没组织块，振荡使块均匀悬浮",
+        "组织块贴于瓶底 → 翻转瓶底朝上加液（液勿接触组织块）→ 37 ℃ 静置 3 h → 轻轻翻转浸液",
+        "先 1000 rpm 离心组织块 30 min 再接种",
+        "组织块必须先胰酶消化 30 min 才能贴壁"
+      ],
+      "answer": 1,
+      "hint": "先贴牢再浸液。",
+      "explanation": "**B 正确。** 讲义：贴附瓶底、倒置加液不接触组织块、静置 3 h 再翻转浸液，观察块缘新长出的细胞。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch01.md", "label": "组织块培养法" }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "下列无菌操作符合讲义的是（　）。",
+      "options": [
+        "开口培养瓶竖直放在台面中央，扩大操作面积",
+        "吸过营养液的吸管必须再在火焰上烧灼，趁热接触组织",
+        "细胞计数必须在超净台内完成，出台即污染",
+        "开口后尽量保持 45° 斜位；计数可在有菌环境；吸过营养液的用具不能再烧灼"
+      ],
+      "answer": 3,
+      "hint": "45°、计数可有菌、营养液吸管不回烧。",
+      "explanation": "**D 正确。** 其余三项都是讲义点名的反例：竖直开口、烧焦吸管、误以为计数必须无菌。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch01.md", "label": "注意事项" }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 12,
+      "stem": "消化法接种密度，讲义给出的约数是（　）。",
+      "options": [
+        "$5\\times 10^3$/ml",
+        "$5\\times 10^5$/ml 左右，取 4 ml 转入 50 ml 培养瓶",
+        "必须精确到 1 个细胞/瓶",
+        "越浓越好，不必计数"
+      ],
+      "answer": 1,
+      "hint": "五个十的五次方。",
+      "explanation": "**B 正确。** 调整到约 $5\\times 10^5$/ml，取 4 ml 转入 50 ml 培养瓶。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch01.md", "label": "计数、接种和培养" }
+    },
+    {
+      "id": "q006",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "乳鼠肝脏在 75% 酒精中应浸泡 30 分钟，才能保证原代培养绝对无菌。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "讲义写的是泡几秒？",
+      "explanation": "**错误。** 颈椎脱臼后置 75% 酒精泡 **5 秒**。泡太久等于把边缘组织固定，消化出来的是死细胞。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch01.md", "label": "取材" }
+    },
+    {
+      "id": "q007",
+      "type": "true_false",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "胰酶消化后静置 3 分钟，应取下层组织块直接接种，上层悬液弃去。",
+      "options": ["错误", "正确"],
+      "answer": 0,
+      "hint": "离散开的细胞在哪一层？",
+      "explanation": "**错误。** 静置让组织块下沉，取**上层细胞悬液**到新离心管。下层是未消化完的块。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch01.md", "label": "消化离散细胞" }
+    },
+    {
+      "id": "q008",
+      "type": "essay",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 20,
+      "label": "简答",
+      "stem": "比较消化培养法与组织块培养法：离散方式、接种物、关键等待步骤各写一点；并写出原代培养与传代培养的分界。",
+      "answer": "消化法：胰酶把组织离散成悬液，离心后按约 5×10^5/ml 接种细胞。组织块法：1 mm³ 小块贴瓶底，先倒置加液使液体不接触组织块，37 ℃ 静置 3 h 再翻转浸液，观察块缘迁出的细胞。分界：原代是成功传代之前、直接来自机体的培养；传代是致密单层之后的分瓶扩增。",
+      "hint": "悬液 vs 贴块；3 小时倒置。",
+      "scoring_criteria": [
+        "消化法提到胰酶离散+悬液接种（6 分）",
+        "组织块法提到贴壁、倒置 3 h、液面勿提前淹没（8 分）",
+        "原代/传代分界正确（6 分）"
+      ],
+      "explanation": "不要把组织块法写成「先消化再贴块」，也不要把原代表述成「离开动物就是传代」。",
+      "sourceRef": { "path": "content/cell-biology-lab/textbook/ch01.md", "label": "两条原代路径" }
+    }
+  ]
+}

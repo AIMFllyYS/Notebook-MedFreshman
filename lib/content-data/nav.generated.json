@@ -8197,6 +8197,149 @@
       ]
     },
     {
+      "id": "cell-biology-lab",
+      "name": "细胞生物学实验",
+      "icon": "ScrollText",
+      "categories": [
+        {
+          "id": "textbook",
+          "name": "教材",
+          "capabilities": [
+            "examples",
+            "quiz",
+            "search"
+          ],
+          "keyStrategy": "chapter-prefix",
+          "items": [
+            {
+              "id": "ch01",
+              "title": "实验一　细胞原代培养",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch02",
+              "title": "实验二　传代培养、计数、冻存与复苏",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch03",
+              "title": "实验三　细胞膜的特性",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch04",
+              "title": "实验四　细胞器的荧光染色",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch05",
+              "title": "实验五　细胞凋亡的检测",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch06",
+              "title": "实验六　小鼠骨髓间充质干细胞分离培养",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch07",
+              "title": "实验七　真核动物细胞的瞬时转染",
+              "type": "document",
+              "status": "done"
+            },
+            {
+              "id": "ch08",
+              "title": "实验八　细胞融合与 S 期检测",
+              "type": "document",
+              "status": "done"
+            }
+          ]
+        },
+        {
+          "id": "detail",
+          "name": "详解",
+          "capabilities": [
+            "examples",
+            "quiz",
+            "search",
+            "media"
+          ],
+          "keyStrategy": "section-dot",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "recording",
+          "name": "课上录音",
+          "capabilities": [
+            "examples",
+            "quiz",
+            "search"
+          ],
+          "keyStrategy": "category-item",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "summary",
+          "name": "课堂纪要",
+          "capabilities": [
+            "search"
+          ],
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "kaoqian-moni",
+          "name": "考前模拟",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        },
+        {
+          "id": "shizhan-yanlian",
+          "name": "实战演练",
+          "items": [
+            {
+              "id": "placeholder",
+              "title": "敬请期待",
+              "type": "document",
+              "status": "stub"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "other",
       "name": "其他",
       "icon": "FolderOpen",

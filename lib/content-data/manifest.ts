@@ -22,6 +22,7 @@ import { histologyTextbookItems } from './histology-textbook';
 import { instrumentalAnalysisTextbookItems } from './instrumental-analysis-textbook';
 import { medicalEnglishTextbookItems, medicalEnglishKaoqianItems, medicalEnglishShizhanItems } from './medical-english-items';
 import { medicalStatisticsTextbookItems, medicalStatisticsDetailItems, medicalStatisticsKaoqianItems } from './medical-statistics-items';
+import { cellBiologyLabTextbookItems } from './cell-biology-lab-items';
 import { biochemistryDetailItems, biochemistrySummaryItems, biochemistryKaoqianItems, biochemistryShizhanItems } from './biochemistry-extras';
 import { anatomyDetailItems, anatomyKaoqianItems, anatomyShizhanItems } from './anatomy-extras';
 import { histologyDetailItems, histologyKaoqianItems, histologyShizhanItems } from './histology-extras';
@@ -231,6 +232,10 @@ export const contentTree: ContentTree = {
         detail: medicalStatisticsDetailItems,
         kaoqianMoni: medicalStatisticsKaoqianItems,
       }),
+    },
+    {
+      ...subjectHeader('cell-biology-lab'),
+      categories: sophomoreCategorySkeleton(cellBiologyLabTextbookItems),
     },
     {
       ...subjectHeader('other'),

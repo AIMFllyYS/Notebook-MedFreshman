@@ -57,6 +57,14 @@ export const SUBJECT_REGISTRY = [
     color: "#0891b2",
     year: "sophomore-1",
   },
+  {
+    id: "cell-biology-lab",
+    name: "细胞生物学实验",
+    shortName: "细胞实验",
+    icon: "ScrollText",
+    color: "#0f766e",
+    year: "sophomore-1",
+  },
 ] as const satisfies readonly SubjectMeta[];
 
 export type SubjectId = (typeof SUBJECT_REGISTRY)[number]["id"];

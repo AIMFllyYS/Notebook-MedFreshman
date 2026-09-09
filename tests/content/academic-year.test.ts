@@ -72,6 +72,7 @@ test("切换到大二上学期后导航树只有大二新书，不含大一科�
     "仪器分析",
     "医学英语",
     "医学统计学",
+    "细胞生物学实验",
   ]) {
     assert.ok(names.includes(expected), `大二上应包含 ${expected}`);
   }
@@ -92,6 +93,7 @@ test("切换到大一下学期后导航树是原科目，不含大二新书", ()
   assert.equal(ids.has("instrumental-analysis"), false);
   assert.equal(ids.has("medical-english"), false);
   assert.equal(ids.has("medical-statistics"), false);
+  assert.equal(ids.has("cell-biology-lab"), false);
 });
 
 test("学年切换只隐藏大一内容，磁盘文件仍在", () => {
