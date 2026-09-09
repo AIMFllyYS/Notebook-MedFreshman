@@ -19,7 +19,7 @@ type ArtifactApiEvent =
   | { type: 'artifact'; id: string; status: 'error'; message?: string };
 
 /**
- * HTML 演示（Artifact）消息内卡片。链路入口见 lib/ai/agent/tools.ts 的 renderInteractive。
+ * HTML 演示（Artifact）消息内卡片。链路入口见 lib/ai/agent/tools/renderInteractive/tool.ts。
  * 本文件只负责 SSE 生成与「打开演示」；真正的 iframe 浮窗在 ArtifactViewer（AppShell 全局层）。
  * 不要在 components/notes/ 或右侧面板里给演示再做一份组件。
  */

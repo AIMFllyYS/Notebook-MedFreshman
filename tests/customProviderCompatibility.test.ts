@@ -40,7 +40,11 @@ test("image mode chat forces generateImage and does not expose artifact tools", 
 
 test("artifact and image generation use the model selected when the tool call was created", () => {
   const chatRoute = readWorkspaceFile("app/api/chat/route.ts");
-  const tools = readWorkspaceFile("lib/ai/agent/tools.ts");
+  const tools = [
+    "lib/ai/agent/tools/renderInteractive/tool.ts",
+    "lib/ai/agent/tools/generateImage/tool.ts",
+    "lib/ai/agent/tools/writeDocument/tool.ts",
+  ].map(readWorkspaceFile).join("\n");
   const artifactCard = readWorkspaceFile("components/chat/ArtifactCard.tsx");
   const imageViewer = readWorkspaceFile("components/chat/ImageGenViewer.tsx");
   const imageCard = readWorkspaceFile("components/chat/ImageGenCard.tsx");

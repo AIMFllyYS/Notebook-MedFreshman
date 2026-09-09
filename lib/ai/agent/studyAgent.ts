@@ -17,7 +17,7 @@ import {
   IMAGE_SEARCH_MAX_TOTAL,
   MAX_TOOL_STEPS,
   type StudyToolRuntime,
-} from "@/lib/ai/agent/tools";
+} from "@/lib/ai/agent/tools/server";
 
 export interface StudyAgentInput {
   model: LanguageModelV4;
