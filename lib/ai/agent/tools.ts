@@ -404,6 +404,20 @@ export function buildStudyTools(
       toModelOutput: ({ output }) => toText(output),
     }),
 
+    /**
+     * renderInteractive —— 生成 HTML 演示（Artifact）。
+     * 工具 id 因已持久化在聊天历史（tool-renderInteractive part）中而保留历史名称；
+     * 对外文案、组件、store 统一用 "artifact / 演示"。不要改这个 id。
+     *
+     * 链路：本工具 → lib/ai/artifact.ts（生成）→ app/api/artifact/route.ts（SSE）
+     *      → components/chat/ArtifactCard.tsx（消息内卡片）→ lib/hooks/useArtifacts.ts（store）
+     *      → components/chat/ArtifactViewer.tsx（全局浮窗，AppShell 挂载，不属于右侧面板或笔记区）。
+     *
+     * 不是这些文件：
+     * - components/interactives/（手写 React 交互组件、右侧「可交互」tab）
+     * - components/canvas/renderers/HtmlRenderer.tsx（drawDiagram html 模式、消息内联 iframe）
+     * - ContentPageClient 的 renderType='html'（内容页课件 iframe，计划 21）
+     */
     renderInteractive: tool({
       description:
         "当一个概念用静态文字难以讲清、且交互能显著提升理解时，调用本工具在后台生成一个可交互的 HTML 演示（例如：可拖动滑块看概率分布随参数变化、物理受力/矢量合成、分子构象翻转/反应机理分步等）。生成后用户可在对话卡片右上角点击「打开演示」。仅在交互确有必要时调用，不要滥用。",

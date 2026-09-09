@@ -3,9 +3,10 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { idbStorage, PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
-// AI 生成的交互式 HTML 产物最终态存储。
-// 流式 delta 由 ArtifactCard 本地 state 承接，完成后才写入 IndexedDB。
-// viewerId 为临时 UI 状态，不持久化。
+/**
+ * HTML 演示（Artifact）store。链路：tools.ts renderInteractive → ArtifactCard → 本 store → ArtifactViewer。
+ * viewerId 只表示「哪个演示浮窗开着」，浮窗由 AppShell 挂载，不是笔记区组件。
+ */
 
 /** AI 生成的交互式 HTML 产物（IndexedDB 持久化）。 */
 export interface Artifact {

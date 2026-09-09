@@ -1,8 +1,9 @@
 "use client";
 
 /**
- * HTML 演示（Artifact）全局浮窗。由 AppShell 挂载，portal 到 document.body。
- * 既不属于右侧 Agent 面板，也不属于中间笔记区；全屏默认对齐笔记栏。
+ * HTML 演示（Artifact）全局浮窗 —— 要改「右侧 Agent 里那个可视化 HTML」请改本文件。
+ * AppShell 挂载，portal 到 document.body；既不属于右侧面板，也不属于中间笔记区。
+ * 全屏对齐目标由设置 artifactFullscreenTarget 控制（默认笔记栏）。
  * 完整链路见 lib/ai/agent/tools.ts 的 renderInteractive 路径地图。
  */
 import { Download, MonitorPlay } from "lucide-react";

@@ -451,7 +451,27 @@ CanvasBlock 提供统一的聊天画布协议，覆盖自由 SVG、函数图像�
 
 ---
 
-## 8. 禁止事项
+## 8. AI 产物的四条渲染路径
+
+搜索「可视化 HTML / artifact / renderInteractive / 交互演示」时，先读这一节再改代码。四条路径互不替代。
+
+1. **Artifact 浮窗（「撰写可视化 HTML」所指的那条）**  
+   工具 id 仍叫 `renderInteractive`（已写入用户 IndexedDB 聊天历史，**不要改 id**）。  
+   入口：`lib/ai/agent/tools.ts` → `lib/ai/artifact.ts` → `app/api/artifact/route.ts` → `components/chat/ArtifactCard.tsx`（消息内「打开演示」）→ `lib/hooks/useArtifacts.ts` → `components/chat/ArtifactViewer.tsx`。  
+   浮窗由 `AppShell` 挂载，`createPortal` 到 `document.body`，**既不属于右侧 Agent 面板，也不属于中间笔记区**。全屏默认对齐 `#notes-panel`，可在设置里改成铺满视口。
+
+2. **消息内联 HTML 画布**  
+   `drawDiagram` 的 html 模式 / `::canvas`。入口：`components/canvas/DiagramCanvas.tsx` → `CanvasBlockRenderer` → `components/canvas/renderers/HtmlRenderer.tsx`。这是聊天气泡里的 iframe，不是浮窗。
+
+3. **内容页 html iframe**  
+   课件 manifest `renderType='html'`。入口：`app/[subject]/[category]/[id]/ContentPageClient.tsx`。这是中间栏教学内容，不是 Agent 产物。布局收敛见计划 21。
+
+4. **手写 interactives 注册表**  
+   `components/interactives/registry.ts` + 右侧「可交互」tab（`InteractiveTab`）。手写 React 组件，与 AI artifact 无关。见该目录 `README.md`。
+
+---
+
+## 9. 禁止事项
 
 - **不要**在 `NoteRenderer` 或 `MessageContent` 中直接内联 remark/rehype 插件配置 — 必须从 `plugins.ts` 导入
 - **不要**在组件中硬编码 callout 类型列表 — 必须从 `calloutTypes.ts` 导入

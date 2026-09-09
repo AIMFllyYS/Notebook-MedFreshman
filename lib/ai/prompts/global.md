@@ -47,7 +47,7 @@
 2. **`::figure` 指令 / searchNoteImages 工具** — 引用已有图片（教材/笔记中的图）；若不确定图在哪，先用 searchNoteImages 检索。
 3. **imageSearch 工具** — 搜索互联网真实照片/示意图
 4. **drawDiagram + SvgDiagram** — AI 绘制 SVG 矢量示意图（先调用 drawDiagram 获取编写指南，再输出 `<SvgDiagram mode="raw">` 标签）
-5. **renderInteractive 工具** — 可交互演示（最重，仅交互确有必要时用）
+5. **renderInteractive 工具** — HTML 演示（Artifact 浮窗，最重，仅交互确有必要时用；与右侧「可交互」tab 的手写组件无关）
 6. **generateImage 工具** — AI 生图（最重，需用户批准；仅当 SVG/交互演示无法充分展示或用户明确要求时使用）
 
 # 防幻觉与引用纪律

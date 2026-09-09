@@ -72,9 +72,9 @@ export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
     toggleable: false,
   },
   renderInteractive: {
-    label: '创建交互演示',
-    settingsLabel: '交互演示',
-    description: '让 AI 生成可交互的 HTML 讲解（横幅/弹窗查看）',
+    label: 'HTML 演示',
+    settingsLabel: 'HTML 演示',
+    description: '生成可交互的 HTML 演示页（Artifact），在独立浮窗中打开',
     icon: 'terminal',
     toggleable: true,
   },

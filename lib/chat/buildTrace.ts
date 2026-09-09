@@ -43,7 +43,7 @@ const TOOL_LABELS: Record<string, string> = {
   searchNoteImages: '检索笔记图片',
   webSearch: '搜索网页',
   imageSearch: '搜索图片',
-  renderInteractive: '创建交互演示',
+  renderInteractive: 'HTML 演示',
   drawDiagram: '绘制图示',
   generateImage: '准备生成图片',
   createQuiz: '出题',
