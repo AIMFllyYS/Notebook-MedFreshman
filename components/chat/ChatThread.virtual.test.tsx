@@ -191,6 +191,48 @@ describe('ChatThread virtualizer', () => {
     expect(getByText('正在思考…')).toBeTruthy();
   });
 
+  it('pins to bottom when composer inset grows while sticking', () => {
+    const { container, rerender } = render(
+      <div style={{ height: 480, display: 'flex', flexDirection: 'column' }}>
+        <ChatThread
+          messages={makeMessages(4)}
+          isLoading={false}
+          error={null}
+          onClearError={() => {}}
+          onFollowUpClick={() => {}}
+          hydrated
+          bottomInset={80}
+        />
+      </div>,
+    );
+    const viewport = container.querySelector('.chat-messages') as HTMLElement;
+    let scrollTop = 50;
+    Object.defineProperty(viewport, 'scrollHeight', { configurable: true, get: () => 600 });
+    Object.defineProperty(viewport, 'clientHeight', { configurable: true, get: () => 400 });
+    Object.defineProperty(viewport, 'scrollTop', {
+      configurable: true,
+      get: () => scrollTop,
+      set: (value: number) => {
+        scrollTop = Number(value);
+      },
+    });
+    rerender(
+      <div style={{ height: 480, display: 'flex', flexDirection: 'column' }}>
+        <ChatThread
+          messages={makeMessages(4)}
+          isLoading={false}
+          error={null}
+          onClearError={() => {}}
+          onFollowUpClick={() => {}}
+          hydrated
+          bottomInset={180}
+        />
+      </div>,
+    );
+    expect(scrollTop).toBe(200);
+    expect(viewport.style.paddingBottom).toBe('180px');
+  });
+
   it('assigns the external scrollContainerRef to the real scroll viewport', () => {
     const scrollRef = React.createRef<HTMLDivElement>();
 

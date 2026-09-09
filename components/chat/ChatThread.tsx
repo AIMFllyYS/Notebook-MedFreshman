@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { AgentArrowUpIcon, AgentLoopIcon, AgentAlertIcon, AgentInfoIcon, AgentCloseIcon } from '@/components/icons/AgentIcons';
 import ChatMessage from '@/components/chat/ChatMessage';
-import { STICK_THRESHOLD_PX, useStickToBottom } from '@/lib/hooks/useStickToBottom';
+import { pinScrollToBottom, STICK_THRESHOLD_PX, useStickToBottom } from '@/lib/hooks/useStickToBottom';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 
 interface ChatThreadProps {
@@ -77,11 +77,6 @@ export default function ChatThread({
     getItemKey: (index) => displayMessages[index]?.id ?? index,
     initialRect: { width: 0, height: 480 },
   });
-  // v3.17 把该回调放在 instance 上，不是 useVirtualizer options（计划 19 B3）。
-  virtualizer.shouldAdjustScrollPositionOnItemSizeChange = (item, _delta, instance) => {
-    if (isLoadingRef.current && item.index === instance.options.count - 1) return false;
-    return true;
-  };
   const virtualItems = virtualizer.getVirtualItems();
   const rows =
     virtualItems.length > 0
@@ -98,6 +93,21 @@ export default function ChatThread({
     STICK_THRESHOLD_PX,
     [safeBottomInset],
   );
+
+  // v3.17 把该回调放在 instance 上，不是 useVirtualizer options（计划 19 B3）。
+  useLayoutEffect(() => {
+    virtualizer.shouldAdjustScrollPositionOnItemSizeChange = (item, _delta, instance) => {
+      if (isLoadingRef.current && item.index === instance.options.count - 1) return false;
+      return true;
+    };
+  }, [virtualizer]);
+
+  // 非流式输入框增高：rAF 循环只在 isLoading 时跑，贴底时直接钉一次。
+  useLayoutEffect(() => {
+    const el = scrollRef.current;
+    if (!el || !wantStickRef.current) return;
+    pinScrollToBottom(el);
+  }, [safeBottomInset, scrollRef, wantStickRef]);
 
   // 非流式：新消息且贴底时滚到末尾。流式刚结束对齐一次（无 smooth）。
   useEffect(() => {
