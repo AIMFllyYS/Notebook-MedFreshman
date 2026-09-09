@@ -4,6 +4,28 @@
 > **调研日期**：2026-07-05
 > **项目版本**：gailvlun v0.3.1
 > **关联文档**：[存储架构规范](../../docs/refer/storage-architecture.md)、[性能审查报告](../../docs/refer/performance-audit-report.md)、[渲染架构](../../docs/refer/rendering-architecture.md)
+>
+> **目录校准（2026-09，计划 22）**：下文是 2026-07 的调研快照（行号、9 工具、`lib/ai/tools.ts`、`useChat` 543 行均已过时）。当前目录以本节「2.0」与 `docs/refer/adding-an-agent-tool.md` 为准。
+
+## 2.0 当前目录结构（2026-09）
+
+Agent 工具不再集中在 `lib/ai/tools.ts` / `lib/ai/agent/tools.ts`。每个工具一个目录：
+
+```
+lib/ai/agent/tools/
+  index.ts            # 客户端入口：类型 + presentation + ResultCard。禁止 re-export tool.ts
+  server.ts           # 仅服务端：buildStudyTools
+  names.ts            # StudyTools / STUDY_TOOL_NAMES
+  catalog.ts          # TOOL_REGISTRY / TOOL_RESULT_CARDS
+  presentations.ts
+  <name>/types.ts + presentation.ts + tool.ts  [+ ResultCard.tsx]
+```
+
+13 个工具：`getCurrentPage`、`getOutline`、`getSection`、`searchNotes`、`searchNoteImages`、`webSearch`、`imageSearch`、`renderInteractive`、`drawDiagram`、`generateImage`、`createQuiz`、`writeDocument`、`useSkill`。其中七个有结果卡片（searchNotes / webSearch / renderInteractive / generateImage / createQuiz / searchNoteImages / writeDocument）。`ChatMessage.tsx` 经 registry 渲染，无工具名字面量。
+
+`useChat.ts` 只剩编排（≤120 行）。`sendMessage` 拆到 `lib/chat/`：`canSendNow`、`resolveRequestSettings`、`estimateContextBudget`、`buildChatRequestBody`、`createStallWatchdog`、`kickoffSessionTitle`、`resolveFollowUps`、`classifySendError`、`hydrateForRequest`、`executeChatRequest`。
+
+`ChatSettings` 壳在 `components/chat/settings/ChatSettings.tsx`（≤150 行），旧路径 `components/chat/ChatSettings.tsx` 是 re-export。
 
 ## 1. 执行摘要
 
@@ -35,7 +57,7 @@ flowchart TB
     subgraph LibAI["lib/ai/ 中立协议层"]
         provider[provider.ts<br/>resolveProvider / 端点链]
         models[models.ts<br/>模型注册表]
-        tools[tools.ts<br/>9 工具 + runTool]
+        tools[tools/server.ts<br/>13 工具 buildStudyTools]
         anthropic[anthropicAdapter.ts<br/>双向翻译]
         upstream[upstream.ts<br/>错误解析 + 容灾判定]
         artifact[artifact.ts<br/>streamInteractiveArtifact]
@@ -148,9 +170,9 @@ flowchart TB
 - `message_stop` 输出最终 usage + `[DONE]`（`anthropicAdapter.ts:535-545`）
 - 兼容 One-API 与官方两种鉴权：同时下发 `x-api-key` 与 `Authorization: Bearer`（`anthropicAdapter.ts:312-318`）
 
-### 3.3 工具调用系统（`lib/ai/tools.ts`）
+### 3.3 工具调用系统（2026-07 快照；现网见 §2.0）
 
-9 个工具的注册与执行集中在一处（`tools.ts:39-204` 的 `ALL_TOOLS` 与 `tools.ts:260-398` 的 `runTool`）。
+> 2026-07 时 9 个工具集中在 `lib/ai/tools.ts`。2026-09 已迁到 `lib/ai/agent/tools/<name>/`，由 `server.ts` 的 `buildStudyTools` 组装。下面清单仍反映当时的调度语义，路径以 §2.0 为准。
 
 **工具清单**：
 
@@ -407,10 +429,10 @@ flowchart LR
 | 端点链切换 | `lib/ai/provider.ts:305-314` | `resolveNextProvider` |
 | Anthropic 请求翻译 | `lib/ai/anthropicAdapter.ts:257-328` | `buildAnthropicRequest` |
 | Anthropic 流翻译 | `lib/ai/anthropicAdapter.ts:377-601` | `anthropicStreamToOpenAI` |
-| 工具定义 | `lib/ai/tools.ts:39-204` | `ALL_TOOLS` |
-| 工具执行 | `lib/ai/tools.ts:260-398` | `runTool` switch |
-| 工具裁剪 | `lib/ai/tools.ts:213-246` | `getToolDefs` |
-| useChat 入口 | `lib/hooks/useChat.ts:64-68` | 签名 + overrides |
+| 工具定义 | `lib/ai/agent/tools/<name>/tool.ts` | 每工具 `createXxxTool` |
+| 工具组装 | `lib/ai/agent/tools/server.ts` | `buildStudyTools` |
+| 工具展示 / 卡片 | `lib/ai/agent/tools/catalog.ts` | `TOOL_REGISTRY` |
+| useChat 入口 | `lib/hooks/useChat.ts` | 编排；纯函数在 `lib/chat/` |
 | 水合门控 | `lib/hooks/useChat.ts:100-105` | `_hasHydrated` + `sessionLoadState` |
 | 模型选择 | `lib/hooks/useChat.ts:108-117` | `effectiveModelId` + thinking 能力约束 |
 | 上下文预算 | `lib/hooks/useChat.ts:191-219` | `fixedContextLimit` + 软上限 |

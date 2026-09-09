@@ -75,7 +75,10 @@ test("image generation route honors explicit custom image API style", () => {
 });
 
 test("custom model settings preserve provider compatibility fields", () => {
-  const source = readWorkspaceFile("components/chat/ChatSettings.tsx");
+  const source = [
+    readWorkspaceFile("components/chat/settings/_shared.tsx"),
+    readWorkspaceFile("components/chat/settings/ModelForm.tsx"),
+  ].join("\n");
 
   assert.match(source, /reasoningField: m\.reasoningField \?\? ""/);
   assert.match(source, /thinkingRequestStyle: m\.thinkingRequestStyle/);
