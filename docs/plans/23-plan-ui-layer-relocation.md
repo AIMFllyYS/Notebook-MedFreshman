@@ -149,3 +149,128 @@ Commit：`chore(lint): enforce lib-must-not-import-components` + `docs(agent): d
 ## 并发避让
 
 内容 Agent 的作业域是 `content/**`、`public/images|media/**`、`lib/content-data/**` 的数据条目。本计划只碰 `lib/ai/agent/tools/**`、`lib/markdown/**`、`components/**`、`eslint.config.mjs`、`docs/**`，与之零重叠。Git 纪律照 `00-execution-contract.md` 第二节：只用显式路径提交，留在 `dev`，不推送，对方的在途脏文件原样留着。
+
+## 执行记录
+
+> 执行日期：2026-09-10。分支 `dev`，未 push。对方在途文件 `docs/refer/exam-type-distribution.md`、`docs/refer/mineru-parsing-guide.md` 与根目录 `A-existing-data.png` 原样未动。截图只写在 `%TEMP%\srp-plan23\`，未进仓库。
+
+### 1. 各阶段 commit
+
+| 阶段 | Hash | Message |
+|------|------|---------|
+| A | `8fbeb7a2` (`8fbeb7a2f8b9553de12bedfb4fb130dcba4759c5`) | `refactor(agent): relocate tool result cards to components/chat/toolCards` |
+| B | `defd5987` (`defd59871f02d0d51c46a170415db46c9b062514`) | `refactor(agent): keep tool barrel free of client components` |
+| C | `a4259804` (`a4259804f2d398ea55fb668800d9d8efc6abc094`) | `refactor(markdown): move component maps to UI layer and drop TDZ workaround` |
+| D | `3bb75c4c` (`3bb75c4cf0368da8aea0d2d5a61f734fe0809456`) | `chore(lint): enforce lib-must-not-import-components` |
+
+阶段 D 的 commit body 本应再写 `docs(agent): document tool card layer`（路径地图与 README）。PowerShell 换行没有进 body，subject 已是计划要求的第一句；路径地图改动（`presentation.ts` 顶部注释、`components/chat/toolCards/README.md`、`docs/refer/adding-an-agent-tool.md`、`docs/refer/rendering-architecture.md`、`lib/ai/agent/toolTypes.ts`、`00` 第六节卡片路径）都在这个 commit 里。
+
+### 2. 各阶段做了什么
+
+**A · 工具卡片归位**
+
+- `git mv` 7 个 `lib/ai/agent/tools/<name>/ResultCard.tsx` → `components/chat/toolCards/<name>Card.tsx`（内容除 import 外逐字未改，含 `"use client"`）。
+- 7 个测试一并搬为 `<name>Card.test.tsx`。4 个含 `vi.mock` 的测试（`searchNoteImages` / `createQuiz` / `generateImage` / `renderInteractive`）mock 路径本来就是 `@/` 别名，**不用改**。
+- `catalog.ts` → `components/chat/toolCards/registry.tsx`；`resultCards.tsx` → `ToolResultCards.tsx`；`registry.test.tsx` 随 registry 搬走。
+- `RESULT_CARD_ORDER` / `resultKey` / `shouldRender` **逐字保留**。顺序断言数组仍是 `searchNotes → webSearch → renderInteractive → generateImage → createQuiz → searchNoteImages → writeDocument`。
+- 工具 id 未改。`studyAgent.ts` / `server.ts` 不消费 `TOOL_REGISTRY`。
+
+**B · 收紧工具桶**
+
+- `lib/ai/agent/tools/index.ts` 只导出类型与 presentation；文件头改为「客户端渲染层在 `components/chat/toolCards/`」。
+- 在 `app/api/health/search/route.ts` **临时** `import { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools"`，跑过 `pnpm build`（**1210** 页）。服务端 chunk `[root-of-the-server]__0bnnk8t._.js` 含 13 个工具 id，**零** `toolCards` / `components/chat` / `ArtifactCard`。`.nft.json` 会列整仓，不能当证据。
+- **临时 import 已撤销**。交付时 `git diff -- app/api/health/search/route.ts` 为空。
+
+**C · markdown 映射表与 TDZ**
+
+- `lib/markdown/directiveComponents.ts` → `components/shared/directives/registry.ts`（导出名 `directiveComponents` 不变）。
+- `lib/markdown/noteComponents.tsx` → `components/notes/noteComponents.tsx`（导出名不变，**未加** `"use client"`）。
+- 四处调用方已改：`MessageContent.tsx`、`NoteRenderer.tsx`、`NoteRendererServer.tsx`（**未加** `"use client"`）、`QuizMarkdown.tsx`。
+- **TDZ 绕行已删**：`QuizMarkdown` 改为模块顶层展开 `directiveComponents`，去掉 `useMemo`。
+- 真实环路仍在（搬文件没拆环）：`QuizMarkdown.tsx` → `components/shared/directives/registry.ts` → `MemoryCard.tsx` → `QuizMarkdown.tsx`。计划允许「改回后仍报错则保留绕行」。vitest 与真机均未出现 `Cannot access ... before initialization`，所以绕行保持删除。若后续 Turbopack 某入口顺序再炸，应恢复绕行并写清这条环，不要硬拆 `MemoryCard`。
+
+**D · 规则归位与路径地图**
+
+- `eslint.config.mjs`：`files: ["lib/**"]` 的 `no-restricted-imports` 从 `warn` 改 **`error`**。`lib/hooks/**` **仍排在 `lib/**` 之后**（扁平配置后写覆盖）。
+- 六处 `tool.ts` / `server.ts` 禁止导入仍全部为 `error`：`components/**`、`lib/hooks/**`、`components/notes/**`、`RightPanel.tsx`、`components/interactives/**`、`components/canvas/**`。
+- 13 个 `presentation.ts` **只加了一行注释**（`types.ts` / `tool.ts` 零改动）。有卡的 7 个指向 `components/chat/toolCards/<name>Card.tsx`；无卡的 6 个写「无结果卡片」。
+- 新建 `components/chat/toolCards/README.md`。同步了加工具文档与「四条渲染路径」。
+
+### 3. 实际改动与计划的偏差
+
+1. **阶段 A 必须先从 `index.ts` 去掉 `TOOL_REGISTRY` / `TOOL_RESULT_CARDS` / `RESULT_CARD_ORDER` 的值导出。** 删 `catalog.ts` 后若仍从桶再导出，tsc 会挂。没有从 `components` 再导出回 `lib`（那会制造新的 `lib → components`）。计划把「收紧桶」写在 B，但 A 不先收这一行就编不过。
+2. **卡片测试是 7 个，不是计划初稿的 4 个**（派发前已校准）。4 个 `vi.mock` 已是 `@/` 别名，路径不用改。
+3. **验收口径「13 个 presentation.ts 未被改动」与阶段 D「顶部加注释」冲突。** 按阶段 D 加了注释，行为 / schema / id 未改。
+4. **阶段 D commit body 缺第二句**（见上）。内容都在，只是 git 消息少一行。
+5. **`00` 第六节「唯一入口」那段仍写着旧路径** `lib/ai/agent/tools.ts` 的 `renderInteractive`。阶段 D 已把 Agent 契约段和 `rendering-architecture.md` 改到 `toolCards/renderInteractiveCard.tsx`，这段历史说明漏改。未在本计划再开第五个 commit 去改，避免扩大范围。
+
+### 4. 计划要求记录的数据
+
+**零命中（两个数字都归零）**
+
+- `git grep "@/components" -- lib`：**27 → 0**（含 4 个测试 `vi.mock`；ESLint 原先只报 23，差的 4 条不在规则作用域）。
+- `pnpm lint` 的 `lib → components`：**23 → 0**（升 `error` 后这 23 条消失，warning 108 → 85）。
+- `git grep -n "TOOL_REGISTRY\|TOOL_RESULT_CARDS" -- lib`：**0**。
+
+**门禁（对比计划 22 第三批基线）**
+
+| | 基线（计划 22 第三批） | 本计划 |
+|--|--|--|
+| `pnpm exec tsc --noEmit` | 0 | 0 |
+| `pnpm lint` | 0 error / **108** warning | 0 error / **85** warning（108 − 23） |
+| `pnpm test:react` | vitest **245** | 62 files / **245** |
+| `pnpm test` | node **535** + vitest **245** | node **535** + vitest **245** |
+| `pnpm build` | **1210** 页 | **1210** 页（阶段 B 含临时桶 import 时测过） |
+| `pnpm test:content` | 契约里 ch08-4 基线失败 | 本次 fail **0**（只记录不修；该基线失败未再现） |
+
+**卡片顺序（代码 + 真机）**
+
+- `registry.test.tsx` 断言数组逐字未变。
+- 真机同一条回复：`searchNotes → webSearch → renderInteractive`（截图 `T1-three-cards.png`）。
+
+**去重**
+
+- `resultKey` 仍是 `artifactId` / `imageGenId` / `quizId` / `documentId`，`ToolResultCards` 的 `dedupBy` 未改。
+- 真机发「同一条回复调用两次 renderInteractive」：模型造出两段同标题文案，但按卡片根节点去重后 **`uniqueDemoCards: 1`**（两颗「打开演示」按钮同属一张卡）。无法在流式里稳定造出「同一 `artifactId` 的两个 part」；与计划 22 结论相同，代码级确认 `resultKey` 即可。
+
+**TDZ**
+
+- 绕行：**已删除**。
+- 真实环路：`QuizMarkdown.tsx` → `registry.ts` → `MemoryCard.tsx` → `QuizMarkdown.tsx`。
+- 真机 `__srpErrors` 的 `tdz` 始终为 `[]`。正文展开 `:::memory{label="融合与 S 期"}` 后 body 正常（`T10-memory-expanded.png`）。题目测试 tab 用 `QuizMarkdown` 渲染题干/选项（`T11-quiz-tab.png`），无 TDZ。
+
+### 5. 真机方法学与结果
+
+- **没有**在用户正在用的 Edge 里测，**没有**清存储，**没有**用隐私窗口。
+- 把 Edge Default 的 `localhost:35349` Local Storage + IndexedDB 拷到 `%TEMP%\srp-plan23-ud\Default\`，Chrome + CDP **9245** 打开副本。
+- 模型 **Qwen3.8 27B**，深度思考关闭。
+- 7 张有卡片的工具均出现：
+
+| 工具 | 真机证据 |
+|------|----------|
+| searchNotes | `引用笔记 · 5 条` |
+| webSearch | `联网来源 · 5 条` |
+| renderInteractive | `打开演示` / 「PEG 融合示意」 |
+| searchNoteImages | `笔记图片 · 6 张` |
+| createQuiz | `PEG 细胞融合 · 即时检验 · 2 题`（不要只找「开始答题」） |
+| generateImage | 「批准生成」卡（未点批准，卡片本身已出） |
+| writeDocument | `查看文档` |
+
+- 笔记两条路径：正文 tab = `NoteRendererServer`（SSR，未加 `"use client"`）；例题 EX01 详情 = 客户端 `NoteRenderer`（`T8-example-detail.png`）。指令组件（定义卡 / MemoryCard）都在。
+- 截图目录：`%TEMP%\srp-plan23\`（`T1` 三卡顺序、`T6`/`T7` 去重、`T8` 例题、`T9`/`T10` MemoryCard、`T11` 题目测试）。
+
+### 6. 未完成项 / 发现但未处理
+
+1. **Next.js overlay「2 Issues」**：`Expected onClick listener to be a function, instead got a string`，栈在 `ArtifactCard.tsx:301`（`MessageContent` 渲染 `reasoningText`），经 `ToolResultCards` → `renderInteractiveCard`。本计划未改 `ArtifactCard`，不是搬迁引入。另有 script tag / onClick string 控制台噪声。
+2. **正文 MemoryCard 解析毛刺**：可见 `EdU 顺序" mode="cloze点击展开`（内容/指令解析，非搬迁引入）。
+3. **`00` 第六节「唯一入口」仍写 `lib/ai/agent/tools.ts`**（见偏差 5）。`rendering-architecture.md` 已是新路径。
+4. **`00` 进度表仍写计划 23「执行中」**。本记录不改契约正文，留给主智能体改状态。
+5. **`noteComponents.tsx` 的 `_node` unused** 是原文件就有的 warning。
+6. **`click-text.js` 用 `innerText.includes` 会点到整页容器**，真机要点精确 `trim()===` 或 class（`.memory-card-header`）。
+
+### 7. 给验收方的重点
+
+- 卡片顺序与去重只认 `components/chat/toolCards/registry.tsx` + `registry.test.tsx`，不要再搜 `lib/**/catalog.ts`。
+- 加工具：`lib` 侧只放 `types.ts` / `presentation.ts` / `tool.ts`；有卡再加 `components/chat/toolCards/<name>Card.tsx` 并在 `registry.tsx` 加一行。id 冻结。
+- `lib/hooks/**` 的 lint 块必须继续排在 `lib/**` 之后。
+- TDZ 环还在，只是当前入口顺序没炸。再动 `MemoryCard` / `QuizMarkdown` / `directiveComponents` 时先看这条环。
