@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test, beforeEach } from "node:test";
-import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
+import { useKeyboardSettings } from "@/lib/stores/keyboard/keyboardSettings";
+
 
 beforeEach(() => {
   useKeyboardSettings.setState({ disabledShortcuts: [] });
