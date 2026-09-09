@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { AgentArrowUpIcon, AgentLoopIcon, AgentAlertIcon, AgentInfoIcon, AgentCloseIcon } from '@/components/icons/AgentIcons';
 import ChatMessage from '@/components/chat/ChatMessage';
+import { TRACE_COLLAPSE_MS } from '@/components/chat/AgentTrace';
 import { pinScrollToBottom, STICK_THRESHOLD_PX, useStickToBottom } from '@/lib/hooks/useStickToBottom';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 
@@ -53,8 +54,10 @@ export default function ChatThread({
 }: ChatThreadProps) {
   const internalRef = useRef<HTMLDivElement>(null);
   const scrollRef = scrollContainerRef ?? internalRef;
+  const [stickActive, setStickActive] = useState(isLoading);
+  if (isLoading && !stickActive) setStickActive(true);
   const isLoadingRef = useRef(isLoading);
-  isLoadingRef.current = isLoading;
+  isLoadingRef.current = isLoading || stickActive;
   const wasLoadingRef = useRef(isLoading);
 
   const displayMessages = useMemo(
@@ -89,10 +92,16 @@ export default function ChatThread({
 
   const { onScroll, isAtBottom, setWantStick, wantStickRef } = useStickToBottom(
     scrollRef,
-    isLoading,
+    isLoading || stickActive,
     STICK_THRESHOLD_PX,
     [safeBottomInset],
   );
+
+  useEffect(() => {
+    if (isLoading) return;
+    const timer = window.setTimeout(() => setStickActive(false), TRACE_COLLAPSE_MS + 48);
+    return () => window.clearTimeout(timer);
+  }, [isLoading]);
 
   // v3.17 把该回调放在 instance 上，不是 useVirtualizer options（计划 19 B3）。
   useLayoutEffect(() => {
