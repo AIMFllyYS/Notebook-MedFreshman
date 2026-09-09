@@ -109,6 +109,8 @@
 
 作者其实已意识到这个 CSS 的副作用：`app/styles/canvas.css:216` 注释写到全屏被 `.chat-messages{contain:layout}` / `.chat-message{content-visibility:auto}` 裁在气泡里，所以 `CanvasFullscreenPortal` 不得不 portal 到 body。
 
+**订正（2026-09-09，计划 19 验收 + 深度修复）：** 运行时 A/B 对照（验收方不改代码、只在浏览器注入旧 CSS）证明「根因一」不是用户症状的主因：`content-visibility: auto` 对已渲染过的元素会保留上次测得的高度，离屏后并不会退回 72px 占位；「72↔真实高度反复翻」只发生在从未绘制过的 overscan 项，且对照两侧 `drops` 都接近 0。真正的机制是**高度骤缩 + 用户意图误判**的连锁：流式中末条骤缩（最典型是 `AgentTrace` 思考块 418px→202px）→ `scrollHeight` 跌到接近/低于 `clientHeight` → 浏览器把 `scrollTop` 夹到 0 → `handleScroll` 把这次程序性下降当成用户上滑 → `atBottom` 变 false → `useStickToBottom` 停止推底，后面整段流式都不跟随；结束帧的对齐又被 `!isAtBottomRef` 跳过。深度修复见 `19-plan-chat-thread-scroll.md` 执行记录「深度修复」：退出跟随改为只认真实手势，贴底在内容收缩时继续钉住。
+
 ### 4.3 根因二：三个滚动驱动同时写 `scrollTop`
 
 - `useStickToBottom(scrollRef, isLoading)`：`isLoading` 期间每帧 `requestAnimationFrame` 检查并把 `scrollTop = scrollHeight`。

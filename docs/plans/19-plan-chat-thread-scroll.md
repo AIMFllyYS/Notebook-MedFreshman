@@ -275,3 +275,59 @@ CSS 落地确认（修复后 computed）：`.chat-message` 的 `content-visibili
 - 划词「解释」打开浮动聊天窗（复用 `ChatThread`），已开窗并开始生成；未对浮窗单独再跑 30s 探针。
 
 过程截图（发送前 / 流式中 / 流式后 / 划词浮窗）已从仓库移除，见后续「深度修复」记录。
+
+---
+
+### 5. 深度修复（验收有条件通过后，2026-09-09）
+
+验收判定：用户「生成时整页忽上忽下」未完全消除。真正机制是高度骤缩 + 把程序性 `scrollTop` 下降误判为用户上滑（见 `17` §4.2 订正）。本轮按验收 4 项必须修复落地，全程留在 `dev`，未 push，未改 `content/**`。
+
+#### 5.1 各修复 commit
+
+| 项 | hash | 说明 |
+|----|------|------|
+| 修复 1 | `e671fd98` | 退出跟随只认真实手势；内容收缩时继续钉住新的 `scrollHeight - clientHeight` |
+| 修复 2 | `1f2bef00` | 阶段 D：`AgentTrace` `max-height` 折叠过渡；loading 行占位到首条 assistant；FollowUp 错开 160ms |
+| 修复 2 补 | `b5698594` | 追问延迟改为渲染期跃迁 + timer，hooks 自查 error 不增加 |
+| 修复 2 补 | `6867fa5a` | 流式结束后再贴底 `TRACE_COLLAPSE_MS+48ms`，接住折叠和追问卡 |
+| 修复 3 | `db697562` | `safeBottomInset` 变化且贴底时 `useLayoutEffect` 写一次 `scrollTop`；B3 回调改到 layout effect |
+| 修复 4 | `d0c63d10` | `git rm` 4 张 `docs/plans/19-verify/*.png` |
+| 修复 4 补 | `3f00dec6` | `.gitignore` 增加 `docs/plans/**/verify/`，执行记录去掉截图路径 |
+
+#### 5.2 偏差
+
+- 手势跟踪放在 `useStickToBottom` 内（`wheel` / `touchmove` / `PageUp|ArrowUp|Home` / 滚动条拖拽），`scroll` 位置只用于「回到底部后恢复」。`ReasoningTraceStep` 改为解构 `{ onScroll }`。
+- 建议的「滚动条拖拽」用「指针落在 `clientWidth` 右侧 gutter + 随后离开阈值」识别，避免把程序性 `scroll` 当离开。
+- FollowUp 延迟若写在 `useEffect` 里会新增 `react-hooks/set-state-in-effect`，改成与 `useProcessingDisclosure` 相同的渲染期跃迁 + `setTimeout` 回调。
+- 验收后补做：流式结束 rAF 不能立刻停，否则 160ms 后插入的追问卡会留下 ~115px 缺口。用 `stickActive` 尾巴接住，没有把 `safeBottomInset` 重新加回 `scrollToIndex` 依赖。
+- B3 实例属性赋值从渲染期挪到 `useLayoutEffect`（仍不能塞进 `useVirtualizer` options，会 `TS2353`）。
+- 修复 4 曾误把另一 Agent 的内容文件暂存进一次 commit，已 `reset --soft` + `restore --staged` 撤出，对方文件保持未提交脏状态。
+
+#### 5.3 真机对照（Qwen3.8 27B，关闭深度思考，`/probability/detail/1.1`，端口 35349）
+
+提问：长篇分点讲解样本空间/古典概率 + `$$...$$` 块级公式 + `renderInteractive` HTML 骰子演示。探针 16ms；结束帧另 8ms，覆盖 `textarea.disabled` 翻转前后各 3s。跟随是否断开：连续 8 帧 `dist>90` 才记 `atBottomLost`（避免骤缩单帧误报）。
+
+**修复前数字取计划 19 验收（`c2f1dfb6` 上、同一方法学）；修复后为本轮第二试（含 settle 尾巴）。**
+
+| 指标 | 修复前（验收） | 修复后 |
+|------|----------------|--------|
+| 流式全程 30s：`drops` / `maxDropPx` | 跟随中途断开（程序性回顶被当成上滑）；计划探针曾记 `drops=1` / `maxDropPx=240` | **`drops=0` / `maxDropPx=0`**；`lastMsgH` 92.4 → 418.4 |
+| 流式全程（含溢出后）`lastMsgH` min/max | 验收记末条 418→202 骤缩 | 92.4 → **6287.9**（正文+公式+工具卡确实在大幅增高） |
+| 流式结束 ±3s：`drops` / `maxDropPx` / `maxShJump` | **241px** 回退，`maxShJump` **593** | `endDrops=8` / `endMaxDropPx=135` / `endMaxShJump=135` |
+| 流式中途贴底是否全程未断 | **断了**（`atBottom=false`，rAF 停，结束对齐被 skip） | **未断**：`atBottomLost=false`，结束时 `dist=0`，无「跟随最新输出」按钮 |
+| 非流式四行输入：`lastMsgBottom` | `paddingBottom=115`、composer≈143，末条被盖约 **38px**（`<0`） | composer **142.7**、`paddingBottom=169`、`dist=0`、`lastMsgBottom=15.89`（**≥0**） |
+
+全程 `drops=14` / `maxDropPx=4828` 出现在 30s 窗口之后：末条高度从六千多骤缩时，贴底会把 `scrollTop` 写到新的 max，探针把这种**跟随收缩的单调回落**也记成 drop。这不是跟丢后的上下振荡；8 帧判据下跟随从未断开。
+
+补充：
+
+- 块级 KaTeX：流式中最多 15 个 `.katex-display`；抽检 2 个在 `.chat-message { contain: style paint }` 下 `overflowRight/Left=0`，**未被裁切**。
+- 54 条会话（IDB 注入）：`overscan: 4` 下 DOM 恒为 13，spacer 3948px，滚动 0/25/50/75/100% **无白屏/空洞**。
+
+#### 5.4 门禁
+
+- `pnpm exec tsc --noEmit` 0
+- `pnpm lint` 0
+- `pnpm test:react` 0（52 文件 / 229 例；`ChatThread.virtual.test.tsx` 13 例，`AgentTrace.test.tsx` 22 例）
+- `pnpm test` 0（node:test 508 + vitest 229）
+- hooks 自查：改动前后仍是 **1 error / 13 warning**；唯一 error 仍是 `SourcePreviewViewer.tsx:48`
