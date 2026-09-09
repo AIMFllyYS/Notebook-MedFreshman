@@ -1,6 +1,7 @@
 /**
- * Agent 工具注册表的客户端入口。
- * 只导出类型、展示元数据与结果卡片；不要从这里 re-export tool.ts / server.ts。
+ * Agent 工具注册表的同构入口。
+ * 只导出类型与展示元数据；客户端渲染层在 `components/chat/toolCards/`。
+ * 不要从这里 re-export tool.ts / server.ts。
  */
 
 /** @public 各工具 Input/Output 与 StudyTools 联合，兼容旧 import。 */
