@@ -146,6 +146,72 @@ Commit：`chore(lint): enforce lib-must-not-import-components` + `docs(agent): d
 - `NoteRendererServer` 是服务端组件，搬到 `components/notes/` 后若误加 `"use client"` 会破坏 SSR——搬迁时**不要**给它加。
 - 本计划不碰 store、不碰滚动、不碰窗口层，与 `19`/`20` 的既成不变量无交集；但仍须遵守 `00-execution-contract.md` 第六节（尤其不要退回 `getElementById("notes-panel")` 字面量、不要手写浮窗 portal）。
 
+## 断环验证（2026-09-10，计划 23 之后的补救）
+
+**结论：环已实证有害，且表现为「静默空映射」而不是崩溃。已断环，并留下测试钉死。**
+
+### 起因
+
+计划 23 阶段 C 删掉了 `QuizMarkdown` 里用 `useMemo` **在组件函数内**延迟展开 `directiveComponents` 的绕行，改为在**模块顶层**构造 `blockComponents` / `inlineComponents`。执行方按计划要求「改回后若不报错就删绕行」执行，当时 build 1210 页与真机都没报错，所以判定可删。
+
+但**环并没有断**，三条边全是静态 import：
+
+```
+components/quiz/QuizMarkdown.tsx         → @/components/shared/directives/registry
+components/shared/directives/registry.ts → @/components/shared/directives/MemoryCard
+components/shared/directives/MemoryCard.tsx → @/components/quiz/QuizMarkdown
+```
+
+「没报错」只说明当时的模块图恰好总是先求值 `QuizMarkdown`。而 `MessageContent.tsx`、`NoteRenderer.tsx`、`NoteRendererServer.tsx` **都直接 import 这个 registry**，先求值 registry 的顺序是可达的。
+
+### 测试（`af2c7e68`）
+
+`components/shared/directives/registry.evaluation-order.test.tsx`：4 个用例，分别按「registry 先」「QuizMarkdown 先」「MemoryCard 先」等顺序在**各自独立的模块图**里（`vi.resetModules()` + 动态 `import()`）加载，断言 14 个指令键全部存在**且每个值都是函数**。
+
+这个断言形状是刻意的，它同时抓两种失败形态：抛 TDZ（崩溃），以及 `{...undefined}` 合法导致的**静默空映射**。
+
+### 实测结果（修复前）
+
+**先求值 registry 时，`blockComponents` 只剩 `table` 和 `img`——14 个指令组件被静默丢弃，控制台干净、页面不报错。**
+
+即：顶层展开访问到尚未初始化的 `directiveComponents`，而 `{...undefined}` 在 JS 里完全合法，于是指令映射静默变空。这比 TDZ 崩溃更难发现：题目与记忆卡里的 `:::callout`、`:::memory`、`::functionplot` 等会**全部不渲染**，没有任何报错。
+
+历史注释里记录的 `Cannot access 'directiveComponents' before initialization` 是同一个环在另一种打包/求值组合下的崩溃形态。
+
+### 修法（`fdce7907`）：断环，不是恢复绕行
+
+- 新增 `components/quiz/QuizMarkdownBase.tsx`（叶子）：KaTeX + `table` / `img` / `p` 覆盖 + `cleanControlTags` / `normalizeDirectiveLabels`，**不 import 指令 registry**，额外组件走 props。
+- `QuizMarkdown.tsx` = `QuizMarkdownBase` + `directiveComponents`，对外签名与行为不变（默认导出、`children` / `inline` / `className`）。组件覆盖顺序保持「先 directives，后 leaf 覆盖」，与原来逐字一致。
+- `MemoryCard.tsx` 改为 import 叶子 → 环断掉（registry → MemoryCard → Base，Base 不再回指）。
+- 残余环路核查：`QuizMarkdownBase` 只依赖 react-markdown / 共享插件 / `ContentImage`，而 `ContentImage` 只导入 React 与 lucide，**没有任何一条边回指 registry**。
+
+### 行为变化及其量化（这是选这条路的前提）
+
+断环后，MemoryCard **内部正文**不再支持嵌套指令（`:::memory` 里再写 `:::callout` 之类）。动手前把这件事量清楚了：
+
+用 Node 扫全量正文（`git ls-files -z -- content`，避开 PowerShell 对非 ASCII 路径的八进制转义问题），按 `:::` 深度配对找出每个 memory 块的块体，再在块体内匹配容器指令 `:::name` 与叶子指令 `::name{` / `:name[`：
+
+- 扫描文件 **3201** 个，`:::memory` 块 **711** 个，未闭合 **0** 个；
+- **块内嵌套指令命中 0 处。**
+
+故此行为变化对现有正文零影响。其余消费方（`FollowUpQuestions` / `FlipCard` / `app/[subject]/review/page.tsx` / `RecordPreviewWindow`）用的仍是完整 `QuizMarkdown`，指令能力未变。
+
+**残留风险（低）：** AI 生成的正文若在 `:::memory` 里嵌套指令，同样不会渲染。真要支持，应让 `MemoryCard` 通过 props 接收指令映射（由调用方注入），而不是重新 import registry 把环接回去。
+
+### 门禁
+
+| | 基线（计划 22 第三批） | 本次 |
+|--|--|--|
+| `pnpm exec tsc --noEmit` | 0 | 0 |
+| `pnpm lint` | 0 error / 85 warning | 0 error / **85** warning |
+| `pnpm test:react` | 245 | **249**（+4 求值顺序用例），63 文件全绿 |
+| `pnpm test`（node + vitest） | 535 + 245 | 退出码 0，vitest 249 |
+| `pnpm build` | 1210 页 | 退出码 0 |
+
+真机验证（记忆卡展开、题目测试、`NoteRenderer` 与 `NoteRendererServer` 两条路径、控制台无 TDZ 且指令未静默丢失）由独立验收智能体执行，结论见下。
+
+---
+
 ## 并发避让
 
 内容 Agent 的作业域是 `content/**`、`public/images|media/**`、`lib/content-data/**` 的数据条目。本计划只碰 `lib/ai/agent/tools/**`、`lib/markdown/**`、`components/**`、`eslint.config.mjs`、`docs/**`，与之零重叠。Git 纪律照 `00-execution-contract.md` 第二节：只用显式路径提交，留在 `dev`，不推送，对方的在途脏文件原样留着。
