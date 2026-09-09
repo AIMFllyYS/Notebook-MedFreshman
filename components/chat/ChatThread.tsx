@@ -67,7 +67,7 @@ export default function ChatThread({
   // Keep the estimate close to a compact header + thinking line. A 120px floor
   // used to park 「AI 正在思考中」 far below 「AI 助教」 on the first streamed row.
   const MESSAGE_ESTIMATE_PX = 72;
-  const showThreadLoading = isLoading && lastDisplay?.role !== 'assistant';
+  const reserveThreadLoading = lastDisplay?.role !== 'assistant';
 
   const virtualizer = useVirtualizer({
     count: displayMessages.length,
@@ -179,8 +179,13 @@ export default function ChatThread({
                 );
               })}
             </div>
-            {showThreadLoading && (
-              <div className="chat-loading" data-testid="chat-thread-loading">
+            {reserveThreadLoading && (
+              <div
+                className="chat-loading"
+                data-testid="chat-thread-loading"
+                style={{ visibility: isLoading ? 'visible' : 'hidden' }}
+                aria-hidden={!isLoading}
+              >
                 <AgentLoopIcon size={16} className="animate-pulse motion-reduce:animate-none" style={{ color: 'var(--ink-soft)' }} />
                 <span className="chat-loading-text">AI 正在思考中...</span>
               </div>
