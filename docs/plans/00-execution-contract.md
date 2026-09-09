@@ -11,7 +11,7 @@
 |------|------|------|
 | `18` | 工程基线（Git 卫生、死代码、护栏） | 已执行、已验收 |
 | `19` | 聊天流滚动与抖动 | 已执行、已验收、已修复（三轮） |
-| `20` | 窗口 / Artifact 体系收敛 | 已执行，验收中 |
+| `20` | 窗口 / Artifact 体系收敛 | 已执行、已验收（判定通过，无必须修复项） |
 | `22` | Agent 架构与 lint 欠账 | 待执行（**下一个**） |
 | `21` | 内容页布局档位 | 待执行（**排最后**） |
 
@@ -131,9 +131,12 @@ pnpm test:react
 
 - AI 对话产物（artifact / document / imageGen）的浮窗属于 `AppShell` 的**全局窗口层**，`createPortal` 到 `document.body`；它们既不属于右侧面板，也不属于中间笔记区。任何新浮层都必须 portal 到 body，不要假定祖先没有 `contain` / `transform` 造成的包含块。
 - **浮窗外壳唯一实现是 `components/window/ManagedWindow.tsx`**（配套 `lib/hooks/useManagedWindowChrome.ts`）。八个 viewer 已全部迁入。新增浮窗一律复用它，**不要再手写 `useDraggable` + `useResizable` + `createPortal` + `WindowChrome` 的那套组合**——正是这套重复了八遍的样板造成了用户抱怨的"改了半天没反应"（改到了错误的副本）。
-  - 例外：`components/review/BillingDashboard.tsx` 有意未迁移，它是 `absolute` + 自定义拖拽，不是 portal 浮窗。
+  - 例外：`components/chat/BillingDashboard.tsx` 有意未迁移，它是 `absolute` + 自定义拖拽，不是 portal 浮窗（配套入口 `lib/window/openBillingDashboard.ts`）。它是 `components` 下唯一还留着 `useResizable(` 的窗口类组件，扫死代码时不要误判。
 - 笔记栏容器 id 只能通过 `lib/constants/layout.ts` 的 `NOTES_PANEL_ID` 引用，不要再出现 `getElementById("notes-panel")` 字面量。
 - `fullscreenTarget` 的默认值是 **`notes`**（对齐笔记栏），不是 viewport。这是迁移前八个 viewer 的既有行为，计划 `20` 按现网行为保留；用户可在设置里切成整窗（`artifactFullscreenTarget`）。
+  验收实测（1440×900 视口）：`notes` 精确等于 `#notes-panel` 的 `{274, 48, 719×852}` 且 `borderRadius: 0`；`viewport` 是 `{0, 0, 1440×900}`，走 `resolveFullscreenRect` 的整窗矩形，**不是空实现**；退出全屏会还原到全屏前几何。改动这块必须保住这三条。
+- `FloatingChatWindow` 传 `registerOverlay={false}`——它不进 overlay 栈，Esc 不关它，这是忠实于迁移前的行为，**不是漏配**。实测 Esc 链不会因此卡住，后面的窗仍按 z 序逐个关闭。
+- 两个窗口同时全屏时，后全屏的会把前一个自动最小化（护栏用例：`tests/windowManager.test.ts` 的 `fullscreen auto-minimizes other fullscreen windows`）。
 - **工具 id `renderInteractive` 不得改名。** 它已随聊天历史持久化进 IndexedDB，改名需要配套存储迁移。UI 文案统一叫"HTML 演示"，但 id 冻结。
 
 **"右侧 Agent 里那个可视化 HTML"的唯一入口**
@@ -141,6 +144,8 @@ pnpm test:react
 用户曾因为找错文件反复改动无效。正确链路是单一的一条，改动前先认准：
 
 `lib/ai/agent/tools.ts` 的 `renderInteractive` → `lib/ai/artifact.ts` → `/api/artifact` → `components/chat/ArtifactCard.tsx` → `lib/hooks/useArtifacts.ts` → **`components/chat/ArtifactViewer.tsx`**（全局浮窗，最终呈现）
+
+搜索时用「可视化 HTML」「HTML 演示」或 `renderInteractive` 这三个词之一。**只搜「可视化」两个字会误入** `components/interactives/registry.ts` 里一堆「××可视化」和 `ChatMessageVisualizations.tsx`；只搜 `interactive` 会进右侧「可交互」tab。
 
 它**不是**下面这三个，不要改错：
 

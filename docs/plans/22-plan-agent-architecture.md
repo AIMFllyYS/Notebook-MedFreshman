@@ -238,3 +238,38 @@ Commit：`docs(agent): document tool registry and store layout`
 - **阶段 E 的 `react-hooks/*` 修复涉及运行时行为**（`set-state-in-effect` 的修法通常是把 effect 里的 setState 改成派生 state 或事件驱动），17 条里每一条都要单独判断，不能机械套模板。改到 `RightPanel.tsx` / `VideoTab.tsx` / `BrowserTab.tsx` 时注意 `21` 可能已经改过同一批文件（tab 列表由能力驱动），先读最新代码。
 - 六个阶段严格顺序执行，各自可独立 revert；不要跨阶段合并 commit。阶段 E 与 A–D 无耦合，若时间紧可作为独立后续任务，但不得从验收标准里删掉。
 - 若阶段 B 中途发现某个 store 被 Electron 主进程或 `scripts/` 直接 import（非 React 上下文），保留原路径 re-export 永久存在并注明原因，不要强搬。
+
+---
+
+## 派发前校准（2026-09-09，主智能体实测）
+
+本计划正文写于计划 `18` 之前，其间 `18`/`19`/`20` 已落地，下面这些数字以本节为准。
+
+**基线（`20` 验收当日实测）**
+
+| 项 | 计划正文 | 实测 |
+|----|----------|------|
+| `pnpm lint` | — | 0 error / **150 warning** |
+| hooks 自查 error 数 | 53（`18` 验收时） | **25**（`components lib` 范围，`20` 后） |
+| `components/chat/ChatSettings.tsx` | — | **1604 行** |
+| `lib/hooks/useChat.ts` | `89-249` 行的 `sendMessage` | 全文 **232 行**，`sendMessage` 约 160 行，与正文描述一致 |
+| store 数量 | 28 | 严格按 `from "zustand"` + `create` 只数出 **22**，放宽到别名/包装导入 26+ |
+
+- 那两个 error 数不是同一口径：`18` 验收的 53 是把七条降级规则全部抬回 error 后的全量数；25 是本节命令那五条规则在 `components lib` 下的数。**阶段 E 开工第一件事是用统一命令重新测一次并把口径写进执行记录**，不要拿 53 和 25 直接相减。
+- store 数量以你自己的清点为准，不要照抄 28。清点时注意 store 的导入写法不统一（有的 `from "zustand"`，有的走别名或包装），漏一个就会漏一份 persist 数据。**阶段 B 的 persist name 清单必须基于你实际找到的全集。**
+
+**计划 `20` 已确立、本计划不得回退的**
+
+见 `00-execution-contract.md` 第六节「窗口层契约」。与本计划直接相关的三条：
+
+1. 工具 id `renderInteractive` **不得改名**（已持久化进 IndexedDB 聊天历史）。阶段 A 把工具搬进 `lib/ai/agent/tools/<name>/` 时，目录名可以用别的，但 `STUDY_TOOL_NAMES` 里的 id 字面量不能动。
+2. 浮窗外壳唯一实现是 `components/window/ManagedWindow.tsx`。阶段 D 拆 `ChatSettings` 时若涉及浮层，复用它，不要手写 portal。
+3. `components/chat/BillingDashboard.tsx` 是 `components` 下**唯一**还留着 `useResizable(` 的窗口类组件，有意未迁移。阶段 F 跑 knip / 扫死代码时不要把它或 `lib/window/openBillingDashboard.ts` 判成废弃。
+   （注意：契约第六节早期版本把它的路径写成 `components/review/`，已修正为 `components/chat/`。）
+
+**计划 `20` 验收遗留、并入本计划的检查点**
+
+1. **`writeDocument` 的进度卡死在 `0/3`，导致 `DocumentCard` 上的「查看文档」按钮始终不露出。** 验收时是绕过按钮、用卡片上已挂载的 `openViewer` 才打开文档窗的。窗口层没问题，问题在文档工具的进度/完成态回传。阶段 A 重整 `writeDocument` 时一并查清：定位 `components/chat/DocumentCard.tsx` 的进度来源，确认是流式事件没发终态、还是卡片没消费终态，修好后真机验证按钮会出现。这是用户可见缺陷，**不算超范围**。
+2. Artifact 的「在新标签页打开」：`lib/utils/openHtmlInNewTab.ts` 用的是 `window.open(url, "_blank", "noopener")`，代码是对的；验收在自动化浏览器里观察到"导航当前 tab"大概是 harness 把弹窗折叠成同标签导航。**请在真人浏览器里手点一次确认，不要因为自动化的观察去改这段代码。**
+3. 浮窗交通灯的全屏按钮与页面顶栏的全屏按钮 `title` 都是「全屏」，容易点错。若阶段 D 顺路经过，可把浮窗侧改成更具体的文案（如「窗口全屏」）；不顺路就不做，别为它单开改动。
+4. 路径地图的已知漏洞：只搜「可视化」两个字仍会落到 `components/interactives/registry.ts` 与 `ChatMessageVisualizations.tsx`。阶段 F 写文档时可在灯塔注释里补一句"不要只搜『可视化』"。
