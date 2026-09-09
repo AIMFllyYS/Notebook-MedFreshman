@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkDirective from "remark-directive";
 import remarkDirectives from "./remarkDirectives.ts";
 
 const run = (tree: unknown) => {
@@ -183,6 +186,50 @@ test("memory 容器指令转为 <memorycard>", () => {
   });
   assert.equal(tree.children[0].data?.hName, "memorycard");
   assert.equal(tree.children[0].data?.hProperties?.label, "本章核心要点");
+});
+
+test("memory 透传 mode，无 file 时不写 raw", () => {
+  const tree = run({
+    type: "root",
+    children: [makeContainer("memory", { label: "氨基酸等电点", mode: "cloze" })],
+  });
+  assert.equal(tree.children[0].data?.hProperties?.mode, "cloze");
+  assert.equal(tree.children[0].data?.hProperties?.raw, undefined);
+});
+
+function parseWithFile(src: string) {
+  const processor = unified().use(remarkParse).use(remarkDirective).use(remarkDirectives);
+  const tree = processor.parse(src);
+  return processor.runSync(tree, { value: src }) as unknown as {
+    children: Array<{
+      type: string;
+      name?: string;
+      data?: { hName?: string; hProperties?: Record<string, string> };
+    }>;
+  };
+}
+
+function memoryProps(src: string) {
+  const tree = parseWithFile(src);
+  const node = tree.children.find((c) => c.data?.hName === "memorycard");
+  assert.ok(node, `未找到 memorycard：${JSON.stringify(tree.children.map((c) => c.data?.hName))}`);
+  return node.data!.hProperties!;
+}
+
+test("remark 把 memory 容器内原文写入 raw（含 ** / 清单 / $）", () => {
+  const props = memoryProps(
+    ':::memory{label="氨基酸等电点" mode="cloze"}\n净电荷为零时的 **pH** 与 $\\mathrm{pI}$\n- [ ] 要点\n:::',
+  );
+  assert.equal(props.mode, "cloze");
+  assert.match(props.raw ?? "", /\*\*pH\*\*/);
+  assert.match(props.raw ?? "", /\$\\mathrm\{pI\}\$/);
+  assert.match(props.raw ?? "", /- \[ \] 要点/);
+});
+
+test("memory 正文超过 8KB 时不写 raw，退回 extract 兜底", () => {
+  const huge = `${"x".repeat(8200)}`;
+  const props = memoryProps(`:::memory{label="过大"}\n${huge}\n:::`);
+  assert.equal(props.raw, undefined);
 });
 
 test("非指令节点不受影响", () => {

@@ -25,10 +25,70 @@ interface DirectiveNode {
   attributes?: Record<string, string | null | undefined>;
   data?: Record<string, unknown>;
   children?: unknown[];
+  position?: {
+    start?: { offset?: number };
+    end?: { offset?: number };
+  };
+}
+
+interface Positioned {
+  position?: {
+    start?: { offset?: number };
+    end?: { offset?: number };
+  };
+}
+
+/**
+ * 记忆卡正文写入 hProperties.raw 的上限。
+ * hProperties 会进入 hast → React props（笔记 SSR 还会进 RSC payload）。
+ * 现网 711 张卡都是短背诵块；超过 8KB 更像误把整节讲义塞进 :::memory，
+ * 再序列化一遍会白白撑大 HTML / 水合数据，故超限退回 MemoryCard.extract()。
+ */
+const MEMORY_RAW_MAX_CHARS = 8 * 1024;
+
+function fileSource(file: unknown): string | undefined {
+  if (!file || typeof file !== "object") return undefined;
+  const value = (file as { value?: unknown }).value;
+  return typeof value === "string" && value.length > 0 ? value : undefined;
+}
+
+function sliceByOffsets(source: string, start: number, end: number): string | undefined {
+  if (end < start || start < 0 || end > source.length) return undefined;
+  const inner = source.slice(start, end);
+  if (inner.length > MEMORY_RAW_MAX_CHARS) return undefined;
+  return inner;
+}
+
+function extractMemoryRaw(source: string | undefined, node: DirectiveNode): string | undefined {
+  if (!source) return undefined;
+
+  const children = Array.isArray(node.children) ? node.children : [];
+  if (children.length > 0) {
+    const first = children[0] as Positioned;
+    const last = children[children.length - 1] as Positioned;
+    const start = first.position?.start?.offset;
+    const end = last.position?.end?.offset;
+    if (typeof start === "number" && typeof end === "number") {
+      return sliceByOffsets(source, start, end);
+    }
+  }
+
+  const start = node.position?.start?.offset;
+  const end = node.position?.end?.offset;
+  if (typeof start !== "number" || typeof end !== "number") return undefined;
+  const block = source.slice(start, end);
+  const firstNl = block.indexOf("\n");
+  if (firstNl === -1) return "";
+  const lastNl = block.lastIndexOf("\n");
+  if (lastNl <= firstNl) return "";
+  const inner = block.slice(firstNl + 1, lastNl);
+  if (inner.length > MEMORY_RAW_MAX_CHARS) return undefined;
+  return inner;
 }
 
 export default function remarkDirectives() {
-  return (tree: unknown) => {
+  return (tree: unknown, file?: unknown) => {
+    const source = fileSource(file);
     visit(
       tree as never,
       (node: DirectiveNode, index: number | undefined, parent: { children: unknown[] } | undefined) => {
@@ -47,11 +107,14 @@ export default function remarkDirectives() {
       // 用于样式元数据，但渲染走独立组件。
       if (node.type === "containerDirective" && name === "memory") {
         data.hName = "memorycard";
-        data.hProperties = {
+        const hProperties: Record<string, string> = {
           kind: "memory",
           label: attrs.label ?? attrs.title ?? "记忆卡",
           mode: attrs.mode ?? "",
         };
+        const raw = extractMemoryRaw(source, node);
+        if (raw !== undefined) hProperties.raw = raw;
+        data.hProperties = hProperties;
         return;
       }
       // SOP 08 试卷录入写法：:::callout{kind=note label="题目"}（kind 指定样式类型）

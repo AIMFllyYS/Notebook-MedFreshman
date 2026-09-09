@@ -37,25 +37,29 @@ export function MemoryCard({ node, children }: NodeProps) {
 
   const [open, setOpen] = useState(false);
 
-  // children 是经过 react-markdown 处理后的 React 节点；为了支持 cloze 与 checklist 交互，
-  // 我们把它当作字符串重新由 QuizMarkdownBase 渲染。这样可以在渲染阶段做挖空/清单处理。
+  // 优先用 remark 写入的容器原文（保留 ** / - [ ] / $…$）。
+  // 没有 position 的树（部分 AI 流式/程序化节点）走 extract() 兜底。
+  const rawFromNode = typeof node?.properties?.raw === "string" ? node.properties.raw : "";
+
   const rawText = useMemo(() => {
+    if (rawFromNode.trim()) return rawFromNode.trim();
     if (!children) return "";
     // 从 React 节点中尽量提取文本；若已是字符串则直接返回。
+    // 已解析树按构造有损（strong 丢 **、checkbox 丢 - [ ]、katex 在属性里），
+    // 只在没有 raw 时作为聊天侧兜底。
     const extract = (child: React.ReactNode): string => {
       if (child === null || child === undefined) return "";
       if (typeof child === "string") return child;
       if (typeof child === "number" || typeof child === "boolean") return String(child);
       if (Array.isArray(child)) return child.map(extract).join("");
       if (React.isValidElement(child)) {
-        // 对于 p/ul/li/div 等容器，提取内部文本
         const element = child as React.ReactElement<{ children?: React.ReactNode }>;
         return extract(element.props.children);
       }
       return "";
     };
     return extract(children).trim();
-  }, [children]);
+  }, [rawFromNode, children]);
 
   return (
     <div className="callout callout-memory">
