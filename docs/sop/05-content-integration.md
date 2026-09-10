@@ -80,7 +80,7 @@
 
 ### Step 4：AI 工具链验证
 
-验证 AI 面板的五个工具能正确工作：
+验证 AI 面板的四个工具能正确工作：
 
 #### 4.1 getCurrentPage
 
@@ -148,5 +148,5 @@ pnpm exec tsc --noEmit
 - [lib/content-data/manifest.ts](../../lib/content-data/manifest.ts) — 操作目标
 - [lib/content/loader.ts](../../lib/content/loader.ts) — 路径解析逻辑
 - [lib/content/layoutProfile.ts](../../lib/content/layoutProfile.ts) — 布局档位推导
-- [lib/ai/agent/tools.ts](../../lib/ai/agent/tools.ts) — AI 工具定义
+- [lib/ai/agent/tools/](../../lib/ai/agent/tools/) — AI 工具定义（13 个目录，见 `index.ts` 的公共再导出）
 - [README.md](./README.md) — SOP 全局规范

@@ -136,9 +136,14 @@ pnpm test:cov    # 覆盖率
 │   │   ├── artifact.test.ts
 │   │   ├── models.test.ts          # 模型注册表
 │   │   ├── provider.test.ts        # 提供者解析
-│   │   ├── tools.test.ts           # AI 工具定义
 │   │   ├── imageSearch.test.ts     # 图片搜索边界
 │   │   ├── imageUtils.test.ts      # 图片附件工具
+│   │   ├── agent/
+│   │   │   ├── studyAgent.test.ts
+│   │   │   ├── requestSchema.test.ts
+│   │   │   ├── tools.searchNotes.test.ts
+│   │   │   └── tools/
+│   │   │       └── presentations.test.ts   # AI 工具目录（13 个）内的测试，如 <name>/tool.test.ts
 │   │   └── search/
 │   │       ├── bm25Store.test.ts
 │   │       ├── vectorStore.test.ts
@@ -146,11 +151,12 @@ pnpm test:cov    # 覆盖率
 │   ├── quiz/
 │   │   └── types.test.ts     # autoGrade 等运行时函数
 │   ├── quiz-progress.test.ts
-│   ├── quiz-store.test.ts          # quiz store buildAttempt
 │   ├── motion.test.ts              # 动画常量与 Variants
 │   ├── constants/
 │   │   ├── prompts.test.ts         # QUICK_PROMPTS 结构
 │   │   └── subjects.test.ts        # 科目映射
+│   ├── stores/
+│   │   └── quiz.test.ts            # quiz store buildAttempt（Vitest）
 │   ├── context/
 │   │   └── estimateTokens.test.ts  # token 估算
 │   ├── content/
@@ -188,7 +194,7 @@ pnpm test:cov    # 覆盖率
 | `lib/ai/search/vectorStore.ts` | `cosineSimilarity` | 相似度计算 |
 | `lib/ai/search/hybridSearch.ts` | `rrfMerge` | RRF 合并 |
 | `app/api/can-embed/route.ts` | `judge` | iframe 嵌入判定 |
-| `lib/quiz-store.ts` | `buildAttempt` | 作答记录构造 |
+| `lib/stores/quiz.ts`（`lib/quiz-store.ts` 已是转发壳） | `buildAttempt` | 作答记录构造 |
 
 这些导出不影响运行时行为，仅暴露已有函数供测试调用。
 

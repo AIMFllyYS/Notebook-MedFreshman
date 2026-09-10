@@ -375,7 +375,7 @@ pnpm check:registry
 
 ### 前端适配
 
-`lib/store.ts` 的 `setActiveRoute()` 按板块声明的 `keyStrategy` 推导 Quiz key；录音板块使用 `category-item` 策略，直接把 `itemId`（如 `"rec-01"`）作为 Quiz key，使 QuizTab 能从 `content/quiz/{subject}/rec-01.json` 加载数据。无需修改 loader 或 progress 逻辑。
+`lib/stores/ui.ts` 的 `setActiveRoute()` 按板块声明的 `keyStrategy` 推导 Quiz key；录音板块使用 `category-item` 策略，直接把 `itemId`（如 `"rec-01"`）作为 Quiz key，使 QuizTab 能从 `content/quiz/{subject}/rec-01.json` 加载数据。无需修改 loader 或 progress 逻辑。
 
 ## 参考文件
 

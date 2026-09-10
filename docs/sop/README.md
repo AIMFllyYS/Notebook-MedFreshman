@@ -146,7 +146,7 @@
 | `docs/refer/rendering-architecture.md` | Markdown 渲染架构（02-detail 引用） |
 | `.env.local` | 环境变量（Token 等，脚本运行时引用） |
 | `lib/content-data/manifest.ts` | 内容目录树（当前实际路径） |
-| `lib/ai/agent/tools.ts` | AI 工具定义（05-integration 验证目标） |
+| `lib/ai/agent/tools/` | AI 工具定义（13 个目录，每个含 `types.ts`/`presentation.ts`/`tool.ts`；05-integration 验证目标） |
 | `lib/content/loader.ts` | 内容加载器（路径解析逻辑） |
 
 ### 7. 容灾降级策略
