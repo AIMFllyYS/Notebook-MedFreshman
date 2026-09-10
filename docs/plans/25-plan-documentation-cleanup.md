@@ -210,3 +210,24 @@ git ls-files '*.md' | Where-Object { $_ -like 'docs/*' } | ForEach-Object {
 - 计划 `21`（内容页布局档位）**正在由另一个子智能体执行**，它会改动 `lib/content/`、`components/layout/AppShell.tsx`、`components/layout/RightPanel.tsx`、`app/[subject]/[category]/[id]/**`，并会写入 `docs/plans/21-plan-content-layout-profiles.md` 的执行记录。**清洗时避开这份计划文档**，等它完成后再处理。
 - PR [#23](https://github.com/AIMFllyYS/Notebook-MedFreshman/pull/23)（计划 20/22/23/24）已开、状态 `MERGEABLE`，等待合并。
 - 当前分支 `dev`，本地与 `origin/dev` 同步。
+
+---
+
+## 执行记录（2026-09-10）
+
+> 本节按 `00-execution-contract.md` 第五节要求追加。完整报告见 [`25-report.md`](./25-report.md)。
+
+**并发状态更新（本轮开工时已过期，特此更正）**：上面「九、并发状态」写作时计划 `21` 仍在执行、PR #23 状态 `MERGEABLE`。实际到本轮清洗开工时，`21` 已于 2026-09-10 完成验收（`tsc`/`lint`/`test`/`build` 门禁全绿，`content/**` 零改动），PR #23 已合并（`MERGED`）。本轮据此确认可以正常处理 `docs/plans/README.md` 里指向 `21` 的索引行（更新状态描述），但**未改动 `21-plan-content-layout-profiles.md` 正文本身**——它是历史记录，验收状态已写在自己文件末尾，无需本轮插手。
+
+**分工与执行**：主智能体先核实基线事实（`lib/stores/` 28 个 store、`lib/ai/agent/tools/` 13 个目录、`components/chat/toolCards/` 7 张卡片、`lib/store.ts`/`lib/quiz-store.ts` 转发壳、`lib/markdown/directiveComponents.ts`/`noteComponents.tsx` 已不存在等），再派发 4 个并行子智能体分别处理 `docs/research/**`、`docs/refer/**`、`docs/sop/**`、归档类文档去留，完成后主智能体交叉抽查关键事实性声明、跑过时词零残留复扫、编写总索引与本报告。
+
+**改动统计**：`docs/refer/**` 5 篇实改（1 篇零改动但逐条核实）、`docs/sop/**` 5 篇实改（9 篇确认无需改）、`docs/research/**` 12 篇实改（6 篇确认无需改）；归档移动 `docs/简化版本/`（19 文件）与 `docs/HANDOFF-agent-sdk-trace-ui.md` 共 20 个文件到 `docs/archive/`，`docs/archive/trae-specs/` 6 篇补状态提示；新建 `docs/README.md`；`docs/plans/README.md` 补齐 `23`/`24`/`25` 索引。
+
+**实际改动与计划的偏差**：
+1. 计划本身「九、并发状态」在开工时已过期（见上）。
+2. `lib/stores/` 计数需递归 `keyboard/` 子目录才能对上契约"28 个"，顶层平铺只能数到 23 个——不是契约数字错，是清点方法容易漏子目录，已在报告中记录避免复发。
+3. 顺手修了一处与本轮代码重构无关的既有小瑕疵（`docs/sop/05-content-integration.md` "验证五个工具"与正文只列 4 个的数字不一致）——超出了"只处理跟本轮改动直接相关的引用"的原定范围，但改动极小且明显正确，判断利大于弊。
+
+**未完成项**：`performance-audit-report.md` 里例题 SSR meta-only 是否全路径生效的矛盾未代码侧确认（不在本轮"只碰 `.md`"作业域内，需要另开任务）；`docs/research/**` 里精确到行号的引用未逐条重新核对；`archive/`/`superpowers/`/`compose/` 三个历史目录是否合并，仅给出建议未执行。
+
+**遗留风险 / 给复核方**：负责 `docs/sop/**` 的子智能体自述用过两条只读 `git status`/`git diff --stat` 核对改动范围，超出"不跑任何 git 命令"的指令边界（未做任何写操作，未影响暂存区）；后续同类任务派发时应更明确地把只读探测也一并禁止或单独放行。
