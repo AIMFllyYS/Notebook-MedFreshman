@@ -62,13 +62,13 @@
 
 对每个新注册的 item，验证 `lib/content/loader.ts` 中的 `readContentMarkdown()` 能正确读取：
 
-1. **通用路径分支**（非概率论科目）：
+1. **通用路径**（`contentRoot.detail` 缺省为 `subject-tree`）：
    - 函数会寻找 `content/{subjectId}/{categoryId}/{itemId}.md`
    - 确认文件确实存在于该路径
 
-2. **概率论特例分支**：
+2. **概率论历史目录**（registry 声明 `contentRoot: { detail: 'legacy-chapters' }`）：
    - `probability` + `detail` → `content/chapters/{chapterId}/{sectionId}.md`
-   - 其他 category 走通用路径
+   - 其他 category 仍走通用路径
 
 3. **验证命令**：
    ```bash
@@ -110,6 +110,31 @@ pnpm exec tsc --noEmit
 
 合入内容后必须 `pnpm test:content`。内容缺图等问题不会阻塞 `pnpm build` / `pnpm test`，但必须在内容合入流程里单独拦下。
 
+## 纯文档课件接入
+
+新导入的课件如果只是一篇文档（没有例题 / 测验 / 动画），不要套详解那套三栏重布局。manifest 按下面写即可，渲染层会按 `capabilities` 推导 `layoutProfile`。
+
+| 目标 | 怎么声明 | 推导出的档位 |
+|------|----------|--------------|
+| 可检索的纯文档（课件、纪要） | `type: 'document'` + 板块 `capabilities: ['search']` | `article`：单栏正文 + 目录 + 可折叠 AI 面板，无例题/测验 tab |
+| 只读资料（考前模拟、真题扫描件） | `type: 'document'` + 板块 `capabilities: []`，并在板块上写 `layoutProfile: 'reference'` | `reference`：同 article 但隐藏右栏与划词 |
+| 需要例题 / 测验 / 动画 | 在板块 `capabilities` 里加上 `examples` / `quiz` / `media` | 自动升为 `full` |
+
+不必手写 `layoutProfile: 'article'`：有 `search`、没有 examples/quiz/media 时推导就是 `article`。空 `capabilities` 的板块若条目是 `document`，推导会变成 `article`（仍有 AI 面板）；考前模拟这类只读页必须显式标 `reference`（标准模板 `kaoqian-moni` / `shizhan-yanlian` 已标好）。
+
+```typescript
+{
+  id: 'courseware',
+  name: '课件',
+  capabilities: ['search'],
+  items: [
+    { id: 'lec-01', title: '第一讲 · 细胞膜', type: 'document', status: 'done' },
+  ],
+},
+```
+
+标准板块用 `category('summary', items)` / `category('kaoqian-moni', items)` 即可，模板已带出对应档位。
+
 ## 产出规范
 
 本 SOP 的产出是对 `lib/content-data/manifest.ts` 的修改（新增 items），无独立文件产出。
@@ -122,5 +147,6 @@ pnpm exec tsc --noEmit
 
 - [lib/content-data/manifest.ts](../../lib/content-data/manifest.ts) — 操作目标
 - [lib/content/loader.ts](../../lib/content/loader.ts) — 路径解析逻辑
+- [lib/content/layoutProfile.ts](../../lib/content/layoutProfile.ts) — 布局档位推导
 - [lib/ai/agent/tools.ts](../../lib/ai/agent/tools.ts) — AI 工具定义
 - [README.md](./README.md) — SOP 全局规范
