@@ -22,28 +22,33 @@
 │  components/shared/directives/registry.ts                       │
 │  ├─ Callout / Derivation / MediaEmbed / Figure / MemoryCard …   │
 │  ├─ PlotDirective / CanvasDirective                             │
-│  components/notes/noteComponents.tsx  ── 笔记侧映射              │
+│  ├─ Timeline / EventCard / ConceptCard / CompareTable /         │
+│  │   CauseEffect / KeyPoint / HistoryMap（近现代史专用，见       │
+│  │   modern-history-textbook-format.md）                        │
+│  components/notes/noteComponents.tsx  ── 笔记侧映射（= 上面这份 │
+│    directiveComponents 展开 + img/pre 覆盖）                    │
 │                                                                 │
 │  components/shared/CodeBlock.tsx    ── 代码块（复制 + 语言标签） │
 │  components/shared/ContentImage.tsx ── 统一图片组件（错误兜底） │
 │  components/canvas/                ── SVG 画布 + 函数绘图       │
 └───────────────────────────────────────────────────────────────┘
-         │                                          │
-    ┌────┴──────────────┐                ┌───────────┴──────────┐
-    │  笔记侧            │                │  聊天侧               │
-    │  NoteRenderer      │                │  MessageContent       │
-    │  img: ContentImage │                │  img: ContentImage    │
-    │                    │                │  + SvgDiagram 标签    │
-    │  外层 CSS:          │                │  外层 CSS:            │
-    │  .prose-notes      │                │  .chat-prose          │
-    └────────────────────┘                └───────────────────────┘
+         │                              │                        │
+    ┌────┴──────────┐        ┌──────────┴─────────┐   ┌──────────┴──────────┐
+    │  笔记侧        │        │  聊天侧              │   │  题库侧              │
+    │  NoteRenderer  │        │  MessageContent      │   │  QuizMarkdown /      │
+    │  / (Server)    │        │  img: ChatImage       │   │  QuizMarkdownBase    │
+    │  img:          │        │  + SvgDiagram 标签    │   │  （叶子渲染器，见    │
+    │  ContentImage  │        │                      │   │   §4.5，断环）        │
+    │  外层 CSS:      │        │  外层 CSS:            │   │  外层 CSS: 复用       │
+    │  .prose-notes  │        │  .chat-prose          │   │  .chat-prose         │
+    └────────────────┘        └─────────────────────┘   └──────────────────────┘
 ```
 
 ### 核心原则
 
-- **中间复用**：两侧使用完全相同的 remark/rehype 插件链、指令组件、CodeBlock 组件。
-- **独立树**：`NoteRenderer` 和 `MessageContent` 是完全独立的 React 组件入口，各自维护 `components` 映射。
-- **CSS 分离**：`.prose-notes` 和 `.chat-prose` 是两套独立的排版令牌容器，公式块/表格/代码块的共享样式同时作用于两者。
+- **中间复用**：三侧使用完全相同的 remark/rehype 插件链；笔记侧与聊天侧复用完整 `directiveComponents`（14 个指令），题库侧（`QuizMarkdownBase`）**不**挂载指令 registry，只映射 `table`/`img`/`p`，理由见 §4.5。
+- **独立树**：`NoteRenderer`（及其服务端版 `NoteRendererServer`）、`MessageContent`、`QuizMarkdown`/`QuizMarkdownBase` 是三条完全独立的 React 组件入口，各自维护 `components` 映射。
+- **CSS 分离**：`.prose-notes` 和 `.chat-prose` 是两套独立的排版令牌容器，公式块/表格/代码块的共享样式同时作用于两者；题库侧复用 `.chat-prose`。
 
 ---
 
@@ -60,6 +65,8 @@
 
 ### 2.2 指令组件 (`components/shared/directives/registry.ts`)
 
+`directiveComponents` 对象当前共 **14 个键**：
+
 | 键名 | 组件 | 来源 |
 |---|---|---|
 | `callout` | `Callout` | `components/shared/directives/Callout.tsx` |
@@ -68,8 +75,18 @@
 | `figuremedia` | `Figure` | `components/shared/directives/Figure.tsx` |
 | `functionplot` | `PlotDirective` | `components/canvas/PlotDirective.tsx` |
 | `svgcanvas` | `CanvasDirective` | `components/canvas/CanvasDirective.tsx` |
+| `memorycard` | `MemoryCard` | `components/shared/directives/MemoryCard.tsx`（`:::memory`，见 §4.5 与 `00-execution-contract.md` 第六节「指令属性解析」） |
+| `timeline` | `Timeline` | `components/shared/directives/Timeline.tsx` |
+| `eventcard` | `EventCard` | `components/shared/directives/EventCard.tsx` |
+| `conceptcard` | `ConceptCard` | `components/shared/directives/ConceptCard.tsx` |
+| `comparetable` | `CompareTable` | `components/shared/directives/CompareTable.tsx` |
+| `causeeffect` | `CauseEffect` | `components/shared/directives/CauseEffect.tsx` |
+| `keypoint` | `KeyPoint` | `components/shared/directives/KeyPoint.tsx` |
+| `historymap` | `HistoryMap` | `components/shared/directives/HistoryMap.tsx` |
 
-两侧通过 `...directiveComponents` 展开到各自的 `components` 对象中。
+后 7 个（`timeline`…`historymap`）是近现代史教材专用指令，语法与用途详见 [modern-history-textbook-format.md](./modern-history-textbook-format.md)。
+
+笔记侧、聊天侧通过 `...directiveComponents` 展开到各自的 `components` 对象中；题库侧（`QuizMarkdownBase`）**不**展开这份映射，见 §4.5。
 
 ### 2.3 Callout 类型 (`lib/markdown/calloutTypes.ts`)
 
@@ -104,31 +121,29 @@ micromark 属性解析失败 → 整个指令被丢弃，渲染成裸 `:::type{.
 
 ---
 
-## 3. 笔记侧 — NoteRenderer
+## 3. 笔记侧 — NoteRenderer / NoteRendererServer
 
-**文件**：`components/notes/NoteRenderer.tsx`
+两个入口共用同一份 `components/notes/noteComponents.tsx`（`= directiveComponents 展开 + img: ContentImage + pre: CodeBlock`），区别只是渲染时机：
+
+| | 文件 | 渲染时机 | 归一化时机 |
+|---|---|---|---|
+| **服务端**（主路径） | `components/notes/NoteRendererServer.tsx` | 构建期/服务端，`react-markdown` 的 `MarkdownAsync`，React Server Component | 调用方（`page.tsx`）预先做过一次 `normalizeDirectiveLabels`，本组件不重复处理 |
+| **客户端**（动态内容） | `components/notes/NoteRenderer.tsx` | 浏览器端 `ReactMarkdown`，`memo()` 包裹 | 组件内部自己调 `normalizeDirectiveLabels`（内容在客户端才确定，无法预归一） |
 
 **外层 CSS 容器**：`.prose-notes`（定义于 `app/styles/prose.css`）
 
-### 独有扩展
+### 为什么要拆成两个
 
-| 组件覆盖 | 用途 |
-|---|---|
-| `img` | `ContentImage` — 统一图片组件，提供加载错误兜底 + figure/figcaption 包裹 |
-| `pre` | 映射到 `CodeBlock` |
-
-### 性能优化
-
-- 使用 `memo()` 包裹，因为笔记内容是静态的，不需要重渲染。
+`NoteRendererServer` 是计划 21 前后引入的 SSR 优化：主内容页在构建期/服务端把 Markdown → HTML（含 KaTeX、代码高亮），客户端不再对整篇正文跑 `react-markdown`，消除切换章节时的主线程阻塞；`::video`/`::interactive`/复制按钮等交互指令组件本身是 `"use client"`，会作为水合岛保留，功能不丢。`NoteRenderer`（客户端版）保留给「内容在客户端才确定」的场景——流式内容、按需 fetch 的脚本/例题等，这些场景没有服务端渲染的机会。
 
 ### 调用点
 
-| 文件 | 场景 |
-|---|---|
-| `app/[subject]/[category]/[id]/ContentPageClient.tsx` | 主笔记页面 |
-| `components/video/VideoTab.tsx` | 视频脚本展开 |
-| `components/examples/ExampleTab.tsx` | 例题页面 |
-| `components/chat/Message.tsx` | QuickExplain 窗口（聊天侧复用笔记渲染） |
+| 文件 | 场景 | 用哪个 |
+|---|---|---|
+| `app/[subject]/[category]/[id]/page.tsx` | 主内容页正文（服务端组件，渲染结果作为插槽下传给 `ContentPageClient`） | `NoteRendererServer` |
+| `components/video/VideoTab.tsx` | 视频讲稿展开 | `NoteRenderer` |
+| `components/examples/ExampleTab.tsx` | 例题页面 | `NoteRenderer` |
+| `components/chat/NoteCitationViewer.tsx` | 「查看引用笔记」浮窗（点击 `searchNotes` 结果卡片的引用条目后按需 `fetch` 正文再渲染） | `NoteRenderer` |
 
 ---
 
@@ -143,7 +158,8 @@ micromark 属性解析失败 → 整个指令被丢弃，渲染成裸 `:::type{.
 | 组件覆盖 | 用途 |
 |---|---|
 | `a` | `target="_blank" rel="noopener noreferrer"` 新窗口打开 |
-| `img` | `ContentImage` — 支持 AI 返回的网络图片和 `imageSearch` 结果 |
+| `img` | `ChatImage`（`components/chat/ChatImage.tsx`）— 支持 AI 返回的网络图片和 `imageSearch` 结果，点击可打开 `useLightbox` 大图预览；**不是** `ContentImage`（那是笔记侧用的） |
+| `p` | 段落内 ≥2 张图时包裹为 `ImageStrip` 横向滚动 |
 | `table` | 外包 `.chat-table-scroll` 实现横向滚动 |
 | `pre` | 映射到 `CodeBlock` |
 
@@ -193,8 +209,27 @@ CHAT_VIZ_TAGS = ['InteractiveVenn', 'InlineDistribution', 'FormulaSteps', 'Manim
 
 | 文件 | 场景 |
 |---|---|
-| `components/chat/ChatMessage.tsx` | AI 回复气泡 |
-| `components/chat/QuickExplainWindow.tsx` | 划词快速解释窗口 |
+| `components/chat/ChatMessage.tsx` | AI 回复气泡；主面板与划词浮窗（`FloatingChatWindow` → `FloatingChatBody`）共用这一个组件树，没有独立的 QuickExplain 专用渲染路径 |
+
+---
+
+## 4.5 题库侧 — QuizMarkdown / QuizMarkdownBase
+
+第三条独立渲染树，用于题目测试（例题、测验、记忆卡）里的 Markdown + KaTeX 片段，**不**挂载可视化/工具调用等重型逻辑。
+
+- **`components/quiz/QuizMarkdownBase.tsx`**：叶子渲染器。只映射 `table`/`img`（`ContentImage`）/`p`（行内模式降级为 `span`），自己调 `normalizeDirectiveLabels`。**永不 import 指令 registry**（直接或间接都不行）。
+- **`components/quiz/QuizMarkdown.tsx`**：`= QuizMarkdownBase + directiveComponents`（顶层展开，不用 `useMemo` 延迟）。
+- **`components/shared/directives/MemoryCard.tsx`**：`:::memory` 指令的实现，**只 import `QuizMarkdownBase`**，不 import `QuizMarkdown`。
+
+### 断环历史（红线，不要接回去）
+
+曾经存在一个真实的循环依赖：`QuizMarkdown → components/shared/directives/registry.ts → MemoryCard.tsx → 回到 QuizMarkdown`。这个环的危险之处是**静默失败**而不是报错：先求值 `registry.ts` 时 `blockComponents` 只剩 `table`/`img`，14 个指令组件被静默丢弃，控制台干净、页面不报错（历史上同一个环也以 `Cannot access 'directiveComponents' before initialization` 的崩溃形态出现过一次）。
+
+现在的结构断开了这个环：`QuizMarkdownBase` 是叶子，`QuizMarkdown` 在它之上叠一层 `directiveComponents`，`MemoryCard` 只依赖叶子。**红线**：`QuizMarkdownBase` 不得 import `components/shared/directives/registry`（含间接依赖，`ContentImage` 那条链也要保持干净）；`MemoryCard` 不得改回 import `QuizMarkdown`。若要支持 `MemoryCard` 内嵌套指令，用 props 注入指令映射，不要重新 import registry。
+
+护栏测试：`components/shared/directives/registry.evaluation-order.test.tsx` 按四种模块求值顺序断言 14 个指令键齐全且每个值都是函数（同时抓崩溃与静默空映射两种失败形态）。
+
+`MemoryCard` 的记忆卡正文优先读 `hProperties.raw`（remark 从源文件切出的原文，保留 `**`/`- [ ]`/`$…$`），只有没有 `raw`（如 AI 流式节点没有 position）时才走 `extract()` 从已解析 React 树回抽（按构造有损：`<strong>` 丢 `**`、checkbox 丢 `- [ ]`、KaTeX 在属性里回抽为空）。`mode=cloze` 挖空由 `ClozeText` 实现，靠 `**...**`/`<u>...</u>`/`_..._` 语法识别挖空片段。
 
 ---
 
@@ -239,7 +274,7 @@ $$
 
 | 指令 | 参数 | 说明 |
 |---|---|---|
-| `::video` | `id` | 嵌入 Manim 动画视频，id 对应 `content/media.generated.ts` |
+| `::video` | `id` | 嵌入 Manim 动画视频，id 对应 `lib/content-data/media.generated.ts`（或对应学科的 `media.{subject}.generated.ts`） |
 | `::interactive` | `id` | 嵌入交互组件，id 对应 `components/interactives/registry.ts` |
 
 ### 5.4 KaTeX 公式
@@ -471,7 +506,7 @@ CanvasBlock 提供统一的聊天画布协议，覆盖自由 SVG、函数图像�
 
 ## 9. 禁止事项
 
-- **不要**在 `NoteRenderer` 或 `MessageContent` 中直接内联 remark/rehype 插件配置 — 必须从 `plugins.ts` 导入
+- **不要**在 `NoteRenderer`、`MessageContent` 或 `QuizMarkdownBase` 中直接内联 remark/rehype 插件配置 — 必须从 `plugins.ts` 导入
 - **不要**在组件中硬编码 callout 类型列表 — 必须从 `calloutTypes.ts` 导入
 - **不要**在聊天侧使用 `.prose-notes` 容器，反之亦然 — 两套排版令牌不同
 - **不要**在 `globals.css` 中添加 prose/callout/code 相关样式 — 各有专属文件

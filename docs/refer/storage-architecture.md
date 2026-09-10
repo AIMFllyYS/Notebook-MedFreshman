@@ -14,7 +14,9 @@
 │  idbStorage.ts                                                  │
 │  ├─ DB_NAME = "gailvlun-db"                                    │
 │  ├─ STORE_NAME = "keyval"                                      │
-│  ├─ PERSIST_KEYS = { chatHistory, artifacts }                  │
+│  ├─ PERSIST_KEYS = { chatHistory, chatManifest, artifacts,     │
+│  │     skills, reviewCards, imageGen, billingHistory,          │
+│  │     documents }                                             │
 │  ├─ idbStorage (StateStorage 适配器)                            │
 │  │   └─ getItem: 先读 IndexedDB → 回退 localStorage → 播种迁移  │
 │  ├─ estimateSize(key)                                          │
@@ -30,11 +32,16 @@
     │                    │                │                       │
     │  useChatHistory    │                │  useSettings          │
     │  useArtifacts      │                │  useTheme             │
-    │                    │                │  useChatUI            │
-    │                    │                │  useBrowser           │
+    │  useDocuments      │                │  useFloatingChats     │
+    │  useImageGen       │                │  useBrowser           │
+    │  useSkills         │                │  useAcademicYear      │
+    │  useReviewCards    │                │  useStore（ui.ts）    │
+    │  useBillingStore   │                │  useKeyboardSettings  │
     │                    │                │  quiz-progress        │
     └────────────────────┘                └───────────────────────┘
 ```
+
+> `useChatHistory`、`useArtifacts` 等 6 个 IndexedDB store 与 `useSettings`/`useTheme` 等各自的持久化封装方式不同（见 §5、§6.1、§6.2），上图只标注它们落在哪一层存储，不代表实现方式相同。
 
 ### 核心原则
 
@@ -56,6 +63,11 @@
 | `PERSIST_KEYS.chatHistory` | `chat-history` | 对话历史 v1（迁移后删除） |
 | `PERSIST_KEYS.chatManifest` | `chat-manifest` | Storage v2 manifest |
 | `PERSIST_KEYS.artifacts` | `artifacts` | 交互演示持久化 key |
+| `PERSIST_KEYS.skills` | `skills` | 技能库持久化 key |
+| `PERSIST_KEYS.reviewCards` | `review-cards` | 复习卡片持久化 key |
+| `PERSIST_KEYS.imageGen` | `image-gen` | AI 生图会话持久化 key |
+| `PERSIST_KEYS.billingHistory` | `billing-history` | 账单历史持久化 key |
+| `PERSIST_KEYS.documents` | `documents` | AI 撰写文档持久化 key |
 | `chat-session:{id}` | per-session | 单会话消息数组 |
 | `chat-blob:{id}` | per-blob | 图片附件 data-url |
 
@@ -108,22 +120,34 @@ artifact 随会话产生但分属不同 store。删除会话时需联动清理�
 
 ## 5. 持久化 Store 清单
 
+> 完整清点表见 `lib/stores/README.md`（含全部 28 个 store 文件与各自 persist 方式），本节只摘录与本文档持久化分层相关的部分。
+
 ### IndexedDB 层
+
+对话历史走 §7 描述的 Storage v2（`chatStorage.ts` 手写 IO，不经 zustand `persist`）；其余 6 个走 `createPersistedStore(..., { storage: "idb" })`（`lib/stores/_persist.ts`）：
 
 | Store | Key | partialize | 说明 |
 |---|---|---|---|
-| `useChatHistory` | `chat-history` | `sessions`, `activeSessionId` | 排除 `_hasHydrated` |
+| `useChatHistory` | `chat-history` / `chat-manifest` / `chat-session:{id}` | — | 见 §7，不使用 zustand `persist` |
 | `useArtifacts` | `artifacts` | `order`, `byId` | 排除 `viewerId`（临时 UI 态）、`_hasHydrated` |
+| `useDocuments` | `documents` | `byId` | AI `writeDocument` 工具产物 |
+| `useImageGen` | `image-gen` | `sessions` | AI 生图会话记录 |
+| `useSkills` | `skills` | `skills` | 用户自定义技能库 |
+| `useReviewCards` | `review-cards` | `byId`, `order` | 复习卡片（划词「记录」产生） |
+| `useBillingStore` | `billing-history` | — | 账单/用量历史 |
 
 ### localStorage 层（不迁移）
 
 | Store | Key | 原因 |
 |---|---|---|
 | `useSettings` | `gailvlun-settings-v1` | ~1KB，纯配置 |
-| `useTheme` | `gailvlun-theme` | ~10B，含 layout 内联防闪脚本 |
-| `useChatUI` | `quickExplainWindowSize` | ~50B |
-| `useBrowser` | `gailvlun-browser` | ~1-5KB，书签/视图模式 |
-| `quiz-progress` | `gailvlun-quiz-progress-v1` | ~2-20KB，成绩记录 |
+| `useTheme` | `gailvlun-theme` + `gailvlun-appearance-v1` | ~10B，含 layout 内联防闪脚本 |
+| `useFloatingChats` | `quickExplainWindowSize` | ~50B，仅浮窗尺寸（手写 `localStorage.getItem/setItem`，非 zustand `persist`；此 key 历史上曾挂在 `useChatUI`，现搬到本 store，key 名未改） |
+| `useBrowser` | `gailvlun-browser-v1` | ~1-5KB，书签/视图模式 |
+| `useAcademicYear` | `gailvlun-academic-year` | 学年选择 |
+| `useStore`（`lib/stores/ui.ts`，经 `lib/store.ts` 转发） | `gailvlun-sidebar-collapsed` / `gailvlun-topbar-collapsed` | 侧栏/顶栏折叠态 |
+| `useKeyboardSettings` | `gailvlun-disabled-shortcuts` | 禁用的快捷键 |
+| `quiz-progress`（经 `useQuizStore` / `lib/quiz-progress.ts`） | `gailvlun-quiz-progress-v1` | ~2-20KB，成绩记录 |
 
 ---
 
@@ -132,10 +156,11 @@ artifact 随会话产生但分属不同 store。删除会话时需联动清理�
 ### 6.1 新增 IndexedDB 持久化 store
 
 1. 在 `idbStorage.ts` 的 `PERSIST_KEYS` 中添加新 key
-2. 在 store 中使用 `persist(fn, { name: PERSIST_KEYS.xxx, storage: createJSONStorage(() => idbStorage) })`
+2. 用 `lib/stores/_persist.ts` 的 `createPersistedStore(initializer, { name: PERSIST_KEYS.xxx, storage: "idb" })` 创建 store（内部即 `persist(fn, { storage: createJSONStorage(() => idbStorage) })`，无需自己拼装）
 3. 添加 `_hasHydrated` + `onRehydrateStorage` 置真
 4. 用 `partialize` 排除临时状态和 `_hasHydrated`
 5. 消费方用 `useHydrated(store)` 门控
+6. **`name` 必须与已上线 key 逐字相同**——改名等于让用户已存数据消失（`createPersistedStore` 的类型注释也写了这条）。
 
 ### 6.2 新增 localStorage 持久化 store
 

@@ -220,8 +220,8 @@ python scripts/one-off/transform-modern-history-textbook.py
 
 ## 7. 相关文件
 
-- 组件目录：`components/shared/directives/`
-- 指令注册：`lib/markdown/directiveComponents.ts`
+- 组件目录：`components/shared/directives/`（`timeline`/`eventcard`/`conceptcard`/`comparetable`/`causeeffect`/`keypoint`/`historymap` 各一个组件文件）
+- 指令注册：`components/shared/directives/registry.ts` 的 `directiveComponents`（`lib/markdown/directiveComponents.ts` 已废弃移除，指令组件映射现在归属 UI 层）
 - 指令解析：`lib/markdown/remarkDirectives.ts`
 - 样式文件：`app/styles/history-directives.css`
 - 教材目录：`content/modern-history/textbook/`

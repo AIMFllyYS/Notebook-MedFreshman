@@ -2,9 +2,9 @@
 
 本手册描述如何向「概率论与数理统计」学习平台接入一个新学科（如大学物理、大学化学、中国近现代史纲要、毛概等）。所有示例以 `physics`（大学物理）为样板，其他学科将 `physics` 替换为目标 `SubjectId` 即可。
 
-> 类型约束：`SubjectId` 定义于 `lib/types/content.ts`，可选值为
-> `'probability' | 'physics' | 'chemistry' | 'modern-history' | 'maogai' | 'other'`。
-> 新增学科需先在此类型中追加字面量，并在 `app/[subject]/[category]/[id]/page.tsx` 的 `VALID_SUBJECTS` 集合中同步追加。
+> 类型约束：`SubjectId` 由 `lib/content-data/subjects.registry.ts` 的 `SUBJECT_REGISTRY` 派生（单一真相源），`lib/types/content.ts` 只是 re-export 旧 import 路径。当前已有 14 个学科（`probability` / `physics` / `chemistry` / `modern-history` / `maogai` / `other` / `medical-english` / `instrumental-analysis` / `anatomy` / `medical-statistics` / `cell-biology-lab` / `cell-biology` / `histology` / `biochemistry`）。
+> 新增学科只需在 `SUBJECT_REGISTRY` 数组追加一个 `{ id, name, shortName, icon, color, year }` 对象；`SubjectId` 类型、`app/[subject]/[category]/[id]/page.tsx` 的合法性校验（`isSubjectId()`，来自 `lib/types/content.ts`）都会自动跟着派生，**不需要**再单独维护一份 `VALID_SUBJECTS` 集合。
+> `detail` 板块的正文落盘路径默认是 `content/{subject}/{category}/{id}.md`（`subject-tree`）；只有概率论历史遗留用 `content/chapters/chNN/x.y.md`（`legacy-chapters`），通过在 `SUBJECT_REGISTRY` 条目上声明 `contentRoot: { detail: "legacy-chapters" }` 声明，路径解析统一走 `lib/content/contentPaths.ts` 的 `CONTENT_PATH_RESOLVERS`。新学科不需要写这个字段，缺省即 `subject-tree`。
 
 ---
 
@@ -42,7 +42,7 @@ public/
 | 交互组件 | `components/interactives/probability/chXX/` | `components/interactives/{subject}/chXX/` |
 | 视频文件 | `public/media/videos/chXX/` | `public/media/videos/{subject}/chXX/` |
 
-> **注意**：Markdown 路径解析逻辑位于 `app/api/section/route.ts` 的 `readContentFile` 函数。概率论走特例分支（`content/chapters/`），其他学科走通用分支（`content/{subjectId}/{categoryId}/{itemId}.md`）。新学科推荐使用通用结构。
+> **注意**：Markdown 路径解析逻辑位于 `lib/content/contentPaths.ts`（`CONTENT_PATH_RESOLVERS`，按 `SubjectMeta.contentRoot.detail` 分派 `subjectTreePath` / `legacyChaptersPath`），供 `lib/content/loader.ts` 的 `readContentMarkdown()` 使用；`app/api/section/route.ts` 只是薄的客户端回退路由（首屏由 `page.tsx` 直接调用 `readContentMarkdown` 做 SSR）。概率论走 `legacy-chapters` 特例分支，其他学科走 `subject-tree` 通用分支（`content/{subjectId}/{categoryId}/{itemId}.md`）。新学科推荐使用通用结构，不需要改这两个文件。
 
 ---
 
@@ -89,14 +89,14 @@ public/
 
 注册后，以下两个函数自动生效：
 
-- `getInteractive(id)` — 通过 id 查找单个条目（被 `directives.tsx` 的 `InteractiveEmbed` 使用）
+- `getInteractive(id)` — 通过 id 查找单个条目（被 `components/shared/directives/MediaEmbed.tsx` 的 `InteractiveEmbed` 使用）
 - `getInteractivesForSection(subjectId, chapterId, sectionId)` — 按学科+章+节过滤（被 `InteractiveTab.tsx` 使用）
 
 ---
 
 ## 3. media 清单格式
 
-视频清单位于 `content/media.generated.ts`，导出 `generatedVideos: VideoEntry[]` 数组。该文件标注为「由 `manim/render.py` 自动生成」，但接入新学科时需手动追加条目（或扩展渲染脚本）。
+视频清单位于 `lib/content-data/media.generated.ts`（原 `content/media.generated.ts` 已随内容层重构迁至 `lib/content-data/`），导出 `generatedVideos: VideoEntry[]` 数组。该文件标注为「由 `manim/render.py` 自动生成」，但接入新学科时需手动追加条目（或扩展渲染脚本）。规模变大后已按学科拆分出 `media.physics.generated.ts`、`media.chemistry.generated.ts` 等同构文件，`lib/content-data/media.ts` 会合并全部来源后再提供查询函数，新学科可以继续写进 `media.generated.ts` 或新建一个同构的 `media.{subject}.generated.ts`。
 
 ### VideoEntry 字段说明
 
@@ -137,13 +137,13 @@ public/
 1. **id 唯一性**：`id` 在全局 `generatedVideos` 数组中必须唯一，建议加学科前缀避免与概率论条目冲突。
 2. **src 路径**：以 `/` 开头，相对 `public` 目录。文件需实际存在于 `public/media/videos/{subject}/chXX/` 下，否则点击播放会 404。
 3. **自动生成标记**：文件头部注释为「自动生成，请勿手动编辑」。若手动追加，建议在条目上方加注释 `// [MANUAL] physics 学科手动追加` 以便后续脚本识别。
-4. **查询函数**：`getVideo(id)` 和 `getVideosForSection(subjectId, chapterId, sectionId)` 已在 `content/media.ts` 中实现，新条目自动生效。
+4. **查询函数**：`getVideo(id)` 和 `getVideosForSection(subjectId, chapterId, sectionId)` 已在 `lib/content-data/media.ts` 中实现，新条目自动生效；该文件还会在模块加载时校验 `id` 全局唯一（重复会直接抛错，而不是静默取错视频）。
 
 ---
 
 ## 4. Markdown 指令用法
 
-正文 Markdown 通过 `lib/markdown/remarkDirectives.ts` 插件扩展了三类指令，由 `components/notes/directives.tsx` 渲染。
+正文 Markdown 通过 `lib/markdown/remarkDirectives.ts` 插件扩展了三类指令，渲染组件集中在 `components/shared/directives/`（`registry.ts` 的 `directiveComponents`，14 个键，详见 [rendering-architecture.md §2.2](./rendering-architecture.md)）；笔记侧与聊天侧分别通过 `components/notes/noteComponents.tsx`、`MessageContent.tsx` 展开这份映射后使用。`lib/markdown/directiveComponents.ts`（旧路径）已不存在。
 
 ### 4.1 媒体嵌入指令（叶子指令 `::`）
 
@@ -153,7 +153,7 @@ public/
 ::video{id=physics-ch01-1.1-motion}
 ```
 
-渲染为可点击的视频卡片，点击后在小窗（PiP）中播放。`id` 必须与 `media.generated.ts` 中的 `VideoEntry.id` 一致；若未找到，显示「动画视频「{id}」即将生成」占位。
+渲染为可点击的视频卡片，点击后在小窗（PiP）中播放。实现是 `components/shared/directives/MediaEmbed.tsx` 的 `VideoEmbed`（按 `kind="video"` 分发）。`id` 必须与 `lib/content-data/media.generated.ts`（或对应学科的 `media.{subject}.generated.ts`）中的 `VideoEntry.id` 一致；若未找到，显示「动画视频「{id}」即将生成」占位。
 
 #### 交互嵌入
 
@@ -161,7 +161,7 @@ public/
 ::interactive{id=physics-ch01-1.1-motion}
 ```
 
-渲染为交互组件卡片，懒加载并执行注册的 React 组件。`id` 必须与 `registry.ts` 中的 `InteractiveMeta.id` 一致；若未找到，显示「交互组件「{id}」即将生成」占位。
+渲染为交互组件卡片，懒加载并执行注册的 React 组件。实现是 `MediaEmbed.tsx` 的 `InteractiveEmbed`（按 `kind="interactive"` 分发）。`id` 必须与 `components/interactives/registry.ts` 中的 `InteractiveMeta.id` 一致；若未找到，显示「交互组件「{id}」即将生成」占位。
 
 ### 4.2 Callout 指令（容器指令 `:::`）
 
@@ -539,7 +539,7 @@ public/media/videos/physics/ch01/physics-ch01-1.1-motion.mp4
 
 ### 步骤 4：在 media.generated.ts 添加视频条目
 
-在 `content/media.generated.ts` 的 `generatedVideos` 数组中追加：
+在 `lib/content-data/media.generated.ts` 的 `generatedVideos` 数组中追加：
 
 ```typescript
 {
@@ -555,7 +555,7 @@ public/media/videos/physics/ch01/physics-ch01-1.1-motion.mp4
 
 ### 步骤 5：创建 Markdown 内容
 
-创建文件 `content/physics/detail/1.1.md`（通用路径，被 `app/api/section/route.ts` 的 `readContentFile` 自动识别）：
+创建文件 `content/physics/detail/1.1.md`（通用 `subject-tree` 路径，被 `lib/content/contentPaths.ts` 的 `CONTENT_PATH_RESOLVERS` 自动识别）：
 
 ```markdown
 ## 匀变速直线运动
@@ -583,38 +583,23 @@ $$
 :::
 ```
 
-> **路径选择**：若希望复用概率论的 `content/chapters/` 结构，需修改 `app/api/section/route.ts` 的 `readContentFile` 函数，为新学科增加特例分支。推荐使用通用 `content/{subject}/{category}/{itemId}.md` 结构，无需改代码。
+> **路径选择**：若希望复用概率论的 `content/chapters/` 结构，需在 `SUBJECT_REGISTRY` 该学科条目上声明 `contentRoot: { detail: "legacy-chapters" }`（`lib/content-data/subjects.registry.ts`），无需改路由代码。推荐直接使用通用 `content/{subject}/{category}/{itemId}.md` 结构（缺省即 `subject-tree`），同样不用改代码。
 
 ### 步骤 6：在 manifest.ts 添加 ContentItem
 
-在 `content/manifest.ts` 的 `physics` 学科 `detail` 分类下添加内容项：
+`content/manifest.ts` 已迁到 `lib/content-data/manifest.ts`，且该文件本身已不是一个「每学科手写一个大对象」的字面量——各学科的 `detail`/`summary`/`recording`/`kaoqian-moni` 等分类内容项现在拆到各自的数据模块（如 `lib/content-data/physics-detail.ts` 导出 `physicsDetailItems: ContentItem[]`），再由 `manifest.ts` 用 `category(id, items)` / `stubCategory(id)`（`lib/content-data/category-templates.ts`）组装成 `Category`，最后拼进 `subjectHeader(subjectId)` 返回的学科对象。
+
+physics 学科已是真实接入的完整学科（`content/physics/detail/*.md` 已有 42 节正文），新增一节内容项时应参照它的接线方式，而不是从零手写：
+
+1. 在对应的 `lib/content-data/{subject}-detail.ts`（如 `physics-detail.ts`）里给章节 `children` 数组追加一个 `ContentItem`：
 
 ```typescript
-{
-  id: 'physics',
-  name: '大学物理',
-  icon: 'Atom',
-  categories: [
-    { id: 'textbook', name: '教材', items: [{ id: 'main', title: '大学物理（教材）', type: 'document', status: 'stub' }] },
-    {
-      id: 'detail',
-      name: '详解',
-      items: [
-        {
-          id: '1.1',
-          title: '匀变速直线运动',
-          type: 'section',
-          status: 'done',
-          summary: '位移、速度、加速度的定量关系。',
-          videoIds: ['physics-ch01-1.1-motion'],
-          interactiveIds: ['physics-ch01-1.1-motion'],
-        },
-      ],
-    },
-    // ...
-  ],
-},
+{ id: '1.1', title: '匀变速直线运动', type: 'section', status: 'done',
+  summary: '位移、速度、加速度的定量关系。',
+  videoIds: ['physics-ch01-1.1-motion'], interactiveIds: ['physics-ch01-1.1-motion'] },
 ```
+
+2. 若是**全新学科**（`SUBJECT_REGISTRY` 里刚追加的），需要新建这个数据模块文件，并在 `manifest.ts` 里 `import` 后用 `category('detail', xxxDetailItems)` 接进该学科的 `categories` 数组（教材等暂未接入正文的分类用 `stubCategory(id)` 占位）。
 
 ### 步骤 7：验证端到端链路
 
@@ -636,7 +621,7 @@ $$
 
 ### ContentImage（`components/shared/ContentImage.tsx`）
 
-所有 Markdown 渲染器（笔记侧 NoteRenderer、聊天侧 MessageContent、测验 QuizMarkdown）的 `img` 组件均映射到 `ContentImage`。功能：
+笔记侧 `NoteRenderer`/`NoteRendererServer` 与测验 `QuizMarkdown`/`QuizMarkdownBase` 的 `img` 组件映射到 `ContentImage`；聊天侧 `MessageContent` 的 `img` 映射到 `ChatImage`（`components/chat/ChatImage.tsx`，多一层大图预览），两者接口一致但不是同一个组件，详见 [rendering-architecture.md](./rendering-architecture.md) §3/§4。`ContentImage` 功能：
 
 - 图片加载失败时显示 `ImageOff` 错误图标 + 文件名（不会白屏）
 - 提供 `title` 时自动包裹 `<figure>` + `<figcaption>`
@@ -664,17 +649,22 @@ import { SvgCanvas, FunctionPlot } from '@/components/canvas';
 
 | 文件 | 职责 |
 |------|------|
-| `lib/types/content.ts` | `SubjectId` / `CategoryId` / `ContentItem` 类型定义 |
-| `lib/content/types.ts` | `VideoEntry` / `InteractiveMeta`（部分）类型定义 |
-| `lib/store.ts` | `activeSubjectId` 状态 + `setActiveSection(subjectId, chapterId, sectionId)` |
-| `content/manifest.ts` | 多科内容树（驱动左侧导航） |
-| `content/media.ts` | `getVideo(id)` / `getVideosForSection(subjectId, chapterId, sectionId)` |
-| `content/media.generated.ts` | 视频清单（`VideoEntry[]`） |
-| `components/interactives/registry.ts` | 交互组件注册表 + `getInteractive` / `getInteractivesForSection` |
-| `components/notes/directives.tsx` | Markdown 指令渲染（`::video` / `::interactive` / callout / derivation） |
+| `lib/content-data/subjects.registry.ts` | `SUBJECT_REGISTRY` 单一真相源：`SubjectId` 派生、学科元数据、`contentRoot.detail` |
+| `lib/types/content.ts` | re-export `SubjectId`/`isSubjectId`；`CategoryId` / `ContentItem` 类型定义 |
+| `lib/content/types.ts` | `VideoEntry` / `MediaManifest` 类型定义 |
+| `components/interactives/registry.ts` | `InteractiveMeta` 类型 + 交互组件注册表 + `getInteractive` / `getInteractivesForSection` |
+| `lib/content/contentPaths.ts` | `CONTENT_PATH_RESOLVERS`：按 `contentRoot.detail` 解析正文文件路径 |
+| `lib/content/loader.ts` | `readContentMarkdown(subjectId, categoryId, itemId)` 等正文/例题读取函数 |
+| `lib/store.ts` | 2 行 `@deprecated` 转发壳，真身见下一行 |
+| `lib/stores/ui.ts` | `activeSubjectId` 状态 + `setActiveSection(subjectId, chapterId, sectionId)`（`useStore`） |
+| `lib/content-data/manifest.ts` | 多科内容树（驱动左侧导航），由 `category()`/`stubCategory()` 组装各学科的 `*-detail.ts` 数据模块 |
+| `lib/content-data/media.ts` | `getVideo(id)` / `getVideosForSection(subjectId, chapterId, sectionId)`；合并 `media.generated.ts` 与各学科 `media.{subject}.generated.ts` |
+| `lib/content-data/media.generated.ts` | 视频清单（`VideoEntry[]`），学科规模变大后可拆出 `media.{subject}.generated.ts` |
+| `components/shared/directives/registry.ts` | Markdown 指令组件映射（`directiveComponents`，14 键，含 `::video`/`::interactive`/callout/derivation） |
+| `components/shared/directives/MediaEmbed.tsx` | `::video` / `::interactive` 指令渲染（`VideoEmbed` / `InteractiveEmbed`） |
 | `lib/markdown/remarkDirectives.ts` | remark 指令解析插件 |
 | `components/visualizations/primitives/` | 4 个可视化原语 |
 | `components/chat/ChatMessageVisualizations.tsx` | AI 对话 XML 标签 → 原语分发器 |
-| `app/[subject]/[category]/[id]/page.tsx` | 多科路由校验（`VALID_SUBJECTS` / `VALID_CATEGORIES`） |
-| `app/[subject]/[category]/[id]/ContentPageClient.tsx` | 路由 → store 同步（仅 detail 分类） |
-| `app/api/section/route.ts` | Markdown 文件读取 API（概率论特例 + 通用路径） |
+| `app/[subject]/[category]/[id]/page.tsx` | 多科路由校验（`isSubjectId()`），SSR 调 `NoteRendererServer` |
+| `app/[subject]/[category]/[id]/ContentPageClient.tsx` | 客户端外壳，接收服务端渲染好的正文插槽（仅 detail 分类） |
+| `app/api/section/route.ts` | Markdown 文件读取 API（客户端回退路由，兼容旧版 `chapterId`/`sectionId` 调用） |
