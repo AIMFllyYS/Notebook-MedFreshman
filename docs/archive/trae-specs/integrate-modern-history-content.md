@@ -1,5 +1,7 @@
 # 中国近现代史纲要 · 内容整合与系统化 Spec（v2 更新）
 
+> **历史设计稿。** 据当前代码核实，`content/modern-history/summary/sum-01.md`~`sum-10.md` 已全部存在，本文描述的纪要补全工作已完成，仅供追溯当时的设计意图。
+
 ## Why
 
 项目中 `modern-history` 学科（中国近现代史纲要）的录音（recording）和详解（detail）、例题（examples）内容已全部完成，但**纪要（summary）分类的 10 个 .md 物理文件完全缺失**。`manifest.ts` 中已声明 `sum-01` ~ `sum-10` 且标记为 `status: 'done'`，但 `content/modern-history/summary/` 目录下实际没有任何 .md 文件，导致用户访问 `/modern-history/summary/sum-01` 等路由时无法加载内容。

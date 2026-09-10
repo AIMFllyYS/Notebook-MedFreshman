@@ -5,7 +5,7 @@
 > **项目版本**：gailvlun v0.3.1
 > **关联文档**：[存储架构规范](../../docs/refer/storage-architecture.md)、[性能审查报告](../../docs/refer/performance-audit-report.md)、[渲染架构](../../docs/refer/rendering-architecture.md)
 >
-> **目录校准（2026-09，计划 22）**：下文是 2026-07 的调研快照（行号、9 工具、`lib/ai/tools.ts`、`useChat` 543 行均已过时）。当前目录以本节「2.0」与 `docs/refer/adding-an-agent-tool.md` 为准。
+> **目录校准（2026-09，计划 22/23，计划 `25` 复核并修正 §2.0）**：下文是 2026-07 的调研快照（行号、9 工具、`lib/ai/tools.ts`、`useChat` 543 行均已过时）。当前目录以本节「2.0」与 `docs/refer/adding-an-agent-tool.md` 为准；本次复核发现 §2.0 之前把结果卡片注册表误写成 `lib/ai/agent/tools/catalog.ts`（该文件不存在），已修正为真实位置 `components/chat/toolCards/registry.tsx`（计划 `23` 把结果卡片从 `lib/` 搬到 `components/` 时一起搬走的）。正文其余小节（§3-§9）除个别路径括注外，行号与机制描述为 2026-07 快照，未逐条重新核实。
 
 ## 2.0 当前目录结构（2026-09）
 
@@ -13,15 +13,21 @@ Agent 工具不再集中在 `lib/ai/tools.ts` / `lib/ai/agent/tools.ts`。每个
 
 ```
 lib/ai/agent/tools/
-  index.ts            # 客户端入口：类型 + presentation + ResultCard。禁止 re-export tool.ts
+  index.ts            # 同构入口：只导出类型 + StudyToolName + TOOL_PRESENTATION/getToolPresentation
+                       # （@public 兼容旧 import），禁止 re-export tool.ts / server.ts
   server.ts           # 仅服务端：buildStudyTools
-  names.ts            # StudyTools / STUDY_TOOL_NAMES
-  catalog.ts          # TOOL_REGISTRY / TOOL_RESULT_CARDS
-  presentations.ts
-  <name>/types.ts + presentation.ts + tool.ts  [+ ResultCard.tsx]
+  names.ts            # StudyTools / StudyToolName / STUDY_TOOL_NAMES
+  registry.ts         # 类型定义：ToolModule / ResultCardProps / ToolPresentation 等（不含实际注册表数据）
+  presentations.ts    # TOOL_PRESENTATION：思考链步骤标题/设置面板文案/图标
+  <name>/types.ts + presentation.ts + tool.ts
+
+components/chat/toolCards/
+  registry.tsx         # TOOL_REGISTRY（各工具 ResultCard 绑定）+ RESULT_CARD_ORDER + TOOL_RESULT_CARDS
+                        # ——真正承载「哪个工具配哪张结果卡片、按什么顺序显示」的数据在这里，不在 lib/ 下
+  <name>Card.tsx        # 7 个工具的结果卡片组件（原 lib/ai/agent/tools/<name>/ResultCard.tsx，计划 23 搬出 lib/）
 ```
 
-13 个工具：`getCurrentPage`、`getOutline`、`getSection`、`searchNotes`、`searchNoteImages`、`webSearch`、`imageSearch`、`renderInteractive`、`drawDiagram`、`generateImage`、`createQuiz`、`writeDocument`、`useSkill`。其中七个有结果卡片（searchNotes / webSearch / renderInteractive / generateImage / createQuiz / searchNoteImages / writeDocument）。`ChatMessage.tsx` 经 registry 渲染，无工具名字面量。
+13 个工具：`getCurrentPage`、`getOutline`、`getSection`、`searchNotes`、`searchNoteImages`、`webSearch`、`imageSearch`、`renderInteractive`、`drawDiagram`、`generateImage`、`createQuiz`、`writeDocument`、`useSkill`。其中七个有结果卡片（searchNotes / webSearch / renderInteractive / generateImage / createQuiz / searchNoteImages / writeDocument），卡片组件在 `components/chat/toolCards/`，显示顺序由该目录 `registry.tsx` 的 `RESULT_CARD_ORDER` 决定。`ChatMessage.tsx` 经这份 registry 渲染，无工具名字面量。
 
 `useChat.ts` 只剩编排（≤120 行）。`sendMessage` 拆到 `lib/chat/`：`canSendNow`、`resolveRequestSettings`、`estimateContextBudget`、`buildChatRequestBody`、`createStallWatchdog`、`kickoffSessionTitle`、`resolveFollowUps`、`classifySendError`、`hydrateForRequest`、`executeChatRequest`。
 
@@ -299,7 +305,7 @@ sequenceDiagram
     end
 ```
 
-**核心类型**（`store.ts:9-14`）：
+**核心类型**（`lib/stores/ui.ts`，2026-09 现网路径；原 `lib/store.ts` 现为转发壳）：
 ```typescript
 interface OutboundMessage {
   content: string;  // 完整内容（可能含划词引用）
@@ -307,7 +313,7 @@ interface OutboundMessage {
 }
 ```
 
-**触发点**（`store.ts:209-215`）：
+**触发点**（`lib/stores/ui.ts` 的 `sendToChat`）：
 ```typescript
 sendToChat: (content) => set((s) => ({
   rightTab: "ai",
@@ -431,7 +437,7 @@ flowchart LR
 | Anthropic 流翻译 | `lib/ai/anthropicAdapter.ts:377-601` | `anthropicStreamToOpenAI` |
 | 工具定义 | `lib/ai/agent/tools/<name>/tool.ts` | 每工具 `createXxxTool` |
 | 工具组装 | `lib/ai/agent/tools/server.ts` | `buildStudyTools` |
-| 工具展示 / 卡片 | `lib/ai/agent/tools/catalog.ts` | `TOOL_REGISTRY` |
+| 工具展示 / 卡片 | `components/chat/toolCards/registry.tsx`（原设想的 `lib/ai/agent/tools/catalog.ts` 并不存在，2026-09 现网数据在 `components/`） | `TOOL_REGISTRY` / `RESULT_CARD_ORDER` |
 | useChat 入口 | `lib/hooks/useChat.ts` | 编排；纯函数在 `lib/chat/` |
 | 水合门控 | `lib/hooks/useChat.ts:100-105` | `_hasHydrated` + `sessionLoadState` |
 | 模型选择 | `lib/hooks/useChat.ts:108-117` | `effectiveModelId` + thinking 能力约束 |
@@ -444,7 +450,7 @@ flowchart LR
 | BM25 | `lib/ai/search/bm25Store.ts:196-239` | `bm25Search` + bigram 分词 |
 | Artifact 流式 | `lib/ai/artifact.ts:123-210` | `streamInteractiveArtifact` |
 | Canvas 修订 | `app/api/canvas-revise/route.ts:23-99` | 非流式 + 诊断 |
-| 划词触发 | `lib/store.ts:209-215` | `sendToChat` |
+| 划词触发 | `lib/stores/ui.ts`（原 `lib/store.ts` 现为转发壳） | `sendToChat` |
 | 划词消费 | `components/chat/ChatPanel.tsx:67-72` | outbound useEffect |
 
 ## 6. 设计决策与取舍分析
@@ -502,14 +508,14 @@ flowchart LR
 
 | # | 问题描述 | 严重程度 | 涉及文件 | 建议修复方向 |
 |---|----------|----------|----------|--------------|
-| 1 | `useFloatingChats.closeWindow` 关闭浮窗时未调用 `useFloatingTokenTracker.resetSession(sessionId)`，导致 `sessions` Record 持续累积已关闭会话的 token 统计 | P2 | `lib/hooks/useFloatingChats.ts:187-197`、`lib/hooks/useFloatingTokenTracker.ts:137-143` | 在 `closeWindow` 删除 sessionId 前 `useFloatingTokenTracker.getState().resetSession(sessionId)` |
+| 1 | `useFloatingChats.closeWindow` 关闭浮窗时未调用 `useFloatingTokenTracker.resetSession(sessionId)`，导致 `sessions` Record 持续累积已关闭会话的 token 统计 | P2 | `lib/stores/floatingChats.ts`、`lib/stores/floatingTokenTracker.ts`（2026-09 现网路径；原 `lib/hooks/useFloatingChats.ts` / `useFloatingTokenTracker.ts` 现为转发壳，行号未重新核对） | 在 `closeWindow` 删除 sessionId 前 `useFloatingTokenTracker.getState().resetSession(sessionId)` |
 | 2 | `route.ts:582-644` 的 FollowUp 兜底 LLM 调用直接在主循环内嵌套 fetch，未走 provider 解析层，使用 `provider.baseUrl` 而非 `activeProvider.baseUrl`，端点切换后仍走原端点 | P2 | `app/api/chat/route.ts:590-617` | 改用 `chatCompletionsUrl(activeProvider.baseUrl)` + `activeProvider.apiKey`，或抽离为独立模块 |
 | 3 | `extractReasoningDelta` 字段优先级 `[preferredField, "reasoning_content", "reasoning", "reasoning_text", "thinking"]`（`provider.ts:130-131`）未去重 `preferredField`（若它等于 "reasoning"，会先匹配一次再匹配 "reasoning_content"） | P3 | `lib/ai/provider.ts:130-131` | `filter((field, index, arr) => field && arr.indexOf(field) === index)` 已存在但应确保 `preferredField` 空字符串也被过滤 |
 | 4 | `MAX_TOOL_TURNS = 6` 达到上限后只发 usage + done，未发送 `info` 事件告知用户「工具调用次数已达上限，可能未完成」 | P3 | `app/api/chat/route.ts:699-713` | 在循环结束后 `send({type:"info", message:"工具调用次数已达上限..."})` |
 | 5 | `estimateTokens`（`estimateTokens.ts`）的 CJK 范围 `0x4dff < code < 0x9fff` 漏了 CJK Ext A（0x3400~0x4dbf）与扩展区；且 `0x4dff` 与 `0x9fff` 边界使用 `<` 而非 `<=` 导致 0x4e00 起始被正确包含但 0x9fff 被排除 | P3 | `lib/context/estimateTokens.ts:7` | 改为 `code >= 0x3400 && code <= 0x9fff` 或用 Unicode property escape `/^\p{Script=Han}$/u` |
 | 6 | `imageSearchFetchedCount` 仅在 `route.ts` 单次请求内累计，跨请求（多轮对话）不持久化，AI 可在新请求中再次调用达上限 | P3 | `app/api/chat/route.ts:309` | 设计如此（每次请求独立），但应在系统提示中告知 AI「本次对话累计」语义仅限单次请求 |
 | 7 | `canvas-revise/route.ts` 使用 `AbortSignal.timeout(provider.timeoutMs)`（`route.ts:70`），Node.js 17.3+ 才支持；若部署到更低版本会运行时报错 | P3 | `app/api/canvas-revise/route.ts:70` | 改用 `AbortController + setTimeout` 模式（与 `route.ts:346-347` 一致） |
-| 8 | `artifactRegistry.ts` 是空文件（`export {}`）但仍在代码库中，注释说明已废弃 | P3 | `lib/ai/artifactRegistry.ts` | 删除文件并清理任何潜在 import |
+| 8 | `artifactRegistry.ts` 是空文件（`export {}`）但仍在代码库中，注释说明已废弃 | P3 | `lib/ai/artifactRegistry.ts` | **已修复**（2026-09 核实：该文件已被删除，不再存在） |
 | 9 | `follow-ups/route.ts` 与 `route.ts:582-644` 内的 FollowUp 兜底逻辑重复（两处都调用 LLM 生成追问），但前者似乎未被前端调用 | P3 | `app/api/follow-ups/route.ts`、`lib/hooks/useChat.ts:482-519` | 确认是否仍需要 `/api/follow-ups`；若不需要则删除；若需要则统一逻辑 |
 | 10 | `useChat.ts:498-509` 的前端 FollowUp 兜底使用硬编码正则分类（解释/出题/推导/比较），未考虑学科差异 | P3 | `lib/hooks/useChat.ts:498-509` | 抽离到 `lib/chat/fallbackFollowUps.ts`，支持学科定制 |
 

@@ -11,15 +11,16 @@ import dynamic from "next/dynamic";
 import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { PanelTopClose, PanelTopOpen, Maximize, Minimize } from "lucide-react";
-import { useStore } from "@/lib/store";
+import { PanelTopClose, PanelTopOpen, PanelRightOpen, Maximize, Minimize } from "lucide-react";
+import { useStore } from "@/lib/stores/ui";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
-import type { SubjectId } from "@/lib/types/content";
+import type { LayoutProfile, SubjectId } from "@/lib/types/content";
 import { isSubjectId } from "@/lib/types/content";
+import { layoutFlags, resolveLayoutProfile } from "@/lib/content/layoutProfile";
 import type { ChatContext } from "@/lib/types/chat";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
@@ -196,6 +197,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const activeCategoryId = useStore((s) => s.activeCategoryId);
   const activeItemId = useStore((s) => s.activeItemId);
   const leftRef = useRef<ImperativePanelHandle>(null);
+  const rightRef = useRef<ImperativePanelHandle>(null);
   const [, startTransition] = useTransition();
   const [isResizing, setIsResizing] = useState(false);
   const handleDragging = useCallback((dragging: boolean) => setIsResizing(dragging), []);
@@ -203,6 +205,22 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const route = useMemo(() => parseRoute(pathname), [pathname]);
   const setActiveRoute = useStore((s) => s.setActiveRoute);
   const setTocData = useStore((s) => s.setTocData);
+  const rightCollapsedByProfile = useStore((s) => s.rightCollapsedByProfile);
+  const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
+
+  const routeLayout = useMemo(() => {
+    if (!route) {
+      return { profile: "full" as LayoutProfile, showRightPanel: true };
+    }
+    const cat = getCategory(route.subjectId, route.categoryId);
+    const item = getContentItem(route.subjectId, route.categoryId, route.itemId);
+    const profile = resolveLayoutProfile(cat, item);
+    const flags = layoutFlags(profile, cat, item);
+    return { profile, showRightPanel: flags.rightTabs.length > 0 };
+  }, [route]);
+  const rightCollapsed = routeLayout.showRightPanel
+    ? rightCollapsedByProfile[routeLayout.profile]
+    : false;
 
   useEffect(() => {
     if (route) setActiveRoute(route.subjectId, route.categoryId, route.itemId);
@@ -225,6 +243,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     if (sidebarCollapsed && !panel.isCollapsed()) panel.collapse();
     else if (!sidebarCollapsed && panel.isCollapsed()) panel.expand();
   }, [sidebarCollapsed]);
+
+  useEffect(() => {
+    const panel = rightRef.current;
+    if (!panel || !routeLayout.showRightPanel) return;
+    if (rightCollapsed && !panel.isCollapsed()) panel.collapse();
+    else if (!rightCollapsed && panel.isCollapsed()) panel.expand();
+  }, [rightCollapsed, routeLayout.showRightPanel]);
 
   const academicYear = useAcademicYear((s) => s.year);
   const chatContext: ChatContext = useMemo(
@@ -304,7 +329,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         itemId={route?.itemId ?? ""}
       />
       <div className="min-h-0 flex-1">
-        <PanelGroup direction="horizontal" autoSaveId="gailvlun-layout-v2">
+        <PanelGroup
+          key={routeLayout.profile}
+          direction="horizontal"
+          autoSaveId={routeLayout.profile === "full" ? "gailvlun-layout-v2" : `gailvlun-layout-v2-${routeLayout.profile}`}
+        >
           <Panel
             ref={leftRef}
             id="sidebar"
@@ -327,29 +356,55 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </span>
           </PanelResizeHandle>
 
-          <Panel id="notes" order={2} minSize={32} defaultSize={50}>
+          <Panel id="notes" order={2} minSize={32} defaultSize={routeLayout.showRightPanel ? 50 : 81}>
             <div className="relative h-full w-full">
               {/* 被 ManagedWindow fullscreenTarget="notes" 用作全屏对齐目标，勿改 id */}
               <div id={NOTES_PANEL_ID} className="h-full w-full">
                 {children}
               </div>
+              {routeLayout.showRightPanel && rightCollapsed && (
+                <button
+                  type="button"
+                  onClick={() => setRightCollapsedForProfile(routeLayout.profile, false)}
+                  title="展开 AI 面板"
+                  aria-label="展开 AI 面板"
+                  className="absolute right-0 top-1/2 z-20 flex -translate-y-1/2 flex-col items-center gap-1 rounded-l-lg border border-r-0 border-[var(--line)] bg-[var(--bg-panel)] px-1.5 py-3 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] hover:text-[var(--ink)]"
+                >
+                  <PanelRightOpen size={16} />
+                  <span>AI</span>
+                </button>
+              )}
               {isResizing && <PageLoader />}
             </div>
           </Panel>
 
-          <PanelResizeHandle onDragging={handleDragging} className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">
-            <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
-              <span className="block h-7 w-1 rounded-full bg-[var(--accent)]/40" />
-            </span>
-          </PanelResizeHandle>
+          {routeLayout.showRightPanel && (
+            <>
+              <PanelResizeHandle onDragging={handleDragging} className="group relative w-px bg-[var(--line)] outline-none data-[resize-handle-state=drag]:bg-[var(--accent)]">
+                <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
+                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
+                  <span className="block h-7 w-1 rounded-full bg-[var(--accent)]/40" />
+                </span>
+              </PanelResizeHandle>
 
-          <Panel id="right" order={3} minSize={22} defaultSize={31}>
-            <div id="right-panel" className="relative h-full">
-              <RightPanel />
-              {isResizing && <ChatSkeleton />}
-            </div>
-          </Panel>
+              <Panel
+                ref={rightRef}
+                id="right"
+                order={3}
+                collapsible
+                collapsedSize={0}
+                minSize={22}
+                defaultSize={rightCollapsed ? 0 : 31}
+                onCollapse={() => startTransition(() => setRightCollapsedForProfile(routeLayout.profile, true))}
+                onExpand={() => startTransition(() => setRightCollapsedForProfile(routeLayout.profile, false))}
+              >
+                <div id="right-panel" className="relative h-full">
+                  <RightPanel />
+                  {isResizing && <ChatSkeleton />}
+                </div>
+              </Panel>
+            </>
+          )}
         </PanelGroup>
       </div>
       <AnimatePresence>

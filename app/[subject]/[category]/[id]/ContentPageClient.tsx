@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { FileText, ClipboardCheck, Lightbulb, PanelTopClose, PanelTopOpen, Maximize, Minimize, ExternalLink } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import SelectionPopover from "@/components/notes/SelectionPopover";
-import type { SubjectId, RenderType } from "@/lib/types/content";
+import type { LayoutProfile, SubjectId, RenderType } from "@/lib/types/content";
+import type { LayoutFlags } from "@/lib/content/layoutProfile";
 import type { ExampleDetail } from "@/lib/content/loader";
 import { useStore } from "@/lib/store";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
@@ -47,6 +48,8 @@ interface ContentPageClientProps {
   categoryName: string;
   itemStatus: string;
   renderType?: RenderType;
+  layoutProfile: LayoutProfile;
+  layoutFlags: LayoutFlags;
 }
 
 function EmptyNote({ itemId, title }: { itemId: string; title: string }) {
@@ -77,6 +80,8 @@ export default function ContentPageClient({
   subjectName,
   categoryName,
   renderType = 'markdown',
+  layoutProfile,
+  layoutFlags: flags,
 }: ContentPageClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<ContentTab>("content");
@@ -86,10 +91,22 @@ export default function ContentPageClient({
   const [htmlFullscreenItem, setHtmlFullscreenItem] = useState<string | null>(null);
   const isHtmlFullscreen = htmlFullscreenItem === itemId;
 
-  // markdown 模式显示全部 Tab；html / component 模式只显示正文 Tab（无例题/测试）
-  const visibleTabs = renderType === 'markdown' ? CONTENT_TABS : CONTENT_TABS.filter((t) => t.id === 'content');
+  // content 恒有；examples/quiz 需档位 flags 与 markdown 同时成立。
+  const visibleTabs = useMemo(
+    () =>
+      CONTENT_TABS.filter((t) => {
+        if (t.id === "content") return true;
+        if (renderType !== "markdown") return false;
+        if (t.id === "examples") return flags.showExamplesTab;
+        if (t.id === "quiz") return flags.showQuizTab;
+        return false;
+      }),
+    [renderType, flags.showExamplesTab, flags.showQuizTab],
+  );
+  const showTabBar = visibleTabs.length > 1;
+  const resolvedTab: ContentTab = visibleTabs.some((t) => t.id === activeTab) ? activeTab : "content";
 
-  const tabIndex = visibleTabs.findIndex((t) => t.id === activeTab);
+  const tabIndex = visibleTabs.findIndex((t) => t.id === resolvedTab);
   const prevTabIndexRef = useRef(tabIndex);
   const [tabDirection, setTabDirection] = useState<1 | -1>(1);
 
@@ -99,12 +116,12 @@ export default function ContentPageClient({
 
   // 路由→store 的同步已上移到 AppShell（覆盖所有分类），此处不再处理。
 
-  // TOC 提取：仅在正文 Tab 且 markdown 类型时扫描 DOM 标题构建目录树
+  // TOC 提取：仅在正文 Tab 且档位允许目录时扫描 DOM 标题
   useToc(
     containerRef,
-    activeTab === 'content' && renderType === 'markdown',
+    resolvedTab === "content" && flags.showToc,
     itemId,
-    initialContent ?? '',
+    initialContent ?? "",
   );
 
   const switchToContentTab = useCallback(() => setActiveTab("content"), []);
@@ -113,7 +130,7 @@ export default function ContentPageClient({
     subjectId,
     categoryId,
     itemId,
-    enabled: activeTab === "content" && renderType === "markdown",
+    enabled: resolvedTab === "content" && flags.showToc,
     onNeedContentTab: switchToContentTab,
   });
 
@@ -135,10 +152,10 @@ export default function ContentPageClient({
   }, [content]);
 
   return (
-    <div className="relative flex h-full flex-col bg-[var(--bg-app)]">
-      {/* Content tab bar */}
+    <div className="relative flex h-full flex-col bg-[var(--bg-app)]" data-layout-profile={layoutProfile}>
+      {/* Content tab bar：仅多于一个 tab 时渲染按钮；收起顶栏按钮与任务栏始终保留 */}
       <div className="flex shrink-0 items-center border-b border-[var(--line)] bg-[var(--bg-app)]">
-        {visibleTabs.map((t) => (
+        {showTabBar && visibleTabs.map((t) => (
           <button
             key={t.id}
             onClick={() => {
@@ -149,14 +166,14 @@ export default function ContentPageClient({
           }}
             className={clsx(
               "relative flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium transition-colors",
-              activeTab === t.id
+              resolvedTab === t.id
                 ? "text-[var(--md-sys-color-primary)]"
                 : "text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)]",
             )}
           >
             {t.icon}
             {t.label}
-            {activeTab === t.id && (
+            {resolvedTab === t.id && (
               <motion.div
                 layoutId="content-tab-indicator"
                 className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[var(--md-sys-color-primary)]"
@@ -192,7 +209,7 @@ export default function ContentPageClient({
       {/* Content area */}
       <div ref={containerRef} data-notes-root className="scroll-y flex-1">
         <AnimatePresence mode="wait">
-          {activeTab === "content" && (
+          {resolvedTab === "content" && (
             <motion.div
               key="content"
               variants={tabPanelVariants(tabDirection)}
@@ -201,7 +218,7 @@ export default function ContentPageClient({
               exit="exit"
               className="h-full"
             >
-              <article className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-8 sm:py-10">
+              <article className={clsx("mx-auto w-full px-4 py-6 sm:px-8 sm:py-10", flags.articleMaxWidth === "wide" ? "max-w-4xl" : "max-w-3xl")}>
                 <div className="mb-5 sm:mb-7">
                   <div className="text-[12px] sm:text-[13px] font-semibold text-[var(--accent)]">
                     {subjectName} · {categoryName}
@@ -263,7 +280,7 @@ export default function ContentPageClient({
               </article>
             </motion.div>
           )}
-          {activeTab === "examples" && (
+          {resolvedTab === "examples" && (
             <motion.div
               key="examples"
               variants={tabPanelVariants(tabDirection)}
@@ -280,7 +297,7 @@ export default function ContentPageClient({
               />
             </motion.div>
           )}
-          {activeTab === "quiz" && (
+          {resolvedTab === "quiz" && (
             <motion.div
               key="quiz"
               variants={tabPanelVariants(tabDirection)}
@@ -295,8 +312,8 @@ export default function ContentPageClient({
         </AnimatePresence>
       </div>
 
-      {/* 划词助手：在正文阅读区选中文字即弹出（解释/举例/追问/引用） */}
-      <SelectionPopover containerRef={containerRef} />
+      {/* 划词助手：reference 档位不挂载 */}
+      {layoutProfile !== "reference" && <SelectionPopover containerRef={containerRef} />}
 
       {/* HTML 全屏覆盖层 */}
       {isHtmlFullscreen && content && (

@@ -7,6 +7,8 @@
 > - [性能优化报告](./07-performance-optimization.md)（代码分割机制）
 > - [渲染架构](../../docs/refer/rendering-architecture.md)
 > - [已有性能审查报告](../../docs/refer/performance-audit-report.md) §3.5、§7.3
+>
+> **2026-09 校对说明**（计划 `25`）：正文里 `directiveComponents` 的文件路径已更新为现网位置 `components/shared/directives/registry.ts`（计划 `23` 从 `lib/markdown/` 搬出）；`components/interactives/registry.ts`（右侧「可交互」tab，53 个组件）与 `:::interactive` 指令走的 `MediaEmbed` 链路本身未变，仍是本报告的准确描述。
 
 ## 1. 执行摘要
 
@@ -260,7 +262,7 @@ if (name === "video" || name === "interactive") {
 
 `:::interactive{id=ch02-2.3-cdf-visualizer}` 被 remark-directive 解析为 containerDirective，`remarkDirectives` 把它转换为 HAST 节点 `<mediaembed kind="interactive" eid="ch02-2.3-cdf-visualizer">`。注意 `interactive` 与 `video` 共享同一个 `mediaembed` HAST 节点类型，靠 `kind` 属性区分。
 
-**Step 2：react-markdown 渲染**（`lib/markdown/directiveComponents.ts:20`）
+**Step 2：react-markdown 渲染**（`components/shared/directives/registry.ts`，2026-09 现网路径；原路径 `lib/markdown/directiveComponents.ts` 已随计划 `23` 搬出 `lib/`）
 
 ```typescript
 export const directiveComponents = {
@@ -429,7 +431,7 @@ flowchart LR
     RD -->|"hName=mediaembed<br/>kind=interactive eid=id"| HAST[HAST 节点]
     HAST --> SSR[NoteRendererServer<br/>SSR/SSG 预渲染]
     SSR --> RC[react-markdown]
-    RC --> DC[directiveComponents.mediaembed]
+    RC --> DC["registry.ts<br/>directiveComponents.mediaembed"]
     DC --> ME[MediaEmbed]
     ME -->|"kind=interactive"| IE[InteractiveEmbed]
     IE --> GI[getInteractive id]
@@ -479,7 +481,7 @@ id 命名：{chapterId}-{sectionId}-{slug}
 | `components/interactives/InteractiveTab.tsx` | 8-54 | Tab 入口 + LazyVisible 包装 | 二级懒加载 |
 | `components/interactives/InteractiveTab.tsx` | 9-12 | useStore 订阅三 id | 学科×章×节 |
 | `lib/markdown/remarkDirectives.ts` | 74-78 | :::interactive 转 mediaembed | 与 ::video 共用 |
-| `lib/markdown/directiveComponents.ts` | 20 | mediaembed → MediaEmbed 组件 | react-markdown 映射 |
+| `components/shared/directives/registry.ts`（原 `lib/markdown/directiveComponents.ts`，计划 `23` 搬出 `lib/`） | — | mediaembed → MediaEmbed 组件 | react-markdown 映射 |
 | `components/shared/directives/MediaEmbed.tsx` | 76-99 | InteractiveEmbed 子组件 | 复用 getInteractive |
 | `components/shared/directives/MediaEmbed.tsx` | 101-107 | MediaEmbed 分发 | kind 区分 video/interactive |
 | `components/ui/LazyVisible.tsx` | 15-40 | 视口懒挂载 mount-once | rootMargin=200px |

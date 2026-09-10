@@ -1,12 +1,12 @@
 "use client";
 
-import { Component, useMemo, useState, useRef, type ErrorInfo, type ReactNode } from "react";
+import { Component, useEffect, useMemo, useState, useRef, type ErrorInfo, type ReactNode } from "react";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
-import { MessageSquare, MonitorPlay, Hand, Globe, X } from "lucide-react";
+import { MessageSquare, MonitorPlay, Hand, Globe, PanelRightClose, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useStore, type RightTab } from "@/lib/store";
+import { useStore, type RightTab } from "@/lib/stores/ui";
 import { tabPanelVariants } from "@/lib/motion";
 import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
 import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
@@ -30,7 +30,7 @@ const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), {
   loading: () => <RightPanelTabLoading label="浏览器" />,
 });
 
-const RIGHT_TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
+const ALL_RIGHT_TABS: { id: RightTab; label: string; icon: React.ReactNode }[] = [
   { id: "ai", label: "AI 对话", icon: <MessageSquare size={15} /> },
   { id: "video", label: "动画讲解", icon: <MonitorPlay size={15} /> },
   { id: "interactive", label: "可交互", icon: <Hand size={15} /> },
@@ -74,7 +74,7 @@ class RightPanelTabBoundary extends Component<
   render() {
     if (!this.state.error) return this.props.children;
 
-    const tabLabel = RIGHT_TABS.find((item) => item.id === this.props.tab)?.label ?? this.props.tab;
+    const tabLabel = ALL_RIGHT_TABS.find((item) => item.id === this.props.tab)?.label ?? this.props.tab;
     return (
       <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
         <div className="rounded-full border border-[var(--line)] bg-[var(--bg-muted)] px-3 py-1 text-[12px] font-medium text-[var(--ink-soft)]">
@@ -99,15 +99,26 @@ class RightPanelTabBoundary extends Component<
 export default function RightPanel() {
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);
+  const rightTabs = useStore((s) => s.rightTabs);
+  const layoutProfile = useStore((s) => s.layoutProfile);
+  const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
+  const visibleRightTabs = ALL_RIGHT_TABS.filter((t) => rightTabs.includes(t.id));
+  const showBrowserChrome = rightTabs.includes("browser");
+
+  useEffect(() => {
+    if (rightTabs.length > 0 && !rightTabs.includes(tab)) {
+      setTab(rightTabs[0] ?? "ai");
+    }
+  }, [rightTabs, tab, setTab]);
 
   // 追踪方向：比较新旧 tab index 决定滑入方向
-  const tabIndex = RIGHT_TABS.findIndex((t) => t.id === tab);
+  const tabIndex = visibleRightTabs.findIndex((t) => t.id === tab);
   const prevTabIndexRef = useRef(tabIndex);
   const [dir, setDir] = useState<1 | -1>(1);
   const variants = tabPanelVariants(dir);
 
   const switchTab = (next: RightTab) => {
-    const newIdx = RIGHT_TABS.findIndex((x) => x.id === next);
+    const newIdx = visibleRightTabs.findIndex((x) => x.id === next);
     setDir(newIdx >= prevTabIndexRef.current ? 1 : -1);
     prevTabIndexRef.current = newIdx;
     setTab(next);
@@ -142,7 +153,7 @@ export default function RightPanel() {
       {/* Top-level tab bar（可横向滑动；含浏览器收藏夹标签 + 末尾「＋」） */}
       <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-1.5 py-1.5">
         <div className="hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
-          {RIGHT_TABS.map((t) => {
+          {visibleRightTabs.map((t) => {
             const isActive =
               t.id === "browser" ? tab === "browser" && activeTabId === BROWSE_TAB : tab === t.id;
             return (
@@ -166,12 +177,12 @@ export default function RightPanel() {
           })}
 
           {/* 分隔符：核心标签 与 浏览器固定书签标签 分开 */}
-          {safeBookmarks.length > 0 && (
+          {showBrowserChrome && safeBookmarks.length > 0 && (
             <span className="mx-0.5 h-5 w-px shrink-0 bg-[var(--line)]" aria-hidden />
           )}
 
           {/* 浏览器收藏夹标签（独立固定标签） */}
-          {safeBookmarks.map((bm) => {
+          {showBrowserChrome && safeBookmarks.map((bm) => {
             const active = tab === "browser" && activeTabId === bm.id;
             return (
               <span
@@ -206,7 +217,16 @@ export default function RightPanel() {
           })}
         </div>
 
-        <BrowserSettingsButton onAdded={() => switchTab("browser")} />
+        {showBrowserChrome && <BrowserSettingsButton onAdded={() => switchTab("browser")} />}
+        <button
+          type="button"
+          onClick={() => setRightCollapsedForProfile(layoutProfile, true)}
+          title="收起右侧面板"
+          aria-label="收起右侧面板"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+        >
+          <PanelRightClose size={16} />
+        </button>
       </div>
 
       {/* Content area */}

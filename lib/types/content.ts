@@ -34,6 +34,14 @@ export type CategoryCapability = 'examples' | 'quiz' | 'search' | 'media';
  */
 export type CategoryKeyStrategy = 'section-dot' | 'item' | 'category-item' | 'chapter-prefix';
 
+/**
+ * 布局档位：决定内容页渲染哪些区块。缺省由 capabilities 推导（见 lib/content/layoutProfile.ts）。
+ * - full      三栏 + 正文/例题/测验 tab + 右侧全部 tab（详解、教材）
+ * - article   单栏正文 + 目录 + 可折叠 AI 面板；无例题/测验；右侧只有 AI（课件、纪要、纯文档）
+ * - reference 同 article 但隐藏 AI 面板入口（考前模拟、只读资料）
+ */
+export type LayoutProfile = 'full' | 'article' | 'reference';
+
 export interface Category {
   id: string;
   name: string;
@@ -42,6 +50,8 @@ export interface Category {
   capabilities?: readonly CategoryCapability[];
   /** 缺省 = 不推导（chapterId / sectionId / quizId 全为空）。 */
   keyStrategy?: CategoryKeyStrategy;
+  /** 缺省由 capabilities / item.type 推导；item.layoutProfile 可覆盖。 */
+  layoutProfile?: LayoutProfile;
 }
 
 export interface ContentItem {
@@ -54,6 +64,8 @@ export interface ContentItem {
   interactiveIds?: string[];
   children?: ContentItem[];
   renderType?: RenderType;
+  /** 覆盖所属板块的 layoutProfile。 */
+  layoutProfile?: LayoutProfile;
 }
 
 export interface ContentTree {

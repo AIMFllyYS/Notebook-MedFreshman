@@ -14,6 +14,7 @@ import {
   stubCategory,
 } from "@/lib/content-data/category-templates";
 import { contentTree } from "@/lib/content-data/manifest";
+import { resolveLayoutProfile } from "@/lib/content/layoutProfile";
 import type { Category } from "@/lib/types/content";
 
 const detail = category("detail", []);
@@ -32,9 +33,11 @@ test("category()/stubCategory()：带出模板的 name / capabilities / keyStrat
   assert.deepEqual([...(detail.capabilities ?? [])].sort(), ["examples", "media", "quiz", "search"]);
   assert.equal(detail.keyStrategy, "section-dot");
   assert.equal(summary.keyStrategy, undefined);
+  assert.equal(summary.layoutProfile, "article");
   const stub = stubCategory("kaoqian-moni");
   assert.equal(stub.items[0]?.status, "stub");
   assert.deepEqual(stub.capabilities, []);
+  assert.equal(stub.layoutProfile, "reference");
   const overridden = category("summary", [], { name: "纪要（自定义）", capabilities: ["search", "quiz"] });
   assert.equal(overridden.name, "纪要（自定义）");
   assert.ok(hasCapability(overridden, "quiz"));
@@ -73,6 +76,19 @@ test("新增板块场景：只声明 capabilities 即生效，无需改代码", 
 
   const errata: Category = { id: "errata", name: "错题本", capabilities: ["quiz"], keyStrategy: "item", items: [] };
   assert.deepEqual(deriveActiveKeys(errata, "week-03"), { activeChapterId: "week-03", activeSectionId: "" });
+});
+
+test("manifest：所有 capabilities: [] 的板块推导为 reference", () => {
+  for (const subject of contentTree.subjects) {
+    for (const cat of subject.categories) {
+      if ((cat.capabilities ?? []).length !== 0) continue;
+      assert.equal(
+        resolveLayoutProfile(cat),
+        "reference",
+        `${subject.id}/${cat.id} 空能力板块应推导为 reference`,
+      );
+    }
+  }
 });
 
 test("manifest：每个板块的 capabilities 都是合法值；标准板块与模板一致", () => {

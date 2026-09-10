@@ -4,6 +4,13 @@
 import type { AcademicYearId } from "@/lib/constants/academic-year";
 import type { SubjectIconName } from "@/lib/ui/subjectIcons";
 
+/**
+ * 内容目录形态（只影响该学科 detail 板块的落盘路径）：
+ * - subject-tree（缺省）：`content/<subject>/<category>/<id>.md`
+ * - legacy-chapters：detail 走 `content/chapters/chNN/x.y.md`（概率论历史目录）
+ */
+export type ContentRootDetail = "subject-tree" | "legacy-chapters";
+
 export interface SubjectMeta {
   id: string;
   /** 完整中文名（侧边栏 / 书架 / AI 提示词） */
@@ -17,8 +24,8 @@ export interface SubjectMeta {
   year: AcademicYearId;
   /** 相对 lib/ai/prompts/ 的学科提示词文件；缺省为 subjects/{id}.md（不存在则只用 global.md） */
   promptFile?: string;
-  /** 内容目录覆盖：仅概率论 detail 沿用历史目录 content/chapters */
-  contentRoot?: { detail?: "chapters" };
+  /** 缺省视为 subject-tree。仅概率论 detail 声明 legacy-chapters。 */
+  contentRoot?: { detail?: ContentRootDetail };
 }
 
 export const SUBJECT_REGISTRY = [
@@ -29,7 +36,7 @@ export const SUBJECT_REGISTRY = [
     icon: "Calculator",
     color: "#6366f1",
     year: "freshman-2",
-    contentRoot: { detail: "chapters" },
+    contentRoot: { detail: "legacy-chapters" },
   },
   { id: "physics", name: "大学物理", shortName: "物理", icon: "Atom", color: "#0ea5e9", year: "freshman-2" },
   { id: "chemistry", name: "有机化学", shortName: "有机", icon: "FlaskConical", color: "#10b981", year: "freshman-2" },

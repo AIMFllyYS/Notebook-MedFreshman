@@ -26,6 +26,8 @@
 | P3 | 长讲义/VideoTab LazyVisible | 部分（既有 LazyVisible 保留） |
 | P3 | token tracker 合并 | 未做（可选） |
 
+> **文档状态说明（2026 年 9 月文档清洗时补记）**：上表 P0~P2 全部已落地并保持至今，但下文「二～九」的问题分析、代码引用与结论段落是**审查当时（修复落地前）的现状描述**，多处已被上表的修复取代而未回填（例如 §5.1「无虚拟化」「单 key 整包 stringify」、§6 关键词检索结论）。本次清洗已订正明确过时/自相矛盾之处并标注「已修复」，但正文分析思路仍按原始审查顺序保留，供方法论参考；涉及具体现状的表述以本文订正处、`00-execution-contract.md` 第六节「既成不变量」与实际代码为准。
+
 **关联文档**：
 
 - [存储架构规范](./storage-architecture.md)
@@ -225,7 +227,7 @@ export async function generateStaticParams() {
 |------|----------|--------------|-------------------|-----------|------|
 | 桌面右侧 tab ≠ AI | **无** | **卸载** | **无** | 中止 | ✅ 优秀 |
 | 移动底栏 tab ≠ AI | **无** | **卸载** | **无** | 中止 | ✅ 优秀 |
-| 浮窗 **最小化** | **无** ChatThread/Input | 仍挂载 FloatingChatWindow | **useChat 仍订阅全量 sessions** | **stopGeneration** 已调用 | ⚠️ 部分 |
+| 浮窗 **最小化** | **无** ChatThread/Input | 仍挂载 FloatingChatWindow | `useChat` 已改为按会话取值订阅（`messagesById[sid]`），不再是审查当时的「全量订阅 sessions」，其他会话流式不会牵动本窗（见 §5.1.1 订正） | **stopGeneration** 已调用 | ✅ 已改善 |
 | 浮窗 **正常显示** | 全量消息 map | 全量 | 全量订阅 | 正常 | 预期 |
 | 聊天头 **自动隐藏** | **全量消息仍渲染** | 全量 | 全量 | 正常 | ℹ️ 设计如此 |
 | 历史面板 **关闭** | 无 overlay | — | ChatPanel 仍订阅 sessions | — | ⚠️ 可优化 |
@@ -247,7 +249,7 @@ export async function generateStaticParams() {
 ```
 
 - **优点**：不渲染 Markdown/KaTeX/工具面板 — 最重部分已跳过
-- **缺点**：`useChat` 仍运行；任一其他会话流式更新会触发本窗 `useChat` 重执行
+- **已改善**：`useChat` 仍运行，但订阅已收窄到 `messagesById[sid]`（见 §5.1.1 订正），其他会话流式更新不会再触发本窗重渲染
 - **副作用**：最小化会 `stopGeneration()` — 资源友好但可能中断用户预期的后台生成（产品取舍，非性能 bug）
 
 ### 4.2 自动隐藏聊天头
@@ -261,78 +263,81 @@ export async function generateStaticParams() {
 
 ### 5.1 AI 对话与历史（最高优先级）
 
-#### 5.1.1 存储模型
+#### 5.1.1 存储模型（**已修复：Storage v2 已落地，见下方订正**）
+
+审查当时（Storage v2 落地前）的模型是「整包单 key」：`useChatHistory` 用 zustand `persist` 把 `sessions: ChatSession[]`（含全部 `messages`、base64 附件）整包塞进 IDB 的 `chat-history` key，每次 `set()` 都 `JSON.stringify` 整包；`useChat.ts` 直接订阅 `sessions` 数组。这正是上表 P1「Storage v2 + Blob 分离 + v1 迁移」修复的对象，**现已不是当前实现**。
+
+**现状（Storage v2，`lib/storage/chatStorage.ts` + `lib/stores/chatHistory.ts`，详见 [storage-architecture.md §7](./storage-architecture.md)）**：
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  useChatHistory (Zustand persist)                        │
-│  ├─ sessions: ChatSession[]  (最多 50)                   │
-│  │    └─ messages: ChatMessage[]  (无上限)               │
-│  │         └─ attachments?: base64 内联在 JSON 中        │
-│  └─ activeSessionId                                      │
-│           │                                              │
-│           ▼ 每次 set → JSON.stringify(整包)              │
-│  idbStorage["chat-history"]  (单 key, 800ms 防抖写盘)    │
+│  useChatHistory（手写 IO，不走 zustand persist）           │
+│  ├─ sessionsMeta: SessionMeta[]（元数据，全量在内存）        │
+│  ├─ messagesById: Record<sessionId, ChatMessage[]>         │
+│  │    └─ 只保留最近打开的 MAX_LOADED_SESSIONS = 3 个会话     │
+│  └─ activeSessionId                                        │
+│           │                                                │
+│           ▼ 分 key 落盘                                     │
+│  idb["chat-manifest"]         全部会话元数据                │
+│  idb["chat-session:{id}"]     单会话 messages[]（按需加载）  │
+│  idb["chat-blob:{id}"]        图片附件（persistInlineAttachments 拆出）│
 └─────────────────────────────────────────────────────────┘
 ```
 
-**问题链**：
+**已解决的问题链**（对照原审查的四条）：
 
-1. **启动**：整包 IDB → JSON.parse → 全部进内存（含水合等待 UI 阻塞）
-2. **流式**：每 60ms `updateMessage` 克隆 `sessions` 数组 + 目标 session 的 `messages` 数组 — **O(总会话消息数)**
-3. **多实例**：每个 `useChat` 订阅 `sessions`（`useChat.ts` L58-66）— **N 个浮窗 = N 倍重渲染**
-4. **请求**：`sendMessage` 构建 `requestMessages` 时发送**完整会话历史**（含 base64 图）— 网络与 `JSON.stringify` 双重复
+1. **启动**：只加载 `chat-manifest`（元数据）+ 当前 active 会话的 `chat-session:{id}`，不再整包水合全部历史。
+2. **流式**：`updateMessage` 只克隆 `messagesById[sessionId]` 这一个会话的数组，不再牵动其余会话。
+3. **多实例**：`useChat.ts` 现在按会话取值订阅（`useChatHistory((s) => s.messagesById[sid] ?? EMPTY_MESSAGES)`），不再整体订阅 `sessions` 数组——其他会话流式更新不会触发本会话 `useChat` 重渲染。
+4. **附件**：`persistInlineAttachments` 把 inline base64 拆到 `chat-blob:{id}`，`sendMessage` 前用 `hydrateAttachmentsForApi` 按需还原，不再让每条消息正文常驻大体积 base64。
 
-```58:66:lib/hooks/useChat.ts
-  const sessions = useChatHistory((s) => s.sessions);
-  const activeSessionId = useChatHistory((s) => s.activeSessionId);
-  ...
-  const activeSession = sessions.find((s) => s.id === (ovSessionId ?? activeSessionId));
-  const messages = activeSession?.messages || [];
+下文 §5.1.2~§5.1.5、§6、§8.1 中仍按审查原文描述「无虚拟化 / 单 key stringify」的段落，均已被上述修复取代，阅读时请以本节订正为准。
+
+#### 5.1.2 渲染路径（**已修复：虚拟化已落地**）
+
+`ChatThread.tsx` 现在用 `@tanstack/react-virtual` 的 `useVirtualizer` 做真正的虚拟列表，不再是审查当时 `messages.filter().map()` 全量渲染：
+
+```75:91:components/chat/ChatThread.tsx
+  const virtualizer = useVirtualizer({
+    count: displayMessages.length,
+    getScrollElement: () => scrollRef.current,
+    estimateSize: () => MESSAGE_ESTIMATE_PX,
+    overscan: 4,
+    getItemKey: (index) => displayMessages[index]?.id ?? index,
+    initialRect: { width: 0, height: 480 },
+  });
+  const virtualItems = virtualizer.getVirtualItems();
 ```
 
-#### 5.1.2 渲染路径
-
-```103:110:components/chat/ChatThread.tsx
-            {messages.filter((m) => m.role !== 'tool').map((msg) => (
-              <ChatMessage
-                key={msg.id}
-                message={msg}
-                ...
-              />
-            ))}
-```
-
-- **无虚拟化**：100+ 条消息 = 100+ 个 `ChatMessage` + 潜在 `ReactMarkdown` 缓存
+- **已虚拟化**：只渲染可视区 + `overscan: 4` 条 `ChatMessage`，长历史不再等比例增加 DOM 节点数
 - **React.memo(ChatMessage)** 对非流式旧消息有效（`updateMessage` 保持未变 message 引用）
 - **流式消息**：每条 assistant 回复在生成期高频重绘 Markdown — 预期成本
-- **rAF 贴底循环**（L61-73）：`isLoading` 期间持续 `requestAnimationFrame` — 单会话成本低，可接受
+- **贴底逻辑**：`useStickToBottom` + `virtualizer.scrollToIndex` 配合，流式期间钉住最后一项；`shouldAdjustScrollPositionOnItemSizeChange` 按计划 19 B3 的约束放在 virtualizer 实例上而不是 options 里
 
 #### 5.1.3 历史面板
 
 `ChatHistoryOverlay` 一次性 `list.map` 渲染当前 tab 下**全部**会话（≤50）。  
 50 条元数据行尚可；若未来提高会话上限或加预览摘要，应分页。
 
-#### 5.1.4 推荐的「真冷存储」形态（设计参考，未实现）
+#### 5.1.4 推荐的「真冷存储」形态（**已实现**，即当时的设计参考 = 现在的 Storage v2）
 
-不改变 UX 的分层方案：
+审查当时提出的分层方案，与现在 §5.1.1 描述的 Storage v2 基本一致（`sessionsMeta` 对应「热层元数据」，`messagesById` 的 LRU ≤3 对应「热层 activeMessages」，`chat-session:{id}` / `chat-blob:{id}` 对应「温层」）；「冷层压缩归档」这一层暂未做，本地复习场景优先级不高：
 
 ```
-热层（内存 Zustand）
+热层（内存，lib/stores/chatHistory.ts）
   ├─ activeSessionId
-  ├─ sessionsMeta: { id, title, updatedAt, messageCount, kind }[]
-  └─ activeMessages: ChatMessage[]  // 仅当前会话，或最近 50 条窗口
+  ├─ sessionsMeta: SessionMeta[]（id/title/updatedAt/messageCount/kind…）
+  └─ messagesById: Record<sessionId, ChatMessage[]>（LRU 最近 3 个会话）
 
-温层（IDB 按 sessionId 分 key）
-  ├─ chat-session-{id} → messages[]
-  └─ chat-attachment-{id} → Blob
+温层（IDB，按 key 分片，lib/storage/chatStorage.ts）
+  ├─ chat-session:{id} → messages[]
+  └─ chat-blob:{id} → 图片附件 data-url
 
-冷层（可选，本地复习工具可不做）
+冷层（未做，本地复习工具可不做）
   └─ 压缩归档 30 天前会话
 ```
 
-切换会话：读温层异步加载 messages → 显示 loading skeleton（类似现有水合门控）。  
-**动画**：会话切换可保留现有过渡，不强制改 UI。
+切换会话：`ensureSessionLoaded()` 异步从温层加载 messages，配合 `sessionLoadState` 显示 loading（`useChatReady()` 门控）。
 
 #### 5.1.5 上下文窗口 vs 列表分页
 
@@ -440,15 +445,15 @@ export async function vectorSearch(queryEmbedding: number[], topK: number): Prom
 
 ## 六、关键词全库检索结论
 
-| 关键词 | 结果 |
-|--------|------|
-| `react-window` / `useVirtualizer` / `virtual` (list) | **无** |
-| `pagination` / `pageSize` / `loadMore` / infinite scroll | **无 UI 分页** |
-| `coldStorage` | **无** |
-| `LazyVisible` | **有**，4+ 使用点 |
-| `next/dynamic` | **广泛**（AppShell、RightPanel、registry、VideoTab…） |
-| `React.lazy` | **无**（项目统一用 next/dynamic） |
-| `IntersectionObserver` | `LazyVisible`、`useToc`（非 infinite scroll） |
+| 关键词 | 结果（审查当时） | 现状（本次清洗核实） |
+|--------|------|------|
+| `react-window` / `useVirtualizer` / `virtual` (list) | 无 | **有**：`ChatThread.tsx` 已用 `@tanstack/react-virtual` 的 `useVirtualizer`（见 §5.1.2） |
+| `pagination` / `pageSize` / `loadMore` / infinite scroll | 无 UI 分页 | 仍无数据层分页；虚拟化解决的是 DOM 渲染量，不是「按需加载更早消息」 |
+| `coldStorage` | 无 | 概念上已用 Storage v2（`sessionsMeta` + 分 session key）实现，只是没有叫这个名字 |
+| `LazyVisible` | 有，4+ 使用点 | 不变 |
+| `next/dynamic` | 广泛（AppShell、RightPanel、registry、VideoTab…） | 不变 |
+| `React.lazy` | 无（项目统一用 next/dynamic） | 不变 |
+| `IntersectionObserver` | `LazyVisible`、`useToc`（非 infinite scroll） | 不变 |
 
 ---
 
@@ -484,10 +489,10 @@ export async function vectorSearch(queryEmbedding: number[], topK: number): Prom
 
 应用逻辑热点：`app/api/chat/route.ts`（553）、`useChat.ts`（432）、`registry.ts`（523）— 长度合理，**性能问题在订阅模式而非行数**。
 
-### 7.4 状态管理全景（17+ Zustand stores）
+### 7.4 状态管理全景（现为 `lib/stores/` 下 28 个 store 文件，**已完成 §7.3 提到的 store 拆分**）
 
-`lib/store.ts` 单体承载：路由选中态、布局折叠、TOC、PiP、mobileTab、chat outbound…  
-与 `useChatHistory`、`useFloatingChats` 等 feature store 并存 — **无模块级循环 import**，但有运行时 `getState()` 耦合（如 deleteSession → prune artifacts）。
+审查当时 `lib/store.ts` 还是承载路由选中态、布局折叠、TOC、PiP、mobileTab 等大量状态的单体文件；计划 22 把它拆到了 `lib/stores/` 下（完整清点见 `lib/stores/README.md`）。`lib/store.ts` 现在只剩 2 行 `@deprecated` 转发壳，真身是 `lib/stores/ui.ts` 的 `useStore`（仍持有 `activeSubjectId`/`mobileTab`/TOC/PiP 这类跨组件路由态，只是文件搬了家、没有再合并/精简）。  
+与 `useChatHistory`、`useFloatingChats` 等 feature store 并存 — **无模块级循环 import**，但仍有运行时 `getState()` 耦合（如 deleteSession → prune artifacts）。
 
 **不建议为大重构而合并 store**；性能优化应**收窄 selector**，而非搬状态。
 
@@ -557,7 +562,7 @@ idb: attachment-{id} → ArrayBuffer
 
 | 文档 | 关系 |
 |------|------|
-| [storage-architecture.md](./storage-architecture.md) | 性能审查补充了「单 key 整包 stringify 仍是 CPU 热点」；建议更新 §5 持久化清单 |
+| [storage-architecture.md](./storage-architecture.md) | 「单 key 整包 stringify」问题已随 Storage v2 解决（见 §5.1.1 订正）；该文档已同步收录 Storage v2 与全部 IndexedDB/localStorage store 清单 |
 | [rendering-architecture.md](./rendering-architecture.md) | SSR 策略与本次结论一致 |
 | [07-testing.md](../sop/07-testing.md) | 建议增加「性能敏感路径」测试备注（idb 防抖、chat 节流） |
 | [kaoshi-moniji-optimization](../compose/plans/2026-06-28-kaoshi-moniji-optimization.md) | 内容 markdown 优化，与运行时正交 |
@@ -566,15 +571,15 @@ idb: attachment-{id} → ArrayBuffer
 
 ## 十一、总结
 
-项目在**「看不见就不渲染 DOM」**上，对 **Tab 级面板**（AI/视频/交互/浏览器）做得很好；对 **聊天历史增长**、**多浮窗订阅**、**列表虚拟化** 仍按「全量热加载」模型运行，且**没有真正的冷存储分层**。
+项目在**「看不见就不渲染 DOM」**上，对 **Tab 级面板**（AI/视频/交互/浏览器）做得很好。审查当时指出的**聊天历史增长**、**多浮窗订阅**、**列表虚拟化**、**冷存储分层**问题，已随本文顶部「修复状态摘要」的 P0/P1/P2 项目全部落地（Zustand 订阅收窄、ChatThread 虚拟化、Storage v2 分层 + Blob 分离均已实现，见 §5.1.1/§5.1.2 订正）。
 
-对当前「本地急切复习」场景，**最值得做的三件事**是：
+当时列出的「最值得做的三件事」现状（本次清洗抽样核实）：
 
-1. **收窄 Zustand 订阅**（成本低、立刻减少多窗卡顿）
-2. **ChatThread 虚拟化**（历史变长后的滚动体验）
-3. **附件出 JSON**（降低 IDB stringify 与网络 payload）
+1. **收窄 Zustand 订阅** — ✅ 已做（`useChat` 按会话取值订阅，见 §5.1.1 订正）
+2. **ChatThread 虚拟化** — ✅ 已做（`@tanstack/react-virtual`，见 §5.1.2 订正）
+3. **附件出 JSON** — ✅ 已做（`chat-blob:{id}` 分 key，见 §5.1.1 订正）
 
-其余（contentTree 瘦身、vector ANN、例题懒加载）随内容规模增长再排期。  
+P2/P3 具体条目的完成状态以顶部「修复状态摘要」表为准（本次清洗核实 `vectorSearch` 已改 `TopKMinHeap` top-K；但例题 SSR 在 `app/[subject]/[category]/[id]/page.tsx` 里仍调的是全量 `readExamples()`，与顶部表格「例题 SSR meta-only」的描述是否已在所有路径生效，建议下次代码侧改动时复核，本文档不下结论）。token tracker 合并（P3，标注可选）未做。  
 超大 interactive 组件与长单文件**维持现状**，符合本次审查边界。
 
 ---

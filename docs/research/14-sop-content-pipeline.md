@@ -4,6 +4,8 @@
 > **调研日期**：2026-07-05
 > **项目版本**：gailvlun v0.3.1
 > **关联文档**：`docs/sop/` 全部 11 个 SOP 文件、`docs/refer/`、`docs/plans/`
+>
+> **2026-09 校对说明**（计划 `25`）：第 7 节问题清单里 `lib/ai/tools.ts` 的引用已更新为现网拆分后的工具目录路径（`lib/ai/agent/tools/<name>/tool.ts`，计划 `22` 拆分）；同时核实发现前 3 项 P1（`getOutline`/`getSection`/`searchNotes` 只覆盖概率论）**已在现网代码中修复**，已标注；第 4 项（缺 `getQuizData` 工具）核实后仍适用。
 
 ## 1. 执行摘要
 
@@ -369,10 +371,10 @@ sequenceDiagram
 
 | # | 问题描述 | 严重程度 | 涉及文件 | 建议修复方向 |
 |---|----------|----------|----------|--------------|
-| 1 | `getOutline` AI 工具只遍历概率论旧 `manifest.chapters`，不覆盖 contentTree 其他科目 | P1 | `lib/ai/tools.ts` | 扩展 `getOutlineText()` 支持多科目 |
-| 2 | `getSection` AI 工具写死 `categoryId = "detail"`，只能读详解板块 | P1 | `lib/ai/tools.ts` | 扩展支持 categoryId 参数 |
-| 3 | `searchNotes` AI 工具只检索概率论 `content/chapters/` | P1 | `lib/ai/tools.ts` | 扩展为遍历所有科目所有 category |
-| 4 | 题目测试无 `getQuizData` AI 工具，AI 无法读取题目数据 | P2 | `lib/ai/tools.ts` | 新增 `getQuizData` 工具 |
+| 1 | `getOutline` AI 工具只遍历概率论旧 `manifest.chapters`，不覆盖 contentTree 其他科目 | P1 | `lib/ai/agent/tools/getOutline/tool.ts`（原单文件 `lib/ai/tools.ts`，计划 `22` 已拆分为 13 个工具目录） | **已修复**（2026-09 核实：现网调用 `lib/content/loader.ts` 的 `getMultiSubjectOutline(scope)`，覆盖全部科目） |
+| 2 | `getSection` AI 工具写死 `categoryId = "detail"`，只能读详解板块 | P1 | `lib/ai/agent/tools/getSection/tool.ts`（原 `lib/ai/tools.ts`） | **已修复**（2026-09 核实：现网支持 `path` 参数按「科目/分类/内容id」任意路径读取，`sectionId` 仅作向下兼容） |
+| 3 | `searchNotes` AI 工具只检索概率论 `content/chapters/` | P1 | `lib/ai/agent/tools/searchNotes/tool.ts`（原 `lib/ai/tools.ts`） | **已修复**（2026-09 核实：现网调用 `searchAllContent(query, scope)`，覆盖全部科目全部分类） |
+| 4 | 题目测试无 `getQuizData` AI 工具，AI 无法读取题目数据 | P2 | `lib/ai/agent/tools/`（原 `lib/ai/tools.ts`） | 仍适用：2026-09 核实 13 个工具中仍无 `getQuizData`，只有生成题目的 `createQuiz`，没有读取现有题目数据的工具；新增 `getQuizData` 工具 |
 | 5 | 试卷分类默认不参与 AI 语义检索索引 | P2 | `lib/content/loader.ts` `lib/ai/indexing/chunker.ts` | 评估是否加入 `kaoqian-moni`/`shizhan-yanlian` 到 `SEARCHABLE_CATEGORIES` |
 | 6 | SOP 文件无版本控制，更新后无变更日志 | P3 | `docs/sop/` | 每个 SOP 添加 `## 变更记录` 章节 |
 | 7 | Subagent Prompt 模板未形式化为可执行脚本 | P3 | `docs/sop/README.md:76-92` | 转化为 `scripts/dispatch-subagent.mjs` 自动派发 |
@@ -471,7 +473,7 @@ SOP 体系是 **全自动化平台改造的核心资产**——已固化的流�
 - `scripts/workflows/generate-chapter.workflow.js` — 单章生成 workflow
 - `lib/content/loader.ts` — 内容加载器（路径解析）
 - `lib/content-data/manifest.ts` — 内容目录树
-- `lib/ai/tools.ts` — AI 工具定义
+- `lib/ai/agent/tools/`（原单文件 `lib/ai/tools.ts`，计划 `22` 已拆分为 13 个 `<name>/` 目录）— AI 工具定义
 - `lib/ai/indexing/chunker.ts` — 向量索引 chunker
 - `components/interactives/registry.ts` — 交互组件注册表
 - `content/media.generated.ts` — 视频清单

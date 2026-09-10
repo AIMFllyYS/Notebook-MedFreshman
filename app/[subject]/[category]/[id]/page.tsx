@@ -5,6 +5,7 @@ import { contentTree, getContentItem, getSubject, getCategory } from "@/lib/cont
 import { readContent, readExamples } from "@/lib/content/loader";
 import { deriveExampleKeyFor } from "@/lib/content/categoryKeys";
 import { normalizeDirectiveLabels } from "@/lib/markdown/normalizeDirectiveLabels";
+import { layoutFlags, resolveLayoutProfile } from "@/lib/content/layoutProfile";
 import NoteRendererServer from "@/components/notes/NoteRendererServer";
 import ContentPageClient from "./ContentPageClient";
 
@@ -75,6 +76,9 @@ export default async function ContentPage({ params }: PageProps) {
   const initialExamples =
     chapterId && sectionId ? readExamples(subject, chapterId, sectionId) : [];
 
+  const profile = resolveLayoutProfile(categoryData, item);
+  const flags = layoutFlags(profile, categoryData, item);
+
   return (
     <ContentPageClient
       subjectId={subject}
@@ -91,6 +95,8 @@ export default async function ContentPage({ params }: PageProps) {
       categoryName={categoryData.name}
       itemStatus={item?.status ?? "stub"}
       renderType={renderType}
+      layoutProfile={profile}
+      layoutFlags={flags}
     />
   );
 }

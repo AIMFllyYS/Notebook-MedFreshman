@@ -15,7 +15,7 @@
 | `22` | Agent 架构与 lint 欠账 | 已执行、**已验收（三批全通过）** |
 | `23` | UI 层归位（`lib` 不再依赖 `components`） | 已执行、**已验收**（含事后断环修复） |
 | `24` | 记忆卡与指令属性解析（**既存 P0**，非回归） | 已执行、门禁全绿；**阶段 C 真机验证待人工完成** |
-| `21` | 内容页布局档位 | 待执行（**排最后**） |
+| `21` | 内容页布局档位 | 已执行、**门禁全绿（build 1210/1210）**；真机验证待人工完成 |
 
 **为什么 `22` 插到 `21` 前面：** 内容 Agent 的改动集中在 `lib/content-data/manifest.ts`、`nav.generated.json`、`subjects.registry.ts`，而这正是计划 `21` 的正面战场；它当前正在改 `docs/refer/mineru-parsing-guide.md`，说明下一批课件导入在路上，落地时必然再动这三个文件。计划 `22` 动的是 `lib/ai/**`、`lib/stores/**`、`components/chat/**`，与内容 Agent 零重叠，先做没有冲突成本。计划 `21` 尽量等这批导入落地后再动。
 
@@ -172,6 +172,16 @@ pnpm test:react
 - 护栏：`lib/markdown/normalizeDirectiveLabels.test.ts` 有 4 例专钉这条（未加引号含公式 ×2、标题内嵌引号、引号内含白名单词）。判据一退回形状匹配它们立刻变红。
 - **记忆卡正文走 `hProperties.raw`（remark 从源文件切出的原文），不是从已解析 React 树回抽。** 回抽按构造有损：`<strong>` 丢 `**`、checkbox 丢 `- [ ]`、KaTeX 在 `dangerouslySetInnerHTML` 里回抽为空。`MemoryCard.extract()` **保留**为聊天侧兜底（AI 流式节点没有 position），不要删。
 - `raw` 的 8 KB 上限：超限退回 `extract()`。实测最大单卡 4168 字符，阈值从未触发；中位页面因 `raw` 增重约 1.3 KB、最重 8.1 KB（react-markdown 会把 `hProperties` 同时作为 prop 和 `node.properties` 传下去，故计两份）。
+
+**布局档位契约（计划 `21` 建立）**
+
+- **「显示哪些 tab / 哪些栏」的唯一判据是 `lib/content/layoutProfile.ts`**（`resolveLayoutProfile` + `layoutFlags`），三档 `full` / `article` / `reference`。`ContentPageClient` **不得**再直接用 `renderType === 'markdown'` 决定例题/测验 tab，`RightPanel` 不得写死全部 tab。
+- **`RightTab` 派生自 `LayoutRightTab`，不要在 `lib/stores/ui.ts` 里重新写一份同形字面量。** 方向是 `ui.ts` → `layoutProfile.ts`（反向会成环，所以类型真相源在 `layoutProfile.ts`）。两处各写一份的话，新增第五个右栏 tab 时不会有任何编译错误，而 `resolveRightTabs` 永远不吐出它——该 tab 会在所有档位下**静默消失**。
+- **中间 tab 的非法值回退必须在渲染期派生，不能用 effect 里 `setState`。** `react-hooks/set-state-in-effect` 现为 error。
+- **`AppShell` 的分栏结构从「路由 + manifest」当场算，不要只等 store。** `setActiveRoute` 在 effect 里，等 store 会晚一帧拆错栏。store 仍然写，供 `RightPanel` 消费。
+- **`autoSaveId` 按档位分桶**：`full` 继续用旧 key `gailvlun-layout-v2`，其余档位用各自的 key——否则 article 折叠后的宽度会写回并污染详解三栏。右栏折叠记忆的新 persist key 是 `gailvlun-right-collapsed-by-profile`（新增 key 可以，但**已有 key 一律不得改名**，见上文 Agent 与状态契约）。
+- **`loader.ts` 里不得再出现 `"chapters"` 字符串特判。** 目录形态由 `subjects.registry.ts` 的 `contentRoot.detail`（`subject-tree` | `legacy-chapters`）声明，路径拼接统一走 `lib/content/contentPaths.ts` 的 `CONTENT_PATH_RESOLVERS`。改这个枚举时**必须同步 `scripts/check-registry-consistency.ts`**，否则 `prebuild` 会误判文件缺失。
+- 产品可见结果：教材 / 课上录音没有 `media` 能力，右侧不再出现空的「动画」「可交互」tab；详解仍是四 tab。这是按能力驱动的预期行为，不是回归。
 
 **"右侧 Agent 里那个可视化 HTML"的唯一入口**
 
