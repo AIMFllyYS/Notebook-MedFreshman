@@ -109,6 +109,36 @@ test("多属性形状幂等：f(f(x)) === f(x)", () => {
   }
 });
 
+// 以下两组钉住「属性边界必须按白名单判定」。若把边界退回 /\s+[\w-]+=/ 这种形状匹配，
+// 这两组会立刻变红：正文里确有 2 处未加引号含公式、21 处标题内嵌 ASCII 引号的写法。
+test("未加引号的 label 内含非属性公式 k= 时，整段仍算标题", () => {
+  assert.equal(
+    normalizeDirectiveLabels(":::pitfall{label=易错点：泊松分布中 k=0 不要漏掉}"),
+    ':::pitfall{label="易错点：泊松分布中 k=0 不要漏掉"}',
+  );
+});
+
+test("未加引号的 label 内含波函数 y= 时，整段仍算标题", () => {
+  assert.equal(
+    normalizeDirectiveLabels(":::example{label=波函数 y=10sin(10πt−x/100) cm}"),
+    ':::example{label="波函数 y=10sin(10πt−x/100) cm"}',
+  );
+});
+
+test("标题内嵌 ASCII 引号后仍有正文时，引号只是标题的一部分", () => {
+  assert.equal(
+    normalizeDirectiveLabels(':::insight{label="熵"的本质}'),
+    ':::insight{label="“熵”的本质"}',
+  );
+});
+
+test("引号内含白名单属性名时，边界从闭合引号之后才开始找", () => {
+  assert.equal(
+    normalizeDirectiveLabels(':::memory{label="用 width=3 画图" mode=cloze}'),
+    ':::memory{label="用 width=3 画图" mode=cloze}',
+  );
+});
+
 test("CRLF 行尾下多属性 memory 指令仍保留 mode", () => {
   const out = normalizeDirectiveLabels(':::memory{label="氨基酸等电点" mode="cloze"}\r\n**pH**\r\n:::\r\n');
   assert.ok(
