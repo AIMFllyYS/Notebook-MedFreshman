@@ -268,3 +268,87 @@ Commit：`docs(sop): document-only courseware integration with layout profiles`
 **新增的既成不变量（计划 `24`，见 `00-execution-contract.md` 第六节）**：本计划不碰 `lib/markdown/**`，但若因任何原因需要动指令解析，`normalizeDirectiveLabels` 的属性边界只能按 `KNOWN_ATTRS` 白名单判定，不得退回形状匹配。
 
 **并发状态（本次派发时实测）**：内容 Agent 最近一次代码提交仍是 `cdec28da`，在途脏文件仍是 `docs/refer/exam-type-distribution.md`、`docs/refer/mineru-parsing-guide.md` 两份（与上一节一致，未扩散到 manifest）。`lib/content-data/**` 当前干净，阶段 A3 / C1 可以正常进行。
+
+## 执行记录
+
+> 执行日期：2026-09-10。分支 `dev`，未 push。对方在途文件 `docs/refer/exam-type-distribution.md`、`docs/refer/mineru-parsing-guide.md` 与根目录 `A-existing-data.png` 原样未动。未做浏览器真机验证（主智能体另行安排）。`pnpm build` 因用户正在跑 `pnpm dev` 抢 `.next`，按派发说明跳过。
+
+### 1. 各阶段 commit
+
+| 阶段 | Hash | Message |
+|------|------|---------|
+| A | `cc74e49d` (`cc74e49dbd09b62fd0d05b266bb9ca8b8fd22489`) | `feat(content): add layoutProfile type, resolver and manifest annotations` |
+| B | `f9326ee1` (`f9326ee105dffdbfbac7daf0013c5098eab03712`) | `feat(content): render content page and right panel by layout profile` |
+| B′ | `1e536b49` (`1e536b496991b3731d82474d8fc6838036717530`) | `fix(content): derive visible content tab without setState in effect` |
+| C | `b1bf87a4` (`b1bf87a41c47e5affcde3aa7f7439012f8f4c39b`) | `refactor(content): replace chapters special-case with declarative path resolvers` |
+| D | `ed1ab64f` (`ed1ab64faa53735e0adf424e646f5f7b0e619ad5`) | `docs(sop): document-only courseware integration with layout profiles` |
+
+阶段 B′ 是 eslint `react-hooks/set-state-in-effect`（error）逼出来的：计划写的「flags 变了用 effect 把 activeTab 拨回 content」在现网规则下过不了 lint。
+
+### 2. 各阶段做了什么
+
+**A · 类型与推导**
+
+- `lib/types/content.ts` 增加 `LayoutProfile`；`Category` / `ContentItem` 各加可选 `layoutProfile`。
+- 新建 `lib/content/layoutProfile.ts`：`resolveLayoutProfile` / `layoutFlags`。`rightTabs` 用本地 `LayoutRightTab` 联合（与 `RightTab` 同形），不 import `lib/stores/ui.ts`。
+- 模板：`summary` → `article`，`kaoqian-moni` / `shizhan-yanlian` → `reference`；`category()` 透传该字段。
+- 测试：六个模板推导、item 覆盖、document 默认 article、空 capabilities → reference。
+
+**B · 渲染层消费**
+
+- `page.tsx` 计算 profile/flags 下发给 `ContentPageClient`（根节点 `data-layout-profile`）。
+- 中间 tab：content 恒有；examples/quiz 取 flags ∩ markdown；单 tab 不画 tab 按钮，保留收起顶栏与任务栏。`article`/`reference` 用 `max-w-4xl`。`reference` 不挂 `SelectionPopover`。
+- `lib/stores/ui.ts`：`setActiveRoute` 写入 `layoutProfile` / `rightTabs`；`rightCollapsedByProfile` 持久化到 `gailvlun-right-collapsed-by-profile`。
+- `RightPanel`：`ALL_RIGHT_TABS` 按 `rightTabs` 过滤；非法当前 tab 回退；从 `@/lib/stores/ui` 导入。
+- `AppShell`：非 full 可折叠右栏 + 边缘「展开 AI」；`reference`（`rightTabs=[]`）不渲染右栏 Panel / ResizeHandle。`#notes-panel` 仍用 `NOTES_PANEL_ID`。浮窗层仍在 PanelGroup 外。
+- `tests/windowLayerPlacement.test.ts` 改前改后均 7 通过。
+
+**C · loader 声明化**
+
+- `contentRoot.detail` 枚举改为 `'subject-tree' \| 'legacy-chapters'`；概率论写 `legacy-chapters`。
+- 新建 `lib/content/contentPaths.ts` 的 `CONTENT_PATH_RESOLVERS`；`loader.ts` 无 `"chapters"` 字面量。
+- `scripts/check-registry-consistency.ts` 与 `docs/sop/subject-onboarding.md` 同步新枚举，否则 prebuild 会找不到概率论正文。
+
+**D · SOP**
+
+- `docs/sop/05-content-integration.md` 追加「纯文档课件接入」与最小 manifest 片段。
+
+### 3. 实际改动与计划的偏差
+
+1. **`layoutProfile.ts` 不从 `ui.ts` 引 `RightTab`。** 计划说可以 lib→lib；但 B3 要让 `ui.ts` 调用 resolver，再引回去就是环。做法：本地 `LayoutRightTab`，同形可赋值给 `RightTab[]`。
+2. **没有给 sophomore-categories / 各学科 `type: 'document'` 条目逐条标 `layoutProfile: 'article'`。** 教材、英语练习等条目是 document，但板块有 examples/quiz，板块级标 article 会压过能力推导、拆掉例题/测验。只标了三个标准模板；`category()` 透传。`misc`/`gongshi`/`guihua` 空能力、无显式档位，无 item 时推导 reference。
+3. **透传函数叫 `category()`，不是计划里的 `buildCategory()`。**
+4. **store 改的是 `lib/stores/ui.ts`，不是转发壳 `lib/store.ts`。**（二次复核已写明。）
+5. **阶段 C 多改了 `check-registry-consistency.ts` 和 `subject-onboarding.md`。** 枚举从 `chapters` 改走后，不改脚本 prebuild 会误判概率论文件缺失。
+6. **`autoSaveId` 按档位分桶。** 计划没提；article 折叠若写回 `gailvlun-layout-v2` 会污染详解三栏宽度。`full` 仍用旧 key，article/reference 用 `gailvlun-layout-v2-${profile}`。
+7. **AppShell 布局从路由+manifest 当场算，不只等 store。** `setActiveRoute` 在 effect 里，等 store 会晚一帧拆错 Panel。store 仍写，给 RightPanel 用。
+8. **非法 tab 不用 effect 拨 `activeTab`。** 改为渲染期 `resolvedTab`，否则 `react-hooks/set-state-in-effect` 是 error。
+
+### 4. 门禁实测（对照派发基线）
+
+| 门禁 | 基线 | 本次 |
+|------|------|------|
+| `tsc --noEmit` | 0 error | 0 error |
+| `pnpm lint` | 0 error / 85 warning | 0 error / 85 warning |
+| `pnpm test:unit` | 551 | **561** |
+| `pnpm test:content` | 1915 | **1916**（0 fail） |
+| `pnpm test:react` | 254（64 文件） | **260**（66 文件） |
+| `pnpm build` | 1210/1210 | **跳过**（`pnpm dev` 占着 `.next`，未杀用户进程） |
+| `rg '"chapters"' lib/content/loader.ts` | — | 零命中 |
+
+`tests/windowLayerPlacement.test.ts`：B3 前后各 7 通过。
+
+### 5. 未完成 / 推迟
+
+- 未做计划「验证」五条真机（派发要求主智能体另排）。
+- 未跑 `pnpm build`（dev server 占用）。
+- 阶段 C **没有**推迟：`subjects.registry.ts` 开工时干净。
+- 移动端底栏仍展示全部 tab（计划「不做移动端专项」）。
+
+### 6. 遗留风险 / 给验收方
+
+- 教材 / 课上录音无 `media`，右侧不再出现空的「动画」「可交互」（详解仍四 tab）。
+- 程序性折叠未包 `data-resizing`；若闪，按计划风险节给折叠动作加一帧冻结。
+- 快捷键切到被隐藏的右栏 tab 会被 `setRightTab` 忽略。
+- 改 `subjects.registry.ts` / `loader.ts` 期间 Turbopack 出现过短暂「module has no exports」，随后 200；若验收时碰到先硬刷新。
+- 真机请先当场读 `#notes-panel` rect，再对 artifact notes 全屏（契约不是固定数字）。
