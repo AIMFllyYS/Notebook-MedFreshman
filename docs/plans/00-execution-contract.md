@@ -14,7 +14,7 @@
 | `20` | 窗口 / Artifact 体系收敛 | 已执行、已验收（判定通过，无必须修复项） |
 | `22` | Agent 架构与 lint 欠账 | 已执行、**已验收（三批全通过）** |
 | `23` | UI 层归位（`lib` 不再依赖 `components`） | 已执行、**已验收**（含事后断环修复） |
-| `24` | 记忆卡与指令属性解析（**既存 P0**，非回归） | 待执行 |
+| `24` | 记忆卡与指令属性解析（**既存 P0**，非回归） | 已执行、门禁全绿；**阶段 C 真机验证待人工完成** |
 | `21` | 内容页布局档位 | 待执行（**排最后**） |
 
 **为什么 `22` 插到 `21` 前面：** 内容 Agent 的改动集中在 `lib/content-data/manifest.ts`、`nav.generated.json`、`subjects.registry.ts`，而这正是计划 `21` 的正面战场；它当前正在改 `docs/refer/mineru-parsing-guide.md`，说明下一批课件导入在路上，落地时必然再动这三个文件。计划 `22` 动的是 `lib/ai/**`、`lib/stores/**`、`components/chat/**`，与内容 Agent 零重叠，先做没有冲突成本。计划 `21` 尽量等这批导入落地后再动。
@@ -163,6 +163,15 @@ pnpm test:react
   **红线**：`QuizMarkdownBase` 不得 import `components/shared/directives/registry`（直接或间接均不可，注意 `ContentImage` 那条链也要保持干净）；`MemoryCard` 不得改回 import `QuizMarkdown`。MemoryCard 内部若要支持嵌套指令，用 props 注入指令映射，**不要**重新 import registry。
   **护栏**：`components/shared/directives/registry.evaluation-order.test.tsx` 按四种求值顺序断言 14 个指令键齐全且每个值都是函数——它同时抓崩溃与静默空映射两种形态。**不要削弱这个测试**（尤其不要只断言键存在而不断言是函数，占位符会漏过去）。
   已量化：全量 3201 个正文文件、711 个 `:::memory` 块内**零处**嵌套指令，故断环带来的「MemoryCard 内不支持嵌套指令」对现有正文零影响。
+
+**指令属性解析（计划 `24` 建立）**
+
+- **`normalizeDirectiveLabels` 的属性边界只能按白名单判定，不得退回形状匹配 `/\s+[\w-]+=/`。** 结构上 `mode=cloze` 与标题正文里的 `k=0`、`y=10sin(…)`、`A260=1.0` 完全同形，形状匹配会把公式误切成属性、把标题截断（正文实测 2 处），并让标题内嵌 ASCII 引号的写法（正文实测 21 处，如 `{label="熵"的本质}`）退回 remark-directive 解析不了的形状——即 `24738d98` / `72c7464d` 修掉的原始缺陷复发。净效果是「修好 78 处、打坏 23 处」。
+- `lib/markdown/normalizeDirectiveLabels.ts` 的 `KNOWN_ATTRS` 必须与 `lib/markdown/remarkDirectives.ts` 里读取的 `attrs.*` 保持同步（当前 29 个）。**新增指令属性时忘了同步，该属性就会被当成标题正文吞掉**，且不会有任何报错。
+- 带引号的值，属性边界搜索必须从**闭合引号之后**开始，否则 `{label="用 width=3 画图" mode=cloze}` 会被切进引号内部。
+- 护栏：`lib/markdown/normalizeDirectiveLabels.test.ts` 有 4 例专钉这条（未加引号含公式 ×2、标题内嵌引号、引号内含白名单词）。判据一退回形状匹配它们立刻变红。
+- **记忆卡正文走 `hProperties.raw`（remark 从源文件切出的原文），不是从已解析 React 树回抽。** 回抽按构造有损：`<strong>` 丢 `**`、checkbox 丢 `- [ ]`、KaTeX 在 `dangerouslySetInnerHTML` 里回抽为空。`MemoryCard.extract()` **保留**为聊天侧兜底（AI 流式节点没有 position），不要删。
+- `raw` 的 8 KB 上限：超限退回 `extract()`。实测最大单卡 4168 字符，阈值从未触发；中位页面因 `raw` 增重约 1.3 KB、最重 8.1 KB（react-markdown 会把 `hProperties` 同时作为 prop 和 `node.properties` 传下去，故计两份）。
 
 **"右侧 Agent 里那个可视化 HTML"的唯一入口**
 

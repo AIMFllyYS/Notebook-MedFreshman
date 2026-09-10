@@ -155,3 +155,89 @@ Commit：`docs(plans): record plan 24 execution`
 ## 并发避让
 
 内容 Agent 的作业域是 `content/**`、`public/images|media/**`、`lib/content-data/**` 的数据条目。本计划只碰 `lib/markdown/**`、`components/shared/directives/**` 与 `docs/**`，与之零重叠。Git 纪律照 `00-execution-contract.md` 第二节：只用显式路径提交，留在 `dev`，不推送，对方的在途脏文件原样留着。
+
+---
+
+# 执行记录
+
+状态：**阶段 A / B 已执行并通过全部自动门禁；阶段 C 真机验证待人工完成**（步骤见文末）。
+
+## 提交
+
+| Commit | 内容 |
+|---|---|
+| `905794d3` | 阶段 A：归一化时保留 label/title 之后的其他属性 |
+| `84150072` | 阶段 B：记忆卡正文改用 remark 写入的源文本 |
+| `fdf68997` | 阶段 A 修正：属性边界改按**白名单**判定（详见下节，这一步是必需的） |
+
+`content/**` 零改动（`git diff --stat 771e6e24..fdf68997 -- content` 为空）。
+
+## 对计划的偏离：属性边界不能用形状匹配
+
+计划阶段 A 第 1 条原本写「不带引号时，值的边界是「下一个 `\s+[\w-]+=`」之前」。**照此实现会制造新的回归**，`905794d3` 最初正是这么写的，`fdf68997` 把它改掉了。
+
+原因是**结构上无法区分**「第二个属性」和「标题正文里的公式」——`mode=cloze` 与 `k=0` 长得一模一样。形状匹配会打坏两类真实写法：
+
+| 写法 | 正文处数 | 形状匹配的输出 | 后果 |
+|---|---|---|---|
+| `{label=易错点：泊松分布中 k=0 不要漏掉}`（未加引号 + 公式） | 2 | `{label="易错点：泊松分布中" k=0 不要漏掉}` | 标题被截断，公式变成假属性 |
+| `{label="熵"的本质}`（标题内嵌 ASCII 引号） | 21 | 在闭合引号处截断、尾部原样拼回 | 变回 remark-directive 解析不了的形状，即 `24738d98` / `72c7464d` 修掉的原始缺陷复发 |
+
+也就是说形状匹配是「修好 78 处、打坏 23 处」。
+
+**改法**：只把 `remarkDirectives.ts` 里真正读取的 29 个 `attrs.*` 名字当作属性边界（`KNOWN_ATTRS`），并让带引号值的边界搜索从**闭合引号之后**才开始（避免标题内含白名单词时切进引号内部，如 `{label="用 width=3 画图" mode=cloze}`）。
+
+> 维护提醒：**新增指令属性时必须同步 `KNOWN_ATTRS`**，否则该属性会被当作标题正文吞掉。这条已写进 `00-execution-contract.md` 的不变量。
+
+## 验证证据
+
+**全量比对**（新旧函数在全部正文上逐行对比）：3201 个内容文件、74923 行指令行，**仅 78 行输出变化**，全部是本该修复的 `mode` 保留，其余逐字一致——既证明修好了目标，也证明没有波及其他指令（对应「风险与回滚」里的最大风险项）。
+
+旧输出形如 `{label="“膈三孔与穿行” mode=”cloze"}`（mode 的值被卷进标题弯引号），新输出 `{label="膈三孔与穿行" mode="cloze"}`。
+
+**生产构建产物**（`.next/server/app/anatomy/detail/1.1.html` 的 RSC payload，即端侧真实拿到的 props）：
+
+```
+"kind":"memory","label":"名词解释答题三问","mode":"cloze","raw":"…先写**位置**…"
+```
+
+标题干净、`mode="cloze"` 送达组件、`raw` 保留了 `**` 标记——两个根因均在真实产物中闭环。
+
+**`raw` 的体积代价**（阶段 B 风险项）：711 张卡平均正文 589 字符，中位页面新增约 **1.3 KB**、最重页面 **8.1 KB**（`content/histology/textbook/ch17-1.md`），而页面本身 300 KB–5 MB，占比不到 0.5%。最大单卡 4168 字符，**8 KB 阈值从未触发**，即 711 张卡全部走保真路径，没有一张静默退回 `extract()`。
+
+**门禁**（全部退出码 0）：
+
+| 门禁 | 结果 | 基线 |
+|---|---|---|
+| `tsc --noEmit` | 0 error | 0 |
+| `pnpm lint`（eslint + knip） | **0 error / 85 warning** | 0 / 85，未新增 |
+| `pnpm test:unit` | 551 通过 / 0 失败 | — |
+| `pnpm test:content` | 1915 通过 / 0 失败 | — |
+| `pnpm test:react` | 254 通过（64 文件） | 249 → +5 为本计划新增 |
+| `pnpm build` | 1210/1210 页，成功 | 1210 |
+
+新增测试：`normalizeDirectiveLabels.test.ts` 20 例（含 4 例专钉白名单边界）、`MemoryCard.test.tsx` 5 例、`remarkDirectives.test.ts`。`registry.evaluation-order.test.tsx` 未被削弱，仍全绿。
+
+> 构建插曲：首次 `pnpm build` 报 `ENOENT: mkdir …ch07-3.segments`。原因是**此前子智能体异常退出遗留的 dev server（PID 11028，端口 35349）仍在写同一个 `.next`**，与 build 抢目录，与本计划代码无关。清掉该进程与 `.next` 后构建通过。排查时确认另外 6 个监听端口分属用户其他项目（OldersNews / 3D-Result / real-estate-frontend / openclaw），未触碰。
+
+## 阶段 C · 待人工完成的真机验证
+
+自动门禁已覆盖交互逻辑本身：`MemoryCard.test.tsx` 走**真实 QuizMarkdown 管道**（含 `remarkDirectives` → `raw`），断言了挖空点击揭示、清单点击打勾、卡内 `$…$` 出 `.katex`、无 mode 时正文非空壳、以及聊天侧 `extract()` 兜底路径。
+
+jsdom 覆盖不到的只剩两项，需要真浏览器：
+
+1. **水合**：`raw` 把含 `**`、`$`、引号的原文送进 payload，需确认控制台无 hydration 报错。
+2. **视觉**：挖空块 / 清单项的样式与展开动画。
+
+操作步骤：
+
+```
+pnpm build   # 若 .next 已是最新可跳过
+pnpm start   # 端口 35349
+```
+
+- `/biochemistry/detail/1.2`：标题不含 `mode=`；cloze 卡展开后显示 `?`，点击揭示；「名解考场总清单」展开后正文非空；卡内公式正常。
+- `/anatomy/detail/1.1`：`mode=cloze` 不带引号的写法同样正常。
+- `/chapters/ch02/2.2`：标题「易错点：泊松分布中 k=0 不要漏掉」**完整不截断**（白名单回归位）。
+- 聊天侧：让模型输出带 `**…**` 的 `:::memory{label="…" mode="cloze"}`，确认气泡内挖空可点（走 `extract()` 兜底）。
+- 全程 F12 控制台无新增报错，尤其无 hydration mismatch。
