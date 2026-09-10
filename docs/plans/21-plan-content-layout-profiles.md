@@ -244,3 +244,27 @@ Commit：`docs(sop): document-only courseware integration with layout profiles`
 - 内容 Agent 最近一次代码提交是 `cdec28da`（按课程名长度排序大二学科），此后整个计划 `20`、`22` 期间未再提交代码。
 - 但它当前有两个在途脏文件：`docs/refer/exam-type-distribution.md`、`docs/refer/mineru-parsing-guide.md`。后者是文档解析指南，**说明下一批课件导入在路上**，落地时会再动 `manifest.ts` / `nav.generated.json` / `subjects.registry.ts`。
 - 所以并发避让那一节的六条规则**照旧全部有效**，尤其第 6 条：若发现 `subjects.registry.ts` 正被大改，阶段 C 可以推迟并在报告里说明。
+
+---
+
+## 二次复核（2026-09-10，计划 23 / 24 落地后，主智能体实测）
+
+计划 `23`、`24` 是在上一节校准之后合入的，文件普遍变长（`RightPanel` 218→**239**、`AppShell` 342→**367**、`lib/stores/ui.ts` 198→**225**、`lib/types/content.ts` 52→**61**、`lib/content/loader.ts` 446→**495**、`ContentPageClient.tsx` **315**、`page.tsx` **84**）。
+
+但**上一节列的具体锚点行号全部仍然准确**，无需再改：
+
+| 锚点 | 复核结果 |
+|---|---|
+| `ContentPageClient.tsx:90` `visibleTabs` | 未漂 ✓ |
+| `RightPanel.tsx:33` `RIGHT_TABS` | 未漂 ✓ |
+| `AppShell.tsx:251` / `:333` 的 `NOTES_PANEL_ID` | 未漂 ✓ |
+| `loader.ts:15` `CONTENT_ROOT`、`:43` chapters 特判 | 未漂 ✓ |
+| `category-templates.ts:13-18` 六模板 | 未漂 ✓（`summary: ['search']`、两个 `[]` 均在） |
+
+**已排除的一个红线冲突**：阶段 A2 的 `LayoutFlags.rightTabs: RightTab[]` 需要 `RightTab` 类型，曾担心它定义在 `components/` 从而让新建的 `lib/content/layoutProfile.ts` 违反计划 `23` 的「`lib` 不得 import `components`」。实测 `RightTab` 定义在 **`lib/stores/ui.ts`**，属 lib→lib，**不违规**。
+
+注意 `components/layout/RightPanel.tsx:9` 目前是从 `@/lib/store`（`@deprecated` 转发壳）导入 `RightTab` 的。本计划若要动这行，**改成从 `@/lib/stores/ui` 导入**；同理所有新写的代码都不要再引转发壳。
+
+**新增的既成不变量（计划 `24`，见 `00-execution-contract.md` 第六节）**：本计划不碰 `lib/markdown/**`，但若因任何原因需要动指令解析，`normalizeDirectiveLabels` 的属性边界只能按 `KNOWN_ATTRS` 白名单判定，不得退回形状匹配。
+
+**并发状态（本次派发时实测）**：内容 Agent 最近一次代码提交仍是 `cdec28da`，在途脏文件仍是 `docs/refer/exam-type-distribution.md`、`docs/refer/mineru-parsing-guide.md` 两份（与上一节一致，未扩散到 manifest）。`lib/content-data/**` 当前干净，阶段 A3 / C1 可以正常进行。
