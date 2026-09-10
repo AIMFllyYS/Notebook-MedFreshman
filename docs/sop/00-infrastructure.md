@@ -377,13 +377,41 @@ python scripts/fallback-docx.py "D:\纪要\纪要1.docx" "content/_raw/modern-hi
 
 | 禁止 | 会导致什么 |
 |---|---|
-| 用脚本/正则批量生成或 patch 正文指令块（"Python 批注入 callout"） | 体积几乎不变，卡片套在原始 dump 上，渲染出来仍是一堵墙，肉眼一看就知道没有真正重写 |
+| 用脚本/正则/关键词匹配批量生成或 patch 正文指令块、批量生成题目答案（"Python 批注入 callout"） | 体积几乎不变，卡片套在原始 dump 上，渲染出来仍是一堵墙，肉眼一看就知道没有真正重写；具体判据见「1a. Python/脚本使用边界」 |
 | 编排/主控智能体自己代写章节正文 | 上下文被多章内容和金标撑爆，质量必然滑坡；且编排端没有机会针对单章素材做深入理解 |
 | 把"文件已生成"当作"内容已达标" | 有的子智能体在写完文件后死于代理流/网络错误，回报丢失但文件是半成品；不能因为路径存在就判定合格 |
 | 跳过验收直接派发下一步（如正文没验收就派发对应测验） | chapterId 之类的标识会串位——上一章还没定稿，测验已经按下一章的编号生成 |
 | 相信"已完成"这句话本身，不看磁盘产物 | 子智能体可能撞了网络/代理错误后谎报或漏报；**磁盘上的文件 + 验收证据才是真相，口头汇报不是** |
 
-> **已知的真实反例**：`scripts/one-off/transform-modern-history-textbook.py`（`docs/refer/modern-history-textbook-format.md` §5 曾把它列为"批量改写"推荐工具）就是"Python 批注入指令块"这条禁令描述的具体样子——按固定规则给每节自动套 `:::timeline`/`:::memory`/`:::keypoint`，不理解正文语义，属于本节要禁止的模式，不要再以它为参考写新的批量脚本。是否要下线这个脚本本身、改写 `docs/refer/modern-history-textbook-format.md` §5/§6，超出本轮改动范围，留给维护者单独决策。
+### 1a. Python/脚本使用边界（判据 + 正反例）
+
+**唯一判据：内容结构/语义上的决策是谁做出的，不是"有没有用脚本"。**
+
+- 决策来自**规则/正则/关键词匹配**（不管用 Python、Node 还是 Bash 写的）→ 禁止。这类脚本本质是"伪装成认真读过原文"，实际只是模式匹配。
+- 决策来自**真的理解语义的过程**（执行子智能体亲自读原文判断，或脚本调用真实 AI 模型且 prompt 有强约束防编造/防省略）→ 允许，但产出仍要过第 3 节的强制验收，不能因为"是脚本/AI 产出的"就免检。
+- 纯**机械转换/校验/构建**（不涉及"这段该怎么组织"这类判断）→ 永远允许，是脚本该发挥作用的战场。
+
+**允许类别（本项目已有真实例子，供参考而非穷举）**：
+
+| 类别 | 例子 |
+|---|---|
+| 格式解析转换（PDF/PPT/DOCX → 原始 markdown，不产出语义指令块） | `scripts/parse-docs.ts`、`scripts/fallback-{pdf,pptx,docx}.py`、`scripts/extract-textbook-pdf.py`、`scripts/extract-scanned-textbook.py` |
+| 路径/资源机械归位（按已有引用匹配文件，不判断"该不该配图"） | `scripts/propagate-images.py`、`scripts/propagate-images-chemistry.py` |
+| 语法/编码规范化（修文本层面的错，不改变内容结构） | `scripts/fix-katex-circled-numbers.ts`、`scripts/fix-math-entities.mjs`、`scripts/fix-section-headings.ts`、`scripts/strip-nul-titles.py`、`scripts/cleanup-noise-lines.ts` |
+| 机械一致性校验（正是第 3 节"机械层验收"该用的工具，鼓励复用/新增，不要每次靠人眼数） | `scripts/check-registry-consistency.ts`、`scripts/check-media-sync.mjs`、`scripts/check-content-encoding.mjs`、`scripts/check-prose-svg-rules.mjs`、`scripts/check-katex-chars.mjs` |
+| 索引/构建/元数据生成 | `scripts/build-index.ts`、`scripts/gen-nav-manifest.ts` |
+| 脚本调用真实 AI 模型、prompt 有硬约束防编造（灰色地带里唯一合理的用法，语义决策权仍在模型推理里，不是脚本规则） | `scripts/one-off/rewrite-maogai-textbook-notes.ts`——system prompt 明确写死"必须保留原文每一句话，不得省略/改写/添加原文没有的观点""改写后字数不得低于原文 92%"，这类硬约束是它能被归为"允许"的原因，不是因为它调用了 AI 就自动合规 |
+
+**禁止类别（本项目里真实存在、已提交的反例，不是假设）**：
+
+| 脚本 | 具体做了什么 | 问题 |
+|---|---|---|
+| `scripts/add-memory-cards.py` | 正则匹配"本章小结"后的文本，按标点切句子直接当 `:::memory` 卡片塞进 `anatomy`/`histology`/`cell-biology`/`biochemistry` 教材 | 零语义理解，纯标点切分 |
+| `scripts/enhance-medical-markdown.py` | 正则匹配"【例】"/"例N-N"包 `:::example`，匹配"注意："/"要点："包 `:::pitfall`，从"本章小结"抽句子拼 `:::memory` | 同上，且三类指令全靠固定正则模式识别 |
+| `scripts/one-off/transform-modern-history-textbook.py` | 按固定规则给每节自动套 `:::timeline`/`:::memory`/`:::keypoint`（`docs/refer/modern-history-textbook-format.md` §5 曾把它列为"批量改写"推荐工具） | 同上 |
+| `scripts/one-off/fill-maogai-example-answers.ts` | 对每道例题按关键词给候选段落打分（`scoreParagraph`），取分最高的几段拼成参考答案 | 完全没判断这段话是否真的回答了题目在问的问题，是"用最匹配的关键词段落糊弄答案" |
+
+前两个脚本与 `docs/archive/REWRITE-LOOP.md` 记录的严格闭环重写（同样覆盖 `anatomy`/`histology`/`cell-biology`/`biochemistry` 四科）出自**同一次提交**（`8586d844`），大概率是"先试脚本批量套壳、发现不行、才改成严格闭环"这段真实历史留下的化石——恰好印证了这条禁令不是纸上谈兵。是否要下线这四个脚本本身、改写 `docs/refer/modern-history-textbook-format.md` §5/§6，超出文档改动范围，留给维护者单独决策；`scripts/one-off/gen_*quiz*.py` 这类"把题目原文/答案硬编码成代码字符串再跑脚本装配 JSON"的写法也不推荐——即使内容本身认真写过，把出题这个语义环节埋进代码文件会让审查变难，新出题应由执行子智能体直接产出 JSON。
 
 ### 2. 闭环单元模型
 

@@ -18,7 +18,7 @@
 
 | 阶段 | 角色 | 类型 | 职责 |
 |------|------|------|------|
-| 解析 | Parser | Shell subagent | 运行 `scripts/parse-docs.ts` 解析 PDF/PPT（脚本只做格式转换，不做内容判断，符合反降质契约） |
+| 解析 | Parser | Shell subagent | 运行 `scripts/parse-docs.ts` 解析 PDF/PPT（脚本只做格式转换，不做内容判断，符合 [00 号契约「1a. Python/脚本使用边界」](./00-infrastructure.md#内容生产闭环与反降质契约) 的"允许"类别） |
 | 闭环生产 | Rewriter-1~N | GeneralPurpose subagent (每个负责 3-4 章，含提取+格式转换+自查) | 从 raw markdown 提取结构化内容并转换为指令块正文；写完立刻按 [「验收（强制）」](#验收强制) 自查，通过才算完成 |
 | 集成 | Integrator | GeneralPurpose subagent | manifest 注册 + AI 可达性验证（跨章节的机械收尾步骤，不涉及内容质量判断，允许独立于 Rewriter 存在） |
 

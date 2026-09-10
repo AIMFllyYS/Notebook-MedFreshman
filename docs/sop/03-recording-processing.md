@@ -36,7 +36,7 @@
 
 | 阶段 | 角色 | 类型 | 职责 |
 |------|------|------|------|
-| PPT 解析 | Parser | Shell subagent | 若有配套 PPT，运行 `scripts/parse-docs.ts`（纯格式转换，不做语义判断） |
+| PPT 解析 | Parser | Shell subagent | 若有配套 PPT，运行 `scripts/parse-docs.ts`（纯格式转换，不做语义判断，符合 [00 号契约「1a. Python/脚本使用边界」](./00-infrastructure.md#内容生产闭环与反降质契约) 的"允许"类别） |
 | DOCX 解析 | DocParser | Shell subagent | 若有 .docx 智能纪要，通过 MinerU 解析为 markdown |
 | 闭环生产 | Cleaner+Summarizer-1~N | GeneralPurpose subagent (每个处理 3-4 讲，含清洗+纪要+自查) | 逐字稿去噪、格式化，并基于清洗后的逐字稿生成结构化纪要；写完立刻按 [「验收（强制）」](#验收强制) 自查，通过才算完成 |
 | 集成 | Integrator | GeneralPurpose subagent | manifest 注册 + 验证（跨讲次的机械收尾步骤，不涉及内容质量判断） |
