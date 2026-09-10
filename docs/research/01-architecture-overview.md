@@ -4,6 +4,8 @@
 > **调研日期**：2026-07-05
 > **项目版本**：gailvlun v0.3.1（package.json 标 0.4.0，CHANGELOG 已记录 v0.4.0 发版）
 > **关联文档**：`docs/refer/rendering-architecture.md`、`docs/refer/storage-architecture.md`、`docs/refer/performance-audit-report.md`、`docs/sop/subject-onboarding.md`、`README.md`、`CHANGELOG.md`
+>
+> **2026-09 校对说明**（计划 `25`）：正文两处 `directiveComponents` / `noteComponents.tsx` 路径引用已更新为现网位置（`components/shared/directives/registry.ts` / `components/notes/noteComponents.tsx`，计划 `23` 从 `lib/markdown/` 搬出）；其余架构性结论（学科无关设计、SubjectId/CategoryId、概率论特例路径等）未变，未逐条重新核实。
 
 ## 1. 执行摘要
 
@@ -65,7 +67,7 @@ flowchart LR
     F --> G["NoteRendererServer<br/>(RSC · 构建期)"]
     G --> H["ContentPageClient<br/>(客户端水合岛)"]
     B --> I["app/api/section<br/>/api/examples<br/>/api/quiz"]
-    B --> J["lib/ai/tools.ts<br/>getOutline / search"]
+    B --> J["lib/ai/agent/tools/{getOutline,searchNotes}/tool.ts<br/>getOutline / search（原单文件 lib/ai/tools.ts，计划22已拆分）"]
 ```
 
 ### 2.3 SSR/CSR 边界
@@ -94,7 +96,7 @@ export function isSubjectId(value: string | undefined | null): value is SubjectI
 - **remark 链**：`remarkGfm` → `remarkMath` → `remarkDirective` → 自定义 `remarkDirectives`（指令归一）→ `remarkCalloutSoftBreaks`（callout 内软换行）
 - **rehype 链**：`rehypeRaw` → `rehypeKatex`（throwOnError:false）→ `rehypeHighlight`（detect:false + subset 白名单）
 
-`rendering-architecture.md` 明确「禁止在 NoteRenderer 或 MessageContent 中直接内联插件配置」，这一约束通过 `noteComponents.tsx` 的纯对象映射保证。
+`rendering-architecture.md` 明确「禁止在 NoteRenderer 或 MessageContent 中直接内联插件配置」，这一约束通过 `noteComponents.tsx`（2026-09 现网路径 `components/notes/noteComponents.tsx`，计划 `23` 从 `lib/markdown/` 搬出）的纯对象映射保证。
 
 ### 3.3 6 学科共存机制
 
@@ -280,7 +282,7 @@ sequenceDiagram
 本维度对平台化改造的影响：
 
 1. **学科无关设计已具备平台化基础**：`SubjectId` + `CategoryId` + `contentTree` 三件套是平台化的核心抽象，新增学科成本可控（5 步接入法）。平台化时可在此基础上做「学科插件包」机制（每个学科一个独立 npm 包或目录，自动注册到 contentTree）。
-2. **共享渲染核心是平台化的关键资产**：`sharedRemarkPlugins` + `directiveComponents` 让任何学科的内容都能复用同一渲染管线，平台化时应保留这一约束，避免新学科自带渲染器导致渲染分裂。
+2. **共享渲染核心是平台化的关键资产**：`sharedRemarkPlugins` + `directiveComponents`（2026-09 现网路径 `components/shared/directives/registry.ts`）让任何学科的内容都能复用同一渲染管线，平台化时应保留这一约束，避免新学科自带渲染器导致渲染分裂。
 3. **manifest 单一真相源是平台化的核心契约**：所有消费方（导航、路由、AI、搜索）都从 `contentTree` 取数，平台化时应将 manifest 升级为「平台 API」，支持运行时注册（而非仅构建期静态导入）。
 4. **概率论特例路径是平台化的债务**：迁移到通用路径（#2）应作为平台化前置任务。
 5. **deprecated manifest 残留是平台化的清理项**：旧 API 下线（#3）应作为平台化前的代码清理。

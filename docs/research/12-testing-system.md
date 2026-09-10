@@ -4,6 +4,8 @@
 > **调研日期**：2026-07-05
 > **项目版本**：gailvlun v0.3.1
 > **关联文档**：`docs/sop/07-testing.md`、`docs/refer/rendering-architecture.md`、`vitest.config.ts`、`scripts/run-unit-tests.mjs`
+>
+> **2026-09 校对说明**（计划 `25`）：第 5 节「未导出函数」表格中 `lib/store.ts`/`lib/quiz-store.ts` 的引用已更新为现网真身路径（`lib/stores/ui.ts`/`lib/stores/quiz.ts`）；`deriveChapterId` 函数已不存在，被 `lib/content/categoryKeys.ts` 的 `deriveActiveKeys` 取代。测试文件数量、目录分布统计（第 3 节等）为 2026-07 快照，未重新统计，如需最新数字请重新跑 `scripts/run-unit-tests.mjs` 与 `pnpm test:react`。
 
 ## 1. 执行摘要
 
@@ -193,7 +195,7 @@ describe("MyComponent", () => {
 | `lib/content/` | 1 | 0 | 1 | poster |
 | `lib/context/` | 1 | 0 | 1 | estimateTokens |
 | `lib/svg/` | 0 | 1 | 1 | svgHealth |
-| `lib/` (根) | 4 | 0 | 4 | motion + quiz-progress + quiz-store + store |
+| `lib/` (根) | 4 | 0 | 4 | motion + quiz-progress + quiz-store + store（2026-09：`quiz-store.ts`/`store.ts` 物理文件仍存在，但内容已收缩为 1 行 `@deprecated` 转发壳，真身分别在 `lib/stores/quiz.ts` / `lib/stores/ui.ts`；测试文件数量为 2026-07 快照，未重新统计） |
 | `lib/review/` | 1 | 0 | 1 | startRecord |
 | `lib/theme/` | 1 | 0 | 1 | appearance |
 | `components/chat/` | 0 | 7 | 7 | FollowUpQuestions + ChatEmptyState + ProcessingSteps + MessageContent + MessageContent.think + ThinkingMenu + ChatInput.thinking + ChatThread.virtual |
@@ -366,8 +368,8 @@ test("chat route uses last user message, selected model context manager", () => 
 | `lib/ai/search/vectorStore.ts` | `cosineSimilarity` | 相似度计算 |
 | `lib/ai/search/hybridSearch.ts` | `rrfMerge` | RRF 合并 |
 | `app/api/can-embed/route.ts` | `judge` | iframe 嵌入判定 |
-| `lib/store.ts` | `deriveChapterId` | quiz key 推导 |
-| `lib/quiz-store.ts` | `buildAttempt` | 作答记录构造 |
+| `lib/content/categoryKeys.ts`（2026-09 现网；原 `lib/store.ts` 的内部函数 `deriveChapterId` 已不存在，被 `deriveActiveKeys` 取代，由 `lib/stores/ui.ts` 的 `setActiveRoute` 调用） | `deriveActiveKeys` | quiz / 视频 / 交互 tab 的查找 key 推导（按板块 capabilities + keyStrategy） |
+| `lib/stores/quiz.ts`（原 `lib/quiz-store.ts`） | `buildAttempt` | 作答记录构造 |
 
 ## 6. 设计决策与取舍分析
 

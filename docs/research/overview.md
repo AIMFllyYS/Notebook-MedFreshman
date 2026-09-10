@@ -5,6 +5,8 @@
 > **项目版本**：gailvlun v0.3.1
 > **调研团队**：software-gailvlun-research（1 主理人 + 1 产品经理 + 5 调研子智能体）
 > **调研范围**：21 app 文件 / 197 组件 / 192 库文件 / 1799 内容文件 / 19708 manim 文件 / 303 脚本 / 67 文档
+>
+> **2026-09 校对说明**（计划 `25`）：本文档是 2026-07-05 的调研总览快照，第 2 节全景架构图与第 7 节要点里提到的 `directiveComponents.tsx`（现搬到 `components/shared/directives/registry.ts`）、`store.ts + 17 Zustand stores`（现为 `lib/stores/`，28 个）已按现网结构更新；其余数据（问题数、优先级统计等）为历史统计，未重新核算，仅供趋势参考。逐维度的准确现网描述见 `01`/`03`/`06` 等对应报告。
 
 ---
 
@@ -61,9 +63,8 @@ graph TB
     subgraph "核心库 lib/"
         LDR["content/loader.ts<br/>Markdown/JSON/HTML 分流"]
         LMR["markdown/plugins.ts<br/>5 remark + 3 rehype"]
-        LDC["directiveComponents.tsx<br/>14 种自定义指令"]
         LIDB["storage/idbStorage.ts<br/>800ms 防抖 + Storage v2"]
-        LZST["store.ts + 17 Zustand stores"]
+        LZST["stores/*<br/>28 个 Zustand store（lib/store.ts 仅为转发壳）"]
         LAI["ai/*<br/>OpenAI 兼容 + Anthropic adapter"]
         LSR["ai/search/*<br/>BM25 + vector + RRF + rerank"]
     end
@@ -71,6 +72,7 @@ graph TB
     subgraph "组件层 components/"
         CRS["notes/NoteRendererServer.tsx<br/>RSC 构建期烘焙"]
         CRC["notes/NoteRenderer.tsx<br/>客户端水合"]
+        LDC["shared/directives/registry.ts<br/>14 种自定义指令组件映射"]
         CIN["interactives/registry.ts<br/>53 个 dynamic 组件"]
         CCH["chat/*<br/>流式 + 60ms 节流"]
         CCB["canvas/*<br/>CanvasBlock 画布系统"]
@@ -100,7 +102,8 @@ graph TB
 
     LMR --> CRS
     LMR --> CRC
-    LDC --> LMR
+    CRS --> LDC
+    CRC --> LDC
 
     ASC --> ACC
     CRS --> ACC
@@ -129,7 +132,7 @@ graph TB
 | 03 | 共享渲染架构 | `03-rendering-architecture.md` | 5 remark + 3 rehype 插件链 + 14 种自定义指令 + RSC 预渲染 + mhchem 单例陷阱 | 12（P2×3,P3×9） |
 | 04 | AI 对话系统 | `04-ai-chat-system.md` | route.ts 734 行承载 SSE + 工具循环 + 9 个工具 + Anthropic 双向翻译 + 稳定前缀命中 prefix cache | 10（P2×2,P3×8） |
 | 05 | 存储架构 | `05-storage-architecture.md` | IDB+LS 双层 + Storage v2 分会话分 key + 800ms 防抖 + v1→v2 幂等迁移 + 水合门控 | 10（P2×4,P3×6） |
-| 06 | 状态管理 | `06-state-management.md` | 17 个 Zustand store + 引用相等订阅 + TokenDashboard 反订阅模式 | 12（P2×3,P3×9） |
+| 06 | 状态管理 | `06-state-management.md` | 28 个 Zustand store（2026-07 调研时为 17 个，计划 `22` 搬家后集中到 `lib/stores/` 并新增）+ 引用相等订阅 + TokenDashboard 反订阅模式 | 12（P2×3,P3×9，2026-07 统计） |
 | 07 | 性能优化 | `07-performance-optimization.md` | P0/P1 共 8 项已落地 + ChatThread 虚拟化 fallback + next.config.mjs 三项构建期优化 | 8（P0×1,P1×1,P2×2,P3×4） |
 | 08 | 交互组件系统 | `08-interactive-components.md` | 53 个组件（概率论 35 + 化学 18）+ 三级懒加载 + :::interactive 指令集成 | 9（P2×4,P3×5） |
 | 09 | Manim 动画系统 | `09-manim-animation.md` | 三套独立渲染管线 + REGISTER 模式 + 8456 tex 中间产物 + _clean_env_for_latex 修正 | 10（P2×3,P3×7） |
@@ -303,7 +306,7 @@ graph LR
 ### 7.1 项目核心优势（应保留）
 
 1. **学科无关设计成熟**：SubjectId + CategoryId 设计使新增学科成本可控（5 步接入法）
-2. **共享渲染核心是关键资产**：sharedRemarkPlugins + directiveComponents + NoteRendererServer 必须保留，避免新学科自带渲染器导致分裂
+2. **共享渲染核心是关键资产**：sharedRemarkPlugins + directiveComponents（现为 `components/shared/directives/registry.ts`）+ NoteRendererServer 必须保留，避免新学科自带渲染器导致分裂
 3. **RSC 预渲染性能优势显著**：构建期完成 Markdown → HTML/KaTeX 烘焙，消除客户端瀑布
 4. **流式双节流防 OOM**：UI 60ms + IDB 800ms 尾随防抖是针对实证 OOM 的有效修复
 5. **Storage v2 分会话分 key**：根治了单 key 整包 stringify 的 CPU 热点

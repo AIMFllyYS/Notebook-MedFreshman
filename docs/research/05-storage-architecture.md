@@ -4,6 +4,8 @@
 > **调研日期**：2026-07-05
 > **项目版本**：gailvlun v0.3.1
 > **关联文档**：[存储架构规范](../../docs/refer/storage-architecture.md)、[性能审查报告](../../docs/refer/performance-audit-report.md)
+>
+> **2026-09 校对说明**（计划 `25`）：`lib/storage/idbStorage.ts` / `lib/storage/chatStorage.ts` 本身的机制与文件位置未变，正文描述仍准确。但所有消费方 store 已随计划 `22` 从 `lib/hooks/useXxx.ts` 搬到 `lib/stores/xxx.ts`（原路径只留 1 行 `@deprecated` 转发壳），本文档已把命中的 `lib/hooks/useChatHistory.ts`、`useReviewCards.ts`、`useSettings.ts`、`useBrowser.ts` 等路径更新为现网真身位置；`PERSIST_KEYS` 现网新增了 `documents`（`useDocuments` 持久化 key，2026-07 调研时还没有这个 store）。行号未逐条重新核对，仅路径迁移。
 
 ## 1. 执行摘要
 
@@ -29,16 +31,18 @@ flowchart TB
         Quiz[测验面板]
     end
 
-    subgraph Hooks["lib/hooks/ (Zustand stores)"]
+    subgraph Hooks["lib/stores/ (Zustand stores，原 lib/hooks/useXxx.ts 现为转发壳)"]
         useChatHistory["useChatHistory<br/>(无 persist, 手动 IDB IO)"]
-        useArtifacts["useArtifacts<br/>(persist + idbStorage)"]
-        useSkills["useSkills<br/>(persist + idbStorage)"]
-        useReviewCards["useReviewCards<br/>(persist + idbStorage)"]
-        useImageGen["useImageGen<br/>(persist + idbStorage)"]
-        useBilling["useBillingStore<br/>(persist + idbStorage)"]
+        useArtifacts["useArtifacts<br/>(createPersistedStore · idb)"]
+        useDocuments["useDocuments<br/>(createPersistedStore · idb)"]
+        useSkills["useSkills<br/>(createPersistedStore · idb)"]
+        useReviewCards["useReviewCards<br/>(createPersistedStore · idb)"]
+        useImageGen["useImageGen<br/>(createPersistedStore · idb)"]
+        useBilling["useBillingStore<br/>(createPersistedStore · idb)"]
         useSettings["useSettings<br/>(手动 localStorage)"]
         useTheme["useTheme<br/>(手动 localStorage + DOM)"]
         useBrowser["useBrowser<br/>(手动 localStorage)"]
+        useAcademicYear["useAcademicYear<br/>(手动 localStorage)"]
         useQuiz["useQuizStore<br/>(通过 quiz-progress 模块)"]
         useChatUI["useChatUI<br/>(无持久化)"]
         useWindowMgr["useWindowManager<br/>(无持久化)"]
@@ -62,6 +66,7 @@ flowchart TB
         K7["image-gen"]
         K8["billing-history"]
         K9["chat-history (v1 遗留, 迁移后删除)"]
+        K10["documents（2026-09 新增，useDocuments）"]
     end
 
     subgraph LS["localStorage"]
@@ -72,6 +77,7 @@ flowchart TB
         L5["gailvlun-sidebar-collapsed"]
         L6["gailvlun-topbar-collapsed"]
         L7["quickExplainWindowSize"]
+        L8["gailvlun-academic-year（2026-09 新增，useAcademicYear）"]
     end
 
     ChatPanel --> useChatHistory
@@ -128,6 +134,7 @@ export const PERSIST_KEYS = {
   reviewCards: "review-cards",
   imageGen: "image-gen",
   billingHistory: "billing-history",
+  documents: "documents",   // 2026-09 新增（useDocuments，AI「生成文档」工具的持久化产物）
 } as const;
 
 export const CHAT_SESSION_KEY_PREFIX = "chat-session:";
@@ -311,7 +318,7 @@ flowchart TD
 - 任一步骤失败都保留 legacy `chat-history`，下次启动可重试
 
 **Strict Mode 双跑安全**：
-- `bootstrapPromise` 单例（`useChatHistory.ts:60`、`335-358`）保证 `ensureChatHistoryBootstrap` 只执行一次
+- `bootstrapPromise` 单例（`lib/stores/chatHistory.ts`，原 `lib/hooks/useChatHistory.ts`）保证 `ensureChatHistoryBootstrap` 只执行一次
 - 即使 React Strict Mode 双调用 `useEffect`，第二次调用命中 `if (bootstrapPromise) return bootstrapPromise`
 
 **测试覆盖**（`chatStorage.migrate.test.ts`）：
@@ -374,7 +381,7 @@ export function useChatReady(sessionId?: string | null): boolean {
 
 #### 3.4.4 useChatHistory 的兼容 shim
 
-由于 `useChatHistory` 不再使用 zustand `persist`，但 `useHydrated(useChatHistory)` 仍被消费，代码在 store 上挂了一个 shim（`useChatHistory.ts:361-383`）：
+由于 `useChatHistory` 不再使用 zustand `persist`，但 `useHydrated(useChatHistory)` 仍被消费，代码在 store 上挂了一个 shim（`lib/stores/chatHistory.ts`，原 `lib/hooks/useChatHistory.ts`）：
 ```typescript
 (useChatHistory as ...).persist = {
   hasHydrated: () => useChatHistory.getState()._hasHydrated,
@@ -453,6 +460,7 @@ if (typeof window !== "undefined") {
 | `gailvlun-sidebar-collapsed` | `useStore` | 侧边栏折叠状态（布尔） | ~5B |
 | `gailvlun-topbar-collapsed` | `useStore` | 顶栏折叠状态（布尔） | ~5B |
 | `quickExplainWindowSize` | `useFloatingChats` | 划词浮窗尺寸 `{width, height}` | ~30B |
+| `gailvlun-academic-year`（2026-09 新增） | `useAcademicYear` | 当前学年单一真相源，驱动书架内容过滤 | ~10B |
 
 **设计差异**：
 - `useSettings` / `useBrowser` 手动 `load()` + `persist(get)` 模式（每次 action 后调用 `persist`）
@@ -591,14 +599,14 @@ flowchart TD
 | 附件还原 | `lib/storage/chatStorage.ts:233-258` | `hydrateAttachmentsForApi` |
 | v1→v2 迁移 | `lib/storage/chatStorage.ts:177-212` | `migrateFromV1IfNeeded` |
 | 迁移测试 | `lib/storage/chatStorage.migrate.test.ts` | 3 场景覆盖 |
-| useChatHistory store | `lib/hooks/useChatHistory.ts:98-332` | 不用 persist，手动 IO |
-| LRU 冷卸载 | `lib/hooks/useChatHistory.ts:84-91`、`131-171` | `evictLoadedSessions` + `MAX_LOADED_SESSIONS=3` |
-| 跨 store 孤儿清理 | `lib/hooks/useChatHistory.ts:75-82` | `pruneArtifactsFromMetas` |
-| bootstrap | `lib/hooks/useChatHistory.ts:335-359` | `ensureChatHistoryBootstrap` |
-| persist shim | `lib/hooks/useChatHistory.ts:361-383` | 兼容 `useHydrated(useChatHistory)` |
-| useHydrated | `lib/hooks/useHydrated.ts:21-34` | `useSyncExternalStore` |
-| useChatReady | `lib/hooks/useChatReady.ts:7-22` | 双重门控 |
-| 会话上限 | `lib/hooks/useChatHistory.ts:21`、`188-196` | `MAX_SESSIONS = 50` |
+| useChatHistory store | `lib/stores/chatHistory.ts`（原 `lib/hooks/useChatHistory.ts`，行号未重新核对） | 不用 persist，手动 IO |
+| LRU 冷卸载 | `lib/stores/chatHistory.ts` | `evictLoadedSessions` + `MAX_LOADED_SESSIONS=3` |
+| 跨 store 孤儿清理 | `lib/stores/chatHistory.ts` | `pruneArtifactsFromMetas` |
+| bootstrap | `lib/stores/chatHistory.ts` | `ensureChatHistoryBootstrap` |
+| persist shim | `lib/stores/chatHistory.ts` | 兼容 `useHydrated(useChatHistory)` |
+| useHydrated | `lib/hooks/useHydrated.ts`（未搬家，仍是真身） | `useSyncExternalStore` |
+| useChatReady | `lib/hooks/useChatReady.ts`（未搬家，仍是真身） | 双重门控 |
+| 会话上限 | `lib/stores/chatHistory.ts` | `MAX_SESSIONS = 50` |
 
 ## 6. 设计决策与取舍分析
 
@@ -661,15 +669,15 @@ flowchart TD
 
 | # | 问题描述 | 严重程度 | 涉及文件 | 建议修复方向 |
 |---|----------|----------|----------|--------------|
-| 1 | `useChatHistory.updateMessage` 在 `saveSessionMessages` 后仅在 `shouldSaveManifest` 为 true 时调 `saveManifest`，但 `updatedAt: Date.now()` 已修改 sessionsMeta，未持久化的 updatedAt 会导致重启后排序错乱 | P2 | `lib/hooks/useChatHistory.ts:288-317` | 每次 updateMessage 都 saveManifest，或在 sessionsMeta 变更时统一 save |
-| 2 | `clearAll()` 清理 `chat-session:*` / `chat-blob:*` 时用 `idbKeys(idbStore)` 遍历所有 key，但 `chatStorage.ts` 内部又 `createStore(DB_NAME, STORE_NAME)` 重新创建了 store 实例（`chatStorage.ts:14-16`），与 `idbStorage.ts:39` 的 `idbStore` 是不同引用，可能导致 keys 列表不一致 | P2 | `lib/storage/chatStorage.ts:14-16`、`lib/storage/idbStorage.ts:39` | 统一从 `idbStorage.ts` 导出 `idbStore`，`chatStorage.ts` 复用而非重建 |
-| 3 | `useChatHistory.deleteSession` 中 `void (async () => { ... deleteSessionData ... })()` 异步删除 blob，若用户在删除完成前刷新页面，blob 会变成孤儿（manifest 已无该 session，但 chat-blob:{id} 仍在 IDB） | P2 | `lib/hooks/useChatHistory.ts:230-233` | 改为 await，或提供启动时孤儿 blob 扫描清理 |
-| 4 | `ensureChatHistoryBootstrap` 的 `bootstrapPromise` 是模块级变量，测试间不会重置，可能导致跨测试用例污染 | P3 | `lib/hooks/useChatHistory.ts:60`、`335-358` | 提供测试专用 `__resetBootstrapForTests()` |
-| 5 | `idbStorage.getItem` 的透明迁移逻辑在 `legacy != null` 时 `await idbSet(name, legacy, idbStore)` 播种，但若 IDB 写入失败（隐私模式），会进入 catch 但 `legacy` 已从 localStorage 删除（`idbStorage.ts:131-135`），导致数据丢失 | P2 | `lib/storage/idbStorage.ts:128-136` | 先 `localStorage.removeItem` 后再 `idbSet` 改为先 idbSet 成功再 removeItem；或用 try-finally |
-| 6 | `useReviewCards.onRehydrateStorage` 在水合时把 processing/parsing 状态改为 error（`useReviewCards.ts:156-164`），但直接修改 `state.byId[id]` 而未通过 set，可能不触发订阅者更新 | P3 | `lib/hooks/useReviewCards.ts:156-164` | 在 `onRehydrateStorage` 返回前批量修改 state 是 zustand 惯例，但应确保 `_setHasHydrated` 触发订阅 |
-| 7 | `idbStorage.setItem` 返回 `void`（`idbStorage.ts:150`），调用方无法知道写入是否成功；`saveSessionMessages` / `saveManifest` 也返回 void，无法在失败时重试 | P3 | `lib/storage/chatStorage.ts:100-102`、`85-87` | 提供 `setItemAsync` 返回 Promise<boolean>，关键路径用 |
-| 8 | `useSettings` 的 `persist(get)` 在每次 action 后同步 `JSON.stringify` + `localStorage.setItem`（`useSettings.ts:214-244`），高频调用（如拖动 fontScale 滑块）可能卡顿 | P3 | `lib/hooks/useSettings.ts:214-244` | 加 100ms 防抖，或迁到 IDB（但 LS 同步写通常 <1ms，可接受） |
-| 9 | `useBrowser.loadPersist` 在模块加载时同步执行（`useBrowser.ts:132`），SSR 时返回 fallback，但客户端首帧与 SSR 不一致可能导致水合警告 | P3 | `lib/hooks/useBrowser.ts:55-82`、`132` | 改为 lazy 初始化或在 `useEffect` 中 hydrate |
+| 1 | `useChatHistory.updateMessage` 在 `saveSessionMessages` 后仅在 `shouldSaveManifest` 为 true 时调 `saveManifest`，但 `updatedAt: Date.now()` 已修改 sessionsMeta，未持久化的 updatedAt 会导致重启后排序错乱 | P2 | `lib/stores/chatHistory.ts`（原 `lib/hooks/useChatHistory.ts`） | 每次 updateMessage 都 saveManifest，或在 sessionsMeta 变更时统一 save |
+| 2 | `clearAll()` 清理 `chat-session:*` / `chat-blob:*` 时用 `idbKeys(idbStore)` 遍历所有 key，但 `chatStorage.ts` 内部又 `createStore(DB_NAME, STORE_NAME)` 重新创建了 store 实例，与 `idbStorage.ts` 的 `idbStore` 是不同引用，可能导致 keys 列表不一致 | P2 | `lib/storage/chatStorage.ts`、`lib/storage/idbStorage.ts` | 统一从 `idbStorage.ts` 导出 `idbStore`，`chatStorage.ts` 复用而非重建 |
+| 3 | `useChatHistory.deleteSession` 中 `void (async () => { ... deleteSessionData ... })()` 异步删除 blob，若用户在删除完成前刷新页面，blob 会变成孤儿（manifest 已无该 session，但 chat-blob:{id} 仍在 IDB） | P2 | `lib/stores/chatHistory.ts`（原 `lib/hooks/useChatHistory.ts`） | 改为 await，或提供启动时孤儿 blob 扫描清理 |
+| 4 | `ensureChatHistoryBootstrap` 的 `bootstrapPromise` 是模块级变量，测试间不会重置，可能导致跨测试用例污染 | P3 | `lib/stores/chatHistory.ts`（原 `lib/hooks/useChatHistory.ts`） | 提供测试专用 `__resetBootstrapForTests()` |
+| 5 | `idbStorage.getItem` 的透明迁移逻辑在 `legacy != null` 时 `await idbSet(name, legacy, idbStore)` 播种，但若 IDB 写入失败（隐私模式），会进入 catch 但 `legacy` 已从 localStorage 删除，导致数据丢失 | P2 | `lib/storage/idbStorage.ts` | 先 `localStorage.removeItem` 后再 `idbSet` 改为先 idbSet 成功再 removeItem；或用 try-finally |
+| 6 | `useReviewCards.onRehydrateStorage` 在水合时把 processing/parsing 状态改为 error，但直接修改 `state.byId[id]` 而未通过 set，可能不触发订阅者更新 | P3 | `lib/stores/reviewCards.ts`（原 `lib/hooks/useReviewCards.ts`） | 在 `onRehydrateStorage` 返回前批量修改 state 是 zustand 惯例，但应确保 `_setHasHydrated` 触发订阅 |
+| 7 | `idbStorage.setItem` 返回 `void`，调用方无法知道写入是否成功；`saveSessionMessages` / `saveManifest` 也返回 void，无法在失败时重试 | P3 | `lib/storage/chatStorage.ts` | 提供 `setItemAsync` 返回 Promise<boolean>，关键路径用 |
+| 8 | `useSettings` 的 `persist(get)` 在每次 action 后同步 `JSON.stringify` + `localStorage.setItem`，高频调用（如拖动 fontScale 滑块）可能卡顿 | P3 | `lib/stores/settings.ts`（原 `lib/hooks/useSettings.ts`） | 加 100ms 防抖，或迁到 IDB（但 LS 同步写通常 <1ms，可接受） |
+| 9 | `useBrowser.loadPersist` 在模块加载时同步执行，SSR 时返回 fallback，但客户端首帧与 SSR 不一致可能导致水合警告 | P3 | `lib/stores/browser.ts`（原 `lib/hooks/useBrowser.ts`） | 改为 lazy 初始化或在 `useEffect` 中 hydrate |
 | 10 | `chatStorage.migrate.test.ts` 未覆盖「manifest 存在但部分 chat-session:{id} 缺失」的场景（manifest 与 session 不一致） | P3 | `lib/storage/chatStorage.migrate.test.ts` | 增加测试用例：manifest 有 session 但 loadSessionMessages 返回 null |
 
 ## 8. 改进建议

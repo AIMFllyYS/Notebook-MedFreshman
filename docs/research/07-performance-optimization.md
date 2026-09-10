@@ -7,6 +7,8 @@
 > - [已有性能审查报告](../../docs/refer/performance-audit-report.md)（2026-06-28，本次在其基础上深化补充）
 > - [渲染架构](../../docs/refer/rendering-architecture.md)
 > - [存储架构](../../docs/refer/storage-architecture.md)
+>
+> **2026-09 校对说明**（计划 `25`）：第 7 节问题清单中 `useTokenTracker`/`useFloatingTokenTracker` 的路径已更新为现网位置 `lib/stores/`（计划 `22` 从 `lib/hooks/` 搬出，原路径留转发壳）。正文其余机制描述（流式双节流、虚拟化、LazyVisible、代码分割等）路径未变，未逐条重新核实是否仍生效。
 
 ## 1. 执行摘要
 
@@ -435,7 +437,7 @@ flowchart LR
 | # | 问题描述 | 严重程度 | 涉及文件 | 建议修复方向 |
 |---|----------|----------|----------|--------------|
 | 1 | 缺少自动化性能回归测试。1228 个测试只覆盖正确性，idbStorage 防抖与 useChat 节流无单元测试，未来重构可能回归 | P1 | `lib/storage/idbStorage.ts`、`lib/hooks/useChat.ts` | 为 idbStorage 防抖与 useChat 节流各加 1-2 个 node:test 单元测试，断言「60ms 内多次调用只触发一次 writeUi」「800ms 内多次 setItem 只触发一次 idbSet」 |
-| 2 | `useTokenTracker` 与 `useFloatingTokenTracker` 同构算术重复（~70 行），已有报告 §7.1 标记为「低紧迫」但至今未合并 | P3 | `lib/hooks/useTokenTracker.ts`、`lib/hooks/useFloatingTokenTracker.ts` | 抽 `createTokenTracker(initialState)` 工厂函数，两个 store 共享算术逻辑 |
+| 2 | `useTokenTracker` 与 `useFloatingTokenTracker` 同构算术重复（~70 行），已有报告 §7.1 标记为「低紧迫」但至今未合并 | P3 | `lib/stores/tokenTracker.ts`、`lib/stores/floatingTokenTracker.ts`（2026-09 现网路径；原 `lib/hooks/useTokenTracker.ts` / `useFloatingTokenTracker.ts` 现为转发壳） | 抽 `createTokenTracker(initialState)` 工厂函数，两个 store 共享算术逻辑 |
 | 3 | ChatThread 虚拟化 estimateSize=120 是固定值，流式期间 Markdown 高度变化剧烈时 measureElement 动态修正可能滞后一帧 | P3 | `components/chat/ChatThread.tsx:64` | 流式期间最后一条消息强制 measureElement，或对最后一条禁用虚拟化 |
 | 4 | `optimizePackageImports` 排除 katex 的根因只在 next.config.mjs 注释里，无文档化，未来易踩坑 | P2 | `next.config.mjs:21-23`、`docs/refer/rendering-architecture.md` | 在 rendering-architecture.md 增「katex mhchem 副作用与 barrel 优化冲突」专节 |
 | 5 | `media.scripts.generated.ts`（388KB）虽已二段式懒加载，但本体仍以 JSON 字符串字面量形式打进 chunk，解析时需完整 parse | P3 | `lib/content-data/media.scripts.generated.ts` | 考虑改为多文件按章节拆分，或预先 parse 成 JS 对象（省去 JSON.parse） |

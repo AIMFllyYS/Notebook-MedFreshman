@@ -6,8 +6,8 @@
 > **Next.js 版本**：16.2.9（package.json:39）
 > **React 版本**：19.2.7
 > **TypeScript 版本**：5.7.3
-
----
+>
+> **2026-09 校对说明**（计划 `25`）：第 2.15 节 `noteComponents.tsx` 路径已更新为现网位置 `components/notes/noteComponents.tsx`（计划 `23` 从 `lib/markdown/` 搬出）。本报告其余的合规判定（P0/P1/P2/P3 问题清单、ESLint/图片优化/元数据等现状）为 2026-07 快照，未逐条重新核实是否已修复；如需最新合规状态，请重新跑 `pnpm lint` / `pnpm exec tsc --noEmit` 并对照 `docs/plans/00-execution-contract.md` 第六节。
 
 ## 1. 执行摘要
 
@@ -507,7 +507,7 @@
   - `tsconfig.json:25-28`：路径别名 `@/* -> ./*`
   - **未启用** `noUncheckedIndexedAccess`、`exactOptionalPropertyTypes`、`noImplicitOverride`、`noFallthroughCasesInSwitch`
   - `exclude` 排除 `manim`、`docs/refer/dist`、`showroom`、`exhibition-hall`、`dist-desktop`、`**/*.test.ts(x)`（`tsconfig.json:38-47`）
-  - 全仓 `: any`/`as any` 仅 4 处（`lib/markdown/plugins.ts:12,28`、`lib/markdown/noteComponents.tsx:13`、`lib/hooks/useChat.ts:411`），均为 remark/rehype 插件类型断点
+  - 全仓 `: any`/`as any` 仅 4 处（`lib/markdown/plugins.ts:12,28`、`components/notes/noteComponents.tsx`（2026-09 现网路径，原 `lib/markdown/noteComponents.tsx` 已随计划 `23` 搬出 `lib/`）、`lib/hooks/useChat.ts:411`，行号为 2026-07 快照未重新核对），均为 remark/rehype 插件类型断点
 - **判定**：⚠️ 偏离
 - **问题描述**：
   1. **`noUncheckedIndexedAccess` 未启用**：数组/对象索引访问默认返回 `T` 而非 `T | undefined`，存在运行时 undefined 风险。例如 `convo[i]`（`app/api/chat/route.ts:657`）假定必有值

@@ -5,6 +5,8 @@
 > **编写日期**：2026-07-01
 > **项目版本**：gailvlun v0.3.1
 > **文档性质**：调研规划，不含代码修改
+>
+> **2026-09 校对说明**（计划 `25`）：本文档记录的是 2026-07-01 立项时的调研问题清单，多处提到的路径（`lib/store.ts`、`lib/quiz-store.ts`、`directiveComponents.ts`、`lib/hooks/useXxx.ts` 等）已随计划 `22`/`23` 搬家，仅在命中处补充了「现已搬到 X」的括注，不改写问题原文——它记录的是「当时为什么要问这个问题」，具体现网路径请以 `docs/plans/00-execution-contract.md` 第六节与对应维度报告（`01`/`03`/`06` 等）为准。
 
 ---
 
@@ -76,7 +78,7 @@
 **调研问题**：
 1. `lib/markdown/plugins.ts` 的完整插件链是什么？`sharedRemarkPlugins` 和 `sharedRehypePlugins` 各包含哪些插件，顺序敏感度如何？
 2. 自定义指令系统（`:::definition` / `:::insight` / `:::example` / `:::pitfall` / `:::figure` / `:::interactive` 等）的解析和渲染流程是什么？
-3. `directiveComponents.ts` 中每个指令组件的职责和实现细节是什么？
+3. `directiveComponents.ts`（2026-09 现已搬到 `components/shared/directives/registry.ts`）中每个指令组件的职责和实现细节是什么？
 4. `NoteRendererServer`（SSG）和 `NoteRendererClient` 的边界在哪里？服务端预渲染了什么，客户端水合了什么？
 5. KaTeX 渲染管线的 mhchem 补丁问题（next.config.mjs 注释提到的 barrel 优化破坏单例）的根因和解决方案是什么？
 
@@ -119,9 +121,9 @@
 
 **调研问题**：
 1. 项目中所有 Zustand store 的完整清单是什么？每个 store 的状态字段、action、持久化策略是什么？
-2. `lib/store.ts`（全局 store）的状态结构是什么？`RightTab` / `MobileTab` / `OutboundMessage` 等核心类型如何驱动 UI？
-3. `lib/quiz-store.ts` 的状态结构是什么？Quiz 进度追踪如何运作？
-4. 各个 hook（`useChat` / `useChatHistory` / `useChatUI` / `useSettings` / `useTheme` / `useBrowser` / `useFloatingChats` / `useWindowManager` 等）如何封装 store 订阅？
+2. `lib/store.ts`（全局 store，2026-09 现已搬到 `lib/stores/ui.ts`，原路径只留转发壳）的状态结构是什么？`RightTab` / `MobileTab` / `OutboundMessage` 等核心类型如何驱动 UI？
+3. `lib/quiz-store.ts`（2026-09 现已搬到 `lib/stores/quiz.ts`）的状态结构是什么？Quiz 进度追踪如何运作？
+4. 各个 hook/store（`useChat` / `useChatHistory` / `useChatUI` / `useSettings` / `useTheme` / `useBrowser` / `useFloatingChats` / `useWindowManager` 等；2026-09 起除 `useChat` 外均已搬到 `lib/stores/`）如何封装 store 订阅？
 5. Zustand persist 中间件与 IndexedDB 的集成方式是什么？哪些 store 使用了 persist？
 6. 订阅模式是否存在性能问题？`useChat` 按会话引用相等订阅优化解决了什么问题？
 
