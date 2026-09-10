@@ -1,5 +1,7 @@
 # 划词快捷解释浮窗升级 Spec
 
+> **历史设计稿。** 据当前代码核实，未见同名的 `QuickExplainWindow` 组件，相关浮窗能力应已被后续计划（浮窗体系统一收敛为 `components/window/ManagedWindow.tsx`，见 `docs/plans/20-*`）取代或重构，仅供追溯当时的设计意图。
+
 ## 1. Why
 
 当前 QuickExplainWindow 仅支持单轮解释，功能简陋：

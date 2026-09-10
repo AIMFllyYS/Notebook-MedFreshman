@@ -18,3 +18,7 @@
 | `upgrade-ai-chat-and-architecture.md` | AI 对话系统升级与架构规范化 |
 
 `.claude/workflows/*.js` 是已被 `scripts/` 取代的旧生成脚本，不归档。
+
+## 简化版本/
+
+概率论与数理统计的独立自学笔记草稿（README + Lesson_01~18，共 19 个文件），与 `content/` 里课堂录音驱动的正式课件是两套体系，不受本仓库代码重构影响。原先误放在 `docs/` 根目录，现移入本目录以免与项目规范文档混淆；正文未改动。
