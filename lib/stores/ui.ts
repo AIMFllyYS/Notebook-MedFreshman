@@ -5,9 +5,14 @@ import type { TocItem } from "@/lib/types/toc";
 import { getCategory, getContentItem } from "@/lib/content-data";
 import { deriveActiveKeys } from "@/lib/content/categoryKeys";
 import { layoutFlags, resolveLayoutProfile } from "@/lib/content/layoutProfile";
+import type { LayoutRightTab } from "@/lib/content/layoutProfile";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 
-export type RightTab = "ai" | "video" | "interactive" | "browser";
+// 派生而非重复声明：`layoutProfile.ts` 决定每个档位显示哪些右栏 tab，但它不能 import 本文件
+// （会成环 ui → layoutProfile → ui），所以类型的真相源放在那边、这里派生回来。
+// 若两处各写一份同形字面量，新增第五个 tab 时这里不会报错，而 resolveRightTabs 永远不吐出它
+// —— 那个 tab 会在所有档位下静默消失。派生掉了这种漂移的可能。
+export type RightTab = LayoutRightTab;
 export type MobileTab = "detail" | "video" | "ai" | "interactive" | "browser";
 
 export interface OutboundMessage {
