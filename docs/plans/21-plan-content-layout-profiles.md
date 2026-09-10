@@ -352,3 +352,36 @@ Commit：`docs(sop): document-only courseware integration with layout profiles`
 - 快捷键切到被隐藏的右栏 tab 会被 `setRightTab` 忽略。
 - 改 `subjects.registry.ts` / `loader.ts` 期间 Turbopack 出现过短暂「module has no exports」，随后 200；若验收时碰到先硬刷新。
 - 真机请先当场读 `#notes-panel` rect，再对 artifact notes 全屏（契约不是固定数字）。
+
+---
+
+## 主智能体验收（2026-09-10）
+
+**判定：通过。** 改动范围 21 个文件、+795/−117，`content/**` 零改动，新增 4 个测试文件。8 处偏差逐条核过，均为「以真实代码为准」的合理调整；其中第 7、8 条（分栏当场算而非等 store、tab 回退改渲染期派生）分别避开了晚一帧拆错栏与 `react-hooks/set-state-in-effect` 这条 error 规则，判断正确。
+
+### 补做的一处修正（`d4ba9923`）
+
+偏差 1 里为避开 `ui → layoutProfile → ui` 的环，在 `layoutProfile.ts` 另写了一份同形的 `LayoutRightTab`。**避环的理由成立，但两处字面量没有任何编译期关联**：日后新增第五个右栏 tab 时这里不会报错，而 `resolveRightTabs` 永远不吐出它，该 tab 会在所有档位下静默消失——正是本轮已两次踩中的失败模式（循环依赖丢 14 个指令组件、`mode` 属性被吞）。
+
+`ui.ts` 本就 import `layoutProfile`，故把类型真相源留在 `layoutProfile.ts`、`RightTab` 派生回来，从结构上消除漂移。已写进 `00-execution-contract.md` 第六节。
+
+### 门禁复测（含被跳过的 build）
+
+停掉 dev server 后补跑构建：
+
+| 门禁 | 基线 | 复测 |
+|---|---|---|
+| `tsc --noEmit` | 0 error | 0 error |
+| `pnpm lint` | 0 error / 85 warning | 0 error / 85 warning（未新增） |
+| `pnpm test:unit` | 551 | 561 |
+| `pnpm test:content` | 1915 | 1916 |
+| `pnpm test:react` | 254 | 260 |
+| `pnpm build` | 1210/1210 | **1210/1210，退出码 0** |
+
+页数与基线完全一致，档位改动未影响 SSG 路由集合。
+
+### 产品决策
+
+教材 / 课上录音右侧不再显示空的「动画」「可交互」tab —— 维护者确认**保持隐藏**，这是能力驱动的预期结果，不是回归。
+
+真机 5 条由维护者自行验证。
