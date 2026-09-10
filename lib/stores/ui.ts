@@ -1,9 +1,10 @@
 import { create } from "zustand";
 import type { VideoEntry } from "@/lib/content/types";
-import type { SubjectId } from "@/lib/types/content";
+import type { LayoutProfile, SubjectId } from "@/lib/types/content";
 import type { TocItem } from "@/lib/types/toc";
-import { getCategory } from "@/lib/content-data";
+import { getCategory, getContentItem } from "@/lib/content-data";
 import { deriveActiveKeys } from "@/lib/content/categoryKeys";
+import { layoutFlags, resolveLayoutProfile } from "@/lib/content/layoutProfile";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 
 export type RightTab = "ai" | "video" | "interactive" | "browser";
@@ -19,6 +20,40 @@ export interface OutboundMessage {
 /** Layout 折叠状态持久化 key。 */
 const LS_KEY_SIDEBAR = "gailvlun-sidebar-collapsed";
 const LS_KEY_TOPBAR = "gailvlun-topbar-collapsed";
+const LS_KEY_RIGHT_COLLAPSED = "gailvlun-right-collapsed-by-profile";
+
+const DEFAULT_RIGHT_COLLAPSED: Record<LayoutProfile, boolean> = {
+  full: false,
+  article: true,
+  reference: true,
+};
+
+const DEFAULT_RIGHT_TABS: RightTab[] = ["ai", "video", "interactive", "browser"];
+
+function readRightCollapsedByProfile(): Record<LayoutProfile, boolean> {
+  if (typeof localStorage === "undefined") return { ...DEFAULT_RIGHT_COLLAPSED };
+  try {
+    const raw = localStorage.getItem(LS_KEY_RIGHT_COLLAPSED);
+    if (!raw) return { ...DEFAULT_RIGHT_COLLAPSED };
+    const parsed = JSON.parse(raw) as Partial<Record<LayoutProfile, boolean>>;
+    return {
+      full: typeof parsed.full === "boolean" ? parsed.full : DEFAULT_RIGHT_COLLAPSED.full,
+      article: typeof parsed.article === "boolean" ? parsed.article : DEFAULT_RIGHT_COLLAPSED.article,
+      reference: typeof parsed.reference === "boolean" ? parsed.reference : DEFAULT_RIGHT_COLLAPSED.reference,
+    };
+  } catch {
+    return { ...DEFAULT_RIGHT_COLLAPSED };
+  }
+}
+
+function writeRightCollapsedByProfile(value: Record<LayoutProfile, boolean>): void {
+  if (typeof localStorage === "undefined") return;
+  try {
+    localStorage.setItem(LS_KEY_RIGHT_COLLAPSED, JSON.stringify(value));
+  } catch {
+    /* ignore */
+  }
+}
 
 function readBoolean(key: string, fallback: boolean): boolean {
   if (typeof localStorage === "undefined") return fallback;
@@ -89,6 +124,13 @@ interface AppState {
   // ── 右侧面板 ──────────────────────────────────────────
   rightTab: RightTab;
   setRightTab: (t: RightTab) => void;
+  /** 当前路由对应的布局档位（由 setActiveRoute 写入） */
+  layoutProfile: LayoutProfile;
+  /** 当前档位允许的右侧 tab；reference 为空 */
+  rightTabs: RightTab[];
+  /** 用户按档位分别记忆的右栏折叠状态 */
+  rightCollapsedByProfile: Record<LayoutProfile, boolean>;
+  setRightCollapsedForProfile: (profile: LayoutProfile, collapsed: boolean) => void;
 
   // ── AI 对话 ───────────────────────────────────────────
   /** 划词 / 外部触发的待发送消息 */
@@ -141,12 +183,23 @@ export const useStore = create<AppState>((set) => ({
   activeSectionId: "1.1",
   setActiveSubject: (s) => set({ activeSubjectId: s }),
   setActiveRoute: (subjectId, categoryId, itemId) =>
-    set({
-      activeSubjectId: subjectId,
-      activeCategoryId: categoryId,
-      activeItemId: itemId,
-      // Quiz / 视频 / 交互 Tab 的查找 key 由板块声明的 capabilities + keyStrategy 决定。
-      ...deriveActiveKeys(getCategory(subjectId, categoryId), itemId),
+    set((s) => {
+      const cat = getCategory(subjectId, categoryId);
+      const item = getContentItem(subjectId, categoryId, itemId);
+      const profile = resolveLayoutProfile(cat, item);
+      const flags = layoutFlags(profile, cat, item);
+      const rightTabs = flags.rightTabs;
+      const rightTab = rightTabs.includes(s.rightTab) ? s.rightTab : (rightTabs[0] ?? "ai");
+      return {
+        activeSubjectId: subjectId,
+        activeCategoryId: categoryId,
+        activeItemId: itemId,
+        // Quiz / 视频 / 交互 Tab 的查找 key 由板块声明的 capabilities + keyStrategy 决定。
+        ...deriveActiveKeys(cat, itemId),
+        layoutProfile: profile,
+        rightTabs,
+        rightTab,
+      };
     }),
 
   sidebarCollapsed: readBoolean(LS_KEY_SIDEBAR, false),
@@ -194,7 +247,17 @@ export const useStore = create<AppState>((set) => ({
     }),
 
   rightTab: "ai",
-  setRightTab: (t) => set({ rightTab: t }),
+  setRightTab: (t) =>
+    set((s) => (s.rightTabs.length === 0 || s.rightTabs.includes(t) ? { rightTab: t } : s)),
+  layoutProfile: "full",
+  rightTabs: DEFAULT_RIGHT_TABS,
+  rightCollapsedByProfile: readRightCollapsedByProfile(),
+  setRightCollapsedForProfile: (profile, collapsed) =>
+    set((s) => {
+      const next = { ...s.rightCollapsedByProfile, [profile]: collapsed };
+      writeRightCollapsedByProfile(next);
+      return { rightCollapsedByProfile: next };
+    }),
 
   outbound: null,
   sendToChat: (content) =>
