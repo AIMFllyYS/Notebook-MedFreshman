@@ -24,8 +24,17 @@ const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一�
 
 ## 交互与设计要求
 - 面向学习者，做成可交互的（滑块/按钮/拖拽即时改变可视化），帮助直观理解给定知识点。
-- 深色背景友好（body 背景用 #1a1a2e 或类似深色）、布局自适应（width:100%）、中文文案。
-- 代码精简优先：核心交互优先，避免冗余装饰；保持精简，但复杂演示可按需扩展（约 16000 字符以内）。
+- **配色默认浅色系**（浅底深字，如 body 背景 #f7f8fa、正文 #1f2328）；仅当用户明确要求深色 / 暗色 / 夜间时才用深色。
+- 布局自适应（width:100%）、中文文案。演示会显示在一个可缩放的浮窗里：铺满整帧的演示（canvas 动画、3D 场景）请自行改用 \`height:100vh; overflow:hidden\`，不必迁就骨架里的 padding。
+- 代码精简优先：核心交互优先，避免冗余装饰；但不要为了短而砍掉演示效果，复杂演示可放心展开（约 32000 字符以内）。
+
+## 运行环境限制
+页面运行在 sandbox iframe 中，以下能力**不可用**，请勿使用，也不要围绕它们设计交互：
+- 顶层导航（\`window.top.location\`、\`target="_top"\` 跳转）。
+- 指针锁定 Pointer Lock（Three.js 的 \`PointerLockControls\` 这类第一人称视角控制会失效，改用 \`OrbitControls\` 等基于拖拽的控制器）。
+- Presentation API。
+
+可正常使用：CDN 引库、\`fetch\`、\`alert/confirm\`、表单、弹窗、下载、localStorage。
 
 ## 骨架模板（可在此基础上填充）
 <!DOCTYPE html>
@@ -33,8 +42,10 @@ const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一�
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- 需要图表 / 3D / 数学排版 / 复杂动画时在此引 CDN，例如： -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script> -->
 <style>
-  body { background:#1a1a2e; color:#e0e0e0; font-family:system-ui,sans-serif; margin:0; padding:16px; }
+  body { background:#f7f8fa; color:#1f2328; font-family:system-ui,sans-serif; margin:0; padding:16px; }
   /* 在此添加样式 */
 </style>
 </head>
