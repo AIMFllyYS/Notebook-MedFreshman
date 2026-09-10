@@ -104,8 +104,9 @@ export default function ContentPageClient({
     [renderType, flags.showExamplesTab, flags.showQuizTab],
   );
   const showTabBar = visibleTabs.length > 1;
+  const resolvedTab: ContentTab = visibleTabs.some((t) => t.id === activeTab) ? activeTab : "content";
 
-  const tabIndex = visibleTabs.findIndex((t) => t.id === activeTab);
+  const tabIndex = visibleTabs.findIndex((t) => t.id === resolvedTab);
   const prevTabIndexRef = useRef(tabIndex);
   const [tabDirection, setTabDirection] = useState<1 | -1>(1);
 
@@ -118,7 +119,7 @@ export default function ContentPageClient({
   // TOC 提取：仅在正文 Tab 且档位允许目录时扫描 DOM 标题
   useToc(
     containerRef,
-    activeTab === "content" && flags.showToc,
+    resolvedTab === "content" && flags.showToc,
     itemId,
     initialContent ?? "",
   );
@@ -129,15 +130,9 @@ export default function ContentPageClient({
     subjectId,
     categoryId,
     itemId,
-    enabled: activeTab === "content" && flags.showToc,
+    enabled: resolvedTab === "content" && flags.showToc,
     onNeedContentTab: switchToContentTab,
   });
-
-  useEffect(() => {
-    if (!visibleTabs.some((t) => t.id === activeTab)) {
-      setActiveTab("content");
-    }
-  }, [visibleTabs, activeTab]);
 
   // HTML 全屏时锁定 body 滚动，退出时恢复。
   useEffect(() => {
@@ -171,14 +166,14 @@ export default function ContentPageClient({
           }}
             className={clsx(
               "relative flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium transition-colors",
-              activeTab === t.id
+              resolvedTab === t.id
                 ? "text-[var(--md-sys-color-primary)]"
                 : "text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)]",
             )}
           >
             {t.icon}
             {t.label}
-            {activeTab === t.id && (
+            {resolvedTab === t.id && (
               <motion.div
                 layoutId="content-tab-indicator"
                 className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-[var(--md-sys-color-primary)]"
@@ -214,7 +209,7 @@ export default function ContentPageClient({
       {/* Content area */}
       <div ref={containerRef} data-notes-root className="scroll-y flex-1">
         <AnimatePresence mode="wait">
-          {activeTab === "content" && (
+          {resolvedTab === "content" && (
             <motion.div
               key="content"
               variants={tabPanelVariants(tabDirection)}
@@ -285,7 +280,7 @@ export default function ContentPageClient({
               </article>
             </motion.div>
           )}
-          {activeTab === "examples" && (
+          {resolvedTab === "examples" && (
             <motion.div
               key="examples"
               variants={tabPanelVariants(tabDirection)}
@@ -302,7 +297,7 @@ export default function ContentPageClient({
               />
             </motion.div>
           )}
-          {activeTab === "quiz" && (
+          {resolvedTab === "quiz" && (
             <motion.div
               key="quiz"
               variants={tabPanelVariants(tabDirection)}
