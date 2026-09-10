@@ -41,6 +41,16 @@ test("readContentMarkdown：probability/detail 路径解析", () => {
   assert.ok(content === null || typeof content === "string");
 });
 
+test("readContentMarkdown：legacy 学科解析到 content/chapters/ch01/1.1.md", () => {
+  const content = readContentMarkdown("probability", "detail", "1.1");
+  assert.ok(content && content.length > 0, "probability/detail/1.1 应能读到正文");
+});
+
+test("readContentMarkdown：普通学科解析到 content/<subject>/<category>/<id>.md", () => {
+  const content = readContentMarkdown("histology", "textbook", "ch02-1");
+  assert.ok(content && content.length > 0, "histology/textbook/ch02-1 应能读到正文");
+});
+
 test("readContentMarkdown：不存在的路径返回 null", () => {
   assert.equal(readContentMarkdown("nonexistent", "detail", "999"), null);
 });

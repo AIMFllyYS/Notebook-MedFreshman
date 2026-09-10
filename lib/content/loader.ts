@@ -10,16 +10,15 @@ import {
   type AcademicYearId,
 } from "@/lib/constants/academic-year";
 import { getSubjectMeta } from "@/lib/content-data/subjects.registry";
+import { CONTENT_PATH_RESOLVERS, LEGACY_CHAPTERS_ROOT } from "@/lib/content/contentPaths";
 import { normalizeSearchQuery } from "@/lib/ai/search/queryNormalize";
-
-const CONTENT_ROOT = path.join(process.cwd(), "content", "chapters");
 
 /** 读取某小节的 markdown 正文；不存在则返回 null。 */
 export function readSectionMarkdown(
   chapterId: string,
   sectionId: string,
 ): string | null {
-  const file = path.join(CONTENT_ROOT, chapterId, `${sectionId}.md`);
+  const file = path.join(LEGACY_CHAPTERS_ROOT, chapterId, `${sectionId}.md`);
   try {
     return fs.readFileSync(file, "utf8");
   } catch {
@@ -27,43 +26,32 @@ export function readSectionMarkdown(
   }
 }
 
+function resolveFilePath(
+  subjectId: string,
+  categoryId: string,
+  itemId: string,
+  ext: string,
+): string {
+  const resolver = CONTENT_PATH_RESOLVERS[getSubjectMeta(subjectId)?.contentRoot?.detail ?? "subject-tree"];
+  return resolver(subjectId, categoryId, itemId, ext);
+}
+
 /**
  * 按 (subjectId, categoryId, itemId) 读取内容 markdown；不存在返回 null。
  * 供 page.tsx 做 SSR 首屏渲染与 /api/section 客户端回退共用，统一路径解析逻辑。
  *
- * - registry 中声明 contentRoot.detail="chapters" 的学科：复用 content/chapters 目录结构（itemId "1.1" → ch01/1.1.md，
- *   章级 id "ch01" → ch01/index.md）。
- * - 其他科目/分类：content/{subjectId}/{categoryId}/{itemId}.md。
+ * 路径由 registry 的 contentRoot.detail 选择 resolver（见 lib/content/contentPaths.ts）：
+ * - legacy-chapters + detail：itemId "1.1" → ch01/1.1.md，章级 id "ch01" → ch01/index.md
+ * - 其余：content/{subjectId}/{categoryId}/{itemId}.md
  */
 export function readContentMarkdown(
   subjectId: string,
   categoryId: string,
   itemId: string,
 ): string | null {
-  if (getSubjectMeta(subjectId)?.contentRoot?.detail === "chapters" && categoryId === "detail") {
-    const chapterMatch = itemId.match(/^(\d+)\./);
-    if (chapterMatch) {
-      const chapterNum = parseInt(chapterMatch[1], 10);
-      const chapterId = `ch${String(chapterNum).padStart(2, "0")}`;
-      return readSectionMarkdown(chapterId, itemId);
-    }
-    const chapterFile = path.join(CONTENT_ROOT, itemId, "index.md");
-    try {
-      return fs.readFileSync(chapterFile, "utf8");
-    } catch {
-      return null;
-    }
-  }
-
-  const genericPath = path.join(
-    process.cwd(),
-    "content",
-    subjectId,
-    categoryId,
-    `${itemId}.md`,
-  );
+  const filePath = resolveFilePath(subjectId, categoryId, itemId, "md");
   try {
-    return fs.readFileSync(genericPath, "utf8");
+    return fs.readFileSync(filePath, "utf8");
   } catch {
     return null;
   }
@@ -71,22 +59,16 @@ export function readContentMarkdown(
 
 /**
  * 按 (subjectId, categoryId, itemId) 读取 HTML 内容；不存在返回 null。
- * 路径：content/{subjectId}/{categoryId}/{itemId}.html
+ * 路径与 markdown 共用同一套 resolver，仅扩展名为 html。
  */
 export function readContentHtml(
   subjectId: string,
   categoryId: string,
   itemId: string,
 ): string | null {
-  const htmlPath = path.join(
-    process.cwd(),
-    "content",
-    subjectId,
-    categoryId,
-    `${itemId}.html`,
-  );
+  const filePath = resolveFilePath(subjectId, categoryId, itemId, "html");
   try {
-    return fs.readFileSync(htmlPath, "utf8");
+    return fs.readFileSync(filePath, "utf8");
   } catch {
     return null;
   }

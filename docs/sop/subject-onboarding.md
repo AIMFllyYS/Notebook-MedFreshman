@@ -17,7 +17,7 @@
 }
 ```
 
-`icon` 必须是 `lib/ui/subjectIcons.ts` 白名单内的名字，否则 `pnpm exec tsc --noEmit` 会报错。需要学科专属提示词时再填写 `promptFile`；概率论历史目录特例才填写 `contentRoot: { detail: 'chapters' }`。
+`icon` 必须是 `lib/ui/subjectIcons.ts` 白名单内的名字，否则 `pnpm exec tsc --noEmit` 会报错。需要学科专属提示词时再填写 `promptFile`；概率论历史目录特例才填写 `contentRoot: { detail: 'legacy-chapters' }`。
 
 ## 2. 挂载内容树
 

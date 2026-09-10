@@ -11,6 +11,7 @@ import { SUBJECT_REGISTRY, SUBJECT_BY_ID, getSubjectMeta } from '../lib/content-
 import { isSubjectIconName } from '../lib/ui/subjectIcons';
 import { ACADEMIC_YEAR_IDS } from '../lib/constants/academic-year';
 import { deriveContentKey, hasCapability } from '../lib/content/categoryKeys';
+import { CONTENT_PATH_RESOLVERS } from '../lib/content/contentPaths';
 import type { Category, ContentItem, Subject } from '../lib/types/content';
 
 const ROOT = process.cwd();
@@ -68,16 +69,8 @@ function walkAll(items: ContentItem[], out: ContentItem[] = []): ContentItem[] {
 function contentFileFor(subject: Subject, cat: Category, item: ContentItem): string | null {
   if (item.renderType === 'component') return null;
   const ext = item.renderType === 'html' ? 'html' : 'md';
-  const meta = getSubjectMeta(subject.id);
-  if (meta?.contentRoot?.detail === 'chapters' && cat.id === 'detail') {
-    const m = item.id.match(/^(\d+)\./);
-    if (m) {
-      const ch = `ch${String(parseInt(m[1], 10)).padStart(2, '0')}`;
-      return path.join(CONTENT, 'chapters', ch, `${item.id}.md`);
-    }
-    return path.join(CONTENT, 'chapters', item.id, 'index.md');
-  }
-  return path.join(CONTENT, subject.id, cat.id, `${item.id}.${ext}`);
+  const detail = getSubjectMeta(subject.id)?.contentRoot?.detail ?? 'subject-tree';
+  return CONTENT_PATH_RESOLVERS[detail](subject.id, cat.id, item.id, ext);
 }
 
 // ── 1. registry ↔ manifest ─────────────────────────────────────
@@ -196,7 +189,7 @@ for (const subject of contentTree.subjects) {
       }
     }
     // 概率论例题目录不带学科前缀：content/examples/chXX/X.Y
-    const exDir = getSubjectMeta(subject.id)?.contentRoot?.detail === 'chapters' ? exRoot : path.join(exRoot, subject.id);
+    const exDir = getSubjectMeta(subject.id)?.contentRoot?.detail === 'legacy-chapters' ? exRoot : path.join(exRoot, subject.id);
     if (fs.existsSync(exDir)) {
       for (const ch of fs.readdirSync(exDir, { withFileTypes: true })) {
         if (!ch.isDirectory()) continue;
