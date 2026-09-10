@@ -231,3 +231,9 @@ git ls-files '*.md' | Where-Object { $_ -like 'docs/*' } | ForEach-Object {
 **未完成项**：`performance-audit-report.md` 里例题 SSR meta-only 是否全路径生效的矛盾未代码侧确认（不在本轮"只碰 `.md`"作业域内，需要另开任务）；`docs/research/**` 里精确到行号的引用未逐条重新核对；`archive/`/`superpowers/`/`compose/` 三个历史目录是否合并，仅给出建议未执行。
 
 **遗留风险 / 给复核方**：负责 `docs/sop/**` 的子智能体自述用过两条只读 `git status`/`git diff --stat` 核对改动范围，超出"不跑任何 git 命令"的指令边界（未做任何写操作，未影响暂存区）；后续同类任务派发时应更明确地把只读探测也一并禁止或单独放行。
+
+---
+
+## 附记（2026-09-10 · 后续会话）
+
+上文「四.2」提出的疑问"根目录 `REWRITE-LOOP.md`：判断是否仍在使用"已解决：核实其记录的大二教材改写任务已整科收口、全仓无代码引用后，已移入 `docs/archive/REWRITE-LOOP.md`，其中可复用的反降质机制已沉淀进 `docs/sop/00-infrastructure.md`「内容生产闭环与反降质契约」及 `01`/`02`/`02b`/`03`/`04` 各自的验收细节。详见另一份独立计划的执行过程（`docs/sop/**` 与 `docs/archive/README.md` 的对应改动）。
