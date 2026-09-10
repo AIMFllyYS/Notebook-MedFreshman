@@ -86,6 +86,10 @@ Explorer subagent 为每个章节/专题整理「输入包」：
 
 Writer subagent 按以下模板撰写每个章节：
 
+> **本 SOP 的内容生产阶段必须遵守** [00-infrastructure.md「内容生产闭环与反降质契约」](./00-infrastructure.md#内容生产闭环与反降质契约)：Writer 对自己负责的专题从"读输入包"到"写完详解"到"自查验收"全程闭环负责。
+>
+> 下面模板里用到的指令**不是全部**——本科目还有 7 个专属指令（`:::timeline`/`:::eventcard`/`:::conceptcard`/`:::comparetable`/`:::causeeffect`/`:::keypoint`/`:::historymap`，完整语法见 [modern-history-textbook-format.md](../refer/modern-history-textbook-format.md)），本轮已把模板里原来用 `:::insight` + 手写表格凑合表达"对比""因果"的地方换成对应的专属指令；`memory` 挖空指令详见该文档 §2.8。
+
 #### 人文科详解结构模板
 
 ```markdown
@@ -129,29 +133,29 @@ Writer subagent 按以下模板撰写每个章节：
 
 ### 因果链分析
 
-:::theorem{label=历史因果}
-{核心因果逻辑，用"因为...所以..."或"条件→结果"结构}
-
-关键链条：
-1. {原因 A} → {直接后果}
-2. {原因 B} → {间接影响}
-3. {合力} → {最终结果}
+:::causeeffect{title={因果链标题，如"XX爆发的原因与结果"}}
+- 原因：{直接原因 + 深层原因}
+- 结果：{直接后果 + 长远影响}
 :::
+
+复杂的多级因果（超过"原因→结果"两段）用列表展开为链条，仍放进同一个 `:::causeeffect` 容器里，不要退回用 `:::theorem` 这种数理指令表达历史因果（`:::theorem` 是给定理/性质用的，语义不对）。
 
 ### 对比评价
 
-:::insight{label=纵向/横向对比}
-{与其他事件/人物/运动的对比分析}
-
-| 维度 | {事件A} | {事件B} |
-|------|---------|---------|
-| 领导阶级 | {..} | {..} |
-| 纲领 | {..} | {..} |
-| 结果 | {..} | {..} |
-| 失败原因 | {..} | {..} |
+:::comparetable{title={对比标题} headers={对象A}|{对象B}}
+- 领导阶级 | {..} | {..}
+- 纲领/主张 | {..} | {..}
+- 结果 | {..} | {..}
+- 失败原因/局限 | {..} | {..}
 :::
 
+教师课堂上给出的独特分析角度（不是单纯罗列对比项，而是评价性的解读）仍用 `:::insight` 标注，与 `:::comparetable` 的结构化对比并存、互为补充。
+
 ### 考试要点
+
+:::keypoint{label=核心结论}
+{本章/本专题最核心的一句话结论}
+:::
 
 :::pitfall{label=必记要点}
 1. **{要点1}**：{简述}
@@ -164,6 +168,12 @@ Writer subagent 按以下模板撰写每个章节：
 - ⚠️ {教师反复强调的论点}
 :::
 
+:::memory{label=本节必背要点}
+- {可挖空自测的核心结论 1}
+- {可挖空自测的核心结论 2}
+- {可挖空自测的核心结论 3}
+:::
+
 ### 小结与衔接
 
 {本章核心结论的一句话总结}
@@ -171,14 +181,21 @@ Writer subagent 按以下模板撰写每个章节：
 > 下一章我们将看到 {衔接到下一专题的逻辑}
 ```
 
+> 若本章/专题本身有清晰的时间线（如某场运动的发展阶段），在"时代背景"之后插入 `:::timeline{period=...}` 给出概览；单个足够重要、值得单独强调的历史事件用 `:::eventcard{title=... date=... place=... significance=...}`；反复出现的核心概念首次出现处用 `:::conceptcard{term=...}`。语法与更多示例见 [modern-history-textbook-format.md](../refer/modern-history-textbook-format.md)。
+
 #### 写作规范
 
 | 规则 | 说明 |
 |------|------|
 | 篇幅 | 每章 2000-5000 字，视专题复杂度而定 |
 | 教师观点 | 用 `:::insight` 标注，与教材表述区分 |
+| 对比 | 用 `:::comparetable{title=... headers=...}`，不用手写表格+`:::insight`凑合 |
+| 因果 | 用 `:::causeeffect{title=...}`，不用 `:::theorem`（语义不对，那是数理指令） |
+| 时间线 | 有明确阶段/大事记的专题用 `:::timeline{period=...}` |
+| 核心概念/单一事件 | 首次出现处用 `:::conceptcard{term=...}` / `:::eventcard{title=... date=...}` |
+| 核心结论 | 用 `:::keypoint{label=核心结论}` |
 | 考试重点 | 用 `:::pitfall` 突出显示 |
-| 对比表格 | 善用表格做横向/纵向比较 |
+| 必背清单 | 每节末尾用 `:::memory{label=本节必背要点}` |
 | 年份 | 重要年份必须准确，不确定时查证 |
 | 引用 | 重要史料/原文用引用块 `>` 标注 |
 
@@ -203,20 +220,32 @@ Writer subagent 按以下模板撰写每个章节：
 
 **注意**：人文科暂无动画和交互组件产出。未来如需添加（如历史时间线交互），参照 SOP-02 的交互组件部分。
 
-## AI 工具可达性验证
+## 验收（强制）
 
-完成后验证（参照 [05-content-integration.md](./05-content-integration.md)）：
+每章/专题闭环完成前，必须按 [00-infrastructure.md「内容生产闭环与反降质契约」第 3 节](./00-infrastructure.md#内容生产闭环与反降质契约) 走完机械层 + 视觉层验收，不能只做 AI 可达性这一层。
+
+### 机械层
+
+- **体积基准**：对照本科目已完成的其他专题实测校准（如近现代史 `content/modern-history/detail/` 下已有小节约 9–14 KB；明显小于此、且几乎没有指令块的判定为提纲而非完整详解）。
+- **指令使用核对**：本轮模板已把"对比"改为 `:::comparetable`、"因果"改为 `:::causeeffect`，新写的小节不应再退回用 `:::insight`/`:::theorem` 凑合表达这两类内容；每节末尾应有 `:::memory` 必背清单。
+- **教师观点保留**：抽查是否真的融入了录音/纪要里教师的独特分析角度（`:::insight`），不是只搬了教材官方结论。
+
+### 视觉层
 
 1. `readContentMarkdown(subjectId, "detail", itemId)` 返回完整笔记
-2. 浏览器访问 `/{subject}/detail/{itemId}` 确认渲染正常
-3. AI Tab 中发送"这一章的核心论点是什么"，确认 AI 能读取并回答
-4. AI Tab 中发送"考试重点有哪些"，确认 AI 能从 `:::pitfall` 中提取重点
+2. 用 `agent-browser` 实际打开 `/{subject}/detail/{itemId}`，等指令块渲染出来后截图，截图字节数明显偏小判定失败
+3. 肉眼确认：时间轴/对比表/因果链/必背清单等卡片正常渲染，不是纯文本墙
+4. AI Tab 中发送"这一章的核心论点是什么"，确认 AI 能读取并回答
+5. AI Tab 中发送"考试重点有哪些"，确认 AI 能从 `:::pitfall`/`:::keypoint` 中提取重点
+
+完整验证参照 [05-content-integration.md](./05-content-integration.md)。
 
 ## 黄金范例
 
 | 文件 | 说明 |
 |------|------|
-| `content/modern-history/detail/` | 近现代史已有详解（作为结构参考） |
+| `content/modern-history/detail/` | 近现代史已有详解（叙事结构可参考；**但这批文件是本轮模板升级前写的，只用了 `:::definition`/`:::pitfall`/`:::note`，没有用到 `:::comparetable`/`:::causeeffect`/`:::timeline` 等新指令**，写新章节时按本文档最新模板执行，不要以旧文件的指令使用情况为准） |
+| `content/modern-history/textbook/` | 教材板块已用 `:::timeline`/`:::comparetable`/`:::causeeffect` 等完整指令集，可参考具体语法（详解与教材是两个不同板块，不能直接照抄内容，但指令写法可以参考） |
 | `content/modern-history/summary/sum-02.md` | 纪要格式参考（输入源） |
 
 ## 参考文件

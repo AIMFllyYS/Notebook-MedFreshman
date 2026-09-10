@@ -18,18 +18,24 @@
 
 ## 执行角色分配
 
+> 本 SOP 的内容生产阶段必须遵守 [00-infrastructure.md「内容生产闭环与反降质契约」](./00-infrastructure.md#内容生产闭环与反降质契约)：Writer 对自己负责的小节从"读输入包"到"写完笔记"到"自查验收"全程闭环负责，写完立刻自查，不能把验收甩给下一个角色；交互/动画依赖正文先通过验收（见「串行 gate」），不能与正文并行抢跑。
+
 | 阶段 | 角色 | 类型 | 职责 |
 |------|------|------|------|
-| 上下文收集 | Explorer | Explore subagent | 读取教材+录音+纪要，整理为精简输入 |
-| 内容生产 | Writer-1~N | GeneralPurpose subagent (每个 2-3 小节) | 撰写详解笔记 |
-| 交互组件 | Interactive-1~N | GeneralPurpose subagent | 开发配套交互 TSX |
-| Manim 动画 | Animator-1~N | GeneralPurpose subagent | 编写 Manim 场景 |
-| 集成 | Integrator | GeneralPurpose subagent | registry + manifest + media 注册 |
+| 上下文收集 | Explorer | Explore subagent | 读取教材+录音+纪要，整理为精简输入（机械汇总，不产出最终交付物，可独立于闭环存在） |
+| 内容生产（闭环） | Writer-1~N | GeneralPurpose subagent (每个 2-3 小节) | 撰写详解笔记 + 写完立刻按 [「验收（强制）」](#验收强制) 自查，通过才算完成 |
+| 交互组件 | Interactive-1~N | GeneralPurpose subagent | 对应小节**正文验收通过后**才可派发；开发配套交互 TSX |
+| Manim 动画 | Animator-1~N | GeneralPurpose subagent | 对应小节**正文验收通过后**才可派发；编写 Manim 场景 |
+| 集成 | Integrator | GeneralPurpose subagent | registry + manifest + media 注册（跨小节的机械收尾步骤，不涉及内容质量判断） |
 
 **上下文控制**：
 - Explorer 输出精简的「章节输入包」（每小节 ~500 字的知识点摘要 + 录音重点 + 考试暗示）
-- Writer 只接收自己负责的 2-3 小节的输入包，不需要完整教材
+- Writer 只接收自己负责的 2-3 小节的输入包，不需要完整教材；小节数偏多或原始素材偏大时应进一步拆小
 - Interactive/Animator 只接收对应小节的概念描述，不需要完整笔记
+
+### 串行 gate（防止级联返工）
+
+正文没有通过验收（见「验收（强制）」）之前，不派发该小节的交互组件、Manim 动画或对应测验（SOP 04）——正文如果后续需要返工，交互/动画/测验会连带作废，这条 gate 是为了避免这类连锁返工。已验收通过的小节不回头改，除非有新证据证明确实需要回归修正。
 
 ## 总原则
 
@@ -237,14 +243,25 @@ Animator subagent 编写 Manim 场景：
 - 视频 ID：`{chapterId}-{sectionId}-{slug}`，如 `ch01-1.4-classical`
 - 交互 ID：`{subject}-{chapterId}-{sectionId}-{slug}`，如 `probability-ch01-1.4-coins`
 
-## AI 工具可达性验证
+## 验收（强制）
 
-完成后验证（参照 [05-content-integration.md](./05-content-integration.md)）：
+每小节闭环完成前，必须按 [00-infrastructure.md「内容生产闭环与反降质契约」第 3 节](./00-infrastructure.md#内容生产闭环与反降质契约) 走完机械层 + 视觉层验收，不能只做 AI 可达性这一层。
+
+### 机械层
+
+- **体积/密度基准**：对照本科目已完成的其他小节实测校准（如概率论 `content/chapters/ch01/1.2.md`~`1.6.md` 约 18–22 KB/节，含 `:::definition`（约 8 个）+ `:::theorem`（1 个左右）+ `:::example`（2-5 个）；人文科目篇幅可能更小但结构指令占比更高，以本科目黄金范例为准）。明显偏小、指令块个位数或缺失，判定为可疑的提纲/摘要而非完整讲义。
+- **写作规范核对**：`$$` 独占一行；例题 2-4 个由浅入深且含完整解答；不出现"来源标注"字样（原则是内化后原创输出，不在正文写"根据教材第 X 页"这类痕迹）。
+
+### 视觉层
 
 1. `readContentMarkdown(subjectId, "detail", itemId)` 返回完整笔记
-2. 右侧「可交互」Tab 显示新注册的组件
-3. 右侧「动画讲解」Tab 显示新视频
-4. AI Tab 中发送"这个定义是什么意思"，确认 AI 能读取并回答
+2. 用 `agent-browser` 实际打开对应页面，等指令块真正渲染出来后截图，截图字节数明显偏小判定失败，换 session 重拍
+3. 肉眼确认：定义/例题/易错点等卡片正常渲染，不是纯 Markdown 文本墙；`::video`/`::interactive` 嵌入位置若已开发对应组件应能正常显示（未开发则不应留下无效占位）
+4. 右侧「可交互」Tab 显示新注册的组件（若本小节开发了交互组件）
+5. 右侧「动画讲解」Tab 显示新视频（若本小节开发了 Manim 动画）
+6. AI Tab 中发送"这个定义是什么意思"，确认 AI 能读取并回答
+
+完整验证参照 [05-content-integration.md](./05-content-integration.md)。
 
 ## 黄金范例
 
