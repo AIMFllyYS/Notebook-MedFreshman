@@ -1,6 +1,6 @@
 "use client";
 
-import type { ComponentType } from "react";
+import { createElement, type ComponentType } from "react";
 
 const registry: Record<string, ComponentType> = {};
 
@@ -45,5 +45,5 @@ export function ComponentRenderer({
       </div>
     );
   }
-  return <Comp />;
+  return createElement(Comp);
 }

@@ -487,7 +487,7 @@ function ChebyshevDemoBase() {
           <>
             <span className="font-bold" style={{ color: BOUND_COLOR }}>上界 = 1（无意义）：</span>
             <span className="text-[var(--ink-soft)]">
-              {" "}当 ε ≤ σ 时，σ²/ε² ≥ 1，而概率本身 ≤ 1，所以切比雪夫上界退化为平凡约束"≤ 1"。
+              {" "}当 ε ≤ σ 时，σ²/ε² ≥ 1，而概率本身 ≤ 1，所以切比雪夫上界退化为平凡约束{'"≤ 1"'}。
               尝试增大 ε（或减小 σ），让 ε 超过 σ，使不等式产生真正的约束力。
             </span>
           </>
@@ -499,7 +499,7 @@ function ChebyshevDemoBase() {
               对正态分布而言，实际尾概率以指数速度衰减，比 1/ε² 快得多。
               当前上界是真实概率的{" "}
               <b style={{ color: BOUND_COLOR }}>{isFinite(ratio) ? ratio.toFixed(1) : "∞"} 倍</b>
-              ——这就是"松紧程度"。
+              ——这就是{'"松紧程度"'}。
               {isFinite(ratio) && ratio < 2 && (
                 <span style={{ color: MID_COLOR }}>
                   {" "}此时 ε/σ ≈ {(eps / sigma).toFixed(1)}，比值接近 1，不等式相对较紧。

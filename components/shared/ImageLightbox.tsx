@@ -16,11 +16,16 @@ export function ImageLightbox() {
 
   useOverlayRegistration({ id: "image-lightbox", open: !!src, onClose: close, priority: 90 });
 
+  const [activeSrc, setActiveSrc] = useState(src);
+  if (src !== activeSrc) {
+    setActiveSrc(src);
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  }
+
   useEffect(() => {
     if (src) {
       document.body.style.overflow = "hidden";
-      setZoom(1);
-      setPan({ x: 0, y: 0 });
       return () => {
         document.body.style.overflow = "";
       };

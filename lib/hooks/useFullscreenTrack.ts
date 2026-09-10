@@ -1,14 +1,23 @@
 "use client";
 
 import { useEffect } from "react";
+import { resolveFullscreenRect, type FullscreenTarget } from "@/lib/constants/layout";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
-export function useFullscreenTrack(windowId: string, enabled: boolean) {
+/**
+ * 全屏期间跟随目标矩形（默认笔记栏）。
+ * `viewport` 跟随视口；`notes` 跟随 `#notes-panel`。
+ */
+export function useFullscreenTrack(
+  windowId: string,
+  enabled: boolean,
+  target: FullscreenTarget = "notes",
+) {
   useEffect(() => {
     if (!enabled || !windowId) return;
 
-    const syncToNotesPanel = () => {
-      const rect = document.getElementById("notes-panel")?.getBoundingClientRect();
+    const sync = () => {
+      const rect = resolveFullscreenRect(target);
       if (!rect || rect.width <= 0 || rect.height <= 0) return;
       useWindowManager.getState().commitGeometry(windowId, {
         pos: { x: rect.left, y: rect.top },
@@ -16,8 +25,8 @@ export function useFullscreenTrack(windowId: string, enabled: boolean) {
       });
     };
 
-    syncToNotesPanel();
-    window.addEventListener("resize", syncToNotesPanel);
-    return () => window.removeEventListener("resize", syncToNotesPanel);
-  }, [enabled, windowId]);
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, [enabled, windowId, target]);
 }

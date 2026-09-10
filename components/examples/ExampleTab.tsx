@@ -64,6 +64,15 @@ export default function ExampleTab({
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [detailError, setDetailError] = useState(false);
   const [fetchNonce, setFetchNonce] = useState(0);
+  const [inflightKey, setInflightKey] = useState<string | null>(null);
+  const [seenSection, setSeenSection] = useState(sectionId);
+  if (sectionId !== seenSection) {
+    setSeenSection(sectionId);
+    setSelectedId(null);
+    setSelected(null);
+    setDetailError(false);
+    setInflightKey(null);
+  }
 
   const contentById = useMemo(() => {
     const map = new Map<string, ExampleDetail>();
@@ -73,32 +82,34 @@ export default function ExampleTab({
     return map;
   }, [initialExamples]);
 
-  useEffect(() => {
-    setSelectedId(null);
-    setSelected(null);
-    setDetailError(false);
-  }, [sectionId]);
+  const requestKey = selectedId
+    ? `${selectedId}\0${fetchNonce}\0${chapterId}\0${sectionId}\0${subjectId}`
+    : null;
 
-  useEffect(() => {
-    if (!selectedId) {
-      setSelected(null);
-      setDetailError(false);
-      setLoadingDetail(false);
-      return;
-    }
-
+  if (selectedId) {
     const cached = contentById.get(selectedId);
     if (cached?.content) {
-      setSelected(cached);
+      if (selected !== cached || loadingDetail || detailError) {
+        setSelected(cached);
+        setDetailError(false);
+        setLoadingDetail(false);
+      }
+      if (inflightKey !== null) setInflightKey(null);
+    } else if (requestKey !== inflightKey) {
+      setInflightKey(requestKey);
+      setLoadingDetail(true);
       setDetailError(false);
-      setLoadingDetail(false);
-      return;
+      setSelected(null);
     }
+  } else if (inflightKey !== null) {
+    setInflightKey(null);
+  }
+
+  useEffect(() => {
+    if (!selectedId) return;
+    if (contentById.get(selectedId)?.content) return;
 
     let cancelled = false;
-    setLoadingDetail(true);
-    setDetailError(false);
-    setSelected(null);
 
     const params = new URLSearchParams({
       chapterId,

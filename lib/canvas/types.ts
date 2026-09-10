@@ -82,7 +82,7 @@ export interface CanvasDiagnostic {
   details?: Record<string, unknown>;
 }
 
-export interface CanvasRevisionRequest {
+interface CanvasRevisionRequest {
   block: CanvasBlock;
   instruction: string;
   topic?: string;
@@ -90,7 +90,7 @@ export interface CanvasRevisionRequest {
   customApiGroups?: unknown[];
 }
 
-export interface CanvasRevisionResponse {
+interface CanvasRevisionResponse {
   block: CanvasBlock;
   diagnostics: CanvasDiagnostic[];
 }

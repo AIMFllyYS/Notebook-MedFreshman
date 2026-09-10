@@ -29,9 +29,11 @@ test("buildFallbackSessionTitle strips quotes and collapses whitespace", () => {
 });
 
 test("useChat generates first-turn titles through the lightweight title endpoint", () => {
-  const source = readFileSync(join(root, "lib/hooks/useChat.ts"), "utf8");
+  const hook = readFileSync(join(root, "lib/hooks/useChat.ts"), "utf8");
+  const helper = readFileSync(join(root, "lib/chat/kickoffSessionTitle.ts"), "utf8");
 
-  assert.match(source, /\/api\/chat-title/);
-  assert.match(source, /buildFallbackSessionTitle/);
-  assert.doesNotMatch(source, /content\.slice\(0,\s*15\)/);
+  assert.match(hook, /kickoffSessionTitle/);
+  assert.match(helper, /\/api\/chat-title/);
+  assert.match(helper, /buildFallbackSessionTitle/);
+  assert.doesNotMatch(helper, /content\.slice\(0,\s*15\)/);
 });

@@ -34,14 +34,19 @@ export default function MobileChapterPicker() {
     hydrateYear();
   }, [hydrateYear]);
 
-  useEffect(() => {
+  const [wasOpen, setWasOpen] = useState(open);
+  if (open !== wasOpen) {
+    setWasOpen(open);
     if (open) {
       setPickerSubject(activeSubject);
       setPickerCategory(activeCategoryId || "detail");
-      requestAnimationFrame(() => {
-        activeRef.current?.scrollIntoView({ block: "center", behavior: "instant" });
-      });
     }
+  }
+  useEffect(() => {
+    if (!open) return;
+    requestAnimationFrame(() => {
+      activeRef.current?.scrollIntoView({ block: "center", behavior: "instant" });
+    });
   }, [open, activeSubject, activeCategoryId]);
 
   const subject = navTree.subjects.find((s) => s.id === pickerSubject);
@@ -217,15 +222,11 @@ function ChapterGroup({
     );
   });
 
-  useEffect(() => {
-    if (
-      hasChildren &&
-      activeItemId != null &&
-      chapter.children!.some((c) => c.id === activeItemId)
-    ) {
-      setExpanded(true);
-    }
-  }, [hasChildren, activeItemId, chapter.children]);
+  const containsActive =
+    hasChildren &&
+    activeItemId != null &&
+    chapter.children!.some((c) => c.id === activeItemId);
+  if (containsActive && !expanded) setExpanded(true);
 
   if (!hasChildren) {
     const isActive = chapter.id === activeItemId;

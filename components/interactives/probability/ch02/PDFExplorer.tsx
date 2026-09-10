@@ -246,6 +246,7 @@ function PDFExplorerBase() {
 
   // 拖动状态
   const dragging = useRef<"a" | "b" | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
   // 显示无记忆性面板
@@ -301,6 +302,7 @@ function PDFExplorerBase() {
     (handle: "a" | "b") => (e: React.MouseEvent) => {
       e.preventDefault();
       dragging.current = handle;
+      setIsDragging(true);
     },
     []
   );
@@ -319,6 +321,7 @@ function PDFExplorerBase() {
 
   const onMouseUp = useCallback(() => {
     dragging.current = null;
+    setIsDragging(false);
   }, []);
 
   // ─── 轴刻度 ──────────────────────────────────────────────────
@@ -427,7 +430,7 @@ function PDFExplorerBase() {
           ref={svgRef}
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           className="w-full select-none"
-          style={{ cursor: dragging.current ? "col-resize" : "default", touchAction: "none" }}
+          style={{ cursor: isDragging ? "col-resize" : "default", touchAction: "none" }}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
           onMouseLeave={onMouseUp}

@@ -18,6 +18,7 @@ import { AgentFileIcon, AgentImageIcon, AgentQuizIcon, AgentTerminalIcon } from 
 // ----------------------------------------------------
 // ChatMessageVisualizations: 标签分发器
 // 将 AI 输出的 XML 标签分发到 Phase 4 创建的公共可视化原语。
+// 不要只搜「可视化」：这里不是 renderInteractive 的 HTML 演示（那个在 ArtifactViewer）。
 // XML 属性经 parseXmlTags 解析后均为字符串，这里负责按需转为 number/boolean。
 // ----------------------------------------------------
 interface ChatMessageVisualizationsProps {

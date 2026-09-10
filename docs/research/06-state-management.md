@@ -4,10 +4,35 @@
 > **调研日期**：2026-07-05
 > **项目版本**：gailvlun v0.3.1
 > **关联文档**：[存储架构规范](../../docs/refer/storage-architecture.md)、[性能审查报告](../../docs/refer/performance-audit-report.md)
+>
+> **目录校准（2026-09，计划 22）**：下文 17 个 store、`lib/hooks/useX.ts` 路径是 2026-07 快照。现网 **28** 个 Zustand store 全部落在 `lib/stores/`，旧路径只留 `@public @deprecated` re-export。清点方法与 persist name 见 `lib/stores/README.md`。无桶文件 `lib/stores/index.ts`。
+
+## 2.0 当前目录结构（2026-09）
+
+```
+lib/stores/
+  _persist.ts          # createPersistedStore；仅套 zustand persist 的 store
+  artifacts.ts         # persist name: artifacts
+  documents.ts         # documents
+  imageGen.ts          # image-gen
+  ...                  # 见 README；自定义 persist 不要套 helper
+```
+
+`lib/hooks/` 只剩真正的 React hook（`useChat`、`useStickToBottom` 等），不再 `create(` store。
+
+zustand persist + idb：`artifacts`、`documents`、`image-gen`、`skills`、`review-cards`、`billing-history`。
+
+自定义 localStorage：`gailvlun-settings-v1`、`gailvlun-theme`、`gailvlun-appearance-v1`、`gailvlun-academic-year`、`gailvlun-browser-v1`、`gailvlun-disabled-shortcuts`、`gailvlun-sidebar-collapsed`、`gailvlun-topbar-collapsed`、`quickExplainWindowSize`、`gailvlun-quiz-progress-v1`。
+
+chatHistory 自定义 idb：`chat-history` / `chat-manifest` / `chat-session:*` / `chat-blob:*`。
+
+**搬家不得改这些 name**，否则用户会看到空白历史 / 设置重置。
+
+`components/chat/BillingDashboard.tsx` 与 `lib/window/openBillingDashboard.ts` 不是死代码，knip 不要删。
 
 ## 1. 执行摘要
 
-gailvlun 的状态管理采用 **Zustand 5.0** 单一库方案，无 Redux/Recoil/Jotai 等替代品。全项目共 **17 个独立 Zustand store**，按职责分为四大类：**全局 UI store**（`useStore`）、**功能 feature store**（`useChatHistory` / `useArtifacts` / `useQuizStore` / `useBrowser` / `useSettings` / `useTheme` / `useSkills` / `useReviewCards` / `useImageGen` / `useBillingStore`）、**临时 UI 态 store**（`useChatUI` / `useContextMenu` / `useWindowManager` / `useFloatingChats` / `useTokenTracker` / `useFloatingTokenTracker`）、**派生 hook**（`useChat` / `useChatHistory` / `useChatReady` / `useHydrated` / `useToc` / `useAutoHideChatHeader` 等）。
+gailvlun 的状态管理采用 **Zustand 5.0** 单一库方案，无 Redux/Recoil/Jotai 等替代品。全项目共 **17 个独立 Zustand store**（2026-07 快照；现网 28 个，见 §2.0），按职责分为四大类：**全局 UI store**（`useStore`）、**功能 feature store**（`useChatHistory` / `useArtifacts` / `useQuizStore` / `useBrowser` / `useSettings` / `useTheme` / `useSkills` / `useReviewCards` / `useImageGen` / `useBillingStore`）、**临时 UI 态 store**（`useChatUI` / `useContextMenu` / `useWindowManager` / `useFloatingChats` / `useTokenTracker` / `useFloatingTokenTracker`）、**派生 hook**（`useChat` / `useChatHistory` / `useChatReady` / `useHydrated` / `useToc` / `useAutoHideChatHeader` 等）。
 
 核心设计模式：
 1. **store 即 feature 边界** — 每个 store 对应一个功能域，`useStore` 是唯一全局 store（路由 + 布局 + outbound + PiP + TOC），其余 store 互不依赖（除 `useFloatingChats` → `useChatHistory` / `useWindowManager` / `useSettings` 等少量跨 store 调用）。

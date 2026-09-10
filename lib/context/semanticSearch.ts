@@ -15,7 +15,7 @@ export interface EmbeddingProvider {
   embedBatch(texts: string[]): Promise<number[][]>;
 }
 
-export interface VectorStore {
+interface VectorStore {
   index(
     documents: { id: string; content: string; metadata?: Record<string, unknown> }[],
   ): Promise<void>;

@@ -17,6 +17,7 @@ import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
+import { NOTES_PANEL_ID } from "@/lib/constants/layout";
 import type { SubjectId } from "@/lib/types/content";
 import { isSubjectId } from "@/lib/types/content";
 import type { ChatContext } from "@/lib/types/chat";
@@ -246,7 +247,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
         <div className="min-h-0 flex-1 overflow-hidden">
           <div className={clsx("h-full", mobileTab !== "detail" && "hidden")}>
-            <div id="notes-panel" className="h-full">
+            {/* 被 ManagedWindow fullscreenTarget="notes" 用作全屏对齐目标，勿改 id */}
+            <div id={NOTES_PANEL_ID} className="h-full">
               {children}
             </div>
           </div>
@@ -327,7 +329,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
           <Panel id="notes" order={2} minSize={32} defaultSize={50}>
             <div className="relative h-full w-full">
-              <div id="notes-panel" className="h-full w-full">
+              {/* 被 ManagedWindow fullscreenTarget="notes" 用作全屏对齐目标，勿改 id */}
+              <div id={NOTES_PANEL_ID} className="h-full w-full">
                 {children}
               </div>
               {isResizing && <PageLoader />}

@@ -8,6 +8,7 @@ import { CUSTOM_PREFIX, findCustomModelGroup, getModelInfoWithCustom } from '@/l
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
+import { openHtmlInNewTab } from '@/lib/utils/openHtmlInNewTab';
 
 type ArtifactApiEvent =
   | { type: 'ping'; t?: number }
@@ -18,10 +19,9 @@ type ArtifactApiEvent =
   | { type: 'artifact'; id: string; status: 'error'; message?: string };
 
 /**
- * 消息内的交互演示卡片：直接挂在对话气泡里（用户视线所在处），而非顶部独立横幅。
- * - 生成中：思考块实时展开 + 可选 HTML 源码，避免「0 字符像挂死」；
- * - 完成后：常驻、显眼的「打开演示」按钮（不会被折叠面板藏起来）。
- * artifact HTML 通过独立 /api/artifact SSE 流生成，完成后才持久化到 useArtifacts。
+ * HTML 演示（Artifact）消息内卡片。链路入口见 lib/ai/agent/tools/renderInteractive/tool.ts。
+ * 本文件只负责 SSE 生成与「打开演示」；真正的 iframe 浮窗在 ArtifactViewer（AppShell 全局层）。
+ * 不要在 components/notes/ 或右侧面板里给演示再做一份组件。
  */
 export default function ArtifactCard({
   artifactId,
@@ -180,9 +180,7 @@ export default function ArtifactCard({
 
   const openExternal = () => {
     if (!html) return;
-    const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
-    window.open(url, '_blank', 'noopener');
-    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    openHtmlInNewTab(html);
   };
 
   const codeChars = html.length;

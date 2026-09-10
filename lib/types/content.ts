@@ -60,7 +60,7 @@ export interface ContentTree {
   subjects: Subject[];
 }
 
-export interface ContentRoute {
+interface ContentRoute {
   subjectId: SubjectId;
   categoryId: string;
   itemId: string;

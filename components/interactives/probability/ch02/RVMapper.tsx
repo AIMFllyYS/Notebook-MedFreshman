@@ -593,7 +593,7 @@ function RVMapperBase() {
             核心概念：
           </span>
           随机变量 X 是从样本空间 Ω 到实数 ℝ 的<b style={{ color: INK }}>函数</b>。
-          它把随机试验的结果"数值化"，使我们能用数学工具分析概率。
+          它把随机试验的结果{'"数值化"'}，使我们能用数学工具分析概率。
         </div>
         <div>
           <span className="font-semibold" style={{ color: INK }}>
@@ -607,7 +607,7 @@ function RVMapperBase() {
             <span className="font-semibold" style={{ color: ACCENT }}>
               多对一映射：
             </span>
-            当前有多个样本点映射到相同 X 值，形成"合并"效果，该取值的概率变大——
+            当前有多个样本点映射到相同 X 值，形成{'"合并"'}效果，该取值的概率变大——
             这正是随机变量强大之处：通过变换揭示概率的结构。
           </div>
         )}

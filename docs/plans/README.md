@@ -83,18 +83,21 @@
 | [17-code-quality-audit-2026-09.md](./17-code-quality-audit-2026-09.md) | 交接文档（只读） | 2026-09 全量代码质量审查：质量基线、Git 卫生、死代码清单、对话抖动根因、artifact 组件归属混乱根因、Agent 架构、内容展示层 | 无；是 18–22 的事实依据 |
 | [18-plan-engineering-baseline.md](./18-plan-engineering-baseline.md) | 独立 Chat · **先行** | 工程基线体系：untrack 工具元数据与大归档、一次性脚本归档、6 项死代码删除、knip + import 边界 + 测试纳入 tsc/eslint、内容测试与代码测试分离 | 无；19–22 依赖它 |
 | [19-plan-chat-thread-scroll.md](./19-plan-chat-thread-scroll.md) | 独立 Chat · 需真机验证 | 对话流式渲染体系：消除 CSS/JS 双虚拟化冲突、单一滚动驱动、底部内边距单源、overflow-anchor | 18 |
-| [20-plan-window-artifact-system.md](./20-plan-window-artifact-system.md) | 独立 Chat | 窗口 / Artifact 体系：`ManagedWindow` 抽取、8 个浮窗迁移、artifact 全屏目标显式化、术语与路径地图 | 18；与 21 可并行 |
-| [21-plan-content-layout-profiles.md](./21-plan-content-layout-profiles.md) | 独立 Chat | 内容展示体系：`layoutProfile` 档位、`capabilities` 驱动 tab 与右栏、loader 路径解析声明化、纯文档课件 SOP | 18；与 20 可并行 |
-| [22-plan-agent-architecture.md](./22-plan-agent-architecture.md) | 独立 Chat · 改动面最大 | Agent 架构体系：工具注册表（每工具一目录）、28 个 store 收敛到 `lib/stores/`、`useChat.sendMessage` 拆分、`ChatSettings` 拆分 | 18、20；建议在 19/21 之后 |
+| [20-plan-window-artifact-system.md](./20-plan-window-artifact-system.md) | 独立 Chat | 窗口 / Artifact 体系：`ManagedWindow` 抽取、8 个浮窗迁移、artifact 全屏目标显式化、术语与路径地图 | 18 |
+| [21-plan-content-layout-profiles.md](./21-plan-content-layout-profiles.md) | 独立 Chat · **排最后** | 内容展示体系：`layoutProfile` 档位、`capabilities` 驱动 tab 与右栏、loader 路径解析声明化、纯文档课件 SOP | 18；与内容 Agent 正面撞车，须等其课件导入落地 |
+| [22-plan-agent-architecture.md](./22-plan-agent-architecture.md) | 独立 Chat · 改动面最大 | Agent 架构体系：工具注册表（每工具一目录）、28 个 store 收敛到 `lib/stores/`、`useChat.sendMessage` 拆分、`ChatSettings` 拆分、偿还 lint 欠账 | 18、20 |
 
 ### 2026-09 代码清洗拓扑
 
+原计划为 19 / 20 / 21 并行，实际因仓库里有另一个内容 Agent 并发提交，改为串行执行，顺序 **18 → 19 → 20 → 22 → 21**：
+
 ```
-18 ──┬── 19（抖动）
-     ├── 20（窗口/Artifact）──┐
-     └── 21（内容展示）        ├── 22（Agent 架构）
-                              ┘
+18（工程基线）✅ → 19（抖动）✅ → 20（窗口/Artifact）✅ → 22（Agent 架构） → 21（内容展示）
 ```
+
+- 每份计划由一个执行型子智能体做，完成后另派独立验收型子智能体端测，有问题再派修复型子智能体。计划 19 走完了完整的"执行 → 验收 → 修复"三轮。
+- `21` 从"可并行"改为"排最后"：它要改 `lib/content-data/manifest.ts`、`nav.generated.json`、`subjects.registry.ts`，而内容 Agent 每次导入课件都动这三个文件。`22` 动 `lib/ai/**`、`lib/stores/**`、`components/chat/**`，与之零重叠，故插到 `21` 前面。
+- 并发隔离、Git 纪律与既成不变量见 [00-execution-contract.md](./00-execution-contract.md)，所有子智能体开工必读。
 
 ## 全局规范
 

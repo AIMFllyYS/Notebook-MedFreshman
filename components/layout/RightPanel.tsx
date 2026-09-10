@@ -1,6 +1,7 @@
 "use client";
 
-import { Component, useMemo, useState, useEffect, useRef, type ErrorInfo, type ReactNode } from "react";
+import { Component, useMemo, useState, useRef, type ErrorInfo, type ReactNode } from "react";
+import { useIsClient } from "@/lib/hooks/useIsClient";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { MessageSquare, MonitorPlay, Hand, Globe, X } from "lucide-react";
@@ -102,8 +103,15 @@ export default function RightPanel() {
   // 追踪方向：比较新旧 tab index 决定滑入方向
   const tabIndex = RIGHT_TABS.findIndex((t) => t.id === tab);
   const prevTabIndexRef = useRef(tabIndex);
-  const dirRef = useRef<1 | -1>(1);
-  const variants = tabPanelVariants(dirRef.current);
+  const [dir, setDir] = useState<1 | -1>(1);
+  const variants = tabPanelVariants(dir);
+
+  const switchTab = (next: RightTab) => {
+    const newIdx = RIGHT_TABS.findIndex((x) => x.id === next);
+    setDir(newIdx >= prevTabIndexRef.current ? 1 : -1);
+    prevTabIndexRef.current = newIdx;
+    setTab(next);
+  };
   const activeSubjectId = useStore((s) => s.activeSubjectId);
   const activeCategoryId = useStore((s) => s.activeCategoryId);
   const activeItemId = useStore((s) => s.activeItemId);
@@ -117,8 +125,7 @@ export default function RightPanel() {
 
   // 避免 hydration mismatch：bookmarks 源自 localStorage，SSR 时使用默认值，
   // 客户端 hydrate 后才使用 localStorage 的真实数据。
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
   const safeBookmarks = mounted ? bookmarks : [];
 
   const academicYear = useAcademicYear((s) => s.year);
@@ -142,10 +149,7 @@ export default function RightPanel() {
               <button
                 key={t.id}
                 onClick={() => {
-                  const newIdx = RIGHT_TABS.findIndex((x) => x.id === t.id);
-                  dirRef.current = newIdx >= prevTabIndexRef.current ? 1 : -1;
-                  prevTabIndexRef.current = newIdx;
-                  setTab(t.id);
+                  switchTab(t.id);
                   if (t.id === "browser") openBrowse();
                 }}
                 className={clsx(
@@ -181,7 +185,7 @@ export default function RightPanel() {
               >
                 <button
                   onClick={() => {
-                    setTab("browser");
+                    switchTab("browser");
                     openBookmark(bm.id);
                   }}
                   className="press flex items-center gap-1"
@@ -202,12 +206,12 @@ export default function RightPanel() {
           })}
         </div>
 
-        <BrowserSettingsButton onAdded={() => setTab("browser")} />
+        <BrowserSettingsButton onAdded={() => switchTab("browser")} />
       </div>
 
       {/* Content area */}
       <div className="min-h-0 flex-1 overflow-hidden">
-        <AnimatePresence mode="wait" custom={dirRef.current}>
+        <AnimatePresence mode="wait" custom={dir}>
           <RightPanelTabBoundary key={tab} tab={tab}>
             {tab === "ai" && (
               <motion.div key="ai-chat" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">

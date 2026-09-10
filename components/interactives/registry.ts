@@ -15,6 +15,10 @@ export interface InteractiveMeta {
 /**
  * 交互组件注册表。每个条目以 id 唯一标识，可被笔记内 ::interactive{id=...}
  * 内联引用，也会出现在右侧「可交互」Tab 中。后续 SOP 子智能体在此追加条目。
+ *
+ * 灯塔：不要只搜「可视化」两个字。这里和 ChatMessageVisualizations 里一堆
+ * 「××可视化」是手写 React 组件；AI 生成的 HTML 演示走
+ * `lib/ai/agent/tools/renderInteractive` → ArtifactViewer 全局浮窗。
  */
 const interactives: InteractiveMeta[] = [
   {

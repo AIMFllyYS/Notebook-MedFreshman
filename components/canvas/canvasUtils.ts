@@ -124,11 +124,6 @@ function formatTickLabel(value: number, step: number): string {
 
 // ── SVG Path Generator ──────────────────────────────────────────────────────
 
-export interface Point {
-  x: number;
-  y: number;
-}
-
 /**
  * Sample a function and generate SVG path data.
  * Breaks the path at discontinuities (large jumps or NaN).

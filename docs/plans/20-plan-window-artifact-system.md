@@ -208,3 +208,106 @@ Commit：`docs(artifact): unify terminology, add path maps, disambiguate interac
 - 阶段 B 每个 viewer 一个 commit，任一回归可单独 revert。
 - `FloatingChatWindow` 内部可能有针对流式输出的特殊尺寸逻辑（如随内容自动增高），迁移前先读完整文件；若与 `ManagedWindow` 的固定几何模型冲突，允许它保留自定义外壳但复用 `ManagedWindow` 导出的 `useManagedWindowChrome()` hook（把 A1 的接线部分再拆一层 hook），不要硬塞。
 - 不要在本计划里改 `useWindowManager` 的 `ManagedWindowType` 联合类型或 z 序算法；`22` 若要把 window store 搬到 `lib/stores/`，届时一起处理。
+
+---
+
+## 执行记录
+
+执行日期：2026-09-09。全程留在 `dev`（契约写 master，以真实分支为准）。未 push。未改 `content/**`。未提交对方 Agent 的 `docs/refer/exam-type-distribution.md` / `mineru-parsing-guide.md`。截图只在仓库外 `%TEMP%\srp-plan20-verify\shots\`。
+
+### 1. 各阶段 commit
+
+| 阶段 | hash | 说明 |
+|------|------|------|
+| A | `89b1b9e2` | 抽出 `ManagedWindow`、`useManagedWindowChrome`、`NOTES_PANEL_ID`、`openHtmlInNewTab` |
+| B1 | `ebdbc644` | `SourcePreviewViewer` → ManagedWindow（并修掉 `setLoadFailed` 的 set-state-in-effect） |
+| B2 | `43c6dcfa` | `SourceTraceViewer` |
+| B3 | `b2fa83b0` | `NoteCitationViewer` |
+| B4 | `8f7a589c` | `ImageGenViewer` |
+| B5 | `4667a80f` | `DocumentViewer` |
+| B6 | `a244de98` | `ArtifactViewer`（55 行，达标 ≤60） |
+| B7 | `cfc2a4e6` | `RecordPreviewWindow` |
+| B8 | `52f155fc` | `FloatingChatWindow` 整窗迁入 ManagedWindow；未改 `ChatThread` / `useStickToBottom` / `AgentTrace` |
+| C | `e912fa72` | `artifactFullscreenTarget` + ChatSettings 开关 + AppShell 用 `NOTES_PANEL_ID` |
+| D | `173d7321` | 术语统一、路径地图、interactives README、`rendering-architecture.md` §8 |
+| 补丁 | `9f620a8e` | 去掉渲染期写 ref（hooks 自查 28→25） |
+| 记录 | （本小节） | 真机数字、偏差、30 秒定位问题 |
+
+`BillingDashboard` 未迁移（计划允许跳过）：它是 `absolute` + 自定义拖拽，不是 `createPortal` + `useDraggable` 那套复制。`TokenDashboard` 仍单独用 `useDraggable`，不是浮窗。
+
+### 2. 实际改动与计划的偏差
+
+1. **默认全屏目标是 `notes` 不是 `viewport`。** 现网八个 viewer + `useFullscreenTrack` 原先都对齐笔记栏。`ManagedWindow` 默认 `fullscreenTarget="notes"`，与现网一致；`viewport` 需自己 `commitGeometry` 铺满视口（`setFullscreen` 本身不改几何）。计划 A2 测试写法不成立。
+2. **`NOTES_PANEL_ID` 在阶段 A 就建了**，阶段 C 只补 AppShell 契约注释与设置项。
+3. **`BillingDashboard` 跳过**，理由见上。
+4. **`FloatingChatWindow` 整窗迁入了 `ManagedWindow`**，没有走「只复用 hook、自绘外壳」的退路。缩放柄改成统一 SVG grip。`registerOverlay={false}`（原先无 Esc 栈）。`fullscreenTarget` 为回调：有笔记栏则对齐，否则 `{0,48, innerWidth/2, innerHeight-48}`。
+5. **`buildTrace` 标签一并改成「HTML 演示」**（计划只写了 `toolPresentation`）。
+6. **分支是 `dev` 不是契约里的 master。** 未切分支、未 push。
+7. **真机「同时开 artifact + 文档 + 图片」改为 artifact + source-preview + 划词浮窗。** 文档/图片 viewer 还读各自 persist store；页面上没有 `useDocuments.getState` / `useImageGen.getState` 全局句柄，注入 `openWindow`  alone 不够。未再为验证改代码。三者已共用同一 `ManagedWindow` 壳。
+8. **Esc 关窗顺序本次未测干净。** 验证脚本误调用了 `SelectionPopover` 的 overlay `register`，随后右侧主聊天出现「面板加载失败」（重试无效，属验证污染，不是提交代码的产品回归）。`FloatingChatWindow` 本身按设计不进 Esc 栈。
+9. **划词浮窗流式探针 `drops=13`（max 162px）。** 18s 内 `scrollHeight` 1198→1616、`scrollTop` 750→1168，净位移与增高同步 +418，视觉上仍贴底。高于计划 19 的「允许 ≤1」。未改 `ChatThread` / `useStickToBottom` / `AgentTrace`。可能是虚拟列表测量/追问卡瞬时夹取被探针算进 drops，或外壳几何变化触发重测。留给验收方用 Qwen3.8 27B 关思考再看一眼。
+
+### 3. 行数对比（物理行）
+
+| 文件 | 后 | 前（约） |
+|------|----|---------|
+| SourcePreviewViewer | 92 | 188 |
+| SourceTraceViewer | 78 | 174 |
+| NoteCitationViewer | 148 | 239 |
+| ImageGenViewer | 411 | 535 |
+| DocumentViewer | 84 | 183 |
+| **ArtifactViewer** | **55** | 167（达标 ≤60） |
+| RecordPreviewWindow | 612 | 697 |
+| FloatingChatWindow | 115 | 196 |
+| BillingDashboard | 429 | 未迁 |
+| ManagedWindow | 159 | 新 |
+
+### 4. 门禁
+
+- `pnpm exec tsc --noEmit`：0
+- `pnpm lint`：0 error / ~153 warning
+- `pnpm test:react`：53 文件 / 234 例
+- `pnpm test`：node:test 508 + vitest 234
+- **hooks 自查**（计划指定的 5 条升 error）：改前 **26**，改后 **25**（未变大）。`SourcePreviewViewer.tsx:48` 那条已随 B1 消失。
+- **`pnpm build` 通过**：1210 个静态页。
+
+验收 rg：
+
+- `getElementById("notes-panel")` 在 `components`/`lib` 为零（走 `NOTES_PANEL_ID`）
+- `toolPresentation.ts` 无「可视化 HTML」
+- `useDraggable(` 在 `components` 只剩 `TokenDashboard`（非浮窗）+ hook 内
+- `preExpandRef` / `nwse-resize` 只在 `ManagedWindow` / `useManagedWindowChrome` / BillingDashboard / `useResizable` 注释
+
+### 5. 真机（agent-browser，`/probability/detail/1.1`，端口 35349）
+
+模型：**Qwen3.8 27B**，深度思考关闭。
+
+| 项 | 结果 |
+|----|------|
+| 设置「HTML 演示窗口 / 笔记区 / 整个窗口」 | 可见；localStorage `artifactFullscreenTarget` 可在 `notes`↔`viewport` 间切换 |
+| 打开演示 → 全屏 | 窗口几何精确对齐 `#notes-panel`（274.2, 48, 719×852），圆角 0 |
+| 全屏中切「整个窗口」 | 铺满视口 1440×900 @ (0,0) |
+| 最小化 → 任务栏「骰子」→ 恢复 | iframe 随 `unmountWhenMinimized` 卸载后再挂上 |
+| 拖拽 / 缩放 | 视口尺寸窗被夹在 (0,0) 拖不动（预期）；`commitGeometry` 收到 720×520 后，标题栏拖 +140/+70、缩放柄收到 632×462 |
+| 外链 | 「在新标签页打开」→ `blob:http://localhost:35349/...`（新 tab t2） |
+| 多窗 z 序 | artifact 5009 / source-preview 5010 / floating-chat 5011、5013；任务栏「更多窗口」有条目 |
+| 划词浮窗最小化 | 顶层窗 `display:none`，任务栏仍在 |
+| 划词浮窗流式 | 见偏差 §9；Qwen3.8 27B 关思考；`drops=13`，净贴底 |
+
+### 6. 「改右侧 Agent 面板里那个可视化 HTML」能否 30 秒内找到正确文件？
+
+**能。** 搜索词会落到同一条链，而不是 `components/notes/` 或 `components/interactives/`：
+
+1. 搜「可视化 HTML」或「HTML 演示」→ `docs/refer/rendering-architecture.md` §8 第一条写明：入口是 `components/chat/ArtifactViewer.tsx`，AppShell 全局浮窗，**既不属于右侧面板，也不属于笔记区**。
+2. 搜 `renderInteractive` → `lib/ai/agent/tools.ts` 定义上方路径地图：工具 → `artifact.ts` → `/api/artifact` → `ArtifactCard` → `useArtifacts` → **`ArtifactViewer`**。并写明「不是 interactives / 不是 HtmlRenderer / 不是内容页 html」。
+3. 搜 `ArtifactViewer` 文件头第一句就是：「要改『右侧 Agent 里那个可视化 HTML』请改本文件。」
+4. `components/interactives/README.md` 第一段把右侧「可交互」tab 和 AI artifact 拆开。
+
+工具 **id 未改**（`renderInteractive` 已在 IndexedDB 聊天历史里）。
+
+### 7. 未完成项
+
+- BillingDashboard 未迁（有意跳过）。
+- 真机未打开真实 DocumentViewer / ImageGenViewer（见偏差 7）。
+- Esc 关窗顺序被验证脚本污染，未作为通过项。
+- 划词浮窗 `drops` 高于计划 19 基线，需验收方目视确认「不抖」。

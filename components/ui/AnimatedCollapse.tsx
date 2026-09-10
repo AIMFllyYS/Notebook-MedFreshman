@@ -32,9 +32,7 @@ export default function AnimatedCollapse({ isOpen, children }: Props) {
   const [shouldRender, setShouldRender] = useState(isOpen);
 
   // 打开：先确保 children 已挂载，再由下方动画 effect 展开。
-  useEffect(() => {
-    if (isOpen) setShouldRender(true);
-  }, [isOpen]);
+  if (isOpen && !shouldRender) setShouldRender(true);
 
   useEffect(() => {
     if (isFirstRender.current) {

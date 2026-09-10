@@ -1,9 +1,10 @@
 {
-  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "$schema": "https://unpkg.com/knip@6/schema.json",
   "entry": [
     "app/**/{page,layout,route,manifest,not-found,error,loading}.{ts,tsx}",
     "electron/**/*.{js,mjs,ts}",
     "scripts/*.{ts,mjs,js}",
+    "tests/helpers/vitest-setup.ts",
     "**/*.test.{ts,tsx}"
   ],
   "project": ["app/**", "components/**", "lib/**", "electron/**", "scripts/*.{ts,mjs,js}"],
@@ -18,7 +19,9 @@
   "ignoreMembers": ["default"],
   "ignoreExportsUsedInFile": true,
   "ignoreIssues": {
-    "**": ["types", "duplicates"]
+    "lib/ai/agent/tools/index.ts": ["types"],
+    "lib/context/index.ts": ["types"],
+    "components/visualizations/primitives/index.ts": ["types"]
   },
   "treatConfigHintsAsErrors": false,
   "next": true,

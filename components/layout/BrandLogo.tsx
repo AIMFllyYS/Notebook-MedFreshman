@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, type Transition, type TargetAndTransition } from "framer-motion";
+import { useIsClient } from "@/lib/hooks/useIsClient";
 
 /**
  * 左上角品牌徽标：在一组「透明底 · 多彩」图形之间，每隔 intervalMs 渐变切换；
@@ -92,12 +93,8 @@ export default function BrandLogo({
   intervalMs?: number;
 }) {
   const [index, setIndex] = useState(0);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsClient();
   const reduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const id = setInterval(

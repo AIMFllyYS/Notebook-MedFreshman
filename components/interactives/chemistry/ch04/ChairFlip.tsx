@@ -94,7 +94,7 @@ function ChairFlipBase() {
         <span style={{ color: COLOR_AXIAL }} className="font-medium">直立键 a</span>
         和一根
         <span style={{ color: COLOR_EQUATORIAL }} className="font-medium">平伏键 e</span>
-        。点击"翻转"会在两个等能（取代基除外）的椅式间切换——
+        。点击{'"翻转"'}会在两个等能（取代基除外）的椅式间切换——
         <b>翻转后 a 键全部变 e 键、e 键全部变 a 键</b>。
       </p>
 

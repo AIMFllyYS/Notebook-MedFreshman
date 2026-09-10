@@ -36,19 +36,17 @@ export function useAutoHideChatHeader(hasUserSent: boolean, pinned: boolean) {
   const [engaged, setEngaged] = useState(false);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    if (!autoHideEnabled) {
+  // 与原先两个 effect 的稳态一致：自动隐藏关闭时清掉悬停/按住态（header 本就常显）；
+  // 仅在自动隐藏开启且 pinned 时强制展开。两者同时成立时不可互斥地反复 setState。
+  if (!autoHideEnabled) {
+    if (revealed || engaged) {
       setRevealed(false);
       setEngaged(false);
     }
-  }, [autoHideEnabled]);
-
-  useEffect(() => {
-    if (pinned) {
-      setRevealed(true);
-      setEngaged(false);
-    }
-  }, [pinned]);
+  } else if (pinned) {
+    if (!revealed) setRevealed(true);
+    if (engaged) setEngaged(false);
+  }
 
   const clearHideTimer = useCallback(() => {
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);

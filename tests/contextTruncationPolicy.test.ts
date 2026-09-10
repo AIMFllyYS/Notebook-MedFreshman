@@ -67,7 +67,12 @@ test("chat route uses last user message, selected model context manager, and sof
 });
 
 test("dynamic tool context uses contextKey de-duplication", () => {
-  const tools = readWorkspaceFile("lib/ai/agent/tools.ts");
+  const tools = [
+    "lib/ai/agent/tools/_shared.ts",
+    "lib/ai/agent/tools/getCurrentPage/tool.ts",
+    "lib/ai/agent/tools/useSkill/tool.ts",
+    "lib/ai/agent/tools/useSkill/types.ts",
+  ].map(readWorkspaceFile).join("\n");
 
   assert.match(tools, /contextKey\?: string/);
   assert.match(tools, /contextKey: `page:/);

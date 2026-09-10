@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Home, RotateCw, ArrowRight, ArrowLeft, ExternalLink, Globe, Search, Smartphone, Monitor, ShieldAlert, Loader2 } from "lucide-react";
 import EmbedFallback from "@/components/browser/EmbedFallback";
 import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
@@ -29,16 +29,18 @@ export default function BrowserTab() {
   const setViewMode = useBrowser((s) => s.setViewMode);
 
   const [addr, setAddr] = useState(currentUrl);
-  useEffect(() => setAddr(currentUrl), [currentUrl]);
+  const [prevUrl, setPrevUrl] = useState(currentUrl);
+  if (currentUrl !== prevUrl) {
+    setPrevUrl(currentUrl);
+    setAddr(currentUrl);
+  }
 
   // 桌面端（Electron）→ 用真实 <webview> 跑全站；网页/开发态 → 维持 iframe + 可嵌入预检。
-  const [isDesktop, setIsDesktop] = useState(false);
-  useEffect(() => {
-    setIsDesktop(
-      typeof window !== "undefined" &&
-        !!(window as unknown as { desktop?: { isElectron?: boolean } }).desktop?.isElectron,
-    );
-  }, []);
+  const isDesktop = useSyncExternalStore(
+    () => () => {},
+    () => !!(window as unknown as { desktop?: { isElectron?: boolean } }).desktop?.isElectron,
+    () => false,
+  );
   const webviewRef = useRef<WebviewEl | null>(null);
   const { blocked, forceEmbed } = useEmbeddable(isDesktop ? null : currentUrl || null);
 
