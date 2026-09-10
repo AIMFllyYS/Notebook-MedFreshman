@@ -11,6 +11,7 @@
 |---|---|
 | 了解现在的架构/约定是什么、有哪些不能踩的红线 | [`plans/00-execution-contract.md`](./plans/00-execution-contract.md) 第六节 |
 | 按 SOP 生产内容（教材/详解/录音/题目/新学科接入…） | [`sop/`](./sop/README.md) |
+| 派发一次具体的内容同步/生成任务，怎么写 prompt | [`prompt/goal-model.md`](./prompt/goal-model.md) |
 | 查某个子系统当前实现的权威说明（渲染架构、存储架构等） | [`refer/`](#refer--权威参考手册活文档) |
 | 回顾"为什么现在长这样"、看某次重构的完整过程 | [`plans/`](./plans/README.md)（`01`–`24`）、[`research/`](#research--深度调研报告2026-07-05-快照) |
 | 找已经完成/废弃/不再维护的旧材料 | [`archive/`](./archive/README.md)、[`superpowers/`](#superpowers--历史设计草案)、[`compose/`](#compose--历史设计草案) |
@@ -26,6 +27,7 @@ docs/
 ├── plans/              执行计划 + 唯一权威契约（00）+ 索引（README）
 ├── refer/               权威参考手册（活文档）
 ├── sop/                 标准操作流程（活文档）
+├── prompt/              派发内容任务的提示词模板（Goal Model 等）
 ├── research/            2026-07-05 深度调研报告快照
 ├── releases/            版本发布记录
 ├── archive/             历史归档（含 trae-specs/、简化版本/、旧交接文档）
@@ -63,6 +65,10 @@ docs/
 
 内容生产的操作规范，索引见 [`sop/README.md`](./sop/README.md)（含 SOP 编号、覆盖板块、全局规范、内容路径约定表）。执行任何内容生产任务前必须先查这里定位适用的 SOP。
 
+## `prompt/` —— 提示词模板（活文档）
+
+派发具体内容任务时用的提示词模板，见 [`prompt/README.md`](./prompt/README.md)。与 `sop/` 的关系：`sop/` 是"应该怎么做"的规范，`prompt/` 是"怎么正确地把规范喂给一次具体任务派发"的模板——目前只有 [`goal-model.md`](./prompt/goal-model.md)。
+
 ## `research/` —— 深度调研报告（2026-07-05 快照）
 
 18 篇 + 1 篇总览，是 2026-07-05 对彼时代码库的一次全维度深度调研（[`overview.md`](./research/overview.md) 有完整方法论与团队分工）。**性质介于活文档与历史记录之间**：它按维度系统性描述架构，本轮清洗已核对并修正其中因计划 `18`–`24` 产生的过时路径引用（store 布局、指令组件位置等），但报告本身的调研方法、问题分级、日期仍保留原样，不是"当前状态的实时镜像"。看具体子系统的现在实现，优先看 `refer/`；看"当时调研出的问题清单和分析深度"，看这里。
@@ -79,6 +85,7 @@ docs/
 - `简化版本/`：概率论与数理统计独立自学笔记草稿（与 `content/` 的正式课件是两套体系，本轮从 `docs/` 根目录移入于此，正文未改）。
 - `HANDOFF-agent-sdk-trace-ui.md`：Agent SDK / Trace UI 迁移交接文档，已被计划 `22`/`23`/`24` 完成并取代。
 - `large-assets-2026-09.md`：大体积资源归档记录。
+- `REWRITE-LOOP.md`：大二上医学教材富文本改写循环的任务专属操作卡（原在仓库根目录）。任务已完成，可复用的反降质机制已沉淀进 [`sop/00-infrastructure.md`「内容生产闭环与反降质契约」](./sop/00-infrastructure.md#内容生产闭环与反降质契约)及 `01`/`02`/`02b`/`03`/`04` 各自的验收细节，现移入本目录仅作历史操作记录保留。
 
 ## `superpowers/` —— 历史设计草案
 
@@ -94,7 +101,8 @@ docs/
 
 - `README.md`（仓库根）—— 项目总览、快速开始、功能特性、技术栈。
 - `CHANGELOG.md`（仓库根）—— 版本变更日志。
-- `REWRITE-LOOP.md`（仓库根）—— 内容 Agent 的教材富文本改写循环操作手册，与 `docs/` 下的项目文档体系是两套独立材料，本轮未触碰（不属于 `.md` 文档清洗的"项目文档"范畴，且是内容 Agent 的作业域）。
+
+> `REWRITE-LOOP.md` 原在仓库根目录，已随其所记录任务的完成移入 [`docs/archive/`](#archive--历史归档)，不再是根目录文档。
 
 ---
 

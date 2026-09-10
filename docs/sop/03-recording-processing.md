@@ -32,15 +32,16 @@
 
 ## 执行角色分配
 
+> 本 SOP 的内容生产阶段必须遵守 [00-infrastructure.md「内容生产闭环与反降质契约」](./00-infrastructure.md#内容生产闭环与反降质契约)：清洗和纪要生成都需要理解课堂语义（判断哪些是老师的重点暗示、哪些是无关闲聊），**不能用脚本批量做去噪/摘要**——脚本只负责 PPT/DOCX 到 Markdown 的格式转换，语义判断必须是执行子智能体亲自读逐字稿做出来的。
+
 | 阶段 | 角色 | 类型 | 职责 |
 |------|------|------|------|
-| PPT 解析 | Parser | Shell subagent | 若有配套 PPT，运行 `scripts/parse-docs.ts` |
+| PPT 解析 | Parser | Shell subagent | 若有配套 PPT，运行 `scripts/parse-docs.ts`（纯格式转换，不做语义判断，符合 [00 号契约「1a. Python/脚本使用边界」](./00-infrastructure.md#内容生产闭环与反降质契约) 的"允许"类别） |
 | DOCX 解析 | DocParser | Shell subagent | 若有 .docx 智能纪要，通过 MinerU 解析为 markdown |
-| 录音清洗 | Cleaner-1~N | GeneralPurpose subagent (每个处理 3-4 讲) | 逐字稿去噪、格式化 |
-| 纪要生成 | Summarizer-1~N | GeneralPurpose subagent (每个处理 3-4 讲) | 生成结构化课堂纪要 |
-| 集成 | Integrator | GeneralPurpose subagent | manifest 注册 + 验证 |
+| 闭环生产 | Cleaner+Summarizer-1~N | GeneralPurpose subagent (每个处理 3-4 讲，含清洗+纪要+自查) | 逐字稿去噪、格式化，并基于清洗后的逐字稿生成结构化纪要；写完立刻按 [「验收（强制）」](#验收强制) 自查，通过才算完成 |
+| 集成 | Integrator | GeneralPurpose subagent | manifest 注册 + 验证（跨讲次的机械收尾步骤，不涉及内容质量判断） |
 
-**上下文控制**：单个逐字稿通常 5000-15000 字，3-4 讲合计约 20000-60000 字。每个 Cleaner/Summarizer subagent 限制处理 3-4 讲以保证质量。
+**上下文控制**：单个逐字稿通常 5000-15000 字，3-4 讲合计约 20000-60000 字。每个执行子智能体限制处理 3-4 讲以保证质量；素材明显偏长或某一讲内容特别密集时应进一步拆小。清洗和纪要生成由同一个子智能体在同一个闭环里完成（纪要要基于清洗后的逐字稿生成，拆成两个互不担责的角色容易导致纪要脱离逐字稿原文自由发挥）。
 
 ## 步骤流程
 
@@ -223,13 +224,27 @@ export const chemistryLectures: readonly LectureMeta[] = [
 录音和纪要文件完成后，在项目根目录运行 `pnpm build-index` 重建检索索引。
 随后运行 `pnpm check:registry`，确认 lectures 派生条目、正文文件和 manifest 保持一致。
 
-## AI 工具可达性验证
+## 验收（强制）
 
-完成后验证：
+每一讲闭环完成前，必须按 [00-infrastructure.md「内容生产闭环与反降质契约」第 3 节](./00-infrastructure.md#内容生产闭环与反降质契约) 走完机械层 + 视觉层验收，另加录音场景特有的**内容真实性抽查**——这是本 SOP 独有的降质信号，REWRITE-LOOP 没覆盖：
+
+### 内容真实性抽查（录音场景特有）
+
+录音/纪要最容易出现的降质不是"体积不够"，而是**纪要脱离逐字稿自由发挥、把老师的具体重点暗示写成了通用套话总结**。抽查方法：
+
+- 随机抽 2-3 处纪要中的"考试重点标注"，回查逐字稿对应时间戳，确认老师确实说过类似的话（"这个要考""重点""记住"等），不是纪要生成时凭常识编的。
+- 确认纪要"教学要点"里的具体论述（不是泛泛的"介绍了XX概念"这种可以套用任何课程的空话）能在逐字稿里找到对应段落。
+
+### 机械层
+
+- 逐字稿清洗后应保留说话人标注和时间戳，且已完成 §3.2 的说话人合并（不应残留同一说话人被 ASR 断句成多段未合并的痕迹）。
+- 纪要固定模板的六个小节（关键词/核心议题/教学要点/考试重点标注/课堂讨论/延伸阅读）不应有大段空白（无内容的小节应省略而不是留占位文字）。
+
+### 视觉层
 
 1. `readContentMarkdown(subjectId, "recording", "rec-01")` 返回非空
 2. `readContentMarkdown(subjectId, "summary", "sum-01")` 返回非空
-3. 浏览器访问 `/{subject}/recording/rec-01`，确认渲染正常
+3. 用 `agent-browser` 实际打开 `/{subject}/recording/rec-01`，确认渲染正常，截图留证
 4. AI Tab 中发送"这节课讲了什么重点"，确认 AI 能读取当前录音/纪要内容
 
 ## 参考文件

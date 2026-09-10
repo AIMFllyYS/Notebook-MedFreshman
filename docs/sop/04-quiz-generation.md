@@ -15,17 +15,28 @@
 
 ## 执行角色分配
 
+> 本 SOP 的出题阶段必须遵守 [00-infrastructure.md「内容生产闭环与反降质契约」第 1a 节](./00-infrastructure.md#内容生产闭环与反降质契约)：**禁止用脚本/关键词匹配批量生成题目或答案**——每道题的立意、干扰项设计、答案核验都需要理解具体知识点，脚本只能做 Step 5 的 JSON 格式化，不能替代出题和核验这两步判断。项目里已有真实反例 `scripts/one-off/fill-maogai-example-answers.ts`（按关键词给候选段落打分、取分最高的几段拼成答案，完全没判断是否真的回答了问题），新出题任务不要重复这个模式，也不要把题目内容写成 `.py`/`.ts` 脚本里的字符串常量再跑脚本装配——出题子智能体应直接产出最终 JSON 文件。出题与核验必须闭环配对（见下文「出题→核验闭环」），不能只出题不核验就交付。
+
 | 阶段 | 角色 | 类型 | 职责 |
 |------|------|------|------|
 | 信息收集 | Explorer | Explore subagent | 读取详解 + 题型分布 + 大纲 |
 | 本章出题 | QuizGen-Current | GeneralPurpose subagent | 生成本章 50% 的题目 |
 | 滚动复习出题 | QuizGen-Review | GeneralPurpose subagent | 生成前序章节 50% 的题目 |
+| 核验（强制） | Verifier | GeneralPurpose subagent（独立于出题者） | 逐题核验答案、干扰项、评分标准，见下文「出题→核验闭环」 |
 | 组卷+评分标准 | Assembler | GeneralPurpose subagent | 合并、校验、生成评分标准 |
-| 写入 | Writer | Shell/GeneralPurpose subagent | 格式化为 JSON 写入文件 |
+| 写入 | Writer | Shell/GeneralPurpose subagent | 格式化为 JSON 写入文件（纯格式转换，不做出题判断） |
 
 **上下文控制**：
 - Explorer 只负责收集信息并总结为精简的知识点清单传递给出题 subagent
 - 出题 subagent 不需要完整的详解原文，只需知识点清单 + 题型要求
+
+### 出题 → 核验闭环（强制，非"推荐"）
+
+出题不是一次性动作，必须完成"出题 subagent 产出 → 独立的 Verifier subagent 核验 → 有疑义改题或换题 → 再核验直到通过"这一整圈才算闭环完成，二者缺一不可：
+
+- **出题者**不得跳过 Verifier 自行判定"答案肯定对"就交付。
+- **Verifier** 必须实际 `Read` 对应章节的详解/教材，逐题确认答案与原文一致、干扰项确有迷惑且确为错、辨析判断成立；有疑义时反馈给出题者改题或换题，而不是自己直接改答案（避免 Verifier 自己也凭记忆臆测）。
+- 只有 Verifier 判定通过的题目才能进入 Assembler 组卷阶段。
 
 ## 步骤流程
 
@@ -177,7 +188,7 @@ Writer subagent 将组卷结果写入 `content/quiz/{subject}/{chapterId}.json`�
 ### 1. 答案必须经子智能体核验为「绝对正确」
 
 - 出题不得凭记忆臆测答案。每道题的正确答案**必须基于项目内容核验**：出题子智能体须实际 `Read` 对应章节的详解 `.md`（及例题、教材），确认答案与教材表述一致。
-- 推荐「出题 → 核验」两遍：由独立子智能体逐题复核（答案是否唯一正确、干扰项是否确有迷惑且确为错、辨析判断是否成立），有疑义则改题或换题。
+- 「出题 → 核验」两遍是**强制流程**（见上文「出题→核验闭环」），不是可选项：由独立子智能体逐题复核（答案是否唯一正确、干扰项是否确有迷惑且确为错、辨析判断是否成立），有疑义则改题或换题。
 - 客观题（单选/多选/判断/辨析）的 `answer` 必须与教材**无歧义**对应；多选不得漏项错项。
 
 ### 2. `explanation` 必须是真实的深度解析
@@ -214,6 +225,14 @@ Writer subagent 将组卷结果写入 `content/quiz/{subject}/{chapterId}.json`�
 - 详见各科出题计划（概率论见 `docs/plans/05c-quiz-probability.md`）。
 
 Quiz 生效的前提是所属板块在 manifest 中声明了 `quiz` 能力；标准板块已由 `lib/content-data/category-templates.ts` 统一声明，学科私有板块需在自己的 Category 对象中明确加入该能力。
+
+## 量化汇报（强制）
+
+Assembler/Writer 完成组卷后，必须汇报以下数字，不能只说"题目已生成"（对齐 [00-infrastructure.md 反降质契约](./00-infrastructure.md#内容生产闭环与反降质契约) 的"禁止相信口头已完成"）：
+
+- 题目总数、按题型/难度/来源（`current_chapter`/`review`）的分布（应与 `summary` 字段一致）
+- 核验轮次：本次是否有题目被 Verifier 打回改题/换题，改了几道
+- 分值合计是否等于 `examConfig.totalPoints`
 
 ## AI 工具可达性验证
 

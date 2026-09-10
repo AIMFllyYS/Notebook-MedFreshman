@@ -14,14 +14,15 @@
 
 ## 执行角色分配
 
+> 本 SOP 的内容生产阶段（结构提取+格式转换）必须遵守 [00-infrastructure.md「内容生产闭环与反降质契约」](./00-infrastructure.md#内容生产闭环与反降质契约)：一个执行子智能体对自己负责的章节，从"提取结构"到"转换为指令块"到"自查验收"全程闭环负责，不要把提取和格式化拆成两个互不担责的角色。
+
 | 阶段 | 角色 | 类型 | 职责 |
 |------|------|------|------|
-| 解析 | Parser | Shell subagent | 运行 `scripts/parse-docs.ts` 解析 PDF/PPT |
-| 结构提取 | Extractor-1~N | GeneralPurpose subagent (每个处理 3-4 章) | 从 raw markdown 提取结构化内容 |
-| 格式化 | Formatter | GeneralPurpose subagent | 统一指令块格式、例题归类 |
-| 集成 | Integrator | GeneralPurpose subagent | manifest 注册 + AI 可达性验证 |
+| 解析 | Parser | Shell subagent | 运行 `scripts/parse-docs.ts` 解析 PDF/PPT（脚本只做格式转换，不做内容判断，符合 [00 号契约「1a. Python/脚本使用边界」](./00-infrastructure.md#内容生产闭环与反降质契约) 的"允许"类别） |
+| 闭环生产 | Rewriter-1~N | GeneralPurpose subagent (每个负责 3-4 章，含提取+格式转换+自查) | 从 raw markdown 提取结构化内容并转换为指令块正文；写完立刻按 [「验收（强制）」](#验收强制) 自查，通过才算完成 |
+| 集成 | Integrator | GeneralPurpose subagent | manifest 注册 + AI 可达性验证（跨章节的机械收尾步骤，不涉及内容质量判断，允许独立于 Rewriter 存在） |
 
-**上下文控制**：Extractor 按章节拆分，每个 subagent 仅接收 3-4 章的 raw markdown，避免上下文过长。
+**上下文控制**：Rewriter 按章节拆分，每个 subagent 仅接收 3-4 章的 raw markdown；素材明显偏大（原始切片 > 40 KB）、章节小节数偏多（≥4 个节文件）时应进一步拆小，避免上下文过长导致"写到后面开始摘要式偷懒"。
 
 ## 步骤流程
 
@@ -110,6 +111,8 @@ $$
 
 #### 格式转换规则
 
+下表是**常用的一部分**，不是全部——完整的 14 个指令组件清单见 [rendering-architecture.md §2.2](../refer/rendering-architecture.md)，转换时应按内容的真实结构选用最贴切的指令，不要因为 SOP 里只写了几个例子就只会用这几个（这正是内容降质的一个常见来源）：
+
 | 教材中的元素 | 转换为 | 说明 |
 |-------------|--------|------|
 | 定义/概念 | `:::definition{label=...}` | 保留原文，公式用 KaTeX |
@@ -117,8 +120,17 @@ $$
 | 例题（讲解用） | `:::example{label=...}` | 含完整解答 |
 | 注意事项 | `:::pitfall{label=...}` | 教材中的"注意""易错" |
 | 一般说明 | `:::note` | 补充性文字 |
+| 记忆要点/易挖空考点 | `:::memory{label=...}` | 需要挖空自测的核心结论，配合 `mode=cloze` |
+| 时间/发展脉络 | `:::timeline` | 有明确先后顺序的历史/流程性内容 |
+| 关键事件 | `:::event` | 单个具体历史事件的要素化呈现 |
+| 核心概念卡 | `:::concept` | 需要单独强调、反复出现的核心概念 |
+| 多对象对比 | `:::compare` | 两个及以上概念/方案/学派的对照 |
+| 因果链 | `:::cause-effect` | 需要显式呈现"因为…所以…"的推理链 |
+| 考点/重点标注 | `:::keypoint` | 教材或考纲明确划出的重点 |
 | 独立公式 | `$$...$$` | 必须独占行 |
 | 行内公式 | `$...$` | |
+
+> 近现代史/毛概等人文科目还有 7 个专属指令（`:::timeline`/`:::event`/`:::concept`/`:::compare`/`:::cause-effect`/`:::keypoint`/`historymap`），详见 [modern-history-textbook-format.md](../refer/modern-history-textbook-format.md)。
 
 ### Step 4：例题提取（指向例题 Tab）
 
@@ -165,13 +177,24 @@ $$
 | 正文例题 | 内嵌于教材正文 `:::example` 指令块中 | — |
 | 例题Tab题目 | `content/examples/{subject}/{chapterId}/{sectionId}/EX{NN}_{slug}.md` | 编号+简述 |
 
-## AI 工具可达性验证
+## 验收（强制）
 
-完成后执行以下验证（参照 [05-content-integration.md](./05-content-integration.md)）：
+每章闭环完成前，必须按 [00-infrastructure.md「内容生产闭环与反降质契约」第 3 节](./00-infrastructure.md#内容生产闭环与反降质契约) 走完机械层 + 视觉层验收，缺一不可，不能只做下面 AI 可达性验证这三条：
+
+### 机械层
+
+- **体积/密度基准**：对照当前已完成的教材黄金范例实测校准（如医学教材 `content/biochemistry/textbook/ch05-1.md` 约 35 KB、24 个 `:::definition`；概率论/物理等理工科教材篇幅可能不同，以本科目已完成的其他章节为准）。明显小于同科目其他已完成章节、且 `:::definition` 数量个位数的，判定为可疑的未加工 dump，不能算完成。
+- **垫圾标记黑名单**：不应残留"本章数字资源""第一篇/第N篇"之类的解析残留文字，标题不应含 `\x00` 等控制字符。
+- **指令块引号规范**：`label="..."` 必须带英文双引号，不能写 `label=概念名` 这种无引号形式（会导致指令解析失败）。
+
+### 视觉层
 
 1. `readContentMarkdown(subjectId, "textbook", chapterId)` 返回非空
-2. 浏览器访问 `/{subject}/textbook/{chapterId}`，确认渲染正常
-3. AI Tab 中发送"教材第X章讲了什么"，确认 AI 能通过 `getCurrentPage` 读取
+2. 用 `agent-browser` 实际打开 `/{subject}/textbook/{chapterId}`，等目标指令块（如"定义"卡片）真正渲染出来后截图；截图字节数明显偏小（接近空白页体量）判定为失败，换 session 重拍，不覆盖已合格的截图
+3. 肉眼确认截图内容：能看到自定义指令卡片渲染效果，不是纯 dump 文本墙；插图不是破图图标
+4. AI Tab 中发送"教材第 X 章讲了什么"，确认 AI 能通过 `getCurrentPage` 读取
+
+完整验证参照 [05-content-integration.md](./05-content-integration.md)。
 
 ## 参考文件
 
