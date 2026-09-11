@@ -4,6 +4,7 @@ import { useState } from "react";
 import { DollarSign, Download } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { exportAllChats } from "@/lib/chat/exportChats";
+import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
 import { h3Cls } from "./_shared";
 
 export function BillingSection() {
@@ -46,6 +47,7 @@ export function BillingSection() {
 
 export function ExportSection() {
   const [exportMsg, setExportMsg] = useState<string | null>(null);
+  const [logExportMsg, setLogExportMsg] = useState<string | null>(null);
 
   return (
       <section className="flex flex-col gap-2">
@@ -69,6 +71,26 @@ export function ExportSection() {
         {exportMsg && (
           <span className="text-[11px] font-medium text-[var(--md-sys-color-primary)]">
             {exportMsg}
+          </span>
+        )}
+        <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+          导出已落盘的 Agent 生命周期日志，保持原始 JSONL，不做清洗。
+        </p>
+        <button
+          type="button"
+          aria-label="导出全部日志"
+          onClick={() => {
+            void exportAgentLogs().then((r) => {
+              setLogExportMsg(r.ok ? (r.empty ? "暂无日志" : "已导出") : (r.error ?? "导出失败"));
+            });
+          }}
+          className="press flex items-center gap-1.5 self-start rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)]"
+        >
+          <Download size={13} /> 导出全部日志
+        </button>
+        {logExportMsg && (
+          <span className="text-[11px] font-medium text-[var(--md-sys-color-primary)]">
+            {logExportMsg}
           </span>
         )}
       </section>

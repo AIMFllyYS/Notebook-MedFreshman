@@ -5,10 +5,20 @@ import userEvent from "@testing-library/user-event";
 import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
 import { useTheme } from "@/lib/hooks/useTheme";
 import GlobalSettings from "./GlobalSettings";
+import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),
   usePathname: () => "/",
+}));
+
+vi.mock("@/lib/ai/observability/downloadAgentLog", () => ({
+  exportAgentLogs: vi.fn().mockResolvedValue({
+    ok: true,
+    empty: false,
+    filename: "agent-lifecycle.jsonl",
+    byteLength: 12,
+  }),
 }));
 
 function renderSettings() {
@@ -36,6 +46,7 @@ describe("GlobalSettings", () => {
       appearance: DEFAULT_APPEARANCE_SETTINGS,
     });
     (window as unknown as { scrollTo: () => void }).scrollTo = vi.fn();
+    vi.mocked(exportAgentLogs).mockClear();
   });
 
   it("renders score and appearance sections with details collapsed by default", () => {
@@ -44,8 +55,20 @@ describe("GlobalSettings", () => {
     expect(screen.getByRole("button", { name: /成绩/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: /快捷键/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: /外观/ })).toHaveAttribute("aria-expanded", "false");
+    expect(screen.getByRole("button", { name: "导出全部日志" })).toBeInTheDocument();
     expect(screen.queryByText("清空全部成绩")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "彩色" })).not.toBeInTheDocument();
+  });
+
+  it("exports raw agent JSONL from the settings page in one click", async () => {
+    const user = userEvent.setup();
+    renderSettings();
+
+    await user.click(screen.getByRole("button", { name: "导出全部日志" }));
+    await waitFor(() => {
+      expect(exportAgentLogs).toHaveBeenCalledTimes(1);
+    });
+    expect(await screen.findByText("已导出")).toBeInTheDocument();
   });
 
   it("expands score details and keeps data actions inside the score section", async () => {
