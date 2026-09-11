@@ -9,6 +9,8 @@ import {
   type OtpRequestResult,
   type OtpVerifyResult,
 } from "@/lib/auth/otp";
+import { installAiAuthFetch } from "@/lib/auth/installAiAuthFetch";
+import { applySessionCookie, sessionAccessToken } from "@/lib/auth/sessionCookie";
 import {
   readPersistedSession,
   signOutSession,
@@ -80,7 +82,10 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
     async (email: string, token: string): Promise<OtpVerifyResult> => {
       if (!client) return { ...UNAVAILABLE };
       const result = await verifyEmailOtp(client, email, token);
-      if (result.ok) apply(snapshotAuthSession(result.user, result.session));
+      if (result.ok) {
+        applySessionCookie(result.session);
+        apply(snapshotAuthSession(result.user, result.session));
+      }
       return result;
     },
     [apply, client],
@@ -102,6 +107,16 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
   };
 }
 
+function useInstallAiAuthFetch(authClient: AuthSessionClient | null) {
+  useEffect(() => {
+    if (!authClient) return;
+    return installAiAuthFetch(async () => {
+      const { data } = await authClient.auth.getSession();
+      return sessionAccessToken(data.session);
+    });
+  }, [authClient]);
+}
+
 export function AuthProvider({
   children,
   client,
@@ -110,6 +125,8 @@ export function AuthProvider({
   client?: AuthRuntimeClient | null;
 }) {
   const value = useAuthSessionController(client);
+  const fetchClient = client !== undefined ? client : tryGetBrowserAuthClient();
+  useInstallAiAuthFetch(fetchClient);
   return <AuthSessionContext.Provider value={value}>{children}</AuthSessionContext.Provider>;
 }
 

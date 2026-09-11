@@ -3,6 +3,8 @@
  * Persistence itself is Supabase persistSession (see BROWSER_AUTH_OPTIONS).
  */
 
+import { applySessionCookie } from "./sessionCookie.ts";
+
 export const LOGIN_PATH = "/login";
 
 export interface AuthSessionUser {
@@ -14,19 +16,21 @@ export interface AuthSession {
   user: AuthSessionUser;
 }
 
+export interface AuthSessionPayload {
+  user?: { id?: string; email?: string | null } | null;
+  access_token?: string;
+}
+
 export interface AuthSessionClient {
   auth: {
     getSession: () => Promise<{
       data: {
-        session: { user?: { id?: string; email?: string | null } | null } | null;
+        session: AuthSessionPayload | null;
       };
       error: { message: string } | null;
     }>;
     onAuthStateChange: (
-      callback: (
-        event: string,
-        session: { user?: { id?: string; email?: string | null } | null } | null,
-      ) => void,
+      callback: (event: string, session: AuthSessionPayload | null) => void,
     ) => { data: { subscription: { unsubscribe: () => void } } };
     signOut: () => Promise<{ error: { message: string } | null }>;
   };
@@ -55,6 +59,7 @@ export async function readPersistedSession(
   client: AuthSessionClient,
 ): Promise<AuthSession | null> {
   const { data } = await client.auth.getSession();
+  applySessionCookie(data.session);
   return snapshotAuthSession(data.session?.user ?? null, data.session);
 }
 
@@ -63,6 +68,7 @@ export function subscribeAuthSession(
   onChange: (session: AuthSession | null) => void,
 ): () => void {
   const { data } = client.auth.onAuthStateChange((_event, session) => {
+    applySessionCookie(session);
     onChange(snapshotAuthSession(session?.user ?? null, session));
   });
   return () => data.subscription.unsubscribe();
@@ -73,5 +79,6 @@ export async function signOutSession(
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   const { error } = await client.auth.signOut();
   if (error) return { ok: false, message: error.message };
+  applySessionCookie(null);
   return { ok: true };
 }
