@@ -3,6 +3,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { useStore } from "@/lib/stores/ui";
 
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/",
+}));
+
 vi.mock("next/dynamic", () => ({
   default: () => () => <div data-testid="dynamic-tab" />,
 }));

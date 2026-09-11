@@ -11,4 +11,12 @@ export const histologyKaoqianItems: ContentItem[] = [
 
 export const histologyShizhanItems: ContentItem[] = [
   { id: "real-01", title: "2021 秋季期末考试回忆版（组胚）", type: "document", status: "done" },
+  { id: "real-02", title: "02 级七年制理论试卷（试题卷）", type: "document", status: "done" },
+  { id: "real-03", title: "02 级七年制理论试卷及答案", type: "document", status: "done" },
+  { id: "real-04", title: "04 级五年制理论试卷", type: "document", status: "done" },
+  { id: "real-05", title: "05 级五年制理论试卷 A 卷", type: "document", status: "done" },
+  { id: "real-06", title: "同济医学院理论试卷 1", type: "document", status: "done" },
+  { id: "real-07", title: "同济医学院理论试卷 2", type: "document", status: "done" },
+  { id: "real-08", title: "历年非选择题汇编（2022.2.9）", type: "document", status: "done" },
+  { id: "real-09", title: "07 级护理专科理论试卷", type: "document", status: "done" },
 ];

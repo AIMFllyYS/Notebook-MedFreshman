@@ -312,8 +312,7 @@ export default function ContentPageClient({
         </AnimatePresence>
       </div>
 
-      {/* 划词助手：reference 档位不挂载 */}
-      {layoutProfile !== "reference" && <SelectionPopover containerRef={containerRef} />}
+      <SelectionPopover containerRef={containerRef} />
 
       {/* HTML 全屏覆盖层 */}
       {isHtmlFullscreen && content && (

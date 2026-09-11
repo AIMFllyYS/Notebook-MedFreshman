@@ -1,12 +1,14 @@
 "use client";
 
 import { Component, useEffect, useMemo, useState, useRef, type ErrorInfo, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import { MessageSquare, MonitorPlay, Hand, Globe, PanelRightClose, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useStore, type RightTab } from "@/lib/stores/ui";
+import { resolveRouteLayout } from "@/lib/content/routeLayout";
 import { tabPanelVariants } from "@/lib/motion";
 import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
 import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
@@ -99,8 +101,12 @@ class RightPanelTabBoundary extends Component<
 export default function RightPanel() {
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);
-  const rightTabs = useStore((s) => s.rightTabs);
-  const layoutProfile = useStore((s) => s.layoutProfile);
+  const storeRightTabs = useStore((s) => s.rightTabs);
+  const storeLayoutProfile = useStore((s) => s.layoutProfile);
+  const pathname = usePathname();
+  const routeLayout = useMemo(() => resolveRouteLayout(pathname), [pathname]);
+  const rightTabs = routeLayout.route ? routeLayout.rightTabs : storeRightTabs;
+  const layoutProfile = routeLayout.route ? routeLayout.profile : storeLayoutProfile;
   const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
   const visibleRightTabs = ALL_RIGHT_TABS.filter((t) => rightTabs.includes(t.id));
   const showBrowserChrome = rightTabs.includes("browser");

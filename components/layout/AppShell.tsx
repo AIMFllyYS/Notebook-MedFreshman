@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useTransition } from "react";
 import {
   Panel,
   PanelGroup,
@@ -18,9 +18,8 @@ import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
-import type { LayoutProfile, SubjectId } from "@/lib/types/content";
-import { isSubjectId } from "@/lib/types/content";
-import { layoutFlags, resolveLayoutProfile } from "@/lib/content/layoutProfile";
+import type { SubjectId } from "@/lib/types/content";
+import { resolveRouteLayout } from "@/lib/content/routeLayout";
 import type { ChatContext } from "@/lib/types/chat";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
@@ -50,17 +49,6 @@ const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: fa
 const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
 const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
 const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false });
-
-/** 从 pathname 解析路由信息：/[subject]/[category]/[id]。
- *  科目做运行时类型守卫；分类由 manifest 动态查找校验（彻底解耦后 CategoryId 不再是固定联合类型）。 */
-function parseRoute(pathname: string) {
-  const segments = pathname.split("/").filter(Boolean);
-  if (segments.length < 3) return null;
-  const [subjectId, categoryId, itemId] = segments;
-  if (!isSubjectId(subjectId)) return null;
-  if (!getCategory(subjectId, categoryId)) return null;
-  return { subjectId, categoryId, itemId };
-}
 
 function TopBar({
   subjectId,
@@ -198,33 +186,27 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const activeItemId = useStore((s) => s.activeItemId);
   const leftRef = useRef<ImperativePanelHandle>(null);
   const rightRef = useRef<ImperativePanelHandle>(null);
+  const sidebarPersistReadyRef = useRef(false);
+  const rightPersistReadyRef = useRef(false);
   const [, startTransition] = useTransition();
   const [isResizing, setIsResizing] = useState(false);
   const handleDragging = useCallback((dragging: boolean) => setIsResizing(dragging), []);
 
-  const route = useMemo(() => parseRoute(pathname), [pathname]);
+  const routeLayout = useMemo(() => resolveRouteLayout(pathname), [pathname]);
+  const route = routeLayout.route;
   const setActiveRoute = useStore((s) => s.setActiveRoute);
   const setTocData = useStore((s) => s.setTocData);
   const rightCollapsedByProfile = useStore((s) => s.rightCollapsedByProfile);
   const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
 
-  const routeLayout = useMemo(() => {
-    if (!route) {
-      return { profile: "full" as LayoutProfile, showRightPanel: true };
-    }
-    const cat = getCategory(route.subjectId, route.categoryId);
-    const item = getContentItem(route.subjectId, route.categoryId, route.itemId);
-    const profile = resolveLayoutProfile(cat, item);
-    const flags = layoutFlags(profile, cat, item);
-    return { profile, showRightPanel: flags.rightTabs.length > 0 };
-  }, [route]);
   const rightCollapsed = routeLayout.showRightPanel
     ? rightCollapsedByProfile[routeLayout.profile]
     : false;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    hydrateLayout();
     if (route) setActiveRoute(route.subjectId, route.categoryId, route.itemId);
-  }, [route, setActiveRoute]);
+  }, [hydrateLayout, route, setActiveRoute]);
 
   // TOC 数据只由内容页的 useToc 产出；离开内容页（首页 / review 等）时清掉，
   // 否则目录视图会残留上一页的标题树，点击也无法滚动（目标 DOM 已不存在）。
@@ -233,15 +215,20 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     if (!route) setTocData([], null);
   }, [route, setTocData]);
 
-  useEffect(() => {
-    hydrateLayout();
-  }, [hydrateLayout]);
+  useLayoutEffect(() => {
+    sidebarPersistReadyRef.current = false;
+    rightPersistReadyRef.current = false;
+  }, [routeLayout.profile]);
 
   useEffect(() => {
     const panel = leftRef.current;
     if (!panel) return;
     if (sidebarCollapsed && !panel.isCollapsed()) panel.collapse();
     else if (!sidebarCollapsed && panel.isCollapsed()) panel.expand();
+    const id = window.setTimeout(() => {
+      sidebarPersistReadyRef.current = true;
+    }, 0);
+    return () => window.clearTimeout(id);
   }, [sidebarCollapsed]);
 
   useEffect(() => {
@@ -249,7 +236,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     if (!panel || !routeLayout.showRightPanel) return;
     if (rightCollapsed && !panel.isCollapsed()) panel.collapse();
     else if (!rightCollapsed && panel.isCollapsed()) panel.expand();
-  }, [rightCollapsed, routeLayout.showRightPanel]);
+    const id = window.setTimeout(() => {
+      rightPersistReadyRef.current = true;
+    }, 0);
+    return () => window.clearTimeout(id);
+  }, [rightCollapsed, routeLayout.showRightPanel, routeLayout.profile]);
 
   const academicYear = useAcademicYear((s) => s.year);
   const chatContext: ChatContext = useMemo(
@@ -322,7 +313,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // ── Desktop layout (unchanged) ─────────────────────────────
   return (
     <KeyboardShortcutProvider>
-    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT}>
+    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT} data-layout-profile={routeLayout.profile}>
       <TopBar
         subjectId={route?.subjectId ?? DEFAULT_SUBJECT}
         categoryId={route?.categoryId ?? "detail"}
@@ -343,8 +334,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             minSize={13}
             defaultSize={19}
             maxSize={34}
-            onCollapse={() => startTransition(() => setSidebarCollapsed(true))}
-            onExpand={() => startTransition(() => setSidebarCollapsed(false))}
+            onCollapse={() => {
+              if (!sidebarPersistReadyRef.current) return;
+              startTransition(() => setSidebarCollapsed(true));
+            }}
+            onExpand={() => {
+              if (!sidebarPersistReadyRef.current) return;
+              startTransition(() => setSidebarCollapsed(false));
+            }}
           >
             <SubjectSidebar />
           </Panel>
@@ -362,9 +359,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               <div id={NOTES_PANEL_ID} className="h-full w-full">
                 {children}
               </div>
-              {routeLayout.showRightPanel && rightCollapsed && (
+              {routeLayout.showRightPanel && (
                 <button
                   type="button"
+                  data-expand-ai
                   onClick={() => setRightCollapsedForProfile(routeLayout.profile, false)}
                   title="展开 AI 面板"
                   aria-label="展开 AI 面板"
@@ -395,8 +393,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 collapsedSize={0}
                 minSize={22}
                 defaultSize={rightCollapsed ? 0 : 31}
-                onCollapse={() => startTransition(() => setRightCollapsedForProfile(routeLayout.profile, true))}
-                onExpand={() => startTransition(() => setRightCollapsedForProfile(routeLayout.profile, false))}
+                onCollapse={() => {
+                  if (!rightPersistReadyRef.current) return;
+                  startTransition(() => setRightCollapsedForProfile(routeLayout.profile, true));
+                }}
+                onExpand={() => {
+                  if (!rightPersistReadyRef.current) return;
+                  startTransition(() => setRightCollapsedForProfile(routeLayout.profile, false));
+                }}
               >
                 <div id="right-panel" className="relative h-full">
                   <RightPanel />
