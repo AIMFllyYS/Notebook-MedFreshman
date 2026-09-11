@@ -4,7 +4,7 @@
 // 提示词拼装顺序与旧 route.ts 逐字节一致：稳定前缀（global + 学科 + 用户设置）
 // 与易变上下文（当前定位 + 参考材料）合并为单条 system，多轮间稳定 → 上游 prefix 缓存命中。
 
-import { ToolLoopAgent, isStepCount, type ToolSet, type PrepareStepFunction } from "ai";
+import { ToolLoopAgent, isStepCount, wrapLanguageModel, type ToolSet, type PrepareStepFunction } from "ai";
 import type { LanguageModelV4 } from "@ai-sdk/provider";
 import { buildSystemPrompt, buildLocationLine } from "@/lib/ai/prompts";
 import type { ChatContext, ChatOptions } from "@/lib/types/chat";
@@ -141,10 +141,14 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
   };
 
   const lifecycle = createAgentLifecycleHooks();
+  const observedModel = wrapLanguageModel({
+    model,
+    middleware: lifecycle.modelMiddleware,
+  });
 
   const agent = new ToolLoopAgent<never, ToolSet>({
     id: "study-tutor",
-    model,
+    model: observedModel,
     instructions,
     tools,
     stopWhen: isStepCount(MAX_TOOL_STEPS),

@@ -1,9 +1,9 @@
-// Agent 生命周期 JSONL 日志：用 AI SDK 钩子落盘，只做密钥剥离，不改事件语义。
+// Agent 生命周期 JSONL 日志：用 AI SDK 钩子落盘，只做密钥剥离，并在 End 钩子上叠加分段耗时。
 // 服务端 → 仓库 log/；Electron 子进程 → userData/logs（由主进程注入 ELECTRON_USER_DATA）。
 
 import fs from "node:fs";
 import path from "node:path";
-import type { TelemetryOptions } from "ai";
+import type { LanguageModelMiddleware, TelemetryOptions } from "ai";
 
 export const AGENT_LOG_FILENAME = "agent-lifecycle.jsonl";
 
@@ -20,7 +20,11 @@ const SECRET_ENV_NAMES = [
 const SECRET_KEY =
   /^(?:api[_-]?key|authorization|access[_-]?token|refresh[_-]?token|client[_-]?secret|secret|password|passwd|bearer|x-api-key|x-auth-token|token)$/i;
 
+/** 超过该耗时的工具在日志里标 `slow: true`，便于按字段筛慢工具。 */
+export const SLOW_TOOL_MS = 1_000;
+
 export type AgentLogWriter = (hook: string, data: unknown) => void;
+export type AgentLogClock = () => number;
 
 export interface AgentLogRecord {
   ts: string;
@@ -124,38 +128,281 @@ function defaultWrite(hook: string, data: unknown): void {
   appendAgentLog(hook, data);
 }
 
-export function createAgentLifecycleHooks(options?: { write?: AgentLogWriter }): {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function getPath(value: unknown, keys: string[]): unknown {
+  let current: unknown = value;
+  for (const key of keys) {
+    if (!isRecord(current)) return undefined;
+    current = current[key];
+  }
+  return current;
+}
+
+function asFiniteNumber(value: unknown): number | undefined {
+  if (typeof value === "number" && Number.isFinite(value) && value >= 0) return value;
+  return undefined;
+}
+
+function asNonEmptyString(value: unknown): string | undefined {
+  return typeof value === "string" && value ? value : undefined;
+}
+
+function elapsedMs(startedAt: number | undefined, now: AgentLogClock): number | undefined {
+  if (startedAt == null) return undefined;
+  return Math.max(0, now() - startedAt);
+}
+
+function mergeEvent(event: unknown, extra: Record<string, unknown>): unknown {
+  if (isRecord(event)) return { ...event, ...extra };
+  return { payload: event, ...extra };
+}
+
+function extractCallId(event: unknown): string | undefined {
+  return asNonEmptyString(getPath(event, ["callId"]));
+}
+
+function extractStepNumber(event: unknown): number | undefined {
+  return asFiniteNumber(getPath(event, ["stepNumber"]));
+}
+
+function extractToolName(event: unknown): string | undefined {
+  return (
+    asNonEmptyString(getPath(event, ["toolName"])) ??
+    asNonEmptyString(getPath(event, ["toolCall", "toolName"]))
+  );
+}
+
+function extractToolCallId(event: unknown): string | undefined {
+  return (
+    asNonEmptyString(getPath(event, ["toolCallId"])) ??
+    asNonEmptyString(getPath(event, ["toolCall", "toolCallId"]))
+  );
+}
+
+function extractResponseTimeMs(event: unknown): number | undefined {
+  return (
+    asFiniteNumber(getPath(event, ["performance", "responseTimeMs"])) ??
+    asFiniteNumber(getPath(event, ["responseTimeMs"]))
+  );
+}
+
+function extractStepTimeMs(event: unknown): number | undefined {
+  return (
+    asFiniteNumber(getPath(event, ["performance", "stepTimeMs"])) ??
+    asFiniteNumber(getPath(event, ["stepTimeMs"]))
+  );
+}
+
+function extractToolExecutionMs(event: unknown): number | undefined {
+  return asFiniteNumber(getPath(event, ["toolExecutionMs"]));
+}
+
+function extractReasoningTokens(event: unknown): number | undefined {
+  return (
+    asFiniteNumber(getPath(event, ["usage", "outputTokens", "reasoning"])) ??
+    asFiniteNumber(getPath(event, ["usage", "outputTokenDetails", "reasoningTokens"]))
+  );
+}
+
+function extractOutputTokens(event: unknown): number | undefined {
+  const nested = asFiniteNumber(getPath(event, ["usage", "outputTokens", "total"]));
+  if (nested != null) return nested;
+  const flat = getPath(event, ["usage", "outputTokens"]);
+  if (typeof flat === "number") return asFiniteNumber(flat);
+  return asFiniteNumber(getPath(event, ["usage", "outputTokens"]));
+}
+
+function contentHasReasoning(event: unknown): boolean {
+  const content = getPath(event, ["content"]);
+  if (Array.isArray(content) && content.some((part) => isRecord(part) && part.type === "reasoning")) {
+    return true;
+  }
+  const reasoning = getPath(event, ["reasoning"]);
+  if (typeof reasoning === "string" && reasoning.trim()) return true;
+  if (Array.isArray(reasoning) && reasoning.length > 0) return true;
+  return Boolean(asNonEmptyString(getPath(event, ["reasoningText"])));
+}
+
+function deriveThinkingMs(event: unknown, llmDurationMs: number | undefined): number | undefined {
+  const responseTimeMs = extractResponseTimeMs(event) ?? llmDurationMs;
+  if (responseTimeMs == null) return undefined;
+  const reasoningTokens = extractReasoningTokens(event);
+  const outputTokens = extractOutputTokens(event);
+  if (reasoningTokens != null && reasoningTokens > 0 && outputTokens != null && outputTokens > 0) {
+    return Math.round(responseTimeMs * (reasoningTokens / outputTokens));
+  }
+  if (contentHasReasoning(event) || (reasoningTokens != null && reasoningTokens > 0)) {
+    return responseTimeMs;
+  }
+  return undefined;
+}
+
+export function createAgentLifecycleHooks(options?: {
+  write?: AgentLogWriter;
+  now?: AgentLogClock;
+  slowToolMs?: number;
+}): {
   onStepStart: (event: unknown) => void;
   onStepEnd: (event: unknown) => void;
   onStepFinish: (event: unknown) => void;
   onToolExecutionStart: (event: unknown) => void;
   onToolExecutionEnd: (event: unknown) => void;
   telemetry: TelemetryOptions;
+  /** 观察 SDK `reasoning-start` / `reasoning-end`，给 thinking 段真实墙钟耗时。 */
+  modelMiddleware: LanguageModelMiddleware;
 } {
   const write = options?.write ?? defaultWrite;
-  const bind = (hook: string) => (event: unknown) => {
+  const now = options?.now ?? Date.now;
+  const slowToolMs = options?.slowToolMs ?? SLOW_TOOL_MS;
+  const llmStartedAt = new Map<string, number>();
+  const toolStartedAt = new Map<string, number>();
+  const stepStartedAt = new Map<number, number>();
+  let thinkingWrittenThisCall = false;
+
+  const safeWrite = (hook: string, data: unknown): void => {
     try {
-      write(hook, event);
+      write(hook, data);
     } catch {
       // 日志失败不得打断对话
     }
   };
 
-  const onStepEnd = bind("onStepEnd");
+  const writeThinking = (data: Record<string, unknown>): void => {
+    thinkingWrittenThisCall = true;
+    safeWrite("thinking", { event: "thinking", ...data });
+  };
+
+  const onStepStart = (event: unknown): void => {
+    const stepNumber = extractStepNumber(event);
+    if (stepNumber != null) stepStartedAt.set(stepNumber, now());
+    safeWrite("onStepStart", event);
+  };
+
+  const onStepEnd = (event: unknown): void => {
+    const stepNumber = extractStepNumber(event);
+    const wall = elapsedMs(stepNumber != null ? stepStartedAt.get(stepNumber) : undefined, now);
+    if (stepNumber != null) stepStartedAt.delete(stepNumber);
+    const stepTimeMs = extractStepTimeMs(event);
+    const durationMs = stepTimeMs ?? wall;
+    safeWrite(
+      "onStepEnd",
+      mergeEvent(event, {
+        ...(durationMs != null ? { durationMs } : {}),
+        ...(stepTimeMs != null ? { stepTimeMs } : {}),
+      }),
+    );
+  };
+
+  const onToolExecutionStart = (event: unknown): void => {
+    const id = extractToolCallId(event) ?? extractToolName(event) ?? "tool";
+    toolStartedAt.set(id, now());
+    safeWrite("onToolExecutionStart", event);
+  };
+
+  const onToolExecutionEnd = (event: unknown): void => {
+    const toolName = extractToolName(event);
+    const toolCallId = extractToolCallId(event);
+    const id = toolCallId ?? toolName ?? "tool";
+    const wall = elapsedMs(toolStartedAt.get(id), now);
+    toolStartedAt.delete(id);
+    const toolExecutionMs = extractToolExecutionMs(event);
+    const durationMs = toolExecutionMs ?? wall ?? 0;
+    safeWrite(
+      "onToolExecutionEnd",
+      mergeEvent(event, {
+        event: "tool",
+        durationMs,
+        ...(toolName ? { toolName } : {}),
+        ...(toolCallId ? { toolCallId } : {}),
+        ...(toolExecutionMs != null ? { toolExecutionMs } : {}),
+        slow: durationMs >= slowToolMs,
+      }),
+    );
+  };
+
+  const onLanguageModelCallStart = (event: unknown): void => {
+    const callId = extractCallId(event) ?? "lm";
+    llmStartedAt.set(callId, now());
+    thinkingWrittenThisCall = false;
+    safeWrite("onLanguageModelCallStart", event);
+  };
+
+  const onLanguageModelCallEnd = (event: unknown): void => {
+    const callId = extractCallId(event) ?? "lm";
+    const wall = elapsedMs(llmStartedAt.get(callId), now);
+    llmStartedAt.delete(callId);
+    const responseTimeMs = extractResponseTimeMs(event);
+    const durationMs = responseTimeMs ?? wall ?? 0;
+    safeWrite(
+      "onLanguageModelCallEnd",
+      mergeEvent(event, {
+        event: "llm",
+        durationMs,
+        ...(responseTimeMs != null ? { responseTimeMs } : {}),
+      }),
+    );
+    if (thinkingWrittenThisCall) return;
+    const thinkingMs = deriveThinkingMs(event, durationMs);
+    if (thinkingMs == null) return;
+    writeThinking({
+      durationMs: thinkingMs,
+      callId,
+      source: "usage",
+      ...(extractReasoningTokens(event) != null ? { reasoningTokens: extractReasoningTokens(event) } : {}),
+    });
+  };
+
+  const modelMiddleware: LanguageModelMiddleware = {
+    specificationVersion: "v4",
+    wrapStream: async ({ doStream }) => {
+      const result = await doStream();
+      const startedAt = new Map<string, number>();
+      return {
+        ...result,
+        stream: result.stream.pipeThrough(
+          new TransformStream({
+            transform(chunk, controller) {
+              controller.enqueue(chunk);
+              if (!isRecord(chunk)) return;
+              if (chunk.type === "reasoning-start") {
+                startedAt.set(asNonEmptyString(chunk.id) ?? "default", now());
+                return;
+              }
+              if (chunk.type === "reasoning-end") {
+                const id = asNonEmptyString(chunk.id) ?? "default";
+                const durationMs = elapsedMs(startedAt.get(id), now) ?? 0;
+                startedAt.delete(id);
+                writeThinking({
+                  durationMs,
+                  reasoningId: id,
+                  source: "reasoning-stream",
+                });
+              }
+            },
+          }),
+        ),
+      };
+    },
+  };
+
   return {
-    onStepStart: bind("onStepStart"),
+    onStepStart,
     onStepEnd,
     // SDK 仍接受该别名；构造时优先 onStepEnd，避免同一步写两行
     onStepFinish: onStepEnd,
-    onToolExecutionStart: bind("onToolExecutionStart"),
-    onToolExecutionEnd: bind("onToolExecutionEnd"),
+    onToolExecutionStart,
+    onToolExecutionEnd,
+    modelMiddleware,
     telemetry: {
       isEnabled: true,
       functionId: "study-tutor",
       integrations: [
         {
-          onLanguageModelCallStart: bind("onLanguageModelCallStart"),
-          onLanguageModelCallEnd: bind("onLanguageModelCallEnd"),
+          onLanguageModelCallStart,
+          onLanguageModelCallEnd,
         },
       ],
     },

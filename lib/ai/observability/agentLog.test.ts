@@ -8,6 +8,7 @@ import { MockLanguageModelV4, convertArrayToReadableStream, convertReadableStrea
 import { createStudyAgent, type StudyAgentInput } from "@/lib/ai/agent/studyAgent.ts";
 import {
   AGENT_LOG_FILENAME,
+  SLOW_TOOL_MS,
   appendAgentLog,
   collectEnvSecrets,
   createAgentLifecycleHooks,
@@ -37,10 +38,26 @@ function toolCallStep(toolName: string, input: Record<string, unknown>): Languag
   return {
     stream: convertArrayToReadableStream<LanguageModelV4StreamPart>([
       { type: "stream-start", warnings: [] },
+      { type: "reasoning-start", id: "r1" },
+      { type: "reasoning-delta", id: "r1", delta: "先看当前页" },
+      { type: "reasoning-end", id: "r1" },
       { type: "tool-call", toolCallId: `call_${toolName}`, toolName, input: JSON.stringify(input) },
       { type: "finish", finishReason: { unified: "tool-calls", raw: "tool_calls" }, usage },
     ]),
   };
+}
+
+type TimedRecord = { hook: string; data: Record<string, unknown> };
+
+function collectHooks(now?: () => number) {
+  const records: TimedRecord[] = [];
+  const hooks = createAgentLifecycleHooks({
+    now,
+    write: (hook, data) => {
+      records.push({ hook, data: (data ?? {}) as Record<string, unknown> });
+    },
+  });
+  return { hooks, records };
 }
 
 function baseInput(model: MockLanguageModelV4): StudyAgentInput {
@@ -185,9 +202,124 @@ test("createStudyAgent：一次工具循环在 JSONL 里能还原 LLM 步与工�
     for (const secret of collectEnvSecrets()) {
       assert.ok(!raw.includes(secret), "env api key leaked");
     }
+    const llm = records.filter((r) => r.hook === "onLanguageModelCallEnd");
+    assert.ok(llm.length >= 1);
+    for (const row of llm) {
+      const data = row.data as { event?: string; durationMs?: number };
+      assert.equal(data.event, "llm");
+      assert.equal(typeof data.durationMs, "number");
+    }
+    const tools = records.filter((r) => r.hook === "onToolExecutionEnd");
+    assert.ok(tools.length >= 1);
+    for (const row of tools) {
+      const data = row.data as { event?: string; durationMs?: number; toolName?: string; slow?: boolean };
+      assert.equal(data.event, "tool");
+      assert.equal(typeof data.durationMs, "number");
+      assert.equal(typeof data.toolName, "string");
+      assert.equal(typeof data.slow, "boolean");
+    }
+    const thinking = records.filter((r) => r.hook === "thinking");
+    assert.ok(thinking.length >= 1, "missing thinking segment");
+    for (const row of thinking) {
+      const data = row.data as { event?: string; durationMs?: number };
+      assert.equal(data.event, "thinking");
+      assert.equal(typeof data.durationMs, "number");
+    }
   } finally {
     if (prev === undefined) delete process.env.AGENT_LOG_PATH;
     else process.env.AGENT_LOG_PATH = prev;
     rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("分段计时：LLM / 工具 / thinking 各自写入独立 durationMs", async () => {
+  let t = 1_000;
+  const { hooks, records } = collectHooks(() => t);
+  const integration = hooks.telemetry.integrations;
+  const lm = Array.isArray(integration) ? integration[0] : integration;
+
+  lm?.onLanguageModelCallStart?.({ callId: "c1" } as never);
+  t = 1_180;
+  lm?.onLanguageModelCallEnd?.({
+    callId: "c1",
+    performance: { responseTimeMs: 175 },
+    usage: { outputTokens: { total: 10, text: 4, reasoning: 6 } },
+    content: [{ type: "reasoning", text: "先想一步" }],
+  } as never);
+
+  hooks.onToolExecutionStart({ toolCall: { toolName: "webSearch", toolCallId: "call_fast" } });
+  t = 1_190;
+  hooks.onToolExecutionEnd({
+    toolCall: { toolName: "webSearch", toolCallId: "call_fast" },
+    toolExecutionMs: 12,
+  });
+
+  const llm = records.find((r) => r.hook === "onLanguageModelCallEnd");
+  assert.equal(llm?.data.event, "llm");
+  assert.equal(llm?.data.durationMs, 175);
+  assert.equal(llm?.data.responseTimeMs, 175);
+
+  const tool = records.find((r) => r.hook === "onToolExecutionEnd");
+  assert.equal(tool?.data.event, "tool");
+  assert.equal(tool?.data.toolName, "webSearch");
+  assert.equal(tool?.data.durationMs, 12);
+  assert.equal(tool?.data.slow, false);
+
+  const thinking = records.find((r) => r.hook === "thinking");
+  assert.equal(thinking?.data.event, "thinking");
+  assert.equal(thinking?.data.durationMs, 105);
+  assert.equal(thinking?.data.source, "usage");
+  assert.equal(thinking?.data.callId, "c1");
+
+  let clock = 0;
+  const streamedHooks = collectHooks(() => {
+    clock += 1;
+    return clock;
+  });
+  const wrapped = await streamedHooks.hooks.modelMiddleware.wrapStream?.({
+    doStream: async () => ({
+      stream: convertArrayToReadableStream<LanguageModelV4StreamPart>([
+        { type: "reasoning-start", id: "r-stream" },
+        { type: "reasoning-delta", id: "r-stream", delta: "hmm" },
+        { type: "reasoning-end", id: "r-stream" },
+      ]),
+    }),
+    doGenerate: async () => {
+      throw new Error("unused");
+    },
+    params: {} as never,
+    model: {} as never,
+  });
+  assert.ok(wrapped?.stream);
+  await convertReadableStreamToArray(wrapped.stream);
+  const streamed = streamedHooks.records.filter((r) => r.hook === "thinking" && r.data.source === "reasoning-stream");
+  assert.equal(streamed.length, 1);
+  assert.equal(streamed[0].data.event, "thinking");
+  assert.equal(typeof streamed[0].data.durationMs, "number");
+  assert.ok(Number(streamed[0].data.durationMs) >= 1);
+  assert.equal(streamed[0].data.reasoningId, "r-stream");
+});
+
+test("慢工具：event=tool + toolName + durationMs + slow 可直接筛出", () => {
+  const { hooks, records } = collectHooks();
+  hooks.onToolExecutionEnd({
+    toolCall: { toolName: "webSearch", toolCallId: "call_slow" },
+    toolExecutionMs: SLOW_TOOL_MS + 3_200,
+  });
+  hooks.onToolExecutionEnd({
+    toolCall: { toolName: "getCurrentPage", toolCallId: "call_fast" },
+    toolExecutionMs: 8,
+  });
+
+  const slow = records.filter((r) => r.hook === "onToolExecutionEnd" && r.data.slow === true);
+  assert.equal(slow.length, 1);
+  assert.equal(slow[0].data.event, "tool");
+  assert.equal(slow[0].data.toolName, "webSearch");
+  assert.equal(slow[0].data.durationMs, SLOW_TOOL_MS + 3_200);
+
+  const fast = records.find((r) => r.data.toolName === "getCurrentPage");
+  assert.equal(fast?.data.slow, false);
+  assert.ok(
+    records.some((r) => r.data.event === "tool" && r.data.toolName === "webSearch" && Number(r.data.durationMs) >= SLOW_TOOL_MS),
+  );
 });
