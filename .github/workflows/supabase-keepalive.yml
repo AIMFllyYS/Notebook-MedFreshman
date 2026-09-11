@@ -1,0 +1,91 @@
+# Daily PostgREST read so the Free-plan project is not paused after 7 days
+# with no real users. GitHub only fires `schedule` on the default branch.
+#
+# Self-contained: curl the same GET /rest/v1/app_users?select=id&limit=1
+# used by lib/db/keepalive.ts. Do not depend on repo scripts — master may
+# not have scripts/db-keepalive.ts.
+#
+# Records: this workflow's run log + job summary JSON.
+# Secrets (repo Settings → Secrets): SUPABASE_URL, SUPABASE_ANON_KEY.
+
+name: supabase-keepalive
+
+on:
+  schedule:
+    - cron: "17 20 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supabase-keepalive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Keepalive query
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+          URL="${SUPABASE_URL:-${NEXT_PUBLIC_SUPABASE_URL:-https://jlahwwnjbhqfnsicdjsx.supabase.co}}"
+          URL="${URL%/}"
+          KEY="${SUPABASE_ANON_KEY:-${NEXT_PUBLIC_SUPABASE_ANON_KEY:-}}"
+          if [ -z "$KEY" ]; then
+            echo "Need SUPABASE_ANON_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY"
+            exit 1
+          fi
+          QUERY_PATH="/rest/v1/app_users?select=id&limit=1"
+          BODY_FILE="$(mktemp)"
+          HTTP_STATUS="$(curl -sS -o "$BODY_FILE" -w "%{http_code}" \
+            --max-time 15 \
+            -H "apikey: ${KEY}" \
+            -H "Authorization: Bearer ${KEY}" \
+            -H "Accept: application/json" \
+            -H "Prefer: count=none" \
+            "${URL}${QUERY_PATH}")"
+          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
+            echo "Keepalive ${HTTP_STATUS}: $(head -c 240 "$BODY_FILE")"
+            rm -f "$BODY_FILE"
+            exit 1
+          fi
+          export URL HTTP_STATUS BODY_FILE
+          python3 <<'PY'
+          import datetime
+          import json
+          import os
+          from pathlib import Path
+          from urllib.parse import urlparse
+
+          body = Path(os.environ["BODY_FILE"]).read_text(encoding="utf-8")
+          try:
+              data = json.loads(body)
+              row_count = len(data) if isinstance(data, list) else 0
+          except Exception:
+              row_count = 0
+          record = {
+              "ok": True,
+              "pingedAt": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z"),
+              "httpStatus": int(os.environ["HTTP_STATUS"]),
+              "rowCount": row_count,
+              "query": "GET /rest/v1/app_users?select=id&limit=1",
+              "projectHost": urlparse(os.environ["URL"]).netloc,
+              "source": "github-actions",
+          }
+          print(json.dumps(record, separators=(",", ":")))
+          summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary:
+              with open(summary, "a", encoding="utf-8") as fh:
+                  fh.write("## Supabase keepalive\n\n")
+                  for key, value in record.items():
+                      fh.write(f"- {key}: `{value}`\n")
+                  fh.write("\n")
+          PY
+          rm -f "$BODY_FILE"
