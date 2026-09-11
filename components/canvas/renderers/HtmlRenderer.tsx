@@ -2,6 +2,7 @@
 
 import { useCallback } from 'react';
 import type { CanvasBlock, HtmlCanvasBlock } from '@/lib/canvas/types';
+import { CANVAS_HTML_IFRAME_SANDBOX, injectOpaqueOriginStorageShim } from '@/lib/sandbox/opaqueOriginStorageShim';
 import { downloadHtmlFile } from '@/lib/utils/downloadHtml';
 import { openHtmlInNewTab } from '@/lib/utils/openHtmlInNewTab';
 import { useCanvasFullscreen } from '@/lib/hooks/useCanvasFullscreen';
@@ -43,8 +44,8 @@ export function HtmlRenderer({ block, revisionTopic, onRevisionSubmit, onRevisio
       >
         <iframe
           title={title}
-          srcDoc={block.source}
-          sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-modals allow-downloads"
+          srcDoc={injectOpaqueOriginStorageShim(block.source)}
+          sandbox={CANVAS_HTML_IFRAME_SANDBOX}
           className="html-canvas-frame"
           style={{ height: fullscreen ? '100%' : height }}
         />
