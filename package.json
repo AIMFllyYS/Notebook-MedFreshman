@@ -29,7 +29,10 @@
     "test:react": "vitest run --passWithNoTests",
     "test:all": "node scripts/run-all-tests.mjs --include-content",
     "test:watch": "vitest",
-    "test:cov": "node scripts/run-unit-tests.mjs --filter=code && vitest run --coverage --passWithNoTests"
+    "test:cov": "node scripts/run-unit-tests.mjs --filter=code && vitest run --coverage --passWithNoTests",
+    "db:migrate": "npx tsx scripts/db-migrate.ts up",
+    "db:migrate:status": "npx tsx scripts/db-migrate.ts status --compare",
+    "db:migrate:compare": "npx tsx scripts/db-migrate.ts compare"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "4.0.46",
@@ -64,6 +67,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@tailwindcss/postcss": "^4.0.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
