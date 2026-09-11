@@ -58,6 +58,8 @@ function ChatParagraph({ node: _node, children, ...props }: MarkdownElementProps
    这里只保留必要的行为：链接新开页、表格横向滚动包裹、代码块复制按钮。 */
 const mdComponents = {
   ...directiveComponents,
+  // Defense in depth: never mount a script element even if a node slips past sanitize.
+  script: () => null,
   img: ChatImage,
   p: ChatParagraph,
   a: ({ node: _node, ...props }: MarkdownElementProps<'a'>) => (

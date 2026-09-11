@@ -1,0 +1,231 @@
+import { defaultSchema, type Options as SanitizeSchema } from "rehype-sanitize";
+
+/**
+ * 聊天 / 笔记 / 测验共用的 HTML 消毒白名单。
+ *
+ * 默认 schema 跟 GitHub（不含 SVG、不含自定义指令标签，且 span 上不允许任意 className）。
+ * 必须放行：
+ * - 正文 DSL（:::definition → callout、::figure、::plot 等）
+ * - KaTeX 入口节点的 className（math-inline / math-display）
+ * - 笔记里偶发的裸 SVG（聊天裸 SVG 仍走 sanitizeSvg，不经过这条管线）
+ *
+ * 不放行 script / 事件属性；默认 schema 也不会把 on* 写进 attributes。
+ */
+
+export const MARKDOWN_DSL_TAGS = [
+  "callout",
+  "derivation",
+  "mediaembed",
+  "figuremedia",
+  "functionplot",
+  "svgcanvas",
+  "memorycard",
+  "timeline",
+  "eventcard",
+  "conceptcard",
+  "comparetable",
+  "causeeffect",
+  "keypoint",
+  "historymap",
+] as const;
+
+/** 默认 GitHub schema 没有、但笔记 HTML 会用到的语义标签。 */
+const MARKDOWN_EXTRA_HTML_TAGS = ["figure", "figcaption"] as const;
+
+/** 与 sanitizeSvg 的标签集合对齐，供 markdown 裸 SVG 使用；不含 foreignObject / script。 */
+const MARKDOWN_SVG_TAGS = [
+  "svg",
+  "g",
+  "circle",
+  "ellipse",
+  "rect",
+  "line",
+  "polyline",
+  "polygon",
+  "path",
+  "text",
+  "tspan",
+  "textPath",
+  "defs",
+  "marker",
+  "use",
+  "symbol",
+  "clipPath",
+  "mask",
+  "pattern",
+  "linearGradient",
+  "radialGradient",
+  "stop",
+  "title",
+  "desc",
+  "image",
+] as const;
+
+const DSL_ATTRIBUTES: Record<string, string[]> = {
+  callout: ["kind", "label"],
+  derivation: ["label"],
+  mediaembed: ["kind", "eid"],
+  figuremedia: ["src", "alt", "caption"],
+  functionplot: [
+    "fn",
+    "xmin",
+    "xmax",
+    "ymin",
+    "ymax",
+    "color",
+    "label",
+    "xlabel",
+    "ylabel",
+    "width",
+    "height",
+    "samples",
+  ],
+  svgcanvas: [
+    "width",
+    "height",
+    "xmin",
+    "xmax",
+    "ymin",
+    "ymax",
+    "xlabel",
+    "ylabel",
+    "grid",
+    "axes",
+  ],
+  memorycard: ["kind", "label", "mode", "raw"],
+  timeline: ["period"],
+  eventcard: ["year", "title", "location", "people", "result", "impact"],
+  conceptcard: ["term"],
+  comparetable: ["title"],
+  causeeffect: ["title"],
+  keypoint: ["label"],
+  historymap: ["title", "points", "caption"],
+};
+
+const SVG_ATTRIBUTES = [
+  "viewBox",
+  "xmlns",
+  "width",
+  "height",
+  "x",
+  "y",
+  "cx",
+  "cy",
+  "r",
+  "rx",
+  "ry",
+  "x1",
+  "y1",
+  "x2",
+  "y2",
+  "d",
+  "points",
+  "fill",
+  "stroke",
+  "strokeWidth",
+  "stroke-width",
+  "strokeDasharray",
+  "stroke-dasharray",
+  "strokeLinecap",
+  "stroke-linecap",
+  "strokeLinejoin",
+  "stroke-linejoin",
+  "opacity",
+  "fillOpacity",
+  "fill-opacity",
+  "strokeOpacity",
+  "stroke-opacity",
+  "transform",
+  "fontSize",
+  "font-size",
+  "fontFamily",
+  "font-family",
+  "fontWeight",
+  "font-weight",
+  "textAnchor",
+  "text-anchor",
+  "dominantBaseline",
+  "dominant-baseline",
+  "dx",
+  "dy",
+  "markerWidth",
+  "markerHeight",
+  "refX",
+  "refY",
+  "orient",
+  "id",
+  "className",
+  "class",
+  "clipPath",
+  "clip-path",
+  "mask",
+  "filter",
+  "gradientUnits",
+  "offset",
+  "stopColor",
+  "stop-color",
+  "stopOpacity",
+  "stop-opacity",
+  "patternUnits",
+  "preserveAspectRatio",
+  "role",
+  "ariaLabel",
+  "aria-label",
+  "startOffset",
+  "textLength",
+  "lengthAdjust",
+  "markerEnd",
+  "marker-end",
+  "markerStart",
+  "marker-start",
+  "markerMid",
+  "marker-mid",
+  "fillRule",
+  "fill-rule",
+  "clipRule",
+  "clip-rule",
+  "letterSpacing",
+  "letter-spacing",
+  "wordSpacing",
+  "word-spacing",
+  "writingMode",
+  "writing-mode",
+  "alignmentBaseline",
+  "alignment-baseline",
+  "baselineShift",
+  "baseline-shift",
+  "href",
+  "xlinkHref",
+  "xlink:href",
+];
+
+const defaultAttributes = defaultSchema.attributes ?? {};
+const defaultStar = defaultAttributes["*"] ?? [];
+
+const svgAttributeMap = Object.fromEntries(
+  MARKDOWN_SVG_TAGS.map((tag) => [tag, SVG_ATTRIBUTES]),
+);
+
+export const markdownSanitizeSchema: SanitizeSchema = {
+  ...defaultSchema,
+  // 笔记 TOC 会自己写 heading id；关掉 GitHub 的 user-content- 前缀，避免文内锚点失效。
+  clobber: [],
+  tagNames: [
+    ...(defaultSchema.tagNames ?? []),
+    ...MARKDOWN_EXTRA_HTML_TAGS,
+    ...MARKDOWN_DSL_TAGS,
+    ...MARKDOWN_SVG_TAGS,
+  ],
+  attributes: {
+    ...defaultAttributes,
+    ...DSL_ATTRIBUTES,
+    ...svgAttributeMap,
+    // KaTeX 入口是 span/div.math-inline|math-display；消毒在 katex 之前，必须保住 className。
+    "*": [...defaultStar, "className"],
+  },
+  protocols: {
+    ...defaultSchema.protocols,
+    xlinkHref: ["http", "https"],
+  },
+  strip: [...new Set([...(defaultSchema.strip ?? []), "script"])],
+};
