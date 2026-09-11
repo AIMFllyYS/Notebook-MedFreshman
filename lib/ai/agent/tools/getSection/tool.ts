@@ -21,11 +21,19 @@ export function createGetSectionTool(ctx: StudyToolContext, runtime: StudyToolRu
         };
       }
       const resolved = resolveContentPath(input, ctx.subjectId);
-      const md = readContentMarkdown(resolved.subjectId, resolved.categoryId, resolved.itemId);
       const contextKey = `section:${resolved.subjectId}/${resolved.categoryId}/${resolved.itemId}`;
+      if (!resolved.found) {
+        return dedupeByContextKey(runtime, "getSection", {
+          text: `【${resolved.title}】未找到该页面内容（路径无效）。可调用 getOutline 查看有效路径。`,
+          contextKey,
+          title: resolved.title,
+          found: false,
+        });
+      }
+      const md = readContentMarkdown(resolved.subjectId, resolved.categoryId, resolved.itemId);
       if (!md) {
         return dedupeByContextKey(runtime, "getSection", {
-          text: `【${resolved.title}】未找到该页面内容${resolved.found ? "（正文尚未生成）" : "（路径无效）"}。可调用 getOutline 查看有效路径。`,
+          text: `【${resolved.title}】未找到该页面内容（正文尚未生成）。可调用 getOutline 查看有效路径。`,
           contextKey,
           title: resolved.title,
           found: false,
