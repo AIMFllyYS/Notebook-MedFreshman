@@ -44,6 +44,7 @@
     "@ai-sdk/openai-compatible": "3.0.41",
     "@ai-sdk/provider": "4.0.9",
     "@rdkit/rdkit": "2025.3.4-1.0.0",
+    "@supabase/supabase-js": "^2.116.0",
     "@tanstack/react-virtual": "^3.14.4",
     "@vidstack/react": "1.15.6",
     "ai": "7.0.85",
