@@ -39,6 +39,8 @@ venv/
 # misc
 .DS_Store
 *.log
+# Agent SDK lifecycle JSONL (server writes log/; Electron writes userData)
+/log/
 npm-debug.log*
 yarn-error.log*
 .vercel

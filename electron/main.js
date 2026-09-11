@@ -157,6 +157,7 @@ async function startServer(keys) {
     HOSTNAME: "127.0.0.1",
     NODE_ENV: "production",
     ELECTRON_RUN_AS_NODE: "1", // run server.js with Electron's bundled Node
+    ELECTRON_USER_DATA: app.getPath("userData"),
   };
   const proc = spawn(process.execPath, [serverJs], { cwd: dir, env, stdio: ["ignore", "pipe", "pipe"] });
   serverProc = proc;

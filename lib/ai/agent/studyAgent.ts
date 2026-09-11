@@ -18,6 +18,7 @@ import {
   MAX_TOOL_STEPS,
   type StudyToolRuntime,
 } from "@/lib/ai/agent/tools/server";
+import { createAgentLifecycleHooks } from "@/lib/ai/observability/agentLog";
 
 export interface StudyAgentInput {
   model: LanguageModelV4;
@@ -139,6 +140,8 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     return {};
   };
 
+  const lifecycle = createAgentLifecycleHooks();
+
   const agent = new ToolLoopAgent<never, ToolSet>({
     id: "study-tutor",
     model,
@@ -150,6 +153,11 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     maxRetries: 0,
     temperature: input.temperature ?? 0.6,
     prepareStep,
+    onStepStart: lifecycle.onStepStart,
+    onStepEnd: lifecycle.onStepEnd,
+    onToolExecutionStart: lifecycle.onToolExecutionStart,
+    onToolExecutionEnd: lifecycle.onToolExecutionEnd,
+    telemetry: lifecycle.telemetry,
     ...(thinking.providerOptions ? { providerOptions: thinking.providerOptions } : {}),
     ...(thinking.maxOutputTokens ? { maxOutputTokens: thinking.maxOutputTokens } : {}),
   });
