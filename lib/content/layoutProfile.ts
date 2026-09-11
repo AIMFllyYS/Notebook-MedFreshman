@@ -30,8 +30,7 @@ function resolveRightTabs(
   profile: LayoutProfile,
   caps: readonly CategoryCapability[],
 ): LayoutRightTab[] {
-  if (profile === "reference") return [];
-  if (profile === "article") return ["ai"];
+  if (profile === "reference" || profile === "article") return ["ai"];
   const tabs: LayoutRightTab[] = ["ai"];
   if (caps.includes("media")) {
     tabs.push("video", "interactive");
@@ -52,7 +51,7 @@ export function layoutFlags(
     showQuizTab: profile === "full" && caps.includes("quiz"),
     showToc: renderType === "markdown",
     rightTabs: resolveRightTabs(profile, caps),
-    defaultRightCollapsed: profile !== "full",
+    defaultRightCollapsed: profile === "article",
     articleMaxWidth: profile === "full" ? "prose" : "wide",
   };
 }

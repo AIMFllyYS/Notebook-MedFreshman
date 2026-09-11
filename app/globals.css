@@ -783,6 +783,31 @@ html[data-topbar-collapsed="true"] header[data-topbar] {
   overflow: hidden;
 }
 
+/* 展开 AI 按钮始终挂在树上，由当前档位的 data 属性显隐，避免 hydration 结构分叉 */
+[data-expand-ai] {
+  display: none;
+}
+
+html[data-right-collapsed-full="true"] [data-layout-profile="full"] [data-expand-ai],
+html[data-right-collapsed-article="true"] [data-layout-profile="article"] [data-expand-ai],
+html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [data-expand-ai] {
+  display: flex;
+}
+
+/* 用户曾收起右栏时，尽量在首帧压住宽度（react-resizable-panels 用 flex-basis，不保证像素级） */
+html[data-right-collapsed-full="true"] [data-layout-profile="full"] #right-panel,
+html[data-right-collapsed-article="true"] [data-layout-profile="article"] #right-panel,
+html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] #right-panel,
+html[data-right-collapsed-full="true"] [data-layout-profile="full"] [data-panel-id="right"],
+html[data-right-collapsed-article="true"] [data-layout-profile="article"] [data-panel-id="right"],
+html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [data-panel-id="right"] {
+  flex-basis: 0 !important;
+  flex-grow: 0 !important;
+  min-width: 0;
+  max-width: 0;
+  overflow: hidden;
+}
+
 /* ─────────────────────────────────────────────────────────────
    Mobile Optimization
    ───────────────────────────────────────────────────────────── */

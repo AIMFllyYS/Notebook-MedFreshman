@@ -30,26 +30,12 @@ const LS_KEY_RIGHT_COLLAPSED = "gailvlun-right-collapsed-by-profile";
 const DEFAULT_RIGHT_COLLAPSED: Record<LayoutProfile, boolean> = {
   full: false,
   article: true,
-  reference: true,
+  reference: false,
 };
 
-const DEFAULT_RIGHT_TABS: RightTab[] = ["ai", "video", "interactive", "browser"];
+const RIGHT_COLLAPSE_PROFILES = ["full", "article", "reference"] as const satisfies readonly LayoutProfile[];
 
-function readRightCollapsedByProfile(): Record<LayoutProfile, boolean> {
-  if (typeof localStorage === "undefined") return { ...DEFAULT_RIGHT_COLLAPSED };
-  try {
-    const raw = localStorage.getItem(LS_KEY_RIGHT_COLLAPSED);
-    if (!raw) return { ...DEFAULT_RIGHT_COLLAPSED };
-    const parsed = JSON.parse(raw) as Partial<Record<LayoutProfile, boolean>>;
-    return {
-      full: typeof parsed.full === "boolean" ? parsed.full : DEFAULT_RIGHT_COLLAPSED.full,
-      article: typeof parsed.article === "boolean" ? parsed.article : DEFAULT_RIGHT_COLLAPSED.article,
-      reference: typeof parsed.reference === "boolean" ? parsed.reference : DEFAULT_RIGHT_COLLAPSED.reference,
-    };
-  } catch {
-    return { ...DEFAULT_RIGHT_COLLAPSED };
-  }
-}
+const DEFAULT_RIGHT_TABS: RightTab[] = ["ai", "video", "interactive", "browser"];
 
 function writeRightCollapsedByProfile(value: Record<LayoutProfile, boolean>): void {
   if (typeof localStorage === "undefined") return;
@@ -57,16 +43,6 @@ function writeRightCollapsedByProfile(value: Record<LayoutProfile, boolean>): vo
     localStorage.setItem(LS_KEY_RIGHT_COLLAPSED, JSON.stringify(value));
   } catch {
     /* ignore */
-  }
-}
-
-function readBoolean(key: string, fallback: boolean): boolean {
-  if (typeof localStorage === "undefined") return fallback;
-  try {
-    const v = localStorage.getItem(key);
-    return v === "true" ? true : v === "false" ? false : fallback;
-  } catch {
-    return fallback;
   }
 }
 
@@ -131,7 +107,7 @@ interface AppState {
   setRightTab: (t: RightTab) => void;
   /** 当前路由对应的布局档位（由 setActiveRoute 写入） */
   layoutProfile: LayoutProfile;
-  /** 当前档位允许的右侧 tab；reference 为空 */
+  /** 当前档位允许的右侧 tab */
   rightTabs: RightTab[];
   /** 用户按档位分别记忆的右栏折叠状态 */
   rightCollapsedByProfile: Record<LayoutProfile, boolean>;
@@ -207,15 +183,17 @@ export const useStore = create<AppState>((set) => ({
       };
     }),
 
-  sidebarCollapsed: readBoolean(LS_KEY_SIDEBAR, false),
+  sidebarCollapsed: false,
   toggleSidebar: () =>
     set((s) => {
       const next = !s.sidebarCollapsed;
       writeBoolean(LS_KEY_SIDEBAR, next);
+      setLayoutAttr("data-sidebar-collapsed", next);
       return { sidebarCollapsed: next };
     }),
   setSidebarCollapsed: (v) => {
     writeBoolean(LS_KEY_SIDEBAR, v);
+    setLayoutAttr("data-sidebar-collapsed", v);
     set({ sidebarCollapsed: v });
   },
 
@@ -239,6 +217,16 @@ export const useStore = create<AppState>((set) => ({
     const updates: Partial<AppState> = {};
     if (topBar !== null) updates.topBarCollapsed = topBar;
     if (sidebar !== null) updates.sidebarCollapsed = sidebar;
+    const right = { ...DEFAULT_RIGHT_COLLAPSED };
+    let hasRightAttr = false;
+    for (const profile of RIGHT_COLLAPSE_PROFILES) {
+      const v = domBoolean(`data-right-collapsed-${profile}`);
+      if (v !== null) {
+        right[profile] = v;
+        hasRightAttr = true;
+      }
+    }
+    if (hasRightAttr) updates.rightCollapsedByProfile = right;
     if (Object.keys(updates).length > 0) set(updates);
   },
 
@@ -256,11 +244,12 @@ export const useStore = create<AppState>((set) => ({
     set((s) => (s.rightTabs.length === 0 || s.rightTabs.includes(t) ? { rightTab: t } : s)),
   layoutProfile: "full",
   rightTabs: DEFAULT_RIGHT_TABS,
-  rightCollapsedByProfile: readRightCollapsedByProfile(),
+  rightCollapsedByProfile: { ...DEFAULT_RIGHT_COLLAPSED },
   setRightCollapsedForProfile: (profile, collapsed) =>
     set((s) => {
       const next = { ...s.rightCollapsedByProfile, [profile]: collapsed };
       writeRightCollapsedByProfile(next);
+      setLayoutAttr(`data-right-collapsed-${profile}`, collapsed);
       return { rightCollapsedByProfile: next };
     }),
 

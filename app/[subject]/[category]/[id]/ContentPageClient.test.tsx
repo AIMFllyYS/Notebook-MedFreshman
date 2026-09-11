@@ -80,6 +80,7 @@ describe("ContentPageClient layout flags", () => {
     expect(screen.queryByRole("button", { name: /例题/ })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /题目测试/ })).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /纪要/ })).toBeInTheDocument();
+    expect(screen.getByTestId("selection-popover")).toBeInTheDocument();
   });
 
   it("full 时三个 tab", () => {
@@ -99,11 +100,11 @@ describe("ContentPageClient layout flags", () => {
     expect(container.querySelector("article")?.className).toContain("max-w-4xl");
   });
 
-  it("reference 不挂载划词弹窗", () => {
+  it("reference 也挂载划词弹窗", () => {
     renderPage({
       layoutProfile: "reference",
-      layoutFlags: { ...flagsArticle, rightTabs: [] },
+      layoutFlags: { ...flagsArticle, rightTabs: ["ai"], defaultRightCollapsed: false },
     });
-    expect(screen.queryByTestId("selection-popover")).not.toBeInTheDocument();
+    expect(screen.getByTestId("selection-popover")).toBeInTheDocument();
   });
 });

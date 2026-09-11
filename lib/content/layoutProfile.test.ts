@@ -5,6 +5,7 @@ import {
   category,
 } from "@/lib/content-data/category-templates";
 import { layoutFlags, resolveLayoutProfile } from "@/lib/content/layoutProfile";
+import { resolveRouteLayout } from "@/lib/content/routeLayout";
 import type { LayoutProfile } from "@/lib/types/content";
 
 const EXPECTED_TEMPLATE_PROFILE: Record<keyof typeof STANDARD_CATEGORIES, LayoutProfile> = {
@@ -75,10 +76,18 @@ test("layoutFlags：full / article / reference 的区块开关", () => {
   assert.equal(article.articleMaxWidth, "wide");
 
   const reference = layoutFlags("reference", exam, { type: "document" });
-  assert.deepEqual(reference.rightTabs, []);
-  assert.equal(reference.defaultRightCollapsed, true);
+  assert.deepEqual(reference.rightTabs, ["ai"]);
+  assert.equal(reference.defaultRightCollapsed, false);
   assert.equal(reference.showToc, true);
 
   const html = layoutFlags("article", summary, { type: "document", renderType: "html" });
   assert.equal(html.showToc, false);
+});
+
+test("resolveRouteLayout：试卷页只有 AI 对话", () => {
+  const exam = resolveRouteLayout("/histology/shizhan-yanlian/real-04");
+  assert.equal(exam.profile, "reference");
+  assert.equal(exam.showRightPanel, true);
+  assert.deepEqual(exam.rightTabs, ["ai"]);
+  assert.equal(resolveRouteLayout("/").profile, "full");
 });
