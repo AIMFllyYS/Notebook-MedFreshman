@@ -23,6 +23,8 @@ build/*
 *.pwd
 
 # env (keep .env.example tracked)
+.env
+.env.production
 .env.local
 .env*.local
 .mcp
