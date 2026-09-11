@@ -7,7 +7,7 @@ import { buildCustomModelRegistryId } from "@/lib/ai/models";
 import { resolveLanguageModel, type ThinkingCallSettings } from "@/lib/ai/sdk/languageModel";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
 
-const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一任务是输出一个完整、自包含的 HTML 文档。
+export const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一任务是输出一个完整、自包含的 HTML 文档。
 
 ## 严格输出规则（违反将导致渲染失败）
 - 只输出 HTML 代码本身。不要输出任何解释、说明、注释、问候或总结文字。
@@ -33,8 +33,10 @@ const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一�
 - 顶层导航（\`window.top.location\`、\`target="_top"\` 跳转）。
 - 指针锁定 Pointer Lock（Three.js 的 \`PointerLockControls\` 这类第一人称视角控制会失效，改用 \`OrbitControls\` 等基于拖拽的控制器）。
 - Presentation API。
+- 持久化存储（\`localStorage\` / \`sessionStorage\` / IndexedDB）：刷新即丢，交互状态请用内存变量。
+- 相对路径或同源 \`fetch\`（如 \`fetch('/api/...')\`、\`fetch('./data.json')\`）：会失败。数据请内联在 HTML / JS 里。
 
-可正常使用：CDN 引库、\`fetch\`、\`alert/confirm\`、表单、弹窗、下载、localStorage。
+可正常使用（这些能力没有被砍，请放心做丰富演示）：CDN 引库、Canvas / SVG / WebGL、CSS 与 JS 动画、\`alert\`/\`confirm\`、表单、弹窗、下载。需要图表 / 3D / 数学排版 / 复杂动画时应当引 CDN 库。
 
 ## 骨架模板（可在此基础上填充）
 <!DOCTYPE html>
