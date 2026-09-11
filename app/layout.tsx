@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
+import { AuthProvider } from "@/lib/hooks/useAuthSession";
 import AppShell from "@/components/layout/AppShell";
 import "./globals.css";
 import "katex/dist/katex.min.css";
@@ -53,7 +54,9 @@ export default function RootLayout({
       </head>
       <body>
         <Suspense fallback={<div className="flex h-screen items-center justify-center text-[var(--ink-faint)]">加载中…</div>}>
-          <AppShell>{children}</AppShell>
+          <AuthProvider>
+            <AppShell>{children}</AppShell>
+          </AuthProvider>
         </Suspense>
       </body>
     </html>

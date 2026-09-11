@@ -56,6 +56,8 @@ describe("GlobalSettings", () => {
     expect(screen.getByRole("button", { name: /快捷键/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: /外观/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: "导出全部日志" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "登录" })).toBeInTheDocument();
+    expect(screen.getByText("未登录")).toBeInTheDocument();
     expect(screen.queryByText("清空全部成绩")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "彩色" })).not.toBeInTheDocument();
   });
