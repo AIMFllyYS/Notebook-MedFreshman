@@ -32,7 +32,8 @@
     "test:cov": "node scripts/run-unit-tests.mjs --filter=code && vitest run --coverage --passWithNoTests",
     "db:migrate": "npx tsx scripts/db-migrate.ts up",
     "db:migrate:status": "npx tsx scripts/db-migrate.ts status --compare",
-    "db:migrate:compare": "npx tsx scripts/db-migrate.ts compare"
+    "db:migrate:compare": "npx tsx scripts/db-migrate.ts compare",
+    "db:keepalive": "npx tsx scripts/db-keepalive.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "4.0.46",
