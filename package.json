@@ -33,7 +33,9 @@
     "db:migrate": "npx tsx scripts/db-migrate.ts up",
     "db:migrate:status": "npx tsx scripts/db-migrate.ts status --compare",
     "db:migrate:compare": "npx tsx scripts/db-migrate.ts compare",
-    "db:keepalive": "npx tsx scripts/db-keepalive.ts"
+    "db:keepalive": "npx tsx scripts/db-keepalive.ts",
+    "db:backup": "npx tsx scripts/db-backup.ts dump",
+    "db:backup:usage": "npx tsx scripts/db-backup.ts usage"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "4.0.46",

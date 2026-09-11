@@ -1,0 +1,232 @@
+# Daily logical dump + Free-plan capacity watermark.
+# GitHub only fires `schedule` on the default branch.
+#
+# Self-contained: curl the Management API (same SQL dump / usage paths as
+# lib/db/backup.ts and lib/db/usageAlert.ts). Do not depend on repo scripts
+# — master may not have scripts/db-backup.ts.
+#
+# Dump is AES-256-CBC+PBKDF2 (openssl). Ciphertext is uploaded as an
+# artifact (outside Supabase). Plaintext is deleted before upload.
+# Public repo: never print table contents or redemption codes.
+#
+# Secrets: SUPABASE_ACCESS_TOKEN, BACKUP_ENCRYPTION_KEY
+# Optional: SUPABASE_PROJECT_REF (defaults to jlahwwnjbhqfnsicdjsx)
+
+name: supabase-backup
+
+on:
+  schedule:
+    - cron: "41 21 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: supabase-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+    steps:
+      - name: Export and encrypt
+        run: |
+          set -euo pipefail
+          TOKEN="${SUPABASE_ACCESS_TOKEN:-}"
+          KEY="${BACKUP_ENCRYPTION_KEY:-}"
+          REF="${SUPABASE_PROJECT_REF:-jlahwwnjbhqfnsicdjsx}"
+          if [ -z "$TOKEN" ]; then
+            echo "Need SUPABASE_ACCESS_TOKEN"
+            exit 1
+          fi
+          if [ -z "$KEY" ]; then
+            echo "Need BACKUP_ENCRYPTION_KEY"
+            exit 1
+          fi
+          WORKDIR="$(mktemp -d)"
+          PLAIN="$WORKDIR/dump.json"
+          ENC="$GITHUB_WORKSPACE/backup-out/studyreview-logical.enc"
+          mkdir -p "$GITHUB_WORKSPACE/backup-out"
+          export TOKEN REF PLAIN
+          python3 <<'PY'
+          import datetime
+          import json
+          import os
+          import urllib.request
+
+          TOKEN = os.environ["TOKEN"]
+          REF = os.environ["REF"]
+          PLAIN = os.environ["PLAIN"]
+          TABLES = [
+              "auth.users",
+              "public.app_users",
+              "public.quota_grants",
+              "public.usage_ledger",
+              "public.redemption_codes",
+              "public.redemptions",
+          ]
+
+          def query(sql):
+              url = f"https://api.supabase.com/v1/projects/{REF}/database/query/read-only"
+              req = urllib.request.Request(
+                  url,
+                  data=json.dumps({"query": sql}).encode("utf-8"),
+                  headers={
+                      "Authorization": f"Bearer {TOKEN}",
+                      "Content-Type": "application/json",
+                      "Accept": "application/json",
+                  },
+                  method="POST",
+              )
+              with urllib.request.urlopen(req, timeout=60) as resp:
+                  return json.loads(resp.read().decode("utf-8"))
+
+          dumped_at = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+          dump = {
+              "version": 1,
+              "kind": "studyreview-logical-dump",
+              "projectRef": REF,
+              "dumpedAt": dumped_at,
+              "tables": {},
+          }
+          row_counts = {}
+          for table in TABLES:
+              sql = (
+                  "select coalesce(json_agg(to_json(t)), '[]'::json) as rows "
+                  f"from (select * from {table} order by 1) t"
+              )
+              body = query(sql)
+              rows = body[0]["rows"] if body else []
+              if isinstance(rows, str):
+                  rows = json.loads(rows) if rows else []
+              dump["tables"][table] = rows
+              row_counts[table] = len(rows)
+
+          with open(PLAIN, "w", encoding="utf-8") as fh:
+              json.dump(dump, fh, separators=(",", ":"))
+              fh.write("\n")
+          print(json.dumps({"ok": True, "action": "dump-prepared", "rowCounts": row_counts, "dumpedAt": dumped_at}, separators=(",", ":")))
+          PY
+          openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -md sha256 -salt \
+            -pass env:BACKUP_ENCRYPTION_KEY \
+            -in "$PLAIN" \
+            -out "$ENC"
+          rm -f "$PLAIN"
+          test -s "$ENC"
+          echo "ciphertextBytes=$(wc -c < "$ENC" | tr -d ' ')"
+
+      - name: Upload encrypted dump
+        uses: actions/upload-artifact@v4
+        with:
+          name: supabase-logical-backup
+          path: backup-out/studyreview-logical.enc
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Usage watermark
+        run: |
+          set -euo pipefail
+          TOKEN="${SUPABASE_ACCESS_TOKEN:-}"
+          REF="${SUPABASE_PROJECT_REF:-jlahwwnjbhqfnsicdjsx}"
+          if [ -z "$TOKEN" ]; then
+            echo "Need SUPABASE_ACCESS_TOKEN"
+            exit 1
+          fi
+          export TOKEN REF
+          python3 <<'PY'
+          import datetime
+          import json
+          import os
+          import urllib.request
+
+          TOKEN = os.environ["TOKEN"]
+          REF = os.environ["REF"]
+
+          def get(url):
+              req = urllib.request.Request(url, headers={"Authorization": f"Bearer {TOKEN}"})
+              with urllib.request.urlopen(req, timeout=60) as resp:
+                  return resp.read()
+
+          def query(sql):
+              url = f"https://api.supabase.com/v1/projects/{REF}/database/query/read-only"
+              req = urllib.request.Request(
+                  url,
+                  data=json.dumps({"query": sql}).encode("utf-8"),
+                  headers={
+                      "Authorization": f"Bearer {TOKEN}",
+                      "Content-Type": "application/json",
+                  },
+                  method="POST",
+              )
+              with urllib.request.urlopen(req, timeout=60) as resp:
+                  return json.loads(resp.read().decode("utf-8"))
+
+          db_rows = query("select pg_database_size(current_database())::bigint as db_bytes")
+          db_bytes = int(db_rows[0]["db_bytes"])
+          metrics = get(f"https://api.supabase.com/v1/projects/{REF}/analytics/endpoints/metrics").decode("utf-8", "replace")
+          nic = 0.0
+          db_tx = 0.0
+          for line in metrics.splitlines():
+              if not line or line.startswith("#"):
+                  continue
+              if line.startswith("node_network_transmit_bytes_total"):
+                  if 'device="lo"' in line:
+                      continue
+                  nic += float(line.rsplit(" ", 1)[-1])
+              elif line.startswith("db_transmit_bytes"):
+                  db_tx += float(line.rsplit(" ", 1)[-1])
+          if nic > 0:
+              egress_bytes = nic
+              egress_source = "prometheus:node_network_transmit_bytes_total"
+          else:
+              egress_bytes = db_tx
+              egress_source = "prometheus:db_transmit_bytes"
+
+          api_counts = None
+          try:
+              raw = get(f"https://api.supabase.com/v1/projects/{REF}/analytics/endpoints/usage.api-counts?interval=1day")
+              api_counts = json.loads(raw.decode("utf-8"))
+          except Exception:
+              api_counts = None
+
+          db_limit = 500 * 1024 * 1024
+          egress_limit = 5 * 1024 * 1024 * 1024
+          threshold = 0.8
+          db_ratio = db_bytes / db_limit
+          egress_ratio = egress_bytes / egress_limit
+          alert = db_ratio >= threshold or egress_ratio >= threshold
+          record = {
+              "ok": True,
+              "collectedAt": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z"),
+              "projectRef": REF,
+              "source": "github-actions",
+              "dbBytes": db_bytes,
+              "dbLimitBytes": db_limit,
+              "dbRatio": db_ratio,
+              "egressBytes": egress_bytes,
+              "egressLimitBytes": egress_limit,
+              "egressRatio": egress_ratio,
+              "egressSource": egress_source,
+              "apiCounts": api_counts,
+              "alert": alert,
+          }
+          print(json.dumps(record, separators=(",", ":")))
+          summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary:
+              with open(summary, "a", encoding="utf-8") as fh:
+                  fh.write("## Supabase usage watermark\n\n")
+                  fh.write(f"- alert: `{alert}`\n")
+                  fh.write(f"- database: `{db_bytes}` / `{db_limit}`\n")
+                  fh.write(f"- egress: `{egress_bytes}` / `{egress_limit}`\n")
+                  fh.write(f"- egressSource: `{egress_source}`\n")
+                  fh.write("\n")
+          if alert:
+              raise SystemExit(2)
+          PY
