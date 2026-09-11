@@ -13,6 +13,7 @@ import {
   ENV_MODEL_FLASH,
 } from "./provider.ts";
 import { buildCustomModelRegistryId } from "./models.ts";
+import { UnsafeCustomBaseUrlError } from "./customBaseUrl.ts";
 
 test("resolveProvider：custom 端点三要素齐全时用自定义", () => {
   const r = resolveProvider("custom", {
@@ -26,6 +27,42 @@ test("resolveProvider：custom 端点三要素齐全时用自定义", () => {
   assert.equal(r.apiKey, "sk-test");
   assert.equal(r.apiModelId, "my-model");
   assert.equal(r.registryId, "custom:my-model");
+});
+
+test("resolveProvider：回环或私网自定义 baseUrl 被拒绝", () => {
+  assert.throws(
+    () => resolveProvider("custom", { baseUrl: "http://127.0.0.1/v1", apiKey: "sk-test", model: "my-model" }),
+    (err: unknown) => err instanceof UnsafeCustomBaseUrlError && err.reason === "private",
+  );
+  assert.throws(
+    () => resolveProvider("custom", {
+      baseUrl: "http://192.168.0.5/v1",
+      apiKey: "sk-test",
+      model: "my-model",
+    }),
+    (err: unknown) => err instanceof UnsafeCustomBaseUrlError && err.reason === "private",
+  );
+});
+
+test("resolveProvider：非 http(s) 自定义 baseUrl 被拒绝", () => {
+  assert.throws(
+    () => resolveProvider("custom", { baseUrl: "file:///tmp/openai", apiKey: "sk-test", model: "my-model" }),
+    (err: unknown) => err instanceof UnsafeCustomBaseUrlError && err.reason === "protocol",
+  );
+});
+
+test("resolveImageProvider：私网自定义 baseUrl 被拒绝", () => {
+  const modelId = buildCustomModelRegistryId("lan-image", "local-image");
+  assert.throws(
+    () => resolveImageProvider(modelId, [{
+      id: "lan-image",
+      name: "LAN Image",
+      baseUrl: "http://10.0.0.2/v1",
+      apiKey: "sk-image",
+      models: [{ id: "local-image", type: "image" }],
+    }]),
+    (err: unknown) => err instanceof UnsafeCustomBaseUrlError && err.reason === "private",
+  );
 });
 
 test("resolveProvider：custom 缺少 apiKey 时不走自定义", () => {

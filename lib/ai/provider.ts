@@ -17,6 +17,7 @@ import {
   type ThinkingRequestStyle,
 } from "@/lib/ai/models";
 import { DEFAULT_CHAT_TIMEOUT_MS } from "@/lib/ai/upstream";
+import { assertSafeCustomBaseUrl } from "@/lib/ai/customBaseUrl";
 
 const BASE = process.env.AI_BASE_URL || "";
 const KEY = process.env.AI_API_KEY || "";
@@ -259,7 +260,7 @@ export function resolveProvider(
       return {
         registryId,
         apiModelId: found.model.id,
-        baseUrl: found.group.baseUrl.trim(),
+        baseUrl: assertSafeCustomBaseUrl(found.group.baseUrl),
         apiKey: found.group.apiKey.trim(),
         // 用户显式填的 override 优先；否则用协议默认。
         reasoningField: found.model.reasoningField?.trim() || auto.reasoningField,
@@ -297,7 +298,7 @@ export function resolveProvider(
     return {
       registryId,
       apiModelId: customModelName.trim(),
-      baseUrl: customProvider.baseUrl.trim(),
+      baseUrl: assertSafeCustomBaseUrl(customProvider.baseUrl),
       apiKey: customProvider.apiKey.trim(),
       reasoningField: REASONING_FIELD,
       thinkingRequestStyle: "siliconflow",
@@ -376,7 +377,7 @@ export function resolveImageProvider(
     const found = findCustomModelGroup(customGroups, effectiveModelId);
     if (found && found.group.baseUrl?.trim() && found.group.apiKey?.trim()) {
       return {
-        baseUrl: found.group.baseUrl.trim(),
+        baseUrl: assertSafeCustomBaseUrl(found.group.baseUrl),
         apiKey: found.group.apiKey.trim(),
         apiModelId: found.model.id,
         registryId: effectiveModelId,

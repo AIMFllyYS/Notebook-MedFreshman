@@ -3,7 +3,9 @@ import {
   resolveImageProvider,
   imagesGenerationsUrl,
   detectImageApiStyle,
+  type ResolvedImageProvider,
 } from "@/lib/ai/provider";
+import { UnsafeCustomBaseUrlError } from "@/lib/ai/customBaseUrl";
 import { parseUpstreamErrorBody } from "@/lib/ai/upstream";
 import type { CustomApiGroup } from "@/lib/ai/models";
 
@@ -40,7 +42,15 @@ export async function POST(req: NextRequest) {
     return Response.json({ error: "缺少生图提示词" }, { status: 400 });
   }
 
-  const provider = resolveImageProvider(modelId, customGroups, defaultImageModelId);
+  let provider: ResolvedImageProvider;
+  try {
+    provider = resolveImageProvider(modelId, customGroups, defaultImageModelId);
+  } catch (err) {
+    if (err instanceof UnsafeCustomBaseUrlError) {
+      return Response.json({ error: err.message }, { status: 400 });
+    }
+    throw err;
+  }
 
   if (!provider.configured) {
     return Response.json(
