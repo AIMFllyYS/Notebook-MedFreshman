@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agent 审查：六模型 × 五 Harness 能力对比</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#f3eee4; --bg2:#ebe4d6; --panel:#fffdf8; --panel2:#f7f1e6;
+    --line:#e0d4c2; --line2:#cfc1ab;
+    --fg:#1c1914; --dim:#5e564b; --dim2:#8a8072;
+    --ink:#2a241c;
+    --cg:#0f766e; --gc:#6d28d9; --k2:#047857; --k3:#c2410c; --cl:#be123c; --gm:#57534e;
+    --p0:#be123c; --p1:#b45309; --ok:#047857;
+    --spot:rgba(180,120,60,.14);
+    --mx:50%; --my:12%;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:"Noto Sans SC", "Source Sans 3", "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height:1.65; -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(720px 420px at var(--mx) var(--my), var(--spot), transparent 58%),
+      radial-gradient(540px 360px at 8% 18%, rgba(15,118,110,.08), transparent 60%),
+      radial-gradient(480px 320px at 92% 8%, rgba(109,40,217,.07), transparent 62%),
+      radial-gradient(420px 280px at 78% 72%, rgba(194,65,12,.06), transparent 65%);
+    animation:orbShift 22s ease-in-out infinite alternate;
+  }
+  body::after{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.35;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+    mix-blend-mode:multiply;
+  }
+  .orb{
+    position:fixed; border-radius:50%; filter:blur(48px); pointer-events:none; z-index:0; opacity:.45;
+    animation:floatY 16s ease-in-out infinite;
+  }
+  .orb.a{width:220px;height:220px;background:#99f6e4;top:12%;left:-40px;animation-delay:-3s}
+  .orb.b{width:180px;height:180px;background:#ddd6fe;top:58%;right:-30px;animation-duration:19s}
+  .orb.c{width:140px;height:140px;background:#fed7aa;bottom:8%;left:22%;animation-duration:13s;animation-delay:-7s}
+  .wrap{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:44px 24px 110px}
+
+  header{position:relative;padding-bottom:32px;margin-bottom:28px}
+  header::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--line2), transparent);
+    transform:scaleX(0); transform-origin:center;
+    animation:ruleIn .9s .2s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--cg); font-weight:600; margin-bottom:14px;
+  }
+  .eyebrow .pulse{
+    width:8px;height:8px;border-radius:50%;background:var(--cg);position:relative;
+  }
+  .eyebrow .pulse::after{
+    content:""; position:absolute; inset:-4px; border-radius:50%;
+    border:1px solid var(--cg); animation:ping 1.8s ease-out infinite;
+  }
+  h1{
+    font-family:"Fraunces", "Noto Sans SC", "Songti SC", serif;
+    font-size:clamp(28px, 4vw, 40px); margin:0 0 12px; letter-spacing:-.03em; font-weight:600;
+    line-height:1.18; color:var(--ink);
+  }
+  .sub{color:var(--dim);font-size:15px;margin:0;max-width:78ch}
+  .sub code{background:var(--panel2);padding:1px 6px;border-radius:4px;font-size:13px;color:#3f3a32;border:1px solid var(--line)}
+  h2{
+    font-family:"Fraunces", "Noto Sans SC", serif;font-size:23px;margin:64px 0 10px;letter-spacing:-.02em;font-weight:600;
+  }
+  h2 .num{
+    font-family:"IBM Plex Mono",monospace;color:var(--dim2);font-weight:500;margin-right:10px;
+    font-size:15px; display:inline-block; vertical-align:middle;
+  }
+  h2 .num::after{
+    content:""; display:block; width:0; height:2px; margin-top:5px;
+    background:linear-gradient(90deg, var(--cg), var(--k3));
+    border-radius:2px;
+  }
+  h2.in .num::after{width:28px; transition:width .7s cubic-bezier(.22,1,.36,1) .15s}
+  .lede{color:var(--dim);font-size:15px;margin:0 0 22px;max-width:88ch}
+  .panel{
+    background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;
+    box-shadow:0 1px 0 rgba(255,255,255,.8) inset, 0 18px 40px -28px rgba(60,40,10,.28);
+    overflow-x:auto;
+  }
+  .panel table{min-width:680px}
+  .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+  @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+
+  .radar-shell{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px;align-items:center}
+  @media(max-width:900px){.radar-shell{grid-template-columns:1fr}}
+  .legend{display:flex;flex-direction:column;gap:7px}
+  .lg{
+    display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:10px;cursor:pointer;
+    border:1px solid transparent;transition:transform .22s cubic-bezier(.22,1,.36,1), background .16s, border-color .16s, opacity .16s;
+    user-select:none; background:transparent;
+  }
+  .lg:hover{background:var(--panel2);transform:translateX(4px)}
+  .lg.off{opacity:.34}
+  .lg .dot{width:11px;height:11px;border-radius:50%;flex:none;box-shadow:0 0 0 3px rgba(28,25,20,.05);position:relative}
+  .lg:not(.off) .dot::after{
+    content:""; position:absolute; inset:-3px; border-radius:50%; border:1px solid currentColor; opacity:.35;
+    animation:ping 2.4s ease-out infinite;
+  }
+  .lg .nm{font-size:13.5px;font-weight:650}
+  .lg .hs{font-size:11.5px;color:var(--dim2);margin-top:1px}
+  .lg .avg{margin-left:auto;font-size:15px;font-variant-numeric:tabular-nums;color:var(--dim);font-weight:650;font-family:"IBM Plex Mono",monospace}
+  .hint{color:var(--dim2);font-size:12.8px;margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--dim);font-weight:600;font-size:12.5px;letter-spacing:.02em;white-space:nowrap}
+  td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;font-family:"IBM Plex Mono",monospace}
+  tbody tr{transition:background .15s}
+  tbody tr:hover{background:rgba(180,140,80,.06)}
+  tbody tr:last-child td{border-bottom:none}
+  .swatch{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;vertical-align:middle}
+  .mono{font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+
+  .bar{
+    height:8px;border-radius:99px;min-width:2px;display:block;transform-origin:left center;
+    transform:scaleX(0); background-size:18px 8px;
+    background-image:linear-gradient(90deg, rgba(255,255,255,.28) 0 8px, transparent 8px 18px);
+  }
+  .bar.on{transform:scaleX(1);transition:transform .9s cubic-bezier(.22,1,.36,1);animation:barShine 2.4s linear infinite}
+  .barcell{display:flex;align-items:center;gap:10px}
+  .barcell .v{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--dim);min-width:52px;text-align:right;font-family:"IBM Plex Mono",monospace}
+
+  .tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:650;white-space:nowrap}
+  .t-full{background:#d1fae5;color:#065f46}
+  .t-part{background:#fef3c7;color:#92400e}
+  .t-lim{background:#fee2e2;color:#9f1239}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 19px;border-top:3px solid var(--c);
+    box-shadow:0 16px 36px -28px rgba(60,40,10,.3);
+    transition:transform .28s cubic-bezier(.22,1,.36,1), box-shadow .28s;
+    position:relative; overflow:hidden;
+  }
+  .card::after{
+    content:""; position:absolute; inset:0 auto auto -40%; width:40%; height:100%;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+    transform:skewX(-18deg); pointer-events:none;
+  }
+  .card:hover{transform:translateY(-5px);box-shadow:0 22px 44px -24px rgba(60,40,10,.38)}
+  .card:hover::after{animation:shine .7s ease}
+  .card h3{margin:0 0 3px;font-size:16px;font-weight:650;font-family:"Fraunces", "Noto Sans SC", serif}
+  .card .meta{color:var(--dim2);font-size:12px;margin:0 0 13px}
+  .card ul{margin:0;padding-left:17px;font-size:13px;color:#3f3a32}
+  .card li{margin-bottom:6px}
+  .card li:last-child{margin-bottom:0}
+  .card .verdict{margin-top:13px;padding-top:12px;border-top:1px solid var(--line);font-size:12.8px;color:var(--dim)}
+  .good::marker{color:var(--ok)} .bad::marker{color:var(--p0)}
+
+  .note{
+    background:var(--panel);border-left:3px solid var(--dim2);border-radius:0 12px 12px 0;
+    padding:15px 18px;font-size:14px;color:#3f3a32;margin:18px 0;
+    box-shadow:0 14px 32px -28px rgba(60,40,10,.25);
+  }
+  .note strong{color:var(--fg)}
+  .note.warn{border-left-color:var(--p1);background:#fff8ee}
+  .note.ink{border-left-color:var(--cg);background:#f3fbf8}
+  ul.plain{font-size:14.2px;color:#3f3a32;padding-left:19px}
+  ul.plain li{margin-bottom:8px}
+  footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:var(--dim2);font-size:12.8px}
+
+  .kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:13px;margin:24px 0 0}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:560px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .kpi{
+    background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 17px;
+    box-shadow:0 14px 30px -26px rgba(60,40,10,.3);
+    transition:transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s;
+    position:relative; overflow:hidden;
+  }
+  .kpi:hover{transform:translateY(-3px) rotate(-.3deg);box-shadow:0 18px 36px -22px rgba(60,40,10,.36)}
+  .kpi .k{font-size:28px;font-weight:650;letter-spacing:-.03em;font-variant-numeric:tabular-nums;font-family:"Fraunces",serif}
+  .kpi .l{font-size:12.2px;color:var(--dim2);margin-top:4px}
+
+  .ctx-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 16px}
+  @media(max-width:720px){.ctx-grid{grid-template-columns:1fr}}
+  .ctx{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+    position:relative; overflow:hidden;
+  }
+  .ctx .who{font-size:12.5px;color:var(--dim2);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+  .ctx .win{font-family:"Fraunces", "Noto Sans SC", serif;font-size:34px;font-weight:650;letter-spacing:-.03em;margin:4px 0 10px;line-height:1}
+  .radar-frame{position:relative; isolation:isolate}
+  .radar-frame svg{position:relative;z-index:1;display:block}
+  .radar-frame::before{
+    content:""; position:absolute; inset:11%; border-radius:50%;
+    border:1px dashed rgba(15,118,110,.28); pointer-events:none;
+    animation:spin 32s linear infinite;
+  }
+  .radar-frame::after{
+    content:""; position:absolute; inset:18%; border-radius:50%;
+    border:1px dashed rgba(109,40,217,.18); pointer-events:none;
+    animation:spin 48s linear infinite reverse;
+  }
+  .vars{width:100%; font-size:13.2px}
+  .vars th{background:var(--panel2)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .ctx .win small{font-size:16px;color:var(--dim2);font-weight:500;margin-left:4px}
+  .track{height:9px;background:#efe6d6;border-radius:99px;overflow:hidden}
+  .fill{height:100%;border-radius:99px;width:0;transition:width 1.1s cubic-bezier(.22,1,.36,1)}
+  .ctx.in .fill{width:var(--w)}
+
+  .env-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  @media(max-width:900px){.env-grid{grid-template-columns:1fr}}
+  .env{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+    transition:transform .25s cubic-bezier(.22,1,.36,1);
+  }
+  .env:hover{transform:translateY(-4px)}
+  .env .chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+  .chip{font-size:11.5px;font-weight:650;padding:3px 8px;border-radius:99px;background:var(--panel2);color:var(--fg);border:1px solid var(--line)}
+  .env h3{margin:0 0 8px;font-size:16px;font-family:"Fraunces", "Noto Sans SC", serif}
+  .env p{margin:0;font-size:13.6px;color:var(--dim)}
+
+  .recos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  @media(max-width:900px){.recos{grid-template-columns:1fr}}
+  .reco{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+    border-top:3px solid var(--c, var(--line2));
+    transition:transform .28s cubic-bezier(.22,1,.36,1);
+  }
+  .reco:hover{transform:translateY(-4px)}
+  .reco .step{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;color:var(--dim2);font-weight:600;
+  }
+  .reco h3{margin:6px 0 8px;font-size:16.5px;font-family:"Fraunces", "Noto Sans SC", serif}
+  .reco p{margin:0;font-size:13.7px;color:var(--dim)}
+
+  .tip{
+    position:fixed; z-index:20; pointer-events:none; opacity:0; transform:translate(-50%,-12px);
+    background:#1c1914; color:#f6f1e8; font-size:12px; padding:7px 10px; border-radius:8px;
+    white-space:nowrap; transition:opacity .15s; font-family:"Source Sans 3",sans-serif;
+    box-shadow:0 10px 24px rgba(28,25,20,.2);
+  }
+  .tip.on{opacity:1}
+
+  .reveal{opacity:1; transform:none; filter:none}
+  html.anim .reveal:not(.in){opacity:0; transform:translateY(16px); filter:blur(3px)}
+  html.anim .reveal.in{opacity:1; transform:none; filter:none; transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1), filter .7s}
+  .d1{transition-delay:.06s}.d2{transition-delay:.12s}.d3{transition-delay:.18s}
+  .d4{transition-delay:.24s}.d5{transition-delay:.3s}.d6{transition-delay:.36s}
+
+  .stamp{
+    display:inline-block; margin-left:10px; padding:2px 8px 1px;
+    border:1.5px solid var(--p0); color:var(--p0); font-size:11px; font-weight:700;
+    letter-spacing:.12em; transform:rotate(-8deg); vertical-align:middle;
+    animation:stampIn .6s .5s cubic-bezier(.34,1.4,.64,1) both;
+  }
+
+  @keyframes orbShift{to{transform:translate3d(18px,-12px,0)}}
+  @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+  @keyframes ping{0%{transform:scale(.7);opacity:.7}100%{transform:scale(2.1);opacity:0}}
+  @keyframes ruleIn{to{transform:scaleX(1)}}
+  @keyframes shine{from{left:-40%}to{left:130%}}
+  @keyframes barShine{to{background-position:18px 0}}
+  @keyframes stampIn{from{opacity:0;transform:rotate(-18deg) scale(1.4)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
+  @keyframes dashDraw{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important}
+    .reveal{opacity:1;transform:none;filter:none}
+    .bar{transform:none}
+    body::before{animation:none}
+  }
+</style>
+</head>
+<body>
+<div class="orb a"></div>
+<div class="orb b"></div>
+<div class="orb c"></div>
+<div class="tip" id="tip"></div>
+<div class="wrap">
+
+<header class="reveal">
+  <div class="eyebrow"><span class="pulse"></span> 六模型交叉核验 · 2026-09-12</div>
+  <h1>Agent 板块审查：六模型 × 五 Harness 能力对比 <span class="stamp">已核验</span></h1>
+  <p class="sub">
+    对象 <code>StudyReview-Platform</code> 的 Agent 循环 / 上下文工程 / Harness / 模型接入。
+    六个 Agent 独立审查，全部结论由 Claude Opus 5 回源码核验后打分。
+    分数量的是<strong>这套工程任务上的好用程度</strong>，不是模型智商榜。
+  </p>
+  <div class="kpis">
+    <div class="kpi reveal d1"><div class="k" data-count="6">0</div><div class="l">参与审查的模型</div></div>
+    <div class="kpi reveal d2"><div class="k" data-count="5">0</div><div class="l">不同 Harness</div></div>
+    <div class="kpi reveal d3"><div class="k" data-count="13" style="color:var(--p0)">0</div><div class="l">去重后 P0</div></div>
+    <div class="kpi reveal d4"><div class="k" data-count="62" style="color:var(--p1)">0</div><div class="l">去重后 P1</div></div>
+    <div class="kpi reveal d5"><div class="k" data-count="11">0</div><div class="l">证伪 / 剔除的结论</div></div>
+  </div>
+</header>
+
+<h2 class="reveal"><span class="num">01</span>怎么读这份对比</h2>
+<p class="lede reveal">
+  前两名用的都是 Grok，并各自套了完整 harness。Cursor 一侧带 IDE 适配（编辑器上下文、工具编排、子智能体调度）；
+  CLI 一侧把仓库拆给十几路只读子智能体。覆盖面强是预期内的——<strong>不能据此直接判断模型本身的能力</strong>。
+  下面这些分数，主要回答：在这些工程板块里，用这个模型 + 这套底座，审得准不准、挖得深不深。
+</p>
+
+<div class="ctx-grid">
+  <div class="ctx reveal d1" data-w="60%">
+    <div class="who" style="color:var(--cg)">Cursor Grok · 上下文</div>
+    <div class="win">300K <small>tokens</small></div>
+    <div class="track"><div class="fill" style="--w:60%;background:var(--cg)"></div></div>
+    <p style="margin:10px 0 0;font-size:13px;color:var(--dim)">Cursor IDE harness。适配层完整，日常主力就跑在这里。</p>
+  </div>
+  <div class="ctx reveal d2" data-w="100%">
+    <div class="who" style="color:var(--gc)">Grok CLI · 上下文</div>
+    <div class="win">500K <small>tokens</small></div>
+    <div class="track"><div class="fill" style="--w:100%;background:var(--gc)"></div></div>
+    <p style="margin:10px 0 0;font-size:13px;color:var(--dim)">更大窗口 + 16 路扇出，一次能塞进更多源码。覆盖广度里有窗口变量。</p>
+  </div>
+</div>
+
+<div class="note ink reveal">
+  <strong>评分对象是「模型 × harness × 任务」，不是裸模型。</strong>
+  Cursor 一侧的强项是 IDE 适配（编辑器上下文、工具编排、子智能体调度）；
+  CLI 一侧的强项是把仓库拆给十几路只读子智能体——覆盖面强是预期内的。
+  子智能体各自把源码读进自己的上下文，14–16 路并行约等于把仓库读十几遍，这会抬高覆盖和缺陷发现力。
+  单智能体的 Kimi / Claude / Gemini 没有这个乘数。<strong>不能拿均分直接给模型智商排名</strong>，要比的是：在这些工程板块里，这个组合审得准不准、挖得深不深。
+</div>
+
+<div class="panel reveal" style="padding:6px 8px;margin-top:16px">
+  <table class="vars">
+    <thead>
+      <tr>
+        <th>模型</th>
+        <th>工程现场</th>
+        <th>上下文</th>
+        <th>扇出</th>
+        <th>用量为什么大 / 小</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="swatch" style="background:var(--cg)"></span>Cursor Grok</td>
+        <td>Cursor IDE · 带适配</td>
+        <td class="n">300K</td>
+        <td class="n">14 路</td>
+        <td>便宜，订阅额度非常多，日常主力</td>
+      </tr>
+      <tr>
+        <td><span class="swatch" style="background:var(--gc)"></span>Grok CLI</td>
+        <td>Grok CLI · 子智能体扇出</td>
+        <td class="n">500K</td>
+        <td class="n">16 路</td>
+        <td>同一套低成本订阅，交叉验证用</td>
+      </tr>
+      <tr>
+        <td><span class="swatch" style="background:var(--k2)"></span>Kimi K2.8</td>
+        <td>Kimi Code</td>
+        <td class="n">—</td>
+        <td class="n">4 路</td>
+        <td>结构判断好用，不当边界巡逻</td>
+      </tr>
+      <tr>
+        <td><span class="swatch" style="background:var(--k3)"></span>Kimi K3</td>
+        <td>商汤日日新 API + DeepSeek Harness</td>
+        <td class="n">—</td>
+        <td class="n">1 路</td>
+        <td>官方 API 并不便宜（$3 / $15）；这次走日日新，单价≈0</td>
+      </tr>
+      <tr>
+        <td><span class="swatch" style="background:var(--cl)"></span>Claude Opus 4.6 Thinking</td>
+        <td>AntiGravity</td>
+        <td class="n">—</td>
+        <td class="n">1 路</td>
+        <td>看地图可以，星级评分不可用</td>
+      </tr>
+      <tr>
+        <td><span class="swatch" style="background:var(--gm)"></span>Gemini High</td>
+        <td>AntiGravity</td>
+        <td class="n">—</td>
+        <td class="n">1 路</td>
+        <td>问题主要在模型本身，机制断言先复核</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="reveal"><span class="num">02</span>能力雷达</h2>
+<p class="lede reveal">
+  六个维度，满分 10。评分不是读观感，而是按「可核验断言的命中率」「是否到 <code>file:line</code>」
+  「独立发现且经核实的真缺陷条数」「是否给已损坏的机制打了好评」四类证据回推的。点击图例可切换显示。
+</p>
+
+<div class="panel reveal">
+  <div class="radar-shell">
+    <div class="radar-frame"><svg id="radar" viewBox="0 0 560 520" role="img" aria-label="六模型能力雷达图"></svg></div>
+    <div>
+      <div class="legend" id="legend"></div>
+      <p class="hint">
+        「抗幻觉」= 未被核验证伪的断言占比，分数越高越可信。<br />
+        「缺陷发现力」按经核实的真阳性条数归一化，非自称条数。
+      </p>
+    </div>
+  </div>
+</div>
+
+<h2 class="reveal"><span class="num">03</span>逐项评分</h2>
+<div class="panel reveal" style="padding:6px 8px">
+  <table id="scoreTable"></table>
+</div>
+
+<h2 class="reveal"><span class="num">04</span>发现量与采信判定</h2>
+<p class="lede reveal">
+  「真阳性」= 该报告提出、且本次核验在源码中确认成立的独立缺陷（多份重复提出的只在各自计一次）。
+  「证伪」= 被核验推翻的断言，包括对已损坏机制给出的正面评价。
+</p>
+<div class="panel reveal" style="padding:6px 8px">
+  <table id="findTable"></table>
+</div>
+
+<div class="note warn reveal">
+  <strong>为什么 Claude Opus 4.6 的真阳性只有 7 条？</strong>
+  它的架构叙述与数据流表基本准确，问题出在<em>结论方向</em>：给 Prefix Cache 优化打了 ⭐⭐⭐⭐⭐、
+  给模型接入打了 ⭐⭐⭐⭐⭐。而这两处恰好各藏着一个 P0——用户提问被写进 system 导致每轮 cache 失效，
+  以及 GLM 降级到 MiMo 后思考方言不切换。<strong>把损坏的机制评为满分，比漏看它更有害</strong>，
+  因为它会让人不再去查。
+</div>
+
+<h2 class="reveal"><span class="num">05</span>耗时与额度估算</h2>
+<p class="lede reveal">
+  牌价按 2026-09-12 各家<strong>官方 API 标价</strong>重核过；「本次实付」按实际走的通道另计。
+  Token 量仍按 harness 形态推算：子智能体扇出是主导变量——14 路并行大致等于把代码库读 14 遍。
+  走 IDE / 会员订阅时，这个差额用户感知不到；换成官方按量 API，差距就会露出来。
+</p>
+<div class="panel reveal" style="padding:6px 8px">
+  <table id="costTable"></table>
+</div>
+
+<div class="note reveal">
+  <strong>牌价来源（每百万 token，缓存未命中）。</strong>
+  Grok 4.6：xAI <code>$2 / $6</code>（prompt ≥200k 整单翻到 <code>$4 / $12</code>）；
+  Kimi K3 官方：Moonshot <code>$3 / $15</code>（缓存命中输入 $0.30）——<strong>官方并不便宜</strong>；
+  K2.8：Kimi 开放平台尚未单独挂牌，coding 档按官方 <code>kimi-k2.7-code $0.95 / $4</code> 作近似；
+  Claude Opus 4.6：<code>$5 / $25</code>（不是旧 Opus 4 的 $15 / $75）；
+  Gemini 3.7 Flash 入门价：<code>$0.75 / $3.75</code>（至 2026-12-31）。
+  未计入 cache 折扣。K3 本次<strong>没有走官方 API</strong>，走的是商汤日日新 Token Plan，公测期单价基本上是免费的。
+</div>
+
+<h2 class="reveal"><span class="num">06</span>成本效率</h2>
+<p class="lede reveal">
+  左边按官方牌价算「假如全部走按量 API」；右边是这次真实通道。两列不能混着比。
+</p>
+<div class="panel reveal" style="padding:6px 8px">
+  <table id="effTable"></table>
+</div>
+
+<div class="note reveal">
+  <strong>K3 看起来便宜，便宜的是通道，不是官方牌价。</strong>
+  Moonshot 官方 K3 是 <code>$3 / $15</code>，比现在的 Grok 4.6（<code>$2 / $6</code>）还贵一档。
+  这次 K3 实付≈0，是因为走了商汤日日新（Token Plan 公测，单价基本为 0），不是因为 K3 本身是廉价模型。
+  按官方牌价，单位成本最低的是 K2.8 近似档和 Gemini；按<em>绝对覆盖</em>，仍然只有两份 Grok 摸到安全面、卫星路由、持久化孤立键——8 条安全类 P0 的唯一来源。<br /><br />
+  两份 Grok 若按 xAI 牌价约 <strong>$33</strong>（未计 ≥200k 加价；加上大约翻倍）。
+  实际走 Cursor / Grok CLI 订阅，这笔感知不到。用订阅额度换 8 条安全 P0 + 步数触顶静默失败——
+  对一个准备把自定义 baseUrl 和用户密钥推到前线的项目，仍然划算。
+</div>
+
+<h2 class="reveal"><span class="num">07</span>各报告定性</h2>
+<div class="cards" id="cards"></div>
+
+<h2 class="reveal"><span class="num">08</span>Harness 形态的影响</h2>
+<p class="lede reveal">这次对比里，<strong>Harness 形态对结果的影响不亚于模型本身</strong>。三条可观察的规律：</p>
+<ul class="plain reveal">
+  <li>
+    <strong>扇出决定覆盖广度，不决定准确率。</strong>
+    Cursor Grok（14 路）与 Grok CLI（16 路）同模型同量级扇出，独立跑出高度一致的结论——
+    这本身就是交叉验证。而单智能体的 Kimi K3 准确率并不低（8.5），只是覆盖不到 5.0：
+    <em>它说的都对，只是没时间说完</em>。
+  </li>
+  <li>
+    <strong>只读约束显著抑制幻觉。</strong>
+    两份 Grok 报告都明确声明「子智能体不改仓库，只回传带行号的机制」，
+    并要求断言可回溯到 <code>file:line</code>。抗幻觉得分 9.5 / 9.3，明显高于自由叙述型报告。
+    Gemini 缺这层约束，于是出现了「Agent 会挂起等待用户批准」这种<em>读了类型定义就以为读了实现</em>的错误。
+  </li>
+  <li>
+    <strong>被问题措辞带偏的风险是真实的。</strong>
+    「Harness」被 Gemini 解成了「H = Hybrid Search / Human-in-the-loop / History / Heartbeat」，
+    整整一章建立在这个自造框架上。同一个词，另外五份都正确理解为 Agent 运行底座。
+    这不是知识缺陷，是<em>遇到不确定术语时选择编一个自洽解释、而不是回代码求证</em>。
+  </li>
+</ul>
+
+<h2 class="reveal"><span class="num">09</span>各模型在工程中的实际用法</h2>
+<p class="lede reveal">
+  分数之外，还要看它们平时被放在哪条流水线上。用量、订阅结构和宿主产品，会反过来解释「为什么这份报告写得深 / 写得浅」。
+</p>
+<div class="env-grid">
+  <div class="env reveal d1">
+    <div class="chips">
+      <span class="chip" style="background:#ccfbf1;color:#115e59;border-color:#99f6e4">Cursor Grok · 300K</span>
+      <span class="chip" style="background:#ede9fe;color:#5b21b6;border-color:#ddd6fe">Grok CLI · 500K</span>
+    </div>
+    <h3>Grok 家族：日常主力，因为便宜</h3>
+    <p>
+      Cursor Grok、Grok CLI，以及同一条线上的 Grok，能被大量使用，首先是因为相对成本很低、订阅给的额度非常多。
+      不是「先证明它最强再决定多用」，而是<strong>便宜到可以拿复杂仓库反复扫</strong>，覆盖和交叉验证才堆得起来。
+      Cursor 侧有完整适配；CLI 侧靠子智能体扇出——能力强没有问题，但那是组合拳，不是裸模型榜。
+    </p>
+  </div>
+  <div class="env reveal d2">
+    <div class="chips">
+      <span class="chip" style="background:#ffe4e6;color:#9f1239;border-color:#fecdd3">Claude Opus 4.6 Thinking</span>
+      <span class="chip" style="background:#e7e5e4;color:#44403c;border-color:#d6d3d1">Gemini High</span>
+    </div>
+    <h3>AntiGravity：Claude 与 Gemini 的宿主</h3>
+    <p>
+      这两份都跑在 AntiGravity 里。Claude 的架构叙述能用，但会给已损坏机制打满分——偏差在判断，不在认不出仓库。
+      Gemini 则更明确：<strong>主要是模型本身的问题</strong>（自造 Harness 框架、把类型定义当成实现）。
+      换宿主也救不了「不确定时编一个自洽解释」。
+    </p>
+  </div>
+  <div class="env reveal d3">
+    <div class="chips">
+      <span class="chip" style="background:#d1fae5;color:#065f46;border-color:#a7f3d0">Kimi K2.8</span>
+    </div>
+    <h3>Kimi Code：K2.8 的工程现场</h3>
+    <p>
+      K2.8 用在 Kimi Code。4 路并行，架构判断力是六份里最清楚的一档（「工具无副作用化」、
+      <code>"upstream"</code> 命名空间靠人记住）。安全面缺席，所以适合当「结构校对」，不适合当「边界巡逻」。
+    </p>
+  </div>
+  <div class="env reveal d4">
+    <div class="chips">
+      <span class="chip" style="background:#ffedd5;color:#9a3412;border-color:#fed7aa">Kimi K3</span>
+    </div>
+    <h3>日日新 API + DeepSeek Harness</h3>
+    <p>
+      K3 官方 API 相对贵（Moonshot <code>$3 / $15</code>）。这次没走官方，而是商汤日日新 + DeepSeek harness——
+      日日新 Token Plan 公测期单价基本上免费。所以「K3 这次很便宜」说的是<strong>通道</strong>，不是牌价。
+      篇幅最小、信噪比最高，compaction 是它先立成 P0 的。准确率不低，覆盖被单线程卡住。
+    </p>
+  </div>
+</div>
+
+<h2 class="reveal"><span class="num">10</span>综合评价与使用建议</h2>
+<p class="lede reveal">
+  把价格、订阅额度、上下文窗口、harness 扇出、宿主产品和这次核验结果叠在一起，而不是只看均分。
+  我自己常用的这几档，综合成本都相对低，适合日常。要看清模型之间的差距，最好拿一个足够复杂的大项目做同一套审查——这次就是那把尺子。
+</p>
+<div class="recos">
+  <div class="reco reveal d1" style="--c:var(--cg)">
+    <div class="step">01 · 日常工程</div>
+    <h3>Grok 系列当默认循环</h3>
+    <p>
+      Cursor Grok / Grok CLI 订阅便宜、额度多，值得占日常工时的大头。复杂勘察、安全面、持久化这类「不主动找就看不见」的问题，这次只有它们摸到。
+      把它理解成<strong>低成本 × 强 harness</strong>，而不是「Grok 一定比别的模型聪明」。
+    </p>
+  </div>
+  <div class="reco reveal d2" style="--c:var(--k2)">
+    <div class="step">02 · 架构校对</div>
+    <h3>Kimi 用来对结构、控预算</h3>
+    <p>
+      K2.8（Kimi Code 订阅）适合要一条设计原则、一张结构图的时候。
+      K3 只有挂在日日新这种近乎免费的通道上，才适合当日常低成本探针；
+      若走官方 Kimi API，<code>$3 / $15</code> 并不划算。两者都别单独指望扫完安全面。
+    </p>
+  </div>
+  <div class="reco reveal d3" style="--c:var(--cl)">
+    <div class="step">03 · AntiGravity</div>
+    <h3>Claude 看地图，不看星级</h3>
+    <p>
+      Opus 4.6 Thinking 的数据流表和能力矩阵可以给新人建立整体认知。不要采信它对 Prefix Cache、模型接入的满分——
+      这次核验说明：<strong>方向对、评分不可用</strong>。改进建议（Orchestrator、渐进压缩）可以当议题，不能当结案。
+    </p>
+  </div>
+  <div class="reco reveal d4" style="--c:var(--gm)">
+    <div class="step">04 · 机制断言</div>
+    <h3>Gemini 先复核再引用</h3>
+    <p>
+      分层图和接入指南能用；§4 自造框架与 HITL 结论不能用。问题主要在模型：读到类型就当实现、不确定术语就编框架。
+      AntiGravity 换不了这件事。机制层句子必须回源码。
+    </p>
+  </div>
+</div>
+
+<div class="note ink reveal" style="margin-top:18px">
+  <strong>如何用一次复杂审查判断差距。</strong>
+  日常小改、补类型、写单测，便宜模型之间几乎分不出高下。把同一套问题扔进一个有循环、有上下文工程、有自定义模型接入的大仓库，
+  差距才会稳定出现：谁能钉到 <code>file:line</code>，谁会给坏掉的机制打五星，谁会把 Harness 编成四个 H。
+  本次 13 条 P0 / 62 条 P1 / 11 条证伪，就是那次实验的刻度。选用时同时看三件事：
+  <em>你付得起多少扇出</em>、<em>宿主有没有只读约束</em>、<em>这份输出能不能当施工蓝本</em>。
+</div>
+
+<h2 class="reveal"><span class="num">11</span>如果只能保留两份</h2>
+<div class="note reveal">
+  保留 <strong><code>agent-analysis-cursor-grok.md</code></strong>（施工蓝本，粒度到行）
+  与 <strong><code>agent-analysis-kimi-k2-8.md</code></strong>（架构判断，含「工具无副作用化」
+  这条别人都没说清的设计原则，以及 <code>"upstream"</code> 命名空间隐性约定这类只有整体视角才看得见的风险）。<br /><br />
+  <code>agent-analysis-grok-cli.md</code> 作为交叉验证副本保留；
+  <code>agent-analysis-kimi-k3.md</code> 的 compaction 议题已并入汇总 P0-12；
+  另两份的可用部分已全部合并，正文建议加「以汇总文档为准」的跳转，避免后人按 §3 里被证伪的断言改代码。
+</div>
+
+<footer class="reveal">
+  详细问题清单见同目录 <code>00-agent-issues-consolidated.md</code>（13 项 P0 / 62 项 P1，按 11 个系统分类，
+  含 11 条证伪结论与来源归属）。  本页评分依据可核验证据。成本分两列：官方 API 牌价（2026-09-12 核验）与本次实付通道。
+  上下文窗口按实际环境：Cursor Grok 300K · Grok CLI 500K。
+</footer>
+
+</div>
+
+<script>
+const DIMS = ["事实准确性","分析深度","覆盖广度","缺陷发现力","工程可执行性","抗幻觉"];
+
+const AGENTS = [
+  { key:"CG", name:"Grok 4.6 xhigh fast", vendor:"xAI",
+    harness:"Cursor IDE · 主 + 14 只读子智能体 · 300K", color:"#0f766e",
+    scores:[9.6,9.8,9.9,9.8,9.0,9.5],
+    tp:45, fp:1, doc:87, trust:"full",
+    inTok:6.8, outTok:0.42, price:[2,6], mins:38,
+    channel:"Cursor 订阅", paid:0, priceHint:"≥200k 则 $4/$12",
+    good:["SDK 源码级钉死 isStepCount(6) 语义，并推出「第 6 步无人收尾」的后果",
+          "唯一给出安全面分级：鉴权 / SSRF / 路径 / sandbox / 密钥旅行",
+          "发现 InteractiveVenn 生产者与消费者字段对不上",
+          "持久化孤立键、listAllChatKeys 从未调用、createSession id 碰撞"],
+    bad:["浮窗 token 泄漏判为「仍在」，实际是路径分裂（关闭按钮会 reset）"],
+    verdict:"本次汇总的主干。抽检断言几乎全中，可直接当施工蓝本。分数量的是 Cursor 适配 harness 上的工程表现。" },
+
+  { key:"GC", name:"Grok 4.6", vendor:"xAI",
+    harness:"Grok CLI · 主 + 16 只读子智能体 · 500K", color:"#6d28d9",
+    scores:[9.4,9.3,9.0,9.2,9.0,9.3],
+    tp:38, fp:1, doc:54, trust:"full",
+    inTok:7.4, outTok:0.38, price:[2,6], mins:41,
+    channel:"Grok CLI 订阅", paid:0, priceHint:"≥200k 则 $4/$12",
+    good:["与 Cursor Grok 独立同源验证，交叉可信度高",
+          "独占：AI_ENABLE_THINKING 写在配置里但运行时从不读取",
+          "独占：查询侧 FailoverEmbedding 定义了未启用",
+          "独占：Electron 强制选中被菜单隐藏的「自由中转」模型"],
+    bad:["把浮窗 token 泄漏列入「已修」，同样只对一半"],
+    verdict:"与主干互补。独占发现集中在 env / Electron / 计费链路。能力强首先来自 16 路扇出 + 500K 窗口。" },
+
+  { key:"K2", name:"Kimi K2.8", vendor:"Moonshot",
+    harness:"Kimi Code · 4 路并行探索", color:"#047857",
+    scores:[8.6,7.5,7.0,6.5,8.0,8.8],
+    tp:12, fp:1, doc:31, trust:"part",
+    inTok:2.4, outTok:0.14, price:[0.95,4], mins:26,
+    channel:"Kimi Code 订阅", paid:0, priceHint:"按官方 k2.7-code 近似",
+    good:["提炼出「工具无副作用化」这条设计原则——13 个工具 throw 数为 0，副作用全部延迟到前端",
+          "独占：\"upstream\" providerOptions 命名空间是靠人记住的隐性约定",
+          "独占：chat-title 仍用旧 CustomProvider 形状（已核实）",
+          "指出无 per-tool 超时、无 MCP、无生命周期 hook"],
+    bad:["把 imageSearch 配额写成「会话配额」，实为单次请求"],
+    verdict:"架构判断力最强的一份，但整个安全面缺席。工程现场在 Kimi Code。" },
+
+  { key:"K3", name:"Kimi K3", vendor:"Moonshot",
+    harness:"商汤日日新 API + DeepSeek Harness · 单智能体", color:"#c2410c",
+    scores:[8.5,6.0,5.0,5.5,8.0,9.0],
+    tp:8, fp:1, doc:18, trust:"part",
+    inTok:0.7, outTok:0.045, price:[3,15], mins:14,
+    channel:"商汤日日新 ≈ $0", paid:0, priceHint:"官方 $3/$15；本次未走官方",
+    good:["最早把「无 compaction」提为 P0，判断正确",
+          "指出 _contextCache 单槽在并发下语义错误（已核实）",
+          "指出步数预算只有步数、没有 token 维度",
+          "引入 DeepSeek-Harness 作外部标尺，是唯一有横向参照的一份"],
+    bad:["把 semantic 说成「可选模式」，实际生产 UI 写死 full，是死路径"],
+    verdict:"篇幅最小、信噪比最高。说的都对，只是没说完。官方 K3 API 并不便宜；这次便宜是因为走了日日新。" },
+
+  { key:"CL", name:"Claude Opus 4.6", vendor:"Anthropic",
+    harness:"AntiGravity · Opus 4.6 Thinking · 单智能体", color:"#be123c",
+    scores:[7.0,5.5,6.0,4.5,6.5,8.0],
+    tp:7, fp:3, doc:20, trust:"part",
+    inTok:0.9, outTok:0.055, price:[5,25], mins:17,
+    channel:"AntiGravity 订阅", paid:0, priceHint:"Opus 4.6 官方牌价",
+    good:["数据流表与模型能力矩阵准确，适合新人建立整体认知",
+          "正确指出 route.ts 是 God Function、缺中间件、步数硬编码",
+          "改进建议（Orchestrator 抽取、渐进式压缩）方向正确"],
+    bad:["Prefix Cache 打 ⭐⭐⭐⭐⭐，实则被「用户提问进 system」打破",
+         "模型接入打 ⭐⭐⭐⭐⭐，漏掉 GLM 降级方言错配等三处实缺陷",
+         "「6 步工具循环」表述不准，未推出触顶后果"],
+    verdict:"方向对但偏浅，且对已损坏机制给了满分。宿主是 AntiGravity，偏差主要在判断而非认仓库。" },
+
+  { key:"GM", name:"Gemini 3.7", vendor:"Google",
+    harness:"AntiGravity · Gemini High · 单智能体", color:"#57534e",
+    scores:[5.0,5.0,6.5,3.5,7.0,4.0],
+    tp:4, fp:7, doc:26, trust:"lim",
+    inTok:1.1, outTok:0.06, price:[0.75,3.75], mins:12,
+    channel:"AntiGravity 订阅", paid:0, priceHint:"3.7 Flash 入门价",
+    good:["六层分层图清晰，适合作架构导览",
+          "接入新模型的操作指南代码样例准确可用",
+          "演进建议（工具反思、子 Agent、评测 harness）有价值"],
+    bad:["把 Harness 解成「H = Hybrid Search / HITL / History / Heartbeat」，整章基于自造框架",
+         "断言 Agent 会挂起等待批准——全仓无 needsApproval，已证伪",
+         "称 Zod 在客户端也校验工具入参——工具仅服务端存在",
+         "向量检索标为智谱，实际默认硅基 bge-m3"],
+    verdict:"叙事与规划可用，机制层断言需逐条复核。问题主要在模型本身，不是 AntiGravity 没写好题。" },
+];
+
+AGENTS.forEach(a=>{
+  a.cost = a.inTok*a.price[0] + a.outTok*a.price[1];
+  a.perDefect = a.cost / a.tp;
+  a.avg = a.scores.reduce((s,v)=>s+v,0)/a.scores.length;
+});
+
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const R = { cx:280, cy:262, r:186, max:10 };
+const hidden = new Set();
+const tip = document.getElementById("tip");
+
+function pt(i, val){
+  const ang = -Math.PI/2 + i * (2*Math.PI/DIMS.length);
+  const d = (val/R.max) * R.r;
+  return [R.cx + d*Math.cos(ang), R.cy + d*Math.sin(ang)];
+}
+function drawRadar(){
+  const svg = document.getElementById("radar");
+  let s = "";
+  for(let g=2; g<=10; g+=2){
+    const pts = DIMS.map((_,i)=>pt(i,g).join(",")).join(" ");
+    s += `<polygon points="${pts}" fill="none" stroke="#e0d4c2" stroke-width="1"/>`;
+  }
+  DIMS.forEach((d,i)=>{
+    const [x,y] = pt(i,10);
+    s += `<line x1="${R.cx}" y1="${R.cy}" x2="${x}" y2="${y}" stroke="#e8dccb" stroke-width="1"/>`;
+    const [lx,ly] = pt(i,11.85);
+    let anchor = "middle";
+    if(lx > R.cx+6) anchor="start";
+    if(lx < R.cx-6) anchor="end";
+    s += `<text x="${lx}" y="${ly+4}" fill="#8a8072" font-size="12.5" font-family="Source Sans 3, sans-serif" text-anchor="${anchor}">${d}</text>`;
+  });
+  s += `<text x="${R.cx+5}" y="${R.cy-R.r+13}" fill="#c4b8a4" font-size="10" font-family="IBM Plex Mono, monospace">10</text>`;
+  AGENTS.forEach(a=>{
+    if(hidden.has(a.key)) return;
+    const pts = a.scores.map((v,i)=>pt(i,v).join(",")).join(" ");
+    s += `<polygon class="poly" data-k="${a.key}" points="${pts}" fill="${a.color}" fill-opacity="0.16" stroke="${a.color}" stroke-width="2.2" stroke-linejoin="round"/>`;
+  });
+  AGENTS.forEach(a=>{
+    if(hidden.has(a.key)) return;
+    a.scores.forEach((v,i)=>{
+      const [x,y]=pt(i,v);
+      s += `<circle class="pt" data-tip="${a.name} · ${DIMS[i]} ${v.toFixed(1)}" cx="${x}" cy="${y}" r="3.6" fill="${a.color}"/>`;
+    });
+  });
+  svg.innerHTML = s;
+  svg.querySelectorAll(".poly").forEach((p,i)=>{
+    const len = p.getTotalLength();
+    p.style.setProperty("--len", len);
+    p.style.strokeDasharray = len;
+    if(reduce){ p.style.strokeDashoffset = 0; return; }
+    p.style.strokeDashoffset = len;
+    requestAnimationFrame(()=>{
+      p.style.transition = `stroke-dashoffset .85s ${i*90}ms cubic-bezier(.22,1,.36,1), fill-opacity .6s ${i*90+200}ms`;
+      p.style.strokeDashoffset = 0;
+    });
+  });
+  svg.querySelectorAll(".pt").forEach(c=>{
+    c.addEventListener("pointerenter", e=>{
+      tip.textContent = c.dataset.tip;
+      tip.style.left = e.clientX + "px";
+      tip.style.top = (e.clientY - 16) + "px";
+      tip.classList.add("on");
+    });
+    c.addEventListener("pointermove", e=>{
+      tip.style.left = e.clientX + "px";
+      tip.style.top = (e.clientY - 16) + "px";
+    });
+    c.addEventListener("pointerleave", ()=> tip.classList.remove("on"));
+  });
+}
+function drawLegend(){
+  document.getElementById("legend").innerHTML = AGENTS.map(a=>`
+    <div class="lg ${hidden.has(a.key)?"off":""}" data-k="${a.key}" style="color:${a.color}">
+      <span class="dot" style="background:${a.color}"></span>
+      <span><span class="nm" style="color:var(--fg)">${a.name}</span><br /><span class="hs">${a.harness}</span></span>
+      <span class="avg">${a.avg.toFixed(1)}</span>
+    </div>`).join("");
+  document.querySelectorAll(".lg").forEach(el=>{
+    el.onclick = ()=>{
+      const k = el.dataset.k;
+      hidden.has(k) ? hidden.delete(k) : hidden.add(k);
+      drawRadar(); drawLegend();
+    };
+  });
+}
+
+const sorted = [...AGENTS].sort((a,b)=>b.avg-a.avg);
+const scoreColor = v => v>=9 ? "#047857" : v>=7 ? "#1c1914" : v>=5.5 ? "#b45309" : "#be123c";
+
+document.getElementById("scoreTable").innerHTML = `
+  <thead><tr><th>模型 / Harness</th>${DIMS.map(d=>`<th class="n">${d}</th>`).join("")}<th class="n">均分</th></tr></thead>
+  <tbody>${sorted.map(a=>`
+    <tr>
+      <td><span class="swatch" style="background:${a.color}"></span><strong>${a.name}</strong>
+        <div style="color:var(--dim2);font-size:11.5px;padding-left:17px">${a.harness}</div></td>
+      ${a.scores.map(v=>`<td class="n" style="color:${scoreColor(v)}">${v.toFixed(1)}</td>`).join("")}
+      <td class="n"><strong>${a.avg.toFixed(2)}</strong></td>
+    </tr>`).join("")}</tbody>`;
+
+const TRUST = { full:['t-full','全量采信'], part:['t-part','部分采信'], lim:['t-lim','有限采信'] };
+const maxTp = Math.max(...AGENTS.map(a=>a.tp));
+document.getElementById("findTable").innerHTML = `
+  <thead><tr><th>模型</th><th style="width:34%">经核实的真阳性缺陷</th><th class="n">证伪条数</th><th class="n">文档体积</th><th>采信判定</th></tr></thead>
+  <tbody>${[...AGENTS].sort((a,b)=>b.tp-a.tp).map(a=>`
+    <tr>
+      <td><span class="swatch" style="background:${a.color}"></span>${a.name}</td>
+      <td><div class="barcell"><span class="bar" style="width:${a.tp/maxTp*100}%;background:${a.color}"></span><span class="v">${a.tp} 条</span></div></td>
+      <td class="n" style="color:${a.fp>=5?"#be123c":a.fp>=3?"#b45309":"var(--dim)"}">${a.fp}</td>
+      <td class="n">${a.doc} KB</td>
+      <td><span class="tag ${TRUST[a.trust][0]}">${TRUST[a.trust][1]}</span></td>
+    </tr>`).join("")}</tbody>`;
+
+const maxCost = Math.max(...AGENTS.map(a=>a.cost));
+document.getElementById("costTable").innerHTML = `
+  <thead><tr><th>模型</th><th>本次通道</th><th class="n">官方牌价 in/out</th><th class="n">输入</th><th class="n">输出</th><th style="width:22%">官方 API 估算</th><th class="n">本次实付</th></tr></thead>
+  <tbody>${[...AGENTS].sort((a,b)=>b.cost-a.cost).map(a=>`
+    <tr>
+      <td><span class="swatch" style="background:${a.color}"></span>${a.name}<div style="color:var(--dim2);font-size:11.5px;padding-left:17px">${a.vendor}</div></td>
+      <td style="font-size:12.5px;color:var(--dim)">${a.channel}</td>
+      <td class="n mono">$${a.price[0]} / $${a.price[1]}<div style="color:var(--dim2);font-size:10.5px;font-weight:400">${a.priceHint}</div></td>
+      <td class="n">${a.inTok.toFixed(1)}M</td>
+      <td class="n">${(a.outTok*1000).toFixed(0)}k</td>
+      <td><div class="barcell"><span class="bar" style="width:${a.cost/maxCost*100}%;background:${a.color}"></span><span class="v">$${a.cost.toFixed(2)}</span></div></td>
+      <td class="n">${a.paid===0?'<span class="tag t-full">≈ $0</span>':'$'+a.paid.toFixed(2)}</td>
+    </tr>`).join("")}</tbody>`;
+
+const effSorted = [...AGENTS].sort((a,b)=>a.perDefect-b.perDefect);
+const maxEff = Math.max(...AGENTS.map(a=>a.perDefect));
+document.getElementById("effTable").innerHTML = `
+  <thead><tr><th>模型</th><th class="n">官方估算</th><th class="n">本次实付</th><th class="n">真阳性</th><th style="width:26%">官方每条成本</th><th>说明</th></tr></thead>
+  <tbody>${effSorted.map((a,i)=>`
+    <tr>
+      <td><span class="swatch" style="background:${a.color}"></span>${a.name}${
+        a.key==="K2"?' <span class="tag t-full" style="margin-left:6px">官方单位成本最低</span>':
+        a.key==="K3"?' <span class="tag t-part" style="margin-left:6px">实付免费 · 日日新</span>':""}</td>
+      <td class="n">$${a.cost.toFixed(2)}</td>
+      <td class="n">${a.paid===0?"≈ $0":"$"+a.paid.toFixed(2)}</td>
+      <td class="n">${a.tp}</td>
+      <td><div class="barcell"><span class="bar" style="width:${a.perDefect/maxEff*100}%;background:${a.color}"></span><span class="v">$${a.perDefect.toFixed(2)}</span></div></td>
+      <td style="font-size:12.5px;color:var(--dim)">${
+        a.key==="K3"?"官方 $3/$15 并不便宜；这次走日日新，实付≈0":
+        a.key==="GM"?"入门价拉高了效率，但 7 条证伪抵消了大部分价值":
+        a.key==="K2"?"按 k2.7-code 牌价近似；实际走 Kimi Code 订阅":
+        a.key==="CG"?"绝对覆盖第一；8 条安全 P0 的主要来源":
+        a.key==="GC"?"与 CG 交叉验证，边际信息量递减但可信度加倍":
+        "官方路径仍是这张表里最贵的"}</td>
+    </tr>`).join("")}</tbody>`;
+
+document.getElementById("cards").innerHTML = sorted.map((a,i)=>`
+  <div class="card reveal d${(i%6)+1}" style="--c:${a.color}">
+    <h3>${a.name}</h3>
+    <p class="meta">${a.harness} · ${a.vendor} · 均分 ${a.avg.toFixed(2)} · 真阳性 ${a.tp} 条</p>
+    <ul>
+      ${a.good.map(g=>`<li class="good">${g}</li>`).join("")}
+      ${a.bad.map(b=>`<li class="bad" style="color:#9f1239">${b}</li>`).join("")}
+    </ul>
+    <div class="verdict">${a.verdict}</div>
+  </div>`).join("");
+
+drawRadar(); drawLegend();
+
+function countUp(el, target){
+  if(reduce){ el.textContent = String(target); return; }
+  const dur = 900;
+  const t0 = performance.now();
+  const tick = (now)=>{
+    const p = Math.min(1, (now-t0)/dur);
+    const e = 1 - Math.pow(1-p, 3);
+    el.textContent = String(Math.round(target * e));
+    if(p < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+function activate(el){
+  el.classList.add("in");
+  el.querySelectorAll(".bar").forEach(b=> b.classList.add("on"));
+  el.querySelectorAll("[data-count]").forEach(n=>{
+    if(n.dataset.done) return;
+    n.dataset.done = "1";
+    countUp(n, Number(n.dataset.count));
+  });
+}
+const io = new IntersectionObserver((ents)=>{
+  ents.forEach(e=>{
+    if(!e.isIntersecting) return;
+    activate(e.target);
+    io.unobserve(e.target);
+  });
+},{threshold:0.08, rootMargin:"0px 0px -6% 0px"});
+
+document.querySelectorAll(".reveal").forEach(el=>{
+  const r = el.getBoundingClientRect();
+  if(r.top < innerHeight * 0.96) activate(el);
+  io.observe(el);
+});
+if(!reduce) document.documentElement.classList.add("anim");
+setTimeout(()=>{
+  document.querySelectorAll(".reveal").forEach(activate);
+}, 1400);
+
+document.addEventListener("pointermove", ev=>{
+  document.documentElement.style.setProperty("--mx", ev.clientX + "px");
+  document.documentElement.style.setProperty("--my", ev.clientY + "px");
+},{passive:true});
+</script>
+</body>
+</html>
