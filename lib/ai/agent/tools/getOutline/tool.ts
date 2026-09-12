@@ -1,23 +1,12 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { getMultiSubjectOutline, type ContentSearchScope } from "@/lib/content/loader";
-import { ACADEMIC_YEAR_IDS, ACADEMIC_YEAR_LABELS } from "@/lib/constants/academic-year";
-import { subjectsOfYear } from "@/lib/content-data/subjects.registry";
+import { describeSubjectsByYear } from "@/lib/content-data/subjectsTable";
 import type { GetOutlineOutput } from "@/lib/ai/agent/tools/getOutline/types";
 import { dedupeByContextKey, toText, type StudyToolContext, type StudyToolRuntime } from "@/lib/ai/agent/tools/_shared";
 
-/** 由 registry 拼出「大二上：细胞生物/生化/…；大一下：概率论/物理/…」。空学期不写入提示词。 */
-function describeSubjectsByYear(): string {
-  return ACADEMIC_YEAR_IDS.map((year) => {
-    const names = subjectsOfYear(year)
-      .filter((s) => s.id !== "other")
-      .map((s) => s.shortName);
-    if (names.length === 0) return null;
-    return `${ACADEMIC_YEAR_LABELS[year].replace("学期", "")}：${names.join("/")}`;
-  })
-    .filter((part): part is string => part !== null)
-    .join("；");
-}
+/** 测试可替换 getMultiSubjectOutline，避免依赖整棵内容树。 */
+export const getOutlineIo = { getMultiSubjectOutline };
 
 export function createGetOutlineTool(ctx: StudyToolContext, runtime: StudyToolRuntime) {
   return tool({
@@ -29,7 +18,7 @@ export function createGetOutlineTool(ctx: StudyToolContext, runtime: StudyToolRu
     execute: async ({ crossYear }): Promise<GetOutlineOutput> => {
       const scope: ContentSearchScope = crossYear ? "all" : ctx.academicYear;
       return dedupeByContextKey(runtime, "getOutline", {
-        text: getMultiSubjectOutline(scope),
+        text: getOutlineIo.getMultiSubjectOutline(scope),
         contextKey: crossYear ? "outline:all" : `outline:${scope}`,
       });
     },

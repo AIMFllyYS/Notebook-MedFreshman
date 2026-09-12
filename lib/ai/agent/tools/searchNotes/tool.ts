@@ -12,6 +12,9 @@ import {
   type StudyToolRuntime,
 } from "@/lib/ai/agent/tools/_shared";
 
+/** 测试可替换检索与健康检查，避免打真实索引。 */
+export const searchNotesIo = { getIndexHealth, searchAllContent, findContentItem };
+
 export function createSearchNotesTool(ctx: StudyToolContext, runtime: StudyToolRuntime) {
   return tool({
     description:
@@ -22,17 +25,17 @@ export function createSearchNotesTool(ctx: StudyToolContext, runtime: StudyToolR
       subjectId: z.string().optional().describe("限定科目 id，如 histology、biochemistry、anatomy、cell-biology、instrumental-analysis。不传则搜当前学年全部科目。"),
     }),
     execute: async ({ query, crossYear, subjectId }): Promise<SearchNotesOutput> => {
-      const health = getIndexHealth();
+      const health = searchNotesIo.getIndexHealth();
       if (!health.ok) {
         return { text: `检索索引未加载：${health.reason}`, hits: [] };
       }
-      const found = findContentItem(ctx.subjectId, ctx.categoryId, ctx.itemId);
+      const found = searchNotesIo.findContentItem(ctx.subjectId, ctx.categoryId, ctx.itemId);
       const queryContext = found
         ? `${found.subjectName} ${found.parentTitle ?? ""} ${found.item.title}`.replace(/\s+/g, " ").trim()
         : undefined;
       const scope: ContentSearchScope = crossYear ? "all" : ctx.academicYear;
       const run = (year: ContentSearchScope) =>
-        searchAllContent(query, {
+        searchNotesIo.searchAllContent(query, {
           limit: SEARCH_NOTES_HIT_LIMIT,
           academicYear: year,
           subjectId: subjectId || undefined,

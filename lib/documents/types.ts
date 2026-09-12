@@ -4,7 +4,7 @@
 // 设计：文档不在一次 LLM 输出里生成（会被 max_tokens 截断），而是
 //   1. outline 阶段：模型给出章节列表（或直接采用工具参数里的 outline）；
 //   2. section 阶段：前端逐节请求，每节独立流式生成，服务端对被截断的节自动续写；
-//   3. 所有节完成后拼成一篇 Markdown（单一真相源），导出 docx / LaTeX / PDF 都从它派生。
+//   3. 所有节完成后拼成一篇 Markdown（单一真相源）。查看器目前只提供 Markdown 下载。
 
 export type DocumentFormat = "markdown" | "docx" | "pdf";
 export type DocumentGenre = "article" | "paper" | "report" | "review-notes" | "essay";

@@ -5,7 +5,11 @@
 > **项目版本**：gailvlun v0.3.1
 > **关联文档**：[存储架构规范](../../docs/refer/storage-architecture.md)、[性能审查报告](../../docs/refer/performance-audit-report.md)、[渲染架构](../../docs/refer/rendering-architecture.md)
 >
-> **目录校准（2026-09，计划 22/23，计划 `25` 复核并修正 §2.0）**：下文是 2026-07 的调研快照（行号、9 工具、`lib/ai/tools.ts`、`useChat` 543 行均已过时）。当前目录以本节「2.0」与 `docs/refer/adding-an-agent-tool.md` 为准；本次复核发现 §2.0 之前把结果卡片注册表误写成 `lib/ai/agent/tools/catalog.ts`（该文件不存在），已修正为真实位置 `components/chat/toolCards/registry.tsx`（计划 `23` 把结果卡片从 `lib/` 搬到 `components/` 时一起搬走的）。正文其余小节（§3-§9）除个别路径括注外，行号与机制描述为 2026-07 快照，未逐条重新核实。
+> **⚠ 过时快照。** §1 与 §3–§9 是 2026-07 调研（734 行 `route.ts`、`anthropicAdapter`、9 个工具、`MAX_TOOL_TURNS`）——这些在现网**都不存在**。不要按那些段落改代码。
+>
+> 权威入口：[`docs/plans/Agent-refactor/00-loop-map.md`](../../plans/Agent-refactor/00-loop-map.md)（本轮 Agent 整改）· [`docs/analysis/Agent/00-agent-issues-consolidated.md`](../Agent/00-agent-issues-consolidated.md)（问题事实）。当前工具目录以本节「2.0」与 `docs/refer/adding-an-agent-tool.md` 为准。
+>
+> **目录校准（2026-09，计划 22/23，计划 `25` 复核并修正 §2.0）**：下文是 2026-07 的调研快照（行号、9 工具、`lib/ai/tools.ts`、`useChat` 543 行均已过时）。本次复核发现 §2.0 之前把结果卡片注册表误写成 `lib/ai/agent/tools/catalog.ts`（该文件不存在），已修正为真实位置 `components/chat/toolCards/registry.tsx`。
 
 ## 2.0 当前目录结构（2026-09）
 
@@ -34,6 +38,8 @@ components/chat/toolCards/
 `ChatSettings` 壳在 `components/chat/settings/ChatSettings.tsx`（≤150 行），旧路径 `components/chat/ChatSettings.tsx` 是 re-export。
 
 ## 1. 执行摘要
+
+> **本节为 2026-07 快照，已过时。** 当时的 734 行 `route.ts`、`anthropicAdapter`、9 个工具、`MAX_TOOL_TURNS` 均已不存在。现网是 `ToolLoopAgent` + 唯一一条 system + 14 个工具目录（含 `getArtifact`），权威见 `docs/plans/Agent-refactor/00-loop-map.md`。
 
 gailvlun 的 AI 对话系统是一个**自建的多协议、多模型、工具调用 + 流式 SSE 中转层**，核心入口 `app/api/chat/route.ts`（734 行）以 OpenAI Chat Completions 为「内部中立协议」，在出口处通过 `anthropicAdapter.ts` 双向翻译 Anthropic Messages 协议，对内统一了工具调用、reasoning 增量、usage 累加、FollowUp 兜底等逻辑。系统提供 9 个工具（getCurrentPage / getOutline / getSection / searchNotes / webSearch / renderInteractive / imageSearch / drawDiagram / generateImage / useSkill），通过 `MAX_TOOL_TURNS=6` 循环 + `loadedContextKeys` 去重防止重复展开。
 
@@ -142,6 +148,8 @@ flowchart TB
 4. **服务端为真相源** — token 用量、上下文分项统计、FollowUp 兜底、容灾切换全部在服务端决策，前端只负责渲染与本地状态。
 
 ## 3. 核心机制详解
+
+> **§3–§9 为 2026-07 快照，已过时，未按现网逐条重写。** 行号、文件名、协议适配器与工具循环都可能对不上。需要改代码时以仓库现状和 `docs/plans/Agent-refactor/` 为准。
 
 ### 3.1 OpenAI 兼容端点适配（`lib/ai/provider.ts`）
 

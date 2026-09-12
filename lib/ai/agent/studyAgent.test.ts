@@ -3,7 +3,7 @@ import { test } from "node:test";
 import type { LanguageModelV4StreamPart, LanguageModelV4StreamResult } from "@ai-sdk/provider";
 import { MockLanguageModelV4, convertArrayToReadableStream, convertReadableStreamToArray } from "ai/test";
 import { createStudyAgent, type StudyAgentInput } from "./studyAgent.ts";
-import { MAX_TOOL_STEPS } from "./tools/_shared.ts";
+import { IMAGE_SEARCH_MAX_TOTAL, MAX_TOOL_STEPS } from "./tools/_shared.ts";
 
 const usage = {
   inputTokens: { total: 10, noCache: 7, cacheRead: 3, cacheWrite: 0 },
@@ -176,6 +176,20 @@ test("createStudyAgent：定位行在 instructions 末尾，换页不改稳定�
   assert.match(ia, /学年：大一下学期/);
   assert.match(ia, /1\.4/);
   assert.match(ib, /1\.5/);
+});
+
+test("createStudyAgent：imageSearch 配额耗尽后 prepareStep 摘除该工具", async () => {
+  const model = new MockLanguageModelV4({
+    doStream: [textStep("基于已有图片继续")],
+  });
+  const { agent, runtime } = createStudyAgent(baseInput(model, {
+    options: { enableSearch: true, enableThinking: false, contextMode: "full" },
+  }));
+  runtime.imageSearchFetchedCount = IMAGE_SEARCH_MAX_TOTAL;
+  await convertReadableStreamToArray((await agent.stream({ messages: [{ role: "user", content: "q" }] })).toUIMessageStream());
+  const names = model.doStreamCalls[0].tools?.map((tool) => tool.name) ?? [];
+  assert.ok(names.includes("webSearch"));
+  assert.ok(!names.includes("imageSearch"));
 });
 
 test("createStudyAgent：第 6 步仍 tool-calls 时不再发起第 7 次 LLM", async () => {

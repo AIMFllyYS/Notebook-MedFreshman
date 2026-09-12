@@ -37,6 +37,14 @@ interface ChatMessageVisualizationsProps {
 const toNum = (v: unknown): number | undefined =>
   v === undefined || v === null || v === '' ? undefined : Number(v);
 
+/** 韦恩图份额：0–1 原样；>1 且 ≤100 视为百分数。 */
+export function vennShare(v: unknown): number | undefined {
+  const n = toNum(v);
+  if (n === undefined || Number.isNaN(n)) return undefined;
+  if (n > 1 && n <= 100) return n / 100;
+  return n;
+}
+
 const toBool = (v: unknown): boolean => v === 'true' || v === true;
 
 const toStr = (v: unknown): string | undefined =>
@@ -81,9 +89,12 @@ export const ChatMessageVisualizations: React.FC<ChatMessageVisualizationsProps>
     case 'InteractiveVenn':
       return (
         <VennDiagram
-          a={toNum(props.a)}
-          b={toNum(props.b)}
-          ab={toNum(props.ab)}
+          a={vennShare(props.a)}
+          b={vennShare(props.b)}
+          ab={vennShare(props.ab)}
+          aLabel={toStr(props.aLabel)}
+          bLabel={toStr(props.bLabel)}
+          abLabel={toStr(props.abLabel)}
           interactive={toBool(props.interactive)}
         />
       );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { FileText, FileSpreadsheet, FileDigit, FileX } from "lucide-react";
+import { FileText, FileDigit } from "lucide-react";
 import { useDocuments, getDocumentMarkdown } from "@/lib/hooks/useDocuments";
 import { assembleDocumentMarkdown } from "@/lib/documents/types";
 import { MessageContent } from "@/components/chat/MessageContent";
@@ -41,24 +41,6 @@ function DocumentViewerSingle({ documentId }: { documentId: string }) {
         className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]"
       >
         <FileText size={15} />
-      </button>
-      <button
-        type="button"
-        data-no-drag
-        onClick={() => { /* TODO: docx export */ }}
-        title="导出 Word（待实现）"
-        className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] opacity-50 hover:bg-[var(--md-sys-color-surface-variant)]"
-      >
-        <FileSpreadsheet size={15} />
-      </button>
-      <button
-        type="button"
-        data-no-drag
-        onClick={() => { /* TODO: LaTeX/PDF export */ }}
-        title="导出 PDF（待实现）"
-        className="press flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] opacity-50 hover:bg-[var(--md-sys-color-surface-variant)]"
-      >
-        <FileX size={15} />
       </button>
     </div>
   );

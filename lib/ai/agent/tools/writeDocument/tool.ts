@@ -6,7 +6,7 @@ import { toText, type StudyToolContext } from "@/lib/ai/agent/tools/_shared";
 export function createWriteDocumentTool(ctx: StudyToolContext) {
   return tool({
     description:
-      "撰写长文章、论文、报告或复习讲义。调用后前端会展示文档生成卡片并分节流式生成；导出支持 Markdown / Word / LaTeX / PDF。用于需要一次性产出较长、结构化文档的场景（如课程论文、章节总结、实验报告）。",
+      "撰写长文章、论文、报告或复习讲义。调用后前端会展示文档生成卡片并分节流式生成；当前仅支持导出 Markdown。用于需要一次性产出较长、结构化文档的场景（如课程论文、章节总结、实验报告）。",
     inputSchema: documentSpecSchema,
     execute: async (input, { toolCallId }): Promise<WriteDocumentOutput> => {
       const validated = validateDocumentSpec(input);

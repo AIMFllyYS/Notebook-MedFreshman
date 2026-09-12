@@ -37,6 +37,12 @@ export interface VennDiagramProps {
   highlightMode?: VennHighlightMode;
   /** 显式指定高亮区域（优先于 highlightMode） */
   highlightRegions?: VennRegion[];
+  /** 圆 A 标签，默认「A」 */
+  aLabel?: string;
+  /** 圆 B 标签，默认「B」 */
+  bLabel?: string;
+  /** 交集标签；省略则只显示数值 */
+  abLabel?: string;
 }
 
 const SVG_W = 280;
@@ -93,6 +99,9 @@ export const VennDiagram: React.FC<VennDiagramProps> = ({
   onChange,
   highlightMode,
   highlightRegions,
+  aLabel = 'A',
+  bLabel = 'B',
+  abLabel,
 }) => {
   const [a, setA] = useState(aInit);
   const [b, setB] = useState(bInit);
@@ -319,20 +328,25 @@ export const VennDiagram: React.FC<VennDiagramProps> = ({
           y={CY - R * 0.45}
           style={{ fontSize: '13px', fontWeight: 700, fill: 'var(--md-sys-color-primary)' }}
         >
-          A
+          {aLabel}
         </text>
         <text
           x={cx2 + R * 0.4}
           y={CY - R * 0.45}
           style={{ fontSize: '13px', fontWeight: 700, fill: 'var(--md-sys-color-tertiary)' }}
         >
-          B
+          {bLabel}
         </text>
 
         {/* 区域数值标注 */}
         <text x={cx1 - R * 0.3} y={CY + 4} style={valueStyle}>
           {d.onlyA.toFixed(2)}
         </text>
+        {abLabel ? (
+          <text x={(cx1 + cx2) / 2} y={CY - 10} textAnchor="middle" style={{ ...labelStyle, fontWeight: 600 }}>
+            {abLabel}
+          </text>
+        ) : null}
         <text x={(cx1 + cx2) / 2 - 8} y={CY + 4} style={valueStyle}>
           {d.ab.toFixed(2)}
         </text>

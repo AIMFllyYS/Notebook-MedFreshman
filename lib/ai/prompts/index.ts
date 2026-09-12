@@ -1,9 +1,11 @@
-// 动态提示词加载器（服务端）：把 MD 文件按 (科目) 拼装为稳定的 system 前缀。
+// 动态提示词加载器（服务端）：把 MD 文件按 (科目) 拼装为唯一一条 system。
 // 设计：global.md（含工具说明，几乎不变）+ subjects/<id>.md（按学科切换）= 稳定前缀，
-// 利于上游 prefix 缓存命中；易变上下文（当前页/检索结果）由 route 放在前缀之后的消息里。
+// 利于上游 prefix 缓存命中；易变上下文（定位行 / 参考材料 / 演示目录）由 studyAgent
+// 拼进同一条 system 的末尾，而不是另开一条消息（部分模型会拒第二条 system）。
 import fs from "node:fs";
 import path from "node:path";
 import { getSubjectMeta, subjectName } from "@/lib/content-data/subjects.registry";
+import { describeSubjectsByYear } from "@/lib/content-data/subjectsTable";
 import { ACADEMIC_YEAR_LABELS, isAcademicYearId } from "@/lib/constants/academic-year";
 import type { ChatContext } from "@/lib/types/chat";
 
@@ -40,6 +42,7 @@ function readMd(rel: string): string {
 export function buildSystemPrompt(ctx: ChatContext): string {
   const subject = subjectName(ctx.subjectId);
   const global = readMd("global.md")
+    .replace(/\{subjectTable\}/g, describeSubjectsByYear({ includeOther: true, name: "full", joiner: "、" }))
     .replace(/「\{subjectName\}」/g, "")
     .replace(/\{subjectName\}/g, subject);
   const subjectRel = subjectPromptFile(ctx.subjectId);

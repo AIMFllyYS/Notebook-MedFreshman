@@ -9,6 +9,9 @@ import {
   type StudyToolRuntime,
 } from "@/lib/ai/agent/tools/_shared";
 
+/** 测试可替换联网搜索，避免打真实智谱。 */
+export const webSearchIo = { runWebSearchDetailed };
+
 export function createWebSearchTool(runtime: StudyToolRuntime) {
   return tool({
     description:
@@ -18,7 +21,7 @@ export function createWebSearchTool(runtime: StudyToolRuntime) {
       numResults: z.number().optional().describe("返回结果数量，默认 5"),
     }),
     execute: async ({ query, numResults }): Promise<WebSearchOutput> => {
-      const r = await runWebSearchDetailed(query, Number(numResults) || 5);
+      const r = await webSearchIo.runWebSearchDetailed(query, Number(numResults) || 5);
       return dedupeByContextKey(runtime, "webSearch", {
         text: r.content,
         contextKey: `web:${normalizeContextKeyPart(query)}`,

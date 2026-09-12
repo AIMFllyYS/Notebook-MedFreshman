@@ -139,6 +139,13 @@ test("引号内含白名单属性名时，边界从闭合引号之后才开始�
   );
 });
 
+test("InteractiveVenn 的 a=/aLabel= 不是 remark 指令属性，label 内的 a= 不得被切开", () => {
+  assert.equal(
+    normalizeDirectiveLabels(":::example{label=集合 a=0.3 aLabel=线粒体}"),
+    ':::example{label="集合 a=0.3 aLabel=线粒体"}',
+  );
+});
+
 test("CRLF 行尾下多属性 memory 指令仍保留 mode", () => {
   const out = normalizeDirectiveLabels(':::memory{label="氨基酸等电点" mode="cloze"}\r\n**pH**\r\n:::\r\n');
   assert.ok(

@@ -1,5 +1,7 @@
 # Goal 模式执行手册：Agent 板块系统性整改
 
+> **调度规则已被 loop 制取代（2026-09-12 16:45 起）。** 不要再按本文第 1–3 节「一个 Issue = 一个 loop」切 54 个循环。权威入口：[`docs/plans/Agent-refactor/00-loop-map.md`](../../plans/Agent-refactor/00-loop-map.md)。第 0 节（Supabase / 标签 / RLS）与第 4 节（三个坑）仍然有效。
+>
 > **生成**：2026-09-12 · **仓库**：[AIMFllyYS/Notebook-MedFreshman](https://github.com/AIMFllyYS/Notebook-MedFreshman)
 > **配套**：问题清单 `00-agent-issues-consolidated.md` · 模型对比 `agent-model-comparison.html`
 > **范围**：21 个 Epic（#27–#47）+ 54 个可独立执行的子 Issue（#48–#101）
