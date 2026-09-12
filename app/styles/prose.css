@@ -738,6 +738,71 @@
   color: var(--md-sys-color-error);
 }
 
+.chat-thread {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-message-dots {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  z-index: 8;
+  display: flex;
+  max-height: min(60%, 22rem);
+  transform: translateY(-50%);
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+.chat-message-dots-cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.chat-message-dot,
+.chat-message-dots-range {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--md-sys-color-on-surface) 28%, transparent);
+  cursor: pointer;
+}
+
+.chat-message-dot[aria-current="true"] {
+  background: var(--md-sys-color-primary);
+  transform: scale(1.25);
+}
+
+.chat-message-dots-range {
+  width: 8px;
+  height: 14px;
+  border-radius: 6px;
+  font-size: 8px;
+  line-height: 14px;
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) 45%, transparent);
+  background: color-mix(in srgb, var(--md-sys-color-on-surface) 16%, transparent);
+}
+
+.chat-message-dot:hover,
+.chat-message-dots-range:hover,
+.chat-message-dot:focus-visible,
+.chat-message-dots-range:focus-visible {
+  background: var(--md-sys-color-primary);
+  outline: none;
+}
+
 /* (comment) */
 .chat-scroll-btn {
   position: absolute;

@@ -4,7 +4,7 @@
 import { isToolUIPart, getToolName, type ToolUIPart } from 'ai';
 import type { ChatMessage, ChatMessagePart, StoredChatAttachment, StudyMessageMetadata } from '@/lib/types/chat';
 import type { StudyTools } from '@/lib/ai/agent/toolTypes';
-import { extractThinkBlocksFromContent, stripThinkTagsFromContent } from '@/lib/chat/rendering/parseChatContent';
+import { extractThinkBlocksFromContent, splitThinkContent, stripThinkTagsFromContent } from '@/lib/chat/rendering/parseChatContent';
 
 export type ChatToolPart = ToolUIPart<StudyTools>;
 
@@ -25,31 +25,64 @@ export function getMessageText(message: Pick<ChatMessage, 'parts'>): string {
     .join('\n\n');
 }
 
-/** 最后一个工具调用之后的 text part（= 面向用户的最终回答）；没有工具时等于全部正文。 */
+export function isMessageToolPart(part: ChatMessagePart): boolean {
+  return part.type === 'dynamic-tool' || part.type.startsWith('tool-');
+}
+
+export function hasStepStart(parts: readonly ChatMessagePart[]): boolean {
+  return parts.some((part) => part.type === 'step-start');
+}
+
+function lastToolPartIndex(parts: readonly ChatMessagePart[]): number {
+  for (let index = parts.length - 1; index >= 0; index--) {
+    if (isMessageToolPart(parts[index])) return index;
+  }
+  return -1;
+}
+
+function answerContentOf(text: string): string {
+  return splitThinkContent(text).content;
+}
+
+function isAnswerTextPart(part: ChatMessagePart, index: number, parts: readonly ChatMessagePart[]): boolean {
+  if (part.type !== 'text') return false;
+  return hasStepStart(parts) || index > lastToolPartIndex(parts);
+}
+
+/** 面向用户的回答：有 step-start 时取全部正文（剥 think）；否则仍是最后工具之后的两桶回退。 */
 export function getAnswerText(message: Pick<ChatMessage, 'parts'>): string {
-  const parts = message.parts;
-  let lastToolIndex = -1;
-  parts.forEach((p, i) => {
-    if (isToolUIPart(p)) lastToolIndex = i;
-  });
-  return parts
-    .slice(lastToolIndex + 1)
-    .filter((p): p is Extract<ChatMessagePart, { type: 'text' }> => p.type === 'text')
-    .map((p) => p.text)
-    .filter(Boolean)
+  return message.parts
+    .flatMap((part, index) => {
+      if (!isAnswerTextPart(part, index, message.parts) || part.type !== 'text') return [];
+      const content = answerContentOf(part.text);
+      return content.trim() ? [content] : [];
+    })
     .join('\n\n');
 }
 
-/** 用新正文替换「最后一个工具之后」的全部 text part（画布修订等就地改正文的场景）。 */
+/**
+ * 用新正文替换全部「答案」text part。时间线消息会丢掉分段、但保留工具/思考/step-start；
+ * 无 step-start 的旧消息仍只替换最后工具之后的正文。
+ */
 export function withAnswerText(message: Pick<ChatMessage, 'parts'>, text: string): ChatMessagePart[] {
   const parts = message.parts;
-  let lastToolIndex = -1;
-  parts.forEach((p, i) => {
-    if (isToolUIPart(p)) lastToolIndex = i;
+  if (!hasStepStart(parts)) {
+    const lastToolIndex = lastToolPartIndex(parts);
+    const head = parts.slice(0, lastToolIndex + 1);
+    const tail = parts.slice(lastToolIndex + 1).filter((part) => part.type !== 'text');
+    return [...head, ...tail, { type: 'text', text, state: 'done' }];
+  }
+
+  let lastAnswer = -1;
+  parts.forEach((part, index) => {
+    if (isAnswerTextPart(part, index, parts)) lastAnswer = index;
   });
-  const head = parts.slice(0, lastToolIndex + 1);
-  const tail = parts.slice(lastToolIndex + 1).filter((p) => p.type !== 'text');
-  return [...head, ...tail, { type: 'text', text, state: 'done' }];
+  if (lastAnswer < 0) return [...parts, { type: 'text', text, state: 'done' }];
+
+  return parts.flatMap((part, index) => {
+    if (!isAnswerTextPart(part, index, parts)) return [part];
+    return index === lastAnswer ? [{ type: 'text' as const, text, state: 'done' as const }] : [];
+  });
 }
 
 export function getReasoningText(message: Pick<ChatMessage, 'parts'>): string {

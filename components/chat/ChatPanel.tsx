@@ -178,7 +178,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
           }}>
             <AgentAlertIcon size={14} style={{ flexShrink: 0 }} />
             <span style={{ flex: 1 }}>
-              {contextWarning || `上下文已使用 ${Math.round(ctxRatio * 100)}%，之后请求会自动只发送最近消息；你仍然可以继续输入。`}
+              {contextWarning || `上下文已使用 ${Math.round(ctxRatio * 100)}%，之后请求会自动压缩较早对话；你仍然可以继续输入。`}
             </span>
             <button type="button" onClick={handleNewChat} style={{
               display: 'flex', alignItems: 'center', gap: 4,

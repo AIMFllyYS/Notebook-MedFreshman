@@ -13,7 +13,7 @@ const section: TraceToolPart = {
   input: { path: 'p/1' }, output: { text: '教材正文', found: true },
 };
 
-test('buildTrace preserves reasoning → commentary → tool → reasoning → tool order and partitions the final answer', () => {
+test('buildTrace interleaves answers by step-start and matches getAnswerText', () => {
   const parts: ChatMessagePart[] = [
     { type: 'reasoning', text: '分析问题', state: 'done' },
     { type: 'text', text: '先查阅教材。', state: 'done' },
@@ -28,12 +28,34 @@ test('buildTrace preserves reasoning → commentary → tool → reasoning → t
   ];
   const trace = buildTrace({ parts });
   assert.deepEqual(trace.steps.map((step) => [step.kind, step.partIndex]), [
-    ['reasoning', 0], ['text', 1], ['tool', 2], ['reasoning', 4], ['text', 5], ['tool', 6],
+    ['reasoning', 0], ['tool', 2], ['reasoning', 4], ['tool', 6],
+  ]);
+  assert.deepEqual(trace.blocks.map((block) => block.kind === 'answer' ? ['answer', block.text] : ['trace', block.steps.map((step) => step.kind)]), [
+    ['trace', ['reasoning']],
+    ['answer', '先查阅教材。'],
+    ['trace', ['tool', 'reasoning']],
+    ['answer', '读取该节正文。'],
+    ['trace', ['tool']],
+    ['answer', '最终回答第一段\n\n最终回答第二段'],
   ]);
   assert.equal(trace.answerText, getAnswerText({ parts }));
-  assert.equal(trace.answerText, '最终回答第一段\n\n最终回答第二段');
+  assert.equal(trace.answerText, '先查阅教材。\n\n读取该节正文。\n\n最终回答第一段\n\n最终回答第二段');
   assert.equal(trace.toolCount, 2);
   assert.equal(trace.steps.some((step) => step.kind !== 'tool' && step.text.includes('最终回答')), false);
+});
+
+test('without step-start, text before the last tool stays in the two-bucket trace', () => {
+  const parts: ChatMessagePart[] = [
+    { type: 'reasoning', text: '分析问题', state: 'done' },
+    { type: 'text', text: '先查阅教材。', state: 'done' },
+    search,
+    { type: 'text', text: '最终回答', state: 'done' },
+  ];
+  const trace = buildTrace({ parts });
+  assert.deepEqual(trace.steps.map((step) => step.kind), ['reasoning', 'text', 'tool']);
+  assert.equal(trace.answerText, getAnswerText({ parts }));
+  assert.equal(trace.answerText, '最终回答');
+  assert.deepEqual(trace.blocks.map((block) => block.kind), ['trace', 'answer']);
 });
 
 test('without tools all text is the answer, never a second trace copy', () => {
@@ -109,13 +131,16 @@ test('metadata, sources and step boundaries do not become spurious trace rows', 
 });
 
 test('custom endpoint think markup is separated from the answer, including an unfinished stream', () => {
-  const complete = buildTrace({ parts: [{ type: 'text', text: '<think>兼容端点的思考</think>回答', state: 'done' }] });
+  const thinkParts: ChatMessagePart[] = [{ type: 'text', text: '<think>兼容端点的思考</think>回答', state: 'done' }];
+  const complete = buildTrace({ parts: thinkParts });
   assert.equal(complete.steps[0].summary, '兼容端点的思考');
   assert.equal(complete.answerText, '回答');
+  assert.equal(complete.answerText, getAnswerText({ parts: thinkParts }));
   const partial = buildTrace({ parts: [{ type: 'text', text: '<think>未完成思考', state: 'streaming' }] }, true);
   assert.equal(partial.steps[0].status, 'running');
   assert.equal(partial.answerText, '');
   assert.equal(buildTrace({ parts: [{ type: 'text', text: '<think>已停止思考', state: 'streaming' }] }).answerText, '');
+  assert.equal(getAnswerText({ parts: [{ type: 'text', text: '<think>已停止思考', state: 'streaming' }] }), '');
 });
 
 test('summaries use result counts, cached sources and skill metadata', () => {

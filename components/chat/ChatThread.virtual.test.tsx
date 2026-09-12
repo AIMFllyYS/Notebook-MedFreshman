@@ -7,6 +7,7 @@ const scrollDriver = vi.hoisted(() => ({
   scrollToIndex: vi.fn(),
   lastOptions: null as Record<string, unknown> | null,
   interceptScroll: false,
+  order: [] as string[],
 }));
 
 vi.mock('@tanstack/react-virtual', async () => {
@@ -17,9 +18,29 @@ vi.mock('@tanstack/react-virtual', async () => {
       scrollDriver.lastOptions = options as unknown as Record<string, unknown>;
       const virtualizer = actual.useVirtualizer(options);
       if (scrollDriver.interceptScroll) {
-        virtualizer.scrollToIndex = scrollDriver.scrollToIndex as typeof virtualizer.scrollToIndex;
+        virtualizer.scrollToIndex = ((index: number, options?: Record<string, unknown>) => {
+          scrollDriver.order.push('scroll');
+          scrollDriver.scrollToIndex(index, options);
+        }) as typeof virtualizer.scrollToIndex;
       }
       return virtualizer;
+    },
+  };
+});
+
+vi.mock('@/lib/hooks/useStickToBottom', async () => {
+  const actual = await vi.importActual<typeof import('@/lib/hooks/useStickToBottom')>('@/lib/hooks/useStickToBottom');
+  return {
+    ...actual,
+    useStickToBottom: (...args: Parameters<typeof actual.useStickToBottom>) => {
+      const result = actual.useStickToBottom(...args);
+      return {
+        ...result,
+        setWantStick: (value: boolean) => {
+          scrollDriver.order.push(`stick:${value}`);
+          result.setWantStick(value);
+        },
+      };
     },
   };
 });
@@ -292,5 +313,54 @@ describe('ChatThread scroll driver', () => {
   it('does not pass scrollPaddingEnd to the virtualizer', () => {
     render(<ChatThread messages={makeMessages(2)} isLoading={false} bottomInset={180} {...base} />);
     expect(scrollDriver.lastOptions).not.toHaveProperty('scrollPaddingEnd');
+  });
+});
+
+describe('ChatThread message dots', () => {
+  const base = {
+    error: null as string | null,
+    onClearError: () => {},
+    onFollowUpClick: () => {},
+    hydrated: true,
+  };
+
+  beforeEach(() => {
+    scrollDriver.interceptScroll = true;
+    scrollDriver.scrollToIndex.mockClear();
+    scrollDriver.order = [];
+  });
+
+  it('anchors user messages with data-message-id and a matching dot', () => {
+    const { container, getByTestId } = render(
+      <div style={{ height: 480, display: 'flex', flexDirection: 'column' }}>
+        <ChatThread messages={makeMessages(4)} isLoading={false} {...base} />
+      </div>,
+    );
+    expect(container.querySelector('[data-message-id="m-0"]')).toBeTruthy();
+    expect(getByTestId('chat-message-dots').querySelectorAll('[data-testid="chat-message-dot"]')).toHaveLength(2);
+  });
+
+  it('clears stick then scrolls the virtualizer to the user index', () => {
+    const { getAllByTestId } = render(
+      <div style={{ height: 480, display: 'flex', flexDirection: 'column' }}>
+        <ChatThread messages={makeMessages(6)} isLoading={false} {...base} />
+      </div>,
+    );
+    scrollDriver.order = [];
+    fireEvent.click(getAllByTestId('chat-message-dot')[0]);
+    expect(scrollDriver.order[0]).toBe('stick:false');
+    expect(scrollDriver.order[1]).toBe('scroll');
+    expect(scrollDriver.scrollToIndex).toHaveBeenCalledWith(0, { align: 'start' });
+  });
+
+  it('collapses a long user-message rail instead of drawing every turn', () => {
+    const { getByTestId } = render(
+      <div style={{ height: 480, display: 'flex', flexDirection: 'column' }}>
+        <ChatThread messages={makeMessages(40)} isLoading={false} {...base} />
+      </div>,
+    );
+    const rail = getByTestId('chat-message-dots');
+    expect(rail.querySelectorAll('[data-testid="chat-message-dot"]').length).toBeLessThan(20);
+    expect(rail.querySelector('.chat-message-dots-range')).toBeTruthy();
   });
 });

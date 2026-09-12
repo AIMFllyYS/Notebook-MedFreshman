@@ -9,7 +9,7 @@ import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import { AgentTrace, TRACE_COLLAPSE_MS } from '@/components/chat/AgentTrace';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
-import { buildTrace } from '@/lib/chat/buildTrace';
+import { buildTrace, type AgentTraceModel, type TraceStep } from '@/lib/chat/buildTrace';
 import { getMessageText } from '@/lib/chat/messageParts';
 import { extractFollowUpQuestionsFromContent } from '@/lib/chat/rendering/parseChatContent';
 import { collectMessageSources } from '@/lib/chat/traceSources';
@@ -22,6 +22,18 @@ interface ChatMessageProps {
   sessionId?: string;
   repairModelId?: string;
   topic?: string;
+}
+
+function traceFromSteps(steps: TraceStep[]): AgentTraceModel {
+  return {
+    steps,
+    blocks: [{ kind: 'trace', steps }],
+    answerText: '',
+    toolCount: steps.filter((step) => step.kind === 'tool').length,
+    errorCount: steps.filter((step) => step.status === 'error').length,
+    interruptedCount: steps.filter((step) => step.status === 'interrupted').length,
+    waitingCount: steps.filter((step) => step.status === 'waiting').length,
+  };
 }
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, isStreaming, sessionId, repairModelId, topic }) => {
@@ -62,8 +74,15 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
 
   const traceSources = useMemo(() => isUser ? [] : collectMessageSources(parts), [isUser, parts]);
 
+  const lastTraceIndex = useMemo(() => {
+    for (let index = trace.blocks.length - 1; index >= 0; index--) {
+      if (trace.blocks[index].kind === 'trace') return index;
+    }
+    return -1;
+  }, [trace.blocks]);
+
   return (
-    <div className={`chat-message ${isUser ? 'user' : 'assistant'}`} data-message-role={message.role}>
+    <div className={`chat-message ${isUser ? 'user' : 'assistant'}`} data-message-role={message.role} data-message-id={message.id}>
       <div className="chat-message-header">
         {isUser ? (
           <span className="chat-message-header-left">
@@ -96,23 +115,38 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
           </>
         ) : (
           <>
-            <AgentTrace trace={trace} isStreaming={isStreaming} durationMs={message.metadata?.durationMs} />
-            {trace.answerText && (
-              <div
-                className="chat-bubble-assistant chat-prose"
-                style={{ background: 'transparent', border: 'none', padding: 0, borderRadius: 0 }}
-                onContextMenu={(e) => openMessageMenu(e, trace.answerText)}
-              >
-                <MessageContent
-                  content={trace.answerText}
-                  enableVisualizations={true}
-                  sessionId={sessionId}
-                  messageId={message.id}
-                  repairModelId={repairModelId}
-                  topic={topic}
-                />
-              </div>
-            )}
+            {trace.blocks.length === 0 && isStreaming ? (
+              <AgentTrace trace={trace} isStreaming durationMs={message.metadata?.durationMs} />
+            ) : null}
+            {trace.blocks.map((block, index) => {
+              if (block.kind === 'trace') {
+                return (
+                  <AgentTrace
+                    key={block.steps[0]?.id ?? `trace:${index}`}
+                    trace={traceFromSteps(block.steps)}
+                    isStreaming={isStreaming}
+                    durationMs={index === lastTraceIndex ? message.metadata?.durationMs : undefined}
+                  />
+                );
+              }
+              return (
+                <div
+                  key={`answer:${index}`}
+                  className="chat-bubble-assistant chat-prose"
+                  style={{ background: 'transparent', border: 'none', padding: 0, borderRadius: 0 }}
+                  onContextMenu={(e) => openMessageMenu(e, trace.answerText)}
+                >
+                  <MessageContent
+                    content={block.text}
+                    enableVisualizations={true}
+                    sessionId={sessionId}
+                    messageId={message.id}
+                    repairModelId={repairModelId}
+                    topic={topic}
+                  />
+                </div>
+              );
+            })}
             <ToolResultCards message={message} isStreaming={isStreaming} />
             {revealFollowups && !isStreaming && (followUpQuestions.length > 0 || traceSources.length > 0) ? (
               <FollowUpQuestions questions={followUpQuestions} onSelect={onFollowUpSelect} sources={traceSources} />

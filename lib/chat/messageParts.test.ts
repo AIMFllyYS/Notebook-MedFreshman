@@ -12,6 +12,7 @@ import {
   normalizeStoredMessages,
   createUserMessage,
   createAssistantPlaceholder,
+  withAnswerText,
   type LegacyChatMessage,
 } from "./messageParts.ts";
 import type { ChatMessage } from "@/lib/types/chat";
@@ -31,15 +32,57 @@ const rich: ChatMessage = {
   ],
 };
 
-test("getMessageText 拼接全部 text；getAnswerText 只取最后一个工具之后的", () => {
+test("getMessageText 拼接全部 text；有 step-start 时 getAnswerText 保留中间正文", () => {
   assert.equal(getMessageText(rich), "我先查一下教材。\n\n最终回答。");
-  assert.equal(getAnswerText(rich), "最终回答。");
+  assert.equal(getAnswerText(rich), "我先查一下教材。\n\n最终回答。");
   assert.equal(getReasoningText(rich), "先想想");
 });
 
 test("getAnswerText：无工具时等于全部正文", () => {
   const m = createUserMessage("u", "hello");
   assert.equal(getAnswerText(m), "hello");
+});
+
+test("getAnswerText 与 buildTrace 一样剥 think 标签", () => {
+  const withThink = { parts: [{ type: "text" as const, text: "<think>兼容端点的思考</think>回答", state: "done" as const }] };
+  assert.equal(getAnswerText(withThink), "回答");
+  const noStep = {
+    parts: [
+      { type: "text" as const, text: "<think>过程</think>中间讲解", state: "done" as const },
+      { type: "tool-searchNotes" as const, toolCallId: "c1", state: "output-available" as const, input: { query: "q" }, output: { text: "", hits: [] } },
+      { type: "text" as const, text: "<think>收尾思考</think>最终回答", state: "done" as const },
+    ],
+  };
+  assert.equal(getAnswerText(noStep), "最终回答");
+});
+
+test("withAnswerText：时间线消息改写全部答案段且不丢工具", () => {
+  const parts = withAnswerText(rich, "修订后的正文");
+  assert.deepEqual(parts.map((p) => p.type), [
+    "reasoning",
+    "tool-searchNotes",
+    "step-start",
+    "tool-getSection",
+    "step-start",
+    "text",
+  ]);
+  const text = parts.find((p) => p.type === "text");
+  assert.equal(text?.type === "text" && text.text, "修订后的正文");
+  assert.equal(parts.filter((p) => p.type === "text").length, 1);
+});
+
+test("withAnswerText：无 step-start 仍只替换最后工具之后的正文", () => {
+  const msg = {
+    parts: [
+      { type: "text" as const, text: "中间讲解", state: "done" as const },
+      { type: "tool-searchNotes" as const, toolCallId: "c1", state: "output-available" as const, input: { query: "q" }, output: { text: "", hits: [] } },
+      { type: "text" as const, text: "最终回答", state: "done" as const },
+    ],
+  };
+  const parts = withAnswerText(msg, "新答案");
+  assert.equal(parts[0].type === "text" && parts[0].text, "中间讲解");
+  assert.equal(parts.at(-1)?.type === "text" && parts.at(-1).text, "新答案");
+  assert.equal(parts.filter((p) => p.type === "text").length, 2);
 });
 
 test("getToolParts / getToolPartsByName", () => {

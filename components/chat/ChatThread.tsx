@@ -4,8 +4,10 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 're
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { AgentArrowUpIcon, AgentLoopIcon, AgentAlertIcon, AgentInfoIcon, AgentCloseIcon } from '@/components/icons/AgentIcons';
 import ChatMessage from '@/components/chat/ChatMessage';
+import ChatMessageDots, { type UserDotEntry } from '@/components/chat/ChatMessageDots';
 import { TRACE_COLLAPSE_MS } from '@/components/chat/AgentTrace';
 import { pinScrollToBottom, STICK_THRESHOLD_PX, useStickToBottom } from '@/lib/hooks/useStickToBottom';
+import { getMessageText } from '@/lib/chat/messageParts';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 
 interface ChatThreadProps {
@@ -89,6 +91,15 @@ export default function ChatThread({
           start: index * MESSAGE_ESTIMATE_PX,
         }));
   const totalSize = virtualizer.getTotalSize() || displayMessages.length * MESSAGE_ESTIMATE_PX;
+  const userDots = useMemo<UserDotEntry[]>(
+    () => displayMessages.flatMap((msg, index) => (
+      msg.role === 'user'
+        ? [{ index, id: msg.id, preview: getMessageText(msg) }]
+        : []
+    )),
+    [displayMessages],
+  );
+  const firstVisibleIndex = virtualItems[0]?.index ?? rows[0]?.index ?? 0;
 
   const { onScroll, isAtBottom, setWantStick, wantStickRef } = useStickToBottom(
     scrollRef,
@@ -138,8 +149,13 @@ export default function ChatThread({
     setWantStick(true);
   };
 
+  const jumpToUserMessage = (index: number) => {
+    setWantStick(false);
+    virtualizer.scrollToIndex(index, { align: 'start' });
+  };
+
   return (
-    <>
+    <div className="chat-thread">
       <div
         ref={scrollRef}
         onScroll={onScroll}
@@ -150,6 +166,7 @@ export default function ChatThread({
           minHeight: 0,
           overflowY: 'auto',
           paddingBottom: safeBottomInset || undefined,
+          paddingRight: userDots.length ? 18 : undefined,
           overflowAnchor: 'none',
         } as React.CSSProperties}
       >
@@ -235,11 +252,19 @@ export default function ChatThread({
         )}
       </div>
 
+      {userDots.length > 0 ? (
+        <ChatMessageDots
+          entries={userDots}
+          firstVisibleIndex={firstVisibleIndex}
+          onJump={jumpToUserMessage}
+        />
+      ) : null}
+
       {!isAtBottom && (
         <button onClick={jumpToBottom} className="chat-scroll-btn" title="跟随最新输出" style={safeBottomInset ? { bottom: safeBottomInset + 8 } : undefined}>
           <AgentArrowUpIcon size={18} style={{ transform: 'rotate(180deg)' }} />
         </button>
       )}
-    </>
+    </div>
   );
 }
