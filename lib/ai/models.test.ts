@@ -27,6 +27,7 @@ import {
   clampThinkingEffort,
   wireThinkingEffort,
 } from "./models.ts";
+import { getMaxTokens } from "@/lib/context/types.ts";
 
 test("MODELS 非空且每个模型有必需字段", () => {
   assert.ok(MODELS.length > 0);
@@ -120,6 +121,38 @@ test("MODELS：12+1 菜单模型价格与 cacheWrite", () => {
   assert.deepEqual(price("kimi-k3"), { input: 20, cachedInput: 2, output: 100 });
   assert.deepEqual(price("Tongyi-MAI/Z-Image-Turbo"), { input: 0, cachedInput: 0, output: 0.1 });
   assert.equal(getModelInfo("meituan/LongCat-2.0:free")?.label.includes(":free"), false);
+});
+
+/** MODELS.md §2 上下文 → registry contextK：1M→1000，1.05M→1050，256K→256。 */
+const MODELS_MD_SECTION2_CONTEXT_K: Record<string, number> = {
+  "deepseek/deepseek-v4.1-flash": 1000,
+  "Qwen/Qwen3.7-Flash": 1000,
+  "gpt-5.6-luna": 1000,
+  "mimo-v2.5": 1000,
+  "google/gemini-3.8-flash": 1000,
+  "z-ai/glm-5.3-flash": 1000,
+  "Qwen/Qwen3.8-Flash": 1000,
+  "meta/muse-spark-1.3-contributor": 1000,
+  "meituan/LongCat-2.0:free": 1050,
+  "inclusionai/ling-3.0-flash-sante:free": 256,
+  "gpt-5.6-sol": 1000,
+  "kimi-k3": 1000,
+};
+
+test("MODELS：对话模型 contextK 对齐 MODELS.md §2，getMaxTokens 按千 token 放大", () => {
+  const chatPicker = MODELS.filter((m) => m.id !== CUSTOM_OPENAI_MODEL_ID && m.type !== "image");
+  assert.deepEqual(
+    chatPicker.map((m) => m.id).sort(),
+    Object.keys(MODELS_MD_SECTION2_CONTEXT_K).sort(),
+  );
+  for (const m of chatPicker) {
+    const expectedK = MODELS_MD_SECTION2_CONTEXT_K[m.id];
+    assert.equal(getModelInfo(m.id)?.contextK, expectedK, m.id);
+    assert.equal(getMaxTokens(m.id), expectedK * 1000, m.id);
+  }
+  assert.equal(getMaxTokens("Qwen/Qwen3.7-Flash"), 1_000_000);
+  assert.equal(getMaxTokens("meituan/LongCat-2.0:free"), 1_050_000);
+  assert.equal(getMaxTokens("inclusionai/ling-3.0-flash-sante:free"), 256_000);
 });
 
 test("getAllModels：不同自定义 API 分组允许同名模型但 registry id 唯一", () => {
