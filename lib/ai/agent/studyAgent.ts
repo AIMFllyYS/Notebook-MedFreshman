@@ -93,6 +93,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     ? `${baseSystemPrompt}\n\n---\n\n${promptExtras.join("\n\n---\n\n")}`
     : baseSystemPrompt;
 
+  // 参考材料进这条唯一 system；提问只留在最后一条 user，不要再拼进 referenceContext。
   const volatile =
     buildLocationLine(chatCtx) +
     (contextTruncated

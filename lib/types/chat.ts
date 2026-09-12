@@ -1,7 +1,7 @@
 // AI 对话完整类型定义。消息主体采用 AI SDK 的 UIMessage（有序 parts），
 // 在其上附加本项目的持久化字段（timestamp / attachments / followUpQuestions）。
 
-import type { UIMessage, UIMessagePart } from 'ai';
+import type { FinishReason, UIMessage, UIMessagePart } from 'ai';
 import type { StudyTools } from '@/lib/ai/agent/toolTypes';
 
 export interface WebSearchSource {
@@ -46,6 +46,8 @@ export interface StudyMessageMetadata {
   usage?: UsageSummary;
   /** 从发送到流结束的耗时，供思考链头部展示「已思考 N 秒」。 */
   durationMs?: number;
+  /** 本轮生成结束原因。步数触顶时为 tool-calls。 */
+  finishReason?: FinishReason;
 }
 
 export type ChatMessagePart = UIMessagePart<StudyDataParts, StudyTools>;

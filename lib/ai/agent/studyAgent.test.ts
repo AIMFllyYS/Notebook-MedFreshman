@@ -3,20 +3,25 @@ import { test } from "node:test";
 import type { LanguageModelV4StreamPart, LanguageModelV4StreamResult } from "@ai-sdk/provider";
 import { MockLanguageModelV4, convertArrayToReadableStream, convertReadableStreamToArray } from "ai/test";
 import { createStudyAgent, type StudyAgentInput } from "./studyAgent.ts";
+import { MAX_TOOL_STEPS } from "./tools/_shared.ts";
 
 const usage = {
   inputTokens: { total: 10, noCache: 7, cacheRead: 3, cacheWrite: 0 },
   outputTokens: { total: 5, text: 5, reasoning: 0 },
 };
 
-function toolCallStep(toolName: string, input: Record<string, unknown>): LanguageModelV4StreamResult {
+function toolCallStep(
+  toolName: string,
+  input: Record<string, unknown>,
+  callId = `call_${toolName}`,
+): LanguageModelV4StreamResult {
   return {
     stream: convertArrayToReadableStream<LanguageModelV4StreamPart>([
       { type: "stream-start", warnings: [] },
       { type: "reasoning-start", id: "r1" },
       { type: "reasoning-delta", id: "r1", delta: "先看看当前页面" },
       { type: "reasoning-end", id: "r1" },
-      { type: "tool-call", toolCallId: `call_${toolName}`, toolName, input: JSON.stringify(input) },
+      { type: "tool-call", toolCallId: callId, toolName, input: JSON.stringify(input) },
       { type: "finish", finishReason: { unified: "tool-calls", raw: "tool_calls" }, usage },
     ]),
   };
@@ -145,8 +150,23 @@ test("createStudyAgent：模型不支持工具时 tools 为空；软上限时 in
   const noTools = createStudyAgent(baseInput(model, { modelSupportsTools: false, referenceContext: "参考材料正文" }));
   assert.equal(Object.keys(noTools.tools).length, 0);
   assert.match(noTools.promptParts.instructions, /【参考材料】\n参考材料正文/);
+  assert.doesNotMatch(noTools.promptParts.instructions, /用户提问：/);
 
   const truncated = createStudyAgent(baseInput(model, { referenceContext: "参考材料正文", contextTruncated: true }));
   assert.doesNotMatch(truncated.promptParts.instructions, /参考材料正文/);
   assert.match(truncated.promptParts.instructions, /80% 软上限/);
+});
+
+test("createStudyAgent：第 6 步仍 tool-calls 时不再发起第 7 次 LLM", async () => {
+  const model = new MockLanguageModelV4({
+    doStream: Array.from({ length: MAX_TOOL_STEPS }, (_, i) =>
+      toolCallStep("getCurrentPage", {}, `call_page_${i}`),
+    ),
+  });
+  const { agent } = createStudyAgent(baseInput(model));
+  const result = await agent.stream({ messages: [{ role: "user", content: "q" }] });
+  await convertReadableStreamToArray(result.toUIMessageStream());
+  assert.equal(model.doStreamCalls.length, MAX_TOOL_STEPS);
+  assert.equal(await result.finishReason, "tool-calls");
+  assert.equal((await result.steps).length, MAX_TOOL_STEPS);
 });

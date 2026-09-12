@@ -1,5 +1,5 @@
 import type { ContextManager, BuildContextResult } from './types';
-import { getMaxTokens } from './types';
+import { closeReferenceMaterials, getMaxTokens } from './types';
 import { DEFAULT_MODEL_ID } from '@/lib/ai/models';
 import type { ChatContext } from '@/lib/types/chat';
 import { contentTree } from '@/lib/content-data/manifest';
@@ -52,11 +52,11 @@ export class FullContextManager implements ContextManager {
 
   async buildContext(
     chatContext: ChatContext,
-    userMessage: string,
   ): Promise<BuildContextResult> {
     const maxTokens = getMaxTokens(this.model);
     const fullContext = await this.getFullContext(chatContext);
-    const context = fullContext + '\n\n用户提问：' + userMessage;
+    // 提问只留在最后一条 user；这里只放参考材料，收尾不含用户原话。
+    const context = closeReferenceMaterials(fullContext);
     const tokenCount = estimateTokens(context);
 
     const pageId = `${chatContext.subjectId}/${chatContext.categoryId}/${chatContext.itemId}`;

@@ -14,6 +14,7 @@ import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { withSseHeartbeat } from "@/lib/ai/sdk/heartbeat";
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
+import { TOOL_STEP_LIMIT_INFO } from "@/lib/ai/agent/tools/server";
 import { computeContextBreakdown } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
 import { formatRequestError, parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
@@ -226,7 +227,18 @@ export async function POST(req: NextRequest) {
       });
       if (aborted) return;
 
-      const [steps, finalText] = await Promise.all([result.steps, result.text]);
+      const [steps, finalText, finishReason] = await Promise.all([
+        result.steps, result.text, result.finishReason,
+      ]);
+
+      // 第 6 步仍要工具且无第 7 次 LLM：SDK finishReason 为 tool-calls。
+      if (finishReason === "tool-calls") {
+        writer.write({
+          type: "data-info",
+          data: { message: TOOL_STEP_LIMIT_INFO },
+          transient: true,
+        });
+      }
 
       // FollowUp 兜底：模型未输出 <FollowUp> 标签时，用轻量模型生成追问
       if (finalText && !/<FollowUp>[\s\S]*?<\/FollowUp>/i.test(finalText)) {
@@ -264,9 +276,10 @@ export async function POST(req: NextRequest) {
           ...(settled.summary ? { usage: settled.summary } : {}),
           durationMs: Date.now() - startedAt,
           modelId: modelId ?? effectiveModelId,
+          finishReason,
         },
       });
-      writer.write({ type: "finish" });
+      writer.write({ type: "finish", finishReason });
     })),
   });
 

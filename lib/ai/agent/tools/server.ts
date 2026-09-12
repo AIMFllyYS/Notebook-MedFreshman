@@ -25,6 +25,7 @@ import { createUseSkillTool } from "@/lib/ai/agent/tools/useSkill/tool";
 export {
   IMAGE_SEARCH_MAX_TOTAL,
   MAX_TOOL_STEPS,
+  TOOL_STEP_LIMIT_INFO,
   createToolRuntime,
   type StudyToolContext,
   type StudyToolRuntime,

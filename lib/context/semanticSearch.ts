@@ -1,5 +1,5 @@
 import type { ContextManager, BuildContextResult } from './types';
-import { getMaxTokens } from './types';
+import { closeReferenceMaterials, getMaxTokens } from './types';
 import { DEFAULT_MODEL_ID } from '@/lib/ai/models';
 import type { ChatContext } from '@/lib/types/chat';
 import { readContentMarkdown } from '@/lib/content/loader';
@@ -77,7 +77,9 @@ export class SemanticSearchManager implements ContextManager {
       // 索引不可用时不注入检索结果
     }
 
-    const context = parts.join('\n') + '\n\n用户提问：' + userMessage;
+    const body = parts.join('\n');
+    // userMessage 只用于检索；提问本身留在最后一条 user，不拼进 system。
+    const context = closeReferenceMaterials(body);
     const tokenCount = estimateTokens(context);
 
     return {

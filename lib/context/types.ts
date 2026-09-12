@@ -30,3 +30,8 @@ export function getMaxTokens(model: string): number {
   if (typeof k === 'number' && k > 0) return k * 1000;
   return MODEL_TOKEN_LIMITS.default;
 }
+
+/** 参考材料收尾：不含用户原话，提问只留在最后一条 user。 */
+export function closeReferenceMaterials(body: string): string {
+  return body.trim() ? `${body}\n\n以上是参考材料` : body;
+}

@@ -3,6 +3,7 @@ import { before, test } from 'node:test';
 import type { NextRequest } from 'next/server';
 import { DefaultChatTransport, readUIMessageStream, type UIMessageChunk } from 'ai';
 import { buildCustomModelRegistryId, type CustomApiGroup } from '@/lib/ai/models';
+import { MAX_TOOL_STEPS, TOOL_STEP_LIMIT_INFO } from '@/lib/ai/agent/tools/_shared';
 import { createUserMessage, getMessageText, getReasoningText, getToolParts } from '@/lib/chat/messageParts';
 import type { ChatMessage } from '@/lib/types/chat';
 
@@ -33,16 +34,26 @@ function responseStream(events: unknown[], anthropic = false): Response {
   });
 }
 
-function openAiStep(tool?: { name: string; arguments: Record<string, unknown> }, text = finalAnswer): Response {
-  const delta = tool ? { tool_calls: [{ index: 0, id: 'call-1', type: 'function', function: {
+function openAiStep(
+  tool?: { name: string; arguments: Record<string, unknown>; id?: string },
+  text = finalAnswer,
+  cachedTokens = 3,
+): Response {
+  const delta = tool ? { tool_calls: [{ index: 0, id: tool.id ?? 'call-1', type: 'function', function: {
     name: tool.name, arguments: JSON.stringify(tool.arguments),
   } }] } : { content: text };
   return responseStream([
     { choices: [{ index: 0, delta: { reasoning: '先分析，再查阅资料。' }, finish_reason: null }] },
     { choices: [{ index: 0, delta, finish_reason: null }] },
     { choices: [{ index: 0, delta: {}, finish_reason: tool ? 'tool_calls' : 'stop' }],
-      usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15, prompt_tokens_details: { cached_tokens: 3 } } },
+      usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15, prompt_tokens_details: { cached_tokens: cachedTokens } } },
   ]);
+}
+
+function systemText(body: Record<string, unknown>): string {
+  const messages = body.messages as Array<{ role: string; content?: unknown }> | undefined;
+  const system = messages?.find((m) => m.role === 'system')?.content;
+  return typeof system === 'string' ? system : '';
 }
 
 async function chat(body: Record<string, unknown> = {}, messages = [createUserMessage('u1', '解释这一节')]) {
@@ -130,7 +141,11 @@ test('chat SDK: real route → transport → parts preserves reasoning, tools, c
   const types = chunks.map((c) => c.type);
   assert.ok(types.indexOf('data-usage') < types.indexOf('finish'));
   assert.ok(types.indexOf('data-context-breakdown') < types.indexOf('finish'));
+  assert.ok(types.indexOf('message-metadata') < types.indexOf('finish'));
   assert.equal(types.filter((type) => type === 'finish').length, 1);
+  const finish = chunks.find((c) => c.type === 'finish');
+  assert.equal(finish && 'finishReason' in finish ? finish.finishReason : undefined, 'stop');
+  assert.equal(message.metadata?.finishReason, 'stop');
   const firstMessages = requests[0].messages as Array<{ role: string; content: string }>;
   assert.equal(firstMessages.filter((m) => m.role === 'system').length, 1);
   assert.match(firstMessages[0].content, /80% 软上限/);
@@ -397,4 +412,70 @@ test('chat SDK: GLM failover bills the landed mimo model, not GLM', async (t) =>
   assert.equal(backupBody.reasoning_effort, undefined);
   assert.equal(backupBody.reasoningEffort, undefined);
   assert.equal(backupBody.enable_thinking, undefined);
+});
+
+test('chat SDK: 6th step still tool-calls stops without a 7th LLM and surfaces a user hint', async (t) => {
+  const requests: Array<Record<string, unknown>> = [];
+  t.mock.method(globalThis, 'fetch', async (_url: unknown, init: RequestInit) => {
+    requests.push(JSON.parse(String(init.body)));
+    assert.ok(requests.length <= MAX_TOOL_STEPS, '第 6 步触顶后不得再请求第 7 次 LLM');
+    return openAiStep({ id: `call-${requests.length}`, name: 'getCurrentPage', arguments: {} });
+  });
+  const { chunks, message } = await chat();
+  assert.equal(requests.length, MAX_TOOL_STEPS);
+  const info = chunks.find((c) => c.type === 'data-info');
+  assert.ok(info && 'data' in info);
+  assert.equal(info.data.message, TOOL_STEP_LIMIT_INFO);
+  assert.ok('transient' in info && info.transient);
+  const finish = chunks.find((c) => c.type === 'finish');
+  assert.equal(finish && 'finishReason' in finish ? finish.finishReason : undefined, 'tool-calls');
+  const meta = chunks.find((c) => c.type === 'message-metadata');
+  assert.equal(meta && 'messageMetadata' in meta ? meta.messageMetadata.finishReason : undefined, 'tool-calls');
+  assert.equal(message?.metadata?.finishReason, 'tool-calls');
+  const types = chunks.map((c) => c.type);
+  assert.ok(types.lastIndexOf('tool-output-available') < types.indexOf('data-info'));
+  assert.ok(types.indexOf('data-info') < types.indexOf('data-context-breakdown'));
+  assert.ok(types.indexOf('data-context-breakdown') < types.indexOf('data-usage'));
+  assert.ok(types.indexOf('data-usage') < types.indexOf('message-metadata'));
+  assert.ok(types.indexOf('message-metadata') < types.indexOf('finish'));
+  assert.equal(types.filter((type) => type === 'finish').length, 1);
+});
+
+test('chat SDK: user question stays out of system so the same-page prefix is cacheable', async (t) => {
+  const systems: string[] = [];
+  const cached: number[] = [];
+  t.mock.method(globalThis, 'fetch', async (_url: unknown, init: RequestInit) => {
+    const body = JSON.parse(String(init.body)) as Record<string, unknown>;
+    const system = systemText(body);
+    if (system) systems.push(system);
+    const cachedTokens = systems.length === 1 ? 3 : 24;
+    cached.push(cachedTokens);
+    return openAiStep(undefined, finalAnswer, cachedTokens);
+  });
+  const page = {
+    contextTruncated: false,
+    subjectId: 'probability',
+    categoryId: 'detail',
+    itemId: '1.4',
+    currentTopic: '古典概型',
+  };
+  const q1 = 'XYZ_Q1_CACHE_PROBE_998877';
+  const q2 = 'XYZ_Q2_CACHE_PROBE_112233';
+  const first = await chat(page, [createUserMessage('u1', q1)]);
+  const second = await chat(page, [
+    createUserMessage('u1', q1),
+    { id: 'a1', role: 'assistant', parts: [{ type: 'text', text: '条件概率是给定条件下的概率。' }] },
+    createUserMessage('u2', q2),
+  ]);
+  assert.equal(systems.length, 2);
+  assert.equal(systems[0], systems[1]);
+  assert.doesNotMatch(systems[0], /用户提问：/);
+  assert.equal(systems[0].includes(q1), false);
+  assert.equal(systems[0].includes(q2), false);
+  assert.match(systems[0], /【参考材料】/);
+  assert.match(systems[0], /以上是参考材料/);
+  assert.match(systems[0], /古典概型/);
+  assert.ok((first.message?.metadata?.usage?.cachedTokens ?? 0) < (second.message?.metadata?.usage?.cachedTokens ?? 0));
+  assert.equal(first.message?.metadata?.usage?.cachedTokens, cached[0]);
+  assert.equal(second.message?.metadata?.usage?.cachedTokens, cached[1]);
 });

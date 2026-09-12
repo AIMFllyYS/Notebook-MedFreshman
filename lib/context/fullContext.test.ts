@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { FullContextManager } from './fullContext.ts';
+
+const page = { subjectId: 'probability', categoryId: 'detail', itemId: '1.4', currentTopic: '古典概型' };
+
+test('FullContextManager：参考材料不含用户提问，同页不同问题上下文逐字节相同', async () => {
+  const manager = new FullContextManager();
+  const first = await manager.buildContext(page, '什么是条件概率？');
+  const second = await manager.buildContext(page, '它和联合概率有什么关系？');
+  assert.doesNotMatch(first.context, /用户提问：/);
+  assert.doesNotMatch(first.context, /什么是条件概率/);
+  assert.doesNotMatch(first.context, /联合概率/);
+  assert.match(first.context, /以上是参考材料/);
+  assert.equal(first.context, second.context);
+  assert.equal(first.tokenCount, second.tokenCount);
+});

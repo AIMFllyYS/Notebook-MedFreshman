@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { UIMessageChunk } from 'ai';
+import { TOOL_STEP_LIMIT_INFO } from '@/lib/ai/agent/tools/_shared';
 import { consumeStudyStream, createStudyChatTransport } from './consumeStudyStream';
 import { createAssistantPlaceholder, getMessageText, getReasoningText } from './messageParts';
 import type { ChatMessage, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
@@ -95,6 +96,22 @@ test('所有结构化工具结果（artifact/image/search/skill）由 SDK 原样
   assert.equal(getMessageText(result), '最终回答');
   const failed = result.parts.find((p) => p.type === 'tool-getSection');
   assert.equal(failed?.state, 'output-error');
+});
+
+test('finishReason 从 finish 落到 metadata，触顶 data-info 仍走 onInfo', async () => {
+  const infos: string[] = [];
+  const result = await consumeStudyStream({
+    message: initial(), onMessage() {}, onInfo: (value) => infos.push(value),
+    stream: fromChunks([
+      ...textChunks('部分卡片'),
+      { type: 'data-info', data: { message: TOOL_STEP_LIMIT_INFO }, transient: true },
+      { type: 'message-metadata', messageMetadata: { finishReason: 'tool-calls', durationMs: 12 } },
+      { type: 'finish', finishReason: 'tool-calls' },
+    ]),
+  });
+  assert.equal(result.metadata?.finishReason, 'tool-calls');
+  assert.deepEqual(infos, [TOOL_STEP_LIMIT_INFO]);
+  assert.equal(result.parts.some((p) => p.type === 'data-info'), false);
 });
 
 test('0/0 usage 不触发 onUsage，避免 ¥0 幽灵账单', async () => {

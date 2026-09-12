@@ -4,6 +4,9 @@ import type { TextToolOutput } from "@/lib/ai/agent/tools/_types";
 
 export const IMAGE_SEARCH_MAX_TOTAL = 20;
 export const MAX_TOOL_STEPS = 6;
+/** 第 6 步仍返回 tool-calls、没有第 7 次 LLM 消化时下发给用户。 */
+export const TOOL_STEP_LIMIT_INFO =
+  "本次达到了工具调用上限，讲解可能不完整，可以再问一次让我继续。";
 
 export interface StudyToolContext {
   subjectId: string;

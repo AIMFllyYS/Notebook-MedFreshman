@@ -1,4 +1,4 @@
-import { DefaultChatTransport, isToolUIPart, readUIMessageStream, type UIMessageChunk } from 'ai';
+import { DefaultChatTransport, isToolUIPart, readUIMessageStream, type FinishReason, type UIMessageChunk } from 'ai';
 import type { RequestMessage } from '@/lib/chat/buildRequestMessages';
 import type { ChatMessage, ChatMessagePart, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
 
@@ -34,6 +34,14 @@ export function createStudyChatTransport(onActivity: () => void) {
 
 function objectValue(value: unknown): Record<string, unknown> | undefined {
   return value != null && typeof value === 'object' ? value as Record<string, unknown> : undefined;
+}
+
+const FINISH_REASONS: ReadonlySet<string> = new Set([
+  'stop', 'length', 'content-filter', 'tool-calls', 'error', 'other',
+]);
+
+function readFinishReason(value: unknown): FinishReason | undefined {
+  return typeof value === 'string' && FINISH_REASONS.has(value) ? value as FinishReason : undefined;
 }
 
 function readUsage(value: unknown): UsageSummary | undefined {
@@ -94,6 +102,7 @@ export async function consumeStudyStream({
   let failure: unknown;
   let latest = structuredClone(message);
   let dataUsage: UsageSummary | undefined;
+  let finishReason: FinishReason | undefined;
   let questions = message.followUpQuestions;
   const startedAt = Date.now();
   const stop = (reason: unknown) => {
@@ -119,7 +128,14 @@ export async function consumeStudyStream({
           stop(new DOMException('生成被中断', 'AbortError'));
           return;
         }
-        if (chunk.type === 'finish') completed = true;
+        if (chunk.type === 'finish') {
+          completed = true;
+          finishReason = readFinishReason(chunk.finishReason) ?? finishReason;
+          finishReason = readFinishReason(objectValue(chunk.messageMetadata)?.finishReason) ?? finishReason;
+        }
+        if (chunk.type === 'message-metadata') {
+          finishReason = readFinishReason(objectValue(chunk.messageMetadata)?.finishReason) ?? finishReason;
+        }
         if (chunk.type === 'data-usage') dataUsage = readUsage(chunk.data) ?? dataUsage;
         if (chunk.type === 'data-context-breakdown') {
           const breakdown = readBreakdown(chunk.data);
@@ -173,12 +189,14 @@ export async function consumeStudyStream({
     const usage = dataUsage ?? readUsage(latest.metadata?.usage);
     const wasAborted = abortSignal?.aborted === true || objectValue(failure)?.name === 'AbortError';
     const endedNormally = completed && failure == null && !wasAborted;
+    finishReason = finishReason ?? readFinishReason(latest.metadata?.finishReason);
     latest = {
       ...latest, followUpQuestions: questions,
       metadata: {
         ...latest.metadata,
         ...(usage ? { usage } : {}),
         durationMs: latest.metadata?.durationMs ?? Date.now() - startedAt,
+        ...(finishReason ? { finishReason } : {}),
       },
       parts: latest.parts.map((part) => {
         // SDK 的 state 描述 part 是否收到了结束帧，不等于 hook 当前是否仍在运行。
