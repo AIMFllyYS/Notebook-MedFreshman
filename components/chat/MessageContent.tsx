@@ -11,7 +11,6 @@ import { parseChatContent } from '@/lib/chat/rendering/parseChatContent';
 import type { ParsedBlock } from '@/lib/types/chat';
 import { ChatMessageVisualizations } from '@/components/chat/ChatMessageVisualizations';
 import { ToolCallDashboard } from '@/components/chat/ToolCallDashboard';
-import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import CodeBlock from '@/components/shared/CodeBlock';
 import { ChatImage } from '@/components/chat/ChatImage';
 import { ImageStrip } from '@/components/chat/ImageStrip';
@@ -23,7 +22,6 @@ import { ensureSvgRoot } from '@/lib/canvas/normalize';
 interface MessageContentProps {
   content: string;
   enableVisualizations?: boolean;
-  onFollowUpSelect?: (question: string) => void;
   /** 聊天体文本（用户输入/思考过程/生成依据）启用软换行：段内单 \n 渲染为 <br>。 */
   preserveLineBreaks?: boolean;
   sessionId?: string;
@@ -168,12 +166,11 @@ function renderBlocks(
   blocks: ParsedBlock[],
   keyPrefix: string,
   enableVisualizations: boolean | undefined,
-  onFollowUpSelect: ((question: string) => void) | undefined,
   remarkPlugins: typeof sharedRemarkPlugins,
   renderContext?: MessageRenderContext,
 ): React.ReactNode {
   return blocks.map((block, idx) =>
-    renderParsedBlock(block, `${keyPrefix}-${idx}`, enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext),
+    renderParsedBlock(block, `${keyPrefix}-${idx}`, enableVisualizations, remarkPlugins, renderContext),
   );
 }
 
@@ -182,7 +179,6 @@ const renderParsedBlock = (
   block: ParsedBlock,
   key: string,
   enableVisualizations?: boolean,
-  onFollowUpSelect?: (question: string) => void,
   remarkPlugins: typeof sharedRemarkPlugins = sharedRemarkPlugins,
   renderContext?: MessageRenderContext,
 ) => {
@@ -194,7 +190,7 @@ const renderParsedBlock = (
       if (nested.some((b) => b.type === 'component')) {
         return (
           <React.Fragment key={key}>
-            {renderBlocks(nested, key, enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext)}
+            {renderBlocks(nested, key, enableVisualizations, remarkPlugins, renderContext)}
           </React.Fragment>
         );
       }
@@ -237,7 +233,7 @@ const renderParsedBlock = (
     const innerBlocks = parseXmlTags(childrenText || '');
     return (
       <React.Fragment key={key}>
-        {renderBlocks(innerBlocks, key, enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext)}
+        {renderBlocks(innerBlocks, key, enableVisualizations, remarkPlugins, renderContext)}
       </React.Fragment>
     );
   }
@@ -261,14 +257,13 @@ const renderParsedBlock = (
 const MessageContentComponent: React.FC<MessageContentProps> = ({
   content,
   enableVisualizations = true,
-  onFollowUpSelect,
   preserveLineBreaks = false,
   sessionId,
   messageId,
   repairModelId,
   topic,
 }) => {
-  const { followUps, blocks } = useMemo(() => {
+  const { blocks } = useMemo(() => {
     return parseChatContent(content);
   }, [content]);
 
@@ -288,10 +283,7 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
 
   return (
     <>
-      {renderBlocks(blocks, 'root', enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext)}
-      {followUps.length > 0 && onFollowUpSelect && (
-        <FollowUpQuestions questions={followUps} onSelect={onFollowUpSelect} />
-      )}
+      {renderBlocks(blocks, 'root', enableVisualizations, remarkPlugins, renderContext)}
     </>
   );
 };

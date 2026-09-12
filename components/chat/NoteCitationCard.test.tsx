@@ -51,4 +51,16 @@ describe('NoteCitationCard', () => {
     expect(useNoteCitations.getState().activePath).toBe('probability/detail/1.4');
     expect(useWindowManager.getState().windows.some((w) => w.type === 'note-citation-viewer')).toBe(true);
   });
+
+  it('dedupes hits by path', () => {
+    render(
+      <NoteCitationCard
+        hits={[
+          ...hits,
+          { title: '贝叶斯重复', path: 'probability/detail/1.4', snippet: '重复片段' },
+        ]}
+      />,
+    );
+    expect(screen.getByText(/引用笔记 · 2 条/)).toBeVisible();
+  });
 });

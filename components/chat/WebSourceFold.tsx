@@ -5,6 +5,7 @@ import { AgentGlobeIcon } from '@/components/icons/AgentIcons';
 import type { WebSearchSource } from '@/lib/types/chat';
 import AgentFoldHeader from '@/components/chat/AgentFoldHeader';
 import { openSourcePreview } from '@/lib/chat/openSourcePreview';
+import { dedupeByKey, webItemKey } from '@/lib/chat/traceSources';
 
 function sourceHost(url: string): string {
   try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return url; }
@@ -20,20 +21,21 @@ export default function WebSourceFold({
   label?: string;
 }) {
   const [expanded, setExpanded] = useState(false);
-  if (!sources.length) return null;
+  const unique = dedupeByKey(sources, webItemKey);
+  if (!unique.length) return null;
 
   return (
     <div className="agent-fold" data-testid="web-source-fold" aria-label={label}>
       <AgentFoldHeader
         icon={<AgentGlobeIcon size={16} className="shrink-0" />}
-        title={`${label} · ${sources.length} 条${cacheHit ? ' · 缓存' : ''}`}
+        title={`${label} · ${unique.length} 条${cacheHit ? ' · 缓存' : ''}`}
         expanded={expanded}
         onToggle={() => setExpanded((open) => !open)}
       />
       {expanded ? (
         <ul className="agent-fold-list hide-scrollbar">
-          {sources.map((source, index) => (
-            <li key={`${source.url}:${index}`}>
+          {unique.map((source, index) => (
+            <li key={source.url}>
               <button
                 type="button"
                 className="web-source-item"

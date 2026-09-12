@@ -13,7 +13,7 @@ describe("tool registry", () => {
     }
   });
 
-  it("lists the seven result cards in current chat order", () => {
+  it("lists the result cards in current chat order", () => {
     expect(TOOL_RESULT_CARDS.map((c) => c.name)).toEqual([
       "searchNotes",
       "webSearch",
@@ -22,6 +22,15 @@ describe("tool registry", () => {
       "createQuiz",
       "searchNoteImages",
       "writeDocument",
+      "imageSearch",
     ]);
+  });
+
+  it("aggregates retrieval tools by path or url", () => {
+    expect(TOOL_REGISTRY.searchNotes.aggregate).toBe(true);
+    expect(TOOL_REGISTRY.webSearch.aggregate).toBe(true);
+    expect(TOOL_REGISTRY.searchNoteImages.aggregate).toBe(true);
+    expect(TOOL_REGISTRY.imageSearch.aggregate).toBe(true);
+    expect(TOOL_REGISTRY.renderInteractive.aggregate).toBeFalsy();
   });
 });

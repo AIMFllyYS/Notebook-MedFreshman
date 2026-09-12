@@ -311,6 +311,8 @@ describe('ChatMessage trace migration', () => {
       expect(answer.compareDocumentPosition(card) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     }
     expect(screen.getByText(/联网来源 · 1 条/)).toBeVisible();
+    expect(screen.queryByText(/参考来源/)).not.toBeInTheDocument();
+    expect(screen.queryByText('补充来源')).not.toBeInTheDocument();
     expect(screen.queryByText('公开课程摘要')).not.toBeInTheDocument();
     expect(screen.getByText(/引用笔记 · 1 条/)).toBeVisible();
     expect(screen.queryByText('公式讲解')).not.toBeInTheDocument();
@@ -326,7 +328,7 @@ describe('ChatMessage trace migration', () => {
   it('preserves image search gallery, drag data and attribution after streaming', () => {
     const msg = message([{ type: 'tool-imageSearch', toolCallId: 'images', state: 'output-available', input: { query: '植物' }, output: { text: '找到图片', provider: 'unsplash', sources: [{ title: '一株植物', alt: '植物特写', url: 'https://images.example/plant.jpg', snippet: '', author: '摄影者', authorUrl: 'https://unsplash.com/@author' }] } }, { type: 'text', text: '图片说明' }]);
     const { rerender } = render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} isStreaming />);
-    expect(screen.queryByRole('img', { name: '植物特写' })).not.toBeInTheDocument();
+    expect(screen.getByRole('img', { name: '植物特写' })).toBeInTheDocument();
     rerender(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} />);
     const image = screen.getByRole('img', { name: '植物特写' });
     expect(screen.getByRole('link', { name: '摄影者' })).toHaveAttribute('href', 'https://unsplash.com/@author');
@@ -361,6 +363,13 @@ describe('ChatMessage trace migration', () => {
     rerender(<ChatMessage message={{ ...msg, followUpQuestions: ['另一问题'] }} onFollowUpSelect={onSelect} />);
     expect(screen.queryByRole('button', { name: '为什么？' })).not.toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: '另一问题' })).toHaveLength(1);
+  });
+
+  it('uses answer FollowUp tags as data for the sourced follow-up channel', () => {
+    const msg = message([{ type: 'text', text: '答案。\n<FollowUp>继续解释|换个例子</FollowUp>' }]);
+    render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} />);
+    expect(screen.getByRole('button', { name: '继续解释' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '换个例子' })).toBeInTheDocument();
   });
 
   it('keeps searchNotes citations collapsed without dumping snippets into the chat', () => {

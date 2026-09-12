@@ -102,7 +102,7 @@
   gap: 3px;
   margin: 0;
   padding: 0 6px 6px;
-  max-height: 8.25rem;
+  max-height: min(70vh, 36rem);
   overflow-x: hidden;
   overflow-y: auto;
   list-style: none;

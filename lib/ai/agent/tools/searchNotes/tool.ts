@@ -3,7 +3,7 @@ import { z } from "zod";
 import { findContentItem, searchAllContent, type ContentSearchScope } from "@/lib/content/loader";
 import { getIndexHealth } from "@/lib/ai/search/indexHealth";
 import { getLastSearchDiagnostics } from "@/lib/ai/search/hybridSearch";
-import type { SearchNotesOutput } from "@/lib/ai/agent/tools/searchNotes/types";
+import { SEARCH_NOTES_HIT_LIMIT, type SearchNotesOutput } from "@/lib/ai/agent/tools/searchNotes/types";
 import {
   dedupeByContextKey,
   normalizeContextKeyPart,
@@ -33,7 +33,7 @@ export function createSearchNotesTool(ctx: StudyToolContext, runtime: StudyToolR
       const scope: ContentSearchScope = crossYear ? "all" : ctx.academicYear;
       const run = (year: ContentSearchScope) =>
         searchAllContent(query, {
-          limit: 8,
+          limit: SEARCH_NOTES_HIT_LIMIT,
           academicYear: year,
           subjectId: subjectId || undefined,
           preferSubjectId: subjectId ? undefined : ctx.subjectId,
@@ -65,7 +65,7 @@ export function createSearchNotesTool(ctx: StudyToolContext, runtime: StudyToolR
       return dedupeByContextKey(runtime, "searchNotes", {
         text: lines.join("\n\n"),
         contextKey: `search:${normalizeContextKeyPart(query)}`,
-        hits: hits.slice(0, 5).map((h) => ({ title: h.title, path: h.path, snippet: h.snippet })),
+        hits: hits.map((h) => ({ title: h.title, path: h.path, snippet: h.snippet })),
         diagnostics,
       });
     },

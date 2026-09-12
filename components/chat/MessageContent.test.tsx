@@ -60,20 +60,15 @@ describe('MessageContent', () => {
     expect(warningText).not.toMatch(/unrecognized tag|incorrect casing/i);
   });
 
-  it('FollowUp 控制标签不显示在正文，但渲染为追问按钮', () => {
-    const onFollowUpSelect = vi.fn();
-
+  it('FollowUp 控制标签不显示在正文，也不单独渲染追问', () => {
     render(
-      <MessageContent
-        content={'正文\n\n<FollowUp>继续解释|换个例子</FollowUp>'}
-        onFollowUpSelect={onFollowUpSelect}
-      />,
+      <MessageContent content={'正文\n\n<FollowUp>继续解释|换个例子</FollowUp>'} />,
     );
 
     expect(screen.getByText('正文')).toBeInTheDocument();
     expect(screen.queryByText(/FollowUp/)).not.toBeInTheDocument();
     expect(screen.queryByText(/继续解释\|换个例子/)).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /继续解释/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /换个例子/ })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /继续解释/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /换个例子/ })).not.toBeInTheDocument();
   });
 });
