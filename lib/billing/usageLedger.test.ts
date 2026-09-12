@@ -10,7 +10,10 @@ import {
   mapLanguageModelUsage,
   resolveActualBillingModelId,
   resolveLedgerUserId,
+  runWithLedgerContext,
   settleChatUsage,
+  settleUsage,
+  hasBillableLedger,
   type UsageLedgerRow,
 } from "./usageLedger.ts";
 
@@ -242,6 +245,92 @@ test("failover：按落地模型计价，两列都有值且不同", async () => 
   assert.notEqual(rows[0].selected_model_id, rows[0].actual_model_id);
   assert.equal(rows[0].cost_cny, mimoCost);
   assert.notEqual(rows[0].cost_cny, glmCost);
+});
+
+test("settleUsage：卫星 llm 按 route 入账，0/0 不建行", async () => {
+  const rows: UsageLedgerRow[] = [];
+  const recorded = await settleUsage({
+    rawUsage: tokenUsage,
+    userId: USER,
+    route: "/api/chat-title",
+    kind: "llm",
+    selectedModelId: MIMO,
+    actualModelId: MIMO,
+    meta: { source: "chat-title" },
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  assert.equal(recorded.recorded, true);
+  assert.equal(rows[0].route, "/api/chat-title");
+  assert.equal(rows[0].kind, "llm");
+  assert.equal(rows[0].meta.source, "chat-title");
+  const empty = await settleUsage({
+    rawUsage: { inputTokens: 0, outputTokens: 0 },
+    userId: USER,
+    route: "/api/chat-title",
+    kind: "llm",
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  assert.equal(empty.recorded, false);
+  assert.equal(rows.length, 1);
+});
+
+test("settleUsage：侧车 kind 按 units 入账，0 units 不建行", async () => {
+  const rows: UsageLedgerRow[] = [];
+  await settleUsage({
+    kind: "web-search",
+    units: 3,
+    userId: USER,
+    route: "/api/chat",
+    actualModelId: "search_pro",
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  await settleUsage({
+    kind: "rerank",
+    units: 8,
+    rawUsage: { inputTokens: 40, outputTokens: 0 },
+    userId: USER,
+    actualModelId: "BAAI/bge-reranker-v2-m3",
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  await settleUsage({
+    kind: "web-search",
+    units: 0,
+    userId: USER,
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  assert.equal(rows.length, 2);
+  assert.equal(rows[0].kind, "web-search");
+  assert.equal(rows[0].meta.units, 3);
+  assert.equal(rows[1].kind, "rerank");
+  assert.equal(rows[1].prompt_tokens, 40);
+  assert.equal(hasBillableLedger({ kind: "image-search", usage: mapLanguageModelUsage({}), units: 0 }), false);
+});
+
+test("settleUsage：ALS 提供 userId 与 insert", async () => {
+  const rows: UsageLedgerRow[] = [];
+  await runWithLedgerContext({ userId: USER, insert: async (row) => { rows.push(row); }, route: "/api/record" }, async () => {
+    const settled = await settleUsage({
+      rawUsage: tokenUsage,
+      kind: "llm",
+      selectedModelId: MIMO,
+      actualModelId: MIMO,
+      meta: { source: "record" },
+    });
+    assert.equal(settled.recorded, true);
+  });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].route, "/api/record");
+  assert.equal(rows[0].user_id, USER);
 });
 
 test("客户端账单：传入实际文本模型而非生图 id", () => {

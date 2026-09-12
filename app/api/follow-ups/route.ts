@@ -5,6 +5,7 @@ import { SUBJECTS } from "@/lib/constants/subjects";
 import { ENV_MODEL_FLASH } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { parseJsonArrayQuestions } from "@/lib/ai/agent/followUps";
+import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -30,7 +31,7 @@ export async function POST(req: NextRequest) {
   const recent = messages.slice(-4);
 
   try {
-    const { text } = await generateText({
+    const result = await generateText({
       model,
       temperature: 0.8,
       instructions:
@@ -46,7 +47,17 @@ export async function POST(req: NextRequest) {
       abortSignal: req.signal,
       timeout: provider.timeoutMs,
     });
-    return NextResponse.json({ questions: parseJsonArrayQuestions(text) });
+    await settleUsage({
+      headers: req.headers,
+      rawUsage: result.totalUsage ?? result.usage,
+      route: "/api/follow-ups",
+      kind: "llm",
+      selectedModelId: ENV_MODEL_FLASH,
+      actualModelId: resolveActualBillingModelId(provider),
+      pool: provider.isCustom ? "byok" : "platform",
+      meta: { source: "follow-ups-route" },
+    });
+    return NextResponse.json({ questions: parseJsonArrayQuestions(result.text) });
   } catch {
     return NextResponse.json({ questions: [] });
   }

@@ -2,6 +2,7 @@
 
 import type { LanguageModel } from "ai";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
+import { settleUsage } from "@/lib/billing/usageLedger";
 import {
   buildOutlineInstructions,
   buildOutlinePrompt,
@@ -46,7 +47,7 @@ async function streamOutline(
   send({ type: "document", id, status: "start", phase: "outline" });
   try {
     const spec = outlineReq.spec;
-    const { text } = await streamRouteText({
+    const { text, usage } = await streamRouteText({
       model,
       instructions: buildOutlineInstructions(spec),
       prompt: buildOutlinePrompt(spec),
@@ -56,6 +57,12 @@ async function streamOutline(
       idleTimeoutMs: timeoutMs,
       onText: (delta) => send({ type: "document", id, status: "delta", delta }),
       onReasoning: (delta) => send({ type: "document", id, status: "reasoning", delta }),
+    });
+    await settleUsage({
+      rawUsage: usage,
+      route: "/api/document",
+      kind: "llm",
+      meta: { source: "document-outline", phase: "outline" },
     });
 
     let outline = parseOutline(text);
@@ -96,8 +103,11 @@ async function streamSection(
 
     const previousTail = previousMarkdown.trim().slice(-PREVIOUS_TAIL_LEN) || (sectionIndex > 0 ? "（继续下一节）" : "");
 
-    const run = async (prompt: string, isContinuation: boolean): Promise<{ text: string; finishReason: string }> => {
-      return streamRouteText({
+    const run = async (
+      prompt: string,
+      isContinuation: boolean,
+    ): Promise<{ text: string; finishReason: string }> => {
+      const streamed = await streamRouteText({
         model,
         instructions: isContinuation
           ? `你是资深写作者。正在续写一节被截断的内容。只输出后续正文，不要重复已写内容，不要重新写标题，不要加任何说明。`
@@ -110,6 +120,18 @@ async function streamSection(
         onText: (delta) => send({ type: "document", id, status: "delta", delta }),
         onReasoning: isContinuation ? undefined : (delta) => send({ type: "document", id, status: "reasoning", delta }),
       });
+      await settleUsage({
+        rawUsage: streamed.usage,
+        route: "/api/document",
+        kind: "llm",
+        meta: {
+          source: isContinuation ? "document-section-continuation" : "document-section",
+          phase: "section",
+          sectionIndex,
+          continuation: isContinuation,
+        },
+      });
+      return streamed;
     };
 
     let result = await run(buildSectionPrompt(spec, outline, sectionIndex, previousTail), false);

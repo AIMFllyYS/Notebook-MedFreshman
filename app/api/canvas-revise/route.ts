@@ -6,6 +6,7 @@ import { resolveLanguageModel } from '@/lib/ai/sdk/languageModel';
 import { buildCanvasRevisionMessages } from '@/lib/canvas/revisionPrompt';
 import { diagnoseCanvasBlock, extractCanvasRevisionBlock } from '@/lib/canvas/revisionOutput';
 import type { CanvasBlock } from '@/lib/canvas/types';
+import { resolveActualBillingModelId, settleUsage } from '@/lib/billing/usageLedger';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -66,6 +67,17 @@ export async function POST(req: NextRequest) {
       timeout: provider.timeoutMs,
     });
     output = result.text.trim();
+    await settleUsage({
+      headers: req.headers,
+      rawUsage: result.totalUsage ?? result.usage,
+      route: '/api/canvas-revise',
+      kind: 'llm',
+      selectedModelId: modelId,
+      actualModelId: resolveActualBillingModelId(provider),
+      customGroups: customApiGroups,
+      pool: provider.isCustom ? 'byok' : 'platform',
+      meta: { source: 'canvas-revise' },
+    });
   } catch (err) {
     const detail = APICallError.isInstance(err) && err.statusCode
       ? `${err.statusCode} ${(err.responseBody ?? '').slice(0, 300)}`

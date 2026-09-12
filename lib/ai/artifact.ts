@@ -6,6 +6,7 @@ import type { ResolvedProvider } from "@/lib/ai/provider";
 import { buildCustomModelRegistryId } from "@/lib/ai/models";
 import { resolveLanguageModel, type ThinkingCallSettings } from "@/lib/ai/sdk/languageModel";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
+import { settleUsage } from "@/lib/billing/usageLedger";
 
 export const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一任务是输出一个完整、自包含的 HTML 文档。
 
@@ -244,6 +245,12 @@ export async function streamInteractiveArtifact(
         reasoning += delta;
         send({ type: "artifact", id: artifactId, status: "reasoning", delta });
       },
+    });
+    await settleUsage({
+      rawUsage: result.usage,
+      route: "/api/artifact",
+      kind: "llm",
+      meta: { source: "artifact", truncated: result.finishReason === "length" },
     });
 
     // finish_reason === "length" 表示达到 max_tokens 被截断 → 收尾时补救闭合标签。

@@ -3,6 +3,7 @@ import { bm25Search, getBm25BuiltAt, isBM25IndexLoaded } from "./bm25Store";
 import { vectorSearch, isVectorIndexLoaded, getVectorIndexModel } from "./vectorStore";
 import type { ScoredChunk } from "./vectorStoreTypes";
 import { getQueryEmbeddingClient } from "@/lib/ai/embedding";
+import { settleUsage } from "@/lib/billing/usageLedger";
 import type { MultiSearchHit } from "@/lib/content/loader";
 import { normalizeSearchQuery } from "./queryNormalize";
 import { shortTitleForIndex } from "@/lib/ai/indexing/bm25Index";
@@ -95,6 +96,24 @@ export function rrfMerge(rankings: ScoredChunk[][], k = 60): ScoredChunk[] {
     .map((entry) => ({ ...entry.chunk, score: entry.score }));
 }
 
+async function settleRerankUsage(
+  json: { usage?: { prompt_tokens?: number; total_tokens?: number } },
+  model: string,
+  documentCount: number,
+  provider: "siliconflow" | "zhipu",
+): Promise<void> {
+  const promptTokens = json.usage?.prompt_tokens ?? json.usage?.total_tokens ?? 0;
+  await settleUsage({
+    kind: "rerank",
+    rawUsage: { inputTokens: promptTokens, outputTokens: 0, totalTokens: promptTokens },
+    units: Math.max(documentCount, 1),
+    selectedModelId: model,
+    actualModelId: model,
+    pool: "platform",
+    meta: { source: "rerank", provider, candidates: documentCount },
+  });
+}
+
 async function rerank(
   query: string,
   documents: string[],
@@ -125,6 +144,7 @@ async function rerank(
     }
 
     const json = await resp.json();
+    await settleRerankUsage(json, model, documents.length, "siliconflow");
     return json.results ?? [];
   } catch (err) {
     const zhipuBaseUrl = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
@@ -151,6 +171,7 @@ async function rerank(
       }
 
       const json = await resp.json();
+      await settleRerankUsage(json, zhipuModel, documents.length, "zhipu");
       return json.results ?? [];
     }
     throw err;

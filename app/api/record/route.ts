@@ -5,6 +5,7 @@ import { ENV_MODEL_FLASH } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
 import type { CustomApiGroup } from "@/lib/ai/models";
+import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
 
 // 「记录」成卡路由（SSE 流式）：把用户划词/右键选中的原文，按用户选择的模式流式转成复习卡片。
 // 输出纯 Markdown 富文本（===FRONT=== / ===BACK=== / ===BLANKS=== 分隔），前端流式渲染 + 思考折叠。
@@ -229,6 +230,17 @@ export async function POST(req: NextRequest) {
             stopHeartbeat();
             send({ type: "content", delta });
           },
+        });
+        await settleUsage({
+          headers: req.headers,
+          rawUsage: result.usage,
+          route: "/api/record",
+          kind: "llm",
+          selectedModelId: modelId,
+          actualModelId: resolveActualBillingModelId(provider),
+          customGroups: customApiGroups,
+          pool: provider.isCustom ? "byok" : "platform",
+          meta: { source: "record", mode, revise: isRevise },
         });
         const card = parseCardContent(result.text, mode);
         send({ type: "result", card, model: provider.registryId });

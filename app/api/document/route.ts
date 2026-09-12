@@ -5,6 +5,7 @@ import { streamDocument } from "@/lib/ai/document";
 import { validateDocumentSpec } from "@/lib/ai/agent/documentTool";
 import { getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
 import type { DocumentApiRequest } from "@/lib/documents/types";
+import { resolveActualBillingModelId, withRequestLedger } from "@/lib/billing/usageLedger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -83,14 +84,25 @@ export async function POST(req: NextRequest) {
 
         const timeoutMs = info?.thinkingRequired ? Math.max(provider.timeoutMs, 120_000) : provider.timeoutMs;
 
-        await streamDocument({
-          send,
-          id: documentId,
-          request,
-          model,
-          signal,
-          timeoutMs,
-        });
+        await withRequestLedger(
+          req.headers,
+          {
+            route: "/api/document",
+            selectedModelId: modelId ?? provider.registryId,
+            actualModelId: resolveActualBillingModelId(provider),
+            customGroups: customApiGroups,
+            pool: provider.isCustom ? "byok" : "platform",
+          },
+          () =>
+            streamDocument({
+              send,
+              id: documentId,
+              request,
+              model,
+              signal,
+              timeoutMs,
+            }),
+        );
       } catch (err) {
         send({
           type: "document",

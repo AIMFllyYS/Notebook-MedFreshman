@@ -1,8 +1,13 @@
 // 联网搜索（智谱 Web Search API）+ 内存缓存（命中复用，降本提速）。
 // 在 https://open.bigmodel.cn 申请 key 后写入 .env 的 ZHIPU_API_KEY。
 
-const ZHIPU_KEY = process.env.ZHIPU_API_KEY || "";
+import { settleUsage } from "@/lib/billing/usageLedger";
+
 const ZHIPU_SEARCH_URL = "https://open.bigmodel.cn/api/paas/v4/web_search";
+
+function zhipuKey(): string {
+  return process.env.ZHIPU_API_KEY || "";
+}
 
 export interface WebSearchSource {
   title: string;
@@ -65,7 +70,7 @@ async function fetchRaw(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${ZHIPU_KEY}`,
+      Authorization: `Bearer ${zhipuKey()}`,
     },
     body: JSON.stringify(body),
   });
@@ -87,12 +92,20 @@ export async function searchCached(
   opts: ZhipuSearchOptions = {},
 ): Promise<{ results: WebSearchSource[]; cacheHit: boolean }> {
   const q = query.trim();
-  if (!q || !ZHIPU_KEY) return { results: [], cacheHit: false };
+  if (!q || !zhipuKey()) return { results: [], cacheHit: false };
   const key = `${q.toLowerCase()}|${count}|${opts.domainFilter ?? ""}`;
   const cached = cacheGet(key);
   if (cached) return { results: cached, cacheHit: true };
   const results = await fetchRaw(q, count, opts);
   cacheSet(key, results);
+  await settleUsage({
+    kind: "web-search",
+    units: Math.max(results.length, 1),
+    selectedModelId: opts.searchEngine ?? "search_pro",
+    actualModelId: opts.searchEngine ?? "search_pro",
+    pool: "platform",
+    meta: { source: "webSearch", resultCount: results.length },
+  });
   return { results, cacheHit: false };
 }
 
@@ -105,7 +118,7 @@ export interface WebSearchDetailed {
 export async function runWebSearchDetailed(query: string, numResults = 5): Promise<WebSearchDetailed> {
   const q = query.trim();
   if (!q) return { content: "搜索关键词为空。", sources: [], cacheHit: false };
-  if (!ZHIPU_KEY) {
+  if (!zhipuKey()) {
     return {
       content: "联网搜索未配置（请在 .env 设置 ZHIPU_API_KEY）。本次请基于已有知识回答，并明确说明未能联网。",
       sources: [],

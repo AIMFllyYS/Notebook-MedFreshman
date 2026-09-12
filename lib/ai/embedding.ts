@@ -1,5 +1,6 @@
 // SiliconFlow Embedding 客户端：封装 /v1/embeddings 调用，实现 EmbeddingProvider 接口。
 import type { EmbeddingProvider } from '@/lib/context/semanticSearch';
+import { settleUsage } from '@/lib/billing/usageLedger';
 
 const BATCH_SIZE = 32; // SiliconFlow 单次请求最多 32 个 input
 
@@ -55,6 +56,16 @@ export class SiliconFlowEmbedding implements EmbeddingProvider {
       for (const item of json.data) {
         results[i + item.index] = item.embedding;
       }
+      const promptTokens = json.usage?.prompt_tokens ?? 0;
+      await settleUsage({
+        kind: 'embedding',
+        rawUsage: { inputTokens: promptTokens, outputTokens: 0, totalTokens: promptTokens },
+        units: batch.length,
+        selectedModelId: this.model,
+        actualModelId: this.model,
+        pool: 'platform',
+        meta: { source: 'embedding', provider: 'siliconflow', batchSize: batch.length },
+      });
     }
 
     return results;
@@ -111,6 +122,16 @@ export class ZhipuEmbedding implements EmbeddingProvider {
       for (const item of json.data) {
         results[i + item.index] = item.embedding;
       }
+      const promptTokens = json.usage?.prompt_tokens ?? 0;
+      await settleUsage({
+        kind: 'embedding',
+        rawUsage: { inputTokens: promptTokens, outputTokens: 0, totalTokens: promptTokens },
+        units: batch.length,
+        selectedModelId: this.model,
+        actualModelId: this.model,
+        pool: 'platform',
+        meta: { source: 'embedding', provider: 'zhipu', batchSize: batch.length },
+      });
     }
 
     return results;

@@ -1,5 +1,10 @@
-const UNSPLASH_KEY = process.env.UNSPLASH_ACCESS_KEY || "";
+import { settleUsage } from "@/lib/billing/usageLedger";
+
 const UNSPLASH_API_URL = "https://api.unsplash.com/search/photos";
+
+function unsplashKey(): string {
+  return process.env.UNSPLASH_ACCESS_KEY || "";
+}
 
 export interface ImageSearchResult {
   url: string;
@@ -35,7 +40,7 @@ export async function searchImages(
   query: string,
   numResults = 3,
 ): Promise<ImageSearchResult[]> {
-  if (!UNSPLASH_KEY || !query.trim()) return [];
+  if (!unsplashKey() || !query.trim()) return [];
 
   try {
     const enhancedQuery = enhanceQueryForEducation(query);
@@ -43,7 +48,7 @@ export async function searchImages(
       `${UNSPLASH_API_URL}?query=${encodeURIComponent(enhancedQuery)}&per_page=${numResults * 2}&content_filter=high`,
       {
         headers: {
-          Authorization: `Client-ID ${UNSPLASH_KEY}`,
+          Authorization: `Client-ID ${unsplashKey()}`,
           "Accept-Version": "v1",
         },
       },
@@ -53,8 +58,17 @@ export async function searchImages(
 
     const data = await res.json();
     const candidates: UnsplashPhoto[] = data.results ?? [];
-
-    return selectBestImages(candidates, numResults);
+    const selected = selectBestImages(candidates, numResults);
+    await settleUsage({
+      kind: "image-search",
+      units: Math.max(selected.length, 1),
+      imageCount: selected.length,
+      selectedModelId: "unsplash",
+      actualModelId: "unsplash",
+      pool: "platform",
+      meta: { source: "imageSearch", resultCount: selected.length },
+    });
+    return selected;
   } catch {
     return [];
   }
@@ -108,11 +122,11 @@ function selectBestImages(
 export async function trackPhotoDownload(
   downloadLocation: string,
 ): Promise<void> {
-  if (!downloadLocation || !UNSPLASH_KEY) return;
+  if (!downloadLocation || !unsplashKey()) return;
 
   try {
     await fetch(downloadLocation, {
-      headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` },
+      headers: { Authorization: `Client-ID ${unsplashKey()}` },
     });
   } catch {
     // Silent failure

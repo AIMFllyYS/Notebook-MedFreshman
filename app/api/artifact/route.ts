@@ -3,6 +3,7 @@ import type { CustomProvider } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { ARTIFACT_IDLE_TIMEOUT_MS, streamInteractiveArtifact } from "@/lib/ai/artifact";
 import { defaultEffortFor, getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
+import { resolveActualBillingModelId, withRequestLedger } from "@/lib/billing/usageLedger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -74,16 +75,27 @@ export async function POST(req: NextRequest) {
           return;
         }
 
-        await streamInteractiveArtifact({
-          send,
-          artifactId,
-          args: { title, prompt },
-          provider,
-          model,
-          signal,
-          timeoutMs,
-          thinking,
-        });
+        await withRequestLedger(
+          req.headers,
+          {
+            route: "/api/artifact",
+            selectedModelId: modelId ?? provider.registryId,
+            actualModelId: resolveActualBillingModelId(provider),
+            customGroups: customApiGroups,
+            pool: provider.isCustom ? "byok" : "platform",
+          },
+          () =>
+            streamInteractiveArtifact({
+              send,
+              artifactId,
+              args: { title, prompt },
+              provider,
+              model,
+              signal,
+              timeoutMs,
+              thinking,
+            }),
+        );
       } catch (err) {
         send({
           type: "artifact",

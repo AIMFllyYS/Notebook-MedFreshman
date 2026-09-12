@@ -17,7 +17,7 @@ import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
 import { computeContextBreakdown } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
 import { parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
-import { awaitUsage, resolveActualBillingModelId, resolveLedgerUserId, settleChatUsage } from "@/lib/billing/usageLedger";
+import { awaitUsage, resolveActualBillingModelId, resolveLedgerUserId, runWithLedgerContext, settleChatUsage } from "@/lib/billing/usageLedger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -109,7 +109,13 @@ export async function POST(req: NextRequest) {
 
   const stream = createUIMessageStream<ChatMessage>({
     onError: formatError,
-    execute: async ({ writer }) => {
+    execute: async ({ writer }) => runWithLedgerContext({
+      userId,
+      sessionId: body.id ?? null,
+      requestId,
+      route: "/api/chat",
+      customGroups,
+    }, async () => {
       const resolved = resolveLanguageModel(effectiveModelId, effectiveCustom, {
         fallbackModelIds: isImageMode ? [body.imageModeTextModelFallback] : [],
         onFailover: ({ label }) =>
@@ -243,7 +249,7 @@ export async function POST(req: NextRequest) {
         },
       });
       writer.write({ type: "finish" });
-    },
+    }),
   });
 
   return withSseHeartbeat(

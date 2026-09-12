@@ -1,8 +1,10 @@
 /**
- * /api/chat 服务端用量台账：上游 usage 到手即写 usage_ledger，
- * 不依赖客户端 SSE。0/0 不落行；reasoning / cache-write 进列并参与计价。
+ * 服务端用量台账：上游消耗到手即写 usage_ledger。
+ * 主聊天走 settleChatUsage；卫星路由 / 工具侧车走 settleUsage。
+ * 0/0 不落行；reasoning / cache-write 进列并参与计价。
  */
 
+import { AsyncLocalStorage } from "node:async_hooks";
 import { extractAccessToken, verifySupabaseAccessToken, type VerifyAccessToken } from "@/lib/auth/aiGate";
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
 import { getModelInfo, getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
@@ -12,6 +14,7 @@ const CHAT_USAGE_ROUTE = "/api/chat";
 const USAGE_WAIT_MS = 3_000;
 
 type UsagePool = "platform" | "byok";
+export type UsageKind = "llm" | "image" | "embedding" | "rerank" | "web-search" | "image-search";
 
 interface MappedUsage {
   promptTokens: number;
@@ -20,6 +23,28 @@ interface MappedUsage {
   reasoningTokens: number;
   cacheWriteTokens: number;
   totalTokens: number;
+}
+
+export interface LedgerContext {
+  userId?: string | null;
+  sessionId?: string | null;
+  requestId?: string | null;
+  route?: string;
+  pool?: UsagePool;
+  selectedModelId?: string | null;
+  actualModelId?: string | null;
+  customGroups?: CustomApiGroup[];
+  insert?: (row: UsageLedgerRow) => Promise<void>;
+}
+
+const ledgerContext = new AsyncLocalStorage<LedgerContext>();
+
+export function runWithLedgerContext<T>(ctx: LedgerContext, fn: () => T): T {
+  return ledgerContext.run(ctx, fn);
+}
+
+function getLedgerContext(): LedgerContext | undefined {
+  return ledgerContext.getStore();
 }
 
 interface ModelPricing {
@@ -33,7 +58,7 @@ export interface UsageLedgerRow {
   user_id: string;
   pool: UsagePool;
   route: string;
-  kind: "llm";
+  kind: UsageKind;
   selected_model_id: string | null;
   actual_model_id: string | null;
   prompt_tokens: number;
@@ -59,6 +84,28 @@ interface SettleChatUsageInput {
   requestId?: string | null;
   route?: string;
   aborted?: boolean;
+  insert?: (row: UsageLedgerRow) => Promise<void>;
+}
+
+interface SettleUsageInput {
+  rawUsage?: unknown;
+  userId?: string | null;
+  headers?: { get(name: string): string | null };
+  selectedModelId?: string | null;
+  actualModelId?: string | null;
+  customGroups?: CustomApiGroup[];
+  pool?: UsagePool;
+  sessionId?: string | null;
+  requestId?: string | null;
+  route?: string;
+  kind?: UsageKind;
+  aborted?: boolean;
+  imageCount?: number;
+  units?: number;
+  meta?: Record<string, unknown>;
+  source?: string;
+  /** false 时只用显式 userId（主聊天 settle，避免误吃 ALS）。 */
+  bindContext?: boolean;
   insert?: (row: UsageLedgerRow) => Promise<void>;
 }
 
@@ -123,6 +170,22 @@ export function hasBillableUsage(usage: MappedUsage): boolean {
   );
 }
 
+export function hasBillableLedger(input: {
+  kind: UsageKind;
+  usage: MappedUsage;
+  imageCount?: number;
+  units?: number;
+}): boolean {
+  const units = input.units ?? 0;
+  const images = input.imageCount ?? 0;
+  if (input.kind === "llm") return hasBillableUsage(input.usage);
+  if (input.kind === "embedding" || input.kind === "rerank") {
+    return hasBillableUsage(input.usage) || units > 0;
+  }
+  if (input.kind === "image") return images > 0 || hasBillableUsage(input.usage);
+  return units > 0 || images > 0;
+}
+
 function toUsageSummary(usage: MappedUsage, actualModelId?: string | null): UsageSummary {
   return {
     promptTokens: usage.promptTokens,
@@ -181,10 +244,17 @@ export function buildUsageLedgerRow(input: {
   sessionId?: string | null;
   requestId?: string | null;
   route?: string;
+  kind?: UsageKind;
   aborted?: boolean;
+  imageCount?: number;
+  units?: number;
   rawUsage?: unknown;
+  meta?: Record<string, unknown>;
+  source?: string;
 }): UsageLedgerRow | null {
-  if (!hasBillableUsage(input.usage)) return null;
+  const kind = input.kind ?? "llm";
+  const imageCount = input.imageCount ?? (kind === "image-search" ? input.units ?? 0 : 0);
+  if (!hasBillableLedger({ kind, usage: input.usage, imageCount, units: input.units })) return null;
   const actualModelId = input.actualModelId ?? input.selectedModelId ?? null;
   const selectedModelId = input.selectedModelId ?? null;
   const pricing = actualModelId
@@ -194,7 +264,7 @@ export function buildUsageLedgerRow(input: {
     user_id: input.userId,
     pool: input.pool ?? "platform",
     route: input.route ?? CHAT_USAGE_ROUTE,
-    kind: "llm",
+    kind,
     selected_model_id: selectedModelId,
     actual_model_id: actualModelId,
     prompt_tokens: input.usage.promptTokens,
@@ -202,11 +272,16 @@ export function buildUsageLedgerRow(input: {
     cached_tokens: input.usage.cachedTokens,
     reasoning_tokens: input.usage.reasoningTokens,
     cache_write_tokens: input.usage.cacheWriteTokens,
-    image_count: 0,
+    image_count: imageCount,
     cost_cny: calcUsageCostCny(input.usage, pricing, input.rawUsage),
     session_id: input.sessionId ?? null,
     request_id: input.requestId ?? null,
-    meta: { aborted: input.aborted === true, source: "chat-main" },
+    meta: {
+      aborted: input.aborted === true,
+      source: input.source ?? (typeof input.meta?.source === "string" ? input.meta.source : "chat-main"),
+      ...(input.units != null ? { units: input.units } : {}),
+      ...input.meta,
+    },
   };
 }
 
@@ -246,32 +321,72 @@ async function defaultInsert(row: UsageLedgerRow): Promise<void> {
   if (error) throw new Error(error.message);
 }
 
-/** 有消耗才写库。缺 user / 0/0 / 写库失败都不抛，避免打断对话流。 */
-export async function settleChatUsage(input: SettleChatUsageInput): Promise<SettleChatUsageResult> {
+async function resolveSettleUserId(input: SettleUsageInput, ctx?: LedgerContext): Promise<string | null> {
+  if (input.bindContext === false) return input.userId ?? null;
+  if (typeof input.userId === "string" && input.userId) return input.userId;
+  if (typeof ctx?.userId === "string" && ctx.userId) return ctx.userId;
+  if (input.headers) return resolveLedgerUserId(input.headers);
+  return input.userId ?? null;
+}
+
+function mergeLedgerFields<T>(explicit: T | undefined, fallback: T | undefined): T | undefined {
+  return explicit !== undefined ? explicit : fallback;
+}
+
+/** 有消耗才写库。缺 user / 0 消耗 / 写库失败都不抛。卫星与侧车用此函数；主聊天用 settleChatUsage。 */
+export async function settleUsage(input: SettleUsageInput): Promise<SettleChatUsageResult> {
+  const ctx = input.bindContext === false ? undefined : getLedgerContext();
   const usage = mapLanguageModelUsage(input.rawUsage);
-  const summary = hasBillableUsage(usage) ? toUsageSummary(usage, input.actualModelId) : undefined;
-  if (!summary || !input.userId) {
+  const actualModelId = mergeLedgerFields(input.actualModelId, ctx?.actualModelId);
+  const summary = hasBillableUsage(usage) ? toUsageSummary(usage, actualModelId) : undefined;
+  const userId = await resolveSettleUserId(input, ctx);
+  if (!userId) {
     return { usage, summary, row: null, recorded: false };
   }
   const row = buildUsageLedgerRow({
     usage,
-    userId: input.userId,
-    selectedModelId: input.selectedModelId,
-    actualModelId: input.actualModelId,
-    customGroups: input.customGroups,
-    pool: input.pool,
-    sessionId: input.sessionId,
-    requestId: input.requestId,
-    route: input.route,
+    userId,
+    selectedModelId: mergeLedgerFields(input.selectedModelId, ctx?.selectedModelId),
+    actualModelId,
+    customGroups: mergeLedgerFields(input.customGroups, ctx?.customGroups),
+    pool: mergeLedgerFields(input.pool, ctx?.pool),
+    sessionId: mergeLedgerFields(input.sessionId, ctx?.sessionId),
+    requestId: mergeLedgerFields(input.requestId, ctx?.requestId),
+    route: input.route ?? ctx?.route ?? CHAT_USAGE_ROUTE,
+    kind: input.kind ?? "llm",
     aborted: input.aborted,
+    imageCount: input.imageCount,
+    units: input.units,
     rawUsage: input.rawUsage,
+    meta: input.meta,
+    source: input.source ?? (typeof input.meta?.source === "string" ? input.meta.source : undefined),
   });
   if (!row) return { usage, summary, row: null, recorded: false };
   try {
-    await (input.insert ?? defaultInsert)(row);
+    await (input.insert ?? ctx?.insert ?? defaultInsert)(row);
     return { usage, summary, row, recorded: true };
   } catch (error) {
     console.warn("[usage_ledger] insert failed:", error instanceof Error ? error.message : error);
     return { usage, summary, row, recorded: false };
   }
+}
+
+/** 有消耗才写库。缺 user / 0/0 / 写库失败都不抛，避免打断对话流。 */
+export async function settleChatUsage(input: SettleChatUsageInput): Promise<SettleChatUsageResult> {
+  return settleUsage({
+    ...input,
+    route: input.route ?? CHAT_USAGE_ROUTE,
+    kind: "llm",
+    source: "chat-main",
+    bindContext: false,
+  });
+}
+
+export async function withRequestLedger<T>(
+  headers: { get(name: string): string | null },
+  extra: Omit<LedgerContext, "userId">,
+  fn: () => Promise<T> | T,
+): Promise<T> {
+  const userId = await resolveLedgerUserId(headers);
+  return runWithLedgerContext({ ...extra, userId }, fn);
 }
