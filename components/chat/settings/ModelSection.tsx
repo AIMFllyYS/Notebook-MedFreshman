@@ -170,7 +170,7 @@ export function RecordAssistantSection() {
             ))}
           </select>
           <div className="mt-1 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
-            默认内置 DeepSeek V4 Flash（性价比高、成卡稳定）。选择自定义模型时需确保对应 API 分组已配置密钥。
+            默认内置 DeepSeek V4.1 Flash（性价比高、成卡稳定）。选择自定义模型时需确保对应 API 分组已配置密钥。
           </div>
         </div>
         <div>

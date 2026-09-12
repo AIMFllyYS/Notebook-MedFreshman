@@ -159,7 +159,7 @@ describe('useChat SDK transport regression', () => {
     mockResponses((body) => body.id === 'float-a' ? first.response : body.id === 'float-b' ? second.response : main.response);
     const { result } = renderHook(() => ({
       main: useChat(context), a: useChat(context, undefined, { sessionId: 'float-a', modelId: 'Qwen/Qwen3.8-27B' }),
-      b: useChat(context, undefined, { sessionId: 'float-b', modelId: 'deepseek/deepseek-v4-flash' }),
+      b: useChat(context, undefined, { sessionId: 'float-b', modelId: 'deepseek/deepseek-v4.1-flash' }),
     }));
     act(() => { result.current.main.sendMessage('主'); result.current.a.sendMessage('浮一'); result.current.b.sendMessage('浮二'); });
     await settle();
@@ -191,7 +191,7 @@ describe('useChat SDK transport regression', () => {
     expect(useFloatingTokenTracker.getState().getSession('float-b').sessionTotal).toEqual(usage);
     expect(useFloatingTokenTracker.getState().getSession('float-a').sessionTotal.totalTokens).toBe(0);
     expect(useBillingStore.getState().records).toHaveLength(2);
-    expect(useBillingStore.getState().records.find((r) => r.sessionId === 'float-b')?.modelId).toBe('deepseek/deepseek-v4-flash');
+    expect(useBillingStore.getState().records.find((r) => r.sessionId === 'float-b')?.modelId).toBe('deepseek/deepseek-v4.1-flash');
   });
 
   it('60ms 尾随节流且用户停止保留末帧，之后可以重新发送', async () => {

@@ -47,7 +47,7 @@ export interface SettingsState {
   // ── 摘录与划词助手（独立模型，不跟随主对话选中模型）──
   /** 摘录功能（划词「记录」成卡）使用的模型。独立于 selectedModelId，
    *  避免右侧切换自定义模型时摘录因密钥/协议不匹配而报错。
-   *  默认内置 DeepSeek V4 Flash（性价比高、成卡质量稳定）。 */
+   *  默认内置 DeepSeek V4.1 Flash（性价比高、成卡质量稳定）。 */
   recordModelId: string;
   /** 划词助手（划词「解释/追问」浮窗）使用的默认模型。 */
   floatingChatModelId: string;
@@ -135,8 +135,8 @@ const DEFAULTS: Persisted = {
   defaultImageModelId: null,
   imageModeTextModel: "mimo-v2.5",
   imageModeTextModelFallback: "mimo-v2.5-pro",
-  // 摘录默认用中转站 DeepSeek V4 Flash：性价比高、成卡质量稳定。
-  recordModelId: "deepseek/deepseek-v4-flash",
+  // 摘录默认用中转站 DeepSeek V4.1 Flash：性价比高、成卡质量稳定。
+  recordModelId: "deepseek/deepseek-v4.1-flash",
   // 划词助手默认：Qwen3.8 27B（视觉 + 混合思考）。
   floatingChatModelId: "Qwen/Qwen3.8-27B",
   customBaseUrl: "",

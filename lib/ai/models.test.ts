@@ -211,7 +211,7 @@ test("MODELS：主力四模型走 relay，硅基流动仅保留生图", () => {
   assert.deepEqual(gemini!.thinkingLevels, ["low", "medium", "high"]);
   assert.equal(gemini?.timeoutMs, 120_000);
 
-  const ds = getModelInfo("deepseek/deepseek-v4-flash");
+  const ds = getModelInfo("deepseek/deepseek-v4.1-flash");
   assert.ok(ds);
   assert.equal(primaryProvider(ds!), "relay");
 
@@ -225,7 +225,7 @@ test("MODELS：主力四模型走 relay，硅基流动仅保留生图", () => {
 });
 
 test("getModelInfo：旧硅基流动/智谱 id 映射到中转站等价模型", () => {
-  assert.equal(getModelInfo("deepseek-ai/DeepSeek-V4-Flash")?.id, "deepseek/deepseek-v4-flash");
+  assert.equal(getModelInfo("deepseek-ai/DeepSeek-V4-Flash")?.id, "deepseek/deepseek-v4.1-flash");
   assert.equal(getModelInfo("Qwen/Qwen3.6-27B")?.id, "Qwen/Qwen3.8-27B");
   assert.equal(getModelInfo("zai-org/GLM-5.2")?.id, "z-ai/glm-5.3-flash");
   assert.equal(getModelInfo("MiniMaxAI/MiniMax-M3")?.id, "Qwen/Qwen3.8-27B");
