@@ -1,12 +1,22 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { decideAiGate, PAID_AI_API_PATHS } from "@/lib/auth/aiGate";
+import { decideAiGate } from "@/lib/auth/aiGate";
 
 /**
  * Next.js 16 request gate (formerly middleware.ts).
  * Blocks anonymous calls to paid AI routes. No desktop / BYOK bypass.
+ * Matcher must be a compile-time literal — Next cannot parse spreads or imports.
  */
 export const config = {
-  matcher: [...PAID_AI_API_PATHS],
+  matcher: [
+    "/api/chat",
+    "/api/chat-title",
+    "/api/artifact",
+    "/api/document",
+    "/api/canvas-revise",
+    "/api/follow-ups",
+    "/api/image-gen",
+    "/api/record",
+  ],
 };
 
 export async function proxy(request: NextRequest) {
