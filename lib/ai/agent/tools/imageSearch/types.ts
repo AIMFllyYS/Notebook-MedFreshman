@@ -12,4 +12,5 @@ export interface ImageSearchOutput extends TextToolOutput {
   provider: "unsplash";
   limitReached?: boolean;
   deduped?: boolean;
+  unconfigured?: boolean;
 }

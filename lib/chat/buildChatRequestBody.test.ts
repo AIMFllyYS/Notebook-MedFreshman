@@ -52,6 +52,35 @@ test("buildChatRequestBody：映射上下文与预算字段", () => {
   assert.deepEqual(body.disabledTools, ["webSearch"]);
   assert.equal(body.customProvider, undefined);
   assert.equal(body.skills[0]?.id, "s1");
+  assert.equal(body.capabilityEndpoints.webSearchApiKey, "");
+});
+
+test("buildChatRequestBody：能力端点随请求发给服务端", () => {
+  const body = buildChatRequestBody(
+    ctx,
+    settings({
+      capabilityEndpoints: {
+        imageBaseUrl: "",
+        imageApiKey: "",
+        imageModelId: "",
+        imageApiStyle: "auto",
+        embeddingBaseUrl: "",
+        embeddingApiKey: "",
+        embeddingModelId: "",
+        rerankBaseUrl: "",
+        rerankApiKey: "",
+        rerankModelId: "",
+        webSearchApiKey: " user-zhipu ",
+        unsplashAccessKey: "user-unsplash",
+      },
+    }),
+    resolved,
+    { limit: 1, estimated: 1, softLimitReached: false },
+    [],
+    "y",
+  );
+  assert.equal(body.capabilityEndpoints.webSearchApiKey, "user-zhipu");
+  assert.equal(body.capabilityEndpoints.unsplashAccessKey, "user-unsplash");
 });
 
 test("buildChatRequestBody：无分组且有旧版 baseUrl 时附带 customProvider", () => {

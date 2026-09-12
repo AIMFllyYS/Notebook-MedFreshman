@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-import { searchImages, trackPhotoDownload } from "@/lib/ai/imageSearch";
+import { IMAGE_SEARCH_UNCONFIGURED_TEXT, searchImages, trackPhotoDownload } from "@/lib/ai/imageSearch";
 import type { ImageSearchOutput } from "@/lib/ai/agent/tools/imageSearch/types";
 import {
   IMAGE_SEARCH_MAX_TOTAL,
@@ -30,7 +30,17 @@ export function createImageSearchTool(runtime: StudyToolRuntime) {
       }
       const remaining = IMAGE_SEARCH_MAX_TOTAL - already;
       const requested = Math.min(Math.max(Number(numResults) || 3, 1), 4);
-      const results = await searchImages(query, Math.min(requested, remaining));
+      const response = await searchImages(query, Math.min(requested, remaining));
+      if (!response.configured) {
+        runtime.imageSearchFetchedCount = IMAGE_SEARCH_MAX_TOTAL;
+        return {
+          text: IMAGE_SEARCH_UNCONFIGURED_TEXT,
+          sources: [],
+          provider: "unsplash",
+          unconfigured: true,
+        };
+      }
+      const results = response.results;
       if (!results.length) {
         return { text: `未找到「${query}」的相关图片。`, sources: [], provider: "unsplash" };
       }

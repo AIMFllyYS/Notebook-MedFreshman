@@ -302,6 +302,7 @@ test("思考强度：生图模型不支持档位，GLM 把 medium 钳到 high �
   assert.equal(wireThinkingEffort(muse, "high"), "xhigh");
   assert.equal(wireThinkingEffort(muse, "max"), "max");
   assert.equal(clampThinkingEffort(muse, "medium"), "high");
+  assert.equal(muse?.vendorTrainingNotice, "对话可能用于厂商训练");
 });
 
 test("getAllModels / 菜单：不含桌面自由中转，自定义思考档位进入 ModelInfo", () => {

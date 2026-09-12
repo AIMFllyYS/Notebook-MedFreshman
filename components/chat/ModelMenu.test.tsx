@@ -96,6 +96,17 @@ describe('ModelMenu thinking submenu', () => {
     expect(queryByTestId('model-thinking-option-off')).not.toBeNull();
   });
 
+  it('shows Muse contributor training notice in the menu and flyout', async () => {
+    const { getByTestId, getAllByText } = render(<ModelMenu />);
+    await act(async () => {
+      getByTestId('model-menu-button').click();
+    });
+    const row = getByTestId('model-menu-item-meta/muse-spark-1.3-contributor');
+    expect(within(row).getByText('对话可能用于厂商训练')).toBeTruthy();
+    fireEvent.mouseEnter(row);
+    expect(getAllByText('对话可能用于厂商训练').length).toBeGreaterThan(1);
+  });
+
   it('selecting an effort picks the model and reports thinking change', async () => {
     const onChange = vi.fn();
     const onThinkingChange = vi.fn();

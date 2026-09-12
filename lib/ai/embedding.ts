@@ -1,6 +1,11 @@
 // SiliconFlow Embedding 客户端：封装 /v1/embeddings 调用，实现 EmbeddingProvider 接口。
 import type { EmbeddingProvider } from '@/lib/context/semanticSearch';
 import { settleUsage } from '@/lib/billing/usageLedger';
+import { resolveUsagePool } from '@/lib/billing/usagePool';
+import { assertSafeCustomBaseUrl } from '@/lib/ai/customBaseUrl';
+import { getCapabilityEndpoints } from '@/lib/ai/capabilityContext';
+import { overlayOptional, resolveCapabilityEndpoint } from '@/lib/ai/capabilityEndpoints';
+import { normalizeOpenAIBaseUrl } from '@/lib/ai/provider';
 
 const BATCH_SIZE = 32; // SiliconFlow 单次请求最多 32 个 input
 
@@ -13,11 +18,24 @@ export class SiliconFlowEmbedding implements EmbeddingProvider {
   private baseUrl: string;
   private apiKey: string;
   readonly model: string;
+  private usedPlatformCredentials: boolean;
 
   constructor() {
-    this.baseUrl = process.env.AI_BASE_URL || 'https://api.siliconflow.cn/v1';
-    this.apiKey = process.env.AI_API_KEY || '';
-    this.model = process.env.AI_EMBEDDING_MODEL || 'BAAI/bge-m3';
+    const ep = getCapabilityEndpoints();
+    const platformBase = process.env.AI_BASE_URL || 'https://api.siliconflow.cn/v1';
+    const platformKey = process.env.AI_API_KEY || '';
+    const resolved = resolveCapabilityEndpoint({
+      userBaseUrl: ep.embeddingBaseUrl,
+      userApiKey: ep.embeddingApiKey,
+      platformBaseUrl: platformBase,
+      platformApiKey: platformKey,
+    });
+    this.baseUrl = resolved.customBaseUrl
+      ? normalizeOpenAIBaseUrl(assertSafeCustomBaseUrl(resolved.baseUrl))
+      : resolved.baseUrl;
+    this.apiKey = resolved.apiKey;
+    this.model = overlayOptional(ep.embeddingModelId, process.env.AI_EMBEDDING_MODEL || 'BAAI/bge-m3');
+    this.usedPlatformCredentials = resolved.usedPlatformCredentials;
   }
 
   get configured(): boolean {
@@ -63,7 +81,7 @@ export class SiliconFlowEmbedding implements EmbeddingProvider {
         units: batch.length,
         selectedModelId: this.model,
         actualModelId: this.model,
-        pool: 'platform',
+        pool: resolveUsagePool(this.usedPlatformCredentials),
         meta: { source: 'embedding', provider: 'siliconflow', batchSize: batch.length },
       });
     }
@@ -178,6 +196,10 @@ function getEmbeddingClient(): FailoverEmbedding {
  * 不能作为检索查询的静默降级，否则余弦相似度全是噪声。
  */
 export function getQueryEmbeddingClient(indexModel?: string | null): SiliconFlowEmbedding | ZhipuEmbedding {
+  const ep = getCapabilityEndpoints();
+  if (ep.embeddingApiKey || ep.embeddingModelId) {
+    return new SiliconFlowEmbedding();
+  }
   const wanted = (indexModel || process.env.AI_EMBEDDING_MODEL || "BAAI/bge-m3").toLowerCase();
   const silicon = new SiliconFlowEmbedding();
   if (silicon.model.toLowerCase() === wanted) return silicon;

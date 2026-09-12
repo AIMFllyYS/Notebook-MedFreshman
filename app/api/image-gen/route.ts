@@ -8,6 +8,7 @@ import {
 import { UnsafeCustomBaseUrlError } from "@/lib/ai/customBaseUrl";
 import { parseUpstreamErrorBody } from "@/lib/ai/upstream";
 import type { CustomApiGroup } from "@/lib/ai/models";
+import { normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,6 +27,17 @@ interface NormalizedImage {
   revised_prompt?: string;
 }
 
+function sanitizeImageGenMessage(message: string): string {
+  return message
+    .replace(/https?:\/\/[^\s"'\\]+/gi, "[endpoint]")
+    .replace(/sk-[A-Za-z0-9_-]+/g, "[key]")
+    .slice(0, 200);
+}
+
+function jsonError(status: number, error: string, code: string) {
+  return Response.json({ error, code }, { status });
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const modelId = typeof body.modelId === "string" ? body.modelId : "";
@@ -37,26 +49,38 @@ export async function POST(req: NextRequest) {
     : [];
   const defaultImageModelId =
     typeof body.defaultImageModelId === "string" ? body.defaultImageModelId : null;
+  const capability = normalizeCapabilityEndpoints(body.capabilityEndpoints);
+  const probe = body.probe === true;
 
-  if (!prompt.trim()) {
-    return Response.json({ error: "缺少生图提示词" }, { status: 400 });
+  if (!probe && !prompt.trim()) {
+    return jsonError(400, "缺少生图提示词", "bad_request");
   }
 
   let provider: ResolvedImageProvider;
   try {
-    provider = resolveImageProvider(modelId, customGroups, defaultImageModelId);
+    provider = resolveImageProvider(modelId, customGroups, defaultImageModelId, capability);
   } catch (err) {
     if (err instanceof UnsafeCustomBaseUrlError) {
-      return Response.json({ error: err.message }, { status: 400 });
+      return jsonError(400, "生图端点不对：自定义地址不安全或协议不受支持", "bad_endpoint");
     }
     throw err;
   }
 
   if (!provider.configured) {
-    return Response.json(
-      { error: "生图 API 未配置，请在 .env.local 填写 AI_BASE_URL / AI_API_KEY，或在设置中添加自定义生图模型。" },
-      { status: 500 },
+    return jsonError(
+      500,
+      "生图 API 未配置，请在设置中填写生图端点，或在 .env.local 配置 AI_BASE_URL / AI_API_KEY。",
+      "unconfigured",
     );
+  }
+
+  if (probe) {
+    return Response.json({
+      ok: true,
+      code: "ok",
+      message: "生图端点已配置（未实际上游出图）",
+      isCustom: provider.isCustom,
+    });
   }
 
   const endpoint = imagesGenerationsUrl(provider.baseUrl);
@@ -102,11 +126,14 @@ export async function POST(req: NextRequest) {
     if (!res.ok) {
       const errText = await res.text().catch(() => "");
       const parsed = parseUpstreamErrorBody(errText);
-      const message = parsed.message || errText.slice(0, 300);
-      return Response.json(
-        { error: `生图 API 返回 ${res.status}：${message}` },
-        { status: res.status },
-      );
+      const message = sanitizeImageGenMessage(parsed.message || errText);
+      if (res.status === 404) {
+        return jsonError(502, "生图端点不对（上游返回 404）", "bad_endpoint");
+      }
+      if (res.status === 401 || res.status === 403) {
+        return jsonError(502, "生图上游拒绝访问，请检查端点与密钥", "upstream_auth");
+      }
+      return jsonError(502, `生图上游拒绝：${message || res.status}`, "upstream");
     }
 
     const data = await res.json().catch(() => null);
@@ -167,9 +194,14 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     clearTimeout(timeoutId);
     const isAbort = err instanceof Error && err.name === "AbortError";
-    return Response.json(
-      { error: isAbort ? "生图超时，请重试" : String((err as Error)?.message ?? err) },
-      { status: 500 },
-    );
+    if (isAbort) {
+      return jsonError(500, "生图超时，请重试", "timeout");
+    }
+    const raw = sanitizeImageGenMessage(String((err as Error)?.message ?? err));
+    const looksLikeEndpoint = /fetch|ENOTFOUND|ECONNREFUSED|Failed to parse URL|network|EAI_AGAIN/i.test(raw);
+    if (looksLikeEndpoint) {
+      return jsonError(502, "生图端点不对或无法连接，请检查设置中的 Base URL", "bad_endpoint");
+    }
+    return jsonError(500, raw || "生图失败", "upstream");
   }
 }

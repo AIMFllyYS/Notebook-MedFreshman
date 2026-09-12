@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { DEFAULT_ACADEMIC_YEAR, isAcademicYearId, type AcademicYearId } from "@/lib/constants/academic-year";
 import type { CustomApiGroup, CustomModelConfig } from "@/lib/ai/models";
+import { normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
 
 const skillSchema = z
   .object({
@@ -58,6 +59,10 @@ export const chatRequestSchema = z.object({
   defaultImageModelId: z.string().nullable().optional(),
   imageModeTextModel: z.string().default("mimo-v2.5"),
   imageModeTextModelFallback: z.string().default("mimo-v2.5"),
+  capabilityEndpoints: z
+    .unknown()
+    .optional()
+    .transform((v) => normalizeCapabilityEndpoints(v ?? {})),
   disabledTools: z.array(z.string()).default([]),
   contextTruncated: z.boolean().default(false),
   sessionContextBudgetTokens: finiteNumber.optional().nullable(),

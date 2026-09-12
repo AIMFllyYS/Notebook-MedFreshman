@@ -178,7 +178,7 @@ export default function ModelMenu({
       <button
         ref={btnRef}
         onClick={() => setOpen((v) => !v)}
-        title="选择模型"
+        title={current?.vendorTrainingNotice ? `${label} · ${current.vendorTrainingNotice}` : "选择模型"}
         data-testid="model-menu-button"
         className="press flex max-w-[180px] min-w-0 items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] [flex-shrink:1]"
       >
@@ -233,8 +233,18 @@ export default function ModelMenu({
                             </span>
                           )}
                         </span>
-                        <span className="min-w-0 flex-1 truncate text-[12.5px] font-medium text-[var(--ink)]">
-                          {m.label}
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-[12.5px] font-medium text-[var(--ink)]">
+                            {m.label}
+                          </span>
+                          {m.vendorTrainingNotice && (
+                            <span
+                              className="mt-0.5 block text-[10px] font-medium leading-snug text-[var(--md-sys-color-error)]"
+                              data-testid="vendor-training-notice"
+                            >
+                              {m.vendorTrainingNotice}
+                            </span>
+                          )}
                         </span>
                       </button>
                     );
@@ -334,6 +344,18 @@ function ModelDetails({
       <div className="px-2 pb-2">
         <div className="text-[12.5px] font-medium text-[var(--ink)]">{model.label}</div>
         <div className="mt-0.5 text-[10.5px] leading-relaxed text-[var(--ink-faint)]">{model.hint}</div>
+        {model.vendorTrainingNotice && (
+          <div
+            className="mt-1.5 rounded-md px-2 py-1.5 text-[11.5px] font-semibold leading-snug"
+            style={{
+              background: "color-mix(in srgb, var(--md-sys-color-error) 12%, transparent)",
+              color: "var(--md-sys-color-error)",
+            }}
+            data-testid="vendor-training-notice"
+          >
+            {model.vendorTrainingNotice}
+          </div>
+        )}
         {badges.length > 0 && (
           <div className="mt-1.5 flex flex-wrap gap-1">
             {badges.map((b) => (

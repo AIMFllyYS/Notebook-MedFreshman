@@ -38,7 +38,7 @@ export function ImageSection() {
               当前默认生图模型
             </div>
             <div className="text-[11.5px] text-[var(--md-sys-color-primary)]">
-              {defaultImageModelId ?? "（降级使用硅基流动 Z-Image-Turbo）"}
+              {defaultImageModelId ?? "（降级使用内置生图模型）"}
             </div>
           </div>
           {defaultImageModelId && (

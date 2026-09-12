@@ -14,6 +14,7 @@ import {
 } from "./provider.ts";
 import { buildCustomModelRegistryId } from "./models.ts";
 import { UnsafeCustomBaseUrlError } from "./customBaseUrl.ts";
+import { EMPTY_CAPABILITY_ENDPOINTS } from "./capabilityEndpoints.ts";
 
 test("resolveProvider：custom 端点三要素齐全时用自定义", () => {
   const r = resolveProvider("custom", {
@@ -213,6 +214,52 @@ test("resolveImageProvider：用户显式选中的生图模型优先于默认生
 
   assert.equal(provider.registryId, "Tongyi-MAI/Z-Image-Turbo");
   assert.equal(provider.imageApiStyle, "siliconflow");
+});
+
+test("resolveImageProvider：空能力端点与未传时行为一致", () => {
+  const a = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo");
+  const b = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo", [], null, EMPTY_CAPABILITY_ENDPOINTS);
+  assert.equal(a.baseUrl, b.baseUrl);
+  assert.equal(a.apiKey, b.apiKey);
+  assert.equal(a.isCustom, b.isCustom);
+  assert.equal(a.apiModelId, b.apiModelId);
+  assert.equal(a.imageApiStyle, b.imageApiStyle);
+});
+
+test("resolveImageProvider：用户生图 baseUrl/key 覆盖平台凭证", () => {
+  const provider = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo", [], null, {
+    ...EMPTY_CAPABILITY_ENDPOINTS,
+    imageBaseUrl: "https://mine.example/v1",
+    imageApiKey: "user-image-key",
+    imageModelId: "my-image",
+    imageApiStyle: "openai",
+  });
+  assert.equal(provider.isCustom, true);
+  assert.equal(provider.apiKey, "user-image-key");
+  assert.equal(provider.baseUrl, "https://mine.example/v1");
+  assert.equal(provider.apiModelId, "my-image");
+  assert.equal(provider.imageApiStyle, "openai");
+});
+
+test("resolveImageProvider：只填 baseUrl 不填 key 时忽略用户 URL", () => {
+  const platform = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo");
+  const withUrlOnly = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo", [], null, {
+    ...EMPTY_CAPABILITY_ENDPOINTS,
+    imageBaseUrl: "http://127.0.0.1/v1",
+  });
+  assert.equal(withUrlOnly.baseUrl, platform.baseUrl);
+  assert.equal(withUrlOnly.isCustom, false);
+});
+
+test("resolveImageProvider：用户生图私网 baseUrl 被拒绝", () => {
+  assert.throws(
+    () => resolveImageProvider("Tongyi-MAI/Z-Image-Turbo", [], null, {
+      ...EMPTY_CAPABILITY_ENDPOINTS,
+      imageBaseUrl: "http://127.0.0.1/v1",
+      imageApiKey: "user-image-key",
+    }),
+    (err: unknown) => err instanceof UnsafeCustomBaseUrlError && err.reason === "private",
+  );
 });
 
 test("resolveImageProvider：用户显式选中的 custom 生图模型优先于默认生图模型", () => {

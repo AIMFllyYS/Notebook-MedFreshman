@@ -1,4 +1,9 @@
 import type { CustomApiGroup } from "@/lib/ai/models";
+import {
+  EMPTY_CAPABILITY_ENDPOINTS,
+  normalizeCapabilityEndpoints,
+  type CapabilityEndpoints,
+} from "@/lib/ai/capabilityEndpoints";
 import type { ChatContext } from "@/lib/types/chat";
 import type { Skill } from "@/lib/types/skill";
 import type { ContextBudget } from "./estimateContextBudget";
@@ -12,6 +17,7 @@ export interface ChatRequestBodySettings {
   defaultImageModelId: string | null;
   imageModeTextModel: string;
   imageModeTextModelFallback: string;
+  capabilityEndpoints?: CapabilityEndpoints;
   disabledTools: string[];
   globalContext: string;
 }
@@ -24,6 +30,7 @@ export interface ChatRequestBody {
   defaultImageModelId: string | null;
   imageModeTextModel: string;
   imageModeTextModelFallback: string;
+  capabilityEndpoints: CapabilityEndpoints;
   disabledTools: string[];
   subjectId: string;
   categoryId: string;
@@ -60,6 +67,7 @@ export function buildChatRequestBody(
     defaultImageModelId: settings.defaultImageModelId,
     imageModeTextModel: settings.imageModeTextModel,
     imageModeTextModelFallback: settings.imageModeTextModelFallback,
+    capabilityEndpoints: normalizeCapabilityEndpoints(settings.capabilityEndpoints ?? EMPTY_CAPABILITY_ENDPOINTS),
     disabledTools: settings.disabledTools,
     subjectId: ctx.subjectId,
     categoryId: ctx.categoryId,

@@ -18,13 +18,19 @@ import {
 } from "@/lib/ai/models";
 import { DEFAULT_CHAT_TIMEOUT_MS } from "@/lib/ai/upstream";
 import { assertSafeCustomBaseUrl } from "@/lib/ai/customBaseUrl";
+import {
+  overlayOptional,
+  resolveCapabilityEndpoint,
+  type CapabilityEndpoints,
+  type ImageApiStyle as CapabilityImageApiStyle,
+} from "@/lib/ai/capabilityEndpoints";
 
 const BASE = process.env.AI_BASE_URL || "";
 const KEY = process.env.AI_API_KEY || "";
 const REASONING_FIELD = process.env.AI_REASONING_FIELD || "reasoning_content";
 
 export type { ThinkingRequestStyle };
-export type ImageApiStyle = "auto" | "openai" | "siliconflow";
+export type ImageApiStyle = CapabilityImageApiStyle;
 
 /** OpenAI 兼容网关：保证 base 以 /v1 结尾，避免拼出 /chat/completions 落到根路径。 */
 export function normalizeOpenAIBaseUrl(url: string): string {
@@ -121,6 +127,36 @@ function inferProtocolFromLegacy(style: unknown): CustomApiProtocol {
 
 function normalizeImageApiStyle(value: unknown): ImageApiStyle {
   return value === "openai" || value === "siliconflow" || value === "auto" ? value : "auto";
+}
+
+function applyUserImageEndpoint(
+  platform: ResolvedImageProvider,
+  capability?: CapabilityEndpoints | null,
+): ResolvedImageProvider {
+  if (!capability) return platform;
+  const resolved = resolveCapabilityEndpoint({
+    userBaseUrl: capability.imageBaseUrl,
+    userApiKey: capability.imageApiKey,
+    platformBaseUrl: platform.baseUrl,
+    platformApiKey: platform.apiKey,
+  });
+  let baseUrl = resolved.baseUrl;
+  if (resolved.customBaseUrl) {
+    baseUrl = normalizeOpenAIBaseUrl(assertSafeCustomBaseUrl(baseUrl));
+  }
+  const apiModelId = overlayOptional(capability.imageModelId, platform.apiModelId);
+  const imageApiStyle = capability.imageApiStyle !== "auto"
+    ? capability.imageApiStyle
+    : platform.imageApiStyle;
+  return {
+    ...platform,
+    baseUrl,
+    apiKey: resolved.apiKey,
+    apiModelId,
+    configured: !!(baseUrl && resolved.apiKey && !baseUrl.includes("your-endpoint")),
+    isCustom: platform.isCustom || !resolved.usedPlatformCredentials,
+    imageApiStyle,
+  };
 }
 
 // 部分中转网关（尤其把 Claude extended thinking 转成 OpenAI 格式的代理）不会把 reasoning
@@ -375,6 +411,7 @@ export function resolveImageProvider(
   modelId: string,
   customGroups?: CustomApiGroup[] | null,
   defaultImageModelId?: string | null,
+  capability?: CapabilityEndpoints | null,
 ): ResolvedImageProvider {
   const selectedCustom = modelId.startsWith(CUSTOM_PREFIX) && customGroups?.length
     ? findCustomModelGroup(customGroups, modelId)
@@ -401,11 +438,11 @@ export function resolveImageProvider(
     }
   }
 
-  // 3. 内置生图模型 → 使用硅基流动凭证
+  // 3. 内置生图模型 → 使用硅基流动凭证（设置里自配的生图端点可覆盖）
   const info = getModelInfo(effectiveModelId);
   if (info && info.type === "image") {
     const cred = credentialsFor(info.endpoints[0]?.provider ?? "siliconflow");
-    return {
+    return applyUserImageEndpoint({
       baseUrl: cred.baseUrl,
       apiKey: cred.apiKey,
       apiModelId: info.endpoints[0]?.apiModelId ?? effectiveModelId,
@@ -413,20 +450,20 @@ export function resolveImageProvider(
       configured: cred.configured,
       isCustom: false,
       imageApiStyle: "siliconflow",
-    };
+    }, capability);
   }
 
   // 4. 回退：使用硅基流动默认凭证 + Z-Image-Turbo
   const cred = credentialsFor("siliconflow");
-  return {
+  return applyUserImageEndpoint({
     baseUrl: cred.baseUrl,
     apiKey: cred.apiKey,
-    apiModelId: "Tongyi-MAI/Z-Image-Turbo",
-    registryId: "Tongyi-MAI/Z-Image-Turbo",
+    apiModelId: overlayOptional(capability?.imageModelId, "Tongyi-MAI/Z-Image-Turbo"),
+    registryId: overlayOptional(capability?.imageModelId, "Tongyi-MAI/Z-Image-Turbo"),
     configured: cred.configured,
     isCustom: false,
     imageApiStyle: "siliconflow",
-  };
+  }, capability);
 }
 
 /** 深度思考预算（token），按用户选择的力度映射。 */

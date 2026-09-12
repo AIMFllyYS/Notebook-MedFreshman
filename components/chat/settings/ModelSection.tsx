@@ -73,6 +73,18 @@ export function BuiltinModelsSection() {
                         {m.group} · {m.contextK}K{" "}
                         {m.pricing && `· ¥${m.pricing.input}/${m.pricing.output}`}
                       </div>
+                      {m.vendorTrainingNotice && (
+                        <div
+                          className="mt-1 rounded px-1.5 py-1 text-[11px] font-medium leading-snug"
+                          style={{
+                            background: "color-mix(in srgb, var(--md-sys-color-error) 12%, transparent)",
+                            color: "var(--md-sys-color-error)",
+                          }}
+                          data-testid="vendor-training-notice"
+                        >
+                          {m.vendorTrainingNotice}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

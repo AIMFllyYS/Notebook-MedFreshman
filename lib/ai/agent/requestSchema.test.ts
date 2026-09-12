@@ -14,3 +14,15 @@ test('request schema defaults absent/invalid academic year and preserves valid v
   assert.equal(parseChatRequest({ academicYear: 'invalid' }).academicYear, DEFAULT_ACADEMIC_YEAR);
   assert.equal(parseChatRequest({ academicYear: 'freshman-2' }).academicYear, 'freshman-2');
 });
+
+test('request schema：能力端点空缺=未配，有值则 trim', () => {
+  const empty = parseChatRequest({ messages: [] });
+  assert.equal(empty.capabilityEndpoints.webSearchApiKey, '');
+  assert.equal(empty.capabilityEndpoints.imageApiStyle, 'auto');
+  const filled = parseChatRequest({
+    messages: [],
+    capabilityEndpoints: { webSearchApiKey: '  zhipu-user  ', imageApiStyle: 'openai' },
+  });
+  assert.equal(filled.capabilityEndpoints.webSearchApiKey, 'zhipu-user');
+  assert.equal(filled.capabilityEndpoints.imageApiStyle, 'openai');
+});

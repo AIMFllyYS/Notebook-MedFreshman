@@ -8,12 +8,14 @@ import { AsyncLocalStorage } from "node:async_hooks";
 import { extractAccessToken, verifySupabaseAccessToken, type VerifyAccessToken } from "@/lib/auth/aiGate";
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
 import { getModelInfo, getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
+import type { UsagePool } from "@/lib/billing/usagePool";
 import type { UsageSummary } from "@/lib/types/chat";
+
+export type { UsagePool };
 
 const CHAT_USAGE_ROUTE = "/api/chat";
 const USAGE_WAIT_MS = 3_000;
 
-type UsagePool = "platform" | "byok";
 export type UsageKind = "llm" | "image" | "embedding" | "rerank" | "web-search" | "image-search";
 
 interface MappedUsage {

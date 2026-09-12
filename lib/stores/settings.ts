@@ -7,6 +7,11 @@ import {
   type CustomApiGroup,
   type ThinkingEffort,
 } from "@/lib/ai/models";
+import {
+  EMPTY_CAPABILITY_ENDPOINTS,
+  normalizeCapabilityEndpoints,
+  type CapabilityEndpoints,
+} from "@/lib/ai/capabilityEndpoints";
 
 export type { ThinkingEffort };
 export type ArtifactFullscreenTarget = "notes" | "viewport";
@@ -33,6 +38,12 @@ export interface SettingsState {
   imageModeTextModel: string;
   /** 生图模式文本模型的容灾降级模型。 */
   imageModeTextModelFallback: string;
+
+  /**
+   * 能力端点（生图 / 向量 / 重排 / 联网搜索 / 搜图）。
+   * 字段全可选；空字符串 = 用平台默认。
+   */
+  capabilityEndpoints: CapabilityEndpoints;
 
   // ── 旧版字段（@deprecated，仅用于向后兼容读取/迁移）──
   /** @deprecated 已迁移到 customApiGroups[0]。 */
@@ -87,6 +98,7 @@ export interface SettingsState {
   setDefaultImageModel: (modelId: string | null) => void;
   setImageModeTextModel: (modelId: string) => void;
   setImageModeTextModelFallback: (modelId: string) => void;
+  setCapabilityEndpoints: (patch: Partial<CapabilityEndpoints>) => void;
 
   // 旧版 Actions（@deprecated，操作 customApiGroups[0]）
   setCustomProvider: (p: { baseUrl?: string; apiKey?: string }) => void;
@@ -113,6 +125,7 @@ type Persisted = Pick<
   | "defaultImageModelId"
   | "imageModeTextModel"
   | "imageModeTextModelFallback"
+  | "capabilityEndpoints"
   | "recordModelId"
   | "floatingChatModelId"
   | "customBaseUrl"
@@ -135,6 +148,7 @@ const DEFAULTS: Persisted = {
   defaultImageModelId: null,
   imageModeTextModel: "mimo-v2.5",
   imageModeTextModelFallback: "mimo-v2.5",
+  capabilityEndpoints: EMPTY_CAPABILITY_ENDPOINTS,
   // 摘录默认用中转站 DeepSeek V4 Flash：性价比高、成卡质量稳定。
   recordModelId: "deepseek/deepseek-v4-flash",
   // 划词助手默认：Qwen3.8 27B（视觉 + 混合思考）。
@@ -186,6 +200,7 @@ function load(): Persisted {
       if (!parsed.defaultImageModelId) parsed.defaultImageModelId = null;
       if (!parsed.imageModeTextModel) parsed.imageModeTextModel = "mimo-v2.5";
       if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "mimo-v2.5";
+      parsed.capabilityEndpoints = normalizeCapabilityEndpoints(parsed.capabilityEndpoints);
       if (typeof parsed.usdExchangeRate !== "number" || !Number.isFinite(parsed.usdExchangeRate) || parsed.usdExchangeRate <= 0) {
         parsed.usdExchangeRate = 7.00;
       }
@@ -235,6 +250,7 @@ function persist(get: () => SettingsState) {
     defaultImageModelId: s.defaultImageModelId,
     imageModeTextModel: s.imageModeTextModel,
     imageModeTextModelFallback: s.imageModeTextModelFallback,
+    capabilityEndpoints: normalizeCapabilityEndpoints(s.capabilityEndpoints),
     recordModelId: s.recordModelId,
     floatingChatModelId: s.floatingChatModelId,
     customBaseUrl: firstGroup?.baseUrl ?? "",
@@ -326,6 +342,12 @@ export const useSettings = create<SettingsState>((set, get) => ({
   },
   setImageModeTextModelFallback: (modelId) => {
     set({ imageModeTextModelFallback: modelId });
+    persist(get);
+  },
+  setCapabilityEndpoints: (patch) => {
+    set((s) => ({
+      capabilityEndpoints: normalizeCapabilityEndpoints({ ...s.capabilityEndpoints, ...patch }),
+    }));
     persist(get);
   },
 

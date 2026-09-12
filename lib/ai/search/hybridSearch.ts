@@ -4,6 +4,11 @@ import { vectorSearch, isVectorIndexLoaded, getVectorIndexModel } from "./vector
 import type { ScoredChunk } from "./vectorStoreTypes";
 import { getQueryEmbeddingClient } from "@/lib/ai/embedding";
 import { settleUsage } from "@/lib/billing/usageLedger";
+import { resolveUsagePool } from "@/lib/billing/usagePool";
+import { assertSafeCustomBaseUrl } from "@/lib/ai/customBaseUrl";
+import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
+import { overlayOptional, resolveCapabilityEndpoint } from "@/lib/ai/capabilityEndpoints";
+import { normalizeOpenAIBaseUrl } from "@/lib/ai/provider";
 import type { MultiSearchHit } from "@/lib/content/loader";
 import { normalizeSearchQuery } from "./queryNormalize";
 import { shortTitleForIndex } from "@/lib/ai/indexing/bm25Index";
@@ -101,6 +106,7 @@ async function settleRerankUsage(
   model: string,
   documentCount: number,
   provider: "siliconflow" | "zhipu",
+  usedPlatformCredentials: boolean,
 ): Promise<void> {
   const promptTokens = json.usage?.prompt_tokens ?? json.usage?.total_tokens ?? 0;
   await settleUsage({
@@ -109,7 +115,7 @@ async function settleRerankUsage(
     units: Math.max(documentCount, 1),
     selectedModelId: model,
     actualModelId: model,
-    pool: "platform",
+    pool: resolveUsagePool(usedPlatformCredentials),
     meta: { source: "rerank", provider, candidates: documentCount },
   });
 }
@@ -119,9 +125,18 @@ async function rerank(
   documents: string[],
   topN: number,
 ): Promise<Array<{ index: number; relevance_score: number }>> {
-  const baseUrl = process.env.AI_BASE_URL || "https://api.siliconflow.cn/v1";
-  const apiKey = process.env.AI_API_KEY || "";
-  const model = process.env.AI_RERANK_MODEL || "BAAI/bge-reranker-v2-m3";
+  const ep = getCapabilityEndpoints();
+  const resolved = resolveCapabilityEndpoint({
+    userBaseUrl: ep.rerankBaseUrl,
+    userApiKey: ep.rerankApiKey,
+    platformBaseUrl: process.env.AI_BASE_URL || "https://api.siliconflow.cn/v1",
+    platformApiKey: process.env.AI_API_KEY || "",
+  });
+  const baseUrl = resolved.customBaseUrl
+    ? normalizeOpenAIBaseUrl(assertSafeCustomBaseUrl(resolved.baseUrl))
+    : resolved.baseUrl;
+  const apiKey = resolved.apiKey;
+  const model = overlayOptional(ep.rerankModelId, process.env.AI_RERANK_MODEL || "BAAI/bge-reranker-v2-m3");
 
   try {
     const resp = await fetch(`${baseUrl}/rerank`, {
@@ -144,9 +159,10 @@ async function rerank(
     }
 
     const json = await resp.json();
-    await settleRerankUsage(json, model, documents.length, "siliconflow");
+    await settleRerankUsage(json, model, documents.length, "siliconflow", resolved.usedPlatformCredentials);
     return json.results ?? [];
   } catch (err) {
+    if (!resolved.usedPlatformCredentials) throw err;
     const zhipuBaseUrl = process.env.ZHIPU_BASE_URL || "https://open.bigmodel.cn/api/paas/v4";
     const zhipuKey = process.env.ZHIPU_API_KEY || "";
     const zhipuModel = process.env.ZHIPU_RERANK_MODEL || "rerank";
@@ -171,7 +187,7 @@ async function rerank(
       }
 
       const json = await resp.json();
-      await settleRerankUsage(json, zhipuModel, documents.length, "zhipu");
+      await settleRerankUsage(json, zhipuModel, documents.length, "zhipu", true);
       return json.results ?? [];
     }
     throw err;

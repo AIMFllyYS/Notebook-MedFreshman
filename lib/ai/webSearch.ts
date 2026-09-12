@@ -1,12 +1,17 @@
 // 联网搜索（智谱 Web Search API）+ 内存缓存（命中复用，降本提速）。
-// 在 https://open.bigmodel.cn 申请 key 后写入 .env 的 ZHIPU_API_KEY。
+// 默认用站点 ZHIPU_API_KEY；用户在设置里自配后用用户的，不计入平台额度。
 
 import { settleUsage } from "@/lib/billing/usageLedger";
+import { resolveUsagePool } from "@/lib/billing/usagePool";
+import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
+import { resolveCapabilitySecret } from "@/lib/ai/capabilityEndpoints";
 
 const ZHIPU_SEARCH_URL = "https://open.bigmodel.cn/api/paas/v4/web_search";
 
-function zhipuKey(): string {
-  return process.env.ZHIPU_API_KEY || "";
+function resolveSearchKey(override?: string): { key: string; usedPlatformCredentials: boolean } {
+  const ep = getCapabilityEndpoints();
+  const resolved = resolveCapabilitySecret(override ?? ep.webSearchApiKey, process.env.ZHIPU_API_KEY || "");
+  return { key: resolved.value, usedPlatformCredentials: resolved.usedPlatformCredentials };
 }
 
 export interface WebSearchSource {
@@ -50,12 +55,15 @@ interface ZhipuSearchOptions {
   searchEngine?: string;
   domainFilter?: string;
   contentSize?: string;
+  /** 显式覆盖用户/平台 key；缺省读能力端点 ALS 与 ZHIPU_API_KEY。 */
+  apiKey?: string;
 }
 
 async function fetchRaw(
   query: string,
   count: number,
   opts: ZhipuSearchOptions = {},
+  apiKey: string,
 ): Promise<WebSearchSource[]> {
   const body: Record<string, unknown> = {
     search_engine: opts.searchEngine ?? "search_pro",
@@ -70,7 +78,7 @@ async function fetchRaw(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${zhipuKey()}`,
+      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify(body),
   });
@@ -90,23 +98,24 @@ export async function searchCached(
   query: string,
   count = 5,
   opts: ZhipuSearchOptions = {},
-): Promise<{ results: WebSearchSource[]; cacheHit: boolean }> {
+): Promise<{ results: WebSearchSource[]; cacheHit: boolean; usedPlatformCredentials: boolean }> {
   const q = query.trim();
-  if (!q || !zhipuKey()) return { results: [], cacheHit: false };
-  const key = `${q.toLowerCase()}|${count}|${opts.domainFilter ?? ""}`;
-  const cached = cacheGet(key);
-  if (cached) return { results: cached, cacheHit: true };
-  const results = await fetchRaw(q, count, opts);
-  cacheSet(key, results);
+  const { key, usedPlatformCredentials } = resolveSearchKey(opts.apiKey);
+  if (!q || !key) return { results: [], cacheHit: false, usedPlatformCredentials };
+  const cacheKey = `${q.toLowerCase()}|${count}|${opts.domainFilter ?? ""}|${usedPlatformCredentials ? "p" : "u"}`;
+  const cached = cacheGet(cacheKey);
+  if (cached) return { results: cached, cacheHit: true, usedPlatformCredentials };
+  const results = await fetchRaw(q, count, opts, key);
+  cacheSet(cacheKey, results);
   await settleUsage({
     kind: "web-search",
     units: Math.max(results.length, 1),
     selectedModelId: opts.searchEngine ?? "search_pro",
     actualModelId: opts.searchEngine ?? "search_pro",
-    pool: "platform",
+    pool: resolveUsagePool(usedPlatformCredentials),
     meta: { source: "webSearch", resultCount: results.length },
   });
-  return { results, cacheHit: false };
+  return { results, cacheHit: false, usedPlatformCredentials };
 }
 
 export interface WebSearchDetailed {
@@ -118,9 +127,10 @@ export interface WebSearchDetailed {
 export async function runWebSearchDetailed(query: string, numResults = 5): Promise<WebSearchDetailed> {
   const q = query.trim();
   if (!q) return { content: "搜索关键词为空。", sources: [], cacheHit: false };
-  if (!zhipuKey()) {
+  const { key } = resolveSearchKey();
+  if (!key) {
     return {
-      content: "联网搜索未配置（请在 .env 设置 ZHIPU_API_KEY）。本次请基于已有知识回答，并明确说明未能联网。",
+      content: "联网搜索未配置（请在设置中填写智谱搜索凭证，或由站点配置 ZHIPU_API_KEY）。本次请基于已有知识回答，并明确说明未能联网。",
       sources: [],
       cacheHit: false,
     };

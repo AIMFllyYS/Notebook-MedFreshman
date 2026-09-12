@@ -7,6 +7,7 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStore";
 import { useLightbox } from "@/lib/stores/lightbox";
 import ManagedWindow from "@/components/window/ManagedWindow";
+import { formatImageGenError } from "@/lib/ai/imageGenError";
 
 /** 将归一化图片项转为可渲染的 src：优先 url，回退 b64_json data URL。 */
 function imageSrc(img: ImageGenImage): string {
@@ -45,6 +46,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
             count: cur.count,
             customApiGroups: settings.customApiGroups,
             defaultImageModelId: cur.modelId ? null : settings.defaultImageModelId,
+            capabilityEndpoints: settings.capabilityEndpoints,
           }),
         });
 
@@ -52,7 +54,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
           const errBody = await res.json().catch(() => null);
           updateSession(sid, {
             status: "error",
-            error: errBody?.error || `请求失败：${res.status}`,
+            error: formatImageGenError(res.status, errBody),
           });
           return;
         }

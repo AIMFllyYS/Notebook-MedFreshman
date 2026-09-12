@@ -18,6 +18,8 @@ import { computeContextBreakdown } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
 import { parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
 import { awaitUsage, resolveActualBillingModelId, resolveLedgerUserId, runWithLedgerContext, settleChatUsage } from "@/lib/billing/usageLedger";
+import { runWithCapabilityEndpoints } from "@/lib/ai/capabilityContext";
+import { capabilitySecretValues } from "@/lib/ai/capabilityEndpoints";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -73,8 +75,11 @@ export async function POST(req: NextRequest) {
     body.modelId ?? (body.model === "pro" ? ENV_MODEL_PRO : body.model === "flash" ? ENV_MODEL_FLASH : undefined);
   const customGroups = body.customApiGroups;
   const effectiveCustom = customGroups.length > 0 ? customGroups : body.customProvider;
-  const secrets = [body.customProvider?.apiKey, ...customGroups.map((group) => group.apiKey)]
-    .filter((value): value is string => !!value);
+  const secrets = [
+    body.customProvider?.apiKey,
+    ...customGroups.map((group) => group.apiKey),
+    ...capabilitySecretValues(body.capabilityEndpoints),
+  ].filter((value): value is string => !!value);
   const formatError = (error: unknown) => toChatErrorMessage(error, secrets);
   const generationAbort = new AbortController();
   const generationSignal = AbortSignal.any([req.signal, generationAbort.signal]);
@@ -109,7 +114,7 @@ export async function POST(req: NextRequest) {
 
   const stream = createUIMessageStream<ChatMessage>({
     onError: formatError,
-    execute: async ({ writer }) => runWithLedgerContext({
+    execute: async ({ writer }) => runWithCapabilityEndpoints(body.capabilityEndpoints, () => runWithLedgerContext({
       userId,
       sessionId: body.id ?? null,
       requestId,
@@ -249,7 +254,7 @@ export async function POST(req: NextRequest) {
         },
       });
       writer.write({ type: "finish" });
-    }),
+    })),
   });
 
   return withSseHeartbeat(

@@ -92,7 +92,14 @@ export interface ModelInfo {
     /** 最大生成数量。 */
     maxCount?: number;
   };
+  /**
+   * 厂商训练声明。有值时必须在模型菜单/设置里明示，不能只藏在 hint。
+   * Muse Spark contributor SKU：对话可能用于厂商训练。
+   */
+  vendorTrainingNotice?: string;
 }
+
+export const MUSE_VENDOR_TRAINING_NOTICE = "对话可能用于厂商训练";
 
 export const CUSTOM_MODEL_ID = "custom";
 
@@ -300,6 +307,7 @@ export const MODELS: ModelInfo[] = [
     vision: true,
     contextK: 256,
     hint: "视觉 · high→xhigh",
+    vendorTrainingNotice: MUSE_VENDOR_TRAINING_NOTICE,
     endpoints: [ep(RELAY, "meta/muse-spark-1.3-contributor")],
     pricing: { input: 0.7, cachedInput: 0.014, output: 1.4 },
     cacheTtlSec: 1800,

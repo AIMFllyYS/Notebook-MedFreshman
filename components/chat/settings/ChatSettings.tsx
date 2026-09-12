@@ -5,6 +5,7 @@ import { AppearanceSection } from "./AppearanceSection";
 import { BuiltinModelsSection, DefaultsSection, RecordAssistantSection } from "./ModelSection";
 import { ApiGroupsSection } from "./ApiGroupsSection";
 import { ImageSection } from "./ImageSection";
+import { CapabilityEndpointsSection } from "./CapabilityEndpointsSection";
 import { ToolsSection } from "./ToolsSection";
 import { ContextSection } from "./ContextSection";
 import { BillingSection, ExportSection } from "./DataSection";
@@ -34,6 +35,7 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
         <ApiGroupsSection />
         <RecordAssistantSection />
         <ImageSection />
+        <CapabilityEndpointsSection />
         <ToolsSection />
         <DefaultsSection />
         <ContextSection />

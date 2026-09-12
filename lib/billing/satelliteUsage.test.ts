@@ -5,7 +5,7 @@ import { buildCustomModelRegistryId, type CustomApiGroup } from "@/lib/ai/models
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
 import { streamDocument } from "@/lib/ai/document";
-import { runWebSearchDetailed } from "@/lib/ai/webSearch";
+import { runWebSearchDetailed, searchCached } from "@/lib/ai/webSearch";
 import { searchImages } from "@/lib/ai/imageSearch";
 import { SiliconFlowEmbedding } from "@/lib/ai/embedding";
 import { runWithLedgerContext, type UsageLedgerRow } from "./usageLedger.ts";
@@ -201,16 +201,19 @@ test("工具侧车：联网搜索 / 搜图 / 嵌入入账，缓存命中不建�
   assert.equal(search.rows.length, 1);
   assert.equal(search.rows[0].kind, "web-search");
   assert.equal(search.rows[0].meta.source, "webSearch");
+  assert.equal(search.rows[0].pool, "platform");
 
   const cached = await captureRows(() => runWebSearchDetailed(query, 3));
   assert.equal(cached.value.cacheHit, true);
   assert.equal(cached.rows.length, 0);
 
   const images = await captureRows(() => searchImages("线粒体示意图", 2));
-  assert.ok(images.value.length > 0);
+  assert.ok(images.value.configured);
+  assert.ok(images.value.results.length > 0);
   assert.equal(images.rows.length, 1);
   assert.equal(images.rows[0].kind, "image-search");
-  assert.equal(images.rows[0].image_count, images.value.length);
+  assert.equal(images.rows[0].image_count, images.value.results.length);
+  assert.equal(images.rows[0].pool, "platform");
 
   const embed = await captureRows(() => new SiliconFlowEmbedding().embed("核糖体"));
   assert.deepEqual(embed.value, [0.1, 0.2]);
@@ -218,4 +221,17 @@ test("工具侧车：联网搜索 / 搜图 / 嵌入入账，缓存命中不建�
   assert.equal(embed.rows[0].kind, "embedding");
   assert.equal(embed.rows[0].prompt_tokens, 9);
   assert.equal(embed.rows[0].actual_model_id, "BAAI/bge-m3");
+
+  const byokSearch = await captureRows(() =>
+    searchCached(`billing-sidecar-byok-${Date.now()}`, 3, { apiKey: "user-zhipu-key" }),
+  );
+  assert.equal(byokSearch.value.usedPlatformCredentials, false);
+  assert.equal(byokSearch.rows[0]?.pool, "byok");
+  assert.equal(byokSearch.rows[0]?.kind, "web-search");
+
+  const byokImages = await captureRows(() => searchImages("线粒体示意图", 2, { apiKey: "user-unsplash-key" }));
+  assert.equal(byokImages.value.configured, true);
+  assert.equal(byokImages.value.usedPlatformCredentials, false);
+  assert.equal(byokImages.rows[0]?.pool, "byok");
+  assert.equal(byokImages.rows[0]?.kind, "image-search");
 });
