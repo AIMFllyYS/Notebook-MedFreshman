@@ -7,6 +7,15 @@
 //  - 正文里内嵌 <think> 的模型 → extractReasoningMiddleware（服务端统一抽成 reasoning）
 //  - 非标准思考字段（thinking / reasoning_details / 结构化对象）→ createReasoningNormalizingFetch
 //
+// Anthropic 原生路径的 reasoning（#94）：
+//  SDK 返回结构化 `reasoning` part（thinking blocks），不是正文里的 <think> 标签，
+//  也不走 OpenAI 兼容的 reasoning_content / 别名字段。因此 anthropic 分支
+//  故意不套 extractReasoningMiddleware，也不包 createReasoningNormalizingFetch——
+//  套上只会空转或误伤。思考参数走 providerOptions.anthropic.thinking（见
+//  buildThinkingSettings 的 anthropic-thinking）。OpenAI 兼容中转透传 Anthropic
+//  时仍走 openai-compatible + 归一化 fetch。
+//
+// 思考参数装配只走 buildThinkingSettings → thinkingSettings() / prepareCall。
 // 仅服务端导入。
 
 import type { LanguageModelV4, LanguageModelV4CallOptions, SharedV4ProviderOptions } from "@ai-sdk/provider";

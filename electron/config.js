@@ -15,7 +15,6 @@ module.exports = {
   AI_MODEL_PRO: "Qwen/Qwen3.8-27B",
   AI_MODEL_FLASH: "z-ai/glm-5.3-flash",
   AI_REASONING_FIELD: "reasoning_content",
-  AI_ENABLE_THINKING: "1",
   MIMO_BASE_URL: "https://token-plan-cn.xiaomimimo.com/v1",
   AI_EMBEDDING_MODEL: "BAAI/bge-m3",
   AI_RERANK_MODEL: "BAAI/bge-reranker-v2-m3",

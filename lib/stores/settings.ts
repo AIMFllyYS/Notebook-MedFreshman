@@ -12,6 +12,17 @@ import {
   normalizeCapabilityEndpoints,
   type CapabilityEndpoints,
 } from "@/lib/ai/capabilityEndpoints";
+import {
+  API_SECRETS_LS_KEY,
+  applyGroupApiKeys,
+  decodeDesktopSecrets,
+  encodeWebSecrets,
+  extractPlainGroupKeys,
+  getDesktopSecretsBridge,
+  splitSettingsSecrets,
+  stripGroupApiKeys,
+  type StoredApiSecrets,
+} from "@/lib/stores/apiSecrets";
 
 export type { ThinkingEffort };
 export type ArtifactFullscreenTarget = "notes" | "viewport";
@@ -231,6 +242,18 @@ function load(): Persisted {
         normalizeRegistryId(parsed.floatingChatModelId || DEFAULTS.floatingChatModelId),
         parsed.customApiGroups,
       );
+
+      const secretsRaw = localStorage.getItem(API_SECRETS_LS_KEY);
+      const split = splitSettingsSecrets(parsed.customApiGroups, secretsRaw, parsed.customApiKey);
+      parsed.customApiGroups = split.groupsForMemory;
+      parsed.customApiKey = split.groupsForMemory[0]?.apiKey ?? "";
+      if (split.rewriteSettings) {
+        const disk = { ...parsed, customApiGroups: stripGroupApiKeys(parsed.customApiGroups), customApiKey: "" };
+        localStorage.setItem(LS_KEY, JSON.stringify(disk));
+      }
+      if (split.rewriteSecrets) {
+        localStorage.setItem(API_SECRETS_LS_KEY, encodeWebSecrets(split.groupKeys));
+      }
       return parsed;
     }
   } catch {
@@ -239,14 +262,27 @@ function load(): Persisted {
   return DEFAULTS;
 }
 
+function persistSecrets(groupKeys: Record<string, string>) {
+  try {
+    localStorage.setItem(API_SECRETS_LS_KEY, encodeWebSecrets(groupKeys));
+  } catch {
+    /* ignore */
+  }
+  const bridge = getDesktopSecretsBridge();
+  if (!bridge) return;
+  const payload: StoredApiSecrets = { v: 1, groups: groupKeys };
+  void bridge.save(payload).catch(() => {});
+}
+
 function persist(get: () => SettingsState) {
   if (typeof window === "undefined") return;
   const s = get();
-  // 旧版字段从 customApiGroups[0] 派生，保持向后兼容
+  // 旧版字段从 customApiGroups[0] 派生，保持向后兼容；密钥不写进 settings JSON。
   const firstGroup = s.customApiGroups[0];
+  const groupKeys = extractPlainGroupKeys(s.customApiGroups);
   const data: Persisted = {
     selectedModelId: s.selectedModelId,
-    customApiGroups: s.customApiGroups,
+    customApiGroups: stripGroupApiKeys(s.customApiGroups),
     defaultImageModelId: s.defaultImageModelId,
     imageModeTextModel: s.imageModeTextModel,
     imageModeTextModelFallback: s.imageModeTextModelFallback,
@@ -254,7 +290,7 @@ function persist(get: () => SettingsState) {
     recordModelId: s.recordModelId,
     floatingChatModelId: s.floatingChatModelId,
     customBaseUrl: firstGroup?.baseUrl ?? "",
-    customApiKey: firstGroup?.apiKey ?? "",
+    customApiKey: "",
     customModelId: "",
     customModels: firstGroup?.models ?? [],
     fontScale: s.fontScale,
@@ -271,10 +307,41 @@ function persist(get: () => SettingsState) {
   } catch {
     /* ignore */
   }
+  persistSecrets(groupKeys);
 }
 
-export const useSettings = create<SettingsState>((set, get) => ({
-  ...load(),
+function hydrateDesktopSecrets(
+  set: (partial: Partial<SettingsState> | ((s: SettingsState) => Partial<SettingsState>)) => void,
+  get: () => SettingsState,
+) {
+  const bridge = getDesktopSecretsBridge();
+  if (!bridge) return;
+  void (async () => {
+    try {
+      const stored = await bridge.load();
+      const desktopKeys = decodeDesktopSecrets(stored);
+      if (Object.keys(desktopKeys).length > 0) {
+        set((s) => {
+          const next = applyGroupApiKeys(s.customApiGroups, { ...extractPlainGroupKeys(s.customApiGroups), ...desktopKeys });
+          return { customApiGroups: next, customApiKey: next[0]?.apiKey ?? "" };
+        });
+        return;
+      }
+      const current = extractPlainGroupKeys(get().customApiGroups);
+      if (Object.keys(current).length > 0) await bridge.save({ v: 1, groups: current });
+    } catch {
+      /* ignore */
+    }
+  })();
+}
+
+export const useSettings = create<SettingsState>((set, get) => {
+  const loaded = load();
+  if (typeof window !== "undefined") {
+    queueMicrotask(() => hydrateDesktopSecrets(set, get));
+  }
+  return {
+    ...loaded,
 
   setSelectedModelId: (id) => {
     set({ selectedModelId: id });
@@ -450,4 +517,5 @@ export const useSettings = create<SettingsState>((set, get) => ({
     set({ floatingChatModelId: id });
     persist(get);
   },
-}));
+  };
+});

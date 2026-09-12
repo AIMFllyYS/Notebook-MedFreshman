@@ -90,6 +90,7 @@ export const customApiGroupSchema: z.ZodType<CustomApiGroup, unknown> = z.object
   baseUrl: z.string(),
   apiKey: z.string(),
   models: z.array(customModelSchema),
+  timeoutMs: z.number().finite().positive().max(600_000).optional(),
 });
 
 export const customProviderSchema = z.object({

@@ -137,7 +137,7 @@ test("record: OpenAI-compatible request, reasoning/content/result/done and cloze
   assert.deepEqual(data.at(-2)?.card, { mode: "cloze", cardType: "cloze", front: "力是 ____", back: "作用", blanks: ["作用", "力"] });
   assert.equal(data.at(-2)?.model, config().modelId);
   assert.equal(calls.length, 1);
-  assert.equal(calls[0].url, "https://custom.invalid/proxy/chat/completions");
+  assert.equal(calls[0].url, "https://custom.invalid/proxy/v1/chat/completions");
   assert.equal(new Headers(calls[0].init.headers).get("Authorization"), "Bearer custom-test-key");
   assert.equal(calls[0].body.reasoning_effort, "medium");
   assert.equal(calls[0].body.enable_thinking, undefined);

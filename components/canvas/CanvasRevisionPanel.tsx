@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSettings } from '@/lib/hooks/useSettings';
+import { selectCustomApiGroupsForRequest } from '@/lib/ai/models';
 import type { CanvasBlock } from '@/lib/canvas/types';
 
 interface CanvasRevisionPanelProps {
@@ -53,7 +54,10 @@ export function CanvasRevisionPanel({
           instruction: value,
           topic,
           modelId: settings.selectedModelId,
-          customApiGroups: settings.customApiGroups,
+          customApiGroups: selectCustomApiGroupsForRequest(
+            settings.customApiGroups,
+            settings.selectedModelId,
+          ),
         }),
       });
       const payload = await res.json().catch(() => ({}));

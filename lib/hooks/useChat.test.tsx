@@ -379,7 +379,13 @@ describe('useChat SDK transport regression', () => {
   });
 
   it('服务端 abort chunk 不呈现错误，旧 customProvider 配置仍发往 API', async () => {
-    useSettings.setState({ customApiGroups: [], customBaseUrl: 'https://legacy.example/v1', customApiKey: 'fake-legacy-key', customModelId: 'legacy-model' });
+    useSettings.setState({
+      selectedModelId: 'custom:legacy-model',
+      customApiGroups: [],
+      customBaseUrl: 'https://legacy.example/v1',
+      customApiKey: 'fake-legacy-key',
+      customModelId: 'legacy-model',
+    });
     mockResponses(() => completedResponse([{ type: 'abort' }]));
     const { result } = renderHook(() => useChat(context));
     act(() => result.current.sendMessage('兼容旧端点'));

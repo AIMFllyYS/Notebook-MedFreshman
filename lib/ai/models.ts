@@ -535,6 +535,8 @@ export interface CustomModelConfig {
     sizes?: string[];
     maxCount?: number;
   };
+  /** chat/completions 超时（毫秒）；缺省用分组 timeoutMs 或默认 45s。 */
+  timeoutMs?: number;
 }
 
 export type CustomApiProtocol = NonNullable<CustomModelConfig["apiProtocol"]>;
@@ -548,6 +550,8 @@ export interface CustomApiGroup {
   baseUrl: string;
   apiKey: string;
   models: CustomModelConfig[];
+  /** 该分组默认超时（毫秒）；模型级 timeoutMs 优先。 */
+  timeoutMs?: number;
 }
 
 export function getModelInfo(id: string): ModelInfo | undefined {
@@ -565,10 +569,44 @@ export function getFetchTimeoutMs(registryId: string): number {
   return info?.timeoutMs ?? 45_000;
 }
 
-/** 是否还有备用端点可尝试。 */
+/** 自定义分组（含 `custom:` / 旧 `custom`）不支持 failover：只有用户填的那一个端点。 */
+export function isCustomRegistryId(registryId: string | undefined): boolean {
+  return !!registryId && (registryId === CUSTOM_MODEL_ID || registryId.startsWith(CUSTOM_PREFIX));
+}
+
+/** 是否还有备用端点可尝试。自定义分组恒为 false（方案 b：不支持 failover）。 */
 export function hasNextEndpoint(registryId: string, currentIndex: number): boolean {
+  if (isCustomRegistryId(registryId)) return false;
   const info = getModelInfo(registryId);
   return !!info && currentIndex + 1 < info.endpoints.length;
+}
+
+/**
+ * 本次请求真正会用到的自定义分组（0 或 1 个，偶发两个：生图默认模型兜底）。
+ * 内置模型（含 custom-openai）不匹配任何分组，返回 []。
+ */
+export function selectCustomApiGroupsForRequest(
+  groups: CustomApiGroup[],
+  ...modelIds: Array<string | null | undefined>
+): CustomApiGroup[] {
+  if (!groups.length) return [];
+  const seen = new Set<string>();
+  const selected: CustomApiGroup[] = [];
+  for (const modelId of modelIds) {
+    if (!modelId) continue;
+    const found = findCustomModelGroup(groups, modelId);
+    if (!found || seen.has(found.group.id)) continue;
+    seen.add(found.group.id);
+    selected.push(found.group);
+  }
+  return selected;
+}
+
+/** 有模型信息时必须显式 vision:true 才接受图片；未知 id 不拦截。 */
+export function modelAcceptsImageInput(id: string, groups: CustomApiGroup[]): boolean {
+  const info = getModelInfoWithCustom(id, groups);
+  if (!info) return true;
+  return info.vision === true;
 }
 
 /** 展平所有分组的自定义模型为单一数组（向后兼容辅助）。 */
@@ -641,12 +679,13 @@ function customDefaultEffort(c: CustomModelConfig, levels: ThinkingEffort[] | un
 /** 将单个 CustomModelConfig 转换为 ModelInfo（内部辅助）。 */
 function customModelToInfo(
   c: CustomModelConfig,
-  group: Pick<CustomApiGroup, "id" | "name">,
+  group: Pick<CustomApiGroup, "id" | "name" | "timeoutMs">,
   options?: { scopedId?: boolean },
 ): ModelInfo {
   const isImage = c.type === "image";
   const thinking = c.thinking ?? false;
   const levels = customThinkingLevels(c);
+  const timeoutMs = c.timeoutMs ?? group.timeoutMs;
   return {
     id: options?.scopedId === false ? CUSTOM_PREFIX + c.id : buildCustomModelRegistryId(group.id, c.id),
     label: c.label || c.id,
@@ -661,7 +700,8 @@ function customModelToInfo(
     vision: c.vision,
     contextK: c.contextK ?? 128,
     hint: isImage ? `${c.id} · 生图模型` : c.id,
-    endpoints: [{ provider: SF, apiModelId: c.id }],
+    // 自定义分组没有内置 endpoints 链；凭证走分组 baseUrl/apiKey，不支持 failover。
+    endpoints: [],
     pricing: c.pricing
       ? {
           input: c.pricing.input,
@@ -671,6 +711,7 @@ function customModelToInfo(
         }
       : undefined,
     cacheTtlSec: c.cacheTtlSec ?? 3600,
+    timeoutMs: typeof timeoutMs === "number" && Number.isFinite(timeoutMs) && timeoutMs > 0 ? timeoutMs : undefined,
     type: c.type ?? "text",
     imageParams: c.imageParams,
   };

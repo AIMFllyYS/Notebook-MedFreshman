@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { AgentLoopIcon, AgentTerminalIcon, AgentFileIcon, AgentChevronIcon, AgentAlertIcon, AgentArrowUpRightIcon, AgentQuoteIcon } from '@/components/icons/AgentIcons';
 import { useArtifacts } from '@/lib/hooks/useArtifacts';
 import { useSettings } from '@/lib/hooks/useSettings';
-import { CUSTOM_PREFIX, findCustomModelGroup, getModelInfoWithCustom } from '@/lib/ai/models';
+import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
@@ -98,11 +98,6 @@ export default function ArtifactCard({
       setError(unsupportedReason || '当前生图模型不支持 HTML 交互组件生成，请切换文本模型后重试。');
       return;
     }
-    const isCustom = artifactModelId.startsWith(CUSTOM_PREFIX);
-    const customGroup = isCustom
-      ? findCustomModelGroup(settings.customApiGroups, artifactModelId)
-      : undefined;
-
     (async () => {
       try {
         const response = await fetch('/api/artifact', {
@@ -113,10 +108,7 @@ export default function ArtifactCard({
             title,
             prompt,
             modelId: artifactModelId,
-            customApiGroups: settings.customApiGroups,
-            customProvider: customGroup
-              ? { baseUrl: customGroup.group.baseUrl, apiKey: customGroup.group.apiKey, model: customGroup.model.id }
-              : undefined,
+            customApiGroups: selectCustomApiGroupsForRequest(settings.customApiGroups, artifactModelId),
           }),
         });
 

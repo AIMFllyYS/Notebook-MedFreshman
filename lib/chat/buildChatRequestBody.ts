@@ -1,4 +1,4 @@
-import type { CustomApiGroup } from "@/lib/ai/models";
+import { isCustomRegistryId, selectCustomApiGroupsForRequest, type CustomApiGroup } from "@/lib/ai/models";
 import {
   EMPTY_CAPABILITY_ENDPOINTS,
   normalizeCapabilityEndpoints,
@@ -59,13 +59,19 @@ export function buildChatRequestBody(
   academicYear: string,
   artifacts: ArtifactCatalogItem[] = [],
 ): ChatRequestBody {
+  const customApiGroups = selectCustomApiGroupsForRequest(
+    settings.customApiGroups,
+    resolved.effectiveModelId,
+  );
   const customProvider: ChatRequestBody["customProvider"] =
-    settings.customApiGroups.length === 0 && settings.customBaseUrl
+    customApiGroups.length === 0
+    && isCustomRegistryId(resolved.effectiveModelId)
+    && settings.customBaseUrl
       ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: settings.customModelId }
       : undefined;
   return {
     modelId: resolved.effectiveModelId,
-    customApiGroups: settings.customApiGroups,
+    customApiGroups,
     customProvider,
     defaultImageModelId: settings.defaultImageModelId,
     imageModeTextModel: settings.imageModeTextModel,

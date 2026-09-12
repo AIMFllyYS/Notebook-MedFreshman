@@ -17,6 +17,10 @@ import {
   getAllModelsFlat,
   buildCustomModelRegistryId,
   findCustomModelGroup,
+  hasNextEndpoint,
+  selectCustomApiGroupsForRequest,
+  modelAcceptsImageInput,
+  isCustomRegistryId,
   normalizeCustomModelRegistryId,
   primaryProvider,
   modelSupportsThinkingEffort,
@@ -352,4 +356,45 @@ test("getAllModels / 菜单：不含桌面自由中转，自定义思考档位�
   const menu = getModelGroupsWithCustom(groups);
   assert.equal(menu.some((g) => g.group === "自由中转"), false);
   assert.ok(menu.some((g) => g.group === "OpenRouter"));
+
+  assert.deepEqual(max?.endpoints, []);
+});
+
+test("hasNextEndpoint：自定义分组恒 false，内置 GLM 有第二跳", () => {
+  assert.equal(hasNextEndpoint("custom:g:m", 0), false);
+  assert.equal(hasNextEndpoint("custom", 0), false);
+  assert.equal(isCustomRegistryId("custom-openai"), false);
+  assert.equal(hasNextEndpoint("z-ai/glm-5.3-flash", 0), true);
+  assert.equal(hasNextEndpoint("z-ai/glm-5.3-flash", 1), false);
+  assert.equal(hasNextEndpoint("mimo-v2.5", 0), false);
+});
+
+test("selectCustomApiGroupsForRequest：只返回本次用到的分组", () => {
+  const groups = [
+    { id: "a", name: "A", baseUrl: "https://a.example/v1", apiKey: "ka", models: [{ id: "m1" }] },
+    { id: "b", name: "B", baseUrl: "https://b.example/v1", apiKey: "kb", models: [{ id: "m2" }] },
+  ];
+  assert.deepEqual(selectCustomApiGroupsForRequest(groups, "z-ai/glm-5.3-flash"), []);
+  assert.deepEqual(selectCustomApiGroupsForRequest(groups, "custom-openai"), []);
+  const used = selectCustomApiGroupsForRequest(groups, buildCustomModelRegistryId("b", "m2"));
+  assert.equal(used.length, 1);
+  assert.equal(used[0]?.id, "b");
+  assert.equal(used[0]?.apiKey, "kb");
+});
+
+test("modelAcceptsImageInput：自定义 vision 声明生效", () => {
+  const groups = [{
+    id: "g",
+    name: "G",
+    baseUrl: "https://x.example/v1",
+    apiKey: "k",
+    models: [
+      { id: "see", vision: true },
+      { id: "text" },
+    ],
+  }];
+  assert.equal(modelAcceptsImageInput(buildCustomModelRegistryId("g", "see"), groups), true);
+  assert.equal(modelAcceptsImageInput(buildCustomModelRegistryId("g", "text"), groups), false);
+  assert.equal(modelAcceptsImageInput("mimo-v2.5", []), true);
+  assert.equal(modelAcceptsImageInput("meituan/LongCat-2.0:free", []), false);
 });

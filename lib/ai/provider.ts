@@ -18,6 +18,7 @@ import {
 } from "@/lib/ai/models";
 import { DEFAULT_CHAT_TIMEOUT_MS } from "@/lib/ai/upstream";
 import { assertSafeCustomBaseUrl } from "@/lib/ai/customBaseUrl";
+import { normalizeOpenAIBaseUrl } from "@/lib/ai/openaiBaseUrl";
 import {
   overlayOptional,
   resolveCapabilityEndpoint,
@@ -25,19 +26,15 @@ import {
   type ImageApiStyle as CapabilityImageApiStyle,
 } from "@/lib/ai/capabilityEndpoints";
 
+// 本模块在加载时读一次 env（BASE / KEY / MIMO_* / RELAY_* / ENV_MODEL_*）。改 env 必须重启进程。
+// 对比：app/api/chat-title/route.ts 的 titleProvider() 每次请求读 env。两套语义不要混改。
 const BASE = process.env.AI_BASE_URL || "";
 const KEY = process.env.AI_API_KEY || "";
 const REASONING_FIELD = process.env.AI_REASONING_FIELD || "reasoning_content";
 
 export type { ThinkingRequestStyle };
 export type ImageApiStyle = CapabilityImageApiStyle;
-
-/** OpenAI 兼容网关：保证 base 以 /v1 结尾，避免拼出 /chat/completions 落到根路径。 */
-export function normalizeOpenAIBaseUrl(url: string): string {
-  const trimmed = url.trim().replace(/\/+$/, "");
-  if (!trimmed) return "";
-  return /\/v1$/i.test(trimmed) ? trimmed : `${trimmed}/v1`;
-}
+export { normalizeOpenAIBaseUrl };
 
 /**
  * 三选一协议 → 底层 style/reasoningField 自动装配。
@@ -191,27 +188,15 @@ export function extractReasoningDelta(
   return text || undefined;
 }
 
-export function buildThinkingRequestParams(
-  style: ThinkingRequestStyle,
-  effort: string | undefined,
-): Record<string, unknown> {
-  if (style === "none") return {};
-  if (style === "openai-reasoning-effort") {
-    return { reasoning_effort: effort === "low" || effort === "medium" ? effort : "high" };
+function safeNormalizedCustomBaseUrl(url: string): string {
+  return normalizeOpenAIBaseUrl(assertSafeCustomBaseUrl(url));
+}
+
+function customTimeoutMs(modelTimeout?: number, groupTimeout?: number): number {
+  for (const raw of [modelTimeout, groupTimeout]) {
+    if (typeof raw === "number" && Number.isFinite(raw) && raw > 0) return raw;
   }
-  // OpenRouter 统一推理参数：{ reasoning: { effort } }，用于转发 Claude/Gemini 等模型的中转网关。
-  if (style === "openrouter-reasoning") {
-    return { reasoning: { effort: effort === "low" || effort === "medium" ? effort : "high" } };
-  }
-  // 部分"OpenAI 兼容"中转网关只是把 Anthropic Messages API 的请求体原样透传，
-  // 此时仍需按 Anthropic 原生 extended thinking 格式下发 { thinking: { type, budget_tokens } }。
-  if (style === "anthropic-thinking") {
-    return { thinking: { type: "enabled", budget_tokens: thinkingBudget(effort) } };
-  }
-  return {
-    enable_thinking: true,
-    thinking_budget: thinkingBudget(effort),
-  };
+  return DEFAULT_CHAT_TIMEOUT_MS;
 }
 
 export function detectImageApiStyle(
@@ -309,7 +294,7 @@ export function resolveProvider(
       return {
         registryId,
         apiModelId: found.model.id,
-        baseUrl: assertSafeCustomBaseUrl(found.group.baseUrl),
+        baseUrl: safeNormalizedCustomBaseUrl(found.group.baseUrl),
         apiKey: found.group.apiKey.trim(),
         // 用户显式填的 override 优先；否则用协议默认。
         reasoningField: found.model.reasoningField?.trim() || auto.reasoningField,
@@ -321,7 +306,7 @@ export function resolveProvider(
         isCustom: true,
         configured: true,
         endpointIndex: 0,
-        timeoutMs: DEFAULT_CHAT_TIMEOUT_MS,
+        timeoutMs: customTimeoutMs(found.model.timeoutMs, found.group.timeoutMs),
       };
     }
   }
@@ -347,7 +332,7 @@ export function resolveProvider(
     return {
       registryId,
       apiModelId: customModelName.trim(),
-      baseUrl: assertSafeCustomBaseUrl(customProvider.baseUrl),
+      baseUrl: safeNormalizedCustomBaseUrl(customProvider.baseUrl),
       apiKey: customProvider.apiKey.trim(),
       reasoningField: REASONING_FIELD,
       thinkingRequestStyle: "siliconflow",
@@ -427,7 +412,7 @@ export function resolveImageProvider(
     const found = findCustomModelGroup(customGroups, effectiveModelId);
     if (found && found.group.baseUrl?.trim() && found.group.apiKey?.trim()) {
       return {
-        baseUrl: assertSafeCustomBaseUrl(found.group.baseUrl),
+        baseUrl: safeNormalizedCustomBaseUrl(found.group.baseUrl),
         apiKey: found.group.apiKey.trim(),
         apiModelId: found.model.id,
         registryId: effectiveModelId,

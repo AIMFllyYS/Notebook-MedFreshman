@@ -20,7 +20,7 @@ import {
   type AttachmentPreview,
 } from "@/lib/ai/imageUtils";
 import { useSettings } from "@/lib/hooks/useSettings";
-import { getModelInfo } from "@/lib/ai/models";
+import { getModelInfoWithCustom, modelAcceptsImageInput } from "@/lib/ai/models";
 import type { ChatAttachment } from "@/lib/types/chat";
 
 export interface UseImageAttachmentsResult {
@@ -77,13 +77,11 @@ export function useImageAttachments(): UseImageAttachmentsResult {
 
   /** 检查当前模型是否支持 vision，不支持则设置错误并返回 false。 */
   const checkVisionSupport = useCallback((): boolean => {
-    const modelId = useSettings.getState().selectedModelId;
-    const info = getModelInfo(modelId);
-    if (info && !info.vision) {
-      setError(`当前模型 ${info.label} 不支持图片上传`);
-      return false;
-    }
-    return true;
+    const { selectedModelId, customApiGroups } = useSettings.getState();
+    if (modelAcceptsImageInput(selectedModelId, customApiGroups)) return true;
+    const info = getModelInfoWithCustom(selectedModelId, customApiGroups);
+    setError(`当前模型 ${info?.label ?? selectedModelId} 不支持图片上传`);
+    return false;
   }, []);
 
   const addFiles = useCallback(

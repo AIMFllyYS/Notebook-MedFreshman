@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDocuments, getDocumentMarkdown } from '@/lib/hooks/useDocuments';
 import { useSettings } from '@/lib/hooks/useSettings';
-import { CUSTOM_PREFIX, findCustomModelGroup, getModelInfoWithCustom } from '@/lib/ai/models';
+import { getModelInfoWithCustom, selectCustomApiGroupsForRequest } from '@/lib/ai/models';
 import { parseSseJsonEvents } from '@/lib/utils/sseEvents';
 import type { DocumentApiEvent, DocumentSpec, DocumentSection } from '@/lib/documents/types';
 import { AgentDocumentIcon, AgentAlertIcon, AgentArrowUpRightIcon } from '@/components/icons/AgentIcons';
@@ -44,12 +44,9 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
       /* eslint-enable react-hooks/set-state-in-effect */
       return;
     }
-    const isCustom = docModelId.startsWith(CUSTOM_PREFIX);
-    const customGroup = isCustom ? findCustomModelGroup(settings.customApiGroups, docModelId) : undefined;
+    const customApiGroups = selectCustomApiGroupsForRequest(settings.customApiGroups, docModelId);
 
-    /* eslint-disable react-hooks/set-state-in-effect */
     setGenerating(true);
-    /* eslint-enable react-hooks/set-state-in-effect */
 
     // 不在 cleanup 里 abort：create() 会写入 store，若 effect 依赖 doc 会 setup→cleanup→setup，
     // 把首个请求掐掉且 startedRef 已置位，进度永远停在 0/N（与 ArtifactCard 同一类坑）。
@@ -65,10 +62,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
             spec,
             modelId: docModelId,
             phase: 'outline',
-            customApiGroups: settings.customApiGroups,
-            customProvider: customGroup
-              ? { baseUrl: customGroup.group.baseUrl, apiKey: customGroup.group.apiKey, model: customGroup.model.id }
-              : undefined,
+            customApiGroups,
           }),
         });
         if (!outlineRes.ok) throw new Error(`大纲请求失败: ${outlineRes.status}`);
@@ -91,10 +85,7 @@ export default function DocumentCard({ documentId, spec, modelId, unsupportedRea
               outline,
               sectionIndex: i,
               previousMarkdown,
-              customApiGroups: settings.customApiGroups,
-              customProvider: customGroup
-                ? { baseUrl: customGroup.group.baseUrl, apiKey: customGroup.group.apiKey, model: customGroup.model.id }
-                : undefined,
+              customApiGroups,
             }),
           });
           if (!sectionRes.ok) throw new Error(`第 ${i + 1} 节请求失败: ${sectionRes.status}`);

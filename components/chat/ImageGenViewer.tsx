@@ -8,6 +8,7 @@ import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStor
 import { useLightbox } from "@/lib/stores/lightbox";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { formatImageGenError, imageGenErrorHeading } from "@/lib/ai/imageGenError";
+import { selectCustomApiGroupsForRequest } from "@/lib/ai/models";
 
 /** 将归一化图片项转为可渲染的 src：优先 url，回退 b64_json data URL。 */
 function imageSrc(img: ImageGenImage): string {
@@ -44,7 +45,11 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
             prompt: cur.prompt,
             size: cur.size,
             count: cur.count,
-            customApiGroups: settings.customApiGroups,
+            customApiGroups: selectCustomApiGroupsForRequest(
+              settings.customApiGroups,
+              imageModelId,
+              cur.modelId ? null : settings.defaultImageModelId,
+            ),
             defaultImageModelId: cur.modelId ? null : settings.defaultImageModelId,
             capabilityEndpoints: settings.capabilityEndpoints,
           }),

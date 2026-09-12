@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   resolveProvider,
+  resolveNextProvider,
   resolveImageProvider,
   chatCompletionsUrl,
   thinkingBudget,
-  buildThinkingRequestParams,
   extractReasoningDelta,
   detectImageApiStyle,
   autoConfigFromProtocol,
@@ -157,23 +157,6 @@ test("extractReasoningDelta：兼容部分中转网关把 reasoning 发成结构
   );
   // 未在预设字段名单里的 thinking 字段兜底
   assert.equal(extractReasoningDelta({ thinking: "J" }, "reasoning_content"), "J");
-});
-
-test("buildThinkingRequestParams：按 provider 风格构造请求参数", () => {
-  assert.deepEqual(buildThinkingRequestParams("none", "high"), {});
-  assert.deepEqual(buildThinkingRequestParams("siliconflow", "low"), {
-    enable_thinking: true,
-    thinking_budget: 2000,
-  });
-  assert.deepEqual(buildThinkingRequestParams("openai-reasoning-effort", "max"), {
-    reasoning_effort: "high",
-  });
-  assert.deepEqual(buildThinkingRequestParams("openrouter-reasoning", "low"), {
-    reasoning: { effort: "low" },
-  });
-  assert.deepEqual(buildThinkingRequestParams("anthropic-thinking", "high"), {
-    thinking: { type: "enabled", budget_tokens: 16000 },
-  });
 });
 
 test("resolveImageProvider：custom 生图模型可声明 OpenAI images 格式", () => {
@@ -351,6 +334,46 @@ test("resolveProvider：自由中转未配置模型 ID 时 configured=false", ()
 test("normalizeOpenAIBaseUrl：补 /v1", () => {
   assert.equal(normalizeOpenAIBaseUrl("https://relay.protocom.org/"), "https://relay.protocom.org/v1");
   assert.equal(normalizeOpenAIBaseUrl("https://relay.protocom.org/v1"), "https://relay.protocom.org/v1");
+});
+
+test("resolveProvider：自定义分组 baseUrl 不带 /v1 时与连通性测试同样补全", () => {
+  const modelId = buildCustomModelRegistryId("g", "m");
+  const r = resolveProvider(modelId, [{
+    id: "g",
+    name: "G",
+    baseUrl: "https://api.example.com",
+    apiKey: "sk-test",
+    models: [{ id: "m" }],
+    timeoutMs: 90_000,
+  }]);
+  assert.equal(r.isCustom, true);
+  assert.equal(r.baseUrl, "https://api.example.com/v1");
+  assert.equal(r.timeoutMs, 90_000);
+  assert.equal(r.endpointIndex, 0);
+});
+
+test("resolveProvider：模型级 timeoutMs 优先于分组", () => {
+  const modelId = buildCustomModelRegistryId("g", "slow");
+  const r = resolveProvider(modelId, [{
+    id: "g",
+    name: "G",
+    baseUrl: "https://api.example.com/v1",
+    apiKey: "sk-test",
+    timeoutMs: 60_000,
+    models: [{ id: "slow", timeoutMs: 120_000 }],
+  }]);
+  assert.equal(r.timeoutMs, 120_000);
+});
+
+test("resolveProvider：自定义分组 endpointIndex 恒为 0 且无 failover", () => {
+  const modelId = buildCustomModelRegistryId("g", "m");
+  const groups = [{
+    id: "g", name: "G", baseUrl: "https://api.example.com/v1", apiKey: "sk",
+    models: [{ id: "m" }],
+  }];
+  const r = resolveProvider(modelId, groups);
+  assert.equal(r.endpointIndex, 0);
+  assert.equal(resolveNextProvider(r.registryId, r.endpointIndex, groups), null);
 });
 
 test("resolveProvider：undefined modelId 回退到 ENV_MODEL_FLASH", () => {

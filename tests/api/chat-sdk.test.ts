@@ -158,6 +158,17 @@ test('chat SDK: real route → transport → parts preserves reasoning, tools, c
   assert.doesNotMatch(modelToolResult.content, /"contextKey"|"sources"/);
 });
 
+test('chat SDK: custom model without vision rejects image parts', async (t) => {
+  const fetch = t.mock.method(globalThis, 'fetch', async () => { throw new Error('unexpected fetch'); });
+  const user = createUserMessage('image-user', '看图解释');
+  user.parts.push({ type: 'file', mediaType: 'image/png', url: 'data:image/png;base64,aGVsbG8=' });
+  const { chunks } = await chat({
+    customApiGroups: [{ ...groups[0], models: [{ id: 'study-model', tools: true, vision: false, apiProtocol: 'openai' }] }],
+  }, [user]);
+  assert.equal(fetch.mock.callCount(), 0);
+  assert.ok(chunks.some((chunk) => chunk.type === 'error' && /不支持图片理解/.test(chunk.errorText)));
+});
+
 test('chat SDK: native Anthropic thinking and image inputs use Messages protocol', async (t) => {
   let upstream: Record<string, unknown> = {};
   t.mock.method(globalThis, 'fetch', async (url: unknown, init: RequestInit) => {
