@@ -19,6 +19,7 @@ import {
   type AuthSession,
   type AuthSessionClient,
 } from "@/lib/auth/session";
+import { scheduleCloudPull, setCloudSyncEnabled } from "@/lib/sync/schedule";
 
 export type AuthRuntimeClient = AuthOtpClient & AuthSessionClient;
 
@@ -117,6 +118,17 @@ function useInstallAiAuthFetch(authClient: AuthSessionClient | null) {
   }, [authClient]);
 }
 
+function useCloudSyncOnAuth(status: AuthStatus, userId: string | null) {
+  useEffect(() => {
+    if (status === "signedIn" && userId) {
+      setCloudSyncEnabled(true);
+      scheduleCloudPull();
+      return;
+    }
+    setCloudSyncEnabled(false);
+  }, [status, userId]);
+}
+
 export function AuthProvider({
   children,
   client,
@@ -127,6 +139,7 @@ export function AuthProvider({
   const value = useAuthSessionController(client);
   const fetchClient = client !== undefined ? client : tryGetBrowserAuthClient();
   useInstallAiAuthFetch(fetchClient);
+  useCloudSyncOnAuth(value.status, value.userId);
   return <AuthSessionContext.Provider value={value}>{children}</AuthSessionContext.Provider>;
 }
 

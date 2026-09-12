@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { DollarSign, Download, Ticket } from "lucide-react";
+import { Cloud, DollarSign, Download, Ticket } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
+import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import { exportAllChats } from "@/lib/chat/exportChats";
 import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
+import { clearCloudSyncMessage, useCloudSyncStatus } from "@/lib/sync/status";
+import { MAX_USER_SYNC_BYTES } from "@/lib/sync/types";
 import { h3Cls, inputCls } from "./_shared";
 
 export function RedemptionSection() {
@@ -117,6 +120,50 @@ export function BillingSection() {
           />
         </div>
       </section>
+  );
+}
+
+export function CloudSyncSection() {
+  const { status } = useAuthSession();
+  const cloudSync = useCloudSyncStatus();
+  const signedIn = status === "signedIn";
+  const limitMb = Math.round((MAX_USER_SYNC_BYTES / (1024 * 1024)) * 10) / 10;
+
+  return (
+    <section className="flex flex-col gap-2">
+      <div className="flex items-center gap-1.5">
+        <Cloud size={14} className="text-[var(--md-sys-color-primary)]" />
+        <h3 className={h3Cls}>云端同步</h3>
+      </div>
+      <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+        登录后同步对话文本、演示 HTML 和长文档。图片、笔记正文、生图会话和 API 密钥不会上传。
+        单用户上限约 {limitMb} MB；超限时本机仍保留，并在对话区提示。
+      </p>
+      <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+        {signedIn ? "已登录，换设备后可拉回历史对话与产物。" : "未登录时数据只留在本机。"}
+      </p>
+      {cloudSync.message ? (
+        <div className="flex items-start justify-between gap-2">
+          <span
+            className="text-[11px] font-medium"
+            style={{
+              color: cloudSync.phase === "error"
+                ? "var(--md-sys-color-error)"
+                : "var(--md-sys-color-primary)",
+            }}
+          >
+            {cloudSync.message}
+          </span>
+          <button
+            type="button"
+            className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]"
+            onClick={clearCloudSyncMessage}
+          >
+            关闭
+          </button>
+        </div>
+      ) : null}
+    </section>
   );
 }
 

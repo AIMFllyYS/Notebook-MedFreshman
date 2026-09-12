@@ -7,14 +7,11 @@ import {
   chatSessionKey,
   chatBlobKey,
   CHAT_BLOB_KEY_PREFIX,
+  CHAT_SESSION_KEY_PREFIX,
+  listPersistedKeys,
+  flushPendingWrites,
 } from '@/lib/storage/idbStorage';
-import { keys as idbKeys } from 'idb-keyval';
-import { createStore } from 'idb-keyval';
 import { getMessageText, getToolPartsByName, normalizeStoredMessages } from '@/lib/chat/messageParts';
-
-const DB_NAME = 'gailvlun-db';
-const STORE_NAME = 'keyval';
-const idbStore = createStore(DB_NAME, STORE_NAME);
 
 export interface SessionMeta {
   id: string;
@@ -136,7 +133,7 @@ export async function deleteSessionData(sessionId: string, blobIds: string[] = [
   }
 }
 
-function extractBlobIdsFromMessages(messages: ChatMessage[]): string[] {
+export function extractBlobIdsFromMessages(messages: ChatMessage[]): string[] {
   const ids: string[] = [];
   for (const m of messages) {
     if (!m.attachments) continue;
@@ -288,10 +285,89 @@ export async function listBlobIdsForSession(sessionId: string): Promise<string[]
   return extractBlobIdsFromMessages(messages);
 }
 
-async function listAllChatKeys(): Promise<string[]> {
+export async function listAllChatKeys(): Promise<string[]> {
   if (!isBrowser()) return [];
-  const all = await idbKeys(idbStore);
+  const all = await listPersistedKeys();
   return all.filter(
-    (k) => typeof k === 'string' && (k.startsWith(CHAT_BLOB_KEY_PREFIX) || k.startsWith('chat-session:')),
-  ) as string[];
+    (k) => k.startsWith(CHAT_BLOB_KEY_PREFIX) || k.startsWith(CHAT_SESSION_KEY_PREFIX),
+  );
+}
+
+export interface ChatGcDeps {
+  listKeys?: () => Promise<string[]>;
+  removeKey?: (key: string) => Promise<void>;
+  loadMessages?: (sessionId: string) => Promise<ChatMessage[] | null>;
+  loadManifest?: () => Promise<ChatManifestV2 | null>;
+}
+
+/**
+ * 以 manifest 为唯一真相源：不在入口里的 chat-session:* / 无引用的 chat-blob:* 删除。
+ * 不会删掉仍被 manifest 会话引用的键。
+ */
+export async function gcOrphanedChatKeys(deps: ChatGcDeps = {}): Promise<{ deleted: string[] }> {
+  const listKeys = deps.listKeys ?? listAllChatKeys;
+  const removeKey = deps.removeKey ?? ((key: string) => idbStorage.removeItem(key));
+  const loadMessages = deps.loadMessages ?? loadSessionMessages;
+  const readManifest = deps.loadManifest ?? loadManifest;
+
+  flushPendingWrites();
+  const manifest = await readManifest();
+  const keepSessions = new Set((manifest?.sessions ?? []).map((s) => s.id));
+  const keys = await listKeys();
+  const deleted: string[] = [];
+
+  for (const key of keys) {
+    if (!key.startsWith(CHAT_SESSION_KEY_PREFIX)) continue;
+    const sessionId = key.slice(CHAT_SESSION_KEY_PREFIX.length);
+    if (!sessionId || keepSessions.has(sessionId)) continue;
+    await removeKey(key);
+    deleted.push(key);
+  }
+
+  const keepBlobs = new Set<string>();
+  for (const sessionId of keepSessions) {
+    const messages = await loadMessages(sessionId);
+    if (!messages) continue;
+    for (const blobId of extractBlobIdsFromMessages(messages)) keepBlobs.add(blobId);
+  }
+
+  for (const key of keys) {
+    if (!key.startsWith(CHAT_BLOB_KEY_PREFIX)) continue;
+    const blobId = key.slice(CHAT_BLOB_KEY_PREFIX.length);
+    if (!blobId || keepBlobs.has(blobId)) continue;
+    await removeKey(key);
+    deleted.push(key);
+  }
+
+  return { deleted };
+}
+
+let gcTimer: ReturnType<typeof setTimeout> | null = null;
+let gcIdleId: number | null = null;
+
+export function cancelOrphanChatGc(): void {
+  if (gcTimer) {
+    clearTimeout(gcTimer);
+    gcTimer = null;
+  }
+  if (gcIdleId != null && typeof window !== 'undefined') {
+    window.cancelIdleCallback?.(gcIdleId);
+    gcIdleId = null;
+  }
+}
+
+export function scheduleOrphanChatGc(): void {
+  if (typeof window === 'undefined') return;
+  cancelOrphanChatGc();
+  const run = () => {
+    gcTimer = null;
+    gcIdleId = null;
+    void gcOrphanedChatKeys();
+  };
+  const ric = window.requestIdleCallback;
+  if (typeof ric === 'function') {
+    gcIdleId = ric(run, { timeout: 4000 });
+    return;
+  }
+  gcTimer = setTimeout(run, 0);
 }

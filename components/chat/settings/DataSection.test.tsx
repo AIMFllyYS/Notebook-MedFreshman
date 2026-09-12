@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ExportSection, RedemptionSection } from "./DataSection";
+import { CloudSyncSection, ExportSection, RedemptionSection } from "./DataSection";
 import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
 
 vi.mock("@/lib/ai/observability/downloadAgentLog", () => ({
@@ -12,6 +12,13 @@ vi.mock("@/lib/ai/observability/downloadAgentLog", () => ({
     byteLength: 12,
   }),
 }));
+
+describe("CloudSyncSection", () => {
+  it("says images, notes, and API keys stay off the cloud", () => {
+    render(<CloudSyncSection />);
+    expect(screen.getByText(/图片、笔记正文、生图会话和 API 密钥不会上传/)).toBeInTheDocument();
+  });
+});
 
 describe("ExportSection", () => {
   it("has a one-click button that exports raw agent JSONL", async () => {

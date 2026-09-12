@@ -35,4 +35,6 @@ Zustand store 的唯一落点。本目录**不做桶导出**（避免把全部 s
 | `quiz.ts` | `useQuizStore` | `gailvlun-quiz-progress-v1`（经 `lib/quiz-progress.ts`） |
 | `lightbox.ts` | `useLightbox` | 不持久化 |
 
+云端同步在 `lib/sync/`，不是第 29 个 store：登录后把 `chat-session` / `artifact` / `document` 镜像到 `sync_documents`。不持久化、不同步 `settings` / `skill` / 生图 / 图片 blob / apiKey。
+
 旧路径（`lib/hooks/useX.ts` 等）保留 re-export 一个发布周期。

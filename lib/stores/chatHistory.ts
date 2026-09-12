@@ -13,10 +13,10 @@ import {
   deleteSessionData,
   listBlobIdsForSession,
   persistInlineAttachments,
-  hydrateAttachmentsForApi,
+  scheduleOrphanChatGc,
 } from '@/lib/storage/chatStorage';
-import { PERSIST_KEYS } from '@/lib/storage/idbStorage';
 import { getMessageText } from '@/lib/chat/messageParts';
+import { scheduleCloudTombstone, scheduleCloudUpsert } from '@/lib/sync/schedule';
 
 const MAX_LOADED_SESSIONS = 3;
 const MAX_SESSIONS = 50;
@@ -172,7 +172,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   },
 
   createSession: (context, kind) => {
-    const id = Date.now().toString();
+    const id = crypto.randomUUID();
     const now = Date.now();
     const meta: SessionMeta = {
       id,
@@ -188,13 +188,20 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     set((state) => {
       const sessionsMeta = [meta, ...state.sessionsMeta];
       const capped = sessionsMeta.length > MAX_SESSIONS ? sessionsMeta.slice(0, MAX_SESSIONS) : sessionsMeta;
-      if (sessionsMeta.length > MAX_SESSIONS) {
-        const dropped = sessionsMeta.slice(MAX_SESSIONS);
+      const dropped = sessionsMeta.length > MAX_SESSIONS ? sessionsMeta.slice(MAX_SESSIONS) : [];
+      const droppedIds = new Set(dropped.map((d) => d.id));
+      if (dropped.length > 0) {
         for (const d of dropped) {
-          void deleteSessionData(d.id, []);
+          void (async () => {
+            const blobIds = await listBlobIdsForSession(d.id);
+            await deleteSessionData(d.id, blobIds);
+            scheduleOrphanChatGc();
+          })();
         }
         pruneArtifactsFromMetas(capped);
       }
+      const messagesById = { ...state.messagesById, [id]: [] };
+      for (const dropId of droppedIds) delete messagesById[dropId];
       saveManifest({
         version: 2,
         activeSessionId: claimActive ? id : state.activeSessionId,
@@ -202,14 +209,15 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       });
       return {
         sessionsMeta: capped,
-        messagesById: { ...state.messagesById, [id]: [] },
-        loadedSessionIds: [...state.loadedSessionIds.filter((x) => x !== id), id],
+        messagesById,
+        loadedSessionIds: [...state.loadedSessionIds.filter((x) => x !== id && !droppedIds.has(x)), id],
         activeSessionId: claimActive ? id : state.activeSessionId,
         sessionLoadState: { ...state.sessionLoadState, [id]: 'loaded' },
         _activeMessagesReady: claimActive ? true : state._activeMessagesReady,
       };
     });
     saveSessionMessages(id, []);
+    scheduleCloudUpsert('chat-session', id);
     return id;
   },
 
@@ -231,7 +239,9 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       void (async () => {
         const blobIds = await listBlobIdsForSession(id);
         await deleteSessionData(id, blobIds);
+        scheduleOrphanChatGc();
       })();
+      scheduleCloudTombstone('chat-session', id);
       return {
         sessionsMeta,
         messagesById,
@@ -261,6 +271,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
 
   addMessage: (sessionId, message) => {
     set((state) => {
+      if (!state.sessionsMeta.some((s) => s.id === sessionId)) return state;
       const storedMessage = persistInlineAttachments(message);
       const prev = state.messagesById[sessionId] ?? [];
       const messages = [...prev, storedMessage];
@@ -281,6 +292,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         activeSessionId: state.activeSessionId,
         sessions: sessionsMeta,
       });
+      scheduleCloudUpsert('chat-session', sessionId);
       return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
     });
   },
@@ -288,6 +300,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   // 性能契约：仅替换目标 session / message；未修改 session 须保留引用（供 useChat 引用相等订阅）。
   updateMessage: (sessionId, messageId, updates) => {
     set((state) => {
+      if (!state.sessionsMeta.some((s) => s.id === sessionId)) return state;
       const prev = state.messagesById[sessionId];
       if (!prev) return state;
       const messages = prev.map((m) => (m.id === messageId ? { ...m, ...updates } : m));
@@ -313,12 +326,14 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
           sessions: sessionsMeta,
         });
       }
+      scheduleCloudUpsert('chat-session', sessionId);
       return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
     });
   },
 
   updateSessionTitle: (sessionId, title) => {
     set((state) => {
+      if (!state.sessionsMeta.some((s) => s.id === sessionId)) return state;
       const sessionsMeta = state.sessionsMeta.map((s) =>
         s.id === sessionId ? { ...s, title, updatedAt: Date.now() } : s,
       );
@@ -327,6 +342,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         activeSessionId: state.activeSessionId,
         sessions: sessionsMeta,
       });
+      scheduleCloudUpsert('chat-session', sessionId);
       return { sessionsMeta };
     });
   },
@@ -355,6 +371,7 @@ export async function ensureChatHistoryBootstrap(): Promise<void> {
     } else {
       useChatHistory.setState({ _hasHydrated: true, _activeMessagesReady: true });
     }
+    scheduleOrphanChatGc();
   })();
   return bootstrapPromise;
 }

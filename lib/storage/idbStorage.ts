@@ -179,6 +179,30 @@ export const idbStorage = {
   },
 };
 
+/** 枚举 IDB + 未落盘 pending + localStorage 兜底键，供 GC 使用。 */
+export async function listPersistedKeys(): Promise<string[]> {
+  const found = new Set<string>(pendingValues.keys());
+  if (!isBrowser()) return [...found];
+  try {
+    const all = await idbKeys(idbStore);
+    for (const key of all) {
+      if (typeof key === "string") found.add(key);
+    }
+  } catch {
+    // IndexedDB 不可用时走 localStorage
+  }
+  try {
+    const n = localStorage.length;
+    for (let i = 0; i < n; i += 1) {
+      const key = localStorage.key(i);
+      if (key) found.add(key);
+    }
+  } catch {
+    // ignore
+  }
+  return [...found];
+}
+
 // ── 工具函数 ────────────────────────────────────────────────────
 
 /** 估算 IndexedDB 中某 key 的数据大小（字节）。 */

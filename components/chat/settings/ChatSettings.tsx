@@ -8,7 +8,7 @@ import { ImageSection } from "./ImageSection";
 import { CapabilityEndpointsSection } from "./CapabilityEndpointsSection";
 import { ToolsSection } from "./ToolsSection";
 import { ContextSection } from "./ContextSection";
-import { BillingSection, ExportSection, RedemptionSection } from "./DataSection";
+import { BillingSection, CloudSyncSection, ExportSection, RedemptionSection } from "./DataSection";
 import { SkillsSection } from "./SkillsSection";
 
 export default function ChatSettings({ onClose }: { onClose?: () => void }) {
@@ -42,6 +42,7 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
         <BillingSection />
         <RedemptionSection />
         <SkillsSection />
+        <CloudSyncSection />
         <ExportSection />
       </div>
     </div>

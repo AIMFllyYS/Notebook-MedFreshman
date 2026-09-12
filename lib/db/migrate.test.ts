@@ -96,6 +96,10 @@ test("discoverMigrations reads repo baseline in version order", () => {
   assert.equal(files[1].version, "0002");
   assert.equal(files[1].filename, "0002_app_users_no_client_update.sql");
   assert.equal(findNonIdempotentStatements(files[1].sql).length, 0);
+  assert.equal(files[2].version, "0003");
+  assert.equal(files[2].filename, "0003_sync_documents_document_kind.sql");
+  assert.equal(findNonIdempotentStatements(files[2].sql).length, 0);
+  assert.match(files[2].sql, /document/);
 });
 
 test("0001_init.sql inventory covers tables indexes triggers policies grants", () => {
