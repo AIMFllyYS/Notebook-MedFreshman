@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Clock, AlertTriangle, X, Pin, RefreshCw, Loader2, BarChart2 } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
@@ -14,6 +14,9 @@ import { useDraggable } from '@/lib/hooks/useDraggable';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { useOverlayRegistration } from '@/lib/keyboard/useOverlayRegistration';
 import { openBillingDashboard } from '@/lib/window/openBillingDashboard';
+import { useBillingStore } from '@/lib/hooks/useBillingStore';
+import { costCnyToUsd, summarizeSessionLedger } from '@/lib/billing/ledgerView';
+import { refreshBillingFromLedger } from '@/lib/billing/syncUsageLedger';
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -25,6 +28,17 @@ function fmtCost(yuan: number): string {
   if (yuan < 0.0001) return '¥0';
   if (yuan < 0.01) return `¥${yuan.toFixed(4)}`;
   return `¥${yuan.toFixed(2)}`;
+}
+
+function fmtUsd(yuan: number, rate: number): string {
+  const usd = costCnyToUsd(yuan, rate);
+  if (usd < 0.0001) return '$0';
+  if (usd < 0.01) return `$${usd.toFixed(4)}`;
+  return `$${usd.toFixed(2)}`;
+}
+
+function fmtMoneyPair(yuan: number, rate: number): string {
+  return `${fmtCost(yuan)} / ${fmtUsd(yuan, rate)}`;
 }
 
 function fmtDuration(sec: number): string {
@@ -65,8 +79,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   // 拖动：rAF + transform（零重渲染），松手才提交。left 正向、bottom 反向（向上拖 = bottom 增大）。
   const { elRef, onPointerDown } = useDraggable((dx, dy) => setPos((p) => ({ x: p.x + dx, y: p.y - dy })));
 
-  // 全局 tracker（主面板用）
-  const gSessionTotal = useTokenTracker((s) => s.sessionTotal);
+  // 全局 tracker（主面板用）——费用改读台账，tracker 只负责上下文与缓存倒计时。
   const gLastTurn = useTokenTracker((s) => s.lastTurn);
   const gCtxTokens = useTokenTracker((s) => s.currentContextTokens);
   const gCtxLimit = useTokenTracker((s) => s.modelContextLimit);
@@ -79,7 +92,6 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   // 浮窗 tracker（划词浮窗用，按 sessionId 隔离）
   const fData = useFloatingTokenTracker((s) => floatingSessionId ? (s.sessions[floatingSessionId] ?? null) : null);
 
-  const sessionTotal = fData?.sessionTotal ?? gSessionTotal;
   const lastTurn = fData?.lastTurn ?? gLastTurn;
   const ctxTokens = fData?.currentContextTokens ?? gCtxTokens;
   const ctxLimit = fData?.modelContextLimit ?? gCtxLimit;
@@ -91,7 +103,15 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
 
   const globalSelectedModelId = useSettings((s) => s.selectedModelId);
   const customApiGroups = useSettings((s) => s.customApiGroups);
+  const usdExchangeRate = useSettings((s) => s.usdExchangeRate);
   const selectedModelId = modelId ?? globalSelectedModelId;
+  const activeSessionId = useChatHistory((s) => s.activeSessionId);
+  const billingRecords = useBillingStore((s) => s.records);
+  const ledgerSessionId = floatingSessionId ?? activeSessionId;
+  const sessionLedger = useMemo(
+    () => summarizeSessionLedger(billingRecords, ledgerSessionId),
+    [billingRecords, ledgerSessionId],
+  );
   const modelInfo = getModelInfoWithCustom(selectedModelId, customApiGroups);
   const pricing = modelInfo?.pricing;
   const cacheTtlSec = modelInfo?.cacheTtlSec;
@@ -151,6 +171,10 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     return () => clearInterval(id);
   }, [open, recompute]);
 
+  useEffect(() => {
+    void refreshBillingFromLedger();
+  }, [ledgerSessionId]);
+
   const ratio = ctxLimit > 0 ? ctxTokens / ctxLimit : 0;
   const pctText = `${Math.min(Math.round(ratio * 100), 999)}%`;
   const ringColor =
@@ -159,8 +183,8 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     '#10b981';
   const barColor = ringColor;
 
-  const turnCost = calcCost(lastTurn.promptTokens, lastTurn.completionTokens, lastTurn.cachedTokens, pricing);
-  const totalCost = calcCost(sessionTotal.promptTokens, sessionTotal.completionTokens, sessionTotal.cachedTokens, pricing);
+  const turnCost = sessionLedger.lastTurn.costCny;
+  const totalCost = sessionLedger.costCny;
 
   useLayoutEffect(() => {
     if (!open || !btnRef.current) return;
@@ -380,10 +404,10 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             {/* Last turn */}
             <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
               <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>本轮对话</div>
-              <Row label="输入 token" value={fmtTokens(lastTurn.promptTokens)} />
-              <Row label="输出 token" value={fmtTokens(lastTurn.completionTokens)} />
-              <Row label="缓存命中" value={fmtTokens(lastTurn.cachedTokens)} />
-              {pricing && <Row label="本轮费用" value={fmtCost(turnCost)} accent />}
+              <Row label="输入 token" value={fmtTokens(sessionLedger.lastTurn.promptTokens)} />
+              <Row label="输出 token" value={fmtTokens(sessionLedger.lastTurn.completionTokens)} />
+              <Row label="缓存命中" value={fmtTokens(sessionLedger.lastTurn.cachedTokens)} />
+              <Row label="本轮费用" value={fmtMoneyPair(turnCost, usdExchangeRate)} accent />
             </div>
 
             {/* Prefix cache countdown — 隔离到子组件，其每秒 tick 不再重渲整个看板 */}
@@ -398,9 +422,9 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             {/* Session total */}
             <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8 }}>
               <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>会话累计</div>
-              <Row label="总输入" value={fmtTokens(sessionTotal.promptTokens)} />
-              <Row label="总输出" value={fmtTokens(sessionTotal.completionTokens)} />
-              {pricing && <Row label="累计费用" value={fmtCost(totalCost)} accent />}
+              <Row label="总输入" value={fmtTokens(sessionLedger.promptTokens)} />
+              <Row label="总输出" value={fmtTokens(sessionLedger.completionTokens)} />
+              <Row label="累计费用" value={fmtMoneyPair(totalCost, usdExchangeRate)} accent />
             </div>
 
             <div style={{ marginTop: 8, fontSize: 9, color: 'var(--ink-faint)', lineHeight: 1.3 }}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Download, LayoutList, PieChart as PieChartIcon, ArrowRightLeft } from "lucide-react";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useBillingStore, getProviderCategoryName } from "@/lib/hooks/useBillingStore";
@@ -10,6 +10,8 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import React from "react";
 import clsx from "clsx";
 import { useResizable } from "@/lib/hooks/useResizable";
+import { refreshBillingFromLedger } from "@/lib/billing/syncUsageLedger";
+import { costCnyToUsd, filterLedgerByRange } from "@/lib/billing/ledgerView";
 
 type TimeRange = "7d" | "30d" | "all";
 
@@ -83,7 +85,7 @@ function ProviderStatCard({
             </button>
           </div>
           <span className="mt-1 text-lg font-semibold text-emerald-600 dark:text-emerald-500">
-            ${(stat.cost / exchangeRate).toFixed(4)}
+            ${costCnyToUsd(stat.cost, exchangeRate).toFixed(4)}
           </span>
           <div className="mt-2 flex items-center justify-between gap-2 text-[10px] text-[var(--ink-faint)]">
             <span className="shrink-0">{stat.count} 次调用</span>
@@ -104,14 +106,14 @@ function BillingDashboardWindow({ winId }: { winId: string }) {
   const customGroups = useSettings((s) => s.customApiGroups);
   const usdExchangeRate = useSettings((s) => s.usdExchangeRate);
 
-  const filteredRecords = useMemo(() => {
-    const now = Date.now();
-    return records.filter((r) => {
-      if (timeRange === "all") return true;
-      const diffDays = (now - r.timestamp) / (1000 * 60 * 60 * 24);
-      return timeRange === "7d" ? diffDays <= 7 : diffDays <= 30;
-    });
-  }, [records, timeRange]);
+  useEffect(() => {
+    void refreshBillingFromLedger();
+  }, []);
+
+  const filteredRecords = useMemo(
+    () => filterLedgerByRange(records, timeRange),
+    [records, timeRange],
+  );
 
   const providerStats = useMemo(() => {
     const stats: Record<string, { cost: number; count: number; tokens: number }> = {};
