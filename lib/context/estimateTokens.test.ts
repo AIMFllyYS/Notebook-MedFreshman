@@ -39,6 +39,13 @@ test("长文本不抛错", () => {
   assert.equal(tokens, 3250);
 });
 
+test("CJK 覆盖 U+9FFF 与扩展 A 区 U+3400–U+4DBF（含端点）", () => {
+  assert.equal(estimateTokens("\u4E00"), 2);
+  assert.equal(estimateTokens("\u9FFF"), 2);
+  assert.equal(estimateTokens("\u3400"), 2);
+  assert.equal(estimateTokens("\u4DBF"), 2);
+});
+
 test("结果始终是整数（ceil）", () => {
   for (const text of ["a", "ab", "abc", "你好世界", "hello world!"]) {
     const result = estimateTokens(text);

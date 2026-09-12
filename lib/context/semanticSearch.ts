@@ -1,7 +1,7 @@
 import type { ContextManager, BuildContextResult, BuildContextOptions } from './types';
 import { closeReferenceMaterials, getMaxTokens } from './types';
 import { summarizePageMarkdown } from './referenceTiers';
-import { DEFAULT_MODEL_ID } from '@/lib/ai/models';
+import { DEFAULT_MODEL_ID, type CustomApiGroup } from '@/lib/ai/models';
 import type { ChatContext } from '@/lib/types/chat';
 import { readContentMarkdown } from '@/lib/content/loader';
 import { getContentItem } from '@/lib/content-data';
@@ -31,9 +31,11 @@ interface VectorStore {
 export class SemanticSearchManager implements ContextManager {
   mode = 'semantic' as const;
   private model: string;
+  private customGroups: CustomApiGroup[];
 
-  constructor(model = DEFAULT_MODEL_ID) {
+  constructor(model = DEFAULT_MODEL_ID, customGroups: CustomApiGroup[] = []) {
     this.model = model;
+    this.customGroups = customGroups;
   }
 
   async buildContext(
@@ -41,7 +43,7 @@ export class SemanticSearchManager implements ContextManager {
     userMessage: string,
     options?: BuildContextOptions,
   ): Promise<BuildContextResult> {
-    const maxTokens = getMaxTokens(this.model);
+    const maxTokens = getMaxTokens(this.model, this.customGroups);
     const parts: string[] = [];
     const compact = options?.compact === true;
 

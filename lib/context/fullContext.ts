@@ -1,14 +1,14 @@
 import type { ContextManager, BuildContextResult, BuildContextOptions } from './types';
 import { closeReferenceMaterials, getMaxTokens } from './types';
 import { assembleReference, pickReferenceTier, summarizePageMarkdown } from './referenceTiers';
-import { DEFAULT_MODEL_ID } from '@/lib/ai/models';
+import { DEFAULT_MODEL_ID, type CustomApiGroup } from '@/lib/ai/models';
 import type { ChatContext } from '@/lib/types/chat';
 import { contentTree } from '@/lib/content-data/manifest';
 import { getContentItem } from '@/lib/content-data';
 import { readContentMarkdown } from '@/lib/content/loader';
 import type { SubjectId, CategoryId } from '@/lib/types/content';
-import { createHash } from 'node:crypto';
 import { estimateTokens } from './estimateTokens';
+import { SOFT_LIMIT_RATIO } from './estimateFullContext';
 
 // ── 文件夹树摘要（模块级缓存：课程目录运行时不变） ──
 
@@ -28,28 +28,17 @@ function buildTreeSummary(): string {
   return _treeSummaryCache;
 }
 
-// ── 模块级缓存（跨请求持久化，解决 per-request new 实例的缓存失效问题） ──
-
-interface CacheEntry {
-  pageId: string;
-  contentHash: string;
-  tier: string;
-}
-
-let _contextCache: CacheEntry | null = null;
-
-function hashContent(text: string): string {
-  return createHash('md5').update(text).digest('hex');
-}
-
 // ── 全量上下文管理器 ──
+// 不再维护模块级 pageId hash 槽：它不缓存正文，且看板改绑上游 cachedTokens。
 
 export class FullContextManager implements ContextManager {
   mode = 'full' as const;
   private model: string;
+  private customGroups: CustomApiGroup[];
 
-  constructor(model = DEFAULT_MODEL_ID) {
+  constructor(model = DEFAULT_MODEL_ID, customGroups: CustomApiGroup[] = []) {
     this.model = model;
+    this.customGroups = customGroups;
   }
 
   async buildContext(
@@ -57,7 +46,7 @@ export class FullContextManager implements ContextManager {
     _userMessage?: string,
     options?: BuildContextOptions,
   ): Promise<BuildContextResult> {
-    const maxTokens = getMaxTokens(this.model);
+    const maxTokens = getMaxTokens(this.model, this.customGroups);
     const outline = buildTreeSummary();
     const pageContent = readContentMarkdown(
       chatContext.subjectId,
@@ -81,7 +70,7 @@ export class FullContextManager implements ContextManager {
       assembled = assembleReference({ outline, summary, full }, tier);
       tokenCount = estimateTokens(closeReferenceMaterials(assembled));
     }
-    if (options?.compact && tokenCount / Math.max(maxTokens, 1) >= 0.8) {
+    if (options?.compact && tokenCount / Math.max(maxTokens, 1) >= SOFT_LIMIT_RATIO) {
       tier = "outline";
       assembled = assembleReference({ outline, summary, full }, tier);
       tokenCount = estimateTokens(closeReferenceMaterials(assembled));
@@ -91,22 +80,13 @@ export class FullContextManager implements ContextManager {
     const context = closeReferenceMaterials(assembled);
     tokenCount = estimateTokens(context);
 
-    const pageId = `${chatContext.subjectId}/${chatContext.categoryId}/${chatContext.itemId}`;
-    const contentHash = hashContent(assembled);
-    const cacheHit = _contextCache !== null
-      && _contextCache.pageId === pageId
-      && _contextCache.contentHash === contentHash
-      && _contextCache.tier === tier;
-
-    _contextCache = { pageId, contentHash, tier };
-
     const sources = this.collectSources(chatContext);
 
     return {
       context,
       tokenCount,
       maxTokens,
-      cacheHit,
+      cacheHit: false,
       sources,
       overflow: tokenCount > maxTokens,
       tier,

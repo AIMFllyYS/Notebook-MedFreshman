@@ -11,6 +11,7 @@ import { useChatReady } from '@/lib/hooks/useChatReady';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useStore } from '@/lib/store';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
+import { SOFT_LIMIT_RATIO } from '@/lib/context/estimateFullContext';
 import { subjectShortName } from '@/lib/content-data/subjects.registry';
 import SelectionPopover from '@/components/notes/SelectionPopover';
 import ChatThread from '@/components/chat/ChatThread';
@@ -55,7 +56,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const contextWarning = useTokenTracker((s) => s.contextWarning);
   const contextTruncated = useTokenTracker((s) => s.contextTruncated);
   const ctxRatio = ctxLimit > 0 ? ctxTokens / ctxLimit : 0;
-  const showWarning = ctxRatio >= 0.8 || contextTruncated;
+  const showWarning = ctxRatio >= SOFT_LIMIT_RATIO || contextTruncated;
 
   // 切换会话时重置 token 统计——外部 store 同步，置于 effect。
   useEffect(() => {

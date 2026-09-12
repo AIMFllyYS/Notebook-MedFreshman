@@ -139,6 +139,8 @@ test('chat SDK: real route → transport → parts preserves reasoning, tools, c
   assert.ok((breakdown?.data.total ?? 0) < 100_000);
   assert.equal(breakdown?.data.displayTotal, 100_000);
   assert.equal(breakdown?.data.truncated, true);
+  assert.equal(breakdown?.data.cachedTokens, 6);
+  assert.equal(breakdown?.data.cacheHit, true);
   const types = chunks.map((c) => c.type);
   assert.ok(types.indexOf('data-usage') < types.indexOf('finish'));
   assert.ok(types.indexOf('data-context-breakdown') < types.indexOf('finish'));

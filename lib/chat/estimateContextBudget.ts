@@ -1,4 +1,9 @@
-import { estimateTokens } from "@/lib/context/estimateTokens";
+import {
+  FIRST_TURN_OVERHEAD_TOKENS,
+  estimateFullContextTokens,
+  isSoftLimitReached,
+  resolveSessionContextBudget,
+} from "@/lib/context/estimateFullContext";
 import type { RequestMessage } from "@/lib/chat/buildRequestMessages";
 import type { ContextBreakdown } from "@/lib/types/chat";
 
@@ -22,22 +27,19 @@ export function estimateContextBudget(
   messages: RequestMessage[],
   userContent: string,
 ): ContextBudget {
-  const limit = tracker.sessionContextBudgetTokens > 0
-    ? tracker.sessionContextBudgetTokens
-    : (model?.contextK ?? 128) * 1000;
+  const modelLimit = (model?.contextK ?? 128) * 1000;
+  const limit = resolveSessionContextBudget(tracker.sessionContextBudgetTokens, modelLimit);
+  const historyText = messages
+    .map((m) =>
+      m.parts
+        .map((p) => (p.type === "text" ? p.text : JSON.stringify(p)))
+        .join(""),
+    )
+    .join("");
   const estimated = tracker.serverContextTokens > 0
-    ? tracker.serverContextTokens + estimateTokens(userContent)
-    : estimateTokens(
-        messages
-          .map((m) =>
-            m.parts
-              .map((p) => (p.type === "text" ? p.text : JSON.stringify(p)))
-              .join(""),
-          )
-          .join(""),
-      ) + 3000;
-  const softLimitReached = limit > 0 && estimated / limit >= 0.8;
-  return { limit, estimated, softLimitReached };
+    ? estimateFullContextTokens({ extraTokens: tracker.serverContextTokens, historyText: userContent })
+    : estimateFullContextTokens({ historyText, extraTokens: FIRST_TURN_OVERHEAD_TOKENS });
+  return { limit, estimated, softLimitReached: isSoftLimitReached(estimated, limit) };
 }
 
 /** 环显示：截断态取垫高值，避免假降；判定仍用 budget.estimated。 */

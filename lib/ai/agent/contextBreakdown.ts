@@ -4,6 +4,7 @@
 import type { ModelMessage, StepResult, ToolSet } from "ai";
 import type { ContextBreakdown } from "@/lib/types/chat";
 import { estimateTokens } from "@/lib/context/estimateTokens";
+import { estimateFullContextTokens } from "@/lib/context/estimateFullContext";
 import type { StudyAgentBundle } from "@/lib/ai/agent/studyAgent";
 
 const tk = (v: unknown) => estimateTokens(typeof v === "string" ? v : JSON.stringify(v ?? ""));
@@ -18,13 +19,26 @@ export interface ComputeBreakdownInput {
   clientContextTokens: number | null;
   truncated: boolean;
   cacheHit?: boolean;
+  /** 上游 usage 的 cachedTokens；看板「上下文缓存」绑这个。 */
+  cachedTokens?: number;
   warning?: string;
 }
 
-function classifyTool(name: string): keyof Pick<ContextBreakdown, "skills" | "webSearch" | "pages" | "conversation"> {
+const PAGE_TOOLS = new Set([
+  "getCurrentPage",
+  "getSection",
+  "searchNotes",
+  "getOutline",
+  "searchNoteImages",
+]);
+const WEB_TOOLS = new Set(["webSearch", "imageSearch"]);
+
+export function classifyTool(
+  name: string,
+): keyof Pick<ContextBreakdown, "skills" | "webSearch" | "pages" | "conversation"> {
   if (name === "useSkill") return "skills";
-  if (name === "webSearch" || name === "imageSearch") return "webSearch";
-  if (name === "getCurrentPage" || name === "getSection" || name === "searchNotes") return "pages";
+  if (WEB_TOOLS.has(name)) return "webSearch";
+  if (PAGE_TOOLS.has(name)) return "pages";
   return "conversation";
 }
 
@@ -37,6 +51,27 @@ function toolDefsTokens(tools: ToolSet): number {
     total += schema ? tk(schema) : 20;
   }
   return total;
+}
+
+/** 发给模型之前的全量占用：system + 工具 schema + 参考材料 + 对话历史。 */
+export function estimateRequestContextTokens(input: {
+  promptParts: StudyAgentBundle["promptParts"];
+  tools: ToolSet;
+  historyMessages: ModelMessage[];
+}): number {
+  const { promptParts, tools, historyMessages } = input;
+  return estimateFullContextTokens({
+    systemText:
+      promptParts.baseSystemPrompt +
+      promptParts.globalContext +
+      promptParts.skillsMenuText +
+      promptParts.pinnedSkillsText,
+    toolDefsTokens: toolDefsTokens(tools),
+    referenceText: promptParts.volatile,
+    historyText: historyMessages
+      .map((m) => (typeof m.content === "string" ? m.content : JSON.stringify(m.content ?? "")))
+      .join(""),
+  });
 }
 
 export function computeContextBreakdown(input: ComputeBreakdownInput): ContextBreakdown {
@@ -73,7 +108,12 @@ export function computeContextBreakdown(input: ComputeBreakdownInput): ContextBr
       : breakdown.total;
   breakdown.displayTotal = padded;
   breakdown.truncated = input.truncated;
-  breakdown.cacheHit = input.cacheHit;
+  if (typeof input.cachedTokens === "number") {
+    breakdown.cachedTokens = input.cachedTokens;
+    breakdown.cacheHit = input.cachedTokens > 0;
+  } else if (input.cacheHit !== undefined) {
+    breakdown.cacheHit = input.cacheHit;
+  }
   if (input.warning) breakdown.warning = input.warning;
   return breakdown;
 }

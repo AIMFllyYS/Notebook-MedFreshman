@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { ContextBreakdown } from '@/lib/types/chat';
 import type { TokenUsage } from '@/lib/hooks/useTokenTracker';
+import { resolveSessionContextBudget } from '@/lib/context/estimateFullContext';
 
 const EMPTY_USAGE: TokenUsage = { promptTokens: 0, completionTokens: 0, cachedTokens: 0, totalTokens: 0 };
 
@@ -83,15 +84,15 @@ export const useFloatingTokenTracker = create<FloatingTokenTrackerState>((set, g
   setCurrentContext(sessionId, tokens, limit) {
     set((s) => {
       const prev = s.sessions[sessionId] ?? emptySession();
-      const fixedLimit = prev.sessionContextBudgetTokens > 0 ? prev.sessionContextBudgetTokens : limit;
+      const budget = resolveSessionContextBudget(prev.sessionContextBudgetTokens, limit);
       return {
         sessions: {
           ...s.sessions,
           [sessionId]: {
             ...prev,
             currentContextTokens: tokens,
-            modelContextLimit: fixedLimit,
-            sessionContextBudgetTokens: fixedLimit,
+            modelContextLimit: budget,
+            sessionContextBudgetTokens: budget,
           },
         },
       };

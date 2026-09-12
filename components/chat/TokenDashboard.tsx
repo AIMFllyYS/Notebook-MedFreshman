@@ -7,6 +7,14 @@ import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
 import { useFloatingTokenTracker } from '@/lib/hooks/useFloatingTokenTracker';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { getModelInfoWithCustom } from '@/lib/ai/models';
+import {
+  FIRST_TURN_OVERHEAD_TOKENS,
+  contextRingCaption,
+  contextRingColor,
+  contextRingLevel,
+  formatContextCacheValue,
+  resolveSessionContextBudget,
+} from '@/lib/context/estimateFullContext';
 import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { estimateTokens } from '@/lib/context/estimateTokens';
 import { getMessageText } from '@/lib/chat/messageParts';
@@ -126,7 +134,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     const tracker = floatingSessionId
       ? useFloatingTokenTracker.getState().getSession(floatingSessionId)
       : useTokenTracker.getState();
-    const limit = tracker.sessionContextBudgetTokens > 0 ? tracker.sessionContextBudgetTokens : modelLimit;
+    const limit = resolveSessionContextBudget(tracker.sessionContextBudgetTokens, modelLimit);
 
     const serverCtx = floatingSessionId
       ? useFloatingTokenTracker.getState().getSession(floatingSessionId).serverContextTokens
@@ -158,7 +166,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
       const text = msgs
         .map((m) => getMessageText(m))
         .join('');
-      const est = estimateTokens(text) + 3000;
+      const est = estimateTokens(text) + FIRST_TURN_OVERHEAD_TOKENS;
       setCurrentContext(est);
     }
   }, [floatingSessionId, modelId]);
@@ -178,11 +186,14 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
 
   const ratio = ctxLimit > 0 ? ctxTokens / ctxLimit : 0;
   const pctText = `${Math.min(Math.round(ratio * 100), 999)}%`;
-  const ringColor =
-    ratio > 0.7 ? 'var(--md-sys-color-error)' :
-    ratio > 0.4 ? '#f59e0b' :
-    '#10b981';
+  const ringLevel = contextRingLevel(ratio);
+  const ringColor = contextRingColor(ringLevel);
+  const ringCaption = contextRingCaption(ringLevel);
   const barColor = ringColor;
+  const cachedTokens = breakdown?.cachedTokens ?? lastTurn.cachedTokens;
+  const showCacheRow = breakdown?.cachedTokens !== undefined
+    || lastTurn.cachedTokens > 0
+    || lastTurn.promptTokens > 0;
 
   const turnCost = sessionLedger.lastTurn.costCny;
   const totalCost = sessionLedger.costCny;
@@ -243,6 +254,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             {isLoading && <Loader2 size={11} className="animate-spin" />}
             {pctText} ({fmtTokens(ctxTokens)} / {fmtTokens(ctxLimit)}) 上下文已使用
+            {ringCaption ? ` · ${ringCaption}` : ''}
           </span>
         }
         placement="top"
@@ -346,12 +358,15 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                   transition: 'width 0.3s ease, background 0.3s ease',
                 }} />
               </div>
+              {ringCaption && (
+                <div style={{ marginTop: 4, fontSize: 10, color: ringColor }}>{ringCaption}</div>
+              )}
             </div>
 
-            {(contextTruncated || breakdown?.cacheHit !== undefined) && (
+            {(contextTruncated || showCacheRow) && (
               <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 10 }}>
-                {breakdown?.cacheHit !== undefined && (
-                  <Row label="上下文缓存" value={breakdown.cacheHit ? '命中' : '未命中'} />
+                {showCacheRow && (
+                  <Row label="上下文缓存" value={formatContextCacheValue(cachedTokens, fmtTokens)} />
                 )}
                 {contextTruncated && (
                   <Row label="发送策略" value="滚动摘要" accent />

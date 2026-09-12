@@ -302,7 +302,7 @@ describe('useChat SDK transport regression', () => {
     history[0].attachments = [{ type: 'image', id: 'old-image', mimeType: 'image/png' }];
     history[23].attachments = [{ type: 'image', id: 'recent-image', mimeType: 'image/png' }];
     useChatHistory.setState({ messagesById: { ...useChatHistory.getState().messagesById, main: history } });
-    useTokenTracker.setState({ serverContextTokens: 900, sessionContextBudgetTokens: 1000 });
+    useTokenTracker.setState({ serverContextTokens: 900_000, sessionContextBudgetTokens: 1_000_000 });
     vi.mocked(hydrateAttachmentsForApi).mockImplementation(async (messages) => messages.map((m) => ({
       ...m, attachments: m.attachments?.map(() => ({ type: 'image' as const, mimeType: 'image/png', base64: 'data:image/png;base64,aW1hZ2U=' })),
     })));
@@ -316,7 +316,7 @@ describe('useChat SDK transport regression', () => {
     expect(sent.some((m) => m.id === 'old-0')).toBe(true);
     expect(sent.at(-2)?.parts.some((p) => p.type === 'file')).toBe(true);
     expect(sent.at(-1)?.parts).toContainEqual({ type: 'file', mediaType: 'image/png', url: 'data:image/png;base64,aW1hZ2U=' });
-    expect(requests[0].body).toMatchObject({ contextTruncated: true, sessionContextBudgetTokens: 1000 });
+    expect(requests[0].body).toMatchObject({ contextTruncated: true, sessionContextBudgetTokens: 1_000_000 });
     expect(useTokenTracker.getState().contextWarning).toContain('80%');
     expect(messagesFor()).toHaveLength(26);
     expect(messagesFor()[0]).toBe(history[0]);

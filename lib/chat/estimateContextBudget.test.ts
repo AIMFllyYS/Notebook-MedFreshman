@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { displayContextTokens, estimateContextBudget } from "./estimateContextBudget.ts";
+import { estimateFullContextTokens, FIRST_TURN_OVERHEAD_TOKENS } from "@/lib/context/estimateFullContext.ts";
 import type { ChatMessage } from "@/lib/types/chat";
 
 const msg = (text: string): ChatMessage => ({
@@ -10,16 +11,16 @@ const msg = (text: string): ChatMessage => ({
   parts: [{ type: "text", text }],
 });
 
-test("estimateContextBudget：优先用会话已锁定的预算与服务端 token", () => {
+test("estimateContextBudget：有服务端 token 时叠加本轮提问；分母取锁定值与当前窗口较大者", () => {
   const budget = estimateContextBudget(
     { sessionContextBudgetTokens: 10_000, serverContextTokens: 7_900 },
     { contextK: 128 },
     [msg("hello")],
     "追问",
   );
-  assert.equal(budget.limit, 10_000);
+  assert.equal(budget.limit, 128_000);
   assert.ok(budget.estimated > 7_900);
-  assert.equal(budget.softLimitReached, budget.estimated / 10_000 >= 0.8);
+  assert.equal(budget.softLimitReached, budget.estimated / 128_000 >= 0.8);
 });
 
 test("estimateContextBudget：无服务端累计时用消息估算 + 3000，软上限 80%", () => {
@@ -68,6 +69,36 @@ test("estimateContextBudget：软上限用未垫高的 serverContextTokens，对
   );
   assert.equal(recovered.softLimitReached, false);
   assert.ok(recovered.estimated < 8_000);
+});
+
+test("estimateContextBudget：换到更大窗口模型后预算分母更新", () => {
+  const grown = estimateContextBudget(
+    { sessionContextBudgetTokens: 128_000, serverContextTokens: 10_000 },
+    { contextK: 1000 },
+    [msg("hi")],
+    "追问",
+  );
+  assert.equal(grown.limit, 1_000_000);
+  const kept = estimateContextBudget(
+    { sessionContextBudgetTokens: 1_000_000, serverContextTokens: 10_000 },
+    { contextK: 32 },
+    [msg("hi")],
+    "追问",
+  );
+  assert.equal(kept.limit, 1_000_000);
+});
+
+test("estimateContextBudget：两端 80% 走 estimateFullContextTokens", () => {
+  const budget = estimateContextBudget(
+    { sessionContextBudgetTokens: 0, serverContextTokens: 0 },
+    { contextK: 8 },
+    [msg("hello")],
+    "hello",
+  );
+  assert.equal(
+    budget.estimated,
+    estimateFullContextTokens({ historyText: "hello", extraTokens: FIRST_TURN_OVERHEAD_TOKENS }),
+  );
 });
 
 test("estimateContextBudget：缺模型时默认 128k", () => {

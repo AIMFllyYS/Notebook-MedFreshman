@@ -7,7 +7,10 @@ import { createAssistantPlaceholder, getMessageText, getReasoningText } from './
 import type { ChatMessage, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
 
 const usage: UsageSummary = { promptTokens: 100, completionTokens: 20, cachedTokens: 30, totalTokens: 120 };
-const breakdown: ContextBreakdown = { tools: 5, skills: 5, conversation: 10, pages: 80, webSearch: 20, total: 120, cacheHit: true };
+const breakdown: ContextBreakdown = {
+  tools: 5, skills: 5, conversation: 10, pages: 80, webSearch: 20, total: 120,
+  displayTotal: 120, cachedTokens: 30, cacheHit: true,
+};
 const initial = () => createAssistantPlaceholder('local-id', { modelId: 'selected-model', thinkingEnabled: true }, 123);
 
 function fromChunks(chunks: UIMessageChunk[]) {

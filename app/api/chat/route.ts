@@ -11,6 +11,7 @@ import { compactHistory } from "@/lib/context/compactHistory";
 import { pruneStudyMessages } from "@/lib/context/pruneStudyMessages";
 import { CONTEXT_WARNING } from "@/lib/chat/estimateContextBudget";
 import { getContextManager } from "@/lib/context";
+import { isSoftLimitReached } from "@/lib/context/estimateFullContext";
 import type { ChatContext, ChatMessage, ChatOptions } from "@/lib/types/chat";
 import { ENV_MODEL_PRO, ENV_MODEL_FLASH } from "@/lib/ai/provider";
 import { getModelInfoWithCustom } from "@/lib/ai/models";
@@ -19,7 +20,7 @@ import { withSseHeartbeat } from "@/lib/ai/sdk/heartbeat";
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
 import { TOOL_STEP_LIMIT_INFO } from "@/lib/ai/agent/tools/server";
-import { computeContextBreakdown } from "@/lib/ai/agent/contextBreakdown";
+import { computeContextBreakdown, estimateRequestContextTokens } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
 import { formatRequestError, parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
 import { awaitUsage, resolveActualBillingModelId, runWithLedgerContext, settleChatUsage } from "@/lib/billing/usageLedger";
@@ -163,27 +164,22 @@ export async function POST(req: NextRequest) {
         throw new Error(`当前模型 ${modelInfo.label} 不支持图片理解，请切换到支持视觉的模型（如 MiMo V2.5）。`);
       }
 
-      // 参考材料 + 软上限。客户端已截断则跳过全文/检索；溢出时再降一档。
+      // 参考材料 + 软上限。两端 80% 用同一套全量估算（system + 工具 schema + 参考材料 + 对话历史）。
       const userText = lastUserText(body.messages);
-      const ctxManager = getContextManager(options.contextMode ?? "full", effectiveModelId);
+      const ctxManager = getContextManager(options.contextMode ?? "full", effectiveModelId, customGroups);
       let ctxResult = await ctxManager.buildContext(chatCtx, userText, { compact: body.contextTruncated });
+      const prunedHistory = pruneStudyMessages(compactArtifactMessages(await toModelMessages(body.messages)));
       const contextBudget = body.sessionContextBudgetTokens ?? ctxResult.maxTokens;
-      let serverSoftLimitReached = contextBudget > 0 && ctxResult.tokenCount / contextBudget >= 0.8;
-      if (!body.contextTruncated && (serverSoftLimitReached || ctxResult.overflow)) {
-        ctxResult = await ctxManager.buildContext(chatCtx, userText, { compact: true });
-        serverSoftLimitReached = contextBudget > 0 && ctxResult.tokenCount / contextBudget >= 0.8;
-      }
-      const contextTruncated = body.contextTruncated || serverSoftLimitReached || ctxResult.overflow;
 
-      const bundle = createStudyAgent({
+      const makeBundle = (truncated: boolean, referenceContext: string) => createStudyAgent({
         model: resolved.model,
         chatCtx,
         options,
         disabledTools: body.disabledTools,
         skills: body.skills,
         globalContext: body.globalContext.trim(),
-        referenceContext: ctxResult.context,
-        contextTruncated,
+        referenceContext,
+        contextTruncated: truncated,
         artifacts: body.artifacts,
         isImageMode,
         selectedModelId: modelId ?? effectiveModelId,
@@ -191,8 +187,29 @@ export async function POST(req: NextRequest) {
         thinking: options.enableThinking ? resolved.thinkingSettings(options.thinkingEffort) : {},
       });
 
-      const rawHistory = await toModelMessages(body.messages);
-      const prunedHistory = pruneStudyMessages(compactArtifactMessages(rawHistory));
+      const estimateIncoming = (truncated: boolean, referenceContext: string) => {
+        const next = makeBundle(truncated, referenceContext);
+        return {
+          bundle: next,
+          tokens: estimateRequestContextTokens({
+            promptParts: next.promptParts,
+            tools: next.tools,
+            historyMessages: prunedHistory,
+          }),
+        };
+      };
+
+      let incoming = estimateIncoming(body.contextTruncated, ctxResult.context);
+      let serverSoftLimitReached = isSoftLimitReached(incoming.tokens, contextBudget);
+      if (!body.contextTruncated && (serverSoftLimitReached || ctxResult.overflow)) {
+        ctxResult = await ctxManager.buildContext(chatCtx, userText, { compact: true });
+        incoming = estimateIncoming(true, ctxResult.context);
+        serverSoftLimitReached = isSoftLimitReached(incoming.tokens, contextBudget);
+      }
+      const contextTruncated = body.contextTruncated || serverSoftLimitReached || ctxResult.overflow;
+      const bundle = contextTruncated === body.contextTruncated
+        ? incoming.bundle
+        : makeBundle(contextTruncated, ctxResult.context);
       const compacted = await compactHistory({
         messages: prunedHistory,
         shouldCompact: contextTruncated,
@@ -286,7 +303,8 @@ export async function POST(req: NextRequest) {
           steps,
           clientContextTokens: body.clientContextTokens ?? null,
           truncated: contextTruncated,
-          cacheHit: ctxResult.cacheHit,
+          cachedTokens: settled.summary?.cachedTokens ?? 0,
+          cacheHit: (settled.summary?.cachedTokens ?? 0) > 0,
           warning: contextTruncated ? CONTEXT_WARNING : undefined,
         }),
       });

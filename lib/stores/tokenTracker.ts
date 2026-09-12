@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { ContextBreakdown } from '@/lib/types/chat';
+import { resolveSessionContextBudget } from '@/lib/context/estimateFullContext';
 
 export interface TokenUsage {
   promptTokens: number;
@@ -21,7 +22,7 @@ export interface TokenTrackerState {
   lastBreakdownTotal: number;
   /** Model context limit in tokens (derived from ModelInfo.contextK). */
   modelContextLimit: number;
-  /** Fixed per-session context budget. It is set once per session and does not change on model switch. */
+  /** Per-session context budget. Grows if the current model window is larger; persist key name frozen. */
   sessionContextBudgetTokens: number;
   contextTruncated: boolean;
   contextWarning: string | null;
@@ -73,11 +74,11 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
 
   setCurrentContext(tokens, limit) {
     set((s) => {
-      const fixedLimit = s.sessionContextBudgetTokens > 0 ? s.sessionContextBudgetTokens : limit;
+      const budget = resolveSessionContextBudget(s.sessionContextBudgetTokens, limit);
       return {
         currentContextTokens: tokens,
-        modelContextLimit: fixedLimit,
-        sessionContextBudgetTokens: fixedLimit,
+        modelContextLimit: budget,
+        sessionContextBudgetTokens: budget,
       };
     });
   },

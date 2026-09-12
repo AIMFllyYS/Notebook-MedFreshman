@@ -10,15 +10,18 @@ function readWorkspaceFile(path: string) {
   return readFileSync(join(root, path), "utf8");
 }
 
-test("token tracker keeps a fixed session context budget", () => {
+test("token tracker grows the session budget when the model window is larger", () => {
   const tracker = useTokenTracker.getState();
   tracker.resetSession();
 
   useTokenTracker.getState().setCurrentContext(10_000, 128_000);
   useTokenTracker.getState().setCurrentContext(20_000, 1_000_000);
 
-  assert.equal(useTokenTracker.getState().modelContextLimit, 128_000);
-  assert.equal(useTokenTracker.getState().sessionContextBudgetTokens, 128_000);
+  assert.equal(useTokenTracker.getState().modelContextLimit, 1_000_000);
+  assert.equal(useTokenTracker.getState().sessionContextBudgetTokens, 1_000_000);
+
+  useTokenTracker.getState().setCurrentContext(21_000, 32_000);
+  assert.equal(useTokenTracker.getState().sessionContextBudgetTokens, 1_000_000);
 });
 
 test("usage accounting does not overwrite context ring totals", () => {
@@ -77,11 +80,26 @@ test("chat route uses last user message, selected model context manager, and sof
   const source = readWorkspaceFile("app/api/chat/route.ts");
 
   assert.match(source, /reverse\(\)\.find\(\(m\) => m\.role === "user"\)/);
-  assert.match(source, /getContextManager\(options\.contextMode \?\? "full", effectiveModelId\)/);
+  assert.match(source, /getContextManager\(options\.contextMode \?\? "full", effectiveModelId, customGroups\)/);
   assert.match(source, /body\.contextTruncated \|\| serverSoftLimitReached \|\| ctxResult\.overflow/);
   assert.match(source, /clientContextTokens: body\.clientContextTokens \?\? null/);
   assert.match(source, /truncated: contextTruncated/);
-  assert.match(source, /cacheHit: ctxResult\.cacheHit/);
+  assert.match(source, /estimateRequestContextTokens/);
+  assert.match(source, /isSoftLimitReached/);
+  assert.match(source, /cachedTokens: settled\.summary\?\.cachedTokens \?\? 0/);
+  assert.doesNotMatch(source, /cacheHit: ctxResult\.cacheHit/);
+});
+
+test("token dashboard binds context cache to cachedTokens and aligns ring with 80% soft limit", () => {
+  const dash = readWorkspaceFile("components/chat/TokenDashboard.tsx");
+  assert.match(dash, /formatContextCacheValue\(cachedTokens/);
+  assert.match(dash, /contextRingLevel/);
+  assert.doesNotMatch(dash, /breakdown\?\.cacheHit \? '命中' : '未命中'/);
+  assert.doesNotMatch(dash, /ratio > 0\.7 \? 'var\(--md-sys-color-error\)'/);
+
+  const full = readWorkspaceFile("lib/context/fullContext.ts");
+  assert.doesNotMatch(full, /_contextCache/);
+  assert.doesNotMatch(full, /createHash/);
 });
 
 test("dynamic tool context uses contextKey de-duplication", () => {
@@ -103,7 +121,7 @@ test("dynamic tool context uses contextKey de-duplication", () => {
 test("chat panel warns at 80 percent but does not disable input", () => {
   const source = readWorkspaceFile("components/chat/ChatPanel.tsx");
 
-  assert.match(source, /const showWarning = ctxRatio >= 0\.8 \|\| contextTruncated/);
+  assert.match(source, /const showWarning = ctxRatio >= SOFT_LIMIT_RATIO \|\| contextTruncated/);
   assert.doesNotMatch(source, /disabled=\{contextFull\}/);
   assert.doesNotMatch(source, /disabledReason="上下文已满/);
 });

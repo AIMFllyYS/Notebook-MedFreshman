@@ -73,6 +73,10 @@ function readBreakdown(value: unknown): ContextBreakdown | undefined {
     conversation: data.conversation as number, pages: data.pages as number,
     webSearch: data.webSearch as number, total: data.total as number,
     ...(typeof data.truncated === 'boolean' ? { truncated: data.truncated } : {}),
+    ...(typeof data.displayTotal === 'number' && Number.isFinite(data.displayTotal) && data.displayTotal >= 0
+      ? { displayTotal: data.displayTotal } : {}),
+    ...(typeof data.cachedTokens === 'number' && Number.isFinite(data.cachedTokens) && data.cachedTokens >= 0
+      ? { cachedTokens: data.cachedTokens } : {}),
     ...(typeof data.cacheHit === 'boolean' ? { cacheHit: data.cacheHit } : {}),
     ...(typeof data.warning === 'string' ? { warning: data.warning } : {}),
   };

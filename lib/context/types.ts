@@ -1,5 +1,5 @@
 import type { ChatContext } from '@/lib/types/chat';
-import { MODELS, getModelInfo } from '@/lib/ai/models';
+import { MODELS, getModelInfoWithCustom, type CustomApiGroup } from '@/lib/ai/models';
 import type { ReferenceTier } from '@/lib/context/referenceTiers';
 
 export type ContextMode = 'full' | 'semantic';
@@ -37,8 +37,8 @@ export const MODEL_TOKEN_LIMITS: Record<string, number> = Object.fromEntries([
   ['default', 128_000],
 ]);
 
-export function getMaxTokens(model: string): number {
-  const k = getModelInfo(model)?.contextK;
+export function getMaxTokens(model: string, customGroups: CustomApiGroup[] = []): number {
+  const k = getModelInfoWithCustom(model, customGroups)?.contextK;
   if (typeof k === 'number' && k > 0) return k * 1000;
   return MODEL_TOKEN_LIMITS.default;
 }

@@ -40,6 +40,7 @@ export type StudyDataParts = {
 export interface StudyMessageMetadata {
   thinkingEnabled?: boolean;
   searchEnabled?: boolean;
+  /** 上游 prefix cache 是否命中（cachedTokens > 0），不是本地 pageId hash。 */
   cacheHit?: boolean;
   /** 发起本条回复时选中的模型 id。 */
   modelId?: string;
@@ -70,7 +71,9 @@ export interface ContextBreakdown {
   displayTotal?: number;
   /** 当前请求是否因 80% 软上限而走滚动摘要 / 分级裁剪。 */
   truncated?: boolean;
-  /** 全量页面上下文是否命中缓存。 */
+  /** 上游 usage 的 cachedTokens。看板「上下文缓存」绑这个，不再绑本地 pageId hash 槽。 */
+  cachedTokens?: number;
+  /** 上游 prefix cache 是否命中（cachedTokens > 0）。不是本地全文 MD5 单槽。 */
   cacheHit?: boolean;
   /** 给 UI 持续展示的上下文警示。 */
   warning?: string;
