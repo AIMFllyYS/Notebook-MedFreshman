@@ -56,6 +56,8 @@ test("artifact and image generation use the model selected when the tool call wa
   assert.match(imageCard, /modelId,/);
   assert.match(imageViewer, /const imageModelId = cur\.modelId \|\| settings\.selectedModelId/);
   assert.match(imageViewer, /defaultImageModelId: cur\.modelId \? null : settings\.defaultImageModelId/);
+  assert.match(imageViewer, /formatImageGenError/);
+  assert.match(imageViewer, /imageGenErrorHeading/);
 });
 
 test("artifact route rejects image models before invoking html generation", () => {

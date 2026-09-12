@@ -262,6 +262,28 @@ test("resolveImageProvider：用户生图私网 baseUrl 被拒绝", () => {
   );
 });
 
+test("resolveImageProvider：RELAY 与 AI_BASE 不同时仍走硅基流动", () => {
+  const prevSfBase = process.env.SILICONFLOW_BASE_URL;
+  const prevSfKey = process.env.SILICONFLOW_API_KEY;
+  process.env.SILICONFLOW_BASE_URL = "https://api.siliconflow.cn/v1";
+  process.env.SILICONFLOW_API_KEY = "sf-image-key";
+  try {
+    const image = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo");
+    const chat = resolveProvider("deepseek/deepseek-v4.1-flash");
+    assert.ok(image.baseUrl.includes("api.siliconflow.cn"), image.baseUrl);
+    assert.equal(image.apiKey, "sf-image-key");
+    assert.equal(image.apiModelId, "Tongyi-MAI/Z-Image-Turbo");
+    assert.equal(image.imageApiStyle, "siliconflow");
+    assert.ok(!image.baseUrl.includes("relay.protocom.org"));
+    assert.notEqual(image.baseUrl, chat.baseUrl);
+  } finally {
+    if (prevSfBase === undefined) delete process.env.SILICONFLOW_BASE_URL;
+    else process.env.SILICONFLOW_BASE_URL = prevSfBase;
+    if (prevSfKey === undefined) delete process.env.SILICONFLOW_API_KEY;
+    else process.env.SILICONFLOW_API_KEY = prevSfKey;
+  }
+});
+
 test("resolveImageProvider：用户显式选中的 custom 生图模型优先于默认生图模型", () => {
   const selectedModelId = buildCustomModelRegistryId("openai-image", "selected-image-model");
   const defaultModelId = buildCustomModelRegistryId("openai-image", "default-image-model");

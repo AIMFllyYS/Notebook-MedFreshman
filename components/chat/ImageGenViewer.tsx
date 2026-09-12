@@ -7,7 +7,7 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStore";
 import { useLightbox } from "@/lib/stores/lightbox";
 import ManagedWindow from "@/components/window/ManagedWindow";
-import { formatImageGenError } from "@/lib/ai/imageGenError";
+import { formatImageGenError, imageGenErrorHeading } from "@/lib/ai/imageGenError";
 
 /** 将归一化图片项转为可渲染的 src：优先 url，回退 b64_json data URL。 */
 function imageSrc(img: ImageGenImage): string {
@@ -175,7 +175,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                 className="text-[13px] font-semibold"
                 style={{ color: "var(--md-sys-color-on-surface)" }}
               >
-                生图失败
+                {imageGenErrorHeading(session.error)}
               </div>
               <div
                 className="max-w-md text-[12px] leading-relaxed"

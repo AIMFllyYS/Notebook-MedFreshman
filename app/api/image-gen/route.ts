@@ -9,6 +9,7 @@ import { UnsafeCustomBaseUrlError } from "@/lib/ai/customBaseUrl";
 import { parseUpstreamErrorBody } from "@/lib/ai/upstream";
 import type { CustomApiGroup } from "@/lib/ai/models";
 import { normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
+import { normalizeImageGenImages } from "@/lib/ai/imageGenResponse";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,12 +21,6 @@ export const dynamic = "force-dynamic";
  * - 其他模型（如 SiliconFlow 的 Z-Image-Turbo）走 SiliconFlow 风格：
  *   请求体用 image_size/batch_size，响应为 { images: [{url}] }。
  */
-/** 归一化后的图片项，兼容 OpenAI（url 或 b64_json）与 SiliconFlow（url）。 */
-interface NormalizedImage {
-  url?: string;
-  b64_json?: string;
-  revised_prompt?: string;
-}
 
 function sanitizeImageGenMessage(message: string): string {
   return message
@@ -138,35 +133,12 @@ export async function POST(req: NextRequest) {
 
     const data = await res.json().catch(() => null);
     if (!data) {
-      return Response.json({ error: "生图 API 返回格式异常" }, { status: 500 });
+      return jsonError(500, "生图 API 返回格式异常", "bad_response");
     }
 
-    // 兼容 OpenAI (data.data) 与 SiliconFlow (data.images) 两种响应格式
-    const rawImages: unknown[] = Array.isArray(data.data)
-      ? data.data
-      : Array.isArray(data.images)
-        ? data.images
-        : [];
-
-    if (rawImages.length === 0) {
-      return Response.json({ error: "生图 API 返回格式异常" }, { status: 500 });
-    }
-
-    // 归一化图片项：统一提取 url / b64_json / revised_prompt
-    const images: NormalizedImage[] = rawImages
-      .map((item) => {
-        if (!item || typeof item !== "object") return null;
-        const obj = item as Record<string, unknown>;
-        const img: NormalizedImage = {};
-        if (typeof obj.url === "string") img.url = obj.url;
-        if (typeof obj.b64_json === "string") img.b64_json = obj.b64_json;
-        if (typeof obj.revised_prompt === "string") img.revised_prompt = obj.revised_prompt;
-        return img.url || img.b64_json ? img : null;
-      })
-      .filter((x): x is NormalizedImage => x !== null);
-
+    const images = normalizeImageGenImages(data);
     if (images.length === 0) {
-      return Response.json({ error: "生图 API 未返回可用图片" }, { status: 500 });
+      return jsonError(500, "生图 API 未返回可用图片", "bad_response");
     }
 
     // usage（gpt-image-1 按 token 计费；dall-e 系列与 SiliconFlow 无此字段）

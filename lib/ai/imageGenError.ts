@@ -14,8 +14,16 @@ export function formatImageGenError(status: number, body: ImageGenErrorBody | nu
   if (code === "bad_endpoint" || status === 404) {
     return message || "生图端点不对，请检查设置中的 Base URL";
   }
-  if (code === "upstream_auth") {
+  if (code === "upstream_auth" || code === "upstream") {
     return message || "生图上游拒绝访问，请检查端点与密钥";
   }
   return message || `生图请求失败（${status}）`;
+}
+
+/** 错误主标题：401 不得写成「生图失败」。 */
+export function imageGenErrorHeading(message: string | undefined): string {
+  if (message && message.includes("未登录")) return "未登录";
+  if (message && (/端点不对/.test(message) || /未配置/.test(message))) return "生图端点不对";
+  if (message && message.includes("上游拒绝")) return "上游拒绝";
+  return "生图失败";
 }
