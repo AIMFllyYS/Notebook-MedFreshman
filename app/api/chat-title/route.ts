@@ -6,6 +6,7 @@ import {
   sanitizeSessionTitle,
 } from "@/lib/chat/sessionTitle";
 import { resolveLanguageModel, UPSTREAM_PROVIDER_NAME } from "@/lib/ai/sdk/languageModel";
+import { logSatelliteError } from "@/lib/ai/observability/agentLog";
 import { settleUsage } from "@/lib/billing/usageLedger";
 import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
 
@@ -77,7 +78,8 @@ export async function POST(req: NextRequest) {
       generated: true,
       model: provider.model,
     });
-  } catch {
+  } catch (err) {
+    logSatelliteError("/api/chat-title", err);
     return Response.json({ title: fallback, generated: false, model: provider.model });
   }
 }

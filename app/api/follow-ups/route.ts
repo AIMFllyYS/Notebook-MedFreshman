@@ -5,6 +5,7 @@ import { SUBJECTS } from "@/lib/constants/subjects";
 import { ENV_MODEL_FLASH } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { parseJsonArrayQuestions } from "@/lib/ai/agent/followUps";
+import { logSatelliteError } from "@/lib/ai/observability/agentLog";
 import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
 import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
@@ -17,9 +18,19 @@ interface ClientMessage {
   content: string;
 }
 
+function asClientMessage(value: unknown): ClientMessage | null {
+  if (!value || typeof value !== "object") return null;
+  const rec = value as Record<string, unknown>;
+  if (rec.role !== "user" && rec.role !== "assistant") return null;
+  if (typeof rec.content !== "string") return null;
+  return { role: rec.role, content: rec.content };
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
-  const messages: ClientMessage[] = Array.isArray(body.messages) ? body.messages : [];
+  const messages: ClientMessage[] = Array.isArray(body.messages)
+    ? body.messages.map(asClientMessage).filter((message): message is ClientMessage => message != null)
+    : [];
   const subjectId: string = String(body.subjectId ?? "probability");
   const categoryId: string = String(body.categoryId ?? "detail");
   const itemId: string = String(body.itemId ?? "");
@@ -68,7 +79,8 @@ export async function POST(req: NextRequest) {
       meta: { source: "follow-ups-route" },
     });
     return NextResponse.json({ questions: parseJsonArrayQuestions(result.text) });
-  } catch {
+  } catch (err) {
+    logSatelliteError("/api/follow-ups", err);
     return NextResponse.json({ questions: [] });
   }
 }

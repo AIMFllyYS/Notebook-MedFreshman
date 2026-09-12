@@ -16,7 +16,7 @@ import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
 import { computeContextBreakdown } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
-import { parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
+import { formatRequestError, parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
 import { awaitUsage, resolveActualBillingModelId, runWithLedgerContext, settleChatUsage } from "@/lib/billing/usageLedger";
 import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/lib/billing/quotaGate";
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
@@ -53,11 +53,13 @@ function hasFileParts(messages: ChatRequest["messages"]): boolean {
 
 /** 历史消息已由客户端剥离 reasoning/tool parts；这里只做 UIMessage → ModelMessage 转换。 */
 async function toModelMessages(messages: ChatRequest["messages"]): Promise<ModelMessage[]> {
-  const uiMessages = messages.map((m, i) => ({
-    id: m.id ?? `m_${i}`,
-    role: m.role,
-    parts: m.parts.filter((p) => p.type === "text" || p.type === "file"),
-  })) as ChatMessage[];
+  const uiMessages = messages
+    .filter((m) => m.role === "user" || m.role === "assistant")
+    .map((m, i) => ({
+      id: m.id ?? `m_${i}`,
+      role: m.role,
+      parts: m.parts.filter((p) => p.type === "text" || p.type === "file"),
+    })) as ChatMessage[];
   return convertToModelMessages(uiMessages, { ignoreIncompleteToolCalls: true });
 }
 
@@ -66,7 +68,7 @@ export async function POST(req: NextRequest) {
   try {
     body = parseChatRequest(await req.json().catch(() => ({})));
   } catch (err) {
-    return new Response(JSON.stringify({ error: `请求体不合法：${(err as Error).message}` }), {
+    return new Response(JSON.stringify({ error: formatRequestError(err) }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });

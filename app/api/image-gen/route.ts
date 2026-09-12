@@ -6,9 +6,10 @@ import {
   type ResolvedImageProvider,
 } from "@/lib/ai/provider";
 import { UnsafeCustomBaseUrlError } from "@/lib/ai/customBaseUrl";
-import { parseUpstreamErrorBody } from "@/lib/ai/upstream";
-import type { CustomApiGroup } from "@/lib/ai/models";
-import { normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
+import { capabilitySecretValues, normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
+import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
+import { collectRequestSecrets, formatRequestError, parseImageGenRequest } from "@/lib/ai/agent/requestSchema";
+import { logSatelliteError } from "@/lib/ai/observability/agentLog";
 import { normalizeImageGenImages } from "@/lib/ai/imageGenResponse";
 import { settleUsage } from "@/lib/billing/usageLedger";
 import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/lib/billing/quotaGate";
@@ -25,26 +26,22 @@ export const dynamic = "force-dynamic";
  *   请求体用 image_size/batch_size，响应为 { images: [{url}] }。
  */
 
-function sanitizeImageGenMessage(message: string): string {
-  return message
-    .replace(/https?:\/\/[^\s"'\\]+/gi, "[endpoint]")
-    .replace(/sk-[A-Za-z0-9_-]+/g, "[key]")
-    .slice(0, 200);
-}
-
 function jsonError(status: number, error: string, code: string) {
   return Response.json({ error, code }, { status });
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json().catch(() => ({}));
+  let body: ReturnType<typeof parseImageGenRequest>;
+  try {
+    body = parseImageGenRequest(await req.json().catch(() => ({})));
+  } catch (err) {
+    return jsonError(400, formatRequestError(err), "bad_request");
+  }
   const modelId = typeof body.modelId === "string" ? body.modelId : "";
   const prompt = typeof body.prompt === "string" ? body.prompt : "";
   const size = typeof body.size === "string" ? body.size : "1024x1024";
   const count = Math.min(Math.max(Number(body.count) || 1, 1), 4);
-  const customGroups: CustomApiGroup[] = Array.isArray(body.customApiGroups)
-    ? body.customApiGroups
-    : [];
+  const customGroups = body.customApiGroups;
   const defaultImageModelId =
     typeof body.defaultImageModelId === "string" ? body.defaultImageModelId : null;
   const capability = normalizeCapabilityEndpoints(body.capabilityEndpoints);
@@ -63,6 +60,12 @@ export async function POST(req: NextRequest) {
     }
     throw err;
   }
+
+  const secrets = [
+    ...collectRequestSecrets({ customApiGroups: customGroups }),
+    ...capabilitySecretValues(capability),
+    provider.apiKey,
+  ].filter((value): value is string => !!value);
 
   if (!provider.configured) {
     return jsonError(
@@ -130,15 +133,15 @@ export async function POST(req: NextRequest) {
 
     if (!res.ok) {
       const errText = await res.text().catch(() => "");
-      const parsed = parseUpstreamErrorBody(errText);
-      const message = sanitizeImageGenMessage(parsed.message || errText);
+      logSatelliteError("/api/image-gen", { status: res.status, body: errText });
       if (res.status === 404) {
         return jsonError(502, "生图端点不对（上游返回 404）", "bad_endpoint");
       }
       if (res.status === 401 || res.status === 403) {
         return jsonError(502, "生图上游拒绝访问，请检查端点与密钥", "upstream_auth");
       }
-      return jsonError(502, `生图上游拒绝：${message || res.status}`, "upstream");
+      const upstreamErr = Object.assign(new Error("image generation failed"), { statusCode: res.status });
+      return jsonError(502, toChatErrorMessage(upstreamErr, secrets), "upstream");
     }
 
     const data = await res.json().catch(() => null);
@@ -196,15 +199,18 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     clearTimeout(timeoutId);
+    logSatelliteError("/api/image-gen", err);
     const isAbort = err instanceof Error && err.name === "AbortError";
     if (isAbort) {
       return jsonError(500, "生图超时，请重试", "timeout");
     }
-    const raw = sanitizeImageGenMessage(String((err as Error)?.message ?? err));
-    const looksLikeEndpoint = /fetch|ENOTFOUND|ECONNREFUSED|Failed to parse URL|network|EAI_AGAIN/i.test(raw);
+    const chain = err && typeof err === "object" ? (err as { code?: unknown; cause?: { code?: unknown } }) : {};
+    const code = typeof chain.code === "string" ? chain.code : typeof chain.cause?.code === "string" ? chain.cause.code : "";
+    const looksLikeEndpoint = /ENOTFOUND|EAI_AGAIN|ECONNREFUSED|ECONNRESET|Failed to parse URL/i.test(code)
+      || /ENOTFOUND|EAI_AGAIN|ECONNREFUSED|Failed to parse URL/i.test(err instanceof Error ? err.message : "");
     if (looksLikeEndpoint) {
       return jsonError(502, "生图端点不对或无法连接，请检查设置中的 Base URL", "bad_endpoint");
     }
-    return jsonError(500, raw || "生图失败", "upstream");
+    return jsonError(500, toChatErrorMessage(err, secrets), "upstream");
   }
 }

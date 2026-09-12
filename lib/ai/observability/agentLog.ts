@@ -128,6 +128,11 @@ function defaultWrite(hook: string, data: unknown): void {
   appendAgentLog(hook, data);
 }
 
+/** 卫星路由上游失败：原始错误只落 JSONL，不回给前端。 */
+export function logSatelliteError(route: string, error: unknown): void {
+  defaultWrite("satelliteError", { route, error });
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }

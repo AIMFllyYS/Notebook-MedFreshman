@@ -2,6 +2,8 @@
 
 import type { LanguageModel } from "ai";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
+import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
+import { logSatelliteError } from "@/lib/ai/observability/agentLog";
 import { settleUsage } from "@/lib/billing/usageLedger";
 import {
   buildOutlineInstructions,
@@ -27,6 +29,7 @@ interface StreamDocumentOptions {
   /** 单阶段首字节 / 流中断超时。 */
   timeoutMs?: number;
   signal?: AbortSignal;
+  secrets?: string[];
 }
 
 const CONTINUATION_MAX = 2;
@@ -41,7 +44,7 @@ export async function streamDocument(options: StreamDocumentOptions): Promise<vo
 }
 
 async function streamOutline(
-  { send, id, model, timeoutMs = 90_000, signal }: StreamDocumentOptions,
+  { send, id, model, timeoutMs = 90_000, signal, secrets = [] }: StreamDocumentOptions,
   outlineReq: DocumentOutlineRequest,
 ): Promise<void> {
   send({ type: "document", id, status: "start", phase: "outline" });
@@ -75,17 +78,18 @@ async function streamOutline(
     }
     send({ type: "document", id, status: "outline", outline });
   } catch (err) {
+    logSatelliteError("/api/document", err);
     send({
       type: "document",
       id,
       status: "error",
-      message: String((err as Error)?.message ?? err),
+      message: toChatErrorMessage(err, secrets),
     });
   }
 }
 
 async function streamSection(
-  { send, id, model, timeoutMs = 120_000, signal }: StreamDocumentOptions,
+  { send, id, model, timeoutMs = 120_000, signal, secrets = [] }: StreamDocumentOptions,
   sectionReq: DocumentSectionRequest,
 ): Promise<void> {
   send({ type: "document", id, status: "start", phase: "section", sectionIndex: sectionReq.sectionIndex });
@@ -147,11 +151,12 @@ async function streamSection(
     const markdown = ensureSectionHeading(full, section.title);
     send({ type: "document", id, status: "section-done", sectionIndex, markdown, continued });
   } catch (err) {
+    logSatelliteError("/api/document", err);
     send({
       type: "document",
       id,
       status: "error",
-      message: String((err as Error)?.message ?? err),
+      message: toChatErrorMessage(err, secrets),
     });
   }
 }

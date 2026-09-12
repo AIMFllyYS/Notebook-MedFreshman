@@ -134,5 +134,32 @@ test("image-gen: 上游 404 为 bad_endpoint，401 为 upstream_auth", async (t)
   const deniedBody = await denied.json() as { code?: string; error?: string };
   assert.equal(deniedBody.code, "upstream_auth");
   assert.match(deniedBody.error ?? "", /上游拒绝/);
+  assert.doesNotMatch(deniedBody.error ?? "", /invalid api key|not found|https?:\/\/|sk-/);
   assert.equal(calls.length, 2);
+});
+
+test("image-gen: 上游 500 不回显原始 body / URL / key，且不透传上游 status", async (t) => {
+  useSiliconflowEnv();
+  upstream(t, () => new Response(
+    JSON.stringify({ error: { message: "quota https://api.evil.example/v1 Bearer sf-image-key sk-leaked" } }),
+    { status: 500 },
+  ));
+  const res = await route.POST(request({ modelId: "Tongyi-MAI/Z-Image-Turbo", prompt: "red circle" }));
+  assert.equal(res.status, 502);
+  const body = await res.json() as { error?: string; code?: string };
+  assert.equal(body.code, "upstream");
+  assert.match(body.error ?? "", /HTTP 500|失败/);
+  assert.doesNotMatch(body.error ?? "", /api\.evil\.example|sf-image-key|sk-leaked|quota https/);
+});
+
+test("image-gen: 超长 prompt 返回可读 400，不是裸 ZodError", async () => {
+  const res = await route.POST(request({
+    modelId: "Tongyi-MAI/Z-Image-Turbo",
+    prompt: "p".repeat(32 * 1024 + 1),
+  }));
+  assert.equal(res.status, 400);
+  const body = await res.json() as { error?: string; code?: string };
+  assert.equal(body.code, "bad_request");
+  assert.match(body.error ?? "", /过长|不合法/);
+  assert.doesNotMatch(body.error ?? "", /ZodError|too_big/);
 });

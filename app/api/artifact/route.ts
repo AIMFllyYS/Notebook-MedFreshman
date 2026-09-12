@@ -1,8 +1,10 @@
 import type { NextRequest } from "next/server";
-import type { CustomProvider } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
+import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { ARTIFACT_IDLE_TIMEOUT_MS, streamInteractiveArtifact } from "@/lib/ai/artifact";
-import { defaultEffortFor, getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
+import { collectRequestSecrets, formatRequestError, parseArtifactRequest } from "@/lib/ai/agent/requestSchema";
+import { logSatelliteError } from "@/lib/ai/observability/agentLog";
+import { defaultEffortFor, getModelInfoWithCustom } from "@/lib/ai/models";
 import { resolveActualBillingModelId, withRequestLedger } from "@/lib/billing/usageLedger";
 import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
@@ -17,22 +19,31 @@ function sse(obj: unknown): string {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json().catch(() => ({}));
+  const raw = await req.json().catch(() => ({}));
+  let body: ReturnType<typeof parseArtifactRequest>;
+  try {
+    body = parseArtifactRequest(raw);
+  } catch (err) {
+    const artifactId = String((raw as { id?: unknown })?.id ?? "");
+    return new Response(sse({ type: "artifact", id: artifactId, status: "error", message: formatRequestError(err) }), {
+      status: 400,
+      headers: { "Content-Type": "text/event-stream; charset=utf-8" },
+    });
+  }
   const artifactId = String(body.id ?? "");
   const title = String(body.title ?? "交互演示");
   const prompt = String(body.prompt ?? "");
   const modelId = typeof body.modelId === "string" ? body.modelId : undefined;
-  const customApiGroups: CustomApiGroup[] = Array.isArray(body.customApiGroups)
-    ? body.customApiGroups
-    : [];
-  const customProvider: CustomProvider | undefined =
-    body.customProvider && typeof body.customProvider === "object" ? body.customProvider : undefined;
+  const customApiGroups = body.customApiGroups;
+  const customProvider = body.customProvider;
+  const secrets = collectRequestSecrets({ customApiGroups, customProvider });
   const resolved = resolveLanguageModel(
     modelId,
     customApiGroups.length > 0 ? customApiGroups : customProvider,
     { firstChunkTimeoutMs: ARTIFACT_IDLE_TIMEOUT_MS },
   );
   const { model, provider } = resolved;
+  if (provider.apiKey) secrets.push(provider.apiKey);
   const info = getModelInfoWithCustom(provider.registryId, customApiGroups);
   // 会思考的模型必须带思考参数（尤其 thinkingRequired），并给 12 分钟滑动超时。
   const thinking = resolved.supportsThinking
@@ -108,11 +119,12 @@ export async function POST(req: NextRequest) {
             }),
         );
       } catch (err) {
+        logSatelliteError("/api/artifact", err);
         send({
           type: "artifact",
           id: artifactId,
           status: "error",
-          message: String((err as Error)?.message ?? err),
+          message: toChatErrorMessage(err, secrets),
         });
       } finally {
         clearInterval(pingTimer);

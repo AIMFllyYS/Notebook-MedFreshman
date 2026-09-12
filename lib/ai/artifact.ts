@@ -1,11 +1,12 @@
 // 交互式 HTML 产物生成：用一次独立的 LLM 流式调用产出一个自包含 HTML 文档。
 // 本模块只负责把上游 HTML delta 转换成 artifact 事件，由 /api/artifact 独立 SSE 路由消费。
 import type { LanguageModel } from "ai";
-import { APICallError } from "@ai-sdk/provider";
 import type { ResolvedProvider } from "@/lib/ai/provider";
 import { buildCustomModelRegistryId } from "@/lib/ai/models";
 import { resolveLanguageModel, type ThinkingCallSettings } from "@/lib/ai/sdk/languageModel";
+import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
+import { logSatelliteError } from "@/lib/ai/observability/agentLog";
 import { settleUsage } from "@/lib/billing/usageLedger";
 
 export const ARTIFACT_SYSTEM = `你是交互式教学演示生成专家。你的唯一任务是输出一个完整、自包含的 HTML 文档。
@@ -275,13 +276,13 @@ export async function streamInteractiveArtifact(
     }
     send({ type: "artifact", id: artifactId, status: "done", html });
   } catch (e) {
+    logSatelliteError("/api/artifact", e);
     const isAbort = e instanceof Error && (e.name === "AbortError" || e.name === "TimeoutError");
     send({
       type: "artifact",
       id: artifactId,
       status: "error",
-      message: isAbort ? "生成超时，请重试" : APICallError.isInstance(e) && e.statusCode
-        ? `生成失败 ${e.statusCode}` : String((e as Error)?.message ?? e),
+      message: isAbort ? "生成超时，请重试" : toChatErrorMessage(e, [provider.apiKey].filter(Boolean)),
     });
   }
 }

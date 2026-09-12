@@ -59,10 +59,7 @@ export function CanvasRevisionPanel({
       const payload = await res.json().catch(() => ({}));
       if (!res.ok || !payload?.block) {
         const message = typeof payload?.error === 'string' ? payload.error : 'Canvas revision failed.';
-        const rawOutput = typeof payload?.rawOutput === 'string' && payload.rawOutput.trim()
-          ? `\n\nRaw model output:\n${payload.rawOutput}`
-          : '';
-        setLocalError(`${message}${rawOutput}`);
+        setLocalError(message);
         return;
       }
       onRevisionAccepted?.(payload.block as CanvasBlock);

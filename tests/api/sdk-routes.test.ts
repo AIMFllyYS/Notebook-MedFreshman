@@ -14,6 +14,7 @@ let artifact: typeof import("../../app/api/artifact/route.ts");
 let title: typeof import("../../app/api/chat-title/route.ts");
 let followUps: typeof import("../../app/api/follow-ups/route.ts");
 let canvas: typeof import("../../app/api/canvas-revise/route.ts");
+let documentRoute: typeof import("../../app/api/document/route.ts");
 
 before(async () => {
   process.env.AI_BASE_URL = "https://builtin.invalid/v1";
@@ -26,10 +27,10 @@ before(async () => {
   process.env.AI_TITLE_MODEL = "title-unknown-model";
   delete process.env.AI_TITLE_BASE_URL;
   delete process.env.AI_TITLE_API_KEY;
-  [record, artifact, title, followUps, canvas] = await Promise.all([
+  [record, artifact, title, followUps, canvas, documentRoute] = await Promise.all([
     import("../../app/api/record/route.ts"), import("../../app/api/artifact/route.ts"),
     import("../../app/api/chat-title/route.ts"), import("../../app/api/follow-ups/route.ts"),
-    import("../../app/api/canvas-revise/route.ts"),
+    import("../../app/api/canvas-revise/route.ts"), import("../../app/api/document/route.ts"),
   ]);
 });
 after(() => {
@@ -196,11 +197,13 @@ test("record: HTTP and in-stream errors retain error/done shape and never emit r
     : Response.json({ error: { message: "denied" } }, { status: 401 }));
   const first = await events(await record.POST(request({ ...config(), mode: "excerpt", text: "材料" })));
   assert.deepEqual(first.map((part) => part.type), ["error", "done"]);
-  assert.match(first[0].message ?? "", /^接口返回 401：/);
+  assert.match(first[0].message ?? "", /HTTP 401|拒绝认证/);
+  assert.doesNotMatch(first[0].message ?? "", /denied|https?:\/\/|sk-|custom-test-key/);
   failInStream = true;
   const second = await events(await record.POST(request({ ...config(), mode: "excerpt", text: "材料" })));
   assert.deepEqual(second.map((part) => part.type), ["error", "done"]);
-  assert.match(second[0].message ?? "", /stream failed/);
+  assert.match(second[0].message ?? "", /失败|stream failed|取消/);
+  assert.doesNotMatch(second[0].message ?? "", /https?:\/\/|sk-/);
 });
 
 test("record: abort during generation reaches upstream and does not finalize a card", { timeout: 3000 }, async (t) => {
@@ -224,7 +227,7 @@ test("record: abort during generation reaches upstream and does not finalize a c
   }
   assert.equal(upstreamAborted, true);
   assert.doesNotMatch(rest, /"type":"result"/);
-  assert.match(rest, /user cancelled/);
+  assert.match(rest, /取消/);
 });
 
 test("artifact: OpenAI-compatible stream retains event schema, prompt order and HTML fence extraction", async (t) => {
@@ -297,7 +300,8 @@ test("artifact: upstream HTTP errors and pre-aborted requests do not emit a succ
   const calls = upstream(t, () => Response.json({ error: { message: "denied" } }, { status: 403 }));
   const data = await events(await artifact.POST(request({ ...config(), id: "a", prompt: "需求" })));
   assert.deepEqual(data.map((part) => part.status), ["start", "error"]);
-  assert.equal(data.at(-1)?.message, "生成失败 403");
+  assert.match(data.at(-1)?.message ?? "", /HTTP 403|拒绝认证/);
+  assert.doesNotMatch(data.at(-1)?.message ?? "", /denied|https?:\/\/|custom-test-key/);
   const signal = AbortSignal.abort(new DOMException("cancelled", "AbortError"));
   const cancelled = await events(await artifact.POST(request({ ...config(), id: "b", prompt: "需求" }, signal)));
   assert.deepEqual(cancelled.map((part) => part.status), ["start", "error"]);
@@ -418,13 +422,62 @@ test("canvas-revise: validation, unparseable output, failed diagnostics and HTTP
   assert.equal(calls.length, 0);
   const malformed = await canvas.POST(request(valid));
   assert.equal(malformed.status, 422);
-  assert.equal((await malformed.json()).rawOutput, "unparseable output");
+  const malformedBody = await malformed.json() as { error?: string; rawOutput?: string };
+  assert.equal("rawOutput" in malformedBody, false);
+  assert.match(malformedBody.error ?? "", /无法解析/);
   response = () => openAiJson(JSON.stringify({ kind: "plot", fn: "not_a_valid_function(x)", attrs: {} }));
   const failed = await canvas.POST(request(valid));
   assert.equal(failed.status, 422);
-  assert.equal((await failed.json()).diagnostics[0].ok, false);
-  response = () => Response.json({ error: { message: "denied" } }, { status: 401 });
+  const failedBody = await failed.json() as { diagnostics: { ok: boolean }[]; rawOutput?: string };
+  assert.equal(failedBody.diagnostics[0].ok, false);
+  assert.equal("rawOutput" in failedBody, false);
+  response = () => Response.json({
+    error: { message: "denied https://evil.example/v1 key=custom-test-key sk-leaked" },
+  }, { status: 401 });
   const upstreamFailed = await canvas.POST(request(valid));
   assert.equal(upstreamFailed.status, 502);
-  assert.match((await upstreamFailed.json()).error, /^Canvas revision request failed: 401 /);
+  const upstreamBody = await upstreamFailed.json() as { error?: string };
+  assert.match(upstreamBody.error ?? "", /HTTP 401|拒绝认证/);
+  assert.doesNotMatch(upstreamBody.error ?? "", /denied|evil\.example|custom-test-key|sk-leaked|rawOutput/);
+});
+
+test("record/artifact/document: oversized input is 400 Chinese; upstream 500 does not echo body", async (t) => {
+  const huge = "x".repeat(32 * 1024 + 1);
+  const recordHuge = await events(await record.POST(request({ ...config(), mode: "excerpt", text: huge })));
+  assert.match(recordHuge[0].message ?? "", /过长|不合法/);
+  assert.doesNotMatch(recordHuge[0].message ?? "", /ZodError|too_big/);
+
+  const artifactHuge = await artifact.POST(request({ ...config(), id: "a", prompt: huge }));
+  assert.equal(artifactHuge.status, 400);
+  const artifactEvents = await events(artifactHuge);
+  assert.match(artifactEvents[0].message ?? "", /过长|不合法/);
+
+  const docHuge = await documentRoute.POST(request({
+    ...config(),
+    id: "doc-1",
+    spec: { title: "t", format: "markdown", genre: "article", brief: "写一节" },
+    previousMarkdown: "x".repeat(128 * 1024 + 1),
+  }));
+  assert.equal(docHuge.status, 400);
+  const docEvents = await events(docHuge);
+  assert.match(docEvents[0].message ?? "", /过长|不合法/);
+
+  upstream(t, () => Response.json({
+    error: { message: "boom https://leak.example/v1 custom-test-key" },
+  }, { status: 500 }));
+  const recordFail = await events(await record.POST(request({ ...config(), mode: "excerpt", text: "材料" })));
+  assert.deepEqual(recordFail.map((part) => part.type), ["error", "done"]);
+  assert.doesNotMatch(recordFail[0].message ?? "", /leak\.example|custom-test-key|boom https/);
+  assert.match(recordFail[0].message ?? "", /HTTP 500|失败/);
+
+  const docFail = await events(await documentRoute.POST(request({
+    ...config(),
+    id: "doc-2",
+    spec: { title: "t", format: "markdown", genre: "article", brief: "写一节" },
+    phase: "outline",
+  })));
+  const docError = docFail.find((part) => part.status === "error" || part.type === "document");
+  assert.ok(docError);
+  const docMessage = docFail.find((part) => part.status === "error")?.message ?? "";
+  assert.doesNotMatch(docMessage, /leak\.example|custom-test-key/);
 });
