@@ -6,6 +6,7 @@ import { ENV_MODEL_FLASH, type CustomProvider } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import type { CustomApiGroup } from "@/lib/ai/models";
 import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 const FOLLOWUP_TIMEOUT_MS = 10_000;
 
@@ -62,14 +63,17 @@ export async function generateFallbackFollowUps(input: FallbackFollowUpsInput): 
       maxRetries: 0,
       abortSignal: AbortSignal.any(signals),
     });
+    const actual = resolved.getActualProvider();
+    const pool = resolveMainModelPool(usedPlatformCredentialsForProvider(actual));
     await settleUsage({
       rawUsage: result.totalUsage ?? result.usage,
       route: "/api/follow-ups",
       kind: "llm",
       selectedModelId: targetModel,
-      actualModelId: resolveActualBillingModelId(resolved.getActualProvider()),
+      actualModelId: resolveActualBillingModelId(actual),
       customGroups: Array.isArray(input.custom) ? input.custom : undefined,
-      pool: resolved.provider.isCustom ? "byok" : "platform",
+      pool: pool ?? undefined,
+      skipInsert: pool == null,
       meta: { source: "followup-fallback" },
     });
     return parsePipeSeparatedQuestions(result.text);

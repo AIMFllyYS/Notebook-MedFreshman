@@ -8,7 +8,8 @@ import { AsyncLocalStorage } from "node:async_hooks";
 import { extractAccessToken, verifySupabaseAccessToken, type VerifyAccessToken } from "@/lib/auth/aiGate";
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
 import { getModelInfo, getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
-import type { UsagePool } from "@/lib/billing/usagePool";
+import { BYOK_OVERHEAD_CNY_PER_MILLION, type UsagePool } from "@/lib/billing/usagePool";
+import { invalidateQuotaCache } from "@/lib/billing/quotaGate";
 import type { UsageSummary } from "@/lib/types/chat";
 
 export type { UsagePool };
@@ -36,6 +37,7 @@ export interface LedgerContext {
   selectedModelId?: string | null;
   actualModelId?: string | null;
   customGroups?: CustomApiGroup[];
+  skipInsert?: boolean;
   insert?: (row: UsageLedgerRow) => Promise<void>;
 }
 
@@ -86,6 +88,7 @@ interface SettleChatUsageInput {
   requestId?: string | null;
   route?: string;
   aborted?: boolean;
+  skipInsert?: boolean;
   insert?: (row: UsageLedgerRow) => Promise<void>;
 }
 
@@ -108,6 +111,8 @@ interface SettleUsageInput {
   source?: string;
   /** false 时只用显式 userId（主聊天 settle，避免误吃 ALS）。 */
   bindContext?: boolean;
+  /** BYOK 主模型不落台账。 */
+  skipInsert?: boolean;
   insert?: (row: UsageLedgerRow) => Promise<void>;
 }
 
@@ -215,6 +220,17 @@ function roundCostCny(value: number): number {
   return Number(value.toFixed(6));
 }
 
+export function calcByokOverheadCny(usage: MappedUsage, units = 0): number {
+  const tokens =
+    usage.promptTokens +
+    usage.completionTokens +
+    usage.cachedTokens +
+    usage.cacheWriteTokens +
+    usage.reasoningTokens;
+  const qty = tokens > 0 ? tokens : Math.max(0, units);
+  return roundCostCny((qty * BYOK_OVERHEAD_CNY_PER_MILLION) / 1_000_000);
+}
+
 /**
  * ¥ / 百万 token。uncached 优先用 noCacheTokens；否则 prompt − cacheRead − cacheWrite。
  * reasoning 已含在 completion 里时不重复加；仅当 completion 为 0 时按 output 价计 reasoning。
@@ -262,9 +278,19 @@ export function buildUsageLedgerRow(input: {
   const pricing = actualModelId
     ? getModelInfoWithCustom(actualModelId, input.customGroups ?? [])?.pricing
     : undefined;
+  const pool = input.pool ?? "platform";
+  const tokenCost = calcUsageCostCny(input.usage, pricing, input.rawUsage);
+  const imageCost =
+    kind === "image" && imageCount > 0 && pricing && tokenCost === 0
+      ? roundCostCny(imageCount * pricing.output)
+      : 0;
+  const costCny =
+    pool === "byok"
+      ? calcByokOverheadCny(input.usage, input.units ?? imageCount)
+      : tokenCost || imageCost;
   return {
     user_id: input.userId,
-    pool: input.pool ?? "platform",
+    pool,
     route: input.route ?? CHAT_USAGE_ROUTE,
     kind,
     selected_model_id: selectedModelId,
@@ -275,7 +301,7 @@ export function buildUsageLedgerRow(input: {
     reasoning_tokens: input.usage.reasoningTokens,
     cache_write_tokens: input.usage.cacheWriteTokens,
     image_count: imageCount,
-    cost_cny: calcUsageCostCny(input.usage, pricing, input.rawUsage),
+    cost_cny: costCny,
     session_id: input.sessionId ?? null,
     request_id: input.requestId ?? null,
     meta: {
@@ -342,7 +368,7 @@ export async function settleUsage(input: SettleUsageInput): Promise<SettleChatUs
   const actualModelId = mergeLedgerFields(input.actualModelId, ctx?.actualModelId);
   const summary = hasBillableUsage(usage) ? toUsageSummary(usage, actualModelId) : undefined;
   const userId = await resolveSettleUserId(input, ctx);
-  if (!userId) {
+  if (!userId || input.skipInsert || ctx?.skipInsert) {
     return { usage, summary, row: null, recorded: false };
   }
   const row = buildUsageLedgerRow({
@@ -366,6 +392,7 @@ export async function settleUsage(input: SettleUsageInput): Promise<SettleChatUs
   if (!row) return { usage, summary, row: null, recorded: false };
   try {
     await (input.insert ?? ctx?.insert ?? defaultInsert)(row);
+    invalidateQuotaCache(userId);
     return { usage, summary, row, recorded: true };
   } catch (error) {
     console.warn("[usage_ledger] insert failed:", error instanceof Error ? error.message : error);

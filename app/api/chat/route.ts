@@ -17,7 +17,9 @@ import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
 import { computeContextBreakdown } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
 import { parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
-import { awaitUsage, resolveActualBillingModelId, resolveLedgerUserId, runWithLedgerContext, settleChatUsage } from "@/lib/billing/usageLedger";
+import { awaitUsage, resolveActualBillingModelId, runWithLedgerContext, settleChatUsage } from "@/lib/billing/usageLedger";
+import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 import { runWithCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { capabilitySecretValues } from "@/lib/ai/capabilityEndpoints";
 
@@ -84,12 +86,17 @@ export async function POST(req: NextRequest) {
   const generationAbort = new AbortController();
   const generationSignal = AbortSignal.any([req.signal, generationAbort.signal]);
   const requestId = crypto.randomUUID();
-  const userId = await resolveLedgerUserId(req.headers);
+  const userId = await resolveQuotaUserId(req.headers);
 
   // 生图模式：用户选择了生图模型时，文本对话使用 imageModeTextModel（失败降级到 fallback）。
   const selectedModelInfo = modelId ? getModelInfoWithCustom(modelId, customGroups) : undefined;
   const isImageMode = selectedModelInfo?.type === "image";
   const effectiveModelId = isImageMode ? body.imageModeTextModel : modelId;
+
+  const previewProvider = resolveLanguageModel(effectiveModelId, effectiveCustom).provider;
+  const mainPool = resolveMainModelPool(usedPlatformCredentialsForProvider(previewProvider));
+  const gate = await assertQuotaAvailable({ userId, pool: mainPool });
+  if (!gate.ok) return quotaRejectedJson(gate);
 
   try {
     const { getIndexHealth } = await import("@/lib/ai/search/indexHealth");
@@ -199,14 +206,18 @@ export async function POST(req: NextRequest) {
       const selectedModelId = modelId ?? effectiveModelId;
       const actualProvider = resolved.getActualProvider();
       const actualModelId = resolveActualBillingModelId(actualProvider);
+      const usedPlatform = usedPlatformCredentialsForProvider(actualProvider);
+      const pool = resolveMainModelPool(usedPlatform);
       // 上游 usage 到手即记账；abort/error 也走这里，不依赖客户端是否还连着 SSE。
+      // BYOK 主模型不进任何池、不落行。
       const settled = await settleChatUsage({
         rawUsage: await awaitUsage(result.totalUsage),
         userId,
         selectedModelId,
         actualModelId,
         customGroups,
-        pool: actualProvider.isCustom ? "byok" : "platform",
+        pool: pool ?? undefined,
+        skipInsert: pool == null,
         sessionId: body.id,
         requestId,
         aborted,

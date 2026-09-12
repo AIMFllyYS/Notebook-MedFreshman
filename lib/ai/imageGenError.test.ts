@@ -8,6 +8,10 @@ test("formatImageGenError：401 为未登录，与上游错误区分", () => {
   assert.match(formatImageGenError(500, { code: "unconfigured", error: "生图 API 未配置" }), /未配置/);
   assert.match(formatImageGenError(502, { code: "upstream_auth", error: "上游拒绝" }), /上游拒绝/);
   assert.match(formatImageGenError(502, { code: "upstream", error: "生图上游拒绝：safety" }), /上游拒绝/);
+  assert.match(
+    formatImageGenError(402, { code: "quota_exhausted", error: "平台额度已用完。可改用 BYOK 继续使用。" }),
+    /可改用 BYOK/,
+  );
 });
 
 test("imageGenErrorHeading：401 不是「生图失败」", () => {
@@ -22,4 +26,8 @@ test("imageGenErrorHeading：401 不是「生图失败」", () => {
     "上游拒绝",
   );
   assert.equal(imageGenErrorHeading(undefined), "生图失败");
+  assert.equal(
+    imageGenErrorHeading(formatImageGenError(402, { code: "quota_exhausted", error: "平台额度已用完。可改用 BYOK 继续使用。" })),
+    "额度已用完",
+  );
 });

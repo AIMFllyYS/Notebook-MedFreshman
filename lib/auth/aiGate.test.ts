@@ -41,7 +41,7 @@ test("PAID_AI_API_PATHS matches the proxy matcher and excludes free routes", () 
     assert.equal(isPaidAiApiUrl(path), true);
     assert.equal(isPaidAiApiUrl(`https://app.invalid${path}`), true);
   }
-  for (const path of ["/api/can-embed", "/api/section", "/api/quiz", "/api/examples", "/api/health/search", "/api/usage", "/login"]) {
+  for (const path of ["/api/can-embed", "/api/section", "/api/quiz", "/api/examples", "/api/health/search", "/api/usage", "/api/redeem", "/login"]) {
     assert.equal(isPaidAiApiPath(path), false);
     assert.equal(isPaidAiApiUrl(path), false);
   }

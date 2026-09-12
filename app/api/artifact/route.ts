@@ -4,6 +4,8 @@ import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { ARTIFACT_IDLE_TIMEOUT_MS, streamInteractiveArtifact } from "@/lib/ai/artifact";
 import { defaultEffortFor, getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
 import { resolveActualBillingModelId, withRequestLedger } from "@/lib/billing/usageLedger";
+import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -75,6 +77,14 @@ export async function POST(req: NextRequest) {
           return;
         }
 
+        const userId = await resolveQuotaUserId(req.headers);
+        const pool = resolveMainModelPool(usedPlatformCredentialsForProvider(provider));
+        const gate = await assertQuotaAvailable({ userId, pool });
+        if (!gate.ok) {
+          send({ type: "artifact", id: artifactId, status: "error", message: gate.error });
+          return;
+        }
+
         await withRequestLedger(
           req.headers,
           {
@@ -82,7 +92,8 @@ export async function POST(req: NextRequest) {
             selectedModelId: modelId ?? provider.registryId,
             actualModelId: resolveActualBillingModelId(provider),
             customGroups: customApiGroups,
-            pool: provider.isCustom ? "byok" : "platform",
+            pool: pool ?? undefined,
+            skipInsert: pool == null,
           },
           () =>
             streamInteractiveArtifact({

@@ -7,6 +7,8 @@ import { buildCanvasRevisionMessages } from '@/lib/canvas/revisionPrompt';
 import { diagnoseCanvasBlock, extractCanvasRevisionBlock } from '@/lib/canvas/revisionOutput';
 import type { CanvasBlock } from '@/lib/canvas/types';
 import { resolveActualBillingModelId, settleUsage } from '@/lib/billing/usageLedger';
+import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from '@/lib/billing/quotaGate';
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from '@/lib/billing/usagePool';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -49,6 +51,11 @@ export async function POST(req: NextRequest) {
     return Response.json({ error: 'The selected model API is not configured.' }, { status: 400 });
   }
 
+  const userId = await resolveQuotaUserId(req.headers);
+  const pool = resolveMainModelPool(usedPlatformCredentialsForProvider(provider));
+  const gate = await assertQuotaAvailable({ userId, pool });
+  if (!gate.ok) return quotaRejectedJson(gate);
+
   let output: string;
   try {
     const result = await generateText({
@@ -75,7 +82,8 @@ export async function POST(req: NextRequest) {
       selectedModelId: modelId,
       actualModelId: resolveActualBillingModelId(provider),
       customGroups: customApiGroups,
-      pool: provider.isCustom ? 'byok' : 'platform',
+      pool: pool ?? undefined,
+      skipInsert: pool == null,
       meta: { source: 'canvas-revise' },
     });
   } catch (err) {

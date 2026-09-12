@@ -10,6 +10,9 @@ import { parseUpstreamErrorBody } from "@/lib/ai/upstream";
 import type { CustomApiGroup } from "@/lib/ai/models";
 import { normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
 import { normalizeImageGenImages } from "@/lib/ai/imageGenResponse";
+import { settleUsage } from "@/lib/billing/usageLedger";
+import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -77,6 +80,13 @@ export async function POST(req: NextRequest) {
       isCustom: provider.isCustom,
     });
   }
+
+  const userId = await resolveQuotaUserId(req.headers);
+  const pool = resolveMainModelPool(
+    usedPlatformCredentialsForProvider({ isCustom: provider.isCustom, registryId: provider.registryId }),
+  );
+  const gate = await assertQuotaAvailable({ userId, pool });
+  if (!gate.ok) return quotaRejectedJson(gate);
 
   const endpoint = imagesGenerationsUrl(provider.baseUrl);
   const apiStyle = detectImageApiStyle(provider.apiModelId, provider.imageApiStyle);
@@ -153,6 +163,27 @@ export async function POST(req: NextRequest) {
         total_tokens: typeof u.total_tokens === "number" ? u.total_tokens : undefined,
       };
     }
+
+    await settleUsage({
+      headers: req.headers,
+      userId,
+      route: "/api/image-gen",
+      kind: "image",
+      imageCount: images.length,
+      selectedModelId: modelId || provider.registryId,
+      actualModelId: provider.registryId,
+      customGroups,
+      pool: pool ?? undefined,
+      skipInsert: pool == null,
+      rawUsage: usage
+        ? {
+            inputTokens: usage.input_tokens ?? 0,
+            outputTokens: usage.output_tokens ?? 0,
+            totalTokens: usage.total_tokens ?? 0,
+          }
+        : undefined,
+      meta: { source: "image-gen" },
+    });
 
     return Response.json({
       images,

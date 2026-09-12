@@ -10,6 +10,14 @@ export function createStudyChatTransport(onActivity: () => void) {
       const response = await fetch(input, init);
       if (!response.ok) {
         const detail = await response.text().catch(() => '');
+        let parsedError = '';
+        try {
+          const parsed = JSON.parse(detail) as { error?: unknown };
+          if (typeof parsed.error === 'string') parsedError = parsed.error.trim();
+        } catch {
+          parsedError = '';
+        }
+        if (parsedError) throw new Error(parsedError);
         throw new Error(`API 请求失败: ${response.status} ${response.statusText}${detail ? ` - ${detail.slice(0, 200)}` : ''}`);
       }
       if (!response.body) throw new Error('流读取失败');

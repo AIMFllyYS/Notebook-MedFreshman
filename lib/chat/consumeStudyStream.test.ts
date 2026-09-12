@@ -221,6 +221,8 @@ test('HTTP 非成功状态与空响应体提供可读错误', async (t) => {
   const mock = t.mock.method(globalThis, 'fetch', async () => new Response('bad gateway', { status: 503, statusText: 'Service Unavailable' }));
   const send = () => createStudyChatTransport(() => {}).sendMessages({ chatId: 's', messageId: 'm', messages: [], trigger: 'submit-message', abortSignal: undefined });
   await assert.rejects(send(), /503 Service Unavailable - bad gateway/);
+  mock.mock.mockImplementation(async () => new Response(JSON.stringify({ error: "平台额度已用完。可改用 BYOK 继续使用。" }), { status: 402, statusText: 'Payment Required' }));
+  await assert.rejects(send(), /可改用 BYOK/);
   mock.mock.mockImplementation(async () => new Response(null));
   await assert.rejects(send(), /流读取失败/);
 });

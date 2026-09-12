@@ -1,11 +1,86 @@
 "use client";
 
 import { useState } from "react";
-import { DollarSign, Download } from "lucide-react";
+import { DollarSign, Download, Ticket } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { exportAllChats } from "@/lib/chat/exportChats";
 import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
-import { h3Cls } from "./_shared";
+import { h3Cls, inputCls } from "./_shared";
+
+export function RedemptionSection() {
+  const [code, setCode] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [ok, setOk] = useState(false);
+
+  return (
+    <section className="flex flex-col gap-2">
+      <div className="flex items-center gap-1.5">
+        <Ticket size={14} className="text-[var(--md-sys-color-primary)]" />
+        <h3 className={h3Cls}>兑换码</h3>
+      </div>
+      <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+        输入兑换码升级档位。失败不会提示该码是否存在。
+      </p>
+      <div className="flex items-center gap-2">
+        <input
+          type="text"
+          autoComplete="off"
+          spellCheck={false}
+          placeholder="输入兑换码"
+          aria-label="兑换码"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          className={`${inputCls} flex-1`}
+        />
+        <button
+          type="button"
+          disabled={busy || !code.trim()}
+          onClick={() => {
+            const submitted = code.trim();
+            setBusy(true);
+            setMessage(null);
+            setOk(false);
+            void fetch("/api/redeem", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ code: submitted }),
+            })
+              .then(async (res) => {
+                const body = (await res.json().catch(() => null)) as { error?: string; tier?: string } | null;
+                if (!res.ok) {
+                  setOk(false);
+                  setMessage(typeof body?.error === "string" ? body.error : "兑换失败，请检查兑换码后重试。");
+                  return;
+                }
+                setOk(true);
+                setCode("");
+                setMessage(body?.tier ? `已兑换为 ${body.tier.toUpperCase()} 档` : "兑换成功");
+              })
+              .catch(() => {
+                setOk(false);
+                setMessage("兑换失败，请检查兑换码后重试。");
+              })
+              .finally(() => setBusy(false));
+          }}
+          className="press shrink-0 rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-50"
+        >
+          {busy ? "兑换中…" : "兑换"}
+        </button>
+      </div>
+      {message && (
+        <span
+          className="text-[11px] font-medium"
+          style={{
+            color: ok ? "var(--md-sys-color-primary)" : "var(--md-sys-color-error)",
+          }}
+        >
+          {message}
+        </span>
+      )}
+    </section>
+  );
+}
 
 export function BillingSection() {
   const usdExchangeRate = useSettings((s) => s.usdExchangeRate);

@@ -6,6 +6,8 @@ import { validateDocumentSpec } from "@/lib/ai/agent/documentTool";
 import { getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
 import type { DocumentApiRequest } from "@/lib/documents/types";
 import { resolveActualBillingModelId, withRequestLedger } from "@/lib/billing/usageLedger";
+import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -66,6 +68,14 @@ export async function POST(req: NextRequest) {
           return;
         }
 
+        const userId = await resolveQuotaUserId(req.headers);
+        const pool = resolveMainModelPool(usedPlatformCredentialsForProvider(provider));
+        const gate = await assertQuotaAvailable({ userId, pool });
+        if (!gate.ok) {
+          send({ type: "document", id: documentId, status: "error", message: gate.error });
+          return;
+        }
+
         const request: DocumentApiRequest = {
           id: documentId,
           spec,
@@ -91,7 +101,8 @@ export async function POST(req: NextRequest) {
             selectedModelId: modelId ?? provider.registryId,
             actualModelId: resolveActualBillingModelId(provider),
             customGroups: customApiGroups,
-            pool: provider.isCustom ? "byok" : "platform",
+            pool: pool ?? undefined,
+            skipInsert: pool == null,
           },
           () =>
             streamDocument({

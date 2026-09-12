@@ -5,6 +5,7 @@ import { createBillingRecord } from "@/lib/stores/billing";
 import {
   awaitUsage,
   buildUsageLedgerRow,
+  calcByokOverheadCny,
   calcUsageCostCny,
   hasBillableUsage,
   mapLanguageModelUsage,
@@ -16,6 +17,7 @@ import {
   hasBillableLedger,
   type UsageLedgerRow,
 } from "./usageLedger.ts";
+import { BYOK_OVERHEAD_CNY_PER_MILLION } from "./usagePool.ts";
 
 const DEEPSEEK = "deepseek/deepseek-v4-flash";
 const IMAGE = "Tongyi-MAI/Z-Image-Turbo";
@@ -315,6 +317,38 @@ test("settleUsage：侧车 kind 按 units 入账，0 units 不建行", async () 
   assert.equal(rows[1].kind, "rerank");
   assert.equal(rows[1].prompt_tokens, 40);
   assert.equal(hasBillableLedger({ kind: "image-search", usage: mapLanguageModelUsage({}), units: 0 }), false);
+});
+
+test("byok 池按 ¥0.5/百万 token 计量，不用落地模型单价", () => {
+  const usage = mapLanguageModelUsage({ inputTokens: 1_000_000, outputTokens: 0, totalTokens: 1_000_000 });
+  const row = buildUsageLedgerRow({
+    usage,
+    userId: USER,
+    pool: "byok",
+    kind: "embedding",
+    actualModelId: MIMO,
+    units: 1,
+  });
+  assert.ok(row);
+  assert.equal(row.cost_cny, BYOK_OVERHEAD_CNY_PER_MILLION);
+  assert.equal(calcByokOverheadCny(usage, 1), 0.5);
+});
+
+test("BYOK 主模型 skipInsert 不落行", async () => {
+  const rows: UsageLedgerRow[] = [];
+  const settled = await settleChatUsage({
+    rawUsage: tokenUsage,
+    userId: USER,
+    selectedModelId: MIMO,
+    actualModelId: MIMO,
+    skipInsert: true,
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  assert.equal(settled.recorded, false);
+  assert.equal(rows.length, 0);
+  assert.ok(settled.summary);
 });
 
 test("settleUsage：ALS 提供 userId 与 insert", async () => {

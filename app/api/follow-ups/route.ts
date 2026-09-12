@@ -6,6 +6,8 @@ import { ENV_MODEL_FLASH } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { parseJsonArrayQuestions } from "@/lib/ai/agent/followUps";
 import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
+import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,6 +26,13 @@ export async function POST(req: NextRequest) {
 
   const { model, provider } = resolveLanguageModel(ENV_MODEL_FLASH);
   if (!provider.configured || messages.length === 0) {
+    return NextResponse.json({ questions: [] });
+  }
+
+  const userId = await resolveQuotaUserId(req.headers);
+  const pool = resolveMainModelPool(usedPlatformCredentialsForProvider(provider));
+  const gate = await assertQuotaAvailable({ userId, pool });
+  if (!gate.ok) {
     return NextResponse.json({ questions: [] });
   }
 
@@ -54,7 +63,8 @@ export async function POST(req: NextRequest) {
       kind: "llm",
       selectedModelId: ENV_MODEL_FLASH,
       actualModelId: resolveActualBillingModelId(provider),
-      pool: provider.isCustom ? "byok" : "platform",
+      pool: pool ?? undefined,
+      skipInsert: pool == null,
       meta: { source: "follow-ups-route" },
     });
     return NextResponse.json({ questions: parseJsonArrayQuestions(result.text) });

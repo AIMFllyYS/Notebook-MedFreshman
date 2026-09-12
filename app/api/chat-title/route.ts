@@ -7,6 +7,7 @@ import {
 } from "@/lib/chat/sessionTitle";
 import { resolveLanguageModel, UPSTREAM_PROVIDER_NAME } from "@/lib/ai/sdk/languageModel";
 import { settleUsage } from "@/lib/billing/usageLedger";
+import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,6 +38,12 @@ export async function POST(req: NextRequest) {
   const provider = titleProvider();
 
   if (!content.trim() || !provider.apiKey) {
+    return Response.json({ title: fallback, generated: false, model: provider.model });
+  }
+
+  const userId = await resolveQuotaUserId(req.headers);
+  const gate = await assertQuotaAvailable({ userId, pool: "platform" });
+  if (!gate.ok) {
     return Response.json({ title: fallback, generated: false, model: provider.model });
   }
 

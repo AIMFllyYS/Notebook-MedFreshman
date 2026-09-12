@@ -79,6 +79,23 @@ async function captureRows<T>(fn: () => Promise<T>): Promise<{ value: T; rows: U
   return { value, rows };
 }
 
+test("FollowUp 兜底：平台模型入账 /api/follow-ups", async (t: TestContext) => {
+  t.mock.method(globalThis, "fetch", async () => openAiJson("如何应用|如何验证|能否推广"));
+  const { value, rows } = await captureRows(() =>
+    generateFallbackFollowUps({
+      userText: "什么是线粒体",
+      answerText: "细胞器",
+      modelId: "z-ai/glm-5.3-flash",
+      isCustom: false,
+    }),
+  );
+  assert.deepEqual(value, ["如何应用", "如何验证", "能否推广"]);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].route, "/api/follow-ups");
+  assert.equal(rows[0].pool, "platform");
+  assert.equal(rows[0].meta.source, "followup-fallback");
+});
+
 test("FollowUp 兜底第二次 generateText 入账 /api/follow-ups", async (t: TestContext) => {
   t.mock.method(globalThis, "fetch", async () => openAiJson("如何应用|如何验证|能否推广"));
   const { value, rows } = await captureRows(() =>
@@ -91,12 +108,7 @@ test("FollowUp 兜底第二次 generateText 入账 /api/follow-ups", async (t: T
     }),
   );
   assert.deepEqual(value, ["如何应用", "如何验证", "能否推广"]);
-  assert.equal(rows.length, 1);
-  assert.equal(rows[0].route, "/api/follow-ups");
-  assert.equal(rows[0].kind, "llm");
-  assert.equal(rows[0].meta.source, "followup-fallback");
-  assert.equal(rows[0].prompt_tokens, 20);
-  assert.equal(rows[0].completion_tokens, 8);
+  assert.equal(rows.length, 0, "BYOK 主模型追问不进池、不落行");
 });
 
 test("文档大纲与每节分别入账", async (t: TestContext) => {

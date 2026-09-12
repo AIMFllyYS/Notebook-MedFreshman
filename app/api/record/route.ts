@@ -6,6 +6,8 @@ import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
 import type { CustomApiGroup } from "@/lib/ai/models";
 import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
+import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 // 「记录」成卡路由（SSE 流式）：把用户划词/右键选中的原文，按用户选择的模式流式转成复习卡片。
 // 输出纯 Markdown 富文本（===FRONT=== / ===BACK=== / ===BLANKS=== 分隔），前端流式渲染 + 思考折叠。
@@ -161,6 +163,15 @@ export async function POST(req: NextRequest) {
 
   const resolved = resolveLanguageModel(modelId, customApiGroups);
   const { provider } = resolved;
+  const userId = await resolveQuotaUserId(req.headers);
+  const pool = resolveMainModelPool(usedPlatformCredentialsForProvider(provider));
+  const gate = await assertQuotaAvailable({ userId, pool });
+  if (!gate.ok) {
+    return new Response(sse({ type: "error", message: gate.error }), {
+      status: 402,
+      headers: { "Content-Type": "text/event-stream" },
+    });
+  }
   if (!provider.configured) {
     return new Response(sse({ type: "error", message: "AI 服务未配置（请先填写密钥）" }), {
       status: 503,
@@ -239,7 +250,8 @@ export async function POST(req: NextRequest) {
           selectedModelId: modelId,
           actualModelId: resolveActualBillingModelId(provider),
           customGroups: customApiGroups,
-          pool: provider.isCustom ? "byok" : "platform",
+          pool: pool ?? undefined,
+          skipInsert: pool == null,
           meta: { source: "record", mode, revise: isRevise },
         });
         const card = parseCardContent(result.text, mode);
