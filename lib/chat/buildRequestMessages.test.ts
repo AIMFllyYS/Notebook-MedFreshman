@@ -39,7 +39,7 @@ test("buildRequestMessages：过滤流式中的空 assistant 占位", () => {
   assert.equal(textOf(out[0]), "latest question");
 });
 
-test("buildRequestMessages：历史 assistant 只保留 text，剥离 reasoning / tool / step-start", () => {
+test("buildRequestMessages：剥离 reasoning / step-start，保留工具结果供服务端衰减", () => {
   const assistant: ChatMessage = {
     id: "2",
     role: "assistant",
@@ -53,11 +53,11 @@ test("buildRequestMessages：历史 assistant 只保留 text，剥离 reasoning 
   };
   const { messages: out } = buildRequestMessages([msg("1", "user", "q"), assistant]);
   assert.equal(out.length, 2);
-  assert.deepEqual(out[1].parts.map((p) => p.type), ["text"]);
+  assert.deepEqual(out[1].parts.map((p) => p.type), ["tool-getCurrentPage", "text"]);
   assert.equal(textOf(out[1]), "answer");
 });
 
-test("buildRequestMessages：只有工具调用没有正文的 assistant 仍算有内容但请求里为空 parts", () => {
+test("buildRequestMessages：只有工具调用没有正文的 assistant 仍带工具 parts", () => {
   const assistant: ChatMessage = {
     id: "2",
     role: "assistant",
@@ -68,7 +68,8 @@ test("buildRequestMessages：只有工具调用没有正文的 assistant 仍算�
   };
   const { messages: out } = buildRequestMessages([msg("1", "user", "q"), assistant]);
   assert.equal(out.length, 2);
-  assert.equal(out[1].parts.length, 0);
+  assert.equal(out[1].parts.length, 1);
+  assert.equal(out[1].parts[0]?.type, "tool-getCurrentPage");
 });
 
 test("buildRequestMessages：超长历史截断尾部", () => {
@@ -112,7 +113,7 @@ test("buildRequestMessages：默认保留完整会话历史", () => {
   assert.equal(out.length, 60);
 });
 
-test("buildRequestMessages：软上限截断只发送最近消息且不保留早期附件", () => {
+test("buildRequestMessages：maxTurns 截断可不保留早期附件", () => {
   const messages: ChatMessage[] = [];
   messages.push(msg("0", "user", "old image", {
     attachments: [{ type: "image", mimeType: "image/png", base64: "data:image/png;base64,abc" }],

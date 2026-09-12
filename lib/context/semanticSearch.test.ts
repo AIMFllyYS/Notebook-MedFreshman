@@ -8,6 +8,7 @@ test('SemanticSearchManager 不再把用户提问拼进参考材料', () => {
   assert.doesNotMatch(source, /用户提问：/);
   assert.match(source, /closeReferenceMaterials/);
   assert.match(source, /hybridSearch\(userMessage/);
+  assert.match(source, /if \(!compact\)/);
 });
 
 test('closeReferenceMaterials 只加结构性收尾、不含用户原话', () => {

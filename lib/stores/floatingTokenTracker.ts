@@ -109,7 +109,7 @@ export const useFloatingTokenTracker = create<FloatingTokenTrackerState>((set, g
             contextBreakdown: breakdown,
             lastBreakdownTotal: breakdown.total,
             serverContextTokens: breakdown.total,
-            currentContextTokens: breakdown.total,
+            currentContextTokens: breakdown.displayTotal ?? breakdown.total,
             contextTruncated: breakdown.truncated === true,
             contextWarning: breakdown.warning ?? null,
           },

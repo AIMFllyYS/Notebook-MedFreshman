@@ -21,7 +21,8 @@ function describeSubjectsByYear(): string {
 
 export function createGetOutlineTool(ctx: StudyToolContext, runtime: StudyToolRuntime) {
   return tool({
-    description: `获取课程目录。默认返回当前学年科目（${describeSubjectsByYear()}）。需要了解课程全貌、各章关系，或把某知识点定位到哪一小节时调用。返回的每个条目后附有复合路径（如 anatomy/textbook/ch01-1），可直接传给 getSection 获取全文。跨学年知识（如大一化学与大二生化）把 crossYear 设为 true。`,
+    // 学年科目名单来自 registry，不随当前 UI 学年变化，避免换学年 bust 工具 schema。
+    description: `获取课程目录。默认返回当前学年科目（${describeSubjectsByYear()}）。需要了解课程全貌、各章关系，或把某知识点定位到哪一小节时调用。返回的每个条目后附有复合路径（如 anatomy/textbook/ch01-1），可直接传给 getSection 获取全文。跨学年知识（如大一化学与大二生化）把 crossYear 设为 true。当前学年见 system 定位行。`,
     inputSchema: z.object({
       crossYear: z.boolean().optional().describe("true 时返回全部学年目录。默认 false，只返回当前学年。"),
     }),

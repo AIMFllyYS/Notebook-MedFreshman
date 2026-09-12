@@ -1,11 +1,22 @@
 import type { ChatContext } from '@/lib/types/chat';
 import { MODELS, getModelInfo } from '@/lib/ai/models';
+import type { ReferenceTier } from '@/lib/context/referenceTiers';
 
 export type ContextMode = 'full' | 'semantic';
+export type { ReferenceTier };
+
+export interface BuildContextOptions {
+  /** 客户端已达软上限：跳过全文/检索，只用目录+当前页摘要。 */
+  compact?: boolean;
+}
 
 export interface ContextManager {
   mode: ContextMode;
-  buildContext(chatContext: ChatContext, userMessage: string): Promise<BuildContextResult>;
+  buildContext(
+    chatContext: ChatContext,
+    userMessage: string,
+    options?: BuildContextOptions,
+  ): Promise<BuildContextResult>;
 }
 
 export interface BuildContextResult {
@@ -15,6 +26,7 @@ export interface BuildContextResult {
   cacheHit: boolean;
   sources?: string[];
   overflow: boolean;
+  tier?: ReferenceTier;
 }
 
 /** 由 `lib/ai/models.ts` 的 `contextK`（千 token）派生，不再单独维护一份上限表。 */

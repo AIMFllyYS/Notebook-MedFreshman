@@ -64,10 +64,14 @@ export function computeContextBreakdown(input: ComputeBreakdownInput): ContextBr
 
   breakdown.total =
     breakdown.tools + breakdown.skills + breakdown.conversation + breakdown.pages + breakdown.webSearch;
-  if (input.clientContextTokens !== null && input.clientContextTokens > breakdown.total) {
-    breakdown.conversation += input.clientContextTokens - breakdown.total;
-    breakdown.total = input.clientContextTokens;
-  }
+  // 环可以垫高，避免截断后假降；软上限判定必须用未垫高的 total。
+  const padded =
+    input.truncated &&
+    input.clientContextTokens !== null &&
+    input.clientContextTokens > breakdown.total
+      ? input.clientContextTokens
+      : breakdown.total;
+  breakdown.displayTotal = padded;
   breakdown.truncated = input.truncated;
   breakdown.cacheHit = input.cacheHit;
   if (input.warning) breakdown.warning = input.warning;

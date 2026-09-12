@@ -10,6 +10,7 @@ import type { DrawDiagramInput, DrawDiagramOutput } from "@/lib/ai/agent/tools/d
 import type { GenerateImageInput, GenerateImageOutput } from "@/lib/ai/agent/tools/generateImage/types";
 import type { CreateQuizInput, CreateQuizOutput } from "@/lib/ai/agent/tools/createQuiz/types";
 import type { WriteDocumentInput, WriteDocumentOutput } from "@/lib/ai/agent/tools/writeDocument/types";
+import type { GetArtifactInput, GetArtifactOutput } from "@/lib/ai/agent/tools/getArtifact/types";
 import type { UseSkillInput, UseSkillOutput } from "@/lib/ai/agent/tools/useSkill/types";
 
 /** 供 UIMessage<…, StudyTools> 使用的 UITools 形状（type alias 才能满足 Record 约束）。 */
@@ -26,6 +27,7 @@ export type StudyTools = {
   generateImage: { input: GenerateImageInput; output: GenerateImageOutput };
   createQuiz: { input: CreateQuizInput; output: CreateQuizOutput };
   writeDocument: { input: WriteDocumentInput; output: WriteDocumentOutput };
+  getArtifact: { input: GetArtifactInput; output: GetArtifactOutput };
   useSkill: { input: UseSkillInput; output: UseSkillOutput };
 };
 
@@ -44,5 +46,6 @@ export const STUDY_TOOL_NAMES: readonly StudyToolName[] = [
   "generateImage",
   "createQuiz",
   "writeDocument",
+  "getArtifact",
   "useSkill",
 ];

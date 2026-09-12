@@ -136,7 +136,8 @@ test('chat SDK: real route → transport → parts preserves reasoning, tools, c
   assert.equal(getToolParts(message)[0].type, 'tool-getSection');
   assert.deepEqual(message.metadata?.usage, { promptTokens: 20, completionTokens: 10, cachedTokens: 6, totalTokens: 30, actualModelId: buildCustomModelRegistryId('test', 'study-model') });
   const breakdown = message.parts.find((p) => p.type === 'data-context-breakdown');
-  assert.equal(breakdown?.data.total, 100_000);
+  assert.ok((breakdown?.data.total ?? 0) < 100_000);
+  assert.equal(breakdown?.data.displayTotal, 100_000);
   assert.equal(breakdown?.data.truncated, true);
   const types = chunks.map((c) => c.type);
   assert.ok(types.indexOf('data-usage') < types.indexOf('finish'));
@@ -149,7 +150,7 @@ test('chat SDK: real route → transport → parts preserves reasoning, tools, c
   const firstMessages = requests[0].messages as Array<{ role: string; content: string }>;
   assert.equal(firstMessages.filter((m) => m.role === 'system').length, 1);
   assert.match(firstMessages[0].content, /80% 软上限/);
-  assert.doesNotMatch(firstMessages[0].content, /【参考材料】/);
+  assert.match(firstMessages[0].content, /【参考材料】/);
   const modelToolResult = (requests[1].messages as Array<{ role: string; content: string }>).find((m) => m.role === 'tool');
   assert.ok(modelToolResult?.content);
   assert.doesNotMatch(modelToolResult.content, /"contextKey"|"sources"/);
@@ -478,4 +479,34 @@ test('chat SDK: user question stays out of system so the same-page prefix is cac
   assert.ok((first.message?.metadata?.usage?.cachedTokens ?? 0) < (second.message?.metadata?.usage?.cachedTokens ?? 0));
   assert.equal(first.message?.metadata?.usage?.cachedTokens, cached[0]);
   assert.equal(second.message?.metadata?.usage?.cachedTokens, cached[1]);
+});
+
+test('chat SDK: soft-limit long history injects a rolling summary instead of dropping the opening', async (t) => {
+  const requests: Array<Record<string, unknown>> = [];
+  t.mock.method(globalThis, 'fetch', async (_url: unknown, init: RequestInit) => {
+    const body = JSON.parse(String(init.body)) as Record<string, unknown>;
+    requests.push(body);
+    if (JSON.stringify(body).includes('上下文压缩器')) {
+      return Response.json({
+        choices: [{ message: { role: 'assistant', content: '早期讨论了线粒体是能量工厂。' }, finish_reason: 'stop' }],
+        usage: { prompt_tokens: 30, completion_tokens: 12, total_tokens: 42 },
+      });
+    }
+    return openAiStep();
+  });
+  const messages: ChatMessage[] = [];
+  for (let i = 0; i < 8; i++) {
+    messages.push(createUserMessage(`u${i}`, i === 0 ? '开头提到了线粒体' : `第${i}问`));
+    if (i < 7) messages.push({ id: `a${i}`, role: 'assistant', parts: [{ type: 'text', text: `答${i}` }] } as ChatMessage);
+  }
+  const { message } = await chat({ contextTruncated: true, id: 'sess-long' }, messages);
+  assert.ok(message);
+  const main = requests.find((req) => {
+    const blob = JSON.stringify(req.messages ?? []);
+    return blob.includes('对话摘要') || blob.includes('线粒体是能量工厂');
+  });
+  assert.ok(main, '主对话应带上滚动摘要');
+  const blob = JSON.stringify(main);
+  assert.match(blob, /线粒体/);
+  assert.match(blob, /第7问/);
 });

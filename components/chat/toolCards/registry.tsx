@@ -79,6 +79,7 @@ export const TOOL_REGISTRY = {
     ResultCard: WriteDocumentResultCard,
     resultKey: (part) => (part.state === "output-available" ? part.output.documentId : null),
   }),
+  getArtifact: moduleOf("getArtifact"),
   useSkill: moduleOf("useSkill"),
 } satisfies { [N in StudyToolName]: ToolModule<N> };
 

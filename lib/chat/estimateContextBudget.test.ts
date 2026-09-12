@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { estimateContextBudget } from "./estimateContextBudget.ts";
+import { displayContextTokens, estimateContextBudget } from "./estimateContextBudget.ts";
 import type { ChatMessage } from "@/lib/types/chat";
 
 const msg = (text: string): ChatMessage => ({
@@ -40,6 +40,34 @@ test("estimateContextBudget：无服务端累计时用消息估算 + 3000，软�
   );
   assert.equal(over.limit, 1000);
   assert.equal(over.softLimitReached, true);
+});
+
+test("displayContextTokens：截断态垫高环，退出截断后用实际值", () => {
+  const over = {
+    limit: 10_000,
+    estimated: 5_000,
+    softLimitReached: true,
+  };
+  const under = { ...over, softLimitReached: false };
+  const tracker = {
+    currentContextTokens: 8_000,
+    contextBreakdown: {
+      tools: 0, skills: 0, pages: 0, webSearch: 0, conversation: 5_000, total: 5_000, displayTotal: 9_000,
+    },
+  };
+  assert.equal(displayContextTokens(tracker, over), 9_000);
+  assert.equal(displayContextTokens(tracker, under), 5_000);
+});
+
+test("estimateContextBudget：软上限用未垫高的 serverContextTokens，对话变短后可退出", () => {
+  const recovered = estimateContextBudget(
+    { sessionContextBudgetTokens: 10_000, serverContextTokens: 5_000 },
+    { contextK: 10 },
+    [msg("短")],
+    "短",
+  );
+  assert.equal(recovered.softLimitReached, false);
+  assert.ok(recovered.estimated < 8_000);
 });
 
 test("estimateContextBudget：缺模型时默认 128k", () => {

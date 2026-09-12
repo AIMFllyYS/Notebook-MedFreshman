@@ -1,5 +1,5 @@
 import { consumeStudyStream, createStudyChatTransport } from "@/lib/chat/consumeStudyStream";
-import { buildRequestMessages, SOFT_LIMIT_MAX_TURNS } from "@/lib/chat/buildRequestMessages";
+import { buildRequestMessages, MAX_REQUEST_MESSAGES } from "@/lib/chat/buildRequestMessages";
 import { createStreamUiThrottle } from "@/lib/chat/streamUiThrottle";
 import { createStallWatchdog } from "@/lib/chat/createStallWatchdog";
 import { hydrateForRequest } from "@/lib/chat/hydrateForRequest";
@@ -30,9 +30,9 @@ export async function executeChatRequest(input: {
   try {
     const hydrated = await hydrateForRequest(input.latestMessages, input.abortSignal);
     input.abortSignal.throwIfAborted();
-    const { messages: requestMessages } = buildRequestMessages(hydrated, input.budget.softLimitReached ? {
-      maxTurns: SOFT_LIMIT_MAX_TURNS, reason: "soft-limit", preserveAttachmentHistory: false,
-    } : undefined);
+    const { messages: requestMessages } = buildRequestMessages(hydrated, {
+      maxTurns: MAX_REQUEST_MESSAGES,
+    });
     watchdog = createStallWatchdog(input.onStall);
     const stream = await createStudyChatTransport(() => { watchdog?.touch(); }).sendMessages({
       chatId: input.sessionId, trigger: "submit-message", messageId: input.userMessageId,

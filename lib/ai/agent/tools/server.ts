@@ -20,7 +20,9 @@ import { createDrawDiagramTool } from "@/lib/ai/agent/tools/drawDiagram/tool";
 import { createGenerateImageTool } from "@/lib/ai/agent/tools/generateImage/tool";
 import { createCreateQuizTool } from "@/lib/ai/agent/tools/createQuiz/tool";
 import { createWriteDocumentTool } from "@/lib/ai/agent/tools/writeDocument/tool";
+import { createGetArtifactTool } from "@/lib/ai/agent/tools/getArtifact/tool";
 import { createUseSkillTool } from "@/lib/ai/agent/tools/useSkill/tool";
+import type { ArtifactCatalogItem } from "@/lib/ai/agent/tools/getArtifact/types";
 
 export {
   IMAGE_SEARCH_MAX_TOTAL,
@@ -34,6 +36,8 @@ export {
 export interface BuildStudyToolsOptions {
   enableSearch: boolean;
   disabled?: string[];
+  /** 请求携带的演示目录（html 只给 getArtifact，不进 prompt）。始终暴露该工具，避免工具 schema 随有无产物 bust。 */
+  artifacts?: ArtifactCatalogItem[];
 }
 
 /**
@@ -63,9 +67,11 @@ export function buildStudyTools(
     renderInteractive: createRenderInteractiveTool(ctx),
     drawDiagram: createDrawDiagramTool(),
     generateImage: createGenerateImageTool(ctx),
+    getArtifact: createGetArtifactTool(opts.artifacts ?? []),
     useSkill: createUseSkillTool(ctx, runtime),
   } satisfies Record<StudyToolName, unknown>;
 
+  // 稳定工具在前；enableSearch / useSkill 易变，追加在末尾，失效范围可解释。
   const names: StudyToolName[] = [
     "getCurrentPage",
     "getOutline",
@@ -77,6 +83,7 @@ export function buildStudyTools(
     "generateImage",
     "createQuiz",
     "writeDocument",
+    "getArtifact",
   ];
   if (opts.enableSearch) names.push("webSearch", "imageSearch");
   if (menuSkillNames.length > 0) names.push("useSkill");

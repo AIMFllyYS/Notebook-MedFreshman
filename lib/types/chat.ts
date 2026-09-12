@@ -64,8 +64,11 @@ export interface ContextBreakdown {
   pages: number;
   /** 联网搜索：webSearch/imageSearch 工具结果。 */
   webSearch: number;
+  /** 未垫高的实际占用。软上限判定必须用这个值。 */
   total: number;
-  /** 当前请求是否因上下文达到 80% 软上限而只发送最近消息。 */
+  /** 环显示用，截断态可垫到客户端估算以免假降。 */
+  displayTotal?: number;
+  /** 当前请求是否因 80% 软上限而走滚动摘要 / 分级裁剪。 */
   truncated?: boolean;
   /** 全量页面上下文是否命中缓存。 */
   cacheHit?: boolean;

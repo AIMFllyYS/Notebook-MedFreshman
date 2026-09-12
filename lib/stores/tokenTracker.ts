@@ -83,11 +83,13 @@ export const useTokenTracker = create<TokenTrackerState>((set) => ({
   },
 
   setContextBreakdown(breakdown) {
+    const actual = breakdown.total;
+    const display = breakdown.displayTotal ?? breakdown.total;
     set({
       contextBreakdown: breakdown,
-      lastBreakdownTotal: breakdown.total,
-      serverContextTokens: breakdown.total,
-      currentContextTokens: breakdown.total,
+      lastBreakdownTotal: actual,
+      serverContextTokens: actual,
+      currentContextTokens: display,
       contextTruncated: breakdown.truncated === true,
       contextWarning: breakdown.warning ?? null,
     });

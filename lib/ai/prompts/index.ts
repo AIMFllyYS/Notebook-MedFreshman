@@ -4,6 +4,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { getSubjectMeta, subjectName } from "@/lib/content-data/subjects.registry";
+import { ACADEMIC_YEAR_LABELS, isAcademicYearId } from "@/lib/constants/academic-year";
 import type { ChatContext } from "@/lib/types/chat";
 
 const PROMPT_ROOT = path.join(process.cwd(), "lib", "ai", "prompts");
@@ -32,17 +33,34 @@ function readMd(rel: string): string {
   return text;
 }
 
-/** 稳定 system 前缀：global（{subjectName} 已替换）+ 学科专门化段。 */
+/**
+ * 稳定 system 前缀：学科无关的 global 在前，当前科目名 + 学科 md 在后。
+ * 换科目时失效从「当前科目」段起；global 教学法段可继续命中 prefix cache。
+ */
 export function buildSystemPrompt(ctx: ChatContext): string {
-  const global = readMd("global.md").replace(/\{subjectName\}/g, subjectName(ctx.subjectId));
+  const subject = subjectName(ctx.subjectId);
+  const global = readMd("global.md")
+    .replace(/「\{subjectName\}」/g, "")
+    .replace(/\{subjectName\}/g, subject);
   const subjectRel = subjectPromptFile(ctx.subjectId);
-  const subject = subjectRel ? readMd(subjectRel) : "";
-  return subject ? `${global}\n\n---\n\n${subject}` : global;
+  const subjectMd = subjectRel ? readMd(subjectRel) : "";
+  const subjectBlock = subjectMd
+    ? `当前科目：${subject}\n\n${subjectMd}`
+    : `当前科目：${subject}`;
+  return `${global}\n\n---\n\n${subjectBlock}`;
 }
 
-/** 当前定位行（轻量、相对易变，放前缀之后的消息里）。 */
+/**
+ * 当前定位行（轻量、易变，必须放在 system 末尾）。
+ * 换页改 itemId/主题；换学年改学年字段。失效范围止于这一行及之后的参考材料。
+ */
 export function buildLocationLine(ctx: ChatContext): string {
-  let s = `【当前位置】科目：${subjectName(ctx.subjectId)} ｜ 分类：${ctx.categoryId} ｜ 内容项：${ctx.itemId}`;
+  const year = isAcademicYearId(ctx.academicYear)
+    ? ACADEMIC_YEAR_LABELS[ctx.academicYear]
+    : ctx.academicYear;
+  let s = "【当前位置】";
+  if (year) s += `学年：${year} ｜ `;
+  s += `科目：${subjectName(ctx.subjectId)} ｜ 分类：${ctx.categoryId} ｜ 内容项：${ctx.itemId}`;
   if (ctx.currentTopic) s += ` ｜ 主题：${ctx.currentTopic}`;
   return s;
 }

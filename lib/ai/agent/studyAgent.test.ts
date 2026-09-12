@@ -145,7 +145,7 @@ test("createStudyAgent：技能菜单进入 instructions 且 useSkill 以 enum �
   assert.ok(!("useSkill" in on.tools));
 });
 
-test("createStudyAgent：模型不支持工具时 tools 为空；软上限时 instructions 省略参考材料", () => {
+test("createStudyAgent：模型不支持工具时 tools 为空；软上限时仍保留分级参考材料", () => {
   const model = new MockLanguageModelV4();
   const noTools = createStudyAgent(baseInput(model, { modelSupportsTools: false, referenceContext: "参考材料正文" }));
   assert.equal(Object.keys(noTools.tools).length, 0);
@@ -153,8 +153,29 @@ test("createStudyAgent：模型不支持工具时 tools 为空；软上限时 in
   assert.doesNotMatch(noTools.promptParts.instructions, /用户提问：/);
 
   const truncated = createStudyAgent(baseInput(model, { referenceContext: "参考材料正文", contextTruncated: true }));
-  assert.doesNotMatch(truncated.promptParts.instructions, /参考材料正文/);
+  assert.match(truncated.promptParts.instructions, /参考材料正文/);
   assert.match(truncated.promptParts.instructions, /80% 软上限/);
+  assert.match(truncated.promptParts.instructions, /分级裁剪/);
+  assert.ok("getArtifact" in createStudyAgent(baseInput(model)).tools);
+});
+
+test("createStudyAgent：定位行在 instructions 末尾，换页不改稳定前缀", () => {
+  const model = new MockLanguageModelV4();
+  const a = createStudyAgent(baseInput(model, {
+    chatCtx: { subjectId: "probability", categoryId: "detail", itemId: "1.4", currentTopic: "古典概型", academicYear: "freshman-2" },
+  }));
+  const b = createStudyAgent(baseInput(model, {
+    chatCtx: { subjectId: "probability", categoryId: "detail", itemId: "1.5", currentTopic: "几何概型", academicYear: "freshman-2" },
+  }));
+  const ia = a.promptParts.instructions;
+  const ib = b.promptParts.instructions;
+  const locA = ia.indexOf("【当前位置】");
+  const locB = ib.indexOf("【当前位置】");
+  assert.ok(locA > 80 && locB > 80);
+  assert.equal(ia.slice(0, locA), ib.slice(0, locB));
+  assert.match(ia, /学年：大一下学期/);
+  assert.match(ia, /1\.4/);
+  assert.match(ib, /1\.5/);
 });
 
 test("createStudyAgent：第 6 步仍 tool-calls 时不再发起第 7 次 LLM", async () => {

@@ -8,6 +8,7 @@ import type { ChatContext } from "@/lib/types/chat";
 import type { Skill } from "@/lib/types/skill";
 import type { ContextBudget } from "./estimateContextBudget";
 import type { ResolvedRequestSettings } from "./resolveRequestSettings";
+import type { ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
 
 export interface ChatRequestBodySettings {
   customApiGroups: CustomApiGroup[];
@@ -46,6 +47,7 @@ export interface ChatRequestBody {
   clientContextTokens: number;
   globalContext: string;
   skills: Skill[];
+  artifacts?: ArtifactCatalogItem[];
 }
 
 export function buildChatRequestBody(
@@ -55,6 +57,7 @@ export function buildChatRequestBody(
   budget: ContextBudget,
   skills: Skill[],
   academicYear: string,
+  artifacts: ArtifactCatalogItem[] = [],
 ): ChatRequestBody {
   const customProvider: ChatRequestBody["customProvider"] =
     settings.customApiGroups.length === 0 && settings.customBaseUrl
@@ -83,5 +86,6 @@ export function buildChatRequestBody(
     clientContextTokens: budget.estimated,
     globalContext: settings.globalContext,
     skills,
+    artifacts,
   };
 }

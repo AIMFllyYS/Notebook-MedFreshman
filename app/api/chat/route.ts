@@ -6,6 +6,10 @@ import {
   type ModelMessage,
   type UIMessageStreamWriter,
 } from "ai";
+import { compactArtifactMessages, compactUiParts } from "@/lib/context/compactArtifacts";
+import { compactHistory } from "@/lib/context/compactHistory";
+import { pruneStudyMessages } from "@/lib/context/pruneStudyMessages";
+import { CONTEXT_WARNING } from "@/lib/chat/estimateContextBudget";
 import { getContextManager } from "@/lib/context";
 import type { ChatContext, ChatMessage, ChatOptions } from "@/lib/types/chat";
 import { ENV_MODEL_PRO, ENV_MODEL_FLASH } from "@/lib/ai/provider";
@@ -26,8 +30,6 @@ import { capabilitySecretValues } from "@/lib/ai/capabilityEndpoints";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const CONTEXT_WARNING = "上下文已达到 80% 软上限，本次请求只发送最近消息；本地聊天历史仍完整保留。";
 
 type Writer = UIMessageStreamWriter<ChatMessage>;
 
@@ -52,14 +54,20 @@ function hasFileParts(messages: ChatRequest["messages"]): boolean {
   return messages.some((m) => m.parts.some((p) => p.type === "file"));
 }
 
-/** 历史消息已由客户端剥离 reasoning/tool parts；这里只做 UIMessage → ModelMessage 转换。 */
+/** UIMessage → ModelMessage。reasoning / 旧工具结果由随后的 pruneMessages 处理。 */
 async function toModelMessages(messages: ChatRequest["messages"]): Promise<ModelMessage[]> {
   const uiMessages = messages
     .filter((m) => m.role === "user" || m.role === "assistant")
     .map((m, i) => ({
       id: m.id ?? `m_${i}`,
       role: m.role,
-      parts: m.parts.filter((p) => p.type === "text" || p.type === "file"),
+      parts: compactUiParts(
+        m.parts.filter((p) => {
+          const type = p.type;
+          return type === "text" || type === "file" || type === "reasoning"
+            || (typeof type === "string" && type.startsWith("tool-"));
+        }),
+      ),
     })) as ChatMessage[];
   return convertToModelMessages(uiMessages, { ignoreIncompleteToolCalls: true });
 }
@@ -155,12 +163,16 @@ export async function POST(req: NextRequest) {
         throw new Error(`当前模型 ${modelInfo.label} 不支持图片理解，请切换到支持视觉的模型（如 MiMo V2.5）。`);
       }
 
-      // 参考材料 + 软上限
+      // 参考材料 + 软上限。客户端已截断则跳过全文/检索；溢出时再降一档。
       const userText = lastUserText(body.messages);
       const ctxManager = getContextManager(options.contextMode ?? "full", effectiveModelId);
-      const ctxResult = await ctxManager.buildContext(chatCtx, userText);
+      let ctxResult = await ctxManager.buildContext(chatCtx, userText, { compact: body.contextTruncated });
       const contextBudget = body.sessionContextBudgetTokens ?? ctxResult.maxTokens;
-      const serverSoftLimitReached = contextBudget > 0 && ctxResult.tokenCount / contextBudget >= 0.8;
+      let serverSoftLimitReached = contextBudget > 0 && ctxResult.tokenCount / contextBudget >= 0.8;
+      if (!body.contextTruncated && (serverSoftLimitReached || ctxResult.overflow)) {
+        ctxResult = await ctxManager.buildContext(chatCtx, userText, { compact: true });
+        serverSoftLimitReached = contextBudget > 0 && ctxResult.tokenCount / contextBudget >= 0.8;
+      }
       const contextTruncated = body.contextTruncated || serverSoftLimitReached || ctxResult.overflow;
 
       const bundle = createStudyAgent({
@@ -172,13 +184,25 @@ export async function POST(req: NextRequest) {
         globalContext: body.globalContext.trim(),
         referenceContext: ctxResult.context,
         contextTruncated,
+        artifacts: body.artifacts,
         isImageMode,
         selectedModelId: modelId ?? effectiveModelId,
         modelSupportsTools: resolved.supportsTools,
         thinking: options.enableThinking ? resolved.thinkingSettings(options.thinkingEffort) : {},
       });
 
-      const historyMessages = await toModelMessages(body.messages);
+      const rawHistory = await toModelMessages(body.messages);
+      const prunedHistory = pruneStudyMessages(compactArtifactMessages(rawHistory));
+      const compacted = await compactHistory({
+        messages: prunedHistory,
+        shouldCompact: contextTruncated,
+        sessionId: body.id,
+        abortSignal: generationSignal,
+        modelId: provider.registryId,
+        isCustom: provider.isCustom,
+        custom: effectiveCustom,
+      });
+      const historyMessages = compacted.messages;
       const startedAt = Date.now();
       const result = await bundle.agent.stream({
         messages: historyMessages,

@@ -55,6 +55,24 @@ test("context breakdown drives ring total and warning state", () => {
   assert.equal(state.contextWarning, "soft limit");
 });
 
+test("token tracker uses unpadded total for the next soft-limit decision", () => {
+  useTokenTracker.getState().resetSession();
+  useTokenTracker.getState().setContextBreakdown({
+    tools: 100,
+    skills: 100,
+    pages: 100,
+    webSearch: 0,
+    conversation: 4_700,
+    total: 5_000,
+    displayTotal: 90_000,
+    truncated: true,
+  });
+  const state = useTokenTracker.getState();
+  assert.equal(state.serverContextTokens, 5_000);
+  assert.equal(state.currentContextTokens, 90_000);
+  assert.equal(state.contextTruncated, true);
+});
+
 test("chat route uses last user message, selected model context manager, and soft truncation metadata", () => {
   const source = readWorkspaceFile("app/api/chat/route.ts");
 

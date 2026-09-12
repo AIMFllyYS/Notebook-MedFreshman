@@ -12,7 +12,7 @@ import { useAcademicYear } from './useAcademicYear';
 import { hydrateAttachmentsForApi } from '@/lib/storage/chatStorage';
 import { createUserMessage, getMessageText } from '@/lib/chat/messageParts';
 import type { ChatContext, ChatMessage, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
-import { SOFT_LIMIT_MAX_TURNS } from '@/lib/chat/buildRequestMessages';
+
 import { buildTrace } from '@/lib/chat/buildTrace';
 
 vi.mock('@/lib/storage/idbStorage', async (importOriginal) => {
@@ -297,7 +297,7 @@ describe('useChat SDK transport regression', () => {
     expect(useChatHistory.getState().messagesById).toEqual({});
   });
 
-  it('附件水合先于请求，80% 软上限只发送最近消息但不删本地历史', async () => {
+  it('附件水合先于请求，80% 软上限仍发送完整历史但不删本地历史', async () => {
     const history: ChatMessage[] = Array.from({ length: 24 }, (_, i) => createUserMessage(`old-${i}`, `历史 ${i}`));
     history[0].attachments = [{ type: 'image', id: 'old-image', mimeType: 'image/png' }];
     history[23].attachments = [{ type: 'image', id: 'recent-image', mimeType: 'image/png' }];
@@ -312,8 +312,8 @@ describe('useChat SDK transport regression', () => {
     await settle();
     expect(hydrateAttachmentsForApi).toHaveBeenCalledTimes(1);
     const sent = requests[0].body.messages as ChatMessage[];
-    expect(sent).toHaveLength(SOFT_LIMIT_MAX_TURNS);
-    expect(sent.some((m) => m.id === 'old-0')).toBe(false);
+    expect(sent.length).toBeGreaterThan(16);
+    expect(sent.some((m) => m.id === 'old-0')).toBe(true);
     expect(sent.at(-2)?.parts.some((p) => p.type === 'file')).toBe(true);
     expect(sent.at(-1)?.parts).toContainEqual({ type: 'file', mediaType: 'image/png', url: 'data:image/png;base64,aW1hZ2U=' });
     expect(requests[0].body).toMatchObject({ contextTruncated: true, sessionContextBudgetTokens: 1000 });

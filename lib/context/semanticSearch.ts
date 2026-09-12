@@ -1,5 +1,6 @@
-import type { ContextManager, BuildContextResult } from './types';
+import type { ContextManager, BuildContextResult, BuildContextOptions } from './types';
 import { closeReferenceMaterials, getMaxTokens } from './types';
+import { summarizePageMarkdown } from './referenceTiers';
 import { DEFAULT_MODEL_ID } from '@/lib/ai/models';
 import type { ChatContext } from '@/lib/types/chat';
 import { readContentMarkdown } from '@/lib/content/loader';
@@ -38,43 +39,50 @@ export class SemanticSearchManager implements ContextManager {
   async buildContext(
     chatContext: ChatContext,
     userMessage: string,
+    options?: BuildContextOptions,
   ): Promise<BuildContextResult> {
     const maxTokens = getMaxTokens(this.model);
     const parts: string[] = [];
+    const compact = options?.compact === true;
 
-    // 1. 当前页面全文（与 FullContextManager 保持一致）
     const pageContent = readContentMarkdown(
       chatContext.subjectId,
       chatContext.categoryId,
       chatContext.itemId,
     );
+    const item = getContentItem(
+      chatContext.subjectId as SubjectId,
+      chatContext.categoryId as CategoryId,
+      chatContext.itemId,
+    );
+    const title = item?.title ?? chatContext.currentTopic;
     if (pageContent) {
-      const item = getContentItem(
-        chatContext.subjectId as SubjectId,
-        chatContext.categoryId as CategoryId,
-        chatContext.itemId,
-      );
-      const title = item?.title ?? chatContext.currentTopic;
-      parts.push(`\n## 当前内容：${title}\n${pageContent}`);
+      if (compact) {
+        parts.push('\n' + summarizePageMarkdown(pageContent, title));
+      } else {
+        parts.push(`\n## 当前内容：${title}\n${pageContent}`);
+      }
     }
 
-    // 2. 语义检索相关 chunk
-    try {
-      const { hybridSearch } = await import('@/lib/ai/search/hybridSearch');
-      const year = chatContext.academicYear;
-      const hits = await hybridSearch(userMessage, {
-        topK: 5,
-        academicYear: year === "all" || !isAcademicYearId(year) ? "all" : year,
-        preferSubjectId: chatContext.subjectId,
-      });
-      if (hits.length > 0) {
-        const searchLines = hits.map(
-          (h) => `### ${h.title}\npath: ${h.path}\n${h.snippet}`,
-        );
-        parts.push(`\n## 语义检索相关内容\n${searchLines.join('\n\n')}`);
+    // 截断态跳过检索 I/O（P1-15）；非 compact 才注入语义命中。
+    if (!compact) {
+      try {
+        const { hybridSearch } = await import('@/lib/ai/search/hybridSearch');
+        const year = chatContext.academicYear;
+        const hits = await hybridSearch(userMessage, {
+          topK: 5,
+          academicYear: year === "all" || !isAcademicYearId(year) ? "all" : year,
+          preferSubjectId: chatContext.subjectId,
+        });
+        if (hits.length > 0) {
+          const searchLines = hits.map(
+            (h) => `### ${h.title}\npath: ${h.path}\n${h.snippet}`,
+          );
+          parts.push(`\n## 语义检索相关内容\n${searchLines.join('\n\n')}`);
+        }
+      } catch {
+        // 索引不可用时不注入检索结果
       }
-    } catch {
-      // 索引不可用时不注入检索结果
     }
 
     const body = parts.join('\n');
@@ -89,6 +97,7 @@ export class SemanticSearchManager implements ContextManager {
       cacheHit: false,
       sources: this.collectSources(chatContext),
       overflow: tokenCount > maxTokens,
+      tier: compact ? "summary" : "full",
     };
   }
 

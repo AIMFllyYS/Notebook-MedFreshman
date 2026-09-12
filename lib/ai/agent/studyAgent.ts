@@ -1,8 +1,8 @@
 // 学习助教 Agent：把 system prompt 拼装、工具集、思考参数、生图模式约束封装成一个 ToolLoopAgent。
 // 每次请求创建一个实例（工具以闭包捕获请求上下文，成本可忽略）。
 //
-// 提示词拼装顺序与旧 route.ts 逐字节一致：稳定前缀（global + 学科 + 用户设置）
-// 与易变上下文（当前定位 + 参考材料）合并为单条 system，多轮间稳定 → 上游 prefix 缓存命中。
+// 提示词：稳定前缀（global 教学法 + 学科 md + 用户设置）在前，
+// 易变段（定位 / 参考材料 / 演示目录）在后，合并为唯一一条 system。
 
 import { ToolLoopAgent, isStepCount, wrapLanguageModel, type ToolSet, type PrepareStepFunction } from "ai";
 import type { LanguageModelV4 } from "@ai-sdk/provider";
@@ -19,6 +19,7 @@ import {
   type StudyToolRuntime,
 } from "@/lib/ai/agent/tools/server";
 import { createAgentLifecycleHooks } from "@/lib/ai/observability/agentLog";
+import { formatArtifactCatalog, type ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
 
 export interface StudyAgentInput {
   model: LanguageModelV4;
@@ -28,10 +29,12 @@ export interface StudyAgentInput {
   disabledTools: string[];
   skills: Skill[];
   globalContext: string;
-  /** 参考材料（上下文管理器产出），已按软上限决定是否省略。 */
+  /** 参考材料（上下文管理器产出），已按分级裁剪。 */
   referenceContext: string;
-  /** 上下文达到 80% 软上限时置 true：省略参考材料并在 system 中说明。 */
+  /** 上下文达到 80% 软上限时置 true：参考材料已分级裁剪，历史走滚动摘要。 */
   contextTruncated: boolean;
+  /** 已生成的演示目录（不含 HTML）。 */
+  artifacts?: ArtifactCatalogItem[];
   /** 用户选择的是生图模型：强制每步只能调用 generateImage。 */
   isImageMode: boolean;
   /** 前端选中的模型 id（透传给 renderInteractive / generateImage 卡片）。 */
@@ -63,6 +66,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
   const {
     model, chatCtx, options, disabledTools, skills, globalContext,
     referenceContext, contextTruncated, isImageMode, selectedModelId, modelSupportsTools, thinking,
+    artifacts = [],
   } = input;
 
   // 稳定排序，保证拼装的系统前缀逐字节一致、利于缓存命中
@@ -93,14 +97,15 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     ? `${baseSystemPrompt}\n\n---\n\n${promptExtras.join("\n\n---\n\n")}`
     : baseSystemPrompt;
 
-  // 参考材料进这条唯一 system；提问只留在最后一条 user，不要再拼进 referenceContext。
+  // 易变段必须后置：定位（换页/换学年）→ 参考材料 → 演示目录 → 压缩说明。
+  // 稳定前缀（global + 学科 + 用户设置）在 systemPrompt 里，同页追问可命中 prefix cache。
   const volatile =
     buildLocationLine(chatCtx) +
+    (referenceContext ? `\n\n【参考材料】\n${referenceContext}` : "") +
+    formatArtifactCatalog(artifacts) +
     (contextTruncated
-      ? "\n\n【上下文策略】当前会话达到 80% 软上限，本次省略完整参考材料，只使用最近消息继续回答。"
-      : referenceContext
-        ? `\n\n【参考材料】\n${referenceContext}`
-        : "");
+      ? "\n\n【上下文策略】当前会话达到 80% 软上限，较早对话已压缩为摘要，参考材料已按目录/摘要分级裁剪。"
+      : "");
 
   // 必须只有「一条」system 消息且在最前：部分模型（如硅基流动 Qwen3）会对第二条 system 报错。
   const instructions = volatile ? `${systemPrompt}\n\n${volatile}` : systemPrompt;
@@ -120,7 +125,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
             : undefined,
         },
         runtime,
-        { enableSearch: options.enableSearch ?? false, disabled: disabledTools },
+        { enableSearch: options.enableSearch ?? false, disabled: disabledTools, artifacts },
       )
     : {};
 

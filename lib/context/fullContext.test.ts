@@ -15,3 +15,14 @@ test('FullContextManager：参考材料不含用户提问，同页不同问题�
   assert.equal(first.context, second.context);
   assert.equal(first.tokenCount, second.tokenCount);
 });
+
+test('FullContextManager：compact 时用目录+摘要而不是全文', async () => {
+  const manager = new FullContextManager();
+  const full = await manager.buildContext(page, 'q');
+  const compact = await manager.buildContext(page, 'q', { compact: true });
+  assert.equal(full.tier, 'full');
+  assert.ok(compact.tier === 'summary' || compact.tier === 'outline');
+  assert.match(compact.context, /课程目录|当前页摘要/);
+  assert.ok(compact.tokenCount <= full.tokenCount);
+  assert.doesNotMatch(compact.context, /用户提问：/);
+});

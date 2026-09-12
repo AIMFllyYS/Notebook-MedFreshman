@@ -140,7 +140,8 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
       }
     };
 
-    if (serverCtx > 0) {
+    const displayBase = tracker.contextBreakdown?.displayTotal ?? serverCtx;
+    if (displayBase > 0) {
       const lastAssistantIdx = (() => {
         for (let i = msgs.length - 1; i >= 0; i--) {
           if (msgs[i].role === 'assistant') return i;
@@ -152,7 +153,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
         .map((m) => getMessageText(m))
         .join('');
       const newTokens = estimateTokens(newText);
-      setCurrentContext(serverCtx + newTokens);
+      setCurrentContext(displayBase + newTokens);
     } else {
       const text = msgs
         .map((m) => getMessageText(m))
@@ -353,7 +354,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                   <Row label="上下文缓存" value={breakdown.cacheHit ? '命中' : '未命中'} />
                 )}
                 {contextTruncated && (
-                  <Row label="发送策略" value="最近消息" accent />
+                  <Row label="发送策略" value="滚动摘要" accent />
                 )}
                 {contextWarning && (
                   <div style={{ marginTop: 4, fontSize: 10, lineHeight: 1.35, color: 'var(--md-sys-color-error)' }}>

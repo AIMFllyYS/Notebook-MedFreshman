@@ -147,6 +147,24 @@ export const chatRequestSchema = z.object({
     .array(skillSchema)
     .max(REQUEST_LIMITS.skills, `技能数量超过上限（最多 ${REQUEST_LIMITS.skills} 个）。`)
     .default([]),
+  artifacts: z
+    .array(
+      z
+        .object({
+          id: z.string(),
+          title: z.string().optional(),
+          summary: z.string().max(2000).optional(),
+          html: z.string().max(REQUEST_LIMITS.canvasSourceChars).optional(),
+        })
+        .transform((item) => ({
+          id: item.id,
+          title: String(item.title ?? ""),
+          summary: String(item.summary ?? ""),
+          html: item.html,
+        })),
+    )
+    .max(16)
+    .default([]),
   subjectId: z.string().default("other"),
   categoryId: z.string().default("detail"),
   itemId: z.string().default(""),

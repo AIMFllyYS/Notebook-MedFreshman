@@ -6,11 +6,13 @@ import { useTokenTracker } from './useTokenTracker';
 import { useFloatingTokenTracker } from './useFloatingTokenTracker';
 import { useBillingStore, createBillingRecord } from './useBillingStore';
 import { useAcademicYear } from './useAcademicYear';
+import { useArtifacts } from './useArtifacts';
+import { collectRequestArtifacts } from '@/lib/context/compactArtifacts';
 import type { ChatMessage, ChatContext, ChatOptions } from '@/lib/types/chat';
 import { createAssistantPlaceholder, createUserMessage } from '@/lib/chat/messageParts';
 import { buildRequestMessages } from '@/lib/chat/buildRequestMessages';
 import {
-  canSendNow, resolveRequestSettings, estimateContextBudget, CONTEXT_WARNING,
+  canSendNow, resolveRequestSettings, estimateContextBudget, displayContextTokens, CONTEXT_WARNING,
   buildChatRequestBody, kickoffSessionTitle, classifySendError, executeChatRequest,
   type SendMessageOptions,
 } from '@/lib/chat/sendMessage';
@@ -65,13 +67,14 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
     const tracker = ovSessionId
       ? useFloatingTokenTracker.getState().getSession(ovSessionId) : useTokenTracker.getState();
     const budget = estimateContextBudget(tracker, resolved.model, estimateMessages, userContent);
+    const ringTokens = displayContextTokens(tracker, budget);
     if (ovSessionId) {
       const floating = useFloatingTokenTracker.getState();
-      floating.setCurrentContext(ovSessionId, budget.estimated, budget.limit);
+      floating.setCurrentContext(ovSessionId, ringTokens, budget.limit);
       floating.setContextWarning(ovSessionId, budget.softLimitReached, CONTEXT_WARNING);
     } else {
       const tokens = useTokenTracker.getState();
-      tokens.setCurrentContext(budget.estimated, budget.limit);
+      tokens.setCurrentContext(ringTokens, budget.limit);
       tokens.setContextWarning(budget.softLimitReached, CONTEXT_WARNING);
     }
     loadingRef.current = true; setIsLoading(true); setError(null); setInfo(null);
@@ -81,7 +84,10 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
       try {
         await executeChatRequest({
           latestMessages, abortSignal: abortController.signal, budget,
-          body: buildChatRequestBody(chatContext, settings, resolved, budget, skills, academicYear),
+          body: buildChatRequestBody(
+            chatContext, settings, resolved, budget, skills, academicYear,
+            collectRequestArtifacts(latestMessages, useArtifacts.getState()),
+          ),
           sessionId, userMessageId: userMessage.id, assistant, userContent,
           onWrite: (message) => useChatHistory.getState().updateMessage(sessionId, assistant.id, {
             parts: message.parts, metadata: message.metadata, followUpQuestions: message.followUpQuestions,

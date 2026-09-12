@@ -1,5 +1,6 @@
-import type { ContextManager, BuildContextResult } from './types';
+import type { ContextManager, BuildContextResult, BuildContextOptions } from './types';
 import { closeReferenceMaterials, getMaxTokens } from './types';
+import { assembleReference, pickReferenceTier, summarizePageMarkdown } from './referenceTiers';
 import { DEFAULT_MODEL_ID } from '@/lib/ai/models';
 import type { ChatContext } from '@/lib/types/chat';
 import { contentTree } from '@/lib/content-data/manifest';
@@ -32,6 +33,7 @@ function buildTreeSummary(): string {
 interface CacheEntry {
   pageId: string;
   contentHash: string;
+  tier: string;
 }
 
 let _contextCache: CacheEntry | null = null;
@@ -52,20 +54,51 @@ export class FullContextManager implements ContextManager {
 
   async buildContext(
     chatContext: ChatContext,
+    _userMessage?: string,
+    options?: BuildContextOptions,
   ): Promise<BuildContextResult> {
     const maxTokens = getMaxTokens(this.model);
-    const fullContext = await this.getFullContext(chatContext);
+    const outline = buildTreeSummary();
+    const pageContent = readContentMarkdown(
+      chatContext.subjectId,
+      chatContext.categoryId,
+      chatContext.itemId,
+    );
+    const item = getContentItem(
+      chatContext.subjectId as SubjectId,
+      chatContext.categoryId as CategoryId,
+      chatContext.itemId,
+    );
+    const title = item?.title ?? chatContext.currentTopic;
+    const summary = pageContent ? summarizePageMarkdown(pageContent, title) : "";
+    const full = pageContent ? `## 当前内容：${title}\n${pageContent}` : "";
+
+    let tier = pickReferenceTier({ compact: options?.compact });
+    let assembled = assembleReference({ outline, summary, full }, tier);
+    let tokenCount = estimateTokens(closeReferenceMaterials(assembled));
+    if (!options?.compact && tokenCount > maxTokens) {
+      tier = "summary";
+      assembled = assembleReference({ outline, summary, full }, tier);
+      tokenCount = estimateTokens(closeReferenceMaterials(assembled));
+    }
+    if (options?.compact && tokenCount / Math.max(maxTokens, 1) >= 0.8) {
+      tier = "outline";
+      assembled = assembleReference({ outline, summary, full }, tier);
+      tokenCount = estimateTokens(closeReferenceMaterials(assembled));
+    }
+
     // 提问只留在最后一条 user；这里只放参考材料，收尾不含用户原话。
-    const context = closeReferenceMaterials(fullContext);
-    const tokenCount = estimateTokens(context);
+    const context = closeReferenceMaterials(assembled);
+    tokenCount = estimateTokens(context);
 
     const pageId = `${chatContext.subjectId}/${chatContext.categoryId}/${chatContext.itemId}`;
-    const contentHash = hashContent(fullContext);
+    const contentHash = hashContent(assembled);
     const cacheHit = _contextCache !== null
       && _contextCache.pageId === pageId
-      && _contextCache.contentHash === contentHash;
+      && _contextCache.contentHash === contentHash
+      && _contextCache.tier === tier;
 
-    _contextCache = { pageId, contentHash };
+    _contextCache = { pageId, contentHash, tier };
 
     const sources = this.collectSources(chatContext);
 
@@ -76,30 +109,13 @@ export class FullContextManager implements ContextManager {
       cacheHit,
       sources,
       overflow: tokenCount > maxTokens,
+      tier,
     };
   }
 
   async getFullContext(chatContext: ChatContext): Promise<string> {
-    const parts: string[] = [];
-
-    parts.push('\n## 课程目录\n' + buildTreeSummary());
-
-    const pageContent = readContentMarkdown(
-      chatContext.subjectId,
-      chatContext.categoryId,
-      chatContext.itemId,
-    );
-    if (pageContent) {
-      const item = getContentItem(
-        chatContext.subjectId as SubjectId,
-        chatContext.categoryId as CategoryId,
-        chatContext.itemId,
-      );
-      const title = item?.title ?? chatContext.currentTopic;
-      parts.push(`\n## 当前内容：${title}\n${pageContent}`);
-    }
-
-    return parts.join('\n');
+    const result = await this.buildContext(chatContext, "", { compact: false });
+    return result.context.replace(/\n\n以上是参考材料$/, "");
   }
 
   private collectSources(chatContext: ChatContext): string[] {

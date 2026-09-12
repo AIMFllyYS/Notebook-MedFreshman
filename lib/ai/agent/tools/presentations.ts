@@ -13,6 +13,7 @@ import { presentation as drawDiagram } from "@/lib/ai/agent/tools/drawDiagram/pr
 import { presentation as generateImage } from "@/lib/ai/agent/tools/generateImage/presentation";
 import { presentation as createQuiz } from "@/lib/ai/agent/tools/createQuiz/presentation";
 import { presentation as writeDocument } from "@/lib/ai/agent/tools/writeDocument/presentation";
+import { presentation as getArtifact } from "@/lib/ai/agent/tools/getArtifact/presentation";
 import { presentation as useSkill } from "@/lib/ai/agent/tools/useSkill/presentation";
 
 export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
@@ -28,6 +29,7 @@ export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
   generateImage,
   createQuiz,
   writeDocument,
+  getArtifact,
   useSkill,
 };
 
