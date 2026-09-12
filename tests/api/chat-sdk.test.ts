@@ -339,14 +339,29 @@ test('chat SDK: image mode exposes only generateImage once and preserves selecte
 
 test('chat SDK: GLM failover bills the landed mimo model, not GLM', async (t) => {
   const hosts: string[] = [];
-  t.mock.method(globalThis, 'fetch', async (url: unknown) => {
+  const bodies: Array<{ host: string; body: Record<string, unknown> }> = [];
+  t.mock.method(globalThis, 'fetch', async (url: unknown, init?: RequestInit) => {
     hosts.push(String(url));
+    if (init?.body) bodies.push({ host: String(url), body: JSON.parse(String(init.body)) as Record<string, unknown> });
     if (String(url).includes('primary.invalid')) return new Response('unavailable', { status: 503 });
     return openAiStep(undefined, '短回答。<FollowUp>如何应用|如何验证</FollowUp>');
   });
-  const { chunks } = await chat({ modelId: 'z-ai/glm-5.3-flash', customApiGroups: [] });
+  const { chunks } = await chat({
+    modelId: 'z-ai/glm-5.3-flash',
+    customApiGroups: [],
+    thinkingEffort: 'max',
+  });
   assert.ok(hosts.some((host) => host.includes('primary.invalid')));
   assert.ok(hosts.some((host) => host.includes('backup.invalid')));
   const usagePart = chunks.find((chunk) => chunk.type === 'data-usage');
   assert.equal(usagePart && 'data' in usagePart ? usagePart.data.actualModelId : undefined, 'mimo-v2.5');
+  const primaryBody = bodies.find((entry) => entry.host.includes('primary.invalid'))?.body;
+  const backupBody = bodies.find((entry) => entry.host.includes('backup.invalid'))?.body;
+  assert.ok(primaryBody, 'primary hop body missing');
+  assert.ok(backupBody, 'backup hop body missing');
+  assert.equal(primaryBody.reasoning_effort ?? primaryBody.reasoningEffort, 'max');
+  assert.deepEqual(backupBody.thinking, { type: 'enabled' }, JSON.stringify(backupBody));
+  assert.equal(backupBody.reasoning_effort, undefined);
+  assert.equal(backupBody.reasoningEffort, undefined);
+  assert.equal(backupBody.enable_thinking, undefined);
 });

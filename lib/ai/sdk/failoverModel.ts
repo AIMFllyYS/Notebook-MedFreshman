@@ -32,6 +32,11 @@ export interface FailoverOptions {
    * 切到下一候选。与用户主动取消区分：只有本模型内部触发的超时才算可恢复。
    */
   firstChunkTimeoutMs?: number;
+  /**
+   * 每一跳发出前改写 callOptions。用于按该候选的思考方言替换冻在 Agent 上的
+   * providerOptions；不传则每跳复用同一份 callOptions（旧行为）。
+   */
+  prepareCall?: (index: number, callOptions: LanguageModelV4CallOptions) => LanguageModelV4CallOptions;
 }
 
 /** 默认判定：上游 502/503/504、智谱/SF 的可恢复 400 code、以及网络层错误。 */
@@ -87,6 +92,11 @@ export function createFailoverLanguageModel(
     return isRecoverable(error);
   };
 
+  const hopOptions = (index: number, callOptions: LanguageModelV4CallOptions, signal: AbortSignal | undefined) => {
+    const prepared = options.prepareCall?.(index, callOptions) ?? callOptions;
+    return { ...prepared, abortSignal: signal };
+  };
+
   return {
     specificationVersion: "v4",
     provider: primary.provider,
@@ -98,7 +108,7 @@ export function createFailoverLanguageModel(
       for (let i = 0; i < candidates.length; i++) {
         const attempt = startAttempt(callOptions.abortSignal, options.firstChunkTimeoutMs);
         try {
-          const result = await candidates[i].model.doGenerate({ ...callOptions, abortSignal: attempt.signal });
+          const result = await candidates[i].model.doGenerate(hopOptions(i, callOptions, attempt.signal));
           options.onLanded?.(candidates[i], i);
           return result;
         } catch (err) {
@@ -120,7 +130,7 @@ export function createFailoverLanguageModel(
         let first: ReadableStreamReadResult<LanguageModelV4StreamPart>;
         let reader: ReadableStreamDefaultReader<LanguageModelV4StreamPart>;
         try {
-          result = await candidates[i].model.doStream({ ...callOptions, abortSignal: attempt.signal });
+          result = await candidates[i].model.doStream(hopOptions(i, callOptions, attempt.signal));
           // doStream 成功返回并不代表上游已开始输出：部分 provider 把 HTTP 错误延后成流内 error part，
           // 因此窥探首个 chunk（首字节超时也覆盖到这里）。
           reader = result.stream.getReader();

@@ -9,7 +9,7 @@
 //
 // 仅服务端导入。
 
-import type { LanguageModelV4, SharedV4ProviderOptions } from "@ai-sdk/provider";
+import type { LanguageModelV4, LanguageModelV4CallOptions, SharedV4ProviderOptions } from "@ai-sdk/provider";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { wrapLanguageModel, extractReasoningMiddleware } from "ai";
@@ -122,13 +122,24 @@ export function buildThinkingSettings(
   const budget = thinkingBudget(effort);
   const modelInfo = info ?? (p.isCustom ? undefined : getModelInfo(p.registryId));
   const effortStr = wireThinkingEffort(modelInfo, effort);
-  switch (p.thinkingRequestStyle) {
+  const style = modelInfo?.thinkingRequestStyle ?? p.thinkingRequestStyle;
+  switch (style) {
     case "none":
       return {};
     case "openai-reasoning-effort":
       return { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: effortStr } } };
     case "openrouter-reasoning":
       return { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { reasoning: { effort: effortStr } } } };
+    case "gemini-thinking-level":
+      return { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { thinking_level: effortStr } } };
+    case "deepseek-thinking":
+      return {
+        providerOptions: {
+          [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" }, reasoning_effort: effortStr },
+        },
+      };
+    case "mimo-thinking":
+      return { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" } } } };
     case "anthropic-thinking": {
       const maxOutputTokens = Math.max(ANTHROPIC_THINKING_MAX_TOKENS_MIN, budget + 4096);
       if (p.apiProtocol === "anthropic") {
@@ -149,6 +160,62 @@ export function buildThinkingSettings(
   }
 }
 
+const THINKING_UPSTREAM_KEYS = [
+  "reasoningEffort",
+  "reasoning_effort",
+  "reasoning",
+  "thinking",
+  "thinking_level",
+  "enable_thinking",
+  "thinking_budget",
+] as const;
+
+/** 用落地端点的思考方言替换 callOptions 里冻住的上一跳参数，避免 merge 残留 GLM 的 reasoningEffort。 */
+export function applyThinkingCallSettings(
+  callOptions: LanguageModelV4CallOptions,
+  settings: ThinkingCallSettings,
+): LanguageModelV4CallOptions {
+  const providerOptions = { ...(callOptions.providerOptions ?? {}) } as Record<string, unknown>;
+  const upstream = { ...((providerOptions[UPSTREAM_PROVIDER_NAME] as Record<string, unknown> | undefined) ?? {}) };
+  for (const key of THINKING_UPSTREAM_KEYS) delete upstream[key];
+  const nextUpstream = settings.providerOptions?.[UPSTREAM_PROVIDER_NAME as keyof SharedV4ProviderOptions];
+  if (nextUpstream && typeof nextUpstream === "object") Object.assign(upstream, nextUpstream);
+  if (Object.keys(upstream).length > 0) providerOptions[UPSTREAM_PROVIDER_NAME] = upstream;
+  else delete providerOptions[UPSTREAM_PROVIDER_NAME];
+
+  const anthropic = { ...((providerOptions.anthropic as Record<string, unknown> | undefined) ?? {}) };
+  if (settings.providerOptions?.anthropic) Object.assign(anthropic, settings.providerOptions.anthropic);
+  else delete anthropic.thinking;
+  if (Object.keys(anthropic).length > 0) providerOptions.anthropic = anthropic;
+  else delete providerOptions.anthropic;
+
+  return {
+    ...callOptions,
+    providerOptions: providerOptions as SharedV4ProviderOptions,
+    ...(settings.maxOutputTokens != null ? { maxOutputTokens: settings.maxOutputTokens } : {}),
+  };
+}
+
+/** failover 后按落地端点的 apiModelId/provider 重取 ModelInfo，方言跟落地模型。 */
+function landedThinkingContext(
+  landed: ResolvedProvider,
+  customGroups: CustomApiGroup[],
+  fallbackInfo: ModelInfo | undefined,
+): { provider: ResolvedProvider; info: ModelInfo | undefined } {
+  if (landed.isCustom) {
+    const info = getModelInfoWithCustom(landed.registryId, customGroups) ?? fallbackInfo;
+    return { provider: landed, info };
+  }
+  const info = getModelInfo(landed.apiModelId) ?? getModelInfo(landed.registryId) ?? fallbackInfo;
+  return {
+    provider: {
+      ...landed,
+      thinkingRequestStyle: info?.thinkingRequestStyle ?? landed.thinkingRequestStyle,
+    },
+    info,
+  };
+}
+
 export function resolveLanguageModel(
   modelId: string | undefined,
   custom?: CustomProvider | CustomApiGroup[] | null,
@@ -167,6 +234,9 @@ export function resolveLanguageModel(
     label: p.apiModelId,
   }));
 
+  let thinkingSettingsRequested = false;
+  let lastThinkingEffort: ThinkingEffort | undefined;
+
   const model = createFailoverLanguageModel(candidates, {
     onFailover: (next, _index, error) => options.onFailover?.({ label: next.label }, error),
     onLanded: (_next, index) => {
@@ -174,6 +244,15 @@ export function resolveLanguageModel(
     },
     // 与旧实现一致：首字节超时视为端点不可用（慢模型如 MoE 冷启动在 models.ts 单独放宽）。
     firstChunkTimeoutMs: options.firstChunkTimeoutMs ?? primary.timeoutMs,
+    prepareCall: (index, callOptions) => {
+      if (!thinkingSettingsRequested || !supportsThinking) return callOptions;
+      const hop = providers[index] ?? actualProvider;
+      const landed = landedThinkingContext(hop, customGroups, info);
+      return applyThinkingCallSettings(
+        callOptions,
+        buildThinkingSettings(landed.provider, lastThinkingEffort, landed.info),
+      );
+    },
   });
 
   return {
@@ -182,6 +261,12 @@ export function resolveLanguageModel(
     getActualProvider: () => actualProvider,
     supportsThinking,
     supportsTools,
-    thinkingSettings: (effort) => (supportsThinking ? buildThinkingSettings(primary, effort, info) : {}),
+    thinkingSettings: (effort) => {
+      thinkingSettingsRequested = true;
+      lastThinkingEffort = effort;
+      if (!supportsThinking) return {};
+      const landed = landedThinkingContext(actualProvider, customGroups, info);
+      return buildThinkingSettings(landed.provider, effort, landed.info);
+    },
   };
 }
