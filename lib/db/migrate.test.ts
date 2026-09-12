@@ -89,10 +89,13 @@ test("checksumSql is stable for the same bytes", () => {
 
 test("discoverMigrations reads repo baseline in version order", () => {
   const files = discoverMigrations(DEFAULT_MIGRATIONS_DIR);
-  assert.ok(files.length >= 1);
+  assert.ok(files.length >= 2);
   assert.equal(files[0].version, "0001");
   assert.equal(files[0].filename, "0001_init.sql");
   assert.equal(files[0].checksum, checksumSql(files[0].sql));
+  assert.equal(files[1].version, "0002");
+  assert.equal(files[1].filename, "0002_app_users_no_client_update.sql");
+  assert.equal(findNonIdempotentStatements(files[1].sql).length, 0);
 });
 
 test("0001_init.sql inventory covers tables indexes triggers policies grants", () => {

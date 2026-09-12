@@ -1,7 +1,7 @@
 {
-  "source": "supabase-management-api-readonly",
+  "source": "pglite-after-0002",
   "projectRef": "jlahwwnjbhqfnsicdjsx",
-  "capturedAt": "2026-09-11T16:30:00.000Z",
+  "capturedAt": "2026-09-12T14:11:49.362Z",
   "catalog": {
     "tables": [
       "app_users",
@@ -42,7 +42,6 @@
     ],
     "policies": [
       "app_users_select_own",
-      "app_users_update_own",
       "quota_grants_select_own",
       "redemptions_select_own",
       "sync_documents_all_own",
@@ -68,11 +67,7 @@
       "schema:public:USAGE:anon",
       "schema:public:USAGE:authenticated",
       "schema:public:USAGE:service_role",
-      "table:app_users:DELETE:anon",
-      "table:app_users:DELETE:authenticated",
       "table:app_users:DELETE:service_role",
-      "table:app_users:INSERT:anon",
-      "table:app_users:INSERT:authenticated",
       "table:app_users:INSERT:service_role",
       "table:app_users:REFERENCES:anon",
       "table:app_users:REFERENCES:authenticated",
@@ -83,11 +78,7 @@
       "table:app_users:TRIGGER:anon",
       "table:app_users:TRIGGER:authenticated",
       "table:app_users:TRIGGER:service_role",
-      "table:app_users:TRUNCATE:anon",
-      "table:app_users:TRUNCATE:authenticated",
       "table:app_users:TRUNCATE:service_role",
-      "table:app_users:UPDATE:anon",
-      "table:app_users:UPDATE:authenticated",
       "table:app_users:UPDATE:service_role",
       "table:quota_grants:DELETE:anon",
       "table:quota_grants:DELETE:authenticated",
