@@ -18,7 +18,7 @@ const settings = (partial: Partial<ChatRequestBodySettings> = {}): ChatRequestBo
   customModelId: "",
   defaultImageModelId: null,
   imageModeTextModel: "mimo-v2.5",
-  imageModeTextModelFallback: "mimo-v2.5-pro",
+  imageModeTextModelFallback: "mimo-v2.5",
   disabledTools: [],
   globalContext: "",
   ...partial,

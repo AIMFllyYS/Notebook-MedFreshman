@@ -134,7 +134,7 @@ const DEFAULTS: Persisted = {
   customApiGroups: [],
   defaultImageModelId: null,
   imageModeTextModel: "mimo-v2.5",
-  imageModeTextModelFallback: "mimo-v2.5-pro",
+  imageModeTextModelFallback: "mimo-v2.5",
   // 摘录默认用中转站 DeepSeek V4 Flash：性价比高、成卡质量稳定。
   recordModelId: "deepseek/deepseek-v4-flash",
   // 划词助手默认：Qwen3.8 27B（视觉 + 混合思考）。
@@ -185,7 +185,7 @@ function load(): Persisted {
       }
       if (!parsed.defaultImageModelId) parsed.defaultImageModelId = null;
       if (!parsed.imageModeTextModel) parsed.imageModeTextModel = "mimo-v2.5";
-      if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "mimo-v2.5-pro";
+      if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "mimo-v2.5";
       if (typeof parsed.usdExchangeRate !== "number" || !Number.isFinite(parsed.usdExchangeRate) || parsed.usdExchangeRate <= 0) {
         parsed.usdExchangeRate = 7.00;
       }

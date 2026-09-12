@@ -262,10 +262,12 @@ test("resolveProvider：旧 GLM-5.2 id 归一到 glm-5.3-flash", () => {
   assert.equal(r.apiModelId, "z-ai/glm-5.3-flash");
 });
 
-test("resolveProvider：Qwen3.8-27B 超时加长", () => {
-  const r = resolveProvider("Qwen/Qwen3.8-27B");
+test("resolveProvider：Qwen3.8-Flash 超时加长", () => {
+  const r = resolveProvider("Qwen/Qwen3.8-Flash");
+  assert.equal(r.registryId, "Qwen/Qwen3.8-Flash");
   assert.equal(r.timeoutMs, 120_000);
-  assert.equal(r.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.equal(r.thinkingRequestStyle, "siliconflow");
+  assert.equal(resolveProvider("Qwen/Qwen3.8-27B").registryId, "Qwen/Qwen3.8-Flash");
 });
 
 test("resolveProvider：自由中转未配置模型 ID 时 configured=false", () => {

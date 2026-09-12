@@ -35,7 +35,6 @@ const deepseekFlat = {
 function expectedDeepseekCost() {
   const pricing = getModelInfo(DEEPSEEK)?.pricing;
   assert.ok(pricing);
-  assert.equal(pricing.cacheWrite, 0.02);
   return calcUsageCostCny(mapLanguageModelUsage(deepseekFlat), pricing, deepseekFlat);
 }
 
@@ -74,17 +73,19 @@ test("0/0 与缺字段都不是可记账用量", () => {
   assert.equal(buildUsageLedgerRow({ usage: mapLanguageModelUsage({ inputTokens: 0, outputTokens: 0 }), userId: USER }), null);
 });
 
-test("DeepSeek cacheWrite 单价进入金额，reasoning 不重复加在 output 上", () => {
-  const pricing = getModelInfo(DEEPSEEK)?.pricing;
+test("cacheWrite 单价进入金额，reasoning 不重复加在 output 上", () => {
+  const pricing = getModelInfo("gpt-5.6-luna")?.pricing;
   assert.ok(pricing);
+  assert.equal(pricing.cacheWrite, 1.75);
   const usage = mapLanguageModelUsage(deepseekFlat);
   const withWrite = calcUsageCostCny(usage, pricing, deepseekFlat);
   const withoutWritePrice = calcUsageCostCny(usage, { ...pricing, cacheWrite: 0 }, deepseekFlat);
-  assert.equal(withWrite, 0.00806);
-  assert.equal(withoutWritePrice, 0.00802);
   assert.ok(withWrite > withoutWritePrice);
   // completion 已含 reasoning，公式用 500 而不是 500+200
-  assert.equal(withWrite, Number(((7000 * 1 + 1000 * 0.02 + 2000 * 0.02 + 500 * 2) / 1_000_000).toFixed(6)));
+  assert.equal(
+    withWrite,
+    Number(((7000 * pricing.input + 1000 * pricing.cachedInput + 2000 * pricing.cacheWrite! + 500 * pricing.output) / 1_000_000).toFixed(6)),
+  );
 });
 
 test("abort 有消耗：立即写 usage_ledger，金额与上游 token × 单价一致", async () => {

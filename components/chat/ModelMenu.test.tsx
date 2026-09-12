@@ -105,11 +105,11 @@ describe('ModelMenu thinking submenu', () => {
     await act(async () => {
       getByTestId('model-menu-button').click();
     });
-    fireEvent.mouseEnter(getByTestId('model-menu-item-google/gemini-3.7-flash'));
+    fireEvent.mouseEnter(getByTestId('model-menu-item-google/gemini-3.8-flash'));
     await act(async () => {
       getByTestId('model-thinking-option-low').click();
     });
-    expect(onChange).toHaveBeenCalledWith('google/gemini-3.7-flash');
+    expect(onChange).toHaveBeenCalledWith('google/gemini-3.8-flash');
     expect(onThinkingChange).toHaveBeenCalledWith({ enabled: true, effort: 'low' });
   });
 });

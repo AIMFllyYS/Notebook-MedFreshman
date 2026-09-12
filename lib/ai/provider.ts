@@ -68,7 +68,7 @@ const RELAY_BASE = normalizeOpenAIBaseUrl(
 const RELAY_KEY = process.env.RELAY_API_KEY || "";
 const RELAY_MODEL_ID = (process.env.RELAY_MODEL_ID || "").trim();
 
-export const ENV_MODEL_PRO = process.env.AI_MODEL_PRO || "Qwen/Qwen3.8-27B";
+export const ENV_MODEL_PRO = process.env.AI_MODEL_PRO || "gpt-5.6-sol";
 export const ENV_MODEL_FLASH = process.env.AI_MODEL_FLASH || "z-ai/glm-5.3-flash";
 
 export interface CustomProvider {
@@ -101,6 +101,9 @@ const THINKING_REQUEST_STYLES: ThinkingRequestStyle[] = [
   "openai-reasoning-effort",
   "openrouter-reasoning",
   "anthropic-thinking",
+  "gemini-thinking-level",
+  "deepseek-thinking",
+  "mimo-thinking",
 ];
 
 function normalizeThinkingRequestStyle(value: unknown, fallback: ThinkingRequestStyle): ThinkingRequestStyle {
@@ -191,18 +194,28 @@ interface ProviderCredentials {
 
 function credentialsFor(provider: ProviderKind): ProviderCredentials {
   switch (provider) {
-    case "mimo":
-      return { baseUrl: MIMO_BASE, apiKey: MIMO_KEY, configured: !!(MIMO_BASE && MIMO_KEY) };
-    case "zhipu":
-      return { baseUrl: ZHIPU_BASE, apiKey: ZHIPU_KEY, configured: !!(ZHIPU_BASE && ZHIPU_KEY) };
-    case "relay":
-      return { baseUrl: RELAY_BASE, apiKey: RELAY_KEY, configured: !!(RELAY_BASE && RELAY_KEY) };
-    default:
+    case "mimo": {
+      const baseUrl = normalizeOpenAIBaseUrl(MIMO_BASE);
+      return { baseUrl, apiKey: MIMO_KEY, configured: !!(baseUrl && MIMO_KEY) };
+    }
+    case "zhipu": {
+      const baseUrl = normalizeOpenAIBaseUrl(ZHIPU_BASE);
+      return { baseUrl, apiKey: ZHIPU_KEY, configured: !!(baseUrl && ZHIPU_KEY) };
+    }
+    case "relay": {
+      const baseUrl = normalizeOpenAIBaseUrl(RELAY_BASE);
+      return { baseUrl, apiKey: RELAY_KEY, configured: !!(baseUrl && RELAY_KEY) };
+    }
+    case "siliconflow": {
+      const rawBase = process.env.SILICONFLOW_BASE_URL || BASE;
+      const apiKey = process.env.SILICONFLOW_API_KEY || KEY;
+      const baseUrl = normalizeOpenAIBaseUrl(rawBase);
       return {
-        baseUrl: BASE,
-        apiKey: KEY,
-        configured: !!(BASE && KEY && !BASE.includes("your-endpoint")),
+        baseUrl,
+        apiKey,
+        configured: !!(baseUrl && apiKey && !baseUrl.includes("your-endpoint")),
       };
+    }
   }
 }
 

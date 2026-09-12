@@ -16,7 +16,7 @@ import {
 import { readOwnUsageLedger, type UsageLedgerDbRow } from "./readUsageLedger.ts";
 
 const MIMO = "mimo-v2.5";
-const MIMO_PRO = "mimo-v2.5-pro";
+const MIMO_PRO = "gpt-5.6-sol";
 const USER = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
 
 function dbRow(over: Partial<UsageLedgerDbRow> = {}): UsageLedgerDbRow {

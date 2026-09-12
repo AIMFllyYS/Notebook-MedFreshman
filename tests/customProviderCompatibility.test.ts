@@ -14,8 +14,8 @@ test("SDK adapter normalizes custom reasoning and builds provider thinking setti
 
   assert.match(source, /extractReasoningMiddleware\(\{ tagName: "think" \}\)/);
   assert.match(source, /createReasoningNormalizingFetch\(p\.reasoningField\)/);
-  assert.match(source, /buildThinkingSettings\(primary, effort, info\)/);
-  assert.match(source, /switch \(p\.thinkingRequestStyle\)/);
+  assert.match(source, /buildThinkingSettings\(landed\.provider, effort, landed\.info\)/);
+  assert.match(source, /switch \(style\)/);
   assert.doesNotMatch(source, /reqBody\.enable_thinking\s*=\s*true/);
   assert.doesNotMatch(source, /reqBody\.thinking_budget\s*=/);
 });
