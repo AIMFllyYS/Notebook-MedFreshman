@@ -1,0 +1,187 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { getModelInfo } from "@/lib/ai/models";
+import {
+  awaitUsage,
+  buildUsageLedgerRow,
+  calcUsageCostCny,
+  hasBillableUsage,
+  mapLanguageModelUsage,
+  resolveLedgerUserId,
+  settleChatUsage,
+  type UsageLedgerRow,
+} from "./usageLedger.ts";
+
+const DEEPSEEK = "deepseek/deepseek-v4-flash";
+const USER = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
+
+const deepseekFlat = {
+  inputTokens: 10_000,
+  outputTokens: 500,
+  totalTokens: 10_500,
+  inputTokenDetails: { noCacheTokens: 7_000, cacheReadTokens: 1_000, cacheWriteTokens: 2_000 },
+  outputTokenDetails: { textTokens: 300, reasoningTokens: 200 },
+};
+
+function expectedDeepseekCost() {
+  const pricing = getModelInfo(DEEPSEEK)?.pricing;
+  assert.ok(pricing);
+  assert.equal(pricing.cacheWrite, 0.02);
+  return calcUsageCostCny(mapLanguageModelUsage(deepseekFlat), pricing, deepseekFlat);
+}
+
+test("mapUsage：扁平 LanguageModelUsage 保留 reasoning 与 cache-write", () => {
+  const usage = mapLanguageModelUsage(deepseekFlat);
+  assert.deepEqual(usage, {
+    promptTokens: 10_000,
+    completionTokens: 500,
+    cachedTokens: 1_000,
+    cacheWriteTokens: 2_000,
+    reasoningTokens: 200,
+    totalTokens: 10_500,
+  });
+  assert.equal(hasBillableUsage(usage), true);
+});
+
+test("mapUsage：嵌套 mock 结构同样落 reasoning / cache-write", () => {
+  const usage = mapLanguageModelUsage({
+    inputTokens: { total: 10, noCache: 5, cacheRead: 3, cacheWrite: 2 },
+    outputTokens: { total: 8, text: 5, reasoning: 3 },
+  });
+  assert.deepEqual(usage, {
+    promptTokens: 10,
+    completionTokens: 8,
+    cachedTokens: 3,
+    cacheWriteTokens: 2,
+    reasoningTokens: 3,
+    totalTokens: 18,
+  });
+});
+
+test("0/0 与缺字段都不是可记账用量", () => {
+  assert.equal(hasBillableUsage(mapLanguageModelUsage({ inputTokens: 0, outputTokens: 0 })), false);
+  assert.equal(hasBillableUsage(mapLanguageModelUsage({})), false);
+  assert.equal(hasBillableUsage(mapLanguageModelUsage(undefined)), false);
+  assert.equal(buildUsageLedgerRow({ usage: mapLanguageModelUsage({ inputTokens: 0, outputTokens: 0 }), userId: USER }), null);
+});
+
+test("DeepSeek cacheWrite 单价进入金额，reasoning 不重复加在 output 上", () => {
+  const pricing = getModelInfo(DEEPSEEK)?.pricing;
+  assert.ok(pricing);
+  const usage = mapLanguageModelUsage(deepseekFlat);
+  const withWrite = calcUsageCostCny(usage, pricing, deepseekFlat);
+  const withoutWritePrice = calcUsageCostCny(usage, { ...pricing, cacheWrite: 0 }, deepseekFlat);
+  assert.equal(withWrite, 0.00806);
+  assert.equal(withoutWritePrice, 0.00802);
+  assert.ok(withWrite > withoutWritePrice);
+  // completion 已含 reasoning，公式用 500 而不是 500+200
+  assert.equal(withWrite, Number(((7000 * 1 + 1000 * 0.02 + 2000 * 0.02 + 500 * 2) / 1_000_000).toFixed(6)));
+});
+
+test("abort 有消耗：立即写 usage_ledger，金额与上游 token × 单价一致", async () => {
+  const rows: UsageLedgerRow[] = [];
+  const settled = await settleChatUsage({
+    rawUsage: deepseekFlat,
+    userId: USER,
+    selectedModelId: DEEPSEEK,
+    actualModelId: DEEPSEEK,
+    pool: "platform",
+    sessionId: "sess-abort",
+    requestId: "req-abort",
+    aborted: true,
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  assert.equal(settled.recorded, true);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].reasoning_tokens, 200);
+  assert.equal(rows[0].cache_write_tokens, 2_000);
+  assert.equal(rows[0].prompt_tokens, 10_000);
+  assert.equal(rows[0].completion_tokens, 500);
+  assert.equal(rows[0].cached_tokens, 1_000);
+  assert.equal(rows[0].cost_cny, expectedDeepseekCost());
+  assert.equal(rows[0].route, "/api/chat");
+  assert.equal(rows[0].kind, "llm");
+  assert.equal(rows[0].meta.aborted, true);
+  assert.equal(rows[0].session_id, "sess-abort");
+});
+
+test("usage 为 0/0 时不产生任何记录", async () => {
+  const rows: UsageLedgerRow[] = [];
+  const settled = await settleChatUsage({
+    rawUsage: { inputTokens: 0, outputTokens: 0, totalTokens: 0, inputTokenDetails: { cacheReadTokens: 0, cacheWriteTokens: 0 }, outputTokenDetails: { reasoningTokens: 0 } },
+    userId: USER,
+    selectedModelId: DEEPSEEK,
+    actualModelId: DEEPSEEK,
+    aborted: true,
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  assert.equal(settled.recorded, false);
+  assert.equal(settled.summary, undefined);
+  assert.equal(settled.row, null);
+  assert.equal(rows.length, 0);
+});
+
+test("reasoning / cache-write 落进 ledger 对应列", async () => {
+  const rows: UsageLedgerRow[] = [];
+  await settleChatUsage({
+    rawUsage: {
+      inputTokens: { total: 40, noCache: 10, cacheRead: 20, cacheWrite: 10 },
+      outputTokens: { total: 15, text: 4, reasoning: 11 },
+    },
+    userId: USER,
+    selectedModelId: DEEPSEEK,
+    actualModelId: DEEPSEEK,
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].reasoning_tokens, 11);
+  assert.equal(rows[0].cache_write_tokens, 10);
+});
+
+test("缺 userId 或 insert 失败都不抛，且缺 user 不写库", async () => {
+  const rows: UsageLedgerRow[] = [];
+  const noUser = await settleChatUsage({
+    rawUsage: deepseekFlat,
+    userId: null,
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  assert.equal(noUser.recorded, false);
+  assert.equal(rows.length, 0);
+  const failed = await settleChatUsage({
+    rawUsage: deepseekFlat,
+    userId: USER,
+    selectedModelId: DEEPSEEK,
+    insert: async () => {
+      throw new Error("db down");
+    },
+  });
+  assert.equal(failed.recorded, false);
+  assert.ok(failed.row);
+});
+
+test("resolveLedgerUserId：Bearer / 校验失败", async () => {
+  const verify = async (token: string) => (token === "valid-ada" ? { id: "ada" } : null);
+  assert.equal(
+    await resolveLedgerUserId({ get: (name) => (name.toLowerCase() === "authorization" ? "Bearer valid-ada" : null) }, { verify }),
+    "ada",
+  );
+  assert.equal(
+    await resolveLedgerUserId({ get: () => "Bearer nope" }, { verify }),
+    null,
+  );
+  assert.equal(await resolveLedgerUserId({ get: () => null }, { verify }), null);
+});
+
+test("awaitUsage：已决议的 usage 立即返回，超时返回 undefined", async () => {
+  assert.deepEqual(await awaitUsage(Promise.resolve(deepseekFlat), 50), deepseekFlat);
+  const hung = new Promise(() => {});
+  assert.equal(await awaitUsage(hung, 20), undefined);
+});

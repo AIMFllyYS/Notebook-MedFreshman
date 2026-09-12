@@ -7,7 +7,7 @@ import {
   type UIMessageStreamWriter,
 } from "ai";
 import { getContextManager } from "@/lib/context";
-import type { ChatContext, ChatMessage, ChatOptions, UsageSummary } from "@/lib/types/chat";
+import type { ChatContext, ChatMessage, ChatOptions } from "@/lib/types/chat";
 import { ENV_MODEL_PRO, ENV_MODEL_FLASH } from "@/lib/ai/provider";
 import { getModelInfoWithCustom } from "@/lib/ai/models";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
@@ -17,6 +17,7 @@ import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
 import { computeContextBreakdown } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
 import { parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
+import { awaitUsage, resolveLedgerUserId, settleChatUsage } from "@/lib/billing/usageLedger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -56,17 +57,6 @@ async function toModelMessages(messages: ChatRequest["messages"]): Promise<Model
   return convertToModelMessages(uiMessages, { ignoreIncompleteToolCalls: true });
 }
 
-function mapUsage(u: { inputTokens?: number; outputTokens?: number; totalTokens?: number; inputTokenDetails?: { cacheReadTokens?: number } }): UsageSummary {
-  const promptTokens = u.inputTokens ?? 0;
-  const completionTokens = u.outputTokens ?? 0;
-  return {
-    promptTokens,
-    completionTokens,
-    cachedTokens: u.inputTokenDetails?.cacheReadTokens ?? 0,
-    totalTokens: u.totalTokens || promptTokens + completionTokens,
-  };
-}
-
 export async function POST(req: NextRequest) {
   let body: ChatRequest;
   try {
@@ -88,6 +78,8 @@ export async function POST(req: NextRequest) {
   const formatError = (error: unknown) => toChatErrorMessage(error, secrets);
   const generationAbort = new AbortController();
   const generationSignal = AbortSignal.any([req.signal, generationAbort.signal]);
+  const requestId = crypto.randomUUID();
+  const userId = await resolveLedgerUserId(req.headers);
 
   // 生图模式：用户选择了生图模型时，文本对话使用 imageModeTextModel（失败降级到 fallback）。
   const selectedModelInfo = modelId ? getModelInfoWithCustom(modelId, customGroups) : undefined;
@@ -173,20 +165,41 @@ export async function POST(req: NextRequest) {
       });
 
       // 手动转发而非 writer.merge：保证 usage / breakdown / followup 等 data part 与 finish 严格排在正文之后。
-      for await (const chunk of result.toUIMessageStream<ChatMessage>({
-        sendReasoning: true, sendStart: true, sendFinish: false, onError: formatError,
-      })) {
-        writer.write(chunk);
-        if (chunk.type === "error" || chunk.type === "abort") {
-          // SDK failures are stream data, not necessarily rejected result promises.
-          // Stop the provider and never run a second, billable follow-up request.
-          generationAbort.abort();
-          return;
+      let streamFailed = false;
+      try {
+        for await (const chunk of result.toUIMessageStream<ChatMessage>({
+          sendReasoning: true, sendStart: true, sendFinish: false, onError: formatError,
+        })) {
+          writer.write(chunk);
+          if (chunk.type === "error" || chunk.type === "abort") {
+            // SDK failures are stream data, not necessarily rejected result promises.
+            // Stop the provider and never run a second, billable follow-up request.
+            generationAbort.abort();
+            streamFailed = true;
+            break;
+          }
         }
+      } catch {
+        generationAbort.abort();
+        streamFailed = true;
       }
-      if (generationSignal.aborted) return;
 
-      const [steps, totalUsage, finalText] = await Promise.all([result.steps, result.totalUsage, result.text]);
+      const aborted = streamFailed || generationSignal.aborted;
+      // 上游 usage 到手即记账；abort/error 也走这里，不依赖客户端是否还连着 SSE。
+      const settled = await settleChatUsage({
+        rawUsage: await awaitUsage(result.totalUsage),
+        userId,
+        selectedModelId: modelId ?? effectiveModelId,
+        actualModelId: provider.registryId,
+        customGroups,
+        pool: provider.isCustom ? "byok" : "platform",
+        sessionId: body.id,
+        requestId,
+        aborted,
+      });
+      if (aborted) return;
+
+      const [steps, finalText] = await Promise.all([result.steps, result.text]);
 
       // FollowUp 兜底：模型未输出 <FollowUp> 标签时，用轻量模型生成追问
       if (finalText && !/<FollowUp>[\s\S]*?<\/FollowUp>/i.test(finalText)) {
@@ -215,13 +228,16 @@ export async function POST(req: NextRequest) {
         }),
       });
 
-      const usage = mapUsage(totalUsage);
-      if (usage.promptTokens > 0 || usage.completionTokens > 0) {
-        writer.write({ type: "data-usage", data: usage });
+      if (settled.summary) {
+        writer.write({ type: "data-usage", data: settled.summary });
       }
       writer.write({
         type: "message-metadata",
-        messageMetadata: { usage, durationMs: Date.now() - startedAt, modelId: modelId ?? effectiveModelId },
+        messageMetadata: {
+          ...(settled.summary ? { usage: settled.summary } : {}),
+          durationMs: Date.now() - startedAt,
+          modelId: modelId ?? effectiveModelId,
+        },
       });
       writer.write({ type: "finish" });
     },

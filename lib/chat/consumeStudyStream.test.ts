@@ -97,6 +97,21 @@ test('所有结构化工具结果（artifact/image/search/skill）由 SDK 原样
   assert.equal(failed?.state, 'output-error');
 });
 
+test('0/0 usage 不触发 onUsage，避免 ¥0 幽灵账单', async () => {
+  const charges: UsageSummary[] = [];
+  const zero = { promptTokens: 0, completionTokens: 0, cachedTokens: 0, totalTokens: 0 };
+  await consumeStudyStream({
+    message: initial(), onMessage() {}, onUsage: (u) => charges.push(u),
+    stream: fromChunks([
+      ...textChunks(),
+      { type: 'data-usage', data: zero },
+      { type: 'message-metadata', messageMetadata: { usage: zero, durationMs: 10 } },
+      { type: 'finish' },
+    ]),
+  });
+  assert.deepEqual(charges, []);
+});
+
 test('usage metadata 是 data 缺失时的兜底，畸形 data 不污染计费/上下文', async () => {
   const charges: UsageSummary[] = [];
   const contexts: ContextBreakdown[] = [];

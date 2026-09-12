@@ -92,6 +92,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
             else if (useChatHistory.getState().activeSessionId === sessionId) useTokenTracker.getState().setContextBreakdown(breakdown);
           },
           onUsage: (usage) => {
+            if (usage.promptTokens <= 0 && usage.completionTokens <= 0) return;
             if (ovSessionId) useFloatingTokenTracker.getState().addUsage(ovSessionId, usage);
             else if (useChatHistory.getState().activeSessionId === sessionId) useTokenTracker.getState().addUsage(usage);
             useBillingStore.getState().addRecord(createBillingRecord({

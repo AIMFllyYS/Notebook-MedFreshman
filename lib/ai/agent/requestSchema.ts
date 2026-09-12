@@ -48,6 +48,8 @@ const finiteNumber = z.number().refine((n) => Number.isFinite(n));
 /** 客户端 body 字段见 `lib/chat/buildChatRequestBody.ts` 的 `ChatRequestBody`（messages 由 transport 另传）。 */
 export const chatRequestSchema = z.object({
   messages: z.array(uiMessageSchema).default([]),
+  /** DefaultChatTransport 的 chatId，用作 usage_ledger.session_id。 */
+  id: z.string().optional(),
   modelId: z.string().optional(),
   /** 兼容旧式 model:'flash'/'pro'（如划词浮窗早期版本）。 */
   model: z.enum(["flash", "pro"]).optional(),

@@ -36,6 +36,8 @@ function readUsage(value: unknown): UsageSummary | undefined {
   if (!finiteToken('promptTokens') || !finiteToken('completionTokens')) return undefined;
   const promptTokens = usage.promptTokens as number;
   const completionTokens = usage.completionTokens as number;
+  // 0/0 不是一次真实消耗；写进 metadata 会让客户端再记一条 ¥0 幽灵账单。
+  if (promptTokens === 0 && completionTokens === 0) return undefined;
   return {
     promptTokens,
     completionTokens,
