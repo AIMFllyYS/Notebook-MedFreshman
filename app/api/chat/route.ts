@@ -17,7 +17,7 @@ import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
 import { computeContextBreakdown } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
 import { parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
-import { awaitUsage, resolveLedgerUserId, settleChatUsage } from "@/lib/billing/usageLedger";
+import { awaitUsage, resolveActualBillingModelId, resolveLedgerUserId, settleChatUsage } from "@/lib/billing/usageLedger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -185,14 +185,17 @@ export async function POST(req: NextRequest) {
       }
 
       const aborted = streamFailed || generationSignal.aborted;
+      const selectedModelId = modelId ?? effectiveModelId;
+      const actualProvider = resolved.getActualProvider();
+      const actualModelId = resolveActualBillingModelId(actualProvider);
       // 上游 usage 到手即记账；abort/error 也走这里，不依赖客户端是否还连着 SSE。
       const settled = await settleChatUsage({
         rawUsage: await awaitUsage(result.totalUsage),
         userId,
-        selectedModelId: modelId ?? effectiveModelId,
-        actualModelId: provider.registryId,
+        selectedModelId,
+        actualModelId,
         customGroups,
-        pool: provider.isCustom ? "byok" : "platform",
+        pool: actualProvider.isCustom ? "byok" : "platform",
         sessionId: body.id,
         requestId,
         aborted,

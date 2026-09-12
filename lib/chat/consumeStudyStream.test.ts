@@ -40,7 +40,7 @@ test('SDK 有序多步快照保留 reasoning/tool outputs/metadata，data 只结
       { type: 'data-info', data: { message: '已切换备用端点' }, transient: true },
       { type: 'data-context-breakdown', data: breakdown },
       { type: 'data-followup', data: { questions: [' 问题一 ', '', '问题二', '问题三', '第四条'] } },
-      { type: 'data-usage', data: usage }, { type: 'data-usage', data: usage },
+      { type: 'data-usage', data: { ...usage, actualModelId: 'mimo-v2.5' } }, { type: 'data-usage', data: { ...usage, actualModelId: 'mimo-v2.5' } },
       { type: 'message-metadata', messageMetadata: { usage, durationMs: 246, cacheHit: true } },
       { type: 'finish', messageMetadata: { usage } },
     ]),
@@ -50,7 +50,7 @@ test('SDK 有序多步快照保留 reasoning/tool outputs/metadata，data 只结
   assert.deepEqual(placeholder, original);
   assert.equal(result.id, 'local-id');
   assert.equal(result.timestamp, 123);
-  assert.deepEqual(result.metadata, { modelId: 'selected-model', thinkingEnabled: true, usage, durationMs: 246, cacheHit: true });
+  assert.deepEqual(result.metadata, { modelId: 'selected-model', thinkingEnabled: true, usage: { ...usage, actualModelId: 'mimo-v2.5' }, durationMs: 246, cacheHit: true });
   assert.deepEqual(result.parts.slice(0, 5).map((p) => p.type), ['step-start', 'reasoning', 'tool-webSearch', 'step-start', 'text']);
   const tool = result.parts.find((p) => p.type === 'tool-webSearch');
   assert.equal(tool?.state, 'output-available');
@@ -59,7 +59,7 @@ test('SDK 有序多步快照保留 reasoning/tool outputs/metadata，data 只结
   assert.equal(getMessageText(result), '最终回答');
   assert.equal(result.parts.some((p) => p.type === 'data-info'), false);
   assert.deepEqual(result.followUpQuestions, ['问题一', '问题二', '问题三']);
-  assert.deepEqual(charges, [usage]);
+  assert.deepEqual(charges, [{ ...usage, actualModelId: 'mimo-v2.5' }]);
   assert.deepEqual(contexts, [breakdown]);
   assert.deepEqual(infos, ['已切换备用端点']);
   assert.ok(snapshots.some((m) => m.parts.some((p) => p.type === 'tool-webSearch' && p.state === 'input-streaming')));

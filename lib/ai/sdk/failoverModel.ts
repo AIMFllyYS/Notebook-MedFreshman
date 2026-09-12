@@ -23,6 +23,8 @@ export interface FailoverCandidate {
 export interface FailoverOptions {
   /** 切换到下一候选时触发；index 为新候选在链中的下标。 */
   onFailover?: (next: FailoverCandidate, index: number, error: unknown) => void;
+  /** 某候选真正开始产出（doGenerate 返回 / doStream 首个非 error chunk）时触发。 */
+  onLanded?: (landed: FailoverCandidate, index: number) => void;
   /** 自定义可恢复判定；默认按 upstream.ts 的规则。 */
   isRecoverable?: (error: unknown) => boolean;
   /**
@@ -96,7 +98,9 @@ export function createFailoverLanguageModel(
       for (let i = 0; i < candidates.length; i++) {
         const attempt = startAttempt(callOptions.abortSignal, options.firstChunkTimeoutMs);
         try {
-          return await candidates[i].model.doGenerate({ ...callOptions, abortSignal: attempt.signal });
+          const result = await candidates[i].model.doGenerate({ ...callOptions, abortSignal: attempt.signal });
+          options.onLanded?.(candidates[i], i);
+          return result;
         } catch (err) {
           lastError = err;
           if (!shouldFailover(err, attempt, callOptions.abortSignal, i)) throw err;
@@ -137,6 +141,8 @@ export function createFailoverLanguageModel(
           options.onFailover?.(candidates[i + 1], i + 1, first.value.error);
           continue;
         }
+
+        options.onLanded?.(candidates[i], i);
 
         // 把窥探过的首个 chunk 放回流头。
         const replayed = new ReadableStream<LanguageModelV4StreamPart>({

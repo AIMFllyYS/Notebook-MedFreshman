@@ -152,6 +152,21 @@ describe('useChat SDK transport regression', () => {
     expect(result.current.info).toBeNull();
   });
 
+  it('生图模式客户端账单按实际文本模型计价', async () => {
+    const control = controlledResponse();
+    mockResponses(() => control.response);
+    useSettings.setState({ selectedModelId: 'Tongyi-MAI/Z-Image-Turbo', imageModeTextModel: 'mimo-v2.5' });
+    const { result } = renderHook(() => useChat(context));
+    act(() => { result.current.sendMessage('画一个细胞'); });
+    await settle();
+    control.emit(...answerChunks(), { type: 'data-usage', data: { ...usage, actualModelId: 'mimo-v2.5' } }, { type: 'finish' });
+    control.close();
+    await settle();
+    const record = useBillingStore.getState().records[0];
+    expect(record.modelId).toBe('mimo-v2.5');
+    expect(record.cost).toBeCloseTo((30 * 1 + 20 * 0.02 + 10 * 2) / 1_000_000);
+  });
+
   it('主会话/两划词浮窗并发隔离，切换活动会话不污染新看板，浮窗可单独停止', async () => {
     const main = controlledResponse();
     const first = controlledResponse();

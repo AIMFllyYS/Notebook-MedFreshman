@@ -48,18 +48,20 @@ test("defaultIsRecoverable：5xx 与可恢复 400 code 可切换，401/429 不�
   assert.equal(defaultIsRecoverable(new Error("random")), false);
 });
 
-test("failover：主端点 503 → 切到备用并回调 onFailover", async () => {
+test("failover：主端点 503 → 切到备用并回调 onFailover / onLanded", async () => {
   const events: string[] = [];
+  const landed: string[] = [];
   const model = createFailoverLanguageModel(
     [
       { model: throwingModel(apiError(503)), label: "primary" },
       { model: okModel("from-backup"), label: "backup" },
     ],
-    { onFailover: (next) => events.push(next.label) },
+    { onFailover: (next) => events.push(next.label), onLanded: (next) => landed.push(next.label) },
   );
   const { stream } = await model.doStream(callOptions);
   const parts = await convertReadableStreamToArray(stream);
   assert.deepEqual(events, ["backup"]);
+  assert.deepEqual(landed, ["backup"]);
   assert.ok(parts.some((p) => p.type === "text-delta" && p.delta === "from-backup"));
 });
 

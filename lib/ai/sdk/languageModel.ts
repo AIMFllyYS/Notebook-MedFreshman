@@ -48,6 +48,8 @@ export interface ResolvedLanguageModel {
   model: LanguageModelV4;
   /** 主端点的解析结果（registryId / 定价 / timeoutMs / apiModelId 等）。 */
   provider: ResolvedProvider;
+  /** 最近一次成功落地的候选（failover 后可能不同于 provider）。 */
+  getActualProvider: () => ResolvedProvider;
   /** 注册表声明的能力（自定义模型来自分组配置）。 */
   supportsThinking: boolean;
   supportsTools: boolean;
@@ -158,13 +160,18 @@ export function resolveLanguageModel(
   const supportsThinking = primary.isCustom ? primary.thinkingRequestStyle !== "none" && (info?.thinking ?? true) : info?.thinking === true;
   const supportsTools = info?.tools !== false;
 
-  const candidates: FailoverCandidate[] = collectCandidates(primary, custom, options.fallbackModelIds ?? []).map((p) => ({
+  const providers = collectCandidates(primary, custom, options.fallbackModelIds ?? []);
+  let actualProvider = providers[0] ?? primary;
+  const candidates: FailoverCandidate[] = providers.map((p) => ({
     model: buildBaseModel(p),
     label: p.apiModelId,
   }));
 
   const model = createFailoverLanguageModel(candidates, {
     onFailover: (next, _index, error) => options.onFailover?.({ label: next.label }, error),
+    onLanded: (_next, index) => {
+      actualProvider = providers[index] ?? actualProvider;
+    },
     // 与旧实现一致：首字节超时视为端点不可用（慢模型如 MoE 冷启动在 models.ts 单独放宽）。
     firstChunkTimeoutMs: options.firstChunkTimeoutMs ?? primary.timeoutMs,
   });
@@ -172,6 +179,7 @@ export function resolveLanguageModel(
   return {
     model,
     provider: primary,
+    getActualProvider: () => actualProvider,
     supportsThinking,
     supportsTools,
     thinkingSettings: (effort) => (supportsThinking ? buildThinkingSettings(primary, effort, info) : {}),

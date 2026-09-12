@@ -96,7 +96,10 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
             if (ovSessionId) useFloatingTokenTracker.getState().addUsage(ovSessionId, usage);
             else if (useChatHistory.getState().activeSessionId === sessionId) useTokenTracker.getState().addUsage(usage);
             useBillingStore.getState().addRecord(createBillingRecord({
-              type: 'chat', modelId: resolved.effectiveModelId, sessionId,
+              type: 'chat',
+              modelId: usage.actualModelId
+                ?? (resolved.model?.type === 'image' ? settings.imageModeTextModel : resolved.effectiveModelId),
+              sessionId,
               customGroups: settings.customApiGroups, usage,
             }));
           },

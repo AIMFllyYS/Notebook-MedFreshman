@@ -90,7 +90,7 @@ test('chat SDK: real route → transport → parts preserves reasoning, tools, c
   assert.equal(getMessageText(message), finalAnswer);
   assert.equal(getToolParts(message)[0].state, 'output-available');
   assert.equal(getToolParts(message)[0].type, 'tool-getSection');
-  assert.deepEqual(message.metadata?.usage, { promptTokens: 20, completionTokens: 10, cachedTokens: 6, totalTokens: 30 });
+  assert.deepEqual(message.metadata?.usage, { promptTokens: 20, completionTokens: 10, cachedTokens: 6, totalTokens: 30, actualModelId: buildCustomModelRegistryId('test', 'study-model') });
   const breakdown = message.parts.find((p) => p.type === 'data-context-breakdown');
   assert.equal(breakdown?.data.total, 100_000);
   assert.equal(breakdown?.data.truncated, true);
@@ -179,7 +179,7 @@ test('chat SDK: native Anthropic tool loop round-trips thinking signatures and t
   assert.equal(tool.toolCallId, 'native-call-1');
   assert.deepEqual(tool.input, { path: 'probability/detail/1.4' });
   assert.ok(tool.output.text.length > 0);
-  assert.deepEqual(message.metadata?.usage, { promptTokens: 20, completionTokens: 10, cachedTokens: 6, totalTokens: 30 });
+  assert.deepEqual(message.metadata?.usage, { promptTokens: 20, completionTokens: 10, cachedTokens: 6, totalTokens: 30, actualModelId: buildCustomModelRegistryId('test', 'study-model') });
 
   type ContentBlock = { type: string; id?: string; name?: string; input?: unknown; signature?: string; tool_use_id?: string; content?: string | Array<{ type: string; text?: string }> };
   const history = requests[1].messages as Array<{ role: string; content: ContentBlock[] }>;
@@ -322,7 +322,8 @@ test('chat SDK: image mode exposes only generateImage once and preserves selecte
     return requests.length === 1 ? openAiStep({ name: 'generateImage', arguments: { prompt: 'a cell', title: '细胞' } }) : openAiStep();
   });
   const imageId = buildCustomModelRegistryId('test', 'image-model');
-  const { message } = await chat({ modelId: imageId, imageModeTextModel: buildCustomModelRegistryId('test', 'study-model'),
+  const textId = buildCustomModelRegistryId('test', 'study-model');
+  const { chunks, message } = await chat({ modelId: imageId, imageModeTextModel: textId,
     customApiGroups: [{ ...groups[0], models: [...groups[0].models, { id: 'image-model', type: 'image' }] }] });
   assert.equal(requests.length, 2);
   assert.deepEqual((requests[0].tools as Array<{ function: { name: string } }>).map((t) => t.function.name), ['generateImage']);
@@ -332,4 +333,20 @@ test('chat SDK: image mode exposes only generateImage once and preserves selecte
   const part = getToolParts(message)[0];
   assert.ok(part.type === 'tool-generateImage' && part.state === 'output-available');
   assert.equal(part.output.modelId, imageId);
+  const usagePart = chunks.find((chunk) => chunk.type === 'data-usage');
+  assert.equal(usagePart && 'data' in usagePart ? usagePart.data.actualModelId : undefined, textId);
+});
+
+test('chat SDK: GLM failover bills the landed mimo model, not GLM', async (t) => {
+  const hosts: string[] = [];
+  t.mock.method(globalThis, 'fetch', async (url: unknown) => {
+    hosts.push(String(url));
+    if (String(url).includes('primary.invalid')) return new Response('unavailable', { status: 503 });
+    return openAiStep(undefined, '短回答。<FollowUp>如何应用|如何验证</FollowUp>');
+  });
+  const { chunks } = await chat({ modelId: 'z-ai/glm-5.3-flash', customApiGroups: [] });
+  assert.ok(hosts.some((host) => host.includes('primary.invalid')));
+  assert.ok(hosts.some((host) => host.includes('backup.invalid')));
+  const usagePart = chunks.find((chunk) => chunk.type === 'data-usage');
+  assert.equal(usagePart && 'data' in usagePart ? usagePart.data.actualModelId : undefined, 'mimo-v2.5');
 });

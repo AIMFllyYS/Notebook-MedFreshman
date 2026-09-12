@@ -1,19 +1,25 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { getModelInfo } from "@/lib/ai/models";
+import { createBillingRecord } from "@/lib/stores/billing";
 import {
   awaitUsage,
   buildUsageLedgerRow,
   calcUsageCostCny,
   hasBillableUsage,
   mapLanguageModelUsage,
+  resolveActualBillingModelId,
   resolveLedgerUserId,
   settleChatUsage,
   type UsageLedgerRow,
 } from "./usageLedger.ts";
 
 const DEEPSEEK = "deepseek/deepseek-v4-flash";
+const IMAGE = "Tongyi-MAI/Z-Image-Turbo";
+const MIMO = "mimo-v2.5";
+const GLM = "z-ai/glm-5.3-flash";
 const USER = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
+const tokenUsage = { inputTokens: 1_000, outputTokens: 500, totalTokens: 1_500 };
 
 const deepseekFlat = {
   inputTokens: 10_000,
@@ -184,4 +190,64 @@ test("awaitUsage：已决议的 usage 立即返回，超时返回 undefined", as
   assert.deepEqual(await awaitUsage(Promise.resolve(deepseekFlat), 50), deepseekFlat);
   const hung = new Promise(() => {});
   assert.equal(await awaitUsage(hung, 20), undefined);
+});
+
+test("resolveActualBillingModelId：注册表能对上 apiModelId 时用落地模型", () => {
+  assert.equal(resolveActualBillingModelId({ registryId: GLM, apiModelId: MIMO }), MIMO);
+  assert.equal(resolveActualBillingModelId({ registryId: GLM, apiModelId: GLM }), GLM);
+  assert.equal(
+    resolveActualBillingModelId({ registryId: "custom:g:study", apiModelId: "study", isCustom: true }),
+    "custom:g:study",
+  );
+});
+
+test("生图模式：按实际文本模型计价，selected 与 actual 可区分", async () => {
+  const rows: UsageLedgerRow[] = [];
+  const settled = await settleChatUsage({
+    rawUsage: tokenUsage,
+    userId: USER,
+    selectedModelId: IMAGE,
+    actualModelId: MIMO,
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  const mimoCost = calcUsageCostCny(mapLanguageModelUsage(tokenUsage), getModelInfo(MIMO)?.pricing, tokenUsage);
+  const imageCost = calcUsageCostCny(mapLanguageModelUsage(tokenUsage), getModelInfo(IMAGE)?.pricing, tokenUsage);
+  assert.equal(settled.recorded, true);
+  assert.equal(settled.summary?.actualModelId, MIMO);
+  assert.equal(rows[0].selected_model_id, IMAGE);
+  assert.equal(rows[0].actual_model_id, MIMO);
+  assert.notEqual(rows[0].selected_model_id, rows[0].actual_model_id);
+  assert.equal(rows[0].cost_cny, mimoCost);
+  assert.notEqual(rows[0].cost_cny, imageCost);
+  assert.equal(rows[0].cost_cny, 0.002);
+});
+
+test("failover：按落地模型计价，两列都有值且不同", async () => {
+  const rows: UsageLedgerRow[] = [];
+  await settleChatUsage({
+    rawUsage: tokenUsage,
+    userId: USER,
+    selectedModelId: GLM,
+    actualModelId: MIMO,
+    insert: async (row) => {
+      rows.push(row);
+    },
+  });
+  const mimoCost = calcUsageCostCny(mapLanguageModelUsage(tokenUsage), getModelInfo(MIMO)?.pricing, tokenUsage);
+  const glmCost = calcUsageCostCny(mapLanguageModelUsage(tokenUsage), getModelInfo(GLM)?.pricing, tokenUsage);
+  assert.equal(rows[0].selected_model_id, GLM);
+  assert.equal(rows[0].actual_model_id, MIMO);
+  assert.notEqual(rows[0].selected_model_id, rows[0].actual_model_id);
+  assert.equal(rows[0].cost_cny, mimoCost);
+  assert.notEqual(rows[0].cost_cny, glmCost);
+});
+
+test("客户端账单：传入实际文本模型而非生图 id", () => {
+  const usage = { promptTokens: 1_000, completionTokens: 500, cachedTokens: 0, totalTokens: 1_500 };
+  const imagePriced = createBillingRecord({ type: "chat", modelId: IMAGE, sessionId: "s", customGroups: [], usage });
+  const textPriced = createBillingRecord({ type: "chat", modelId: MIMO, sessionId: "s", customGroups: [], usage });
+  assert.equal(textPriced.cost, 0.002);
+  assert.ok(textPriced.cost > imagePriced.cost);
 });

@@ -43,6 +43,7 @@ function readUsage(value: unknown): UsageSummary | undefined {
     completionTokens,
     cachedTokens: finiteToken('cachedTokens') ? usage.cachedTokens as number : 0,
     totalTokens: finiteToken('totalTokens') ? usage.totalTokens as number : promptTokens + completionTokens,
+    ...(typeof usage.actualModelId === 'string' && usage.actualModelId ? { actualModelId: usage.actualModelId } : {}),
   };
 }
 

@@ -23,6 +23,8 @@ export interface UsageSummary {
   completionTokens: number;
   cachedTokens: number;
   totalTokens: number;
+  /** 实际落地的上游模型；缺省时客户端按所选模型计价。 */
+  actualModelId?: string;
 }
 
 /** 服务端经 UI Message Stream 下发的自定义 data parts。 */

@@ -5,7 +5,7 @@
 
 import { extractAccessToken, verifySupabaseAccessToken, type VerifyAccessToken } from "@/lib/auth/aiGate";
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
-import { getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
+import { getModelInfo, getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
 import type { UsageSummary } from "@/lib/types/chat";
 
 const CHAT_USAGE_ROUTE = "/api/chat";
@@ -123,13 +123,27 @@ export function hasBillableUsage(usage: MappedUsage): boolean {
   );
 }
 
-function toUsageSummary(usage: MappedUsage): UsageSummary {
+function toUsageSummary(usage: MappedUsage, actualModelId?: string | null): UsageSummary {
   return {
     promptTokens: usage.promptTokens,
     completionTokens: usage.completionTokens,
     cachedTokens: usage.cachedTokens,
     totalTokens: usage.totalTokens,
+    ...(actualModelId ? { actualModelId } : {}),
   };
+}
+
+/**
+ * 落地端点的计价 id：apiModelId 能对上注册表时用它（GLM → mimo-v2.5），
+ * 否则退回 registryId（自定义模型、同模型换供应商）。
+ */
+export function resolveActualBillingModelId(provider: {
+  registryId: string;
+  apiModelId: string;
+  isCustom?: boolean;
+}): string {
+  if (!provider.isCustom && getModelInfo(provider.apiModelId)) return provider.apiModelId;
+  return provider.registryId;
 }
 
 function roundCostCny(value: number): number {
@@ -235,7 +249,7 @@ async function defaultInsert(row: UsageLedgerRow): Promise<void> {
 /** 有消耗才写库。缺 user / 0/0 / 写库失败都不抛，避免打断对话流。 */
 export async function settleChatUsage(input: SettleChatUsageInput): Promise<SettleChatUsageResult> {
   const usage = mapLanguageModelUsage(input.rawUsage);
-  const summary = hasBillableUsage(usage) ? toUsageSummary(usage) : undefined;
+  const summary = hasBillableUsage(usage) ? toUsageSummary(usage, input.actualModelId) : undefined;
   if (!summary || !input.userId) {
     return { usage, summary, row: null, recorded: false };
   }

@@ -94,6 +94,7 @@ test("buildThinkingSettings：none → 空对象", () => {
 test("resolveLanguageModel：内置模型返回 openai-compatible 模型并暴露能力", () => {
   const r = resolveLanguageModel("mimo-v2.5");
   assert.equal(r.provider.registryId, "mimo-v2.5");
+  assert.equal(r.getActualProvider(), r.provider);
   assert.equal(r.supportsThinking, true);
   assert.equal(r.supportsTools, true);
   assert.equal(r.model.modelId, "mimo-v2.5");
@@ -175,6 +176,43 @@ test("buildThinkingSettings：自定义模型未勾选思考时 thinkingSettings
   const r = resolveLanguageModel(buildCustomModelRegistryId("or", "gpt-plain"), groups);
   assert.equal(r.supportsThinking, false);
   assert.deepEqual(r.thinkingSettings("high"), {});
+});
+
+test("resolveLanguageModel：failover 后 getActualProvider 指向落地模型", async (t) => {
+  const primaryId = buildCustomModelRegistryId("failover", "text-a");
+  const backupId = buildCustomModelRegistryId("failover-b", "text-b");
+  const groups: CustomApiGroup[] = [{
+    id: "failover", name: "Failover", baseUrl: "https://primary-failover.invalid/v1", apiKey: "fixture-only",
+    models: [
+      { id: "text-a", apiProtocol: "openai" },
+      { id: "text-b", apiProtocol: "openai" },
+    ],
+  }];
+  const backupGroups: CustomApiGroup[] = [{
+    ...groups[0],
+    id: "failover-b",
+    baseUrl: "https://backup-failover.invalid/v1",
+    models: [{ id: "text-b", apiProtocol: "openai" }],
+  }];
+  const resolved = resolveLanguageModel(primaryId, [...groups, ...backupGroups], {
+    fallbackModelIds: [buildCustomModelRegistryId("failover-b", "text-b")],
+  });
+  assert.equal(resolved.provider.registryId, primaryId);
+  t.mock.method(globalThis, "fetch", async (input: string | URL | Request) => {
+    const url = String(input);
+    if (url.includes("primary-failover.invalid")) {
+      return new Response("unavailable", { status: 503 });
+    }
+    return new Response(
+      `data: ${JSON.stringify({ choices: [{ delta: { content: "ok" } }] })}\n\n` +
+        `data: ${JSON.stringify({ choices: [{ delta: {}, finish_reason: "stop" }], usage: { prompt_tokens: 2, completion_tokens: 1 } })}\n\n` +
+        "data: [DONE]\n\n",
+      { headers: { "content-type": "text/event-stream" } },
+    );
+  });
+  const result = await resolved.model.doStream({ prompt: fixturePrompt });
+  await readParts(result.stream);
+  assert.equal(resolved.getActualProvider().registryId, backupId);
 });
 
 test("resolveLanguageModel：真实 SDK 对默认/标准配置的结构化思考与别名流均可消费", async (t) => {
