@@ -437,12 +437,12 @@
 - **规范要求**：敏感信息不进 git；`NEXT_PUBLIC_` 前缀的变量进入客户端 bundle；其他变量仅服务端可用；用 `server-only` 包防止服务端代码误入客户端；`.env.local` 应在 `.gitignore` 中。
 - **项目实现**：
   - `.env.example`（66 行）列出全部配置项，注释清晰
-  - `.env.local`（32 行）**包含真实 API Key**：
-    - `AI_API_KEY=sk-lxwipiuzjmvylozdakbmmieefwdnjosexfotrltqortmuizu`
-    - `MIMO_API_KEY=sk-ckhlilfyol6ftppupru3pb1wzanvo9myzv5qd0i965aey0nu`
-    - `ZHIPU_API_KEY=efee6311a50f4eea90a6eda259c6ef2d.Ywzwb7fdVe9yhYTO`
-    - `UNSPLASH_ACCESS_KEY=7kdgfJ9ZZ1TBGYFZAYPKxaX6OBUV2nmoC7t-fYjJEjs`
-    - `MinerU_API_Token=eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIifQ...`（JWT）
+  - `.env.local`（32 行）**当时含真实 API Key**（值已打码，视为已泄露，须轮换）：
+    - `AI_API_KEY=sk-xxxxxxxxxxxxxxxx`
+    - `MIMO_API_KEY=sk-xxxxxxxxxxxxxxxx`
+    - `ZHIPU_API_KEY=********.********`
+    - `UNSPLASH_ACCESS_KEY=********`
+    - `MinerU_API_Token=eyJ...`（JWT，已打码）
     - `COS_INDEX_BASE_URL=https://...myqcloud.com/index/`
   - `NEXT_PUBLIC_` 前缀仅用于 1 个变量：`NEXT_PUBLIC_VIDEO_CDN_BASE`（`app` 目录 Grep 无命中，仅 `.env.local:31`）
   - `lib/` 下 11 个文件用 `process.env.`（含 `provider.ts`、`embedding.ts`、`webSearch.ts`、`vectorStore.ts` 等）
