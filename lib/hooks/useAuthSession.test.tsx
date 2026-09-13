@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { useAuthSessionController, type AuthRuntimeClient } from "./useAuthSession";
 
@@ -6,7 +6,7 @@ function mockClient(initial?: { id: string; email: string } | null): AuthRuntime
   getSessionCalls: number;
 } {
   let session = initial ? { user: initial } : null;
-  const listeners = new Set<(event: string, session: typeof session) => void>();
+  const listeners = new Set<(event: string, session: import("@/lib/auth/session").AuthSessionPayload | null) => void>();
   const client: AuthRuntimeClient & { getSessionCalls: number } = {
     getSessionCalls: 0,
     auth: {
@@ -34,6 +34,28 @@ function mockClient(initial?: { id: string; email: string } | null): AuthRuntime
 }
 
 describe("useAuthSessionController", () => {
+  it('a late initial signed-out snapshot cannot erase a newer login or cookie', async () => {
+    const client = mockClient();
+    let finish!: (value: Awaited<ReturnType<typeof client.auth.getSession>>) => void;
+    let event!: Parameters<typeof client.auth.onAuthStateChange>[0];
+    client.auth.getSession = () => new Promise((resolve) => { finish = resolve; });
+    client.auth.onAuthStateChange = (callback) => { event = callback; return { data: { subscription: { unsubscribe() {} } } }; };
+    const { result } = renderHook(() => useAuthSessionController(client));
+    act(() => event('SIGNED_IN', { access_token: 'new-login', user: { id: 'u2', email: 'new@example.com' } }));
+    act(() => event('INITIAL_SESSION', null));
+    await act(async () => finish({ data: { session: null }, error: null }));
+    expect(result.current.userId).toBe('u2');
+    expect(document.cookie).toContain('srp-access-token=new-login');
+  });
+  it('reconciles a login from another page on focus without overwriting a newer event', async () => {
+    const client = mockClient();
+    const { result, unmount } = renderHook(() => useAuthSessionController(client));
+    await waitFor(() => expect(result.current.status).toBe('signedOut'));
+    client.auth.getSession = vi.fn(async () => ({ data: { session: { access_token: 'external', user: { id: 'external', email: 'other@example.com' } } }, error: null }));
+    act(() => window.dispatchEvent(new Event('focus')));
+    await waitFor(() => expect(result.current.userId).toBe('external'));
+    unmount();
+  });
   it("restores a persisted session on mount and after remount", async () => {
     const client = mockClient({ id: "u1", email: "ada@example.com" });
     const first = renderHook(() => useAuthSessionController(client));

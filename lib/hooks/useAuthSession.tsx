@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { tryGetBrowserAuthClient } from "@/lib/auth/browserClient";
 import {
   requestEmailOtp,
@@ -37,7 +37,7 @@ export interface AuthSessionApi {
 
 const AuthSessionContext = createContext<AuthSessionApi | null>(null);
 
-const UNAVAILABLE: OtpRequestResult = {
+const UNAVAILABLE: Extract<OtpRequestResult, { ok: false }> = {
   ok: false,
   code: "auth_error",
   message: "登录未配置：浏览器读不到 Supabase 公钥。确认 .env.local 有 NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY 后重启 dev。",
@@ -50,6 +50,7 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
 
   const [status, setStatus] = useState<AuthStatus>(client ? "loading" : "signedOut");
   const [session, setSession] = useState<AuthSession | null>(null);
+  const authRevision = useRef(0);
 
   const apply = useCallback((next: AuthSession | null) => {
     setSession(next);
@@ -59,15 +60,36 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
   useEffect(() => {
     if (!client) return;
     let cancelled = false;
-    void readPersistedSession(client).then((next) => {
-      if (!cancelled) apply(next);
-    });
+    let readSequence = 0;
+    const restore = async () => {
+      const revision = authRevision.current;
+      const sequence = ++readSequence;
+      const accept = () => !cancelled && authRevision.current === revision && readSequence === sequence;
+      try {
+        const next = await readPersistedSession(client, accept);
+        if (accept()) { authRevision.current += 1; apply(next); }
+      } catch {
+        // A transient read error must not erase an already authenticated session or its cookie.
+        if (accept()) setStatus((current) => current === 'loading' ? 'signedOut' : current);
+      }
+    };
     const unsub = subscribeAuthSession(client, (next) => {
-      if (!cancelled) apply(next);
-    });
+      if (!cancelled) { authRevision.current += 1; apply(next); }
+    }, (event) => event !== 'INITIAL_SESSION' || authRevision.current === 0);
+    void restore();
+    const onFocus = () => { if (document.visibilityState !== 'hidden') void restore(); };
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === null || /^sb-.*-auth-token$/.test(event.key)) void restore();
+    };
+    window.addEventListener('focus', onFocus);
+    window.addEventListener('storage', onStorage);
+    document.addEventListener('visibilitychange', onFocus);
     return () => {
       cancelled = true;
       unsub();
+      window.removeEventListener('focus', onFocus);
+      window.removeEventListener('storage', onStorage);
+      document.removeEventListener('visibilitychange', onFocus);
     };
   }, [apply, client]);
 
@@ -82,8 +104,10 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
   const verifyOtp = useCallback(
     async (email: string, token: string): Promise<OtpVerifyResult> => {
       if (!client) return { ...UNAVAILABLE };
+      authRevision.current += 1;
       const result = await verifyEmailOtp(client, email, token);
       if (result.ok) {
+        authRevision.current += 1;
         applySessionCookie(result.session);
         apply(snapshotAuthSession(result.user, result.session));
       }
@@ -93,7 +117,11 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
   );
 
   const signOut = useCallback(async () => {
-    if (client) await signOutSession(client);
+    authRevision.current += 1;
+    if (client) {
+      const result = await signOutSession(client);
+      if (!result.ok) return;
+    }
     apply(null);
   }, [apply, client]);
 
@@ -109,7 +137,7 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
 }
 
 function useInstallAiAuthFetch(authClient: AuthSessionClient | null) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!authClient) return;
     return installAiAuthFetch(async () => {
       const { data } = await authClient.auth.getSession();
