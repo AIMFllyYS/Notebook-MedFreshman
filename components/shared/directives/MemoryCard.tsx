@@ -29,11 +29,15 @@ interface NodeProps {
  *   - 默认折叠：正面只显示标题，点击展开全部内容。
  *   - 清单项 `- [ ]` 会被渲染为可逐项点击的背诵条目，点击后显示该项并打勾。
  *   - mode=cloze 时，内容中的 `**...**` 会被遮蔽为可点击挖空。
+ *   - mode=reveal 时，展开后一次性渲染完整 Markdown（课堂新手卡默认模式，不逐行拆分）。
  */
 export function MemoryCard({ node, children }: NodeProps) {
   const label = String(node?.properties?.label ?? "");
   const mode = String(node?.properties?.mode ?? "").toLowerCase();
   const isCloze = mode === "cloze";
+  // reveal：新手卡模式，展开后一次性渲染完整 Markdown（表格/公式/多段落都保留），
+  // 不再按「每行 - [ ]」拆分，避免课堂手卡被错误切碎。
+  const isReveal = mode === "reveal";
 
   const [open, setOpen] = useState(false);
 
@@ -89,7 +93,9 @@ export function MemoryCard({ node, children }: NodeProps) {
             className="memory-card-body"
           >
             <div className="memory-card-content">
-              {isCloze ? (
+              {isReveal ? (
+                <QuizMarkdownBase className="chat-prose">{rawText}</QuizMarkdownBase>
+              ) : isCloze ? (
                 <ClozeText text={rawText} />
               ) : (
                 <ChecklistMarkdown text={rawText} />

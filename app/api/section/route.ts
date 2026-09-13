@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { readSectionMarkdown, readContentMarkdown } from "@/lib/content/loader";
+import { readSectionMarkdown, readContentUnified } from "@/lib/content/loader";
+import { findContentItem } from "@/lib/content/loader";
 
 export const runtime = "nodejs";
 
@@ -22,8 +23,13 @@ export async function GET(req: NextRequest) {
 
   // 新版多科路由。读盘前由 loader 做标识符白名单 + 内容树校验，树外 / `..` 直接 null。
   if (subjectId && categoryId && itemId) {
-    const content = readContentMarkdown(subjectId, categoryId, itemId);
-    return NextResponse.json({ content });
+    const renderType = findContentItem(subjectId, categoryId, itemId)?.item.renderType;
+    const unified = readContentUnified(subjectId, categoryId, itemId, renderType);
+    // 同时返回 format，供引用浮窗按 text/markdown/html 选择渲染器（旧调用方只取 content 不受影响）。
+    return NextResponse.json({
+      content: unified?.raw ?? null,
+      format: unified?.format ?? null,
+    });
   }
 
   // 兼容旧版路由

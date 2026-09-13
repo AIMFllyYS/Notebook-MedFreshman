@@ -10,8 +10,9 @@ import { contentTree } from '../lib/content-data/manifest';
 import { SUBJECT_REGISTRY, SUBJECT_BY_ID, getSubjectMeta } from '../lib/content-data/subjects.registry';
 import { isSubjectIconName } from '../lib/ui/subjectIcons';
 import { ACADEMIC_YEAR_IDS } from '../lib/constants/academic-year';
-import { deriveContentKey, hasCapability } from '../lib/content/categoryKeys';
+import { deriveContentKey, hasCapability, resolveQuizId } from '../lib/content/categoryKeys';
 import { CONTENT_PATH_RESOLVERS } from '../lib/content/contentPaths';
+import { resolveLectureFile } from '../lib/content/lectures/paths';
 import type { Category, ContentItem, Subject } from '../lib/types/content';
 
 const ROOT = process.cwd();
@@ -65,9 +66,14 @@ function walkAll(items: ContentItem[], out: ContentItem[] = []): ContentItem[] {
   return out;
 }
 
-/** 与 lib/content/loader.ts readContentMarkdown 保持一致的路径解析。 */
+/** 与 lib/content/loader.ts readContent 保持一致的路径解析。 */
 function contentFileFor(subject: Subject, cat: Category, item: ContentItem): string | null {
   if (item.renderType === 'component') return null;
+  // 课堂课节分组父节点不对应文件；课堂材料走 lectures 受控目录（由生成目录登记）。
+  if (item.navigationOnly) return null;
+  if (item.materialRole) {
+    return resolveLectureFile(subject.id, item.id)?.absPath ?? null;
+  }
   const ext = item.renderType === 'html' ? 'html' : 'md';
   const detail = getSubjectMeta(subject.id)?.contentRoot?.detail ?? 'subject-tree';
   return CONTENT_PATH_RESOLVERS[detail](subject.id, cat.id, item.id, ext);
@@ -156,6 +162,8 @@ for (const subject of contentTree.subjects) {
     }
     for (const catDir of fs.readdirSync(path.join(CONTENT, top.name), { withFileTypes: true })) {
       if (!catDir.isDirectory() || ORPHAN_SKIP_DIR.test(catDir.name)) continue;
+      // lectures/ 是课堂课节目录，由 gen-lectures / check-lectures 治理，不走「板块目录」规则。
+      if (catDir.name === 'lectures') continue;
       const relDir = `${top.name}/${catDir.name}`;
       const subject = contentTree.subjects.find((s) => s.id === top.name)!;
       if (!subject.categories.some((c) => c.id === catDir.name)) {
@@ -185,7 +193,9 @@ for (const subject of contentTree.subjects) {
         const key = deriveContentKey(cat, item.id);
         const p = `${subject.id}/${cat.id}/${item.id}`;
         if (hasCapability(cat, 'examples') && key.sectionId) keyIndex.set(`${key.chapterId}/${key.sectionId}`, p);
-        if (hasCapability(cat, 'quiz') && key.quizId) quizIndex.set(key.quizId, p);
+        // 课堂材料用显式 quizRef（四材料共享一套题），其余回退 keyStrategy 推导。
+        const quizId = resolveQuizId(cat, item.id, item);
+        if (hasCapability(cat, 'quiz') && quizId) quizIndex.set(quizId, p);
       }
     }
     // 概率论例题目录不带学科前缀：content/examples/chXX/X.Y
@@ -222,6 +232,11 @@ for (const subject of contentTree.subjects) {
     title: item.title,
     type: item.type,
     status: item.status,
+    ...(item.renderType ? { renderType: item.renderType } : {}),
+    ...(item.navigationOnly ? { navigationOnly: true } : {}),
+    ...(item.materialRole ? { materialRole: item.materialRole } : {}),
+    ...(item.lessonRef ? { lessonRef: item.lessonRef } : {}),
+    ...(item.quizRef ? { quizRef: item.quizRef } : {}),
     ...(item.children?.length ? { children: item.children.map(slim) } : {}),
   });
   const expected = JSON.stringify({

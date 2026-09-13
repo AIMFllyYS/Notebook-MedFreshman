@@ -75,10 +75,16 @@ test("两处 AI iframe 源码使用共享 sandbox，且无 allow-same-origin", (
   assert.match(renderer, /injectOpaqueOriginStorageShim/);
 });
 
-test("ContentPageClient 仍保留 allow-same-origin（gongshi 未误改）", () => {
+test("ContentPageClient：历史 HTML 保留 allow-same-origin，课堂 notes 收紧沙箱", () => {
   const src = readFileSync(CONTENT_PAGE, "utf8");
-  const matches = src.match(/sandbox="allow-scripts allow-same-origin"/g) ?? [];
-  assert.equal(matches.length, 2);
+  // 历史可信 HTML 的回退沙箱仍只出现一次（htmlSandbox 三元表达式的 else 分支）。
+  const legacy = src.match(/"allow-scripts allow-same-origin"/g) ?? [];
+  assert.equal(legacy.length, 1);
+  // 课堂静态笔记 notes.html 收紧为仅放行新窗口：禁脚本、禁同源。
+  assert.match(src, /materialRole === "notes"\s*\?\s*"allow-popups"/);
+  // 两处 iframe 都统一走 htmlSandbox 变量，而不是各自硬编码。
+  const bound = src.match(/sandbox=\{htmlSandbox\}/g) ?? [];
+  assert.equal(bound.length, 2);
   assert.doesNotMatch(src, /injectOpaqueOriginStorageShim/);
   assert.doesNotMatch(src, /opaqueOriginStorageShim/);
 });

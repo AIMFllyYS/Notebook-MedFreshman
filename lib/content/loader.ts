@@ -18,8 +18,24 @@ import {
   isSafeContentSegment,
 } from "@/lib/content/contentPathGuard";
 import { normalizeSearchQuery } from "@/lib/ai/search/queryNormalize";
+import { readLectureArticle } from "@/lib/content/lectures/paths";
+import { extractHtmlText } from "@/lib/content/lectures/extractHtml";
+import type { LectureMaterialRole } from "@/lib/content/lectures/roles";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content");
+
+/**
+ * 课堂材料优先读取：命中 lectures 生成目录则返回受控文件，否则返回 null（走旧路径回退）。
+ * 课堂文件路径不接受外部传入，完全由 articleId 经生成目录反查，杜绝任意路径读取。
+ */
+function tryReadLecture(
+  subjectId: string,
+  itemId: string,
+): { format: "text" | "markdown" | "html"; raw: string; role: LectureMaterialRole } | null {
+  const art = readLectureArticle(subjectId, itemId);
+  if (!art) return null;
+  return { format: art.format, raw: art.raw, role: art.role };
+}
 
 function authorizeContentRead(subjectId: string, categoryId: string, itemId: string): boolean {
   if (!isSafeContentRef(subjectId, categoryId, itemId)) return false;
@@ -73,6 +89,12 @@ export function readContentMarkdown(
   itemId: string,
 ): string | null {
   if (!authorizeContentRead(subjectId, categoryId, itemId)) return null;
+  const lecture = tryReadLecture(subjectId, itemId);
+  if (lecture) {
+    // 课堂材料：markdown 角色（纪要/手卡）与纯文本逐字稿可直接返回；HTML 笔记不在此通道。
+    if (lecture.format === "html") return null;
+    return lecture.raw;
+  }
   const filePath = resolveFilePath(subjectId, categoryId, itemId, "md");
   return readAuthorizedFile(filePath, CONTENT_ROOT);
 }
@@ -87,8 +109,74 @@ export function readContentHtml(
   itemId: string,
 ): string | null {
   if (!authorizeContentRead(subjectId, categoryId, itemId)) return null;
+  const lecture = tryReadLecture(subjectId, itemId);
+  if (lecture) return lecture.format === "html" ? lecture.raw : null;
   const filePath = resolveFilePath(subjectId, categoryId, itemId, "html");
   return readAuthorizedFile(filePath, CONTENT_ROOT);
+}
+
+export interface UnifiedContent {
+  /** 材料的受控格式（课堂材料以生成目录为准，旧内容以传入 renderType 为准）。 */
+  format: "text" | "markdown" | "html";
+  raw: string;
+  /** 仅课堂材料存在。 */
+  materialRole?: LectureMaterialRole;
+}
+
+/**
+ * 统一读取：课堂材料按其登记格式返回；旧内容按 renderType 回退到 md/html 读取。
+ * component / 不存在返回 null。
+ */
+export function readContentUnified(
+  subjectId: string,
+  categoryId: string,
+  itemId: string,
+  renderType?: string,
+): UnifiedContent | null {
+  if (!authorizeContentRead(subjectId, categoryId, itemId)) return null;
+  const lecture = tryReadLecture(subjectId, itemId);
+  if (lecture) return { format: lecture.format, raw: lecture.raw, materialRole: lecture.role };
+  if (renderType === "component") return null;
+  if (renderType === "html") {
+    const raw = readContentHtml(subjectId, categoryId, itemId);
+    return raw === null ? null : { format: "html", raw };
+  }
+  if (renderType === "text") {
+    // 旧链路没有 text 资源，回退到 md（纯文本同样可渲染）。
+    const raw = readContentMarkdown(subjectId, categoryId, itemId);
+    return raw === null ? null : { format: "text", raw };
+  }
+  const raw = readContentMarkdown(subjectId, categoryId, itemId);
+  return raw === null ? null : { format: "markdown", raw };
+}
+
+/**
+ * 检索 / 引用用「最佳纯文本」：课堂逐字稿原样、纪要/手卡为 Markdown 原文（由分块器剥标记）、
+ * 课堂 HTML 笔记先做受控文本提取；旧内容维持原 md/html 读取不变。
+ */
+export function readContentSearchText(
+  subjectId: string,
+  categoryId: string,
+  itemId: string,
+): { format: "text" | "markdown" | "html"; text: string; materialRole?: LectureMaterialRole } | null {
+  const lecture = tryReadLecture(subjectId, itemId);
+  if (lecture) {
+    if (lecture.format === "html") {
+      try {
+        return { format: "html", text: extractHtmlText(lecture.raw).text, materialRole: lecture.role };
+      } catch {
+        return { format: "html", text: lecture.raw, materialRole: lecture.role };
+      }
+    }
+    return { format: lecture.format, text: lecture.raw, materialRole: lecture.role };
+  }
+  const legacyItem = findContentItem(subjectId, categoryId, itemId)?.item;
+  if (legacyItem?.renderType === "html") {
+    const raw = readContentHtml(subjectId, categoryId, itemId);
+    return raw === null ? null : { format: "html", text: raw };
+  }
+  const raw = readContentMarkdown(subjectId, categoryId, itemId);
+  return raw === null ? null : { format: "markdown", text: raw };
 }
 
 /**
@@ -101,13 +189,7 @@ export function readContent(
   itemId: string,
   renderType?: string,
 ): string | null {
-  if (renderType === "html") {
-    return readContentHtml(subjectId, categoryId, itemId);
-  }
-  if (renderType === "component") {
-    return null;
-  }
-  return readContentMarkdown(subjectId, categoryId, itemId);
+  return readContentUnified(subjectId, categoryId, itemId, renderType)?.raw ?? null;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -291,9 +373,10 @@ export function getMultiSubjectOutline(scope: ContentSearchScope = "all"): strin
 
       for (const item of cat.items) {
         if (item.children?.length) {
-          const chNum = item.id.replace(/^ch0?/, "");
-          lines.push(`\n  第${chNum}章 ${item.title}`);
-          if (item.summary) lines.push(`    概要：${item.summary}`);
+          // 课堂课节分组：直接列课节名，不套用「第X章」。
+          const groupLabel = item.navigationOnly ? item.title : `第${item.id.replace(/^ch0?/, "")}章 ${item.title}`;
+          lines.push(`\n  ${groupLabel}`);
+          if (item.summary && !item.navigationOnly) lines.push(`    概要：${item.summary}`);
           for (const sec of item.children) {
             const flag = sec.status === "done" ? "" : "（待完善）";
             const p = `${subject.id}/${cat.id}/${sec.id}`;
@@ -407,7 +490,12 @@ function substringSearch(
 
       const leafItems: { item: ContentItem; parentTitle?: string }[] = [];
       for (const item of cat.items) {
-        if (item.children?.length) {
+        // 课堂课节分组父节点不可路由，只检索其材料叶子。
+        if (item.navigationOnly) {
+          for (const child of item.children ?? []) {
+            leafItems.push({ item: child, parentTitle: item.title });
+          }
+        } else if (item.children?.length) {
           for (const child of item.children) {
             leafItems.push({ item: child, parentTitle: item.title });
           }
@@ -418,9 +506,10 @@ function substringSearch(
 
       for (const { item, parentTitle } of leafItems) {
         if (item.status === "stub") continue;
-        const md = readContentMarkdown(subject.id, cat.id, item.id);
-        if (!md) continue;
-        const text = stripMarkdown(md);
+        // 课堂 HTML 笔记走受控文本提取，其余维持 markdown 读取。
+        const searched = readContentSearchText(subject.id, cat.id, item.id);
+        const text = searched ? stripMarkdown(searched.text) : "";
+        if (!text) continue;
 
         let matchIdx = -1;
         for (const kw of keywords) {

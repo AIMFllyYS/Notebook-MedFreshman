@@ -1,0 +1,85 @@
+# 内容与代码 PR 的统一质量闸门。
+# 触发：合入 master 的 PR、master 推送、手动派发。
+# 本地等价命令：pnpm check:lectures && pnpm check:registry && pnpm typecheck && pnpm lint && pnpm test:all && pnpm test:react && pnpm build
+name: ci
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: typecheck / lint / tests / build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          # 与本地一致（pnpm 11；仓库 pnpm-workspace.yaml 仅含 allowBuilds，pnpm 9 会报 packages field missing）
+          version: 11.7.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # content 检索测试（如 sophomore-search）关闭子串回退，依赖 content/.index；
+      # 离线只建 BM25 + chunks-meta（--bm25-only），无需 embedding token，hybrid 自动降级为关键词检索。
+      - name: Build offline search index (BM25)
+        run: pnpm build-index --bm25-only
+
+      - name: Encoding check
+        run: pnpm check:encoding
+
+      - name: Lectures contract gate (schema / static HTML / cards / quiz hash / generated freshness)
+        run: pnpm check:lectures
+
+      - name: Registry consistency (also fails on stale nav.generated.json)
+        run: pnpm check:registry
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: ESLint
+        run: pnpm lint:eslint
+
+      - name: Secrets scan
+        run: pnpm lint:secrets
+
+      # knip 目前存在与课堂接入无关的存量未用导出（master 即如此），先非阻断采集，待专项清理后改为必需。
+      - name: Knip unused exports (non-blocking, pre-existing findings)
+        run: pnpm lint:knip
+        continue-on-error: true
+
+      - name: Unit tests (code, node:test)
+        run: pnpm test:unit
+
+      - name: Content tests (node:test)
+        run: pnpm test:content
+
+      - name: React component tests (vitest)
+        run: pnpm test:react
+
+      - name: Production build (runs prebuild gates first)
+        run: pnpm build
+        env:
+          # 构建期不发起真实外部调用；占位避免缺变量导致静态生成失败。
+          NEXT_TELEMETRY_DISABLED: "1"

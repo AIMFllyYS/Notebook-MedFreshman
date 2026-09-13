@@ -21,7 +21,10 @@ export async function generateStaticParams() {
     for (const category of subject.categories) {
       const walk = (items: ContentItem[]) => {
         for (const item of items) {
-          params.push({ subject: subject.id, category: category.id, id: item.id });
+          // navigationOnly 仅作导航分组父节点（课堂课节），本身不生成路由。
+          if (!item.navigationOnly) {
+            params.push({ subject: subject.id, category: category.id, id: item.id });
+          }
           if (item.children) walk(item.children);
         }
       };
@@ -50,6 +53,11 @@ export default async function ContentPage({ params }: PageProps) {
 
   // 内容项不存在时显示占位
   if (!subjectData || !categoryData) {
+    notFound();
+  }
+
+  // 导航分组父节点不对应文章，直接 404（正常情况下静态参数已将其排除）。
+  if (item?.navigationOnly) {
     notFound();
   }
 
@@ -95,6 +103,7 @@ export default async function ContentPage({ params }: PageProps) {
       categoryName={categoryData.name}
       itemStatus={item?.status ?? "stub"}
       renderType={renderType}
+      materialRole={item?.materialRole}
       layoutProfile={profile}
       layoutFlags={flags}
     />

@@ -6,10 +6,13 @@ import { useNoteCitations, NOTE_CITATION_WINDOW_ID } from '@/lib/hooks/useNoteCi
 import { useWindowManager } from '@/lib/hooks/useWindowManager';
 import ManagedWindow from '@/components/window/ManagedWindow';
 import NoteRenderer from '@/components/notes/NoteRenderer';
+import PlainTextReader from '@/components/notes/PlainTextReader';
 import { noteBreadcrumb, noteHref, parseNotePath } from '@/lib/content/notePath';
 import type { SearchHit } from '@/lib/ai/agent/toolTypes';
 
 type LoadState = 'idle' | 'loading' | 'done' | 'missing' | 'error';
+type SectionFormat = 'markdown' | 'text' | 'html';
+interface CachedSection { content: string; format: SectionFormat }
 
 export default function NoteCitationViewer() {
   const hits = useNoteCitations((s) => s.hits);
@@ -22,9 +25,10 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
   const setActivePath = useNoteCitations((s) => s.setActivePath);
   const closeViewer = useNoteCitations((s) => s.closeViewer);
   const managed = useWindowManager((s) => s.windows.find((w) => w.id === NOTE_CITATION_WINDOW_ID));
-  const cacheRef = useRef<Map<string, string>>(new Map());
+  const cacheRef = useRef<Map<string, CachedSection>>(new Map());
   const [status, setStatus] = useState<LoadState>('idle');
   const [content, setContent] = useState('');
+  const [format, setFormat] = useState<SectionFormat>('markdown');
   const [error, setError] = useState<string | null>(null);
 
   const active = hits.find((hit) => hit.path === activePath) ?? hits[0];
@@ -34,7 +38,8 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
     if (!active) return;
     const cached = cacheRef.current.get(active.path);
     if (cached) {
-      setContent(cached);
+      setContent(cached.content);
+      setFormat(cached.format);
       setStatus('done');
       setError(null);
       return;
@@ -43,6 +48,7 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
     const loc = parseNotePath(active.path);
     if (!loc) {
       setContent(active.snippet || '');
+      setFormat('markdown');
       setStatus('missing');
       setError('无法解析笔记路径');
       return;
@@ -58,22 +64,27 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
     fetch(`/api/section?${params.toString()}`, { signal: controller.signal })
       .then(async (res) => {
         if (!res.ok) throw new Error(`读取失败 ${res.status}`);
-        return res.json() as Promise<{ content?: string | null }>;
+        return res.json() as Promise<{ content?: string | null; format?: SectionFormat | null }>;
       })
       .then((data) => {
-        const markdown = typeof data.content === 'string' ? data.content : '';
-        if (markdown.trim()) {
-          cacheRef.current.set(active.path, markdown);
-          setContent(markdown);
+        const text = typeof data.content === 'string' ? data.content : '';
+        const fmt: SectionFormat =
+          data.format === 'text' || data.format === 'html' ? data.format : 'markdown';
+        if (text.trim()) {
+          cacheRef.current.set(active.path, { content: text, format: fmt });
+          setContent(text);
+          setFormat(fmt);
           setStatus('done');
         } else {
           setContent(active.snippet || '');
+          setFormat('markdown');
           setStatus('missing');
         }
       })
       .catch((err: unknown) => {
         if (controller.signal.aborted) return;
         setContent(active.snippet || '');
+        setFormat('markdown');
         setStatus('error');
         setError(err instanceof Error ? err.message : '读取笔记失败');
       });
@@ -137,9 +148,23 @@ function NoteCitationViewerWindow({ hits, activePath }: { hits: SearchHit[]; act
             <p className="note-citation-status">未找到完整正文，已显示检索片段。</p>
           ) : null}
           {content ? (
-            <div className="prose-notes note-citation-prose">
-              <NoteRenderer content={content} />
-            </div>
+            format === 'html' ? (
+              // 课堂静态笔记：禁脚本/同源，仅放行新窗口外链。
+              <iframe
+                srcDoc={content}
+                sandbox="allow-popups"
+                className="h-full min-h-[320px] w-full flex-1 border-0"
+                title={heading}
+              />
+            ) : format === 'text' ? (
+              <div className="note-citation-prose overflow-auto p-3">
+                <PlainTextReader content={content} />
+              </div>
+            ) : (
+              <div className="prose-notes note-citation-prose">
+                <NoteRenderer content={content} />
+              </div>
+            )
           ) : null}
         </div>
       </div>

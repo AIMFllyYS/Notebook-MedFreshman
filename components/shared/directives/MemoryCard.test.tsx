@@ -70,6 +70,38 @@ describe("MemoryCard via QuizMarkdown pipeline", () => {
     expect(container.querySelector(".katex")).not.toBeNull();
     expect(container.querySelector(".chat-prose")).not.toBeNull();
   });
+
+  it("mode=reveal 一次性渲染整块 Markdown（表格不被切成清单项）", async () => {
+    const { container } = render(
+      <QuizMarkdown>
+        {
+          ':::memory{label="萃取参数" mode="reveal"}\n| 参数 | 定义 |\n| --- | --- |\n| KD | 浓度比 |\n:::'
+        }
+      </QuizMarkdown>,
+    );
+
+    await expandByLabel("萃取参数");
+    // 表格单元格完整渲染
+    expect(container.querySelector("table")).not.toBeNull();
+    expect(container.textContent).toContain("浓度比");
+    // reveal 不走逐项 checklist
+    expect(container.querySelector(".memory-checklist-item")).toBeNull();
+    expect(screen.queryByText("点击显示要点")).not.toBeInTheDocument();
+  });
+
+  it("mode=reveal 保留多段落与公式，不逐行遮蔽", async () => {
+    const { container } = render(
+      <QuizMarkdown>
+        {':::memory{label="分配系数" mode="reveal"}\n第一段定义。\n\n第二段含 $K_D$ 公式。\n:::'}
+      </QuizMarkdown>,
+    );
+
+    await expandByLabel("分配系数");
+    expect(container.textContent).toContain("第一段定义");
+    expect(container.textContent).toContain("第二段含");
+    expect(container.querySelector(".katex")).not.toBeNull();
+    expect(container.querySelector(".memory-cloze-blank")).toBeNull();
+  });
 });
 
 describe("MemoryCard extract() fallback", () => {

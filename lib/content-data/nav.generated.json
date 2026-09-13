@@ -8459,7 +8459,8 @@
               "id": "exam-source",
               "title": "历届真题资源包",
               "type": "document",
-              "status": "done"
+              "status": "done",
+              "renderType": "html"
             }
           ]
         },
@@ -8471,7 +8472,8 @@
               "id": "gongshi",
               "title": "概率论公式",
               "type": "document",
-              "status": "done"
+              "status": "done",
+              "renderType": "html"
             }
           ]
         },
@@ -8483,7 +8485,8 @@
               "id": "schedule",
               "title": "复习计划",
               "type": "document",
-              "status": "done"
+              "status": "done",
+              "renderType": "html"
             }
           ]
         }

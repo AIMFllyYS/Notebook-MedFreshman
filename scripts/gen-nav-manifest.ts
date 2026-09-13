@@ -12,6 +12,12 @@ function slimItem(item: ContentItem): ContentItem {
     type: item.type,
     status: item.status,
   };
+  // 课堂内容需要这些字段驱动渲染 / 题库共享 / 分组折叠（正文与路径不进导航瘦身文件）。
+  if (item.renderType) out.renderType = item.renderType;
+  if (item.navigationOnly) out.navigationOnly = true;
+  if (item.materialRole) out.materialRole = item.materialRole;
+  if (item.lessonRef) out.lessonRef = item.lessonRef;
+  if (item.quizRef) out.quizRef = item.quizRef;
   if (item.children?.length) out.children = item.children.map(slimItem);
   return out;
 }
