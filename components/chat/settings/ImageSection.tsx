@@ -4,7 +4,8 @@ import { useState } from "react";
 import { ChevronDown, ChevronRight, Sparkles } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { getAllModels } from "@/lib/ai/models";
-import { h3Cls, inputCls, labelCls } from "./_shared";
+import { h3Cls, labelCls } from "./_shared";
+import AppSelect from "@/components/ui/AppSelect";
 
 export function ImageSection() {
   const customApiGroups = useSettings((s) => s.customApiGroups);
@@ -51,31 +52,13 @@ export function ImageSection() {
           )}
           <div>
             <label className={labelCls}>生图模式文本模型（理解意图 + 优化提示词）</label>
-            <select
-              value={imageModeTextModel}
-              onChange={(e) => setImageModeTextModel(e.target.value)}
-              className={inputCls}
-            >
-              {allTextModels.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.label} · {m.group}
-                </option>
-              ))}
-            </select>
+            <AppSelect label="生图模式文本模型" value={imageModeTextModel} onValueChange={setImageModeTextModel}
+              options={allTextModels.map((m) => ({ value: m.id, label: `${m.label} · ${m.group}` }))} />
           </div>
           <div>
             <label className={labelCls}>容灾降级模型（主模型失败时使用）</label>
-            <select
-              value={imageModeTextModelFallback}
-              onChange={(e) => setImageModeTextModelFallback(e.target.value)}
-              className={inputCls}
-            >
-              {allTextModels.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.label} · {m.group}
-                </option>
-              ))}
-            </select>
+            <AppSelect label="容灾降级模型" value={imageModeTextModelFallback} onValueChange={setImageModeTextModelFallback}
+              options={allTextModels.map((m) => ({ value: m.id, label: `${m.label} · ${m.group}` }))} />
           </div>
         </div>
       )}

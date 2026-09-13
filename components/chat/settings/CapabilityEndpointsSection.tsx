@@ -12,6 +12,7 @@ import {
   type ImageApiStyle,
 } from "@/lib/ai/capabilityEndpoints";
 import { h3Cls, inputCls, labelCls } from "./_shared";
+import AppSelect from "@/components/ui/AppSelect";
 
 export function CapabilityEndpointsSection() {
   const capabilityEndpoints = useSettings((s) => s.capabilityEndpoints) ?? EMPTY_CAPABILITY_ENDPOINTS;
@@ -108,17 +109,9 @@ export function CapabilityEndpointsSection() {
             </div>
             <div>
               <label className={labelCls}>API 风格</label>
-              <select
-                className={inputCls}
-                value={capabilityEndpoints.imageApiStyle}
-                onChange={(e) => setCapabilityEndpoints({ imageApiStyle: e.target.value as ImageApiStyle })}
-              >
-                {IMAGE_API_STYLES.map((style) => (
-                  <option key={style} value={style}>
-                    {style}
-                  </option>
-                ))}
-              </select>
+              <AppSelect label="生图 API 风格" value={capabilityEndpoints.imageApiStyle}
+                onValueChange={(imageApiStyle: ImageApiStyle) => setCapabilityEndpoints({ imageApiStyle })}
+                options={IMAGE_API_STYLES.map((style) => ({ value: style, label: style }))} />
             </div>
             <button
               type="button"

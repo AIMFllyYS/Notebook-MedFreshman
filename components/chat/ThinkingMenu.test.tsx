@@ -33,8 +33,7 @@ describe('ThinkingMenuButton', () => {
     expect(btn.textContent).toContain('深度思考·High');
     expect(btn.querySelector('[data-agent-icon="loop"]')).not.toBeNull();
     expect(btn.querySelector('[data-agent-icon="loop"]')?.getAttribute('aria-hidden')).toBe('true');
-    expect(btn.style.color).toBe('var(--ink)');
-    expect(btn.style.background).toBe('var(--bg-muted)');
+    expect(btn).toHaveClass('chat-input-toggle-thinking-active');
     expect(btn.querySelector('.lucide')).toBeNull();
   });
 
@@ -55,7 +54,7 @@ describe('ThinkingMenuButton', () => {
     expect(queryByTestId('thinking-menu-option-medium')).not.toBeNull();
     expect(queryByTestId('thinking-menu-option-high')).not.toBeNull();
     expect(queryByTestId('thinking-menu-option-max')).not.toBeNull();
-    expect(getByTestId('thinking-menu-option-off').querySelector('[data-agent-icon="pause"]')).not.toBeNull();
+    expect(getByTestId('thinking-menu-option-off')).toHaveAttribute('aria-checked', 'false');
     expect(getByTestId('thinking-menu-option-medium').querySelector('[data-agent-icon="check"]')).not.toBeNull();
   });
 
