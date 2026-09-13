@@ -9,6 +9,7 @@ import type { ChatContext, ChatAttachment } from '@/lib/types/chat';
 import { useChatUI } from '@/lib/hooks/useChatUI';
 import { useSettings, type ThinkingEffort } from '@/lib/hooks/useSettings';
 import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
+import { ACCEPTED_DOCUMENT_FILE_TYPES } from '@/lib/ai/imageUtils';
 import { useKeyboardSettings } from '@/lib/keyboard/useKeyboardSettings';
 import {
   getModelInfoWithCustom,
@@ -323,7 +324,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/gif,image/webp,.txt,.md,.markdown,.docx,text/plain,text/markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          accept={`image/jpeg,image/png,image/gif,image/webp,${ACCEPTED_DOCUMENT_FILE_TYPES}`}
           multiple
           style={{ display: 'none' }}
           onChange={handleFileChange}

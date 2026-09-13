@@ -35,4 +35,13 @@ describe('AttachmentThumbnails', () => {
     expect(screen.getByText('DOCX')).toBeVisible();
     expect(screen.getByText('1,200 字')).toBeVisible();
   });
+
+  it('shows concise format labels for HTML and YAML aliases', () => {
+    render(<AttachmentThumbnails readonlyAttachments={[
+      { id: 'blob-html', type: 'document', mimeType: 'text/html', name: 'chapter.htm', size: 120, characterCount: 80 },
+      { id: 'blob-yaml', type: 'document', mimeType: 'application/yaml', name: 'outline.yml', size: 90, characterCount: 50 },
+    ]} />);
+    expect(screen.getByText('HTML')).toBeVisible();
+    expect(screen.getByText('YAML')).toBeVisible();
+  });
 });

@@ -12,8 +12,8 @@ afterEach(() => {
 });
 
 describe('useImageAttachments documents', () => {
-  it('turns a paste longer than 10,000 characters into an in-composer TXT attachment', async () => {
-    const pasted = `复习资料\n${'字'.repeat(10_001)}`;
+  it('turns a paste longer than 1,000 characters into an in-composer TXT attachment', async () => {
+    const pasted = '字'.repeat(1_001);
     const preventDefault = vi.fn();
     const { result } = renderHook(() => useImageAttachments());
 
@@ -34,18 +34,18 @@ describe('useImageAttachments documents', () => {
     if (attachment.type === 'document') {
       expect(attachment.name).toMatch(/^粘贴文本-.*\.txt$/);
       expect(attachment.text).toBe(pasted);
-      expect(attachment.characterCount).toBe(10_006);
+      expect(attachment.characterCount).toBe(1_001);
     }
-    expect(result.current.info).toMatch(/已将 10,006 字粘贴内容转为 TXT 附件/);
+    expect(result.current.info).toMatch(/已将 1,001 字粘贴内容转为 TXT 附件/);
   });
 
-  it('leaves ordinary pasted text in the textarea', () => {
+  it('keeps an exact 1,000-character paste in the textarea', () => {
     const preventDefault = vi.fn();
     const { result } = renderHook(() => useImageAttachments());
     act(() => {
       result.current.handlePaste({
         preventDefault,
-        clipboardData: { items: [] as unknown as DataTransferItemList, getData: () => '普通文本' },
+        clipboardData: { items: [] as unknown as DataTransferItemList, getData: () => '字'.repeat(1_000) },
       } as unknown as React.ClipboardEvent);
     });
     expect(preventDefault).not.toHaveBeenCalled();

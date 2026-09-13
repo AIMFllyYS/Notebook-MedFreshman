@@ -52,6 +52,10 @@ describe('floating transparent composer', () => {
     expect(toolbar.contains(getByTestId('context-dashboard'))).toBe(true);
     expect(toolbar.contains(getByTestId('model-selector'))).toBe(true);
     expect(row.contains(getByRole('textbox'))).toBe(true);
+    const fileInput = container.querySelector('input[type="file"]');
+    expect(fileInput).toHaveAttribute('accept', expect.stringContaining('.html'));
+    expect(fileInput).toHaveAttribute('accept', expect.stringContaining('.json'));
+    expect(fileInput).toHaveAttribute('accept', expect.stringContaining('.tsx'));
     expect(dock.contains(getByTestId('notice'))).toBe(true);
     expect(dock.contains(getByTestId('attachment-preview'))).toBe(true);
     expect(row.contains(getByTestId('attachment-preview'))).toBe(true);

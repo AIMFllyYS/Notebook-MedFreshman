@@ -5,7 +5,7 @@
  * 所有函数纯客户端运行，不依赖 React，可在任意组件或 hook 中调用。
  */
 
-import type { ChatAttachment } from "@/lib/types/chat";
+import type { ChatAttachment, ChatDocumentMimeType } from "@/lib/types/chat";
 
 /** 单图最大体积（2 MB），超过则触发 Canvas 压缩。 */
 export const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
@@ -20,8 +20,63 @@ export const ACCEPTED_IMAGE_TYPES = new Set([
 
 export const MAX_DOCUMENT_SIZE = 10 * 1024 * 1024;
 export const MAX_DOCUMENT_CHARACTERS = 200_000;
-export const LONG_PASTE_DOCUMENT_THRESHOLD = 10_000;
-export const ACCEPTED_DOCUMENT_EXTENSIONS = new Set(["txt", "md", "markdown", "docx"]);
+export const LONG_PASTE_DOCUMENT_THRESHOLD = 1_000;
+
+/**
+ * 文本附件白名单。不要仅依赖浏览器上报的 MIME：不同系统经常会把
+ * 代码、配置和 Markdown 文件标成空字符串或 application/octet-stream。
+ */
+export const DOCUMENT_MIME_BY_EXTENSION = {
+  txt: "text/plain",
+  md: "text/markdown",
+  markdown: "text/markdown",
+  html: "text/html",
+  htm: "text/html",
+  csv: "text/csv",
+  tsv: "text/tab-separated-values",
+  json: "application/json",
+  jsonl: "application/x-ndjson",
+  xml: "application/xml",
+  yaml: "application/yaml",
+  yml: "application/yaml",
+  css: "text/css",
+  js: "text/javascript",
+  jsx: "text/javascript",
+  mjs: "text/javascript",
+  cjs: "text/javascript",
+  ts: "text/typescript",
+  tsx: "text/typescript",
+  sql: "application/sql",
+  log: "text/plain",
+  ini: "text/plain",
+  conf: "text/plain",
+  cfg: "text/plain",
+  toml: "application/toml",
+  py: "text/plain",
+  java: "text/plain",
+  c: "text/plain",
+  cc: "text/plain",
+  cpp: "text/plain",
+  h: "text/plain",
+  hpp: "text/plain",
+  go: "text/plain",
+  rs: "text/plain",
+  sh: "application/x-sh",
+  bash: "application/x-sh",
+  zsh: "application/x-sh",
+  ps1: "text/plain",
+  bat: "text/plain",
+  cmd: "text/plain",
+  docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+} as const satisfies Record<string, ChatDocumentMimeType>;
+
+export const ACCEPTED_DOCUMENT_EXTENSIONS = new Set(Object.keys(DOCUMENT_MIME_BY_EXTENSION));
+
+/** 供文件选择器复用，保证可选择范围与实际解析白名单完全一致。 */
+export const ACCEPTED_DOCUMENT_FILE_TYPES = [
+  ...Object.keys(DOCUMENT_MIME_BY_EXTENSION).map((extension) => `.${extension}`),
+  ...new Set(Object.values(DOCUMENT_MIME_BY_EXTENSION)),
+].join(",");
 
 /** 压缩后最长边像素上限。 */
 const COMPRESS_MAX_DIM = 1920;
@@ -41,7 +96,7 @@ export interface ImageAttachmentPreview {
 export interface DocumentAttachmentPreview {
   type: "document";
   file: File;
-  mimeType: "text/plain" | "text/markdown" | "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+  mimeType: ChatDocumentMimeType;
   name: string;
   size: number;
   text: string;
@@ -86,8 +141,9 @@ function readFileAsArrayBuffer(file: File): Promise<ArrayBuffer> {
 
 export async function fileToDocumentAttachment(file: File): Promise<DocumentAttachmentPreview> {
   const extension = documentExtension(file);
-  if (!ACCEPTED_DOCUMENT_EXTENSIONS.has(extension)) {
-    throw new Error(`不支持 ${file.name}，请选择 TXT、MD 或 DOCX 文档`);
+  const mappedMimeType = DOCUMENT_MIME_BY_EXTENSION[extension as keyof typeof DOCUMENT_MIME_BY_EXTENSION];
+  if (!mappedMimeType) {
+    throw new Error(`不支持 ${file.name}，请选择文本、Markdown、HTML、代码、配置或 DOCX 文档`);
   }
   if (file.size > MAX_DOCUMENT_SIZE) {
     throw new Error(`${file.name} 超过 10 MB，暂时无法作为对话附件读取`);
@@ -105,10 +161,11 @@ export async function fileToDocumentAttachment(file: File): Promise<DocumentAtta
       : { arrayBuffer };
     const result = await mammoth.extractRawText(input);
     text = result.value;
-    mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    mimeType = mappedMimeType;
   } else {
     text = await readFileAsText(file);
-    mimeType = extension === "md" || extension === "markdown" ? "text/markdown" : "text/plain";
+    // HTML 等格式只读取源码文本，不插入 DOM，也不会执行其中的脚本。
+    mimeType = mappedMimeType;
   }
 
   const characterCount = countCodePoints(text);

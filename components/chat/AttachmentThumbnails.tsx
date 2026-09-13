@@ -27,6 +27,8 @@ function formatSize(size?: number): string {
 function typeLabel(name: string | undefined, mimeType: string): string {
   const extension = name?.split(".").pop()?.toUpperCase();
   if (extension === "MARKDOWN") return "MD";
+  if (extension === "HTM") return "HTML";
+  if (extension === "YML") return "YAML";
   if (extension) return extension;
   if (mimeType === "text/markdown") return "MD";
   if (mimeType.includes("wordprocessingml")) return "DOCX";

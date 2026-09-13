@@ -94,9 +94,31 @@ export interface ChatImageAttachment {
   size?: number;
 }
 
+/**
+ * 对话文档的规范 MIME。源代码与没有专用 MIME 的配置文件统一使用
+ * text/plain；真正允许进入文本读取链路的范围仍由扩展名白名单控制。
+ */
+export type ChatDocumentMimeType =
+  | 'text/plain'
+  | 'text/markdown'
+  | 'text/html'
+  | 'text/csv'
+  | 'text/tab-separated-values'
+  | 'text/css'
+  | 'text/javascript'
+  | 'text/typescript'
+  | 'application/json'
+  | 'application/x-ndjson'
+  | 'application/xml'
+  | 'application/yaml'
+  | 'application/sql'
+  | 'application/toml'
+  | 'application/x-sh'
+  | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
 export interface ChatDocumentAttachment {
   type: 'document';
-  mimeType: 'text/plain' | 'text/markdown' | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  mimeType: ChatDocumentMimeType;
   name: string;
   /** 已验证并提取出的 UTF-8 正文；DOCX 同样在进入附件列表前完成提取。 */
   text: string;

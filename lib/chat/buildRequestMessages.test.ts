@@ -118,6 +118,21 @@ test("buildRequestMessages：TXT / MD / DOCX 正文作为明确标记的文本�
   assert.match(requestText, /# 复习提纲/);
 });
 
+test("buildRequestMessages：HTML 附件只作为源码文本发送", () => {
+  const htmlSource = '<article><script>alert("never render")</script>正文</article>';
+  const input = msg("1", "user", "检查网页源码", {
+    attachments: [
+      { type: "document", mimeType: "text/html", name: "lesson.html", text: htmlSource, size: 64, characterCount: 58 },
+    ],
+  });
+
+  const { messages } = buildRequestMessages([input]);
+  assert.equal(messages[0].parts.some((part) => part.type === "file"), false);
+  const requestText = textOf(messages[0]);
+  assert.match(requestText, /attached-document name="lesson\.html" type="text\/html"/);
+  assert.match(requestText, /<script>alert\("never render"\)<\/script>/);
+});
+
 test("buildRequestMessages：默认保留完整会话历史", () => {
   const messages: ChatMessage[] = [];
   for (let i = 0; i < 60; i++) {
