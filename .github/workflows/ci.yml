@@ -41,6 +41,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # content 检索测试（如 sophomore-search）关闭子串回退，依赖 content/.index；
+      # 离线只建 BM25 + chunks-meta（--bm25-only），无需 embedding token，hybrid 自动降级为关键词检索。
+      - name: Build offline search index (BM25)
+        run: pnpm build-index --bm25-only
+
       - name: Encoding check
         run: pnpm check:encoding
 

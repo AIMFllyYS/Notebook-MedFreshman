@@ -46,7 +46,7 @@ content/<subjectId>/lectures/<lessonId>/
 content/quiz/<subjectId>/<quizId>.json   # 四材料共享的一套题
 ```
 
-`lesson.json` 字段以 `exampleValidLessonManifest()` 为准：schemaVersion、lessonId、subjectId、courseName、term、taughtOn、sessionIndex（start/end）、title、materials（四材料 file/format 冻结值）、quizId、sourceHashes（由生成器/校验器核对）、revision。
+`lesson.json` 字段以 `exampleValidLessonManifest()`（`lib/content/lectures/schema.ts`）为准（zod strict，禁多余键）：schemaVersion(=1)、subjectId、courseInstanceId（如 `rec-2026-fall`）、lessonId、courseName、sessionRange `{start,end}`（课程内累计节次）、taughtOn(YYYY-MM-DD)、topic、revision(正整数，材料改动需 +1)、materials（四材料 file/format 冻结值）、quizId（=lessonId）、可选 sourceRef（云盘四个产物的溯源 token/链接）。lessonId 必须等于 `expectedLessonId(courseInstanceId, sessionRange)`。
 
 ### 3. 各材料的受控要求
 
@@ -57,7 +57,7 @@ content/quiz/<subjectId>/<quizId>.json   # 四材料共享的一套题
 
 ### 4. 出题与题源绑定
 
-- 题目只允许出自 `recording` 或 `notes`（`sourceRef.source ∈ {recording, notes}`），并带 blockId 指回具体轮次/提取块；`contentRef` 记录所依据材料的内容哈希，材料改动后哈希对不上即校验失败，强制复核题目。
+- 每题的 `sourceRef.source` 一旦填写，只允许是 `recording` 或 `notes`（写 minutes/cards 直接校验失败），并用 blockId 指回具体发言轮次 / HTML 提取块；正式内容 PR 的题**应**通过 `contentRef` 绑定当节材料（lessonId、revision、recordingHash、notesTextHash）。`contentRef` 在实现上可选但强烈推荐：一旦填写，材料改动导致哈希或 revision 对不上即校验失败，强制重新复核题目。
 - quiz JSON 结构遵循 `lib/quiz/types.ts`（QuizData.contentRef / 题目 sourceRef）。
 
 ### 5. 生成与校验（本地必须全绿才提交）
@@ -98,7 +98,7 @@ pnpm typecheck
 
 - 音频/视频、PDF、PPTX、docx、图片二进制（正文层不落地大文件）；云盘原始录音、HTML/PDF 成品留在云盘。
 - 含脚本或外链的 notes.html；超过 8192 字符的单张手卡；非 reveal 手卡。
-- 题源为 minutes/cards 的题；没有 contentRef 哈希绑定的题。
+- 题源标注为 minutes/cards 的题（`sourceRef.source` 只允许 recording/notes）；正式内容 PR 中未带 `contentRef` 哈希绑定的题（应补齐后再合入）。
 - 手改的 `lectures.generated.json` / `nav.generated.json`。
 - 把 `instrumental-analysis` 的内容写进 `chemistry`，或把白名单外课程就近塞进任意学科。
 
