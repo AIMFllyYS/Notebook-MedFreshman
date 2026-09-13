@@ -55,6 +55,18 @@ test("eventMatchesCombo matches mod+4", () => {
   assert.equal(eventMatchesCombo(e, "mod+4"), true);
 });
 
+test("eventMatchesCombo：没有 key 的合成事件不匹配也不抛", () => {
+  const e = {
+    key: undefined,
+    ctrlKey: false,
+    metaKey: false,
+    altKey: false,
+    shiftKey: false,
+  } as unknown as KeyboardEvent;
+  assert.equal(eventMatchesCombo(e, "escape"), false);
+  assert.equal(eventMatchesCombo(e, "mod+i"), false);
+});
+
 test("eventMatchesCombo matches mod+shift+/ as ?", () => {
   const e = {
     key: "?",
