@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest';
-import { render, act, fireEvent } from '@testing-library/react';
+import { render, act, fireEvent, screen } from '@testing-library/react';
 import ChatInput from './ChatInput';
 import { useSettings } from '@/lib/hooks/useSettings';
 
@@ -102,6 +102,31 @@ describe('ChatInput thinking menu', () => {
     expect(btn.getAttribute('data-enabled')).toBe('1');
     expect(btn.getAttribute('data-effort')).toBe('high');
     expect(btn.textContent).toContain('深度思考·High');
+  });
+
+  it.each([
+    ['DeepSeek V4.1 Flash', 'deepseek/deepseek-v4.1-flash'],
+    ['Qwen3.7 Flash', 'Qwen/Qwen3.7-Flash'],
+  ])('%s defaults to thinking and does not expose an off option', (_label, modelId) => {
+    useSettings.setState({ defaultThinking: false, defaultThinkingEffort: 'medium' });
+    const onSend = vi.fn();
+    const { getByTestId, getByRole } = render(
+      <ChatInput
+        onSend={onSend}
+        onStop={vi.fn()}
+        isLoading={false}
+        chatContext={chatContext}
+        modelId={modelId}
+      />,
+    );
+    const button = getByTestId('thinking-menu-button');
+    expect(button).toHaveAttribute('data-enabled', '1');
+    fireEvent.click(button);
+    expect(screen.queryByTestId('thinking-menu-option-off')).not.toBeInTheDocument();
+    expect(screen.getByText(/当前模型必须开启/)).toBeVisible();
+    fireEvent.change(getByRole('textbox'), { target: { value: '解释这一页' } });
+    fireEvent.keyDown(getByRole('textbox'), { key: 'Enter' });
+    expect(onSend).toHaveBeenCalledWith('解释这一页', expect.objectContaining({ enableThinking: true }));
   });
 
   it('sends effective thinkingEffort through onSend when thinking is enabled', async () => {
