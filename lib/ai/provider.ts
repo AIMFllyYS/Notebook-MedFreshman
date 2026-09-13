@@ -18,6 +18,8 @@ import {
   type ThinkingRequestStyle,
 } from "@/lib/ai/models";
 import { DEFAULT_CHAT_TIMEOUT_MS } from "@/lib/ai/upstream";
+import { relayModelConfig } from "@/lib/ai/relayConfig";
+import { AUTO_MODEL_ID } from "@/lib/ai/models";
 import { assertSafeCustomBaseUrl } from "@/lib/ai/customBaseUrl";
 import { normalizeOpenAIBaseUrl } from "@/lib/ai/openaiBaseUrl";
 import {
@@ -85,6 +87,9 @@ export interface CustomProvider {
 }
 
 export interface ResolvedProvider {
+  /** Built-in OpenAI gateway uses its own sampling defaults, not the calling feature's temperature. */
+  gatewayDefaults?: boolean;
+  temperature?: number;
   /** 注册 id（菜单/设置），用于 getModelInfo、计费展示 */
   registryId: string;
   /** 发给上游 chat/completions 的 model 字段 */
@@ -252,6 +257,7 @@ function resolveBuiltinEndpoint(
   registryId: string,
   endpointIndex: number,
 ): ResolvedProvider {
+  if (registryId === AUTO_MODEL_ID) throw new Error("自动模型必须先由服务端完成路由。");
   const info = getModelInfo(registryId);
   const fallbackId = ENV_MODEL_FLASH;
   const effectiveId = info ? registryId : fallbackId;
@@ -261,9 +267,10 @@ function resolveBuiltinEndpoint(
   const endpoint = endpoints[idx];
   const cred = endpoint ? credentialsFor(endpoint.provider) : credentialsFor("siliconflow");
   const isCustomOpenai = effectiveId === CUSTOM_OPENAI_MODEL_ID;
+  const relay = endpoint?.provider === "relay" && !isCustomOpenai ? relayModelConfig(effectiveId) : undefined;
   const apiModelId = isCustomOpenai
     ? (RELAY_MODEL_ID || endpoint?.apiModelId || effectiveId)
-    : (endpoint?.apiModelId ?? effectiveId);
+    : (relay?.apiModelId ?? endpoint?.apiModelId ?? effectiveId);
   // custom-openai 的 apiModelId 是用户填的 RELAY_MODEL_ID，可能撞上内置 id；
   // 思考方言仍跟注册条目，与 hop 0 历史行为一致。其余 hop 按落地 apiModelId 取。
   const landedInfo = getLandedModelInfo(isCustomOpenai ? effectiveId : apiModelId, effectiveId)
@@ -275,10 +282,12 @@ function resolveBuiltinEndpoint(
     baseUrl: cred.baseUrl,
     apiKey: cred.apiKey,
     reasoningField: REASONING_FIELD,
-    thinkingRequestStyle: landedInfo?.thinkingRequestStyle ?? "siliconflow",
+    thinkingRequestStyle: relay?.thinkingRequestStyle ?? landedInfo?.thinkingRequestStyle ?? "siliconflow",
+    gatewayDefaults: !!relay,
+    ...(relay?.temperature !== undefined ? { temperature: relay.temperature } : {}),
     apiProtocol: "openai",
     isCustom: false,
-    configured: isCustomOpenai ? cred.configured && !!RELAY_MODEL_ID : cred.configured,
+    configured: isCustomOpenai ? cred.configured && !!RELAY_MODEL_ID : cred.configured && relay?.enabled !== false,
     endpointIndex: idx,
     timeoutMs: getFetchTimeoutMs(effectiveId),
   };
@@ -321,6 +330,10 @@ export function resolveProvider(
         timeoutMs: customTimeoutMs(found.model.timeoutMs, found.group.timeoutMs),
       };
     }
+  }
+
+  if (isCustomModel && Array.isArray(custom) && modelId?.startsWith(CUSTOM_PREFIX)) {
+    throw new Error('当前自定义模型的分组、地址或密钥不可用。请检查 API 设置或恢复旧配置，本次不会改用平台模型。');
   }
 
   // 旧版兼容：custom 为 CustomProvider 对象

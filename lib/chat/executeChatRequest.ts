@@ -1,6 +1,8 @@
 import { consumeStudyStream, createStudyChatTransport } from "@/lib/chat/consumeStudyStream";
 import { buildRequestMessages, MAX_REQUEST_MESSAGES } from "@/lib/chat/buildRequestMessages";
 import { createStreamUiThrottle } from "@/lib/chat/streamUiThrottle";
+import { flushPendingWrites } from "@/lib/storage/idbStorage";
+import { notifyAccountUsageChanged } from "@/lib/billing/quotaView";
 import { createStallWatchdog } from "@/lib/chat/createStallWatchdog";
 import { hydrateForRequest } from "@/lib/chat/hydrateForRequest";
 import { resolveFollowUps } from "@/lib/chat/resolveFollowUps";
@@ -52,6 +54,8 @@ export async function executeChatRequest(input: {
     }
   } finally {
     throttle.flush();
+    flushPendingWrites();
     watchdog?.stop();
+    notifyAccountUsageChanged();
   }
 }

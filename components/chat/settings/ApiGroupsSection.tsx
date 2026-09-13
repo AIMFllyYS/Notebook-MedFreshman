@@ -6,6 +6,7 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import { isElectronDesktop } from "@/lib/stores/apiSecrets";
 import { inputCls, labelCls } from "./_shared";
 import { ApiGroupCard } from "./_ApiGroupCard";
+import { ApiConfigurationRecovery } from './ApiConfigurationRecovery';
 import SettingsDisclosure from "./SettingsDisclosure";
 
 export function ApiGroupsSection() {
@@ -48,6 +49,7 @@ export function ApiGroupsSection() {
     <SettingsDisclosure expanded={customExpanded} onToggle={() => setCustomExpanded((v) => !v)}
       icon={<Plug size={14} />} title="自定义 API" meta={`${customApiGroups.length} 个分组 · 与站点默认并存`}>
         <div className="flex flex-col gap-2">
+          <ApiConfigurationRecovery />
           <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
             可创建多个 API 分组，每组独立 baseUrl/apiKey + 模型列表，全部出现在模型菜单中。
           </p>

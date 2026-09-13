@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { backupSettings, mergeApiGroups, normalizeStoredSettings, readSettingsBackup } from './settingsRecovery';
 import {
   DEFAULT_MODEL_ID,
   normalizeCustomModelRegistryId,
@@ -42,6 +43,8 @@ function normalizeThinkingEffort(v: unknown): ThinkingEffort {
  * - 聊天区字体缩放、工具启用/禁用、默认思考/搜索（S4 设置面板消费）
  */
 export interface SettingsState {
+  settingsLoadWarning: string | null;
+  importApiConfiguration: (groups: CustomApiGroup[], selectedModelId?: string) => void;
   // ── 模型 ──────────────────────────────
   selectedModelId: string;
 
@@ -182,12 +185,22 @@ const DEFAULTS: Persisted = {
   usdExchangeRate: 7.00,
 };
 
-function load(): Persisted {
+let settingsCanPersist = true;
+function load(): Persisted & { settingsLoadWarning?: string | null } {
   if (typeof window === "undefined") return DEFAULTS;
   try {
-    const raw = localStorage.getItem(LS_KEY);
+    let raw = localStorage.getItem(LS_KEY);
+    let recoveredSecrets: string | null | undefined;
+    let warning: string | null = null;
     if (raw) {
-      const parsed = { ...DEFAULTS, ...JSON.parse(raw) } as Persisted;
+      try { normalizeStoredSettings(raw); } catch {
+        const backup = readSettingsBackup(localStorage);
+        if (backup) { settingsCanPersist = false; raw = backup.settings; recoveredSecrets = backup.secrets; warning = '原设置无法读取，已载入本机备份；原始记录未删除。点击恢复本机备份后再保存。'; }
+        else { settingsCanPersist = false; return { ...DEFAULTS, settingsLoadWarning: '设置文件无法读取。原始记录已保留，请导入旧配置恢复，勿清空浏览器数据。' }; }
+      }
+    }
+    if (raw) {
+      const parsed = { ...DEFAULTS, ...normalizeStoredSettings(raw) } as Persisted;
       // 向后兼容 1：旧版 customModelId 非空但 customModels 为空时，自动迁移
       if (parsed.customModelId && (!parsed.customModels || parsed.customModels.length === 0)) {
         parsed.customModels = [{ id: parsed.customModelId }];
@@ -247,7 +260,16 @@ function load(): Persisted {
         parsed.customApiGroups,
       );
 
-      const secretsRaw = localStorage.getItem(API_SECRETS_LS_KEY);
+      let secretsRaw = recoveredSecrets;
+      if (secretsRaw === undefined) {
+        try { secretsRaw = localStorage.getItem(API_SECRETS_LS_KEY); } catch { settingsCanPersist = false; warning = '分组已保留，但密钥存储暂不可读取。'; }
+      }
+      if (secretsRaw) {
+        try {
+          const payload = JSON.parse(secretsRaw);
+          if (!payload || payload.v !== 1 || !payload.groups || typeof payload.groups !== 'object') throw new Error('invalid secret store');
+        } catch { settingsCanPersist = false; warning = '分组已保留，但旧密钥记录无法解析；已阻止覆盖，请导入备份恢复。'; }
+      }
       const split = splitSettingsSecrets(
         parsed.customApiGroups,
         secretsRaw,
@@ -257,45 +279,60 @@ function load(): Persisted {
       parsed.customApiGroups = split.groupsForMemory;
       parsed.customApiKey = split.groupsForMemory[0]?.apiKey ?? "";
       parsed.capabilityEndpoints = split.capabilityForMemory;
-      if (split.rewriteSettings) {
+      let secretsSaved = !split.rewriteSecrets;
+      if (split.rewriteSecrets && !warning) {
+        backupSettings(localStorage);
+        try {
+          localStorage.setItem(API_SECRETS_LS_KEY, encodeWebSecrets(split.groupKeys, split.capabilityKeys));
+          secretsSaved = true;
+        } catch { warning = '密钥迁移暂未完成，旧配置和当前分组已保留；请检查浏览器存储空间。'; }
+      }
+      if (split.rewriteSettings && secretsSaved && !warning) {
         const disk = {
           ...parsed,
           customApiGroups: stripGroupApiKeys(parsed.customApiGroups),
           customApiKey: "",
           capabilityEndpoints: stripCapabilitySecrets(parsed.capabilityEndpoints),
         };
-        localStorage.setItem(LS_KEY, JSON.stringify(disk));
+        try { localStorage.setItem(LS_KEY, JSON.stringify(disk)); }
+        catch { warning = '设置暂不可写入，当前分组与旧配置已保留。'; }
       }
-      if (split.rewriteSecrets) {
-        localStorage.setItem(API_SECRETS_LS_KEY, encodeWebSecrets(split.groupKeys, split.capabilityKeys));
-      }
-      return parsed;
+      return { ...parsed, settingsLoadWarning: warning };
     }
   } catch {
-    /* ignore */
+    settingsCanPersist = false;
+    return { ...DEFAULTS, settingsLoadWarning: '本机设置读取失败，已阻止空配置覆盖原记录。请检查浏览器存储权限。' };
   }
   return DEFAULTS;
 }
 
-function persistSecrets(groupKeys: Record<string, string>, capabilityKeys: Record<string, string>) {
+let desktopSecretsReady = false;
+function persistSecrets(groupKeys: Record<string, string>, capabilityKeys: Record<string, string>): boolean {
   try {
     localStorage.setItem(API_SECRETS_LS_KEY, encodeWebSecrets(groupKeys, capabilityKeys));
   } catch {
-    /* ignore */
+    return false;
   }
   const bridge = getDesktopSecretsBridge();
-  if (!bridge) return;
+  if (!bridge || !desktopSecretsReady) return true;
   const payload: StoredApiSecrets = { v: 1, groups: groupKeys, capability: capabilityKeys };
   void bridge.save(payload).catch(() => {});
+  return true;
 }
 
 function persist(get: () => SettingsState) {
   if (typeof window === "undefined") return;
+  if (!settingsCanPersist) return;
   const s = get();
   // 旧版字段从 customApiGroups[0] 派生，保持向后兼容；密钥不写进 settings JSON。
   const firstGroup = s.customApiGroups[0];
   const groupKeys = extractPlainGroupKeys(s.customApiGroups);
   const capabilityKeys = extractPlainCapabilityKeys(s.capabilityEndpoints);
+  backupSettings(localStorage);
+  if (!persistSecrets(groupKeys, capabilityKeys)) {
+    useSettings.setState({ settingsLoadWarning: '密钥保存失败，原有分组记录未被覆盖；请检查浏览器存储空间。' });
+    return;
+  }
   const data: Persisted = {
     selectedModelId: s.selectedModelId,
     customApiGroups: stripGroupApiKeys(s.customApiGroups),
@@ -321,9 +358,8 @@ function persist(get: () => SettingsState) {
   try {
     localStorage.setItem(LS_KEY, JSON.stringify(data));
   } catch {
-    /* ignore */
+    useSettings.setState({ settingsLoadWarning: '当前配置尚未保存成功，请检查存储空间后重试。' });
   }
-  persistSecrets(groupKeys, capabilityKeys);
 }
 
 function hydrateDesktopSecrets(
@@ -332,22 +368,29 @@ function hydrateDesktopSecrets(
 ) {
   const bridge = getDesktopSecretsBridge();
   if (!bridge) return;
+  const initialGroups = extractPlainGroupKeys(get().customApiGroups);
+  const initialCapability = extractPlainCapabilityKeys(get().capabilityEndpoints);
   void (async () => {
     try {
       const stored = await bridge.load();
       const desktopKeys = decodeDesktopSecrets(stored);
       const desktopCapability = decodeDesktopCapabilitySecrets(stored);
+      const currentGroups = extractPlainGroupKeys(get().customApiGroups);
+      const liveCapability = extractPlainCapabilityKeys(get().capabilityEndpoints);
+      for (const id of Object.keys(desktopKeys)) if (currentGroups[id] !== initialGroups[id]) delete desktopKeys[id];
+      for (const id of Object.keys(desktopCapability)) if (liveCapability[id] !== initialCapability[id]) delete desktopCapability[id];
+      desktopSecretsReady = true;
       const hasDesktopGroups = Object.keys(desktopKeys).length > 0;
       const hasDesktopCapability = Object.keys(desktopCapability).length > 0;
       if (hasDesktopGroups || hasDesktopCapability) {
         set((s) => {
           const nextGroups = hasDesktopGroups
-            ? applyGroupApiKeys(s.customApiGroups, { ...extractPlainGroupKeys(s.customApiGroups), ...desktopKeys })
+            ? applyGroupApiKeys(s.customApiGroups, { ...desktopKeys, ...extractPlainGroupKeys(s.customApiGroups) })
             : s.customApiGroups;
           const nextCapability = hasDesktopCapability
             ? applyCapabilitySecrets(
               s.capabilityEndpoints,
-              { ...extractPlainCapabilityKeys(s.capabilityEndpoints), ...desktopCapability },
+              { ...desktopCapability, ...extractPlainCapabilityKeys(s.capabilityEndpoints) },
             )
             : s.capabilityEndpoints;
           return {
@@ -386,7 +429,18 @@ export const useSettings = create<SettingsState>((set, get) => {
     queueMicrotask(() => hydrateDesktopSecrets(set, get));
   }
   return {
+    settingsLoadWarning: null,
     ...loaded,
+
+  importApiConfiguration: (groups, selectedModelId) => {
+    settingsCanPersist = true;
+    set((s) => {
+      const merged = mergeApiGroups(s.customApiGroups, groups);
+      return { customApiGroups: merged, settingsLoadWarning: null,
+        selectedModelId: selectedModelId ? normalizeCustomModelRegistryId(normalizeRegistryId(selectedModelId), merged) : s.selectedModelId };
+    });
+    persist(get);
+  },
 
   setSelectedModelId: (id) => {
     set({ selectedModelId: id });

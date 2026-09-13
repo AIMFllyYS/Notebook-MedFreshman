@@ -160,23 +160,23 @@ test("buildThinkingSettings：mimo-thinking → thinking.type，不含 reasoning
   assert.equal("enable_thinking" in opts, false);
 });
 
-test("buildThinkingSettings：GLM 降级到 mimo 后按落地端点 mimo-thinking 下发", () => {
+test("buildThinkingSettings：GLM 降级到 mimo 后按落地端点 中转 OpenAI 格式下发", () => {
   const stale = fakeProvider({
     registryId: "z-ai/glm-5.3-flash",
     apiModelId: "mimo-v2.5",
     thinkingRequestStyle: "openai-reasoning-effort",
   });
   const landed = getModelInfo(stale.apiModelId);
-  assert.equal(landed?.thinkingRequestStyle, "mimo-thinking");
+  assert.equal(landed?.thinkingRequestStyle, "openai-reasoning-effort");
   const s = buildThinkingSettings(
     { ...stale, thinkingRequestStyle: landed!.thinkingRequestStyle! },
     "medium",
     landed,
   );
   const opts = s.providerOptions?.[UPSTREAM_PROVIDER_NAME] as Record<string, unknown>;
-  assert.deepEqual(opts, { thinking: { type: "enabled" } });
-  assert.equal(opts.enable_thinking, undefined);
-  assert.equal(opts.reasoningEffort, undefined);
+  assert.deepEqual(opts, { reasoningEffort: "medium" });
+  assert.equal('enable_thinking' in opts, false);
+  assert.equal('thinking' in opts, false);
 });
 
 test("buildThinkingSettings：自定义模型勾选的 max 档原样下发 reasoningEffort", () => {
@@ -231,7 +231,7 @@ test("applyThinkingCallSettings：替换思考键，不残留上一跳 reasoning
   );
   const opts = next.providerOptions?.[UPSTREAM_PROVIDER_NAME] as Record<string, unknown>;
   assert.deepEqual(opts, { temperature: 0.6, thinking: { type: "enabled" } });
-  assert.equal(opts.reasoningEffort, undefined);
+  assert.equal('reasoningEffort' in opts, false);
 });
 
 test("resolveLanguageModel：failover 后 thinkingSettings 跟落地 mimo-thinking", async (t) => {
@@ -292,7 +292,7 @@ test("resolveLanguageModel：failover 后 thinkingSettings 跟落地 mimo-thinki
   assert.equal(resolved.getActualProvider().registryId, backupId);
   const opts = resolved.thinkingSettings("medium").providerOptions?.[UPSTREAM_PROVIDER_NAME] as Record<string, unknown>;
   assert.deepEqual(opts, { thinking: { type: "enabled" } });
-  assert.equal(opts.enable_thinking, undefined);
+  assert.equal('enable_thinking' in opts, false);
 
   const backup = hops.find((h) => h.url.includes("backup-mimo.invalid"));
   assert.ok(backup, `backup hop missing: ${JSON.stringify(hops.map((h) => h.url))}`);

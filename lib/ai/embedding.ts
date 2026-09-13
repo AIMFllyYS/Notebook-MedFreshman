@@ -163,40 +163,7 @@ export class ZhipuEmbedding implements EmbeddingProvider {
   }
 }
 
-// 容灾包装：先 SiliconFlow，失败再试智谱。
-class FailoverEmbedding implements EmbeddingProvider {
-  private primary: SiliconFlowEmbedding;
-  private fallback: ZhipuEmbedding;
 
-  constructor() {
-    this.primary = new SiliconFlowEmbedding();
-    this.fallback = new ZhipuEmbedding();
-  }
-
-  async embed(text: string): Promise<number[]> {
-    const [result] = await this.embedBatch([text]);
-    return result;
-  }
-
-  async embedBatch(texts: string[]): Promise<number[][]> {
-    try {
-      return await this.primary.embedBatch(texts);
-    } catch (err) {
-      // 降级到智谱，仅当智谱已配置时
-      if (this.fallback.configured) {
-        return await this.fallback.embedBatch(texts);
-      }
-      throw err;
-    }
-  }
-}
-
-let _instance: FailoverEmbedding | null = null;
-
-function getEmbeddingClient(): FailoverEmbedding {
-  if (!_instance) _instance = new FailoverEmbedding();
-  return _instance;
-}
 
 /**
  * 查询向量必须与索引构建模型一致。智谱 embedding-3 与 bge-m3 维度不同，

@@ -1,5 +1,5 @@
 // 多提供商精选模型注册表 —— 供 AI 对话的模型选择菜单。
-// 主力对话：自有中转（relay.protocom.org）；MiMo 走小米 Token Plan；
+// 主力对话：自有中转（relay.protocom.org）；MiMo 同样走自有中转；
 // 硅基流动仅保留生图；智谱仅保留向量/重排/联网搜索。
 // model id（注册 id）与上游 apiModelId 分离；endpoints 链支持容灾降级。
 
@@ -102,6 +102,13 @@ export interface ModelInfo {
 export const MUSE_VENDOR_TRAINING_NOTICE = "对话可能用于厂商训练";
 
 export const CUSTOM_MODEL_ID = "custom";
+export const AUTO_MODEL_ID = "auto";
+
+/** A selection policy, not an upstream model. No fabricated price or fixed window. */
+export const AUTO_MODEL_INFO: ModelInfo = {
+  id: AUTO_MODEL_ID, label: "自动", group: "自动模型", thinking: true,
+  tools: true, vision: true, hint: "根据当前任务自动选择合适的模型", endpoints: [],
+};
 
 /** 桌面「自由中转」：用户自填 URL / API Key / 模型 ID，registry id 固定，上游 apiModelId 来自 env。 */
 export const CUSTOM_OPENAI_MODEL_ID = "custom-openai";
@@ -142,7 +149,6 @@ export function normalizeRegistryId(id: string): string {
 }
 
 const SF = "siliconflow" as const;
-const MIMO = "mimo" as const;
 const RELAY = "relay" as const;
 
 function ep(provider: ProviderKind, apiModelId: string): ModelEndpoint {
@@ -177,7 +183,7 @@ export const MODELS: ModelInfo[] = [
     thinking: true,
     thinkingLevels: ["low", "medium", "high"],
     defaultThinkingEffort: "medium",
-    thinkingRequestStyle: "deepseek-thinking",
+    thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
     vision: true,
     contextK: 1000,
@@ -194,7 +200,7 @@ export const MODELS: ModelInfo[] = [
     thinking: true,
     thinkingLevels: ["low", "medium", "high", "max"],
     defaultThinkingEffort: "medium",
-    thinkingRequestStyle: "siliconflow",
+    thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
     vision: true,
     contextK: 1000,
@@ -227,12 +233,14 @@ export const MODELS: ModelInfo[] = [
     label: "MiMo V2.5",
     group: "多模态",
     thinking: true,
-    thinkingRequestStyle: "mimo-thinking",
+    thinkingLevels: ["low", "medium", "high"],
+    defaultThinkingEffort: "medium",
+    thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
     vision: true,
     contextK: 1000,
-    hint: "全模态 · 1M · 思考仅开关",
-    endpoints: [ep(MIMO, "mimo-v2.5")],
+    hint: "全模态 · 1M · 可调思考深度",
+    endpoints: [ep(RELAY, "mimo-v2.5")],
     icon: "mimo",
     pricing: { input: 1, cachedInput: 0.02, cacheWrite: 1, output: 2 },
     cacheTtlSec: 3600,
@@ -245,7 +253,7 @@ export const MODELS: ModelInfo[] = [
     thinkingRequired: true,
     thinkingLevels: ["low", "medium", "high"],
     defaultThinkingEffort: "medium",
-    thinkingRequestStyle: "gemini-thinking-level",
+    thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
     vision: true,
     contextK: 1000,
@@ -270,7 +278,7 @@ export const MODELS: ModelInfo[] = [
     vision: true,
     contextK: 1000,
     hint: "1M · 思考不可关",
-    endpoints: [ep(RELAY, "z-ai/glm-5.3-flash"), ep(MIMO, "mimo-v2.5")],
+    endpoints: [ep(RELAY, "z-ai/glm-5.3-flash"), ep(RELAY, "mimo-v2.5")],
     icon: "zhipu",
     pricing: { input: 0.8, cachedInput: 0.23, output: 2.8 },
     cacheTtlSec: 1800,
@@ -283,7 +291,7 @@ export const MODELS: ModelInfo[] = [
     thinking: true,
     thinkingLevels: ["low", "medium", "high", "max"],
     defaultThinkingEffort: "medium",
-    thinkingRequestStyle: "siliconflow",
+    thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
     vision: true,
     contextK: 1000,
@@ -366,13 +374,12 @@ export const MODELS: ModelInfo[] = [
     group: "旗舰模型",
     thinking: true,
     thinkingRequired: true,
-    thinkingLevels: ["low", "high", "max"],
-    defaultThinkingEffort: "max",
-    thinkingRequestStyle: "openai-reasoning-effort",
+    thinkingLevels: [],
+    thinkingRequestStyle: "none",
     tools: true,
     vision: true,
     contextK: 1000,
-    hint: "旗舰 · 1M · 思考不可关",
+    hint: "旗舰 · 1M · 使用模型默认推理配置",
     endpoints: [ep(RELAY, "kimi-k3")],
     icon: "kimi",
     pricing: { input: 20, cachedInput: 2, output: 100 },
@@ -450,33 +457,10 @@ export function wireThinkingEffort(
 
 export const CUSTOM_PREFIX = "custom:";
 
-export interface ParsedCustomModelRegistryId {
-  groupId?: string;
-  modelId: string;
-  scoped: boolean;
-}
-
 export function buildCustomModelRegistryId(groupId: string, modelId: string): string {
   return `${CUSTOM_PREFIX}${encodeURIComponent(groupId)}:${encodeURIComponent(modelId)}`;
 }
 
-function parseCustomModelRegistryId(id: string): ParsedCustomModelRegistryId | undefined {
-  if (!id.startsWith(CUSTOM_PREFIX)) return undefined;
-  const rest = id.slice(CUSTOM_PREFIX.length);
-  const sep = rest.indexOf(":");
-  if (sep > 0) {
-    try {
-      return {
-        groupId: decodeURIComponent(rest.slice(0, sep)),
-        modelId: decodeURIComponent(rest.slice(sep + 1)),
-        scoped: true,
-      };
-    } catch {
-      return { groupId: rest.slice(0, sep), modelId: rest.slice(sep + 1), scoped: true };
-    }
-  }
-  return { modelId: rest, scoped: false };
-}
 
 export interface CustomModelConfig {
   id: string;
@@ -555,6 +539,7 @@ export interface CustomApiGroup {
 }
 
 export function getModelInfo(id: string): ModelInfo | undefined {
+  if (id === AUTO_MODEL_ID) return AUTO_MODEL_INFO;
   return MODELS.find((m) => m.id === normalizeRegistryId(id));
 }
 
@@ -618,10 +603,6 @@ export function modelAcceptsImageInput(id: string, groups: CustomApiGroup[]): bo
   return info.vision === true;
 }
 
-/** 展平所有分组的自定义模型为单一数组（向后兼容辅助）。 */
-function getAllCustomModels(groups: CustomApiGroup[]): CustomModelConfig[] {
-  return groups.flatMap((g) => g.models);
-}
 
 /** 在分组中查找包含某模型的分组（custom: 前缀）。 */
 export function findCustomModelGroup(

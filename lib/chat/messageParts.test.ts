@@ -81,7 +81,8 @@ test("withAnswerText：无 step-start 仍只替换最后工具之后的正文", 
   };
   const parts = withAnswerText(msg, "新答案");
   assert.equal(parts[0].type === "text" && parts[0].text, "中间讲解");
-  assert.equal(parts.at(-1)?.type === "text" && parts.at(-1).text, "新答案");
+  const tail = parts.at(-1);
+  assert.equal(tail?.type === "text" && tail.text, "新答案");
   assert.equal(parts.filter((p) => p.type === "text").length, 2);
 });
 

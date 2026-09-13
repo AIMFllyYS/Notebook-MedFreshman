@@ -34,6 +34,7 @@ export type StudyDataParts = {
   'context-breakdown': ContextBreakdown;
   usage: UsageSummary;
   followup: { questions: string[] };
+  'answer-complete': { durationMs: number };
 };
 
 /** UIMessage.metadata：本条消息的运行元信息。 */

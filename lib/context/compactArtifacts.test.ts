@@ -60,7 +60,7 @@ test("formatArtifactCatalog 不含 html", () => {
   assert.match(text, /getArtifact/);
 });
 
-test("collectRequestArtifacts 从消息与 store 收集 id/标题/摘要", () => {
+test("collectRequestArtifacts 只收集当前会话引用，不混入全局最近产物", () => {
   const items = collectRequestArtifacts(
     [{
       parts: [{
@@ -78,7 +78,36 @@ test("collectRequestArtifacts 从消息与 store 收集 id/标题/摘要", () =>
     },
   );
   assert.equal(items.some((i) => i.id === "art_msg" && i.title === "消息里的"), true);
-  assert.equal(items.some((i) => i.id === "art_store"), true);
+  assert.equal(items.some((i) => i.id === "art_store"), false);
   assert.ok(items.every((i) => !i.summary.includes("<")));
   assert.equal(htmlToSummary("<p>hello world</p>"), "hello world");
+});
+
+test('HTML 摘要边界保留完整 emoji，旧摘要修正不改写原件', () => {
+  assert.equal(htmlToSummary(`<p>${'a'.repeat(119)}📖tail</p>`), 'a'.repeat(119) + '📖');
+  const item = { id: 'art_old', title: '旧\udc00标题', summary: 'a'.repeat(119) + '\ud83d', html: '<p>原件📖</p>' };
+  const before = { ...item };
+  assert.doesNotMatch(formatArtifactCatalog([item]), /[\uD800-\uDFFF]/gu);
+  const [part] = compactUiParts([{ type: 'tool-renderInteractive', state: 'output-available', output: item }]);
+  assert.equal(part.output.summary, 'a'.repeat(119) + '�');
+  assert.deepEqual(item, before);
+});
+
+test('新会话不附带全局产物，getArtifact 引用仍保留完整原件', () => {
+  const artifact = { id: 'art_old', title: '旧产物', html: '<p>原件📖</p>' };
+  const store = { order: ['art_old'], byId: { art_old: artifact } };
+  assert.deepEqual(collectRequestArtifacts([], store), []);
+  const part = { type: 'tool-getArtifact', state: 'output-available', output: { artifactId: 'art_old' } };
+  const items = collectRequestArtifacts([{ parts: [part, part] }], store);
+  assert.equal(items.length, 1);
+  assert.equal(items[0].html, artifact.html);
+  assert.equal(store.byId.art_old, artifact);
+});
+
+test('产物目录去重后只保留当前会话最近 16 个引用', () => {
+  const messages = Array.from({ length: 20 }, (_, i) => ({ parts: [{
+    type: 'tool-renderInteractive', state: 'output-available', output: { artifactId: `art_${i}` },
+  }] }));
+  const items = collectRequestArtifacts(messages, { order: [], byId: {} });
+  assert.deepEqual(items.map((item) => item.id), Array.from({ length: 16 }, (_, i) => `art_${19 - i}`));
 });

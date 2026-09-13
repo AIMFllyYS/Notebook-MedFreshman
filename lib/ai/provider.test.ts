@@ -30,6 +30,10 @@ test("resolveProvider：custom 端点三要素齐全时用自定义", () => {
   assert.equal(r.registryId, "custom:my-model");
 });
 
+test('a missing scoped custom API never silently uses platform credentials', () => {
+  assert.throws(() => resolveProvider('custom:lost:model', []), /本次不会改用平台模型/);
+});
+
 test("resolveProvider：回环或私网自定义 baseUrl 被拒绝", () => {
   assert.throws(
     () => resolveProvider("custom", { baseUrl: "http://127.0.0.1/v1", apiKey: "sk-test", model: "my-model" }),
@@ -306,12 +310,13 @@ test("resolveImageProvider：用户显式选中的 custom 生图模型优先于�
   assert.equal(provider.imageApiStyle, "openai");
 });
 
-test("resolveProvider：mimo 模型走 MIMO 端点且 apiModelId 一致", () => {
+test("resolveProvider：mimo 模型走企业中转且 apiModelId 一致", () => {
   const r = resolveProvider("mimo-v2.5");
   assert.equal(r.isCustom, false);
   assert.equal(r.registryId, "mimo-v2.5");
   assert.equal(r.apiModelId, "mimo-v2.5");
-  assert.ok(r.baseUrl.includes("xiaomimimo") || r.baseUrl === "");
+  assert.equal(r.baseUrl, resolveProvider("deepseek/deepseek-v4.1-flash").baseUrl);
+  assert.equal(r.apiKey, resolveProvider("deepseek/deepseek-v4.1-flash").apiKey);
 });
 
 test("resolveProvider：主力 GLM 走 relay，备用端点为 mimo", () => {
@@ -335,7 +340,7 @@ test("resolveProvider：GLM 备用 hop 的 thinkingRequestStyle 跟落地 MiMo�
   assert.equal(backup.registryId, "z-ai/glm-5.3-flash");
   assert.equal(backup.apiModelId, "mimo-v2.5");
   assert.equal(backup.endpointIndex, 1);
-  assert.equal(backup.thinkingRequestStyle, "mimo-thinking");
+  assert.equal(backup.thinkingRequestStyle, "openai-reasoning-effort");
   assert.equal(backup.reasoningField, primary.reasoningField);
 });
 
@@ -349,7 +354,7 @@ test("resolveProvider：Qwen3.8-Flash 超时加长", () => {
   const r = resolveProvider("Qwen/Qwen3.8-Flash");
   assert.equal(r.registryId, "Qwen/Qwen3.8-Flash");
   assert.equal(r.timeoutMs, 120_000);
-  assert.equal(r.thinkingRequestStyle, "siliconflow");
+  assert.equal(r.thinkingRequestStyle, "openai-reasoning-effort");
   assert.equal(resolveProvider("Qwen/Qwen3.8-27B").registryId, "Qwen/Qwen3.8-Flash");
 });
 

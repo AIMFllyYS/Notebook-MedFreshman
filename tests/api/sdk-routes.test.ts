@@ -371,7 +371,7 @@ test("follow-ups: exact course context + last four messages in order, loose JSON
   const res = await followUps.POST(request({ messages, subjectId: "probability", categoryId: "detail", itemId: "1.2" }));
   assert.deepEqual(await res.json(), { questions: ["问题一", "2", "问题三"] });
   assert.equal(calls[0].body.model, "z-ai/glm-5.3-flash");
-  assert.equal(calls[0].body.temperature, 0.8);
+  assert.equal(calls[0].body.temperature, undefined); // Built-in relay uses gateway defaults.
   assert.match(contentText(calls[0].body.messages[0].content), /分类 detail，内容项 1.2/);
   assert.deepEqual(calls[0].body.messages.slice(1, -1).map((message) => contentText(message.content)), ["message-2", "message-3", "message-4", "message-5"]);
   assert.equal(contentText(calls[0].body.messages.at(-1)?.content), "请据此给出 3 个举一反三的追问（仅 JSON 数组）。");

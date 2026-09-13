@@ -22,6 +22,33 @@ before(async () => {
 });
 
 const finalAnswer = '这是最终回答。<FollowUp>如何应用|如何验证</FollowUp>';
+
+test('chat SDK: automatic fallback stays within fast/free, with no auxiliary premium request', async (t) => {
+  const ids: string[] = [];
+  t.mock.method(globalThis, 'fetch', async (_url: unknown, init?: RequestInit) => {
+    const request = JSON.parse(String(init?.body)) as { model: string };
+    ids.push(request.model);
+    if (ids.length === 1) return Response.json({ error: { code: 'model_not_found' } }, { status: 404 });
+    return openAiStep(undefined, '一个完整回答。');
+  });
+  const { message, chunks } = await chat({ modelId: 'auto', customApiGroups: [], enableThinking: false });
+  assert.deepEqual(ids, ['meituan/LongCat-2.0:free', 'inclusionai/ling-3.0-flash-sante:free']);
+  assert.equal(message?.metadata?.modelId, 'auto');
+  assert.equal(message?.metadata?.usage?.actualModelId, ids[1]);
+  assert.ok(chunks.findIndex((c) => c.type === 'data-answer-complete') < chunks.findIndex((c) => c.type === 'finish'));
+});
+
+test('chat SDK: automatic vision failure never escalates to a multimodal/flagship fallback', async (t) => {
+  const ids: string[] = [];
+  t.mock.method(globalThis, 'fetch', async (_url: unknown, init?: RequestInit) => {
+    ids.push(JSON.parse(String(init?.body)).model);
+    return Response.json({ error: { code: 'model_not_found', message: 'not available' } }, { status: 404 });
+  });
+  await chat({ modelId: 'auto', customApiGroups: [] }, [{ ...createUserMessage('image', '解释图片'), parts: [
+    { type: 'text', text: '解释图片' }, { type: 'file', mediaType: 'image/png', url: 'data:image/png;base64,aGVsbG8=' },
+  ] }]);
+  assert.deepEqual(ids, ['deepseek/deepseek-v4.1-flash']);
+});
 const groups: CustomApiGroup[] = [{
   id: 'test', name: 'Test', baseUrl: 'https://custom.invalid/v1', apiKey: 'test-only',
   models: [{ id: 'study-model', thinking: true, tools: true, vision: true, apiProtocol: 'openai' }],
@@ -88,6 +115,32 @@ test('chat SDK: invalid message shape returns HTTP 400 without fetching upstream
   assert.match(body.error ?? '', /请求体不合法/);
   assert.doesNotMatch(body.error ?? '', /ZodError|invalid_type|\[\s*\{/);
   assert.equal(fetch.mock.callCount(), 0);
+});
+
+test('chat SDK: legacy malformed artifact/history survives route and tool-loop without poisoning upstream', async (t) => {
+  const requests: Array<Record<string, unknown>> = [];
+  t.mock.method(globalThis, 'fetch', async (_url: unknown, init?: RequestInit) => {
+    const request = JSON.parse(String(init?.body));
+    requests.push(request);
+    assert.doesNotMatch(systemText(request), /[\uD800-\uDFFF]/gu);
+    assert.match(systemText(request), /旧演示�/);
+    const user = request.messages.find((m: { role: string }) => m.role === 'user');
+    assert.match(JSON.stringify(user), /中文📖�/);
+    return requests.length === 1 ? openAiStep({ name: 'getArtifact', arguments: { id: 'art_legacy' } }) : openAiStep(undefined, '连接正常📖<FollowUp>如何应用|如何验证</FollowUp>');
+  });
+  const artifact = { id: 'art_legacy', title: '旧演示\udc00', summary: 'a'.repeat(119) + '\ud83d', html: '<html><body>完整原件📖，旧文本\ud83d</body></html>' };
+  const original = { ...artifact };
+  const { message, chunks } = await chat({
+    modelId: 'deepseek/deepseek-v4.1-flash', customApiGroups: [], artifacts: [artifact],
+  }, [createUserMessage('legacy-user', '中文📖\udc00')]);
+  assert.equal(requests.length, 2);
+  const toolMessage = (requests[1].messages as Array<{ role: string; content: string }>).find((m) => m.role === 'tool');
+  assert.ok(toolMessage);
+  assert.doesNotMatch(toolMessage.content, /[\uD800-\uDFFF]/gu);
+  assert.match(toolMessage.content, /完整原件📖/);
+  assert.equal(message && getMessageText(message), '连接正常📖<FollowUp>如何应用|如何验证</FollowUp>');
+  assert.equal(chunks.some((chunk) => chunk.type === 'error'), false);
+  assert.deepEqual(artifact, original);
 });
 
 test('chat SDK: role:system is rejected with Chinese and never hits upstream', async (t) => {
@@ -311,7 +364,7 @@ test('chat SDK: 503 switches registry endpoint and sends transient info before s
     return urls.length === 1 ? new Response('{"error":{"message":"unavailable"}}', { status: 503 }) : openAiStep();
   });
   const { chunks, message } = await chat({ modelId: 'z-ai/glm-5.3-flash', customApiGroups: [] });
-  assert.deepEqual(urls, ['https://primary.invalid/v1/chat/completions', 'https://backup.invalid/v1/chat/completions']);
+  assert.deepEqual(urls, ['https://primary.invalid/v1/chat/completions', 'https://primary.invalid/v1/chat/completions']);
   const info = chunks.find((c) => c.type === 'data-info');
   assert.ok(info && 'transient' in info && info.transient);
   assert.ok(message);
@@ -396,7 +449,7 @@ test('chat SDK: image mode exposes only generateImage once and preserves selecte
   assert.ok(part.type === 'tool-generateImage' && part.state === 'output-available');
   assert.equal(part.output.modelId, imageId);
   const usagePart = chunks.find((chunk) => chunk.type === 'data-usage');
-  assert.equal(usagePart && 'data' in usagePart ? usagePart.data.actualModelId : undefined, textId);
+  assert.equal(usagePart && 'data' in usagePart ? (usagePart.data as { actualModelId?: string }).actualModelId : undefined, textId);
 });
 
 test('chat SDK: GLM failover bills the landed mimo model, not GLM', async (t) => {
@@ -405,7 +458,7 @@ test('chat SDK: GLM failover bills the landed mimo model, not GLM', async (t) =>
   t.mock.method(globalThis, 'fetch', async (url: unknown, init?: RequestInit) => {
     hosts.push(String(url));
     if (init?.body) bodies.push({ host: String(url), body: JSON.parse(String(init.body)) as Record<string, unknown> });
-    if (String(url).includes('primary.invalid')) return new Response('unavailable', { status: 503 });
+    if (JSON.parse(String(init?.body)).model === 'z-ai/glm-5.3-flash') return new Response('unavailable', { status: 503 });
     return openAiStep(undefined, '短回答。<FollowUp>如何应用|如何验证</FollowUp>');
   });
   const { chunks } = await chat({
@@ -414,16 +467,16 @@ test('chat SDK: GLM failover bills the landed mimo model, not GLM', async (t) =>
     thinkingEffort: 'max',
   });
   assert.ok(hosts.some((host) => host.includes('primary.invalid')));
-  assert.ok(hosts.some((host) => host.includes('backup.invalid')));
+  assert.equal(hosts.every((host) => host.includes('primary.invalid')), true);
   const usagePart = chunks.find((chunk) => chunk.type === 'data-usage');
-  assert.equal(usagePart && 'data' in usagePart ? usagePart.data.actualModelId : undefined, 'mimo-v2.5');
-  const primaryBody = bodies.find((entry) => entry.host.includes('primary.invalid'))?.body;
-  const backupBody = bodies.find((entry) => entry.host.includes('backup.invalid'))?.body;
+  assert.equal(usagePart && 'data' in usagePart ? (usagePart.data as { actualModelId?: string }).actualModelId : undefined, 'mimo-v2.5');
+  const primaryBody = bodies.find((entry) => entry.body.model === 'z-ai/glm-5.3-flash')?.body;
+  const backupBody = bodies.find((entry) => entry.body.model === 'mimo-v2.5')?.body;
   assert.ok(primaryBody, 'primary hop body missing');
   assert.ok(backupBody, 'backup hop body missing');
   assert.equal(primaryBody.reasoning_effort ?? primaryBody.reasoningEffort, 'max');
-  assert.deepEqual(backupBody.thinking, { type: 'enabled' }, JSON.stringify(backupBody));
-  assert.equal(backupBody.reasoning_effort, undefined);
+  assert.equal(backupBody.thinking, undefined);
+  assert.equal(backupBody.reasoning_effort, 'high');
   assert.equal(backupBody.reasoningEffort, undefined);
   assert.equal(backupBody.enable_thinking, undefined);
 });
@@ -439,12 +492,12 @@ test('chat SDK: 6th step still tool-calls stops without a 7th LLM and surfaces a
   assert.equal(requests.length, MAX_TOOL_STEPS);
   const info = chunks.find((c) => c.type === 'data-info');
   assert.ok(info && 'data' in info);
-  assert.equal(info.data.message, TOOL_STEP_LIMIT_INFO);
+  assert.equal((info.data as { message: string }).message, TOOL_STEP_LIMIT_INFO);
   assert.ok('transient' in info && info.transient);
   const finish = chunks.find((c) => c.type === 'finish');
   assert.equal(finish && 'finishReason' in finish ? finish.finishReason : undefined, 'tool-calls');
   const meta = chunks.find((c) => c.type === 'message-metadata');
-  assert.equal(meta && 'messageMetadata' in meta ? meta.messageMetadata.finishReason : undefined, 'tool-calls');
+  assert.equal(meta && 'messageMetadata' in meta ? (meta.messageMetadata as { finishReason: string }).finishReason : undefined, 'tool-calls');
   assert.equal(message?.metadata?.finishReason, 'tool-calls');
   const types = chunks.map((c) => c.type);
   assert.ok(types.lastIndexOf('tool-output-available') < types.indexOf('data-info'));
@@ -478,7 +531,7 @@ test('chat SDK: user question stays out of system so the same-page prefix is cac
   const first = await chat(page, [createUserMessage('u1', q1)]);
   const second = await chat(page, [
     createUserMessage('u1', q1),
-    { id: 'a1', role: 'assistant', parts: [{ type: 'text', text: '条件概率是给定条件下的概率。' }] },
+    { id: 'a1', timestamp: 0, role: 'assistant', parts: [{ type: 'text', text: '条件概率是给定条件下的概率。' }] },
     createUserMessage('u2', q2),
   ]);
   assert.equal(systems.length, 2);

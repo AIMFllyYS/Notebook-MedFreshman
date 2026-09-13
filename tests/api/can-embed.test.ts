@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test, type TestContext } from "node:test";
 import type { NextRequest } from "next/server";
-import { GET, guardProbeUrl, judge } from "@/app/api/can-embed/route";
+import { GET, guardProbeUrl, judge } from "@/lib/browser/probeEmbed";
 import { checkCustomBaseUrl } from "@/lib/ai/customBaseUrl";
 
 function probeReq(url: string | null): NextRequest {

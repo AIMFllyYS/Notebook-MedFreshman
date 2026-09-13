@@ -40,6 +40,7 @@ import {
 } from "@/lib/ai/models";
 import { createFailoverLanguageModel, type FailoverCandidate } from "@/lib/ai/sdk/failoverModel";
 import { createReasoningNormalizingFetch } from "@/lib/ai/sdk/reasoningNormalizer";
+import { repairTextValues } from '@/lib/utils/unicode';
 
 /** openai-compatible 实例统一用这个名字，providerOptions 也用同一个 key（无需按上游区分）。 */
 export const UPSTREAM_PROVIDER_NAME = "upstream";
@@ -68,6 +69,8 @@ export interface ResolvedLanguageModel {
 }
 
 export interface ResolveLanguageModelOptions {
+  /** An automatic selection is a closed candidate set, including every fallback hop. */
+  allowedModelIds?: readonly string[];
   /** 切换到备用端点/备用模型时回调（用于向前端推送提示）。 */
   onFailover?: (next: { label: string }, error: unknown) => void;
   /** 额外的整模型降级链（如生图模式：主文本模型 → imageModeTextModelFallback）。 */
@@ -92,9 +95,11 @@ function buildBaseModel(p: ResolvedProvider): LanguageModelV4 {
     baseURL: p.baseUrl.replace(/\/+$/, ""),
     apiKey: p.apiKey,
     includeUsage: true,
-    // 标准字段名也可能携带结构化值；归一化只改可识别的思考内容，其余协议仍由 SDK 校验。
-    fetch: createReasoningNormalizingFetch(p.reasoningField),
+    // The built-in gateway is the standard OpenAI-compatible path. Legacy/vendor
+    // response normalization belongs only to user-configured direct connections.
+    ...(p.gatewayDefaults ? {} : { fetch: createReasoningNormalizingFetch(p.reasoningField) }),
   });
+  if (p.gatewayDefaults) return upstream(p.apiModelId);
   return wrapLanguageModel({
     model: upstream(p.apiModelId),
     middleware: extractReasoningMiddleware({ tagName: "think" }),
@@ -132,7 +137,7 @@ export function buildThinkingSettings(
   const budget = thinkingBudget(effort);
   const modelInfo = info ?? (p.isCustom ? undefined : getModelInfo(p.registryId));
   const effortStr = wireThinkingEffort(modelInfo, effort);
-  const style = modelInfo?.thinkingRequestStyle ?? p.thinkingRequestStyle;
+  const style = p.thinkingRequestStyle;
   switch (style) {
     case "none":
       return {};
@@ -218,10 +223,7 @@ function landedThinkingContext(
   }
   const info = getLandedModelInfo(landed.apiModelId, landed.registryId) ?? fallbackInfo;
   return {
-    provider: {
-      ...landed,
-      thinkingRequestStyle: info?.thinkingRequestStyle ?? landed.thinkingRequestStyle,
-    },
+    provider: landed,
     info,
   };
 }
@@ -237,7 +239,9 @@ export function resolveLanguageModel(
   const supportsThinking = primary.isCustom ? primary.thinkingRequestStyle !== "none" && (info?.thinking ?? true) : info?.thinking === true;
   const supportsTools = info?.tools !== false;
 
-  const providers = collectCandidates(primary, custom, options.fallbackModelIds ?? []);
+  const providers = collectCandidates(primary, custom, options.fallbackModelIds ?? [])
+    .filter((p) => !options.allowedModelIds || options.allowedModelIds.includes(p.registryId));
+  if (!providers.length) throw new Error('当前没有可用的自动模型，请稍后重试或手动选择模型。');
   let actualProvider = providers[0] ?? primary;
   const candidates: FailoverCandidate[] = providers.map((p) => ({
     model: buildBaseModel(p),
@@ -247,7 +251,7 @@ export function resolveLanguageModel(
   let thinkingSettingsRequested = false;
   let lastThinkingEffort: ThinkingEffort | undefined;
 
-  const model = createFailoverLanguageModel(candidates, {
+  const failoverModel = createFailoverLanguageModel(candidates, {
     onFailover: (next, _index, error) => options.onFailover?.({ label: next.label }, error),
     onLanded: (_next, index) => {
       actualProvider = providers[index] ?? actualProvider;
@@ -255,13 +259,40 @@ export function resolveLanguageModel(
     // 与旧实现一致：首字节超时视为端点不可用（慢模型如 MoE 冷启动在 models.ts 单独放宽）。
     firstChunkTimeoutMs: options.firstChunkTimeoutMs ?? primary.timeoutMs,
     prepareCall: (index, callOptions) => {
-      if (!thinkingSettingsRequested || !supportsThinking) return callOptions;
       const hop = providers[index] ?? actualProvider;
       const landed = landedThinkingContext(hop, customGroups, info);
-      return applyThinkingCallSettings(
+      const prepared = thinkingSettingsRequested && supportsThinking ? applyThinkingCallSettings(
         callOptions,
         buildThinkingSettings(landed.provider, lastThinkingEffort, landed.info),
-      );
+      ) : callOptions;
+      if (!hop.gatewayDefaults) return prepared;
+      const defaults = {
+        ...prepared, temperature: hop.temperature,
+        topP: undefined, frequencyPenalty: undefined, presencePenalty: undefined, seed: undefined,
+      };
+      // These gateway models reject named/required tool_choice while reasoning. Keep only
+      // the requested tool, but use the supported OpenAI auto choice; no vendor fields.
+      if (['deepseek/deepseek-v4.1-flash', 'kimi-k3'].includes(hop.registryId)
+        && (defaults.toolChoice?.type === 'tool' || defaults.toolChoice?.type === 'required')) {
+        const name = defaults.toolChoice.type === 'tool' ? defaults.toolChoice.toolName : undefined;
+        if (name) defaults.tools = defaults.tools?.filter((tool) => tool.type === 'function' && tool.name === name);
+        defaults.toolChoice = { type: 'auto' };
+      }
+      return hop.thinkingRequestStyle === 'none' ? applyThinkingCallSettings(defaults, {}) : defaults;
+    },
+  });
+
+  // One final boundary for every model and every tool-loop step, including
+  // history produced by older clients and text truncated by satellite features.
+  const model = wrapLanguageModel({
+    model: failoverModel,
+    middleware: {
+      specificationVersion: 'v4',
+      transformParams: async ({ params }) => ({
+        ...params,
+        prompt: repairTextValues(params.prompt),
+        tools: repairTextValues(params.tools),
+      }),
     },
   });
 

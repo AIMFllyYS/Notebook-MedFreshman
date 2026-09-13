@@ -13,8 +13,10 @@ import { CONTEXT_WARNING } from "@/lib/chat/estimateContextBudget";
 import { getContextManager } from "@/lib/context";
 import { isSoftLimitReached } from "@/lib/context/estimateFullContext";
 import type { ChatContext, ChatMessage, ChatOptions } from "@/lib/types/chat";
-import { ENV_MODEL_PRO, ENV_MODEL_FLASH } from "@/lib/ai/provider";
-import { getModelInfoWithCustom } from "@/lib/ai/models";
+import { ENV_MODEL_PRO, ENV_MODEL_FLASH, resolveProvider } from "@/lib/ai/provider";
+import { AUTO_MODEL_ID, getModelInfoWithCustom } from "@/lib/ai/models";
+import { selectAutomaticModels } from "@/lib/ai/autoRoute";
+import { estimateTokens } from "@/lib/context/estimateTokens";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { withSseHeartbeat } from "@/lib/ai/sdk/heartbeat";
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
@@ -103,20 +105,27 @@ export async function POST(req: NextRequest) {
   // 生图模式：用户选择了生图模型时，文本对话使用 imageModeTextModel（失败降级到 fallback）。
   const selectedModelInfo = modelId ? getModelInfoWithCustom(modelId, customGroups) : undefined;
   const isImageMode = selectedModelInfo?.type === "image";
-  const effectiveModelId = isImageMode ? body.imageModeTextModel : modelId;
-
-  const previewProvider = resolveLanguageModel(effectiveModelId, effectiveCustom).provider;
+  let effectiveModelId = isImageMode ? body.imageModeTextModel : modelId;
+  let automaticModels: string[] | undefined;
+  let previewProvider;
+  try {
+    if (effectiveModelId === AUTO_MODEL_ID) {
+      automaticModels = selectAutomaticModels({
+        hasImages: hasFileParts(body.messages),
+        estimatedTokens: estimateTokens(JSON.stringify(body.messages)) + estimateTokens(body.globalContext) + 16_000,
+        text: lastUserText(body.messages), thinking: body.enableThinking,
+      });
+      if (!automaticModels.length) return Response.json({ error: '当前没有能处理此请求的自动模型，请稍后重试或手动选择模型。' }, { status: 503 });
+      effectiveModelId = automaticModels[0];
+    }
+    previewProvider = resolveProvider(effectiveModelId, effectiveCustom);
+  } catch (error) {
+    return Response.json({ error: formatError(error) }, { status: 400 });
+  }
   const mainOnPlatformCredentials = usedPlatformCredentialsForProvider(previewProvider);
   const mainPool = resolveMainModelPool(mainOnPlatformCredentials);
   const gate = await assertQuotaAvailable({ userId, pool: mainPool });
   if (!gate.ok) return quotaRejectedJson(gate);
-
-  try {
-    const { getIndexHealth } = await import("@/lib/ai/search/indexHealth");
-    getIndexHealth();
-  } catch {
-    /* 索引体检失败不阻断对话 */
-  }
 
   const options: ChatOptions = {
     enableThinking: body.enableThinking,
@@ -143,11 +152,12 @@ export async function POST(req: NextRequest) {
       mainUsedPlatformCredentials: mainOnPlatformCredentials,
     }, async () => {
       const resolved = resolveLanguageModel(effectiveModelId, effectiveCustom, {
-        fallbackModelIds: isImageMode ? [body.imageModeTextModelFallback] : [],
+        fallbackModelIds: automaticModels?.slice(1) ?? (isImageMode ? [body.imageModeTextModelFallback] : []),
+        allowedModelIds: automaticModels,
         onFailover: ({ label }) =>
           writer.write({
             type: "data-info",
-            data: { message: `主端点不可用，已切换到备用 API（${label}）` },
+            data: { message: automaticModels ? '正在重新连接模型服务…' : `主端点不可用，已切换到备用 API（${label}）` },
             transient: true,
           }),
       });
@@ -171,7 +181,12 @@ export async function POST(req: NextRequest) {
       const ctxManager = getContextManager(options.contextMode ?? "full", effectiveModelId, customGroups);
       let ctxResult = await ctxManager.buildContext(chatCtx, userText, { compact: body.contextTruncated });
       const prunedHistory = pruneStudyMessages(compactArtifactMessages(await toModelMessages(body.messages)));
-      const contextBudget = body.sessionContextBudgetTokens ?? ctxResult.maxTokens;
+      const candidateLimit = automaticModels
+        ? Math.min(...automaticModels.map((id) => (getModelInfoWithCustom(id, customGroups)?.contextK ?? 128) * 1000))
+        : ctxResult.maxTokens;
+      const requestedBudget = body.sessionContextBudgetTokens;
+      const contextBudget = Math.min(ctxResult.maxTokens, candidateLimit,
+        requestedBudget != null && requestedBudget > 0 ? requestedBudget : ctxResult.maxTokens);
 
       const makeBundle = (truncated: boolean, referenceContext: string) => createStudyAgent({
         model: resolved.model,
@@ -184,7 +199,7 @@ export async function POST(req: NextRequest) {
         contextTruncated: truncated,
         artifacts: body.artifacts,
         isImageMode,
-        selectedModelId: modelId ?? effectiveModelId,
+        selectedModelId: automaticModels ? effectiveModelId : modelId ?? effectiveModelId,
         modelSupportsTools: resolved.supportsTools,
         thinking: options.enableThinking ? resolved.thinkingSettings(options.thinkingEffort) : {},
       });
@@ -218,6 +233,7 @@ export async function POST(req: NextRequest) {
         sessionId: body.id,
         abortSignal: generationSignal,
         modelId: provider.registryId,
+        useSelectedModel: !!automaticModels,
         isCustom: provider.isCustom,
         custom: effectiveCustom,
       });
@@ -249,6 +265,7 @@ export async function POST(req: NextRequest) {
       }
 
       const aborted = streamFailed || generationSignal.aborted;
+      if (!aborted) writer.write({ type: 'data-answer-complete', data: { durationMs: Date.now() - startedAt } });
       const selectedModelId = modelId ?? effectiveModelId;
       const actualProvider = resolved.getActualProvider();
       const actualModelId = resolveActualBillingModelId(actualProvider);
@@ -284,7 +301,7 @@ export async function POST(req: NextRequest) {
       }
 
       // FollowUp 兜底：模型未输出 <FollowUp> 标签时，用轻量模型生成追问
-      if (finalText && !/<FollowUp>[\s\S]*?<\/FollowUp>/i.test(finalText)) {
+      if (!automaticModels && finalText && !/<FollowUp>[\s\S]*?<\/FollowUp>/i.test(finalText)) {
         const questions = await generateFallbackFollowUps({
           userText,
           answerText: finalText,

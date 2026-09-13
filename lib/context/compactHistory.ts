@@ -25,6 +25,7 @@ export interface CompactHistoryInput {
   keepTurns?: number;
   abortSignal?: AbortSignal;
   modelId?: string;
+  useSelectedModel?: boolean;
   isCustom?: boolean;
   custom?: CustomApiGroup[] | CustomProvider | null;
   generateSummary?: (prompt: string, abortSignal?: AbortSignal) => Promise<{ text: string; usage?: unknown }>;
@@ -156,7 +157,7 @@ export async function compactHistory(input: CompactHistoryInput): Promise<Compac
   const startedAt = Date.now();
   let summary = "";
   let usage: unknown;
-  const targetModel = input.isCustom ? input.modelId || ENV_MODEL_FLASH : ENV_MODEL_FLASH;
+  const targetModel = input.isCustom || input.useSelectedModel ? input.modelId || ENV_MODEL_FLASH : ENV_MODEL_FLASH;
 
   try {
     if (input.generateSummary) {

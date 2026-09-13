@@ -261,7 +261,7 @@ test("MODELS：对话走 relay/mimo，硅基流动仅保留生图", () => {
   assert.deepEqual(glm!.thinkingLevels, ["low", "high", "max"]);
   assert.equal(glm!.defaultThinkingEffort, "max");
   assert.equal(glm!.endpoints[0].apiModelId, "z-ai/glm-5.3-flash");
-  assert.equal(glm!.endpoints[1]?.provider, "mimo");
+  assert.equal(glm!.endpoints[1]?.provider, "relay");
   assert.equal(glm!.timeoutMs, 120_000);
 
   const qwen = getModelInfo("Qwen/Qwen3.8-Flash");
@@ -269,20 +269,20 @@ test("MODELS：对话走 relay/mimo，硅基流动仅保留生图", () => {
   assert.equal(qwen?.icon, "qwen");
   assert.equal(qwen?.timeoutMs, 120_000);
   assert.equal(qwen?.vision, true);
-  assert.equal(qwen?.thinkingRequestStyle, "siliconflow");
+  assert.equal(qwen?.thinkingRequestStyle, "openai-reasoning-effort");
 
   const gemini = getModelInfo("google/gemini-3.8-flash");
   assert.ok(gemini);
   assert.equal(gemini?.icon, "gemini");
   assert.equal(gemini?.thinkingRequired, true);
-  assert.equal(gemini?.thinkingRequestStyle, "gemini-thinking-level");
+  assert.equal(gemini?.thinkingRequestStyle, "openai-reasoning-effort");
   assert.deepEqual(gemini!.thinkingLevels, ["low", "medium", "high"]);
   assert.equal(gemini?.timeoutMs, 120_000);
 
   const ds = getModelInfo("deepseek/deepseek-v4.1-flash");
   assert.ok(ds);
   assert.equal(primaryProvider(ds!), "relay");
-  assert.equal(ds!.thinkingRequestStyle, "deepseek-thinking");
+  assert.equal(ds!.thinkingRequestStyle, "openai-reasoning-effort");
   assert.equal(ds!.vision, true);
 
   const image = getModelInfo("Tongyi-MAI/Z-Image-Turbo");
@@ -322,14 +322,14 @@ test("getModelInfo：旧 id 映射到当前注册表", () => {
   assert.equal(getModelInfo("Pro/moonshotai/Kimi-K2.6")?.id, "kimi-k3");
 });
 
-test("MODELS：MiMo 走 Token Plan provider，思考仅 on/off", () => {
+test("MODELS：MiMo 走统一中转，可调思考深度", () => {
   const mimo = getModelInfo("mimo-v2.5");
   assert.ok(mimo);
-  assert.equal(primaryProvider(mimo!), "mimo");
+  assert.equal(primaryProvider(mimo!), "relay");
   assert.equal(mimo!.group, "多模态");
-  assert.equal(mimo!.thinkingRequestStyle, "mimo-thinking");
-  assert.deepEqual(mimo!.thinkingLevels ?? [], []);
-  assert.equal(modelSupportsThinkingEffort(mimo), false);
+  assert.equal(mimo!.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.deepEqual(mimo!.thinkingLevels, ['low', 'medium', 'high']);
+  assert.equal(modelSupportsThinkingEffort(mimo), true);
 });
 
 test("思考强度：生图模型不支持档位，GLM 把 medium 钳到 high 并原样下发 max", () => {

@@ -1,11 +1,68 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { API_SECRETS_LS_KEY, SETTINGS_LS_KEY } from "@/lib/stores/apiSecrets";
+import { SETTINGS_BACKUP_KEY } from './settingsRecovery';
 import { useSettings } from "@/lib/stores/settings";
 
 describe("settings apiKey persist", () => {
   afterEach(() => {
+    vi.restoreAllMocks();
     localStorage.removeItem(SETTINGS_LS_KEY);
     localStorage.removeItem(API_SECRETS_LS_KEY);
+    localStorage.removeItem(SETTINGS_BACKUP_KEY);
+    delete (window as unknown as { desktop?: unknown }).desktop;
+  });
+
+  it('failed secret migration does not strip old keys or make API groups disappear', async () => {
+    const group = { id: 'upgrade', name: '旧 API', baseUrl: 'https://example.invalid/v1', apiKey: 'old-key', models: [{ id: 'my-model' }] };
+    const original = JSON.stringify({ customApiGroups: [group], selectedModelId: 'custom:my-model' });
+    localStorage.setItem(SETTINGS_LS_KEY, original);
+    const setItem = Storage.prototype.setItem;
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(function (this: Storage, key, value) {
+      if (key === API_SECRETS_LS_KEY) throw new DOMException('full', 'QuotaExceededError');
+      setItem.call(this, key, value);
+    });
+    vi.resetModules();
+    const { useSettings: loaded } = await import('./settings');
+    expect(loaded.getState().customApiGroups).toEqual([group]);
+    expect(loaded.getState().selectedModelId).toBe('custom:upgrade:my-model');
+    expect(loaded.getState().settingsLoadWarning).toBeTruthy();
+    expect(localStorage.getItem(SETTINGS_LS_KEY)).toBe(original);
+    loaded.getState().setFontScale(1.1);
+    expect(localStorage.getItem(SETTINGS_LS_KEY)).toBe(original);
+  });
+
+  it('wrapped upgrade config with a null selection still loads groups and survives reload', async () => {
+    localStorage.setItem(SETTINGS_LS_KEY, JSON.stringify({ state: { selectedModelId: null, customApiGroups: [{ id: 'wrapped', name: '旧分组', baseUrl: '', apiKey: 'key', models: ['model-a'] }] } }));
+    vi.resetModules();
+    const { useSettings: loaded } = await import('./settings');
+    expect(loaded.getState().customApiGroups[0].models[0].id).toBe('model-a');
+    expect(loaded.getState().customApiGroups[0].apiKey).toBe('key');
+    vi.resetModules();
+    const { useSettings: reloaded } = await import('./settings');
+    expect(reloaded.getState().customApiGroups[0].apiKey).toBe('key');
+  });
+
+  it('malformed settings cannot be overwritten by a model selection', async () => {
+    localStorage.setItem(SETTINGS_LS_KEY, '{broken');
+    vi.resetModules();
+    const { useSettings: loaded } = await import('./settings');
+    loaded.getState().setSelectedModelId('auto');
+    expect(localStorage.getItem(SETTINGS_LS_KEY)).toBe('{broken');
+    expect(loaded.getState().settingsLoadWarning).toBeTruthy();
+  });
+
+  it('delayed desktop secret hydration cannot roll back an edited API key', async () => {
+    localStorage.setItem(SETTINGS_LS_KEY, JSON.stringify({ customApiGroups: [{ id: 'desktop', name: 'Desktop', baseUrl: 'https://example.invalid/v1', apiKey: 'old-key', models: [{ id: 'test' }] }] }));
+    let complete!: (value: unknown) => void;
+    const save = vi.fn(async () => {});
+    (window as unknown as { desktop: unknown }).desktop = { isElectron: true, secrets: { load: () => new Promise((resolve) => { complete = resolve; }), save } };
+    vi.resetModules();
+    const { useSettings: loaded } = await import('./settings');
+    await Promise.resolve();
+    loaded.getState().updateApiGroup('desktop', { apiKey: 'new-key' });
+    complete({ v: 1, groups: { desktop: 'old-key' }, capability: {} });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(loaded.getState().customApiGroups[0].apiKey).toBe('new-key');
   });
 
   it("把 apiKey 写到独立 key 并混淆，settings v1 不含明文", () => {

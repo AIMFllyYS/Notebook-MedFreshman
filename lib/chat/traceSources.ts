@@ -36,7 +36,7 @@ export function noteImageItemKey(item: { src?: string | null }): string | null {
 }
 
 export function collectMessageSources(parts: ChatMessagePart[]): TraceSource[] {
-  const notes: TraceSource[] = getToolPartsByName({ parts }, 'searchNotes').flatMap((part) =>
+  const notes: Extract<TraceSource, { kind: 'note' }>[] = getToolPartsByName({ parts }, 'searchNotes').flatMap((part) =>
     part.state === 'output-available' && !part.preliminary
       ? (part.output.hits ?? []).map((hit: SearchHit) => ({
           kind: 'note' as const,
@@ -47,7 +47,7 @@ export function collectMessageSources(parts: ChatMessagePart[]): TraceSource[] {
       : [],
   );
 
-  const web: TraceSource[] = getToolPartsByName({ parts }, 'webSearch').flatMap((part) =>
+  const web: Extract<TraceSource, { kind: 'web' }>[] = getToolPartsByName({ parts }, 'webSearch').flatMap((part) =>
     part.state === 'output-available' && !part.preliminary
       ? (part.output.sources ?? []).map((source: WebSearchSource) => ({
           kind: 'web' as const,

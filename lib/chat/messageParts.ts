@@ -12,9 +12,6 @@ export function isChatToolPart(part: ChatMessagePart): part is ChatToolPart {
   return isToolUIPart(part);
 }
 
-function toolPartName(part: ChatToolPart): string {
-  return getToolName(part);
-}
 
 /** 所有 text part 拼接（供预览 / 标题 / 复制 / 导出）。 */
 export function getMessageText(message: Pick<ChatMessage, 'parts'>): string {

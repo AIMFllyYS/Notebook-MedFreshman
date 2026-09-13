@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 /** 原样返回已落盘 JSONL，不解析、不改写。路径由 resolveAgentLogPath 按 #52 约定解析。 */
 export async function GET() {
   const { bytes, exists } = readRawAgentLog();
-  return new Response(bytes, {
+  return new Response(new Uint8Array(bytes), {
     status: 200,
     headers: {
       "Content-Type": "application/octet-stream",

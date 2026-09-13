@@ -63,7 +63,7 @@ const uiMessageSchema = z
     id: z.string().optional(),
     role: z.enum(["user", "assistant"], "不支持的消息角色，仅允许 user 或 assistant。"),
     parts: z
-      .array(z.record(z.string(), z.unknown()))
+      .array(z.looseObject({ type: z.string() }))
       .max(REQUEST_LIMITS.parts, `单条消息的内容块超过上限（最多 ${REQUEST_LIMITS.parts} 个）。`),
     metadata: z.unknown().optional(),
   })

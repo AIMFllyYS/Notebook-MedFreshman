@@ -29,7 +29,7 @@ function asClientMessage(value: unknown): ClientMessage | null {
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const messages: ClientMessage[] = Array.isArray(body.messages)
-    ? body.messages.map(asClientMessage).filter((message): message is ClientMessage => message != null)
+    ? (body.messages as unknown[]).map(asClientMessage).filter((message): message is ClientMessage => message != null)
     : [];
   const subjectId: string = String(body.subjectId ?? "probability");
   const categoryId: string = String(body.categoryId ?? "detail");

@@ -79,7 +79,7 @@ test("artifact and image generation use the model selected when the tool call wa
   const imageViewer = readWorkspaceFile("components/chat/ImageGenViewer.tsx");
   const imageCard = readWorkspaceFile("components/chat/ImageGenCard.tsx");
 
-  assert.match(chatRoute, /selectedModelId: modelId \?\? effectiveModelId/);
+  assert.match(chatRoute, /selectedModelId: automaticModels \? effectiveModelId : modelId \?\? effectiveModelId/);
   assert.match(tools, /unsupportedReason: ctx\.artifactUnsupportedReason/);
   assert.equal([...tools.matchAll(/modelId: ctx\.modelId/g)].length, 3);
   assert.match(artifactCard, /const artifactModelId = modelId \|\| settings\.selectedModelId/);

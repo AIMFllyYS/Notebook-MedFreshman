@@ -14,6 +14,7 @@ import {
   formToModel,
   type ModelFormState,
 } from "./_shared";
+import AppSelect from "@/components/ui/AppSelect";
 
 /** 模型表单（添加/编辑），支持文本/生图 Tab 切换 + 能力勾选。 */
 export function ModelForm({
@@ -370,22 +371,18 @@ export function ModelForm({
                 </div>
                 <div>
                   <label className={labelCls}>思考参数格式（override）</label>
-                  <select
-                    value={form.thinkingRequestStyle}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        thinkingRequestStyle: e.target.value as ModelFormState["thinkingRequestStyle"],
-                      })
-                    }
-                    className={inputCls}
-                  >
-                    <option value="siliconflow">enable_thinking / thinking_budget</option>
-                    <option value="openai-reasoning-effort">reasoning_effort</option>
-                    <option value="openrouter-reasoning">reasoning.effort（OpenRouter）</option>
-                    <option value="anthropic-thinking">thinking.budget_tokens（Anthropic 原生）</option>
-                    <option value="none">不发送思考参数</option>
-                  </select>
+                  <AppSelect label="思考参数格式" value={form.thinkingRequestStyle}
+                    onValueChange={(thinkingRequestStyle) => setForm({ ...form, thinkingRequestStyle })}
+                    options={[
+                      { value: "siliconflow", label: "enable_thinking / thinking_budget" },
+                      { value: "openai-reasoning-effort", label: "reasoning_effort" },
+                      { value: "openrouter-reasoning", label: "reasoning.effort（OpenRouter）" },
+                      { value: "deepseek-thinking", label: "thinking + reasoning_effort（DeepSeek）" },
+                      { value: "mimo-thinking", label: "thinking.type（MiMo）" },
+                      { value: "gemini-thinking-level", label: "thinking_level（Gemini 兼容）" },
+                      { value: "anthropic-thinking", label: "thinking.budget_tokens（Anthropic 原生）" },
+                      { value: "none", label: "不发送思考参数" },
+                    ] as const} />
                 </div>
               </div>
             </details>
@@ -435,18 +432,13 @@ export function ModelForm({
           </div>
           <div>
             <label className={labelCls}>生图 API 格式</label>
-            <select
-              value={form.imageApiStyle}
-              onChange={(e) => setForm({
-                ...form,
-                imageApiStyle: e.target.value as ModelFormState["imageApiStyle"],
-              })}
-              className={inputCls}
-            >
-              <option value="auto">自动识别</option>
-              <option value="openai">OpenAI Images API</option>
-              <option value="siliconflow">SiliconFlow 图片接口</option>
-            </select>
+            <AppSelect label="生图 API 格式" value={form.imageApiStyle}
+              onValueChange={(imageApiStyle) => setForm({ ...form, imageApiStyle })}
+              options={[
+                { value: "auto", label: "自动识别" },
+                { value: "openai", label: "OpenAI Images API" },
+                { value: "siliconflow", label: "SiliconFlow 图片接口" },
+              ] as const} />
           </div>
         </div>
       )}
