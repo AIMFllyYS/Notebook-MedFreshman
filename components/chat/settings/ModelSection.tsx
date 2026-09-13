@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { BookmarkPlus, Brain, ChevronDown, ChevronRight, Globe, Star } from "lucide-react";
+import { BookmarkPlus, Brain, Boxes, Globe, Star } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { MODELS, isPickerHiddenModel, getAllModels } from "@/lib/ai/models";
 import { Toggle, h3Cls, labelCls } from "./_shared";
 import AppSelect from "@/components/ui/AppSelect";
+import SettingsDisclosure from "./SettingsDisclosure";
 
 export function BuiltinModelsSection() {
   const defaultImageModelId = useSettings((s) => s.defaultImageModelId);
@@ -17,19 +18,9 @@ export function BuiltinModelsSection() {
   const builtinVisibleCount = builtinTextModels.length + builtinImageModels.length;
 
   return (
-      <section className="flex flex-col gap-2">
-        <button
-          onClick={() => setBuiltinExpanded((v) => !v)}
-          className="flex items-center gap-1.5 self-start"
-        >
-          {builtinExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-          <h3 className={h3Cls}>内置模型（站点默认）</h3>
-          <span className="text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
-            · {builtinVisibleCount} 个
-          </span>
-        </button>
-        {builtinExpanded && (
-          <div className="flex flex-col gap-2 pl-4">
+      <SettingsDisclosure expanded={builtinExpanded} onToggle={() => setBuiltinExpanded((v) => !v)}
+        icon={<Boxes size={14} />} title="内置模型" meta={`${builtinVisibleCount} 个 · 站点默认`}>
+          <div className="flex flex-col gap-2">
             <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
               由部署方在 .env 配置，所有用户共享。下方仅展示，不可修改。
             </p>
@@ -146,8 +137,7 @@ export function BuiltinModelsSection() {
               </div>
             )}
           </div>
-        )}
-      </section>
+      </SettingsDisclosure>
   );
 }
 

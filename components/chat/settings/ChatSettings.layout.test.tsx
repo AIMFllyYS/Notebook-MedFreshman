@@ -25,7 +25,12 @@ describe('Agent settings workspace', () => {
     expect(view.queryByText('自定义 API')).toBeNull();
     fireEvent.click(view.getByTestId('chat-settings-nav-models'));
     expect(view.getByTestId('chat-settings-content-models')).toHaveTextContent('自定义 API');
+    expect(view.getByTestId('chat-settings-content-models')).toHaveTextContent('生图设置');
+    expect(view.getByTestId('chat-settings-content-models')).toHaveTextContent('能力端点');
     expect(view.queryByText('默认对话')).toBeNull();
+    fireEvent.click(view.getByTestId('chat-settings-nav-capabilities'));
+    expect(view.getByTestId('chat-settings-content-capabilities')).toHaveTextContent('工具调用');
+    expect(view.queryByText('生图设置')).toBeNull();
     fireEvent.click(view.getByRole('button', { name: '返回对话' }));
     expect(onClose).toHaveBeenCalledOnce();
   });

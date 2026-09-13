@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
-import { ChevronDown, ChevronRight, Plus } from "lucide-react";
+import { Plug, Plus } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { isElectronDesktop } from "@/lib/stores/apiSecrets";
-import { h3Cls, inputCls, labelCls } from "./_shared";
+import { inputCls, labelCls } from "./_shared";
 import { ApiGroupCard } from "./_ApiGroupCard";
+import SettingsDisclosure from "./SettingsDisclosure";
 
 export function ApiGroupsSection() {
   const customApiGroups = useSettings((s) => s.customApiGroups);
@@ -44,19 +45,9 @@ export function ApiGroupsSection() {
   };
 
   return (
-    <section className="flex flex-col gap-2">
-      <button
-        onClick={() => setCustomExpanded((v) => !v)}
-        className="flex items-center gap-1.5 self-start"
-      >
-        {customExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-        <h3 className={h3Cls}>自定义 API（与站点默认并存）</h3>
-        <span className="text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
-          · {customApiGroups.length} 个分组
-        </span>
-      </button>
-      {customExpanded && (
-        <div className="flex flex-col gap-2 pl-4">
+    <SettingsDisclosure expanded={customExpanded} onToggle={() => setCustomExpanded((v) => !v)}
+      icon={<Plug size={14} />} title="自定义 API" meta={`${customApiGroups.length} 个分组 · 与站点默认并存`}>
+        <div className="flex flex-col gap-2">
           <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
             可创建多个 API 分组，每组独立 baseUrl/apiKey + 模型列表，全部出现在模型菜单中。
           </p>
@@ -147,7 +138,6 @@ export function ApiGroupsSection() {
             </button>
           )}
         </div>
-      )}
-    </section>
+    </SettingsDisclosure>
   );
 }

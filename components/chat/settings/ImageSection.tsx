@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronRight, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { getAllModels } from "@/lib/ai/models";
-import { h3Cls, labelCls } from "./_shared";
+import { labelCls } from "./_shared";
 import AppSelect from "@/components/ui/AppSelect";
+import SettingsDisclosure from "./SettingsDisclosure";
 
 export function ImageSection() {
   const customApiGroups = useSettings((s) => s.customApiGroups);
@@ -19,17 +20,9 @@ export function ImageSection() {
   const allTextModels = getAllModels(customApiGroups).filter((m) => m.type !== "image");
 
   return (
-    <section className="flex flex-col gap-2">
-      <button
-        onClick={() => setImageGenExpanded((v) => !v)}
-        className="flex items-center gap-1.5 self-start"
-      >
-        {imageGenExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-        <Sparkles size={14} className="text-[var(--md-sys-color-primary)]" />
-        <h3 className={h3Cls}>生图设置</h3>
-      </button>
-      {imageGenExpanded && (
-        <div className="flex flex-col gap-2.5 pl-4">
+    <SettingsDisclosure expanded={imageGenExpanded} onToggle={() => setImageGenExpanded((v) => !v)}
+      icon={<Sparkles size={14} />} title="生图设置" meta="默认模型、提示词模型与容灾">
+        <div className="flex flex-col gap-2.5">
           <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
             默认生图模型可在「内置模型」或「自定义 API」中点击 ⭐ 设置。生图模式下，
             AI 会先用文本模型理解意图并优化提示词，再调用生图模型实际生成图片。
@@ -61,7 +54,6 @@ export function ImageSection() {
               options={allTextModels.map((m) => ({ value: m.id, label: `${m.label} · ${m.group}` }))} />
           </div>
         </div>
-      )}
-    </section>
+    </SettingsDisclosure>
   );
 }

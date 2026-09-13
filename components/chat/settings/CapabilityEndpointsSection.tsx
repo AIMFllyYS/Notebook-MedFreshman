@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronRight, KeyRound } from "lucide-react";
+import { KeyRound } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { formatImageGenError } from "@/lib/ai/imageGenError";
 import {
@@ -11,8 +11,9 @@ import {
   selectCapabilityEndpointsForRequest,
   type ImageApiStyle,
 } from "@/lib/ai/capabilityEndpoints";
-import { h3Cls, inputCls, labelCls } from "./_shared";
+import { inputCls, labelCls } from "./_shared";
 import AppSelect from "@/components/ui/AppSelect";
+import SettingsDisclosure from "./SettingsDisclosure";
 
 export function CapabilityEndpointsSection() {
   const capabilityEndpoints = useSettings((s) => s.capabilityEndpoints) ?? EMPTY_CAPABILITY_ENDPOINTS;
@@ -56,18 +57,9 @@ export function CapabilityEndpointsSection() {
   };
 
   return (
-    <section className="flex flex-col gap-2">
-      <button
-        type="button"
-        onClick={() => setExpanded((v) => !v)}
-        className="flex items-center gap-1.5 self-start"
-      >
-        {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-        <KeyRound size={14} className="text-[var(--md-sys-color-primary)]" />
-        <h3 className={h3Cls}>能力端点</h3>
-      </button>
-      {expanded && (
-        <div className="flex flex-col gap-3 pl-4">
+    <SettingsDisclosure expanded={expanded} onToggle={() => setExpanded((v) => !v)}
+      icon={<KeyRound size={14} />} title="能力端点" meta="生图、向量、搜索与重排">
+        <div className="flex flex-col gap-3">
           <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
             每一项留空 = 使用平台默认。填写自己的密钥后，该能力不计入平台额度。
           </p>
@@ -239,7 +231,6 @@ export function CapabilityEndpointsSection() {
             </div>
           </fieldset>
         </div>
-      )}
-    </section>
+    </SettingsDisclosure>
   );
 }

@@ -1,9 +1,7 @@
 "use client";
 
 import { useCallback, useState, type ReactNode } from "react";
-import {
-  ArrowLeft, Bot, Database, Palette, PlugZap, Settings2, SlidersHorizontal, Sparkles,
-} from "lucide-react";
+import { ArrowLeft, Bot, Database, Palette, PlugZap, Settings2, SlidersHorizontal, Sparkles } from "lucide-react";
 import { AppearanceSection } from "./AppearanceSection";
 import { BuiltinModelsSection, DefaultsSection, RecordAssistantSection } from "./ModelSection";
 import { ApiGroupsSection } from "./ApiGroupsSection";
@@ -19,8 +17,8 @@ type SectionId = "general" | "appearance" | "models" | "capabilities" | "skills"
 const SECTIONS: { id: SectionId; label: string; hint: string; icon: typeof Settings2 }[] = [
   { id: "general", label: "通用", hint: "常规与对话默认", icon: SlidersHorizontal },
   { id: "appearance", label: "外观", hint: "主题与阅读体验", icon: Palette },
-  { id: "models", label: "模型配置", hint: "模型、API 与端点", icon: PlugZap },
-  { id: "capabilities", label: "Agent 能力", hint: "工具与生图", icon: Bot },
+  { id: "models", label: "模型配置", hint: "模型、API 与生图", icon: PlugZap },
+  { id: "capabilities", label: "Agent 能力", hint: "工具与演示", icon: Bot },
   { id: "skills", label: "Skills", hint: "技能库与注入", icon: Sparkles },
   { id: "data", label: "数据与账户", hint: "计费、同步与导出", icon: Database },
 ];
@@ -35,12 +33,12 @@ const CONTENT: Record<SectionId, { title: string; description: string; body: Rea
     body: <AppearanceSection />,
   },
   models: {
-    title: "模型配置", description: "在一个区域管理内置模型、自定义 API 分组和专用能力端点。",
-    body: <><ApiGroupsSection /><BuiltinModelsSection /><CapabilityEndpointsSection /></>,
+    title: "模型配置", description: "集中管理内置模型、自定义 API、专用能力端点与图片生成流程。",
+    body: <><BuiltinModelsSection /><ApiGroupsSection /><CapabilityEndpointsSection /><ImageSection /></>,
   },
   capabilities: {
-    title: "Agent 能力", description: "控制可用工具和图片生成流程，不影响模型或历史对话。",
-    body: <><ToolsSection /><ImageSection /></>,
+    title: "Agent 能力", description: "控制 Agent 可以调用的工具与交互能力，不影响模型或历史对话。",
+    body: <ToolsSection />,
   },
   skills: {
     title: "Skills", description: "维护可供 Agent 按需调用或固定注入的技能。",
@@ -80,7 +78,8 @@ export default function ChatSettings({ onClose }: { onClose?: () => void }) {
     </aside>
     <main className="chat-settings-main" tabIndex={-1}>
       <header className="chat-settings-content-header">
-        <p>Agent 设置</p><h1>{content.title}</h1><span>{content.description}</span>
+        <h1 className="sr-only">{content.title}</h1>
+        <p>{content.description}</p>
       </header>
       <div key={active} className="chat-settings-content" data-testid={`chat-settings-content-${active}`}>
         {content.body}
