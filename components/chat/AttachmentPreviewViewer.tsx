@@ -1,10 +1,12 @@
 "use client";
 
-import { useCallback } from "react";
-import { FileSearch, ShieldCheck } from "lucide-react";
+import { useCallback, useMemo } from "react";
+import { FileSearch, Presentation, ShieldCheck } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import type { AttachmentPreviewData } from "@/lib/stores/windowManager";
+import { MessageContent } from "@/components/chat/MessageContent";
+import { parsePptxSlideText, type PptxSlideText } from "@/lib/chat/parsePptx";
 
 const LOCAL_PREVIEW_CSP = "default-src 'none'; img-src data: blob:; media-src data: blob:; style-src 'unsafe-inline'; font-src data:; form-action 'none'; base-uri 'none'";
 
@@ -45,6 +47,17 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
   const handleClose = useCallback(() => closeWindow(windowId), [closeWindow, windowId]);
   const data = managed?.data as AttachmentPreviewData | undefined;
   const localHtml = data?.kind === "html" ? lockHtmlPreviewToLocal(data.content) : "";
+  const pptPreview = useMemo(() => {
+    if (!data || data.kind !== "ppt") return { slides: null as PptxSlideText[] | null, error: null as string | null };
+    if (!data.mimeType.includes("presentationml")) {
+      return { slides: null, error: "旧版 .ppt 为二进制格式，浏览器无法在不联网的情况下还原版式；文件仍保存在本机。" };
+    }
+    try {
+      return { slides: parsePptxSlideText(data.content), error: null };
+    } catch {
+      return { slides: null, error: "该 PPTX 无法解析为本地幻灯片预览；原文件仍保存在本机。" };
+    }
+  }, [data]);
 
   if (!managed || !data) return null;
 
@@ -52,7 +65,7 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
     <ManagedWindow
       windowId={windowId}
       title={data.name}
-      icon={<FileSearch size={15} />}
+      icon={data.kind === "ppt" ? <Presentation size={15} /> : <FileSearch size={15} />}
       onClose={handleClose}
       fullscreenTarget="notes"
       minSize={{ minW: 360, minH: 280 }}
@@ -74,6 +87,29 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
         <iframe src={data.content} title={data.name} className="h-full w-full border-0 bg-white" />
       ) : data.kind === "html" ? (
         <iframe srcDoc={localHtml} sandbox="" title={data.name} className="h-full w-full border-0 bg-white" />
+      ) : data.kind === "markdown" ? (
+        <div className="h-full w-full overflow-auto px-6 py-5 chat-prose">
+          <MessageContent content={data.content} enableVisualizations={false} preserveLineBreaks={false} />
+        </div>
+      ) : data.kind === "ppt" ? (
+        <div className="h-full w-full overflow-auto bg-[var(--bg-muted)] p-5">
+          {pptPreview.slides ? (
+            <div className="mx-auto flex max-w-3xl flex-col gap-4">
+              {pptPreview.slides.map((slide) => (
+                <article key={slide.number} className="min-h-44 rounded-xl border border-[var(--line)] bg-white p-6 shadow-sm">
+                  <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--ink-faint)]">Slide {slide.number}</div>
+                  <p className="whitespace-pre-wrap text-[15px] leading-7 text-[var(--ink)]">{slide.text}</p>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="flex h-full min-h-52 flex-col items-center justify-center gap-3 px-6 text-center">
+              <Presentation size={32} className="text-[var(--md-sys-color-primary)]" />
+              <p className="text-[13px] font-semibold text-[var(--ink)]">PowerPoint 本地预览</p>
+              <p className="max-w-md text-[12px] leading-6 text-[var(--ink-soft)]">{pptPreview.error ?? "正在读取幻灯片…"}</p>
+            </div>
+          )}
+        </div>
       ) : (
         <pre className="h-full w-full overflow-auto whitespace-pre-wrap break-words p-5 font-mono text-[12px] leading-6 text-[var(--ink)]">{data.content}</pre>
       )}

@@ -266,8 +266,8 @@ export async function hydrateAttachmentsForApi(messages: ChatMessage[]): Promise
             size: a.size ?? new Blob([payload]).size,
             characterCount: a.characterCount ?? [...payload].length,
           } : a.type === 'local-file' ? {
-            type: 'local-file', mimeType: 'application/pdf', dataUrl: payload,
-            name: a.name ?? '未命名文档.pdf', size: a.size ?? 0,
+            type: 'local-file', mimeType: a.mimeType as Extract<ChatAttachment, { type: 'local-file' }>['mimeType'], dataUrl: payload,
+            name: a.name ?? '未命名本地文件', size: a.size ?? 0,
           } : {
             type: 'image', mimeType: a.mimeType, base64: payload,
             name: a.name, size: a.size,

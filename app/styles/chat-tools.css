@@ -331,6 +331,20 @@ mark.citation-flash {
   min-height: 0;
 }
 
+.window-taskbar-add {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent), 0 0 14px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent);
+}
+
+.window-taskbar-add-menu {
+  transform-origin: top right;
+  animation: window-taskbar-add-in 120ms var(--ease-out);
+}
+
+@keyframes window-taskbar-add-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .source-trace-window {
   min-width: 0;
   min-height: 0;

@@ -73,6 +73,8 @@ export const DOCUMENT_MIME_BY_EXTENSION = {
 export const ACCEPTED_DOCUMENT_EXTENSIONS = new Set(Object.keys(DOCUMENT_MIME_BY_EXTENSION));
 export const LOCAL_PREVIEW_MIME_BY_EXTENSION = {
   pdf: "application/pdf",
+  ppt: "application/vnd.ms-powerpoint",
+  pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
 } as const;
 export const ACCEPTED_LOCAL_PREVIEW_EXTENSIONS = new Set(Object.keys(LOCAL_PREVIEW_MIME_BY_EXTENSION));
 
@@ -112,7 +114,7 @@ export interface DocumentAttachmentPreview {
 export interface LocalFileAttachmentPreview {
   type: "local-file";
   file: File;
-  mimeType: "application/pdf";
+  mimeType: "application/pdf" | "application/vnd.ms-powerpoint" | "application/vnd.openxmlformats-officedocument.presentationml.presentation";
   name: string;
   size: number;
   dataUrl: string;
@@ -194,7 +196,7 @@ export async function fileToDocumentAttachment(file: File): Promise<DocumentAtta
   return { type: "document", file, mimeType, name: file.name, size: file.size, text, characterCount };
 }
 
-/** PDF 等仅供本地查看的原始文件不会进入 AI 请求。 */
+/** PDF / PowerPoint 等仅供本地查看的原始文件不会进入 AI 请求。 */
 export async function fileToLocalPreviewAttachment(file: File): Promise<LocalFileAttachmentPreview> {
   const extension = documentExtension(file);
   const mimeType = LOCAL_PREVIEW_MIME_BY_EXTENSION[extension as keyof typeof LOCAL_PREVIEW_MIME_BY_EXTENSION];

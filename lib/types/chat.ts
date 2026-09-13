@@ -129,7 +129,7 @@ export interface ChatDocumentAttachment {
 /** 仅保存在本机、不会进入 AI 请求正文的原始文件。目前用于 PDF 本地预览。 */
 export interface ChatLocalFileAttachment {
   type: 'local-file';
-  mimeType: 'application/pdf';
+  mimeType: 'application/pdf' | 'application/vnd.ms-powerpoint' | 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
   /** 浏览器本地读取的 data URL；持久化后正文移入 IndexedDB blob 槽。 */
   dataUrl: string;
   name: string;

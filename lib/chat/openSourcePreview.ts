@@ -6,6 +6,13 @@ export function sourcePreviewWindowId(url: string) {
 
 export function openSourcePreview(source: { url: string; title?: string }) {
   if (!source.url) return;
+  let parsed: URL;
+  try {
+    parsed = new URL(source.url);
+  } catch {
+    return;
+  }
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return;
   const id = sourcePreviewWindowId(source.url);
   const title = source.title?.trim() || sourceHost(source.url);
   const wm = useWindowManager.getState();

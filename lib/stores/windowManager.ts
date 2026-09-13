@@ -51,7 +51,7 @@ export interface SourcePreviewData {
 export interface AttachmentPreviewData {
   name: string;
   mimeType: string;
-  kind: "image" | "pdf" | "html" | "text";
+  kind: "image" | "pdf" | "ppt" | "html" | "markdown" | "text";
   content: string;
 }
 
