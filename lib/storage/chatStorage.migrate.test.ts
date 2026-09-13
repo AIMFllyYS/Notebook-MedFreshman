@@ -192,3 +192,38 @@ test("migrateFromV1IfNeeded：文档正文单独落 blob 并可无损 hydrate", 
     assert.equal(document.name, "复习.md");
   }
 });
+
+test("migrateFromV1IfNeeded：本地 PDF 数据只落本机 blob 并可恢复预览", async () => {
+  const dataUrl = "data:application/pdf;base64,JVBERi0xLjc=";
+  const v1 = {
+    state: {
+      activeSessionId: "pdf",
+      sessions: [{
+        id: "pdf", title: "本地 PDF", createdAt: 1, updatedAt: 2,
+        messages: [{
+          id: "m-pdf", role: "user", content: "本地参考", timestamp: 3,
+          attachments: [{
+            type: "local-file", mimeType: "application/pdf", name: "lecture.pdf",
+            dataUrl, size: 14,
+          }],
+        }],
+      }],
+    },
+  };
+  storage.set(PERSIST_KEYS.chatHistory, JSON.stringify(v1));
+  const { migrateFromV1IfNeeded, loadSessionMessages, hydrateAttachmentsForApi } = await import("./chatStorage.ts");
+
+  assert.equal(await migrateFromV1IfNeeded(), true);
+  const stored = await loadSessionMessages("pdf");
+  const ref = stored?.[0].attachments?.[0];
+  assert.ok(ref && "id" in ref && ref.type === "local-file");
+  assert.equal(ref && "dataUrl" in ref, false);
+
+  const hydrated = await hydrateAttachmentsForApi(stored!);
+  const localFile = hydrated[0].attachments?.[0];
+  assert.ok(localFile && localFile.type === "local-file" && "dataUrl" in localFile);
+  if (localFile?.type === "local-file" && "dataUrl" in localFile) {
+    assert.equal(localFile.dataUrl, dataUrl);
+    assert.equal(localFile.name, "lecture.pdf");
+  }
+});

@@ -71,11 +71,17 @@ export const DOCUMENT_MIME_BY_EXTENSION = {
 } as const satisfies Record<string, ChatDocumentMimeType>;
 
 export const ACCEPTED_DOCUMENT_EXTENSIONS = new Set(Object.keys(DOCUMENT_MIME_BY_EXTENSION));
+export const LOCAL_PREVIEW_MIME_BY_EXTENSION = {
+  pdf: "application/pdf",
+} as const;
+export const ACCEPTED_LOCAL_PREVIEW_EXTENSIONS = new Set(Object.keys(LOCAL_PREVIEW_MIME_BY_EXTENSION));
 
 /** 供文件选择器复用，保证可选择范围与实际解析白名单完全一致。 */
 export const ACCEPTED_DOCUMENT_FILE_TYPES = [
   ...Object.keys(DOCUMENT_MIME_BY_EXTENSION).map((extension) => `.${extension}`),
+  ...Object.keys(LOCAL_PREVIEW_MIME_BY_EXTENSION).map((extension) => `.${extension}`),
   ...new Set(Object.values(DOCUMENT_MIME_BY_EXTENSION)),
+  ...new Set(Object.values(LOCAL_PREVIEW_MIME_BY_EXTENSION)),
 ].join(",");
 
 /** 压缩后最长边像素上限。 */
@@ -103,7 +109,16 @@ export interface DocumentAttachmentPreview {
   characterCount: number;
 }
 
-export type AttachmentPreview = ImageAttachmentPreview | DocumentAttachmentPreview;
+export interface LocalFileAttachmentPreview {
+  type: "local-file";
+  file: File;
+  mimeType: "application/pdf";
+  name: string;
+  size: number;
+  dataUrl: string;
+}
+
+export type AttachmentPreview = ImageAttachmentPreview | DocumentAttachmentPreview | LocalFileAttachmentPreview;
 
 function documentExtension(file: File): string {
   return file.name.split(".").pop()?.toLowerCase() ?? "";
@@ -111,6 +126,10 @@ function documentExtension(file: File): string {
 
 export function isSupportedDocument(file: File): boolean {
   return ACCEPTED_DOCUMENT_EXTENSIONS.has(documentExtension(file));
+}
+
+export function isSupportedLocalPreview(file: File): boolean {
+  return ACCEPTED_LOCAL_PREVIEW_EXTENSIONS.has(documentExtension(file));
 }
 
 function countCodePoints(text: string): number {
@@ -173,6 +192,20 @@ export async function fileToDocumentAttachment(file: File): Promise<DocumentAtta
     throw new Error(`${file.name} 提取后超过 20 万字，请拆分后再上传`);
   }
   return { type: "document", file, mimeType, name: file.name, size: file.size, text, characterCount };
+}
+
+/** PDF 等仅供本地查看的原始文件不会进入 AI 请求。 */
+export async function fileToLocalPreviewAttachment(file: File): Promise<LocalFileAttachmentPreview> {
+  const extension = documentExtension(file);
+  const mimeType = LOCAL_PREVIEW_MIME_BY_EXTENSION[extension as keyof typeof LOCAL_PREVIEW_MIME_BY_EXTENSION];
+  if (!mimeType) {
+    throw new Error(`不支持 ${file.name} 的本地预览`);
+  }
+  if (file.size > MAX_DOCUMENT_SIZE) {
+    throw new Error(`${file.name} 超过 10 MB，暂时无法在对话中预览`);
+  }
+  const dataUrl = await readFileAsDataUrl(file);
+  return { type: "local-file", file, mimeType, name: file.name, size: file.size, dataUrl };
 }
 
 /**
@@ -243,7 +276,9 @@ export async function filesToAttachments(
     try {
       const att = file.type.startsWith("image/")
         ? await fileToAttachment(file)
-        : await fileToDocumentAttachment(file);
+        : isSupportedLocalPreview(file)
+          ? await fileToLocalPreviewAttachment(file)
+          : await fileToDocumentAttachment(file);
       attachments.push(att);
     } catch (e) {
       errors.push((e as Error).message || `处理 ${file.name} 失败`);
@@ -282,27 +317,41 @@ export function getSupportedFilesFromDragEvent(e: React.DragEvent | DragEvent): 
 
 /** 将 AttachmentPreview[] 转换为发送给 API 的 ChatAttachment[]。 */
 export function toChatAttachments(previews: AttachmentPreview[]): ChatAttachment[] {
-  return previews.map((attachment) => attachment.type === "document"
-    ? {
+  return previews.map((attachment) => {
+    if (attachment.type === "document") {
+      return {
         type: "document" as const,
         mimeType: attachment.mimeType,
         name: attachment.name,
         text: attachment.text,
         size: attachment.size,
         characterCount: attachment.characterCount,
-      }
-    : {
+      };
+    }
+    if (attachment.type === "local-file") {
+      return {
+        type: "local-file" as const,
+        mimeType: attachment.mimeType,
+        dataUrl: attachment.dataUrl,
+        name: attachment.name,
+        size: attachment.size,
+      };
+    }
+    return {
         type: "image" as const,
         mimeType: attachment.mimeType,
         base64: attachment.base64,
         name: attachment.file.name,
         size: attachment.file.size,
-      });
+      };
+  });
 }
 
 /** 释放一组 AttachmentPreview 的 blob URL，防止内存泄漏。 */
 export function revokeAttachments(previews: AttachmentPreview[]): void {
   previews.forEach((attachment) => {
-    if (attachment.type !== "document") URL.revokeObjectURL(attachment.previewUrl);
+    if (attachment.type !== "document" && attachment.type !== "local-file") {
+      URL.revokeObjectURL(attachment.previewUrl);
+    }
   });
 }

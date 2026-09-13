@@ -9,7 +9,7 @@ import {
 } from "./types";
 
 const MEDIA_DATA_URL_RE = /data:(?:image|audio|video)\/[a-z0-9.+-]+;base64,[a-z0-9+/=\s]+/gi;
-const STRIP_KEYS = new Set(["base64", "apikey", "api_key"]);
+const STRIP_KEYS = new Set(["base64", "dataurl", "apikey", "api_key"]);
 
 export function utf8ByteLength(text: string): number {
   return new TextEncoder().encode(text).length;

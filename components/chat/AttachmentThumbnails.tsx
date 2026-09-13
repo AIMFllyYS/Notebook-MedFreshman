@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { FileText, X } from "lucide-react";
-import type { AttachmentPreview } from "@/lib/ai/imageUtils";
+import type { AttachmentPreview, ImageAttachmentPreview } from "@/lib/ai/imageUtils";
 import type { StoredChatAttachment } from "@/lib/types/chat";
 import { isAttachmentRef } from "@/lib/types/chat";
 import { loadBlobDataUrl } from "@/lib/storage/chatStorage";
+import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 
 interface AttachmentThumbnailsProps {
   previews?: AttachmentPreview[];
@@ -33,6 +34,50 @@ function typeLabel(name: string | undefined, mimeType: string): string {
   if (mimeType === "text/markdown") return "MD";
   if (mimeType.includes("wordprocessingml")) return "DOCX";
   return "TXT";
+}
+
+function previewKind(name: string | undefined, mimeType: string): "image" | "pdf" | "html" | "text" {
+  if (mimeType.startsWith("image/")) return "image";
+  if (mimeType === "application/pdf" || name?.toLowerCase().endsWith(".pdf")) return "pdf";
+  if (mimeType === "text/html" || /\.html?$/i.test(name ?? "")) return "html";
+  return "text";
+}
+
+function isImagePreview(attachment: AttachmentPreview): attachment is ImageAttachmentPreview {
+  return attachment.type !== "document" && attachment.type !== "local-file";
+}
+
+function openPreviewItem(attachment: AttachmentPreview, key: string) {
+  const name = isImagePreview(attachment) ? attachment.file.name : attachment.name;
+  const content = isImagePreview(attachment)
+    ? attachment.base64
+    : attachment.type === "local-file"
+      ? attachment.dataUrl
+      : attachment.text;
+  openAttachmentPreview(key, {
+    name,
+    mimeType: attachment.mimeType,
+    kind: previewKind(name, attachment.mimeType),
+    content,
+  });
+}
+
+async function openStoredPreview(attachment: StoredChatAttachment, key: string) {
+  const name = attachment.name ?? "未命名附件";
+  const content = isAttachmentRef(attachment)
+    ? await loadBlobDataUrl(attachment.id)
+    : attachment.type === "image"
+      ? attachment.base64
+      : attachment.type === "local-file"
+        ? attachment.dataUrl
+        : attachment.text;
+  if (!content) return;
+  openAttachmentPreview(key, {
+    name,
+    mimeType: attachment.mimeType,
+    kind: previewKind(name, attachment.mimeType),
+    content,
+  });
 }
 
 function ReadonlyImage({ attachment }: { attachment: StoredChatAttachment }) {
@@ -85,7 +130,7 @@ export default function AttachmentThumbnails({
   onRemove,
   readonlyAttachments,
   size = 56,
-  clickable = false,
+  clickable = true,
   embedded = false,
 }: AttachmentThumbnailsProps) {
   const previewItems = previews ?? [];
@@ -99,15 +144,25 @@ export default function AttachmentThumbnails({
       aria-label="附件"
     >
       {previewItems.map((attachment, index) => {
-        const name = attachment.type === "document" ? attachment.name : attachment.file.name;
+        const name = isImagePreview(attachment) ? attachment.file.name : attachment.name;
+        const key = `composer:${name}:${attachment.file.lastModified}:${attachment.file.size}:${index}`;
         return (
           <span className="chat-attachment-item" key={`${name}:${index}`}>
-            {attachment.type === "document" ? (
-              <DocumentCard {...attachment} />
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element -- local object URL preview.
-              <img src={attachment.previewUrl} alt={name} className="chat-attachment-image" />
-            )}
+            <button
+              type="button"
+              className={`chat-attachment-preview-trigger ${clickable ? "chat-attachment-clickable" : ""}`}
+              onClick={() => openPreviewItem(attachment, key)}
+              aria-label={`预览附件 ${name}`}
+              title={`预览 ${name}`}
+              disabled={!clickable}
+            >
+              {!isImagePreview(attachment) ? (
+                <DocumentCard {...attachment} />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element -- local object URL preview.
+                <img src={attachment.previewUrl} alt={name} className="chat-attachment-image" />
+              )}
+            </button>
             {onRemove ? (
               <button type="button" className="chat-attachment-remove" onClick={() => onRemove(index)} aria-label={`移除附件 ${name}`}>
                 <X size={11} />
@@ -118,16 +173,26 @@ export default function AttachmentThumbnails({
       })}
       {readonlyItems.map((attachment, index) => {
         const key = isAttachmentRef(attachment) ? attachment.id : `${attachment.type}:${attachment.name ?? index}`;
+        const name = attachment.name ?? "未命名附件";
         return (
-          <span className={`chat-attachment-item ${clickable ? "chat-attachment-clickable" : ""}`} key={key}>
-            {attachment.type === "document" ? (
-              <DocumentCard
-                name={attachment.name ?? "未命名文档"}
-                mimeType={attachment.mimeType}
-                size={attachment.size}
-                characterCount={attachment.characterCount}
-              />
-            ) : <ReadonlyImage attachment={attachment} />}
+          <span className="chat-attachment-item" key={key}>
+            <button
+              type="button"
+              className={`chat-attachment-preview-trigger ${clickable ? "chat-attachment-clickable" : ""}`}
+              onClick={() => { void openStoredPreview(attachment, `stored:${key}`); }}
+              aria-label={`预览附件 ${name}`}
+              title={`预览 ${name}`}
+              disabled={!clickable}
+            >
+              {attachment.type !== "image" ? (
+                <DocumentCard
+                  name={attachment.name ?? "未命名文档"}
+                  mimeType={attachment.mimeType}
+                  size={attachment.size}
+                  characterCount={'characterCount' in attachment ? attachment.characterCount : undefined}
+                />
+              ) : <ReadonlyImage attachment={attachment} />}
+            </button>
           </span>
         );
       })}

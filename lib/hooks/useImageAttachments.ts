@@ -113,7 +113,9 @@ export function useImageAttachments(): UseImageAttachmentsResult {
   const remove = useCallback((idx: number) => {
     setAttachments((prev) => {
       const attachment = prev[idx];
-      if (attachment?.type !== "document") URL.revokeObjectURL(attachment.previewUrl);
+      if (attachment && attachment.type !== "document" && attachment.type !== "local-file") {
+        URL.revokeObjectURL(attachment.previewUrl);
+      }
       return prev.filter((_, i) => i !== idx);
     });
   }, []);

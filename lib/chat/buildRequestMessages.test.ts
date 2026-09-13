@@ -133,6 +133,21 @@ test("buildRequestMessages：HTML 附件只作为源码文本发送", () => {
   assert.match(requestText, /<script>alert\("never render"\)<\/script>/);
 });
 
+test("buildRequestMessages：本地 PDF 预览数据不会进入 AI 请求", () => {
+  const input = msg("1", "user", "这是一份本地参考文件", {
+    attachments: [{
+      type: "local-file", mimeType: "application/pdf", name: "private.pdf",
+      dataUrl: "data:application/pdf;base64,JVBERi0xLjc=", size: 14,
+    }],
+  });
+
+  const { messages } = buildRequestMessages([input]);
+  const requestText = textOf(messages[0]);
+  assert.equal(messages[0].parts.some((part) => part.type === "file"), false);
+  assert.equal(requestText.includes("JVBERi0xLjc"), false);
+  assert.equal(requestText, "这是一份本地参考文件");
+});
+
 test("buildRequestMessages：默认保留完整会话历史", () => {
   const messages: ChatMessage[] = [];
   for (let i = 0; i < 60; i++) {

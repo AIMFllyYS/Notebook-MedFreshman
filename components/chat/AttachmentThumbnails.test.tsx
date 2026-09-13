@@ -1,8 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import AttachmentThumbnails from './AttachmentThumbnails';
+import { useWindowManager } from '@/lib/hooks/useWindowManager';
 
 describe('AttachmentThumbnails', () => {
+  beforeEach(() => {
+    useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
+  });
+
   it('renders image and document attachments in one embedded shelf and removes by source index', () => {
     const onRemove = vi.fn();
     const { container } = render(<AttachmentThumbnails embedded onRemove={onRemove} previews={[
@@ -38,10 +43,14 @@ describe('AttachmentThumbnails', () => {
 
   it('shows concise format labels for HTML and YAML aliases', () => {
     render(<AttachmentThumbnails readonlyAttachments={[
-      { id: 'blob-html', type: 'document', mimeType: 'text/html', name: 'chapter.htm', size: 120, characterCount: 80 },
-      { id: 'blob-yaml', type: 'document', mimeType: 'application/yaml', name: 'outline.yml', size: 90, characterCount: 50 },
+      { type: 'document', mimeType: 'text/html', name: 'chapter.htm', text: '<h1>力学</h1>', size: 120, characterCount: 11 },
+      { type: 'document', mimeType: 'application/yaml', name: 'outline.yml', text: 'chapter: mechanics', size: 90, characterCount: 18 },
     ]} />);
     expect(screen.getByText('HTML')).toBeVisible();
     expect(screen.getByText('YAML')).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: '预览附件 chapter.htm' }));
+    const preview = useWindowManager.getState().windows.find((win) => win.type === 'attachment-preview');
+    expect(preview?.title).toBe('chapter.htm');
+    expect(preview?.data).toMatchObject({ kind: 'html', mimeType: 'text/html' });
   });
 });

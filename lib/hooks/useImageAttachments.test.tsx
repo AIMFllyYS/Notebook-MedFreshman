@@ -51,4 +51,25 @@ describe('useImageAttachments documents', () => {
     expect(preventDefault).not.toHaveBeenCalled();
     expect(result.current.attachments).toHaveLength(0);
   });
+
+  it('reads PDF attachments locally without making a network request', async () => {
+    const network = vi.spyOn(globalThis, 'fetch');
+    const { result } = renderHook(() => useImageAttachments());
+
+    await act(async () => {
+      await result.current.addFiles([
+        new File(['%PDF-1.7 local'], 'lecture.pdf', { type: 'application/pdf' }),
+      ]);
+    });
+
+    expect(network).not.toHaveBeenCalled();
+    expect(result.current.attachments).toHaveLength(1);
+    const attachment = result.current.attachments[0];
+    expect(attachment.type).toBe('local-file');
+    if (attachment.type === 'local-file') {
+      expect(attachment.dataUrl).toMatch(/^data:application\/pdf;base64,/);
+      expect(attachment.name).toBe('lecture.pdf');
+    }
+    expect(result.current.toChatFormat()?.[0]?.type).toBe('local-file');
+  });
 });

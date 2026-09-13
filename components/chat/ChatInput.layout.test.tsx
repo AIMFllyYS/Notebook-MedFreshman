@@ -56,6 +56,7 @@ describe('floating transparent composer', () => {
     expect(fileInput).toHaveAttribute('accept', expect.stringContaining('.html'));
     expect(fileInput).toHaveAttribute('accept', expect.stringContaining('.json'));
     expect(fileInput).toHaveAttribute('accept', expect.stringContaining('.tsx'));
+    expect(fileInput).toHaveAttribute('accept', expect.stringContaining('.pdf'));
     expect(dock.contains(getByTestId('notice'))).toBe(true);
     expect(dock.contains(getByTestId('attachment-preview'))).toBe(true);
     expect(row.contains(getByTestId('attachment-preview'))).toBe(true);

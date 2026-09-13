@@ -126,7 +126,17 @@ export interface ChatDocumentAttachment {
   characterCount: number;
 }
 
-export type ChatAttachment = ChatImageAttachment | ChatDocumentAttachment;
+/** 仅保存在本机、不会进入 AI 请求正文的原始文件。目前用于 PDF 本地预览。 */
+export interface ChatLocalFileAttachment {
+  type: 'local-file';
+  mimeType: 'application/pdf';
+  /** 浏览器本地读取的 data URL；持久化后正文移入 IndexedDB blob 槽。 */
+  dataUrl: string;
+  name: string;
+  size: number;
+}
+
+export type ChatAttachment = ChatImageAttachment | ChatDocumentAttachment | ChatLocalFileAttachment;
 
 /** Storage v2：附件正文存 chat-blob:{id}，消息内仅保留引用。 */
 export interface ChatAttachmentRef {
