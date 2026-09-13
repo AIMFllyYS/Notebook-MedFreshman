@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { measureElement, useVirtualizer } from '@tanstack/react-virtual';
 import { AgentArrowUpIcon, AgentLoopIcon, AgentAlertIcon, AgentInfoIcon, AgentCloseIcon } from '@/components/icons/AgentIcons';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatMessageDots, { type UserDotEntry } from '@/components/chat/ChatMessageDots';
@@ -69,15 +69,64 @@ export default function ChatThread({
   const lastDisplay = displayMessages[displayMessages.length - 1];
   const lastDisplayId = lastDisplay?.id;
   const safeBottomInset = Number.isFinite(bottomInset) ? Math.max(0, bottomInset) : 0;
-  // Keep the estimate close to a compact header + thinking line. A 120px floor
-  // used to park 「AI 正在思考中」 far below 「AI 助教」 on the first streamed row.
+  // Keep the unmeasured streaming-tail estimate close to a compact header +
+  // thinking line. A 120px floor used to park 「AI 正在思考中」 far below
+  // 「AI 助教」 on the first streamed row. Completed rows are estimated from
+  // the mean measured size for that role, so offsets for never-mounted prefix
+  // rows stay realistic. Mean, not latest sample: a single artifact-bearing
+  // answer runs to thousands of px, and estimating every unmeasured assistant
+  // row at that height overshoots the jump target as badly as 72px undershot.
   const MESSAGE_ESTIMATE_PX = 72;
   const reserveThreadLoading = lastDisplay?.role !== 'assistant';
+  const displayMessagesRef = useRef(displayMessages);
+  displayMessagesRef.current = displayMessages;
+  const emptyRoleSizes = () => ({
+    user: { sum: 0, count: 0 },
+    assistant: { sum: 0, count: 0 },
+  });
+  const roleSizeRef = useRef(emptyRoleSizes());
+  const sessionRef = useRef(sessionId);
+  if (sessionRef.current !== sessionId) {
+    sessionRef.current = sessionId;
+    roleSizeRef.current = emptyRoleSizes();
+  }
+  const jumpRafRef = useRef(0);
+
+  const roleEstimate = (role: 'user' | 'assistant') => {
+    const { sum, count } = roleSizeRef.current[role];
+    return count > 0 ? sum / count : MESSAGE_ESTIMATE_PX;
+  };
+
+  const estimateSize = (index: number) => {
+    const list = displayMessagesRef.current;
+    const msg = list[index];
+    if (!msg) return MESSAGE_ESTIMATE_PX;
+    const streamingTail = isLoadingRef.current && index === list.length - 1 && msg.role === 'assistant';
+    if (streamingTail) return MESSAGE_ESTIMATE_PX;
+    return roleEstimate(msg.role === 'user' ? 'user' : 'assistant');
+  };
+
+  const measureRow: typeof measureElement = (element, entry, instance) => {
+    const size = measureElement(element, entry, instance);
+    const index = instance.indexFromElement(element);
+    const list = displayMessagesRef.current;
+    const msg = list[index];
+    const streamingTail = isLoadingRef.current && index === list.length - 1 && msg?.role === 'assistant';
+    if (msg && (msg.role === 'user' || msg.role === 'assistant') && !streamingTail && size >= 1) {
+      // 同一行重复测量（内容增高、字体缩放）会多次入样；对均值的影响有界，
+      // 换来的是不必按 index 维护一份与 virtualizer 平行的尺寸表。
+      const bucket = roleSizeRef.current[msg.role];
+      bucket.sum += size;
+      bucket.count += 1;
+    }
+    return size;
+  };
 
   const virtualizer = useVirtualizer({
     count: displayMessages.length,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => MESSAGE_ESTIMATE_PX,
+    estimateSize,
+    measureElement: measureRow,
     overscan: 4,
     getItemKey: (index) => displayMessages[index]?.id ?? index,
     initialRect: { width: 0, height: 480 },
@@ -142,6 +191,10 @@ export default function ChatThread({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- 计划 19 B2：故意收窄依赖
   }, [displayMessages.length, isLoading]);
 
+  useEffect(() => () => {
+    if (jumpRafRef.current) cancelAnimationFrame(jumpRafRef.current);
+  }, []);
+
   const jumpToBottom = () => {
     if (displayMessages.length > 0) {
       virtualizer.scrollToIndex(displayMessages.length - 1, { align: 'end', behavior: 'smooth' });
@@ -151,7 +204,21 @@ export default function ChatThread({
 
   const jumpToUserMessage = (index: number) => {
     setWantStick(false);
-    virtualizer.scrollToIndex(index, { align: 'start' });
+    const align = { align: 'start' as const };
+    virtualizer.scrollToIndex(index, align);
+    if (jumpRafRef.current) cancelAnimationFrame(jumpRafRef.current);
+    let lastOffset = virtualizer.getOffsetForIndex(index, 'start')?.[0];
+    let attempts = 0;
+    const refine = () => {
+      attempts += 1;
+      virtualizer.scrollToIndex(index, align);
+      const nextOffset = virtualizer.getOffsetForIndex(index, 'start')?.[0];
+      const stable = lastOffset != null && nextOffset != null && Math.abs(nextOffset - lastOffset) < 1;
+      lastOffset = nextOffset;
+      if (stable || attempts >= 8) return;
+      jumpRafRef.current = requestAnimationFrame(refine);
+    };
+    jumpRafRef.current = requestAnimationFrame(refine);
   };
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import type { ChatMessage } from '@/lib/types/chat';
 
 const scrollDriver = vi.hoisted(() => ({
@@ -314,6 +314,16 @@ describe('ChatThread scroll driver', () => {
     render(<ChatThread messages={makeMessages(2)} isLoading={false} bottomInset={180} {...base} />);
     expect(scrollDriver.lastOptions).not.toHaveProperty('scrollPaddingEnd');
   });
+
+  it('keeps the compact 72px estimate for the first streamed assistant row', () => {
+    const messages = [
+      makeMessages(2)[0],
+      { ...makeMessages(2)[1], parts: [] },
+    ];
+    render(<ChatThread messages={messages} isLoading {...base} />);
+    const estimate = scrollDriver.lastOptions?.estimateSize as (index: number) => number;
+    expect(estimate(1)).toBe(72);
+  });
 });
 
 describe('ChatThread message dots', () => {
@@ -362,5 +372,133 @@ describe('ChatThread message dots', () => {
     const rail = getByTestId('chat-message-dots');
     expect(rail.querySelectorAll('[data-testid="chat-message-dot"]').length).toBeLessThan(20);
     expect(rail.querySelector('.chat-message-dots-range')).toBeTruthy();
+  });
+});
+
+describe('ChatThread message dots measured jump', () => {
+  const base = {
+    error: null as string | null,
+    onClearError: () => {},
+    onFollowUpClick: () => {},
+    hydrated: true,
+  };
+  const ROW_PX = 220;
+  const VIEW_PX = 480;
+  const TARGET_INDEX = 10;
+
+  beforeEach(() => {
+    scrollDriver.interceptScroll = false;
+    scrollDriver.scrollToIndex.mockClear();
+  });
+
+  it('lands a middle-turn dot on the measured row when only the tail is mounted', async () => {
+    const proto = HTMLElement.prototype;
+    const prevOffset = Object.getOwnPropertyDescriptor(proto, 'offsetHeight');
+    const prevClient = Object.getOwnPropertyDescriptor(proto, 'clientHeight');
+    const prevScrollHeight = Object.getOwnPropertyDescriptor(proto, 'scrollHeight');
+    const prevScrollTo = proto.scrollTo;
+
+    const rowHeight = (el: HTMLElement) => {
+      if (el.classList?.contains('chat-messages')) return VIEW_PX;
+      if (el.hasAttribute('data-index')) return ROW_PX;
+      return 0;
+    };
+
+    Object.defineProperty(proto, 'offsetHeight', {
+      configurable: true,
+      get() { return rowHeight(this as HTMLElement); },
+    });
+    Object.defineProperty(proto, 'clientHeight', {
+      configurable: true,
+      get() { return rowHeight(this as HTMLElement); },
+    });
+    Object.defineProperty(proto, 'scrollHeight', {
+      configurable: true,
+      get() {
+        const el = this as HTMLElement;
+        if (el.classList?.contains('chat-messages')) {
+          const spacer = el.querySelector(':scope > div') as HTMLElement | null;
+          const parsed = spacer ? parseInt(spacer.style.height, 10) : 0;
+          return Number.isFinite(parsed) ? parsed : 0;
+        }
+        return rowHeight(el);
+      },
+    });
+    proto.scrollTo = function (arg?: ScrollToOptions | number, y?: number) {
+      if (typeof arg === 'number') {
+        this.scrollLeft = arg;
+        if (typeof y === 'number') this.scrollTop = y;
+      } else if (arg && typeof arg === 'object') {
+        if (arg.left != null) this.scrollLeft = arg.left;
+        if (arg.top != null) this.scrollTop = arg.top;
+      }
+      this.dispatchEvent(new Event('scroll'));
+    };
+
+    const restore = () => {
+      if (prevOffset) Object.defineProperty(proto, 'offsetHeight', prevOffset);
+      else delete (proto as { offsetHeight?: number }).offsetHeight;
+      if (prevClient) Object.defineProperty(proto, 'clientHeight', prevClient);
+      else delete (proto as { clientHeight?: number }).clientHeight;
+      if (prevScrollHeight) Object.defineProperty(proto, 'scrollHeight', prevScrollHeight);
+      else delete (proto as { scrollHeight?: number }).scrollHeight;
+      proto.scrollTo = prevScrollTo;
+    };
+
+    try {
+      const { container, getAllByTestId } = render(
+        <div style={{ height: VIEW_PX, display: 'flex', flexDirection: 'column' }}>
+          <ChatThread messages={makeMessages(24)} isLoading={false} {...base} />
+        </div>,
+      );
+      const viewport = container.querySelector('.chat-messages') as HTMLElement;
+      expect(viewport).toBeTruthy();
+
+      await act(async () => {
+        for (let i = 0; i < 4; i++) {
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+        }
+      });
+
+      const spacer = viewport.querySelector(':scope > div') as HTMLElement;
+      const total = parseInt(spacer.style.height, 10);
+      expect(total).toBeGreaterThan(VIEW_PX);
+      await act(async () => {
+        viewport.scrollTop = total - VIEW_PX;
+        fireEvent.scroll(viewport);
+        for (let i = 0; i < 6; i++) {
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+        }
+      });
+
+      expect(container.querySelector('[data-message-id="m-23"]')).toBeTruthy();
+      expect(container.querySelector(`[data-message-id="m-${TARGET_INDEX}"]`)).toBeNull();
+
+      const targetDot = getAllByTestId('chat-message-dot').find(
+        (dot) => dot.getAttribute('data-message-index') === String(TARGET_INDEX),
+      );
+      expect(targetDot).toBeTruthy();
+      fireEvent.click(targetDot!);
+
+      await act(async () => {
+        for (let i = 0; i < 10; i++) {
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+        }
+      });
+
+      const target = container.querySelector(`[data-message-id="m-${TARGET_INDEX}"]`) as HTMLElement | null;
+      expect(target).toBeTruthy();
+      const row = target!.closest('[data-index]') as HTMLElement;
+      expect(row).toBeTruthy();
+      const start = Number(/translateY\(([-\d.]+)px\)/.exec(row.style.transform)?.[1]);
+      expect(Number.isFinite(start)).toBe(true);
+      expect(start).toBeGreaterThan(TARGET_INDEX * 72 + 40);
+      expect(Math.abs(start - TARGET_INDEX * ROW_PX)).toBeLessThan(ROW_PX / 2);
+      expect(viewport.scrollTop).toBeGreaterThanOrEqual(start - 2);
+      expect(viewport.scrollTop).toBeLessThan(start + VIEW_PX);
+      expect(Math.abs(viewport.scrollTop - start)).toBeLessThan(8);
+    } finally {
+      restore();
+    }
   });
 });
