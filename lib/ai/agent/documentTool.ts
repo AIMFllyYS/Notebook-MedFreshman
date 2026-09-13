@@ -10,7 +10,9 @@ import {
 
 const documentSpecSchema = z.object({
   title: z.string().min(1).describe("文章标题"),
-  format: z.enum(DOCUMENT_FORMATS as [string, ...string[]]).describe("目标交付格式：markdown / docx / pdf"),
+  // 交付只有 Markdown。仍接受历史的 docx / pdf（IndexedDB 里存着旧文档），
+  // 但对模型只描述 markdown，并在下面归一化——不要再让模型以为能产出 Word/PDF。
+  format: z.enum(DOCUMENT_FORMATS as [string, ...string[]]).describe("目标交付格式：markdown（当前只支持 Markdown 交付）"),
   genre: z.enum(DOCUMENT_GENRES as [string, ...string[]]).describe("文体：article / paper / report / review-notes / essay"),
   brief: z.string().min(1).describe("写作要求：主题、受众、论点、风格、需要覆盖的知识点等"),
   outline: z.array(z.string().min(1)).optional().describe("可选的章节标题列表；省略时由 outline 阶段生成"),
@@ -28,6 +30,8 @@ export function validateDocumentSpec(input: unknown): { ok: true; spec: Document
     ok: true,
     spec: {
       ...parsed.data,
+      // 查看器只给 .md，所以旧的 docx / pdf 一律当 markdown 处理。
+      format: "markdown",
       language: (parsed.data.language ?? "zh") as DocumentLanguage,
     } as DocumentSpec,
   };

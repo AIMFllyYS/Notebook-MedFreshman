@@ -30,7 +30,11 @@ export const DOCUMENT_GENRE_LABELS: Record<DocumentGenre, string> = {
 /** writeDocument 工具参数（模型填写）。 */
 export interface DocumentSpec {
   title: string;
-  /** 目标交付格式；Markdown 始终是源格式，docx / pdf 在查看器里导出。 */
+  /**
+   * 目标交付格式。**当前只交付 Markdown**：查看器只提供 .md 下载，
+   * `validateDocumentSpec` 会把历史的 docx / pdf 归一化成 markdown。
+   * 枚举保留是为了读出旧的 IndexedDB 文档。
+   */
   format: DocumentFormat;
   genre: DocumentGenre;
   /** 写作要求：主题、受众、论点、风格、篇幅要求、需要覆盖的知识点等。 */

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createWriteDocumentTool } from "./tool.ts";
+import { documentSpecSchema, validateDocumentSpec } from "@/lib/ai/agent/documentTool";
 import type { WriteDocumentOutput } from "./types.ts";
 import type { StudyToolContext } from "@/lib/ai/agent/tools/_shared";
 
@@ -35,6 +36,21 @@ test("writeDocument：合法 spec 下发卡片 id", async () => {
   assert.equal(result.modelId, "z-ai/glm-5.3-flash");
   assert.equal(result.unsupportedReason, undefined);
   assert.match(result.text, /复习讲义/);
+});
+
+test("writeDocument：模型给 docx / pdf 也归一化成 markdown（交付只有 .md）", () => {
+  for (const format of ["docx", "pdf"]) {
+    const parsed = validateDocumentSpec({
+      title: "复习讲义",
+      format,
+      genre: "review-notes",
+      brief: "总结本章",
+    });
+    assert.equal(parsed.ok, true);
+    if (parsed.ok) assert.equal(parsed.spec.format, "markdown");
+  }
+  // 工具 schema 不再向模型描述 Word / PDF。
+  assert.doesNotMatch(String(documentSpecSchema.shape.format.description), /docx|pdf|Word|PDF/);
 });
 
 test("writeDocument：非法 spec 返回 unsupportedReason 且仍带 documentId", async () => {
