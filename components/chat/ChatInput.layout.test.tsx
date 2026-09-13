@@ -110,7 +110,7 @@ describe('floating transparent composer', () => {
     expect(callbacks.clearAttachments).toHaveBeenCalledOnce();
   });
 
-  it('CSS contract anchors a transparent dock and wraps both toolbar groups instead of clipping narrow surfaces', () => {
+  it('CSS contract anchors a transparent dock and stages compact toolbar controls without clipping narrow surfaces', () => {
     const css = readFileSync(resolve(process.cwd(), 'app/styles/prose.css'), 'utf8');
     const rule = (selector: string) => css.match(new RegExp(`${selector.replaceAll('.', '\\.')}\\s*\\{([^}]+)\\}`))?.[1] ?? '';
     const dock = rule('.chat-input-container');
@@ -124,6 +124,33 @@ describe('floating transparent composer', () => {
     expect(rule('.chat-input-toolbar-group')).toContain('min-width: 0');
     expect(rule('.chat-input-textarea')).toContain('min-width: 0');
     expect(css).toContain('@container chat-composer (max-width: 320px)');
+    expect(css).toContain('@container chat-composer (max-width: 430px)');
+    expect(rule('.chat-input-more')).toContain('opacity: 0');
+    expect(css).toContain('opacity 100ms var(--ease-out)');
+    expect(css).toContain('opacity 90ms var(--ease-out) 110ms');
     expect(rule('.chat-input-row')).toContain('backdrop-filter: blur(14px)');
+  });
+
+  it('shows the meter only for long text, keeps excess text, blocks send and opens an accessible warning', () => {
+    const { getByRole } = render(<ChatInput {...props} />);
+    const textbox = getByRole('textbox');
+    expect(document.querySelector('.chat-input-count')).toBeNull();
+    fireEvent.change(textbox, { target: { value: '字'.repeat(1_000) } });
+    expect(document.querySelector('.chat-input-count')).toBeNull();
+    fireEvent.change(textbox, { target: { value: '字'.repeat(1_001) } });
+    expect(document.querySelector('.chat-input-count')).toHaveTextContent('1,001 / 50,000 字');
+    expect(document.querySelector('.chat-input-row')).toHaveClass('chat-input-row-with-count');
+    fireEvent.change(textbox, { target: { value: '字'.repeat(50_001) } });
+    expect(textbox).toHaveValue('字'.repeat(50_001));
+    expect(textbox).toHaveAttribute('aria-invalid', 'true');
+    expect(getByRole('alertdialog')).toHaveTextContent('已超出 5 万字上限');
+    expect(getByRole('button', { name: '发送' })).toBeDisabled();
+    expect(props.onSend).not.toHaveBeenCalled();
+  });
+
+  it('counts supplementary Unicode characters as one visible character without showing a short-text meter', () => {
+    const { getByRole } = render(<ChatInput {...props} />);
+    fireEvent.change(getByRole('textbox'), { target: { value: '😀'.repeat(1_001) } });
+    expect(document.querySelector('.chat-input-count')).toHaveTextContent('1,001 / 50,000 字');
   });
 });

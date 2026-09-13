@@ -305,9 +305,3 @@ export async function getVectorIndexModel(): Promise<string | null> {
   const index = await loadIndexAsync();
   return index?.model ?? null;
 }
-
-/** 测试用：清空惰性缓存。 */
-function resetVectorIndexCache(): void {
-  _vectorIndex = null;
-  _loadAttempted = false;
-}

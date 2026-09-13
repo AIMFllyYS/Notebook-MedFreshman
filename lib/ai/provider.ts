@@ -4,6 +4,7 @@
 
 import {
   getModelInfo,
+  getLandedModelInfo,
   getFetchTimeoutMs,
   hasNextEndpoint,
   normalizeRegistryId,
@@ -17,20 +18,29 @@ import {
   type ThinkingRequestStyle,
 } from "@/lib/ai/models";
 import { DEFAULT_CHAT_TIMEOUT_MS } from "@/lib/ai/upstream";
+import { relayModelConfig } from "@/lib/ai/relayConfig";
+import { AUTO_MODEL_ID } from "@/lib/ai/models";
+import { assertSafeCustomBaseUrl } from "@/lib/ai/customBaseUrl";
+import { normalizeOpenAIBaseUrl } from "@/lib/ai/openaiBaseUrl";
+import {
+  overlayOptional,
+  resolveCapabilityEndpoint,
+  type CapabilityEndpoints,
+  type ImageApiStyle as CapabilityImageApiStyle,
+} from "@/lib/ai/capabilityEndpoints";
 
-const BASE = process.env.AI_BASE_URL || "";
+// 本模块在加载时读一次 env（BASE / KEY / MIMO_* / RELAY_* / ENV_MODEL_*）。改 env 必须重启进程。
+// 对比：app/api/chat-title/route.ts 的 titleProvider() 每次请求读 env。两套语义不要混改。
+// AI_BASE_URL 不再参与本模块的 base 解析：它曾是生图端点的兜底，而那正是
+// 「配了中转站 → 生图 404」的来源。向量 / 重排仍在 embedding.ts 里各自读它。
 const KEY = process.env.AI_API_KEY || "";
+/** 生图端点的真实默认值。见 credentialsFor("siliconflow")：不拿 AI_BASE_URL 当兜底。 */
+const SILICONFLOW_DEFAULT_BASE = "https://api.siliconflow.cn/v1";
 const REASONING_FIELD = process.env.AI_REASONING_FIELD || "reasoning_content";
 
 export type { ThinkingRequestStyle };
-export type ImageApiStyle = "auto" | "openai" | "siliconflow";
-
-/** OpenAI 兼容网关：保证 base 以 /v1 结尾，避免拼出 /chat/completions 落到根路径。 */
-export function normalizeOpenAIBaseUrl(url: string): string {
-  const trimmed = url.trim().replace(/\/+$/, "");
-  if (!trimmed) return "";
-  return /\/v1$/i.test(trimmed) ? trimmed : `${trimmed}/v1`;
-}
+export type ImageApiStyle = CapabilityImageApiStyle;
+export { normalizeOpenAIBaseUrl };
 
 /**
  * 三选一协议 → 底层 style/reasoningField 自动装配。
@@ -67,7 +77,7 @@ const RELAY_BASE = normalizeOpenAIBaseUrl(
 const RELAY_KEY = process.env.RELAY_API_KEY || "";
 const RELAY_MODEL_ID = (process.env.RELAY_MODEL_ID || "").trim();
 
-export const ENV_MODEL_PRO = process.env.AI_MODEL_PRO || "Qwen/Qwen3.8-27B";
+export const ENV_MODEL_PRO = process.env.AI_MODEL_PRO || "gpt-5.6-sol";
 export const ENV_MODEL_FLASH = process.env.AI_MODEL_FLASH || "z-ai/glm-5.3-flash";
 
 export interface CustomProvider {
@@ -77,6 +87,9 @@ export interface CustomProvider {
 }
 
 export interface ResolvedProvider {
+  /** Built-in OpenAI gateway uses its own sampling defaults, not the calling feature's temperature. */
+  gatewayDefaults?: boolean;
+  temperature?: number;
   /** 注册 id（菜单/设置），用于 getModelInfo、计费展示 */
   registryId: string;
   /** 发给上游 chat/completions 的 model 字段 */
@@ -100,6 +113,9 @@ const THINKING_REQUEST_STYLES: ThinkingRequestStyle[] = [
   "openai-reasoning-effort",
   "openrouter-reasoning",
   "anthropic-thinking",
+  "gemini-thinking-level",
+  "deepseek-thinking",
+  "mimo-thinking",
 ];
 
 function normalizeThinkingRequestStyle(value: unknown, fallback: ThinkingRequestStyle): ThinkingRequestStyle {
@@ -117,6 +133,36 @@ function inferProtocolFromLegacy(style: unknown): CustomApiProtocol {
 
 function normalizeImageApiStyle(value: unknown): ImageApiStyle {
   return value === "openai" || value === "siliconflow" || value === "auto" ? value : "auto";
+}
+
+function applyUserImageEndpoint(
+  platform: ResolvedImageProvider,
+  capability?: CapabilityEndpoints | null,
+): ResolvedImageProvider {
+  if (!capability) return platform;
+  const resolved = resolveCapabilityEndpoint({
+    userBaseUrl: capability.imageBaseUrl,
+    userApiKey: capability.imageApiKey,
+    platformBaseUrl: platform.baseUrl,
+    platformApiKey: platform.apiKey,
+  });
+  let baseUrl = resolved.baseUrl;
+  if (resolved.customBaseUrl) {
+    baseUrl = normalizeOpenAIBaseUrl(assertSafeCustomBaseUrl(baseUrl));
+  }
+  const apiModelId = overlayOptional(capability.imageModelId, platform.apiModelId);
+  const imageApiStyle = capability.imageApiStyle !== "auto"
+    ? capability.imageApiStyle
+    : platform.imageApiStyle;
+  return {
+    ...platform,
+    baseUrl,
+    apiKey: resolved.apiKey,
+    apiModelId,
+    configured: !!(baseUrl && resolved.apiKey && !baseUrl.includes("your-endpoint")),
+    isCustom: platform.isCustom || !resolved.usedPlatformCredentials,
+    imageApiStyle,
+  };
 }
 
 // 部分中转网关（尤其把 Claude extended thinking 转成 OpenAI 格式的代理）不会把 reasoning
@@ -151,27 +197,15 @@ export function extractReasoningDelta(
   return text || undefined;
 }
 
-export function buildThinkingRequestParams(
-  style: ThinkingRequestStyle,
-  effort: string | undefined,
-): Record<string, unknown> {
-  if (style === "none") return {};
-  if (style === "openai-reasoning-effort") {
-    return { reasoning_effort: effort === "low" || effort === "medium" ? effort : "high" };
+function safeNormalizedCustomBaseUrl(url: string): string {
+  return normalizeOpenAIBaseUrl(assertSafeCustomBaseUrl(url));
+}
+
+function customTimeoutMs(modelTimeout?: number, groupTimeout?: number): number {
+  for (const raw of [modelTimeout, groupTimeout]) {
+    if (typeof raw === "number" && Number.isFinite(raw) && raw > 0) return raw;
   }
-  // OpenRouter 统一推理参数：{ reasoning: { effort } }，用于转发 Claude/Gemini 等模型的中转网关。
-  if (style === "openrouter-reasoning") {
-    return { reasoning: { effort: effort === "low" || effort === "medium" ? effort : "high" } };
-  }
-  // 部分"OpenAI 兼容"中转网关只是把 Anthropic Messages API 的请求体原样透传，
-  // 此时仍需按 Anthropic 原生 extended thinking 格式下发 { thinking: { type, budget_tokens } }。
-  if (style === "anthropic-thinking") {
-    return { thinking: { type: "enabled", budget_tokens: thinkingBudget(effort) } };
-  }
-  return {
-    enable_thinking: true,
-    thinking_budget: thinkingBudget(effort),
-  };
+  return DEFAULT_CHAT_TIMEOUT_MS;
 }
 
 export function detectImageApiStyle(
@@ -190,18 +224,32 @@ interface ProviderCredentials {
 
 function credentialsFor(provider: ProviderKind): ProviderCredentials {
   switch (provider) {
-    case "mimo":
-      return { baseUrl: MIMO_BASE, apiKey: MIMO_KEY, configured: !!(MIMO_BASE && MIMO_KEY) };
-    case "zhipu":
-      return { baseUrl: ZHIPU_BASE, apiKey: ZHIPU_KEY, configured: !!(ZHIPU_BASE && ZHIPU_KEY) };
-    case "relay":
-      return { baseUrl: RELAY_BASE, apiKey: RELAY_KEY, configured: !!(RELAY_BASE && RELAY_KEY) };
-    default:
+    case "mimo": {
+      const baseUrl = normalizeOpenAIBaseUrl(MIMO_BASE);
+      return { baseUrl, apiKey: MIMO_KEY, configured: !!(baseUrl && MIMO_KEY) };
+    }
+    case "zhipu": {
+      const baseUrl = normalizeOpenAIBaseUrl(ZHIPU_BASE);
+      return { baseUrl, apiKey: ZHIPU_KEY, configured: !!(baseUrl && ZHIPU_KEY) };
+    }
+    case "relay": {
+      const baseUrl = normalizeOpenAIBaseUrl(RELAY_BASE);
+      return { baseUrl, apiKey: RELAY_KEY, configured: !!(baseUrl && RELAY_KEY) };
+    }
+    case "siliconflow": {
+      // base 不回落 AI_BASE_URL：那个变量常被指向中转站，而中转站不提供
+      // Tongyi-MAI/Z-Image-Turbo，回落只会换来一个静默 404。key 仍可回落
+      // AI_API_KEY——历史 .env.example 把硅基流动的 key 写在那里，且用错 key 会
+      // 拿到明确的 401 而不是静默失败。
+      const rawBase = process.env.SILICONFLOW_BASE_URL || SILICONFLOW_DEFAULT_BASE;
+      const apiKey = process.env.SILICONFLOW_API_KEY || KEY;
+      const baseUrl = normalizeOpenAIBaseUrl(rawBase);
       return {
-        baseUrl: BASE,
-        apiKey: KEY,
-        configured: !!(BASE && KEY && !BASE.includes("your-endpoint")),
+        baseUrl,
+        apiKey,
+        configured: !!(baseUrl && apiKey && !baseUrl.includes("your-endpoint")),
       };
+    }
   }
 }
 
@@ -209,6 +257,7 @@ function resolveBuiltinEndpoint(
   registryId: string,
   endpointIndex: number,
 ): ResolvedProvider {
+  if (registryId === AUTO_MODEL_ID) throw new Error("自动模型必须先由服务端完成路由。");
   const info = getModelInfo(registryId);
   const fallbackId = ENV_MODEL_FLASH;
   const effectiveId = info ? registryId : fallbackId;
@@ -218,9 +267,14 @@ function resolveBuiltinEndpoint(
   const endpoint = endpoints[idx];
   const cred = endpoint ? credentialsFor(endpoint.provider) : credentialsFor("siliconflow");
   const isCustomOpenai = effectiveId === CUSTOM_OPENAI_MODEL_ID;
+  const relay = endpoint?.provider === "relay" && !isCustomOpenai ? relayModelConfig(effectiveId) : undefined;
   const apiModelId = isCustomOpenai
     ? (RELAY_MODEL_ID || endpoint?.apiModelId || effectiveId)
-    : (endpoint?.apiModelId ?? effectiveId);
+    : (relay?.apiModelId ?? endpoint?.apiModelId ?? effectiveId);
+  // custom-openai 的 apiModelId 是用户填的 RELAY_MODEL_ID，可能撞上内置 id；
+  // 思考方言仍跟注册条目，与 hop 0 历史行为一致。其余 hop 按落地 apiModelId 取。
+  const landedInfo = getLandedModelInfo(isCustomOpenai ? effectiveId : apiModelId, effectiveId)
+    ?? effectiveInfo;
 
   return {
     registryId: effectiveId,
@@ -228,10 +282,12 @@ function resolveBuiltinEndpoint(
     baseUrl: cred.baseUrl,
     apiKey: cred.apiKey,
     reasoningField: REASONING_FIELD,
-    thinkingRequestStyle: effectiveInfo?.thinkingRequestStyle ?? "siliconflow",
+    thinkingRequestStyle: relay?.thinkingRequestStyle ?? landedInfo?.thinkingRequestStyle ?? "siliconflow",
+    gatewayDefaults: !!relay,
+    ...(relay?.temperature !== undefined ? { temperature: relay.temperature } : {}),
     apiProtocol: "openai",
     isCustom: false,
-    configured: isCustomOpenai ? cred.configured && !!RELAY_MODEL_ID : cred.configured,
+    configured: isCustomOpenai ? cred.configured && !!RELAY_MODEL_ID : cred.configured && relay?.enabled !== false,
     endpointIndex: idx,
     timeoutMs: getFetchTimeoutMs(effectiveId),
   };
@@ -259,7 +315,7 @@ export function resolveProvider(
       return {
         registryId,
         apiModelId: found.model.id,
-        baseUrl: found.group.baseUrl.trim(),
+        baseUrl: safeNormalizedCustomBaseUrl(found.group.baseUrl),
         apiKey: found.group.apiKey.trim(),
         // 用户显式填的 override 优先；否则用协议默认。
         reasoningField: found.model.reasoningField?.trim() || auto.reasoningField,
@@ -271,9 +327,13 @@ export function resolveProvider(
         isCustom: true,
         configured: true,
         endpointIndex: 0,
-        timeoutMs: DEFAULT_CHAT_TIMEOUT_MS,
+        timeoutMs: customTimeoutMs(found.model.timeoutMs, found.group.timeoutMs),
       };
     }
+  }
+
+  if (isCustomModel && Array.isArray(custom) && modelId?.startsWith(CUSTOM_PREFIX)) {
+    throw new Error('当前自定义模型的分组、地址或密钥不可用。请检查 API 设置或恢复旧配置，本次不会改用平台模型。');
   }
 
   // 旧版兼容：custom 为 CustomProvider 对象
@@ -297,7 +357,7 @@ export function resolveProvider(
     return {
       registryId,
       apiModelId: customModelName.trim(),
-      baseUrl: customProvider.baseUrl.trim(),
+      baseUrl: safeNormalizedCustomBaseUrl(customProvider.baseUrl),
       apiKey: customProvider.apiKey.trim(),
       reasoningField: REASONING_FIELD,
       thinkingRequestStyle: "siliconflow",
@@ -361,6 +421,7 @@ export function resolveImageProvider(
   modelId: string,
   customGroups?: CustomApiGroup[] | null,
   defaultImageModelId?: string | null,
+  capability?: CapabilityEndpoints | null,
 ): ResolvedImageProvider {
   const selectedCustom = modelId.startsWith(CUSTOM_PREFIX) && customGroups?.length
     ? findCustomModelGroup(customGroups, modelId)
@@ -376,7 +437,7 @@ export function resolveImageProvider(
     const found = findCustomModelGroup(customGroups, effectiveModelId);
     if (found && found.group.baseUrl?.trim() && found.group.apiKey?.trim()) {
       return {
-        baseUrl: found.group.baseUrl.trim(),
+        baseUrl: safeNormalizedCustomBaseUrl(found.group.baseUrl),
         apiKey: found.group.apiKey.trim(),
         apiModelId: found.model.id,
         registryId: effectiveModelId,
@@ -387,11 +448,11 @@ export function resolveImageProvider(
     }
   }
 
-  // 3. 内置生图模型 → 使用硅基流动凭证
+  // 3. 内置生图模型 → 使用硅基流动凭证（设置里自配的生图端点可覆盖）
   const info = getModelInfo(effectiveModelId);
   if (info && info.type === "image") {
     const cred = credentialsFor(info.endpoints[0]?.provider ?? "siliconflow");
-    return {
+    return applyUserImageEndpoint({
       baseUrl: cred.baseUrl,
       apiKey: cred.apiKey,
       apiModelId: info.endpoints[0]?.apiModelId ?? effectiveModelId,
@@ -399,20 +460,20 @@ export function resolveImageProvider(
       configured: cred.configured,
       isCustom: false,
       imageApiStyle: "siliconflow",
-    };
+    }, capability);
   }
 
   // 4. 回退：使用硅基流动默认凭证 + Z-Image-Turbo
   const cred = credentialsFor("siliconflow");
-  return {
+  return applyUserImageEndpoint({
     baseUrl: cred.baseUrl,
     apiKey: cred.apiKey,
-    apiModelId: "Tongyi-MAI/Z-Image-Turbo",
-    registryId: "Tongyi-MAI/Z-Image-Turbo",
+    apiModelId: overlayOptional(capability?.imageModelId, "Tongyi-MAI/Z-Image-Turbo"),
+    registryId: overlayOptional(capability?.imageModelId, "Tongyi-MAI/Z-Image-Turbo"),
     configured: cred.configured,
     isCustom: false,
     imageApiStyle: "siliconflow",
-  };
+  }, capability);
 }
 
 /** 深度思考预算（token），按用户选择的力度映射。 */

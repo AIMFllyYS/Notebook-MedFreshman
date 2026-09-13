@@ -1,10 +1,14 @@
 import type { NextRequest } from "next/server";
 import type { RecordCardAI, RecordMode } from "@/lib/review/types";
-import { APICallError } from "@ai-sdk/provider";
 import { ENV_MODEL_FLASH } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
+import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { streamRouteText } from "@/lib/ai/sdk/routeGeneration";
-import type { CustomApiGroup } from "@/lib/ai/models";
+import { collectRequestSecrets, formatRequestError, parseRecordRequest } from "@/lib/ai/agent/requestSchema";
+import { logSatelliteError } from "@/lib/ai/observability/agentLog";
+import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
+import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 // 「记录」成卡路由（SSE 流式）：把用户划词/右键选中的原文，按用户选择的模式流式转成复习卡片。
 // 输出纯 Markdown 富文本（===FRONT=== / ===BACK=== / ===BLANKS=== 分隔），前端流式渲染 + 思考折叠。
@@ -125,7 +129,15 @@ function parseCardContent(raw: string, mode: RecordMode): RecordCardAI {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json().catch(() => ({}));
+  let body: ReturnType<typeof parseRecordRequest>;
+  try {
+    body = parseRecordRequest(await req.json().catch(() => ({})));
+  } catch (err) {
+    return new Response(sse({ type: "error", message: formatRequestError(err) }), {
+      status: 400,
+      headers: { "Content-Type": "text/event-stream" },
+    });
+  }
   const mode = body.mode as RecordMode;
   const text: string = typeof body.text === "string" ? body.text.trim() : "";
   const userInstruction: string =
@@ -135,14 +147,12 @@ export async function POST(req: NextRequest) {
   const categoryName: string = String(body.categoryName ?? "");
   const itemLabel: string = String(body.itemLabel ?? "");
   const enableThinking: boolean = body.enableThinking === true;
-  // 摘录功能现在传 customApiGroups（与 /api/chat 一致），resolveProvider 自动处理内置/自定义模型。
-  const customApiGroups: CustomApiGroup[] | undefined = Array.isArray(body.customApiGroups)
-    ? body.customApiGroups
-    : undefined;
+  const customApiGroups = body.customApiGroups;
   const modelId: string | undefined =
     typeof body.modelId === "string" && body.modelId.trim()
       ? body.modelId
       : ENV_MODEL_FLASH;
+  const secrets = collectRequestSecrets({ customApiGroups });
 
   const validModes: RecordMode[] = ["excerpt", "cloze", "quiz", "custom"];
   if (!validModes.includes(mode)) {
@@ -160,6 +170,16 @@ export async function POST(req: NextRequest) {
 
   const resolved = resolveLanguageModel(modelId, customApiGroups);
   const { provider } = resolved;
+  if (provider.apiKey) secrets.push(provider.apiKey);
+  const userId = await resolveQuotaUserId(req.headers);
+  const pool = resolveMainModelPool(usedPlatformCredentialsForProvider(provider));
+  const gate = await assertQuotaAvailable({ userId, pool });
+  if (!gate.ok) {
+    return new Response(sse({ type: "error", message: gate.error }), {
+      status: 402,
+      headers: { "Content-Type": "text/event-stream" },
+    });
+  }
   if (!provider.configured) {
     return new Response(sse({ type: "error", message: "AI 服务未配置（请先填写密钥）" }), {
       status: 503,
@@ -230,14 +250,24 @@ export async function POST(req: NextRequest) {
             send({ type: "content", delta });
           },
         });
+        await settleUsage({
+          headers: req.headers,
+          rawUsage: result.usage,
+          route: "/api/record",
+          kind: "llm",
+          selectedModelId: modelId,
+          actualModelId: resolveActualBillingModelId(provider),
+          customGroups: customApiGroups,
+          pool: pool ?? undefined,
+          skipInsert: pool == null,
+          meta: { source: "record", mode, revise: isRevise },
+        });
         const card = parseCardContent(result.text, mode);
         send({ type: "result", card, model: provider.registryId });
         send({ type: "done" });
       } catch (err) {
-        const message = APICallError.isInstance(err) && err.statusCode
-          ? `接口返回 ${err.statusCode}：${(err.responseBody ?? "").slice(0, 300)}`
-          : String((err as Error)?.message ?? err);
-        send({ type: "error", message });
+        logSatelliteError("/api/record", err);
+        send({ type: "error", message: toChatErrorMessage(err, secrets) });
         send({ type: "done" });
       } finally {
         stopHeartbeat();

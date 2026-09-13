@@ -1,7 +1,7 @@
 # docs/ 总索引
 
 > 本文件是 `docs/` 全站文档的唯一入口。任何人或 AI 智能体想知道"这份东西该写在哪、该去哪找"，先看这一页。
-> 编写于计划 `25`（全量文档清洗）。判断某份文档是否已过时，以 [`docs/plans/00-execution-contract.md`](./plans/00-execution-contract.md) 第六节「既成不变量」为准。
+> 编写于计划 `25`（全量文档清洗）。判断某份文档是否已过时，以 [`plans/archive/00-execution-contract.md`](./plans/archive/00-execution-contract.md) 第六节「既成不变量」为准。本轮 Agent 整改入口是 [`plans/Agent-refactor/00-loop-map.md`](./plans/Agent-refactor/00-loop-map.md)。
 
 ---
 
@@ -9,7 +9,8 @@
 
 | 我想... | 去哪 |
 |---|---|
-| 了解现在的架构/约定是什么、有哪些不能踩的红线 | [`plans/00-execution-contract.md`](./plans/00-execution-contract.md) 第六节 |
+| 了解现在的架构/约定是什么、有哪些不能踩的红线 | [`plans/archive/00-execution-contract.md`](./plans/archive/00-execution-contract.md) 第六节 |
+| 看这一轮 Agent 平台整改做了什么、按哪个 loop 跑 | [`plans/Agent-refactor/00-loop-map.md`](./plans/Agent-refactor/00-loop-map.md) |
 | 按 SOP 生产内容（教材/详解/录音/题目/新学科接入…） | [`sop/`](./sop/README.md) |
 | 派发一次具体的内容同步/生成任务，怎么写 prompt | [`prompt/goal-model.md`](./prompt/goal-model.md) |
 | 查某个子系统当前实现的权威说明（渲染架构、存储架构等） | [`refer/`](#refer--权威参考手册活文档) |
@@ -24,7 +25,7 @@
 ```
 docs/
 ├── README.md          ← 你在这里
-├── plans/              执行计划 + 唯一权威契约（00）+ 索引（README）
+├── plans/              Agent-refactor/（本轮 loop 制）+ archive/（历史计划与执行契约）
 ├── refer/               权威参考手册（活文档）
 ├── sop/                 标准操作流程（活文档）
 ├── prompt/              派发内容任务的提示词模板（Goal Model 等）
@@ -41,8 +42,9 @@ docs/
 
 存放"做一件事的完整任务书"。绝大部分是**历史记录**（描述当时做了什么、为什么），只有两个例外是活文档：
 
-- [`00-execution-contract.md`](./plans/00-execution-contract.md`) —— **唯一权威源**。第六节「既成不变量」汇总了 `18`–`24` 五轮代码清洗留下的、不得回退的约定（store 布局、Agent 工具目录结构、UI 分层规则、窗口体系、指令解析等）。任何文档与它冲突，以它为准。
-- [`README.md`](./plans/README.md) —— 计划总索引，列出 `01`–`25` 每份计划的主题、依赖与状态。
+- [`archive/00-execution-contract.md`](./plans/archive/00-execution-contract.md) —— **代码清洗不变量权威源**。第六节汇总 `18`–`24` 留下的、不得回退的约定，以及本轮 Agent 整改新增的几条（proxy matcher 字面量、服务端台账、ALS、登录闸门）。任何文档与它冲突，以它为准。
+- [`Agent-refactor/00-loop-map.md`](./plans/Agent-refactor/00-loop-map.md) —— **本轮 Agent 平台整改入口**（2026-09-12 起的 loop 制）。取代 `docs/analysis/Agent/01-goal-mode-runbook.md` 第 1–3 节的一号一循环调度。
+- [`archive/README.md`](./plans/archive/README.md) —— 计划 `01`–`25` 的历史索引。
 
 其余 `01`–`24` 记录的是各自完成时间点的真实状态，**不要因为里面出现"过时路径"就去改写正文**——那正是历史该有的样子。`17`（代码质量审查）是 `18`–`22` 的事实依据；`18`–`24` 是 2026-09 的一轮系统性代码清洗（工程基线 → 滚动抖动 → 窗口/Artifact → Agent 架构 → UI 层归位 → 记忆卡/指令解析 → 内容展示体系）；`25` 就是你现在在读的这一轮文档清洗。
 

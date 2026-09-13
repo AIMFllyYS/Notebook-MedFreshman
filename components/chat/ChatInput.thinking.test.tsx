@@ -85,7 +85,7 @@ describe('ChatInput thinking menu', () => {
 
   it('shows enabled state with default effort when model supports thinking and defaultThinking is on', () => {
     useSettings.setState({
-      selectedModelId: 'mimo-v2.5',
+      selectedModelId: 'z-ai/glm-5.3-flash',
       customApiGroups: [],
       defaultThinking: true,
       defaultThinkingEffort: 'high',

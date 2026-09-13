@@ -14,10 +14,40 @@ test("SDK adapter normalizes custom reasoning and builds provider thinking setti
 
   assert.match(source, /extractReasoningMiddleware\(\{ tagName: "think" \}\)/);
   assert.match(source, /createReasoningNormalizingFetch\(p\.reasoningField\)/);
-  assert.match(source, /buildThinkingSettings\(primary, effort, info\)/);
-  assert.match(source, /switch \(p\.thinkingRequestStyle\)/);
+  assert.match(source, /buildThinkingSettings\(landed\.provider, effort, landed\.info\)/);
+  assert.match(source, /switch \(style\)/);
   assert.doesNotMatch(source, /reqBody\.enable_thinking\s*=\s*true/);
   assert.doesNotMatch(source, /reqBody\.thinking_budget\s*=/);
+  assert.match(source, /Anthropic 原生路径的 reasoning/);
+  assert.match(source, /故意不套 extractReasoningMiddleware/);
+});
+
+test("思考装配只剩 buildThinkingSettings；AI_ENABLE_THINKING 已删除", () => {
+  const provider = readWorkspaceFile("lib/ai/provider.ts");
+  const envExample = readWorkspaceFile(".env.example");
+  const electronConfig = readWorkspaceFile("electron/config.js");
+  assert.doesNotMatch(provider, /buildThinkingRequestParams/);
+  assert.doesNotMatch(envExample, /AI_ENABLE_THINKING/);
+  assert.doesNotMatch(electronConfig, /AI_ENABLE_THINKING/);
+});
+
+test("6 条花钱路由的客户端只发本次用到的自定义分组", () => {
+  const files = [
+    "lib/chat/buildChatRequestBody.ts",
+    "components/chat/ArtifactCard.tsx",
+    "components/chat/DocumentCard.tsx",
+    "components/chat/ImageGenViewer.tsx",
+    "lib/review/startRecord.ts",
+    "components/canvas/CanvasRevisionPanel.tsx",
+  ];
+  for (const file of files) {
+    const source = readWorkspaceFile(file);
+    assert.match(source, /selectCustomApiGroupsForRequest/, file);
+    assert.doesNotMatch(source, /customApiGroups:\s*settings\.customApiGroups/, file);
+  }
+  const chatRoute = readWorkspaceFile("app/api/chat/route.ts");
+  assert.doesNotMatch(chatRoute, /!provider\.isCustom/);
+  assert.match(chatRoute, /modelInfo && !modelInfo\.vision/);
 });
 
 test("study agent omits tools for models that do not support tool calling", () => {
@@ -49,13 +79,15 @@ test("artifact and image generation use the model selected when the tool call wa
   const imageViewer = readWorkspaceFile("components/chat/ImageGenViewer.tsx");
   const imageCard = readWorkspaceFile("components/chat/ImageGenCard.tsx");
 
-  assert.match(chatRoute, /selectedModelId: modelId \?\? effectiveModelId/);
+  assert.match(chatRoute, /selectedModelId: automaticModels \? effectiveModelId : modelId \?\? effectiveModelId/);
   assert.match(tools, /unsupportedReason: ctx\.artifactUnsupportedReason/);
   assert.equal([...tools.matchAll(/modelId: ctx\.modelId/g)].length, 3);
   assert.match(artifactCard, /const artifactModelId = modelId \|\| settings\.selectedModelId/);
   assert.match(imageCard, /modelId,/);
   assert.match(imageViewer, /const imageModelId = cur\.modelId \|\| settings\.selectedModelId/);
   assert.match(imageViewer, /defaultImageModelId: cur\.modelId \? null : settings\.defaultImageModelId/);
+  assert.match(imageViewer, /formatImageGenError/);
+  assert.match(imageViewer, /imageGenErrorHeading/);
 });
 
 test("artifact route rejects image models before invoking html generation", () => {

@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown, ChevronRight, Plus } from "lucide-react";
+import { useState, useSyncExternalStore } from "react";
+import { Plug, Plus } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
-import { h3Cls, inputCls, labelCls } from "./_shared";
+import { isElectronDesktop } from "@/lib/stores/apiSecrets";
+import { inputCls, labelCls } from "./_shared";
 import { ApiGroupCard } from "./_ApiGroupCard";
+import { ApiConfigurationRecovery } from './ApiConfigurationRecovery';
+import SettingsDisclosure from "./SettingsDisclosure";
 
 export function ApiGroupsSection() {
   const customApiGroups = useSettings((s) => s.customApiGroups);
@@ -21,6 +24,11 @@ export function ApiGroupsSection() {
   const [newGroupName, setNewGroupName] = useState("");
   const [newGroupBaseUrl, setNewGroupBaseUrl] = useState("");
   const [newGroupApiKey, setNewGroupApiKey] = useState("");
+  const desktop = useSyncExternalStore(
+    () => () => {},
+    () => isElectronDesktop(),
+    () => false,
+  );
 
   const handleCreateGroup = () => {
     const name = newGroupName.trim() || `API 分组 ${customApiGroups.length + 1}`;
@@ -38,21 +46,20 @@ export function ApiGroupsSection() {
   };
 
   return (
-    <section className="flex flex-col gap-2">
-      <button
-        onClick={() => setCustomExpanded((v) => !v)}
-        className="flex items-center gap-1.5 self-start"
-      >
-        {customExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-        <h3 className={h3Cls}>自定义 API（与站点默认并存）</h3>
-        <span className="text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
-          · {customApiGroups.length} 个分组
-        </span>
-      </button>
-      {customExpanded && (
-        <div className="flex flex-col gap-2 pl-4">
+    <SettingsDisclosure expanded={customExpanded} onToggle={() => setCustomExpanded((v) => !v)}
+      icon={<Plug size={14} />} title="自定义 API" meta={`${customApiGroups.length} 个分组 · 与站点默认并存`}>
+        <div className="flex flex-col gap-2">
+          <ApiConfigurationRecovery />
           <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
             可创建多个 API 分组，每组独立 baseUrl/apiKey + 模型列表，全部出现在模型菜单中。
+          </p>
+          <p
+            data-testid="api-key-storage-notice"
+            className="text-[11px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]"
+          >
+            {desktop
+              ? "桌面端：API 密钥由操作系统加密保存（Windows 为 DPAPI），不会以明文写入设置 JSON。"
+              : "网页端：API 密钥保存在本机浏览器（独立存储、轻量混淆），不进入云端。这不是加密，本机扩展或取证仍可能读取；请勿在公共电脑上保存密钥。"}
           </p>
 
           {customApiGroups.map((group) => (
@@ -133,7 +140,6 @@ export function ApiGroupsSection() {
             </button>
           )}
         </div>
-      )}
-    </section>
+    </SettingsDisclosure>
   );
 }

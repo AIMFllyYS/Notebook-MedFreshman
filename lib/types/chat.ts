@@ -1,7 +1,7 @@
 // AI 对话完整类型定义。消息主体采用 AI SDK 的 UIMessage（有序 parts），
 // 在其上附加本项目的持久化字段（timestamp / attachments / followUpQuestions）。
 
-import type { UIMessage, UIMessagePart } from 'ai';
+import type { FinishReason, UIMessage, UIMessagePart } from 'ai';
 import type { StudyTools } from '@/lib/ai/agent/toolTypes';
 
 export interface WebSearchSource {
@@ -23,6 +23,8 @@ export interface UsageSummary {
   completionTokens: number;
   cachedTokens: number;
   totalTokens: number;
+  /** 实际落地的上游模型；缺省时客户端按所选模型计价。 */
+  actualModelId?: string;
 }
 
 /** 服务端经 UI Message Stream 下发的自定义 data parts。 */
@@ -32,18 +34,22 @@ export type StudyDataParts = {
   'context-breakdown': ContextBreakdown;
   usage: UsageSummary;
   followup: { questions: string[] };
+  'answer-complete': { durationMs: number };
 };
 
 /** UIMessage.metadata：本条消息的运行元信息。 */
 export interface StudyMessageMetadata {
   thinkingEnabled?: boolean;
   searchEnabled?: boolean;
+  /** 上游 prefix cache 是否命中（cachedTokens > 0），不是本地 pageId hash。 */
   cacheHit?: boolean;
   /** 发起本条回复时选中的模型 id。 */
   modelId?: string;
   usage?: UsageSummary;
   /** 从发送到流结束的耗时，供思考链头部展示「已思考 N 秒」。 */
   durationMs?: number;
+  /** 本轮生成结束原因。步数触顶时为 tool-calls。 */
+  finishReason?: FinishReason;
 }
 
 export type ChatMessagePart = UIMessagePart<StudyDataParts, StudyTools>;
@@ -60,10 +66,15 @@ export interface ContextBreakdown {
   pages: number;
   /** 联网搜索：webSearch/imageSearch 工具结果。 */
   webSearch: number;
+  /** 未垫高的实际占用。软上限判定必须用这个值。 */
   total: number;
-  /** 当前请求是否因上下文达到 80% 软上限而只发送最近消息。 */
+  /** 环显示用，截断态可垫到客户端估算以免假降。 */
+  displayTotal?: number;
+  /** 当前请求是否因 80% 软上限而走滚动摘要 / 分级裁剪。 */
   truncated?: boolean;
-  /** 全量页面上下文是否命中缓存。 */
+  /** 上游 usage 的 cachedTokens。看板「上下文缓存」绑这个，不再绑本地 pageId hash 槽。 */
+  cachedTokens?: number;
+  /** 上游 prefix cache 是否命中（cachedTokens > 0）。不是本地全文 MD5 单槽。 */
   cacheHit?: boolean;
   /** 给 UI 持续展示的上下文警示。 */
   warning?: string;

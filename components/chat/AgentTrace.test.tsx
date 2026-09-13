@@ -5,7 +5,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 import userEvent from '@testing-library/user-event';
 import { buildTrace } from '@/lib/chat/buildTrace';
 import type { ChatMessage as ChatMessageType, ChatMessagePart } from '@/lib/types/chat';
-import { AgentTrace } from './AgentTrace';
+import { AgentTrace, TRACE_COLLAPSE_MS } from './AgentTrace';
 import ChatMessage from './ChatMessage';
 import { ToolCallDashboard } from './ToolCallDashboard';
 
@@ -88,6 +88,7 @@ describe('ordered AgentTrace', () => {
   });
 
   it('auto-collapses on completion, preserves user choice during a stream and reopens for a new run', () => {
+    expect(TRACE_COLLAPSE_MS).toBe(160);
     const active = message([{ type: 'reasoning', text: '思考中', state: 'streaming' }]);
     const { rerender } = render(<AgentTrace trace={buildTrace(active, true)} isStreaming />);
     fireEvent.click(screen.getByRole('button', { name: '正在处理…' }));
@@ -261,6 +262,7 @@ describe('ChatMessage trace migration', () => {
       <ChatMessage message={message([{ type: 'text', text: 'AI 回答' }])} onFollowUpSelect={vi.fn()} />
     </>);
     const userMessage = container.querySelector('[data-message-role="user"]')!;
+    expect(userMessage).toHaveAttribute('data-message-id', 'assistant-1');
     const userHeader = userMessage.querySelector('.chat-message-header')!;
     const userContent = userMessage.querySelector('.chat-message-content')!;
     const userBubble = userMessage.querySelector('.chat-bubble-user')!;
@@ -280,20 +282,35 @@ describe('ChatMessage trace migration', () => {
     expect(getComputedStyle(assistant.querySelector('.chat-message-content')!).textAlign).toBe('left');
   });
 
-  it('renders the answer once below the trace and preserves final answer repair and context-menu bindings', () => {
-    const msg = message([{ type: 'reasoning', text: '推理内容', state: 'done' }, { type: 'text', text: '我先查教材', state: 'done' }, tool, { type: 'text', text: '面向用户的最终回答', state: 'done' }]);
+  it('renders each answer segment once without duplicating them in the trace', () => {
+    const msg = message([
+      { type: 'step-start' },
+      { type: 'reasoning', text: '推理内容', state: 'done' },
+      { type: 'text', text: '我先查教材', state: 'done' },
+      tool,
+      { type: 'step-start' },
+      { type: 'text', text: '面向用户的最终回答', state: 'done' },
+    ]);
     const { container } = render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} sessionId="floating-session" repairModelId="chosen-model" />);
+    expect(container.querySelector('[data-message-id="assistant-1"]')).toBeInTheDocument();
     expect(screen.getAllByText('面向用户的最终回答')).toHaveLength(1);
-    expect(screen.queryByText('我先查教材')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: '处理完成' }));
     expect(screen.getAllByText('我先查教材')).toHaveLength(1);
-    const bubble = container.querySelector('.chat-bubble-assistant')!;
-    expect(bubble).not.toHaveTextContent('我先查教材');
-    expect(bubble).toHaveStyle({ background: 'transparent', border: 'none', padding: 0 });
-    expect(within(bubble as HTMLElement).getByTestId('message-content')).toHaveAttribute('data-session-id', 'floating-session');
-    expect(within(bubble as HTMLElement).getByTestId('message-content')).toHaveAttribute('data-repair-model', 'chosen-model');
-    fireEvent.contextMenu(bubble);
-    expect(openMessageMenu.mock.calls[0][1]).toBe('面向用户的最终回答');
+    for (const header of screen.getAllByRole('button', { name: '处理完成' })) {
+      fireEvent.click(header);
+    }
+    expect(screen.getAllByText('我先查教材')).toHaveLength(1);
+    expect(screen.getAllByText('面向用户的最终回答')).toHaveLength(1);
+    const bubbles = container.querySelectorAll('.chat-bubble-assistant');
+    expect(bubbles).toHaveLength(2);
+    expect(bubbles[0]).toHaveTextContent('我先查教材');
+    expect(bubbles[0]).not.toHaveTextContent('面向用户的最终回答');
+    expect(bubbles[1]).toHaveTextContent('面向用户的最终回答');
+    expect(bubbles[1]).not.toHaveTextContent('我先查教材');
+    expect(bubbles[0]).toHaveStyle({ background: 'transparent', border: 'none', padding: 0 });
+    expect(within(bubbles[0] as HTMLElement).getByTestId('message-content')).toHaveAttribute('data-session-id', 'floating-session');
+    expect(within(bubbles[1] as HTMLElement).getByTestId('message-content')).toHaveAttribute('data-repair-model', 'chosen-model');
+    fireEvent.contextMenu(bubbles[1]);
+    expect(openMessageMenu.mock.calls[0][1]).toBe('我先查教材\n\n面向用户的最终回答');
   });
 
   it('keeps typed search, artifact, image approval and source cards below the final answer', () => {
@@ -311,6 +328,8 @@ describe('ChatMessage trace migration', () => {
       expect(answer.compareDocumentPosition(card) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     }
     expect(screen.getByText(/联网来源 · 1 条/)).toBeVisible();
+    expect(screen.queryByText(/参考来源/)).not.toBeInTheDocument();
+    expect(screen.queryByText('补充来源')).not.toBeInTheDocument();
     expect(screen.queryByText('公开课程摘要')).not.toBeInTheDocument();
     expect(screen.getByText(/引用笔记 · 1 条/)).toBeVisible();
     expect(screen.queryByText('公式讲解')).not.toBeInTheDocument();
@@ -326,7 +345,7 @@ describe('ChatMessage trace migration', () => {
   it('preserves image search gallery, drag data and attribution after streaming', () => {
     const msg = message([{ type: 'tool-imageSearch', toolCallId: 'images', state: 'output-available', input: { query: '植物' }, output: { text: '找到图片', provider: 'unsplash', sources: [{ title: '一株植物', alt: '植物特写', url: 'https://images.example/plant.jpg', snippet: '', author: '摄影者', authorUrl: 'https://unsplash.com/@author' }] } }, { type: 'text', text: '图片说明' }]);
     const { rerender } = render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} isStreaming />);
-    expect(screen.queryByRole('img', { name: '植物特写' })).not.toBeInTheDocument();
+    expect(screen.getByRole('img', { name: '植物特写' })).toBeInTheDocument();
     rerender(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} />);
     const image = screen.getByRole('img', { name: '植物特写' });
     expect(screen.getByRole('link', { name: '摄影者' })).toHaveAttribute('href', 'https://unsplash.com/@author');
@@ -361,6 +380,13 @@ describe('ChatMessage trace migration', () => {
     rerender(<ChatMessage message={{ ...msg, followUpQuestions: ['另一问题'] }} onFollowUpSelect={onSelect} />);
     expect(screen.queryByRole('button', { name: '为什么？' })).not.toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: '另一问题' })).toHaveLength(1);
+  });
+
+  it('uses answer FollowUp tags as data for the sourced follow-up channel', () => {
+    const msg = message([{ type: 'text', text: '答案。\n<FollowUp>继续解释|换个例子</FollowUp>' }]);
+    render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} />);
+    expect(screen.getByRole('button', { name: '继续解释' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '换个例子' })).toBeInTheDocument();
   });
 
   it('keeps searchNotes citations collapsed without dumping snippets into the chat', () => {

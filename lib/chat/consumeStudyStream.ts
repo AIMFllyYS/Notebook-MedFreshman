@@ -1,4 +1,4 @@
-import { DefaultChatTransport, isToolUIPart, readUIMessageStream, type UIMessageChunk } from 'ai';
+import { DefaultChatTransport, isToolUIPart, readUIMessageStream, type FinishReason, type UIMessageChunk } from 'ai';
 import type { RequestMessage } from '@/lib/chat/buildRequestMessages';
 import type { ChatMessage, ChatMessagePart, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
 
@@ -10,6 +10,14 @@ export function createStudyChatTransport(onActivity: () => void) {
       const response = await fetch(input, init);
       if (!response.ok) {
         const detail = await response.text().catch(() => '');
+        let parsedError = '';
+        try {
+          const parsed = JSON.parse(detail) as { error?: unknown };
+          if (typeof parsed.error === 'string') parsedError = parsed.error.trim();
+        } catch {
+          parsedError = '';
+        }
+        if (parsedError) throw new Error(parsedError);
         throw new Error(`API 请求失败: ${response.status} ${response.statusText}${detail ? ` - ${detail.slice(0, 200)}` : ''}`);
       }
       if (!response.body) throw new Error('流读取失败');
@@ -28,6 +36,14 @@ function objectValue(value: unknown): Record<string, unknown> | undefined {
   return value != null && typeof value === 'object' ? value as Record<string, unknown> : undefined;
 }
 
+const FINISH_REASONS: ReadonlySet<string> = new Set([
+  'stop', 'length', 'content-filter', 'tool-calls', 'error', 'other',
+]);
+
+function readFinishReason(value: unknown): FinishReason | undefined {
+  return typeof value === 'string' && FINISH_REASONS.has(value) ? value as FinishReason : undefined;
+}
+
 function readUsage(value: unknown): UsageSummary | undefined {
   const usage = objectValue(value);
   if (!usage) return undefined;
@@ -36,11 +52,14 @@ function readUsage(value: unknown): UsageSummary | undefined {
   if (!finiteToken('promptTokens') || !finiteToken('completionTokens')) return undefined;
   const promptTokens = usage.promptTokens as number;
   const completionTokens = usage.completionTokens as number;
+  // 0/0 不是一次真实消耗；写进 metadata 会让客户端再记一条 ¥0 幽灵账单。
+  if (promptTokens === 0 && completionTokens === 0) return undefined;
   return {
     promptTokens,
     completionTokens,
     cachedTokens: finiteToken('cachedTokens') ? usage.cachedTokens as number : 0,
     totalTokens: finiteToken('totalTokens') ? usage.totalTokens as number : promptTokens + completionTokens,
+    ...(typeof usage.actualModelId === 'string' && usage.actualModelId ? { actualModelId: usage.actualModelId } : {}),
   };
 }
 
@@ -54,6 +73,10 @@ function readBreakdown(value: unknown): ContextBreakdown | undefined {
     conversation: data.conversation as number, pages: data.pages as number,
     webSearch: data.webSearch as number, total: data.total as number,
     ...(typeof data.truncated === 'boolean' ? { truncated: data.truncated } : {}),
+    ...(typeof data.displayTotal === 'number' && Number.isFinite(data.displayTotal) && data.displayTotal >= 0
+      ? { displayTotal: data.displayTotal } : {}),
+    ...(typeof data.cachedTokens === 'number' && Number.isFinite(data.cachedTokens) && data.cachedTokens >= 0
+      ? { cachedTokens: data.cachedTokens } : {}),
     ...(typeof data.cacheHit === 'boolean' ? { cacheHit: data.cacheHit } : {}),
     ...(typeof data.warning === 'string' ? { warning: data.warning } : {}),
   };
@@ -83,6 +106,7 @@ export async function consumeStudyStream({
   let failure: unknown;
   let latest = structuredClone(message);
   let dataUsage: UsageSummary | undefined;
+  let finishReason: FinishReason | undefined;
   let questions = message.followUpQuestions;
   const startedAt = Date.now();
   const stop = (reason: unknown) => {
@@ -108,7 +132,14 @@ export async function consumeStudyStream({
           stop(new DOMException('生成被中断', 'AbortError'));
           return;
         }
-        if (chunk.type === 'finish') completed = true;
+        if (chunk.type === 'finish') {
+          completed = true;
+          finishReason = readFinishReason(chunk.finishReason) ?? finishReason;
+          finishReason = readFinishReason(objectValue(chunk.messageMetadata)?.finishReason) ?? finishReason;
+        }
+        if (chunk.type === 'message-metadata') {
+          finishReason = readFinishReason(objectValue(chunk.messageMetadata)?.finishReason) ?? finishReason;
+        }
         if (chunk.type === 'data-usage') dataUsage = readUsage(chunk.data) ?? dataUsage;
         if (chunk.type === 'data-context-breakdown') {
           const breakdown = readBreakdown(chunk.data);
@@ -162,12 +193,14 @@ export async function consumeStudyStream({
     const usage = dataUsage ?? readUsage(latest.metadata?.usage);
     const wasAborted = abortSignal?.aborted === true || objectValue(failure)?.name === 'AbortError';
     const endedNormally = completed && failure == null && !wasAborted;
+    finishReason = finishReason ?? readFinishReason(latest.metadata?.finishReason);
     latest = {
       ...latest, followUpQuestions: questions,
       metadata: {
         ...latest.metadata,
         ...(usage ? { usage } : {}),
         durationMs: latest.metadata?.durationMs ?? Date.now() - startedAt,
+        ...(finishReason ? { finishReason } : {}),
       },
       parts: latest.parts.map((part) => {
         // SDK 的 state 描述 part 是否收到了结束帧，不等于 hook 当前是否仍在运行。

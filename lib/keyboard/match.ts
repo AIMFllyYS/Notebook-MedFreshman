@@ -4,7 +4,9 @@ export function modKey(e: KeyboardEvent): boolean {
   return e.ctrlKey || e.metaKey;
 }
 
-function normalizeKey(key: string): string {
+function normalizeKey(key: string | undefined | null): string {
+  // 自动填充 / IME / 扩展会合成没有 key 的 keydown，不能假定它是字符串。
+  if (typeof key !== "string") return "";
   const k = key.toLowerCase();
   if (k === " ") return "space";
   return k;

@@ -6,22 +6,33 @@ import {
   type ModelMessage,
   type UIMessageStreamWriter,
 } from "ai";
+import { compactArtifactMessages, compactUiParts } from "@/lib/context/compactArtifacts";
+import { compactHistory } from "@/lib/context/compactHistory";
+import { pruneStudyMessages } from "@/lib/context/pruneStudyMessages";
+import { CONTEXT_WARNING } from "@/lib/chat/estimateContextBudget";
 import { getContextManager } from "@/lib/context";
-import type { ChatContext, ChatMessage, ChatOptions, UsageSummary } from "@/lib/types/chat";
-import { ENV_MODEL_PRO, ENV_MODEL_FLASH } from "@/lib/ai/provider";
-import { getModelInfoWithCustom } from "@/lib/ai/models";
+import { isSoftLimitReached } from "@/lib/context/estimateFullContext";
+import type { ChatContext, ChatMessage, ChatOptions } from "@/lib/types/chat";
+import { ENV_MODEL_PRO, ENV_MODEL_FLASH, resolveProvider } from "@/lib/ai/provider";
+import { AUTO_MODEL_ID, getModelInfoWithCustom } from "@/lib/ai/models";
+import { selectAutomaticModels } from "@/lib/ai/autoRoute";
+import { estimateTokens } from "@/lib/context/estimateTokens";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { withSseHeartbeat } from "@/lib/ai/sdk/heartbeat";
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
-import { computeContextBreakdown } from "@/lib/ai/agent/contextBreakdown";
+import { TOOL_STEP_LIMIT_INFO } from "@/lib/ai/agent/tools/server";
+import { computeContextBreakdown, estimateRequestContextTokens } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
-import { parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
+import { formatRequestError, parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
+import { awaitUsage, resolveActualBillingModelId, runWithLedgerContext, settleChatUsage } from "@/lib/billing/usageLedger";
+import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/lib/billing/quotaGate";
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
+import { runWithCapabilityEndpoints } from "@/lib/ai/capabilityContext";
+import { capabilitySecretValues } from "@/lib/ai/capabilityEndpoints";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const CONTEXT_WARNING = "上下文已达到 80% 软上限，本次请求只发送最近消息；本地聊天历史仍完整保留。";
 
 type Writer = UIMessageStreamWriter<ChatMessage>;
 
@@ -46,25 +57,22 @@ function hasFileParts(messages: ChatRequest["messages"]): boolean {
   return messages.some((m) => m.parts.some((p) => p.type === "file"));
 }
 
-/** 历史消息已由客户端剥离 reasoning/tool parts；这里只做 UIMessage → ModelMessage 转换。 */
+/** UIMessage → ModelMessage。reasoning / 旧工具结果由随后的 pruneMessages 处理。 */
 async function toModelMessages(messages: ChatRequest["messages"]): Promise<ModelMessage[]> {
-  const uiMessages = messages.map((m, i) => ({
-    id: m.id ?? `m_${i}`,
-    role: m.role,
-    parts: m.parts.filter((p) => p.type === "text" || p.type === "file"),
-  })) as ChatMessage[];
+  const uiMessages = messages
+    .filter((m) => m.role === "user" || m.role === "assistant")
+    .map((m, i) => ({
+      id: m.id ?? `m_${i}`,
+      role: m.role,
+      parts: compactUiParts(
+        m.parts.filter((p) => {
+          const type = p.type;
+          return type === "text" || type === "file" || type === "reasoning"
+            || (typeof type === "string" && type.startsWith("tool-"));
+        }),
+      ),
+    })) as ChatMessage[];
   return convertToModelMessages(uiMessages, { ignoreIncompleteToolCalls: true });
-}
-
-function mapUsage(u: { inputTokens?: number; outputTokens?: number; totalTokens?: number; inputTokenDetails?: { cacheReadTokens?: number } }): UsageSummary {
-  const promptTokens = u.inputTokens ?? 0;
-  const completionTokens = u.outputTokens ?? 0;
-  return {
-    promptTokens,
-    completionTokens,
-    cachedTokens: u.inputTokenDetails?.cacheReadTokens ?? 0,
-    totalTokens: u.totalTokens || promptTokens + completionTokens,
-  };
 }
 
 export async function POST(req: NextRequest) {
@@ -72,7 +80,7 @@ export async function POST(req: NextRequest) {
   try {
     body = parseChatRequest(await req.json().catch(() => ({})));
   } catch (err) {
-    return new Response(JSON.stringify({ error: `请求体不合法：${(err as Error).message}` }), {
+    return new Response(JSON.stringify({ error: formatRequestError(err) }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
@@ -83,23 +91,41 @@ export async function POST(req: NextRequest) {
     body.modelId ?? (body.model === "pro" ? ENV_MODEL_PRO : body.model === "flash" ? ENV_MODEL_FLASH : undefined);
   const customGroups = body.customApiGroups;
   const effectiveCustom = customGroups.length > 0 ? customGroups : body.customProvider;
-  const secrets = [body.customProvider?.apiKey, ...customGroups.map((group) => group.apiKey)]
-    .filter((value): value is string => !!value);
+  const secrets = [
+    body.customProvider?.apiKey,
+    ...customGroups.map((group) => group.apiKey),
+    ...capabilitySecretValues(body.capabilityEndpoints),
+  ].filter((value): value is string => !!value);
   const formatError = (error: unknown) => toChatErrorMessage(error, secrets);
   const generationAbort = new AbortController();
   const generationSignal = AbortSignal.any([req.signal, generationAbort.signal]);
+  const requestId = crypto.randomUUID();
+  const userId = await resolveQuotaUserId(req.headers);
 
   // 生图模式：用户选择了生图模型时，文本对话使用 imageModeTextModel（失败降级到 fallback）。
   const selectedModelInfo = modelId ? getModelInfoWithCustom(modelId, customGroups) : undefined;
   const isImageMode = selectedModelInfo?.type === "image";
-  const effectiveModelId = isImageMode ? body.imageModeTextModel : modelId;
-
+  let effectiveModelId = isImageMode ? body.imageModeTextModel : modelId;
+  let automaticModels: string[] | undefined;
+  let previewProvider;
   try {
-    const { getIndexHealth } = await import("@/lib/ai/search/indexHealth");
-    getIndexHealth();
-  } catch {
-    /* 索引体检失败不阻断对话 */
+    if (effectiveModelId === AUTO_MODEL_ID) {
+      automaticModels = selectAutomaticModels({
+        hasImages: hasFileParts(body.messages),
+        estimatedTokens: estimateTokens(JSON.stringify(body.messages)) + estimateTokens(body.globalContext) + 16_000,
+        text: lastUserText(body.messages), thinking: body.enableThinking,
+      });
+      if (!automaticModels.length) return Response.json({ error: '当前没有能处理此请求的自动模型，请稍后重试或手动选择模型。' }, { status: 503 });
+      effectiveModelId = automaticModels[0];
+    }
+    previewProvider = resolveProvider(effectiveModelId, effectiveCustom);
+  } catch (error) {
+    return Response.json({ error: formatError(error) }, { status: 400 });
   }
+  const mainOnPlatformCredentials = usedPlatformCredentialsForProvider(previewProvider);
+  const mainPool = resolveMainModelPool(mainOnPlatformCredentials);
+  const gate = await assertQuotaAvailable({ userId, pool: mainPool });
+  if (!gate.ok) return quotaRejectedJson(gate);
 
   const options: ChatOptions = {
     enableThinking: body.enableThinking,
@@ -117,13 +143,21 @@ export async function POST(req: NextRequest) {
 
   const stream = createUIMessageStream<ChatMessage>({
     onError: formatError,
-    execute: async ({ writer }) => {
+    execute: async ({ writer }) => runWithCapabilityEndpoints(body.capabilityEndpoints, () => runWithLedgerContext({
+      userId,
+      sessionId: body.id ?? null,
+      requestId,
+      route: "/api/chat",
+      customGroups,
+      mainUsedPlatformCredentials: mainOnPlatformCredentials,
+    }, async () => {
       const resolved = resolveLanguageModel(effectiveModelId, effectiveCustom, {
-        fallbackModelIds: isImageMode ? [body.imageModeTextModelFallback] : [],
+        fallbackModelIds: automaticModels?.slice(1) ?? (isImageMode ? [body.imageModeTextModelFallback] : []),
+        allowedModelIds: automaticModels,
         onFailover: ({ label }) =>
           writer.write({
             type: "data-info",
-            data: { message: `主端点不可用，已切换到备用 API（${label}）` },
+            data: { message: automaticModels ? '正在重新连接模型服务…' : `主端点不可用，已切换到备用 API（${label}）` },
             transient: true,
           }),
       });
@@ -138,34 +172,72 @@ export async function POST(req: NextRequest) {
         );
         return;
       }
-      if (hasFileParts(body.messages) && modelInfo && !modelInfo.vision && !provider.isCustom) {
+      if (hasFileParts(body.messages) && modelInfo && !modelInfo.vision) {
         throw new Error(`当前模型 ${modelInfo.label} 不支持图片理解，请切换到支持视觉的模型（如 MiMo V2.5）。`);
       }
 
-      // 参考材料 + 软上限
+      // 参考材料 + 软上限。两端 80% 用同一套全量估算（system + 工具 schema + 参考材料 + 对话历史）。
       const userText = lastUserText(body.messages);
-      const ctxManager = getContextManager(options.contextMode ?? "full", effectiveModelId);
-      const ctxResult = await ctxManager.buildContext(chatCtx, userText);
-      const contextBudget = body.sessionContextBudgetTokens ?? ctxResult.maxTokens;
-      const serverSoftLimitReached = contextBudget > 0 && ctxResult.tokenCount / contextBudget >= 0.8;
-      const contextTruncated = body.contextTruncated || serverSoftLimitReached || ctxResult.overflow;
+      const ctxManager = getContextManager(options.contextMode ?? "full", effectiveModelId, customGroups);
+      let ctxResult = await ctxManager.buildContext(chatCtx, userText, { compact: body.contextTruncated });
+      const prunedHistory = pruneStudyMessages(compactArtifactMessages(await toModelMessages(body.messages)));
+      const candidateLimit = automaticModels
+        ? Math.min(...automaticModels.map((id) => (getModelInfoWithCustom(id, customGroups)?.contextK ?? 128) * 1000))
+        : ctxResult.maxTokens;
+      const requestedBudget = body.sessionContextBudgetTokens;
+      const contextBudget = Math.min(ctxResult.maxTokens, candidateLimit,
+        requestedBudget != null && requestedBudget > 0 ? requestedBudget : ctxResult.maxTokens);
 
-      const bundle = createStudyAgent({
+      const makeBundle = (truncated: boolean, referenceContext: string) => createStudyAgent({
         model: resolved.model,
         chatCtx,
         options,
         disabledTools: body.disabledTools,
         skills: body.skills,
         globalContext: body.globalContext.trim(),
-        referenceContext: ctxResult.context,
-        contextTruncated,
+        referenceContext,
+        contextTruncated: truncated,
+        artifacts: body.artifacts,
         isImageMode,
-        selectedModelId: modelId ?? effectiveModelId,
+        selectedModelId: automaticModels ? effectiveModelId : modelId ?? effectiveModelId,
         modelSupportsTools: resolved.supportsTools,
         thinking: options.enableThinking ? resolved.thinkingSettings(options.thinkingEffort) : {},
       });
 
-      const historyMessages = await toModelMessages(body.messages);
+      const estimateIncoming = (truncated: boolean, referenceContext: string) => {
+        const next = makeBundle(truncated, referenceContext);
+        return {
+          bundle: next,
+          tokens: estimateRequestContextTokens({
+            promptParts: next.promptParts,
+            tools: next.tools,
+            historyMessages: prunedHistory,
+          }),
+        };
+      };
+
+      let incoming = estimateIncoming(body.contextTruncated, ctxResult.context);
+      let serverSoftLimitReached = isSoftLimitReached(incoming.tokens, contextBudget);
+      if (!body.contextTruncated && (serverSoftLimitReached || ctxResult.overflow)) {
+        ctxResult = await ctxManager.buildContext(chatCtx, userText, { compact: true });
+        incoming = estimateIncoming(true, ctxResult.context);
+        serverSoftLimitReached = isSoftLimitReached(incoming.tokens, contextBudget);
+      }
+      const contextTruncated = body.contextTruncated || serverSoftLimitReached || ctxResult.overflow;
+      const bundle = contextTruncated === body.contextTruncated
+        ? incoming.bundle
+        : makeBundle(contextTruncated, ctxResult.context);
+      const compacted = await compactHistory({
+        messages: prunedHistory,
+        shouldCompact: contextTruncated,
+        sessionId: body.id,
+        abortSignal: generationSignal,
+        modelId: provider.registryId,
+        useSelectedModel: !!automaticModels,
+        isCustom: provider.isCustom,
+        custom: effectiveCustom,
+      });
+      const historyMessages = compacted.messages;
       const startedAt = Date.now();
       const result = await bundle.agent.stream({
         messages: historyMessages,
@@ -173,23 +245,63 @@ export async function POST(req: NextRequest) {
       });
 
       // 手动转发而非 writer.merge：保证 usage / breakdown / followup 等 data part 与 finish 严格排在正文之后。
-      for await (const chunk of result.toUIMessageStream<ChatMessage>({
-        sendReasoning: true, sendStart: true, sendFinish: false, onError: formatError,
-      })) {
-        writer.write(chunk);
-        if (chunk.type === "error" || chunk.type === "abort") {
-          // SDK failures are stream data, not necessarily rejected result promises.
-          // Stop the provider and never run a second, billable follow-up request.
-          generationAbort.abort();
-          return;
+      let streamFailed = false;
+      try {
+        for await (const chunk of result.toUIMessageStream<ChatMessage>({
+          sendReasoning: true, sendStart: true, sendFinish: false, onError: formatError,
+        })) {
+          writer.write(chunk);
+          if (chunk.type === "error" || chunk.type === "abort") {
+            // SDK failures are stream data, not necessarily rejected result promises.
+            // Stop the provider and never run a second, billable follow-up request.
+            generationAbort.abort();
+            streamFailed = true;
+            break;
+          }
         }
+      } catch {
+        generationAbort.abort();
+        streamFailed = true;
       }
-      if (generationSignal.aborted) return;
 
-      const [steps, totalUsage, finalText] = await Promise.all([result.steps, result.totalUsage, result.text]);
+      const aborted = streamFailed || generationSignal.aborted;
+      if (!aborted) writer.write({ type: 'data-answer-complete', data: { durationMs: Date.now() - startedAt } });
+      const selectedModelId = modelId ?? effectiveModelId;
+      const actualProvider = resolved.getActualProvider();
+      const actualModelId = resolveActualBillingModelId(actualProvider);
+      const usedPlatform = usedPlatformCredentialsForProvider(actualProvider);
+      const pool = resolveMainModelPool(usedPlatform);
+      // 上游 usage 到手即记账；abort/error 也走这里，不依赖客户端是否还连着 SSE。
+      // BYOK 主模型不进任何池、不落行。
+      const settled = await settleChatUsage({
+        rawUsage: await awaitUsage(result.totalUsage),
+        userId,
+        selectedModelId,
+        actualModelId,
+        customGroups,
+        pool: pool ?? undefined,
+        skipInsert: pool == null,
+        sessionId: body.id,
+        requestId,
+        aborted,
+      });
+      if (aborted) return;
+
+      const [steps, finalText, finishReason] = await Promise.all([
+        result.steps, result.text, result.finishReason,
+      ]);
+
+      // 第 6 步仍要工具且无第 7 次 LLM：SDK finishReason 为 tool-calls。
+      if (finishReason === "tool-calls") {
+        writer.write({
+          type: "data-info",
+          data: { message: TOOL_STEP_LIMIT_INFO },
+          transient: true,
+        });
+      }
 
       // FollowUp 兜底：模型未输出 <FollowUp> 标签时，用轻量模型生成追问
-      if (finalText && !/<FollowUp>[\s\S]*?<\/FollowUp>/i.test(finalText)) {
+      if (!automaticModels && finalText && !/<FollowUp>[\s\S]*?<\/FollowUp>/i.test(finalText)) {
         const questions = await generateFallbackFollowUps({
           userText,
           answerText: finalText,
@@ -210,21 +322,26 @@ export async function POST(req: NextRequest) {
           steps,
           clientContextTokens: body.clientContextTokens ?? null,
           truncated: contextTruncated,
-          cacheHit: ctxResult.cacheHit,
+          cachedTokens: settled.summary?.cachedTokens ?? 0,
+          cacheHit: (settled.summary?.cachedTokens ?? 0) > 0,
           warning: contextTruncated ? CONTEXT_WARNING : undefined,
         }),
       });
 
-      const usage = mapUsage(totalUsage);
-      if (usage.promptTokens > 0 || usage.completionTokens > 0) {
-        writer.write({ type: "data-usage", data: usage });
+      if (settled.summary) {
+        writer.write({ type: "data-usage", data: settled.summary });
       }
       writer.write({
         type: "message-metadata",
-        messageMetadata: { usage, durationMs: Date.now() - startedAt, modelId: modelId ?? effectiveModelId },
+        messageMetadata: {
+          ...(settled.summary ? { usage: settled.summary } : {}),
+          durationMs: Date.now() - startedAt,
+          modelId: modelId ?? effectiveModelId,
+          finishReason,
+        },
       });
-      writer.write({ type: "finish" });
-    },
+      writer.write({ type: "finish", finishReason });
+    })),
   });
 
   return withSseHeartbeat(

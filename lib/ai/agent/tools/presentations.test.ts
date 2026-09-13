@@ -11,4 +11,6 @@ test("TOOL_PRESENTATION keys match STUDY_TOOL_NAMES and every label is non-empty
     assert.ok(p.label.trim().length > 0, name);
     assert.ok(p.settingsLabel.trim().length > 0, name);
   }
+  assert.doesNotMatch(TOOL_PRESENTATION.writeDocument.description, /Word|LaTeX|PDF/);
+  assert.match(TOOL_PRESENTATION.writeDocument.description, /Markdown/);
 });

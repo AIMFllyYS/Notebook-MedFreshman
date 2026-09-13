@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo, useId } from 'react';
 import {
   AgentGlobeIcon, AgentArrowUpIcon, AgentStopIcon, AgentQuoteIcon,
   AgentCloseIcon, AgentCheckIcon, AgentPaperclipIcon,
@@ -18,7 +18,9 @@ import {
   clampThinkingEffort,
 } from '@/lib/ai/models';
 import ModelMenu from '@/components/chat/ModelMenu';
-import ThinkingMenuButton from '@/components/chat/ThinkingMenu';
+import ThinkingMenuButton, { ThinkingMenuItems } from '@/components/chat/ThinkingMenu';
+import AnchoredMenu from '@/components/ui/AnchoredMenu';
+import InputLimitDialog from '@/components/chat/InputLimitDialog';
 import TokenDashboard from '@/components/chat/TokenDashboard';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 
@@ -51,8 +53,22 @@ export interface ChatInputProps {
   notice?: React.ReactNode;
 }
 
+export const MAX_INPUT_CHARACTERS = 50_000;
+function countCharacters(text: string) {
+  // Count Unicode code points without allocating a second large array.
+  let count = 0;
+  for (const character of text) count += character ? 1 : 0;
+  return count;
+}
+
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice }) => {
   const [input, setInput] = useState('');
+  const countId = useId();
+  const characterCount = useMemo(() => countCharacters(input), [input]);
+  const overLimit = characterCount > MAX_INPUT_CHARACTERS;
+  const showCharacterCount = characterCount > 1_000;
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
+  const composingRef = useRef(false);
   const [isFocused, setIsFocused] = useState(false);
   const [enableThinking, setEnableThinking] = useState(() => useSettings.getState().defaultThinking);
   const [thinkingEffort, setThinkingEffort] = useState<ThinkingEffort>(
@@ -127,6 +143,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   }, [onComposerInsetChange]);
 
   const handleSend = useCallback(() => {
+    if (overLimit) { setShowLimitDialog(true); return; }
     const trimmed = input.trim();
     if ((!trimmed && attachments.length === 0) || isLoading || externalDisabled) return;
 
@@ -140,9 +157,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     setInput('');
     clearAttachments();
     if (effectiveQuote) clearQuotedText();
-  }, [input, attachments, isLoading, externalDisabled, onSend, effectiveEnableThinking, effectiveThinkingEffort, enableSearch, effectiveQuote, clearQuotedText, toChatFormat, clearAttachments]);
+  }, [input, overLimit, attachments, isLoading, externalDisabled, onSend, effectiveEnableThinking, effectiveThinkingEffort, enableSearch, effectiveQuote, clearQuotedText, toChatFormat, clearAttachments]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (composingRef.current || e.nativeEvent.isComposing || e.keyCode === 229) return;
     if (e.key === 'Enter' && !e.shiftKey) {
       if (!sendShortcutEnabled) return;
       e.preventDefault();
@@ -162,7 +180,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   };
 
   const inputDisabled = isLoading || !!externalDisabled;
-  const sendDisabled = !!externalDisabled || ((!input.trim() && attachments.length === 0) && !isLoading);
+  const sendDisabled = !!externalDisabled || (!isLoading && (overLimit || (!input.trim() && attachments.length === 0)));
+  const thinkingProps = {
+    enabled: effectiveEnableThinking, effort: displayEffort, supported: thinkingSupported,
+    disabled: inputDisabled, levels: thinkingLevels, allowOff: thinkingAllowOff,
+    onChange: ({ enabled, effort }: { enabled: boolean; effort: ThinkingEffort }) => {
+      setEnableThinking(selectedModelInfo?.thinkingRequired ? true : enabled);
+      setThinkingEffort(thinkingEffortSupported ? clampThinkingEffort(selectedModelInfo, effort) : effort);
+    },
+  };
 
   return (
     <div
@@ -213,20 +239,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       )}
 
       <div className="chat-input-toolbar" aria-label="对话选项">
-        <div className="chat-input-toolbar-group">
+        <div className="chat-input-toolbar-group chat-input-toolbar-options">
           {thinkingSupported && (
-            <ThinkingMenuButton
-              enabled={effectiveEnableThinking}
-              effort={displayEffort}
-              supported={thinkingSupported}
-              disabled={inputDisabled}
-              levels={thinkingLevels}
-              allowOff={thinkingAllowOff}
-              onChange={({ enabled, effort }) => {
-                setEnableThinking(selectedModelInfo?.thinkingRequired ? true : enabled);
-                setThinkingEffort(thinkingEffortSupported ? clampThinkingEffort(selectedModelInfo, effort) : effort);
-              }}
-            />
+            <ThinkingMenuButton {...thinkingProps} />
           )}
 
           <button
@@ -234,12 +249,31 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
             disabled={inputDisabled}
             className={`chat-input-toggle chat-input-toggle-search ${enableSearch ? 'chat-input-toggle-search-active' : ''} ${inputDisabled ? 'chat-input-toggle-disabled' : ''}`}
             title="联网搜索（需配置搜索API）"
+            aria-pressed={enableSearch}
           >
             <AgentGlobeIcon size={12} />
             <span className="chat-input-toggle-text">联网搜索</span>
             {enableSearch && <AgentCheckIcon size={10} />}
           </button>
         </div>
+
+        <AnchoredMenu label="更多对话选项" placement="top" width={250} disabled={inputDisabled}
+          className="chat-input-toggle chat-input-more" trigger={<>
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="3" cy="8" r="1.2" fill="currentColor" /><circle cx="8" cy="8" r="1.2" fill="currentColor" /><circle cx="13" cy="8" r="1.2" fill="currentColor" /></svg>
+            {(effectiveEnableThinking || enableSearch) && <span className="chat-input-more-dot" />}
+          </>}>
+          {(close) => <>
+            {thinkingSupported ? <ThinkingMenuItems {...thinkingProps} onChange={(next) => { thinkingProps.onChange(next); close(); }} />
+              : <div className="app-menu-heading">当前模型不支持深度思考</div>}
+            <div className="app-menu-separator" />
+            <button type="button" role="menuitemcheckbox" aria-checked={enableSearch} disabled={inputDisabled} className="app-menu-item"
+              onClick={() => { setEnableSearch((value) => !value); close(); }}>
+              <span className="app-menu-check"><AgentGlobeIcon size={13} /></span>
+              <span>联网搜索<small>使用搜索 API 获取最新信息</small></span>
+              {enableSearch && <AgentCheckIcon size={12} />}
+            </button>
+          </>}
+        </AnchoredMenu>
 
         <div className="chat-input-toolbar-group chat-input-toolbar-models">
           {showTokenDashboard && <TokenDashboard isLoading={isLoading} floatingSessionId={floatingSessionId} modelId={modelId} />}
@@ -257,11 +291,23 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         </div>
       </div>
 
-      <div className={`chat-input-row ${isFocused ? 'chat-input-row-focused' : ''}`}>
+      <div className={`chat-input-row ${isFocused ? 'chat-input-row-focused' : ''} ${showCharacterCount ? 'chat-input-row-with-count' : ''}`}>
         <textarea
           ref={textareaRef}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => {
+            const next = e.target.value;
+            setInput(next);
+            if (!composingRef.current && !overLimit && countCharacters(next) > MAX_INPUT_CHARACTERS) setShowLimitDialog(true);
+          }}
+          onCompositionStart={() => { composingRef.current = true; }}
+          onCompositionEnd={(e) => {
+            composingRef.current = false;
+            if (countCharacters(e.currentTarget.value) > MAX_INPUT_CHARACTERS) setShowLimitDialog(true);
+          }}
+          aria-label="输入问题"
+          aria-describedby={showCharacterCount ? countId : undefined}
+          aria-invalid={overLimit || undefined}
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
           onFocus={() => setIsFocused(true)}
@@ -280,6 +326,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           style={{ display: 'none' }}
           onChange={handleFileChange}
         />
+
+        {showCharacterCount && (
+          <div id={countId} className={`chat-input-count ${overLimit ? 'chat-input-count-error' : ''}`} aria-live={overLimit ? 'assertive' : 'off'}>
+            <span>{characterCount.toLocaleString('en-US')} / 50,000 字</span>
+          </div>
+        )}
 
         <button
           onClick={handleAttachClick}
@@ -310,7 +362,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           {isLoading ? <AgentStopIcon size={14} /> : <AgentArrowUpIcon size={14} />}
         </button>
       </div>
-
+      {showLimitDialog && <InputLimitDialog count={characterCount} limit={MAX_INPUT_CHARACTERS} onClose={() => setShowLimitDialog(false)} />}
     </div>
   );
 };

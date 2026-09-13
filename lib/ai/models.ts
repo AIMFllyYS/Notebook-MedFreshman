@@ -1,5 +1,5 @@
 // 多提供商精选模型注册表 —— 供 AI 对话的模型选择菜单。
-// 主力对话：自有中转（relay.protocom.org）；MiMo 走小米 Token Plan；
+// 主力对话：自有中转（relay.protocom.org）；MiMo 同样走自有中转；
 // 硅基流动仅保留生图；智谱仅保留向量/重排/联网搜索。
 // model id（注册 id）与上游 apiModelId 分离；endpoints 链支持容灾降级。
 
@@ -29,7 +29,10 @@ export type ThinkingRequestStyle =
   | "siliconflow"
   | "openai-reasoning-effort"
   | "openrouter-reasoning"
-  | "anthropic-thinking";
+  | "anthropic-thinking"
+  | "gemini-thinking-level"
+  | "deepseek-thinking"
+  | "mimo-thinking";
 
 export interface ModelEndpoint {
   provider: ProviderKind;
@@ -89,9 +92,23 @@ export interface ModelInfo {
     /** 最大生成数量。 */
     maxCount?: number;
   };
+  /**
+   * 厂商训练声明。有值时必须在模型菜单/设置里明示，不能只藏在 hint。
+   * Muse Spark contributor SKU：对话可能用于厂商训练。
+   */
+  vendorTrainingNotice?: string;
 }
 
+export const MUSE_VENDOR_TRAINING_NOTICE = "对话可能用于厂商训练";
+
 export const CUSTOM_MODEL_ID = "custom";
+export const AUTO_MODEL_ID = "auto";
+
+/** A selection policy, not an upstream model. No fabricated price or fixed window. */
+export const AUTO_MODEL_INFO: ModelInfo = {
+  id: AUTO_MODEL_ID, label: "自动", group: "自动模型", thinking: true,
+  tools: true, vision: true, hint: "根据当前任务自动选择合适的模型", endpoints: [],
+};
 
 /** 桌面「自由中转」：用户自填 URL / API Key / 模型 ID，registry id 固定，上游 apiModelId 来自 env。 */
 export const CUSTOM_OPENAI_MODEL_ID = "custom-openai";
@@ -107,19 +124,24 @@ export function modelsForPicker(models: ModelInfo[]): ModelInfo[] {
 
 /** 已下架注册 id → 当前注册 id（用户本地设置兼容） */
 export const LEGACY_REGISTRY_ALIASES: Record<string, string> = {
-  "MiniMaxAI/MiniMax-M3": "Qwen/Qwen3.8-27B",
-  "MiniMaxAI/MiniMax-M2.5": "Qwen/Qwen3.8-27B",
-  "deepseek-ai/DeepSeek-V4-Pro": "deepseek/deepseek-v4-flash",
-  "deepseek-ai/DeepSeek-V4-Flash": "deepseek/deepseek-v4-flash",
+  "MiniMaxAI/MiniMax-M3": "Qwen/Qwen3.8-Flash",
+  "MiniMaxAI/MiniMax-M2.5": "Qwen/Qwen3.8-Flash",
+  "Qwen/Qwen3.6-35B-A3B": "Qwen/Qwen3.8-Flash",
+  "Qwen/Qwen3.6-27B": "Qwen/Qwen3.8-Flash",
+  "moonshotai/Kimi-K2.7-Code": "Qwen/Qwen3.8-Flash",
+  "Qwen/Qwen3.8-27B": "Qwen/Qwen3.8-Flash",
+  "Pro/moonshotai/Kimi-K2.6": "kimi-k3",
+  "google/gemini-3.7-flash": "google/gemini-3.8-flash",
+  "deepseek-ai/DeepSeek-V4-Pro": "deepseek/deepseek-v4.1-flash",
+  "deepseek-ai/DeepSeek-V4-Flash": "deepseek/deepseek-v4.1-flash",
+  "deepseek/deepseek-v4-flash": "deepseek/deepseek-v4.1-flash",
+  "mimo-v2.5-pro": "mimo-v2.5",
+  "mimo-v2-flash": "mimo-v2.5",
   "zai-org/GLM-5.2": "z-ai/glm-5.3-flash",
   "Pro/zai-org/GLM-5.1": "z-ai/glm-5.3-flash",
   "zai-org/GLM-Z1-AirX": "z-ai/glm-5.3-flash",
   "zai-org/GLM-4.7-FlashX": "z-ai/glm-5.3-flash",
-  "Qwen/Qwen3.6-35B-A3B": "Qwen/Qwen3.8-27B",
-  "Qwen/Qwen3.6-27B": "Qwen/Qwen3.8-27B",
-  "Pro/moonshotai/Kimi-K2.6": "google/gemini-3.7-flash",
-  "moonshotai/Kimi-K2.7-Code": "Qwen/Qwen3.8-27B",
-  "mimo-v2-flash": "mimo-v2.5",
+  "inclusionai/ling-3.0-flash-sante:free": "inclusionai/ling-3.0-flash-sante:free",
 };
 
 export function normalizeRegistryId(id: string): string {
@@ -127,7 +149,6 @@ export function normalizeRegistryId(id: string): string {
 }
 
 const SF = "siliconflow" as const;
-const MIMO = "mimo" as const;
 const RELAY = "relay" as const;
 
 function ep(provider: ProviderKind, apiModelId: string): ModelEndpoint {
@@ -137,8 +158,6 @@ function ep(provider: ProviderKind, apiModelId: string): ModelEndpoint {
 function sf(id: string): ModelEndpoint[] {
   return [ep(SF, id)];
 }
-
-const MIMO_LEVELS: ThinkingEffort[] = ["low", "medium", "high", "max"];
 
 export const MODELS: ModelInfo[] = [
   // ── 自由中转（用户自填 OpenAI 兼容端点，不必使用项目默认中转站）──
@@ -156,124 +175,225 @@ export const MODELS: ModelInfo[] = [
     hint: "自定义 OpenAI 兼容端点 · 在桌面设置中填写 URL / 模型 ID / API Key",
     endpoints: [ep(RELAY, CUSTOM_OPENAI_MODEL_ID)],
   },
-  // ── 主力模型（项目中转站；仅当 RELAY_* 指向该站时可用）──────────────────
+  // ── 快速模型 ──────────────────────────
   {
-    id: "z-ai/glm-5.3-flash",
-    label: "GLM-5.3 Flash",
-    group: "主力模型",
-    thinking: true,
-    thinkingRequired: true,
-    thinkingLevels: ["low", "high", "max"],
-    thinkingEffortMap: { low: "low", medium: "high", high: "high", max: "max" },
-    defaultThinkingEffort: "high",
-    thinkingRequestStyle: "openai-reasoning-effort",
-    tools: true,
-    vision: true,
-    contextK: 1000,
-    hint: "多模态 · 1M · 思考不可关 · low/high/max",
-    endpoints: [ep(RELAY, "z-ai/glm-5.3-flash"), ep(MIMO, "mimo-v2.5")],
-    icon: "zhipu",
-    pricing: { input: 1.05, cachedInput: 0.21, output: 3.5 },
-    cacheTtlSec: 1800,
-    timeoutMs: 120_000,
-  },
-  {
-    id: "Qwen/Qwen3.8-27B",
-    label: "Qwen3.8 27B",
-    group: "主力模型",
+    id: "deepseek/deepseek-v4.1-flash",
+    label: "DeepSeek V4.1 Flash",
+    group: "快速模型",
     thinking: true,
     thinkingLevels: ["low", "medium", "high"],
-    thinkingEffortMap: { low: "low", medium: "medium", high: "xhigh", max: "xhigh" },
-    defaultThinkingEffort: "medium",
-    thinkingRequestStyle: "openai-reasoning-effort",
-    tools: true,
-    vision: true,
-    contextK: 256,
-    hint: "视觉 · 256K · 混合思考 · low/medium/xhigh",
-    endpoints: [ep(RELAY, "Qwen/Qwen3.8-27B")],
-    icon: "qwen",
-    pricing: { input: 0.5, cachedInput: 0.05, output: 3.5 },
-    cacheTtlSec: 1800,
-    timeoutMs: 120_000,
-  },
-  {
-    id: "google/gemini-3.7-flash",
-    label: "Gemini 3.7 Flash",
-    group: "主力模型",
-    thinking: true,
-    thinkingRequired: true,
-    thinkingLevels: ["low", "medium", "high"],
-    thinkingEffortMap: { low: "low", medium: "medium", high: "high", max: "high" },
     defaultThinkingEffort: "medium",
     thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
     vision: true,
     contextK: 1000,
-    hint: "1M · 思考不可关 · thinking_level low/medium/high",
-    endpoints: [ep(RELAY, "google/gemini-3.7-flash")],
-    icon: "gemini",
-    pricing: { input: 1.05, cachedInput: 0.21, output: 4.2 },
-    cacheTtlSec: 3600,
-    timeoutMs: 120_000,
-  },
-  {
-    id: "deepseek/deepseek-v4-flash",
-    label: "DeepSeek V4 Flash",
-    group: "主力模型",
-    thinking: true,
-    thinkingLevels: ["low", "medium", "high"],
-    thinkingEffortMap: { low: "low", medium: "medium", high: "high", max: "high" },
-    defaultThinkingEffort: "medium",
-    thinkingRequestStyle: "openai-reasoning-effort",
-    tools: true,
-    contextK: 1000,
-    hint: "性价比推理 · 1M · reasoning_effort",
-    endpoints: [ep(RELAY, "deepseek/deepseek-v4-flash")],
+    hint: "全局默认 · 视觉 · 1M",
+    endpoints: [ep(RELAY, "deepseek/deepseek-v4.1-flash")],
     icon: "deepseek",
-    pricing: { input: 1, cachedInput: 0.02, cacheWrite: 0.02, output: 2 },
+    pricing: { input: 2.1, cachedInput: 0.042, output: 8.4 },
     cacheTtlSec: 7200,
   },
-  // ── 小米 MiMo（Token Plan）──────────────────
   {
-    id: "mimo-v2.5-pro",
-    label: "MiMo V2.5 Pro",
-    group: "小米 MiMo",
+    id: "Qwen/Qwen3.7-Flash",
+    label: "Qwen3.7 Flash",
+    group: "快速模型",
     thinking: true,
-    thinkingLevels: MIMO_LEVELS,
+    thinkingLevels: ["low", "medium", "high", "max"],
     defaultThinkingEffort: "medium",
-    thinkingRequestStyle: "siliconflow",
+    thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
+    vision: true,
     contextK: 1000,
-    hint: "旗舰推理 · 1M · Token Plan",
-    endpoints: [ep(MIMO, "mimo-v2.5-pro")],
-    icon: "mimo",
-    pricing: { input: 3, cachedInput: 0.025, output: 6 },
+    hint: "视觉 · 1M · 快速",
+    endpoints: [ep(RELAY, "Qwen/Qwen3.7-Flash")],
+    icon: "qwen",
+    pricing: { input: 1.2, cachedInput: 0.24, output: 4.8 },
+    cacheTtlSec: 1800,
+    timeoutMs: 120_000,
+  },
+  // ── 多模态 ──────────────────────────
+  {
+    id: "gpt-5.6-luna",
+    label: "GPT-5.6 Luna",
+    group: "多模态",
+    thinking: true,
+    thinkingLevels: ["low", "medium", "high", "max"],
+    defaultThinkingEffort: "medium",
+    thinkingRequestStyle: "openai-reasoning-effort",
+    tools: true,
+    vision: true,
+    contextK: 1000,
+    hint: "多模态 · 视觉 · 1M",
+    endpoints: [ep(RELAY, "gpt-5.6-luna")],
+    pricing: { input: 1.4, cachedInput: 0.14, cacheWrite: 1.75, output: 8.4 },
     cacheTtlSec: 3600,
   },
   {
     id: "mimo-v2.5",
     label: "MiMo V2.5",
-    group: "小米 MiMo",
+    group: "多模态",
     thinking: true,
-    thinkingLevels: MIMO_LEVELS,
+    thinkingLevels: ["low", "medium", "high"],
     defaultThinkingEffort: "medium",
-    thinkingRequestStyle: "siliconflow",
+    thinkingRequestStyle: "openai-reasoning-effort",
     tools: true,
     vision: true,
     contextK: 1000,
-    hint: "全模态 · 1M · 图片理解",
-    endpoints: [ep(MIMO, "mimo-v2.5")],
+    hint: "全模态 · 1M · 可调思考深度",
+    endpoints: [ep(RELAY, "mimo-v2.5")],
     icon: "mimo",
-    pricing: { input: 1, cachedInput: 0.02, output: 2 },
+    pricing: { input: 1, cachedInput: 0.02, cacheWrite: 1, output: 2 },
     cacheTtlSec: 3600,
   },
-  // ── 硅基流动生图 ──────────────────────────
+  {
+    id: "google/gemini-3.8-flash",
+    label: "Gemini 3.8 Flash",
+    group: "多模态",
+    thinking: true,
+    thinkingRequired: true,
+    thinkingLevels: ["low", "medium", "high"],
+    defaultThinkingEffort: "medium",
+    thinkingRequestStyle: "openai-reasoning-effort",
+    tools: true,
+    vision: true,
+    contextK: 1000,
+    hint: "1M · 思考不可关",
+    endpoints: [ep(RELAY, "google/gemini-3.8-flash")],
+    icon: "gemini",
+    pricing: { input: 10.5, cachedInput: 1.05, output: 52.5 },
+    cacheTtlSec: 3600,
+    timeoutMs: 120_000,
+  },
+  {
+    id: "z-ai/glm-5.3-flash",
+    label: "GLM-5.3 Flash",
+    group: "多模态",
+    thinking: true,
+    thinkingRequired: true,
+    thinkingLevels: ["low", "high", "max"],
+    thinkingEffortMap: { low: "low", medium: "high", high: "high", max: "max" },
+    defaultThinkingEffort: "max",
+    thinkingRequestStyle: "openai-reasoning-effort",
+    tools: true,
+    vision: true,
+    contextK: 1000,
+    hint: "1M · 思考不可关",
+    endpoints: [ep(RELAY, "z-ai/glm-5.3-flash"), ep(RELAY, "mimo-v2.5")],
+    icon: "zhipu",
+    pricing: { input: 0.8, cachedInput: 0.23, output: 2.8 },
+    cacheTtlSec: 1800,
+    timeoutMs: 120_000,
+  },
+  {
+    id: "Qwen/Qwen3.8-Flash",
+    label: "Qwen3.8 Flash",
+    group: "多模态",
+    thinking: true,
+    thinkingLevels: ["low", "medium", "high", "max"],
+    defaultThinkingEffort: "medium",
+    thinkingRequestStyle: "openai-reasoning-effort",
+    tools: true,
+    vision: true,
+    contextK: 1000,
+    hint: "视觉 · 1M · 混合思考",
+    endpoints: [ep(RELAY, "Qwen/Qwen3.8-Flash")],
+    icon: "qwen",
+    pricing: { input: 0.8, cachedInput: 0.1, output: 2.7 },
+    cacheTtlSec: 1800,
+    timeoutMs: 120_000,
+  },
+  {
+    id: "meta/muse-spark-1.3-contributor",
+    label: "Muse Spark 1.3",
+    group: "多模态",
+    thinking: true,
+    thinkingLevels: ["high", "max"],
+    thinkingEffortMap: { high: "xhigh", max: "max" },
+    defaultThinkingEffort: "high",
+    thinkingRequestStyle: "openai-reasoning-effort",
+    tools: true,
+    vision: true,
+    contextK: 1000,
+    hint: "视觉 · 1M · high→xhigh",
+    vendorTrainingNotice: MUSE_VENDOR_TRAINING_NOTICE,
+    endpoints: [ep(RELAY, "meta/muse-spark-1.3-contributor")],
+    pricing: { input: 0.7, cachedInput: 0.014, output: 1.4 },
+    cacheTtlSec: 1800,
+    timeoutMs: 120_000,
+  },
+  // ── 免费模型 ──────────────────────────
+  {
+    id: "meituan/LongCat-2.0:free",
+    label: "LongCat 2.0",
+    group: "免费模型",
+    thinking: true,
+    thinkingLevels: ["low", "medium", "high"],
+    defaultThinkingEffort: "medium",
+    thinkingRequestStyle: "openai-reasoning-effort",
+    tools: true,
+    contextK: 1050,
+    hint: "免费 · 1.05M",
+    endpoints: [ep(RELAY, "meituan/LongCat-2.0:free")],
+    pricing: { input: 0, cachedInput: 0, output: 0 },
+  },
+  {
+    id: "inclusionai/ling-3.0-flash-sante:free",
+    label: "Ling 3.0 Flash Sante",
+    group: "免费模型",
+    thinking: true,
+    thinkingLevels: ["low", "medium", "high"],
+    defaultThinkingEffort: "medium",
+    thinkingRequestStyle: "openai-reasoning-effort",
+    tools: true,
+    contextK: 256,
+    hint: "免费 · 256K",
+    endpoints: [ep(RELAY, "inclusionai/ling-3.0-flash-sante:free")],
+    pricing: { input: 0, cachedInput: 0, output: 0 },
+  },
+  // ── 旗舰模型 ──────────────────────────
+  {
+    id: "gpt-5.6-sol",
+    label: "GPT-5.6 Sol",
+    group: "旗舰模型",
+    thinking: true,
+    thinkingLevels: ["low", "medium", "high", "max"],
+    defaultThinkingEffort: "medium",
+    thinkingRequestStyle: "openai-reasoning-effort",
+    tools: true,
+    vision: true,
+    contextK: 1000,
+    hint: "旗舰 · 视觉 · 1M",
+    endpoints: [ep(RELAY, "gpt-5.6-sol")],
+    pricing: { input: 28, cachedInput: 2.8, cacheWrite: 35, output: 140 },
+    cacheTtlSec: 3600,
+    timeoutMs: 120_000,
+  },
+  {
+    id: "kimi-k3",
+    label: "Kimi K3",
+    group: "旗舰模型",
+    thinking: true,
+    thinkingRequired: true,
+    thinkingLevels: [],
+    thinkingRequestStyle: "none",
+    tools: true,
+    vision: true,
+    contextK: 1000,
+    hint: "旗舰 · 1M · 使用模型默认推理配置",
+    endpoints: [ep(RELAY, "kimi-k3")],
+    icon: "kimi",
+    pricing: { input: 20, cachedInput: 2, output: 100 },
+    cacheTtlSec: 3600,
+    timeoutMs: 120_000,
+  },
+  // ── 生图模型 ──────────────────────────
   {
     id: "Tongyi-MAI/Z-Image-Turbo",
     label: "Z-Image Turbo",
-    group: "硅基流动生图",
+    group: "生图模型",
     type: "image",
     thinking: false,
+    thinkingRequestStyle: "none",
     tools: false,
     contextK: 0,
     hint: "通义生图 · ¥0.10/张 · 亚秒级 · 中英文文字",
@@ -284,7 +404,7 @@ export const MODELS: ModelInfo[] = [
   },
 ];
 
-export const DEFAULT_MODEL_ID = "z-ai/glm-5.3-flash";
+export const DEFAULT_MODEL_ID = "deepseek/deepseek-v4.1-flash";
 
 export function modelThinkingLevels(info: ModelInfo | undefined): ThinkingEffort[] {
   if (!info?.thinking) return [];
@@ -337,33 +457,10 @@ export function wireThinkingEffort(
 
 export const CUSTOM_PREFIX = "custom:";
 
-export interface ParsedCustomModelRegistryId {
-  groupId?: string;
-  modelId: string;
-  scoped: boolean;
-}
-
 export function buildCustomModelRegistryId(groupId: string, modelId: string): string {
   return `${CUSTOM_PREFIX}${encodeURIComponent(groupId)}:${encodeURIComponent(modelId)}`;
 }
 
-function parseCustomModelRegistryId(id: string): ParsedCustomModelRegistryId | undefined {
-  if (!id.startsWith(CUSTOM_PREFIX)) return undefined;
-  const rest = id.slice(CUSTOM_PREFIX.length);
-  const sep = rest.indexOf(":");
-  if (sep > 0) {
-    try {
-      return {
-        groupId: decodeURIComponent(rest.slice(0, sep)),
-        modelId: decodeURIComponent(rest.slice(sep + 1)),
-        scoped: true,
-      };
-    } catch {
-      return { groupId: rest.slice(0, sep), modelId: rest.slice(sep + 1), scoped: true };
-    }
-  }
-  return { modelId: rest, scoped: false };
-}
 
 export interface CustomModelConfig {
   id: string;
@@ -422,6 +519,8 @@ export interface CustomModelConfig {
     sizes?: string[];
     maxCount?: number;
   };
+  /** chat/completions 超时（毫秒）；缺省用分组 timeoutMs 或默认 45s。 */
+  timeoutMs?: number;
 }
 
 export type CustomApiProtocol = NonNullable<CustomModelConfig["apiProtocol"]>;
@@ -435,10 +534,22 @@ export interface CustomApiGroup {
   baseUrl: string;
   apiKey: string;
   models: CustomModelConfig[];
+  /** 该分组默认超时（毫秒）；模型级 timeoutMs 优先。 */
+  timeoutMs?: number;
 }
 
 export function getModelInfo(id: string): ModelInfo | undefined {
+  if (id === AUTO_MODEL_ID) return AUTO_MODEL_INFO;
   return MODELS.find((m) => m.id === normalizeRegistryId(id));
+}
+
+/**
+ * 落地端点的 ModelInfo：apiModelId 能对上注册表时用它（GLM → mimo-v2.5），
+ * 否则退回 registryId（同模型换供应商、未知上游 id）。
+ * `resolveBuiltinEndpoint` 与 `landedThinkingContext` 必须共用这一判据。
+ */
+export function getLandedModelInfo(apiModelId: string, registryId: string): ModelInfo | undefined {
+  return getModelInfo(apiModelId) ?? getModelInfo(registryId);
 }
 
 /** 主路由 provider（endpoints[0]）。 */
@@ -452,16 +563,46 @@ export function getFetchTimeoutMs(registryId: string): number {
   return info?.timeoutMs ?? 45_000;
 }
 
-/** 是否还有备用端点可尝试。 */
+/** 自定义分组（含 `custom:` / 旧 `custom`）不支持 failover：只有用户填的那一个端点。 */
+export function isCustomRegistryId(registryId: string | undefined): boolean {
+  return !!registryId && (registryId === CUSTOM_MODEL_ID || registryId.startsWith(CUSTOM_PREFIX));
+}
+
+/** 是否还有备用端点可尝试。自定义分组恒为 false（方案 b：不支持 failover）。 */
 export function hasNextEndpoint(registryId: string, currentIndex: number): boolean {
+  if (isCustomRegistryId(registryId)) return false;
   const info = getModelInfo(registryId);
   return !!info && currentIndex + 1 < info.endpoints.length;
 }
 
-/** 展平所有分组的自定义模型为单一数组（向后兼容辅助）。 */
-function getAllCustomModels(groups: CustomApiGroup[]): CustomModelConfig[] {
-  return groups.flatMap((g) => g.models);
+/**
+ * 本次请求真正会用到的自定义分组（0 或 1 个，偶发两个：生图默认模型兜底）。
+ * 内置模型（含 custom-openai）不匹配任何分组，返回 []。
+ */
+export function selectCustomApiGroupsForRequest(
+  groups: CustomApiGroup[],
+  ...modelIds: Array<string | null | undefined>
+): CustomApiGroup[] {
+  if (!groups.length) return [];
+  const seen = new Set<string>();
+  const selected: CustomApiGroup[] = [];
+  for (const modelId of modelIds) {
+    if (!modelId) continue;
+    const found = findCustomModelGroup(groups, modelId);
+    if (!found || seen.has(found.group.id)) continue;
+    seen.add(found.group.id);
+    selected.push(found.group);
+  }
+  return selected;
 }
+
+/** 有模型信息时必须显式 vision:true 才接受图片；未知 id 不拦截。 */
+export function modelAcceptsImageInput(id: string, groups: CustomApiGroup[]): boolean {
+  const info = getModelInfoWithCustom(id, groups);
+  if (!info) return true;
+  return info.vision === true;
+}
+
 
 /** 在分组中查找包含某模型的分组（custom: 前缀）。 */
 export function findCustomModelGroup(
@@ -528,12 +669,13 @@ function customDefaultEffort(c: CustomModelConfig, levels: ThinkingEffort[] | un
 /** 将单个 CustomModelConfig 转换为 ModelInfo（内部辅助）。 */
 function customModelToInfo(
   c: CustomModelConfig,
-  group: Pick<CustomApiGroup, "id" | "name">,
+  group: Pick<CustomApiGroup, "id" | "name" | "timeoutMs">,
   options?: { scopedId?: boolean },
 ): ModelInfo {
   const isImage = c.type === "image";
   const thinking = c.thinking ?? false;
   const levels = customThinkingLevels(c);
+  const timeoutMs = c.timeoutMs ?? group.timeoutMs;
   return {
     id: options?.scopedId === false ? CUSTOM_PREFIX + c.id : buildCustomModelRegistryId(group.id, c.id),
     label: c.label || c.id,
@@ -548,7 +690,8 @@ function customModelToInfo(
     vision: c.vision,
     contextK: c.contextK ?? 128,
     hint: isImage ? `${c.id} · 生图模型` : c.id,
-    endpoints: [{ provider: SF, apiModelId: c.id }],
+    // 自定义分组没有内置 endpoints 链；凭证走分组 baseUrl/apiKey，不支持 failover。
+    endpoints: [],
     pricing: c.pricing
       ? {
           input: c.pricing.input,
@@ -558,6 +701,7 @@ function customModelToInfo(
         }
       : undefined,
     cacheTtlSec: c.cacheTtlSec ?? 3600,
+    timeoutMs: typeof timeoutMs === "number" && Number.isFinite(timeoutMs) && timeoutMs > 0 ? timeoutMs : undefined,
     type: c.type ?? "text",
     imageParams: c.imageParams,
   };

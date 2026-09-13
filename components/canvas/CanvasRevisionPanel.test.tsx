@@ -47,7 +47,7 @@ describe('CanvasRevisionPanel', () => {
       instruction: 'turn this into ethanol',
       topic: 'organic chemistry',
       modelId: 'mimo-v2.5',
-      customApiGroups: settings.customApiGroups,
+      customApiGroups: [],
     });
   });
 

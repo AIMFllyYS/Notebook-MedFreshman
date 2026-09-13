@@ -29,6 +29,7 @@ export function parseUpstreamErrorBody(text: string): ParsedUpstreamError {
  */
 export function isRecoverableUpstreamFailure(status: number, errorCode?: string): boolean {
   if (status === 502 || status === 503 || status === 504) return true;
+  if ((status === 400 || status === 404) && errorCode === "model_not_found") return true;
   if (status === 400 && errorCode) {
     const recoverableCodes = new Set(["1211", "20012", "1210"]);
     if (recoverableCodes.has(errorCode)) return true;

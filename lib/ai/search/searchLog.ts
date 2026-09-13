@@ -28,7 +28,3 @@ export function searchLogOnce(
   seenMessages.add(message);
   emit(level, event, { message, ...fields });
 }
-
-function resetSearchLogOnce(): void {
-  seenMessages.clear();
-}

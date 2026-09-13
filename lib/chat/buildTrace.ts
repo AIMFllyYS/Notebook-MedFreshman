@@ -1,5 +1,6 @@
 import type { ChatMessage, ChatMessagePart } from '@/lib/types/chat';
 import type { ChatToolPart } from '@/lib/chat/messageParts';
+import { hasStepStart } from '@/lib/chat/messageParts';
 import { splitThinkContent } from '@/lib/chat/rendering/parseChatContent';
 import { getToolPresentation } from '@/lib/ai/agent/tools/presentations';
 
@@ -27,8 +28,13 @@ export interface TraceToolStep extends TraceStepBase {
 
 export type TraceStep = TraceTextStep | TraceToolStep;
 
+export type TraceRenderBlock =
+  | { kind: 'trace'; steps: TraceStep[] }
+  | { kind: 'answer'; text: string };
+
 export interface AgentTraceModel {
   steps: TraceStep[];
+  blocks: TraceRenderBlock[];
   answerText: string;
   toolCount: number;
   errorCount: number;
@@ -125,64 +131,151 @@ export function buildToolTraceStep(part: TraceToolPart, partIndex: number, isStr
   };
 }
 
-/**
- * A view projection, never a second message store. Reasoning and tool calls retain
- * their exact parts positions. Text preceding the last tool belongs to the trace;
- * the remaining text is the answer (the same boundary as getAnswerText).
- * A later streamed tool can move a provisional answer into the trace, but it is
- * never rendered in both places in the same snapshot.
- */
-export function buildTrace(message: Pick<ChatMessage, 'parts'>, isStreaming = false): AgentTraceModel {
-  const steps: TraceStep[] = [];
-  const answer: string[] = [];
-  let lastToolIndex = -1;
-  for (let index = message.parts.length - 1; index >= 0; index--) {
-    if (isTraceToolPart(message.parts[index])) {
-      lastToolIndex = index;
-      break;
-    }
-  }
-
-  const addText = (kind: TraceTextStep['kind'], text: string, partIndex: number, streaming: boolean, suffix = '') => {
-    if (!text.trim() && !streaming) return;
-    steps.push({
-      id: `${kind}:${partIndex}${suffix}`,
-      kind,
-      partIndex,
-      text,
-      status: streaming ? (isStreaming ? 'running' : 'interrupted') : 'complete',
-      title: kind === 'reasoning' ? '思考' : '进展说明',
-      summary: preview(text) || '正在思考…',
-    });
-  };
-
-  message.parts.forEach((part, partIndex) => {
-    if (isTraceToolPart(part)) {
-      steps.push(buildToolTraceStep(part, partIndex, isStreaming));
-    } else if (part.type === 'reasoning') {
-      addText('reasoning', part.text, partIndex, part.state === 'streaming');
-    } else if (part.type === 'text') {
-      // The SDK normally extracts think tags. This also keeps older/custom endpoint
-      // snapshots readable without exposing an unfinished <think> in the answer.
-      const split = splitThinkContent(part.text);
-      if (split.reasoning) {
-        addText('reasoning', split.reasoning, partIndex, part.state === 'streaming' && !split.content.trim(), ':think');
-      }
-      if (partIndex <= lastToolIndex) {
-        addText('text', split.content, partIndex, part.state === 'streaming');
-      } else if (split.content.trim()) {
-        answer.push(split.content);
-      }
-    }
-    // step-start, data-*, source and file parts are not execution steps.
-  });
-
+function summarizeTrace(steps: TraceStep[], answerText: string, blocks: TraceRenderBlock[]): AgentTraceModel {
   return {
     steps,
-    answerText: answer.join('\n\n'),
+    blocks,
+    answerText,
     toolCount: steps.filter((step) => step.kind === 'tool').length,
     errorCount: steps.filter((step) => step.status === 'error').length,
     interruptedCount: steps.filter((step) => step.status === 'interrupted').length,
     waitingCount: steps.filter((step) => step.status === 'waiting').length,
   };
+}
+
+function pushTextStep(
+  steps: TraceStep[],
+  kind: TraceTextStep['kind'],
+  text: string,
+  partIndex: number,
+  streaming: boolean,
+  isStreaming: boolean,
+  suffix = '',
+): TraceTextStep | undefined {
+  if (!text.trim() && !streaming) return undefined;
+  const step: TraceTextStep = {
+    id: `${kind}:${partIndex}${suffix}`,
+    kind,
+    partIndex,
+    text,
+    status: streaming ? (isStreaming ? 'running' : 'interrupted') : 'complete',
+    title: kind === 'reasoning' ? '思考' : '进展说明',
+    summary: preview(text) || '正在思考…',
+  };
+  steps.push(step);
+  return step;
+}
+
+/**
+ * A view projection, never a second message store. Reasoning and tool calls retain
+ * their exact parts positions. Messages with step-start keep text as answer segments
+ * in parts order (same boundary as getAnswerText). Messages without step-start fall
+ * back to two buckets: text before the last tool is commentary; the rest is the answer.
+ * A later streamed tool can move a provisional two-bucket answer into the trace, but
+ * it is never rendered in both places in the same snapshot.
+ */
+export function buildTrace(message: Pick<ChatMessage, 'parts'>, isStreaming = false): AgentTraceModel {
+  return hasStepStart(message.parts)
+    ? buildTimelineTrace(message.parts, isStreaming)
+    : buildBucketTrace(message.parts, isStreaming);
+}
+
+function buildBucketTrace(parts: readonly ChatMessagePart[], isStreaming: boolean): AgentTraceModel {
+  const steps: TraceStep[] = [];
+  const answer: string[] = [];
+  let lastToolIndex = -1;
+  for (let index = parts.length - 1; index >= 0; index--) {
+    if (isTraceToolPart(parts[index])) {
+      lastToolIndex = index;
+      break;
+    }
+  }
+
+  parts.forEach((part, partIndex) => {
+    if (isTraceToolPart(part)) {
+      steps.push(buildToolTraceStep(part, partIndex, isStreaming));
+    } else if (part.type === 'reasoning') {
+      pushTextStep(steps, 'reasoning', part.text, partIndex, part.state === 'streaming', isStreaming);
+    } else if (part.type === 'text') {
+      const split = splitThinkContent(part.text);
+      if (split.reasoning) {
+        pushTextStep(steps, 'reasoning', split.reasoning, partIndex, part.state === 'streaming' && !split.content.trim(), isStreaming, ':think');
+      }
+      if (partIndex <= lastToolIndex) {
+        pushTextStep(steps, 'text', split.content, partIndex, part.state === 'streaming', isStreaming);
+      } else if (split.content.trim()) {
+        answer.push(split.content);
+      }
+    }
+  });
+
+  const answerText = answer.join('\n\n');
+  const blocks: TraceRenderBlock[] = [];
+  if (steps.length) blocks.push({ kind: 'trace', steps });
+  if (answerText) blocks.push({ kind: 'answer', text: answerText });
+  return summarizeTrace(steps, answerText, blocks);
+}
+
+function buildTimelineTrace(parts: readonly ChatMessagePart[], isStreaming: boolean): AgentTraceModel {
+  const steps: TraceStep[] = [];
+  const answer: string[] = [];
+  const blocks: TraceRenderBlock[] = [];
+  let currentSteps: TraceStep[] = [];
+  let separateAnswer = false;
+
+  const flushSteps = () => {
+    if (!currentSteps.length) return;
+    blocks.push({ kind: 'trace', steps: currentSteps });
+    currentSteps = [];
+  };
+
+  const addStep = (step: TraceStep) => {
+    steps.push(step);
+    currentSteps.push(step);
+  };
+
+  parts.forEach((part, partIndex) => {
+    if (part.type === 'step-start') {
+      separateAnswer = true;
+      return;
+    }
+    if (isTraceToolPart(part)) {
+      addStep(buildToolTraceStep(part, partIndex, isStreaming));
+      return;
+    }
+    if (part.type === 'reasoning') {
+      const step = pushTextStep(steps, 'reasoning', part.text, partIndex, part.state === 'streaming', isStreaming);
+      if (step) currentSteps.push(step);
+      return;
+    }
+    if (part.type !== 'text') return;
+
+    const split = splitThinkContent(part.text);
+    if (split.reasoning) {
+      const step = pushTextStep(
+        steps,
+        'reasoning',
+        split.reasoning,
+        partIndex,
+        part.state === 'streaming' && !split.content.trim(),
+        isStreaming,
+        ':think',
+      );
+      if (step) currentSteps.push(step);
+    }
+    if (!split.content.trim()) return;
+
+    flushSteps();
+    const prev = blocks[blocks.length - 1];
+    if (prev?.kind === 'answer' && !separateAnswer) {
+      prev.text = `${prev.text}\n\n${split.content}`;
+    } else {
+      blocks.push({ kind: 'answer', text: split.content });
+    }
+    separateAnswer = false;
+    answer.push(split.content);
+  });
+
+  flushSteps();
+  return summarizeTrace(steps, answer.join('\n\n'), blocks);
 }

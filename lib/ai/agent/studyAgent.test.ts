@@ -3,20 +3,25 @@ import { test } from "node:test";
 import type { LanguageModelV4StreamPart, LanguageModelV4StreamResult } from "@ai-sdk/provider";
 import { MockLanguageModelV4, convertArrayToReadableStream, convertReadableStreamToArray } from "ai/test";
 import { createStudyAgent, type StudyAgentInput } from "./studyAgent.ts";
+import { IMAGE_SEARCH_MAX_TOTAL, MAX_TOOL_STEPS } from "./tools/_shared.ts";
 
 const usage = {
   inputTokens: { total: 10, noCache: 7, cacheRead: 3, cacheWrite: 0 },
   outputTokens: { total: 5, text: 5, reasoning: 0 },
 };
 
-function toolCallStep(toolName: string, input: Record<string, unknown>): LanguageModelV4StreamResult {
+function toolCallStep(
+  toolName: string,
+  input: Record<string, unknown>,
+  callId = `call_${toolName}`,
+): LanguageModelV4StreamResult {
   return {
     stream: convertArrayToReadableStream<LanguageModelV4StreamPart>([
       { type: "stream-start", warnings: [] },
       { type: "reasoning-start", id: "r1" },
       { type: "reasoning-delta", id: "r1", delta: "先看看当前页面" },
       { type: "reasoning-end", id: "r1" },
-      { type: "tool-call", toolCallId: `call_${toolName}`, toolName, input: JSON.stringify(input) },
+      { type: "tool-call", toolCallId: callId, toolName, input: JSON.stringify(input) },
       { type: "finish", finishReason: { unified: "tool-calls", raw: "tool_calls" }, usage },
     ]),
   };
@@ -140,13 +145,63 @@ test("createStudyAgent：技能菜单进入 instructions 且 useSkill 以 enum �
   assert.ok(!("useSkill" in on.tools));
 });
 
-test("createStudyAgent：模型不支持工具时 tools 为空；软上限时 instructions 省略参考材料", () => {
+test("createStudyAgent：模型不支持工具时 tools 为空；软上限时仍保留分级参考材料", () => {
   const model = new MockLanguageModelV4();
   const noTools = createStudyAgent(baseInput(model, { modelSupportsTools: false, referenceContext: "参考材料正文" }));
   assert.equal(Object.keys(noTools.tools).length, 0);
   assert.match(noTools.promptParts.instructions, /【参考材料】\n参考材料正文/);
+  assert.doesNotMatch(noTools.promptParts.instructions, /用户提问：/);
 
   const truncated = createStudyAgent(baseInput(model, { referenceContext: "参考材料正文", contextTruncated: true }));
-  assert.doesNotMatch(truncated.promptParts.instructions, /参考材料正文/);
+  assert.match(truncated.promptParts.instructions, /参考材料正文/);
   assert.match(truncated.promptParts.instructions, /80% 软上限/);
+  assert.match(truncated.promptParts.instructions, /分级裁剪/);
+  assert.ok("getArtifact" in createStudyAgent(baseInput(model)).tools);
+});
+
+test("createStudyAgent：定位行在 instructions 末尾，换页不改稳定前缀", () => {
+  const model = new MockLanguageModelV4();
+  const a = createStudyAgent(baseInput(model, {
+    chatCtx: { subjectId: "probability", categoryId: "detail", itemId: "1.4", currentTopic: "古典概型", academicYear: "freshman-2" },
+  }));
+  const b = createStudyAgent(baseInput(model, {
+    chatCtx: { subjectId: "probability", categoryId: "detail", itemId: "1.5", currentTopic: "几何概型", academicYear: "freshman-2" },
+  }));
+  const ia = a.promptParts.instructions;
+  const ib = b.promptParts.instructions;
+  const locA = ia.indexOf("【当前位置】");
+  const locB = ib.indexOf("【当前位置】");
+  assert.ok(locA > 80 && locB > 80);
+  assert.equal(ia.slice(0, locA), ib.slice(0, locB));
+  assert.match(ia, /学年：大一下学期/);
+  assert.match(ia, /1\.4/);
+  assert.match(ib, /1\.5/);
+});
+
+test("createStudyAgent：imageSearch 配额耗尽后 prepareStep 摘除该工具", async () => {
+  const model = new MockLanguageModelV4({
+    doStream: [textStep("基于已有图片继续")],
+  });
+  const { agent, runtime } = createStudyAgent(baseInput(model, {
+    options: { enableSearch: true, enableThinking: false, contextMode: "full" },
+  }));
+  runtime.imageSearchFetchedCount = IMAGE_SEARCH_MAX_TOTAL;
+  await convertReadableStreamToArray((await agent.stream({ messages: [{ role: "user", content: "q" }] })).toUIMessageStream());
+  const names = model.doStreamCalls[0].tools?.map((tool) => tool.name) ?? [];
+  assert.ok(names.includes("webSearch"));
+  assert.ok(!names.includes("imageSearch"));
+});
+
+test("createStudyAgent：第 6 步仍 tool-calls 时不再发起第 7 次 LLM", async () => {
+  const model = new MockLanguageModelV4({
+    doStream: Array.from({ length: MAX_TOOL_STEPS }, (_, i) =>
+      toolCallStep("getCurrentPage", {}, `call_page_${i}`),
+    ),
+  });
+  const { agent } = createStudyAgent(baseInput(model));
+  const result = await agent.stream({ messages: [{ role: "user", content: "q" }] });
+  await convertReadableStreamToArray(result.toUIMessageStream());
+  assert.equal(model.doStreamCalls.length, MAX_TOOL_STEPS);
+  assert.equal(await result.finishReason, "tool-calls");
+  assert.equal((await result.steps).length, MAX_TOOL_STEPS);
 });

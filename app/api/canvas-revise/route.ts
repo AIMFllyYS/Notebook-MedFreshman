@@ -1,11 +1,16 @@
 import type { NextRequest } from 'next/server';
 import { generateText } from 'ai';
-import { APICallError } from '@ai-sdk/provider';
-import { getModelInfoWithCustom, type CustomApiGroup } from '@/lib/ai/models';
+import { getModelInfoWithCustom } from '@/lib/ai/models';
 import { resolveLanguageModel } from '@/lib/ai/sdk/languageModel';
+import { toChatErrorMessage } from '@/lib/ai/sdk/errorMessage';
+import { collectRequestSecrets, formatRequestError, parseCanvasReviseRequest } from '@/lib/ai/agent/requestSchema';
+import { logSatelliteError } from '@/lib/ai/observability/agentLog';
 import { buildCanvasRevisionMessages } from '@/lib/canvas/revisionPrompt';
 import { diagnoseCanvasBlock, extractCanvasRevisionBlock } from '@/lib/canvas/revisionOutput';
 import type { CanvasBlock } from '@/lib/canvas/types';
+import { resolveActualBillingModelId, settleUsage } from '@/lib/billing/usageLedger';
+import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from '@/lib/billing/quotaGate';
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from '@/lib/billing/usagePool';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -19,11 +24,17 @@ function hasUsableBlock(value: unknown): value is CanvasBlock {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json().catch(() => ({}));
+  let body: ReturnType<typeof parseCanvasReviseRequest>;
+  try {
+    body = parseCanvasReviseRequest(await req.json().catch(() => ({})));
+  } catch (err) {
+    return Response.json({ error: formatRequestError(err) }, { status: 400 });
+  }
   const modelId = typeof body.modelId === 'string' ? body.modelId : '';
-  const customApiGroups: CustomApiGroup[] = Array.isArray(body.customApiGroups) ? body.customApiGroups : [];
+  const customApiGroups = body.customApiGroups;
   const instruction = typeof body.instruction === 'string' ? body.instruction.trim() : '';
   const topic = typeof body.topic === 'string' ? body.topic : undefined;
+  const secrets = collectRequestSecrets({ customApiGroups });
 
   if (!modelId) {
     return Response.json({ error: 'Missing model configuration for canvas revision.' }, { status: 400 });
@@ -44,9 +55,15 @@ export async function POST(req: NextRequest) {
   }
 
   const { model, provider } = resolveLanguageModel(modelId, customApiGroups);
+  if (provider.apiKey) secrets.push(provider.apiKey);
   if (!provider.configured) {
     return Response.json({ error: 'The selected model API is not configured.' }, { status: 400 });
   }
+
+  const userId = await resolveQuotaUserId(req.headers);
+  const pool = resolveMainModelPool(usedPlatformCredentialsForProvider(provider));
+  const gate = await assertQuotaAvailable({ userId, pool });
+  if (!gate.ok) return quotaRejectedJson(gate);
 
   let output: string;
   try {
@@ -66,16 +83,26 @@ export async function POST(req: NextRequest) {
       timeout: provider.timeoutMs,
     });
     output = result.text.trim();
+    await settleUsage({
+      headers: req.headers,
+      rawUsage: result.totalUsage ?? result.usage,
+      route: '/api/canvas-revise',
+      kind: 'llm',
+      selectedModelId: modelId,
+      actualModelId: resolveActualBillingModelId(provider),
+      customGroups: customApiGroups,
+      pool: pool ?? undefined,
+      skipInsert: pool == null,
+      meta: { source: 'canvas-revise' },
+    });
   } catch (err) {
-    const detail = APICallError.isInstance(err) && err.statusCode
-      ? `${err.statusCode} ${(err.responseBody ?? '').slice(0, 300)}`
-      : String((err as Error)?.message ?? err);
-    return Response.json({ error: `Canvas revision request failed: ${detail}` }, { status: 502 });
+    logSatelliteError('/api/canvas-revise', err);
+    return Response.json({ error: toChatErrorMessage(err, secrets) }, { status: 502 });
   }
 
   const extracted = extractCanvasRevisionBlock(output);
   if (!extracted.ok) {
-    return Response.json({ error: extracted.error, rawOutput: extracted.rawOutput }, { status: 422 });
+    return Response.json({ error: '画布修订结果无法解析，请换种说法再试。' }, { status: 422 });
   }
 
   const diagnostics = diagnoseCanvasBlock(extracted.block);
@@ -84,7 +111,6 @@ export async function POST(req: NextRequest) {
     return Response.json(
       {
         error: failed.message,
-        rawOutput: output,
         diagnostics,
       },
       { status: 422 },

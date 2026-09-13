@@ -22,6 +22,9 @@ describe('ChatSettings custom model thinking levels', () => {
   it('lets each custom model pick thinking intensity levels and persists them', async () => {
     const { getByTestId, getByPlaceholderText, getAllByPlaceholderText, queryByTestId } = render(<ChatSettings />);
     await act(async () => {
+      getByTestId('chat-settings-nav-models').click();
+    });
+    await act(async () => {
       getByTestId('custom-api-group-toggle-or').click();
     });
     await act(async () => {

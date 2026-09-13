@@ -122,17 +122,38 @@ export function useStickToBottom(
 
   useEffect(() => {
     if (!active) return;
+    const el = ref.current;
+    if (!el) return;
     let raf = 0;
+    const observedDom = typeof el.nodeType === 'number' && typeof MutationObserver !== 'undefined';
     const tick = () => {
-      const el = ref.current;
-      if (el && wantStickRef.current) pinScrollToBottom(el);
-      raf = requestAnimationFrame(tick);
+      raf = 0;
+      if (document.visibilityState !== 'hidden' && wantStickRef.current) pinScrollToBottom(el);
+      // Fallback for non-DOM hosts. Browsers schedule only after observable changes.
+      if (!observedDom) raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    const schedule = () => {
+      if (!raf && wantStickRef.current && document.visibilityState !== 'hidden') raf = requestAnimationFrame(tick);
+    };
+    const resize = typeof ResizeObserver !== 'undefined' && observedDom ? new ResizeObserver(schedule) : null;
+    const observeChildren = () => {
+      resize?.disconnect();
+      resize?.observe(el);
+      for (const child of Array.from(el.children ?? [])) resize?.observe(child);
+    };
+    const mutation = observedDom ? new MutationObserver(() => { observeChildren(); schedule(); }) : null;
+    // Ignore opacity/transform animation writes; ResizeObserver handles actual geometry changes.
+    mutation?.observe(el, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['hidden'] });
+    observeChildren();
+    document.addEventListener('visibilitychange', schedule);
+    schedule();
+    return () => {
+      cancelAnimationFrame(raf); resize?.disconnect(); mutation?.disconnect();
+      document.removeEventListener('visibilitychange', schedule);
+    };
     // deps 由调用方追加（如 safeBottomInset），展开后参与重启循环。
     // eslint-disable-next-line react-hooks/exhaustive-deps -- 第四参是调用方声明的附加依赖
-  }, [active, ref, ...deps]);
+  }, [active, ref, isAtBottom, ...deps]);
 
   return { onScroll, isAtBottom, setWantStick, wantStickRef };
 }

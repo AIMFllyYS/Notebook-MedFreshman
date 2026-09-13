@@ -62,12 +62,14 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
     }
 
     setMaxHeight(el.scrollHeight);
+    let secondRaf = 0;
     const raf = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setMaxHeight(0));
+      secondRaf = requestAnimationFrame(() => setMaxHeight(0));
     });
     const timer = window.setTimeout(() => setBodyMounted(false), TRACE_COLLAPSE_MS);
     return () => {
       cancelAnimationFrame(raf);
+      cancelAnimationFrame(secondRaf);
       window.clearTimeout(timer);
     };
   }, [expanded, bodyMounted, reducedMotion]);
@@ -146,4 +148,3 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
     </section>
   );
 });
-

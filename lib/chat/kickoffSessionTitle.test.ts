@@ -8,6 +8,13 @@ afterEach(() => {
   }
 });
 
+test('automatic sessions use a local title without invoking an unrestricted default model', (t) => {
+  const fetch = t.mock.method(globalThis, 'fetch', async () => { throw new Error('must not request'); });
+  const title = kickoffSessionTitle('auto', '解释条件概率', { subjectId: 'a', categoryId: 'b', itemId: 'c' }, () => {}, true);
+  assert.ok(title.length > 0);
+  assert.equal(fetch.mock.callCount(), 0);
+});
+
 test("kickoffSessionTitle：立即返回本地兜底标题，成功后再回调远端标题", async () => {
   const calls: { url: unknown; body: Record<string, unknown> }[] = [];
   const originalFetch = globalThis.fetch;
