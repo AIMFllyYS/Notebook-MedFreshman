@@ -129,7 +129,8 @@ describe("GlobalSettings", () => {
     await user.click(screen.getByRole("button", { name: /外观/ }));
     await user.click(screen.getByRole("button", { name: "自定义" }));
     fireEvent.change(await screen.findByLabelText("白天主色"), { target: { value: "#1166aa" } });
-    await user.selectOptions(screen.getByLabelText("全局字体"), "songti");
+    await user.click(screen.getByRole("button", { name: "全局字体" }));
+    await user.click(screen.getByRole("option", { name: "宋体阅读" }));
 
     const state = useTheme.getState();
     expect(state.appearance.mode).toBe("custom");
