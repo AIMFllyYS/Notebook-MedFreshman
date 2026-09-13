@@ -1,7 +1,11 @@
-// 内容分块管道：遍历 contentTree 全部可搜索叶节点，读取 md，按语义边界分块。
+// 内容分块管道：遍历 contentTree 全部可搜索叶节点，读取材料，按语义边界分块。
 import { contentTree } from '@/lib/content-data/manifest';
-import { readContentMarkdown, stripMarkdown } from '@/lib/content/loader';
+import { readContentSearchText, stripMarkdown } from '@/lib/content/loader';
 import { hasCapability } from '@/lib/content/categoryKeys';
+import {
+  extractTranscriptBlocks,
+  formatTranscriptBlock,
+} from '@/lib/content/lectures/extractTranscript';
 import type { ContentItem } from '@/lib/types/content';
 
 export interface ContentChunk {
@@ -129,7 +133,12 @@ export function generateChunks(): ContentChunk[] {
 
       const leafItems: { item: ContentItem; parentTitle?: string }[] = [];
       for (const item of cat.items) {
-        if (item.children?.length) {
+        // navigationOnly 是课堂课节分组父节点，本身不是文章；只收它的材料叶子。
+        if (item.navigationOnly) {
+          for (const child of item.children ?? []) {
+            leafItems.push({ item: child, parentTitle: item.title });
+          }
+        } else if (item.children?.length) {
           for (const child of item.children) {
             leafItems.push({ item: child, parentTitle: item.title });
           }
@@ -141,10 +150,17 @@ export function generateChunks(): ContentChunk[] {
       for (const { item, parentTitle } of leafItems) {
         if (item.status === 'stub') continue;
         if (item.id === 'toc' || item.id.endsWith('-toc')) continue;
-        const md = readContentMarkdown(subject.id, cat.id, item.id);
-        if (!md) continue;
+        const search = readContentSearchText(subject.id, cat.id, item.id);
+        if (!search) continue;
 
-        const plainText = stripMarkdown(md);
+        // 课堂逐字稿按「发言轮次」切块并保留说话人/时间戳；HTML 笔记已是提取后的纯文本；
+        // 纪要/手卡（Markdown）与全部旧内容维持 stripMarkdown 路径。
+        const plainText =
+          item.materialRole === 'recording'
+            ? extractTranscriptBlocks(search.text).map(formatTranscriptBlock).join('\n\n')
+            : search.format === 'html'
+              ? search.text
+              : stripMarkdown(search.text);
         if (!plainText.trim()) continue;
 
         const titleParts = [subject.name, cat.name];

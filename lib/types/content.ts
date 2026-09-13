@@ -4,10 +4,18 @@
 export type { SubjectId } from '@/lib/content-data/subjects.registry';
 export { SUBJECT_IDS, isSubjectId } from '@/lib/content-data/subjects.registry';
 import type { SubjectId } from '@/lib/content-data/subjects.registry';
+import type { LectureMaterialRole } from '@/lib/content/lectures/roles';
 
 export type CategoryId = string;
 
-export type RenderType = 'markdown' | 'html' | 'component';
+/**
+ * 渲染格式：
+ * - markdown：经 Markdown + 指令管线渲染（教材/纪要/手卡）
+ * - html：受控静态 HTML，iframe 沙箱渲染（课堂笔记等自包含 HTML）
+ * - component：内置 React 组件
+ * - text：受控纯文本（课堂逐字稿），只做转义与换行保留，**不经过** Markdown 管线
+ */
+export type RenderType = 'markdown' | 'html' | 'component' | 'text';
 
 export interface Subject {
   id: SubjectId;
@@ -66,6 +74,20 @@ export interface ContentItem {
   renderType?: RenderType;
   /** 覆盖所属板块的 layoutProfile。 */
   layoutProfile?: LayoutProfile;
+  /**
+   * 仅用于导航分组、本身不对应任何文章（不生成路由 / 不进静态参数）。
+   * 课堂课节的父节点（lessonId）用它承载四材料叶子。
+   */
+  navigationOnly?: boolean;
+  /** 课堂材料：所属课节 lessonId。 */
+  lessonRef?: string;
+  /** 课堂材料：材料角色（recording/minutes/notes/cards）。 */
+  materialRole?: LectureMaterialRole;
+  /**
+   * 课堂材料：显式指定关联题库 id（同一节课的四材料共享一套题）。
+   * 缺省时回退到板块 keyStrategy 推导（见 lib/content/categoryKeys.ts）。
+   */
+  quizRef?: string;
 }
 
 export interface ContentTree {

@@ -55,14 +55,35 @@ export function deriveExampleKeyFor(cat: CategoryLike | undefined | null, itemId
   return { chapterId, sectionId };
 }
 
+interface QuizRefLike {
+  quizRef?: string;
+}
+
+/**
+ * 题库 id 解析：材料显式声明 quizRef（课堂四材料共享一套题）时优先用它；
+ * 否则回退到板块 keyStrategy 推导。这样同一节课的原文/纪要/笔记/手卡打开的是同一套题。
+ */
+export function resolveQuizId(
+  cat: CategoryLike | undefined | null,
+  itemId: string,
+  item?: QuizRefLike | null,
+): string {
+  if (item?.quizRef) return item.quizRef;
+  return deriveContentKey(cat, itemId).quizId;
+}
+
 /** 右侧 Quiz / 视频 / 交互 Tab 用的 store 字段：无 quiz 与 media 能力时全空。 */
-export function deriveActiveKeys(cat: CategoryLike | undefined | null, itemId: string): { activeChapterId: string; activeSectionId: string } {
+export function deriveActiveKeys(
+  cat: CategoryLike | undefined | null,
+  itemId: string,
+  item?: QuizRefLike | null,
+): { activeChapterId: string; activeSectionId: string } {
   const quiz = hasCapability(cat, "quiz");
   const media = hasCapability(cat, "media");
   if (!quiz && !media) return { activeChapterId: "", activeSectionId: "" };
   const key = deriveContentKey(cat, itemId);
   return {
-    activeChapterId: key.quizId,
+    activeChapterId: item?.quizRef ?? key.quizId,
     activeSectionId: media ? key.sectionId : "",
   };
 }

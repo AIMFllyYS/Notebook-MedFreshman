@@ -17,11 +17,35 @@ export type Difficulty = "basic" | "medium" | "hard";
 export type QuestionSource = "current_chapter" | "review";
 
 /** 答案来源出处（深度解析须指明），供「来源目录」展示。 */
+/**
+ * 课堂四材料来源角色。课堂课节的题目只允许来自 recording（课堂原文）/ notes（课堂笔记）；
+ * textbook 等既有学科沿用旧路径时可不填 source。
+ */
+export type QuizMaterialSource =
+  | "recording"
+  | "minutes"
+  | "notes"
+  | "cards"
+  | "textbook"
+  | "detail";
+
 export interface SourceRef {
   /** 来源文件路径（来源目录），如 content/modern-history/detail/2.1.md */
   path?: string;
   /** 人类可读的定位，如 "2.1 银荒与末世 · 二、银铜双本位制" */
   label?: string;
+  /** 课堂课节：本题依据哪一份材料（课堂测验只允许 recording / notes）。 */
+  source?: QuizMaterialSource;
+  /** 材料内定位块：逐字稿发言块 id / 笔记小节锚点，便于溯源。 */
+  blockId?: string;
+}
+
+/** 题源与当节材料的绑定信息（课堂课节推荐填写，材料改动后哈希失配可暴露题源过期）。 */
+export interface QuizContentRef {
+  lessonId: string;
+  revision: number;
+  recordingHash?: string;
+  notesTextHash?: string;
 }
 
 /** 阅读理解子题。 */
@@ -128,6 +152,8 @@ export interface QuizData {
   examConfig: QuizExamConfig;
   questions: QuizQuestion[];
   summary?: QuizSummaryStats;
+  /** 课堂课节：题源与当节材料哈希的绑定（既有学科题可不填）。 */
+  contentRef?: QuizContentRef;
 }
 
 /** 用户作答：选择/判断为索引，多选为索引数组，填空/大题为文本，复合题型为子题 id → 作答映射。 */

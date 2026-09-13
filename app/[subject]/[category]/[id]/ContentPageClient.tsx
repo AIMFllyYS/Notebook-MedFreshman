@@ -6,7 +6,9 @@ import clsx from "clsx";
 import { FileText, ClipboardCheck, Lightbulb, PanelTopClose, PanelTopOpen, Maximize, Minimize, ExternalLink } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import SelectionPopover from "@/components/notes/SelectionPopover";
+import PlainTextReader from "@/components/notes/PlainTextReader";
 import type { LayoutProfile, SubjectId, RenderType } from "@/lib/types/content";
+import type { LectureMaterialRole } from "@/lib/content/lectures/roles";
 import type { LayoutFlags } from "@/lib/content/layoutProfile";
 import type { ExampleDetail } from "@/lib/content/loader";
 import { useStore } from "@/lib/store";
@@ -48,6 +50,8 @@ interface ContentPageClientProps {
   categoryName: string;
   itemStatus: string;
   renderType?: RenderType;
+  /** 课堂材料角色（recording/minutes/notes/cards），用于区分静态笔记沙箱等。 */
+  materialRole?: LectureMaterialRole;
   layoutProfile: LayoutProfile;
   layoutFlags: LayoutFlags;
 }
@@ -80,6 +84,7 @@ export default function ContentPageClient({
   subjectName,
   categoryName,
   renderType = 'markdown',
+  materialRole,
   layoutProfile,
   layoutFlags: flags,
 }: ContentPageClientProps) {
@@ -90,14 +95,17 @@ export default function ContentPageClient({
   const isMobile = useIsMobile();
   const [htmlFullscreenItem, setHtmlFullscreenItem] = useState<string | null>(null);
   const isHtmlFullscreen = htmlFullscreenItem === itemId;
+  // 课堂静态笔记（notes.html）默认禁脚本 / 禁同源，仅放行新窗口打开外链；
+  // 历史 HTML 工具页保持原沙箱以避免回归。
+  const htmlSandbox = materialRole === "notes" ? "allow-popups" : "allow-scripts allow-same-origin";
 
-  // content 恒有；examples/quiz 需档位 flags 与 markdown 同时成立。
+  // content 恒有；examples 仅 markdown（例题是 Markdown）；quiz 与渲染格式解耦——
+  // 课堂四材料（text/markdown/html）共享同一套题，只要档位 flags 允许就显示题目 tab。
   const visibleTabs = useMemo(
     () =>
       CONTENT_TABS.filter((t) => {
         if (t.id === "content") return true;
-        if (renderType !== "markdown") return false;
-        if (t.id === "examples") return flags.showExamplesTab;
+        if (t.id === "examples") return renderType === "markdown" && flags.showExamplesTab;
         if (t.id === "quiz") return flags.showQuizTab;
         return false;
       }),
@@ -258,7 +266,7 @@ export default function ContentPageClient({
                       </div>
                       <iframe
                         srcDoc={content}
-                        sandbox="allow-scripts allow-same-origin"
+                        sandbox={htmlSandbox}
                         className="h-full min-h-[60vh] w-full rounded-lg border border-[var(--line)]"
                         title={itemTitle}
                       />
@@ -266,6 +274,10 @@ export default function ContentPageClient({
                   ) : renderType === 'component' ? (
                     <div key={itemId} className="animate-fade-in">
                       <ComponentRenderer subjectId={subjectId} categoryId={categoryId} itemId={itemId} />
+                    </div>
+                  ) : renderType === 'text' ? (
+                    <div key={itemId} className="animate-fade-in">
+                      <PlainTextReader content={content} />
                     </div>
                   ) : (
                     <div key={itemId} className="prose-notes animate-fade-in">
@@ -319,7 +331,7 @@ export default function ContentPageClient({
         <div className="fixed inset-0 z-[100] bg-white">
           <iframe
             srcDoc={content}
-            sandbox="allow-scripts allow-same-origin"
+            sandbox={htmlSandbox}
             className="h-full w-full border-0"
             title={itemTitle}
           />

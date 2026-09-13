@@ -21,6 +21,7 @@
 | 08 | [08-exam-paper-integration.md](./08-exam-paper-integration.md) | 考前模拟/实战演练 | Word 试卷 → 卡片化 Markdown 录入与 manifest 注册 |
 | 09 | [09-english-unit-content.md](./09-english-unit-content.md) | 大学英语 Unit | 课文精读、例题与 Quiz 内容生成和注册 |
 | 10 | [10-search-index-lifecycle.md](./10-search-index-lifecycle.md) | 检索索引 | 重建、随部署分发、health 冒烟与回滚 |
+| 12 | [12-lecture-content-ingest.md](./12-lecture-content-ingest.md) | 课堂四材料接入 | 逐字稿/纪要/可视化笔记/手卡+题打包接入、严格校验与 PR 节奏 |
 | — | [subject-onboarding.md](./subject-onboarding.md) | 新学科接入 | 从零接入一个新科目的端到端流程 |
 
 ---
@@ -112,6 +113,7 @@
 | 教材 | `content/{subject}/textbook/{chapterId}.md` | `examples`, `quiz`, `search` | `contentTree.subjects[x].categories[textbook].items[]` |
 | 详解 | `content/{subject}/detail/{itemId}.md`（概率论例外：`content/chapters/`） | `examples`, `quiz`, `search`, `media` | `contentTree.subjects[x].categories[detail].items[]` |
 | 录音 | `content/{subject}/recording/rec-XX.md` | `examples`, `quiz`, `search` | `contentTree.subjects[x].categories[recording].items[]` |
+| 课堂课节（四材料） | `content/{subject}/lectures/<lessonId>/{recording.md,minutes.md,notes.html,cards.md}` + `lesson.json` | recording 板块 `examples`,`quiz`,`search`（能力在板块上） | 由 `pnpm gen:lectures` 扫描生成，经 manifest 适配层并入 recording，禁止手写注册（见 SOP 12） |
 | 纪要 | `content/{subject}/summary/sum-XX.md` | `search` | `contentTree.subjects[x].categories[summary].items[]` |
 | 题目 | `content/quiz/{subject}/{chapterId}.json` | — | 前端 QuizTab 直接读取（无需 manifest） |
 | 例题 | `content/examples/{subject}/{chapterId}/{sectionId}/` | — | 通过 `readExamples()` 自动发现 |

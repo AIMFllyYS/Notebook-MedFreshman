@@ -175,8 +175,9 @@ export const useStore = create<AppState>((set) => ({
         activeSubjectId: subjectId,
         activeCategoryId: categoryId,
         activeItemId: itemId,
-        // Quiz / 视频 / 交互 Tab 的查找 key 由板块声明的 capabilities + keyStrategy 决定。
-        ...deriveActiveKeys(cat, itemId),
+        // Quiz / 视频 / 交互 Tab 的查找 key：课堂材料优先用 item.quizRef（四材料共享一套题），
+        // 否则由板块 capabilities + keyStrategy 推导。
+        ...deriveActiveKeys(cat, itemId, item),
         layoutProfile: profile,
         rightTabs,
         rightTab,

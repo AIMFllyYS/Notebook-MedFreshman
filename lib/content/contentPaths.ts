@@ -1,8 +1,11 @@
 import path from "node:path";
 import type { ContentRootDetail } from "@/lib/content-data/subjects.registry";
 
+/** 内容根目录 content/（所有学科、lectures、quiz、examples 的共同根）。 */
+export const CONTENT_ROOT = path.join(process.cwd(), "content");
+
 /** 概率论 detail 历史目录：content/chapters/chNN/x.y.md */
-export const LEGACY_CHAPTERS_ROOT = path.join(process.cwd(), "content", "chapters");
+export const LEGACY_CHAPTERS_ROOT = path.join(CONTENT_ROOT, "chapters");
 
 export type ContentPathResolver = (
   subjectId: string,
