@@ -46,6 +46,7 @@ export interface SourceTraceViewerData {
 export interface SourcePreviewData {
   url: string;
   title: string;
+  iconUrl?: string;
 }
 
 export interface AttachmentPreviewData {

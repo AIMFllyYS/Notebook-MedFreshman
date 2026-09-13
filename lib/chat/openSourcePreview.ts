@@ -4,7 +4,15 @@ export function sourcePreviewWindowId(url: string) {
   return `source-preview:${url}`;
 }
 
-export function openSourcePreview(source: { url: string; title?: string }) {
+export function sourceFaviconUrl(url: string): string {
+  try {
+    return new URL("/favicon.ico", url).toString();
+  } catch {
+    return "";
+  }
+}
+
+export function openSourcePreview(source: { url: string; title?: string; iconUrl?: string }) {
   if (!source.url) return;
   let parsed: URL;
   try {
@@ -15,12 +23,14 @@ export function openSourcePreview(source: { url: string; title?: string }) {
   if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return;
   const id = sourcePreviewWindowId(source.url);
   const title = source.title?.trim() || sourceHost(source.url);
+  const iconUrl = source.iconUrl?.trim() || sourceFaviconUrl(source.url);
   const wm = useWindowManager.getState();
   const existing = wm.windows.find((win) => win.id === id);
   if (existing) {
-    wm.updateWindow(id, { title, data: { url: source.url, title } });
+    wm.updateWindow(id, { title, icon: iconUrl, data: { url: source.url, title, iconUrl } });
     if (existing.minimized) wm.restoreWindow(id);
     else wm.bringToFront(id);
+    void hydrateSourceIcon(id, source.url, iconUrl);
     return;
   }
   const { pos, size } = sourcePreviewGeometry();
@@ -28,9 +38,53 @@ export function openSourcePreview(source: { url: string; title?: string }) {
     id,
     type: "source-preview",
     title,
+    icon: iconUrl,
     pos,
     size,
-    data: { url: source.url, title },
+    data: { url: source.url, title, iconUrl },
+  });
+  void hydrateSourceIcon(id, source.url, iconUrl);
+}
+
+/** 尝试读取页面声明的 favicon；跨域或非 HTML 页面失败时保留 /favicon.ico。 */
+async function resolveDeclaredSourceIcon(url: string, fallback: string): Promise<string> {
+  if (typeof window === "undefined" || typeof fetch === "undefined" || typeof DOMParser === "undefined") return fallback;
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 2500);
+  try {
+    const response = await fetch(url, {
+      credentials: "omit",
+      signal: controller.signal,
+      headers: { Accept: "text/html,application/xhtml+xml" },
+    });
+    if (!response.ok) return fallback;
+    const contentType = response.headers.get("content-type") || "";
+    if (contentType && !/html|xml/i.test(contentType)) return fallback;
+    const html = await response.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const link = Array.from(doc.querySelectorAll("link[rel][href]")).find((node) => {
+      const rel = node.getAttribute("rel")?.toLowerCase().split(/\s+/) ?? [];
+      return rel.includes("icon") || rel.includes("shortcut") || rel.includes("apple-touch-icon");
+    });
+    const href = link?.getAttribute("href")?.trim();
+    return href ? new URL(href, url).toString() : fallback;
+  } catch {
+    return fallback;
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+async function hydrateSourceIcon(id: string, url: string, fallback: string) {
+  if (!fallback) return;
+  const iconUrl = await resolveDeclaredSourceIcon(url, fallback);
+  const wm = useWindowManager.getState();
+  const current = wm.windows.find((win) => win.id === id);
+  if (!current || current.type !== "source-preview" || current.icon === iconUrl) return;
+  const data = current.data as { url?: string; title?: string; iconUrl?: string };
+  wm.updateWindow(id, {
+    icon: iconUrl,
+    data: { ...data, iconUrl },
   });
 }
 

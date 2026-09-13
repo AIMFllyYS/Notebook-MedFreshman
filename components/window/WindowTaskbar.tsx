@@ -8,7 +8,7 @@ import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, FileText, FileSearch, 
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import OverflowMenu from "@/components/window/OverflowMenu";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
-import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
+import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 import { openSourcePreview } from "@/lib/chat/openSourcePreview";
 
@@ -24,7 +24,13 @@ type TaskbarTooltip = {
   top: number;
 };
 
-function WindowIcon({ type }: { type: ManagedWindow["type"] }) {
+function WindowIcon({ type, icon }: { type: ManagedWindow["type"]; icon?: string }) {
+  const [failedIcon, setFailedIcon] = useState<string | null>(null);
+  if (icon && failedIcon !== icon) {
+    // 动态站点 favicon 不在 next/image 的静态远程域名白名单内。
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={icon} alt="" aria-hidden="true" className="h-4 w-4 rounded-sm object-contain" onError={() => setFailedIcon(icon)} />;
+  }
   if (type === "floating-chat") return <PencilSparklesIcon size={15} />;
   if (type === "record-preview") return <BookmarkCheck size={15} />;
   if (type === "image-gen-viewer") return <ImagePlus size={15} />;
@@ -65,10 +71,25 @@ function isImagePreview(attachment: AttachmentPreview): attachment is ImageAttac
   return attachment.type !== "document" && attachment.type !== "local-file";
 }
 
+function FileErrorDialog({ message, onClose }: { message: string; onClose: () => void }) {
+  return createPortal(
+    <div className="app-dialog-backdrop">
+      <div role="alertdialog" aria-modal="true" aria-label="文件添加失败" className="app-dialog">
+        <div className="app-dialog-eyebrow">文件添加提醒</div>
+        <h2>文件无法添加</h2>
+        <p>{message}</p>
+        <button type="button" className="app-dialog-confirm" onClick={onClose}>知道了</button>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
 function AddContentButton() {
   const [open, setOpen] = useState(false);
   const [url, setUrl] = useState("");
   const [urlError, setUrlError] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState<{ top: number; right: number } | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -104,7 +125,7 @@ function AddContentButton() {
   }, [open]);
 
   const handleFiles = async (files: File[]) => {
-    const { attachments, errors } = await filesToAttachments(files);
+    const { attachments, errors } = await filesToAttachments(files, { maxFileSize: MAX_LOCAL_FILE_SIZE });
     attachments.forEach((attachment, index) => {
       const originalName = isImagePreview(attachment) ? attachment.file.name : attachment.name;
       const kind = previewKind(attachment);
@@ -116,7 +137,7 @@ function AddContentButton() {
         content: previewContent(attachment),
       });
     });
-    if (errors.length > 0) setUrlError(errors[0]);
+    if (errors.length > 0) setFileError(errors[0]);
     setOpen(false);
   };
 
@@ -204,6 +225,7 @@ function AddContentButton() {
         </div>,
         document.body,
       )}
+      {fileError && typeof document !== "undefined" ? <FileErrorDialog message={fileError} onClose={() => setFileError(null)} /> : null}
     </div>
   );
 }
@@ -293,7 +315,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
               !win.minimized && "text-[var(--md-sys-color-primary)]",
             )}
           >
-            {win.type === "attachment-preview" ? <AttachmentWindowIcon data={win.data} /> : <WindowIcon type={win.type} />}
+            {win.type === "attachment-preview" ? <AttachmentWindowIcon data={win.data} /> : <WindowIcon type={win.type} icon={win.icon} />}
             <span
               className={clsx(
                 "absolute bottom-0.5 left-1/2 h-0.5 -translate-x-1/2 rounded-full transition-all",

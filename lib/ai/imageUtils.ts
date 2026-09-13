@@ -19,8 +19,15 @@ export const ACCEPTED_IMAGE_TYPES = new Set([
 ]);
 
 export const MAX_DOCUMENT_SIZE = 10 * 1024 * 1024;
+/** 工作站顶部“添加文件”是完全本地的入口，允许更大的文件。 */
+export const MAX_LOCAL_FILE_SIZE = 100 * 1024 * 1024;
 export const MAX_DOCUMENT_CHARACTERS = 200_000;
 export const LONG_PASTE_DOCUMENT_THRESHOLD = 1_000;
+
+export interface FileAttachmentOptions {
+  /** 覆盖默认的对话附件体积上限；仅应由本地预览入口使用。 */
+  maxFileSize?: number;
+}
 
 /**
  * 文本附件白名单。不要仅依赖浏览器上报的 MIME：不同系统经常会把
@@ -160,14 +167,15 @@ function readFileAsArrayBuffer(file: File): Promise<ArrayBuffer> {
   });
 }
 
-export async function fileToDocumentAttachment(file: File): Promise<DocumentAttachmentPreview> {
+export async function fileToDocumentAttachment(file: File, options: FileAttachmentOptions = {}): Promise<DocumentAttachmentPreview> {
   const extension = documentExtension(file);
   const mappedMimeType = DOCUMENT_MIME_BY_EXTENSION[extension as keyof typeof DOCUMENT_MIME_BY_EXTENSION];
   if (!mappedMimeType) {
     throw new Error(`不支持 ${file.name}，请选择文本、Markdown、HTML、代码、配置或 DOCX 文档`);
   }
-  if (file.size > MAX_DOCUMENT_SIZE) {
-    throw new Error(`${file.name} 超过 10 MB，暂时无法作为对话附件读取`);
+  const maxFileSize = options.maxFileSize ?? MAX_DOCUMENT_SIZE;
+  if (file.size > maxFileSize) {
+    throw new Error(`${file.name} 超过 ${Math.round(maxFileSize / (1024 * 1024))} MB，暂时无法读取`);
   }
 
   let text: string;
@@ -197,14 +205,15 @@ export async function fileToDocumentAttachment(file: File): Promise<DocumentAtta
 }
 
 /** PDF / PowerPoint 等仅供本地查看的原始文件不会进入 AI 请求。 */
-export async function fileToLocalPreviewAttachment(file: File): Promise<LocalFileAttachmentPreview> {
+export async function fileToLocalPreviewAttachment(file: File, options: FileAttachmentOptions = {}): Promise<LocalFileAttachmentPreview> {
   const extension = documentExtension(file);
   const mimeType = LOCAL_PREVIEW_MIME_BY_EXTENSION[extension as keyof typeof LOCAL_PREVIEW_MIME_BY_EXTENSION];
   if (!mimeType) {
     throw new Error(`不支持 ${file.name} 的本地预览`);
   }
-  if (file.size > MAX_DOCUMENT_SIZE) {
-    throw new Error(`${file.name} 超过 10 MB，暂时无法在对话中预览`);
+  const maxFileSize = options.maxFileSize ?? MAX_DOCUMENT_SIZE;
+  if (file.size > maxFileSize) {
+    throw new Error(`${file.name} 超过 ${Math.round(maxFileSize / (1024 * 1024))} MB，暂时无法预览`);
   }
   const dataUrl = await readFileAsDataUrl(file);
   return { type: "local-file", file, mimeType, name: file.name, size: file.size, dataUrl };
@@ -252,9 +261,13 @@ export function readFileAsDataUrl(file: File): Promise<string> {
  * 将单个图片 File 转换为 AttachmentPreview（含压缩、base64、blob 预览 URL）。
  * 非 image/* 文件抛出 Error。
  */
-export async function fileToAttachment(file: File): Promise<AttachmentPreview> {
+export async function fileToAttachment(file: File, options: FileAttachmentOptions = {}): Promise<AttachmentPreview> {
   if (!file.type.startsWith("image/")) {
     throw new Error("仅支持图片文件（JPG/PNG/GIF/WebP）");
+  }
+  const maxFileSize = options.maxFileSize;
+  if (maxFileSize !== undefined && file.size > maxFileSize) {
+    throw new Error(`${file.name} 超过 ${Math.round(maxFileSize / (1024 * 1024))} MB，暂时无法读取`);
   }
   const needsCompress = file.size > MAX_IMAGE_SIZE;
   const base64 = needsCompress
@@ -271,16 +284,17 @@ export async function fileToAttachment(file: File): Promise<AttachmentPreview> {
  */
 export async function filesToAttachments(
   files: File[],
+  options: FileAttachmentOptions = {},
 ): Promise<{ attachments: AttachmentPreview[]; errors: string[] }> {
   const attachments: AttachmentPreview[] = [];
   const errors: string[] = [];
   for (const file of files) {
     try {
       const att = file.type.startsWith("image/")
-        ? await fileToAttachment(file)
+        ? await fileToAttachment(file, options)
         : isSupportedLocalPreview(file)
-          ? await fileToLocalPreviewAttachment(file)
-          : await fileToDocumentAttachment(file);
+          ? await fileToLocalPreviewAttachment(file, options)
+          : await fileToDocumentAttachment(file, options);
       attachments.push(att);
     } catch (e) {
       errors.push((e as Error).message || `处理 ${file.name} 失败`);

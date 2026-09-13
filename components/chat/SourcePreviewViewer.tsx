@@ -11,6 +11,16 @@ interface DesktopWebview extends HTMLElement {
   loadURL(url: string): Promise<void>;
 }
 
+function SourcePreviewIcon({ iconUrl }: { iconUrl?: string }) {
+  const [failedIcon, setFailedIcon] = useState<string | null>(null);
+  if (iconUrl && failedIcon !== iconUrl) {
+    // 动态站点 favicon 不在 next/image 的静态远程域名白名单内。
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={iconUrl} alt="" aria-hidden="true" className="h-[15px] w-[15px] rounded-sm object-contain" onError={() => setFailedIcon(iconUrl)} />;
+  }
+  return <Globe size={15} />;
+}
+
 // Electron 注入的真实 Chromium 视图；网页开发态仍使用普通 iframe。
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Webview: any = "webview";
@@ -42,7 +52,7 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
   const closeWindow = useWindowManager((s) => s.closeWindow);
   const handleClose = useCallback(() => closeWindow(windowId), [closeWindow, windowId]);
 
-  const data = (managed?.data ?? {}) as { url?: string; title?: string };
+  const data = (managed?.data ?? {}) as { url?: string; title?: string; iconUrl?: string };
   const url = data.url ?? "";
   const isDesktop = useSyncExternalStore(
     () => () => {},
@@ -65,7 +75,7 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
     <ManagedWindow
       windowId={windowId}
       title={managed.title}
-      icon={<Globe size={15} />}
+      icon={<SourcePreviewIcon iconUrl={data.iconUrl ?? managed.icon} />}
       onClose={handleClose}
       fullscreenTarget="notes"
       className="source-preview-window"

@@ -1,7 +1,8 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import WindowTaskbar from "./WindowTaskbar";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { MAX_LOCAL_FILE_SIZE } from "@/lib/ai/imageUtils";
 
 describe("WindowTaskbar add content", () => {
   beforeEach(() => {
@@ -32,5 +33,19 @@ describe("WindowTaskbar add content", () => {
     expect(preview?.title).toBe("网址 · example.com");
     expect(preview?.data).toMatchObject({ url: "https://example.com/course" });
     expect(screen.getByRole("button", { name: "添加内容" })).toBeVisible();
+  });
+
+  it("shows a modal when a local file exceeds the workspace limit", async () => {
+    const { container } = render(<WindowTaskbar host="topbar" />);
+    const file = new File(["x"], "large.pdf", { type: "application/pdf" });
+    Object.defineProperty(file, "size", { value: MAX_LOCAL_FILE_SIZE + 1 });
+    const input = container.querySelector('input[type="file"]');
+    expect(input).not.toBeNull();
+
+    fireEvent.change(input!, { target: { files: [file] } });
+
+    await waitFor(() => {
+      expect(screen.getByRole("alertdialog", { name: "文件添加失败" })).toHaveTextContent("超过 100 MB");
+    });
   });
 });
