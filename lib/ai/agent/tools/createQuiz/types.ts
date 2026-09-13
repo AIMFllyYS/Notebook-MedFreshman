@@ -3,7 +3,7 @@ import type { TextToolOutput } from "@/lib/ai/agent/tools/_types";
 
 /** 模型在工具参数里写的单题（宽松：id / difficulty / points 等可省略，服务端补默认值）。 */
 export interface CreateQuizQuestionInput {
-  type: QuizQuestion["type"];
+  type: "single_choice" | "multiple_choice" | "true_false" | "analysis" | "fill_blank" | "essay";
   stem: string;
   options?: string[];
   /** 选择题为选项下标（多选为下标数组）；判断题 1=正确 0=错误；主观题为参考答案文本。 */

@@ -7,9 +7,18 @@
 //  - 正文里内嵌 <think> 的模型 → extractReasoningMiddleware（服务端统一抽成 reasoning）
 //  - 非标准思考字段（thinking / reasoning_details / 结构化对象）→ createReasoningNormalizingFetch
 //
+// Anthropic 原生路径的 reasoning（#94）：
+//  SDK 返回结构化 `reasoning` part（thinking blocks），不是正文里的 <think> 标签，
+//  也不走 OpenAI 兼容的 reasoning_content / 别名字段。因此 anthropic 分支
+//  故意不套 extractReasoningMiddleware，也不包 createReasoningNormalizingFetch——
+//  套上只会空转或误伤。思考参数走 providerOptions.anthropic.thinking（见
+//  buildThinkingSettings 的 anthropic-thinking）。OpenAI 兼容中转透传 Anthropic
+//  时仍走 openai-compatible + 归一化 fetch。
+//
+// 思考参数装配只走 buildThinkingSettings → thinkingSettings() / prepareCall。
 // 仅服务端导入。
 
-import type { LanguageModelV4, SharedV4ProviderOptions } from "@ai-sdk/provider";
+import type { LanguageModelV4, LanguageModelV4CallOptions, SharedV4ProviderOptions } from "@ai-sdk/provider";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { wrapLanguageModel, extractReasoningMiddleware } from "ai";
@@ -22,6 +31,7 @@ import {
 } from "@/lib/ai/provider";
 import {
   getModelInfo,
+  getLandedModelInfo,
   getModelInfoWithCustom,
   wireThinkingEffort,
   type CustomApiGroup,
@@ -30,6 +40,7 @@ import {
 } from "@/lib/ai/models";
 import { createFailoverLanguageModel, type FailoverCandidate } from "@/lib/ai/sdk/failoverModel";
 import { createReasoningNormalizingFetch } from "@/lib/ai/sdk/reasoningNormalizer";
+import { repairTextValues } from '@/lib/utils/unicode';
 
 /** openai-compatible 实例统一用这个名字，providerOptions 也用同一个 key（无需按上游区分）。 */
 export const UPSTREAM_PROVIDER_NAME = "upstream";
@@ -48,6 +59,8 @@ export interface ResolvedLanguageModel {
   model: LanguageModelV4;
   /** 主端点的解析结果（registryId / 定价 / timeoutMs / apiModelId 等）。 */
   provider: ResolvedProvider;
+  /** 最近一次成功落地的候选（failover 后可能不同于 provider）。 */
+  getActualProvider: () => ResolvedProvider;
   /** 注册表声明的能力（自定义模型来自分组配置）。 */
   supportsThinking: boolean;
   supportsTools: boolean;
@@ -56,6 +69,8 @@ export interface ResolvedLanguageModel {
 }
 
 export interface ResolveLanguageModelOptions {
+  /** An automatic selection is a closed candidate set, including every fallback hop. */
+  allowedModelIds?: readonly string[];
   /** 切换到备用端点/备用模型时回调（用于向前端推送提示）。 */
   onFailover?: (next: { label: string }, error: unknown) => void;
   /** 额外的整模型降级链（如生图模式：主文本模型 → imageModeTextModelFallback）。 */
@@ -80,9 +95,11 @@ function buildBaseModel(p: ResolvedProvider): LanguageModelV4 {
     baseURL: p.baseUrl.replace(/\/+$/, ""),
     apiKey: p.apiKey,
     includeUsage: true,
-    // 标准字段名也可能携带结构化值；归一化只改可识别的思考内容，其余协议仍由 SDK 校验。
-    fetch: createReasoningNormalizingFetch(p.reasoningField),
+    // The built-in gateway is the standard OpenAI-compatible path. Legacy/vendor
+    // response normalization belongs only to user-configured direct connections.
+    ...(p.gatewayDefaults ? {} : { fetch: createReasoningNormalizingFetch(p.reasoningField) }),
   });
+  if (p.gatewayDefaults) return upstream(p.apiModelId);
   return wrapLanguageModel({
     model: upstream(p.apiModelId),
     middleware: extractReasoningMiddleware({ tagName: "think" }),
@@ -120,13 +137,24 @@ export function buildThinkingSettings(
   const budget = thinkingBudget(effort);
   const modelInfo = info ?? (p.isCustom ? undefined : getModelInfo(p.registryId));
   const effortStr = wireThinkingEffort(modelInfo, effort);
-  switch (p.thinkingRequestStyle) {
+  const style = p.thinkingRequestStyle;
+  switch (style) {
     case "none":
       return {};
     case "openai-reasoning-effort":
       return { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: effortStr } } };
     case "openrouter-reasoning":
       return { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { reasoning: { effort: effortStr } } } };
+    case "gemini-thinking-level":
+      return { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { thinking_level: effortStr } } };
+    case "deepseek-thinking":
+      return {
+        providerOptions: {
+          [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" }, reasoning_effort: effortStr },
+        },
+      };
+    case "mimo-thinking":
+      return { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" } } } };
     case "anthropic-thinking": {
       const maxOutputTokens = Math.max(ANTHROPIC_THINKING_MAX_TOKENS_MIN, budget + 4096);
       if (p.apiProtocol === "anthropic") {
@@ -147,6 +175,59 @@ export function buildThinkingSettings(
   }
 }
 
+const THINKING_UPSTREAM_KEYS = [
+  "reasoningEffort",
+  "reasoning_effort",
+  "reasoning",
+  "thinking",
+  "thinking_level",
+  "enable_thinking",
+  "thinking_budget",
+] as const;
+
+/** 用落地端点的思考方言替换 callOptions 里冻住的上一跳参数，避免 merge 残留 GLM 的 reasoningEffort。 */
+export function applyThinkingCallSettings(
+  callOptions: LanguageModelV4CallOptions,
+  settings: ThinkingCallSettings,
+): LanguageModelV4CallOptions {
+  const providerOptions = { ...(callOptions.providerOptions ?? {}) } as Record<string, unknown>;
+  const upstream = { ...((providerOptions[UPSTREAM_PROVIDER_NAME] as Record<string, unknown> | undefined) ?? {}) };
+  for (const key of THINKING_UPSTREAM_KEYS) delete upstream[key];
+  const nextUpstream = settings.providerOptions?.[UPSTREAM_PROVIDER_NAME as keyof SharedV4ProviderOptions];
+  if (nextUpstream && typeof nextUpstream === "object") Object.assign(upstream, nextUpstream);
+  if (Object.keys(upstream).length > 0) providerOptions[UPSTREAM_PROVIDER_NAME] = upstream;
+  else delete providerOptions[UPSTREAM_PROVIDER_NAME];
+
+  const anthropic = { ...((providerOptions.anthropic as Record<string, unknown> | undefined) ?? {}) };
+  if (settings.providerOptions?.anthropic) Object.assign(anthropic, settings.providerOptions.anthropic);
+  else delete anthropic.thinking;
+  if (Object.keys(anthropic).length > 0) providerOptions.anthropic = anthropic;
+  else delete providerOptions.anthropic;
+
+  return {
+    ...callOptions,
+    providerOptions: providerOptions as SharedV4ProviderOptions,
+    ...(settings.maxOutputTokens != null ? { maxOutputTokens: settings.maxOutputTokens } : {}),
+  };
+}
+
+/** failover 后按落地端点的 apiModelId/provider 重取 ModelInfo，方言跟落地模型。 */
+function landedThinkingContext(
+  landed: ResolvedProvider,
+  customGroups: CustomApiGroup[],
+  fallbackInfo: ModelInfo | undefined,
+): { provider: ResolvedProvider; info: ModelInfo | undefined } {
+  if (landed.isCustom) {
+    const info = getModelInfoWithCustom(landed.registryId, customGroups) ?? fallbackInfo;
+    return { provider: landed, info };
+  }
+  const info = getLandedModelInfo(landed.apiModelId, landed.registryId) ?? fallbackInfo;
+  return {
+    provider: landed,
+    info,
+  };
+}
+
 export function resolveLanguageModel(
   modelId: string | undefined,
   custom?: CustomProvider | CustomApiGroup[] | null,
@@ -158,22 +239,75 @@ export function resolveLanguageModel(
   const supportsThinking = primary.isCustom ? primary.thinkingRequestStyle !== "none" && (info?.thinking ?? true) : info?.thinking === true;
   const supportsTools = info?.tools !== false;
 
-  const candidates: FailoverCandidate[] = collectCandidates(primary, custom, options.fallbackModelIds ?? []).map((p) => ({
+  const providers = collectCandidates(primary, custom, options.fallbackModelIds ?? [])
+    .filter((p) => !options.allowedModelIds || options.allowedModelIds.includes(p.registryId));
+  if (!providers.length) throw new Error('当前没有可用的自动模型，请稍后重试或手动选择模型。');
+  let actualProvider = providers[0] ?? primary;
+  const candidates: FailoverCandidate[] = providers.map((p) => ({
     model: buildBaseModel(p),
     label: p.apiModelId,
   }));
 
-  const model = createFailoverLanguageModel(candidates, {
+  let thinkingSettingsRequested = false;
+  let lastThinkingEffort: ThinkingEffort | undefined;
+
+  const failoverModel = createFailoverLanguageModel(candidates, {
     onFailover: (next, _index, error) => options.onFailover?.({ label: next.label }, error),
+    onLanded: (_next, index) => {
+      actualProvider = providers[index] ?? actualProvider;
+    },
     // 与旧实现一致：首字节超时视为端点不可用（慢模型如 MoE 冷启动在 models.ts 单独放宽）。
     firstChunkTimeoutMs: options.firstChunkTimeoutMs ?? primary.timeoutMs,
+    prepareCall: (index, callOptions) => {
+      const hop = providers[index] ?? actualProvider;
+      const landed = landedThinkingContext(hop, customGroups, info);
+      const prepared = thinkingSettingsRequested && supportsThinking ? applyThinkingCallSettings(
+        callOptions,
+        buildThinkingSettings(landed.provider, lastThinkingEffort, landed.info),
+      ) : callOptions;
+      if (!hop.gatewayDefaults) return prepared;
+      const defaults = {
+        ...prepared, temperature: hop.temperature,
+        topP: undefined, frequencyPenalty: undefined, presencePenalty: undefined, seed: undefined,
+      };
+      // These gateway models reject named/required tool_choice while reasoning. Keep only
+      // the requested tool, but use the supported OpenAI auto choice; no vendor fields.
+      if (['deepseek/deepseek-v4.1-flash', 'kimi-k3'].includes(hop.registryId)
+        && (defaults.toolChoice?.type === 'tool' || defaults.toolChoice?.type === 'required')) {
+        const name = defaults.toolChoice.type === 'tool' ? defaults.toolChoice.toolName : undefined;
+        if (name) defaults.tools = defaults.tools?.filter((tool) => tool.type === 'function' && tool.name === name);
+        defaults.toolChoice = { type: 'auto' };
+      }
+      return hop.thinkingRequestStyle === 'none' ? applyThinkingCallSettings(defaults, {}) : defaults;
+    },
+  });
+
+  // One final boundary for every model and every tool-loop step, including
+  // history produced by older clients and text truncated by satellite features.
+  const model = wrapLanguageModel({
+    model: failoverModel,
+    middleware: {
+      specificationVersion: 'v4',
+      transformParams: async ({ params }) => ({
+        ...params,
+        prompt: repairTextValues(params.prompt),
+        tools: repairTextValues(params.tools),
+      }),
+    },
   });
 
   return {
     model,
     provider: primary,
+    getActualProvider: () => actualProvider,
     supportsThinking,
     supportsTools,
-    thinkingSettings: (effort) => (supportsThinking ? buildThinkingSettings(primary, effort, info) : {}),
+    thinkingSettings: (effort) => {
+      thinkingSettingsRequested = true;
+      lastThinkingEffort = effort;
+      if (!supportsThinking) return {};
+      const landed = landedThinkingContext(actualProvider, customGroups, info);
+      return buildThinkingSettings(landed.provider, effort, landed.info);
+    },
   };
 }

@@ -13,7 +13,7 @@ import { getMessageText } from '@/lib/chat/messageParts';
 
 vi.mock('@/lib/storage/idbStorage', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/lib/storage/idbStorage')>(),
-  idbStorage: { getItem: vi.fn(async () => null), setItem: vi.fn(), removeItem: vi.fn(async () => {}) },
+  idbStorage: { getItem: vi.fn(async () => null), setItem: vi.fn(), setItemLazy: vi.fn(), removeItem: vi.fn(async () => {}) },
 }));
 vi.mock('@/lib/hooks/useChatHistory', async (importOriginal) => ({
   ...await importOriginal<typeof import('@/lib/hooks/useChatHistory')>(),

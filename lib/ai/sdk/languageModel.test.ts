@@ -2,12 +2,13 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   normalizeAnthropicBaseUrl,
+  applyThinkingCallSettings,
   buildThinkingSettings,
   resolveLanguageModel,
   UPSTREAM_PROVIDER_NAME,
 } from "./languageModel.ts";
 import type { ResolvedProvider } from "./../provider.ts";
-import { buildCustomModelRegistryId, type CustomApiGroup } from "./../models.ts";
+import { buildCustomModelRegistryId, getModelInfo, type CustomApiGroup } from "./../models.ts";
 import type { LanguageModelV4StreamPart } from "@ai-sdk/provider";
 
 function fixtureModel(reasoningField?: string) {
@@ -94,6 +95,7 @@ test("buildThinkingSettings：none → 空对象", () => {
 test("resolveLanguageModel：内置模型返回 openai-compatible 模型并暴露能力", () => {
   const r = resolveLanguageModel("mimo-v2.5");
   assert.equal(r.provider.registryId, "mimo-v2.5");
+  assert.equal(r.getActualProvider(), r.provider);
   assert.equal(r.supportsThinking, true);
   assert.equal(r.supportsTools, true);
   assert.equal(r.model.modelId, "mimo-v2.5");
@@ -131,10 +133,50 @@ test("buildThinkingSettings：GLM-5.3 Flash 的 max 原样下发", () => {
   assert.deepEqual(med.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "high" } });
 });
 
-test("buildThinkingSettings：Qwen3.8 的 high 映射为 xhigh", () => {
-  const r = resolveLanguageModel("Qwen/Qwen3.8-27B");
+test("buildThinkingSettings：Muse Spark 的 high 映射为 xhigh", () => {
+  const r = resolveLanguageModel("meta/muse-spark-1.3-contributor");
   const s = r.thinkingSettings("high");
   assert.deepEqual(s.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "xhigh" } });
+});
+
+test("buildThinkingSettings：gemini-thinking-level → thinking_level", () => {
+  const s = buildThinkingSettings(fakeProvider({ thinkingRequestStyle: "gemini-thinking-level" }), "medium");
+  assert.deepEqual(s.providerOptions, { [UPSTREAM_PROVIDER_NAME]: { thinking_level: "medium" } });
+});
+
+test("buildThinkingSettings：deepseek-thinking → thinking.enabled + reasoning_effort", () => {
+  const s = buildThinkingSettings(fakeProvider({ thinkingRequestStyle: "deepseek-thinking" }), "high");
+  assert.deepEqual(s.providerOptions, {
+    [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" }, reasoning_effort: "high" },
+  });
+});
+
+test("buildThinkingSettings：mimo-thinking → thinking.type，不含 reasoning_effort", () => {
+  const s = buildThinkingSettings(fakeProvider({ thinkingRequestStyle: "mimo-thinking" }), "high");
+  const opts = s.providerOptions?.[UPSTREAM_PROVIDER_NAME] as Record<string, unknown>;
+  assert.deepEqual(opts, { thinking: { type: "enabled" } });
+  assert.equal("reasoning_effort" in opts, false);
+  assert.equal("reasoningEffort" in opts, false);
+  assert.equal("enable_thinking" in opts, false);
+});
+
+test("buildThinkingSettings：GLM 降级到 mimo 后按落地端点 中转 OpenAI 格式下发", () => {
+  const stale = fakeProvider({
+    registryId: "z-ai/glm-5.3-flash",
+    apiModelId: "mimo-v2.5",
+    thinkingRequestStyle: "openai-reasoning-effort",
+  });
+  const landed = getModelInfo(stale.apiModelId);
+  assert.equal(landed?.thinkingRequestStyle, "openai-reasoning-effort");
+  const s = buildThinkingSettings(
+    { ...stale, thinkingRequestStyle: landed!.thinkingRequestStyle! },
+    "medium",
+    landed,
+  );
+  const opts = s.providerOptions?.[UPSTREAM_PROVIDER_NAME] as Record<string, unknown>;
+  assert.deepEqual(opts, { reasoningEffort: "medium" });
+  assert.equal('enable_thinking' in opts, false);
+  assert.equal('thinking' in opts, false);
 });
 
 test("buildThinkingSettings：自定义模型勾选的 max 档原样下发 reasoningEffort", () => {
@@ -175,6 +217,126 @@ test("buildThinkingSettings：自定义模型未勾选思考时 thinkingSettings
   const r = resolveLanguageModel(buildCustomModelRegistryId("or", "gpt-plain"), groups);
   assert.equal(r.supportsThinking, false);
   assert.deepEqual(r.thinkingSettings("high"), {});
+});
+
+test("applyThinkingCallSettings：替换思考键，不残留上一跳 reasoningEffort", () => {
+  const next = applyThinkingCallSettings(
+    {
+      prompt: fixturePrompt,
+      providerOptions: {
+        [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "max", temperature: 0.6 },
+      },
+    } as Parameters<typeof applyThinkingCallSettings>[0],
+    { providerOptions: { [UPSTREAM_PROVIDER_NAME]: { thinking: { type: "enabled" } } } },
+  );
+  const opts = next.providerOptions?.[UPSTREAM_PROVIDER_NAME] as Record<string, unknown>;
+  assert.deepEqual(opts, { temperature: 0.6, thinking: { type: "enabled" } });
+  assert.equal('reasoningEffort' in opts, false);
+});
+
+test("resolveLanguageModel：failover 后 thinkingSettings 跟落地 mimo-thinking", async (t) => {
+  const primaryId = buildCustomModelRegistryId("glm-like", "glm");
+  const backupId = buildCustomModelRegistryId("mimo-like", "mimo-v2.5");
+  const groups: CustomApiGroup[] = [
+    {
+      id: "glm-like",
+      name: "GLM-like",
+      baseUrl: "https://primary-glm.invalid/v1",
+      apiKey: "fixture-only",
+      models: [{
+        id: "glm",
+        thinking: true,
+        thinkingLevels: ["low", "high", "max"],
+        thinkingRequestStyle: "openai-reasoning-effort",
+        apiProtocol: "openai",
+      }],
+    },
+    {
+      id: "mimo-like",
+      name: "MiMo-like",
+      baseUrl: "https://backup-mimo.invalid/v1",
+      apiKey: "fixture-only",
+      models: [{
+        id: "mimo-v2.5",
+        thinking: true,
+        thinkingRequestStyle: "mimo-thinking",
+        apiProtocol: "openai",
+      }],
+    },
+  ];
+  const resolved = resolveLanguageModel(primaryId, groups, { fallbackModelIds: [backupId] });
+  const frozen = resolved.thinkingSettings("max");
+  assert.deepEqual(frozen.providerOptions, {
+    [UPSTREAM_PROVIDER_NAME]: { reasoningEffort: "max" },
+  });
+  const hops: Array<{ url: string; body: Record<string, unknown> }> = [];
+  t.mock.method(globalThis, "fetch", async (input: string | URL | Request, init?: RequestInit) => {
+    const url = String(input);
+    const body = init?.body ? JSON.parse(String(init.body)) as Record<string, unknown> : {};
+    hops.push({ url, body });
+    if (url.includes("primary-glm.invalid")) {
+      return new Response("unavailable", { status: 503 });
+    }
+    return new Response(
+      `data: ${JSON.stringify({ choices: [{ delta: { content: "ok" } }] })}\n\n` +
+        `data: ${JSON.stringify({ choices: [{ delta: {}, finish_reason: "stop" }], usage: { prompt_tokens: 2, completion_tokens: 1 } })}\n\n` +
+        "data: [DONE]\n\n",
+      { headers: { "content-type": "text/event-stream" } },
+    );
+  });
+  const result = await resolved.model.doStream({
+    prompt: fixturePrompt,
+    providerOptions: frozen.providerOptions,
+  });
+  await readParts(result.stream);
+  assert.equal(resolved.getActualProvider().registryId, backupId);
+  const opts = resolved.thinkingSettings("medium").providerOptions?.[UPSTREAM_PROVIDER_NAME] as Record<string, unknown>;
+  assert.deepEqual(opts, { thinking: { type: "enabled" } });
+  assert.equal('enable_thinking' in opts, false);
+
+  const backup = hops.find((h) => h.url.includes("backup-mimo.invalid"));
+  assert.ok(backup, `backup hop missing: ${JSON.stringify(hops.map((h) => h.url))}`);
+  assert.deepEqual(backup.body.thinking, { type: "enabled" }, JSON.stringify(backup.body));
+  assert.equal(backup.body.reasoning_effort, undefined);
+  assert.equal(backup.body.reasoningEffort, undefined);
+  assert.equal(backup.body.enable_thinking, undefined);
+});
+
+test("resolveLanguageModel：failover 后 getActualProvider 指向落地模型", async (t) => {
+  const primaryId = buildCustomModelRegistryId("failover", "text-a");
+  const backupId = buildCustomModelRegistryId("failover-b", "text-b");
+  const groups: CustomApiGroup[] = [{
+    id: "failover", name: "Failover", baseUrl: "https://primary-failover.invalid/v1", apiKey: "fixture-only",
+    models: [
+      { id: "text-a", apiProtocol: "openai" },
+      { id: "text-b", apiProtocol: "openai" },
+    ],
+  }];
+  const backupGroups: CustomApiGroup[] = [{
+    ...groups[0],
+    id: "failover-b",
+    baseUrl: "https://backup-failover.invalid/v1",
+    models: [{ id: "text-b", apiProtocol: "openai" }],
+  }];
+  const resolved = resolveLanguageModel(primaryId, [...groups, ...backupGroups], {
+    fallbackModelIds: [buildCustomModelRegistryId("failover-b", "text-b")],
+  });
+  assert.equal(resolved.provider.registryId, primaryId);
+  t.mock.method(globalThis, "fetch", async (input: string | URL | Request) => {
+    const url = String(input);
+    if (url.includes("primary-failover.invalid")) {
+      return new Response("unavailable", { status: 503 });
+    }
+    return new Response(
+      `data: ${JSON.stringify({ choices: [{ delta: { content: "ok" } }] })}\n\n` +
+        `data: ${JSON.stringify({ choices: [{ delta: {}, finish_reason: "stop" }], usage: { prompt_tokens: 2, completion_tokens: 1 } })}\n\n` +
+        "data: [DONE]\n\n",
+      { headers: { "content-type": "text/event-stream" } },
+    );
+  });
+  const result = await resolved.model.doStream({ prompt: fixturePrompt });
+  await readParts(result.stream);
+  assert.equal(resolved.getActualProvider().registryId, backupId);
 });
 
 test("resolveLanguageModel：真实 SDK 对默认/标准配置的结构化思考与别名流均可消费", async (t) => {

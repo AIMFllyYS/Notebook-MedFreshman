@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   resolveProvider,
+  resolveNextProvider,
   resolveImageProvider,
   chatCompletionsUrl,
   thinkingBudget,
-  buildThinkingRequestParams,
   extractReasoningDelta,
   detectImageApiStyle,
   autoConfigFromProtocol,
@@ -13,6 +13,8 @@ import {
   ENV_MODEL_FLASH,
 } from "./provider.ts";
 import { buildCustomModelRegistryId } from "./models.ts";
+import { UnsafeCustomBaseUrlError } from "./customBaseUrl.ts";
+import { EMPTY_CAPABILITY_ENDPOINTS } from "./capabilityEndpoints.ts";
 
 test("resolveProvider：custom 端点三要素齐全时用自定义", () => {
   const r = resolveProvider("custom", {
@@ -26,6 +28,46 @@ test("resolveProvider：custom 端点三要素齐全时用自定义", () => {
   assert.equal(r.apiKey, "sk-test");
   assert.equal(r.apiModelId, "my-model");
   assert.equal(r.registryId, "custom:my-model");
+});
+
+test('a missing scoped custom API never silently uses platform credentials', () => {
+  assert.throws(() => resolveProvider('custom:lost:model', []), /本次不会改用平台模型/);
+});
+
+test("resolveProvider：回环或私网自定义 baseUrl 被拒绝", () => {
+  assert.throws(
+    () => resolveProvider("custom", { baseUrl: "http://127.0.0.1/v1", apiKey: "sk-test", model: "my-model" }),
+    (err: unknown) => err instanceof UnsafeCustomBaseUrlError && err.reason === "private",
+  );
+  assert.throws(
+    () => resolveProvider("custom", {
+      baseUrl: "http://192.168.0.5/v1",
+      apiKey: "sk-test",
+      model: "my-model",
+    }),
+    (err: unknown) => err instanceof UnsafeCustomBaseUrlError && err.reason === "private",
+  );
+});
+
+test("resolveProvider：非 http(s) 自定义 baseUrl 被拒绝", () => {
+  assert.throws(
+    () => resolveProvider("custom", { baseUrl: "file:///tmp/openai", apiKey: "sk-test", model: "my-model" }),
+    (err: unknown) => err instanceof UnsafeCustomBaseUrlError && err.reason === "protocol",
+  );
+});
+
+test("resolveImageProvider：私网自定义 baseUrl 被拒绝", () => {
+  const modelId = buildCustomModelRegistryId("lan-image", "local-image");
+  assert.throws(
+    () => resolveImageProvider(modelId, [{
+      id: "lan-image",
+      name: "LAN Image",
+      baseUrl: "http://10.0.0.2/v1",
+      apiKey: "sk-image",
+      models: [{ id: "local-image", type: "image" }],
+    }]),
+    (err: unknown) => err instanceof UnsafeCustomBaseUrlError && err.reason === "private",
+  );
 });
 
 test("resolveProvider：custom 缺少 apiKey 时不走自定义", () => {
@@ -121,23 +163,6 @@ test("extractReasoningDelta：兼容部分中转网关把 reasoning 发成结构
   assert.equal(extractReasoningDelta({ thinking: "J" }, "reasoning_content"), "J");
 });
 
-test("buildThinkingRequestParams：按 provider 风格构造请求参数", () => {
-  assert.deepEqual(buildThinkingRequestParams("none", "high"), {});
-  assert.deepEqual(buildThinkingRequestParams("siliconflow", "low"), {
-    enable_thinking: true,
-    thinking_budget: 2000,
-  });
-  assert.deepEqual(buildThinkingRequestParams("openai-reasoning-effort", "max"), {
-    reasoning_effort: "high",
-  });
-  assert.deepEqual(buildThinkingRequestParams("openrouter-reasoning", "low"), {
-    reasoning: { effort: "low" },
-  });
-  assert.deepEqual(buildThinkingRequestParams("anthropic-thinking", "high"), {
-    thinking: { type: "enabled", budget_tokens: 16000 },
-  });
-});
-
 test("resolveImageProvider：custom 生图模型可声明 OpenAI images 格式", () => {
   const modelId = buildCustomModelRegistryId("openai-image", "my-image-model");
   const provider = resolveImageProvider(modelId, [
@@ -178,6 +203,92 @@ test("resolveImageProvider：用户显式选中的生图模型优先于默认生
   assert.equal(provider.imageApiStyle, "siliconflow");
 });
 
+test("resolveImageProvider：空能力端点与未传时行为一致", () => {
+  const a = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo");
+  const b = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo", [], null, EMPTY_CAPABILITY_ENDPOINTS);
+  assert.equal(a.baseUrl, b.baseUrl);
+  assert.equal(a.apiKey, b.apiKey);
+  assert.equal(a.isCustom, b.isCustom);
+  assert.equal(a.apiModelId, b.apiModelId);
+  assert.equal(a.imageApiStyle, b.imageApiStyle);
+});
+
+test("resolveImageProvider：用户生图 baseUrl/key 覆盖平台凭证", () => {
+  const provider = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo", [], null, {
+    ...EMPTY_CAPABILITY_ENDPOINTS,
+    imageBaseUrl: "https://mine.example/v1",
+    imageApiKey: "user-image-key",
+    imageModelId: "my-image",
+    imageApiStyle: "openai",
+  });
+  assert.equal(provider.isCustom, true);
+  assert.equal(provider.apiKey, "user-image-key");
+  assert.equal(provider.baseUrl, "https://mine.example/v1");
+  assert.equal(provider.apiModelId, "my-image");
+  assert.equal(provider.imageApiStyle, "openai");
+});
+
+test("resolveImageProvider：只填 baseUrl 不填 key 时忽略用户 URL", () => {
+  const platform = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo");
+  const withUrlOnly = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo", [], null, {
+    ...EMPTY_CAPABILITY_ENDPOINTS,
+    imageBaseUrl: "http://127.0.0.1/v1",
+  });
+  assert.equal(withUrlOnly.baseUrl, platform.baseUrl);
+  assert.equal(withUrlOnly.isCustom, false);
+});
+
+test("resolveImageProvider：用户生图私网 baseUrl 被拒绝", () => {
+  assert.throws(
+    () => resolveImageProvider("Tongyi-MAI/Z-Image-Turbo", [], null, {
+      ...EMPTY_CAPABILITY_ENDPOINTS,
+      imageBaseUrl: "http://127.0.0.1/v1",
+      imageApiKey: "user-image-key",
+    }),
+    (err: unknown) => err instanceof UnsafeCustomBaseUrlError && err.reason === "private",
+  );
+});
+
+test("resolveImageProvider：RELAY 与 AI_BASE 不同时仍走硅基流动", () => {
+  const prevSfBase = process.env.SILICONFLOW_BASE_URL;
+  const prevSfKey = process.env.SILICONFLOW_API_KEY;
+  process.env.SILICONFLOW_BASE_URL = "https://api.siliconflow.cn/v1";
+  process.env.SILICONFLOW_API_KEY = "sf-image-key";
+  try {
+    const image = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo");
+    const chat = resolveProvider("deepseek/deepseek-v4.1-flash");
+    assert.ok(image.baseUrl.includes("api.siliconflow.cn"), image.baseUrl);
+    assert.equal(image.apiKey, "sf-image-key");
+    assert.equal(image.apiModelId, "Tongyi-MAI/Z-Image-Turbo");
+    assert.equal(image.imageApiStyle, "siliconflow");
+    assert.ok(!image.baseUrl.includes("relay.protocom.org"));
+    assert.notEqual(image.baseUrl, chat.baseUrl);
+  } finally {
+    if (prevSfBase === undefined) delete process.env.SILICONFLOW_BASE_URL;
+    else process.env.SILICONFLOW_BASE_URL = prevSfBase;
+    if (prevSfKey === undefined) delete process.env.SILICONFLOW_API_KEY;
+    else process.env.SILICONFLOW_API_KEY = prevSfKey;
+  }
+});
+
+test("resolveImageProvider：只配 AI_BASE_URL（指向中转站）时不拿它当生图端点", () => {
+  const prevSfBase = process.env.SILICONFLOW_BASE_URL;
+  const prevSfKey = process.env.SILICONFLOW_API_KEY;
+  delete process.env.SILICONFLOW_BASE_URL;
+  delete process.env.SILICONFLOW_API_KEY;
+  try {
+    const image = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo");
+    // AI_BASE_URL 在测试环境里指向中转站；生图必须回到硅基流动自己的域名。
+    assert.ok(image.baseUrl.includes("api.siliconflow.cn"), image.baseUrl);
+    assert.ok(!image.baseUrl.includes("relay"), image.baseUrl);
+  } finally {
+    if (prevSfBase === undefined) delete process.env.SILICONFLOW_BASE_URL;
+    else process.env.SILICONFLOW_BASE_URL = prevSfBase;
+    if (prevSfKey === undefined) delete process.env.SILICONFLOW_API_KEY;
+    else process.env.SILICONFLOW_API_KEY = prevSfKey;
+  }
+});
+
 test("resolveImageProvider：用户显式选中的 custom 生图模型优先于默认生图模型", () => {
   const selectedModelId = buildCustomModelRegistryId("openai-image", "selected-image-model");
   const defaultModelId = buildCustomModelRegistryId("openai-image", "default-image-model");
@@ -199,12 +310,13 @@ test("resolveImageProvider：用户显式选中的 custom 生图模型优先于�
   assert.equal(provider.imageApiStyle, "openai");
 });
 
-test("resolveProvider：mimo 模型走 MIMO 端点且 apiModelId 一致", () => {
+test("resolveProvider：mimo 模型走企业中转且 apiModelId 一致", () => {
   const r = resolveProvider("mimo-v2.5");
   assert.equal(r.isCustom, false);
   assert.equal(r.registryId, "mimo-v2.5");
   assert.equal(r.apiModelId, "mimo-v2.5");
-  assert.ok(r.baseUrl.includes("xiaomimimo") || r.baseUrl === "");
+  assert.equal(r.baseUrl, resolveProvider("deepseek/deepseek-v4.1-flash").baseUrl);
+  assert.equal(r.apiKey, resolveProvider("deepseek/deepseek-v4.1-flash").apiKey);
 });
 
 test("resolveProvider：主力 GLM 走 relay，备用端点为 mimo", () => {
@@ -219,21 +331,37 @@ test("resolveProvider：主力 GLM 走 relay，备用端点为 mimo", () => {
   assert.equal(backup.endpointIndex, 1);
 });
 
+test("resolveProvider：GLM 备用 hop 的 thinkingRequestStyle 跟落地 MiMo，不沿用 GLM 方言", () => {
+  const primary = resolveProvider("z-ai/glm-5.3-flash", undefined, 0);
+  assert.equal(primary.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.equal(primary.apiModelId, "z-ai/glm-5.3-flash");
+
+  const backup = resolveProvider("z-ai/glm-5.3-flash", undefined, 1);
+  assert.equal(backup.registryId, "z-ai/glm-5.3-flash");
+  assert.equal(backup.apiModelId, "mimo-v2.5");
+  assert.equal(backup.endpointIndex, 1);
+  assert.equal(backup.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.equal(backup.reasoningField, primary.reasoningField);
+});
+
 test("resolveProvider：旧 GLM-5.2 id 归一到 glm-5.3-flash", () => {
   const r = resolveProvider("zai-org/GLM-5.2", undefined, 0);
   assert.equal(r.registryId, "z-ai/glm-5.3-flash");
   assert.equal(r.apiModelId, "z-ai/glm-5.3-flash");
 });
 
-test("resolveProvider：Qwen3.8-27B 超时加长", () => {
-  const r = resolveProvider("Qwen/Qwen3.8-27B");
+test("resolveProvider：Qwen3.8-Flash 超时加长", () => {
+  const r = resolveProvider("Qwen/Qwen3.8-Flash");
+  assert.equal(r.registryId, "Qwen/Qwen3.8-Flash");
   assert.equal(r.timeoutMs, 120_000);
   assert.equal(r.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.equal(resolveProvider("Qwen/Qwen3.8-27B").registryId, "Qwen/Qwen3.8-Flash");
 });
 
 test("resolveProvider：自由中转未配置模型 ID 时 configured=false", () => {
   const r = resolveProvider("custom-openai");
   assert.equal(r.registryId, "custom-openai");
+  assert.equal(r.thinkingRequestStyle, "openai-reasoning-effort");
   if (!process.env.RELAY_MODEL_ID) {
     assert.equal(r.configured, false);
     assert.equal(r.apiModelId, "custom-openai");
@@ -243,6 +371,46 @@ test("resolveProvider：自由中转未配置模型 ID 时 configured=false", ()
 test("normalizeOpenAIBaseUrl：补 /v1", () => {
   assert.equal(normalizeOpenAIBaseUrl("https://relay.protocom.org/"), "https://relay.protocom.org/v1");
   assert.equal(normalizeOpenAIBaseUrl("https://relay.protocom.org/v1"), "https://relay.protocom.org/v1");
+});
+
+test("resolveProvider：自定义分组 baseUrl 不带 /v1 时与连通性测试同样补全", () => {
+  const modelId = buildCustomModelRegistryId("g", "m");
+  const r = resolveProvider(modelId, [{
+    id: "g",
+    name: "G",
+    baseUrl: "https://api.example.com",
+    apiKey: "sk-test",
+    models: [{ id: "m" }],
+    timeoutMs: 90_000,
+  }]);
+  assert.equal(r.isCustom, true);
+  assert.equal(r.baseUrl, "https://api.example.com/v1");
+  assert.equal(r.timeoutMs, 90_000);
+  assert.equal(r.endpointIndex, 0);
+});
+
+test("resolveProvider：模型级 timeoutMs 优先于分组", () => {
+  const modelId = buildCustomModelRegistryId("g", "slow");
+  const r = resolveProvider(modelId, [{
+    id: "g",
+    name: "G",
+    baseUrl: "https://api.example.com/v1",
+    apiKey: "sk-test",
+    timeoutMs: 60_000,
+    models: [{ id: "slow", timeoutMs: 120_000 }],
+  }]);
+  assert.equal(r.timeoutMs, 120_000);
+});
+
+test("resolveProvider：自定义分组 endpointIndex 恒为 0 且无 failover", () => {
+  const modelId = buildCustomModelRegistryId("g", "m");
+  const groups = [{
+    id: "g", name: "G", baseUrl: "https://api.example.com/v1", apiKey: "sk",
+    models: [{ id: "m" }],
+  }];
+  const r = resolveProvider(modelId, groups);
+  assert.equal(r.endpointIndex, 0);
+  assert.equal(resolveNextProvider(r.registryId, r.endpointIndex, groups), null);
 });
 
 test("resolveProvider：undefined modelId 回退到 ENV_MODEL_FLASH", () => {

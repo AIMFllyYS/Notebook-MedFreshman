@@ -1,12 +1,20 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Clock, AlertTriangle, X, Pin, RefreshCw, Loader2, BarChart2 } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
 import { useFloatingTokenTracker } from '@/lib/hooks/useFloatingTokenTracker';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { getModelInfoWithCustom } from '@/lib/ai/models';
+import {
+  FIRST_TURN_OVERHEAD_TOKENS,
+  contextRingCaption,
+  contextRingColor,
+  contextRingLevel,
+  formatContextCacheValue,
+  resolveSessionContextBudget,
+} from '@/lib/context/estimateFullContext';
 import { useChatHistory } from '@/lib/hooks/useChatHistory';
 import { estimateTokens } from '@/lib/context/estimateTokens';
 import { getMessageText } from '@/lib/chat/messageParts';
@@ -14,6 +22,12 @@ import { useDraggable } from '@/lib/hooks/useDraggable';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { useOverlayRegistration } from '@/lib/keyboard/useOverlayRegistration';
 import { openBillingDashboard } from '@/lib/window/openBillingDashboard';
+import { useBillingStore } from '@/lib/hooks/useBillingStore';
+import { costCnyToUsd, summarizeSessionLedger } from '@/lib/billing/ledgerView';
+import { refreshBillingFromLedger } from '@/lib/billing/syncUsageLedger';
+import { AccountQuota } from '@/components/chat/AccountQuota';
+import { UsageProgressBar } from '@/components/chat/UsageProgressBar';
+import { ACCOUNT_USAGE_CHANGED, notifyAccountUsageChanged } from '@/lib/billing/quotaView';
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -25,6 +39,17 @@ function fmtCost(yuan: number): string {
   if (yuan < 0.0001) return '¥0';
   if (yuan < 0.01) return `¥${yuan.toFixed(4)}`;
   return `¥${yuan.toFixed(2)}`;
+}
+
+function fmtUsd(yuan: number, rate: number): string {
+  const usd = costCnyToUsd(yuan, rate);
+  if (usd < 0.0001) return '$0';
+  if (usd < 0.01) return `$${usd.toFixed(4)}`;
+  return `$${usd.toFixed(2)}`;
+}
+
+function fmtMoneyPair(yuan: number, rate: number): string {
+  return `${fmtCost(yuan)} / ${fmtUsd(yuan, rate)}`;
 }
 
 function fmtDuration(sec: number): string {
@@ -57,16 +82,17 @@ const BREAKDOWN_CATS: { key: 'tools' | 'skills' | 'pages' | 'webSearch' | 'conve
 
 export default function TokenDashboard({ isLoading = false, floatingSessionId, modelId }: { isLoading?: boolean; floatingSessionId?: string; modelId?: string }) {
   const [open, setOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [pinned, setPinned] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
 
   const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [panelHeight, setPanelHeight] = useState(560);
   // 拖动：rAF + transform（零重渲染），松手才提交。left 正向、bottom 反向（向上拖 = bottom 增大）。
   const { elRef, onPointerDown } = useDraggable((dx, dy) => setPos((p) => ({ x: p.x + dx, y: p.y - dy })));
 
-  // 全局 tracker（主面板用）
-  const gSessionTotal = useTokenTracker((s) => s.sessionTotal);
+  // 全局 tracker（主面板用）——费用改读台账，tracker 只负责上下文与缓存倒计时。
   const gLastTurn = useTokenTracker((s) => s.lastTurn);
   const gCtxTokens = useTokenTracker((s) => s.currentContextTokens);
   const gCtxLimit = useTokenTracker((s) => s.modelContextLimit);
@@ -77,9 +103,9 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   const gContextWarning = useTokenTracker((s) => s.contextWarning);
 
   // 浮窗 tracker（划词浮窗用，按 sessionId 隔离）
-  const fData = useFloatingTokenTracker((s) => floatingSessionId ? (s.sessions[floatingSessionId] ?? null) : null);
+  const floatingData = useFloatingTokenTracker((s) => floatingSessionId ? (s.sessions[floatingSessionId] ?? null) : null);
+  const fData = floatingSessionId ? floatingData ?? useFloatingTokenTracker.getState().getSession(floatingSessionId) : null;
 
-  const sessionTotal = fData?.sessionTotal ?? gSessionTotal;
   const lastTurn = fData?.lastTurn ?? gLastTurn;
   const ctxTokens = fData?.currentContextTokens ?? gCtxTokens;
   const ctxLimit = fData?.modelContextLimit ?? gCtxLimit;
@@ -91,7 +117,15 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
 
   const globalSelectedModelId = useSettings((s) => s.selectedModelId);
   const customApiGroups = useSettings((s) => s.customApiGroups);
+  const usdExchangeRate = useSettings((s) => s.usdExchangeRate);
   const selectedModelId = modelId ?? globalSelectedModelId;
+  const activeSessionId = useChatHistory((s) => s.activeSessionId);
+  const billingRecords = useBillingStore((s) => s.records);
+  const ledgerSessionId = floatingSessionId ?? activeSessionId;
+  const sessionLedger = useMemo(
+    () => summarizeSessionLedger(billingRecords, ledgerSessionId),
+    [billingRecords, ledgerSessionId],
+  );
   const modelInfo = getModelInfoWithCustom(selectedModelId, customApiGroups);
   const pricing = modelInfo?.pricing;
   const cacheTtlSec = modelInfo?.cacheTtlSec;
@@ -106,7 +140,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     const tracker = floatingSessionId
       ? useFloatingTokenTracker.getState().getSession(floatingSessionId)
       : useTokenTracker.getState();
-    const limit = tracker.sessionContextBudgetTokens > 0 ? tracker.sessionContextBudgetTokens : modelLimit;
+    const limit = resolveSessionContextBudget(tracker.sessionContextBudgetTokens, modelLimit);
 
     const serverCtx = floatingSessionId
       ? useFloatingTokenTracker.getState().getSession(floatingSessionId).serverContextTokens
@@ -120,7 +154,8 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
       }
     };
 
-    if (serverCtx > 0) {
+    const displayBase = tracker.contextBreakdown?.displayTotal ?? serverCtx;
+    if (displayBase > 0) {
       const lastAssistantIdx = (() => {
         for (let i = msgs.length - 1; i >= 0; i--) {
           if (msgs[i].role === 'assistant') return i;
@@ -132,12 +167,12 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
         .map((m) => getMessageText(m))
         .join('');
       const newTokens = estimateTokens(newText);
-      setCurrentContext(serverCtx + newTokens);
+      setCurrentContext(displayBase + newTokens);
     } else {
       const text = msgs
         .map((m) => getMessageText(m))
         .join('');
-      const est = estimateTokens(text) + 3000;
+      const est = estimateTokens(text) + FIRST_TURN_OVERHEAD_TOKENS;
       setCurrentContext(est);
     }
   }, [floatingSessionId, modelId]);
@@ -151,25 +186,53 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     return () => clearInterval(id);
   }, [open, recompute]);
 
+  useEffect(() => {
+    if (!open) return;
+    const refresh = () => { void refreshBillingFromLedger(); };
+    refresh();
+    window.addEventListener(ACCOUNT_USAGE_CHANGED, refresh);
+    return () => window.removeEventListener(ACCOUNT_USAGE_CHANGED, refresh);
+  }, [ledgerSessionId, open]);
+
   const ratio = ctxLimit > 0 ? ctxTokens / ctxLimit : 0;
   const pctText = `${Math.min(Math.round(ratio * 100), 999)}%`;
-  const ringColor =
-    ratio > 0.7 ? 'var(--md-sys-color-error)' :
-    ratio > 0.4 ? '#f59e0b' :
-    '#10b981';
+  const ringLevel = contextRingLevel(ratio);
+  const ringColor = contextRingColor(ringLevel);
+  const ringCaption = contextRingCaption(ringLevel);
   const barColor = ringColor;
+  const cachedTokens = breakdown?.cachedTokens ?? lastTurn.cachedTokens;
+  const showCacheRow = breakdown?.cachedTokens !== undefined
+    || lastTurn.cachedTokens > 0
+    || lastTurn.promptTokens > 0;
 
-  const turnCost = calcCost(lastTurn.promptTokens, lastTurn.completionTokens, lastTurn.cachedTokens, pricing);
-  const totalCost = calcCost(sessionTotal.promptTokens, sessionTotal.completionTokens, sessionTotal.cachedTokens, pricing);
+  const turnCost = sessionLedger.lastTurn.costCny;
+  const totalCost = sessionLedger.costCny;
 
   useLayoutEffect(() => {
     if (!open || !btnRef.current) return;
-    const r = btnRef.current.getBoundingClientRect();
-    const pw = 280;
-    let x = r.left;
-    if (x + pw > window.innerWidth - 8) x = window.innerWidth - pw - 8;
-    if (x < 8) x = 8;
-    setPos({ x, y: window.innerHeight - r.top + 6 });
+    const place = () => {
+      const r = btnRef.current?.getBoundingClientRect();
+      if (!r) return;
+      const viewport = window.visualViewport;
+      const width = viewport?.width ?? window.innerWidth;
+      const height = viewport?.height ?? window.innerHeight;
+      const top = viewport?.offsetTop ?? 0;
+      const pw = Math.min(300, width - 16);
+      const mobile = width < 640;
+      setPos({ x: Math.max(8, Math.min(r.left, width - pw - 8)), y: mobile
+        ? Math.max(8, window.innerHeight - top - height + 8)
+        : Math.max(8, window.innerHeight - r.top + 6) });
+      setPanelHeight(Math.max(120, Math.min(560, mobile ? height * 0.75 : r.top - top - 16)));
+    };
+    place();
+    window.addEventListener('resize', place);
+    window.visualViewport?.addEventListener('resize', place);
+    window.visualViewport?.addEventListener('scroll', place);
+    return () => {
+      window.removeEventListener('resize', place);
+      window.visualViewport?.removeEventListener('resize', place);
+      window.visualViewport?.removeEventListener('scroll', place);
+    };
   }, [open]);
 
   useOverlayRegistration({
@@ -218,6 +281,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             {isLoading && <Loader2 size={11} className="animate-spin" />}
             {pctText} ({fmtTokens(ctxTokens)} / {fmtTokens(ctxLimit)}) 上下文已使用
+            {ringCaption ? ` · ${ringCaption}` : ''}
           </span>
         }
         placement="top"
@@ -244,7 +308,10 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             position: 'fixed',
             left: pos.x,
             bottom: pos.y,
-            width: 280,
+            width: 'min(300px, calc(100vw - 16px))',
+            maxHeight: panelHeight,
+            overflowY: 'auto',
+            overscrollBehavior: 'contain',
             zIndex: 9999,
           }}
           className="rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] shadow-lg animate-[dropdown-in_0.15s_ease-out]"
@@ -272,6 +339,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                 onClick={() => {
                   setRefreshing(true);
                   recompute();
+                  notifyAccountUsageChanged();
                   setTimeout(() => setRefreshing(false), 600);
                 }}
                 title="刷新上下文估算"
@@ -293,6 +361,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
               </button>
               <button
                 onClick={() => { setOpen(false); setPinned(false); }}
+                aria-label="关闭上下文看板"
                 data-no-drag
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: 'var(--ink-faint)' }}
               >
@@ -302,6 +371,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
           </div>
 
           <div style={{ padding: '10px 12px', fontSize: 11 }}>
+            <AccountQuota />
             {/* Context usage bar */}
             <div style={{ marginBottom: 10 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, color: 'var(--ink-soft)' }}>
@@ -310,26 +380,19 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                   {fmtTokens(ctxTokens)} / {fmtTokens(ctxLimit)} &nbsp;{pctText}
                 </span>
               </div>
-              <div style={{
-                height: 6, borderRadius: 3,
-                background: 'var(--bg-muted)', overflow: 'hidden',
-              }}>
-                <div style={{
-                  width: `${Math.min(ratio * 100, 100)}%`,
-                  height: '100%', borderRadius: 3,
-                  background: barColor,
-                  transition: 'width 0.3s ease, background 0.3s ease',
-                }} />
-              </div>
+              <UsageProgressBar ratio={ratio} ariaLabel="上下文使用比例" />
+              {ringCaption && (
+                <div style={{ marginTop: 4, fontSize: 10, color: ringColor }}>{ringCaption}</div>
+              )}
             </div>
 
-            {(contextTruncated || breakdown?.cacheHit !== undefined) && (
+            {(contextTruncated || showCacheRow) && (
               <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 10 }}>
-                {breakdown?.cacheHit !== undefined && (
-                  <Row label="上下文缓存" value={breakdown.cacheHit ? '命中' : '未命中'} />
+                {showCacheRow && (
+                  <Row label="上下文缓存" value={formatContextCacheValue(cachedTokens, fmtTokens)} />
                 )}
                 {contextTruncated && (
-                  <Row label="发送策略" value="最近消息" accent />
+                  <Row label="发送策略" value="滚动摘要" accent />
                 )}
                 {contextWarning && (
                   <div style={{ marginTop: 4, fontSize: 10, lineHeight: 1.35, color: 'var(--md-sys-color-error)' }}>
@@ -340,6 +403,9 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             )}
 
             {/* Context composition (IDE 式分项构成) */}
+            <details onToggle={(event) => setDetailsOpen(event.currentTarget.open)}>
+            <summary className="mb-2 cursor-pointer rounded py-2 text-[var(--ink-soft)]">上下文构成与消耗详情</summary>
+            {detailsOpen ? <>
             <div style={{ marginBottom: 10 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, color: 'var(--ink-soft)' }}>
                 <span>上下文构成</span>
@@ -380,10 +446,10 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             {/* Last turn */}
             <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 8 }}>
               <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>本轮对话</div>
-              <Row label="输入 token" value={fmtTokens(lastTurn.promptTokens)} />
-              <Row label="输出 token" value={fmtTokens(lastTurn.completionTokens)} />
-              <Row label="缓存命中" value={fmtTokens(lastTurn.cachedTokens)} />
-              {pricing && <Row label="本轮费用" value={fmtCost(turnCost)} accent />}
+              <Row label="输入 token" value={fmtTokens(sessionLedger.lastTurn.promptTokens)} />
+              <Row label="输出 token" value={fmtTokens(sessionLedger.lastTurn.completionTokens)} />
+              <Row label="缓存命中" value={fmtTokens(sessionLedger.lastTurn.cachedTokens)} />
+              <Row label="本轮费用" value={fmtMoneyPair(turnCost, usdExchangeRate)} accent />
             </div>
 
             {/* Prefix cache countdown — 隔离到子组件，其每秒 tick 不再重渲整个看板 */}
@@ -398,14 +464,16 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             {/* Session total */}
             <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8 }}>
               <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>会话累计</div>
-              <Row label="总输入" value={fmtTokens(sessionTotal.promptTokens)} />
-              <Row label="总输出" value={fmtTokens(sessionTotal.completionTokens)} />
-              {pricing && <Row label="累计费用" value={fmtCost(totalCost)} accent />}
+              <Row label="总输入" value={fmtTokens(sessionLedger.promptTokens)} />
+              <Row label="总输出" value={fmtTokens(sessionLedger.completionTokens)} />
+              <Row label="累计费用" value={fmtMoneyPair(totalCost, usdExchangeRate)} accent />
             </div>
 
             <div style={{ marginTop: 8, fontSize: 9, color: 'var(--ink-faint)', lineHeight: 1.3 }}>
               价格为平台参考价，实际以 API 提供商结算为准。
             </div>
+            </> : null}
+            </details>
           </div>
         </div>,
         document.body,

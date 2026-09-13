@@ -2,15 +2,22 @@
 
 import { Type } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
+import { useTheme } from "@/lib/hooks/useTheme";
+import AppearanceSettingsControls from "@/components/layout/AppearanceSettingsControls";
 import { h3Cls } from "./_shared";
 
 export function AppearanceSection() {
   const fontScale = useSettings((s) => s.fontScale);
   const setFontScale = useSettings((s) => s.setFontScale);
+  const { theme, setTheme, appearance, setAppearanceMode, setCustomAppearance, resetAppearance } = useTheme();
 
   return (
-    <section className="flex flex-col gap-2">
-      <h3 className={h3Cls}>外观</h3>
+    <section className="flex flex-col gap-3">
+      <h3 className={h3Cls}>整个项目</h3>
+      <AppearanceSettingsControls theme={theme} setTheme={setTheme} appearance={appearance}
+        setAppearanceMode={setAppearanceMode} setCustomAppearance={setCustomAppearance} resetAppearance={resetAppearance} />
+      <div className="settings-section-divider" />
+      <h3 className={h3Cls}>对话阅读</h3>
       <div className="flex items-center gap-2 text-[var(--md-sys-color-on-surface-variant)]">
         <Type size={14} />
         <span className="text-[12.5px]">对话字体大小</span>

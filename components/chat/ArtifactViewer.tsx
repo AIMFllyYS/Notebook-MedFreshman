@@ -9,6 +9,7 @@
 import { Download, MonitorPlay } from "lucide-react";
 import { useArtifacts } from "@/lib/hooks/useArtifacts";
 import { useSettings } from "@/lib/hooks/useSettings";
+import { ARTIFACT_IFRAME_SANDBOX, injectOpaqueOriginStorageShim } from "@/lib/sandbox/opaqueOriginStorageShim";
 import { downloadHtmlFile } from "@/lib/utils/downloadHtml";
 import { openHtmlInNewTab } from "@/lib/utils/openHtmlInNewTab";
 import ManagedWindow from "@/components/window/ManagedWindow";
@@ -50,8 +51,8 @@ export default function ArtifactViewer() {
     >
       <iframe
         title={art.title}
-        srcDoc={art.html}
-        sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-modals allow-downloads"
+        srcDoc={injectOpaqueOriginStorageShim(art.html)}
+        sandbox={ARTIFACT_IFRAME_SANDBOX}
         className="min-h-0 w-full flex-1 border-0 bg-white"
       />
     </ManagedWindow>

@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { BookmarkPlus, Brain, ChevronDown, ChevronRight, Globe, Star } from "lucide-react";
+import { BookmarkPlus, Brain, Boxes, Globe, Star } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { MODELS, isPickerHiddenModel, getAllModels } from "@/lib/ai/models";
-import { Toggle, h3Cls, inputCls, labelCls } from "./_shared";
+import { Toggle, h3Cls, labelCls } from "./_shared";
+import AppSelect from "@/components/ui/AppSelect";
+import SettingsDisclosure from "./SettingsDisclosure";
 
 export function BuiltinModelsSection() {
   const defaultImageModelId = useSettings((s) => s.defaultImageModelId);
@@ -16,19 +18,9 @@ export function BuiltinModelsSection() {
   const builtinVisibleCount = builtinTextModels.length + builtinImageModels.length;
 
   return (
-      <section className="flex flex-col gap-2">
-        <button
-          onClick={() => setBuiltinExpanded((v) => !v)}
-          className="flex items-center gap-1.5 self-start"
-        >
-          {builtinExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-          <h3 className={h3Cls}>内置模型（站点默认）</h3>
-          <span className="text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
-            · {builtinVisibleCount} 个
-          </span>
-        </button>
-        {builtinExpanded && (
-          <div className="flex flex-col gap-2 pl-4">
+      <SettingsDisclosure expanded={builtinExpanded} onToggle={() => setBuiltinExpanded((v) => !v)}
+        icon={<Boxes size={14} />} title="内置模型" meta={`${builtinVisibleCount} 个 · 站点默认`}>
+          <div className="flex flex-col gap-2">
             <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
               由部署方在 .env 配置，所有用户共享。下方仅展示，不可修改。
             </p>
@@ -73,6 +65,18 @@ export function BuiltinModelsSection() {
                         {m.group} · {m.contextK}K{" "}
                         {m.pricing && `· ¥${m.pricing.input}/${m.pricing.output}`}
                       </div>
+                      {m.vendorTrainingNotice && (
+                        <div
+                          className="mt-1 rounded px-1.5 py-1 text-[11px] font-medium leading-snug"
+                          style={{
+                            background: "color-mix(in srgb, var(--md-sys-color-error) 12%, transparent)",
+                            color: "var(--md-sys-color-error)",
+                          }}
+                          data-testid="vendor-training-notice"
+                        >
+                          {m.vendorTrainingNotice}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -133,8 +137,7 @@ export function BuiltinModelsSection() {
               </div>
             )}
           </div>
-        )}
-      </section>
+      </SettingsDisclosure>
   );
 }
 
@@ -158,34 +161,16 @@ export function RecordAssistantSection() {
         </p>
         <div>
           <label className={labelCls}>摘录模型（划词「记录」成卡）</label>
-          <select
-            value={recordModelId}
-            onChange={(e) => setRecordModelId(e.target.value)}
-            className={inputCls}
-          >
-            {allTextModels.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.label} · {m.group}
-              </option>
-            ))}
-          </select>
+          <AppSelect label="摘录模型" value={recordModelId} onValueChange={setRecordModelId}
+            options={allTextModels.map((m) => ({ value: m.id, label: `${m.label} · ${m.group}` }))} />
           <div className="mt-1 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
             默认内置 DeepSeek V4 Flash（性价比高、成卡稳定）。选择自定义模型时需确保对应 API 分组已配置密钥。
           </div>
         </div>
         <div>
           <label className={labelCls}>划词助手模型（「解释/追问」浮窗）</label>
-          <select
-            value={floatingChatModelId}
-            onChange={(e) => setFloatingChatModelId(e.target.value)}
-            className={inputCls}
-          >
-            {allTextModels.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.label} · {m.group}
-              </option>
-            ))}
-          </select>
+          <AppSelect label="划词助手模型" value={floatingChatModelId} onValueChange={setFloatingChatModelId}
+            options={allTextModels.map((m) => ({ value: m.id, label: `${m.label} · ${m.group}` }))} />
           <div className="mt-1 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
             划词后弹出的浮窗对话使用的默认模型。可在浮窗内随时切换。
           </div>
@@ -242,7 +227,7 @@ export function DefaultsSection() {
 
         <div
           className={
-            "flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2 " +
+            "flex flex-col items-stretch gap-3 rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2.5 " +
             (defaultThinking ? "" : "opacity-60")
           }
         >
@@ -262,7 +247,7 @@ export function DefaultsSection() {
           <div
             role="radiogroup"
             aria-label="默认思考力度"
-            className="flex items-center rounded-md border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-variant)] p-0.5"
+            className="grid grid-cols-4 items-center rounded-md border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-variant)] p-0.5"
           >
             {(["low", "medium", "high", "max"] as const).map((lvl) => {
               const active = defaultThinkingEffort === lvl;

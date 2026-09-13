@@ -5,7 +5,9 @@ import {
   CUSTOM_MODEL_ID,
   DEFAULT_MODEL_ID,
   CUSTOM_OPENAI_MODEL_ID,
+  LEGACY_REGISTRY_ALIASES,
   getModelInfo,
+  getLandedModelInfo,
   getModelGroups,
   getModelGroupsWithCustom,
   getAllModels,
@@ -16,12 +18,18 @@ import {
   getAllModelsFlat,
   buildCustomModelRegistryId,
   findCustomModelGroup,
+  hasNextEndpoint,
+  selectCustomApiGroupsForRequest,
+  modelAcceptsImageInput,
+  isCustomRegistryId,
   normalizeCustomModelRegistryId,
   primaryProvider,
   modelSupportsThinkingEffort,
+  modelAllowsDisableThinking,
   clampThinkingEffort,
   wireThinkingEffort,
 } from "./models.ts";
+import { getMaxTokens } from "@/lib/context/types.ts";
 
 test("MODELS 非空且每个模型有必需字段", () => {
   assert.ok(MODELS.length > 0);
@@ -54,6 +62,7 @@ test("CUSTOM_OPENAI_MODEL_ID 在 MODELS 且为自由中转分组", () => {
 test("DEFAULT_MODEL_ID 存在于 MODELS", () => {
   const found = getModelInfo(DEFAULT_MODEL_ID);
   assert.ok(found, `DEFAULT_MODEL_ID ${DEFAULT_MODEL_ID} 应在 MODELS 中`);
+  assert.equal(DEFAULT_MODEL_ID, "deepseek/deepseek-v4.1-flash");
 });
 
 test("getModelInfo：存在的 id 返回 ModelInfo", () => {
@@ -75,7 +84,7 @@ test("getModelGroups：按 group 聚合且保持声明顺序，不展示桌面�
     assert.notEqual(g.group, "自由中转");
     assert.ok(!g.models.some((m) => m.id === CUSTOM_OPENAI_MODEL_ID));
   }
-  assert.equal(groups[0].group, "主力模型");
+  assert.deepEqual(groups.map((g) => g.group), ["快速模型", "多模态", "免费模型", "旗舰模型", "生图模型"]);
 });
 
 test("getModelGroups：菜单模型都被分组覆盖（不含桌面自由中转）", () => {
@@ -90,6 +99,62 @@ test("MODELS：model id 唯一", () => {
     assert.ok(!ids.has(m.id), `model id 重复: ${m.id}`);
     ids.add(m.id);
   }
+});
+
+test("MODELS：12+1 菜单模型价格与 cacheWrite", () => {
+  const picker = MODELS.filter((m) => m.id !== CUSTOM_OPENAI_MODEL_ID);
+  assert.equal(picker.length, 13);
+  const price = (id: string) => {
+    const m = getModelInfo(id);
+    assert.ok(m?.pricing, id);
+    return m!.pricing!;
+  };
+  assert.deepEqual(price("deepseek/deepseek-v4.1-flash"), { input: 2.1, cachedInput: 0.042, output: 8.4 });
+  assert.deepEqual(price("Qwen/Qwen3.7-Flash"), { input: 1.2, cachedInput: 0.24, output: 4.8 });
+  assert.deepEqual(price("gpt-5.6-luna"), { input: 1.4, cachedInput: 0.14, cacheWrite: 1.75, output: 8.4 });
+  assert.deepEqual(price("mimo-v2.5"), { input: 1, cachedInput: 0.02, cacheWrite: 1, output: 2 });
+  assert.deepEqual(price("google/gemini-3.8-flash"), { input: 10.5, cachedInput: 1.05, output: 52.5 });
+  assert.deepEqual(price("z-ai/glm-5.3-flash"), { input: 0.8, cachedInput: 0.23, output: 2.8 });
+  assert.deepEqual(price("Qwen/Qwen3.8-Flash"), { input: 0.8, cachedInput: 0.1, output: 2.7 });
+  assert.deepEqual(price("meta/muse-spark-1.3-contributor"), { input: 0.7, cachedInput: 0.014, output: 1.4 });
+  assert.deepEqual(price("meituan/LongCat-2.0:free"), { input: 0, cachedInput: 0, output: 0 });
+  assert.deepEqual(price("inclusionai/ling-3.0-flash-sante:free"), { input: 0, cachedInput: 0, output: 0 });
+  assert.deepEqual(price("gpt-5.6-sol"), { input: 28, cachedInput: 2.8, cacheWrite: 35, output: 140 });
+  assert.deepEqual(price("kimi-k3"), { input: 20, cachedInput: 2, output: 100 });
+  assert.deepEqual(price("Tongyi-MAI/Z-Image-Turbo"), { input: 0, cachedInput: 0, output: 0.1 });
+  assert.equal(getModelInfo("meituan/LongCat-2.0:free")?.label.includes(":free"), false);
+});
+
+/** MODELS.md §2 上下文 → registry contextK：1M→1000，1.05M→1050，256K→256。 */
+const MODELS_MD_SECTION2_CONTEXT_K: Record<string, number> = {
+  "deepseek/deepseek-v4.1-flash": 1000,
+  "Qwen/Qwen3.7-Flash": 1000,
+  "gpt-5.6-luna": 1000,
+  "mimo-v2.5": 1000,
+  "google/gemini-3.8-flash": 1000,
+  "z-ai/glm-5.3-flash": 1000,
+  "Qwen/Qwen3.8-Flash": 1000,
+  "meta/muse-spark-1.3-contributor": 1000,
+  "meituan/LongCat-2.0:free": 1050,
+  "inclusionai/ling-3.0-flash-sante:free": 256,
+  "gpt-5.6-sol": 1000,
+  "kimi-k3": 1000,
+};
+
+test("MODELS：对话模型 contextK 对齐 MODELS.md §2，getMaxTokens 按千 token 放大", () => {
+  const chatPicker = MODELS.filter((m) => m.id !== CUSTOM_OPENAI_MODEL_ID && m.type !== "image");
+  assert.deepEqual(
+    chatPicker.map((m) => m.id).sort(),
+    Object.keys(MODELS_MD_SECTION2_CONTEXT_K).sort(),
+  );
+  for (const m of chatPicker) {
+    const expectedK = MODELS_MD_SECTION2_CONTEXT_K[m.id];
+    assert.equal(getModelInfo(m.id)?.contextK, expectedK, m.id);
+    assert.equal(getMaxTokens(m.id), expectedK * 1000, m.id);
+  }
+  assert.equal(getMaxTokens("Qwen/Qwen3.7-Flash"), 1_000_000);
+  assert.equal(getMaxTokens("meituan/LongCat-2.0:free"), 1_050_000);
+  assert.equal(getMaxTokens("inclusionai/ling-3.0-flash-sante:free"), 256_000);
 });
 
 test("getAllModels：不同自定义 API 分组允许同名模型但 registry id 唯一", () => {
@@ -188,55 +253,91 @@ test("normalizeCustomModelRegistryId：旧 custom id 仅在唯一匹配时自动
   assert.equal(normalizeCustomModelRegistryId("mimo-v2.5", duplicateGroups), "mimo-v2.5");
 });
 
-test("MODELS：主力四模型走 relay，硅基流动仅保留生图", () => {
+test("MODELS：对话走 relay/mimo，硅基流动仅保留生图", () => {
   const glm = getModelInfo("z-ai/glm-5.3-flash");
   assert.ok(glm);
+  assert.equal(glm!.group, "多模态");
   assert.equal(primaryProvider(glm!), "relay");
   assert.equal(glm!.thinkingRequired, true);
   assert.deepEqual(glm!.thinkingLevels, ["low", "high", "max"]);
+  assert.equal(glm!.defaultThinkingEffort, "max");
   assert.equal(glm!.endpoints[0].apiModelId, "z-ai/glm-5.3-flash");
-  assert.equal(glm!.endpoints[1]?.provider, "mimo");
+  assert.equal(glm!.endpoints[1]?.provider, "relay");
   assert.equal(glm!.timeoutMs, 120_000);
 
-  const qwen = getModelInfo("Qwen/Qwen3.8-27B");
+  const qwen = getModelInfo("Qwen/Qwen3.8-Flash");
   assert.ok(qwen);
   assert.equal(qwen?.icon, "qwen");
   assert.equal(qwen?.timeoutMs, 120_000);
   assert.equal(qwen?.vision, true);
+  assert.equal(qwen?.thinkingRequestStyle, "openai-reasoning-effort");
 
-  const gemini = getModelInfo("google/gemini-3.7-flash");
+  const gemini = getModelInfo("google/gemini-3.8-flash");
   assert.ok(gemini);
   assert.equal(gemini?.icon, "gemini");
   assert.equal(gemini?.thinkingRequired, true);
+  assert.equal(gemini?.thinkingRequestStyle, "openai-reasoning-effort");
   assert.deepEqual(gemini!.thinkingLevels, ["low", "medium", "high"]);
   assert.equal(gemini?.timeoutMs, 120_000);
 
-  const ds = getModelInfo("deepseek/deepseek-v4-flash");
+  const ds = getModelInfo("deepseek/deepseek-v4.1-flash");
   assert.ok(ds);
   assert.equal(primaryProvider(ds!), "relay");
+  assert.equal(ds!.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.equal(ds!.thinkingRequired, true);
+  assert.equal(ds!.vision, true);
+
+  const qwen37 = getModelInfo("Qwen/Qwen3.7-Flash");
+  assert.ok(qwen37);
+  assert.equal(qwen37!.thinkingRequired, true);
+  assert.equal(modelAllowsDisableThinking(qwen37), false);
+  assert.equal(modelAllowsDisableThinking(ds), false);
 
   const image = getModelInfo("Tongyi-MAI/Z-Image-Turbo");
   assert.ok(image);
   assert.equal(image?.type, "image");
+  assert.equal(image?.group, "生图模型");
   assert.equal(primaryProvider(image!), "siliconflow");
 
   assert.equal(MODELS.filter((m) => m.type !== "image" && primaryProvider(m) === "siliconflow").length, 0);
   assert.equal(MODELS.filter((m) => primaryProvider(m) === "zhipu").length, 0);
 });
 
-test("getModelInfo：旧硅基流动/智谱 id 映射到中转站等价模型", () => {
-  assert.equal(getModelInfo("deepseek-ai/DeepSeek-V4-Flash")?.id, "deepseek/deepseek-v4-flash");
-  assert.equal(getModelInfo("Qwen/Qwen3.6-27B")?.id, "Qwen/Qwen3.8-27B");
-  assert.equal(getModelInfo("zai-org/GLM-5.2")?.id, "z-ai/glm-5.3-flash");
-  assert.equal(getModelInfo("MiniMaxAI/MiniMax-M3")?.id, "Qwen/Qwen3.8-27B");
-  assert.equal(getModelInfo("mimo-v2-flash")?.id, "mimo-v2.5");
+test("LEGACY_REGISTRY_ALIASES：每个 value 都能 getModelInfo", () => {
+  for (const [legacy, current] of Object.entries(LEGACY_REGISTRY_ALIASES)) {
+    const info = getModelInfo(current);
+    assert.ok(info, `alias ${legacy} → ${current} 应能 getModelInfo`);
+    assert.equal(getModelInfo(legacy)?.id, info!.id);
+  }
 });
 
-test("MODELS：MiMo 走 Token Plan provider", () => {
+test("getLandedModelInfo：apiModelId 能对上注册表时用落地模型，否则退回 registryId", () => {
+  assert.equal(getLandedModelInfo("mimo-v2.5", "z-ai/glm-5.3-flash")?.id, "mimo-v2.5");
+  assert.equal(getLandedModelInfo("z-ai/glm-5.3-flash", "z-ai/glm-5.3-flash")?.id, "z-ai/glm-5.3-flash");
+  assert.equal(getLandedModelInfo("unknown-upstream", "mimo-v2.5")?.id, "mimo-v2.5");
+});
+
+test("getModelInfo：旧 id 映射到当前注册表", () => {
+  assert.equal(getModelInfo("deepseek-ai/DeepSeek-V4-Flash")?.id, "deepseek/deepseek-v4.1-flash");
+  assert.equal(getModelInfo("deepseek/deepseek-v4-flash")?.id, "deepseek/deepseek-v4.1-flash");
+  assert.equal(getModelInfo("Qwen/Qwen3.6-27B")?.id, "Qwen/Qwen3.8-Flash");
+  assert.equal(getModelInfo("Qwen/Qwen3.8-27B")?.id, "Qwen/Qwen3.8-Flash");
+  assert.equal(getModelInfo("zai-org/GLM-5.2")?.id, "z-ai/glm-5.3-flash");
+  assert.equal(getModelInfo("MiniMaxAI/MiniMax-M3")?.id, "Qwen/Qwen3.8-Flash");
+  assert.equal(getModelInfo("mimo-v2-flash")?.id, "mimo-v2.5");
+  assert.equal(getModelInfo("mimo-v2.5-pro")?.id, "mimo-v2.5");
+  assert.equal(getModelInfo("google/gemini-3.7-flash")?.id, "google/gemini-3.8-flash");
+  assert.equal(getModelInfo("Pro/moonshotai/Kimi-K2.6")?.id, "kimi-k3");
+});
+
+test("MODELS：MiMo 走统一中转，可调思考深度", () => {
   const mimo = getModelInfo("mimo-v2.5");
   assert.ok(mimo);
-  assert.equal(primaryProvider(mimo!), "mimo");
-  assert.deepEqual(mimo!.thinkingLevels, ["low", "medium", "high", "max"]);
+  assert.equal(primaryProvider(mimo!), "relay");
+  assert.equal(mimo!.group, "多模态");
+  assert.equal(mimo!.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.deepEqual(mimo!.thinkingLevels, ['low', 'medium', 'high']);
+  assert.equal(modelSupportsThinkingEffort(mimo), true);
 });
 
 test("思考强度：生图模型不支持档位，GLM 把 medium 钳到 high 并原样下发 max", () => {
@@ -249,9 +350,11 @@ test("思考强度：生图模型不支持档位，GLM 把 medium 钳到 high �
   assert.equal(wireThinkingEffort(glm, "max"), "max");
   assert.equal(wireThinkingEffort(glm, "medium"), "high");
 
-  const qwen = getModelInfo("Qwen/Qwen3.8-27B");
-  assert.equal(wireThinkingEffort(qwen, "high"), "xhigh");
-  assert.equal(clampThinkingEffort(qwen, "max"), "high");
+  const muse = getModelInfo("meta/muse-spark-1.3-contributor");
+  assert.equal(wireThinkingEffort(muse, "high"), "xhigh");
+  assert.equal(wireThinkingEffort(muse, "max"), "max");
+  assert.equal(clampThinkingEffort(muse, "medium"), "high");
+  assert.equal(muse?.vendorTrainingNotice, "对话可能用于厂商训练");
 });
 
 test("getAllModels / 菜单：不含桌面自由中转，自定义思考档位进入 ModelInfo", () => {
@@ -301,4 +404,45 @@ test("getAllModels / 菜单：不含桌面自由中转，自定义思考档位�
   const menu = getModelGroupsWithCustom(groups);
   assert.equal(menu.some((g) => g.group === "自由中转"), false);
   assert.ok(menu.some((g) => g.group === "OpenRouter"));
+
+  assert.deepEqual(max?.endpoints, []);
+});
+
+test("hasNextEndpoint：自定义分组恒 false，内置 GLM 有第二跳", () => {
+  assert.equal(hasNextEndpoint("custom:g:m", 0), false);
+  assert.equal(hasNextEndpoint("custom", 0), false);
+  assert.equal(isCustomRegistryId("custom-openai"), false);
+  assert.equal(hasNextEndpoint("z-ai/glm-5.3-flash", 0), true);
+  assert.equal(hasNextEndpoint("z-ai/glm-5.3-flash", 1), false);
+  assert.equal(hasNextEndpoint("mimo-v2.5", 0), false);
+});
+
+test("selectCustomApiGroupsForRequest：只返回本次用到的分组", () => {
+  const groups = [
+    { id: "a", name: "A", baseUrl: "https://a.example/v1", apiKey: "ka", models: [{ id: "m1" }] },
+    { id: "b", name: "B", baseUrl: "https://b.example/v1", apiKey: "kb", models: [{ id: "m2" }] },
+  ];
+  assert.deepEqual(selectCustomApiGroupsForRequest(groups, "z-ai/glm-5.3-flash"), []);
+  assert.deepEqual(selectCustomApiGroupsForRequest(groups, "custom-openai"), []);
+  const used = selectCustomApiGroupsForRequest(groups, buildCustomModelRegistryId("b", "m2"));
+  assert.equal(used.length, 1);
+  assert.equal(used[0]?.id, "b");
+  assert.equal(used[0]?.apiKey, "kb");
+});
+
+test("modelAcceptsImageInput：自定义 vision 声明生效", () => {
+  const groups = [{
+    id: "g",
+    name: "G",
+    baseUrl: "https://x.example/v1",
+    apiKey: "k",
+    models: [
+      { id: "see", vision: true },
+      { id: "text" },
+    ],
+  }];
+  assert.equal(modelAcceptsImageInput(buildCustomModelRegistryId("g", "see"), groups), true);
+  assert.equal(modelAcceptsImageInput(buildCustomModelRegistryId("g", "text"), groups), false);
+  assert.equal(modelAcceptsImageInput("mimo-v2.5", []), true);
+  assert.equal(modelAcceptsImageInput("meituan/LongCat-2.0:free", []), false);
 });

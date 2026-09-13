@@ -128,6 +128,21 @@ export function ApiGroupCard({
             />
           </div>
           <div>
+            <label className={labelCls}>请求超时（毫秒，缺省 45000）</label>
+            <input
+              type="number"
+              min={5000}
+              step={1000}
+              value={group.timeoutMs ?? ""}
+              onChange={(e) => {
+                const n = Number(e.target.value);
+                onUpdate({ timeoutMs: e.target.value && Number.isFinite(n) && n > 0 ? n : undefined });
+              }}
+              placeholder="45000"
+              className={inputCls}
+            />
+          </div>
+          <div>
             <label className={labelCls}>API 密钥</label>
             <div className="relative">
               <input

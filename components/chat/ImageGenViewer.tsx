@@ -7,6 +7,9 @@ import { useSettings } from "@/lib/hooks/useSettings";
 import { useBillingStore, createBillingRecord } from "@/lib/hooks/useBillingStore";
 import { useLightbox } from "@/lib/stores/lightbox";
 import ManagedWindow from "@/components/window/ManagedWindow";
+import { formatImageGenError, imageGenErrorHeading } from "@/lib/ai/imageGenError";
+import { capabilityNeedsForImageGen, selectCapabilityEndpointsForRequest } from "@/lib/ai/capabilityEndpoints";
+import { selectCustomApiGroupsForRequest } from "@/lib/ai/models";
 
 /** 将归一化图片项转为可渲染的 src：优先 url，回退 b64_json data URL。 */
 function imageSrc(img: ImageGenImage): string {
@@ -43,8 +46,16 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
             prompt: cur.prompt,
             size: cur.size,
             count: cur.count,
-            customApiGroups: settings.customApiGroups,
+            customApiGroups: selectCustomApiGroupsForRequest(
+              settings.customApiGroups,
+              imageModelId,
+              cur.modelId ? null : settings.defaultImageModelId,
+            ),
             defaultImageModelId: cur.modelId ? null : settings.defaultImageModelId,
+            capabilityEndpoints: selectCapabilityEndpointsForRequest(
+              settings.capabilityEndpoints,
+              capabilityNeedsForImageGen(),
+            ),
           }),
         });
 
@@ -52,7 +63,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
           const errBody = await res.json().catch(() => null);
           updateSession(sid, {
             status: "error",
-            error: errBody?.error || `请求失败：${res.status}`,
+            error: formatImageGenError(res.status, errBody),
           });
           return;
         }
@@ -173,7 +184,7 @@ function ImageGenViewerSingle({ sessionId }: { sessionId: string }) {
                 className="text-[13px] font-semibold"
                 style={{ color: "var(--md-sys-color-on-surface)" }}
               >
-                生图失败
+                {imageGenErrorHeading(session.error)}
               </div>
               <div
                 className="max-w-md text-[12px] leading-relaxed"

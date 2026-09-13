@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { backupSettings, mergeApiGroups, normalizeStoredSettings, readSettingsBackup } from './settingsRecovery';
 import {
   DEFAULT_MODEL_ID,
   normalizeCustomModelRegistryId,
@@ -7,6 +8,26 @@ import {
   type CustomApiGroup,
   type ThinkingEffort,
 } from "@/lib/ai/models";
+import {
+  EMPTY_CAPABILITY_ENDPOINTS,
+  normalizeCapabilityEndpoints,
+  type CapabilityEndpoints,
+} from "@/lib/ai/capabilityEndpoints";
+import {
+  API_SECRETS_LS_KEY,
+  applyCapabilitySecrets,
+  applyGroupApiKeys,
+  decodeDesktopCapabilitySecrets,
+  decodeDesktopSecrets,
+  encodeWebSecrets,
+  extractPlainCapabilityKeys,
+  extractPlainGroupKeys,
+  getDesktopSecretsBridge,
+  splitSettingsSecrets,
+  stripCapabilitySecrets,
+  stripGroupApiKeys,
+  type StoredApiSecrets,
+} from "@/lib/stores/apiSecrets";
 
 export type { ThinkingEffort };
 export type ArtifactFullscreenTarget = "notes" | "viewport";
@@ -22,6 +43,8 @@ function normalizeThinkingEffort(v: unknown): ThinkingEffort {
  * - 聊天区字体缩放、工具启用/禁用、默认思考/搜索（S4 设置面板消费）
  */
 export interface SettingsState {
+  settingsLoadWarning: string | null;
+  importApiConfiguration: (groups: CustomApiGroup[], selectedModelId?: string) => void;
   // ── 模型 ──────────────────────────────
   selectedModelId: string;
 
@@ -33,6 +56,12 @@ export interface SettingsState {
   imageModeTextModel: string;
   /** 生图模式文本模型的容灾降级模型。 */
   imageModeTextModelFallback: string;
+
+  /**
+   * 能力端点（生图 / 向量 / 重排 / 联网搜索 / 搜图）。
+   * 字段全可选；空字符串 = 用平台默认。
+   */
+  capabilityEndpoints: CapabilityEndpoints;
 
   // ── 旧版字段（@deprecated，仅用于向后兼容读取/迁移）──
   /** @deprecated 已迁移到 customApiGroups[0]。 */
@@ -87,6 +116,7 @@ export interface SettingsState {
   setDefaultImageModel: (modelId: string | null) => void;
   setImageModeTextModel: (modelId: string) => void;
   setImageModeTextModelFallback: (modelId: string) => void;
+  setCapabilityEndpoints: (patch: Partial<CapabilityEndpoints>) => void;
 
   // 旧版 Actions（@deprecated，操作 customApiGroups[0]）
   setCustomProvider: (p: { baseUrl?: string; apiKey?: string }) => void;
@@ -113,6 +143,7 @@ type Persisted = Pick<
   | "defaultImageModelId"
   | "imageModeTextModel"
   | "imageModeTextModelFallback"
+  | "capabilityEndpoints"
   | "recordModelId"
   | "floatingChatModelId"
   | "customBaseUrl"
@@ -134,7 +165,8 @@ const DEFAULTS: Persisted = {
   customApiGroups: [],
   defaultImageModelId: null,
   imageModeTextModel: "mimo-v2.5",
-  imageModeTextModelFallback: "mimo-v2.5-pro",
+  imageModeTextModelFallback: "mimo-v2.5",
+  capabilityEndpoints: EMPTY_CAPABILITY_ENDPOINTS,
   // 摘录默认用中转站 DeepSeek V4 Flash：性价比高、成卡质量稳定。
   recordModelId: "deepseek/deepseek-v4-flash",
   // 划词助手默认：Qwen3.8 27B（视觉 + 混合思考）。
@@ -153,12 +185,22 @@ const DEFAULTS: Persisted = {
   usdExchangeRate: 7.00,
 };
 
-function load(): Persisted {
+let settingsCanPersist = true;
+function load(): Persisted & { settingsLoadWarning?: string | null } {
   if (typeof window === "undefined") return DEFAULTS;
   try {
-    const raw = localStorage.getItem(LS_KEY);
+    let raw = localStorage.getItem(LS_KEY);
+    let recoveredSecrets: string | null | undefined;
+    let warning: string | null = null;
     if (raw) {
-      const parsed = { ...DEFAULTS, ...JSON.parse(raw) } as Persisted;
+      try { normalizeStoredSettings(raw); } catch {
+        const backup = readSettingsBackup(localStorage);
+        if (backup) { settingsCanPersist = false; raw = backup.settings; recoveredSecrets = backup.secrets; warning = '原设置无法读取，已载入本机备份；原始记录未删除。点击恢复本机备份后再保存。'; }
+        else { settingsCanPersist = false; return { ...DEFAULTS, settingsLoadWarning: '设置文件无法读取。原始记录已保留，请导入旧配置恢复，勿清空浏览器数据。' }; }
+      }
+    }
+    if (raw) {
+      const parsed = { ...DEFAULTS, ...normalizeStoredSettings(raw) } as Persisted;
       // 向后兼容 1：旧版 customModelId 非空但 customModels 为空时，自动迁移
       if (parsed.customModelId && (!parsed.customModels || parsed.customModels.length === 0)) {
         parsed.customModels = [{ id: parsed.customModelId }];
@@ -185,7 +227,8 @@ function load(): Persisted {
       }
       if (!parsed.defaultImageModelId) parsed.defaultImageModelId = null;
       if (!parsed.imageModeTextModel) parsed.imageModeTextModel = "mimo-v2.5";
-      if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "mimo-v2.5-pro";
+      if (!parsed.imageModeTextModelFallback) parsed.imageModeTextModelFallback = "mimo-v2.5";
+      parsed.capabilityEndpoints = normalizeCapabilityEndpoints(parsed.capabilityEndpoints);
       if (typeof parsed.usdExchangeRate !== "number" || !Number.isFinite(parsed.usdExchangeRate) || parsed.usdExchangeRate <= 0) {
         parsed.usdExchangeRate = 7.00;
       }
@@ -216,29 +259,91 @@ function load(): Persisted {
         normalizeRegistryId(parsed.floatingChatModelId || DEFAULTS.floatingChatModelId),
         parsed.customApiGroups,
       );
-      return parsed;
+
+      let secretsRaw = recoveredSecrets;
+      if (secretsRaw === undefined) {
+        try { secretsRaw = localStorage.getItem(API_SECRETS_LS_KEY); } catch { settingsCanPersist = false; warning = '分组已保留，但密钥存储暂不可读取。'; }
+      }
+      if (secretsRaw) {
+        try {
+          const payload = JSON.parse(secretsRaw);
+          if (!payload || payload.v !== 1 || !payload.groups || typeof payload.groups !== 'object') throw new Error('invalid secret store');
+        } catch { settingsCanPersist = false; warning = '分组已保留，但旧密钥记录无法解析；已阻止覆盖，请导入备份恢复。'; }
+      }
+      const split = splitSettingsSecrets(
+        parsed.customApiGroups,
+        secretsRaw,
+        parsed.customApiKey,
+        parsed.capabilityEndpoints,
+      );
+      parsed.customApiGroups = split.groupsForMemory;
+      parsed.customApiKey = split.groupsForMemory[0]?.apiKey ?? "";
+      parsed.capabilityEndpoints = split.capabilityForMemory;
+      let secretsSaved = !split.rewriteSecrets;
+      if (split.rewriteSecrets && !warning) {
+        backupSettings(localStorage);
+        try {
+          localStorage.setItem(API_SECRETS_LS_KEY, encodeWebSecrets(split.groupKeys, split.capabilityKeys));
+          secretsSaved = true;
+        } catch { warning = '密钥迁移暂未完成，旧配置和当前分组已保留；请检查浏览器存储空间。'; }
+      }
+      if (split.rewriteSettings && secretsSaved && !warning) {
+        const disk = {
+          ...parsed,
+          customApiGroups: stripGroupApiKeys(parsed.customApiGroups),
+          customApiKey: "",
+          capabilityEndpoints: stripCapabilitySecrets(parsed.capabilityEndpoints),
+        };
+        try { localStorage.setItem(LS_KEY, JSON.stringify(disk)); }
+        catch { warning = '设置暂不可写入，当前分组与旧配置已保留。'; }
+      }
+      return { ...parsed, settingsLoadWarning: warning };
     }
   } catch {
-    /* ignore */
+    settingsCanPersist = false;
+    return { ...DEFAULTS, settingsLoadWarning: '本机设置读取失败，已阻止空配置覆盖原记录。请检查浏览器存储权限。' };
   }
   return DEFAULTS;
 }
 
+let desktopSecretsReady = false;
+function persistSecrets(groupKeys: Record<string, string>, capabilityKeys: Record<string, string>): boolean {
+  try {
+    localStorage.setItem(API_SECRETS_LS_KEY, encodeWebSecrets(groupKeys, capabilityKeys));
+  } catch {
+    return false;
+  }
+  const bridge = getDesktopSecretsBridge();
+  if (!bridge || !desktopSecretsReady) return true;
+  const payload: StoredApiSecrets = { v: 1, groups: groupKeys, capability: capabilityKeys };
+  void bridge.save(payload).catch(() => {});
+  return true;
+}
+
 function persist(get: () => SettingsState) {
   if (typeof window === "undefined") return;
+  if (!settingsCanPersist) return;
   const s = get();
-  // 旧版字段从 customApiGroups[0] 派生，保持向后兼容
+  // 旧版字段从 customApiGroups[0] 派生，保持向后兼容；密钥不写进 settings JSON。
   const firstGroup = s.customApiGroups[0];
+  const groupKeys = extractPlainGroupKeys(s.customApiGroups);
+  const capabilityKeys = extractPlainCapabilityKeys(s.capabilityEndpoints);
+  backupSettings(localStorage);
+  if (!persistSecrets(groupKeys, capabilityKeys)) {
+    useSettings.setState({ settingsLoadWarning: '密钥保存失败，原有分组记录未被覆盖；请检查浏览器存储空间。' });
+    return;
+  }
   const data: Persisted = {
     selectedModelId: s.selectedModelId,
-    customApiGroups: s.customApiGroups,
+    customApiGroups: stripGroupApiKeys(s.customApiGroups),
     defaultImageModelId: s.defaultImageModelId,
     imageModeTextModel: s.imageModeTextModel,
     imageModeTextModelFallback: s.imageModeTextModelFallback,
+    capabilityEndpoints: stripCapabilitySecrets(normalizeCapabilityEndpoints(s.capabilityEndpoints)),
     recordModelId: s.recordModelId,
     floatingChatModelId: s.floatingChatModelId,
     customBaseUrl: firstGroup?.baseUrl ?? "",
-    customApiKey: firstGroup?.apiKey ?? "",
+    customApiKey: "",
     customModelId: "",
     customModels: firstGroup?.models ?? [],
     fontScale: s.fontScale,
@@ -253,12 +358,89 @@ function persist(get: () => SettingsState) {
   try {
     localStorage.setItem(LS_KEY, JSON.stringify(data));
   } catch {
-    /* ignore */
+    useSettings.setState({ settingsLoadWarning: '当前配置尚未保存成功，请检查存储空间后重试。' });
   }
 }
 
-export const useSettings = create<SettingsState>((set, get) => ({
-  ...load(),
+function hydrateDesktopSecrets(
+  set: (partial: Partial<SettingsState> | ((s: SettingsState) => Partial<SettingsState>)) => void,
+  get: () => SettingsState,
+) {
+  const bridge = getDesktopSecretsBridge();
+  if (!bridge) return;
+  const initialGroups = extractPlainGroupKeys(get().customApiGroups);
+  const initialCapability = extractPlainCapabilityKeys(get().capabilityEndpoints);
+  void (async () => {
+    try {
+      const stored = await bridge.load();
+      const desktopKeys = decodeDesktopSecrets(stored);
+      const desktopCapability = decodeDesktopCapabilitySecrets(stored);
+      const currentGroups = extractPlainGroupKeys(get().customApiGroups);
+      const liveCapability = extractPlainCapabilityKeys(get().capabilityEndpoints);
+      for (const id of Object.keys(desktopKeys)) if (currentGroups[id] !== initialGroups[id]) delete desktopKeys[id];
+      for (const id of Object.keys(desktopCapability)) if (liveCapability[id] !== initialCapability[id]) delete desktopCapability[id];
+      desktopSecretsReady = true;
+      const hasDesktopGroups = Object.keys(desktopKeys).length > 0;
+      const hasDesktopCapability = Object.keys(desktopCapability).length > 0;
+      if (hasDesktopGroups || hasDesktopCapability) {
+        set((s) => {
+          const nextGroups = hasDesktopGroups
+            ? applyGroupApiKeys(s.customApiGroups, { ...desktopKeys, ...extractPlainGroupKeys(s.customApiGroups) })
+            : s.customApiGroups;
+          const nextCapability = hasDesktopCapability
+            ? applyCapabilitySecrets(
+              s.capabilityEndpoints,
+              { ...desktopCapability, ...extractPlainCapabilityKeys(s.capabilityEndpoints) },
+            )
+            : s.capabilityEndpoints;
+          return {
+            customApiGroups: nextGroups,
+            customApiKey: nextGroups[0]?.apiKey ?? "",
+            capabilityEndpoints: nextCapability,
+          };
+        });
+        const memoryGroups = extractPlainGroupKeys(get().customApiGroups);
+        const memoryCapability = extractPlainCapabilityKeys(get().capabilityEndpoints);
+        const backfillGroups = !hasDesktopGroups && Object.keys(memoryGroups).length > 0;
+        const backfillCapability = !hasDesktopCapability && Object.keys(memoryCapability).length > 0;
+        if (backfillGroups || backfillCapability) {
+          await bridge.save({
+            v: 1,
+            groups: hasDesktopGroups ? desktopKeys : memoryGroups,
+            capability: hasDesktopCapability ? desktopCapability : memoryCapability,
+          });
+        }
+        return;
+      }
+      const current = extractPlainGroupKeys(get().customApiGroups);
+      const currentCapability = extractPlainCapabilityKeys(get().capabilityEndpoints);
+      if (Object.keys(current).length > 0 || Object.keys(currentCapability).length > 0) {
+        await bridge.save({ v: 1, groups: current, capability: currentCapability });
+      }
+    } catch {
+      /* ignore */
+    }
+  })();
+}
+
+export const useSettings = create<SettingsState>((set, get) => {
+  const loaded = load();
+  if (typeof window !== "undefined") {
+    queueMicrotask(() => hydrateDesktopSecrets(set, get));
+  }
+  return {
+    settingsLoadWarning: null,
+    ...loaded,
+
+  importApiConfiguration: (groups, selectedModelId) => {
+    settingsCanPersist = true;
+    set((s) => {
+      const merged = mergeApiGroups(s.customApiGroups, groups);
+      return { customApiGroups: merged, settingsLoadWarning: null,
+        selectedModelId: selectedModelId ? normalizeCustomModelRegistryId(normalizeRegistryId(selectedModelId), merged) : s.selectedModelId };
+    });
+    persist(get);
+  },
 
   setSelectedModelId: (id) => {
     set({ selectedModelId: id });
@@ -326,6 +508,12 @@ export const useSettings = create<SettingsState>((set, get) => ({
   },
   setImageModeTextModelFallback: (modelId) => {
     set({ imageModeTextModelFallback: modelId });
+    persist(get);
+  },
+  setCapabilityEndpoints: (patch) => {
+    set((s) => ({
+      capabilityEndpoints: normalizeCapabilityEndpoints({ ...s.capabilityEndpoints, ...patch }),
+    }));
     persist(get);
   },
 
@@ -428,4 +616,5 @@ export const useSettings = create<SettingsState>((set, get) => ({
     set({ floatingChatModelId: id });
     persist(get);
   },
-}));
+  };
+});

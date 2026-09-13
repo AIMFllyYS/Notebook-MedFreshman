@@ -2,9 +2,13 @@
 // needs no privileged bridge for its core features. We expose a tiny, read-only
 // `window.desktop` flag so the renderer can feature-detect the Electron build and
 // switch the in-app browser from <iframe> to a real <webview> (真实浏览器).
-const { contextBridge } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("desktop", {
   isElectron: true,
   platform: process.platform,
+  secrets: {
+    load: () => ipcRenderer.invoke("secrets:load"),
+    save: (payload) => ipcRenderer.invoke("secrets:save", payload),
+  },
 });

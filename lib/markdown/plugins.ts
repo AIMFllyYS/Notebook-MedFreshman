@@ -2,11 +2,13 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkDirective from "remark-directive";
 import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 import rehypeKatex from "rehype-katex";
 import rehypeHighlight from "rehype-highlight";
 import "katex/contrib/mhchem";
 import remarkDirectives from "./remarkDirectives";
 import remarkCalloutSoftBreaks from "./remarkCalloutSoftBreaks";
+import { markdownSanitizeSchema } from "./sanitizeSchema";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const sharedRemarkPlugins: any[] = [
@@ -17,8 +19,10 @@ export const sharedRemarkPlugins: any[] = [
   remarkCalloutSoftBreaks,
 ];
 
-// rehype-raw must precede rehype-katex so raw HTML/SVG nodes are parsed
-// before KaTeX processes math delimiters.
+// rehype-raw must precede sanitize (so raw HTML is parsed into elements
+// that can be stripped) and precede rehype-katex (so math delimiters still
+// see a complete tree). Sanitize itself must precede katex/highlight so
+// trusted plugin output is not re-filtered.
 //
 // rehype-highlight 的 detect:true 会让 highlight.js 对每个未标语言的 fence 遍历所有 grammar
 // 做自动识别——对概率论/物理这种"整卷 KaTeX 但几乎无代码块"的内容来说是纯浪费。
@@ -27,6 +31,7 @@ export const sharedRemarkPlugins: any[] = [
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const sharedRehypePlugins: any[] = [
   rehypeRaw,
+  [rehypeSanitize, markdownSanitizeSchema],
   [rehypeKatex, { throwOnError: false, strict: false }],
   [
     rehypeHighlight,

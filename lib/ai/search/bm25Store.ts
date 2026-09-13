@@ -157,10 +157,3 @@ export async function getBm25BuiltAt(): Promise<string> {
   await loadIndexAsync();
   return _builtAt;
 }
-
-function resetBm25IndexCache(): void {
-  _bm25Index = null;
-  _chunkMeta = null;
-  _loadAttempted = false;
-  _builtAt = "";
-}

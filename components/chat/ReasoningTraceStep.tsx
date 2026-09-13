@@ -36,8 +36,7 @@ function ReasoningContent({ step }: { step: TraceTextStep }) {
       onContextMenu={(event) => openMessageMenu(event, step.text)}
       className="chat-prose max-h-64 min-w-0 overflow-x-hidden overflow-y-auto break-words pr-2 [overflow-wrap:anywhere]"
     >
-      {step.text ? <MessageContent content={step.text} enableVisualizations={false} preserveLineBreaks /> : <span>正在整理思路…</span>}
+      {step.text ? <MessageContent content={step.text} isStreaming={step.status === 'running'} enableVisualizations={false} preserveLineBreaks /> : <span>正在整理思路…</span>}
     </div>
   );
 }
-

@@ -1,6 +1,18 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { stripFences, extractHtml, finalizeHtml, looksLikeHtmlDocument } from "./artifact.ts";
+import {
+  ARTIFACT_SYSTEM,
+  stripFences,
+  extractHtml,
+  finalizeHtml,
+  looksLikeHtmlDocument,
+} from "./artifact.ts";
+
+function usableCapabilityLine(prompt: string): string {
+  const match = prompt.match(/可正常使用[^\n]*/);
+  assert.ok(match, "提示词应有「可正常使用」能力句");
+  return match[0];
+}
 
 // ── stripFences ────────────────────────────────────────────────
 
@@ -142,4 +154,42 @@ test("finalizeHtml：去围栏 + 提取 + 补全组合", () => {
   assert.ok(result.includes("</script>"));
   assert.ok(result.includes("</body>"));
   assert.ok(result.includes("</html>"));
+});
+
+// ── ARTIFACT_SYSTEM 与沙箱能力对齐 ─────────────────────────────
+
+test("ARTIFACT_SYSTEM：不再承诺可用 localStorage 或相对路径 fetch", () => {
+  const usable = usableCapabilityLine(ARTIFACT_SYSTEM);
+  assert.doesNotMatch(usable, /localStorage/i);
+  assert.doesNotMatch(usable, /sessionStorage/i);
+  assert.doesNotMatch(usable, /IndexedDB/i);
+  assert.doesNotMatch(usable, /fetch/i);
+
+  assert.match(ARTIFACT_SYSTEM, /不可用/);
+  assert.match(ARTIFACT_SYSTEM, /localStorage/);
+  assert.match(ARTIFACT_SYSTEM, /相对路径/);
+  assert.match(ARTIFACT_SYSTEM, /fetch\('\/api\//);
+  assert.match(ARTIFACT_SYSTEM, /内联/);
+  assert.match(ARTIFACT_SYSTEM, /内存变量/);
+});
+
+test("ARTIFACT_SYSTEM：仍鼓励 CDN / canvas / 动画等可视化能力", () => {
+  const usable = usableCapabilityLine(ARTIFACT_SYSTEM);
+  assert.match(usable, /CDN/);
+  assert.match(usable, /Canvas/i);
+  assert.match(usable, /SVG/);
+  assert.match(usable, /动画/);
+  assert.match(usable, /alert/);
+  assert.match(usable, /confirm/);
+  assert.match(usable, /表单/);
+  assert.match(usable, /弹窗/);
+  assert.match(usable, /下载/);
+
+  assert.match(ARTIFACT_SYSTEM, /Chart\.js/);
+  assert.match(ARTIFACT_SYSTEM, /D3/);
+  assert.match(ARTIFACT_SYSTEM, /Three\.js/);
+  assert.match(ARTIFACT_SYSTEM, /ECharts/);
+  assert.match(ARTIFACT_SYSTEM, /GSAP/);
+  assert.match(ARTIFACT_SYSTEM, /应当.*引库/);
+  assert.match(ARTIFACT_SYSTEM, /滑块\/按钮\/拖拽/);
 });

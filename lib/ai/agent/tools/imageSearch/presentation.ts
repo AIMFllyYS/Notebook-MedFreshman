@@ -1,4 +1,4 @@
-/** 无结果卡片。有 UI 时放 `components/chat/toolCards/imageSearchCard.tsx`。 */
+/** 结果卡片：`components/chat/toolCards/imageSearchCard.tsx` */
 import type { ToolPresentation } from "@/lib/ai/agent/tools/registry";
 
 export const presentation: ToolPresentation = {

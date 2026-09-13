@@ -3,6 +3,7 @@
 import {
   type CustomModelConfig,
   type ThinkingEffort,
+  type ThinkingRequestStyle,
   THINKING_EFFORT_VALUES,
   THINKING_EFFORT_LABELS,
   normalizeThinkingLevels,
@@ -58,7 +59,7 @@ interface ModelFormState {
   tools: boolean;
   apiProtocol: "openai" | "anthropic" | "siliconflow";
   reasoningField: string;
-  thinkingRequestStyle: "none" | "siliconflow" | "openai-reasoning-effort" | "openrouter-reasoning" | "anthropic-thinking";
+  thinkingRequestStyle: ThinkingRequestStyle;
   showAdvanced: boolean;
   imageApiStyle: "auto" | "openai" | "siliconflow";
   sizes: string[];

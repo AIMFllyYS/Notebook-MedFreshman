@@ -1,6 +1,7 @@
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { createPersistedStore } from "@/lib/stores/_persist";
+import { scheduleCloudUpsert } from "@/lib/sync/schedule";
 
 /**
  * HTML 演示（Artifact）store。链路：tools.ts renderInteractive → ArtifactCard → 本 store → ArtifactViewer。
@@ -62,6 +63,7 @@ export const useArtifacts = createPersistedStore<ArtifactsState>(
           const exists = s.byId[id];
           const order = exists ? s.order : [...s.order, id];
           const prev = s.byId[id];
+          scheduleCloudUpsert("artifact", id);
           return {
             order,
             byId: {

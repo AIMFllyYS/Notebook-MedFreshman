@@ -1,6 +1,7 @@
 "use client";
 
 import { Moon, RotateCcw, Sun, Type } from "lucide-react";
+import AppSelect from "@/components/ui/AppSelect";
 import {
   FONT_CHOICES,
   type AppearanceMode,
@@ -157,18 +158,12 @@ export default function AppearanceSettingsControls({
         <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
           <Type size={14} /> 全局字体
         </span>
-        <select
-          aria-label="全局字体"
-          value={appearance.custom.font}
-          onChange={(event) => updateCustomAppearance({ font: event.currentTarget.value as GlobalFontId })}
-          className="rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container)] px-2 py-1 text-[12.5px] text-[var(--md-sys-color-on-surface)] outline-none"
-        >
-          {(Object.keys(FONT_CHOICES) as GlobalFontId[]).map((fontId) => (
-            <option key={fontId} value={fontId}>
-              {FONT_CHOICES[fontId].label}
-            </option>
-          ))}
-        </select>
+        <AppSelect label="全局字体" value={appearance.custom.font}
+          onValueChange={(font) => updateCustomAppearance({ font })}
+          className="max-w-[150px]"
+          options={(Object.keys(FONT_CHOICES) as GlobalFontId[]).map((fontId) => ({
+            value: fontId, label: FONT_CHOICES[fontId].label,
+          }))} />
       </label>
 
       <button

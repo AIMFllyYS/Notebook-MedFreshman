@@ -12,13 +12,13 @@ import { useAcademicYear } from './useAcademicYear';
 import { hydrateAttachmentsForApi } from '@/lib/storage/chatStorage';
 import { createUserMessage, getMessageText } from '@/lib/chat/messageParts';
 import type { ChatContext, ChatMessage, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
-import { SOFT_LIMIT_MAX_TURNS } from '@/lib/chat/buildRequestMessages';
+
 import { buildTrace } from '@/lib/chat/buildTrace';
 
 vi.mock('@/lib/storage/idbStorage', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/storage/idbStorage')>();
   return { ...actual, idbStorage: {
-    getItem: vi.fn(async () => null), setItem: vi.fn(), removeItem: vi.fn(async () => {}),
+    getItem: vi.fn(async () => null), setItem: vi.fn(), setItemLazy: vi.fn(), removeItem: vi.fn(async () => {}),
   } };
 });
 vi.mock('@/lib/storage/chatStorage', async (importOriginal) => {
@@ -152,6 +152,21 @@ describe('useChat SDK transport regression', () => {
     expect(result.current.info).toBeNull();
   });
 
+  it('生图模式客户端账单按实际文本模型计价', async () => {
+    const control = controlledResponse();
+    mockResponses(() => control.response);
+    useSettings.setState({ selectedModelId: 'Tongyi-MAI/Z-Image-Turbo', imageModeTextModel: 'mimo-v2.5' });
+    const { result } = renderHook(() => useChat(context));
+    act(() => { result.current.sendMessage('画一个细胞'); });
+    await settle();
+    control.emit(...answerChunks(), { type: 'data-usage', data: { ...usage, actualModelId: 'mimo-v2.5' } }, { type: 'finish' });
+    control.close();
+    await settle();
+    const record = useBillingStore.getState().records[0];
+    expect(record.modelId).toBe('mimo-v2.5');
+    expect(record.cost).toBeCloseTo((30 * 1 + 20 * 0.02 + 10 * 2) / 1_000_000);
+  });
+
   it('主会话/两划词浮窗并发隔离，切换活动会话不污染新看板，浮窗可单独停止', async () => {
     const main = controlledResponse();
     const first = controlledResponse();
@@ -282,12 +297,12 @@ describe('useChat SDK transport regression', () => {
     expect(useChatHistory.getState().messagesById).toEqual({});
   });
 
-  it('附件水合先于请求，80% 软上限只发送最近消息但不删本地历史', async () => {
+  it('附件水合先于请求，80% 软上限仍发送完整历史但不删本地历史', async () => {
     const history: ChatMessage[] = Array.from({ length: 24 }, (_, i) => createUserMessage(`old-${i}`, `历史 ${i}`));
     history[0].attachments = [{ type: 'image', id: 'old-image', mimeType: 'image/png' }];
     history[23].attachments = [{ type: 'image', id: 'recent-image', mimeType: 'image/png' }];
     useChatHistory.setState({ messagesById: { ...useChatHistory.getState().messagesById, main: history } });
-    useTokenTracker.setState({ serverContextTokens: 900, sessionContextBudgetTokens: 1000 });
+    useTokenTracker.setState({ serverContextTokens: 900_000, sessionContextBudgetTokens: 1_000_000 });
     vi.mocked(hydrateAttachmentsForApi).mockImplementation(async (messages) => messages.map((m) => ({
       ...m, attachments: m.attachments?.map(() => ({ type: 'image' as const, mimeType: 'image/png', base64: 'data:image/png;base64,aW1hZ2U=' })),
     })));
@@ -297,11 +312,11 @@ describe('useChat SDK transport regression', () => {
     await settle();
     expect(hydrateAttachmentsForApi).toHaveBeenCalledTimes(1);
     const sent = requests[0].body.messages as ChatMessage[];
-    expect(sent).toHaveLength(SOFT_LIMIT_MAX_TURNS);
-    expect(sent.some((m) => m.id === 'old-0')).toBe(false);
+    expect(sent.length).toBeGreaterThan(16);
+    expect(sent.some((m) => m.id === 'old-0')).toBe(true);
     expect(sent.at(-2)?.parts.some((p) => p.type === 'file')).toBe(true);
     expect(sent.at(-1)?.parts).toContainEqual({ type: 'file', mediaType: 'image/png', url: 'data:image/png;base64,aW1hZ2U=' });
-    expect(requests[0].body).toMatchObject({ contextTruncated: true, sessionContextBudgetTokens: 1000 });
+    expect(requests[0].body).toMatchObject({ contextTruncated: true, sessionContextBudgetTokens: 1_000_000 });
     expect(useTokenTracker.getState().contextWarning).toContain('80%');
     expect(messagesFor()).toHaveLength(26);
     expect(messagesFor()[0]).toBe(history[0]);
@@ -364,7 +379,13 @@ describe('useChat SDK transport regression', () => {
   });
 
   it('服务端 abort chunk 不呈现错误，旧 customProvider 配置仍发往 API', async () => {
-    useSettings.setState({ customApiGroups: [], customBaseUrl: 'https://legacy.example/v1', customApiKey: 'fake-legacy-key', customModelId: 'legacy-model' });
+    useSettings.setState({
+      selectedModelId: 'custom:legacy-model',
+      customApiGroups: [],
+      customBaseUrl: 'https://legacy.example/v1',
+      customApiKey: 'fake-legacy-key',
+      customModelId: 'legacy-model',
+    });
     mockResponses(() => completedResponse([{ type: 'abort' }]));
     const { result } = renderHook(() => useChat(context));
     act(() => result.current.sendMessage('兼容旧端点'));

@@ -4,7 +4,7 @@
 // 设计：文档不在一次 LLM 输出里生成（会被 max_tokens 截断），而是
 //   1. outline 阶段：模型给出章节列表（或直接采用工具参数里的 outline）；
 //   2. section 阶段：前端逐节请求，每节独立流式生成，服务端对被截断的节自动续写；
-//   3. 所有节完成后拼成一篇 Markdown（单一真相源），导出 docx / LaTeX / PDF 都从它派生。
+//   3. 所有节完成后拼成一篇 Markdown（单一真相源）。查看器目前只提供 Markdown 下载。
 
 export type DocumentFormat = "markdown" | "docx" | "pdf";
 export type DocumentGenre = "article" | "paper" | "report" | "review-notes" | "essay";
@@ -30,7 +30,11 @@ export const DOCUMENT_GENRE_LABELS: Record<DocumentGenre, string> = {
 /** writeDocument 工具参数（模型填写）。 */
 export interface DocumentSpec {
   title: string;
-  /** 目标交付格式；Markdown 始终是源格式，docx / pdf 在查看器里导出。 */
+  /**
+   * 目标交付格式。**当前只交付 Markdown**：查看器只提供 .md 下载，
+   * `validateDocumentSpec` 会把历史的 docx / pdf 归一化成 markdown。
+   * 枚举保留是为了读出旧的 IndexedDB 文档。
+   */
   format: DocumentFormat;
   genre: DocumentGenre;
   /** 写作要求：主题、受众、论点、风格、篇幅要求、需要覆盖的知识点等。 */

@@ -32,11 +32,20 @@ export function toChatErrorMessage(error: unknown, secrets: string[] = []): stri
 
   const status = chain.map((item) => item.statusCode).find((value): value is number => typeof value === 'number');
   if (status === 401 || status === 403) return `模型服务拒绝认证（HTTP ${status}），请检查 API 密钥和模型访问权限。`;
-  if (status === 404) return '模型接口不存在（HTTP 404），请检查 API 地址和模型名称。';
   if (status === 429) return '模型请求受限（HTTP 429），请检查服务额度或稍后重试。';
 
   const leaf = [...chain].reverse().find((item) => typeof item.message === 'string' && item.message.trim());
   let detail = typeof leaf?.message === 'string' ? leaf.message : typeof error === 'string' ? error : '';
+  if (status === 400 || status === 404 || status === 422) {
+    for (const item of [...chain].reverse()) {
+      if (typeof item.responseBody !== 'string' || item.responseBody.length > 64_000) continue;
+      try {
+        const body = JSON.parse(item.responseBody);
+        const reason = body?.error?.message ?? body?.message;
+        if (typeof reason === 'string' && reason.trim()) { detail = reason; break; }
+      } catch { /* Never display an unparsed response or HTML error page. */ }
+    }
+  }
   for (const secret of secrets.filter(Boolean)) detail = detail.split(secret).join('[已隐藏]');
   detail = detail
     .replace(/https?:\/\/[^\s"<>]+/gi, '[API 地址]')
@@ -44,7 +53,12 @@ export function toChatErrorMessage(error: unknown, secrets: string[] = []): stri
     .replace(/\bsk-[a-zA-Z0-9_-]+/g, '[已隐藏]')
     .replace(/(["']?(?:api[-_]?key|authorization|token|password)["']?\s*[:=]\s*)["']?[^\s,"'\]}]+["']?/gi, '$1[已隐藏]')
     .split(/\r?\n/)[0].trim().slice(0, 240);
-  if (status) return `模型接口请求失败（HTTP ${status}）${detail ? `：${detail}` : '，请稍后重试。'}`;
+  if (/^AI_?APICallError$/i.test(detail)) detail = '';
+  if (status === 404 && /not (?:available|supported).*group|configured account/i.test(detail)) {
+    return `当前中转凭证分组未开通此模型（HTTP 404）：${detail}`;
+  }
+  if (status === 404 && !detail) return '模型接口不存在（HTTP 404），请检查 API 地址和模型名称。';
+  if (status) return `模型接口请求失败（HTTP ${status}）${detail ? `：${detail}` : '，请检查该模型接受的参数或稍后重试。'}`;
   if (!detail || /^(An error occurred\.?|fetch failed)$/i.test(detail)) {
     return '模型请求失败，请检查 API 配置与网络连接后重试。';
   }

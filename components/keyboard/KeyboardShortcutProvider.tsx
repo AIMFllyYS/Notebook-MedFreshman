@@ -38,6 +38,7 @@ export default function KeyboardShortcutProvider({ children }: { children: React
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (isMobile || !isDesktopViewport()) return;
+      if (typeof e.key !== "string") return;
 
       const typing = isTypingTarget(e.target);
       const isReviewPage = pathname.endsWith("/review");

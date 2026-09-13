@@ -5,7 +5,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 import userEvent from '@testing-library/user-event';
 import { buildTrace } from '@/lib/chat/buildTrace';
 import type { ChatMessage as ChatMessageType, ChatMessagePart } from '@/lib/types/chat';
-import { AgentTrace } from './AgentTrace';
+import { AgentTrace, TRACE_COLLAPSE_MS } from './AgentTrace';
 import ChatMessage from './ChatMessage';
 import { ToolCallDashboard } from './ToolCallDashboard';
 
@@ -24,6 +24,9 @@ vi.mock('framer-motion', async () => {
 
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock('@/lib/hooks/useContextMenu', () => ({ openMessageMenu }));
+vi.mock('@/components/layout/BrandLogo', () => ({
+  default: () => <span role="img" aria-label="期末复习工作站" data-testid="brand-logo" />,
+}));
 vi.mock('@/components/chat/MessageContent', () => ({
   MessageContent: ({ content, sessionId, messageId, repairModelId }: { content: string; sessionId?: string; messageId?: string; repairModelId?: string }) => (
     <div data-testid="message-content" data-session-id={sessionId} data-message-id={messageId} data-repair-model={repairModelId}>{content}</div>
@@ -88,6 +91,7 @@ describe('ordered AgentTrace', () => {
   });
 
   it('auto-collapses on completion, preserves user choice during a stream and reopens for a new run', () => {
+    expect(TRACE_COLLAPSE_MS).toBe(160);
     const active = message([{ type: 'reasoning', text: '思考中', state: 'streaming' }]);
     const { rerender } = render(<AgentTrace trace={buildTrace(active, true)} isStreaming />);
     fireEvent.click(screen.getByRole('button', { name: '正在处理…' }));
@@ -120,12 +124,14 @@ describe('ordered AgentTrace', () => {
     // abort/EOF, while the hook independently turns the request isStreaming off.
     const msg = message([{ type: 'reasoning', text: '仍在推理中的部分内容', state: 'streaming' }], { metadata: { durationMs: 600 } });
     const { container, rerender } = render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} isStreaming />);
-    expect(screen.getByRole('button', { name: '正在处理…' })).toHaveAttribute('aria-expanded', 'true');
+    expect(within(container.querySelector('.chat-message-header')!).getByRole('status')).toHaveTextContent('正在处理…');
+    expect(screen.getByRole('button', { name: '处理过程' })).toHaveAttribute('aria-expanded', 'true');
     rerender(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} />);
-    const header = screen.getByRole('button', { name: '处理已停止' });
-    expect(header).toHaveAttribute('aria-expanded', 'false');
+    expect(within(container.querySelector('.chat-message-header')!).getByRole('status')).toHaveTextContent('处理已停止');
+    const process = screen.getByRole('button', { name: '处理过程' });
+    expect(process).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByText(/已处理/)).not.toBeInTheDocument();
-    fireEvent.click(header);
+    fireEvent.click(process);
     expect(screen.getByRole('button', { name: /思考 已停止/ })).toBeVisible();
     expect(screen.getByText('仍在推理中的部分内容')).toBeVisible();
     expect(container.querySelector('[data-motion-repeats="true"]')).toBeNull();
@@ -204,6 +210,17 @@ describe('ordered AgentTrace', () => {
     expect(screen.queryByText(/已思考/)).not.toBeInTheDocument();
   });
 
+  it('shows only recorded per-step duration and adds a completion check to the summary', () => {
+    const trace = buildTrace({
+      parts: [{ type: 'reasoning', text: '完成分析', state: 'done' }],
+      metadata: { stepDurationsMs: { 'reasoning:0': 2_600 } },
+    });
+    const { container } = render(<AgentTrace trace={trace} durationMs={3_100} />);
+    expect(container.querySelector('.agent-trace-complete-mark')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '已处理 3 秒' }));
+    expect(screen.getByText('3 秒')).toHaveClass('agent-trace-step-duration');
+  });
+
   it('uses original monochrome semantic glyphs and a flat, counter-free activity log', () => {
     const trace = buildTrace(message([
       { type: 'reasoning', text: '检查执行步骤', state: 'done' }, tool, pendingTool,
@@ -241,7 +258,7 @@ describe('ordered AgentTrace', () => {
     }
     const commentary = container.querySelector('.agent-trace-commentary')!;
     expect(getComputedStyle(commentary).paddingLeft).toBe('28px');
-    expect(getComputedStyle(commentary).marginTop).toBe('4px');
+    expect(getComputedStyle(commentary).marginTop).toBe('2px');
     fireEvent.click(screen.getByRole('button', { name: /读取笔记章节 已完成/ }));
     const body = container.querySelector('[data-trace-id="tool:nested-detail"] .agent-trace-step-body')!;
     expect(getComputedStyle(body).paddingLeft).toBe('28px');
@@ -258,9 +275,10 @@ describe('ChatMessage trace migration', () => {
     const longQuestion = `请解释 ${'https://example.test/very-long-path/'.repeat(20)}`;
     const { container } = render(<>
       <ChatMessage message={message([{ type: 'text', text: longQuestion }], { role: 'user' })} onFollowUpSelect={vi.fn()} />
-      <ChatMessage message={message([{ type: 'text', text: 'AI 回答' }])} onFollowUpSelect={vi.fn()} />
+      <ChatMessage message={message([{ type: 'text', text: 'AI 回答' }], { metadata: { durationMs: 2_600 } })} onFollowUpSelect={vi.fn()} />
     </>);
     const userMessage = container.querySelector('[data-message-role="user"]')!;
+    expect(userMessage).toHaveAttribute('data-message-id', 'assistant-1');
     const userHeader = userMessage.querySelector('.chat-message-header')!;
     const userContent = userMessage.querySelector('.chat-message-content')!;
     const userBubble = userMessage.querySelector('.chat-bubble-user')!;
@@ -273,27 +291,49 @@ describe('ChatMessage trace migration', () => {
     expect(getComputedStyle(userBubble).overflowWrap).toBe('anywhere');
     expect(getComputedStyle(userBubble).textAlign).toBe('left');
     expect(userBubble).toHaveTextContent(longQuestion);
-    const assistant = container.querySelector('[data-message-role="assistant"]')!;
+    const assistant = container.querySelector<HTMLElement>('[data-message-role="assistant"]')!;
+    const assistantHeader = assistant.querySelector<HTMLElement>('.chat-message-header')!;
     expect(getComputedStyle(assistant).alignItems).toBe('flex-start');
-    expect(getComputedStyle(assistant.querySelector('.chat-message-header')!).justifyContent).toBe('flex-start');
+    expect(getComputedStyle(assistantHeader).justifyContent).toBe('flex-start');
+    expect(within(assistantHeader).getByRole('img', { name: '期末复习工作站' })).toBeVisible();
+    expect(within(assistantHeader).getByRole('status')).toHaveTextContent('已处理 3 秒');
+    expect(within(assistantHeader).queryByText('AI 助教')).not.toBeInTheDocument();
+    expect(assistantHeader.querySelector('.agent-trace-complete-mark')).toBeNull();
     expect(getComputedStyle(assistant.querySelector('.chat-message-content')!).alignItems).toBe('stretch');
     expect(getComputedStyle(assistant.querySelector('.chat-message-content')!).textAlign).toBe('left');
   });
 
-  it('renders the answer once below the trace and preserves final answer repair and context-menu bindings', () => {
-    const msg = message([{ type: 'reasoning', text: '推理内容', state: 'done' }, { type: 'text', text: '我先查教材', state: 'done' }, tool, { type: 'text', text: '面向用户的最终回答', state: 'done' }]);
+  it('renders each answer segment once without duplicating them in the trace', () => {
+    const msg = message([
+      { type: 'step-start' },
+      { type: 'reasoning', text: '推理内容', state: 'done' },
+      { type: 'text', text: '我先查教材', state: 'done' },
+      tool,
+      { type: 'step-start' },
+      { type: 'text', text: '面向用户的最终回答', state: 'done' },
+    ]);
     const { container } = render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} sessionId="floating-session" repairModelId="chosen-model" />);
+    expect(container.querySelector('[data-message-id="assistant-1"]')).toBeInTheDocument();
     expect(screen.getAllByText('面向用户的最终回答')).toHaveLength(1);
-    expect(screen.queryByText('我先查教材')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: '处理完成' }));
     expect(screen.getAllByText('我先查教材')).toHaveLength(1);
-    const bubble = container.querySelector('.chat-bubble-assistant')!;
-    expect(bubble).not.toHaveTextContent('我先查教材');
-    expect(bubble).toHaveStyle({ background: 'transparent', border: 'none', padding: 0 });
-    expect(within(bubble as HTMLElement).getByTestId('message-content')).toHaveAttribute('data-session-id', 'floating-session');
-    expect(within(bubble as HTMLElement).getByTestId('message-content')).toHaveAttribute('data-repair-model', 'chosen-model');
-    fireEvent.contextMenu(bubble);
-    expect(openMessageMenu.mock.calls[0][1]).toBe('面向用户的最终回答');
+    expect(container.querySelector('.chat-message-header .agent-trace-complete-mark')).toBeNull();
+    expect(container.querySelector('.agent-trace-complete-mark')).toBeInTheDocument();
+    for (const header of screen.getAllByRole('button', { name: '处理过程' })) {
+      fireEvent.click(header);
+    }
+    expect(screen.getAllByText('我先查教材')).toHaveLength(1);
+    expect(screen.getAllByText('面向用户的最终回答')).toHaveLength(1);
+    const bubbles = container.querySelectorAll('.chat-bubble-assistant');
+    expect(bubbles).toHaveLength(2);
+    expect(bubbles[0]).toHaveTextContent('我先查教材');
+    expect(bubbles[0]).not.toHaveTextContent('面向用户的最终回答');
+    expect(bubbles[1]).toHaveTextContent('面向用户的最终回答');
+    expect(bubbles[1]).not.toHaveTextContent('我先查教材');
+    expect(bubbles[0]).toHaveStyle({ background: 'transparent', border: 'none', padding: 0 });
+    expect(within(bubbles[0] as HTMLElement).getByTestId('message-content')).toHaveAttribute('data-session-id', 'floating-session');
+    expect(within(bubbles[1] as HTMLElement).getByTestId('message-content')).toHaveAttribute('data-repair-model', 'chosen-model');
+    fireEvent.contextMenu(bubbles[1]);
+    expect(openMessageMenu.mock.calls[0][1]).toBe('我先查教材\n\n面向用户的最终回答');
   });
 
   it('keeps typed search, artifact, image approval and source cards below the final answer', () => {
@@ -311,6 +351,8 @@ describe('ChatMessage trace migration', () => {
       expect(answer.compareDocumentPosition(card) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     }
     expect(screen.getByText(/联网来源 · 1 条/)).toBeVisible();
+    expect(screen.queryByText(/参考来源/)).not.toBeInTheDocument();
+    expect(screen.queryByText('补充来源')).not.toBeInTheDocument();
     expect(screen.queryByText('公开课程摘要')).not.toBeInTheDocument();
     expect(screen.getByText(/引用笔记 · 1 条/)).toBeVisible();
     expect(screen.queryByText('公式讲解')).not.toBeInTheDocument();
@@ -326,7 +368,7 @@ describe('ChatMessage trace migration', () => {
   it('preserves image search gallery, drag data and attribution after streaming', () => {
     const msg = message([{ type: 'tool-imageSearch', toolCallId: 'images', state: 'output-available', input: { query: '植物' }, output: { text: '找到图片', provider: 'unsplash', sources: [{ title: '一株植物', alt: '植物特写', url: 'https://images.example/plant.jpg', snippet: '', author: '摄影者', authorUrl: 'https://unsplash.com/@author' }] } }, { type: 'text', text: '图片说明' }]);
     const { rerender } = render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} isStreaming />);
-    expect(screen.queryByRole('img', { name: '植物特写' })).not.toBeInTheDocument();
+    expect(screen.getByRole('img', { name: '植物特写' })).toBeInTheDocument();
     rerender(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} />);
     const image = screen.getByRole('img', { name: '植物特写' });
     expect(screen.getByRole('link', { name: '摄影者' })).toHaveAttribute('href', 'https://unsplash.com/@author');
@@ -363,6 +405,13 @@ describe('ChatMessage trace migration', () => {
     expect(screen.getAllByRole('button', { name: '另一问题' })).toHaveLength(1);
   });
 
+  it('uses answer FollowUp tags as data for the sourced follow-up channel', () => {
+    const msg = message([{ type: 'text', text: '答案。\n<FollowUp>继续解释|换个例子</FollowUp>' }]);
+    render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} />);
+    expect(screen.getByRole('button', { name: '继续解释' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '换个例子' })).toBeInTheDocument();
+  });
+
   it('keeps searchNotes citations collapsed without dumping snippets into the chat', () => {
     render(<ChatMessage message={message([tool, { type: 'text', text: '最终回答' }])} onFollowUpSelect={vi.fn()} />);
     expect(screen.queryByText('公式讲解')).not.toBeInTheDocument();
@@ -376,7 +425,8 @@ describe('ChatMessage trace migration', () => {
     const msg = message([{ type: 'text', text: '准备查询' }, { type: 'tool-getSection', toolCallId: 'failed', state: 'output-error', input: {}, errorText: '查询失败' }]);
     const { container } = render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} />);
     expect(container.querySelector('.chat-bubble-assistant')).toBeNull();
-    fireEvent.click(screen.getByRole('button', { name: '处理结束，部分步骤未完成' }));
+    expect(within(container.querySelector('.chat-message-header')!).getByRole('status')).toHaveTextContent('处理结束，部分步骤未完成');
+    fireEvent.click(screen.getByRole('button', { name: '处理过程' }));
     expect(screen.getAllByText('准备查询')).toHaveLength(1);
     expect(screen.getByText('查询失败')).toBeVisible();
   });

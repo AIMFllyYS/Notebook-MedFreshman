@@ -25,4 +25,17 @@ describe('WebSourceFold', () => {
     fireEvent.click(screen.getByRole('button', { name: /大学课程资料/ }));
     expect(useWindowManager.getState().windows.some((win) => win.id === sourcePreviewWindowId(sources[0].url))).toBe(true);
   });
+
+  it('dedupes sources by url', () => {
+    render(
+      <WebSourceFold
+        sources={[
+          { title: '大学课程资料', url: 'https://example.edu/course', snippet: '' },
+          { title: '重复', url: 'https://example.edu/course', snippet: '' },
+          { title: '另一篇', url: 'https://example.edu/other', snippet: '' },
+        ]}
+      />,
+    );
+    expect(screen.getByText(/联网来源 · 2 条/)).toBeVisible();
+  });
 });

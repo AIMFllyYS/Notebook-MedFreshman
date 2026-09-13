@@ -30,6 +30,8 @@ const MAX_RECORDS = 50000;
 interface BillingStore {
   records: BillingRecord[];
   addRecord: (record: BillingRecord) => void;
+  /** 用服务端台账整表替换本地缓存（金额已是 cost_cny）。 */
+  replaceFromLedger: (records: BillingRecord[]) => void;
   clearAll: () => void;
   exportToCsv: (customGroups?: CustomApiGroup[]) => void;
 }
@@ -136,6 +138,11 @@ export const useBillingStore = createPersistedStore<BillingStore>(
         }
         return { records: next };
       }),
+      replaceFromLedger: (records) => {
+        const next = records.slice();
+        if (next.length > MAX_RECORDS) next.length = MAX_RECORDS;
+        set({ records: next });
+      },
       clearAll: () => set({ records: [] }),
       exportToCsv: (customGroups = []) => {
         const { records } = get();

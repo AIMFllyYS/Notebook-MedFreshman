@@ -52,8 +52,14 @@ describe('floating transparent composer', () => {
     expect(toolbar.contains(getByTestId('context-dashboard'))).toBe(true);
     expect(toolbar.contains(getByTestId('model-selector'))).toBe(true);
     expect(row.contains(getByRole('textbox'))).toBe(true);
+    const fileInput = container.querySelector('input[type="file"]');
+    expect(fileInput).toHaveAttribute('accept', expect.stringContaining('.html'));
+    expect(fileInput).toHaveAttribute('accept', expect.stringContaining('.json'));
+    expect(fileInput).toHaveAttribute('accept', expect.stringContaining('.tsx'));
+    expect(fileInput).toHaveAttribute('accept', expect.stringContaining('.pdf'));
     expect(dock.contains(getByTestId('notice'))).toBe(true);
     expect(dock.contains(getByTestId('attachment-preview'))).toBe(true);
+    expect(row.contains(getByTestId('attachment-preview'))).toBe(true);
     expect(getByTestId('notice').compareDocumentPosition(toolbar) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(getByTestId('context-dashboard')).toHaveAttribute('data-session-id', 'floating-session');
     expect(getByTestId('context-dashboard')).toHaveAttribute('data-model-id', 'mimo-v2.5');
@@ -104,13 +110,13 @@ describe('floating transparent composer', () => {
     expect(callbacks.paste).toHaveBeenCalledOnce();
     expect(callbacks.drop).toHaveBeenCalledOnce();
     fireEvent.click(getByTitle('发送'));
-    expect(props.onSend).toHaveBeenCalledWith('请描述这张图片', expect.objectContaining({ quotedText: '引用段落',
+    expect(props.onSend).toHaveBeenCalledWith('请阅读并分析附件', expect.objectContaining({ quotedText: '引用段落',
       attachments: [{ type: 'image', mimeType: 'image/png', base64: 'data:image/png;base64,eA==' }] }));
     expect(callbacks.clearQuote).toHaveBeenCalledOnce();
     expect(callbacks.clearAttachments).toHaveBeenCalledOnce();
   });
 
-  it('CSS contract anchors a transparent dock and wraps both toolbar groups instead of clipping narrow surfaces', () => {
+  it('CSS contract anchors a transparent dock and stages compact toolbar controls without clipping narrow surfaces', () => {
     const css = readFileSync(resolve(process.cwd(), 'app/styles/prose.css'), 'utf8');
     const rule = (selector: string) => css.match(new RegExp(`${selector.replaceAll('.', '\\.')}\\s*\\{([^}]+)\\}`))?.[1] ?? '';
     const dock = rule('.chat-input-container');
@@ -124,6 +130,33 @@ describe('floating transparent composer', () => {
     expect(rule('.chat-input-toolbar-group')).toContain('min-width: 0');
     expect(rule('.chat-input-textarea')).toContain('min-width: 0');
     expect(css).toContain('@container chat-composer (max-width: 320px)');
+    expect(css).toContain('@container chat-composer (max-width: 430px)');
+    expect(rule('.chat-input-more')).toContain('opacity: 0');
+    expect(css).toContain('opacity 100ms var(--ease-out)');
+    expect(css).toContain('opacity 90ms var(--ease-out) 110ms');
     expect(rule('.chat-input-row')).toContain('backdrop-filter: blur(14px)');
+  });
+
+  it('shows the meter only for long text, keeps excess text, blocks send and opens an accessible warning', () => {
+    const { getByRole } = render(<ChatInput {...props} />);
+    const textbox = getByRole('textbox');
+    expect(document.querySelector('.chat-input-count')).toBeNull();
+    fireEvent.change(textbox, { target: { value: '字'.repeat(1_000) } });
+    expect(document.querySelector('.chat-input-count')).toBeNull();
+    fireEvent.change(textbox, { target: { value: '字'.repeat(1_001) } });
+    expect(document.querySelector('.chat-input-count')).toHaveTextContent('1,001 / 50,000 字');
+    expect(document.querySelector('.chat-input-row')).toHaveClass('chat-input-row-with-count');
+    fireEvent.change(textbox, { target: { value: '字'.repeat(50_001) } });
+    expect(textbox).toHaveValue('字'.repeat(50_001));
+    expect(textbox).toHaveAttribute('aria-invalid', 'true');
+    expect(getByRole('alertdialog')).toHaveTextContent('已超出 5 万字上限');
+    expect(getByRole('button', { name: '发送' })).toBeDisabled();
+    expect(props.onSend).not.toHaveBeenCalled();
+  });
+
+  it('counts supplementary Unicode characters as one visible character without showing a short-text meter', () => {
+    const { getByRole } = render(<ChatInput {...props} />);
+    fireEvent.change(getByRole('textbox'), { target: { value: '😀'.repeat(1_001) } });
+    expect(document.querySelector('.chat-input-count')).toHaveTextContent('1,001 / 50,000 字');
   });
 });

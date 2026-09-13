@@ -48,18 +48,57 @@ test("defaultIsRecoverable：5xx 与可恢复 400 code 可切换，401/429 不�
   assert.equal(defaultIsRecoverable(new Error("random")), false);
 });
 
-test("failover：主端点 503 → 切到备用并回调 onFailover", async () => {
+test("failover：prepareCall 每跳替换冻住的 providerOptions", async () => {
+  const seen: unknown[] = [];
+  const primary = new MockLanguageModelV4({
+    doStream: async (opts) => {
+      seen.push({ hop: "primary", providerOptions: opts.providerOptions });
+      throw apiError(503);
+    },
+  });
+  const backup = new MockLanguageModelV4({
+    doStream: async (opts) => {
+      seen.push({ hop: "backup", providerOptions: opts.providerOptions });
+      return { stream: textStream("from-backup") };
+    },
+  });
+  const model = createFailoverLanguageModel(
+    [
+      { model: primary, label: "primary" },
+      { model: backup, label: "backup" },
+    ],
+    {
+      prepareCall: (index, opts) => ({
+        ...opts,
+        providerOptions: { upstream: { hop: index } },
+      }),
+    },
+  );
+  const { stream } = await model.doStream({
+    ...callOptions,
+    providerOptions: { upstream: { hop: "frozen" } },
+  });
+  await convertReadableStreamToArray(stream);
+  assert.deepEqual(seen, [
+    { hop: "primary", providerOptions: { upstream: { hop: 0 } } },
+    { hop: "backup", providerOptions: { upstream: { hop: 1 } } },
+  ]);
+});
+
+test("failover：主端点 503 → 切到备用并回调 onFailover / onLanded", async () => {
   const events: string[] = [];
+  const landed: string[] = [];
   const model = createFailoverLanguageModel(
     [
       { model: throwingModel(apiError(503)), label: "primary" },
       { model: okModel("from-backup"), label: "backup" },
     ],
-    { onFailover: (next) => events.push(next.label) },
+    { onFailover: (next) => events.push(next.label), onLanded: (next) => landed.push(next.label) },
   );
   const { stream } = await model.doStream(callOptions);
   const parts = await convertReadableStreamToArray(stream);
   assert.deepEqual(events, ["backup"]);
+  assert.deepEqual(landed, ["backup"]);
   assert.ok(parts.some((p) => p.type === "text-delta" && p.delta === "from-backup"));
 });
 

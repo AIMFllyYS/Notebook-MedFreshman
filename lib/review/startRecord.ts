@@ -1,3 +1,4 @@
+import { selectCustomApiGroupsForRequest } from "@/lib/ai/models";
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
 import { useRecordPreviews } from "@/lib/hooks/useRecordPreviews";
 import { useSettings } from "@/lib/hooks/useSettings";
@@ -20,12 +21,11 @@ function clamp(text: string): string {
 function aiRequestExtras() {
   // 摘录功能使用独立的 recordModelId（默认中转站 DeepSeek V4 Flash），
   // 不再跟随主对话的 selectedModelId —— 避免右侧切换自定义模型时
-  // 摘录因密钥/协议不匹配而报错。customApiGroups 始终透传，
-  // resolveProvider 仅在 modelId 为 custom: 前缀时才查找分组。
+  // 摘录因密钥/协议不匹配而报错。只发 recordModelId 所属的那一个分组。
   const settings = useSettings.getState();
   return {
     modelId: settings.recordModelId,
-    customApiGroups: settings.customApiGroups,
+    customApiGroups: selectCustomApiGroupsForRequest(settings.customApiGroups, settings.recordModelId),
   };
 }
 
