@@ -49,6 +49,44 @@ function envText(env: NodeJS.ProcessEnv, key: string): string {
   return raw == null ? "" : stripEnvValue(raw);
 }
 
+function definedEntries(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
+  const out: NodeJS.ProcessEnv = {};
+  for (const [key, value] of Object.entries(env)) {
+    if (typeof value === "string" && value !== "") out[key] = value;
+  }
+  return out;
+}
+
+/**
+ * Next / Turbopack 只会把「写死的 `process.env.NEXT_PUBLIC_*`」打进浏览器包。
+ * 默认参数 `= process.env` 或 `env["NEXT_PUBLIC_…"]` 在客户端要么是空对象，
+ * 要么 `process` 根本不存在（抛错被 tryGetBrowserAuthClient 吞掉 → 登录页
+ * 「Auth is not configured」）。这里的属性访问必须保持静态字面量。
+ */
+export function inlinedPublicAuthEnv(): NodeJS.ProcessEnv {
+  return {
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+  };
+}
+
+function liveProcessEnv(): NodeJS.ProcessEnv | null {
+  try {
+    if (typeof process === "undefined") return null;
+    return process.env ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** 浏览器只用内联的 NEXT_PUBLIC_*；Node / 测试再叠上真实 process.env。 */
+export function defaultAuthProcessEnv(): NodeJS.ProcessEnv {
+  const inlined = definedEntries(inlinedPublicAuthEnv());
+  const live = liveProcessEnv();
+  return live ? { ...live, ...inlined } : inlined;
+}
+
 function trimUrl(value: string): string {
   return stripEnvValue(value).replace(/\/+$/, "");
 }
@@ -60,7 +98,7 @@ function requireSupabaseUrl(url: string): string {
   return url;
 }
 
-export function resolvePublicAuthEnv(env: NodeJS.ProcessEnv = process.env): PublicAuthEnv {
+export function resolvePublicAuthEnv(env: NodeJS.ProcessEnv = defaultAuthProcessEnv()): PublicAuthEnv {
   const supabaseUrl = requireSupabaseUrl(
     trimUrl(
       env.NEXT_PUBLIC_SUPABASE_URL || env.SUPABASE_URL || DEFAULT_AUTH_SUPABASE_URL,
@@ -69,6 +107,7 @@ export function resolvePublicAuthEnv(env: NodeJS.ProcessEnv = process.env): Publ
   const anonKey =
     envText(env, "NEXT_PUBLIC_SUPABASE_ANON_KEY") ||
     envText(env, "SUPABASE_ANON_KEY") ||
+    envText(env, "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY") ||
     envText(env, "SUPABASE_PUBLISHABLE_KEY");
   if (!anonKey) {
     throw new Error("Need NEXT_PUBLIC_SUPABASE_ANON_KEY (or SUPABASE_ANON_KEY)");
@@ -76,7 +115,7 @@ export function resolvePublicAuthEnv(env: NodeJS.ProcessEnv = process.env): Publ
   return { supabaseUrl, anonKey };
 }
 
-export function resolveServiceAuthEnv(env: NodeJS.ProcessEnv = process.env): ServiceAuthEnv {
+export function resolveServiceAuthEnv(env: NodeJS.ProcessEnv = defaultAuthProcessEnv()): ServiceAuthEnv {
   const pub = resolvePublicAuthEnv(env);
   const serviceRoleKey =
     envText(env, "SUPABASE_SERVICE_ROLE_KEY") || envText(env, "SUPABASE_SECRET_KEY");
@@ -87,7 +126,7 @@ export function resolveServiceAuthEnv(env: NodeJS.ProcessEnv = process.env): Ser
 }
 
 export function resolveManagementAuthEnv(
-  env: NodeJS.ProcessEnv = process.env,
+  env: NodeJS.ProcessEnv = defaultAuthProcessEnv(),
 ): ManagementAuthEnv {
   const accessToken = envText(env, "SUPABASE_ACCESS_TOKEN");
   const projectRef =
@@ -100,7 +139,7 @@ export function resolveManagementAuthEnv(
   return { accessToken, projectRef };
 }
 
-export function resolveSmtpEnv(env: NodeJS.ProcessEnv = process.env): SmtpEnv {
+export function resolveSmtpEnv(env: NodeJS.ProcessEnv = defaultAuthProcessEnv()): SmtpEnv {
   const host = envText(env, "ALIYUN_SMTP_HOST");
   const port = envText(env, "ALIYUN_SMTP_PORT") || "465";
   const user = envText(env, "ALIYUN_SMTP_USER");

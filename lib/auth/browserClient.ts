@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { resolvePublicAuthEnv, type PublicAuthEnv } from "./env.ts";
+import { defaultAuthProcessEnv, resolvePublicAuthEnv, type PublicAuthEnv } from "./env.ts";
 
 /** Browser / anon client. Do not pass the service role key here. */
 export const BROWSER_AUTH_OPTIONS = {
@@ -10,14 +10,16 @@ export const BROWSER_AUTH_OPTIONS = {
 
 let browserClientSingleton: SupabaseClient | undefined;
 
+function resolveBrowserEnv(env?: NodeJS.ProcessEnv | PublicAuthEnv): PublicAuthEnv {
+  if (env && "anonKey" in env && "supabaseUrl" in env) return env;
+  return resolvePublicAuthEnv(env ?? defaultAuthProcessEnv());
+}
+
 /** Browser / anon client. Do not pass the service role key here. */
 export function createBrowserAuthClient(
-  env: NodeJS.ProcessEnv | PublicAuthEnv = process.env,
+  env?: NodeJS.ProcessEnv | PublicAuthEnv,
 ): SupabaseClient {
-  const resolved =
-    "anonKey" in env && "supabaseUrl" in env
-      ? env
-      : resolvePublicAuthEnv(env as NodeJS.ProcessEnv);
+  const resolved = resolveBrowserEnv(env);
   return createClient(resolved.supabaseUrl, resolved.anonKey, {
     auth: { ...BROWSER_AUTH_OPTIONS },
   });
@@ -25,7 +27,7 @@ export function createBrowserAuthClient(
 
 /** Shared browser client so persistSession / onAuthStateChange stay on one instance. */
 export function getBrowserAuthClient(
-  env: NodeJS.ProcessEnv | PublicAuthEnv = process.env,
+  env?: NodeJS.ProcessEnv | PublicAuthEnv,
 ): SupabaseClient {
   if (!browserClientSingleton) {
     browserClientSingleton = createBrowserAuthClient(env);
@@ -34,7 +36,7 @@ export function getBrowserAuthClient(
 }
 
 export function tryGetBrowserAuthClient(
-  env: NodeJS.ProcessEnv | PublicAuthEnv = process.env,
+  env?: NodeJS.ProcessEnv | PublicAuthEnv,
 ): SupabaseClient | null {
   try {
     return getBrowserAuthClient(env);

@@ -40,7 +40,7 @@ const AuthSessionContext = createContext<AuthSessionApi | null>(null);
 const UNAVAILABLE: OtpRequestResult = {
   ok: false,
   code: "auth_error",
-  message: "Auth is not configured",
+  message: "登录未配置：浏览器读不到 Supabase 公钥。确认 .env.local 有 NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY 后重启 dev。",
 };
 
 export function useAuthSessionController(injected?: AuthRuntimeClient | null): AuthSessionApi {

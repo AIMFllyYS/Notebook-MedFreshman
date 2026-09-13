@@ -35,6 +35,25 @@ test("browser client persists the session across reloads", () => {
   resetBrowserAuthClient();
 });
 
+test("tryGetBrowserAuthClient 无参时用内联 NEXT_PUBLIC_*，不访问 process.env 对象", () => {
+  resetBrowserAuthClient();
+  const prevUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const prevKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  process.env.NEXT_PUBLIC_SUPABASE_URL = "https://abc123.supabase.co";
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "anon-key";
+  try {
+    const client = tryGetBrowserAuthClient();
+    assert.ok(client);
+    assert.equal(typeof client?.auth.signInWithOtp, "function");
+  } finally {
+    resetBrowserAuthClient();
+    if (prevUrl === undefined) delete process.env.NEXT_PUBLIC_SUPABASE_URL;
+    else process.env.NEXT_PUBLIC_SUPABASE_URL = prevUrl;
+    if (prevKey === undefined) delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    else process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = prevKey;
+  }
+});
+
 test("createServiceAuthClient exposes Auth Admin", () => {
   const client = createServiceAuthClient({
     NEXT_PUBLIC_SUPABASE_URL: "https://abc123.supabase.co",

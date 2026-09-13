@@ -3,6 +3,8 @@ import { test } from "node:test";
 import {
   DEFAULT_AUTH_PROJECT_REF,
   DEFAULT_AUTH_SUPABASE_URL,
+  defaultAuthProcessEnv,
+  inlinedPublicAuthEnv,
   resolveManagementAuthEnv,
   resolvePublicAuthEnv,
   resolveServiceAuthEnv,
@@ -33,6 +35,33 @@ test("resolvePublicAuthEnv prefers public URL/key and falls back to live project
   assert.equal(fallback.supabaseUrl, DEFAULT_AUTH_SUPABASE_URL);
   assert.equal(fallback.supabaseUrl.includes(DEFAULT_AUTH_PROJECT_REF), true);
   assert.equal(fallback.anonKey, "legacy-anon");
+});
+
+test("resolvePublicAuthEnv 接受 NEXT_PUBLIC_ 新格式公钥", () => {
+  const resolved = resolvePublicAuthEnv({
+    NEXT_PUBLIC_SUPABASE_URL: "https://abc123.supabase.co",
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_test",
+  });
+  assert.equal(resolved.anonKey, "sb_publishable_test");
+});
+
+test("无参 resolvePublicAuthEnv 读静态 NEXT_PUBLIC_*，不依赖传入 process.env 对象", () => {
+  const prevUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const prevKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  process.env.NEXT_PUBLIC_SUPABASE_URL = "https://abc123.supabase.co";
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "anon-from-process";
+  try {
+    assert.equal(inlinedPublicAuthEnv().NEXT_PUBLIC_SUPABASE_ANON_KEY, "anon-from-process");
+    assert.equal(defaultAuthProcessEnv().NEXT_PUBLIC_SUPABASE_ANON_KEY, "anon-from-process");
+    const resolved = resolvePublicAuthEnv();
+    assert.equal(resolved.supabaseUrl, "https://abc123.supabase.co");
+    assert.equal(resolved.anonKey, "anon-from-process");
+  } finally {
+    if (prevUrl === undefined) delete process.env.NEXT_PUBLIC_SUPABASE_URL;
+    else process.env.NEXT_PUBLIC_SUPABASE_URL = prevUrl;
+    if (prevKey === undefined) delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    else process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = prevKey;
+  }
 });
 
 test("resolvePublicAuthEnv rejects missing keys and non-supabase hosts", () => {
