@@ -748,14 +748,15 @@
 
 .chat-message-dots {
   position: absolute;
+  top: 50%;
   right: 5px;
-  bottom: clamp(104px, 18%, 176px);
+  bottom: auto;
   z-index: 8;
   display: flex;
   max-height: min(58%, 22rem);
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 5px;
   overflow: visible;
   padding: 8px 5px;
@@ -765,6 +766,7 @@
   box-shadow: 0 4px 16px rgb(0 0 0 / 0.06);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  transform: translateY(-50%);
 }
 
 .chat-message-dots-track {
@@ -1126,6 +1128,17 @@
 }
 .chat-message-header-name {
   font-weight: 500;
+}
+.chat-message-assistant-status {
+  gap: 6px;
+  min-height: 22px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-variant-numeric: tabular-nums;
+}
+.chat-message-assistant-status-text {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 .chat-message-badge {
   font-size: 10px;

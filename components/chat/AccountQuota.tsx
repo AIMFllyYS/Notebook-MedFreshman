@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuthSession } from '@/lib/hooks/useAuthSession';
 import { fetchQuota } from '@/lib/billing/fetchQuota';
 import { ACCOUNT_USAGE_CHANGED, type QuotaView } from '@/lib/billing/quotaView';
+import { UsageProgressBar } from '@/components/chat/UsageProgressBar';
 
 const TIERS = { free: '免费会员', plus: 'Plus 会员', pro: 'Pro 会员' };
 const money = (n: number) => `¥${Math.max(0, n).toFixed(n > 0 && n < 0.01 ? 4 : 2)}`;
@@ -48,7 +49,13 @@ export function AccountQuota() {
     {data ? <>
       {(['platform', 'byok'] as const).map((key) => <div key={key} className="mb-2">
         <div className="flex justify-between gap-2 text-[11px]"><span>{key === 'platform' ? '平台模型额度' : '自备 API 辅助额度'}</span><strong className={data[key].remaining <= 0 ? 'text-[var(--md-sys-color-error)]' : ''}>{money(data[key].remaining)} <span className="font-normal text-[var(--ink-faint)]">/ {money(data[key].cap)}</span></strong></div>
-        <progress aria-label={key === 'platform' ? '平台模型剩余额度' : '自备 API 辅助剩余额度'} className="mt-1 h-1 w-full accent-[var(--accent-ink)]" max={Math.max(1, data[key].cap)} value={Math.max(0, data[key].remaining)} />
+        <div className="mt-1">
+          <UsageProgressBar
+            ratio={data[key].cap > 0 ? data[key].remaining / data[key].cap : 0}
+            ariaLabel={key === 'platform' ? '平台模型剩余额度' : '自备 API 辅助剩余额度'}
+            invertRisk
+          />
+        </div>
       </div>)}
       <p className="text-[10px] leading-relaxed text-[var(--ink-faint)]">辅助额度用于平台提供的搜索等能力，不是外部 API 账户余额。<br />当前额度周期截至 {new Date(data.periodEnd).toLocaleDateString('zh-CN')}。</p>
       {error ? <p className="mt-1 text-[10px] text-[var(--ink-faint)]">上次更新：{new Date(data.updatedAt).toLocaleTimeString('zh-CN')}</p> : null}

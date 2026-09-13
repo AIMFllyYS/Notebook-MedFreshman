@@ -24,6 +24,9 @@ vi.mock('framer-motion', async () => {
 
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock('@/lib/hooks/useContextMenu', () => ({ openMessageMenu }));
+vi.mock('@/components/layout/BrandLogo', () => ({
+  default: () => <span role="img" aria-label="期末复习工作站" data-testid="brand-logo" />,
+}));
 vi.mock('@/components/chat/MessageContent', () => ({
   MessageContent: ({ content, sessionId, messageId, repairModelId }: { content: string; sessionId?: string; messageId?: string; repairModelId?: string }) => (
     <div data-testid="message-content" data-session-id={sessionId} data-message-id={messageId} data-repair-model={repairModelId}>{content}</div>
@@ -121,12 +124,14 @@ describe('ordered AgentTrace', () => {
     // abort/EOF, while the hook independently turns the request isStreaming off.
     const msg = message([{ type: 'reasoning', text: '仍在推理中的部分内容', state: 'streaming' }], { metadata: { durationMs: 600 } });
     const { container, rerender } = render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} isStreaming />);
-    expect(screen.getByRole('button', { name: '正在处理…' })).toHaveAttribute('aria-expanded', 'true');
+    expect(within(container.querySelector('.chat-message-header')!).getByRole('status')).toHaveTextContent('正在处理…');
+    expect(screen.getByRole('button', { name: '处理过程' })).toHaveAttribute('aria-expanded', 'true');
     rerender(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} />);
-    const header = screen.getByRole('button', { name: '处理已停止' });
-    expect(header).toHaveAttribute('aria-expanded', 'false');
+    expect(within(container.querySelector('.chat-message-header')!).getByRole('status')).toHaveTextContent('处理已停止');
+    const process = screen.getByRole('button', { name: '处理过程' });
+    expect(process).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByText(/已处理/)).not.toBeInTheDocument();
-    fireEvent.click(header);
+    fireEvent.click(process);
     expect(screen.getByRole('button', { name: /思考 已停止/ })).toBeVisible();
     expect(screen.getByText('仍在推理中的部分内容')).toBeVisible();
     expect(container.querySelector('[data-motion-repeats="true"]')).toBeNull();
@@ -270,7 +275,7 @@ describe('ChatMessage trace migration', () => {
     const longQuestion = `请解释 ${'https://example.test/very-long-path/'.repeat(20)}`;
     const { container } = render(<>
       <ChatMessage message={message([{ type: 'text', text: longQuestion }], { role: 'user' })} onFollowUpSelect={vi.fn()} />
-      <ChatMessage message={message([{ type: 'text', text: 'AI 回答' }])} onFollowUpSelect={vi.fn()} />
+      <ChatMessage message={message([{ type: 'text', text: 'AI 回答' }], { metadata: { durationMs: 2_600 } })} onFollowUpSelect={vi.fn()} />
     </>);
     const userMessage = container.querySelector('[data-message-role="user"]')!;
     expect(userMessage).toHaveAttribute('data-message-id', 'assistant-1');
@@ -286,9 +291,14 @@ describe('ChatMessage trace migration', () => {
     expect(getComputedStyle(userBubble).overflowWrap).toBe('anywhere');
     expect(getComputedStyle(userBubble).textAlign).toBe('left');
     expect(userBubble).toHaveTextContent(longQuestion);
-    const assistant = container.querySelector('[data-message-role="assistant"]')!;
+    const assistant = container.querySelector<HTMLElement>('[data-message-role="assistant"]')!;
+    const assistantHeader = assistant.querySelector<HTMLElement>('.chat-message-header')!;
     expect(getComputedStyle(assistant).alignItems).toBe('flex-start');
-    expect(getComputedStyle(assistant.querySelector('.chat-message-header')!).justifyContent).toBe('flex-start');
+    expect(getComputedStyle(assistantHeader).justifyContent).toBe('flex-start');
+    expect(within(assistantHeader).getByRole('img', { name: '期末复习工作站' })).toBeVisible();
+    expect(within(assistantHeader).getByRole('status')).toHaveTextContent('已处理 3 秒');
+    expect(within(assistantHeader).queryByText('AI 助教')).not.toBeInTheDocument();
+    expect(assistantHeader.querySelector('.agent-trace-complete-mark')).toBeNull();
     expect(getComputedStyle(assistant.querySelector('.chat-message-content')!).alignItems).toBe('stretch');
     expect(getComputedStyle(assistant.querySelector('.chat-message-content')!).textAlign).toBe('left');
   });
@@ -306,7 +316,9 @@ describe('ChatMessage trace migration', () => {
     expect(container.querySelector('[data-message-id="assistant-1"]')).toBeInTheDocument();
     expect(screen.getAllByText('面向用户的最终回答')).toHaveLength(1);
     expect(screen.getAllByText('我先查教材')).toHaveLength(1);
-    for (const header of screen.getAllByRole('button', { name: '处理完成' })) {
+    expect(container.querySelector('.chat-message-header .agent-trace-complete-mark')).toBeNull();
+    expect(container.querySelector('.agent-trace-complete-mark')).toBeInTheDocument();
+    for (const header of screen.getAllByRole('button', { name: '处理过程' })) {
       fireEvent.click(header);
     }
     expect(screen.getAllByText('我先查教材')).toHaveLength(1);
@@ -413,7 +425,8 @@ describe('ChatMessage trace migration', () => {
     const msg = message([{ type: 'text', text: '准备查询' }, { type: 'tool-getSection', toolCallId: 'failed', state: 'output-error', input: {}, errorText: '查询失败' }]);
     const { container } = render(<ChatMessage message={msg} onFollowUpSelect={vi.fn()} />);
     expect(container.querySelector('.chat-bubble-assistant')).toBeNull();
-    fireEvent.click(screen.getByRole('button', { name: '处理结束，部分步骤未完成' }));
+    expect(within(container.querySelector('.chat-message-header')!).getByRole('status')).toHaveTextContent('处理结束，部分步骤未完成');
+    fireEvent.click(screen.getByRole('button', { name: '处理过程' }));
     expect(screen.getAllByText('准备查询')).toHaveLength(1);
     expect(screen.getByText('查询失败')).toBeVisible();
   });

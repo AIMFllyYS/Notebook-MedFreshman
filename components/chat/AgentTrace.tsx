@@ -15,6 +15,8 @@ export interface AgentTraceProps {
   trace: AgentTraceModel;
   isStreaming?: boolean;
   durationMs?: number;
+  /** 对话消息已有品牌状态头时，折叠入口只标识内部处理过程。 */
+  summaryMode?: 'status' | 'process';
 }
 
 function completedLabel(trace: AgentTraceModel, durationMs?: number): string {
@@ -30,7 +32,20 @@ function completedLabel(trace: AgentTraceModel, durationMs?: number): string {
   return '处理完成';
 }
 
-export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = false, durationMs }: AgentTraceProps) {
+export function agentProcessingLabel(
+  trace: AgentTraceModel,
+  isStreaming = false,
+  durationMs?: number,
+): string {
+  if (!isStreaming) return completedLabel(trace, durationMs);
+  const activeStep = trace.steps.findLast((step) => step.status === 'running');
+  if (activeStep) return '正在处理…';
+  if (trace.waitingCount) return '等待工具批准';
+  if (trace.steps.length === 0) return '正在思考…';
+  return '正在整理回答…';
+}
+
+export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = false, durationMs, summaryMode = 'status' }: AgentTraceProps) {
   const contentId = useId();
   const reducedMotion = useReducedMotion();
   const [expanded, setExpanded] = useProcessingDisclosure(isStreaming);
@@ -96,10 +111,9 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
     );
   }
 
-  const activeStep = trace.steps.findLast((step) => step.status === 'running');
-  const title = isStreaming
-    ? (activeStep ? '正在处理…' : trace.waitingCount ? '等待工具批准' : '正在整理回答…')
-    : completedLabel(trace, durationMs);
+  const title = summaryMode === 'process'
+    ? '处理过程'
+    : agentProcessingLabel(trace, isStreaming, durationMs);
 
   return (
     <section className={`agent-trace min-w-0 ${expanded ? 'mb-3' : 'mb-1'}`} aria-label="Agent 处理过程">

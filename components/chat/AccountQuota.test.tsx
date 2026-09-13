@@ -14,7 +14,18 @@ it('shows both pools and never labels the period as membership expiry', async ()
   await screen.findByText('Plus 会员');
   expect(screen.getByText('平台模型额度')).toBeTruthy();
   expect(screen.getByText('自备 API 辅助额度')).toBeTruthy();
+  expect(screen.getByRole('progressbar', { name: '平台模型剩余额度' })).toHaveAttribute('data-risk-level', 'ok');
   expect(screen.queryByText(/会员到期/)).toBeNull();
+});
+it('reuses the colored usage bar with reversed risk semantics for low remaining quota', async () => {
+  vi.mocked(fetchQuota).mockResolvedValue({
+    ...value('one'),
+    platform: { cap: 70, used: 65, remaining: 5 },
+  });
+  render(<AccountQuota />);
+  const progress = await screen.findByRole('progressbar', { name: '平台模型剩余额度' });
+  expect(progress).toHaveAttribute('aria-valuenow', '7');
+  expect(progress).toHaveAttribute('data-risk-level', 'limit');
 });
 it('discards a late old-account response and never turns errors into zero balance', async () => {
   let resolveOld!: (data: ReturnType<typeof value>) => void;

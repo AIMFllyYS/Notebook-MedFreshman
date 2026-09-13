@@ -26,6 +26,7 @@ import { useBillingStore } from '@/lib/hooks/useBillingStore';
 import { costCnyToUsd, summarizeSessionLedger } from '@/lib/billing/ledgerView';
 import { refreshBillingFromLedger } from '@/lib/billing/syncUsageLedger';
 import { AccountQuota } from '@/components/chat/AccountQuota';
+import { UsageProgressBar } from '@/components/chat/UsageProgressBar';
 import { ACCOUNT_USAGE_CHANGED, notifyAccountUsageChanged } from '@/lib/billing/quotaView';
 
 function fmtTokens(n: number): string {
@@ -379,17 +380,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                   {fmtTokens(ctxTokens)} / {fmtTokens(ctxLimit)} &nbsp;{pctText}
                 </span>
               </div>
-              <div style={{
-                height: 6, borderRadius: 3,
-                background: 'var(--bg-muted)', overflow: 'hidden',
-              }}>
-                <div style={{
-                  width: `${Math.min(ratio * 100, 100)}%`,
-                  height: '100%', borderRadius: 3,
-                  background: barColor,
-                  transition: 'width 0.3s ease, background 0.3s ease',
-                }} />
-              </div>
+              <UsageProgressBar ratio={ratio} ariaLabel="上下文使用比例" />
               {ringCaption && (
                 <div style={{ marginTop: 4, fontSize: 10, color: ringColor }}>{ringCaption}</div>
               )}
