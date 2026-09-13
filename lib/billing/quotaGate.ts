@@ -4,6 +4,7 @@
  */
 
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
+import { readQuotaPages } from "@/lib/billing/readQuotaPages";
 import type { UsagePool } from "@/lib/billing/usagePool";
 
 export const TIER_QUOTA_CNY = { free: 7, plus: 70, pro: 700 } as const;
@@ -228,23 +229,27 @@ function defaultStore(): QuotaStore {
     },
     async listGrants(userId) {
       const client = createServiceAuthClient();
+      return readQuotaPages<QuotaGrantRow>(async (from, to) => {
       const { data, error } = await client
         .from("quota_grants")
         .select("pool, tier, amount_cny, period_start, period_end")
-        .eq("user_id", userId);
+        .eq("user_id", userId).order("id").range(from, to);
       if (error) throw new Error(error.message);
       return (data ?? []) as QuotaGrantRow[];
+      });
     },
     async listLedger(userId, period) {
       const client = createServiceAuthClient();
+      return readQuotaPages<QuotaLedgerRow>(async (from, to) => {
       const { data, error } = await client
         .from("usage_ledger")
         .select("pool, kind, cost_cny, meta")
         .eq("user_id", userId)
         .gte("occurred_at", period.start.toISOString())
-        .lt("occurred_at", period.end.toISOString());
+        .lt("occurred_at", period.end.toISOString()).order("id").range(from, to);
       if (error) throw new Error(error.message);
       return (data ?? []) as QuotaLedgerRow[];
+      });
     },
   };
 }

@@ -102,3 +102,8 @@ test("normalizeEmail and isValidEmail", () => {
   assert.equal(isValidEmail("a@b.com"), true);
   assert.equal(isValidEmail("nope"), false);
 });
+
+test('OTP response without a session token is not reported as successful login', async () => {
+  const result = await verifyEmailOtp(mockClient({ session: {} }), 'ada@example.com', '123456');
+  assert.equal(result.ok, false);
+});

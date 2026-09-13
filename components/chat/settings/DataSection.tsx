@@ -1,4 +1,5 @@
 "use client";
+import { notifyAccountUsageChanged } from '@/lib/billing/quotaView';
 
 import { useState } from "react";
 import { Cloud, DollarSign, Download, Ticket } from "lucide-react";
@@ -57,6 +58,7 @@ export function RedemptionSection() {
                   return;
                 }
                 setOk(true);
+                notifyAccountUsageChanged();
                 setCode("");
                 setMessage(body?.tier ? `已兑换为 ${body.tier.toUpperCase()} 档` : "兑换成功");
               })

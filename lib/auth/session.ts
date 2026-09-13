@@ -57,17 +57,21 @@ export function snapshotAuthSession(user: unknown, session: unknown): AuthSessio
 /** Reads the persisted browser session (refresh / remount). */
 export async function readPersistedSession(
   client: AuthSessionClient,
+  accept: () => boolean = () => true,
 ): Promise<AuthSession | null> {
-  const { data } = await client.auth.getSession();
-  applySessionCookie(data.session);
+  const { data, error } = await client.auth.getSession();
+  if (error) throw new Error('登录会话暂时无法恢复，请稍后重试。');
+  if (accept()) applySessionCookie(data.session);
   return snapshotAuthSession(data.session?.user ?? null, data.session);
 }
 
 export function subscribeAuthSession(
   client: AuthSessionClient,
   onChange: (session: AuthSession | null) => void,
+  acceptEvent: (event: string) => boolean = () => true,
 ): () => void {
-  const { data } = client.auth.onAuthStateChange((_event, session) => {
+  const { data } = client.auth.onAuthStateChange((event, session) => {
+    if (!acceptEvent(event)) return;
     applySessionCookie(session);
     onChange(snapshotAuthSession(session?.user ?? null, session));
   });

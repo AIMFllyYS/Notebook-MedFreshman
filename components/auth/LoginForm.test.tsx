@@ -19,7 +19,7 @@ const verifyEmailOtpMock = vi.mocked(verifyEmailOtp);
 
 function mockClient(initial?: { id: string; email: string } | null): AuthRuntimeClient {
   let session = initial ? { user: initial } : null;
-  const listeners = new Set<(event: string, session: typeof session) => void>();
+  const listeners = new Set<(event: string, session: import("@/lib/auth/session").AuthSessionPayload | null) => void>();
   return {
     auth: {
       signInWithOtp: async () => ({ error: null }),

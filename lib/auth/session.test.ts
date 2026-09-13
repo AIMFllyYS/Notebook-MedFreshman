@@ -13,10 +13,10 @@ function mockSessionClient(opts: {
   session?: { user: { id: string; email?: string | null } } | null;
   signOutError?: string;
 }): AuthSessionClient & {
-  listeners: Set<(event: string, session: unknown) => void>;
+  listeners: Set<(event: string, session: import("./session").AuthSessionPayload | null) => void>;
 } {
   let session = opts.session ?? null;
-  const listeners = new Set<(event: string, session: unknown) => void>();
+  const listeners = new Set<(event: string, session: import("./session").AuthSessionPayload | null) => void>();
   return {
     listeners,
     auth: {

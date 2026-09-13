@@ -6,12 +6,12 @@ import { defaultAuthProcessEnv, resolveServiceAuthEnv, type ServiceAuthEnv } fro
  * Never import this from a Client Component.
  */
 export function createServiceAuthClient(
-  env?: NodeJS.ProcessEnv | ServiceAuthEnv,
+  env?: Partial<NodeJS.ProcessEnv> | ServiceAuthEnv,
 ): SupabaseClient {
-  const resolved =
-    env && "serviceRoleKey" in env && "supabaseUrl" in env
-      ? env
-      : resolveServiceAuthEnv(env ?? defaultAuthProcessEnv());
+  const resolved: ServiceAuthEnv =
+    env && "serviceRoleKey" in env && typeof env.serviceRoleKey === "string" && typeof env.supabaseUrl === "string"
+      ? { serviceRoleKey: env.serviceRoleKey, supabaseUrl: env.supabaseUrl, anonKey: env.anonKey ?? "" }
+      : resolveServiceAuthEnv((env ?? defaultAuthProcessEnv()) as Partial<NodeJS.ProcessEnv>);
   return createClient(resolved.supabaseUrl, resolved.serviceRoleKey, {
     auth: {
       persistSession: false,

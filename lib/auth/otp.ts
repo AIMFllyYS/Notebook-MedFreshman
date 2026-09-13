@@ -3,6 +3,8 @@
  * written to GoTrue via Management API (`mailer_otp_exp`, `smtp_max_frequency`).
  */
 
+import { sessionAccessToken } from './sessionCookie';
+
 export const EMAIL_OTP_EXPIRY_SECONDS = 600;
 export const EMAIL_OTP_RESEND_INTERVAL_SECONDS = 60;
 export const EMAIL_OTP_TYPE = "email" as const;
@@ -106,6 +108,9 @@ export async function verifyEmailOtp(
       code: authErrorCode(error.message, "invalid_token"),
       message: error.message,
     };
+  }
+  if (!sessionAccessToken(data.session)) {
+    return { ok: false, code: 'auth_error', message: '验证未返回有效登录凭证，请重新获取验证码后登录。' };
   }
   return { ok: true, email: normalized, user: data.user, session: data.session };
 }

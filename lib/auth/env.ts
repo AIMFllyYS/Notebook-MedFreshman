@@ -44,13 +44,13 @@ export function stripEnvValue(raw: string): string {
   return (hash >= 0 ? trimmed.slice(0, hash) : trimmed).trim();
 }
 
-function envText(env: NodeJS.ProcessEnv, key: string): string {
+function envText(env: Partial<NodeJS.ProcessEnv>, key: string): string {
   const raw = env[key];
   return raw == null ? "" : stripEnvValue(raw);
 }
 
-function definedEntries(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
-  const out: NodeJS.ProcessEnv = {};
+function definedEntries(env: Partial<NodeJS.ProcessEnv>): Partial<NodeJS.ProcessEnv> {
+  const out: Partial<NodeJS.ProcessEnv> = {};
   for (const [key, value] of Object.entries(env)) {
     if (typeof value === "string" && value !== "") out[key] = value;
   }
@@ -63,7 +63,7 @@ function definedEntries(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
  * 要么 `process` 根本不存在（抛错被 tryGetBrowserAuthClient 吞掉 → 登录页
  * 「Auth is not configured」）。这里的属性访问必须保持静态字面量。
  */
-export function inlinedPublicAuthEnv(): NodeJS.ProcessEnv {
+export function inlinedPublicAuthEnv(): Partial<NodeJS.ProcessEnv> {
   return {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -71,7 +71,7 @@ export function inlinedPublicAuthEnv(): NodeJS.ProcessEnv {
   };
 }
 
-function liveProcessEnv(): NodeJS.ProcessEnv | null {
+function liveProcessEnv(): Partial<NodeJS.ProcessEnv> | null {
   try {
     if (typeof process === "undefined") return null;
     return process.env ?? null;
@@ -81,7 +81,7 @@ function liveProcessEnv(): NodeJS.ProcessEnv | null {
 }
 
 /** 浏览器只用内联的 NEXT_PUBLIC_*；Node / 测试再叠上真实 process.env。 */
-export function defaultAuthProcessEnv(): NodeJS.ProcessEnv {
+export function defaultAuthProcessEnv(): Partial<NodeJS.ProcessEnv> {
   const inlined = definedEntries(inlinedPublicAuthEnv());
   const live = liveProcessEnv();
   return live ? { ...live, ...inlined } : inlined;
@@ -98,7 +98,7 @@ function requireSupabaseUrl(url: string): string {
   return url;
 }
 
-export function resolvePublicAuthEnv(env: NodeJS.ProcessEnv = defaultAuthProcessEnv()): PublicAuthEnv {
+export function resolvePublicAuthEnv(env: Partial<NodeJS.ProcessEnv> = defaultAuthProcessEnv()): PublicAuthEnv {
   const supabaseUrl = requireSupabaseUrl(
     trimUrl(
       env.NEXT_PUBLIC_SUPABASE_URL || env.SUPABASE_URL || DEFAULT_AUTH_SUPABASE_URL,
@@ -115,7 +115,7 @@ export function resolvePublicAuthEnv(env: NodeJS.ProcessEnv = defaultAuthProcess
   return { supabaseUrl, anonKey };
 }
 
-export function resolveServiceAuthEnv(env: NodeJS.ProcessEnv = defaultAuthProcessEnv()): ServiceAuthEnv {
+export function resolveServiceAuthEnv(env: Partial<NodeJS.ProcessEnv> = defaultAuthProcessEnv()): ServiceAuthEnv {
   const pub = resolvePublicAuthEnv(env);
   const serviceRoleKey =
     envText(env, "SUPABASE_SERVICE_ROLE_KEY") || envText(env, "SUPABASE_SECRET_KEY");
@@ -126,7 +126,7 @@ export function resolveServiceAuthEnv(env: NodeJS.ProcessEnv = defaultAuthProces
 }
 
 export function resolveManagementAuthEnv(
-  env: NodeJS.ProcessEnv = defaultAuthProcessEnv(),
+  env: Partial<NodeJS.ProcessEnv> = defaultAuthProcessEnv(),
 ): ManagementAuthEnv {
   const accessToken = envText(env, "SUPABASE_ACCESS_TOKEN");
   const projectRef =
@@ -139,7 +139,7 @@ export function resolveManagementAuthEnv(
   return { accessToken, projectRef };
 }
 
-export function resolveSmtpEnv(env: NodeJS.ProcessEnv = defaultAuthProcessEnv()): SmtpEnv {
+export function resolveSmtpEnv(env: Partial<NodeJS.ProcessEnv> = defaultAuthProcessEnv()): SmtpEnv {
   const host = envText(env, "ALIYUN_SMTP_HOST");
   const port = envText(env, "ALIYUN_SMTP_PORT") || "465";
   const user = envText(env, "ALIYUN_SMTP_USER");

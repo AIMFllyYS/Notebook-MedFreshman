@@ -137,7 +137,7 @@ async function cmdVerifyTrigger() {
     email,
   );
 
-  const leftover = await sql.query<{ n?: number }>(
+  const leftover = await sql.query<{ n?: number; auth_users?: number; app_users?: number; quota_grants?: number }>(
     `select
        (select count(*)::int from auth.users where id = '${proof.userId}') as auth_users,
        (select count(*)::int from public.app_users where id = '${proof.userId}') as app_users,
