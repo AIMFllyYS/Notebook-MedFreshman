@@ -13,6 +13,7 @@ interface TraceStepBase {
   status: TraceStatus;
   title: string;
   summary: string;
+  durationMs?: number;
 }
 
 export interface TraceTextStep extends TraceStepBase {
@@ -81,7 +82,12 @@ export function getTraceToolStatus(part: TraceToolPart, isStreaming: boolean): T
   return isStreaming ? 'running' : 'interrupted';
 }
 
-export function buildToolTraceStep(part: TraceToolPart, partIndex: number, isStreaming = false): TraceToolStep {
+export function buildToolTraceStep(
+  part: TraceToolPart,
+  partIndex: number,
+  isStreaming = false,
+  stepDurationsMs?: Readonly<Record<string, number>>,
+): TraceToolStep {
   const name = traceToolName(part);
   const status = getTraceToolStatus(part, isStreaming);
   const input = record(part.input);
@@ -119,14 +125,16 @@ export function buildToolTraceStep(part: TraceToolPart, partIndex: number, isStr
         : getTraceToolOutput(part));
   }
 
+  const id = `tool:${part.toolCallId}`;
   return {
-    id: `tool:${part.toolCallId}`,
+    id,
     partIndex,
     kind: 'tool',
     status,
     name,
     title: getToolPresentation(name)?.label ?? part.title ?? name,
     summary: preview(summary),
+    durationMs: stepDurationsMs?.[id],
     part,
   };
 }
@@ -151,16 +159,19 @@ function pushTextStep(
   streaming: boolean,
   isStreaming: boolean,
   suffix = '',
+  stepDurationsMs?: Readonly<Record<string, number>>,
 ): TraceTextStep | undefined {
   if (!text.trim() && !streaming) return undefined;
+  const id = `${kind}:${partIndex}${suffix}`;
   const step: TraceTextStep = {
-    id: `${kind}:${partIndex}${suffix}`,
+    id,
     kind,
     partIndex,
     text,
     status: streaming ? (isStreaming ? 'running' : 'interrupted') : 'complete',
     title: kind === 'reasoning' ? '思考' : '进展说明',
     summary: preview(text) || '正在思考…',
+    durationMs: stepDurationsMs?.[id],
   };
   steps.push(step);
   return step;
@@ -174,13 +185,18 @@ function pushTextStep(
  * A later streamed tool can move a provisional two-bucket answer into the trace, but
  * it is never rendered in both places in the same snapshot.
  */
-export function buildTrace(message: Pick<ChatMessage, 'parts'>, isStreaming = false): AgentTraceModel {
+export function buildTrace(message: Pick<ChatMessage, 'parts'> & Partial<Pick<ChatMessage, 'metadata'>>, isStreaming = false): AgentTraceModel {
+  const stepDurationsMs = message.metadata?.stepDurationsMs;
   return hasStepStart(message.parts)
-    ? buildTimelineTrace(message.parts, isStreaming)
-    : buildBucketTrace(message.parts, isStreaming);
+    ? buildTimelineTrace(message.parts, isStreaming, stepDurationsMs)
+    : buildBucketTrace(message.parts, isStreaming, stepDurationsMs);
 }
 
-function buildBucketTrace(parts: readonly ChatMessagePart[], isStreaming: boolean): AgentTraceModel {
+function buildBucketTrace(
+  parts: readonly ChatMessagePart[],
+  isStreaming: boolean,
+  stepDurationsMs?: Readonly<Record<string, number>>,
+): AgentTraceModel {
   const steps: TraceStep[] = [];
   const answer: string[] = [];
   let lastToolIndex = -1;
@@ -193,16 +209,16 @@ function buildBucketTrace(parts: readonly ChatMessagePart[], isStreaming: boolea
 
   parts.forEach((part, partIndex) => {
     if (isTraceToolPart(part)) {
-      steps.push(buildToolTraceStep(part, partIndex, isStreaming));
+      steps.push(buildToolTraceStep(part, partIndex, isStreaming, stepDurationsMs));
     } else if (part.type === 'reasoning') {
-      pushTextStep(steps, 'reasoning', part.text, partIndex, part.state === 'streaming', isStreaming);
+      pushTextStep(steps, 'reasoning', part.text, partIndex, part.state === 'streaming', isStreaming, '', stepDurationsMs);
     } else if (part.type === 'text') {
       const split = splitThinkContent(part.text);
       if (split.reasoning) {
-        pushTextStep(steps, 'reasoning', split.reasoning, partIndex, part.state === 'streaming' && !split.content.trim(), isStreaming, ':think');
+        pushTextStep(steps, 'reasoning', split.reasoning, partIndex, part.state === 'streaming' && !split.content.trim(), isStreaming, ':think', stepDurationsMs);
       }
       if (partIndex <= lastToolIndex) {
-        pushTextStep(steps, 'text', split.content, partIndex, part.state === 'streaming', isStreaming);
+        pushTextStep(steps, 'text', split.content, partIndex, part.state === 'streaming', isStreaming, '', stepDurationsMs);
       } else if (split.content.trim()) {
         answer.push(split.content);
       }
@@ -216,7 +232,11 @@ function buildBucketTrace(parts: readonly ChatMessagePart[], isStreaming: boolea
   return summarizeTrace(steps, answerText, blocks);
 }
 
-function buildTimelineTrace(parts: readonly ChatMessagePart[], isStreaming: boolean): AgentTraceModel {
+function buildTimelineTrace(
+  parts: readonly ChatMessagePart[],
+  isStreaming: boolean,
+  stepDurationsMs?: Readonly<Record<string, number>>,
+): AgentTraceModel {
   const steps: TraceStep[] = [];
   const answer: string[] = [];
   const blocks: TraceRenderBlock[] = [];
@@ -240,11 +260,11 @@ function buildTimelineTrace(parts: readonly ChatMessagePart[], isStreaming: bool
       return;
     }
     if (isTraceToolPart(part)) {
-      addStep(buildToolTraceStep(part, partIndex, isStreaming));
+      addStep(buildToolTraceStep(part, partIndex, isStreaming, stepDurationsMs));
       return;
     }
     if (part.type === 'reasoning') {
-      const step = pushTextStep(steps, 'reasoning', part.text, partIndex, part.state === 'streaming', isStreaming);
+      const step = pushTextStep(steps, 'reasoning', part.text, partIndex, part.state === 'streaming', isStreaming, '', stepDurationsMs);
       if (step) currentSteps.push(step);
       return;
     }
@@ -260,6 +280,7 @@ function buildTimelineTrace(parts: readonly ChatMessagePart[], isStreaming: bool
         part.state === 'streaming' && !split.content.trim(),
         isStreaming,
         ':think',
+        stepDurationsMs,
       );
       if (step) currentSteps.push(step);
     }

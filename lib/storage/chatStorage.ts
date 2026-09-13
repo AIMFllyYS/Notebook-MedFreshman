@@ -121,6 +121,12 @@ export async function saveBlobFromDataUrl(blobId: string, dataUrl: string): Prom
   if (!ok) throw new Error(`Failed to save chat blob: ${blobId}`);
 }
 
+function inlineAttachmentPayload(attachment: ChatAttachment): string | null {
+  if (attachment.type === 'image') return attachment.base64 || null;
+  if (attachment.type === 'document') return attachment.text;
+  return attachment.dataUrl || null;
+}
+
 export async function deleteSessionData(sessionId: string, blobIds: string[] = []): Promise<void> {
   if (!isBrowser()) return;
   await idbStorage.removeItem(chatSessionKey(sessionId));
@@ -155,10 +161,15 @@ async function migrateAttachmentsInMessages(messages: ChatMessage[]): Promise<Ch
     }
     const attachments = [];
     for (const a of m.attachments) {
-      if ('base64' in a && a.base64) {
+      const payload = 'id' in a ? null : inlineAttachmentPayload(a);
+      if (payload != null) {
         const id: string = `blob-${m.id}-${attachments.length}-${Date.now()}`;
-        await saveBlobFromDataUrl(id, a.base64);
-        attachments.push({ id, type: 'image' as const, mimeType: a.mimeType, name: undefined });
+        await saveBlobFromDataUrl(id, payload);
+        attachments.push({
+          id, type: a.type, mimeType: a.mimeType,
+          name: a.name, size: a.size,
+          ...('characterCount' in a ? { characterCount: a.characterCount } : {}),
+        });
       } else {
         attachments.push(a);
       }
@@ -242,15 +253,24 @@ export async function hydrateAttachmentsForApi(messages: ChatMessage[]): Promise
     }
     const attachments: ChatAttachment[] = [];
     for (const a of m.attachments) {
-      if ('base64' in a && a.base64) {
+      if (!('id' in a)) {
         attachments.push(a as ChatAttachment);
       } else if ('id' in a) {
-        const dataUrl = await loadBlobDataUrl((a as { id: string }).id);
-        if (dataUrl) {
-          attachments.push({
-            type: 'image',
-            mimeType: a.mimeType,
-            base64: dataUrl,
+        const payload = await loadBlobDataUrl((a as { id: string }).id);
+        if (payload) {
+          attachments.push(a.type === 'document' ? {
+            type: 'document',
+            mimeType: a.mimeType as Extract<ChatAttachment, { type: 'document' }>['mimeType'],
+            name: a.name ?? '未命名文档.txt',
+            text: payload,
+            size: a.size ?? new Blob([payload]).size,
+            characterCount: a.characterCount ?? [...payload].length,
+          } : a.type === 'local-file' ? {
+            type: 'local-file', mimeType: a.mimeType as Extract<ChatAttachment, { type: 'local-file' }>['mimeType'], dataUrl: payload,
+            name: a.name ?? '未命名本地文件', size: a.size ?? 0,
+          } : {
+            type: 'image', mimeType: a.mimeType, base64: payload,
+            name: a.name, size: a.size,
           });
         }
       }
@@ -264,10 +284,19 @@ export function persistInlineAttachments(message: ChatMessage): ChatMessage {
   if (!message.attachments?.length) return message;
   const attachments: StoredChatAttachment[] = [];
   for (const a of message.attachments) {
-    if ('base64' in a && a.base64) {
+    if (!('id' in a)) {
+      const payload = inlineAttachmentPayload(a);
+      if (payload == null) {
+        attachments.push(a);
+        continue;
+      }
       const id = `blob-${message.id}-${attachments.length}`;
-      void saveBlobFromDataUrl(id, a.base64);
-      attachments.push({ id, type: 'image', mimeType: a.mimeType });
+      void saveBlobFromDataUrl(id, payload);
+      attachments.push({
+        id, type: a.type, mimeType: a.mimeType,
+        name: a.name, size: a.size,
+        ...('characterCount' in a ? { characterCount: a.characterCount } : {}),
+      });
     } else {
       attachments.push(a);
     }

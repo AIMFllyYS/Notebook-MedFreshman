@@ -48,6 +48,11 @@ export interface StudyMessageMetadata {
   usage?: UsageSummary;
   /** 从发送到流结束的耗时，供思考链头部展示「已思考 N 秒」。 */
   durationMs?: number;
+  /**
+   * 客户端实际观察到的各推理/工具步骤耗时，key 与 buildTrace 的 step id 一致。
+   * 旧消息没有这份数据时 UI 不显示步骤耗时，不使用总耗时反推。
+   */
+  stepDurationsMs?: Record<string, number>;
   /** 本轮生成结束原因。步数触顶时为 tool-calls。 */
   finishReason?: FinishReason;
 }
@@ -80,19 +85,67 @@ export interface ContextBreakdown {
   warning?: string;
 }
 
-export interface ChatAttachment {
+export interface ChatImageAttachment {
   type: 'image';
   mimeType: string;
   /** data:image/png;base64,... 完整 data-url */
   base64: string;
+  name?: string;
+  size?: number;
 }
+
+/**
+ * 对话文档的规范 MIME。源代码与没有专用 MIME 的配置文件统一使用
+ * text/plain；真正允许进入文本读取链路的范围仍由扩展名白名单控制。
+ */
+export type ChatDocumentMimeType =
+  | 'text/plain'
+  | 'text/markdown'
+  | 'text/html'
+  | 'text/csv'
+  | 'text/tab-separated-values'
+  | 'text/css'
+  | 'text/javascript'
+  | 'text/typescript'
+  | 'application/json'
+  | 'application/x-ndjson'
+  | 'application/xml'
+  | 'application/yaml'
+  | 'application/sql'
+  | 'application/toml'
+  | 'application/x-sh'
+  | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+export interface ChatDocumentAttachment {
+  type: 'document';
+  mimeType: ChatDocumentMimeType;
+  name: string;
+  /** 已验证并提取出的 UTF-8 正文；DOCX 同样在进入附件列表前完成提取。 */
+  text: string;
+  size: number;
+  characterCount: number;
+}
+
+/** 仅保存在本机、不会进入 AI 请求正文的原始文件。目前用于 PDF 本地预览。 */
+export interface ChatLocalFileAttachment {
+  type: 'local-file';
+  mimeType: 'application/pdf' | 'application/vnd.ms-powerpoint' | 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+  /** 浏览器本地读取的 data URL；持久化后正文移入 IndexedDB blob 槽。 */
+  dataUrl: string;
+  name: string;
+  size: number;
+}
+
+export type ChatAttachment = ChatImageAttachment | ChatDocumentAttachment | ChatLocalFileAttachment;
 
 /** Storage v2：附件正文存 chat-blob:{id}，消息内仅保留引用。 */
 export interface ChatAttachmentRef {
-  type: 'image';
+  type: ChatAttachment['type'];
   mimeType: string;
   id: string;
   name?: string;
+  size?: number;
+  characterCount?: number;
 }
 
 export type StoredChatAttachment = ChatAttachment | ChatAttachmentRef;

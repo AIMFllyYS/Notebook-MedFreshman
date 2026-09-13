@@ -8,6 +8,10 @@ import { AgentTrace } from '@/components/chat/AgentTrace';
 /** Compatibility entry point; new message rendering uses AgentTrace directly. */
 export default function ProcessingSteps({ msg, streaming = false }: { msg: ChatMessage; streaming?: boolean }) {
   const parts = msg.parts;
-  const trace = useMemo(() => buildTrace({ parts }, streaming), [parts, streaming]);
+  const stepDurationsMs = msg.metadata?.stepDurationsMs;
+  const trace = useMemo(
+    () => buildTrace({ parts, metadata: stepDurationsMs ? { stepDurationsMs } : undefined }, streaming),
+    [parts, stepDurationsMs, streaming],
+  );
   return <AgentTrace trace={trace} isStreaming={streaming} durationMs={msg.metadata?.durationMs} />;
 }

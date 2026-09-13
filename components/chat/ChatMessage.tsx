@@ -2,11 +2,12 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
-import { AgentLoopIcon, AgentUserIcon } from '@/components/icons/AgentIcons';
+import { AgentUserIcon } from '@/components/icons/AgentIcons';
+import BrandLogo from '@/components/layout/BrandLogo';
 import type { ChatMessage as ChatMessageType } from '@/lib/types/chat';
 import { MessageContent } from '@/components/chat/MessageContent';
 import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
-import { AgentTrace, TRACE_COLLAPSE_MS } from '@/components/chat/AgentTrace';
+import { AgentTrace, TRACE_COLLAPSE_MS, agentProcessingLabel } from '@/components/chat/AgentTrace';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { openMessageMenu } from '@/lib/hooks/useContextMenu';
 import { buildTrace, type AgentTraceModel, type TraceStep } from '@/lib/chat/buildTrace';
@@ -40,6 +41,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
   const isStreaming = requestStreaming && !message.parts.some((part) => part.type === 'data-answer-complete');
   const isUser = message.role === 'user';
   const parts = message.parts;
+  const stepDurationsMs = message.metadata?.stepDurationsMs;
   const reducedMotion = useReducedMotion();
   const streaming = !!isStreaming;
   const [revealFollowups, setRevealFollowups] = useState(!streaming);
@@ -64,7 +66,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
     const timer = window.setTimeout(() => setRevealFollowups(true), TRACE_COLLAPSE_MS);
     return () => window.clearTimeout(timer);
   }, [revealNonce]);
-  const trace = useMemo(() => buildTrace({ parts }, !!isStreaming), [parts, isStreaming]);
+  const trace = useMemo(
+    () => buildTrace({ parts, metadata: stepDurationsMs ? { stepDurationsMs } : undefined }, !!isStreaming),
+    [parts, stepDurationsMs, isStreaming],
+  );
   const userText = useMemo(() => isUser ? getMessageText({ parts }) : '', [isUser, parts]);
   const followUpQuestions = useMemo(() => {
     if (message.followUpQuestions?.length) return message.followUpQuestions;
@@ -75,13 +80,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
 
   const traceSources = useMemo(() => isUser ? [] : collectMessageSources(parts), [isUser, parts]);
 
-  const lastTraceIndex = useMemo(() => {
-    for (let index = trace.blocks.length - 1; index >= 0; index--) {
-      if (trace.blocks[index].kind === 'trace') return index;
-    }
-    return -1;
-  }, [trace.blocks]);
-
   return (
     <div className={`chat-message ${isUser ? 'user' : 'assistant'}`} data-message-role={message.role} data-message-id={message.id}>
       <div className="chat-message-header">
@@ -91,9 +89,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
             <AgentUserIcon size={16} />
           </span>
         ) : (
-          <span className="chat-message-header-left">
-            <AgentLoopIcon size={18} />
-            <span className="chat-message-header-name">AI 助教</span>
+          <span className="chat-message-header-left chat-message-assistant-status" aria-label="AI 回复状态">
+            <BrandLogo size={20} />
+            <span className="chat-message-assistant-status-text" role="status" aria-live="polite">
+              {agentProcessingLabel(trace, !!isStreaming, message.metadata?.durationMs)}
+            </span>
             {message.metadata?.thinkingEnabled ? <span className="sr-only">已启用深度思考</span> : null}
             {message.metadata?.searchEnabled ? <span className="sr-only">已启用联网搜索</span> : null}
           </span>
@@ -116,9 +116,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
           </>
         ) : (
           <>
-            {trace.blocks.length === 0 && isStreaming ? (
-              <AgentTrace trace={trace} isStreaming durationMs={message.metadata?.durationMs} />
-            ) : null}
             {trace.blocks.map((block, index) => {
               if (block.kind === 'trace') {
                 return (
@@ -126,7 +123,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                     key={block.steps[0]?.id ?? `trace:${index}`}
                     trace={traceFromSteps(block.steps)}
                     isStreaming={isStreaming}
-                    durationMs={index === lastTraceIndex ? message.metadata?.durationMs : undefined}
+                    summaryMode="process"
                   />
                 );
               }

@@ -9,6 +9,7 @@ import type { ChatContext, ChatAttachment } from '@/lib/types/chat';
 import { useChatUI } from '@/lib/hooks/useChatUI';
 import { useSettings, type ThinkingEffort } from '@/lib/hooks/useSettings';
 import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
+import { ACCEPTED_DOCUMENT_FILE_TYPES } from '@/lib/ai/imageUtils';
 import { useKeyboardSettings } from '@/lib/keyboard/useKeyboardSettings';
 import {
   getModelInfoWithCustom,
@@ -54,6 +55,14 @@ export interface ChatInputProps {
 }
 
 export const MAX_INPUT_CHARACTERS = 50_000;
+
+type QueuedMessage = {
+  id: string;
+  content: string;
+  quotedText?: string;
+  attachments?: ChatAttachment[];
+};
+
 function countCharacters(text: string) {
   // Count Unicode code points without allocating a second large array.
   let count = 0;
@@ -63,6 +72,9 @@ function countCharacters(text: string) {
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice }) => {
   const [input, setInput] = useState('');
+  const [queuedMessages, setQueuedMessages] = useState<QueuedMessage[]>([]);
+  const [editingQueuedId, setEditingQueuedId] = useState<string | null>(null);
+  const queueAwaitingLoadingRef = useRef(false);
   const countId = useId();
   const characterCount = useMemo(() => countCharacters(input), [input]);
   const overLimit = characterCount > MAX_INPUT_CHARACTERS;
@@ -111,6 +123,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     handleDragLeave,
     isDragging,
     error: attachError,
+    info: attachInfo,
   } = useImageAttachments();
 
   useEffect(() => {
@@ -142,22 +155,73 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     };
   }, [onComposerInsetChange]);
 
-  const handleSend = useCallback(() => {
-    if (overLimit) { setShowLimitDialog(true); return; }
-    const trimmed = input.trim();
-    if ((!trimmed && attachments.length === 0) || isLoading || externalDisabled) return;
-
-    onSend(trimmed || '请描述这张图片', {
-      quotedText: effectiveQuote || undefined,
+  const dispatchMessage = useCallback((message: QueuedMessage) => {
+    onSend(message.content, {
+      quotedText: message.quotedText,
       enableThinking: effectiveEnableThinking,
       thinkingEffort: effectiveThinkingEffort,
       enableSearch,
-      attachments: toChatFormat(),
+      attachments: message.attachments,
     });
+  }, [onSend, effectiveEnableThinking, effectiveThinkingEffort, enableSearch]);
+
+  const clearDraft = useCallback(() => {
     setInput('');
     clearAttachments();
     if (effectiveQuote) clearQuotedText();
-  }, [input, overLimit, attachments, isLoading, externalDisabled, onSend, effectiveEnableThinking, effectiveThinkingEffort, enableSearch, effectiveQuote, clearQuotedText, toChatFormat, clearAttachments]);
+  }, [clearAttachments, effectiveQuote, clearQuotedText]);
+
+  const handleSend = useCallback(() => {
+    if (overLimit) { setShowLimitDialog(true); return; }
+    const trimmed = input.trim();
+    if ((!trimmed && attachments.length === 0) || externalDisabled) return;
+
+    const message: QueuedMessage = {
+      id: crypto.randomUUID(),
+      content: trimmed || '请阅读并分析附件',
+      quotedText: effectiveQuote || undefined,
+      attachments: toChatFormat(),
+    };
+    if (isLoading) {
+      if (editingQueuedId) {
+        setQueuedMessages((items) => items.map((item) => item.id === editingQueuedId ? { ...item, content: message.content } : item));
+        setEditingQueuedId(null);
+      } else {
+        setQueuedMessages((items) => [...items, message]);
+      }
+    } else {
+      dispatchMessage(message);
+    }
+    clearDraft();
+  }, [input, overLimit, attachments, isLoading, externalDisabled, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft]);
+
+  useEffect(() => {
+    if (isLoading) {
+      // 下一轮生成已经开始，允许在它结束后继续发送队列中的下一条。
+      queueAwaitingLoadingRef.current = false;
+      return;
+    }
+    if (externalDisabled || queuedMessages.length === 0) return;
+    // onSend 通常会让父级立即进入 loading；即使父级更新稍有延迟，也不能
+    // 在同一轮 effect 中把多条排队消息一次性发出。
+    if (queueAwaitingLoadingRef.current) return;
+    const next = queuedMessages[0];
+    queueAwaitingLoadingRef.current = true;
+    setQueuedMessages((items) => items[0]?.id === next.id ? items.slice(1) : items);
+    setEditingQueuedId((current) => current === next.id ? null : current);
+    dispatchMessage(next);
+  }, [dispatchMessage, externalDisabled, isLoading, queuedMessages]);
+
+  const editQueuedMessage = useCallback((message: QueuedMessage) => {
+    setInput(message.content);
+    setEditingQueuedId(message.id);
+    textareaRef.current?.focus();
+  }, []);
+
+  const cancelQueuedMessage = useCallback((id: string) => {
+    setQueuedMessages((items) => items.filter((item) => item.id !== id));
+    setEditingQueuedId((current) => current === id ? null : current);
+  }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (composingRef.current || e.nativeEvent.isComposing || e.keyCode === 229) return;
@@ -179,8 +243,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     e.target.value = '';
   };
 
-  const inputDisabled = isLoading || !!externalDisabled;
+  const inputDisabled = !!externalDisabled;
   const sendDisabled = !!externalDisabled || (!isLoading && (overLimit || (!input.trim() && attachments.length === 0)));
+  const showStopButton = isLoading && !input.trim() && attachments.length === 0;
   const thinkingProps = {
     enabled: effectiveEnableThinking, effort: displayEffort, supported: thinkingSupported,
     disabled: inputDisabled, levels: thinkingLevels, allowOff: thinkingAllowOff,
@@ -213,9 +278,25 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           {attachError}
         </div>
       )}
+      {attachInfo ? <div className="chat-attachment-notice" role="status">{attachInfo}</div> : null}
 
-      {attachments.length > 0 && (
-        <AttachmentThumbnails previews={attachments} onRemove={removeAttachment} />
+      {queuedMessages.length > 0 && (
+        <div className="chat-input-queue" role="region" aria-label="等待发送">
+          <div className="chat-input-queue-heading">
+            <span className="chat-input-queue-label"><span className="chat-input-queue-pulse" />等待发送</span>
+            <span className="chat-input-queue-count">{queuedMessages.length} 条</span>
+          </div>
+          <div className="chat-input-queue-list">
+            {queuedMessages.map((message, index) => (
+              <div className="chat-input-queue-item" key={message.id}>
+                <span className="chat-input-queue-index">{index + 1}</span>
+                <span className="chat-input-queue-text" title={message.content}>{message.content}</span>
+                <button type="button" className="chat-input-queue-action" onClick={() => editQueuedMessage(message)} aria-label={`编辑第 ${index + 1} 条排队内容`}>编辑</button>
+                <button type="button" className="chat-input-queue-action chat-input-queue-action-muted" onClick={() => cancelQueuedMessage(message.id)} aria-label={`取消第 ${index + 1} 条排队内容`}>取消</button>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
 
       {effectiveQuote && (
@@ -292,6 +373,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       </div>
 
       <div className={`chat-input-row ${isFocused ? 'chat-input-row-focused' : ''} ${showCharacterCount ? 'chat-input-row-with-count' : ''}`}>
+        {attachments.length > 0 ? (
+          <AttachmentThumbnails previews={attachments} onRemove={removeAttachment} embedded />
+        ) : null}
+        <div className="chat-input-editor-row">
         <textarea
           ref={textareaRef}
           value={input}
@@ -312,7 +397,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           onPaste={handlePaste}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder={externalDisabled ? (disabledReason || '输入已禁用') : isLoading ? 'AI 正在思考中...' : '输入问题，Shift+Enter换行，Ctrl+V粘贴图片...'}
+          placeholder={externalDisabled ? (disabledReason || '输入已禁用') : isLoading ? '继续输入，发送后将排队…' : '输入问题，或粘贴 / 拖入图片与文档...'}
           disabled={inputDisabled}
           rows={1}
           className="chat-input-textarea"
@@ -321,7 +406,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/gif,image/webp"
+          accept={`image/jpeg,image/png,image/gif,image/webp,${ACCEPTED_DOCUMENT_FILE_TYPES}`}
           multiple
           style={{ display: 'none' }}
           onChange={handleFileChange}
@@ -343,24 +428,26 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
             cursor: inputDisabled ? 'not-allowed' : 'pointer',
             opacity: inputDisabled ? 0.4 : 1,
           }}
-          title="上传图片附件"
+          title="上传图片或文档"
+          aria-label="上传图片或文档"
         >
           <AgentPaperclipIcon size={14} />
         </button>
 
         <button
-          onClick={isLoading ? onStop : handleSend}
+          onClick={showStopButton ? onStop : handleSend}
           disabled={sendDisabled}
           className="chat-input-send"
           style={{
-            background: isLoading ? 'var(--md-sys-color-error-container)' : ((!input.trim() && attachments.length === 0) ? 'var(--md-sys-color-outline-variant)' : 'var(--md-sys-color-primary)'),
-            color: isLoading ? 'var(--md-sys-color-on-error-container)' : ((!input.trim() && attachments.length === 0) ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary)'),
+            background: showStopButton ? 'var(--md-sys-color-error-container)' : ((!input.trim() && attachments.length === 0) ? 'var(--md-sys-color-outline-variant)' : 'var(--md-sys-color-primary)'),
+            color: showStopButton ? 'var(--md-sys-color-on-error-container)' : ((!input.trim() && attachments.length === 0) ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary)'),
             cursor: sendDisabled ? 'not-allowed' : 'pointer',
           }}
-          title={isLoading ? '停止生成' : '发送'}
+          title={showStopButton ? '停止生成' : '发送'}
         >
-          {isLoading ? <AgentStopIcon size={14} /> : <AgentArrowUpIcon size={14} />}
+          {showStopButton ? <AgentStopIcon size={14} /> : <AgentArrowUpIcon size={14} />}
         </button>
+        </div>
       </div>
       {showLimitDialog && <InputLimitDialog count={characterCount} limit={MAX_INPUT_CHARACTERS} onClose={() => setShowLimitDialog(false)} />}
     </div>

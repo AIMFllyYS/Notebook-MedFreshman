@@ -9,7 +9,7 @@ import {
 } from "./types";
 
 const MEDIA_DATA_URL_RE = /data:(?:image|audio|video)\/[a-z0-9.+-]+;base64,[a-z0-9+/=\s]+/gi;
-const STRIP_KEYS = new Set(["base64", "apikey", "api_key"]);
+const STRIP_KEYS = new Set(["base64", "dataurl", "apikey", "api_key"]);
 
 export function utf8ByteLength(text: string): number {
   return new TextEncoder().encode(text).length;
@@ -63,7 +63,9 @@ export function payloadLooksUnsafe(payload: unknown): boolean {
 function stripAttachment(a: StoredChatAttachment): StoredChatAttachment {
   const id = "id" in a && typeof a.id === "string" && a.id ? a.id : `unsynced-${a.mimeType}`;
   const name = "name" in a && typeof a.name === "string" ? a.name : undefined;
-  return { id, type: "image", mimeType: a.mimeType, name };
+  const size = "size" in a && typeof a.size === "number" ? a.size : undefined;
+  const characterCount = "characterCount" in a && typeof a.characterCount === "number" ? a.characterCount : undefined;
+  return { id, type: a.type, mimeType: a.mimeType, name, size, characterCount };
 }
 
 export function sanitizeChatMessages(messages: ChatMessage[]): ChatMessage[] {

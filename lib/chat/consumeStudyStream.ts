@@ -82,6 +82,23 @@ function readBreakdown(value: unknown): ContextBreakdown | undefined {
   };
 }
 
+function traceTimingKeys(part: ChatMessagePart, partIndex: number): string[] {
+  if (isToolUIPart(part)) return [`tool:${part.toolCallId}`];
+  if (part.type === 'reasoning') return [`reasoning:${partIndex}`];
+  // Legacy providers can stream <think> inside a text part. Recording both stable
+  // projections lets buildTrace select the one it actually renders without guessing.
+  if (part.type === 'text') return [`text:${partIndex}`, `reasoning:${partIndex}:think`];
+  return [];
+}
+
+function traceTimingComplete(part: ChatMessagePart): boolean {
+  if (part.type === 'reasoning' || part.type === 'text') return part.state !== 'streaming';
+  if (!isToolUIPart(part)) return false;
+  if (part.state === 'output-available') return !part.preliminary;
+  if (part.state === 'output-error' || part.state === 'output-denied') return true;
+  return part.state === 'approval-responded' && !part.approval.approved;
+}
+
 export interface ConsumeStudyStreamOptions {
   stream: ReadableStream<UIMessageChunk>;
   message: ChatMessage;
@@ -109,6 +126,20 @@ export async function consumeStudyStream({
   let finishReason: FinishReason | undefined;
   let questions = message.followUpQuestions;
   const startedAt = Date.now();
+  const stepStartedAt = new Map<string, number>();
+  const completedStepTimings = new Set<string>();
+  const stepDurationsMs: Record<string, number> = { ...(message.metadata?.stepDurationsMs ?? {}) };
+  const observeStepDurations = (parts: readonly ChatMessagePart[], now: number, finalize = false) => {
+    parts.forEach((part, partIndex) => {
+      for (const key of traceTimingKeys(part, partIndex)) {
+        if (completedStepTimings.has(key)) continue;
+        const firstSeenAt = stepStartedAt.get(key) ?? now;
+        if (!stepStartedAt.has(key)) stepStartedAt.set(key, firstSeenAt);
+        stepDurationsMs[key] = Math.max(stepDurationsMs[key] ?? 0, now - firstSeenAt);
+        if (finalize || traceTimingComplete(part)) completedStepTimings.add(key);
+      }
+    });
+  };
   const stop = (reason: unknown) => {
     if (stopped) return;
     stopped = true;
@@ -174,10 +205,15 @@ export async function consumeStudyStream({
       message: structuredClone(message), stream: input, terminateOnError: true,
       onError(error) { failure ??= error; stop(error); },
     })) {
+      observeStepDurations(snapshot.parts, Date.now());
       latest = {
         ...snapshot,
         // 服务端 start 的 id 不得替换本地占位的主键。
         id: message.id, followUpQuestions: questions,
+        metadata: {
+          ...snapshot.metadata,
+          ...(Object.keys(stepDurationsMs).length ? { stepDurationsMs: { ...stepDurationsMs } } : {}),
+        },
       };
       onMessage(latest);
     }
@@ -194,12 +230,14 @@ export async function consumeStudyStream({
     const wasAborted = abortSignal?.aborted === true || objectValue(failure)?.name === 'AbortError';
     const endedNormally = completed && failure == null && !wasAborted;
     finishReason = finishReason ?? readFinishReason(latest.metadata?.finishReason);
+    observeStepDurations(latest.parts, Date.now(), true);
     latest = {
       ...latest, followUpQuestions: questions,
       metadata: {
         ...latest.metadata,
         ...(usage ? { usage } : {}),
         durationMs: latest.metadata?.durationMs ?? Date.now() - startedAt,
+        ...(Object.keys(stepDurationsMs).length ? { stepDurationsMs: { ...stepDurationsMs } } : {}),
         ...(finishReason ? { finishReason } : {}),
       },
       parts: latest.parts.map((part) => {

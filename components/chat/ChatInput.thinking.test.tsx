@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest';
-import { render, act, fireEvent } from '@testing-library/react';
+import { render, act, fireEvent, screen, waitFor } from '@testing-library/react';
 import ChatInput from './ChatInput';
 import { useSettings } from '@/lib/hooks/useSettings';
 
@@ -57,7 +57,7 @@ describe('ChatInput thinking menu', () => {
     const { container, getByTitle, getByRole, getByTestId, rerender } = render(<ChatInput {...props} />);
     expect(getByTestId('thinking-menu-button')).not.toBeDisabled();
     expect(getByTitle('发送').querySelector('[data-agent-icon="arrow-up"]')).not.toBeNull();
-    expect(getByTitle('上传图片附件').querySelector('[data-agent-icon="paperclip"]')).not.toBeNull();
+    expect(getByTitle('上传图片或文档').querySelector('[data-agent-icon="paperclip"]')).not.toBeNull();
     expect(getByTitle('联网搜索（需配置搜索API）').querySelector('[data-agent-icon="globe"]')).not.toBeNull();
     fireEvent.change(getByRole('textbox'), { target: { value: '解释这一页' } });
     fireEvent.keyDown(getByRole('textbox'), { key: 'Enter' });
@@ -104,6 +104,31 @@ describe('ChatInput thinking menu', () => {
     expect(btn.textContent).toContain('深度思考·High');
   });
 
+  it.each([
+    ['DeepSeek V4.1 Flash', 'deepseek/deepseek-v4.1-flash'],
+    ['Qwen3.7 Flash', 'Qwen/Qwen3.7-Flash'],
+  ])('%s defaults to thinking and does not expose an off option', (_label, modelId) => {
+    useSettings.setState({ defaultThinking: false, defaultThinkingEffort: 'medium' });
+    const onSend = vi.fn();
+    const { getByTestId, getByRole } = render(
+      <ChatInput
+        onSend={onSend}
+        onStop={vi.fn()}
+        isLoading={false}
+        chatContext={chatContext}
+        modelId={modelId}
+      />,
+    );
+    const button = getByTestId('thinking-menu-button');
+    expect(button).toHaveAttribute('data-enabled', '1');
+    fireEvent.click(button);
+    expect(screen.queryByTestId('thinking-menu-option-off')).not.toBeInTheDocument();
+    expect(screen.getByText(/当前模型必须开启/)).toBeVisible();
+    fireEvent.change(getByRole('textbox'), { target: { value: '解释这一页' } });
+    fireEvent.keyDown(getByRole('textbox'), { key: 'Enter' });
+    expect(onSend).toHaveBeenCalledWith('解释这一页', expect.objectContaining({ enableThinking: true }));
+  });
+
   it('sends effective thinkingEffort through onSend when thinking is enabled', async () => {
     useSettings.setState({
       selectedModelId: 'mimo-v2.5',
@@ -129,5 +154,36 @@ describe('ChatInput thinking menu', () => {
     await act(async () => { sendBtn!.click(); });
     expect(onSend).toHaveBeenCalledOnce();
     expect(onSend).toHaveBeenCalledWith('hello', expect.objectContaining({ enableThinking: true, thinkingEffort: 'medium' }));
+  });
+
+  it('keeps drafting while loading and sends queued messages in order after generation ends', async () => {
+    const onSend = vi.fn();
+    const onStop = vi.fn();
+    const { getByRole, getByTitle, rerender } = render(
+      <ChatInput {...{ onSend, onStop, isLoading: true, chatContext }} />,
+    );
+    const textbox = getByRole('textbox');
+    expect(textbox).not.toBeDisabled();
+    expect(getByTitle('停止生成')).toBeVisible();
+
+    fireEvent.change(textbox, { target: { value: '第一条' } });
+    expect(getByTitle('发送').querySelector('[data-agent-icon="arrow-up"]')).not.toBeNull();
+    fireEvent.click(getByTitle('发送'));
+    fireEvent.change(textbox, { target: { value: '第二条' } });
+    fireEvent.click(getByTitle('发送'));
+    expect(onSend).not.toHaveBeenCalled();
+    expect(getByRole('region', { name: '等待发送' })).toHaveTextContent('2 条');
+
+    fireEvent.click(getByRole('button', { name: '编辑第 1 条排队内容' }));
+    fireEvent.change(textbox, { target: { value: '第一条（已修改）' } });
+    fireEvent.click(getByTitle('发送'));
+
+    rerender(<ChatInput {...{ onSend, onStop, isLoading: false, chatContext }} />);
+    await waitFor(() => expect(onSend).toHaveBeenCalledWith('第一条（已修改）', expect.any(Object)));
+    // 模拟父级在发送第一条后进入下一轮生成，再由生成结束触发第二条。
+    rerender(<ChatInput {...{ onSend, onStop, isLoading: true, chatContext }} />);
+    expect(getByRole('region', { name: '等待发送' })).toHaveTextContent('第二条');
+    rerender(<ChatInput {...{ onSend, onStop, isLoading: false, chatContext }} />);
+    await waitFor(() => expect(onSend).toHaveBeenCalledWith('第二条', expect.any(Object)));
   });
 });

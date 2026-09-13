@@ -71,7 +71,7 @@ export function activeUserDotIndex(entries: readonly UserDotEntry[], firstVisibl
 }
 
 function previewLabel(preview: string, turn: number): string {
-  const clipped = preview.replace(/\s+/g, ' ').trim().slice(0, 32);
+  const clipped = preview.replace(/\s+/g, ' ').trim().slice(0, 44);
   return clipped ? `第 ${turn} 次提问：${clipped}` : `第 ${turn} 次提问`;
 }
 
@@ -92,6 +92,7 @@ export default function ChatMessageDots({
 
   return (
     <nav className="chat-message-dots" aria-label="对话定位" data-testid="chat-message-dots">
+      <span className="chat-message-dots-track" aria-hidden="true" />
       {items.map((item) => {
         if (item.type === 'dot') {
           return (
@@ -129,11 +130,14 @@ export default function ChatMessageDots({
                 className="chat-message-dots-range"
                 aria-label={`第 ${item.startTurn}–${item.endTurn} 次提问`}
                 aria-expanded={false}
-                title={`第 ${item.startTurn}–${item.endTurn} 次提问`}
                 onClick={() => setExpandedRange(rangeId)}
                 onFocus={() => setExpandedRange(rangeId)}
               >
-                ···
+                <span aria-hidden="true">···</span>
+                <span className="chat-message-dot-preview" aria-hidden="true">
+                  <strong>较早的提问</strong>
+                  <span>第 {item.startTurn}–{item.endTurn} 次，展开后可精确定位</span>
+                </span>
               </button>
             )}
           </div>
@@ -163,8 +167,13 @@ function DotButton({
       data-message-index={entry.index}
       aria-label={label}
       aria-current={current ? 'true' : undefined}
-      title={label}
       onClick={() => onJump(entry.index)}
-    />
+    >
+      <span className="chat-message-dot-mark" aria-hidden="true" />
+      <span className="chat-message-dot-preview" aria-hidden="true">
+        <strong>第 {turn} 次提问{current ? ' · 当前' : ''}</strong>
+        <span>“{entry.preview.replace(/\s+/g, ' ').trim().slice(0, 96) || '空白提问'}”</span>
+      </span>
+    </button>
   );
 }

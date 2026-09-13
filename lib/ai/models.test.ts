@@ -25,6 +25,7 @@ import {
   normalizeCustomModelRegistryId,
   primaryProvider,
   modelSupportsThinkingEffort,
+  modelAllowsDisableThinking,
   clampThinkingEffort,
   wireThinkingEffort,
 } from "./models.ts";
@@ -283,7 +284,14 @@ test("MODELS：对话走 relay/mimo，硅基流动仅保留生图", () => {
   assert.ok(ds);
   assert.equal(primaryProvider(ds!), "relay");
   assert.equal(ds!.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.equal(ds!.thinkingRequired, true);
   assert.equal(ds!.vision, true);
+
+  const qwen37 = getModelInfo("Qwen/Qwen3.7-Flash");
+  assert.ok(qwen37);
+  assert.equal(qwen37!.thinkingRequired, true);
+  assert.equal(modelAllowsDisableThinking(qwen37), false);
+  assert.equal(modelAllowsDisableThinking(ds), false);
 
   const image = getModelInfo("Tongyi-MAI/Z-Image-Turbo");
   assert.ok(image);

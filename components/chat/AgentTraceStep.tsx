@@ -12,6 +12,7 @@ export interface AgentTraceStepProps {
   title: string;
   summary: string;
   status: TraceStatus;
+  durationMs?: number;
   icon: React.ReactNode;
   children: React.ReactNode;
   /** Narrative can unfold live; tool details remain opt-in to keep the log compact. */
@@ -27,13 +28,16 @@ const STATUS_LABELS: Record<TraceStatus, string> = {
 };
 
 /** Flat activity row: one semantic glyph, one line of text, details on demand. */
-export const AgentTraceStep = React.memo(function AgentTraceStep({ id, kind, title, summary, status, icon, children, expandWhileRunning = false }: AgentTraceStepProps) {
+export const AgentTraceStep = React.memo(function AgentTraceStep({ id, kind, title, summary, status, durationMs, icon, children, expandWhileRunning = false }: AgentTraceStepProps) {
   const contentId = useId();
   const reducedMotion = useReducedMotion();
   const active = status === 'running';
   const [expanded, setExpanded] = useProcessingDisclosure(active && expandWhileRunning, status === 'error');
   const isError = status === 'error';
   const exceptional = isError || status === 'interrupted' || status === 'waiting';
+  const durationLabel = durationMs == null || !Number.isFinite(durationMs) || durationMs < 0
+    ? null
+    : durationMs < 1000 ? '不到 1 秒' : `${Math.round(durationMs / 1000)} 秒`;
 
   return (
     <li className="agent-trace-step" data-trace-id={id} data-trace-kind={kind} data-trace-status={status}>
@@ -56,6 +60,7 @@ export const AgentTraceStep = React.memo(function AgentTraceStep({ id, kind, tit
           <span className="max-w-[70%] shrink-0 truncate">{title}</span>
           <span className={exceptional ? `shrink-0 text-[11px] ${isError ? 'text-[var(--md-sys-color-error)]' : 'text-[var(--md-sys-color-outline)]'}` : 'sr-only'}>{STATUS_LABELS[status]}</span>
           {!expanded && summary ? <span className="min-w-0 truncate text-[12px] text-[var(--md-sys-color-outline)]">{summary}</span> : null}
+          {durationLabel ? <span className="agent-trace-step-duration">{durationLabel}</span> : null}
           <span aria-hidden="true" className={`shrink-0 opacity-65 transition-transform motion-reduce:transition-none ${expanded ? 'rotate-180' : '-rotate-90'}`}>
             <AgentChevronIcon size={14} />
           </span>
@@ -76,4 +81,3 @@ export const AgentTraceStep = React.memo(function AgentTraceStep({ id, kind, tit
     </li>
   );
 });
-
