@@ -21,7 +21,9 @@ describe("WindowTaskbar add content", () => {
   it("keeps a glowing plus slot available and opens a URL as a taskbar window", () => {
     render(<WindowTaskbar host="topbar" />);
     fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
-    expect(screen.getByRole("menu", { name: "添加内容" })).toBeVisible();
+    const menu = screen.getByRole("menu", { name: "添加内容" });
+    expect(menu).toBeVisible();
+    expect(menu.parentElement).toBe(document.body);
 
     fireEvent.change(screen.getByRole("textbox", { name: "网址" }), { target: { value: "example.com/course" } });
     fireEvent.click(screen.getByRole("button", { name: "打开" }));
@@ -29,5 +31,6 @@ describe("WindowTaskbar add content", () => {
     const preview = useWindowManager.getState().windows.find((win) => win.type === "source-preview");
     expect(preview?.title).toBe("网址 · example.com");
     expect(preview?.data).toMatchObject({ url: "https://example.com/course" });
+    expect(screen.getByRole("button", { name: "添加内容" })).toBeVisible();
   });
 });

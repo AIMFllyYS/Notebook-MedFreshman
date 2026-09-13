@@ -69,16 +69,38 @@ function AddContentButton() {
   const [open, setOpen] = useState(false);
   const [url, setUrl] = useState("");
   const [urlError, setUrlError] = useState<string | null>(null);
+  const [menuPosition, setMenuPosition] = useState<{ top: number; right: number } | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const updateMenuPosition = () => {
+    const button = buttonRef.current;
+    if (!button || typeof window === "undefined") return;
+    const rect = button.getBoundingClientRect();
+    setMenuPosition({
+      top: rect.bottom + 8,
+      right: Math.max(8, window.innerWidth - rect.right),
+    });
+  };
 
   useEffect(() => {
     if (!open) return;
     const close = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+      const target = event.target as Node;
+      if (!rootRef.current?.contains(target) && !menuRef.current?.contains(target)) setOpen(false);
     };
+    const reposition = () => updateMenuPosition();
     document.addEventListener("pointerdown", close);
-    return () => document.removeEventListener("pointerdown", close);
+    window.addEventListener("resize", reposition);
+    window.addEventListener("scroll", reposition, true);
+    updateMenuPosition();
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      window.removeEventListener("resize", reposition);
+      window.removeEventListener("scroll", reposition, true);
+    };
   }, [open]);
 
   const handleFiles = async (files: File[]) => {
@@ -118,11 +140,19 @@ function AddContentButton() {
   return (
     <div ref={rootRef} className="relative shrink-0">
       <button
+        ref={buttonRef}
         type="button"
         aria-label="添加内容"
         aria-expanded={open}
         title="添加 PDF、文件或网址"
-        onClick={() => { setOpen((value) => !value); setUrlError(null); }}
+        onClick={() => {
+          setOpen((value) => {
+            const next = !value;
+            if (next) requestAnimationFrame(updateMenuPosition);
+            return next;
+          });
+          setUrlError(null);
+        }}
         className={clsx(
           "window-taskbar-add relative flex h-7 w-7 items-center justify-center rounded-lg border shadow-sm transition-all",
           open
@@ -144,8 +174,14 @@ function AddContentButton() {
           if (files.length > 0) void handleFiles(files);
         }}
       />
-      {open && (
-        <div role="menu" aria-label="添加内容" className="window-taskbar-add-menu absolute right-0 top-9 z-[12000] w-64 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-2 shadow-xl">
+      {open && menuPosition && typeof document !== "undefined" && createPortal(
+        <div
+          ref={menuRef}
+          role="menu"
+          aria-label="添加内容"
+          style={{ position: "fixed", top: menuPosition.top, right: menuPosition.right }}
+          className="window-taskbar-add-menu z-[12000] w-64 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-2 shadow-xl"
+        >
           <button type="button" role="menuitem" onClick={() => fileRef.current?.click()} className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]">
             <Upload size={14} className="text-[var(--md-sys-color-primary)]" />
             <span><strong className="font-semibold">添加文件</strong><small className="ml-1 text-[var(--ink-soft)]">PDF、文本、代码</small></span>
@@ -165,7 +201,8 @@ function AddContentButton() {
           </div>
           {urlError ? <p className="px-1 pt-1 text-[10px] text-[var(--md-sys-color-error)]">{urlError}</p> : null}
           <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">内容会在当前工作站窗口中打开；选择文件不会上传。</p>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );
@@ -232,7 +269,6 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
 
   return (
     <div className="flex min-w-0 flex-1 items-center gap-1">
-      <AddContentButton />
       <motion.div
         ref={ref}
         layoutId="window-taskbar"
@@ -274,6 +310,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
           </button>
         ))}
       </motion.div>
+      <AddContentButton />
       {activeTooltip && typeof document !== "undefined" && createPortal(
         <div
           role="tooltip"
