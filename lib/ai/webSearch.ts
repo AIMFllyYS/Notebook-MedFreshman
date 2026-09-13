@@ -1,8 +1,8 @@
 // 联网搜索（智谱 Web Search API）+ 内存缓存（命中复用，降本提速）。
 // 默认用站点 ZHIPU_API_KEY；用户在设置里自配后用用户的，不计入平台额度。
 
-import { settleUsage } from "@/lib/billing/usageLedger";
-import { resolveUsagePool } from "@/lib/billing/usagePool";
+import { mainUsedPlatformCredentials, settleUsage } from "@/lib/billing/usageLedger";
+import { resolveSidecarBilling } from "@/lib/billing/usagePool";
 import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { resolveCapabilitySecret } from "@/lib/ai/capabilityEndpoints";
 
@@ -112,7 +112,10 @@ export async function searchCached(
     units: Math.max(results.length, 1),
     selectedModelId: opts.searchEngine ?? "search_pro",
     actualModelId: opts.searchEngine ?? "search_pro",
-    pool: resolveUsagePool(usedPlatformCredentials),
+    ...resolveSidecarBilling({
+      usedPlatformCredentials,
+      mainUsedPlatformCredentials: mainUsedPlatformCredentials(),
+    }),
     meta: { source: "webSearch", resultCount: results.length },
   });
   return { results, cacheHit: false, usedPlatformCredentials };

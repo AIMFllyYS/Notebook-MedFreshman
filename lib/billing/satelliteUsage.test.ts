@@ -79,6 +79,23 @@ async function captureRows<T>(fn: () => Promise<T>): Promise<{ value: T; rows: U
   return { value, rows };
 }
 
+/** BYOK 轮：主模型走用户自己的 key，所以主模型不入账（skipInsert 进 ALS）。 */
+async function captureRowsInByokRound<T>(
+  fn: () => Promise<T>,
+): Promise<{ value: T; rows: UsageLedgerRow[] }> {
+  const rows: UsageLedgerRow[] = [];
+  const value = await runWithLedgerContext(
+    {
+      userId: USER,
+      mainUsedPlatformCredentials: false,
+      skipInsert: true,
+      insert: async (row) => { rows.push(row); },
+    },
+    fn,
+  );
+  return { value, rows };
+}
+
 test("FollowUp 兜底：平台模型入账 /api/follow-ups", async (t: TestContext) => {
   t.mock.method(globalThis, "fetch", async () => openAiJson("如何应用|如何验证|能否推广"));
   const { value, rows } = await captureRows(() =>
@@ -234,16 +251,49 @@ test("工具侧车：联网搜索 / 搜图 / 嵌入入账，缓存命中不建�
   assert.equal(embed.rows[0].prompt_tokens, 9);
   assert.equal(embed.rows[0].actual_model_id, "BAAI/bge-m3");
 
-  const byokSearch = await captureRows(() =>
-    searchCached(`billing-sidecar-byok-${Date.now()}`, 3, { apiKey: "user-zhipu-key" }),
+  // 用户自备侧车 key：这笔钱是用户自己付的，不该进任何池。
+  const ownKeySearch = await captureRows(() =>
+    searchCached(`billing-sidecar-ownkey-${Date.now()}`, 3, { apiKey: "user-zhipu-key" }),
   );
-  assert.equal(byokSearch.value.usedPlatformCredentials, false);
-  assert.equal(byokSearch.rows[0]?.pool, "byok");
-  assert.equal(byokSearch.rows[0]?.kind, "web-search");
+  assert.equal(ownKeySearch.value.usedPlatformCredentials, false);
+  assert.deepEqual(ownKeySearch.rows, []);
 
-  const byokImages = await captureRows(() => searchImages("线粒体示意图", 2, { apiKey: "user-unsplash-key" }));
-  assert.equal(byokImages.value.configured, true);
-  assert.equal(byokImages.value.usedPlatformCredentials, false);
-  assert.equal(byokImages.rows[0]?.pool, "byok");
-  assert.equal(byokImages.rows[0]?.kind, "image-search");
+  const ownKeyImages = await captureRows(() => searchImages("线粒体示意图", 2, { apiKey: "user-unsplash-key" }));
+  assert.equal(ownKeyImages.value.configured, true);
+  assert.equal(ownKeyImages.value.usedPlatformCredentials, false);
+  assert.deepEqual(ownKeyImages.rows, []);
+});
+
+test("BYOK 轮里我们垫付的平台侧车进 byok 池，不进 platform", async (t: TestContext) => {
+  t.mock.method(globalThis, "fetch", async (input: string | URL | Request) => {
+    const url = String(input);
+    if (url.includes("web_search")) {
+      return Response.json({
+        search_result: [{ title: "细胞", link: "https://example.test/cell", content: "简介" }],
+      });
+    }
+    if (url.includes("/embeddings")) {
+      return Response.json({
+        data: [{ embedding: [0.1, 0.2], index: 0 }],
+        usage: { prompt_tokens: 9 },
+      });
+    }
+    throw new Error(`unexpected fetch ${url}`);
+  });
+
+  // 平台 key 的搜索：主模型是 BYOK，所以这笔平台开销要按 ¥0.5/百万 token 记进 byok。
+  const search = await captureRowsInByokRound(() =>
+    searchCached(`billing-sidecar-byok-round-${Date.now()}`, 3),
+  );
+  assert.equal(search.value.usedPlatformCredentials, true);
+  assert.equal(search.rows.length, 1);
+  assert.equal(search.rows[0].pool, "byok");
+  assert.equal(search.rows[0].kind, "web-search");
+
+  // 主模型的 skipInsert 不该把侧车一起吞掉。
+  const embed = await captureRowsInByokRound(() => new SiliconFlowEmbedding().embed("核糖体"));
+  assert.deepEqual(embed.value, [0.1, 0.2]);
+  assert.equal(embed.rows.length, 1);
+  assert.equal(embed.rows[0].pool, "byok");
+  assert.equal(embed.rows[0].kind, "embedding");
 });

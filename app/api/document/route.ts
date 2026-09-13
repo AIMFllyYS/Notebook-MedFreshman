@@ -114,6 +114,7 @@ export async function POST(req: NextRequest) {
             customGroups: customApiGroups,
             pool: pool ?? undefined,
             skipInsert: pool == null,
+            mainUsedPlatformCredentials: pool != null,
           },
           () =>
             streamDocument({

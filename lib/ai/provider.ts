@@ -28,8 +28,11 @@ import {
 
 // 本模块在加载时读一次 env（BASE / KEY / MIMO_* / RELAY_* / ENV_MODEL_*）。改 env 必须重启进程。
 // 对比：app/api/chat-title/route.ts 的 titleProvider() 每次请求读 env。两套语义不要混改。
-const BASE = process.env.AI_BASE_URL || "";
+// AI_BASE_URL 不再参与本模块的 base 解析：它曾是生图端点的兜底，而那正是
+// 「配了中转站 → 生图 404」的来源。向量 / 重排仍在 embedding.ts 里各自读它。
 const KEY = process.env.AI_API_KEY || "";
+/** 生图端点的真实默认值。见 credentialsFor("siliconflow")：不拿 AI_BASE_URL 当兜底。 */
+const SILICONFLOW_DEFAULT_BASE = "https://api.siliconflow.cn/v1";
 const REASONING_FIELD = process.env.AI_REASONING_FIELD || "reasoning_content";
 
 export type { ThinkingRequestStyle };
@@ -228,7 +231,11 @@ function credentialsFor(provider: ProviderKind): ProviderCredentials {
       return { baseUrl, apiKey: RELAY_KEY, configured: !!(baseUrl && RELAY_KEY) };
     }
     case "siliconflow": {
-      const rawBase = process.env.SILICONFLOW_BASE_URL || BASE;
+      // base 不回落 AI_BASE_URL：那个变量常被指向中转站，而中转站不提供
+      // Tongyi-MAI/Z-Image-Turbo，回落只会换来一个静默 404。key 仍可回落
+      // AI_API_KEY——历史 .env.example 把硅基流动的 key 写在那里，且用错 key 会
+      // 拿到明确的 401 而不是静默失败。
+      const rawBase = process.env.SILICONFLOW_BASE_URL || SILICONFLOW_DEFAULT_BASE;
       const apiKey = process.env.SILICONFLOW_API_KEY || KEY;
       const baseUrl = normalizeOpenAIBaseUrl(rawBase);
       return {

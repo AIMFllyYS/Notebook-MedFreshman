@@ -267,6 +267,24 @@ test("resolveImageProvider：RELAY 与 AI_BASE 不同时仍走硅基流动", () 
   }
 });
 
+test("resolveImageProvider：只配 AI_BASE_URL（指向中转站）时不拿它当生图端点", () => {
+  const prevSfBase = process.env.SILICONFLOW_BASE_URL;
+  const prevSfKey = process.env.SILICONFLOW_API_KEY;
+  delete process.env.SILICONFLOW_BASE_URL;
+  delete process.env.SILICONFLOW_API_KEY;
+  try {
+    const image = resolveImageProvider("Tongyi-MAI/Z-Image-Turbo");
+    // AI_BASE_URL 在测试环境里指向中转站；生图必须回到硅基流动自己的域名。
+    assert.ok(image.baseUrl.includes("api.siliconflow.cn"), image.baseUrl);
+    assert.ok(!image.baseUrl.includes("relay"), image.baseUrl);
+  } finally {
+    if (prevSfBase === undefined) delete process.env.SILICONFLOW_BASE_URL;
+    else process.env.SILICONFLOW_BASE_URL = prevSfBase;
+    if (prevSfKey === undefined) delete process.env.SILICONFLOW_API_KEY;
+    else process.env.SILICONFLOW_API_KEY = prevSfKey;
+  }
+});
+
 test("resolveImageProvider：用户显式选中的 custom 生图模型优先于默认生图模型", () => {
   const selectedModelId = buildCustomModelRegistryId("openai-image", "selected-image-model");
   const defaultModelId = buildCustomModelRegistryId("openai-image", "default-image-model");

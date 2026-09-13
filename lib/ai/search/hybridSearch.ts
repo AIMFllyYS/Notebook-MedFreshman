@@ -3,8 +3,8 @@ import { bm25Search, getBm25BuiltAt, isBM25IndexLoaded } from "./bm25Store";
 import { vectorSearch, isVectorIndexLoaded, getVectorIndexModel } from "./vectorStore";
 import type { ScoredChunk } from "./vectorStoreTypes";
 import { getQueryEmbeddingClient } from "@/lib/ai/embedding";
-import { settleUsage } from "@/lib/billing/usageLedger";
-import { resolveUsagePool } from "@/lib/billing/usagePool";
+import { mainUsedPlatformCredentials, settleUsage } from "@/lib/billing/usageLedger";
+import { resolveSidecarBilling } from "@/lib/billing/usagePool";
 import { assertSafeCustomBaseUrl } from "@/lib/ai/customBaseUrl";
 import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { overlayOptional, resolveCapabilityEndpoint } from "@/lib/ai/capabilityEndpoints";
@@ -115,7 +115,10 @@ async function settleRerankUsage(
     units: Math.max(documentCount, 1),
     selectedModelId: model,
     actualModelId: model,
-    pool: resolveUsagePool(usedPlatformCredentials),
+    ...resolveSidecarBilling({
+      usedPlatformCredentials,
+      mainUsedPlatformCredentials: mainUsedPlatformCredentials(),
+    }),
     meta: { source: "rerank", provider, candidates: documentCount },
   });
 }

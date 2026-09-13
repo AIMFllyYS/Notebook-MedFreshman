@@ -13,6 +13,10 @@ export const PERIOD_MS = 30 * 24 * 60 * 60 * 1000;
 export const QUOTA_CACHE_TTL_MS = 5_000;
 export const QUOTA_EXHAUSTED_CODE = "quota_exhausted" as const;
 export const QUOTA_EXHAUSTED_STATUS = 402 as const;
+export const QUOTA_UNAVAILABLE_CODE = "quota_unavailable" as const;
+export const QUOTA_UNAVAILABLE_STATUS = 503 as const;
+export const QUOTA_UNAVAILABLE_MESSAGE =
+  "额度服务暂时不可用，请稍后重试。为避免记错账，本次请求未发往模型。";
 
 export const PLATFORM_QUOTA_EXHAUSTED_MESSAGE =
   "平台额度已用完。可改用 BYOK（在设置中填写自己的 API 密钥）继续使用。";
@@ -47,8 +51,8 @@ export type QuotaDecision =
   | { ok: true; snapshot: QuotaSnapshot | null }
   | {
       ok: false;
-      status: typeof QUOTA_EXHAUSTED_STATUS;
-      code: typeof QUOTA_EXHAUSTED_CODE;
+      status: typeof QUOTA_EXHAUSTED_STATUS | typeof QUOTA_UNAVAILABLE_STATUS;
+      code: typeof QUOTA_EXHAUSTED_CODE | typeof QUOTA_UNAVAILABLE_CODE;
       error: string;
       pool: UsagePool;
     };
@@ -113,6 +117,16 @@ export function quotaRejectedJson(decision: Extract<QuotaDecision, { ok: false }
   return Response.json(
     { error: decision.error, code: decision.code, pool: decision.pool },
     { status: decision.status },
+  );
+}
+
+/** 区分「没配 Supabase」与「配了但查不通」：前者放行，后者必须拒。 */
+export function isQuotaServiceUnconfigured(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    message.startsWith("Need SUPABASE_") ||
+    message.startsWith("Need NEXT_PUBLIC_SUPABASE_ANON_KEY") ||
+    message.startsWith("SUPABASE_URL must be")
   );
 }
 
@@ -326,7 +340,20 @@ export async function assertQuotaAvailable(input: {
     }
     return { ok: true, snapshot };
   } catch (error) {
-    console.warn("[quota] load failed:", error instanceof Error ? error.message : error);
-    return { ok: true, snapshot: null };
+    const detail = error instanceof Error ? error.message : String(error);
+    // 没配额度服务（本地开发、自托管未接 Supabase）本就没有额度可言，放行。
+    if (isQuotaServiceUnconfigured(error)) {
+      console.warn("[quota] 额度服务未配置，跳过闸门:", detail);
+      return { ok: true, snapshot: null };
+    }
+    // 配了但查不通：必须拒。放行等于无限额度，而且这笔钱花出去还不会入账。
+    console.error("[quota] 额度查询失败，拒绝本次请求:", detail);
+    return {
+      ok: false,
+      status: QUOTA_UNAVAILABLE_STATUS,
+      code: QUOTA_UNAVAILABLE_CODE,
+      error: QUOTA_UNAVAILABLE_MESSAGE,
+      pool: input.pool,
+    };
   }
 }

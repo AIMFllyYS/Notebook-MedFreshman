@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
   if (!provider.configured) {
     return jsonError(
       500,
-      "生图 API 未配置，请在设置中填写生图端点，或在 .env.local 配置 AI_BASE_URL / AI_API_KEY。",
+      "生图 API 未配置，请在设置中填写生图端点，或在 .env.local 配置 SILICONFLOW_BASE_URL / SILICONFLOW_API_KEY。",
       "unconfigured",
     );
   }

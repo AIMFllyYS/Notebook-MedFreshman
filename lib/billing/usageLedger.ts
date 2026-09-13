@@ -34,6 +34,8 @@ export interface LedgerContext {
   requestId?: string | null;
   route?: string;
   pool?: UsagePool;
+  /** 这一轮主模型花的是谁的 key。侧车据此决定进 platform 还是 byok 池。 */
+  mainUsedPlatformCredentials?: boolean;
   selectedModelId?: string | null;
   actualModelId?: string | null;
   customGroups?: CustomApiGroup[];
@@ -49,6 +51,14 @@ export function runWithLedgerContext<T>(ctx: LedgerContext, fn: () => T): T {
 
 function getLedgerContext(): LedgerContext | undefined {
   return ledgerContext.getStore();
+}
+
+/**
+ * 侧车用：本轮主模型是否走平台凭证。没有上下文（脚本、索引构建等）时按平台算，
+ * 与接入前的行为一致。
+ */
+export function mainUsedPlatformCredentials(): boolean {
+  return getLedgerContext()?.mainUsedPlatformCredentials !== false;
 }
 
 interface ModelPricing {
@@ -368,7 +378,9 @@ export async function settleUsage(input: SettleUsageInput): Promise<SettleChatUs
   const actualModelId = mergeLedgerFields(input.actualModelId, ctx?.actualModelId);
   const summary = hasBillableUsage(usage) ? toUsageSummary(usage, actualModelId) : undefined;
   const userId = await resolveSettleUserId(input, ctx);
-  if (!userId || input.skipInsert || ctx?.skipInsert) {
+  // 显式 false 能压过上下文里的 true：BYOK 主模型不入账，但同一轮里我们垫付的侧车要入账。
+  const skipInsert = input.skipInsert ?? ctx?.skipInsert;
+  if (!userId || skipInsert) {
     return { usage, summary, row: null, recorded: false };
   }
   const row = buildUsageLedgerRow({

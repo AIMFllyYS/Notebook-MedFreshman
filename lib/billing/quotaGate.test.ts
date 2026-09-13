@@ -2,8 +2,11 @@ import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
 import {
   PLATFORM_QUOTA_EXHAUSTED_MESSAGE,
+  QUOTA_UNAVAILABLE_CODE,
+  QUOTA_UNAVAILABLE_STATUS,
   TIER_QUOTA_CNY,
   assertQuotaAvailable,
+  isQuotaServiceUnconfigured,
   ledgerRowCountsTowardPool,
   loadQuotaSnapshot,
   rollQuotaPeriod,
@@ -173,6 +176,48 @@ test("platform 耗尽则拒，提示可改用 BYOK", async () => {
   }
   const byokMain = await assertQuotaAvailable({ userId: USER, pool: null });
   assert.equal(byokMain.ok, true);
+});
+
+test("额度查询失败不放行：返回 503，不能把故障当成额度充足", async () => {
+  const broken: QuotaStore = {
+    async getUser() {
+      throw new Error("fetch failed: ECONNRESET");
+    },
+    async savePeriod() {},
+    async listGrants() {
+      return [];
+    },
+    async listLedger() {
+      return [];
+    },
+  };
+  setQuotaGateTestDeps({ store: broken, now: () => NOW });
+  const decision = await assertQuotaAvailable({ userId: USER, pool: "platform" });
+  assert.equal(decision.ok, false);
+  if (!decision.ok) {
+    assert.equal(decision.status, QUOTA_UNAVAILABLE_STATUS);
+    assert.equal(decision.code, QUOTA_UNAVAILABLE_CODE);
+  }
+});
+
+test("未配置额度服务仍放行（本地开发 / 未接 Supabase）", async () => {
+  const unconfigured: QuotaStore = {
+    async getUser() {
+      throw new Error("Need SUPABASE_SERVICE_ROLE_KEY");
+    },
+    async savePeriod() {},
+    async listGrants() {
+      return [];
+    },
+    async listLedger() {
+      return [];
+    },
+  };
+  setQuotaGateTestDeps({ store: unconfigured, now: () => NOW });
+  const decision = await assertQuotaAvailable({ userId: USER, pool: "platform" });
+  assert.equal(decision.ok, true);
+  assert.equal(isQuotaServiceUnconfigured(new Error("Need SUPABASE_SERVICE_ROLE_KEY")), true);
+  assert.equal(isQuotaServiceUnconfigured(new Error("fetch failed")), false);
 });
 
 test("无 userId 不拦截（proxy 已拦未登录）", async () => {

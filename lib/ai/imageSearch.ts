@@ -1,5 +1,5 @@
-import { settleUsage } from "@/lib/billing/usageLedger";
-import { resolveUsagePool } from "@/lib/billing/usagePool";
+import { mainUsedPlatformCredentials, settleUsage } from "@/lib/billing/usageLedger";
+import { resolveSidecarBilling } from "@/lib/billing/usagePool";
 import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
 import { resolveCapabilitySecret } from "@/lib/ai/capabilityEndpoints";
 
@@ -86,7 +86,10 @@ export async function searchImages(
       imageCount: selected.length,
       selectedModelId: "unsplash",
       actualModelId: "unsplash",
-      pool: resolveUsagePool(usedPlatformCredentials),
+      ...resolveSidecarBilling({
+        usedPlatformCredentials,
+        mainUsedPlatformCredentials: mainUsedPlatformCredentials(),
+      }),
       meta: { source: "imageSearch", resultCount: selected.length },
     });
     return { configured: true, results: selected, usedPlatformCredentials };

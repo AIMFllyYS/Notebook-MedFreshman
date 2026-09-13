@@ -106,7 +106,8 @@ export async function POST(req: NextRequest) {
   const effectiveModelId = isImageMode ? body.imageModeTextModel : modelId;
 
   const previewProvider = resolveLanguageModel(effectiveModelId, effectiveCustom).provider;
-  const mainPool = resolveMainModelPool(usedPlatformCredentialsForProvider(previewProvider));
+  const mainOnPlatformCredentials = usedPlatformCredentialsForProvider(previewProvider);
+  const mainPool = resolveMainModelPool(mainOnPlatformCredentials);
   const gate = await assertQuotaAvailable({ userId, pool: mainPool });
   if (!gate.ok) return quotaRejectedJson(gate);
 
@@ -139,6 +140,7 @@ export async function POST(req: NextRequest) {
       requestId,
       route: "/api/chat",
       customGroups,
+      mainUsedPlatformCredentials: mainOnPlatformCredentials,
     }, async () => {
       const resolved = resolveLanguageModel(effectiveModelId, effectiveCustom, {
         fallbackModelIds: isImageMode ? [body.imageModeTextModelFallback] : [],

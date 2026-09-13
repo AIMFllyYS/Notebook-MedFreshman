@@ -1,7 +1,7 @@
 // SiliconFlow Embedding 客户端：封装 /v1/embeddings 调用，实现 EmbeddingProvider 接口。
 import type { EmbeddingProvider } from '@/lib/context/semanticSearch';
-import { settleUsage } from '@/lib/billing/usageLedger';
-import { resolveUsagePool } from '@/lib/billing/usagePool';
+import { mainUsedPlatformCredentials, settleUsage } from '@/lib/billing/usageLedger';
+import { resolveSidecarBilling } from '@/lib/billing/usagePool';
 import { assertSafeCustomBaseUrl } from '@/lib/ai/customBaseUrl';
 import { getCapabilityEndpoints } from '@/lib/ai/capabilityContext';
 import { overlayOptional, resolveCapabilityEndpoint } from '@/lib/ai/capabilityEndpoints';
@@ -81,7 +81,10 @@ export class SiliconFlowEmbedding implements EmbeddingProvider {
         units: batch.length,
         selectedModelId: this.model,
         actualModelId: this.model,
-        pool: resolveUsagePool(this.usedPlatformCredentials),
+        ...resolveSidecarBilling({
+          usedPlatformCredentials: this.usedPlatformCredentials,
+          mainUsedPlatformCredentials: mainUsedPlatformCredentials(),
+        }),
         meta: { source: 'embedding', provider: 'siliconflow', batchSize: batch.length },
       });
     }
@@ -147,7 +150,11 @@ export class ZhipuEmbedding implements EmbeddingProvider {
         units: batch.length,
         selectedModelId: this.model,
         actualModelId: this.model,
-        pool: 'platform',
+        ...resolveSidecarBilling({
+          // 降级路径只走站点 ZHIPU_API_KEY，永远是平台凭证。
+          usedPlatformCredentials: true,
+          mainUsedPlatformCredentials: mainUsedPlatformCredentials(),
+        }),
         meta: { source: 'embedding', provider: 'zhipu', batchSize: batch.length },
       });
     }
