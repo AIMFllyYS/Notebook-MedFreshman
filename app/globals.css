@@ -7,6 +7,10 @@
 @import "./styles/chat-tools.css";
 @import "./styles/appearance.css";
 
+/* Keep wheel/touch/keyboard scrolling everywhere in the app; hide only native scrollbar chrome. */
+* { scrollbar-width: none !important; -ms-overflow-style: none; }
+*::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+
 /* ─────────────────────────────────────────────────────────────
    Material Design 3 Token System
    ───────────────────────────────────────────────────────────── */

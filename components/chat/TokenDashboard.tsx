@@ -25,6 +25,8 @@ import { openBillingDashboard } from '@/lib/window/openBillingDashboard';
 import { useBillingStore } from '@/lib/hooks/useBillingStore';
 import { costCnyToUsd, summarizeSessionLedger } from '@/lib/billing/ledgerView';
 import { refreshBillingFromLedger } from '@/lib/billing/syncUsageLedger';
+import { AccountQuota } from '@/components/chat/AccountQuota';
+import { ACCOUNT_USAGE_CHANGED, notifyAccountUsageChanged } from '@/lib/billing/quotaView';
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -79,11 +81,13 @@ const BREAKDOWN_CATS: { key: 'tools' | 'skills' | 'pages' | 'webSearch' | 'conve
 
 export default function TokenDashboard({ isLoading = false, floatingSessionId, modelId }: { isLoading?: boolean; floatingSessionId?: string; modelId?: string }) {
   const [open, setOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [pinned, setPinned] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
 
   const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [panelHeight, setPanelHeight] = useState(560);
   // 拖动：rAF + transform（零重渲染），松手才提交。left 正向、bottom 反向（向上拖 = bottom 增大）。
   const { elRef, onPointerDown } = useDraggable((dx, dy) => setPos((p) => ({ x: p.x + dx, y: p.y - dy })));
 
@@ -98,7 +102,8 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   const gContextWarning = useTokenTracker((s) => s.contextWarning);
 
   // 浮窗 tracker（划词浮窗用，按 sessionId 隔离）
-  const fData = useFloatingTokenTracker((s) => floatingSessionId ? (s.sessions[floatingSessionId] ?? null) : null);
+  const floatingData = useFloatingTokenTracker((s) => floatingSessionId ? (s.sessions[floatingSessionId] ?? null) : null);
+  const fData = floatingSessionId ? floatingData ?? useFloatingTokenTracker.getState().getSession(floatingSessionId) : null;
 
   const lastTurn = fData?.lastTurn ?? gLastTurn;
   const ctxTokens = fData?.currentContextTokens ?? gCtxTokens;
@@ -181,8 +186,12 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   }, [open, recompute]);
 
   useEffect(() => {
-    void refreshBillingFromLedger();
-  }, [ledgerSessionId]);
+    if (!open) return;
+    const refresh = () => { void refreshBillingFromLedger(); };
+    refresh();
+    window.addEventListener(ACCOUNT_USAGE_CHANGED, refresh);
+    return () => window.removeEventListener(ACCOUNT_USAGE_CHANGED, refresh);
+  }, [ledgerSessionId, open]);
 
   const ratio = ctxLimit > 0 ? ctxTokens / ctxLimit : 0;
   const pctText = `${Math.min(Math.round(ratio * 100), 999)}%`;
@@ -200,12 +209,29 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
 
   useLayoutEffect(() => {
     if (!open || !btnRef.current) return;
-    const r = btnRef.current.getBoundingClientRect();
-    const pw = 280;
-    let x = r.left;
-    if (x + pw > window.innerWidth - 8) x = window.innerWidth - pw - 8;
-    if (x < 8) x = 8;
-    setPos({ x, y: window.innerHeight - r.top + 6 });
+    const place = () => {
+      const r = btnRef.current?.getBoundingClientRect();
+      if (!r) return;
+      const viewport = window.visualViewport;
+      const width = viewport?.width ?? window.innerWidth;
+      const height = viewport?.height ?? window.innerHeight;
+      const top = viewport?.offsetTop ?? 0;
+      const pw = Math.min(300, width - 16);
+      const mobile = width < 640;
+      setPos({ x: Math.max(8, Math.min(r.left, width - pw - 8)), y: mobile
+        ? Math.max(8, window.innerHeight - top - height + 8)
+        : Math.max(8, window.innerHeight - r.top + 6) });
+      setPanelHeight(Math.max(120, Math.min(560, mobile ? height * 0.75 : r.top - top - 16)));
+    };
+    place();
+    window.addEventListener('resize', place);
+    window.visualViewport?.addEventListener('resize', place);
+    window.visualViewport?.addEventListener('scroll', place);
+    return () => {
+      window.removeEventListener('resize', place);
+      window.visualViewport?.removeEventListener('resize', place);
+      window.visualViewport?.removeEventListener('scroll', place);
+    };
   }, [open]);
 
   useOverlayRegistration({
@@ -281,7 +307,10 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             position: 'fixed',
             left: pos.x,
             bottom: pos.y,
-            width: 280,
+            width: 'min(300px, calc(100vw - 16px))',
+            maxHeight: panelHeight,
+            overflowY: 'auto',
+            overscrollBehavior: 'contain',
             zIndex: 9999,
           }}
           className="rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] shadow-lg animate-[dropdown-in_0.15s_ease-out]"
@@ -309,6 +338,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                 onClick={() => {
                   setRefreshing(true);
                   recompute();
+                  notifyAccountUsageChanged();
                   setTimeout(() => setRefreshing(false), 600);
                 }}
                 title="刷新上下文估算"
@@ -330,6 +360,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
               </button>
               <button
                 onClick={() => { setOpen(false); setPinned(false); }}
+                aria-label="关闭上下文看板"
                 data-no-drag
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, color: 'var(--ink-faint)' }}
               >
@@ -339,6 +370,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
           </div>
 
           <div style={{ padding: '10px 12px', fontSize: 11 }}>
+            <AccountQuota />
             {/* Context usage bar */}
             <div style={{ marginBottom: 10 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, color: 'var(--ink-soft)' }}>
@@ -380,6 +412,9 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             )}
 
             {/* Context composition (IDE 式分项构成) */}
+            <details onToggle={(event) => setDetailsOpen(event.currentTarget.open)}>
+            <summary className="mb-2 cursor-pointer rounded py-2 text-[var(--ink-soft)]">上下文构成与消耗详情</summary>
+            {detailsOpen ? <>
             <div style={{ marginBottom: 10 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, color: 'var(--ink-soft)' }}>
                 <span>上下文构成</span>
@@ -446,6 +481,8 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             <div style={{ marginTop: 8, fontSize: 9, color: 'var(--ink-faint)', lineHeight: 1.3 }}>
               价格为平台参考价，实际以 API 提供商结算为准。
             </div>
+            </> : null}
+            </details>
           </div>
         </div>,
         document.body,

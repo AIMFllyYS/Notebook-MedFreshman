@@ -123,6 +123,7 @@ export default function ChatThread({
   };
 
   const virtualizer = useVirtualizer({
+    useFlushSync: false,
     count: displayMessages.length,
     getScrollElement: () => scrollRef.current,
     estimateSize,
