@@ -14,12 +14,16 @@ import {
 } from "@/lib/ai/capabilityEndpoints";
 import {
   API_SECRETS_LS_KEY,
+  applyCapabilitySecrets,
   applyGroupApiKeys,
+  decodeDesktopCapabilitySecrets,
   decodeDesktopSecrets,
   encodeWebSecrets,
+  extractPlainCapabilityKeys,
   extractPlainGroupKeys,
   getDesktopSecretsBridge,
   splitSettingsSecrets,
+  stripCapabilitySecrets,
   stripGroupApiKeys,
   type StoredApiSecrets,
 } from "@/lib/stores/apiSecrets";
@@ -244,15 +248,26 @@ function load(): Persisted {
       );
 
       const secretsRaw = localStorage.getItem(API_SECRETS_LS_KEY);
-      const split = splitSettingsSecrets(parsed.customApiGroups, secretsRaw, parsed.customApiKey);
+      const split = splitSettingsSecrets(
+        parsed.customApiGroups,
+        secretsRaw,
+        parsed.customApiKey,
+        parsed.capabilityEndpoints,
+      );
       parsed.customApiGroups = split.groupsForMemory;
       parsed.customApiKey = split.groupsForMemory[0]?.apiKey ?? "";
+      parsed.capabilityEndpoints = split.capabilityForMemory;
       if (split.rewriteSettings) {
-        const disk = { ...parsed, customApiGroups: stripGroupApiKeys(parsed.customApiGroups), customApiKey: "" };
+        const disk = {
+          ...parsed,
+          customApiGroups: stripGroupApiKeys(parsed.customApiGroups),
+          customApiKey: "",
+          capabilityEndpoints: stripCapabilitySecrets(parsed.capabilityEndpoints),
+        };
         localStorage.setItem(LS_KEY, JSON.stringify(disk));
       }
       if (split.rewriteSecrets) {
-        localStorage.setItem(API_SECRETS_LS_KEY, encodeWebSecrets(split.groupKeys));
+        localStorage.setItem(API_SECRETS_LS_KEY, encodeWebSecrets(split.groupKeys, split.capabilityKeys));
       }
       return parsed;
     }
@@ -262,15 +277,15 @@ function load(): Persisted {
   return DEFAULTS;
 }
 
-function persistSecrets(groupKeys: Record<string, string>) {
+function persistSecrets(groupKeys: Record<string, string>, capabilityKeys: Record<string, string>) {
   try {
-    localStorage.setItem(API_SECRETS_LS_KEY, encodeWebSecrets(groupKeys));
+    localStorage.setItem(API_SECRETS_LS_KEY, encodeWebSecrets(groupKeys, capabilityKeys));
   } catch {
     /* ignore */
   }
   const bridge = getDesktopSecretsBridge();
   if (!bridge) return;
-  const payload: StoredApiSecrets = { v: 1, groups: groupKeys };
+  const payload: StoredApiSecrets = { v: 1, groups: groupKeys, capability: capabilityKeys };
   void bridge.save(payload).catch(() => {});
 }
 
@@ -280,13 +295,14 @@ function persist(get: () => SettingsState) {
   // 旧版字段从 customApiGroups[0] 派生，保持向后兼容；密钥不写进 settings JSON。
   const firstGroup = s.customApiGroups[0];
   const groupKeys = extractPlainGroupKeys(s.customApiGroups);
+  const capabilityKeys = extractPlainCapabilityKeys(s.capabilityEndpoints);
   const data: Persisted = {
     selectedModelId: s.selectedModelId,
     customApiGroups: stripGroupApiKeys(s.customApiGroups),
     defaultImageModelId: s.defaultImageModelId,
     imageModeTextModel: s.imageModeTextModel,
     imageModeTextModelFallback: s.imageModeTextModelFallback,
-    capabilityEndpoints: normalizeCapabilityEndpoints(s.capabilityEndpoints),
+    capabilityEndpoints: stripCapabilitySecrets(normalizeCapabilityEndpoints(s.capabilityEndpoints)),
     recordModelId: s.recordModelId,
     floatingChatModelId: s.floatingChatModelId,
     customBaseUrl: firstGroup?.baseUrl ?? "",
@@ -307,7 +323,7 @@ function persist(get: () => SettingsState) {
   } catch {
     /* ignore */
   }
-  persistSecrets(groupKeys);
+  persistSecrets(groupKeys, capabilityKeys);
 }
 
 function hydrateDesktopSecrets(
@@ -320,15 +336,44 @@ function hydrateDesktopSecrets(
     try {
       const stored = await bridge.load();
       const desktopKeys = decodeDesktopSecrets(stored);
-      if (Object.keys(desktopKeys).length > 0) {
+      const desktopCapability = decodeDesktopCapabilitySecrets(stored);
+      const hasDesktopGroups = Object.keys(desktopKeys).length > 0;
+      const hasDesktopCapability = Object.keys(desktopCapability).length > 0;
+      if (hasDesktopGroups || hasDesktopCapability) {
         set((s) => {
-          const next = applyGroupApiKeys(s.customApiGroups, { ...extractPlainGroupKeys(s.customApiGroups), ...desktopKeys });
-          return { customApiGroups: next, customApiKey: next[0]?.apiKey ?? "" };
+          const nextGroups = hasDesktopGroups
+            ? applyGroupApiKeys(s.customApiGroups, { ...extractPlainGroupKeys(s.customApiGroups), ...desktopKeys })
+            : s.customApiGroups;
+          const nextCapability = hasDesktopCapability
+            ? applyCapabilitySecrets(
+              s.capabilityEndpoints,
+              { ...extractPlainCapabilityKeys(s.capabilityEndpoints), ...desktopCapability },
+            )
+            : s.capabilityEndpoints;
+          return {
+            customApiGroups: nextGroups,
+            customApiKey: nextGroups[0]?.apiKey ?? "",
+            capabilityEndpoints: nextCapability,
+          };
         });
+        const memoryGroups = extractPlainGroupKeys(get().customApiGroups);
+        const memoryCapability = extractPlainCapabilityKeys(get().capabilityEndpoints);
+        const backfillGroups = !hasDesktopGroups && Object.keys(memoryGroups).length > 0;
+        const backfillCapability = !hasDesktopCapability && Object.keys(memoryCapability).length > 0;
+        if (backfillGroups || backfillCapability) {
+          await bridge.save({
+            v: 1,
+            groups: hasDesktopGroups ? desktopKeys : memoryGroups,
+            capability: hasDesktopCapability ? desktopCapability : memoryCapability,
+          });
+        }
         return;
       }
       const current = extractPlainGroupKeys(get().customApiGroups);
-      if (Object.keys(current).length > 0) await bridge.save({ v: 1, groups: current });
+      const currentCapability = extractPlainCapabilityKeys(get().capabilityEndpoints);
+      if (Object.keys(current).length > 0 || Object.keys(currentCapability).length > 0) {
+        await bridge.save({ v: 1, groups: current, capability: currentCapability });
+      }
     } catch {
       /* ignore */
     }

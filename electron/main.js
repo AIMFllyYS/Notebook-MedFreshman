@@ -78,6 +78,15 @@ function saveKeys(keys) {
   return clean;
 }
 
+function cleanSecretRecord(input) {
+  const src = input && typeof input === "object" ? input : {};
+  const clean = {};
+  for (const [id, val] of Object.entries(src)) {
+    if (typeof id === "string" && typeof val === "string") clean[id] = val;
+  }
+  return clean;
+}
+
 function loadCustomApiSecrets() {
   try {
     const buf = fs.readFileSync(CUSTOM_SECRETS_FILE);
@@ -85,25 +94,23 @@ function loadCustomApiSecrets() {
       ? safeStorage.decryptString(buf)
       : buf.toString("utf8");
     const obj = JSON.parse(json);
-    if (!obj || typeof obj !== "object") return { v: 1, groups: {} };
-    const groups = obj.groups && typeof obj.groups === "object" ? obj.groups : {};
-    const clean = {};
-    for (const [id, val] of Object.entries(groups)) {
-      if (typeof id === "string" && typeof val === "string") clean[id] = val;
-    }
-    return { v: 1, groups: clean };
+    if (!obj || typeof obj !== "object") return { v: 1, groups: {}, capability: {} };
+    return {
+      v: 1,
+      groups: cleanSecretRecord(obj.groups),
+      capability: cleanSecretRecord(obj.capability),
+    };
   } catch {
-    return { v: 1, groups: {} };
+    return { v: 1, groups: {}, capability: {} };
   }
 }
 
 function saveCustomApiSecrets(payload) {
-  const groups = payload && payload.groups && typeof payload.groups === "object" ? payload.groups : {};
-  const clean = {};
-  for (const [id, val] of Object.entries(groups)) {
-    if (typeof id === "string" && typeof val === "string") clean[id] = val;
-  }
-  const json = JSON.stringify({ v: 1, groups: clean });
+  const groups = cleanSecretRecord(payload && payload.groups);
+  const capability = payload && payload.capability !== undefined
+    ? cleanSecretRecord(payload.capability)
+    : loadCustomApiSecrets().capability;
+  const json = JSON.stringify({ v: 1, groups, capability });
   const data = safeStorage.isEncryptionAvailable()
     ? safeStorage.encryptString(json)
     : Buffer.from(json, "utf8");

@@ -105,3 +105,55 @@ export function resolveCapabilitySecret(userValue: string | undefined, platformV
   if (user) return { value: user, usedPlatformCredentials: false };
   return { value: trimEndpointField(platformValue), usedPlatformCredentials: true };
 }
+
+/** 本次请求可能真正打到的 sidecar。只剥密钥，baseUrl / modelId / style 原样保留。 */
+export type CapabilityNeed = "image" | "embedding" | "rerank" | "webSearch" | "imageSearch";
+
+const NEED_TO_SECRET: Record<CapabilityNeed, keyof CapabilityEndpoints> = {
+  image: "imageApiKey",
+  embedding: "embeddingApiKey",
+  rerank: "rerankApiKey",
+  webSearch: "webSearchApiKey",
+  imageSearch: "unsplashAccessKey",
+};
+
+/**
+ * chat 侧判据（宁多勿少）：
+ * - embedding / rerank：searchNotes 未禁用，或 contextMode=semantic（都会走 hybridSearch）
+ * - webSearch / imageSearch：enableSearch 打开且该工具未禁用
+ * - image：generateImage 只出批准卡，真正出图走 /api/image-gen，chat 不带生图密钥
+ */
+export function capabilityNeedsForChat(input: {
+  enableSearch?: boolean;
+  disabledTools?: readonly string[];
+  contextMode?: "full" | "semantic";
+}): CapabilityNeed[] {
+  const disabled = new Set(input.disabledTools ?? []);
+  const needs: CapabilityNeed[] = [];
+  if (!disabled.has("searchNotes") || input.contextMode === "semantic") {
+    needs.push("embedding", "rerank");
+  }
+  if (input.enableSearch && !disabled.has("webSearch")) needs.push("webSearch");
+  if (input.enableSearch && !disabled.has("imageSearch")) needs.push("imageSearch");
+  return needs;
+}
+
+export function capabilityNeedsForImageGen(): CapabilityNeed[] {
+  return ["image"];
+}
+
+export function selectCapabilityEndpointsForRequest(
+  raw: unknown,
+  needs: readonly CapabilityNeed[],
+): CapabilityEndpoints {
+  const full = normalizeCapabilityEndpoints(raw);
+  const allow = new Set(needs.map((need) => NEED_TO_SECRET[need]));
+  return {
+    ...full,
+    imageApiKey: allow.has("imageApiKey") ? full.imageApiKey : "",
+    embeddingApiKey: allow.has("embeddingApiKey") ? full.embeddingApiKey : "",
+    rerankApiKey: allow.has("rerankApiKey") ? full.rerankApiKey : "",
+    webSearchApiKey: allow.has("webSearchApiKey") ? full.webSearchApiKey : "",
+    unsplashAccessKey: allow.has("unsplashAccessKey") ? full.unsplashAccessKey : "",
+  };
+}

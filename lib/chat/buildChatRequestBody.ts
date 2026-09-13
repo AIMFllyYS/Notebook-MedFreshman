@@ -1,7 +1,8 @@
 import { isCustomRegistryId, selectCustomApiGroupsForRequest, type CustomApiGroup } from "@/lib/ai/models";
 import {
   EMPTY_CAPABILITY_ENDPOINTS,
-  normalizeCapabilityEndpoints,
+  capabilityNeedsForChat,
+  selectCapabilityEndpointsForRequest,
   type CapabilityEndpoints,
 } from "@/lib/ai/capabilityEndpoints";
 import type { ChatContext } from "@/lib/types/chat";
@@ -76,7 +77,14 @@ export function buildChatRequestBody(
     defaultImageModelId: settings.defaultImageModelId,
     imageModeTextModel: settings.imageModeTextModel,
     imageModeTextModelFallback: settings.imageModeTextModelFallback,
-    capabilityEndpoints: normalizeCapabilityEndpoints(settings.capabilityEndpoints ?? EMPTY_CAPABILITY_ENDPOINTS),
+    capabilityEndpoints: selectCapabilityEndpointsForRequest(
+      settings.capabilityEndpoints ?? EMPTY_CAPABILITY_ENDPOINTS,
+      capabilityNeedsForChat({
+        enableSearch: resolved.enableSearch,
+        disabledTools: settings.disabledTools,
+        contextMode: resolved.contextMode,
+      }),
+    ),
     disabledTools: settings.disabledTools,
     subjectId: ctx.subjectId,
     categoryId: ctx.categoryId,

@@ -2,11 +2,14 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   EMPTY_CAPABILITY_ENDPOINTS,
+  capabilityNeedsForChat,
+  capabilityNeedsForImageGen,
   capabilitySecretValues,
   normalizeCapabilityEndpoints,
   overlayOptional,
   resolveCapabilityEndpoint,
   resolveCapabilitySecret,
+  selectCapabilityEndpointsForRequest,
 } from "./capabilityEndpoints.ts";
 import { runWithCapabilityEndpoints, getCapabilityEndpoints } from "./capabilityContext.ts";
 
@@ -74,4 +77,43 @@ test("overlayOptional / capabilitySecretValues / ALS", () => {
   const inner = runWithCapabilityEndpoints({ unsplashAccessKey: " us " }, () => getCapabilityEndpoints());
   assert.equal(inner.unsplashAccessKey, "us");
   assert.equal(getCapabilityEndpoints().unsplashAccessKey, "");
+});
+
+test("selectCapabilityEndpointsForRequest：image-gen 只留生图密钥", () => {
+  const filtered = selectCapabilityEndpointsForRequest({
+    imageApiKey: "sk-image",
+    imageBaseUrl: "https://img.example/v1",
+    imageModelId: "img-1",
+    webSearchApiKey: "sk-search",
+    unsplashAccessKey: "sk-unsplash",
+    embeddingApiKey: "sk-embed",
+    rerankApiKey: "sk-rerank",
+  }, capabilityNeedsForImageGen());
+  assert.equal(filtered.imageApiKey, "sk-image");
+  assert.equal(filtered.imageBaseUrl, "https://img.example/v1");
+  assert.equal(filtered.imageModelId, "img-1");
+  assert.equal(filtered.webSearchApiKey, "");
+  assert.equal(filtered.unsplashAccessKey, "");
+  assert.equal(filtered.embeddingApiKey, "");
+  assert.equal(filtered.rerankApiKey, "");
+});
+
+test("capabilityNeedsForChat：按 enableSearch / disabledTools / contextMode 收窄", () => {
+  assert.deepEqual(capabilityNeedsForChat({ enableSearch: false, disabledTools: [] }), ["embedding", "rerank"]);
+  assert.deepEqual(
+    capabilityNeedsForChat({ enableSearch: true, disabledTools: [] }),
+    ["embedding", "rerank", "webSearch", "imageSearch"],
+  );
+  assert.deepEqual(
+    capabilityNeedsForChat({ enableSearch: true, disabledTools: ["webSearch"] }),
+    ["embedding", "rerank", "imageSearch"],
+  );
+  assert.deepEqual(
+    capabilityNeedsForChat({ enableSearch: false, disabledTools: ["searchNotes"], contextMode: "full" }),
+    [],
+  );
+  assert.deepEqual(
+    capabilityNeedsForChat({ enableSearch: false, disabledTools: ["searchNotes"], contextMode: "semantic" }),
+    ["embedding", "rerank"],
+  );
 });

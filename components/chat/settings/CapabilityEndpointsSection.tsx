@@ -4,7 +4,13 @@ import { useState } from "react";
 import { ChevronDown, ChevronRight, KeyRound } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { formatImageGenError } from "@/lib/ai/imageGenError";
-import { EMPTY_CAPABILITY_ENDPOINTS, IMAGE_API_STYLES, type ImageApiStyle } from "@/lib/ai/capabilityEndpoints";
+import {
+  EMPTY_CAPABILITY_ENDPOINTS,
+  IMAGE_API_STYLES,
+  capabilityNeedsForImageGen,
+  selectCapabilityEndpointsForRequest,
+  type ImageApiStyle,
+} from "@/lib/ai/capabilityEndpoints";
 import { h3Cls, inputCls, labelCls } from "./_shared";
 
 export function CapabilityEndpointsSection() {
@@ -29,7 +35,10 @@ export function CapabilityEndpointsSection() {
           modelId: selectedModelId,
           customApiGroups,
           defaultImageModelId,
-          capabilityEndpoints,
+          capabilityEndpoints: selectCapabilityEndpointsForRequest(
+            capabilityEndpoints,
+            capabilityNeedsForImageGen(),
+          ),
         }),
       });
       const body = await res.json().catch(() => null);

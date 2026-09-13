@@ -55,32 +55,93 @@ test("buildChatRequestBody：映射上下文与预算字段", () => {
   assert.equal(body.capabilityEndpoints.webSearchApiKey, "");
 });
 
-test("buildChatRequestBody：能力端点随请求发给服务端", () => {
+const allCapabilityKeys = {
+  imageBaseUrl: "https://img.example/v1",
+  imageApiKey: "sk-image",
+  imageModelId: "img-1",
+  imageApiStyle: "openai" as const,
+  embeddingBaseUrl: "https://emb.example/v1",
+  embeddingApiKey: "sk-embed",
+  embeddingModelId: "emb-1",
+  rerankBaseUrl: "https://rr.example/v1",
+  rerankApiKey: "sk-rerank",
+  rerankModelId: "rr-1",
+  webSearchApiKey: " user-zhipu ",
+  unsplashAccessKey: "user-unsplash",
+};
+
+test("buildChatRequestBody：未开联网时不发搜索密钥，检索 sidecar 仍带", () => {
   const body = buildChatRequestBody(
     ctx,
-    settings({
-      capabilityEndpoints: {
-        imageBaseUrl: "",
-        imageApiKey: "",
-        imageModelId: "",
-        imageApiStyle: "auto",
-        embeddingBaseUrl: "",
-        embeddingApiKey: "",
-        embeddingModelId: "",
-        rerankBaseUrl: "",
-        rerankApiKey: "",
-        rerankModelId: "",
-        webSearchApiKey: " user-zhipu ",
-        unsplashAccessKey: "user-unsplash",
-      },
-    }),
+    settings({ capabilityEndpoints: allCapabilityKeys }),
     resolved,
+    { limit: 1, estimated: 1, softLimitReached: false },
+    [],
+    "y",
+  );
+  assert.equal(body.capabilityEndpoints.webSearchApiKey, "");
+  assert.equal(body.capabilityEndpoints.unsplashAccessKey, "");
+  assert.equal(body.capabilityEndpoints.imageApiKey, "");
+  assert.equal(body.capabilityEndpoints.embeddingApiKey, "sk-embed");
+  assert.equal(body.capabilityEndpoints.rerankApiKey, "sk-rerank");
+  assert.equal(body.capabilityEndpoints.imageBaseUrl, "https://img.example/v1");
+});
+
+test("buildChatRequestBody：开联网时只发搜索相关密钥，生图密钥缺席", () => {
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ capabilityEndpoints: allCapabilityKeys }),
+    { ...resolved, enableSearch: true },
     { limit: 1, estimated: 1, softLimitReached: false },
     [],
     "y",
   );
   assert.equal(body.capabilityEndpoints.webSearchApiKey, "user-zhipu");
   assert.equal(body.capabilityEndpoints.unsplashAccessKey, "user-unsplash");
+  assert.equal(body.capabilityEndpoints.embeddingApiKey, "sk-embed");
+  assert.equal(body.capabilityEndpoints.rerankApiKey, "sk-rerank");
+  assert.equal(body.capabilityEndpoints.imageApiKey, "");
+  assert.equal(JSON.stringify(body).includes("sk-image"), false);
+});
+
+test("buildChatRequestBody：禁用 webSearch 时不发智谱 key，imageSearch 仍带", () => {
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ capabilityEndpoints: allCapabilityKeys, disabledTools: ["webSearch"] }),
+    { ...resolved, enableSearch: true },
+    { limit: 1, estimated: 1, softLimitReached: false },
+    [],
+    "y",
+  );
+  assert.equal(body.capabilityEndpoints.webSearchApiKey, "");
+  assert.equal(body.capabilityEndpoints.unsplashAccessKey, "user-unsplash");
+  assert.equal(JSON.stringify(body).includes("user-zhipu"), false);
+});
+
+test("buildChatRequestBody：禁用 searchNotes 且非 semantic 时不发向量/重排 key", () => {
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ capabilityEndpoints: allCapabilityKeys, disabledTools: ["searchNotes"] }),
+    resolved,
+    { limit: 1, estimated: 1, softLimitReached: false },
+    [],
+    "y",
+  );
+  assert.equal(body.capabilityEndpoints.embeddingApiKey, "");
+  assert.equal(body.capabilityEndpoints.rerankApiKey, "");
+});
+
+test("buildChatRequestBody：semantic 即使禁用 searchNotes 仍带向量/重排 key", () => {
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ capabilityEndpoints: allCapabilityKeys, disabledTools: ["searchNotes"] }),
+    { ...resolved, contextMode: "semantic" },
+    { limit: 1, estimated: 1, softLimitReached: false },
+    [],
+    "y",
+  );
+  assert.equal(body.capabilityEndpoints.embeddingApiKey, "sk-embed");
+  assert.equal(body.capabilityEndpoints.rerankApiKey, "sk-rerank");
 });
 
 test("buildChatRequestBody：无分组且旧版 custom 模型时附带 customProvider", () => {
