@@ -1737,6 +1737,96 @@
   justify-content: center;
 }
 
+.chat-input-queue {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 6px;
+  padding: 7px 9px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 22%, var(--line));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--md-sys-color-primary-container) 42%, var(--bg-panel));
+}
+.chat-input-queue-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 10px;
+  font-weight: 600;
+}
+.chat-input-queue-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--md-sys-color-primary);
+}
+.chat-input-queue-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary) 14%, transparent);
+}
+.chat-input-queue-count {
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.chat-input-queue-list {
+  display: flex;
+  max-height: 6.5rem;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.chat-input-queue-item {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px;
+  color: var(--md-sys-color-on-surface);
+  font-size: 11px;
+}
+.chat-input-queue-index {
+  display: grid;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--md-sys-color-primary) 14%, transparent);
+  color: var(--md-sys-color-primary);
+  font-size: 9px;
+  font-weight: 700;
+}
+.chat-input-queue-text {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chat-input-queue-action {
+  flex: 0 0 auto;
+  padding: 2px 4px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--md-sys-color-primary);
+  font-size: 10px;
+  cursor: pointer;
+}
+.chat-input-queue-action:hover,
+.chat-input-queue-action:focus-visible {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
+}
+.chat-input-queue-action-muted {
+  color: var(--ink-faint);
+}
+
 /* (comment) */
 @container (max-width: 420px) {
   .model-menu-label-full {

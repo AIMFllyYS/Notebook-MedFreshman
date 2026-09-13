@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest';
-import { render, act, fireEvent, screen } from '@testing-library/react';
+import { render, act, fireEvent, screen, waitFor } from '@testing-library/react';
 import ChatInput from './ChatInput';
 import { useSettings } from '@/lib/hooks/useSettings';
 
@@ -154,5 +154,36 @@ describe('ChatInput thinking menu', () => {
     await act(async () => { sendBtn!.click(); });
     expect(onSend).toHaveBeenCalledOnce();
     expect(onSend).toHaveBeenCalledWith('hello', expect.objectContaining({ enableThinking: true, thinkingEffort: 'medium' }));
+  });
+
+  it('keeps drafting while loading and sends queued messages in order after generation ends', async () => {
+    const onSend = vi.fn();
+    const onStop = vi.fn();
+    const { getByRole, getByTitle, rerender } = render(
+      <ChatInput {...{ onSend, onStop, isLoading: true, chatContext }} />,
+    );
+    const textbox = getByRole('textbox');
+    expect(textbox).not.toBeDisabled();
+    expect(getByTitle('停止生成')).toBeVisible();
+
+    fireEvent.change(textbox, { target: { value: '第一条' } });
+    expect(getByTitle('发送').querySelector('[data-agent-icon="arrow-up"]')).not.toBeNull();
+    fireEvent.click(getByTitle('发送'));
+    fireEvent.change(textbox, { target: { value: '第二条' } });
+    fireEvent.click(getByTitle('发送'));
+    expect(onSend).not.toHaveBeenCalled();
+    expect(getByRole('region', { name: '等待发送' })).toHaveTextContent('2 条');
+
+    fireEvent.click(getByRole('button', { name: '编辑第 1 条排队内容' }));
+    fireEvent.change(textbox, { target: { value: '第一条（已修改）' } });
+    fireEvent.click(getByTitle('发送'));
+
+    rerender(<ChatInput {...{ onSend, onStop, isLoading: false, chatContext }} />);
+    await waitFor(() => expect(onSend).toHaveBeenCalledWith('第一条（已修改）', expect.any(Object)));
+    // 模拟父级在发送第一条后进入下一轮生成，再由生成结束触发第二条。
+    rerender(<ChatInput {...{ onSend, onStop, isLoading: true, chatContext }} />);
+    expect(getByRole('region', { name: '等待发送' })).toHaveTextContent('第二条');
+    rerender(<ChatInput {...{ onSend, onStop, isLoading: false, chatContext }} />);
+    await waitFor(() => expect(onSend).toHaveBeenCalledWith('第二条', expect.any(Object)));
   });
 });
