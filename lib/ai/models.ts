@@ -558,6 +558,15 @@ export function getModelInfo(id: string): ModelInfo | undefined {
   return MODELS.find((m) => m.id === normalizeRegistryId(id));
 }
 
+/**
+ * 落地端点的 ModelInfo：apiModelId 能对上注册表时用它（GLM → mimo-v2.5），
+ * 否则退回 registryId（同模型换供应商、未知上游 id）。
+ * `resolveBuiltinEndpoint` 与 `landedThinkingContext` 必须共用这一判据。
+ */
+export function getLandedModelInfo(apiModelId: string, registryId: string): ModelInfo | undefined {
+  return getModelInfo(apiModelId) ?? getModelInfo(registryId);
+}
+
 /** 主路由 provider（endpoints[0]）。 */
 export function primaryProvider(info: ModelInfo): ProviderKind {
   return info.endpoints[0]?.provider ?? SF;

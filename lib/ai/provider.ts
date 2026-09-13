@@ -4,6 +4,7 @@
 
 import {
   getModelInfo,
+  getLandedModelInfo,
   getFetchTimeoutMs,
   hasNextEndpoint,
   normalizeRegistryId,
@@ -263,6 +264,10 @@ function resolveBuiltinEndpoint(
   const apiModelId = isCustomOpenai
     ? (RELAY_MODEL_ID || endpoint?.apiModelId || effectiveId)
     : (endpoint?.apiModelId ?? effectiveId);
+  // custom-openai 的 apiModelId 是用户填的 RELAY_MODEL_ID，可能撞上内置 id；
+  // 思考方言仍跟注册条目，与 hop 0 历史行为一致。其余 hop 按落地 apiModelId 取。
+  const landedInfo = getLandedModelInfo(isCustomOpenai ? effectiveId : apiModelId, effectiveId)
+    ?? effectiveInfo;
 
   return {
     registryId: effectiveId,
@@ -270,7 +275,7 @@ function resolveBuiltinEndpoint(
     baseUrl: cred.baseUrl,
     apiKey: cred.apiKey,
     reasoningField: REASONING_FIELD,
-    thinkingRequestStyle: effectiveInfo?.thinkingRequestStyle ?? "siliconflow",
+    thinkingRequestStyle: landedInfo?.thinkingRequestStyle ?? "siliconflow",
     apiProtocol: "openai",
     isCustom: false,
     configured: isCustomOpenai ? cred.configured && !!RELAY_MODEL_ID : cred.configured,

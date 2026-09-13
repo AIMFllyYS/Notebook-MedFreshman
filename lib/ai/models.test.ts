@@ -7,6 +7,7 @@ import {
   CUSTOM_OPENAI_MODEL_ID,
   LEGACY_REGISTRY_ALIASES,
   getModelInfo,
+  getLandedModelInfo,
   getModelGroups,
   getModelGroupsWithCustom,
   getAllModels,
@@ -300,6 +301,12 @@ test("LEGACY_REGISTRY_ALIASES：每个 value 都能 getModelInfo", () => {
     assert.ok(info, `alias ${legacy} → ${current} 应能 getModelInfo`);
     assert.equal(getModelInfo(legacy)?.id, info!.id);
   }
+});
+
+test("getLandedModelInfo：apiModelId 能对上注册表时用落地模型，否则退回 registryId", () => {
+  assert.equal(getLandedModelInfo("mimo-v2.5", "z-ai/glm-5.3-flash")?.id, "mimo-v2.5");
+  assert.equal(getLandedModelInfo("z-ai/glm-5.3-flash", "z-ai/glm-5.3-flash")?.id, "z-ai/glm-5.3-flash");
+  assert.equal(getLandedModelInfo("unknown-upstream", "mimo-v2.5")?.id, "mimo-v2.5");
 });
 
 test("getModelInfo：旧 id 映射到当前注册表", () => {

@@ -326,6 +326,19 @@ test("resolveProvider：主力 GLM 走 relay，备用端点为 mimo", () => {
   assert.equal(backup.endpointIndex, 1);
 });
 
+test("resolveProvider：GLM 备用 hop 的 thinkingRequestStyle 跟落地 MiMo，不沿用 GLM 方言", () => {
+  const primary = resolveProvider("z-ai/glm-5.3-flash", undefined, 0);
+  assert.equal(primary.thinkingRequestStyle, "openai-reasoning-effort");
+  assert.equal(primary.apiModelId, "z-ai/glm-5.3-flash");
+
+  const backup = resolveProvider("z-ai/glm-5.3-flash", undefined, 1);
+  assert.equal(backup.registryId, "z-ai/glm-5.3-flash");
+  assert.equal(backup.apiModelId, "mimo-v2.5");
+  assert.equal(backup.endpointIndex, 1);
+  assert.equal(backup.thinkingRequestStyle, "mimo-thinking");
+  assert.equal(backup.reasoningField, primary.reasoningField);
+});
+
 test("resolveProvider：旧 GLM-5.2 id 归一到 glm-5.3-flash", () => {
   const r = resolveProvider("zai-org/GLM-5.2", undefined, 0);
   assert.equal(r.registryId, "z-ai/glm-5.3-flash");
@@ -343,6 +356,7 @@ test("resolveProvider：Qwen3.8-Flash 超时加长", () => {
 test("resolveProvider：自由中转未配置模型 ID 时 configured=false", () => {
   const r = resolveProvider("custom-openai");
   assert.equal(r.registryId, "custom-openai");
+  assert.equal(r.thinkingRequestStyle, "openai-reasoning-effort");
   if (!process.env.RELAY_MODEL_ID) {
     assert.equal(r.configured, false);
     assert.equal(r.apiModelId, "custom-openai");

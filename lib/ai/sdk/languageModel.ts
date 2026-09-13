@@ -31,6 +31,7 @@ import {
 } from "@/lib/ai/provider";
 import {
   getModelInfo,
+  getLandedModelInfo,
   getModelInfoWithCustom,
   wireThinkingEffort,
   type CustomApiGroup,
@@ -215,7 +216,7 @@ function landedThinkingContext(
     const info = getModelInfoWithCustom(landed.registryId, customGroups) ?? fallbackInfo;
     return { provider: landed, info };
   }
-  const info = getModelInfo(landed.apiModelId) ?? getModelInfo(landed.registryId) ?? fallbackInfo;
+  const info = getLandedModelInfo(landed.apiModelId, landed.registryId) ?? fallbackInfo;
   return {
     provider: {
       ...landed,
