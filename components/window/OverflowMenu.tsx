@@ -12,7 +12,13 @@ interface OverflowMenuProps {
   onToggle: (id: string) => void;
 }
 
-function WindowIcon({ type }: { type: ManagedWindow["type"] }) {
+function WindowIcon({ type, icon }: { type: ManagedWindow["type"]; icon?: string }) {
+  const [failedIcon, setFailedIcon] = useState<string | null>(null);
+  if (icon && failedIcon !== icon) {
+    // 动态站点 favicon 不在 next/image 的静态远程域名白名单内。
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={icon} alt="" aria-hidden="true" className="h-4 w-4 rounded-sm object-contain" onError={() => setFailedIcon(icon)} />;
+  }
   if (type === "floating-chat") return <PencilSparklesIcon size={14} />;
   if (type === "record-preview") return <BookmarkCheck size={14} />;
   if (type === "image-gen-viewer") return <ImagePlus size={14} />;
@@ -82,7 +88,7 @@ export default function OverflowMenu({ windows, onToggle }: OverflowMenuProps) {
               className="flex w-full items-center gap-2 px-3 py-2 text-left text-[13px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
             >
               <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-primary)]">
-                <WindowIcon type={win.type} />
+                <WindowIcon type={win.type} icon={win.icon} />
               </span>
               <span className="min-w-0 flex-1 truncate">{win.title}</span>
               {win.badge && win.badge > 1 && (

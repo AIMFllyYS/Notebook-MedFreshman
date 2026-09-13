@@ -14,7 +14,13 @@ import {
   Trash2,
   Palette,
   Keyboard,
+  Download,
+  LogIn,
+  LogOut,
 } from "lucide-react";
+import { LOGIN_PATH } from "@/lib/auth/session";
+import { useAuthSession } from "@/lib/hooks/useAuthSession";
+import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
 import { navTree } from "@/lib/content-data/nav";
 import SubjectIcon from "@/components/shared/SubjectIcon";
@@ -179,9 +185,12 @@ export default function GlobalSettings({
   const setCustomAppearance = useTheme((s) => s.setCustomAppearance);
   const resetAppearance = useTheme((s) => s.resetAppearance);
   const router = useRouter();
+  const { status: authStatus, email: authEmail, signOut } = useAuthSession();
 
   const [entries, setEntries] = useState<ProgressEntry[]>(() => getAllProgress());
   const [confirmClear, setConfirmClear] = useState(false);
+  const [logExportMsg, setLogExportMsg] = useState<string | null>(null);
+  const [exportingLogs, setExportingLogs] = useState(false);
   const [openSection, setOpenSection] = useState<"scores" | "keyboard" | "appearance" | null>(null);
   const [pos, setPos] = useState<PopoverPos>(() => computePos(null));
   const panelRef = useRef<HTMLDivElement>(null);
@@ -230,6 +239,15 @@ export default function GlobalSettings({
     setConfirmClear(false);
   };
 
+  const handleExportLogs = () => {
+    setExportingLogs(true);
+    void exportAgentLogs()
+      .then((r) => {
+        setLogExportMsg(r.ok ? (r.empty ? "暂无日志" : "已导出") : (r.error ?? "导出失败"));
+      })
+      .finally(() => setExportingLogs(false));
+  };
+
   const node = (
     <motion.div
       ref={panelRef}
@@ -272,6 +290,54 @@ export default function GlobalSettings({
         </div>
 
         <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
+          <div
+            className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container)] px-3.5 py-2.5"
+            style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
+          >
+            <div className="min-w-0">
+              <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">账号</div>
+              <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                {authStatus === "signedIn" ? authEmail || "已登录" : "未登录"}
+              </div>
+            </div>
+            {authStatus === "signedIn" ? (
+              <button
+                type="button"
+                aria-label="退出"
+                onClick={() => void signOut()}
+                className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
+                style={{
+                  background: "var(--md-sys-color-primary)",
+                  color: "var(--md-sys-color-on-primary)",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <LogOut size={14} />
+                退出
+              </button>
+            ) : (
+              <button
+                type="button"
+                aria-label="登录"
+                onClick={() => {
+                  router.push(LOGIN_PATH);
+                  onClose();
+                }}
+                className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
+                style={{
+                  background: "var(--md-sys-color-primary)",
+                  color: "var(--md-sys-color-on-primary)",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <LogIn size={14} />
+                登录
+              </button>
+            )}
+          </div>
+
           <AcademicYearSwitcher />
 
           <SettingsSection
@@ -422,6 +488,40 @@ export default function GlobalSettings({
               resetAppearance={resetAppearance}
             />
           </SettingsSection>
+
+          <div className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container)] px-3.5 py-2.5"
+            style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
+          >
+            <div className="min-w-0">
+              <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">
+                导出全部日志
+              </div>
+              <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                下载已落盘的 Agent 生命周期 JSONL，保持原始字节，不做清洗。
+              </div>
+              {logExportMsg && (
+                <div className="mt-1 text-[11px] font-medium text-[var(--md-sys-color-primary)]">
+                  {logExportMsg}
+                </div>
+              )}
+            </div>
+            <button
+              type="button"
+              aria-label="导出全部日志"
+              onClick={handleExportLogs}
+              disabled={exportingLogs}
+              className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors disabled:opacity-40"
+              style={{
+                background: "var(--md-sys-color-primary)",
+                color: "var(--md-sys-color-on-primary)",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              <Download size={14} />
+              {exportingLogs ? "导出中" : "导出"}
+            </button>
+          </div>
         </div>
     </motion.div>
   );

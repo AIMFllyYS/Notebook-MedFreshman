@@ -3,6 +3,7 @@ import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { createPersistedStore } from "@/lib/stores/_persist";
 import type { DocumentSpec, DocumentSection, StoredDocument, DocumentStatus } from "@/lib/documents/types";
 import { assembleDocumentMarkdown } from "@/lib/documents/types";
+import { scheduleCloudUpsert } from "@/lib/sync/schedule";
 
 interface DocumentsState {
   byId: Record<string, StoredDocument>;
@@ -45,25 +46,29 @@ export const useDocuments = createPersistedStore<DocumentsState>(
       _setHasHydrated: (v) => set({ _hasHydrated: v }),
 
       create: (id, spec, modelId) =>
-        set((s) => ({
-          byId: {
-            ...s.byId,
-            [id]: {
-              id,
-              spec,
-              modelId,
-              sections: spec.outline?.map((title) => ({ title, status: "pending" })) ?? [],
-              status: "idle",
-              createdAt: Date.now(),
-              updatedAt: Date.now(),
+        set((s) => {
+          scheduleCloudUpsert("document", id);
+          return {
+            byId: {
+              ...s.byId,
+              [id]: {
+                id,
+                spec,
+                modelId,
+                sections: spec.outline?.map((title) => ({ title, status: "pending" })) ?? [],
+                status: "idle",
+                createdAt: Date.now(),
+                updatedAt: Date.now(),
+              },
             },
-          },
-        })),
+          };
+        }),
 
       setSections: (id, sections) =>
         set((s) => {
           const doc = s.byId[id];
           if (!doc) return s;
+          scheduleCloudUpsert("document", id);
           return { byId: { ...s.byId, [id]: { ...doc, sections, updatedAt: Date.now() } } };
         }),
 
@@ -72,6 +77,7 @@ export const useDocuments = createPersistedStore<DocumentsState>(
           const doc = s.byId[id];
           if (!doc) return s;
           const sections = doc.sections.map((sec, i) => (i === index ? { ...sec, markdown, status: "done" as const } : sec));
+          scheduleCloudUpsert("document", id);
           return { byId: { ...s.byId, [id]: { ...doc, sections, updatedAt: Date.now() } } };
         }),
 
@@ -94,6 +100,7 @@ export const useDocuments = createPersistedStore<DocumentsState>(
         set((s) => {
           const doc = s.byId[id];
           if (!doc) return s;
+          scheduleCloudUpsert("document", id);
           return { byId: { ...s.byId, [id]: { ...doc, status, error, updatedAt: Date.now() } } };
         }),
 

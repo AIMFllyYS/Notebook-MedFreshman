@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useMemo, Children, isValidElement } from 'react';
+import { useStreamingText } from '@/lib/hooks/useStreamingText';
 import ReactMarkdown from 'react-markdown';
 import { sharedRemarkPlugins, sharedRehypePlugins } from '@/lib/markdown/plugins';
 import remarkSoftBreaks from '@/lib/markdown/remarkSoftBreaks';
@@ -11,7 +12,6 @@ import { parseChatContent } from '@/lib/chat/rendering/parseChatContent';
 import type { ParsedBlock } from '@/lib/types/chat';
 import { ChatMessageVisualizations } from '@/components/chat/ChatMessageVisualizations';
 import { ToolCallDashboard } from '@/components/chat/ToolCallDashboard';
-import { FollowUpQuestions } from '@/components/chat/FollowUpQuestions';
 import CodeBlock from '@/components/shared/CodeBlock';
 import { ChatImage } from '@/components/chat/ChatImage';
 import { ImageStrip } from '@/components/chat/ImageStrip';
@@ -21,9 +21,9 @@ import { VizErrorBoundary } from '@/components/chat/VizErrorBoundary';
 import { ensureSvgRoot } from '@/lib/canvas/normalize';
 
 interface MessageContentProps {
+  isStreaming?: boolean;
   content: string;
   enableVisualizations?: boolean;
-  onFollowUpSelect?: (question: string) => void;
   /** 聊天体文本（用户输入/思考过程/生成依据）启用软换行：段内单 \n 渲染为 <br>。 */
   preserveLineBreaks?: boolean;
   sessionId?: string;
@@ -58,6 +58,8 @@ function ChatParagraph({ node: _node, children, ...props }: MarkdownElementProps
    这里只保留必要的行为：链接新开页、表格横向滚动包裹、代码块复制按钮。 */
 const mdComponents = {
   ...directiveComponents,
+  // Defense in depth: never mount a script element even if a node slips past sanitize.
+  script: () => null,
   img: ChatImage,
   p: ChatParagraph,
   a: ({ node: _node, ...props }: MarkdownElementProps<'a'>) => (
@@ -166,12 +168,11 @@ function renderBlocks(
   blocks: ParsedBlock[],
   keyPrefix: string,
   enableVisualizations: boolean | undefined,
-  onFollowUpSelect: ((question: string) => void) | undefined,
   remarkPlugins: typeof sharedRemarkPlugins,
   renderContext?: MessageRenderContext,
 ): React.ReactNode {
   return blocks.map((block, idx) =>
-    renderParsedBlock(block, `${keyPrefix}-${idx}`, enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext),
+    renderParsedBlock(block, `${keyPrefix}-${idx}`, enableVisualizations, remarkPlugins, renderContext),
   );
 }
 
@@ -180,7 +181,6 @@ const renderParsedBlock = (
   block: ParsedBlock,
   key: string,
   enableVisualizations?: boolean,
-  onFollowUpSelect?: (question: string) => void,
   remarkPlugins: typeof sharedRemarkPlugins = sharedRemarkPlugins,
   renderContext?: MessageRenderContext,
 ) => {
@@ -192,7 +192,7 @@ const renderParsedBlock = (
       if (nested.some((b) => b.type === 'component')) {
         return (
           <React.Fragment key={key}>
-            {renderBlocks(nested, key, enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext)}
+            {renderBlocks(nested, key, enableVisualizations, remarkPlugins, renderContext)}
           </React.Fragment>
         );
       }
@@ -235,7 +235,7 @@ const renderParsedBlock = (
     const innerBlocks = parseXmlTags(childrenText || '');
     return (
       <React.Fragment key={key}>
-        {renderBlocks(innerBlocks, key, enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext)}
+        {renderBlocks(innerBlocks, key, enableVisualizations, remarkPlugins, renderContext)}
       </React.Fragment>
     );
   }
@@ -259,22 +259,24 @@ const renderParsedBlock = (
 const MessageContentComponent: React.FC<MessageContentProps> = ({
   content,
   enableVisualizations = true,
-  onFollowUpSelect,
   preserveLineBreaks = false,
   sessionId,
   messageId,
   repairModelId,
   topic,
+  isStreaming = false,
 }) => {
-  const { followUps, blocks } = useMemo(() => {
-    return parseChatContent(content);
-  }, [content]);
+  const renderedContent = useStreamingText(content, isStreaming);
+  const { blocks } = useMemo(() => {
+    return parseChatContent(renderedContent);
+  }, [renderedContent]);
 
   const remarkPlugins = useMemo(
     () => (preserveLineBreaks ? [...sharedRemarkPlugins, remarkSoftBreaks] : sharedRemarkPlugins),
     [preserveLineBreaks],
   );
 
+  const rendered = useMemo(() => {
   const canvasBlockCounter = { current: 0 };
   const renderContext: MessageRenderContext = {
     sessionId,
@@ -284,16 +286,10 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
     nextCanvasBlockIndex: () => canvasBlockCounter.current++,
   };
 
-  return (
-    <>
-      {renderBlocks(blocks, 'root', enableVisualizations, onFollowUpSelect, remarkPlugins, renderContext)}
-      {followUps.length > 0 && onFollowUpSelect && (
-        <FollowUpQuestions questions={followUps} onSelect={onFollowUpSelect} />
-      )}
-    </>
-  );
+  return renderBlocks(blocks, 'root', enableVisualizations, remarkPlugins, renderContext);
+  }, [blocks, enableVisualizations, remarkPlugins, sessionId, messageId, repairModelId, topic]);
+  return <>{rendered}</>;
 };
 
 export const MessageContent = React.memo(MessageContentComponent);
 MessageContent.displayName = 'MessageContent';
-

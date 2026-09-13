@@ -18,6 +18,7 @@ const fs = require("node:fs");
 const net = require("node:net");
 const http = require("node:http");
 const BAKED = require("./config");
+const { normalizeOpenAIBaseUrl } = require("./openaiBaseUrl");
 
 // 自由中转 = 用户自填的 OpenAI 兼容端点（URL + API Key + 模型 ID），不必使用项目中转站。
 // SiliconFlow / MiMo / Zhipu / Unsplash 仍为可选。
@@ -44,6 +45,7 @@ function hasRequiredKeys(keys) {
 }
 
 const KEYS_FILE = path.join(app.getPath("userData"), "keys.enc");
+const CUSTOM_SECRETS_FILE = path.join(app.getPath("userData"), "custom-api-secrets.enc");
 
 let serverProc = null;
 let serverPort = null;
@@ -74,6 +76,46 @@ function saveKeys(keys) {
     : Buffer.from(json, "utf8");
   fs.writeFileSync(KEYS_FILE, data);
   return clean;
+}
+
+function cleanSecretRecord(input) {
+  const src = input && typeof input === "object" ? input : {};
+  const clean = {};
+  for (const [id, val] of Object.entries(src)) {
+    if (typeof id === "string" && typeof val === "string") clean[id] = val;
+  }
+  return clean;
+}
+
+function loadCustomApiSecrets() {
+  try {
+    const buf = fs.readFileSync(CUSTOM_SECRETS_FILE);
+    const json = safeStorage.isEncryptionAvailable()
+      ? safeStorage.decryptString(buf)
+      : buf.toString("utf8");
+    const obj = JSON.parse(json);
+    if (!obj || typeof obj !== "object") return { v: 1, groups: {}, capability: {} };
+    return {
+      v: 1,
+      groups: cleanSecretRecord(obj.groups),
+      capability: cleanSecretRecord(obj.capability),
+    };
+  } catch {
+    return { v: 1, groups: {}, capability: {} };
+  }
+}
+
+function saveCustomApiSecrets(payload) {
+  const groups = cleanSecretRecord(payload && payload.groups);
+  const capability = payload && payload.capability !== undefined
+    ? cleanSecretRecord(payload.capability)
+    : loadCustomApiSecrets().capability;
+  const json = JSON.stringify({ v: 1, groups, capability });
+  const data = safeStorage.isEncryptionAvailable()
+    ? safeStorage.encryptString(json)
+    : Buffer.from(json, "utf8");
+  fs.writeFileSync(CUSTOM_SECRETS_FILE, data);
+  return { ok: true };
 }
 
 // ---------- server orchestration ----------
@@ -157,6 +199,7 @@ async function startServer(keys) {
     HOSTNAME: "127.0.0.1",
     NODE_ENV: "production",
     ELECTRON_RUN_AS_NODE: "1", // run server.js with Electron's bundled Node
+    ELECTRON_USER_DATA: app.getPath("userData"),
   };
   const proc = spawn(process.execPath, [serverJs], { cwd: dir, env, stdio: ["ignore", "pipe", "pipe"] });
   serverProc = proc;
@@ -333,6 +376,9 @@ function buildMenu() {
 }
 
 // ---------- IPC (setup window) ----------
+ipcMain.handle("secrets:load", () => loadCustomApiSecrets());
+ipcMain.handle("secrets:save", (_e, payload) => saveCustomApiSecrets(payload));
+
 ipcMain.handle("setup:get-keys", () => loadKeys());
 
 ipcMain.handle("setup:save", async (_e, keys) => {
@@ -358,14 +404,9 @@ ipcMain.handle("setup:save", async (_e, keys) => {
 // Best-effort validation: GET {base}/models with the SiliconFlow key.
 ipcMain.handle("setup:test", async (_e, keys) => {
   const result = {};
-  const withV1 = (base) => {
-    const t = String(base || "").trim().replace(/\/+$/, "");
-    if (!t) return t;
-    return /\/v1$/i.test(t) ? t : `${t}/v1`;
-  };
   const tryModels = async (base, key, label) => {
     if (!key || !key.trim()) return { label, status: "empty" };
-    const url = withV1(base);
+    const url = normalizeOpenAIBaseUrl(base);
     if (!url) return { label, status: "empty" };
     try {
       const resp = await fetch(`${url}/models`, {

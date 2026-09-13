@@ -39,4 +39,12 @@ export interface ToolModule<N extends StudyToolName = StudyToolName> {
   resultKey?: (part: ToolPart<N>) => string | null;
   /** 卡片渲染条件（如 hits.length > 0）。缺省 = output-available && !preliminary */
   shouldRender?: (part: ToolPart<N>) => boolean;
+  /** 同名工具多次调用合成一张卡（searchNotes / webSearch / 图片检索）。 */
+  aggregate?: boolean;
+  /** 聚合条目去重键（path / url）。空键放行，避免误丢无 id 条目。 */
+  itemKey?: (item: unknown) => string | null;
+  /** 从一次调用取出待合并条目。 */
+  itemsOf?: (part: ToolPart<N>) => readonly unknown[];
+  /** 把去重后的条目写回第一张卡使用的 part。 */
+  withItems?: (part: ToolPart<N>, items: readonly unknown[]) => ToolPart<N>;
 }

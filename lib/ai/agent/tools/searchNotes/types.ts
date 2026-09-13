@@ -1,5 +1,8 @@
 import type { TextToolOutput } from "@/lib/ai/agent/tools/_types";
 
+/** 模型 text 与 UI hits 共用的条数上限。 */
+export const SEARCH_NOTES_HIT_LIMIT = 8;
+
 export interface SearchHit {
   title: string;
   path: string;

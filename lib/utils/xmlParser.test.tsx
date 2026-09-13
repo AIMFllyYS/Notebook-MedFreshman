@@ -50,6 +50,24 @@ describe('parseXmlTags', () => {
     expect(formula!.childrenText).toContain('$E=mc^2$');
   });
 
+  it('InteractiveVenn 解析 a/b/ab 与标签 props，不读 children', () => {
+    const blocks = parseXmlTags(
+      '<InteractiveVenn a={0.3} b={25} ab={10} aLabel="线粒体" bLabel="叶绿体" abLabel="内共生" />',
+    );
+    expect(blocks).toHaveLength(1);
+    expect(blocks[0].type).toBe('component');
+    expect(blocks[0].tagName).toBe('InteractiveVenn');
+    expect(blocks[0].props).toMatchObject({
+      a: 0.3,
+      b: 25,
+      ab: 10,
+      aLabel: '线粒体',
+      bLabel: '叶绿体',
+      abLabel: '内共生',
+    });
+    expect(blocks[0].childrenText).toBe('');
+  });
+
   it('无内层 PascalCase 标签时 Answer 为单一组件块', () => {
     const blocks = parseXmlTags('<Answer>纯 markdown 正文</Answer>');
     expect(blocks).toHaveLength(1);

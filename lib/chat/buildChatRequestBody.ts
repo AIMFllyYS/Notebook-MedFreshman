@@ -1,8 +1,15 @@
-import type { CustomApiGroup } from "@/lib/ai/models";
+import { isCustomRegistryId, selectCustomApiGroupsForRequest, type CustomApiGroup } from "@/lib/ai/models";
+import {
+  EMPTY_CAPABILITY_ENDPOINTS,
+  capabilityNeedsForChat,
+  selectCapabilityEndpointsForRequest,
+  type CapabilityEndpoints,
+} from "@/lib/ai/capabilityEndpoints";
 import type { ChatContext } from "@/lib/types/chat";
 import type { Skill } from "@/lib/types/skill";
 import type { ContextBudget } from "./estimateContextBudget";
 import type { ResolvedRequestSettings } from "./resolveRequestSettings";
+import type { ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
 
 export interface ChatRequestBodySettings {
   customApiGroups: CustomApiGroup[];
@@ -12,6 +19,7 @@ export interface ChatRequestBodySettings {
   defaultImageModelId: string | null;
   imageModeTextModel: string;
   imageModeTextModelFallback: string;
+  capabilityEndpoints?: CapabilityEndpoints;
   disabledTools: string[];
   globalContext: string;
 }
@@ -24,6 +32,7 @@ export interface ChatRequestBody {
   defaultImageModelId: string | null;
   imageModeTextModel: string;
   imageModeTextModelFallback: string;
+  capabilityEndpoints: CapabilityEndpoints;
   disabledTools: string[];
   subjectId: string;
   categoryId: string;
@@ -39,6 +48,7 @@ export interface ChatRequestBody {
   clientContextTokens: number;
   globalContext: string;
   skills: Skill[];
+  artifacts?: ArtifactCatalogItem[];
 }
 
 export function buildChatRequestBody(
@@ -48,18 +58,33 @@ export function buildChatRequestBody(
   budget: ContextBudget,
   skills: Skill[],
   academicYear: string,
+  artifacts: ArtifactCatalogItem[] = [],
 ): ChatRequestBody {
+  const customApiGroups = selectCustomApiGroupsForRequest(
+    settings.customApiGroups,
+    resolved.effectiveModelId,
+  );
   const customProvider: ChatRequestBody["customProvider"] =
-    settings.customApiGroups.length === 0 && settings.customBaseUrl
+    customApiGroups.length === 0
+    && isCustomRegistryId(resolved.effectiveModelId)
+    && settings.customBaseUrl
       ? { baseUrl: settings.customBaseUrl, apiKey: settings.customApiKey, model: settings.customModelId }
       : undefined;
   return {
     modelId: resolved.effectiveModelId,
-    customApiGroups: settings.customApiGroups,
+    customApiGroups,
     customProvider,
     defaultImageModelId: settings.defaultImageModelId,
     imageModeTextModel: settings.imageModeTextModel,
     imageModeTextModelFallback: settings.imageModeTextModelFallback,
+    capabilityEndpoints: selectCapabilityEndpointsForRequest(
+      settings.capabilityEndpoints ?? EMPTY_CAPABILITY_ENDPOINTS,
+      capabilityNeedsForChat({
+        enableSearch: resolved.enableSearch,
+        disabledTools: settings.disabledTools,
+        contextMode: resolved.contextMode,
+      }),
+    ),
     disabledTools: settings.disabledTools,
     subjectId: ctx.subjectId,
     categoryId: ctx.categoryId,
@@ -75,5 +100,6 @@ export function buildChatRequestBody(
     clientContextTokens: budget.estimated,
     globalContext: settings.globalContext,
     skills,
+    artifacts,
   };
 }

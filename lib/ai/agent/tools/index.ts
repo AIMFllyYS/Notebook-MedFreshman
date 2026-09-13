@@ -18,6 +18,7 @@ export type { DrawDiagramInput, DrawDiagramOutput } from "@/lib/ai/agent/tools/d
 export type { GenerateImageInput, GenerateImageOutput } from "@/lib/ai/agent/tools/generateImage/types";
 export type { CreateQuizInput, CreateQuizOutput, CreateQuizQuestionInput } from "@/lib/ai/agent/tools/createQuiz/types";
 export type { WriteDocumentInput, WriteDocumentOutput } from "@/lib/ai/agent/tools/writeDocument/types";
+export type { GetArtifactInput, GetArtifactOutput, ArtifactCatalogItem } from "@/lib/ai/agent/tools/getArtifact/types";
 export type { UseSkillInput, UseSkillOutput } from "@/lib/ai/agent/tools/useSkill/types";
 export type { StudyTools, StudyToolName } from "@/lib/ai/agent/tools/names";
 /** @public 兼容旧 import 路径；设置面板与思考链从 presentations / toolPresentation 取用。 */

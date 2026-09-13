@@ -1,5 +1,18 @@
-const UNSPLASH_KEY = process.env.UNSPLASH_ACCESS_KEY || "";
+import { mainUsedPlatformCredentials, settleUsage } from "@/lib/billing/usageLedger";
+import { resolveSidecarBilling } from "@/lib/billing/usagePool";
+import { getCapabilityEndpoints } from "@/lib/ai/capabilityContext";
+import { resolveCapabilitySecret } from "@/lib/ai/capabilityEndpoints";
+
 const UNSPLASH_API_URL = "https://api.unsplash.com/search/photos";
+
+export const IMAGE_SEARCH_UNCONFIGURED_TEXT =
+  "搜图未配置（请在设置中填写 Unsplash Access Key，或由站点配置 UNSPLASH_ACCESS_KEY）。请不要再次调用 imageSearch。";
+
+function resolveUnsplashKey(override?: string): { key: string; usedPlatformCredentials: boolean } {
+  const ep = getCapabilityEndpoints();
+  const resolved = resolveCapabilitySecret(override ?? ep.unsplashAccessKey, process.env.UNSPLASH_ACCESS_KEY || "");
+  return { key: resolved.value, usedPlatformCredentials: resolved.usedPlatformCredentials };
+}
 
 export interface ImageSearchResult {
   url: string;
@@ -8,6 +21,12 @@ export interface ImageSearchResult {
   source: string;
   alt: string;
   downloadLocation: string;
+}
+
+export interface ImageSearchResponse {
+  configured: boolean;
+  results: ImageSearchResult[];
+  usedPlatformCredentials: boolean;
 }
 
 interface UnsplashPhoto {
@@ -34,8 +53,15 @@ interface UnsplashPhoto {
 export async function searchImages(
   query: string,
   numResults = 3,
-): Promise<ImageSearchResult[]> {
-  if (!UNSPLASH_KEY || !query.trim()) return [];
+  opts?: { apiKey?: string },
+): Promise<ImageSearchResponse> {
+  const { key, usedPlatformCredentials } = resolveUnsplashKey(opts?.apiKey);
+  if (!key) {
+    return { configured: false, results: [], usedPlatformCredentials };
+  }
+  if (!query.trim()) {
+    return { configured: true, results: [], usedPlatformCredentials };
+  }
 
   try {
     const enhancedQuery = enhanceQueryForEducation(query);
@@ -43,20 +69,32 @@ export async function searchImages(
       `${UNSPLASH_API_URL}?query=${encodeURIComponent(enhancedQuery)}&per_page=${numResults * 2}&content_filter=high`,
       {
         headers: {
-          Authorization: `Client-ID ${UNSPLASH_KEY}`,
+          Authorization: `Client-ID ${key}`,
           "Accept-Version": "v1",
         },
       },
     );
 
-    if (!res.ok) return [];
+    if (!res.ok) return { configured: true, results: [], usedPlatformCredentials };
 
     const data = await res.json();
     const candidates: UnsplashPhoto[] = data.results ?? [];
-
-    return selectBestImages(candidates, numResults);
+    const selected = selectBestImages(candidates, numResults);
+    await settleUsage({
+      kind: "image-search",
+      units: Math.max(selected.length, 1),
+      imageCount: selected.length,
+      selectedModelId: "unsplash",
+      actualModelId: "unsplash",
+      ...resolveSidecarBilling({
+        usedPlatformCredentials,
+        mainUsedPlatformCredentials: mainUsedPlatformCredentials(),
+      }),
+      meta: { source: "imageSearch", resultCount: selected.length },
+    });
+    return { configured: true, results: selected, usedPlatformCredentials };
   } catch {
-    return [];
+    return { configured: true, results: [], usedPlatformCredentials };
   }
 }
 
@@ -108,11 +146,12 @@ function selectBestImages(
 export async function trackPhotoDownload(
   downloadLocation: string,
 ): Promise<void> {
-  if (!downloadLocation || !UNSPLASH_KEY) return;
+  const { key } = resolveUnsplashKey();
+  if (!downloadLocation || !key) return;
 
   try {
     await fetch(downloadLocation, {
-      headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` },
+      headers: { Authorization: `Client-ID ${key}` },
     });
   } catch {
     // Silent failure

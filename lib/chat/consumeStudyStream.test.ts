@@ -1,12 +1,16 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { UIMessageChunk } from 'ai';
+import { TOOL_STEP_LIMIT_INFO } from '@/lib/ai/agent/tools/_shared';
 import { consumeStudyStream, createStudyChatTransport } from './consumeStudyStream';
 import { createAssistantPlaceholder, getMessageText, getReasoningText } from './messageParts';
 import type { ChatMessage, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
 
 const usage: UsageSummary = { promptTokens: 100, completionTokens: 20, cachedTokens: 30, totalTokens: 120 };
-const breakdown: ContextBreakdown = { tools: 5, skills: 5, conversation: 10, pages: 80, webSearch: 20, total: 120, cacheHit: true };
+const breakdown: ContextBreakdown = {
+  tools: 5, skills: 5, conversation: 10, pages: 80, webSearch: 20, total: 120,
+  displayTotal: 120, cachedTokens: 30, cacheHit: true,
+};
 const initial = () => createAssistantPlaceholder('local-id', { modelId: 'selected-model', thinkingEnabled: true }, 123);
 
 function fromChunks(chunks: UIMessageChunk[]) {
@@ -19,7 +23,12 @@ const textChunks = (text = '最终回答'): UIMessageChunk[] => [
   { type: 'text-start', id: 'text' }, { type: 'text-delta', id: 'text', delta: text }, { type: 'text-end', id: 'text' },
 ];
 
-test('SDK 有序多步快照保留 reasoning/tool outputs/metadata，data 只结算一次且不修改占位对象', async () => {
+test('SDK 有序多步快照保留 reasoning/tool outputs/metadata，data 只结算一次且不修改占位对象', async (t) => {
+  let clock = 1_000;
+  t.mock.method(Date, 'now', () => {
+    clock += 10;
+    return clock;
+  });
   const placeholder = initial();
   const original = structuredClone(placeholder);
   const snapshots: ChatMessage[] = [];
@@ -40,7 +49,7 @@ test('SDK 有序多步快照保留 reasoning/tool outputs/metadata，data 只结
       { type: 'data-info', data: { message: '已切换备用端点' }, transient: true },
       { type: 'data-context-breakdown', data: breakdown },
       { type: 'data-followup', data: { questions: [' 问题一 ', '', '问题二', '问题三', '第四条'] } },
-      { type: 'data-usage', data: usage }, { type: 'data-usage', data: usage },
+      { type: 'data-usage', data: { ...usage, actualModelId: 'mimo-v2.5' } }, { type: 'data-usage', data: { ...usage, actualModelId: 'mimo-v2.5' } },
       { type: 'message-metadata', messageMetadata: { usage, durationMs: 246, cacheHit: true } },
       { type: 'finish', messageMetadata: { usage } },
     ]),
@@ -50,7 +59,19 @@ test('SDK 有序多步快照保留 reasoning/tool outputs/metadata，data 只结
   assert.deepEqual(placeholder, original);
   assert.equal(result.id, 'local-id');
   assert.equal(result.timestamp, 123);
-  assert.deepEqual(result.metadata, { modelId: 'selected-model', thinkingEnabled: true, usage, durationMs: 246, cacheHit: true });
+  assert.equal(result.metadata?.modelId, 'selected-model');
+  assert.equal(result.metadata?.thinkingEnabled, true);
+  assert.deepEqual(result.metadata?.usage, { ...usage, actualModelId: 'mimo-v2.5' });
+  assert.equal(result.metadata?.durationMs, 246);
+  assert.equal(result.metadata?.cacheHit, true);
+  assert.ok((result.metadata?.stepDurationsMs?.['reasoning:1'] ?? -1) >= 0);
+  assert.ok((result.metadata?.stepDurationsMs?.['tool:search'] ?? -1) >= 0);
+  const completedToolSnapshot = snapshots.find((snapshot) => snapshot.parts.some(
+    (part) => part.type === 'tool-webSearch' && part.state === 'output-available',
+  ));
+  const toolDurationAtCompletion = completedToolSnapshot?.metadata?.stepDurationsMs?.['tool:search'];
+  assert.ok(toolDurationAtCompletion != null && toolDurationAtCompletion > 0);
+  assert.equal(result.metadata?.stepDurationsMs?.['tool:search'], toolDurationAtCompletion);
   assert.deepEqual(result.parts.slice(0, 5).map((p) => p.type), ['step-start', 'reasoning', 'tool-webSearch', 'step-start', 'text']);
   const tool = result.parts.find((p) => p.type === 'tool-webSearch');
   assert.equal(tool?.state, 'output-available');
@@ -59,7 +80,7 @@ test('SDK 有序多步快照保留 reasoning/tool outputs/metadata，data 只结
   assert.equal(getMessageText(result), '最终回答');
   assert.equal(result.parts.some((p) => p.type === 'data-info'), false);
   assert.deepEqual(result.followUpQuestions, ['问题一', '问题二', '问题三']);
-  assert.deepEqual(charges, [usage]);
+  assert.deepEqual(charges, [{ ...usage, actualModelId: 'mimo-v2.5' }]);
   assert.deepEqual(contexts, [breakdown]);
   assert.deepEqual(infos, ['已切换备用端点']);
   assert.ok(snapshots.some((m) => m.parts.some((p) => p.type === 'tool-webSearch' && p.state === 'input-streaming')));
@@ -95,6 +116,37 @@ test('所有结构化工具结果（artifact/image/search/skill）由 SDK 原样
   assert.equal(getMessageText(result), '最终回答');
   const failed = result.parts.find((p) => p.type === 'tool-getSection');
   assert.equal(failed?.state, 'output-error');
+});
+
+test('finishReason 从 finish 落到 metadata，触顶 data-info 仍走 onInfo', async () => {
+  const infos: string[] = [];
+  const result = await consumeStudyStream({
+    message: initial(), onMessage() {}, onInfo: (value) => infos.push(value),
+    stream: fromChunks([
+      ...textChunks('部分卡片'),
+      { type: 'data-info', data: { message: TOOL_STEP_LIMIT_INFO }, transient: true },
+      { type: 'message-metadata', messageMetadata: { finishReason: 'tool-calls', durationMs: 12 } },
+      { type: 'finish', finishReason: 'tool-calls' },
+    ]),
+  });
+  assert.equal(result.metadata?.finishReason, 'tool-calls');
+  assert.deepEqual(infos, [TOOL_STEP_LIMIT_INFO]);
+  assert.equal(result.parts.some((p) => p.type === 'data-info'), false);
+});
+
+test('0/0 usage 不触发 onUsage，避免 ¥0 幽灵账单', async () => {
+  const charges: UsageSummary[] = [];
+  const zero = { promptTokens: 0, completionTokens: 0, cachedTokens: 0, totalTokens: 0 };
+  await consumeStudyStream({
+    message: initial(), onMessage() {}, onUsage: (u) => charges.push(u),
+    stream: fromChunks([
+      ...textChunks(),
+      { type: 'data-usage', data: zero },
+      { type: 'message-metadata', messageMetadata: { usage: zero, durationMs: 10 } },
+      { type: 'finish' },
+    ]),
+  });
+  assert.deepEqual(charges, []);
 });
 
 test('usage metadata 是 data 缺失时的兜底，畸形 data 不污染计费/上下文', async () => {
@@ -206,6 +258,8 @@ test('HTTP 非成功状态与空响应体提供可读错误', async (t) => {
   const mock = t.mock.method(globalThis, 'fetch', async () => new Response('bad gateway', { status: 503, statusText: 'Service Unavailable' }));
   const send = () => createStudyChatTransport(() => {}).sendMessages({ chatId: 's', messageId: 'm', messages: [], trigger: 'submit-message', abortSignal: undefined });
   await assert.rejects(send(), /503 Service Unavailable - bad gateway/);
+  mock.mock.mockImplementation(async () => new Response(JSON.stringify({ error: "平台额度已用完。可改用 BYOK 继续使用。" }), { status: 402, statusText: 'Payment Required' }));
+  await assert.rejects(send(), /可改用 BYOK/);
   mock.mock.mockImplementation(async () => new Response(null));
   await assert.rejects(send(), /流读取失败/);
 });

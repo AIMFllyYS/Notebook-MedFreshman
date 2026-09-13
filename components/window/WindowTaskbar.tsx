@@ -4,10 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, FileText, BookOpen, Globe } from "lucide-react";
+import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, FileText, FileSearch, FileType, FileSpreadsheet, Presentation, Code2, BookOpen, Globe, Plus, Link2, Upload } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import OverflowMenu from "@/components/window/OverflowMenu";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
+import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
+import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
+import { openSourcePreview } from "@/lib/chat/openSourcePreview";
 
 interface WindowTaskbarProps {
   host: "topbar" | "content-tab";
@@ -21,15 +24,210 @@ type TaskbarTooltip = {
   top: number;
 };
 
-function WindowIcon({ type }: { type: ManagedWindow["type"] }) {
+function WindowIcon({ type, icon }: { type: ManagedWindow["type"]; icon?: string }) {
+  const [failedIcon, setFailedIcon] = useState<string | null>(null);
+  if (icon && failedIcon !== icon) {
+    // 动态站点 favicon 不在 next/image 的静态远程域名白名单内。
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={icon} alt="" aria-hidden="true" className="h-4 w-4 rounded-sm object-contain" onError={() => setFailedIcon(icon)} />;
+  }
   if (type === "floating-chat") return <PencilSparklesIcon size={15} />;
   if (type === "record-preview") return <BookmarkCheck size={15} />;
   if (type === "image-gen-viewer") return <ImagePlus size={15} />;
   if (type === "billing-dashboard") return <PieChart size={15} />;
   if (type === "document-viewer") return <FileText size={15} />;
+  if (type === "attachment-preview") return <FileSearch size={15} />;
   if (type === "note-citation-viewer" || type === "source-trace-viewer") return <BookOpen size={15} />;
   if (type === "source-preview") return <Globe size={15} />;
   return <MonitorPlay size={15} />;
+}
+
+function AttachmentWindowIcon({ data }: { data: ManagedWindow["data"] }) {
+  const attachment = data as { kind?: string };
+  if (attachment.kind === "pdf") return <FileSearch size={15} />;
+  if (attachment.kind === "ppt") return <Presentation size={15} />;
+  if (attachment.kind === "markdown") return <FileType size={15} />;
+  if (attachment.kind === "html") return <Code2 size={15} />;
+  if (attachment.kind === "text") return <FileSpreadsheet size={15} />;
+  return <FileSearch size={15} />;
+}
+
+function previewKind(attachment: AttachmentPreview): "image" | "pdf" | "ppt" | "html" | "markdown" | "text" {
+  if (isImagePreview(attachment)) return "image";
+  if (attachment.type === "local-file") return attachment.mimeType.includes("powerpoint") ? "ppt" : "pdf";
+  if (attachment.mimeType.includes("powerpoint") || /\.pptx?$/i.test(attachment.name)) return "ppt";
+  if (attachment.mimeType === "text/html" || /\.html?$/i.test(attachment.name)) return "html";
+  if (attachment.mimeType === "text/markdown" || /\.md(?:own)?$/i.test(attachment.name)) return "markdown";
+  return "text";
+}
+
+function previewContent(attachment: AttachmentPreview): string {
+  if (isImagePreview(attachment)) return attachment.base64;
+  if (attachment.type === "local-file") return attachment.dataUrl;
+  return attachment.text;
+}
+
+function isImagePreview(attachment: AttachmentPreview): attachment is ImageAttachmentPreview {
+  return attachment.type !== "document" && attachment.type !== "local-file";
+}
+
+function FileErrorDialog({ message, onClose }: { message: string; onClose: () => void }) {
+  return createPortal(
+    <div className="app-dialog-backdrop">
+      <div role="alertdialog" aria-modal="true" aria-label="文件添加失败" className="app-dialog">
+        <div className="app-dialog-eyebrow">文件添加提醒</div>
+        <h2>文件无法添加</h2>
+        <p>{message}</p>
+        <button type="button" className="app-dialog-confirm" onClick={onClose}>知道了</button>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
+function AddContentButton() {
+  const [open, setOpen] = useState(false);
+  const [url, setUrl] = useState("");
+  const [urlError, setUrlError] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [menuPosition, setMenuPosition] = useState<{ top: number; right: number } | null>(null);
+  const fileRef = useRef<HTMLInputElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const updateMenuPosition = () => {
+    const button = buttonRef.current;
+    if (!button || typeof window === "undefined") return;
+    const rect = button.getBoundingClientRect();
+    setMenuPosition({
+      top: rect.bottom + 8,
+      right: Math.max(8, window.innerWidth - rect.right),
+    });
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const close = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (!rootRef.current?.contains(target) && !menuRef.current?.contains(target)) setOpen(false);
+    };
+    const reposition = () => updateMenuPosition();
+    document.addEventListener("pointerdown", close);
+    window.addEventListener("resize", reposition);
+    window.addEventListener("scroll", reposition, true);
+    updateMenuPosition();
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      window.removeEventListener("resize", reposition);
+      window.removeEventListener("scroll", reposition, true);
+    };
+  }, [open]);
+
+  const handleFiles = async (files: File[]) => {
+    const { attachments, errors } = await filesToAttachments(files, { maxFileSize: MAX_LOCAL_FILE_SIZE });
+    attachments.forEach((attachment, index) => {
+      const originalName = isImagePreview(attachment) ? attachment.file.name : attachment.name;
+      const kind = previewKind(attachment);
+      const name = kind === "html" ? `HTML · ${originalName}` : originalName;
+      openAttachmentPreview(`topbar:${originalName}:${attachment.file.lastModified}:${index}`, {
+        name,
+        mimeType: attachment.mimeType,
+        kind,
+        content: previewContent(attachment),
+      });
+    });
+    if (errors.length > 0) setFileError(errors[0]);
+    setOpen(false);
+  };
+
+  const addUrl = () => {
+    const raw = url.trim();
+    if (!raw) return;
+    const candidate = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+    try {
+      const parsed = new URL(candidate);
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") throw new Error();
+      const isHtml = /\.html?(?:$|[?#])/i.test(parsed.pathname);
+      openSourcePreview({ url: parsed.toString(), title: `${isHtml ? "HTML" : "网址"} · ${parsed.hostname}` });
+      setUrl("");
+      setUrlError(null);
+      setOpen(false);
+    } catch {
+      setUrlError("请输入有效的 http:// 或 https:// 地址");
+    }
+  };
+
+  return (
+    <div ref={rootRef} className="relative shrink-0">
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-label="添加内容"
+        aria-expanded={open}
+        title="添加 PDF、文件或网址"
+        onClick={() => {
+          setOpen((value) => {
+            const next = !value;
+            if (next) requestAnimationFrame(updateMenuPosition);
+            return next;
+          });
+          setUrlError(null);
+        }}
+        className={clsx(
+          "window-taskbar-add relative flex h-7 w-7 items-center justify-center rounded-lg border shadow-sm transition-all",
+          open
+            ? "border-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-primary)]"
+            : "border-[color-mix(in_srgb,var(--md-sys-color-primary)_42%,var(--line))] bg-[var(--bg-elevated)] text-[var(--md-sys-color-primary)] hover:border-[var(--md-sys-color-primary)] hover:bg-[var(--bg-muted)]",
+        )}
+      >
+        <Plus size={15} strokeWidth={2.3} />
+      </button>
+      <input
+        ref={fileRef}
+        type="file"
+        accept={`image/jpeg,image/png,image/gif,image/webp,${ACCEPTED_DOCUMENT_FILE_TYPES}`}
+        multiple
+        hidden
+        onChange={(event) => {
+          const files = Array.from(event.target.files ?? []);
+          event.target.value = "";
+          if (files.length > 0) void handleFiles(files);
+        }}
+      />
+      {open && menuPosition && typeof document !== "undefined" && createPortal(
+        <div
+          ref={menuRef}
+          role="menu"
+          aria-label="添加内容"
+          style={{ position: "fixed", top: menuPosition.top, right: menuPosition.right }}
+          className="window-taskbar-add-menu z-[12000] w-64 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-2 shadow-xl"
+        >
+          <button type="button" role="menuitem" onClick={() => fileRef.current?.click()} className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]">
+            <Upload size={14} className="text-[var(--md-sys-color-primary)]" />
+            <span><strong className="font-semibold">添加文件</strong><small className="ml-1 text-[var(--ink-soft)]">PDF、文本、代码</small></span>
+          </button>
+          <div className="my-1 border-t border-[var(--line)]" />
+          <div className="flex items-center gap-1.5 px-1">
+            <Link2 size={14} className="shrink-0 text-[var(--md-sys-color-primary)]" />
+            <input
+              value={url}
+              onChange={(event) => { setUrl(event.target.value); setUrlError(null); }}
+              onKeyDown={(event) => { if (event.key === "Enter") addUrl(); }}
+              placeholder="输入网址…"
+              aria-label="网址"
+              className="min-w-0 flex-1 rounded-md border border-[var(--line)] bg-[var(--bg-muted)] px-2 py-1.5 text-[12px] text-[var(--ink)] outline-none focus:border-[var(--md-sys-color-primary)]"
+            />
+            <button type="button" onClick={addUrl} className="rounded-md bg-[var(--md-sys-color-primary)] px-2 py-1.5 text-[11px] font-medium text-[var(--md-sys-color-on-primary)]">打开</button>
+          </div>
+          {urlError ? <p className="px-1 pt-1 text-[10px] text-[var(--md-sys-color-error)]">{urlError}</p> : null}
+          <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">内容会在当前工作站窗口中打开；选择文件不会上传。</p>
+        </div>,
+        document.body,
+      )}
+      {fileError && typeof document !== "undefined" ? <FileErrorDialog message={fileError} onClose={() => setFileError(null)} /> : null}
+    </div>
+  );
 }
 
 export function partitionTaskbarWindows(
@@ -91,12 +289,8 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
 
   const activeTooltip = tooltip && windows.some((win) => win.id === tooltip.win.id) ? tooltip : null;
 
-  if (windows.length === 0) {
-    return <div ref={ref} className="min-w-0 flex-1" />;
-  }
-
   return (
-    <>
+    <div className="flex min-w-0 flex-1 items-center gap-1">
       <motion.div
         ref={ref}
         layoutId="window-taskbar"
@@ -121,7 +315,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
               !win.minimized && "text-[var(--md-sys-color-primary)]",
             )}
           >
-            <WindowIcon type={win.type} />
+            {win.type === "attachment-preview" ? <AttachmentWindowIcon data={win.data} /> : <WindowIcon type={win.type} icon={win.icon} />}
             <span
               className={clsx(
                 "absolute bottom-0.5 left-1/2 h-0.5 -translate-x-1/2 rounded-full transition-all",
@@ -138,6 +332,7 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
           </button>
         ))}
       </motion.div>
+      <AddContentButton />
       {activeTooltip && typeof document !== "undefined" && createPortal(
         <div
           role="tooltip"
@@ -148,6 +343,6 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
         </div>,
         document.body,
       )}
-    </>
+    </div>
   );
 }

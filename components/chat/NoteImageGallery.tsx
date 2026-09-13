@@ -2,6 +2,7 @@
 
 import React from 'react';
 import type { NoteImageHit } from '@/lib/ai/agent/toolTypes';
+import { dedupeByKey, noteImageItemKey } from '@/lib/chat/traceSources';
 import { AgentGalleryIcon } from '@/components/icons/AgentIcons';
 import { ChatImage } from '@/components/chat/ChatImage';
 import { ImageStrip } from '@/components/chat/ImageStrip';
@@ -12,18 +13,19 @@ interface NoteImageGalleryProps {
 }
 
 export default function NoteImageGallery({ images, query }: NoteImageGalleryProps) {
-  if (!images.length) return null;
+  const unique = dedupeByKey(images, noteImageItemKey);
+  if (!unique.length) return null;
   return (
     <div className="my-3 rounded-2xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container)] p-3">
       <div className="mb-2 flex items-center gap-2 text-[12px] font-semibold text-[var(--md-sys-color-on-surface)]">
         <AgentGalleryIcon size={16} />
-        <span>笔记图片 · {images.length} 张</span>
+        <span>笔记图片 · {unique.length} 张</span>
         {query ? <span className="ml-auto text-[11px] text-[var(--md-sys-color-on-surface-variant)] truncate max-w-[120px]">{query}</span> : null}
       </div>
       <ImageStrip>
-        {images.map((img, i) => (
+        {unique.map((img, i) => (
           <div
-            key={`${img.src}:${i}`}
+            key={img.src}
             className="flex flex-col gap-1.5"
             draggable
             onDragStart={(e) => {

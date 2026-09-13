@@ -10,6 +10,9 @@ import {
   type StudyToolRuntime,
 } from "@/lib/ai/agent/tools/_shared";
 
+/** 测试可替换检索，避免扫全库笔记。 */
+export const searchNoteImagesIo = { searchNoteImages, describeNoteImagesForModel };
+
 export function createSearchNoteImagesTool(ctx: StudyToolContext, runtime: StudyToolRuntime) {
   return tool({
     description:
@@ -21,14 +24,14 @@ export function createSearchNoteImagesTool(ctx: StudyToolContext, runtime: Study
       limit: z.number().optional().describe("返回图片数量，默认 6，最大 12。"),
     }),
     execute: async ({ query, crossYear, subjectId, limit }): Promise<SearchNoteImagesOutput> => {
-      const images = searchNoteImages(query, {
+      const images = searchNoteImagesIo.searchNoteImages(query, {
         academicYear: crossYear ? "all" : ctx.academicYear,
         subjectId,
         preferSubjectId: subjectId ? undefined : ctx.subjectId,
         limit: Number(limit) || undefined,
       });
       return dedupeByContextKey<SearchNoteImagesOutput>(runtime, "searchNoteImages", {
-        text: describeNoteImagesForModel(query, images),
+        text: searchNoteImagesIo.describeNoteImagesForModel(query, images),
         contextKey: `note-img:${normalizeContextKeyPart(query)}`,
         images,
       });

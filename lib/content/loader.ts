@@ -11,19 +11,42 @@ import {
 } from "@/lib/constants/academic-year";
 import { getSubjectMeta } from "@/lib/content-data/subjects.registry";
 import { CONTENT_PATH_RESOLVERS, LEGACY_CHAPTERS_ROOT } from "@/lib/content/contentPaths";
+import {
+  contentIo,
+  isResolvedPathInside,
+  isSafeContentRef,
+  isSafeContentSegment,
+} from "@/lib/content/contentPathGuard";
 import { normalizeSearchQuery } from "@/lib/ai/search/queryNormalize";
+
+const CONTENT_ROOT = path.join(process.cwd(), "content");
+
+function authorizeContentRead(subjectId: string, categoryId: string, itemId: string): boolean {
+  if (!isSafeContentRef(subjectId, categoryId, itemId)) return false;
+  return !!findContentItem(subjectId, categoryId, itemId);
+}
+
+function readAuthorizedFile(filePath: string, rootDir: string): string | null {
+  if (!isResolvedPathInside(filePath, rootDir)) return null;
+  try {
+    return contentIo.readFileSync(filePath, "utf8");
+  } catch {
+    return null;
+  }
+}
 
 /** 读取某小节的 markdown 正文；不存在则返回 null。 */
 export function readSectionMarkdown(
   chapterId: string,
   sectionId: string,
 ): string | null {
+  if (!isSafeContentSegment(chapterId) || !isSafeContentSegment(sectionId)) return null;
+  const inTree =
+    findContentItem("probability", "detail", sectionId) ??
+    findContentItem("probability", "detail", chapterId);
+  if (!inTree) return null;
   const file = path.join(LEGACY_CHAPTERS_ROOT, chapterId, `${sectionId}.md`);
-  try {
-    return fs.readFileSync(file, "utf8");
-  } catch {
-    return null;
-  }
+  return readAuthorizedFile(file, LEGACY_CHAPTERS_ROOT);
 }
 
 function resolveFilePath(
@@ -49,12 +72,9 @@ export function readContentMarkdown(
   categoryId: string,
   itemId: string,
 ): string | null {
+  if (!authorizeContentRead(subjectId, categoryId, itemId)) return null;
   const filePath = resolveFilePath(subjectId, categoryId, itemId, "md");
-  try {
-    return fs.readFileSync(filePath, "utf8");
-  } catch {
-    return null;
-  }
+  return readAuthorizedFile(filePath, CONTENT_ROOT);
 }
 
 /**
@@ -66,12 +86,9 @@ export function readContentHtml(
   categoryId: string,
   itemId: string,
 ): string | null {
+  if (!authorizeContentRead(subjectId, categoryId, itemId)) return null;
   const filePath = resolveFilePath(subjectId, categoryId, itemId, "html");
-  try {
-    return fs.readFileSync(filePath, "utf8");
-  } catch {
-    return null;
-  }
+  return readAuthorizedFile(filePath, CONTENT_ROOT);
 }
 
 /**
@@ -311,6 +328,10 @@ export function resolveContentPath(
   if (parts.length >= 3) {
     const [subjectId, categoryId, ...rest] = parts;
     const itemId = rest.join("/");
+    if (!isSafeContentRef(subjectId, categoryId, itemId)) {
+      const title = `${subjectId} > ${categoryId} > ${itemId}`;
+      return { subjectId, categoryId, itemId, title, found: false };
+    }
     const found = findContentItem(subjectId, categoryId, itemId);
     const title = found
       ? `${found.subjectName} > ${found.categoryName} > ${found.parentTitle ? found.parentTitle + " > " : ""}${found.item.title}`
@@ -319,6 +340,15 @@ export function resolveContentPath(
   }
 
   // 向下兼容：纯小节 ID（如 "1.4"），默认当前科目 detail
+  if (!isSafeContentRef(fallbackSubjectId, "detail", pathOrId)) {
+    return {
+      subjectId: fallbackSubjectId,
+      categoryId: "detail",
+      itemId: pathOrId,
+      title: `${fallbackSubjectId} > detail > ${pathOrId}`,
+      found: false,
+    };
+  }
   const found = findContentItem(fallbackSubjectId, "detail", pathOrId);
   const title = found
     ? `${found.subjectName} > ${found.categoryName} > ${found.parentTitle ? found.parentTitle + " > " : ""}${found.item.title}`

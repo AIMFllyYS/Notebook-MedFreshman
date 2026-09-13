@@ -7,14 +7,11 @@ import {
   chatSessionKey,
   chatBlobKey,
   CHAT_BLOB_KEY_PREFIX,
+  CHAT_SESSION_KEY_PREFIX,
+  listPersistedKeys,
+  flushPendingWrites,
 } from '@/lib/storage/idbStorage';
-import { keys as idbKeys } from 'idb-keyval';
-import { createStore } from 'idb-keyval';
 import { getMessageText, getToolPartsByName, normalizeStoredMessages } from '@/lib/chat/messageParts';
-
-const DB_NAME = 'gailvlun-db';
-const STORE_NAME = 'keyval';
-const idbStore = createStore(DB_NAME, STORE_NAME);
 
 export interface SessionMeta {
   id: string;
@@ -102,7 +99,7 @@ export async function loadSessionMessages(sessionId: string): Promise<ChatMessag
 }
 
 export function saveSessionMessages(sessionId: string, messages: ChatMessage[]): void {
-  idbStorage.setItem(chatSessionKey(sessionId), JSON.stringify(messages));
+  idbStorage.setItemLazy(chatSessionKey(sessionId), () => JSON.stringify(messages));
 }
 
 async function saveManifestNow(manifest: ChatManifestV2): Promise<boolean> {
@@ -124,6 +121,12 @@ export async function saveBlobFromDataUrl(blobId: string, dataUrl: string): Prom
   if (!ok) throw new Error(`Failed to save chat blob: ${blobId}`);
 }
 
+function inlineAttachmentPayload(attachment: ChatAttachment): string | null {
+  if (attachment.type === 'image') return attachment.base64 || null;
+  if (attachment.type === 'document') return attachment.text;
+  return attachment.dataUrl || null;
+}
+
 export async function deleteSessionData(sessionId: string, blobIds: string[] = []): Promise<void> {
   if (!isBrowser()) return;
   await idbStorage.removeItem(chatSessionKey(sessionId));
@@ -136,7 +139,7 @@ export async function deleteSessionData(sessionId: string, blobIds: string[] = [
   }
 }
 
-function extractBlobIdsFromMessages(messages: ChatMessage[]): string[] {
+export function extractBlobIdsFromMessages(messages: ChatMessage[]): string[] {
   const ids: string[] = [];
   for (const m of messages) {
     if (!m.attachments) continue;
@@ -158,10 +161,15 @@ async function migrateAttachmentsInMessages(messages: ChatMessage[]): Promise<Ch
     }
     const attachments = [];
     for (const a of m.attachments) {
-      if ('base64' in a && a.base64) {
+      const payload = 'id' in a ? null : inlineAttachmentPayload(a);
+      if (payload != null) {
         const id: string = `blob-${m.id}-${attachments.length}-${Date.now()}`;
-        await saveBlobFromDataUrl(id, a.base64);
-        attachments.push({ id, type: 'image' as const, mimeType: a.mimeType, name: undefined });
+        await saveBlobFromDataUrl(id, payload);
+        attachments.push({
+          id, type: a.type, mimeType: a.mimeType,
+          name: a.name, size: a.size,
+          ...('characterCount' in a ? { characterCount: a.characterCount } : {}),
+        });
       } else {
         attachments.push(a);
       }
@@ -245,15 +253,24 @@ export async function hydrateAttachmentsForApi(messages: ChatMessage[]): Promise
     }
     const attachments: ChatAttachment[] = [];
     for (const a of m.attachments) {
-      if ('base64' in a && a.base64) {
+      if (!('id' in a)) {
         attachments.push(a as ChatAttachment);
       } else if ('id' in a) {
-        const dataUrl = await loadBlobDataUrl((a as { id: string }).id);
-        if (dataUrl) {
-          attachments.push({
-            type: 'image',
-            mimeType: a.mimeType,
-            base64: dataUrl,
+        const payload = await loadBlobDataUrl((a as { id: string }).id);
+        if (payload) {
+          attachments.push(a.type === 'document' ? {
+            type: 'document',
+            mimeType: a.mimeType as Extract<ChatAttachment, { type: 'document' }>['mimeType'],
+            name: a.name ?? '未命名文档.txt',
+            text: payload,
+            size: a.size ?? new Blob([payload]).size,
+            characterCount: a.characterCount ?? [...payload].length,
+          } : a.type === 'local-file' ? {
+            type: 'local-file', mimeType: a.mimeType as Extract<ChatAttachment, { type: 'local-file' }>['mimeType'], dataUrl: payload,
+            name: a.name ?? '未命名本地文件', size: a.size ?? 0,
+          } : {
+            type: 'image', mimeType: a.mimeType, base64: payload,
+            name: a.name, size: a.size,
           });
         }
       }
@@ -267,10 +284,19 @@ export function persistInlineAttachments(message: ChatMessage): ChatMessage {
   if (!message.attachments?.length) return message;
   const attachments: StoredChatAttachment[] = [];
   for (const a of message.attachments) {
-    if ('base64' in a && a.base64) {
+    if (!('id' in a)) {
+      const payload = inlineAttachmentPayload(a);
+      if (payload == null) {
+        attachments.push(a);
+        continue;
+      }
       const id = `blob-${message.id}-${attachments.length}`;
-      void saveBlobFromDataUrl(id, a.base64);
-      attachments.push({ id, type: 'image', mimeType: a.mimeType });
+      void saveBlobFromDataUrl(id, payload);
+      attachments.push({
+        id, type: a.type, mimeType: a.mimeType,
+        name: a.name, size: a.size,
+        ...('characterCount' in a ? { characterCount: a.characterCount } : {}),
+      });
     } else {
       attachments.push(a);
     }
@@ -278,9 +304,6 @@ export function persistInlineAttachments(message: ChatMessage): ChatMessage {
   return { ...message, attachments };
 }
 
-function persistMessagesAttachments(messages: ChatMessage[]): ChatMessage[] {
-  return messages.map(persistInlineAttachments);
-}
 
 export async function listBlobIdsForSession(sessionId: string): Promise<string[]> {
   const messages = await loadSessionMessages(sessionId);
@@ -288,10 +311,89 @@ export async function listBlobIdsForSession(sessionId: string): Promise<string[]
   return extractBlobIdsFromMessages(messages);
 }
 
-async function listAllChatKeys(): Promise<string[]> {
+export async function listAllChatKeys(): Promise<string[]> {
   if (!isBrowser()) return [];
-  const all = await idbKeys(idbStore);
+  const all = await listPersistedKeys();
   return all.filter(
-    (k) => typeof k === 'string' && (k.startsWith(CHAT_BLOB_KEY_PREFIX) || k.startsWith('chat-session:')),
-  ) as string[];
+    (k) => k.startsWith(CHAT_BLOB_KEY_PREFIX) || k.startsWith(CHAT_SESSION_KEY_PREFIX),
+  );
+}
+
+export interface ChatGcDeps {
+  listKeys?: () => Promise<string[]>;
+  removeKey?: (key: string) => Promise<void>;
+  loadMessages?: (sessionId: string) => Promise<ChatMessage[] | null>;
+  loadManifest?: () => Promise<ChatManifestV2 | null>;
+}
+
+/**
+ * 以 manifest 为唯一真相源：不在入口里的 chat-session:* / 无引用的 chat-blob:* 删除。
+ * 不会删掉仍被 manifest 会话引用的键。
+ */
+export async function gcOrphanedChatKeys(deps: ChatGcDeps = {}): Promise<{ deleted: string[] }> {
+  const listKeys = deps.listKeys ?? listAllChatKeys;
+  const removeKey = deps.removeKey ?? ((key: string) => idbStorage.removeItem(key));
+  const loadMessages = deps.loadMessages ?? loadSessionMessages;
+  const readManifest = deps.loadManifest ?? loadManifest;
+
+  flushPendingWrites();
+  const manifest = await readManifest();
+  const keepSessions = new Set((manifest?.sessions ?? []).map((s) => s.id));
+  const keys = await listKeys();
+  const deleted: string[] = [];
+
+  for (const key of keys) {
+    if (!key.startsWith(CHAT_SESSION_KEY_PREFIX)) continue;
+    const sessionId = key.slice(CHAT_SESSION_KEY_PREFIX.length);
+    if (!sessionId || keepSessions.has(sessionId)) continue;
+    await removeKey(key);
+    deleted.push(key);
+  }
+
+  const keepBlobs = new Set<string>();
+  for (const sessionId of keepSessions) {
+    const messages = await loadMessages(sessionId);
+    if (!messages) continue;
+    for (const blobId of extractBlobIdsFromMessages(messages)) keepBlobs.add(blobId);
+  }
+
+  for (const key of keys) {
+    if (!key.startsWith(CHAT_BLOB_KEY_PREFIX)) continue;
+    const blobId = key.slice(CHAT_BLOB_KEY_PREFIX.length);
+    if (!blobId || keepBlobs.has(blobId)) continue;
+    await removeKey(key);
+    deleted.push(key);
+  }
+
+  return { deleted };
+}
+
+let gcTimer: ReturnType<typeof setTimeout> | null = null;
+let gcIdleId: number | null = null;
+
+export function cancelOrphanChatGc(): void {
+  if (gcTimer) {
+    clearTimeout(gcTimer);
+    gcTimer = null;
+  }
+  if (gcIdleId != null && typeof window !== 'undefined') {
+    window.cancelIdleCallback?.(gcIdleId);
+    gcIdleId = null;
+  }
+}
+
+export function scheduleOrphanChatGc(): void {
+  if (typeof window === 'undefined') return;
+  cancelOrphanChatGc();
+  const run = () => {
+    gcTimer = null;
+    gcIdleId = null;
+    void gcOrphanedChatKeys();
+  };
+  const ric = window.requestIdleCallback;
+  if (typeof ric === 'function') {
+    gcIdleId = ric(run, { timeout: 4000 });
+    return;
+  }
+  gcTimer = setTimeout(run, 0);
 }

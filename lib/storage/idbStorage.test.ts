@@ -10,6 +10,20 @@ import {
 
 const storage = new Map<string, string>();
 
+test('lazy writes serialize only the latest snapshot, and deletion cancels it', async () => {
+  let serializations = 0;
+  for (let i = 0; i < 100; i++) idbStorage.setItemLazy('lazy', () => { serializations++; return String(i); });
+  assert.equal(serializations, 0);
+  flushPendingWrites();
+  assert.equal(serializations, 1);
+  assert.equal(await idbStorage.getItem('lazy'), '99');
+  idbStorage.setItemLazy('lazy', () => { serializations++; return 'deleted'; });
+  await idbStorage.removeItem('lazy');
+  flushPendingWrites();
+  assert.equal(serializations, 1);
+  assert.equal(await idbStorage.getItem('lazy'), null);
+});
+
 function installBrowserMocks() {
   const listeners = new Map<string, Set<() => void>>();
   (globalThis as { window?: unknown }).window = {

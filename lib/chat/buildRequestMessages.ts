@@ -1,8 +1,13 @@
+import { isToolUIPart } from 'ai';
 import type { ChatAttachment, ChatMessage, ChatMessagePart } from '@/lib/types/chat';
 import { hasVisibleContent } from '@/lib/chat/messageParts';
+import { compactUiParts } from '@/lib/context/compactArtifacts';
 
 export const DEFAULT_MAX_TURNS = Number.MAX_SAFE_INTEGER;
+/** @deprecated 软上限改为服务端滚动摘要，不再用 16 条硬切。仍导出以免旧测试/import 断裂。 */
 export const SOFT_LIMIT_MAX_TURNS = 16;
+/** 与 chatRequestSchema messages 上限对齐，防止 400。 */
+export const MAX_REQUEST_MESSAGES = 200;
 
 /** 发给 /api/chat 的消息：UIMessage 形状，图片附件已转成 file part（data URL）。 */
 export type RequestMessage = Pick<ChatMessage, 'id' | 'role' | 'parts'>;
@@ -20,18 +25,32 @@ export interface BuildRequestMessagesOptions {
 }
 
 /**
- * 历史消息只保留 text / file parts：思考、工具调用、data 等不回灌模型，
- * 与迁移前「只发 user/assistant 文本」的 token 行为一致，也利于 prefix 缓存。
+ * 发给模型的 parts：text / file / 工具。reasoning 仍剥离（跨轮不回灌）；
+ * 旧工具结果由服务端 pruneMessages(before-last-2-messages) 衰减。
  */
+function keepRequestPart(p: ChatMessagePart): boolean {
+  if (p.type === 'text') return p.text.trim().length > 0;
+  if (p.type === 'file') return true;
+  if (isToolUIPart(p)) return p.state === 'output-available' || p.state === 'input-available';
+  return false;
+}
+
 function toRequestMessage(m: ChatMessage): RequestMessage {
-  const parts: ChatMessagePart[] = m.parts.filter(
-    (p) => (p.type === 'text' && p.text.trim().length > 0) || p.type === 'file',
-  );
+  const parts: ChatMessagePart[] = compactUiParts(m.parts.filter(keepRequestPart));
   if (m.role === 'user') {
     const imageParts: ChatMessagePart[] = (m.attachments ?? [])
-      .filter((a): a is ChatAttachment => 'base64' in a && !!a.base64)
+      .filter((a): a is Extract<ChatAttachment, { type: 'image' }> => a.type === 'image' && 'base64' in a && !!a.base64)
       .map((a) => ({ type: 'file', mediaType: a.mimeType, url: a.base64 }));
     parts.push(...imageParts);
+    const documents = (m.attachments ?? [])
+      .filter((a): a is Extract<ChatAttachment, { type: 'document' }> => a.type === 'document' && 'text' in a)
+      .map((attachment) => {
+        const safeName = attachment.name.replace(/[<>\r\n]/g, '_');
+        return `<attached-document name="${safeName}" type="${attachment.mimeType}">\n${attachment.text}\n</attached-document>`;
+      });
+    if (documents.length > 0) {
+      parts.push({ type: 'text', text: `以下是用户随本轮消息提供的文档正文：\n\n${documents.join('\n\n')}` });
+    }
   }
   return { id: m.id, role: m.role, parts };
 }

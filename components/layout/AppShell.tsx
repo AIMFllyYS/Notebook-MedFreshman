@@ -43,6 +43,7 @@ const DocumentViewerLayer = dynamic(() => import("@/components/chat/DocumentView
 const NoteCitationViewer = dynamic(() => import("@/components/chat/NoteCitationViewer"), { ssr: false });
 const SourceTraceViewer = dynamic(() => import("@/components/chat/SourceTraceViewer"), { ssr: false });
 const SourcePreviewViewer = dynamic(() => import("@/components/chat/SourcePreviewViewer"), { ssr: false });
+const AttachmentPreviewViewer = dynamic(() => import("@/components/chat/AttachmentPreviewViewer"), { ssr: false });
 const MessageContextMenu = dynamic(() => import("@/components/shared/MessageContextMenu"), { ssr: false });
 const BillingDashboardLayer = dynamic(() => import("@/components/chat/BillingDashboard"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
@@ -303,6 +304,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <NoteCitationViewer />
         <SourceTraceViewer />
         <SourcePreviewViewer />
+        <AttachmentPreviewViewer />
         <MessageContextMenu />
         <BillingDashboardLayer />
       </div>
@@ -422,6 +424,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <NoteCitationViewer />
       <SourceTraceViewer />
       <SourcePreviewViewer />
+      <AttachmentPreviewViewer />
       <MessageContextMenu />
       <BillingDashboardLayer />
     </div>

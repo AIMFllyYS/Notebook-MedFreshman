@@ -5,6 +5,8 @@ import { generateText } from "ai";
 import { ENV_MODEL_FLASH, type CustomProvider } from "@/lib/ai/provider";
 import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import type { CustomApiGroup } from "@/lib/ai/models";
+import { resolveActualBillingModelId, settleUsage } from "@/lib/billing/usageLedger";
+import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
 
 const FOLLOWUP_TIMEOUT_MS = 10_000;
 
@@ -49,11 +51,11 @@ export interface FallbackFollowUpsInput {
 export async function generateFallbackFollowUps(input: FallbackFollowUpsInput): Promise<string[]> {
   try {
     const targetModel = input.isCustom ? input.modelId : ENV_MODEL_FLASH;
-    const { model } = resolveLanguageModel(targetModel, input.custom);
+    const resolved = resolveLanguageModel(targetModel, input.custom);
     const signals: AbortSignal[] = [AbortSignal.timeout(FOLLOWUP_TIMEOUT_MS)];
     if (input.abortSignal) signals.push(input.abortSignal);
-    const { text } = await generateText({
-      model,
+    const result = await generateText({
+      model: resolved.model,
       instructions: FALLBACK_SYSTEM,
       prompt: `学生提问：${input.userText.slice(0, 500)}\n\n助教回答（摘要）：${input.answerText.slice(0, 1000)}\n\n请生成3个追问：`,
       temperature: 0.5,
@@ -61,7 +63,20 @@ export async function generateFallbackFollowUps(input: FallbackFollowUpsInput): 
       maxRetries: 0,
       abortSignal: AbortSignal.any(signals),
     });
-    return parsePipeSeparatedQuestions(text);
+    const actual = resolved.getActualProvider();
+    const pool = resolveMainModelPool(usedPlatformCredentialsForProvider(actual));
+    await settleUsage({
+      rawUsage: result.totalUsage ?? result.usage,
+      route: "/api/follow-ups",
+      kind: "llm",
+      selectedModelId: targetModel,
+      actualModelId: resolveActualBillingModelId(actual),
+      customGroups: Array.isArray(input.custom) ? input.custom : undefined,
+      pool: pool ?? undefined,
+      skipInsert: pool == null,
+      meta: { source: "followup-fallback" },
+    });
+    return parsePipeSeparatedQuestions(result.text);
   } catch (err) {
     console.warn("[FollowUp fallback] failed:", (err as Error)?.message);
     return [];

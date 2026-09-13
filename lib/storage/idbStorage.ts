@@ -52,7 +52,8 @@ function isBrowser(): boolean {
 // 方案：按 key 尾随防抖，最新值胜出，高频写合并为一次；页面卸载/隐藏时立即落盘，零丢失。
 /** 流式持久化写盘防抖间隔（测试与文档引用）。 */
 export const WRITE_DEBOUNCE_MS = 800;
-const pendingValues = new Map<string, string>();
+type PendingValue = string | (() => string);
+const pendingValues = new Map<string, PendingValue>();
 const pendingTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
 async function writeNow(name: string, value: string): Promise<boolean> {
@@ -78,7 +79,7 @@ function flushKey(name: string): void {
   const value = pendingValues.get(name);
   if (value === undefined) return;
   pendingValues.delete(name);
-  void writeNow(name, value);
+  void writeNow(name, typeof value === "function" ? value() : value);
 }
 
 /** 立即落盘所有挂起的写（卸载/隐藏/清空时调用）。 */
@@ -120,7 +121,7 @@ export const idbStorage = {
     if (!isBrowser()) return null;
     // 命中尚未落盘的最新值，避免「写后立即读」拿到旧数据
     const pending = pendingValues.get(name);
-    if (pending !== undefined) return pending;
+    if (pending !== undefined) return typeof pending === "function" ? pending() : pending;
     try {
       // 1. 先读 IndexedDB
       const val = await idbGet<string>(name, idbStore);
@@ -156,6 +157,15 @@ export const idbStorage = {
     pendingTimers.set(name, setTimeout(() => flushKey(name), WRITE_DEBOUNCE_MS));
   },
 
+  /** Coalesce before serialization; a bounded checkpoint also runs during uninterrupted streams. */
+  setItemLazy(name: string, serialize: () => string): void {
+    if (!isBrowser()) return;
+    pendingValues.set(name, serialize);
+    if (!pendingTimers.has(name)) {
+      pendingTimers.set(name, setTimeout(() => flushKey(name), WRITE_DEBOUNCE_MS));
+    }
+  },
+
   async removeItem(name: string): Promise<void> {
     if (!isBrowser()) return;
     // 取消尚未落盘的写，避免删除后又被旧值覆盖回来
@@ -179,46 +189,26 @@ export const idbStorage = {
   },
 };
 
-// ── 工具函数 ────────────────────────────────────────────────────
-
-/** 估算 IndexedDB 中某 key 的数据大小（字节）。 */
-async function estimateSize(key: string): Promise<number> {
-  if (!isBrowser()) return 0;
+/** 枚举 IDB + 未落盘 pending + localStorage 兜底键，供 GC 使用。 */
+export async function listPersistedKeys(): Promise<string[]> {
+  const found = new Set<string>(pendingValues.keys());
+  if (!isBrowser()) return [...found];
   try {
-    const val = await idbGet<string>(key, idbStore);
-    if (!val) return 0;
-    return new Blob([val]).size;
-  } catch {
-    return 0;
-  }
-}
-
-/** 清空全部持久化数据（设置面板"清空所有"可复用）。 */
-async function clearAll(): Promise<void> {
-  if (!isBrowser()) return;
-  // 先取消所有挂起写，避免清空后被旧值写回
-  for (const timer of pendingTimers.values()) clearTimeout(timer);
-  pendingTimers.clear();
-  pendingValues.clear();
-  for (const key of Object.values(PERSIST_KEYS)) {
-    try {
-      await idbDel(key, idbStore);
-    } catch {
-      // ignore
+    const all = await idbKeys(idbStore);
+    for (const key of all) {
+      if (typeof key === "string") found.add(key);
     }
+  } catch {
+    // IndexedDB 不可用时走 localStorage
   }
-  // 清理按会话 / blob 前缀写入的 key（Storage v2）
   try {
-    const allKeys = await idbKeys(idbStore);
-    for (const key of allKeys) {
-      if (
-        typeof key === "string" &&
-        (key.startsWith(CHAT_SESSION_KEY_PREFIX) || key.startsWith(CHAT_BLOB_KEY_PREFIX))
-      ) {
-        await idbDel(key, idbStore);
-      }
+    const n = localStorage.length;
+    for (let i = 0; i < n; i += 1) {
+      const key = localStorage.key(i);
+      if (key) found.add(key);
     }
   } catch {
     // ignore
   }
+  return [...found];
 }

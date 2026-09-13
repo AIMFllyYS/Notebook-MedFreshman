@@ -6,6 +6,9 @@ import {
   sanitizeSessionTitle,
 } from "@/lib/chat/sessionTitle";
 import { resolveLanguageModel, UPSTREAM_PROVIDER_NAME } from "@/lib/ai/sdk/languageModel";
+import { logSatelliteError } from "@/lib/ai/observability/agentLog";
+import { settleUsage } from "@/lib/billing/usageLedger";
+import { assertQuotaAvailable, resolveQuotaUserId } from "@/lib/billing/quotaGate";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -39,11 +42,17 @@ export async function POST(req: NextRequest) {
     return Response.json({ title: fallback, generated: false, model: provider.model });
   }
 
+  const userId = await resolveQuotaUserId(req.headers);
+  const gate = await assertQuotaAvailable({ userId, pool: "platform" });
+  if (!gate.ok) {
+    return Response.json({ title: fallback, generated: false, model: provider.model });
+  }
+
   try {
     // Title credentials/model deliberately have their own precedence. Resolve
     // this explicit endpoint as custom so unknown title models never become Flash.
     const resolved = resolveLanguageModel("custom", provider);
-    const { text } = await generateText({
+    const result = await generateText({
       model: resolved.model,
       instructions: "你是学习软件的会话标题生成器。只输出一个中文纯文本标题，约20字，不要引号、编号、解释、换行或 Markdown。",
       prompt: `请为这次 AI 对话生成标题：\n${content.slice(0, 1800)}`,
@@ -54,12 +63,23 @@ export async function POST(req: NextRequest) {
       abortSignal: req.signal,
       timeout: resolved.provider.timeoutMs,
     });
+    await settleUsage({
+      headers: req.headers,
+      rawUsage: result.totalUsage ?? result.usage,
+      route: "/api/chat-title",
+      kind: "llm",
+      selectedModelId: provider.model,
+      actualModelId: provider.model,
+      pool: "platform",
+      meta: { source: "chat-title" },
+    });
     return Response.json({
-      title: sanitizeSessionTitle(text, fallback),
+      title: sanitizeSessionTitle(result.text, fallback),
       generated: true,
       model: provider.model,
     });
-  } catch {
+  } catch (err) {
+    logSatelliteError("/api/chat-title", err);
     return Response.json({ title: fallback, generated: false, model: provider.model });
   }
 }

@@ -6,8 +6,10 @@ export function kickoffSessionTitle(
   userContent: string,
   ctx: Pick<ChatContext, "subjectId" | "categoryId" | "itemId">,
   applyRemoteTitle: (sessionId: string, title: string) => void,
+  localOnly = false,
 ): string {
   const fallbackTitle = buildFallbackSessionTitle(userContent);
+  if (localOnly) return fallbackTitle;
   void fetch("/api/chat-title", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

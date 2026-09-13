@@ -23,8 +23,11 @@ build/*
 *.pwd
 
 # env (keep .env.example tracked)
+.env
+.env.production
 .env.local
 .env*.local
+.mcp
 
 # manim intermediate render cache (final mp4s live in public/media)
 manim/media*/
@@ -38,6 +41,8 @@ venv/
 # misc
 .DS_Store
 *.log
+# Agent SDK lifecycle JSONL (server writes log/; Electron writes userData)
+/log/
 npm-debug.log*
 yarn-error.log*
 .vercel

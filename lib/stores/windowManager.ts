@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview";
+export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview";
 
 export interface WindowPoint {
   x: number;
@@ -46,9 +46,17 @@ export interface SourceTraceViewerData {
 export interface SourcePreviewData {
   url: string;
   title: string;
+  iconUrl?: string;
 }
 
-export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | DocumentViewerData | NoteCitationViewerData | SourceTraceViewerData | SourcePreviewData | Record<string, unknown>;
+export interface AttachmentPreviewData {
+  name: string;
+  mimeType: string;
+  kind: "image" | "pdf" | "ppt" | "html" | "markdown" | "text";
+  content: string;
+}
+
+export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | DocumentViewerData | NoteCitationViewerData | SourceTraceViewerData | SourcePreviewData | AttachmentPreviewData | Record<string, unknown>;
 
 export interface ManagedWindow<TData = ManagedWindowData> {
   id: string;

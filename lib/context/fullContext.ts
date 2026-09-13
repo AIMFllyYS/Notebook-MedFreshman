@@ -1,13 +1,14 @@
-import type { ContextManager, BuildContextResult } from './types';
-import { getMaxTokens } from './types';
-import { DEFAULT_MODEL_ID } from '@/lib/ai/models';
+import type { ContextManager, BuildContextResult, BuildContextOptions } from './types';
+import { closeReferenceMaterials, getMaxTokens } from './types';
+import { assembleReference, pickReferenceTier, summarizePageMarkdown } from './referenceTiers';
+import { DEFAULT_MODEL_ID, type CustomApiGroup } from '@/lib/ai/models';
 import type { ChatContext } from '@/lib/types/chat';
 import { contentTree } from '@/lib/content-data/manifest';
 import { getContentItem } from '@/lib/content-data';
 import { readContentMarkdown } from '@/lib/content/loader';
 import type { SubjectId, CategoryId } from '@/lib/types/content';
-import { createHash } from 'node:crypto';
 import { estimateTokens } from './estimateTokens';
+import { SOFT_LIMIT_RATIO } from './estimateFullContext';
 
 // ── 文件夹树摘要（模块级缓存：课程目录运行时不变） ──
 
@@ -27,45 +28,57 @@ function buildTreeSummary(): string {
   return _treeSummaryCache;
 }
 
-// ── 模块级缓存（跨请求持久化，解决 per-request new 实例的缓存失效问题） ──
-
-interface CacheEntry {
-  pageId: string;
-  contentHash: string;
-}
-
-let _contextCache: CacheEntry | null = null;
-
-function hashContent(text: string): string {
-  return createHash('md5').update(text).digest('hex');
-}
-
 // ── 全量上下文管理器 ──
+// 不再维护模块级 pageId hash 槽：它不缓存正文，且看板改绑上游 cachedTokens。
 
 export class FullContextManager implements ContextManager {
   mode = 'full' as const;
   private model: string;
+  private customGroups: CustomApiGroup[];
 
-  constructor(model = DEFAULT_MODEL_ID) {
+  constructor(model = DEFAULT_MODEL_ID, customGroups: CustomApiGroup[] = []) {
     this.model = model;
+    this.customGroups = customGroups;
   }
 
   async buildContext(
     chatContext: ChatContext,
-    userMessage: string,
+    _userMessage?: string,
+    options?: BuildContextOptions,
   ): Promise<BuildContextResult> {
-    const maxTokens = getMaxTokens(this.model);
-    const fullContext = await this.getFullContext(chatContext);
-    const context = fullContext + '\n\n用户提问：' + userMessage;
-    const tokenCount = estimateTokens(context);
+    const maxTokens = getMaxTokens(this.model, this.customGroups);
+    const outline = buildTreeSummary();
+    const pageContent = readContentMarkdown(
+      chatContext.subjectId,
+      chatContext.categoryId,
+      chatContext.itemId,
+    );
+    const item = getContentItem(
+      chatContext.subjectId as SubjectId,
+      chatContext.categoryId as CategoryId,
+      chatContext.itemId,
+    );
+    const title = item?.title ?? chatContext.currentTopic;
+    const summary = pageContent ? summarizePageMarkdown(pageContent, title) : "";
+    const full = pageContent ? `## 当前内容：${title}\n${pageContent}` : "";
 
-    const pageId = `${chatContext.subjectId}/${chatContext.categoryId}/${chatContext.itemId}`;
-    const contentHash = hashContent(fullContext);
-    const cacheHit = _contextCache !== null
-      && _contextCache.pageId === pageId
-      && _contextCache.contentHash === contentHash;
+    let tier = pickReferenceTier({ compact: options?.compact });
+    let assembled = assembleReference({ outline, summary, full }, tier);
+    let tokenCount = estimateTokens(closeReferenceMaterials(assembled));
+    if (!options?.compact && tokenCount > maxTokens) {
+      tier = "summary";
+      assembled = assembleReference({ outline, summary, full }, tier);
+      tokenCount = estimateTokens(closeReferenceMaterials(assembled));
+    }
+    if (options?.compact && tokenCount / Math.max(maxTokens, 1) >= SOFT_LIMIT_RATIO) {
+      tier = "outline";
+      assembled = assembleReference({ outline, summary, full }, tier);
+      tokenCount = estimateTokens(closeReferenceMaterials(assembled));
+    }
 
-    _contextCache = { pageId, contentHash };
+    // 提问只留在最后一条 user；这里只放参考材料，收尾不含用户原话。
+    const context = closeReferenceMaterials(assembled);
+    tokenCount = estimateTokens(context);
 
     const sources = this.collectSources(chatContext);
 
@@ -73,33 +86,16 @@ export class FullContextManager implements ContextManager {
       context,
       tokenCount,
       maxTokens,
-      cacheHit,
+      cacheHit: false,
       sources,
       overflow: tokenCount > maxTokens,
+      tier,
     };
   }
 
   async getFullContext(chatContext: ChatContext): Promise<string> {
-    const parts: string[] = [];
-
-    parts.push('\n## 课程目录\n' + buildTreeSummary());
-
-    const pageContent = readContentMarkdown(
-      chatContext.subjectId,
-      chatContext.categoryId,
-      chatContext.itemId,
-    );
-    if (pageContent) {
-      const item = getContentItem(
-        chatContext.subjectId as SubjectId,
-        chatContext.categoryId as CategoryId,
-        chatContext.itemId,
-      );
-      const title = item?.title ?? chatContext.currentTopic;
-      parts.push(`\n## 当前内容：${title}\n${pageContent}`);
-    }
-
-    return parts.join('\n');
+    const result = await this.buildContext(chatContext, "", { compact: false });
+    return result.context.replace(/\n\n以上是参考材料$/, "");
   }
 
   private collectSources(chatContext: ChatContext): string[] {

@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
   const categoryId = searchParams.get("categoryId");
   const itemId = searchParams.get("itemId");
 
-  // 新版多科路由
+  // 新版多科路由。读盘前由 loader 做标识符白名单 + 内容树校验，树外 / `..` 直接 null。
   if (subjectId && categoryId && itemId) {
     const content = readContentMarkdown(subjectId, categoryId, itemId);
     return NextResponse.json({ content });

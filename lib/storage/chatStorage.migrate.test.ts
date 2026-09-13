@@ -158,3 +158,72 @@ test("migrateFromV1IfNeeded：inline 图片迁移为 blob ref 且可 hydrate 回
   const first = hydrated[0].attachments?.[0];
   assert.equal(first && "base64" in first ? first.base64 : undefined, dataUrl);
 });
+
+test("migrateFromV1IfNeeded：文档正文单独落 blob 并可无损 hydrate", async () => {
+  const v1 = {
+    state: {
+      activeSessionId: "docs",
+      sessions: [{
+        id: "docs", title: "文档", createdAt: 1, updatedAt: 2,
+        messages: [{
+          id: "m-doc", role: "user", content: "总结", timestamp: 3,
+          attachments: [{
+            type: "document", mimeType: "text/markdown", name: "复习.md",
+            text: "# 重点\n细胞结构", size: 24, characterCount: 9,
+          }],
+        }],
+      }],
+    },
+  };
+  storage.set(PERSIST_KEYS.chatHistory, JSON.stringify(v1));
+  const { migrateFromV1IfNeeded, loadSessionMessages, hydrateAttachmentsForApi } = await import("./chatStorage.ts");
+
+  assert.equal(await migrateFromV1IfNeeded(), true);
+  const stored = await loadSessionMessages("docs");
+  const ref = stored?.[0].attachments?.[0];
+  assert.ok(ref && "id" in ref && ref.type === "document");
+  assert.equal(ref && "text" in ref, false);
+
+  const hydrated = await hydrateAttachmentsForApi(stored!);
+  const document = hydrated[0].attachments?.[0];
+  assert.ok(document && document.type === "document" && "text" in document);
+  if (document?.type === "document" && "text" in document) {
+    assert.equal(document.text, "# 重点\n细胞结构");
+    assert.equal(document.name, "复习.md");
+  }
+});
+
+test("migrateFromV1IfNeeded：本地 PDF 数据只落本机 blob 并可恢复预览", async () => {
+  const dataUrl = "data:application/pdf;base64,JVBERi0xLjc=";
+  const v1 = {
+    state: {
+      activeSessionId: "pdf",
+      sessions: [{
+        id: "pdf", title: "本地 PDF", createdAt: 1, updatedAt: 2,
+        messages: [{
+          id: "m-pdf", role: "user", content: "本地参考", timestamp: 3,
+          attachments: [{
+            type: "local-file", mimeType: "application/pdf", name: "lecture.pdf",
+            dataUrl, size: 14,
+          }],
+        }],
+      }],
+    },
+  };
+  storage.set(PERSIST_KEYS.chatHistory, JSON.stringify(v1));
+  const { migrateFromV1IfNeeded, loadSessionMessages, hydrateAttachmentsForApi } = await import("./chatStorage.ts");
+
+  assert.equal(await migrateFromV1IfNeeded(), true);
+  const stored = await loadSessionMessages("pdf");
+  const ref = stored?.[0].attachments?.[0];
+  assert.ok(ref && "id" in ref && ref.type === "local-file");
+  assert.equal(ref && "dataUrl" in ref, false);
+
+  const hydrated = await hydrateAttachmentsForApi(stored!);
+  const localFile = hydrated[0].attachments?.[0];
+  assert.ok(localFile && localFile.type === "local-file" && "dataUrl" in localFile);
+  if (localFile?.type === "local-file" && "dataUrl" in localFile) {
+    assert.equal(localFile.dataUrl, dataUrl);
+    assert.equal(localFile.name, "lecture.pdf");
+  }
+});

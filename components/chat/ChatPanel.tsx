@@ -3,6 +3,7 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
 import { AgentAlertIcon, AgentPlusIcon } from '@/components/icons/AgentIcons';
+import { clearCloudSyncMessage, useCloudSyncStatus } from '@/lib/sync/status';
 import { useAutoHideChatHeader } from '@/lib/hooks/useAutoHideChatHeader';
 import { useChat } from '@/lib/hooks/useChat';
 import { useChatHistory, ensureChatHistoryBootstrap } from '@/lib/hooks/useChatHistory';
@@ -11,6 +12,7 @@ import { useChatReady } from '@/lib/hooks/useChatReady';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useStore } from '@/lib/store';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
+import { SOFT_LIMIT_RATIO } from '@/lib/context/estimateFullContext';
 import { subjectShortName } from '@/lib/content-data/subjects.registry';
 import SelectionPopover from '@/components/notes/SelectionPopover';
 import ChatThread from '@/components/chat/ChatThread';
@@ -55,7 +57,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const contextWarning = useTokenTracker((s) => s.contextWarning);
   const contextTruncated = useTokenTracker((s) => s.contextTruncated);
   const ctxRatio = ctxLimit > 0 ? ctxTokens / ctxLimit : 0;
-  const showWarning = ctxRatio >= 0.8 || contextTruncated;
+  const showWarning = ctxRatio >= SOFT_LIMIT_RATIO || contextTruncated;
+  const cloudSync = useCloudSyncStatus();
 
   // 切换会话时重置 token 统计——外部 store 同步，置于 effect。
   useEffect(() => {
@@ -168,7 +171,9 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         chatContext={chatContext}
         onOpenSettings={() => setShowSettings(true)}
         onComposerInsetChange={setComposerInset}
-        notice={showWarning ? (
+        notice={(showWarning || cloudSync.message) ? (
+          <>
+            {showWarning ? (
           <div role="status" style={{
             display: 'flex', alignItems: 'center', gap: 8,
             padding: '8px 12px', marginBottom: 8,
@@ -178,7 +183,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
           }}>
             <AgentAlertIcon size={14} style={{ flexShrink: 0 }} />
             <span style={{ flex: 1 }}>
-              {contextWarning || `上下文已使用 ${Math.round(ctxRatio * 100)}%，之后请求会自动只发送最近消息；你仍然可以继续输入。`}
+              {contextWarning || `上下文已使用 ${Math.round(ctxRatio * 100)}%，之后请求会自动压缩较早对话；你仍然可以继续输入。`}
             </span>
             <button type="button" onClick={handleNewChat} style={{
               display: 'flex', alignItems: 'center', gap: 4,
@@ -189,6 +194,38 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
               <AgentPlusIcon size={12} /> 新建对话
             </button>
           </div>
+            ) : null}
+            {cloudSync.message ? (
+              <div
+                role={cloudSync.phase === 'error' ? 'alert' : 'status'}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  padding: '8px 12px', marginBottom: 8,
+                  borderRadius: 10, fontSize: 12,
+                  background: cloudSync.phase === 'error'
+                    ? 'var(--md-sys-color-error-container)'
+                    : 'var(--md-sys-color-secondary-container)',
+                  color: cloudSync.phase === 'error'
+                    ? 'var(--md-sys-color-on-error-container)'
+                    : 'var(--md-sys-color-on-secondary-container)',
+                }}
+              >
+                <AgentAlertIcon size={14} style={{ flexShrink: 0 }} />
+                <span style={{ flex: 1 }}>{cloudSync.message}</span>
+                <button
+                  type="button"
+                  onClick={clearCloudSyncMessage}
+                  style={{
+                    padding: '4px 10px', borderRadius: 8, border: 'none',
+                    background: 'transparent', color: 'inherit',
+                    fontSize: 11, fontWeight: 600, cursor: 'pointer',
+                  }}
+                >
+                  关闭
+                </button>
+              </div>
+            ) : null}
+          </>
         ) : null}
       />
 
