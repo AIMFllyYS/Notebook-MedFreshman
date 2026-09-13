@@ -69,7 +69,7 @@ function printFindings(hits: SecretFinding[], bypassed: boolean) {
   stream(formatScanReport(hits, bypassed));
 }
 
-export function runSecretScanCli(argv = process.argv.slice(2), env = process.env): number {
+export function runSecretScanCli(argv = process.argv.slice(2), env: Partial<NodeJS.ProcessEnv> = process.env): number {
   const staged = argv.includes("--staged");
   const bypass = resolveBypass(argv, env);
 

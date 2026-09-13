@@ -6,6 +6,7 @@
   "author": "Gailvlun",
   "main": "electron/main.js",
   "scripts": {
+    "typecheck": "tsc --noEmit --incremental false",
     "dev": "next dev -p 35349",
     "check:encoding": "node scripts/check-content-encoding.mjs",
     "gen:script-ids": "node scripts/gen-script-ids.mjs",

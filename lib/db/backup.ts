@@ -289,7 +289,7 @@ export function readEncryptedDump(path: string, passphrase: string): LogicalDump
   return deserializeDump(decryptBackup(readFileSync(path), passphrase));
 }
 
-export function resolveBackupEnv(env: NodeJS.ProcessEnv = process.env): {
+export function resolveBackupEnv(env: Partial<NodeJS.ProcessEnv> = process.env): {
   accessToken: string;
   projectRef: string;
   encryptionKey: string;

@@ -64,7 +64,7 @@ export function isDailyCron(expr: string): boolean {
 }
 
 export function resolveKeepaliveEnv(
-  env: NodeJS.ProcessEnv = process.env,
+  env: Partial<NodeJS.ProcessEnv> = process.env,
 ): KeepaliveEnv {
   const supabaseUrl = (
     env.SUPABASE_URL?.trim() ||
