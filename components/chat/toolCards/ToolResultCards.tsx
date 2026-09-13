@@ -41,11 +41,11 @@ function overlayAggregateMeta(
     queries.length && part.input && typeof part.input === "object"
       ? { ...part.input, query: queries.join(" · ") }
       : part.input;
-  if (!("cacheHit" in part.output)) return { ...part, input };
+  if (!("cacheHit" in part.output)) return Object.assign({}, part, { input });
   const cacheHit = parts.every(
     (item) => item.state === "output-available" && Boolean((item.output as { cacheHit?: boolean }).cacheHit),
   );
-  return { ...part, input, output: { ...part.output, cacheHit } };
+  return Object.assign({}, part, { input, output: { ...part.output, cacheHit } });
 }
 
 function mergeAggregatedPart(

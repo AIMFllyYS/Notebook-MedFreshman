@@ -79,15 +79,15 @@ function baseInput(model: MockLanguageModelV4): StudyAgentInput {
 
 test("resolveAgentLogPath：服务端走仓库 log/，Electron 走 userData/logs", () => {
   assert.equal(
-    resolveAgentLogPath({} as NodeJS.ProcessEnv, path.join("D:", "repo")),
+    resolveAgentLogPath({} as Partial<NodeJS.ProcessEnv>, path.join("D:", "repo")),
     path.join("D:", "repo", "log", AGENT_LOG_FILENAME),
   );
   assert.equal(
-    resolveAgentLogPath({ ELECTRON_USER_DATA: "D:\\AppData\\Gailvlun" } as NodeJS.ProcessEnv, path.join("D:", "repo")),
+    resolveAgentLogPath({ ELECTRON_USER_DATA: "D:\\AppData\\Gailvlun" } as Partial<NodeJS.ProcessEnv>, path.join("D:", "repo")),
     path.join("D:\\AppData\\Gailvlun", "logs", AGENT_LOG_FILENAME),
   );
   assert.equal(
-    resolveAgentLogPath({ AGENT_LOG_PATH: "E:\\tmp\\custom.jsonl", ELECTRON_USER_DATA: "D:\\ud" } as NodeJS.ProcessEnv),
+    resolveAgentLogPath({ AGENT_LOG_PATH: "E:\\tmp\\custom.jsonl", ELECTRON_USER_DATA: "D:\\ud" } as Partial<NodeJS.ProcessEnv>),
     "E:\\tmp\\custom.jsonl",
   );
 });

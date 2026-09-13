@@ -36,7 +36,8 @@ function traceFromSteps(steps: TraceStep[]): AgentTraceModel {
   };
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, isStreaming, sessionId, repairModelId, topic }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, isStreaming: requestStreaming, sessionId, repairModelId, topic }) => {
+  const isStreaming = requestStreaming && !message.parts.some((part) => part.type === 'data-answer-complete');
   const isUser = message.role === 'user';
   const parts = message.parts;
   const reducedMotion = useReducedMotion();
@@ -138,6 +139,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
                 >
                   <MessageContent
                     content={block.text}
+                    isStreaming={isStreaming}
                     enableVisualizations={true}
                     sessionId={sessionId}
                     messageId={message.id}

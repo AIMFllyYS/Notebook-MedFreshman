@@ -303,12 +303,15 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       if (!state.sessionsMeta.some((s) => s.id === sessionId)) return state;
       const prev = state.messagesById[sessionId];
       if (!prev) return state;
-      const messages = prev.map((m) => (m.id === messageId ? { ...m, ...updates } : m));
+      const target = prev.find((m) => m.id === messageId);
+      if (!target) return state;
+      const updated = { ...target, ...updates };
+      const messages = prev.map((m) => (m.id === messageId ? updated : m));
       let shouldSaveManifest = false;
       const sessionsMeta = state.sessionsMeta.map((s) =>
         {
           if (s.id !== sessionId) return s;
-          const artifactIds = mergeArtifactIds(s.artifactIds, messages);
+          const artifactIds = mergeArtifactIds(s.artifactIds, [updated]);
           if (!sameStringArray(s.artifactIds, artifactIds)) {
             shouldSaveManifest = true;
           }

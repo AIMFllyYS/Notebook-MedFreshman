@@ -33,7 +33,7 @@ export interface AgentLogRecord {
 }
 
 export function resolveAgentLogPath(
-  env: NodeJS.ProcessEnv = process.env,
+  env: Partial<NodeJS.ProcessEnv> = process.env,
   cwd: string = process.cwd(),
 ): string {
   const override = env.AGENT_LOG_PATH?.trim();
@@ -43,7 +43,7 @@ export function resolveAgentLogPath(
   return path.join(cwd, "log", AGENT_LOG_FILENAME);
 }
 
-export function collectEnvSecrets(env: NodeJS.ProcessEnv = process.env): string[] {
+export function collectEnvSecrets(env: Partial<NodeJS.ProcessEnv> = process.env): string[] {
   const secrets: string[] = [];
   for (const name of SECRET_ENV_NAMES) {
     const value = env[name]?.trim();

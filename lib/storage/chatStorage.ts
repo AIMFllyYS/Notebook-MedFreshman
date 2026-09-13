@@ -99,7 +99,7 @@ export async function loadSessionMessages(sessionId: string): Promise<ChatMessag
 }
 
 export function saveSessionMessages(sessionId: string, messages: ChatMessage[]): void {
-  idbStorage.setItem(chatSessionKey(sessionId), JSON.stringify(messages));
+  idbStorage.setItemLazy(chatSessionKey(sessionId), () => JSON.stringify(messages));
 }
 
 async function saveManifestNow(manifest: ChatManifestV2): Promise<boolean> {
@@ -275,9 +275,6 @@ export function persistInlineAttachments(message: ChatMessage): ChatMessage {
   return { ...message, attachments };
 }
 
-function persistMessagesAttachments(messages: ChatMessage[]): ChatMessage[] {
-  return messages.map(persistInlineAttachments);
-}
 
 export async function listBlobIdsForSession(sessionId: string): Promise<string[]> {
   const messages = await loadSessionMessages(sessionId);

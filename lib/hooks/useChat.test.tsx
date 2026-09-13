@@ -18,7 +18,7 @@ import { buildTrace } from '@/lib/chat/buildTrace';
 vi.mock('@/lib/storage/idbStorage', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/storage/idbStorage')>();
   return { ...actual, idbStorage: {
-    getItem: vi.fn(async () => null), setItem: vi.fn(), removeItem: vi.fn(async () => {}),
+    getItem: vi.fn(async () => null), setItem: vi.fn(), setItemLazy: vi.fn(), removeItem: vi.fn(async () => {}),
   } };
 });
 vi.mock('@/lib/storage/chatStorage', async (importOriginal) => {

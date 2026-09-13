@@ -6,6 +6,7 @@ import { useTokenTracker } from './useTokenTracker';
 import { useFloatingTokenTracker } from './useFloatingTokenTracker';
 import { useBillingStore, createBillingRecord } from './useBillingStore';
 import { useAcademicYear } from './useAcademicYear';
+import { AUTO_MODEL_ID } from '@/lib/ai/models';
 import { useArtifacts } from './useArtifacts';
 import { collectRequestArtifacts } from '@/lib/context/compactArtifacts';
 import type { ChatMessage, ChatContext, ChatOptions } from '@/lib/types/chat';
@@ -56,7 +57,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
     if (isFirstMessage) {
       history.updateSessionTitle(sessionId, kickoffSessionTitle(sessionId, userContent, chatContext, (id, title) => {
         useChatHistory.getState().updateSessionTitle(id, title);
-      }));
+      }, resolved.effectiveModelId === AUTO_MODEL_ID));
     }
     const assistant = createAssistantPlaceholder(crypto.randomUUID(), {
       thinkingEnabled: resolved.enableThinking, searchEnabled: resolved.enableSearch, modelId: resolved.effectiveModelId,

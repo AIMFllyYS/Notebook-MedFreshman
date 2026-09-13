@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useMemo, Children, isValidElement } from 'react';
+import { useStreamingText } from '@/lib/hooks/useStreamingText';
 import ReactMarkdown from 'react-markdown';
 import { sharedRemarkPlugins, sharedRehypePlugins } from '@/lib/markdown/plugins';
 import remarkSoftBreaks from '@/lib/markdown/remarkSoftBreaks';
@@ -20,6 +21,7 @@ import { VizErrorBoundary } from '@/components/chat/VizErrorBoundary';
 import { ensureSvgRoot } from '@/lib/canvas/normalize';
 
 interface MessageContentProps {
+  isStreaming?: boolean;
   content: string;
   enableVisualizations?: boolean;
   /** 聊天体文本（用户输入/思考过程/生成依据）启用软换行：段内单 \n 渲染为 <br>。 */
@@ -262,16 +264,19 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
   messageId,
   repairModelId,
   topic,
+  isStreaming = false,
 }) => {
+  const renderedContent = useStreamingText(content, isStreaming);
   const { blocks } = useMemo(() => {
-    return parseChatContent(content);
-  }, [content]);
+    return parseChatContent(renderedContent);
+  }, [renderedContent]);
 
   const remarkPlugins = useMemo(
     () => (preserveLineBreaks ? [...sharedRemarkPlugins, remarkSoftBreaks] : sharedRemarkPlugins),
     [preserveLineBreaks],
   );
 
+  const rendered = useMemo(() => {
   const canvasBlockCounter = { current: 0 };
   const renderContext: MessageRenderContext = {
     sessionId,
@@ -281,13 +286,10 @@ const MessageContentComponent: React.FC<MessageContentProps> = ({
     nextCanvasBlockIndex: () => canvasBlockCounter.current++,
   };
 
-  return (
-    <>
-      {renderBlocks(blocks, 'root', enableVisualizations, remarkPlugins, renderContext)}
-    </>
-  );
+  return renderBlocks(blocks, 'root', enableVisualizations, remarkPlugins, renderContext);
+  }, [blocks, enableVisualizations, remarkPlugins, sessionId, messageId, repairModelId, topic]);
+  return <>{rendered}</>;
 };
 
 export const MessageContent = React.memo(MessageContentComponent);
 MessageContent.displayName = 'MessageContent';
-

@@ -188,6 +188,7 @@ function BillingDashboardWindow({ winId }: { winId: string }) {
   const parentRef = React.useRef<HTMLDivElement>(null);
   
   const rowVirtualizer = useVirtualizer({
+    useFlushSync: false,
     count: filteredRecords.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 36,
