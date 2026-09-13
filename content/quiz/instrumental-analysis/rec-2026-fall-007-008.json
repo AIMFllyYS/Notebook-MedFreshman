@@ -1,0 +1,260 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "rec-2026-fall-007-008",
+  "generatedAt": "2026-09-13",
+  "examConfig": {
+    "source": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/recording.md；content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-007-008",
+    "revision": 1,
+    "recordingHash": "82f47a931cd0102586ffc879b957880a19bbf13323c31a48285331f09d651371",
+    "notesTextHash": "db9e37e595405c9ad69f9ff9b98b6820ef8a6e827862c29320eaea54aa1a05e9"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于萃取与反萃取的方向，下列说法正确的是（　）。",
+      "options": [
+        "组分从有机相转移到水相称为萃取，从水相转移到有机相称为反萃取",
+        "组分从水相转移到有机相称为萃取，从有机相转移回水相称为反萃取",
+        "无论方向如何，只要发生相间转移都叫萃取，不存在反萃取",
+        "萃取与反萃取的方向由操作温度决定，与两相溶解特性无关"
+      ],
+      "answer": 1,
+      "hint": "回忆四氯化碳萃取碘：碘从水相进入下层有机相。",
+      "explanation": "**B 正确。** 萃取是组分从水相进入有机相，反萃取是改变水相条件（如 pH、配位剂）后组分从有机相重回水相，方向本质由组分在两相的亲疏水溶解特性决定。\n- A：方向说反了。\n- C：反萃取是明确概念，锂电池废液回收锂就是萃取+反萃取循环。\n- D：方向取决于溶解度（亲疏水性），不是温度。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/recording.md",
+        "label": "萃取与反萃取定义 · 亲疏水特性"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "分配系数 $K_D$ 与分配比 $D$ 的区别，下列正确的是（　）。",
+      "options": [
+        "$K_D$ 是总浓度之比，$D$ 是单一形态的平衡浓度之比",
+        "两者完全相同，只是符号不同",
+        "$K_D=[A]_O/[A]_W$ 只计某一形态的平衡浓度；$D=C_O/C_W$ 计入该组分在两相中的所有存在形态",
+        "$K_D$ 会随 pH 与形态分布改变，$D$ 只由温度决定，二者总相等"
+      ],
+      "answer": 2,
+      "hint": "方括号 [A] 与无括号 C 的区别：一个是单形态平衡浓度，一个是总浓度。",
+      "explanation": "**C 正确。** $K_D$ 用方括号平衡浓度、只看某一形态（如 I₂），在组分、溶剂、温度确定后是常数；$D$ 用总浓度 C，要把碘在水相中的 I₂、I⁻、HIO（次碘酸）等所有形态计入，因此当某一相存在多种形态时 $K_D$ 与 $D$ 不相等。\n- A：恰好说反。\n- B：两者定义不同。\n- D：说反了——$K_D$ 才是确定条件下的常数，随 pH/形态分布变化的是 $D$。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/recording.md",
+        "label": "分配系数 KD 与分配比 D · 碘的多种形态"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "当水相与有机相体积相等时，萃取百分率 $E\\%$ 可简化为（　）。",
+      "options": [
+        "$E\\%=\\dfrac{D}{D-1}\\times100\\%$",
+        "$E\\%=\\dfrac{D}{D+1}\\times100\\%$",
+        "$E\\%=\\dfrac{1}{D+1}\\times100\\%$",
+        "$E\\%=D\\times100\\%$"
+      ],
+      "answer": 1,
+      "hint": "一般式 E%=DV_O/(DV_O+V_W)，令 V_O=V_W。",
+      "explanation": "**B 正确。** 一般式 $E\\%=DV_O/(DV_O+V_W)\\times100\\%$，等体积 $V_O=V_W$ 时约去体积即得 $E\\%=D/(D+1)\\times100\\%$。萃取率不可能达到 100%，水相总有少量残留，属分配平衡决定的系统误差。\n- A、C、D 代入一般式均不成立。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/recording.md",
+        "label": "萃取百分率 E% · 等体积简化"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "在有机相总用量相同的前提下，下列萃取策略回收率最高的是（　）。",
+      "options": [
+        "一次性加入全部有机相进行单次萃取",
+        "把有机相分成几份，进行多次（少量多次）萃取",
+        "只萃取一次但剧烈振荡更长时间",
+        "升高温度即可，与分次无关"
+      ],
+      "answer": 1,
+      "hint": "回忆 n 次残留公式 m_n=m₀[V_W/(DV_O+V_W)]^n，以及洗衣服的类比。",
+      "explanation": "**B 正确。** n 次萃取后水相残留 $m_n=m_0[V_W/(DV_O+V_W)]^n$，括号内小于 1，次数越多残留越少；总有机相用量固定时，少量多次的累积回收率显著高于单次全量。\n- A：单次全量效果较差。\n- C、D：振荡时间或温度不能替代分次萃取带来的指数级残留下降。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/recording.md",
+        "label": "多次萃取规律 · 少量多次"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于超临界流体萃取（SFE），下列描述错误的是（　）。",
+      "options": [
+        "最常用介质是超临界 CO₂，临界条件约为 31 ℃、7.39 MPa",
+        "兼具气体的高流动性和液体的溶解能力，传质效率高",
+        "萃取后降压，CO₂ 挥发为气体，产物无溶剂残留",
+        "需要大量高温有机溶剂，产物中溶剂残留难以去除"
+      ],
+      "answer": 3,
+      "hint": "题目要求选「错误」项；超临界 CO₂ 接近室温、无残留。",
+      "explanation": "**D 错误（符合题意）。** 超临界 CO₂ 临界温度 31 ℃ 接近室温、适合热敏性物质，降压后 CO₂ 直接挥发、几乎无溶剂残留，这正是 SFE 的优点，而非需要大量高温有机溶剂。\n- A、B、C 均为 SFE 的正确特点，广泛用于精油、咖啡因提取。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "主流萃取方法 · 超临界 CO₂ 萃取"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "我国稀土分离的核心工业技术、并由徐光宪团队推广到全国工厂的是（　）。",
+      "options": [
+        "单级萃取",
+        "多级逆流（串级）萃取",
+        "索氏连续萃取",
+        "离子交换法"
+      ],
+      "answer": 1,
+      "hint": "轻重两相在多级萃取器中反向流动，效率远超国外的离子交换法。",
+      "explanation": "**B 正确。** 稀土元素性质极相近，国外长期用效率低、成本高的离子交换法；徐光宪团队开创多级逆流（串级）萃取理论与工艺并无偿推广，使我国成为稀土分离生产大国。\n- A 单级萃取分离能力不足；C 索氏提取用于固体（如茶叶咖啡因）；D 离子交换法正是被逆流萃取超越的旧路线。",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/recording.md",
+        "label": "多级逆流萃取 · 稀土分离与徐光宪"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "固相萃取（SPE）最常用的 C18 填料吸附有机物主要依靠（　）。",
+      "options": [
+        "长链烷基（碳十八）的疏水/脂溶作用",
+        "强静电离子交换",
+        "共价化学键合目标物",
+        "分子筛的孔径筛分"
+      ],
+      "answer": 0,
+      "hint": "C18 是键合在微米硅球上的十八烷基，是固相萃取最常用的填料。",
+      "explanation": "**A 正确。** C18 是键合在硅胶上的十八烷基，靠长链烷基的疏水（脂溶）作用吸附非极性/弱极性有机物：过柱时目标物被吸附、杂质流走，再用合适溶剂洗脱富集。\n- B 对应离子交换树脂；C SPE 是可逆吸附而非共价结合；D 描述的是尺寸排阻/膜筛分机理。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "固相萃取 SPE · C18 填料"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于固相微萃取（SPME），下列说法不正确的是（　）。",
+      "options": [
+        "核心是表面涂覆固相涂层的细针，外形类似注射器",
+        "可用浸入法处理难挥发组分、顶空法处理易挥发组分",
+        "需要大量有机溶剂洗脱，集采样、萃取、浓缩、进样于一体",
+        "具有样品量小、操作快、重复性好、可自动化的优点"
+      ],
+      "answer": 2,
+      "hint": "题目选「不正确」；SPME 是绿色前处理技术，最大特点之一是无需有机溶剂。",
+      "explanation": "**C 不正确（符合题意）。** SPME 靠涂层针吸附达平衡后直接进色谱进样口热脱附，**无需有机溶剂**，这正是它的绿色优势。\n- A、B、D 均正确：涂层丝针、浸入/顶空两种方式、样品量小且可自动化。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "固相微萃取 SPME · 结构与优势"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于分子三类能级及其吸收光谱，下列正确的是（　）。",
+      "options": [
+        "能级差：转动 > 振动 > 电子，分别对应紫外可见、红外、远红外",
+        "能级差：电子 > 振动 > 转动，电子跃迁必伴随振动、转动跃迁，故分子光谱为连续带状谱",
+        "分子的紫外可见光谱与原子光谱一样是离散线状谱",
+        "振动能级差最大，对应紫外可见光"
+      ],
+      "answer": 1,
+      "hint": "电子能级差最大、对应紫外可见；振转能级密集叠加成连续谱（eV 为教材量级参考，课堂只要求记对应波段）。",
+      "explanation": "**B 正确。** 能级差 电子 > 振动 > 转动，分别对应紫外可见、红外、远红外（eV 量级为教材参考，课堂不要求背数值）；电子跃迁必然叠加密集的振、转跃迁，使分子吸收光谱呈连续带状谱，而原子光谱是离散线状谱。\n- A、D：能级差大小与对应波段说反；C：分子光谱是连续带状谱而非线状谱。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "分子三类能级 · 连续带状谱"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列电子跃迁中，摩尔吸光系数最大（$10^4\\sim10^5$）、是紫外可见分光光度法主要检测对象的是（　）。",
+      "options": [
+        "$\\sigma\\rightarrow\\sigma^*$，吸收波长小于 200 nm，处于真空紫外",
+        "$n\\rightarrow\\sigma^*$，吸收弱、ε 仅约 $10^2$",
+        "$\\pi\\rightarrow\\pi^*$，简单烯烃尚在真空紫外，共轭增大后红移进入紫外可见区、灵敏度高",
+        "所有跃迁灵敏度相同，没有主次之分"
+      ],
+      "answer": 2,
+      "hint": "价电子能级顺序 σ<π<n<π*<σ*；乙烯 165 nm、苯 184 nm，共轭越大越向长波红移。",
+      "explanation": "**C 正确。** 孤立 π 键（如乙烯 165 nm、苯 184 nm）尚在真空紫外边缘；共轭体系增大后 π→π* 红移进入可检测的紫外可见区，摩尔吸光系数高达 $10^4$-$10^5$，是 UV-VIS 的主要检测对象。\n- A：σ→σ* 在真空紫外（<200 nm），常规仪器无法检测，烷烃可作惰性溶剂；\n- B：n→σ*（如甲醇 183 nm）ε 仅约 $10^2$、灵敏度很低；D：各类跃迁灵敏度差异显著。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "电子跃迁类型 · π→π* 主力跃迁"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于生色团、助色团与红移，下列说法正确的是（　）。",
+      "options": [
+        "助色团本身含强不饱和键、能独立产生强烈紫外吸收",
+        "生色团是含不饱和键的共轭结构；助色团含孤对电子，本身不吸收，与生色团相连后通过 p-π 共轭使吸收红移",
+        "红移是吸收波长向短波方向移动，意味着共轭体系减小",
+        "只要是饱和烷烃就具有大共轭体系，因而有很强的紫外可见吸收"
+      ],
+      "answer": 1,
+      "hint": "苯 184 nm、萘 221 nm、蒽 251 nm：共轭越大，最大吸收波长越长（红移）。",
+      "explanation": "**B 正确。** 生色团（如 C=C、C=O、苯环）是含不饱和键的共轭结构；助色团（-OH、-NH₂、-OR、-X）含孤对电子、本身不吸收，与生色团相连后扩展共轭、减小 π→π* 能级差而红移并增色。\n- A：助色团本身不吸收；\n- C：红移是向**长波**移动、对应共轭增大，向短波是蓝移；\n- D：饱和烷烃只有 σ 键，无共轭、几乎无紫外可见吸收。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "生色团与助色团 · 红移"
+      }
+    }
+  ]
+}

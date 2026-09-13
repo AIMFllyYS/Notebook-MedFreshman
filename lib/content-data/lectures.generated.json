@@ -1,4 +1,49 @@
 {
   "schemaVersion": 1,
-  "lessons": []
+  "lessons": [
+    {
+      "subjectId": "instrumental-analysis",
+      "lessonId": "rec-2026-fall-007-008",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "分析化学",
+      "sessionRange": {
+        "start": 7,
+        "end": 8
+      },
+      "taughtOn": "2026-09-11",
+      "topic": "萃取技术体系与紫外可见分光光度法基础",
+      "revision": 1,
+      "quizId": "rec-2026-fall-007-008",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-007-008"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-007-008"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-007-008"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-007-008"
+        }
+      },
+      "hashes": {
+        "recording": "82f47a931cd0102586ffc879b957880a19bbf13323c31a48285331f09d651371",
+        "notesText": "db9e37e595405c9ad69f9ff9b98b6820ef8a6e827862c29320eaea54aa1a05e9"
+      }
+    }
+  ]
 }
