@@ -155,10 +155,14 @@ async function migrateAttachmentsInMessages(messages: ChatMessage[]): Promise<Ch
     }
     const attachments = [];
     for (const a of m.attachments) {
-      if ('base64' in a && a.base64) {
+      if (('base64' in a && a.base64) || ('text' in a && typeof a.text === 'string')) {
         const id: string = `blob-${m.id}-${attachments.length}-${Date.now()}`;
-        await saveBlobFromDataUrl(id, a.base64);
-        attachments.push({ id, type: 'image' as const, mimeType: a.mimeType, name: undefined });
+        await saveBlobFromDataUrl(id, 'base64' in a ? a.base64 : a.text);
+        attachments.push({
+          id, type: a.type, mimeType: a.mimeType,
+          name: a.name, size: a.size,
+          ...('characterCount' in a ? { characterCount: a.characterCount } : {}),
+        });
       } else {
         attachments.push(a);
       }
@@ -242,15 +246,21 @@ export async function hydrateAttachmentsForApi(messages: ChatMessage[]): Promise
     }
     const attachments: ChatAttachment[] = [];
     for (const a of m.attachments) {
-      if ('base64' in a && a.base64) {
+      if (('base64' in a && a.base64) || ('text' in a && typeof a.text === 'string')) {
         attachments.push(a as ChatAttachment);
       } else if ('id' in a) {
-        const dataUrl = await loadBlobDataUrl((a as { id: string }).id);
-        if (dataUrl) {
-          attachments.push({
-            type: 'image',
-            mimeType: a.mimeType,
-            base64: dataUrl,
+        const payload = await loadBlobDataUrl((a as { id: string }).id);
+        if (payload) {
+          attachments.push(a.type === 'document' ? {
+            type: 'document',
+            mimeType: a.mimeType as Extract<ChatAttachment, { type: 'document' }>['mimeType'],
+            name: a.name ?? '未命名文档.txt',
+            text: payload,
+            size: a.size ?? new Blob([payload]).size,
+            characterCount: a.characterCount ?? [...payload].length,
+          } : {
+            type: 'image', mimeType: a.mimeType, base64: payload,
+            name: a.name, size: a.size,
           });
         }
       }
@@ -264,10 +274,14 @@ export function persistInlineAttachments(message: ChatMessage): ChatMessage {
   if (!message.attachments?.length) return message;
   const attachments: StoredChatAttachment[] = [];
   for (const a of message.attachments) {
-    if ('base64' in a && a.base64) {
+    if (('base64' in a && a.base64) || ('text' in a && typeof a.text === 'string')) {
       const id = `blob-${message.id}-${attachments.length}`;
-      void saveBlobFromDataUrl(id, a.base64);
-      attachments.push({ id, type: 'image', mimeType: a.mimeType });
+      void saveBlobFromDataUrl(id, 'base64' in a ? a.base64 : a.text);
+      attachments.push({
+        id, type: a.type, mimeType: a.mimeType,
+        name: a.name, size: a.size,
+        ...('characterCount' in a ? { characterCount: a.characterCount } : {}),
+      });
     } else {
       attachments.push(a);
     }

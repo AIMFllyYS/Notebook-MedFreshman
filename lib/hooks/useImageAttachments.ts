@@ -16,7 +16,9 @@ import {
   toChatAttachments,
   revokeAttachments,
   getImagesFromClipboard,
-  getImagesFromDragEvent,
+  getSupportedFilesFromDragEvent,
+  LONG_PASTE_DOCUMENT_THRESHOLD,
+  MAX_DOCUMENT_CHARACTERS,
   type AttachmentPreview,
 } from "@/lib/ai/imageUtils";
 import { useSettings } from "@/lib/hooks/useSettings";
@@ -48,6 +50,8 @@ export interface UseImageAttachmentsResult {
   isDragging: boolean;
   /** 错误信息（3 秒后自动清除）。 */
   error: string | null;
+  /** 非阻断提示，例如长文本已自动转换为 TXT。 */
+  info: string | null;
   /** 手动清除错误。 */
   clearError: () => void;
 }
@@ -55,6 +59,7 @@ export interface UseImageAttachmentsResult {
 export function useImageAttachments(): UseImageAttachmentsResult {
   const [attachments, setAttachments] = useState<AttachmentPreview[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const dragCounter = useRef(0);
 
@@ -64,6 +69,11 @@ export function useImageAttachments(): UseImageAttachmentsResult {
     const t = setTimeout(() => setError(null), 3000);
     return () => clearTimeout(t);
   }, [error]);
+  useEffect(() => {
+    if (!info) return;
+    const t = setTimeout(() => setInfo(null), 4000);
+    return () => clearTimeout(t);
+  }, [info]);
 
   // 组件卸载时释放所有 blob URL
   useEffect(() => {
@@ -87,8 +97,11 @@ export function useImageAttachments(): UseImageAttachmentsResult {
   const addFiles = useCallback(
     async (files: File[]) => {
       if (files.length === 0) return;
-      if (!checkVisionSupport()) return;
-      const { attachments: newOnes, errors } = await filesToAttachments(files);
+      const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+      const otherFiles = files.filter((file) => !file.type.startsWith("image/"));
+      const acceptedFiles = imageFiles.length > 0 && !checkVisionSupport() ? otherFiles : files;
+      if (acceptedFiles.length === 0) return;
+      const { attachments: newOnes, errors } = await filesToAttachments(acceptedFiles);
       if (errors.length > 0) setError(errors[0]);
       if (newOnes.length > 0) {
         setAttachments((prev) => [...prev, ...newOnes]);
@@ -99,7 +112,8 @@ export function useImageAttachments(): UseImageAttachmentsResult {
 
   const remove = useCallback((idx: number) => {
     setAttachments((prev) => {
-      URL.revokeObjectURL(prev[idx].previewUrl);
+      const attachment = prev[idx];
+      if (attachment?.type !== "document") URL.revokeObjectURL(attachment.previewUrl);
       return prev.filter((_, i) => i !== idx);
     });
   }, []);
@@ -119,10 +133,25 @@ export function useImageAttachments(): UseImageAttachmentsResult {
   const handlePaste = useCallback(
     (e: React.ClipboardEvent) => {
       const images = getImagesFromClipboard(e);
-      if (images.length === 0) return;
-      // 有图片时阻止默认粘贴（避免同时插入图片的文件名文本）
+      if (images.length > 0) {
+        // 有图片时阻止默认粘贴（避免同时插入图片的文件名文本）
+        e.preventDefault();
+        void addFiles(images);
+        return;
+      }
+      const pastedText = e.clipboardData.getData("text/plain");
+      let characterCount = 0;
+      for (const value of pastedText) characterCount += value ? 1 : 0;
+      if (characterCount <= LONG_PASTE_DOCUMENT_THRESHOLD) return;
       e.preventDefault();
-      addFiles(images);
+      if (characterCount > MAX_DOCUMENT_CHARACTERS) {
+        setError(`粘贴内容超过 20 万字，请拆分后再添加`);
+        return;
+      }
+      const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+      const file = new File([pastedText], `粘贴文本-${stamp}.txt`, { type: "text/plain;charset=utf-8" });
+      void addFiles([file]);
+      setInfo(`已将 ${characterCount.toLocaleString("zh-CN")} 字粘贴内容转为 TXT 附件`);
     },
     [addFiles],
   );
@@ -132,9 +161,9 @@ export function useImageAttachments(): UseImageAttachmentsResult {
       e.preventDefault();
       dragCounter.current = 0;
       setIsDragging(false);
-      const images = getImagesFromDragEvent(e);
-      if (images.length > 0) {
-        void addFiles(images);
+      const files = getSupportedFilesFromDragEvent(e);
+      if (files.length > 0) {
+        void addFiles(files);
         return;
       }
       const uriList =
@@ -201,6 +230,7 @@ export function useImageAttachments(): UseImageAttachmentsResult {
     handleDragLeave,
     isDragging,
     error,
+    info,
     clearError,
   };
 }

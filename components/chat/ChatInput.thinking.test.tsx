@@ -57,7 +57,7 @@ describe('ChatInput thinking menu', () => {
     const { container, getByTitle, getByRole, getByTestId, rerender } = render(<ChatInput {...props} />);
     expect(getByTestId('thinking-menu-button')).not.toBeDisabled();
     expect(getByTitle('发送').querySelector('[data-agent-icon="arrow-up"]')).not.toBeNull();
-    expect(getByTitle('上传图片附件').querySelector('[data-agent-icon="paperclip"]')).not.toBeNull();
+    expect(getByTitle('上传图片或文档').querySelector('[data-agent-icon="paperclip"]')).not.toBeNull();
     expect(getByTitle('联网搜索（需配置搜索API）').querySelector('[data-agent-icon="globe"]')).not.toBeNull();
     fireEvent.change(getByRole('textbox'), { target: { value: '解释这一页' } });
     fireEvent.keyDown(getByRole('textbox'), { key: 'Enter' });

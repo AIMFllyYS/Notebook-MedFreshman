@@ -63,7 +63,9 @@ export function payloadLooksUnsafe(payload: unknown): boolean {
 function stripAttachment(a: StoredChatAttachment): StoredChatAttachment {
   const id = "id" in a && typeof a.id === "string" && a.id ? a.id : `unsynced-${a.mimeType}`;
   const name = "name" in a && typeof a.name === "string" ? a.name : undefined;
-  return { id, type: "image", mimeType: a.mimeType, name };
+  const size = "size" in a && typeof a.size === "number" ? a.size : undefined;
+  const characterCount = "characterCount" in a && typeof a.characterCount === "number" ? a.characterCount : undefined;
+  return { id, type: a.type, mimeType: a.mimeType, name, size, characterCount };
 }
 
 export function sanitizeChatMessages(messages: ChatMessage[]): ChatMessage[] {

@@ -63,7 +63,11 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
       thinkingEnabled: resolved.enableThinking, searchEnabled: resolved.enableSearch, modelId: resolved.effectiveModelId,
     });
     history.addMessage(sessionId, assistant);
-    const latestMessages = useChatHistory.getState().messagesById[sessionId] ?? [];
+    const storedLatestMessages = useChatHistory.getState().messagesById[sessionId] ?? [];
+    // addMessage immediately replaces large inline attachments with IndexedDB refs.
+    // Keep this turn's original in-memory payload for the request so a just-started
+    // blob write can never race the following hydration read.
+    const latestMessages = storedLatestMessages.map((entry) => entry.id === userMessage.id ? userMessage : entry);
     const { messages: estimateMessages } = buildRequestMessages(latestMessages);
     const tracker = ovSessionId
       ? useFloatingTokenTracker.getState().getSession(ovSessionId) : useTokenTracker.getState();

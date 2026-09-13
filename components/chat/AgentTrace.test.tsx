@@ -205,6 +205,17 @@ describe('ordered AgentTrace', () => {
     expect(screen.queryByText(/已思考/)).not.toBeInTheDocument();
   });
 
+  it('shows only recorded per-step duration and adds a completion check to the summary', () => {
+    const trace = buildTrace({
+      parts: [{ type: 'reasoning', text: '完成分析', state: 'done' }],
+      metadata: { stepDurationsMs: { 'reasoning:0': 2_600 } },
+    });
+    const { container } = render(<AgentTrace trace={trace} durationMs={3_100} />);
+    expect(container.querySelector('.agent-trace-complete-mark')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '已处理 3 秒' }));
+    expect(screen.getByText('3 秒')).toHaveClass('agent-trace-step-duration');
+  });
+
   it('uses original monochrome semantic glyphs and a flat, counter-free activity log', () => {
     const trace = buildTrace(message([
       { type: 'reasoning', text: '检查执行步骤', state: 'done' }, tool, pendingTool,
@@ -242,7 +253,7 @@ describe('ordered AgentTrace', () => {
     }
     const commentary = container.querySelector('.agent-trace-commentary')!;
     expect(getComputedStyle(commentary).paddingLeft).toBe('28px');
-    expect(getComputedStyle(commentary).marginTop).toBe('4px');
+    expect(getComputedStyle(commentary).marginTop).toBe('2px');
     fireEvent.click(screen.getByRole('button', { name: /读取笔记章节 已完成/ }));
     const body = container.querySelector('[data-trace-id="tool:nested-detail"] .agent-trace-step-body')!;
     expect(getComputedStyle(body).paddingLeft).toBe('28px');

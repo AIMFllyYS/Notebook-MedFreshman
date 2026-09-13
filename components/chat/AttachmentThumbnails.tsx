@@ -1,169 +1,134 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { FileText, X } from "lucide-react";
 import type { AttachmentPreview } from "@/lib/ai/imageUtils";
-import type { ChatAttachment, StoredChatAttachment } from "@/lib/types/chat";
+import type { StoredChatAttachment } from "@/lib/types/chat";
 import { isAttachmentRef } from "@/lib/types/chat";
 import { loadBlobDataUrl } from "@/lib/storage/chatStorage";
 
 interface AttachmentThumbnailsProps {
-  /** 前端预览列表（含 blob URL），用于输入区可删除的缩略图。 */
   previews?: AttachmentPreview[];
-  /** 删除回调（仅输入模式可用）。 */
   onRemove?: (idx: number) => void;
-  /** 已发送消息的附件，用于聊天历史只读展示。 */
   readonlyAttachments?: StoredChatAttachment[];
-  /** 缩略图尺寸（px）。 */
   size?: number;
-  /** 是否可点击放大。 */
   clickable?: boolean;
+  /** 输入区使用紧凑横向搁板；历史消息使用可换行展示。 */
+  embedded?: boolean;
 }
 
-function ReadonlyAttachmentImg({
-  attachment,
-  size,
-  clickable,
-}: {
-  attachment: StoredChatAttachment;
-  size: number;
-  clickable: boolean;
-}) {
-  const [src, setSrc] = useState<string | null>(
-    isAttachmentRef(attachment) ? null : attachment.base64,
-  );
+function formatSize(size?: number): string {
+  if (size == null || !Number.isFinite(size)) return "";
+  if (size < 1024) return `${size} B`;
+  if (size < 1024 * 1024) return `${Math.max(1, Math.round(size / 1024))} KB`;
+  return `${(size / 1024 / 1024).toFixed(1)} MB`;
+}
+
+function typeLabel(name: string | undefined, mimeType: string): string {
+  const extension = name?.split(".").pop()?.toUpperCase();
+  if (extension === "MARKDOWN") return "MD";
+  if (extension) return extension;
+  if (mimeType === "text/markdown") return "MD";
+  if (mimeType.includes("wordprocessingml")) return "DOCX";
+  return "TXT";
+}
+
+function ReadonlyImage({ attachment }: { attachment: StoredChatAttachment }) {
+  const [src, setSrc] = useState<string | null>(() => {
+    if (attachment.type !== "image" || isAttachmentRef(attachment)) return null;
+    return attachment.base64;
+  });
 
   useEffect(() => {
-    if (!isAttachmentRef(attachment)) return;
+    if (attachment.type !== "image" || !isAttachmentRef(attachment)) return;
     let cancelled = false;
     void loadBlobDataUrl(attachment.id).then((url) => {
       if (!cancelled && url) setSrc(url);
     });
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [attachment]);
 
-  if (!src) {
-    return (
-      <div
-        style={{
-          width: size,
-          height: size,
-          borderRadius: 8,
-          background: "var(--bg-muted)",
-          border: "1px solid var(--line)",
-        }}
-      />
-    );
-  }
-
+  if (!src) return <span className="chat-attachment-image-placeholder" aria-hidden="true" />;
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- blob/base64 URLs not supported by next/image
-    <img
-      src={src}
-      alt=""
-      style={{ width: "100%", height: "100%", objectFit: "cover", cursor: clickable ? "pointer" : "default" }}
-    />
+    // eslint-disable-next-line @next/next/no-img-element -- IndexedDB blob/data URLs are not supported by next/image.
+    <img src={src} alt={attachment.name ?? "已上传图片"} className="chat-attachment-image" />
   );
 }
 
-/**
- * 附件缩略图组件 —— 统一渲染图片附件预览。
- */
-const AttachmentThumbnails: React.FC<AttachmentThumbnailsProps> = ({
+function DocumentCard({ name, mimeType, size, characterCount }: {
+  name: string;
+  mimeType: string;
+  size?: number;
+  characterCount?: number;
+}) {
+  const detail = characterCount != null
+    ? `${characterCount.toLocaleString("zh-CN")} 字`
+    : formatSize(size);
+  return (
+    <span className="chat-attachment-document">
+      <span className="chat-attachment-document-icon" aria-hidden="true"><FileText size={17} /></span>
+      <span className="chat-attachment-document-copy">
+        <span className="chat-attachment-name" title={name}>{name}</span>
+        <span className="chat-attachment-meta">
+          <span>{typeLabel(name, mimeType)}</span>
+          {detail ? <><span aria-hidden="true">·</span><span>{detail}</span></> : null}
+        </span>
+      </span>
+    </span>
+  );
+}
+
+export default function AttachmentThumbnails({
   previews,
   onRemove,
   readonlyAttachments,
   size = 56,
   clickable = false,
-}) => {
-  const items: { src: string; alt: string; key: string }[] = [];
-
-  if (previews) {
-    previews.forEach((p, i) =>
-      items.push({ src: p.previewUrl, alt: p.file.name, key: `preview-${i}` }),
-    );
-  }
-
-  const readonly = readonlyAttachments ?? [];
-  const hasReadonly = readonly.length > 0;
-
-  if (items.length === 0 && !hasReadonly) return null;
+  embedded = false,
+}: AttachmentThumbnailsProps) {
+  const previewItems = previews ?? [];
+  const readonlyItems = readonlyAttachments ?? [];
+  if (previewItems.length === 0 && readonlyItems.length === 0) return null;
 
   return (
     <div
-      style={{
-        display: "flex",
-        gap: "6px",
-        flexWrap: "wrap",
-        padding: "6px 8px",
-        borderRadius: "10px 10px 0 0",
-        background: "var(--bg-muted)",
-        borderBottom: "1px solid var(--line)",
-      }}
+      className={`chat-attachment-shelf ${embedded ? "chat-attachment-shelf-embedded" : ""}`}
+      style={{ ["--attachment-size" as string]: `${size}px` } as React.CSSProperties}
+      aria-label="附件"
     >
-      {items.map((item, i) => (
-        <div
-          key={item.key}
-          style={{
-            position: "relative",
-            width: size,
-            height: size,
-            borderRadius: 8,
-            overflow: "hidden",
-            border: "1px solid var(--line)",
-            cursor: clickable ? "pointer" : "default",
-          }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={item.src}
-            alt={item.alt}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-          {onRemove && (
-            <button
-              onClick={() => onRemove(i)}
-              style={{
-                position: "absolute",
-                top: 2,
-                right: 2,
-                width: 16,
-                height: 16,
-                borderRadius: "50%",
-                background: "rgba(0,0,0,0.55)",
-                color: "#fff",
-                border: "none",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: 0,
-              }}
-            >
-              <X size={10} />
-            </button>
-          )}
-        </div>
-      ))}
-      {readonly.map((a, i) => (
-        <div
-          key={isAttachmentRef(a) ? a.id : `inline-${i}`}
-          style={{
-            position: "relative",
-            width: size,
-            height: size,
-            borderRadius: 8,
-            overflow: "hidden",
-            border: "1px solid var(--line)",
-          }}
-        >
-          <ReadonlyAttachmentImg attachment={a} size={size} clickable={clickable} />
-        </div>
-      ))}
+      {previewItems.map((attachment, index) => {
+        const name = attachment.type === "document" ? attachment.name : attachment.file.name;
+        return (
+          <span className="chat-attachment-item" key={`${name}:${index}`}>
+            {attachment.type === "document" ? (
+              <DocumentCard {...attachment} />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element -- local object URL preview.
+              <img src={attachment.previewUrl} alt={name} className="chat-attachment-image" />
+            )}
+            {onRemove ? (
+              <button type="button" className="chat-attachment-remove" onClick={() => onRemove(index)} aria-label={`移除附件 ${name}`}>
+                <X size={11} />
+              </button>
+            ) : null}
+          </span>
+        );
+      })}
+      {readonlyItems.map((attachment, index) => {
+        const key = isAttachmentRef(attachment) ? attachment.id : `${attachment.type}:${attachment.name ?? index}`;
+        return (
+          <span className={`chat-attachment-item ${clickable ? "chat-attachment-clickable" : ""}`} key={key}>
+            {attachment.type === "document" ? (
+              <DocumentCard
+                name={attachment.name ?? "未命名文档"}
+                mimeType={attachment.mimeType}
+                size={attachment.size}
+                characterCount={attachment.characterCount}
+              />
+            ) : <ReadonlyImage attachment={attachment} />}
+          </span>
+        );
+      })}
     </div>
   );
-};
-
-export default AttachmentThumbnails;
+}

@@ -23,7 +23,12 @@ const textChunks = (text = '最终回答'): UIMessageChunk[] => [
   { type: 'text-start', id: 'text' }, { type: 'text-delta', id: 'text', delta: text }, { type: 'text-end', id: 'text' },
 ];
 
-test('SDK 有序多步快照保留 reasoning/tool outputs/metadata，data 只结算一次且不修改占位对象', async () => {
+test('SDK 有序多步快照保留 reasoning/tool outputs/metadata，data 只结算一次且不修改占位对象', async (t) => {
+  let clock = 1_000;
+  t.mock.method(Date, 'now', () => {
+    clock += 10;
+    return clock;
+  });
   const placeholder = initial();
   const original = structuredClone(placeholder);
   const snapshots: ChatMessage[] = [];
@@ -54,7 +59,19 @@ test('SDK 有序多步快照保留 reasoning/tool outputs/metadata，data 只结
   assert.deepEqual(placeholder, original);
   assert.equal(result.id, 'local-id');
   assert.equal(result.timestamp, 123);
-  assert.deepEqual(result.metadata, { modelId: 'selected-model', thinkingEnabled: true, usage: { ...usage, actualModelId: 'mimo-v2.5' }, durationMs: 246, cacheHit: true });
+  assert.equal(result.metadata?.modelId, 'selected-model');
+  assert.equal(result.metadata?.thinkingEnabled, true);
+  assert.deepEqual(result.metadata?.usage, { ...usage, actualModelId: 'mimo-v2.5' });
+  assert.equal(result.metadata?.durationMs, 246);
+  assert.equal(result.metadata?.cacheHit, true);
+  assert.ok((result.metadata?.stepDurationsMs?.['reasoning:1'] ?? -1) >= 0);
+  assert.ok((result.metadata?.stepDurationsMs?.['tool:search'] ?? -1) >= 0);
+  const completedToolSnapshot = snapshots.find((snapshot) => snapshot.parts.some(
+    (part) => part.type === 'tool-webSearch' && part.state === 'output-available',
+  ));
+  const toolDurationAtCompletion = completedToolSnapshot?.metadata?.stepDurationsMs?.['tool:search'];
+  assert.ok(toolDurationAtCompletion != null && toolDurationAtCompletion > 0);
+  assert.equal(result.metadata?.stepDurationsMs?.['tool:search'], toolDurationAtCompletion);
   assert.deepEqual(result.parts.slice(0, 5).map((p) => p.type), ['step-start', 'reasoning', 'tool-webSearch', 'step-start', 'text']);
   const tool = result.parts.find((p) => p.type === 'tool-webSearch');
   assert.equal(tool?.state, 'output-available');

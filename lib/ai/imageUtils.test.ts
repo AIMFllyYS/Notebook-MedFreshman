@@ -6,7 +6,10 @@ import {
   toChatAttachments,
   revokeAttachments,
   type AttachmentPreview,
+  fileToDocumentAttachment,
+  LONG_PASTE_DOCUMENT_THRESHOLD,
 } from "./imageUtils.ts";
+import { Document, Packer, Paragraph } from "docx";
 
 test("MAX_IMAGE_SIZE 为 2MB", () => {
   assert.equal(MAX_IMAGE_SIZE, 2 * 1024 * 1024);
@@ -46,6 +49,30 @@ test("toChatAttachments：转换格式正确", () => {
 
 test("toChatAttachments：空数组返回空数组", () => {
   assert.deepEqual(toChatAttachments([]), []);
+});
+
+test("文档附件：TXT 与 Markdown 直接提取正文和真实字数", async () => {
+  const txt = await fileToDocumentAttachment(new File(["中文😀 notes"], "notes.txt", { type: "text/plain" }));
+  assert.equal(txt.type, "document");
+  assert.equal(txt.text, "中文😀 notes");
+  assert.equal(txt.characterCount, 9);
+  assert.equal(txt.mimeType, "text/plain");
+
+  const md = await fileToDocumentAttachment(new File(["# 标题"], "outline.md", { type: "text/markdown" }));
+  assert.equal(md.text, "# 标题");
+  assert.equal(md.mimeType, "text/markdown");
+  assert.equal(LONG_PASTE_DOCUMENT_THRESHOLD, 10_000);
+});
+
+test("文档附件：DOCX 通过解析器提取正文，而不是只接受文件名", async () => {
+  const document = new Document({ sections: [{ children: [new Paragraph("DOCX 正文内容")] }] });
+  const buffer = await Packer.toBuffer(document);
+  const bytes = Uint8Array.from(buffer);
+  const attachment = await fileToDocumentAttachment(new File([bytes], "lesson.docx", {
+    type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  }));
+  assert.match(attachment.text, /DOCX 正文内容/);
+  assert.equal(attachment.mimeType, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 });
 
 test("revokeAttachments：不抛异常（URL.revokeObjectURL 在 Node 中不存在，函数应安全调用）", () => {

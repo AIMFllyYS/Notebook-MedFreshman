@@ -111,6 +111,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     handleDragLeave,
     isDragging,
     error: attachError,
+    info: attachInfo,
   } = useImageAttachments();
 
   useEffect(() => {
@@ -147,7 +148,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     const trimmed = input.trim();
     if ((!trimmed && attachments.length === 0) || isLoading || externalDisabled) return;
 
-    onSend(trimmed || '请描述这张图片', {
+    onSend(trimmed || '请阅读并分析附件', {
       quotedText: effectiveQuote || undefined,
       enableThinking: effectiveEnableThinking,
       thinkingEffort: effectiveThinkingEffort,
@@ -213,10 +214,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           {attachError}
         </div>
       )}
-
-      {attachments.length > 0 && (
-        <AttachmentThumbnails previews={attachments} onRemove={removeAttachment} />
-      )}
+      {attachInfo ? <div className="chat-attachment-notice" role="status">{attachInfo}</div> : null}
 
       {effectiveQuote && (
         <div className="chat-input-quote">
@@ -292,6 +290,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       </div>
 
       <div className={`chat-input-row ${isFocused ? 'chat-input-row-focused' : ''} ${showCharacterCount ? 'chat-input-row-with-count' : ''}`}>
+        {attachments.length > 0 ? (
+          <AttachmentThumbnails previews={attachments} onRemove={removeAttachment} embedded />
+        ) : null}
+        <div className="chat-input-editor-row">
         <textarea
           ref={textareaRef}
           value={input}
@@ -312,7 +314,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           onPaste={handlePaste}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder={externalDisabled ? (disabledReason || '输入已禁用') : isLoading ? 'AI 正在思考中...' : '输入问题，Shift+Enter换行，Ctrl+V粘贴图片...'}
+          placeholder={externalDisabled ? (disabledReason || '输入已禁用') : isLoading ? 'AI 正在思考中...' : '输入问题，或粘贴 / 拖入图片与文档...'}
           disabled={inputDisabled}
           rows={1}
           className="chat-input-textarea"
@@ -321,7 +323,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/gif,image/webp"
+          accept="image/jpeg,image/png,image/gif,image/webp,.txt,.md,.markdown,.docx,text/plain,text/markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           multiple
           style={{ display: 'none' }}
           onChange={handleFileChange}
@@ -343,7 +345,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
             cursor: inputDisabled ? 'not-allowed' : 'pointer',
             opacity: inputDisabled ? 0.4 : 1,
           }}
-          title="上传图片附件"
+          title="上传图片或文档"
+          aria-label="上传图片或文档"
         >
           <AgentPaperclipIcon size={14} />
         </button>
@@ -361,6 +364,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         >
           {isLoading ? <AgentStopIcon size={14} /> : <AgentArrowUpIcon size={14} />}
         </button>
+        </div>
       </div>
       {showLimitDialog && <InputLimitDialog count={characterCount} limit={MAX_INPUT_CHARACTERS} onClose={() => setShowLimitDialog(false)} />}
     </div>

@@ -2,7 +2,7 @@
 
 import React, { useId, useLayoutEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { AgentChevronIcon } from '@/components/icons/AgentIcons';
+import { AgentCheckIcon, AgentChevronIcon } from '@/components/icons/AgentIcons';
 import type { AgentTraceModel } from '@/lib/chat/buildTrace';
 import { useProcessingDisclosure } from '@/lib/hooks/useProcessingDisclosure';
 import { ToolTraceStep } from '@/components/chat/ToolTraceStep';
@@ -102,7 +102,7 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
     : completedLabel(trace, durationMs);
 
   return (
-    <section className="agent-trace mb-4 min-w-0" aria-label="Agent 处理过程">
+    <section className={`agent-trace min-w-0 ${expanded ? 'mb-3' : 'mb-1'}`} aria-label="Agent 处理过程">
       <button
         type="button"
         aria-expanded={expanded}
@@ -110,6 +110,9 @@ export const AgentTrace = React.memo(function AgentTrace({ trace, isStreaming = 
         onClick={() => setExpanded((open) => !open)}
         className="flex min-h-9 max-w-full items-center gap-1 rounded-md py-1.5 text-left text-[13px] leading-5 text-[var(--md-sys-color-on-surface-variant)] transition-colors hover:text-[var(--md-sys-color-on-surface)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--md-sys-color-primary)] motion-reduce:transition-none"
       >
+        {!isStreaming && trace.interruptedCount === 0 && trace.waitingCount === 0 && trace.errorCount === 0 ? (
+          <span aria-hidden="true" className="agent-trace-complete-mark"><AgentCheckIcon size={13} /></span>
+        ) : null}
         <motion.span
           role="status"
           aria-live="polite"

@@ -48,6 +48,11 @@ export interface StudyMessageMetadata {
   usage?: UsageSummary;
   /** 从发送到流结束的耗时，供思考链头部展示「已思考 N 秒」。 */
   durationMs?: number;
+  /**
+   * 客户端实际观察到的各推理/工具步骤耗时，key 与 buildTrace 的 step id 一致。
+   * 旧消息没有这份数据时 UI 不显示步骤耗时，不使用总耗时反推。
+   */
+  stepDurationsMs?: Record<string, number>;
   /** 本轮生成结束原因。步数触顶时为 tool-calls。 */
   finishReason?: FinishReason;
 }
@@ -80,19 +85,35 @@ export interface ContextBreakdown {
   warning?: string;
 }
 
-export interface ChatAttachment {
+export interface ChatImageAttachment {
   type: 'image';
   mimeType: string;
   /** data:image/png;base64,... 完整 data-url */
   base64: string;
+  name?: string;
+  size?: number;
 }
+
+export interface ChatDocumentAttachment {
+  type: 'document';
+  mimeType: 'text/plain' | 'text/markdown' | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  name: string;
+  /** 已验证并提取出的 UTF-8 正文；DOCX 同样在进入附件列表前完成提取。 */
+  text: string;
+  size: number;
+  characterCount: number;
+}
+
+export type ChatAttachment = ChatImageAttachment | ChatDocumentAttachment;
 
 /** Storage v2：附件正文存 chat-blob:{id}，消息内仅保留引用。 */
 export interface ChatAttachmentRef {
-  type: 'image';
+  type: ChatAttachment['type'];
   mimeType: string;
   id: string;
   name?: string;
+  size?: number;
+  characterCount?: number;
 }
 
 export type StoredChatAttachment = ChatAttachment | ChatAttachmentRef;

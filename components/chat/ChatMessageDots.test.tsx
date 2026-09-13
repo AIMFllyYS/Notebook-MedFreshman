@@ -49,6 +49,8 @@ describe('ChatMessageDots', () => {
     const dots = screen.getAllByTestId('chat-message-dot');
     expect(dots).toHaveLength(3);
     expect(dots[1]).toHaveAttribute('aria-current', 'true');
+    expect(dots[1]).toHaveTextContent('第 2 次提问 · 当前');
+    expect(dots[1]).toHaveTextContent('提问 2');
     fireEvent.click(dots[0]);
     expect(onJump).toHaveBeenCalledWith(0);
   });

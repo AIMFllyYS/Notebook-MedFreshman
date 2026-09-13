@@ -40,6 +40,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
   const isStreaming = requestStreaming && !message.parts.some((part) => part.type === 'data-answer-complete');
   const isUser = message.role === 'user';
   const parts = message.parts;
+  const stepDurationsMs = message.metadata?.stepDurationsMs;
   const reducedMotion = useReducedMotion();
   const streaming = !!isStreaming;
   const [revealFollowups, setRevealFollowups] = useState(!streaming);
@@ -64,7 +65,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFollowUpSelect, is
     const timer = window.setTimeout(() => setRevealFollowups(true), TRACE_COLLAPSE_MS);
     return () => window.clearTimeout(timer);
   }, [revealNonce]);
-  const trace = useMemo(() => buildTrace({ parts }, !!isStreaming), [parts, isStreaming]);
+  const trace = useMemo(
+    () => buildTrace({ parts, metadata: stepDurationsMs ? { stepDurationsMs } : undefined }, !!isStreaming),
+    [parts, stepDurationsMs, isStreaming],
+  );
   const userText = useMemo(() => isUser ? getMessageText({ parts }) : '', [isUser, parts]);
   const followUpQuestions = useMemo(() => {
     if (message.followUpQuestions?.length) return message.followUpQuestions;

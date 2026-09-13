@@ -53,6 +53,20 @@ test("buildChatSessionPayload strips inline base64 and keeps blob id refs", () =
   assert.deepEqual(Object.keys(payload).sort(), ["messages", "meta", "v"]);
 });
 
+test("buildChatSessionPayload strips inline document text but preserves document metadata", () => {
+  const payload = buildChatSessionPayload(meta("docs"), [msg("m-doc", {
+    attachments: [{
+      type: "document", mimeType: "text/markdown", name: "notes.md",
+      text: "private document body", size: 21, characterCount: 21,
+    }],
+  })]);
+  const attachment = payload.messages[0].attachments?.[0];
+  assert.ok(attachment && attachment.type === "document" && "id" in attachment);
+  assert.equal(JSON.stringify(payload).includes("private document body"), false);
+  assert.equal(attachment?.name, "notes.md");
+  assert.equal(attachment?.characterCount, 21);
+});
+
 test("stripForbiddenFields drops apiKey and data URLs", () => {
   const stripped = stripForbiddenFields({
     html: '<img src="data:image/png;base64,QUJDRA==" />',

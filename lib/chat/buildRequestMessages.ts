@@ -39,9 +39,18 @@ function toRequestMessage(m: ChatMessage): RequestMessage {
   const parts: ChatMessagePart[] = compactUiParts(m.parts.filter(keepRequestPart));
   if (m.role === 'user') {
     const imageParts: ChatMessagePart[] = (m.attachments ?? [])
-      .filter((a): a is ChatAttachment => 'base64' in a && !!a.base64)
+      .filter((a): a is Extract<ChatAttachment, { type: 'image' }> => a.type === 'image' && 'base64' in a && !!a.base64)
       .map((a) => ({ type: 'file', mediaType: a.mimeType, url: a.base64 }));
     parts.push(...imageParts);
+    const documents = (m.attachments ?? [])
+      .filter((a): a is Extract<ChatAttachment, { type: 'document' }> => a.type === 'document' && 'text' in a)
+      .map((attachment) => {
+        const safeName = attachment.name.replace(/[<>\r\n]/g, '_');
+        return `<attached-document name="${safeName}" type="${attachment.mimeType}">\n${attachment.text}\n</attached-document>`;
+      });
+    if (documents.length > 0) {
+      parts.push({ type: 'text', text: `以下是用户随本轮消息提供的文档正文：\n\n${documents.join('\n\n')}` });
+    }
   }
   return { id: m.id, role: m.role, parts };
 }

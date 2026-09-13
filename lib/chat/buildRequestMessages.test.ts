@@ -101,6 +101,23 @@ test("buildRequestMessages：含附件的早期 user 消息保留并转成 file 
   assert.equal(file.url, "data:image/png;base64,abc");
 });
 
+test("buildRequestMessages：TXT / MD / DOCX 正文作为明确标记的文本附件发送", () => {
+  const input = msg("1", "user", "请总结附件", {
+    attachments: [
+      { type: "document", mimeType: "text/plain", name: "课堂笔记.txt", text: "第一段正文", size: 12, characterCount: 5 },
+      { type: "document", mimeType: "text/markdown", name: "review.md", text: "# 复习提纲", size: 16, characterCount: 6 },
+    ],
+  });
+
+  const { messages } = buildRequestMessages([input]);
+  assert.equal(messages[0].parts.some((part) => part.type === "file"), false);
+  const requestText = textOf(messages[0]);
+  assert.match(requestText, /attached-document name="课堂笔记.txt"/);
+  assert.match(requestText, /第一段正文/);
+  assert.match(requestText, /attached-document name="review.md" type="text\/markdown"/);
+  assert.match(requestText, /# 复习提纲/);
+});
+
 test("buildRequestMessages：默认保留完整会话历史", () => {
   const messages: ChatMessage[] = [];
   for (let i = 0; i < 60; i++) {

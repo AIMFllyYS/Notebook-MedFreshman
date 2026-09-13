@@ -54,6 +54,7 @@ describe('floating transparent composer', () => {
     expect(row.contains(getByRole('textbox'))).toBe(true);
     expect(dock.contains(getByTestId('notice'))).toBe(true);
     expect(dock.contains(getByTestId('attachment-preview'))).toBe(true);
+    expect(row.contains(getByTestId('attachment-preview'))).toBe(true);
     expect(getByTestId('notice').compareDocumentPosition(toolbar) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(getByTestId('context-dashboard')).toHaveAttribute('data-session-id', 'floating-session');
     expect(getByTestId('context-dashboard')).toHaveAttribute('data-model-id', 'mimo-v2.5');
@@ -104,7 +105,7 @@ describe('floating transparent composer', () => {
     expect(callbacks.paste).toHaveBeenCalledOnce();
     expect(callbacks.drop).toHaveBeenCalledOnce();
     fireEvent.click(getByTitle('发送'));
-    expect(props.onSend).toHaveBeenCalledWith('请描述这张图片', expect.objectContaining({ quotedText: '引用段落',
+    expect(props.onSend).toHaveBeenCalledWith('请阅读并分析附件', expect.objectContaining({ quotedText: '引用段落',
       attachments: [{ type: 'image', mimeType: 'image/png', base64: 'data:image/png;base64,eA==' }] }));
     expect(callbacks.clearQuote).toHaveBeenCalledOnce();
     expect(callbacks.clearAttachments).toHaveBeenCalledOnce();
