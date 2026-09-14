@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { BookOpen, Globe } from 'lucide-react';
 import EmbedFallback from '@/components/browser/EmbedFallback';
+import WebviewSite from '@/components/browser/WebviewSite';
 import ManagedWindow from '@/components/window/ManagedWindow';
 import DocumentWorkspace from '@/components/window/DocumentWorkspace';
 import NoteRenderer from '@/components/notes/NoteRenderer';
@@ -208,7 +209,7 @@ function WebSourceStage({ source }: { source: Extract<TraceSource, { kind: 'web'
   }
 
   if (isDesktop) {
-    return <DesktopEmbeddedSite url={source.url} />;
+    return <WebviewSite url={source.url} />;
   }
 
   return (
@@ -221,25 +222,14 @@ function WebSourceStage({ source }: { source: Extract<TraceSource, { kind: 'web'
       allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-read; clipboard-write"
       referrerPolicy="no-referrer-when-downgrade"
       onError={() => setLoadFailed(true)}
-    />
-  );
-}
-
-function DesktopEmbeddedSite({ url }: { url: string }) {
-  const ref = useCallback((node: (HTMLElement & { loadURL(url: string): Promise<void> }) | null) => {
-    if (!node) return;
-    if (!node.getAttribute('src')) void node.loadURL(url).catch(() => {});
-  }, [url]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const Webview: any = 'webview';
-  return (
-    <Webview
-      ref={ref}
-      key={url}
-      src={url}
-      partition="persist:browser"
-      allowpopups="true"
-      style={{ width: '100%', height: '100%', display: 'flex', border: 0, background: 'white' }}
+      onLoad={(event) => {
+        try {
+          const doc = event.currentTarget.contentDocument;
+          if (doc && (doc.URL === 'about:blank' || !doc.body?.childElementCount)) setLoadFailed(true);
+        } catch {
+          /* cross-origin: treated as rendered */
+        }
+      }}
     />
   );
 }

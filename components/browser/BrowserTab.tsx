@@ -1,22 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { Home, RotateCw, ArrowRight, ArrowLeft, ExternalLink, Globe, Search, Smartphone, Monitor, ShieldAlert, Loader2 } from "lucide-react";
+import { Home, RotateCw, ArrowRight, ArrowLeft, ExternalLink, Globe, Search, Smartphone, Monitor } from "lucide-react";
 import EmbedFallback from "@/components/browser/EmbedFallback";
+import WebviewSite, { type WebviewEl } from "@/components/browser/WebviewSite";
 import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
 import { useEmbeddable } from "@/lib/hooks/useEmbeddable";
-
-/** Electron <webview> 元素的运行时方法（注入式，非标准 DOM）。 */
-interface WebviewEl extends HTMLElement {
-  loadURL(url: string): Promise<void>;
-  reload(): void;
-  goBack(): void;
-  goForward(): void;
-  getURL(): string;
-}
-// <webview> 是 Electron 注入的自定义元素，非标准 JSX；以字符串 host 元素形式渲染，旁路类型检查。
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Webview: any = "webview";
 
 /** 右侧面板内置浏览器：地址栏 + 自适应（手机视口模拟）iframe。本地使用，仅做基础 sandbox 安全。 */
 export default function BrowserTab() {
@@ -42,7 +31,7 @@ export default function BrowserTab() {
     () => false,
   );
   const webviewRef = useRef<WebviewEl | null>(null);
-  const { blocked, forceEmbed } = useEmbeddable(isDesktop ? null : currentUrl || null);
+  const { blocked, reason, forceEmbed } = useEmbeddable(isDesktop ? null : currentUrl || null);
 
   const go = () => {
     if (addr.trim()) navigate(addr);
@@ -143,6 +132,7 @@ export default function BrowserTab() {
           ) : blocked ? (
             <EmbedFallback
               url={currentUrl}
+              reason={reason}
               onForce={forceEmbed}
               title="该站点禁止被内嵌"
               actionLabel="在新标签页打开"
@@ -199,140 +189,6 @@ function FramedSite({ url, nonce, viewMode }: { url: string; nonce: number; view
           allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-read; clipboard-write"
           referrerPolicy="no-referrer-when-downgrade"
         />
-      )}
-    </div>
-  );
-}
-
-/**
- * 桌面端真实浏览器：内嵌 Electron <webview>（真·Chromium，持久分区保留登录态/Cookie）。
- * 无 can-embed 限制、无 sandbox —— 几乎可打开所有站点（含需登录的 DeepSeek/Claude 等）。
- * 导航沿用 useBrowser store：currentUrl 变化→loadURL，reloadNonce 变化→reload；
- * 内部跳转经 did-navigate 同步回地址栏。前进/后退由工具栏经 webviewRef 调用。
- */
-function WebviewSite({
-  url,
-  nonce,
-  webviewRef,
-  onUrlChange,
-}: {
-  url: string;
-  nonce: number;
-  webviewRef: React.MutableRefObject<WebviewEl | null>;
-  onUrlChange: (u: string) => void;
-}) {
-  const localRef = useRef<WebviewEl | null>(null);
-  const [initialUrl] = useState(() => url); // 定格挂载时地址作为初始 src
-  const lastLoaded = useRef(url);
-  const firstNonce = useRef(nonce);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // 事件监听：地址同步 + 加载态 + 失败兜底（把"白屏"变成可读错误，便于定位）。
-  useEffect(() => {
-    const wv = localRef.current;
-    if (!wv) return;
-    const onNav = (e: Event) => {
-      const u = (e as unknown as { url?: string }).url || wv.getURL?.();
-      if (u) onUrlChange(u);
-    };
-    const onStart = () => { setError(null); setLoading(true); };
-    const onStop = () => setLoading(false);
-    const onReady = () => {
-      setLoading(false);
-      // 兜底：若 src 属性未触发导航（自定义元素属性/属性时序问题），dom-ready 后主动 loadURL。
-      try {
-        const cur = wv.getURL?.();
-        if ((!cur || cur === "about:blank") && initialUrl) wv.loadURL(initialUrl).catch(() => {});
-      } catch { /* ignore */ }
-    };
-    const onFail = (e: Event) => {
-      const ev = e as unknown as { errorCode?: number; errorDescription?: string; isMainFrame?: boolean };
-      // -3 = ERR_ABORTED（重定向/主动取消）忽略；仅主框架失败才提示。
-      if (ev.isMainFrame && ev.errorCode !== -3) {
-        setError(`${ev.errorDescription || "加载失败"}（${ev.errorCode}）`);
-        setLoading(false);
-      }
-    };
-    const onGone = () => { setError("页面渲染进程已退出，请重试。"); setLoading(false); };
-
-    wv.addEventListener("did-navigate", onNav);
-    wv.addEventListener("did-navigate-in-page", onNav);
-    wv.addEventListener("did-start-loading", onStart);
-    wv.addEventListener("did-stop-loading", onStop);
-    wv.addEventListener("dom-ready", onReady);
-    wv.addEventListener("did-fail-load", onFail);
-    wv.addEventListener("render-process-gone", onGone);
-    return () => {
-      wv.removeEventListener("did-navigate", onNav);
-      wv.removeEventListener("did-navigate-in-page", onNav);
-      wv.removeEventListener("did-start-loading", onStart);
-      wv.removeEventListener("did-stop-loading", onStop);
-      wv.removeEventListener("dom-ready", onReady);
-      wv.removeEventListener("did-fail-load", onFail);
-      wv.removeEventListener("render-process-gone", onGone);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // 书签/标签/主页/地址栏访问 → store.currentUrl 变化 → loadURL。
-  useEffect(() => {
-    const wv = localRef.current;
-    if (wv && url && url !== lastLoaded.current) {
-      lastLoaded.current = url;
-      setError(null);
-      wv.loadURL(url).catch(() => {});
-    }
-  }, [url]);
-
-  // 刷新按钮 → reloadNonce 变化 → reload 当前页面。
-  useEffect(() => {
-    if (nonce === firstNonce.current) return;
-    firstNonce.current = nonce;
-    setError(null);
-    localRef.current?.reload();
-  }, [nonce]);
-
-  return (
-    <div className="relative h-full w-full overflow-hidden bg-white">
-      <Webview
-        ref={(n: WebviewEl | null) => {
-          localRef.current = n;
-          webviewRef.current = n;
-        }}
-        src={initialUrl}
-        partition="persist:browser"
-        allowpopups="true"
-        // 绝对铺满 + display:flex，规避 <webview> 默认 display 导致塌成 0 高的白屏。
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", display: "flex", border: 0 }}
-      />
-      {loading && !error && (
-        <div className="absolute left-2 top-2 z-10 flex items-center gap-1.5 rounded-full bg-[var(--bg-panel)] px-2.5 py-1 text-[11px] text-[var(--ink-soft)] shadow">
-          <Loader2 size={12} className="animate-spin" /> 加载中…
-        </div>
-      )}
-      {error && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-[var(--bg-panel)] px-6 text-center">
-          <ShieldAlert size={26} className="text-[var(--ink-soft)]" />
-          <p className="text-[14px] font-semibold text-[var(--ink)]">页面加载失败</p>
-          <p className="max-w-[300px] text-[12px] leading-relaxed text-[var(--ink-soft)]">{error}</p>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => { setError(null); setLoading(true); localRef.current?.reload(); }}
-              className="press inline-flex items-center gap-1.5 rounded-full bg-[var(--accent)] px-3.5 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)]"
-            >
-              <RotateCw size={13} /> 重试
-            </button>
-            <a
-              href={url || undefined}
-              target="_blank"
-              rel="noreferrer"
-              className="press inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3.5 py-1.5 text-[12.5px] text-[var(--ink-soft)]"
-            >
-              <ExternalLink size={13} /> 系统浏览器打开
-            </a>
-          </div>
-        </div>
       )}
     </div>
   );

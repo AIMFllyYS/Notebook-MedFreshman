@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { strToU8, zipSync } from "fflate";
 import AttachmentPreviewViewer, { lockHtmlPreviewToLocal } from "./AttachmentPreviewViewer";
@@ -52,7 +52,7 @@ describe("AttachmentPreviewViewer", () => {
     expect(screen.getByText("第一章")).toBeVisible();
   });
 
-  it("shows PPTX slide text as local slide cards", () => {
+  it("shows PPTX slide text as local slide cards", async () => {
     const archive = zipSync({ "ppt/slides/slide1.xml": strToU8("<p:sld><a:t>考试重点</a:t></p:sld>") });
     const dataUrl = `data:application/vnd.openxmlformats-officedocument.presentationml.presentation;base64,${Buffer.from(archive).toString("base64")}`;
     openAttachmentPreview("pptx", {
@@ -60,8 +60,9 @@ describe("AttachmentPreviewViewer", () => {
       kind: "ppt", content: dataUrl,
     });
     render(<AttachmentPreviewViewer />);
-    expect(screen.getAllByText(/Slide 1/).length).toBeGreaterThan(0);
-    expect(screen.getAllByText("考试重点").length).toBeGreaterThan(0);
+    await waitFor(() => {
+      expect(screen.getAllByText("考试重点").length).toBeGreaterThan(0);
+    });
   });
 });
 

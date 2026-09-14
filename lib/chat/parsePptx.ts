@@ -27,8 +27,8 @@ function dataUrlBytes(dataUrl: string): Uint8Array {
  * 轻量、纯浏览器端的 PPTX 文本预览：只解压 OOXML 中的 a:t 节点，
  * 不执行宏、不加载外部资源。复杂版式仍保留为“文本化幻灯片”展示。
  */
-export function parsePptxSlideText(dataUrl: string): PptxSlideText[] {
-  const files = unzipSync(dataUrlBytes(dataUrl));
+export function parsePptxSlideBytes(bytes: Uint8Array): PptxSlideText[] {
+  const files = unzipSync(bytes);
   const names = Object.keys(files)
     .filter((name) => /^ppt\/slides\/slide\d+\.xml$/i.test(name))
     .sort((a, b) => Number(a.match(/slide(\d+)/i)?.[1] ?? 0) - Number(b.match(/slide(\d+)/i)?.[1] ?? 0));
@@ -41,4 +41,8 @@ export function parsePptxSlideText(dataUrl: string): PptxSlideText[] {
       .trim();
     return { number: index + 1, text: text || "（此页没有可提取的文字）" };
   });
+}
+
+export function parsePptxSlideText(dataUrl: string): PptxSlideText[] {
+  return parsePptxSlideBytes(dataUrlBytes(dataUrl));
 }

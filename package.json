@@ -63,6 +63,7 @@
     "mammoth": "^1.12.2",
     "next": "16.2.9",
     "pdfjs-dist": "5.5.207",
+    "pptx-preview": "^1.0.7",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-markdown": "^9.0.3",

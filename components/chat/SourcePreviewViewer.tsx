@@ -3,13 +3,10 @@
 import { useCallback, useState, useSyncExternalStore } from "react";
 import { Globe } from "lucide-react";
 import EmbedFallback from "@/components/browser/EmbedFallback";
+import WebviewSite from "@/components/browser/WebviewSite";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { useEmbeddable } from "@/lib/hooks/useEmbeddable";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
-
-interface DesktopWebview extends HTMLElement {
-  loadURL(url: string): Promise<void>;
-}
 
 function SourcePreviewIcon({ iconUrl }: { iconUrl?: string }) {
   const [failedIcon, setFailedIcon] = useState<string | null>(null);
@@ -20,10 +17,6 @@ function SourcePreviewIcon({ iconUrl }: { iconUrl?: string }) {
   }
   return <Globe size={15} />;
 }
-
-// Electron 注入的真实 Chromium 视图；网页开发态仍使用普通 iframe。
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Webview: any = "webview";
 
 export default function SourcePreviewViewer() {
   // Boolean snapshot stays referentially stable for React 19's getSnapshot.
@@ -99,7 +92,7 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
           }}
         />
       ) : isDesktop ? (
-        <DesktopEmbeddedSite url={url} />
+        <WebviewSite url={url} />
       ) : (
         <iframe
           key={url}
@@ -110,28 +103,18 @@ function SourcePreviewWindow({ windowId }: { windowId: string }) {
           allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-read; clipboard-write"
           referrerPolicy="no-referrer-when-downgrade"
           onError={() => setLoadFailed(true)}
+          onLoad={(event) => {
+            try {
+              const doc = event.currentTarget.contentDocument;
+              if (doc && (doc.URL === "about:blank" || !doc.body?.childElementCount)) setLoadFailed(true);
+            } catch {
+              /* cross-origin: treated as rendered */
+            }
+          }}
         />
       )}
     </ManagedWindow>
   );
 }
 
-function DesktopEmbeddedSite({ url }: { url: string }) {
-  const ref = useCallback((node: DesktopWebview | null) => {
-    if (!node) return;
-    // The src attribute is normally enough; loadURL is a small compatibility fallback
-    // for packaged Electron builds where the custom element is upgraded one tick later.
-    if (!node.getAttribute("src")) void node.loadURL(url).catch(() => {});
-  }, [url]);
 
-  return (
-    <Webview
-      ref={ref}
-      key={url}
-      src={url}
-      partition="persist:attachment-web-preview"
-      allowpopups="true"
-      style={{ width: "100%", height: "100%", display: "flex", border: 0, background: "white" }}
-    />
-  );
-}

@@ -6,11 +6,12 @@ import ManagedWindow from "@/components/window/ManagedWindow";
 import FileTypeIcon from "@/components/icons/file-types/FileTypeIcon";
 import PdfDocumentPane from "@/components/window/PdfDocumentPane";
 import DocxDocumentPane from "@/components/window/DocxDocumentPane";
+import PptxDocumentPane from "@/components/window/PptxDocumentPane";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import type { AttachmentPreviewData } from "@/lib/stores/windowManager";
 import { MessageContent } from "@/components/chat/MessageContent";
-import { parsePptxSlideText, type PptxSlideText } from "@/lib/chat/parsePptx";
+
 
 const LOCAL_PREVIEW_CSP = "default-src 'none'; img-src data: blob:; media-src data: blob:; style-src 'unsafe-inline'; font-src data:; form-action 'none'; base-uri 'none'";
 
@@ -51,17 +52,6 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
   const handleClose = useCallback(() => closeWindow(windowId), [closeWindow, windowId]);
   const data = managed?.data as AttachmentPreviewData | undefined;
   const localHtml = data?.kind === "html" ? lockHtmlPreviewToLocal(data.content) : "";
-  const pptPreview = useMemo(() => {
-    if (!data || data.kind !== "ppt") return { slides: null as PptxSlideText[] | null, error: null as string | null };
-    if (!data.mimeType.includes("presentationml")) {
-      return { slides: null, error: "旧版 .ppt 为二进制格式，浏览器无法在不联网的情况下还原版式；文件仍保存在本机。" };
-    }
-    try {
-      return { slides: parsePptxSlideText(data.content), error: null };
-    } catch {
-      return { slides: null, error: "该 PPTX 无法解析为本地幻灯片预览；原文件仍保存在本机。" };
-    }
-  }, [data]);
 
   if (!managed || !data) return null;
 
@@ -96,7 +86,17 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
       ) : data.kind === "markdown" ? (
         <MarkdownPreviewPane content={data.content} />
       ) : data.kind === "ppt" ? (
-        <PptPreviewPane slides={pptPreview.slides} error={pptPreview.error} />
+        data.mimeType.includes("presentationml") ? (
+          <PptxDocumentPane src={data.content} name={data.name} />
+        ) : (
+          <div className="flex h-full min-h-52 flex-col items-center justify-center gap-3 px-6 text-center">
+            <Presentation size={32} className="text-[var(--md-sys-color-primary)]" />
+            <p className="text-[13px] font-semibold text-[var(--ink)]">PowerPoint 本地预览</p>
+            <p className="max-w-md text-[12px] leading-6 text-[var(--ink-soft)]">
+              旧版 .ppt 为二进制格式，浏览器无法在不联网的情况下还原版式；文件仍保存在本机。
+            </p>
+          </div>
+        )
       ) : (
         <pre className="h-full w-full overflow-auto whitespace-pre-wrap break-words p-5 font-mono text-[12px] leading-6 text-[var(--ink)]">{data.content}</pre>
       )}
@@ -125,37 +125,4 @@ function MarkdownPreviewPane({ content }: { content: string }) {
   );
 }
 
-function PptPreviewPane({ slides, error }: { slides: PptxSlideText[] | null; error: string | null }) {
-  const [active, setActive] = useState(String(slides?.[0]?.number ?? 1));
-  const current = slides?.find((slide) => String(slide.number) === active) ?? slides?.[0];
-  if (!slides) {
-    return (
-      <div className="flex h-full min-h-52 flex-col items-center justify-center gap-3 px-6 text-center">
-        <Presentation size={32} className="text-[var(--md-sys-color-primary)]" />
-        <p className="text-[13px] font-semibold text-[var(--ink)]">PowerPoint 本地预览</p>
-        <p className="max-w-md text-[12px] leading-6 text-[var(--ink-soft)]">{error ?? "正在读取幻灯片…"}</p>
-      </div>
-    );
-  }
-  return (
-    <DocumentWorkspace
-      outline={slides.map((slide) => ({
-        id: String(slide.number),
-        title: slide.text.slice(0, 36) || `幻灯片 ${slide.number}`,
-        meta: `Slide ${slide.number}`,
-      }))}
-      activeId={String(current?.number ?? 1)}
-      onSelect={setActive}
-      outlineLabel="幻灯片"
-    >
-      <div className="flex h-full items-start justify-center p-5">
-        <article className="document-workspace-paper min-h-52 w-full max-w-3xl rounded-xl p-6">
-          <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--ink-faint)]">
-            Slide {current?.number}
-          </div>
-          <p className="whitespace-pre-wrap text-[15px] leading-7 text-[var(--ink)]">{current?.text}</p>
-        </article>
-      </div>
-    </DocumentWorkspace>
-  );
-}
+

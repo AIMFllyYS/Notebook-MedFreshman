@@ -93,6 +93,21 @@ test("judge：CSP frame-ancestors 带多个域名时不可嵌入", () => {
   assert.equal(judge(h).embeddable, false);
 });
 
+test("judge：CSP frame-ancestors https: 在 https 源下可嵌入", () => {
+  const h = new Headers({
+    "content-security-policy": "frame-ancestors https:",
+  });
+  assert.equal(judge(h, "https://app.example").embeddable, true);
+  assert.equal(judge(h, "http://app.example").embeddable, false);
+});
+
+test("judge：CSP frame-ancestors 列出本源时可嵌入", () => {
+  const h = new Headers({
+    "content-security-policy": "frame-ancestors https://app.invalid https://other.example",
+  });
+  assert.equal(judge(h, "https://app.invalid").embeddable, true);
+});
+
 test("guardProbeUrl：复用字面主机校验拒绝回环与私网", () => {
   for (const raw of [
     "http://127.0.0.1/",
@@ -183,4 +198,11 @@ test("GET：公网 302 到另一公网后再判定头", async (t: TestContext) =
   assert.equal(body.embeddable, false);
   assert.ok(body.reason?.includes("DENY"));
   assert.equal(body.finalUrl, "https://example.com/new");
+});
+
+test("GET：403 不武断阻断，允许前端尝试内嵌", async (t: TestContext) => {
+  t.mock.method(globalThis, "fetch", async () => new Response(null, { status: 403 }));
+  const body = await probeJson("https://example.com/challenge");
+  assert.equal(body.embeddable, true);
+  assert.equal(body.status, 403);
 });
