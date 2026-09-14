@@ -13,6 +13,7 @@ import {
   enqueueTombstone,
   enqueueUpsert,
   flushCloudSyncForTests,
+  loadCloudSyncUsage,
   pullAndPushAll,
   type CloudSyncStores,
 } from "./engine.ts";
@@ -275,5 +276,49 @@ describe("cloud sync engine", { concurrency: false }, () => {
     markSessionStreaming("live", false);
     await pullAndPushAll();
     assert.equal(api.upserts.some((row) => row.client_id === "live"), true);
+  });
+
+  test("loadCloudSyncUsage sums live remote rows by kind", async () => {
+    const api = createMemorySyncClient();
+    await api.upsert({
+      kind: "chat-session",
+      client_id: "s1",
+      payload: { v: 1, meta: sessionMeta("s1"), messages: [msg("m1", "hello")] },
+      deleted: false,
+    });
+    await api.upsert({
+      kind: "artifact",
+      client_id: "a1",
+      payload: { id: "a1", title: "demo", html: "<p>x</p>", status: "done" },
+      deleted: false,
+    });
+    await api.upsert({
+      kind: "document",
+      client_id: "d1",
+      payload: { id: "d1" },
+      deleted: true,
+    });
+    __setCloudSyncStoresForTests(createMemoryStores().stores);
+    __setSyncClientForTests(api);
+    const usage = await loadCloudSyncUsage();
+    assert.equal(usage.source, "cloud");
+    assert.equal(usage.kinds.find((row) => row.kind === "chat-session")?.count, 1);
+    assert.equal(usage.kinds.find((row) => row.kind === "artifact")?.count, 1);
+    assert.equal(usage.kinds.find((row) => row.kind === "document")?.count, 0);
+    assert.ok(usage.totalBytes > 0);
+  });
+
+  test("loadCloudSyncUsage falls back to local stores when unsigned", async () => {
+    const memory = createMemoryStores();
+    memory.sessions.set("s1", {
+      meta: sessionMeta("s1"),
+      messages: [msg("m1", "local-only")],
+    });
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests(null);
+    const usage = await loadCloudSyncUsage();
+    assert.equal(usage.source, "local");
+    assert.equal(usage.kinds.find((row) => row.kind === "chat-session")?.count, 1);
+    assert.ok(usage.totalBytes > 0);
   });
 });

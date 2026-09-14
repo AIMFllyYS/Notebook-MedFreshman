@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState, type ReactNode } from "react";
-import { ArrowLeft, Bot, Database, Palette, PlugZap, Settings2, SlidersHorizontal, Sparkles } from "lucide-react";
+import { ArrowLeft, Database, Orbit, Palette, PlugZap, ScrollText, Settings2, SlidersHorizontal } from "lucide-react";
 import { AppearanceSection } from "./AppearanceSection";
 import { BuiltinModelsSection, DefaultsSection, RecordAssistantSection } from "./ModelSection";
 import { ApiGroupsSection } from "./ApiGroupsSection";
@@ -18,8 +18,8 @@ const SECTIONS: { id: SectionId; label: string; hint: string; icon: typeof Setti
   { id: "general", label: "通用", hint: "常规与对话默认", icon: SlidersHorizontal },
   { id: "appearance", label: "外观", hint: "主题与阅读体验", icon: Palette },
   { id: "models", label: "模型配置", hint: "模型、API 与生图", icon: PlugZap },
-  { id: "capabilities", label: "Agent 能力", hint: "工具与演示", icon: Bot },
-  { id: "skills", label: "Skills", hint: "技能库与注入", icon: Sparkles },
+  { id: "capabilities", label: "Agent 能力", hint: "工具与演示", icon: Orbit },
+  { id: "skills", label: "Skills", hint: "技能库与注入", icon: ScrollText },
   { id: "data", label: "数据与账户", hint: "计费、同步与导出", icon: Database },
 ];
 

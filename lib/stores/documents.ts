@@ -76,7 +76,7 @@ export const useDocuments = createPersistedStore<DocumentsState>(
         set((s) => {
           const doc = s.byId[id];
           if (!doc) return s;
-          const sections = doc.sections.map((sec, i) => (i === index ? { ...sec, markdown, status: "done" as const } : sec));
+          const sections = doc.sections.map((sec, i) => (i === index ? { ...sec, markdown } : sec));
           return { byId: { ...s.byId, [id]: { ...doc, sections, updatedAt: Date.now() } } };
         }),
 

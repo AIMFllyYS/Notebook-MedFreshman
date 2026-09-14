@@ -38,6 +38,12 @@ import {
   type SyncDocumentRow,
   type SyncDocumentsApi,
 } from "./types";
+import {
+  emptyCloudSyncUsage,
+  summarizeSyncRows,
+  summarizeSyncUsage,
+  type CloudSyncUsage,
+} from "./usage";
 
 const DEFAULT_DEBOUNCE_MS = 2000;
 const MAX_LOCAL_SESSIONS = 50;
@@ -137,6 +143,56 @@ async function resolveClient(): Promise<SyncDocumentsApi | null> {
   const userId = data.session?.user && "id" in data.session.user ? data.session.user.id : null;
   if (typeof userId !== "string" || !userId) return null;
   return createSupabaseSyncClient(supabase, userId);
+}
+
+function parseJobKey(key: string): CloudSyncKind | null {
+  for (const kind of CLOUD_SYNC_KINDS) {
+    if (key.startsWith(`${kind}:`)) return kind;
+  }
+  return null;
+}
+
+export function getCachedCloudSyncUsage(): CloudSyncUsage | null {
+  if (!remoteBytesReady) return null;
+  return summarizeSyncUsage(
+    [...remoteBytesByKey].flatMap(([key, bytes]) => {
+      const kind = parseJobKey(key);
+      return kind && bytes > 0 ? [{ kind, bytes }] : [];
+    }),
+    "cloud",
+  );
+}
+
+async function measureLocalSyncUsage(): Promise<CloudSyncUsage> {
+  const entries: { kind: CloudSyncKind; bytes: number }[] = [];
+  for (const meta of stores.listSessionMetas()) {
+    const payload = await loadLocalPayload("chat-session", meta.id);
+    if (payload) entries.push({ kind: "chat-session", bytes: payloadByteSize(payload) });
+  }
+  for (const id of stores.listArtifactIds()) {
+    const payload = await loadLocalPayload("artifact", id);
+    if (payload) entries.push({ kind: "artifact", bytes: payloadByteSize(payload) });
+  }
+  for (const id of stores.listDocumentIds()) {
+    const payload = await loadLocalPayload("document", id);
+    if (payload) entries.push({ kind: "document", bytes: payloadByteSize(payload) });
+  }
+  return summarizeSyncUsage(entries, "local");
+}
+
+export async function loadCloudSyncUsage(): Promise<CloudSyncUsage> {
+  const api = await resolveClient();
+  if (api) {
+    const { data, error } = await api.list(CLOUD_SYNC_KINDS);
+    if (!error) {
+      rememberRemoteBytesFromRows(data);
+      return summarizeSyncRows(data);
+    }
+    const cached = getCachedCloudSyncUsage();
+    if (cached) return { ...cached, error: error.message };
+    return emptyCloudSyncUsage("cloud", error.message);
+  }
+  return measureLocalSyncUsage();
 }
 
 function bindPagehideFlush(): void {

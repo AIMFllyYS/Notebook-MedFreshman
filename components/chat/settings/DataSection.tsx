@@ -1,14 +1,17 @@
 "use client";
 import { notifyAccountUsageChanged } from '@/lib/billing/quotaView';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Cloud, DollarSign, Download, Ticket } from "lucide-react";
+import { UsageProgressBar } from "@/components/chat/UsageProgressBar";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import { exportAllChats } from "@/lib/chat/exportChats";
 import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
+import { getCachedCloudSyncUsage, loadCloudSyncUsage } from "@/lib/sync/engine";
 import { clearCloudSyncMessage, useCloudSyncStatus } from "@/lib/sync/status";
 import { MAX_USER_SYNC_BYTES } from "@/lib/sync/types";
+import { formatSyncBytes, type CloudSyncUsage } from "@/lib/sync/usage";
 import { h3Cls, inputCls } from "./_shared";
 
 export function RedemptionSection() {
@@ -130,6 +133,24 @@ export function CloudSyncSection() {
   const cloudSync = useCloudSyncStatus();
   const signedIn = status === "signedIn";
   const limitMb = Math.round((MAX_USER_SYNC_BYTES / (1024 * 1024)) * 10) / 10;
+  const [usage, setUsage] = useState<CloudSyncUsage | null>(null);
+  const [revision, setRevision] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    const cached = getCachedCloudSyncUsage();
+    if (cached) setUsage(cached);
+    void loadCloudSyncUsage().then((next) => {
+      if (!cancelled) setUsage(next);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [signedIn, cloudSync.phase, revision]);
+
+  const title = usage?.source === "local" ? "本机可同步占用" : "云端已用";
+  const limitBytes = usage?.limitBytes ?? MAX_USER_SYNC_BYTES;
+  const totalBytes = usage?.totalBytes ?? 0;
 
   return (
     <section className="flex flex-col gap-2">
@@ -141,6 +162,65 @@ export function CloudSyncSection() {
         登录后同步对话文本、演示 HTML 和长文档。用户上传的图片与 PDF 不上云。工具读过的笔记以摘要同步，全文在教材包。生图会话和 API 密钥不会上传。
         单用户上限约 {limitMb} MB；超限时本机仍保留，并在对话区提示。
       </p>
+      <div className="rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
+        {!usage ? (
+          <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">正在统计占用…</p>
+        ) : (
+          <>
+            <div className="mb-1.5 flex items-center justify-between gap-2 text-[11px]">
+              <span className="text-[var(--md-sys-color-on-surface)]">{title}</span>
+              <div className="flex items-center gap-2">
+                <strong className="text-[var(--md-sys-color-on-surface)]">
+                  {formatSyncBytes(totalBytes)}{" "}
+                  <span className="font-normal text-[var(--md-sys-color-on-surface-variant)]">
+                    / {formatSyncBytes(limitBytes)}
+                  </span>
+                </strong>
+                <button
+                  type="button"
+                  className="text-[11px] text-[var(--md-sys-color-primary)]"
+                  onClick={() => setRevision((n) => n + 1)}
+                >
+                  刷新占用
+                </button>
+              </div>
+            </div>
+            <UsageProgressBar
+              ratio={limitBytes > 0 ? totalBytes / limitBytes : 0}
+              ariaLabel={title}
+            />
+            <div className="mt-2 flex flex-col gap-1.5">
+              {usage.kinds.map((row) => (
+                <div key={row.kind}>
+                  <div className="mb-1 flex justify-between gap-2 text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                    <span>
+                      {row.label}
+                      {row.count > 0 ? ` · ${row.count} ${row.unit}` : ""}
+                    </span>
+                    <strong className="font-medium text-[var(--md-sys-color-on-surface)]">
+                      {formatSyncBytes(row.bytes)}
+                    </strong>
+                  </div>
+                  <UsageProgressBar
+                    ratio={totalBytes > 0 ? row.bytes / totalBytes : 0}
+                    ariaLabel={`${row.label}占用`}
+                    height={4}
+                  />
+                </div>
+              ))}
+            </div>
+            {usage.error ? (
+              <p className="mt-1.5 text-[10px] text-[var(--md-sys-color-error)]">{usage.error}</p>
+            ) : (
+              <p className="mt-1.5 text-[10px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+                {signedIn
+                  ? "占用按同步后的对话、演示与文档合计，不含用户上传的图片与 PDF。"
+                  : "未登录时按本机将同步的内容估算，登录后改为云端实际占用。"}
+              </p>
+            )}
+          </>
+        )}
+      </div>
       <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
         {signedIn ? "已登录，换设备后可拉回历史对话与产物。" : "未登录时数据只留在本机。"}
       </p>
