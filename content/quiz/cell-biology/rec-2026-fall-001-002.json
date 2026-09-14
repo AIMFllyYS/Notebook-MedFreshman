@@ -1,0 +1,260 @@
+{
+  "subjectId": "cell-biology",
+  "chapterId": "rec-2026-fall-001-002",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/cell-biology/lectures/rec-2026-fall-001-002/recording.md；content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-001-002",
+    "revision": 1,
+    "recordingHash": "d485098d49515e3d9e0214895861a6dd5a361c79218f6e54324068ee9b83ae80",
+    "notesTextHash": "5ded9263ad790600936a8783fc418b65a6f2bd30d669574c84d6981f085c1fc8"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "细胞生理学把细胞层面的生命活动归纳为四大功能模块，下列不属于这四大模块的是（　）。",
+      "options": [
+        "物质运输与稳态（离子通道、分泌/内吞）",
+        "能量代谢（ATP生成、糖脂代谢）",
+        "免疫监视与抗体库多样性",
+        "大分子质量控制（DNA/RNA/蛋白质合成、降解、监控）"
+      ],
+      "answer": 2,
+      "hint": "回忆口诀「物流能量信号加质控」。",
+      "explanation": "**C 错误（符合题意）。** 四大模块是：①物质运输与稳态 ②能量代谢 ③信号转导 ④大分子质量控制，贯穿发育、分化、衰老、代谢等所有生理过程；「免疫监视」不在其中。\n- A、B、D：分别对应模块①②④，均正确。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "绪论 · 四大功能模块"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "1665年Hooke用自制显微镜观察软木塞并将分隔结构命名为cell，他实际观察到的是（　）。",
+      "options": [
+        "正在流动的活原生质",
+        "死细胞的细胞壁",
+        "血液中的活红细胞",
+        "池塘水中的活细菌"
+      ],
+      "answer": 1,
+      "hint": "口诀「虎克命名看死壁，列文虎克看活细胞」。",
+      "explanation": "**B 正确。** Hooke观察的是红酒软木塞（死组织），看到的只是残留的细胞壁小室，并非活细胞；首次真正看到活细胞的是Leeuwenhoek（1674年，放大200倍看到红细胞、精子）。\n- A：Hooke未见活原生质流动；\n- C、D：活红细胞、活细菌是Leeuwenhoek的工作。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "细胞发现史 · Hooke 与 Leeuwenhoek"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "2013年Rothman、Schekman、Südhof获诺贝尔奖，表彰他们的研究发现是（　）。",
+      "options": [
+        "细胞内囊泡运输的调控机制",
+        "蛋白质具有内在定位信号、控制胞内传递分布",
+        "溶酶体与过氧化物酶体的结构和功能",
+        "绿色荧光蛋白在活细胞中的示踪"
+      ],
+      "answer": 0,
+      "hint": "口诀「七四细胞器，九九信号肽，一三囊泡运」。",
+      "explanation": "**A 正确。** 2013年奖对应「囊泡运输调控机制」，解析了细胞物流体系；三个诺奖平均间隔约20年。\n- B：蛋白质定位信号肽是1999年Blobel的贡献；\n- C：溶酶体、过氧化物酶体等细胞器结构功能是1974年Claude、de Duve、Palade的贡献；\n- D：GFP示踪不是本课三个诺奖之一。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "发展史 · 三个诺贝尔奖"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "据本课材料，一个细胞生存所必需的基础基因约为（　）。",
+      "options": [
+        "约50个",
+        "约500个",
+        "约5000个",
+        "约20000个（即人的全部基因）"
+      ],
+      "answer": 1,
+      "hint": "已知基因组最小的支原体只有约500个基础基因。",
+      "explanation": "**B 正确。** 一个细胞生存必需基因约500个；已知基因组最小的物种支原体即只有约500个基础基因（寄生性，可从宿主获得小分子）。\n- A：数量级过小；\n- C：偏大；\n- D：约2万个是人全部基因总数，不是「生存必需」下限。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "细胞生命特征 · 基础基因与最小基因组"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "生物膜的脂质主要分为三大类，下列不属于这三大类的是（　）。",
+      "options": [
+        "甘油磷脂（PC、PE、PS）",
+        "鞘脂（如鞘磷脂）",
+        "胆固醇",
+        "三酰甘油（甘油三酯）"
+      ],
+      "answer": 3,
+      "hint": "口诀「甘磷鞘脂胆固醇」；三酰甘油是脂滴里存的储能中性脂。",
+      "explanation": "**D 错误（符合题意）。** 膜脂三大类是甘油磷脂（细胞膜主体）、鞘脂（少量掺杂）和胆固醇（调节膜流动性、类固醇激素原料）；三酰甘油是脂滴中储存的中性储能脂，不是膜结构脂。\n- A、B、C：均为膜脂三大类之一。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "细胞膜 · 三类脂"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "以红细胞膜为例，磷脂双分子层的不对称性表现为（　）。",
+      "options": [
+        "细胞膜外侧PC（磷脂酰胆碱）和鞘脂较多",
+        "细胞膜外侧PS（磷脂酰丝氨酸）和PE较多",
+        "内外层磷脂种类完全相同、只是数量不同",
+        "胆固醇只分布于内侧、外侧完全没有"
+      ],
+      "answer": 0,
+      "hint": "外侧是PC+鞘脂，内侧是PS+PE。",
+      "explanation": "**A 正确。** 红细胞膜不对称：外侧PC+鞘脂较多，内侧PS+PE较多；这种不对称使膜两侧结合不同蛋白，PS外翻即凋亡信号。\n- B：把内外层说反了，PS/PE在正常细胞位于内侧；\n- C：内外层磷脂「种类」本就不同，不对称正是本课重点；\n- D：胆固醇参与构成脂筏，并非只分布于内侧。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "细胞膜 · 双分子层不对称性"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于磷脂酰丝氨酸（PS）在细胞膜上的分布及其意义，下列说法正确的是（　）。",
+      "options": [
+        "正常活细胞中PS位于细胞膜外侧，细胞增殖时翻到内侧",
+        "正常时PS位于内侧，细胞凋亡时外翻到外侧，发出「请吞噬我」信号",
+        "PS只存在于高尔基体膜上，与细胞膜无关",
+        "PS外翻是细胞进入有丝分裂期的标志性信号"
+      ],
+      "answer": 1,
+      "hint": "口诀「PS在内静悄悄，一翻向外喊凋亡」。",
+      "explanation": "**B 正确。** 正常活细胞PS位于内侧；凋亡时PS外翻到外侧，向巨噬细胞发出「我快死了，请吞噬我」的信号；翻转酶功能异常/突变可致PS外翻与免疫缺陷疾病。\n- A：内外方向与生理意义都说反；\n- C：PS是细胞膜内侧主要脂质之一；\n- D：外翻标志的是凋亡而非有丝分裂。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "细胞膜 · PS外翻与细胞凋亡"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "磷脂分子在双分子层中从一层翻转到另一层（flip-flop），其特点是（　）。",
+      "options": [
+        "与侧向流动一样，可自发快速完成、不需能量",
+        "只在细胞分裂瞬间发生一次、无需酶参与",
+        "需要翻转酶（flippase）参与，并消耗能量",
+        "由ATP合酶直接催化、不消耗能量"
+      ],
+      "answer": 2,
+      "hint": "同一层内平移容易，跨层翻转要酶还要能量。",
+      "explanation": "**C 正确。** 膜的双向流动性中：侧向流动（同一层内平移）容易、不需能量；而跨层翻转（flip-flop）需翻转酶（flippase）并消耗能量，正是翻转酶维持不对称性、其突变可致免疫缺陷的机制基础。\n- A：把翻转等同于不需能的侧向流动，错误；\n- B：翻转需要酶，并非分裂瞬间的自发事件；\n- D：不消耗能量与事实相反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "细胞膜 · 双分子层流动性"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列关于线粒体的说法，错误的是（　）。",
+      "options": [
+        "起源于内共生：古细菌被真核细胞吞噬后未被消化而共存演化",
+        "拥有自己的基因组mtDNA，是唯一有自身遗传物质的细胞器",
+        "按经典理论，线粒体属于细胞内囊泡运输体系的一环",
+        "子代线粒体主要经卵细胞由母系继承"
+      ],
+      "answer": 2,
+      "hint": "新进展（有争议）说应激下可能有膜接触交流，但经典理论不属于囊泡运输体系。",
+      "explanation": "**C 错误（符合题意）。** 经典理论认为线粒体不属于囊泡运输体系，是相对独立的细胞器系统；仅近年（有争议）的研究提示应激状态下可能与其他细胞器有膜接触/交流。\n- A：内共生起源是线粒体特殊之处；\n- B：mtDNA是「唯一有自身遗传物质的细胞器」这一高频考点；\n- D：卵细胞大、精子小，细胞器主要来自母亲，为母系遗传。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "细胞器 · 线粒体的特殊性"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "在细胞器间物质运输的三种方式中，蛋白质跨膜进入线粒体、过氧化物酶体属于（　）。",
+      "options": [
+        "门控运输（经核孔往返细胞核与细胞质）",
+        "跨膜运输（蛋白质直接跨膜进入细胞器）",
+        "囊泡运输（经囊泡在细胞器间传递）",
+        "被动自由扩散，不需要任何靶向信号"
+      ],
+      "answer": 1,
+      "hint": "对号入座：核孔=门控，线粒体/过氧化物酶体=跨膜，内质网↔高尔基体=囊泡。",
+      "explanation": "**B 正确。** 三种方式：门控运输（核孔，细胞核↔细胞质）、跨膜运输（蛋白跨膜进入线粒体、过氧化物酶体）、囊泡运输（内质网→高尔基体→内体/溶酶体/细胞膜）；进入线粒体属跨膜运输。\n- A：门控运输只指经核孔的核质交流；\n- C：囊泡运输指膜性细胞器间的囊泡传递，线粒体经典上不属于该体系；\n- D：蛋白进入细胞器依赖定位信号肽（1999诺奖），绝非自由扩散。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "细胞器 · 三种运输方式"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "传统光学显微镜分辨率约200nm，本课介绍的超高分辨率荧光显微镜可达到约（　）。",
+      "options": [
+        "约2 nm",
+        "约60 nm",
+        "约2 μm",
+        "约6 μm"
+      ],
+      "answer": 1,
+      "hint": "超高分辨逼近电镜的50nm量级，每秒250帧活体3D。",
+      "explanation": "**B 正确。** 传统光学显微镜受可见光波长限制约200nm，超高分辨率荧光显微镜（STED、SIM、光片等）可达约60nm、每秒250帧，能捕捉活体动态。\n- A：过于接近原子/电镜单颗粒尺度；\n- C、D：以μm计比200nm还大，与「超高分辨」方向相反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "新技术 · 超高分辨率荧光显微镜"
+      }
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+{
+  "subjectId": "cell-biology",
+  "chapterId": "rec-2026-fall-005-006",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/cell-biology/lectures/rec-2026-fall-005-006/recording.md；content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-005-006",
+    "revision": 1,
+    "recordingHash": "0fdfc337eba9013821b2e5eeba2a0963d3da68a7011623b40fb1ef4dea240734",
+    "notesTextHash": "798d3d7aa9d68fe9a696759ea0e3615d4639252121c5f67e58d674e7e61a79c6"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课提出的理解一切生物膜特性的「第一性原则」是（　）。",
+      "options": [
+        "用疏水核心隔开两个水相",
+        "膜蛋白含量约占细胞膜一半",
+        "膜糖链永久朝向胞质侧",
+        "胆固醇是细胞膜的唯一脂类"
+      ],
+      "answer": 0,
+      "hint": "所有膜相关结论都能从「疏水核心隔开两水相」推导，不用死记。",
+      "explanation": "**A 正确。** 生物膜用疏水脂肪酸尾部核心隔开胞质与胞外两个水相，区室化、选择性通透、不对称性等特性均可由此推导；生物膜不仅指细胞膜，还包括各膜性细胞器的膜。\n- B、C、D：均与材料所述事实不符——膜糖链朝非胞质侧，膜脂还包括磷脂与糖脂。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "生物膜基础认知 · 第一性原则"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "构成细胞膜脂双层基本骨架、具有亲水头部与疏水尾部两亲性的成分是（　）。",
+      "options": [
+        "胆固醇",
+        "外周膜蛋白",
+        "细胞外被（糖萼）",
+        "磷脂（甘油磷脂＋鞘磷脂）"
+      ],
+      "answer": 3,
+      "hint": "两亲性＝磷酸亲水头部＋脂肪酸疏水尾部。",
+      "explanation": "**D 正确。** 磷脂（甘油磷脂为主，加鞘磷脂）是细胞膜基本骨架，头部亲水、尾部疏水，故在水中自发形成双分子层。\n- A：胆固醇是流动性缓冲剂、并非骨架；\n- B：外周膜蛋白贴附膜上、不是脂双层骨架；\n- C：糖萼是膜糖形成的细胞外被。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "细胞膜化学组成 · 膜脂/磷脂"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于跨膜扩散的驱动力，下列说法正确的是（　）。",
+      "options": [
+        "不带电物质仅受浓度梯度驱动，带电离子同时受浓度梯度与电势梯度（电化学梯度）共同驱动",
+        "不带电物质受电势梯度驱动、与浓度无关",
+        "带电离子仅受浓度梯度驱动",
+        "所有物质的扩散驱动力完全相同"
+      ],
+      "answer": 0,
+      "hint": "带电，就多一个电场因素。",
+      "explanation": "**A 正确。** 扩散属被动运输、不耗能：不带电物质只沿浓度梯度扩散；带电离子还要叠加膜电位差，受浓度梯度＋电势梯度合称的电化学梯度驱动。\n- B：不带电物质不存在净电荷，不被电势直接驱动；\n- C：带电离子还受电势梯度；\n- D：是否带电决定了驱动力是否含电势项。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "跨膜运输引入 · 电化学梯度"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于甘油磷脂按极性头基的分布倾向，下列说法正确的是（　）。",
+      "options": [
+        "PC（磷脂酰胆碱）主要分布于外侧，PS（磷脂酰丝氨酸）带负电、正常仅位于内侧",
+        "PE（磷脂酰乙醇胺）主要分布于细胞膜外侧",
+        "PS正常状态下位于细胞膜外侧",
+        "PC与PS在内外侧的分布完全相同"
+      ],
+      "answer": 0,
+      "hint": "外侧鞘磷脂＋PC多；内侧PE＋PS多。",
+      "explanation": "**A 正确。** 按头基：PC小头基偏外侧，PE（小头基、倒圆锥）易分布于内侧，PS带负电、正常仅位于内侧；外侧多鞘磷脂与PC。这种内外侧不对称需酶催化维持。\n- B：PE分布于内侧；\n- C：PS正常在内侧，外翻才是凋亡信号；\n- D：分布不对称正是本课重点。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "膜脂 · 甘油磷脂头基与分布"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "胆固醇对膜流动性的调节作用，正确的描述是（　）。",
+      "options": [
+        "单纯地增加膜流动性",
+        "单纯地降低膜流动性",
+        "作「缓冲调节剂」：低温下提升流动性、高温下降低流动性，拓宽膜维持合适流动性的温度范围",
+        "其作用与温度无关，只改变膜的蛋白质含量"
+      ],
+      "answer": 2,
+      "hint": "低温防凝固、高温防过流——双向调节。",
+      "explanation": "**C 正确。** 胆固醇强刚性、两亲性，是流动性缓冲剂：低温下抑制脂肪酸链紧密排列、防止膜凝固而提升流动性；高温下限制磷脂过度运动而降低流动性，从而拓宽膜维持合适流动性的温度范围。\n- A、B：把它说成单向调节，不准确；\n- D：其作用与温度密切相关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "膜脂 · 胆固醇双向调节"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "外周膜蛋白非共价贴附于膜表面，将其温和剥离常用的方法是（　）。",
+      "options": [
+        "加入去垢剂溶解脂双层",
+        "加入限制性内切酶",
+        "改变盐浓度或pH",
+        "高温煮沸使蛋白变性"
+      ],
+      "answer": 2,
+      "hint": "贴附靠静电等弱相互作用，温和条件即可剥离。",
+      "explanation": "**C 正确。** 外周膜蛋白以非共价键贴附膜内外表面，改变盐浓度或pH即可温和剥离，不必破坏脂双层；整合膜蛋白才需去垢剂抽提。\n- A：去垢剂用于整合膜蛋白，不是外周蛋白的温和剥离法；\n- B：限制性内切酶切割DNA，与膜蛋白提取无关；\n- D：煮沸会变性蛋白，不是「温和剥离」。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "膜蛋白 · 外周膜蛋白提取"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于整合膜蛋白及其药理意义，下列与材料一致的是（　）。",
+      "options": [
+        "几乎没有临床药物作用于整合膜蛋白",
+        "整合膜蛋白跨膜区为疏水α螺旋，且60%以上临床药物以其为靶点",
+        "临床药物靶点全部是外周膜蛋白",
+        "整合膜蛋白不含任何跨膜结构域"
+      ],
+      "answer": 1,
+      "hint": "多次跨膜α螺旋可围成亲水孔道供带电离子通过。",
+      "explanation": "**B 正确。** 整合膜蛋白经单次/多次跨膜α螺旋嵌入疏水核心，跨膜区以疏水氨基酸为主、多次跨膜可围成亲水孔道；它占膜蛋白约20%~30%，却是60%以上临床药物的作用靶点。\n- A、C：与「60%以上药物靶点」相反；\n- D：跨膜α螺旋正是整合膜蛋白的定义性特征。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "膜蛋白 · 整合膜蛋白与药物靶点"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "ABO血型的分子本质是（　）。",
+      "options": [
+        "红细胞膜上整合膜蛋白的种类不同",
+        "红细胞膜糖链末端的糖种类不同",
+        "红细胞膜上胆固醇含量不同",
+        "由DNA序列直接决定的血清清蛋白差异"
+      ],
+      "answer": 1,
+      "hint": "膜糖糖链永久朝向外侧，ABO差异在末端糖。",
+      "explanation": "**B 正确。** 膜糖（糖脂、糖蛋白）糖链均永久朝向非胞质侧、形成糖萼；ABO血型的本质是红细胞膜上糖链末端所含糖种类不同，而非膜蛋白本身不同。\n- A：差异不在蛋白质；\n- C：与胆固醇含量无关；\n- D：血型识别的是膜上糖链表位，不是血清清蛋白。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "膜糖 · 糖萼与ABO血型"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "已知脂分子自发跨双层翻转在热力学上几乎不可能，据此可推知（　）。",
+      "options": [
+        "内外侧磷脂分布的不对称性无需任何酶即可自发长期维持",
+        "脂分子自发跨双层翻转迅速而常见",
+        "膜脂不对称性只在合成瞬间存在、与功能信息无关",
+        "不对称分布需翻转酶（flippase）催化维持；PS外翻即凋亡的标志性信号"
+      ],
+      "answer": 3,
+      "hint": "「位置本身就是信息」；PS在内侧，外翻＝喊凋亡。",
+      "explanation": "**D 正确。** 翻转几乎不可能自发发生，故内外侧种类/数量不对称需翻转酶等催化维持；一旦PS外翻到外侧，即发出「吞噬我」的凋亡标志信号，说明「位置本身就是信息」。\n- A：正因翻转难，才更需要酶维持；\n- B：与「几乎不可能」相反；\n- C：不对称分布正是重要功能信息。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "膜生物学特性 · 不对称性与翻转酶"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于荧光漂白后恢复（FRAP）实验，下列说法正确的是（　）。",
+      "options": [
+        "被漂白区域的荧光永远不会恢复",
+        "漂白区域荧光立即完全恢复、没有时间过程",
+        "漂白区荧光随膜蛋白侧向扩散逐步恢复，可量化其扩散速率与可流动池大小",
+        "FRAP本质就是人-鼠细胞融合实验的别称"
+      ],
+      "answer": 2,
+      "hint": "细胞融合证明「会动」，FRAP还能量化「动多快」。",
+      "explanation": "**C 正确。** FRAP用激光局部漂白荧光标记的膜蛋白，随后漂白区因周围荧光蛋白侧向扩散而逐步恢复，可量化扩散速率与恢复比例（可流动池大小）。\n- A：若不恢复则说明膜完全静止，与事实相反；\n- B：恢复需要时间；\n- D：FRAP与细胞融合是两个独立实验——后者用人-鼠细胞分别标记红绿荧光证明膜蛋白侧向扩散。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "膜流动性 · 细胞融合与FRAP"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于脂筏模型与流动镶嵌模型的关系，下列说法正确的是（　）。",
+      "options": [
+        "脂筏模型否定并彻底取代了流动镶嵌模型",
+        "脂筏是膜上鞘脂、胆固醇与特定蛋白富集的动态微区，可作信号传导、胞吞的功能平台",
+        "脂筏是位于细胞膜外的独立细胞器",
+        "脂筏由磷脂酰丝氨酸外翻聚集形成"
+      ],
+      "answer": 1,
+      "hint": "脂筏是对流动镶嵌模型的补充，不是推翻。",
+      "explanation": "**B 正确。** 流动镶嵌模型（脂双层是二维流体、蛋白镶嵌、膜具不对称性）是核心基础；脂筏模型在其之上补充——膜上动态存在富含鞘脂、胆固醇和特定蛋白的微区，作为信号传导与胞吞平台。\n- A：脂筏模型未否定流动镶嵌模型；\n- C：脂筏是膜上微区而非独立细胞器；\n- D：脂筏富集鞘脂与胆固醇，与PS外翻无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "膜结构模型 · 流动镶嵌与脂筏"
+      }
+    }
+  ]
+}

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>生物化学与分子生物学 · 第7-8节 · 核酸结构与功能</title>
+<style>
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; color: #1a1a2e; background: #f8f9fc; }
+.page { width: 210mm; height: 297mm; padding: 18mm 16mm; page-break-after: always; position: relative; overflow: hidden; }
+.page:last-child { page-break-after: auto; }
+
+/* Cover */
+.cover { background: linear-gradient(135deg, #1a5276 0%, #2e86c1 50%, #1a5276 100%); color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.cover::before { content: ''; position: absolute; top: -50mm; right: -50mm; width: 200mm; height: 200mm; border-radius: 50%; background: rgba(255,255,255,0.05); }
+.cover::after { content: ''; position: absolute; bottom: -40mm; left: -40mm; width: 160mm; height: 160mm; border-radius: 50%; background: rgba(255,255,255,0.04); }
+.cover-kicker { font-size: 11pt; letter-spacing: 6px; text-transform: uppercase; opacity: 0.7; margin-bottom: 12mm; }
+.cover h1 { font-size: 36pt; font-weight: 700; line-height: 1.3; margin-bottom: 8mm; }
+.cover h1 .accent { color: #f9e79f; }
+.cover-sub { font-size: 14pt; opacity: 0.85; margin-bottom: 4mm; }
+.cover-meta { font-size: 10pt; opacity: 0.6; margin-top: 20mm; line-height: 2; }
+.dna-icon { font-size: 60pt; margin-bottom: 10mm; opacity: 0.9; }
+
+/* Content pages */
+.page-header { display: flex; align-items: center; margin-bottom: 8mm; padding-bottom: 4mm; border-bottom: 2.5pt solid #2e86c1; }
+.page-num { font-size: 9pt; color: #888; margin-left: auto; }
+.chapter-badge { background: #2e86c1; color: #fff; padding: 2mm 5mm; border-radius: 3mm; font-size: 10pt; font-weight: 600; margin-right: 4mm; }
+.page-title { font-size: 18pt; font-weight: 700; color: #1a5276; }
+
+.section { margin-bottom: 6mm; }
+.section-title { font-size: 12pt; font-weight: 700; color: #2e86c1; margin-bottom: 3mm; padding-left: 3mm; border-left: 3pt solid #2e86c1; }
+.section-body { font-size: 9.5pt; line-height: 1.75; color: #333; }
+
+.kv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin: 3mm 0; }
+.kv-card { background: #fff; border: 0.5pt solid #d5dbdb; border-radius: 2mm; padding: 3mm 4mm; }
+.kv-card .k { font-weight: 700; color: #1a5276; font-size: 9.5pt; margin-bottom: 1mm; }
+.kv-card .v { font-size: 9pt; color: #555; line-height: 1.6; }
+
+.highlight-box { background: linear-gradient(135deg, #fef9e7 0%, #fdebd0 100%); border-left: 3pt solid #f39c12; border-radius: 0 2mm 2mm 0; padding: 3mm 5mm; margin: 3mm 0; font-size: 9.5pt; }
+.highlight-box .label { font-weight: 700; color: #b9770e; font-size: 8.5pt; margin-bottom: 1mm; }
+
+.warn-box { background: #fdedec; border-left: 3pt solid #e74c3c; border-radius: 0 2mm 2mm 0; padding: 3mm 5mm; margin: 3mm 0; font-size: 9.5pt; color: #922b21; }
+.warn-box .label { font-weight: 700; font-size: 8.5pt; margin-bottom: 1mm; }
+
+.table-wrap { margin: 3mm 0; }
+table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+th { background: #2e86c1; color: #fff; padding: 2mm 3mm; text-align: left; font-weight: 600; }
+td { padding: 2mm 3mm; border-bottom: 0.5pt solid #d5dbdb; }
+tr:nth-child(even) td { background: #f4f6f7; }
+
+.flow-chart { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2mm; margin: 4mm 0; }
+.flow-node { background: #2e86c1; color: #fff; padding: 2.5mm 4mm; border-radius: 2mm; font-size: 9pt; font-weight: 600; text-align: center; }
+.flow-node.light { background: #aed6f1; color: #1a5276; }
+.flow-arrow { color: #2e86c1; font-size: 14pt; font-weight: 700; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+
+.footer { position: absolute; bottom: 8mm; left: 16mm; right: 16mm; display: flex; justify-content: space-between; font-size: 8pt; color: #aaa; border-top: 0.5pt solid #e0e0e0; padding-top: 2mm; }
+</style>
+</head>
+<body>
+
+<!-- Page 1: Cover -->
+<div class="page cover">
+  <div class="dna-icon">🧬</div>
+  <div class="cover-kicker">BIOCHEMISTRY · 生物化学与分子生物学</div>
+  <h1>核酸结构与功能<br><span class="accent">可视化笔记</span></h1>
+  <div class="cover-sub">第7-8节 · 课程内累计节次</div>
+  <div class="cover-meta">
+    授课教师：郭雨松 教授<br>
+    日期：2026年9月10日（周四）<br>
+    地点：PBL教学楼6中(3层)
+  </div>
+</div>
+
+<!-- Page 2: Overview & Nucleotides -->
+<div class="page">
+  <div class="page-header">
+    <span class="chapter-badge">第一章</span>
+    <span class="page-title">核苷酸组成与非结构功能</span>
+    <span class="page-num">2 / 7</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title">核苷酸的基本组成</div>
+    <div class="section-body">
+      <div class="flow-chart">
+        <div class="flow-node">碱基<br><span style="font-size:8pt;opacity:0.8">嘌呤A·G / 嘧啶C·T·U</span></div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-node">戊糖<br><span style="font-size:8pt;opacity:0.8">核糖 / 2'-脱氧核糖</span></div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-node light">磷酸<br><span style="font-size:8pt;opacity:0.8">1~3个</span></div>
+        <div class="flow-arrow">=</div>
+        <div class="flow-node" style="background:#1a5276">核苷酸</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv-card"><div class="k">核苷</div><div class="v">碱基 + 戊糖（无磷酸）</div></div>
+        <div class="kv-card"><div class="k">磷酸数命名</div><div class="v">1个=NMP，2个=NDP，3个=NTP</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">核苷酸的三大非结构功能</div>
+    <div class="section-body">
+      <div class="kv-grid">
+        <div class="kv-card" style="border-left:3pt solid #27ae60">
+          <div class="k">⚡ 化学能载体</div>
+          <div class="v"><b>ATP</b>——磷酸基团间高能酸酐键，细胞通用能量货币</div>
+        </div>
+        <div class="kv-card" style="border-left:3pt solid #e67e22">
+          <div class="k">📡 第二信使</div>
+          <div class="v"><b>cAMP、cGMP、cGAS</b>——细胞信号转导；cGAS参与感染应答</div>
+        </div>
+        <div class="kv-card" style="border-left:3pt solid #8e44ad;grid-column:1/-1">
+          <div class="k">🔧 辅酶</div>
+          <div class="v"><b>NAD⁺/NADH、NADP⁺/NADPH</b>——氧化还原反应中递氢递电子；后续维生素、酶、代谢章节反复涉及</div>
+        </div>
+      </div>
+      <div class="warn-box">
+        <div class="label">⚠️ 高频易错</div>
+        核苷酸不仅是核酸的基本单位，还具有多种重要生理功能——这是容易被忽略的考点。
+      </div>
+    </div>
+  </div>
+
+  <div class="footer"><span>生物化学与分子生物学 · 核酸结构与功能</span><span>第 2 页</span></div>
+</div>
+
+<!-- Page 3: Primary Structure -->
+<div class="page">
+  <div class="page-header">
+    <span class="chapter-badge">第二章</span>
+    <span class="page-title">核酸一级结构</span>
+    <span class="page-num">3 / 7</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title">3',5'-磷酸二酯键</div>
+    <div class="section-body">
+      <div class="highlight-box">
+        <div class="label">💡 核心定义</div>
+        一个核苷酸的<b>3'-羟基</b>与另一个核苷酸的<b>5'-磷酸</b>发生酯化反应，脱去一分子水形成3',5'-磷酸二酯键。
+      </div>
+      <div class="kv-grid">
+        <div class="kv-card"><div class="k">英文拆解</div><div class="v">phospho(磷酸) + di(二) + ester(酯) + bond(键)</div></div>
+        <div class="kv-card"><div class="k">结构特征</div><div class="v">无分支的线性分子（与有分支的多糖对比）</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">核酸的方向性与序列表示</div>
+    <div class="section-body">
+      <div class="two-col">
+        <div>
+          <div class="kv-card" style="margin-bottom:2mm"><div class="k">5'端</div><div class="v">游离磷酸基团端</div></div>
+          <div class="kv-card" style="margin-bottom:2mm"><div class="k">3'端</div><div class="v">游离羟基端</div></div>
+          <div class="kv-card"><div class="k">撇号(')意义</div><div class="v">戊糖碳编号加撇，与碱基碳编号区分</div></div>
+        </div>
+        <div>
+          <div class="highlight-box">
+            <div class="label">📝 书写约定</div>
+            默认从左到右 = <b>5'→3'</b>方向<br>
+            序列方向与蛋白质<b>N端→C端</b>对应<br>
+            表示可简化：完整结构式→骨架式→仅碱基序列
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">核酸与蛋白质的单位对比</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>维度</th><th>核酸</th><th>蛋白质</th></tr>
+        <tr><td>单链长度单位</td><td>nt（核苷酸数）</td><td>—</td></tr>
+        <tr><td>双链长度单位</td><td>bp（碱基对）</td><td>—</td></tr>
+        <tr><td>分子量单位</td><td>—</td><td>kD（千道尔顿）</td></tr>
+        <tr><td>电泳Marker</td><td>以bp标识</td><td>以kD标识</td></tr>
+        <tr><td>相同单体数分子量差异</td><td>较小（4种核苷酸接近）</td><td>较大（20种氨基酸差异大）</td></tr>
+      </table>
+    </div>
+    <div class="highlight-box">
+      <div class="label">🧬 基因组参考</div>
+      人类基因组约 <b>3.2×10⁹ bp（32亿碱基对）</b>，在已知物种中不属于最大范畴；复杂功能更多来自调控序列。
+    </div>
+  </div>
+
+  <div class="footer"><span>生物化学与分子生物学 · 核酸结构与功能</span><span>第 3 页</span></div>
+</div>
+
+<!-- Page 4: DNA Double Helix -->
+<div class="page">
+  <div class="page-header">
+    <span class="chapter-badge">第三章</span>
+    <span class="page-title">DNA双螺旋结构</span>
+    <span class="page-num">4 / 7</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title">双螺旋发现的关键实验</div>
+    <div class="flow-chart">
+      <div class="flow-node light">Chargaff规则<br><span style="font-size:8pt">A=T, C=G</span></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-node light">X射线衍射<br><span style="font-size:8pt">第51号照片</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node" style="background:#1a5276">沃森·克里克<br>双螺旋模型</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">B型双螺旋核心参数</div>
+    <div class="kv-grid">
+      <div class="kv-card"><div class="k">链方向</div><div class="v">两条链<b>反向平行</b></div></div>
+      <div class="kv-card"><div class="k">骨架/碱基</div><div class="v">亲水骨架在外，疏水碱基在内</div></div>
+      <div class="kv-card"><div class="k">螺旋直径</div><div class="v"><b>2.37 nm</b></div></div>
+      <div class="kv-card"><div class="k">螺距</div><div class="v"><b>3.54 nm</b>（含10.5 bp）</div></div>
+      <div class="kv-card"><div class="k">碱基间距</div><div class="v"><b>0.34 nm</b>（与螺旋轴垂直）</div></div>
+      <div class="kv-card"><div class="k">每螺距碱基数</div><div class="v"><b>10.5 bp</b>（非经典10bp）</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">碱基配对与维持作用力</div>
+    <div class="two-col">
+      <div>
+        <div class="highlight-box">
+          <div class="label">🔗 碱基配对</div>
+          <b>A = T</b>：2对氢键<br>
+          <b>G ≡ C</b>：3对氢键<br>
+          G-C含量高 → 更稳定
+        </div>
+      </div>
+      <div>
+        <div class="highlight-box" style="background:linear-gradient(135deg,#eaf2f8,#d4e6f1);border-left-color:#2e86c1">
+          <div class="label" style="color:#1a5276">⚖️ 维持作用力</div>
+          ① <b>碱基间氢键</b>——横向配对<br>
+          ② <b>碱基堆积力</b>——纵向堆叠<br>
+          两者共同维持双螺旋稳定
+        </div>
+      </div>
+    </div>
+    <div class="warn-box">
+      <div class="label">⚠️ 易错点</div>
+      双螺旋稳定靠两类作用力——只答氢键不答碱基堆积力是常见失分点。A-T是2个氢键，G-C是3个，方向不要记反。
+    </div>
+  </div>
+
+  <div class="footer"><span>生物化学与分子生物学 · 核酸结构与功能</span><span>第 4 页</span></div>
+</div>
+
+<!-- Page 5: Grooves & Special Structures -->
+<div class="page">
+  <div class="page-header">
+    <span class="chapter-badge">第三章·续</span>
+    <span class="page-title">大沟小沟与DNA特殊结构</span>
+    <span class="page-num">5 / 7</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title">大沟与小沟的功能差异</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>特征</th><th>大沟</th><th>小沟</th></tr>
+        <tr><td>宽度</td><td>较宽</td><td>较窄</td></tr>
+        <tr><td>碱基信息暴露</td><td>充分</td><td>较少</td></tr>
+        <tr><td>蛋白结合方式</td><td>序列特异性识别</td><td>静电作用/形状匹配</td></tr>
+        <tr><td>结合特异性</td><td>高</td><td>低</td></tr>
+        <tr><td>典型结合蛋白</td><td>转录因子（亮氨酸拉链、螺旋-环-螺旋、锌指）</td><td>非特异性结合蛋白</td></tr>
+      </table>
+    </div>
+    <div class="highlight-box">
+      <div class="label">💡 功能逻辑</div>
+      大沟暴露更多碱基序列信息，转录因子的识别螺旋插入大沟读取碱基序列，从而特异性结合靶DNA序列，启动基因表达。
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">双螺旋构象变体</div>
+    <div class="kv-grid">
+      <div class="kv-card"><div class="k">B型</div><div class="v">生理条件最常见，规整，大沟小沟清晰</div></div>
+      <div class="kv-card"><div class="k">A型</div><div class="v">高盐/脱水条件，更紧凑，碱基对倾斜</div></div>
+      <div class="kv-card" style="grid-column:1/-1"><div class="k">Z型</div><div class="v">左手螺旋，骨架呈锯齿状，常见于GC富集区，参与基因表达调控</div></div>
+    </div>
+    <div style="font-size:8.5pt;color:#888;margin-top:2mm">* A型/Z型真实存在于体内，无需记忆具体结构参数，有印象即可。</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">非常规特殊结构</div>
+    <div class="two-col">
+      <div class="kv-card" style="border-left:3pt solid #8e44ad">
+        <div class="k">三链DNA</div>
+        <div class="v">通过<b>Hoogsteen氢键</b>维持，三碱基平面堆叠，是分子生物学过程的短暂阶段（如转录调控）</div>
+      </div>
+      <div class="kv-card" style="border-left:3pt solid #e74c3c">
+        <div class="k">G四链体</div>
+        <div class="v">四个鸟嘌呤形成稳定四碱基平面堆叠，也称G-quadruplex，常见于<b>染色体端粒</b>，核酸研究热点</div>
+      </div>
+    </div>
+    <div class="warn-box">
+      <div class="label">⚠️ 注意</div>
+      三链DNA和G四链体都使用<b>Hoogsteen氢键</b>，不是Watson-Crick氢键。
+    </div>
+  </div>
+
+  <div class="footer"><span>生物化学与分子生物学 · 核酸结构与功能</span><span>第 5 页</span></div>
+</div>
+
+<!-- Page 6: Higher-order folding -->
+<div class="page">
+  <div class="page-header">
+    <span class="chapter-badge">第四章</span>
+    <span class="page-title">DNA高级结构折叠</span>
+    <span class="page-num">6 / 7</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title">折叠的必要性</div>
+    <div class="highlight-box">
+      <div class="label">📏 尺度对比</div>
+      人类基因组DNA总长约 <b>2米</b> → 必须装入直径约 <b>10微米</b> 的细胞核 → 需要高度有序的层级压缩
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">层级折叠过程</div>
+    <div class="flow-chart" style="flex-direction:column;align-items:stretch">
+      <div style="display:flex;align-items:center;justify-content:center;gap:2mm">
+        <div class="flow-node" style="flex:1">DNA双螺旋</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="flex:1;background:#1a5276">核小体<br><span style="font-size:7.5pt">146bp+组蛋白八聚体</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node light" style="flex:1">11nm纤维</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:2mm;margin-top:2mm">
+        <div class="flow-node light" style="flex:1">30nm螺线管<br><span style="font-size:7.5pt">H1组蛋白封口</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node light" style="flex:1">超螺线管</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="flex:1;background:#1a5276">染色体</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">核小体的组成</div>
+    <div class="kv-grid">
+      <div class="kv-card"><div class="k">DNA长度</div><div class="v"><b>146 bp</b>缠绕组蛋白八聚体约1.75圈</div></div>
+      <div class="kv-card"><div class="k">组蛋白八聚体</div><div class="v">H2A、H2B、H3、H4各<b>2个</b></div></div>
+      <div class="kv-card"><div class="k">连接组蛋白</div><div class="v">H1在核小体入口/出口处封口</div></div>
+      <div class="kv-card"><div class="k">表观遗传</div><div class="v">组蛋白N端尾巴修饰（乙酰化/甲基化/磷酸化）</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">原核生物与线粒体DNA</div>
+    <div class="highlight-box" style="background:linear-gradient(135deg,#f4ecf7,#e8daef);border-left-color:#8e44ad">
+      <div class="label" style="color:#6c3483">🔬 特殊形式</div>
+      原核生物、线粒体DNA<b>无组蛋白</b>结构，常形成<b>超螺旋</b>结构，对应<b>类核</b>（nucleoid）区域。后续分子生物学章节会涉及<b>拓扑异构酶</b>对超螺旋的调控作用。
+    </div>
+  </div>
+
+  <div class="footer"><span>生物化学与分子生物学 · 核酸结构与功能</span><span>第 6 页</span></div>
+</div>
+
+<!-- Page 7: RNA -->
+<div class="page">
+  <div class="page-header">
+    <span class="chapter-badge">第五章</span>
+    <span class="page-title">RNA分类与结构</span>
+    <span class="page-num">7 / 7</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title">RNA与DNA的化学组成差异</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>维度</th><th>DNA</th><th>RNA</th></tr>
+        <tr><td>戊糖</td><td>2'-脱氧核糖</td><td><b>核糖（2'-OH）</b></td></tr>
+        <tr><td>碱基</td><td>A、T、C、G</td><td>A、<b>U</b>、C、G</td></tr>
+        <tr><td>稀有碱基</td><td>极少</td><td><b>大量存在</b></td></tr>
+        <tr><td>存在形式</td><td>双链为主</td><td><b>单链为主</b>（局部双链）</td></tr>
+      </table>
+    </div>
+    <div class="highlight-box">
+      <div class="label">💡 2'-OH的影响</div>
+      位阻效应 → 难以形成稳定长双链；化学活泼性 → 更易降解。结果：RNA多为单链，仅局部形成双链（茎环结构）。
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">RNA分类体系</div>
+    <div class="flow-chart" style="flex-direction:column;align-items:stretch">
+      <div style="display:flex;align-items:center;justify-content:center;gap:2mm">
+        <div class="flow-node" style="flex:1;background:#1a5276">RNA</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="flex:1">编码RNA<br><span style="font-size:8pt">mRNA</span></div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-node" style="flex:1">非编码RNA</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:2mm;margin-top:2mm;padding-left:30%">
+        <div class="flow-node light" style="flex:1">组成型<br><span style="font-size:8pt">tRNA、rRNA</span></div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-node light" style="flex:1">调控型<br><span style="font-size:8pt">miRNA、siRNA、lncRNA</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">mRNA加工三步与成熟结构</div>
+    <div class="two-col">
+      <div>
+        <div class="highlight-box">
+          <div class="label">🔧 hnRNA → 成熟mRNA（三步）</div>
+          ① <b>5'端加帽</b>：m⁷GPPP帽子<br>
+          ② <b>3'端加尾</b>：PolyA尾巴<br>
+          ③ <b>剪接</b>：去内含子、拼外显子
+        </div>
+      </div>
+      <div>
+        <div class="highlight-box" style="background:linear-gradient(135deg,#eaf2f8,#d4e6f1);border-left-color:#2e86c1">
+          <div class="label" style="color:#1a5276">📐 成熟mRNA结构</div>
+          5'帽 — 5'UTR — <b>ORF</b> — 3'UTR — PolyA尾<br>
+          <span style="font-size:8.5pt">头尾结合蛋白→环状结构→提升稳定性</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">tRNA的结构与功能</div>
+    <div class="kv-grid">
+      <div class="kv-card"><div class="k">功能</div><div class="v">氨基酸与mRNA密码子的衔接载体，转运氨基酸至核糖体</div></div>
+      <div class="kv-card"><div class="k">稀有碱基</div><div class="v">双氢尿嘧啶、假尿嘧啶、甲基化嘌呤等大量存在</div></div>
+      <div class="kv-card"><div class="k">二级结构</div><div class="v"><b>三叶草形</b>（茎环结构，含氨基酸臂/D环/反密码子环/TψC环）</div></div>
+      <div class="kv-card"><div class="k">三级结构</div><div class="v"><b>倒L型</b>（一端接氨基酸3'端CCA，一端反密码子环）</div></div>
+    </div>
+  </div>
+
+  <div class="footer"><span>生物化学与分子生物学 · 核酸结构与功能</span><span>第 7 页</span></div>
+</div>
+
+</body>
+</html>

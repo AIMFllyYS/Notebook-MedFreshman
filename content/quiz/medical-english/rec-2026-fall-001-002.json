@@ -1,0 +1,194 @@
+{
+  "subjectId": "medical-english",
+  "chapterId": "rec-2026-fall-001-002",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/medical-english/lectures/rec-2026-fall-001-002/recording.md；content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+    "totalPoints": 80,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-001-002",
+    "revision": 1,
+    "recordingHash": "59586cc007e50d1bdea3aa7e3f48379d6b6ed5702e22a15ec66559b398d38edf",
+    "notesTextHash": "04fd9020a99dd0ca26048c85aaca1cdee8340ff2282f8aea0f993b33404ff209"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "医学英语课程总评成绩由课堂表现、项目（Project）和期末考试三部分构成，其中期末考试卷面满分为（　）。",
+      "options": [
+        "100 分，卷面满分即总评满分",
+        "70 分，卷面总分 70 分",
+        "30 分，仅为平时成绩的一部分",
+        "20 分，仅相当于课堂表现"
+      ],
+      "answer": 1,
+      "hint": "助记口诀「二加十加七十」。",
+      "explanation": "**B 正确。** 课堂表现 20 分 + 项目 10 分 = 平时 30 分，期末考试卷面总分 70 分，合计 100 分；老师特别强调卷面本身就只有 70 分。\n- A：卷面并非 100 分；\n- C：30 分是平时成绩（课堂表现+项目），不是期末卷面；\n- D：20 分只是课堂表现一项。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "课程考核 · 成绩构成 20+10+70"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于本课程的出勤扣分规则，下列说法正确的是（　）。",
+      "options": [
+        "缺勤每次扣 5 分，最多可缺勤 4 次",
+        "缺勤每次扣 2 分，3 次以内迟到不扣分",
+        "缺勤每次扣 3 分、最多缺勤 6 次，迟到允许 1 次",
+        "缺勤不扣分，只记录考勤名单"
+      ],
+      "answer": 2,
+      "hint": "口诀「缺勤扣三限六次」，迟到另有一次宽容度。",
+      "explanation": "**C 正确。** 缺勤每次扣 3 分，最多缺勤 6 次（扣完 20 分课堂表现）；迟到允许 1 次。\n- A、B：每次扣分数与次数上限均与材料不符；\n- D：缺勤明确要扣分。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "课程考核 · 缺勤每次扣3分限6次、迟到允许1次"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课程教材共 15 个单元，本学期计划学习的单元数是（　）。",
+      "options": [
+        "5 个单元，其中含 1 个期末项目单元",
+        "15 个单元全部学完",
+        "3 个单元",
+        "8 个单元"
+      ],
+      "answer": 0,
+      "hint": "助记口诀「五单元两阅读」。",
+      "explanation": "**A 正确。** 教材共 15 个单元，本学期学 5 个单元：每个单元按 Reading 1（自学）+ Reading 2（精讲）推进，另有 1 个单元用于期末项目。\n- B：本学期不要求学完全部 15 单元；\n- C、D：数字在材料中无依据。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "学习内容 · 教材15单元本学期学5个"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于每个单元两篇 Reading 的学习方式，下列安排正确的是（　）。",
+      "options": [
+        "Reading 1 课堂精讲，Reading 2 课后自学",
+        "两篇均由老师在课堂上逐句精讲",
+        "两篇均要求学生课后自学，老师不讲",
+        "Reading 1 自学以了解背景知识，Reading 2 课堂精讲"
+      ],
+      "answer": 3,
+      "hint": "一篇自己读背景，一篇老师带读。",
+      "explanation": "**D 正确。** Reading 1 由学生自学，目的是熟悉单元主题的背景知识；Reading 2 才是课堂精讲内容。\n- A：两篇的分工说反了；\n- B、C：与课堂实际安排不符。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "学习内容 · Reading 1自学背景 / Reading 2精讲"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "老师指出，英语国家人们日常对话的开场寒暄，常用的说法是（　）。",
+      "options": [
+        "一见面就问 \"How are you?\"",
+        "聊天气，如 \"It's a fine day today.\"",
+        "正式问候 \"How do you do?\"",
+        "直接自报姓名 \"I'm a medical student.\""
+      ],
+      "answer": 1,
+      "hint": "聊天气是英语寒暄的经典开场，不涉及个人隐私。",
+      "explanation": "**B 正确。** 老师举例说明：英语国家日常对话常以天气话题开场（It's a fine day today），而不是像中国学生那样开口就 How are you。\n- A：并非日常开场的首选；\n- C：How do you do 只用于非常正式的场合；\n- D：与课堂所讲寒暄方式无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "课堂口语 · 日常开场说天气而非 How are you"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "老师在课堂上提问 orientation 的含义，并强调它是大学阶段比 direction 更正式的用词。该词意为（　）。",
+      "options": [
+        "罗盘上的方位角读数",
+        "大学新生报到日",
+        "direction / guideline，即指导方向、指南",
+        "手术室内的方位示意图"
+      ],
+      "answer": 2,
+      "hint": "课堂上学生猜 direction 被老师肯定，另补充 guideline。",
+      "explanation": "**C 正确。** 老师明确 orientation = direction / guideline；用它替代高中阶段学的 direction，以体现大学阶段更书面、更正式的用词。\n- A、D：是对「方向」一词的望文生义；\n- B：报到日只是同形词的误用，与本课释义无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "课堂词汇 · orientation = direction/guideline"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列关于本课程考核与学习要求的说法，错误的是（　）。",
+      "options": [
+        "课堂表现 20 分、项目 10 分，老师称这平时 30 分是「送分题」",
+        "课堂学习共 24 次，老师强调要珍惜每一次机会",
+        "作业只要按时交就有分，扣分是为了让你知道错在哪里",
+        "项目单元由老师在开学前直接指定，与学生英语水平无关"
+      ],
+      "answer": 3,
+      "hint": "题目选「错误」项；项目单元要在做完医学英语水平测试后才选定。",
+      "explanation": "**D 错误（符合题意）。** 项目单元并非课前指定，而是在医学英语水平测试之后、根据学生水平选定的。\n- A、B、C 均为材料原文：平时 30 分是送分题、共 24 次课堂学习、作业交了就有分。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "学习要求 · 项目单元按水平测试后选定"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "按课堂口语要求，老师进教室说 \"Good morning, everyone\" 时，学生最合适的回应是（　）。",
+      "options": [
+        "齐声回应 \"Good morning\"，主动开口",
+        "只微笑看着老师、点头示意即可",
+        "保持沉默，等老师继续讲课",
+        "齐声说 \"It's a fine day today.\""
+      ],
+      "answer": 0,
+      "hint": "老师反复强调：不要只看着老师，要开口回应。",
+      "explanation": "**A 正确。** 老师每堂课说 Good morning / Good afternoon 时，学生都应回应同样的问候，不能只是看着老师。\n- B、C：正是老师点名批评的错误做法；\n- D：聊天气是陌生人寒暄的开场方式，不是对老师问候的回应。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "课堂口语 · Good morning 应主动回应"
+      }
+    }
+  ]
+}

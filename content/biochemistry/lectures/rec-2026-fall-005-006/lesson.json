@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "biochemistry",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-005-006",
+  "courseName": "生物化学与分子生物学",
+  "sessionRange": {
+    "start": 5,
+    "end": 6
+  },
+  "taughtOn": "2026-09-08",
+  "topic": "蛋白质结构功能与核酸开篇",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-005-006"
+}

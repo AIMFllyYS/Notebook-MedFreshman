@@ -1,0 +1,260 @@
+{
+  "subjectId": "cell-biology",
+  "chapterId": "rec-2026-fall-003-004",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/cell-biology/lectures/rec-2026-fall-003-004/recording.md；content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-003-004",
+    "revision": 1,
+    "recordingHash": "fe628c594ee57c872dff92013b1f62b225eada6de64a33b3f2a664a633f749b4",
+    "notesTextHash": "b8c1d0e072f488ed83eca610281196da9f41d4b2a1f6cc9888b49e21b02d6a73"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "传统将整个组织细胞混合分析、被比喻为「黑盒子」的原因是（　）。",
+      "options": [
+        "得到的是所有细胞混合后的表型信号，无法判断究竟是哪种细胞出了问题",
+        "完全观察不到任何表型变化",
+        "只能研究基因组、无法研究蛋白质",
+        "实验必须依赖昂贵试剂才能完成"
+      ],
+      "answer": 0,
+      "hint": "以肝脏敲基因为例：知道输入和输出，中间过程不清楚。",
+      "explanation": "**A 正确。** 传统方法把组织/器官所有细胞混合分析，敲除某基因后看到的表型是全部细胞的混合结果，分不清是肝细胞、胆管上皮、Kupffer细胞还是星状细胞出了问题，故称「混合信号」黑盒子。\n- B：表型仍可观察，只是被平均化；\nC、D：与「黑盒子」所指的混合信号问题无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "单细胞生物学 · 混合信号问题"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "空间组学（Spatial Omics）相比普通单细胞分析，额外获得的关键信息是（　）。",
+      "options": [
+        "细胞内基因组的全部碱基序列",
+        "细胞在组织中的空间位置信息",
+        "单一蛋白质的原子级三维结构",
+        "线粒体基因组的拷贝数"
+      ],
+      "answer": 1,
+      "hint": "空间组学 = 单细胞 + 空间位置，输出三维数据。",
+      "explanation": "**B 正确。** 空间组学在单细胞分析（知道每个细胞表达水平）基础上叠加空间位置，输出三维空间数据，使发育追踪和疾病定位像「看电影」一样有时间有空间。\n- A、D：DNA序列/拷贝数本就由基因组学提供，并非空间信息增量；\n- C：蛋白质原子结构属结构生物学，不是空间组学范畴。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "单细胞生物学 · 空间组学"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于「组学」与「筛选」的关系，下列说法正确的是（　）。",
+      "options": [
+        "组学与筛选是两类完全互斥的研究方法",
+        "传统筛选比组学覆盖得更全面",
+        "组学是筛选的高阶阶段，能更全面、无偏差地分析传统筛不到的脂类、代谢物、功能冗余基因等",
+        "组学只能筛选DNA序列，与脂类代谢物无关"
+      ],
+      "answer": 2,
+      "hint": "传统筛选筛不到：脂类、代谢物、变化不明显的、功能冗余基因。",
+      "explanation": "**C 正确。** 生物学绝大部分发现来自筛选，组学是筛选的高阶阶段——传统遗传/蛋白筛选无偏但覆盖面有限，组学可更全面无偏差地检测DNA/RNA/蛋白/代谢物/脂类等分子。\n- A：组学并非取代或互斥筛选，而是其高阶发展；\n- B：恰好说反，传统筛选覆盖面更窄；\n- D：脂质组学、代谢组学正是检测脂类和小分子。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "组学概述 · 筛选是核心、组学是高阶阶段"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "转录组学（Transcriptomics）的主要研究对象是（　）。",
+      "options": [
+        "DNA的全序列",
+        "RNA的表达水平",
+        "蛋白质的表达水平",
+        "脂质分子的种类与含量"
+      ],
+      "answer": 1,
+      "hint": "转录产物即RNA。",
+      "explanation": "**B 正确。** 转录组学研究基因转录产物即RNA的表达水平；基因组学研究DNA全序列，蛋白质组学研究蛋白表达，脂质组学研究脂类。\n- A：对应基因组学；\n- C：对应蛋白质组学；\n- D：对应脂质组学。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "各类组学 · 转录组学"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列研究内容中，属于表观组学（Epigenomics）范畴的是（　）。",
+      "options": [
+        "线粒体基因组的全序列测序",
+        "单一蛋白质的原子级三维结构",
+        "DNA甲基化、组蛋白乙酰化等DNA/蛋白上的化学修饰",
+        "血浆中游离氨基酸的浓度测定"
+      ],
+      "answer": 2,
+      "hint": "表观＝在序列之上的化学修饰：甲基化、乙酰化、泛素化、磷酸化。",
+      "explanation": "**C 正确。** 表观组学研究DNA/蛋白质上的化学修饰，如DNA甲基化、组蛋白乙酰化/甲基化、泛素化、磷酸化等；有限的蛋白通过修饰变成多种功能类型。\n- A：属基因组学；\n- B：属结构生物学；\n- D：氨基酸小分子浓度属代谢组学。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "各类组学 · 表观组学"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "课堂说「表观遗传虽然叫遗传，但不是（传统意义上的）遗传」，其正确理解是（　）。",
+      "options": [
+        "表观修饰完全不能从父母传递给子代",
+        "表观修饰可传给子代但并非100%忠实传递、有选择性，更像一种生化传递",
+        "表观遗传本质上就是DNA序列的改变",
+        "组蛋白乙酰化与遗传现象毫无关系"
+      ],
+      "answer": 1,
+      "hint": "传统遗传是DNA序列100%忠实传递；表观是化学修饰的选择性传递。",
+      "explanation": "**B 正确。** 传统遗传是DNA序列从亲代到子代100%忠实传递；表观遗传是DNA/蛋白上的化学修饰，可传递给子代但不是100%、有选择性，更像「生化传递」，在发育与疾病中影响很大。\n- A：修饰并非完全不能传递；\n- C：表观遗传不改DNA序列本身；\n- D：组蛋白乙酰化正是典型的表观修饰。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "表观遗传学 · 不是100%遗传"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于人类基因组计划（HGP）与如今全基因组测序的对比，下列与材料一致的是（　）。",
+      "options": [
+        "HGP约花30亿美元、历时十几年；如今抽一滴血约两天、几千元人民币即可测完",
+        "HGP当年只花几千元，如今反而需要约30亿美元",
+        "HGP与现在测序都需要十几年才能完成",
+        "HGP当年测定的只是线粒体DNA"
+      ],
+      "answer": 0,
+      "hint": "效率提升千万倍：30亿美元→几千元。",
+      "explanation": "**A 正确。** HGP于上世纪90年代由全球合作、花约30亿美元、历时十几年；现在抽一滴血两天左右、几千元人民币即可测完30亿碱基，诊断学正朝快速、便宜方向发展。\n- B：费用变化方向说反；\n- C：如今两天即可完成；\n- D：HGP测的是全基因组，不是仅线粒体DNA。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "基因组学发展 · 人类基因组计划费用"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "蛋白质组学中「靶向蛋白质组学」（如蛋白互作组）的做法是（　）。",
+      "options": [
+        "提取细胞全部蛋白质、用质谱无偏差地测定每种蛋白的表达水平",
+        "已知一个蛋白，拉取与其结合的所有蛋白，得到蛋白互作网络",
+        "只检测DNA甲基化修饰水平",
+        "只测定血浆中葡萄糖浓度"
+      ],
+      "answer": 1,
+      "hint": "无偏差＝全蛋白质谱；靶向＝已知一蛋白钓互作网络。",
+      "explanation": "**B 正确。** 靶向蛋白组学（蛋白互作组）从一个已知蛋白出发，拉取与其结合的全部蛋白，重建互作网络；无偏差蛋白组学才是提取全部蛋白、质谱检测各蛋白表达水平。\n- A：描述的是无偏差蛋白组学；\n- C：属表观组学；\n- D：属代谢组学。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "蛋白质组学 · 无偏差 vs 靶向"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于代谢组学及其重要性，下列说法错误的是（　）。",
+      "options": [
+        "研究对象包括糖、脂、氨基酸等小分子代谢物",
+        "代谢物除提供能量外，还可能调控表观遗传、转录等过程",
+        "代谢是生命的底层逻辑，没有代谢就是死的",
+        "代谢物只参与供能，不参与任何调控过程"
+      ],
+      "answer": 3,
+      "hint": "题目选「错误」项；代谢还是调控者，不只是燃料。",
+      "explanation": "**D 错误（符合题意）。** 材料明确：代谢物除供能外还可能调控表观遗传、转录，代谢是生命的底层逻辑，「没有代谢就是死的东西」。\n- A、B、C：均与材料一致。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "代谢组学 · 代谢的重要性"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列各组学与研究对象的配对，错误的是（　）。",
+      "options": [
+        "基因组学 — DNA全序列",
+        "蛋白质组学 — 蛋白质表达水平",
+        "脂质组学 — 脂质类物质",
+        "转录组学 — 组蛋白乙酰化修饰"
+      ],
+      "answer": 3,
+      "hint": "组蛋白乙酰化是修饰，属表观组学；转录组学管RNA。",
+      "explanation": "**D 错误（符合题意）。** 转录组学研究RNA表达水平；组蛋白乙酰化属于表观组学研究的化学修饰。\n- A、B、C：基因组学—DNA、蛋白质组学—蛋白、脂质组学—脂质，配对均正确。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "各类组学 · 研究对象配对"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "课堂对当前组学研究现状与未来趋势的评价，下列与材料一致的是（　）。",
+      "options": [
+        "组学文章机制均已闭环，结论很强",
+        "组学数据量庞大却难捕捉底层机制，不少文章「开了头没闭环」，未来趋势是回归分子机制层面",
+        "组学已完全取代传统分子生物学实验",
+        "单细胞数据量小，无需借助AI/大数据处理"
+      ],
+      "answer": 1,
+      "hint": "「做到80%就停下，剩20%留给别人」。",
+      "explanation": "**B 正确。** 材料指出：组学数据量大、常需AI构建空间网络，但人难从海量数据捕捉底层机制，大量文章（含CNS主刊）「开了头没闭环」，未来各种组学要回归分子机制层面。\n- A：与「结论较弱」相反；\n- C：组学是筛选高阶阶段，不能取代机制研究；\n- D：数据量极大、正是需要AI/大数据的原因。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "当前局限 · 组学现状与未来趋势"
+      }
+    }
+  ]
+}

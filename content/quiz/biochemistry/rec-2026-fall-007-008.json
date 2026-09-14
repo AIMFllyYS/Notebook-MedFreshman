@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-007-008",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-007-008/recording.md；content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-007-008",
+    "revision": 1,
+    "recordingHash": "549c5425058a83135ff7787b22749053db23346d515175cf9f2a37e5b07fd040",
+    "notesTextHash": "f6129b893a16aff8a54651c5a3523968243b97a763c34b09aace460fbb4018f9"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "核苷酸除作为核酸基本组成单位外，还具有多种重要生理功能。下列配对正确的是（　）。",
+      "options": [
+        "ATP —— 第二信使；cAMP —— 能量货币",
+        "ATP —— 化学能载体（能量货币）；cAMP/cGMP —— 第二信使；NAD⁺/NADPH —— 辅酶",
+        "ATP、cAMP、NADH 三者都只参与构成DNA链",
+        "NAD⁺ —— 能量货币；ATP —— 辅酶"
+      ],
+      "answer": 1,
+      "hint": "能量、信使、辅酶三类各举一例。",
+      "explanation": "**B 正确。** 核苷酸三大非结构功能：ATP靠磷酸基团间的高能酸酐键作细胞通用能量货币；cAMP/cGMP作第二信使参与信号转导；NAD⁺/NADPH作辅酶在氧化还原反应中递氢递电子。\n- A、D：把ATP与cAMP/NADH的功能配对说反。\n- C：这些分子不是DNA链的结构成分。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "核苷酸三大非结构功能"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "连接相邻核苷酸、形成核酸链骨架的 3',5'-磷酸二酯键，其形成方式是（　）。",
+      "options": [
+        "一个核苷酸的5'-羟基与另一个核苷酸的3'-磷酸酯化",
+        "两个核苷酸的碱基直接以氢键相连",
+        "一个核苷酸的3'-磷酸与另一个核苷酸的3'-羟基酯化",
+        "一个核苷酸的3'-羟基与另一个核苷酸的5'-磷酸酯化"
+      ],
+      "answer": 3,
+      "hint": "3'-羟基连到5'-磷酸。",
+      "explanation": "**D 正确。** 3',5'-磷酸二酯键由一个核苷酸的3'-羟基与另一个核苷酸的5'-磷酸酯化（脱一分子水）形成，使核酸成为无分支的线性分子，并由此有游离5'磷酸端和游离3'羟基端。\n- A：把3'与5'位置说反。\n- B：碱基氢键是双螺旋横向配对，不是磷酸二酯键。\n- C：方向错误。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "3',5'-磷酸二酯键"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "已知某DNA样品中腺嘌呤A占22%，根据Chargaff规则，鸟嘌呤G所占比例应为（　）。",
+      "options": [
+        "28%",
+        "22%",
+        "44%",
+        "56%"
+      ],
+      "answer": 0,
+      "hint": "A=T，C=G，A+T+C+G=100%。",
+      "explanation": "**A 正确。** Chargaff规则A=T、C=G。A=T=22%，则 G=C=(100%-22%×2)/2=28%。\n- B：22%是A（=T）的比例，不是G。\n- C、D：代入公式计算均不正确。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "Chargaff规则 · 碱基比例计算"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于DNA双螺旋中的碱基配对与氢键数目，下列正确的是（　）。",
+      "options": [
+        "A-T之间3对氢键，G-C之间2对氢键",
+        "A-T和G-C之间都是2对氢键",
+        "A-T之间2对氢键，G-C之间3对氢键，故G-C含量高的DNA更稳定",
+        "A-T之间0对氢键，G-C之间4对氢键"
+      ],
+      "answer": 2,
+      "hint": "G≡C三键、A=T双键。",
+      "explanation": "**C 正确。** A与T之间以2对氢键配对（A=T），G与C之间以3对氢键配对（G≡C）；G-C含量高则氢键总数多，DNA更稳定。\n- A：氢键数目说反。\n- B：G-C为3对而非2对。\n- D：数目明显错误。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "碱基配对 · A-T(2)/G-C(3)"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "转录因子等序列特异性蛋白主要通过双螺旋的哪一沟识别DNA序列？原因是（　）。",
+      "options": [
+        "小沟，因为小沟更宽、碱基序列信息暴露更多",
+        "大沟，因为大沟较宽、暴露的碱基序列信息更充分，蛋白可直接读取序列",
+        "大沟和小沟结构完全相同，可任意结合",
+        "中央，通过氢键直接打断碱基对"
+      ],
+      "answer": 1,
+      "hint": "宽沟才读得到序列。",
+      "explanation": "**B 正确。** 大沟较宽、暴露更多碱基序列信息，转录因子的识别螺旋（亮氨酸拉链、螺旋-环-螺旋、锌指等）插入大沟读取碱基序列，从而特异性结合靶序列；小沟窄、信息暴露少，蛋白多靠静电作用或形状匹配结合、特异性低。\n- A：把大小沟的宽窄与信息暴露说反。\n- C：两沟结构与功能不同。\n- D：蛋白结合不打断碱基对。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "大沟与小沟 · 转录因子结合"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列关于维持 B 型 DNA 双螺旋稳定作用力的说法，错误的是（　）。",
+      "options": [
+        "碱基之间通过横向氢键维持互补配对",
+        "碱基平面之间的疏水堆积力（碱基堆积力）是维持双螺旋的重要作用力",
+        "双螺旋的稳定同时依赖氢键与碱基堆积力两类作用力",
+        "双螺旋稳定只靠碱基间的氢键，与碱基堆积力无关"
+      ],
+      "answer": 3,
+      "hint": "题目选「错误」；只答氢键会失分。",
+      "explanation": "**D 错误（符合题意）。** 双螺旋稳定靠两类作用力：碱基间横向氢键与碱基层层堆叠的纵向碱基堆积力；只答氢键、不答碱基堆积力是常见失分点。\n- A、B、C：均为正确表述。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "双螺旋维持力 · 氢键+碱基堆积力"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "核小体（染色质的第一级折叠）的组成是（　）。",
+      "options": [
+        "约146 bp DNA缠绕组蛋白八聚体（H2A、H2B、H3、H4各2个）",
+        "约146 bp DNA缠绕单个H1组蛋白",
+        "约1000 bp DNA缠绕组蛋白二聚体",
+        "DNA不结合任何组蛋白，自行形成超螺旋"
+      ],
+      "answer": 0,
+      "hint": "146bp + 组蛋白八聚体。",
+      "explanation": "**A 正确。** 核小体核心颗粒由约146 bp DNA缠绕组蛋白八聚体（H2A、H2B、H3、H4各2个）约1.75圈而成；H1在核小体入口/出口处封口。组蛋白尾巴的修饰对应表观遗传调控。\n- B：H1是连接组蛋白、起封口作用，不是八聚体。\n- C：bp数与八聚体描述错误。\n- D：描述的是原核/线粒体DNA（无组蛋白、超螺旋、类核）。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "核小体组成 · 146bp+组蛋白八聚体"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于 RNA 与 DNA 在化学组成与结构上的差异，下列说法错误的是（　）。",
+      "options": [
+        "RNA的戊糖为核糖（2'位有羟基），DNA为2'-脱氧核糖",
+        "RNA用尿嘧啶U，DNA用胸腺嘧啶T",
+        "RNA以稳定的长双链为主，DNA以单链为主",
+        "RNA含大量稀有碱基（如双氢尿嘧啶、假尿嘧啶）"
+      ],
+      "answer": 2,
+      "hint": "题目选「错误」；谁是单链、谁是双链？",
+      "explanation": "**C 错误（符合题意）。** 事实正好相反：RNA以单链为主（仅局部形成双链/茎环），DNA以双链为主。RNA的2'-OH既产生位阻使其难形成长双链，又因活泼性使其更易降解。\n- A、B、D：均为RNA与DNA的正确差异。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "RNA与DNA化学组成差异"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "真核生物初始转录产物 hnRNA 加工为成熟 mRNA 需要的三步是（　）。",
+      "options": [
+        "5'端加尾、3'端加帽、内部甲基化",
+        "5'端加帽（m⁷GPPP）、3'端加PolyA尾、剪接（去内含子、拼外显子）",
+        "剪接、去帽、去尾",
+        "5'端加PolyA尾、3'端加帽、剪接"
+      ],
+      "answer": 1,
+      "hint": "加帽、加尾、剪接。",
+      "explanation": "**B 正确。** hnRNA需经三步加工为成熟mRNA：①5'端加m⁷GPPP帽子；②3'端加多聚腺苷酸（PolyA）尾；③剪接去除内含子、拼接外显子。成熟mRNA结构为5'帽—5'UTR—ORF—3'UTR—PolyA尾。\n- A、D：把加帽与加尾的端点说反。\n- C：与实际加工方向相反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "hnRNA加工三步与成熟mRNA结构"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于 tRNA（转运RNA）的功能与结构，下列说法正确的是（　）。",
+      "options": [
+        "tRNA是蛋白质合成的直接模板，结构为线性单链",
+        "tRNA的二级结构为倒L型，三级结构为三叶草形",
+        "tRNA不含任何稀有碱基",
+        "tRNA作为氨基酸与mRNA密码子的衔接载体，二级结构为三叶草形、三级结构为倒L型，富含稀有碱基"
+      ],
+      "answer": 3,
+      "hint": "三叶草是二级，倒L是三级。",
+      "explanation": "**D 正确。** tRNA负责把对应氨基酸精准转运至核糖体，是氨基酸与mRNA密码子的衔接载体；其二级结构为三叶草形（茎环），三级结构为特征性倒L型，并富含双氢尿嘧啶、假尿嘧啶等稀有碱基。\n- A：蛋白质合成模板是mRNA。\n- B：把二级与三级结构说反。\n- C：tRNA富含稀有碱基。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "tRNA · 三叶草二级/倒L三级"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "DNA 从双螺旋逐步压缩为染色体的正确层级顺序是（　）。",
+      "options": [
+        "双螺旋 → 核小体（146bp+组蛋白八聚体）→ 11nm染色质纤维 → 30nm螺线管 → 超螺线管 → 染色体",
+        "双螺旋 → 染色体 → 30nm螺线管 → 核小体 → 11nm纤维",
+        "双螺旋 → 30nm螺线管 → 核小体 → 11nm纤维 → 染色体",
+        "核小体 → 双螺旋 → 11nm纤维 → 染色体 → 30nm螺线管"
+      ],
+      "answer": 0,
+      "hint": "先核小体，再11nm，再30nm螺线管。",
+      "explanation": "**A 正确。** 人类基因组DNA总长约2米需装入直径约10微米的细胞核，经高度有序的层级压缩：双螺旋→核小体（146bp+组蛋白八聚体）→11nm染色质纤维→30nm螺线管（H1封口）→超螺线管→染色体。\n- B、C、D：层级顺序错误。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "DNA高级折叠层级 · 双螺旋到染色体"
+      }
+    }
+  ]
+}

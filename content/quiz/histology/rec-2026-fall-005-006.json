@@ -1,0 +1,260 @@
+{
+  "subjectId": "histology",
+  "chapterId": "rec-2026-fall-005-006",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/histology/lectures/rec-2026-fall-005-006/recording.md；content/histology/lectures/rec-2026-fall-005-006/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-005-006",
+    "revision": 1,
+    "recordingHash": "aed49cb5b7cdf12369ebd3502e5dbc74deebd8bbe8ba27c87226608d3c55c342",
+    "notesTextHash": "d1f1e2909c83770374e9999e255cfb32caa6bae24541cc06bd1040b237a30b03"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "网状纤维在常规 HE 染色下与胶原纤维难以区分，需用哪种方法特异性显示？其核心成分为（　）。",
+      "options": [
+        "苏木精-伊红染色；Ⅰ型胶原蛋白",
+        "地衣红染色；弹性蛋白",
+        "镀银染色；Ⅲ型胶原蛋白",
+        "苏丹Ⅲ染色；脂肪"
+      ],
+      "answer": 2,
+      "hint": "嗜银纤维靠镀银。",
+      "explanation": "**C 正确。** 网状纤维HE染色下与胶原纤维折光率接近、无法区分，需镀银染色特异性显示，故称嗜银纤维；电镜下可见周期性横纹，核心成分为Ⅲ型胶原蛋白。\n- A：HE不能区分网状纤维，Ⅰ型胶原是肌腱/骨的主要成分。\n- B：地衣红染色显示弹性纤维（弹性软骨）。\n- D：苏丹Ⅲ染色显示脂肪。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "网状纤维 · 镀银染色与Ⅲ型胶原"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "固有结缔组织基质中，蛋白聚糖聚合体形成“分子筛”起屏障作用。该屏障可被破坏，是因为某些细胞能分泌（　）。",
+      "options": [
+        "透明质酸酶，降解作为骨架的透明质酸，使溶血性链球菌、肿瘤细胞得以扩散",
+        "胶原蛋白酶，直接消化胶原纤维",
+        "弹性蛋白酶，破坏弹性纤维",
+        "胰蛋白酶，无差别消化周围所有细胞"
+      ],
+      "answer": 0,
+      "hint": "分子筛的骨架是透明质酸。",
+      "explanation": "**A 正确。** 蛋白聚糖以长链透明质酸为骨架聚合成分子筛，可阻挡大分子、细菌扩散；透明质酸酶可降解透明质酸破坏骨架，溶血性链球菌、肿瘤细胞分泌该酶而致感染或病灶扩散。\n- B、C：与分子筛骨架（透明质酸）无关。\n- D：并非该屏障被破坏的机制。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "基质分子筛与透明质酸酶"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于白色（黄色）脂肪与棕色脂肪的比较，下列正确的是（　）。",
+      "options": [
+        "白色脂肪为多泡脂肪细胞、核位于中央；棕色脂肪为单泡脂肪细胞、核挤至边缘",
+        "两者都是单泡脂肪细胞，仅颜色不同",
+        "白色脂肪富含线粒体、主要功能是产热",
+        "白色脂肪为单泡脂肪细胞（一个大脂滴、核被挤至边缘）；棕色脂肪为多泡脂肪细胞（多个小脂滴、核位于中央、富含线粒体）"
+      ],
+      "answer": 3,
+      "hint": "一个大脂滴 vs 多个小脂滴。",
+      "explanation": "**D 正确。** 白色/黄色脂肪由单泡脂肪细胞构成，一个大脂滴、HE呈空泡状、核被挤至边缘；棕色脂肪由多泡脂肪细胞构成，多个小脂滴、核位于中央、富含线粒体，主要功能是产热（新生儿/冬眠动物多）。\n- A：把单泡与多泡、核位置说反。\n- B：细胞类型不同。\n- C：富含线粒体、产热是棕色脂肪。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "白色/黄色脂肪 vs 棕色脂肪"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列软骨类型与其主要分布的配对，正确的是（　）。",
+      "options": [
+        "纤维软骨 —— 关节面、肋软骨，有软骨膜",
+        "透明软骨 —— 肋软骨、关节面、呼吸道管壁软骨环；弹性软骨 —— 耳郭、外耳道、会厌",
+        "弹性软骨 —— 椎间盘、关节盘、耻骨联合，无软骨膜",
+        "透明软骨 —— 耳郭、会厌，无软骨膜"
+      ],
+      "answer": 1,
+      "hint": "透明肋关呼吸胚，弹性耳外会厌飞。",
+      "explanation": "**B 正确。** 透明软骨分布最广，见于肋软骨、关节面、呼吸道管壁软骨环、早期胚胎骨架（关节面处无软骨膜）；弹性软骨含大量弹性纤维，分布于耳郭、外耳道、会厌；纤维软骨含粗大胶原纤维，分布于椎间盘、关节盘、耻骨联合，且无软骨膜。\n- A：关节面/肋软骨是透明软骨而非纤维软骨。\n- C：椎间盘等是纤维软骨而非弹性软骨。\n- D：耳郭/会厌是弹性软骨。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "三类软骨 · 分布与纤维类型"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于透明软骨中软骨细胞的分布规律与“同源细胞群”，下列说法正确的是（　）。",
+      "options": [
+        "越靠近软骨膜细胞越大；同源细胞群指不同来源细胞偶然聚集",
+        "软骨细胞始终分散为单个，不形成任何细胞群",
+        "近软骨膜处细胞小而单个（幼稚），向内部体积增大形成同源细胞群；后者由同一个幼稚软骨细胞分裂增殖而成",
+        "同源细胞群是由血液中迁入的巨噬细胞聚集而成"
+      ],
+      "answer": 2,
+      "hint": "同一个幼稚软骨细胞分裂形成的细胞团。",
+      "explanation": "**C 正确。** 靠近软骨膜的软骨细胞体积小、单个分散（幼稚状态）；向组织内部体积增大并形成同源细胞群——由同一个幼稚软骨细胞分裂增殖形成的细胞团，是软骨内部（间质）增殖的形态学标志。\n- A：把内外大小说反，且同源细胞群来源错。\n- B：内部确会形成同源细胞群。\n- D：与巨噬细胞无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "透明软骨 · 同源细胞群"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于骨基质的有机成分与无机成分，下列说法正确的是（　）。",
+      "options": [
+        "有机成分约35%（95%为Ⅰ型胶原蛋白，提供韧性），无机成分约65%为羟基磷灰石结晶（提供硬度）",
+        "有机成分约65%为羟基磷灰石，无机成分约35%为胶原",
+        "骨基质全部由无机成分构成，不含胶原",
+        "类骨质是已充分钙化的无机成分"
+      ],
+      "answer": 0,
+      "hint": "有机35%给韧性，无机65%给硬度。",
+      "explanation": "**A 正确。** 骨基质有机成分约35%（其中95%为Ⅰ型胶原蛋白，提供韧性），无机成分约65%为羟基磷灰石结晶（针状/片状，分布于胶原纤维间隙，提供硬度）；类骨质指尚未钙化的骨基质有机成分。\n- B：把有机/无机比例与成分说反。\n- C：骨基质同时含有机胶原与无机盐。\n- D：类骨质是未钙化的有机成分。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "骨基质 · 有机35%/无机65%"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "破骨细胞实现骨吸收（溶解骨基质）的结构与机制是（　）。",
+      "options": [
+        "胞体小、单核，释放碱性物质溶解胶原",
+        "靠吞噬整块骨组织碎片，不分泌任何物质",
+        "紧贴骨面形成绒毛缘，在开放环境中消化",
+        "靠近骨组织一侧形成皱折缘、周围以亮区封闭局部微环境，释放酸性物质溶解无机成分、蛋白酶降解有机成分后内吞吸收"
+      ],
+      "answer": 3,
+      "hint": "皱折缘+亮区，封闭酸性微环境。",
+      "explanation": "**D 正确。** 破骨细胞是由多个单核细胞融合而成的多核巨细胞、胞质嗜酸性；紧贴骨吸收面形成皱折缘扩大表面积，周围亮区封闭局部微环境，释放酸性物质（H⁺）溶解羟基磷灰石、释放溶酶体酶降解胶原，再经内吞消化吸收。\n- A：破骨细胞大、多核、嗜酸性，且释放酸性而非碱性物质。\n- B、C：既非整体吞噬，也不在开放环境中消化。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "破骨细胞 · 皱折缘与亮区溶骨"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于血钙浓度的激素调节，下列配对正确的是（　）。",
+      "options": [
+        "甲状旁腺激素促进成骨、降低血钙；降钙素促进破骨、升高血钙",
+        "甲状旁腺激素促进破骨细胞活跃、升高血钙；降钙素促进成骨、降低血钙",
+        "两种激素都只降低血钙",
+        "两种激素都只升高血钙"
+      ],
+      "answer": 1,
+      "hint": "PTH升钙，降钙素降钙。",
+      "explanation": "**B 正确。** 甲状旁腺激素（PTH）使破骨细胞活跃、溶骨而升高血钙；降钙素促进成骨细胞成骨而降低血钙，二者共同参与血钙平衡。\n- A：把两者作用说反。\n- C、D：两种激素作用相反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "血钙调控 · PTH vs 降钙素"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于长骨密质骨的骨单位（哈佛系统），下列说法正确的是（　）。",
+      "options": [
+        "骨单位是骨改建残留的旧骨单位片段，无中央管，呈扇形",
+        "骨单位由外环骨板单独构成，不含血管",
+        "骨单位是长骨骨干的核心结构单位，中央为哈佛管、周围环绕多层同心圆排列的骨单位骨板，骨小管逐层相通连至中央管形成营养通路",
+        "骨单位即穿通管，垂直于长轴走行"
+      ],
+      "answer": 2,
+      "hint": "中央哈佛管+同心圆骨板。",
+      "explanation": "**C 正确。** 骨单位（哈佛系统）是长骨骨干的核心结构单位，圆筒状，中央为含血管神经的哈佛管，周围环绕多层同心圆排列的骨单位骨板；骨细胞突起经骨小管逐层相通、最内层连中央管，建立营养通路。\n- A：那是间骨板（残留旧骨单位片段、无中央管、扇形）。\n- B：外环骨板是环绕骨干外表面的另一骨板。\n- D：穿通管垂直长轴、连接骨膜与内部，并非骨单位。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "骨单位（哈佛系统）结构"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "长骨骺板（生长板）从骨骺向骨干方向，软骨分化与成骨的五区正确顺序是（　）。",
+      "options": [
+        "软骨储备区 → 软骨增生区 → 软骨成熟区 → 软骨钙化区 → 成骨区",
+        "成骨区 → 软骨钙化区 → 软骨成熟区 → 软骨增生区 → 软骨储备区",
+        "软骨增生区 → 软骨储备区 → 软骨钙化区 → 软骨成熟区 → 成骨区",
+        "软骨储备区 → 软骨钙化区 → 软骨成熟区 → 软骨增生区 → 成骨区"
+      ],
+      "answer": 0,
+      "hint": "储备→增生→成熟→钙化→成骨。",
+      "explanation": "**A 正确。** 骺板五区从骨骺向骨干依次为：软骨储备区→软骨增生区→软骨成熟区→软骨钙化区→成骨区；骺板不断增殖产生新软骨，是长骨加长的结构基础。\n- B：方向完全颠倒。\n- C、D：区内顺序错乱。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "骺板五区排序"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于骨生长的激素调节与骨发生方式，下列说法正确的是（　）。",
+      "options": [
+        "生长激素缺乏导致呆小症（身材矮小伴智力障碍），甲状腺激素缺乏导致侏儒症",
+        "颅骨、顶骨、锁骨通过软骨内成骨发生",
+        "四肢骨、躯干骨通过膜内成骨发生",
+        "生长激素缺乏仅致侏儒症（身材矮小、智力正常），甲状腺激素缺乏致呆小症（身材矮小伴智力障碍）；颅骨等膜内成骨、四肢躯干骨等软骨内成骨"
+      ],
+      "answer": 3,
+      "hint": "侏儒只矮不傻，呆小又矮又傻。",
+      "explanation": "**D 正确。** 生长激素主要促进骺板软骨增殖，缺乏仅致身材矮小（侏儒症）、智力正常；甲状腺激素既调控骺板生长又调控神经发育，缺乏致身材矮小伴智力障碍（呆小症）。骨发生上，颅骨、顶骨、锁骨为膜内成骨，四肢骨、躯干骨为软骨内成骨。\n- A：把侏儒症与呆小症的激素来源说反。\n- B、C：膜内成骨与软骨内成骨的代表骨说反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "激素调控与骨发生方式 · 侏儒/呆小"
+      }
+    }
+  ]
+}

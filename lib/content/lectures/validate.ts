@@ -275,6 +275,8 @@ export function validateAllLessons(): ScanAllResult {
   const results: LessonScanResult[] = [];
   const errors: string[] = [];
   const warnings: string[] = [];
+  // lessonId / articleId 只要求「学科内唯一」：节次是课程内累计，不同学科天然会出现
+  // 相同的 rec-2026-fall-001-002（路由 / 物理目录 / quiz 都以 subjectId 为命名空间）。
   const seenLesson = new Set<string>();
   const seenArticle = new Set<string>();
   const perSubjectRanges = new Map<string, Array<{ range: [number, number]; id: string }>>();
@@ -285,12 +287,14 @@ export function validateAllLessons(): ScanAllResult {
     warnings.push(...r.warnings.map((w) => `[${dir.subjectId}/${dir.lessonId}] ${w}`));
     if (!r.result) continue;
     const { entry } = r.result;
-    if (seenLesson.has(entry.lessonId)) errors.push(`lessonId 重复：${entry.lessonId}`);
-    seenLesson.add(entry.lessonId);
+    const lessonKey = `${entry.subjectId}/${entry.lessonId}`;
+    if (seenLesson.has(lessonKey)) errors.push(`同学科 lessonId 重复：${lessonKey}`);
+    seenLesson.add(lessonKey);
     for (const role of LECTURE_MATERIAL_ROLES) {
       const aid = entry.materials[role].articleId;
-      if (seenArticle.has(aid)) errors.push(`文章 id 重复：${aid}`);
-      seenArticle.add(aid);
+      const articleKey = `${entry.subjectId}/${aid}`;
+      if (seenArticle.has(articleKey)) errors.push(`同学科文章 id 重复：${articleKey}`);
+      seenArticle.add(articleKey);
     }
     const list = perSubjectRanges.get(entry.subjectId) ?? [];
     const [s, e] = [entry.sessionRange.start, entry.sessionRange.end];

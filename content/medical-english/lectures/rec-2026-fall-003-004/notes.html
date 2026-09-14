@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>医学英语基础 · 第3-4节 · 可视化笔记</title>
+<style>
+  :root{
+    --paper:#F5F2EB; --paper-card:#FBF9F4; --ink:#1E1C18; --ink-soft:#555046; --ink-faint:#8A8476; --rule:#D4CEBE;
+    --accent-lang:#6B2D4E; --accent-lang-soft:#EAD9E2;
+    --accent-med:#1B5E5A; --accent-med-soft:#D6E8E6;
+    --accent-key:#9A6B1A; --accent-key-soft:#F2E6CC;
+    --accent-warn:#9C3A2E; --accent-warn-soft:#F2DDD8;
+    --display:'Noto Serif CJK SC',serif; --body:'Noto Sans CJK SC',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--paper);}
+  body{font-family:var(--body);color:var(--ink);font-size:9.6pt;line-height:1.65;}
+  .page{width:210mm;min-height:297mm;background:var(--paper);position:relative;overflow:hidden;padding:16mm 17mm 14mm 17mm;page-break-after:always;}
+  .page:last-child{page-break-after:auto;}
+  .running{display:flex;justify-content:space-between;align-items:baseline;font-size:7.4pt;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--rule);padding-bottom:2.5mm;margin-bottom:7mm;}
+  .running .tag{color:var(--accent-lang);font-weight:700;}
+  .cover{background:var(--ink);color:var(--paper);padding:0;}
+  .cover .inner{position:relative;height:100%;padding:28mm 18mm 18mm 18mm;display:flex;flex-direction:column;justify-content:space-between;min-height:257mm;}
+  .cover .eyebrow{font-size:8.5pt;letter-spacing:0.34em;text-transform:uppercase;color:var(--accent-key-soft);display:flex;align-items:center;gap:8px;}
+  .cover .eyebrow::before{content:"";width:24px;height:2px;background:var(--accent-key);display:inline-block;}
+  .cover h1.title{font-family:var(--display);font-weight:900;color:var(--paper);font-size:44pt;line-height:1.08;margin-top:12mm;letter-spacing:-0.01em;}
+  .cover h1.title small{display:block;font-size:15pt;font-weight:500;color:var(--accent-key-soft);margin-top:7mm;}
+  .cover .subtitle{font-family:var(--display);font-size:11.5pt;color:#C9C4B3;margin-top:8mm;max-width:130mm;line-height:1.75;font-weight:500;}
+  .cover .meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5mm;border-top:1px solid #4d4b42;padding-top:5mm;margin-top:12mm;}
+  .cover .meta div .k{font-size:7.4pt;letter-spacing:0.18em;color:var(--ink-faint);text-transform:uppercase;}
+  .cover .meta div .v{font-family:var(--display);font-size:10.5pt;color:var(--paper);margin-top:1.5mm;}
+  .toc-title{font-family:var(--display);font-size:24pt;font-weight:800;margin-bottom:2mm;}
+  .toc-sub{color:var(--ink-soft);font-size:9.5pt;max-width:150mm;margin-bottom:8mm;line-height:1.8;}
+  table.toc{width:100%;border-collapse:collapse;font-size:9.2pt;}
+  table.toc th{text-align:left;font-size:7.4pt;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--ink);padding:0 3mm 2mm 0;font-weight:600;}
+  table.toc td{padding:3.8mm 3mm 3.8mm 0;border-bottom:1px solid var(--rule);vertical-align:top;}
+  table.toc .num{font-family:var(--display);font-weight:800;color:var(--accent-lang);font-size:10.5pt;white-space:nowrap;}
+  table.toc .ch{font-family:var(--display);font-weight:700;font-size:10pt;}
+  table.toc .desc{color:var(--ink-soft);font-size:8.8pt;}
+  h2.ch-title{font-family:var(--display);font-weight:900;font-size:22pt;line-height:1.15;margin-top:2mm;max-width:150mm;}
+  .thesis{font-family:var(--display);font-weight:600;font-size:11pt;color:var(--accent-lang);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:3.5mm 0;margin:5mm 0 6mm 0;line-height:1.6;}
+  h3.sec{font-family:var(--display);font-weight:700;font-size:13pt;color:var(--ink);margin:6mm 0 3mm 0;padding-left:3mm;border-left:3px solid var(--accent-lang);}
+  h3.sec.med{border-left-color:var(--accent-med);}
+  h3.sec.key{border-left-color:var(--accent-key);}
+  p{margin-bottom:2.5mm;}
+  .cardgrid{display:grid;grid-template-columns:1fr 1fr;gap:3.5mm;margin:4mm 0;}
+  .card{background:var(--paper-card);border:0.5pt solid var(--rule);border-radius:2mm;padding:3.5mm 4mm;break-inside:avoid;}
+  .card .tab{display:inline-block;font-size:7.2pt;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.8mm 2mm;border-radius:1mm;margin-bottom:2mm;}
+  .card.lang .tab{background:var(--accent-lang-soft);color:var(--accent-lang);}
+  .card.med .tab{background:var(--accent-med-soft);color:var(--accent-med);}
+  .card.key .tab{background:var(--accent-key-soft);color:var(--accent-key);}
+  .card.warn .tab{background:var(--accent-warn-soft);color:var(--accent-warn);}
+  .card h4{font-family:var(--display);font-size:10.5pt;font-weight:700;margin-bottom:1.5mm;}
+  .card p,.card li{font-size:8.8pt;color:var(--ink-soft);line-height:1.55;}
+  .card ul{padding-left:4mm;}
+  .card li{margin-bottom:1mm;}
+  .pullquote{border-left:3px solid var(--accent-key);padding:3mm 4mm;margin:4mm 0;background:var(--accent-key-soft);border-radius:0 2mm 2mm 0;}
+  .pullquote p{font-family:var(--display);font-size:10.5pt;font-weight:600;color:var(--ink);line-height:1.6;font-style:italic;}
+  .pullquote .attr{font-size:8pt;color:var(--ink-faint);margin-top:1.5mm;font-style:normal;}
+  table.data{width:100%;border-collapse:collapse;font-size:8.8pt;margin:3mm 0;}
+  table.data th{background:var(--accent-lang-soft);color:var(--accent-lang);font-weight:700;text-align:left;padding:2mm 3mm;border:0.5pt solid var(--rule);font-size:8.2pt;letter-spacing:0.04em;}
+  table.data td{padding:2mm 3mm;border:0.5pt solid var(--rule);vertical-align:top;}
+  table.data tr:nth-child(even) td{background:var(--paper-card);}
+  .checklist{margin:3mm 0;}
+  .checklist .item{display:flex;gap:2.5mm;align-items:flex-start;margin-bottom:2mm;font-size:9pt;}
+  .checklist .box{flex:none;width:3.5mm;height:3.5mm;border:1pt solid var(--accent-lang);border-radius:0.8mm;margin-top:0.6mm;}
+  .checklist .txt b{color:var(--ink);}
+  .checklist .txt{color:var(--ink-soft);}
+  .diagram-frame{border:0.5pt solid var(--rule);border-radius:2mm;padding:4mm;background:var(--paper-card);margin:4mm 0;text-align:center;}
+  .diagram-frame .caption{font-size:7.8pt;color:var(--ink-faint);margin-top:2mm;letter-spacing:0.04em;}
+  .flow{display:flex;align-items:center;justify-content:center;gap:2mm;flex-wrap:wrap;}
+  .flow .node{background:var(--accent-lang-soft);color:var(--accent-lang);padding:2.5mm 4mm;border-radius:2mm;font-size:8.5pt;font-weight:600;text-align:center;min-width:28mm;}
+  .flow .node.med{background:var(--accent-med-soft);color:var(--accent-med);}
+  .flow .node.key{background:var(--accent-key-soft);color:var(--accent-key);}
+  .flow .arrow{color:var(--ink-faint);font-size:12pt;font-weight:700;}
+  .footer{position:absolute;bottom:6mm;left:17mm;right:17mm;display:flex;justify-content:space-between;font-size:7.2pt;color:var(--ink-faint);letter-spacing:0.08em;border-top:0.5pt solid var(--rule);padding-top:2mm;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="page cover">
+  <div class="inner">
+    <div>
+      <div class="eyebrow">Medical English · Lecture Notes</div>
+      <h1 class="title">医学英语基础<small>Paraphrasing · AI医学诊断文本 · 学术写作</small></h1>
+      <p class="subtitle">第3-4节课堂笔记：释义改写技巧精讲、AI医学诊断文本三段式结构分析、八种学术段落展开方法，以及小组展示任务安排。</p>
+    </div>
+    <div class="meta">
+      <div><div class="k">课程</div><div class="v">医学英语基础</div></div>
+      <div><div class="k">节次</div><div class="v">第3-4节</div></div>
+      <div><div class="k">日期</div><div class="v">2026-09-09</div></div>
+      <div><div class="k">教师</div><div class="v">叶琳 副教授</div></div>
+      <div><div class="k">教材</div><div class="v">Unit 1 Reading 2</div></div>
+      <div><div class="k">类型</div><div class="v">理论课</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="page">
+  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CONTENTS</span></div>
+  <div class="toc-title">目录</div>
+  <p class="toc-sub">本课围绕三大核心板块展开：Paraphrasing释义改写的系统方法、AI医学诊断文本的结构与论证分析、以及学术写作段落展开的八种方法。每章以一个核心论点统领，配卡片、表格和流程图辅助理解。</p>
+  <table class="toc">
+    <thead><tr><th style="width:14mm">章节</th><th style="width:55mm">标题</th><th>核心论点</th></tr></thead>
+    <tbody>
+      <tr><td class="num">01</td><td class="ch">Paraphrasing释义改写</td><td class="desc">用不同词语重述他人内容，完全保留原意不歪曲；四大技巧+四步操作+特殊规则</td></tr>
+      <tr><td class="num">02</td><td class="ch">AI医学诊断文本分析</td><td class="desc">文本呈"问题→优势→挑战"三段式；AI补充而非替代人类专业知识</td></tr>
+      <tr><td class="num">03</td><td class="ch">学术写作段落展开</td><td class="desc">八种方法组合使用；医学文本也用隐喻和反讽增强可读性</td></tr>
+      <tr><td class="num">04</td><td class="ch">小组展示与发展建议</td><td class="desc">五组四段分析维度；跨学科发展是医学生可行路径</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CHAPTER 1 -->
+<div class="page">
+  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 01</span></div>
+  <h2 class="ch-title">Paraphrasing 释义改写</h2>
+  <div class="thesis">Paraphrasing的核心是"用不同词语重述他人内容，完全保留原意不歪曲"——它既是理解工具，也是学术写作的降重利器。</div>
+
+  <h3 class="sec">定义与三大价值</h3>
+  <div class="cardgrid">
+    <div class="card lang"><div class="tab">Definition</div><h4>核心定义</h4><p>Restating others' written or spoken content with different words, with the core requirement of fully retaining the original semantic meaning without distortion.</p></div>
+    <div class="card key"><div class="tab">Value</div><h4>三大价值</h4><ul><li>帮助更好地理解原文</li><li>支持高效笔记和总结</li><li>避免抄袭，降低查重率</li></ul></div>
+  </div>
+
+  <h3 class="sec">四大释义技巧</h3>
+  <table class="data">
+    <thead><tr><th style="width:32mm">技巧</th><th style="width:28mm">英文</th><th>说明与示例</th></tr></thead>
+    <tbody>
+      <tr><td><b>同义词替换</b></td><td>synonyms</td><td>用同义词替换原词和短语，如 important → crucial / significant</td></tr>
+      <tr><td><b>词性转换</b></td><td>part of speech</td><td>名词↔动词、形容词↔副词，如 analysis (n.) → analyze (v.)</td></tr>
+      <tr><td><b>主被动转换</b></td><td>active ↔ passive</td><td>The doctor diagnosed → It was diagnosed by the doctor</td></tr>
+      <tr><td><b>句型改写</b></td><td>sentence patterns</td><td>调整句子结构，简单句↔复合句</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sec key">标准操作四步骤</h3>
+  <div class="diagram-frame">
+    <div class="flow">
+      <div class="node">① 通读理解<br><span style="font-size:7.5pt;font-weight:400">Read & understand</span></div>
+      <div class="arrow">→</div>
+      <div class="node key">② 识别核心词<br><span style="font-size:7.5pt;font-weight:400">Identify keywords</span></div>
+      <div class="arrow">→</div>
+      <div class="node">③ 替换重组<br><span style="font-size:7.5pt;font-weight:400">Replace & rearrange</span></div>
+      <div class="arrow">→</div>
+      <div class="node key">④ 对照确认<br><span style="font-size:7.5pt;font-weight:400">Compare & confirm</span></div>
+    </div>
+    <div class="caption">图 1.1 — Paraphrasing 标准操作流程</div>
+  </div>
+  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>03</span></div>
+</div>
+
+<!-- CHAPTER 1 continued -->
+<div class="page">
+  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 01</span></div>
+
+  <h3 class="sec">特殊规则与场景注意</h3>
+  <div class="cardgrid">
+    <div class="card warn"><div class="tab">⚠ 不可替换</div><h4>专业术语与专有名词</h4><p>Fixed proper nouns including professional terms such as <b>photosynthesis</b> and <b>drug names</b> cannot be replaced. 替换会导致术语错误。</p></div>
+    <div class="card lang"><div class="tab">Idioms</div><h4>谚语/习语释义</h4><p>必须先掌握核心隐含意义（core implied meaning），再用平实语言重述——<b>非字面翻译</b>。</p></div>
+    <div class="card key"><div class="tab">Context</div><h4>语境匹配</h4><p>抽象含义词不可用字面同义词替换，必须匹配具体语义场景。</p></div>
+    <div class="card med"><div class="tab">Formality</div><h4>正式性保持</h4><p>拉丁/希腊源正式术语换成普通词会降低学术正式性，正式论文写作不推荐。</p></div>
+  </div>
+
+  <div class="pullquote">
+    <p>"Fully retaining the original semantic meaning without distortion" — 保留原意是Paraphrasing的第一原则，技巧服务于意义，而非相反。</p>
+    <div class="attr">— 本课核心原则</div>
+  </div>
+
+  <h3 class="sec med">医学英语句子特征</h3>
+  <p>Medical academic texts often use two characteristic sentence patterns:</p>
+  <div class="cardgrid">
+    <div class="card med"><div class="tab">Pattern A</div><h4>简单句 + 丰富修饰语</h4><p>Simple sentences with rich modifiers — 主干清晰，修饰成分承载专业信息。</p></div>
+    <div class="card med"><div class="tab">Pattern B</div><h4>复合句：简单主句 + 复杂从句</h4><p>Compound sentences with simple main clauses and complex subordinate clauses — 分析时先找主句抓核心意思。</p></div>
+  </div>
+  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>04</span></div>
+</div>
+
+<!-- CHAPTER 2 -->
+<div class="page">
+  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 02</span></div>
+  <h2 class="ch-title">AI 医学诊断文本分析</h2>
+  <div class="thesis">文本呈"人类诊断问题→AI优势→AI挑战"三段式论证结构；AI的定位是补充而非替代人类专业知识。</div>
+
+  <h3 class="sec med">文本三段式结构</h3>
+  <div class="diagram-frame">
+    <div class="flow" style="flex-direction:column;gap:3mm;">
+      <div style="display:flex;align-items:center;gap:3mm;width:100%;">
+        <div class="node med" style="min-width:35mm;">Section 1<br>Para 1-3</div>
+        <div style="text-align:left;font-size:8.8pt;color:var(--ink-soft);"><b>人类医学诊断现存问题</b><br>误诊两大核心原因分析</div>
+      </div>
+      <div class="arrow" style="transform:rotate(90deg);">→</div>
+      <div style="display:flex;align-items:center;gap:3mm;width:100%;">
+        <div class="node" style="min-width:35mm;">Section 2<br>Para 4-9</div>
+        <div style="text-align:left;font-size:8.8pt;color:var(--ink-soft);"><b>AI应用于医学诊断的核心优势</b><br>准确性 + 时效性提升</div>
+      </div>
+      <div class="arrow" style="transform:rotate(90deg);">→</div>
+      <div style="display:flex;align-items:center;gap:3mm;width:100%;">
+        <div class="node key" style="min-width:35mm;">Section 3<br>Para 10-14</div>
+        <div style="text-align:left;font-size:8.8pt;color:var(--ink-soft);"><b>AI诊断现存挑战 + 未来方向</b><br>成本、信任、伦理与就业</div>
+      </div>
+    </div>
+    <div class="caption">图 2.1 — AI医学诊断文本三段式论证结构</div>
+  </div>
+
+  <h3 class="sec">Illness Script 与误诊原因</h3>
+  <div class="cardgrid">
+    <div class="card med"><div class="tab">Concept</div><h4>Illness Script（疾病脚本）</h4><p>医生通常依靠记忆疾病脚本来识别疾病——这是一种基于经验的模式匹配方法。</p></div>
+    <div class="card warn"><div class="tab">⚠ Misdiagnosis</div><h4>误诊两大原因</h4><ul><li>忽略患者关键特异因素</li><li>非典型表现不符合标准模式</li></ul></div>
+  </div>
+  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>05</span></div>
+</div>
+
+<!-- CHAPTER 2 continued -->
+<div class="page">
+  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 02</span></div>
+
+  <h3 class="sec med">AI诊断的核心优势</h3>
+  <div class="cardgrid">
+    <div class="card med"><div class="tab">Accuracy</div><h4>提高准确性</h4><p>海量数据支撑（supported by massive data），能发现人类容易忽略的新模式。</p></div>
+    <div class="card med"><div class="tab">Timeliness</div><h4>提高时效性</h4><p>快速识别疾病，如缺血性中风（ischemic stroke）的快速识别。</p></div>
+    <div class="card med"><div class="tab">New Patterns</div><h4>发现创造性模式</h4><p>Spot new, creative patterns — 超越人类经验局限的模式识别能力。</p></div>
+    <div class="card key"><div class="tab">Core Principle</div><h4>补充而非替代</h4><p>AI should <b>complement rather than replace</b> human professional expertise. 需充足资金投入。</p></div>
+  </div>
+
+  <h3 class="sec">AI诊断面临的四大挑战</h3>
+  <table class="data">
+    <thead><tr><th style="width:28mm">挑战</th><th style="width:32mm">英文</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><b>高开发成本</b></td><td>High development cost</td><td>AI医疗技术研发需要大量资金投入</td></tr>
+      <tr><td><b>潜在错误信息</b></td><td>Potential misinformation</td><td>AI可能输出错误或误导性诊断信息</td></tr>
+      <tr><td><b>患者信任度低</b></td><td>Low patient trust</td><td>缺乏有效数据支撑时，患者对AI诊断信任度低</td></tr>
+      <tr><td><b>伦理与就业</b></td><td>Ethics & employment</td><td>过度依赖AI可能导致大规模失业；欧洲采取保守研发策略</td></tr>
+    </tbody>
+  </table>
+
+  <div class="pullquote">
+    <p>"Our country develops too fast... if AI is used to replace people like this, a large number of people will be unemployed, which is unimaginable."</p>
+    <div class="attr">— 课堂讨论：AI发展的社会风险</div>
+  </div>
+  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>06</span></div>
+</div>
+
+<!-- CHAPTER 3 -->
+<div class="page">
+  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 03</span></div>
+  <h2 class="ch-title">学术写作段落展开方法</h2>
+  <div class="thesis">八种段落展开方法通常组合使用而非单一应用；即使专业医学文本也会用隐喻和反讽等修辞手法增强可读性。</div>
+
+  <h3 class="sec key">八种常用段落展开方法</h3>
+  <div class="cardgrid">
+    <div class="card key"><div class="tab">01</div><h4>时间顺序</h4><p>time order / time sequence — 按时间先后组织内容</p></div>
+    <div class="card key"><div class="tab">02</div><h4>过程描述</h4><p>process — 描述步骤和流程</p></div>
+    <div class="card key"><div class="tab">03</div><h4>空间描述</h4><p>space description — 按空间位置组织</p></div>
+    <div class="card key"><div class="tab">04</div><h4>举例+概括</h4><p>example and generalization — 先举例后归纳或反之</p></div>
+    <div class="card key"><div class="tab">05</div><h4>比较与对比</h4><p>comparison and contrast — 比较异同</p></div>
+    <div class="card key"><div class="tab">06</div><h4>因果关系</h4><p>cause and effect — 分析原因与结果</p></div>
+    <div class="card key"><div class="tab">07</div><h4>分类与划分</h4><p>classification and division — 将整体分类或划分</p></div>
+    <div class="card key"><div class="tab">08</div><h4>定义法</h4><p>definition — 先定义概念再展开</p></div>
+  </div>
+
+  <h3 class="sec">应用规则与修辞手法</h3>
+  <div class="cardgrid">
+    <div class="card lang"><div class="tab">Rule</div><h4>多方法组合</h4><p>Most formal academic paragraphs do <b>not</b> use a single development method; multiple methods are often combined to support core arguments.</p></div>
+    <div class="card med"><div class="tab">Rhetoric</div><h4>医学文本也用修辞</h4><p>Even professional medical academic texts use <b>metaphor</b> and <b>irony</b> in titles and key sentences to enhance readability.</p></div>
+  </div>
+  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>07</span></div>
+</div>
+
+<!-- CHAPTER 3 continued + CHAPTER 4 -->
+<div class="page">
+  <div class="running"><span>医学英语基础 · 第3-4节</span><span class="tag">CHAPTER 03-04</span></div>
+
+  <h3 class="sec med">段落分析实例（Para 1-3）</h3>
+  <table class="data">
+    <thead><tr><th style="width:18mm">段落</th><th style="width:35mm">展开方法</th><th>核心内容与修辞</th></tr></thead>
+    <tbody>
+      <tr><td><b>Para 1</b></td><td>时间顺序 + 举例</td><td>医学诊断发展史；隐喻 <b>"history is a march"</b>；代表性简单被动句</td></tr>
+      <tr><td><b>Para 2</b></td><td>举例 + 定义</td><td>诊断仍依赖医生的 illness scripts；长复合句特征：简单主句+复杂从句</td></tr>
+      <tr><td><b>Para 3</b></td><td>举例 + 因果</td><td>人类误诊两大原因；为后续AI优势做铺垫</td></tr>
+    </tbody>
+  </table>
+
+  <div class="pullquote">
+    <p>长复合句分析技巧：先找 simple main clause 抓核心意思，再看 complex subordinate clause 理解修饰和补充信息。</p>
+    <div class="attr">— 课堂强调点</div>
+  </div>
+
+  <h2 class="ch-title" style="margin-top:8mm;font-size:18pt;">小组展示与发展建议</h2>
+
+  <h3 class="sec lang">小组展示安排</h3>
+  <div class="cardgrid">
+    <div class="card lang"><div class="tab">5 Groups</div><h4>五组分配</h4><p>Para 1-3 / 4-6 / 7-9 / 10-11 / 12-14 — 14段文本分为5部分</p></div>
+    <div class="card key"><div class="tab">4 Dimensions</div><h4>四个分析维度</h4><ul><li>段落主旨（main idea）</li><li>写作风格（writing style）</li><li>修辞手法（rhetorical devices）</li><li>句子释义与翻译（paraphrasing & translation）</li></ul></div>
+  </div>
+
+  <h3 class="sec med">个人发展建议</h3>
+  <p>文本两位作者均为具有医学+计算机/经济学双背景的跨学科人才。教师鼓励医学生：</p>
+  <div class="checklist">
+    <div class="item"><div class="box"></div><div class="txt"><b>跨学科发展</b> — 结合医学主业与其他学科（计算机、经济学等）</div></div>
+    <div class="item"><div class="box"></div><div class="txt"><b>发展副业技能</b> — 在医学主业基础上，结合兴趣发展可生存的副业技能</div></div>
+    <div class="item"><div class="box"></div><div class="txt"><b>主动规划未来</b> — "less than 20 years old is just the starting point of life"，时代既是机遇也是挑战</div></div>
+  </div>
+
+  <div class="pullquote">
+    <p>"Our main business is medicine. If you are interested, you can really develop a side business, which may be the skill for us to survive in this era in the future."</p>
+    <div class="attr">— 教师金句 · 跨学科发展建议</div>
+  </div>
+  <div class="footer"><span>医学英语基础 · 第3-4节</span><span>08</span></div>
+</div>
+
+</body>
+</html>

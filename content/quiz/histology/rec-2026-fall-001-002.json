@@ -1,0 +1,260 @@
+{
+  "subjectId": "histology",
+  "chapterId": "rec-2026-fall-001-002",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/histology/lectures/rec-2026-fall-001-002/recording.md；content/histology/lectures/rec-2026-fall-001-002/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-001-002",
+    "revision": 1,
+    "recordingHash": "e6f09eaffc3cb5267bef39d39eb92a51ed41f7b07aa58b96f82cf4fc66b70310",
+    "notesTextHash": "72a13b436bbe1b1da6b4accace1fa33f5ea4386009ced80a55bc17832b092cbd"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "组织学（Histology）的研究对象是（　）。",
+      "options": [
+        "正常人体微细结构及其相关功能",
+        "尸体大体解剖与骨骼走向",
+        "肿瘤细胞的癌变机制",
+        "药物在体内的代谢动力学"
+      ],
+      "answer": 0,
+      "hint": "两个关键词：「正常」「结构」。",
+      "explanation": "**A 正确。** 组织学研究正常人体微细结构及其相关功能，词源 histos（组织）+ logos（学问），又称显微解剖学，属解剖学范畴。\n- B：大体结构由大体解剖学研究；\n- C：癌变机制属病理学；\n- D：药代动力学属药理学。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "绪论 · 组织学定义"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "光镜结构与超微（电镜）结构各自常用的度量单位是（　）。",
+      "options": [
+        "光镜用nm，电镜用μm",
+        "两者都用cm",
+        "光镜用mm，电镜用nm",
+        "光镜用μm，电镜用nm"
+      ],
+      "answer": 3,
+      "hint": "光镜分辨率0.2μm，电镜分辨率0.1~0.2nm。",
+      "explanation": "**D 正确。** 普通光镜下所见（细胞核、细胞质、细胞器等）度量用微米μm；电镜下的超微结构（染色质、线粒体、内质网、溶酶体等）度量用纳米nm。\n- A、C：单位对应错配；\n- B：cm是宏观尺度。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "绪论 · 光镜/超微结构度量单位"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列不属于人体四大基本组织的是（　）。",
+      "options": [
+        "上皮组织",
+        "结缔组织",
+        "血液组织",
+        "神经组织"
+      ],
+      "answer": 2,
+      "hint": "四大：上皮、结缔、肌、神经。",
+      "explanation": "**C 错误（符合题意）。** 四大基本组织为上皮组织、结缔组织、肌组织、神经组织；血液属结缔组织（的特殊类型），不是与四大并列的独立「基本组织」。\n- A、B、D：均为四大基本组织。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "绪论 · 四大基本组织"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "HE染色中，碱性染料苏木精将核酸、核糖体等酸性物质染成蓝紫色，该物质对苏木精的染色性质称为（　）。",
+      "options": [
+        "嗜酸性",
+        "嗜碱性",
+        "中性",
+        "异染性"
+      ],
+      "answer": 1,
+      "hint": "酸性物质爱碱性染料→嗜碱性→蓝紫色。",
+      "explanation": "**B 正确。** 物质本身偏酸性（核酸、核糖体），对碱性染料苏木精亲和力强，被染蓝紫色，称嗜碱性；伊红为酸性染料，把碱性的细胞质、红细胞染成红色，称嗜酸性。\n- A：嗜酸性是对伊红（酸染料）亲和、染红；\n- C：中性指对两种染料均无特殊亲和；\n- D：异染性指甲苯胺蓝染肥大细胞颗粒呈紫红色（染料本身蓝色），不属HE范畴。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "研究技术 · HE染色与嗜色性"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "光镜下观察到某细胞胞质呈强嗜碱性，据此最合理的功能推测是（　）。",
+      "options": [
+        "脂滴丰富、以储能为主",
+        "以分泌黏液为主",
+        "蛋白质合成功能旺盛（富含粗面内质网与游离核糖体）",
+        "该细胞是成熟红细胞"
+      ],
+      "answer": 2,
+      "hint": "嗜碱性＝富含酸性物质＝核糖体/粗面内质网多＝合成蛋白。",
+      "explanation": "**C 正确。** 嗜碱性提示胞质含大量酸性物质，主要是核糖体与粗面内质网，而粗面内质网/核糖体正是蛋白质合成的场所，故胞质强嗜碱性常提示蛋白质合成功能旺盛（如浆细胞）。\n- A：脂滴在制片中多被溶解，呈空泡状；\n- B：分泌黏液的杯状细胞HE呈空泡状、PAS阳性；\n- D：成熟红细胞胞质嗜酸性且无核糖体。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "学习方法 · 结构与功能联系"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "冰冻切片法相比石蜡切片法的突出优势及适用场景是（　）。",
+      "options": [
+        "结构保存最精细、适合长期存档",
+        "快速（数十分钟）且能较好保存化学成分/酶活性，适用于术中快速病理诊断",
+        "完全不需要任何染色即可观察",
+        "只适用于骨、牙等硬组织磨片"
+      ],
+      "answer": 1,
+      "hint": "冷硬即切，跳过脱水透明包埋。",
+      "explanation": "**B 正确。** 冰冻切片低温冷冻后直接切片，无需脱水、透明、包埋，数十分钟出片，且避免高温/化学试剂破坏，适合手术中快速病理诊断与需保存酶活性/小分子的研究。\n- A：结构保存精细、可长期存档是石蜡切片的优点；\n- C：仍需染色；\n- D：骨/牙硬组织用磨片，与冰冻切片无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "研究技术 · 石蜡切片与冰冻切片"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "扫描电镜（SEM）的成像原理与用途是（　）。",
+      "options": [
+        "电子束穿过约60nm超薄切片，观察细胞内部超微结构",
+        "以可见光代替电子束、玻璃透镜代替电磁场",
+        "电子束在组织表面扫描、产生二次电子，用于观察表面立体结构",
+        "分辨率约0.2μm，与普通光镜相同"
+      ],
+      "answer": 2,
+      "hint": "SEM看表面立体感（纤毛、红细胞双凹盘）。",
+      "explanation": "**C 正确。** 电镜以电子束代替可见光、电磁场代替透镜；扫描电镜电子束在样品表面扫描、收集二次电子，形成表面立体像，如气管纤毛、红细胞双凹圆盘状。\n- A：那是透射电镜TEM（电子束穿超薄切片、按电子密度成像）；\n- B：电镜不用可见光与玻璃透镜；\n- D：电镜分辨率约0.1~0.2nm，远高于光镜0.2μm。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "研究技术 · TEM与SEM"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "PAS反应（过碘酸-希夫反应）主要用于检测组织中的（　）。",
+      "options": [
+        "蛋白质",
+        "脂质",
+        "DNA序列",
+        "多糖（如肝细胞糖原），呈紫红色"
+      ],
+      "answer": 3,
+      "hint": "过碘酸氧化乙二醇基→醛基→与Schiff试剂结合显紫红。",
+      "explanation": "**D 正确。** PAS反应检测多糖：过碘酸氧化多糖乙二醇基为醛基，再与Schiff试剂结合生成紫红色沉淀，可显示肝细胞糖原；杯状细胞黏液也PAS阳性。\n- A：显示蛋白质多用免疫组化；\n- B：脂质用脂溶性染色；\n- C：检测核酸用原位杂交（碱基互补）。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "研究技术 · PAS反应"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列关于上皮组织基本特点的描述，错误的是（　）。",
+      "options": [
+        "细胞排列紧密、细胞外基质极少",
+        "具有明显极性，分游离面、基底面与侧面",
+        "神经末梢丰富、感觉灵敏",
+        "上皮内富含毛细血管，营养直接由上皮内血管供应"
+      ],
+      "answer": 3,
+      "hint": "题目选「错误」；上皮无血管。",
+      "explanation": "**D 错误（符合题意）。** 上皮组织无血管，营养由深层结缔组织的血管透过基膜供应；但上皮神经末梢丰富、感觉灵敏。\n- A、B、C：均为上皮组织正确特点（细胞紧密、基质极少；游离面/基底面/侧面极性；神经末梢丰富）。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "上皮组织 · 基本特点（无血管）"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于单层扁平上皮的内皮与间皮，下列说法正确的是（　）。",
+      "options": [
+        "内皮分布于内脏外表面，间皮分布于心血管腔面",
+        "内皮位于心血管、淋巴管腔面，间皮位于胸膜、腹膜、心包膜（内脏外表面），二者均为单层扁平上皮",
+        "内皮属于复层扁平上皮",
+        "间皮主要分布于呼吸道腔面"
+      ],
+      "answer": 1,
+      "hint": "都单层扁平；内皮管腔内、间皮体腔面。",
+      "explanation": "**B 正确。** 内皮衬于心、血管、淋巴管腔面，间皮衬于胸膜、腹膜、心包膜（内脏器官外表面），二者均为单层扁平上皮，表面光滑，利于血液流动与器官滑动。\n- A：把内皮与间皮的位置说反；\n- C：内皮是单层而非复层；\n- D：呼吸道腔面是假复层纤毛柱状上皮。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "被覆上皮 · 内皮与间皮"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "分布于呼吸道（气管、支气管）腔面、所有细胞均附于基膜但高矮不一、游离面有纤毛的上皮是（　）。",
+      "options": [
+        "单层柱状上皮",
+        "假复层纤毛柱状上皮",
+        "复层扁平上皮",
+        "变移上皮"
+      ],
+      "answer": 1,
+      "hint": "看似多层实为单层，游离面有纤毛。",
+      "explanation": "**B 正确。** 假复层纤毛柱状上皮所有细胞都附于基膜、但高矮不一、细胞核高低错落，看似多层实为单层，游离面有纤毛，分布于呼吸道腔面。\n- A：单层柱状上皮（如小肠）一层高度一致的柱状细胞，伴纹状缘与杯状细胞；\n- C：复层扁平上皮多层、表层扁平，分布于皮肤表皮、口腔食管；\n- D：变移上皮层次随充盈状态变化，分布于泌尿系统。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "被覆上皮 · 假复层纤毛柱状上皮"
+      }
+    }
+  ]
+}

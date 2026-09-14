@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+:root{--paper:#F7F9FC;--ink:#1A2530;--muted:#5A6B7D;--line:#D5DDE5;--accent:#1A5276;--accent-deep:#0E3A5C;--accent-tint:#E0EAF3;--gold:#B8860B;--gold-tint:#FBF3DC;--teal:#1A6B5A;--teal-tint:#DCEDE8;--serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
+.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
+.page:last-child{page-break-after:auto;}
+.cover{background:radial-gradient(120% 80% at 78% 12%,#2E86C1 0%,#1A5276 55%,#0E3A5C 100%);color:#EEF3F8;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
+.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(184,134,11,.4);}
+.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#D4AF37;margin-bottom:8mm;}
+.cover h1{font-family:var(--serif);font-size:28pt;line-height:1.2;color:#FBFCFD;margin-bottom:6mm;}
+.cover h1 .accent{color:#F4D03F;}
+.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(238,243,248,.82);margin-bottom:4mm;}
+.cover .meta{font-size:10pt;color:rgba(238,243,248,.6);margin-top:auto;}
+.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
+.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
+.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
+h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
+p{margin:2mm 0;}
+.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
+.card.concl{border-left:3pt solid var(--accent);}
+.card.teal{border-left:3pt solid var(--teal);background:var(--teal-tint);}
+.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
+table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
+th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
+td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
+tr:nth-child(even) td{background:var(--accent-tint);}
+.hl{background:var(--gold-tint);border:0.4pt solid #E0C870;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
+.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
+.flow{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm;margin:3mm 0;font-size:9pt;}
+.flow-step{display:flex;align-items:center;margin:1.5mm 0;}
+.flow-num{width:7mm;height:7mm;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:8pt;flex-shrink:0;}
+.flow-text{margin-left:3mm;flex:1;}
+.flow-arrow{margin-left:6mm;color:var(--muted);font-size:12pt;}
+.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
+</style>
+</head>
+<body>
+<div class="page cover">
+  <div class="frame"></div>
+  <div class="kicker">CELL BIOLOGY · 细胞生物学</div>
+  <h1>单细胞生物学与<br><span class="accent">组学技术</span></h1>
+  <div class="subt">第3-4节 · 课程笔记可视化手册</div>
+  <div class="meta">2026-09-03 · 华中科技大学基础医学</div>
+</div>
+<div class="page">
+  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">单细胞生物学</span></div>
+  <div class="card concl">
+    <div class="label">为什么需要单细胞生物学？</div>
+    <p><strong>传统方法的局限</strong>：将整个组织/器官的细胞混合分析，得到"混合信号"（黑盒子）。</p>
+    <p>例：敲除肝脏某基因后观察表型，无法判断是哪种肝细胞出了问题——知道输入和输出，中间过程不清楚。</p>
+    <p><strong>单细胞生物学</strong>：对组织中每个细胞（功能单元）单独分析，再组合信息。</p>
+  </div>
+  <div class="card teal">
+    <div class="label">空间组学（Spatial Omics）</div>
+    <p>在单细胞分析基础上，增加<strong>空间位置信息</strong>。</p>
+    <p>输出：三维空间数据——不仅知道每个细胞的表达水平，还知道它在组织中的位置。</p>
+    <p><strong>应用</strong>：①发育——从一个细胞→组织→器官，追踪分化（像看电影，有时间有空间）；②疾病——正常vs病人，定位哪种细胞出问题。</p>
+  </div>
+  <div class="hl"><span class="tag">当前局限</span>组学数据量大，AI构建空间网络，但人难捕捉底层机制。大量文章（含CNS主刊）结论较弱——"开了头没闭环"，做到80%就停下来。未来趋势：回归分子机制层面。</div>
+  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">02</span><span class="chapter-title">筛选——生物学研究的核心</span></div>
+  <div class="flow">
+    <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>传统筛选</strong>：遗传学筛选、蛋白筛选——随机、无偏差</div></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>筛不到的</strong>：脂类、代谢物、表达变化不明显的、功能冗余基因</div></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>组学 = 筛选的高阶阶段</strong>：更全面、无偏差的筛选方式</div></div>
+  </div>
+  <div class="footer"><span>细胞生物学 · 单细胞生物学与组学</span><span>第 2 页</span></div>
+</div>
+<div class="page">
+  <div class="chapter-head"><span class="chapter-no">03</span><span class="chapter-title">各类组学</span></div>
+  <table>
+    <tr><th>组学</th><th>研究对象</th><th>要点</th></tr>
+    <tr><td><strong>基因组学</strong></td><td>DNA全序列</td><td>HGP：30亿美元/十几年 → 现在几千元/2天；30亿碱基，2万多基因</td></tr>
+    <tr><td><strong>转录组学</strong></td><td>RNA表达水平</td><td>基因转录产物</td></tr>
+    <tr><td><strong>表观组学</strong></td><td>DNA/蛋白化学修饰</td><td>不是100%遗传，更像生化传递；甲基化/乙酰化/泛素化/磷酸化</td></tr>
+    <tr><td><strong>蛋白质组学</strong></td><td>蛋白质表达</td><td>无偏差（全蛋白）vs 靶向（蛋白互作组）</td></tr>
+    <tr><td><strong>代谢组学</strong></td><td>代谢物小分子</td><td>糖/脂/氨基酸；除能量外还调控表观转录</td></tr>
+    <tr><td><strong>脂质组学</strong></td><td>脂质</td><td>脂类物质</td></tr>
+    <tr><td><strong>单细胞组学</strong></td><td>单个细胞多组学</td><td>与上述组学结合</td></tr>
+  </table>
+  <div class="card teal">
+    <div class="label">表观遗传学</div>
+    <p>虽然叫"遗传学"，但<strong>不是传统意义上的遗传</strong>。</p>
+    <p>传统遗传：DNA序列100%忠实传递。表观遗传：化学修饰可传递但<strong>不是100%传递</strong>，有选择性，更像"生化传递"。</p>
+    <p>有限的蛋白通过修饰变成多种功能类型。</p>
+  </div>
+  <div class="hl"><span class="tag">代谢重要性</span>没有代谢就是死的东西。代谢物除了提供能量，还可能调控表观遗传、转录等——是生命的底层逻辑。</div>
+  <h3>易错点汇总</h3>
+  <ol>
+    <li>单细胞生物学解决"混合信号"问题，传统方法是黑盒子。</li>
+    <li>空间组学 = 单细胞 + 空间位置（三维数据）。</li>
+    <li>组学是筛选的高阶阶段，不是替代筛选。</li>
+    <li>表观遗传不是100%遗传，是化学修饰的选择性传递。</li>
+    <li>人类基因组计划：30亿美元/十几年 → 几千元/2天。</li>
+    <li>目前组学文章结论弱，未来要回归分子机制。</li>
+  </ol>
+  <div style="margin-top:4mm;text-align:center;color:var(--muted);font-size:9pt;">— 细胞生物学 · 第3-4节 · 完 —</div>
+  <div class="footer"><span>细胞生物学 · 单细胞生物学与组学</span><span>第 3 页</span></div>
+</div>
+</body>
+</html>

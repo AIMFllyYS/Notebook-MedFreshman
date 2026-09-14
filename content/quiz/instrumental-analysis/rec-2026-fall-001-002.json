@@ -1,0 +1,260 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "rec-2026-fall-001-002",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/recording.md；content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-001-002",
+    "revision": 1,
+    "recordingHash": "387f103eb82a9b559a1612f6f6feccca8d5de74d5019bed0eaf4070dd68fd2a4",
+    "notesTextHash": "efb617b558775becf8aa4e8f21e60a146d198874a1994be954533abae0ee2556"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课程总评成绩的构成比例是（　）。",
+      "options": [
+        "理论考试 40% + 平时成绩 60%",
+        "理论考试 60%（卷面 100 分）+ 平时成绩 40%",
+        "理论考试 100%，平时成绩不计入",
+        "实验 50% + 理论考试 50%"
+      ],
+      "answer": 1,
+      "hint": "助记口诀「三六二四学时，六四开考核」。",
+      "explanation": "**B 正确。** 总评 = 理论考试 60%（卷面 100 分）+ 平时 40%（实验+课堂展示/讨论+测验+作业）。\n- A：比例说反了；\n- C：平时 40% 明确计入；\n- D：实验只是平时成绩的一部分，不是与理论对半分。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "课程考核 · 理论60% 平时40%"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "按本课定义，分析化学是研究获取物质化学信息的科学，其研究内容包括物质的（　）。",
+      "options": [
+        "颜色、气味、味道",
+        "密度、熔点、沸点",
+        "结构、组成和含量",
+        "硬度、导电性、磁性"
+      ],
+      "answer": 2,
+      "hint": "口诀「分析化学三信息，结构组成加含量」。",
+      "explanation": "**C 正确。** 分析化学获取的化学信息指物质的结构、组成和含量；本课程进一步聚焦复杂样品中微量/痕量物质的分析。\n- A、B、D：多属物理性质或感官描述，不是分析化学定义中的三类化学信息。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "分析化学定义 · 结构/组成/含量"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于化学分析与仪器分析的比较，下列说法正确的是（　）。",
+      "options": [
+        "化学分析（滴定/重量法）适用于常量分析、准确度高；仪器分析适用于微量/痕量、灵敏度高，是本课重点",
+        "仪器分析只适用于常量分析，准确度不如化学分析",
+        "化学分析灵敏度高，能直接测定血液中的痕量药物",
+        "两者适用范围完全相同，差别只在是否使用仪器"
+      ],
+      "answer": 0,
+      "hint": "一张对比表：常量 vs 微量痕量、准确度 vs 灵敏度。",
+      "explanation": "**A 正确。** 化学分析（滴定、重量法）用于常量分析、准确度高，本课不再细讲；仪器分析（电/光/色谱）用于微量/痕量分析、灵敏度高，是本课重点。\n- B、C：把灵敏度和适用范围说反了；\n- D：两者的适用对象和特点显著不同。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "化学分析 vs 仪器分析 · 对比表"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "聚四氟乙烯（PTFE）被用作滴定管活塞，与其用途直接相关的化学性质是（　）。",
+      "options": [
+        "极易氧化，遇空气即缓慢燃烧",
+        "化学性质活泼，能与大多数试剂反应",
+        "常温下为液体，靠黏度实现密封",
+        "耐酸、耐碱、耐腐蚀、耐高压，化学性质不活泼"
+      ],
+      "answer": 3,
+      "hint": "做题策略：能抗酸抗碱耐腐蚀 → 与啥都不反应 → 不活泼。",
+      "explanation": "**D 正确。** PTFE 耐酸、耐碱、耐腐蚀、耐高压，化学性质不活泼（单体为氢被氟取代的四氟乙烯），适合制作长期接触各类试剂的滴定管活塞。\n- A、B：与「不活泼」恰好相反，正是被反复提醒的易错项；\n- C：PTFE 是固体聚合物，不是液体。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "聚四氟乙烯 PTFE · 滴定管活塞与化学不活泼"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "银的卤化物 AgF、AgCl、AgBr、AgI，其溶解度从大到小排列正确的是（　）。",
+      "options": [
+        "AgI > AgBr > AgCl > AgF",
+        "AgF > AgCl > AgBr > AgI",
+        "AgCl > AgF > AgI > AgBr",
+        "四种卤化物溶解度完全相同"
+      ],
+      "answer": 1,
+      "hint": "口诀「银卤溶解度，氯溴碘递减」，AgF 是个例外可溶。",
+      "explanation": "**B 正确。** 溶解度顺序为 AgF（可溶）> AgCl > AgBr > AgI（最难溶），随卤素离子从上到下递减。\n- A：完全颠倒；\n- C：排列无依据；\n- D：四种物质溶解度差异显著，正是本节重点。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "沉淀溶解平衡 · 银卤化物溶解度顺序"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于 AgCl、AgBr、AgI 的溶度积 $K_{sp}$ 及其分析应用，下列说法正确的是（　）。",
+      "options": [
+        "$K_{sp}$：AgI > AgBr > AgCl，应用于色谱分离",
+        "$K_{sp}$：AgCl > AgBr > AgI，应用于气相色谱定量",
+        "$K_{sp}$：AgCl > AgBr > AgI，沉淀溶解平衡是电位分析法（离子选择电极）的理论基础",
+        "三者 $K_{sp}$ 相同，无分析应用价值"
+      ],
+      "answer": 2,
+      "hint": "溶解度越小，溶度积越小；电极电位与离子活度遵循能斯特方程。",
+      "explanation": "**C 正确。** $K_{sp}$：AgCl > AgBr > AgI，与溶解度顺序一致；沉淀溶解平衡是电位分析法（卤素离子选择电极）的理论基础，电极电位与离子活度的关系遵循能斯特方程。\n- A：$K_{sp}$ 方向与应用均错；\n- B：应用张冠李戴到气相色谱；\n- D：三者 $K_{sp}$ 差别明显且有重要分析应用。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "沉淀溶解平衡 · Ksp顺序与电位分析应用"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课以血药浓度监测为例说明为什么要用仪器分析。下列解释正确的是（　）。",
+      "options": [
+        "药片虽为毫克级，但药物入血后被稀释、不完全吸收并经代谢，血药浓度已达微量/痕量，血液基质又很复杂，需高灵敏度仪器并区分原药与代谢产物",
+        "血液样品量太少，根本无法进行任何滴定",
+        "化学分析无法测定任何含金属离子的样品",
+        "仪器分析比化学分析便宜得多，纯粹出于成本考虑"
+      ],
+      "answer": 0,
+      "hint": "药片毫克级 → 入血稀释代谢 → 微量/痕量 + 基质复杂。",
+      "explanation": "**A 正确。** 药片为毫克级，但入血后被稀释、不完全吸收并代谢，血药浓度降到微量/痕量；血液又含蛋白质、脂肪、血红素、胆红素、金属离子等复杂基质，化学滴定灵敏度不够，仪器分析灵敏度高，还能区分原药与代谢产物（有的代谢产物才是活性形式），用于药效评估与给药方案设计。\n- B：不是样品量问题；\n- C：化学分析可测常量金属，只是对痕量血药不够灵敏；\n- D：与成本无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "血药浓度监测 · 为何需要仪器分析"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于有效数字的运算与修约规则，下列说法正确的是（　）。",
+      "options": [
+        "加减法以有效数字位数最少的那个数据为准",
+        "乘除法以小数点后位数最少的那个数据为准",
+        "数值修约一律按四舍五入进行",
+        "加减看小数点后位数，乘除看有效数字位数；修约遵循四舍六入五成双"
+      ],
+      "answer": 3,
+      "hint": "口诀「有效数字不跳过，加减小数乘数位」。",
+      "explanation": "**D 正确。** 加减法看小数点后位数（绝对误差），乘除法看有效数字位数（相对误差）；修约按「四舍六入五成双」处理。有效数字用于数据处理和结果报告，体现准确度和精密度。\n- A、B：把加减法和乘除法的判据说反了；\n- C：修约规则是四舍六入五成双，不是简单四舍五入。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "有效数字 · 运算与修约规则"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "头发中锌的测定实验要求学生自备干净头发，主要原因是（　）。",
+      "options": [
+        "脏头发颜色深，会干扰滴定终点的肉眼观察",
+        "常用洗发水中常含锌，残留会使测定结果偏高（超标）",
+        "头发太短样品量不够，必须留长发",
+        "只有干净头发里才含有机溶剂"
+      ],
+      "answer": 1,
+      "hint": "老师反复强调：别用含锌洗发水，否则结果超标。",
+      "explanation": "**B 正确。** 头发锌含量可反映身体锌营养状况，但洗发水中常添加锌，残留会污染头发使测定结果偏高，故必须用干净头发。\n- A：该实验是分光光度法，不靠肉眼看滴定终点；\n- C、D：均为臆测项，材料中无依据。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "实验项目 · 头发锌测定需干净头发"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列关于本课程安排的说法，错误的是（　）。",
+      "options": [
+        "理论课 36 学时、实验课 24 学时",
+        "作业通过微信课程平台提交，晚交每天扣 2 分",
+        "实验课从开学第一周就开始，共做 10 个实验",
+        "理论课内容包括样品采集处理、电分析、紫外可见、分子发光、色谱等模块"
+      ],
+      "answer": 2,
+      "hint": "题目选「错误」项；实验从第 10 周才开始。",
+      "explanation": "**C 错误（符合题意）。** 实验课从第 10 周才开始、共 6 个实验，并非开学第一周、10 个实验。\n- A、B、D 均与课程安排一致：理论 36+实验 24 学时；作业微信平台提交、晚交每天扣 2 分（最低 60 分）；理论模块为样电光发色他六大块。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "课程概况 · 学时/作业/实验周次"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课强调要了解仪器结构，其主要原因是（　）。",
+      "options": [
+        "实验出现异常时需判断是操作问题、仪器问题还是样品问题，能定位故障部件并与维修人员高效沟通，缩短停机时间",
+        "仪器结构本身对实验结果没有任何影响，学它只为凑学分",
+        "要求每个学生在校期间独立维修所有厂家仪器",
+        "只是为了期末考试多拿分，与日后科研无关"
+      ],
+      "answer": 0,
+      "hint": "异常三可能：操作问题 / 仪器问题 / 样品问题。",
+      "explanation": "**A 正确。** 实验室大量时间与仪器打交道，出现异常时要能判断是操作、仪器还是样品问题，定位故障部件后才能与维修人员高效沟通、缩短停机时间；这也是课程目标之一。\n- B、D：低估了仪器结构知识的实用价值；\n- C：只需能排查故障、沟通部件，并非要求独立维修厂家仪器。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "课程目标 · 仪器结构与故障排查"
+      }
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-001-002",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-001-002/recording.md；content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-001-002",
+    "revision": 1,
+    "recordingHash": "4eb55e6712569c66cb4995c8b5439806d5c82bf2c6b0d2926dfcf4a4efe20abc",
+    "notesTextHash": "1051d1d9ddcded2c81dd782ec63ba6d40c0b68c01bcfca6821e465f7b0299bfe"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本门《生物化学与分子生物学》课程内容的三大部分，下列归纳正确的是（　）。",
+      "options": [
+        "生物分子结构与功能、物质代谢、免疫与内分泌",
+        "生物分子的结构与功能、代谢与调节、分子生物学",
+        "糖代谢、脂代谢、蛋白质代谢",
+        "细胞生物学、遗传学、生理学"
+      ],
+      "answer": 1,
+      "hint": "回忆口诀：结构功能加代谢，分子生物三部分。",
+      "explanation": "**B 正确。** 课程三大部分为：生物分子的结构与功能（4章）、代谢与调节、分子生物学；其中前两部分合称“生物化学”，是课程名称的来源。\n- A、C、D：均不是本课程官方的三大部分划分。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "课程体系三大部分"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "维生素B1（硫胺素）在体内发挥辅酶作用的活性形式及其主要功能是（　）。",
+      "options": [
+        "硫胺素不经过任何活化即可直接作为辅酶发挥作用",
+        "活性形式为焦磷酸硫胺素（TPP），主要功能是转移氢原子",
+        "活性形式为焦磷酸硫胺素（TPP），主要功能是转移醛基",
+        "活性形式为硫胺素单磷酸酯，主要功能是转移甲基"
+      ],
+      "answer": 2,
+      "hint": "B1硫胺素，TPP转醛基。",
+      "explanation": "**C 正确。** 维生素B1即硫胺素，在肝脏磷酸化生成活性形式焦磷酸硫胺素（TPP），其主要功能是转移醛基，是丙酮酸脱氢酶复合体的必需辅因子。\n- A：硫胺素需活化为TPP才具辅酶活性。\n- B：转移氢（递氢）并非TPP的功能。\n- D：产物与功能描述均错误。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "维生素B1与焦磷酸硫胺素 TPP"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "丙酮酸脱氢酶复合体所催化的反应及其必需辅因子是（　）。",
+      "options": [
+        "丙酮酸 → 乙酰辅酶A，必需辅因子为TPP",
+        "乙酰辅酶A → 丙酮酸，必需辅因子为TPP",
+        "丙酮酸 → 乳酸，必需辅因子为NADH",
+        "葡萄糖 → 丙酮酸，必需辅因子为生物素"
+      ],
+      "answer": 0,
+      "hint": "丙酮酸脱氢，TPP是必需；产物是进入三羧酸循环的关键。",
+      "explanation": "**A 正确。** 丙酮酸脱氢酶复合体催化丙酮酸 → 乙酰辅酶A，是糖酵解后进入三羧酸循环之前的关键步骤，必需辅因子为TPP（维生素B1活性形式），是糖代谢核心酶之一。\n- B：反应方向说反。\n- C：丙酮酸→乳酸由乳酸脱氢酶催化，非丙酮酸脱氢酶复合体。\n- D：葡萄糖→丙酮酸是糖酵解，不经过丙酮酸脱氢酶复合体。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "丙酮酸脱氢酶复合体 · 丙酮酸→乙酰CoA"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "SLC19A2 基因突变所编码蛋白的缺陷及其导致的疾病是（　）。",
+      "options": [
+        "氨甲酰磷酸合成酶1缺陷 → 高氨血症",
+        "葡萄糖-6-磷酸酶缺陷 → 糖原贮积病",
+        "囊性纤维化跨膜传导调节因子缺陷 → 囊性纤维化",
+        "硫胺素转运蛋白1缺陷 → 硫胺素反应性巨幼细胞贫血"
+      ],
+      "answer": 3,
+      "hint": "SLC19A2缺，维B1口服补。",
+      "explanation": "**D 正确。** SLC19A2编码硫胺素转运蛋白1（ThTr1），其缺陷使维生素B1摄取不足，导致硫胺素反应性巨幼细胞贫血，治疗为口服大剂量维生素B1。\n- A：CPS1缺陷才致高氨血症，是本课另一案例。\n- B、C：均非本课涉及的基因-疾病配对。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "SLC19A2与硫胺素转运蛋白1"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "SLC19A2 基因缺陷引起肺炎、糖尿病、贫血、听力丧失等多系统症状的分子机制，正确的因果顺序是（　）。",
+      "options": [
+        "TPP生成减少 → 维生素B1摄取不足 → 丙酮酸脱氢酶复合体活性降低 → 三羧酸循环障碍",
+        "维生素B1摄取不足 → TPP生成减少 → 丙酮酸脱氢酶复合体活性降低 → 三羧酸循环障碍 → 能量代谢紊乱",
+        "丙酮酸脱氢酶复合体活性降低 → TPP生成减少 → 维生素B1摄取不足 → 能量代谢紊乱",
+        "三羧酸循环障碍 → 维生素B1摄取不足 → TPP生成减少 → 丙酮酸脱氢酶复合体活性降低"
+      ],
+      "answer": 1,
+      "hint": "从基因缺陷到能量紊乱，按流程图从上往下推。",
+      "explanation": "**B 正确。** 因果链为：硫胺素转运蛋白1（ThTr1）缺陷 → 维生素B1摄取不足 → TPP生成减少 → 丙酮酸脱氢酶复合体活性降低 → 丙酮酸→乙酰CoA受阻、三羧酸循环障碍 → 能量代谢紊乱，进而影响造血、胰岛、听觉神经等高耗能系统。\n- A、C、D：均把上下游环节的因果顺序颠倒。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "硫胺素反应性巨幼细胞贫血 · 分子机制链"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "硫胺素反应性巨幼细胞贫血患者口服大剂量维生素B1可缓解症状，其生化依据是（　）。",
+      "options": [
+        "大剂量维生素B1可直接修复 SLC19A2 基因的突变",
+        "维生素B1可取代缺陷蛋白在膜上形成新的转运通道",
+        "转运蛋白只是效率降低而非完全失活，提高底物浓度可部分代偿转运不足",
+        "维生素B1作为能量物质直接氧化供能，绕过三羧酸循环"
+      ],
+      "answer": 2,
+      "hint": "蛋白还在、只是效率低；多喂底物即可补偿。",
+      "explanation": "**C 正确。** ThTr1缺陷使转运效率降低但并非完全失活，口服大剂量维生素B1提高底物浓度，可在质量作用上部分代偿转运不足，使细胞获得足够硫胺素而缓解症状。\n- A：维生素B1是营养底物，不是基因修复手段。\n- B：维生素B1不能替代转运蛋白形成新通道。\n- D：维生素B1是辅酶前体，并非直接氧化供能的能量物质。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "口服大剂量维生素B1的治疗原理"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于 CPS1（氨甲酰磷酸合成酶1）缺陷，下列说法正确的是（　）。",
+      "options": [
+        "CPS1 是尿素循环关键酶，缺陷导致血氨升高（高氨血症）",
+        "CPS1 是糖酵解关键酶，缺陷导致低血糖",
+        "CPS1 缺陷主要引起巨幼细胞贫血，需补铁治疗",
+        "CPS1 是硫胺素转运蛋白，缺陷导致维生素B1缺乏"
+      ],
+      "answer": 0,
+      "hint": "CPS1缺高氨，基因编辑新希望。",
+      "explanation": "**A 正确。** CPS1是尿素循环关键酶，负责将氨整合进入尿素循环；其缺陷使氨不能被清除而蓄积，导致新生儿高氨血症，表现为肌张力高、颤抖、血糖升高。\n- B：定位错误，CPS1不是糖酵解酶。\n- C：巨幼细胞贫血对应 SLC19A2 案例。\n- D：把 CPS1 与硫胺素转运蛋白1相混淆。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "CPS1缺陷与高氨血症"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于2023年报道的针对 CPS1 缺陷新生儿的基因编辑治疗，下列说法错误的是（　）。",
+      "options": [
+        "被称为全世界第一例个性化定制基因编辑疗法",
+        "治疗后患儿恢复为健康正常儿童，随访无额外副作用",
+        "其技术基础包括 CRISPR 等分子生物学技术",
+        "该疗法已被证明完全无风险，可在国内广泛常规开展"
+      ],
+      "answer": 3,
+      "hint": "题目选「错误」；材料明确提醒基因编辑仍有风险。",
+      "explanation": "**D 错误（符合题意）。** 材料明确指出基因编辑仍有较高风险，国内也有患者冒险尝试、很多尚在调查中，需关注技术与伦理问题，远未达到“完全无风险、广泛常规开展”。\n- A、B、C：均为材料所述事实。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "基因编辑治疗 · 风险与伦理"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于罕见病现状，下列数据与描述正确的是（　）。",
+      "options": [
+        "全世界约7000种罕见病，其中仅约20%与遗传相关",
+        "全世界约7000种罕见病，约80%由基因缺陷导致；患者平均要看多个医生、经历多次误诊才确诊",
+        "罕见病种类不足1000种，且绝大多数可被一线医生一次确诊",
+        "罕见病与基因缺陷无关，主要由环境污染引起"
+      ],
+      "answer": 1,
+      "hint": "七十到一百美元口诀反过来背罕见病：七千、八成遗传。",
+      "explanation": "**B 正确。** 全世界约7000种罕见病，80%由基因缺陷（遗传病）导致；每个患者平均要看8个医生、经历3次误诊、历时7年多才确诊，约1/3医生不了解罕见病。\n- A：遗传比例说反（应为80%而非20%）。\n- C、D：与材料数据明显不符。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "罕见病现状 · 关键数据"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列蛋白质与其主要生物学功能的配对，错误的是（　）。",
+      "options": [
+        "血红蛋白 —— 物质运输（运输氧气）",
+        "抗体、补体 —— 免疫防御",
+        "胶原蛋白、角蛋白 —— 信号传导",
+        "肌动蛋白、肌球蛋白 —— 运动"
+      ],
+      "answer": 2,
+      "hint": "题目选「错误」；胶原蛋白、角蛋白撑结构。",
+      "explanation": "**C 错误（符合题意）。** 胶原蛋白、角蛋白属于“结构支持”功能；信号传导对应的例子是受体、激素蛋白。\n- A：血红蛋白运输氧气，属物质运输，正确。\n- B：抗体、补体参与免疫防御，正确。\n- D：肌动蛋白、肌球蛋白参与肌肉收缩与运动，正确。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "蛋白质六大功能分类"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "危重新生儿出现无法解释的多系统症状时，如今可借助全基因组测序快速诊断。与人类基因组计划（HGP）时期相比，现在的测序（　）。",
+      "options": [
+        "时间从十几年缩短到约1天，费用从约30亿美元降到约100美元",
+        "时间仍需十几年，费用仍约30亿美元，只是精度提高",
+        "时间缩短到1天，但费用反而上升到数百万美元",
+        "测序成本与时间均无明显变化"
+      ],
+      "answer": 0,
+      "hint": "三十亿到一百美元，十几载到一天。",
+      "explanation": "**A 正确。** 人类基因组计划（1990-2003）历时十几年、耗资约30亿美元（多国合作）；如今全基因组测序约1天、约100美元，成本骤降使危重新生儿快速全基因组测序成为新的专家共识。\n- B：低估了技术进步。\n- C、D：费用与时间的变化方向均错误。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-001-002/notes.html",
+        "label": "人类基因组计划与测序成本变化"
+      }
+    }
+  ]
+}

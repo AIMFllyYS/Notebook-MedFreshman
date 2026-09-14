@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "histology",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-001-002",
+  "courseName": "人体组织学",
+  "sessionRange": {
+    "start": 1,
+    "end": 2
+  },
+  "taughtOn": "2026-08-31",
+  "topic": "绪论与上皮组织",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-001-002"
+}

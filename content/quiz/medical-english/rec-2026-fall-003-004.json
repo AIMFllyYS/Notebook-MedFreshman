@@ -1,0 +1,260 @@
+{
+  "subjectId": "medical-english",
+  "chapterId": "rec-2026-fall-003-004",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/medical-english/lectures/rec-2026-fall-003-004/recording.md；content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-003-004",
+    "revision": 1,
+    "recordingHash": "d43dcb9aef4ceb1c63eab967f873c9044bf6e8de4a62de7c23a0093f39b71e68",
+    "notesTextHash": "0432db5282c0d95732d9e733556691c6659b2f07159c9a0bd8ec9b72c7435911"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于 Paraphrasing（释义改写）的核心要求，下列说法正确的是（　）。",
+      "options": [
+        "逐词替换原文每一个词，改动幅度越大越好",
+        "大幅缩写原文，只保留最主干的意思",
+        "用不同词语重述他人内容，完全保留原意而不加歪曲",
+        "先把原文翻译成中文再背下来"
+      ],
+      "answer": 2,
+      "hint": "必背句：fully retaining the original semantic meaning without distortion。",
+      "explanation": "**C 正确。** Paraphrasing 是用不同词语重述他人书面或口头内容，第一原则是 fully retaining the original semantic meaning without distortion（完全保留原意、不歪曲），三大价值为帮助理解原文、高效笔记总结、避免抄袭降重。\n- A：不是逐词替换、幅度越大越好；\n- B：缩写丢失细节不等于释义；\n- D：翻译成中文不是本课讲的 paraphrasing。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "Paraphrasing · 定义与核心原则"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列哪一项不属于本课所讲的四大常用释义技巧（　）。",
+      "options": [
+        "同义词替换（synonyms）",
+        "词性转换（part of speech）",
+        "主被动转换（active ↔ passive）",
+        "模仿录音语音语调反复朗读背诵"
+      ],
+      "answer": 3,
+      "hint": "口诀「同义、词性、主被动、句型」。",
+      "explanation": "**D 正确（符合题意）。** 四大技巧是同义词替换、词性转换、主被动转换、句型改写；模仿语音语调朗读不属于释义改写技巧。\n- A、B、C 均为四大技巧之一，如 important→crucial、analysis(n.)→analyze(v.)、The doctor diagnosed→It was diagnosed。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "四大释义技巧 · 同义/词性/主被动/句型"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "按本课给出的标准流程，进行 Paraphrasing 的第一步应当是（　）。",
+      "options": [
+        "通读并充分理解原文",
+        "直接把所有专业术语换成同义词",
+        "先查词典找出全部生僻词",
+        "把原文逐字翻译成中文"
+      ],
+      "answer": 0,
+      "hint": "流程四步：通读理解 → 识别核心词 → 替换重组 → 对照确认。",
+      "explanation": "**A 正确。** 标准操作第一步是 read and fully understand the original text（通读理解），之后才识别核心关键词、替换重组、最后与原文对照确认意思一致。\n- B：专业术语恰恰不能替换，也不是第一步；\n- C、D：查词典或逐字翻译都不在该流程内。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "释义操作四步骤 · 通读理解先行"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "在该 AI 医学诊断文本的三段式结构中，Section 2（Para 4-9）的核心内容是（　）。",
+      "options": [
+        "人类医学诊断现存问题与误诊两大原因",
+        "AI 应用于医学诊断的核心优势（准确性+时效性）",
+        "AI 诊断的立法建议与医疗事故赔偿",
+        "医学院校招生与教育改革方向"
+      ],
+      "answer": 1,
+      "hint": "口诀「问题→优势→挑战」三段递进。",
+      "explanation": "**B 正确。** Section 1（Para 1-3）讲人类诊断现存问题+误诊两大原因；Section 2（Para 4-9）讲 AI 的核心优势，即海量数据支撑带来的准确性与时效性提升；Section 3（Para 10-14）讲 AI 的挑战与未来方向。\n- A 是 Section 1 的内容；\n- C、D 在本课文本中无依据。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "文本三段式结构 · Section 2 AI优势"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于 paraphrasing 中专业术语（如 photosynthesis、药名等 fixed proper nouns）的处理，下列做法正确的是（　）。",
+      "options": [
+        "用最通俗的普通英语词替换，方便大众阅读",
+        "换成同义词以最大限度降低查重率",
+        "必须原样保留、不可替换，否则会造成术语错误",
+        "用汉语拼音标注后再替换"
+      ],
+      "answer": 2,
+      "hint": "易错提醒：专业术语和专有名词绝对不能替换。",
+      "explanation": "**C 正确。** 专业术语、药名等 fixed proper nouns 有标准化特定含义，同义词无法准确传达，替换会引入术语错误，故必须保留；其余内容才应充分改写以降低查重率。\n- A、B：把正式术语换成普通词既不准确，还会降低学术文本的正式性；\n- D：本课无此做法。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "特殊规则 · 专业术语不可替换"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "对于谚语/习语（idiom）的释义改写，本课建议的正确做法是（　）。",
+      "options": [
+        "逐字直译每个词，保持字面一一对应",
+        "先完全掌握其核心隐含意义，再用平实语言重述内涵",
+        "直接删掉不译，以免读者困惑",
+        "原文习语整体保留不动，仅在句末加注释"
+      ],
+      "answer": 1,
+      "hint": "口诀「术语不动，谚语译意」——译的是意，不是字。",
+      "explanation": "**B 正确。** 谚语/习语必须先把握其核心隐含意义（core implied meaning），再用平实语言重述其内涵；直接按字面翻译会丢失其比喻义。\n- A：字面翻译正是被批评的做法；\n- C、D：既不符合 paraphrasing 要求，也不是本课讲的方法。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "特殊规则 · 谚语习语先译隐含意义"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课指出医生通常靠记忆 illness scripts（疾病脚本）识别疾病，由此导致误诊的两大原因是（　）。",
+      "options": [
+        "忽略患者关键特异因素；非典型疾病表现不符合标准模式",
+        "医生学历偏低；临床病例总量不足",
+        "检查仪器精度不够；检验试剂过期",
+        "患者隐瞒病史；家属过度干预治疗"
+      ],
+      "answer": 0,
+      "hint": "这两点恰好对应 AI 能解决的优势——海量数据+发现新模式。",
+      "explanation": "**A 正确。** 两大误诊原因为：①忽略患者关键特异因素（neglect critical specific factors）；②非典型疾病表现不符合标准模式（atypical presentations）。\n- B、C、D：均为材料未提及的臆测项，不是本课所讲的两大原因。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "Illness Script · 误诊两大原因"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课对 AI 在医学领域定位的总结，正确的表述是（　）。",
+      "options": [
+        "AI 应尽快完全替代医生进行独立诊断",
+        "AI 只能用于挂号分诊，不能辅助诊断",
+        "AI 与医学诊断毫无关系，纯属娱乐用途",
+        "AI 应补充（complement）而非替代（replace）人类专业知识，并需充足资金投入"
+      ],
+      "answer": 3,
+      "hint": "必背原句：AI should complement rather than replace human expertise。",
+      "explanation": "**D 正确。** 核心原则是 AI 应 complement rather than replace 人类专业知识，技术稳定迭代还需充足资金投入与有效数据支撑。\n- A：与「补充而非替代」相反；\n- B：AI 在本课中正是辅助诊断的工具，如快速识别缺血性中风；\n- C：明显错误。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "AI定位 · 补充而非替代人类专家"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "在本课列出的 8 种学术段落展开方法中，「按时间先后顺序组织内容」对应的英文术语是（　）。",
+      "options": [
+        "cause and effect",
+        "definition",
+        "time order / time sequence",
+        "space description"
+      ],
+      "answer": 2,
+      "hint": "口诀「时过空举比因类定」，第一个就是时间顺序。",
+      "explanation": "**C 正确。** time order / time sequence（时间顺序）按时间先后组织内容，Para 1 医学诊断发展史即属此法。\n- A：因果关系；\n- B：定义法；\n- D：空间描述——三者均与「按时间先后」不符。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "8种段落展开方法 · time order"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列关于 AI 医学诊断所面临挑战的说法，错误的是（　）。",
+      "options": [
+        "开发成本高，且系统可能输出错误信息",
+        "欧洲出于伦理与就业保护，大力推动 AI 全面替代医生",
+        "在缺乏充分有效数据时，患者对 AI 诊断的信任度较低",
+        "过度依赖 AI 可能造成大规模失业，人口基数大的地区尤甚"
+      ],
+      "answer": 1,
+      "hint": "题目选「错误」项；欧洲的策略恰恰相反——保守研发。",
+      "explanation": "**B 错误（符合题意）。** 出于伦理与就业保护，欧洲采取的是保守（conservative）研发策略，而非推动 AI 全面替代医生。\n- A、C、D 均为材料所列挑战：高开发成本、潜在错误信息输出、有效数据不足时患者信任度低、过度依赖导致大规模失业的伦理担忧。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "AI诊断四大挑战 · 欧洲保守研发策略"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "对课文 Para 1（医学诊断发展史）这一段落，本课给出的分析结论是（　）。",
+      "options": [
+        "采用时间顺序+举例展开，并用 \"history is a march\" 这一隐喻增强表达",
+        "纯空间描述段落，不含任何修辞手法",
+        "采用因果关系展开，直接论证 AI 必然取代医生",
+        "采用定义法，先定义 illness script 这一概念"
+      ],
+      "answer": 0,
+      "hint": "口诀「一段时间加隐喻，二段定义长复合」。",
+      "explanation": "**A 正确。** Para 1 按时间顺序回顾医学诊断发展史并举例，修辞上使用了 \"history is a march\" 的隐喻；本课还指出连医学学术文本也常用 metaphor、irony 增强可读性。\n- B：含隐喻修辞，并非纯空间描述；\n- C：因果展开、讲误诊两大原因的是 Para 3，且文本主旨是「补充而非替代」；\n- D：定义 illness script 的是 Para 2。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "段落分析实例 · Para 1 时间顺序+隐喻"
+      }
+    }
+  ]
+}

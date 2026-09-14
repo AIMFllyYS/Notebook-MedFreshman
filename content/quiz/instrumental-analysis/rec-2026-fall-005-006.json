@@ -1,0 +1,260 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "rec-2026-fall-005-006",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/recording.md；content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-005-006",
+    "revision": 1,
+    "recordingHash": "4abee6d82186e19313f60ca12ee7a33a26a6d9d2763f1514aaa381bd79f91f48",
+    "notesTextHash": "b45713fd3a135bdf9e0f6183b6ff1dec79a60d37959a0174439e79b6c05f4210"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课补讲指出，信号检出限与定量限分别取空白信号标准偏差的（　）。",
+      "options": [
+        "2 倍与 5 倍",
+        "5 倍与 10 倍",
+        "3 倍与 10 倍",
+        "3 倍与 3 倍"
+      ],
+      "answer": 2,
+      "hint": "口诀「检出限三倍空白，定量限十倍空白」；检出限判有没有，定量限判有多少。",
+      "explanation": "**C 正确。** 信号检出限通用规则取空白标准偏差的 3 倍（不同方法可调为 2 倍），定量限取 10 倍，用于待测物的准确定量，区别于仅判断「存在与否」的检出限。\n- A、B：倍数组合与材料不符；\n- D：两者倍数相同则无法区分检出与定量。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "检出限 · 信号3倍空白/定量限10倍空白"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "样品采集三大原则中，作为核心、最必须掌握的是（　）。",
+      "options": [
+        "代表性——少量送检样品的检测结果能代表整批分析对象",
+        "典型性——无论检测目标是什么，都只在污染源附近采样",
+        "事实性——样品越快测越好，无需其他考虑",
+        "随意性——抽到什么就测什么"
+      ],
+      "answer": 0,
+      "hint": "老师强调：核心原则三个字——代表性。",
+      "explanation": "**A 正确。** 采样三大原则以代表性为核心；典型性（匹配检测目标的特定范围，如查污染到污染源附近采）和事实性（易变质样品严控采样与检测的时间间隔）是衍生要求。\n- B：典型性只针对特定检测目标，不是不论目标都去污染源；\n- C：事实性强调时效，但并非唯一；\n- D：随意采样无代表性，直接违背核心原则。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "采样三大原则 · 代表性为核心"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "按地表水采样规范，河流宽度小于 50 m 时应布设的采样垂线数为（　）。",
+      "options": [
+        "3 条",
+        "1 条",
+        "2 条",
+        "不设采样垂线"
+      ],
+      "answer": 1,
+      "hint": "口诀「五十百三垂线」：<50m 一条，50-100m 两条，>100m 三条。",
+      "explanation": "**B 正确。** 采样垂线按河流宽度确定：<50 m 设 1 条，50–100 m 设 2 条，>100 m 设 3 条。\n- A、C：那是 100 m 以上、50–100 m 的配置；\n- D：地表水监测必须设垂线。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "地表水采样 · 垂线按河流宽度"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于水样采集容器的选择，下列搭配正确的是（　）。",
+      "options": [
+        "测金属离子用玻璃容器，测有机物用塑料容器",
+        "测金属离子用不锈钢容器，测有机物用木桶",
+        "无论测什么组分，都统一使用玻璃容器",
+        "测金属离子用塑料容器（防玻璃离子渗出），测有机物用玻璃容器（防塑料单体溶出）"
+      ],
+      "answer": 3,
+      "hint": "易错点：与直觉相反——玻璃会渗出金属离子，塑料会溶出有机物。",
+      "explanation": "**D 正确。** 测金属离子要用塑料容器，避免玻璃容器渗出金属离子干扰；测有机物要用玻璃容器，避免塑料单体溶出干扰。\n- A：恰好说反；\n- B、C：均不符合容器选择原则。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "容器选择 · 金属用塑料/有机物用玻璃"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "由校准曲线 $Y = A + S\\cdot C$（Y 为信号、C 为浓度、A 为截距、S 为斜率），将信号检出限换算为浓度检出限的正确公式是（　）。",
+      "options": [
+        "$C_{检出} = 信号检出 \\times S - A$",
+        "$C_{检出} = (信号检出 - A) \\div S$",
+        "$C_{检出} = (信号检出 + A) \\times S$",
+        "$C_{检出} = 信号检出 \\div (A + S)$"
+      ],
+      "answer": 1,
+      "hint": "扣除背景截距 A，再除以灵敏度 S。",
+      "explanation": "**B 正确。** 把信号检出限代入 $Y = A + S\\cdot C$，扣除背景截距 A 后除以斜率 S，即 $C_{检出}= (信号检出 - A) / S$。\n- A：符号与乘除均错；\n- C：应为减 A 而非加 A；\n- D：分母应为斜率 S，不是 A+S。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "浓度检出限换算 · 扣截距除斜率"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "按地表水采样规范，水深大于 10 m 的采样点，应采集的水层为（　）。",
+      "options": [
+        "仅上层",
+        "上下两层",
+        "上中下三层",
+        "任意一层即可"
+      ],
+      "answer": 2,
+      "hint": "口诀「五和十三层深」：<5m 上层、5-10m 两层、>10m 三层。",
+      "explanation": "**C 正确。** 采样深度按水深确定：<5 m 采上层，5–10 m 采上下两层，>10 m 采上中下三层。\n- A：那是 <5 m 的做法；\n- B：那是 5–10 m 的做法；\n- D：深水层垂向分布差异大，不能任意采一层。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "地表水采样 · 深度按水深"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列水质指标中，按采样规范必须在采样后立即测定的是（　）。",
+      "options": [
+        "余氯、细菌总数、pH 值",
+        "重金属总量、农药残留",
+        "溶解氧、电导率",
+        "总氮、总磷"
+      ],
+      "answer": 0,
+      "hint": "易挥发或受环境影响大的指标要现场马上测。",
+      "explanation": "**A 正确。** 余氯、细菌总数、pH 值需采样后立即测定，避免组分挥发或环境干扰导致结果失真。\n- B、C、D：可按规范冷藏/加试剂保存后在实验室测定，不在立即测定之列。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "保存要求 · 余氯/细菌/pH 立即测定"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于散装粮食与果蔬样品的采集和缩分，下列搭配正确的是（　）。",
+      "options": [
+        "散装粮食用四分法缩分，果蔬用双螺旋套管采样器",
+        "散装粮食和果蔬都用四分法",
+        "散装粮食和果蔬都用双螺旋套管采样器",
+        "散装粮食用双螺旋套管采样器插入粮堆采多深度样本；果蔬去不可食部分后用四分法（取对角线部分）缩分"
+      ],
+      "answer": 3,
+      "hint": "口诀「粮食双螺旋，果蔬四分法」。",
+      "explanation": "**D 正确。** 散装粮食用带凹槽的双螺旋套管采样器插入粮堆，无需拆封即可采不同深度样本；果蔬先去除不可食用部分，再用四分法取对角线部分捣碎制备待测样。\n- A、B、C：把两类样品的工具/方法张冠李戴。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "固体样品采集 · 双螺旋套管/四分法缩分"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "样品预处理的三大目标是（　）。",
+      "options": [
+        "缩短实验时间、美化样品外观、节约试剂",
+        "将样品处理为适配检测的形态、去除检测干扰组分、浓缩低浓度待测组分",
+        "稀释待测组分、增加基质杂质、延长保存期",
+        "把样品烘干、灭菌、装瓶即可"
+      ],
+      "answer": 1,
+      "hint": "口诀「便分析、除干扰、浓缩」。",
+      "explanation": "**B 正确。** 预处理三大目标：①把样品处理成适配检测的形态（便于分析）；②去除检测干扰组分；③浓缩低浓度待测组分。两项关键要求：不损失待测组分、不引入新干扰。\n- A、C、D：均与三大目标相反或无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "样品预处理 · 三大目标与两项要求"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "对待测组分易挥发的样品进行分解前处理，下列方法中**不适合**的是（　）。",
+      "options": [
+        "低温灰化：射频放电产生氧自由基，约 100 ℃ 即可氧化分解",
+        "湿法消化：加浓硝酸/高氯酸/硫酸，温度由试剂沸点控制、低于干法",
+        "在 400–700 ℃ 马弗炉中进行干法高温灰化",
+        "密闭罐消解：聚四氟乙烯内衬不锈钢密闭罐，高压下提高消解效率"
+      ],
+      "answer": 2,
+      "hint": "题目选「不适合」项；高温会让易挥发组分跑掉。",
+      "explanation": "**C 不适合（符合题意）。** 干法灰化在 400–700 ℃ 马弗炉中高温氧化，无需试剂、适用于不易挥发组分，但高温会导致易挥发组分损失。\n- A、B：低温灰化（~100 ℃ 氧自由基）与湿法消化（沸点控温、温度较低）都正是为减少挥发损失而选；\n- D：密闭罐高压消解效率高，并非专对易挥发组分的禁忌方法。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "分解法预处理 · 干法高温损失易挥发组分"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于高氯酸与氢氟酸的操作安全，下列说法正确的是（　）。",
+      "options": [
+        "高氯酸接触酚类、羟基类有机物易生成易爆物质，消解全程不得离人、样品变黑应立即停止加热冷却后补硝酸；氢氟酸可与骨骼中的钙结合造成不可逆损伤（俗称「化骨水」），须全程全套防护",
+        "高氯酸性质非常稳定，可与任何有机物任意混合长时间加热",
+        "氢氟酸只是弱酸，溅到皮肤上用水冲冲即可，无需专门防护",
+        "消解加热时人可以离开一段时间，只要温度不高就行"
+      ],
+      "answer": 0,
+      "hint": "口诀「高氯遇酚易爆变黑即停，氢氟化骨水全套防护」。",
+      "explanation": "**A 正确。** 高氯酸遇酚类/羟基类有机物易生成易爆物质，消解全程不得离人，样品变黑立即停热、冷却后补加硝酸；氢氟酸可与骨骼中的钙结合造成不可逆损伤（「化骨水」），必须全程佩戴全套防护用具。\n- B：高氯酸并非与任意有机物安全共存；\n- C：氢氟酸接触皮肤可致不可逆损伤，绝非冲冲即可；\n- D：所有加热类实验操作全程不得离开人。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "消化安全 · 高氯酸/氢氟酸操作规范"
+      }
+    }
+  ]
+}
