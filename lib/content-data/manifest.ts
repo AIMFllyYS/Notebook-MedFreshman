@@ -26,7 +26,7 @@ import { cellBiologyLabTextbookItems } from './cell-biology-lab-items';
 import { biochemistryDetailItems, biochemistrySummaryItems, biochemistryKaoqianItems, biochemistryShizhanItems } from './biochemistry-extras';
 import { anatomyDetailItems, anatomyKaoqianItems, anatomyShizhanItems } from './anatomy-extras';
 import { histologyDetailItems, histologyKaoqianItems, histologyShizhanItems } from './histology-extras';
-import { hasLectures, lectureNavGroupsBySubject } from './lectures';
+import { hasLectures, lectureNavGroupsBySubject, lectureSummaryLeavesBySubject } from './lectures';
 
 
 const physicsKaoqianMoniItems = [
@@ -285,23 +285,30 @@ const baseContentTree: ContentTree = {
 };
 
 // ── 课堂内容适配 ─────────────────────────────────────────────────────────
-// 把 lectures.generated.json 中每节课的「四材料分组」并入对应学科的「课堂录音」板块。
-// 旧 rec/sum 手工条目一律保留；若某学科 recording 仅有占位 stub，则用真实课节替换占位，
-// 避免「敬请期待」与真实课节并列。新课堂不再写入 summary（纪要并入课节组，不双份）。
+// 把 lectures.generated.json 中每节课的材料按板块拆分并入：
+//  - recording（课上录音）：课节 navigationOnly 分组，下挂课堂原文/课堂笔记/复习手卡 3 叶子；
+//  - summary（课堂纪要）：课堂纪要 minutes 叶子（full 布局，共享同一套测验）。
+// 旧 rec/sum 手工条目一律保留；若某板块仅有占位 stub，则用真实课节替换占位，
+// 避免「敬请期待」与真实课节并列。
 function mergeLecturesIntoTree(tree: ContentTree): ContentTree {
   return {
     ...tree,
     subjects: tree.subjects.map((subject) => {
       if (!hasLectures(subject.id)) return subject;
-      const groups = lectureNavGroupsBySubject(subject.id);
+      const recordingGroups = lectureNavGroupsBySubject(subject.id);
+      const summaryLeaves = lectureSummaryLeavesBySubject(subject.id);
+      const mergeInto = (cat: typeof subject.categories[number], incoming: typeof recordingGroups) => {
+        const onlyStub =
+          cat.items.length === 1 && cat.items[0].status === 'stub';
+        const items = onlyStub ? incoming : [...cat.items, ...incoming];
+        return { ...cat, items };
+      };
       return {
         ...subject,
         categories: subject.categories.map((cat) => {
-          if (cat.id !== 'recording') return cat;
-          const onlyStub =
-            cat.items.length === 1 && cat.items[0].status === 'stub';
-          const items = onlyStub ? groups : [...cat.items, ...groups];
-          return { ...cat, items };
+          if (cat.id === 'recording') return mergeInto(cat, recordingGroups);
+          if (cat.id === 'summary') return mergeInto(cat, summaryLeaves);
+          return cat;
         }),
       };
     }),

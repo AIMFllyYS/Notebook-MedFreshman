@@ -237,6 +237,7 @@ for (const subject of contentTree.subjects) {
     ...(item.materialRole ? { materialRole: item.materialRole } : {}),
     ...(item.lessonRef ? { lessonRef: item.lessonRef } : {}),
     ...(item.quizRef ? { quizRef: item.quizRef } : {}),
+    ...(item.layoutProfile ? { layoutProfile: item.layoutProfile } : {}),
     ...(item.children?.length ? { children: item.children.map(slim) } : {}),
   });
   const expected = JSON.stringify({
@@ -249,6 +250,7 @@ for (const subject of contentTree.subjects) {
         name: c.name,
         ...(c.capabilities?.length ? { capabilities: c.capabilities } : {}),
         ...(c.keyStrategy ? { keyStrategy: c.keyStrategy } : {}),
+        ...(c.layoutProfile ? { layoutProfile: c.layoutProfile } : {}),
         items: c.items.map(slim),
       })),
     })),

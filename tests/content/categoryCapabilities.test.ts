@@ -32,7 +32,9 @@ test("category()/stubCategory()：带出模板的 name / capabilities / keyStrat
   assert.equal(detail.name, "详解");
   assert.deepEqual([...(detail.capabilities ?? [])].sort(), ["examples", "media", "quiz", "search"]);
   assert.equal(detail.keyStrategy, "section-dot");
-  assert.equal(summary.keyStrategy, undefined);
+  // summary 现带 search+quiz 能力与 category-item 策略（课堂纪要 minutes 叶子共享测验）；
+  // 仍保持 article 布局，大一旧 sum-XX 不显示测验 Tab。
+  assert.equal(summary.keyStrategy, "category-item");
   assert.equal(summary.layoutProfile, "article");
   const stub = stubCategory("kaoqian-moni");
   assert.equal(stub.items[0]?.status, "stub");
@@ -53,16 +55,16 @@ test("deriveContentKey：四种策略与历史行为一致", () => {
   assert.deepEqual(deriveContentKey(textbook, "ch05-2"), { chapterId: "textbook", sectionId: "ch05", quizId: "tb-ch05" });
   assert.deepEqual(deriveContentKey(textbook, "tb-ch05"), { chapterId: "textbook", sectionId: "tb-ch05", quizId: "tb-ch05" });
   assert.deepEqual(deriveContentKey(textbook, "toc"), { chapterId: "textbook", sectionId: "toc", quizId: "" });
-  assert.deepEqual(deriveContentKey(summary, "sum-01"), EMPTY_KEY);
+  assert.deepEqual(deriveContentKey(summary, "sum-01"), { chapterId: "summary", sectionId: "sum-01", quizId: "sum-01" }, "summary 现为 category-item 策略");
   assert.deepEqual(deriveContentKey(undefined, "1.1"), EMPTY_KEY);
 });
 
 test("deriveExampleKeyFor / deriveActiveKeys：按 capabilities 开关", () => {
   assert.deepEqual(deriveExampleKeyFor(detail, "1.4"), { chapterId: "ch01", sectionId: "1.4" });
-  assert.deepEqual(deriveExampleKeyFor(summary, "sum-01"), { chapterId: "", sectionId: "" });
+  assert.deepEqual(deriveExampleKeyFor(summary, "sum-01"), { chapterId: "", sectionId: "" }, "summary 无 examples 能力，例题 key 为空");
   assert.deepEqual(deriveActiveKeys(detail, "1.4"), { activeChapterId: "ch01", activeSectionId: "1.4" });
   assert.deepEqual(deriveActiveKeys(recording, "rec-07"), { activeChapterId: "rec-07", activeSectionId: "" }, "录音无 media，sectionId 为空");
-  assert.deepEqual(deriveActiveKeys(summary, "sum-01"), { activeChapterId: "", activeSectionId: "" });
+  assert.deepEqual(deriveActiveKeys(summary, "sum-01"), { activeChapterId: "sum-01", activeSectionId: "" }, "summary 有 quiz 能力，category-item 推导出 quizId");
   const mediaOnly: Category = { id: "x", name: "x", capabilities: ["media"], keyStrategy: "section-dot", items: [] };
   assert.deepEqual(deriveActiveKeys(mediaOnly, "2.1"), { activeChapterId: "ch02", activeSectionId: "2.1" });
 });

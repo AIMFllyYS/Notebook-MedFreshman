@@ -416,8 +416,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "sum-01",
@@ -514,6 +517,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "kaodian-01",
@@ -682,6 +686,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "real-01",
@@ -1311,8 +1316,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "sum-01",
@@ -1469,6 +1477,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "sim-01",
@@ -1511,6 +1520,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "placeholder",
@@ -2156,8 +2166,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "sum-01",
@@ -2278,6 +2291,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "sim-01",
@@ -2332,6 +2346,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "placeholder",
@@ -3037,8 +3052,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "sum-01",
@@ -3105,6 +3123,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "modern-history-mock-final-paper-01",
@@ -3147,6 +3166,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "placeholder",
@@ -3810,8 +3830,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "sum-01",
@@ -3890,6 +3913,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "maogai-mock-final-paper-01",
@@ -3932,6 +3956,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "maogai-practice-unit-intro-01",
@@ -4067,8 +4092,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "placeholder",
@@ -4081,6 +4109,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "sim-01",
@@ -4117,6 +4146,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "real-01",
@@ -4780,16 +4810,6 @@
                   "quizRef": "rec-2026-fall-007-008"
                 },
                 {
-                  "id": "min-rec-2026-fall-007-008",
-                  "title": "课堂纪要 · 第7-8节",
-                  "type": "document",
-                  "status": "done",
-                  "renderType": "markdown",
-                  "materialRole": "minutes",
-                  "lessonRef": "rec-2026-fall-007-008",
-                  "quizRef": "rec-2026-fall-007-008"
-                },
-                {
                   "id": "note-rec-2026-fall-007-008",
                   "title": "课堂笔记 · 第7-8节",
                   "type": "document",
@@ -4817,20 +4837,29 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "min-rec-2026-fall-007-008",
+              "title": "课堂纪要 · 第7-8节",
               "type": "document",
-              "status": "stub"
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-007-008",
+              "quizRef": "rec-2026-fall-007-008",
+              "layoutProfile": "full"
             }
           ]
         },
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "placeholder",
@@ -4843,6 +4872,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "placeholder",
@@ -5256,8 +5286,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "placeholder",
@@ -5270,6 +5303,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "sim-01",
@@ -5288,6 +5322,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "real-01",
@@ -5375,8 +5410,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "placeholder",
@@ -5389,6 +5427,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "sim-01",
@@ -5401,6 +5440,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "placeholder",
@@ -5518,8 +5558,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "placeholder",
@@ -5532,6 +5575,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "placeholder",
@@ -5544,6 +5588,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "placeholder",
@@ -6183,8 +6228,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "placeholder",
@@ -6197,6 +6245,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "placeholder",
@@ -6209,6 +6258,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "placeholder",
@@ -7276,8 +7326,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "placeholder",
@@ -7290,6 +7343,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "sim-01",
@@ -7308,6 +7362,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "real-01",
@@ -8327,8 +8382,11 @@
           "id": "summary",
           "name": "课堂纪要",
           "capabilities": [
-            "search"
+            "search",
+            "quiz"
           ],
+          "keyStrategy": "category-item",
+          "layoutProfile": "article",
           "items": [
             {
               "id": "sum-01",
@@ -8341,6 +8399,7 @@
         {
           "id": "kaoqian-moni",
           "name": "考前模拟",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "sim-01",
@@ -8365,6 +8424,7 @@
         {
           "id": "shizhan-yanlian",
           "name": "实战演练",
+          "layoutProfile": "reference",
           "items": [
             {
               "id": "real-01",

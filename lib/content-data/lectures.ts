@@ -41,9 +41,13 @@ function materialLeafTitle(entry: LectureCatalogEntry, role: LectureMaterialRole
   )}`;
 }
 
-/** 把一节课转成 navigationOnly 分组节点（父节点不生成路由，四叶子才是文章）。 */
-function toNavGroup(entry: LectureCatalogEntry): ContentItem {
-  const children: ContentItem[] = LECTURE_MATERIAL_ROLES.map((role) => {
+/** recording（课上录音）板块下挂载的材料角色：课堂原文 / 课堂笔记 / 复习手卡。
+ *  课堂纪要 minutes 单独归入 summary（课堂纪要）板块，见 lectureSummaryLeavesBySubject。 */
+const RECORDING_ROLES = LECTURE_MATERIAL_ROLES.filter((role) => role !== "minutes");
+
+/** 把一节课转成 recording 板块下的 navigationOnly 分组节点（父节点不生成路由，3 叶子才是文章）。 */
+function toRecordingNavGroup(entry: LectureCatalogEntry): ContentItem {
+  const children: ContentItem[] = RECORDING_ROLES.map((role) => {
     const material = entry.materials[role];
     return {
       id: material.articleId,
@@ -66,15 +70,42 @@ function toNavGroup(entry: LectureCatalogEntry): ContentItem {
   };
 }
 
-/** 某学科的课堂分组（按上课日期、节次排序）。 */
-export function lectureNavGroupsBySubject(subjectId: SubjectId | string): ContentItem[] {
+/** 把一节课的课堂纪要（minutes）转成 summary 板块下的叶子。
+ *  summary 板块默认 article 布局，这里用 item.layoutProfile="full" 覆盖，
+ *  使其显示与其他三材料共享的测验 Tab（quizRef 一致）。 */
+function toSummaryLeaf(entry: LectureCatalogEntry): ContentItem {
+  const material = entry.materials.minutes;
+  return {
+    id: material.articleId,
+    title: materialLeafTitle(entry, "minutes"),
+    type: "document",
+    status: "done",
+    renderType: material.format as RenderType,
+    materialRole: "minutes",
+    lessonRef: entry.lessonId,
+    quizRef: entry.quizId,
+    layoutProfile: "full",
+  };
+}
+
+/** 某学科全部课节，按上课日期、节次排序。 */
+function sortedLessonsForSubject(subjectId: SubjectId | string): LectureCatalogEntry[] {
   return catalog.lessons
     .filter((l) => l.subjectId === subjectId)
     .sort(
       (a, b) =>
         a.taughtOn.localeCompare(b.taughtOn) || a.sessionRange.start - b.sessionRange.start,
-    )
-    .map(toNavGroup);
+    );
+}
+
+/** 某学科 recording 板块下的课堂分组（按上课日期、节次排序）。 */
+export function lectureNavGroupsBySubject(subjectId: SubjectId | string): ContentItem[] {
+  return sortedLessonsForSubject(subjectId).map(toRecordingNavGroup);
+}
+
+/** 某学科 summary 板块下的课堂纪要叶子（按上课日期、节次排序）。 */
+export function lectureSummaryLeavesBySubject(subjectId: SubjectId | string): ContentItem[] {
+  return sortedLessonsForSubject(subjectId).map(toSummaryLeaf);
 }
 
 export function hasLectures(subjectId: SubjectId | string): boolean {
