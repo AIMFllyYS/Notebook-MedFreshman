@@ -93,7 +93,7 @@
 
 还有一个原因就是我们常见的驼背对吧？刚才说的脊柱的弯曲的更严重了，所以会这三个原因导致了我们的脊柱。
 @说话人 4 18:23
-&nbspthe spinal column or backbone is one of the most important parts of your body。
+ the spinal column or backbone is one of the most important parts of your body。
 
 Advice made support，allow you to stand upright，bend and twist。
 
@@ -101,11 +101,11 @@ Very good individual bones interlock with each other to form a spinal column，t
 @说话人 1 20:00
 And.
 @说话人 4 20:03
-&nbspeach disc works in concert with two facet joints，forming a spinal motion segment。The BIO mechanical function of each pair of facet joints is to Guide and limit the movement of the spinal motion segment。The surfaces of the joint recorded with courage that helps each joint move smoothly。Directly behind this，the ring by vertical bodies create a vertical tunnel called the spinal canal or neural canal。The spinal cord and spinal nerves pass through the spinal canal which protects them from injury。The spinal cord is a major column of nerve tissue that is connected to the brain and serves as an Information superhighway between the brain and the body。
+ each disc works in concert with two facet joints，forming a spinal motion segment。The BIO mechanical function of each pair of facet joints is to Guide and limit the movement of the spinal motion segment。The surfaces of the joint recorded with courage that helps each joint move smoothly。Directly behind this，the ring by vertical bodies create a vertical tunnel called the spinal canal or neural canal。The spinal cord and spinal nerves pass through the spinal canal which protects them from injury。The spinal cord is a major column of nerve tissue that is connected to the brain and serves as an Information superhighway between the brain and the body。
 @说话人 1 20:45
 The nerves.
 @说话人 4 20:49
-&nbspin your spinal branch off to form pairs of nerves that travel through the small openings between your vertebrae，enter for people for ages。This is the condition of a normal lumbar intervertebral disc。As this generation breaks down，the inner core can make out the other portion of this。This condition is known as a discrimination which puts direct pressure on the nerve。Mama herniated disk symptoms include low back pain，legs and back pain，like menace，anti。
+ in your spinal branch off to form pairs of nerves that travel through the small openings between your vertebrae，enter for people for ages。This is the condition of a normal lumbar intervertebral disc。As this generation breaks down，the inner core can make out the other portion of this。This condition is known as a discrimination which puts direct pressure on the nerve。Mama herniated disk symptoms include low back pain，legs and back pain，like menace，anti。
 
 And this topic lumbar dysectomy is a minimally invasive procedure for treating lumbar herniated disc。First，a thin Guide wire is placed under x Ray control down to the involved level of the slide。A tapering diameter is inserted over the background。A small tube is inserted over the diameter to create a portal to the herniated disk。The end scope is placed through the tube and diskectomy is performed。Using special instruments，your surgeon can now Micro surgically remove the herniation thereby relieving nerve recompression。The incision is close to the station two and the procedure is Complete。Advantages Venice topic Lombardi inspect to me include the following。Minimally invasive，short recovery，high success rates，animals are no blood loss，preservation of spinal mobility，small incision and minimal scar tissue condition。Patients are typically able to go home in a few hours and.
 @说话人 2 22:44
@@ -155,7 +155,7 @@ And this topic lumbar dysectomy is a minimally invasive procedure for treating l
 
 在我们上臂这里肱骨我们然后秀肌肉就叫另外然后往下是前臂的桡骨尺骨，再往下就是手骨，手骨包括腕骨发放掌骨一块一共14块，上述部分需求我们先看锁骨是这个形态，这是图上面看，下面看大家可以摸一下，这个事情不熟，对吧？可以摸一下，它是弯曲的对吧？
 
-&nbspS呈s形内侧的2/3步向前，我这是非常感谢它分两端它的近侧端，它的内侧端叫做什么？叫做胸骨关与胸与胸骨柄所贴近，相关节形成叫做胸锁关节，然后它的外侧关节是叫做肩弓缘与肩胛骨的肩峰相关联，它的上表面是光滑的，而下表面下面是粗糙的，粗糙就会可能是有肌腱和韧带的缝合，然后它是整体撕成了缠死的，正好在 s s弯的中间，那也就是这个靠外侧的1/3处也是所谓的意义合作。
+ S呈s形内侧的2/3步向前，我这是非常感谢它分两端它的近侧端，它的内侧端叫做什么？叫做胸骨关与胸与胸骨柄所贴近，相关节形成叫做胸锁关节，然后它的外侧关节是叫做肩弓缘与肩胛骨的肩峰相关联，它的上表面是光滑的，而下表面下面是粗糙的，粗糙就会可能是有肌腱和韧带的缝合，然后它是整体撕成了缠死的，正好在 s s弯的中间，那也就是这个靠外侧的1/3处也是所谓的意义合作。
 
 对，这边是朱向前的对吧？朱向前刚回到终点站靠外侧的1/3是一无所获。然后我们看肩胛骨，这里就是肩胛骨，接着在后面就是在学习过程叫做肩胛骨。增加骨的形状是一个三角形的阳性，位于胸位于胸廓后外，它的特点可以分为两个面、三个圆、三个角、三个窝，然后横着接通。
 
@@ -515,7 +515,7 @@ And this topic lumbar dysectomy is a minimally invasive procedure for treating l
 @说话人 5 01:20:21
 Shoulder recitations，silicon anatomy，you can see the body anatomy of the shoulder area。It includes the humorous and the schedule。You can also see the important muscles attached to the shoulder area，including the super spinach as subscapular as along the head of the license。Shoulder dislocation is this location of the gain of humoral chart。You can see that cavity as part of the scheduler， the label is attached to the united deliberate reinforce the united cavity and act as the bomber within the joint capsule of the shoulder joint。There is a nerve in the air that's commonly injured and shoulder dislocations。It arises from the posterior core that supplies the tears minor and deployed muscle and the skin over the shoulder area，injury of the anxiety nerve result in numbness in the shoulder area，a weakness of shoulder.
 @说话人 1 01:21:50
-&nbspconduction。
+ conduction。
 @说话人 5 01:21:52
 The shoulder joint is the most commonly distributed joint in the body。Types of shoulder dissertation include anterior dissertation and posterior dislocation until dislocation is the most common dislocation。The mechanism is abduction，extension and external rotation of the arm。He can see the mechanism of abduction，extension，acceleration that leads to the dissertation。 The arm would be in a position away from the body often overhead with the arm rotated backwards。This is a normal shoulder turn to the distribution。You can see the bicycle standard until this continue this location is often found with combination of labor and tear and greater to rise in fraction or fracture of the humor shape called it says lesion back lesion。It is in jail of the deal and see the labor of the Illinois draft。Then completion may be associated with a higher current state of this location，especially in patient，younger than3 years of age recommendation can appear either as fibrous our body in the elderly patient。
 
