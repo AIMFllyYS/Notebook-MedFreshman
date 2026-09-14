@@ -312,7 +312,7 @@ export default function ChatThread({
         {error && (
           <div className="chat-error" role="alert">
             <AgentAlertIcon size={16} />
-            <span>{error}</span>
+            <span className="min-w-0 flex-1 break-words">{error}</span>
             <button type="button" onClick={onClearError} className="chat-error-close" aria-label="关闭错误提示">
               <AgentCloseIcon size={14} />
             </button>

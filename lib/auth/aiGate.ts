@@ -3,6 +3,7 @@ import { resolvePublicAuthEnv } from "./env.ts";
 import { isPaidAiApiPath } from "./paidAiRoutes.ts";
 import { consumeRateLimit, type RateLimitConsumeOptions } from "./rateLimit.ts";
 import { extractAccessToken } from "./sessionCookie.ts";
+import { AI_LOGIN_REQUIRED_MESSAGE } from "./loginHint.ts";
 
 export { extractAccessToken } from "./sessionCookie.ts";
 export {
@@ -11,7 +12,7 @@ export {
   PAID_AI_API_PATHS,
 } from "./paidAiRoutes.ts";
 
-export const AI_GATE_UNAUTHORIZED = { error: "Unauthorized" } as const;
+export const AI_GATE_UNAUTHORIZED = { error: AI_LOGIN_REQUIRED_MESSAGE } as const;
 export const AI_GATE_RATE_LIMITED = { error: "Too many requests" } as const;
 
 export interface GateUser {

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview";
+export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor";
 
 export interface WindowPoint {
   x: number;
@@ -31,6 +31,8 @@ export interface ImageGenViewerData {
 
 export type BillingDashboardData = Record<string, never>;
 
+export type MembershipSponsorData = Record<string, never>;
+
 export interface DocumentViewerData {
   documentId: string;
 }
@@ -41,6 +43,7 @@ export interface NoteCitationViewerData {
 
 export interface SourceTraceViewerData {
   sources: unknown[];
+  activeKey?: string;
 }
 
 export interface SourcePreviewData {
@@ -52,11 +55,11 @@ export interface SourcePreviewData {
 export interface AttachmentPreviewData {
   name: string;
   mimeType: string;
-  kind: "image" | "pdf" | "ppt" | "html" | "markdown" | "text";
+  kind: "image" | "pdf" | "ppt" | "html" | "markdown" | "text" | "docx";
   content: string;
 }
 
-export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | DocumentViewerData | NoteCitationViewerData | SourceTraceViewerData | SourcePreviewData | AttachmentPreviewData | Record<string, unknown>;
+export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | MembershipSponsorData | DocumentViewerData | NoteCitationViewerData | SourceTraceViewerData | SourcePreviewData | AttachmentPreviewData | Record<string, unknown>;
 
 export interface ManagedWindow<TData = ManagedWindowData> {
   id: string;
@@ -69,6 +72,8 @@ export interface ManagedWindow<TData = ManagedWindowData> {
   fullscreen: boolean;
   minimized: boolean;
   badge?: number;
+  /** 进入全屏前的几何，供红绿灯与键盘快捷键还原。 */
+  preExpand?: { pos: WindowPoint; size: WindowSize } | null;
   data: TData;
 }
 

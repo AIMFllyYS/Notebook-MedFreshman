@@ -52,7 +52,7 @@ export function collectMessageSources(parts: ChatMessagePart[]): TraceSource[] {
       ? (part.output.sources ?? []).map((source: WebSearchSource) => ({
           kind: 'web' as const,
           title: source.title || source.url,
-          url: source.url,
+          url: source.url ?? '',
           snippet: source.snippet ?? '',
         }))
       : [],

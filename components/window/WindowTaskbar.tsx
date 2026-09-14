@@ -4,11 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, FileText, FileSearch, FileType, FileSpreadsheet, Presentation, Code2, BookOpen, Globe, Plus, Link2, Upload } from "lucide-react";
+import { Plus, Link2, Upload } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import OverflowMenu from "@/components/window/OverflowMenu";
-import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
+import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
+import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
 import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
+import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 import { openSourcePreview } from "@/lib/chat/openSourcePreview";
 
@@ -24,47 +26,20 @@ type TaskbarTooltip = {
   top: number;
 };
 
-function WindowIcon({ type, icon }: { type: ManagedWindow["type"]; icon?: string }) {
-  const [failedIcon, setFailedIcon] = useState<string | null>(null);
-  if (icon && failedIcon !== icon) {
-    // 动态站点 favicon 不在 next/image 的静态远程域名白名单内。
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={icon} alt="" aria-hidden="true" className="h-4 w-4 rounded-sm object-contain" onError={() => setFailedIcon(icon)} />;
-  }
-  if (type === "floating-chat") return <PencilSparklesIcon size={15} />;
-  if (type === "record-preview") return <BookmarkCheck size={15} />;
-  if (type === "image-gen-viewer") return <ImagePlus size={15} />;
-  if (type === "billing-dashboard") return <PieChart size={15} />;
-  if (type === "document-viewer") return <FileText size={15} />;
-  if (type === "attachment-preview") return <FileSearch size={15} />;
-  if (type === "note-citation-viewer" || type === "source-trace-viewer") return <BookOpen size={15} />;
-  if (type === "source-preview") return <Globe size={15} />;
-  return <MonitorPlay size={15} />;
+function taskbarAccent(win: ManagedWindow): string | undefined {
+  if (win.type !== "attachment-preview") return undefined;
+  return fileTypeAccent(win.data as { kind?: string; mimeType?: string; name?: string });
 }
 
-function AttachmentWindowIcon({ data }: { data: ManagedWindow["data"] }) {
-  const attachment = data as { kind?: string };
-  if (attachment.kind === "pdf") return <FileSearch size={15} />;
-  if (attachment.kind === "ppt") return <Presentation size={15} />;
-  if (attachment.kind === "markdown") return <FileType size={15} />;
-  if (attachment.kind === "html") return <Code2 size={15} />;
-  if (attachment.kind === "text") return <FileSpreadsheet size={15} />;
-  return <FileSearch size={15} />;
-}
-
-function previewKind(attachment: AttachmentPreview): "image" | "pdf" | "ppt" | "html" | "markdown" | "text" {
-  if (isImagePreview(attachment)) return "image";
-  if (attachment.type === "local-file") return attachment.mimeType.includes("powerpoint") ? "ppt" : "pdf";
-  if (attachment.mimeType.includes("powerpoint") || /\.pptx?$/i.test(attachment.name)) return "ppt";
-  if (attachment.mimeType === "text/html" || /\.html?$/i.test(attachment.name)) return "html";
-  if (attachment.mimeType === "text/markdown" || /\.md(?:own)?$/i.test(attachment.name)) return "markdown";
-  return "text";
+function previewKind(attachment: AttachmentPreview) {
+  const name = isImagePreview(attachment) ? attachment.file.name : attachment.name;
+  return attachmentPreviewKind({ name, mimeType: attachment.mimeType });
 }
 
 function previewContent(attachment: AttachmentPreview): string {
   if (isImagePreview(attachment)) return attachment.base64;
   if (attachment.type === "local-file") return attachment.dataUrl;
-  return attachment.text;
+  return attachment.previewUrl || attachment.text;
 }
 
 function isImagePreview(attachment: AttachmentPreview): attachment is ImageAttachmentPreview {
@@ -311,18 +286,19 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
             className={clsx(
               "relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border text-[var(--ink-soft)] shadow-sm transition-colors",
               "border-[color-mix(in_srgb,var(--line)_88%,var(--md-sys-color-primary)_12%)] bg-[var(--bg-elevated)]",
-              "hover:border-[var(--md-sys-color-primary)] hover:bg-[var(--bg-muted)] hover:text-[var(--md-sys-color-primary)]",
-              !win.minimized && "text-[var(--md-sys-color-primary)]",
+              "hover:border-[var(--md-sys-color-primary)] hover:bg-[var(--bg-muted)]",
+              !taskbarAccent(win) && "hover:text-[var(--md-sys-color-primary)]",
+              !taskbarAccent(win) && !win.minimized && "text-[var(--md-sys-color-primary)]",
             )}
           >
-            {win.type === "attachment-preview" ? <AttachmentWindowIcon data={win.data} /> : <WindowIcon type={win.type} icon={win.icon} />}
+            <WindowTypeIcon type={win.type} icon={win.icon} data={win.data} size={15} />
             <span
               className={clsx(
                 "absolute bottom-0.5 left-1/2 h-0.5 -translate-x-1/2 rounded-full transition-all",
-                win.minimized
-                  ? "w-4 bg-[var(--md-sys-color-primary)]"
-                  : "w-2 bg-[var(--ink-faint)]",
+                win.minimized ? "w-4" : "w-2",
+                !taskbarAccent(win) && (win.minimized ? "bg-[var(--md-sys-color-primary)]" : "bg-[var(--ink-faint)]"),
               )}
+              style={taskbarAccent(win) ? { background: taskbarAccent(win) } : undefined}
             />
             {win.badge && win.badge > 1 && (
               <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-[var(--md-sys-color-primary)] px-1 text-[10px] font-semibold leading-none text-[var(--md-sys-color-on-primary)]">

@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Download, LayoutList, PieChart as PieChartIcon, ArrowRightLeft } from "lucide-react";
+import { Download, PieChart as PieChartIcon, ArrowRightLeft } from "lucide-react";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { useBillingStore, getProviderCategoryName } from "@/lib/hooks/useBillingStore";
 import { useSettings } from "@/lib/hooks/useSettings";
-import WindowChrome from "@/components/window/WindowChrome";
+import ManagedWindow from "@/components/window/ManagedWindow";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import React from "react";
 import clsx from "clsx";
-import { useResizable } from "@/lib/hooks/useResizable";
 import { refreshBillingFromLedger } from "@/lib/billing/syncUsageLedger";
 import { costCnyToUsd, filterLedgerByRange } from "@/lib/billing/ledgerView";
 
@@ -99,7 +98,7 @@ function ProviderStatCard({
 
 function BillingDashboardWindow({ winId }: { winId: string }) {
   const managed = useWindowManager((s) => s.windows.find((w) => w.id === winId));
-  const { bringToFront, closeWindow, minimizeWindow, setFullscreen, commitGeometry } = useWindowManager();
+  const closeWindow = useWindowManager((s) => s.closeWindow);
 
   const [timeRange, setTimeRange] = useState<TimeRange>("7d");
   const { records, exportToCsv } = useBillingStore();
@@ -195,69 +194,31 @@ function BillingDashboardWindow({ winId }: { winId: string }) {
     overscan: 10,
   });
 
-  const elRef = React.useRef<HTMLDivElement>(null);
-  const onResizeStart = useResizable(
-    elRef,
-    (width, height) => {
-      commitGeometry(winId, { size: { width, height } });
-    },
-    { minW: 500, minH: 350 }
-  );
-
   if (!managed) return null;
 
-  const handlePointerDown = () => bringToFront(winId);
-
   return (
-    <div
-      ref={elRef}
-      onPointerDownCapture={handlePointerDown}
-      style={{
-        position: managed.fullscreen ? "fixed" : "absolute",
-        left: managed.fullscreen ? 0 : managed.pos.x,
-        top: managed.fullscreen ? 0 : managed.pos.y,
-        width: managed.fullscreen ? "100%" : managed.size.width,
-        height: managed.fullscreen ? "100%" : managed.size.height,
-        zIndex: managed.z,
-        display: managed.minimized ? "none" : "flex",
-      }}
-      className="overflow-hidden rounded-xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--bg-panel)] shadow-2xl ring-1 ring-black/5"
+    <ManagedWindow
+      windowId={winId}
+      title={managed.title}
+      icon={<PieChartIcon size={15} />}
+      onClose={() => closeWindow(winId)}
+      fullscreenTarget="viewport"
+      minSize={{ minW: 500, minH: 350 }}
+      overlayId="billing-dashboard"
+      actions={
+        <button
+          type="button"
+          data-no-drag
+          onClick={() => exportToCsv(customGroups)}
+          title="导出 CSV"
+          className="press flex h-7 items-center gap-1 rounded-lg px-2 text-xs font-medium text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-variant)]"
+        >
+          <Download size={13} />
+          <span className="hidden sm:inline">导出记录</span>
+        </button>
+      }
+      bodyClassName="flex min-h-0 flex-1 flex-col overflow-hidden"
     >
-      <WindowChrome
-        title={managed.title}
-        icon={<PieChartIcon size={14} />}
-        isFullscreen={managed.fullscreen}
-        onClose={() => closeWindow(winId)}
-        onMinimize={() => minimizeWindow(winId)}
-        onFullscreen={() => setFullscreen(winId, !managed.fullscreen)}
-        onDragStart={(e) => {
-          const startX = e.clientX;
-          const startY = e.clientY;
-          const startPosX = managed.pos.x;
-          const startPosY = managed.pos.y;
-          const onMove = (me: PointerEvent) => {
-            commitGeometry(winId, {
-              pos: { x: startPosX + me.clientX - startX, y: startPosY + me.clientY - startY },
-            });
-          };
-          const onUp = () => {
-            document.removeEventListener("pointermove", onMove);
-            document.removeEventListener("pointerup", onUp);
-          };
-          document.addEventListener("pointermove", onMove);
-          document.addEventListener("pointerup", onUp);
-        }}
-        actions={
-          <button
-            onClick={() => exportToCsv(customGroups)}
-            title="导出 CSV"
-            className="flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)] transition-colors"
-          >
-            <Download size={13} />
-            <span className="hidden sm:inline">导出记录</span>
-          </button>
-        }
-      >
         <div className="flex h-full flex-col bg-[var(--bg-surface)] text-[var(--ink)]">
           {/* Header Controls */}
           <div className="flex shrink-0 items-center justify-between border-b border-[var(--line)] bg-[var(--bg-panel)] px-4 py-3">
@@ -403,33 +364,6 @@ function BillingDashboardWindow({ winId }: { winId: string }) {
           </div>
         </div>
 
-        {/* 调整大小把手 */}
-        {!managed.fullscreen && (
-          <div
-            onPointerDown={onResizeStart}
-            title="拖拽缩放窗口"
-            style={{
-              position: "absolute",
-              right: 1,
-              bottom: 1,
-              width: 18,
-              height: 18,
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "flex-end",
-              padding: 2,
-              color: "var(--md-sys-color-outline)",
-              cursor: "nwse-resize",
-              touchAction: "none",
-            }}
-          >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round">
-              <path d="M11 4 L4 11" />
-              <path d="M11 8 L8 11" />
-            </svg>
-          </div>
-        )}
-      </WindowChrome>
-    </div>
+    </ManagedWindow>
   );
 }

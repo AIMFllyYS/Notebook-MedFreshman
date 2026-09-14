@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { strToU8, zipSync } from "fflate";
 import WindowTaskbar from "./WindowTaskbar";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { MAX_LOCAL_FILE_SIZE } from "@/lib/ai/imageUtils";
@@ -46,6 +47,26 @@ describe("WindowTaskbar add content", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("alertdialog", { name: "文件添加失败" })).toHaveTextContent("超过 100 MB");
+    });
+  });
+
+  it("opens a pptx as PowerPoint, not PDF", async () => {
+    const { container } = render(<WindowTaskbar host="topbar" />);
+    const archive = zipSync({ "ppt/slides/slide1.xml": strToU8("<p:sld><a:t>第一页</a:t></p:sld>") });
+    const file = new File([archive], "课.slides.pptx", {
+      type: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    });
+    const input = container.querySelector('input[type="file"]');
+    expect(input).not.toBeNull();
+    fireEvent.change(input!, { target: { files: [file] } });
+
+    await waitFor(() => {
+      const preview = useWindowManager.getState().windows.find((win) => win.type === "attachment-preview");
+      expect(preview?.data).toMatchObject({
+        kind: "ppt",
+        name: "课.slides.pptx",
+        mimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      });
     });
   });
 });

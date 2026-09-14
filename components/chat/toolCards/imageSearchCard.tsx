@@ -19,9 +19,9 @@ export default function ImageSearchResultCard({ part }: ResultCardProps<"imageSe
         <span className="image-search-gallery-via">via Unsplash</span>
       </div>
       <ImageStrip>
-        {sources.map((source) => (
+        {sources.map((source, index) => (
           <div
-            key={source.url}
+            key={source.url || `image:${index}:${source.title || source.alt || "untitled"}`}
             className="image-search-gallery-item"
             draggable
             onDragStart={(e) => {

@@ -116,6 +116,8 @@ export interface DocumentAttachmentPreview {
   size: number;
   text: string;
   characterCount: number;
+  /** 原始文件 object URL，供 Word 等保真预览；不进入模型请求。 */
+  previewUrl?: string;
 }
 
 export interface LocalFileAttachmentPreview {
@@ -191,6 +193,17 @@ export async function fileToDocumentAttachment(file: File, options: FileAttachme
     const result = await mammoth.extractRawText(input);
     text = result.value;
     mimeType = mappedMimeType;
+    const characterCount = countCodePoints(text);
+    if (characterCount > MAX_DOCUMENT_CHARACTERS) {
+      throw new Error(`${file.name} 提取后超过 20 万字，请拆分后再上传`);
+    }
+    let previewUrl: string | undefined;
+    try {
+      previewUrl = URL.createObjectURL(file);
+    } catch {
+      previewUrl = undefined;
+    }
+    return { type: "document", file, mimeType, name: file.name, size: file.size, text, characterCount, previewUrl };
   } else {
     text = await readFileAsText(file);
     // HTML 等格式只读取源码文本，不插入 DOM，也不会执行其中的脚本。
@@ -215,7 +228,15 @@ export async function fileToLocalPreviewAttachment(file: File, options: FileAtta
   if (file.size > maxFileSize) {
     throw new Error(`${file.name} 超过 ${Math.round(maxFileSize / (1024 * 1024))} MB，暂时无法预览`);
   }
-  const dataUrl = await readFileAsDataUrl(file);
+  let dataUrl: string | null = null;
+  try {
+    if (typeof URL !== "undefined" && typeof URL.createObjectURL === "function") {
+      dataUrl = URL.createObjectURL(file);
+    }
+  } catch {
+    dataUrl = null;
+  }
+  if (!dataUrl) dataUrl = await readFileAsDataUrl(file);
   return { type: "local-file", file, mimeType, name: file.name, size: file.size, dataUrl };
 }
 

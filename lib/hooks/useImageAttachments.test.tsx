@@ -67,7 +67,7 @@ describe('useImageAttachments documents', () => {
     const attachment = result.current.attachments[0];
     expect(attachment.type).toBe('local-file');
     if (attachment.type === 'local-file') {
-      expect(attachment.dataUrl).toMatch(/^data:application\/pdf;base64,/);
+      expect(attachment.dataUrl).toMatch(/^(data:application\/pdf;base64,|blob:)/);
       expect(attachment.name).toBe('lecture.pdf');
     }
     expect(result.current.toChatFormat()?.[0]?.type).toBe('local-file');

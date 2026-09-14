@@ -1,13 +1,28 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Sparkles } from 'lucide-react';
 import { useAuthSession } from '@/lib/hooks/useAuthSession';
 import { fetchQuota } from '@/lib/billing/fetchQuota';
 import { ACCOUNT_USAGE_CHANGED, type QuotaView } from '@/lib/billing/quotaView';
 import { UsageProgressBar } from '@/components/chat/UsageProgressBar';
+import { openMembershipSponsor } from '@/lib/window/openMembershipSponsor';
 
 const TIERS = { free: '免费会员', plus: 'Plus 会员', pro: 'Pro 会员' };
 const money = (n: number) => `¥${Math.max(0, n).toFixed(n > 0 && n < 0.01 ? 4 : 2)}`;
+
+function GetMembershipTag() {
+  return (
+    <button
+      type="button"
+      className="press membership-get-tag"
+      onClick={() => openMembershipSponsor()}
+    >
+      <Sparkles size={10} strokeWidth={2.2} aria-hidden="true" />
+      获取会员
+    </button>
+  );
+}
 
 export function AccountQuota() {
   const { userId, status } = useAuthSession();
@@ -38,13 +53,23 @@ export function AccountQuota() {
       document.removeEventListener('visibilitychange', refresh);
     };
   }, [userId, revision]);
-  if (!userId) return <p className="text-[11px] text-[var(--ink-faint)]">{status === 'loading' ? '正在读取账户…' : '登录后查看会员与额度'}</p>;
+  if (!userId) {
+    return (
+      <div className="mb-3 flex items-center justify-between gap-2 border-b border-[var(--line)] pb-3">
+        <p className="min-w-0 text-[11px] text-[var(--ink-faint)]">{status === 'loading' ? '正在读取账户…' : '登录后查看会员与额度'}</p>
+        <GetMembershipTag />
+      </div>
+    );
+  }
   const data = state.userId === userId ? state.data : undefined;
   const error = state.userId === userId ? state.error : undefined;
   return <section aria-label="会员与额度" className="mb-3 border-b border-[var(--line)] pb-3">
     <div className="mb-2 flex items-center justify-between gap-2">
-      <strong className="text-[12px] text-[var(--ink)]">{data ? TIERS[data.tier] : '会员与额度'}</strong>
-      <button type="button" className="rounded px-2 py-1 text-[11px] text-[var(--accent-ink)] hover:bg-[var(--bg-muted)]" onClick={() => setRevision((n) => n + 1)}>刷新额度</button>
+      <div className="flex min-w-0 items-center gap-2">
+        <strong className="text-[12px] text-[var(--ink)]">{data ? TIERS[data.tier] : '会员与额度'}</strong>
+        <GetMembershipTag />
+      </div>
+      <button type="button" className="shrink-0 rounded px-2 py-1 text-[11px] text-[var(--accent-ink)] hover:bg-[var(--bg-muted)]" onClick={() => setRevision((n) => n + 1)}>刷新额度</button>
     </div>
     {data ? <>
       {(['platform', 'byok'] as const).map((key) => <div key={key} className="mb-2">
