@@ -4081,10 +4081,82 @@
           "keyStrategy": "category-item",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "rec-2026-fall-001-002",
+              "title": "第1-2节 · 课程介绍",
               "type": "document",
-              "status": "stub"
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-001-002",
+                  "title": "课堂原文 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                },
+                {
+                  "id": "note-rec-2026-fall-001-002",
+                  "title": "课堂笔记 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                },
+                {
+                  "id": "card-rec-2026-fall-001-002",
+                  "title": "复习手卡 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-003-004",
+              "title": "第3-4节 · Paraphrasing与AI医学诊断文本分析",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-003-004",
+                  "title": "课堂原文 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                },
+                {
+                  "id": "note-rec-2026-fall-003-004",
+                  "title": "课堂笔记 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                },
+                {
+                  "id": "card-rec-2026-fall-003-004",
+                  "title": "复习手卡 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                }
+              ]
             }
           ]
         },
@@ -4099,10 +4171,26 @@
           "layoutProfile": "article",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "min-rec-2026-fall-001-002",
+              "title": "课堂纪要 · 第1-2节",
               "type": "document",
-              "status": "stub"
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-001-002",
+              "quizRef": "rec-2026-fall-001-002",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-003-004",
+              "title": "课堂纪要 · 第3-4节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-003-004",
+              "quizRef": "rec-2026-fall-003-004",
+              "layoutProfile": "full"
             }
           ]
         },
@@ -4793,6 +4881,123 @@
           "keyStrategy": "category-item",
           "items": [
             {
+              "id": "rec-2026-fall-001-002",
+              "title": "第1-2节 · 绪论",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-001-002",
+                  "title": "课堂原文 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                },
+                {
+                  "id": "note-rec-2026-fall-001-002",
+                  "title": "课堂笔记 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                },
+                {
+                  "id": "card-rec-2026-fall-001-002",
+                  "title": "复习手卡 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-003-004",
+              "title": "第3-4节 · 有效数字与误差分析",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-003-004",
+                  "title": "课堂原文 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                },
+                {
+                  "id": "note-rec-2026-fall-003-004",
+                  "title": "课堂笔记 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                },
+                {
+                  "id": "card-rec-2026-fall-003-004",
+                  "title": "复习手卡 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-005-006",
+              "title": "第5-6节 · 检出限与试样采集预处理",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-005-006",
+                  "title": "课堂原文 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                },
+                {
+                  "id": "note-rec-2026-fall-005-006",
+                  "title": "课堂笔记 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                },
+                {
+                  "id": "card-rec-2026-fall-005-006",
+                  "title": "复习手卡 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                }
+              ]
+            },
+            {
               "id": "rec-2026-fall-007-008",
               "title": "第7-8节 · 萃取技术体系与紫外可见分光光度法基础",
               "type": "document",
@@ -4843,6 +5048,39 @@
           "keyStrategy": "category-item",
           "layoutProfile": "article",
           "items": [
+            {
+              "id": "min-rec-2026-fall-001-002",
+              "title": "课堂纪要 · 第1-2节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-001-002",
+              "quizRef": "rec-2026-fall-001-002",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-003-004",
+              "title": "课堂纪要 · 第3-4节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-003-004",
+              "quizRef": "rec-2026-fall-003-004",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-005-006",
+              "title": "课堂纪要 · 第5-6节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-005-006",
+              "quizRef": "rec-2026-fall-005-006",
+              "layoutProfile": "full"
+            },
             {
               "id": "min-rec-2026-fall-007-008",
               "title": "课堂纪要 · 第7-8节",
@@ -5275,10 +5513,160 @@
           "keyStrategy": "category-item",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "rec-2026-fall-001-003",
+              "title": "第1-3节 · 绪论与骨学躯干骨",
               "type": "document",
-              "status": "stub"
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-001-003",
+                  "title": "课堂原文 · 第1-3节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-001-003",
+                  "quizRef": "rec-2026-fall-001-003"
+                },
+                {
+                  "id": "note-rec-2026-fall-001-003",
+                  "title": "课堂笔记 · 第1-3节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-001-003",
+                  "quizRef": "rec-2026-fall-001-003"
+                },
+                {
+                  "id": "card-rec-2026-fall-001-003",
+                  "title": "复习手卡 · 第1-3节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-001-003",
+                  "quizRef": "rec-2026-fall-001-003"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-004-006",
+              "title": "第4-6节 · 脊柱连接与胸廓",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-004-006",
+                  "title": "课堂原文 · 第4-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-004-006",
+                  "quizRef": "rec-2026-fall-004-006"
+                },
+                {
+                  "id": "note-rec-2026-fall-004-006",
+                  "title": "课堂笔记 · 第4-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-004-006",
+                  "quizRef": "rec-2026-fall-004-006"
+                },
+                {
+                  "id": "card-rec-2026-fall-004-006",
+                  "title": "复习手卡 · 第4-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-004-006",
+                  "quizRef": "rec-2026-fall-004-006"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-007-009",
+              "title": "第7-9节 · 下肢骨及其连接",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-007-009",
+                  "title": "课堂原文 · 第7-9节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-007-009",
+                  "quizRef": "rec-2026-fall-007-009"
+                },
+                {
+                  "id": "note-rec-2026-fall-007-009",
+                  "title": "课堂笔记 · 第7-9节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-007-009",
+                  "quizRef": "rec-2026-fall-007-009"
+                },
+                {
+                  "id": "card-rec-2026-fall-007-009",
+                  "title": "复习手卡 · 第7-9节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-007-009",
+                  "quizRef": "rec-2026-fall-007-009"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-010-013",
+              "title": "第10-13节 · 颅骨及其连接",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-010-013",
+                  "title": "课堂原文 · 第10-13节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-010-013",
+                  "quizRef": "rec-2026-fall-010-013"
+                },
+                {
+                  "id": "note-rec-2026-fall-010-013",
+                  "title": "课堂笔记 · 第10-13节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-010-013",
+                  "quizRef": "rec-2026-fall-010-013"
+                },
+                {
+                  "id": "card-rec-2026-fall-010-013",
+                  "title": "复习手卡 · 第10-13节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-010-013",
+                  "quizRef": "rec-2026-fall-010-013"
+                }
+              ]
             }
           ]
         },
@@ -5293,10 +5681,48 @@
           "layoutProfile": "article",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "min-rec-2026-fall-001-003",
+              "title": "课堂纪要 · 第1-3节",
               "type": "document",
-              "status": "stub"
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-001-003",
+              "quizRef": "rec-2026-fall-001-003",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-004-006",
+              "title": "课堂纪要 · 第4-6节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-004-006",
+              "quizRef": "rec-2026-fall-004-006",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-007-009",
+              "title": "课堂纪要 · 第7-9节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-007-009",
+              "quizRef": "rec-2026-fall-007-009",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-010-013",
+              "title": "课堂纪要 · 第10-13节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-010-013",
+              "quizRef": "rec-2026-fall-010-013",
+              "layoutProfile": "full"
             }
           ]
         },
@@ -6217,10 +6643,160 @@
           "keyStrategy": "category-item",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "rec-2026-fall-001-002",
+              "title": "第1-2节 · 绪论与细胞膜框架",
               "type": "document",
-              "status": "stub"
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-001-002",
+                  "title": "课堂原文 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                },
+                {
+                  "id": "note-rec-2026-fall-001-002",
+                  "title": "课堂笔记 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                },
+                {
+                  "id": "card-rec-2026-fall-001-002",
+                  "title": "复习手卡 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-003-004",
+              "title": "第3-4节 · 单细胞生物学与组学",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-003-004",
+                  "title": "课堂原文 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                },
+                {
+                  "id": "note-rec-2026-fall-003-004",
+                  "title": "课堂笔记 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                },
+                {
+                  "id": "card-rec-2026-fall-003-004",
+                  "title": "复习手卡 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-005-006",
+              "title": "第5-6节 · 细胞膜与物质穿膜运输",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-005-006",
+                  "title": "课堂原文 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                },
+                {
+                  "id": "note-rec-2026-fall-005-006",
+                  "title": "课堂笔记 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                },
+                {
+                  "id": "card-rec-2026-fall-005-006",
+                  "title": "复习手卡 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-007-008",
+              "title": "第7-8节 · 生物膜与跨膜运输复习及内膜系统开篇",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-007-008",
+                  "title": "课堂原文 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                },
+                {
+                  "id": "note-rec-2026-fall-007-008",
+                  "title": "课堂笔记 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                },
+                {
+                  "id": "card-rec-2026-fall-007-008",
+                  "title": "复习手卡 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                }
+              ]
             }
           ]
         },
@@ -6235,10 +6811,48 @@
           "layoutProfile": "article",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "min-rec-2026-fall-001-002",
+              "title": "课堂纪要 · 第1-2节",
               "type": "document",
-              "status": "stub"
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-001-002",
+              "quizRef": "rec-2026-fall-001-002",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-003-004",
+              "title": "课堂纪要 · 第3-4节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-003-004",
+              "quizRef": "rec-2026-fall-003-004",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-005-006",
+              "title": "课堂纪要 · 第5-6节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-005-006",
+              "quizRef": "rec-2026-fall-005-006",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-007-008",
+              "title": "课堂纪要 · 第7-8节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-007-008",
+              "quizRef": "rec-2026-fall-007-008",
+              "layoutProfile": "full"
             }
           ]
         },
@@ -7315,10 +7929,121 @@
           "keyStrategy": "category-item",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "rec-2026-fall-001-002",
+              "title": "第1-2节 · 绪论与上皮组织",
               "type": "document",
-              "status": "stub"
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-001-002",
+                  "title": "课堂原文 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                },
+                {
+                  "id": "note-rec-2026-fall-001-002",
+                  "title": "课堂笔记 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                },
+                {
+                  "id": "card-rec-2026-fall-001-002",
+                  "title": "复习手卡 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-003-004",
+              "title": "第3-4节 · 腺上皮与结缔组织",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-003-004",
+                  "title": "课堂原文 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                },
+                {
+                  "id": "note-rec-2026-fall-003-004",
+                  "title": "课堂笔记 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                },
+                {
+                  "id": "card-rec-2026-fall-003-004",
+                  "title": "复习手卡 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-005-006",
+              "title": "第5-6节 · 软骨骨骨发生",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-005-006",
+                  "title": "课堂原文 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                },
+                {
+                  "id": "note-rec-2026-fall-005-006",
+                  "title": "课堂笔记 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                },
+                {
+                  "id": "card-rec-2026-fall-005-006",
+                  "title": "复习手卡 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                }
+              ]
             }
           ]
         },
@@ -7333,10 +8058,37 @@
           "layoutProfile": "article",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "min-rec-2026-fall-001-002",
+              "title": "课堂纪要 · 第1-2节",
               "type": "document",
-              "status": "stub"
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-001-002",
+              "quizRef": "rec-2026-fall-001-002",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-003-004",
+              "title": "课堂纪要 · 第3-4节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-003-004",
+              "quizRef": "rec-2026-fall-003-004",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-005-006",
+              "title": "课堂纪要 · 第5-6节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-005-006",
+              "quizRef": "rec-2026-fall-005-006",
+              "layoutProfile": "full"
             }
           ]
         },
@@ -8371,10 +9123,160 @@
           "keyStrategy": "category-item",
           "items": [
             {
-              "id": "placeholder",
-              "title": "敬请期待",
+              "id": "rec-2026-fall-001-002",
+              "title": "第1-2节 · 绪论与蛋白质概述",
               "type": "document",
-              "status": "stub"
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-001-002",
+                  "title": "课堂原文 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                },
+                {
+                  "id": "note-rec-2026-fall-001-002",
+                  "title": "课堂笔记 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                },
+                {
+                  "id": "card-rec-2026-fall-001-002",
+                  "title": "复习手卡 · 第1-2节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-001-002",
+                  "quizRef": "rec-2026-fall-001-002"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-003-004",
+              "title": "第3-4节 · 生物活性肽与蛋白质结构",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-003-004",
+                  "title": "课堂原文 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                },
+                {
+                  "id": "note-rec-2026-fall-003-004",
+                  "title": "课堂笔记 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                },
+                {
+                  "id": "card-rec-2026-fall-003-004",
+                  "title": "复习手卡 · 第3-4节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-003-004",
+                  "quizRef": "rec-2026-fall-003-004"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-005-006",
+              "title": "第5-6节 · 蛋白质结构功能与核酸开篇",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-005-006",
+                  "title": "课堂原文 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                },
+                {
+                  "id": "note-rec-2026-fall-005-006",
+                  "title": "课堂笔记 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                },
+                {
+                  "id": "card-rec-2026-fall-005-006",
+                  "title": "复习手卡 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-007-008",
+              "title": "第7-8节 · 核酸结构与功能",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-007-008",
+                  "title": "课堂原文 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                },
+                {
+                  "id": "note-rec-2026-fall-007-008",
+                  "title": "课堂笔记 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                },
+                {
+                  "id": "card-rec-2026-fall-007-008",
+                  "title": "复习手卡 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                }
+              ]
             }
           ]
         },
@@ -8393,6 +9295,50 @@
               "title": "生化讨论课笔记",
               "type": "document",
               "status": "done"
+            },
+            {
+              "id": "min-rec-2026-fall-001-002",
+              "title": "课堂纪要 · 第1-2节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-001-002",
+              "quizRef": "rec-2026-fall-001-002",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-003-004",
+              "title": "课堂纪要 · 第3-4节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-003-004",
+              "quizRef": "rec-2026-fall-003-004",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-005-006",
+              "title": "课堂纪要 · 第5-6节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-005-006",
+              "quizRef": "rec-2026-fall-005-006",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-007-008",
+              "title": "课堂纪要 · 第7-8节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-007-008",
+              "quizRef": "rec-2026-fall-007-008",
+              "layoutProfile": "full"
             }
           ]
         },

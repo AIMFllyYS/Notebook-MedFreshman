@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+:root{--paper:#FBF7F2;--ink:#2A1F1A;--muted:#8A7568;--line:#E8DCD0;--accent:#7B3F00;--accent-deep:#5A2D00;--accent-tint:#F5E8D8;--gold:#B8860B;--gold-tint:#FBF3DC;--crimson:#A93226;--crimson-tint:#F9E5E2;--teal:#1A6B5A;--teal-tint:#DCEDE8;--serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
+.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
+.page:last-child{page-break-after:auto;}
+.cover{background:radial-gradient(120% 80% at 78% 12%,#A0522D 0%,#7B3F00 55%,#5A2D00 100%);color:#F5EDE0;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
+.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(212,175,55,.45);}
+.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#D4AF37;margin-bottom:8mm;}
+.cover h1{font-family:var(--serif);font-size:28pt;line-height:1.2;color:#FBF7F0;margin-bottom:6mm;}
+.cover h1 .accent{color:#F4D03F;}
+.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(245,237,224,.82);margin-bottom:4mm;}
+.cover .meta{font-size:10pt;color:rgba(245,237,224,.6);margin-top:auto;}
+.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
+.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
+.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
+h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
+p{margin:2mm 0;}
+.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
+.card.concl{border-left:3pt solid var(--accent);}
+.card.warn{border-left:3pt solid var(--crimson);background:var(--crimson-tint);}
+.card.teal{border-left:3pt solid var(--teal);background:var(--teal-tint);}
+.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
+table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
+th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
+td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
+tr:nth-child(even) td{background:var(--accent-tint);}
+.hl{background:var(--gold-tint);border:0.4pt solid #E0C870;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
+.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
+.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
+</style>
+</head>
+<body>
+<div class="page cover">
+  <div class="frame"></div>
+  <div class="kicker">BIOCHEMISTRY · 生物化学</div>
+  <h1>生物活性肽与<br><span class="accent">蛋白质结构</span></h1>
+  <div class="subt">第3-4节 · 课程笔记可视化手册</div>
+  <div class="meta">2026-09-03 · 华中科技大学基础医学</div>
+</div>
+<div class="page">
+  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">生物活性肽——"快乐激素"</span></div>
+  <table>
+    <tr><th>名称</th><th>类型</th><th>来源</th><th>功能</th></tr>
+    <tr><td><strong>血清素</strong>（5-HT）</td><td>色氨酸衍生物</td><td>色氨酸代谢</td><td>情绪、睡眠、食欲</td></tr>
+    <tr><td><strong>多巴胺</strong></td><td>酪氨酸衍生物</td><td>酪氨酸+羟基</td><td>奖赏系统、运动控制</td></tr>
+    <tr><td><strong>催产素</strong></td><td>9肽（含二硫键）</td><td>2个半胱氨酸</td><td>社交、依恋、分娩</td></tr>
+    <tr><td><strong>内啡肽</strong></td><td>多肽</td><td>结构复杂</td><td>镇痛、愉悦</td></tr>
+  </table>
+  <div class="hl"><span class="tag">注意</span>血清素和多巴胺是<strong>氨基酸衍生物</strong>（不是肽）；催产素和内啡肽才是<strong>多肽</strong>。</div>
+  <div class="card teal">
+    <div class="label">谷胱甘肽（复习）</div>
+    <p>三肽（Glu-Cys-Gly），还原型GSH ↔ 氧化型GSSG，维持细胞氧化还原状态。</p>
+    <p>GST（谷胱甘肽S-转移酶）：常用蛋白表达标签。</p>
+  </div>
+  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">02</span><span class="chapter-title">蛋白质四级结构概述</span></div>
+  <table>
+    <tr><th>层次</th><th>定义</th><th>维持化学键</th></tr>
+    <tr><td><strong>一级</strong></td><td>氨基酸序列（N→C端）</td><td>肽键（+二硫键位置）</td></tr>
+    <tr><td><strong>二级</strong></td><td>主链骨架原子相对空间位置</td><td>氢键</td></tr>
+    <tr><td><strong>三级</strong></td><td>整条肽链所有原子空间排布</td><td>疏水作用、氢键、离子键、范德华力、二硫键</td></tr>
+    <tr><td><strong>四级</strong></td><td>多亚基蛋白亚基空间排布</td><td>疏水作用、氢键、离子键</td></tr>
+  </table>
+  <div class="hl"><span class="tag">学习方法</span>每级结构重点关注：<strong>定义 + 维持化学键</strong>。结构图颜色约定：蓝=N/氨基，红=O，灰=C，紫=侧链。</div>
+  <div class="footer"><span>生化 · 生物活性肽与蛋白质结构</span><span>第 2 页</span></div>
+</div>
+<div class="page">
+  <div class="chapter-head"><span class="chapter-no">03</span><span class="chapter-title">一级结构</span></div>
+  <div class="card concl">
+    <div class="label">定义与要点</div>
+    <p><strong>定义</strong>：蛋白质多肽链中氨基酸的排列顺序。</p>
+    <p><strong>书写方向</strong>：从N端（氨基端）到C端（羧基端），约定俗成从左到右。</p>
+    <p><strong>维持化学键</strong>：<strong>肽键</strong>（peptide bond）。</p>
+  </div>
+  <div class="card warn">
+    <div class="label">二硫键与一级结构的关系（易错点）</div>
+    <p><strong>二硫键的位置</strong>属于一级结构范畴（哪个半胱氨酸与哪个半胱氨酸配对）。</p>
+    <p>但<strong>二硫键本身</strong>不是维持一级结构的化学键（肽键才是）。</p>
+  </div>
+  <div class="card teal">
+    <div class="label">胰岛素例子</div>
+    <p>2条肽链：A链（21个氨基酸）+ B链（30个氨基酸）。</p>
+    <p>3个二硫键：A链内1个，A-B链间2个。</p>
+  </div>
+  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">04</span><span class="chapter-title">二级结构与肽平面</span></div>
+  <div class="card concl">
+    <div class="label">肽单元/肽平面（peptide unit / peptide plane）</div>
+    <p>肽键（C-N）键长介于单键和双键之间，具有<strong>部分双键性质</strong>，不能自由旋转。</p>
+    <p><strong>6个原子共平面</strong>：Cα（前）- C（羰基）- N - H - Cα（后）。</p>
+    <p>每个肽单元是一个刚性平面。Cα两侧的单键（φ角和ψ角）可以旋转。</p>
+  </div>
+  <table>
+    <tr><th>二级结构类型</th><th>特点</th></tr>
+    <tr><td><strong>α-螺旋</strong></td><td>右手螺旋，3.6个氨基酸/圈，螺距0.54nm，氢键平行于螺旋轴</td></tr>
+    <tr><td><strong>β-折叠</strong></td><td>肽链伸展呈锯齿状，氢键垂直于肽链，平行/反平行</td></tr>
+    <tr><td><strong>β-转角</strong></td><td>180°回折，4个氨基酸，常含Gly和Pro</td></tr>
+    <tr><td>无规卷曲</td><td>无确定规律的肽段</td></tr>
+  </table>
+  <div class="hl"><span class="tag">注意</span>二级结构只考虑<strong>主链骨架原子</strong>，不考虑侧链R基团。</div>
+  <h3>易错点汇总</h3>
+  <ol>
+    <li>血清素/多巴胺是氨基酸衍生物，不是肽；催产素/内啡肽是多肽。</li>
+    <li>一级结构 = 序列 + 二硫键位置；维持化学键是肽键。</li>
+    <li>肽键有部分双键性质，不能自由旋转，形成肽平面（6原子共面）。</li>
+    <li>α-螺旋：右手，3.6aa/圈，氢键平行于轴。</li>
+    <li>β-折叠：氢键垂直于肽链，平行/反平行。</li>
+  </ol>
+  <div style="margin-top:4mm;text-align:center;color:var(--muted);font-size:9pt;">— 生物化学 · 第3-4节 · 完 —</div>
+  <div class="footer"><span>生化 · 生物活性肽与蛋白质结构</span><span>第 3 页</span></div>
+</div>
+</body>
+</html>

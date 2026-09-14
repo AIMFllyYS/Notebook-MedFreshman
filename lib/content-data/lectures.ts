@@ -112,20 +112,30 @@ export function hasLectures(subjectId: SubjectId | string): boolean {
   return catalog.lessons.some((l) => l.subjectId === subjectId);
 }
 
-const articleIndex = new Map<string, LectureArticleRef>();
-for (const entry of catalog.lessons) {
-  for (const role of LECTURE_MATERIAL_ROLES) {
-    const material = entry.materials[role];
-    articleIndex.set(material.articleId, { entry, role, material });
+/**
+ * 由 catalog 建「学科::articleId」复合索引（纯函数，便于单测）。
+ * 键必须带 subjectId：节次是课程内累计，不同学科会出现相同 articleId，
+ * 用裸 articleId 作全局键会让后写学科覆盖先写学科。
+ */
+export function buildLectureArticleIndex(
+  cat: LectureCatalog,
+): Map<string, LectureArticleRef> {
+  const index = new Map<string, LectureArticleRef>();
+  for (const entry of cat.lessons) {
+    for (const role of LECTURE_MATERIAL_ROLES) {
+      const material = entry.materials[role];
+      index.set(`${entry.subjectId}::${material.articleId}`, { entry, role, material });
+    }
   }
+  return index;
 }
 
-/** 学科 + 文章 id 查课堂材料，学科不匹配返回 null（loader / paths 的受控入口）。 */
+const articleIndex = buildLectureArticleIndex(catalog);
+
+/** 学科 + 文章 id 查课堂材料，学科不匹配 / 不存在返回 null（loader / paths 的受控入口）。 */
 export function getLectureArticleForSubject(
   subjectId: string,
   articleId: string,
 ): LectureArticleRef | null {
-  const ref = articleIndex.get(articleId);
-  if (!ref || ref.entry.subjectId !== subjectId) return null;
-  return ref;
+  return articleIndex.get(`${subjectId}::${articleId}`) ?? null;
 }

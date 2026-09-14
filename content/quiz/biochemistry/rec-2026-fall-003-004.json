@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-003-004",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-003-004/recording.md；content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-003-004",
+    "revision": 1,
+    "recordingHash": "d788c8ab5d1b4189cd950d1942b71650c4b888777d08ed6165d2f55cf7eb0410",
+    "notesTextHash": "0edea5012c0e0959f5057a9cb4933a3469a58099a1c868a33da3acc565cfd4a3"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列关于四种“快乐激素”类型归属的说法，正确的是（　）。",
+      "options": [
+        "血清素、多巴胺都是多肽类激素",
+        "血清素、多巴胺是氨基酸衍生物；催产素、内啡肽才是多肽",
+        "催产素、多巴胺都是氨基酸衍生物",
+        "四种物质全都是三肽"
+      ],
+      "answer": 1,
+      "hint": "谁是氨基酸衍生物、谁才是多肽？",
+      "explanation": "**B 正确。** 血清素是色氨酸代谢产物、多巴胺由酪氨酸衍生，二者都是氨基酸衍生物而非肽；催产素（9肽、含二硫键）和内啡肽才是多肽类神经肽。\n- A：血清素、多巴胺不是肽。\n- C：催产素是9肽，多巴胺是酪氨酸衍生物，归属错配。\n- D：四种物质并非都是三肽。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "生物活性肽 · 四种快乐激素分类"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于催产素的结构，下列描述正确的是（　）。",
+      "options": [
+        "催产素是色氨酸代谢产物，属于氨基酸衍生物",
+        "催产素是由19个氨基酸组成的单链多肽，不含二硫键",
+        "催产素是仅含2个氨基酸残基的二肽",
+        "催产素是9肽，分子中含1个二硫键（由2个半胱氨酸形成）"
+      ],
+      "answer": 3,
+      "hint": "9个残基、1个二硫键、2个半胱氨酸。",
+      "explanation": "**D 正确。** 催产素是由9个氨基酸残基组成的神经肽，分子中含1个二硫键（2个半胱氨酸配对），参与社交、依恋、分娩等。\n- A：色氨酸衍生物是血清素。\n- B：氨基酸数与二硫键描述均错。\n- C：催产素是9肽而非二肽。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "催产素 · 9肽与二硫键"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "维持蛋白质一级结构的主要化学键是（　）。",
+      "options": [
+        "肽键",
+        "氢键",
+        "疏水作用",
+        "二硫键"
+      ],
+      "answer": 0,
+      "hint": "一级结构=序列，靠什么键把氨基酸连起来？",
+      "explanation": "**A 正确。** 一级结构指多肽链中氨基酸从N端到C端的排列顺序，维持它的主要化学键是肽键；二硫键的配对位置信息也属于一级结构范畴，但二硫键本身不是维持一级结构的化学键。\n- B：氢键主要维持二级结构。\n- C：疏水作用参与维持三、四级结构。\n- D：二硫键位置属一级结构范畴，但不是维持一级结构的化学键。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "一级结构 · 维持化学键与二硫键位置"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于肽键与肽单元（肽平面），下列说法正确的是（　）。",
+      "options": [
+        "肽键（C-N）是典型单键，可以自由旋转",
+        "肽平面上共平面的原子只有3个",
+        "肽键具有部分双键性质、不能自由旋转，相关6个原子（Cα前-C-N-H-Cα后）共处于一个刚性平面",
+        "肽键可自由旋转，因此主链构象不受任何限制"
+      ],
+      "answer": 2,
+      "hint": "肽键不能转，能转的是Cα两侧的单键。",
+      "explanation": "**C 正确。** 肽键C-N键长介于单键和双键之间、具部分双键性质，不能自由旋转，使 Cα(前)-C-N-H-Cα(后) 6个原子共处于一个刚性肽平面；主链的旋转只能发生在Cα两侧的单键（φ角、ψ角）上。\n- A、D：肽键不能自由旋转。\n- B：是6个原子共平面而非3个。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "肽单元/肽平面 · 部分双键性质"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "蛋白质二级结构的定义是“多肽链主链骨架原子的相对空间位置”，这意味着研究二级结构时（　）。",
+      "options": [
+        "需要同时考虑侧链R基团的全部空间排布",
+        "只考虑主链骨架原子，不考虑侧链R基团",
+        "只考虑侧链R基团，不考虑主链",
+        "必须同时考虑整条肽链所有原子的三维排布"
+      ],
+      "answer": 1,
+      "hint": "二级结构只谈主链骨架。",
+      "explanation": "**B 正确。** 二级结构只描述主链骨架（N-Cα-C重复）原子的相对空间位置，不考虑侧链R基团；考虑整条肽链所有原子空间排布的是三级结构。\n- A、C：把主链与侧链的关系说反。\n- D：这是三级结构的定义。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "二级结构 · 只考虑主链骨架"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于 α-螺旋，下列特征描述正确的是（　）。",
+      "options": [
+        "左手螺旋，每圈10个氨基酸，氢键垂直于螺旋轴",
+        "右手螺旋，每圈3.6个氨基酸，氢键垂直于螺旋轴",
+        "左手螺旋，每圈3.6个氨基酸，螺距0.54nm",
+        "右手螺旋，每圈3.6个氨基酸，螺距0.54nm，氢键平行于螺旋轴"
+      ],
+      "answer": 3,
+      "hint": "右手、3.6个/圈、氢键平行于轴。",
+      "explanation": "**D 正确。** α-螺旋为右手螺旋，每圈3.6个氨基酸，螺距0.54nm，链内氢键平行于螺旋轴方向。\n- A：手性、每圈氨基酸数、氢键方向均错。\n- B：氢键应平行而非垂直螺旋轴。\n- C：手性说反（应为右手）。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "α-螺旋 · 右手/3.6/氢键平行"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于 β-折叠，下列说法正确的是（　）。",
+      "options": [
+        "肽链充分伸展呈锯齿状，相邻肽链间形成氢键，氢键方向垂直于肽链长轴，有平行和反平行两种",
+        "肽链盘绕成右手螺旋，氢键平行于螺旋轴",
+        "由4个氨基酸完成180°回折，常含甘氨酸和脯氨酸",
+        "肽链无确定规律，不形成任何氢键"
+      ],
+      "answer": 0,
+      "hint": "伸展成锯齿、氢键垂直肽链。",
+      "explanation": "**A 正确。** β-折叠中肽链充分伸展呈锯齿状，相邻肽链（或同链远端）之间形成氢键，氢键方向垂直于肽链长轴，有平行和反平行两种排列。\n- B：这是α-螺旋的描述。\n- C：这是β-转角。\n- D：这是无规卷曲。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "β-折叠 · 伸展与氢键方向"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于胰岛素的结构，下列说法正确的是（　）。",
+      "options": [
+        "胰岛素仅含1条肽链，共21个氨基酸，无二硫键",
+        "胰岛素含A、B两条肽链，共30个氨基酸，0个二硫键",
+        "胰岛素含A链（21个氨基酸）和B链（30个氨基酸），共3个二硫键（A链内1个、A-B链间2个）",
+        "胰岛素含3条肽链，共3个氨基酸，3个二硫键"
+      ],
+      "answer": 2,
+      "hint": "A21+B30，三个二硫键。",
+      "explanation": "**C 正确。** 胰岛素由A链（21个氨基酸）和B链（30个氨基酸）两条肽链组成，共3个二硫键：A链内1个、A-B链间2个；二硫键的配对位置属于一级结构范畴。\n- A、B：肽链数、氨基酸数、二硫键数均错。\n- D：肽链数与氨基酸数明显错误。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "胰岛素 · A/B链与二硫键"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于蛋白质三级、四级结构的维持作用力，下列说法正确的是（　）。",
+      "options": [
+        "三级结构只靠肽键维持，四级结构只靠氢键",
+        "三级结构由疏水作用、氢键、离子键、范德华力、二硫键等共同维持；四级结构由疏水作用、氢键、离子键维持",
+        "三级结构和四级结构都只靠肽键维持",
+        "四级结构需要肽键将各亚基共价连接成一条链"
+      ],
+      "answer": 1,
+      "hint": "肽键只管一级，三、四级靠弱相互作用。",
+      "explanation": "**B 正确。** 三级结构是整条肽链所有原子的空间排布，由疏水作用、氢键、离子键、范德华力、二硫键等共同维持；四级结构是多亚基蛋白中亚基的空间排布，由疏水作用、氢键、离子键维持，亚基之间并无肽键共价连接。\n- A、C：肽键维持的是一级结构，不是三、四级结构。\n- D：亚基之间没有肽键共价连接。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "四级结构 · 三级/四级维持化学键"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列关于蛋白质二级结构类型的配对，错误的是（　）。",
+      "options": [
+        "α-螺旋 —— 右手螺旋，3.6个氨基酸/圈",
+        "β-折叠 —— 肽链伸展，氢键垂直于肽链",
+        "β-转角 —— 肽链180°回折，常含甘氨酸和脯氨酸",
+        "无规卷曲 —— 指完全无规、杂乱无意义，在蛋白质中并不存在"
+      ],
+      "answer": 3,
+      "hint": "题目选「错误」；无规卷曲是有确定构象的正常肽段。",
+      "explanation": "**D 错误（符合题意）。** 无规卷曲是一种无确定规律但具有确定构象的肽段，是蛋白质二级结构的正常组成部分，并非“不存在”。\n- A、B、C：均为正确描述。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "二级结构四类型 · 无规卷曲"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于谷胱甘肽（GSH/GSSG），下列说法正确的是（　）。",
+      "options": [
+        "谷胱甘肽是由谷氨酸、半胱氨酸、甘氨酸组成的三肽，还原型GSH与氧化型GSSG相互转变，维持细胞氧化还原状态",
+        "谷胱甘肽是由两条肽链组成的四聚体蛋白",
+        "谷胱甘肽是仅含谷氨酸和甘氨酸的二肽",
+        "谷胱甘肽即 GST，是常用的抗生素"
+      ],
+      "answer": 0,
+      "hint": "谷氨酸-半胱氨酸-甘氨酸，三肽。",
+      "explanation": "**A 正确。** 谷胱甘肽是谷氨酸-半胱氨酸-甘氨酸组成的三肽，还原型GSH与氧化型GSSG相互转变，参与维持细胞氧化还原状态；GST（谷胱甘肽S-转移酶）是常用蛋白表达标签。\n- B：谷胱甘肽是小分子三肽，不是四聚体蛋白。\n- C：是三肽而非二肽，且含半胱氨酸。\n- D：GST是酶/表达标签，不是抗生素。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-003-004/notes.html",
+        "label": "谷胱甘肽 GSH/GSSG"
+      }
+    }
+  ]
+}

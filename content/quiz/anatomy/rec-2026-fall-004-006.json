@@ -1,0 +1,260 @@
+{
+  "subjectId": "anatomy",
+  "chapterId": "rec-2026-fall-004-006",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/anatomy/lectures/rec-2026-fall-004-006/recording.md；content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-004-006",
+    "revision": 1,
+    "recordingHash": "8c08245281c525d8eb2c8a51d1641eb9cc794d9cefc808cb56fe8f47d1b94b5e",
+    "notesTextHash": "acfab6396c672cb85d857bcafcbf716071c35b0988ec45f70607b0ee563ac7b7"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于椎间盘的位置与结构，下列描述正确的是（　）。",
+      "options": [
+        "位于相邻椎弓之间，由黄韧带包裹",
+        "位于相邻椎体之间，共约 23 个；外周为纤维环、中央为髓核",
+        "椎间盘富含血管，损伤后极易自行修复",
+        "纤维环中央厚、周边薄，髓核位于外周"
+      ],
+      "answer": 1,
+      "hint": "椎间盘是「弹性垫」：外圈同心圆纤维软骨，中央胶状髓核。",
+      "explanation": "**B 正确。** 椎间盘位于相邻椎体之间（第 2 颈椎至第 1 骶椎，共 23 个），外周为多层同心圆排列的纤维软骨构成的纤维环（前厚后薄），中央为柔软富弹性的胶状髓核，起弹性垫、缓冲震荡的作用。\n- A：椎间盘连的是椎体而非椎弓。\n- C：椎间盘无血管，损伤后难以修复。\n- D：髓核在中央、纤维环在外周，且纤维环是前厚后薄。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+        "label": "椎体间连接 · 椎间盘结构"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "腰椎间盘突出时髓核多向后外侧突出、压迫神经根，其原因是（　）。",
+      "options": [
+        "椎体后方有后纵韧带阻挡，髓核难以向正后方突出，而后外侧缺乏韧带保护、为薄弱区",
+        "髓核本身只向外侧移动，不受韧带影响",
+        "前纵韧带在后方把髓核挤向外侧",
+        "后纵韧带完全缺失，髓核随意突出"
+      ],
+      "answer": 0,
+      "hint": "后纵韧带沿椎体后面下行，正后方有它挡着。",
+      "explanation": "**A 正确。** 椎间盘正后方有后纵韧带覆盖，阻挡髓核向正后方突出；后外侧缺乏韧带加强、是力学薄弱区，故腰部承重最大时纤维环易破裂，髓核多向后外侧突出，压迫椎间孔内的脊神经根。\n- B：突出方向受韧带制约，不是髓核「天生」只向外。\n- C：前纵韧带位于椎体前面，不在后方。\n- D：后纵韧带存在但只在正中较窄，侧后方相对薄弱，并非缺失。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+        "label": "椎间盘临床 · 腰椎间盘突出方向"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于前纵韧带与后纵韧带的功能，下列配对正确的是（　）。",
+      "options": [
+        "前纵韧带防止脊柱过度前屈，后纵韧带防止过度后伸",
+        "前、后纵韧带均只连结椎弓板，与椎体无关",
+        "前纵韧带位于椎体后面，后纵韧带位于椎体前面",
+        "前纵韧带位于椎体前面、防止脊柱过度后伸，后纵韧带位于椎体后面、防止过度前屈并限制椎间盘后突"
+      ],
+      "answer": 3,
+      "hint": "口诀：前纵防后伸，后纵防前屈，别记反。",
+      "explanation": "**D 正确。** 前纵韧带位于椎体前面（自颅底至骶骨），防止脊柱过度后伸、限制椎间盘向前突出；后纵韧带位于椎体后面（椎管前壁，自第 2 颈椎至骶骨），防止脊柱过度前屈、限制椎间盘向后突出。\n- A：两者功能恰好说反。\n- B：纵韧带沿椎体前面/后面走行，不是连椎弓板（那是黄韧带）。\n- C：前、后纵韧带的位置说反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+        "label": "前纵韧带与后纵韧带功能对比"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "黄韧带的位置与特点是（　）。",
+      "options": [
+        "连于相邻棘突之间，白色而坚韧",
+        "连于相邻椎弓板之间，呈黄色、韧性高，参与构成椎管后壁并防止脊柱过度前屈",
+        "连于棘突尖端纵行走行，自枕外隆凸向下",
+        "连于相邻横突之间，限制脊柱侧屈"
+      ],
+      "answer": 1,
+      "hint": "「黄」字即指其颜色，它构成椎管的后壁。",
+      "explanation": "**B 正确。** 黄韧带连于相邻椎弓板之间，因富含弹性纤维而呈黄色、韧性远高于普通韧带，参与构成椎管后壁，可防止脊柱过度前屈。\n- A：连棘突的是棘间韧带。\n- C：沿棘突尖端纵行、自第 7 颈椎至骶骨的是棘上韧带，其向上延续成三角形弹性膜称项韧带。\n- D：连横突的是横突间韧带。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+        "label": "椎弓间连接 · 黄韧带"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "做「低头—仰头」动作与「左右转头」动作分别主要依靠的关节是（　）。",
+      "options": [
+        "转头靠寰枕关节，低头仰头靠寰枢关节",
+        "两个动作都靠椎间盘与关节突关节，与寰椎、枕骨无关",
+        "低头仰头（屈、伸、侧屈）靠寰枕关节；左右转头（以齿突为轴旋转）靠寰枢关节",
+        "低头仰头靠肋椎关节，转头靠胸锁关节"
+      ],
+      "answer": 2,
+      "hint": "寰枕关节＝枕骨髁＋寰椎上关节凹；寰枢正中关节＝齿突＋齿突凹，是车轴关节。",
+      "explanation": "**C 正确。** 寰枕关节由寰椎侧块上关节凹与枕骨髁构成（椭圆关节），使头做屈（低头）、伸（仰头）和侧屈；寰枢关节以枢椎齿突为轴旋转（正中为车轴关节），使头部左右转动。\n- A：两组关节的运动说反。\n- B：头颈部的俯仰与旋转正是这两组特殊关节的功能。\n- D：肋椎关节连肋与胸椎，胸锁关节在胸前壁，均与此无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+        "label": "寰枕关节与寰枢关节 · 运动形式"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "寰椎横韧带在维持头颈稳定中的关键作用是（　）。",
+      "options": [
+        "横过齿突后方，将齿突固定于寰椎前弓后方，防止齿突后移压迫脊髓",
+        "附着于齿突尖与枕骨大孔前缘之间",
+        "连于齿突上部两侧至枕骨髁，主要限制头部过度旋转",
+        "走行于椎体前面，防止脊柱过度后伸"
+      ],
+      "answer": 0,
+      "hint": "该韧带断裂后果严重：齿突后移可伤及脊髓、危及生命。",
+      "explanation": "**A 正确。** 寰椎横韧带横过齿突后方、两端附于寰椎侧块，把齿突固定在寰椎前弓后方，防止齿突向后移位压迫脊髓；一旦断裂，齿突后移可造成致命的脊髓损伤。\n- B：描述的是齿突尖韧带（齿突尖→枕骨大孔前缘）。\n- C：描述的是翼状韧带（齿突上部两侧→枕骨髁，限制过度旋转）。\n- D：走行于椎体前面、防过度后伸的是前纵韧带。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+        "label": "寰枢关节加固韧带 · 寰椎横韧带"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "从侧面观察脊柱的四个生理弯曲，下列凸向正确的是（　）。",
+      "options": [
+        "颈曲、腰曲凸向后，胸曲、骶曲凸向前",
+        "颈曲、腰曲凸向前，胸曲、骶曲凸向后",
+        "四个弯曲全部凸向前",
+        "四个弯曲全部凸向后"
+      ],
+      "answer": 1,
+      "hint": "胎儿是原始的「弓背」；抬头、站立行走又在颈、腰两处长出向前的弯。",
+      "explanation": "**B 正确。** 四个生理弯曲中，胸曲与骶曲凸向后（胚胎时期即形成的原始弯曲），颈曲与腰曲凸向前（后天形成：颈曲在婴儿约 3 个月抬头时出现，腰曲在约 1 岁站立行走时形成），共同缓冲震荡、维持直立重心。\n- A：把前后凸向整体说反。\n- C、D：四个弯曲并非同向，颈/腰与胸/骶凸向相反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+        "label": "脊柱侧面观 · 四个生理弯曲"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列脊柱弯曲中，属于胚胎时期即已形成的「原始（先天）弯曲」的是（　）。",
+      "options": [
+        "颈曲和腰曲",
+        "颈曲和胸曲",
+        "腰曲和骶曲",
+        "胸曲和骶曲"
+      ],
+      "answer": 3,
+      "hint": "后天弯曲对应「抬头」和「站立行走」两个发育里程碑。",
+      "explanation": "**D 正确。** 胸曲与骶曲凸向后，在胚胎时期即已形成，属原始（先天）弯曲；颈曲（约 3 个月抬头）与腰曲（约 1 岁站立行走）凸向前，是适应直立行走后天形成的弯曲。\n- A：颈曲、腰曲均为后天形成。\n- B、C：均把一个后天弯曲与先天弯曲混搭。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+        "label": "四个生理弯曲 · 先天与后天形成时期"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "椎间盘总厚度约占脊柱全长的（　）。",
+      "options": [
+        "约 1/10",
+        "约 1/2",
+        "约 1/4",
+        "椎间盘极薄，可忽略不计"
+      ],
+      "answer": 2,
+      "hint": "脊柱大幅度运动靠多个小活动度的椎间盘累加，它占比不小。",
+      "explanation": "**C 正确。** 成年男性脊柱长约 70 cm、女性约 60 cm，椎间盘总厚度约占脊柱全长的 **1/4**；单个椎间盘活动度很小，多个椎间盘与关节突关节累加才形成脊柱较大幅度的屈伸、侧屈、旋转与环转。\n- A、B、D：与约占 1/4 的事实不符。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+        "label": "脊柱长度 · 椎间盘占比"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "老年人脊柱变短、身高降低，下列原因中**不属于**教材所述的是（　）。",
+      "options": [
+        "椎间盘萎缩、变薄",
+        "骨密度升高、椎体异常增厚",
+        "骨质疏松、椎体被压缩",
+        "驼背，脊柱生理弯曲加重"
+      ],
+      "answer": 1,
+      "hint": "题目选「不属于」；老年人骨是变松、变脆，不是变硬变厚。",
+      "explanation": "**B 不属于（符合题意）。** 老年人脊柱变短的三大原因是：椎间盘萎缩变薄、骨质疏松导致椎体压缩、驼背使弯曲加重；老年人是骨密度下降而非升高、椎体变松而非增厚。\n- A、C、D 均为教材所述原因。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+        "label": "脊柱长度 · 老年人变矮的原因"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "胸廓的组成是（　）。",
+      "options": [
+        "12 块胸椎、12 对肋和 1 块胸骨，保护胸腔脏器并参与呼吸运动",
+        "全部由 12 对肋骨围成，不含胸椎与胸骨",
+        "由胸椎、肋和锁骨构成",
+        "由 7 块颈椎、12 对肋和胸骨构成"
+      ],
+      "answer": 0,
+      "hint": "后—上—前：胸椎在后、肋在两侧、胸骨在前正中。",
+      "explanation": "**A 正确。** 胸廓由 12 块胸椎、12 对肋和 1 块胸骨共同构成，呈上窄下宽的圆锥形，有保护胸腔脏器、参与呼吸运动的功能。\n- B：胸廓还包括后方胸椎与前方胸骨。\n- C：锁骨不参与构成胸廓。\n- D：颈椎不参与胸廓，胸椎是 12 块。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-004-006/notes.html",
+        "label": "胸廓 · 组成与功能"
+      }
+    }
+  ]
+}

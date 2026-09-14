@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "anatomy",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-007-009",
+  "courseName": "系统解剖学",
+  "sessionRange": {
+    "start": 7,
+    "end": 9
+  },
+  "taughtOn": "2026-09-07",
+  "topic": "下肢骨及其连接",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-007-009"
+}

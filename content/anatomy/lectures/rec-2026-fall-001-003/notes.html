@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+:root{--paper:#FAF8F1;--ink:#24201A;--muted:#857B68;--line:#E6DECC;--accent:#7B2D26;--accent-deep:#4A1A16;--accent-tint:#F3E5E3;--gold:#A2630C;--gold-tint:#F8ECD3;--crimson:#B23A2E;--crimson-tint:#F7E4DF;--serif:"Noto Serif CJK SC",serif;--sans:"Noto Sans CJK SC",sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:10pt;line-height:1.7;}
+.page{width:210mm;min-height:297mm;padding:18mm 20mm;position:relative;page-break-after:always;}
+.page:last-child{page-break-after:auto;}
+.cover{background:radial-gradient(120% 80% at 78% 12%,#A0392E 0%,#7B2D26 55%,#4A1A16 100%);color:#F3EEE2;display:flex;flex-direction:column;justify-content:center;padding:25mm;}
+.cover .frame{position:absolute;inset:13mm;border:0.6pt solid rgba(231,206,156,.55);}
+.cover .kicker{font-size:9pt;letter-spacing:.42em;text-transform:uppercase;color:#E7CE9C;margin-bottom:8mm;}
+.cover h1{font-family:var(--serif);font-size:34pt;line-height:1.2;color:#FBF7EC;margin-bottom:6mm;}
+.cover h1 .accent{color:#E7CE9C;}
+.cover .subt{font-family:var(--serif);font-size:14pt;color:rgba(243,238,226,.82);margin-bottom:4mm;}
+.cover .meta{font-size:10pt;color:rgba(243,238,226,.6);margin-top:auto;}
+.toc h2{font-family:var(--serif);font-size:22pt;color:var(--accent-deep);margin-bottom:8mm;border-bottom:2pt solid var(--accent);padding-bottom:3mm;}
+.toc-item{display:flex;justify-content:space-between;align-items:baseline;padding:3mm 0;border-bottom:0.5pt solid var(--line);}
+.toc-item .num{font-family:var(--serif);font-weight:700;color:var(--accent);min-width:12mm;}
+.toc-item .title{font-family:var(--serif);font-size:12pt;font-weight:600;flex:1;}
+.toc-item .desc{font-size:8.5pt;color:var(--muted);margin-left:4mm;}
+.chapter-head{margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.6pt solid var(--accent);}
+.chapter-no{display:inline-block;font-family:var(--serif);font-weight:700;font-size:11pt;color:#fff;background:var(--accent);padding:1mm 3mm;border-radius:1.5mm;margin-right:3mm;}
+.chapter-title{font-family:var(--serif);font-size:18pt;color:var(--accent-deep);font-weight:700;}
+h3{font-family:var(--serif);font-size:13pt;color:var(--accent-deep);margin:6mm 0 3mm;padding-left:3mm;border-left:3pt solid var(--accent);}
+p{margin:2mm 0;}
+ul,ol{margin:2mm 0 2mm 6mm;}
+li{margin:1mm 0;}
+.card{background:#fff;border:0.5pt solid var(--line);border-radius:2mm;padding:4mm 5mm;margin:3mm 0;}
+.card.concl{border-left:3pt solid var(--accent);}
+.card.warn{border-left:3pt solid var(--crimson);background:var(--crimson-tint);}
+.card.gold{border-left:3pt solid var(--gold);background:var(--gold-tint);}
+.card .label{font-size:8pt;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:1.5mm;text-transform:uppercase;}
+.card.warn .label{color:var(--crimson);}
+table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
+th{background:var(--accent);color:#fff;padding:2mm 3mm;text-align:left;font-weight:600;}
+td{padding:2mm 3mm;border-bottom:0.5pt solid var(--line);}
+tr:nth-child(even) td{background:var(--accent-tint);}
+.hl{background:var(--gold-tint);border:0.4pt solid #E7CE9C;border-radius:1.5mm;padding:2mm 3mm;margin:2mm 0;}
+.hl .tag{display:inline-block;background:var(--gold);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
+.footer{position:absolute;bottom:10mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:0.5pt solid var(--line);padding-top:2mm;}
+</style>
+</head>
+<body>
+
+<div class="page cover">
+  <div class="frame"></div>
+  <div class="kicker">SYSTEMATIC ANATOMY · 系统解剖学</div>
+  <h1>绪论与<br><span class="accent">骨学躯干骨</span></h1>
+  <div class="subt">第1-3节 · 实验课 · 课程笔记可视化手册</div>
+  <div class="meta">2026-08-31 · 解剖楼实验室 · 华中科技大学基础医学</div>
+</div>
+
+<div class="page">
+  <div class="toc">
+    <h2>目 录</h2>
+    <div class="toc-item"><span class="num">01</span><span class="title">解剖学基础术语</span><span class="desc">姿势·方位·轴面</span></div>
+    <div class="toc-item"><span class="num">02</span><span class="title">骨学总论</span><span class="desc">分类·结构·化学成分</span></div>
+    <div class="toc-item"><span class="num">03</span><span class="title">关节学</span><span class="desc">基本结构·辅助结构·运动</span></div>
+    <div class="toc-item"><span class="num">04</span><span class="title">椎骨</span><span class="desc">一般形态·颈椎·胸椎·腰椎</span></div>
+    <div class="toc-item"><span class="num">05</span><span class="title">胸骨与肋</span><span class="desc">胸骨角·真肋假肋浮肋</span></div>
+    <div class="toc-item"><span class="num">06</span><span class="title">易错点与回忆题</span><span class="desc">高频考点·核心问答</span></div>
+  </div>
+  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 2 页</span></div>
+</div>
+
+<div class="page">
+  <div class="chapter-head"><span class="chapter-no">01</span><span class="chapter-title">解剖学基础术语</span></div>
+  <div class="card concl">
+    <div class="label">标准解剖学姿势（所有方位的基准）</div>
+    <p>身体直立，面向前，两眼平视，上肢下垂，<strong>掌心向前</strong>，下肢并拢，足尖向前。</p>
+    <p style="color:var(--crimson);">⚠️ 与体育课立正的唯一区别：掌心向前（非向内）。</p>
+  </div>
+  <h3>方位术语</h3>
+  <table>
+    <tr><th>术语</th><th>含义</th></tr>
+    <tr><td>上/下</td><td>近头为上，近足为下</td></tr>
+    <tr><td>前/后（腹侧/背侧）</td><td>近胸腹为前，近背为后</td></tr>
+    <tr><td>内侧/外侧</td><td>近正中矢状面为内侧</td></tr>
+    <tr><td>浅/深</td><td>近体表为浅</td></tr>
+    <tr><td>近侧/远侧</td><td>近躯干为近侧（四肢用）</td></tr>
+    <tr><td>尺侧/桡侧</td><td>前臂内=尺侧，外=桡侧</td></tr>
+    <tr><td>胫侧/腓侧</td><td>小腿内=胫侧，外=腓侧</td></tr>
+  </table>
+  <h3>三轴与三面</h3>
+  <div class="hl"><span class="tag">三轴</span>垂直轴（上下）· 冠状轴（左右）· 矢状轴（前后）</div>
+  <div class="hl"><span class="tag">三面</span>矢状面（分左右）· 冠状面（分前后）· 水平面（分上下）</div>
+
+  <div class="chapter-head" style="margin-top:8mm;"><span class="chapter-no">02</span><span class="chapter-title">骨学总论</span></div>
+  <table>
+    <tr><th>类型</th><th>特点</th><th>例子</th></tr>
+    <tr><td>长骨</td><td>一体两端</td><td>肱骨、股骨、指骨</td></tr>
+    <tr><td>短骨</td><td>立方形成群</td><td>腕骨、跗骨</td></tr>
+    <tr><td>扁骨</td><td>板状围成腔</td><td>颅盖骨、肋骨、胸骨</td></tr>
+    <tr><td>不规则骨</td><td>含空腔</td><td>椎骨、筛骨</td></tr>
+  </table>
+  <div class="card warn"><div class="label">易错</div><p>指骨虽短属长骨；肋骨虽长属扁骨。成人共206块骨。</p></div>
+
+  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 3 页</span></div>
+</div>
+
+<div class="page">
+  <div class="chapter-head"><span class="chapter-no">02</span><span class="chapter-title">骨学总论（续）</span></div>
+  <h3>长骨结构</h3>
+  <div class="card concl">
+    <div class="label">结构</div>
+    <p><strong>骨干</strong>（中间，骨髓腔）+ <strong>骺</strong>（两端膨大）+ <strong>干骺端</strong>（交界）+ <strong>骺线/骺软骨</strong>（成骨细胞，促生长；闭合→停止生长）</p>
+    <p>测骨龄常用腕部X线；12岁前骺线明显可见。</p>
+  </div>
+  <h3>骨的构造</h3>
+  <table>
+    <tr><th>结构</th><th>位置</th><th>特点</th></tr>
+    <tr><td>骨密质</td><td>表层</td><td>致密坚硬，骨干厚</td></tr>
+    <tr><td>骨松质</td><td>内部</td><td>骨小梁交织，骺部多</td></tr>
+    <tr><td>骨膜</td><td>外表面</td><td>含成骨/破骨细胞，营养再生感觉</td></tr>
+    <tr><td>红骨髓</td><td>骨松质</td><td>造血；成人在椎骨/髂骨/胸骨</td></tr>
+    <tr><td>黄骨髓</td><td>骨髓腔</td><td>脂肪，失血时可转化</td></tr>
+  </table>
+  <div class="hl"><span class="tag">骨髓穿刺</span>常选髂骨或胸骨（成人红骨髓所在）。</div>
+  <h3>骨的化学成分</h3>
+  <div class="card gold">
+    <div class="label">有机质 vs 无机质</div>
+    <p><strong>有机质（1/3）</strong>：胶原纤维→韧性弹性。脱钙骨可弯折。</p>
+    <p><strong>无机质（2/3）</strong>：碱性磷酸钙→硬度脆性。煅烧骨一碰就碎。</p>
+    <p>儿童有机质多→青枝骨折；老人无机质多→易骨折。</p>
+  </div>
+
+  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 4 页</span></div>
+</div>
+
+<div class="page">
+  <div class="chapter-head"><span class="chapter-no">03</span><span class="chapter-title">关节学</span></div>
+  <div class="card concl">
+    <div class="label">关节三大基本结构（所有关节共有）</div>
+    <p><strong>① 关节面</strong>：关节头+关节窝，覆关节软骨（减摩擦、增弹性）</p>
+    <p><strong>② 关节囊</strong>：外层纤维膜，内层滑膜（分泌滑液）</p>
+    <p><strong>③ 关节腔</strong>：滑膜+软骨围成，呈<strong>负压</strong>，含滑液</p>
+  </div>
+  <h3>辅助结构</h3>
+  <table>
+    <tr><th>结构</th><th>功能</th><th>例子</th></tr>
+    <tr><td>韧带</td><td>加强稳固、限制运动</td><td>膝关节交叉韧带</td></tr>
+    <tr><td>关节盘</td><td>调节适配、缓冲、分腔</td><td>膝关节半月板</td></tr>
+    <tr><td>关节唇</td><td>加深关节窝、增稳定</td><td>髋/肩关节盂唇</td></tr>
+    <tr><td>滑膜襞/囊</td><td>填充、减摩擦</td><td>膝关节翼状襞</td></tr>
+  </table>
+  <h3>关节运动</h3>
+  <div class="hl"><span class="tag">运动轴</span>屈伸→冠状轴 · 收展→矢状轴 · 旋转→垂直轴 · 环转→复合</div>
+  <div class="card warn">
+    <div class="label">特殊情况（高频考点）</div>
+    <p><strong>踝关节</strong>：勾脚=伸（背屈），绷脚=屈（跖屈）——与日常认知相反！</p>
+    <p><strong>拇指腕掌关节</strong>：屈伸沿矢状轴，收展沿冠状轴——与其他四指相反（第一掌骨旋转90°）。</p>
+  </div>
+  <div class="hl"><span class="tag">关节对比</span>肩关节囊薄→活动大易脱位；髋关节囊厚→稳固。</div>
+
+  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 5 页</span></div>
+</div>
+
+<div class="page">
+  <div class="chapter-head"><span class="chapter-no">04</span><span class="chapter-title">椎骨</span></div>
+  <div class="card concl">
+    <div class="label">一般形态</div>
+    <p><strong>椎体</strong>（前，承重）+ <strong>椎弓</strong>（后，围成椎孔→椎管）</p>
+    <p><strong>7个突起</strong>：1棘突 + 2横突 + 4关节突（上2+下2）</p>
+    <p><strong>椎间孔</strong>：相邻切迹围成，脊神经血管通过。</p>
+  </div>
+  <div class="card warn"><div class="label">腰椎间盘突出</div><p>椎间盘向侧后方突出→压迫椎间孔内脊神经（不是掉到椎管里）。</p></div>
+
+  <h3>特殊颈椎</h3>
+  <table>
+    <tr><th>颈椎</th><th>别称</th><th>核心特点</th></tr>
+    <tr><td>C1</td><td><strong>寰椎</strong></td><td>无椎体，前弓+后弓+侧块；齿突凹；与枕骨成寰枕关节</td></tr>
+    <tr><td>C2</td><td><strong>枢椎</strong></td><td>齿突向上（=C1椎体融合）；寰枢关节</td></tr>
+    <tr><td>C7</td><td><strong>隆椎</strong></td><td>棘突最长不分叉，体表标志</td></tr>
+  </table>
+  <div class="hl"><span class="tag">颈椎共性</span>椎体小、椎孔大三角形、横突有孔、C2-6棘突分叉。椎动脉从C6横突孔上行。</div>
+  <div class="hl"><span class="tag">钩椎关节</span>C3-7椎体钩+上位椎体斜坡；增生→颈椎病。</div>
+
+  <h3>胸椎 vs 腰椎</h3>
+  <table>
+    <tr><th></th><th>胸椎(12)</th><th>腰椎(5)</th></tr>
+    <tr><td>椎体</td><td>有肋凹</td><td>肥大（承重最大）</td></tr>
+    <tr><td>棘突</td><td>长，斜向后下（叠瓦状）</td><td>板状，水平向后</td></tr>
+    <tr><td>关节突</td><td>冠状位</td><td>矢状位</td></tr>
+    <tr><td>横突</td><td>有横突肋凹（T11/12无）</td><td>无</td></tr>
+  </table>
+  <div class="hl"><span class="tag">腰穿</span>选腰椎：棘突间隙大 + 腰部为马尾（不伤脊髓）。</div>
+
+  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 6 页</span></div>
+</div>
+
+<div class="page">
+  <div class="chapter-head"><span class="chapter-no">05</span><span class="chapter-title">胸骨与肋</span></div>
+  <div class="card gold">
+    <div class="label">胸骨角（重要体表标志）</div>
+    <p>胸骨柄与体交界处，向前突出。</p>
+    <p><strong>两侧平对第2肋</strong>→计数肋骨的标志。</p>
+    <p><strong>向后平对第4胸椎下缘</strong>。</p>
+  </div>
+  <p>胸骨三部分：胸骨柄 + 胸骨体 + 剑突。柄上缘：颈静脉切迹。</p>
+
+  <h3>肋（12对）</h3>
+  <table>
+    <tr><th>分类</th><th>范围</th><th>特点</th></tr>
+    <tr><td><strong>真肋</strong></td><td>1-7</td><td>肋软骨直接连胸骨</td></tr>
+    <tr><td><strong>假肋</strong></td><td>8-10</td><td>肋软骨连上位肋软骨→肋弓</td></tr>
+    <tr><td><strong>浮肋</strong></td><td>11-12</td><td>前端游离</td></tr>
+  </table>
+  <div class="card concl">
+    <div class="label">肋骨结构</div>
+    <p>肋头（关节面）→ 肋颈 → 肋结节 → 肋体（肋角 + 内面肋沟）</p>
+    <p>肋沟：肋间神经、血管走行。肋软骨：透明软骨，终生不骨化。</p>
+  </div>
+  <div class="hl"><span class="tag">第1肋</span>最短最宽，前斜角肌结节 + 锁骨下动静脉沟。第11/12肋：无肋颈、肋结节、肋角。</div>
+
+  <h3>骶骨与尾骨</h3>
+  <p>骶骨：5骶椎融合，三角形，4对骶前孔+4对骶后孔，耳状面（骶髂关节），骶管裂孔。</p>
+  <p>尾骨：3-4尾椎融合，末端游离，易骨折。</p>
+
+  <div class="chapter-head" style="margin-top:6mm;"><span class="chapter-no">06</span><span class="chapter-title">易错点与回忆题</span></div>
+  <ol>
+    <li>标准解剖学姿势<strong>掌心向前</strong>。</li>
+    <li>指骨属长骨，肋骨属扁骨。</li>
+    <li>骺线闭合=停止生长。</li>
+    <li>成人红骨髓在椎骨/髂骨/胸骨。</li>
+    <li>关节腔<strong>负压</strong>。</li>
+    <li>踝关节勾脚=伸，绷脚=屈。</li>
+    <li>椎骨7突起：1棘+2横+4关节。</li>
+    <li>寰椎无椎体，枢椎有齿突，隆椎棘突最长。</li>
+    <li>胸骨角平对第2肋+第4胸椎下缘。</li>
+    <li>真肋1-7，假肋8-10，浮肋11-12。</li>
+  </ol>
+
+  <div style="margin-top:6mm;text-align:center;color:var(--muted);font-size:9pt;">— 系统解剖学 · 第1-3节 · 完 —</div>
+  <div class="footer"><span>系统解剖学 · 绪论与骨学躯干骨</span><span>第 7 页</span></div>
+</div>
+
+</body>
+</html>

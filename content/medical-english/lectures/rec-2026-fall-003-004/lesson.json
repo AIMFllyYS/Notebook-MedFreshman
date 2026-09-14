@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "medical-english",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-003-004",
+  "courseName": "医学英语",
+  "sessionRange": {
+    "start": 3,
+    "end": 4
+  },
+  "taughtOn": "2026-09-09",
+  "topic": "Paraphrasing与AI医学诊断文本分析",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-003-004"
+}

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>分析化学 · 第5-6节 · 可视化笔记</title>
+<style>
+:root{--accent:#0E5C52;--accent-deep:#0A463E;--accent-tint:#E7F0EB;--accent-line:#BFD8CF;--mnem:#A2630C;--mnem-tint:#F8ECD3;--paper:#FAF7F0;--ink:#24201A;--ink-soft:#4A4337;--muted:#857B68;--line:#E6DECC;--crimson:#B23A2E;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Noto Sans CJK SC","Microsoft YaHei",sans-serif;background:var(--paper);color:var(--ink);font-size:10pt;line-height:1.7;padding:0;}
+.cover{width:210mm;min-height:297mm;background:linear-gradient(135deg,#12685C 0%,#0A463E 55%,#07372F 100%);color:#F3EEE2;padding:25mm 20mm;display:flex;flex-direction:column;page-break-after:always;position:relative;overflow:hidden;}
+.cover::before{content:"";position:absolute;right:-30mm;top:-20mm;width:120mm;height:120mm;border:1pt solid rgba(231,206,156,.15);border-radius:50%;}
+.cover .kicker{font-size:9pt;letter-spacing:.4em;text-transform:uppercase;color:#E7CE9C;margin-bottom:8mm;}
+.cover h1{font-family:"Noto Serif CJK SC",serif;font-size:36pt;font-weight:700;line-height:1.2;margin-bottom:6mm;}
+.cover h1 .accent{color:#E7CE9C;}
+.cover .sub{font-size:13pt;color:rgba(243,238,226,.85);margin-bottom:4mm;}
+.cover .meta{font-size:10pt;color:rgba(243,238,226,.6);margin-top:auto;line-height:2;}
+.cover .meta b{color:#E7CE9C;}
+.page{padding:18mm 16mm;page-break-after:always;}
+.page:last-child{page-break-after:auto;}
+h2.sec-title{font-family:"Noto Serif CJK SC",serif;font-size:17pt;color:var(--accent-deep);border-bottom:2pt solid var(--accent);padding-bottom:2mm;margin-bottom:5mm;}
+h3.sub-title{font-size:12pt;color:var(--accent-deep);margin:5mm 0 2mm;font-weight:700;}
+p{margin-bottom:2.5mm;text-align:justify;}
+table{width:100%;border-collapse:collapse;margin:3mm 0;font-size:9pt;}
+th{background:var(--accent);color:#fff;padding:2mm 2.5mm;text-align:left;font-weight:600;}
+td{padding:1.8mm 2.5mm;border-bottom:0.5pt solid var(--line);vertical-align:top;}
+tr:nth-child(even) td{background:rgba(231,240,235,.4);}
+.hl-box{background:var(--mnem-tint);border-left:3pt solid var(--mnem);padding:3mm 4mm;margin:3mm 0;border-radius:0 2mm 2mm 0;}
+.hl-box .tag{display:inline-block;background:var(--mnem);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;letter-spacing:.05em;}
+.warn-box{background:#F7E4DF;border-left:3pt solid var(--crimson);padding:3mm 4mm;margin:3mm 0;border-radius:0 2mm 2mm 0;color:#7E2A20;}
+.warn-box .tag{display:inline-block;background:var(--crimson);color:#fff;font-size:7.5pt;font-weight:700;padding:.5mm 2mm;border-radius:1mm;margin-right:2mm;}
+.kv{margin:1.5mm 0;}
+.kv .k{font-weight:700;color:var(--accent-deep);}
+.kv .k::after{content:"｜";color:var(--accent-line);margin:0 .3em;font-weight:400;}
+ul,ol{margin:2mm 0 2mm 6mm;}
+li{margin-bottom:1mm;}
+.toc{columns:2;column-gap:8mm;}
+.toc-item{break-inside:avoid;margin-bottom:2mm;font-size:9.5pt;}
+.toc-item .num{color:var(--accent);font-weight:700;margin-right:2mm;}
+.checklist li{list-style:none;margin-left:-4mm;}
+.checklist li::before{content:"☐ ";color:var(--accent);font-weight:700;}
+.qa{margin-bottom:4mm;}
+.qa .q{font-weight:700;color:var(--accent-deep);margin-bottom:1.5mm;}
+.qa .a{color:var(--ink-soft);padding-left:4mm;border-left:1.5pt solid var(--accent-line);}
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:1mm;margin:3mm 0;font-size:8.5pt;}
+.flow .step{background:var(--accent-tint);border:0.5pt solid var(--accent-line);color:var(--accent-deep);padding:1.5mm 3mm;border-radius:2mm;font-weight:600;}
+.flow .arrow{color:var(--muted);font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="kicker">ANALYTICAL CHEMISTRY · 可视化笔记</div>
+  <h1>分析化学<span class="accent">速查</span></h1>
+  <div class="sub">第5-6节 · 检出限 + 试样采集与预处理</div>
+  <div class="meta">
+    <b>授课教师</b>：刘敏 副教授<br>
+    <b>日期</b>：2026-09-08（周二）<br>
+    <b>课程内节次</b>：第5-6节<br>
+    <b>主题</b>：检出限换算 · 采样三大原则 · 气液固生物样品采集 · 样品保存 · 预处理方法 · 实验安全
+  </div>
+</div>
+
+<div class="page">
+  <h2 class="sec-title">知识结构总览</h2>
+  <div class="toc">
+    <div class="toc-item"><span class="num">01</span>检出限定义与浓度换算</div>
+    <div class="toc-item"><span class="num">02</span>定量限与检出限的区别</div>
+    <div class="toc-item"><span class="num">03</span>采样三大原则（代表性/典型性/事实性）</div>
+    <div class="toc-item"><span class="num">04</span>采样方法（随机/系统/判断）</div>
+    <div class="toc-item"><span class="num">05</span>气体样品采集（直接/富集）</div>
+    <div class="toc-item"><span class="num">06</span>地表水采样垂线与深度规范</div>
+    <div class="toc-item"><span class="num">07</span>容器选择（金属用塑料/有机物用玻璃）</div>
+    <div class="toc-item"><span class="num">08</span>固体与生物样品采集</div>
+    <div class="toc-item"><span class="num">09</span>样品保存（密封/冷藏/防腐剂）</div>
+    <div class="toc-item"><span class="num">10</span>预处理三大目标与两项要求</div>
+    <div class="toc-item"><span class="num">11</span>干法灰化/低温灰化/湿法消化</div>
+    <div class="toc-item"><span class="num">12</span>消化液组合与操作安全</div>
+    <div class="toc-item"><span class="num">13</span>密闭罐消解与微波消解</div>
+  </div>
+
+  <h2 class="sec-title" style="margin-top:8mm;">01 · 检出限</h2>
+  <div class="flow">
+    <span class="step">空白信号</span><span class="arrow">→</span>
+    <span class="step">3×空白标准偏差</span><span class="arrow">→</span>
+    <span class="step">信号检出限</span><span class="arrow">→</span>
+    <span class="step">(信号检出限-A)/S</span><span class="arrow">→</span>
+    <span class="step">浓度检出限</span>
+  </div>
+  <div class="kv"><span class="k">空白信号</span>无待测组分的纯溶剂检测信号偏差=系统误差，叠加随机误差后在基准值上下波动</div>
+  <div class="kv"><span class="k">信号检出限</span>通用规则=空白标准偏差的3倍（不同方法可调整为2倍）</div>
+  <div class="kv"><span class="k">校准曲线</span>Y = A + S·C；Y=信号，C=浓度，A=截距（背景），S=斜率（灵敏度）</div>
+  <div class="hl-box"><span class="tag">必背公式</span>浓度检出限 = (信号检出限 - 截距A) / 斜率S</div>
+  <div class="kv"><span class="k">定量限</span>空白标准偏差的10倍，用于准确定量（区别于仅判断存在的检出限）</div>
+  <div class="warn-box"><span class="tag">⚠ 易混</span>检出限仅判断"有没有"（3倍空白SD），定量限才能判断"有多少"（10倍空白SD）。</div>
+</div>
+
+<div class="page">
+  <h2 class="sec-title">02-04 · 试样采集基础</h2>
+  <div class="kv"><span class="k">实验流程</span>采样→制样前处理→测定→数据处理→出具报告；制样前处理占整体实验时长的最大比例</div>
+
+  <h3 class="sub-title">核心术语</h3>
+  <table>
+    <tr><th>术语</th><th>定义</th></tr>
+    <tr><td>总体</td><td>分析对象的全体</td></tr>
+    <tr><td>个体</td><td>总体内的单个单位</td></tr>
+    <tr><td>样本</td><td>从总体中抽取的代表性个体集合</td></tr>
+    <tr><td>样本容量</td><td>样本包含的个体数量</td></tr>
+  </table>
+
+  <h3 class="sub-title">采样三大原则</h3>
+  <div class="kv"><span class="k">代表性（核心）</span>少量样品的检测结果可代表整批分析对象的整体情况——必须掌握</div>
+  <div class="kv"><span class="k">典型性</span>匹配检测目标的特定范围（如检测污染需在污染源附近采样）</div>
+  <div class="kv"><span class="k">事实性</span>易变质样品需严格控制采样与检测的时间间隔</div>
+
+  <h3 class="sub-title">采样方法</h3>
+  <div class="kv"><span class="k">随机采样</span>需足够样本量保障代表性</div>
+  <div class="kv"><span class="k">系统采样</span>按固定规则采样，可减少样本量</div>
+  <div class="kv"><span class="k">判断采样</span>基于专业判断选择采样点</div>
+  <div class="hl-box"><span class="tag">金句</span>"样品采集的原则，其实只有三个字，叫做代表性"</div>
+</div>
+
+<div class="page">
+  <h2 class="sec-title">05 · 气体样品采集</h2>
+  <table>
+    <tr><th>场景</th><th>方法</th><th>示例</th></tr>
+    <tr><td>高浓度</td><td>直接采样法</td><td>正己烷车间空气（浓度极高直接采集）</td></tr>
+    <tr><td>低浓度</td><td>滤膜阻留</td><td>PM2.5检测（抽气泵+特定孔径滤膜，抽气24h富集）</td></tr>
+    <tr><td>低浓度</td><td>固体吸附</td><td>吸附剂管富集</td></tr>
+    <tr><td>低浓度</td><td>低温冷凝</td><td>低温冷凝富集</td></tr>
+  </table>
+  <div class="kv"><span class="k">苯并芘标准</span>我国环境空气质量标准：苯并芘日均值=0.0025 μg/m³；超标时段与肺癌发病率存在相关性</div>
+  <div class="kv"><span class="k">气溶胶病毒采集</span>方案一=抽气→选择性透过膜→抗原抗体荧光直测；方案二=抽气→带溶剂离心装置富集→送检。优化：滤膜预筛杂质+溶剂提前灭活+多病毒并行检测</div>
+
+  <h2 class="sec-title" style="margin-top:8mm;">06-07 · 液体样品采集</h2>
+  <h3 class="sub-title">地表水采样垂线（按河流宽度）</h3>
+  <table>
+    <tr><th>河流宽度</th><th>采样垂线数</th></tr>
+    <tr><td>&lt; 50米</td><td>1条</td></tr>
+    <tr><td>50-100米</td><td>2条</td></tr>
+    <tr><td>&gt; 100米</td><td>3条</td></tr>
+  </table>
+  <h3 class="sub-title">地表水采样深度（按水深）</h3>
+  <table>
+    <tr><th>水深</th><th>采样层</th></tr>
+    <tr><td>&lt; 5米</td><td>上层</td></tr>
+    <tr><td>5-10米</td><td>上下两层</td></tr>
+    <tr><td>&gt; 10米</td><td>上中下三层</td></tr>
+  </table>
+  <div class="warn-box"><span class="tag">⚠ 反直觉</span>测金属离子用塑料容器（防玻璃离子渗出），测有机物用玻璃容器（防塑料单体溶出）。与直觉相反！</div>
+  <div class="kv"><span class="k">立即测定指标</span>余氯、细菌总数、pH值（避免组分挥发或环境干扰）</div>
+</div>
+
+<div class="page">
+  <h2 class="sec-title">08 · 固体与生物样品采集</h2>
+  <div class="kv"><span class="k">散装粮食</span>双螺旋套管采样器（带凹槽），插入粮堆采不同深度样本，无需拆封整袋包装</div>
+  <div class="kv"><span class="k">果蔬缩分</span>去除不可食用部分→四分法（取对角线部分）→捣碎制备待测样</div>
+  <table>
+    <tr><th>样品类型</th><th>容器/要求</th></tr>
+    <tr><td>尿液、血液</td><td>聚乙烯、聚丙烯容器或硬质玻璃管</td></tr>
+    <tr><td>毛发</td><td>贴近头皮部分反映近期情况</td></tr>
+    <tr><td>唾液</td><td>同尿液/血液容器要求</td></tr>
+  </table>
+  <div class="hl-box"><span class="tag">瘦肉精检测</span>家畜瘦肉精检测可采集尿液样本→试纸条现场快速筛查→现场采样≥10mL→样本备双份（一份当场检测+一份封存留作阳性复检用，避免争议）</div>
+
+  <h2 class="sec-title" style="margin-top:8mm;">09 · 样品保存</h2>
+  <div class="kv"><span class="k">通用方式</span>①密封（防挥发污染）②冷藏（低温抑制微生物和反应）③添加化学防腐剂（抑制微生物）</div>
+  <div class="kv"><span class="k">核心目标</span>避免样品组分变质、待测物损失，同时避免引入干扰后续检测的杂质</div>
+  <div class="warn-box"><span class="tag">⚠ 特殊</span>检测易挥发组分的水样：需将容器装满至溢流后密封，避免顶空空间导致待测组分挥发→最终检测结果偏低。</div>
+</div>
+
+<div class="page">
+  <h2 class="sec-title">10 · 样品预处理目标与要求</h2>
+  <div class="hl-box"><span class="tag">三大目标</span>①便于分析（将样品处理为适配检测的形态）②除干扰（去除检测干扰组分）③浓缩（浓缩低浓度待测组分）</div>
+  <div class="hl-box"><span class="tag">两项要求</span>①严格避免待测组分损失 ②不得引入新的干扰物质</div>
+
+  <h2 class="sec-title" style="margin-top:8mm;">11 · 分解法预处理</h2>
+  <table>
+    <tr><th>方法</th><th>条件</th><th>特点</th><th>适用范围</th></tr>
+    <tr><td>干法灰化</td><td>400-700℃马弗炉</td><td>高温氧化分解，无需额外试剂，仅剩余无机组分</td><td>不易挥发的待测组分</td></tr>
+    <tr><td>低温灰化</td><td>~100℃，氧自由基</td><td>射频放电产生氧自由基，低温氧化</td><td>易挥发待测组分</td></tr>
+    <tr><td>湿法消化</td><td>强氧化剂加热</td><td>浓硝酸/高氯酸/硫酸，温度由试剂沸点控制（低于干法）</td><td>易挥发组分</td></tr>
+  </table>
+  <div class="kv"><span class="k">溶解法</span>水溶性组分直接用水溶解；油脂中金属离子用酸性溶液浸出；有机氯农药用有机溶剂提取</div>
+
+  <h2 class="sec-title" style="margin-top:8mm;">12 · 消化液组合与安全</h2>
+  <table>
+    <tr><th>试剂</th><th>特性</th><th>作用</th></tr>
+    <tr><td>硝酸</td><td>适配易消解样品</td><td>基础消解</td></tr>
+    <tr><td>硫酸</td><td>高沸点</td><td>提升反应温度</td></tr>
+    <tr><td>高氯酸</td><td>强氧化性+高沸点</td><td>彻底消解</td></tr>
+  </table>
+  <div class="warn-box"><span class="tag">⚠ 高氯酸</span>接触酚类、羟基类有机物易生成易爆物质！消解全程不得离人！若发现样品变黑→立即停止加热→冷却后补加硝酸！</div>
+  <div class="warn-box"><span class="tag">⚠ 氢氟酸</span>可与骨骼中的钙结合造成不可逆损伤（俗称"化骨水"）！操作时必须全程佩戴全套防护用具，避免直接接触！</div>
+  <div class="hl-box"><span class="tag">安全金句</span>"凡是发生事故的，一定有无数个先兆在提醒你，都没有被发现，才会出现事故"</div>
+</div>
+
+<div class="page">
+  <h2 class="sec-title">13 · 特殊消解技术</h2>
+  <div class="kv"><span class="k">密闭罐消解</span>带聚四氟乙烯/聚乙烯内衬的不锈钢密闭罐；类似高压锅的高压环境→大幅提升消解效率；适配氢氟酸等强腐蚀性试剂</div>
+  <div class="kv"><span class="k">微波消解</span>微波=厘米级波长的交变电场；使样品中极性分子快速转动摩擦生热；实现从分子层面的均匀加热；消解效率远高于常规方法</div>
+
+  <h2 class="sec-title" style="margin-top:8mm;">复习清单</h2>
+  <ul class="checklist">
+    <li>空白信号的误差来源（系统误差+随机误差）</li>
+    <li>信号检出限定义（3倍空白标准偏差）</li>
+    <li>浓度检出限换算公式（Y=A+S·C）</li>
+    <li>定量限与检出限的区别（10倍 vs 3倍）</li>
+    <li>采样三大原则（代表性/典型性/事实性）</li>
+    <li>随机/系统/判断采样的区别</li>
+    <li>气体样品高浓度vs低浓度采集方法</li>
+    <li>PM2.5滤膜采样与苯并芘标准（0.0025 μg/m³）</li>
+    <li>地表水采样垂线规则（按宽度：50/100米分界）</li>
+    <li>地表水采样深度规则（按水深：5/10米分界）</li>
+    <li>金属离子vs有机物的容器选择（塑料vs玻璃）</li>
+    <li>余氯/细菌/pH需立即测定</li>
+    <li>双螺旋套管采样器的使用</li>
+    <li>四分法缩分操作</li>
+    <li>瘦肉精检测流程（快筛+双份备份）</li>
+    <li>样品保存三种方式（密封/冷藏/化学防腐剂）</li>
+    <li>易挥发水样装满溢流保存</li>
+    <li>预处理三大目标与两项要求</li>
+    <li>干法灰化/低温灰化/湿法消化的原理与适用范围</li>
+    <li>消化液组合规则（硝酸+硫酸+高氯酸）</li>
+    <li>高氯酸与氢氟酸的操作安全</li>
+    <li>密闭罐消解与微波消解的原理</li>
+  </ul>
+</div>
+
+<div class="page">
+  <h2 class="sec-title">主动回忆题</h2>
+  <div class="qa">
+    <div class="q">Q1：如何从信号检出限换算得到浓度检出限？</div>
+    <div class="a">首先建立校准曲线Y = A + S·C，其中Y为检测信号，C为待测物浓度，A为截距（背景信号），S为斜率（方法灵敏度）。信号检出限通常取空白标准偏差的3倍。将信号检出限代入校准曲线，扣除背景截距A后除以斜率S，即得到浓度检出限：C检出限 = (信号检出限 - A) / S。</div>
+  </div>
+  <div class="qa">
+    <div class="q">Q2：样品采集的核心原则是什么？地表水采样垂线和采样深度如何确定？</div>
+    <div class="a">采样的核心原则是代表性——少量送检样品的检验结果能代表整批物料。此外还有典型性（匹配检测目标范围）和事实性（易变质样品注意时效性）。地表水采样垂线按河流宽度确定：&lt;50米设1条，50-100米设2条，&gt;100米设3条。采样深度按水深确定：&lt;5米采上层，5-10米采上下两层，&gt;10米采上中下三层。</div>
+  </div>
+  <div class="qa">
+    <div class="q">Q3：干法灰化、低温灰化和湿法消化三种分解法各有什么特点和适用范围？</div>
+    <div class="a">干法灰化在400-700℃马弗炉中高温氧化分解，无需额外试剂，适用于不易挥发的待测组分，但高温可能导致易挥发组分损失。低温灰化通过射频放电产生氧自由基，在约100℃即可氧化分解，适用于易挥发待测组分。湿法消化加入浓硝酸、高氯酸、硫酸等强氧化剂，加热分解有机物，反应温度由试剂沸点控制（低于干法灰化温度），也适用于易挥发组分，温度较低可减少挥发损失。</div>
+  </div>
+  <div class="qa">
+    <div class="q">Q4：样品预处理的三大目标和两项关键要求是什么？为什么高氯酸和氢氟酸操作需要特别注意安全？</div>
+    <div class="a">预处理三大目标：①将样品处理为适配检测的形态（便于分析）；②去除检测干扰组分；③浓缩低浓度待测组分。两项关键要求：①严格避免待测组分损失；②不得引入新的干扰物质。高氯酸接触酚类、羟基类有机物易生成易爆物质，消解全程不得离人，样品变黑需立即停止加热。氢氟酸可与骨骼中的钙结合造成不可逆损伤（俗称"化骨水"），必须全程佩戴全套防护用具。</div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "cell-biology",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-003-004",
+  "courseName": "细胞生物学",
+  "sessionRange": {
+    "start": 3,
+    "end": 4
+  },
+  "taughtOn": "2026-09-03",
+  "topic": "单细胞生物学与组学",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-003-004"
+}

@@ -1,0 +1,260 @@
+{
+  "subjectId": "anatomy",
+  "chapterId": "rec-2026-fall-010-013",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/anatomy/lectures/rec-2026-fall-010-013/recording.md；content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-010-013",
+    "revision": 1,
+    "recordingHash": "f536f60d07524dab7719c0dbf477ee27ba21f33884f8d274b34f0daa096aa820",
+    "notesTextHash": "69ac4c4e0a7c563b591346ecbb9d5e6da5e7ca7cd603a7c1d3366320bb7aef0f"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于颅骨的总数与分部，下列正确的是（　）。",
+      "options": [
+        "颅骨共 29 块，脑颅与面颅各占一半",
+        "以眶上缘、外耳门上缘连线为界，分脑颅 8 块与面颅 15 块，共 23 块（不含舌骨）",
+        "以鼻根至枕骨大孔连线为界分脑颅和面颅",
+        "舌骨计入面颅，面颅共 16 块"
+      ],
+      "answer": 1,
+      "hint": "脑颅容纳脑 8 块，面颅构成眶、鼻、口腔 15 块。",
+      "explanation": "**B 正确。** 颅骨共 23 块（不含舌骨），以眶上缘、外耳门上缘连线为界，分为容纳脑的脑颅（8 块）与构成眶、鼻、口腔的面颅（15 块）。\n- A：总数与划分均错。\n- C：分界不是鼻根至枕骨大孔连线。\n- D：舌骨属面颅但题干总数口径是不含舌骨计 23 块；本项把面颅凑成 16 块，计数错误。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+        "label": "颅骨总论 · 总数与脑颅面颅分界"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列脑颅骨中，**不成对**的一组是（　）。",
+      "options": [
+        "额骨、筛骨、蝶骨、枕骨",
+        "顶骨、颞骨",
+        "上颌骨、颧骨、鼻骨",
+        "犁骨、下颌骨、舌骨"
+      ],
+      "answer": 0,
+      "hint": "脑颅不成对 4 块「额筛蝶枕」，成对 2 对「颞、顶」。",
+      "explanation": "**A 正确。** 脑颅 8 块中，不成对的为额骨、筛骨、蝶骨、枕骨 4 块；成对的为顶骨×2、颞骨×2 共 2 对。\n- B：顶骨、颞骨是成对的脑颅骨。\n- C：上颌骨、颧骨、鼻骨属面颅且成对。\n- D：犁骨、下颌骨、舌骨是面颅中不成对的 3 块，不是脑颅。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+        "label": "脑颅骨 · 成对与不成对"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "太阳穴（翼点）处受外力打击后易形成硬膜外血肿，其解剖学基础是（　）。",
+      "options": [
+        "翼点骨壁厚，深部无重要血管",
+        "翼点由额、顶、枕、蝶四骨构成，深部走行大脑中动脉",
+        "翼点破裂后血液直接流入蛛网膜下隙",
+        "翼点为额、顶、颞、蝶四骨交界的 H 形薄弱区，深部有脑膜中动脉前支走行，骨折易损伤该动脉致硬膜外血肿"
+      ],
+      "answer": 3,
+      "hint": "H 形骨缝、骨壁薄、深部动脉在前支。",
+      "explanation": "**D 正确。** 翼点位于颞窝前下部（太阳穴），是额、顶、颞、蝶四骨交界的 H 形骨缝区，骨壁较薄；其深面走行脑膜中动脉前支，受撞击骨折时易损伤该动脉，血液积聚于硬脑膜与颅骨之间形成硬膜外血肿。\n- A：翼点恰恰骨壁薄且深部有重要动脉。\n- B：参与骨是额、顶、颞、蝶（非枕），血管是脑膜中动脉前支（非大脑中动脉）。\n- C：该出血位于硬脑膜与颅骨之间，不是蛛网膜下隙。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+        "label": "翼点 · 构成与硬膜外血肿"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "颅盖诸骨缝中，冠状缝位于（　）。",
+      "options": [
+        "左右顶骨之间",
+        "额骨与两侧顶骨之间",
+        "两侧顶骨与枕骨之间",
+        "额骨与鼻骨之间"
+      ],
+      "answer": 1,
+      "hint": "冠状缝横走如王冠；矢状缝前后向正中；人字缝在顶、枕之间。",
+      "explanation": "**B 正确。** 颅盖三缝：冠状缝是额骨与两侧顶骨之间的骨缝；矢状缝是左右顶骨之间；人字缝是两侧顶骨与枕骨之间。\n- A：左右顶骨之间是矢状缝。\n- C：顶骨与枕骨之间是人字缝。\n- D：额骨与鼻骨之间并非颅盖三缝之一。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+        "label": "颅骨整体 · 颅盖三缝"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "蝶骨大翼上从前到后依次排列的三个孔道是（　）。",
+      "options": [
+        "棘孔、卵圆孔、圆孔",
+        "卵圆孔、圆孔、棘孔",
+        "圆孔、卵圆孔、棘孔",
+        "圆孔、棘孔、卵圆孔"
+      ],
+      "answer": 2,
+      "hint": "口诀：圆、卵、棘，由前向后。",
+      "explanation": "**C 正确。** 蝶骨大翼上从前到后依次为圆孔（向前通翼腭窝）、卵圆孔（垂直向下通颅底）、棘孔（垂直向下通颅底）。\n- A、B、D：均把三孔的前后顺序排错。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+        "label": "脑颅骨 · 蝶骨大翼圆孔/卵圆孔/棘孔"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "行下牙槽神经阻滞麻醉时，常作为定位标志的下颌骨结构是（　）。",
+      "options": [
+        "下颌小舌（下颌孔前方的小突起）",
+        "颏孔",
+        "冠突",
+        "髁突"
+      ],
+      "answer": 0,
+      "hint": "下牙槽神经从下颌孔入下颌骨；麻醉定位标志在孔附近。",
+      "explanation": "**A 正确。** 下牙槽神经经下颌支内侧面的下颌孔进入下颌骨；下颌孔前方的下颌小舌是传统下牙槽神经阻滞麻醉的核心定位标志。\n- B：颏孔在体外侧面，是颏神经穿出处，不用于此麻醉定位。\n- C：冠突是下颌支上端前方的突起，为颞肌附着处。\n- D：髁突是下颌支上端后方突起，构成颞下颌关节的关节头。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+        "label": "面颅骨 · 下颌骨与下颌小舌麻醉定位"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列鼻旁窦与其开口位置的配对，错误的是（　）。",
+      "options": [
+        "额窦——开口于中鼻道",
+        "上颌窦——开口于中鼻道",
+        "蝶窦——开口于蝶筛隐窝",
+        "筛窦后组——开口于中鼻道"
+      ],
+      "answer": 3,
+      "hint": "筛窦「前中组」与「后组」开口不在同一鼻道。",
+      "explanation": "**D 错误（符合题意）。** 筛窦**前、中组**开口于中鼻道，而**后组**开口于上鼻道，并非中鼻道。\n- A、B：额窦、上颌窦均开口于中鼻道，正确。\n- C：蝶窦开口于蝶筛隐窝，正确。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+        "label": "鼻旁窦 · 各窦开口位置"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "上颌窦炎临床上较常见、且站立位不易自愈，其解剖学原因是（　）。",
+      "options": [
+        "上颌窦是最小的鼻旁窦，血供丰富",
+        "上颌窦是体积最大的鼻旁窦，开口位于窦内侧壁上部，站立位时窦内分泌物难以自行引流排出",
+        "上颌窦不开口于鼻腔，与鼻腔隔绝",
+        "上颌窦开口于上鼻道，位置过低"
+      ],
+      "answer": 1,
+      "hint": "开口高、窦腔大、人直立时积液「出不来」。",
+      "explanation": "**B 正确。** 上颌窦是体积最大的鼻旁窦，其开口位于窦内侧壁上部；人站立位时开口位置高于窦底，窦内分泌物无法自行引流排出、引流不畅，故上颌窦炎常见。\n- A：上颌窦是最大而非最小的鼻旁窦。\n- C：上颌窦开口于中鼻道，与鼻腔相通。\n- D：上颌窦开口于中鼻道而非上鼻道，且问题在于开口偏「高」而非过低。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+        "label": "鼻旁窦 · 上颌窦引流特点"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "鼻中隔（鼻腔内侧壁）主要由下列哪组结构构成（　）。",
+      "options": [
+        "上鼻甲与中鼻甲",
+        "上颌骨与腭骨",
+        "筛骨垂直板与犁骨",
+        "蝶骨体与枕骨基底部"
+      ],
+      "answer": 2,
+      "hint": "一垂直板、一犁骨，拼成正中的隔板。",
+      "explanation": "**C 正确。** 鼻中隔主要由筛骨垂直板（上）与犁骨（后下）共同构成；多数人存在轻度偏曲。鼻腔外侧壁才是上、中、下三鼻甲与三鼻道。\n- A：上、中鼻甲位于鼻腔外侧壁，不构成鼻中隔。\n- B：上颌骨、腭骨参与构成硬腭。\n- D：蝶骨体、枕骨基底部位于颅底，不构成鼻中隔。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+        "label": "鼻腔 · 鼻中隔组成"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "颞下颌关节在大张口时容易发生前脱位，其主要原因是（　）。",
+      "options": [
+        "关节囊前壁薄弱，大张口时髁突可滑过关节结节前方",
+        "关节盘将关节腔分成了两个独立腔隙",
+        "该关节属双侧联动关节",
+        "关节囊后壁最薄弱"
+      ],
+      "answer": 0,
+      "hint": "脱位方向是「前」，薄弱处自然在前壁。",
+      "explanation": "**A 正确。** 颞下颌关节由髁突、颞骨下颌窝和关节结节构成，关节结节虽在一定程度上限制下颌前移，但因关节囊前壁薄弱，在过度张口、肌肉牵拉下髁突可滑过关节结节前方，发生前脱位。\n- B：关节盘分上下两腔是其结构特点，并非前脱位的原因。\n- C：双侧联动是运动特性，与脱位方向无关。\n- D：薄弱的是关节囊前壁而非后壁。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+        "label": "颞下颌关节 · 前脱位机制"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于新生儿颅骨，下列说法正确的是（　）。",
+      "options": [
+        "新生儿脑颅与面颅比例约为 4:1，与成人相同",
+        "新生儿脑颅与面颅比例约为 8:1，随发育至成年变为约 4:1；未骨化处有结缔组织膜填充的颅囟",
+        "新生儿颅骨已完全骨化，没有颅囟",
+        "舌骨与下颌骨之间靠骨性结合相连"
+      ],
+      "answer": 1,
+      "hint": "婴儿脑大脸小，囟门是摸得到的软组织区。",
+      "explanation": "**B 正确。** 新生儿脑颅与面颅比例约为 8:1（脑发育早、面颅未发育），随生长发育面颅扩张，成年后约为 4:1；未完全骨化处由结缔组织膜填充形成前囟、后囟等颅囟，是评估发育的重要标志。\n- A：新生儿约 8:1、成年才约 4:1。\n- C：新生儿恰有多块颅囟，骨化尚未完成。\n- D：舌骨不与任何骨直接连接，靠肌腱、韧带附着。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-010-013/notes.html",
+        "label": "新生儿颅骨 · 颅囟与脑面比例"
+      }
+    }
+  ]
+}

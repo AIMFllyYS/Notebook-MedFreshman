@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-005-006",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-005-006/recording.md；content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-005-006",
+    "revision": 1,
+    "recordingHash": "06d67bef353db7f5eb1a52811af9011341ac5209811473a2840a43c88b1c630d",
+    "notesTextHash": "d2f7eaf4f0897c492f9ce4dcecbff22727a645a8b989e3dc3e1c4b45577c1f79"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "血红蛋白氧结合曲线呈S型而肌红蛋白呈双曲线型，其根本原因是（　）。",
+      "options": [
+        "血红蛋白分子量更大，肌红蛋白分子量更小",
+        "血红蛋白含铁更多，肌红蛋白含铁更少",
+        "血红蛋白是四聚体、存在正协同效应，肌红蛋白是单体、无协同效应",
+        "血红蛋白在红细胞内，肌红蛋白在肌肉细胞外"
+      ],
+      "answer": 2,
+      "hint": "寡聚体才有亚基间协同。",
+      "explanation": "**C 正确。** 血红蛋白是四聚体寡聚蛋白，某一亚基结合O₂后，经 Fe²⁺嵌入卟啉环→组氨酸F8位移→盐桥断裂的构象传递，使其余亚基更易结合O₂（正协同效应），故曲线呈S型；肌红蛋白为单体，无亚基间协同，曲线为简单双曲线型。\n- A、B、D：均非曲线形态差异的根本原因。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "血红蛋白协同效应 · S型曲线"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于血红蛋白的 T 态（紧张态）与 R 态（松弛态），下列说法正确的是（　）。",
+      "options": [
+        "T态未结合氧气、亚基间由盐桥紧密连接；R态结合氧气后盐桥断裂、亚基结构疏松",
+        "T态结合氧气后更疏松，R态未结合氧气时更紧密",
+        "T态与R态都结合氧气，区别仅在于分子量大小",
+        "R态即未结合氧气状态，与T态结构完全相同"
+      ],
+      "answer": 0,
+      "hint": "T=紧张、未结合；R=松弛、已结合。",
+      "explanation": "**A 正确。** T态（Tense紧张态）未结合氧气，亚基间由离子键/盐桥紧密连接；结合O₂后经构象传递使盐桥断裂，转为结构疏松的R态（Relaxed松弛态），其余亚基更易结合O₂。\n- B、D：把结合氧与构象松紧的对应关系说反。\n- C：两态区别在于构象与结合氧状态，而非分子量。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "T态/R态结构特征与转换"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于蛋白质构象疾病（如阿尔茨海默病），下列说法错误的是（　）。",
+      "options": [
+        "致病蛋白的氨基酸序列并无突变，仅空间构象发生改变",
+        "病理状态下蛋白由以α-螺旋为主错误折叠为以β-折叠为主",
+        "错误折叠的β-折叠纤维聚集形成难溶于水的淀粉样沉淀",
+        "构象疾病的根本原因是基因发生点突变、改变了氨基酸序列"
+      ],
+      "answer": 3,
+      "hint": "题目选「错误」；构象病是序列不变、构象变。",
+      "explanation": "**D 错误（符合题意）。** 构象疾病的核心特征是氨基酸序列无突变、仅空间构象改变（正常以α-螺旋为主→病理以β-折叠为主），最终形成难溶的淀粉样沉淀；阿尔茨海默病即APP异常切割产生Aβ聚集形成斑块。\n- A、B、C：均为构象疾病的正确描述。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "蛋白质构象疾病 · α→β折叠"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列关于茚三酮反应与双缩脲反应的说法，正确的是（　）。",
+      "options": [
+        "茚三酮反应检测肽键，双缩脲反应检测游离氨基",
+        "茚三酮反应检测游离α-氨基（游离氨基酸有、蛋白质无）；双缩脲反应检测肽键（蛋白质有、游离氨基酸无）",
+        "两者都只能检测游离氨基酸，不能检测蛋白质",
+        "两者都能同时检测蛋白质和游离氨基酸，结果完全相同"
+      ],
+      "answer": 1,
+      "hint": "一个查游离氨基，一个查肽键，正好相反。",
+      "explanation": "**B 正确。** 茚三酮反应针对游离α-氨基，故游离氨基酸有反应、完整蛋白质无反应；双缩脲反应针对肽键，在稀碱下与CuSO₄共热变紫色，是蛋白质特有的检测反应。二者正好相反。\n- A：把两者的检测对象说反。\n- C：双缩脲反应可检测蛋白质。\n- D：两者检测对象与结果不同。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "茚三酮反应 vs 双缩脲反应"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "蛋白质变性时，被破坏和不被破坏的作用力分别是（　）。",
+      "options": [
+        "变性破坏肽键，不破坏氢键和二硫键",
+        "变性破坏二硫键和肽键，不破坏氢键",
+        "变性破坏氢键、疏水作用、盐桥/离子键、二硫键，但不破坏维持一级结构的肽键",
+        "变性同时破坏肽键与全部高级结构作用力"
+      ],
+      "answer": 2,
+      "hint": "变性只拆高级结构，不动序列。",
+      "explanation": "**C 正确。** 变性时一级结构（肽键、氨基酸序列）保持完整，被破坏的是维持高级结构的氢键、疏水作用、盐桥/离子键和二硫键。\n- A、B、D：均错误地认为肽键在变性中被破坏。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "蛋白质变性 · 破坏/不破坏的作用力"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "Anfinsen 核糖核酸酶复性实验（尿素+β-巯基乙醇使其变性，透析去除后活性恢复）证明了（　）。",
+      "options": [
+        "蛋白质的一级结构（氨基酸序列）包含了其高级结构折叠的全部信息，一级结构是高级结构与功能的基础",
+        "蛋白质的高级结构在变性后完全无法恢复",
+        "变性必须破坏肽键才能使酶失活",
+        "二硫键是维持蛋白质一级结构的化学键"
+      ],
+      "answer": 0,
+      "hint": "尿素拆氢键、巯基乙醇拆二硫键，透析后又复性。",
+      "explanation": "**A 正确。** 尿素破坏氢键、β-巯基乙醇还原二硫键使RNase变性失活，透析去除后酶活性恢复，证明一级结构（氨基酸序列）包含折叠所需的全部信息，一级结构决定高级结构，该成果获诺贝尔奖。\n- B：实验正说明部分简单蛋白可复性。\n- C：变性不破坏肽键。\n- D：维持一级结构的是肽键。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "Anfinsen复性实验 · 一级结构决定高级结构"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "在凝胶过滤层析（分子筛）中，不同大小蛋白质的洗脱顺序是（　）。",
+      "options": [
+        "小分子先被洗脱，大分子后被洗脱",
+        "分子大小与洗脱顺序无关",
+        "带电越多的蛋白质越先被洗脱",
+        "大分子先被洗脱（不能进入凝胶孔隙、路径短），小分子进入孔隙延迟洗脱"
+      ],
+      "answer": 3,
+      "hint": "大分子进不去孔隙，走“大路”先出来。",
+      "explanation": "**D 正确。** 凝胶填料内有大小不同的孔隙，大分子不能进入孔隙、只能从颗粒间流过，路径短、速度快，先被洗脱；小分子可进入孔隙内部、路径长，延迟洗脱。这与SDS-PAGE中大分子迁移慢正好相反。\n- A：把顺序说反。\n- B、C：与分子筛按分子量分离的原理不符（按电荷分离的是离子交换层析）。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "凝胶过滤层析 · 大分子先洗脱"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "在 SDS-PAGE 中，SDS（十二烷基硫酸钠）的主要作用是（　）。",
+      "options": [
+        "使蛋白质带上与其本身等电点相关的电荷",
+        "强去垢剂，覆盖蛋白质本身电荷，使蛋白带电量与分子量正相关，从而按分子量分离",
+        "作为还原剂打开蛋白质的二硫键",
+        "作为pH梯度介质，使蛋白停在自身pI处"
+      ],
+      "answer": 1,
+      "hint": "SDS是去垢剂，把电荷“抹平”成只看分子量。",
+      "explanation": "**B 正确。** SDS是强去垢剂，包裹蛋白并覆盖其本身电荷，使蛋白带电量只与分子量正相关，再按凝胶孔径差异分离，因此SDS-PAGE按分子量分离。\n- A：SDS掩盖而非保留蛋白本身电荷。\n- C：还原二硫键的是β-巯基乙醇等还原剂。\n- D：pH梯度、停在pI处是等电聚焦的原理。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "SDS-PAGE · SDS的作用"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列蛋白质结构解析方法与其适用范围的配对，正确的是（　）。",
+      "options": [
+        "冷冻电镜 —— 仅适用于小于50个氨基酸的小肽",
+        "X射线衍射 —— 无需任何晶体，可在溶液中解析",
+        "NMR —— 适用于小于50个氨基酸、小于10 kD的小蛋白，可在溶液中测定原子级结构",
+        "冷冻电镜 —— 分辨率最低，现已基本被淘汰"
+      ],
+      "answer": 2,
+      "hint": "小蛋白用NMR，有晶体用X射线，大复合物用冷冻电镜。",
+      "explanation": "**C 正确。** NMR适用于小于50个氨基酸、小于10 kD的小蛋白/多肽，可在溶液中得到原子级结构；X射线衍射需先培养蛋白晶体但分辨率高；冷冻电镜适用于3-100nm的蛋白及复合体，是当前主流、可达3Å、无需晶体。\n- A：小肽/小蛋白用NMR而非冷冻电镜。\n- B：X射线衍射必须先获得蛋白晶体。\n- D：冷冻电镜正是当前主流方法。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "结构解析方法 · NMR/X射线/冷冻电镜"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于核苷与核苷酸的组成关系，下列说法正确的是（　）。",
+      "options": [
+        "核苷=碱基+核糖（或脱氧核糖），通过糖苷键连接；核苷酸=核苷+磷酸（连在核糖5'位羟基）",
+        "核苷=碱基+磷酸，核苷酸=碱基+核糖",
+        "核苷与核苷酸完全相同，只是名称不同",
+        "核苷酸=碱基+氨基酸，不含磷酸"
+      ],
+      "answer": 0,
+      "hint": "核苷酸比核苷多一个磷酸。",
+      "explanation": "**A 正确。** 核苷由碱基与核糖/脱氧核糖通过糖苷键连接而成；核苷酸在核苷基础上再加上磷酸基团（连接在核糖5'位羟基），是核酸的基本组成单位。\n- B：把磷酸与核糖的位置说反。\n- C：核苷酸比核苷多一个磷酸基团。\n- D：核苷酸不含氨基酸。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "核苷与核苷酸 · 组成关系"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于超速离心与沉降系数 S，下列说法正确的是（　）。",
+      "options": [
+        "沉降系数S的单位为秒（s），且30S与50S结合后等于80S",
+        "超速离心可任意操作，无需配平",
+        "沉降系数只与分子形状有关，与质量无关",
+        "沉降系数S单位为 $10^{-13}$ 秒，30S+50S=70S（并非简单加和，因结合后形状变化影响沉降）"
+      ],
+      "answer": 3,
+      "hint": "30+50≠80，而是70。",
+      "explanation": "**D 正确。** 沉降系数S表示颗粒在离心力场中的移动速度，单位为 $10^{-13}$ 秒；30S与50S结合后因形状变化影响沉降速度，并非简单相加，而是70S。超速离心必须严格配平，否则会损毁设备甚至引发安全事故。\n- A：单位与加和关系均错。\n- B：超速离心必须严格配平。\n- C：沉降系数同时与质量和形状相关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "沉降系数S · 30S+50S=70S"
+      }
+    }
+  ]
+}

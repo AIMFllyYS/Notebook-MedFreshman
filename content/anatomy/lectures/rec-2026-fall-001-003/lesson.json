@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "anatomy",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-001-003",
+  "courseName": "系统解剖学",
+  "sessionRange": {
+    "start": 1,
+    "end": 3
+  },
+  "taughtOn": "2026-08-31",
+  "topic": "绪论与骨学躯干骨",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-001-003"
+}

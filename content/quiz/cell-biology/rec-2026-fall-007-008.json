@@ -1,0 +1,260 @@
+{
+  "subjectId": "cell-biology",
+  "chapterId": "rec-2026-fall-007-008",
+  "generatedAt": "2026-09-14",
+  "examConfig": {
+    "source": "content/cell-biology/lectures/rec-2026-fall-007-008/recording.md；content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-007-008",
+    "revision": 1,
+    "recordingHash": "a15431941a3a2f1a8f740d2ad3530ac09a77d1ddc3700eb33d27c70275110466",
+    "notesTextHash": "1ef8df14ed0d11bc3d3f8a5eaa077574a7ff3f962ee810c2f63a7294c49f71b3"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "判断物质能否直接穿透脂双层，课堂给出的首要（决定性）依据是（　）。",
+      "options": [
+        "分子是否足够小",
+        "是否带电——只要带电，无论多小都无法直接穿过疏水核心",
+        "分子量是否大于1000",
+        "物质是否带有颜色标记"
+      ],
+      "answer": 1,
+      "hint": "优先级：是否带电 → 脂溶性/极性 → 大小。",
+      "explanation": "**B 正确。** 优先级为：①是否带电（带电离子如 Na⁺、K⁺、Cl⁻ 完全无法直接穿透疏水核心）→②脂溶性与极性（高脂溶性、非极性易穿透）→③分子大小；带电是决定性障碍。\n- A：大小只在前两条相近时才起作用；\n- C、D：并非课堂给出的判断依据。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "通透判断 · 带电是决定性障碍"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "自由扩散（简单扩散）的特征是（　）。",
+      "options": [
+        "需转运体介导，存在饱和效应",
+        "需直接水解ATP供能",
+        "不需蛋白介导、不耗能、顺梯度进行，速率与底物浓度呈线性正相关",
+        "只允许带电离子通过脂双层"
+      ],
+      "answer": 2,
+      "hint": "与协助扩散对照：无蛋白、无饱和、线性。",
+      "explanation": "**C 正确。** 自由扩散无需蛋白、不耗能、顺电化学梯度，速率与底物浓度线性相关、无饱和；不带电物质靠浓度梯度、带电物质靠电化学梯度。\n- A：需转运体且有饱和是协助扩散/主动运输的特点；\n- B：不耗能；\n- D：带电离子根本无法直接透过脂双层。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "小分子运输 · 自由扩散特点"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于通道蛋白与转运体（载体）的区别，下列说法正确的是（　）。",
+      "options": [
+        "通道蛋白可主动运输且通量较低",
+        "通道形成亲水孔道、仅介导被动运输且通量极高；转运体靠结合底物后构象改变、可主可被、存在饱和效应",
+        "两者都形成贯穿膜的亲水性孔道",
+        "转运体的单通道通量远高于离子通道"
+      ],
+      "answer": 1,
+      "hint": "通道通量10⁷~10⁸/秒；转运体交替开放、有Vmax。",
+      "explanation": "**B 正确。** 通道蛋白形成贯穿脂双层的亲水孔道、仅被动运输、通量极高（10⁷~10⁸ 离子/秒）、有门控与选择性过滤器；转运体靠结合底物—构象改变（交替开放）—另一侧释放，可介导主动或被动运输、存在饱和效应。\n- A：通道仅被动、通量极高；\n- C：转运体不形成固定孔道；\n- D：恰好相反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "膜运输蛋白 · 通道 vs 转运体"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "钠钾泵（Na⁺/K⁺-ATPase）每水解1分子ATP的转运结果是（　）。",
+      "options": [
+        "向胞外运出3个Na⁺、向胞内运入2个K⁺，净转出1个正电荷",
+        "向胞外运出2个Na⁺、向胞内运入3个K⁺",
+        "向胞内运入3个Na⁺、向胞外运出2个K⁺",
+        "把胞质Ca²⁺泵入内质网"
+      ],
+      "answer": 0,
+      "hint": "3钠出、2钾入，生电泵使膜内更负。",
+      "explanation": "**A 正确。** 钠钾泵属P型泵，每水解1分子ATP泵出3个Na⁺、泵入2个K⁺，净转出1个正电荷（生电），建立Na⁺外高内低、K⁺内高外低的梯度，是动物细胞离子稳态的核心泵。\n- B：钠、钾数量说反；\n- C：方向与生理事实相反；\n- D：那是钙泵的功能。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "原发性主动运输 · 钠钾泵"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "V型离子泵的定位与功能是（　）。",
+      "options": [
+        "定位于质膜，泵出Na⁺维持静息电位",
+        "定位于溶酶体、内吞体等细胞器膜，将H⁺泵入腔内以维持其酸性环境",
+        "将K⁺泵出胞外建立梯度",
+        "只存在于线粒体外膜"
+      ],
+      "answer": 1,
+      "hint": "V＝vacuole；酸性pH 4.5~5.0适配溶酶体水解酶。",
+      "explanation": "**B 正确。** V型离子泵定位液泡、溶酶体、内吞体膜，把H⁺泵入腔内维持酸性（约pH 4.5~5.0），正好适配溶酶体水解酶的最适酸度。\n- A：质膜上泵Na⁺的是钠钾泵（P型）；\n- C：与V型泵功能不符；\n- D：不位于线粒体外膜。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "原发性主动运输 · V型质子泵"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "肿瘤细胞「多药耐药（MDR）」的常见分子机制是（　）。",
+      "options": [
+        "钠钾泵把化疗药物泵出细胞外",
+        "水通道AQP1让化疗药物外流",
+        "ABC转运体（如MDR1/P-糖蛋白）把进入细胞的化疗药物泵出胞外，使胞内药物浓度下降",
+        "V型质子泵直接分解化疗药物"
+      ],
+      "answer": 2,
+      "hint": "课堂金句：「ABC转运体把药泵出去，你吃药可能就不管用了」。",
+      "explanation": "**C 正确。** ABC转运体结构为2个跨膜域＋2个ATP结合域，底物谱极广；肿瘤细胞高表达MDR1/P-糖蛋白，把进入胞内的化疗药物泵出，导致多药耐药，是化疗失败的重要原因。\n- A：钠钾泵转运Na⁺/K⁺，不负责泵药；\n- B：水通道只通水；\n- D：V型泵泵H⁺、不直接分解药物。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "原发性主动运输 · ABC转运体与MDR"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "WHO推荐的口服补盐液（ORS）必须同时含Na⁺和葡萄糖，其原理是利用小肠上皮的（　）。",
+      "options": [
+        "SGLT同向协同转运：Na⁺顺梯度进入释放的势能带动葡萄糖逆梯度吸收，再借渗透压促进水吸收",
+        "自由扩散直接把水吸入血液",
+        "钠钾泵直接把水分子泵入细胞",
+        "受体介导胞吞把水分整体吞入细胞"
+      ],
+      "answer": 0,
+      "hint": "继发性主动运输、symport；补的是水和电解质。",
+      "explanation": "**A 正确。** SGLT利用钠钾泵建立的胞外高Na⁺梯度，把Na⁺与葡萄糖同向带入细胞（同向运输），Na⁺进入后经基底侧钠钾泵泵出、建立渗透压梯度驱动水吸收，从而大幅提升腹泻患者补液效率。\n- B：水靠渗透压、不是自由扩散「吸入」；\n- C：钠钾泵不转运水；\n- D：补盐液吸收不依赖胞吞。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "继发性主动运输 · SGLT与ORS"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "受体介导胞吞过程中，水解GTP、介导包被囊泡从质膜上缢断脱落的蛋白是（　）。",
+      "options": [
+        "网格蛋白（Clathrin）",
+        "AP2衔接蛋白",
+        "LDL受体",
+        "发动蛋白（Dynamin）"
+      ],
+      "answer": 3,
+      "hint": "按顺序：配体→受体→AP2→网格蛋白→发动蛋白。",
+      "explanation": "**D 正确。** 发动蛋白水解GTP，像「缢绳」一样把颈部勒断、使囊泡从质膜脱落；随后囊泡脱包被并与早期内吞体融合。\n- A：网格蛋白形成三脚蛋白包被、提供膜形变机械力；\n- B：AP2衔接受体与网格蛋白；\n- C：LDL受体是识别配体的跨膜受体，完成后循环回质膜。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "大分子运输 · 受体介导胞吞五组分"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "下列跨膜运输异常疾病与缺陷位点的配对，错误的是（　）。",
+      "options": [
+        "家族性高胆固醇血症 — LDL受体缺陷",
+        "胱氨酸尿症 — 肾小管胱氨酸转运体缺陷，致尿路结石",
+        "肾性糖尿 — 肾小管SGLT缺陷，血糖正常但糖随尿排出",
+        "囊性纤维化 — 钠钾泵（Na⁺/K⁺-ATPase）缺陷"
+      ],
+      "answer": 3,
+      "hint": "囊性纤维化的核心逻辑：离子→水→黏液。",
+      "explanation": "**D 错误（符合题意）。** 囊性纤维化是CFTR氯离子通道缺陷：Cl⁻无法外排→气道表面水分泌减少→黏液变稠、纤毛障碍→反复感染；并非钠钾泵缺陷。\n- A、B、C：分别对应LDL受体、胱氨酸转运体、SGLT缺陷，配对均正确。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "运输异常疾病 · 四种疾病配对"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于内膜系统的组成，下列说法正确的是（　）。",
+      "options": [
+        "内膜系统包括线粒体",
+        "内膜系统含内质网、高尔基体、溶酶体、内吞体等膜性细胞器；线粒体因独立起源与遗传、不经囊泡交换而不属于内膜系统",
+        "内膜系统就是细胞膜的别称",
+        "过氧化物酶体不属于内膜系统"
+      ],
+      "answer": 1,
+      "hint": "「线粒体不属于内膜系统」是常见考点。",
+      "explanation": "**B 正确。** 内膜系统指经囊泡运输动态连接的膜性细胞器（内质网、高尔基体、溶酶体、过氧化物酶体、内吞体、分泌囊泡等）；线粒体起源于内共生、有自身DNA与独立蛋白合成系统、不通过囊泡与内膜系统交换，故不属于内膜系统。\n- A：与考点相反；\n- C：内膜系统指胞内膜性细胞器，不是质膜；\n- D：过氧化物酶体属于内膜系统。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "内膜系统开篇 · 定义与范围"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于糙面内质网（RER）与光面内质网（SER）及附着核糖体，下列说法正确的是（　）。",
+      "options": [
+        "糙面内质网上的附着核糖体永久结合在膜上，从不脱落",
+        "二者是连续同一膜系统的不同区域，核糖体合成分泌/膜蛋白时才经SRP引导附着、合成完成后脱落回胞质",
+        "光面内质网的主要功能是合成分泌蛋白与膜蛋白",
+        "糙面内质网呈分支管状管网、无核糖体附着"
+      ],
+      "answer": 1,
+      "hint": "核心差异是有无附着核糖体；但附着是动态的、暂时的。",
+      "explanation": "**B 正确。** RER扁平片状、有附着核糖体，负责分泌/膜蛋白合成与初加工；SER管状、无核糖体，负责脂质合成、解毒、钙储存；二者是连续膜系统的不同区域，核糖体在合成分泌/膜蛋白时经信号肽-SRP引导附着、完成后解离回胞质，并非永久结合。\n- A：附着是暂时、动态的；\n- C：合成分泌/膜蛋白是RER的功能；\n- D：把RER说成无核糖体的管状结构，与事实相反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "内质网基础 · 糙面/光面与核糖体动态附着"
+      }
+    }
+  ]
+}
