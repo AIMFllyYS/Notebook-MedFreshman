@@ -23,6 +23,6 @@ describe("writeDocument ResultCard", () => {
       },
     } as ToolPart<"writeDocument">;
     render(<WriteDocumentResultCard part={part} message={message} isStreaming={false} ctx={{ isStreaming: false }} />);
-    expect(screen.getByText("细胞综述")).toBeVisible();
+    expect(screen.getByText(/细胞综述/)).toBeVisible();
   });
 });

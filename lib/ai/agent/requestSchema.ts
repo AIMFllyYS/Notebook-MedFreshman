@@ -21,10 +21,13 @@ export const REQUEST_LIMITS = {
   /** #71 之后这里只会剩本次用到的那一个。 */
   customApiGroups: 32,
   /**
-   * 客户端 `MAX_IMAGE_SIZE` = 2MB 原图；发出去的是 data URL（约 4/3）。
-   * 服务端按 4MB 字符串略宽，避免压缩后的合法附件被拒。
+   * 本轮最多 1 张图，data URL 合计 ≤ 400KB；须低于 nginx 默认 1m 与客户端 800KB 硬顶。
    */
-  filePartChars: 4 * 1024 * 1024,
+  filePartChars: 400 * 1024,
+  /** 整包 JSON 字节上限，与客户端序列化硬顶对齐。 */
+  requestBytes: 800 * 1024,
+  /** 单条 text part（含附件文档正文）上限。 */
+  textPartChars: 128 * 1024,
   /** artifact / image-gen / record / canvas 的 prompt、instruction、text。 */
   satellitePromptChars: 32 * 1024,
   /** canvas HTML/SVG source；交互演示可比普通 prompt 大。 */
@@ -69,13 +72,21 @@ const uiMessageSchema = z
   })
   .superRefine((message, ctx) => {
     for (const part of message.parts) {
-      if (part.type !== "file") continue;
-      if (filePartPayloadLength(part) <= REQUEST_LIMITS.filePartChars) continue;
-      ctx.addIssue({
-        code: "custom",
-        message: `附件过大（单张不超过 ${Math.round(REQUEST_LIMITS.filePartChars / (1024 * 1024))}MB）。`,
-      });
-      break;
+      if (part.type === "file") {
+        if (filePartPayloadLength(part) <= REQUEST_LIMITS.filePartChars) continue;
+        ctx.addIssue({
+          code: "custom",
+          message: `附件过大（单张不超过 ${Math.round(REQUEST_LIMITS.filePartChars / 1024)}KB）。`,
+        });
+        break;
+      }
+      if (part.type === "text" && typeof part.text === "string" && part.text.length > REQUEST_LIMITS.textPartChars) {
+        ctx.addIssue({
+          code: "custom",
+          message: `文本内容过长（单段不超过 ${Math.round(REQUEST_LIMITS.textPartChars / 1024)}KB）。`,
+        });
+        break;
+      }
     }
   });
 
@@ -286,6 +297,7 @@ function formatZodIssue(issue: z.core.$ZodIssue): string {
 
 /** 把 ZodError 收成一句可读中文；绝不回传 issue.input 或裸 JSON dump。 */
 export function formatRequestError(error: unknown): string {
+  if (error instanceof RequestTooLargeError) return error.message;
   if (error instanceof z.ZodError) {
     const parts = [...new Set(error.issues.map(formatZodIssue).filter(Boolean))];
     const detail = parts.slice(0, 3).join("；");
@@ -306,8 +318,26 @@ export function collectRequestSecrets(body: {
   return secrets;
 }
 
+export class RequestTooLargeError extends Error {
+  constructor(message = "这次对话上下文过大，已保留本机。请少带历史图或开新会话。") {
+    super(message);
+    this.name = "RequestTooLargeError";
+  }
+}
+
+function rawRequestBytes(raw: unknown): number {
+  try {
+    return new TextEncoder().encode(typeof raw === "string" ? raw : JSON.stringify(raw ?? {})).length;
+  } catch {
+    return Number.POSITIVE_INFINITY;
+  }
+}
+
 /** 解析请求体；不合法时抛出 ZodError，由路由转成用户可读的错误事件。 */
 export function parseChatRequest(raw: unknown): ChatRequest {
+  if (rawRequestBytes(raw) > REQUEST_LIMITS.requestBytes) {
+    throw new RequestTooLargeError();
+  }
   return chatRequestSchema.parse(raw ?? {});
 }
 

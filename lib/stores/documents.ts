@@ -3,7 +3,7 @@ import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { createPersistedStore } from "@/lib/stores/_persist";
 import type { DocumentSpec, DocumentSection, StoredDocument, DocumentStatus } from "@/lib/documents/types";
 import { assembleDocumentMarkdown } from "@/lib/documents/types";
-import { scheduleCloudUpsert } from "@/lib/sync/schedule";
+import { scheduleCloudTombstone, scheduleCloudUpsert } from "@/lib/sync/schedule";
 
 interface DocumentsState {
   byId: Record<string, StoredDocument>;
@@ -76,8 +76,7 @@ export const useDocuments = createPersistedStore<DocumentsState>(
         set((s) => {
           const doc = s.byId[id];
           if (!doc) return s;
-          const sections = doc.sections.map((sec, i) => (i === index ? { ...sec, markdown, status: "done" as const } : sec));
-          scheduleCloudUpsert("document", id);
+          const sections = doc.sections.map((sec, i) => (i === index ? { ...sec, markdown } : sec));
           return { byId: { ...s.byId, [id]: { ...doc, sections, updatedAt: Date.now() } } };
         }),
 
@@ -131,6 +130,9 @@ export const useDocuments = createPersistedStore<DocumentsState>(
           const keepSet = new Set(keepIds);
           const byId: Record<string, StoredDocument> = {};
           for (const id of keepSet) if (s.byId[id]) byId[id] = s.byId[id];
+          for (const id of Object.keys(s.byId)) {
+            if (!keepSet.has(id)) scheduleCloudTombstone("document", id);
+          }
           return { byId };
         }),
     }),

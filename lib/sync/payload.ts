@@ -1,12 +1,32 @@
 import type { ChatMessage, StoredChatAttachment } from "@/lib/types/chat";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
+import { compactStudyMessages } from "@/lib/chat/compactStudyParts";
 import {
   KIND_SIZE_LIMIT,
+  MAX_USER_SYNC_BYTES,
   type ArtifactSyncPayload,
   type ChatSessionSyncPayload,
   type CloudSyncKind,
   type DocumentSyncPayload,
 } from "./types";
+
+let kindLimitOverride: Partial<Record<CloudSyncKind, number>> | null = null;
+let userLimitOverride: number | null = null;
+
+export function __setSyncLimitsForTests(
+  next: { kind?: Partial<Record<CloudSyncKind, number>>; user?: number } | null,
+): void {
+  kindLimitOverride = next?.kind ?? null;
+  userLimitOverride = next?.user ?? null;
+}
+
+export function effectiveKindLimit(kind: CloudSyncKind): number {
+  return kindLimitOverride?.[kind] ?? KIND_SIZE_LIMIT[kind];
+}
+
+export function effectiveUserLimit(): number {
+  return userLimitOverride ?? MAX_USER_SYNC_BYTES;
+}
 
 const MEDIA_DATA_URL_RE = /data:(?:image|audio|video)\/[a-z0-9.+-]+;base64,[a-z0-9+/=\s]+/gi;
 const STRIP_KEYS = new Set(["base64", "dataurl", "apikey", "api_key"]);
@@ -69,7 +89,7 @@ function stripAttachment(a: StoredChatAttachment): StoredChatAttachment {
 }
 
 export function sanitizeChatMessages(messages: ChatMessage[]): ChatMessage[] {
-  return messages.map((message) => {
+  return compactStudyMessages(messages, "sync").map((message) => {
     const stripped = stripForbiddenFields(message) as ChatMessage;
     if (!message.attachments?.length) {
       return { ...stripped, attachments: undefined };
@@ -113,25 +133,43 @@ export function preparePayload(
 ): PayloadCheck {
   const payload = stripForbiddenFields(raw);
   const bytes = payloadByteSize(payload);
-  const limit = KIND_SIZE_LIMIT[kind];
+  const limit = effectiveKindLimit(kind);
   if (payloadLooksUnsafe(payload)) return { ok: false, reason: "unsafe", bytes, limit };
   if (bytes > limit) return { ok: false, reason: "kind-limit", bytes, limit };
   return { ok: true, payload, bytes };
 }
 
-export function formatKindLimitMessage(kind: CloudSyncKind, bytes: number, limit: number): string {
-  const usedKb = Math.max(1, Math.round(bytes / 1024));
+function kb(bytes: number): number {
+  return Math.max(1, Math.round(bytes / 1024));
+}
+
+export function formatKindLimitMessage(
+  kind: CloudSyncKind,
+  bytes: number,
+  limit: number,
+  lastOkBytes?: number,
+): string {
+  const usedKb = kb(bytes);
   const limitKb = Math.round(limit / 1024);
+  const last = lastOkBytes != null && lastOkBytes > 0 ? `上次成功约 ${kb(lastOkBytes)} KB，` : "";
   if (kind === "artifact") {
-    return `这条演示 HTML 约 ${usedKb} KB，超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。`;
+    return `这条演示 HTML 约 ${usedKb} KB，${last}超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。`;
   }
   if (kind === "document") {
-    return `这篇长文档约 ${usedKb} KB，超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。`;
+    return `这篇长文档约 ${usedKb} KB，${last}超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。`;
   }
-  return `这段对话约 ${usedKb} KB，超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。`;
+  return `这段对话约 ${usedKb} KB，${last}超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。瘦身后可再试。`;
 }
 
 export function formatUserLimitMessage(limit: number): string {
   const mb = Math.round((limit / (1024 * 1024)) * 10) / 10;
-  return `云端同步已达 ${mb} MB 上限，本条未上传。本机仍保留。图片不会占用云端额度。`;
+  return `云端同步已达 ${mb} MB 账号合计上限，本条未上传。本机仍保留。图片不会占用云端额度。`;
+}
+
+export function isSyncKindLimitError(message: string): boolean {
+  return /sync_kind_limit/i.test(message);
+}
+
+export function isSyncUserLimitError(message: string): boolean {
+  return /sync_user_limit/i.test(message);
 }

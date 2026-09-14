@@ -71,7 +71,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
 
   // 稳定排序，保证拼装的系统前缀逐字节一致、利于缓存命中
   const sortedSkills = [...skills]
-    .filter((s) => s.name && s.content)
+    .filter((s) => s.name)
     .sort((a, b) => a.createdAt - b.createdAt || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   const pinnedSkills = sortedSkills.filter((s) => s.pinned);
   const menuSkills = sortedSkills.filter((s) => !s.pinned);

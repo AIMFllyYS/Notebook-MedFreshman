@@ -12,13 +12,13 @@ export const SCHEMA_SYNC_KINDS = ["chat-session", "artifact", "settings", "skill
 export const SYNC_TABLE = "sync_documents";
 
 /**
- * 免费层约 500 MB / 250 人 → 人均 2 MB。
- * 抽样：仓库里的演示 HTML 只有数百字节到数十 KB；256 KB 单条上限留出数量级余量。
+ * 压缩之后的可用容量：同一 32MB 是大量瘦身后的复习会话，不是几十条胖轨迹。
+ * 免费层约 500 MB 可支撑十数个重度用户的同步副本。
  */
-export const MAX_ARTIFACT_BYTES = 256 * 1024;
-export const MAX_DOCUMENT_BYTES = 512 * 1024;
-export const MAX_CHAT_SESSION_BYTES = 512 * 1024;
-export const MAX_USER_SYNC_BYTES = 2 * 1024 * 1024;
+export const MAX_ARTIFACT_BYTES = 1 * 1024 * 1024;
+export const MAX_DOCUMENT_BYTES = 2 * 1024 * 1024;
+export const MAX_CHAT_SESSION_BYTES = 4 * 1024 * 1024;
+export const MAX_USER_SYNC_BYTES = 32 * 1024 * 1024;
 
 export const KIND_SIZE_LIMIT: Record<CloudSyncKind, number> = {
   "chat-session": MAX_CHAT_SESSION_BYTES,

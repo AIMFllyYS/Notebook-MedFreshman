@@ -1,5 +1,6 @@
 import { DefaultChatTransport, isToolUIPart, readUIMessageStream, type FinishReason, type UIMessageChunk } from 'ai';
 import type { RequestMessage } from '@/lib/chat/buildRequestMessages';
+import { REQUEST_TOO_LARGE_MESSAGE } from '@/lib/chat/requestBudget';
 import type { ChatMessage, ChatMessagePart, ContextBreakdown, UsageSummary } from '@/lib/types/chat';
 
 /** SDK 负责 SSE/UTF-8 解码；只在原始字节层观察活动，注释心跳也能续期。 */
@@ -17,6 +18,7 @@ export function createStudyChatTransport(onActivity: () => void) {
         } catch {
           parsedError = '';
         }
+        if (response.status === 413) throw new Error(REQUEST_TOO_LARGE_MESSAGE);
         if (parsedError) throw new Error(parsedError);
         throw new Error(`API 请求失败: ${response.status} ${response.statusText}${detail ? ` - ${detail.slice(0, 200)}` : ''}`);
       }

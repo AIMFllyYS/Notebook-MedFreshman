@@ -35,5 +35,12 @@ export function scheduleCloudTombstone(kind: CloudSyncKind, clientId: string): v
 
 export function scheduleCloudPull(): void {
   if (!canSchedule()) return;
-  void import("./engine").then((mod) => mod.pullAndPushAll());
+  const start = () => {
+    void import("./engine").then((mod) => mod.pullAndPushAll());
+  };
+  if (typeof requestIdleCallback === "function") {
+    requestIdleCallback(() => start(), { timeout: 4000 });
+    return;
+  }
+  setTimeout(start, 0);
 }

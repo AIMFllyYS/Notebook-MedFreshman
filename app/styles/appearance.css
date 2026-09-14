@@ -149,7 +149,8 @@
   border-color: var(--appearance-ai-answer-border);
 }
 
-[data-appearance="colorful"] .artifact-card {
+[data-appearance="colorful"] .artifact-card,
+[data-appearance="colorful"] .document-card {
   border-color: color-mix(in srgb, var(--md-sys-color-tertiary) 45%, var(--line)) !important;
   background: color-mix(in srgb, var(--appearance-card-bg-c) 84%, var(--bg-panel)) !important;
 }

@@ -3,6 +3,7 @@ import { test } from "node:test";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
 import {
+  __setSyncLimitsForTests,
   buildArtifactPayload,
   buildChatSessionPayload,
   formatKindLimitMessage,
@@ -12,7 +13,7 @@ import {
   redactMediaString,
   stripForbiddenFields,
 } from "./payload.ts";
-import { MAX_ARTIFACT_BYTES, MAX_USER_SYNC_BYTES } from "./types.ts";
+import { MAX_USER_SYNC_BYTES } from "./types.ts";
 
 function meta(id: string): SessionMeta {
   return {
@@ -96,7 +97,8 @@ test("stripForbiddenFields drops apiKey and data URLs", () => {
 });
 
 test("preparePayload rejects oversized artifacts with a readable limit", () => {
-  const html = "x".repeat(MAX_ARTIFACT_BYTES + 8);
+  __setSyncLimitsForTests({ kind: { artifact: 256 } });
+  const html = "x".repeat(300);
   const result = preparePayload("artifact", buildArtifactPayload({
     id: "a1",
     title: "big",
@@ -108,6 +110,40 @@ test("preparePayload rejects oversized artifacts with a readable limit", () => {
   assert.equal(result.reason, "kind-limit");
   assert.match(formatKindLimitMessage("artifact", result.bytes, result.limit), /未上传云端/);
   assert.match(formatUserLimitMessage(MAX_USER_SYNC_BYTES), /上限/);
+  __setSyncLimitsForTests(null);
+});
+
+test("sanitizeChatMessages 同步 JSON 不含笔记全文 / 技能正文 / data URL", () => {
+  const note = "线粒体是细胞的能量工厂。".repeat(80);
+  const payload = buildChatSessionPayload(meta("s-note"), [{
+    id: "a1",
+    role: "assistant",
+    timestamp: 1,
+    parts: [
+      { type: "reasoning", text: "很长的思考过程用于验证只留预览。".repeat(5), state: "done" },
+      {
+        type: "tool-getCurrentPage",
+        toolCallId: "c1",
+        state: "output-available",
+        input: {},
+        output: { text: `【细胞】\n\n${note}`, contextKey: "page:cell/textbook/ch1" },
+      },
+      {
+        type: "tool-useSkill",
+        toolCallId: "c2",
+        state: "output-available",
+        input: { name: "Bayes" },
+        output: { text: "【技能：Bayes】\n步骤一不要上传", contextKey: "skill:s1", skill: "Bayes", found: true },
+      },
+      { type: "text", text: "线粒体负责供能。", state: "done" },
+    ],
+  }]);
+  const json = JSON.stringify(payload);
+  assert.equal(json.includes(note), false);
+  assert.equal(json.includes("步骤一不要上传"), false);
+  assert.equal(json.includes("data:image"), false);
+  assert.match(json, /线粒体负责供能/);
+  assert.match(json, /page:cell\/textbook\/ch1/);
 });
 
 test("redactMediaString leaves ordinary text and https images", () => {

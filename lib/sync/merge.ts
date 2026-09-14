@@ -1,19 +1,38 @@
 import type { ChatMessage } from "@/lib/types/chat";
+import { compactStudyMessage, toolNameFromPart } from "@/lib/chat/compactStudyParts";
+import { getAnswerText } from "@/lib/chat/messageParts";
 import type { ChatSessionSyncPayload } from "./types";
 
-function messageWeight(message: ChatMessage): number {
-  try {
-    return JSON.stringify(message).length;
-  } catch {
-    return 0;
+function semanticScore(message: ChatMessage): number {
+  let score = Math.min(getAnswerText(message).length, 2000);
+  for (const part of message.parts ?? []) {
+    if (part.type === "step-start") score += 5;
+    if (part.type === "reasoning") score += 10;
+    const name = toolNameFromPart(part);
+    if (!name || !("state" in part) || part.state !== "output-available") continue;
+    score += 50;
+    const output = "output" in part && part.output && typeof part.output === "object"
+      ? part.output as Record<string, unknown>
+      : null;
+    if (!output) continue;
+    if (output.questions) score += 100;
+    if (output.spec) score += 100;
+    if (output.hits) score += 80;
+    if (output.sources) score += 80;
+    if (output.imageGenId) score += 80;
+    if (output.artifactId) score += 40;
+    if (output.contextKey) score += 20;
   }
+  return score;
 }
 
 function pickRicherMessage(a: ChatMessage, b: ChatMessage): ChatMessage {
+  const ca = compactStudyMessage(a, "persist");
+  const cb = compactStudyMessage(b, "persist");
   const at = a.timestamp ?? 0;
   const bt = b.timestamp ?? 0;
-  if (bt !== at) return bt > at ? b : a;
-  return messageWeight(b) >= messageWeight(a) ? b : a;
+  if (bt !== at) return bt > at ? cb : ca;
+  return semanticScore(cb) >= semanticScore(ca) ? cb : ca;
 }
 
 /** 对话按 id 并集，不丢任何一侧的消息；同 id 取更新/更完整的一份，再按时序排。 */

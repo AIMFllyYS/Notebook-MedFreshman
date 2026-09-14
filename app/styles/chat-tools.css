@@ -4,7 +4,8 @@
 .note-citation-card,
 .chat-quiz-card,
 .agent-fold,
-.artifact-card {
+.artifact-card,
+.document-card {
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -33,6 +34,43 @@
   flex: 0 0 auto;
   margin-left: auto;
   white-space: nowrap;
+}
+
+.document-section-list {
+  margin: 0;
+  max-height: 8.5rem;
+  overflow: auto;
+  padding: 0 12px 8px;
+  list-style: none;
+}
+
+.document-section-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  padding: 2px 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+
+.document-section-index {
+  flex: 0 0 1.4rem;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+}
+
+.document-section-title {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.document-section-state {
+  flex: 0 0 auto;
+  font-size: 10.5px;
 }
 
 .viz-fold-body,

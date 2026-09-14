@@ -31,6 +31,14 @@ export function createUseSkillTool(ctx: StudyToolContext, runtime: StudyToolRunt
         const available = list.map((s) => s.name).join("、") || "（无）";
         return { text: `未找到名为「${wanted}」的技能。可用技能：${available}。`, skill: wanted, found: false };
       }
+      if (!skill.content) {
+        return {
+          text: `技能「${skill.name}」的正文未随本轮请求发送。请先在技能库中固定该技能，或再试一次。`,
+          skill: skill.name,
+          found: false,
+          contextKey: `skill:${skill.id || normalizeContextKeyPart(skill.name)}`,
+        };
+      }
       const head = skill.description ? `${skill.description}\n\n` : "";
       return dedupeByContextKey(runtime, "useSkill", {
         text: `【技能：${skill.name}】\n${head}${skill.content}`,

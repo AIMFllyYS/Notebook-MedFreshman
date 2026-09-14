@@ -137,7 +137,6 @@ export function collectRequestArtifacts(
       id: artifact.id,
       title: artifact.title,
       summary: htmlToSummary(artifact.html),
-      html: artifact.html,
     };
   });
 }

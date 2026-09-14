@@ -1,3 +1,5 @@
+import { REQUEST_TOO_LARGE_MESSAGE, isPayloadTooLargeError } from "@/lib/chat/requestBudget";
+
 export function classifySendError(
   err: unknown,
   flags: { stalled: boolean; aborted: boolean },
@@ -7,5 +9,6 @@ export function classifySendError(
     flags.aborted ||
     (err != null && typeof err === "object" && "name" in err && err.name === "AbortError");
   if (isAbort) return null;
+  if (isPayloadTooLargeError(err)) return REQUEST_TOO_LARGE_MESSAGE;
   return err instanceof Error ? err.message : "发生未知错误";
 }

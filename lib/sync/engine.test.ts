@@ -13,12 +13,15 @@ import {
   enqueueTombstone,
   enqueueUpsert,
   flushCloudSyncForTests,
+  loadCloudSyncUsage,
   pullAndPushAll,
   type CloudSyncStores,
 } from "./engine.ts";
 import { __resetCloudSyncStatusForTests, getCloudSyncStatus } from "./status.ts";
-import { MAX_ARTIFACT_BYTES, MAX_USER_SYNC_BYTES, SCHEMA_SYNC_KINDS, type ChatSessionSyncPayload } from "./types.ts";
+import { SCHEMA_SYNC_KINDS, type ChatSessionSyncPayload } from "./types.ts";
+import { __setSyncLimitsForTests } from "./payload.ts";
 import { setCloudSyncEnabled, isCloudSyncEnabled } from "./schedule.ts";
+import { markSessionStreaming } from "./streamingSessions.ts";
 
 function msg(id: string, text: string, extra?: Partial<ChatMessage>): ChatMessage {
   return {
@@ -184,11 +187,12 @@ describe("cloud sync engine", { concurrency: false }, () => {
   });
 
   test("kind over-limit does not upsert and sets a readable error", async () => {
+    __setSyncLimitsForTests({ kind: { artifact: 256 } });
     const memory = createMemoryStores();
     memory.artifacts.set("huge", {
       id: "huge",
       title: "huge",
-      html: "y".repeat(MAX_ARTIFACT_BYTES + 32),
+      html: "y".repeat(300),
       status: "done",
     });
     const api = createMemorySyncClient();
@@ -201,6 +205,7 @@ describe("cloud sync engine", { concurrency: false }, () => {
   });
 
   test("user total over-limit refuses the new row", async () => {
+    __setSyncLimitsForTests({ user: 512, kind: { artifact: 400 } });
     const memory = createMemoryStores();
     memory.artifacts.set("extra", { id: "extra", title: "e", html: "<p>more</p>", status: "done" });
     const api = createMemorySyncClient();
@@ -208,7 +213,7 @@ describe("cloud sync engine", { concurrency: false }, () => {
       kind: "artifact",
       client_id: "filler",
       deleted: false,
-      payload: { id: "filler", html: "z".repeat(MAX_USER_SYNC_BYTES - 8), status: "done", title: "f" },
+      payload: { id: "filler", html: "z".repeat(400), status: "done", title: "f" },
     });
     __setCloudSyncStoresForTests(memory.stores);
     __setSyncClientForTests(api);
@@ -237,5 +242,83 @@ describe("cloud sync engine", { concurrency: false }, () => {
     const row = api.rows.get("chat-session:gone");
     assert.equal(row?.deleted, true);
     assert.equal(api.rows.size, 1);
+  });
+
+  test("identical payload hash skips a second upsert", async () => {
+    const memory = createMemoryStores();
+    memory.sessions.set("s1", {
+      meta: sessionMeta("s1"),
+      messages: [msg("m1", "same")],
+    });
+    const api = createMemorySyncClient();
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests(api);
+    enqueueUpsert("chat-session", "s1");
+    await flushCloudSyncForTests();
+    const first = api.upserts.length;
+    enqueueUpsert("chat-session", "s1");
+    await flushCloudSyncForTests();
+    assert.equal(api.upserts.length, first);
+  });
+
+  test("pullAndPushAll skips a session that is still streaming", async () => {
+    const memory = createMemoryStores();
+    memory.sessions.set("live", {
+      meta: sessionMeta("live"),
+      messages: [msg("m1", "streaming")],
+    });
+    const api = createMemorySyncClient();
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests(api);
+    markSessionStreaming("live", true);
+    await pullAndPushAll();
+    assert.equal(api.upserts.some((row) => row.client_id === "live"), false);
+    markSessionStreaming("live", false);
+    await pullAndPushAll();
+    assert.equal(api.upserts.some((row) => row.client_id === "live"), true);
+  });
+
+  test("loadCloudSyncUsage sums live remote rows by kind", async () => {
+    const api = createMemorySyncClient();
+    await api.upsert({
+      kind: "chat-session",
+      client_id: "s1",
+      payload: { v: 1, meta: sessionMeta("s1"), messages: [msg("m1", "hello")] },
+      deleted: false,
+    });
+    await api.upsert({
+      kind: "artifact",
+      client_id: "a1",
+      payload: { id: "a1", title: "demo", html: "<p>x</p>", status: "done" },
+      deleted: false,
+    });
+    await api.upsert({
+      kind: "document",
+      client_id: "d1",
+      payload: { id: "d1" },
+      deleted: true,
+    });
+    __setCloudSyncStoresForTests(createMemoryStores().stores);
+    __setSyncClientForTests(api);
+    const usage = await loadCloudSyncUsage();
+    assert.equal(usage.source, "cloud");
+    assert.equal(usage.kinds.find((row) => row.kind === "chat-session")?.count, 1);
+    assert.equal(usage.kinds.find((row) => row.kind === "artifact")?.count, 1);
+    assert.equal(usage.kinds.find((row) => row.kind === "document")?.count, 0);
+    assert.ok(usage.totalBytes > 0);
+  });
+
+  test("loadCloudSyncUsage falls back to local stores when unsigned", async () => {
+    const memory = createMemoryStores();
+    memory.sessions.set("s1", {
+      meta: sessionMeta("s1"),
+      messages: [msg("m1", "local-only")],
+    });
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests(null);
+    const usage = await loadCloudSyncUsage();
+    assert.equal(usage.source, "local");
+    assert.equal(usage.kinds.find((row) => row.kind === "chat-session")?.count, 1);
+    assert.ok(usage.totalBytes > 0);
   });
 });

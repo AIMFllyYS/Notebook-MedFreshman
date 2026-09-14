@@ -28,6 +28,8 @@ import { refreshBillingFromLedger } from '@/lib/billing/syncUsageLedger';
 import { AccountQuota } from '@/components/chat/AccountQuota';
 import { UsageProgressBar } from '@/components/chat/UsageProgressBar';
 import { ACCOUNT_USAGE_CHANGED, notifyAccountUsageChanged } from '@/lib/billing/quotaView';
+import { EMPTY_SESSION_STORAGE, measureSessionStorageUsageAsync, type SessionStorageUsage } from '@/lib/chat/sessionStorageUsage';
+import { formatSyncBytes } from '@/lib/sync/usage';
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -82,7 +84,8 @@ const BREAKDOWN_CATS: { key: 'tools' | 'skills' | 'pages' | 'webSearch' | 'conve
 
 export default function TokenDashboard({ isLoading = false, floatingSessionId, modelId }: { isLoading?: boolean; floatingSessionId?: string; modelId?: string }) {
   const [open, setOpen] = useState(false);
-  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(true);
+  const [sessionStorage, setSessionStorage] = useState<SessionStorageUsage>(EMPTY_SESSION_STORAGE);
   const [pinned, setPinned] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -177,14 +180,32 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     }
   }, [floatingSessionId, modelId]);
 
+  const refreshSessionStorage = useCallback(() => {
+    const st = useChatHistory.getState();
+    const sid = floatingSessionId ?? st.activeSessionId;
+    if (!sid) {
+      setSessionStorage(EMPTY_SESSION_STORAGE);
+      return;
+    }
+    const apply = async (store: typeof st) => {
+      const meta = store.sessionsMeta.find((item) => item.id === sid);
+      setSessionStorage(await measureSessionStorageUsageAsync(sid, store.messagesById[sid] ?? [], meta));
+    };
+    void st.ensureSessionLoaded(sid).then(() => apply(useChatHistory.getState()));
+  }, [floatingSessionId]);
+
   // 始终定时刷新上下文估算（面板开关均运行），确保按钮数字实时更新。
   // 面板开时 2.5s 高频刷新（展开详情需要跟手）；关时 5s 低频刷新（仅更新按钮数字）。
   useEffect(() => {
     recompute();
+    if (open) refreshSessionStorage();
     const interval = open ? 2500 : 5000;
-    const id = setInterval(recompute, interval);
+    const id = setInterval(() => {
+      recompute();
+      if (open) refreshSessionStorage();
+    }, interval);
     return () => clearInterval(id);
-  }, [open, recompute]);
+  }, [open, recompute, refreshSessionStorage]);
 
   useEffect(() => {
     if (!open) return;
@@ -289,6 +310,8 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
         <button
           ref={btnRef}
           onClick={() => setOpen((v) => !v)}
+          aria-label="打开上下文看板"
+          aria-expanded={open}
           className="press flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
         >
           {iconSvg}
@@ -386,6 +409,8 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
               )}
             </div>
 
+            <SessionStorageBlock usage={sessionStorage} />
+
             {(contextTruncated || showCacheRow) && (
               <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 10 }}>
                 {showCacheRow && (
@@ -403,7 +428,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
             )}
 
             {/* Context composition (IDE 式分项构成) */}
-            <details onToggle={(event) => setDetailsOpen(event.currentTarget.open)}>
+            <details open={detailsOpen} onToggle={(event) => setDetailsOpen(event.currentTarget.open)}>
             <summary className="mb-2 cursor-pointer rounded py-2 text-[var(--ink-soft)]">上下文构成与消耗详情</summary>
             {detailsOpen ? <>
             <div style={{ marginBottom: 10 }}>
@@ -479,6 +504,36 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
         document.body,
       )}
     </>
+  );
+}
+
+function SessionStorageBlock({ usage }: { usage: SessionStorageUsage }) {
+  const conversationLimit = usage.conversationLimitBytes;
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div style={{ marginBottom: 6 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
+          <span>对话占用</span>
+          <span style={{ fontVariantNumeric: 'tabular-nums' }}>
+            {formatSyncBytes(usage.conversationBytes)} / {formatSyncBytes(conversationLimit)}
+          </span>
+        </div>
+        <UsageProgressBar
+          ratio={conversationLimit > 0 ? usage.conversationBytes / conversationLimit : 0}
+          ariaLabel="对话占用"
+          height={4}
+        />
+      </div>
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
+          <span>附件占用{usage.attachmentCount > 0 ? ` · ${usage.attachmentCount} 个` : ''}</span>
+          <span style={{ fontVariantNumeric: 'tabular-nums' }}>{formatSyncBytes(usage.attachmentBytes)}</span>
+        </div>
+      </div>
+      <div style={{ marginTop: 4, fontSize: 10, color: 'var(--ink-faint)', lineHeight: 1.35 }}>
+        对话条对照本条会话 4 MB 上限。附件只留本机，不占云端额度，也没有账号附件上限。
+      </div>
+    </div>
   );
 }
 

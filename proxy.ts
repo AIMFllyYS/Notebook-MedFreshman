@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { decideAiGate } from "@/lib/auth/aiGate";
+import { decideAiGate, TRUSTED_PROXY_USER_HEADER } from "@/lib/auth/aiGate";
 
 /**
  * Next.js 16 request gate (formerly middleware.ts).
@@ -25,7 +25,12 @@ export async function proxy(request: NextRequest) {
     method: request.method,
     headers: request.headers,
   });
-  if (decision.action === "next") return NextResponse.next();
+  if (decision.action === "next") {
+    const headers = new Headers(request.headers);
+    headers.delete(TRUSTED_PROXY_USER_HEADER);
+    if (decision.userId) headers.set(TRUSTED_PROXY_USER_HEADER, decision.userId);
+    return NextResponse.next({ request: { headers } });
+  }
   return NextResponse.json(decision.body, {
     status: decision.status,
     headers: decision.headers,
