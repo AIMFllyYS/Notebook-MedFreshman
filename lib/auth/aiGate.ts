@@ -31,14 +31,22 @@ export interface AiGateDeps extends RateLimitConsumeOptions {
   consume?: typeof consumeRateLimit;
 }
 
+export const TRUSTED_PROXY_USER_HEADER = "x-studyreview-user-id";
+
 export type AiGateDecision =
-  | { action: "next" }
+  | { action: "next"; userId?: string }
   | {
       action: "reject";
       status: 401 | 429;
       body: { error: string };
       headers?: Record<string, string>;
     };
+
+export function readTrustedProxyUserId(headers: { get(name: string): string | null }): string | null {
+  const id = headers.get(TRUSTED_PROXY_USER_HEADER)?.trim();
+  if (!id || id.length > 128) return null;
+  return id;
+}
 
 export async function verifySupabaseAccessToken(token: string): Promise<GateUser | null> {
   if (!token) return null;
@@ -97,5 +105,5 @@ export async function decideAiGate(
       headers: { "Retry-After": String(hit.retryAfterSec) },
     };
   }
-  return { action: "next" };
+  return { action: "next", userId: user.id };
 }

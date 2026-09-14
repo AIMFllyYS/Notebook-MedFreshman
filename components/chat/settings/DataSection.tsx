@@ -138,7 +138,7 @@ export function CloudSyncSection() {
         <h3 className={h3Cls}>云端同步</h3>
       </div>
       <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-        登录后同步对话文本、演示 HTML 和长文档。图片、笔记正文、生图会话和 API 密钥不会上传。
+        登录后同步对话文本、演示 HTML 和长文档。用户上传的图片与 PDF 不上云。工具读过的笔记以摘要同步，全文在教材包。生图会话和 API 密钥不会上传。
         单用户上限约 {limitMb} MB；超限时本机仍保留，并在对话区提示。
       </p>
       <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">

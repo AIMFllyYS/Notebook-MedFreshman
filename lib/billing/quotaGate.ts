@@ -80,11 +80,17 @@ export interface QuotaUserRow {
   period_end: string;
 }
 
+export interface QuotaLedgerSum {
+  platform: number;
+  byok: number;
+}
+
 export interface QuotaStore {
   getUser(userId: string): Promise<QuotaUserRow | null>;
   savePeriod(userId: string, period: QuotaPeriod, tier?: UserTier): Promise<void>;
   listGrants(userId: string): Promise<QuotaGrantRow[]>;
   listLedger(userId: string, period: QuotaPeriod): Promise<QuotaLedgerRow[]>;
+  sumLedger?(userId: string, period: QuotaPeriod): Promise<QuotaLedgerSum>;
 }
 
 export interface QuotaGateTestDeps {
@@ -96,18 +102,22 @@ export interface QuotaGateTestDeps {
 let testDeps: QuotaGateTestDeps | null = null;
 
 const snapshotCache = new Map<string, { at: number; snapshot: QuotaSnapshot }>();
+const snapshotInflight = new Map<string, Promise<QuotaSnapshot | null>>();
 
 export function setQuotaGateTestDeps(deps: QuotaGateTestDeps | null): void {
   testDeps = deps;
   snapshotCache.clear();
+  snapshotInflight.clear();
 }
 
 export function invalidateQuotaCache(userId?: string | null): void {
   if (!userId) {
     snapshotCache.clear();
+    snapshotInflight.clear();
     return;
   }
   snapshotCache.delete(userId);
+  snapshotInflight.delete(userId);
 }
 
 export function quotaExhaustedMessage(pool: UsagePool): string {
@@ -251,6 +261,29 @@ function defaultStore(): QuotaStore {
       return (data ?? []) as QuotaLedgerRow[];
       });
     },
+    async sumLedger(userId, period) {
+      const client = createServiceAuthClient();
+      const { data, error } = await client.rpc("quota_period_sum", {
+        p_user_id: userId,
+        p_start: period.start.toISOString(),
+        p_end: period.end.toISOString(),
+      });
+      if (error) {
+        const ledger = await this.listLedger(userId, period);
+        return {
+          platform: sumLedgerUsed(ledger, "platform"),
+          byok: sumLedgerUsed(ledger, "byok"),
+        };
+      }
+      const used: QuotaLedgerSum = { platform: 0, byok: 0 };
+      for (const row of (data ?? []) as Array<{ pool?: string; used?: number }>) {
+        if (row.pool === "platform" || row.pool === "byok") {
+          const amount = Number(row.used);
+          if (Number.isFinite(amount) && amount > 0) used[row.pool] = amount;
+        }
+      }
+      return used;
+    },
   };
 }
 
@@ -267,14 +300,11 @@ export async function resolveQuotaUserId(
 ): Promise<string | null> {
   if (testDeps?.resolveUserId) return testDeps.resolveUserId(headers);
   const { resolveLedgerUserId } = await import("@/lib/billing/usageLedger");
-  return resolveLedgerUserId(headers);
+  return resolveLedgerUserId(headers, { allowTrustedProxyHeader: true });
 }
 
-export async function loadQuotaSnapshot(userId: string): Promise<QuotaSnapshot | null> {
-  const cached = snapshotCache.get(userId);
+async function loadQuotaSnapshotFresh(userId: string): Promise<QuotaSnapshot | null> {
   const now = nowDate();
-  if (cached && now.getTime() - cached.at < QUOTA_CACHE_TTL_MS) return cached.snapshot;
-
   const db = store();
   const user = await db.getUser(userId);
   if (!user) return null;
@@ -286,21 +316,22 @@ export async function loadQuotaSnapshot(userId: string): Promise<QuotaSnapshot |
   const tier = asUserTier(user.tier);
   if (rolled.rolled) {
     await db.savePeriod(userId, rolled.period);
-    invalidateQuotaCache(userId);
+    snapshotCache.delete(userId);
   }
 
-  const [grants, ledger] = await Promise.all([
+  const [grants, used] = await Promise.all([
     db.listGrants(userId),
-    db.listLedger(userId, rolled.period),
+    db.sumLedger
+      ? db.sumLedger(userId, rolled.period)
+      : db.listLedger(userId, rolled.period).then((ledger) => ({
+          platform: sumLedgerUsed(ledger, "platform"),
+          byok: sumLedgerUsed(ledger, "byok"),
+        })),
   ]);
 
   const cap = {
     platform: sumGrantCap(grants, rolled.period, "platform", tier),
     byok: sumGrantCap(grants, rolled.period, "byok", tier),
-  };
-  const used = {
-    platform: sumLedgerUsed(ledger, "platform"),
-    byok: sumLedgerUsed(ledger, "byok"),
   };
   const snapshot: QuotaSnapshot = {
     userId,
@@ -316,6 +347,19 @@ export async function loadQuotaSnapshot(userId: string): Promise<QuotaSnapshot |
   };
   snapshotCache.set(userId, { at: now.getTime(), snapshot });
   return snapshot;
+}
+
+export async function loadQuotaSnapshot(userId: string): Promise<QuotaSnapshot | null> {
+  const cached = snapshotCache.get(userId);
+  const now = nowDate();
+  if (cached && now.getTime() - cached.at < QUOTA_CACHE_TTL_MS) return cached.snapshot;
+  const pending = snapshotInflight.get(userId);
+  if (pending) return pending;
+  const next = loadQuotaSnapshotFresh(userId).finally(() => {
+    snapshotInflight.delete(userId);
+  });
+  snapshotInflight.set(userId, next);
+  return next;
 }
 
 /**

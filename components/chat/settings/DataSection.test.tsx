@@ -16,7 +16,8 @@ vi.mock("@/lib/ai/observability/downloadAgentLog", () => ({
 describe("CloudSyncSection", () => {
   it("says images, notes, and API keys stay off the cloud", () => {
     render(<CloudSyncSection />);
-    expect(screen.getByText(/图片、笔记正文、生图会话和 API 密钥不会上传/)).toBeInTheDocument();
+    expect(screen.getByText(/工具读过的笔记以摘要同步/)).toBeInTheDocument();
+    expect(screen.getByText(/用户上传的图片与 PDF 不上云/)).toBeInTheDocument();
   });
 });
 

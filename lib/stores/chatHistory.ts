@@ -329,7 +329,6 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
           sessions: sessionsMeta,
         });
       }
-      scheduleCloudUpsert('chat-session', sessionId);
       return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
     });
   },

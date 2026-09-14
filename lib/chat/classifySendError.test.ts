@@ -20,3 +20,17 @@ test("classifySendError：其它错误取 message，非 Error 用通用文案", 
   assert.equal(classifySendError(new Error("上游返回错误"), { stalled: false, aborted: false }), "上游返回错误");
   assert.equal(classifySendError("boom", { stalled: false, aborted: false }), "发生未知错误");
 });
+
+test("classifySendError：413 / nginx HTML 映射可读文案", () => {
+  assert.match(
+    classifySendError(new Error("API 请求失败: 413 Request Entity Too Large - <html>nginx/1.18.0</html>"), {
+      stalled: false,
+      aborted: false,
+    }) ?? "",
+    /已保留本机/,
+  );
+  assert.doesNotMatch(
+    classifySendError(new Error("<html>413 Request Entity Too Large</html>"), { stalled: false, aborted: false }) ?? "",
+    /nginx|<!DOCTYPE|<html/i,
+  );
+});

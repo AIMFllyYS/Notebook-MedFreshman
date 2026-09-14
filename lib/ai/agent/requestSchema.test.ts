@@ -7,6 +7,7 @@ import {
   parseChatRequest,
   parseImageGenRequest,
   REQUEST_LIMITS,
+  RequestTooLargeError,
 } from './requestSchema';
 import { DEFAULT_ACADEMIC_YEAR } from '@/lib/constants/academic-year';
 
@@ -108,6 +109,16 @@ test('request schema rejects oversized globalContext / skills / attachments', ()
     ),
     /附件过大/,
   );
+});
+
+test('request schema rejects a whole body over the serialized byte cap', () => {
+  assert.throws(
+    () => parseChatRequest({
+      messages: [{ role: 'user', parts: [{ type: 'text', text: 'x'.repeat(REQUEST_LIMITS.requestBytes) }] }],
+    }),
+    RequestTooLargeError,
+  );
+  assert.match(formatRequestError(new RequestTooLargeError()), /已保留本机/);
 });
 
 test('request schema keeps unknown fields ignored and normal payloads valid', () => {

@@ -1,7 +1,7 @@
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { createPersistedStore } from "@/lib/stores/_persist";
-import { scheduleCloudUpsert } from "@/lib/sync/schedule";
+import { scheduleCloudTombstone, scheduleCloudUpsert } from "@/lib/sync/schedule";
 
 /**
  * HTML 演示（Artifact）store。链路：tools.ts renderInteractive → ArtifactCard → 本 store → ArtifactViewer。
@@ -110,7 +110,12 @@ export const useArtifacts = createPersistedStore<ArtifactsState>(
             if (keepSet.has(id)) {
               newById[id] = s.byId[id];
               newOrder.push(id);
+            } else {
+              scheduleCloudTombstone("artifact", id);
             }
+          }
+          for (const id of Object.keys(s.byId)) {
+            if (!keepSet.has(id) && !s.order.includes(id)) scheduleCloudTombstone("artifact", id);
           }
           return { byId: newById, order: newOrder };
         }),

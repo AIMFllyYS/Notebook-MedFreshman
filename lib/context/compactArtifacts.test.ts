@@ -100,7 +100,8 @@ test('新会话不附带全局产物，getArtifact 引用仍保留完整原件',
   const part = { type: 'tool-getArtifact', state: 'output-available', output: { artifactId: 'art_old' } };
   const items = collectRequestArtifacts([{ parts: [part, part] }], store);
   assert.equal(items.length, 1);
-  assert.equal(items[0].html, artifact.html);
+  assert.equal("html" in items[0], false);
+  assert.equal(items[0].summary, "原件📖");
   assert.equal(store.byId.art_old, artifact);
 });
 

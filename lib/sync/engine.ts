@@ -14,20 +14,25 @@ import type { StoredDocument } from "@/lib/documents/types";
 import type { ChatMessage } from "@/lib/types/chat";
 import { createSupabaseSyncClient } from "./client";
 import { isRemoteNewer, mergeChatSessionPayloads } from "./merge";
+import { compactStudyMessages } from "@/lib/chat/compactStudyParts";
 import {
   buildArtifactPayload,
   buildChatSessionPayload,
   buildDocumentPayload,
+  effectiveUserLimit,
   formatKindLimitMessage,
   formatUserLimitMessage,
+  isSyncKindLimitError,
+  isSyncUserLimitError,
   payloadByteSize,
   preparePayload,
+  __setSyncLimitsForTests,
 } from "./payload";
 import { beginCloudSyncApply, endCloudSyncApply } from "./schedule";
+import { isSessionStreaming, __resetStreamingSessionsForTests } from "./streamingSessions";
 import { getCloudSyncStatus, setCloudSyncStatus } from "./status";
 import {
   CLOUD_SYNC_KINDS,
-  MAX_USER_SYNC_BYTES,
   type ChatSessionSyncPayload,
   type CloudSyncKind,
   type SyncDocumentRow,
@@ -84,6 +89,10 @@ let debounceMs = DEFAULT_DEBOUNCE_MS;
 const pending = new Map<string, Job>();
 const timers = new Map<string, ReturnType<typeof setTimeout>>();
 const baseline = new Map<string, string>();
+const lastOkBytes = new Map<string, number>();
+const lastPushedHash = new Map<string, string>();
+let remoteBytesByKey = new Map<string, number>();
+let remoteBytesReady = false;
 let chain: Promise<void> = Promise.resolve();
 let pagehideBound = false;
 
@@ -111,7 +120,13 @@ export function __resetCloudSyncForTests(): void {
   timers.clear();
   pending.clear();
   baseline.clear();
+  lastOkBytes.clear();
+  lastPushedHash.clear();
+  remoteBytesByKey = new Map();
+  remoteBytesReady = false;
   chain = Promise.resolve();
+  __setSyncLimitsForTests(null);
+  __resetStreamingSessionsForTests();
 }
 
 async function resolveClient(): Promise<SyncDocumentsApi | null> {
@@ -201,7 +216,11 @@ function asChatPayload(value: unknown): ChatSessionSyncPayload | null {
   if (!value || typeof value !== "object") return null;
   const row = value as ChatSessionSyncPayload;
   if (row.v !== 1 || !row.meta?.id || !Array.isArray(row.messages)) return null;
-  return { v: 1, meta: row.meta, messages: row.messages };
+  return {
+    v: 1,
+    meta: row.meta,
+    messages: compactStudyMessages(row.messages, "persist"),
+  };
 }
 
 function asArtifact(value: unknown): Artifact | null {
@@ -237,20 +256,52 @@ async function loadLocalPayload(kind: CloudSyncKind, clientId: string): Promise<
   return doc ? buildDocumentPayload(doc) : null;
 }
 
+function rememberRemoteBytesFromRows(rows: SyncDocumentRow[]): void {
+  const next = new Map<string, number>();
+  for (const row of rows) {
+    if (row.deleted) continue;
+    next.set(jobKey(row.kind, row.client_id), payloadByteSize(row.payload));
+  }
+  remoteBytesByKey = next;
+  remoteBytesReady = true;
+}
+
+function noteRemoteBytes(kind: CloudSyncKind, clientId: string, bytes: number, deleted: boolean): void {
+  const key = jobKey(kind, clientId);
+  if (deleted) remoteBytesByKey.delete(key);
+  else remoteBytesByKey.set(key, bytes);
+}
+
+function cachedUserBytes(skipKind: CloudSyncKind, skipId: string): number | null {
+  if (!remoteBytesReady) return null;
+  let bytes = 0;
+  const skip = jobKey(skipKind, skipId);
+  for (const [key, value] of remoteBytesByKey) {
+    if (key === skip) continue;
+    bytes += value;
+  }
+  return bytes;
+}
+
+function payloadFingerprint(payload: unknown): string {
+  try {
+    return JSON.stringify(payload);
+  } catch {
+    return "";
+  }
+}
+
 async function remoteUserBytes(
   api: SyncDocumentsApi,
   skipKind: CloudSyncKind,
   skipId: string,
 ): Promise<{ bytes: number; error: string | null }> {
+  const cached = cachedUserBytes(skipKind, skipId);
+  if (cached != null) return { bytes: cached, error: null };
   const { data, error } = await api.list(CLOUD_SYNC_KINDS);
   if (error) return { bytes: 0, error: error.message };
-  let bytes = 0;
-  for (const row of data) {
-    if (row.deleted) continue;
-    if (row.kind === skipKind && row.client_id === skipId) continue;
-    bytes += payloadByteSize(row.payload);
-  }
-  return { bytes, error: null };
+  rememberRemoteBytesFromRows(data);
+  return { bytes: cachedUserBytes(skipKind, skipId) ?? 0, error: null };
 }
 
 function rememberBaseline(kind: CloudSyncKind, clientId: string, updatedAt: string | undefined): void {
@@ -281,6 +332,9 @@ async function pushTombstone(api: SyncDocumentsApi, kind: CloudSyncKind, clientI
     return;
   }
   rememberBaseline(kind, clientId, data?.updated_at);
+  noteRemoteBytes(kind, clientId, 0, true);
+  lastPushedHash.delete(jobKey(kind, clientId));
+  lastOkBytes.delete(jobKey(kind, clientId));
 }
 
 async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: string): Promise<void> {
@@ -314,10 +368,20 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
   const prepared = preparePayload(kind, toUpload);
   if (!prepared.ok) {
     if (prepared.reason === "kind-limit") {
-      reportError(formatKindLimitMessage(kind, prepared.bytes, prepared.limit));
+      reportError(formatKindLimitMessage(kind, prepared.bytes, prepared.limit, lastOkBytes.get(jobKey(kind, clientId))));
     } else {
       reportError("同步内容含图片或密钥，已跳过上传。本机仍保留。");
     }
+    return;
+  }
+
+  const hash = payloadFingerprint(prepared.payload);
+  const remoteHash = remote && !remote.deleted ? payloadFingerprint(remote.payload) : "";
+  if (hash && (lastPushedHash.get(jobKey(kind, clientId)) === hash || remoteHash === hash)) {
+    rememberBaseline(kind, clientId, remote?.updated_at);
+    lastPushedHash.set(jobKey(kind, clientId), hash);
+    lastOkBytes.set(jobKey(kind, clientId), prepared.bytes);
+    noteRemoteBytes(kind, clientId, prepared.bytes, false);
     return;
   }
 
@@ -326,8 +390,8 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     reportError(`云端同步失败：${total.error}`);
     return;
   }
-  if (total.bytes + prepared.bytes > MAX_USER_SYNC_BYTES) {
-    reportError(formatUserLimitMessage(MAX_USER_SYNC_BYTES));
+  if (total.bytes + prepared.bytes > effectiveUserLimit()) {
+    reportError(formatUserLimitMessage(effectiveUserLimit()));
     return;
   }
 
@@ -338,10 +402,19 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     deleted: false,
   });
   if (error) {
-    reportError(`云端同步失败：${error.message}`);
+    if (isSyncKindLimitError(error.message)) {
+      reportError(formatKindLimitMessage(kind, prepared.bytes, prepared.bytes, lastOkBytes.get(jobKey(kind, clientId))));
+    } else if (isSyncUserLimitError(error.message)) {
+      reportError(formatUserLimitMessage(effectiveUserLimit()));
+    } else {
+      reportError(`云端同步失败：${error.message}`);
+    }
     return;
   }
   rememberBaseline(kind, clientId, data?.updated_at);
+  lastPushedHash.set(jobKey(kind, clientId), hash);
+  lastOkBytes.set(jobKey(kind, clientId), prepared.bytes);
+  noteRemoteBytes(kind, clientId, prepared.bytes, false);
 }
 
 function capSessions(metas: SessionMeta[]): SessionMeta[] {
@@ -465,6 +538,7 @@ async function pullFromCloud(api: SyncDocumentsApi): Promise<void> {
     reportError(`云端同步失败：${error.message}`);
     return;
   }
+  rememberRemoteBytesFromRows(data);
   const tombstones = data.filter((row) => row.deleted);
   const live = data.filter((row) => !row.deleted);
   for (const row of tombstones) await applyRemoteRow(row);
@@ -472,7 +546,10 @@ async function pullFromCloud(api: SyncDocumentsApi): Promise<void> {
 }
 
 async function pushAllLocal(api: SyncDocumentsApi): Promise<void> {
-  for (const meta of stores.listSessionMetas()) await pushOne(api, "chat-session", meta.id);
+  for (const meta of stores.listSessionMetas()) {
+    if (isSessionStreaming(meta.id)) continue;
+    await pushOne(api, "chat-session", meta.id);
+  }
   for (const id of stores.listArtifactIds()) await pushOne(api, "artifact", id);
   for (const id of stores.listDocumentIds()) await pushOne(api, "document", id);
 }

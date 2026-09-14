@@ -33,11 +33,14 @@
     "primaryKeys": [],
     "functions": [
       "handle_new_user",
+      "quota_period_sum",
+      "sync_documents_enforce_bytes",
       "touch_updated_at"
     ],
     "triggers": [
       "app_users_touch",
       "on_auth_user_created",
+      "sync_documents_byte_limits",
       "sync_documents_touch"
     ],
     "policies": [
@@ -60,6 +63,10 @@
       "function:handle_new_user:EXECUTE:anon",
       "function:handle_new_user:EXECUTE:authenticated",
       "function:handle_new_user:EXECUTE:service_role",
+      "function:quota_period_sum:EXECUTE:service_role",
+      "function:sync_documents_enforce_bytes:EXECUTE:anon",
+      "function:sync_documents_enforce_bytes:EXECUTE:authenticated",
+      "function:sync_documents_enforce_bytes:EXECUTE:service_role",
       "function:touch_updated_at:EXECUTE:anon",
       "function:touch_updated_at:EXECUTE:authenticated",
       "function:touch_updated_at:EXECUTE:service_role",

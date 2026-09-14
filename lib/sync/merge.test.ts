@@ -56,6 +56,43 @@ test("mergeChatSessionPayloads reports newly added remote ids", () => {
   assert.equal(result.payload.meta.title, "remote");
 });
 
+test("pickRicherMessage 在一侧已 compact 时仍选 compact 规范，不靠未压缩 JSON 长度", () => {
+  const fat: ChatMessage = {
+    id: "m1",
+    role: "assistant",
+    timestamp: 10,
+    parts: [
+      {
+        type: "tool-getCurrentPage",
+        toolCallId: "c1",
+        state: "output-available",
+        input: {},
+        output: { text: "【页】\n\n" + "很长的笔记正文".repeat(80), contextKey: "page:a/b/c" },
+      },
+      { type: "text", text: "短答", state: "done" },
+    ],
+  };
+  const slim: ChatMessage = {
+    id: "m1",
+    role: "assistant",
+    timestamp: 10,
+    parts: [
+      {
+        type: "tool-getCurrentPage",
+        toolCallId: "c1",
+        state: "output-available",
+        input: {},
+        output: { text: "【已加载】getCurrentPage：page:a/b/c。需要时再调用该工具取回全文。", contextKey: "page:a/b/c" },
+      },
+      { type: "text", text: "短答", state: "done" },
+    ],
+  };
+  const merged = mergeChatMessages([fat], [slim]);
+  const page = merged[0].parts.find((p) => p.type === "tool-getCurrentPage") as { output: { text: string } };
+  assert.match(page.output.text, /【已加载】/);
+  assert.doesNotMatch(page.output.text, /很长的笔记正文/);
+});
+
 test("isRemoteNewer treats missing baseline as newer", () => {
   assert.equal(isRemoteNewer("2026-01-02T00:00:00.000Z", undefined), true);
   assert.equal(isRemoteNewer("2026-01-02T00:00:00.000Z", "2026-01-03T00:00:00.000Z"), false);

@@ -5,7 +5,7 @@
  */
 
 import { AsyncLocalStorage } from "node:async_hooks";
-import { extractAccessToken, verifySupabaseAccessToken, type VerifyAccessToken } from "@/lib/auth/aiGate";
+import { extractAccessToken, readTrustedProxyUserId, verifySupabaseAccessToken, type VerifyAccessToken } from "@/lib/auth/aiGate";
 import { createServiceAuthClient } from "@/lib/auth/serviceClient";
 import { getModelInfo, getModelInfoWithCustom, type CustomApiGroup } from "@/lib/ai/models";
 import { BYOK_OVERHEAD_CNY_PER_MILLION, type UsagePool } from "@/lib/billing/usagePool";
@@ -341,10 +341,14 @@ export async function awaitUsage(
 
 export async function resolveLedgerUserId(
   headers: { get(name: string): string | null },
-  deps?: { verify?: VerifyAccessToken },
+  deps?: { verify?: VerifyAccessToken; allowTrustedProxyHeader?: boolean },
 ): Promise<string | null> {
   const token = extractAccessToken(headers);
   if (!token) return null;
+  if (deps?.allowTrustedProxyHeader) {
+    const trusted = readTrustedProxyUserId(headers);
+    if (trusted) return trusted;
+  }
   try {
     const user = await (deps?.verify ?? verifySupabaseAccessToken)(token);
     return user?.id ?? null;

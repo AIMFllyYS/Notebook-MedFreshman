@@ -10,6 +10,7 @@ export function kickoffSessionTitle(
 ): string {
   const fallbackTitle = buildFallbackSessionTitle(userContent);
   if (localOnly) return fallbackTitle;
+  const start = () => {
   void fetch("/api/chat-title", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -30,5 +31,11 @@ export function kickoffSessionTitle(
     .catch(() => {
       /* 标题失败不影响主请求；本地标题已落库。 */
     });
+  };
+  if (typeof requestIdleCallback === "function") {
+    requestIdleCallback(start, { timeout: 1500 });
+  } else {
+    setTimeout(start, 0);
+  }
   return fallbackTitle;
 }

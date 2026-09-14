@@ -6,7 +6,9 @@ import {
   type ModelMessage,
   type UIMessageStreamWriter,
 } from "ai";
-import { compactArtifactMessages, compactUiParts } from "@/lib/context/compactArtifacts";
+import { compactStudyParts } from "@/lib/chat/compactStudyParts";
+import { rehydrateStudyParts } from "@/lib/chat/rehydrateStudyParts";
+import { compactArtifactMessages } from "@/lib/context/compactArtifacts";
 import { compactHistory } from "@/lib/context/compactHistory";
 import { pruneStudyMessages } from "@/lib/context/pruneStudyMessages";
 import { CONTEXT_WARNING } from "@/lib/chat/estimateContextBudget";
@@ -24,7 +26,7 @@ import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
 import { TOOL_STEP_LIMIT_INFO } from "@/lib/ai/agent/tools/server";
 import { computeContextBreakdown, estimateRequestContextTokens } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
-import { formatRequestError, parseChatRequest, type ChatRequest } from "@/lib/ai/agent/requestSchema";
+import { formatRequestError, parseChatRequest, RequestTooLargeError, type ChatRequest } from "@/lib/ai/agent/requestSchema";
 import { awaitUsage, resolveActualBillingModelId, runWithLedgerContext, settleChatUsage } from "@/lib/billing/usageLedger";
 import { assertQuotaAvailable, quotaRejectedJson, resolveQuotaUserId } from "@/lib/billing/quotaGate";
 import { resolveMainModelPool, usedPlatformCredentialsForProvider } from "@/lib/billing/usagePool";
@@ -57,19 +59,26 @@ function hasFileParts(messages: ChatRequest["messages"]): boolean {
   return messages.some((m) => m.parts.some((p) => p.type === "file"));
 }
 
-/** UIMessage → ModelMessage。reasoning / 旧工具结果由随后的 pruneMessages 处理。 */
-async function toModelMessages(messages: ChatRequest["messages"]): Promise<ModelMessage[]> {
+/** UIMessage → ModelMessage。先压 stub 再按 contextKey 回灌页/节/技能。 */
+async function toModelMessages(
+  messages: ChatRequest["messages"],
+  ctx: { skills: ChatRequest["skills"]; artifacts: ChatRequest["artifacts"]; academicYear: ChatRequest["academicYear"] },
+): Promise<ModelMessage[]> {
   const uiMessages = messages
     .filter((m) => m.role === "user" || m.role === "assistant")
     .map((m, i) => ({
       id: m.id ?? `m_${i}`,
       role: m.role,
-      parts: compactUiParts(
-        m.parts.filter((p) => {
-          const type = p.type;
-          return type === "text" || type === "file" || type === "reasoning"
-            || (typeof type === "string" && type.startsWith("tool-"));
-        }),
+      parts: rehydrateStudyParts(
+        compactStudyParts(
+          m.parts.filter((p) => {
+            const type = p.type;
+            return type === "text" || type === "file" || type === "reasoning"
+              || (typeof type === "string" && type.startsWith("tool-"));
+          }) as ChatMessage["parts"],
+          "ui-request",
+        ),
+        ctx,
       ),
     })) as ChatMessage[];
   return convertToModelMessages(uiMessages, { ignoreIncompleteToolCalls: true });
@@ -80,8 +89,9 @@ export async function POST(req: NextRequest) {
   try {
     body = parseChatRequest(await req.json().catch(() => ({})));
   } catch (err) {
+    const status = err instanceof RequestTooLargeError ? 413 : 400;
     return new Response(JSON.stringify({ error: formatRequestError(err) }), {
-      status: 400,
+      status,
       headers: { "Content-Type": "application/json" },
     });
   }
@@ -180,7 +190,11 @@ export async function POST(req: NextRequest) {
       const userText = lastUserText(body.messages);
       const ctxManager = getContextManager(options.contextMode ?? "full", effectiveModelId, customGroups);
       let ctxResult = await ctxManager.buildContext(chatCtx, userText, { compact: body.contextTruncated });
-      const prunedHistory = pruneStudyMessages(compactArtifactMessages(await toModelMessages(body.messages)));
+      const prunedHistory = pruneStudyMessages(compactArtifactMessages(await toModelMessages(body.messages, {
+        skills: body.skills,
+        artifacts: body.artifacts,
+        academicYear: body.academicYear,
+      })));
       const candidateLimit = automaticModels
         ? Math.min(...automaticModels.map((id) => (getModelInfoWithCustom(id, customGroups)?.contextK ?? 128) * 1000))
         : ctxResult.maxTokens;

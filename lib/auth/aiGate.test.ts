@@ -109,7 +109,7 @@ test("a mocked valid session passes the gate from cookie or Authorization", asyn
     },
     { verifyAccessToken: allowAda },
   );
-  assert.deepEqual(viaHeader, { action: "next" });
+  assert.deepEqual(viaHeader, { action: "next", userId: "ada" });
 
   const viaCookie = await decideAiGate(
     {
@@ -119,7 +119,7 @@ test("a mocked valid session passes the gate from cookie or Authorization", asyn
     },
     { verifyAccessToken: allowAda },
   );
-  assert.deepEqual(viaCookie, { action: "next" });
+  assert.deepEqual(viaCookie, { action: "next", userId: "ada" });
 
   const electronSignedIn = await decideAiGate(
     {
@@ -132,7 +132,7 @@ test("a mocked valid session passes the gate from cookie or Authorization", asyn
     },
     { verifyAccessToken: allowAda },
   );
-  assert.deepEqual(electronSignedIn, { action: "next" });
+  assert.deepEqual(electronSignedIn, { action: "next", userId: "ada" });
 });
 
 test("non-AI routes and CORS preflight are not gated", async () => {
@@ -165,8 +165,8 @@ test("signed-in callers are rate-limited per user after the window max", async (
     { pathname: "/api/chat", method: "POST", headers: headers({ authorization: "Bearer valid-ada" }) },
     deps,
   );
-  assert.deepEqual(first, { action: "next" });
-  assert.deepEqual(second, { action: "next" });
+  assert.deepEqual(first, { action: "next", userId: "ada" });
+  assert.deepEqual(second, { action: "next", userId: "ada" });
   assert.equal(third.action, "reject");
   if (third.action === "reject") {
     assert.equal(third.status, 429);
@@ -178,7 +178,7 @@ test("signed-in callers are rate-limited per user after the window max", async (
     { pathname: "/api/chat", method: "POST", headers: headers({ authorization: "Bearer valid-bob" }) },
     { verifyAccessToken: allowBob, max: 2, windowMs: 60_000, now: 9_000_000 },
   );
-  assert.deepEqual(otherUser, { action: "next" });
+  assert.deepEqual(otherUser, { action: "next", userId: "bob" });
 });
 
 test("installAiAuthFetch adds a Bearer token only on paid AI URLs", async () => {

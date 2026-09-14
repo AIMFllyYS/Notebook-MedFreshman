@@ -11,6 +11,7 @@ import {
   listPersistedKeys,
   flushPendingWrites,
 } from '@/lib/storage/idbStorage';
+import { compactStudyMessages } from '@/lib/chat/compactStudyParts';
 import { getMessageText, getToolPartsByName, normalizeStoredMessages } from '@/lib/chat/messageParts';
 
 export interface SessionMeta {
@@ -92,14 +93,18 @@ export async function loadSessionMessages(sessionId: string): Promise<ChatMessag
     if (!Array.isArray(parsed)) return null;
     // 旧扁平结构（content / reasoningContent / toolCalls）在读取时就地迁移为 parts；
     // 下次保存自然写回新形状，无需单独的存储版本迁移。
-    return normalizeStoredMessages(parsed);
+    return compactStudyMessages(normalizeStoredMessages(parsed), 'persist');
   } catch {
     return null;
   }
 }
 
+export function serializeSessionMessages(messages: ChatMessage[]): string {
+  return JSON.stringify(compactStudyMessages(messages, 'persist'));
+}
+
 export function saveSessionMessages(sessionId: string, messages: ChatMessage[]): void {
-  idbStorage.setItemLazy(chatSessionKey(sessionId), () => JSON.stringify(messages));
+  idbStorage.setItemLazy(chatSessionKey(sessionId), () => serializeSessionMessages(messages));
 }
 
 async function saveManifestNow(manifest: ChatManifestV2): Promise<boolean> {
@@ -107,7 +112,7 @@ async function saveManifestNow(manifest: ChatManifestV2): Promise<boolean> {
 }
 
 async function saveSessionMessagesNow(sessionId: string, messages: ChatMessage[]): Promise<boolean> {
-  return setItemNow(chatSessionKey(sessionId), JSON.stringify(messages));
+  return setItemNow(chatSessionKey(sessionId), serializeSessionMessages(messages));
 }
 
 export async function loadBlobDataUrl(blobId: string): Promise<string | null> {
@@ -244,9 +249,16 @@ export async function loadAllSessionsForExport(metas: SessionMeta[]): Promise<Ch
   return sessions;
 }
 
-export async function hydrateAttachmentsForApi(messages: ChatMessage[]): Promise<ChatMessage[]> {
+export async function hydrateAttachmentsForApi(
+  messages: ChatMessage[],
+  options?: { messageIds?: ReadonlySet<string> },
+): Promise<ChatMessage[]> {
   const out: ChatMessage[] = [];
   for (const m of messages) {
+    if (options?.messageIds && !options.messageIds.has(m.id)) {
+      out.push(m);
+      continue;
+    }
     if (!m.attachments?.length) {
       out.push(m);
       continue;

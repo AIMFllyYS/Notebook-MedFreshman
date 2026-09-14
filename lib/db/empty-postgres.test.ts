@@ -13,12 +13,13 @@ test("empty PGlite migrate equals live catalog snapshot", { timeout: 60_000 }, a
   const diff = diffCatalogs(result.catalog, snapshot.catalog);
 
   assert.equal(result.backend, EMPTY_DB_BACKEND);
-  assert.deepEqual(result.applied, ["0001", "0002", "0003"]);
-  assert.deepEqual(result.replay, { applied: [], skipped: ["0001", "0002", "0003"] });
-  assert.equal(result.currentVersion, "0003");
+  assert.deepEqual(result.applied, ["0001", "0002", "0003", "0004"]);
+  assert.deepEqual(result.replay, { applied: [], skipped: ["0001", "0002", "0003", "0004"] });
+  assert.equal(result.currentVersion, "0004");
   assert.equal(result.status.applied[0]?.version, "0001");
   assert.equal(result.status.applied[1]?.version, "0002");
   assert.equal(result.status.applied[2]?.version, "0003");
+  assert.equal(result.status.applied[3]?.version, "0004");
   assert.equal(result.status.pending.length, 0);
   assert.equal(
     catalogsMatch(diff),

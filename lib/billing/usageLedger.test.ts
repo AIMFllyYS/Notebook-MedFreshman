@@ -190,6 +190,34 @@ test("resolveLedgerUserId：Bearer / 校验失败", async () => {
     null,
   );
   assert.equal(await resolveLedgerUserId({ get: () => null }, { verify }), null);
+  assert.equal(
+    await resolveLedgerUserId(
+      {
+        get: (name) => {
+          const key = name.toLowerCase();
+          if (key === "authorization") return "Bearer valid-ada";
+          if (key === "x-studyreview-user-id") return "from-proxy";
+          return null;
+        },
+      },
+      { verify, allowTrustedProxyHeader: true },
+    ),
+    "from-proxy",
+  );
+  assert.equal(
+    await resolveLedgerUserId(
+      {
+        get: (name) => {
+          const key = name.toLowerCase();
+          if (key === "authorization") return "Bearer valid-ada";
+          if (key === "x-studyreview-user-id") return "spoofed";
+          return null;
+        },
+      },
+      { verify },
+    ),
+    "ada",
+  );
 });
 
 test("awaitUsage：已决议的 usage 立即返回，超时返回 undefined", async () => {

@@ -100,6 +100,9 @@ test("discoverMigrations reads repo baseline in version order", () => {
   assert.equal(files[2].filename, "0003_sync_documents_document_kind.sql");
   assert.equal(findNonIdempotentStatements(files[2].sql).length, 0);
   assert.match(files[2].sql, /document/);
+  assert.equal(files[3].version, "0004");
+  assert.equal(files[3].filename, "0004_sync_quota_bytes.sql");
+  assert.equal(findNonIdempotentStatements(files[3].sql).length, 0);
 });
 
 test("0001_init.sql inventory covers tables indexes triggers policies grants", () => {
@@ -117,7 +120,13 @@ test("0001_init.sql inventory covers tables indexes triggers policies grants", (
     assert.ok(inventory.rlsTables.includes(table), `rls ${table}`);
     assert.ok(inventory.primaryKeys.includes(`${table}_pkey`), `pk ${table}`);
   }
-  assert.deepEqual(inventory.functions, ["handle_new_user", "touch_updated_at"]);
+  assert.deepEqual(inventory.functions, [
+    "handle_new_user",
+    "quota_period_sum",
+    "sync_documents_enforce_bytes",
+    "touch_updated_at",
+  ]);
+  assert.ok(inventory.triggers.includes("sync_documents_byte_limits"));
   assert.ok(inventory.indexes.includes("quota_grants_user_period_idx"));
   assert.ok(inventory.indexes.includes("usage_ledger_request_idx"));
   assert.ok(inventory.uniqueConstraints.includes("redemption_codes_code_key"));

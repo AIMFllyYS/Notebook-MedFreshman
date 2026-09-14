@@ -314,7 +314,7 @@ describe('useChat SDK transport regression', () => {
     const sent = requests[0].body.messages as ChatMessage[];
     expect(sent.length).toBeGreaterThan(16);
     expect(sent.some((m) => m.id === 'old-0')).toBe(true);
-    expect(sent.at(-2)?.parts.some((p) => p.type === 'file')).toBe(true);
+    expect(sent.filter((m) => m.id === 'old-0').some((m) => m.parts.some((p) => p.type === 'file'))).toBe(false);
     expect(sent.at(-1)?.parts).toContainEqual({ type: 'file', mediaType: 'image/png', url: 'data:image/png;base64,aW1hZ2U=' });
     expect(requests[0].body).toMatchObject({ contextTruncated: true, sessionContextBudgetTokens: 1_000_000 });
     expect(useTokenTracker.getState().contextWarning).toContain('80%');

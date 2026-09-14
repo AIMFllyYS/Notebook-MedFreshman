@@ -84,21 +84,35 @@ test("buildRequestMessages：超长历史截断尾部", () => {
   assert.equal(textOf(out[0]), "u95");
 });
 
-test("buildRequestMessages：含附件的早期 user 消息保留并转成 file part", () => {
+test("buildRequestMessages：历史图不进 file part，只留本机占位", () => {
   const messages: ChatMessage[] = [];
   for (let i = 0; i < 50; i++) {
     messages.push(msg(String(i), "user", `u${i}`));
   }
   messages[0] = msg("0", "user", "with image", {
-    attachments: [{ type: "image", mimeType: "image/png", base64: "data:image/png;base64,abc" }],
+    attachments: [{ type: "image", mimeType: "image/png", name: "old.png", base64: "data:image/png;base64,abc" }],
   });
   const { messages: out, truncated } = buildRequestMessages(messages, 5);
   assert.equal(truncated, true);
-  const img = out.find(hasFile);
-  assert.ok(img);
-  const file = img!.parts.find((p) => p.type === "file") as { mediaType: string; url: string };
-  assert.equal(file.mediaType, "image/png");
-  assert.equal(file.url, "data:image/png;base64,abc");
+  assert.equal(out.some(hasFile), false);
+  assert.equal(out.some((m) => m.id === "0"), false);
+});
+
+test("buildRequestMessages：本轮图片进 file part，历史图只写占位", () => {
+  const messages = [
+    msg("0", "user", "old image", {
+      attachments: [{ type: "image", mimeType: "image/png", name: "old.png", base64: "data:image/png;base64,abc" }],
+    }),
+    msg("1", "assistant", "ok"),
+    msg("2", "user", "new image", {
+      attachments: [{ type: "image", mimeType: "image/png", name: "new.png", base64: "data:image/png;base64,xyz" }],
+    }),
+  ];
+  const { messages: out } = buildRequestMessages(messages);
+  assert.equal(out.some((m) => m.id === "0" && hasFile(m)), false);
+  assert.match(textOf(out[0]), /用户曾附图片「old.png」/);
+  const latest = out.find((m) => m.id === "2");
+  assert.ok(latest && hasFile(latest));
 });
 
 test("buildRequestMessages：TXT / MD / DOCX 正文作为明确标记的文本附件发送", () => {
