@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useRef } from "react";
-import { resolveFullscreenRect, type FullscreenTarget } from "@/lib/constants/layout";
+import { useCallback } from "react";
+import type { FullscreenTarget } from "@/lib/constants/layout";
 import { useDraggable } from "@/lib/hooks/useDraggable";
 import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
 import { useResizable } from "@/lib/hooks/useResizable";
 import { useWindowManager, type WindowSize } from "@/lib/hooks/useWindowManager";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { toggleManagedWindowFullscreen } from "@/lib/window/toggleManagedFullscreen";
 
 export type { FullscreenTarget };
 
@@ -37,8 +38,7 @@ export function useManagedWindowChrome({
   onResize,
 }: UseManagedWindowChromeOptions) {
   const managed = useWindowManager((s) => s.windows.find((w) => w.id === windowId));
-  const { bringToFront, commitGeometry, minimizeWindow, setFullscreen } = useWindowManager();
-  const preExpandRef = useRef<{ pos: { x: number; y: number }; size: WindowSize } | null>(null);
+  const { bringToFront, commitGeometry, minimizeWindow } = useWindowManager();
 
   const { elRef, onPointerDown } = useDraggable((dx, dy) => {
     const current = useWindowManager.getState().windows.find((w) => w.id === windowId);
@@ -70,25 +70,8 @@ export function useManagedWindowChrome({
   });
 
   const toggleFullscreen = useCallback(() => {
-    const current = useWindowManager.getState().windows.find((w) => w.id === windowId);
-    if (!current) return;
-    if (current.fullscreen) {
-      const snap = preExpandRef.current;
-      if (snap) commitGeometry(windowId, { pos: snap.pos, size: snap.size });
-      preExpandRef.current = null;
-      setFullscreen(windowId, false);
-      return;
-    }
-    preExpandRef.current = { pos: current.pos, size: current.size };
-    const rect = resolveFullscreenRect(fullscreenTarget);
-    if (rect && rect.width > 0 && rect.height > 0) {
-      commitGeometry(windowId, {
-        pos: { x: rect.left, y: rect.top },
-        size: { width: rect.width, height: rect.height },
-      });
-    }
-    setFullscreen(windowId, true);
-  }, [commitGeometry, fullscreenTarget, setFullscreen, windowId]);
+    toggleManagedWindowFullscreen(windowId, fullscreenTarget);
+  }, [fullscreenTarget, windowId]);
 
   return {
     managed,

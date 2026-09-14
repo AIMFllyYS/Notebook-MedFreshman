@@ -41,6 +41,7 @@ export interface NoteCitationViewerData {
 
 export interface SourceTraceViewerData {
   sources: unknown[];
+  activeKey?: string;
 }
 
 export interface SourcePreviewData {
@@ -52,7 +53,7 @@ export interface SourcePreviewData {
 export interface AttachmentPreviewData {
   name: string;
   mimeType: string;
-  kind: "image" | "pdf" | "ppt" | "html" | "markdown" | "text";
+  kind: "image" | "pdf" | "ppt" | "html" | "markdown" | "text" | "docx";
   content: string;
 }
 
@@ -69,6 +70,8 @@ export interface ManagedWindow<TData = ManagedWindowData> {
   fullscreen: boolean;
   minimized: boolean;
   badge?: number;
+  /** 进入全屏前的几何，供红绿灯与键盘快捷键还原。 */
+  preExpand?: { pos: WindowPoint; size: WindowSize } | null;
   data: TData;
 }
 

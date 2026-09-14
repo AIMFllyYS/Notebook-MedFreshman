@@ -2,7 +2,7 @@ import React from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import WebSourceFold from './WebSourceFold';
-import { sourcePreviewWindowId } from '@/lib/chat/openSourcePreview';
+
 import { useWindowManager } from '@/lib/hooks/useWindowManager';
 
 afterEach(() => {
@@ -23,7 +23,7 @@ describe('WebSourceFold', () => {
     expect(screen.getByText(/1\. 大学课程资料/)).toBeVisible();
     expect(screen.queryByText(/公开课程摘要/)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /大学课程资料/ }));
-    expect(useWindowManager.getState().windows.some((win) => win.id === sourcePreviewWindowId(sources[0].url))).toBe(true);
+    expect(useWindowManager.getState().windows.some((win) => win.type === 'source-trace-viewer')).toBe(true);
   });
 
   it('dedupes sources by url', () => {

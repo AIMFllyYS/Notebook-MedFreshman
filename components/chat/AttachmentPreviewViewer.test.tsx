@@ -24,21 +24,22 @@ describe("AttachmentPreviewViewer", () => {
     expect(frame).toHaveAttribute("sandbox", "");
     expect(frame.getAttribute("srcdoc")).toContain("Content-Security-Policy");
     expect(frame.getAttribute("srcdoc")).toContain("default-src 'none'");
-    expect(frame.getAttribute("srcdoc")).toContain('<h1>力学</h1>');
+    expect(frame.getAttribute("srcdoc")).toContain("<h1>力学</h1>");
     expect(screen.getByText("仅本地")).toBeVisible();
   });
 
   it("uses the shared macOS minimize control and keeps a taskbar-restorable window", () => {
     openAttachmentPreview("pdf", {
       name: "lecture.pdf", mimeType: "application/pdf", kind: "pdf",
-      content: "data:application/pdf;base64,JVBERi0xLjc=",
+      content: "blob:http://localhost/test-pdf",
     });
     render(<AttachmentPreviewViewer />);
 
-    expect(screen.getByTitle("lecture.pdf")).toHaveAttribute("src", "data:application/pdf;base64,JVBERi0xLjc=");
+    const win = screen.getByTestId("attachment-preview-window");
+    expect(win).toBeInTheDocument();
     fireEvent.click(screen.getByTitle("最小化"));
     expect(useWindowManager.getState().windows[0]?.minimized).toBe(true);
-    expect(screen.queryByTitle("lecture.pdf")).not.toBeInTheDocument();
+    expect(win).toHaveStyle({ display: "none" });
   });
 
   it("reuses the shared Markdown renderer for .md previews", () => {
@@ -59,8 +60,8 @@ describe("AttachmentPreviewViewer", () => {
       kind: "ppt", content: dataUrl,
     });
     render(<AttachmentPreviewViewer />);
-    expect(screen.getByText("Slide 1")).toBeVisible();
-    expect(screen.getByText("考试重点")).toBeVisible();
+    expect(screen.getAllByText(/Slide 1/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText("考试重点").length).toBeGreaterThan(0);
   });
 });
 

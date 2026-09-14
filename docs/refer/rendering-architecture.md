@@ -502,6 +502,12 @@ CanvasBlock 提供统一的聊天画布协议，覆盖自由 SVG、函数图像�
 4. **手写 interactives 注册表**  
    `components/interactives/registry.ts` + 右侧「可交互」tab（`InteractiveTab`）。手写 React 组件，与 AI artifact 无关。见该目录 `README.md`。
 
+5. **附件阅读器（PDF / PPTX / DOCX / MD）**  
+   入口：`AttachmentPreviewViewer` + `ManagedWindow`。PDF 内核是 `pdfjs-dist`（`PdfDocumentPane`，worker/cmap 在 `public/pdfjs/`）；Word 用 `docx-preview`；PPTX 目前左栏幻灯片目录 + 文本舞台（`parsePptxSlideText`），视觉引擎可替换。外壳是 `DocumentWorkspace`（左目录右正文），不要用库自带工具栏。文件类型图标（红 PDF / 蓝 Word / 橙 PPT）是有意偏离全局 primary 的例外。
+
+6. **来源浏览器（笔记引用 / 联网搜索 / 「来源」）**  
+   左目录右正文，与笔记引用同一套 `DocumentWorkspace`。`WebSourceFold` 与追问卡「来源」打开 `source-trace-viewer`，不再为每条链接新开窗，也不再 `router.push` 回主栏。网页能嵌则嵌（Electron `<webview>` / 预检 iframe），否则摘要 + JSON。
+
 ---
 
 ## 9. 禁止事项

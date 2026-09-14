@@ -170,6 +170,10 @@
   background: var(--appearance-dialog-header-bg);
 }
 
+[data-theme="dark"] .file-type-icon {
+  filter: brightness(1.12) saturate(1.06);
+}
+
 [data-appearance="colorful"] .prose-notes table thead th,
 [data-appearance="colorful"] .chat-prose table thead th {
   background: var(--appearance-table-head-bg);

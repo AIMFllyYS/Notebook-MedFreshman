@@ -120,9 +120,22 @@ export async function loadBlobDataUrl(blobId: string): Promise<string | null> {
   return idbStorage.getItem(chatBlobKey(blobId));
 }
 
+async function persistableDataUrl(dataUrl: string): Promise<string> {
+  if (!dataUrl.startsWith("blob:")) return dataUrl;
+  const response = await fetch(dataUrl);
+  const blob = await response.blob();
+  return await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ""));
+    reader.onerror = () => reject(reader.error ?? new Error("读取本地文件失败"));
+    reader.readAsDataURL(blob);
+  });
+}
+
 export async function saveBlobFromDataUrl(blobId: string, dataUrl: string): Promise<void> {
   if (!isBrowser()) return;
-  const ok = await setItemNow(chatBlobKey(blobId), dataUrl);
+  const stored = await persistableDataUrl(dataUrl);
+  const ok = await setItemNow(chatBlobKey(blobId), stored);
   if (!ok) throw new Error(`Failed to save chat blob: ${blobId}`);
 }
 

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { AgentGlobeIcon } from '@/components/icons/AgentIcons';
 import type { WebSearchSource } from '@/lib/types/chat';
 import AgentFoldHeader from '@/components/chat/AgentFoldHeader';
-import { openSourcePreview } from '@/lib/chat/openSourcePreview';
+import { openWebSearchSources } from '@/lib/chat/openSourceTrace';
 import { dedupeByKey, webItemKey } from '@/lib/chat/traceSources';
 
 function sourceHost(url: string): string {
@@ -39,7 +39,7 @@ export default function WebSourceFold({
               <button
                 type="button"
                 className="web-source-item"
-                onClick={() => openSourcePreview({ url: source.url, title: source.title })}
+                onClick={() => openWebSearchSources(unique, source.url)}
               >
                 <span className="web-source-item-title">
                   <span className="min-w-0 flex-1 truncate">{index + 1}. {source.title || sourceHost(source.url)}</span>

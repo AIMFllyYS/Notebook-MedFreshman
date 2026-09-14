@@ -1,8 +1,12 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
-import { FileSearch, Presentation, ShieldCheck } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import { Presentation, ShieldCheck } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
+import FileTypeIcon from "@/components/icons/file-types/FileTypeIcon";
+import PdfDocumentPane from "@/components/window/PdfDocumentPane";
+import DocxDocumentPane from "@/components/window/DocxDocumentPane";
+import DocumentWorkspace from "@/components/window/DocumentWorkspace";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import type { AttachmentPreviewData } from "@/lib/stores/windowManager";
 import { MessageContent } from "@/components/chat/MessageContent";
@@ -65,7 +69,7 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
     <ManagedWindow
       windowId={windowId}
       title={data.name}
-      icon={data.kind === "ppt" ? <Presentation size={15} /> : <FileSearch size={15} />}
+      icon={<FileTypeIcon kind={data.kind === "ppt" ? "ppt" : undefined} mimeType={data.mimeType} name={data.name} size={15} />}
       onClose={handleClose}
       fullscreenTarget="notes"
       minSize={{ minW: 360, minH: 280 }}
@@ -84,35 +88,74 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
         // eslint-disable-next-line @next/next/no-img-element -- local data URLs are intentionally kept out of remote loaders.
         <img src={data.content} alt={data.name} className="h-full w-full object-contain p-4" />
       ) : data.kind === "pdf" ? (
-        <iframe src={data.content} title={data.name} className="h-full w-full border-0 bg-white" />
+        <PdfDocumentPane src={data.content} name={data.name} />
+      ) : data.kind === "docx" ? (
+        <DocxDocumentPane src={data.content} name={data.name} />
       ) : data.kind === "html" ? (
         <iframe srcDoc={localHtml} sandbox="" title={data.name} className="h-full w-full border-0 bg-white" />
       ) : data.kind === "markdown" ? (
-        <div className="h-full w-full overflow-auto px-6 py-5 chat-prose">
-          <MessageContent content={data.content} enableVisualizations={false} preserveLineBreaks={false} />
-        </div>
+        <MarkdownPreviewPane content={data.content} />
       ) : data.kind === "ppt" ? (
-        <div className="h-full w-full overflow-auto bg-[var(--bg-muted)] p-5">
-          {pptPreview.slides ? (
-            <div className="mx-auto flex max-w-3xl flex-col gap-4">
-              {pptPreview.slides.map((slide) => (
-                <article key={slide.number} className="min-h-44 rounded-xl border border-[var(--line)] bg-white p-6 shadow-sm">
-                  <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--ink-faint)]">Slide {slide.number}</div>
-                  <p className="whitespace-pre-wrap text-[15px] leading-7 text-[var(--ink)]">{slide.text}</p>
-                </article>
-              ))}
-            </div>
-          ) : (
-            <div className="flex h-full min-h-52 flex-col items-center justify-center gap-3 px-6 text-center">
-              <Presentation size={32} className="text-[var(--md-sys-color-primary)]" />
-              <p className="text-[13px] font-semibold text-[var(--ink)]">PowerPoint 本地预览</p>
-              <p className="max-w-md text-[12px] leading-6 text-[var(--ink-soft)]">{pptPreview.error ?? "正在读取幻灯片…"}</p>
-            </div>
-          )}
-        </div>
+        <PptPreviewPane slides={pptPreview.slides} error={pptPreview.error} />
       ) : (
         <pre className="h-full w-full overflow-auto whitespace-pre-wrap break-words p-5 font-mono text-[12px] leading-6 text-[var(--ink)]">{data.content}</pre>
       )}
     </ManagedWindow>
+  );
+}
+
+function markdownOutline(content: string) {
+  const items = [...content.matchAll(/^(#{1,4})\s+(.+)$/gm)].map((match, index) => ({
+    id: String(index + 1),
+    title: match[2].trim(),
+    meta: `H${match[1].length}`,
+  }));
+  return items.length ? items : [{ id: "1", title: "正文" }];
+}
+
+function MarkdownPreviewPane({ content }: { content: string }) {
+  const outline = useMemo(() => markdownOutline(content), [content]);
+  const [activeId, setActiveId] = useState(outline[0]?.id ?? "1");
+  return (
+    <DocumentWorkspace outline={outline} activeId={activeId} onSelect={setActiveId} outlineLabel="Markdown 目录">
+      <div className="h-full overflow-auto bg-[var(--bg-panel)] px-6 py-5 chat-prose">
+        <MessageContent content={content} enableVisualizations={false} preserveLineBreaks={false} />
+      </div>
+    </DocumentWorkspace>
+  );
+}
+
+function PptPreviewPane({ slides, error }: { slides: PptxSlideText[] | null; error: string | null }) {
+  const [active, setActive] = useState(String(slides?.[0]?.number ?? 1));
+  const current = slides?.find((slide) => String(slide.number) === active) ?? slides?.[0];
+  if (!slides) {
+    return (
+      <div className="flex h-full min-h-52 flex-col items-center justify-center gap-3 px-6 text-center">
+        <Presentation size={32} className="text-[var(--md-sys-color-primary)]" />
+        <p className="text-[13px] font-semibold text-[var(--ink)]">PowerPoint 本地预览</p>
+        <p className="max-w-md text-[12px] leading-6 text-[var(--ink-soft)]">{error ?? "正在读取幻灯片…"}</p>
+      </div>
+    );
+  }
+  return (
+    <DocumentWorkspace
+      outline={slides.map((slide) => ({
+        id: String(slide.number),
+        title: slide.text.slice(0, 36) || `幻灯片 ${slide.number}`,
+        meta: `Slide ${slide.number}`,
+      }))}
+      activeId={String(current?.number ?? 1)}
+      onSelect={setActive}
+      outlineLabel="幻灯片"
+    >
+      <div className="flex h-full items-start justify-center p-5">
+        <article className="document-workspace-paper min-h-52 w-full max-w-3xl rounded-xl p-6">
+          <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--ink-faint)]">
+            Slide {current?.number}
+          </div>
+          <p className="whitespace-pre-wrap text-[15px] leading-7 text-[var(--ink)]">{current?.text}</p>
+        </article>
+      </div>
+    </DocumentWorkspace>
   );
 }

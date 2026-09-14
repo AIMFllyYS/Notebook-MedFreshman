@@ -3,6 +3,9 @@ import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { useArtifacts } from "@/lib/hooks/useArtifacts";
 import { useImageGen } from "@/lib/hooks/useImageGen";
 import { useRecordPreviews } from "@/lib/hooks/useRecordPreviews";
+import { useDocuments } from "@/lib/hooks/useDocuments";
+import { useNoteCitations } from "@/lib/hooks/useNoteCitations";
+import { toggleManagedWindowFullscreen } from "@/lib/window/toggleManagedFullscreen";
 
 /** 解析当前应操作的 managed 窗口（activeWindowId 或 z 最高未最小化）。 */
 export function getActiveManagedWindow(): ManagedWindow | null {
@@ -33,6 +36,12 @@ export function closeManagedWindow(win: ManagedWindow): void {
     case "record-preview":
       useRecordPreviews.getState().close(win.id);
       break;
+    case "document-viewer":
+      useDocuments.getState().closeViewer();
+      break;
+    case "note-citation-viewer":
+      useNoteCitations.getState().closeViewer();
+      break;
     default:
       useWindowManager.getState().closeWindow(win.id);
   }
@@ -57,7 +66,6 @@ export function toggleMinimizeActiveWindow(): boolean {
 export function toggleFullscreenActiveWindow(): boolean {
   const win = getActiveManagedWindow();
   if (!win) return false;
-  const { setFullscreen } = useWindowManager.getState();
-  setFullscreen(win.id, !win.fullscreen);
+  toggleManagedWindowFullscreen(win.id);
   return true;
 }
