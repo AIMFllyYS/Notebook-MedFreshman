@@ -16,7 +16,10 @@ function skipIfNoIndex() {
 }
 
 if (!skipIfNoIndex()) {
-  test("绪论 + cell-biology / 大二上：top-3 含 cell-biology/textbook/ch01", async () => {
+  // 说明：接入课堂四材料后，同学科「绪论」课节（recording/notes/cards，标题即“绪论…”）
+  // 在纯 BM25（CI 无 embedding）下会合理地排在教材第一章之前，故教材只需保证落在前 5（可被检索到），
+  // 与下方“第三章 top-5”用例口径一致；topK 取 8。
+  test("绪论 + cell-biology / 大二上：top-5 含 cell-biology/textbook/ch01", async () => {
     const hits = await hybridSearch("绪论", {
       topK: 8,
       academicYear: "sophomore-1",
@@ -24,10 +27,10 @@ if (!skipIfNoIndex()) {
       queryContext: "医学细胞生物学 第一章 绪论",
     });
     assert.ok(hits.length > 0, "应有命中");
-    const top3 = hits.slice(0, 3);
+    const top5 = hits.slice(0, 5);
     assert.ok(
-      top3.some((h) => h.path.startsWith("cell-biology/textbook/ch01")),
-      `top-3 应含细胞生物学第一章，实际 ${top3.map((h) => h.path).join(", ")}`,
+      top5.some((h) => h.path.startsWith("cell-biology/textbook/ch01")),
+      `top-5 应含细胞生物学第一章，实际 ${top5.map((h) => h.path).join(", ")}`,
     );
   });
 
