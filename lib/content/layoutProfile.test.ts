@@ -42,6 +42,20 @@ test("item.layoutProfile 覆盖 category", () => {
   );
 });
 
+test("课堂纪要 minutes 叶子用 full 覆盖 summary 的 article，从而显示共享测验 Tab", () => {
+  // summary 板块默认 article 布局（大一旧 sum-XX 无 item 覆盖 → 不显示 quiz）。
+  const summaryCat = category("summary", []);
+  assert.equal(resolveLayoutProfile(summaryCat, { type: "document" }), "article");
+  const oldSummaryFlags = layoutFlags("article", summaryCat, { type: "document" });
+  assert.equal(oldSummaryFlags.showQuizTab, false, "旧 summary 文章不显示测验 Tab");
+
+  // 课堂四材料的 minutes 叶子带 item.layoutProfile="full"，summary 又声明了 quiz 能力 → 显示共享测验。
+  const minutesItem = { type: "document" as const, layoutProfile: "full" as const };
+  assert.equal(resolveLayoutProfile(summaryCat, minutesItem), "full");
+  const minutesFlags = layoutFlags("full", summaryCat, minutesItem);
+  assert.equal(minutesFlags.showQuizTab, true, "minutes 叶子显示共享测验 Tab");
+});
+
 test("document 类型在无 examples/quiz/media 时默认 article", () => {
   assert.equal(resolveLayoutProfile({ capabilities: ["search"] }, { type: "document" }), "article");
   assert.equal(resolveLayoutProfile({ capabilities: [] }, { type: "document" }), "article");

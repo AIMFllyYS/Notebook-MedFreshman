@@ -2,7 +2,7 @@
 
 ## 适用场景
 
-把一节课的课堂产物（由 hust-study-workflow 在云盘侧产出）接入本仓库，使其在「课堂原文（recording）」板块下成为一个可阅读、可检索、可出题、四材料共享同一套题的课节。一节课 = 一个课节目录 + 一套题。
+把一节课的课堂产物（由 hust-study-workflow 在云盘侧产出）接入本仓库，使其成为一个可阅读、可检索、可出题、四材料共享同一套题的课节。一节课 = 一个课节目录 + 一套题。导航上分挂两个板块：**课上录音（recording）**下挂课节父节点与「课堂原文 / 课堂笔记 / 复习手卡」3 个叶子，**课堂纪要（summary）**下挂「课堂纪要 minutes」叶子（物理文件仍统一在 `lectures/<lessonId>/` 目录，不拆分）。
 
 与旧 `03-recording-processing.md` 的区别：03 只产出单篇课堂材料；本 SOP 面向**四材料打包接入 + 严格校验 + PR 合入**，并冻结目录形态与作者契约。
 
@@ -92,7 +92,11 @@ pnpm typecheck
 | 题 | `content/quiz/<s>/<quizId>.json` | QuizTab | 题源仅 recording/notes + 哈希绑定 |
 | 生成清单 | `lib/content-data/lectures.generated.json` | — | 自动生成，必提交 |
 
-导航形态：课节是 recording 板块下一个 `navigationOnly` 父节点（id=lessonId，不可路由），下挂四个材料叶子；叶子带 `materialRole / lessonRef / quizRef`，四材料靠同一 `quizRef` 共享题。
+导航形态（跨两个板块，物理文件不拆分）：
+- **recording（课上录音）**：课节是一个 `navigationOnly` 父节点（id=lessonId，不可路由、访问 404），下挂课堂原文 `rec-`、课堂笔记 `note-`、复习手卡 `card-` 三个材料叶子。
+- **summary（课堂纪要）**：直接放课堂纪要 `min-` 叶子（不再建课节父节点），该叶子带 `item.layoutProfile="full"` 覆盖 summary 板块默认的 article 布局，从而显示与其他三材料共享的测验 Tab。
+- 所有叶子都带 `materialRole / lessonRef / quizRef`，四材料靠同一 `quizRef` 共享一套题；文件解析（`readLectureArticle`）只按 articleId 索引，不依赖 URL 中的板块，因此 minutes 挂 summary 无需移动物理文件。
+- summary 板块模板因此带 `search+quiz` 能力与 `category-item` 策略，但保留 `layoutProfile:"article"`：大一旧 `sum-XX` 文章无 item 级覆盖，仍是 article 布局、不显示测验，行为不变。
 
 ## 禁止提交项
 
@@ -105,15 +109,15 @@ pnpm typecheck
 ## AI 工具可达性验证（引用 05-content-integration.md）
 
 - 四材料都要能被 `readContentUnified` 读到正确 `format`；检索（searchNotes/chunker）能命中逐字稿轮次与 notes 提取文本；`/api/section` 返回 `{content, format}`，引用浮窗按 text/markdown/html 正确分发。
-- 验证：访问 `/<subject>/recording/<articleId>`，四材料分别确认正文渲染、测验 Tab 加载的是同一套题、AI 面板「这节课讲了什么」能取到当前页。
+- 验证：recording 下三份材料访问 `/<subject>/recording/<articleId>`，课堂纪要访问 `/<subject>/summary/min-<lessonId>`；分别确认正文渲染、测验 Tab 加载的是同一套题、AI 面板「这节课讲了什么」能取到当前页；旧路径 `/<subject>/recording/min-<lessonId>` 应 404。
 
 ## 视觉验收（必做）
 
-本地 `pnpm dev`，对每节课依次打开四个材料叶子：
-1. recording：说话人行高亮、等宽可读、时间戳在；
-2. minutes：标题/表格/公式正常；
-3. notes：iframe 内可视化笔记完整、无空白、无脚本请求（Network 无外链）；
-4. cards：reveal 卡点击逐张展开、表格/公式不串行；
+本地 `pnpm dev`，对每节课依次打开四个材料叶子（前三个在 recording 板块，minutes 在 summary 板块）：
+1. recording · 课堂原文（`/recording/rec-<lessonId>`）：说话人行高亮、等宽可读、时间戳在；
+2. summary · 课堂纪要（`/summary/min-<lessonId>`）：标题/表格/公式正常，且测验 Tab 显示同一套题；
+3. recording · 课堂笔记（`/recording/note-<lessonId>`）：iframe 内可视化笔记完整、无空白、无脚本请求（Network 无外链）；
+4. recording · 复习手卡（`/recording/card-<lessonId>`）：reveal 卡点击逐张展开、表格/公式不串行；
 5. 四材料测验 Tab 题目一致。由视觉模型子智能体截图核对，不接受「应该没问题」。
 
 ## 参考文件（相对路径链接）

@@ -18,6 +18,8 @@ function slimItem(item: ContentItem): ContentItem {
   if (item.materialRole) out.materialRole = item.materialRole;
   if (item.lessonRef) out.lessonRef = item.lessonRef;
   if (item.quizRef) out.quizRef = item.quizRef;
+  // 课堂纪要 minutes 叶子用 item.layoutProfile="full" 覆盖 summary 板块默认的 article 布局。
+  if (item.layoutProfile) out.layoutProfile = item.layoutProfile;
   if (item.children?.length) out.children = item.children.map(slimItem);
   return out;
 }
@@ -32,6 +34,9 @@ const nav = {
       name: cat.name,
       ...(cat.capabilities?.length ? { capabilities: cat.capabilities } : {}),
       ...(cat.keyStrategy ? { keyStrategy: cat.keyStrategy } : {}),
+      // 保留板块级默认布局：summary 板块默认 article，避免运行时从 nav 反序列化时
+      // 丢失布局、被 capabilities(含 quiz) 反推成 full 而让大一旧 summary 误显示测验 Tab。
+      ...(cat.layoutProfile ? { layoutProfile: cat.layoutProfile } : {}),
       items: cat.items.map(slimItem),
     })),
   })),

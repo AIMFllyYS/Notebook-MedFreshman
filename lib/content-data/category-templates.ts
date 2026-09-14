@@ -14,7 +14,10 @@ export const STANDARD_CATEGORIES = {
   textbook: { name: '教材', capabilities: ['examples', 'quiz', 'search'], keyStrategy: 'chapter-prefix' },
   detail: { name: '详解', capabilities: ['examples', 'quiz', 'search', 'media'], keyStrategy: 'section-dot' },
   recording: { name: '课上录音', capabilities: ['examples', 'quiz', 'search'], keyStrategy: 'category-item' },
-  summary: { name: '课堂纪要', capabilities: ['search'], layoutProfile: 'article' },
+  // 课堂纪要板块：默认 article 布局（大一旧 sum-XX）；课堂四材料的 minutes 叶子通过
+  // item.layoutProfile="full" 覆盖为 full，配合 quiz 能力显示与其他三材料共享的测验 Tab。
+  // keyStrategy 用 category-item 以满足注册表一致性；minutes 叶子有显式 quizRef，优先于推导。
+  summary: { name: '课堂纪要', capabilities: ['search', 'quiz'], keyStrategy: 'category-item', layoutProfile: 'article' },
   'kaoqian-moni': { name: '考前模拟', capabilities: [], layoutProfile: 'reference' },
   'shizhan-yanlian': { name: '实战演练', capabilities: [], layoutProfile: 'reference' },
 } as const satisfies Record<string, CategoryTemplate>;
