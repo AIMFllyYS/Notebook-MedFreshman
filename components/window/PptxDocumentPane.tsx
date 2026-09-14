@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Presentation } from "lucide-react";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
 import { parsePptxSlideBytes, type PptxSlideText } from "@/lib/chat/parsePptx";
+
+const SLIDE_WIDTH = 960;
+const SLIDE_HEIGHT = 540;
 
 async function sourceToBuffer(src: string): Promise<ArrayBuffer> {
   if (src.startsWith("data:")) {
@@ -19,8 +22,24 @@ async function sourceToBuffer(src: string): Promise<ArrayBuffer> {
   throw new Error("无法读取该 PPTX");
 }
 
+function fitSlide(stage: HTMLElement, scaler: HTMLElement, host: HTMLElement) {
+  const pad = 16;
+  const availW = Math.max(160, stage.clientWidth - pad);
+  const availH = Math.max(90, stage.clientHeight - pad);
+  const scale = Math.min(availW / SLIDE_WIDTH, availH / SLIDE_HEIGHT);
+  if (!Number.isFinite(scale) || scale <= 0) return;
+  scaler.style.width = `${SLIDE_WIDTH * scale}px`;
+  scaler.style.height = `${SLIDE_HEIGHT * scale}px`;
+  host.style.width = `${SLIDE_WIDTH}px`;
+  host.style.height = `${SLIDE_HEIGHT}px`;
+  host.style.transform = `scale(${scale})`;
+  host.style.transformOrigin = "top left";
+}
+
 export default function PptxDocumentPane({ src, name }: { src: string; name: string }) {
   const hostRef = useRef<HTMLDivElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const scalerRef = useRef<HTMLDivElement | null>(null);
   const previewerRef = useRef<{
     slideCount: number;
     renderSingleSlide: (index: number) => void;
@@ -54,7 +73,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
         if (!cancelled) setSlides(titles.length ? titles : null);
         const { init } = await import("pptx-preview");
         if (cancelled) return;
-        const previewer = init(host, { width: 960, height: 540, mode: "slide" });
+        const previewer = init(host, { width: SLIDE_WIDTH, height: SLIDE_HEIGHT, mode: "slide" });
         await previewer.preview(buffer);
         if (cancelled) {
           previewer.destroy();
@@ -88,6 +107,20 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
     previewerRef.current.renderSingleSlide(Math.max(0, page - 1));
   }, [page, visual]);
 
+  useLayoutEffect(() => {
+    if (!visual) return;
+    const stage = stageRef.current;
+    const scaler = scalerRef.current;
+    const host = hostRef.current;
+    if (!stage || !scaler || !host) return;
+    const apply = () => fitSlide(stage, scaler, host);
+    apply();
+    if (typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(apply);
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, [visual, page]);
+
   const outline = (slides ?? Array.from({ length: pageCount }, (_, index) => ({
     number: index + 1,
     text: `幻灯片 ${index + 1}`,
@@ -115,6 +148,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
       activeId={String(page)}
       onSelect={(id) => setPage(Number(id) || 1)}
       outlineLabel="幻灯片"
+      resizable
       toolbar={
         <>
           <button type="button" data-no-drag title="上一页" onClick={() => setPage((value) => Math.max(1, value - 1))}>
@@ -129,12 +163,14 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
         </>
       }
     >
-      <div className="flex h-full flex-col items-center justify-start gap-3 p-4">
+      <div ref={stageRef} className="pptx-stage-fit">
         <div
-          ref={hostRef}
-          className="pptx-visual-host document-workspace-paper w-full max-w-[960px] overflow-hidden rounded-xl"
+          ref={scalerRef}
+          className="pptx-stage-scaler document-workspace-paper overflow-hidden rounded-xl"
           hidden={!visual}
-        />
+        >
+          <div ref={hostRef} className="pptx-visual-host" />
+        </div>
         {!visual && current ? (
           <article className="document-workspace-paper min-h-52 w-full max-w-3xl rounded-xl p-6">
             <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--ink-faint)]">

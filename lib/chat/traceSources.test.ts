@@ -51,6 +51,24 @@ test('collectMessageSources gathers notes and dedupes web urls', () => {
   assert.equal(sources.filter((s) => s.kind === 'web').length, 2);
 });
 
+test('collectMessageSources keeps web hits that have a title but no url', () => {
+  const parts = [
+    {
+      type: 'tool-webSearch',
+      toolCallId: 'w',
+      state: 'output-available',
+      input: { query: 'q' },
+      output: { text: 'ok', sources: [
+        { title: '无链接', url: '', snippet: '摘要' },
+        { title: '有链接', url: 'https://example.edu/a', snippet: '' },
+      ] },
+    },
+  ] as ChatMessagePart[];
+  const sources = collectMessageSources(parts);
+  assert.equal(sources.length, 2);
+  assert.equal(sources.filter((item) => item.kind === 'web' && !item.url).length, 1);
+});
+
 test('collectMessageSources dedupes notes by path and ignores source-url parts', () => {
   const parts = [
     {

@@ -21,6 +21,24 @@ test("classifySendError：其它错误取 message，非 Error 用通用文案", 
   assert.equal(classifySendError("boom", { stalled: false, aborted: false }), "发生未知错误");
 });
 
+test("classifySendError：未登录 401 指向左下角设置登录", () => {
+  const hint = classifySendError(new Error("Unauthorized"), { stalled: false, aborted: false });
+  assert.match(hint ?? "", /左下角「设置」/);
+  assert.match(hint ?? "", /登录/);
+  assert.match(hint ?? "", /邮箱和验证码/);
+  assert.equal(
+    classifySendError(new Error("API 请求失败: 401 Unauthorized - Unauthorized"), { stalled: false, aborted: false }),
+    hint,
+  );
+  assert.match(
+    classifySendError(new Error("模型服务拒绝认证（HTTP 401），请检查 API 密钥和模型访问权限。"), {
+      stalled: false,
+      aborted: false,
+    }) ?? "",
+    /API 密钥/,
+  );
+});
+
 test("classifySendError：413 / nginx HTML 映射可读文案", () => {
   assert.match(
     classifySendError(new Error("API 请求失败: 413 Request Entity Too Large - <html>nginx/1.18.0</html>"), {

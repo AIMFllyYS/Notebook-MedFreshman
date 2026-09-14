@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { strToU8, zipSync } from "fflate";
 import AttachmentPreviewViewer, { lockHtmlPreviewToLocal } from "./AttachmentPreviewViewer";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
@@ -7,11 +7,17 @@ import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
 describe("AttachmentPreviewViewer", () => {
   beforeEach(() => {
+    vi.stubGlobal("ResizeObserver", class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    });
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
   });
 
   afterEach(() => {
     cleanup();
+    vi.unstubAllGlobals();
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
   });
 
@@ -37,6 +43,7 @@ describe("AttachmentPreviewViewer", () => {
 
     const win = screen.getByTestId("attachment-preview-window");
     expect(win).toBeInTheDocument();
+    expect(screen.getByTestId("document-workspace-resize-handle")).toBeVisible();
     fireEvent.click(screen.getByTitle("最小化"));
     expect(useWindowManager.getState().windows[0]?.minimized).toBe(true);
     expect(win).toHaveStyle({ display: "none" });
@@ -50,6 +57,7 @@ describe("AttachmentPreviewViewer", () => {
     render(<AttachmentPreviewViewer />);
     expect(screen.getByRole("heading", { name: "复习提纲" })).toBeVisible();
     expect(screen.getByText("第一章")).toBeVisible();
+    expect(screen.queryByTestId("document-workspace-resize-handle")).not.toBeInTheDocument();
   });
 
   it("shows PPTX slide text as local slide cards", async () => {
@@ -63,6 +71,24 @@ describe("AttachmentPreviewViewer", () => {
     await waitFor(() => {
       expect(screen.getAllByText("考试重点").length).toBeGreaterThan(0);
     });
+    expect(screen.getByTestId("document-workspace-resize-handle")).toBeVisible();
+  });
+
+  it("does not send a pptx through the PDF renderer even if kind was stored as pdf", async () => {
+    const archive = zipSync({ "ppt/slides/slide1.xml": strToU8("<p:sld><a:t>第一页标题</a:t></p:sld>") });
+    const dataUrl = `data:application/vnd.openxmlformats-officedocument.presentationml.presentation;base64,${Buffer.from(archive).toString("base64")}`;
+    openAttachmentPreview("pptx-misfiled", {
+      name: "课.slides.pptx",
+      mimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      kind: "pdf",
+      content: dataUrl,
+    });
+    render(<AttachmentPreviewViewer />);
+    await waitFor(() => {
+      expect(screen.getAllByText("第一页标题").length).toBeGreaterThan(0);
+    });
+    expect(screen.queryByText("无法渲染 PDF")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Invalid PDF structure/i)).not.toBeInTheDocument();
   });
 });
 

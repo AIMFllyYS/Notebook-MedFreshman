@@ -6,6 +6,7 @@ import type { AttachmentPreview, ImageAttachmentPreview } from "@/lib/ai/imageUt
 import type { StoredChatAttachment } from "@/lib/types/chat";
 import { isAttachmentRef } from "@/lib/types/chat";
 import { loadBlobDataUrl } from "@/lib/storage/chatStorage";
+import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 
 interface AttachmentThumbnailsProps {
@@ -36,14 +37,8 @@ function typeLabel(name: string | undefined, mimeType: string): string {
   return "TXT";
 }
 
-function previewKind(name: string | undefined, mimeType: string): "image" | "pdf" | "ppt" | "html" | "markdown" | "text" | "docx" {
-  if (mimeType.startsWith("image/")) return "image";
-  if (mimeType === "application/pdf" || name?.toLowerCase().endsWith(".pdf")) return "pdf";
-  if (mimeType.includes("powerpoint") || /\.pptx?$/i.test(name ?? "")) return "ppt";
-  if (mimeType.includes("wordprocessing") || /\.docx?$/i.test(name ?? "")) return "docx";
-  if (mimeType === "text/html" || /\.html?$/i.test(name ?? "")) return "html";
-  if (mimeType === "text/markdown" || /\.md(?:own)?$/i.test(name ?? "")) return "markdown";
-  return "text";
+function previewKind(name: string | undefined, mimeType: string) {
+  return attachmentPreviewKind({ name, mimeType });
 }
 
 function isImagePreview(attachment: AttachmentPreview): attachment is ImageAttachmentPreview {

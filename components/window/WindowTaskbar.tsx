@@ -10,6 +10,7 @@ import OverflowMenu from "@/components/window/OverflowMenu";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
 import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
 import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
+import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 import { openSourcePreview } from "@/lib/chat/openSourcePreview";
 
@@ -30,14 +31,9 @@ function taskbarAccent(win: ManagedWindow): string | undefined {
   return fileTypeAccent(win.data as { kind?: string; mimeType?: string; name?: string });
 }
 
-function previewKind(attachment: AttachmentPreview): "image" | "pdf" | "ppt" | "html" | "markdown" | "text" | "docx" {
-  if (isImagePreview(attachment)) return "image";
-  if (attachment.type === "local-file") return attachment.mimeType.includes("powerpoint") ? "ppt" : "pdf";
-  if (attachment.mimeType.includes("powerpoint") || /\.pptx?$/i.test(attachment.name)) return "ppt";
-  if (attachment.mimeType.includes("wordprocessing") || /\.docx?$/i.test(attachment.name)) return "docx";
-  if (attachment.mimeType === "text/html" || /\.html?$/i.test(attachment.name)) return "html";
-  if (attachment.mimeType === "text/markdown" || /\.md(?:own)?$/i.test(attachment.name)) return "markdown";
-  return "text";
+function previewKind(attachment: AttachmentPreview) {
+  const name = isImagePreview(attachment) ? attachment.file.name : attachment.name;
+  return attachmentPreviewKind({ name, mimeType: attachment.mimeType });
 }
 
 function previewContent(attachment: AttachmentPreview): string {

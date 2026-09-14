@@ -135,6 +135,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
       activeId={String(page)}
       onSelect={(id) => setPage(Number(id) || 1)}
       outlineLabel={`${name} 目录`}
+      resizable
       toolbar={
         <>
           <button type="button" data-no-drag title="上一页" onClick={() => setPage((p) => Math.max(1, p - 1))}>

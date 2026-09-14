@@ -13,6 +13,11 @@ describe("resolveFileGlyphKind", () => {
     expect(resolveFileGlyphKind({ kind: "text", name: "notes.txt" })).toBe("text");
     expect(resolveFileGlyphKind({ name: "main.ts" })).toBe("code");
     expect(resolveFileGlyphKind({ kind: "image" })).toBe("image");
+    expect(resolveFileGlyphKind({
+      kind: "pdf",
+      name: "课.pptx",
+      mimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    })).toBe("ppt");
   });
 
   it("gives each glyph a distinct fill", () => {

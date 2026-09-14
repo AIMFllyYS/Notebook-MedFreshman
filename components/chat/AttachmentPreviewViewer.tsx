@@ -8,6 +8,7 @@ import PdfDocumentPane from "@/components/window/PdfDocumentPane";
 import DocxDocumentPane from "@/components/window/DocxDocumentPane";
 import PptxDocumentPane from "@/components/window/PptxDocumentPane";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
+import { attachmentPreviewKind, isOpenXmlPptx } from "@/lib/chat/attachmentPreviewKind";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import type { AttachmentPreviewData } from "@/lib/stores/windowManager";
 import { MessageContent } from "@/components/chat/MessageContent";
@@ -51,7 +52,8 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
   const closeWindow = useWindowManager((state) => state.closeWindow);
   const handleClose = useCallback(() => closeWindow(windowId), [closeWindow, windowId]);
   const data = managed?.data as AttachmentPreviewData | undefined;
-  const localHtml = data?.kind === "html" ? lockHtmlPreviewToLocal(data.content) : "";
+  const kind = data ? attachmentPreviewKind(data) : "text";
+  const localHtml = kind === "html" && data ? lockHtmlPreviewToLocal(data.content) : "";
 
   if (!managed || !data) return null;
 
@@ -59,7 +61,7 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
     <ManagedWindow
       windowId={windowId}
       title={data.name}
-      icon={<FileTypeIcon kind={data.kind === "ppt" ? "ppt" : undefined} mimeType={data.mimeType} name={data.name} size={15} />}
+      icon={<FileTypeIcon kind={kind === "ppt" ? "ppt" : undefined} mimeType={data.mimeType} name={data.name} size={17} />}
       onClose={handleClose}
       fullscreenTarget="notes"
       minSize={{ minW: 360, minH: 280 }}
@@ -74,19 +76,19 @@ function AttachmentPreviewWindow({ windowId }: { windowId: string }) {
       bodyClassName="flex min-h-0 flex-1 overflow-hidden bg-[var(--bg-panel)]"
       unmountWhenMinimized
     >
-      {data.kind === "image" ? (
+      {kind === "image" ? (
         // eslint-disable-next-line @next/next/no-img-element -- local data URLs are intentionally kept out of remote loaders.
         <img src={data.content} alt={data.name} className="h-full w-full object-contain p-4" />
-      ) : data.kind === "pdf" ? (
+      ) : kind === "pdf" ? (
         <PdfDocumentPane src={data.content} name={data.name} />
-      ) : data.kind === "docx" ? (
+      ) : kind === "docx" ? (
         <DocxDocumentPane src={data.content} name={data.name} />
-      ) : data.kind === "html" ? (
+      ) : kind === "html" ? (
         <iframe srcDoc={localHtml} sandbox="" title={data.name} className="h-full w-full border-0 bg-white" />
-      ) : data.kind === "markdown" ? (
+      ) : kind === "markdown" ? (
         <MarkdownPreviewPane content={data.content} />
-      ) : data.kind === "ppt" ? (
-        data.mimeType.includes("presentationml") ? (
+      ) : kind === "ppt" ? (
+        isOpenXmlPptx(data) ? (
           <PptxDocumentPane src={data.content} name={data.name} />
         ) : (
           <div className="flex h-full min-h-52 flex-col items-center justify-center gap-3 px-6 text-center">

@@ -35,16 +35,18 @@ export default function WebSourceFold({
       {expanded ? (
         <ul className="agent-fold-list hide-scrollbar">
           {unique.map((source, index) => (
-            <li key={source.url}>
+            <li key={source.url || `web:${index}:${source.title || "untitled"}`}>
               <button
                 type="button"
                 className="web-source-item"
-                onClick={() => openWebSearchSources(unique, source.url)}
+                onClick={() => openWebSearchSources(unique, source.url, index)}
               >
                 <span className="web-source-item-title">
                   <span className="min-w-0 flex-1 truncate">{index + 1}. {source.title || sourceHost(source.url)}</span>
                 </span>
-                <span className="web-source-item-host">{sourceHost(source.url)}</span>
+                <span className="web-source-item-host" title={source.url || undefined}>
+                  {source.url || "暂无链接"}
+                </span>
               </button>
             </li>
           ))}

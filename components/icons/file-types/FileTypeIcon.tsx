@@ -30,7 +30,6 @@ export function resolveFileGlyphKind(data: {
   const name = (data.name ?? "").toLowerCase();
   const mime = (data.mimeType ?? "").toLowerCase();
   const kind = data.kind ?? "";
-  if (kind === "pdf" || mime.includes("pdf") || name.endsWith(".pdf")) return "pdf";
   if (
     kind === "ppt" ||
     mime.includes("powerpoint") ||
@@ -39,6 +38,7 @@ export function resolveFileGlyphKind(data: {
   ) {
     return "ppt";
   }
+  if (kind === "pdf" || mime.includes("pdf") || name.endsWith(".pdf")) return "pdf";
   if (
     kind === "docx" ||
     mime.includes("wordprocessing") ||
@@ -82,26 +82,22 @@ function resolveFill(kind: FileGlyphKind): string {
   return document.documentElement.getAttribute("data-theme") === "dark" ? colors.fillDark : colors.fill;
 }
 
-function DocumentBody({ fill }: { fill: string }) {
+function DocumentBody({ color }: { color: string }) {
   return (
-    <>
-      <path
-        fill={fill}
-        d="M6.2 2.4h7.4L19.6 8.4V20.2c0 .9-.7 1.6-1.6 1.6H6.2c-.9 0-1.6-.7-1.6-1.6V4c0-.9.7-1.6 1.6-1.6Z"
-      />
-      <path fill="rgba(255,255,255,0.28)" d="M13.6 2.4V7.6c0 .6.5 1.1 1.1 1.1h5" />
-      <path fill="rgba(0,0,0,0.12)" d="M13.6 2.4 19.6 8.4h-5c-.6 0-1.1-.5-1.1-1.1V2.4Z" />
-    </>
+    <g fill="none" stroke={color} strokeWidth="1.7" strokeLinejoin="round" strokeLinecap="round">
+      <path d="M4.85 2.05h8.15L20.2 9.25V20.55c0 .95-.77 1.7-1.7 1.7H4.85c-.93 0-1.7-.75-1.7-1.7V3.75c0-.93.77-1.7 1.7-1.7Z" />
+      <path d="M13 2.05v6.15c0 .58.47 1.05 1.05 1.05H20.2" />
+    </g>
   );
 }
 
-function Label({ children, fontSize = 6.2 }: { children: string; fontSize?: number }) {
+function Label({ children, color, fontSize = 6.4 }: { children: string; color: string; fontSize?: number }) {
   return (
     <text
       x="12"
-      y="17.4"
+      y="17.55"
       textAnchor="middle"
-      fill="#fff"
+      fill={color}
       fontSize={fontSize}
       fontWeight={800}
       fontFamily='ui-sans-serif, system-ui, "Segoe UI", sans-serif'
@@ -116,11 +112,11 @@ export default function FileTypeIcon({
   kind,
   mimeType,
   name,
-  size = 16,
+  size = 18,
   ...props
 }: FileTypeIconProps) {
   const glyph = kind ?? resolveFileGlyphKind({ mimeType, name });
-  const fill = resolveFill(glyph);
+  const color = resolveFill(glyph);
 
   return (
     <svg
@@ -128,30 +124,31 @@ export default function FileTypeIcon({
       width={size}
       height={size}
       viewBox="0 0 24 24"
+      overflow="visible"
       aria-hidden="true"
       data-file-kind={glyph}
       className="file-type-icon"
       {...props}
     >
-      <DocumentBody fill={fill} />
-      {glyph === "pdf" ? <Label fontSize={5.6}>PDF</Label> : null}
-      {glyph === "docx" ? <Label fontSize={8.2}>W</Label> : null}
+      <DocumentBody color={color} />
+      {glyph === "pdf" ? <Label color={color} fontSize={6}>PDF</Label> : null}
+      {glyph === "docx" ? <Label color={color} fontSize={8.6}>W</Label> : null}
       {glyph === "ppt" ? (
-        <>
-          <rect x="7.2" y="11.2" width="4.2" height="3.1" rx="0.45" fill="#fff" opacity="0.95" />
-          <rect x="12.6" y="11.2" width="4.2" height="3.1" rx="0.45" fill="#fff" opacity="0.7" />
-          <rect x="7.2" y="15.1" width="4.2" height="3.1" rx="0.45" fill="#fff" opacity="0.7" />
-          <rect x="12.6" y="15.1" width="4.2" height="3.1" rx="0.45" fill="#fff" opacity="0.5" />
-        </>
+        <g fill="none" stroke={color} strokeWidth="1.35" strokeLinejoin="round">
+          <rect x="6.35" y="11.05" width="5.15" height="3.5" rx="0.55" />
+          <rect x="12.5" y="11.05" width="5.15" height="3.5" rx="0.55" />
+          <rect x="6.35" y="15.35" width="5.15" height="3.5" rx="0.55" />
+          <rect x="12.5" y="15.35" width="5.15" height="3.5" rx="0.55" />
+        </g>
       ) : null}
-      {glyph === "markdown" ? <Label fontSize={5.4}>MD</Label> : null}
+      {glyph === "markdown" ? <Label color={color} fontSize={5.8}>MD</Label> : null}
       {glyph === "html" ? (
         <text
           x="12"
-          y="17.6"
+          y="17.7"
           textAnchor="middle"
-          fill="#fff"
-          fontSize={6.4}
+          fill={color}
+          fontSize={6.8}
           fontWeight={800}
           fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
         >
@@ -159,25 +156,25 @@ export default function FileTypeIcon({
         </text>
       ) : null}
       {glyph === "text" ? (
-        <>
-          <rect x="7.4" y="11.4" width="9.2" height="1.35" rx="0.5" fill="#fff" />
-          <rect x="7.4" y="14" width="9.2" height="1.35" rx="0.5" fill="#fff" opacity="0.85" />
-          <rect x="7.4" y="16.6" width="6.4" height="1.35" rx="0.5" fill="#fff" opacity="0.65" />
-        </>
+        <g fill="none" stroke={color} strokeWidth="1.45" strokeLinecap="round">
+          <path d="M6.85 12.05h10.3" />
+          <path d="M6.85 15.05h10.3" />
+          <path d="M6.85 18.05h7.2" />
+        </g>
       ) : null}
       {glyph === "image" ? (
-        <>
-          <circle cx="9.1" cy="12.2" r="1.15" fill="#fff" />
-          <path fill="#fff" d="M7.2 18.4 10.4 14.6l2.2 2.4 2.1-2.8 2.9 4.2H7.2Z" />
-        </>
+        <g fill="none" stroke={color} strokeWidth="1.45" strokeLinejoin="round" strokeLinecap="round">
+          <circle cx="8.7" cy="12.05" r="1.25" />
+          <path d="M6.45 19.1 10.15 14.7l2.3 2.5 2.2-3 3.25 4.9" />
+        </g>
       ) : null}
       {glyph === "code" ? (
         <text
           x="12"
-          y="17.6"
+          y="17.7"
           textAnchor="middle"
-          fill="#fff"
-          fontSize={6.4}
+          fill={color}
+          fontSize={6.8}
           fontWeight={800}
           fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
         >

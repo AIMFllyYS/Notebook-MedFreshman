@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, BookOpen, Globe, FileDigit } from "lucide-react";
+import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, BookOpen, Globe, FileDigit, Heart } from "lucide-react";
 import FileTypeIcon, { resolveFileGlyphKind } from "@/components/icons/file-types/FileTypeIcon";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
@@ -39,7 +39,7 @@ export function WindowTypeIcon({
         kind={resolveFileGlyphKind(attachment)}
         mimeType={attachment.mimeType}
         name={attachment.name}
-        size={size}
+        size={size + 2}
       />
     );
   }
@@ -47,6 +47,7 @@ export function WindowTypeIcon({
   if (type === "record-preview") return <BookmarkCheck size={size} />;
   if (type === "image-gen-viewer") return <ImagePlus size={size} />;
   if (type === "billing-dashboard") return <PieChart size={size} />;
+  if (type === "membership-sponsor") return <Heart size={size} />;
   if (type === "document-viewer") return <FileDigit size={size} />;
   if (type === "note-citation-viewer" || type === "source-trace-viewer") return <BookOpen size={size} />;
   if (type === "source-preview") return <Globe size={size} />;

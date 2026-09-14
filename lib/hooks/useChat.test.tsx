@@ -278,7 +278,8 @@ describe('useChat SDK transport regression', () => {
     expect(lastAssistant().parts.find((p) => p.type === 'tool-searchNotes')).toMatchObject({ state: 'output-error' });
     act(() => result.current.sendMessage('再试'));
     await settle();
-    expect(result.current.error).toContain('401 Unauthorized');
+    expect(result.current.error).toContain('左下角「设置」');
+    expect(result.current.error).toContain('邮箱和验证码');
     act(() => result.current.clearError());
     expect(result.current.error).toBeNull();
   });

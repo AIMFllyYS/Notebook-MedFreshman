@@ -4,8 +4,11 @@ import type { WebSearchSource } from '@/lib/types/chat';
 
 export const SOURCE_TRACE_WINDOW_ID = 'source-trace-viewer';
 
-export function sourceItemKey(source: TraceSource): string {
-  return source.kind === 'note' ? `note:${source.path}` : `web:${source.url}`;
+export function sourceItemKey(source: TraceSource, index = 0): string {
+  if (source.kind === 'note') {
+    return source.path ? `note:${source.path}` : `note:${index}:${source.title || 'untitled'}`;
+  }
+  return source.url ? `web:${source.url}` : `web:${index}:${source.title || 'untitled'}`;
 }
 
 export function openSourceTrace(
@@ -15,7 +18,7 @@ export function openSourceTrace(
   if (!sources.length) return;
   const id = options?.id ?? SOURCE_TRACE_WINDOW_ID;
   const title = options?.title ?? `来源追踪 · ${sources.length} 条`;
-  const activeKey = options?.activeKey ?? sourceItemKey(sources[0]);
+  const activeKey = options?.activeKey ?? sourceItemKey(sources[0], 0);
   const { pos, size } = sourceTraceGeometry();
   const wm = useWindowManager.getState();
   const existing = wm.windows.find((win) => win.id === id);
@@ -35,21 +38,23 @@ export function openSourceTrace(
   });
 }
 
-export function openWebSearchSources(sources: WebSearchSource[], activeUrl?: string) {
-  const items: TraceSource[] = sources
-    .filter((source) => source.url)
-    .map((source) => ({
-      kind: 'web' as const,
-      title: source.title || source.url,
-      url: source.url,
-      snippet: source.snippet ?? '',
-    }));
+export function openWebSearchSources(sources: WebSearchSource[], activeUrl?: string, activeIndex?: number) {
+  const items: TraceSource[] = sources.map((source) => ({
+    kind: 'web' as const,
+    title: source.title || source.url || '未命名来源',
+    url: source.url ?? '',
+    snippet: source.snippet ?? '',
+  }));
   if (!items.length) return;
-  const active = items.find((item) => item.kind === 'web' && item.url === activeUrl) ?? items[0];
+  const index = activeIndex != null && activeIndex >= 0 && activeIndex < items.length
+    ? activeIndex
+    : Math.max(0, items.findIndex((item) => item.kind === 'web' && item.url && item.url === activeUrl));
+  const active = items[index] ?? items[0];
+  const firstUrl = items.find((item) => item.kind === 'web' && item.url)?.url;
   openSourceTrace(items, {
-    id: `web-search:${items[0].kind === 'web' ? items[0].url : items.length}`,
+    id: `web-search:${firstUrl || items.length}`,
     title: `联网来源 · ${items.length} 条`,
-    activeKey: sourceItemKey(active),
+    activeKey: sourceItemKey(active, index),
   });
 }
 

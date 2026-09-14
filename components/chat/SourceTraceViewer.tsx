@@ -40,8 +40,9 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
     const raw = (managed?.data as { sources?: TraceSource[] } | undefined)?.sources;
     return Array.isArray(raw) ? raw : [];
   }, [managed?.data]);
-  const activeKey = (managed?.data as { activeKey?: string } | undefined)?.activeKey ?? (sources[0] ? sourceItemKey(sources[0]) : '');
-  const active = sources.find((source) => sourceItemKey(source) === activeKey) ?? sources[0];
+  const activeKey = (managed?.data as { activeKey?: string } | undefined)?.activeKey ?? (sources[0] ? sourceItemKey(sources[0], 0) : '');
+  const activeIndex = Math.max(0, sources.findIndex((source, index) => sourceItemKey(source, index) === activeKey));
+  const active = sources[activeIndex] ?? sources[0];
 
   if (!managed) return null;
 
@@ -56,7 +57,7 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
       className="source-trace-window"
       overlayId={windowId === SOURCE_TRACE_WINDOW_ID ? 'source-trace-viewer' : `source-trace-${windowId}`}
       externalLink={
-        active?.kind === 'web'
+        active?.kind === 'web' && active.url
           ? { onOpen: () => window.open(active.url, '_blank', 'noopener,noreferrer'), label: '打开原页面' }
           : active?.kind === 'note'
             ? (() => {
@@ -73,13 +74,14 @@ function SourceTraceWindow({ windowId }: { windowId: string }) {
       ) : (
         <DocumentWorkspace
           outlineLabel="来源目录"
-          outline={sources.map((source) => ({
-            id: sourceItemKey(source),
+          outline={sources.map((source, index) => ({
+            id: sourceItemKey(source, index),
             kindLabel: source.kind === 'note' ? '笔记' : '网页',
             title: source.title,
-            meta: source.kind === 'note' ? source.path : source.url,
+            meta: source.kind === 'note' ? source.path : source.url || '暂无链接',
+            metaWrap: source.kind === 'web',
           }))}
-          activeId={sourceItemKey(active)}
+          activeId={sourceItemKey(active, activeIndex)}
           onSelect={(id) => updateWindow(windowId, { data: { sources, activeKey: id } })}
         >
           {active.kind === 'note' ? <NoteSourceStage source={active} /> : <WebSourceStage source={active} />}
@@ -178,58 +180,91 @@ function NoteSourceStage({ source }: { source: Extract<TraceSource, { kind: 'not
   );
 }
 
+function WebSourceAddressBar({ url }: { url: string }) {
+  return (
+    <div className="web-source-address-bar" data-testid="web-source-address">
+      {url ? (
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="web-source-address-link"
+          title={url}
+        >
+          {url}
+        </a>
+      ) : (
+        <span className="web-source-address-missing">此来源未提供链接</span>
+      )}
+    </div>
+  );
+}
+
 function WebSourceStage({ source }: { source: Extract<TraceSource, { kind: 'web' }> }) {
   const isDesktop = useSyncExternalStore(
     () => () => {},
     () => !!(window as unknown as { desktop?: { isElectron?: boolean } }).desktop?.isElectron,
     () => false,
   );
-  const { blocked, reason, forceEmbed } = useEmbeddable(isDesktop ? null : source.url);
+  const { blocked, reason, forceEmbed } = useEmbeddable(isDesktop ? null : source.url || null);
   const [loadFailed, setLoadFailed] = useState(false);
-  const showFallback = !isDesktop && (blocked || loadFailed);
+  const showFallback = !source.url || (!isDesktop && (blocked || loadFailed));
+  const address = <WebSourceAddressBar url={source.url} />;
 
   if (showFallback) {
     return (
       <div className="flex h-full min-h-0 flex-col overflow-auto bg-[var(--bg-panel)]">
+        {address}
         <div className="note-citation-snippet m-4">
           <div className="note-citation-snippet-label">页面摘要</div>
           <p className="text-[13px] font-semibold text-[var(--ink)]">{source.title}</p>
-          <p className="mt-1 break-all text-[11px] text-[var(--ink-faint)]">{source.url}</p>
           {source.snippet ? <p className="mt-2 text-[13px] leading-6 text-[var(--ink)]">{source.snippet}</p> : null}
         </div>
         <details className="mx-4 mb-3 rounded-lg border border-[var(--line)] bg-[var(--bg-muted)] px-3 py-2">
           <summary className="cursor-pointer text-[12px] font-medium text-[var(--ink-soft)]">原始 JSON</summary>
           <pre className="mt-2 overflow-auto text-[11px] leading-5 text-[var(--ink)]">{JSON.stringify(source, null, 2)}</pre>
         </details>
-        <div className="min-h-48 flex-1">
-          <EmbedFallback url={source.url} reason={reason || (loadFailed ? '页面加载失败' : undefined)} onForce={() => { setLoadFailed(false); forceEmbed(); }} />
-        </div>
+        {source.url ? (
+          <div className="min-h-48 flex-1">
+            <EmbedFallback url={source.url} reason={reason || (loadFailed ? '页面加载失败' : undefined)} onForce={() => { setLoadFailed(false); forceEmbed(); }} />
+          </div>
+        ) : null}
       </div>
     );
   }
 
   if (isDesktop) {
-    return <WebviewSite url={source.url} />;
+    return (
+      <div className="flex h-full min-h-0 flex-col">
+        {address}
+        <div className="min-h-0 flex-1">
+          <WebviewSite url={source.url} />
+        </div>
+      </div>
+    );
   }
 
   return (
-    <iframe
-      key={source.url}
-      src={source.url}
-      title={source.title}
-      className="h-full min-h-0 w-full flex-1 border-0 bg-white"
-      sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-downloads allow-modals"
-      allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-read; clipboard-write"
-      referrerPolicy="no-referrer-when-downgrade"
-      onError={() => setLoadFailed(true)}
-      onLoad={(event) => {
-        try {
-          const doc = event.currentTarget.contentDocument;
-          if (doc && (doc.URL === 'about:blank' || !doc.body?.childElementCount)) setLoadFailed(true);
-        } catch {
-          /* cross-origin: treated as rendered */
-        }
-      }}
-    />
+    <div className="flex h-full min-h-0 flex-col">
+      {address}
+      <iframe
+        key={source.url}
+        src={source.url}
+        title={source.title}
+        className="h-full min-h-0 w-full flex-1 border-0 bg-white"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-downloads allow-modals"
+        allow="autoplay; fullscreen; encrypted-media; picture-in-picture; clipboard-read; clipboard-write"
+        referrerPolicy="no-referrer-when-downgrade"
+        onError={() => setLoadFailed(true)}
+        onLoad={(event) => {
+          try {
+            const doc = event.currentTarget.contentDocument;
+            if (doc && (doc.URL === 'about:blank' || !doc.body?.childElementCount)) setLoadFailed(true);
+          } catch {
+            /* cross-origin: treated as rendered */
+          }
+        }}
+      />
+    </div>
   );
 }

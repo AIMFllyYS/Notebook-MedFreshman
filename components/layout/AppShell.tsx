@@ -46,6 +46,7 @@ const SourcePreviewViewer = dynamic(() => import("@/components/chat/SourcePrevie
 const AttachmentPreviewViewer = dynamic(() => import("@/components/chat/AttachmentPreviewViewer"), { ssr: false });
 const MessageContextMenu = dynamic(() => import("@/components/shared/MessageContextMenu"), { ssr: false });
 const BillingDashboardLayer = dynamic(() => import("@/components/chat/BillingDashboard"), { ssr: false });
+const MembershipSponsorLayer = dynamic(() => import("@/components/chat/MembershipSponsorWindow"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
 const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
 const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
@@ -307,6 +308,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <AttachmentPreviewViewer />
         <MessageContextMenu />
         <BillingDashboardLayer />
+        <MembershipSponsorLayer />
       </div>
       </KeyboardShortcutProvider>
     );
@@ -427,6 +429,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <AttachmentPreviewViewer />
       <MessageContextMenu />
       <BillingDashboardLayer />
+      <MembershipSponsorLayer />
     </div>
     </KeyboardShortcutProvider>
   );
