@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "cell-biology",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-009-010",
+  "courseName": "细胞生物学",
+  "sessionRange": {
+    "start": 9,
+    "end": 10
+  },
+  "taughtOn": "2026-09-14",
+  "topic": "细胞内膜系统与囊泡转运",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-009-010"
+}

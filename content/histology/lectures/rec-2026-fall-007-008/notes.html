@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; color: #24201A; background: #FAF8F1; font-size: 10pt; line-height: 1.6; }
+.page { width: 210mm; min-height: 297mm; padding: 15mm 16mm; page-break-after: always; position: relative; }
+.page:last-child { page-break-after: auto; }
+.cover { background: linear-gradient(135deg, #2F8557 0%, #1F5C39 55%, #143D27 100%); color: #FBF7EC; display: flex; flex-direction: column; justify-content: center; padding: 25mm; }
+.cover .kicker { font-size: 10pt; letter-spacing: .4em; text-transform: uppercase; color: #E7CE9C; margin-bottom: 8mm; }
+.cover h1 { font-size: 32pt; font-weight: 700; line-height: 1.2; margin-bottom: 6mm; }
+.cover h1 .accent { color: #E7CE9C; }
+.cover .sub { font-size: 13pt; color: rgba(251,247,236,.85); margin-bottom: 4mm; }
+.cover .meta { font-size: 10pt; color: rgba(251,247,236,.6); margin-top: 10mm; line-height: 1.8; }
+.cover .rule { width: 40mm; height: 2pt; background: #E7CE9C; margin: 6mm 0; }
+h2 { font-size: 16pt; color: #1F5C39; border-bottom: 2pt solid #2F8557; padding-bottom: 2mm; margin: 6mm 0 4mm; }
+h3 { font-size: 12pt; color: #2F8557; margin: 4mm 0 2mm; }
+h4 { font-size: 10.5pt; color: #1F5C39; margin: 3mm 0 1.5mm; }
+p { margin: 1.5mm 0; }
+ul, ol { margin: 1.5mm 0 1.5mm 6mm; }
+li { margin: 0.8mm 0; }
+.card { background: #fff; border: 0.5pt solid #E6DECC; border-radius: 2mm; padding: 3mm 4mm; margin: 2.5mm 0; }
+.card.hot { border-left: 3pt solid #A2630C; background: #FFFDF8; }
+.tag { display: inline-block; background: #E8F1EA; color: #1F5C39; font-size: 8pt; font-weight: 600; padding: 0.5mm 2mm; border-radius: 1mm; margin-right: 2mm; }
+.tag.hot { background: #F8ECD3; color: #8A5208; }
+.tag.warn { background: #F7E4DF; color: #B23A2E; }
+.kv { display: flex; margin: 1mm 0; }
+.kv .k { font-weight: 600; color: #1F5C39; min-width: 30mm; }
+.kv .v { flex: 1; }
+.hl { background: linear-gradient(180deg,#F8ECD3,#F8ECD3); border: 0.5pt solid #E7CE9C; border-radius: 1.5mm; padding: 2mm 3mm; margin: 2mm 0; }
+.warn-box { background: #F7E4DF; border: 0.5pt solid #E6BDB4; border-radius: 1.5mm; padding: 2mm 3mm; margin: 2mm 0; color: #7E2A20; }
+.mnem { background: #F8ECD3; border-left: 3pt solid #A2630C; border-radius: 0 1.5mm 1.5mm 0; padding: 2.5mm 4mm; margin: 2.5mm 0; font-style: italic; color: #8A5208; }
+.toc { columns: 2; column-gap: 8mm; }
+.toc-item { break-inside: avoid; margin: 1.5mm 0; font-size: 9.5pt; }
+.toc-item .num { color: #2F8557; font-weight: 700; margin-right: 2mm; }
+.flow { display: flex; align-items: center; flex-wrap: wrap; gap: 1.5mm; margin: 2mm 0; }
+.flow .step { background: #E8F1EA; color: #1F5C39; padding: 1.5mm 3mm; border-radius: 1.5mm; font-size: 9pt; font-weight: 600; }
+.flow .arrow { color: #2F8557; font-weight: 700; }
+table { width: 100%; border-collapse: collapse; margin: 2mm 0; font-size: 9pt; }
+th { background: #2F8557; color: #fff; padding: 1.5mm 2mm; text-align: left; }
+td { padding: 1.5mm 2mm; border-bottom: 0.5pt solid #E6DECC; }
+tr:nth-child(even) td { background: #F4EFE4; }
+.footer { position: absolute; bottom: 8mm; left: 16mm; right: 16mm; font-size: 8pt; color: #857B68; display: flex; justify-content: space-between; border-top: 0.5pt solid #E6DECC; padding-top: 2mm; }
+</style>
+</head>
+<body>
+
+<!-- 封面 -->
+<div class="page cover">
+  <div class="kicker">HISTOLOGY · 人体组织学</div>
+  <div class="rule"></div>
+  <h1>血液<br><span class="accent">与肌组织</span></h1>
+  <div class="sub">第五、六章 · 血液(红细胞/白细胞/血小板) + 肌组织(骨骼肌/心肌/平滑肌)</div>
+  <div class="meta">
+    课程：人体组织学<br>
+    节次：课程内第7-8节（全天1-2节）<br>
+    日期：2026-09-14（周一）
+  </div>
+</div>
+
+<!-- 目录 -->
+<div class="page">
+  <h2>目录</h2>
+  <div class="toc">
+    <div class="toc-item"><span class="num">一</span>血液基础组成与血象</div>
+    <div class="toc-item"><span class="num">二</span>红细胞</div>
+    <div class="toc-item"><span class="num">三</span>白细胞分类</div>
+    <div class="toc-item"><span class="num">四</span>血小板</div>
+    <div class="toc-item"><span class="num">五</span>肌组织基础分类</div>
+    <div class="toc-item"><span class="num">六</span>骨骼肌结构与肌节</div>
+    <div class="toc-item"><span class="num">七</span>肌丝组成与收缩机制</div>
+    <div class="toc-item"><span class="num">八</span>心肌结构与闰盘</div>
+    <div class="toc-item"><span class="num">九</span>平滑肌结构</div>
+    <div class="toc-item"><span class="num">十</span>三种肌组织对比</div>
+    <div class="toc-item"><span class="num">十一</span>复习清单与主动回忆题</div>
+  </div>
+
+  <h2 style="margin-top:8mm;">知识结构总览</h2>
+  <div class="card">
+    <p><span class="tag">血液</span>血浆(55%) + 有形成分(45%) → 红细胞(携氧) / 白细胞(免疫) / 血小板(止血)</p>
+    <p style="margin-top:2mm;"><span class="tag hot">肌组织</span>横纹肌(骨骼肌随意 + 心肌非随意) / 平滑肌(非随意)</p>
+    <p style="margin-top:2mm;"><span class="tag warn">核心机制</span>肌丝滑动学说(Ca²⁺→肌钙蛋白→原肌球蛋白移位→横桥摆动) | 闰盘(横位桥粒+纵位缝隙连接)</p>
+  </div>
+</div>
+
+<!-- 血液 -->
+<div class="page">
+  <h2>一、血液基础组成与血象</h2>
+  
+  <div class="card hot">
+    <div class="kv"><span class="k">血液分层</span><span class="v">抗凝离心分三层：<b>血浆55%</b>（上层清亮）+ 白细胞血小板（中间薄层）+ <b>红细胞45%</b>（下层红色）</span></div>
+    <div class="kv"><span class="k">有形成分</span><span class="v">血小板是巨核细胞胞质脱落碎片，无完整细胞结构，用"有形成分"比"血细胞"更严谨</span></div>
+    <div class="kv"><span class="k">血象</span><span class="v">血细胞形态、数量、血红蛋白浓度的检测结果，常用<b>瑞氏/吉姆萨染色</b>，辅助感染、造血异常初筛</span></div>
+  </div>
+
+  <h2>二、红细胞</h2>
+  
+  <div class="card hot">
+    <h3>2.1 形态结构特征</h3>
+    <div class="kv"><span class="k">形态</span><span class="v"><b>双凹圆盘状</b>，无核无细胞器，直径7.5-8.5μm</span></div>
+    <div class="kv"><span class="k">膜骨架</span><span class="v">含血影蛋白、肌动蛋白，有弹性，可通过直径更小的毛细血管</span></div>
+    <div class="kv"><span class="k">中央淡染区</span><span class="v">双凹形态使周边染色深、中央色淡，是形态学识别标志</span></div>
+    <div class="hl">双凹圆盘意义：①增加表面积（比同体积球形大~30%）利于气体交换 ②便于毛细血管形变 ③中央淡染区识别标志</div>
+  </div>
+
+  <div class="card">
+    <h3>2.2 网织红细胞与渗透压</h3>
+    <div class="kv"><span class="k">网织红细胞</span><span class="v">接近成熟，残留核糖体，煌焦油蓝染色显蓝色颗粒，成人<b>0.5%-1%</b>，反映造血功能</span></div>
+    <div class="kv"><span class="k">正常渗透压</span><span class="v">约<b>300mOsm</b></span></div>
+    <div class="kv"><span class="k">低渗</span><span class="v">吸水膨胀→溶血→残留囊状膜称<b>血影(ghost)</b></span></div>
+    <div class="kv"><span class="k">高渗</span><span class="v">失水皱缩</span></div>
+    <div class="warn-box">⚠️ 膜骨架蛋白基因突变→红细胞变球形/椭圆形→被巨噬细胞吞噬→<b>遗传性球形/椭圆形红细胞增多症</b></div>
+  </div>
+
+  <div class="card">
+    <h3>2.3 气体运输与数值变化</h3>
+    <div class="kv"><span class="k">运输机制</span><span class="v">依靠血红蛋白结合/释放O₂和CO₂，受气体分压调控；肺部高氧结合氧→外周低氧释放氧→结合CO₂→肺释放</span></div>
+    <div class="kv"><span class="k">性别差异</span><span class="v">红细胞及血红蛋白正常值<b>女性略低于男性</b></span></div>
+    <div class="kv"><span class="k">生理性升高</span><span class="v">新生儿、高原居民、长期运动人群</span></div>
+    <div class="mnem">血浆五五有形成，双凹圆盘红细胞；无核无器携氧气，低渗溶血留血影。</div>
+  </div>
+</div>
+
+<!-- 白细胞+血小板 -->
+<div class="page">
+  <h2>三、白细胞分类</h2>
+  
+  <div class="card hot">
+    <table>
+      <tr><th>类型</th><th>占比</th><th>形态特征</th><th>核心功能</th></tr>
+      <tr><td><b>中性粒细胞</b></td><td>50%-70%</td><td>核杆状/分叶，细小淡紫颗粒</td><td>吞噬杀菌，细菌感染时升高</td></tr>
+      <tr><td><b>嗜酸性粒细胞</b></td><td>0.5%-5%</td><td>核两叶八字形，橘红色粗大颗粒</td><td>抗过敏+抗寄生虫</td></tr>
+      <tr><td><b>嗜碱性粒细胞</b></td><td>0%-1%</td><td>核S形被颗粒遮盖，蓝紫色颗粒</td><td>与肥大细胞相似，参与过敏</td></tr>
+      <tr><td><b>单核细胞</b></td><td>3%-8%</td><td>体积最大，肾形/马蹄形核</td><td>穿出血管→巨噬细胞</td></tr>
+      <tr><td><b>淋巴细胞</b></td><td>20%-30%</td><td>核圆染色深，胞质少蔚蓝色</td><td>T(细胞免疫)/B(体液免疫)/NK</td></tr>
+    </table>
+    <div class="hl">细菌感染→中性粒升高；病毒感染→白细胞无明显升高；过敏/寄生虫→嗜酸性粒升高</div>
+    <div class="mnem">中性吞噬第一线，嗜酸抗过敏寄生；嗜碱颗粒盖细胞核，单核变巨噬；淋巴TBNK，特异免疫它最强。</div>
+  </div>
+
+  <h2>四、血小板</h2>
+  
+  <div class="card hot">
+    <div class="kv"><span class="k">来源</span><span class="v"><b>巨核细胞胞质脱落碎片</b>，无细胞核，双凸圆盘状，常成群分布</span></div>
+    <div class="kv"><span class="k">α颗粒</span><span class="v">电子密度中等，储存凝血相关因子（纤维蛋白原、血小板因子4等）</span></div>
+    <div class="kv"><span class="k">δ颗粒(致密)</span><span class="v">电子密度高，储存<b>5-羟色胺、钙离子</b></span></div>
+    <div class="kv"><span class="k">功能</span><span class="v">①黏附聚集→临时血凝块 ②释放颗粒→激活凝血 ③刺激内皮增殖→修复损伤</span></div>
+    <div class="mnem">血小板是巨核碎，无核双凸圆盘堆；α粒凝血因子，δ粒五羟色胺钙；黏附聚集堵伤口，释放凝血修内皮。</div>
+  </div>
+</div>
+
+<!-- 骨骼肌 -->
+<div class="page">
+  <h2>五、肌组织基础分类</h2>
+  
+  <div class="card">
+    <div class="kv"><span class="k">按横纹分</span><span class="v"><b>横纹肌</b>（骨骼肌、心肌）+ <b>平滑肌</b>（无横纹）</span></div>
+    <div class="kv"><span class="k">按调控分</span><span class="v"><b>随意肌</b>（仅骨骼肌，受意志控制）+ <b>非随意肌</b>（心肌、平滑肌）</span></div>
+    <div class="kv"><span class="k">基本概念</span><span class="v">肌细胞呈纤维状也称肌纤维；细胞膜称<b>肌膜(sarcolemma)</b>，细胞质称<b>肌质(sarcoplasm)</b></span></div>
+  </div>
+
+  <h2>六、骨骼肌结构与肌节</h2>
+  
+  <div class="card hot">
+    <h3>6.1 光镜结构</h3>
+    <div class="kv"><span class="k">结缔组织包裹</span><span class="v"><b>肌外膜</b>(整块)→<b>肌束膜</b>(肌束)→<b>肌内膜</b>(单个肌细胞)</span></div>
+    <div class="kv"><span class="k">细胞形态</span><span class="v">长圆柱状<b>无分支</b>，<b>多核位于膜下</b>（胚胎期多个成肌细胞融合），明显周期性横纹</span></div>
+  </div>
+
+  <div class="card hot">
+    <h3>6.2 横纹结构与肌节</h3>
+    <div class="flow">
+      <span class="step">I带(明带)<br>中央Z线</span>
+      <span class="arrow">+</span>
+      <span class="step">A带(暗带)<br>中央H带<br>H带中央M线</span>
+      <span class="arrow">+</span>
+      <span class="step">I带(明带)<br>中央Z线</span>
+    </div>
+    <div class="kv"><span class="k">肌节定义</span><span class="v">相邻两Z线之间，=<b>1/2I带+完整A带+1/2I带</b>，是骨骼肌收缩的基本结构和功能单位</span></div>
+    <div class="hl">肌丝滑动证据：收缩时<b>I带和H带缩短</b>甚至消失，<b>A带长度不变</b>——说明细肌丝向粗肌丝滑动，而非肌丝本身缩短</div>
+    <div class="mnem">肌外肌束肌内膜，长圆柱多核膜下；I明A暗有横纹，Z线M线要记清；肌节两Z线之间，收缩I短A不变。</div>
+  </div>
+</div>
+
+<!-- 收缩机制 -->
+<div class="page">
+  <h2>七、肌丝组成与收缩机制</h2>
+  
+  <div class="card hot">
+    <h3>7.1 肌丝组成</h3>
+    <div class="kv"><span class="k">粗肌丝</span><span class="v"><b>肌球蛋白</b>构成，固定于M线，头部为横桥（ATP酶活性）</span></div>
+    <div class="kv"><span class="k">细肌丝</span><span class="v"><b>肌动蛋白</b>(双螺旋主干，含肌球蛋白结合位点) + <b>原肌球蛋白</b>(舒张时遮盖结合位点) + <b>肌钙蛋白</b>(调控)</span></div>
+    <div class="kv"><span class="k">肌钙蛋白三亚基</span><span class="v"><b>TnT</b>(结合原肌球蛋白) + <b>TnI</b>(抑制肌动球蛋白结合) + <b>TnC</b>(结合Ca²⁺)</span></div>
+  </div>
+
+  <div class="card hot">
+    <h3>7.2 肌丝滑动学说（收缩流程）</h3>
+    <div class="flow">
+      <span class="step">Ca²⁺结合TnC</span>
+      <span class="arrow">→</span>
+      <span class="step">肌钙蛋白构象变化</span>
+      <span class="arrow">→</span>
+      <span class="step">原肌球蛋白移位</span>
+      <span class="arrow">→</span>
+      <span class="step">暴露肌动蛋白位点</span>
+      <span class="arrow">→</span>
+      <span class="step">横桥结合摆动</span>
+      <span class="arrow">→</span>
+      <span class="step">细肌丝滑动</span>
+      <span class="arrow">→</span>
+      <span class="step">肌节缩短</span>
+    </div>
+    <div class="kv"><span class="k">兴奋传导</span><span class="v">运动神经元→运动终板→肌膜→<b>横小管(T管)</b>传导至细胞深部</span></div>
+    <div class="kv"><span class="k">钙释放</span><span class="v">横小管触发<b>肌质网(纵小管)</b>释放Ca²⁺→胞质Ca²⁺升高</span></div>
+    <div class="kv"><span class="k">三联体</span><span class="v"><b>横小管+两侧终池</b>（纵小管末端膨大），是兴奋-收缩耦联关键结构</span></div>
+    <div class="kv"><span class="k">舒张</span><span class="v">Ca²⁺被肌质网钙泵回收→原肌球蛋白重新遮盖位点→肌肉舒张</span></div>
+    <div class="mnem">粗肌丝肌球蛋白，细肌丝动原钙；钙结合TnC，原肌移位露位点；横桥摆动丝滑动，三联体管钙释放。</div>
+  </div>
+</div>
+
+<!-- 心肌+平滑肌 -->
+<div class="page">
+  <h2>八、心肌结构与闰盘</h2>
+  
+  <div class="card hot">
+    <h3>8.1 光镜与超微结构</h3>
+    <div class="kv"><span class="k">光镜特征</span><span class="v">短圆柱<b>有分支</b>，<b>单核居中</b>，横纹不明显，细胞间有<b>闰盘</b></span></div>
+    <div class="kv"><span class="k">超微特征</span><span class="v">横小管<b>较粗位于Z线水平</b>（骨骼肌在A-I交界处），肌质网不发达形成<b>二联体</b>，<b>线粒体极丰富</b>（终身收缩高耗能）</span></div>
+  </div>
+
+  <div class="card hot">
+    <h3>8.2 闰盘功能</h3>
+    <div class="kv"><span class="k">横位部分</span><span class="v">含<b>黏着小带(中间连接)+桥粒</b>，牢固连接，抵抗收缩拉力</span></div>
+    <div class="kv"><span class="k">纵位部分</span><span class="v">含<b>缝隙连接</b>，电偶联→所有心肌细胞同步收缩→功能合胞体</span></div>
+    <div class="hl">心房肌含内分泌颗粒→分泌<b>心钠素(ANP)</b>→排钠排水、降血压→心脏有内分泌功能</div>
+    <div class="mnem">心肌短圆有分支，单核居中闰盘连；横位桥粒牢固接，纵位缝隙同步缩；线粒体丰供能足，心房泌素心钠素。</div>
+  </div>
+
+  <h2>九、平滑肌结构</h2>
+  
+  <div class="card hot">
+    <div class="kv"><span class="k">光镜特征</span><span class="v"><b>梭形无横纹</b>，单核居中，收缩时核呈<b>螺旋扭曲状</b>，横切面大小不一（有核处粗、末端点状）</span></div>
+    <div class="kv"><span class="k">无横小管</span><span class="v">细胞膜凹陷形成<b>基膜小凹(caveolae)</b>传导兴奋（替代横小管）</span></div>
+    <div class="kv"><span class="k">肌丝附着点</span><span class="v"><b>密斑</b>(膜上)+<b>密体</b>(胞质内)，替代Z线作为肌丝附着位点</span></div>
+    <div class="kv"><span class="k">收缩特点</span><span class="v">粗细肌丝螺旋排布→收缩呈<b>扭曲状</b>，核也螺旋扭曲；收缩缓慢持久，非随意</span></div>
+    <div class="mnem">平滑肌梭形无横纹，核在中央收缩扭；基膜小凹替横管，密斑密体附肌丝；螺旋排布收缩扭，内脏壁内慢持久。</div>
+  </div>
+</div>
+
+<!-- 对比+复习 -->
+<div class="page">
+  <h2>十、三种肌组织对比</h2>
+  
+  <div class="card hot">
+    <table>
+      <tr><th>特征</th><th>骨骼肌</th><th>心肌</th><th>平滑肌</th></tr>
+      <tr><td>细胞形态</td><td>长圆柱，无分支</td><td>短圆柱，有分支</td><td>梭形</td></tr>
+      <tr><td>细胞核</td><td>多核，位于膜下</td><td>单核，位于中央</td><td>单核，位于中央</td></tr>
+      <tr><td>横纹</td><td>明显</td><td>有但不明显</td><td>无</td></tr>
+      <tr><td>闰盘</td><td>无</td><td>有</td><td>无</td></tr>
+      <tr><td>横小管</td><td>A-I交界处，细</td><td>Z线水平，粗</td><td>无(基膜小凹替代)</td></tr>
+      <tr><td>肌质网</td><td>发达，三联体</td><td>不发达，二联体</td><td>不发达</td></tr>
+      <tr><td>控制</td><td>随意</td><td>非随意</td><td>非随意</td></tr>
+      <tr><td>线粒体</td><td>较丰富</td><td>极丰富</td><td>较少</td></tr>
+      <tr><td>分布</td><td>附着于骨骼</td><td>心脏壁</td><td>内脏器官壁</td></tr>
+    </table>
+  </div>
+
+  <h2>十一、复习清单</h2>
+  <div class="card">
+    <ul>
+      <li>血液三层组成及各层占比；血象定义及染色方法</li>
+      <li>红细胞形态（双凹圆盘、无核无细胞器）；网织红细胞特征及临床意义</li>
+      <li>红细胞渗透压（300mOsm、低渗溶血→血影）；遗传性球形红细胞增多症病因</li>
+      <li>白细胞分类及各类占比、形态、功能；细菌/病毒感染时的变化</li>
+      <li>血小板来源（巨核细胞）、颗粒类型（α/δ）及功能</li>
+      <li>肌组织两种分类方式（横纹/平滑肌，随意/非随意肌）</li>
+      <li>骨骼肌三层结缔组织包裹；光镜结构（长圆柱、多核膜下、明显横纹）</li>
+      <li>横纹各结构（I带/Z线/A带/H带/M线）；肌节定义、组成</li>
+      <li>粗/细肌丝蛋白组成；肌钙蛋白三亚基功能；肌丝滑动学说完整流程</li>
+      <li>骨骼肌膜系统（横小管/纵小管/三联体）</li>
+      <li>心肌光镜（短圆柱有分支、单核居中、闰盘）与超微（横小管粗Z线、二联体、线粒体丰富）</li>
+      <li>闰盘横位（黏着小带+桥粒）与纵位（缝隙连接）功能；心钠素</li>
+      <li>平滑肌光镜（梭形无横纹、核螺旋扭曲）与超微（基膜小凹、密斑密体）</li>
+    </ul>
+  </div>
+
+  <h2>主动回忆题</h2>
+  <div class="card">
+    <h4>Q1 简述红细胞双凹圆盘形态的生理意义</h4>
+    <p style="color:#857B68;font-size:9pt;">①增加表面积（比同体积球形大~30%）利于O₂/CO₂气体交换；②膜含骨架蛋白有弹性，便于通过直径更小的毛细血管时形变；③中央薄周边厚，染色后形成中央淡染区，是形态学识别标志。</p>
+  </div>
+  <div class="card">
+    <h4>Q2 简述骨骼肌肌丝滑动学说的主要内容</h4>
+    <p style="color:#857B68;font-size:9pt;">Ca²⁺结合肌钙蛋白TnC→肌钙蛋白构象变化→原肌球蛋白移位→暴露肌动蛋白结合位点→横桥（肌球蛋白头部）与肌动蛋白结合→ATP供能横桥摆动→拉动细肌丝向粗肌丝滑动→肌节缩短（I带和H带缩短，A带不变）。</p>
+  </div>
+  <div class="card">
+    <h4>Q3 简述闰盘的结构和功能</h4>
+    <p style="color:#857B68;font-size:9pt;">闰盘是心肌细胞间特征性连接，呈阶梯状。横位部分含黏着小带和桥粒，起机械连接作用（抵抗收缩拉力）；纵位部分含缝隙连接，实现电偶联，使兴奋快速传导，保障所有心肌细胞同步收缩（功能合胞体）。</p>
+  </div>
+
+  <div class="footer">
+    <span>人体组织学 · 第7-8节 · 血液与肌组织</span>
+    <span>2026-09-14</span>
+  </div>
+</div>
+
+</body>
+</html>

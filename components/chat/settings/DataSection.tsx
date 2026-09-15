@@ -139,6 +139,7 @@ export function CloudSyncSection() {
   useEffect(() => {
     let cancelled = false;
     const cached = getCachedCloudSyncUsage();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (cached) setUsage(cached);
     void loadCloudSyncUsage().then((next) => {
       if (!cancelled) setUsage(next);

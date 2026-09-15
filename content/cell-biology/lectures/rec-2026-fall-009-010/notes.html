@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; color: #24201A; background: #FAF8F1; font-size: 10pt; line-height: 1.6; }
+.page { width: 210mm; min-height: 297mm; padding: 15mm 16mm; page-break-after: always; position: relative; }
+.page:last-child { page-break-after: auto; }
+.cover { background: linear-gradient(135deg, #2F8557 0%, #1F5C39 55%, #143D27 100%); color: #FBF7EC; display: flex; flex-direction: column; justify-content: center; padding: 25mm; }
+.cover .kicker { font-size: 10pt; letter-spacing: .4em; text-transform: uppercase; color: #E7CE9C; margin-bottom: 8mm; }
+.cover h1 { font-size: 32pt; font-weight: 700; line-height: 1.2; margin-bottom: 6mm; }
+.cover h1 .accent { color: #E7CE9C; }
+.cover .sub { font-size: 13pt; color: rgba(251,247,236,.85); margin-bottom: 4mm; }
+.cover .meta { font-size: 10pt; color: rgba(251,247,236,.6); margin-top: 10mm; line-height: 1.8; }
+.cover .rule { width: 40mm; height: 2pt; background: #E7CE9C; margin: 6mm 0; }
+h2 { font-size: 16pt; color: #1F5C39; border-bottom: 2pt solid #2F8557; padding-bottom: 2mm; margin: 6mm 0 4mm; }
+h3 { font-size: 12pt; color: #2F8557; margin: 4mm 0 2mm; }
+h4 { font-size: 10.5pt; color: #1F5C39; margin: 3mm 0 1.5mm; }
+p { margin: 1.5mm 0; }
+ul, ol { margin: 1.5mm 0 1.5mm 6mm; }
+li { margin: 0.8mm 0; }
+.card { background: #fff; border: 0.5pt solid #E6DECC; border-radius: 2mm; padding: 3mm 4mm; margin: 2.5mm 0; }
+.card.hot { border-left: 3pt solid #A2630C; background: #FFFDF8; }
+.tag { display: inline-block; background: #E8F1EA; color: #1F5C39; font-size: 8pt; font-weight: 600; padding: 0.5mm 2mm; border-radius: 1mm; margin-right: 2mm; }
+.tag.hot { background: #F8ECD3; color: #8A5208; }
+.tag.warn { background: #F7E4DF; color: #B23A2E; }
+.kv { display: flex; margin: 1mm 0; }
+.kv .k { font-weight: 600; color: #1F5C39; min-width: 28mm; }
+.kv .v { flex: 1; }
+.hl { background: linear-gradient(180deg,#F8ECD3,#F8ECD3); border: 0.5pt solid #E7CE9C; border-radius: 1.5mm; padding: 2mm 3mm; margin: 2mm 0; }
+.warn-box { background: #F7E4DF; border: 0.5pt solid #E6BDB4; border-radius: 1.5mm; padding: 2mm 3mm; margin: 2mm 0; color: #7E2A20; }
+.mnem { background: #F8ECD3; border-left: 3pt solid #A2630C; border-radius: 0 1.5mm 1.5mm 0; padding: 2.5mm 4mm; margin: 2.5mm 0; font-style: italic; color: #8A5208; }
+.toc { columns: 2; column-gap: 8mm; }
+.toc-item { break-inside: avoid; margin: 1.5mm 0; font-size: 9.5pt; }
+.toc-item .num { color: #2F8557; font-weight: 700; margin-right: 2mm; }
+.flow { display: flex; align-items: center; flex-wrap: wrap; gap: 1.5mm; margin: 2mm 0; }
+.flow .step { background: #E8F1EA; color: #1F5C39; padding: 1.5mm 3mm; border-radius: 1.5mm; font-size: 9pt; font-weight: 600; }
+.flow .arrow { color: #2F8557; font-weight: 700; }
+table { width: 100%; border-collapse: collapse; margin: 2mm 0; font-size: 9pt; }
+th { background: #2F8557; color: #fff; padding: 1.5mm 2mm; text-align: left; }
+td { padding: 1.5mm 2mm; border-bottom: 0.5pt solid #E6DECC; }
+tr:nth-child(even) td { background: #F4EFE4; }
+.footer { position: absolute; bottom: 8mm; left: 16mm; right: 16mm; font-size: 8pt; color: #857B68; display: flex; justify-content: space-between; border-top: 0.5pt solid #E6DECC; padding-top: 2mm; }
+</style>
+</head>
+<body>
+
+<!-- 封面 -->
+<div class="page cover">
+  <div class="kicker">CELL BIOLOGY · 细胞生物学</div>
+  <div class="rule"></div>
+  <h1>细胞内膜系统<br><span class="accent">与囊泡转运</span></h1>
+  <div class="sub">第五章 · 内质网 / 高尔基体 / 溶酶体 / 过氧化物酶体 / 囊泡运输</div>
+  <div class="meta">
+    课程：细胞生物学<br>
+    节次：课程内第9-10节（全天3-4节）<br>
+    日期：2026-09-14（周一）
+  </div>
+</div>
+
+<!-- 目录 -->
+<div class="page">
+  <h2>目录</h2>
+  <div class="toc">
+    <div class="toc-item"><span class="num">一</span>内质网的结构与功能</div>
+    <div class="toc-item"><span class="num">二</span>信号肽假说与共翻译转位</div>
+    <div class="toc-item"><span class="num">三</span>蛋白折叠质量控制与糖基化</div>
+    <div class="toc-item"><span class="num">四</span>高尔基体的结构与功能</div>
+    <div class="toc-item"><span class="num">五</span>溶酶体与M6P分选机制</div>
+    <div class="toc-item"><span class="num">六</span>过氧化物酶体</div>
+    <div class="toc-item"><span class="num">七</span>三类包被蛋白</div>
+    <div class="toc-item"><span class="num">八</span>囊泡运输全流程</div>
+    <div class="toc-item"><span class="num">九</span>关键分子：Rab与SNARE</div>
+    <div class="toc-item"><span class="num">十</span>复习清单与主动回忆题</div>
+  </div>
+
+  <h2 style="margin-top:8mm;">知识结构总览</h2>
+  <div class="card">
+    <p><span class="tag">内膜系统</span>内质网(RER/SER) → 高尔基体(cis/medial/trans/TGN) → 溶酶体 → 过氧化物酶体</p>
+    <p style="margin-top:2mm;"><span class="tag hot">囊泡运输</span>出芽(包被蛋白) → 脱包被 → 长距离运输(马达蛋白) → 对接(Rab) → 融合(SNARE)</p>
+    <p style="margin-top:2mm;"><span class="tag warn">核心机制</span>信号肽假说(SRP→Sec61) | M6P分选(溶酶体) | KDEL回收(ER驻留蛋白)</p>
+  </div>
+</div>
+
+<!-- 内质网 -->
+<div class="page">
+  <h2>一、内质网的结构与功能</h2>
+  
+  <div class="card hot">
+    <h3>1.1 分类与结构连通性</h3>
+    <div class="kv"><span class="k">粗面内质网RER</span><span class="v">扁平囊状，膜外附着核糖体，分泌蛋白合成主要场所</span></div>
+    <div class="kv"><span class="k">光面内质网SER</span><span class="v">管状结构，无核糖体，脂质合成与解毒</span></div>
+    <div class="kv"><span class="k">二者关系</span><span class="v">同一细胞器的不同功能形态，膜系统连续连通</span></div>
+    <div class="hl">RER与核膜外层相连，ER腔与核间隙直接连通</div>
+  </div>
+
+  <div class="card">
+    <h3>1.2 微粒体体系（研究工具）</h3>
+    <div class="kv"><span class="k">定义</span><span class="v">细胞匀浆后ER脂双层自封闭形成的小型囊泡，<b>非天然细胞器</b></span></div>
+    <div class="kv"><span class="k">分离</span><span class="v">蔗糖密度梯度离心，分离粗面微粒体（有核糖体，密度大）和光面微粒体</span></div>
+    <div class="kv"><span class="k">应用</span><span class="v">微粒体体外重构体系是验证信号肽假说的核心工具，获诺贝尔奖</span></div>
+  </div>
+
+  <div class="card">
+    <h3>1.3 化学组成与驻留信号</h3>
+    <div class="kv"><span class="k">膜蛋白</span><span class="v">占60%-70%</span></div>
+    <div class="kv"><span class="k">脂类</span><span class="v">占30%-40%，以磷脂为主，胆固醇/鞘磷脂远低于质膜</span></div>
+    <div class="kv"><span class="k">驻留信号</span><span class="v">ER腔驻留蛋白C端带<b>KDEL/HDEL</b>信号，逃逸后被高尔基体KDEL受体识别经COPI回收</span></div>
+  </div>
+
+  <div class="card">
+    <h3>1.4 光面内质网功能</h3>
+    <div class="kv"><span class="k">基础功能</span><span class="v">所有膜脂（磷脂、胆固醇）合成场所</span></div>
+    <div class="kv"><span class="k">肝细胞</span><span class="v">药物解毒，依赖<b>细胞色素P450</b></span></div>
+    <div class="kv"><span class="k">肌细胞</span><span class="v">钙储存与释放（肌质网），调控肌肉收缩</span></div>
+    <div class="kv"><span class="k">类固醇细胞</span><span class="v">类固醇激素合成</span></div>
+  </div>
+</div>
+
+<!-- 信号肽假说 -->
+<div class="page">
+  <h2>二、信号肽假说与共翻译转位</h2>
+  
+  <div class="card hot">
+    <h3>2.1 信号肽假说完整流程</h3>
+    <div class="flow">
+      <span class="step">分泌蛋白N端信号肽</span>
+      <span class="arrow">→</span>
+      <span class="step">SRP识别</span>
+      <span class="arrow">→</span>
+      <span class="step">暂停翻译</span>
+      <span class="arrow">→</span>
+      <span class="step">ER膜SRP受体</span>
+      <span class="arrow">→</span>
+      <span class="step">Sec61通道</span>
+      <span class="arrow">→</span>
+      <span class="step">共翻译转位</span>
+    </div>
+    <div class="kv"><span class="k">信号肽</span><span class="v">分泌蛋白N端的疏水氨基酸序列，是进入分泌途径的标签</span></div>
+    <div class="kv"><span class="k">SRP</span><span class="v">信号识别颗粒，识别信号肽后暂停翻译，引导核糖体至ER膜</span></div>
+    <div class="kv"><span class="k">Sec61</span><span class="v">ER膜上的转位通道，新生肽通过此通道进入ER腔</span></div>
+    <div class="kv"><span class="k">共翻译转位</span><span class="v">边翻译边转运，翻译和转运同时进行</span></div>
+    <div class="mnem">信号肽在N端，SRP识别停翻译；内质网膜上Sec61，共翻译转位进腔里。</div>
+  </div>
+
+  <h2>三、蛋白折叠质量控制与糖基化</h2>
+  
+  <div class="card hot">
+    <h3>3.1 蛋白折叠与质量控制</h3>
+    <div class="kv"><span class="k">分子伴侣Bip</span><span class="v">Hsp70家族，协助新生肽折叠</span></div>
+    <div class="kv"><span class="k">PDI</span><span class="v">蛋白二硫键异构酶，催化二硫键形成与重排</span></div>
+    <div class="kv"><span class="k">ERAD</span><span class="v">内质网相关降解，错误折叠蛋白逆向转运回胞质→蛋白酶体降解</span></div>
+    <div class="warn-box">⚠️ 囊性纤维化ΔF508突变：CFTR蛋白错误折叠→ERAD提前降解→细胞膜CFTR不足→氯离子转运障碍</div>
+  </div>
+
+  <div class="card">
+    <h3>3.2 N-糖基化 vs O-糖基化</h3>
+    <table>
+      <tr><th>特征</th><th>N-糖基化</th><th>O-糖基化</th></tr>
+      <tr><td>场所</td><td>内质网</td><td>高尔基体</td></tr>
+      <tr><td>方式</td><td>14糖基<b>整体添加</b></td><td>糖基<b>逐个添加</b></td></tr>
+      <tr><td>连接原子</td><td>天冬酰胺侧链<b>氮原子</b></td><td>丝氨酸/苏氨酸侧链<b>羟基氧原子</b></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 高尔基体与溶酶体 -->
+<div class="page">
+  <h2>四、高尔基体的结构与功能</h2>
+  
+  <div class="card hot">
+    <h3>4.1 极性特征</h3>
+    <div class="flow">
+      <span class="step">顺面cis<br>(接收ER物质)</span>
+      <span class="arrow">→</span>
+      <span class="step">中间层<br>(加工)</span>
+      <span class="arrow">→</span>
+      <span class="step">反面trans<br>(分选输出)</span>
+      <span class="arrow">→</span>
+      <span class="step">TGN<br>(反面管网)</span>
+    </div>
+    <div class="kv"><span class="k">结构极性</span><span class="v">顺面接收→中间加工→反面分选输出</span></div>
+    <div class="kv"><span class="k">化学极性</span><span class="v">不同膜囊区域分布特异性糖苷酶/糖基转移酶，逐级有序加工</span></div>
+  </div>
+
+  <div class="card">
+    <h3>4.2 修饰与分选功能</h3>
+    <div class="kv"><span class="k">O-糖基化</span><span class="v">高尔基体完成，糖基逐个添加至丝氨酸/苏氨酸羟基氧</span></div>
+    <div class="kv"><span class="k">蛋白水解加工</span><span class="v">胰岛素原C肽切除在<b>分泌颗粒</b>；白蛋白原水解在<b>TGN</b></span></div>
+    <div class="kv"><span class="k">TGN分选</span><span class="v">三条输出路径：①溶酶体(M6P→网格蛋白囊泡) ②质膜(组成型分泌) ③调节性分泌囊泡(等待信号)</span></div>
+  </div>
+
+  <h2>五、溶酶体与M6P分选机制</h2>
+  
+  <div class="card hot">
+    <h3>5.1 M6P分选完整流程</h3>
+    <div class="flow">
+      <span class="step">RER合成<br>+N-糖基化</span>
+      <span class="arrow">→</span>
+      <span class="step">顺面高尔基体<br>添加M6P</span>
+      <span class="arrow">→</span>
+      <span class="step">TGN<br>M6P受体识别</span>
+      <span class="arrow">→</span>
+      <span class="step">网格蛋白囊泡<br>→内体</span>
+      <span class="arrow">→</span>
+      <span class="step">酸性环境<br>受体配体分离</span>
+      <span class="arrow">→</span>
+      <span class="step">溶酶体</span>
+    </div>
+    <div class="kv"><span class="k">溶酶体环境</span><span class="v">单层膜，pH <b>4.5-5.0</b>酸性，膜蛋白高度糖基化防自身降解</span></div>
+    <div class="kv"><span class="k">M6P标记</span><span class="v">水解酶N-糖链在顺面高尔基体被添加甘露糖-6-磷酸（M6P）</span></div>
+    <div class="warn-box">⚠️ M6P标记缺失→水解酶分泌至胞外→溶酶体酶缺失→底物积累→<b>I细胞病（粘脂贮积症II型）</b></div>
+    <div class="mnem">溶酶体酸四点五，M6P标记是关键；顺面高尔基体加上，TGN受体网格囊；内体酸来受体回，I细胞病因标记缺。</div>
+  </div>
+</div>
+
+<!-- 过氧化物酶体+囊泡运输 -->
+<div class="page">
+  <h2>六、过氧化物酶体</h2>
+  
+  <div class="card">
+    <div class="kv"><span class="k">标志性酶</span><span class="v"><b>氧化酶</b>（氧化底物产H₂O₂）+ <b>过氧化氢酶</b>（将H₂O₂歧化为水和氧气）</span></div>
+    <div class="kv"><span class="k">核心功能</span><span class="v">脂肪酸β-氧化（超长链脂肪酸）、解毒、活性氧代谢</span></div>
+    <div class="kv"><span class="k">蛋白转运</span><span class="v">胞质游离核糖体合成后，经PTS信号识别转运进入（不含DNA/核糖体）</span></div>
+  </div>
+
+  <h2>七、三类包被蛋白</h2>
+  
+  <div class="card hot">
+    <table>
+      <tr><th>包被类型</th><th>运输方向</th><th>功能</th></tr>
+      <tr><td><b>COPII</b></td><td>ER → 高尔基体（顺向）</td><td>内质网输出囊泡</td></tr>
+      <tr><td><b>COPI</b></td><td>高尔基体 → ER（逆向）+ 高尔基体膜囊间</td><td>回收逃逸蛋白（KDEL）、Golgi内运输</td></tr>
+      <tr><td><b>网格蛋白</b></td><td>TGN → 内体 + 质膜 → 内体</td><td>溶酶体分选（M6P）、受体介导胞吞</td></tr>
+    </table>
+    <div class="hl">包被蛋白9字功能：<b>货物选择与膜芽的塑形上</b></div>
+    <div class="mnem">COPII顺向ER走，COPI逆向回收留；网格蛋白两头跑，TGN内体质膜收。</div>
+  </div>
+
+  <h2>八、囊泡运输全流程</h2>
+  
+  <div class="card hot">
+    <div class="flow">
+      <span class="step">①出芽<br>(包被蛋白)</span>
+      <span class="arrow">→</span>
+      <span class="step">②脱包被</span>
+      <span class="arrow">→</span>
+      <span class="step">③长距离运输<br>(细胞骨架+马达蛋白)</span>
+      <span class="arrow">→</span>
+      <span class="step">④初始对接<br>(Rab GTPase)</span>
+      <span class="arrow">→</span>
+      <span class="step">⑤膜融合<br>(SNARE)</span>
+    </div>
+    <div class="kv"><span class="k">出芽</span><span class="v">包被蛋白选择货物+膜芽塑形</span></div>
+    <div class="kv"><span class="k">脱包被</span><span class="v">囊泡形成后包被解离，暴露融合蛋白</span></div>
+    <div class="kv"><span class="k">长距离运输</span><span class="v">不依赖随机扩散，依托细胞骨架+马达蛋白拖拽</span></div>
+    <div class="kv"><span class="k">初始对接</span><span class="v"><b>Rab GTPase</b>作为囊泡身份标识，介导与靶膜初始对接</span></div>
+    <div class="kv"><span class="k">膜融合</span><span class="v"><b>v-SNARE</b>与<b>t-SNARE</b>缠绕，拉近两膜至<b>1nm</b>，脂类自发流动完成融合</span></div>
+    <div class="mnem">出芽脱壳再运输，马达蛋白拖囊泡；Rab身份来对接，SNARE缠绕膜融合。</div>
+  </div>
+</div>
+
+<!-- 复习 -->
+<div class="page">
+  <h2>九、复习清单</h2>
+  <div class="card">
+    <ul>
+      <li>内质网分类（RER/SER）及结构连通性</li>
+      <li>微粒体定义、分离方法及信号肽假说验证中的作用</li>
+      <li>信号肽假说完整流程（SRP→Sec61→共翻译转位）</li>
+      <li>内质网蛋白折叠质控（Bip、PDI、ERAD）及囊性纤维化关联</li>
+      <li>N-糖基化与O-糖基化区别（场所、方式、连接原子）</li>
+      <li>KDEL/HDEL驻留信号及COPI回收机制</li>
+      <li>高尔基体结构极性与化学极性</li>
+      <li>高尔基体分选功能（TGN三条输出路径）</li>
+      <li>溶酶体酸性环境（pH 4.5-5.0）及膜蛋白糖基化保护</li>
+      <li>M6P分选机制完整流程及I细胞病</li>
+      <li>过氧化物酶体标志性酶（氧化酶+过氧化氢酶）</li>
+      <li>三类包被蛋白名称及运输方向</li>
+      <li>囊泡运输全流程（出芽→脱包被→运输→对接→融合）</li>
+      <li>Rab GTPase和SNARE蛋白的作用</li>
+    </ul>
+  </div>
+
+  <h2>十、主动回忆题</h2>
+  <div class="card">
+    <h4>Q1 简述信号肽假说的主要内容</h4>
+    <p style="color:#857B68;font-size:9pt;">分泌蛋白N端信号肽→SRP识别暂停翻译→ER膜SRP受体→Sec61通道→共翻译转位。微粒体体外重构验证，获诺贝尔奖。</p>
+  </div>
+  <div class="card">
+    <h4>Q2 比较N-糖基化和O-糖基化</h4>
+    <p style="color:#857B68;font-size:9pt;">N-糖基化：内质网，14糖基整体添加，天冬酰胺氮原子。O-糖基化：高尔基体，糖基逐个添加，丝氨酸/苏氨酸羟基氧原子。</p>
+  </div>
+  <div class="card">
+    <h4>Q3 简述溶酶体水解酶的M6P分选机制</h4>
+    <p style="color:#857B68;font-size:9pt;">顺面高尔基体添加M6P→TGN被M6P受体识别→网格蛋白囊泡→内体→酸性环境受体配体分离→溶酶体。M6P缺失导致I细胞病。</p>
+  </div>
+  <div class="card">
+    <h4>Q4 比较三类包被蛋白的运输方向</h4>
+    <p style="color:#857B68;font-size:9pt;">COPII：ER→高尔基体顺向。COPI：高尔基体→ER逆向回收+Golgi内。网格蛋白：TGN→内体+质膜→内体。共同功能：货物选择+膜芽塑形。</p>
+  </div>
+
+  <div class="footer">
+    <span>细胞生物学 · 第9-10节 · 细胞内膜系统与囊泡转运</span>
+    <span>2026-09-14</span>
+  </div>
+</div>
+
+</body>
+</html>

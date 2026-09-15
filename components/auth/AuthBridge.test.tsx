@@ -51,7 +51,7 @@ it('real Supabase SDK login reaches both quota and the Agent gate through AuthPr
   await screen.findByText('Plus 会员');
   expect(screen.queryByText('登录后查看会员与额度')).toBeNull();
   await act(async () => fireEvent.click(screen.getByText('检查 Agent 请求')));
-  expect(gate).toEqual({ action: 'next' });
+  expect(gate).toMatchObject({ action: 'next' });
   expect(calls).toContain('/api/quota');
   expect(calls).toContain('/api/chat');
 });

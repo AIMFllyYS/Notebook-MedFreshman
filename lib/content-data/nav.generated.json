@@ -5035,6 +5035,45 @@
                   "quizRef": "rec-2026-fall-007-008"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-009-010",
+              "title": "第9-10节 · 紫外可见分光光度法续与朗伯比尔定律",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-009-010",
+                  "title": "课堂原文 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                },
+                {
+                  "id": "note-rec-2026-fall-009-010",
+                  "title": "课堂笔记 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                },
+                {
+                  "id": "card-rec-2026-fall-009-010",
+                  "title": "复习手卡 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                }
+              ]
             }
           ]
         },
@@ -5090,6 +5129,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-007-008",
               "quizRef": "rec-2026-fall-007-008",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-009-010",
+              "title": "课堂纪要 · 第9-10节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-009-010",
+              "quizRef": "rec-2026-fall-009-010",
               "layoutProfile": "full"
             }
           ]
@@ -5630,41 +5680,80 @@
               ]
             },
             {
-              "id": "rec-2026-fall-010-013",
-              "title": "第10-13节 · 颅骨及其连接",
+              "id": "rec-2026-fall-010-012",
+              "title": "第10-12节 · 颅骨及其连接",
               "type": "document",
               "status": "done",
               "navigationOnly": true,
               "children": [
                 {
-                  "id": "rec-rec-2026-fall-010-013",
-                  "title": "课堂原文 · 第10-13节",
+                  "id": "rec-rec-2026-fall-010-012",
+                  "title": "课堂原文 · 第10-12节",
                   "type": "document",
                   "status": "done",
                   "renderType": "text",
                   "materialRole": "recording",
-                  "lessonRef": "rec-2026-fall-010-013",
-                  "quizRef": "rec-2026-fall-010-013"
+                  "lessonRef": "rec-2026-fall-010-012",
+                  "quizRef": "rec-2026-fall-010-012"
                 },
                 {
-                  "id": "note-rec-2026-fall-010-013",
-                  "title": "课堂笔记 · 第10-13节",
+                  "id": "note-rec-2026-fall-010-012",
+                  "title": "课堂笔记 · 第10-12节",
                   "type": "document",
                   "status": "done",
                   "renderType": "html",
                   "materialRole": "notes",
-                  "lessonRef": "rec-2026-fall-010-013",
-                  "quizRef": "rec-2026-fall-010-013"
+                  "lessonRef": "rec-2026-fall-010-012",
+                  "quizRef": "rec-2026-fall-010-012"
                 },
                 {
-                  "id": "card-rec-2026-fall-010-013",
-                  "title": "复习手卡 · 第10-13节",
+                  "id": "card-rec-2026-fall-010-012",
+                  "title": "复习手卡 · 第10-12节",
                   "type": "document",
                   "status": "done",
                   "renderType": "markdown",
                   "materialRole": "cards",
-                  "lessonRef": "rec-2026-fall-010-013",
-                  "quizRef": "rec-2026-fall-010-013"
+                  "lessonRef": "rec-2026-fall-010-012",
+                  "quizRef": "rec-2026-fall-010-012"
+                }
+              ]
+            },
+            {
+              "id": "rec-2026-fall-013-015",
+              "title": "第13-15节 · 肌总论头颈肌与躯干肌",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-013-015",
+                  "title": "课堂原文 · 第13-15节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-013-015",
+                  "quizRef": "rec-2026-fall-013-015"
+                },
+                {
+                  "id": "note-rec-2026-fall-013-015",
+                  "title": "课堂笔记 · 第13-15节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-013-015",
+                  "quizRef": "rec-2026-fall-013-015"
+                },
+                {
+                  "id": "card-rec-2026-fall-013-015",
+                  "title": "复习手卡 · 第13-15节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-013-015",
+                  "quizRef": "rec-2026-fall-013-015"
                 }
               ]
             }
@@ -5714,14 +5803,25 @@
               "layoutProfile": "full"
             },
             {
-              "id": "min-rec-2026-fall-010-013",
-              "title": "课堂纪要 · 第10-13节",
+              "id": "min-rec-2026-fall-010-012",
+              "title": "课堂纪要 · 第10-12节",
               "type": "document",
               "status": "done",
               "renderType": "markdown",
               "materialRole": "minutes",
-              "lessonRef": "rec-2026-fall-010-013",
-              "quizRef": "rec-2026-fall-010-013",
+              "lessonRef": "rec-2026-fall-010-012",
+              "quizRef": "rec-2026-fall-010-012",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-013-015",
+              "title": "课堂纪要 · 第13-15节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-013-015",
+              "quizRef": "rec-2026-fall-013-015",
               "layoutProfile": "full"
             }
           ]
@@ -6797,6 +6897,45 @@
                   "quizRef": "rec-2026-fall-007-008"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-009-010",
+              "title": "第9-10节 · 细胞内膜系统与囊泡转运",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-009-010",
+                  "title": "课堂原文 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                },
+                {
+                  "id": "note-rec-2026-fall-009-010",
+                  "title": "课堂笔记 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                },
+                {
+                  "id": "card-rec-2026-fall-009-010",
+                  "title": "复习手卡 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                }
+              ]
             }
           ]
         },
@@ -6852,6 +6991,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-007-008",
               "quizRef": "rec-2026-fall-007-008",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-009-010",
+              "title": "课堂纪要 · 第9-10节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-009-010",
+              "quizRef": "rec-2026-fall-009-010",
               "layoutProfile": "full"
             }
           ]
@@ -8044,6 +8194,45 @@
                   "quizRef": "rec-2026-fall-005-006"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-007-008",
+              "title": "第7-8节 · 血液与肌组织",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-007-008",
+                  "title": "课堂原文 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                },
+                {
+                  "id": "note-rec-2026-fall-007-008",
+                  "title": "课堂笔记 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                },
+                {
+                  "id": "card-rec-2026-fall-007-008",
+                  "title": "复习手卡 · 第7-8节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-007-008",
+                  "quizRef": "rec-2026-fall-007-008"
+                }
+              ]
             }
           ]
         },
@@ -8088,6 +8277,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-005-006",
               "quizRef": "rec-2026-fall-005-006",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-007-008",
+              "title": "课堂纪要 · 第7-8节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-007-008",
+              "quizRef": "rec-2026-fall-007-008",
               "layoutProfile": "full"
             }
           ]
@@ -9277,6 +9477,45 @@
                   "quizRef": "rec-2026-fall-007-008"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-009-010",
+              "title": "第9-10节 · RNA结构功能续讲与维生素",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-009-010",
+                  "title": "课堂原文 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                },
+                {
+                  "id": "note-rec-2026-fall-009-010",
+                  "title": "课堂笔记 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                },
+                {
+                  "id": "card-rec-2026-fall-009-010",
+                  "title": "复习手卡 · 第9-10节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-009-010",
+                  "quizRef": "rec-2026-fall-009-010"
+                }
+              ]
             }
           ]
         },
@@ -9338,6 +9577,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-007-008",
               "quizRef": "rec-2026-fall-007-008",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-009-010",
+              "title": "课堂纪要 · 第9-10节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-009-010",
+              "quizRef": "rec-2026-fall-009-010",
               "layoutProfile": "full"
             }
           ]

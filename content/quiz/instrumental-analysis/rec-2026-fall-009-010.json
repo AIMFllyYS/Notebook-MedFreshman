@@ -1,0 +1,260 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "rec-2026-fall-009-010",
+  "generatedAt": "2026-09-15",
+  "examConfig": {
+    "source": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/recording.md；content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-009-010",
+    "revision": 1,
+    "recordingHash": "",
+    "notesTextHash": ""
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "紫外与可见光波长范围"
+      },
+      "stem": "紫外可见分光光度法中，紫外波段所对应的波长范围是下列哪一项？",
+      "options": [
+        "200 ~ 400 nm",
+        "400 ~ 780 nm",
+        "100 ~ 200 nm",
+        "780 ~ 2000 nm"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**课堂明确要求背诵：紫外波段为 200~400 nm，可见波段为 400~780 nm。B 项 400~780 nm 是可见光范围，不是紫外；C 项 100~200 nm 属于真空紫外（σ→σ* 跃迁区），并非本课所称紫外；D 项 780~2000 nm 属于近红外波段，与紫外无关。",
+      "hint": "老师强调200到400必须背下来。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "朗伯比尔定律数学表达式"
+      },
+      "stem": "朗伯比尔定律的正确数学表达式是下列哪一个？",
+      "options": [
+        "A = Kbc",
+        "A = K / (bc)",
+        "T = Kbc",
+        "A = Kb / c"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**朗伯比尔定律为 A = Kbc，吸光度与吸光物质浓度 c 和液层厚度 b 成正比。B 项把 bc 放在分母，违背“与 c、b 均成正比”的结论；C 项把透射比 T 写成与 bc 成正比，实际上 T 与浓度不成正比，是对数关系；D 项把 c 放在分母，意味着浓度越大吸光度越小，与定律相反。",
+      "hint": "朗伯管厚度 b，比尔管浓度 c，A 与二者都成正比。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "吸光度与透射比的定义关系"
+      },
+      "stem": "透射比 T = Iₜ / I₀ 与吸光度 A 之间的正确关系是下列哪一项？",
+      "options": [
+        "A = -log T",
+        "A = log T",
+        "A = T",
+        "A = -T"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**定义 A = -log T = -log(Iₜ/I₀) = log(I₀/Iₜ)，之所以取负对数，是因为 -logT 才与浓度成正比。B 项 log T 在 T<1 时为负，且不与浓度成正比；C 项 A=T 是把透射比直接当吸光度，忽略了对数关系；D 项 A=-T 既无对数也无物理意义。",
+      "hint": "A 与 T 是对数关系，不是线性关系。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "紫外可见分光光度法的光谱分类归属"
+      },
+      "stem": "按光谱产生机理分类，紫外可见分光光度法属于下列哪一类？",
+      "options": [
+        "分子吸收光谱",
+        "原子发射光谱",
+        "分子发射光谱",
+        "原子吸收光谱"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**紫外可见分光光度法同时具备两个属性：一是分子光谱（分子有电子运动、振动、转动三种运动状态），二是吸收光谱（吸收能量后发生电子能级跃迁）。B 项原子发射光谱研究的是原子受激发光，且与原子光谱不符；C 项它不属发射光谱，因为分子是吸收光而非发射光；D 项它不是原子光谱，原子只有电子运动一种状态。",
+      "hint": "记住老师那句话：分子光谱 + 吸收光谱。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "摩尔吸光系数ε的物理意义与影响因素"
+      },
+      "stem": "当浓度 c 用 mol/L 表示时，吸光系数 K 常写作摩尔吸光系数 ε。关于 ε，下列说法正确的是哪一项？",
+      "options": [
+        "ε 的大小与溶液浓度 c 和液层厚度 b 成正比",
+        "ε 随比色皿的材质不同而改变",
+        "ε 是吸光物质的特征常数，主要与物质本性、入射光波长、溶剂及温度有关",
+        "ε 没有单位"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**ε 反映物质对特定波长光的吸收能力，是物质的特征常数，主要由物质本性、入射光波长（λmax 处最大）、溶剂性质和温度决定。A 项错误：A=εbc 中 ε 与 c、b 无关，c、b 变化时 A 跟着变，但 ε 不变；B 项错误：比色皿材质影响光路反射和能否透过紫外，但不改变 ε 本身；D 项错误：A 无单位，b、c 有单位，故 ε 必有单位（如 L·mol⁻¹·cm⁻¹），考试算 K 必须带单位。",
+      "hint": "ε 是物质特征常数，不随 c、b 变化。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "偏离朗伯比尔定律的光学因素"
+      },
+      "stem": "下列各项中，全部属于偏离朗伯比尔定律的“光学因素”的一组是哪一项？",
+      "options": [
+        "介质不均匀、浓度过高",
+        "非单色光、杂散光",
+        "溶液中的化学反应、缔合解离",
+        "温度变化、溶剂极性改变"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**光学因素指与入射光本身及仪器光路有关的因素，包括非单色光（谱带宽度）和杂散光（仪器内部反射、镜头落灰）。A 项介质不均匀、浓度过高属于物理化学因素；C 项化学反应（缔合、解离）也属于物理化学因素；D 项温度、溶剂极性主要影响物质状态，不属于光学因素。",
+      "hint": "光学因素看“光”，物理化学因素看“溶液本身”。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "杂散光作为主要偏离因素"
+      },
+      "stem": "在朗伯比尔定律的各类偏离因素中，被课堂明确指为“造成偏离的主要因素”的是下列哪一项？",
+      "options": [
+        "溶液温度波动",
+        "比色皿放置方向",
+        "记录仪器的时间常数",
+        "杂散光"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**课堂指出仪器内部反射镜、镜头落灰等造成的杂散光是造成朗伯比尔定律偏离的主要因素，它使高浓度区曲线向下弯曲，杂散光越多线性范围越窄，这也是新仪器比旧仪器好用的原因。A 项温度虽影响 K，但不是课堂所指主要偏离因素；B 项比色皿放置方向主要影响反射光，可通过使用同一比色皿消除；C 项时间常数与偏离定律无关。",
+      "hint": "老师原话：杂散光是造成偏离的主要因素。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "摩尔吸光系数与灵敏度判断标准"
+      },
+      "stem": "课堂以吸光系数 K 的数量级粗略判断检测灵敏度。按这一标准，下列哪一项属于“灵敏度高”？",
+      "options": [
+        "K > 1",
+        "K > 10",
+        "K > 10⁴",
+        "K > 10²"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**课堂给出的经验判据为 K > 10⁴ 即灵敏度高，并举例硫酸铜 K 约 <10² 较小、高锰酸钾 K 约 10³ 可用紫外方法测量。A、B、D 项给出的阈值远低于课堂判据，按课堂标准都不属高灵敏度。",
+      "hint": "记住 10 的 4 次方这条线。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "吸光度加和性及其对选择性的影响"
+      },
+      "stem": "当溶液中同时存在多种彼此不发生相互作用、已达平衡的吸光物质时，下列关于总吸光度的说法正确的是哪一项？",
+      "options": [
+        "总吸光度等于各组分吸光度之积",
+        "总吸光度等于各组分吸光度之和，即 A总 = A₁ + A₂ + …",
+        "总吸光度等于各组分吸光度之差",
+        "仪器只对含量最大的组分响应，与其他组分无关"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**课堂指出：多种吸光物质且彼此无相互作用时总吸光度可加和，A总 = A₁ + A₂ + …，这正是紫外可见法选择性不好、易受干扰的根本原因。A 项乘积关系无任何依据；C 项差值关系会随组分多少而正负变化，物理意义错误；D 项错误，仪器只知道某波长处有吸收，并不区分是谁在吸收。",
+      "hint": "加和性就是选择性差的根源。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "朗伯比尔定律不适用于高浓度的原因"
+      },
+      "stem": "课堂强调朗伯比尔定律不适合高浓度溶液。从非单色光角度看，其根本原因是下列哪一项？",
+      "options": [
+        "高浓度时溶液温度明显升高，导致 ε 下降",
+        "高浓度时溶剂大量挥发，使 b 发生变化",
+        "高浓度时检测器进入饱和状态，无法读数",
+        "高浓度时吸收曲线更陡，谱带宽度内不同波长吸光度差异大，平均值偏离 λmax 处真实值更多，相对误差更大"
+      ],
+      "answer": 3,
+      "explanation": "**D 正确。**实际光源总有一定谱带宽度 Δλ，测得的 A 是 Δλ 内各波长吸光度的平均值；低浓度时吸收曲线较平缓，平均偏离小；高浓度时吸收峰更陡，λmax 附近高低差异大，平均偏离真实值更多，故非单色光对高浓度相对误差更大，这也是定律只适合稀溶液的重要原因。A、B 项温度、溶剂挥发不是课堂从非单色光角度给出的解释；C 项检测器饱和属于仪器问题，与非单色光偏离机理无关。",
+      "hint": "关键在“曲线陡”与“平均偏离”。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "溶剂极性对π→π*与n→π*跃迁的不同影响"
+      },
+      "stem": "某物质在非极性溶剂己烷中 λmax = 305 nm，改在极性溶剂乙醇中 λmax 变为 307 nm。由这一变化可判断其对应的电子跃迁类型及溶剂极性效应应为下列哪一项？",
+      "options": [
+        "发生红移，对应 π→π* 跃迁",
+        "发生蓝移，对应 n→π* 跃迁",
+        "波长不变，说明与溶剂极性无关",
+        "先红移后蓝移，无法判断跃迁类型"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**波长由 305 nm 增至 307 nm，是向长波方向移动即红移；课堂给出的规律是：极性溶剂使 π* 轨道能量下降幅度大于 π 轨道，π→π* 能级差变小，波长变长，故为 π→π* 跃迁。B 项蓝移对应 n→π*（n 轨道在极性溶剂中氢键作用下降更多，能级差变大），与本题波长变长的事实相反；C 项波长已发生 2 nm 变化，并非与极性无关；D 项同一溶剂体系中不存在“先红后蓝”的判断路径。",
+      "hint": "波长变长=红移；红移对应 π→π*。"
+    }
+  ]
+}
