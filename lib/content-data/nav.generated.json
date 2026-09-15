@@ -6140,7 +6140,14 @@
             "search"
           ],
           "keyStrategy": "chapter-prefix",
-          "items": []
+          "items": [
+            {
+              "id": "ch01",
+              "title": "细胞生物学实验课程概述",
+              "type": "document",
+              "status": "done"
+            }
+          ]
         },
         {
           "id": "detail",
