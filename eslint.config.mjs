@@ -29,6 +29,7 @@ export default defineConfig([
     ".workbuddy/**",
     "tmp/**",
     "public/rdkit/**",
+    "public/pdfjs/**",
   ]),
   {
     files: ["electron/**"],

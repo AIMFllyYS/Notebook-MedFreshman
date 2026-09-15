@@ -53,6 +53,7 @@ export default function PptxDocumentPane({ src, name }: { src: string; name: str
 
   useEffect(() => {
     let cancelled = false;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setError(null);
     setVisual(false);
     previewerRef.current?.destroy();

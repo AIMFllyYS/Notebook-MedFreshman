@@ -198,6 +198,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   // 面板开时 2.5s 高频刷新（展开详情需要跟手）；关时 5s 低频刷新（仅更新按钮数字）。
   useEffect(() => {
     recompute();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (open) refreshSessionStorage();
     const interval = open ? 2500 : 5000;
     const id = setInterval(() => {

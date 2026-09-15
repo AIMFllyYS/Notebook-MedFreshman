@@ -69,6 +69,7 @@ export default function PdfDocumentPane({ src, name }: { src: string; name: stri
 
   useEffect(() => {
     let cancelled = false;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setError(null);
     void (async () => {
       try {
