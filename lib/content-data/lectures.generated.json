@@ -662,6 +662,50 @@
       }
     },
     {
+      "subjectId": "cell-biology-experiment",
+      "lessonId": "rec-2026-fall-005-008",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "细胞生物学实验",
+      "sessionRange": {
+        "start": 5,
+        "end": 8
+      },
+      "taughtOn": "2026-09-15",
+      "topic": "细胞传代培养冻存与复苏",
+      "revision": 1,
+      "quizId": "rec-2026-fall-005-008",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-005-008"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-005-008"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-005-008"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-005-008"
+        }
+      },
+      "hashes": {
+        "recording": "8e809a69cbb534a4c0bf901c1260e30d7a8c709b24fb343dd8c03baf468dd53e",
+        "notesText": "ea279121a6aad0d9564d4833afe8a762ef1bf2ff228ecea22b715adf4503863d"
+      }
+    },
+    {
       "subjectId": "histology",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",

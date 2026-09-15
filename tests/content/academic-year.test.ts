@@ -63,6 +63,7 @@ test("大二上学科按课程全名字数从短到长", () => {
     "医学细胞生物学",
     "组织学与胚胎学",
     "生物化学与分子生物学",
+    "细胞生物学实验（课堂）",
   ]);
   const lengths = names.map((n) => [...n].length);
   assert.deepEqual(lengths, [...lengths].sort((a, b) => a - b));
