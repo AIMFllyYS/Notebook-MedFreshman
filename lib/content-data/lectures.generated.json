@@ -135,46 +135,90 @@
     },
     {
       "subjectId": "anatomy",
-      "lessonId": "rec-2026-fall-010-013",
+      "lessonId": "rec-2026-fall-010-012",
       "courseInstanceId": "rec-2026-fall",
       "courseName": "系统解剖学",
       "sessionRange": {
         "start": 10,
-        "end": 13
+        "end": 12
       },
       "taughtOn": "2026-09-09",
       "topic": "颅骨及其连接",
       "revision": 1,
-      "quizId": "rec-2026-fall-010-013",
+      "quizId": "rec-2026-fall-010-012",
       "materials": {
         "recording": {
           "role": "recording",
           "file": "recording.md",
           "format": "text",
-          "articleId": "rec-rec-2026-fall-010-013"
+          "articleId": "rec-rec-2026-fall-010-012"
         },
         "minutes": {
           "role": "minutes",
           "file": "minutes.md",
           "format": "markdown",
-          "articleId": "min-rec-2026-fall-010-013"
+          "articleId": "min-rec-2026-fall-010-012"
         },
         "notes": {
           "role": "notes",
           "file": "notes.html",
           "format": "html",
-          "articleId": "note-rec-2026-fall-010-013"
+          "articleId": "note-rec-2026-fall-010-012"
         },
         "cards": {
           "role": "cards",
           "file": "cards.md",
           "format": "markdown",
-          "articleId": "card-rec-2026-fall-010-013"
+          "articleId": "card-rec-2026-fall-010-012"
         }
       },
       "hashes": {
         "recording": "f536f60d07524dab7719c0dbf477ee27ba21f33884f8d274b34f0daa096aa820",
         "notesText": "69ac4c4e0a7c563b591346ecbb9d5e6da5e7ca7cd603a7c1d3366320bb7aef0f"
+      }
+    },
+    {
+      "subjectId": "anatomy",
+      "lessonId": "rec-2026-fall-013-015",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "系统解剖学",
+      "sessionRange": {
+        "start": 13,
+        "end": 15
+      },
+      "taughtOn": "2026-09-14",
+      "topic": "肌总论头颈肌与躯干肌",
+      "revision": 1,
+      "quizId": "rec-2026-fall-013-015",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-013-015"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-013-015"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-013-015"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-013-015"
+        }
+      },
+      "hashes": {
+        "recording": "4f479cf8db248438771f138db5fd227ca4b8d97dd7464fd9bdbc7ce89dd0e447",
+        "notesText": "94f1539e3b4822767a6e13100ce59cf10e48bac25e3826ea16090245fd5f441e"
       }
     },
     {
@@ -354,6 +398,50 @@
       }
     },
     {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-009-010",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 9,
+        "end": 10
+      },
+      "taughtOn": "2026-09-15",
+      "topic": "RNA结构功能续讲与维生素",
+      "revision": 1,
+      "quizId": "rec-2026-fall-009-010",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-009-010"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-009-010"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-009-010"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-009-010"
+        }
+      },
+      "hashes": {
+        "recording": "35e420c9b7023d9955c3fb2e9fd240fb6eec19e9b83b80399531f6aad9005a91",
+        "notesText": "ffa76454787f1b18e4900419d3fbd82b9b325281f5e9fc56269e55a5deb5482a"
+      }
+    },
+    {
       "subjectId": "cell-biology",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -530,6 +618,50 @@
       }
     },
     {
+      "subjectId": "cell-biology",
+      "lessonId": "rec-2026-fall-009-010",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "细胞生物学",
+      "sessionRange": {
+        "start": 9,
+        "end": 10
+      },
+      "taughtOn": "2026-09-14",
+      "topic": "细胞内膜系统与囊泡转运",
+      "revision": 1,
+      "quizId": "rec-2026-fall-009-010",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-009-010"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-009-010"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-009-010"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-009-010"
+        }
+      },
+      "hashes": {
+        "recording": "9b9527261690c8297989d6809e4339e701f0343c0a2901c093cbcb9400527e84",
+        "notesText": "2e71838e7b5ac75ba48118ecfb799bf2a649032625c47a283d3b960ea729061a"
+      }
+    },
+    {
       "subjectId": "histology",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -659,6 +791,50 @@
       "hashes": {
         "recording": "aed49cb5b7cdf12369ebd3502e5dbc74deebd8bbe8ba27c87226608d3c55c342",
         "notesText": "d1f1e2909c83770374e9999e255cfb32caa6bae24541cc06bd1040b237a30b03"
+      }
+    },
+    {
+      "subjectId": "histology",
+      "lessonId": "rec-2026-fall-007-008",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "人体组织学",
+      "sessionRange": {
+        "start": 7,
+        "end": 8
+      },
+      "taughtOn": "2026-09-14",
+      "topic": "血液与肌组织",
+      "revision": 1,
+      "quizId": "rec-2026-fall-007-008",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-007-008"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-007-008"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-007-008"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-007-008"
+        }
+      },
+      "hashes": {
+        "recording": "ecb4171b042a42638f4f9078bfd310d312e0ea4b0d92e308587777632bcecaff",
+        "notesText": "e0ebdea743f43d7c8f34d395dfce8bd52875001e87d64ab84950237fd5c2767e"
       }
     },
     {
@@ -835,6 +1011,50 @@
       "hashes": {
         "recording": "82f47a931cd0102586ffc879b957880a19bbf13323c31a48285331f09d651371",
         "notesText": "db9e37e595405c9ad69f9ff9b98b6820ef8a6e827862c29320eaea54aa1a05e9"
+      }
+    },
+    {
+      "subjectId": "instrumental-analysis",
+      "lessonId": "rec-2026-fall-009-010",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "分析化学",
+      "sessionRange": {
+        "start": 9,
+        "end": 10
+      },
+      "taughtOn": "2026-09-15",
+      "topic": "紫外可见分光光度法续与朗伯比尔定律",
+      "revision": 1,
+      "quizId": "rec-2026-fall-009-010",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-009-010"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-009-010"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-009-010"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-009-010"
+        }
+      },
+      "hashes": {
+        "recording": "e4d4345849fcd9764794f9f0b54fba73bf7fbc57efa83f55de335add89a52694",
+        "notesText": "b9344b5190c7289d61752ece2230071662c1657a0a38794ac6514a30d929b5d2"
       }
     },
     {

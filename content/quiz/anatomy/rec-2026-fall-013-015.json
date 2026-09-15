@@ -1,0 +1,260 @@
+{
+  "subjectId": "anatomy",
+  "chapterId": "rec-2026-fall-013-015",
+  "generatedAt": "2026-09-15",
+  "examConfig": {
+    "source": "content/anatomy/lectures/rec-2026-fall-013-015/recording.md；content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-013-015",
+    "revision": 1,
+    "recordingHash": "",
+    "notesTextHash": ""
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+        "label": "肌总论：平滑肌/心肌/骨骼肌与随意、不随意、横纹肌的交叉分类"
+      },
+      "stem": "下列关于肌肉按构造和神经支配的分类，正确的是哪一项？",
+      "options": [
+        "不随意肌包括平滑肌和骨骼肌",
+        "横纹肌包括心肌和骨骼肌",
+        "随意肌包括平滑肌和心肌",
+        "骨骼肌无明显横纹，肌纤维走形不明显"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。** 心肌和骨骼肌在显微镜下都可见明显横纹（肌节结构），合称横纹肌。A 错：骨骼肌是随主观意志控制的随意肌，不随意肌只包括平滑肌和心肌；C 错：随意肌仅指骨骼肌，平滑肌和心肌均为不随意肌；D 错：骨骼肌有明显横纹、肌纤维呈束状，平滑肌才是无横纹、肌纤维走形不明显的一类。",
+      "hint": "记住交叉口诀：随意肌=骨骼肌；不随意肌=平滑肌+心肌；横纹肌=心肌+骨骼肌。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+        "label": "肌总论辅助装置：籽骨"
+      },
+      "stem": "全身最大的籽骨是下列哪一块？",
+      "options": [
+        "髌骨",
+        "豌豆骨",
+        "距骨",
+        "骰骨"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。** 籽骨发生于肌腱内，功能是改变力的方向、减少摩擦；全身最大的籽骨是髌骨。B 错：豌豆骨是腕骨之一（短骨），并非肌腱内发生的籽骨；C、D 错：距骨和骰骨均为足骨，属于普通骨而非籽骨。",
+      "hint": "膝关节前方那块大家熟悉的骨就是答案。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+        "label": "头肌：面肌（表情肌）的神经支配"
+      },
+      "stem": "面肌（表情肌）属于皮肌，一端连骨、一端连皮肤，其运动神经支配是？",
+      "options": [
+        "三叉神经",
+        "面神经",
+        "副神经",
+        "舌咽神经"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。** 面肌由面神经支配，一侧面神经麻痹可导致同侧面瘫（额纹消失、不能闭眼、口角歪向健侧）。A 错：三叉神经支配的是咀嚼肌（咬肌、颞肌、翼内肌、翼外肌），不是面肌；C 错：副神经支配胸锁乳突肌和斜方肌；D 错：舌咽神经与咽部感觉及吞咽有关，不支配面肌。",
+      "hint": "口角歪斜的面瘫，提示哪条神经出了问题？"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+        "label": "颈肌：胸锁乳突肌的功能"
+      },
+      "stem": "关于胸锁乳突肌的运动效应，下列描述正确的是？",
+      "options": [
+        "一侧收缩使头向对侧倾斜、脸转向同侧",
+        "一侧收缩使头向同侧倾斜、脸转向对侧",
+        "两侧同时收缩使头前屈",
+        "一侧收缩即可使头后仰"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。** 胸锁乳突肌起自胸骨柄和锁骨胸骨端，止于颞骨乳突；一侧收缩时头向同侧倾斜、脸转向对侧，两侧同时收缩使头后仰。A 错：把方向说反了；C 错：两侧收缩是头后仰而非前屈，屈头屈颈是颈深内侧群（颈长肌、头长肌）的作用；D 错：一侧收缩只产生侧屈加转头，不能使头后仰。",
+      "hint": "想象转头看肩膀：耳朵贴近同侧肩，脸转向另一边。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+        "label": "颈深肌群：斜角肌间隙的构成与穿行结构"
+      },
+      "stem": "斜角肌间隙是临床重要结构，其围成及穿行内容物正确的是？",
+      "options": [
+        "由前斜角肌、中斜角肌和第一肋围成，有臂丛神经和锁骨下动脉穿过",
+        "由前斜角肌、后斜角肌和第二肋围成，有颈丛和锁骨下静脉穿过",
+        "由中斜角肌、后斜角肌和第一肋围成，有迷走神经和颈总动脉穿过",
+        "由前、中、后三块斜角肌共同围成，有膈神经和椎动脉穿过"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。** 斜角肌间隙由前斜角肌、中斜角肌与第一肋围成，臂丛神经和锁骨下动脉由此穿过，斜角肌间隙综合征可压迫这两个结构。B 错：后斜角肌止于第二肋，不参与该间隙围成，且穿行者不是颈丛和锁骨下静脉；C 错：间隙由前、中斜角肌而非中、后斜角肌构成，穿行者也不是迷走神经和颈总动脉；D 错：后斜角肌不参与围成，穿行者也不是膈神经和椎动脉。",
+      "hint": "记住是\"前+中\"斜角肌加第一肋，过\"臂丛+锁骨下动脉\"。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+        "label": "胸上肢肌：前锯肌损伤与翼状肩"
+      },
+      "stem": "一侧前锯肌受损、肩胛骨不能紧贴胸壁而内侧缘翘起，形成的体征是？",
+      "options": [
+        "塌肩",
+        "翼状肩",
+        "方肩",
+        "垂肩"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。** 前锯肌起自上8或上9肋骨、止于肩胛骨内侧缘和下角，功能是拉肩胛骨向前紧贴胸壁；一侧瘫痪后肩胛骨内侧缘翘起，称翼状肩。A、D 错：塌肩/垂肩多与斜方肌（耸肩、上提肩胛骨）功能障碍有关；C 错：方肩常见于肩关节脱位或三角肌萎缩，与前锯肌无关。",
+      "hint": "肩胛骨内侧缘像翅膀一样翘起——名字里就带\"翼\"。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+        "label": "固有胸肌：肋间外肌与肋间内肌的呼吸作用"
+      },
+      "stem": "关于固有胸肌中肋间外肌和肋间内肌的呼吸功能，正确的是？",
+      "options": [
+        "肋间外肌降肋助呼气，肋间内肌提肋助吸气",
+        "肋间外肌提肋助吸气，肋间内肌降肋助呼气",
+        "两者均为提肋助吸气",
+        "两者均为降肋助呼气"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。** 肋间外肌位于肋间隙浅层，肌纤维斜向前下，提肋助吸气；肋间内肌位于其深面，肌纤维斜向后下（与肋间外肌垂直交叉），降肋助呼气。A 错：把两者功能完全说反；C、D 错：二者纤维方向相反、功能也相反，并非同为吸气肌或同为呼气肌。",
+      "hint": "纤维方向\"外前下、内后下\"交叉，外吸气、内呼气。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+        "label": "膈肌：三个裂孔的椎体水平与穿行结构"
+      },
+      "stem": "关于膈肌三个裂孔的位置和穿行结构，下列哪一项正确？",
+      "options": [
+        "主动脉裂孔位于第10胸椎，穿行主动脉和胸导管",
+        "食管裂孔位于第10胸椎偏左，穿行食管和迷走神经",
+        "腔静脉裂孔位于第12胸椎偏右，穿行下腔静脉",
+        "食管裂孔位于第8胸椎，穿行食管和胸导管"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。** 食管裂孔平第10胸椎、偏左，穿行食管和迷走神经。A 错：主动脉裂孔应平第12胸椎（不是第10胸椎），穿主动脉和胸导管；C 错：腔静脉裂孔平第8胸椎、偏右，在中心腱上，是三者中位置最高者（不是第12胸椎）；D 错：第8胸椎是腔静脉裂孔的水平，且胸导管穿主动脉裂孔，不穿食管裂孔。",
+      "hint": "口诀\"主12、食10、腔8\"，从后往前椎体水平递减。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+        "label": "腹肌：腹直肌鞘与弓状线"
+      },
+      "stem": "关于弓状线（脐下约4-5cm）以下腹直肌鞘的构成，正确的是？",
+      "options": [
+        "前层由腹外斜肌腱膜构成，后层由腹内斜肌腱膜后层加腹横肌腱膜构成",
+        "三块扁肌的腱膜全部从腹直肌前面跨过，鞘后层缺如，腹直肌后面直接贴腹横筋膜",
+        "腹直肌后面紧贴腹横肌肌性部分，腱膜不分前后层",
+        "前层仅由腹横肌腱膜构成，后层由腹外斜肌腱膜构成"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。** 在弓状线以下，腹外斜肌、腹内斜肌、腹横肌三块扁肌的腱膜全部经腹直肌前面走行，腹直肌鞘后层缺如，腹直肌后面直接贴腹横筋膜。A 错：这描述的是弓状线以上（后层由腹内斜肌后层+腹横肌腱膜构成）的构成，不是弓状线以下；C 错：腹直肌后面贴的是腹横筋膜，而不是腹横肌肌性部分；D 错：前后层的腱膜来源均被说反。",
+      "hint": "弓状线是鞘后层的游离下缘——过了这条线，后层\"没了\"。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+        "label": "腹股沟区：海氏三角围成与直疝"
+      },
+      "stem": "海氏三角（腹股沟三角）是腹股沟直疝的突出区域，其正确边界是？",
+      "options": [
+        "内侧界腹直肌外侧缘、下界腹股沟韧带、外侧界腹壁下动脉",
+        "内侧界腹直肌内侧缘、下界腹股沟韧带、外侧界腹壁下动脉",
+        "内侧界腹直肌外侧缘、下界腔隙韧带、外侧界腹壁上动脉",
+        "内侧界腹股沟韧带、下界腹横肌弓状下缘、外侧界腹壁下静脉"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。** 海氏三角由腹直肌外侧缘、腹股沟韧带和腹壁下动脉围成，腹腔内容物经此三角向前突出即腹股沟直疝（不经深环、不进入腹股沟管）。B 错：内侧界应是腹直肌外侧缘而非内侧缘，否则已越过正中线；C 错：下界是腹股沟韧带而非腔隙韧带，外侧界是腹壁下动脉而非腹壁上动脉；D 错：把腹股沟韧带当作内侧界、腹横肌弓状下缘当作下界，且外侧界错为腹壁下静脉，均不符合。",
+      "hint": "直疝在腹壁下动脉\"内侧\"突出，斜疝从动脉\"外侧\"的深环进入腹股沟管。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/anatomy/lectures/rec-2026-fall-013-015/notes.html",
+        "label": "肌总论：肌肉发生——肌节与鳃弓来源及神经支配"
+      },
+      "stem": "关于骨骼肌在胚胎期的发生来源及其神经支配，正确的是？",
+      "options": [
+        "由鳃弓间充质演化来的肌肉由躯体神经支配",
+        "由肌节演化来的肌肉由特殊内脏神经支配",
+        "鳃弓演化的肌肉主要是头颈部肌肉和背部斜方肌，由特殊内脏神经支配",
+        "躯干肌和四肢肌由鳃弓间充质演化而来"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。** 鳃弓间充质演化的肌肉主要是头颈部肌肉和背部斜方肌，因其在进化上属于内脏性起源（鱼类鳃的延续），故由特殊内脏神经支配。A 错：鳃弓来源的肌肉由特殊内脏神经支配，而非躯体神经；B 错：肌节演化的躯干肌、四肢肌及部分头肌才由躯体神经支配；D 错：躯干肌和四肢肌来自肌节，不是鳃弓间充质。",
+      "hint": "肌节→躯体神经支配；鳃弓→特殊内脏神经支配（头颈部+斜方肌）。"
+    }
+  ]
+}

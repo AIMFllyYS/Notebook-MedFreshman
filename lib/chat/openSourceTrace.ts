@@ -50,7 +50,7 @@ export function openWebSearchSources(sources: WebSearchSource[], activeUrl?: str
     ? activeIndex
     : Math.max(0, items.findIndex((item) => item.kind === 'web' && item.url && item.url === activeUrl));
   const active = items[index] ?? items[0];
-  const firstUrl = items.find((item) => item.kind === 'web' && item.url)?.url;
+  const firstUrl = items.find((item): item is Extract<TraceSource, { kind: 'web' }> => item.kind === 'web' && !!item.url)?.url;
   openSourceTrace(items, {
     id: `web-search:${firstUrl || items.length}`,
     title: `联网来源 · ${items.length} 条`,

@@ -2,14 +2,14 @@
   "schemaVersion": 1,
   "subjectId": "anatomy",
   "courseInstanceId": "rec-2026-fall",
-  "lessonId": "rec-2026-fall-010-013",
+  "lessonId": "rec-2026-fall-013-015",
   "courseName": "系统解剖学",
   "sessionRange": {
-    "start": 10,
-    "end": 13
+    "start": 13,
+    "end": 15
   },
-  "taughtOn": "2026-09-09",
-  "topic": "颅骨及其连接",
+  "taughtOn": "2026-09-14",
+  "topic": "肌总论头颈肌与躯干肌",
   "revision": 1,
   "materials": {
     "recording": {
@@ -29,5 +29,5 @@
       "format": "markdown"
     }
   },
-  "quizId": "rec-2026-fall-010-013"
+  "quizId": "rec-2026-fall-013-015"
 }

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "instrumental-analysis",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-009-010",
+  "courseName": "分析化学",
+  "sessionRange": {
+    "start": 9,
+    "end": 10
+  },
+  "taughtOn": "2026-09-15",
+  "topic": "紫外可见分光光度法续与朗伯比尔定律",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-009-010"
+}

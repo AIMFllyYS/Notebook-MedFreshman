@@ -1,0 +1,260 @@
+{
+  "subjectId": "histology",
+  "chapterId": "rec-2026-fall-007-008",
+  "generatedAt": "2026-09-15",
+  "examConfig": {
+    "source": "content/histology/lectures/rec-2026-fall-007-008/recording.md；content/histology/lectures/rec-2026-fall-007-008/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-007-008",
+    "revision": 1,
+    "recordingHash": "",
+    "notesTextHash": ""
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "血液经抗凝离心后分为三层，从上到下各层成分与占比正确的是（　）。",
+      "options": [
+        "上层血浆（约55%，淡黄色），中层白膜层为白细胞和血小板（<1%），下层红细胞（约45%，红色）",
+        "上层红细胞，中层白细胞和血小板，下层血浆",
+        "上层白细胞和血小板，中层血浆，下层红细胞",
+        "上层血浆占45%，下层红细胞占55%"
+      ],
+      "answer": 0,
+      "hint": "上浆、中膜、下红。",
+      "explanation": "**A 正确。** 抗凝离心后血液分三层：上层淡黄色血浆约占55%，中间很薄的白色白膜层为白细胞和血小板（<1%），下层红色红细胞约占45%。\n- B、C：把三层顺序完全颠倒。\n- D：血浆与红细胞的占比说反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "血液离心三层组成与占比"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于血浆与血清的区别，下列说法正确的是（　）。",
+      "options": [
+        "血清加抗凝剂离心得到，含有纤维蛋白原",
+        "血浆加抗凝剂离心得到、含纤维蛋白原；血清是血液凝固后析出的液体、不含纤维蛋白原",
+        "血浆和血清都含有纤维蛋白原",
+        "血浆和血清都不含纤维蛋白原"
+      ],
+      "answer": 1,
+      "hint": "看纤维蛋白原有无。",
+      "explanation": "**B 正确。** 血浆是血液加抗凝剂离心后的上层液体，含有纤维蛋白原；血清是血液凝固后析出的液体，纤维蛋白原已转变成纤维蛋白被消耗，故血清中不含纤维蛋白原。\n- A：描述的是血浆而非血清，且血清不含纤维蛋白原。\n- C、D：两者在纤维蛋白原有无上恰相反。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "血浆与血清的区别 · 纤维蛋白原"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于成熟红细胞的形态结构特点，下列描述正确的是（　）。",
+      "options": [
+        "双凹圆盘状，有细胞核和线粒体",
+        "双凹圆盘状，无细胞核也无细胞器，胞质内含血红蛋白",
+        "双凸圆盘状，有一个分叶核",
+        "球形，无核但有大量溶酶体"
+      ],
+      "answer": 1,
+      "hint": "成熟红细胞是无核无器的双凹圆盘。",
+      "explanation": "**B 正确。** 成熟红细胞呈双凹圆盘状，无细胞核也无任何细胞器（无线粒体，只能糖酵解供能），胞质内含大量血红蛋白，主要运输O₂和CO₂。\n- A：成熟红细胞既无核也无线粒体。\n- C：红细胞为双凹圆盘而非双凸，且无核。\n- D：红细胞不是球形（球形见于遗传性球形红细胞增多症），也不含大量溶酶体。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "成熟红细胞形态 · 双凹圆盘无核无器"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "骨骼肌从外到内的三层结缔组织及其包裹对象，正确的是（　）。",
+      "options": [
+        "肌内膜包整块肌肉，肌外膜包肌束，肌束膜包单条肌纤维",
+        "肌束膜包整块肌肉，肌外膜包单条肌纤维",
+        "肌外膜包整块肌肉，肌束膜包肌束，肌内膜包每条肌纤维",
+        "三层结缔组织均只包单条肌纤维，末端汇合成韧带"
+      ],
+      "answer": 2,
+      "hint": "外整块、中肌束、内单条。",
+      "explanation": "**C 正确。** 骨骼肌外层为肌外膜包整块肌肉，中层为肌束膜包绕由多条肌纤维组成的肌束，内层为肌内膜包每条肌纤维；三层结缔组织在肌肉末端汇集形成肌腱附着于骨。\n- A、B：三层名称与包裹对象配对错误。\n- D：三者包裹层次不同，且末端形成的是肌腱而非韧带。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "骨骼肌三层结缔组织 · 肌外膜/肌束膜/肌内膜"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "外周血涂片中，中性粒细胞出现“核左移”是指（　）。",
+      "options": [
+        "5叶以上分叶核中性粒细胞超过3%，提示巨幼细胞性贫血",
+        "杆状核及幼稚中性粒细胞增多，提示严重感染、骨髓大量释放未成熟细胞",
+        "嗜酸性粒细胞比例升高，提示过敏或寄生虫感染",
+        "淋巴细胞比例显著升高，提示病毒感染"
+      ],
+      "answer": 1,
+      "hint": "幼稚核增多往左走。",
+      "explanation": "**B 正确。** 核左移指外周血中杆状核和幼稚阶段中性粒细胞增多，见于严重感染，提示骨髓将未成熟细胞大量释放入血。\n- A：那是核右移（5叶以上>3%），见于维生素B₁₂/叶酸缺乏所致巨幼细胞性贫血。\n- C、D：描述的是嗜酸性粒细胞/淋巴细胞比例变化，与中性粒细胞核象无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "中性粒细胞 · 核左移与核右移"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于嗜酸性粒细胞的颗粒成分与主要功能，下列正确的是（　）。",
+      "options": [
+        "颗粒含肝素和组胺，主要参与抗凝和I型超敏反应",
+        "颗粒含主要碱性蛋白和组胺酶，主要抗寄生虫感染并通过组胺酶灭活组胺减轻过敏反应",
+        "颗粒含髓过氧化物酶和溶菌酶，主要吞噬杀灭细菌",
+        "颗粒含铁蛋白，主要运输氧气"
+      ],
+      "answer": 1,
+      "hint": "抗寄生虫+抗过敏。",
+      "explanation": "**B 正确。** 嗜酸性粒细胞颗粒含主要碱性蛋白（MBP）、嗜酸性阳离子蛋白等，可杀灭蠕虫等寄生虫；还含组胺酶，能灭活组胺而减轻过敏反应，故过敏性疾病和寄生虫感染时其比例升高。\n- A：肝素、组胺是嗜碱性粒细胞颗粒成分。\n- C：髓过氧化物酶、溶菌酶是中性粒细胞嗜天青颗粒/特殊颗粒成分，主要杀菌。\n- D：与血红蛋白运氧无关。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "嗜酸性粒细胞 · 颗粒成分与抗过敏抗寄生虫功能"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于血小板的来源、结构与功能，下列说法正确的是（　）。",
+      "options": [
+        "血小板是完整的有核细胞，来源于原红细胞",
+        "血小板是骨髓巨核细胞胞质脱落形成的无核小块，其α颗粒储存纤维蛋白原、vWF等凝血相关物质，参与止血凝血",
+        "血小板是血液中体积最大的血细胞，寿命约120天",
+        "血小板受刺激时伸出伪足，内部无任何膜管道系统"
+      ],
+      "answer": 1,
+      "hint": "巨核碎块、无核、α颗粒储凝血因子。",
+      "explanation": "**B 正确。** 血小板不是完整细胞，而是骨髓巨核细胞胞质脱落的无核小块；α颗粒最多，含纤维蛋白原、血小板因子4、PDGF、vWF、凝血因子V等，δ（致密）颗粒含ADP、ATP、5-HT、Ca²⁺，共同参与黏附、释放、聚集与凝血。\n- A：血小板无核，也不来源于红细胞系。\n- C：血小板是最小的血细胞（直径2-4μm），寿命仅7-14天；120天是红细胞寿命。\n- D：血小板膜内陷形成开放小管系统（OCS）和致密管道系统（DTS）。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "血小板 · 巨核细胞来源与α/δ颗粒"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于肌节的定义与组成，下列正确的是（　）。",
+      "options": [
+        "相邻两条M线之间的一段肌原纤维，由1个完整A带构成",
+        "相邻两条Z线之间的一段肌原纤维，即1/2 I带 + 1个完整A带 + 1/2 I带，是肌原纤维的基本结构与功能单位",
+        "一个完整H带加两侧M线",
+        "两条横小管之间的一段肌纤维"
+      ],
+      "answer": 1,
+      "hint": "两Z线之间，半I-A-半I。",
+      "explanation": "**B 正确。** 肌节指相邻两条Z线之间的一段肌原纤维，由1/2 I带+1个完整A带+1/2 I带构成，是骨骼肌收缩的基本结构和功能单位，静息时长约2-2.5μm。\n- A、C：以M线/H带为界或仅含A带均不对。\n- D：横小管是膜系统结构，不是肌节分界。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "肌节 · 定义与组成（1/2 I + A + 1/2 I）"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于心肌闰盘的超微结构与功能，下列说法正确的是（　）。",
+      "options": [
+        "横位部分为缝隙连接，纵位部分为桥粒",
+        "闰盘是骨骼肌细胞间的特征性结构，含半桥粒",
+        "横位部分含黏着小带（中间连接）和桥粒以牢固传递收缩力，纵位部分含缝隙连接以实现电耦联、使心肌同步收缩",
+        "闰盘只起营养作用，不参与细胞间连接与电传导"
+      ],
+      "answer": 2,
+      "hint": "横位机械、纵位电偶。",
+      "explanation": "**C 正确。** 闰盘是心肌细胞间特有的阶梯状连接：横位部分含黏着小带和桥粒，起牢固机械连接、传递收缩力的作用；纵位部分含缝隙连接，允许离子通过实现电耦联，使相邻心肌同步收缩。\n- A：把横位/纵位的连接类型说反。\n- B：闰盘见于心肌而非骨骼肌。\n- D：闰盘兼具机械连接与电传导功能。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "闰盘 · 横位黏着小带+桥粒，纵位缝隙连接"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "根据肌丝滑动学说，骨骼肌收缩时各带/线长度变化正确的是（　）。",
+      "options": [
+        "A带缩短，I带和H带长度不变",
+        "I带和H带缩短甚至消失，A带长度不变，说明是细肌丝向粗肌丝方向滑动而非肌丝本身缩短",
+        "所有带和线均同步缩短，肌丝本身长度也缩短",
+        "H带增宽，I带和A带均缩短"
+      ],
+      "answer": 1,
+      "hint": "A带不变，I/H短。",
+      "explanation": "**B 正确。** 收缩时细肌丝向M线方向滑入粗肌丝之间，重叠增多，故只有细肌丝的I带和只有粗肌丝的H带缩短甚至消失，而代表粗肌丝全长的A带长度不变，肌节整体缩短。\n- A：A带由粗肌丝长度决定，不变；I带、H带才缩短。\n- C：肌丝本身长度不变。\n- D：H带应缩短而非增宽。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "肌丝滑动学说 · 收缩时A带不变、I带H带缩短"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于平滑肌与横纹肌在超微结构上的区别，下列说法正确的是（　）。",
+      "options": [
+        "平滑肌有横小管和完整肌节，以Z线作为细肌丝附着点",
+        "平滑肌一条粗肌丝周围排列6根细肌丝，与骨骼肌完全相同",
+        "平滑肌无横小管而以肌膜小凹（Caveolae）传兴奋，无Z线而以密斑（肌膜下）和密体（胞质内）作为细肌丝附着点，故收缩时细胞呈扭曲状",
+        "平滑肌线粒体极丰富、形成二联体，与心肌相同"
+      ],
+      "answer": 2,
+      "hint": "无横小管→小凹；无Z线→密斑密体。",
+      "explanation": "**C 正确。** 平滑肌无横纹、无横小管和肌节，膜凹陷形成肌膜小凹传兴奋；以密斑（肌膜下）和密体（胞质内）替代Z线作为细肌丝附着点；粗细肌丝螺旋排列、相邻粗肌丝横桥朝向相反，故收缩时细胞和核均呈扭曲状。\n- A：平滑肌既无横小管/肌节，也无Z线。\n- B：骨骼肌粗:细为1:6，平滑肌一条粗肌丝周围有10-30条细肌丝。\n- D：线粒体极丰富、形成二联体是心肌特征，与平滑肌不同。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/histology/lectures/rec-2026-fall-007-008/notes.html",
+        "label": "平滑肌 · 肌膜小凹与密斑密体、扭曲收缩"
+      }
+    }
+  ]
+}

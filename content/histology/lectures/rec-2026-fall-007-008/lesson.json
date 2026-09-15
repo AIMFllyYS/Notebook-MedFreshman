@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "histology",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-007-008",
+  "courseName": "人体组织学",
+  "sessionRange": {
+    "start": 7,
+    "end": 8
+  },
+  "taughtOn": "2026-09-14",
+  "topic": "血液与肌组织",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-007-008"
+}

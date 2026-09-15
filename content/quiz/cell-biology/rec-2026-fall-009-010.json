@@ -1,0 +1,260 @@
+{
+  "subjectId": "cell-biology",
+  "chapterId": "rec-2026-fall-009-010",
+  "generatedAt": "2026-09-15",
+  "examConfig": {
+    "source": "content/cell-biology/lectures/rec-2026-fall-009-010/recording.md；content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-009-010",
+    "revision": 1,
+    "recordingHash": "",
+    "notesTextHash": ""
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "内质网分类与RER/SER结构连通性"
+      },
+      "stem": "关于粗面内质网（RER）与光面内质网（SER），下列说法正确的是？",
+      "options": [
+        "二者是细胞内两种完全独立的细胞器",
+        "RER为管状结构，SER为扁平囊状结构",
+        "RER与SER是同一内质网的不同形态与功能区域，膜系统连续连通",
+        "SER膜外附着核糖体，RER无核糖体附着"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**粗面与光面内质网并非两种独立细胞器，而是内质网这同一细胞器的不同形态与功能区域，结构上连续连通，粗面内质网与核膜外层相连、内质网腔与核间隙直接相通。A错：老师明确强调二者不是两个不同的细胞器。B错：正好相反——RER为扁平囊状、SER为管状。D错：附着核糖体的是RER而非SER。",
+      "hint": "粗面扁平附核糖体，光面管状无颗粒，二者膜系统连续。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "内质网标志酶（葡萄糖-6-磷酸酶）"
+      },
+      "stem": "下列哪种酶被认为是内质网的标志酶？",
+      "options": [
+        "过氧化氢酶",
+        "葡萄糖-6-磷酸酶",
+        "细胞色素P450",
+        "蛋白二硫键异构酶（PDI）"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**葡萄糖-6-磷酸酶是内质网的标志酶，位于ER膜上，负责去掉葡萄糖第6位的磷酸。A错：过氧化氢酶是过氧化物酶体的标志酶，负责把H₂O₂歧化为水和氧气。C错：细胞色素P450是肝细胞SER上参与解毒的氧化酶，并非内质网的标志酶。D错：PDI是ER腔内帮助二硫键形成与重排的折叠相关蛋白，不是标志酶。",
+      "hint": "回忆ER膜上去掉葡萄糖第六位磷酸的那个酶。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "溶酶体酸性pH与V-ATPase"
+      },
+      "stem": "溶酶体内部维持的酸性pH范围约为？",
+      "options": [
+        "pH 4.5-5.0",
+        "pH 6.5-7.0",
+        "pH 7.2-7.4",
+        "pH 8.0-8.5"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**溶酶体内为pH 4.5-5.0的强酸性环境，由V-ATPase消耗ATP把质子泵入，以适配其中酸性水解酶的最适工作环境。B错：pH 6.5-7.0接近内体逐渐酸化过程中的过渡范围，并非溶酶体最终的强酸性。C错：pH 7.2-7.4是胞质/胞外的中性pH，溶酶体并非中性。D错：pH 8.0-8.5偏碱性，与溶酶体酸性环境完全相反。",
+      "hint": "里面的水解酶要在强酸下才最适工作。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "过氧化物酶体两种标志酶"
+      },
+      "stem": "关于过氧化物酶体的两种标志性酶及其作用，下列描述正确的是？",
+      "options": [
+        "氧化酶利用氧气氧化底物生成H₂O₂，过氧化氢酶将H₂O₂歧化为水和氧气",
+        "过氧化氢酶氧化底物生成H₂O₂，氧化酶再将H₂O₂分解为水和氧气",
+        "氧化酶与过氧化氢酶都直接把有毒物质氧化成二氧化碳和水",
+        "只含过氧化氢酶，并不产生H₂O₂"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**过氧化物酶体中氧化酶利用O₂氧化底物、把脱下的电子交给氧生成H₂O₂，再由过氧化氢酶把有毒的H₂O₂歧化为水和氧气完成解毒。B错：把两种酶的作用说反了。C错：二者并非都直接把毒物氧化成CO₂和水，而是先由氧化酶产H₂O₂、再由过氧化氢酶分解。D错：过氧化物酶体同时含氧化酶和过氧化氢酶两种标志酶，且氧化过程确实会产生H₂O₂。",
+      "hint": "一种酶产毒（H₂O₂），另一种酶解毒。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "信号肽假说与SRP识别"
+      },
+      "stem": "在信号肽假说中，分泌蛋白的信号肽刚从核糖体大亚基露出后，紧接着发生的第一步是？",
+      "options": [
+        "信号肽直接插入Sec61通道",
+        "SRP（信号识别颗粒）识别并结合信号肽，同时结合核糖体使翻译暂停",
+        "信号肽酶立即把信号肽切除",
+        "核糖体直接与核膜结合"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**信号肽N端一露出核糖体大亚基即被SRP识别，SRP同时结合核糖体使翻译暂停，以便把整个核糖体-新生肽复合物靶向到内质网。A错：此时核糖体尚未到达ER膜，还不能进入Sec61通道。C错：信号肽切除发生在翻译结束、新生肽进入ER腔之后，由信号肽酶完成，不是第一步。D错：核糖体是先被SRP带至ER膜上的SRP受体，而非先与核膜结合。",
+      "hint": "先被识别并让翻译“停一下”，再被带到ER膜。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "N-糖基化与O-糖基化区别"
+      },
+      "stem": "关于N-糖基化与O-糖基化的比较，下列说法正确的是？",
+      "options": [
+        "N-糖基化在高尔基体进行，O-糖基化在内质网进行",
+        "N-糖基化逐个添加糖基，O-糖基化整体一次性添加14糖核心",
+        "N-糖基化连接天冬酰胺侧链氮原子，O-糖基化连接丝氨酸/苏氨酸侧链羟基氧原子",
+        "二者都连接在天冬酰胺残基上"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**N-糖基化连接在天冬酰胺（Asn）侧链的氮原子上，O-糖基化连接在丝氨酸/苏氨酸（Ser/Thr）侧链羟基的氧原子上。A错：场所正好相反——N-糖基化在内质网、O-糖基化在高尔基体。B错：添加方式正好相反——N-糖基化是14糖核心整体一次性添加，O-糖基化是逐个添加。D错：只有N-糖基化连在天冬酰胺上，O-糖基化连在Ser/Thr上。",
+      "hint": "从场所、连接残基、添加方式三点对比。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "M6P标记的添加部位"
+      },
+      "stem": "溶酶体水解酶的M6P（甘露糖-6-磷酸）标记是在高尔基体的哪个区域添加的？",
+      "options": [
+        "TGN（反面管网结构）",
+        "cis面（顺面/CGN）",
+        "中间膜囊（medial cisternae）",
+        "trans面但不包括TGN"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**M6P标记是在cis面（顺面/CGN）由磷酸转移酶给水解酶N-糖链上甘露糖第6位加上磷酸基团形成的。A错：TGN是M6P受体识别并分选水解酶的部位，而不是添加M6P标记的部位。C错：中间膜囊主要负责糖链的进一步加工修饰，不负责添加M6P。D错：M6P标记不在trans侧添加。",
+      "hint": "先在顺面“加标签”，再到TGN“分选”。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "三类包被蛋白运输方向"
+      },
+      "stem": "下列关于三类包被蛋白介导的运输方向，配对正确的是？",
+      "options": [
+        "COPII——高尔基体→内质网的逆向回收",
+        "COPI——内质网→高尔基体的顺向运输",
+        "网格蛋白（clathrin）——TGN→内体/溶酶体，以及质膜→内体",
+        "网格蛋白——专门负责内质网输出囊泡"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**网格蛋白包被介导TGN→内体/溶酶体（如M6P分选通路）以及质膜→内体（内吞作用）。A错：方向说反了——COPII是ER→高尔基体的顺向运输。B错：方向也说反了——COPI是高尔基体→ER的逆向回收，用于把逃逸的KDEL驻留蛋白收回内质网。D错：负责内质网输出囊泡的是COPII，而不是网格蛋白。",
+      "hint": "COPII顺向出ER，COPI逆向回ER，网格蛋白管TGN/质膜到内体。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "胰岛素原加工与C肽临床意义"
+      },
+      "stem": "临床上检测血液中的C肽水平，主要是为了评估什么？",
+      "options": [
+        "患者外源注射胰岛素的剂量是否足够",
+        "患者自身内源胰岛素的合成与分泌能力",
+        "患者血糖浓度的即时高低",
+        "患者胰高血糖素的分泌水平"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**内源合成胰岛素时，胰岛素原在分泌颗粒中切除下的C肽与成熟胰岛素以1:1同时分泌；外源注射的胰岛素本身不含C肽，因此测C肽可反映患者自身β细胞合成胰岛素的能力。A错：外源注射的胰岛素不含C肽，无法用C肽衡量其剂量是否足够。C错：C肽反映的是内源胰岛素合成能力，而非即时血糖浓度。D错：C肽来自胰岛素原加工，与胰高血糖素无关。",
+      "hint": "外源打进去的胰岛素不带C肽。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "微粒体三组对照实验与共翻译转位"
+      },
+      "stem": "在微粒体重构实验中，第三组“先完成翻译生成前体蛋白，再加入粗面微粒体”的结果及其推论是？",
+      "options": [
+        "前体蛋白仍能进入微粒体腔，说明翻译完成后也能转位",
+        "前体蛋白不能进入微粒体腔，证明转位必须与翻译同时进行（共翻译转位）",
+        "前体蛋白进入微粒体后信号肽仍被切除，说明信号肽切除不依赖转位",
+        "前体蛋白被微粒体中的蛋白酶完全降解"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**第三组先在无微粒体条件下完成翻译、生成带信号肽的前体蛋白后再加粗面微粒体，结果蛋白不能进入微粒体腔，由此证明转位必须与翻译同时进行（共翻译转位）；翻译完成、肽链已折叠后便无法再穿过Sec61通道。A错：结果恰恰相反，前体蛋白不能进入。C错：第三组蛋白根本没有进入微粒体，谈不上信号肽被切除；观察到“信号肽被切除、蛋白变短”的是第二组（翻译同时加微粒体）。D错：前体蛋白并非被微粒体中的蛋白酶降解，而是因已折叠、无法再通过Sec61通道进入。",
+      "hint": "先翻完再加微粒体，进得去吗？"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-009-010/notes.html",
+        "label": "Rab与SNARE在膜融合中的分工"
+      },
+      "stem": "囊泡运输到达靶膜后，关于Rab蛋白与SNARE蛋白的分工，下列说法正确的是？",
+      "options": [
+        "Rab蛋白像拉链一样把两膜拉近并直接介导最终膜融合",
+        "SNARE蛋白作为囊泡身份标签，负责远距离初始拴系",
+        "Rab蛋白结合拴系蛋白建立囊泡与靶膜的初始远距离连接，SNARE（v-SNARE与t-SNARE共4条螺旋）配对绞合介导最终膜融合",
+        "Rab与SNARE功能完全相同，都只负责货物选择"
+      ],
+      "answer": 2,
+      "explanation": "**C 正确。**Rab小GTP酶作为囊泡/细胞器的身份标签，结合效应因子（拴系蛋白）先建立囊泡与靶膜的远距离初始连接；随后囊泡膜上的v-SNARE与靶膜上的t-SNARE共4条螺旋像拉链一样配对绞合，排开两膜间的水、把膜拉近，介导最终膜融合。A错：把Rab说成了直接拉膜融合的角色——直接介导膜融合的是SNARE。B错：把SNARE说成了身份标签——负责远距离初始拴系的是Rab。D错：Rab/SNARE在到达端负责对接与融合，货物选择是出发端包被蛋白的工作，二者既不相同也不负责选货物。",
+      "hint": "Rab管“认路拴系”，SNARE管“拉链融合”。"
+    }
+  ]
+}
