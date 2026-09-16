@@ -5,7 +5,7 @@ import { Folder, FolderOpen, Layers } from "lucide-react";
 import FolderTreeRow from "./FolderTreeRow";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import SubjectIcon from "@/components/shared/SubjectIcon";
-import { academicYearOfSubject } from "@/lib/constants/academic-year";
+import { DEFAULT_ACADEMIC_YEAR, academicYearOfSubject } from "@/lib/constants/academic-year";
 import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
 
 /** 学年 → 学科文件夹树。数据与主页书架同一份 registry；行组件复用 FolderTreeRow。 */
@@ -18,8 +18,8 @@ export default function YearSubjectFolderTree({
 }) {
   const groups = useMemo(() => listFlashcardSubjectGroups(), []);
   const [expandedYears, setExpandedYears] = useState<Set<string>>(() => {
-    const yearId = selectedId ? academicYearOfSubject(selectedId) : groups[0]?.yearId;
-    return yearId ? new Set([yearId]) : new Set();
+    const yearId = selectedId ? academicYearOfSubject(selectedId) : DEFAULT_ACADEMIC_YEAR;
+    return new Set([yearId]);
   });
 
   const toggleYear = (yearId: string) => {
