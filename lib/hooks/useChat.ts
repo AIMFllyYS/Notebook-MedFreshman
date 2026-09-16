@@ -119,6 +119,8 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
               flashcards,
               maxToolRounds: settings.maxToolRounds,
               planMode: sendOptions?.planMode,
+              forcedTool: sendOptions?.forcedTool,
+              attachedFiles: sendOptions?.attachedFiles,
             },
             resolved,
             budget,

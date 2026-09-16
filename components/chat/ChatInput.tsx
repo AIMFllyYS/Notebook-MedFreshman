@@ -3,11 +3,28 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo, useId } from 'react';
 import {
   AgentGlobeIcon, AgentArrowUpIcon, AgentStopIcon, AgentQuoteIcon,
-  AgentCloseIcon, AgentCheckIcon, AgentPaperclipIcon,
+  AgentCloseIcon, AgentCheckIcon, AgentPlusIcon,
 } from '@/components/icons/AgentIcons';
-import type { ChatContext, ChatAttachment } from '@/lib/types/chat';
+import type { ChatContext } from '@/lib/types/chat';
+import type { SendMessageOptions } from '@/lib/chat/sendMessage';
 import { useChatUI } from '@/lib/hooks/useChatUI';
 import { useSettings, type ThinkingEffort } from '@/lib/hooks/useSettings';
+import { useSkills } from '@/lib/hooks/useSkills';
+import {
+  hasNotebookFileDrag,
+  mergeAttachedFiles,
+  readNotebookFileDrag,
+  skillForcedTool,
+  type AttachedFileRef,
+  type ComposerForcedTool,
+  type ForcedComposerTool,
+} from '@/lib/chat/composerIntent';
+import { detectComposerTrigger, flattenFileMentions, listFileMentions, replaceComposerTrigger } from '@/lib/chat/fileMentions';
+import { readPlanModeGate, resolvePlanMode } from '@/lib/chat/planModeGate';
+import ComposerChips from '@/components/chat/composer/ComposerChips';
+import ComposerCommandPanel, { listComposerCommands } from '@/components/chat/composer/ComposerCommandPanel';
+import ComposerPalette from '@/components/chat/composer/ComposerPalette';
+import FileMentionMenu from '@/components/chat/composer/FileMentionMenu';
 import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
 import { ACCEPTED_DOCUMENT_FILE_TYPES } from '@/lib/ai/imageUtils';
 import { useKeyboardSettings } from '@/lib/keyboard/useKeyboardSettings';
@@ -27,13 +44,7 @@ import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { shouldBlockFocusSteal } from '@/lib/notes/selectionPopover';
 
 export interface ChatInputProps {
-  onSend: (content: string, options?: {
-    quotedText?: string;
-    enableThinking?: boolean;
-    thinkingEffort?: ThinkingEffort;
-    enableSearch?: boolean;
-    attachments?: ChatAttachment[];
-  }) => void;
+  onSend: (content: string, options?: SendMessageOptions) => void;
   onStop: () => void;
   isLoading: boolean;
   chatContext: ChatContext;
@@ -61,8 +72,13 @@ type QueuedMessage = {
   id: string;
   content: string;
   quotedText?: string;
-  attachments?: ChatAttachment[];
+  attachments?: SendMessageOptions["attachments"];
+  planMode?: boolean;
+  forcedTool?: ComposerForcedTool;
+  attachedFiles?: AttachedFileRef[];
 };
+
+type PaletteKind = "slash" | "hash" | null;
 
 function countCharacters(text: string) {
   // Count Unicode code points without allocating a second large array.
@@ -71,7 +87,7 @@ function countCharacters(text: string) {
   return count;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice, chatContext }) => {
   const [input, setInput] = useState('');
   const [queuedMessages, setQueuedMessages] = useState<QueuedMessage[]>([]);
   const [editingQueuedId, setEditingQueuedId] = useState<string | null>(null);
@@ -92,7 +108,18 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const composerRef = useRef<HTMLDivElement>(null);
   const lastInsetRef = useRef<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const plusRef = useRef<HTMLButtonElement>(null);
   const { quotedText, clearQuotedText } = useChatUI();
+  const skills = useSkills((s) => s.skills);
+  const settingsSnapshot = useSettings();
+  const planGate = readPlanModeGate(settingsSnapshot);
+  const [planMode, setPlanMode] = useState(() => readPlanModeGate(useSettings.getState()).defaultOn);
+  const [forcedTool, setForcedTool] = useState<ComposerForcedTool | undefined>();
+  const [attachedFiles, setAttachedFiles] = useState<AttachedFileRef[]>([]);
+  const [palette, setPalette] = useState<PaletteKind>(null);
+  const [paletteIndex, setPaletteIndex] = useState(0);
+  const [mentionQuery, setMentionQuery] = useState("");
+  const mentionTriggerRef = useRef<ReturnType<typeof detectComposerTrigger>>(null);
   const globalSelectedModelId = useSettings((s) => s.selectedModelId);
   const customApiGroups = useSettings((s) => s.customApiGroups);
   const selectedModelId = modelId ?? globalSelectedModelId;
@@ -156,6 +183,64 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     };
   }, [onComposerInsetChange]);
 
+  const effectivePlanMode = resolvePlanMode(planMode, settingsSnapshot);
+  const mentionGroups = useMemo(
+    () => listFileMentions(chatContext, mentionQuery),
+    [chatContext, mentionQuery],
+  );
+  const slashItems = useMemo(
+    () => listComposerCommands({ planAllowed: planGate.allowed, skills, query: mentionQuery }),
+    [planGate.allowed, skills, mentionQuery],
+  );
+  const forcedSkillName = forcedTool?.startsWith("skill:")
+    ? skills.find((skill) => skillForcedTool(skill.id) === forcedTool)?.name
+    : undefined;
+
+  const closePalette = useCallback(() => {
+    setPalette(null);
+    setPaletteIndex(0);
+    mentionTriggerRef.current = null;
+  }, []);
+
+  const consumeTrigger = useCallback(() => {
+    const trigger = mentionTriggerRef.current;
+    const el = textareaRef.current;
+    if (!trigger || !el) return;
+    const cursor = el.selectionStart ?? input.length;
+    const next = replaceComposerTrigger(input, trigger, cursor);
+    setInput(next);
+    mentionTriggerRef.current = null;
+  }, [input]);
+
+  const applyPlan = useCallback(() => {
+    if (!planGate.allowed) return;
+    setPlanMode((value) => !value);
+    setForcedTool(undefined);
+    consumeTrigger();
+    closePalette();
+  }, [planGate.allowed, consumeTrigger, closePalette]);
+
+  const applyTool = useCallback((tool: ForcedComposerTool) => {
+    setForcedTool((current) => current === tool ? undefined : tool);
+    if (!planGate.forced) setPlanMode(false);
+    consumeTrigger();
+    closePalette();
+  }, [planGate.forced, consumeTrigger, closePalette]);
+
+  const applySkill = useCallback((skill: { id: string }) => {
+    const next = skillForcedTool(skill.id);
+    setForcedTool((current) => current === next ? undefined : next);
+    if (!planGate.forced) setPlanMode(false);
+    consumeTrigger();
+    closePalette();
+  }, [planGate.forced, consumeTrigger, closePalette]);
+
+  const applyFile = useCallback((file: AttachedFileRef) => {
+    setAttachedFiles((current) => mergeAttachedFiles(current, [file]));
+    consumeTrigger();
+    closePalette();
+  }, [consumeTrigger, closePalette]);
+
   const dispatchMessage = useCallback((message: QueuedMessage) => {
     onSend(message.content, {
       quotedText: message.quotedText,
@@ -163,25 +248,32 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       thinkingEffort: effectiveThinkingEffort,
       enableSearch,
       attachments: message.attachments,
+      planMode: message.planMode,
+      forcedTool: message.forcedTool,
+      attachedFiles: message.attachedFiles,
     });
   }, [onSend, effectiveEnableThinking, effectiveThinkingEffort, enableSearch]);
 
   const clearDraft = useCallback(() => {
     setInput('');
     clearAttachments();
+    setAttachedFiles([]);
     if (effectiveQuote) clearQuotedText();
   }, [clearAttachments, effectiveQuote, clearQuotedText]);
 
   const handleSend = useCallback(() => {
     if (overLimit) { setShowLimitDialog(true); return; }
     const trimmed = input.trim();
-    if ((!trimmed && attachments.length === 0) || externalDisabled) return;
+    if ((!trimmed && attachments.length === 0 && attachedFiles.length === 0) || externalDisabled) return;
 
     const message: QueuedMessage = {
       id: crypto.randomUUID(),
-      content: trimmed || '请阅读并分析附件',
+      content: trimmed || (attachedFiles.length > 0 ? '请阅读这些笔记' : '请阅读并分析附件'),
       quotedText: effectiveQuote || undefined,
       attachments: toChatFormat(),
+      planMode: effectivePlanMode || undefined,
+      forcedTool: effectivePlanMode ? undefined : forcedTool,
+      attachedFiles: attachedFiles.length > 0 ? attachedFiles : undefined,
     };
     if (isLoading) {
       if (editingQueuedId) {
@@ -194,7 +286,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       dispatchMessage(message);
     }
     clearDraft();
-  }, [input, overLimit, attachments, isLoading, externalDisabled, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft]);
+  }, [input, overLimit, attachments, attachedFiles, isLoading, externalDisabled, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft, effectivePlanMode, forcedTool]);
 
   useEffect(() => {
     if (isLoading) {
@@ -226,6 +318,25 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (composingRef.current || e.nativeEvent.isComposing || e.keyCode === 229) return;
+    if (palette) {
+      const count = palette === "hash" ? flattenFileMentions(mentionGroups).length : slashItems.length;
+      if (e.key === "Escape") { e.preventDefault(); closePalette(); return; }
+      if (e.key === "ArrowDown") { e.preventDefault(); setPaletteIndex((i) => (i + 1) % Math.max(count, 1)); return; }
+      if (e.key === "ArrowUp") { e.preventDefault(); setPaletteIndex((i) => (i - 1 + Math.max(count, 1)) % Math.max(count, 1)); return; }
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        if (palette === "hash") {
+          const file = flattenFileMentions(mentionGroups)[paletteIndex];
+          if (file) applyFile(file);
+        } else {
+          const item = slashItems[paletteIndex];
+          if (item?.kind === "plan") applyPlan();
+          else if (item?.kind === "tool") applyTool(item.id as ForcedComposerTool);
+          else if (item?.skill) applySkill(item.skill);
+        }
+        return;
+      }
+    }
     if (e.key === 'Enter' && !e.shiftKey) {
       if (!sendShortcutEnabled) return;
       e.preventDefault();
@@ -233,8 +344,16 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     }
   };
 
-  const handleAttachClick = () => {
-    fileInputRef.current?.click();
+  const syncTrigger = (value: string, cursor: number) => {
+    const trigger = detectComposerTrigger(value, cursor);
+    mentionTriggerRef.current = trigger;
+    if (!trigger) {
+      if (palette === "hash" || (palette === "slash" && mentionQuery)) closePalette();
+      return;
+    }
+    setMentionQuery(trigger.query);
+    setPalette(trigger.type);
+    setPaletteIndex(0);
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -245,8 +364,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   };
 
   const inputDisabled = !!externalDisabled;
-  const sendDisabled = !!externalDisabled || (!isLoading && (overLimit || (!input.trim() && attachments.length === 0)));
-  const showStopButton = isLoading && !input.trim() && attachments.length === 0;
+  const sendDisabled = !!externalDisabled || (!isLoading && (overLimit || (!input.trim() && attachments.length === 0 && attachedFiles.length === 0)));
+  const showStopButton = isLoading && !input.trim() && attachments.length === 0 && attachedFiles.length === 0;
   const thinkingProps = {
     enabled: effectiveEnableThinking, effort: displayEffort, supported: thinkingSupported,
     disabled: inputDisabled, levels: thinkingLevels, allowOff: thinkingAllowOff,
@@ -260,8 +379,24 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     <div
       ref={composerRef}
       className="chat-input-container"
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
+      onDrop={(event) => {
+        const files = readNotebookFileDrag(event.dataTransfer);
+        if (files.length > 0) {
+          event.preventDefault();
+          event.stopPropagation();
+          setAttachedFiles((current) => mergeAttachedFiles(current, files));
+          return;
+        }
+        handleDrop(event);
+      }}
+      onDragOver={(event) => {
+        if (hasNotebookFileDrag(event.dataTransfer)) {
+          event.preventDefault();
+          event.dataTransfer.dropEffect = "copy";
+          return;
+        }
+        handleDragOver(event);
+      }}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       style={isDragging ? {
@@ -377,13 +512,44 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         {attachments.length > 0 ? (
           <AttachmentThumbnails previews={attachments} onRemove={removeAttachment} embedded />
         ) : null}
+        <ComposerChips
+          planMode={effectivePlanMode}
+          forcedTool={effectivePlanMode ? undefined : forcedTool}
+          forcedSkillName={forcedSkillName}
+          attachedFiles={attachedFiles}
+          onClearPlan={() => { if (!planGate.forced) setPlanMode(false); }}
+          onClearTool={() => setForcedTool(undefined)}
+          onRemoveFile={(path) => setAttachedFiles((items) => items.filter((item) => item.path !== path))}
+        />
         <div className="chat-input-editor-row">
+        <button
+          ref={plusRef}
+          type="button"
+          className="chat-input-plus"
+          disabled={inputDisabled}
+          title="添加计划、工具或技能"
+          aria-label="添加计划、工具或技能"
+          aria-expanded={palette === "slash"}
+          data-testid="composer-plus"
+          onClick={() => {
+            if (palette === "slash" && !mentionTriggerRef.current) closePalette();
+            else {
+              mentionTriggerRef.current = null;
+              setMentionQuery("");
+              setPaletteIndex(0);
+              setPalette("slash");
+            }
+          }}
+        >
+          <AgentPlusIcon size={16} />
+        </button>
         <textarea
           ref={textareaRef}
           value={input}
           onChange={(e) => {
             const next = e.target.value;
             setInput(next);
+            syncTrigger(next, e.target.selectionStart ?? next.length);
             if (!composingRef.current && !overLimit && countCharacters(next) > MAX_INPUT_CHARACTERS) setShowLimitDialog(true);
           }}
           onCompositionStart={() => { composingRef.current = true; }}
@@ -403,7 +569,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           onPaste={handlePaste}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder={externalDisabled ? (disabledReason || '输入已禁用') : isLoading ? '继续输入，发送后将排队…' : '输入问题，或粘贴 / 拖入图片与文档...'}
+          placeholder={externalDisabled ? (disabledReason || '输入已禁用') : isLoading ? '继续输入，发送后将排队…' : '输入问题，# 引用笔记，/ 计划或工具…'}
           disabled={inputDisabled}
           rows={1}
           className="chat-input-textarea"
@@ -425,28 +591,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         )}
 
         <button
-          onClick={handleAttachClick}
-          disabled={inputDisabled}
-          className="chat-input-send"
-          style={{
-            background: 'transparent',
-            color: 'var(--ink-soft)',
-            cursor: inputDisabled ? 'not-allowed' : 'pointer',
-            opacity: inputDisabled ? 0.4 : 1,
-          }}
-          title="上传图片或文档"
-          aria-label="上传图片或文档"
-        >
-          <AgentPaperclipIcon size={14} />
-        </button>
-
-        <button
           onClick={showStopButton ? onStop : handleSend}
           disabled={sendDisabled}
           className="chat-input-send"
           style={{
-            background: showStopButton ? 'var(--md-sys-color-error-container)' : ((!input.trim() && attachments.length === 0) ? 'var(--md-sys-color-outline-variant)' : 'var(--md-sys-color-primary)'),
-            color: showStopButton ? 'var(--md-sys-color-on-error-container)' : ((!input.trim() && attachments.length === 0) ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary)'),
+            background: showStopButton ? 'var(--md-sys-color-error-container)' : ((!input.trim() && attachments.length === 0 && attachedFiles.length === 0) ? 'var(--md-sys-color-outline-variant)' : 'var(--md-sys-color-primary)'),
+            color: showStopButton ? 'var(--md-sys-color-on-error-container)' : ((!input.trim() && attachments.length === 0 && attachedFiles.length === 0) ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary)'),
             cursor: sendDisabled ? 'not-allowed' : 'pointer',
           }}
           title={showStopButton ? '停止生成' : '发送'}
@@ -455,6 +605,28 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         </button>
         </div>
       </div>
+      <ComposerPalette
+        open={palette !== null}
+        anchor={palette === "slash" && !mentionTriggerRef.current ? plusRef.current : textareaRef.current}
+        label={palette === "hash" ? "引用笔记" : "对话命令"}
+        onClose={closePalette}
+      >
+        {palette === "hash" ? (
+          <FileMentionMenu groups={mentionGroups} activeIndex={paletteIndex} onSelect={applyFile} />
+        ) : (
+          <ComposerCommandPanel
+            planMode={effectivePlanMode}
+            planAllowed={planGate.allowed}
+            forcedTool={forcedTool}
+            skills={skills}
+            query={mentionQuery}
+            activeIndex={paletteIndex}
+            onSelectPlan={applyPlan}
+            onSelectTool={applyTool}
+            onSelectSkill={applySkill}
+          />
+        )}
+      </ComposerPalette>
       {showLimitDialog && <InputLimitDialog count={characterCount} limit={MAX_INPUT_CHARACTERS} onClose={() => setShowLimitDialog(false)} />}
     </div>
   );

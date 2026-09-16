@@ -49,6 +49,29 @@ test("buildChatRequestBody：透传 maxToolRounds 与 planMode", () => {
   ).planMode, undefined);
 });
 
+test("buildChatRequestBody：输入框计划/工具/附件字段透传", () => {
+  const attached = [{
+    path: "probability/detail/1.4",
+    title: "古典概型",
+    kind: "file" as const,
+    address: "概率论 › 详解 › 古典概型",
+    subjectId: "probability",
+    categoryId: "detail",
+    itemId: "1.4",
+  }];
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ planMode: true, forcedTool: "generateImage", attachedFiles: attached }),
+    resolved,
+    { limit: 8000, estimated: 1200, softLimitReached: false },
+    [],
+    "2025-2026-1",
+  );
+  assert.equal(body.planMode, true);
+  assert.equal(body.forcedTool, "generateImage");
+  assert.deepEqual(body.attachedFiles, attached);
+});
+
 test("buildChatRequestBody：确认沉淀后带上 memoryCommit", () => {
   const body = buildChatRequestBody(
     ctx,

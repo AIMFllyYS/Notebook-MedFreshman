@@ -10,14 +10,8 @@ import { useStore } from "@/lib/stores/ui";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import ChatThread from "@/components/chat/ChatThread";
 import ChatInput from "@/components/chat/ChatInput";
-import type { ChatAttachment, ChatOptions } from "@/lib/types/chat";
-
-type SendOpts = {
-  quotedText?: string;
-  enableThinking?: boolean;
-  enableSearch?: boolean;
-  attachments?: ChatAttachment[];
-};
+import type { ChatOptions } from "@/lib/types/chat";
+import type { SendMessageOptions } from "@/lib/chat/sendMessage";
 
 /**
  * 笔记编辑窗内的微型 Agent：复用右侧对话的输入框 / 消息列表 / AgentTrace，
@@ -112,7 +106,7 @@ export default function NoteAgentPanel({
           }
         />
         <ChatInput
-          onSend={(content: string, opts?: SendOpts) => sendMessage(content, opts)}
+          onSend={(content: string, opts?: SendMessageOptions) => sendMessage(content, opts)}
           onStop={stopGeneration}
           isLoading={isLoading || !chatReady}
           chatContext={chatContext}

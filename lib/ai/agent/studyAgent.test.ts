@@ -282,6 +282,34 @@ test("createStudyAgent：planMode 不暴露写工具，只读工具仍在，规�
   assert.doesNotMatch(idle.promptParts.volatile, /计划模式（只读）/);
 });
 
+test("createStudyAgent：forcedTool 首步强制调用且其它工具仍在；附加文件进 volatile", async () => {
+  const model = new MockLanguageModelV4({
+    doStream: [toolCallStep("generateImage", { prompt: "细胞", title: "细胞" }), textStep("说明")],
+  });
+  const { agent, promptParts, tools } = createStudyAgent(baseInput(model, {
+    forcedTool: "generateImage",
+    attachedFiles: [{
+      path: "probability/detail/1.4",
+      title: "古典概型与几何概型",
+      kind: "file",
+      address: "概率论 › 详解 › 古典概型",
+      subjectId: "probability",
+      categoryId: "detail",
+      itemId: "1.4",
+    }],
+  }));
+  assert.ok("generateImage" in tools);
+  assert.ok("getCurrentPage" in tools);
+  assert.match(promptParts.volatile, /指定工具/);
+  assert.match(promptParts.volatile, /用户附加的笔记/);
+  assert.match(promptParts.volatile, /probability\/detail\/1\.4/);
+  await convertReadableStreamToArray((await agent.stream({ messages: [{ role: "user", content: "画细胞" }] })).toUIMessageStream());
+  assert.deepEqual(model.doStreamCalls[0].toolChoice, { type: "tool", toolName: "generateImage" });
+  const firstTools = model.doStreamCalls[0].tools?.map((tool) => tool.name) ?? [];
+  assert.ok(firstTools.includes("generateImage"));
+  assert.ok(firstTools.includes("getCurrentPage"));
+});
+
 test("createStudyAgent：maxToolRounds=2 时第 2 步后不再发起第 3 次 LLM", async () => {
   const model = new MockLanguageModelV4({
     doStream: Array.from({ length: 4 }, (_, i) =>

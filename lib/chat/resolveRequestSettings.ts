@@ -1,6 +1,7 @@
 import { getModelInfoWithCustom, type CustomApiGroup, type ModelInfo, type ThinkingEffort } from "@/lib/ai/models";
 import type { ChatAttachment, ChatOptions } from "@/lib/types/chat";
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
+import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composerIntent";
 
 export interface SendMessageOptions {
   quotedText?: string;
@@ -11,6 +12,8 @@ export interface SendMessageOptions {
   memoryCommit?: MemoryCommitKind;
   /** 计划模式：本轮只读。斜杠 / 加号代理传入，设置页不开关。 */
   planMode?: boolean;
+  forcedTool?: ComposerForcedTool;
+  attachedFiles?: AttachedFileRef[];
 }
 
 export interface RequestSettingsInput {

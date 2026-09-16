@@ -215,6 +215,35 @@ export const chatRequestSchema = z.object({
   maxToolRounds: z.number().finite().optional(),
   /** 计划模式：只读工具，先输出计划文档。 */
   planMode: z.boolean().optional(),
+  /** 输入框强制选用的工具或 skill:id。 */
+  forcedTool: z.string().max(160).optional(),
+  /** 从文件树 / # 选中的笔记地址，服务端按 path 读全文。 */
+  attachedFiles: z
+    .array(
+      z
+        .object({
+          path: z.string().max(256),
+          title: z.string().max(256).optional(),
+          kind: z.enum(["file", "folder"]).optional(),
+          address: z.string().max(512).optional(),
+          subjectId: z.string().max(64).optional(),
+          categoryId: z.string().max(64).optional(),
+          itemId: z.string().max(160).optional(),
+          childPaths: z.array(z.string().max(256)).max(64).optional(),
+        })
+        .transform((file) => ({
+          path: file.path,
+          title: String(file.title ?? file.path),
+          kind: (file.kind === "folder" ? "folder" : "file") as "file" | "folder",
+          address: String(file.address ?? file.path),
+          subjectId: String(file.subjectId ?? ""),
+          categoryId: String(file.categoryId ?? ""),
+          itemId: String(file.itemId ?? ""),
+          childPaths: file.childPaths,
+        })),
+    )
+    .max(16)
+    .default([]),
   /** 主对话随身携带的本机笔记目录；窗内对话应为空。 */
   userNotes: z
     .array(
