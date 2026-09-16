@@ -141,6 +141,10 @@ test('request schema keeps unknown fields ignored and normal payloads valid', ()
   }).editingUserNote, { id: 'note_1', title: '被覆上皮', markdown: '# 被覆上皮' });
   assert.equal(parseChatRequest({ messages: [] }).editingUserNote, undefined);
   assert.equal(parseChatRequest({ messages: [], noteWindowAgent: true }).noteWindowAgent, true);
+  assert.equal(parseChatRequest({ messages: [], planMode: true, maxToolRounds: 10 }).planMode, true);
+  assert.equal(parseChatRequest({ messages: [], planMode: true, maxToolRounds: 10 }).maxToolRounds, 10);
+  assert.equal(parseChatRequest({ messages: [] }).planMode, undefined);
+  assert.equal(parseChatRequest({ messages: [] }).maxToolRounds, undefined);
   assert.equal(parseChatRequest({ messages: [] }).userNotes.length, 0);
   assert.equal(parseChatRequest({
     messages: [],

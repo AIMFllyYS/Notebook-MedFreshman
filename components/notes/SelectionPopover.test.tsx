@@ -5,6 +5,8 @@ import { useUserNotes } from "@/lib/stores/userNotes";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { useStore } from "@/lib/stores/ui";
 import { SELECTION_POPOVER_SCROLL_GRACE_MS } from "@/lib/notes/selectionPopover";
+import { DEFAULT_SELECTION_ASSISTANT_ACTIONS } from "@/lib/notes/selectionAssistant";
+import { useSettings } from "@/lib/stores/settings";
 
 vi.mock("@/lib/keyboard/useOverlayRegistration", () => ({
   useOverlayRegistration: () => {},
@@ -46,6 +48,10 @@ describe("SelectionPopover", () => {
       librarySubjectId: null,
     });
     useStore.setState({ activeSubjectId: "probability", activeCategoryId: "detail", activeItemId: "1.1" });
+    useSettings.setState({
+      selectionAssistantEnabled: true,
+      selectionAssistantActions: { ...DEFAULT_SELECTION_ASSISTANT_ACTIONS },
+    });
   });
 
   afterEach(() => {
@@ -115,5 +121,55 @@ describe("SelectionPopover", () => {
     expect(note?.quote).toMatch(/泊松分布/);
     expect(note?.source?.kind).toBe("agent");
     expect(useUserNotes.getState().openEditorIds).toEqual([note?.id]);
+  });
+
+  it("总开关关闭时不弹出划词助手", async () => {
+    useSettings.setState({ selectionAssistantEnabled: false });
+    const containerRef = { current: null as HTMLDivElement | null };
+    render(
+      <div>
+        <div
+          ref={(node) => {
+            containerRef.current = node;
+          }}
+        >
+          <p>泊松分布的均值等于方差。</p>
+        </div>
+        <SelectionPopover containerRef={containerRef} noteSource="agent" />
+      </div>,
+    );
+    selectAcross(containerRef.current!);
+    fireEvent.mouseUp(containerRef.current!);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    expect(screen.queryByRole("button", { name: "笔记" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "引用" })).not.toBeInTheDocument();
+  });
+
+  it("可隐藏引用动作但保留笔记", async () => {
+    useSettings.setState({
+      selectionAssistantActions: { ...DEFAULT_SELECTION_ASSISTANT_ACTIONS, quote: false },
+    });
+    const containerRef = { current: null as HTMLDivElement | null };
+    render(
+      <div>
+        <div
+          ref={(node) => {
+            containerRef.current = node;
+          }}
+        >
+          <p>泊松分布的均值等于方差。</p>
+        </div>
+        <SelectionPopover containerRef={containerRef} noteSource="agent" />
+      </div>,
+    );
+    selectAcross(containerRef.current!);
+    fireEvent.mouseUp(containerRef.current!);
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+    expect(screen.getByRole("button", { name: "笔记" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "引用" })).not.toBeInTheDocument();
   });
 });

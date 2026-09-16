@@ -11,6 +11,11 @@ import { copyTextToClipboard, shouldInterceptSelectionCopy } from "@/lib/clipboa
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { unwrapMark, wrapRange } from "@/lib/notes/crayonHighlight";
 import { createAndOpenClassroomNote } from "@/lib/notes/openUserNote";
+import { useSettings } from "@/lib/hooks/useSettings";
+import {
+  hasVisibleSelectionActions,
+  isSelectionActionVisible,
+} from "@/lib/notes/selectionAssistant";
 import {
   SELECTION_POPOVER_COLLAPSE_GRACE_MS,
   SELECTION_POPOVER_SCROLL_GRACE_MS,
@@ -103,6 +108,9 @@ export default function SelectionPopover({
 }) {
   const setQuotedText = useChatUI((s) => s.setQuotedText);
   const openWindow = useFloatingChats((s) => s.openWindow);
+  const selectionAssistantEnabled = useSettings((s) => s.selectionAssistantEnabled);
+  const selectionAssistantActions = useSettings((s) => s.selectionAssistantActions);
+  const siteAssistantOn = selectionAssistantEnabled !== false && hasVisibleSelectionActions(selectionAssistantActions);
   const [pop, setPop] = useState<PopState | null>(null);
   const [copied, setCopied] = useState(false);
   const [boxWidth, setBoxWidth] = useState(0);
@@ -134,7 +142,16 @@ export default function SelectionPopover({
   }, [pop, copied]);
 
   useEffect(() => {
+    const root = containerRef.current;
+    if (root) root.setAttribute("data-selection-host", "");
+    return () => {
+      root?.removeAttribute("data-selection-host");
+    };
+  }, [containerRef]);
+
+  useEffect(() => {
     function onMouseUp(e: MouseEvent) {
+      if (!siteAssistantOn) return;
       if (boxRef.current && boxRef.current.contains(e.target as Node)) return;
       window.setTimeout(() => {
         if (markRef.current && !actionTakenRef.current) {
@@ -176,7 +193,7 @@ export default function SelectionPopover({
     }
     document.addEventListener("mouseup", onMouseUp);
     return () => document.removeEventListener("mouseup", onMouseUp);
-  }, [containerRef]);
+  }, [containerRef, siteAssistantOn]);
 
   useEffect(() => {
     function onScroll() {
@@ -212,6 +229,19 @@ export default function SelectionPopover({
     const ok = await copyTextToClipboard(pop.text);
     if (ok) setCopied(true);
   }, [pop]);
+
+  const showCopy = isSelectionActionVisible(selectionAssistantActions, "copy");
+  const showExplain = isSelectionActionVisible(selectionAssistantActions, "explain");
+  const showRecord = isSelectionActionVisible(selectionAssistantActions, "record");
+  const showNote = isSelectionActionVisible(selectionAssistantActions, "note");
+  const showAsk = isSelectionActionVisible(selectionAssistantActions, "ask");
+  const showQuote = isSelectionActionVisible(selectionAssistantActions, "quote");
+  const showMid = showExplain || showRecord || showNote || showAsk;
+
+  useEffect(() => {
+    if (siteAssistantOn) return;
+    closePopover(markRef, actionTakenRef, setPop, setCopied);
+  }, [siteAssistantOn]);
 
   if (!pop) return null;
 
@@ -283,20 +313,36 @@ export default function SelectionPopover({
         className="animate-fade-up"
       >
         <div className="flex items-center gap-0.5 rounded-xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] p-1 shadow-lg">
-          <PopIconBtn
-            onClick={() => void handleCopy()}
-            icon={Copy}
-            copiedIcon={Check}
-            copied={copied}
-            title="复制"
-          />
-          <div className="mx-0.5 h-5 w-px bg-[var(--md-sys-color-outline-variant)]" />
-          <PopBtn onClick={() => spawn("explain")} icon={Lightbulb} label="解释" />
-          <PopBtn onClick={handleRecord} icon={BookmarkPlus} label="记录" />
-          <PopBtn onClick={handleNote} icon={StickyNote} label="笔记" />
-          <PopBtn onClick={() => spawn("ask")} icon={MessageSquare} label="追问" />
-          <div className="mx-0.5 h-5 w-px bg-[var(--md-sys-color-outline-variant)]" />
-          <PopBtn onClick={handleQuote} icon={Send} label="引用" />
+          {showCopy && (
+            <PopIconBtn
+              onClick={() => void handleCopy()}
+              icon={Copy}
+              copiedIcon={Check}
+              copied={copied}
+              title="复制"
+            />
+          )}
+          {showCopy && showMid && (
+            <div className="mx-0.5 h-5 w-px bg-[var(--md-sys-color-outline-variant)]" />
+          )}
+          {showExplain && (
+            <PopBtn onClick={() => spawn("explain")} icon={Lightbulb} label="解释" />
+          )}
+          {showRecord && (
+            <PopBtn onClick={handleRecord} icon={BookmarkPlus} label="记录" />
+          )}
+          {showNote && (
+            <PopBtn onClick={handleNote} icon={StickyNote} label="笔记" />
+          )}
+          {showAsk && (
+            <PopBtn onClick={() => spawn("ask")} icon={MessageSquare} label="追问" />
+          )}
+          {showQuote && (showCopy || showMid) && (
+            <div className="mx-0.5 h-5 w-px bg-[var(--md-sys-color-outline-variant)]" />
+          )}
+          {showQuote && (
+            <PopBtn onClick={handleQuote} icon={Send} label="引用" />
+          )}
         </div>
         <div className="mx-auto h-2 w-2 -translate-y-1 rotate-45 border-b border-r border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)]" />
       </div>

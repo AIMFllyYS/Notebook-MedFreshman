@@ -436,4 +436,14 @@ describe('useChat SDK transport regression', () => {
     expect(messagesFor('main')).toEqual([]);
     expect(messagesFor('note-s')).toHaveLength(2);
   });
+
+  it('sendMessage 把 planMode 与设置里的 maxToolRounds 带进 /api/chat', async () => {
+    mockResponses(() => completedResponse());
+    useSettings.setState({ maxToolRounds: 9 });
+    const { result } = renderHook(() => useChat(context));
+    act(() => { result.current.sendMessage('先列计划', { planMode: true }); });
+    await settle();
+    expect(requests[0].body.planMode).toBe(true);
+    expect(requests[0].body.maxToolRounds).toBe(9);
+  });
 });

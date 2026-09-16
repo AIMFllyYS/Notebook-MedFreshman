@@ -117,6 +117,8 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
               noteWindowAgent: isNoteWindow,
               userNotes,
               flashcards,
+              maxToolRounds: settings.maxToolRounds,
+              planMode: sendOptions?.planMode,
             },
             resolved,
             budget,

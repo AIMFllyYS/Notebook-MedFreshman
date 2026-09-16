@@ -30,6 +30,8 @@ export interface ChatRequestBodySettings {
   noteWindowAgent?: boolean;
   userNotes?: UserNoteCatalogItem[];
   flashcards?: FlashcardCatalogItem[];
+  maxToolRounds?: number;
+  planMode?: boolean;
 }
 
 /** 发给 /api/chat 的 body（messages 由 transport 另传）。字段须与 chatRequestSchema 对齐。 */
@@ -62,6 +64,8 @@ export interface ChatRequestBody {
   noteWindowAgent?: boolean;
   userNotes?: UserNoteCatalogItem[];
   flashcards?: FlashcardCatalogItem[];
+  maxToolRounds?: number;
+  planMode?: boolean;
 }
 
 export function buildChatRequestBody(
@@ -119,5 +123,7 @@ export function buildChatRequestBody(
     noteWindowAgent: settings.noteWindowAgent,
     userNotes: settings.userNotes ?? [],
     flashcards: settings.flashcards ?? [],
+    maxToolRounds: settings.maxToolRounds,
+    planMode: settings.planMode,
   };
 }

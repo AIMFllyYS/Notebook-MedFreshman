@@ -33,6 +33,22 @@ const resolved: ResolvedRequestSettings = {
   contextMode: "full",
 };
 
+test("buildChatRequestBody：透传 maxToolRounds 与 planMode", () => {
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ maxToolRounds: 8, planMode: true }),
+    resolved,
+    { limit: 8000, estimated: 1200, softLimitReached: false },
+    [],
+    "2025-2026-1",
+  );
+  assert.equal(body.maxToolRounds, 8);
+  assert.equal(body.planMode, true);
+  assert.equal(buildChatRequestBody(
+    ctx, settings(), resolved, { limit: 1, estimated: 1, softLimitReached: false }, [], "y",
+  ).planMode, undefined);
+});
+
 test("buildChatRequestBody：确认沉淀后带上 memoryCommit", () => {
   const body = buildChatRequestBody(
     ctx,

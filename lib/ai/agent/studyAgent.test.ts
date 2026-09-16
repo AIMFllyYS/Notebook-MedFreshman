@@ -261,6 +261,40 @@ test("createStudyAgent：imageSearch 配额耗尽后 prepareStep 摘除该工具
   assert.ok(!names.includes("imageSearch"));
 });
 
+test("createStudyAgent：planMode 不暴露写工具，只读工具仍在，规则进 volatile", () => {
+  const model = new MockLanguageModelV4();
+  const idle = createStudyAgent(baseInput(model));
+  const planned = createStudyAgent(baseInput(model, { planMode: true, memoryCommit: "note" }));
+  assert.ok("getCurrentPage" in planned.tools);
+  assert.ok("searchNotes" in planned.tools);
+  assert.ok("getArtifact" in planned.tools);
+  assert.ok(!("writeDocument" in planned.tools));
+  assert.ok(!("renderInteractive" in planned.tools));
+  assert.ok(!("generateImage" in planned.tools));
+  assert.ok(!("createQuiz" in planned.tools));
+  assert.ok(!("updateUserNote" in planned.tools));
+  assert.ok(!("commitNotes" in planned.tools));
+  assert.ok("writeDocument" in idle.tools);
+  const locIdle = idle.promptParts.instructions.indexOf("【当前位置】");
+  const locPlan = planned.promptParts.instructions.indexOf("【当前位置】");
+  assert.equal(idle.promptParts.instructions.slice(0, locIdle), planned.promptParts.instructions.slice(0, locPlan));
+  assert.match(planned.promptParts.volatile, /计划模式（只读）/);
+  assert.doesNotMatch(idle.promptParts.volatile, /计划模式（只读）/);
+});
+
+test("createStudyAgent：maxToolRounds=2 时第 2 步后不再发起第 3 次 LLM", async () => {
+  const model = new MockLanguageModelV4({
+    doStream: Array.from({ length: 4 }, (_, i) =>
+      toolCallStep("getCurrentPage", {}, `call_limit_${i}`),
+    ),
+  });
+  const { agent } = createStudyAgent(baseInput(model, { maxToolRounds: 2 }));
+  const result = await agent.stream({ messages: [{ role: "user", content: "q" }] });
+  await convertReadableStreamToArray(result.toUIMessageStream());
+  assert.equal(model.doStreamCalls.length, 2);
+  assert.equal((await result.steps).length, 2);
+});
+
 test("createStudyAgent：第 6 步仍 tool-calls 时不再发起第 7 次 LLM", async () => {
   const model = new MockLanguageModelV4({
     doStream: Array.from({ length: MAX_TOOL_STEPS }, (_, i) =>

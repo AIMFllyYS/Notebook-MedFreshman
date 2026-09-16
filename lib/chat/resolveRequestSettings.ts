@@ -9,6 +9,8 @@ export interface SendMessageOptions {
   enableSearch?: boolean;
   attachments?: ChatAttachment[];
   memoryCommit?: MemoryCommitKind;
+  /** 计划模式：本轮只读。斜杠 / 加号代理传入，设置页不开关。 */
+  planMode?: boolean;
 }
 
 export interface RequestSettingsInput {

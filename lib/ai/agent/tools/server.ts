@@ -29,10 +29,14 @@ import { createCommitFlashcardsTool } from "@/lib/ai/agent/tools/commitFlashcard
 import { createUpdateUserNoteTool } from "@/lib/ai/agent/tools/updateUserNote/tool";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 import type { ArtifactCatalogItem } from "@/lib/ai/agent/tools/getArtifact/types";
+import { PLAN_MODE_WRITE_TOOL_SET } from "@/lib/ai/agent/planMode";
 
 export {
   IMAGE_SEARCH_MAX_TOTAL,
   MAX_TOOL_STEPS,
+  MIN_TOOL_ROUNDS,
+  MAX_TOOL_ROUNDS_CAP,
+  clampMaxToolRounds,
   TOOL_STEP_LIMIT_INFO,
   createToolRuntime,
   type StudyToolContext,
@@ -53,6 +57,10 @@ export interface BuildStudyToolsOptions {
   editingUserNote?: EditingUserNoteContext;
   /** 窗内笔记 Agent 不暴露演示/生图/长文等重工具。 */
   noteWindowAgent?: boolean;
+  /** 计划模式：只暴露只读工具，写文档/HTML/生图等不注册。 */
+  planMode?: boolean;
+  /** 输入框强制工具：窗内对话即使默认隐藏，也要暴露这一个。 */
+  forcedToolName?: string;
 }
 
 const NOTE_WINDOW_HIDDEN_TOOLS = new Set<StudyToolName>([
@@ -125,11 +133,16 @@ export function buildStudyTools(
   if (opts.memoryCommit === "flashcards") names.push("commitFlashcards");
   if (opts.enableSearch) names.push("webSearch", "imageSearch");
   if (menuSkillNames.length > 0) names.push("useSkill");
+  const forced = opts.forcedToolName as StudyToolName | undefined;
+  if (forced && (forced in all) && !names.includes(forced) && !opts.planMode) {
+    names.push(forced);
+  }
 
   const selected: ToolSet = {};
   for (const n of names) {
     if (disabled.has(n)) continue;
-    if (opts.noteWindowAgent && NOTE_WINDOW_HIDDEN_TOOLS.has(n)) continue;
+    if (opts.noteWindowAgent && NOTE_WINDOW_HIDDEN_TOOLS.has(n) && n !== opts.forcedToolName) continue;
+    if (opts.planMode && PLAN_MODE_WRITE_TOOL_SET.has(n)) continue;
     selected[n] = all[n];
   }
   return selected;
