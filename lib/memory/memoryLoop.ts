@@ -10,6 +10,7 @@ import type { CommitNotesOutput } from "@/lib/ai/agent/tools/commitNotes/types";
 import type { CommitFlashcardsOutput } from "@/lib/ai/agent/tools/commitFlashcards/types";
 import type { RecordMode } from "@/lib/review/types";
 import { buildNoteCommitPrompt } from "@/lib/memory/noteCommitPrompt";
+import { buildFlashcardCommitPrompt } from "@/lib/memory/flashcardCommitPrompt";
 
 export const MEMORY_TOOL_NAMES = ["proposeMemory", "commitNotes", "commitFlashcards"] as const;
 
@@ -98,6 +99,5 @@ export function buildCommitPrompt(kind: MemoryKind, extras: { title?: string; mo
   if (kind === "note") {
     return buildNoteCommitPrompt(extras.title);
   }
-  const mode = extras.mode ?? "cloze";
-  return `用户已确认把这次对话整理成复习闪卡，模式为 ${mode}。请立即调用 commitFlashcards，给出 2–6 条可测验原文（originalText）。不要再调用 proposeMemory，不要在正文里重复卡片内容。`;
+  return buildFlashcardCommitPrompt(extras.mode);
 }

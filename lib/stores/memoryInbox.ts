@@ -1,9 +1,7 @@
 import { create } from "zustand";
 import { useWindowManager } from "@/lib/stores/windowManager";
-import { useStore } from "@/lib/stores/ui";
 import { useChatHistory } from "@/lib/stores/chatHistory";
 import {
-  buildCommitPrompt,
   collectMemoryToolEvents,
   memoryCommitOf,
   shouldAcceptProposal,
@@ -12,9 +10,9 @@ import {
 } from "@/lib/memory/memoryLoop";
 import { applyCommitFlashcards, applyCommitNotes } from "@/lib/memory/applyMemoryTools";
 import {
-  currentNoteCommitChatContext,
-  runNoteCommitWithRuntime,
-} from "@/lib/memory/runNoteCommit";
+  currentMemoryCommitChatContext,
+  runMemoryCommitWithRuntime,
+} from "@/lib/memory/runMemoryCommit";
 import { classifySendError } from "@/lib/chat/classifySendError";
 import { memoryProposalWindowId } from "@/lib/notes/userNote";
 import type { MemoryKind } from "@/lib/ai/agent/tools/proposeMemory/types";
@@ -38,7 +36,7 @@ export interface MemoryProposal {
   createdNoteId?: string;
   createdCardIds?: string[];
   error?: string;
-  /** 笔记旁路请求的本地 assistant，不进主 thread。 */
+  /** 旁路请求的本地 assistant，不进主 thread。 */
   commitMessage?: ChatMessage;
 }
 
@@ -75,7 +73,7 @@ function cloudGeometry(index: number) {
   return { pos: { x, y }, size: { width, height } };
 }
 
-const noteCommitAborts = new Map<string, AbortController>();
+const memoryCommitAborts = new Map<string, AbortController>();
 
 function sessionForMessage(messageId: string): { sessionId: string | null; messages: ChatMessage[] } {
   const history = useChatHistory.getState();
@@ -88,20 +86,31 @@ function sessionForMessage(messageId: string): { sessionId: string | null; messa
   return { sessionId, messages: sessionId ? history.messagesById[sessionId] ?? [] : [] };
 }
 
-async function startNoteCommit(id: string): Promise<void> {
-  const prev = useMemoryInbox.getState().byId[id];
-  if (!prev || prev.kind !== "note" || prev.status !== "committing") return;
+function emptyCommitError(kind: MemoryProposal["kind"]): string {
+  return kind === "note" ? "没有写出笔记，请再试一次。" : "没有写出闪卡，请再试一次。";
+}
 
-  noteCommitAborts.get(id)?.abort();
+function commitSucceeded(item: MemoryProposal): boolean {
+  return Boolean(item.createdNoteId || item.createdCardIds?.length);
+}
+
+async function startMemoryCommit(id: string): Promise<void> {
+  const prev = useMemoryInbox.getState().byId[id];
+  if (!prev || prev.status !== "committing") return;
+  if (prev.kind !== "note" && prev.kind !== "flashcard") return;
+
+  memoryCommitAborts.get(id)?.abort();
   const abortController = new AbortController();
-  noteCommitAborts.set(id, abortController);
+  memoryCommitAborts.set(id, abortController);
   const { sessionId, messages } = sessionForMessage(prev.messageId);
 
   try {
-    const result = await runNoteCommitWithRuntime({
+    const result = await runMemoryCommitWithRuntime({
       historyMessages: messages,
+      memoryCommit: memoryCommitOf(prev.kind),
       title: prev.titleDraft,
-      chatContext: currentNoteCommitChatContext(),
+      mode: prev.modeDraft,
+      chatContext: currentMemoryCommitChatContext(),
       sessionId: sessionId ?? undefined,
       abortController,
       onWrite: (message) => {
@@ -115,23 +124,26 @@ async function startNoteCommit(id: string): Promise<void> {
     if (abortController.signal.aborted || useMemoryInbox.getState().byId[id]?.status !== "committing") return;
 
     const { commits } = collectMemoryToolEvents([result]);
-    const noteCommit = commits.find((item) => item.kind === "note" && item.notes);
-    if (!noteCommit) {
+    const commit = commits.find((item) => {
+      if (item.kind !== prev.kind) return false;
+      return prev.kind === "note" ? Boolean(item.notes) : Boolean(item.flashcards);
+    });
+    if (!commit) {
       useMemoryInbox.setState((s) => {
         const live = s.byId[id];
         if (!live) return s;
         return {
           byId: {
             ...s.byId,
-            [id]: { ...live, status: "proposed", error: "没有写出笔记，请再试一次。" },
+            [id]: { ...live, status: "proposed", error: emptyCommitError(prev.kind) },
           },
         };
       });
       return;
     }
-    useMemoryInbox.getState().ingestCommit(noteCommit);
+    useMemoryInbox.getState().ingestCommit(commit);
     const after = useMemoryInbox.getState().byId[id];
-    if (after?.createdNoteId) {
+    if (after && commitSucceeded(after)) {
       useMemoryInbox.getState().dismiss(id);
       return;
     }
@@ -156,7 +168,7 @@ async function startNoteCommit(id: string): Promise<void> {
       };
     });
   } finally {
-    if (noteCommitAborts.get(id) === abortController) noteCommitAborts.delete(id);
+    if (memoryCommitAborts.get(id) === abortController) memoryCommitAborts.delete(id);
   }
 }
 
@@ -273,21 +285,14 @@ export const useMemoryInbox = create<MemoryInboxState>((set, get) => ({
     }));
     useWindowManager.getState().updateWindow(memoryProposalWindowId(id), {
       title: prev.kind === "note" ? "正在整理笔记" : "正在整理闪卡",
-      size: { width: 380, height: prev.kind === "note" ? 420 : 360 },
+      size: { width: 380, height: 420 },
     });
-    if (prev.kind === "note") {
-      void startNoteCommit(id);
-      return;
-    }
-    useStore.getState().sendToChat(
-      buildCommitPrompt(prev.kind, { title: prev.titleDraft, mode: prev.modeDraft }),
-      { memoryCommit: memoryCommitOf(prev.kind) },
-    );
+    void startMemoryCommit(id);
   },
 
   dismiss: (id) => {
-    noteCommitAborts.get(id)?.abort();
-    noteCommitAborts.delete(id);
+    memoryCommitAborts.get(id)?.abort();
+    memoryCommitAborts.delete(id);
     useWindowManager.getState().closeWindow(memoryProposalWindowId(id));
     const prev = get().byId[id];
     if (!prev) return;

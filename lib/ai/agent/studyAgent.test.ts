@@ -142,6 +142,8 @@ test("createStudyAgent：未确认时不暴露 commit 工具，确认笔记后�
   const cards = createStudyAgent(baseInput(model, { memoryCommit: "flashcards" }));
   assert.ok("commitFlashcards" in cards.tools);
   assert.ok(!("commitNotes" in cards.tools));
+  assert.equal(cards.promptParts.instructions, idle.promptParts.instructions);
+  assert.doesNotMatch(cards.promptParts.instructions, /记忆闭环（已确认闪卡）/);
 });
 
 test("createStudyAgent：技能菜单进入 instructions 且 useSkill 以 enum 暴露；enableSearch 控制联网工具", () => {
