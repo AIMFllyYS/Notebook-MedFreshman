@@ -9,6 +9,8 @@ import type { MemoryKind, ProposeMemoryOutput } from "@/lib/ai/agent/tools/propo
 import type { CommitNotesOutput } from "@/lib/ai/agent/tools/commitNotes/types";
 import type { CommitFlashcardsOutput } from "@/lib/ai/agent/tools/commitFlashcards/types";
 import type { RecordMode } from "@/lib/review/types";
+import { buildNoteCommitPrompt } from "@/lib/memory/noteCommitPrompt";
+import { buildFlashcardCommitPrompt } from "@/lib/memory/flashcardCommitPrompt";
 
 export const MEMORY_TOOL_NAMES = ["proposeMemory", "commitNotes", "commitFlashcards"] as const;
 
@@ -95,9 +97,7 @@ export function shouldAcceptProposal(
 
 export function buildCommitPrompt(kind: MemoryKind, extras: { title?: string; mode?: RecordMode }): string {
   if (kind === "note") {
-    const title = extras.title?.trim() || "课堂要点";
-    return `用户已确认把这次对话整理成个人笔记。请立即调用 commitNotes：写一篇短要点提纲（Markdown 提纲，不是讲义），标题用「${title}」。不要再调用 proposeMemory，不要调用 writeDocument，不要在正文里重复笔记全文。`;
+    return buildNoteCommitPrompt(extras.title);
   }
-  const mode = extras.mode ?? "cloze";
-  return `用户已确认把这次对话整理成复习闪卡，模式为 ${mode}。请立即调用 commitFlashcards，给出 2–6 条可测验原文（originalText）。不要再调用 proposeMemory，不要在正文里重复卡片内容。`;
+  return buildFlashcardCommitPrompt(extras.mode);
 }

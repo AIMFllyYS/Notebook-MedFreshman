@@ -4,7 +4,6 @@ import { Sparkles } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import { AgentTrace } from "@/components/chat/AgentTrace";
 import { useMemoryInbox, type MemoryProposal } from "@/lib/stores/memoryInbox";
-import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { memoryProposalWindowId } from "@/lib/notes/userNote";
@@ -22,18 +21,13 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
   const confirm = useMemoryInbox((s) => s.confirm);
   const dismiss = useMemoryInbox((s) => s.dismiss);
   const setDraft = useMemoryInbox((s) => s.setDraft);
-  const messagesById = useChatHistory((s) => s.messagesById);
-  const activeSessionId = useChatHistory((s) => s.activeSessionId);
 
   const question = proposal.kind === "note" ? "要把这次对话整理成笔记吗？" : "要把这次对话整理成闪卡吗？";
-  const latestAssistant = (() => {
-    const messages = activeSessionId ? messagesById[activeSessionId] ?? [] : [];
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i]?.role === "assistant") return messages[i];
-    }
-    return null;
-  })();
-  const trace = latestAssistant ? buildTrace(latestAssistant, proposal.status === "committing") : null;
+  const streaming = proposal.status === "committing";
+  const trace = streaming || proposal.commitMessage
+    ? buildTrace(proposal.commitMessage ?? { parts: [] }, streaming)
+    : null;
+  const committingLabel = proposal.kind === "note" ? "正在整理笔记…" : "正在整理闪卡…";
 
   return (
     <ManagedWindow
@@ -47,8 +41,12 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
       bodyClassName="flex min-h-0 min-w-0 flex-1 overflow-hidden"
     >
       <div className="memory-cloud" data-no-drag>
-        <p className="memory-cloud-question">{question}</p>
-        <p className="memory-cloud-reason">{proposal.reason}</p>
+        {proposal.status === "proposed" ? (
+          <>
+            <p className="memory-cloud-question">{question}</p>
+            <p className="memory-cloud-reason">{proposal.reason}</p>
+          </>
+        ) : null}
 
         {proposal.status === "proposed" && proposal.kind === "note" ? (
           <label className="memory-cloud-field">
@@ -95,16 +93,16 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
         <div className="memory-cloud-actions">
           {proposal.status === "proposed" ? (
             <>
-              <button type="button" className="user-note-toolbar-primary" onClick={() => confirm(proposal.id)}>
-                整理
-              </button>
               <button type="button" className="user-note-toolbar-link" onClick={() => dismiss(proposal.id)}>
                 不用了
+              </button>
+              <button type="button" className="user-note-toolbar-primary" onClick={() => confirm(proposal.id)}>
+                整理
               </button>
             </>
           ) : null}
           {proposal.status === "committing" ? (
-            <span className="memory-cloud-reason">正在调用 Agent 写入…</span>
+            <span className="memory-cloud-reason">{committingLabel}</span>
           ) : null}
           {proposal.status === "done" && proposal.kind === "note" && proposal.createdNoteId ? (
             <button

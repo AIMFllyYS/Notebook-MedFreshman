@@ -137,11 +137,30 @@ test("createStudyAgent：未确认时不暴露 commit 工具，确认笔记后�
   const notes = createStudyAgent(baseInput(model, { memoryCommit: "note" }));
   assert.ok("commitNotes" in notes.tools);
   assert.ok(!("commitFlashcards" in notes.tools));
-  assert.match(notes.promptParts.instructions, /记忆闭环（已确认笔记）/);
+  assert.equal(notes.promptParts.instructions, idle.promptParts.instructions);
 
   const cards = createStudyAgent(baseInput(model, { memoryCommit: "flashcards" }));
   assert.ok("commitFlashcards" in cards.tools);
   assert.ok(!("commitNotes" in cards.tools));
+  assert.equal(cards.promptParts.instructions, idle.promptParts.instructions);
+  assert.doesNotMatch(cards.promptParts.instructions, /记忆闭环（已确认闪卡）/);
+});
+
+test("createStudyAgent：打开个人笔记后才暴露 updateUserNote，且不改稳定前缀", () => {
+  const model = new MockLanguageModelV4();
+  const idle = createStudyAgent(baseInput(model));
+  assert.ok(!("updateUserNote" in idle.tools));
+
+  const editing = createStudyAgent(baseInput(model, {
+    editingUserNote: { id: "note_1", title: "被覆上皮", markdown: "# 被覆上皮\n\n1. 分类" },
+  }));
+  assert.ok("updateUserNote" in editing.tools);
+  assert.match(editing.promptParts.volatile, /正在编辑的个人笔记/);
+  assert.match(editing.promptParts.volatile, /被覆上皮/);
+  assert.match(editing.promptParts.volatile, /updateUserNote/);
+  const locIdle = idle.promptParts.instructions.indexOf("【当前位置】");
+  const locEdit = editing.promptParts.instructions.indexOf("【当前位置】");
+  assert.equal(idle.promptParts.instructions.slice(0, locIdle), editing.promptParts.instructions.slice(0, locEdit));
 });
 
 test("createStudyAgent：技能菜单进入 instructions 且 useSkill 以 enum 暴露；enableSearch 控制联网工具", () => {

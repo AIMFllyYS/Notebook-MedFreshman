@@ -2,16 +2,19 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, Download, ExternalLink, Layers, Quote } from "lucide-react";
+import clsx from "clsx";
+import { Check, Download, ExternalLink, Layers, PenLine, Quote } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
 import FlipCard from "@/components/review/FlipCard";
 import QuizMarkdown from "@/components/quiz/QuizMarkdown";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
+import { useRecordPreviews } from "@/lib/stores/recordPreviews";
 import { useReviewCards } from "@/lib/stores/reviewCards";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { FLASHCARD_CITE_WINDOW_ID, formatFlashcardQuote, plainSnippet } from "@/lib/notes/userNote";
+import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
 import { downloadFlashcardMarkdown, downloadFlashcardsCsv } from "@/lib/review/exportCards";
 import type { CardStatus, ReviewCard } from "@/lib/review/types";
 
@@ -95,6 +98,19 @@ function FlashcardCitePicker() {
       >
         <ExternalLink size={12} /> 打开复习板
       </button>
+      <button
+        type="button"
+        data-no-drag
+        className="user-note-toolbar-link"
+        style={{ marginLeft: "auto" }}
+        disabled={!active}
+        onClick={(e) => {
+          if (!active) return;
+          useRecordPreviews.getState().open(active.id, { x: e.clientX, y: e.clientY });
+        }}
+      >
+        <PenLine size={12} /> 编辑
+      </button>
     </div>
   );
 
@@ -105,43 +121,87 @@ function FlashcardCitePicker() {
       icon={<Layers size={15} />}
       onClose={closePicker}
       fullscreenTarget="notes"
-      minSize={{ minW: 520, minH: 380 }}
+      minSize={{ minW: 640, minH: 380 }}
       overlayId="flashcard-cite-picker"
       bodyClassName="flex min-h-0 min-w-0 flex-1 overflow-hidden"
       unmountWhenMinimized
     >
-      {cards.length === 0 ? (
-        <div className="user-note-stage">
-          <p className="user-note-empty">还没有复习闪卡。在正文划词或右键消息选择『记录』即可生成。</p>
-          <div className="user-note-stage-actions" style={{ padding: "0 20px 20px" }} data-no-drag>
-            <button
-              type="button"
-              data-no-drag
-              className="user-note-action"
-              onClick={() => router.push(subjectId ? `/${subjectId}/review` : "/")}
-            >
-              <ExternalLink size={12} /> 打开复习板
-            </button>
+      <div className="flashcard-cite-layout">
+        <FlashcardSubjectSidebar selectedId={subjectId} />
+        {cards.length === 0 ? (
+          <div className="user-note-stage">
+            <p className="user-note-empty">还没有复习闪卡。在正文划词或右键消息选择『记录』即可生成。</p>
+            <div className="user-note-stage-actions" style={{ padding: "0 20px 20px" }} data-no-drag>
+              <button
+                type="button"
+                data-no-drag
+                className="user-note-action"
+                onClick={() => router.push(subjectId ? `/${subjectId}/review` : "/")}
+              >
+                <ExternalLink size={12} /> 打开复习板
+              </button>
+            </div>
           </div>
-        </div>
-      ) : (
-        <DocumentWorkspace
-          outlineLabel="复习闪卡"
-          outline={cards.map((card) => ({
-            id: card.id,
-            kindLabel: STATUS_LABEL[card.status],
-            title: plainSnippet(card.front || card.originalText, 80) || "（空白卡）",
-            meta: card.sourceLabel,
-          }))}
-          activeId={active?.id ?? ""}
-          onSelect={setActiveCardId}
-          toolbar={toolbar}
-          emptyLabel="还没有闪卡"
-        >
-          {active ? <FlashcardStage key={active.id} card={active} /> : null}
-        </DocumentWorkspace>
-      )}
+        ) : (
+          <DocumentWorkspace
+            outlineLabel="复习闪卡"
+            outline={cards.map((card) => ({
+              id: card.id,
+              kindLabel: STATUS_LABEL[card.status],
+              title: plainSnippet(card.front || card.originalText, 80) || "（空白卡）",
+              meta: card.sourceLabel,
+            }))}
+            activeId={active?.id ?? ""}
+            onSelect={setActiveCardId}
+            toolbar={toolbar}
+            emptyLabel="还没有闪卡"
+          >
+            {active ? <FlashcardStage key={active.id} card={active} /> : null}
+          </DocumentWorkspace>
+        )}
+      </div>
     </ManagedWindow>
+  );
+}
+
+function FlashcardSubjectSidebar({ selectedId }: { selectedId: string | null }) {
+  const setSubjectId = useFlashcardCitations((s) => s.setSubjectId);
+  const groups = useMemo(() => listFlashcardSubjectGroups(), []);
+
+  return (
+    <nav className="flashcard-cite-folders" aria-label="学科" data-no-drag>
+      <button
+        type="button"
+        data-no-drag
+        className={clsx("flashcard-cite-folder-all", selectedId === null && "is-active")}
+        aria-current={selectedId === null ? "true" : undefined}
+        onClick={() => setSubjectId(null)}
+      >
+        全部
+      </button>
+      {groups.map((group) => (
+        <section key={group.yearId} className="flashcard-cite-folder-group">
+          <h3 className="flashcard-cite-folder-group-label">{group.label}</h3>
+          {group.subjects.map((subject) => {
+            const selected = selectedId === subject.id;
+            return (
+              <button
+                key={subject.id}
+                type="button"
+                data-no-drag
+                className={clsx("flashcard-cite-folder", selected && "is-active")}
+                aria-label={subject.fullName}
+                title={subject.fullName}
+                aria-current={selected ? "true" : undefined}
+                onClick={() => setSubjectId(subject.id)}
+              >
+                {subject.name}
+              </button>
+            );
+          })}
+        </section>
+      ))}
+    </nav>
   );
 }
 

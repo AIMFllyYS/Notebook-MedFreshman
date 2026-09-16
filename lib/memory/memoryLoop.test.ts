@@ -35,8 +35,13 @@ test("buildCommitPrompt asks for the matching commit tool", () => {
   assert.match(buildCommitPrompt("note", { title: "渗透压" }), /commitNotes/);
   assert.match(buildCommitPrompt("note", { title: "渗透压" }), /渗透压/);
   assert.match(buildCommitPrompt("note", { title: "渗透压" }), /不要再调用 proposeMemory/);
+  assert.match(buildCommitPrompt("note", { title: "渗透压" }), /有序列表/);
+  assert.match(buildCommitPrompt("note", { title: "渗透压" }), /短记忆提纲/);
+  assert.match(buildCommitPrompt("note", { title: "渗透压" }), /不要写非常详细的 Markdown/);
   assert.match(buildCommitPrompt("flashcard", { mode: "cloze" }), /commitFlashcards/);
   assert.match(buildCommitPrompt("flashcard", { mode: "cloze" }), /cloze/);
+  assert.match(buildCommitPrompt("flashcard", { mode: "cloze" }), /按约定模式/);
+  assert.match(buildCommitPrompt("flashcard", { mode: "excerpt" }), /excerpt/);
 });
 
 test("collectMemoryToolEvents reads propose and commit outputs", () => {

@@ -1,16 +1,22 @@
 import { create } from "zustand";
 import { useWindowManager } from "@/lib/stores/windowManager";
-import { useStore } from "@/lib/stores/ui";
+import { useChatHistory } from "@/lib/stores/chatHistory";
 import {
-  buildCommitPrompt,
+  collectMemoryToolEvents,
   memoryCommitOf,
   shouldAcceptProposal,
   type MemoryCommitEvent,
   type MemoryProposalEvent,
 } from "@/lib/memory/memoryLoop";
 import { applyCommitFlashcards, applyCommitNotes } from "@/lib/memory/applyMemoryTools";
+import {
+  currentMemoryCommitChatContext,
+  runMemoryCommitWithRuntime,
+} from "@/lib/memory/runMemoryCommit";
+import { classifySendError } from "@/lib/chat/classifySendError";
 import { memoryProposalWindowId } from "@/lib/notes/userNote";
 import type { MemoryKind } from "@/lib/ai/agent/tools/proposeMemory/types";
+import type { ChatMessage } from "@/lib/types/chat";
 import type { RecordMode } from "@/lib/review/types";
 
 export type MemoryProposalStatus = "proposed" | "committing" | "done" | "dismissed";
@@ -30,6 +36,8 @@ export interface MemoryProposal {
   createdNoteId?: string;
   createdCardIds?: string[];
   error?: string;
+  /** 旁路请求的本地 assistant，不进主 thread。 */
+  commitMessage?: ChatMessage;
 }
 
 interface MemoryInboxState {
@@ -63,6 +71,105 @@ function cloudGeometry(index: number) {
     : Math.max(16, window.innerWidth - width - 28);
   const y = Math.max(64, (rect?.top ?? 72) + 40 + index * 28);
   return { pos: { x, y }, size: { width, height } };
+}
+
+const memoryCommitAborts = new Map<string, AbortController>();
+
+function sessionForMessage(messageId: string): { sessionId: string | null; messages: ChatMessage[] } {
+  const history = useChatHistory.getState();
+  for (const [sessionId, messages] of Object.entries(history.messagesById)) {
+    if (messages.some((message) => message.id === messageId)) {
+      return { sessionId, messages };
+    }
+  }
+  const sessionId = history.activeSessionId;
+  return { sessionId, messages: sessionId ? history.messagesById[sessionId] ?? [] : [] };
+}
+
+function emptyCommitError(kind: MemoryProposal["kind"]): string {
+  return kind === "note" ? "没有写出笔记，请再试一次。" : "没有写出闪卡，请再试一次。";
+}
+
+function commitSucceeded(item: MemoryProposal): boolean {
+  return Boolean(item.createdNoteId || item.createdCardIds?.length);
+}
+
+async function startMemoryCommit(id: string): Promise<void> {
+  const prev = useMemoryInbox.getState().byId[id];
+  if (!prev || prev.status !== "committing") return;
+  if (prev.kind !== "note" && prev.kind !== "flashcard") return;
+
+  memoryCommitAborts.get(id)?.abort();
+  const abortController = new AbortController();
+  memoryCommitAborts.set(id, abortController);
+  const { sessionId, messages } = sessionForMessage(prev.messageId);
+
+  try {
+    const result = await runMemoryCommitWithRuntime({
+      historyMessages: messages,
+      memoryCommit: memoryCommitOf(prev.kind),
+      title: prev.titleDraft,
+      mode: prev.modeDraft,
+      chatContext: currentMemoryCommitChatContext(),
+      sessionId: sessionId ?? undefined,
+      abortController,
+      onWrite: (message) => {
+        const live = useMemoryInbox.getState().byId[id];
+        if (!live || live.status !== "committing") return;
+        useMemoryInbox.setState((s) => ({
+          byId: { ...s.byId, [id]: { ...s.byId[id]!, commitMessage: message } },
+        }));
+      },
+    });
+    if (abortController.signal.aborted || useMemoryInbox.getState().byId[id]?.status !== "committing") return;
+
+    const { commits } = collectMemoryToolEvents([result]);
+    const commit = commits.find((item) => {
+      if (item.kind !== prev.kind) return false;
+      return prev.kind === "note" ? Boolean(item.notes) : Boolean(item.flashcards);
+    });
+    if (!commit) {
+      useMemoryInbox.setState((s) => {
+        const live = s.byId[id];
+        if (!live) return s;
+        return {
+          byId: {
+            ...s.byId,
+            [id]: { ...live, status: "proposed", error: emptyCommitError(prev.kind) },
+          },
+        };
+      });
+      return;
+    }
+    useMemoryInbox.getState().ingestCommit(commit);
+    const after = useMemoryInbox.getState().byId[id];
+    if (after && commitSucceeded(after)) {
+      useMemoryInbox.getState().dismiss(id);
+      return;
+    }
+    if (after?.error) {
+      useMemoryInbox.setState((s) => {
+        const live = s.byId[id];
+        if (!live) return s;
+        return { byId: { ...s.byId, [id]: { ...live, status: "proposed" } } };
+      });
+    }
+  } catch (error) {
+    if (abortController.signal.aborted) return;
+    const message = classifySendError(error, { stalled: false, aborted: abortController.signal.aborted });
+    useMemoryInbox.setState((s) => {
+      const live = s.byId[id];
+      if (!live) return s;
+      return {
+        byId: {
+          ...s.byId,
+          [id]: { ...live, status: "proposed", error: message ?? "整理失败，请再试一次。" },
+        },
+      };
+    });
+  } finally {
+    if (memoryCommitAborts.get(id) === abortController) memoryCommitAborts.delete(id);
+  }
 }
 
 function openCloud(proposal: MemoryProposal, index: number) {
@@ -170,18 +277,22 @@ export const useMemoryInbox = create<MemoryInboxState>((set, get) => ({
   confirm: (id) => {
     const prev = get().byId[id];
     if (!prev || prev.status !== "proposed") return;
-    set((s) => ({ byId: { ...s.byId, [id]: { ...prev, status: "committing" } } }));
+    set((s) => ({
+      byId: {
+        ...s.byId,
+        [id]: { ...prev, status: "committing", error: undefined, commitMessage: undefined },
+      },
+    }));
     useWindowManager.getState().updateWindow(memoryProposalWindowId(id), {
       title: prev.kind === "note" ? "正在整理笔记" : "正在整理闪卡",
-      size: { width: 380, height: 360 },
+      size: { width: 380, height: 420 },
     });
-    useStore.getState().sendToChat(
-      buildCommitPrompt(prev.kind, { title: prev.titleDraft, mode: prev.modeDraft }),
-      { memoryCommit: memoryCommitOf(prev.kind) },
-    );
+    void startMemoryCommit(id);
   },
 
   dismiss: (id) => {
+    memoryCommitAborts.get(id)?.abort();
+    memoryCommitAborts.delete(id);
     useWindowManager.getState().closeWindow(memoryProposalWindowId(id));
     const prev = get().byId[id];
     if (!prev) return;

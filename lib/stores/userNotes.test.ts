@@ -11,6 +11,7 @@ function reset() {
     byId: {},
     order: [],
     openEditorIds: [],
+    agentEditingNoteId: null,
     libraryOpen: false,
     libraryIntent: "browse",
     librarySubjectId: null,
@@ -59,9 +60,11 @@ test("openEditor opens a managed window and closeManagedWindow clears it", () =>
   assert.deepEqual(win?.data, { noteId: id });
   assert.deepEqual(useUserNotes.getState().openEditorIds, [id]);
 
+  useUserNotes.getState().setAgentEditingNoteId(id);
   closeManagedWindow(win!);
   assert.equal(useWindowManager.getState().windows.length, 0);
   assert.deepEqual(useUserNotes.getState().openEditorIds, []);
+  assert.equal(useUserNotes.getState().agentEditingNoteId, null);
 });
 
 test("openLibrary cite mode and closeManagedWindow", () => {
@@ -86,7 +89,13 @@ test("flashcard cite picker opens a singleton window", () => {
   useFlashcardCitations.getState().openPicker({ subjectId: "probability" });
   const win = useWindowManager.getState().windows.find((item) => item.type === "flashcard-cite-picker");
   assert.ok(win);
-  assert.match(win?.title ?? "", /选择复习闪卡/);
+  assert.match(win?.title ?? "", /复习闪卡页面/);
+  useFlashcardCitations.getState().setSubjectId(null);
+  assert.equal(useFlashcardCitations.getState().subjectId, null);
+  assert.equal(
+    useWindowManager.getState().windows.find((item) => item.type === "flashcard-cite-picker")?.title,
+    "复习闪卡页面",
+  );
   closeManagedWindow(win!);
   assert.equal(useFlashcardCitations.getState().open, false);
 });

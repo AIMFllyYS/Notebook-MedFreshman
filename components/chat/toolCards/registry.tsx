@@ -85,9 +85,10 @@ export const TOOL_REGISTRY = {
   proposeMemory: moduleOf("proposeMemory"),
   commitNotes: moduleOf("commitNotes"),
   commitFlashcards: moduleOf("commitFlashcards"),
+  updateUserNote: moduleOf("updateUserNote"),
 } satisfies { [N in StudyToolName]: ToolModule<N> };
 
-export const THREAD_SILENT_TOOLS = ["proposeMemory", "commitNotes", "commitFlashcards"] as const satisfies readonly StudyToolName[];
+export const THREAD_SILENT_TOOLS = ["proposeMemory", "commitNotes", "commitFlashcards", "updateUserNote"] as const satisfies readonly StudyToolName[];
 
 /** 现网 ChatMessage 卡片顺序（不是 STUDY_TOOL_NAMES）。imageSearch 追加在末尾，与收回前的气泡顺序一致。 */
 export const RESULT_CARD_ORDER = [

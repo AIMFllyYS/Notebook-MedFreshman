@@ -45,6 +45,19 @@ test("buildChatRequestBody：确认沉淀后带上 memoryCommit", () => {
   assert.equal(body.memoryCommit, "note");
 });
 
+test("buildChatRequestBody：打开个人笔记时带上 editingUserNote", () => {
+  const note = { id: "note_1", title: "被覆上皮", markdown: "# 被覆上皮" };
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ editingUserNote: note }),
+    resolved,
+    { limit: 8000, estimated: 1200, softLimitReached: false },
+    [],
+    "2025-2026-1",
+  );
+  assert.deepEqual(body.editingUserNote, note);
+});
+
 test("buildChatRequestBody：映射上下文与预算字段", () => {
   const body = buildChatRequestBody(
     ctx,

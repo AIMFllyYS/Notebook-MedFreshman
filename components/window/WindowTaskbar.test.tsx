@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { strToU8, zipSync } from "fflate";
 import WindowTaskbar from "./WindowTaskbar";
@@ -7,6 +7,7 @@ import { MAX_LOCAL_FILE_SIZE } from "@/lib/ai/imageUtils";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
+import { SPOTLIGHT_BODY_CLASS, SPOTLIGHT_PANEL_CLASS } from "@/components/search/spotlightChrome";
 
 describe("WindowTaskbar add content", () => {
   beforeEach(() => {
@@ -40,6 +41,9 @@ describe("WindowTaskbar add content", () => {
     expect(menu).toBeVisible();
     expect(menu.parentElement).toBe(document.body);
 
+    fireEvent.click(screen.getByRole("menuitem", { name: /输入网址/ }));
+    expect(screen.queryByRole("menu", { name: "添加内容" })).not.toBeInTheDocument();
+
     fireEvent.change(screen.getByRole("textbox", { name: "网址" }), { target: { value: "example.com/course" } });
     fireEvent.click(screen.getByRole("button", { name: "打开" }));
 
@@ -47,6 +51,64 @@ describe("WindowTaskbar add content", () => {
     expect(preview?.title).toBe("网址 · example.com");
     expect(preview?.data).toMatchObject({ url: "https://example.com/course" });
     expect(screen.getByRole("button", { name: "添加内容" })).toBeVisible();
+  });
+
+  it("groups plus menu items with the same dividers as add-file used to have", () => {
+    render(<WindowTaskbar host="topbar" />);
+    fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
+    const menu = screen.getByRole("menu", { name: "添加内容" });
+
+    const items = within(menu).getAllByRole("menuitem").map((item) => item.textContent);
+    expect(items).toEqual([
+      expect.stringMatching(/^选择笔记/),
+      expect.stringMatching(/^复习闪卡页面/),
+      expect.stringMatching(/^导入长文本/),
+      expect.stringMatching(/^导入可交互 HTML/),
+      expect.stringMatching(/^新建笔记/),
+      expect.stringMatching(/^添加文件/),
+      expect.stringMatching(/^输入网址/),
+    ]);
+
+    const openPanels = within(menu).getByRole("group", { name: "打开面板" });
+    expect(within(openPanels).getAllByRole("menuitem").map((item) => item.textContent)).toEqual([
+      expect.stringMatching(/^选择笔记/),
+      expect.stringMatching(/^复习闪卡页面/),
+    ]);
+
+    const imports = within(menu).getByRole("group", { name: "导入产物" });
+    expect(within(imports).getAllByRole("menuitem").map((item) => item.textContent)).toEqual([
+      expect.stringMatching(/^导入长文本/),
+      expect.stringMatching(/^导入可交互 HTML/),
+    ]);
+
+    const files = within(menu).getByRole("group", { name: "新建文件" });
+    expect(within(files).getAllByRole("menuitem").map((item) => item.textContent)).toEqual([
+      expect.stringMatching(/^新建笔记/),
+      expect.stringMatching(/^添加文件/),
+      expect.stringMatching(/^输入网址/),
+    ]);
+
+    const dividers = menu.querySelectorAll("[data-menu-divider]");
+    expect(dividers).toHaveLength(2);
+    expect(dividers[0]).toHaveClass("my-1", "border-t");
+    expect(dividers[1]).toHaveClass("my-1", "border-t");
+    expect(openPanels.nextElementSibling).toBe(dividers[0]);
+    expect(dividers[0]!.nextElementSibling).toBe(imports);
+    expect(imports.nextElementSibling).toBe(dividers[1]);
+    expect(dividers[1]!.nextElementSibling).toBe(files);
+  });
+
+  it("opens a URL dialog that reuses the global search spotlight size", () => {
+    render(<WindowTaskbar host="topbar" />);
+    fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /输入网址/ }));
+
+    const dialog = screen.getByRole("dialog", { name: "输入网址" });
+    expect(dialog).toHaveClass(...SPOTLIGHT_PANEL_CLASS.split(" "));
+    expect(dialog.className).toContain("w-[min(720px,calc(100vw-28px))]");
+    expect(dialog.className).toContain("mt-[12vh]");
+    expect(dialog.innerHTML).not.toContain("max-h-[58vh]");
+    expect(SPOTLIGHT_BODY_CLASS).toContain("max-h-[58vh]");
   });
 
   it("shows a modal when a local file exceeds the workspace limit", async () => {
@@ -103,7 +165,9 @@ describe("WindowTaskbar add content", () => {
     expect(useUserNotes.getState().libraryIntent).toBe("cite");
 
     fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
-    fireEvent.click(screen.getByRole("menuitem", { name: /选择复习闪卡/ }));
+    expect(screen.getByRole("menuitem", { name: /复习闪卡页面/ })).toBeInTheDocument();
+    expect(screen.queryByRole("menuitem", { name: /选择复习闪卡/ })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("menuitem", { name: /复习闪卡页面/ }));
     expect(useWindowManager.getState().windows.some((win) => win.type === "flashcard-cite-picker")).toBe(true);
     expect(useFlashcardCitations.getState().open).toBe(true);
   });

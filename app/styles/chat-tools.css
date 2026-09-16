@@ -725,6 +725,11 @@ mark.citation-flash {
   font-weight: 600;
 }
 
+.user-note-editor-ai {
+  flex-shrink: 0;
+  margin-inline: -2px;
+}
+
 .user-note-chrome-actions {
   display: flex;
   align-items: center;
@@ -962,8 +967,7 @@ mark.citation-flash {
 .user-note-toolbar-link {
   background: transparent;
   color: var(--md-sys-color-primary);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
 }
 
 /* 父级 .document-workspace-body 是可滚动的块级容器：这里显式吃满高度，
@@ -983,6 +987,80 @@ mark.citation-flash {
 
 .flashcard-cite-stage {
   padding: 14px;
+}
+
+/* 闪卡管理窗：左侧学期学科分栏，对齐 macOS 备忘录窄栏 + 现有 window chrome token。 */
+.flashcard-cite-layout {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.flashcard-cite-layout .document-workspace,
+.flashcard-cite-layout .user-note-stage {
+  min-width: 0;
+  flex: 1;
+}
+
+.flashcard-cite-folders {
+  display: flex;
+  width: 10.75rem;
+  min-width: 0;
+  flex-shrink: 0;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 7px 6px 10px;
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  background: color-mix(in srgb, var(--md-sys-color-surface-container) 88%, transparent);
+}
+
+.flashcard-cite-folder-all,
+.flashcard-cite-folder {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 26px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  font-size: 12.5px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.flashcard-cite-folder-all {
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+
+.flashcard-cite-folder-group {
+  margin-top: 7px;
+}
+
+.flashcard-cite-folder-group-label {
+  margin: 0;
+  padding: 3px 8px 4px;
+  color: var(--md-sys-color-outline);
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.flashcard-cite-folder-all:hover:not(.is-active),
+.flashcard-cite-folder:hover:not(.is-active) {
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.flashcard-cite-folder-all.is-active,
+.flashcard-cite-folder.is-active {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
 }
 
 .user-note-stage-head {
@@ -1052,24 +1130,25 @@ mark.citation-flash {
   min-height: 0;
   flex: 1;
   flex-direction: column;
-  gap: 10px;
-  padding: 14px 16px 16px;
+  gap: 8px;
+  padding: 12px 14px 13px;
   background: var(--bg-panel);
 }
 
 .memory-cloud-question {
   margin: 0;
   color: var(--ink);
-  font-size: 14px;
-  font-weight: 650;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .memory-cloud-reason,
 .memory-cloud-error {
   margin: 0;
   color: var(--ink-soft);
-  font-size: 12.5px;
-  line-height: 1.55;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .memory-cloud-error {
@@ -1081,16 +1160,17 @@ mark.citation-flash {
   flex-direction: column;
   gap: 4px;
   color: var(--ink-soft);
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
 }
 
 .memory-cloud-field input {
-  height: 30px;
-  padding: 0 8px;
+  height: 28px;
+  padding: 0 9px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 7px;
   background: var(--bg-muted);
+  box-shadow: inset 0 1px 1px color-mix(in srgb, black 5%, transparent);
   color: var(--ink);
   font-size: 13px;
   outline: none;
@@ -1098,6 +1178,7 @@ mark.citation-flash {
 
 .memory-cloud-field input:focus {
   border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent);
 }
 
 .memory-cloud-trace {
@@ -1109,7 +1190,15 @@ mark.citation-flash {
 .memory-cloud-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
+}
+
+.memory-cloud-actions .user-note-toolbar-link {
+  margin-right: auto;
 }
 
 .user-note-course-summary {

@@ -31,6 +31,7 @@ const STRUCTURED_TEXT_TOOLS = new Set([
   "generateImage",
   "commitNotes",
   "commitFlashcards",
+  "updateUserNote",
 ]);
 
 export function isCompactedToolText(text: string): boolean {

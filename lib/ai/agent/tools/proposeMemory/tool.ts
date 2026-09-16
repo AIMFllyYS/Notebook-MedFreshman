@@ -8,7 +8,7 @@ const RECORD_MODES = ["excerpt", "cloze", "quiz", "custom"] as const;
 export function createProposeMemoryTool() {
   return tool({
     description:
-      "轻量提议：当这次对话产出了值得及时复习的要点时调用。只提议，不要在这里写完整笔记或闪卡。前端会在 AI 面板左侧弹出通知云，等学生确认后再调用 commitNotes / commitFlashcards。同一轮对话每种 kind 最多提议一次，不要刷屏。kind=note 表示短要点提纲，kind=flashcard 表示可测验记忆卡。",
+      "轻量提议：当这次对话产出了值得及时复习的要点时调用。只提议，不要在这里写完整笔记或闪卡。前端会在 AI 面板左侧弹出通知云，等学生确认后再调用 commitNotes / commitFlashcards。同一轮对话每种 kind 最多提议一次，不要刷屏。kind=note 表示短记忆提纲（有序列表/表格，不是讲义），kind=flashcard 表示可测验记忆卡。",
     inputSchema: z.object({
       kind: z.enum(["note", "flashcard"]).describe("note=短复习提纲；flashcard=可测验闪卡"),
       reason: z.string().min(1).describe("一句话说明为什么值得记住"),

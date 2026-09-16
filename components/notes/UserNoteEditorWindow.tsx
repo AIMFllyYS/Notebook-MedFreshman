@@ -5,13 +5,14 @@ import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import clsx from "clsx";
-import { Download, Quote, Trash2 } from "lucide-react";
+import { Download, MessageSquare, Quote, Trash2 } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import NoteRenderer from "@/components/notes/NoteRenderer";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { downloadAsMarkdown } from "@/lib/documents/export";
+import { openAgentForUserNote } from "@/lib/notes/openUserNote";
 import { formatNoteQuote, subjectLabel, userNoteWindowId } from "@/lib/notes/userNote";
 
 type EditorMode = "source" | "wysiwyg" | "split";
@@ -122,6 +123,16 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
             aria-label="笔记标题"
             onChange={(event) => updateNote(noteId, { title: event.target.value })}
           />
+          <button
+            type="button"
+            data-no-drag
+            title="让小岸编辑这篇笔记"
+            aria-label="让小岸编辑这篇笔记"
+            className="user-note-chrome-btn user-note-editor-ai"
+            onClick={() => openAgentForUserNote(noteId)}
+          >
+            <MessageSquare size={14} />
+          </button>
           <span className="user-note-editor-subject">{subjectLabel(note.subjectId)}</span>
         </div>
 

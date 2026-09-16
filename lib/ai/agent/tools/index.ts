@@ -23,6 +23,7 @@ export type { UseSkillInput, UseSkillOutput } from "@/lib/ai/agent/tools/useSkil
 export type { ProposeMemoryInput, ProposeMemoryOutput, MemoryKind } from "@/lib/ai/agent/tools/proposeMemory/types";
 export type { CommitNotesInput, CommitNotesOutput } from "@/lib/ai/agent/tools/commitNotes/types";
 export type { CommitFlashcardsInput, CommitFlashcardsOutput, CommitFlashcardItem } from "@/lib/ai/agent/tools/commitFlashcards/types";
+export type { UpdateUserNoteInput, UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/types";
 export type { StudyTools, StudyToolName } from "@/lib/ai/agent/tools/names";
 /** @public 兼容旧 import 路径；设置面板与思考链从 presentations / toolPresentation 取用。 */
 export { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";

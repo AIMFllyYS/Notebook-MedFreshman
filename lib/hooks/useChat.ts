@@ -17,6 +17,7 @@ import {
   buildChatRequestBody, kickoffSessionTitle, classifySendError, executeChatRequest,
   type SendMessageOptions,
 } from '@/lib/chat/sendMessage';
+import { selectEditingUserNote } from '@/lib/notes/applyUserNoteAgent';
 
 const EMPTY_MESSAGES: ChatMessage[] = [];
 export function useChat(chatContext: ChatContext, options?: ChatOptions, overrides?: { sessionId?: string; modelId?: string }) {
@@ -90,7 +91,16 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
         await executeChatRequest({
           latestMessages, abortSignal: abortController.signal, budget,
           body: buildChatRequestBody(
-            chatContext, { ...settings, memoryCommit: sendOptions?.memoryCommit }, resolved, budget, skills, academicYear,
+            chatContext,
+            {
+              ...settings,
+              memoryCommit: sendOptions?.memoryCommit,
+              editingUserNote: selectEditingUserNote() ?? undefined,
+            },
+            resolved,
+            budget,
+            skills,
+            academicYear,
             collectRequestArtifacts(latestMessages, useArtifacts.getState()),
           ),
           sessionId, userMessageId: userMessage.id, assistant, userContent,

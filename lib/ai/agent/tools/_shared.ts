@@ -1,6 +1,7 @@
 import type { Skill } from "@/lib/types/skill";
 import type { AcademicYearId } from "@/lib/constants/academic-year";
 import type { TextToolOutput } from "@/lib/ai/agent/tools/_types";
+import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 
 export const IMAGE_SEARCH_MAX_TOTAL = 20;
 export const MAX_TOOL_STEPS = 6;
@@ -20,6 +21,8 @@ export interface StudyToolContext {
   modelId?: string;
   /** 生图模式下当前模型不支持 HTML 交互生成的提示。 */
   artifactUnsupportedReason?: string;
+  /** 学生从笔记窗打开助教时，当前正在编辑的个人笔记。 */
+  editingUserNote?: EditingUserNoteContext;
 }
 
 /** 跨工具轮次的可变状态（同一请求内共享）。 */

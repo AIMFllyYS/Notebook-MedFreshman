@@ -21,6 +21,7 @@ import {
 import { createAgentLifecycleHooks } from "@/lib/ai/observability/agentLog";
 import { formatArtifactCatalog, type ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
+import { formatEditingUserNoteContext, type EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 
 export interface StudyAgentInput {
   model: LanguageModelV4;
@@ -45,6 +46,8 @@ export interface StudyAgentInput {
   temperature?: number;
   /** 学生确认沉淀后，本轮才暴露对应 commit 工具。 */
   memoryCommit?: MemoryCommitKind;
+  /** 学生从笔记窗打开助教时，当前正在编辑的个人笔记。 */
+  editingUserNote?: EditingUserNoteContext;
 }
 
 export interface StudyAgentBundle {
@@ -65,18 +68,13 @@ export interface StudyAgentBundle {
 const IMAGE_MODE_RULE =
   "## 生图模式硬性规则\n当前用户选择的是生图模型。无论用户输入什么，本次最终动作必须调用 generateImage 工具，把用户意图改写为清晰、可执行的生图提示词。不要用纯文字回答替代，不要调用 renderInteractive 或 drawDiagram。";
 
-const NOTE_COMMIT_RULE =
-  "## 记忆闭环（已确认笔记）\n学生已确认把这次对话整理成个人短笔记。请立即调用 commitNotes，写出标题与短要点提纲（Markdown，不是讲义）。不要再调用 proposeMemory，不要调用 writeDocument，不要在正文里重复笔记全文。";
-
-const FLASHCARD_COMMIT_RULE =
-  "## 记忆闭环（已确认闪卡）\n学生已确认把这次对话整理成复习闪卡。请立即调用 commitFlashcards，按约定模式提交 2–6 条可测验原文。不要再调用 proposeMemory，不要在正文里重复卡片内容。";
-
 export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
   const {
     model, chatCtx, options, disabledTools, skills, globalContext,
     referenceContext, contextTruncated, isImageMode, selectedModelId, modelSupportsTools, thinking,
     artifacts = [],
     memoryCommit,
+    editingUserNote,
   } = input;
 
   // 稳定排序，保证拼装的系统前缀逐字节一致、利于缓存命中
@@ -96,8 +94,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
 
   const promptExtras: string[] = [];
   if (isImageMode) promptExtras.push(IMAGE_MODE_RULE);
-  if (memoryCommit === "note") promptExtras.push(NOTE_COMMIT_RULE);
-  if (memoryCommit === "flashcards") promptExtras.push(FLASHCARD_COMMIT_RULE);
+  // 笔记 / 闪卡撰写指令放在旁路请求的最后一条 user 消息，不改 system 前缀，便于命中 prefix cache。
   if (globalContext) promptExtras.push(`## 全局补充上下文（用户提供，始终适用）\n${globalContext}`);
   if (pinnedSkillsText) promptExtras.push(`## 已固定启用的技能（用户手动开启，请始终遵循其指导）\n${pinnedSkillsText}`);
   if (skillsMenuText) {
@@ -113,6 +110,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
   // 稳定前缀（global + 学科 + 用户设置）在 systemPrompt 里，同页追问可命中 prefix cache。
   const volatile =
     buildLocationLine(chatCtx) +
+    (editingUserNote ? `\n\n${formatEditingUserNoteContext(editingUserNote)}` : "") +
     (referenceContext ? `\n\n【参考材料】\n${referenceContext}` : "") +
     formatArtifactCatalog(artifacts) +
     (contextTruncated
@@ -132,12 +130,13 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
           skills: sortedSkills,
           academicYear: chatCtx.academicYear,
           modelId: selectedModelId,
+          editingUserNote,
           artifactUnsupportedReason: isImageMode
             ? "当前生图模型不支持 HTML 交互组件生成，请切换文本模型后重试。"
             : undefined,
         },
         runtime,
-        { enableSearch: options.enableSearch ?? false, disabled: disabledTools, artifacts, memoryCommit },
+        { enableSearch: options.enableSearch ?? false, disabled: disabledTools, artifacts, memoryCommit, editingUserNote },
       )
     : {};
 
