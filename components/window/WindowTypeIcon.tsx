@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, BookOpen, Globe, FileDigit, Heart } from "lucide-react";
+import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, BookOpen, Globe, FileDigit, Heart, NotebookPen } from "lucide-react";
 import FileTypeIcon, { resolveFileGlyphKind } from "@/components/icons/file-types/FileTypeIcon";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
@@ -51,5 +51,6 @@ export function WindowTypeIcon({
   if (type === "document-viewer") return <FileDigit size={size} />;
   if (type === "note-citation-viewer" || type === "source-trace-viewer") return <BookOpen size={size} />;
   if (type === "source-preview") return <Globe size={size} />;
+  if (type === "notes-editor") return <NotebookPen size={size} />;
   return <MonitorPlay size={size} />;
 }

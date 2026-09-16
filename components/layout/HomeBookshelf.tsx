@@ -2,13 +2,14 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { GraduationCap, BookOpenCheck } from "lucide-react";
+import { GraduationCap, BookOpenCheck, NotebookPen } from "lucide-react";
 import { contentTree } from "@/lib/content-data/manifest";
 import { firstLearnHref } from "@/lib/content-data";
 import { subjectColor } from "@/lib/content-data/subjects.registry";
 import SubjectIcon from "@/components/shared/SubjectIcon";
 import { BOOKSHELF_GRID_COLUMNS, BOOKSHELF_GRID_GAP, filterSubjectsByYear } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { openNotesEditor } from "@/lib/notes/openNotesEditor";
 import type { Subject } from "@/lib/types/content";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
 
@@ -119,6 +120,13 @@ function BookCard({ subject }: { subject: Subject }) {
           <Link href={`/${subject.id}/review`} style={overlayBtn(false)}>
             <BookOpenCheck size={15} /> 开始复习
           </Link>
+          <button
+            type="button"
+            style={{ ...overlayBtn(false), cursor: "pointer" }}
+            onClick={() => openNotesEditor({ subjectId: subject.id, subjectName: subject.name })}
+          >
+            <NotebookPen size={15} /> 笔记
+          </button>
         </div>
       </div>
     </div>
@@ -142,7 +150,7 @@ export default function HomeBookshelf() {
             期末复习工作站
           </h1>
           <p style={{ fontSize: 14, color: "var(--ink-soft)", marginTop: 8, lineHeight: 1.7 }}>
-            选一本书：<b>开始学习</b> 进入正文，<b>开始复习</b> 翻看你划词 / 右键「记录」生成的记忆卡。
+            选一本书：<b>开始学习</b> 进入正文，<b>开始复习</b> 翻看你划词 / 右键「记录」生成的记忆卡，<b>笔记</b> 打开该科目的 Markdown 笔记窗口。
           </p>
         </header>
 

@@ -8,6 +8,7 @@ import { Plus, Link2, Upload } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import OverflowMenu from "@/components/window/OverflowMenu";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
+import AddNoteMenuItems from "@/components/notes/AddNoteMenuItems";
 import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
 import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
 import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
@@ -182,6 +183,7 @@ function AddContentButton() {
             <Upload size={14} className="text-[var(--md-sys-color-primary)]" />
             <span><strong className="font-semibold">添加文件</strong><small className="ml-1 text-[var(--ink-soft)]">PDF、文本、代码</small></span>
           </button>
+          <AddNoteMenuItems onDone={() => setOpen(false)} />
           <div className="my-1 border-t border-[var(--line)]" />
           <div className="flex items-center gap-1.5 px-1">
             <Link2 size={14} className="shrink-0 text-[var(--md-sys-color-primary)]" />

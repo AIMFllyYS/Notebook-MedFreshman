@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   ChevronLeft, ChevronRight, ChevronUp, Trash2, Download, Loader, RefreshCw,
-  AlertTriangle, BookOpenCheck, Home, GraduationCap, Wand2,
+  AlertTriangle, BookOpenCheck, Home, GraduationCap, Wand2, NotebookPen,
 } from "lucide-react";
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
 import { useRecordPreviews } from "@/lib/hooks/useRecordPreviews";
@@ -19,6 +19,7 @@ import QuizMarkdown from "@/components/quiz/QuizMarkdown";
 import SelectionPopover from "@/components/notes/SelectionPopover";
 import { useReviewKeyboard } from "@/lib/keyboard/useReviewKeyboard";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { openNotesEditor } from "@/lib/notes/openNotesEditor";
 
 function downloadJSON(obj: unknown, filename: string) {
   const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
@@ -127,6 +128,15 @@ export default function ReviewBoardPage() {
           <Link href="/" className="press" style={pillBtn(false)} title="返回首页">
             <Home size={14} /> 首页
           </Link>
+          <button
+            type="button"
+            className="press"
+            style={pillBtn(false)}
+            title="打开本科目的笔记"
+            onClick={() => openNotesEditor({ subjectId, subjectName })}
+          >
+            <NotebookPen size={14} /> 笔记
+          </button>
 
           {/* 下载菜单 */}
           <div style={{ position: "relative" }}>
