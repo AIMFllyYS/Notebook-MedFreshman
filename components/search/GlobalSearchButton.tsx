@@ -1,9 +1,8 @@
 "use client";
 
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
-import { ArrowUpRight, Command, Search, X } from "lucide-react";
+import { ArrowUpRight, Command, Search } from "lucide-react";
 import { contentTree } from "@/lib/content-data";
 import { buildGlobalSearchIndex, searchGlobalIndex } from "@/lib/search/globalSearch";
 import { filterContentTreeByYear } from "@/lib/constants/academic-year";
@@ -12,6 +11,8 @@ import { useGlobalSearch } from "@/lib/keyboard/useGlobalSearch";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { formatShortcut } from "@/lib/keyboard/format";
 import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
+import SpotlightDialog from "@/components/search/SpotlightDialog";
+import { SPOTLIGHT_BODY_CLASS, SPOTLIGHT_INPUT_CLASS } from "@/components/search/spotlightChrome";
 
 const SEARCH_LIMIT = 32;
 
@@ -73,75 +74,62 @@ export default function GlobalSearchButton() {
         )}
       </button>
 
-      {open && createPortal(
-        <div className="fixed inset-0 z-[10000] bg-black/20 backdrop-blur-[2px]" onPointerDown={() => setOpen(false)}>
-          <div
-            className="mx-auto mt-[12vh] w-[min(720px,calc(100vw-28px))] overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--bg-panel)] shadow-2xl"
-            onPointerDown={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-center gap-3 border-b border-[var(--line)] px-4 py-3">
-              <Search size={18} className="shrink-0 text-[var(--md-sys-color-primary)]" />
-              <input
-                ref={inputRef}
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="搜索课程、章节、录音、摘要..."
-                className="min-w-0 flex-1 bg-transparent text-[15px] text-[var(--ink)] outline-none placeholder:text-[var(--ink-faint)]"
-              />
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                title="关闭"
-                className="grid h-7 w-7 place-items-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
-              >
-                <X size={16} />
-              </button>
-            </div>
-
-            <div className="max-h-[58vh] overflow-y-auto p-2">
-              {deferredQuery.trim() ? (
-                results.length > 0 ? (
-                  results.map((result) => (
-                    <button
-                      key={result.id}
-                      type="button"
-                      onClick={() => openResult(result.href)}
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-[var(--bg-muted)]"
-                    >
-                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-primary)]">
-                        <Search size={15} />
+      <SpotlightDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        label="全局搜索"
+        icon={<Search size={18} className="shrink-0 text-[var(--md-sys-color-primary)]" />}
+        input={
+          <input
+            ref={inputRef}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="搜索课程、章节、录音、摘要..."
+            className={SPOTLIGHT_INPUT_CLASS}
+          />
+        }
+      >
+        <div className={SPOTLIGHT_BODY_CLASS}>
+          {deferredQuery.trim() ? (
+            results.length > 0 ? (
+              results.map((result) => (
+                <button
+                  key={result.id}
+                  type="button"
+                  onClick={() => openResult(result.href)}
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-[var(--bg-muted)]"
+                >
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-primary)]">
+                    <Search size={15} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[14px] font-semibold text-[var(--ink)]">
+                      {result.itemId} {result.title}
+                    </span>
+                    <span className="block truncate text-[12px] text-[var(--ink-faint)]">
+                      {result.breadcrumbs || `${result.subjectName} / ${result.categoryName}`}
+                    </span>
+                    {result.summary && (
+                      <span className="mt-0.5 block truncate text-[12px] text-[var(--ink-soft)]">
+                        {result.summary}
                       </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate text-[14px] font-semibold text-[var(--ink)]">
-                          {result.itemId} {result.title}
-                        </span>
-                        <span className="block truncate text-[12px] text-[var(--ink-faint)]">
-                          {result.breadcrumbs || `${result.subjectName} / ${result.categoryName}`}
-                        </span>
-                        {result.summary && (
-                          <span className="mt-0.5 block truncate text-[12px] text-[var(--ink-soft)]">
-                            {result.summary}
-                          </span>
-                        )}
-                      </span>
-                      <ArrowUpRight size={14} className="shrink-0 text-[var(--ink-faint)]" />
-                    </button>
-                  ))
-                ) : (
-                  <div className="px-4 py-10 text-center text-[13px] text-[var(--ink-faint)]">
-                    没有匹配结果
-                  </div>
-                )
-              ) : (
-                <div className="px-4 py-10 text-center text-[13px] text-[var(--ink-faint)]">
-                  输入关键词、章节编号或课程名开始搜索
-                </div>
-              )}
+                    )}
+                  </span>
+                  <ArrowUpRight size={14} className="shrink-0 text-[var(--ink-faint)]" />
+                </button>
+              ))
+            ) : (
+              <div className="px-4 py-10 text-center text-[13px] text-[var(--ink-faint)]">
+                没有匹配结果
+              </div>
+            )
+          ) : (
+            <div className="px-4 py-10 text-center text-[13px] text-[var(--ink-faint)]">
+              输入关键词、章节编号或课程名开始搜索
             </div>
-          </div>
-        </div>,
-        document.body,
-      )}
+          )}
+        </div>
+      </SpotlightDialog>
     </>
   );
 }
