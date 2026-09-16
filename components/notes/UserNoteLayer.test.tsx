@@ -88,11 +88,38 @@ describe("personal note windows", () => {
 
     const title = screen.getByLabelText("笔记标题");
     const ai = screen.getByRole("button", { name: "笔记对话" });
-    const subject = screen.getByText("系统解剖学");
+    const subject = screen.getByTestId("subject-picker");
+    expect(subject).toHaveTextContent("系统解剖学");
     expect(title.compareDocumentPosition(ai) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(ai.compareDocumentPosition(subject) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(ai.querySelector("svg")).toBeTruthy();
     expect(ai.innerHTML).toMatch(/lucide-message-square|message-square/i);
+  });
+
+  it("changes the note subject from the title chip and persists it", () => {
+    const id = createAndOpenNote("anatomy", { title: "被覆上皮", markdown: "# 被覆上皮" });
+    render(<UserNoteLayer />);
+
+    fireEvent.click(screen.getByTestId("subject-picker"));
+    fireEvent.click(screen.getByTestId("subject-picker-option-physics"));
+
+    expect(useUserNotes.getState().byId[id]?.subjectId).toBe("physics");
+    expect(screen.getByTestId("subject-picker")).toHaveTextContent("大学物理");
+  });
+
+  it("keeps a home-shelf note unfiled until the subject menu files it", () => {
+    const id = createAndOpenNote(null);
+    render(<UserNoteLayer />);
+
+    expect(useUserNotes.getState().byId[id]?.subjectId).toBeNull();
+    expect(screen.getByTestId("subject-picker")).toHaveTextContent("未归档");
+
+    fireEvent.click(screen.getByTestId("subject-picker"));
+    expect(screen.getByTestId("subject-picker-option-unfiled")).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("subject-picker-option-probability"));
+
+    expect(useUserNotes.getState().byId[id]?.subjectId).toBe("probability");
+    expect(screen.getByTestId("subject-picker")).toHaveTextContent("概率论");
   });
 
   it("opens an in-window note agent without touching the main thread", () => {

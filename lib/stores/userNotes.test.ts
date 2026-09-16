@@ -54,6 +54,16 @@ test("createNote binds subject and seeds default markdown", () => {
   assert.match(note?.markdown ?? "", /\$E = mc\^\{2\}\$/);
 });
 
+test("updateNote can refile the subject without touching markdown", () => {
+  const id = useUserNotes.getState().createNote(null);
+  const markdown = useUserNotes.getState().byId[id]?.markdown;
+  useUserNotes.getState().updateNote(id, { subjectId: "probability" });
+  assert.equal(useUserNotes.getState().byId[id]?.subjectId, "probability");
+  assert.equal(useUserNotes.getState().byId[id]?.markdown, markdown);
+  useUserNotes.getState().updateNote(id, { subjectId: null });
+  assert.equal(useUserNotes.getState().byId[id]?.subjectId, null);
+});
+
 test("updateNote auto-follows heading until the title is edited by hand", () => {
   const id = useUserNotes.getState().createNote("physics");
   useUserNotes.getState().updateNote(id, { markdown: "# 牛顿定律\n\n$F=ma$" });

@@ -146,6 +146,18 @@ test("note editor AI button reuses the right-panel conversation icon", () => {
   assert.match(editor, /<MessageSquare size=\{14\} \/>/);
 });
 
+test("note and flashcard subject chips reuse AnchoredMenu", () => {
+  const menu = readFileSync(new URL("../../components/notes/SubjectPickerMenu.tsx", import.meta.url), "utf8");
+  const editor = readFileSync(new URL("../../components/notes/UserNoteEditorWindow.tsx", import.meta.url), "utf8");
+  const flashcards = readFileSync(new URL("../../components/notes/FlashcardCiteWindow.tsx", import.meta.url), "utf8");
+  const preview = readFileSync(new URL("../../components/review/RecordPreviewWindow.tsx", import.meta.url), "utf8");
+  assert.match(menu, /from "@\/components\/ui\/AnchoredMenu"/);
+  assert.match(menu, /className="app-menu-item"/);
+  assert.match(editor, /SubjectPickerMenu/);
+  assert.match(flashcards, /SubjectPickerMenu/);
+  assert.match(preview, /SubjectPickerMenu/);
+});
+
 test("import pickers open a shared agent-product window", () => {
   openDocumentImportPicker();
   assert.equal(useAgentProductPicker.getState().kind, "document");

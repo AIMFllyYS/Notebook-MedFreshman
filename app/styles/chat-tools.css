@@ -718,11 +718,19 @@ mark.citation-flash {
 .user-note-editor-subject {
   flex-shrink: 0;
   padding: 2px 8px;
+  border: none;
   border-radius: 999px;
   background: var(--md-sys-color-surface-variant);
   color: var(--md-sys-color-on-surface-variant);
   font-size: 11px;
   font-weight: 600;
+  cursor: pointer;
+}
+
+.user-note-editor-subject:hover,
+.user-note-editor-subject[aria-expanded="true"] {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
 }
 
 .user-note-editor-ai {
@@ -1040,6 +1048,17 @@ mark.citation-flash {
 
 .flashcard-cite-stage {
   padding: 14px;
+}
+
+.flashcard-cite-stage-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.flashcard-cite-stage > .flashcard-cite-stage-head {
+  margin-bottom: 10px;
 }
 
 /* 闪卡管理窗：左侧学期学科分栏，对齐 macOS 备忘录窄栏 + 现有 window chrome token。 */

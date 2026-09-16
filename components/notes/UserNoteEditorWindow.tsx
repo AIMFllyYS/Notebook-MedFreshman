@@ -14,7 +14,8 @@ import { useCiteToChat } from "@/components/notes/useCiteToChat";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { downloadAsMarkdown } from "@/lib/documents/export";
 import { citeUserNoteToMainAgent, openAgentForUserNote } from "@/lib/notes/openUserNote";
-import { formatNoteQuote, subjectLabel, userNoteWindowId } from "@/lib/notes/userNote";
+import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
+import { formatNoteQuote, userNoteWindowId } from "@/lib/notes/userNote";
 
 type EditorMode = "source" | "wysiwyg" | "split";
 
@@ -132,6 +133,7 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
               preview={preview}
               wysiwyg={wysiwyg}
               onTitleChange={(title) => updateNote(noteId, { title })}
+              onSubjectChange={(next) => updateNote(noteId, { subjectId: next })}
               onToggleAgent={() => useUserNotes.getState().setNoteAgentOpen(noteId, false)}
             />
           </Panel>
@@ -159,6 +161,7 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
           preview={preview}
           wysiwyg={wysiwyg}
           onTitleChange={(title) => updateNote(noteId, { title })}
+          onSubjectChange={(next) => updateNote(noteId, { subjectId: next })}
           onToggleAgent={() => openAgentForUserNote(noteId)}
         />
       )}
@@ -187,6 +190,7 @@ function NoteEditorBody({
   preview,
   wysiwyg,
   onTitleChange,
+  onSubjectChange,
   onToggleAgent,
 }: {
   noteId: string;
@@ -198,6 +202,7 @@ function NoteEditorBody({
   preview: ReactNode;
   wysiwyg: ReactNode;
   onTitleChange: (title: string) => void;
+  onSubjectChange: (subjectId: string | null) => void;
   onToggleAgent: () => void;
 }) {
   return (
@@ -221,7 +226,7 @@ function NoteEditorBody({
         >
           <MessageSquare size={14} />
         </button>
-        <span className="user-note-editor-subject">{subjectLabel(subjectId)}</span>
+        <SubjectPickerMenu value={subjectId} allowUnfiled onChange={onSubjectChange} />
       </div>
 
       {mode === "split" ? (

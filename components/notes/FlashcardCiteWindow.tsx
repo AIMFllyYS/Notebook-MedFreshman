@@ -13,6 +13,7 @@ import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { useRecordPreviews } from "@/lib/stores/recordPreviews";
 import { useReviewCards } from "@/lib/stores/reviewCards";
 import { useWindowManager } from "@/lib/stores/windowManager";
+import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
 import { FLASHCARD_CITE_WINDOW_ID, formatFlashcardQuote, plainSnippet } from "@/lib/notes/userNote";
 import { listFlashcardSubjectGroups } from "@/lib/notes/flashcardSubjects";
 import { downloadFlashcardMarkdown, downloadFlashcardsCsv } from "@/lib/review/exportCards";
@@ -205,15 +206,28 @@ function FlashcardSubjectSidebar({ selectedId }: { selectedId: string | null }) 
   );
 }
 
+function applyFlashcardSubject(cardId: string, next: string | null) {
+  if (!next) return;
+  useReviewCards.getState().setSubject(cardId, next);
+  const picker = useFlashcardCitations.getState();
+  if (picker.subjectId) picker.setSubjectId(next);
+}
+
 function FlashcardStage({ card }: { card: ReviewCard }) {
   const [flipped, setFlipped] = useState(false);
+  const subjectMenu = (
+    <SubjectPickerMenu value={card.subjectId} onChange={(next) => applyFlashcardSubject(card.id, next)} />
+  );
 
   if (!card.front) {
     return (
       <div className="user-note-stage">
-        <div className="user-note-stage-head">
-          <div className="user-note-stage-title">{STATUS_LABEL[card.status]}</div>
-          <div className="user-note-stage-meta">{card.sourceLabel}</div>
+        <div className="user-note-stage-head flashcard-cite-stage-head" data-no-drag>
+          <div>
+            <div className="user-note-stage-title">{STATUS_LABEL[card.status]}</div>
+            <div className="user-note-stage-meta">{card.sourceLabel}</div>
+          </div>
+          {subjectMenu}
         </div>
         <div className="user-note-preview chat-prose">
           <p className="note-citation-status">这张卡还没有成卡，下面是记录下来的原文。</p>
@@ -225,6 +239,10 @@ function FlashcardStage({ card }: { card: ReviewCard }) {
 
   return (
     <div className="flashcard-cite-stage">
+      <div className="flashcard-cite-stage-head" data-no-drag>
+        <div className="user-note-stage-meta">{card.sourceLabel}</div>
+        {subjectMenu}
+      </div>
       <FlipCard card={card} flipped={flipped} onFlip={() => setFlipped((f) => !f)} />
     </div>
   );

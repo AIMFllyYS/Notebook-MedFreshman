@@ -21,10 +21,11 @@ import {
 
 const genId = () => Math.random().toString(36).slice(2, 11);
 
-/** 笔记正文/标题的增量补丁。 */
+/** 笔记正文/标题/学科的增量补丁。 */
 export interface UserNotePatch {
   title?: string;
   markdown?: string;
+  subjectId?: string | null;
 }
 
 export interface OpenNoteLibraryOptions {
@@ -56,7 +57,7 @@ interface UserNotesState {
 
   /** 新建一篇笔记（不开窗），返回笔记 id。可带入 Agent 沉淀的短提纲。 */
   createNote: (subjectId: string | null, init?: { title?: string; markdown?: string }) => string;
-  /** 改标题 / 正文；未手动改过标题时标题跟随正文首个标题。 */
+  /** 改标题 / 正文 / 学科；未手动改过标题时标题跟随正文首个标题。 */
   updateNote: (id: string, patch: UserNotePatch) => void;
   /** 删除笔记，并关掉它可能打开着的编辑器窗口。 */
   removeNote: (id: string) => void;
@@ -186,9 +187,10 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
           : patch.markdown !== undefined && autoTitled
             ? deriveNoteTitle(markdown)
             : prev.title;
-      if (title === prev.title && markdown === prev.markdown) return;
+      const subjectId = patch.subjectId !== undefined ? patch.subjectId : prev.subjectId;
+      if (title === prev.title && markdown === prev.markdown && subjectId === prev.subjectId) return;
 
-      const next: UserNote = { ...prev, title, markdown, updatedAt: Date.now() };
+      const next: UserNote = { ...prev, title, markdown, subjectId, updatedAt: Date.now() };
       set((s) => ({ byId: { ...s.byId, [id]: next } }));
       if (next.title !== prev.title) {
         useWindowManager.getState().updateWindow(userNoteWindowId(id), {

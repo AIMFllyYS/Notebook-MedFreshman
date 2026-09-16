@@ -9,8 +9,10 @@ import {
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
 import { useRecordPreviews, type RecordPreview } from "@/lib/hooks/useRecordPreviews";
 import { processRecord, retryRecord, reviseRecord, type ProcessCallbacks } from "@/lib/review/startRecord";
+import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
 import { getSubject } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
+import { useWindowManager } from "@/lib/stores/windowManager";
 import { useProcessingDisclosure } from "@/lib/hooks/useProcessingDisclosure";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import ManagedWindow from "@/components/window/ManagedWindow";
@@ -19,7 +21,7 @@ import CollapsibleSection from "@/components/review/CollapsibleSection";
 import QuizMarkdown from "@/components/quiz/QuizMarkdown";
 import type { RecordMode } from "@/lib/review/types";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
-import { formatFlashcardQuote } from "@/lib/notes/userNote";
+import { formatFlashcardQuote, subjectLabel } from "@/lib/notes/userNote";
 import { downloadFlashcardMarkdown, downloadFlashcardsCsv } from "@/lib/review/exportCards";
 
 // 统一设计 token
@@ -187,6 +189,18 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
       bodyClassName="flex flex-col"
       registerOverlay={false}
       unmountWhenMinimized
+      actions={
+        <SubjectPickerMenu
+          value={card.subjectId}
+          onChange={(next) => {
+            if (!next) return;
+            useReviewCards.getState().setSubject(card.id, next);
+            useWindowManager.getState().updateWindow(preview.id, {
+              title: `记录到复习板 · ${subjectLabel(next)}`,
+            });
+          }}
+        />
+      }
       frameStyle={{
         background: "var(--md-sys-color-surface-container-lowest)",
         boxShadow: "0 12px 32px rgba(0,0,0,0.18), 0 0 0 1px var(--md-sys-color-outline-variant)",

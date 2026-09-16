@@ -140,6 +140,29 @@ describe("FlashcardCiteWindow", () => {
     expect(screen.queryByRole("button", { name: "编辑" })).not.toBeInTheDocument();
   });
 
+  it("changes the active card subject from the stage chip", () => {
+    const id = useReviewCards.getState().addSaved("泊松分布原文", {
+      subjectId: "probability",
+      sourceLabel: "概率论 / 详解 / 2.3",
+    });
+    useReviewCards.getState().finalize(
+      id,
+      { mode: "quiz", cardType: "quiz", front: "泊松分布的期望？", back: "$\\lambda$" },
+      "test",
+    );
+    openFlashcardCitePicker({ subjectId: "probability" });
+    render(<FlashcardCiteWindow />);
+
+    expect(screen.getByTestId("subject-picker")).toHaveTextContent("概率论");
+    fireEvent.click(screen.getByTestId("subject-picker"));
+    fireEvent.click(screen.getByTestId("subject-picker-option-physics"));
+
+    expect(useReviewCards.getState().byId[id]?.subjectId).toBe("physics");
+    expect(useReviewCards.getState().byId[id]?.sourceLabel).toBe("大学物理 / 详解 / 2.3");
+    expect(useFlashcardCitations.getState().subjectId).toBe("physics");
+    expect(screen.getByTestId("subject-picker")).toHaveTextContent("大学物理");
+  });
+
   it("opens the existing record preview without closing the cite picker", () => {
     const id = useReviewCards.getState().addSaved("泊松分布原文", {
       subjectId: "probability",
