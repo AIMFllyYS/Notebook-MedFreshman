@@ -92,8 +92,9 @@ describe("RecordPreviewWindow", () => {
     useRecordPreviews.getState().open(id, { x: 80, y: 80 });
     render(<RecordPreviewLayer />);
 
-    const createObjectURL = vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:card");
-    const revokeObjectURL = vi.spyOn(URL, "revokeObjectURL").mockImplementation(() => {});
+    const createObjectURL = vi.fn(() => "blob:card");
+    const revokeObjectURL = vi.fn();
+    vi.stubGlobal("URL", { createObjectURL, revokeObjectURL });
 
     fireEvent.click(screen.getByTestId("record-preview-more"));
     fireEvent.click(screen.getByTestId("record-preview-export"));
@@ -119,9 +120,6 @@ describe("RecordPreviewWindow", () => {
     fireEvent.click(screen.getByTestId("record-preview-more"));
     fireEvent.click(screen.getByTestId("record-preview-delete"));
     expect(useReviewCards.getState().byId[id]).toBeUndefined();
-
-    createObjectURL.mockRestore();
-    revokeObjectURL.mockRestore();
   });
 });
 
