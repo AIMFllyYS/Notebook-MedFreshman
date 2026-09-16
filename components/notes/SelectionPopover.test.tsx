@@ -20,6 +20,19 @@ function selectAcross(root: HTMLElement) {
 
 describe("SelectionPopover", () => {
   beforeEach(() => {
+    if (typeof Range !== "undefined" && !Range.prototype.getBoundingClientRect) {
+      Range.prototype.getBoundingClientRect = () => ({
+        x: 40,
+        y: 80,
+        left: 40,
+        top: 80,
+        width: 120,
+        height: 24,
+        right: 160,
+        bottom: 104,
+        toJSON() { return this; },
+      });
+    }
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
     useUserNotes.setState({
       byId: {},

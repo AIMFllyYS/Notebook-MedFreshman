@@ -159,7 +159,9 @@ export default function SelectionPopover({
         const range = sel.getRangeAt(0);
         const root = containerRef.current;
         if (!root || !root.contains(range.commonAncestorContainer)) return;
-        const rect = range.getBoundingClientRect();
+        const rect = typeof range.getBoundingClientRect === "function"
+          ? range.getBoundingClientRect()
+          : { left: 24, top: 24, width: 0, height: 0 };
         // 先记下几何再 wrap：Agent 虚拟列表改行高会滚一下，grace 内不关助手。
         ignoreUntilRef.current = performance.now() + SELECTION_POPOVER_SCROLL_GRACE_MS;
         const marks = wrapRange(range);

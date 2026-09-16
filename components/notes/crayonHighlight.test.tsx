@@ -11,7 +11,7 @@ describe("wrapRange", () => {
     range.setEnd(root.querySelectorAll("p")[1].firstChild!, 3);
     const marks = wrapRange(range);
     expect(marks.length).toBe(2);
-    expect(marks.map((mark) => mark.textContent).join("")).toBe("行均值等于方差第二");
+    expect(marks.map((mark) => mark.textContent).join("")).toBe("均值等于方差第二行");
     marks.forEach(unwrapMark);
     expect(root.textContent).toBe("第一行均值等于方差第二行课上强调");
     root.remove();

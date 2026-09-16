@@ -205,6 +205,12 @@ describe("personal note windows", () => {
     expect(screen.getByLabelText("笔记标题")).toHaveValue("被覆上皮");
     expect(useChatHistory.getState().messagesById.main).toEqual(mainMessages);
     expect(applyUpdateUserNoteEvents(Object.values(useChatHistory.getState().messagesById).flat())).toEqual([]);
+    expect(screen.getByRole("navigation", { name: "笔记目录" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "刷新渲染" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "隐藏目录" }));
+    expect(screen.queryByRole("navigation", { name: "笔记目录" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "显示目录" }));
+    expect(screen.getByRole("navigation", { name: "笔记目录" })).toBeTruthy();
   });
 
   it("filters the library from the folder tree and hides the all-subjects chip", () => {
@@ -250,7 +256,7 @@ describe("personal note windows", () => {
     expect(screen.getByText("整理信息")).toBeInTheDocument();
     expect(screen.getByText(/出处/)).toBeInTheDocument();
     expect(screen.getByLabelText("课堂笔记标题")).toBeInTheDocument();
-    expect(screen.getByTestId("crepe-stub")).toBeInTheDocument();
+    expect(screen.getByText("原文")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "引用到对话" }));
     expect(useChatUI.getState().quotedText).toMatch(/【课堂笔记/);
