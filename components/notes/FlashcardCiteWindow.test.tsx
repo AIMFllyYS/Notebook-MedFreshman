@@ -2,9 +2,11 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import FlashcardCiteWindow from "./FlashcardCiteWindow";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
+import { useRecordPreviews } from "@/lib/stores/recordPreviews";
 import { useReviewCards } from "@/lib/stores/reviewCards";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { useChatUI } from "@/lib/stores/chatUI";
+import { FLASHCARD_CITE_WINDOW_ID } from "@/lib/notes/userNote";
 import { openFlashcardCitePicker } from "@/lib/notes/openUserNote";
 
 vi.mock("next/navigation", () => ({
@@ -19,6 +21,7 @@ describe("FlashcardCiteWindow", () => {
     });
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
     useFlashcardCitations.setState({ open: false, subjectId: null, activeCardId: null });
+    useRecordPreviews.setState({ previews: [] });
     useReviewCards.setState({ byId: {}, order: [] });
     useChatUI.getState().clearQuotedText();
   });
@@ -35,6 +38,7 @@ describe("FlashcardCiteWindow", () => {
     expect(screen.getByRole("button", { name: "全部" })).toBeInTheDocument();
     expect(screen.getByText(/还没有复习闪卡/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "打开复习板" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "编辑" })).not.toBeInTheDocument();
   });
 
   it("cites the selected flashcard into the chat quote tray", () => {
@@ -64,7 +68,8 @@ describe("FlashcardCiteWindow", () => {
     const downloadCard = screen.getByRole("button", { name: /下载这张/ });
     const downloadCsv = screen.getByRole("button", { name: /下载 CSV/ });
     const openReview = screen.getByRole("button", { name: "打开复习板" });
-    for (const button of [downloadCard, downloadCsv, openReview]) {
+    const editCard = screen.getByRole("button", { name: "编辑" });
+    for (const button of [downloadCard, downloadCsv, openReview, editCard]) {
       expect(button).toHaveClass("user-note-toolbar-link");
       expect(button.tagName).toBe("BUTTON");
     }
@@ -132,5 +137,40 @@ describe("FlashcardCiteWindow", () => {
     expect(screen.getByText(/还没有复习闪卡/)).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "学科" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "打开复习板" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "编辑" })).not.toBeInTheDocument();
+  });
+
+  it("opens the existing record preview without closing the cite picker", () => {
+    const id = useReviewCards.getState().addSaved("泊松分布原文", {
+      subjectId: "probability",
+      sourceLabel: "概率论 / 详解 / 2.3",
+    });
+    useReviewCards.getState().finalize(
+      id,
+      {
+        mode: "quiz",
+        cardType: "quiz",
+        front: "泊松分布的期望？",
+        back: "$\\lambda$",
+      },
+      "test",
+    );
+    openFlashcardCitePicker({ subjectId: "probability" });
+    render(<FlashcardCiteWindow />);
+
+    const edit = screen.getByRole("button", { name: "编辑" });
+    expect(edit).toBeEnabled();
+    fireEvent.click(edit);
+
+    expect(useFlashcardCitations.getState().open).toBe(true);
+    expect(useWindowManager.getState().windows.some((win) => win.id === FLASHCARD_CITE_WINDOW_ID)).toBe(true);
+    expect(useWindowManager.getState().windows.some((win) => win.type === "flashcard-cite-picker")).toBe(true);
+
+    const preview = useWindowManager.getState().windows.find((win) => win.type === "record-preview");
+    expect(preview).toBeDefined();
+    expect(preview?.data).toMatchObject({ cardId: id });
+    expect(useRecordPreviews.getState().previews).toEqual([
+      expect.objectContaining({ cardId: id }),
+    ]);
   });
 });

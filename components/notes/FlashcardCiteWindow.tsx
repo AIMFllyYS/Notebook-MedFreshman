@@ -3,13 +3,14 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
-import { Check, Download, ExternalLink, Layers, Quote } from "lucide-react";
+import { Check, Download, ExternalLink, Layers, PenLine, Quote } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
 import FlipCard from "@/components/review/FlipCard";
 import QuizMarkdown from "@/components/quiz/QuizMarkdown";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
+import { useRecordPreviews } from "@/lib/stores/recordPreviews";
 import { useReviewCards } from "@/lib/stores/reviewCards";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { FLASHCARD_CITE_WINDOW_ID, formatFlashcardQuote, plainSnippet } from "@/lib/notes/userNote";
@@ -96,6 +97,19 @@ function FlashcardCitePicker() {
         onClick={() => router.push(subjectId ? `/${subjectId}/review` : "/")}
       >
         <ExternalLink size={12} /> 打开复习板
+      </button>
+      <button
+        type="button"
+        data-no-drag
+        className="user-note-toolbar-link"
+        style={{ marginLeft: "auto" }}
+        disabled={!active}
+        onClick={(e) => {
+          if (!active) return;
+          useRecordPreviews.getState().open(active.id, { x: e.clientX, y: e.clientY });
+        }}
+      >
+        <PenLine size={12} /> 编辑
       </button>
     </div>
   );
