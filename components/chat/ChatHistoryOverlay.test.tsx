@@ -6,6 +6,7 @@ const historyState = {
   sessionsMeta: [
     { id: 'main-1', title: '细胞生物学复习', kind: 'main', updatedAt: 1_700_000_000_000, messageCount: 8 },
     { id: 'float-1', title: '解释线粒体', kind: 'floating', updatedAt: 1_700_000_100_000, messageCount: 3 },
+    { id: 'note-1', title: '被覆上皮', kind: 'note', updatedAt: 1_700_000_200_000, messageCount: 2 },
   ],
   activeSessionId: 'main-1',
   deleteSession: vi.fn(),
@@ -39,11 +40,13 @@ describe('Chat history workspace', () => {
     expect(view.getByRole('heading', { name: '对话记录' })).toBeInTheDocument();
     expect(view.getByText('细胞生物学复习')).toBeInTheDocument();
     expect(view.queryByText('解释线粒体')).toBeNull();
+    expect(view.queryByText('被覆上皮')).toBeNull();
 
     fireEvent.click(view.getByRole('button', { name: /划词/ }));
     expect(view.getByRole('heading', { name: '划词对话' })).toBeInTheDocument();
     expect(view.getByText('解释线粒体')).toBeInTheDocument();
     expect(view.queryByText('细胞生物学复习')).toBeNull();
+    expect(view.queryByText('被覆上皮')).toBeNull();
 
     fireEvent.click(view.getByRole('button', { name: '返回对话' }));
     expect(onClose).toHaveBeenCalledOnce();

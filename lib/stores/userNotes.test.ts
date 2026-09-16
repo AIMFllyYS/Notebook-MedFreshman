@@ -3,6 +3,7 @@ import { beforeEach, test } from "node:test";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
+import { useChatHistory } from "@/lib/stores/chatHistory";
 import { userNoteWindowId, USER_NOTE_LIBRARY_WINDOW_ID } from "@/lib/notes/userNote";
 import { closeManagedWindow } from "@/lib/keyboard/windowActions";
 
@@ -12,12 +13,24 @@ function reset() {
     order: [],
     openEditorIds: [],
     agentEditingNoteId: null,
+    noteAgentOpenIds: [],
+    noteAgentSessionById: {},
     libraryOpen: false,
     libraryIntent: "browse",
     librarySubjectId: null,
   });
   useFlashcardCitations.setState({ open: false, subjectId: null, activeCardId: null });
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
+  useChatHistory.setState({
+    sessionsMeta: [{ id: "main", title: "主对话", createdAt: 1, updatedAt: 1, messageCount: 0, artifactIds: [] }],
+    messagesById: { main: [] },
+    activeSessionId: "main",
+    sessionLoadState: { main: "loaded" },
+    loadedSessionIds: ["main"],
+    pinnedSessionIds: [],
+    _hasHydrated: true,
+    _activeMessagesReady: true,
+  });
 }
 
 beforeEach(reset);
@@ -77,12 +90,30 @@ test("openLibrary cite mode and closeManagedWindow", () => {
   assert.equal(useUserNotes.getState().libraryOpen, false);
 });
 
+test("ensureNoteAgentSession reuses one note-kind session and does not claim the main thread", () => {
+  const id = useUserNotes.getState().createNote("anatomy", { title: "被覆上皮" });
+  const first = useUserNotes.getState().ensureNoteAgentSession(id);
+  const second = useUserNotes.getState().ensureNoteAgentSession(id);
+  assert.ok(first);
+  assert.equal(first, second);
+  assert.equal(useChatHistory.getState().activeSessionId, "main");
+  assert.equal(useChatHistory.getState().sessionsMeta.find((item) => item.id === first)?.kind, "note");
+  useUserNotes.getState().setNoteAgentOpen(id, true);
+  assert.deepEqual(useUserNotes.getState().noteAgentOpenIds, [id]);
+  useUserNotes.getState().setNoteAgentOpen(id, false);
+  assert.deepEqual(useUserNotes.getState().noteAgentOpenIds, []);
+});
+
 test("removeNote deletes the record and closes its editor", () => {
   const id = useUserNotes.getState().createNote(null);
   useUserNotes.getState().openEditor(id);
+  const sessionId = useUserNotes.getState().ensureNoteAgentSession(id);
+  useUserNotes.getState().setNoteAgentOpen(id, true);
   useUserNotes.getState().removeNote(id);
   assert.equal(useUserNotes.getState().byId[id], undefined);
   assert.equal(useWindowManager.getState().windows.length, 0);
+  assert.equal(useUserNotes.getState().noteAgentSessionById[id], undefined);
+  assert.ok(!useChatHistory.getState().sessionsMeta.some((item) => item.id === sessionId));
 });
 
 test("flashcard cite picker opens a singleton window", () => {

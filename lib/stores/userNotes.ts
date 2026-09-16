@@ -1,5 +1,6 @@
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { createPersistedStore } from "@/lib/stores/_persist";
+import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import {
   DEFAULT_NOTE_MARKDOWN,
@@ -37,9 +38,15 @@ interface UserNotesState {
   order: string[];
   /** 已打开的编辑器窗口对应的笔记 id（可多开）。 */
   openEditorIds: string[];
-  /** 从编辑窗点开 Agent 的那篇笔记；关掉编辑器后清空。 */
+  /** 引用到右侧主 Agent 后，主对话本轮可 updateUserNote 的那篇笔记；关掉编辑器后清空。 */
   agentEditingNoteId: string | null;
   setAgentEditingNoteId: (id: string | null) => void;
+  /** 编辑窗内展开了微型 Agent 面板的笔记。不持久化。 */
+  noteAgentOpenIds: string[];
+  setNoteAgentOpen: (id: string, open: boolean) => void;
+  /** 每篇笔记自己的干净会话；随笔记持久化，重开窗可续聊。 */
+  noteAgentSessionById: Record<string, string>;
+  ensureNoteAgentSession: (id: string) => string | null;
   libraryOpen: boolean;
   libraryIntent: NoteLibraryIntent;
   librarySubjectId: string | null;
@@ -116,6 +123,34 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     openEditorIds: [],
     agentEditingNoteId: null,
     setAgentEditingNoteId: (id) => set({ agentEditingNoteId: id }),
+    noteAgentOpenIds: [],
+    setNoteAgentOpen: (id, open) =>
+      set((s) => {
+        if (!s.byId[id]) return s;
+        const has = s.noteAgentOpenIds.includes(id);
+        if (open === has) return s;
+        return {
+          noteAgentOpenIds: open
+            ? [...s.noteAgentOpenIds, id]
+            : s.noteAgentOpenIds.filter((item) => item !== id),
+        };
+      }),
+    noteAgentSessionById: {},
+    ensureNoteAgentSession: (id) => {
+      if (!get().byId[id]) return null;
+      const existing = get().noteAgentSessionById[id];
+      const history = useChatHistory.getState();
+      if (existing && history.sessionsMeta.some((session) => session.id === existing)) {
+        return existing;
+      }
+      const sessionId = history.createSession(undefined, "note");
+      const title = get().byId[id]?.title.trim() || "笔记对话";
+      history.updateSessionTitle(sessionId, title);
+      set((s) => ({
+        noteAgentSessionById: { ...s.noteAgentSessionById, [id]: sessionId },
+      }));
+      return sessionId;
+    },
     libraryOpen: false,
     libraryIntent: "browse",
     librarySubjectId: null,
@@ -164,14 +199,19 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
 
     removeNote: (id) => {
       if (!get().byId[id]) return;
+      const sessionId = get().noteAgentSessionById[id];
+      if (sessionId) useChatHistory.getState().deleteSession(sessionId);
       useWindowManager.getState().closeWindow(userNoteWindowId(id));
       set((s) => {
         const byId = { ...s.byId };
         delete byId[id];
+        const { [id]: _drop, ...noteAgentSessionById } = s.noteAgentSessionById;
         return {
           byId,
           order: s.order.filter((x) => x !== id),
           openEditorIds: s.openEditorIds.filter((x) => x !== id),
+          noteAgentOpenIds: s.noteAgentOpenIds.filter((x) => x !== id),
+          noteAgentSessionById,
           agentEditingNoteId: s.agentEditingNoteId === id ? null : s.agentEditingNoteId,
         };
       });
@@ -206,6 +246,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
       useWindowManager.getState().closeWindow(userNoteWindowId(id));
       set((s) => ({
         openEditorIds: s.openEditorIds.filter((x) => x !== id),
+        noteAgentOpenIds: s.noteAgentOpenIds.filter((x) => x !== id),
         agentEditingNoteId: s.agentEditingNoteId === id ? null : s.agentEditingNoteId,
       }));
     },
@@ -233,8 +274,9 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
   {
     name: PERSIST_KEYS.userNotes,
     storage: "idb",
-    partialize: (s) => ({ byId: s.byId, order: s.order }),
+    partialize: (s) => ({ byId: s.byId, order: s.order, noteAgentSessionById: s.noteAgentSessionById }),
     onRehydrateStorage: () => (state) => {
+      if (state && !state.noteAgentSessionById) state.noteAgentSessionById = {};
       state?._setHasHydrated(true);
     },
   },

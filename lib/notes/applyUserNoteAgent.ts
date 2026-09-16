@@ -10,10 +10,10 @@ export function resetAppliedUserNoteEdits(): void {
   appliedToolCallIds.clear();
 }
 
-/** 当前点开 AI 的那篇已打开个人笔记；关掉编辑器后返回 null。 */
-export function selectEditingUserNote(): EditingUserNoteContext | null {
+/** 正在交给 Agent 的已打开个人笔记；关掉编辑器后返回 null。 */
+export function selectEditingUserNote(noteId?: string | null): EditingUserNoteContext | null {
   const state = useUserNotes.getState();
-  const id = state.agentEditingNoteId;
+  const id = noteId === undefined ? state.agentEditingNoteId : noteId;
   if (!id || !state.openEditorIds.includes(id)) return null;
   const note = state.byId[id];
   if (!note) return null;

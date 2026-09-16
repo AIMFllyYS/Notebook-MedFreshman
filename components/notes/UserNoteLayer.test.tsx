@@ -9,6 +9,13 @@ import { useStore } from "@/lib/stores/ui";
 import { applyUpdateUserNoteEvents, resetAppliedUserNoteEdits } from "@/lib/notes/applyUserNoteAgent";
 import { createAndOpenNote, openNoteLibrary } from "@/lib/notes/openUserNote";
 
+vi.mock("@/components/chat/ChatThread", () => ({
+  default: () => <div data-testid="note-agent-thread" />,
+}));
+vi.mock("@/components/chat/ChatInput", () => ({
+  default: () => <div data-testid="note-agent-input" />,
+}));
+
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),
   usePathname: () => "/",
@@ -30,12 +37,24 @@ describe("personal note windows", () => {
       order: [],
       openEditorIds: [],
       agentEditingNoteId: null,
+      noteAgentOpenIds: [],
+      noteAgentSessionById: {},
       libraryOpen: false,
       libraryIntent: "browse",
       librarySubjectId: null,
     });
     useChatUI.getState().clearQuotedText();
-    useChatHistory.setState({ messagesById: {}, activeSessionId: null });
+    useChatHistory.setState({
+      messagesById: { main: [] },
+      activeSessionId: "main",
+      sessionsMeta: [{ id: "main", title: "主对话", createdAt: 1, updatedAt: 1, messageCount: 0, artifactIds: [] }],
+      sessionLoadState: { main: "loaded" },
+      loadedSessionIds: ["main"],
+      pinnedSessionIds: [],
+      _hasHydrated: true,
+      _activeMessagesReady: true,
+    });
+    useStore.setState({ rightTab: "video", mobileTab: "detail" });
     resetAppliedUserNoteEdits();
   });
 
@@ -57,8 +76,10 @@ describe("personal note windows", () => {
     expect(useUserNotes.getState().byId[id]?.title).toBe("期望");
     expect(screen.getByLabelText("笔记标题")).toHaveValue("期望");
     expect(screen.getByText("期望", { selector: "h1" })).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "分享到对话" }));
+    fireEvent.click(screen.getByRole("button", { name: "引用到右侧对话" }));
     expect(useChatUI.getState().quotedText).toMatch(/【笔记】期望/);
+    expect(useUserNotes.getState().agentEditingNoteId).toBe(id);
+    expect(useStore.getState().rightTab).toBe("ai");
   });
 
   it("places the AI conversation icon between the title and subject", () => {
@@ -66,7 +87,7 @@ describe("personal note windows", () => {
     render(<UserNoteLayer />);
 
     const title = screen.getByLabelText("笔记标题");
-    const ai = screen.getByRole("button", { name: "让小岸编辑这篇笔记" });
+    const ai = screen.getByRole("button", { name: "笔记对话" });
     const subject = screen.getByText("系统解剖学");
     expect(title.compareDocumentPosition(ai) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(ai.compareDocumentPosition(subject) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -74,20 +95,36 @@ describe("personal note windows", () => {
     expect(ai.innerHTML).toMatch(/lucide-message-square|message-square/i);
   });
 
-  it("opens the existing Agent and writes a mocked tool result back into the note", () => {
+  it("opens an in-window note agent without touching the main thread", () => {
     const id = createAndOpenNote("anatomy", { title: "被覆上皮", markdown: "旧稿" });
+    const mainMessages = [
+      { id: "m1", role: "user" as const, timestamp: 1, parts: [{ type: "text" as const, text: "主对话还在" }] },
+    ];
+    useChatHistory.setState({
+      activeSessionId: "main",
+      messagesById: { main: mainMessages },
+      sessionsMeta: [{ id: "main", title: "主对话", createdAt: 1, updatedAt: 1, messageCount: 1, artifactIds: [] }],
+    });
     useStore.setState({ rightTab: "video", mobileTab: "detail" });
     render(<UserNoteLayer />);
 
-    fireEvent.click(screen.getByRole("button", { name: "让小岸编辑这篇笔记" }));
-    expect(useUserNotes.getState().agentEditingNoteId).toBe(id);
-    expect(useChatUI.getState().quotedText).toMatch(/【笔记】被覆上皮/);
-    expect(useStore.getState().rightTab).toBe("ai");
+    fireEvent.click(screen.getByRole("button", { name: "笔记对话" }));
+    const sessionId = useUserNotes.getState().noteAgentSessionById[id];
+    expect(useUserNotes.getState().noteAgentOpenIds).toContain(id);
+    expect(sessionId).toBeTruthy();
+    expect(useUserNotes.getState().agentEditingNoteId).toBeNull();
+    expect(useChatUI.getState().quotedText).toBeNull();
+    expect(useStore.getState().rightTab).toBe("video");
+    expect(useChatHistory.getState().messagesById.main).toEqual(mainMessages);
+    expect(screen.getByRole("region", { name: "笔记对话" })).toBeTruthy();
+    expect(screen.getByTestId("note-agent-thread")).toBeTruthy();
+    expect(screen.getByTestId("note-agent-input")).toBeTruthy();
 
     act(() => {
       useChatHistory.setState({
         messagesById: {
-          s1: [
+          main: mainMessages,
+          [sessionId!]: [
             {
               id: "a1",
               role: "assistant",
@@ -114,6 +151,7 @@ describe("personal note windows", () => {
 
     expect(useUserNotes.getState().byId[id]?.markdown).toBe("# 被覆上皮\n\n1. 单层扁平");
     expect(screen.getByLabelText("笔记标题")).toHaveValue("被覆上皮");
+    expect(useChatHistory.getState().messagesById.main).toEqual(mainMessages);
     expect(applyUpdateUserNoteEvents(Object.values(useChatHistory.getState().messagesById).flat())).toEqual([]);
   });
 

@@ -730,6 +730,59 @@ mark.citation-flash {
   margin-inline: -2px;
 }
 
+.user-note-editor-ai.is-active {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.user-note-with-agent {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+}
+
+.note-agent-panel {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  flex-direction: column;
+  background: var(--md-sys-color-surface-container-lowest);
+  border-left: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.note-agent-panel-head {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 10px 7px 14px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.note-agent-panel-body {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.note-agent-empty {
+  padding: 20px 16px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.65;
+  text-align: center;
+}
+
 .user-note-chrome-actions {
   display: flex;
   align-items: center;

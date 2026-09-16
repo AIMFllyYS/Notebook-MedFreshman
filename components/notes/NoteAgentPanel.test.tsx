@@ -1,0 +1,149 @@
+import type { ReactNode } from "react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { UIMessageChunk } from "ai";
+import NoteAgentPanel from "./NoteAgentPanel";
+import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { useSettings } from "@/lib/hooks/useSettings";
+import { useUserNotes } from "@/lib/stores/userNotes";
+import { useStore } from "@/lib/stores/ui";
+import { getMessageText } from "@/lib/chat/messageParts";
+
+vi.mock("@/lib/storage/idbStorage", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@/lib/storage/idbStorage")>(),
+  idbStorage: {
+    getItem: vi.fn(async () => null),
+    setItem: vi.fn(),
+    setItemLazy: vi.fn(),
+    removeItem: vi.fn(async () => {}),
+  },
+}));
+vi.mock("@/lib/hooks/useChatHistory", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@/lib/hooks/useChatHistory")>(),
+  ensureChatHistoryBootstrap: vi.fn(async () => {}),
+}));
+vi.mock("@/components/chat/ChatThread", () => ({
+  default: ({ emptyState }: { emptyState: ReactNode }) => (
+    <div data-testid="note-agent-thread">{emptyState}</div>
+  ),
+}));
+vi.mock("@/components/chat/ChatInput", () => ({
+  default: ({ onSend, disableQuote }: { onSend: (text: string) => void; disableQuote?: boolean }) => (
+    <div>
+      <span data-testid="note-agent-quote">{String(disableQuote)}</span>
+      <button type="button" onClick={() => onSend("把分类补全")}>发送笔记对话</button>
+    </div>
+  ),
+}));
+
+const initialSettings = useSettings.getState();
+let requests: Array<Record<string, unknown>>;
+
+function encode(chunk: UIMessageChunk) {
+  return new TextEncoder().encode(`data: ${JSON.stringify(chunk)}\n\n`);
+}
+
+function completedResponse() {
+  let controller: ReadableStreamDefaultController<Uint8Array>;
+  const response = new Response(new ReadableStream<Uint8Array>({
+    start(c) {
+      controller = c;
+      for (const chunk of [
+        { type: "start", messageId: "remote-id" },
+        { type: "start-step" },
+        { type: "text-start", id: "t" },
+        { type: "text-delta", id: "t", delta: "已改稿" },
+        { type: "text-end", id: "t" },
+        { type: "finish" },
+      ] as UIMessageChunk[]) {
+        controller.enqueue(encode(chunk));
+      }
+      controller.enqueue(new TextEncoder().encode("data: [DONE]\n\n"));
+      controller.close();
+    },
+  }), {
+    headers: { "Content-Type": "text/event-stream", "x-vercel-ai-ui-message-stream": "v1" },
+  });
+  return response;
+}
+
+const settle = async () => {
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(0);
+  });
+};
+
+describe("NoteAgentPanel", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    requests = [];
+    vi.stubGlobal("fetch", vi.fn(async (url: unknown, init?: RequestInit) => {
+      if (url === "/api/chat-title") return Response.json({ title: "笔记对话标题" });
+      requests.push(JSON.parse(String(init?.body)));
+      return completedResponse();
+    }));
+    useSettings.setState({ ...initialSettings, selectedModelId: "mimo-v2.5", customApiGroups: [] });
+    useStore.setState({
+      activeSubjectId: "anatomy",
+      activeCategoryId: "textbook",
+      activeItemId: "ch01",
+    });
+    useUserNotes.setState({
+      byId: {},
+      order: [],
+      openEditorIds: [],
+      agentEditingNoteId: null,
+      noteAgentOpenIds: [],
+      noteAgentSessionById: {},
+    });
+    const noteId = useUserNotes.getState().createNote("anatomy", {
+      title: "被覆上皮",
+      markdown: "# 被覆上皮\n\n旧稿",
+    });
+    useUserNotes.getState().openEditor(noteId);
+    useUserNotes.setState({
+      noteAgentOpenIds: [noteId],
+      noteAgentSessionById: { [noteId]: "note-s" },
+    });
+    useChatHistory.setState({
+      activeSessionId: "main",
+      _hasHydrated: true,
+      _activeMessagesReady: true,
+      messagesById: {
+        main: [{ id: "keep", role: "user", timestamp: 1, parts: [{ type: "text", text: "主对话还在" }] }],
+        "note-s": [],
+      },
+      sessionsMeta: [
+        { id: "main", title: "主对话", createdAt: 1, updatedAt: 1, messageCount: 1, artifactIds: [] },
+        { id: "note-s", title: "被覆上皮", createdAt: 1, updatedAt: 1, kind: "note", messageCount: 0, artifactIds: [] },
+      ],
+      sessionLoadState: { main: "loaded", "note-s": "loaded" },
+      loadedSessionIds: ["main", "note-s"],
+      pinnedSessionIds: [],
+    });
+  });
+
+  afterEach(async () => {
+    cleanup();
+    await vi.advanceTimersByTimeAsync(0);
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
+  it("sends against the note session with this note as editing context", async () => {
+    const noteId = useUserNotes.getState().order[0];
+    render(<NoteAgentPanel noteId={noteId} sessionId="note-s" />);
+    expect(screen.getByRole("region", { name: "笔记对话" })).toBeTruthy();
+    expect(screen.getByTestId("note-agent-quote")).toHaveTextContent("true");
+    fireEvent.click(screen.getByRole("button", { name: "发送笔记对话" }));
+    await settle();
+    expect(requests).toHaveLength(1);
+    expect(requests[0]).toMatchObject({
+      id: "note-s",
+      editingUserNote: { id: noteId, title: "被覆上皮", markdown: "# 被覆上皮\n\n旧稿" },
+    });
+    expect(getMessageText(useChatHistory.getState().messagesById["note-s"][0])).toBe("把分类补全");
+    expect(getMessageText(useChatHistory.getState().messagesById.main[0])).toBe("主对话还在");
+  });
+});

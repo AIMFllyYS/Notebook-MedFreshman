@@ -174,6 +174,23 @@ test("createSession uses UUID ids that do not collide in the same millisecond", 
   assert.match(second, /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
 });
 
+test("createSession note kind does not claim the active main thread", async () => {
+  const { useChatHistory } = await import("./chatHistory.ts");
+  useChatHistory.setState({
+    sessionsMeta: [{ id: "main", title: "主对话", createdAt: 1, updatedAt: 1, messageCount: 0, artifactIds: [] }],
+    messagesById: { main: [] },
+    activeSessionId: "main",
+    sessionLoadState: { main: "loaded" },
+    loadedSessionIds: ["main"],
+    pinnedSessionIds: [],
+    _hasHydrated: true,
+    _activeMessagesReady: true,
+  });
+  const noteSession = useChatHistory.getState().createSession(undefined, "note");
+  assert.equal(useChatHistory.getState().activeSessionId, "main");
+  assert.equal(useChatHistory.getState().sessionsMeta.find((item) => item.id === noteSession)?.kind, "note");
+});
+
 test("evicting past MAX_SESSIONS deletes blobs and drops messagesById", async () => {
   const { useChatHistory } = await import("./chatHistory.ts");
   const evicted = "old-49";

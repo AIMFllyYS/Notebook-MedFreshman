@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState, type KeyboardEvent } from "react";
+import { useCallback, useState, type KeyboardEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import dynamic from "next/dynamic";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
@@ -8,11 +8,12 @@ import clsx from "clsx";
 import { Download, MessageSquare, Quote, Trash2 } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import NoteRenderer from "@/components/notes/NoteRenderer";
+import NoteAgentPanel from "@/components/notes/NoteAgentPanel";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { downloadAsMarkdown } from "@/lib/documents/export";
-import { openAgentForUserNote } from "@/lib/notes/openUserNote";
+import { citeUserNoteToMainAgent, openAgentForUserNote } from "@/lib/notes/openUserNote";
 import { formatNoteQuote, subjectLabel, userNoteWindowId } from "@/lib/notes/userNote";
 
 type EditorMode = "source" | "wysiwyg" | "split";
@@ -33,6 +34,8 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
   const updateNote = useUserNotes((s) => s.updateNote);
   const removeNote = useUserNotes((s) => s.removeNote);
   const closeEditor = useUserNotes((s) => s.closeEditor);
+  const agentOpen = useUserNotes((s) => s.noteAgentOpenIds.includes(noteId));
+  const agentSessionId = useUserNotes((s) => s.noteAgentSessionById[noteId]);
   const [mode, setMode] = useState<EditorMode>("wysiwyg");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const { cited, cite } = useCiteToChat();
@@ -70,10 +73,12 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
       <button
         type="button"
         data-no-drag
-        title="分享到对话"
-        aria-label="分享到对话"
+        title="引用到右侧对话"
+        aria-label="引用到右侧对话"
         className="user-note-chrome-btn"
-        onClick={() => cite(formatNoteQuote(note))}
+        onClick={() => {
+          if (citeUserNoteToMainAgent(noteId)) cite(formatNoteQuote(note));
+        }}
       >
         <Quote size={14} />
         <span className="sr-only">{cited ? "已引用到对话" : "引用到对话"}</span>
@@ -108,56 +113,55 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
       icon={<NotebookFormulaIcon size={15} />}
       onClose={handleClose}
       fullscreenTarget="notes"
-      minSize={{ minW: 460, minH: 360 }}
+      minSize={agentOpen ? { minW: 720, minH: 400 } : { minW: 460, minH: 360 }}
       overlayId={`user-note-editor-${noteId}`}
       actions={actions}
       bodyClassName="flex min-h-0 min-w-0 flex-1 overflow-hidden"
       unmountWhenMinimized
     >
-      <div className="user-note-editor">
-        <div className="user-note-editor-head" data-no-drag>
-          <input
-            className="user-note-title-input"
-            value={note.title}
-            placeholder="笔记标题"
-            aria-label="笔记标题"
-            onChange={(event) => updateNote(noteId, { title: event.target.value })}
-          />
-          <button
-            type="button"
+      {agentOpen ? (
+        <PanelGroup direction="horizontal" autoSaveId="user-note-agent" className="user-note-with-agent">
+          <Panel defaultSize={64} minSize={40} className="min-h-0 min-w-0">
+            <NoteEditorBody
+              noteId={noteId}
+              title={note.title}
+              subjectId={note.subjectId}
+              agentOpen
+              mode={mode}
+              source={source}
+              preview={preview}
+              wysiwyg={wysiwyg}
+              onTitleChange={(title) => updateNote(noteId, { title })}
+              onToggleAgent={() => useUserNotes.getState().setNoteAgentOpen(noteId, false)}
+            />
+          </Panel>
+          <PanelResizeHandle
             data-no-drag
-            title="让小岸编辑这篇笔记"
-            aria-label="让小岸编辑这篇笔记"
-            className="user-note-chrome-btn user-note-editor-ai"
-            onClick={() => openAgentForUserNote(noteId)}
+            className="document-workspace-resize-handle group relative outline-none"
           >
-            <MessageSquare size={14} />
-          </button>
-          <span className="user-note-editor-subject">{subjectLabel(note.subjectId)}</span>
-        </div>
-
-        {mode === "split" ? (
-          <PanelGroup direction="horizontal" autoSaveId="user-note-editor" className="user-note-split">
-            <Panel defaultSize={50} minSize={22} className="min-h-0 min-w-0">
-              {source}
-            </Panel>
-            <PanelResizeHandle
-              data-no-drag
-              className="document-workspace-resize-handle group relative outline-none"
-            >
-              <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
-              <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 group-data-[resize-handle-state=drag]:opacity-100">
-                <span className="block h-7 w-1 rounded-full bg-[var(--md-sys-color-primary)]/50" />
-              </span>
-            </PanelResizeHandle>
-            <Panel defaultSize={50} minSize={22} className="min-h-0 min-w-0">
-              {preview}
-            </Panel>
-          </PanelGroup>
-        ) : (
-          <div className="user-note-single">{mode === "source" ? source : wysiwyg}</div>
-        )}
-      </div>
+            <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
+            <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 group-data-[resize-handle-state=drag]:opacity-100">
+              <span className="block h-7 w-1 rounded-full bg-[var(--md-sys-color-primary)]/50" />
+            </span>
+          </PanelResizeHandle>
+          <Panel defaultSize={36} minSize={26} className="min-h-0 min-w-0">
+            {agentSessionId ? <NoteAgentPanel noteId={noteId} sessionId={agentSessionId} /> : null}
+          </Panel>
+        </PanelGroup>
+      ) : (
+        <NoteEditorBody
+          noteId={noteId}
+          title={note.title}
+          subjectId={note.subjectId}
+          agentOpen={false}
+          mode={mode}
+          source={source}
+          preview={preview}
+          wysiwyg={wysiwyg}
+          onTitleChange={(title) => updateNote(noteId, { title })}
+          onToggleAgent={() => openAgentForUserNote(noteId)}
+        />
+      )}
 
       {confirmDelete && typeof document !== "undefined" ? (
         <DeleteNoteDialog
@@ -170,6 +174,78 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
         />
       ) : null}
     </ManagedWindow>
+  );
+}
+
+function NoteEditorBody({
+  noteId,
+  title,
+  subjectId,
+  agentOpen,
+  mode,
+  source,
+  preview,
+  wysiwyg,
+  onTitleChange,
+  onToggleAgent,
+}: {
+  noteId: string;
+  title: string;
+  subjectId: string | null;
+  agentOpen: boolean;
+  mode: EditorMode;
+  source: ReactNode;
+  preview: ReactNode;
+  wysiwyg: ReactNode;
+  onTitleChange: (title: string) => void;
+  onToggleAgent: () => void;
+}) {
+  return (
+    <div className="user-note-editor">
+      <div className="user-note-editor-head" data-no-drag>
+        <input
+          className="user-note-title-input"
+          value={title}
+          placeholder="笔记标题"
+          aria-label="笔记标题"
+          onChange={(event) => onTitleChange(event.target.value)}
+        />
+        <button
+          type="button"
+          data-no-drag
+          title={agentOpen ? "收起笔记对话" : "打开笔记对话"}
+          aria-label="笔记对话"
+          aria-pressed={agentOpen}
+          className={clsx("user-note-chrome-btn user-note-editor-ai", agentOpen && "is-active")}
+          onClick={onToggleAgent}
+        >
+          <MessageSquare size={14} />
+        </button>
+        <span className="user-note-editor-subject">{subjectLabel(subjectId)}</span>
+      </div>
+
+      {mode === "split" ? (
+        <PanelGroup direction="horizontal" autoSaveId={`user-note-editor:${noteId}`} className="user-note-split">
+          <Panel defaultSize={50} minSize={22} className="min-h-0 min-w-0">
+            {source}
+          </Panel>
+          <PanelResizeHandle
+            data-no-drag
+            className="document-workspace-resize-handle group relative outline-none"
+          >
+            <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
+            <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 group-data-[resize-handle-state=drag]:opacity-100">
+              <span className="block h-7 w-1 rounded-full bg-[var(--md-sys-color-primary)]/50" />
+            </span>
+          </PanelResizeHandle>
+          <Panel defaultSize={50} minSize={22} className="min-h-0 min-w-0">
+            {preview}
+          </Panel>
+        </PanelGroup>
+      ) : (
+        <div className="user-note-single">{mode === "source" ? source : wysiwyg}</div>
+      )}
+    </div>
   );
 }
 

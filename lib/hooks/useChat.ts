@@ -20,9 +20,15 @@ import {
 import { selectEditingUserNote } from '@/lib/notes/applyUserNoteAgent';
 
 const EMPTY_MESSAGES: ChatMessage[] = [];
-export function useChat(chatContext: ChatContext, options?: ChatOptions, overrides?: { sessionId?: string; modelId?: string }) {
+export function useChat(chatContext: ChatContext, options?: ChatOptions, overrides?: {
+  sessionId?: string;
+  modelId?: string;
+  /** 窗内笔记对话锁定这篇笔记；主对话不传，仍读 cite 写入的 agentEditingNoteId。 */
+  editingUserNoteId?: string;
+}) {
   const ovSessionId = overrides?.sessionId;
   const ovModelId = overrides?.modelId;
+  const ovEditingUserNoteId = overrides?.editingUserNoteId;
   const resolvedSessionId = useChatHistory((s) => ovSessionId ?? s.activeSessionId);
   const messages = useChatHistory((s) => {
     const sid = ovSessionId ?? s.activeSessionId;
@@ -95,7 +101,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
             {
               ...settings,
               memoryCommit: sendOptions?.memoryCommit,
-              editingUserNote: selectEditingUserNote() ?? undefined,
+              editingUserNote: selectEditingUserNote(ovEditingUserNoteId) ?? undefined,
             },
             resolved,
             budget,
@@ -139,6 +145,6 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
       }
     })();
     return true;
-  }, [chatContext, options, ovSessionId, ovModelId]);
+  }, [chatContext, options, ovSessionId, ovModelId, ovEditingUserNoteId]);
   return { messages, isLoading, error, info, sendMessage, stopGeneration, clearError, clearInfo, sessionId: resolvedSessionId };
 }

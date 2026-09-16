@@ -106,8 +106,9 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     ? `${baseSystemPrompt}\n\n---\n\n${promptExtras.join("\n\n---\n\n")}`
     : baseSystemPrompt;
 
-  // 易变段必须后置：定位（换页/换学年）→ 参考材料 → 演示目录 → 压缩说明。
-  // 稳定前缀（global + 学科 + 用户设置）在 systemPrompt 里，同页追问可命中 prefix cache。
+  // 易变段必须后置：定位（换页/换学年）→ 当前笔记正文 → 参考材料 → 演示目录 → 压缩说明。
+  // 稳定前缀（global + 学科 + 用户设置 + 工具清单）在 systemPrompt 里，同页追问可命中 prefix cache。
+  // 窗内笔记对话与右侧主 Agent 共用这条前缀；笔记 markdown 只出现在定位行之后，避免每篇笔记各自 bust 前缀。
   const volatile =
     buildLocationLine(chatCtx) +
     (editingUserNote ? `\n\n${formatEditingUserNoteContext(editingUserNote)}` : "") +
