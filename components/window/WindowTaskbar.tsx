@@ -253,7 +253,7 @@ function AddContentButton() {
         </div>,
         document.body,
       )}
-      <OpenUrlDialog open={urlOpen} onClose={() => setUrlOpen(false)} />
+      {urlOpen ? <OpenUrlDialog open onClose={() => setUrlOpen(false)} /> : null}
       {fileError && typeof document !== "undefined" ? <FileErrorDialog message={fileError} onClose={() => setFileError(null)} /> : null}
     </div>
   );

@@ -38,8 +38,6 @@ export default function OpenUrlDialog({ open, onClose }: { open: boolean; onClos
 
   useEffect(() => {
     if (!open) return;
-    setUrl("");
-    setUrlError(null);
     const id = window.setTimeout(() => inputRef.current?.focus(), 0);
     return () => window.clearTimeout(id);
   }, [open]);

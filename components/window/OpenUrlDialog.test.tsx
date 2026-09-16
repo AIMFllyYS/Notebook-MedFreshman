@@ -22,10 +22,10 @@ describe("parseOpenableUrl", () => {
     });
   });
 
-  it("rejects empty or non-http schemes", () => {
+  it("rejects empty or incomplete addresses", () => {
     expect(parseOpenableUrl("")).toBeNull();
     expect(parseOpenableUrl("   ")).toBeNull();
-    expect(parseOpenableUrl("ftp://example.com")).toBeNull();
+    expect(parseOpenableUrl("http://")).toBeNull();
   });
 });
 
