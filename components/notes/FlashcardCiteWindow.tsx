@@ -115,6 +115,7 @@ function FlashcardCitePicker() {
           activeId={active?.id ?? ""}
           onSelect={setActiveCardId}
           toolbar={toolbar}
+          emptyLabel="还没有闪卡"
         >
           {active ? <FlashcardStage key={active.id} card={active} /> : null}
         </DocumentWorkspace>

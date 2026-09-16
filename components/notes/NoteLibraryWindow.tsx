@@ -163,6 +163,7 @@ export default function NoteLibraryWindow() {
         activeId={activeTab === "mine" ? (activeNote?.id ?? "") : (activeHit?.path ?? "")}
         onSelect={(id) => (activeTab === "mine" ? setActiveNoteId(id) : setActiveCoursePath(id))}
         toolbar={toolbar}
+        emptyLabel={activeTab === "mine" ? "还没有笔记" : "没有匹配的课程笔记"}
       >
         {activeTab === "mine" ? (
           <UserNoteStage

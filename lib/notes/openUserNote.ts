@@ -6,12 +6,22 @@ import { useStore } from "@/lib/stores/ui";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import type { NoteLibraryIntent } from "@/lib/notes/userNote";
 
+function onBookshelfHome(): boolean {
+  return typeof window !== "undefined" && window.location.pathname === "/";
+}
+
+function resolveSubjectId(explicit?: string | null): string | null {
+  if (explicit !== undefined) return explicit;
+  if (onBookshelfHome()) return null;
+  return useStore.getState().activeSubjectId ?? null;
+}
+
 /**
- * 新建一篇笔记并打开编辑器。省略 subjectId 时绑定当前科目；显式传 null 则不归档。
+ * 新建一篇笔记并打开编辑器。省略 subjectId 时绑定当前科目（首页书架则不归档）；显式传 null 则不归档。
  * 返回新笔记 id。
  */
 export function createAndOpenNote(subjectId?: string | null): string {
-  const bound = subjectId === undefined ? useStore.getState().activeSubjectId : subjectId;
+  const bound = resolveSubjectId(subjectId);
   const notes = useUserNotes.getState();
   const id = notes.createNote(bound);
   notes.openEditor(id);
@@ -20,11 +30,6 @@ export function createAndOpenNote(subjectId?: string | null): string {
 
 export function openNoteEditor(noteId: string): void {
   useUserNotes.getState().openEditor(noteId);
-}
-
-function resolveSubjectId(explicit?: string | null): string | null {
-  if (explicit !== undefined) return explicit;
-  return useStore.getState().activeSubjectId ?? null;
 }
 
 /** browse = 书架「笔记」；cite = 加号菜单「选择笔记」（我的笔记 + 课程笔记两栏）。 */
