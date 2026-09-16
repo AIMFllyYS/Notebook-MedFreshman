@@ -23,7 +23,6 @@ import { instrumentalAnalysisTextbookItems } from './instrumental-analysis-textb
 import { medicalEnglishTextbookItems, medicalEnglishKaoqianItems, medicalEnglishShizhanItems } from './medical-english-items';
 import { medicalStatisticsTextbookItems, medicalStatisticsDetailItems, medicalStatisticsKaoqianItems } from './medical-statistics-items';
 import { cellBiologyLabTextbookItems } from './cell-biology-lab-items';
-import { cellBiologyExperimentTextbookItems } from './cell-biology-experiment-items';
 import { biochemistryDetailItems, biochemistrySummaryItems, biochemistryKaoqianItems, biochemistryShizhanItems } from './biochemistry-extras';
 import { anatomyDetailItems, anatomyKaoqianItems, anatomyShizhanItems } from './anatomy-extras';
 import { histologyDetailItems, histologyKaoqianItems, histologyShizhanItems } from './histology-extras';
@@ -215,10 +214,6 @@ const baseContentTree: ContentTree = {
     {
       ...subjectHeader('cell-biology-lab'),
       categories: sophomoreCategorySkeleton(cellBiologyLabTextbookItems),
-    },
-    {
-      ...subjectHeader('cell-biology-experiment'),
-      categories: sophomoreCategorySkeleton(cellBiologyExperimentTextbookItems),
     },
     {
       ...subjectHeader('cell-biology'),

@@ -46,8 +46,7 @@ const ALIAS_TABLE: AliasEntry[] = [
     aliases: ["毛泽东思想和中国特色社会主义理论体系概论", "毛泽东思想概论", "毛概", "毛中特"],
   },
   { subjectId: "medical-statistics", aliases: ["医学统计学", "卫生统计学"] },
-  { subjectId: "cell-biology-lab", aliases: ["医学细胞生物学实验"] },
-  { subjectId: "cell-biology-experiment", aliases: ["细胞生物学实验"] },
+  { subjectId: "cell-biology-lab", aliases: ["医学细胞生物学实验", "细胞生物学实验"] },
 ];
 
 /**
