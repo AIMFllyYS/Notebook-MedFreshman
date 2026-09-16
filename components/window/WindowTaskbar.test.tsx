@@ -6,6 +6,7 @@ import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { MAX_LOCAL_FILE_SIZE } from "@/lib/ai/imageUtils";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
+import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
 
 describe("WindowTaskbar add content", () => {
   beforeEach(() => {
@@ -23,6 +24,7 @@ describe("WindowTaskbar add content", () => {
       librarySubjectId: null,
     });
     useFlashcardCitations.setState({ open: false, subjectId: null, activeCardId: null });
+    useAgentProductPicker.setState({ open: false, kind: "document" });
   });
 
   afterEach(() => {
@@ -104,5 +106,17 @@ describe("WindowTaskbar add content", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: /选择复习闪卡/ }));
     expect(useWindowManager.getState().windows.some((win) => win.type === "flashcard-cite-picker")).toBe(true);
     expect(useFlashcardCitations.getState().open).toBe(true);
+  });
+
+  it("opens document and artifact import pickers from the plus menu", () => {
+    render(<WindowTaskbar host="topbar" />);
+    fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /导入长文本/ }));
+    expect(useAgentProductPicker.getState()).toMatchObject({ open: true, kind: "document" });
+    expect(useWindowManager.getState().windows.some((win) => win.type === "agent-product-picker")).toBe(true);
+
+    fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /导入可交互 HTML/ }));
+    expect(useAgentProductPicker.getState()).toMatchObject({ open: true, kind: "artifact" });
   });
 });

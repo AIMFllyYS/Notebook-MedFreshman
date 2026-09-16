@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { beforeEach, test } from "node:test";
-import { createAndOpenNote, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
+import { createAndOpenNote, openArtifactImportPicker, openDocumentImportPicker, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
+import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { useWindowManager } from "@/lib/stores/windowManager";
@@ -17,6 +18,7 @@ beforeEach(() => {
     librarySubjectId: null,
   });
   useFlashcardCitations.setState({ open: false, subjectId: null, activeCardId: null });
+  useAgentProductPicker.setState({ open: false, kind: "document" });
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
   useStore.setState({ activeSubjectId: DEFAULT_SUBJECT });
 });
@@ -43,4 +45,13 @@ test("openFlashcardCitePicker defaults to the active subject", () => {
   openFlashcardCitePicker();
   assert.equal(useFlashcardCitations.getState().open, true);
   assert.equal(useFlashcardCitations.getState().subjectId, DEFAULT_SUBJECT);
+});
+
+test("import pickers open a shared agent-product window", () => {
+  openDocumentImportPicker();
+  assert.equal(useAgentProductPicker.getState().kind, "document");
+  assert.ok(useWindowManager.getState().windows.some((win) => win.type === "agent-product-picker"));
+  openArtifactImportPicker();
+  assert.equal(useAgentProductPicker.getState().kind, "artifact");
+  assert.equal(useWindowManager.getState().windows.filter((win) => win.type === "agent-product-picker").length, 1);
 });

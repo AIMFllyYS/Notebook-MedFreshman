@@ -58,5 +58,8 @@ describe("FlashcardCiteWindow", () => {
     expect(useChatUI.getState().quotedText).toMatch(/【复习闪卡 · 概率论 \/ 详解 \/ 2.3】/);
     expect(useChatUI.getState().quotedText).toMatch(/正面：泊松分布的期望？/);
     expect(useChatUI.getState().quotedText).toMatch(/解析：母函数/);
+
+    fireEvent.click(screen.getByRole("button", { name: /下载这张/ }));
+    fireEvent.click(screen.getByRole("button", { name: /下载 CSV/ }));
   });
 });

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, ExternalLink, Layers, Quote } from "lucide-react";
+import { Check, Download, ExternalLink, Layers, Quote } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
 import FlipCard from "@/components/review/FlipCard";
@@ -12,6 +12,7 @@ import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { useReviewCards } from "@/lib/stores/reviewCards";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { FLASHCARD_CITE_WINDOW_ID, formatFlashcardQuote, plainSnippet } from "@/lib/notes/userNote";
+import { downloadFlashcardMarkdown, downloadFlashcardsCsv } from "@/lib/review/exportCards";
 import type { CardStatus, ReviewCard } from "@/lib/review/types";
 
 const STATUS_LABEL: Record<CardStatus, string> = {
@@ -65,6 +66,26 @@ function FlashcardCitePicker() {
         }}
       >
         {cited ? <Check size={13} /> : <Quote size={13} />} {cited ? "已引用到对话" : "引用到对话"}
+      </button>
+      <button
+        type="button"
+        data-no-drag
+        className="user-note-toolbar-link"
+        disabled={!active}
+        onClick={() => {
+          if (active) downloadFlashcardMarkdown(active);
+        }}
+      >
+        <Download size={12} /> 下载这张
+      </button>
+      <button
+        type="button"
+        data-no-drag
+        className="user-note-toolbar-link"
+        disabled={cards.length === 0}
+        onClick={() => downloadFlashcardsCsv(cards, subjectId ? `复习闪卡-${subjectId}` : "复习闪卡")}
+      >
+        <Download size={12} /> 下载 CSV
       </button>
       <button
         type="button"

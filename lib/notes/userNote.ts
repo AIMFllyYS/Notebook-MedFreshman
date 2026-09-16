@@ -43,6 +43,11 @@ export function userNoteWindowId(noteId: string): string {
 
 export const USER_NOTE_LIBRARY_WINDOW_ID = "user-note-library";
 export const FLASHCARD_CITE_WINDOW_ID = "flashcard-cite-picker";
+export const AGENT_PRODUCT_PICKER_WINDOW_ID = "agent-product-picker";
+
+export function memoryProposalWindowId(proposalId: string): string {
+  return `memory-proposal:${proposalId}`;
+}
 
 /**
  * 从正文推导标题：优先第一个 ATX 标题（`# …`），否则第一行非空文本，都没有则兜底。

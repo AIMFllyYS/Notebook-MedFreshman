@@ -4,10 +4,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { Plus, Link2, Upload, BookOpen, Layers } from "lucide-react";
+import { Plus, Link2, Upload, BookOpen, Layers, FileDigit, MonitorPlay } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
-import { createAndOpenNote, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
+import { createAndOpenNote, openArtifactImportPicker, openDocumentImportPicker, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
 import OverflowMenu from "@/components/window/OverflowMenu";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
 import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
@@ -216,6 +216,30 @@ function AddContentButton() {
             <Layers size={14} className="text-[var(--md-sys-color-primary)]" />
             <span><strong className="font-semibold">选择复习闪卡</strong><small className="ml-1 text-[var(--ink-soft)]">引用记忆卡</small></span>
           </button>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              openDocumentImportPicker();
+              setOpen(false);
+            }}
+            className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+          >
+            <FileDigit size={14} className="text-[var(--md-sys-color-primary)]" />
+            <span><strong className="font-semibold">导入长文本</strong><small className="ml-1 text-[var(--ink-soft)]">Agent 讲义</small></span>
+          </button>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              openArtifactImportPicker();
+              setOpen(false);
+            }}
+            className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+          >
+            <MonitorPlay size={14} className="text-[var(--md-sys-color-primary)]" />
+            <span><strong className="font-semibold">导入可交互 HTML</strong><small className="ml-1 text-[var(--ink-soft)]">Agent 演示</small></span>
+          </button>
           <div className="my-1 border-t border-[var(--line)]" />
           <button type="button" role="menuitem" onClick={() => fileRef.current?.click()} className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]">
             <Upload size={14} className="text-[var(--md-sys-color-primary)]" />
@@ -235,7 +259,7 @@ function AddContentButton() {
             <button type="button" onClick={addUrl} className="rounded-md bg-[var(--md-sys-color-primary)] px-2 py-1.5 text-[11px] font-medium text-[var(--md-sys-color-on-primary)]">打开</button>
           </div>
           {urlError ? <p className="px-1 pt-1 text-[10px] text-[var(--md-sys-color-error)]">{urlError}</p> : null}
-          <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">笔记、闪卡会在当前工作站窗口中打开；选择文件不会上传。</p>
+          <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">笔记、闪卡、长文本和演示都从本机仓库打开，不会重新生成。</p>
         </div>,
         document.body,
       )}
