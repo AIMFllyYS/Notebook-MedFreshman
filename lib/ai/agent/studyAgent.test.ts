@@ -137,7 +137,7 @@ test("createStudyAgent：未确认时不暴露 commit 工具，确认笔记后�
   const notes = createStudyAgent(baseInput(model, { memoryCommit: "note" }));
   assert.ok("commitNotes" in notes.tools);
   assert.ok(!("commitFlashcards" in notes.tools));
-  assert.match(notes.promptParts.instructions, /记忆闭环（已确认笔记）/);
+  assert.equal(notes.promptParts.instructions, idle.promptParts.instructions);
 
   const cards = createStudyAgent(baseInput(model, { memoryCommit: "flashcards" }));
   assert.ok("commitFlashcards" in cards.tools);

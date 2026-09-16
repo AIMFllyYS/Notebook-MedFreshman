@@ -46,6 +46,9 @@ test("buildSystemPrompt：工具清单含 useSkill；出题 1–12；导出只�
   assert.match(prompt, /\*\*proposeMemory\*\*/);
   assert.match(prompt, /\*\*commitNotes\*\*/);
   assert.match(prompt, /\*\*commitFlashcards\*\*/);
+  assert.match(prompt, /短记忆提纲/);
+  assert.match(prompt, /有序列表/);
+  assert.match(prompt, /不要写非常详细的 Markdown/);
   assert.doesNotMatch(prompt, /Word \/ LaTeX \/ PDF/);
   assert.match(prompt, /<InteractiveVenn a=\{0\.3\} b=\{0\.25\} ab=\{0\.1\} aLabel=/);
   assert.doesNotMatch(prompt, /<InteractiveVenn>集合A\|集合B\|交集标签/);

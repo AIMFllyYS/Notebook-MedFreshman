@@ -33,7 +33,14 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
     }
     return null;
   })();
-  const trace = latestAssistant ? buildTrace(latestAssistant, proposal.status === "committing") : null;
+  const streaming = proposal.status === "committing";
+  const noteTrace = proposal.kind === "note" && (streaming || proposal.commitMessage)
+    ? buildTrace(proposal.commitMessage ?? { parts: [] }, streaming)
+    : null;
+  const flashcardTrace = proposal.kind === "flashcard" && latestAssistant
+    ? buildTrace(latestAssistant, streaming)
+    : null;
+  const trace = noteTrace ?? flashcardTrace;
 
   return (
     <ManagedWindow
@@ -47,8 +54,12 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
       bodyClassName="flex min-h-0 min-w-0 flex-1 overflow-hidden"
     >
       <div className="memory-cloud" data-no-drag>
-        <p className="memory-cloud-question">{question}</p>
-        <p className="memory-cloud-reason">{proposal.reason}</p>
+        {proposal.status === "proposed" ? (
+          <>
+            <p className="memory-cloud-question">{question}</p>
+            <p className="memory-cloud-reason">{proposal.reason}</p>
+          </>
+        ) : null}
 
         {proposal.status === "proposed" && proposal.kind === "note" ? (
           <label className="memory-cloud-field">
@@ -95,16 +106,18 @@ export default function MemoryProposalCloud({ proposal }: { proposal: MemoryProp
         <div className="memory-cloud-actions">
           {proposal.status === "proposed" ? (
             <>
-              <button type="button" className="user-note-toolbar-primary" onClick={() => confirm(proposal.id)}>
-                整理
-              </button>
               <button type="button" className="user-note-toolbar-link" onClick={() => dismiss(proposal.id)}>
                 不用了
+              </button>
+              <button type="button" className="user-note-toolbar-primary" onClick={() => confirm(proposal.id)}>
+                整理
               </button>
             </>
           ) : null}
           {proposal.status === "committing" ? (
-            <span className="memory-cloud-reason">正在调用 Agent 写入…</span>
+            <span className="memory-cloud-reason">
+              {proposal.kind === "note" ? "正在整理笔记…" : "正在调用 Agent 写入…"}
+            </span>
           ) : null}
           {proposal.status === "done" && proposal.kind === "note" && proposal.createdNoteId ? (
             <button

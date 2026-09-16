@@ -11,7 +11,11 @@ const execOpts = {
 };
 
 test("commitNotes hands title and markdown to the frontend", async () => {
-  const result = (await createCommitNotesTool().execute!(
+  const tool = createCommitNotesTool();
+  const description = typeof tool.description === "function" ? "" : (tool.description ?? "");
+  assert.match(description, /有序列表/);
+  assert.match(description, /短记忆提纲/);
+  const result = (await tool.execute!(
     { title: "渗透压", markdown: "# 渗透压\n\n- 定义" },
     execOpts,
   )) as CommitNotesOutput;
