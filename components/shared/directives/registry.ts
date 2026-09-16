@@ -13,6 +13,8 @@ import { CompareTable } from "@/components/shared/directives/CompareTable";
 import { CauseEffect } from "@/components/shared/directives/CauseEffect";
 import { KeyPoint } from "@/components/shared/directives/KeyPoint";
 import { HistoryMap } from "@/components/shared/directives/HistoryMap";
+import { NoteRef } from "@/components/shared/directives/NoteRef";
+import { CardRef } from "@/components/shared/directives/CardRef";
 
 export const directiveComponents = {
   callout: Callout,
@@ -29,4 +31,6 @@ export const directiveComponents = {
   causeeffect: CauseEffect,
   keypoint: KeyPoint,
   historymap: HistoryMap,
+  noteref: NoteRef,
+  cardref: CardRef,
 } as unknown as Partial<Components>;

@@ -220,6 +220,24 @@ export default function remarkDirectives() {
         data.hProperties = { label: attrs.label ?? attrs.title ?? "核心要点" };
         return;
       }
+      // 用户笔记里的引用（叶子指令）：指向课程讲义 / 指向复习闪卡
+      if (name === "noteref") {
+        data.hName = "noteref";
+        data.hProperties = {
+          path: attrs.path ?? "",
+          title: attrs.title ?? attrs.label ?? "",
+          snippet: attrs.snippet ?? "",
+        };
+        return;
+      }
+      if (name === "cardref") {
+        data.hName = "cardref";
+        data.hProperties = {
+          cardid: attrs.cardid ?? attrs.id ?? "",
+          label: attrs.label ?? attrs.title ?? "",
+        };
+        return;
+      }
       // 历史地图（叶子指令）
       if (name === "map") {
         data.hName = "historymap";

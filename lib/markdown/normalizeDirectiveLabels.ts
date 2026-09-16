@@ -36,9 +36,9 @@ const LABEL_KEY = /^(label|title)=/;
 // 长得完全一样，形状匹配会把公式误切成属性、把标题截断（实测正文里有 2 处这种写法）。
 // 新增指令属性时要同步这份名单，否则该属性会被当成标题正文吞掉。
 const KNOWN_ATTRS = [
-  "alt", "axes", "caption", "color", "fn", "grid", "height", "id", "impact",
-  "kind", "label", "location", "mode", "people", "period", "points", "result",
-  "samples", "src", "term", "title", "width", "xlabel", "xmax", "xmin", "year",
+  "alt", "axes", "caption", "cardid", "color", "fn", "grid", "height", "id", "impact",
+  "kind", "label", "location", "mode", "path", "people", "period", "points", "result",
+  "samples", "snippet", "src", "term", "title", "width", "xlabel", "xmax", "xmin", "year",
   "ylabel", "ymax", "ymin",
 ] as const;
 const NEXT_ATTR = new RegExp(`\\s+(?:${KNOWN_ATTRS.join("|")})=`);

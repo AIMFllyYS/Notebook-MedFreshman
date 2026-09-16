@@ -27,6 +27,8 @@ export const MARKDOWN_DSL_TAGS = [
   "causeeffect",
   "keypoint",
   "historymap",
+  "noteref",
+  "cardref",
 ] as const;
 
 /** 默认 GitHub schema 没有、但笔记 HTML 会用到的语义标签。 */
@@ -100,6 +102,8 @@ const DSL_ATTRIBUTES: Record<string, string[]> = {
   causeeffect: ["title"],
   keypoint: ["label"],
   historymap: ["title", "points", "caption"],
+  noteref: ["path", "title", "snippet"],
+  cardref: ["cardid", "label"],
 };
 
 const SVG_ATTRIBUTES = [
