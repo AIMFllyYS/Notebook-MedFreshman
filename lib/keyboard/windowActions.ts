@@ -42,6 +42,10 @@ export function closeManagedWindow(win: ManagedWindow): void {
     case "note-citation-viewer":
       useNoteCitations.getState().closeViewer();
       break;
+    case "user-notes":
+      // 用户笔记只关窗不删数据，没有额外 store 需要收尾。
+      useWindowManager.getState().closeWindow(win.id);
+      break;
     default:
       useWindowManager.getState().closeWindow(win.id);
   }

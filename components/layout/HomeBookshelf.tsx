@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { GraduationCap, BookOpenCheck } from "lucide-react";
+import UserNoteIcon from "@/components/icons/UserNoteIcon";
+import { openUserNotesLibrary } from "@/lib/user-notes/workspace";
 import { contentTree } from "@/lib/content-data/manifest";
 import { firstLearnHref } from "@/lib/content-data";
 import { subjectColor } from "@/lib/content-data/subjects.registry";
@@ -24,6 +26,7 @@ function overlayBtn(primary: boolean): React.CSSProperties {
     fontSize: 13,
     fontWeight: 600,
     textDecoration: "none",
+    cursor: "pointer",
     minWidth: 132,
     justifyContent: "center",
     background: primary ? "#fff" : "transparent",
@@ -119,6 +122,13 @@ function BookCard({ subject }: { subject: Subject }) {
           <Link href={`/${subject.id}/review`} style={overlayBtn(false)}>
             <BookOpenCheck size={15} /> 开始复习
           </Link>
+          <button
+            type="button"
+            onClick={() => openUserNotesLibrary(subject.id)}
+            style={overlayBtn(false)}
+          >
+            <UserNoteIcon size={15} /> 笔记
+          </button>
         </div>
       </div>
     </div>
@@ -142,7 +152,7 @@ export default function HomeBookshelf() {
             期末复习工作站
           </h1>
           <p style={{ fontSize: 14, color: "var(--ink-soft)", marginTop: 8, lineHeight: 1.7 }}>
-            选一本书：<b>开始学习</b> 进入正文，<b>开始复习</b> 翻看你划词 / 右键「记录」生成的记忆卡。
+            选一本书：<b>开始学习</b> 进入正文，<b>开始复习</b> 翻看记忆卡，<b>笔记</b> 打开这门课的 Markdown 笔记窗。
           </p>
         </header>
 

@@ -5,8 +5,12 @@ import {
   AgentGlobeIcon, AgentArrowUpIcon, AgentStopIcon, AgentQuoteIcon,
   AgentCloseIcon, AgentCheckIcon, AgentPaperclipIcon,
 } from '@/components/icons/AgentIcons';
-import type { ChatContext, ChatAttachment } from '@/lib/types/chat';
+import { BookmarkCheck } from 'lucide-react';
+import type { ChatContext, ChatAttachment, ChatDocumentAttachment } from '@/lib/types/chat';
+import UserNoteIcon from '@/components/icons/UserNoteIcon';
 import { useChatUI } from '@/lib/hooks/useChatUI';
+import { useComposerCitations, type ComposerCitation } from '@/lib/hooks/useComposerCitations';
+import { openUserNoteById } from '@/lib/user-notes/workspace';
 import { useSettings, type ThinkingEffort } from '@/lib/hooks/useSettings';
 import { useImageAttachments } from '@/lib/hooks/useImageAttachments';
 import { ACCEPTED_DOCUMENT_FILE_TYPES } from '@/lib/ai/imageUtils';
@@ -92,6 +96,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const lastInsetRef = useRef<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { quotedText, clearQuotedText } = useChatUI();
+  // 引用芯片独立于 quotedText：quotedText 是划词「引用自当前页面」，这里是用户挑的笔记 / 闪卡。
+  const citations = useComposerCitations((s) => s.citations);
+  const removeCitation = useComposerCitations((s) => s.removeCitation);
+  const clearCitations = useComposerCitations((s) => s.clearCitations);
   const globalSelectedModelId = useSettings((s) => s.selectedModelId);
   const customApiGroups = useSettings((s) => s.customApiGroups);
   const selectedModelId = modelId ?? globalSelectedModelId;
@@ -155,6 +163,20 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     };
   }, [onComposerInsetChange]);
 
+  // 引用作为 markdown 文档附件随消息一起发出，正文里的公式原样交给模型。
+  const citationAttachments = useMemo<ChatDocumentAttachment[]>(
+    () => citations.map((citation) => ({
+      type: 'document',
+      mimeType: 'text/markdown',
+      name: `${citation.title}.md`,
+      text: citation.markdown,
+      size: new TextEncoder().encode(citation.markdown).length,
+      characterCount: countCharacters(citation.markdown),
+    })),
+    [citations],
+  );
+  const hasDraft = Boolean(input.trim()) || attachments.length > 0 || citations.length > 0;
+
   const dispatchMessage = useCallback((message: QueuedMessage) => {
     onSend(message.content, {
       quotedText: message.quotedText,
@@ -169,18 +191,20 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     setInput('');
     clearAttachments();
     if (effectiveQuote) clearQuotedText();
-  }, [clearAttachments, effectiveQuote, clearQuotedText]);
+    if (citations.length > 0) clearCitations();
+  }, [clearAttachments, effectiveQuote, clearQuotedText, citations.length, clearCitations]);
 
   const handleSend = useCallback(() => {
     if (overLimit) { setShowLimitDialog(true); return; }
     const trimmed = input.trim();
-    if ((!trimmed && attachments.length === 0) || externalDisabled) return;
+    if ((!trimmed && attachments.length === 0 && citations.length === 0) || externalDisabled) return;
 
+    const outgoing = [...(toChatFormat() ?? []), ...citationAttachments];
     const message: QueuedMessage = {
       id: crypto.randomUUID(),
       content: trimmed || '请阅读并分析附件',
       quotedText: effectiveQuote || undefined,
-      attachments: toChatFormat(),
+      attachments: outgoing.length > 0 ? outgoing : undefined,
     };
     if (isLoading) {
       if (editingQueuedId) {
@@ -193,7 +217,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       dispatchMessage(message);
     }
     clearDraft();
-  }, [input, overLimit, attachments, isLoading, externalDisabled, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft]);
+  }, [input, overLimit, attachments, citations.length, citationAttachments, isLoading, externalDisabled, effectiveQuote, toChatFormat, editingQueuedId, dispatchMessage, clearDraft]);
+
+  const handleCitationClick = useCallback((citation: ComposerCitation) => {
+    // 闪卡不强行开预览窗（预览窗要锚点坐标）；笔记直接跳回它所在科目的工作区。
+    if (citation.kind === 'user-note') openUserNoteById(citation.sourceId);
+  }, []);
 
   useEffect(() => {
     if (isLoading) {
@@ -244,8 +273,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   };
 
   const inputDisabled = !!externalDisabled;
-  const sendDisabled = !!externalDisabled || (!isLoading && (overLimit || (!input.trim() && attachments.length === 0)));
-  const showStopButton = isLoading && !input.trim() && attachments.length === 0;
+  const sendDisabled = !!externalDisabled || (!isLoading && (overLimit || !hasDraft));
+  const showStopButton = isLoading && !hasDraft;
   const thinkingProps = {
     enabled: effectiveEnableThinking, effort: displayEffort, supported: thinkingSupported,
     disabled: inputDisabled, levels: thinkingLevels, allowOff: thinkingAllowOff,
@@ -296,6 +325,37 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {citations.length > 0 && (
+        <div className="mb-1 flex flex-wrap gap-1" role="region" aria-label="引用内容">
+          {citations.map((citation) => (
+            <span
+              key={citation.id}
+              className="flex max-w-full items-center gap-1 rounded-lg bg-[var(--md-sys-color-secondary-container)] pl-1.5 pr-0.5 py-0.5 text-[11px] text-[var(--md-sys-color-on-secondary-container)]"
+            >
+              <button
+                type="button"
+                onClick={() => handleCitationClick(citation)}
+                title={`${citation.title}（${citation.kind === 'user-note' ? '笔记' : '闪卡'}）`}
+                className="flex min-w-0 items-center gap-1"
+              >
+                {citation.kind === 'user-note' ? <UserNoteIcon size={12} /> : <BookmarkCheck size={12} />}
+                <span className="max-w-[140px] truncate font-semibold">{citation.title}</span>
+                <span className="opacity-70">{citation.kind === 'user-note' ? '笔记' : '闪卡'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => removeCitation(citation.id)}
+                aria-label={`移除引用 ${citation.title}`}
+                title="移除引用"
+                className="flex h-4 w-4 items-center justify-center rounded opacity-70 hover:opacity-100"
+              >
+                <AgentCloseIcon size={11} />
+              </button>
+            </span>
+          ))}
         </div>
       )}
 
@@ -439,8 +499,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           disabled={sendDisabled}
           className="chat-input-send"
           style={{
-            background: showStopButton ? 'var(--md-sys-color-error-container)' : ((!input.trim() && attachments.length === 0) ? 'var(--md-sys-color-outline-variant)' : 'var(--md-sys-color-primary)'),
-            color: showStopButton ? 'var(--md-sys-color-on-error-container)' : ((!input.trim() && attachments.length === 0) ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary)'),
+            background: showStopButton ? 'var(--md-sys-color-error-container)' : (!hasDraft ? 'var(--md-sys-color-outline-variant)' : 'var(--md-sys-color-primary)'),
+            color: showStopButton ? 'var(--md-sys-color-on-error-container)' : (!hasDraft ? 'var(--md-sys-color-on-surface-variant)' : 'var(--md-sys-color-on-primary)'),
             cursor: sendDisabled ? 'not-allowed' : 'pointer',
           }}
           title={showStopButton ? '停止生成' : '发送'}

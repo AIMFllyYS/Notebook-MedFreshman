@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { strToU8, zipSync } from "fflate";
 import WindowTaskbar from "./WindowTaskbar";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { useUserNotes } from "@/lib/hooks/useUserNotes";
 import { MAX_LOCAL_FILE_SIZE } from "@/lib/ai/imageUtils";
 
 describe("WindowTaskbar add content", () => {
@@ -12,12 +13,14 @@ describe("WindowTaskbar add content", () => {
       disconnect() {}
     });
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
+    useUserNotes.setState({ byId: {}, order: [] });
   });
 
   afterEach(() => {
     cleanup();
     vi.unstubAllGlobals();
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
+    useUserNotes.setState({ byId: {}, order: [] });
   });
 
   it("keeps a glowing plus slot available and opens a URL as a taskbar window", () => {
@@ -48,6 +51,33 @@ describe("WindowTaskbar add content", () => {
     await waitFor(() => {
       expect(screen.getByRole("alertdialog", { name: "文件添加失败" })).toHaveTextContent("超过 100 MB");
     });
+  });
+
+  it("creates a markdown note window from the plus menu", () => {
+    render(<WindowTaskbar host="topbar" />);
+    fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /新建笔记/ }));
+
+    const noteWin = useWindowManager.getState().windows.find((win) => win.type === "user-notes");
+    expect(noteWin).toBeDefined();
+    expect(noteWin?.title).toMatch(/我的笔记/);
+    expect(screen.getByRole("button", { name: "添加内容" })).toBeVisible();
+  });
+
+  it("opens a note citation picker from the plus menu", () => {
+    render(<WindowTaskbar host="topbar" />);
+    fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /引用笔记/ }));
+    expect(screen.getByRole("searchbox", { name: "搜索笔记" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "引用到对话" })).toBeDisabled();
+  });
+
+  it("opens a flashcard citation picker from the plus menu", () => {
+    render(<WindowTaskbar host="topbar" />);
+    fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /引用复习闪卡/ }));
+    expect(screen.getByRole("searchbox", { name: "搜索闪卡" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "引用到对话" })).toBeDisabled();
   });
 
   it("opens a pptx as PowerPoint, not PDF", async () => {

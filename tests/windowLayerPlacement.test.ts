@@ -25,6 +25,8 @@ test("citation and document viewers are mounted in the global app shell window l
   assert.match(appShell, /<SourcePreviewViewer\s*\/>/);
   assert.match(appShell, /components\/chat\/DocumentViewer/);
   assert.match(appShell, /<DocumentViewerLayer\s*\/>/);
+  assert.match(appShell, /components\/notes\/UserNotesLayer/);
+  assert.match(appShell, /<UserNotesLayer\s*\/>/);
 });
 
 test("artifact viewer is mounted in the global app shell window layer", () => {

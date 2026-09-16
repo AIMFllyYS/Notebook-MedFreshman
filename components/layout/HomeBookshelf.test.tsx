@@ -1,9 +1,10 @@
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import HomeBookshelf from "./HomeBookshelf";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { DEFAULT_ACADEMIC_YEAR } from "@/lib/constants/academic-year";
 
 vi.mock("next/navigation", () => ({
@@ -39,6 +40,15 @@ describe("HomeBookshelf year filter", () => {
     expect(screen.queryByText("系统解剖学")).not.toBeInTheDocument();
     expect(screen.queryByText("医学英语")).not.toBeInTheDocument();
     expect(screen.queryByText("医学统计学")).not.toBeInTheDocument();
+  });
+
+  it("科目卡提供笔记入口并打开该科笔记窗", () => {
+    useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
+    render(<HomeBookshelf />);
+    const noteButtons = screen.getAllByRole("button", { name: "笔记" });
+    expect(noteButtons.length).toBeGreaterThan(0);
+    fireEvent.click(noteButtons[0]);
+    expect(useWindowManager.getState().windows.some((item) => item.type === "user-notes")).toBe(true);
   });
 
   it("空学期显示空书架说明", async () => {

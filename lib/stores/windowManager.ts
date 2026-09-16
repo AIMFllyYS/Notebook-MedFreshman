@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor";
+export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor" | "user-notes";
 
 export interface WindowPoint {
   x: number;
@@ -41,6 +41,12 @@ export interface NoteCitationViewerData {
   activePath: string;
 }
 
+/** 用户笔记工作区：每个科目最多一个窗口，noteId 为当前选中笔记（null = 空态/未选）。 */
+export interface UserNotesWindowData {
+  subjectId: string;
+  noteId: string | null;
+}
+
 export interface SourceTraceViewerData {
   sources: unknown[];
   activeKey?: string;
@@ -59,7 +65,7 @@ export interface AttachmentPreviewData {
   content: string;
 }
 
-export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | MembershipSponsorData | DocumentViewerData | NoteCitationViewerData | SourceTraceViewerData | SourcePreviewData | AttachmentPreviewData | Record<string, unknown>;
+export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | MembershipSponsorData | DocumentViewerData | NoteCitationViewerData | UserNotesWindowData | SourceTraceViewerData | SourcePreviewData | AttachmentPreviewData | Record<string, unknown>;
 
 export interface ManagedWindow<TData = ManagedWindowData> {
   id: string;

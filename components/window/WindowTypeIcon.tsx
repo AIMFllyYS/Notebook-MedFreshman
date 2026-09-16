@@ -4,6 +4,7 @@ import { useState } from "react";
 import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, BookOpen, Globe, FileDigit, Heart } from "lucide-react";
 import FileTypeIcon, { resolveFileGlyphKind } from "@/components/icons/file-types/FileTypeIcon";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
+import UserNoteIcon from "@/components/icons/UserNoteIcon";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
 
 export function WindowTypeIcon({
@@ -49,6 +50,7 @@ export function WindowTypeIcon({
   if (type === "billing-dashboard") return <PieChart size={size} />;
   if (type === "membership-sponsor") return <Heart size={size} />;
   if (type === "document-viewer") return <FileDigit size={size} />;
+  if (type === "user-notes") return <UserNoteIcon size={size} />;
   if (type === "note-citation-viewer" || type === "source-trace-viewer") return <BookOpen size={size} />;
   if (type === "source-preview") return <Globe size={size} />;
   return <MonitorPlay size={size} />;

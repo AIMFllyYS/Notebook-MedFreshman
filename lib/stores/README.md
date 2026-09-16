@@ -2,7 +2,7 @@
 
 Zustand store 的唯一落点。本目录**不做桶导出**（避免把全部 store 打进每个页面）。
 
-清点方法：搜 `from "zustand"` / `from 'zustand'` 且文件内有 `create(`。共 **28** 个。
+清点方法：搜 `from "zustand"` / `from 'zustand'` 且文件内有 `create(`。共 **30** 个。
 
 | 文件 | hook | persist name / 存储 |
 |------|------|---------------------|
@@ -11,6 +11,7 @@ Zustand store 的唯一落点。本目录**不做桶导出**（避免把全部 s
 | `imageGen.ts` | `useImageGen` | `image-gen`（idb） |
 | `skills.ts` | `useSkills` | `skills`（idb） |
 | `reviewCards.ts` | `useReviewCards` | `review-cards`（idb） |
+| `userNotes.ts` | `useUserNotes` | `user-notes`（idb） |
 | `billing.ts` | `useBillingStore` | `billing-history`（idb） |
 | `settings.ts` | `useSettings` | `gailvlun-settings-v1`（自定义 localStorage） |
 | `theme.ts` | `useTheme` | `gailvlun-theme` + `gailvlun-appearance-v1` |
@@ -20,6 +21,7 @@ Zustand store 的唯一落点。本目录**不做桶导出**（避免把全部 s
 | `windowManager.ts` | `useWindowManager` | 不持久化 |
 | `floatingChats.ts` | `useFloatingChats` | `quickExplainWindowSize`（仅窗口尺寸） |
 | `chatUI.ts` | `useChatUI` | 不持久化 |
+| `composerCitations.ts` | `useComposerCitations` | 不持久化 |
 | `contextMenu.ts` | `useContextMenu` | 不持久化 |
 | `noteCitations.ts` | `useNoteCitations` | 不持久化 |
 | `noteLocator.ts` | `useNoteLocator` | 不持久化 |
@@ -35,6 +37,6 @@ Zustand store 的唯一落点。本目录**不做桶导出**（避免把全部 s
 | `quiz.ts` | `useQuizStore` | `gailvlun-quiz-progress-v1`（经 `lib/quiz-progress.ts`） |
 | `lightbox.ts` | `useLightbox` | 不持久化 |
 
-云端同步在 `lib/sync/`，不是第 29 个 store：登录后把 `chat-session` / `artifact` / `document` 镜像到 `sync_documents`。不持久化、不同步 `settings` / `skill` / 生图 / 图片 blob / apiKey。
+云端同步在 `lib/sync/`，不是第 31 个 store：登录后把 `chat-session` / `artifact` / `document` 镜像到 `sync_documents`。不持久化、不同步 `settings` / `skill` / 生图 / 图片 blob / apiKey。
 
 旧路径（`lib/hooks/useX.ts` 等）保留 re-export 一个发布周期。

@@ -4,15 +4,18 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { Plus, Link2, Upload } from "lucide-react";
+import { Plus, Link2, Upload, BookmarkCheck, ChevronLeft } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import OverflowMenu from "@/components/window/OverflowMenu";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
 import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
+import UserNoteIcon from "@/components/icons/UserNoteIcon";
+import WorkspaceCitePanel from "@/components/notes/WorkspaceCitePanel";
 import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
 import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 import { openSourcePreview } from "@/lib/chat/openSourcePreview";
+import { createAndOpenUserNote } from "@/lib/user-notes/workspace";
 
 interface WindowTaskbarProps {
   host: "topbar" | "content-tab";
@@ -60,8 +63,11 @@ function FileErrorDialog({ message, onClose }: { message: string; onClose: () =>
   );
 }
 
+type AddMenuView = "main" | "cite-note" | "cite-card";
+
 function AddContentButton() {
   const [open, setOpen] = useState(false);
+  const [view, setView] = useState<AddMenuView>("main");
   const [url, setUrl] = useState("");
   const [urlError, setUrlError] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
@@ -140,11 +146,14 @@ function AddContentButton() {
         type="button"
         aria-label="添加内容"
         aria-expanded={open}
-        title="添加 PDF、文件或网址"
+        title="添加笔记、文件、引用或网址"
         onClick={() => {
           setOpen((value) => {
             const next = !value;
-            if (next) requestAnimationFrame(updateMenuPosition);
+            if (next) {
+              setView("main");
+              requestAnimationFrame(updateMenuPosition);
+            }
             return next;
           });
           setUrlError(null);
@@ -176,27 +185,80 @@ function AddContentButton() {
           role="menu"
           aria-label="添加内容"
           style={{ position: "fixed", top: menuPosition.top, right: menuPosition.right }}
-          className="window-taskbar-add-menu z-[12000] w-64 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-2 shadow-xl"
+          className={clsx(
+            "window-taskbar-add-menu z-[12000] rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] shadow-xl",
+            view === "main" ? "w-64 p-2" : "w-80 p-0",
+          )}
         >
-          <button type="button" role="menuitem" onClick={() => fileRef.current?.click()} className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]">
-            <Upload size={14} className="text-[var(--md-sys-color-primary)]" />
-            <span><strong className="font-semibold">添加文件</strong><small className="ml-1 text-[var(--ink-soft)]">PDF、文本、代码</small></span>
-          </button>
-          <div className="my-1 border-t border-[var(--line)]" />
-          <div className="flex items-center gap-1.5 px-1">
-            <Link2 size={14} className="shrink-0 text-[var(--md-sys-color-primary)]" />
-            <input
-              value={url}
-              onChange={(event) => { setUrl(event.target.value); setUrlError(null); }}
-              onKeyDown={(event) => { if (event.key === "Enter") addUrl(); }}
-              placeholder="输入网址…"
-              aria-label="网址"
-              className="min-w-0 flex-1 rounded-md border border-[var(--line)] bg-[var(--bg-muted)] px-2 py-1.5 text-[12px] text-[var(--ink)] outline-none focus:border-[var(--md-sys-color-primary)]"
-            />
-            <button type="button" onClick={addUrl} className="rounded-md bg-[var(--md-sys-color-primary)] px-2 py-1.5 text-[11px] font-medium text-[var(--md-sys-color-on-primary)]">打开</button>
-          </div>
-          {urlError ? <p className="px-1 pt-1 text-[10px] text-[var(--md-sys-color-error)]">{urlError}</p> : null}
-          <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">内容会在当前工作站窗口中打开；选择文件不会上传。</p>
+          {view === "main" ? (
+            <>
+              <button type="button" role="menuitem" onClick={() => fileRef.current?.click()} className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]">
+                <Upload size={14} className="text-[var(--md-sys-color-primary)]" />
+                <span><strong className="font-semibold">添加文件</strong><small className="ml-1 text-[var(--ink-soft)]">PDF、文本、代码</small></span>
+              </button>
+              <div className="my-1 border-t border-[var(--line)]" />
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => {
+                  createAndOpenUserNote();
+                  setOpen(false);
+                }}
+                className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+              >
+                <UserNoteIcon size={14} className="text-[var(--md-sys-color-primary)]" />
+                <span><strong className="font-semibold">新建笔记</strong><small className="ml-1 text-[var(--ink-soft)]">Markdown · 公式</small></span>
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => setView("cite-note")}
+                className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+              >
+                <UserNoteIcon size={14} className="text-[var(--md-sys-color-primary)]" />
+                <span><strong className="font-semibold">引用笔记</strong><small className="ml-1 text-[var(--ink-soft)]">选一篇带到对话</small></span>
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => setView("cite-card")}
+                className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+              >
+                <BookmarkCheck size={14} className="text-[var(--md-sys-color-primary)]" />
+                <span><strong className="font-semibold">引用复习闪卡</strong><small className="ml-1 text-[var(--ink-soft)]">选卡片带到对话</small></span>
+              </button>
+              <div className="my-1 border-t border-[var(--line)]" />
+              <div className="flex items-center gap-1.5 px-1">
+                <Link2 size={14} className="shrink-0 text-[var(--md-sys-color-primary)]" />
+                <input
+                  value={url}
+                  onChange={(event) => { setUrl(event.target.value); setUrlError(null); }}
+                  onKeyDown={(event) => { if (event.key === "Enter") addUrl(); }}
+                  placeholder="输入网址…"
+                  aria-label="网址"
+                  className="min-w-0 flex-1 rounded-md border border-[var(--line)] bg-[var(--bg-muted)] px-2 py-1.5 text-[12px] text-[var(--ink)] outline-none focus:border-[var(--md-sys-color-primary)]"
+                />
+                <button type="button" onClick={addUrl} className="rounded-md bg-[var(--md-sys-color-primary)] px-2 py-1.5 text-[11px] font-medium text-[var(--md-sys-color-on-primary)]">打开</button>
+              </div>
+              {urlError ? <p className="px-1 pt-1 text-[10px] text-[var(--md-sys-color-error)]">{urlError}</p> : null}
+              <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">笔记和闪卡会引用到对话；文件与网址在工作站窗口中打开。</p>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={() => setView("main")}
+                className="flex w-full items-center gap-1.5 px-3 pt-2.5 pb-1 text-left text-[12px] font-semibold text-[var(--ink)] hover:text-[var(--md-sys-color-primary)]"
+              >
+                <ChevronLeft size={14} />
+                {view === "cite-note" ? "引用笔记" : "引用复习闪卡"}
+              </button>
+              <WorkspaceCitePanel
+                kind={view === "cite-note" ? "user-note" : "review-card"}
+                onDone={() => setOpen(false)}
+              />
+            </>
+          )}
         </div>,
         document.body,
       )}
