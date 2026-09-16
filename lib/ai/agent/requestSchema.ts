@@ -4,6 +4,12 @@
 
 import { z } from "zod";
 import { DEFAULT_ACADEMIC_YEAR, isAcademicYearId, type AcademicYearId } from "@/lib/constants/academic-year";
+import {
+  MAX_MEMORY_CARDS,
+  MAX_MEMORY_CARD_FIELD_CHARS,
+  MAX_MEMORY_NOTES,
+  MAX_MEMORY_NOTE_CHARS,
+} from "@/lib/ai/agent/tools/memoryCatalog";
 import type { CustomApiGroup, CustomModelConfig } from "@/lib/ai/models";
 import { normalizeCapabilityEndpoints } from "@/lib/ai/capabilityEndpoints";
 
@@ -203,6 +209,58 @@ export const chatRequestSchema = z.object({
         .default(""),
     })
     .optional(),
+  /** 窗内笔记 Agent：与主对话共用前缀，但可收窄工具。 */
+  noteWindowAgent: z.boolean().optional(),
+  /** 主对话随身携带的本机笔记目录；窗内对话应为空。 */
+  userNotes: z
+    .array(
+      z
+        .object({
+          id: z.string(),
+          title: z.string().optional().default(""),
+          subjectId: z.string().nullable().optional().default(null),
+          markdown: z.string().max(MAX_MEMORY_NOTE_CHARS).optional().default(""),
+          updatedAt: z.number().optional().default(0),
+          kind: z.enum(["personal", "classroom"]).optional(),
+        })
+        .transform((note) => ({
+          id: note.id,
+          title: String(note.title ?? ""),
+          subjectId: note.subjectId ?? null,
+          markdown: String(note.markdown ?? ""),
+          updatedAt: Number(note.updatedAt ?? 0),
+          kind: note.kind,
+        })),
+    )
+    .max(MAX_MEMORY_NOTES)
+    .default([]),
+  /** 主对话随身携带的复习闪卡目录（复用复习板）。 */
+  flashcards: z
+    .array(
+      z
+        .object({
+          id: z.string(),
+          subjectId: z.string().optional().default(""),
+          sourceLabel: z.string().optional().default(""),
+          front: z.string().max(MAX_MEMORY_CARD_FIELD_CHARS).optional().default(""),
+          back: z.string().max(MAX_MEMORY_CARD_FIELD_CHARS).optional().default(""),
+          originalText: z.string().max(MAX_MEMORY_CARD_FIELD_CHARS).optional().default(""),
+          explanation: z.string().max(MAX_MEMORY_CARD_FIELD_CHARS).optional(),
+          status: z.string().optional().default(""),
+        })
+        .transform((card) => ({
+          id: card.id,
+          subjectId: String(card.subjectId ?? ""),
+          sourceLabel: String(card.sourceLabel ?? ""),
+          front: String(card.front ?? ""),
+          back: String(card.back ?? ""),
+          originalText: String(card.originalText ?? ""),
+          explanation: card.explanation,
+          status: String(card.status ?? ""),
+        })),
+    )
+    .max(MAX_MEMORY_CARDS)
+    .default([]),
 });
 
 export type ChatRequest = z.infer<typeof chatRequestSchema>;

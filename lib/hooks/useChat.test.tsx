@@ -430,6 +430,9 @@ describe('useChat SDK transport regression', () => {
     act(() => { result.current.sendMessage('把分类补全'); });
     await settle();
     expect(requests[0].body.editingUserNote).toEqual({ id: noteId, title: '被覆上皮', markdown: '# 被覆上皮\n\n旧稿' });
+    expect(requests[0].body.noteWindowAgent).toBe(true);
+    expect(requests[0].body.userNotes).toEqual([]);
+    expect(requests[0].body.flashcards).toEqual([]);
     expect(messagesFor('main')).toEqual([]);
     expect(messagesFor('note-s')).toHaveLength(2);
   });

@@ -9,7 +9,8 @@ export type { TextToolOutput } from "@/lib/ai/agent/tools/_types";
 export type { GetCurrentPageInput, GetCurrentPageOutput } from "@/lib/ai/agent/tools/getCurrentPage/types";
 export type { GetOutlineInput, GetOutlineOutput } from "@/lib/ai/agent/tools/getOutline/types";
 export type { GetSectionInput, GetSectionOutput } from "@/lib/ai/agent/tools/getSection/types";
-export type { SearchHit, SearchNotesDiagnostics, SearchNotesInput, SearchNotesOutput } from "@/lib/ai/agent/tools/searchNotes/types";
+export type { SearchHit, SearchHitKind, SearchNotesDiagnostics, SearchNotesInput, SearchNotesOutput, SearchNotesScope } from "@/lib/ai/agent/tools/searchNotes/types";
+export type { FlashcardHit, SearchFlashcardsInput, SearchFlashcardsOutput } from "@/lib/ai/agent/tools/searchFlashcards/types";
 export type { NoteImageHit, SearchNoteImagesInput, SearchNoteImagesOutput } from "@/lib/ai/agent/tools/searchNoteImages/types";
 export type { WebSearchInput, WebSearchOutput } from "@/lib/ai/agent/tools/webSearch/types";
 export type { ImageSearchInput, ImageSearchOutput } from "@/lib/ai/agent/tools/imageSearch/types";
@@ -23,7 +24,7 @@ export type { UseSkillInput, UseSkillOutput } from "@/lib/ai/agent/tools/useSkil
 export type { ProposeMemoryInput, ProposeMemoryOutput, MemoryKind } from "@/lib/ai/agent/tools/proposeMemory/types";
 export type { CommitNotesInput, CommitNotesOutput } from "@/lib/ai/agent/tools/commitNotes/types";
 export type { CommitFlashcardsInput, CommitFlashcardsOutput, CommitFlashcardItem } from "@/lib/ai/agent/tools/commitFlashcards/types";
-export type { UpdateUserNoteInput, UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/types";
+export type { UpdateUserNoteAction, UpdateUserNoteInput, UpdateUserNoteOutput } from "@/lib/ai/agent/tools/updateUserNote/types";
 export type { StudyTools, StudyToolName } from "@/lib/ai/agent/tools/names";
 /** @public 兼容旧 import 路径；设置面板与思考链从 presentations / toolPresentation 取用。 */
 export { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";

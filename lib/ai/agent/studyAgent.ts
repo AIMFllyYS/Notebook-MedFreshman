@@ -22,6 +22,11 @@ import { createAgentLifecycleHooks } from "@/lib/ai/observability/agentLog";
 import { formatArtifactCatalog, type ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
 import { formatEditingUserNoteContext, type EditingUserNoteContext } from "@/lib/notes/editingUserNote";
+import {
+  formatMemoryCatalogLine,
+  type FlashcardCatalogItem,
+  type UserNoteCatalogItem,
+} from "@/lib/ai/agent/tools/memoryCatalog";
 
 export interface StudyAgentInput {
   model: LanguageModelV4;
@@ -48,6 +53,11 @@ export interface StudyAgentInput {
   memoryCommit?: MemoryCommitKind;
   /** 学生从笔记窗打开助教时，当前正在编辑的个人笔记。 */
   editingUserNote?: EditingUserNoteContext;
+  /** 窗内笔记对话：收窄工具，提示词仍只改 volatile 段。 */
+  noteWindowAgent?: boolean;
+  /** 主对话随身携带的本机笔记/闪卡目录；窗内对话应传空。 */
+  userNotes?: UserNoteCatalogItem[];
+  flashcards?: FlashcardCatalogItem[];
 }
 
 export interface StudyAgentBundle {
@@ -75,6 +85,9 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     artifacts = [],
     memoryCommit,
     editingUserNote,
+    noteWindowAgent,
+    userNotes = [],
+    flashcards = [],
   } = input;
 
   // 稳定排序，保证拼装的系统前缀逐字节一致、利于缓存命中
@@ -109,9 +122,11 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
   // 易变段必须后置：定位（换页/换学年）→ 当前笔记正文 → 参考材料 → 演示目录 → 压缩说明。
   // 稳定前缀（global + 学科 + 用户设置 + 工具清单）在 systemPrompt 里，同页追问可命中 prefix cache。
   // 窗内笔记对话与右侧主 Agent 共用这条前缀；笔记 markdown 只出现在定位行之后，避免每篇笔记各自 bust 前缀。
+  const memoryLine = noteWindowAgent ? "" : formatMemoryCatalogLine(userNotes, flashcards);
   const volatile =
     buildLocationLine(chatCtx) +
     (editingUserNote ? `\n\n${formatEditingUserNoteContext(editingUserNote)}` : "") +
+    (memoryLine ? `\n\n${memoryLine}` : "") +
     (referenceContext ? `\n\n【参考材料】\n${referenceContext}` : "") +
     formatArtifactCatalog(artifacts) +
     (contextTruncated
@@ -132,12 +147,14 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
           academicYear: chatCtx.academicYear,
           modelId: selectedModelId,
           editingUserNote,
+          userNotes,
+          flashcards,
           artifactUnsupportedReason: isImageMode
             ? "当前生图模型不支持 HTML 交互组件生成，请切换文本模型后重试。"
             : undefined,
         },
         runtime,
-        { enableSearch: options.enableSearch ?? false, disabled: disabledTools, artifacts, memoryCommit, editingUserNote },
+        { enableSearch: options.enableSearch ?? false, disabled: disabledTools, artifacts, memoryCommit, editingUserNote, noteWindowAgent },
       )
     : {};
 

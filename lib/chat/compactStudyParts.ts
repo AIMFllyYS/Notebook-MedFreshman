@@ -20,6 +20,7 @@ const STUB_TEXT_TOOLS = new Set([
 
 const SEARCH_TOOLS = new Set([
   "searchNotes",
+  "searchFlashcards",
   "searchNoteImages",
   "webSearch",
   "imageSearch",

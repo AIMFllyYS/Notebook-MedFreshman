@@ -28,6 +28,7 @@ const PAGE_TOOLS = new Set([
   "getCurrentPage",
   "getSection",
   "searchNotes",
+  "searchFlashcards",
   "getOutline",
   "searchNoteImages",
 ]);

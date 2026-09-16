@@ -2,6 +2,7 @@ import type { GetCurrentPageInput, GetCurrentPageOutput } from "@/lib/ai/agent/t
 import type { GetOutlineInput, GetOutlineOutput } from "@/lib/ai/agent/tools/getOutline/types";
 import type { GetSectionInput, GetSectionOutput } from "@/lib/ai/agent/tools/getSection/types";
 import type { SearchNotesInput, SearchNotesOutput } from "@/lib/ai/agent/tools/searchNotes/types";
+import type { SearchFlashcardsInput, SearchFlashcardsOutput } from "@/lib/ai/agent/tools/searchFlashcards/types";
 import type { SearchNoteImagesInput, SearchNoteImagesOutput } from "@/lib/ai/agent/tools/searchNoteImages/types";
 import type { WebSearchInput, WebSearchOutput } from "@/lib/ai/agent/tools/webSearch/types";
 import type { ImageSearchInput, ImageSearchOutput } from "@/lib/ai/agent/tools/imageSearch/types";
@@ -23,6 +24,7 @@ export type StudyTools = {
   getOutline: { input: GetOutlineInput; output: GetOutlineOutput };
   getSection: { input: GetSectionInput; output: GetSectionOutput };
   searchNotes: { input: SearchNotesInput; output: SearchNotesOutput };
+  searchFlashcards: { input: SearchFlashcardsInput; output: SearchFlashcardsOutput };
   searchNoteImages: { input: SearchNoteImagesInput; output: SearchNoteImagesOutput };
   webSearch: { input: WebSearchInput; output: WebSearchOutput };
   imageSearch: { input: ImageSearchInput; output: ImageSearchOutput };
@@ -46,6 +48,7 @@ export const STUDY_TOOL_NAMES: readonly StudyToolName[] = [
   "getOutline",
   "getSection",
   "searchNotes",
+  "searchFlashcards",
   "searchNoteImages",
   "webSearch",
   "imageSearch",

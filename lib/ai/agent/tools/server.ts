@@ -12,6 +12,7 @@ import { createGetCurrentPageTool } from "@/lib/ai/agent/tools/getCurrentPage/to
 import { createGetOutlineTool } from "@/lib/ai/agent/tools/getOutline/tool";
 import { createGetSectionTool } from "@/lib/ai/agent/tools/getSection/tool";
 import { createSearchNotesTool } from "@/lib/ai/agent/tools/searchNotes/tool";
+import { createSearchFlashcardsTool } from "@/lib/ai/agent/tools/searchFlashcards/tool";
 import { createSearchNoteImagesTool } from "@/lib/ai/agent/tools/searchNoteImages/tool";
 import { createWebSearchTool } from "@/lib/ai/agent/tools/webSearch/tool";
 import { createImageSearchTool } from "@/lib/ai/agent/tools/imageSearch/tool";
@@ -50,7 +51,22 @@ export interface BuildStudyToolsOptions {
   memoryCommit?: "note" | "flashcards";
   /** 学生从笔记窗打开助教时才暴露 updateUserNote。 */
   editingUserNote?: EditingUserNoteContext;
+  /** 窗内笔记 Agent 不暴露演示/生图/长文等重工具。 */
+  noteWindowAgent?: boolean;
 }
+
+const NOTE_WINDOW_HIDDEN_TOOLS = new Set<StudyToolName>([
+  "searchNotes",
+  "searchFlashcards",
+  "renderInteractive",
+  "drawDiagram",
+  "generateImage",
+  "createQuiz",
+  "writeDocument",
+  "proposeMemory",
+  "commitNotes",
+  "commitFlashcards",
+]);
 
 /**
  * 构建本次请求的工具集。
@@ -71,6 +87,7 @@ export function buildStudyTools(
     getOutline: createGetOutlineTool(ctx, runtime),
     getSection: createGetSectionTool(ctx, runtime),
     searchNotes: createSearchNotesTool(ctx, runtime),
+    searchFlashcards: createSearchFlashcardsTool(ctx, runtime),
     webSearch: createWebSearchTool(runtime),
     imageSearch: createImageSearchTool(runtime),
     searchNoteImages: createSearchNoteImagesTool(ctx, runtime),
@@ -93,6 +110,7 @@ export function buildStudyTools(
     "getOutline",
     "getSection",
     "searchNotes",
+    "searchFlashcards",
     "searchNoteImages",
     "renderInteractive",
     "drawDiagram",
@@ -101,16 +119,18 @@ export function buildStudyTools(
     "writeDocument",
     "getArtifact",
     "proposeMemory",
+    "updateUserNote",
   ];
   if (opts.memoryCommit === "note") names.push("commitNotes");
   if (opts.memoryCommit === "flashcards") names.push("commitFlashcards");
-  if (opts.editingUserNote?.id) names.push("updateUserNote");
   if (opts.enableSearch) names.push("webSearch", "imageSearch");
   if (menuSkillNames.length > 0) names.push("useSkill");
 
   const selected: ToolSet = {};
   for (const n of names) {
-    if (!disabled.has(n)) selected[n] = all[n];
+    if (disabled.has(n)) continue;
+    if (opts.noteWindowAgent && NOTE_WINDOW_HIDDEN_TOOLS.has(n)) continue;
+    selected[n] = all[n];
   }
   return selected;
 }

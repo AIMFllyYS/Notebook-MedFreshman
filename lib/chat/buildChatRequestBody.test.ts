@@ -56,6 +56,42 @@ test("buildChatRequestBody：打开个人笔记时带上 editingUserNote", () =>
     "2025-2026-1",
   );
   assert.deepEqual(body.editingUserNote, note);
+  assert.equal(body.noteWindowAgent, undefined);
+
+  const windowed = buildChatRequestBody(
+    ctx,
+    settings({ editingUserNote: note, noteWindowAgent: true }),
+    resolved,
+    { limit: 8000, estimated: 1200, softLimitReached: false },
+    [],
+    "2025-2026-1",
+  );
+  assert.equal(windowed.noteWindowAgent, true);
+  assert.deepEqual(windowed.userNotes, []);
+  assert.deepEqual(windowed.flashcards, []);
+});
+
+test("buildChatRequestBody：主对话可带本机笔记/闪卡目录", () => {
+  const notes = [{ id: "n1", title: "被覆上皮", markdown: "单层扁平", subjectId: "histology", updatedAt: 1 }];
+  const cards = [{
+    id: "c1",
+    subjectId: "anatomy",
+    sourceLabel: "骨学",
+    front: "长骨",
+    back: "骨干与骺",
+    originalText: "长骨由骨干和骺构成",
+    status: "ready",
+  }];
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ userNotes: notes, flashcards: cards }),
+    resolved,
+    { limit: 8000, estimated: 1200, softLimitReached: false },
+    [],
+    "2025-2026-1",
+  );
+  assert.deepEqual(body.userNotes, notes);
+  assert.deepEqual(body.flashcards, cards);
 });
 
 test("buildChatRequestBody：映射上下文与预算字段", () => {

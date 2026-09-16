@@ -218,6 +218,9 @@ export async function POST(req: NextRequest) {
         thinking: options.enableThinking ? resolved.thinkingSettings(options.thinkingEffort) : {},
         memoryCommit: body.memoryCommit,
         editingUserNote: body.editingUserNote,
+        noteWindowAgent: body.noteWindowAgent,
+        userNotes: body.noteWindowAgent ? [] : body.userNotes,
+        flashcards: body.noteWindowAgent ? [] : body.flashcards,
       });
 
       const estimateIncoming = (truncated: boolean, referenceContext: string) => {

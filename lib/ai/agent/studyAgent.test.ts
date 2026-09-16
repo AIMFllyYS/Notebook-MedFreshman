@@ -146,10 +146,26 @@ test("createStudyAgent：未确认时不暴露 commit 工具，确认笔记后�
   assert.doesNotMatch(cards.promptParts.instructions, /记忆闭环（已确认闪卡）/);
 });
 
-test("createStudyAgent：打开个人笔记后才暴露 updateUserNote，且不改稳定前缀", () => {
+test("createStudyAgent：主对话目录只报数量，不 dump 笔记正文", () => {
+  const model = new MockLanguageModelV4();
+  const withCatalog = createStudyAgent(baseInput(model, {
+    userNotes: [{ id: "n1", title: "秘密标题", markdown: "秘密正文不该进 system", subjectId: "histology", updatedAt: 1 }],
+  }));
+  assert.match(withCatalog.promptParts.volatile, /个人笔记 1 篇/);
+  assert.doesNotMatch(withCatalog.promptParts.volatile, /秘密正文/);
+  const windowed = createStudyAgent(baseInput(model, {
+    userNotes: [{ id: "n1", title: "秘密标题", markdown: "秘密正文", subjectId: null, updatedAt: 1 }],
+    noteWindowAgent: true,
+  }));
+  assert.doesNotMatch(windowed.promptParts.volatile, /本机记忆/);
+});
+
+test("createStudyAgent：主对话始终暴露 updateUserNote / 查找工具；窗内收窄且不改稳定前缀", () => {
   const model = new MockLanguageModelV4();
   const idle = createStudyAgent(baseInput(model));
-  assert.ok(!("updateUserNote" in idle.tools));
+  assert.ok("updateUserNote" in idle.tools);
+  assert.ok("searchNotes" in idle.tools);
+  assert.ok("searchFlashcards" in idle.tools);
 
   const editing = createStudyAgent(baseInput(model, {
     editingUserNote: { id: "note_1", title: "被覆上皮", markdown: "# 被覆上皮\n\n1. 分类" },
@@ -161,6 +177,19 @@ test("createStudyAgent：打开个人笔记后才暴露 updateUserNote，且不�
   const locIdle = idle.promptParts.instructions.indexOf("【当前位置】");
   const locEdit = editing.promptParts.instructions.indexOf("【当前位置】");
   assert.equal(idle.promptParts.instructions.slice(0, locIdle), editing.promptParts.instructions.slice(0, locEdit));
+
+  const windowed = createStudyAgent(baseInput(model, {
+    editingUserNote: { id: "note_1", title: "被覆上皮", markdown: "# 被覆上皮" },
+    noteWindowAgent: true,
+  }));
+  assert.ok("updateUserNote" in windowed.tools);
+  assert.ok(!("searchNotes" in windowed.tools));
+  assert.ok(!("searchFlashcards" in windowed.tools));
+  assert.ok(!("renderInteractive" in windowed.tools));
+  assert.ok(!("generateImage" in windowed.tools));
+  assert.ok(!("writeDocument" in windowed.tools));
+  assert.ok(!("proposeMemory" in windowed.tools));
+  assert.equal(idle.promptParts.instructions.slice(0, locIdle), windowed.promptParts.instructions.slice(0, windowed.promptParts.instructions.indexOf("【当前位置】")));
 });
 
 test("createStudyAgent：技能菜单进入 instructions 且 useSkill 以 enum 暴露；enableSearch 控制联网工具", () => {

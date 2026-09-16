@@ -140,6 +140,16 @@ test('request schema keeps unknown fields ignored and normal payloads valid', ()
     editingUserNote: { id: 'note_1', title: '被覆上皮', markdown: '# 被覆上皮' },
   }).editingUserNote, { id: 'note_1', title: '被覆上皮', markdown: '# 被覆上皮' });
   assert.equal(parseChatRequest({ messages: [] }).editingUserNote, undefined);
+  assert.equal(parseChatRequest({ messages: [], noteWindowAgent: true }).noteWindowAgent, true);
+  assert.equal(parseChatRequest({ messages: [] }).userNotes.length, 0);
+  assert.equal(parseChatRequest({
+    messages: [],
+    userNotes: [{ id: "n1", title: "被覆上皮", markdown: "单层扁平", subjectId: "histology" }],
+  }).userNotes[0]?.id, "n1");
+  assert.equal(parseChatRequest({
+    messages: [],
+    flashcards: [{ id: "c1", front: "长骨", originalText: "骨干与骺", subjectId: "anatomy" }],
+  }).flashcards[0]?.id, "c1");
 });
 
 test('satellite schemas reject oversized prompts and ignore non-array customApiGroups', () => {

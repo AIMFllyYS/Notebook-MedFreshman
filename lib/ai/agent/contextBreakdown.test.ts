@@ -39,6 +39,7 @@ test("classifyTool：getOutline / searchNoteImages 进 pages，其余未覆盖�
   assert.equal(classifyTool("getCurrentPage"), "pages");
   assert.equal(classifyTool("getSection"), "pages");
   assert.equal(classifyTool("searchNotes"), "pages");
+  assert.equal(classifyTool("searchFlashcards"), "pages");
   assert.equal(classifyTool("webSearch"), "webSearch");
   assert.equal(classifyTool("imageSearch"), "webSearch");
   assert.equal(classifyTool("useSkill"), "skills");

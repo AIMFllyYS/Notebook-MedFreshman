@@ -5,6 +5,7 @@ import { presentation as getCurrentPage } from "@/lib/ai/agent/tools/getCurrentP
 import { presentation as getOutline } from "@/lib/ai/agent/tools/getOutline/presentation";
 import { presentation as getSection } from "@/lib/ai/agent/tools/getSection/presentation";
 import { presentation as searchNotes } from "@/lib/ai/agent/tools/searchNotes/presentation";
+import { presentation as searchFlashcards } from "@/lib/ai/agent/tools/searchFlashcards/presentation";
 import { presentation as searchNoteImages } from "@/lib/ai/agent/tools/searchNoteImages/presentation";
 import { presentation as webSearch } from "@/lib/ai/agent/tools/webSearch/presentation";
 import { presentation as imageSearch } from "@/lib/ai/agent/tools/imageSearch/presentation";
@@ -25,6 +26,7 @@ export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
   getOutline,
   getSection,
   searchNotes,
+  searchFlashcards,
   searchNoteImages,
   webSearch,
   imageSearch,
