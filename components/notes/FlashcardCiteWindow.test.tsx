@@ -17,6 +17,7 @@ describe("FlashcardCiteWindow", () => {
   beforeEach(() => {
     vi.stubGlobal("ResizeObserver", class {
       observe() {}
+      unobserve() {}
       disconnect() {}
     });
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
@@ -34,7 +35,7 @@ describe("FlashcardCiteWindow", () => {
   it("shows empty guidance when the subject has no cards", () => {
     openFlashcardCitePicker({ subjectId: "probability" });
     render(<FlashcardCiteWindow />);
-    expect(screen.getByRole("navigation", { name: "学科" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "文件夹" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "全部" })).toBeInTheDocument();
     expect(screen.getByText(/还没有复习闪卡/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "打开复习板" })).toBeInTheDocument();
@@ -106,7 +107,7 @@ describe("FlashcardCiteWindow", () => {
     render(<FlashcardCiteWindow />);
 
     expect(screen.getByRole("button", { name: "全部" })).toBeInTheDocument();
-    expect(screen.getByText("大一下学期")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "大一下学期" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /泊松分布的期望/ })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /牛顿第二定律/ })).not.toBeInTheDocument();
 
@@ -133,9 +134,10 @@ describe("FlashcardCiteWindow", () => {
     render(<FlashcardCiteWindow />);
 
     expect(screen.getByRole("button", { name: /泊松分布的期望/ })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "大二上学期" }));
     fireEvent.click(screen.getByRole("button", { name: "系统解剖学" }));
     expect(screen.getByText(/还没有复习闪卡/)).toBeInTheDocument();
-    expect(screen.getByRole("navigation", { name: "学科" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "文件夹" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "打开复习板" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "编辑" })).not.toBeInTheDocument();
   });

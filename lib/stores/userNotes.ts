@@ -51,6 +51,8 @@ interface UserNotesState {
   libraryOpen: boolean;
   libraryIntent: NoteLibraryIntent;
   librarySubjectId: string | null;
+  /** 笔记库左侧文件夹树选中的学科；null = 全部。 */
+  setLibrarySubjectId: (subjectId: string | null) => void;
   /** IndexedDB 异步水合完成标志。 */
   _hasHydrated: boolean;
   _setHasHydrated: (v: boolean) => void;
@@ -251,6 +253,15 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
         noteAgentOpenIds: s.noteAgentOpenIds.filter((x) => x !== id),
         agentEditingNoteId: s.agentEditingNoteId === id ? null : s.agentEditingNoteId,
       }));
+    },
+
+    setLibrarySubjectId: (subjectId) => {
+      const intent = get().libraryIntent;
+      useWindowManager.getState().updateWindow(USER_NOTE_LIBRARY_WINDOW_ID, {
+        title: libraryTitle(intent, subjectId),
+        data: { subjectId, intent },
+      });
+      set({ librarySubjectId: subjectId });
     },
 
     openLibrary: (opts) => {

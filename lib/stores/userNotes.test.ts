@@ -90,6 +90,22 @@ test("openEditor opens a managed window and closeManagedWindow clears it", () =>
   assert.equal(useUserNotes.getState().agentEditingNoteId, null);
 });
 
+test("setLibrarySubjectId updates the library filter and window title", () => {
+  useUserNotes.getState().openLibrary({ subjectId: "probability", intent: "browse" });
+  useUserNotes.getState().setLibrarySubjectId("anatomy");
+  assert.equal(useUserNotes.getState().librarySubjectId, "anatomy");
+  assert.match(
+    useWindowManager.getState().windows.find((item) => item.id === USER_NOTE_LIBRARY_WINDOW_ID)?.title ?? "",
+    /系统解剖/,
+  );
+  useUserNotes.getState().setLibrarySubjectId(null);
+  assert.equal(useUserNotes.getState().librarySubjectId, null);
+  assert.equal(
+    useWindowManager.getState().windows.find((item) => item.id === USER_NOTE_LIBRARY_WINDOW_ID)?.title,
+    "笔记",
+  );
+});
+
 test("openLibrary cite mode and closeManagedWindow", () => {
   useUserNotes.getState().openLibrary({ subjectId: "probability", intent: "cite" });
   const win = useWindowManager.getState().windows.find((item) => item.id === USER_NOTE_LIBRARY_WINDOW_ID);

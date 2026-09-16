@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { BookOpen, Check, PenLine, Plus, Quote } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
+import YearSubjectFolderTree from "@/components/layout/YearSubjectFolderTree";
 import NoteRenderer from "@/components/notes/NoteRenderer";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
@@ -38,10 +39,10 @@ export default function NoteLibraryWindow() {
   const order = useUserNotes((s) => s.order);
   const openEditor = useUserNotes((s) => s.openEditor);
   const closeLibrary = useUserNotes((s) => s.closeLibrary);
+  const setLibrarySubjectId = useUserNotes((s) => s.setLibrarySubjectId);
 
   const [tab, setTab] = useState<LibraryTab>("mine");
   const [query, setQuery] = useState("");
-  const [allSubjects, setAllSubjects] = useState(false);
   const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
   const [activeCoursePath, setActiveCoursePath] = useState<string | null>(null);
   const { cited, cite } = useCiteToChat();
@@ -49,8 +50,8 @@ export default function NoteLibraryWindow() {
   const keyword = query.trim().toLowerCase();
 
   const notes = useMemo(
-    () => selectUserNotes(byId, order, allSubjects ? null : subjectId),
-    [allSubjects, byId, order, subjectId],
+    () => selectUserNotes(byId, order, subjectId),
+    [byId, order, subjectId],
   );
   const visibleNotes = useMemo(
     () => (keyword ? notes.filter((note) => note.title.toLowerCase().includes(keyword)) : notes),
@@ -73,8 +74,8 @@ export default function NoteLibraryWindow() {
   if (!managed) return null;
 
   const handleCreate = () => {
-    // 走公共入口，新笔记绑定当前笔记库的科目（「全部科目」视图下不归档）。
-    const id = createAndOpenNote(allSubjects ? null : subjectId);
+    // 走公共入口，新笔记绑定左侧树当前选中的科目（「全部」时不归档）。
+    const id = createAndOpenNote(subjectId);
     setActiveNoteId(id);
     setTab("mine");
   };
@@ -120,24 +121,12 @@ export default function NoteLibraryWindow() {
 
       <input
         data-no-drag
-        className="user-note-search"
+        className="user-note-search is-offset"
         value={query}
         placeholder="按标题搜索…"
         aria-label="按标题搜索笔记"
         onChange={(event) => setQuery(event.target.value)}
       />
-
-      {activeTab === "mine" && subjectId ? (
-        <button
-          type="button"
-          data-no-drag
-          aria-pressed={allSubjects}
-          className={`user-note-chip${allSubjects ? " is-active" : ""}`}
-          onClick={() => setAllSubjects((on) => !on)}
-        >
-          全部科目
-        </button>
-      ) : null}
 
       <button type="button" data-no-drag className="user-note-toolbar-primary" onClick={handleCreate}>
         <Plus size={13} /> 新建笔记
@@ -164,6 +153,7 @@ export default function NoteLibraryWindow() {
         onSelect={(id) => (activeTab === "mine" ? setActiveNoteId(id) : setActiveCoursePath(id))}
         toolbar={toolbar}
         emptyLabel={activeTab === "mine" ? "还没有笔记" : "没有匹配的课程笔记"}
+        folderTree={<YearSubjectFolderTree selectedId={subjectId} onSelect={setLibrarySubjectId} />}
       >
         {activeTab === "mine" ? (
           <UserNoteStage

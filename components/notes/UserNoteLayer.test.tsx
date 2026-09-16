@@ -29,6 +29,7 @@ describe("personal note windows", () => {
   beforeEach(() => {
     vi.stubGlobal("ResizeObserver", class {
       observe() {}
+      unobserve() {}
       disconnect() {}
     });
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
@@ -180,6 +181,34 @@ describe("personal note windows", () => {
     expect(screen.getByLabelText("笔记标题")).toHaveValue("被覆上皮");
     expect(useChatHistory.getState().messagesById.main).toEqual(mainMessages);
     expect(applyUpdateUserNoteEvents(Object.values(useChatHistory.getState().messagesById).flat())).toEqual([]);
+  });
+
+  it("filters the library from the folder tree and hides the all-subjects chip", () => {
+    const probabilityId = useUserNotes.getState().createNote("probability");
+    useUserNotes.getState().updateNote(probabilityId, { title: "泊松笔记", markdown: "泊松" });
+    const physicsId = useUserNotes.getState().createNote("physics");
+    useUserNotes.getState().updateNote(physicsId, { title: "牛顿笔记", markdown: "牛顿" });
+    openNoteLibrary({ subjectId: "probability", intent: "cite" });
+    render(<UserNoteLayer />);
+
+    expect(screen.getByRole("navigation", { name: "文件夹" })).toBeInTheDocument();
+    expect(screen.getByTestId("folder-tree-resize-handle")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "大一下学期" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "全部科目" })).not.toBeInTheDocument();
+    const search = screen.getByLabelText("按标题搜索笔记");
+    expect(search).toBeInTheDocument();
+    expect(search).toHaveClass("is-offset");
+
+    expect(screen.getByRole("button", { name: /泊松笔记/ })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /牛顿笔记/ })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "大学物理" }));
+    expect(screen.queryByRole("button", { name: /泊松笔记/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /牛顿笔记/ })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "全部" }));
+    expect(screen.getByRole("button", { name: /泊松笔记/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /牛顿笔记/ })).toBeInTheDocument();
   });
 
   it("cites a user note into the chat quote tray from the library", () => {
