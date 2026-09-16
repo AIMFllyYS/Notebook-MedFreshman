@@ -19,6 +19,8 @@ export function formatEditingUserNoteContext(note: EditingUserNoteContext): stri
   return [
     `【正在编辑的个人笔记】id=${note.id} 标题「${title}」。`,
     "学生从笔记编辑窗打开了你。请用 updateUserNote 直接改这篇笔记的 markdown，不要调用 commitNotes 或 writeDocument 另开一篇。",
+    "先正常输出分析与讲解；再自行判断哪些要点值得写进这篇笔记。该整理就调用 updateUserNote 写回，不必等学生再点一次。",
+    "整理时保持原有标题层级，补全缺段、纠正错误，不要另起一篇。",
     "",
     markdown,
   ].join("\n");

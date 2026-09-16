@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useChat } from "@/lib/hooks/useChat";
 import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/hooks/useChatHistory";
@@ -23,7 +23,16 @@ type SendOpts = {
  * 笔记编辑窗内的微型 Agent：复用右侧对话的输入框 / 消息列表 / AgentTrace，
  * 但绑定这篇笔记自己的 session，不读写主 thread。
  */
-export default function NoteAgentPanel({ noteId, sessionId }: { noteId: string; sessionId: string }) {
+export default function NoteAgentPanel({
+  noteId,
+  sessionId,
+  onSettled,
+}: {
+  noteId: string;
+  sessionId: string;
+  /** Agent 本轮输入结束后刷新 MD 渲染视图。 */
+  onSettled?: () => void;
+}) {
   const closePanel = useUserNotes((s) => s.setNoteAgentOpen);
   const activeSubjectId = useStore((s) => s.activeSubjectId);
   const activeCategoryId = useStore((s) => s.activeCategoryId);
@@ -47,6 +56,7 @@ export default function NoteAgentPanel({ noteId, sessionId }: { noteId: string; 
   );
   const chatReady = useChatReady(sessionId);
   const [composerInset, setComposerInset] = useState(150);
+  const wasLoading = useRef(false);
 
   useEffect(() => {
     void ensureChatHistoryBootstrap();
@@ -57,6 +67,11 @@ export default function NoteAgentPanel({ noteId, sessionId }: { noteId: string; 
   }, [sessionId]);
 
   useEffect(() => () => stopGeneration(), [stopGeneration]);
+
+  useEffect(() => {
+    if (wasLoading.current && !isLoading) onSettled?.();
+    wasLoading.current = isLoading;
+  }, [isLoading, onSettled]);
 
   return (
     <section

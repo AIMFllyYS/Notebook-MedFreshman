@@ -14,6 +14,9 @@ test("formatEditingUserNoteContext includes id, title, markdown and the writebac
   assert.match(text, /updateUserNote/);
   assert.match(text, /1\. 分类/);
   assert.match(text, /不要调用 commitNotes 或 writeDocument 另开一篇/);
+  assert.match(text, /先正常输出分析/);
+  assert.match(text, /该整理就调用 updateUserNote/);
+  assert.match(text, /整理时保持原有标题层级/);
 });
 
 test("formatEditingUserNoteContext truncates long markdown", () => {
