@@ -3,7 +3,7 @@ import { PERSIST_KEYS } from '@/lib/storage/idbStorage';
 import { createPersistedStore } from '@/lib/stores/_persist';
 
 // 技能库持久化（IndexedDB，gailvlun-db）。异步水合：首屏为空，消费方用
-// useHydrated(useSkills) 门控。最多 20 个技能；每个为单个 .md 文件解析而来。
+// useHydrated(useSkills) 门控。最多 20 个技能；来源可以是 .md / ZIP / .skill。
 
 export const MAX_SKILLS = 20;
 
