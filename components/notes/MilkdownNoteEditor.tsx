@@ -20,7 +20,10 @@ export default function MilkdownNoteEditor({
   const rootRef = useRef<HTMLDivElement | null>(null);
   const onChangeRef = useRef(onChange);
   const [failed, setFailed] = useState(false);
-  onChangeRef.current = onChange;
+
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
   useEffect(() => {
     const root = rootRef.current;
