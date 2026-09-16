@@ -4157,6 +4157,45 @@
                   "quizRef": "rec-2026-fall-003-004"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-005-006",
+              "title": "第5-6节 · Unit 1 Language learning (2) & exercise",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-005-006",
+                  "title": "课堂原文 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                },
+                {
+                  "id": "note-rec-2026-fall-005-006",
+                  "title": "课堂笔记 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                },
+                {
+                  "id": "card-rec-2026-fall-005-006",
+                  "title": "复习手卡 · 第5-6节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-005-006",
+                  "quizRef": "rec-2026-fall-005-006"
+                }
+              ]
             }
           ]
         },
@@ -4190,6 +4229,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-003-004",
               "quizRef": "rec-2026-fall-003-004",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-005-006",
+              "title": "课堂纪要 · 第5-6节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-005-006",
+              "quizRef": "rec-2026-fall-005-006",
               "layoutProfile": "full"
             }
           ]
