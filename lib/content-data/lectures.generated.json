@@ -222,6 +222,50 @@
       }
     },
     {
+      "subjectId": "anatomy",
+      "lessonId": "rec-2026-fall-016-018",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "系统解剖学",
+      "sessionRange": {
+        "start": 16,
+        "end": 18
+      },
+      "taughtOn": "2026-09-16",
+      "topic": "上下肢肌学",
+      "revision": 1,
+      "quizId": "rec-2026-fall-016-018",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-016-018"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-016-018"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-016-018"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-016-018"
+        }
+      },
+      "hashes": {
+        "recording": "d55e56f7bc745fd743ff8d84399e58260d282f5aca1596fbc0a69ce6b6186faf",
+        "notesText": "2da6ca3b33f84164ef2ad1f9294297a1fc67b266fa157c97202302bcd21fbf37"
+      }
+    },
+    {
       "subjectId": "biochemistry",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
