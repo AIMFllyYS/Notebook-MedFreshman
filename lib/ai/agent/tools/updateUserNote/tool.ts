@@ -24,7 +24,7 @@ export function createUpdateUserNoteTool(ctx: StudyToolContext) {
       }
       const title = input.title?.trim() || undefined;
       return {
-        text: `已把个人笔记「${title ?? current.title || "无标题笔记"}」交给前端写回编辑器。请用一句话告诉学生可以继续改，不要复述全文。`,
+        text: `已把个人笔记「${title ?? (current.title || "无标题笔记")}」交给前端写回编辑器。请用一句话告诉学生可以继续改，不要复述全文。`,
         noteId: current.id,
         markdown: input.markdown,
         title,
