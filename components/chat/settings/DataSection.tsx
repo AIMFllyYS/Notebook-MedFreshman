@@ -10,7 +10,7 @@ import { exportAllChats } from "@/lib/chat/exportChats";
 import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
 import { getCachedCloudSyncUsage, loadCloudSyncUsage } from "@/lib/sync/engine";
 import { clearCloudSyncMessage, useCloudSyncStatus } from "@/lib/sync/status";
-import { MAX_USER_SYNC_BYTES } from "@/lib/sync/types";
+import { MAX_FLASHCARDS_POOL_BYTES, MAX_NOTES_POOL_BYTES, MAX_USER_SYNC_BYTES } from "@/lib/sync/types";
 import { formatSyncBytes, type CloudSyncUsage } from "@/lib/sync/usage";
 import { h3Cls, inputCls } from "./_shared";
 
@@ -160,8 +160,8 @@ export function CloudSyncSection() {
         <h3 className={h3Cls}>云端同步</h3>
       </div>
       <p className="text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
-        登录后同步对话文本、演示 HTML 和长文档。用户上传的图片与 PDF 不上云。工具读过的笔记以摘要同步，全文在教材包。生图会话和 API 密钥不会上传。
-        单用户上限约 {limitMb} MB；超限时本机仍保留，并在对话区提示。
+        登录后同步对话文本、演示 HTML、长文档、个人笔记和复习闪卡。用户上传的图片与 PDF 不上云。工具读过的笔记以摘要同步，全文在教材包。生图会话和 API 密钥不会上传。
+        单用户上限约 {limitMb} MB；笔记额度池 {Math.round(MAX_NOTES_POOL_BYTES / (1024 * 1024))} MB，闪卡额度池 {Math.round(MAX_FLASHCARDS_POOL_BYTES / (1024 * 1024))} MB。超限时本机仍保留，并在对话区提示。
       </p>
       <div className="rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
         {!usage ? (
@@ -191,6 +191,27 @@ export function CloudSyncSection() {
               ariaLabel={title}
             />
             <div className="mt-2 flex flex-col gap-1.5">
+              {(usage.pools ?? []).map((row) => (
+                <div key={row.id}>
+                  <div className="mb-1 flex justify-between gap-2 text-[11px] text-[var(--md-sys-color-on-surface)]">
+                    <span>
+                      {row.label}
+                      {row.count > 0 ? ` · ${row.count} ${row.unit}` : ""}
+                    </span>
+                    <strong className="font-medium">
+                      {formatSyncBytes(row.bytes)}{" "}
+                      <span className="font-normal text-[var(--md-sys-color-on-surface-variant)]">
+                        / {formatSyncBytes(row.limitBytes)}
+                      </span>
+                    </strong>
+                  </div>
+                  <UsageProgressBar
+                    ratio={row.limitBytes > 0 ? row.bytes / row.limitBytes : 0}
+                    ariaLabel={row.label}
+                    height={4}
+                  />
+                </div>
+              ))}
               {usage.kinds.map((row) => (
                 <div key={row.kind}>
                   <div className="mb-1 flex justify-between gap-2 text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
@@ -215,7 +236,7 @@ export function CloudSyncSection() {
             ) : (
               <p className="mt-1.5 text-[10px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
                 {signedIn
-                  ? "占用按同步后的对话、演示与文档合计，不含用户上传的图片与 PDF。"
+                  ? "占用按同步后的对话、演示、文档、笔记与闪卡合计。笔记 / 闪卡另有独立额度池。不含用户上传的图片与 PDF。"
                   : "未登录时按本机将同步的内容估算，登录后改为云端实际占用。"}
               </p>
             )}

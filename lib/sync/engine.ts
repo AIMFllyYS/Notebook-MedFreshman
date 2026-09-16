@@ -10,7 +10,11 @@ import {
 import { useArtifacts, type Artifact } from "@/lib/stores/artifacts";
 import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useDocuments } from "@/lib/stores/documents";
+import { useUserNotes } from "@/lib/stores/userNotes";
+import { useReviewCards } from "@/lib/stores/reviewCards";
 import type { StoredDocument } from "@/lib/documents/types";
+import type { UserNote } from "@/lib/notes/userNote";
+import type { ReviewCard } from "@/lib/review/types";
 import type { ChatMessage } from "@/lib/types/chat";
 import { createSupabaseSyncClient } from "./client";
 import { isRemoteNewer, mergeChatSessionPayloads } from "./merge";
@@ -19,13 +23,19 @@ import {
   buildArtifactPayload,
   buildChatSessionPayload,
   buildDocumentPayload,
+  buildReviewCardPayload,
+  buildUserNotePayload,
+  effectivePoolLimit,
   effectiveUserLimit,
   formatKindLimitMessage,
+  formatPoolLimitMessage,
   formatUserLimitMessage,
   isSyncKindLimitError,
+  isSyncPoolLimitError,
   isSyncUserLimitError,
   payloadByteSize,
   preparePayload,
+  quotaPoolForKind,
   __setSyncLimitsForTests,
 } from "./payload";
 import { beginCloudSyncApply, endCloudSyncApply } from "./schedule";
@@ -37,6 +47,7 @@ import {
   type CloudSyncKind,
   type SyncDocumentRow,
   type SyncDocumentsApi,
+  type SyncQuotaPool,
 } from "./types";
 import {
   emptyCloudSyncUsage,
@@ -64,6 +75,14 @@ export interface CloudSyncStores {
   getDocument: (id: string) => StoredDocument | null;
   applyDocument: (doc: StoredDocument) => void;
   forgetDocument: (id: string) => void;
+  listNoteIds: () => string[];
+  getNote: (id: string) => UserNote | null;
+  applyNote: (note: UserNote) => void;
+  forgetNote: (id: string) => void;
+  listCardIds: () => string[];
+  getCard: (id: string) => ReviewCard | null;
+  applyCard: (card: ReviewCard) => void;
+  forgetCard: (id: string) => void;
 }
 
 function createDefaultStores(): CloudSyncStores {
@@ -86,6 +105,14 @@ function createDefaultStores(): CloudSyncStores {
     getDocument: (id) => useDocuments.getState().byId[id] ?? null,
     applyDocument: applyDocumentToZustand,
     forgetDocument: forgetDocumentInZustand,
+    listNoteIds: () => useUserNotes.getState().order,
+    getNote: (id) => useUserNotes.getState().byId[id] ?? null,
+    applyNote: applyNoteToZustand,
+    forgetNote: forgetNoteInZustand,
+    listCardIds: () => useReviewCards.getState().order,
+    getCard: (id) => useReviewCards.getState().byId[id] ?? null,
+    applyCard: applyCardToZustand,
+    forgetCard: forgetCardInZustand,
   };
 }
 
@@ -176,6 +203,14 @@ async function measureLocalSyncUsage(): Promise<CloudSyncUsage> {
   for (const id of stores.listDocumentIds()) {
     const payload = await loadLocalPayload("document", id);
     if (payload) entries.push({ kind: "document", bytes: payloadByteSize(payload) });
+  }
+  for (const id of stores.listNoteIds()) {
+    const payload = await loadLocalPayload("user-note", id);
+    if (payload) entries.push({ kind: "user-note", bytes: payloadByteSize(payload) });
+  }
+  for (const id of stores.listCardIds()) {
+    const payload = await loadLocalPayload("review-card", id);
+    if (payload) entries.push({ kind: "review-card", bytes: payloadByteSize(payload) });
   }
   return summarizeSyncUsage(entries, "local");
 }
@@ -299,6 +334,30 @@ function asDocument(value: unknown): StoredDocument | null {
   return row;
 }
 
+function asUserNote(value: unknown): UserNote | null {
+  if (!value || typeof value !== "object") return null;
+  const row = value as UserNote;
+  if (typeof row.id !== "string" || typeof row.markdown !== "string") return null;
+  return {
+    id: row.id,
+    title: typeof row.title === "string" ? row.title : "",
+    markdown: row.markdown,
+    subjectId: typeof row.subjectId === "string" ? row.subjectId : null,
+    createdAt: typeof row.createdAt === "number" ? row.createdAt : Date.now(),
+    updatedAt: typeof row.updatedAt === "number" ? row.updatedAt : Date.now(),
+    kind: row.kind === "classroom" ? "classroom" : row.kind === "personal" ? "personal" : undefined,
+    quote: typeof row.quote === "string" ? row.quote : undefined,
+    source: row.source,
+  };
+}
+
+function asReviewCard(value: unknown): ReviewCard | null {
+  if (!value || typeof value !== "object") return null;
+  const row = value as ReviewCard;
+  if (typeof row.id !== "string" || typeof row.originalText !== "string") return null;
+  return row;
+}
+
 async function loadLocalPayload(kind: CloudSyncKind, clientId: string): Promise<unknown | null> {
   if (kind === "chat-session") {
     const session = await stores.loadSession(clientId);
@@ -308,8 +367,16 @@ async function loadLocalPayload(kind: CloudSyncKind, clientId: string): Promise<
     const artifact = stores.getArtifact(clientId);
     return artifact ? buildArtifactPayload(artifact) : null;
   }
-  const doc = stores.getDocument(clientId);
-  return doc ? buildDocumentPayload(doc) : null;
+  if (kind === "document") {
+    const doc = stores.getDocument(clientId);
+    return doc ? buildDocumentPayload(doc) : null;
+  }
+  if (kind === "user-note") {
+    const note = stores.getNote(clientId);
+    return note ? buildUserNotePayload(note) : null;
+  }
+  const card = stores.getCard(clientId);
+  return card ? buildReviewCardPayload(card) : null;
 }
 
 function rememberRemoteBytesFromRows(rows: SyncDocumentRow[]): void {
@@ -334,6 +401,18 @@ function cachedUserBytes(skipKind: CloudSyncKind, skipId: string): number | null
   const skip = jobKey(skipKind, skipId);
   for (const [key, value] of remoteBytesByKey) {
     if (key === skip) continue;
+    bytes += value;
+  }
+  return bytes;
+}
+
+function cachedPoolBytes(pool: SyncQuotaPool, skipKind: CloudSyncKind, skipId: string): number {
+  let bytes = 0;
+  const skip = jobKey(skipKind, skipId);
+  for (const [key, value] of remoteBytesByKey) {
+    if (key === skip) continue;
+    const kind = parseJobKey(key);
+    if (!kind || quotaPoolForKind(kind) !== pool) continue;
     bytes += value;
   }
   return bytes;
@@ -407,6 +486,17 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
   }
 
   let toUpload: unknown = local;
+  if (kind === "user-note" && remote && !remote.deleted) {
+    const localNote = asUserNote(local);
+    const remoteNote = asUserNote(remote.payload);
+    if (localNote && remoteNote && remoteNote.updatedAt > localNote.updatedAt) {
+      stores.applyNote(remoteNote);
+      rememberBaseline(kind, clientId, remote.updated_at);
+      lastPushedHash.set(jobKey(kind, clientId), payloadFingerprint(remote.payload));
+      noteRemoteBytes(kind, clientId, payloadByteSize(remote.payload), false);
+      return;
+    }
+  }
   if (kind === "chat-session" && remote && !remote.deleted) {
     const known = baseline.get(jobKey(kind, clientId));
     if (isRemoteNewer(remote.updated_at, known)) {
@@ -450,6 +540,14 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     reportError(formatUserLimitMessage(effectiveUserLimit()));
     return;
   }
+  const pool = quotaPoolForKind(kind);
+  if (pool) {
+    const poolBytes = cachedPoolBytes(pool, kind, clientId);
+    if (poolBytes + prepared.bytes > effectivePoolLimit(pool)) {
+      reportError(formatPoolLimitMessage(pool, effectivePoolLimit(pool)));
+      return;
+    }
+  }
 
   const { data, error } = await api.upsert({
     kind,
@@ -462,6 +560,9 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
       reportError(formatKindLimitMessage(kind, prepared.bytes, prepared.bytes, lastOkBytes.get(jobKey(kind, clientId))));
     } else if (isSyncUserLimitError(error.message)) {
       reportError(formatUserLimitMessage(effectiveUserLimit()));
+    } else if (isSyncPoolLimitError(error.message)) {
+      const pool = quotaPoolForKind(kind);
+      reportError(formatPoolLimitMessage(pool ?? "notes", pool ? effectivePoolLimit(pool) : effectiveUserLimit()));
     } else {
       reportError(`云端同步失败：${error.message}`);
     }
@@ -555,12 +656,58 @@ function forgetDocumentInZustand(id: string): void {
   });
 }
 
+function applyNoteToZustand(note: UserNote): void {
+  withLocalApply(() => {
+    useUserNotes.setState((state) => ({
+      byId: { ...state.byId, [note.id]: note },
+      order: state.order.includes(note.id) ? state.order : [...state.order, note.id],
+    }));
+  });
+}
+
+function forgetNoteInZustand(id: string): void {
+  withLocalApply(() => {
+    useUserNotes.setState((state) => {
+      const { [id]: _drop, ...byId } = state.byId;
+      const { [id]: _session, ...noteAgentSessionById } = state.noteAgentSessionById;
+      return {
+        byId,
+        order: state.order.filter((item) => item !== id),
+        openEditorIds: state.openEditorIds.filter((item) => item !== id),
+        noteAgentOpenIds: state.noteAgentOpenIds.filter((item) => item !== id),
+        noteAgentSessionById,
+        agentEditingNoteId: state.agentEditingNoteId === id ? null : state.agentEditingNoteId,
+      };
+    });
+  });
+}
+
+function applyCardToZustand(card: ReviewCard): void {
+  withLocalApply(() => {
+    useReviewCards.setState((state) => ({
+      byId: { ...state.byId, [card.id]: card },
+      order: state.order.includes(card.id) ? state.order : [...state.order, card.id],
+    }));
+  });
+}
+
+function forgetCardInZustand(id: string): void {
+  withLocalApply(() => {
+    useReviewCards.setState((state) => {
+      const { [id]: _drop, ...byId } = state.byId;
+      return { byId, order: state.order.filter((item) => item !== id) };
+    });
+  });
+}
+
 async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
   rememberBaseline(row.kind, row.client_id, row.updated_at);
   if (row.deleted) {
     if (row.kind === "chat-session") stores.forgetSession(row.client_id);
     else if (row.kind === "artifact") stores.forgetArtifact(row.client_id);
-    else stores.forgetDocument(row.client_id);
+    else if (row.kind === "document") stores.forgetDocument(row.client_id);
+    else if (row.kind === "user-note") stores.forgetNote(row.client_id);
+    else stores.forgetCard(row.client_id);
     return;
   }
   if (row.kind === "chat-session") {
@@ -584,8 +731,21 @@ async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
     if (artifact) stores.applyArtifact(artifact);
     return;
   }
-  const doc = asDocument(row.payload);
-  if (doc) stores.applyDocument(doc);
+  if (row.kind === "document") {
+    const doc = asDocument(row.payload);
+    if (doc) stores.applyDocument(doc);
+    return;
+  }
+  if (row.kind === "user-note") {
+    const note = asUserNote(row.payload);
+    if (!note) return;
+    const local = stores.getNote(row.client_id);
+    if (local && local.updatedAt > note.updatedAt) return;
+    stores.applyNote(note);
+    return;
+  }
+  const card = asReviewCard(row.payload);
+  if (card) stores.applyCard(card);
 }
 
 async function pullFromCloud(api: SyncDocumentsApi): Promise<void> {
@@ -608,6 +768,8 @@ async function pushAllLocal(api: SyncDocumentsApi): Promise<void> {
   }
   for (const id of stores.listArtifactIds()) await pushOne(api, "artifact", id);
   for (const id of stores.listDocumentIds()) await pushOne(api, "document", id);
+  for (const id of stores.listNoteIds()) await pushOne(api, "user-note", id);
+  for (const id of stores.listCardIds()) await pushOne(api, "review-card", id);
 }
 
 export async function pullAndPushAll(): Promise<void> {

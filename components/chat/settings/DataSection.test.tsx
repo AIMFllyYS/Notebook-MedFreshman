@@ -22,18 +22,26 @@ vi.mock("@/lib/sync/engine", () => ({
 const usageFixture = {
   source: "cloud" as const,
   totalBytes: 3 * 1024 * 1024,
-  limitBytes: 32 * 1024 * 1024,
+  limitBytes: 48 * 1024 * 1024,
   kinds: [
-    { kind: "chat-session" as const, label: "全部对话", unit: "条", bytes: 2 * 1024 * 1024, count: 4, limitBytes: 4 * 1024 * 1024 },
-    { kind: "artifact" as const, label: "演示", unit: "个", bytes: 512 * 1024, count: 2, limitBytes: 1024 * 1024 },
-    { kind: "document" as const, label: "文档", unit: "篇", bytes: 512 * 1024, count: 1, limitBytes: 2 * 1024 * 1024 },
+    { kind: "chat-session" as const, label: "全部对话", unit: "条", bytes: 2 * 1024 * 1024, count: 4, limitBytes: 5 * 1024 * 1024 },
+    { kind: "artifact" as const, label: "演示", unit: "个", bytes: 256 * 1024, count: 2, limitBytes: Math.round(1.5 * 1024 * 1024) },
+    { kind: "document" as const, label: "文档", unit: "篇", bytes: 256 * 1024, count: 1, limitBytes: Math.round(2.5 * 1024 * 1024) },
+    { kind: "user-note" as const, label: "个人笔记", unit: "篇", bytes: 256 * 1024, count: 3, limitBytes: 2 * 1024 * 1024 },
+    { kind: "review-card" as const, label: "复习闪卡", unit: "张", bytes: 256 * 1024, count: 5, limitBytes: 256 * 1024 },
+  ],
+  pools: [
+    { id: "notes" as const, label: "笔记额度池", unit: "篇", bytes: 256 * 1024, count: 3, limitBytes: 20 * 1024 * 1024 },
+    { id: "flashcards" as const, label: "闪卡额度池", unit: "张", bytes: 256 * 1024, count: 5, limitBytes: 20 * 1024 * 1024 },
   ],
 };
 
 describe("CloudSyncSection", () => {
-  it("says images, notes, and API keys stay off the cloud", async () => {
+  it("says personal notes and flashcards sync, while images stay local", async () => {
     vi.mocked(loadCloudSyncUsage).mockResolvedValue(usageFixture);
     render(<CloudSyncSection />);
+    expect(screen.getByText(/个人笔记和复习闪卡/)).toBeInTheDocument();
+    expect(screen.getByText(/笔记额度池 20 MB/)).toBeInTheDocument();
     expect(screen.getByText(/工具读过的笔记以摘要同步/)).toBeInTheDocument();
     expect(screen.getByText(/用户上传的图片与 PDF 不上云/)).toBeInTheDocument();
     expect(await screen.findByRole("progressbar", { name: "云端已用" })).toBeInTheDocument();
@@ -42,7 +50,9 @@ describe("CloudSyncSection", () => {
   it("reuses the colored usage bar for total and each sync kind", async () => {
     vi.mocked(loadCloudSyncUsage).mockResolvedValue(usageFixture);
     render(<CloudSyncSection />);
-    expect(await screen.findByRole("progressbar", { name: "云端已用" })).toHaveAttribute("aria-valuenow", "9");
+    expect(await screen.findByRole("progressbar", { name: "云端已用" })).toHaveAttribute("aria-valuenow", "6");
+    expect(screen.getByRole("progressbar", { name: "笔记额度池" })).toBeInTheDocument();
+    expect(screen.getByRole("progressbar", { name: "闪卡额度池" })).toBeInTheDocument();
     expect(screen.getByRole("progressbar", { name: "全部对话占用" })).toBeInTheDocument();
     expect(screen.getByRole("progressbar", { name: "演示占用" })).toBeInTheDocument();
     expect(screen.getByRole("progressbar", { name: "文档占用" })).toBeInTheDocument();

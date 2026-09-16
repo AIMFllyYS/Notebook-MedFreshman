@@ -1,6 +1,7 @@
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { createPersistedStore } from "@/lib/stores/_persist";
 import { retargetCardSourceLabel } from "@/lib/notes/flashcardSubjects";
+import { scheduleCloudTombstone, scheduleCloudUpsert } from "@/lib/sync/schedule";
 import type {
   ReviewCard,
   ReviewCardContext,
@@ -68,6 +69,7 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
           createdAt: Date.now(),
         };
         set((s) => ({ byId: { ...s.byId, [id]: card }, order: [...s.order, id] }));
+        scheduleCloudUpsert("review-card", id);
         return id;
       },
 
@@ -75,6 +77,7 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
         set((s) => {
           const prev = s.byId[id];
           if (!prev) return s;
+          scheduleCloudUpsert("review-card", id);
           return {
             byId: {
               ...s.byId,
@@ -98,6 +101,7 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
         set((s) => {
           const prev = s.byId[id];
           if (!prev) return s;
+          scheduleCloudUpsert("review-card", id);
           return { byId: { ...s.byId, [id]: { ...prev, status: "processing", mode, error: undefined } } };
         }),
 
@@ -105,6 +109,7 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
         set((s) => {
           const prev = s.byId[id];
           if (!prev) return s;
+          scheduleCloudUpsert("review-card", id);
           return { byId: { ...s.byId, [id]: { ...prev, status: "error", error: message } } };
         }),
 
@@ -113,6 +118,7 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
           if (!s.byId[id]) return s;
           const byId = { ...s.byId };
           delete byId[id];
+          scheduleCloudTombstone("review-card", id);
           return { byId, order: s.order.filter((x) => x !== id) };
         }),
 
@@ -120,6 +126,7 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
         set((s) => {
           const prev = s.byId[id];
           if (!prev || prev.subjectId === subjectId) return s;
+          scheduleCloudUpsert("review-card", id);
           return {
             byId: {
               ...s.byId,

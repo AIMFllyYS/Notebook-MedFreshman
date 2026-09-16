@@ -11,7 +11,7 @@ Zustand store 的唯一落点。本目录**不做桶导出**（避免把全部 s
 | `imageGen.ts` | `useImageGen` | `image-gen`（idb） |
 | `skills.ts` | `useSkills` | `skills`（idb） |
 | `reviewCards.ts` | `useReviewCards` | `review-cards`（idb） |
-| `userNotes.ts` | `useUserNotes` | `user-notes`（idb，只存本机不上云） |
+| `userNotes.ts` | `useUserNotes` | `user-notes`（idb；登录后 `user-note` 上云） |
 | `billing.ts` | `useBillingStore` | `billing-history`（idb） |
 | `settings.ts` | `useSettings` | `gailvlun-settings-v1`（自定义 localStorage） |
 | `theme.ts` | `useTheme` | `gailvlun-theme` + `gailvlun-appearance-v1` |
@@ -37,6 +37,6 @@ Zustand store 的唯一落点。本目录**不做桶导出**（避免把全部 s
 | `quiz.ts` | `useQuizStore` | `gailvlun-quiz-progress-v1`（经 `lib/quiz-progress.ts`） |
 | `lightbox.ts` | `useLightbox` | 不持久化 |
 
-云端同步在 `lib/sync/`，不是第 31 个 store：登录后把 `chat-session` / `artifact` / `document` 镜像到 `sync_documents`。不持久化、不同步 `settings` / `skill` / 生图 / 图片 blob / apiKey / 个人笔记。
+云端同步在 `lib/sync/`，不是第 31 个 store：登录后把 `chat-session` / `artifact` / `document` / `user-note` / `review-card` 镜像到 `sync_documents`。不持久化、不同步 `settings` / `skill` / 生图 / 图片 blob / apiKey。笔记与闪卡另有 20MB 额度池，见 `docs/plans/notes-flashcards-cloud-sync.md`。
 
 旧路径（`lib/hooks/useX.ts` 等）保留 re-export 一个发布周期。

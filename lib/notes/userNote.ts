@@ -1,5 +1,6 @@
 // 用户笔记数据模型与纯函数工具。
-// 个人长笔记与课堂便签都落在 IndexedDB `user-notes`（见 lib/stores/userNotes.ts）。
+// 个人长笔记与课堂便签都落在 IndexedDB `user-notes`（见 lib/stores/userNotes.ts），
+// 登录后经 `notifyUserNoteChanged` 走 sync_documents 的 `user-note`。
 // content/ 下只读的课堂讲义 HTML 不再冒充「选择笔记 · 课程笔记」。
 
 import { getSubject } from "@/lib/content-data";
