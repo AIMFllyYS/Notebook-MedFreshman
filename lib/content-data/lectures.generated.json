@@ -222,6 +222,50 @@
       }
     },
     {
+      "subjectId": "anatomy",
+      "lessonId": "rec-2026-fall-016-018",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "系统解剖学",
+      "sessionRange": {
+        "start": 16,
+        "end": 18
+      },
+      "taughtOn": "2026-09-16",
+      "topic": "上下肢肌学",
+      "revision": 1,
+      "quizId": "rec-2026-fall-016-018",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-016-018"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-016-018"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-016-018"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-016-018"
+        }
+      },
+      "hashes": {
+        "recording": "d55e56f7bc745fd743ff8d84399e58260d282f5aca1596fbc0a69ce6b6186faf",
+        "notesText": "2da6ca3b33f84164ef2ad1f9294297a1fc67b266fa157c97202302bcd21fbf37"
+      }
+    },
+    {
       "subjectId": "biochemistry",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -439,6 +483,50 @@
       "hashes": {
         "recording": "35e420c9b7023d9955c3fb2e9fd240fb6eec19e9b83b80399531f6aad9005a91",
         "notesText": "ffa76454787f1b18e4900419d3fbd82b9b325281f5e9fc56269e55a5deb5482a"
+      }
+    },
+    {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-011-012",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 11,
+        "end": 12
+      },
+      "taughtOn": "2026-09-16",
+      "topic": "B族维生素续讲与酶学",
+      "revision": 1,
+      "quizId": "rec-2026-fall-011-012",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-011-012"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-011-012"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-011-012"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-011-012"
+        }
+      },
+      "hashes": {
+        "recording": "438e7d049087fe5acd6f1ee5747f93a25156dd74debf3faa21afa605c52c20bd",
+        "notesText": "c9a611063d20e686b492f196a38cf915ad7998e83cda158b928f65b57362d172"
       }
     },
     {
@@ -1187,6 +1275,50 @@
       "hashes": {
         "recording": "d43dcb9aef4ceb1c63eab967f873c9044bf6e8de4a62de7c23a0093f39b71e68",
         "notesText": "0432db5282c0d95732d9e733556691c6659b2f07159c9a0bd8ec9b72c7435911"
+      }
+    },
+    {
+      "subjectId": "medical-english",
+      "lessonId": "rec-2026-fall-005-006",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "医学英语",
+      "sessionRange": {
+        "start": 5,
+        "end": 6
+      },
+      "taughtOn": "2026-09-16",
+      "topic": "Unit 1 Language learning (2) & exercise",
+      "revision": 1,
+      "quizId": "rec-2026-fall-005-006",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-005-006"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-005-006"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-005-006"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-005-006"
+        }
+      },
+      "hashes": {
+        "recording": "8b9f217858e300c77fe4dbc3cf5fdac7ae03c93a039114e99908397937740f36",
+        "notesText": "5570ecc858ddb77454f29122f73a66ea9e18ea4b58750bc2eb1dfa0101c656c2"
       }
     }
   ]

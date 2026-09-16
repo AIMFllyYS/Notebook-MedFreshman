@@ -1,0 +1,260 @@
+{
+  "subjectId": "medical-english",
+  "chapterId": "rec-2026-fall-005-006",
+  "generatedAt": "2026-09-16",
+  "examConfig": {
+    "source": "content/medical-english/lectures/rec-2026-fall-005-006/recording.md；content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-005-006",
+    "revision": 1,
+    "recordingHash": "8b9f217858e300c77fe4dbc3cf5fdac7ae03c93a039114e99908397937740f36",
+    "notesTextHash": "5570ecc858ddb77454f29122f73a66ea9e18ea4b58750bc2eb1dfa0101c656c2"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课给出的医学术语（medical term）构成基本模式是（　）。",
+      "options": [
+        "prefix + word root + suffix",
+        "prefix + word root + combining vowel + suffix",
+        "word root + prefix + suffix + vowel",
+        "prefix + suffix + word root + combining vowel"
+      ],
+      "answer": 1,
+      "hint": "口诀「前缀词根连元音，后缀结尾记心间」。",
+      "explanation": "**B 正确。** 医学术语的基本构词模式是 prefix（前缀）+ word root（词根）+ combining vowel（连接元音）+ suffix（后缀），也可以是 prefix + word root + combining vowel + word root + suffix。\n- A：缺少 connecting vowel，不是完整的基本模式；\n- C、D：顺序错误，连接元音紧跟词根之后。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "医学术语构成模式 · prefix+root+combining vowel+suffix"
+      }
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课为什么要求同学们做同族词（cognate words）练习？下列说法最准确的是（　）。",
+      "options": [
+        "为了练习英语口语发音",
+        "为了让同学们背诵每个单词的全部拼写",
+        "一个词根可派生至少20个词，记词根比记整个单词容易，且词根含义在任何组合中不变",
+        "为了应付期末考试的听写测试"
+      ],
+      "answer": 2,
+      "hint": "词根的含义在任何组合中都不变（cardio 永远是 heart）。",
+      "explanation": "**C 正确。** 同族词共享同一个词根，一个词根加前缀、后缀或词根组合可派生至少20个词；记词根的含义比逐个记整个单词容易得多，且词根含义在任何组合中保持不变（如 cardio 永远表示 heart）。\n- A、B、D：均非本课所述同族词练习的目的；本课强调的是通过词根词缀系统记忆，而非口语或听写。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "同族词记忆法 · 记词根比记整词容易"
+      }
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "医学术语 Presentation 的三个任务不包括下列哪一项（　）。",
+      "options": [
+        "Words Analysis：教材P17选7个词根分析构成",
+        "Cognate Words：每个词根找5个同族词",
+        "Medical Translation：教材P18-19翻译练习",
+        "Writing a 3000-word research paper on AI"
+      ],
+      "answer": 3,
+      "hint": "三任务口诀「分析同族加翻译」。",
+      "explanation": "**D 正确（符合题意）。** 三个任务是 Task 1 Words Analysis（P17选7个词根）、Task 2 Cognate Words（每个词根5个同族词）、Task 3 Medical Translation（P18-19）；写3000字研究论文不在其中。\n- A、B、C 均为三个任务之一。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "医学术语Presentation三任务"
+      }
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课指出 Unit 1 课文的主旨句（thesis statement）及其位置是（　）。",
+      "options": [
+        "\"AI will replace all doctors.\" — 在第1段",
+        "\"AI can solve all these problems.\" — 在第4段，仅一句话，既是过渡段也是全文主旨句",
+        "\"AI is dangerous and should be banned.\" — 在第10段",
+        "\"Human doctors are better than AI.\" — 在第12段"
+      ],
+      "answer": 1,
+      "hint": "口诀「主旨句在第四段，AI解决所有难题」。",
+      "explanation": "**B 正确。** 第4段只有一句话，既是过渡段（transitional paragraph）也是全文主旨句（thesis statement），内容为 \"AI can solve all these problems\"。\n- A、C、D：均非课文主旨句，且与课文主旨（AI补充而非替代）相悖。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "课文主旨句 · P4 AI can solve all these problems"
+      }
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "在 Paragraph 5 中，本课列举的导致医生误诊的人为因素不包括（　）。",
+      "options": [
+        "heavy workload（工作负担重）",
+        "lack of sufficient time（时间不足）",
+        "cognitive bandwidth（认知带宽有限）",
+        "insufficient medical insurance coverage（医保覆盖不足）"
+      ],
+      "answer": 3,
+      "hint": "P5 平行结构列举四个因素：heavy workload, lack of sufficient time, cognitive bandwidth, gaps of knowledge。",
+      "explanation": "**D 正确（符合题意）。** P5 列举的人为因素为 heavy workload、lack of sufficient time、cognitive bandwidth、gaps of knowledge；医保覆盖不足不在课文中。\n- A、B、C 均为课文列举的导致医生误诊的人为因素。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "P5 AI优势1 · 人为因素平行结构"
+      }
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "关于 Paragraph 6 中平行结构 \"pneumonia, blood clot in the lungs, acute kidney injury\" 的排列逻辑，本课给出的分析是（　）。",
+      "options": [
+        "完全随机排列，没有任何逻辑",
+        "按严重程度递进（普通→慢性→急性严重），且按身体部位从上到下（肺→肾）",
+        "按单词首字母字母表顺序排列",
+        "按发现时间从早到晚排列"
+      ],
+      "answer": 1,
+      "hint": "平行结构不是随便列的，有内在逻辑——严重程度+从上到下。",
+      "explanation": "**B 正确。** 本课强调平行结构不是随意排列：①按严重程度递进——pneumonia（普通疾病）→ blood clot（慢性疾病）→ acute kidney injury（急性严重疾病）；②按身体部位从上到下——肺（呼吸）→ 肾。\n- A：与「平行结构有逻辑顺序」的强调相反；\n- C、D：课文未提及字母顺序或时间顺序。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "P6平行结构逻辑 · 严重程度+从上到下"
+      }
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "在 Paragraph 7 中，作者用 \"Consider for example, hypertrophic cardiomyopathy...\" 开头，本课指出这个句式是（　）。",
+      "options": [
+        "感叹句（exclamatory sentence）",
+        "疑问句（interrogative sentence）",
+        "祈使句（imperative sentence），作用是吸引读者注意力",
+        "倒装句（inverted sentence），用于强调否定"
+      ],
+      "answer": 2,
+      "hint": "Consider 是 let's do something 型祈使句。",
+      "explanation": "**C 正确。** \"Consider for example...\" 是祈使句（imperative sentence），即使在较正式的学术文章中也使用，其功能是 attract the readers' interests（吸引读者注意力）。\n- A、B、D：均不符合 consider 开头的祈使句性质。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "祈使句 · Consider for example 吸引读者注意力"
+      }
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "在 Paragraph 9 中，作者特意选择眼科医生（ophthalmologists）作为 AI 帮助的例子之一，本课解释的原因是（　）。",
+      "options": [
+        "眼科病例数量最多，数据量最大",
+        "眼科诊断最简单，AI最容易掌握",
+        "视网膜疾病非常精密，选择眼科可以体现即使最精密的疾病 AI 也能诊断",
+        "眼科医生工资最高，经济效应最好"
+      ],
+      "answer": 2,
+      "hint": "眼科的特征是视网膜，很精密——即使最精密的也能诊断出来。",
+      "explanation": "**C 正确。** 本课解释：眼科的特征是视网膜，非常精密；作者特意选眼科而非 kidney（前面已提过 acute kidney injury），就是为了体现即使是最精密的疾病 AI 也能诊断，进一步展示 AI 的独特能力。\n- A、B、D：均非本课所述原因；课文强调的是「精密疾病也能诊断」，不是病例数量、难度或工资。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "P9为什么选眼科 · 视网膜最精密"
+      }
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课总结 Paragraph 10 中 AI 面临的三个挑战，其逻辑顺序是（　）。",
+      "options": [
+        "从简单到复杂",
+        "从创造（creative）→使用（use）→长期效果（long-term effect），即产品生命周期",
+        "从便宜到昂贵",
+        "从国内到国际"
+      ],
+      "answer": 1,
+      "hint": "口诀「昂贵产权加激励，创造使用长期记」。",
+      "explanation": "**B 正确。** 三个挑战的逻辑顺序是从创造（AI 很昂贵，需要大规模数据训练）→ 使用（知识产权保护困难）→ 长期效果（需要财务激励才能持续发展），这就是产品的生命周期；第二位作者是经济学家，所以这部分有经济学逻辑。\n- A、C、D：均非课文所述的逻辑顺序。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "P10三大挑战逻辑 · 创造→使用→长期效果"
+      }
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "在 Paragraph 11 中，作者用 \"random thread\" 指代网上不可靠的信息。本课指出这里使用的修辞手法及其用意是（　）。",
+      "options": [
+        "拟人（personification），把信息当作人来描写",
+        "夸张（hyperbole），夸大信息的数量",
+        "隐喻（metaphor）：thread=线，很细经不起推敲、一扯就断，委婉表达不可靠信息，避免直接说 unbelievable",
+        "明喻（simile），用 like 把信息比作线"
+      ],
+      "answer": 2,
+      "hint": "thread 是「线」，一扯就断——经不起推敲。",
+      "explanation": "**C 正确。** \"random thread\" 是隐喻（metaphor）：thread 是线，很细、经不起推敲、一扯就断，作者用它委婉指代网上不可靠的信息（unreliable information）；因为不好直接说 unbelievable information（毕竟有人相信），所以用 thread 来暗指。\n- A、B、D：均不符合 thread 作为隐喻的分析。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "P11 random thread 隐喻 · 委婉表达不可靠信息"
+      }
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "points": 10,
+      "stem": "本课在翻译技巧中指出，英译汉时对英语长句的正确处理方式是（　）。",
+      "options": [
+        "必须逐字逐句对应，一个英文长句翻成一个汉语长句",
+        "英语长句可以拆成汉语多个短句；反过来汉译英时则应按英语思维，可能合成一个句子",
+        "把所有修饰语全部删掉，只保留主干",
+        "把英语长句直接用拼音标注，不做翻译"
+      ],
+      "answer": 1,
+      "hint": "英语长句→汉语短句；英译汉按汉语思维，汉译英按英语思维。",
+      "explanation": "**B 正确。** 本课翻译技巧：英语长句在汉译时可拆成多个短句（如 P8 长句拆成两句）；反过来汉译英时要按英语思维，可能合成一个句子。同时注意近义词替换（如 help→协助/帮助/支持）避免重复。\n- A：与「长句拆短句」技巧相反；\n- C：删修饰语丢失信息，不是翻译技巧；\n- D：明显错误。",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/medical-english/lectures/rec-2026-fall-005-006/notes.html",
+        "label": "翻译技巧 · 英语长句拆汉语短句"
+      }
+    }
+  ]
+}
