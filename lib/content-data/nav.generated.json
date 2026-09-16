@@ -9554,6 +9554,45 @@
                   "quizRef": "rec-2026-fall-009-010"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-011-012",
+              "title": "第11-12节 · B族维生素续讲与酶学",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-011-012",
+                  "title": "课堂原文 · 第11-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-011-012",
+                  "quizRef": "rec-2026-fall-011-012"
+                },
+                {
+                  "id": "note-rec-2026-fall-011-012",
+                  "title": "课堂笔记 · 第11-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-011-012",
+                  "quizRef": "rec-2026-fall-011-012"
+                },
+                {
+                  "id": "card-rec-2026-fall-011-012",
+                  "title": "复习手卡 · 第11-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-011-012",
+                  "quizRef": "rec-2026-fall-011-012"
+                }
+              ]
             }
           ]
         },
@@ -9626,6 +9665,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-009-010",
               "quizRef": "rec-2026-fall-009-010",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-011-012",
+              "title": "课堂纪要 · 第11-12节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-011-012",
+              "quizRef": "rec-2026-fall-011-012",
               "layoutProfile": "full"
             }
           ]
