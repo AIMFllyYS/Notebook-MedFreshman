@@ -21,6 +21,10 @@ test("global search and URL dialog reuse one spotlight chrome", () => {
   assert.match(chrome, /rounded-2xl/);
   assert.match(dialog, /SPOTLIGHT_PANEL_CLASS/);
   assert.match(search, /SpotlightDialog/);
+  assert.match(search, /useProgressiveGlobalSearch/);
+  assert.match(search, /GlobalSearchResults/);
+  assert.doesNotMatch(search, /filterContentTreeByYear/);
+  assert.doesNotMatch(search, /useArtifacts/);
   assert.match(url, /SpotlightDialog/);
   assert.match(taskbar, /OpenUrlDialog/);
   assert.match(taskbar, /data-menu-group="open-panels"/);

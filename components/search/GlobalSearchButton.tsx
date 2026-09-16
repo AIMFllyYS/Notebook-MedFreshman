@@ -1,20 +1,20 @@
 "use client";
 
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowUpRight, Command, Search } from "lucide-react";
-import { contentTree } from "@/lib/content-data";
-import { buildGlobalSearchIndex, searchGlobalIndex } from "@/lib/search/globalSearch";
-import { filterContentTreeByYear } from "@/lib/constants/academic-year";
+import { Command, Search } from "lucide-react";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { useGlobalSearch } from "@/lib/keyboard/useGlobalSearch";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { formatShortcut } from "@/lib/keyboard/format";
 import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
+import { useProgressiveGlobalSearch } from "@/lib/search/useProgressiveGlobalSearch";
+import type { GlobalSearchHit } from "@/lib/search/globalSearch";
+import { openNoteEditor, openFlashcardCitePicker } from "@/lib/notes/openUserNote";
+import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import SpotlightDialog from "@/components/search/SpotlightDialog";
 import { SPOTLIGHT_BODY_CLASS, SPOTLIGHT_INPUT_CLASS } from "@/components/search/spotlightChrome";
-
-const SEARCH_LIMIT = 32;
+import GlobalSearchResults from "@/components/search/GlobalSearchResults";
 
 export default function GlobalSearchButton() {
   const router = useRouter();
@@ -25,14 +25,8 @@ export default function GlobalSearchButton() {
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
   const academicYear = useAcademicYear((s) => s.year);
-  const index = useMemo(
-    () => buildGlobalSearchIndex(filterContentTreeByYear(contentTree, academicYear)),
-    [academicYear],
-  );
-  const results = useMemo(
-    () => searchGlobalIndex(index, deferredQuery, SEARCH_LIMIT),
-    [deferredQuery, index],
-  );
+  const { noteHits, cardHits, bodyHits, notesLoading, cardsLoading, bodyLoading } =
+    useProgressiveGlobalSearch(open ? deferredQuery : "", academicYear);
 
   useOverlayRegistration({
     id: "global-search",
@@ -47,10 +41,19 @@ export default function GlobalSearchButton() {
     return () => window.clearTimeout(id);
   }, [open]);
 
-  const openResult = (href: string) => {
+  const openHit = (hit: GlobalSearchHit) => {
     setOpen(false);
     setQuery("");
-    router.push(href);
+    if (hit.kind === "note" && hit.noteId) {
+      openNoteEditor(hit.noteId);
+      return;
+    }
+    if (hit.kind === "flashcard" && hit.cardId) {
+      openFlashcardCitePicker({ subjectId: hit.subjectId ?? null });
+      useFlashcardCitations.getState().setActiveCardId(hit.cardId);
+      return;
+    }
+    if (hit.href) router.push(hit.href);
   };
 
   const shortcutLabel = formatShortcut("global.search");
@@ -84,50 +87,22 @@ export default function GlobalSearchButton() {
             ref={inputRef}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="搜索课程、章节、录音、摘要..."
+            placeholder="搜索章节、正文、笔记、闪卡..."
             className={SPOTLIGHT_INPUT_CLASS}
           />
         }
       >
         <div className={SPOTLIGHT_BODY_CLASS}>
-          {deferredQuery.trim() ? (
-            results.length > 0 ? (
-              results.map((result) => (
-                <button
-                  key={result.id}
-                  type="button"
-                  onClick={() => openResult(result.href)}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-[var(--bg-muted)]"
-                >
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-primary)]">
-                    <Search size={15} />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[14px] font-semibold text-[var(--ink)]">
-                      {result.itemId} {result.title}
-                    </span>
-                    <span className="block truncate text-[12px] text-[var(--ink-faint)]">
-                      {result.breadcrumbs || `${result.subjectName} / ${result.categoryName}`}
-                    </span>
-                    {result.summary && (
-                      <span className="mt-0.5 block truncate text-[12px] text-[var(--ink-soft)]">
-                        {result.summary}
-                      </span>
-                    )}
-                  </span>
-                  <ArrowUpRight size={14} className="shrink-0 text-[var(--ink-faint)]" />
-                </button>
-              ))
-            ) : (
-              <div className="px-4 py-10 text-center text-[13px] text-[var(--ink-faint)]">
-                没有匹配结果
-              </div>
-            )
-          ) : (
-            <div className="px-4 py-10 text-center text-[13px] text-[var(--ink-faint)]">
-              输入关键词、章节编号或课程名开始搜索
-            </div>
-          )}
+          <GlobalSearchResults
+            query={deferredQuery}
+            noteHits={noteHits}
+            cardHits={cardHits}
+            bodyHits={bodyHits}
+            notesLoading={notesLoading}
+            cardsLoading={cardsLoading}
+            bodyLoading={bodyLoading}
+            onOpen={openHit}
+          />
         </div>
       </SpotlightDialog>
     </>
