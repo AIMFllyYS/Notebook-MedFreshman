@@ -161,6 +161,12 @@ test("note and flashcard subject chips reuse AnchoredMenu", () => {
   assert.match(editor, /SubjectPickerMenu/);
   assert.match(flashcards, /SubjectPickerMenu/);
   assert.match(preview, /SubjectPickerMenu/);
+  assert.match(preview, /from "@\/components\/ui\/AnchoredMenu"/);
+  assert.match(preview, /label="保留"/);
+  assert.match(preview, /label="放弃"/);
+  assert.match(preview, /data-testid="record-preview-export"/);
+  assert.match(preview, /data-testid="record-preview-download-md"/);
+  assert.match(preview, /data-testid="record-preview-delete"/);
 });
 
 test("import pickers open a shared agent-product window", () => {

@@ -3,13 +3,14 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import {
   Loader, X, Trash2, RefreshCw, Check, BookmarkCheck, AlertTriangle,
-  BrainCircuit, ChevronDown, ChevronUp, Loader2, Wand2,
-  BookOpenText, PencilLine, FileQuestion, Settings2, Download, Quote,
+  BrainCircuit, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Loader2, Wand2,
+  BookOpenText, PencilLine, FileQuestion, Settings2, Download, Quote, MoreHorizontal,
 } from "lucide-react";
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
 import { useRecordPreviews, type RecordPreview } from "@/lib/hooks/useRecordPreviews";
 import { processRecord, retryRecord, reviseRecord, type ProcessCallbacks } from "@/lib/review/startRecord";
 import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
+import AnchoredMenu from "@/components/ui/AnchoredMenu";
 import { getSubject } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
 import { useWindowManager } from "@/lib/stores/windowManager";
@@ -19,7 +20,7 @@ import ManagedWindow from "@/components/window/ManagedWindow";
 import FlipCard from "@/components/review/FlipCard";
 import CollapsibleSection from "@/components/review/CollapsibleSection";
 import QuizMarkdown from "@/components/quiz/QuizMarkdown";
-import type { RecordMode } from "@/lib/review/types";
+import type { RecordMode, ReviewCard } from "@/lib/review/types";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
 import { formatFlashcardQuote, subjectLabel } from "@/lib/notes/userNote";
 import { downloadFlashcardMarkdown, downloadFlashcardsCsv } from "@/lib/review/exportCards";
@@ -329,11 +330,14 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
         {card.status === "ready" && !isProcessing ? (
           <>
             <ActionBtn onClick={() => close(preview.id)} icon={Check} label="保留" primary />
-            <ActionBtn onClick={() => cite(formatFlashcardQuote(card))} icon={Quote} label={cited ? "已分享" : "分享"} />
-            <ActionBtn onClick={() => downloadFlashcardMarkdown(card)} icon={Download} label="下载" />
-            <ActionBtn onClick={() => downloadFlashcardsCsv([card], card.sourceLabel || "复习闪卡")} icon={Download} label="CSV" />
-            <ActionBtn onClick={() => { setFlipped(false); handleRetry(); }} icon={RefreshCw} label="重做" />
-            <ActionBtn onClick={handleDiscard} icon={Trash2} label="丢弃" danger />
+            <ActionBtn onClick={handleDiscard} icon={X} label="放弃" danger />
+            <PreviewMoreMenu
+              card={card}
+              cited={cited}
+              onCite={() => cite(formatFlashcardQuote(card))}
+              onRetry={() => { setFlipped(false); handleRetry(); }}
+              onDiscard={handleDiscard}
+            />
           </>
         ) : card.status === "error" ? (
           <>
@@ -587,6 +591,158 @@ function ReviseInput({
   );
 }
 
+function PreviewMoreMenu({
+  card,
+  cited,
+  onCite,
+  onRetry,
+  onDiscard,
+}: {
+  card: ReviewCard;
+  cited: boolean;
+  onCite: () => void;
+  onRetry: () => void;
+  onDiscard: () => void;
+}) {
+  return (
+    <AnchoredMenu
+      label="更多"
+      placement="top"
+      width={240}
+      role="menu"
+      testId="record-preview-more"
+      triggerData={{ "data-no-drag": "" }}
+      className="press"
+      style={{
+        flex: "0 0 auto",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 5,
+        padding: "7px 12px",
+        borderRadius: BOX.radius,
+        border: BOX.border,
+        background: "transparent",
+        color: "var(--ink-soft)",
+        fontSize: 12.5,
+        fontWeight: 600,
+        cursor: "pointer",
+      }}
+      trigger={<><MoreHorizontal size={14} /> 更多</>}
+    >
+      {(close) => (
+        <PreviewMoreMenuBody
+          card={card}
+          cited={cited}
+          onCite={onCite}
+          onRetry={onRetry}
+          onDiscard={onDiscard}
+          close={close}
+        />
+      )}
+    </AnchoredMenu>
+  );
+}
+
+/** 一级：导出 / 分享 / 重做 / 删除；二级：下载 Markdown、下载 CSV。 */
+function PreviewMoreMenuBody({
+  card,
+  cited,
+  onCite,
+  onRetry,
+  onDiscard,
+  close,
+}: {
+  card: ReviewCard;
+  cited: boolean;
+  onCite: () => void;
+  onRetry: () => void;
+  onDiscard: () => void;
+  close: () => void;
+}) {
+  const [pane, setPane] = useState<"root" | "export">("root");
+
+  if (pane === "export") {
+    return (
+      <>
+        <button type="button" role="menuitem" className="app-menu-item" onClick={() => setPane("root")}>
+          <span className="app-menu-check"><ChevronLeft size={13} /></span>
+          <span>返回</span>
+        </button>
+        <div className="app-menu-heading">导出</div>
+        <button
+          type="button"
+          role="menuitem"
+          className="app-menu-item"
+          data-testid="record-preview-download-md"
+          onClick={() => { downloadFlashcardMarkdown(card); close(); }}
+        >
+          <span className="app-menu-check"><Download size={13} /></span>
+          <span>下载 Markdown<small>这张卡的 .md 文件</small></span>
+        </button>
+        <button
+          type="button"
+          role="menuitem"
+          className="app-menu-item"
+          data-testid="record-preview-download-csv"
+          onClick={() => { downloadFlashcardsCsv([card], card.sourceLabel || "复习闪卡"); close(); }}
+        >
+          <span className="app-menu-check"><Download size={13} /></span>
+          <span>下载 CSV<small>表格，可导入其他复习软件</small></span>
+        </button>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        role="menuitem"
+        className="app-menu-item"
+        data-testid="record-preview-export"
+        onClick={() => setPane("export")}
+      >
+        <span className="app-menu-check"><Download size={13} /></span>
+        <span>导出<small>Markdown / CSV</small></span>
+        <ChevronRight size={13} />
+      </button>
+      <button
+        type="button"
+        role="menuitem"
+        className="app-menu-item"
+        data-testid="record-preview-share"
+        onClick={() => { onCite(); close(); }}
+      >
+        <span className="app-menu-check"><Quote size={13} /></span>
+        <span>{cited ? "已分享" : "分享"}</span>
+      </button>
+      <button
+        type="button"
+        role="menuitem"
+        className="app-menu-item"
+        data-testid="record-preview-retry"
+        onClick={() => { onRetry(); close(); }}
+      >
+        <span className="app-menu-check"><RefreshCw size={13} /></span>
+        <span>重做</span>
+      </button>
+      <div className="app-menu-separator" />
+      <button
+        type="button"
+        role="menuitem"
+        className="app-menu-item"
+        data-testid="record-preview-delete"
+        style={{ color: "var(--md-sys-color-error)" }}
+        onClick={() => { onDiscard(); close(); }}
+      >
+        <span className="app-menu-check"><Trash2 size={13} /></span>
+        <span>删除</span>
+      </button>
+    </>
+  );
+}
+
 function ActionBtn({
   onClick,
   icon: Icon,
@@ -609,6 +765,7 @@ function ActionBtn({
   const border = primary ? "none" : BOX.border;
   return (
     <button
+      type="button"
       onClick={onClick}
       className="press"
       style={{

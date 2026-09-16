@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
@@ -9,6 +9,7 @@ interface AnchoredMenuProps {
   trigger: ReactNode;
   children: (close: () => void) => ReactNode;
   className?: string;
+  style?: CSSProperties;
   disabled?: boolean;
   width?: number;
   placement?: "top" | "bottom";
@@ -18,7 +19,7 @@ interface AnchoredMenuProps {
 }
 
 /** Shared non-modal menu: portal, viewport collision handling and keyboard/focus lifecycle. */
-export default function AnchoredMenu({ label, trigger, children, className = "", disabled, width = 240,
+export default function AnchoredMenu({ label, trigger, children, className = "", style, disabled, width = 240,
   placement = "bottom", role = "menu", testId, triggerData }: AnchoredMenuProps) {
   const id = useId();
   const [open, setOpen] = useState(false);
@@ -76,7 +77,7 @@ export default function AnchoredMenu({ label, trigger, children, className = "",
   return <>
     <button ref={buttonRef} type="button" aria-label={label} title={label} aria-haspopup={role}
       aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled}
-      className={className} data-testid={testId} {...triggerData}
+      className={className} style={style} data-testid={testId} {...triggerData}
       onClick={() => setOpen((value) => !value)}
       onKeyDown={(event) => { if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setOpen(true); } }}>
       {trigger}
