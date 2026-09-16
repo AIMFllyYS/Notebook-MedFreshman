@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, BookOpen, Globe, FileDigit, Heart } from "lucide-react";
+import { BookmarkCheck, MonitorPlay, ImagePlus, PieChart, BookOpen, Globe, FileDigit, Heart, Layers } from "lucide-react";
 import FileTypeIcon, { resolveFileGlyphKind } from "@/components/icons/file-types/FileTypeIcon";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
+import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
 
 export function WindowTypeIcon({
@@ -49,6 +50,8 @@ export function WindowTypeIcon({
   if (type === "billing-dashboard") return <PieChart size={size} />;
   if (type === "membership-sponsor") return <Heart size={size} />;
   if (type === "document-viewer") return <FileDigit size={size} />;
+  if (type === "user-note-editor" || type === "user-note-library") return <NotebookFormulaIcon size={size} />;
+  if (type === "flashcard-cite-picker") return <Layers size={size} />;
   if (type === "note-citation-viewer" || type === "source-trace-viewer") return <BookOpen size={size} />;
   if (type === "source-preview") return <Globe size={size} />;
   return <MonitorPlay size={size} />;

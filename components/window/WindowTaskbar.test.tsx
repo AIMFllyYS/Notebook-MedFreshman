@@ -4,6 +4,8 @@ import { strToU8, zipSync } from "fflate";
 import WindowTaskbar from "./WindowTaskbar";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { MAX_LOCAL_FILE_SIZE } from "@/lib/ai/imageUtils";
+import { useUserNotes } from "@/lib/stores/userNotes";
+import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 
 describe("WindowTaskbar add content", () => {
   beforeEach(() => {
@@ -12,6 +14,15 @@ describe("WindowTaskbar add content", () => {
       disconnect() {}
     });
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
+    useUserNotes.setState({
+      byId: {},
+      order: [],
+      openEditorIds: [],
+      libraryOpen: false,
+      libraryIntent: "browse",
+      librarySubjectId: null,
+    });
+    useFlashcardCitations.setState({ open: false, subjectId: null, activeCardId: null });
   });
 
   afterEach(() => {
@@ -68,5 +79,30 @@ describe("WindowTaskbar add content", () => {
         mimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
       });
     });
+  });
+
+  it("opens a new markdown note from the plus menu", () => {
+    render(<WindowTaskbar host="topbar" />);
+    fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /新建笔记/ }));
+
+    const editor = useWindowManager.getState().windows.find((win) => win.type === "user-note-editor");
+    expect(editor).toBeDefined();
+    expect(useUserNotes.getState().order).toHaveLength(1);
+    const note = useUserNotes.getState().byId[useUserNotes.getState().order[0]!];
+    expect(note?.markdown).toMatch(/\$E = mc\^\{2\}\$/);
+  });
+
+  it("opens the note picker and flashcard picker from the plus menu", () => {
+    render(<WindowTaskbar host="topbar" />);
+    fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /选择笔记/ }));
+    expect(useWindowManager.getState().windows.some((win) => win.type === "user-note-library")).toBe(true);
+    expect(useUserNotes.getState().libraryIntent).toBe("cite");
+
+    fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /选择复习闪卡/ }));
+    expect(useWindowManager.getState().windows.some((win) => win.type === "flashcard-cite-picker")).toBe(true);
+    expect(useFlashcardCitations.getState().open).toBe(true);
   });
 });

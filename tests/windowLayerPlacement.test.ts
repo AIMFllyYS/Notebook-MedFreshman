@@ -17,6 +17,8 @@ test("citation and document viewers are mounted in the global app shell window l
 
   assert.doesNotMatch(chatPanel, /NoteCitationViewer/, "Citation windows must outlive the AI tab.");
   assert.doesNotMatch(chatPanel, /SourcePreviewViewer/, "Source preview windows must outlive the AI tab.");
+  assert.doesNotMatch(chatPanel, /UserNoteLayer/, "Personal note windows must outlive the AI tab.");
+  assert.doesNotMatch(chatPanel, /FlashcardCiteWindow/, "Flashcard cite windows must outlive the AI tab.");
   assert.match(appShell, /components\/chat\/NoteCitationViewer/);
   assert.match(appShell, /<NoteCitationViewer\s*\/>/);
   assert.match(appShell, /components\/chat\/SourceTraceViewer/);
@@ -25,6 +27,11 @@ test("citation and document viewers are mounted in the global app shell window l
   assert.match(appShell, /<SourcePreviewViewer\s*\/>/);
   assert.match(appShell, /components\/chat\/DocumentViewer/);
   assert.match(appShell, /<DocumentViewerLayer\s*\/>/);
+  assert.match(appShell, /components\/notes\/UserNoteLayer/);
+  assert.match(appShell, /<UserNoteLayer\s*\/>/);
+  assert.match(appShell, /components\/notes\/FlashcardCiteWindow/);
+  assert.match(appShell, /<FlashcardCiteWindow\s*\/>/);
+  assert.doesNotMatch(appShell, /DevNoteHarness/);
 });
 
 test("artifact viewer is mounted in the global app shell window layer", () => {

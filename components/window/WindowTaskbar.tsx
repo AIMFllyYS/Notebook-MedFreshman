@@ -4,8 +4,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { Plus, Link2, Upload } from "lucide-react";
+import { Plus, Link2, Upload, BookOpen, Layers } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
+import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
+import { createAndOpenNote, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
 import OverflowMenu from "@/components/window/OverflowMenu";
 import { WindowTypeIcon } from "@/components/window/WindowTypeIcon";
 import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
@@ -140,7 +142,7 @@ function AddContentButton() {
         type="button"
         aria-label="添加内容"
         aria-expanded={open}
-        title="添加 PDF、文件或网址"
+        title="添加笔记、闪卡、文件或网址"
         onClick={() => {
           setOpen((value) => {
             const next = !value;
@@ -178,6 +180,43 @@ function AddContentButton() {
           style={{ position: "fixed", top: menuPosition.top, right: menuPosition.right }}
           className="window-taskbar-add-menu z-[12000] w-64 rounded-xl border border-[var(--line)] bg-[var(--bg-panel)] p-2 shadow-xl"
         >
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              createAndOpenNote();
+              setOpen(false);
+            }}
+            className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+          >
+            <NotebookFormulaIcon size={14} className="text-[var(--md-sys-color-primary)]" />
+            <span><strong className="font-semibold">新建笔记</strong><small className="ml-1 text-[var(--ink-soft)]">Markdown · 公式</small></span>
+          </button>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              openNoteLibrary({ intent: "cite" });
+              setOpen(false);
+            }}
+            className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+          >
+            <BookOpen size={14} className="text-[var(--md-sys-color-primary)]" />
+            <span><strong className="font-semibold">选择笔记</strong><small className="ml-1 text-[var(--ink-soft)]">引用我的 / 课程笔记</small></span>
+          </button>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              openFlashcardCitePicker();
+              setOpen(false);
+            }}
+            className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
+          >
+            <Layers size={14} className="text-[var(--md-sys-color-primary)]" />
+            <span><strong className="font-semibold">选择复习闪卡</strong><small className="ml-1 text-[var(--ink-soft)]">引用记忆卡</small></span>
+          </button>
+          <div className="my-1 border-t border-[var(--line)]" />
           <button type="button" role="menuitem" onClick={() => fileRef.current?.click()} className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]">
             <Upload size={14} className="text-[var(--md-sys-color-primary)]" />
             <span><strong className="font-semibold">添加文件</strong><small className="ml-1 text-[var(--ink-soft)]">PDF、文本、代码</small></span>
@@ -196,7 +235,7 @@ function AddContentButton() {
             <button type="button" onClick={addUrl} className="rounded-md bg-[var(--md-sys-color-primary)] px-2 py-1.5 text-[11px] font-medium text-[var(--md-sys-color-on-primary)]">打开</button>
           </div>
           {urlError ? <p className="px-1 pt-1 text-[10px] text-[var(--md-sys-color-error)]">{urlError}</p> : null}
-          <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">内容会在当前工作站窗口中打开；选择文件不会上传。</p>
+          <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">笔记、闪卡会在当前工作站窗口中打开；选择文件不会上传。</p>
         </div>,
         document.body,
       )}
