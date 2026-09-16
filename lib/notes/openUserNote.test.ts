@@ -47,6 +47,29 @@ test("openFlashcardCitePicker defaults to the active subject", () => {
   assert.equal(useFlashcardCitations.getState().subjectId, DEFAULT_SUBJECT);
 });
 
+test("createAndOpenNote on the bookshelf home stays unfiled", () => {
+  const prev = globalThis.window;
+  Object.defineProperty(globalThis, "window", {
+    configurable: true,
+    value: { location: { pathname: "/" } },
+  });
+  try {
+    const id = createAndOpenNote();
+    assert.equal(useUserNotes.getState().byId[id]?.subjectId, null);
+  } finally {
+    if (prev) Object.defineProperty(globalThis, "window", { configurable: true, value: prev });
+    else delete (globalThis as { window?: unknown }).window;
+  }
+});
+
+test("import pickers reuse one window and switch title with kind", () => {
+  openDocumentImportPicker();
+  assert.ok(useWindowManager.getState().windows.some((win) => win.title === "导入长文本"));
+  openArtifactImportPicker();
+  assert.equal(useWindowManager.getState().windows.filter((win) => win.type === "agent-product-picker").length, 1);
+  assert.ok(useWindowManager.getState().windows.some((win) => win.title === "导入可交互 HTML"));
+});
+
 test("import pickers open a shared agent-product window", () => {
   openDocumentImportPicker();
   assert.equal(useAgentProductPicker.getState().kind, "document");
