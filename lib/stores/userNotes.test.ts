@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { beforeEach, test } from "node:test";
-import { selectLibraryNotes, useUserNotes } from "@/lib/stores/userNotes";
+import { selectClassroomNotes, selectLibraryNotes, useUserNotes } from "@/lib/stores/userNotes";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { useChatHistory } from "@/lib/stores/chatHistory";
@@ -182,6 +182,29 @@ test("ensureNoteAgentSession reuses one note-kind session and does not claim the
   assert.deepEqual(useUserNotes.getState().noteAgentOpenIds, [id]);
   useUserNotes.getState().setNoteAgentOpen(id, false);
   assert.deepEqual(useUserNotes.getState().noteAgentOpenIds, []);
+});
+
+test("classroom notes stay out of the personal library and open as a sticky window", () => {
+  const personal = useUserNotes.getState().createNote("probability", { title: "长笔记", markdown: "正文" });
+  const classroom = useUserNotes.getState().createNote("probability", {
+    kind: "classroom",
+    quote: "泊松分布的均值等于方差",
+    title: "泊松",
+    markdown: "课上强调。",
+    source: { kind: "agent", label: "概率论 · Agent" },
+  });
+  const mine = selectLibraryNotes(useUserNotes.getState().byId, useUserNotes.getState().order, "probability");
+  const classNotes = selectClassroomNotes(useUserNotes.getState().byId, useUserNotes.getState().order, "probability");
+  assert.deepEqual(mine.map((note) => note.id), [personal]);
+  assert.deepEqual(classNotes.map((note) => note.id), [classroom]);
+  assert.equal(useUserNotes.getState().byId[classroom]?.kind, "classroom");
+  assert.equal(useUserNotes.getState().byId[classroom]?.quote, "泊松分布的均值等于方差");
+
+  useUserNotes.getState().openEditor(classroom, { anchor: { x: 40, y: 80 } });
+  const win = useWindowManager.getState().windows.find((item) => item.data && "noteId" in item.data && item.data.noteId === classroom);
+  assert.equal(win?.type, "user-note-editor");
+  assert.ok((win?.size.width ?? 999) <= 380);
+  assert.ok((win?.size.height ?? 999) <= 360);
 });
 
 test("removeNote deletes the record and closes its editor", () => {

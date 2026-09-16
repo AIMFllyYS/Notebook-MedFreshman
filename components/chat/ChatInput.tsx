@@ -24,6 +24,7 @@ import AnchoredMenu from '@/components/ui/AnchoredMenu';
 import InputLimitDialog from '@/components/chat/InputLimitDialog';
 import TokenDashboard from '@/components/chat/TokenDashboard';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
+import { shouldBlockFocusSteal } from '@/lib/notes/selectionPopover';
 
 export interface ChatInputProps {
   onSend: (content: string, options?: {
@@ -393,6 +394,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           aria-label="输入问题"
           aria-describedby={showCharacterCount ? countId : undefined}
           aria-invalid={overLimit || undefined}
+          onMouseDown={(e) => {
+            if (shouldBlockFocusSteal(typeof window !== "undefined" ? window.getSelection() : null, e.currentTarget)) {
+              e.preventDefault();
+            }
+          }}
           onKeyDown={handleKeyDown}
           onPaste={handlePaste}
           onFocus={() => setIsFocused(true)}

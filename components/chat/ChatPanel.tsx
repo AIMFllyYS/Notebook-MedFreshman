@@ -230,7 +230,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
       />
 
       {showSettings && <ChatSettings onClose={() => setShowSettings(false)} />}
-      <SelectionPopover containerRef={scrollContainerRef} />
+      <SelectionPopover containerRef={scrollContainerRef} noteSource="agent" />
 
       {showHistory && (
         <ChatHistoryOverlay

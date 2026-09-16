@@ -1279,6 +1279,83 @@ mark.citation-flash {
   color: var(--md-sys-color-on-surface);
 }
 
+.classroom-note {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  background: color-mix(in srgb, #f3e2a8 62%, var(--md-sys-color-surface-container-low));
+}
+
+.classroom-note-head {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 0;
+}
+
+.classroom-note-quote {
+  flex-shrink: 0;
+  margin: 8px 10px 0;
+  padding: 8px 10px;
+  border: none;
+  border-left: 3px solid var(--md-sys-color-primary);
+  border-radius: 0 8px 8px 0;
+  background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.classroom-note-quote-label,
+.classroom-note-org-label {
+  margin-bottom: 2px;
+  color: var(--ink-soft);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.classroom-note-meta {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 2px 12px 4px;
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.classroom-note .user-note-crepe,
+.classroom-note .user-note-crepe-loading,
+.user-note-crepe.is-compact {
+  background: transparent;
+}
+
+.classroom-note .user-note-crepe .milkdown,
+.user-note-crepe.is-compact .milkdown {
+  --crepe-color-background: transparent;
+  --crepe-base-font-size: 13px;
+  padding: 4px 10px 16px;
+  background: transparent;
+}
+
+.classroom-note-org {
+  margin: 0 0 14px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--md-sys-color-surface-container-low);
+}
+
+.classroom-note-org-line {
+  margin: 2px 0 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 @media (max-width: 720px) {
   .note-citation-layout {
     flex-direction: column;

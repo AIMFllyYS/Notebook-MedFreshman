@@ -6,17 +6,21 @@ import {
   BLANK_NOTE_MARKDOWN,
   deriveNoteTitle,
   EXAMPLE_USER_NOTE_ID,
+  isClassroomNote,
   seedExampleNoteIfEmpty,
   subjectLabel,
   USER_NOTE_LIBRARY_WINDOW_ID,
   userNoteWindowId,
+  type ClassroomNoteSource,
   type NoteLibraryIntent,
   type UserNote,
+  type UserNoteKind,
 } from "@/lib/notes/userNote";
+import { notifyUserNoteChanged } from "@/lib/notes/userNoteSync";
 
 // 个人笔记仓库（IndexedDB 持久化，复用 useReviewCards / useDocuments 范式）。
-// 只存本机：与复习卡片一样**不**走 scheduleCloudUpsert —— 笔记是随手写的私货，
-// 上云要先有冲突合并策略，这里刻意不做，避免多端互相覆盖。
+// 本机 IndexedDB 为真相源。云同步走 notifyUserNoteChanged（SYNC POINT），
+// 不在本文件扩展 CLOUD_SYNC_KINDS / 额度统计。
 //
 // 窗口态（openEditorIds / library*）不持久化：窗口管理器本身也不持久化，
 // 刷新后重开窗口比恢复一堆空壳窗口更符合预期。
@@ -28,6 +32,20 @@ export interface UserNotePatch {
   title?: string;
   markdown?: string;
   subjectId?: string | null;
+  quote?: string;
+  source?: ClassroomNoteSource;
+}
+
+export interface CreateUserNoteInit {
+  title?: string;
+  markdown?: string;
+  kind?: UserNoteKind;
+  quote?: string;
+  source?: ClassroomNoteSource;
+}
+
+export interface OpenEditorOptions {
+  anchor?: { x: number; y: number };
 }
 
 export interface OpenNoteLibraryOptions {
@@ -60,15 +78,15 @@ interface UserNotesState {
   _setHasHydrated: (v: boolean) => void;
 
   /** 新建一篇笔记（不开窗），返回笔记 id。可带入 Agent 沉淀的短提纲。无 init 时正文空白。 */
-  createNote: (subjectId: string | null, init?: { title?: string; markdown?: string }) => string;
+  createNote: (subjectId: string | null, init?: CreateUserNoteInit) => string;
   /** 库为空时 seed 一篇案例笔记；已有笔记则跳过。 */
   ensureExampleNote: () => string | null;
   /** 改标题 / 正文 / 学科；未手动改过标题时标题跟随正文首个标题。 */
   updateNote: (id: string, patch: UserNotePatch) => void;
   /** 删除笔记，并关掉它可能打开着的编辑器窗口。 */
   removeNote: (id: string) => void;
-  /** 打开编辑器；已打开则前置（最小化的先还原）。 */
-  openEditor: (id: string) => void;
+  /** 打开编辑器；已打开则前置（最小化的先还原）。课堂便签用小便签几何。 */
+  openEditor: (id: string, opts?: OpenEditorOptions) => void;
   closeEditor: (id: string) => void;
   openLibrary: (opts?: OpenNoteLibraryOptions) => void;
   closeLibrary: () => void;
@@ -97,11 +115,35 @@ export function selectLibraryNotes(
   subjectId?: string | null,
   opts?: { includeExample?: boolean },
 ): UserNote[] {
-  const notes = selectUserNotes(byId, order, subjectId);
+  const notes = selectUserNotes(byId, order, subjectId).filter((note) => !isClassroomNote(note));
   if (!opts?.includeExample) return notes;
   const example = byId[EXAMPLE_USER_NOTE_ID];
   if (!example || notes.some((note) => note.id === example.id)) return notes;
   return [...notes, example].sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+/** 选择笔记 · 课堂笔记栏：只列划词便签，不混进个人长笔记。 */
+export function selectClassroomNotes(
+  byId: Record<string, UserNote>,
+  order: string[],
+  subjectId?: string | null,
+): UserNote[] {
+  return selectUserNotes(byId, order, subjectId).filter((note) => isClassroomNote(note));
+}
+
+function stickyNoteGeometry(anchor?: { x: number; y: number }) {
+  const width = 360;
+  const height = 328;
+  if (typeof window === "undefined") {
+    return { pos: { x: 48, y: 80 }, size: { width, height } };
+  }
+  const x = anchor
+    ? Math.min(Math.max(Math.round(anchor.x - width / 2), 16), window.innerWidth - width - 16)
+    : Math.max(16, Math.floor(window.innerWidth * 0.18));
+  const y = anchor
+    ? Math.min(Math.max(Math.round(anchor.y + 10), 16), window.innerHeight - height - 16)
+    : Math.max(16, Math.floor(window.innerHeight * 0.16));
+  return { pos: { x, y }, size: { width, height } };
 }
 
 function editorWindowGeometry(openCount: number) {
@@ -185,7 +227,9 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
       const id = genId();
       const now = Date.now();
       const markdown = init?.markdown?.trim() ? init.markdown : BLANK_NOTE_MARKDOWN;
-      const title = init?.title?.trim() || deriveNoteTitle(markdown);
+      const kind: UserNoteKind = init?.kind === "classroom" ? "classroom" : "personal";
+      const quote = init?.quote?.trim() || undefined;
+      const title = init?.title?.trim() || deriveNoteTitle(quote || markdown);
       const note: UserNote = {
         id,
         title,
@@ -193,8 +237,12 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
         subjectId,
         createdAt: now,
         updatedAt: now,
+        kind,
+        quote,
+        source: init?.source,
       };
       set((s) => ({ byId: { ...s.byId, [id]: note }, order: [...s.order, id] }));
+      notifyUserNoteChanged(id, "upsert");
       return id;
     },
 
@@ -202,6 +250,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
       const seeded = seedExampleNoteIfEmpty(get().byId, get().order);
       if (!seeded) return get().byId[EXAMPLE_USER_NOTE_ID]?.id ?? null;
       set(seeded);
+      notifyUserNoteChanged(EXAMPLE_USER_NOTE_ID, "upsert");
       return EXAMPLE_USER_NOTE_ID;
     },
 
@@ -218,10 +267,21 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
             ? deriveNoteTitle(markdown)
             : prev.title;
       const subjectId = patch.subjectId !== undefined ? patch.subjectId : prev.subjectId;
-      if (title === prev.title && markdown === prev.markdown && subjectId === prev.subjectId) return;
+      const quote = patch.quote !== undefined ? patch.quote : prev.quote;
+      const source = patch.source !== undefined ? patch.source : prev.source;
+      if (
+        title === prev.title &&
+        markdown === prev.markdown &&
+        subjectId === prev.subjectId &&
+        quote === prev.quote &&
+        source === prev.source
+      ) {
+        return;
+      }
 
-      const next: UserNote = { ...prev, title, markdown, subjectId, updatedAt: Date.now() };
+      const next: UserNote = { ...prev, title, markdown, subjectId, quote, source, updatedAt: Date.now() };
       set((s) => ({ byId: { ...s.byId, [id]: next } }));
+      notifyUserNoteChanged(id, "upsert");
       if (next.title !== prev.title) {
         useWindowManager.getState().updateWindow(userNoteWindowId(id), {
           title: next.title || "无标题笔记",
@@ -234,6 +294,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
       const sessionId = get().noteAgentSessionById[id];
       if (sessionId) useChatHistory.getState().deleteSession(sessionId);
       useWindowManager.getState().closeWindow(userNoteWindowId(id));
+      notifyUserNoteChanged(id, "tombstone");
       set((s) => {
         const byId = { ...s.byId };
         delete byId[id];
@@ -249,7 +310,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
       });
     },
 
-    openEditor: (id) => {
+    openEditor: (id, opts) => {
       const note = get().byId[id];
       if (!note) return;
       const winId = userNoteWindowId(id);
@@ -259,11 +320,14 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
         if (existing.minimized) manager.restoreWindow(winId);
         else manager.bringToFront(winId);
       } else {
-        const { pos, size } = editorWindowGeometry(get().openEditorIds.length);
+        const classroom = isClassroomNote(note);
+        const { pos, size } = classroom
+          ? stickyNoteGeometry(opts?.anchor)
+          : editorWindowGeometry(get().openEditorIds.length);
         manager.openWindow({
           id: winId,
           type: "user-note-editor",
-          title: note.title || "无标题笔记",
+          title: classroom ? note.title || "课堂笔记" : note.title || "无标题笔记",
           pos,
           size,
           data: { noteId: id },

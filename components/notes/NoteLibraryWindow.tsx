@@ -1,29 +1,26 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { BookOpen, Check, PenLine, Plus, Quote } from "lucide-react";
+import { Check, PenLine, Plus, Quote } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import DocumentWorkspace from "@/components/window/DocumentWorkspace";
 import YearSubjectFolderTree from "@/components/layout/YearSubjectFolderTree";
 import NoteRenderer from "@/components/notes/NoteRenderer";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
-import { useNoteCitations } from "@/lib/stores/noteCitations";
-import { useUserNotes, selectLibraryNotes } from "@/lib/stores/userNotes";
+import { useUserNotes, selectClassroomNotes, selectLibraryNotes } from "@/lib/stores/userNotes";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { createAndOpenNote } from "@/lib/notes/openUserNote";
-import { noteBreadcrumb, parseNotePath } from "@/lib/content/notePath";
 import {
+  formatClassroomNoteQuote,
   formatNoteQuote,
-  listCourseNoteHits,
   plainSnippet,
   subjectLabel,
   USER_NOTE_LIBRARY_WINDOW_ID,
-  type CourseNoteHit,
   type UserNote,
 } from "@/lib/notes/userNote";
 
-type LibraryTab = "mine" | "course";
+type LibraryTab = "mine" | "classroom";
 
 function formatUpdatedAt(timestamp: number): string {
   const date = new Date(timestamp);
@@ -44,7 +41,7 @@ export default function NoteLibraryWindow() {
   const [tab, setTab] = useState<LibraryTab>("mine");
   const [query, setQuery] = useState("");
   const [activeNoteId, setActiveNoteId] = useState<string | null>(null);
-  const [activeCoursePath, setActiveCoursePath] = useState<string | null>(null);
+  const [activeClassroomId, setActiveClassroomId] = useState<string | null>(null);
   const { cited, cite } = useCiteToChat();
 
   const keyword = query.trim().toLowerCase();
@@ -58,10 +55,19 @@ export default function NoteLibraryWindow() {
     [keyword, notes],
   );
 
-  const courseHits = useMemo(() => (subjectId ? listCourseNoteHits(subjectId) : []), [subjectId]);
-  const visibleHits = useMemo(
-    () => (keyword ? courseHits.filter((hit) => hit.title.toLowerCase().includes(keyword)) : courseHits),
-    [courseHits, keyword],
+  const classroomNotes = useMemo(
+    () => selectClassroomNotes(byId, order, subjectId),
+    [byId, order, subjectId],
+  );
+  const visibleClassroom = useMemo(
+    () =>
+      keyword
+        ? classroomNotes.filter((note) => {
+            const hay = `${note.title} ${note.quote ?? ""} ${note.source?.label ?? ""}`.toLowerCase();
+            return hay.includes(keyword);
+          })
+        : classroomNotes,
+    [classroomNotes, keyword],
   );
 
   const showTabs = intent === "cite";
@@ -69,7 +75,8 @@ export default function NoteLibraryWindow() {
 
   const activeNote =
     visibleNotes.find((note) => note.id === activeNoteId) ?? visibleNotes[0] ?? null;
-  const activeHit = visibleHits.find((hit) => hit.path === activeCoursePath) ?? visibleHits[0] ?? null;
+  const activeClassroom =
+    visibleClassroom.find((note) => note.id === activeClassroomId) ?? visibleClassroom[0] ?? null;
 
   if (!managed) return null;
 
@@ -87,11 +94,11 @@ export default function NoteLibraryWindow() {
           title: note.title || "无标题笔记",
           meta: `${subjectLabel(note.subjectId)} · ${formatUpdatedAt(note.updatedAt)}`,
         }))
-      : visibleHits.map((hit) => ({
-          id: hit.path,
-          kindLabel: hit.categoryName,
-          title: hit.title,
-          meta: plainSnippet(hit.snippet, 60) || hit.path,
+      : visibleClassroom.map((note) => ({
+          id: note.id,
+          kindLabel: note.source?.kind === "agent" ? "Agent" : note.source?.kind === "review" ? "复习板" : "正文",
+          title: note.title || "课堂笔记",
+          meta: plainSnippet(note.quote || note.markdown, 60) || note.source?.label || "课堂批注",
         }));
 
   const toolbar = (
@@ -110,11 +117,11 @@ export default function NoteLibraryWindow() {
           <button
             type="button"
             data-no-drag
-            aria-pressed={activeTab === "course"}
-            className={`user-note-mode${activeTab === "course" ? " is-active" : ""}`}
-            onClick={() => setTab("course")}
+            aria-pressed={activeTab === "classroom"}
+            className={`user-note-mode${activeTab === "classroom" ? " is-active" : ""}`}
+            onClick={() => setTab("classroom")}
           >
-            课程笔记
+            课堂笔记
           </button>
         </div>
       ) : null}
@@ -147,12 +154,12 @@ export default function NoteLibraryWindow() {
       unmountWhenMinimized
     >
       <DocumentWorkspace
-        outlineLabel={activeTab === "mine" ? "我的笔记" : "课程笔记"}
+        outlineLabel={activeTab === "mine" ? "我的笔记" : "课堂笔记"}
         outline={outline}
-        activeId={activeTab === "mine" ? (activeNote?.id ?? "") : (activeHit?.path ?? "")}
-        onSelect={(id) => (activeTab === "mine" ? setActiveNoteId(id) : setActiveCoursePath(id))}
+        activeId={activeTab === "mine" ? (activeNote?.id ?? "") : (activeClassroom?.id ?? "")}
+        onSelect={(id) => (activeTab === "mine" ? setActiveNoteId(id) : setActiveClassroomId(id))}
         toolbar={toolbar}
-        emptyLabel={activeTab === "mine" ? "还没有笔记" : "没有匹配的课程笔记"}
+        emptyLabel={activeTab === "mine" ? "还没有笔记" : "还没有课堂笔记"}
         folderTree={<YearSubjectFolderTree selectedId={subjectId} onSelect={setLibrarySubjectId} />}
       >
         {activeTab === "mine" ? (
@@ -163,7 +170,7 @@ export default function NoteLibraryWindow() {
             onOpen={(note) => openEditor(note.id)}
           />
         ) : (
-          <CourseNoteStage hit={activeHit} hasSubject={Boolean(subjectId)} />
+          <ClassroomNoteStage note={activeClassroom} />
         )}
       </DocumentWorkspace>
     </ManagedWindow>
@@ -216,54 +223,56 @@ function UserNoteStage({
   );
 }
 
-function CourseNoteStage({ hit, hasSubject }: { hit: CourseNoteHit | null; hasSubject: boolean }) {
+function ClassroomNoteStage({ note }: { note: UserNote | null }) {
   const { cited, cite } = useCiteToChat();
-  if (!hit) {
+  const openEditor = useUserNotes((s) => s.openEditor);
+  if (!note) {
     return (
       <div className="user-note-stage">
         <p className="user-note-empty">
-          {hasSubject ? "没有匹配的课程笔记。" : "先进入某一科，才能浏览它的课程笔记。"}
+          还没有课堂笔记。在正文或 Agent 回答里划一句，点「笔记」写成便签批注。
         </p>
       </div>
     );
   }
 
-  const parsed = parseNotePath(hit.path);
-  const breadcrumb = parsed ? noteBreadcrumb(parsed, hit.title) : hit.title;
-
   return (
     <div className="user-note-stage">
       <div className="user-note-stage-head">
-        <div className="user-note-stage-title">{hit.title}</div>
-        <div className="user-note-stage-meta">{breadcrumb}</div>
+        <div className="user-note-stage-title">{note.title || "课堂笔记"}</div>
+        <div className="user-note-stage-meta">
+          {subjectLabel(note.subjectId)} · {note.source?.label || "课堂批注"} · 更新于 {formatUpdatedAt(note.updatedAt)}
+        </div>
         <div className="user-note-stage-actions" data-no-drag>
-          <button
-            type="button"
-            data-no-drag
-            className="user-note-action is-primary"
-            onClick={() =>
-              useNoteCitations
-                .getState()
-                .openViewer([{ title: hit.title, path: hit.path, snippet: hit.snippet }], hit.path)
-            }
-          >
-            <BookOpen size={13} /> 查看引用
+          <button type="button" data-no-drag className="user-note-action" onClick={() => openEditor(note.id)}>
+            <PenLine size={13} /> 编辑
           </button>
           <button
             type="button"
             data-no-drag
-            className="user-note-action"
-            onClick={() => cite([`【课程笔记】${breadcrumb}`, hit.snippet || hit.path].join("\n"))}
+            className="user-note-action is-primary"
+            onClick={() => cite(formatClassroomNoteQuote(note))}
           >
             {cited ? <Check size={13} /> : <Quote size={13} />} {cited ? "已引用到对话" : "引用到对话"}
           </button>
         </div>
       </div>
-      <div className="user-note-preview">
-        {hit.snippet ? (
-          <p className="user-note-course-summary">{hit.snippet}</p>
+      <div className="user-note-preview prose-notes">
+        <blockquote className="classroom-note-quote">
+          <div className="classroom-note-quote-label">原文引用</div>
+          {note.quote?.trim() || "（没有划词原文）"}
+        </blockquote>
+        <div className="classroom-note-org">
+          <div className="classroom-note-org-label">整理信息</div>
+          <p className="classroom-note-org-line">科目：{subjectLabel(note.subjectId)}</p>
+          <p className="classroom-note-org-line">出处：{note.source?.label || "课堂"}</p>
+          {note.source?.path ? <p className="classroom-note-org-line">路径：{note.source.path}</p> : null}
+          <p className="classroom-note-org-line">更新：{formatUpdatedAt(note.updatedAt)}</p>
+        </div>
+        {note.markdown.trim() ? (
+          <NoteRenderer content={note.markdown} />
         ) : (
-          <p className="note-citation-status">这条课程笔记没有摘要，点「查看引用」读正文。</p>
+          <p className="note-citation-status">还没有批注。点「编辑」在便签里写一句。</p>
         )}
       </div>
     </div>

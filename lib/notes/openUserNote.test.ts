@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { beforeEach, test } from "node:test";
 import { readFileSync } from "node:fs";
-import { citeUserNoteToMainAgent, createAndOpenNote, openAgentForUserNote, openArtifactImportPicker, openDocumentImportPicker, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
+import { citeUserNoteToMainAgent, createAndOpenClassroomNote, createAndOpenNote, openAgentForUserNote, openArtifactImportPicker, openDocumentImportPicker, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
 import { BLANK_NOTE_MARKDOWN, DEFAULT_NOTE_MARKDOWN, EXAMPLE_USER_NOTE_ID } from "@/lib/notes/userNote";
 import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
 import { useUserNotes } from "@/lib/stores/userNotes";
@@ -48,6 +48,24 @@ test("createAndOpenNote uses the active subject when omitted", () => {
   assert.doesNotMatch(useUserNotes.getState().byId[id]?.markdown ?? "", /案例笔记/);
   assert.notEqual(useUserNotes.getState().byId[id]?.markdown, DEFAULT_NOTE_MARKDOWN);
   assert.ok(useWindowManager.getState().windows.some((win) => win.type === "user-note-editor"));
+});
+
+test("createAndOpenClassroomNote writes a classroom sticky note with the quote", () => {
+  useStore.setState({ activeSubjectId: "probability", activeCategoryId: "detail", activeItemId: "1.1" });
+  const id = createAndOpenClassroomNote({
+    quote: "泊松分布的均值等于方差",
+    sourceKind: "agent",
+    anchor: { x: 120, y: 160 },
+  });
+  assert.ok(id);
+  const note = useUserNotes.getState().byId[id!];
+  assert.equal(note?.kind, "classroom");
+  assert.equal(note?.quote, "泊松分布的均值等于方差");
+  assert.equal(note?.subjectId, "probability");
+  assert.match(note?.source?.label ?? "", /Agent/);
+  assert.deepEqual(useUserNotes.getState().openEditorIds, [id]);
+  const win = useWindowManager.getState().windows.find((item) => item.data && "noteId" in item.data && item.data.noteId === id);
+  assert.ok((win?.size.width ?? 999) <= 380);
 });
 
 test("createAndOpenNote can leave a note unfiled", () => {
