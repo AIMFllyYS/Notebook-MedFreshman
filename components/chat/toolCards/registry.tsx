@@ -113,7 +113,9 @@ export interface ToolResultCardEntry {
   withItems?: (part: ToolPart<StudyToolName>, items: readonly unknown[]) => ToolPart<StudyToolName>;
 }
 
-export const TOOL_RESULT_CARDS: readonly ToolResultCardEntry[] = RESULT_CARD_ORDER.map((name) => {
+export const TOOL_RESULT_CARDS: readonly ToolResultCardEntry[] = RESULT_CARD_ORDER.filter(
+  (name) => !(THREAD_SILENT_TOOLS as readonly StudyToolName[]).includes(name),
+).map((name) => {
   const mod = TOOL_REGISTRY[name];
   if (!mod.ResultCard) throw new Error(`TOOL_RESULT_CARDS: ${name} 缺少 ResultCard`);
   return {
