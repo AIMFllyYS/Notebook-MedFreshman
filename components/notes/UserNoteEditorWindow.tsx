@@ -2,30 +2,39 @@
 
 import { useCallback, useState, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
+import dynamic from "next/dynamic";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import clsx from "clsx";
-import { Trash2 } from "lucide-react";
+import { Download, Quote, Trash2 } from "lucide-react";
 import ManagedWindow from "@/components/window/ManagedWindow";
 import NoteRenderer from "@/components/notes/NoteRenderer";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
+import { useCiteToChat } from "@/components/notes/useCiteToChat";
 import { useUserNotes } from "@/lib/stores/userNotes";
-import { subjectLabel, userNoteWindowId } from "@/lib/notes/userNote";
+import { downloadAsMarkdown } from "@/lib/documents/export";
+import { formatNoteQuote, subjectLabel, userNoteWindowId } from "@/lib/notes/userNote";
 
-type EditorMode = "edit" | "split" | "preview";
+type EditorMode = "source" | "wysiwyg" | "split";
 
 const MODES: { id: EditorMode; label: string }[] = [
-  { id: "edit", label: "编辑" },
+  { id: "source", label: "源码" },
+  { id: "wysiwyg", label: "渲染编辑" },
   { id: "split", label: "分栏" },
-  { id: "preview", label: "预览" },
 ];
+
+const MilkdownNoteEditor = dynamic(() => import("@/components/notes/MilkdownNoteEditor"), {
+  ssr: false,
+  loading: () => <div className="user-note-crepe-loading">加载渲染编辑器…</div>,
+});
 
 export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
   const note = useUserNotes((s) => s.byId[noteId]);
   const updateNote = useUserNotes((s) => s.updateNote);
   const removeNote = useUserNotes((s) => s.removeNote);
   const closeEditor = useUserNotes((s) => s.closeEditor);
-  const [mode, setMode] = useState<EditorMode>("split");
+  const [mode, setMode] = useState<EditorMode>("wysiwyg");
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const { cited, cite } = useCiteToChat();
 
   const handleClose = useCallback(() => closeEditor(noteId), [closeEditor, noteId]);
   const handleMarkdown = useCallback(
@@ -39,6 +48,7 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
     <NoteSourcePane value={note.markdown} onChange={handleMarkdown} />
   );
   const preview = <NotePreviewPane markdown={note.markdown} />;
+  const wysiwyg = <MilkdownNoteEditor key={`${noteId}:${mode}`} value={note.markdown} onChange={handleMarkdown} />;
 
   const actions = (
     <div className="user-note-chrome-actions" data-no-drag>
@@ -56,6 +66,27 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
           </button>
         ))}
       </div>
+      <button
+        type="button"
+        data-no-drag
+        title="分享到对话"
+        aria-label="分享到对话"
+        className="user-note-chrome-btn"
+        onClick={() => cite(formatNoteQuote(note))}
+      >
+        <Quote size={14} />
+        <span className="sr-only">{cited ? "已引用到对话" : "引用到对话"}</span>
+      </button>
+      <button
+        type="button"
+        data-no-drag
+        title="下载 Markdown"
+        aria-label="下载 Markdown"
+        className="user-note-chrome-btn"
+        onClick={() => downloadAsMarkdown(note.markdown, note.title || "无标题笔记")}
+      >
+        <Download size={14} />
+      </button>
       <button
         type="button"
         data-no-drag
@@ -113,7 +144,7 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
             </Panel>
           </PanelGroup>
         ) : (
-          <div className="user-note-single">{mode === "edit" ? source : preview}</div>
+          <div className="user-note-single">{mode === "source" ? source : wysiwyg}</div>
         )}
       </div>
 

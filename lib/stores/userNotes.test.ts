@@ -21,6 +21,16 @@ function reset() {
 
 beforeEach(reset);
 
+test("createNote can seed an agent summary instead of the default template", () => {
+  const id = useUserNotes.getState().createNote("physics", {
+    title: "牛顿定律",
+    markdown: "# 牛顿定律\n\n$F=ma$",
+  });
+  const note = useUserNotes.getState().byId[id];
+  assert.equal(note?.title, "牛顿定律");
+  assert.equal(note?.markdown, "# 牛顿定律\n\n$F=ma$");
+});
+
 test("createNote binds subject and seeds default markdown", () => {
   const id = useUserNotes.getState().createNote("probability");
   const note = useUserNotes.getState().byId[id];

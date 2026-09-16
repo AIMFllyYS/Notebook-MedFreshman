@@ -11,6 +11,10 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/",
 }));
 
+vi.mock("@/components/notes/MilkdownNoteEditor", () => ({
+  default: () => <div data-testid="crepe-stub">渲染编辑器</div>,
+}));
+
 describe("personal note windows", () => {
   beforeEach(() => {
     vi.stubGlobal("ResizeObserver", class {
@@ -38,6 +42,7 @@ describe("personal note windows", () => {
     const id = createAndOpenNote("probability");
     render(<UserNoteLayer />);
 
+    fireEvent.click(screen.getByRole("button", { name: "分栏" }));
     const editor = screen.getByLabelText("笔记正文（Markdown）");
     fireEvent.change(editor, {
       target: { value: "# 期望\n\n行内 $E(X)=\\lambda$\n\n$$\\int_0^1 x\\,dx$$" },
@@ -46,6 +51,8 @@ describe("personal note windows", () => {
     expect(useUserNotes.getState().byId[id]?.title).toBe("期望");
     expect(screen.getByLabelText("笔记标题")).toHaveValue("期望");
     expect(screen.getByText("期望", { selector: "h1" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "分享到对话" }));
+    expect(useChatUI.getState().quotedText).toMatch(/【笔记】期望/);
   });
 
   it("cites a user note into the chat quote tray from the library", () => {

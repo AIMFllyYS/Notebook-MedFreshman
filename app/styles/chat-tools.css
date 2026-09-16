@@ -807,6 +807,50 @@ mark.citation-flash {
   color: var(--ink-faint);
 }
 
+.user-note-crepe,
+.user-note-crepe-loading {
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  background: var(--bg-panel);
+}
+
+.user-note-crepe-loading {
+  display: grid;
+  place-items: center;
+  color: var(--ink-faint);
+  font-size: 13px;
+}
+
+.user-note-crepe .milkdown {
+  --crepe-color-background: var(--bg-panel);
+  --crepe-color-on-background: var(--ink);
+  --crepe-color-surface: var(--bg-panel);
+  --crepe-color-surface-low: var(--md-sys-color-surface-container-low);
+  --crepe-color-on-surface: var(--ink);
+  --crepe-color-on-surface-variant: var(--ink-soft);
+  --crepe-color-outline: var(--line);
+  --crepe-color-primary: var(--md-sys-color-primary);
+  --crepe-color-secondary: var(--md-sys-color-secondary-container);
+  --crepe-color-on-secondary: var(--md-sys-color-on-secondary-container);
+  --crepe-color-inverse: var(--md-sys-color-inverse-surface);
+  --crepe-color-on-inverse: var(--md-sys-color-inverse-on-surface);
+  --crepe-color-inline-code: var(--md-sys-color-error);
+  --crepe-color-error: var(--md-sys-color-error);
+  --crepe-color-hover: var(--bg-muted);
+  --crepe-color-selected: var(--md-sys-color-primary-container);
+  --crepe-color-inline-area: var(--md-sys-color-surface-variant);
+  --crepe-font-title: inherit;
+  --crepe-font-default: inherit;
+  --crepe-font-code: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  --crepe-base-font-size: 14.5px;
+  min-height: 100%;
+  padding: 8px 12px 28px;
+  background: var(--bg-panel);
+  color: var(--ink);
+}
+
 .user-note-preview {
   min-width: 0;
   min-height: 0;
@@ -1001,6 +1045,71 @@ mark.citation-flash {
   font-size: 13px;
   line-height: 1.7;
   color: var(--md-sys-color-on-surface-variant);
+}
+
+.memory-cloud {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px 16px;
+  background: var(--bg-panel);
+}
+
+.memory-cloud-question {
+  margin: 0;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.memory-cloud-reason,
+.memory-cloud-error {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.memory-cloud-error {
+  color: var(--md-sys-color-error);
+}
+
+.memory-cloud-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.memory-cloud-field input {
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg-muted);
+  color: var(--ink);
+  font-size: 13px;
+  outline: none;
+}
+
+.memory-cloud-field input:focus {
+  border-color: var(--md-sys-color-primary);
+}
+
+.memory-cloud-trace {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+}
+
+.memory-cloud-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .user-note-course-summary {

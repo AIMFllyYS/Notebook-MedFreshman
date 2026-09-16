@@ -44,8 +44,8 @@ interface UserNotesState {
   _hasHydrated: boolean;
   _setHasHydrated: (v: boolean) => void;
 
-  /** 新建一篇笔记（不开窗），返回笔记 id。 */
-  createNote: (subjectId: string | null) => string;
+  /** 新建一篇笔记（不开窗），返回笔记 id。可带入 Agent 沉淀的短提纲。 */
+  createNote: (subjectId: string | null, init?: { title?: string; markdown?: string }) => string;
   /** 改标题 / 正文；未手动改过标题时标题跟随正文首个标题。 */
   updateNote: (id: string, patch: UserNotePatch) => void;
   /** 删除笔记，并关掉它可能打开着的编辑器窗口。 */
@@ -117,13 +117,15 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     _hasHydrated: false,
     _setHasHydrated: (v) => set({ _hasHydrated: v }),
 
-    createNote: (subjectId) => {
+    createNote: (subjectId, init) => {
       const id = genId();
       const now = Date.now();
+      const markdown = init?.markdown?.trim() ? init.markdown : DEFAULT_NOTE_MARKDOWN;
+      const title = init?.title?.trim() || deriveNoteTitle(markdown);
       const note: UserNote = {
         id,
-        title: deriveNoteTitle(DEFAULT_NOTE_MARKDOWN),
-        markdown: DEFAULT_NOTE_MARKDOWN,
+        title,
+        markdown,
         subjectId,
         createdAt: now,
         updatedAt: now,
