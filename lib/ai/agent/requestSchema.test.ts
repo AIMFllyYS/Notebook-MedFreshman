@@ -135,6 +135,11 @@ test('request schema keeps unknown fields ignored and normal payloads valid', ()
   assert.equal('legacyUnknown' in parsed, false);
   assert.equal(parseChatRequest({ messages: [], memoryCommit: 'note' }).memoryCommit, 'note');
   assert.equal(parseChatRequest({ messages: [] }).memoryCommit, undefined);
+  assert.deepEqual(parseChatRequest({
+    messages: [],
+    editingUserNote: { id: 'note_1', title: '被覆上皮', markdown: '# 被覆上皮' },
+  }).editingUserNote, { id: 'note_1', title: '被覆上皮', markdown: '# 被覆上皮' });
+  assert.equal(parseChatRequest({ messages: [] }).editingUserNote, undefined);
 });
 
 test('satellite schemas reject oversized prompts and ignore non-array customApiGroups', () => {

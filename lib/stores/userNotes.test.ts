@@ -11,6 +11,7 @@ function reset() {
     byId: {},
     order: [],
     openEditorIds: [],
+    agentEditingNoteId: null,
     libraryOpen: false,
     libraryIntent: "browse",
     librarySubjectId: null,
@@ -59,9 +60,11 @@ test("openEditor opens a managed window and closeManagedWindow clears it", () =>
   assert.deepEqual(win?.data, { noteId: id });
   assert.deepEqual(useUserNotes.getState().openEditorIds, [id]);
 
+  useUserNotes.getState().setAgentEditingNoteId(id);
   closeManagedWindow(win!);
   assert.equal(useWindowManager.getState().windows.length, 0);
   assert.deepEqual(useUserNotes.getState().openEditorIds, []);
+  assert.equal(useUserNotes.getState().agentEditingNoteId, null);
 });
 
 test("openLibrary cite mode and closeManagedWindow", () => {

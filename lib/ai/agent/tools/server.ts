@@ -25,6 +25,8 @@ import { createUseSkillTool } from "@/lib/ai/agent/tools/useSkill/tool";
 import { createProposeMemoryTool } from "@/lib/ai/agent/tools/proposeMemory/tool";
 import { createCommitNotesTool } from "@/lib/ai/agent/tools/commitNotes/tool";
 import { createCommitFlashcardsTool } from "@/lib/ai/agent/tools/commitFlashcards/tool";
+import { createUpdateUserNoteTool } from "@/lib/ai/agent/tools/updateUserNote/tool";
+import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 import type { ArtifactCatalogItem } from "@/lib/ai/agent/tools/getArtifact/types";
 
 export {
@@ -46,6 +48,8 @@ export interface BuildStudyToolsOptions {
    * 未确认时只给 proposeMemory，避免模型直接写笔记/闪卡。
    */
   memoryCommit?: "note" | "flashcards";
+  /** 学生从笔记窗打开助教时才暴露 updateUserNote。 */
+  editingUserNote?: EditingUserNoteContext;
 }
 
 /**
@@ -80,6 +84,7 @@ export function buildStudyTools(
     proposeMemory: createProposeMemoryTool(),
     commitNotes: createCommitNotesTool(),
     commitFlashcards: createCommitFlashcardsTool(),
+    updateUserNote: createUpdateUserNoteTool(ctx),
   } satisfies Record<StudyToolName, unknown>;
 
   // 稳定工具在前；enableSearch / useSkill 易变，追加在末尾，失效范围可解释。
@@ -99,6 +104,7 @@ export function buildStudyTools(
   ];
   if (opts.memoryCommit === "note") names.push("commitNotes");
   if (opts.memoryCommit === "flashcards") names.push("commitFlashcards");
+  if (opts.editingUserNote?.id) names.push("updateUserNote");
   if (opts.enableSearch) names.push("webSearch", "imageSearch");
   if (menuSkillNames.length > 0) names.push("useSkill");
 

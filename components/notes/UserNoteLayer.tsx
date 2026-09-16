@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import { useUserNotes } from "@/lib/stores/userNotes";
+import { useChatHistory } from "@/lib/stores/chatHistory";
+import { applyUpdateUserNoteEvents } from "@/lib/notes/applyUserNoteAgent";
 import UserNoteEditorWindow from "@/components/notes/UserNoteEditorWindow";
 import NoteLibraryWindow from "@/components/notes/NoteLibraryWindow";
 
@@ -8,6 +11,11 @@ import NoteLibraryWindow from "@/components/notes/NoteLibraryWindow";
 export default function UserNoteLayer() {
   const openEditorIds = useUserNotes((s) => s.openEditorIds);
   const libraryOpen = useUserNotes((s) => s.libraryOpen);
+  const messagesById = useChatHistory((s) => s.messagesById);
+
+  useEffect(() => {
+    applyUpdateUserNoteEvents(Object.values(messagesById).flat());
+  }, [messagesById]);
 
   return (
     <>

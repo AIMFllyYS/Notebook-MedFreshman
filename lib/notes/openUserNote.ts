@@ -1,11 +1,12 @@
-// 个人笔记的对外入口：加号菜单 / 书架卡片 / 键盘快捷键都只调这四个函数，
+// 个人笔记的对外入口：加号菜单 / 书架卡片 / 键盘快捷键 / 笔记窗 AI 图标只调这里，
 // 不直接摸 store，也不关心窗口 id 怎么拼。
 
 import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
+import { useChatUI } from "@/lib/stores/chatUI";
 import { useStore } from "@/lib/stores/ui";
 import { useUserNotes } from "@/lib/stores/userNotes";
-import type { NoteLibraryIntent } from "@/lib/notes/userNote";
+import { formatNoteQuote, type NoteLibraryIntent } from "@/lib/notes/userNote";
 
 function onBookshelfHome(): boolean {
   return typeof window !== "undefined" && window.location.pathname === "/";
@@ -34,6 +35,22 @@ export function createAndOpenNote(
 
 export function openNoteEditor(noteId: string): void {
   useUserNotes.getState().openEditor(noteId);
+}
+
+/**
+ * 笔记窗 AI 图标：打开已有右侧 Agent，带上这篇已打开笔记的引用，并允许 updateUserNote 写回。
+ */
+export function openAgentForUserNote(noteId: string): boolean {
+  const notes = useUserNotes.getState();
+  const note = notes.byId[noteId];
+  if (!note || !notes.openEditorIds.includes(noteId)) return false;
+  notes.setAgentEditingNoteId(noteId);
+  useChatUI.getState().setQuotedText(formatNoteQuote(note));
+  const ui = useStore.getState();
+  ui.setRightTab("ai");
+  ui.setMobileTab("ai");
+  ui.setRightCollapsedForProfile(ui.layoutProfile, false);
+  return true;
 }
 
 /** browse = 书架「笔记」；cite = 加号菜单「选择笔记」（我的笔记 + 课程笔记两栏）。 */

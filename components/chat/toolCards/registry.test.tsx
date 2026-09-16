@@ -14,13 +14,14 @@ describe("tool registry", () => {
   });
 
   it("keeps memory-loop tools off the fat result-card list", () => {
-    expect([...THREAD_SILENT_TOOLS]).toEqual(["proposeMemory", "commitNotes", "commitFlashcards"]);
+    expect([...THREAD_SILENT_TOOLS]).toEqual(["proposeMemory", "commitNotes", "commitFlashcards", "updateUserNote"]);
     expect(TOOL_RESULT_CARDS.map((c) => c.name)).not.toEqual(
-      expect.arrayContaining(["proposeMemory", "commitNotes", "commitFlashcards"]),
+      expect.arrayContaining(["proposeMemory", "commitNotes", "commitFlashcards", "updateUserNote"]),
     );
     expect(TOOL_REGISTRY.proposeMemory.ResultCard).toBeUndefined();
     expect(TOOL_REGISTRY.commitNotes.ResultCard).toBeUndefined();
     expect(TOOL_REGISTRY.commitFlashcards.ResultCard).toBeUndefined();
+    expect(TOOL_REGISTRY.updateUserNote.ResultCard).toBeUndefined();
   });
 
   it("lists the result cards in current chat order", () => {

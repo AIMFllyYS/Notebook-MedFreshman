@@ -21,6 +21,7 @@ import {
 import { createAgentLifecycleHooks } from "@/lib/ai/observability/agentLog";
 import { formatArtifactCatalog, type ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
+import { formatEditingUserNoteContext, type EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 
 export interface StudyAgentInput {
   model: LanguageModelV4;
@@ -45,6 +46,8 @@ export interface StudyAgentInput {
   temperature?: number;
   /** 学生确认沉淀后，本轮才暴露对应 commit 工具。 */
   memoryCommit?: MemoryCommitKind;
+  /** 学生从笔记窗打开助教时，当前正在编辑的个人笔记。 */
+  editingUserNote?: EditingUserNoteContext;
 }
 
 export interface StudyAgentBundle {
@@ -71,6 +74,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     referenceContext, contextTruncated, isImageMode, selectedModelId, modelSupportsTools, thinking,
     artifacts = [],
     memoryCommit,
+    editingUserNote,
   } = input;
 
   // 稳定排序，保证拼装的系统前缀逐字节一致、利于缓存命中
@@ -106,6 +110,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
   // 稳定前缀（global + 学科 + 用户设置）在 systemPrompt 里，同页追问可命中 prefix cache。
   const volatile =
     buildLocationLine(chatCtx) +
+    (editingUserNote ? `\n\n${formatEditingUserNoteContext(editingUserNote)}` : "") +
     (referenceContext ? `\n\n【参考材料】\n${referenceContext}` : "") +
     formatArtifactCatalog(artifacts) +
     (contextTruncated
@@ -125,12 +130,13 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
           skills: sortedSkills,
           academicYear: chatCtx.academicYear,
           modelId: selectedModelId,
+          editingUserNote,
           artifactUnsupportedReason: isImageMode
             ? "当前生图模型不支持 HTML 交互组件生成，请切换文本模型后重试。"
             : undefined,
         },
         runtime,
-        { enableSearch: options.enableSearch ?? false, disabled: disabledTools, artifacts, memoryCommit },
+        { enableSearch: options.enableSearch ?? false, disabled: disabledTools, artifacts, memoryCommit, editingUserNote },
       )
     : {};
 

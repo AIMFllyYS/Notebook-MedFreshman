@@ -37,6 +37,9 @@ interface UserNotesState {
   order: string[];
   /** 已打开的编辑器窗口对应的笔记 id（可多开）。 */
   openEditorIds: string[];
+  /** 从编辑窗点开 Agent 的那篇笔记；关掉编辑器后清空。 */
+  agentEditingNoteId: string | null;
+  setAgentEditingNoteId: (id: string | null) => void;
   libraryOpen: boolean;
   libraryIntent: NoteLibraryIntent;
   librarySubjectId: string | null;
@@ -111,6 +114,8 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     byId: {},
     order: [],
     openEditorIds: [],
+    agentEditingNoteId: null,
+    setAgentEditingNoteId: (id) => set({ agentEditingNoteId: id }),
     libraryOpen: false,
     libraryIntent: "browse",
     librarySubjectId: null,
@@ -167,6 +172,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
           byId,
           order: s.order.filter((x) => x !== id),
           openEditorIds: s.openEditorIds.filter((x) => x !== id),
+          agentEditingNoteId: s.agentEditingNoteId === id ? null : s.agentEditingNoteId,
         };
       });
     },
@@ -198,7 +204,10 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
 
     closeEditor: (id) => {
       useWindowManager.getState().closeWindow(userNoteWindowId(id));
-      set((s) => ({ openEditorIds: s.openEditorIds.filter((x) => x !== id) }));
+      set((s) => ({
+        openEditorIds: s.openEditorIds.filter((x) => x !== id),
+        agentEditingNoteId: s.agentEditingNoteId === id ? null : s.agentEditingNoteId,
+      }));
     },
 
     openLibrary: (opts) => {

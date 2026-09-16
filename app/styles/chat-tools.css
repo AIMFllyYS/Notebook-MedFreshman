@@ -725,6 +725,11 @@ mark.citation-flash {
   font-weight: 600;
 }
 
+.user-note-editor-ai {
+  flex-shrink: 0;
+  margin-inline: -2px;
+}
+
 .user-note-chrome-actions {
   display: flex;
   align-items: center;
