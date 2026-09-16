@@ -31,6 +31,8 @@ describe("FlashcardCiteWindow", () => {
   it("shows empty guidance when the subject has no cards", () => {
     openFlashcardCitePicker({ subjectId: "probability" });
     render(<FlashcardCiteWindow />);
+    expect(screen.getByRole("navigation", { name: "学科" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "全部" })).toBeInTheDocument();
     expect(screen.getByText(/还没有复习闪卡/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "打开复习板" })).toBeInTheDocument();
   });
@@ -65,5 +67,62 @@ describe("FlashcardCiteWindow", () => {
     fireEvent.click(screen.getByRole("button", { name: /下载这张/ }));
     fireEvent.click(screen.getByRole("button", { name: /下载 CSV/ }));
     expect(createObjectURL).toHaveBeenCalled();
+  });
+
+  it("filters the card list by the subject sidebar and can show all", () => {
+    const probabilityId = useReviewCards.getState().addSaved("泊松分布原文", {
+      subjectId: "probability",
+      sourceLabel: "概率论 / 详解 / 2.3",
+    });
+    useReviewCards.getState().finalize(
+      probabilityId,
+      { mode: "quiz", cardType: "quiz", front: "泊松分布的期望？", back: "$\\lambda$" },
+      "test",
+    );
+    const physicsId = useReviewCards.getState().addSaved("牛顿原文", {
+      subjectId: "physics",
+      sourceLabel: "大学物理 / 详解 / 1.1",
+    });
+    useReviewCards.getState().finalize(
+      physicsId,
+      { mode: "quiz", cardType: "quiz", front: "牛顿第二定律？", back: "$F=ma$" },
+      "test",
+    );
+
+    openFlashcardCitePicker({ subjectId: "probability" });
+    render(<FlashcardCiteWindow />);
+
+    expect(screen.getByRole("button", { name: "全部" })).toBeInTheDocument();
+    expect(screen.getByText("大一下学期")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /泊松分布的期望/ })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /牛顿第二定律/ })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "全部" }));
+    expect(screen.getByRole("button", { name: /泊松分布的期望/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /牛顿第二定律/ })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "大学物理" }));
+    expect(screen.queryByRole("button", { name: /泊松分布的期望/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /牛顿第二定律/ })).toBeInTheDocument();
+  });
+
+  it("shows the empty state after switching to a subject with no cards", () => {
+    const id = useReviewCards.getState().addSaved("泊松分布原文", {
+      subjectId: "probability",
+      sourceLabel: "概率论 / 详解 / 2.3",
+    });
+    useReviewCards.getState().finalize(
+      id,
+      { mode: "quiz", cardType: "quiz", front: "泊松分布的期望？", back: "$\\lambda$" },
+      "test",
+    );
+    openFlashcardCitePicker({ subjectId: "probability" });
+    render(<FlashcardCiteWindow />);
+
+    expect(screen.getByRole("button", { name: /泊松分布的期望/ })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "系统解剖学" }));
+    expect(screen.getByText(/还没有复习闪卡/)).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "学科" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "打开复习板" })).toBeInTheDocument();
   });
 });

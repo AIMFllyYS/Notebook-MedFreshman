@@ -86,7 +86,13 @@ test("flashcard cite picker opens a singleton window", () => {
   useFlashcardCitations.getState().openPicker({ subjectId: "probability" });
   const win = useWindowManager.getState().windows.find((item) => item.type === "flashcard-cite-picker");
   assert.ok(win);
-  assert.match(win?.title ?? "", /选择复习闪卡/);
+  assert.match(win?.title ?? "", /复习闪卡页面/);
+  useFlashcardCitations.getState().setSubjectId(null);
+  assert.equal(useFlashcardCitations.getState().subjectId, null);
+  assert.equal(
+    useWindowManager.getState().windows.find((item) => item.type === "flashcard-cite-picker")?.title,
+    "复习闪卡页面",
+  );
   closeManagedWindow(win!);
   assert.equal(useFlashcardCitations.getState().open, false);
 });

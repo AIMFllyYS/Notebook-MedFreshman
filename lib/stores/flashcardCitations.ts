@@ -1,15 +1,17 @@
 import { create } from "zustand";
 import { useWindowManager } from "@/lib/stores/windowManager";
-import { FLASHCARD_CITE_WINDOW_ID, subjectLabel } from "@/lib/notes/userNote";
+import { FLASHCARD_CITE_WINDOW_ID } from "@/lib/notes/userNote";
+import { flashcardPickerTitle } from "@/lib/notes/flashcardSubjects";
 
-// 「选择复习闪卡」挑选窗的会话态（单开、不持久化，与 noteCitations 同构）。
-// 卡片本体在 useReviewCards（IndexedDB），这里只记住窗口开着、限定哪一科、选中哪张。
+// 「复习闪卡页面」管理窗的会话态（单开、不持久化，与 noteCitations 同构）。
+// 卡片本体在 useReviewCards（IndexedDB），这里只记住窗口开着、左侧选了哪一科、选中哪张。
 
 interface FlashcardCitationsState {
   open: boolean;
   subjectId: string | null;
   activeCardId: string | null;
   openPicker: (opts?: { subjectId?: string | null }) => void;
+  setSubjectId: (subjectId: string | null) => void;
   setActiveCardId: (cardId: string) => void;
   closePicker: () => void;
 }
@@ -40,12 +42,20 @@ export const useFlashcardCitations = create<FlashcardCitationsState>((set) => ({
     useWindowManager.getState().openWindow({
       id: FLASHCARD_CITE_WINDOW_ID,
       type: "flashcard-cite-picker",
-      title: subjectId ? `选择复习闪卡 · ${subjectLabel(subjectId)}` : "选择复习闪卡",
+      title: flashcardPickerTitle(subjectId),
       pos,
       size,
       data: { subjectId },
     });
     set({ open: true, subjectId, activeCardId: null });
+  },
+
+  setSubjectId: (subjectId) => {
+    useWindowManager.getState().updateWindow(FLASHCARD_CITE_WINDOW_ID, {
+      title: flashcardPickerTitle(subjectId),
+      data: { subjectId, activeCardId: null },
+    });
+    set({ subjectId, activeCardId: null });
   },
 
   setActiveCardId: (cardId) => {

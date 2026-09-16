@@ -214,7 +214,7 @@ function AddContentButton() {
             className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
           >
             <Layers size={14} className="text-[var(--md-sys-color-primary)]" />
-            <span><strong className="font-semibold">选择复习闪卡</strong><small className="ml-1 text-[var(--ink-soft)]">引用记忆卡</small></span>
+            <span><strong className="font-semibold">复习闪卡页面</strong><small className="ml-1 text-[var(--ink-soft)]">管理记忆卡</small></span>
           </button>
           <button
             type="button"

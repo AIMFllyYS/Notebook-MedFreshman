@@ -103,7 +103,9 @@ describe("WindowTaskbar add content", () => {
     expect(useUserNotes.getState().libraryIntent).toBe("cite");
 
     fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
-    fireEvent.click(screen.getByRole("menuitem", { name: /选择复习闪卡/ }));
+    expect(screen.getByRole("menuitem", { name: /复习闪卡页面/ })).toBeInTheDocument();
+    expect(screen.queryByRole("menuitem", { name: /选择复习闪卡/ })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("menuitem", { name: /复习闪卡页面/ }));
     expect(useWindowManager.getState().windows.some((win) => win.type === "flashcard-cite-picker")).toBe(true);
     expect(useFlashcardCitations.getState().open).toBe(true);
   });
