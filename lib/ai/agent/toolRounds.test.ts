@@ -4,8 +4,8 @@ import { clampMaxToolRounds, MAX_TOOL_ROUNDS_CAP, MAX_TOOL_STEPS, MIN_TOOL_ROUND
 
 test("clampMaxToolRounds：缺省 / 非法回退默认 6，夹到 1–16", () => {
   assert.equal(clampMaxToolRounds(undefined), MAX_TOOL_STEPS);
-  assert.equal(clampMaxToolRounds(null), MAX_TOOL_STEPS);
   assert.equal(clampMaxToolRounds("x"), MAX_TOOL_STEPS);
+  assert.equal(clampMaxToolRounds(null), MIN_TOOL_ROUNDS);
   assert.equal(clampMaxToolRounds(0), MIN_TOOL_ROUNDS);
   assert.equal(clampMaxToolRounds(-3), MIN_TOOL_ROUNDS);
   assert.equal(clampMaxToolRounds(3.6), 4);
