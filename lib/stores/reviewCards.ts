@@ -1,5 +1,6 @@
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { createPersistedStore } from "@/lib/stores/_persist";
+import { retargetCardSourceLabel } from "@/lib/notes/flashcardSubjects";
 import type {
   ReviewCard,
   ReviewCardContext,
@@ -31,6 +32,8 @@ interface ReviewCardsState {
   markError: (id: string, message: string) => void;
   /** 删除一张卡。 */
   remove: (id: string) => void;
+  /** 更换这张卡绑定的科目（写现有 subjectId / sourceLabel，不另开存储）。 */
+  setSubject: (id: string, subjectId: string) => void;
   /** 取某科目下的卡片（按创建时间倒序，最新在前）。 */
   bySubject: (subjectId: string) => ReviewCard[];
   /** 导出某科目 / 全部为可下载结构。 */
@@ -111,6 +114,22 @@ export const useReviewCards = createPersistedStore<ReviewCardsState>(
           const byId = { ...s.byId };
           delete byId[id];
           return { byId, order: s.order.filter((x) => x !== id) };
+        }),
+
+      setSubject: (id, subjectId) =>
+        set((s) => {
+          const prev = s.byId[id];
+          if (!prev || prev.subjectId === subjectId) return s;
+          return {
+            byId: {
+              ...s.byId,
+              [id]: {
+                ...prev,
+                subjectId,
+                sourceLabel: retargetCardSourceLabel(prev.sourceLabel, subjectId),
+              },
+            },
+          };
         }),
 
       bySubject: (subjectId) =>

@@ -6,6 +6,7 @@ import {
   FLASHCARD_PICKER_TITLE,
   flashcardPickerTitle,
   listFlashcardSubjectGroups,
+  retargetCardSourceLabel,
 } from "@/lib/notes/flashcardSubjects";
 
 test("flashcard picker title uses the management-page name", () => {
@@ -31,4 +32,9 @@ test("subject groups come from the academic-year registry, not a hardcoded table
     ?.subjects.find((subject) => subject.id === "probability");
   assert.equal(probability?.name, "概率论");
   assert.equal(probability?.fullName, "概率论与数理统计");
+});
+
+test("retargetCardSourceLabel only rewrites the subject segment", () => {
+  assert.equal(retargetCardSourceLabel("概率论 / 详解 / 2.3", "physics"), "大学物理 / 详解 / 2.3");
+  assert.equal(retargetCardSourceLabel("随手记", "anatomy"), "系统解剖学");
 });

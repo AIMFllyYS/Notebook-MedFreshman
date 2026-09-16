@@ -3,6 +3,7 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import type { UIMessageChunk } from 'ai';
 import { useChat } from './useChat';
 import { useChatHistory } from './useChatHistory';
+import { useUserNotes } from '@/lib/stores/userNotes';
 import { useSettings } from './useSettings';
 import { useTokenTracker } from './useTokenTracker';
 import { useFloatingTokenTracker } from './useFloatingTokenTracker';
@@ -409,5 +410,27 @@ describe('useChat SDK transport regression', () => {
     act(() => result.current.sendMessage('推导公式'));
     await settle();
     expect(lastAssistant(sid).followUpQuestions).toEqual(['每一步的依据是什么？', '有没有更简单的推导方法？', '这个公式怎么记忆？']);
+  });
+
+  it('窗内笔记会话带上指定 editingUserNote，且不改主 thread', async () => {
+    mockResponses(() => completedResponse());
+    const noteId = useUserNotes.getState().createNote('anatomy', { title: '被覆上皮', markdown: '# 被覆上皮\n\n旧稿' });
+    useUserNotes.getState().openEditor(noteId);
+    useUserNotes.getState().setAgentEditingNoteId('other-note');
+    useChatHistory.setState({
+      activeSessionId: 'main',
+      messagesById: { main: [], 'note-s': [] },
+      sessionsMeta: ['main', 'note-s'].map((id) => ({
+        id, title: id, createdAt: 1, updatedAt: 1, messageCount: 0, artifactIds: [],
+      })),
+      sessionLoadState: { main: 'loaded', 'note-s': 'loaded' },
+      loadedSessionIds: ['main', 'note-s'],
+    });
+    const { result } = renderHook(() => useChat(context, undefined, { sessionId: 'note-s', editingUserNoteId: noteId }));
+    act(() => { result.current.sendMessage('把分类补全'); });
+    await settle();
+    expect(requests[0].body.editingUserNote).toEqual({ id: noteId, title: '被覆上皮', markdown: '# 被覆上皮\n\n旧稿' });
+    expect(messagesFor('main')).toEqual([]);
+    expect(messagesFor('note-s')).toHaveLength(2);
   });
 });

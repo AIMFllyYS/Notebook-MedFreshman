@@ -28,7 +28,7 @@ export interface ChatSession {
   createdAt: number;
   updatedAt: number;
   context?: ChatContext;
-  kind?: 'main' | 'floating';
+  kind?: 'main' | 'floating' | 'note';
   /** Storage v2：历史列表在未加载消息体时使用 */
   messageCount?: number;
 }
@@ -50,7 +50,7 @@ interface ChatHistoryState {
   pinSession: (id: string) => void;
   unpinSession: (id: string) => void;
   ensureSessionLoaded: (sessionId: string) => Promise<void>;
-  createSession: (context?: ChatContext, kind?: 'main' | 'floating') => string;
+  createSession: (context?: ChatContext, kind?: 'main' | 'floating' | 'note') => string;
   deleteSession: (id: string) => void;
   switchSession: (id: string) => void;
   addMessage: (sessionId: string, message: ChatMessage) => void;
@@ -179,12 +179,12 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       title: '新对话',
       createdAt: now,
       updatedAt: now,
-      kind: kind === 'floating' ? 'floating' : undefined,
+      kind: kind === 'floating' || kind === 'note' ? kind : undefined,
       context,
       messageCount: 0,
       artifactIds: [],
     };
-    const claimActive = kind !== 'floating';
+    const claimActive = kind !== 'floating' && kind !== 'note';
     set((state) => {
       const sessionsMeta = [meta, ...state.sessionsMeta];
       const capped = sessionsMeta.length > MAX_SESSIONS ? sessionsMeta.slice(0, MAX_SESSIONS) : sessionsMeta;

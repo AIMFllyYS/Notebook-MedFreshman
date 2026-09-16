@@ -19,8 +19,8 @@ function resolveSubjectId(explicit?: string | null): string | null {
 }
 
 /**
- * 新建一篇笔记并打开编辑器。省略 subjectId 时绑定当前科目（首页书架则不归档）；显式传 null 则不归档。
- * `init` 给 Agent commitNotes 写入短提纲用。返回新笔记 id。
+ * 新建一篇空白笔记并打开编辑器。省略 subjectId 时绑定当前科目（首页书架则不归档）；显式传 null 则不归档。
+ * `init` 给 Agent commitNotes 写入短提纲用。不复制案例模板。返回新笔记 id。
  */
 export function createAndOpenNote(
   subjectId?: string | null,
@@ -38,13 +38,26 @@ export function openNoteEditor(noteId: string): void {
 }
 
 /**
- * 笔记窗 AI 图标：打开已有右侧 Agent，带上这篇已打开笔记的引用，并允许 updateUserNote 写回。
+ * 笔记窗 AI 图标：在编辑窗内部展开微型 Agent，不抢右侧主对话。
+ * 每篇笔记使用独立 session；写回仍走 updateUserNote。
  */
 export function openAgentForUserNote(noteId: string): boolean {
   const notes = useUserNotes.getState();
   const note = notes.byId[noteId];
   if (!note || !notes.openEditorIds.includes(noteId)) return false;
-  notes.setAgentEditingNoteId(noteId);
+  if (!notes.ensureNoteAgentSession(noteId)) return false;
+  notes.setNoteAgentOpen(noteId, true);
+  return true;
+}
+
+/**
+ * 笔记窗「引用」：写进右侧主 Agent 引用托盘，并暴露 updateUserNote，让主对话能改这篇笔记。
+ */
+export function citeUserNoteToMainAgent(noteId: string): boolean {
+  const notes = useUserNotes.getState();
+  const note = notes.byId[noteId];
+  if (!note) return false;
+  if (notes.openEditorIds.includes(noteId)) notes.setAgentEditingNoteId(noteId);
   useChatUI.getState().setQuotedText(formatNoteQuote(note));
   const ui = useStore.getState();
   ui.setRightTab("ai");

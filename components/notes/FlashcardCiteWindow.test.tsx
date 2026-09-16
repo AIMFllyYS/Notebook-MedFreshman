@@ -17,6 +17,7 @@ describe("FlashcardCiteWindow", () => {
   beforeEach(() => {
     vi.stubGlobal("ResizeObserver", class {
       observe() {}
+      unobserve() {}
       disconnect() {}
     });
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
@@ -34,7 +35,7 @@ describe("FlashcardCiteWindow", () => {
   it("shows empty guidance when the subject has no cards", () => {
     openFlashcardCitePicker({ subjectId: "probability" });
     render(<FlashcardCiteWindow />);
-    expect(screen.getByRole("navigation", { name: "学科" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "文件夹" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "全部" })).toBeInTheDocument();
     expect(screen.getByText(/还没有复习闪卡/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "打开复习板" })).toBeInTheDocument();
@@ -106,7 +107,7 @@ describe("FlashcardCiteWindow", () => {
     render(<FlashcardCiteWindow />);
 
     expect(screen.getByRole("button", { name: "全部" })).toBeInTheDocument();
-    expect(screen.getByText("大一下学期")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "大一下学期" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /泊松分布的期望/ })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /牛顿第二定律/ })).not.toBeInTheDocument();
 
@@ -133,11 +134,35 @@ describe("FlashcardCiteWindow", () => {
     render(<FlashcardCiteWindow />);
 
     expect(screen.getByRole("button", { name: /泊松分布的期望/ })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "大二上学期" }));
     fireEvent.click(screen.getByRole("button", { name: "系统解剖学" }));
     expect(screen.getByText(/还没有复习闪卡/)).toBeInTheDocument();
-    expect(screen.getByRole("navigation", { name: "学科" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "文件夹" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "打开复习板" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "编辑" })).not.toBeInTheDocument();
+  });
+
+  it("changes the active card subject from the stage chip", () => {
+    const id = useReviewCards.getState().addSaved("泊松分布原文", {
+      subjectId: "probability",
+      sourceLabel: "概率论 / 详解 / 2.3",
+    });
+    useReviewCards.getState().finalize(
+      id,
+      { mode: "quiz", cardType: "quiz", front: "泊松分布的期望？", back: "$\\lambda$" },
+      "test",
+    );
+    openFlashcardCitePicker({ subjectId: "probability" });
+    render(<FlashcardCiteWindow />);
+
+    expect(screen.getByTestId("subject-picker")).toHaveTextContent("概率论");
+    fireEvent.click(screen.getByTestId("subject-picker"));
+    fireEvent.click(screen.getByTestId("subject-picker-option-physics"));
+
+    expect(useReviewCards.getState().byId[id]?.subjectId).toBe("physics");
+    expect(useReviewCards.getState().byId[id]?.sourceLabel).toBe("大学物理 / 详解 / 2.3");
+    expect(useFlashcardCitations.getState().subjectId).toBe("physics");
+    expect(screen.getByTestId("subject-picker")).toHaveTextContent("大学物理");
   });
 
   it("opens the existing record preview without closing the cite picker", () => {

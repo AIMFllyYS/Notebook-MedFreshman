@@ -42,6 +42,23 @@ describe("DocumentWorkspace", () => {
     expect(screen.getByTestId("document-workspace-resize-handle")).toBeVisible();
   });
 
+  it("splits the left pane so the folder tree sits under the outline", () => {
+    render(
+      <DocumentWorkspace
+        outline={[{ id: "1", title: "笔记甲" }]}
+        activeId="1"
+        onSelect={() => {}}
+        outlineLabel="我的笔记"
+        folderTree={<nav aria-label="文件夹">学年树</nav>}
+      >
+        正文
+      </DocumentWorkspace>,
+    );
+    expect(screen.getByLabelText("我的笔记")).toBeVisible();
+    expect(screen.getByLabelText("文件夹")).toBeVisible();
+    expect(screen.getByTestId("folder-tree-resize-handle")).toBeVisible();
+  });
+
   it("wraps outline meta when asked so long URLs stay on the panel", () => {
     render(
       <DocumentWorkspace

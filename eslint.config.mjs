@@ -55,6 +55,8 @@ export default defineConfig([
   },
   {
     files: ["components/notes/**", "components/layout/RightPanel.tsx", "components/interactives/**"],
+    // 笔记窗内微型 Agent 必须复用 ChatThread / ChatInput，但不抢主对话。
+    ignores: ["components/notes/NoteAgentPanel.tsx"],
     rules: {
       "no-restricted-imports": ["error", {
         patterns: [

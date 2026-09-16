@@ -14,6 +14,14 @@ export function flashcardPickerTitle(subjectId: string | null): string {
   return subjectId ? `${FLASHCARD_PICKER_TITLE} · ${subjectLabel(subjectId)}` : FLASHCARD_PICKER_TITLE;
 }
 
+/** 换科目时只改出处第一段（学科名），后面的板块 / 章节保持原样。 */
+export function retargetCardSourceLabel(sourceLabel: string, nextSubjectId: string): string {
+  const name = subjectLabel(nextSubjectId);
+  const parts = sourceLabel.split(" / ").map((part) => part.trim()).filter(Boolean);
+  if (parts.length <= 1) return name;
+  return [name, ...parts.slice(1)].join(" / ");
+}
+
 export interface FlashcardSubjectFolder {
   id: string;
   name: string;

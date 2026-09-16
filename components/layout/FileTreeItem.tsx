@@ -2,8 +2,9 @@
 
 import { memo, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronRight, Folder, FolderOpen, FileText } from "lucide-react";
+import { Folder, FolderOpen, FileText } from "lucide-react";
 import type { ContentItem } from "@/lib/types/content";
+import FolderTreeRow from "./FolderTreeRow";
 
 interface FileTreeItemProps {
   item: ContentItem;
@@ -68,76 +69,30 @@ function FileTreeItem({
     }
   }, []);
 
+  const icon = isFolder ? (
+    isExpanded ? (
+      <FolderOpen size={15} style={{ color: "var(--md-sys-color-primary)" }} />
+    ) : (
+      <Folder size={15} style={{ color: "var(--md-sys-color-outline)" }} />
+    )
+  ) : (
+    <FileText size={14} style={{ color: "var(--md-sys-color-outline)" }} />
+  );
+
   return (
-    <div>
-      <button
-        onClick={
-          isFolder
-            ? () => onToggle(nsKey)
-            : () => onSelect(subjectId, categoryId, item)
-        }
-        onFocus={schedulePrefetch}
-        onBlur={cancelPrefetch}
-        className="flex w-full items-center gap-1 border-0 bg-transparent text-left outline-none"
-        style={{
-          paddingLeft: depth * 16 + 4,
-          height: 28,
-          lineHeight: "28px",
-          fontSize: 13,
-          background: isSelected
-            ? "var(--md-sys-color-primary-container)"
-            : undefined,
-          color: isSelected
-            ? "var(--md-sys-color-on-primary-container)"
-            : "var(--md-sys-color-on-surface-variant)",
-        }}
-        onMouseEnter={(e) => {
-          if (!isSelected) {
-            e.currentTarget.style.background =
-              "var(--md-sys-color-surface-container-high)";
-          }
-          schedulePrefetch();
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = isSelected
-            ? "var(--md-sys-color-primary-container)"
-            : "";
-          cancelPrefetch();
-        }}
-      >
-        {/* 展开箭头 */}
-        <span
-          className="inline-flex shrink-0 items-center justify-center"
-          style={{
-            width: 16,
-            height: 16,
-            transition: "transform 0.35s cubic-bezier(0.05,0.7,0.1,1.0)",
-            transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)",
-            opacity: isFolder ? 1 : 0,
-          }}
-        >
-          <ChevronRight size={14} />
-        </span>
-
-        {/* 图标 */}
-        <span className="inline-flex shrink-0 items-center justify-center" style={{ width: 18, height: 18 }}>
-          {isFolder ? (
-            isExpanded ? (
-              <FolderOpen size={15} style={{ color: "var(--md-sys-color-primary)" }} />
-            ) : (
-              <Folder size={15} style={{ color: "var(--md-sys-color-outline)" }} />
-            )
-          ) : (
-            <FileText size={14} style={{ color: "var(--md-sys-color-outline)" }} />
-          )}
-        </span>
-
-        {/* 标题 */}
-        <span className="truncate" style={{ fontSize: 13 }}>
-          {item.title}
-        </span>
-      </button>
-    </div>
+    <FolderTreeRow
+      depth={depth}
+      title={item.title}
+      isFolder={isFolder}
+      isExpanded={isExpanded}
+      isSelected={isSelected}
+      icon={icon}
+      onClick={isFolder ? () => onToggle(nsKey) : () => onSelect(subjectId, categoryId, item)}
+      onMouseEnter={schedulePrefetch}
+      onMouseLeave={cancelPrefetch}
+      onFocus={schedulePrefetch}
+      onBlur={cancelPrefetch}
+    />
   );
 }
 

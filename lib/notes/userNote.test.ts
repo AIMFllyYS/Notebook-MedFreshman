@@ -1,12 +1,16 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
+  BLANK_NOTE_MARKDOWN,
   DEFAULT_NOTE_MARKDOWN,
+  EXAMPLE_USER_NOTE_ID,
   deriveNoteTitle,
   formatFlashcardQuote,
   formatNoteQuote,
   listCourseNoteHits,
+  makeExampleUserNote,
   plainSnippet,
+  seedExampleNoteIfEmpty,
   subjectLabel,
   userNoteWindowId,
 } from "@/lib/notes/userNote";
@@ -26,10 +30,31 @@ test("deriveNoteTitle clamps long titles", () => {
   assert.equal(title.length, 60);
 });
 
-test("default markdown contains KaTeX delimiters", () => {
+test("default markdown is the case note, not a blank create template", () => {
+  assert.match(DEFAULT_NOTE_MARKDOWN, /^# 案例笔记/m);
   assert.match(DEFAULT_NOTE_MARKDOWN, /\$E = mc\^\{2\}\$/);
   assert.match(DEFAULT_NOTE_MARKDOWN, /\$\$/);
   assert.match(DEFAULT_NOTE_MARKDOWN, /\\int/);
+  assert.equal(BLANK_NOTE_MARKDOWN.trim(), "");
+  assert.notEqual(DEFAULT_NOTE_MARKDOWN.trim(), BLANK_NOTE_MARKDOWN.trim());
+});
+
+test("seedExampleNoteIfEmpty inserts the case note once when the library is empty", () => {
+  const first = seedExampleNoteIfEmpty({}, []);
+  assert.ok(first);
+  assert.equal(first.order.length, 1);
+  assert.equal(first.byId[EXAMPLE_USER_NOTE_ID]?.title, "案例笔记");
+  assert.equal(first.byId[EXAMPLE_USER_NOTE_ID]?.markdown, DEFAULT_NOTE_MARKDOWN);
+  assert.equal(first.byId[EXAMPLE_USER_NOTE_ID]?.subjectId, null);
+
+  const again = seedExampleNoteIfEmpty(first.byId, first.order);
+  assert.equal(again, null);
+
+  const existing = seedExampleNoteIfEmpty(
+    { mine: { ...makeExampleUserNote(), id: "mine", title: "课堂备忘", markdown: "旧稿" } },
+    ["mine"],
+  );
+  assert.equal(existing, null);
 });
 
 test("formatNoteQuote prefixes title and truncates long bodies", () => {

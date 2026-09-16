@@ -41,7 +41,7 @@ const ChatHistoryOverlay: React.FC<ChatHistoryOverlayProps> = ({
   };
   const [tab, setTab] = useState<TabType>('main');
   const [confirmId, setConfirmId] = useState<string | null>(null);
-  const mainSessions = sessions.filter((s) => s.kind !== 'floating');
+  const mainSessions = sessions.filter((s) => s.kind !== 'floating' && s.kind !== 'note');
   const floatingSessions = sessions.filter((s) => s.kind === 'floating');
 
   const imageSessionList: ImageGenSession[] = Object.values(imageSessions).sort(

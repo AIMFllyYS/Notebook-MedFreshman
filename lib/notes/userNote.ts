@@ -24,7 +24,11 @@ const TITLE_MAX_CHARS = 60;
 /** 引用到对话时的正文上限，避免把一篇长笔记整篇塞进输入框。 */
 const QUOTE_MAX_CHARS = 4000;
 
-export const DEFAULT_NOTE_MARKDOWN = `# 无标题笔记
+/** 选择笔记库的默认可见案例；新建笔记不要用这篇当模板。 */
+export const EXAMPLE_USER_NOTE_ID = "example-user-note";
+
+/** 案例笔记正文（KaTeX / GFM 演示）。只 seed 进库，不塞进 createNote。 */
+export const DEFAULT_NOTE_MARKDOWN = `# 案例笔记
 
 在左侧用 Markdown 写作。支持 GFM 表格、任务列表，以及 KaTeX 公式。
 
@@ -36,6 +40,37 @@ $$
 \\int_{-\\infty}^{\\infty} e^{-x^{2}}\\,dx = \\sqrt{\\pi}
 $$
 `;
+
+/** 加号 / 书架「新建笔记」：干净空白，标题占位即可。 */
+export const BLANK_NOTE_MARKDOWN = "";
+
+export function makeExampleUserNote(now = Date.now()): UserNote {
+  return {
+    id: EXAMPLE_USER_NOTE_ID,
+    title: deriveNoteTitle(DEFAULT_NOTE_MARKDOWN),
+    markdown: DEFAULT_NOTE_MARKDOWN,
+    subjectId: null,
+    createdAt: now,
+    updatedAt: now,
+  };
+}
+
+/**
+ * 库为空时插入一篇案例；已有任意用户笔记（含这篇案例）则不动。
+ * 不覆盖、不在每次新建时克隆。
+ */
+export function seedExampleNoteIfEmpty(
+  byId: Record<string, UserNote>,
+  order: string[],
+  now = Date.now(),
+): { byId: Record<string, UserNote>; order: string[] } | null {
+  if (order.length > 0 || byId[EXAMPLE_USER_NOTE_ID]) return null;
+  const note = makeExampleUserNote(now);
+  return {
+    byId: { ...byId, [note.id]: note },
+    order: [...order, note.id],
+  };
+}
 
 export function userNoteWindowId(noteId: string): string {
   return `user-note-editor:${noteId}`;

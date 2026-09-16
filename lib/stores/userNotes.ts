@@ -1,9 +1,12 @@
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { createPersistedStore } from "@/lib/stores/_persist";
+import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import {
-  DEFAULT_NOTE_MARKDOWN,
+  BLANK_NOTE_MARKDOWN,
   deriveNoteTitle,
+  EXAMPLE_USER_NOTE_ID,
+  seedExampleNoteIfEmpty,
   subjectLabel,
   USER_NOTE_LIBRARY_WINDOW_ID,
   userNoteWindowId,
@@ -20,10 +23,11 @@ import {
 
 const genId = () => Math.random().toString(36).slice(2, 11);
 
-/** 笔记正文/标题的增量补丁。 */
+/** 笔记正文/标题/学科的增量补丁。 */
 export interface UserNotePatch {
   title?: string;
   markdown?: string;
+  subjectId?: string | null;
 }
 
 export interface OpenNoteLibraryOptions {
@@ -37,19 +41,29 @@ interface UserNotesState {
   order: string[];
   /** 已打开的编辑器窗口对应的笔记 id（可多开）。 */
   openEditorIds: string[];
-  /** 从编辑窗点开 Agent 的那篇笔记；关掉编辑器后清空。 */
+  /** 引用到右侧主 Agent 后，主对话本轮可 updateUserNote 的那篇笔记；关掉编辑器后清空。 */
   agentEditingNoteId: string | null;
   setAgentEditingNoteId: (id: string | null) => void;
+  /** 编辑窗内展开了微型 Agent 面板的笔记。不持久化。 */
+  noteAgentOpenIds: string[];
+  setNoteAgentOpen: (id: string, open: boolean) => void;
+  /** 每篇笔记自己的干净会话；随笔记持久化，重开窗可续聊。 */
+  noteAgentSessionById: Record<string, string>;
+  ensureNoteAgentSession: (id: string) => string | null;
   libraryOpen: boolean;
   libraryIntent: NoteLibraryIntent;
   librarySubjectId: string | null;
+  /** 笔记库左侧文件夹树选中的学科；null = 全部。 */
+  setLibrarySubjectId: (subjectId: string | null) => void;
   /** IndexedDB 异步水合完成标志。 */
   _hasHydrated: boolean;
   _setHasHydrated: (v: boolean) => void;
 
-  /** 新建一篇笔记（不开窗），返回笔记 id。可带入 Agent 沉淀的短提纲。 */
+  /** 新建一篇笔记（不开窗），返回笔记 id。可带入 Agent 沉淀的短提纲。无 init 时正文空白。 */
   createNote: (subjectId: string | null, init?: { title?: string; markdown?: string }) => string;
-  /** 改标题 / 正文；未手动改过标题时标题跟随正文首个标题。 */
+  /** 库为空时 seed 一篇案例笔记；已有笔记则跳过。 */
+  ensureExampleNote: () => string | null;
+  /** 改标题 / 正文 / 学科；未手动改过标题时标题跟随正文首个标题。 */
   updateNote: (id: string, patch: UserNotePatch) => void;
   /** 删除笔记，并关掉它可能打开着的编辑器窗口。 */
   removeNote: (id: string) => void;
@@ -71,6 +85,23 @@ export function selectUserNotes(
     .filter((note): note is UserNote => Boolean(note))
     .filter((note) => (subjectId == null ? true : note.subjectId === subjectId))
     .sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+/**
+ * 选择笔记（cite）列表：当前筛选下若看不到案例，补进来当默认可见示例。
+ * 不改变用户笔记排序；案例未归档时在学科筛选里仍能看见。
+ */
+export function selectLibraryNotes(
+  byId: Record<string, UserNote>,
+  order: string[],
+  subjectId?: string | null,
+  opts?: { includeExample?: boolean },
+): UserNote[] {
+  const notes = selectUserNotes(byId, order, subjectId);
+  if (!opts?.includeExample) return notes;
+  const example = byId[EXAMPLE_USER_NOTE_ID];
+  if (!example || notes.some((note) => note.id === example.id)) return notes;
+  return [...notes, example].sort((a, b) => b.updatedAt - a.updatedAt);
 }
 
 function editorWindowGeometry(openCount: number) {
@@ -116,6 +147,34 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     openEditorIds: [],
     agentEditingNoteId: null,
     setAgentEditingNoteId: (id) => set({ agentEditingNoteId: id }),
+    noteAgentOpenIds: [],
+    setNoteAgentOpen: (id, open) =>
+      set((s) => {
+        if (!s.byId[id]) return s;
+        const has = s.noteAgentOpenIds.includes(id);
+        if (open === has) return s;
+        return {
+          noteAgentOpenIds: open
+            ? [...s.noteAgentOpenIds, id]
+            : s.noteAgentOpenIds.filter((item) => item !== id),
+        };
+      }),
+    noteAgentSessionById: {},
+    ensureNoteAgentSession: (id) => {
+      if (!get().byId[id]) return null;
+      const existing = get().noteAgentSessionById[id];
+      const history = useChatHistory.getState();
+      if (existing && history.sessionsMeta.some((session) => session.id === existing)) {
+        return existing;
+      }
+      const sessionId = history.createSession(undefined, "note");
+      const title = get().byId[id]?.title.trim() || "笔记对话";
+      history.updateSessionTitle(sessionId, title);
+      set((s) => ({
+        noteAgentSessionById: { ...s.noteAgentSessionById, [id]: sessionId },
+      }));
+      return sessionId;
+    },
     libraryOpen: false,
     libraryIntent: "browse",
     librarySubjectId: null,
@@ -125,7 +184,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     createNote: (subjectId, init) => {
       const id = genId();
       const now = Date.now();
-      const markdown = init?.markdown?.trim() ? init.markdown : DEFAULT_NOTE_MARKDOWN;
+      const markdown = init?.markdown?.trim() ? init.markdown : BLANK_NOTE_MARKDOWN;
       const title = init?.title?.trim() || deriveNoteTitle(markdown);
       const note: UserNote = {
         id,
@@ -137,6 +196,13 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
       };
       set((s) => ({ byId: { ...s.byId, [id]: note }, order: [...s.order, id] }));
       return id;
+    },
+
+    ensureExampleNote: () => {
+      const seeded = seedExampleNoteIfEmpty(get().byId, get().order);
+      if (!seeded) return get().byId[EXAMPLE_USER_NOTE_ID]?.id ?? null;
+      set(seeded);
+      return EXAMPLE_USER_NOTE_ID;
     },
 
     updateNote: (id, patch) => {
@@ -151,9 +217,10 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
           : patch.markdown !== undefined && autoTitled
             ? deriveNoteTitle(markdown)
             : prev.title;
-      if (title === prev.title && markdown === prev.markdown) return;
+      const subjectId = patch.subjectId !== undefined ? patch.subjectId : prev.subjectId;
+      if (title === prev.title && markdown === prev.markdown && subjectId === prev.subjectId) return;
 
-      const next: UserNote = { ...prev, title, markdown, updatedAt: Date.now() };
+      const next: UserNote = { ...prev, title, markdown, subjectId, updatedAt: Date.now() };
       set((s) => ({ byId: { ...s.byId, [id]: next } }));
       if (next.title !== prev.title) {
         useWindowManager.getState().updateWindow(userNoteWindowId(id), {
@@ -164,14 +231,19 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
 
     removeNote: (id) => {
       if (!get().byId[id]) return;
+      const sessionId = get().noteAgentSessionById[id];
+      if (sessionId) useChatHistory.getState().deleteSession(sessionId);
       useWindowManager.getState().closeWindow(userNoteWindowId(id));
       set((s) => {
         const byId = { ...s.byId };
         delete byId[id];
+        const { [id]: _drop, ...noteAgentSessionById } = s.noteAgentSessionById;
         return {
           byId,
           order: s.order.filter((x) => x !== id),
           openEditorIds: s.openEditorIds.filter((x) => x !== id),
+          noteAgentOpenIds: s.noteAgentOpenIds.filter((x) => x !== id),
+          noteAgentSessionById,
           agentEditingNoteId: s.agentEditingNoteId === id ? null : s.agentEditingNoteId,
         };
       });
@@ -206,11 +278,22 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
       useWindowManager.getState().closeWindow(userNoteWindowId(id));
       set((s) => ({
         openEditorIds: s.openEditorIds.filter((x) => x !== id),
+        noteAgentOpenIds: s.noteAgentOpenIds.filter((x) => x !== id),
         agentEditingNoteId: s.agentEditingNoteId === id ? null : s.agentEditingNoteId,
       }));
     },
 
+    setLibrarySubjectId: (subjectId) => {
+      const intent = get().libraryIntent;
+      useWindowManager.getState().updateWindow(USER_NOTE_LIBRARY_WINDOW_ID, {
+        title: libraryTitle(intent, subjectId),
+        data: { subjectId, intent },
+      });
+      set({ librarySubjectId: subjectId });
+    },
+
     openLibrary: (opts) => {
+      get().ensureExampleNote();
       const subjectId = opts?.subjectId ?? null;
       const intent: NoteLibraryIntent = opts?.intent ?? "browse";
       const { pos, size } = libraryWindowGeometry();
@@ -233,9 +316,11 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
   {
     name: PERSIST_KEYS.userNotes,
     storage: "idb",
-    partialize: (s) => ({ byId: s.byId, order: s.order }),
+    partialize: (s) => ({ byId: s.byId, order: s.order, noteAgentSessionById: s.noteAgentSessionById }),
     onRehydrateStorage: () => (state) => {
+      if (state && !state.noteAgentSessionById) state.noteAgentSessionById = {};
       state?._setHasHydrated(true);
+      state?.ensureExampleNote();
     },
   },
 );

@@ -19,7 +19,7 @@ export interface SessionMeta {
   title: string;
   createdAt: number;
   updatedAt: number;
-  kind?: 'main' | 'floating';
+  kind?: 'main' | 'floating' | 'note';
   context?: ChatContext;
   messageCount: number;
   preview?: string;

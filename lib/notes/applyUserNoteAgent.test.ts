@@ -18,6 +18,8 @@ function resetNotes() {
     order: [],
     openEditorIds: [],
     agentEditingNoteId: null,
+    noteAgentOpenIds: [],
+    noteAgentSessionById: {},
     libraryOpen: false,
     libraryIntent: "browse",
     librarySubjectId: null,
@@ -44,6 +46,15 @@ test("selectEditingUserNote only returns the open note the student handed to Age
 
   useUserNotes.getState().closeEditor(id);
   assert.equal(selectEditingUserNote(), null);
+});
+
+test("selectEditingUserNote can lock a specific open note besides the cited one", () => {
+  const cited = openNote("# 引用这篇");
+  const other = useUserNotes.getState().createNote("anatomy", { title: "窗内这篇", markdown: "# 窗内" });
+  useUserNotes.getState().openEditor(other);
+  assert.equal(selectEditingUserNote()?.id, cited);
+  assert.equal(selectEditingUserNote(other)?.id, other);
+  assert.equal(selectEditingUserNote(other)?.markdown, "# 窗内");
 });
 
 test("applyUpdateUserNote writes markdown back into the open editor", () => {
