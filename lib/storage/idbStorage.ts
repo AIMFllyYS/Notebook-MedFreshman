@@ -20,6 +20,7 @@ export const PERSIST_KEYS = {
   artifacts: "artifacts",
   skills: "skills",
   reviewCards: "review-cards",
+  userNotes: "user-notes",
   imageGen: "image-gen",
   billingHistory: "billing-history",
   documents: "documents",
