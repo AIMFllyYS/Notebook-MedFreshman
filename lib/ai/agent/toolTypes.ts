@@ -8,9 +8,10 @@
  *   types.ts  presentation.ts  tool.ts
  * 有卡片时：components/chat/toolCards/<name>Card.tsx
  * ```
- * 14 个目录：getCurrentPage / getOutline / getSection / searchNotes /
+ * 18 个目录：getCurrentPage / getOutline / getSection / searchNotes /
  * searchNoteImages / webSearch / imageSearch / renderInteractive / drawDiagram /
- * generateImage / createQuiz / writeDocument / getArtifact / useSkill。
+ * generateImage / createQuiz / writeDocument / getArtifact / useSkill /
+ * proposeMemory / commitNotes / commitFlashcards / updateUserNote。
  *
  * 本文件只做兼容旧 import 路径的 re-export（真实类型在各 `types.ts`）。
  * 客户端 ChatMessage 的 UITools 泛型直接引用此处，UI 才能从 `tool-xxx` part 的
@@ -59,6 +60,16 @@ export type {
   UseSkillOutput,
   GetArtifactInput,
   GetArtifactOutput,
+  ProposeMemoryInput,
+  ProposeMemoryOutput,
+  MemoryKind,
+  CommitNotesInput,
+  CommitNotesOutput,
+  CommitFlashcardsInput,
+  CommitFlashcardsOutput,
+  CommitFlashcardItem,
+  UpdateUserNoteInput,
+  UpdateUserNoteOutput,
   StudyTools,
   StudyToolName,
 } from "@/lib/ai/agent/tools/index";

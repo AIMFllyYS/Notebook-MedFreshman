@@ -15,6 +15,10 @@ import { presentation as createQuiz } from "@/lib/ai/agent/tools/createQuiz/pres
 import { presentation as writeDocument } from "@/lib/ai/agent/tools/writeDocument/presentation";
 import { presentation as getArtifact } from "@/lib/ai/agent/tools/getArtifact/presentation";
 import { presentation as useSkill } from "@/lib/ai/agent/tools/useSkill/presentation";
+import { presentation as proposeMemory } from "@/lib/ai/agent/tools/proposeMemory/presentation";
+import { presentation as commitNotes } from "@/lib/ai/agent/tools/commitNotes/presentation";
+import { presentation as commitFlashcards } from "@/lib/ai/agent/tools/commitFlashcards/presentation";
+import { presentation as updateUserNote } from "@/lib/ai/agent/tools/updateUserNote/presentation";
 
 export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
   getCurrentPage,
@@ -31,6 +35,10 @@ export const TOOL_PRESENTATION: Record<StudyToolName, ToolPresentation> = {
   writeDocument,
   getArtifact,
   useSkill,
+  proposeMemory,
+  commitNotes,
+  commitFlashcards,
+  updateUserNote,
 };
 
 /** 设置面板「工具调用」区展示的工具，按 STUDY_TOOL_NAMES 顺序。 */

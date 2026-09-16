@@ -115,6 +115,14 @@ export function buildToolTraceStep(
     summary = `找到 ${output.hits.length} 条笔记`;
   } else if (typeof output.skill === 'string') {
     summary = `${output.found === false ? '未找到技能' : '已调用技能'}：${output.skill}`;
+  } else if (output.kind === 'note' || output.kind === 'flashcard') {
+    summary = typeof output.reason === 'string' && output.reason
+      ? output.reason
+      : output.kind === 'note' ? '提议整理成笔记' : '提议整理成闪卡';
+  } else if (typeof output.noteId === 'string') {
+    summary = `笔记：${typeof output.title === 'string' && output.title ? output.title : '已写入'}`;
+  } else if (Array.isArray(output.items) && (name === 'commitFlashcards' || output.mode)) {
+    summary = `${output.items.length} 张闪卡${typeof output.mode === 'string' ? ` · ${output.mode}` : ''}`;
   } else if (typeof output.title === 'string' && output.title) {
     summary = output.title;
   } else {

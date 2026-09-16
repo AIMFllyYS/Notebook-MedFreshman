@@ -41,6 +41,10 @@ const ArtifactViewer = dynamic(() => import("@/components/chat/ArtifactViewer"),
 const ImageGenViewerLayer = dynamic(() => import("@/components/chat/ImageGenViewer"), { ssr: false });
 const DocumentViewerLayer = dynamic(() => import("@/components/chat/DocumentViewer"), { ssr: false });
 const NoteCitationViewer = dynamic(() => import("@/components/chat/NoteCitationViewer"), { ssr: false });
+const UserNoteLayer = dynamic(() => import("@/components/notes/UserNoteLayer"), { ssr: false });
+const FlashcardCiteWindow = dynamic(() => import("@/components/notes/FlashcardCiteWindow"), { ssr: false });
+const AgentProductPickerWindow = dynamic(() => import("@/components/notes/AgentProductPickerWindow"), { ssr: false });
+const MemoryInboxLayer = dynamic(() => import("@/components/memory/MemoryInboxLayer"), { ssr: false });
 const SourceTraceViewer = dynamic(() => import("@/components/chat/SourceTraceViewer"), { ssr: false });
 const SourcePreviewViewer = dynamic(() => import("@/components/chat/SourcePreviewViewer"), { ssr: false });
 const AttachmentPreviewViewer = dynamic(() => import("@/components/chat/AttachmentPreviewViewer"), { ssr: false });
@@ -303,6 +307,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <ImageGenViewerLayer />
         <DocumentViewerLayer />
         <NoteCitationViewer />
+        <UserNoteLayer />
+        <FlashcardCiteWindow />
+        <AgentProductPickerWindow />
+        <MemoryInboxLayer />
         <SourceTraceViewer />
         <SourcePreviewViewer />
         <AttachmentPreviewViewer />
@@ -424,6 +432,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <ImageGenViewerLayer />
       <DocumentViewerLayer />
       <NoteCitationViewer />
+      <UserNoteLayer />
+      <FlashcardCiteWindow />
+      <AgentProductPickerWindow />
+      <MemoryInboxLayer />
       <SourceTraceViewer />
       <SourcePreviewViewer />
       <AttachmentPreviewViewer />

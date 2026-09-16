@@ -5,6 +5,11 @@ import { useImageGen } from "@/lib/hooks/useImageGen";
 import { useRecordPreviews } from "@/lib/hooks/useRecordPreviews";
 import { useDocuments } from "@/lib/hooks/useDocuments";
 import { useNoteCitations } from "@/lib/hooks/useNoteCitations";
+import { useUserNotes } from "@/lib/stores/userNotes";
+import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
+import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
+import { useMemoryInbox } from "@/lib/stores/memoryInbox";
+import type { MemoryProposalData, UserNoteEditorData } from "@/lib/stores/windowManager";
 import { toggleManagedWindowFullscreen } from "@/lib/window/toggleManagedFullscreen";
 
 /** 解析当前应操作的 managed 窗口（activeWindowId 或 z 最高未最小化）。 */
@@ -42,6 +47,25 @@ export function closeManagedWindow(win: ManagedWindow): void {
     case "note-citation-viewer":
       useNoteCitations.getState().closeViewer();
       break;
+    case "user-note-editor": {
+      const data = win.data as UserNoteEditorData;
+      useUserNotes.getState().closeEditor(data.noteId);
+      break;
+    }
+    case "user-note-library":
+      useUserNotes.getState().closeLibrary();
+      break;
+    case "flashcard-cite-picker":
+      useFlashcardCitations.getState().closePicker();
+      break;
+    case "agent-product-picker":
+      useAgentProductPicker.getState().closePicker();
+      break;
+    case "memory-proposal": {
+      const data = win.data as MemoryProposalData;
+      useMemoryInbox.getState().dismiss(data.proposalId);
+      break;
+    }
     default:
       useWindowManager.getState().closeWindow(win.id);
   }

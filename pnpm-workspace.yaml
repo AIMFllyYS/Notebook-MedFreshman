@@ -3,3 +3,10 @@ allowBuilds:
   esbuild: true
   sharp: true
   unrs-resolver: true
+
+# Milkdown Crepe 锁了这三颗 @codemirror/*。pnpm 11 默认 minimumReleaseAge=1440，
+# CI frozen install 会在包发布未满 24h 时直接失败。只放开这三颗已锁定版本。
+minimumReleaseAgeExclude:
+  - "@codemirror/commands@6.11.1"
+  - "@codemirror/state@6.7.5"
+  - "@codemirror/view@6.43.12"

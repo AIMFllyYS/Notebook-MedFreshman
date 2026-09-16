@@ -10,6 +10,8 @@ import type { Skill } from "@/lib/types/skill";
 import type { ContextBudget } from "./estimateContextBudget";
 import type { ResolvedRequestSettings } from "./resolveRequestSettings";
 import type { ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
+import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
+import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 
 export interface ChatRequestBodySettings {
   customApiGroups: CustomApiGroup[];
@@ -22,6 +24,8 @@ export interface ChatRequestBodySettings {
   capabilityEndpoints?: CapabilityEndpoints;
   disabledTools: string[];
   globalContext: string;
+  memoryCommit?: MemoryCommitKind;
+  editingUserNote?: EditingUserNoteContext;
 }
 
 /** 发给 /api/chat 的 body（messages 由 transport 另传）。字段须与 chatRequestSchema 对齐。 */
@@ -49,6 +53,8 @@ export interface ChatRequestBody {
   globalContext: string;
   skills: Skill[];
   artifacts?: ArtifactCatalogItem[];
+  memoryCommit?: MemoryCommitKind;
+  editingUserNote?: EditingUserNoteContext;
 }
 
 export function buildChatRequestBody(
@@ -101,5 +107,7 @@ export function buildChatRequestBody(
     globalContext: settings.globalContext,
     skills,
     artifacts,
+    memoryCommit: settings.memoryCommit,
+    editingUserNote: settings.editingUserNote,
   };
 }

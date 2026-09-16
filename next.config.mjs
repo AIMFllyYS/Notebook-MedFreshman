@@ -19,7 +19,7 @@ const nextConfig = {
   // 注意：katex 不可加入——它靠 `import "katex/contrib/mhchem"` 的副作用给 katex 单例打补丁，
   // barrel 优化的深层导入改写会破坏该单例关系，导致 SSR 包里 mhchem 的气体箭头 `^`、三键 `#`
   // 等惰性特性失效（\ce{N2 ^}、\ce{-C#CH} 渲染成红字错误），而 node 直跑无此改写故正常。
-  transpilePackages: ["pdfjs-dist", "docx-preview", "pptx-preview"],
+  transpilePackages: ["pdfjs-dist", "docx-preview", "pptx-preview", "@milkdown/crepe", "@milkdown/kit"],
   experimental: {
     optimizePackageImports: ["framer-motion", "lucide-react"],
   },

@@ -29,6 +29,9 @@ const STRUCTURED_TEXT_TOOLS = new Set([
   "createQuiz",
   "writeDocument",
   "generateImage",
+  "commitNotes",
+  "commitFlashcards",
+  "updateUserNote",
 ]);
 
 export function isCompactedToolText(text: string): boolean {
@@ -114,7 +117,7 @@ function compactToolOutput(
   }
 
   if (STRUCTURED_TEXT_TOOLS.has(name) && typeof rec.text === "string" && rec.text.length > 400 && !isCompactedToolText(rec.text)) {
-    const hasStructured = rec.questions != null || rec.spec != null || rec.imageGenId != null;
+    const hasStructured = rec.questions != null || rec.spec != null || rec.imageGenId != null || rec.markdown != null || rec.items != null;
     if (hasStructured) rec.text = stubToolText(name, rec, input);
   }
 

@@ -216,6 +216,8 @@ export async function POST(req: NextRequest) {
         selectedModelId: automaticModels ? effectiveModelId : modelId ?? effectiveModelId,
         modelSupportsTools: resolved.supportsTools,
         thinking: options.enableThinking ? resolved.thinkingSettings(options.thinkingEffort) : {},
+        memoryCommit: body.memoryCommit,
+        editingUserNote: body.editingUserNote,
       });
 
       const estimateIncoming = (truncated: boolean, referenceContext: string) => {
