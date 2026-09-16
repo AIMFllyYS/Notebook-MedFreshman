@@ -9,6 +9,7 @@ import { useUserNotes } from "@/lib/stores/userNotes";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
 import { useMemoryInbox } from "@/lib/stores/memoryInbox";
+import { useQuizExplain } from "@/lib/stores/quizExplain";
 import type { MemoryProposalData, UserNoteEditorData } from "@/lib/stores/windowManager";
 import { toggleManagedWindowFullscreen } from "@/lib/window/toggleManagedFullscreen";
 
@@ -66,6 +67,9 @@ export function closeManagedWindow(win: ManagedWindow): void {
       useMemoryInbox.getState().dismiss(data.proposalId);
       break;
     }
+    case "quiz-explain":
+      useQuizExplain.getState().closeWindow(win.id);
+      break;
     default:
       useWindowManager.getState().closeWindow(win.id);
   }

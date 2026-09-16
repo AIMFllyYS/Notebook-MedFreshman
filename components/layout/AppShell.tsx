@@ -36,6 +36,7 @@ import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const FloatingChatLayer = dynamic(() => import("@/components/chat/FloatingChatLayer"), { ssr: false });
+const QuizExplainLayer = dynamic(() => import("@/components/quiz/QuizExplainLayer"), { ssr: false });
 const RecordPreviewLayer = dynamic(() => import("@/components/review/RecordPreviewLayer"), { ssr: false });
 const ArtifactViewer = dynamic(() => import("@/components/chat/ArtifactViewer"), { ssr: false });
 const ImageGenViewerLayer = dynamic(() => import("@/components/chat/ImageGenViewer"), { ssr: false });
@@ -302,6 +303,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <PipPlayer />
         </AnimatePresence>
         <FloatingChatLayer />
+        <QuizExplainLayer />
         <RecordPreviewLayer />
         <ArtifactViewer />
         <ImageGenViewerLayer />
@@ -427,6 +429,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <PipPlayer />
       </AnimatePresence>
       <FloatingChatLayer />
+      <QuizExplainLayer />
       <RecordPreviewLayer />
       <ArtifactViewer />
       <ImageGenViewerLayer />
