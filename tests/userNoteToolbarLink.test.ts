@@ -36,10 +36,11 @@ test("tool action text uses the existing toolbar button, without underline", () 
   assert.match(standaloneRule(prose, ".prose-notes a"), /text-decoration:\s*underline/);
   assert.match(standaloneRule(prose, ".chat-prose a"), /text-decoration:\s*underline/);
 
-  assert.match(flashcards, /className="user-note-toolbar-link"[\s\S]{0,160}下载这张/);
-  assert.match(flashcards, /className="user-note-toolbar-link"[\s\S]{0,160}下载 CSV/);
-  assert.match(flashcards, /className="user-note-toolbar-link"[\s\S]{0,160}打开复习板/);
-  assert.match(cloud, /className="user-note-toolbar-link"[\s\S]{0,120}不用了/);
+  assert.equal((flashcards.match(/className="user-note-toolbar-link"/g) || []).length, 3);
+  assert.match(flashcards, /下载这张/);
+  assert.match(flashcards, /下载 CSV/);
+  assert.match(flashcards, /打开复习板/);
+  assert.match(cloud, /className="user-note-toolbar-link"[\s\S]{0,180}不用了/);
 
   assert.doesNotMatch(noteEditor, /user-note-toolbar-link/);
   assert.match(noteEditor, /user-note-chrome-btn/);
