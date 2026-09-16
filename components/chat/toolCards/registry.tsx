@@ -81,7 +81,13 @@ export const TOOL_REGISTRY = {
   }),
   getArtifact: moduleOf("getArtifact"),
   useSkill: moduleOf("useSkill"),
+  // 记忆闭环：只在 Agent 轨迹里显示调用，不进对话产出框。
+  proposeMemory: moduleOf("proposeMemory"),
+  commitNotes: moduleOf("commitNotes"),
+  commitFlashcards: moduleOf("commitFlashcards"),
 } satisfies { [N in StudyToolName]: ToolModule<N> };
+
+export const THREAD_SILENT_TOOLS = ["proposeMemory", "commitNotes", "commitFlashcards"] as const satisfies readonly StudyToolName[];
 
 /** 现网 ChatMessage 卡片顺序（不是 STUDY_TOOL_NAMES）。imageSearch 追加在末尾，与收回前的气泡顺序一致。 */
 export const RESULT_CARD_ORDER = [
@@ -107,7 +113,9 @@ export interface ToolResultCardEntry {
   withItems?: (part: ToolPart<StudyToolName>, items: readonly unknown[]) => ToolPart<StudyToolName>;
 }
 
-export const TOOL_RESULT_CARDS: readonly ToolResultCardEntry[] = RESULT_CARD_ORDER.map((name) => {
+export const TOOL_RESULT_CARDS: readonly ToolResultCardEntry[] = RESULT_CARD_ORDER.filter(
+  (name) => !(THREAD_SILENT_TOOLS as readonly StudyToolName[]).includes(name),
+).map((name) => {
   const mod = TOOL_REGISTRY[name];
   if (!mod.ResultCard) throw new Error(`TOOL_RESULT_CARDS: ${name} 缺少 ResultCard`);
   return {

@@ -12,6 +12,9 @@ import type { CreateQuizInput, CreateQuizOutput } from "@/lib/ai/agent/tools/cre
 import type { WriteDocumentInput, WriteDocumentOutput } from "@/lib/ai/agent/tools/writeDocument/types";
 import type { GetArtifactInput, GetArtifactOutput } from "@/lib/ai/agent/tools/getArtifact/types";
 import type { UseSkillInput, UseSkillOutput } from "@/lib/ai/agent/tools/useSkill/types";
+import type { ProposeMemoryInput, ProposeMemoryOutput } from "@/lib/ai/agent/tools/proposeMemory/types";
+import type { CommitNotesInput, CommitNotesOutput } from "@/lib/ai/agent/tools/commitNotes/types";
+import type { CommitFlashcardsInput, CommitFlashcardsOutput } from "@/lib/ai/agent/tools/commitFlashcards/types";
 
 /** 供 UIMessage<…, StudyTools> 使用的 UITools 形状（type alias 才能满足 Record 约束）。 */
 export type StudyTools = {
@@ -29,6 +32,9 @@ export type StudyTools = {
   writeDocument: { input: WriteDocumentInput; output: WriteDocumentOutput };
   getArtifact: { input: GetArtifactInput; output: GetArtifactOutput };
   useSkill: { input: UseSkillInput; output: UseSkillOutput };
+  proposeMemory: { input: ProposeMemoryInput; output: ProposeMemoryOutput };
+  commitNotes: { input: CommitNotesInput; output: CommitNotesOutput };
+  commitFlashcards: { input: CommitFlashcardsInput; output: CommitFlashcardsOutput };
 };
 
 export type StudyToolName = keyof StudyTools;
@@ -48,4 +54,7 @@ export const STUDY_TOOL_NAMES: readonly StudyToolName[] = [
   "writeDocument",
   "getArtifact",
   "useSkill",
+  "proposeMemory",
+  "commitNotes",
+  "commitFlashcards",
 ];

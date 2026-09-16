@@ -18,16 +18,18 @@ function OutlineNav({
   activeId,
   onSelect,
   outlineLabel,
+  emptyLabel = "没有目录",
 }: {
   outline: DocumentOutlineItem[];
   activeId: string;
   onSelect: (id: string) => void;
   outlineLabel: string;
+  emptyLabel?: string;
 }) {
   return (
     <nav className="note-citation-sidebar" aria-label={outlineLabel}>
       {outline.length === 0 ? (
-        <p className="note-citation-status">没有目录</p>
+        <p className="note-citation-status">{emptyLabel}</p>
       ) : (
         outline.map((item, index) => {
           const selected = item.id === activeId;
@@ -70,6 +72,7 @@ export default function DocumentWorkspace({
   toolbar,
   children,
   outlineLabel = "目录",
+  emptyLabel,
   resizable = false,
 }: {
   outline: DocumentOutlineItem[];
@@ -78,11 +81,19 @@ export default function DocumentWorkspace({
   toolbar?: ReactNode;
   children: ReactNode;
   outlineLabel?: string;
+  /** 目录为空时的说明。缺省「没有目录」。 */
+  emptyLabel?: string;
   /** PDF / PPT 左右栏可拖拽缩放；笔记来源等保持固定目录宽。 */
   resizable?: boolean;
 }) {
   const nav = (
-    <OutlineNav outline={outline} activeId={activeId} onSelect={onSelect} outlineLabel={outlineLabel} />
+    <OutlineNav
+      outline={outline}
+      activeId={activeId}
+      onSelect={onSelect}
+      outlineLabel={outlineLabel}
+      emptyLabel={emptyLabel}
+    />
   );
   const stage = <Stage toolbar={toolbar}>{children}</Stage>;
 

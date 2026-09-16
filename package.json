@@ -46,6 +46,7 @@
     "@ai-sdk/anthropic": "4.0.46",
     "@ai-sdk/openai-compatible": "3.0.41",
     "@ai-sdk/provider": "4.0.9",
+    "@milkdown/crepe": "7.22.0",
     "@rdkit/rdkit": "2025.3.4-1.0.0",
     "@supabase/supabase-js": "^2.116.0",
     "@tanstack/react-virtual": "^3.14.4",

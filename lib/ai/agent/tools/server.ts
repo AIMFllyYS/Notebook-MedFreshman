@@ -22,6 +22,9 @@ import { createCreateQuizTool } from "@/lib/ai/agent/tools/createQuiz/tool";
 import { createWriteDocumentTool } from "@/lib/ai/agent/tools/writeDocument/tool";
 import { createGetArtifactTool } from "@/lib/ai/agent/tools/getArtifact/tool";
 import { createUseSkillTool } from "@/lib/ai/agent/tools/useSkill/tool";
+import { createProposeMemoryTool } from "@/lib/ai/agent/tools/proposeMemory/tool";
+import { createCommitNotesTool } from "@/lib/ai/agent/tools/commitNotes/tool";
+import { createCommitFlashcardsTool } from "@/lib/ai/agent/tools/commitFlashcards/tool";
 import type { ArtifactCatalogItem } from "@/lib/ai/agent/tools/getArtifact/types";
 
 export {
@@ -38,6 +41,11 @@ export interface BuildStudyToolsOptions {
   disabled?: string[];
   /** 请求携带的演示目录（html 只给 getArtifact，不进 prompt）。始终暴露该工具，避免工具 schema 随有无产物 bust。 */
   artifacts?: ArtifactCatalogItem[];
+  /**
+   * 记忆闭环第二步：学生确认后才把完整 commit schema 暴露给模型。
+   * 未确认时只给 proposeMemory，避免模型直接写笔记/闪卡。
+   */
+  memoryCommit?: "note" | "flashcards";
 }
 
 /**
@@ -69,6 +77,9 @@ export function buildStudyTools(
     generateImage: createGenerateImageTool(ctx),
     getArtifact: createGetArtifactTool(opts.artifacts ?? []),
     useSkill: createUseSkillTool(ctx, runtime),
+    proposeMemory: createProposeMemoryTool(),
+    commitNotes: createCommitNotesTool(),
+    commitFlashcards: createCommitFlashcardsTool(),
   } satisfies Record<StudyToolName, unknown>;
 
   // 稳定工具在前；enableSearch / useSkill 易变，追加在末尾，失效范围可解释。
@@ -84,7 +95,10 @@ export function buildStudyTools(
     "createQuiz",
     "writeDocument",
     "getArtifact",
+    "proposeMemory",
   ];
+  if (opts.memoryCommit === "note") names.push("commitNotes");
+  if (opts.memoryCommit === "flashcards") names.push("commitFlashcards");
   if (opts.enableSearch) names.push("webSearch", "imageSearch");
   if (menuSkillNames.length > 0) names.push("useSkill");
 

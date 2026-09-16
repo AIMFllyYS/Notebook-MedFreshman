@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import {
   Loader, X, Trash2, RefreshCw, Check, BookmarkCheck, AlertTriangle,
   BrainCircuit, ChevronDown, ChevronUp, Loader2, Wand2,
-  BookOpenText, PencilLine, FileQuestion, Settings2,
+  BookOpenText, PencilLine, FileQuestion, Settings2, Download, Quote,
 } from "lucide-react";
 import { useReviewCards } from "@/lib/hooks/useReviewCards";
 import { useRecordPreviews, type RecordPreview } from "@/lib/hooks/useRecordPreviews";
@@ -18,6 +18,9 @@ import FlipCard from "@/components/review/FlipCard";
 import CollapsibleSection from "@/components/review/CollapsibleSection";
 import QuizMarkdown from "@/components/quiz/QuizMarkdown";
 import type { RecordMode } from "@/lib/review/types";
+import { useCiteToChat } from "@/components/notes/useCiteToChat";
+import { formatFlashcardQuote } from "@/lib/notes/userNote";
+import { downloadFlashcardMarkdown, downloadFlashcardsCsv } from "@/lib/review/exportCards";
 
 // 统一设计 token
 const BOX = {
@@ -48,6 +51,7 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
 
   const [reviseText, setReviseText] = useState("");
   const [reviseError, setReviseError] = useState<string | null>(null);
+  const { cited, cite } = useCiteToChat();
   const abortRef = useRef<AbortController | null>(null);
   const uiTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingReasoning = useRef("");
@@ -311,6 +315,9 @@ export default function RecordPreviewWindow({ preview }: { preview: RecordPrevie
         {card.status === "ready" && !isProcessing ? (
           <>
             <ActionBtn onClick={() => close(preview.id)} icon={Check} label="保留" primary />
+            <ActionBtn onClick={() => cite(formatFlashcardQuote(card))} icon={Quote} label={cited ? "已分享" : "分享"} />
+            <ActionBtn onClick={() => downloadFlashcardMarkdown(card)} icon={Download} label="下载" />
+            <ActionBtn onClick={() => downloadFlashcardsCsv([card], card.sourceLabel || "复习闪卡")} icon={Download} label="CSV" />
             <ActionBtn onClick={() => { setFlipped(false); handleRetry(); }} icon={RefreshCw} label="重做" />
             <ActionBtn onClick={handleDiscard} icon={Trash2} label="丢弃" danger />
           </>

@@ -189,6 +189,8 @@ export const chatRequestSchema = z.object({
     .unknown()
     .default(DEFAULT_ACADEMIC_YEAR)
     .transform((v): AcademicYearId => (isAcademicYearId(v) ? v : DEFAULT_ACADEMIC_YEAR)),
+  /** 学生确认沉淀后，本轮才暴露 commitNotes / commitFlashcards。 */
+  memoryCommit: z.enum(["note", "flashcards"]).optional(),
 });
 
 export type ChatRequest = z.infer<typeof chatRequestSchema>;

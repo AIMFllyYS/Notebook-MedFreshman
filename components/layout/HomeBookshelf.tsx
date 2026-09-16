@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { GraduationCap, BookOpenCheck } from "lucide-react";
+import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
+import { openNoteLibrary } from "@/lib/notes/openUserNote";
 import { contentTree } from "@/lib/content-data/manifest";
 import { firstLearnHref } from "@/lib/content-data";
 import { subjectColor } from "@/lib/content-data/subjects.registry";
@@ -24,7 +26,7 @@ function overlayBtn(primary: boolean): React.CSSProperties {
     fontSize: 13,
     fontWeight: 600,
     textDecoration: "none",
-    minWidth: 132,
+    minWidth: 118,
     justifyContent: "center",
     background: primary ? "#fff" : "transparent",
     color: primary ? "#141414" : "#fff",
@@ -98,7 +100,7 @@ function BookCard({ subject }: { subject: Subject }) {
             zIndex: 2,
             display: "flex",
             flexDirection: "column",
-            gap: 10,
+            gap: 8,
             alignItems: "center",
             justifyContent: "center",
             background: "rgba(10,12,20,0.56)",
@@ -119,6 +121,13 @@ function BookCard({ subject }: { subject: Subject }) {
           <Link href={`/${subject.id}/review`} style={overlayBtn(false)}>
             <BookOpenCheck size={15} /> 开始复习
           </Link>
+          <button
+            type="button"
+            onClick={() => openNoteLibrary({ subjectId: subject.id, intent: "browse" })}
+            style={{ ...overlayBtn(false), cursor: "pointer" }}
+          >
+            <NotebookFormulaIcon size={15} /> 笔记
+          </button>
         </div>
       </div>
     </div>
@@ -142,7 +151,7 @@ export default function HomeBookshelf() {
             期末复习工作站
           </h1>
           <p style={{ fontSize: 14, color: "var(--ink-soft)", marginTop: 8, lineHeight: 1.7 }}>
-            选一本书：<b>开始学习</b> 进入正文，<b>开始复习</b> 翻看你划词 / 右键「记录」生成的记忆卡。
+            选一本书：<b>开始学习</b> 进入正文，<b>开始复习</b> 翻看记忆卡，<b>笔记</b> 写下这一科的个人笔记。
           </p>
         </header>
 
