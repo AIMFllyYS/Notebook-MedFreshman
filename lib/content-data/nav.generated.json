@@ -5806,6 +5806,45 @@
                   "quizRef": "rec-2026-fall-013-015"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-016-018",
+              "title": "第16-18节 · 上下肢肌学",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-016-018",
+                  "title": "课堂原文 · 第16-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-016-018",
+                  "quizRef": "rec-2026-fall-016-018"
+                },
+                {
+                  "id": "note-rec-2026-fall-016-018",
+                  "title": "课堂笔记 · 第16-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-016-018",
+                  "quizRef": "rec-2026-fall-016-018"
+                },
+                {
+                  "id": "card-rec-2026-fall-016-018",
+                  "title": "复习手卡 · 第16-18节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-016-018",
+                  "quizRef": "rec-2026-fall-016-018"
+                }
+              ]
             }
           ]
         },
@@ -5872,6 +5911,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-013-015",
               "quizRef": "rec-2026-fall-013-015",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-016-018",
+              "title": "课堂纪要 · 第16-18节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-016-018",
+              "quizRef": "rec-2026-fall-016-018",
               "layoutProfile": "full"
             }
           ]
