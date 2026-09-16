@@ -33,6 +33,18 @@ const resolved: ResolvedRequestSettings = {
   contextMode: "full",
 };
 
+test("buildChatRequestBody：确认沉淀后带上 memoryCommit", () => {
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ memoryCommit: "note" }),
+    resolved,
+    { limit: 8000, estimated: 1200, softLimitReached: false },
+    [],
+    "2025-2026-1",
+  );
+  assert.equal(body.memoryCommit, "note");
+});
+
 test("buildChatRequestBody：映射上下文与预算字段", () => {
   const body = buildChatRequestBody(
     ctx,
@@ -52,6 +64,7 @@ test("buildChatRequestBody：映射上下文与预算字段", () => {
   assert.deepEqual(body.disabledTools, ["webSearch"]);
   assert.equal(body.customProvider, undefined);
   assert.equal(body.skills[0]?.id, "s1");
+  assert.equal(body.memoryCommit, undefined);
   assert.equal(body.capabilityEndpoints.webSearchApiKey, "");
 });
 
