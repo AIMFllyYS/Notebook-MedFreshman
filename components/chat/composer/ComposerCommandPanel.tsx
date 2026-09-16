@@ -67,11 +67,7 @@ export default function ComposerCommandPanel({
   const showPlan = items.some((item) => item.kind === "plan");
   const tools = items.filter((item) => item.kind === "tool");
   const skillItems = items.filter((item) => item.kind === "skill");
-  let cursor = -1;
-  const mark = () => {
-    cursor += 1;
-    return cursor === activeIndex;
-  };
+  const selectedId = items[activeIndex]?.id;
 
   return (
     <div className="composer-command-panel" data-testid="composer-command-panel" role="listbox" aria-label="对话命令">
@@ -79,7 +75,7 @@ export default function ComposerCommandPanel({
         <button
           type="button"
           role="option"
-          aria-selected={mark()}
+          aria-selected={selectedId === "plan"}
           className="app-menu-item"
           onClick={onSelectPlan}
         >
@@ -97,7 +93,7 @@ export default function ComposerCommandPanel({
             key={tool}
             type="button"
             role="option"
-            aria-selected={mark()}
+            aria-selected={selectedId === tool}
             className="app-menu-item"
             onClick={() => onSelectTool(tool)}
           >
@@ -114,7 +110,7 @@ export default function ComposerCommandPanel({
           key={item.skill!.id}
           type="button"
           role="option"
-          aria-selected={mark()}
+          aria-selected={selectedId === skillForcedTool(item.skill!.id)}
           className="app-menu-item"
           onClick={() => onSelectSkill(item.skill!)}
         >

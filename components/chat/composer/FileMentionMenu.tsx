@@ -12,20 +12,19 @@ export interface FileMentionMenuProps {
 
 export default function FileMentionMenu({ groups, activeIndex = 0, onSelect }: FileMentionMenuProps) {
   const flat = flattenFileMentions(groups);
-  let cursor = -1;
+  const selectedPath = flat[activeIndex]?.path;
   return (
     <div className="file-mention-menu" data-testid="file-mention-menu" role="listbox" aria-label="引用笔记">
       {groups.map((group) => (
         <div key={group.id}>
           <div className="app-menu-heading">{group.label}</div>
           {group.items.map((item) => {
-            cursor += 1;
             return (
               <button
                 key={item.path}
                 type="button"
                 role="option"
-                aria-selected={cursor === activeIndex}
+                aria-selected={item.path === selectedPath}
                 className="app-menu-item"
                 onClick={() => onSelect(item)}
               >

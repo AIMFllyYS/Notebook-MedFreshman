@@ -356,9 +356,7 @@ function NoteSourcePane({
 
   return (
     <textarea
-      ref={(node) => {
-        refEl.current = node;
-      }}
+      ref={refEl}
       data-no-drag
       className="user-note-source"
       value={value}

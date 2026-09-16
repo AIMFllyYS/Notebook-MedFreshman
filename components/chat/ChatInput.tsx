@@ -117,6 +117,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const [forcedTool, setForcedTool] = useState<ComposerForcedTool | undefined>();
   const [attachedFiles, setAttachedFiles] = useState<AttachedFileRef[]>([]);
   const [palette, setPalette] = useState<PaletteKind>(null);
+  const [paletteAnchor, setPaletteAnchor] = useState<"plus" | "textarea">("textarea");
   const [paletteIndex, setPaletteIndex] = useState(0);
   const [mentionQuery, setMentionQuery] = useState("");
   const mentionTriggerRef = useRef<ReturnType<typeof detectComposerTrigger>>(null);
@@ -352,6 +353,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       return;
     }
     setMentionQuery(trigger.query);
+    setPaletteAnchor("textarea");
     setPalette(trigger.type);
     setPaletteIndex(0);
   };
@@ -537,6 +539,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
               mentionTriggerRef.current = null;
               setMentionQuery("");
               setPaletteIndex(0);
+              setPaletteAnchor("plus");
               setPalette("slash");
             }
           }}
@@ -607,7 +610,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       </div>
       <ComposerPalette
         open={palette !== null}
-        anchor={palette === "slash" && !mentionTriggerRef.current ? plusRef.current : textareaRef.current}
+        anchorRef={palette === "slash" && paletteAnchor === "plus" ? plusRef : textareaRef}
         label={palette === "hash" ? "引用笔记" : "对话命令"}
         onClose={closePalette}
       >

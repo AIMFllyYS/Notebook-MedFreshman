@@ -6,13 +6,13 @@ import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 export default function ComposerPalette({
   open,
-  anchor,
+  anchorRef,
   label,
   onClose,
   children,
 }: {
   open: boolean;
-  anchor: HTMLElement | null;
+  anchorRef: { readonly current: HTMLElement | null };
   label: string;
   onClose: () => void;
   children: ReactNode;
@@ -23,7 +23,7 @@ export default function ComposerPalette({
   useOverlayRegistration({ id: `composer-palette-${id}`, open, onClose, priority: 80 });
 
   const update = useCallback(() => {
-    const button = anchor;
+    const button = anchorRef.current;
     const menu = menuRef.current;
     if (!button || !menu) return;
     const rect = button.getBoundingClientRect();
@@ -36,7 +36,7 @@ export default function ComposerPalette({
       width,
       maxHeight: height,
     });
-  }, [anchor]);
+  }, [anchorRef]);
 
   useLayoutEffect(() => {
     if (!open) return;
@@ -45,7 +45,7 @@ export default function ComposerPalette({
     if (menuRef.current) observer?.observe(menuRef.current);
     window.addEventListener("resize", update);
     const dismiss = (event: PointerEvent) => {
-      if (!menuRef.current?.contains(event.target as Node) && !anchor?.contains(event.target as Node)) onClose();
+      if (!menuRef.current?.contains(event.target as Node) && !anchorRef.current?.contains(event.target as Node)) onClose();
     };
     document.addEventListener("pointerdown", dismiss);
     return () => {
@@ -53,7 +53,7 @@ export default function ComposerPalette({
       window.removeEventListener("resize", update);
       document.removeEventListener("pointerdown", dismiss);
     };
-  }, [open, update, children, anchor, onClose]);
+  }, [open, update, children, anchorRef, onClose]);
 
   if (!open || typeof document === "undefined") return null;
   return createPortal(
