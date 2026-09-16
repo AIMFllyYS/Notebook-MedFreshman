@@ -19,8 +19,8 @@ function resolveSubjectId(explicit?: string | null): string | null {
 }
 
 /**
- * 新建一篇笔记并打开编辑器。省略 subjectId 时绑定当前科目（首页书架则不归档）；显式传 null 则不归档。
- * `init` 给 Agent commitNotes 写入短提纲用。返回新笔记 id。
+ * 新建一篇空白笔记并打开编辑器。省略 subjectId 时绑定当前科目（首页书架则不归档）；显式传 null 则不归档。
+ * `init` 给 Agent commitNotes 写入短提纲用。不复制案例模板。返回新笔记 id。
  */
 export function createAndOpenNote(
   subjectId?: string | null,

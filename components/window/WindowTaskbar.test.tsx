@@ -154,7 +154,9 @@ describe("WindowTaskbar add content", () => {
     expect(editor).toBeDefined();
     expect(useUserNotes.getState().order).toHaveLength(1);
     const note = useUserNotes.getState().byId[useUserNotes.getState().order[0]!];
-    expect(note?.markdown).toMatch(/\$E = mc\^\{2\}\$/);
+    expect(note?.title).toBe("无标题笔记");
+    expect(note?.markdown.trim()).toBe("");
+    expect(note?.markdown).not.toMatch(/\$E = mc\^\{2\}\$/);
   });
 
   it("opens the note picker and flashcard picker from the plus menu", () => {
@@ -163,6 +165,7 @@ describe("WindowTaskbar add content", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: /选择笔记/ }));
     expect(useWindowManager.getState().windows.some((win) => win.type === "user-note-library")).toBe(true);
     expect(useUserNotes.getState().libraryIntent).toBe("cite");
+    expect(useUserNotes.getState().byId["example-user-note"]?.title).toBe("案例笔记");
 
     fireEvent.click(screen.getByRole("button", { name: "添加内容" }));
     expect(screen.getByRole("menuitem", { name: /复习闪卡页面/ })).toBeInTheDocument();

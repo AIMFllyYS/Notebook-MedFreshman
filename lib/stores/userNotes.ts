@@ -3,8 +3,10 @@ import { createPersistedStore } from "@/lib/stores/_persist";
 import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import {
-  DEFAULT_NOTE_MARKDOWN,
+  BLANK_NOTE_MARKDOWN,
   deriveNoteTitle,
+  EXAMPLE_USER_NOTE_ID,
+  seedExampleNoteIfEmpty,
   subjectLabel,
   USER_NOTE_LIBRARY_WINDOW_ID,
   userNoteWindowId,
@@ -57,8 +59,10 @@ interface UserNotesState {
   _hasHydrated: boolean;
   _setHasHydrated: (v: boolean) => void;
 
-  /** 新建一篇笔记（不开窗），返回笔记 id。可带入 Agent 沉淀的短提纲。 */
+  /** 新建一篇笔记（不开窗），返回笔记 id。可带入 Agent 沉淀的短提纲。无 init 时正文空白。 */
   createNote: (subjectId: string | null, init?: { title?: string; markdown?: string }) => string;
+  /** 库为空时 seed 一篇案例笔记；已有笔记则跳过。 */
+  ensureExampleNote: () => string | null;
   /** 改标题 / 正文 / 学科；未手动改过标题时标题跟随正文首个标题。 */
   updateNote: (id: string, patch: UserNotePatch) => void;
   /** 删除笔记，并关掉它可能打开着的编辑器窗口。 */
@@ -81,6 +85,23 @@ export function selectUserNotes(
     .filter((note): note is UserNote => Boolean(note))
     .filter((note) => (subjectId == null ? true : note.subjectId === subjectId))
     .sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+/**
+ * 选择笔记（cite）列表：当前筛选下若看不到案例，补进来当默认可见示例。
+ * 不改变用户笔记排序；案例未归档时在学科筛选里仍能看见。
+ */
+export function selectLibraryNotes(
+  byId: Record<string, UserNote>,
+  order: string[],
+  subjectId?: string | null,
+  opts?: { includeExample?: boolean },
+): UserNote[] {
+  const notes = selectUserNotes(byId, order, subjectId);
+  if (!opts?.includeExample) return notes;
+  const example = byId[EXAMPLE_USER_NOTE_ID];
+  if (!example || notes.some((note) => note.id === example.id)) return notes;
+  return [...notes, example].sort((a, b) => b.updatedAt - a.updatedAt);
 }
 
 function editorWindowGeometry(openCount: number) {
@@ -163,7 +184,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     createNote: (subjectId, init) => {
       const id = genId();
       const now = Date.now();
-      const markdown = init?.markdown?.trim() ? init.markdown : DEFAULT_NOTE_MARKDOWN;
+      const markdown = init?.markdown?.trim() ? init.markdown : BLANK_NOTE_MARKDOWN;
       const title = init?.title?.trim() || deriveNoteTitle(markdown);
       const note: UserNote = {
         id,
@@ -175,6 +196,13 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
       };
       set((s) => ({ byId: { ...s.byId, [id]: note }, order: [...s.order, id] }));
       return id;
+    },
+
+    ensureExampleNote: () => {
+      const seeded = seedExampleNoteIfEmpty(get().byId, get().order);
+      if (!seeded) return get().byId[EXAMPLE_USER_NOTE_ID]?.id ?? null;
+      set(seeded);
+      return EXAMPLE_USER_NOTE_ID;
     },
 
     updateNote: (id, patch) => {
@@ -265,6 +293,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     },
 
     openLibrary: (opts) => {
+      get().ensureExampleNote();
       const subjectId = opts?.subjectId ?? null;
       const intent: NoteLibraryIntent = opts?.intent ?? "browse";
       const { pos, size } = libraryWindowGeometry();
@@ -291,6 +320,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     onRehydrateStorage: () => (state) => {
       if (state && !state.noteAgentSessionById) state.noteAgentSessionById = {};
       state?._setHasHydrated(true);
+      state?.ensureExampleNote();
     },
   },
 );

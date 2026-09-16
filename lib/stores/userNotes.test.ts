@@ -1,10 +1,16 @@
 import assert from "node:assert/strict";
 import { beforeEach, test } from "node:test";
-import { useUserNotes } from "@/lib/stores/userNotes";
+import { selectLibraryNotes, useUserNotes } from "@/lib/stores/userNotes";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { useChatHistory } from "@/lib/stores/chatHistory";
-import { userNoteWindowId, USER_NOTE_LIBRARY_WINDOW_ID } from "@/lib/notes/userNote";
+import {
+  BLANK_NOTE_MARKDOWN,
+  DEFAULT_NOTE_MARKDOWN,
+  EXAMPLE_USER_NOTE_ID,
+  userNoteWindowId,
+  USER_NOTE_LIBRARY_WINDOW_ID,
+} from "@/lib/notes/userNote";
 import { closeManagedWindow } from "@/lib/keyboard/windowActions";
 
 function reset() {
@@ -35,7 +41,7 @@ function reset() {
 
 beforeEach(reset);
 
-test("createNote can seed an agent summary instead of the default template", () => {
+test("createNote can seed an agent summary instead of a blank note", () => {
   const id = useUserNotes.getState().createNote("physics", {
     title: "牛顿定律",
     markdown: "# 牛顿定律\n\n$F=ma$",
@@ -45,13 +51,61 @@ test("createNote can seed an agent summary instead of the default template", () 
   assert.equal(note?.markdown, "# 牛顿定律\n\n$F=ma$");
 });
 
-test("createNote binds subject and seeds default markdown", () => {
+test("createNote binds subject and leaves a blank body", () => {
   const id = useUserNotes.getState().createNote("probability");
   const note = useUserNotes.getState().byId[id];
   assert.ok(note);
   assert.equal(note?.subjectId, "probability");
   assert.equal(note?.title, "无标题笔记");
-  assert.match(note?.markdown ?? "", /\$E = mc\^\{2\}\$/);
+  assert.equal(note?.markdown, BLANK_NOTE_MARKDOWN);
+  assert.equal((note?.markdown ?? "").trim(), "");
+  assert.doesNotMatch(note?.markdown ?? "", /\$E = mc\^\{2\}\$/);
+  assert.notEqual(note?.id, EXAMPLE_USER_NOTE_ID);
+});
+
+test("ensureExampleNote seeds the case note once and skips existing libraries", () => {
+  const first = useUserNotes.getState().ensureExampleNote();
+  assert.equal(first, EXAMPLE_USER_NOTE_ID);
+  const example = useUserNotes.getState().byId[EXAMPLE_USER_NOTE_ID];
+  assert.equal(example?.title, "案例笔记");
+  assert.equal(example?.markdown, DEFAULT_NOTE_MARKDOWN);
+  assert.deepEqual(useUserNotes.getState().order, [EXAMPLE_USER_NOTE_ID]);
+
+  assert.equal(useUserNotes.getState().ensureExampleNote(), EXAMPLE_USER_NOTE_ID);
+  assert.deepEqual(useUserNotes.getState().order, [EXAMPLE_USER_NOTE_ID]);
+
+  reset();
+  const existing = useUserNotes.getState().createNote("physics", {
+    title: "课堂备忘",
+    markdown: "旧稿不要被案例覆盖",
+  });
+  assert.equal(useUserNotes.getState().ensureExampleNote(), null);
+  assert.equal(useUserNotes.getState().byId[EXAMPLE_USER_NOTE_ID], undefined);
+  assert.equal(useUserNotes.getState().byId[existing]?.markdown, "旧稿不要被案例覆盖");
+});
+
+test("openLibrary seeds the case note when empty", () => {
+  useUserNotes.getState().openLibrary({ intent: "cite" });
+  assert.equal(useUserNotes.getState().byId[EXAMPLE_USER_NOTE_ID]?.title, "案例笔记");
+  assert.deepEqual(useUserNotes.getState().order, [EXAMPLE_USER_NOTE_ID]);
+});
+
+test("selectLibraryNotes can pin the case note under a subject filter", () => {
+  useUserNotes.getState().ensureExampleNote();
+  const classId = useUserNotes.getState().createNote("probability", {
+    title: "泊松笔记",
+    markdown: "泊松",
+  });
+  const filtered = selectLibraryNotes(useUserNotes.getState().byId, useUserNotes.getState().order, "probability");
+  assert.deepEqual(filtered.map((note) => note.id), [classId]);
+  const cited = selectLibraryNotes(
+    useUserNotes.getState().byId,
+    useUserNotes.getState().order,
+    "probability",
+    { includeExample: true },
+  );
+  assert.ok(cited.some((note) => note.id === classId));
+  assert.ok(cited.some((note) => note.id === EXAMPLE_USER_NOTE_ID));
 });
 
 test("updateNote can refile the subject without touching markdown", () => {

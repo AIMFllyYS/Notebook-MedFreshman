@@ -8,6 +8,7 @@ import { useChatUI } from "@/lib/stores/chatUI";
 import { useStore } from "@/lib/stores/ui";
 import { applyUpdateUserNoteEvents, resetAppliedUserNoteEdits } from "@/lib/notes/applyUserNoteAgent";
 import { createAndOpenNote, openNoteLibrary } from "@/lib/notes/openUserNote";
+import { BLANK_NOTE_MARKDOWN, EXAMPLE_USER_NOTE_ID } from "@/lib/notes/userNote";
 
 vi.mock("@/components/chat/ChatThread", () => ({
   default: () => <div data-testid="note-agent-thread" />,
@@ -62,6 +63,29 @@ describe("personal note windows", () => {
   afterEach(() => {
     cleanup();
     vi.unstubAllGlobals();
+  });
+
+  it("creates a blank note instead of cloning the case template", () => {
+    const id = createAndOpenNote("probability");
+    expect(useUserNotes.getState().byId[id]?.title).toBe("无标题笔记");
+    expect(useUserNotes.getState().byId[id]?.markdown).toBe(BLANK_NOTE_MARKDOWN);
+    expect(useUserNotes.getState().byId[EXAMPLE_USER_NOTE_ID]).toBeUndefined();
+  });
+
+  it("shows the seeded case note in the cite library without cloning it on create", () => {
+    openNoteLibrary({ subjectId: null, intent: "cite" });
+    render(<UserNoteLayer />);
+
+    expect(screen.getByRole("button", { name: /案例笔记/ })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "案例笔记" })).toBeInTheDocument();
+    expect(useUserNotes.getState().order).toEqual([EXAMPLE_USER_NOTE_ID]);
+
+    fireEvent.click(screen.getByRole("button", { name: "新建笔记" }));
+    const created = useUserNotes.getState().order.find((id) => id !== EXAMPLE_USER_NOTE_ID);
+    expect(created).toBeTruthy();
+    expect(useUserNotes.getState().byId[created!]?.markdown).toBe(BLANK_NOTE_MARKDOWN);
+    expect(useUserNotes.getState().byId[EXAMPLE_USER_NOTE_ID]?.title).toBe("案例笔记");
+    expect(useUserNotes.getState().order.filter((id) => id === EXAMPLE_USER_NOTE_ID)).toHaveLength(1);
   });
 
   it("edits markdown in split view and live-renders formulas", () => {

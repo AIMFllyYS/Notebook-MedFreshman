@@ -9,7 +9,7 @@ import NoteRenderer from "@/components/notes/NoteRenderer";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { useCiteToChat } from "@/components/notes/useCiteToChat";
 import { useNoteCitations } from "@/lib/stores/noteCitations";
-import { useUserNotes, selectUserNotes } from "@/lib/stores/userNotes";
+import { useUserNotes, selectLibraryNotes } from "@/lib/stores/userNotes";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { createAndOpenNote } from "@/lib/notes/openUserNote";
 import { noteBreadcrumb, parseNotePath } from "@/lib/content/notePath";
@@ -50,8 +50,8 @@ export default function NoteLibraryWindow() {
   const keyword = query.trim().toLowerCase();
 
   const notes = useMemo(
-    () => selectUserNotes(byId, order, subjectId),
-    [byId, order, subjectId],
+    () => selectLibraryNotes(byId, order, subjectId, { includeExample: intent === "cite" }),
+    [byId, intent, order, subjectId],
   );
   const visibleNotes = useMemo(
     () => (keyword ? notes.filter((note) => note.title.toLowerCase().includes(keyword)) : notes),

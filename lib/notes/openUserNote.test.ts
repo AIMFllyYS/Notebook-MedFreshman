@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { beforeEach, test } from "node:test";
 import { readFileSync } from "node:fs";
 import { citeUserNoteToMainAgent, createAndOpenNote, openAgentForUserNote, openArtifactImportPicker, openDocumentImportPicker, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
+import { BLANK_NOTE_MARKDOWN, DEFAULT_NOTE_MARKDOWN, EXAMPLE_USER_NOTE_ID } from "@/lib/notes/userNote";
 import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
@@ -43,6 +44,9 @@ beforeEach(() => {
 test("createAndOpenNote uses the active subject when omitted", () => {
   const id = createAndOpenNote();
   assert.equal(useUserNotes.getState().byId[id]?.subjectId, DEFAULT_SUBJECT);
+  assert.equal(useUserNotes.getState().byId[id]?.markdown, BLANK_NOTE_MARKDOWN);
+  assert.doesNotMatch(useUserNotes.getState().byId[id]?.markdown ?? "", /案例笔记/);
+  assert.notEqual(useUserNotes.getState().byId[id]?.markdown, DEFAULT_NOTE_MARKDOWN);
   assert.ok(useWindowManager.getState().windows.some((win) => win.type === "user-note-editor"));
 });
 
@@ -56,6 +60,7 @@ test("openNoteLibrary defaults to the active subject in cite mode", () => {
   assert.equal(useUserNotes.getState().libraryOpen, true);
   assert.equal(useUserNotes.getState().libraryIntent, "cite");
   assert.equal(useUserNotes.getState().librarySubjectId, DEFAULT_SUBJECT);
+  assert.equal(useUserNotes.getState().byId[EXAMPLE_USER_NOTE_ID]?.title, "案例笔记");
 });
 
 test("openFlashcardCitePicker defaults to the active subject", () => {
