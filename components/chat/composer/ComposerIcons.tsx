@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import type { ReactElement, SVGProps } from "react";
 import type { ForcedComposerTool } from "@/lib/chat/composerIntent";
 
 function Frame({ color, children, ...props }: SVGProps<SVGSVGElement> & { color: string }) {
@@ -67,7 +67,7 @@ export function NotesToolIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-const TOOL_ICONS: Record<ForcedComposerTool, (props: SVGProps<SVGSVGElement>) => JSX.Element> = {
+const TOOL_ICONS: Record<ForcedComposerTool, (props: SVGProps<SVGSVGElement>) => ReactElement> = {
   generateImage: GenerateImageToolIcon,
   renderInteractive: InteractiveHtmlToolIcon,
   writeDocument: LongArticleToolIcon,

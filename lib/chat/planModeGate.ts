@@ -25,13 +25,14 @@ export interface PlanModeGate {
   defaultOn: boolean;
 }
 
-export function readPlanModeGate(settings: PlanModeSettingsSlice | null | undefined): PlanModeGate {
-  const nested = settings?.agentPlanMode;
-  const allowed = (nested?.allowed ?? settings?.planModeAllowed ?? settings?.allowPlanMode) !== false;
+export function readPlanModeGate(settings?: object | null): PlanModeGate {
+  const slice = (settings ?? {}) as PlanModeSettingsSlice;
+  const nested = slice.agentPlanMode;
+  const allowed = (nested?.allowed ?? slice.planModeAllowed ?? slice.allowPlanMode) !== false;
   const forced = nested?.forced === true
-    || settings?.planModeForced === true
-    || settings?.forcePlanMode === true;
-  const defaultOn = forced || nested?.defaultOn === true || settings?.planMode === true;
+    || slice.planModeForced === true
+    || slice.forcePlanMode === true;
+  const defaultOn = forced || nested?.defaultOn === true || slice.planMode === true;
   return {
     allowed,
     forced: allowed && forced,
@@ -39,7 +40,7 @@ export function readPlanModeGate(settings: PlanModeSettingsSlice | null | undefi
   };
 }
 
-export function resolvePlanMode(uiOn: boolean, settings: PlanModeSettingsSlice | null | undefined): boolean {
+export function resolvePlanMode(uiOn: boolean, settings?: object | null): boolean {
   const gate = readPlanModeGate(settings);
   if (!gate.allowed) return false;
   if (gate.forced) return true;

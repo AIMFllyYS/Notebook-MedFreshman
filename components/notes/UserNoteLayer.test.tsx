@@ -191,6 +191,7 @@ describe("personal note windows", () => {
                     text: "已写回",
                     noteId: id,
                     markdown: "# 被覆上皮\n\n1. 单层扁平",
+                    action: "update",
                     applied: true,
                   },
                 },
