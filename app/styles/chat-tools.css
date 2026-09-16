@@ -962,8 +962,7 @@ mark.citation-flash {
 .user-note-toolbar-link {
   background: transparent;
   color: var(--md-sys-color-primary);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
 }
 
 /* 父级 .document-workspace-body 是可滚动的块级容器：这里显式吃满高度，

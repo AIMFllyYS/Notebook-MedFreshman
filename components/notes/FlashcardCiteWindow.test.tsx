@@ -61,11 +61,19 @@ describe("FlashcardCiteWindow", () => {
     expect(useChatUI.getState().quotedText).toMatch(/正面：泊松分布的期望？/);
     expect(useChatUI.getState().quotedText).toMatch(/解析：母函数/);
 
+    const downloadCard = screen.getByRole("button", { name: /下载这张/ });
+    const downloadCsv = screen.getByRole("button", { name: /下载 CSV/ });
+    const openReview = screen.getByRole("button", { name: "打开复习板" });
+    for (const button of [downloadCard, downloadCsv, openReview]) {
+      expect(button).toHaveClass("user-note-toolbar-link");
+      expect(button.tagName).toBe("BUTTON");
+    }
+
     const createObjectURL = vi.fn(() => "blob:flashcard");
     const revokeObjectURL = vi.fn();
     vi.stubGlobal("URL", { createObjectURL, revokeObjectURL });
-    fireEvent.click(screen.getByRole("button", { name: /下载这张/ }));
-    fireEvent.click(screen.getByRole("button", { name: /下载 CSV/ }));
+    fireEvent.click(downloadCard);
+    fireEvent.click(downloadCsv);
     expect(createObjectURL).toHaveBeenCalled();
   });
 
