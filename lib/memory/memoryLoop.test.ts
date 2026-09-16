@@ -9,7 +9,7 @@ import {
 import type { ChatMessage } from "@/lib/types/chat";
 
 function message(id: string, parts: ChatMessage["parts"]): ChatMessage {
-  return { id, role: "assistant", parts };
+  return { id, role: "assistant", parts, timestamp: 1 };
 }
 
 test("memoryCommitOf maps propose kind to commit gate", () => {
