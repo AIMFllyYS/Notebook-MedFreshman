@@ -115,4 +115,27 @@ describe("settings apiKey persist", () => {
     expect(reloadSettings.getState().capabilityEndpoints.webSearchApiKey).toBe(legacyKey);
     expect(localStorage.getItem(SETTINGS_LS_KEY) ?? "").not.toContain(legacyKey);
   });
+
+  it("持久化最大工具轮数、答题模型与划词助手策略", async () => {
+    useSettings.getState().setMaxToolRounds(12);
+    useSettings.getState().setQuizModelId("deepseek/deepseek-v4.1-flash");
+    useSettings.getState().setSelectionAssistantEnabled(false);
+    useSettings.getState().setSelectionAssistantAction("quote", false);
+    useSettings.getState().setBlockForeignSelectionAssistants(true);
+    const raw = JSON.parse(localStorage.getItem(SETTINGS_LS_KEY) ?? "{}");
+    expect(raw.maxToolRounds).toBe(12);
+    expect(raw.quizModelId).toBe("deepseek/deepseek-v4.1-flash");
+    expect(raw.selectionAssistantEnabled).toBe(false);
+    expect(raw.selectionAssistantActions.quote).toBe(false);
+    expect(raw.blockForeignSelectionAssistants).toBe(true);
+
+    vi.resetModules();
+    const { useSettings: reloaded } = await import("@/lib/stores/settings");
+    expect(reloaded.getState().maxToolRounds).toBe(12);
+    expect(reloaded.getState().quizModelId).toBe("deepseek/deepseek-v4.1-flash");
+    expect(reloaded.getState().selectionAssistantEnabled).toBe(false);
+    expect(reloaded.getState().selectionAssistantActions.quote).toBe(false);
+    expect(reloaded.getState().blockForeignSelectionAssistants).toBe(true);
+    expect(reloaded.getState().selectionAssistantActions.note).toBe(true);
+  });
 });

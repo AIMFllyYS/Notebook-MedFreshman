@@ -2,6 +2,7 @@
 
 import { useSettings } from "@/lib/hooks/useSettings";
 import { TOGGLEABLE_TOOLS as TOOLS } from "@/lib/chat/toolPresentation";
+import { MAX_TOOL_ROUNDS_CAP, MAX_TOOL_STEPS, MIN_TOOL_ROUNDS } from "@/lib/ai/agent/toolRounds";
 import { Toggle, h3Cls } from "./_shared";
 
 export function ToolsSection() {
@@ -9,11 +10,35 @@ export function ToolsSection() {
   const toggleTool = useSettings((s) => s.toggleTool);
   const artifactFullscreenTarget = useSettings((s) => s.artifactFullscreenTarget);
   const setArtifactFullscreenTarget = useSettings((s) => s.setArtifactFullscreenTarget);
+  const maxToolRounds = useSettings((s) => s.maxToolRounds);
+  const setMaxToolRounds = useSettings((s) => s.setMaxToolRounds);
 
   return (
     <>
       <section className="flex flex-col gap-2">
         <h3 className={h3Cls}>工具调用</h3>
+        <div className="flex items-center justify-between gap-3 rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
+          <div className="min-w-0">
+            <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
+              最大工具调用轮数
+            </div>
+            <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+              接到 Agent ToolLoop（默认 {MAX_TOOL_STEPS} 轮）。斜杠 / 加号菜单读不到此值时仍走本设置。
+            </div>
+          </div>
+          <label className="flex shrink-0 items-center gap-1.5">
+            <input
+              type="number"
+              min={MIN_TOOL_ROUNDS}
+              max={MAX_TOOL_ROUNDS_CAP}
+              value={maxToolRounds}
+              onChange={(e) => setMaxToolRounds(Number(e.target.value))}
+              data-testid="max-tool-rounds"
+              className="w-14 rounded-md border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-lowest)] px-2 py-1 text-right text-[12.5px] text-[var(--md-sys-color-on-surface)] outline-none focus:border-[var(--md-sys-color-primary)]"
+            />
+            <span className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">轮</span>
+          </label>
+        </div>
         {TOOLS.map((t) => {
           const enabled = !disabledTools.includes(t.name);
           return (

@@ -19,7 +19,7 @@ export function normalizeStoredSettings(raw: string): Record<string, unknown> {
   const parsed = record(JSON.parse(raw));
   if (!parsed) throw new Error('设置不是有效对象');
   const data = { ...(record(parsed.state) ?? parsed) };
-  for (const field of ['selectedModelId', 'defaultImageModelId', 'imageModeTextModel', 'imageModeTextModelFallback', 'recordModelId', 'floatingChatModelId', 'customBaseUrl', 'customApiKey', 'customModelId']) {
+  for (const field of ['selectedModelId', 'defaultImageModelId', 'imageModeTextModel', 'imageModeTextModelFallback', 'recordModelId', 'floatingChatModelId', 'quizModelId', 'customBaseUrl', 'customApiKey', 'customModelId']) {
     if (typeof data[field] !== 'string' || !data[field]) delete data[field];
   }
   data.customModels = models(data.customModels);

@@ -4,6 +4,10 @@ import { useState } from "react";
 import { BookmarkPlus, Brain, Boxes, Globe, Star } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { MODELS, isPickerHiddenModel, getAllModels } from "@/lib/ai/models";
+import {
+  SELECTION_ASSISTANT_ACTIONS,
+  SELECTION_ASSISTANT_ACTION_LABELS,
+} from "@/lib/notes/selectionAssistant";
 import { Toggle, h3Cls, labelCls } from "./_shared";
 import AppSelect from "@/components/ui/AppSelect";
 import SettingsDisclosure from "./SettingsDisclosure";
@@ -147,6 +151,14 @@ export function RecordAssistantSection() {
   const setRecordModelId = useSettings((s) => s.setRecordModelId);
   const floatingChatModelId = useSettings((s) => s.floatingChatModelId);
   const setFloatingChatModelId = useSettings((s) => s.setFloatingChatModelId);
+  const quizModelId = useSettings((s) => s.quizModelId);
+  const setQuizModelId = useSettings((s) => s.setQuizModelId);
+  const selectionAssistantEnabled = useSettings((s) => s.selectionAssistantEnabled);
+  const setSelectionAssistantEnabled = useSettings((s) => s.setSelectionAssistantEnabled);
+  const selectionAssistantActions = useSettings((s) => s.selectionAssistantActions);
+  const setSelectionAssistantAction = useSettings((s) => s.setSelectionAssistantAction);
+  const blockForeignSelectionAssistants = useSettings((s) => s.blockForeignSelectionAssistants);
+  const setBlockForeignSelectionAssistants = useSettings((s) => s.setBlockForeignSelectionAssistants);
   const allTextModels = getAllModels(customApiGroups).filter((m) => m.type !== "image");
 
   return (
@@ -174,6 +186,63 @@ export function RecordAssistantSection() {
           <div className="mt-1 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
             划词后弹出的浮窗对话使用的默认模型。可在浮窗内随时切换。
           </div>
+        </div>
+        <div>
+          <label className={labelCls}>答题 / 深度解答默认模型</label>
+          <AppSelect label="答题模型" value={quizModelId} onValueChange={setQuizModelId}
+            options={allTextModels.map((m) => ({ value: m.id, label: `${m.label} · ${m.group}` }))} />
+          <div className="mt-1 text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">
+            出题与深度解答默认使用此模型，默认 DeepSeek。可在自定义 API 分组中另选。
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
+          <div>
+            <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">开启本站划词助手</div>
+            <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+              关掉后划词不再弹出本站动作条（解释、记录、笔记、引用等）
+            </div>
+          </div>
+          <Toggle on={selectionAssistantEnabled} onClick={() => setSelectionAssistantEnabled(!selectionAssistantEnabled)} />
+        </div>
+
+        <div className={selectionAssistantEnabled ? "flex flex-col gap-1.5" : "flex flex-col gap-1.5 opacity-60"}>
+          <div className={labelCls}>划词助手展示动作</div>
+          <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">勾选要显示的按钮；未勾选的不出现在浮条上。</p>
+          <div className="grid grid-cols-2 gap-1.5">
+            {SELECTION_ASSISTANT_ACTIONS.map((action) => {
+              const on = selectionAssistantActions[action] !== false;
+              return (
+                <label
+                  key={action}
+                  className="flex items-center justify-between gap-2 rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-1.5"
+                >
+                  <span className="text-[12.5px] text-[var(--md-sys-color-on-surface)]">
+                    {SELECTION_ASSISTANT_ACTION_LABELS[action]}
+                  </span>
+                  <input
+                    type="checkbox"
+                    checked={on}
+                    disabled={!selectionAssistantEnabled}
+                    onChange={(e) => setSelectionAssistantAction(action, e.target.checked)}
+                    data-testid={`selection-action-${action}`}
+                    className="accent-[var(--md-sys-color-primary)]"
+                  />
+                </label>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
+          <div className="min-w-0 pr-3">
+            <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">尽量阻止其它划词助手</div>
+            <div className="text-[11px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]">
+              前端可做：压掉选区右键菜单、关闭系统 touch callout、划词后立刻收起原生选区。
+              无法拦截系统级 Look Up / Copilot、浏览器扩展或厂商划词插件。
+            </div>
+          </div>
+          <Toggle on={blockForeignSelectionAssistants} onClick={() => setBlockForeignSelectionAssistants(!blockForeignSelectionAssistants)} />
         </div>
       </section>
   );
