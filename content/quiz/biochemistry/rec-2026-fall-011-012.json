@@ -1,0 +1,260 @@
+{
+  "subjectId": "biochemistry",
+  "chapterId": "rec-2026-fall-011-012",
+  "generatedAt": "2026-09-16",
+  "examConfig": {
+    "source": "content/biochemistry/lectures/rec-2026-fall-011-012/recording.md；content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-011-012",
+    "revision": 1,
+    "recordingHash": "438e7d049087fe5acd6f1ee5747f93a25156dd74debf3faa21afa605c52c20bd",
+    "notesTextHash": "c9a611063d20e686b492f196a38cf915ad7998e83cda158b928f65b57362d172"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "options": [
+        "TPP（焦磷酸硫胺素）和TPP-ATP",
+        "FMN（黄素单核苷酸）和FAD（黄素腺嘌呤二核苷酸）",
+        "NAD和NADP",
+        "磷酸吡哆醛和磷酸吡哆胺"
+      ],
+      "answer": 1,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "维生素B2核黄素的活性形式FMN与FAD"
+      },
+      "explanation": "**B 正确。** 维生素B2（核黄素）在体内的活性形式为FMN和FAD，作为氧化还原酶的递氢辅因子。A错：TPP是维生素B1（硫胺素）的活性形式。C错：NAD/NADP是维生素PP（烟酸/烟酰胺）的活性形式。D错：磷酸吡哆醛是维生素B6的活性形式。",
+      "hint": "核黄素即黄素（flavin），活性形式带FMN/FAD字样。",
+      "stem": "维生素B2（核黄素）在体内发挥辅酶功能的活性形式是？"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "options": [
+        "脚气病",
+        "口角炎与眼睑炎",
+        "糙皮症（pellagra）",
+        "坏血病"
+      ],
+      "answer": 2,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "维生素PP缺乏症糙皮症"
+      },
+      "explanation": "**C 正确。** 维生素PP（烟酸/烟酰胺）的特征性缺乏症为糙皮症（pellagra），症状累及皮肤、消化系统和神经系统。A错：脚气病是维生素B1（硫胺素）缺乏症。B错：口角炎、眼睑炎是维生素B2（核黄素）缺乏症。D错：坏血病是维生素C缺乏症。",
+      "hint": "PP→pellagra，三个P对应。",
+      "stem": "维生素PP（烟酸/烟酰胺）缺乏引起的特征性疾病是？"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "options": [
+        "NAD主要参与合成代谢（脂肪酸、胆固醇合成），NADPH主要参与分解代谢（糖酵解、三羧酸循环）",
+        "NAD主要参与分解代谢（糖酵解、三羧酸循环），NADPH主要参与合成代谢（脂肪酸、胆固醇合成）",
+        "NAD和NADPH功能完全相同，仅磷酸基团有无不影响代谢方向",
+        "NADPH是磷酸戊糖途径的主要来源，NAD只在线粒体中起作用"
+      ],
+      "answer": 1,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "NAD与NADPH在分解/合成代谢中的分工"
+      },
+      "explanation": "**B 正确。** NAD⁺/NADH主要参与分解代谢（糖酵解、三羧酸循环、丙酮酸→乳酸），提供能量；NADPH由磷酸戊糖途径产生，主要作为供氢体参与合成代谢（脂肪酸、胆固醇合成）。A错：把两者说反了。C错：两者代谢方向截然不同，并非无差别。D错：磷酸戊糖途径是NADPH的产生途径而非NADPH的来源对象，且NAD并非只在线粒体中起作用。",
+      "hint": "NAD分解产能，NADPH合成原料。",
+      "stem": "关于NAD与NADPH在代谢中的分工，下列叙述正确的是？"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "options": [
+        "辅酶A的关键基团是活泼巯基（-SH），通过形成二硫键发挥氧化还原功能",
+        "辅酶A的关键基团是活泼巯基（-SH），通过与酰基形成硫酯键来转移酰基",
+        "辅酶A只存在于游离小分子形式，不能与蛋白质共价相连",
+        "泛酸因广泛存在，严重缺乏也不会引起任何症状"
+      ],
+      "answer": 1,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "泛酸/辅酶A的巯基转酰基机制"
+      },
+      "explanation": "**B 正确。** 辅酶A的活性中心是活泼巯基，与酰基形成硫酯键（如乙酰CoA），作为酰基供体转移酰基。A错：巯基此处不形成二硫键、不执行氧化还原，而是形成硫酯键转酰基。C错：泛酸的另一种活性形式酰基载体蛋白（ACP）就是通过丝氨酸残基与泛酸部分共价连接的蛋白质。D错：泛酸严重缺乏可致四肢神经痛。",
+      "hint": "CoA的-SH不是用来做二硫键，而是挂酰基。",
+      "stem": "关于泛酸（遍多酸）的活性形式与功能，下列说法正确的是？"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "options": [
+        "生物素需要在体内进一步磷酸化才成为活性形式",
+        "生物素自身就是活性形式，作为羧化酶的辅因子传递羧基",
+        "生物素是转氨基酶的辅因子，转移氨基",
+        "生物素因广泛存在，长期服用抗生素不会导致其缺乏"
+      ],
+      "answer": 1,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "生物素自身即活性形式、羧化酶辅基"
+      },
+      "explanation": "**B 正确。** 生物素与其他维生素不同，自身即为活性形式，是羧化酶的辅因子，通过尿素部分接受羧基再传递给底物。A错：生物素不需进一步磷酸化修饰。C错：转移氨基的是维生素B6的活性形式磷酸吡哆醛。D错：长期服用抗生素会抑制肠道菌群合成生物素，可导致缺乏。",
+      "hint": "生物素=bio（生物）+素，自己就是活性形式。",
+      "stem": "关于生物素，下列叙述正确的是？"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "options": [
+        "叶酸活性形式是二氢叶酸（DH2），转移氨基",
+        "叶酸中多个谷氨酸之间通过α-肽键连接，与蛋白质中的肽键相同",
+        "叶酸活性形式是四氢叶酸（FH4），作为一碳单位载体参与嘌呤核苷酸合成",
+        "孕妇补充叶酸主要用于预防缺铁性贫血，与胎儿神经管无关"
+      ],
+      "answer": 2,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "叶酸结构、FH4与一碳单位、γ-肽键"
+      },
+      "explanation": "**C 正确。** 叶酸的活性形式是四氢叶酸（FH4），蝶啶环5、6、7、8位各加一个氢，作为一碳单位载体参与嘌呤核苷酸合成；缺乏致巨幼细胞贫血，孕妇补充可预防胎儿神经管缺陷。A错：活性形式是四氢叶酸FH4而非二氢叶酸，转移的是一碳单位而非氨基。B错：多个谷氨酸之间用的是侧链γ-羧基形成的γ-肽键，不是主链α-肽键（类似谷胱甘肽）。D错：孕妇补叶酸主要预防胎儿神经管缺陷（脊柱裂），并非缺铁性贫血。",
+      "hint": "FH4=Folic acid+4个氢；γ-肽键用的是谷氨酸侧链羧基。",
+      "stem": "关于叶酸的结构与功能，下列说法正确的是？"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "options": [
+        "维生素B12是唯一含有金属元素的维生素，金属为铁（Fe），吸收需要内因子",
+        "维生素B12是唯一含有金属元素的维生素，金属为钴（Co），吸收需要内因子",
+        "维生素B12吸收不需要任何辅助因子，可在肠道自由扩散入血",
+        "维生素B12缺乏引起低血色素小细胞性贫血，与叶酸无关"
+      ],
+      "answer": 1,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "维生素B12唯一含金属钴、内因子吸收、恶性贫血"
+      },
+      "explanation": "**B 正确。** 维生素B12（钴胺素）是唯一含金属元素的维生素，中心金属为钴（Co），结构类似血红素（中心Fe）；其吸收需要胃黏膜壁细胞分泌的内因子（IF）协助，吸收后还需转钴胺素运输。A错：中心金属是钴而非铁。C错：B12必须与内因子结合才能吸收。D错：B12缺乏引起的是巨幼细胞性贫血（恶性贫血），且与叶酸、B6共同参与含硫氨基酸代谢。",
+      "hint": "B12=钴胺素，Co（钴）；内因子IF=Intrinsic Factor。",
+      "stem": "关于维生素B12（钴胺素），下列叙述正确的是？"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "options": [
+        "维生素E → 维生素C → 谷胱甘肽 → NADPH",
+        "维生素C → 维生素E → NADPH → 谷胱甘肽",
+        "维生素K → 维生素A → 维生素D → 维生素E",
+        "维生素D → 维生素A → 维生素C → 维生素B12"
+      ],
+      "answer": 0,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "维生素C保护维生素E的抗氧化串联链"
+      },
+      "explanation": "**A 正确。** 维生素E（生育酚，脂溶性）是细胞膜上最重要的抗氧化剂；被氧化后由水溶性的维生素C在细胞质中将其还原；维生素C再由谷胱甘肽（GSH）还原，最终由NADPH提供还原力，串联为E→C→GSH→NADPH。B错：顺序颠倒，维生素E先被氧化、维生素C负责还原它。C、D错：维生素K/A/D/B12均不参与这一抗氧化还原串联。",
+      "hint": "膜上脂溶E先出手，胞质水溶C接力，GSH和NADPH收尾。",
+      "stem": "在维生素C参与的抗氧化还原链中，下列串联顺序正确的是？"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "options": [
+        "缀合酶=酶蛋白（apoenzyme）+辅因子（cofactor）；辅酶结合较疏松，辅基结合较紧密",
+        "单纯酶=蛋白质+金属离子辅因子；缀合酶=只有蛋白质",
+        "apoenzyme指已经结合了辅因子的完整有活性的酶",
+        "金属酶与金属激活酶的区别在于前者不含金属、后者含金属"
+      ],
+      "answer": 0,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "单纯酶/缀合酶、酶蛋白/辅因子、辅酶/辅基、金属酶/金属激活酶"
+      },
+      "explanation": "**A 正确。** 缀合酶（结合酶）=酶蛋白apoenzyme（蛋白质部分）+辅因子cofactor；辅因子中与酶蛋白结合疏松的称辅酶coenzyme，结合紧密的称辅基prosthetic group。B错：正好说反——单纯酶只有蛋白质（如胰淀粉酶），缀合酶才含其他成分。C错：apoenzyme中的apo意为\"空的、未结合其他东西\"，指尚未结合辅因子的无活性酶蛋白部分。D错：金属酶和金属激活酶都含金属离子，区别在于金属与酶结合紧密程度（金属酶紧密，金属激活酶疏松）。",
+      "hint": "apo=空；辅酶松、辅基紧；金属酶紧、金属激活酶松。",
+      "stem": "关于酶的分子组成与辅因子分类，下列说法正确的是？"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "options": [
+        "胰蛋白酶结合口袋底部是天冬氨酸（负电），深口袋，识别精氨酸/赖氨酸等正电大侧链",
+        "胰凝乳蛋白酶结合口袋底部是天冬氨酸（负电），浅口袋，识别丙氨酸等小侧链",
+        "弹性蛋白酶结合口袋底部是天冬氨酸（负电），深口袋，识别苯丙氨酸",
+        "三种丝氨酸蛋白酶的结合口袋结构相同，仅催化三联体不同"
+      ],
+      "answer": 0,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "三种丝氨酸蛋白酶结合口袋结构与底物特异性"
+      },
+      "explanation": "**A 正确。** 胰蛋白酶结合口袋底部带负电的天冬氨酸与底物带正电的精氨酸/赖氨酸侧链形成静电相互作用，深口袋适合大侧链碱性氨基酸。B错：胰凝乳蛋白酶口袋底部是不带电的丝氨酸（不是天冬氨酸），较浅口袋识别苯丙氨酸等芳香/中性大侧链。C错：弹性蛋白酶口袋两侧甘氨酸突变为缬氨酸，口袋很小，识别丙氨酸等小侧链。D错：三种酶的催化三联体（Asp-His-Ser）相同，正是结合口袋结构的差异决定了底物特异性。",
+      "hint": "口袋底部带电+深浅+两侧氨基酸，共同决定识别谁。",
+      "stem": "比较胰蛋白酶、胰凝乳蛋白酶和弹性蛋白酶的结合口袋与底物特异性，下列叙述正确的是？"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "options": [
+        "锁钥模型认为底物结合会诱导酶发生构象变化，诱导契合模型认为酶与底物结构完全互补",
+        "催化剂通过提高反应的活化能使反应加速",
+        "酶降低活化能的机制包括邻近效应、定向排列、表面效应（去溶剂化）和多元催化",
+        "表面效应是指酶将水分子紧密包裹在底物周围以促进反应"
+      ],
+      "answer": 2,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/biochemistry/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "锁钥vs诱导契合、活化能、四种催化机制"
+      },
+      "explanation": "**C 正确。** 酶通过邻近效应（多底物同时结合距离近）、定向排列（反应原子空间角度合适）、表面效应/去溶剂化（结合口袋排除水化膜水分子）、多元催化（氨基酸侧链的酸碱催化，如催化三联体）共同降低活化能。A错：把两个模型说反了——锁钥模型认为结构完全互补、酶不变；诱导契合模型认为底物结合诱导酶构象变化（如己糖激酶结合葡萄糖后两结构域角度变小）。B错：催化剂是降低而非提高活化能。D错：表面效应是排除（而非保留）阻碍反应的水分子，使底物与酶关键部位直接接触。",
+      "hint": "降活化能四板斧：近、齐、干（去水）、酸碱。",
+      "stem": "关于酶的工作原理与催化机制，下列说法正确的是？"
+    }
+  ]
+}

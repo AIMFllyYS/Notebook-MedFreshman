@@ -486,6 +486,50 @@
       }
     },
     {
+      "subjectId": "biochemistry",
+      "lessonId": "rec-2026-fall-011-012",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "生物化学与分子生物学",
+      "sessionRange": {
+        "start": 11,
+        "end": 12
+      },
+      "taughtOn": "2026-09-16",
+      "topic": "B族维生素续讲与酶学",
+      "revision": 1,
+      "quizId": "rec-2026-fall-011-012",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-011-012"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-011-012"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-011-012"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-011-012"
+        }
+      },
+      "hashes": {
+        "recording": "438e7d049087fe5acd6f1ee5747f93a25156dd74debf3faa21afa605c52c20bd",
+        "notesText": "c9a611063d20e686b492f196a38cf915ad7998e83cda158b928f65b57362d172"
+      }
+    },
+    {
       "subjectId": "cell-biology",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
