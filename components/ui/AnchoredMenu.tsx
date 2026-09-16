@@ -16,11 +16,13 @@ interface AnchoredMenuProps {
   role?: "menu" | "listbox";
   testId?: string;
   triggerData?: Record<`data-${string}`, string>;
+  /** 叠在 Spotlight 等高层 overlay 上时提高菜单层。 */
+  menuZIndex?: number;
 }
 
 /** Shared non-modal menu: portal, viewport collision handling and keyboard/focus lifecycle. */
 export default function AnchoredMenu({ label, trigger, children, className = "", style, disabled, width = 240,
-  placement = "bottom", role = "menu", testId, triggerData }: AnchoredMenuProps) {
+  placement = "bottom", role = "menu", testId, triggerData, menuZIndex }: AnchoredMenuProps) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [position, setPosition] = useState({ left: 8, top: 8, width, maxHeight: 320 });
@@ -82,7 +84,7 @@ export default function AnchoredMenu({ label, trigger, children, className = "",
       onKeyDown={(event) => { if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setOpen(true); } }}>
       {trigger}
     </button>
-    {open && createPortal(<div ref={menuRef} id={id} role={role} aria-label={label} className="app-menu" style={position}
+    {open && createPortal(<div ref={menuRef} id={id} role={role} aria-label={label} className="app-menu" style={{ ...position, zIndex: menuZIndex }}
       onKeyDown={(event) => {
         if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); close(); buttonRef.current?.focus(); return; }
         if (event.key === "Tab") { close(); return; }

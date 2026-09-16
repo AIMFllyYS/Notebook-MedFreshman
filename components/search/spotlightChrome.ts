@@ -1,4 +1,4 @@
-/** 全局搜索与输入网址弹窗共用的 Spotlight chrome，不要各写一套。 */
+/** 全局搜索 Spotlight 与加号菜单网址栏共用输入框 class，不要各写一套。 */
 export const SPOTLIGHT_BACKDROP_CLASS = "fixed inset-0 z-[10000] bg-black/20 backdrop-blur-[2px]";
 export const SPOTLIGHT_PANEL_CLASS =
   "mx-auto mt-[12vh] w-[min(720px,calc(100vw-28px))] overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--bg-panel)] shadow-2xl";

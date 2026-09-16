@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
-import OpenUrlDialog, { parseOpenableUrl } from "./OpenUrlDialog";
-import { SPOTLIGHT_BODY_CLASS, SPOTLIGHT_PANEL_CLASS } from "@/components/search/spotlightChrome";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import OpenUrlField, { parseOpenableUrl } from "./OpenUrlDialog";
+import { SPOTLIGHT_INPUT_CLASS } from "@/components/search/spotlightChrome";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
 afterEach(() => {
@@ -29,19 +29,29 @@ describe("parseOpenableUrl", () => {
   });
 });
 
-describe("OpenUrlDialog", () => {
-  it("reuses the search spotlight panel and stays shorter than the results body", () => {
-    render(<OpenUrlDialog open onClose={() => {}} />);
-    const dialog = screen.getByRole("dialog", { name: "输入网址" });
-    expect(dialog).toHaveClass(...SPOTLIGHT_PANEL_CLASS.split(" "));
-    expect(dialog.innerHTML).not.toContain("max-h-[58vh]");
-    expect(SPOTLIGHT_BODY_CLASS).toContain("max-h-[58vh]");
+describe("OpenUrlField", () => {
+  it("reuses the search input class and stays inline", () => {
+    render(<OpenUrlField />);
+    const input = screen.getByRole("textbox", { name: "网址" });
+    expect(input).toHaveClass(...SPOTLIGHT_INPUT_CLASS.split(" "));
+    expect(screen.queryByRole("dialog", { name: "输入网址" })).not.toBeInTheDocument();
   });
 
   it("shows a validation error instead of opening a preview", () => {
-    render(<OpenUrlDialog open onClose={() => {}} />);
+    render(<OpenUrlField />);
     fireEvent.click(screen.getByRole("button", { name: "打开" }));
     expect(screen.getByText("请输入有效的 http:// 或 https:// 地址")).toBeInTheDocument();
     expect(useWindowManager.getState().windows).toHaveLength(0);
+  });
+
+  it("opens a source-preview window and notifies the parent", () => {
+    const onOpened = vi.fn();
+    render(<OpenUrlField onOpened={onOpened} />);
+    fireEvent.change(screen.getByRole("textbox", { name: "网址" }), { target: { value: "example.com/course" } });
+    fireEvent.click(screen.getByRole("button", { name: "打开" }));
+    const preview = useWindowManager.getState().windows.find((win) => win.type === "source-preview");
+    expect(preview?.title).toBe("网址 · example.com");
+    expect(preview?.data).toMatchObject({ url: "https://example.com/course" });
+    expect(onOpened).toHaveBeenCalledOnce();
   });
 });

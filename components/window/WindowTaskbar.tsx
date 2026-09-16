@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import { Plus, Link2, Upload, BookOpen, Layers, FileDigit, MonitorPlay } from "lucide-react";
+import { Plus, Upload, BookOpen, Layers, FileDigit, MonitorPlay } from "lucide-react";
 import { useWindowManager, type ManagedWindow } from "@/lib/hooks/useWindowManager";
 import NotebookFormulaIcon from "@/components/icons/NotebookFormulaIcon";
 import { createAndOpenNote, openArtifactImportPicker, openDocumentImportPicker, openFlashcardCitePicker, openNoteLibrary } from "@/lib/notes/openUserNote";
@@ -14,7 +14,7 @@ import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
 import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
 import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
-import OpenUrlDialog from "@/components/window/OpenUrlDialog";
+import OpenUrlField from "@/components/window/OpenUrlDialog";
 
 interface WindowTaskbarProps {
   host: "topbar" | "content-tab";
@@ -68,7 +68,6 @@ function AddMenuDivider() {
 
 function AddContentButton() {
   const [open, setOpen] = useState(false);
-  const [urlOpen, setUrlOpen] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState<{ top: number; right: number } | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -236,24 +235,13 @@ function AddContentButton() {
               <Upload size={14} className="text-[var(--md-sys-color-primary)]" />
               <span><strong className="font-semibold">添加文件</strong><small className="ml-1 text-[var(--ink-soft)]">PDF、文本、代码</small></span>
             </button>
-            <button
-              type="button"
-              role="menuitem"
-              onClick={() => {
-                setUrlOpen(true);
-                setOpen(false);
-              }}
-              className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[12px] text-[var(--ink)] hover:bg-[var(--bg-muted)]"
-            >
-              <Link2 size={14} className="text-[var(--md-sys-color-primary)]" />
-              <span><strong className="font-semibold">输入网址</strong><small className="ml-1 text-[var(--ink-soft)]">打开网页</small></span>
-            </button>
           </div>
+          <AddMenuDivider />
+          <OpenUrlField onOpened={() => setOpen(false)} />
           <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">笔记、闪卡、长文本和演示都从本机仓库打开，不会重新生成。</p>
         </div>,
         document.body,
       )}
-      {urlOpen ? <OpenUrlDialog open onClose={() => setUrlOpen(false)} /> : null}
       {fileError && typeof document !== "undefined" ? <FileErrorDialog message={fileError} onClose={() => setFileError(null)} /> : null}
     </div>
   );

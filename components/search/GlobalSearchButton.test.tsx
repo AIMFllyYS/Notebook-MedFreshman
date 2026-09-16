@@ -101,6 +101,71 @@ describe("GlobalSearchButton", () => {
     });
   });
 
+  it("搜索框最右侧是固定类二级筛选，按种类只保留笔记栏", async () => {
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        observe() {}
+        disconnect() {}
+      },
+    );
+    useUserNotes.getState().createNote("cell-biology", {
+      title: "核糖体笔记",
+      markdown: "核糖体是合成蛋白质的场所",
+    });
+    useUserNotes.setState({ _hasHydrated: true });
+    const input = openSearch();
+    const filter = screen.getByTestId("global-search-filter");
+    expect(input.nextElementSibling).toBe(filter);
+    expect(filter.nextElementSibling).toHaveAttribute("title", "关闭");
+
+    fireEvent.click(filter);
+    const root = screen.getByRole("menu", { name: "筛选搜索" });
+    expect(root).toHaveClass("app-menu");
+    expect(screen.getByTestId("search-filter-by-kind")).toHaveTextContent("按种类");
+    expect(screen.getByTestId("search-filter-by-subject")).toHaveTextContent("按课程");
+
+    fireEvent.click(screen.getByTestId("search-filter-by-kind"));
+    fireEvent.click(screen.getByTestId("search-filter-kind-note"));
+
+    fireEvent.change(input, { target: { value: "核糖体" } });
+    await waitFor(() => {
+      expect(screen.getByRole("region", { name: "笔记" })).toBeInTheDocument();
+      expect(screen.getByText("核糖体笔记")).toBeInTheDocument();
+    });
+    expect(screen.queryByRole("region", { name: "正文" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "闪卡" })).not.toBeInTheDocument();
+  });
+
+  it("按课程筛选后只保留该学科的笔记和正文", async () => {
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        observe() {}
+        disconnect() {}
+      },
+    );
+    useUserNotes.getState().createNote("cell-biology", {
+      title: "核糖体笔记",
+      markdown: "核糖体是合成蛋白质的场所",
+    });
+    useUserNotes.getState().createNote("probability", {
+      title: "贝叶斯笔记",
+      markdown: "由果溯因",
+    });
+    useUserNotes.setState({ _hasHydrated: true });
+    const input = openSearch();
+    fireEvent.click(screen.getByTestId("global-search-filter"));
+    fireEvent.click(screen.getByTestId("search-filter-by-subject"));
+    fireEvent.click(screen.getByTestId("search-filter-subject-cell-biology"));
+
+    fireEvent.change(input, { target: { value: "笔记" } });
+    await waitFor(() => {
+      expect(screen.getByText("核糖体笔记")).toBeInTheDocument();
+    });
+    expect(screen.queryByText("贝叶斯笔记")).not.toBeInTheDocument();
+  });
+
   it("正文分片加载中显示骨架，而不是空白转圈", async () => {
     vi.stubGlobal(
       "fetch",
