@@ -31,6 +31,10 @@ test("citation and document viewers are mounted in the global app shell window l
   assert.match(appShell, /<UserNoteLayer\s*\/>/);
   assert.match(appShell, /components\/notes\/FlashcardCiteWindow/);
   assert.match(appShell, /<FlashcardCiteWindow\s*\/>/);
+  assert.match(appShell, /components\/notes\/AgentProductPickerWindow/);
+  assert.match(appShell, /<AgentProductPickerWindow\s*\/>/);
+  assert.match(appShell, /components\/memory\/MemoryInboxLayer/);
+  assert.match(appShell, /<MemoryInboxLayer\s*\/>/);
   assert.doesNotMatch(appShell, /DevNoteHarness/);
 });
 

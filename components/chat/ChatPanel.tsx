@@ -75,7 +75,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     queueMicrotask(() => {
       if (cancelled || useStore.getState().outbound !== outbound) return;
       // busy/hydration 的同步门控可能在 effect 排队后变化；被拒绝的项仍等待下一次就绪。
-      if (sendMessage(outbound.content) && useStore.getState().outbound === outbound) clearOutbound();
+      if (sendMessage(outbound.content, { memoryCommit: outbound.memoryCommit }) && useStore.getState().outbound === outbound) clearOutbound();
     });
     return () => { cancelled = true; };
   }, [outbound, sendMessage, clearOutbound, chatReady, isLoading]);

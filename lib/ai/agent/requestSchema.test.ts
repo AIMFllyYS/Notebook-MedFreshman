@@ -133,6 +133,8 @@ test('request schema keeps unknown fields ignored and normal payloads valid', ()
   assert.equal(parsed.globalContext, '一段背景');
   assert.equal(parsed.skills.length, 1);
   assert.equal('legacyUnknown' in parsed, false);
+  assert.equal(parseChatRequest({ messages: [], memoryCommit: 'note' }).memoryCommit, 'note');
+  assert.equal(parseChatRequest({ messages: [] }).memoryCommit, undefined);
 });
 
 test('satellite schemas reject oversized prompts and ignore non-array customApiGroups', () => {

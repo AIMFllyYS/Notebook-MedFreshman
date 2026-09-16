@@ -1,5 +1,6 @@
 import { getModelInfoWithCustom, type CustomApiGroup, type ModelInfo, type ThinkingEffort } from "@/lib/ai/models";
 import type { ChatAttachment, ChatOptions } from "@/lib/types/chat";
+import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
 
 export interface SendMessageOptions {
   quotedText?: string;
@@ -7,6 +8,7 @@ export interface SendMessageOptions {
   thinkingEffort?: ThinkingEffort;
   enableSearch?: boolean;
   attachments?: ChatAttachment[];
+  memoryCommit?: MemoryCommitKind;
 }
 
 export interface RequestSettingsInput {

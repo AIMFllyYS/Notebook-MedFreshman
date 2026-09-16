@@ -90,7 +90,7 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
         await executeChatRequest({
           latestMessages, abortSignal: abortController.signal, budget,
           body: buildChatRequestBody(
-            chatContext, settings, resolved, budget, skills, academicYear,
+            chatContext, { ...settings, memoryCommit: sendOptions?.memoryCommit }, resolved, budget, skills, academicYear,
             collectRequestArtifacts(latestMessages, useArtifacts.getState()),
           ),
           sessionId, userMessageId: userMessage.id, assistant, userContent,

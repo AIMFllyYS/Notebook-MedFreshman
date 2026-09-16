@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { STUDY_TOOL_NAMES } from "@/lib/ai/agent/tools/names";
-import { TOOL_REGISTRY, TOOL_RESULT_CARDS } from "@/components/chat/toolCards/registry";
+import { THREAD_SILENT_TOOLS, TOOL_REGISTRY, TOOL_RESULT_CARDS } from "@/components/chat/toolCards/registry";
 
 describe("tool registry", () => {
   it("matches STUDY_TOOL_NAMES and requires ResultCard when resultKey exists", () => {
@@ -11,6 +11,16 @@ describe("tool registry", () => {
         expect(TOOL_REGISTRY[name].ResultCard).toBeTruthy();
       }
     }
+  });
+
+  it("keeps memory-loop tools off the fat result-card list", () => {
+    expect([...THREAD_SILENT_TOOLS]).toEqual(["proposeMemory", "commitNotes", "commitFlashcards"]);
+    expect(TOOL_RESULT_CARDS.map((c) => c.name)).not.toEqual(
+      expect.arrayContaining(["proposeMemory", "commitNotes", "commitFlashcards"]),
+    );
+    expect(TOOL_REGISTRY.proposeMemory.ResultCard).toBeUndefined();
+    expect(TOOL_REGISTRY.commitNotes.ResultCard).toBeUndefined();
+    expect(TOOL_REGISTRY.commitFlashcards.ResultCard).toBeUndefined();
   });
 
   it("lists the result cards in current chat order", () => {

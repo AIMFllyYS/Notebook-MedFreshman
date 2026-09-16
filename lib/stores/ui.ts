@@ -20,6 +20,8 @@ export interface OutboundMessage {
   content: string;
   /** 触发发送的递增序号；ChatPanel 监听其变化以发起请求 */
   nonce: number;
+  /** 记忆闭环第二步：确认后才把 commit 工具交给模型。 */
+  memoryCommit?: "note" | "flashcards";
 }
 
 /** Layout 折叠状态持久化 key。 */
@@ -117,7 +119,7 @@ interface AppState {
   /** 划词 / 外部触发的待发送消息 */
   outbound: OutboundMessage | null;
   /** 把一段文本送入 AI 对话并切到 AI Tab（用于划词问答与建议追问） */
-  sendToChat: (content: string) => void;
+  sendToChat: (content: string, opts?: { memoryCommit?: OutboundMessage["memoryCommit"] }) => void;
   clearOutbound: () => void;
 
   // ── 手机端 ──────────────────────────────────────────────
@@ -255,11 +257,11 @@ export const useStore = create<AppState>((set) => ({
     }),
 
   outbound: null,
-  sendToChat: (content) =>
+  sendToChat: (content, opts) =>
     set((s) => ({
       rightTab: "ai",
       mobileTab: "ai",
-      outbound: { content, nonce: (s.outbound?.nonce ?? 0) + 1 },
+      outbound: { content, nonce: (s.outbound?.nonce ?? 0) + 1, memoryCommit: opts?.memoryCommit },
     })),
   clearOutbound: () => set({ outbound: null }),
 

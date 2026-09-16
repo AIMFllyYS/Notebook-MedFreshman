@@ -127,6 +127,23 @@ test("createStudyAgent：生图模式首步强制 generateImage，之后关闭�
   assert.equal(out.output.count, 1);
 });
 
+test("createStudyAgent：未确认时不暴露 commit 工具，确认笔记后才给 commitNotes", () => {
+  const model = new MockLanguageModelV4();
+  const idle = createStudyAgent(baseInput(model));
+  assert.ok("proposeMemory" in idle.tools);
+  assert.ok(!("commitNotes" in idle.tools));
+  assert.ok(!("commitFlashcards" in idle.tools));
+
+  const notes = createStudyAgent(baseInput(model, { memoryCommit: "note" }));
+  assert.ok("commitNotes" in notes.tools);
+  assert.ok(!("commitFlashcards" in notes.tools));
+  assert.match(notes.promptParts.instructions, /记忆闭环（已确认笔记）/);
+
+  const cards = createStudyAgent(baseInput(model, { memoryCommit: "flashcards" }));
+  assert.ok("commitFlashcards" in cards.tools);
+  assert.ok(!("commitNotes" in cards.tools));
+});
+
 test("createStudyAgent：技能菜单进入 instructions 且 useSkill 以 enum 暴露；enableSearch 控制联网工具", () => {
   const model = new MockLanguageModelV4();
   const skills = [
@@ -157,6 +174,10 @@ test("createStudyAgent：模型不支持工具时 tools 为空；软上限时仍
   assert.match(truncated.promptParts.instructions, /80% 软上限/);
   assert.match(truncated.promptParts.instructions, /分级裁剪/);
   assert.ok("getArtifact" in createStudyAgent(baseInput(model)).tools);
+  assert.ok("proposeMemory" in createStudyAgent(baseInput(model)).tools);
+  assert.ok(!("commitNotes" in createStudyAgent(baseInput(model)).tools));
+  assert.ok("commitNotes" in createStudyAgent(baseInput(model, { memoryCommit: "note" })).tools);
+  assert.ok(!("commitFlashcards" in createStudyAgent(baseInput(model, { memoryCommit: "note" })).tools));
 });
 
 test("createStudyAgent：定位行在 instructions 末尾，换页不改稳定前缀", () => {
