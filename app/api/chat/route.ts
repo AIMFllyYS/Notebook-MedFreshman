@@ -23,6 +23,7 @@ import { resolveLanguageModel } from "@/lib/ai/sdk/languageModel";
 import { withSseHeartbeat } from "@/lib/ai/sdk/heartbeat";
 import { toChatErrorMessage } from "@/lib/ai/sdk/errorMessage";
 import { createStudyAgent } from "@/lib/ai/agent/studyAgent";
+import { isComposerForcedTool } from "@/lib/chat/composerIntent";
 import { TOOL_STEP_LIMIT_INFO } from "@/lib/ai/agent/tools/server";
 import { computeContextBreakdown, estimateRequestContextTokens } from "@/lib/ai/agent/contextBreakdown";
 import { generateFallbackFollowUps } from "@/lib/ai/agent/followUps";
@@ -218,6 +219,13 @@ export async function POST(req: NextRequest) {
         thinking: options.enableThinking ? resolved.thinkingSettings(options.thinkingEffort) : {},
         memoryCommit: body.memoryCommit,
         editingUserNote: body.editingUserNote,
+        noteWindowAgent: body.noteWindowAgent,
+        userNotes: body.noteWindowAgent ? [] : body.userNotes,
+        flashcards: body.noteWindowAgent ? [] : body.flashcards,
+        maxToolRounds: body.maxToolRounds,
+        planMode: body.planMode,
+        forcedTool: isComposerForcedTool(body.forcedTool) ? body.forcedTool : undefined,
+        attachedFiles: body.attachedFiles,
       });
 
       const estimateIncoming = (truncated: boolean, referenceContext: string) => {

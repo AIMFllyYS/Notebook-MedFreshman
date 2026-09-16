@@ -15,13 +15,21 @@ import {
   buildStudyTools,
   createToolRuntime,
   IMAGE_SEARCH_MAX_TOTAL,
-  MAX_TOOL_STEPS,
+  clampMaxToolRounds,
   type StudyToolRuntime,
 } from "@/lib/ai/agent/tools/server";
+import { formatComposerVolatile } from "@/lib/chat/attachedFilesContext";
+import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composerIntent";
+import { forcedSkillId, resolveForcedToolName } from "@/lib/chat/composerIntent";
 import { createAgentLifecycleHooks } from "@/lib/ai/observability/agentLog";
 import { formatArtifactCatalog, type ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
 import { formatEditingUserNoteContext, type EditingUserNoteContext } from "@/lib/notes/editingUserNote";
+import {
+  formatMemoryCatalogLine,
+  type FlashcardCatalogItem,
+  type UserNoteCatalogItem,
+} from "@/lib/ai/agent/tools/memoryCatalog";
 
 export interface StudyAgentInput {
   model: LanguageModelV4;
@@ -48,6 +56,17 @@ export interface StudyAgentInput {
   memoryCommit?: MemoryCommitKind;
   /** 学生从笔记窗打开助教时，当前正在编辑的个人笔记。 */
   editingUserNote?: EditingUserNoteContext;
+  /** 窗内笔记对话：收窄工具，提示词仍只改 volatile 段。 */
+  noteWindowAgent?: boolean;
+  /** 主对话随身携带的本机笔记/闪卡目录；窗内对话应传空。 */
+  userNotes?: UserNoteCatalogItem[];
+  flashcards?: FlashcardCatalogItem[];
+  /** 工具循环上限（设置页「最大工具调用轮数」）。缺省 = MAX_TOOL_STEPS。 */
+  maxToolRounds?: number;
+  /** 计划模式：只读工具 + 先输出计划文档。斜杠 UI 由其它代理负责。 */
+  planMode?: boolean;
+  forcedTool?: ComposerForcedTool;
+  attachedFiles?: AttachedFileRef[];
 }
 
 export interface StudyAgentBundle {
@@ -75,7 +94,15 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     artifacts = [],
     memoryCommit,
     editingUserNote,
+    noteWindowAgent,
+    userNotes = [],
+    flashcards = [],
+    maxToolRounds,
+    planMode,
+    forcedTool,
+    attachedFiles = [],
   } = input;
+  const toolRoundLimit = clampMaxToolRounds(maxToolRounds);
 
   // 稳定排序，保证拼装的系统前缀逐字节一致、利于缓存命中
   const sortedSkills = [...skills]
@@ -109,14 +136,26 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
   // 易变段必须后置：定位（换页/换学年）→ 当前笔记正文 → 参考材料 → 演示目录 → 压缩说明。
   // 稳定前缀（global + 学科 + 用户设置 + 工具清单）在 systemPrompt 里，同页追问可命中 prefix cache。
   // 窗内笔记对话与右侧主 Agent 共用这条前缀；笔记 markdown 只出现在定位行之后，避免每篇笔记各自 bust 前缀。
+  const memoryLine = noteWindowAgent ? "" : formatMemoryCatalogLine(userNotes, flashcards);
+  const forcedSkillName = forcedSkillId(forcedTool)
+    ? sortedSkills.find((skill) => skill.id === forcedSkillId(forcedTool))?.name
+    : undefined;
+  const composerLine = formatComposerVolatile({
+    planMode,
+    forcedTool,
+    forcedSkillName,
+    attachedFiles,
+  });
   const volatile =
     buildLocationLine(chatCtx) +
     (editingUserNote ? `\n\n${formatEditingUserNoteContext(editingUserNote)}` : "") +
+    (memoryLine ? `\n\n${memoryLine}` : "") +
     (referenceContext ? `\n\n【参考材料】\n${referenceContext}` : "") +
     formatArtifactCatalog(artifacts) +
     (contextTruncated
       ? "\n\n【上下文策略】当前会话达到 80% 软上限，较早对话已压缩为摘要，参考材料已按目录/摘要分级裁剪。"
-      : "");
+      : "") +
+    (composerLine ? `\n\n${composerLine}` : "");
 
   // 必须只有「一条」system 消息且在最前：部分模型（如硅基流动 Qwen3）会对第二条 system 报错。
   const instructions = volatile ? `${systemPrompt}\n\n${volatile}` : systemPrompt;
@@ -132,25 +171,43 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
           academicYear: chatCtx.academicYear,
           modelId: selectedModelId,
           editingUserNote,
+          userNotes,
+          flashcards,
           artifactUnsupportedReason: isImageMode
             ? "当前生图模型不支持 HTML 交互组件生成，请切换文本模型后重试。"
             : undefined,
         },
         runtime,
-        { enableSearch: options.enableSearch ?? false, disabled: disabledTools, artifacts, memoryCommit, editingUserNote },
+        {
+          enableSearch: options.enableSearch ?? false,
+          disabled: disabledTools,
+          artifacts,
+          memoryCommit,
+          editingUserNote,
+          noteWindowAgent,
+          planMode,
+          forcedToolName: planMode ? undefined : resolveForcedToolName(forcedTool, { editingUserNote, memoryCommit }),
+        },
       )
     : {};
 
   const toolNames = Object.keys(tools);
+  const forcedToolName = planMode
+    ? undefined
+    : resolveForcedToolName(forcedTool, { editingUserNote, memoryCommit });
 
   // 每步动态收窄工具：生图模式首步只留 generateImage 并强制调用，之后关闭工具让模型写说明文字
   // （避免强制 toolChoice 在每步重复触发）；imageSearch 配额耗尽后不再暴露。
+  // 输入框指定工具：首步强制调用，其它工具仍可见。
   const prepareStep: PrepareStepFunction<ToolSet> = ({ stepNumber }) => {
     if (toolNames.length === 0) return {};
     if (isImageMode && toolNames.includes("generateImage")) {
       return stepNumber === 0
         ? { activeTools: ["generateImage"], toolChoice: { type: "tool", toolName: "generateImage" } }
         : { activeTools: [], toolChoice: "none" };
+    }
+    if (forcedToolName && toolNames.includes(forcedToolName) && stepNumber === 0) {
+      return { toolChoice: { type: "tool", toolName: forcedToolName } };
     }
     if (runtime.imageSearchFetchedCount >= IMAGE_SEARCH_MAX_TOTAL && toolNames.includes("imageSearch")) {
       return { activeTools: toolNames.filter((n) => n !== "imageSearch") };
@@ -169,7 +226,7 @@ export function createStudyAgent(input: StudyAgentInput): StudyAgentBundle {
     model: observedModel,
     instructions,
     tools,
-    stopWhen: isStepCount(MAX_TOOL_STEPS),
+    stopWhen: isStepCount(toolRoundLimit),
     // Endpoint fallback is owned by the model adapter; never repeat the entire
     // failed chain three times (especially for local permission/network errors).
     maxRetries: 0,

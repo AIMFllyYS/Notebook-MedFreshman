@@ -12,6 +12,7 @@ import { createGetCurrentPageTool } from "@/lib/ai/agent/tools/getCurrentPage/to
 import { createGetOutlineTool } from "@/lib/ai/agent/tools/getOutline/tool";
 import { createGetSectionTool } from "@/lib/ai/agent/tools/getSection/tool";
 import { createSearchNotesTool } from "@/lib/ai/agent/tools/searchNotes/tool";
+import { createSearchFlashcardsTool } from "@/lib/ai/agent/tools/searchFlashcards/tool";
 import { createSearchNoteImagesTool } from "@/lib/ai/agent/tools/searchNoteImages/tool";
 import { createWebSearchTool } from "@/lib/ai/agent/tools/webSearch/tool";
 import { createImageSearchTool } from "@/lib/ai/agent/tools/imageSearch/tool";
@@ -28,10 +29,14 @@ import { createCommitFlashcardsTool } from "@/lib/ai/agent/tools/commitFlashcard
 import { createUpdateUserNoteTool } from "@/lib/ai/agent/tools/updateUserNote/tool";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 import type { ArtifactCatalogItem } from "@/lib/ai/agent/tools/getArtifact/types";
+import { PLAN_MODE_WRITE_TOOL_SET } from "@/lib/ai/agent/planMode";
 
 export {
   IMAGE_SEARCH_MAX_TOTAL,
   MAX_TOOL_STEPS,
+  MIN_TOOL_ROUNDS,
+  MAX_TOOL_ROUNDS_CAP,
+  clampMaxToolRounds,
   TOOL_STEP_LIMIT_INFO,
   createToolRuntime,
   type StudyToolContext,
@@ -50,7 +55,26 @@ export interface BuildStudyToolsOptions {
   memoryCommit?: "note" | "flashcards";
   /** 学生从笔记窗打开助教时才暴露 updateUserNote。 */
   editingUserNote?: EditingUserNoteContext;
+  /** 窗内笔记 Agent 不暴露演示/生图/长文等重工具。 */
+  noteWindowAgent?: boolean;
+  /** 计划模式：只暴露只读工具，写文档/HTML/生图等不注册。 */
+  planMode?: boolean;
+  /** 输入框强制工具：窗内对话即使默认隐藏，也要暴露这一个。 */
+  forcedToolName?: string;
 }
+
+const NOTE_WINDOW_HIDDEN_TOOLS = new Set<StudyToolName>([
+  "searchNotes",
+  "searchFlashcards",
+  "renderInteractive",
+  "drawDiagram",
+  "generateImage",
+  "createQuiz",
+  "writeDocument",
+  "proposeMemory",
+  "commitNotes",
+  "commitFlashcards",
+]);
 
 /**
  * 构建本次请求的工具集。
@@ -71,6 +95,7 @@ export function buildStudyTools(
     getOutline: createGetOutlineTool(ctx, runtime),
     getSection: createGetSectionTool(ctx, runtime),
     searchNotes: createSearchNotesTool(ctx, runtime),
+    searchFlashcards: createSearchFlashcardsTool(ctx, runtime),
     webSearch: createWebSearchTool(runtime),
     imageSearch: createImageSearchTool(runtime),
     searchNoteImages: createSearchNoteImagesTool(ctx, runtime),
@@ -93,6 +118,7 @@ export function buildStudyTools(
     "getOutline",
     "getSection",
     "searchNotes",
+    "searchFlashcards",
     "searchNoteImages",
     "renderInteractive",
     "drawDiagram",
@@ -101,16 +127,23 @@ export function buildStudyTools(
     "writeDocument",
     "getArtifact",
     "proposeMemory",
+    "updateUserNote",
   ];
   if (opts.memoryCommit === "note") names.push("commitNotes");
   if (opts.memoryCommit === "flashcards") names.push("commitFlashcards");
-  if (opts.editingUserNote?.id) names.push("updateUserNote");
   if (opts.enableSearch) names.push("webSearch", "imageSearch");
   if (menuSkillNames.length > 0) names.push("useSkill");
+  const forced = opts.forcedToolName as StudyToolName | undefined;
+  if (forced && (forced in all) && !names.includes(forced) && !opts.planMode) {
+    names.push(forced);
+  }
 
   const selected: ToolSet = {};
   for (const n of names) {
-    if (!disabled.has(n)) selected[n] = all[n];
+    if (disabled.has(n)) continue;
+    if (opts.noteWindowAgent && NOTE_WINDOW_HIDDEN_TOOLS.has(n) && n !== opts.forcedToolName) continue;
+    if (opts.planMode && PLAN_MODE_WRITE_TOOL_SET.has(n)) continue;
+    selected[n] = all[n];
   }
   return selected;
 }

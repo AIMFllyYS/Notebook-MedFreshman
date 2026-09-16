@@ -15,6 +15,10 @@ import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import SpotlightDialog from "@/components/search/SpotlightDialog";
 import { SPOTLIGHT_BODY_CLASS, SPOTLIGHT_INPUT_CLASS } from "@/components/search/spotlightChrome";
 import GlobalSearchResults from "@/components/search/GlobalSearchResults";
+import GlobalSearchFilterMenu, {
+  type GlobalSearchKindFilter,
+  type GlobalSearchSubjectFilter,
+} from "@/components/search/GlobalSearchFilterMenu";
 
 export default function GlobalSearchButton() {
   const router = useRouter();
@@ -23,6 +27,8 @@ export default function GlobalSearchButton() {
   const setOpen = useGlobalSearch((s) => s.setOpen);
   const searchEnabled = useKeyboardSettings((s) => s.isEnabled("global.search"));
   const [query, setQuery] = useState("");
+  const [kindFilter, setKindFilter] = useState<GlobalSearchKindFilter>(null);
+  const [subjectFilter, setSubjectFilter] = useState<GlobalSearchSubjectFilter>(null);
   const deferredQuery = useDeferredValue(query);
   const academicYear = useAcademicYear((s) => s.year);
   const { noteHits, cardHits, bodyHits, notesLoading, cardsLoading, bodyLoading } =
@@ -57,6 +63,11 @@ export default function GlobalSearchButton() {
   };
 
   const shortcutLabel = formatShortcut("global.search");
+  const showNotes = !kindFilter || kindFilter === "note";
+  const showCards = !kindFilter || kindFilter === "flashcard";
+  const showBody = !kindFilter || kindFilter === "body";
+  const bySubject = (hits: GlobalSearchHit[]) =>
+    subjectFilter ? hits.filter((hit) => hit.subjectId === subjectFilter) : hits;
 
   return (
     <>
@@ -83,24 +94,32 @@ export default function GlobalSearchButton() {
         label="全局搜索"
         icon={<Search size={18} className="shrink-0 text-[var(--md-sys-color-primary)]" />}
         input={
-          <input
-            ref={inputRef}
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="搜索章节、正文、笔记、闪卡..."
-            className={SPOTLIGHT_INPUT_CLASS}
-          />
+          <>
+            <input
+              ref={inputRef}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="搜索章节、正文、笔记、闪卡..."
+              className={SPOTLIGHT_INPUT_CLASS}
+            />
+            <GlobalSearchFilterMenu
+              kind={kindFilter}
+              subjectId={subjectFilter}
+              onKindChange={setKindFilter}
+              onSubjectChange={setSubjectFilter}
+            />
+          </>
         }
       >
         <div className={SPOTLIGHT_BODY_CLASS}>
           <GlobalSearchResults
             query={deferredQuery}
-            noteHits={noteHits}
-            cardHits={cardHits}
-            bodyHits={bodyHits}
-            notesLoading={notesLoading}
-            cardsLoading={cardsLoading}
-            bodyLoading={bodyLoading}
+            noteHits={showNotes ? bySubject(noteHits) : []}
+            cardHits={showCards ? bySubject(cardHits) : []}
+            bodyHits={showBody ? bySubject(bodyHits) : []}
+            notesLoading={showNotes && notesLoading}
+            cardsLoading={showCards && cardsLoading}
+            bodyLoading={showBody && bodyLoading}
             onOpen={openHit}
           />
         </div>

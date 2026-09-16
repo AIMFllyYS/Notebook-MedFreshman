@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link2 } from "lucide-react";
-import SpotlightDialog from "@/components/search/SpotlightDialog";
 import { SPOTLIGHT_INPUT_CLASS } from "@/components/search/spotlightChrome";
 import { openSourcePreview } from "@/lib/chat/openSourcePreview";
-import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
 export function parseOpenableUrl(raw: string): { href: string; hostname: string; isHtml: boolean } | null {
   const trimmed = raw.trim();
@@ -24,23 +22,10 @@ export function parseOpenableUrl(raw: string): { href: string; hostname: string;
   }
 }
 
-export default function OpenUrlDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
+/** 加号菜单最后一栏的内联网址栏：复用搜索 input class，不另开 Spotlight 页。 */
+export default function OpenUrlField({ onOpened }: { onOpened?: () => void }) {
   const [url, setUrl] = useState("");
   const [urlError, setUrlError] = useState<string | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
-  useOverlayRegistration({
-    id: "open-url",
-    open,
-    onClose,
-    priority: 80,
-  });
-
-  useEffect(() => {
-    if (!open) return;
-    const id = window.setTimeout(() => inputRef.current?.focus(), 0);
-    return () => window.clearTimeout(id);
-  }, [open]);
 
   const addUrl = () => {
     const parsed = parseOpenableUrl(url);
@@ -52,18 +37,16 @@ export default function OpenUrlDialog({ open, onClose }: { open: boolean; onClos
       url: parsed.href,
       title: `${parsed.isHtml ? "HTML" : "网址"} · ${parsed.hostname}`,
     });
-    onClose();
+    setUrl("");
+    setUrlError(null);
+    onOpened?.();
   };
 
   return (
-    <SpotlightDialog
-      open={open}
-      onClose={onClose}
-      label="输入网址"
-      icon={<Link2 size={18} className="shrink-0 text-[var(--md-sys-color-primary)]" />}
-      input={
+    <div role="group" aria-label="输入网址" data-menu-group="open-url">
+      <div className="flex items-center gap-1.5 px-1">
+        <Link2 size={14} className="shrink-0 text-[var(--md-sys-color-primary)]" />
         <input
-          ref={inputRef}
           value={url}
           onChange={(event) => {
             setUrl(event.target.value);
@@ -76,22 +59,17 @@ export default function OpenUrlDialog({ open, onClose }: { open: boolean; onClos
           aria-label="网址"
           className={SPOTLIGHT_INPUT_CLASS}
         />
-      }
-    >
-      <div className="px-4 py-3">
-        {urlError ? (
-          <p className="text-[12px] text-[var(--md-sys-color-error)]">{urlError}</p>
-        ) : (
-          <p className="text-[13px] text-[var(--ink-faint)]">输入 http:// 或 https:// 地址，回车即可打开</p>
-        )}
         <button
           type="button"
           onClick={addUrl}
-          className="mt-3 rounded-md bg-[var(--md-sys-color-primary)] px-2 py-1.5 text-[11px] font-medium text-[var(--md-sys-color-on-primary)]"
+          className="rounded-md bg-[var(--md-sys-color-primary)] px-2 py-1.5 text-[11px] font-medium text-[var(--md-sys-color-on-primary)]"
         >
           打开
         </button>
       </div>
-    </SpotlightDialog>
+      {urlError ? (
+        <p className="px-1 pt-1 text-[12px] text-[var(--md-sys-color-error)]">{urlError}</p>
+      ) : null}
+    </div>
   );
 }

@@ -1,14 +1,19 @@
 import type { TextToolOutput } from "@/lib/ai/agent/tools/_types";
 
+export type UpdateUserNoteAction = "update" | "delete";
+
 export interface UpdateUserNoteInput {
-  markdown: string;
+  markdown?: string;
   title?: string;
+  noteId?: string;
+  action?: UpdateUserNoteAction;
 }
 
 export interface UpdateUserNoteOutput extends TextToolOutput {
   noteId: string;
   markdown: string;
   title?: string;
-  /** 服务端已确认请求里带着正在编辑的个人笔记。 */
+  action: UpdateUserNoteAction;
+  /** 服务端已确认有可写回的个人笔记 id。 */
   applied: boolean;
 }

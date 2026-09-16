@@ -1,10 +1,24 @@
-// 个人笔记（用户自己写的 Markdown）数据模型与纯函数工具。
-// 与 content/ 下的「课程笔记」是两套东西：课程笔记是只读的仓库文件，
-// 个人笔记只存在于用户本机的 IndexedDB（见 lib/stores/userNotes.ts）。
+// 用户笔记数据模型与纯函数工具。
+// 个人长笔记与课堂便签都落在 IndexedDB `user-notes`（见 lib/stores/userNotes.ts），
+// 登录后经 `notifyUserNoteChanged` 走 sync_documents 的 `user-note`。
+// content/ 下只读的课堂讲义 HTML 不再冒充「选择笔记 · 课程笔记」。
 
 import { getSubject } from "@/lib/content-data";
 import { isSubjectId } from "@/lib/types/content";
-import type { Category, ContentItem } from "@/lib/types/content";
+
+export type UserNoteKind = "personal" | "classroom";
+
+export type ClassroomNoteSourceKind = "content" | "agent" | "review";
+
+/** 课堂便签的出处：哪一页正文 / 哪次 Agent 回答 / 复习板。 */
+export interface ClassroomNoteSource {
+  kind: ClassroomNoteSourceKind;
+  label: string;
+  subjectId?: string | null;
+  categoryId?: string;
+  itemId?: string;
+  path?: string;
+}
 
 export interface UserNote {
   id: string;
@@ -14,6 +28,11 @@ export interface UserNote {
   subjectId: string | null;
   createdAt: number;
   updatedAt: number;
+  /** 缺省 / 旧数据 = 个人长笔记。classroom = 划词批注便签。 */
+  kind?: UserNoteKind;
+  /** 划中的原句（课堂便签）。 */
+  quote?: string;
+  source?: ClassroomNoteSource;
 }
 
 /** 笔记库窗口的两种用途：browse = 书架上「我的笔记」，cite = 加号菜单「选择笔记」。 */
@@ -132,6 +151,29 @@ export function formatNoteQuote(note: Pick<UserNote, "title" | "markdown">): str
   return `【笔记】${note.title}\n\n${markdown}`;
 }
 
+export function isClassroomNote(note: Pick<UserNote, "kind"> | null | undefined): boolean {
+  return note?.kind === "classroom";
+}
+
+export function noteKind(note: Pick<UserNote, "kind"> | null | undefined): UserNoteKind {
+  return isClassroomNote(note) ? "classroom" : "personal";
+}
+
+export function formatClassroomNoteQuote(
+  note: Pick<UserNote, "title" | "markdown" | "quote" | "source">,
+): string {
+  const lines = [`【课堂笔记 · ${note.source?.label || note.title}】`];
+  if (note.quote?.trim()) lines.push(`原文：${note.quote.trim()}`);
+  if (note.markdown.trim()) {
+    const markdown =
+      note.markdown.length > QUOTE_MAX_CHARS
+        ? `${note.markdown.slice(0, QUOTE_MAX_CHARS)}\n\n…（笔记较长，已截断）`
+        : note.markdown;
+    lines.push("", markdown);
+  }
+  return lines.join("\n");
+}
+
 /** 列表行用的一句话预览：去掉常见 Markdown 记号并压平空白。 */
 export function plainSnippet(markdown: string, maxChars = 80): string {
   const text = markdown
@@ -145,43 +187,6 @@ export function plainSnippet(markdown: string, maxChars = 80): string {
     .replace(/\s+/g, " ")
     .trim();
   return text.length > maxChars ? `${text.slice(0, maxChars)}…` : text;
-}
-
-/** 一条可引用的课程笔记（path 与 searchNotes 命中同构，可直接喂 noteCitations）。 */
-export interface CourseNoteHit {
-  path: string;
-  title: string;
-  snippet: string;
-  categoryId: string;
-  categoryName: string;
-}
-
-/**
- * 摊平某科目内容树里「真正能读」的条目：跳过纯导航节点、占位（stub）与目录页。
- * 用于加号菜单「选择笔记 · 课程笔记」这一栏。
- */
-export function listCourseNoteHits(subjectId: string): CourseNoteHit[] {
-  if (!isSubjectId(subjectId)) return [];
-  const subject = getSubject(subjectId);
-  if (!subject) return [];
-
-  const hits: CourseNoteHit[] = [];
-  const walk = (items: ContentItem[], category: Category) => {
-    for (const item of items) {
-      if (!item.navigationOnly && item.status !== "stub" && item.id !== "toc") {
-        hits.push({
-          path: `${subject.id}/${category.id}/${item.id}`,
-          title: item.title,
-          snippet: item.summary || "",
-          categoryId: category.id,
-          categoryName: category.name,
-        });
-      }
-      if (item.children?.length) walk(item.children, category);
-    }
-  };
-  for (const category of subject.categories) walk(category.items, category);
-  return hits;
 }
 
 /** 科目显示名（未绑定科目时给出「未归档」）。 */

@@ -24,6 +24,7 @@ test("summarizeSyncRows skips tombstones and totals live kinds", () => {
   assert.equal(usage.kinds.find((row) => row.kind === "document")?.count, 0);
   assert.ok(usage.totalBytes > 0);
   assert.equal(usage.totalBytes, usage.kinds.reduce((sum, row) => sum + row.bytes, 0));
+  assert.equal(usage.pools.find((row) => row.id === "notes")?.count, 0);
 });
 
 test("summarizeSyncUsage ignores non-finite bytes and keeps empty rows", () => {
@@ -38,4 +39,5 @@ test("summarizeSyncUsage ignores non-finite bytes and keeps empty rows", () => {
   assert.equal(usage.kinds.find((row) => row.kind === "document")?.count, 1);
   assert.equal(usage.kinds.find((row) => row.kind === "document")?.bytes, 100);
   assert.equal(emptyCloudSyncUsage("cloud").totalBytes, 0);
+  assert.equal(emptyCloudSyncUsage("cloud").pools.length, 2);
 });

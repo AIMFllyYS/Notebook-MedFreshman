@@ -1406,6 +1406,61 @@
   align-items: flex-end;
   gap: 6px;
 }
+.chat-input-plus {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 80%, transparent);
+  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.chat-input-plus:hover { color: var(--md-sys-color-on-surface); }
+.chat-input-plus:disabled { opacity: .4; cursor: not-allowed; }
+.composer-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+.composer-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  min-height: 24px;
+  padding: 2px 6px 2px 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 82%, transparent);
+  color: var(--md-sys-color-on-surface);
+  font-size: 12px;
+  line-height: 1.2;
+}
+.composer-chip > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.composer-chip button {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.composer-chip-plan { background: color-mix(in srgb, #7c3aed 16%, var(--md-sys-color-surface)); }
+.composer-chip-tool { background: color-mix(in srgb, var(--md-sys-color-primary) 12%, var(--md-sys-color-surface)); }
+.composer-chip-file { background: color-mix(in srgb, var(--md-sys-color-tertiary) 12%, var(--md-sys-color-surface)); }
+.composer-palette { overflow: auto; }
+.composer-command-on {
+  margin-left: auto;
+  color: var(--md-sys-color-primary);
+  font-size: 10.5px;
+}
 .chat-input-row-focused {
   border-color: color-mix(in srgb, var(--md-sys-color-on-surface) 46%, transparent);
   box-shadow: 0 4px 22px rgb(0 0 0 / 0.09);

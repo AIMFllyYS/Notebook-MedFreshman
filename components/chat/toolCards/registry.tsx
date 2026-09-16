@@ -34,6 +34,7 @@ export const TOOL_REGISTRY = {
     withItems: (part, items) =>
       part.state === "output-available" ? { ...part, output: { ...part.output, hits: items as SearchHit[] } } : part,
   }),
+  searchFlashcards: moduleOf("searchFlashcards"),
   searchNoteImages: moduleOf("searchNoteImages", {
     ResultCard: SearchNoteImagesResultCard,
     shouldRender: (part) => part.state === "output-available" && !!part.output.images?.length,

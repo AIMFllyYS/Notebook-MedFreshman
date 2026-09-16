@@ -2,9 +2,15 @@ import type { Skill } from "@/lib/types/skill";
 import type { AcademicYearId } from "@/lib/constants/academic-year";
 import type { TextToolOutput } from "@/lib/ai/agent/tools/_types";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
+import type { FlashcardCatalogItem, UserNoteCatalogItem } from "@/lib/ai/agent/tools/memoryCatalog";
 
 export const IMAGE_SEARCH_MAX_TOTAL = 20;
-export const MAX_TOOL_STEPS = 6;
+export {
+  MAX_TOOL_STEPS,
+  MIN_TOOL_ROUNDS,
+  MAX_TOOL_ROUNDS_CAP,
+  clampMaxToolRounds,
+} from "@/lib/ai/agent/toolRounds";
 /** 第 6 步仍返回 tool-calls、没有第 7 次 LLM 消化时下发给用户。 */
 export const TOOL_STEP_LIMIT_INFO =
   "本次达到了工具调用上限，讲解可能不完整，可以再问一次让我继续。";
@@ -23,6 +29,10 @@ export interface StudyToolContext {
   artifactUnsupportedReason?: string;
   /** 学生从笔记窗打开助教时，当前正在编辑的个人笔记。 */
   editingUserNote?: EditingUserNoteContext;
+  /** 本机个人笔记目录（主对话携带；窗内对话为空，避免翻整库）。 */
+  userNotes?: UserNoteCatalogItem[];
+  /** 本机复习闪卡目录（复用复习板，不另开存储）。 */
+  flashcards?: FlashcardCatalogItem[];
 }
 
 /** 跨工具轮次的可变状态（同一请求内共享）。 */

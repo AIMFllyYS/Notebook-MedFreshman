@@ -5,8 +5,15 @@ import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { useChatUI } from "@/lib/stores/chatUI";
 import { useStore } from "@/lib/stores/ui";
+import { currentRecordContext } from "@/lib/review/recordContext";
 import { useUserNotes } from "@/lib/stores/userNotes";
-import { formatNoteQuote, type NoteLibraryIntent } from "@/lib/notes/userNote";
+import {
+  deriveNoteTitle,
+  formatNoteQuote,
+  type ClassroomNoteSourceKind,
+  type NoteLibraryIntent,
+} from "@/lib/notes/userNote";
+import type { SubjectId } from "@/lib/types/content";
 
 function onBookshelfHome(): boolean {
   return typeof window !== "undefined" && window.location.pathname === "/";
@@ -66,7 +73,46 @@ export function citeUserNoteToMainAgent(noteId: string): boolean {
   return true;
 }
 
-/** browse = 书架「笔记」；cite = 加号菜单「选择笔记」（我的笔记 + 课程笔记两栏）。 */
+/**
+ * 划词「笔记」：新建一篇课堂便签并打开小便签窗。
+ * 原文写入 quote，批注正文空白，等用户在 compact Milkdown 里写。
+ */
+export function createAndOpenClassroomNote(input: {
+  quote: string;
+  sourceKind?: ClassroomNoteSourceKind;
+  recordSubjectId?: SubjectId;
+  subjectId?: string | null;
+  anchor?: { x: number; y: number };
+}): string | null {
+  const quote = input.quote.trim();
+  if (quote.length < 2) return null;
+  const ctx = currentRecordContext(input.recordSubjectId);
+  const bound = input.subjectId !== undefined ? input.subjectId : (ctx.subjectId || resolveSubjectId());
+  const sourceKind = input.sourceKind ?? (input.recordSubjectId ? "review" : "content");
+  const label =
+    sourceKind === "agent"
+      ? [ctx.sourceLabel, "Agent"].filter(Boolean).join(" · ") || "Agent 对话"
+      : ctx.sourceLabel || "课堂";
+  const notes = useUserNotes.getState();
+  const id = notes.createNote(bound, {
+    kind: "classroom",
+    quote,
+    title: deriveNoteTitle(quote),
+    markdown: "",
+    source: {
+      kind: sourceKind,
+      label,
+      subjectId: bound,
+      categoryId: ctx.categoryId,
+      itemId: ctx.itemId,
+      path: ctx.categoryId && ctx.itemId ? `${ctx.subjectId}/${ctx.categoryId}/${ctx.itemId}` : undefined,
+    },
+  });
+  notes.openEditor(id, { anchor: input.anchor });
+  return id;
+}
+
+/** browse = 书架「笔记」；cite = 加号菜单「选择笔记」（我的笔记 + 课堂笔记两栏）。 */
 export function openNoteLibrary(opts?: { subjectId?: string | null; intent?: NoteLibraryIntent }): void {
   useUserNotes.getState().openLibrary({
     intent: opts?.intent,

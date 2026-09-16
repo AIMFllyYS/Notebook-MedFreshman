@@ -1,10 +1,12 @@
 "use client";
 
-import { memo, useCallback, useRef } from "react";
+import { memo, useCallback, useRef, type DragEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Folder, FolderOpen, FileText } from "lucide-react";
 import type { ContentItem } from "@/lib/types/content";
 import FolderTreeRow from "./FolderTreeRow";
+import { writeNotebookFileDrag } from "@/lib/chat/composerIntent";
+import { fileRefFromNav } from "@/lib/chat/fileMentions";
 
 interface FileTreeItemProps {
   item: ContentItem;
@@ -69,6 +71,10 @@ function FileTreeItem({
     }
   }, []);
 
+  const handleDragStart = useCallback((event: DragEvent<HTMLButtonElement>) => {
+    writeNotebookFileDrag(event.dataTransfer, [fileRefFromNav(subjectId, categoryId, item)]);
+  }, [subjectId, categoryId, item]);
+
   const icon = isFolder ? (
     isExpanded ? (
       <FolderOpen size={15} style={{ color: "var(--md-sys-color-primary)" }} />
@@ -92,6 +98,9 @@ function FileTreeItem({
       onMouseLeave={cancelPrefetch}
       onFocus={schedulePrefetch}
       onBlur={cancelPrefetch}
+      titleAttr={`${item.title} · 长按拖到输入框可引用`}
+      draggable
+      onDragStart={handleDragStart}
     />
   );
 }

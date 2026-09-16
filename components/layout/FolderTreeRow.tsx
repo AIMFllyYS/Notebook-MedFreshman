@@ -1,6 +1,6 @@
 "use client";
 
-import type { FocusEvent, MouseEvent, ReactNode } from "react";
+import type { DragEvent, FocusEvent, MouseEvent, PointerEvent, ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 
 /** 主页左侧文件树行（与 FileTreeItem / SubjectSidebar 同款：28px、chevron、图标）。 */
@@ -19,6 +19,11 @@ export default function FolderTreeRow({
   titleAttr,
   ariaLabel,
   fontWeight,
+  draggable,
+  onDragStart,
+  onDragEnd,
+  onPointerDown,
+  onPointerUp,
 }: {
   depth: number;
   title: string;
@@ -34,6 +39,11 @@ export default function FolderTreeRow({
   titleAttr?: string;
   ariaLabel?: string;
   fontWeight?: number;
+  draggable?: boolean;
+  onDragStart?: (event: DragEvent<HTMLButtonElement>) => void;
+  onDragEnd?: (event: DragEvent<HTMLButtonElement>) => void;
+  onPointerDown?: (event: PointerEvent<HTMLButtonElement>) => void;
+  onPointerUp?: (event: PointerEvent<HTMLButtonElement>) => void;
 }) {
   return (
     <button
@@ -46,6 +56,11 @@ export default function FolderTreeRow({
       onClick={onClick}
       onFocus={onFocus}
       onBlur={onBlur}
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
       className="flex w-full items-center gap-1 border-0 bg-transparent text-left outline-none"
       style={{
         paddingLeft: depth * 16 + 4,

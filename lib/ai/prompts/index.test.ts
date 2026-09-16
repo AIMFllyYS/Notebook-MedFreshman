@@ -47,6 +47,8 @@ test("buildSystemPrompt：工具清单含 useSkill；出题 1–12；导出只�
   assert.match(prompt, /\*\*commitNotes\*\*/);
   assert.match(prompt, /\*\*commitFlashcards\*\*/);
   assert.match(prompt, /\*\*updateUserNote\*\*/);
+  assert.match(prompt, /\*\*searchFlashcards\*\*/);
+  assert.match(prompt, /主动查找/);
   assert.match(prompt, /短记忆提纲/);
   assert.match(prompt, /有序列表/);
   assert.match(prompt, /不要写非常详细的 Markdown/);

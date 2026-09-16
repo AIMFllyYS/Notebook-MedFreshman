@@ -33,6 +33,45 @@ const resolved: ResolvedRequestSettings = {
   contextMode: "full",
 };
 
+test("buildChatRequestBody：透传 maxToolRounds 与 planMode", () => {
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ maxToolRounds: 8, planMode: true }),
+    resolved,
+    { limit: 8000, estimated: 1200, softLimitReached: false },
+    [],
+    "2025-2026-1",
+  );
+  assert.equal(body.maxToolRounds, 8);
+  assert.equal(body.planMode, true);
+  assert.equal(buildChatRequestBody(
+    ctx, settings(), resolved, { limit: 1, estimated: 1, softLimitReached: false }, [], "y",
+  ).planMode, undefined);
+});
+
+test("buildChatRequestBody：输入框计划/工具/附件字段透传", () => {
+  const attached = [{
+    path: "probability/detail/1.4",
+    title: "古典概型",
+    kind: "file" as const,
+    address: "概率论 › 详解 › 古典概型",
+    subjectId: "probability",
+    categoryId: "detail",
+    itemId: "1.4",
+  }];
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ planMode: true, forcedTool: "generateImage", attachedFiles: attached }),
+    resolved,
+    { limit: 8000, estimated: 1200, softLimitReached: false },
+    [],
+    "2025-2026-1",
+  );
+  assert.equal(body.planMode, true);
+  assert.equal(body.forcedTool, "generateImage");
+  assert.deepEqual(body.attachedFiles, attached);
+});
+
 test("buildChatRequestBody：确认沉淀后带上 memoryCommit", () => {
   const body = buildChatRequestBody(
     ctx,
@@ -56,6 +95,42 @@ test("buildChatRequestBody：打开个人笔记时带上 editingUserNote", () =>
     "2025-2026-1",
   );
   assert.deepEqual(body.editingUserNote, note);
+  assert.equal(body.noteWindowAgent, undefined);
+
+  const windowed = buildChatRequestBody(
+    ctx,
+    settings({ editingUserNote: note, noteWindowAgent: true }),
+    resolved,
+    { limit: 8000, estimated: 1200, softLimitReached: false },
+    [],
+    "2025-2026-1",
+  );
+  assert.equal(windowed.noteWindowAgent, true);
+  assert.deepEqual(windowed.userNotes, []);
+  assert.deepEqual(windowed.flashcards, []);
+});
+
+test("buildChatRequestBody：主对话可带本机笔记/闪卡目录", () => {
+  const notes = [{ id: "n1", title: "被覆上皮", markdown: "单层扁平", subjectId: "histology", updatedAt: 1 }];
+  const cards = [{
+    id: "c1",
+    subjectId: "anatomy",
+    sourceLabel: "骨学",
+    front: "长骨",
+    back: "骨干与骺",
+    originalText: "长骨由骨干和骺构成",
+    status: "ready",
+  }];
+  const body = buildChatRequestBody(
+    ctx,
+    settings({ userNotes: notes, flashcards: cards }),
+    resolved,
+    { limit: 8000, estimated: 1200, softLimitReached: false },
+    [],
+    "2025-2026-1",
+  );
+  assert.deepEqual(body.userNotes, notes);
+  assert.deepEqual(body.flashcards, cards);
 });
 
 test("buildChatRequestBody：映射上下文与预算字段", () => {

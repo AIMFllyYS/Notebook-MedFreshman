@@ -51,7 +51,7 @@ describe("TokenDashboard session storage", () => {
     expect(details).toHaveAttribute("open");
     const conversationBar = await screen.findByRole("progressbar", { name: "对话占用" });
     expect(Number(conversationBar.getAttribute("aria-valuenow"))).toBeLessThan(5);
-    expect(screen.getByText(/4\.0 MB/)).toBeInTheDocument();
+    expect(screen.getByText(/5\.0 MB/)).toBeInTheDocument();
     expect(screen.queryByRole("progressbar", { name: "附件占用" })).toBeNull();
     expect(screen.getByText(/20 KB/)).toBeInTheDocument();
     expect(screen.getByText(/1 个/)).toBeInTheDocument();

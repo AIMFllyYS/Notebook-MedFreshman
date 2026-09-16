@@ -29,7 +29,13 @@ export default function SpotlightDialog({
 }: SpotlightDialogProps) {
   if (!open || typeof document === "undefined") return null;
   return createPortal(
-    <div className={SPOTLIGHT_BACKDROP_CLASS} onPointerDown={onClose}>
+    <div
+      className={SPOTLIGHT_BACKDROP_CLASS}
+      onPointerDown={(event) => {
+        if ((event.target as Element | null)?.closest?.(".app-menu")) return;
+        onClose();
+      }}
+    >
       <div
         role="dialog"
         aria-modal="true"

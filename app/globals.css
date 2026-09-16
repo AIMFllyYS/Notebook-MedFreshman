@@ -851,3 +851,13 @@ html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [d
     user-select: none;
   }
 }
+
+/* 尽量压住系统/浏览器划词助手：不能拦截 Look Up / Copilot / 扩展。 */
+html[data-block-foreign-selection] {
+  -webkit-touch-callout: none;
+}
+html[data-block-foreign-selection] [data-selection-host] {
+  -webkit-touch-callout: none;
+  -webkit-user-select: text;
+  user-select: text;
+}

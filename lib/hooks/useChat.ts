@@ -18,6 +18,9 @@ import {
   type SendMessageOptions,
 } from '@/lib/chat/sendMessage';
 import { selectEditingUserNote } from '@/lib/notes/applyUserNoteAgent';
+import { collectFlashcardCatalog, collectUserNoteCatalog } from '@/lib/ai/agent/tools/memoryCatalog';
+import { useUserNotes } from '@/lib/stores/userNotes';
+import { useReviewCards } from '@/lib/stores/reviewCards';
 
 const EMPTY_MESSAGES: ChatMessage[] = [];
 export function useChat(chatContext: ChatContext, options?: ChatOptions, overrides?: {
@@ -91,6 +94,15 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
     }
     loadingRef.current = true; setIsLoading(true); setError(null); setInfo(null);
     const abortController = new AbortController(); abortRef.current = abortController;
+    const isNoteWindow = Boolean(ovEditingUserNoteId);
+    const notesState = useUserNotes.getState();
+    const cardsState = useReviewCards.getState();
+    const userNotes = isNoteWindow
+      ? []
+      : collectUserNoteCatalog(notesState.order.map((id) => notesState.byId[id]).filter(Boolean));
+    const flashcards = isNoteWindow
+      ? []
+      : collectFlashcardCatalog(cardsState.order.map((id) => cardsState.byId[id]).filter(Boolean));
     void (async () => {
       let stalled = false;
       try {
@@ -102,6 +114,13 @@ export function useChat(chatContext: ChatContext, options?: ChatOptions, overrid
               ...settings,
               memoryCommit: sendOptions?.memoryCommit,
               editingUserNote: selectEditingUserNote(ovEditingUserNoteId) ?? undefined,
+              noteWindowAgent: isNoteWindow,
+              userNotes,
+              flashcards,
+              maxToolRounds: settings.maxToolRounds,
+              planMode: sendOptions?.planMode,
+              forcedTool: sendOptions?.forcedTool,
+              attachedFiles: sendOptions?.attachedFiles,
             },
             resolved,
             budget,

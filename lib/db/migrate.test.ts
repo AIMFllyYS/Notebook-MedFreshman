@@ -103,6 +103,11 @@ test("discoverMigrations reads repo baseline in version order", () => {
   assert.equal(files[3].version, "0004");
   assert.equal(files[3].filename, "0004_sync_quota_bytes.sql");
   assert.equal(findNonIdempotentStatements(files[3].sql).length, 0);
+  assert.equal(files[4].version, "0005");
+  assert.equal(files[4].filename, "0005_sync_user_notes_flashcards.sql");
+  assert.equal(findNonIdempotentStatements(files[4].sql).length, 0);
+  assert.match(files[4].sql, /user-note/);
+  assert.match(files[4].sql, /review-card/);
 });
 
 test("0001_init.sql inventory covers tables indexes triggers policies grants", () => {

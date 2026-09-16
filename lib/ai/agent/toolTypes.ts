@@ -8,8 +8,8 @@
  *   types.ts  presentation.ts  tool.ts
  * 有卡片时：components/chat/toolCards/<name>Card.tsx
  * ```
- * 18 个目录：getCurrentPage / getOutline / getSection / searchNotes /
- * searchNoteImages / webSearch / imageSearch / renderInteractive / drawDiagram /
+ * 19 个目录：getCurrentPage / getOutline / getSection / searchNotes /
+ * searchFlashcards / searchNoteImages / webSearch / imageSearch / renderInteractive / drawDiagram /
  * generateImage / createQuiz / writeDocument / getArtifact / useSkill /
  * proposeMemory / commitNotes / commitFlashcards / updateUserNote。
  *
@@ -35,9 +35,14 @@ export type {
   GetSectionInput,
   GetSectionOutput,
   SearchHit,
+  SearchHitKind,
   SearchNotesDiagnostics,
   SearchNotesInput,
   SearchNotesOutput,
+  SearchNotesScope,
+  FlashcardHit,
+  SearchFlashcardsInput,
+  SearchFlashcardsOutput,
   NoteImageHit,
   SearchNoteImagesInput,
   SearchNoteImagesOutput,
@@ -68,6 +73,7 @@ export type {
   CommitFlashcardsInput,
   CommitFlashcardsOutput,
   CommitFlashcardItem,
+  UpdateUserNoteAction,
   UpdateUserNoteInput,
   UpdateUserNoteOutput,
   StudyTools,

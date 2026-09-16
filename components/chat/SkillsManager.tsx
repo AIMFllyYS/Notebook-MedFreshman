@@ -4,16 +4,7 @@ import { useRef, useState } from 'react';
 import { Upload, Trash2, FileText, Pin } from 'lucide-react';
 import { useSkills, MAX_SKILLS } from '@/lib/hooks/useSkills';
 import { useHydrated } from '@/lib/hooks/useHydrated';
-import { parseSkillMarkdown } from '@/lib/utils/skillFrontmatter';
-
-function readText(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const r = new FileReader();
-    r.onload = () => resolve(String(r.result ?? ''));
-    r.onerror = reject;
-    r.readAsText(file);
-  });
-}
+import { importSkillFiles } from '@/lib/utils/importSkills';
 
 function fmtSize(content: string): string {
   const bytes = new Blob([content]).size;
@@ -38,7 +29,7 @@ function Toggle({ on, onClick, title }: { on: boolean; onClick: () => void; titl
   );
 }
 
-/** 技能库管理表格（落 useSkills / IndexedDB）。上传单个 .md，最多 MAX_SKILLS 个。 */
+/** 技能库管理表格（落 useSkills / IndexedDB）。支持 .md / ZIP / .skill，最多 MAX_SKILLS 个。 */
 export default function SkillsManager() {
   const hydrated = useHydrated(useSkills);
   const skills = useSkills((s) => s.skills);
@@ -59,25 +50,21 @@ export default function SkillsManager() {
     const files = e.target.files;
     if (!files?.length) return;
     setErr('');
-    let rejected = 0;
-    for (const file of Array.from(files)) {
-      if (!/\.(md|markdown)$/i.test(file.name) && file.type !== 'text/markdown') {
-        rejected++;
-        continue;
+    const imported = await importSkillFiles(files);
+    let added = 0;
+    for (const parsed of imported.skills) {
+      const ok = addSkill({ name: parsed.name, description: parsed.description, content: parsed.content });
+      if (!ok) {
+        setErr(`最多 ${MAX_SKILLS} 个技能，部分文件未添加。`);
+        break;
       }
-      try {
-        const raw = await readText(file);
-        const parsed = parseSkillMarkdown(raw, file.name);
-        const ok = addSkill({ name: parsed.name, description: parsed.description, content: parsed.content });
-        if (!ok) {
-          setErr(`最多 ${MAX_SKILLS} 个技能，部分文件未添加。`);
-          break;
-        }
-      } catch {
-        rejected++;
-      }
+      added += 1;
     }
-    if (rejected > 0) setErr((p) => p || '仅支持 .md / .markdown 文件。');
+    const messages = [...imported.errors];
+    if (imported.rejected > 0 && added === 0 && imported.skills.length === 0) {
+      messages.push('仅支持 .md / .markdown / .zip / .skill。');
+    }
+    if (messages.length) setErr((p) => p || messages[0] || '');
     e.target.value = '';
   };
 
@@ -86,7 +73,7 @@ export default function SkillsManager() {
       <input
         ref={fileRef}
         type="file"
-        accept=".md,.markdown,text/markdown"
+        accept=".md,.markdown,.zip,.skill,text/markdown,application/zip"
         multiple
         onChange={handleFiles}
         className="hidden"
@@ -98,10 +85,10 @@ export default function SkillsManager() {
           disabled={atLimit}
           className="press flex items-center gap-1.5 rounded-lg bg-[var(--md-sys-color-primary)] px-3 py-1.5 text-[12.5px] font-medium text-[var(--md-sys-color-on-primary)] disabled:opacity-40"
         >
-          <Upload size={14} /> 上传 .md
+          <Upload size={14} /> 导入技能
         </button>
         <span className="text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
-          {skills.length} / {MAX_SKILLS}
+          {skills.length} / {MAX_SKILLS} · .md / ZIP / .skill
         </span>
       </div>
 
@@ -111,7 +98,7 @@ export default function SkillsManager() {
         <div className="text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">正在加载技能库…</div>
       ) : skills.length === 0 ? (
         <div className="rounded-lg border border-dashed border-[var(--md-sys-color-outline-variant)] px-3 py-4 text-center text-[11.5px] text-[var(--md-sys-color-on-surface-variant)]">
-          还没有技能。上传一个 .md 文件即可（文件含 frontmatter 的 name/description 会自动填入，可在下方编辑）。
+          还没有技能。导入 .md，或含 SKILL.md 的 ZIP / .skill 包（frontmatter 的 name/description 会自动填入，可在下方编辑）。
         </div>
       ) : (
         <div className="flex flex-col gap-2">

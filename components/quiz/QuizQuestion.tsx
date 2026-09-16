@@ -10,6 +10,7 @@ import { useQuizStore } from "@/lib/quiz-store";
 import { getVideo } from "@/lib/content-data/media";
 import { openMessageMenu } from "@/lib/hooks/useContextMenu";
 import QuizMarkdown from "./QuizMarkdown";
+import { useQuizExplain } from "@/lib/stores/quizExplain";
 
 const InlinePlayer = dynamic(() => import("@/components/video/InlinePlayer"), {
   ssr: false,
@@ -269,14 +270,48 @@ function ReviewExplain({ q }: { q: Q }) {
   const isSubjective = q.type === "analysis" || q.type === "fill_blank" || q.type === "essay";
   return (
     <div
+      data-testid="quiz-explain-card"
       style={{
-        marginTop: "14px",
-        padding: "13px 15px",
+        marginTop: "6px",
+        padding: "10px 12px",
         borderRadius: "var(--md-sys-shape-corner-medium)",
         background: "var(--md-sys-color-surface-container)",
         border: "1px solid var(--md-sys-color-outline-variant)",
       }}
     >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "8px",
+          marginBottom: q.explanation || isSubjective || (q.scoring_criteria && q.scoring_criteria.length > 0) ? "6px" : 0,
+        }}
+      >
+        <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--md-sys-color-on-surface-variant)" }}>
+          深度解析
+        </span>
+        <button
+          type="button"
+          data-testid="quiz-explain-agent-btn"
+          onClick={() => useQuizExplain.getState().openWindow(q)}
+          style={{
+            flexShrink: 0,
+            fontSize: "11px",
+            fontWeight: 600,
+            lineHeight: 1.3,
+            padding: "3px 8px",
+            borderRadius: "var(--md-sys-shape-corner-full)",
+            border: "1px solid var(--md-sys-color-outline-variant)",
+            background: "var(--md-sys-color-surface-container-lowest)",
+            color: "var(--md-sys-color-primary)",
+            cursor: "pointer",
+          }}
+        >
+          让 Agent 更详细解答
+        </button>
+      </div>
+
       {/* 辨析题：先给命题判断 */}
       {q.type === "analysis" && (
         <div style={{ fontSize: "13px", fontWeight: 700, marginBottom: "8px", color: q.answer === 1 ? SUCCESS : ERROR }}>
@@ -287,7 +322,7 @@ function ReviewExplain({ q }: { q: Q }) {
       {/* 参考答案（主观题） */}
       {isSubjective && (
         <>
-          <SectionLabel>参考答案</SectionLabel>
+          <SectionLabel tight>参考答案</SectionLabel>
           <div style={{ fontSize: "14px", lineHeight: 1.75, color: "var(--md-sys-color-on-surface)" }}>
             <QuizMarkdown>{q.type === "analysis" ? q.reasoning || String(q.answer ?? "") : String(q.answer ?? "")}</QuizMarkdown>
           </div>
@@ -297,7 +332,7 @@ function ReviewExplain({ q }: { q: Q }) {
       {/* 评分要点 */}
       {q.scoring_criteria && q.scoring_criteria.length > 0 && (
         <>
-          <SectionLabel>评分要点</SectionLabel>
+          <SectionLabel tight={!isSubjective}>评分要点</SectionLabel>
           <ul style={{ margin: 0, paddingLeft: "18px", display: "flex", flexDirection: "column", gap: "4px" }}>
             {q.scoring_criteria.map((c, i) => (
               <li key={i} style={{ fontSize: "13px", lineHeight: 1.6, color: "var(--md-sys-color-on-surface)" }}>
@@ -308,17 +343,14 @@ function ReviewExplain({ q }: { q: Q }) {
         </>
       )}
 
-      {/* 深度解析 */}
+      {/* 深度解析正文 */}
       {q.explanation && (
-        <>
-          <SectionLabel>深度解析</SectionLabel>
-          <div
-            style={{ fontSize: "13.5px", lineHeight: 1.75, color: "var(--md-sys-color-on-surface-variant)" }}
-            onContextMenu={(e) => openMessageMenu(e, q.explanation!)}
-          >
-            <QuizMarkdown>{q.explanation}</QuizMarkdown>
-          </div>
-        </>
+        <div
+          style={{ fontSize: "13.5px", lineHeight: 1.75, color: "var(--md-sys-color-on-surface-variant)" }}
+          onContextMenu={(e) => openMessageMenu(e, q.explanation!)}
+        >
+          <QuizMarkdown>{q.explanation}</QuizMarkdown>
+        </div>
       )}
 
       {/* 来源目录 */}
@@ -353,9 +385,9 @@ function ReviewExplain({ q }: { q: Q }) {
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children, tight }: { children: React.ReactNode; tight?: boolean }) {
   return (
-    <div style={{ fontSize: "12px", fontWeight: 700, color: "var(--md-sys-color-on-surface-variant)", margin: "12px 0 6px" }}>
+    <div style={{ fontSize: "12px", fontWeight: 700, color: "var(--md-sys-color-on-surface-variant)", margin: tight ? "4px 0 6px" : "12px 0 6px" }}>
       {children}
     </div>
   );

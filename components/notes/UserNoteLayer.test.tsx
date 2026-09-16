@@ -7,7 +7,7 @@ import { useChatHistory } from "@/lib/stores/chatHistory";
 import { useChatUI } from "@/lib/stores/chatUI";
 import { useStore } from "@/lib/stores/ui";
 import { applyUpdateUserNoteEvents, resetAppliedUserNoteEdits } from "@/lib/notes/applyUserNoteAgent";
-import { createAndOpenNote, openNoteLibrary } from "@/lib/notes/openUserNote";
+import { createAndOpenClassroomNote, createAndOpenNote, openNoteLibrary } from "@/lib/notes/openUserNote";
 import { BLANK_NOTE_MARKDOWN, EXAMPLE_USER_NOTE_ID } from "@/lib/notes/userNote";
 
 vi.mock("@/components/chat/ChatThread", () => ({
@@ -191,6 +191,7 @@ describe("personal note windows", () => {
                     text: "已写回",
                     noteId: id,
                     markdown: "# 被覆上皮\n\n1. 单层扁平",
+                    action: "update",
                     applied: true,
                   },
                 },
@@ -205,6 +206,12 @@ describe("personal note windows", () => {
     expect(screen.getByLabelText("笔记标题")).toHaveValue("被覆上皮");
     expect(useChatHistory.getState().messagesById.main).toEqual(mainMessages);
     expect(applyUpdateUserNoteEvents(Object.values(useChatHistory.getState().messagesById).flat())).toEqual([]);
+    expect(screen.getByRole("navigation", { name: "笔记目录" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "刷新渲染" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "隐藏目录" }));
+    expect(screen.queryByRole("navigation", { name: "笔记目录" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "显示目录" }));
+    expect(screen.getByRole("navigation", { name: "笔记目录" })).toBeTruthy();
   });
 
   it("filters the library from the folder tree and hides the all-subjects chip", () => {
@@ -233,6 +240,28 @@ describe("personal note windows", () => {
     fireEvent.click(screen.getByRole("button", { name: "全部" }));
     expect(screen.getByRole("button", { name: /泊松笔记/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /牛顿笔记/ })).toBeInTheDocument();
+  });
+
+  it("lists classroom notes in the cite library and opens the sticky editor", () => {
+    createAndOpenClassroomNote({
+      quote: "泊松分布的均值等于方差",
+      sourceKind: "agent",
+      subjectId: "probability",
+    });
+    openNoteLibrary({ subjectId: "probability", intent: "cite" });
+    render(<UserNoteLayer />);
+
+    fireEvent.click(screen.getByRole("button", { name: "课堂笔记" }));
+    expect(screen.getByRole("button", { name: /泊松分布的均值等于方差/ })).toBeInTheDocument();
+    expect(screen.getByText("原文引用")).toBeInTheDocument();
+    expect(screen.getByText("整理信息")).toBeInTheDocument();
+    expect(screen.getByText(/出处/)).toBeInTheDocument();
+    expect(screen.getByLabelText("课堂笔记标题")).toBeInTheDocument();
+    expect(screen.getByText("原文")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "引用到对话" }));
+    expect(useChatUI.getState().quotedText).toMatch(/【课堂笔记/);
+    expect(useChatUI.getState().quotedText).toMatch(/泊松分布的均值等于方差/);
   });
 
   it("cites a user note into the chat quote tray from the library", () => {

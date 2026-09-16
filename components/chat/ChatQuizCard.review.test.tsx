@@ -39,6 +39,7 @@ describe('ChatQuizCard real renderer', () => {
     expect(screen.queryByText(/深度解析正文/)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /正确/ }));
     expect(screen.getByText(/深度解析正文/)).toBeVisible();
+    expect(screen.getByRole("button", { name: "让 Agent 更详细解答" })).toBeVisible();
     expect(screen.getByText(/回答正确/)).toBeVisible();
   });
 

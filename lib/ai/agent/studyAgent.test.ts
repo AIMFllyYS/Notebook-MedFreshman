@@ -146,10 +146,26 @@ test("createStudyAgent：未确认时不暴露 commit 工具，确认笔记后�
   assert.doesNotMatch(cards.promptParts.instructions, /记忆闭环（已确认闪卡）/);
 });
 
-test("createStudyAgent：打开个人笔记后才暴露 updateUserNote，且不改稳定前缀", () => {
+test("createStudyAgent：主对话目录只报数量，不 dump 笔记正文", () => {
+  const model = new MockLanguageModelV4();
+  const withCatalog = createStudyAgent(baseInput(model, {
+    userNotes: [{ id: "n1", title: "秘密标题", markdown: "秘密正文不该进 system", subjectId: "histology", updatedAt: 1 }],
+  }));
+  assert.match(withCatalog.promptParts.volatile, /个人笔记 1 篇/);
+  assert.doesNotMatch(withCatalog.promptParts.volatile, /秘密正文/);
+  const windowed = createStudyAgent(baseInput(model, {
+    userNotes: [{ id: "n1", title: "秘密标题", markdown: "秘密正文", subjectId: null, updatedAt: 1 }],
+    noteWindowAgent: true,
+  }));
+  assert.doesNotMatch(windowed.promptParts.volatile, /本机记忆/);
+});
+
+test("createStudyAgent：主对话始终暴露 updateUserNote / 查找工具；窗内收窄且不改稳定前缀", () => {
   const model = new MockLanguageModelV4();
   const idle = createStudyAgent(baseInput(model));
-  assert.ok(!("updateUserNote" in idle.tools));
+  assert.ok("updateUserNote" in idle.tools);
+  assert.ok("searchNotes" in idle.tools);
+  assert.ok("searchFlashcards" in idle.tools);
 
   const editing = createStudyAgent(baseInput(model, {
     editingUserNote: { id: "note_1", title: "被覆上皮", markdown: "# 被覆上皮\n\n1. 分类" },
@@ -161,6 +177,19 @@ test("createStudyAgent：打开个人笔记后才暴露 updateUserNote，且不�
   const locIdle = idle.promptParts.instructions.indexOf("【当前位置】");
   const locEdit = editing.promptParts.instructions.indexOf("【当前位置】");
   assert.equal(idle.promptParts.instructions.slice(0, locIdle), editing.promptParts.instructions.slice(0, locEdit));
+
+  const windowed = createStudyAgent(baseInput(model, {
+    editingUserNote: { id: "note_1", title: "被覆上皮", markdown: "# 被覆上皮" },
+    noteWindowAgent: true,
+  }));
+  assert.ok("updateUserNote" in windowed.tools);
+  assert.ok(!("searchNotes" in windowed.tools));
+  assert.ok(!("searchFlashcards" in windowed.tools));
+  assert.ok(!("renderInteractive" in windowed.tools));
+  assert.ok(!("generateImage" in windowed.tools));
+  assert.ok(!("writeDocument" in windowed.tools));
+  assert.ok(!("proposeMemory" in windowed.tools));
+  assert.equal(idle.promptParts.instructions.slice(0, locIdle), windowed.promptParts.instructions.slice(0, windowed.promptParts.instructions.indexOf("【当前位置】")));
 });
 
 test("createStudyAgent：技能菜单进入 instructions 且 useSkill 以 enum 暴露；enableSearch 控制联网工具", () => {
@@ -230,6 +259,68 @@ test("createStudyAgent：imageSearch 配额耗尽后 prepareStep 摘除该工具
   const names = model.doStreamCalls[0].tools?.map((tool) => tool.name) ?? [];
   assert.ok(names.includes("webSearch"));
   assert.ok(!names.includes("imageSearch"));
+});
+
+test("createStudyAgent：planMode 不暴露写工具，只读工具仍在，规则进 volatile", () => {
+  const model = new MockLanguageModelV4();
+  const idle = createStudyAgent(baseInput(model));
+  const planned = createStudyAgent(baseInput(model, { planMode: true, memoryCommit: "note" }));
+  assert.ok("getCurrentPage" in planned.tools);
+  assert.ok("searchNotes" in planned.tools);
+  assert.ok("getArtifact" in planned.tools);
+  assert.ok(!("writeDocument" in planned.tools));
+  assert.ok(!("renderInteractive" in planned.tools));
+  assert.ok(!("generateImage" in planned.tools));
+  assert.ok(!("createQuiz" in planned.tools));
+  assert.ok(!("updateUserNote" in planned.tools));
+  assert.ok(!("commitNotes" in planned.tools));
+  assert.ok("writeDocument" in idle.tools);
+  const locIdle = idle.promptParts.instructions.indexOf("【当前位置】");
+  const locPlan = planned.promptParts.instructions.indexOf("【当前位置】");
+  assert.equal(idle.promptParts.instructions.slice(0, locIdle), planned.promptParts.instructions.slice(0, locPlan));
+  assert.match(planned.promptParts.volatile, /计划模式（只读）/);
+  assert.doesNotMatch(idle.promptParts.volatile, /计划模式（只读）/);
+});
+
+test("createStudyAgent：forcedTool 首步强制调用且其它工具仍在；附加文件进 volatile", async () => {
+  const model = new MockLanguageModelV4({
+    doStream: [toolCallStep("generateImage", { prompt: "细胞", title: "细胞" }), textStep("说明")],
+  });
+  const { agent, promptParts, tools } = createStudyAgent(baseInput(model, {
+    forcedTool: "generateImage",
+    attachedFiles: [{
+      path: "probability/detail/1.4",
+      title: "古典概型与几何概型",
+      kind: "file",
+      address: "概率论 › 详解 › 古典概型",
+      subjectId: "probability",
+      categoryId: "detail",
+      itemId: "1.4",
+    }],
+  }));
+  assert.ok("generateImage" in tools);
+  assert.ok("getCurrentPage" in tools);
+  assert.match(promptParts.volatile, /指定工具/);
+  assert.match(promptParts.volatile, /用户附加的笔记/);
+  assert.match(promptParts.volatile, /probability\/detail\/1\.4/);
+  await convertReadableStreamToArray((await agent.stream({ messages: [{ role: "user", content: "画细胞" }] })).toUIMessageStream());
+  assert.deepEqual(model.doStreamCalls[0].toolChoice, { type: "tool", toolName: "generateImage" });
+  const firstTools = model.doStreamCalls[0].tools?.map((tool) => tool.name) ?? [];
+  assert.ok(firstTools.includes("generateImage"));
+  assert.ok(firstTools.includes("getCurrentPage"));
+});
+
+test("createStudyAgent：maxToolRounds=2 时第 2 步后不再发起第 3 次 LLM", async () => {
+  const model = new MockLanguageModelV4({
+    doStream: Array.from({ length: 4 }, (_, i) =>
+      toolCallStep("getCurrentPage", {}, `call_limit_${i}`),
+    ),
+  });
+  const { agent } = createStudyAgent(baseInput(model, { maxToolRounds: 2 }));
+  const result = await agent.stream({ messages: [{ role: "user", content: "q" }] });
+  await convertReadableStreamToArray(result.toUIMessageStream());
+  assert.equal(model.doStreamCalls.length, 2);
+  assert.equal((await result.steps).length, 2);
 });
 
 test("createStudyAgent：第 6 步仍 tool-calls 时不再发起第 7 次 LLM", async () => {

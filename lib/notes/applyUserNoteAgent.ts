@@ -31,7 +31,8 @@ export function collectUpdateUserNoteEvents(messages: readonly ChatMessage[]): U
     for (const part of getToolPartsByName(message, "updateUserNote")) {
       if (part.state !== "output-available" || part.preliminary) continue;
       const output = part.output as UpdateUserNoteOutput;
-      if (!output?.applied || !output.noteId || !output.markdown) continue;
+      if (!output?.applied || !output.noteId) continue;
+      if (output.action !== "delete" && !output.markdown) continue;
       events.push({ toolCallId: part.toolCallId, output });
     }
   }
@@ -44,9 +45,15 @@ export function collectUpdateUserNoteEvents(messages: readonly ChatMessage[]): U
  */
 export function applyUpdateUserNote(output: UpdateUserNoteOutput, toolCallId?: string): boolean {
   if (toolCallId && appliedToolCallIds.has(toolCallId)) return false;
-  if (!output.applied || !output.noteId || !output.markdown) return false;
+  if (!output.applied || !output.noteId) return false;
   const state = useUserNotes.getState();
-  if (!state.openEditorIds.includes(output.noteId) || !state.byId[output.noteId]) return false;
+  if (!state.byId[output.noteId]) return false;
+  if (output.action === "delete") {
+    state.removeNote(output.noteId);
+    if (toolCallId) appliedToolCallIds.add(toolCallId);
+    return true;
+  }
+  if (!output.markdown) return false;
   state.updateNote(output.noteId, {
     markdown: output.markdown,
     ...(output.title !== undefined ? { title: output.title } : {}),

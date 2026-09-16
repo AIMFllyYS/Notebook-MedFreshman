@@ -12,6 +12,8 @@ import type { ResolvedRequestSettings } from "./resolveRequestSettings";
 import type { ArtifactCatalogItem } from "@/lib/context/compactArtifacts";
 import type { MemoryCommitKind } from "@/lib/memory/memoryLoop";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
+import type { FlashcardCatalogItem, UserNoteCatalogItem } from "@/lib/ai/agent/tools/memoryCatalog";
+import type { AttachedFileRef, ComposerForcedTool } from "@/lib/chat/composerIntent";
 
 export interface ChatRequestBodySettings {
   customApiGroups: CustomApiGroup[];
@@ -26,6 +28,13 @@ export interface ChatRequestBodySettings {
   globalContext: string;
   memoryCommit?: MemoryCommitKind;
   editingUserNote?: EditingUserNoteContext;
+  noteWindowAgent?: boolean;
+  userNotes?: UserNoteCatalogItem[];
+  flashcards?: FlashcardCatalogItem[];
+  maxToolRounds?: number;
+  planMode?: boolean;
+  forcedTool?: ComposerForcedTool;
+  attachedFiles?: AttachedFileRef[];
 }
 
 /** 发给 /api/chat 的 body（messages 由 transport 另传）。字段须与 chatRequestSchema 对齐。 */
@@ -55,6 +64,13 @@ export interface ChatRequestBody {
   artifacts?: ArtifactCatalogItem[];
   memoryCommit?: MemoryCommitKind;
   editingUserNote?: EditingUserNoteContext;
+  noteWindowAgent?: boolean;
+  userNotes?: UserNoteCatalogItem[];
+  flashcards?: FlashcardCatalogItem[];
+  maxToolRounds?: number;
+  planMode?: boolean;
+  forcedTool?: ComposerForcedTool;
+  attachedFiles?: AttachedFileRef[];
 }
 
 export function buildChatRequestBody(
@@ -109,5 +125,12 @@ export function buildChatRequestBody(
     artifacts,
     memoryCommit: settings.memoryCommit,
     editingUserNote: settings.editingUserNote,
+    noteWindowAgent: settings.noteWindowAgent,
+    userNotes: settings.userNotes ?? [],
+    flashcards: settings.flashcards ?? [],
+    maxToolRounds: settings.maxToolRounds,
+    planMode: settings.planMode,
+    forcedTool: settings.forcedTool,
+    attachedFiles: settings.attachedFiles ?? [],
   };
 }

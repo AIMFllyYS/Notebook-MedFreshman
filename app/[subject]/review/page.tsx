@@ -232,7 +232,7 @@ export default function ReviewBoardPage() {
       </div>
 
       {/* 板内划词记录（强制记录到本科目） */}
-      <SelectionPopover containerRef={boardRef} recordSubjectId={subjectId} />
+      <SelectionPopover containerRef={boardRef} recordSubjectId={subjectId} noteSource="review" />
     </div>
   );
 }

@@ -532,7 +532,7 @@ function SessionStorageBlock({ usage }: { usage: SessionStorageUsage }) {
         </div>
       </div>
       <div style={{ marginTop: 4, fontSize: 10, color: 'var(--ink-faint)', lineHeight: 1.35 }}>
-        对话条对照本条会话 4 MB 上限。附件只留本机，不占云端额度，也没有账号附件上限。
+        对话条对照本条会话 {Math.round(conversationLimit / (1024 * 1024))} MB 上限。附件只留本机，不占云端额度，也没有账号附件上限。
       </div>
     </div>
   );

@@ -64,6 +64,7 @@ test("applyUpdateUserNote writes markdown back into the open editor", () => {
     noteId: id,
     markdown: "# 被覆上皮\n\n1. 单层扁平",
     title: "上皮组织",
+    action: "update",
     applied: true,
   });
   assert.equal(ok, true);
@@ -71,16 +72,30 @@ test("applyUpdateUserNote writes markdown back into the open editor", () => {
   assert.equal(useUserNotes.getState().byId[id]?.title, "上皮组织");
 });
 
-test("applyUpdateUserNote ignores a note that is not open", () => {
+test("applyUpdateUserNote can update a closed note by id", () => {
   const id = useUserNotes.getState().createNote("anatomy", { title: "关着", markdown: "旧" });
   const ok = applyUpdateUserNote({
     text: "ok",
     noteId: id,
     markdown: "新稿",
+    action: "update",
     applied: true,
   });
-  assert.equal(ok, false);
-  assert.equal(useUserNotes.getState().byId[id]?.markdown, "旧");
+  assert.equal(ok, true);
+  assert.equal(useUserNotes.getState().byId[id]?.markdown, "新稿");
+});
+
+test("applyUpdateUserNote can delete a note by id", () => {
+  const id = useUserNotes.getState().createNote("anatomy", { title: "删我", markdown: "旧" });
+  const ok = applyUpdateUserNote({
+    text: "ok",
+    noteId: id,
+    markdown: "",
+    action: "delete",
+    applied: true,
+  });
+  assert.equal(ok, true);
+  assert.equal(useUserNotes.getState().byId[id], undefined);
 });
 
 test("collect and apply updateUserNote events from a mocked agent tool part", () => {
@@ -95,7 +110,7 @@ test("collect and apply updateUserNote events from a mocked agent tool part", ()
         toolCallId: "u1",
         state: "output-available",
         input: { markdown: "# 新稿" },
-        output: { text: "已写回", noteId: id, markdown: "# 新稿", applied: true },
+        output: { text: "已写回", noteId: id, markdown: "# 新稿", action: "update", applied: true },
       },
     ],
   };

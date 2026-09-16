@@ -142,6 +142,7 @@ describe("NoteAgentPanel", () => {
     expect(requests[0]).toMatchObject({
       id: "note-s",
       editingUserNote: { id: noteId, title: "被覆上皮", markdown: "# 被覆上皮\n\n旧稿" },
+      noteWindowAgent: true,
     });
     expect(getMessageText(useChatHistory.getState().messagesById["note-s"][0])).toBe("把分类补全");
     expect(getMessageText(useChatHistory.getState().messagesById.main[0])).toBe("主对话还在");

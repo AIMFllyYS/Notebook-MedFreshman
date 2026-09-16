@@ -6,15 +6,9 @@ import { useChatHistory, ensureChatHistoryBootstrap } from "@/lib/hooks/useChatH
 import { useChatReady } from "@/lib/hooks/useChatReady";
 import ChatThread from "@/components/chat/ChatThread";
 import ChatInput from "@/components/chat/ChatInput";
-import type { ChatContext, ChatAttachment, ChatOptions } from "@/lib/types/chat";
+import type { ChatContext, ChatOptions } from "@/lib/types/chat";
+import type { SendMessageOptions } from "@/lib/chat/sendMessage";
 import { useFloatingChats, type FloatingWin } from "@/lib/hooks/useFloatingChats";
-
-type SendOpts = {
-  quotedText?: string;
-  enableThinking?: boolean;
-  enableSearch?: boolean;
-  attachments?: ChatAttachment[];
-};
 
 interface FloatingChatBodyProps {
   win: FloatingWin;
@@ -68,7 +62,7 @@ export default function FloatingChatBody({ win, chatContext, onModelChange }: Fl
 
   useEffect(() => () => stopGeneration(), [stopGeneration]);
 
-  function handleSend(content: string, opts?: SendOpts) {
+  function handleSend(content: string, opts?: SendMessageOptions) {
     const isFirst = messages.length === 0;
     const quoted = isFirst && win.seedMode === "ask" && win.seedText.trim() ? win.seedText : opts?.quotedText;
     sendMessage(content, { ...opts, quotedText: quoted });

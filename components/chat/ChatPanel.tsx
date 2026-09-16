@@ -22,7 +22,8 @@ import { ImageLightbox } from '@/components/shared/ImageLightbox';
 import ChatPanelHeader from '@/components/chat/ChatPanelHeader';
 import ChatEmptyState from '@/components/chat/ChatEmptyState';
 import ChatHistoryOverlay from '@/components/chat/ChatHistoryOverlay';
-import type { ChatContext, ChatOptions, ChatAttachment } from '@/lib/types/chat';
+import type { ChatContext, ChatOptions } from '@/lib/types/chat';
+import type { SendMessageOptions } from '@/lib/chat/sendMessage';
 
 interface ChatPanelProps {
   chatContext: ChatContext;
@@ -80,7 +81,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
     return () => { cancelled = true; };
   }, [outbound, sendMessage, clearOutbound, chatReady, isLoading]);
 
-  const handleSend = (content: string, options?: { quotedText?: string; enableThinking?: boolean; enableSearch?: boolean; attachments?: ChatAttachment[] }) => {
+  const handleSend = (content: string, options?: SendMessageOptions) => {
     sendMessage(content, options);
   };
 
@@ -230,7 +231,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
       />
 
       {showSettings && <ChatSettings onClose={() => setShowSettings(false)} />}
-      <SelectionPopover containerRef={scrollContainerRef} />
+      <SelectionPopover containerRef={scrollContainerRef} noteSource="agent" />
 
       {showHistory && (
         <ChatHistoryOverlay

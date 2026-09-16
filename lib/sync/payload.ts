@@ -3,21 +3,32 @@ import type { SessionMeta } from "@/lib/storage/chatStorage";
 import { compactStudyMessages } from "@/lib/chat/compactStudyParts";
 import {
   KIND_SIZE_LIMIT,
+  KIND_QUOTA_POOL,
   MAX_USER_SYNC_BYTES,
+  POOL_SIZE_LIMIT,
   type ArtifactSyncPayload,
   type ChatSessionSyncPayload,
   type CloudSyncKind,
   type DocumentSyncPayload,
+  type ReviewCardSyncPayload,
+  type SyncQuotaPool,
+  type UserNoteSyncPayload,
 } from "./types";
 
 let kindLimitOverride: Partial<Record<CloudSyncKind, number>> | null = null;
 let userLimitOverride: number | null = null;
+let poolLimitOverride: Partial<Record<SyncQuotaPool, number>> | null = null;
 
 export function __setSyncLimitsForTests(
-  next: { kind?: Partial<Record<CloudSyncKind, number>>; user?: number } | null,
+  next: {
+    kind?: Partial<Record<CloudSyncKind, number>>;
+    user?: number;
+    pool?: Partial<Record<SyncQuotaPool, number>>;
+  } | null,
 ): void {
   kindLimitOverride = next?.kind ?? null;
   userLimitOverride = next?.user ?? null;
+  poolLimitOverride = next?.pool ?? null;
 }
 
 export function effectiveKindLimit(kind: CloudSyncKind): number {
@@ -26,6 +37,14 @@ export function effectiveKindLimit(kind: CloudSyncKind): number {
 
 export function effectiveUserLimit(): number {
   return userLimitOverride ?? MAX_USER_SYNC_BYTES;
+}
+
+export function effectivePoolLimit(pool: SyncQuotaPool): number {
+  return poolLimitOverride?.[pool] ?? POOL_SIZE_LIMIT[pool];
+}
+
+export function quotaPoolForKind(kind: CloudSyncKind): SyncQuotaPool | null {
+  return KIND_QUOTA_POOL[kind] ?? null;
 }
 
 const MEDIA_DATA_URL_RE = /data:(?:image|audio|video)\/[a-z0-9.+-]+;base64,[a-z0-9+/=\s]+/gi;
@@ -123,6 +142,24 @@ export function buildDocumentPayload(doc: DocumentSyncPayload): DocumentSyncPayl
   return stripForbiddenFields(doc) as DocumentSyncPayload;
 }
 
+export function buildUserNotePayload(note: UserNoteSyncPayload): UserNoteSyncPayload {
+  return stripForbiddenFields({
+    id: note.id,
+    title: note.title,
+    markdown: note.markdown,
+    subjectId: note.subjectId,
+    createdAt: note.createdAt,
+    updatedAt: note.updatedAt,
+    kind: note.kind,
+    quote: note.quote,
+    source: note.source,
+  }) as UserNoteSyncPayload;
+}
+
+export function buildReviewCardPayload(card: ReviewCardSyncPayload): ReviewCardSyncPayload {
+  return stripForbiddenFields(card) as ReviewCardSyncPayload;
+}
+
 export type PayloadCheck =
   | { ok: true; payload: unknown; bytes: number }
   | { ok: false; reason: "unsafe" | "kind-limit"; bytes: number; limit: number };
@@ -158,7 +195,19 @@ export function formatKindLimitMessage(
   if (kind === "document") {
     return `这篇长文档约 ${usedKb} KB，${last}超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。`;
   }
+  if (kind === "user-note") {
+    return `这篇笔记约 ${usedKb} KB，${last}超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。`;
+  }
+  if (kind === "review-card") {
+    return `这张闪卡约 ${usedKb} KB，${last}超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。`;
+  }
   return `这段对话约 ${usedKb} KB，${last}超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。瘦身后可再试。`;
+}
+
+export function formatPoolLimitMessage(pool: SyncQuotaPool, limit: number): string {
+  const mb = Math.round((limit / (1024 * 1024)) * 10) / 10;
+  const label = pool === "notes" ? "笔记额度池" : "闪卡额度池";
+  return `${label}已达 ${mb} MB 上限，本条未上传。本机仍保留。`;
 }
 
 export function formatUserLimitMessage(limit: number): string {
@@ -172,4 +221,8 @@ export function isSyncKindLimitError(message: string): boolean {
 
 export function isSyncUserLimitError(message: string): boolean {
   return /sync_user_limit/i.test(message);
+}
+
+export function isSyncPoolLimitError(message: string): boolean {
+  return /sync_pool_limit/i.test(message);
 }

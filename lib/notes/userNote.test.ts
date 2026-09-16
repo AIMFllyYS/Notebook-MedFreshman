@@ -5,9 +5,10 @@ import {
   DEFAULT_NOTE_MARKDOWN,
   EXAMPLE_USER_NOTE_ID,
   deriveNoteTitle,
+  formatClassroomNoteQuote,
   formatFlashcardQuote,
   formatNoteQuote,
-  listCourseNoteHits,
+  isClassroomNote,
   makeExampleUserNote,
   plainSnippet,
   seedExampleNoteIfEmpty,
@@ -84,12 +85,22 @@ test("plainSnippet strips markdown chrome", () => {
   assert.equal(plainSnippet("# 标题\n\n**加粗** 与 `code`"), "标题 加粗 与 code");
 });
 
-test("listCourseNoteHits skips stubs and navigation-only nodes", () => {
-  const hits = listCourseNoteHits("probability");
-  assert.ok(hits.length > 10);
-  assert.ok(hits.every((hit) => hit.path.startsWith("probability/")));
-  assert.ok(hits.every((hit) => !hit.path.endsWith("/toc")));
-  assert.ok(hits.some((hit) => hit.title.length > 0));
+test("classroom note helpers treat missing kind as personal", () => {
+  assert.equal(isClassroomNote({ kind: "classroom" }), true);
+  assert.equal(isClassroomNote({ kind: "personal" }), false);
+  assert.equal(isClassroomNote({}), false);
+});
+
+test("formatClassroomNoteQuote keeps the selected sentence and annotation", () => {
+  const quoted = formatClassroomNoteQuote({
+    title: "泊松",
+    markdown: "课上强调均值等于方差。",
+    quote: "泊松分布的均值等于方差",
+    source: { kind: "agent", label: "概率论 · Agent" },
+  });
+  assert.match(quoted, /【课堂笔记 · 概率论 · Agent】/);
+  assert.match(quoted, /原文：泊松分布的均值等于方差/);
+  assert.match(quoted, /课上强调均值等于方差/);
 });
 
 test("subjectLabel and window id helpers", () => {

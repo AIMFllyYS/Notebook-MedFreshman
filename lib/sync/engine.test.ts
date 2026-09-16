@@ -3,6 +3,8 @@ import { afterEach, beforeEach, describe, test } from "node:test";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { Artifact } from "@/lib/stores/artifacts";
 import type { StoredDocument } from "@/lib/documents/types";
+import type { UserNote } from "@/lib/notes/userNote";
+import type { ReviewCard } from "@/lib/review/types";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
 import { createMemorySyncClient } from "./client.ts";
 import {
@@ -48,6 +50,8 @@ function createMemoryStores() {
   const sessions = new Map<string, { meta: SessionMeta; messages: ChatMessage[] }>();
   const artifacts = new Map<string, Artifact>();
   const documents = new Map<string, StoredDocument>();
+  const notes = new Map<string, UserNote>();
+  const cards = new Map<string, ReviewCard>();
   const stores: CloudSyncStores = {
     listSessionMetas: () => [...sessions.values()].map((row) => row.meta),
     loadSession: async (id) => sessions.get(id) ?? null,
@@ -73,8 +77,24 @@ function createMemoryStores() {
     forgetDocument: (id) => {
       documents.delete(id);
     },
+    listNoteIds: () => [...notes.keys()],
+    getNote: (id) => notes.get(id) ?? null,
+    applyNote: (note) => {
+      notes.set(note.id, note);
+    },
+    forgetNote: (id) => {
+      notes.delete(id);
+    },
+    listCardIds: () => [...cards.keys()],
+    getCard: (id) => cards.get(id) ?? null,
+    applyCard: (card) => {
+      cards.set(card.id, card);
+    },
+    forgetCard: (id) => {
+      cards.delete(id);
+    },
   };
-  return { stores, sessions, artifacts, documents };
+  return { stores, sessions, artifacts, documents, notes, cards };
 }
 
 describe("cloud sync engine", { concurrency: false }, () => {
@@ -320,5 +340,75 @@ describe("cloud sync engine", { concurrency: false }, () => {
     assert.equal(usage.source, "local");
     assert.equal(usage.kinds.find((row) => row.kind === "chat-session")?.count, 1);
     assert.ok(usage.totalBytes > 0);
+  });
+
+  test("pull and push user-note and review-card as real cloud kinds", async () => {
+    const memory = createMemoryStores();
+    memory.notes.set("n1", {
+      id: "n1",
+      title: "被覆上皮",
+      markdown: "# 被覆上皮\n\n1. 分类",
+      subjectId: "anatomy",
+      createdAt: 1,
+      updatedAt: 2,
+    });
+    memory.cards.set("c1", {
+      id: "c1",
+      subjectId: "anatomy",
+      sourceLabel: "组织学",
+      originalText: "被覆上皮",
+      cardType: "excerpt",
+      front: "什么是被覆上皮",
+      back: "覆盖体表或衬于体内",
+      status: "ready",
+      createdAt: 1,
+    });
+    const api = createMemorySyncClient();
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests(api);
+    await pullAndPushAll();
+    const kinds = api.upserts.map((row) => row.kind);
+    assert.ok(kinds.includes("user-note"));
+    assert.ok(kinds.includes("review-card"));
+
+    const other = createMemoryStores();
+    __setCloudSyncStoresForTests(other.stores);
+    await pullAndPushAll();
+    assert.equal(other.notes.get("n1")?.markdown, "# 被覆上皮\n\n1. 分类");
+    assert.equal(other.cards.get("c1")?.front, "什么是被覆上皮");
+    const usage = await loadCloudSyncUsage();
+    assert.equal(usage.pools.find((row) => row.id === "notes")?.count, 1);
+    assert.equal(usage.pools.find((row) => row.id === "flashcards")?.count, 1);
+  });
+
+  test("user-note pull keeps the newer local updatedAt", async () => {
+    const memory = createMemoryStores();
+    memory.notes.set("n1", {
+      id: "n1",
+      title: "本机新稿",
+      markdown: "# 本机",
+      subjectId: "anatomy",
+      createdAt: 1,
+      updatedAt: 90,
+    });
+    const api = createMemorySyncClient();
+    await api.upsert({
+      kind: "user-note",
+      client_id: "n1",
+      deleted: false,
+      payload: {
+        id: "n1",
+        title: "云端旧稿",
+        markdown: "# 云端",
+        subjectId: "anatomy",
+        createdAt: 1,
+        updatedAt: 10,
+      },
+    });
+    __setCloudSyncStoresForTests(memory.stores);
+    __setSyncClientForTests(api);
+    await pullAndPushAll();
+    assert.equal(memory.notes.get("n1")?.title, "本机新稿");
+    assert.match(JSON.stringify(api.upserts.at(-1)?.payload), /本机/);
   });
 });

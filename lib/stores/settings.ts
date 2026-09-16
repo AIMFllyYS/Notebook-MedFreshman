@@ -13,6 +13,8 @@ import {
   normalizeCapabilityEndpoints,
   type CapabilityEndpoints,
 } from "@/lib/ai/capabilityEndpoints";
+import { DEFAULT_SELECTION_ASSISTANT_ACTIONS, normalizeSelectionAssistantActions, type SelectionAssistantActions } from "@/lib/notes/selectionAssistant";
+import { clampMaxToolRounds, MAX_TOOL_STEPS } from "@/lib/ai/agent/toolRounds";
 import {
   API_SECRETS_LS_KEY,
   applyCapabilitySecrets,
@@ -80,8 +82,25 @@ export interface SettingsState {
   recordModelId: string;
   /** 划词助手（划词「解释/追问」浮窗）使用的默认模型。 */
   floatingChatModelId: string;
+  /** 答题 / 深度解答默认模型。出题代理读此字段，默认 DeepSeek。 */
+  quizModelId: string;
   setRecordModelId: (id: string) => void;
   setFloatingChatModelId: (id: string) => void;
+  setQuizModelId: (id: string) => void;
+
+  /** Agent 单轮最大工具调用轮数（接到 ToolLoop stopWhen）。 */
+  maxToolRounds: number;
+  setMaxToolRounds: (v: number) => void;
+
+  /** 是否开启本站划词助手。 */
+  selectionAssistantEnabled: boolean;
+  /** 划词助手展示哪些动作。 */
+  selectionAssistantActions: SelectionAssistantActions;
+  /** 尽量阻止浏览器 / 系统其它划词助手（前端手段有限）。 */
+  blockForeignSelectionAssistants: boolean;
+  setSelectionAssistantEnabled: (v: boolean) => void;
+  setSelectionAssistantAction: (action: keyof SelectionAssistantActions, visible: boolean) => void;
+  setBlockForeignSelectionAssistants: (v: boolean) => void;
 
   // ── 体验（S4）────────────────────────
   fontScale: number; // 0.85 ~ 1.35
@@ -146,6 +165,11 @@ type Persisted = Pick<
   | "capabilityEndpoints"
   | "recordModelId"
   | "floatingChatModelId"
+  | "quizModelId"
+  | "maxToolRounds"
+  | "selectionAssistantEnabled"
+  | "selectionAssistantActions"
+  | "blockForeignSelectionAssistants"
   | "customBaseUrl"
   | "customApiKey"
   | "customModelId"
@@ -171,6 +195,11 @@ const DEFAULTS: Persisted = {
   recordModelId: "deepseek/deepseek-v4-flash",
   // 划词助手默认：Qwen3.8 27B（视觉 + 混合思考）。
   floatingChatModelId: "Qwen/Qwen3.8-27B",
+  quizModelId: DEFAULT_MODEL_ID,
+  maxToolRounds: MAX_TOOL_STEPS,
+  selectionAssistantEnabled: true,
+  selectionAssistantActions: DEFAULT_SELECTION_ASSISTANT_ACTIONS,
+  blockForeignSelectionAssistants: false,
   customBaseUrl: "",
   customApiKey: "",
   customModelId: "",
@@ -259,6 +288,14 @@ function load(): Persisted & { settingsLoadWarning?: string | null } {
         normalizeRegistryId(parsed.floatingChatModelId || DEFAULTS.floatingChatModelId),
         parsed.customApiGroups,
       );
+      parsed.quizModelId = normalizeCustomModelRegistryId(
+        normalizeRegistryId(parsed.quizModelId || DEFAULTS.quizModelId),
+        parsed.customApiGroups,
+      );
+      parsed.maxToolRounds = clampMaxToolRounds(parsed.maxToolRounds);
+      parsed.selectionAssistantEnabled = parsed.selectionAssistantEnabled !== false;
+      parsed.selectionAssistantActions = normalizeSelectionAssistantActions(parsed.selectionAssistantActions);
+      parsed.blockForeignSelectionAssistants = parsed.blockForeignSelectionAssistants === true;
 
       let secretsRaw = recoveredSecrets;
       if (secretsRaw === undefined) {
@@ -342,6 +379,11 @@ function persist(get: () => SettingsState) {
     capabilityEndpoints: stripCapabilitySecrets(normalizeCapabilityEndpoints(s.capabilityEndpoints)),
     recordModelId: s.recordModelId,
     floatingChatModelId: s.floatingChatModelId,
+    quizModelId: s.quizModelId,
+    maxToolRounds: clampMaxToolRounds(s.maxToolRounds),
+    selectionAssistantEnabled: s.selectionAssistantEnabled !== false,
+    selectionAssistantActions: normalizeSelectionAssistantActions(s.selectionAssistantActions),
+    blockForeignSelectionAssistants: s.blockForeignSelectionAssistants === true,
     customBaseUrl: firstGroup?.baseUrl ?? "",
     customApiKey: "",
     customModelId: "",
@@ -614,6 +656,31 @@ export const useSettings = create<SettingsState>((set, get) => {
   },
   setFloatingChatModelId: (id) => {
     set({ floatingChatModelId: id });
+    persist(get);
+  },
+  setQuizModelId: (id) => {
+    set({ quizModelId: id });
+    persist(get);
+  },
+  setMaxToolRounds: (v) => {
+    set({ maxToolRounds: clampMaxToolRounds(v) });
+    persist(get);
+  },
+  setSelectionAssistantEnabled: (v) => {
+    set({ selectionAssistantEnabled: v });
+    persist(get);
+  },
+  setSelectionAssistantAction: (action, visible) => {
+    set((s) => ({
+      selectionAssistantActions: {
+        ...normalizeSelectionAssistantActions(s.selectionAssistantActions),
+        [action]: visible,
+      },
+    }));
+    persist(get);
+  },
+  setBlockForeignSelectionAssistants: (v) => {
+    set({ blockForeignSelectionAssistants: v });
     persist(get);
   },
   };

@@ -430,7 +430,26 @@ describe('useChat SDK transport regression', () => {
     act(() => { result.current.sendMessage('把分类补全'); });
     await settle();
     expect(requests[0].body.editingUserNote).toEqual({ id: noteId, title: '被覆上皮', markdown: '# 被覆上皮\n\n旧稿' });
+    expect(requests[0].body.noteWindowAgent).toBe(true);
+    expect(requests[0].body.userNotes).toEqual([]);
+    expect(requests[0].body.flashcards).toEqual([]);
     expect(messagesFor('main')).toEqual([]);
     expect(messagesFor('note-s')).toHaveLength(2);
+  });
+
+  it('sendMessage 把 planMode / forcedTool / attachedFiles 与设置里的 maxToolRounds 带进 /api/chat', async () => {
+    mockResponses(() => completedResponse());
+    useSettings.setState({ maxToolRounds: 9 });
+    const attached = [{
+      path: 'probability/detail/1.4', title: '古典概型', kind: 'file' as const,
+      address: '概率论 › 详解 › 古典概型', subjectId: 'probability', categoryId: 'detail', itemId: '1.4',
+    }];
+    const { result } = renderHook(() => useChat(context));
+    act(() => { result.current.sendMessage('先列计划', { planMode: true, forcedTool: 'generateImage', attachedFiles: attached }); });
+    await settle();
+    expect(requests[0].body.planMode).toBe(true);
+    expect(requests[0].body.forcedTool).toBe('generateImage');
+    expect(requests[0].body.attachedFiles).toEqual(attached);
+    expect(requests[0].body.maxToolRounds).toBe(9);
   });
 });
