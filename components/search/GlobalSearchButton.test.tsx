@@ -54,7 +54,7 @@ describe("GlobalSearchButton", () => {
     fireEvent.change(input, { target: { value: "贝叶斯" } });
     await waitFor(() => {
       expect(screen.getByRole("region", { name: "正文" })).toBeInTheDocument();
-      expect(screen.getByText(/贝叶斯公式/)).toBeInTheDocument();
+      expect(screen.getAllByText(/贝叶斯公式/).length).toBeGreaterThan(0);
     });
   });
 

@@ -33,7 +33,7 @@ export async function scanInChunks<T, R>(
     const slice = items.slice(i, i + chunkSize);
     for (const item of slice) {
       const hit = visit(item);
-      if (hit) hits.push(hit);
+      if (hit != null) hits.push(hit);
     }
     options.onProgress?.(hits.slice());
     if (i + chunkSize < items.length) await yieldFn();
