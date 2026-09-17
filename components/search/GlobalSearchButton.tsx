@@ -32,7 +32,7 @@ export default function GlobalSearchButton() {
   const deferredQuery = useDeferredValue(query);
   const academicYear = useAcademicYear((s) => s.year);
   const { noteHits, cardHits, bodyHits, notesLoading, cardsLoading, bodyLoading } =
-    useProgressiveGlobalSearch(open ? deferredQuery : "", academicYear);
+    useProgressiveGlobalSearch(open ? deferredQuery : "", academicYear, kindFilter);
 
   useOverlayRegistration({
     id: "global-search",
