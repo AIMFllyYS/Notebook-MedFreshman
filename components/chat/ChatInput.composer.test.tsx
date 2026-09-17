@@ -38,6 +38,7 @@ describe('ChatInput composer slash / hash / drop', () => {
     const { getByTestId, getByRole } = render(<ChatInput {...props} />);
     fireEvent.click(getByTestId('composer-plus'));
     expect(getByTestId('composer-command-panel')).toHaveTextContent('计划模式');
+    expect(getByTestId('composer-command-panel')).toHaveTextContent('压缩');
     expect(getByTestId('composer-command-panel')).toHaveTextContent('生成图片');
     expect(getByTestId('composer-command-panel')).toHaveTextContent('速记');
     expect(getByTestId('composer-command-panel').textContent).not.toMatch(/先输出|本轮必调|只读规划/);

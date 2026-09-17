@@ -54,6 +54,7 @@ interface ChatHistoryState {
   deleteSession: (id: string) => void;
   switchSession: (id: string) => void;
   addMessage: (sessionId: string, message: ChatMessage) => void;
+  replaceMessages: (sessionId: string, messages: ChatMessage[]) => void;
   updateMessage: (sessionId: string, messageId: string, updates: Partial<ChatMessage>) => void;
   updateSessionTitle: (sessionId: string, title: string) => void;
 }
@@ -294,6 +295,34 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       });
       scheduleCloudUpsert('chat-session', sessionId);
       return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
+    });
+  },
+
+  replaceMessages: (sessionId, messages) => {
+    set((state) => {
+      if (!state.sessionsMeta.some((s) => s.id === sessionId)) return state;
+      const stored = messages.map((message) => persistInlineAttachments(message));
+      const sessionsMeta = state.sessionsMeta.map((s) =>
+        s.id === sessionId
+          ? {
+              ...s,
+              updatedAt: Date.now(),
+              messageCount: stored.length,
+              preview: stored.find((item) => item.role === "user")
+                ? getMessageText(stored.find((item) => item.role === "user")!).slice(0, 80)
+                : s.preview,
+              artifactIds: mergeArtifactIds([], stored),
+            }
+          : s,
+      );
+      saveSessionMessages(sessionId, stored);
+      saveManifest({
+        version: 2,
+        activeSessionId: state.activeSessionId,
+        sessions: sessionsMeta,
+      });
+      scheduleCloudUpsert("chat-session", sessionId);
+      return { messagesById: { ...state.messagesById, [sessionId]: stored }, sessionsMeta };
     });
   },
 

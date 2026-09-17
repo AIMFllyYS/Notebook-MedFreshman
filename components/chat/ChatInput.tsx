@@ -21,6 +21,7 @@ import {
 } from '@/lib/chat/composerIntent';
 import { detectComposerTrigger, flattenFileMentions, listFileMentions, replaceComposerTrigger } from '@/lib/chat/fileMentions';
 import { readPlanModeGate, resolvePlanMode } from '@/lib/chat/planModeGate';
+import { compactActiveSession } from '@/lib/context/compactChatSession';
 import ComposerChips from '@/components/chat/composer/ComposerChips';
 import ComposerCommandPanel, { listComposerCommands } from '@/components/chat/composer/ComposerCommandPanel';
 import ComposerPalette from '@/components/chat/composer/ComposerPalette';
@@ -224,6 +225,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     closePalette();
   }, [planGate.allowed, consumeTrigger, closePalette]);
 
+  const applyCompact = useCallback(() => {
+    consumeTrigger();
+    closePalette();
+    void compactActiveSession();
+  }, [consumeTrigger, closePalette]);
+
   const applyTool = useCallback((tool: ForcedComposerTool) => {
     setForcedTool((current) => current === tool ? undefined : tool);
     if (!planGate.forced) setPlanMode(false);
@@ -335,6 +342,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         } else {
           const item = slashItems[paletteIndex];
           if (item?.kind === "plan") applyPlan();
+          else if (item?.kind === "compact") applyCompact();
           else if (item?.kind === "tool") applyTool(item.id as ForcedComposerTool);
           else if (item?.skill) applySkill(item.skill);
         }
@@ -642,6 +650,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
             query={mentionQuery}
             activeIndex={paletteIndex}
             onSelectPlan={applyPlan}
+            onSelectCompact={applyCompact}
             onSelectTool={applyTool}
             onSelectSkill={applySkill}
           />

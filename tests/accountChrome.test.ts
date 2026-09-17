@@ -17,7 +17,9 @@ test("左下角坞显示头像和昵称，设置菜单顶部是账户信息", ()
 
   assert.match(dock, /LeftDockFace/);
   assert.match(dock, /useAccountProfile/);
+  assert.match(dock, /UserDockMenu|user-menu-quota|额度/);
   assert.match(sidebar, /LeftDock/);
+  assert.match(sidebar, /UserQuotaPanel/);
   assert.match(settings, /data-testid="account-card"/);
   assert.match(settings, /Math\.min\(352/);
   assert.match(settings, /AccountDialog/);

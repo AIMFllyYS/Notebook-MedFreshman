@@ -31,6 +31,11 @@ export interface SessionLedgerSummary {
   promptTokens: number;
   completionTokens: number;
   cachedTokens: number;
+  /** 本会话有缓存命中的计费笔数。 */
+  cacheHitCount: number;
+  /** 命中笔数 / 本会话计费笔数；无记录时为 0。 */
+  cacheHitRate: number;
+  turnCount: number;
   costCny: number;
   lastTurn: {
     promptTokens: number;
@@ -172,11 +177,15 @@ export function summarizeSessionLedger(
     if (!best || row.timestamp > best.timestamp) return row;
     return best;
   }, undefined);
+  const cacheHitCount = rows.filter((r) => (r.cachedTokens ?? 0) > 0).length;
   return {
     sessionId: sid,
     promptTokens: rows.reduce((n, r) => n + (r.promptTokens ?? 0), 0),
     completionTokens: rows.reduce((n, r) => n + (r.completionTokens ?? 0), 0),
     cachedTokens: rows.reduce((n, r) => n + (r.cachedTokens ?? 0), 0),
+    cacheHitCount,
+    cacheHitRate: rows.length > 0 ? cacheHitCount / rows.length : 0,
+    turnCount: rows.length,
     costCny: rows.reduce((n, r) => n + r.cost, 0),
     lastTurn: last
       ? {

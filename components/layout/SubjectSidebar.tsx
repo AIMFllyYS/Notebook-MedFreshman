@@ -19,6 +19,7 @@ import TocTree from "./TocTree";
 import SiblingFilesPanel from "./SiblingFilesPanel";
 import GlobalSettings from "./GlobalSettings";
 import LeftDock from "./LeftDock";
+import UserQuotaPanel from "./UserQuotaPanel";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
@@ -45,6 +46,7 @@ export default function SubjectSidebar() {
   const toggleTheme = useTheme((s) => s.toggle);
   const hydrateTheme = useTheme((s) => s.hydrate);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [quotaOpen, setQuotaOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const settingsBtnRef = useRef<HTMLButtonElement>(null);
   const academicYear = useAcademicYear((s) => s.year);
@@ -352,7 +354,11 @@ export default function SubjectSidebar() {
           borderTop: "1px solid var(--md-sys-color-outline-variant)",
         }}
       >
-        <LeftDock buttonRef={settingsBtnRef} onToggle={() => setSettingsOpen((v) => !v)} />
+        <LeftDock
+          buttonRef={settingsBtnRef}
+          onToggle={() => setSettingsOpen((v) => !v)}
+          onOpenQuota={() => setQuotaOpen(true)}
+        />
         <button
           onClick={toggleTheme}
           className="flex shrink-0 items-center justify-center rounded-lg transition-colors"
@@ -376,6 +382,9 @@ export default function SubjectSidebar() {
         </button>
       </div>
 
+      {quotaOpen && (
+        <UserQuotaPanel anchorRef={settingsBtnRef} onClose={() => setQuotaOpen(false)} />
+      )}
       {settingsOpen && (
         <GlobalSettings anchorRef={settingsBtnRef} onClose={() => setSettingsOpen(false)} />
       )}

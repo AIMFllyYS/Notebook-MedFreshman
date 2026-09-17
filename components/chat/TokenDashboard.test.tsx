@@ -2,10 +2,8 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import TokenDashboard from "./TokenDashboard";
 import { useChatHistory } from "@/lib/stores/chatHistory";
+import { useBillingStore } from "@/lib/hooks/useBillingStore";
 
-vi.mock("@/components/chat/AccountQuota", () => ({
-  AccountQuota: () => <div>会员与额度</div>,
-}));
 vi.mock("@/lib/billing/syncUsageLedger", () => ({
   refreshBillingFromLedger: vi.fn(),
 }));
@@ -20,10 +18,11 @@ afterEach(() => {
     messagesById: {},
     activeSessionId: null,
   });
+  useBillingStore.setState({ records: [] });
 });
 
-describe("TokenDashboard session storage", () => {
-  it("expands the details menu by default and shows this conversation's local storage", async () => {
+describe("TokenDashboard context panel", () => {
+  it("keeps context details open, hides quota/storage, and shows cache hit billing", async () => {
     useChatHistory.setState({
       activeSessionId: "s1",
       sessionsMeta: [{
@@ -40,20 +39,54 @@ describe("TokenDashboard session storage", () => {
           role: "user",
           parts: [{ type: "text", text: "hello" }],
           timestamp: 1,
-          attachments: [{ id: "blob-1", type: "image", mimeType: "image/png", name: "a.png", size: 20_480 }],
         }],
       },
+    });
+    useBillingStore.setState({
+      records: [
+        {
+          id: "r1",
+          timestamp: 1,
+          modelId: "mimo-v2.5",
+          modelLabel: "MiMo",
+          providerCategory: "unknown",
+          type: "chat",
+          promptTokens: 100,
+          completionTokens: 20,
+          cachedTokens: 40,
+          totalTokens: 120,
+          cost: 0.01,
+          sessionId: "s1",
+        },
+        {
+          id: "r2",
+          timestamp: 2,
+          modelId: "mimo-v2.5",
+          modelLabel: "MiMo",
+          providerCategory: "unknown",
+          type: "chat",
+          promptTokens: 80,
+          completionTokens: 10,
+          cachedTokens: 0,
+          totalTokens: 90,
+          cost: 0.02,
+          sessionId: "s1",
+        },
+      ],
     });
 
     render(<TokenDashboard />);
     fireEvent.click(screen.getByRole("button", { name: "打开上下文看板" }));
-    const details = document.querySelector("details");
-    expect(details).toHaveAttribute("open");
-    const conversationBar = await screen.findByRole("progressbar", { name: "对话占用" });
-    expect(Number(conversationBar.getAttribute("aria-valuenow"))).toBeLessThan(5);
-    expect(screen.getByText(/5\.0 MB/)).toBeInTheDocument();
-    expect(screen.queryByRole("progressbar", { name: "附件占用" })).toBeNull();
-    expect(screen.getByText(/20 KB/)).toBeInTheDocument();
-    expect(screen.getByText(/1 个/)).toBeInTheDocument();
+    expect(document.querySelector("details")).toBeNull();
+    expect(screen.getByText("上下文使用")).toBeInTheDocument();
+    expect(screen.getByText("上下文构成")).toBeInTheDocument();
+    expect(screen.getByText("累计计费")).toBeInTheDocument();
+    expect(screen.getByText("1 次")).toBeInTheDocument();
+    expect(screen.getByText("50%")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "压缩" })).toBeInTheDocument();
+    expect(screen.queryByText("会员与额度")).toBeNull();
+    expect(screen.queryByText(/已使用的 AI 额度/)).toBeNull();
+    expect(screen.queryByRole("progressbar", { name: "对话占用" })).toBeNull();
+    expect(screen.getByText(/缓存命中窗口默认 5 分钟/)).toBeInTheDocument();
   });
 });

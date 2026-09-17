@@ -1,9 +1,12 @@
 import type { CSSProperties, ReactElement, ReactNode } from "react";
 import type { ForcedComposerTool } from "@/lib/chat/composerIntent";
+import { ContextUsageRing } from "@/components/chat/ContextUsageRing";
+import { useTokenTracker } from "@/lib/hooks/useTokenTracker";
 
 /** 与顶栏最小化窗同一套缩略图：方圆角、细边框、底栏色条。 */
 const THUMB_ACCENTS = {
   plan: "#7c3aed",
+  compact: "#0ea5e9",
   generateImage: "#e11d48",
   renderInteractive: "#0d9488",
   writeDocument: "#d97706",
@@ -62,6 +65,18 @@ export function PlanModeIcon() {
         <circle cx="3.6" cy="12" r="1.15" />
         <path d="M6.3 4h6.2M6.3 8h6.2M6.3 12h4.1" />
       </Glyph>
+    </ComposerThumb>
+  );
+}
+
+/** 加号 / 斜杠「压缩」：复用上下文窗口百分比圆环。 */
+export function CompactContextIcon() {
+  const ctxTokens = useTokenTracker((s) => s.currentContextTokens);
+  const ctxLimit = useTokenTracker((s) => s.modelContextLimit);
+  const ratio = ctxLimit > 0 ? ctxTokens / ctxLimit : 0;
+  return (
+    <ComposerThumb name="compact" accent={THUMB_ACCENTS.compact}>
+      <ContextUsageRing ratio={ratio} size={12} />
     </ComposerThumb>
   );
 }

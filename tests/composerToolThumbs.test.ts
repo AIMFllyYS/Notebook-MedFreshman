@@ -19,6 +19,7 @@ test("composer command icons copy the minimized-window thumbnail chrome", () => 
   assert.match(icons, /composer-tool-thumb/);
   assert.doesNotMatch(icons, /TrafficGlyph|<circle cx=\{6\} cy=\{6\} r=\{5\.5\}/);
   assert.match(icons, /name="plan"/);
+  assert.match(icons, /name="compact"/);
   assert.match(icons, /name="generateImage"/);
   assert.match(icons, /name="renderInteractive"/);
   assert.match(icons, /name="writeDocument"/);
@@ -34,6 +35,7 @@ test("composer command icons copy the minimized-window thumbnail chrome", () => 
   assert.match(css, /\.composer-command-panel \.app-menu-check \{[\s\S]*?width:\s*22px;/);
 
   assert.match(panel, /<PlanModeIcon \/>/);
+  assert.match(panel, /<CompactContextIcon \/>/);
   assert.match(panel, /<ForcedToolIcon tool=\{tool\} \/>/);
   assert.match(panel, /<SkillIcon \/>/);
 });

@@ -16,6 +16,7 @@ const TOOL_THUMBS = [
 describe('ComposerCommandPanel', () => {
   it('lists plan, square tool thumbs and imported skills in three blocks', () => {
     const onSelectPlan = vi.fn();
+    const onSelectCompact = vi.fn();
     const onSelectTool = vi.fn();
     const onSelectSkill = vi.fn();
     const { getByRole, getByTestId } = render(
@@ -24,12 +25,17 @@ describe('ComposerCommandPanel', () => {
         planAllowed
         skills={[{ id: 's1', name: '错题分析', description: '复盘', content: 'x', pinned: false, createdAt: 1 }]}
         onSelectPlan={onSelectPlan}
+        onSelectCompact={onSelectCompact}
         onSelectTool={onSelectTool}
         onSelectSkill={onSelectSkill}
       />,
     );
     const panel = getByTestId('composer-command-panel');
-    expect(panel.textContent).toMatch(/计划模式[\s\S]*特定工具[\s\S]*已导入 Skills/);
+    expect(panel.textContent).toMatch(/计划模式[\s\S]*压缩[\s\S]*特定工具[\s\S]*已导入 Skills/);
+    const compactThumb = getByRole('option', { name: '压缩' }).querySelector('[data-composer-icon="compact"]');
+    expect(compactThumb).toHaveAttribute('data-composer-thumb', 'square');
+    fireEvent.click(getByRole('option', { name: /压缩/ }));
+    expect(onSelectCompact).toHaveBeenCalledOnce();
     expect(panel.textContent).not.toMatch(/先输出|本轮必调|只读规划/);
     for (const [label, icon] of TOOL_THUMBS) {
       const thumb = getByRole('option', { name: label }).querySelector(`[data-composer-icon="${icon}"]`);
@@ -49,5 +55,6 @@ describe('ComposerCommandPanel', () => {
     expect(onSelectTool).toHaveBeenCalledWith('writeDocument');
     expect(onSelectSkill).toHaveBeenCalledWith(expect.objectContaining({ id: 's1' }));
     expect(listComposerCommands({ planAllowed: true, skills: [], query: '图片' }).map((item) => item.id)).toEqual(['generateImage']);
+    expect(listComposerCommands({ planAllowed: true, skills: [], query: '' }).map((item) => item.id)[1]).toBe('compact');
   });
 });

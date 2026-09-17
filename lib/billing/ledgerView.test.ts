@@ -77,6 +77,18 @@ test("切会话不丢计：A 的金额在切到 B 后仍在", () => {
   assert.equal(backToA.lastTurn.costCny, 0.01);
 });
 
+test("累计计费给出缓存命中次数与命中率", () => {
+  const records = [
+    rec({ sessionId: "s", cachedTokens: 20, promptTokens: 100, timestamp: 1 }),
+    rec({ id: "2", sessionId: "s", cachedTokens: 0, promptTokens: 50, timestamp: 2 }),
+    rec({ id: "3", sessionId: "other", cachedTokens: 99, timestamp: 3 }),
+  ];
+  const dash = summarizeSessionLedger(records, "s");
+  assert.equal(dash.cacheHitCount, 1);
+  assert.equal(dash.turnCount, 2);
+  assert.equal(dash.cacheHitRate, 0.5);
+});
+
 test("看板与账本同一汇总函数，数字一致", () => {
   const records = [
     rec({ sessionId: "s", cost: 0.002, promptTokens: 100, completionTokens: 40, timestamp: 1 }),

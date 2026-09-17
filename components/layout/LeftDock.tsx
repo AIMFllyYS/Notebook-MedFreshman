@@ -1,6 +1,7 @@
 "use client";
 
 import UserAvatar from "./UserAvatar";
+import UserDockMenu from "./UserDockMenu";
 import { resolveNickname } from "@/lib/profile/displayName";
 import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
 
@@ -34,34 +35,28 @@ export function LeftDockFace({
 export default function LeftDock({
   buttonRef,
   onToggle,
+  onOpenQuota,
 }: {
   buttonRef: React.RefObject<HTMLButtonElement | null>;
   onToggle: () => void;
+  onOpenQuota?: () => void;
 }) {
   const account = useAccountProfile();
   return (
-    <button
-      ref={buttonRef}
-      type="button"
-      data-testid="left-dock"
-      onClick={onToggle}
-      className="flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors"
+    <UserDockMenu
+      triggerRef={buttonRef}
+      testId="left-dock"
+      label={`账户 ${account.nickname}`}
+      onOpenQuota={onOpenQuota ?? (() => {})}
+      onOpenSettings={onToggle}
+      className="flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-[var(--md-sys-color-surface-container-high)]"
       style={{
         color: "var(--md-sys-color-on-surface-variant)",
         background: "transparent",
         border: "none",
         cursor: "pointer",
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.background = "var(--md-sys-color-surface-container-high)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.background = "transparent";
-      }}
-      title={`${account.nickname} · 设置`}
-      aria-label={`账户 ${account.nickname}`}
-    >
-      <LeftDockFace />
-    </button>
+      trigger={<LeftDockFace />}
+    />
   );
 }

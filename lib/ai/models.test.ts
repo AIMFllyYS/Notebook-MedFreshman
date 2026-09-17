@@ -4,6 +4,8 @@ import {
   MODELS,
   CUSTOM_MODEL_ID,
   DEFAULT_MODEL_ID,
+  DEFAULT_CACHE_TTL_SEC,
+  resolveCacheTtlSec,
   CUSTOM_OPENAI_MODEL_ID,
   LEGACY_REGISTRY_ALIASES,
   getModelInfo,
@@ -30,6 +32,17 @@ import {
   wireThinkingEffort,
 } from "./models.ts";
 import { getMaxTokens } from "@/lib/context/types.ts";
+
+test("缓存命中默认 5 分钟，计费按此", () => {
+  assert.equal(DEFAULT_CACHE_TTL_SEC, 300);
+  assert.equal(resolveCacheTtlSec(undefined), 300);
+  assert.equal(resolveCacheTtlSec(0), 300);
+  const withTtl = MODELS.filter((m) => m.cacheTtlSec != null);
+  assert.ok(withTtl.length > 0);
+  for (const m of withTtl) {
+    assert.equal(m.cacheTtlSec, DEFAULT_CACHE_TTL_SEC);
+  }
+});
 
 test("MODELS 非空且每个模型有必需字段", () => {
   assert.ok(MODELS.length > 0);

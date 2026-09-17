@@ -124,7 +124,7 @@ export function ModelForm({
               />
             </div>
             <div>
-              <label className={labelCls}>缓存 TTL 秒（默认 3600）</label>
+              <label className={labelCls}>缓存 TTL 秒（默认 300，计费按此）</label>
               <input
                 type="number"
                 value={form.cacheTtlSec}
