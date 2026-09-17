@@ -39,6 +39,13 @@ export function ToolsSection() {
             <span className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">轮</span>
           </label>
         </div>
+        <p
+          data-testid="max-tool-rounds-hint"
+          className="text-[11px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]"
+        >
+          推荐 {MAX_TOOL_STEPS} 轮：与 studyAgent 默认一致，一般问答够用。
+          上限 {MAX_TOOL_ROUNDS_CAP} 轮对齐 AI SDK ToolLoopAgent 的默认 stopWhen，再高没有架构适配收益。
+        </p>
         {TOOLS.map((t) => {
           const enabled = !disabledTools.includes(t.name);
           return (
