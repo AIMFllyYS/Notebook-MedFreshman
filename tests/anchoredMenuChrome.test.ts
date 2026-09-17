@@ -14,11 +14,18 @@ test("AnchoredMenu waits for layout and uses the shared stacking constant", () =
   const menu = readWorkspaceFile("components/ui/AnchoredMenu.tsx");
   const css = readWorkspaceFile("app/styles/prose.css");
   const select = readWorkspaceFile("components/ui/AppSelect.tsx");
+  const palette = readWorkspaceFile("components/chat/composer/ComposerPalette.tsx");
 
   assert.match(menu, /from "@\/lib\/ui\/anchoredMenuPosition"/);
   assert.match(menu, /data-placed=\{box \? "true" : "false"\}/);
   assert.match(menu, /isUsableAnchorRect/);
   assert.doesNotMatch(menu, /left:\s*8,\s*top:\s*8/);
+  assert.match(palette, /from "@\/lib\/ui\/anchoredMenuPosition"/);
+  assert.match(palette, /data-placed=\{box \? "true" : "false"\}/);
+  assert.match(palette, /isUsableAnchorRect/);
+  assert.match(palette, /createPortal/);
+  assert.match(palette, /document\.body/);
+  assert.doesNotMatch(palette, /left:\s*8,\s*top:\s*8/);
   assert.match(css, /\.app-menu\s*\{[^}]*z-index:\s*12000/);
   assert.match(css, /\.app-menu:not\(\[data-placed="true"\]\)/);
   assert.match(css, /\.agent-settings-overlay\s*\{[^}]*z-index:\s*10000/);

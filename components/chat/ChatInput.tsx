@@ -110,6 +110,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const lastInsetRef = useRef<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const plusRef = useRef<HTMLButtonElement>(null);
+  const paletteIgnoreRefs = useRef([plusRef]);
   const { quotedText, clearQuotedText } = useChatUI();
   const skills = useSkills((s) => s.skills);
   const settingsSnapshot = useSettings();
@@ -583,7 +584,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           onCompositionStart={() => { composingRef.current = true; }}
           onCompositionEnd={(e) => {
             composingRef.current = false;
-            if (countCharacters(e.currentTarget.value) > MAX_INPUT_CHARACTERS) setShowLimitDialog(true);
+            const next = e.currentTarget.value;
+            syncTrigger(next, e.currentTarget.selectionStart ?? next.length);
+            if (countCharacters(next) > MAX_INPUT_CHARACTERS) setShowLimitDialog(true);
           }}
           aria-label="输入问题"
           aria-describedby={showCharacterCount ? countId : undefined}
@@ -636,6 +639,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       <ComposerPalette
         open={palette !== null}
         anchorRef={palette === "slash" && paletteAnchor === "plus" ? plusRef : textareaRef}
+        ignoreRefs={paletteIgnoreRefs.current}
         label={palette === "hash" ? "引用笔记" : "对话命令"}
         onClose={closePalette}
       >
