@@ -13,12 +13,14 @@ import {
 } from "@/lib/notes/userNote";
 import { closeManagedWindow } from "@/lib/keyboard/windowActions";
 import { stripUserNoteWindowState } from "@/lib/stores/windowPersist";
+import { SAVED_TOAST_MESSAGE, useToast } from "@/lib/stores/toast";
 
 function reset() {
   useUserNotes.setState({
     byId: {},
     order: [],
     openEditorIds: [],
+    dirtyEditorIds: [],
     agentEditingNoteId: null,
     noteAgentOpenIds: [],
     noteAgentSessionById: {},
@@ -28,6 +30,7 @@ function reset() {
   });
   useFlashcardCitations.setState({ open: false, subjectId: null, activeCardId: null });
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
+  useToast.getState().clear();
   useChatHistory.setState({
     sessionsMeta: [{ id: "main", title: "主对话", createdAt: 1, updatedAt: 1, messageCount: 0, artifactIds: [] }],
     messagesById: { main: [] },
@@ -135,14 +138,17 @@ test("rehydrating old window fields does not keep editors or the library open", 
   useUserNotes.getState().openLibrary({ intent: "browse" });
   useUserNotes.getState().setAgentEditingNoteId(id);
   useUserNotes.getState().setNoteAgentOpen(id, true);
+  useUserNotes.setState({ dirtyEditorIds: [id] });
   stripUserNoteWindowState(useUserNotes.getState());
   useUserNotes.setState({
     openEditorIds: useUserNotes.getState().openEditorIds,
+    dirtyEditorIds: useUserNotes.getState().dirtyEditorIds,
     libraryOpen: useUserNotes.getState().libraryOpen,
     agentEditingNoteId: useUserNotes.getState().agentEditingNoteId,
     noteAgentOpenIds: useUserNotes.getState().noteAgentOpenIds,
   });
   assert.deepEqual(useUserNotes.getState().openEditorIds, []);
+  assert.deepEqual(useUserNotes.getState().dirtyEditorIds, []);
   assert.equal(useUserNotes.getState().libraryOpen, false);
   assert.equal(useUserNotes.getState().agentEditingNoteId, null);
   assert.deepEqual(useUserNotes.getState().noteAgentOpenIds, []);
@@ -226,6 +232,25 @@ test("classroom notes stay out of the personal library and open as a sticky wind
   assert.equal(win?.type, "user-note-editor");
   assert.ok((win?.size.width ?? 999) <= 380);
   assert.ok((win?.size.height ?? 999) <= 360);
+});
+
+test("closing an edited note window toasts once; untouched close stays silent", () => {
+  const id = useUserNotes.getState().createNote("probability", { title: "泊松", markdown: "初稿" });
+  useUserNotes.getState().openEditor(id);
+  useUserNotes.getState().closeEditor(id);
+  assert.deepEqual(useToast.getState().toasts, []);
+
+  useUserNotes.getState().openEditor(id);
+  useUserNotes.getState().updateNote(id, { markdown: "改过的正文" });
+  assert.deepEqual(useUserNotes.getState().dirtyEditorIds, [id]);
+  useUserNotes.getState().closeEditor(id);
+  assert.deepEqual(useUserNotes.getState().dirtyEditorIds, []);
+  assert.deepEqual(useToast.getState().toasts.map((toast) => toast.message), [SAVED_TOAST_MESSAGE]);
+
+  useToast.getState().clear();
+  useUserNotes.getState().openEditor(id);
+  useUserNotes.getState().closeEditor(id);
+  assert.deepEqual(useToast.getState().toasts, []);
 });
 
 test("removeNote deletes the record and closes its editor", () => {

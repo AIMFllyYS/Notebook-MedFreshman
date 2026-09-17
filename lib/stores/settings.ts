@@ -161,6 +161,12 @@ export interface SettingsState {
 
 const LS_KEY = "gailvlun-settings-v1";
 
+/** 成功写入本机设置后递增。设置页用它判断 blur 时值是否已 persist。 */
+let settingsPersistGeneration = 0;
+export function getSettingsPersistGeneration(): number {
+  return settingsPersistGeneration;
+}
+
 type Persisted = Pick<
   SettingsState,
   | "selectedModelId"
@@ -413,6 +419,7 @@ function persist(get: () => SettingsState) {
   };
   try {
     localStorage.setItem(LS_KEY, JSON.stringify(data));
+    settingsPersistGeneration += 1;
   } catch {
     useSettings.setState({ settingsLoadWarning: '当前配置尚未保存成功，请检查存储空间后重试。' });
   }

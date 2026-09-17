@@ -42,6 +42,8 @@ test("citation and document viewers are mounted in the global app shell window l
   assert.match(layers, /<QuizExplainLayer\s*\/>/);
   assert.doesNotMatch(appShell, /DevNoteHarness/);
   assert.doesNotMatch(layers, /DevNoteHarness/);
+  assert.match(appShell, /components\/shared\/ToastHost/);
+  assert.match(appShell, /<ToastHost\s*\/>/);
 });
 
 test("artifact viewer is mounted in the global app shell window layer", () => {

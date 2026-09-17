@@ -12,6 +12,7 @@ import { ContextSection } from "./ContextSection";
 import { BillingSection, CloudSyncSection, ExportSection, RedemptionSection } from "./DataSection";
 import { SkillsSection } from "./SkillsSection";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { onSettingsFieldBlur, onSettingsFieldFocus } from "@/lib/settings/settingsSaveToast";
 
 type SectionId = "general" | "appearance" | "models" | "capabilities" | "skills" | "data";
 const SECTIONS: { id: SectionId; label: string; hint: string; icon: typeof Settings2 }[] = [
@@ -68,7 +69,12 @@ export default function ChatSettings({
   });
   const content = CONTENT[active];
 
-  return <div className="chat-settings-workspace" data-testid="chat-settings-workspace">
+  return <div
+    className="chat-settings-workspace"
+    data-testid="chat-settings-workspace"
+    onFocus={onSettingsFieldFocus}
+    onBlur={onSettingsFieldBlur}
+  >
     <aside className="chat-settings-sidebar" aria-label="Agent 设置分类">
       {showBack ? (
         <button type="button" onClick={close} className="chat-settings-back" aria-label="返回对话">

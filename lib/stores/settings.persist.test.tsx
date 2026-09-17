@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { API_SECRETS_LS_KEY, SETTINGS_LS_KEY } from "@/lib/stores/apiSecrets";
 import { SETTINGS_BACKUP_KEY } from './settingsRecovery';
-import { useSettings } from "@/lib/stores/settings";
+import { getSettingsPersistGeneration, useSettings } from "@/lib/stores/settings";
 
 describe("settings apiKey persist", () => {
   afterEach(() => {
@@ -137,6 +137,20 @@ describe("settings apiKey persist", () => {
     expect(reloaded.getState().selectionAssistantActions.quote).toBe(false);
     expect(reloaded.getState().blockForeignSelectionAssistants).toBe(true);
     expect(reloaded.getState().selectionAssistantActions.note).toBe(true);
+  });
+
+  it("成功 persist 后递增代数，写入失败则不递增", async () => {
+    const before = getSettingsPersistGeneration();
+    useSettings.getState().setGlobalContext("persist-ok");
+    expect(getSettingsPersistGeneration()).toBe(before + 1);
+
+    localStorage.setItem(SETTINGS_LS_KEY, '{broken');
+    vi.resetModules();
+    const { useSettings: loaded, getSettingsPersistGeneration: genAfterLoad } = await import("./settings");
+    const blocked = genAfterLoad();
+    loaded.getState().setGlobalContext("should-not-write");
+    expect(genAfterLoad()).toBe(blocked);
+    expect(localStorage.getItem(SETTINGS_LS_KEY)).toBe("{broken");
   });
 
   it("persist Agent 面板顶部标签与固定助教导航开关", async () => {
