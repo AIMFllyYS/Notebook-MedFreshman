@@ -17,7 +17,7 @@ import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
-import { NOTES_PANEL_ID } from "@/lib/constants/layout";
+import { NOTES_PANEL_ID, RIGHT_PANEL_ID } from "@/lib/constants/layout";
 import type { SubjectId } from "@/lib/types/content";
 import { isSubjectReviewPath, resolveRouteLayout } from "@/lib/content/routeLayout";
 import type { ChatContext } from "@/lib/types/chat";
@@ -56,10 +56,12 @@ function TopBar({
   subjectId,
   categoryId,
   itemId,
+  hideWindowTaskbar = false,
 }: {
   subjectId: SubjectId;
   categoryId: string;
   itemId: string;
+  hideWindowTaskbar?: boolean;
 }) {
   const toggleSidebar = useStore((s) => s.toggleSidebar);
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
@@ -146,7 +148,7 @@ function TopBar({
         {!topBarCollapsed && (
           <div className="mr-1 flex min-w-0 flex-1 items-center justify-end gap-1 border-r border-[var(--line)] pr-2">
             <GlobalSearchButton />
-            <WindowTaskbar host="topbar" />
+            {!hideWindowTaskbar && <WindowTaskbar host="topbar" />}
           </div>
         )}
         <button
@@ -335,6 +337,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         subjectId={route?.subjectId ?? DEFAULT_SUBJECT}
         categoryId={route?.categoryId ?? "detail"}
         itemId={route?.itemId ?? ""}
+        hideWindowTaskbar={resolvedMode === "agent"}
       />
       {!studioChrome ? (
       <div className="min-h-0 flex-1">
@@ -424,7 +427,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   startTransition(() => setRightCollapsedForProfile(routeLayout.profile, false));
                 }}
               >
-                <div id="right-panel" className="relative h-full">
+                <div id={RIGHT_PANEL_ID} className="relative h-full">
                   <RightPanel />
                   {isResizing && <ChatSkeleton />}
                 </div>

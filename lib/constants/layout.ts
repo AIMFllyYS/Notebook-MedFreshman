@@ -6,15 +6,22 @@
  */
 export const NOTES_PANEL_ID = "notes-panel";
 
-export type FullscreenTarget = "viewport" | "notes" | (() => DOMRect | null);
+/** 右侧面板 DOM id。Agent 模式下 Mac 窗放大铺在这一栏。 */
+export const RIGHT_PANEL_ID = "right-panel";
 
-/** 解析全屏目标矩形。`notes` 在笔记栏缺失时返回 null，由调用方决定是否回退。 */
+export type FullscreenTarget = "viewport" | "notes" | "right" | (() => DOMRect | null);
+
+function panelRect(id: string): DOMRect | null {
+  if (typeof document === "undefined") return null;
+  const rect = document.getElementById(id)?.getBoundingClientRect();
+  return rect && rect.width > 0 && rect.height > 0 ? rect : null;
+}
+
+/** 解析全屏目标矩形。`notes` / `right` 在目标栏缺失时返回 null，由调用方决定是否回退。 */
 export function resolveFullscreenRect(target: FullscreenTarget = "viewport"): DOMRect | null {
   if (typeof target === "function") return target();
-  if (target === "notes") {
-    const rect = document.getElementById(NOTES_PANEL_ID)?.getBoundingClientRect();
-    return rect && rect.width > 0 && rect.height > 0 ? rect : null;
-  }
+  if (target === "notes") return panelRect(NOTES_PANEL_ID);
+  if (target === "right") return panelRect(RIGHT_PANEL_ID);
   if (typeof window === "undefined") return null;
   return new DOMRect(0, 0, window.innerWidth, window.innerHeight);
 }

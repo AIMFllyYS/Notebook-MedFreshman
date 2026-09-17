@@ -12,6 +12,7 @@ import { resolveRouteLayout } from "@/lib/content/routeLayout";
 import { tabPanelVariants } from "@/lib/motion";
 import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
 import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
+import WindowTaskbar from "@/components/window/WindowTaskbar";
 import type { ChatContext } from "@/lib/types/chat";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { useSettings } from "@/lib/hooks/useSettings";
@@ -99,7 +100,13 @@ class RightPanelTabBoundary extends Component<
   }
 }
 
-export default function RightPanel() {
+export default function RightPanel({
+  hideAiTab = false,
+  showWindowDock = false,
+}: {
+  hideAiTab?: boolean;
+  showWindowDock?: boolean;
+} = {}) {
   const tab = useStore((s) => s.rightTab);
   const setTab = useStore((s) => s.setRightTab);
   const storeRightTabs = useStore((s) => s.rightTabs);
@@ -110,21 +117,30 @@ export default function RightPanel() {
   const layoutProfile = routeLayout.route ? routeLayout.profile : storeLayoutProfile;
   const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
   const showRightPanelTabBar = useSettings((s) => s.showRightPanelTabBar);
-  const visibleRightTabs = ALL_RIGHT_TABS.filter((t) => rightTabs.includes(t.id));
+  const visibleRightTabs = ALL_RIGHT_TABS.filter(
+    (t) => rightTabs.includes(t.id) && !(hideAiTab && t.id === "ai"),
+  );
   const showBrowserChrome = rightTabs.includes("browser");
   const showTabBar = showRightPanelTabBar !== false;
+  const showChrome = showTabBar || showWindowDock;
+  const agentFallbackTab = hideAiTab ? visibleRightTabs[0]?.id : undefined;
 
   useEffect(() => {
+    if (hideAiTab && tab === "ai") {
+      if (agentFallbackTab) setTab(agentFallbackTab);
+      return;
+    }
     if (rightTabs.length > 0 && !rightTabs.includes(tab)) {
       setTab(rightTabs[0] ?? "ai");
     }
-  }, [rightTabs, tab, setTab]);
+  }, [rightTabs, tab, setTab, hideAiTab, agentFallbackTab]);
 
   useEffect(() => {
+    if (hideAiTab) return;
     if (!showTabBar && rightTabs.includes("ai") && tab !== "ai") {
       setTab("ai");
     }
-  }, [showTabBar, rightTabs, tab, setTab]);
+  }, [showTabBar, rightTabs, tab, setTab, hideAiTab]);
 
   // 追踪方向：比较新旧 tab index 决定滑入方向
   const tabIndex = visibleRightTabs.findIndex((t) => t.id === tab);
@@ -166,9 +182,9 @@ export default function RightPanel() {
   return (
     <div className="flex h-full flex-col border-l border-[var(--line)] bg-[var(--bg-panel)]">
       {/* Top-level tab bar（可横向滑动；含浏览器收藏夹标签 + 末尾「＋」） */}
-      {showTabBar && <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-1.5 py-1.5">
-        <div className="hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
-          {visibleRightTabs.map((t) => {
+      {showChrome && <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-1.5 py-1.5">
+        <div className={clsx("hide-scrollbar flex items-center gap-1 overflow-x-auto", showWindowDock ? "shrink-0" : "min-w-0 flex-1")}>
+          {showTabBar && visibleRightTabs.map((t) => {
             const isActive =
               t.id === "browser" ? tab === "browser" && activeTabId === BROWSE_TAB : tab === t.id;
             return (
@@ -232,6 +248,11 @@ export default function RightPanel() {
           })}
         </div>
 
+        {showWindowDock && (
+          <div className="flex min-w-0 flex-1 items-center justify-end">
+            <WindowTaskbar host="right-panel" />
+          </div>
+        )}
         {showBrowserChrome && <BrowserSettingsButton onAdded={() => switchTab("browser")} />}
         <button
           type="button"
@@ -248,7 +269,7 @@ export default function RightPanel() {
       <div className="min-h-0 flex-1 overflow-hidden">
         <AnimatePresence mode="wait" custom={dir}>
           <RightPanelTabBoundary key={tab} tab={tab}>
-            {tab === "ai" && (
+            {tab === "ai" && !hideAiTab && (
               <motion.div key="ai-chat" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
                 <ChatPanel chatContext={chatContext} />
               </motion.div>

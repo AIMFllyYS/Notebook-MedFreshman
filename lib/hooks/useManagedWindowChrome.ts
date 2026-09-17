@@ -5,8 +5,10 @@ import type { FullscreenTarget } from "@/lib/constants/layout";
 import { useDraggable } from "@/lib/hooks/useDraggable";
 import { useFullscreenTrack } from "@/lib/hooks/useFullscreenTrack";
 import { useResizable } from "@/lib/hooks/useResizable";
+import { useWestResizable } from "@/lib/hooks/useWestResizable";
 import { useWindowManager, type WindowSize } from "@/lib/hooks/useWindowManager";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import { isAgentWorkspace } from "@/lib/stores/workspace";
 import { toggleManagedWindowFullscreen } from "@/lib/window/toggleManagedFullscreen";
 
 export type { FullscreenTarget };
@@ -41,6 +43,7 @@ export function useManagedWindowChrome({
   const { bringToFront, commitGeometry, minimizeWindow } = useWindowManager();
 
   const { elRef, onPointerDown } = useDraggable((dx, dy) => {
+    if (isAgentWorkspace()) return;
     const current = useWindowManager.getState().windows.find((w) => w.id === windowId);
     if (!current) return;
     commitGeometry(windowId, {
@@ -58,6 +61,15 @@ export function useManagedWindowChrome({
       onResize?.({ width, height });
     },
     minSize,
+  );
+
+  const onWestResizeStart = useWestResizable(
+    elRef,
+    (geom) => {
+      commitGeometry(windowId, geom);
+      onResize?.(geom.size);
+    },
+    { minW: minSize.minW },
   );
 
   useFullscreenTrack(windowId, managed?.fullscreen ?? false, fullscreenTarget);
@@ -78,6 +90,7 @@ export function useManagedWindowChrome({
     elRef,
     onPointerDown,
     onResizeStart,
+    onWestResizeStart,
     toggleFullscreen,
     bringToFront,
     minimizeWindow,

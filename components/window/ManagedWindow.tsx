@@ -8,6 +8,7 @@ import {
   type FullscreenTarget,
 } from "@/lib/hooks/useManagedWindowChrome";
 import type { WindowSize } from "@/lib/hooks/useWindowManager";
+import { isAgentWorkspace } from "@/lib/stores/workspace";
 
 export type { FullscreenTarget };
 
@@ -94,6 +95,7 @@ export default function ManagedWindow({
     elRef,
     onPointerDown,
     onResizeStart,
+    onWestResizeStart,
     toggleFullscreen,
     bringToFront,
     minimizeWindow,
@@ -154,6 +156,23 @@ export default function ManagedWindow({
       >
         {showBody ? children : null}
       </WindowChrome>
+      {!managed.fullscreen && !managed.minimized && isAgentWorkspace() && (
+        <div
+          data-no-drag
+          data-testid="agent-window-widen"
+          onPointerDown={onWestResizeStart}
+          title="拖拽加宽"
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: 8,
+            cursor: "ew-resize",
+            touchAction: "none",
+          }}
+        />
+      )}
       {!managed.fullscreen && !managed.minimized && <ResizeGrip onPointerDown={onResizeStart} />}
     </div>,
     document.body,
