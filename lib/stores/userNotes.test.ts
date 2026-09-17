@@ -12,6 +12,7 @@ import {
   USER_NOTE_LIBRARY_WINDOW_ID,
 } from "@/lib/notes/userNote";
 import { closeManagedWindow } from "@/lib/keyboard/windowActions";
+import { stripUserNoteWindowState } from "@/lib/stores/windowPersist";
 
 function reset() {
   useUserNotes.setState({
@@ -126,6 +127,26 @@ test("updateNote auto-follows heading until the title is edited by hand", () => 
   useUserNotes.getState().updateNote(id, { title: "力学笔记" });
   useUserNotes.getState().updateNote(id, { markdown: "# 别的标题\n\n正文" });
   assert.equal(useUserNotes.getState().byId[id]?.title, "力学笔记");
+});
+
+test("rehydrating old window fields does not keep editors or the library open", () => {
+  const id = useUserNotes.getState().createNote("probability");
+  useUserNotes.getState().openEditor(id);
+  useUserNotes.getState().openLibrary({ intent: "browse" });
+  useUserNotes.getState().setAgentEditingNoteId(id);
+  useUserNotes.getState().setNoteAgentOpen(id, true);
+  stripUserNoteWindowState(useUserNotes.getState());
+  useUserNotes.setState({
+    openEditorIds: useUserNotes.getState().openEditorIds,
+    libraryOpen: useUserNotes.getState().libraryOpen,
+    agentEditingNoteId: useUserNotes.getState().agentEditingNoteId,
+    noteAgentOpenIds: useUserNotes.getState().noteAgentOpenIds,
+  });
+  assert.deepEqual(useUserNotes.getState().openEditorIds, []);
+  assert.equal(useUserNotes.getState().libraryOpen, false);
+  assert.equal(useUserNotes.getState().agentEditingNoteId, null);
+  assert.deepEqual(useUserNotes.getState().noteAgentOpenIds, []);
+  assert.ok(useUserNotes.getState().byId[id]);
 });
 
 test("openEditor opens a managed window and closeManagedWindow clears it", () => {

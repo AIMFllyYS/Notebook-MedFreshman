@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, test } from "node:test";
-import { useMemoryInbox } from "./memoryInbox.ts";
+import { resetMemoryInboxSessionAcks, syncMemoryInboxFromSessions, useMemoryInbox } from "./memoryInbox.ts";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { useStore } from "@/lib/stores/ui";
 import { useChatHistory } from "@/lib/stores/chatHistory";
@@ -53,7 +53,8 @@ function flashcardCommitMessage(mode: RecordMode): ChatMessage {
 }
 
 beforeEach(() => {
-  useMemoryInbox.setState({ byId: {}, order: [], appliedCommitIds: [] });
+  useMemoryInbox.setState({ byId: {}, order: [], appliedCommitIds: [], seenProposalIds: [] });
+  resetMemoryInboxSessionAcks();
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
   useStore.setState({ outbound: null, activeSubjectId: DEFAULT_SUBJECT, activeCategoryId: "detail", activeItemId: "1.1" });
   useUserNotes.setState({
@@ -85,6 +86,84 @@ beforeEach(() => {
 afterEach(() => {
   setNoteCommitRunnerForTests(null);
   setMemoryCommitRunnerForTests(null);
+});
+
+test("historical propose/commit on first session look do not reopen clouds or rewrite notes", () => {
+  const noteId = useUserNotes.getState().createNote("probability", { title: "已有笔记", markdown: "旧稿" });
+  useUserNotes.getState().closeEditor(noteId);
+  const history = [
+    {
+      id: "old-a",
+      role: "assistant" as const,
+      timestamp: 1,
+      parts: [
+        {
+          type: "tool-proposeMemory",
+          toolCallId: "t-old",
+          state: "output-available",
+          input: { kind: "note", reason: "旧对话" },
+          output: { proposalId: "prop_old", kind: "note", reason: "旧对话", titleHint: "渗透压" },
+        },
+        {
+          type: "tool-commitNotes",
+          toolCallId: "c-old",
+          state: "output-available",
+          input: { title: "渗透压", markdown: "新稿" },
+          output: { text: "ok", noteId: "note_dup", title: "渗透压", markdown: "新稿" },
+        },
+      ],
+    },
+  ];
+  syncMemoryInboxFromSessions({ main: history });
+  syncMemoryInboxFromSessions({ main: history });
+  assert.deepEqual(useMemoryInbox.getState().order, []);
+  assert.ok(useMemoryInbox.getState().seenProposalIds.includes("prop_old"));
+  assert.ok(useMemoryInbox.getState().appliedCommitIds.includes("c-old"));
+  assert.equal(useWindowManager.getState().windows.length, 0);
+  assert.deepEqual(useUserNotes.getState().order, [noteId]);
+  assert.deepEqual(useUserNotes.getState().openEditorIds, []);
+});
+
+test("live proposeMemory after a session is acknowledged still opens one cloud", () => {
+  syncMemoryInboxFromSessions({ main: [] });
+  syncMemoryInboxFromSessions({
+    main: [
+      {
+        id: "m-live",
+        role: "assistant",
+        timestamp: 2,
+        parts: [
+          {
+            type: "tool-proposeMemory",
+            toolCallId: "t-live",
+            state: "output-available",
+            input: { kind: "note", reason: "刚讲清" },
+            output: { proposalId: "prop_live", kind: "note", reason: "刚讲清", titleHint: "渗透压" },
+          },
+        ],
+      },
+    ],
+  });
+  assert.deepEqual(useMemoryInbox.getState().order, ["prop_live"]);
+  assert.ok(useWindowManager.getState().windows.some((win) => win.type === "memory-proposal"));
+});
+
+test("orphan historical commit is remembered and does not open a record book", () => {
+  useMemoryInbox.getState().ingestCommit({
+    toolCallId: "c-orphan",
+    messageId: "m1",
+    kind: "flashcard",
+    flashcards: {
+      text: "ok",
+      cardIds: ["card_x"],
+      mode: "cloze",
+      items: [{ originalText: "渗透压是溶液的依数性" }],
+    },
+  });
+  assert.deepEqual(useMemoryInbox.getState().appliedCommitIds, ["c-orphan"]);
+  assert.equal(useWindowManager.getState().windows.length, 0);
+  assert.equal(useRecordPreviews.getState().previews.length, 0);
+  assert.equal(useReviewCards.getState().order.length, 0);
 });
 
 test("ingestProposal opens a left-side memory cloud once per kind", () => {

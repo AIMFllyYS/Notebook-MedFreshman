@@ -3,21 +3,19 @@
 import { useEffect } from "react";
 import MemoryProposalCloud from "@/components/memory/MemoryProposalCloud";
 import { useChatHistory } from "@/lib/stores/chatHistory";
-import { useMemoryInbox } from "@/lib/stores/memoryInbox";
-import { collectMemoryToolEvents } from "@/lib/memory/memoryLoop";
+import { syncMemoryInboxFromSessions, useMemoryInbox } from "@/lib/stores/memoryInbox";
 
 export default function MemoryInboxLayer() {
   const messagesById = useChatHistory((s) => s.messagesById);
+  const hydrated = useChatHistory((s) => s._hasHydrated);
+  const ready = useChatHistory((s) => s._activeMessagesReady);
   const byId = useMemoryInbox((s) => s.byId);
   const order = useMemoryInbox((s) => s.order);
 
   useEffect(() => {
-    const messages = Object.values(messagesById).flat();
-    const { proposals, commits } = collectMemoryToolEvents(messages);
-    const inbox = useMemoryInbox.getState();
-    for (const proposal of proposals) inbox.ingestProposal(proposal);
-    for (const commit of commits) inbox.ingestCommit(commit);
-  }, [messagesById]);
+    if (!hydrated || !ready) return;
+    syncMemoryInboxFromSessions(messagesById);
+  }, [hydrated, ready, messagesById]);
 
   const visible = order
     .map((id) => byId[id])

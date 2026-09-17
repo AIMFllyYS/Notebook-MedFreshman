@@ -2,6 +2,7 @@ import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { createPersistedStore } from "@/lib/stores/_persist";
 import { scheduleCloudTombstone, scheduleCloudUpsert } from "@/lib/sync/schedule";
+import { stripViewerId } from "@/lib/stores/windowPersist";
 
 /**
  * HTML 演示（Artifact）store。链路：tools.ts renderInteractive → ArtifactCard → 本 store → ArtifactViewer。
@@ -125,6 +126,7 @@ export const useArtifacts = createPersistedStore<ArtifactsState>(
       storage: "idb",
       partialize: (s) => ({ order: s.order, byId: s.byId }),
       onRehydrateStorage: () => (state) => {
+        if (state) stripViewerId(state);
         state?._setHasHydrated(true);
       },
     },
