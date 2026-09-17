@@ -7,10 +7,10 @@ afterEach(() => cleanup());
 const TOOL_THUMBS = [
   ['计划模式', 'plan'],
   ['生成图片', 'generateImage'],
-  ['可交互 HTML', 'renderInteractive'],
-  ['长文', 'writeDocument'],
-  ['闪卡', 'flashcards'],
-  ['笔记', 'notes'],
+  ['可交互网页', 'renderInteractive'],
+  ['生成长文', 'writeDocument'],
+  ['整理闪卡', 'flashcards'],
+  ['整理笔记', 'notes'],
 ] as const;
 
 describe('ComposerCommandPanel', () => {
@@ -31,10 +31,10 @@ describe('ComposerCommandPanel', () => {
       />,
     );
     const panel = getByTestId('composer-command-panel');
-    expect(panel.textContent).toMatch(/计划模式[\s\S]*压缩[\s\S]*特定工具[\s\S]*已导入 Skills/);
-    const compactThumb = getByRole('option', { name: '压缩' }).querySelector('[data-composer-icon="compact"]');
+    expect(panel.textContent).toMatch(/计划模式[\s\S]*压缩上下文[\s\S]*特定工具[\s\S]*已导入 Skills/);
+    const compactThumb = getByRole('option', { name: '压缩上下文' }).querySelector('[data-composer-icon="compact"]');
     expect(compactThumb).toHaveAttribute('data-composer-thumb', 'square');
-    fireEvent.click(getByRole('option', { name: /压缩/ }));
+    fireEvent.click(getByRole('option', { name: /压缩上下文/ }));
     expect(onSelectCompact).toHaveBeenCalledOnce();
     expect(panel.textContent).not.toMatch(/先输出|本轮必调|只读规划/);
     for (const [label, icon] of TOOL_THUMBS) {
@@ -49,7 +49,7 @@ describe('ComposerCommandPanel', () => {
     expect(skill?.querySelector('svg')).toBeNull();
     expect(skill?.querySelector('.composer-tool-thumb-bar')).toBeNull();
     fireEvent.click(getByRole('option', { name: /计划模式/ }));
-    fireEvent.click(getByRole('option', { name: /长文/ }));
+    fireEvent.click(getByRole('option', { name: /生成长文/ }));
     fireEvent.click(getByRole('option', { name: /错题分析/ }));
     expect(onSelectPlan).toHaveBeenCalledOnce();
     expect(onSelectTool).toHaveBeenCalledWith('writeDocument');

@@ -2,6 +2,8 @@
 
 import type { Skill } from "@/lib/types/skill";
 import {
+  COMPOSER_COMPACT_LABEL,
+  COMPOSER_PLAN_LABEL,
   FORCED_COMPOSER_TOOLS,
   FORCED_TOOL_LABELS,
   type ComposerForcedTool,
@@ -33,8 +35,8 @@ export function listComposerCommands(input: {
   const query = input.query?.trim().toLowerCase() ?? "";
   const match = (label: string) => !query || label.toLowerCase().includes(query);
   const items: Array<{ id: ComposerCommandId; kind: "plan" | "compact" | "tool" | "skill"; skill?: Skill }> = [];
-  if (input.planAllowed && match("计划模式")) items.push({ id: "plan", kind: "plan" });
-  if (match("压缩")) items.push({ id: "compact", kind: "compact" });
+  if (input.planAllowed && match(COMPOSER_PLAN_LABEL)) items.push({ id: "plan", kind: "plan" });
+  if (match(COMPOSER_COMPACT_LABEL)) items.push({ id: "compact", kind: "compact" });
   for (const tool of FORCED_COMPOSER_TOOLS) {
     if (match(FORCED_TOOL_LABELS[tool]) || match(tool)) items.push({ id: tool, kind: "tool" });
   }
@@ -76,7 +78,7 @@ export default function ComposerCommandPanel({
           onClick={onSelectPlan}
         >
           <span className="app-menu-check"><PlanModeIcon /></span>
-          <span>计划模式</span>
+          <span>{COMPOSER_PLAN_LABEL}</span>
           {planMode ? <span className="composer-command-on">已开</span> : null}
         </button>
       )}
@@ -89,7 +91,7 @@ export default function ComposerCommandPanel({
           onClick={onSelectCompact}
         >
           <span className="app-menu-check"><CompactContextIcon /></span>
-          <span>压缩</span>
+          <span>{COMPOSER_COMPACT_LABEL}</span>
         </button>
       )}
       {(showPlan || showCompact) && tools.length > 0 ? <div className="app-menu-separator" /> : null}

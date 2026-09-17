@@ -2,6 +2,7 @@
 
 import { AgentCloseIcon, AgentFileIcon } from "@/components/icons/AgentIcons";
 import {
+  COMPOSER_PLAN_LABEL,
   FORCED_TOOL_LABELS,
   isForcedComposerTool,
   type AttachedFileRef,
@@ -32,7 +33,7 @@ export default function ComposerChips({
       {planMode ? (
         <span className="composer-chip composer-chip-plan" data-testid="composer-chip-plan">
           <PlanModeIcon />
-          <span>计划模式</span>
+          <span>{COMPOSER_PLAN_LABEL}</span>
           <button type="button" aria-label="关闭计划模式" onClick={onClearPlan}>
             <AgentCloseIcon size={12} />
           </button>

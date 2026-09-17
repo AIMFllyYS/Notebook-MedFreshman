@@ -69,7 +69,7 @@ export function PlanModeIcon() {
   );
 }
 
-/** 加号 / 斜杠「压缩」：复用上下文窗口百分比圆环。 */
+/** 加号 / 斜杠「压缩上下文」：复用上下文窗口百分比圆环。 */
 export function CompactContextIcon() {
   const ctxTokens = useTokenTracker((s) => s.currentContextTokens);
   const ctxLimit = useTokenTracker((s) => s.modelContextLimit);
