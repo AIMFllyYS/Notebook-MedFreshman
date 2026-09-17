@@ -29,9 +29,8 @@ test("顶栏与壳走 StudySolo 三模式，不再写期末复习工作站", () 
 
   assert.match(switcher, /from "@\/components\/ui\/AnchoredMenu"/);
   assert.match(switcher, /appModeTitle/);
-  assert.match(switcher, /app-mode-option-studio/);
-  assert.match(switcher, /app-mode-option-agent/);
-  assert.match(switcher, /app-mode-option-class/);
+  assert.match(switcher, /app-mode-option-\$\{item\}/);
+  assert.match(switcher, /APP_MODES\.map/);
 
   assert.match(bookshelf, /StudySolo/);
   assert.doesNotMatch(bookshelf, /期末复习工作站/);
