@@ -9,8 +9,30 @@ import ChatPanel from "@/components/chat/ChatPanel";
 import { NOTES_PANEL_ID, RIGHT_PANEL_ID } from "@/lib/constants/layout";
 import { useAcademicYear } from "@/lib/stores/academicYear";
 import { useStore } from "@/lib/stores/ui";
+import { useIsClient } from "@/lib/hooks/useIsClient";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import type { ChatContext } from "@/lib/types/chat";
+
+function AgentChatCanvas({ chatContext }: { chatContext: ChatContext }) {
+  const ready = useIsClient();
+  if (!ready) {
+    return (
+      <div className="chat-panel" data-testid="agent-chat-pending" aria-busy="true">
+        <div className="chat-header-sticky">
+          <div className="chat-header">
+            <div className="chat-header-left">
+              <span className="chat-header-title">AI 助教</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-1 items-center justify-center text-[13px] text-[var(--ink-faint)]">
+          正在打开对话…
+        </div>
+      </div>
+    );
+  }
+  return <ChatPanel chatContext={chatContext} />;
+}
 
 /**
  * Agent 工作区。中间复用 ChatPanel；左右槽位接对话栏与右侧窗坞。
@@ -41,7 +63,7 @@ export default function AgentWorkspace() {
   const main = (
     <div data-agent-slot="main" className="relative h-full min-h-0">
       <div id={NOTES_PANEL_ID} className="h-full w-full">
-        <ChatPanel chatContext={chatContext} />
+        <AgentChatCanvas chatContext={chatContext} />
       </div>
       {sidebarCollapsed && (
         <button

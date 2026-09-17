@@ -4,9 +4,14 @@ import AgentWorkspace from "./AgentWorkspace";
 import { useStore } from "@/lib/stores/ui";
 
 let mobile = false;
+let clientReady = true;
 
 vi.mock("@/lib/hooks/useIsMobile", () => ({
   useIsMobile: () => mobile,
+}));
+
+vi.mock("@/lib/hooks/useIsClient", () => ({
+  useIsClient: () => clientReady,
 }));
 
 vi.mock("./AgentConversationSidebar", () => ({
@@ -31,6 +36,16 @@ describe("AgentWorkspace", () => {
       layoutProfile: "full",
       rightCollapsedByProfile: { full: false, article: true, reference: false },
     });
+    mobile = false;
+    clientReady = true;
+  });
+
+  it("SSR 占位不含加号，避免未水合的死输入框", () => {
+    clientReady = false;
+    render(<AgentWorkspace />);
+    expect(screen.getByTestId("agent-chat-pending")).toHaveTextContent("正在打开对话");
+    expect(document.querySelector('[data-testid="composer-plus"]')).toBeNull();
+    expect(screen.queryByTestId("chat-panel-entry")).toBeNull();
   });
 
   it("桌面三栏槽位 + 复用 ChatPanel 入口，切到 Agent 不崩", () => {

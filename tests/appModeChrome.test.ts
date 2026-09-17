@@ -54,6 +54,8 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.match(workspace, /data-agent-slot="windows"/);
   assert.match(workspace, /data-agent-slot="main"/);
   assert.match(workspace, /components\/chat\/ChatPanel/);
+  assert.match(workspace, /useIsClient/);
+  assert.match(workspace, /agent-chat-pending/);
   assert.doesNotMatch(workspace, /next\/dynamic/);
   assert.match(workspace, /if \(isMobile\)/);
   assert.match(workspace, /AgentConversationSidebar/);
