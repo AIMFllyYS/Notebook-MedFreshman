@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { searchSubjectBody } from "@/lib/search/bodySearch";
+import { __resetBodySearchCacheForTests, bodySearchCacheSize, searchSubjectBody } from "@/lib/search/bodySearch";
 import { buildGlobalSearchIndex } from "@/lib/search/globalSearch";
 import { contentTree } from "@/lib/content-data/manifest";
 
@@ -33,4 +33,13 @@ test("searchSubjectBody 不命中 HTML / artifact 形态", () => {
 test("searchSubjectBody 不把课堂 notes.html 里的样式词当正文", () => {
   const hits = searchSubjectBody("histology", "Noto Serif CJK SC");
   assert.equal(hits.length, 0);
+});
+
+test("searchSubjectBody 暖查询复用剥好的正文，不再扩缓存", () => {
+  __resetBodySearchCacheForTests();
+  searchSubjectBody("histology", "被覆上皮");
+  const warmed = bodySearchCacheSize();
+  assert.ok(warmed > 0);
+  searchSubjectBody("histology", "上皮");
+  assert.equal(bodySearchCacheSize(), warmed);
 });

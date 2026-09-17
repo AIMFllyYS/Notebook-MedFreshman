@@ -28,6 +28,7 @@ vi.mock('@/lib/hooks/useImageAttachments', () => ({
     handleDragEnter: vi.fn(),
     handleDragLeave: vi.fn(),
     isDragging: false,
+    endDrag: vi.fn(),
     error: null,
   }),
 }));

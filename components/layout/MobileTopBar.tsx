@@ -33,7 +33,7 @@ export default function MobileTopBar() {
     <header
       className="flex shrink-0 items-center gap-2 border-b border-[var(--line)] bg-[var(--bg-panel)] px-3"
       style={{
-        height: 48,
+        minHeight: 52,
         paddingTop: "env(safe-area-inset-top, 0px)",
       }}
     >
@@ -59,7 +59,8 @@ export default function MobileTopBar() {
 
       <button
         onClick={toggleTheme}
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] active:bg-[var(--bg-muted)]"
+        aria-label={theme === "light" ? "切换到深色" : "切换到浅色"}
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] active:bg-[var(--bg-muted)]"
       >
         {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
       </button>

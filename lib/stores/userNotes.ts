@@ -17,6 +17,7 @@ import {
   type UserNoteKind,
 } from "@/lib/notes/userNote";
 import { notifyUserNoteChanged } from "@/lib/notes/userNoteSync";
+import { stripUserNoteWindowState } from "@/lib/stores/windowPersist";
 
 // 个人笔记仓库（IndexedDB 持久化，复用 useReviewCards / useDocuments 范式）。
 // 本机 IndexedDB 为真相源。云同步走 notifyUserNoteChanged（SYNC POINT），
@@ -380,11 +381,26 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
   {
     name: PERSIST_KEYS.userNotes,
     storage: "idb",
+    version: 1,
     partialize: (s) => ({ byId: s.byId, order: s.order, noteAgentSessionById: s.noteAgentSessionById }),
+    migrate: (persisted) => {
+      const data = (persisted ?? {}) as {
+        byId?: UserNotesState["byId"];
+        order?: string[];
+        noteAgentSessionById?: Record<string, string>;
+      };
+      return {
+        byId: data.byId ?? {},
+        order: data.order ?? [],
+        noteAgentSessionById: data.noteAgentSessionById ?? {},
+      };
+    },
     onRehydrateStorage: () => (state) => {
-      if (state && !state.noteAgentSessionById) state.noteAgentSessionById = {};
-      state?._setHasHydrated(true);
-      state?.ensureExampleNote();
+      if (!state) return;
+      if (!state.noteAgentSessionById) state.noteAgentSessionById = {};
+      stripUserNoteWindowState(state);
+      state._setHasHydrated(true);
+      state.ensureExampleNote();
     },
   },
 );

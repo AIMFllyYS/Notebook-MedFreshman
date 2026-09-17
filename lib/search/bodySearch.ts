@@ -6,10 +6,46 @@ import {
   buildGlobalSearchIndex,
   clampSearchQuery,
   matchBodyText,
+  stripForSearch,
+  type GlobalSearchEntry,
   type GlobalSearchHit,
 } from "@/lib/search/globalSearch";
 
 const SUBJECT_BODY_LIMIT = 16;
+
+let entriesBySubject: Map<string, GlobalSearchEntry[]> | null = null;
+const strippedByEntryId = new Map<string, string>();
+
+function subjectEntries(subjectId: string): GlobalSearchEntry[] {
+  if (!entriesBySubject) {
+    entriesBySubject = new Map();
+    for (const entry of buildGlobalSearchIndex(contentTree)) {
+      const list = entriesBySubject.get(entry.subjectId) ?? [];
+      list.push(entry);
+      entriesBySubject.set(entry.subjectId, list);
+    }
+  }
+  return entriesBySubject.get(subjectId) ?? [];
+}
+
+function preparedBodyFor(entry: GlobalSearchEntry): string | null {
+  const cached = strippedByEntryId.get(entry.id);
+  if (cached !== undefined) return cached || null;
+  const raw = readContentMarkdown(entry.subjectId, entry.categoryId, entry.itemId);
+  const stripped = raw ? stripForSearch(raw) : "";
+  strippedByEntryId.set(entry.id, stripped);
+  return stripped || null;
+}
+
+/** 测试用：确认暖查询不再扩缓存。 */
+export function bodySearchCacheSize(): number {
+  return strippedByEntryId.size;
+}
+
+export function __resetBodySearchCacheForTests(): void {
+  entriesBySubject = null;
+  strippedByEntryId.clear();
+}
 
 export function searchSubjectBody(
   subjectId: string,
@@ -19,12 +55,11 @@ export function searchSubjectBody(
   const query = clampSearchQuery(rawQuery);
   if (!query || !isSubjectId(subjectId)) return [];
 
-  const entries = buildGlobalSearchIndex(contentTree).filter((entry) => entry.subjectId === subjectId);
   const hits: GlobalSearchHit[] = [];
-  for (const entry of entries) {
-    const raw = readContentMarkdown(entry.subjectId, entry.categoryId, entry.itemId);
-    if (!raw) continue;
-    const hit = matchBodyText(entry, raw, query);
+  for (const entry of subjectEntries(subjectId)) {
+    const body = preparedBodyFor(entry);
+    if (!body) continue;
+    const hit = matchBodyText(entry, body, query, body);
     if (hit) hits.push(hit);
   }
 

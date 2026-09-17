@@ -13,7 +13,7 @@ import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 // 若两处各写一份同形字面量，新增第五个 tab 时这里不会报错，而 resolveRightTabs 永远不吐出它
 // —— 那个 tab 会在所有档位下静默消失。派生掉了这种漂移的可能。
 export type RightTab = LayoutRightTab;
-export type MobileTab = "detail" | "video" | "ai" | "interactive" | "browser";
+export type MobileTab = "detail" | "review" | "ai" | "browser" | "settings";
 
 export interface OutboundMessage {
   /** 要发送给 AI 的完整内容（可能含划词引用） */
@@ -114,6 +114,11 @@ interface AppState {
   /** 用户按档位分别记忆的右栏折叠状态 */
   rightCollapsedByProfile: Record<LayoutProfile, boolean>;
   setRightCollapsedForProfile: (profile: LayoutProfile, collapsed: boolean) => void;
+
+  /** 页面正中的 Agent 设置层（左下角与 AI 助教共用）。 */
+  agentSettingsOpen: boolean;
+  openAgentSettings: () => void;
+  closeAgentSettings: () => void;
 
   // ── AI 对话 ───────────────────────────────────────────
   /** 划词 / 外部触发的待发送消息 */
@@ -255,6 +260,10 @@ export const useStore = create<AppState>((set) => ({
       setLayoutAttr(`data-right-collapsed-${profile}`, collapsed);
       return { rightCollapsedByProfile: next };
     }),
+
+  agentSettingsOpen: false,
+  openAgentSettings: () => set({ agentSettingsOpen: true }),
+  closeAgentSettings: () => set({ agentSettingsOpen: false }),
 
   outbound: null,
   sendToChat: (content, opts) =>

@@ -14,6 +14,7 @@ import { useBrowser, BROWSE_TAB } from "@/lib/hooks/useBrowser";
 import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
 import type { ChatContext } from "@/lib/types/chat";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useSettings } from "@/lib/hooks/useSettings";
 
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
   ssr: false,
@@ -108,14 +109,22 @@ export default function RightPanel() {
   const rightTabs = routeLayout.route ? routeLayout.rightTabs : storeRightTabs;
   const layoutProfile = routeLayout.route ? routeLayout.profile : storeLayoutProfile;
   const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
+  const showRightPanelTabBar = useSettings((s) => s.showRightPanelTabBar);
   const visibleRightTabs = ALL_RIGHT_TABS.filter((t) => rightTabs.includes(t.id));
   const showBrowserChrome = rightTabs.includes("browser");
+  const showTabBar = showRightPanelTabBar !== false;
 
   useEffect(() => {
     if (rightTabs.length > 0 && !rightTabs.includes(tab)) {
       setTab(rightTabs[0] ?? "ai");
     }
   }, [rightTabs, tab, setTab]);
+
+  useEffect(() => {
+    if (!showTabBar && rightTabs.includes("ai") && tab !== "ai") {
+      setTab("ai");
+    }
+  }, [showTabBar, rightTabs, tab, setTab]);
 
   // 追踪方向：比较新旧 tab index 决定滑入方向
   const tabIndex = visibleRightTabs.findIndex((t) => t.id === tab);
@@ -157,7 +166,7 @@ export default function RightPanel() {
   return (
     <div className="flex h-full flex-col border-l border-[var(--line)] bg-[var(--bg-panel)]">
       {/* Top-level tab bar（可横向滑动；含浏览器收藏夹标签 + 末尾「＋」） */}
-      <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-1.5 py-1.5">
+      {showTabBar && <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-1.5 py-1.5">
         <div className="hide-scrollbar flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
           {visibleRightTabs.map((t) => {
             const isActive =
@@ -233,7 +242,7 @@ export default function RightPanel() {
         >
           <PanelRightClose size={16} />
         </button>
-      </div>
+      </div>}
 
       {/* Content area */}
       <div className="min-h-0 flex-1 overflow-hidden">

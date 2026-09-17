@@ -232,11 +232,12 @@ export function matchBodyText(
   entry: GlobalSearchEntry,
   rawBody: string,
   rawQuery: string,
+  preparedBody?: string,
 ): GlobalSearchHit | null {
   const query = normalizeSearchText(rawQuery);
   if (!query) return null;
   const terms = query.split(/\s+/).filter(Boolean);
-  const body = stripForSearch(rawBody);
+  const body = preparedBody ?? stripForSearch(rawBody);
   if (!body) return null;
   const bodyNorm = normalizeSearchText(body);
   const haystack = `${entry.haystack} ${bodyNorm}`;

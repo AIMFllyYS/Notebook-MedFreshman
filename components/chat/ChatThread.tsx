@@ -136,7 +136,7 @@ export default function ChatThread({
   const rows =
     virtualItems.length > 0
       ? virtualItems
-      : displayMessages.slice(0, Math.min(displayMessages.length, 14)).map((_, index) => ({
+      : displayMessages.slice(0, Math.min(displayMessages.length, 8)).map((_, index) => ({
           index,
           start: index * MESSAGE_ESTIMATE_PX,
         }));

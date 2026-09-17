@@ -11,7 +11,7 @@ vi.mock('@/lib/hooks/useChatUI', () => ({ useChatUI: () => ({ quotedText: null, 
 vi.mock('@/lib/hooks/useImageAttachments', () => ({ useImageAttachments: () => ({
   attachments: [], addFiles: vi.fn(), remove: vi.fn(), clear: vi.fn(), toChatFormat: () => [],
   handlePaste: vi.fn(), handleDrop: vi.fn(), handleDragOver: vi.fn(), handleDragEnter: vi.fn(), handleDragLeave: vi.fn(),
-  isDragging: false, error: null,
+  isDragging: false, endDrag: vi.fn(), error: null,
 }) }));
 
 const context = { subjectId: 'probability', categoryId: 'detail', itemId: '1.4', currentTopic: '古典概型' };
@@ -40,6 +40,7 @@ describe('ChatInput composer slash / hash / drop', () => {
     expect(getByTestId('composer-command-panel')).toHaveTextContent('计划模式');
     expect(getByTestId('composer-command-panel')).toHaveTextContent('生成图片');
     expect(getByTestId('composer-command-panel')).toHaveTextContent('速记');
+    expect(getByTestId('composer-command-panel').textContent).not.toMatch(/先输出|本轮必调|只读规划/);
     fireEvent.click(screen.getByRole('option', { name: /计划模式/ }));
     expect(getByTestId('composer-chip-plan')).toHaveTextContent('计划模式');
     fireEvent.change(getByRole('textbox'), { target: { value: '/' } });
@@ -60,15 +61,24 @@ describe('ChatInput composer slash / hash / drop', () => {
     }));
   });
 
-  it('tree drop becomes a file chip and send includes attachedFiles', () => {
-    const { container, getByTestId } = render(<ChatInput {...props} />);
+  it('tree drop becomes a file chip, clears the dashed overlay, and send includes attachedFiles', () => {
+    const { container, getByTestId, getByRole, queryByTestId } = render(<ChatInput {...props} />);
+    expect(getByRole('textbox')).toHaveAttribute('placeholder', '输入问题、引用笔记、计划或工具');
     const payload = JSON.stringify([{
       path: 'probability/detail/1.3', title: '频率与概率', kind: 'file',
       address: '概率论 › 详解 › 频率与概率', subjectId: 'probability', categoryId: 'detail', itemId: '1.3',
     }]);
-    fireEvent.drop(container.querySelector('.chat-input-container')!, {
-      dataTransfer: { getData: (type: string) => type === NOTEBOOK_FILE_MIME || type === 'text/plain' ? payload : '', types: [NOTEBOOK_FILE_MIME] },
-    });
+    const dataTransfer = {
+      getData: (type: string) => type === NOTEBOOK_FILE_MIME || type === 'text/plain' ? payload : '',
+      types: [NOTEBOOK_FILE_MIME],
+      dropEffect: 'copy',
+    };
+    const dock = container.querySelector('.chat-input-container')!;
+    fireEvent.dragEnter(dock, { dataTransfer });
+    fireEvent.dragOver(dock, { dataTransfer });
+    expect(getByTestId('composer-drop-overlay')).toBeTruthy();
+    fireEvent.drop(dock, { dataTransfer });
+    expect(queryByTestId('composer-drop-overlay')).toBeNull();
     expect(getByTestId('composer-chip-file')).toHaveTextContent('频率与概率');
     fireEvent.change(screen.getByRole('textbox'), { target: { value: '讲解' } });
     fireEvent.click(screen.getByTitle('发送'));

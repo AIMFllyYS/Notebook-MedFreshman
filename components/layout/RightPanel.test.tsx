@@ -2,6 +2,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { useStore } from "@/lib/stores/ui";
+import { useSettings } from "@/lib/hooks/useSettings";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/",
@@ -40,6 +41,7 @@ import RightPanel from "./RightPanel";
 describe("RightPanel layout flags", () => {
   beforeEach(() => {
     localStorage.clear();
+    useSettings.setState({ showRightPanelTabBar: true });
     useStore.setState({
       rightTab: "ai",
       rightTabs: ["ai", "video", "interactive", "browser"],
@@ -54,6 +56,14 @@ describe("RightPanel layout flags", () => {
     expect(screen.queryByRole("button", { name: "动画讲解" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "可交互" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "浏览器" })).not.toBeInTheDocument();
+  });
+
+  it("隐藏最顶部标签后不再渲染 AI 对话那一行和栏内收起按钮", () => {
+    useSettings.setState({ showRightPanelTabBar: false });
+    render(<RightPanel />);
+    expect(screen.queryByRole("button", { name: "AI 对话" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "动画讲解" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "收起右侧面板" })).not.toBeInTheDocument();
   });
 
   it("当前 tab 不在允许列表时回退到列表首项", async () => {

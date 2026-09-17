@@ -828,6 +828,144 @@ html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [d
   -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
+.mobile-review-hub {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 16px calc(20px + env(safe-area-inset-bottom, 0px));
+  background: var(--bg-app);
+}
+
+.mobile-review-hub-kicker {
+  margin: 0 0 4px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.mobile-review-hub-head h1 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 22px;
+  font-weight: 720;
+  line-height: 1.25;
+}
+
+.mobile-review-hub-head p {
+  margin: 8px 0 0;
+  max-width: 36ch;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.mobile-review-hub-head strong {
+  color: var(--ink);
+}
+
+.mobile-review-hub-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mobile-review-card {
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg-panel);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobile-review-card:active {
+  background: var(--bg-muted);
+}
+
+.mobile-review-card-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--accent-weak);
+  color: var(--accent-ink);
+}
+
+.mobile-review-card-copy {
+  min-width: 0;
+}
+
+.mobile-review-card-copy strong,
+.mobile-review-card-copy small {
+  display: block;
+}
+
+.mobile-review-card-copy strong {
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 680;
+}
+
+.mobile-review-card-copy small {
+  margin-top: 4px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.mobile-review-board-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent-weak);
+  color: var(--accent-ink);
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.mobile-settings-panel {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+/* 只压手机底栏「设置」，不改桌面右栏 Mac 窗宽。 */
+.mobile-settings-panel .chat-settings-workspace {
+  grid-template-columns: 58px minmax(0, 1fr);
+}
+.mobile-settings-panel .chat-settings-sidebar {
+  padding-inline: 7px;
+}
+.mobile-settings-panel .chat-settings-back span,
+.mobile-settings-panel .chat-settings-brand > span:last-child,
+.mobile-settings-panel .chat-settings-nav-item > span {
+  display: none;
+}
+.mobile-settings-panel .chat-settings-back,
+.mobile-settings-panel .chat-settings-brand,
+.mobile-settings-panel .chat-settings-nav-item {
+  justify-content: center;
+}
+.mobile-settings-panel .chat-settings-nav-item {
+  min-height: 44px;
+}
+
 /* Prevent pull-to-refresh / overscroll bounce on mobile shell */
 @media (max-width: 767px) {
   html, body {
@@ -837,6 +975,18 @@ html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [d
   /* Ensure touch targets are at least 44px */
   .mobile-bottom-nav button {
     min-height: 44px;
+  }
+
+  .mobile-browser-toolbar button,
+  .mobile-browser-toolbar a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .review-board-toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 12px;
   }
 
   /* Tighter scrollbar on mobile */

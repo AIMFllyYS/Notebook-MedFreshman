@@ -21,7 +21,10 @@ describe('ComposerCommandPanel', () => {
     );
     const panel = getByTestId('composer-command-panel');
     expect(panel.textContent).toMatch(/计划模式[\s\S]*特定工具[\s\S]*已导入 Skills/);
-    expect(getByRole('option', { name: /可交互 HTML/ }).querySelector('[data-composer-icon="renderInteractive"]')).toBeTruthy();
+    expect(panel.textContent).not.toMatch(/先输出|本轮必调|只读规划/);
+    expect(getByRole('option', { name: '可交互 HTML' }).querySelector('[data-composer-icon="renderInteractive"]')).toBeTruthy();
+    expect(getByRole('option', { name: '计划模式' }).querySelector('[data-composer-icon="plan"]')).toHaveAttribute('width', '12');
+    expect(getByRole('option', { name: '错题分析' }).querySelector('[data-composer-icon="skill"]')).toBeTruthy();
     fireEvent.click(getByRole('option', { name: /计划模式/ }));
     fireEvent.click(getByRole('option', { name: /长文/ }));
     fireEvent.click(getByRole('option', { name: /错题分析/ }));

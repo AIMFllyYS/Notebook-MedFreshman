@@ -52,6 +52,18 @@ describe('useImageAttachments documents', () => {
     expect(result.current.attachments).toHaveLength(0);
   });
 
+  it('endDrag clears a stuck dashed-box drag state', () => {
+    const { result } = renderHook(() => useImageAttachments());
+    act(() => {
+      result.current.handleDragEnter({ preventDefault() {} } as unknown as React.DragEvent);
+    });
+    expect(result.current.isDragging).toBe(true);
+    act(() => {
+      result.current.endDrag();
+    });
+    expect(result.current.isDragging).toBe(false);
+  });
+
   it('reads PDF attachments locally without making a network request', async () => {
     const network = vi.spyOn(globalThis, 'fetch');
     const { result } = renderHook(() => useImageAttachments());

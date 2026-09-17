@@ -50,17 +50,31 @@ const CONTENT: Record<SectionId, { title: string; description: string; body: Rea
   },
 };
 
-export default function ChatSettings({ onClose }: { onClose?: () => void }) {
+export default function ChatSettings({
+  onClose,
+  showBack = true,
+}: {
+  onClose?: () => void;
+  /** 手机底栏「设置」已是独立板块，不再显示返回对话。 */
+  showBack?: boolean;
+}) {
   const [active, setActive] = useState<SectionId>("general");
   const close = useCallback(() => onClose?.(), [onClose]);
-  useOverlayRegistration({ id: "chat-settings-workspace", open: true, onClose: close, priority: 50 });
+  useOverlayRegistration({
+    id: "chat-settings-workspace",
+    open: Boolean(onClose) && showBack,
+    onClose: close,
+    priority: 50,
+  });
   const content = CONTENT[active];
 
   return <div className="chat-settings-workspace" data-testid="chat-settings-workspace">
     <aside className="chat-settings-sidebar" aria-label="Agent 设置分类">
-      <button type="button" onClick={close} className="chat-settings-back" aria-label="返回对话">
-        <ArrowLeft size={15} /><span>返回对话</span>
-      </button>
+      {showBack ? (
+        <button type="button" onClick={close} className="chat-settings-back" aria-label="返回对话">
+          <ArrowLeft size={15} /><span>返回对话</span>
+        </button>
+      ) : null}
       <div className="chat-settings-brand">
         <span className="chat-settings-brand-icon"><Settings2 size={16} /></span>
         <span><strong>设置</strong><small>AI Agent</small></span>

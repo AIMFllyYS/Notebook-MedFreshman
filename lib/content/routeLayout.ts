@@ -25,6 +25,12 @@ export const HOME_ROUTE_LAYOUT: ResolvedRouteLayout = {
   rightTabs: HOME_RIGHT_TABS,
 };
 
+/** `/physiology/review` 这类科目复习板，不是三栏内容页。 */
+export function isSubjectReviewPath(pathname: string): boolean {
+  const parts = pathname.split("/").filter(Boolean);
+  return parts.length === 2 && parts[1] === "review";
+}
+
 /** 从 pathname 解析 /[subject]/[category]/[id]；科目或分类无效时视为非内容页。 */
 export function parseContentRoute(pathname: string): ParsedContentRoute | null {
   const segments = pathname.split("/").filter(Boolean);

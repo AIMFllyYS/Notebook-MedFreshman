@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { contentTree } from "@/lib/content-data";
-import type { AcademicYearId } from "@/lib/constants/academic-year";
+import { academicYearOfSubject, type AcademicYearId } from "@/lib/constants/academic-year";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useReviewCards } from "@/lib/stores/reviewCards";
 import {
@@ -13,6 +13,7 @@ import {
   matchUserNote,
   mergeBodyHits,
   type GlobalSearchHit,
+  type GlobalSearchSectionId,
 } from "@/lib/search/globalSearch";
 import { scanInChunks, yieldToMain } from "@/lib/search/progressiveScan";
 import { fetchSubjectBodyHits } from "@/lib/search/fetchSubjectBody";
@@ -20,20 +21,25 @@ import { fetchSubjectBodyHits } from "@/lib/search/fetchSubjectBody";
 const TITLE_LIMIT = 12;
 const BODY_LIMIT = 16;
 
-export function useProgressiveGlobalSearch(rawQuery: string, preferYear: AcademicYearId) {
+export function useProgressiveGlobalSearch(
+  rawQuery: string,
+  preferYear: AcademicYearId,
+  kind: GlobalSearchSectionId | null = null,
+) {
   const query = rawQuery.trim();
   const titleIndex = useMemo(() => buildGlobalSearchIndex(contentTree), []);
   const chapterHits = useMemo(
-    () => (query ? chapterHitsFromIndex(titleIndex, query, TITLE_LIMIT) : []),
-    [query, titleIndex],
+    () => (query && (!kind || kind === "body") ? chapterHitsFromIndex(titleIndex, query, TITLE_LIMIT) : []),
+    [kind, query, titleIndex],
   );
 
-  const notesById = useUserNotes((s) => s.byId);
   const notesOrder = useUserNotes((s) => s.order);
   const notesHydrated = useUserNotes((s) => s._hasHydrated);
-  const cardsById = useReviewCards((s) => s.byId);
   const cardsOrder = useReviewCards((s) => s.order);
   const cardsHydrated = useReviewCards((s) => s._hasHydrated);
+  const wantNotes = !kind || kind === "note";
+  const wantCards = !kind || kind === "flashcard";
+  const wantBody = !kind || kind === "body";
 
   const [noteHits, setNoteHits] = useState<GlobalSearchHit[]>([]);
   const [cardHits, setCardHits] = useState<GlobalSearchHit[]>([]);
@@ -50,45 +56,60 @@ export function useProgressiveGlobalSearch(rawQuery: string, preferYear: Academi
       await yieldToMain();
       if (ac.signal.aborted) return;
 
-      const notes = notesOrder.map((id) => notesById[id]).filter(Boolean);
-      if (notesHydrated && notes.length === 0) {
+      if (wantNotes) {
+        const notesState = useUserNotes.getState();
+        const notes = notesOrder.map((id) => notesState.byId[id]).filter(Boolean);
+        if (notesHydrated && notes.length === 0) {
+          setNoteHits([]);
+          setNotesScanning(false);
+        } else if (notesHydrated) {
+          setNotesScanning(true);
+          const hits = await scanInChunks(notes, (note) => matchUserNote(note, query), {
+            signal: ac.signal,
+            onProgress: setNoteHits,
+          });
+          if (ac.signal.aborted) return;
+          setNoteHits(hits);
+          setNotesScanning(false);
+        }
+      } else {
         setNoteHits([]);
-        setNotesScanning(false);
-      } else if (notesHydrated) {
-        setNotesScanning(true);
-        const hits = await scanInChunks(notes, (note) => matchUserNote(note, query), {
-          signal: ac.signal,
-          onProgress: setNoteHits,
-        });
-        if (ac.signal.aborted) return;
-        setNoteHits(hits);
         setNotesScanning(false);
       }
 
-      const cards = cardsOrder.map((id) => cardsById[id]).filter(Boolean);
-      if (cardsHydrated && cards.length === 0) {
+      if (wantCards) {
+        const cardsState = useReviewCards.getState();
+        const cards = cardsOrder.map((id) => cardsState.byId[id]).filter(Boolean);
+        if (cardsHydrated && cards.length === 0) {
+          setCardHits([]);
+          setCardsScanning(false);
+        } else if (cardsHydrated) {
+          setCardsScanning(true);
+          const hits = await scanInChunks(cards, (card) => matchFlashcard(card, query), {
+            signal: ac.signal,
+            onProgress: setCardHits,
+          });
+          if (ac.signal.aborted) return;
+          setCardHits(hits);
+          setCardsScanning(false);
+        }
+      } else {
         setCardHits([]);
-        setCardsScanning(false);
-      } else if (cardsHydrated) {
-        setCardsScanning(true);
-        const hits = await scanInChunks(cards, (card) => matchFlashcard(card, query), {
-          signal: ac.signal,
-          onProgress: setCardHits,
-        });
-        if (ac.signal.aborted) return;
-        setCardHits(hits);
         setCardsScanning(false);
       }
     })();
 
     return () => ac.abort();
-  }, [query, notesHydrated, notesById, notesOrder, cardsHydrated, cardsById, cardsOrder]);
+  }, [query, notesHydrated, notesOrder, cardsHydrated, cardsOrder, wantNotes, wantCards]);
 
   useEffect(() => {
-    if (!query) return;
+    if (!query || !wantBody) return;
 
     const ac = new AbortController();
     const shards = listBodySearchShards(contentTree, preferYear);
+    const preferredCount = preferYear
+      ? shards.filter((subjectId) => academicYearOfSubject(subjectId) === preferYear).length
+      : shards.length;
 
     void (async () => {
       await yieldToMain();
@@ -96,10 +117,11 @@ export function useProgressiveGlobalSearch(rawQuery: string, preferYear: Academi
       setBodyHits([]);
       setBodyLoading(true);
       const acc: GlobalSearchHit[] = [];
-      for (const subjectId of shards) {
+      for (let i = 0; i < shards.length; i++) {
         if (ac.signal.aborted) return;
+        if (i === preferredCount) await yieldToMain(120);
         try {
-          const hits = await fetchSubjectBodyHits(subjectId, query, ac.signal);
+          const hits = await fetchSubjectBodyHits(shards[i]!, query, ac.signal);
           if (ac.signal.aborted) return;
           acc.push(...hits);
           setBodyHits(acc.slice());
@@ -112,7 +134,7 @@ export function useProgressiveGlobalSearch(rawQuery: string, preferYear: Academi
     })();
 
     return () => ac.abort();
-  }, [query, preferYear]);
+  }, [query, preferYear, wantBody]);
 
   const bodySectionHits = useMemo(
     () => mergeBodyHits(chapterHits, bodyHits, BODY_LIMIT),
@@ -120,11 +142,11 @@ export function useProgressiveGlobalSearch(rawQuery: string, preferYear: Academi
   );
 
   return {
-    noteHits: query ? noteHits : [],
-    cardHits: query ? cardHits : [],
-    bodyHits: query ? bodySectionHits : [],
-    notesLoading: Boolean(query) && (!notesHydrated || notesScanning),
-    cardsLoading: Boolean(query) && (!cardsHydrated || cardsScanning),
-    bodyLoading: Boolean(query) && bodyLoading,
+    noteHits: query && wantNotes ? noteHits : [],
+    cardHits: query && wantCards ? cardHits : [],
+    bodyHits: query && wantBody ? bodySectionHits : [],
+    notesLoading: Boolean(query) && wantNotes && (!notesHydrated || notesScanning),
+    cardsLoading: Boolean(query) && wantCards && (!cardsHydrated || cardsScanning),
+    bodyLoading: Boolean(query) && wantBody && bodyLoading,
   };
 }

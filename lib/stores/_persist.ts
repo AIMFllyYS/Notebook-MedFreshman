@@ -1,5 +1,11 @@
 import { create, type StateCreator } from "zustand";
-import { persist, createJSONStorage, type PersistOptions } from "zustand/middleware";
+import {
+  persist,
+  createJSONStorage,
+  type PersistOptions,
+  type PersistStorage,
+  type StorageValue,
+} from "zustand/middleware";
 import { idbStorage } from "@/lib/storage/idbStorage";
 
 export type PersistedStoreOptions<T> = {
@@ -12,13 +18,29 @@ export type PersistedStoreOptions<T> = {
   onRehydrateStorage?: PersistOptions<T, unknown>["onRehydrateStorage"];
 };
 
+/** IDB persist：把 JSON.stringify 推迟到 800ms 防抖落盘，避免笔记/闪卡每次 set 都卡主线程。 */
+export function createLazyIdbJSONStorage<S>(): PersistStorage<S> {
+  return {
+    getItem: async (name) => {
+      const raw = await idbStorage.getItem(name);
+      return raw ? (JSON.parse(raw) as StorageValue<S>) : null;
+    },
+    setItem: (name, value) => {
+      idbStorage.setItemLazy(name, () => JSON.stringify(value));
+    },
+    removeItem: (name) => {
+      void idbStorage.removeItem(name);
+    },
+  };
+}
+
 export function createPersistedStore<T>(
   initializer: StateCreator<T>,
   opts: PersistedStoreOptions<T>,
 ) {
   const storage =
     opts.storage === "idb"
-      ? createJSONStorage(() => idbStorage)
+      ? createLazyIdbJSONStorage()
       : createJSONStorage(() => localStorage);
 
   return create<T>()(

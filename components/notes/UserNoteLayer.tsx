@@ -9,26 +9,28 @@ import ClassroomNoteWindow from "@/components/notes/ClassroomNoteWindow";
 import NoteLibraryWindow from "@/components/notes/NoteLibraryWindow";
 import { isClassroomNote } from "@/lib/notes/userNote";
 
+function OpenNoteWindow({ noteId }: { noteId: string }) {
+  const classroom = useUserNotes((s) => isClassroomNote(s.byId[noteId]));
+  return classroom ? <ClassroomNoteWindow noteId={noteId} /> : <UserNoteEditorWindow noteId={noteId} />;
+}
+
 // 个人笔记的浮窗层：N 个编辑器 + 单开的笔记库。与 RecordPreviewLayer 并列挂在 AppShell（桌面 + 移动）。
 export default function UserNoteLayer() {
   const openEditorIds = useUserNotes((s) => s.openEditorIds);
-  const notesById = useUserNotes((s) => s.byId);
   const libraryOpen = useUserNotes((s) => s.libraryOpen);
   const messagesById = useChatHistory((s) => s.messagesById);
 
   useEffect(() => {
-    applyUpdateUserNoteEvents(Object.values(messagesById).flat());
+    for (const messages of Object.values(messagesById)) {
+      if (messages.length) applyUpdateUserNoteEvents(messages);
+    }
   }, [messagesById]);
 
   return (
     <>
-      {openEditorIds.map((noteId) =>
-        isClassroomNote(notesById[noteId]) ? (
-          <ClassroomNoteWindow key={noteId} noteId={noteId} />
-        ) : (
-          <UserNoteEditorWindow key={noteId} noteId={noteId} />
-        ),
-      )}
+      {openEditorIds.map((noteId) => (
+        <OpenNoteWindow key={noteId} noteId={noteId} />
+      ))}
       {libraryOpen ? <NoteLibraryWindow /> : null}
     </>
   );

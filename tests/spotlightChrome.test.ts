@@ -31,7 +31,11 @@ test("global search and plus-menu URL field share one input class", () => {
   assert.match(filter, /按种类/);
   assert.match(filter, /按课程/);
   assert.match(filter, /className="app-menu-item"/);
+  assert.match(chrome, /SPOTLIGHT_SEARCH_FIELD_CLASS/);
+  assert.match(chrome, /rounded-xl/);
+  assert.match(search, /SPOTLIGHT_SEARCH_FIELD_CLASS/);
   assert.match(url, /SPOTLIGHT_INPUT_CLASS/);
+  assert.match(url, /SPOTLIGHT_SEARCH_FIELD_CLASS/);
   assert.doesNotMatch(url, /SpotlightDialog/);
   assert.match(taskbar, /OpenUrlField/);
   assert.doesNotMatch(taskbar, /urlOpen/);

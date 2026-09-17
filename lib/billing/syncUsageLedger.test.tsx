@@ -10,6 +10,7 @@ vi.mock("@/lib/storage/idbStorage", async (importOriginal) => {
     idbStorage: {
       getItem: vi.fn(async () => null),
       setItem: vi.fn(),
+      setItemLazy: vi.fn(),
       removeItem: vi.fn(async () => {}),
     },
   };

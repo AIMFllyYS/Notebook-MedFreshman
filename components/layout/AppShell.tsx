@@ -19,7 +19,7 @@ import { getSubject, getCategory, getContentItem } from "@/lib/content-data";
 import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
 import type { SubjectId } from "@/lib/types/content";
-import { resolveRouteLayout } from "@/lib/content/routeLayout";
+import { isSubjectReviewPath, resolveRouteLayout } from "@/lib/content/routeLayout";
 import type { ChatContext } from "@/lib/types/chat";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
@@ -27,6 +27,8 @@ import BrandLogo from "./BrandLogo";
 import MobileTopBar from "./MobileTopBar";
 import MobileBottomNav from "./MobileBottomNav";
 import MobileChapterPicker from "./MobileChapterPicker";
+import MobileReviewHub from "./MobileReviewHub";
+import MobileSettingsPanel from "./MobileSettingsPanel";
 import { ChatSkeleton, PageLoader } from "@/components/shared/ResizeLoader";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
 import GlobalSearchButton from "@/components/search/GlobalSearchButton";
@@ -35,26 +37,9 @@ import { formatShortcut } from "@/lib/keyboard/format";
 import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
-const FloatingChatLayer = dynamic(() => import("@/components/chat/FloatingChatLayer"), { ssr: false });
-const QuizExplainLayer = dynamic(() => import("@/components/quiz/QuizExplainLayer"), { ssr: false });
-const RecordPreviewLayer = dynamic(() => import("@/components/review/RecordPreviewLayer"), { ssr: false });
-const ArtifactViewer = dynamic(() => import("@/components/chat/ArtifactViewer"), { ssr: false });
-const ImageGenViewerLayer = dynamic(() => import("@/components/chat/ImageGenViewer"), { ssr: false });
-const DocumentViewerLayer = dynamic(() => import("@/components/chat/DocumentViewer"), { ssr: false });
-const NoteCitationViewer = dynamic(() => import("@/components/chat/NoteCitationViewer"), { ssr: false });
-const UserNoteLayer = dynamic(() => import("@/components/notes/UserNoteLayer"), { ssr: false });
-const FlashcardCiteWindow = dynamic(() => import("@/components/notes/FlashcardCiteWindow"), { ssr: false });
-const AgentProductPickerWindow = dynamic(() => import("@/components/notes/AgentProductPickerWindow"), { ssr: false });
-const MemoryInboxLayer = dynamic(() => import("@/components/memory/MemoryInboxLayer"), { ssr: false });
-const SourceTraceViewer = dynamic(() => import("@/components/chat/SourceTraceViewer"), { ssr: false });
-const SourcePreviewViewer = dynamic(() => import("@/components/chat/SourcePreviewViewer"), { ssr: false });
-const AttachmentPreviewViewer = dynamic(() => import("@/components/chat/AttachmentPreviewViewer"), { ssr: false });
-const MessageContextMenu = dynamic(() => import("@/components/shared/MessageContextMenu"), { ssr: false });
-const BillingDashboardLayer = dynamic(() => import("@/components/chat/BillingDashboard"), { ssr: false });
-const MembershipSponsorLayer = dynamic(() => import("@/components/chat/MembershipSponsorWindow"), { ssr: false });
+const DeferredWindowLayers = dynamic(() => import("@/components/window/DeferredWindowLayers"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
-const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
-const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
+const AgentSettingsOverlay = dynamic(() => import("@/components/chat/AgentSettingsOverlay"), { ssr: false });
 const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false });
 
 function TopBar({
@@ -261,6 +246,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     [activeSubjectId, activeCategoryId, activeItemId, academicYear],
   );
 
+  const isReviewRoute = isSubjectReviewPath(pathname);
+  const showLessonPane =
+    mobileTab === "detail" || (mobileTab === "review" && isReviewRoute);
+
   // ── Mobile layout ──────────────────────────────────────────
   if (isMobile) {
     return (
@@ -268,31 +257,31 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]" data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT}>
         <MobileTopBar />
 
-        <div className="min-h-0 flex-1 overflow-hidden">
-          <div className={clsx("h-full", mobileTab !== "detail" && "hidden")}>
+        <div className="relative min-h-0 flex-1 overflow-hidden">
+          <div className={clsx("absolute inset-0", !showLessonPane && "invisible pointer-events-none")}>
             {/* 被 ManagedWindow fullscreenTarget="notes" 用作全屏对齐目标，勿改 id */}
             <div id={NOTES_PANEL_ID} className="h-full">
               {children}
             </div>
           </div>
-          {mobileTab === "video" && (
-            <div className="h-full">
-              <VideoTab />
+          {mobileTab === "review" && !isReviewRoute && (
+            <div className="absolute inset-0">
+              <MobileReviewHub />
             </div>
           )}
           {mobileTab === "ai" && (
-            <div className="h-full">
+            <div className="absolute inset-0">
               <ChatPanel chatContext={chatContext} />
             </div>
           )}
-          {mobileTab === "interactive" && (
-            <div className="h-full">
-              <InteractiveTab />
+          {mobileTab === "browser" && (
+            <div className="absolute inset-0">
+              <BrowserTab />
             </div>
           )}
-          {mobileTab === "browser" && (
-            <div className="h-full">
-              <BrowserTab />
+          {mobileTab === "settings" && (
+            <div className="absolute inset-0">
+              <MobileSettingsPanel />
             </div>
           )}
         </div>
@@ -302,23 +291,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <AnimatePresence>
           <PipPlayer />
         </AnimatePresence>
-        <FloatingChatLayer />
-        <QuizExplainLayer />
-        <RecordPreviewLayer />
-        <ArtifactViewer />
-        <ImageGenViewerLayer />
-        <DocumentViewerLayer />
-        <NoteCitationViewer />
-        <UserNoteLayer />
-        <FlashcardCiteWindow />
-        <AgentProductPickerWindow />
-        <MemoryInboxLayer />
-        <SourceTraceViewer />
-        <SourcePreviewViewer />
-        <AttachmentPreviewViewer />
-        <MessageContextMenu />
-        <BillingDashboardLayer />
-        <MembershipSponsorLayer />
+        <DeferredWindowLayers />
+        <AgentSettingsOverlay />
       </div>
       </KeyboardShortcutProvider>
     );
@@ -428,23 +402,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <AnimatePresence>
         <PipPlayer />
       </AnimatePresence>
-      <FloatingChatLayer />
-      <QuizExplainLayer />
-      <RecordPreviewLayer />
-      <ArtifactViewer />
-      <ImageGenViewerLayer />
-      <DocumentViewerLayer />
-      <NoteCitationViewer />
-      <UserNoteLayer />
-      <FlashcardCiteWindow />
-      <AgentProductPickerWindow />
-      <MemoryInboxLayer />
-      <SourceTraceViewer />
-      <SourcePreviewViewer />
-      <AttachmentPreviewViewer />
-      <MessageContextMenu />
-      <BillingDashboardLayer />
-      <MembershipSponsorLayer />
+      <DeferredWindowLayers />
+      <AgentSettingsOverlay />
     </div>
     </KeyboardShortcutProvider>
   );

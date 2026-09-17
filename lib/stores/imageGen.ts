@@ -1,6 +1,7 @@
 import { PERSIST_KEYS } from "@/lib/storage/idbStorage";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 import { createPersistedStore } from "@/lib/stores/_persist";
+import { stripOpenIds } from "@/lib/stores/windowPersist";
 
 export type ImageGenStatus = "idle" | "loading" | "done" | "error";
 
@@ -178,6 +179,7 @@ export const useImageGen = createPersistedStore<ImageGenState>(
       storage: "idb",
       partialize: (s) => ({ sessions: s.sessions }),
       onRehydrateStorage: () => (state) => {
+        if (state) stripOpenIds(state);
         state?._setHasHydrated(true);
       },
     },

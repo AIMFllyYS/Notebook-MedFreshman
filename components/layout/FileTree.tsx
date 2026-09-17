@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import FileTreeItem from "./FileTreeItem";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
@@ -16,7 +17,7 @@ interface FileTreeProps {
   onItemSelect: (subjectId: string, categoryId: string, item: ContentItem) => void;
 }
 
-export default function FileTree({
+function FileTree({
   items,
   depth = 0,
   subjectId,
@@ -69,3 +70,5 @@ export default function FileTree({
     </div>
   );
 }
+
+export default memo(FileTree);

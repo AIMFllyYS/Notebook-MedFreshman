@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Link2 } from "lucide-react";
-import { SPOTLIGHT_INPUT_CLASS } from "@/components/search/spotlightChrome";
+import { SPOTLIGHT_INPUT_CLASS, SPOTLIGHT_SEARCH_FIELD_CLASS } from "@/components/search/spotlightChrome";
 import { openSourcePreview } from "@/lib/chat/openSourcePreview";
 
 export function parseOpenableUrl(raw: string): { href: string; hostname: string; isHtml: boolean } | null {
@@ -44,25 +44,27 @@ export default function OpenUrlField({ onOpened }: { onOpened?: () => void }) {
 
   return (
     <div role="group" aria-label="输入网址" data-menu-group="open-url">
-      <div className="flex items-center gap-1.5 px-1">
-        <Link2 size={14} className="shrink-0 text-[var(--md-sys-color-primary)]" />
-        <input
-          value={url}
-          onChange={(event) => {
-            setUrl(event.target.value);
-            setUrlError(null);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") addUrl();
-          }}
-          placeholder="输入网址…"
-          aria-label="网址"
-          className={SPOTLIGHT_INPUT_CLASS}
-        />
+      <div className="flex items-center gap-1.5">
+        <div className={`min-w-0 flex-1 ${SPOTLIGHT_SEARCH_FIELD_CLASS}`}>
+          <Link2 size={15} className="shrink-0 text-[var(--md-sys-color-primary)]" />
+          <input
+            value={url}
+            onChange={(event) => {
+              setUrl(event.target.value);
+              setUrlError(null);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") addUrl();
+            }}
+            placeholder="输入网址…"
+            aria-label="网址"
+            className={SPOTLIGHT_INPUT_CLASS}
+          />
+        </div>
         <button
           type="button"
           onClick={addUrl}
-          className="rounded-md bg-[var(--md-sys-color-primary)] px-2 py-1.5 text-[11px] font-medium text-[var(--md-sys-color-on-primary)]"
+          className="h-8 shrink-0 rounded-xl bg-[var(--md-sys-color-primary)] px-2.5 text-[12px] font-medium text-[var(--md-sys-color-on-primary)]"
         >
           打开
         </button>

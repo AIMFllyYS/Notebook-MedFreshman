@@ -7,10 +7,11 @@ describe('ChatPanelHeader native assistant glyphs', () => {
     const onOpenSettings = vi.fn();
     const onOpenHistory = vi.fn();
     const onNewChat = vi.fn();
-    const { container, getByText, getByTitle } = render(<ChatPanelHeader topic="细胞生物学" onOpenSettings={onOpenSettings}
+    const { container, getByText, getByTitle, queryByLabelText } = render(<ChatPanelHeader topic="细胞生物学" onOpenSettings={onOpenSettings}
       onOpenHistory={onOpenHistory} onNewChat={onNewChat} />);
     expect(getByText('AI 助教')).toBeTruthy();
     expect(getByText('细胞生物学')).toBeTruthy();
+    expect(queryByLabelText('收起右侧面板')).toBeNull();
     expect(container.querySelector('[data-agent-icon="loop"]')).not.toBeNull();
     expect(getByTitle('AI 设置').querySelector('[data-agent-icon="settings"]')).not.toBeNull();
     expect(getByTitle('历史记录').querySelector('[data-agent-icon="history"]')).not.toBeNull();
@@ -23,5 +24,15 @@ describe('ChatPanelHeader native assistant glyphs', () => {
     expect(onNewChat).toHaveBeenCalledOnce();
     expect(container.querySelector('.lucide')).toBeNull();
     for (const icon of container.querySelectorAll('svg')) expect(icon.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('moves the right-panel collapse action onto the assistant header when asked', () => {
+    const onCollapseRight = vi.fn();
+    const { getByLabelText, container } = render(<ChatPanelHeader topic="细胞生物学" onOpenSettings={vi.fn()}
+      onOpenHistory={vi.fn()} onNewChat={vi.fn()} onCollapseRight={onCollapseRight} />);
+    fireEvent.click(getByLabelText('收起右侧面板'));
+    expect(onCollapseRight).toHaveBeenCalledOnce();
+    expect(container.querySelector('[data-agent-icon="panel-close"]')).not.toBeNull();
+    expect(container.querySelector('.lucide')).toBeNull();
   });
 });

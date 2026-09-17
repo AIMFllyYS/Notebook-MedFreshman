@@ -13,7 +13,7 @@ import type { GlobalSearchHit } from "@/lib/search/globalSearch";
 import { openNoteEditor, openFlashcardCitePicker } from "@/lib/notes/openUserNote";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import SpotlightDialog from "@/components/search/SpotlightDialog";
-import { SPOTLIGHT_BODY_CLASS, SPOTLIGHT_INPUT_CLASS } from "@/components/search/spotlightChrome";
+import { SPOTLIGHT_BODY_CLASS, SPOTLIGHT_INPUT_CLASS, SPOTLIGHT_SEARCH_FIELD_CLASS } from "@/components/search/spotlightChrome";
 import GlobalSearchResults from "@/components/search/GlobalSearchResults";
 import GlobalSearchFilterMenu, {
   type GlobalSearchKindFilter,
@@ -32,7 +32,7 @@ export default function GlobalSearchButton() {
   const deferredQuery = useDeferredValue(query);
   const academicYear = useAcademicYear((s) => s.year);
   const { noteHits, cardHits, bodyHits, notesLoading, cardsLoading, bodyLoading } =
-    useProgressiveGlobalSearch(open ? deferredQuery : "", academicYear);
+    useProgressiveGlobalSearch(open ? deferredQuery : "", academicYear, kindFilter);
 
   useOverlayRegistration({
     id: "global-search",
@@ -75,7 +75,7 @@ export default function GlobalSearchButton() {
         type="button"
         onClick={() => setOpen(true)}
         title={searchEnabled ? `全局搜索 ${shortcutLabel}` : "全局搜索（快捷键已关闭）"}
-        className="group relative flex h-8 min-w-0 items-center gap-2 overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--line)_76%,var(--md-sys-color-primary)_24%)] bg-[linear-gradient(120deg,color-mix(in_srgb,var(--bg-elevated)_92%,var(--md-sys-color-primary)_8%),var(--bg-panel))] px-3 text-[13px] text-[var(--ink-soft)] shadow-sm transition-colors hover:border-[var(--md-sys-color-primary)] hover:text-[var(--ink)]"
+        className={`group ${SPOTLIGHT_SEARCH_FIELD_CLASS} transition-colors hover:border-[var(--md-sys-color-primary)] hover:text-[var(--ink)]`}
         style={{ opacity: searchEnabled ? 1 : 0.72 }}
       >
         <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.18),transparent)] transition-transform duration-700 group-hover:translate-x-full" />

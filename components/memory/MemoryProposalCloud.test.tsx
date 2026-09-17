@@ -10,7 +10,7 @@ describe("MemoryProposalCloud", () => {
       observe() {}
       disconnect() {}
     });
-    useMemoryInbox.setState({ byId: {}, order: [], appliedCommitIds: [] });
+    useMemoryInbox.setState({ byId: {}, order: [], appliedCommitIds: [], seenProposalIds: [] });
     useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
   });
 

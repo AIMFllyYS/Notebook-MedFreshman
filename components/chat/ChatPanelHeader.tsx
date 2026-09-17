@@ -1,13 +1,15 @@
 'use client';
 
 import React from 'react';
-import { AgentPlusIcon, AgentHistoryIcon, AgentSettingsIcon, AgentLoopIcon } from '@/components/icons/AgentIcons';
+import { AgentPlusIcon, AgentHistoryIcon, AgentSettingsIcon, AgentLoopIcon, AgentPanelCloseIcon } from '@/components/icons/AgentIcons';
 
 interface ChatPanelHeaderProps {
   topic: string;
   onOpenSettings: () => void;
   onOpenHistory: () => void;
   onNewChat: () => void;
+  /** 隐藏右侧栏顶部标签后，收起按钮改到这条中间导航。 */
+  onCollapseRight?: () => void;
 }
 
 const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({
@@ -15,6 +17,7 @@ const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({
   onOpenSettings,
   onOpenHistory,
   onNewChat,
+  onCollapseRight,
 }) => {
   return (
     <div className="chat-header">
@@ -36,6 +39,18 @@ const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({
           <AgentPlusIcon size={12} />
           <span className="chat-header-btn-text">新对话</span>
         </button>
+        {onCollapseRight && (
+          <button
+            type="button"
+            onClick={onCollapseRight}
+            title="收起右侧面板"
+            aria-label="收起右侧面板"
+            className="chat-header-btn"
+          >
+            <AgentPanelCloseIcon size={12} />
+            <span className="chat-header-btn-text">收起</span>
+          </button>
+        )}
       </div>
     </div>
   );

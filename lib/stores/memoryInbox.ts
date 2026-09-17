@@ -44,8 +44,11 @@ interface MemoryInboxState {
   byId: Record<string, MemoryProposal>;
   order: string[];
   appliedCommitIds: string[];
+  /** 已见过的提议（含刷新时从旧对话扫到的），避免再开云。 */
+  seenProposalIds: string[];
   ingestProposal: (event: MemoryProposalEvent) => void;
   ingestCommit: (event: MemoryCommitEvent) => void;
+  acknowledgeHistory: (proposals: MemoryProposalEvent[], commits: MemoryCommitEvent[]) => void;
   setDraft: (id: string, patch: { titleDraft?: string; modeDraft?: RecordMode }) => void;
   confirm: (id: string) => void;
   dismiss: (id: string) => void;
@@ -84,6 +87,14 @@ function sessionForMessage(messageId: string): { sessionId: string | null; messa
   }
   const sessionId = history.activeSessionId;
   return { sessionId, messages: sessionId ? history.messagesById[sessionId] ?? [] : [] };
+}
+
+function uniquePush(list: string[], ids: readonly string[]): string[] {
+  const next = [...list];
+  for (const id of ids) {
+    if (id && !next.includes(id)) next.push(id);
+  }
+  return next;
 }
 
 function emptyCommitError(kind: MemoryProposal["kind"]): string {
@@ -188,9 +199,18 @@ export const useMemoryInbox = create<MemoryInboxState>((set, get) => ({
   byId: {},
   order: [],
   appliedCommitIds: [],
+  seenProposalIds: [],
+
+  acknowledgeHistory: (proposals, commits) => {
+    set((s) => ({
+      seenProposalIds: uniquePush(s.seenProposalIds, proposals.map((item) => item.proposalId)),
+      appliedCommitIds: uniquePush(s.appliedCommitIds, commits.map((item) => item.toolCallId)),
+    }));
+  },
 
   ingestProposal: (event) => {
     const state = get();
+    if (state.seenProposalIds.includes(event.proposalId) || state.byId[event.proposalId]) return;
     if (!shouldAcceptProposal(liveKinds(state), event, Boolean(state.byId[event.proposalId]))) return;
     const proposal: MemoryProposal = {
       id: event.proposalId,
@@ -207,6 +227,7 @@ export const useMemoryInbox = create<MemoryInboxState>((set, get) => ({
     set((s) => ({
       byId: { ...s.byId, [proposal.id]: proposal },
       order: s.order.includes(proposal.id) ? s.order : [...s.order, proposal.id],
+      seenProposalIds: uniquePush(s.seenProposalIds, [proposal.id]),
     }));
     openCloud(proposal, get().order.length - 1);
   },
@@ -217,54 +238,48 @@ export const useMemoryInbox = create<MemoryInboxState>((set, get) => ({
       .order
       .map((id) => get().byId[id])
       .find((item) => item && item.status === "committing" && item.kind === event.kind);
+    if (!committing) {
+      set((s) => ({ appliedCommitIds: uniquePush(s.appliedCommitIds, [event.toolCallId]) }));
+      return;
+    }
 
     try {
       if (event.kind === "note" && event.notes) {
         const noteId = applyCommitNotes(event.notes);
-        if (committing) {
-          set((s) => ({
-            appliedCommitIds: [...s.appliedCommitIds, event.toolCallId],
-            byId: {
-              ...s.byId,
-              [committing.id]: {
-                ...committing,
-                status: "done",
-                commitToolCallId: event.toolCallId,
-                createdNoteId: noteId,
-              },
+        set((s) => ({
+          appliedCommitIds: uniquePush(s.appliedCommitIds, [event.toolCallId]),
+          byId: {
+            ...s.byId,
+            [committing.id]: {
+              ...committing,
+              status: "done",
+              commitToolCallId: event.toolCallId,
+              createdNoteId: noteId,
             },
-          }));
-        } else {
-          set((s) => ({ appliedCommitIds: [...s.appliedCommitIds, event.toolCallId] }));
-        }
+          },
+        }));
         return;
       }
       if (event.kind === "flashcard" && event.flashcards) {
         const cardIds = applyCommitFlashcards(event.flashcards);
-        if (committing) {
-          set((s) => ({
-            appliedCommitIds: [...s.appliedCommitIds, event.toolCallId],
-            byId: {
-              ...s.byId,
-              [committing.id]: {
-                ...committing,
-                status: "done",
-                commitToolCallId: event.toolCallId,
-                createdCardIds: cardIds,
-              },
+        set((s) => ({
+          appliedCommitIds: uniquePush(s.appliedCommitIds, [event.toolCallId]),
+          byId: {
+            ...s.byId,
+            [committing.id]: {
+              ...committing,
+              status: "done",
+              commitToolCallId: event.toolCallId,
+              createdCardIds: cardIds,
             },
-          }));
-        } else {
-          set((s) => ({ appliedCommitIds: [...s.appliedCommitIds, event.toolCallId] }));
-        }
+          },
+        }));
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : "写入失败";
-      if (committing) {
-        set((s) => ({
-          byId: { ...s.byId, [committing.id]: { ...committing, error: message } },
-        }));
-      }
+      set((s) => ({
+        byId: { ...s.byId, [committing.id]: { ...committing, error: message } },
+      }));
     }
   },
 
@@ -299,3 +314,30 @@ export const useMemoryInbox = create<MemoryInboxState>((set, get) => ({
     set((s) => ({ byId: { ...s.byId, [id]: { ...prev, status: "dismissed" } } }));
   },
 }));
+
+const acknowledgedSessionIds = new Set<string>();
+
+export function resetMemoryInboxSessionAcks(): void {
+  acknowledgedSessionIds.clear();
+}
+
+/**
+ * 每个会话第一次看到的 propose/commit 只记入已见集合，不弹云、不重写库。
+ * 之后该会话新增的工具事件才 ingest（当前轮对话）。
+ */
+export function syncMemoryInboxFromSessions(
+  messagesById: Record<string, ChatMessage[] | undefined>,
+): void {
+  const inbox = useMemoryInbox.getState();
+  for (const [sessionId, messages] of Object.entries(messagesById)) {
+    if (!messages) continue;
+    const { proposals, commits } = collectMemoryToolEvents(messages);
+    if (!acknowledgedSessionIds.has(sessionId)) {
+      inbox.acknowledgeHistory(proposals, commits);
+      acknowledgedSessionIds.add(sessionId);
+      continue;
+    }
+    for (const proposal of proposals) inbox.ingestProposal(proposal);
+    for (const commit of commits) inbox.ingestCommit(commit);
+  }
+}

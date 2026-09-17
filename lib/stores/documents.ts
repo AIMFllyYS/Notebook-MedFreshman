@@ -4,6 +4,7 @@ import { createPersistedStore } from "@/lib/stores/_persist";
 import type { DocumentSpec, DocumentSection, StoredDocument, DocumentStatus } from "@/lib/documents/types";
 import { assembleDocumentMarkdown } from "@/lib/documents/types";
 import { scheduleCloudTombstone, scheduleCloudUpsert } from "@/lib/sync/schedule";
+import { stripViewerId } from "@/lib/stores/windowPersist";
 
 interface DocumentsState {
   byId: Record<string, StoredDocument>;
@@ -141,6 +142,7 @@ export const useDocuments = createPersistedStore<DocumentsState>(
       storage: "idb",
       partialize: (s) => ({ byId: s.byId }),
       onRehydrateStorage: () => (state) => {
+        if (state) stripViewerId(state);
         state?._setHasHydrated(true);
       },
     },
