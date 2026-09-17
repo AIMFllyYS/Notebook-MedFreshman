@@ -125,6 +125,14 @@ describe("GlobalSettings", () => {
     expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toHaveTextContent("大一下学期");
   });
 
+  it("opens a small account window from the account card", async () => {
+    const user = userEvent.setup();
+    renderSettings();
+    await user.click(screen.getByRole("button", { name: "查看账户" }));
+    expect(screen.getByRole("dialog", { name: "账户信息" })).toBeInTheDocument();
+    expect(screen.getByText("只保存在这台设备")).toBeInTheDocument();
+  });
+
   it("page variant inlines dock settings without a close control", () => {
     render(<GlobalSettings variant="page" onClose={() => {}} />);
     expect(screen.getByTestId("global-settings-page")).toBeInTheDocument();

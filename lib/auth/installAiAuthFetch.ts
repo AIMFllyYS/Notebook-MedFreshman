@@ -1,6 +1,6 @@
 import { isPaidAiApiPath, normalizeApiPathname } from "./paidAiRoutes.ts";
 
-const ACCOUNT_PATHS = new Set(['/api/quota', '/api/usage', '/api/redeem']);
+const ACCOUNT_PATHS = new Set(['/api/quota', '/api/usage', '/api/redeem', '/api/profile']);
 
 /** Never attach our session token to third-party APIs, even when their path matches ours. */
 export function isAuthenticatedAppUrl(input: RequestInfo | URL, origin: string): boolean {

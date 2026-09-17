@@ -11,16 +11,17 @@ test('AI, quota, ledger and redemption all receive the current first-party token
     return new Response('ok');
   }, 'https://study.example');
   try {
-    for (const path of ['/api/chat', '/api/quota', '/api/usage', '/api/redeem']) await fetch(path);
+    for (const path of ['/api/chat', '/api/quota', '/api/usage', '/api/redeem', '/api/profile']) await fetch(path);
     token = 'refreshed';
     await fetch(new Request('https://study.example/api/chat', { headers: { 'x-test': 'preserved' } }));
     await fetch(new Request('https://study.example/api/chat', { headers: { authorization: 'Bearer explicit' } }));
-    assert.deepEqual(seen.map((item) => item.auth), ['Bearer initial', 'Bearer initial', 'Bearer initial', 'Bearer initial', 'Bearer refreshed', 'Bearer explicit']);
-    assert.equal(seen[4].extra, 'preserved');
+    assert.deepEqual(seen.map((item) => item.auth), ['Bearer initial', 'Bearer initial', 'Bearer initial', 'Bearer initial', 'Bearer initial', 'Bearer refreshed', 'Bearer explicit']);
+    assert.equal(seen[5].extra, 'preserved');
   } finally { restore(); }
 });
 test('matching third-party URLs and protocol-relative URLs never receive the app token', async () => {
   assert.equal(isAuthenticatedAppUrl('/api/quota?x=1', 'https://study.example'), true);
+  assert.equal(isAuthenticatedAppUrl('/api/profile', 'https://study.example'), true);
   for (const url of ['https://elsewhere.example/api/chat', '//elsewhere.example/api/quota', 'https://study.example.evil/api/chat', '/api/can-embed']) {
     assert.equal(isAuthenticatedAppUrl(url, 'https://study.example'), false);
   }

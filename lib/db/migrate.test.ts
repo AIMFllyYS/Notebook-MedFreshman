@@ -108,6 +108,11 @@ test("discoverMigrations reads repo baseline in version order", () => {
   assert.equal(findNonIdempotentStatements(files[4].sql).length, 0);
   assert.match(files[4].sql, /user-note/);
   assert.match(files[4].sql, /review-card/);
+  assert.equal(files[5].version, "0006");
+  assert.equal(files[5].filename, "0006_app_users_nickname.sql");
+  assert.equal(findNonIdempotentStatements(files[5].sql).length, 0);
+  assert.match(files[5].sql, /nickname/);
+  assert.match(files[5].sql, /update_own_nickname/);
 });
 
 test("0001_init.sql inventory covers tables indexes triggers policies grants", () => {
@@ -130,6 +135,7 @@ test("0001_init.sql inventory covers tables indexes triggers policies grants", (
     "quota_period_sum",
     "sync_documents_enforce_bytes",
     "touch_updated_at",
+    "update_own_nickname",
   ]);
   assert.ok(inventory.triggers.includes("sync_documents_byte_limits"));
   assert.ok(inventory.indexes.includes("quota_grants_user_period_idx"));

@@ -19,11 +19,12 @@ import {
   LogOut,
   GraduationCap,
 } from "lucide-react";
-import { LOGIN_PATH } from "@/lib/auth/session";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import { useStore } from "@/lib/stores/ui";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
 import UserAvatar from "./UserAvatar";
+import AccountDialog from "./AccountDialog";
+import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
 import { ACADEMIC_YEAR_LABELS } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { navTree } from "@/lib/content-data/nav";
@@ -155,7 +156,7 @@ function computePos(anchor: HTMLElement | null): PopoverPos {
   const margin = 8;
   const vw = typeof window !== "undefined" ? window.innerWidth : 1280;
   const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-  const width = Math.min(420, vw - margin * 2);
+  const width = Math.min(352, vw - margin * 2);
   if (!anchor) {
     return { left: margin, bottom: 48, width, maxHeight: vh - 64 };
   }
@@ -181,7 +182,7 @@ export default function GlobalSettings({
   variant = "popover",
 }: {
   onClose: () => void;
-  anchorRef?: React.RefObject<HTMLButtonElement | null>;
+  anchorRef?: React.RefObject<HTMLElement | null>;
   variant?: "popover" | "page";
 }) {
   const page = variant === "page";
@@ -193,9 +194,12 @@ export default function GlobalSettings({
   const resetAppearance = useTheme((s) => s.resetAppearance);
   const router = useRouter();
   const { status: authStatus, email: authEmail, signOut } = useAuthSession();
+  const account = useAccountProfile();
+  const openLoginOverlay = useStore((s) => s.openLoginOverlay);
 
   const [entries, setEntries] = useState<ProgressEntry[]>(() => getAllProgress());
   const [confirmClear, setConfirmClear] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [openSection, setOpenSection] = useState<"year" | "scores" | "keyboard" | "appearance" | null>(null);
   const openAgentSettings = useStore((s) => s.openAgentSettings);
   const academicYear = useAcademicYear((s) => s.year);
@@ -228,6 +232,7 @@ export default function GlobalSettings({
       const t = e.target as Node;
       if (panelRef.current?.contains(t)) return;
       if (anchorRef?.current?.contains(t)) return;
+      if (document.getElementById("studysolo-account-dialog")?.contains(t)) return;
       onClose();
     };
     document.addEventListener("mousedown", onDown);
@@ -286,15 +291,15 @@ export default function GlobalSettings({
     >
         {/* 头部 */}
         <div
-          className="flex shrink-0 items-center justify-between px-5 py-3.5"
+          className="flex shrink-0 items-center justify-between px-3.5 py-2.5"
           style={{
             borderBottom: "1px solid var(--md-sys-color-outline-variant)",
             background: "var(--md-sys-color-surface-container)",
           }}
         >
-          <div className="flex items-center gap-2">
-            <Settings size={16} className="text-[var(--md-sys-color-primary)]" />
-            <span className="text-[14px] font-bold text-[var(--md-sys-color-on-surface)]">设置</span>
+          <div className="flex items-center gap-1.5">
+            <Settings size={14} className="text-[var(--md-sys-color-primary)]" />
+            <span className="text-[13px] font-bold text-[var(--md-sys-color-on-surface)]">设置</span>
           </div>
           {page ? null : (
           <button
@@ -307,26 +312,35 @@ export default function GlobalSettings({
           )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
+        <div className="flex flex-1 flex-col gap-2.5 overflow-y-auto p-3">
           <div
-            className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container)] px-3.5 py-2.5"
+            data-testid="account-card"
+            className="flex items-center justify-between gap-2.5 rounded-[14px] bg-[var(--md-sys-color-surface-container)] px-3 py-2"
             style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
           >
-            <div className="flex min-w-0 items-center gap-3">
+            <button
+              type="button"
+              className="flex min-w-0 flex-1 items-center gap-2.5 text-left"
+              style={{ background: "transparent", border: "none", cursor: "pointer" }}
+              onClick={() => setAccountOpen(true)}
+              aria-label="查看账户"
+            >
               <UserAvatar
-                email={authEmail}
+                name={account.nickname}
+                email={account.email ?? authEmail}
+                imageSrc={account.avatarSrc}
                 signedIn={authStatus === "signedIn"}
-                size={40}
+                size={34}
               />
               <div className="min-w-0">
-                <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">
-                  {authStatus === "signedIn" ? (authEmail?.split("@")[0] || "已登录") : "访客"}
+                <div className="truncate text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
+                  {account.nickname}
                 </div>
                 <div className="truncate text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                  {authStatus === "signedIn" ? authEmail || "已登录" : "未登录"}
+                  {account.membership}
                 </div>
               </div>
-            </div>
+            </button>
             {authStatus === "signedIn" ? (
               <button
                 type="button"
@@ -348,7 +362,7 @@ export default function GlobalSettings({
                 type="button"
                 aria-label="登录"
                 onClick={() => {
-                  router.push(LOGIN_PATH);
+                  openLoginOverlay();
                   onClose();
                 }}
                 className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
@@ -555,7 +569,23 @@ export default function GlobalSettings({
     </motion.div>
   );
 
-  if (page) return node;
+  const accountDialog = accountOpen ? (
+    <AccountDialog onClose={() => setAccountOpen(false)} />
+  ) : null;
+
+  if (page) {
+    return (
+      <>
+        {node}
+        {accountDialog}
+      </>
+    );
+  }
   if (typeof document === "undefined") return null;
-  return createPortal(node, document.body);
+  return (
+    <>
+      {createPortal(node, document.body)}
+      {accountDialog}
+    </>
+  );
 }

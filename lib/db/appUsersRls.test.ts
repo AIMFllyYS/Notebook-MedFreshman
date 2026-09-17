@@ -66,3 +66,11 @@ test("0002 migration file is tracked next to 0001", () => {
   const sql = readFileSync(join(process.cwd(), "supabase/migrations/0002_app_users_no_client_update.sql"), "utf8");
   assert.match(sql, /app_users_update_own/);
 });
+
+test("0006 adds nickname RPC without reopening generic app_users writes", () => {
+  const sql = readFileSync(join(process.cwd(), "supabase/migrations/0006_app_users_nickname.sql"), "utf8");
+  assert.match(sql, /add column if not exists nickname/);
+  assert.match(sql, /update_own_nickname/);
+  assert.doesNotMatch(sql, /create policy/);
+  assert.doesNotMatch(sql, /avatar/);
+});
