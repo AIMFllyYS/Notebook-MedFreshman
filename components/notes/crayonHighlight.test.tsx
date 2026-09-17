@@ -26,7 +26,7 @@ describe("wrapRange", () => {
     range.setStart(last, 3);
     range.setEnd(last, 6);
     const marks = wrapRange(range);
-    expect(marks.map((mark) => mark.textContent).join("")).toBe("句线");
+    expect(marks.map((mark) => mark.textContent).join("")).toBe("线粒体");
     marks.forEach(unwrapMark);
     expect(root.textContent?.endsWith("目标句线粒体")).toBe(true);
     root.remove();
