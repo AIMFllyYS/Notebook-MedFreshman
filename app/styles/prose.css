@@ -2191,11 +2191,11 @@
 .chat-settings-workspace[data-nav="top"] .chat-settings-sidebar {
   flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   padding: 8px 10px;
   border-right: none;
   border-bottom: 1px solid var(--md-sys-color-outline-variant);
-  overflow: hidden;
+  overflow-x: auto;
 }
 .chat-settings-workspace[data-nav="top"] .chat-settings-brand {
   display: none;
@@ -2223,6 +2223,9 @@
 }
 .chat-settings-workspace[data-nav="top"] .chat-settings-back {
   flex: none;
+}
+.chat-settings-workspace[data-nav="top"] .chat-settings-back span {
+  display: none;
 }
 
 /* 页面正中的登录层：和设置 overlay 同款，不是 ManagedWindow。 */

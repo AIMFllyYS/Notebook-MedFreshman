@@ -85,4 +85,17 @@ describe("MobileChapterPicker", () => {
     fireEvent.click(screen.getByRole("button", { name: "关闭" }));
     expect(useStore.getState().mobileChapterPickerOpen).toBe(false);
   });
+
+  it("portals the sheet onto document.body so the shell cannot clip it", () => {
+    render(
+      <div data-testid="fake-shell" style={{ overflow: "hidden", transform: "translateX(0)" }}>
+        <MobileChapterPicker />
+      </div>,
+    );
+    const picker = screen.getByTestId("mobile-chapter-picker");
+    const backdrop = screen.getByTestId("mobile-chapter-backdrop");
+    expect(picker.parentElement).toBe(document.body);
+    expect(backdrop.parentElement).toBe(document.body);
+    expect(screen.getByTestId("fake-shell")).not.toContainElement(picker);
+  });
 });
