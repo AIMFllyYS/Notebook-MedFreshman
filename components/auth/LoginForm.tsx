@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties, type FormEvent } from "react";
+import { useState, type CSSProperties, type FormEvent } from "react";
 import { LogOut, X } from "lucide-react";
 import BrandLogo from "@/components/layout/BrandLogo";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
@@ -62,13 +62,10 @@ export default function LoginForm({ onClose }: { onClose?: () => void }) {
 
   const signedIn = status === "signedIn" && !needsNewPassword;
   const displayEmail = sessionEmail ?? email;
-
-  useEffect(() => {
-    if (needsNewPassword) {
-      setMode("login");
-      setPhase("form");
-    }
-  }, [needsNewPassword]);
+  if (needsNewPassword && (mode !== "login" || phase !== "form")) {
+    setMode("login");
+    setPhase("form");
+  }
 
   async function sendMail(intent: MailIntent) {
     setError(null);

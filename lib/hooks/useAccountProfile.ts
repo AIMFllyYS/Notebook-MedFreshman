@@ -12,28 +12,29 @@ export function useAccountProfile() {
   const avatarSrc = useUserProfile((s) => (userId ? s.avatars[userId] ?? null : null));
   const cachedNickname = useUserProfile((s) => (userId ? s.nicknames[userId] ?? null : null));
   const cacheNickname = useUserProfile((s) => s.cacheNickname);
-  const [membership, setMembership] = useState(status === "signedIn" ? "免费会员" : "未登录");
+  const [remoteMembership, setRemoteMembership] = useState<{ id: string; label: string } | null>(null);
 
   const nickname = status === "signedIn" ? resolveNickname(cachedNickname, email) : "访客";
+  const membership = !userId
+    ? "未登录"
+    : remoteMembership?.id === userId
+      ? remoteMembership.label
+      : "免费会员";
 
   useEffect(() => {
-    if (!userId) {
-      setMembership("未登录");
-      return;
-    }
+    if (!userId) return;
     let cancelled = false;
-    setMembership("免费会员");
     void fetchAccountProfile()
       .then((profile) => {
         if (cancelled || profile.userId !== userId) return;
         cacheNickname(userId, profile.nickname);
-        setMembership(profile.membership);
+        setRemoteMembership({ id: userId, label: profile.membership });
       })
       .catch(() => {
         if (!cancelled) {
           void fetchQuota(userId)
             .then((quota) => {
-              if (!cancelled) setMembership(membershipLabel(quota.tier));
+              if (!cancelled) setRemoteMembership({ id: userId, label: membershipLabel(quota.tier) });
             })
             .catch(() => {});
         }

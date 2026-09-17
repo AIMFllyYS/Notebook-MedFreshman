@@ -28,16 +28,17 @@ export default function AccountDialog({
   const titleId = useId();
   const fileRef = useRef<HTMLInputElement>(null);
   const [draftName, setDraftName] = useState(nickname);
+  const [syncedName, setSyncedName] = useState(nickname);
   const [hasPassword, setHasPassword] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState<"name" | "avatar" | "password" | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
+  if (nickname !== syncedName) {
+    setSyncedName(nickname);
     setDraftName(nickname);
-  }, [nickname]);
+  }
 
   useEffect(() => {
     const client = tryGetBrowserAuthClient() as PasswordAuthClient | null;

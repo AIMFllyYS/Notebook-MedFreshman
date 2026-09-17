@@ -110,7 +110,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const lastInsetRef = useRef<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const plusRef = useRef<HTMLButtonElement>(null);
-  const paletteIgnoreRefs = useRef([plusRef]);
   const { quotedText, clearQuotedText } = useChatUI();
   const skills = useSkills((s) => s.skills);
   const settingsSnapshot = useSettings();
@@ -639,7 +638,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       <ComposerPalette
         open={palette !== null}
         anchorRef={palette === "slash" && paletteAnchor === "plus" ? plusRef : textareaRef}
-        ignoreRefs={paletteIgnoreRefs.current}
+        ignoreRefs={[plusRef]}
         label={palette === "hash" ? "引用笔记" : "对话命令"}
         onClose={closePalette}
       >
