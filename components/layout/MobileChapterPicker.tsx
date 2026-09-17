@@ -75,9 +75,10 @@ export default function MobileChapterPicker() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[80] bg-black/40"
+            className="fixed inset-0 z-50 bg-black/40"
             data-testid="mobile-chapter-backdrop"
             onClick={() => close(false)}
+            style={{ zIndex: 80 }}
           />
 
           {/* Sheet */}
@@ -100,8 +101,8 @@ export default function MobileChapterPicker() {
             onDragEnd={(_, info) => {
               if (info.offset.y > 100 || info.velocity.y > 500) close(false);
             }}
-            className="fixed inset-x-0 bottom-0 z-[80] flex max-h-[85dvh] flex-col rounded-t-2xl bg-[var(--bg-panel)] shadow-lg"
-            style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+            className="fixed inset-x-0 bottom-0 z-50 flex max-h-[85dvh] flex-col rounded-t-2xl bg-[var(--bg-panel)] shadow-lg"
+            style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)", zIndex: 80 }}
           >
             {/* Drag handle */}
             <div className="flex shrink-0 items-center justify-center py-2">
