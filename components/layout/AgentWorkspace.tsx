@@ -1,18 +1,16 @@
 "use client";
 
 import { useMemo } from "react";
-import dynamic from "next/dynamic";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { PanelLeftOpen, PanelRightOpen } from "lucide-react";
 import AgentConversationSidebar from "./AgentConversationSidebar";
 import RightPanel from "./RightPanel";
+import ChatPanel from "@/components/chat/ChatPanel";
 import { NOTES_PANEL_ID, RIGHT_PANEL_ID } from "@/lib/constants/layout";
 import { useAcademicYear } from "@/lib/stores/academicYear";
 import { useStore } from "@/lib/stores/ui";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import type { ChatContext } from "@/lib/types/chat";
-
-const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
 
 /**
  * Agent 工作区。中间复用 ChatPanel；左右槽位接对话栏与右侧窗坞。

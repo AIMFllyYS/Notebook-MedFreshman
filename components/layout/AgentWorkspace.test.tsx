@@ -23,15 +23,6 @@ vi.mock("@/components/chat/ChatPanel", () => ({
   ),
 }));
 
-vi.mock("next/dynamic", () => ({
-  default: (loader: () => Promise<{ default: unknown }>) => {
-    void loader();
-    return ({ chatContext }: { chatContext: { subjectId: string } }) => (
-      <div data-testid="chat-panel-entry">{chatContext.subjectId}</div>
-    );
-  },
-}));
-
 describe("AgentWorkspace", () => {
   afterEach(() => {
     cleanup();
