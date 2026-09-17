@@ -15,7 +15,7 @@ describe("LoginPage", () => {
     push.mockClear();
   });
 
-  it("renders a centered StudySolo overlay without waiting for AppShell", () => {
+  it("renders a centered StudySolo overlay on the first paint", () => {
     render(<LoginPage />);
     const dialog = screen.getByRole("dialog", { name: "登录 StudySolo" });
     expect(dialog).toHaveClass("login-dialog");
