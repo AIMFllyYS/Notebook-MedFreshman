@@ -17,11 +17,15 @@ import {
   SlidersHorizontal,
   LogIn,
   LogOut,
+  GraduationCap,
 } from "lucide-react";
 import { LOGIN_PATH } from "@/lib/auth/session";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import { useStore } from "@/lib/stores/ui";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
+import UserAvatar from "./UserAvatar";
+import { ACADEMIC_YEAR_LABELS } from "@/lib/constants/academic-year";
+import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { navTree } from "@/lib/content-data/nav";
 import SubjectIcon from "@/components/shared/SubjectIcon";
 import { useTheme } from "@/lib/hooks/useTheme";
@@ -189,12 +193,13 @@ export default function GlobalSettings({
 
   const [entries, setEntries] = useState<ProgressEntry[]>(() => getAllProgress());
   const [confirmClear, setConfirmClear] = useState(false);
-  const [openSection, setOpenSection] = useState<"scores" | "keyboard" | "appearance" | null>(null);
+  const [openSection, setOpenSection] = useState<"year" | "scores" | "keyboard" | "appearance" | null>(null);
   const openAgentSettings = useStore((s) => s.openAgentSettings);
+  const academicYear = useAcademicYear((s) => s.year);
   const [pos, setPos] = useState<PopoverPos>(() => computePos(null));
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const toggleSection = useCallback((id: "scores" | "keyboard" | "appearance") => {
+  const toggleSection = useCallback((id: "year" | "scores" | "keyboard" | "appearance") => {
     setOpenSection((prev) => (prev === id ? null : id));
   }, []);
 
@@ -289,10 +294,19 @@ export default function GlobalSettings({
             className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container)] px-3.5 py-2.5"
             style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
           >
-            <div className="min-w-0">
-              <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">账号</div>
-              <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                {authStatus === "signedIn" ? authEmail || "已登录" : "未登录"}
+            <div className="flex min-w-0 items-center gap-3">
+              <UserAvatar
+                email={authEmail}
+                signedIn={authStatus === "signedIn"}
+                size={40}
+              />
+              <div className="min-w-0">
+                <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">
+                  {authStatus === "signedIn" ? (authEmail?.split("@")[0] || "已登录") : "访客"}
+                </div>
+                <div className="truncate text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                  {authStatus === "signedIn" ? authEmail || "已登录" : "未登录"}
+                </div>
               </div>
             </div>
             {authStatus === "signedIn" ? (
@@ -333,7 +347,15 @@ export default function GlobalSettings({
             )}
           </div>
 
-          <AcademicYearSwitcher />
+          <SettingsSection
+            title="年级 / 学期"
+            icon={<GraduationCap size={16} />}
+            open={openSection === "year"}
+            onToggle={() => toggleSection("year")}
+            summary={ACADEMIC_YEAR_LABELS[academicYear]}
+          >
+            <AcademicYearSwitcher />
+          </SettingsSection>
 
           <SettingsSection
             title="成绩"
