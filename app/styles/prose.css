@@ -1399,11 +1399,19 @@
   box-shadow: 0 4px 18px rgb(0 0 0 / 0.06);
   transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
 }
+.chat-input-drop-overlay {
+  position: absolute;
+  inset: 0;
+  border: 2px dashed var(--md-sys-color-primary);
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 3;
+}
 .chat-input-editor-row {
   position: relative;
   display: flex;
   min-width: 0;
-  align-items: flex-end;
+  align-items: center;
   gap: 6px;
 }
 .chat-input-plus {
@@ -1456,6 +1464,14 @@
 .composer-chip-tool { background: color-mix(in srgb, var(--md-sys-color-primary) 12%, var(--md-sys-color-surface)); }
 .composer-chip-file { background: color-mix(in srgb, var(--md-sys-color-tertiary) 12%, var(--md-sys-color-surface)); }
 .composer-palette { overflow: auto; }
+.composer-command-panel .app-menu-item {
+  gap: 12px;
+  font-size: 13.5px;
+}
+.composer-command-panel .app-menu-check {
+  width: 12px;
+  height: 12px;
+}
 .composer-command-on {
   margin-left: auto;
   color: var(--md-sys-color-primary);
@@ -1475,10 +1491,10 @@
   background: transparent;
   color: var(--md-sys-color-on-surface);
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 20px;
   font-family: inherit;
   outline: none;
-  min-height: 36px;
+  min-height: 32px;
   max-height: 120px;
   margin: 0;
 }

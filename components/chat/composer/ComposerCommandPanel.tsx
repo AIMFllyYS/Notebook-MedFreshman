@@ -8,15 +8,7 @@ import {
   type ForcedComposerTool,
   skillForcedTool,
 } from "@/lib/chat/composerIntent";
-import { ForcedToolIcon, PlanModeIcon } from "./ComposerIcons";
-
-const TOOL_HINTS: Record<ForcedComposerTool, string> = {
-  generateImage: "本轮必调生图，仍可检索",
-  renderInteractive: "本轮必调可交互 HTML",
-  writeDocument: "本轮必调长文",
-  flashcards: "本轮必沉淀闪卡",
-  notes: "本轮必整理笔记",
-};
+import { ForcedToolIcon, PlanModeIcon, SkillIcon } from "./ComposerIcons";
 
 export type ComposerCommandId = "plan" | ComposerForcedTool;
 
@@ -80,7 +72,7 @@ export default function ComposerCommandPanel({
           onClick={onSelectPlan}
         >
           <span className="app-menu-check"><PlanModeIcon /></span>
-          <span>计划模式<small>只读规划，先输出计划文档</small></span>
+          <span>计划模式</span>
           {planMode ? <span className="composer-command-on">已开</span> : null}
         </button>
       )}
@@ -98,7 +90,7 @@ export default function ComposerCommandPanel({
             onClick={() => onSelectTool(tool)}
           >
             <span className="app-menu-check"><ForcedToolIcon tool={tool} /></span>
-            <span>{FORCED_TOOL_LABELS[tool]}<small>{TOOL_HINTS[tool]}</small></span>
+            <span>{FORCED_TOOL_LABELS[tool]}</span>
             {forcedTool === tool ? <span className="composer-command-on">已选</span> : null}
           </button>
         );
@@ -114,10 +106,8 @@ export default function ComposerCommandPanel({
           className="app-menu-item"
           onClick={() => onSelectSkill(item.skill!)}
         >
-          <span>
-            {item.skill!.name}
-            {item.skill!.description ? <small>{item.skill!.description}</small> : null}
-          </span>
+          <span className="app-menu-check"><SkillIcon /></span>
+          <span>{item.skill!.name}</span>
           {forcedTool === skillForcedTool(item.skill!.id) ? <span className="composer-command-on">已选</span> : null}
         </button>
       ))}

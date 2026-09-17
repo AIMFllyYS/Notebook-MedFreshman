@@ -48,6 +48,8 @@ export interface UseImageAttachmentsResult {
   handleDragLeave: (e: React.DragEvent) => void;
   /** 是否正在拖拽图片（用于 UI 高亮）。 */
   isDragging: boolean;
+  /** 放下或拖离后立刻清掉虚线框，避免挡住输入。 */
+  endDrag: () => void;
   /** 错误信息（3 秒后自动清除）。 */
   error: string | null;
   /** 非阻断提示，例如长文本已自动转换为 TXT。 */
@@ -158,11 +160,15 @@ export function useImageAttachments(): UseImageAttachmentsResult {
     [addFiles],
   );
 
+  const endDrag = useCallback(() => {
+    dragCounter.current = 0;
+    setIsDragging(false);
+  }, []);
+
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
-      dragCounter.current = 0;
-      setIsDragging(false);
+      endDrag();
       const files = getSupportedFilesFromDragEvent(e);
       if (files.length > 0) {
         void addFiles(files);
@@ -193,7 +199,7 @@ export function useImageAttachments(): UseImageAttachmentsResult {
         }
       })();
     },
-    [addFiles, checkVisionSupport],
+    [addFiles, checkVisionSupport, endDrag],
   );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -231,6 +237,7 @@ export function useImageAttachments(): UseImageAttachmentsResult {
     handleDragEnter,
     handleDragLeave,
     isDragging,
+    endDrag,
     error,
     info,
     clearError,

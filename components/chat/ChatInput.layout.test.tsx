@@ -22,7 +22,7 @@ vi.mock('@/lib/hooks/useImageAttachments', () => ({ useImageAttachments: () => (
   addFiles: callbacks.addFiles, remove: callbacks.remove, clear: callbacks.clearAttachments,
   toChatFormat: () => callbacks.attachment ? [{ type: 'image', mimeType: 'image/png', base64: 'data:image/png;base64,eA==' }] : [],
   handlePaste: callbacks.paste, handleDrop: callbacks.drop, handleDragOver: vi.fn(), handleDragEnter: vi.fn(), handleDragLeave: vi.fn(),
-  isDragging: false, error: null,
+  isDragging: false, endDrag: vi.fn(), error: null,
 }) }));
 
 const context = { subjectId: 'physics', categoryId: 'textbook', itemId: '1', currentTopic: '力学' };
@@ -129,6 +129,10 @@ describe('floating transparent composer', () => {
     expect(rule('.chat-input-toolbar-group')).toContain('flex-wrap: wrap');
     expect(rule('.chat-input-toolbar-group')).toContain('min-width: 0');
     expect(rule('.chat-input-textarea')).toContain('min-width: 0');
+    expect(rule('.chat-input-textarea')).toContain('min-height: 32px');
+    expect(rule('.chat-input-textarea')).toContain('line-height: 20px');
+    expect(rule('.chat-input-editor-row')).toContain('align-items: center');
+    expect(rule('.chat-input-drop-overlay')).toContain('pointer-events: none');
     expect(css).toContain('@container chat-composer (max-width: 320px)');
     expect(css).toContain('@container chat-composer (max-width: 430px)');
     expect(rule('.chat-input-more')).toContain('opacity: 0');

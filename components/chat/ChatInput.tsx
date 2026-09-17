@@ -151,9 +151,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     handleDragEnter,
     handleDragLeave,
     isDragging,
+    endDrag,
     error: attachError,
     info: attachInfo,
   } = useImageAttachments();
+  const [fileDragOver, setFileDragOver] = useState(false);
+  const showDropOverlay = isDragging || fileDragOver;
 
   useEffect(() => {
     const el = textareaRef.current;
@@ -382,6 +385,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
       ref={composerRef}
       className="chat-input-container"
       onDrop={(event) => {
+        setFileDragOver(false);
+        endDrag();
         const files = readNotebookFileDrag(event.dataTransfer);
         if (files.length > 0) {
           event.preventDefault();
@@ -395,18 +400,30 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
         if (hasNotebookFileDrag(event.dataTransfer)) {
           event.preventDefault();
           event.dataTransfer.dropEffect = "copy";
+          setFileDragOver(true);
           return;
         }
         handleDragOver(event);
       }}
-      onDragEnter={handleDragEnter}
-      onDragLeave={handleDragLeave}
-      style={isDragging ? {
-        outline: '2px dashed var(--md-sys-color-primary)',
-        outlineOffset: '-4px',
-        borderRadius: '12px',
-      } : undefined}
+      onDragEnter={(event) => {
+        if (hasNotebookFileDrag(event.dataTransfer)) {
+          event.preventDefault();
+          setFileDragOver(true);
+        }
+        handleDragEnter(event);
+      }}
+      onDragLeave={(event) => {
+        const next = event.relatedTarget as Node | null;
+        if (next && composerRef.current?.contains(next)) {
+          handleDragLeave(event);
+          return;
+        }
+        setFileDragOver(false);
+        endDrag();
+        handleDragLeave(event);
+      }}
     >
+      {showDropOverlay ? <div className="chat-input-drop-overlay" data-testid="composer-drop-overlay" aria-hidden="true" /> : null}
       {notice}
       {attachError && (
         <div style={{
@@ -572,7 +589,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           onPaste={handlePaste}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholder={externalDisabled ? (disabledReason || '输入已禁用') : isLoading ? '继续输入，发送后将排队…' : '输入问题，# 引用笔记，/ 计划或工具…'}
+          placeholder={externalDisabled ? (disabledReason || '输入已禁用') : isLoading ? '继续输入，发送后将排队…' : '输入问题、引用笔记、计划或工具'}
           disabled={inputDisabled}
           rows={1}
           className="chat-input-textarea"
