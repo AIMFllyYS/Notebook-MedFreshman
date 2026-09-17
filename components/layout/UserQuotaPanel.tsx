@@ -37,7 +37,7 @@ export default function UserQuotaPanel({
   onClose: () => void;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
-  const [pos, setPos] = useState(() => computePos(anchorRef.current));
+  const [pos, setPos] = useState(() => computePos(null));
 
   useLayoutEffect(() => {
     const place = () => setPos(computePos(anchorRef.current));
