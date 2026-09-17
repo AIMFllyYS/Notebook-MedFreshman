@@ -30,8 +30,8 @@ test("composer command icons copy the minimized-window thumbnail chrome", () => 
   assert.match(taskbar, /rounded-lg border[\s\S]*shadow-sm/);
   assert.match(taskbar, /border-\[color-mix\(in_srgb,var\(--line\)_88%,var\(--md-sys-color-primary\)_12%\)\]/);
   assert.match(css, /\.composer-tool-thumb \{[\s\S]*?border-radius:\s*6px;/);
-  assert.match(css, /border:\s*1px solid color-mix\(in srgb, var\(--line\) 88%, var\(--md-sys-color-primary\) 12%\)/);
-  assert.match(css, /\.composer-command-panel \.app-menu-check \{[\s\S]*?width:\s*20px;/);
+  assert.match(css, /border:\s*1px solid color-mix\(in srgb, var\(--line\) 82%, var\(--md-sys-color-primary\) 18%\)/);
+  assert.match(css, /\.composer-command-panel \.app-menu-check \{[\s\S]*?width:\s*22px;/);
 
   assert.match(panel, /<PlanModeIcon \/>/);
   assert.match(panel, /<ForcedToolIcon tool=\{tool\} \/>/);

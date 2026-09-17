@@ -1469,26 +1469,26 @@
   font-size: 13.5px;
 }
 .composer-command-panel .app-menu-check {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
 }
 .composer-tool-thumb {
   position: relative;
   display: inline-grid;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   flex: none;
   place-items: center;
   box-sizing: border-box;
-  border: 1px solid color-mix(in srgb, var(--line) 88%, var(--md-sys-color-primary) 12%);
+  border: 1px solid color-mix(in srgb, var(--line) 82%, var(--md-sys-color-primary) 18%);
   border-radius: 6px;
   background: var(--bg-elevated);
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.07);
   color: var(--md-sys-color-on-surface-variant);
 }
 .composer-tool-thumb svg {
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
 }
 .composer-tool-thumb-bar {
   position: absolute;
