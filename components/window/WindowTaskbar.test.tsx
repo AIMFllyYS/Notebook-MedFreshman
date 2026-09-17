@@ -7,7 +7,7 @@ import { MAX_LOCAL_FILE_SIZE } from "@/lib/ai/imageUtils";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useFlashcardCitations } from "@/lib/stores/flashcardCitations";
 import { useAgentProductPicker } from "@/lib/stores/agentProductPicker";
-import { SPOTLIGHT_INPUT_CLASS } from "@/components/search/spotlightChrome";
+import { SPOTLIGHT_INPUT_CLASS, SPOTLIGHT_SEARCH_FIELD_CLASS } from "@/components/search/spotlightChrome";
 
 describe("WindowTaskbar add content", () => {
   beforeEach(() => {
@@ -87,6 +87,9 @@ describe("WindowTaskbar add content", () => {
 
     const url = within(menu).getByRole("group", { name: "输入网址" });
     expect(within(url).getByRole("textbox", { name: "网址" })).toHaveClass(...SPOTLIGHT_INPUT_CLASS.split(" "));
+    expect(within(url).getByRole("textbox", { name: "网址" }).parentElement).toHaveClass(
+      ...SPOTLIGHT_SEARCH_FIELD_CLASS.split(" "),
+    );
     expect(within(url).queryByRole("menuitem")).not.toBeInTheDocument();
 
     const dividers = menu.querySelectorAll("[data-menu-divider]");

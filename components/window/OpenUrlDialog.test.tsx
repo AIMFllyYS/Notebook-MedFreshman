@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import OpenUrlField, { parseOpenableUrl } from "./OpenUrlDialog";
-import { SPOTLIGHT_INPUT_CLASS } from "@/components/search/spotlightChrome";
+import { SPOTLIGHT_INPUT_CLASS, SPOTLIGHT_SEARCH_FIELD_CLASS } from "@/components/search/spotlightChrome";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
 
 afterEach(() => {
@@ -34,6 +34,7 @@ describe("OpenUrlField", () => {
     render(<OpenUrlField />);
     const input = screen.getByRole("textbox", { name: "网址" });
     expect(input).toHaveClass(...SPOTLIGHT_INPUT_CLASS.split(" "));
+    expect(input.parentElement).toHaveClass(...SPOTLIGHT_SEARCH_FIELD_CLASS.split(" "));
     expect(screen.queryByRole("dialog", { name: "输入网址" })).not.toBeInTheDocument();
   });
 
