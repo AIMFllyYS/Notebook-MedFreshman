@@ -21,9 +21,11 @@ import { NOTES_PANEL_ID } from "@/lib/constants/layout";
 import type { SubjectId } from "@/lib/types/content";
 import { isSubjectReviewPath, resolveRouteLayout } from "@/lib/content/routeLayout";
 import type { ChatContext } from "@/lib/types/chat";
+import { resolveAppMode, usesStudioChrome } from "@/lib/constants/app-mode";
+import { useAppMode } from "@/lib/stores/appMode";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
-import BrandLogo from "./BrandLogo";
+import ModeSwitcher from "./ModeSwitcher";
 import MobileTopBar from "./MobileTopBar";
 import MobileBottomNav from "./MobileBottomNav";
 import MobileChapterPicker from "./MobileChapterPicker";
@@ -105,14 +107,7 @@ function TopBar({
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg>
       </button>
-      <div className="flex items-center gap-2">
-        <span className="flex h-7 w-7 items-center justify-center">
-          <BrandLogo size={24} />
-        </span>
-        <span className="text-[15px] font-semibold tracking-tight">
-          期末复习工作站
-        </span>
-      </div>
+      <ModeSwitcher />
       <div className="ml-2 flex min-w-0 items-center gap-1.5 text-[13px] text-[var(--ink-faint)]">
         {subject && (
           <>
@@ -168,8 +163,14 @@ function TopBar({
 }
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "/";
   const isMobile = useIsMobile();
+  const hydrateMode = useAppMode((s) => s.hydrate);
+  const syncFromPathname = useAppMode((s) => s.syncFromPathname);
+  const rememberStudioPath = useAppMode((s) => s.rememberStudioPath);
+  const persistedMode = useAppMode((s) => s.mode);
+  const resolvedMode = resolveAppMode(pathname, persistedMode);
+  const studioChrome = usesStudioChrome(pathname);
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
   const setSidebarCollapsed = useStore((s) => s.setSidebarCollapsed);
   const hydrateLayout = useStore((s) => s.hydrateLayout);
@@ -198,8 +199,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   useLayoutEffect(() => {
     hydrateLayout();
+    hydrateMode();
+    syncFromPathname(pathname);
+    rememberStudioPath(pathname);
     if (route) setActiveRoute(route.subjectId, route.categoryId, route.itemId);
-  }, [hydrateLayout, route, setActiveRoute]);
+  }, [hydrateLayout, hydrateMode, syncFromPathname, rememberStudioPath, pathname, route, setActiveRoute]);
 
   // TOC 数据只由内容页的 useToc 产出；离开内容页（首页 / review 等）时清掉，
   // 否则目录视图会残留上一页的标题树，点击也无法滚动（目标 DOM 已不存在）。
@@ -255,40 +259,46 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   if (isMobile) {
     return (
       <KeyboardShortcutProvider>
-      <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]" data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT}>
+      <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]" data-app-mode={resolvedMode} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT}>
         <MobileTopBar />
 
         <div className="relative min-h-0 flex-1 overflow-hidden">
-          <div className={clsx("absolute inset-0", !showLessonPane && "invisible pointer-events-none")}>
-            {/* 被 ManagedWindow fullscreenTarget="notes" 用作全屏对齐目标，勿改 id */}
-            <div id={NOTES_PANEL_ID} className="h-full">
-              {children}
-            </div>
-          </div>
-          {mobileTab === "review" && !isReviewRoute && (
-            <div className="absolute inset-0">
-              <MobileReviewHub />
-            </div>
-          )}
-          {mobileTab === "ai" && (
-            <div className="absolute inset-0">
-              <ChatPanel chatContext={chatContext} />
-            </div>
-          )}
-          {mobileTab === "browser" && (
-            <div className="absolute inset-0">
-              <BrowserTab />
-            </div>
-          )}
-          {mobileTab === "settings" && (
-            <div className="absolute inset-0">
-              <MobileSettingsPanel />
-            </div>
+          {!studioChrome ? (
+            <div className="absolute inset-0">{children}</div>
+          ) : (
+            <>
+              <div className={clsx("absolute inset-0", !showLessonPane && "invisible pointer-events-none")}>
+                {/* 被 ManagedWindow fullscreenTarget="notes" 用作全屏对齐目标，勿改 id */}
+                <div id={NOTES_PANEL_ID} className="h-full">
+                  {children}
+                </div>
+              </div>
+              {mobileTab === "review" && !isReviewRoute && (
+                <div className="absolute inset-0">
+                  <MobileReviewHub />
+                </div>
+              )}
+              {mobileTab === "ai" && (
+                <div className="absolute inset-0">
+                  <ChatPanel chatContext={chatContext} />
+                </div>
+              )}
+              {mobileTab === "browser" && (
+                <div className="absolute inset-0">
+                  <BrowserTab />
+                </div>
+              )}
+              {mobileTab === "settings" && (
+                <div className="absolute inset-0">
+                  <MobileSettingsPanel />
+                </div>
+              )}
+            </>
           )}
         </div>
 
-        <MobileBottomNav />
-        <MobileChapterPicker />
+        {studioChrome && <MobileBottomNav />}
+        {studioChrome && <MobileChapterPicker />}
         <AnimatePresence>
           <PipPlayer />
         </AnimatePresence>
@@ -303,12 +313,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   // ── Desktop layout (unchanged) ─────────────────────────────
   return (
     <KeyboardShortcutProvider>
-    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT} data-layout-profile={routeLayout.profile}>
+    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-app)]" data-resizing={isResizing || undefined} data-app-mode={resolvedMode} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT} data-layout-profile={routeLayout.profile}>
       <TopBar
         subjectId={route?.subjectId ?? DEFAULT_SUBJECT}
         categoryId={route?.categoryId ?? "detail"}
         itemId={route?.itemId ?? ""}
       />
+      {!studioChrome ? (
+      <div className="min-h-0 flex-1">
+        {children}
+      </div>
+      ) : (
       <div className="min-h-0 flex-1">
         <PanelGroup
           key={routeLayout.profile}
@@ -401,6 +416,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           )}
         </PanelGroup>
       </div>
+      )}
       <AnimatePresence>
         <PipPlayer />
       </AnimatePresence>

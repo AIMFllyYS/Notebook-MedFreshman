@@ -148,7 +148,7 @@ export default function HomeBookshelf() {
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "40px 28px 56px" }}>
         <header style={{ marginBottom: 22 }}>
           <h1 style={{ fontSize: 26, fontWeight: 800, color: "var(--ink)", letterSpacing: "-0.01em" }}>
-            期末复习工作站
+            StudySolo
           </h1>
           <p style={{ fontSize: 14, color: "var(--ink-soft)", marginTop: 8, lineHeight: 1.7 }}>
             选一本书：<b>开始学习</b> 进入正文，<b>开始复习</b> 翻看记忆卡，<b>笔记</b> 写下这一科的个人笔记。

@@ -40,6 +40,7 @@ test("settings and shared pickers go through AnchoredMenu", () => {
     "components/notes/SubjectPickerMenu.tsx",
     "components/search/GlobalSearchFilterMenu.tsx",
     "components/review/RecordPreviewWindow.tsx",
+    "components/layout/ModeSwitcher.tsx",
   ];
   for (const path of files) {
     const source = readWorkspaceFile(path);

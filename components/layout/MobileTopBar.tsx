@@ -1,16 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { ChevronDown, Sun, Moon } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
+import { usesStudioChrome } from "@/lib/constants/app-mode";
 import { getContentItem } from "@/lib/content-data";
 import { subjectShortName } from "@/lib/content-data/subjects.registry";
 import SubjectIcon from "@/components/shared/SubjectIcon";
-import BrandLogo from "./BrandLogo";
+import ModeSwitcher from "./ModeSwitcher";
 
 export default function MobileTopBar() {
+  const pathname = usePathname() ?? "/";
+  const studioChrome = usesStudioChrome(pathname);
   const subjectId = useStore((s) => s.activeSubjectId);
   const categoryId = useStore((s) => s.activeCategoryId);
   const itemId = useStore((s) => s.activeItemId);
@@ -37,10 +41,9 @@ export default function MobileTopBar() {
         paddingTop: "env(safe-area-inset-top, 0px)",
       }}
     >
-      <span className="flex h-6 w-6 shrink-0 items-center justify-center text-[var(--accent)]">
-        <BrandLogo size={20} />
-      </span>
+      <ModeSwitcher compact />
 
+      {studioChrome ? (
       <button
         onClick={toggle}
         className={clsx(
@@ -56,6 +59,9 @@ export default function MobileTopBar() {
         <span className="truncate text-[13px] font-medium">{sectionLabel}</span>
         <ChevronDown size={14} className="ml-auto shrink-0 text-[var(--ink-faint)]" />
       </button>
+      ) : (
+        <div className="min-w-0 flex-1" />
+      )}
 
       <button
         onClick={toggleTheme}

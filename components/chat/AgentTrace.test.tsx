@@ -25,7 +25,7 @@ vi.mock('framer-motion', async () => {
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock('@/lib/hooks/useContextMenu', () => ({ openMessageMenu }));
 vi.mock('@/components/layout/BrandLogo', () => ({
-  default: () => <span role="img" aria-label="期末复习工作站" data-testid="brand-logo" />,
+  default: () => <span role="img" aria-label="StudySolo" data-testid="brand-logo" />,
 }));
 vi.mock('@/components/chat/MessageContent', () => ({
   MessageContent: ({ content, sessionId, messageId, repairModelId }: { content: string; sessionId?: string; messageId?: string; repairModelId?: string }) => (
@@ -295,7 +295,7 @@ describe('ChatMessage trace migration', () => {
     const assistantHeader = assistant.querySelector<HTMLElement>('.chat-message-header')!;
     expect(getComputedStyle(assistant).alignItems).toBe('flex-start');
     expect(getComputedStyle(assistantHeader).justifyContent).toBe('flex-start');
-    expect(within(assistantHeader).getByRole('img', { name: '期末复习工作站' })).toBeVisible();
+    expect(within(assistantHeader).getByRole('img', { name: 'StudySolo' })).toBeVisible();
     expect(within(assistantHeader).getByRole('status')).toHaveTextContent('已处理 3 秒');
     expect(within(assistantHeader).queryByText('AI 助教')).not.toBeInTheDocument();
     expect(assistantHeader.querySelector('.agent-trace-complete-mark')).toBeNull();
