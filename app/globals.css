@@ -824,6 +824,8 @@ html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [d
 
 /* Bottom navigation bar glass effect */
 .mobile-bottom-nav {
+  position: relative;
+  z-index: 20;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
@@ -1075,8 +1077,8 @@ html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [d
   right: 10px;
   bottom: 10px;
   display: flex;
-  width: min(360px, calc(100% - 20px));
-  height: min(520px, calc(100% - 20px));
+  width: min(320px, calc(100% - 20px));
+  height: min(400px, calc(100% - 36px));
   flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--md-sys-color-outline-variant);
