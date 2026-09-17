@@ -36,13 +36,17 @@ describe("AgentSettingsOverlay", () => {
     expect(dialog.closest("[data-testid=agent-settings-overlay]")).toHaveClass("agent-settings-overlay");
   });
 
-  it("closes from the reused workspace and from the backdrop", () => {
+  it("closes from the reused workspace back control", () => {
     useStore.setState({ agentSettingsOpen: true });
     render(<AgentSettingsOverlay />);
     fireEvent.click(screen.getByRole("button", { name: "返回对话" }));
     expect(useStore.getState().agentSettingsOpen).toBe(false);
+    expect(screen.queryByTestId("agent-settings-overlay")).toBeNull();
+  });
 
+  it("closes when clicking the dimmed backdrop", () => {
     useStore.setState({ agentSettingsOpen: true });
+    render(<AgentSettingsOverlay />);
     fireEvent.mouseDown(screen.getByTestId("agent-settings-overlay"));
     expect(useStore.getState().agentSettingsOpen).toBe(false);
   });
