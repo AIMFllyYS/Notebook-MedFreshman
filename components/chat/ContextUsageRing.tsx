@@ -20,9 +20,10 @@ export function ContextUsageRing({
       height={size}
       viewBox="0 0 32 32"
       aria-hidden={title ? undefined : true}
-      title={title}
+      aria-label={title}
       style={{ transform: "rotate(-90deg)" }}
     >
+      {title ? <title>{title}</title> : null}
       <circle cx="16" cy="16" r={RING_R} fill="none" stroke={ringColor} strokeWidth="4" strokeOpacity={0.15} />
       <circle
         cx="16"
