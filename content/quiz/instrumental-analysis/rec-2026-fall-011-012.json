@@ -1,0 +1,260 @@
+{
+  "subjectId": "instrumental-analysis",
+  "chapterId": "rec-2026-fall-011-012",
+  "generatedAt": "2026-09-17",
+  "examConfig": {
+    "source": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/recording.md；content/instrumental-analysis/lectures/rec-2026-fall-011-012/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-011-012",
+    "revision": 1,
+    "recordingHash": "a7235104d0504f1e4e49f1368f7e20b6ddc60dc613324af9e327ed4a39dec817",
+    "notesTextHash": "e688a027962eda335ef5626f86a1646072331833396e8a9673c9d676dc187e94"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "单色器类型：棱镜与光栅"
+      },
+      "stem": "分光光度计的单色器用于把光源发出的复色光分解为单色光。下列关于单色器的说法，正确的是哪一项？",
+      "options": [
+        "单色器只能用棱镜，光栅不能用于分光光度计",
+        "单色器有棱镜和光栅两种，现代仪器主流使用光栅，光栅靠反射和衍射色散",
+        "棱镜靠衍射分光，光栅靠折射分光",
+        "光栅体积大、成本高，现代仪器已逐渐用棱镜取代光栅"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**单色器有棱镜和光栅两种：棱镜利用不同波长光在玻璃中折射率不同（折射色散），光栅利用刻槽的反射与衍射（反射+衍射色散）。现代仪器主流用光栅，因为它体积小（指甲盖大小）、成本低、波长范围广、色散均匀。A 错误：光栅正是现代主流；C 把两者原理说反了；D 与事实相反，是棱镜逐渐被光栅取代。",
+      "hint": "棱镜折射光栅衍，现代主流用光栅。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "比色皿材料：玻璃与石英"
+      },
+      "stem": "要在紫外区（如 200~350 nm）测定溶液的吸收曲线，应选用哪种比色皿？",
+      "options": [
+        "玻璃比色皿，因为玻璃透明",
+        "石英比色皿，因为玻璃在约 320 nm 以下会吸收紫外线",
+        "任意一种都可以，反正都是透明的",
+        "玻璃比色皿，因为石英不能透过可见光"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**玻璃比色皿的透光下限约 320 nm，320 nm 以下玻璃吸收紫外线，故紫外区必须用石英比色皿（石英紫外、可见都能透）。新比色皿玻璃标 K、石英标 Q。A、C 错误：玻璃虽透明但在紫外区吸收光；D 错误：石英并不挡可见光。",
+      "hint": "玻璃可见标 K，石英紫外标 Q。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "光电管与光电倍增管的灵敏度差异"
+      },
+      "stem": "光电倍增管比普通光电管灵敏得多，其根本原因是下列哪一项？",
+      "options": [
+        "光电倍增管的光敏材料对光更敏感",
+        "光电倍增管在光阴极后设有多级倍增极，光电子被逐级倍增，电子数呈级数增长（如 9 级可达 10⁷ 倍）",
+        "光电倍增管外壳全部用石英制造",
+        "光电倍增管不需要外加电压就能工作"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**光电倍增管在光阴极与阳极之间加入多个倍增极（dynode，旧称打拿级），每个光电子打到倍增极上打出多个二次电子，逐级倍增后电子数可放大到 10⁷ 量级，故灵敏度极高。A 错误：核心不是光敏材料本身；C 错误：只是入射窗口用石英，且这与灵敏度无关；D 错误：倍增极间需约 90 V 高压差。",
+      "hint": "九级倍增，电子放大千万倍。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "basic",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "普通仪器最优吸光度范围"
+      },
+      "stem": "对于普通分光光度计（透光率误差 ΔT≈±1%），课堂强调吸光度宜控制在下列哪个范围以减小浓度相对误差？",
+      "options": [
+        "0.001 ~ 0.01",
+        "0.2 ~ 0.8",
+        "1.0 ~ 2.0",
+        "2.0 ~ 3.0"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**由 Δc/c=(0.434ΔT)/(T·lgT) 画出的误差曲线呈 U 型，普通仪器（ΔT=±1%）U 型底部对应的吸光度约为 0.2~0.8（对应透光率约 15%~65%），这是要求掌握的适宜范围。A 太低、C/D 太高，都落在 U 型两端误差大的区域；好仪器 ΔT 更小、范围才可放宽。",
+      "hint": "零点二到零点八。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "影响显色反应的四个因素"
+      },
+      "stem": "下列各项中，全部属于影响显色反应主要因素的一组是哪一项？",
+      "options": [
+        "显色剂用量、pH 值、温度、反应时间",
+        "光源电压、狭缝宽度、测定波长、比色皿",
+        "单色器类型、检测器、读数装置、显示方式",
+        "溶剂极性、折射率、黏度、密度"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**课堂明确要求掌握影响显色反应的四个因素：显色剂用量、pH 值、温度、反应时间，并通过作吸光度对各因素的条件曲线来寻找平台。B 属于仪器操作条件而非显色反应本身的影响因素；C 是仪器部件；D 与显色反应条件无直接关系。",
+      "hint": "剂量、pH、温度、时间，四个红字要背。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "recording",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/recording.md",
+        "label": "误用玻璃比色皿扫紫外区的现象"
+      },
+      "stem": "实验中误用玻璃比色皿，从 200 nm 扫到 300 nm 做吸收曲线，最可能观察到什么现象？",
+      "options": [
+        "曲线完全正常，与用石英比色皿没有区别",
+        "200~320 nm 吸光度极大、顶格超出量程且曲线杂乱，到 320 nm 附近突然下降恢复正常",
+        "整个波长范围内吸光度都为零",
+        "只在 320 nm 处出现一个尖峰，其余平坦"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**玻璃在 320 nm 以下吸收紫外线，200~320 nm 区间吸光度极大、超出量程，仪器以为浓度太高而输出杂乱曲线；过了 320 nm 玻璃不再吸收，曲线突然恢复正常。若只扫 200~300 nm，全程都是乱线，容易被误判为仪器坏了——其实是拿错比色皿。A、C、D 均不符合课堂描述。",
+      "hint": "玻璃吸收紫外，顶格乱画，320 突然掉下来。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "单波长双光束消除光源波动误差"
+      },
+      "stem": "与单波长单光束相比，单波长双光束分光光度计最主要的优点是下列哪一项？",
+      "options": [
+        "价格更便宜、更不容易坏",
+        "通过切光器（斩光器）将同一束光高速交替地通过参比和样品，消除光源和检测器不稳定带来的误差",
+        "只需要一个比色皿，不需要任何参比溶液",
+        "可以同时输出两个不同波长的测定结果"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**单波长双光束用切光器以毫秒级速度把同一束单色光交替送入参比比色皿和样品比色皿，因切换极快可认为两束光来自同一时刻同一光源，光源/检测器的漂移对两者影响相同，比较后即被抵消。A 错误：这是单光束的优点；C 错误：单波长双光束仍用两个比色皿（参比+样品），不需参比、只用一个比色皿的是双波长双光束；D 错误：双光束仍是一个波长。",
+      "hint": "双光束靠切光器毫秒切换，参比样品交替比。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "medium",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "参比溶液的选择：试剂空白"
+      },
+      "stem": "用邻二氮菲显色测定铁，加入了显色剂并调节了 pH。按课堂讲的原则，最应选用下列哪种参比溶液？",
+      "options": [
+        "只用纯蒸馏水作溶剂空白",
+        "不加待测铁离子、其余试剂（显色剂、缓冲液等）与样品完全相同的试剂空白",
+        "不加任何试剂的铁样品溶液作样品空白",
+        "直接用空气作参比"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**原则是“谁可能带来干扰就用谁当空白”：显色剂、缓冲液等试剂本身可能吸收，故配一份除不加待测离子外、其余完全相同的试剂空白。A 错误：溶剂空白只适用于仅溶剂可能干扰的情况（如直接用水配的高锰酸钾）；C 错误：这里样品基体无色、干扰来自试剂而非样品本身；D 错误：空气不能扣除溶液和试剂背景。",
+      "hint": "谁可能带来干扰，就用谁当空白。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "狭缝宽度对谱带宽度与灵敏度的影响"
+      },
+      "stem": "关于狭缝宽度对测定的影响，下列说法正确的是哪一项？",
+      "options": [
+        "狭缝越宽，谱带越宽，非单色光效应越强，测得吸光度偏低、灵敏度降低；但狭缝过窄会使出射光太弱、对检测器要求过高",
+        "狭缝越宽，通过的光越多，灵敏度一定越高",
+        "狭缝宽度只影响光强，与谱带宽度、灵敏度无关",
+        "狭缝越窄越好，任何仪器都应把狭缝开到最窄"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**狭缝决定出射光的谱带宽度：狭缝越宽越接近非单色光，谱带内吸收系数小的波长被平均进来，测得吸光度偏低、灵敏度下降（负偏差）；但狭缝过窄时出射光本身很弱、再被溶液吸收后更弱，对检测器要求很高，普通仪器开不了太窄，只有高端仪器才行。B 错误：“光多”不等于灵敏度高，关键看吸收程度；C 错误：狭缝直接决定谱带宽度；D 错误：过窄光太弱、信噪比差。",
+      "hint": "谱带宽=非单色光=灵敏度低；但太窄光太弱。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "浓度相对误差的最小点 A=0.434"
+      },
+      "stem": "由误差式 Δc/c=(0.434·ΔT)/(T·lgT) 可知浓度相对误差随透光率呈 U 型变化。使浓度相对误差达到最小（数学极值点）的吸光度是下列哪一项？",
+      "options": [
+        "A = 0.2",
+        "A = 0.434",
+        "A = 0.8",
+        "A = 1.0"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**对相对误差式求极值可得最佳透光率 T=e⁻¹≈0.368=36.8%，对应 A=-lg0.368≈0.434，这是 U 型曲线的底，且该极值点不随仪器精度变化，是要求掌握的最小误差点。A（0.2）和 C（0.8）是普通仪器适宜范围的上下限，不是最小点；D 无依据。注意区分：最小点 0.434 固定不变，而适宜范围 0.2~0.8 针对普通仪器、好仪器可更宽。",
+      "hint": "四三四是最小差，且不随仪器变。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "points": 10,
+      "difficulty": "hard",
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/instrumental-analysis/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "双波长法等吸收点原理"
+      },
+      "stem": "用双波长法测定待测组分 A、消除干扰组分 B 的影响时，选择参比波长 λ₂ 的依据是下列哪一项？",
+      "options": [
+        "选待测组分 A 吸收最小的波长",
+        "选干扰组分 B 在 λ₁ 与 λ₂ 处吸光系数相等（等吸收点），使两式相减后 ΔA=ΔK_A·c_A、与 B 无关",
+        "任意选两个不同波长即可，与干扰组分无关",
+        "选干扰组分 B 的最大吸收波长"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**在 λ₁、λ₂ 处分别有 A_λ₁=K_A,λ₁·c_A+K_B,λ₁·c_B、A_λ₂=K_A,λ₂·c_A+K_B,λ₂·c_B；选 λ₂ 使 K_B,λ₁=K_B,λ₂（B 的等吸收点），相减后 B 的项为零，ΔA=(K_A,λ₁−K_A,λ₂)·c_A=ΔK_A·c_A，只与 A 成正比。即使 λ₂ 处 A 也有吸收仍成立。A 错误：λ₁ 通常取 A 的吸收峰；C 错误：必须满足 B 等吸收条件；D 错误：λ₂ 不是 B 的最大吸收，而是 B 与 λ₁ 吸光度相等的点。",
+      "hint": "等吸收点画平行线，B 的项相减消掉。"
+    }
+  ]
+}

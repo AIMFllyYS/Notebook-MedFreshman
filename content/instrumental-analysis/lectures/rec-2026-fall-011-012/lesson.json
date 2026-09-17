@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "instrumental-analysis",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-011-012",
+  "courseName": "分析化学",
+  "sessionRange": {
+    "start": 11,
+    "end": 12
+  },
+  "taughtOn": "2026-09-17",
+  "topic": "分光光度法（紫外-可见分光光度法）——单色器、比色皿、检测器、仪器类型、显色反应、误差控制、双波长法",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-011-012"
+}

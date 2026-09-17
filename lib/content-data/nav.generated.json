@@ -5124,6 +5124,45 @@
                   "quizRef": "rec-2026-fall-009-010"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-011-012",
+              "title": "第11-12节 · 分光光度法（紫外-可见分光光度法）——单色器、比色皿、检测器、仪器类型、显色反应、误差控制、双波长法",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-011-012",
+                  "title": "课堂原文 · 第11-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-011-012",
+                  "quizRef": "rec-2026-fall-011-012"
+                },
+                {
+                  "id": "note-rec-2026-fall-011-012",
+                  "title": "课堂笔记 · 第11-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-011-012",
+                  "quizRef": "rec-2026-fall-011-012"
+                },
+                {
+                  "id": "card-rec-2026-fall-011-012",
+                  "title": "复习手卡 · 第11-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-011-012",
+                  "quizRef": "rec-2026-fall-011-012"
+                }
+              ]
             }
           ]
         },
@@ -5190,6 +5229,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-009-010",
               "quizRef": "rec-2026-fall-009-010",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-011-012",
+              "title": "课堂纪要 · 第11-12节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-011-012",
+              "quizRef": "rec-2026-fall-011-012",
               "layoutProfile": "full"
             }
           ]
@@ -7074,6 +7124,45 @@
                   "quizRef": "rec-2026-fall-009-010"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-011-012",
+              "title": "第11-12节 · 线粒体与细胞的能量转换（一）——线粒体基础特征、功能、疾病、超微结构、动力学、嵴的动态研究",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-011-012",
+                  "title": "课堂原文 · 第11-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-011-012",
+                  "quizRef": "rec-2026-fall-011-012"
+                },
+                {
+                  "id": "note-rec-2026-fall-011-012",
+                  "title": "课堂笔记 · 第11-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-011-012",
+                  "quizRef": "rec-2026-fall-011-012"
+                },
+                {
+                  "id": "card-rec-2026-fall-011-012",
+                  "title": "复习手卡 · 第11-12节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-011-012",
+                  "quizRef": "rec-2026-fall-011-012"
+                }
+              ]
             }
           ]
         },
@@ -7140,6 +7229,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-009-010",
               "quizRef": "rec-2026-fall-009-010",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-011-012",
+              "title": "课堂纪要 · 第11-12节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-011-012",
+              "quizRef": "rec-2026-fall-011-012",
               "layoutProfile": "full"
             }
           ]
