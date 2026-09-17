@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { stripOpenIds, stripUserNoteWindowState, stripViewerId } from "./windowPersist.ts";
+import { EMPTY_USER_NOTE_WINDOW_STATE, stripOpenIds, stripUserNoteWindowState, stripViewerId } from "./windowPersist.ts";
 
 test("stripUserNoteWindowState drops old persisted editor/library windows", () => {
   const state = stripUserNoteWindowState({
@@ -15,6 +15,8 @@ test("stripUserNoteWindowState drops old persisted editor/library windows", () =
   assert.equal(state.agentEditingNoteId, null);
   assert.deepEqual(state.noteAgentOpenIds, []);
   assert.equal(state.byId?.["note-a"]?.id, "note-a");
+  state.openEditorIds?.push("later");
+  assert.deepEqual(EMPTY_USER_NOTE_WINDOW_STATE.openEditorIds, []);
 });
 
 test("stripViewerId and stripOpenIds are idempotent", () => {

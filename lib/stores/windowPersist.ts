@@ -13,10 +13,10 @@ export const EMPTY_USER_NOTE_WINDOW_STATE = {
 export function stripUserNoteWindowState<T extends Partial<typeof EMPTY_USER_NOTE_WINDOW_STATE>>(
   state: T,
 ): T {
-  state.openEditorIds = EMPTY_USER_NOTE_WINDOW_STATE.openEditorIds;
-  state.libraryOpen = EMPTY_USER_NOTE_WINDOW_STATE.libraryOpen;
-  state.agentEditingNoteId = EMPTY_USER_NOTE_WINDOW_STATE.agentEditingNoteId;
-  state.noteAgentOpenIds = EMPTY_USER_NOTE_WINDOW_STATE.noteAgentOpenIds;
+  state.openEditorIds = [];
+  state.libraryOpen = false;
+  state.agentEditingNoteId = null;
+  state.noteAgentOpenIds = [];
   return state;
 }
 
