@@ -47,12 +47,14 @@ export default function AnchoredMenu({ label, trigger, children, className = "",
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const focusedRef = useRef(false);
-  const close = useCallback(() => setOpen(false), []);
+  const close = useCallback(() => {
+    setOpen(false);
+    setBox(null);
+  }, []);
   useOverlayRegistration({ id: `menu-${id}`, open, onClose: close, priority: 70 });
 
   useLayoutEffect(() => {
     if (!open) {
-      setBox(null);
       focusedRef.current = false;
       return;
     }
@@ -85,7 +87,7 @@ export default function AnchoredMenu({ label, trigger, children, className = "",
     const update = () => {
       const next = measure();
       if (next === "close") {
-        setOpen(false);
+        close();
         return true;
       }
       if (!next) return false;
@@ -117,7 +119,7 @@ export default function AnchoredMenu({ label, trigger, children, className = "",
       window.removeEventListener("resize", update);
       document.removeEventListener("scroll", scroll, true);
     };
-  }, [open, width, placement]);
+  }, [close, open, width, placement]);
 
   useEffect(() => {
     if (!open) return;
@@ -132,8 +134,11 @@ export default function AnchoredMenu({ label, trigger, children, className = "",
     <button ref={buttonRef} type="button" aria-label={label} title={label} aria-haspopup={role}
       aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled}
       className={className} style={style} data-testid={testId} {...triggerData}
-      onClick={() => setOpen((value) => !value)}
-      onKeyDown={(event) => { if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setOpen(true); } }}>
+      onClick={() => {
+        if (open) close();
+        else { setBox(null); setOpen(true); }
+      }}
+      onKeyDown={(event) => { if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setBox(null); setOpen(true); } }}>
       {trigger}
     </button>
     {open && createPortal(<div ref={menuRef} id={id} role={role} aria-label={label} className="app-menu"
