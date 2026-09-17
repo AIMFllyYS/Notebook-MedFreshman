@@ -8,6 +8,8 @@ import ManagedWindow from "@/components/window/ManagedWindow";
 import SubjectPickerMenu from "@/components/notes/SubjectPickerMenu";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { userNoteWindowId } from "@/lib/notes/userNote";
+import { useWindowManager } from "@/lib/stores/windowManager";
+import { shouldMountHeavyEditor } from "@/lib/window/heavyEditor";
 
 const MilkdownNoteEditor = dynamic(() => import("@/components/notes/MilkdownNoteEditor"), {
   ssr: false,
@@ -20,6 +22,8 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
   const updateNote = useUserNotes((s) => s.updateNote);
   const removeNote = useUserNotes((s) => s.removeNote);
   const closeEditor = useUserNotes((s) => s.closeEditor);
+  const windowId = userNoteWindowId(noteId);
+  const isFront = useWindowManager((s) => shouldMountHeavyEditor(s.activeWindowId, windowId));
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleClose = useCallback(() => closeEditor(noteId), [closeEditor, noteId]);
@@ -74,7 +78,18 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
           />
         </div>
         <p className="classroom-note-meta">{note.source?.label || "课堂批注"}</p>
-        <MilkdownNoteEditor key={noteId} value={note.markdown} onChange={handleMarkdown} compact />
+        {isFront ? (
+          <MilkdownNoteEditor key={noteId} value={note.markdown} onChange={handleMarkdown} compact />
+        ) : (
+          <textarea
+            data-no-drag
+            className="user-note-source"
+            value={note.markdown}
+            spellCheck={false}
+            aria-label="课堂批注"
+            onChange={(event) => handleMarkdown(event.target.value)}
+          />
+        )}
       </div>
 
       {confirmDelete && typeof document !== "undefined" ? (

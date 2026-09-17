@@ -26,6 +26,8 @@ import {
   type NoteTocItem,
 } from "@/lib/notes/noteToc";
 import { DURATION, EASE } from "@/lib/motion";
+import { useWindowManager } from "@/lib/stores/windowManager";
+import { shouldMountHeavyEditor } from "@/lib/window/heavyEditor";
 
 type EditorMode = "source" | "wysiwyg" | "split";
 
@@ -47,6 +49,8 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
   const closeEditor = useUserNotes((s) => s.closeEditor);
   const agentOpen = useUserNotes((s) => s.noteAgentOpenIds.includes(noteId));
   const agentSessionId = useUserNotes((s) => s.noteAgentSessionById[noteId]);
+  const windowId = userNoteWindowId(noteId);
+  const isFront = useWindowManager((s) => shouldMountHeavyEditor(s.activeWindowId, windowId));
   const [mode, setMode] = useState<EditorMode>("wysiwyg");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [tocOpen, setTocOpen] = useState(true);
@@ -93,11 +97,15 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
         <RefreshCw size={13} />
         <span>刷新</span>
       </button>
-      <MilkdownNoteEditor
-        key={`${noteId}:${mode}:${wysiwygRev}`}
-        value={note.markdown}
-        onChange={handleMarkdown}
-      />
+      {isFront ? (
+        <MilkdownNoteEditor
+          key={`${noteId}:${mode}:${wysiwygRev}`}
+          value={note.markdown}
+          onChange={handleMarkdown}
+        />
+      ) : (
+        <NotePreviewPane markdown={note.markdown} />
+      )}
     </div>
   );
 

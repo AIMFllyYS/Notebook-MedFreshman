@@ -35,24 +35,9 @@ import { formatShortcut } from "@/lib/keyboard/format";
 import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
-const FloatingChatLayer = dynamic(() => import("@/components/chat/FloatingChatLayer"), { ssr: false });
-const QuizExplainLayer = dynamic(() => import("@/components/quiz/QuizExplainLayer"), { ssr: false });
-const RecordPreviewLayer = dynamic(() => import("@/components/review/RecordPreviewLayer"), { ssr: false });
-const ArtifactViewer = dynamic(() => import("@/components/chat/ArtifactViewer"), { ssr: false });
-const ImageGenViewerLayer = dynamic(() => import("@/components/chat/ImageGenViewer"), { ssr: false });
-const DocumentViewerLayer = dynamic(() => import("@/components/chat/DocumentViewer"), { ssr: false });
-const NoteCitationViewer = dynamic(() => import("@/components/chat/NoteCitationViewer"), { ssr: false });
-const UserNoteLayer = dynamic(() => import("@/components/notes/UserNoteLayer"), { ssr: false });
-const FlashcardCiteWindow = dynamic(() => import("@/components/notes/FlashcardCiteWindow"), { ssr: false });
-const AgentProductPickerWindow = dynamic(() => import("@/components/notes/AgentProductPickerWindow"), { ssr: false });
-const MemoryInboxLayer = dynamic(() => import("@/components/memory/MemoryInboxLayer"), { ssr: false });
-const SourceTraceViewer = dynamic(() => import("@/components/chat/SourceTraceViewer"), { ssr: false });
-const SourcePreviewViewer = dynamic(() => import("@/components/chat/SourcePreviewViewer"), { ssr: false });
-const AttachmentPreviewViewer = dynamic(() => import("@/components/chat/AttachmentPreviewViewer"), { ssr: false });
-const MessageContextMenu = dynamic(() => import("@/components/shared/MessageContextMenu"), { ssr: false });
-const BillingDashboardLayer = dynamic(() => import("@/components/chat/BillingDashboard"), { ssr: false });
-const MembershipSponsorLayer = dynamic(() => import("@/components/chat/MembershipSponsorWindow"), { ssr: false });
+const DeferredWindowLayers = dynamic(() => import("@/components/window/DeferredWindowLayers"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
+const AgentSettingsOverlay = dynamic(() => import("@/components/chat/AgentSettingsOverlay"), { ssr: false });
 const VideoTab = dynamic(() => import("@/components/video/VideoTab"), { ssr: false });
 const InteractiveTab = dynamic(() => import("@/components/interactives/InteractiveTab"), { ssr: false });
 const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false });
@@ -302,23 +287,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <AnimatePresence>
           <PipPlayer />
         </AnimatePresence>
-        <FloatingChatLayer />
-        <QuizExplainLayer />
-        <RecordPreviewLayer />
-        <ArtifactViewer />
-        <ImageGenViewerLayer />
-        <DocumentViewerLayer />
-        <NoteCitationViewer />
-        <UserNoteLayer />
-        <FlashcardCiteWindow />
-        <AgentProductPickerWindow />
-        <MemoryInboxLayer />
-        <SourceTraceViewer />
-        <SourcePreviewViewer />
-        <AttachmentPreviewViewer />
-        <MessageContextMenu />
-        <BillingDashboardLayer />
-        <MembershipSponsorLayer />
+        <DeferredWindowLayers />
+        <AgentSettingsOverlay />
       </div>
       </KeyboardShortcutProvider>
     );
@@ -428,23 +398,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <AnimatePresence>
         <PipPlayer />
       </AnimatePresence>
-      <FloatingChatLayer />
-      <QuizExplainLayer />
-      <RecordPreviewLayer />
-      <ArtifactViewer />
-      <ImageGenViewerLayer />
-      <DocumentViewerLayer />
-      <NoteCitationViewer />
-      <UserNoteLayer />
-      <FlashcardCiteWindow />
-      <AgentProductPickerWindow />
-      <MemoryInboxLayer />
-      <SourceTraceViewer />
-      <SourcePreviewViewer />
-      <AttachmentPreviewViewer />
-      <MessageContextMenu />
-      <BillingDashboardLayer />
-      <MembershipSponsorLayer />
+      <DeferredWindowLayers />
+      <AgentSettingsOverlay />
     </div>
     </KeyboardShortcutProvider>
   );

@@ -1,5 +1,11 @@
 /** 把 Range 覆盖的文本节点包进 <mark>，供划词与引用定位共用。 */
 
+function firstTextNode(node: Node): Text | null {
+  if (node.nodeType === Node.TEXT_NODE) return node as Text;
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+  return (walker.nextNode() as Text | null) ?? null;
+}
+
 export function wrapRange(range: Range, className = "crayon-highlight"): HTMLElement[] {
   const marks: HTMLElement[] = [];
   const root = range.commonAncestorContainer;
@@ -13,15 +19,23 @@ export function wrapRange(range: Range, className = "crayon-highlight"): HTMLEle
   const startOffset = range.startOffset;
   const endOffset = range.endOffset;
 
+  const startText = startNode.nodeType === Node.TEXT_NODE ? (startNode as Text) : firstTextNode(startNode);
+  if (!startText) return marks;
+
   const walker = document.createTreeWalker(walkerRoot, NodeFilter.SHOW_TEXT);
+  walker.currentNode = startText;
   const planned: { tn: Text; start: number; end: number }[] = [];
-  let node: Node | null;
-  while ((node = walker.nextNode())) {
+  let node: Node | null = startText;
+  while (node) {
     const tn = node as Text;
-    if (!range.intersectsNode(tn)) continue;
-    const start = tn === startNode ? startOffset : 0;
-    const end = tn === endNode ? endOffset : tn.length;
-    if (start < end) planned.push({ tn, start, end });
+    if (range.intersectsNode(tn)) {
+      const start = tn === startNode ? startOffset : 0;
+      const end = tn === endNode ? endOffset : tn.length;
+      if (start < end) planned.push({ tn, start, end });
+    }
+    if (tn === endNode) break;
+    if ((tn.compareDocumentPosition(endNode) & Node.DOCUMENT_POSITION_PRECEDING) !== 0) break;
+    node = walker.nextNode();
   }
 
   for (const { tn, start, end } of planned) {
