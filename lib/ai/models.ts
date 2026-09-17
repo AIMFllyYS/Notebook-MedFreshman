@@ -17,6 +17,15 @@ export const THINKING_EFFORT_LABELS: Record<ThinkingEffort, string> = {
   max: "最强",
 };
 
+/** Prefix cache 命中窗口默认 5 分钟；看板倒计时与费用估算按此计费。 */
+export const DEFAULT_CACHE_TTL_SEC = 300;
+
+export function resolveCacheTtlSec(value?: number | null): number {
+  return typeof value === "number" && Number.isFinite(value) && value > 0
+    ? value
+    : DEFAULT_CACHE_TTL_SEC;
+}
+
 /** 保留声明顺序，丢掉未知值。 */
 export function normalizeThinkingLevels(levels: unknown): ThinkingEffort[] {
   if (!Array.isArray(levels)) return [];
@@ -79,7 +88,7 @@ export interface ModelInfo {
     cacheWrite?: number;
     output: number;
   };
-  /** Prefix cache 估算 TTL（秒）。 */
+  /** Prefix cache 估算 TTL（秒）。缺省按 DEFAULT_CACHE_TTL_SEC（5 分钟）计费。 */
   cacheTtlSec?: number;
   /** chat/completions 请求超时（毫秒）；慢模型（MoE 冷启动）可加长。 */
   timeoutMs?: number;
@@ -192,7 +201,7 @@ export const MODELS: ModelInfo[] = [
     endpoints: [ep(RELAY, "deepseek/deepseek-v4.1-flash")],
     icon: "deepseek",
     pricing: { input: 2.1, cachedInput: 0.042, output: 8.4 },
-    cacheTtlSec: 7200,
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
   },
   {
     id: "Qwen/Qwen3.7-Flash",
@@ -210,7 +219,7 @@ export const MODELS: ModelInfo[] = [
     endpoints: [ep(RELAY, "Qwen/Qwen3.7-Flash")],
     icon: "qwen",
     pricing: { input: 1.2, cachedInput: 0.24, output: 4.8 },
-    cacheTtlSec: 1800,
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
     timeoutMs: 120_000,
   },
   // ── 多模态 ──────────────────────────
@@ -228,7 +237,7 @@ export const MODELS: ModelInfo[] = [
     hint: "多模态 · 视觉 · 1M",
     endpoints: [ep(RELAY, "gpt-5.6-luna")],
     pricing: { input: 1.4, cachedInput: 0.14, cacheWrite: 1.75, output: 8.4 },
-    cacheTtlSec: 3600,
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
   },
   {
     id: "mimo-v2.5",
@@ -245,7 +254,7 @@ export const MODELS: ModelInfo[] = [
     endpoints: [ep(RELAY, "mimo-v2.5")],
     icon: "mimo",
     pricing: { input: 1, cachedInput: 0.02, cacheWrite: 1, output: 2 },
-    cacheTtlSec: 3600,
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
   },
   {
     id: "google/gemini-3.8-flash",
@@ -263,7 +272,7 @@ export const MODELS: ModelInfo[] = [
     endpoints: [ep(RELAY, "google/gemini-3.8-flash")],
     icon: "gemini",
     pricing: { input: 10.5, cachedInput: 1.05, output: 52.5 },
-    cacheTtlSec: 3600,
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
     timeoutMs: 120_000,
   },
   {
@@ -283,7 +292,7 @@ export const MODELS: ModelInfo[] = [
     endpoints: [ep(RELAY, "z-ai/glm-5.3-flash"), ep(RELAY, "mimo-v2.5")],
     icon: "zhipu",
     pricing: { input: 0.8, cachedInput: 0.23, output: 2.8 },
-    cacheTtlSec: 1800,
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
     timeoutMs: 120_000,
   },
   {
@@ -301,7 +310,7 @@ export const MODELS: ModelInfo[] = [
     endpoints: [ep(RELAY, "Qwen/Qwen3.8-Flash")],
     icon: "qwen",
     pricing: { input: 0.8, cachedInput: 0.1, output: 2.7 },
-    cacheTtlSec: 1800,
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
     timeoutMs: 120_000,
   },
   {
@@ -320,7 +329,7 @@ export const MODELS: ModelInfo[] = [
     vendorTrainingNotice: MUSE_VENDOR_TRAINING_NOTICE,
     endpoints: [ep(RELAY, "meta/muse-spark-1.3-contributor")],
     pricing: { input: 0.7, cachedInput: 0.014, output: 1.4 },
-    cacheTtlSec: 1800,
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
     timeoutMs: 120_000,
   },
   // ── 免费模型 ──────────────────────────
@@ -367,7 +376,7 @@ export const MODELS: ModelInfo[] = [
     hint: "旗舰 · 视觉 · 1M",
     endpoints: [ep(RELAY, "gpt-5.6-sol")],
     pricing: { input: 28, cachedInput: 2.8, cacheWrite: 35, output: 140 },
-    cacheTtlSec: 3600,
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
     timeoutMs: 120_000,
   },
   {
@@ -385,7 +394,7 @@ export const MODELS: ModelInfo[] = [
     endpoints: [ep(RELAY, "kimi-k3")],
     icon: "kimi",
     pricing: { input: 20, cachedInput: 2, output: 100 },
-    cacheTtlSec: 3600,
+    cacheTtlSec: DEFAULT_CACHE_TTL_SEC,
     timeoutMs: 120_000,
   },
   // ── 生图模型 ──────────────────────────
@@ -702,7 +711,7 @@ function customModelToInfo(
           output: c.pricing.output,
         }
       : undefined,
-    cacheTtlSec: c.cacheTtlSec ?? 3600,
+    cacheTtlSec: resolveCacheTtlSec(c.cacheTtlSec),
     timeoutMs: typeof timeoutMs === "number" && Number.isFinite(timeoutMs) && timeoutMs > 0 ? timeoutMs : undefined,
     type: c.type ?? "text",
     imageParams: c.imageParams,

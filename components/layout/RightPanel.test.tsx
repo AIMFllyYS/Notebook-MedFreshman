@@ -32,6 +32,10 @@ vi.mock("@/components/browser/BrowserSettingsButton", () => ({
   default: () => <button type="button">浏览器设置</button>,
 }));
 
+vi.mock("@/components/window/WindowTaskbar", () => ({
+  default: ({ host }: { host: string }) => <div data-testid="window-taskbar-host">{host}</div>,
+}));
+
 vi.mock("@/lib/hooks/useAcademicYear", () => ({
   useAcademicYear: (sel: (s: { year: string }) => unknown) => sel({ year: "sophomore-1" }),
 }));
@@ -64,6 +68,14 @@ describe("RightPanel layout flags", () => {
     expect(screen.queryByRole("button", { name: "AI 对话" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "动画讲解" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "收起右侧面板" })).not.toBeInTheDocument();
+  });
+
+  it("Agent 模式隐藏 AI tab，并把最小化窗列表放到右栏", () => {
+    render(<RightPanel hideAiTab showWindowDock />);
+    expect(screen.queryByRole("button", { name: "AI 对话" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "动画讲解" })).toBeInTheDocument();
+    expect(screen.getByTestId("window-taskbar-host")).toHaveTextContent("right-panel");
+    expect(screen.getByRole("button", { name: "收起右侧面板" })).toBeInTheDocument();
   });
 
   it("当前 tab 不在允许列表时回退到列表首项", async () => {

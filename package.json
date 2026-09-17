@@ -2,7 +2,7 @@
   "name": "gailvlun",
   "version": "0.5.1",
   "private": true,
-  "description": "期末复习工作站 · 多学科辅助学习应用",
+  "description": "StudySolo · 多学科辅助学习应用",
   "author": "Gailvlun",
   "main": "electron/main.js",
   "scripts": {

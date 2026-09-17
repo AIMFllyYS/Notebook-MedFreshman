@@ -120,6 +120,11 @@ interface AppState {
   openAgentSettings: () => void;
   closeAgentSettings: () => void;
 
+  /** 页面正中的登录弹窗（设置 overlay 同款，不是 Mac 窗）。 */
+  loginOverlayOpen: boolean;
+  openLoginOverlay: () => void;
+  closeLoginOverlay: () => void;
+
   // ── AI 对话 ───────────────────────────────────────────
   /** 划词 / 外部触发的待发送消息 */
   outbound: OutboundMessage | null;
@@ -264,6 +269,10 @@ export const useStore = create<AppState>((set) => ({
   agentSettingsOpen: false,
   openAgentSettings: () => set({ agentSettingsOpen: true }),
   closeAgentSettings: () => set({ agentSettingsOpen: false }),
+
+  loginOverlayOpen: false,
+  openLoginOverlay: () => set({ loginOverlayOpen: true }),
+  closeLoginOverlay: () => set({ loginOverlayOpen: false }),
 
   outbound: null,
   sendToChat: (content, opts) =>

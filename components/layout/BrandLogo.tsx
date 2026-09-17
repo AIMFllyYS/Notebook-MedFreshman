@@ -111,7 +111,7 @@ export default function BrandLogo({
     <span
       className="relative inline-flex shrink-0"
       style={{ width: size, height: size }}
-      aria-label="期末复习工作站"
+      aria-label="StudySolo"
       role="img"
     >
       {mounted ? (

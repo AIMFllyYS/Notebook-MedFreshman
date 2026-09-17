@@ -8,9 +8,12 @@ import {
   AUTH_CONFIG_API_PATH,
   CUSTOM_SMTP_EMAIL_RATE_LIMIT,
   DIRECTMAIL_SMTP_HOSTS,
+  MAILER_SUBJECT_CONFIRMATION,
   MAILER_SUBJECT_MAGIC_LINK,
+  MAILER_SUBJECT_RECOVERY,
   MAILER_TEMPLATE_CONFIRMATION,
   MAILER_TEMPLATE_MAGIC_LINK,
+  MAILER_TEMPLATE_RECOVERY,
   applyAuthSmtpConfig,
   authConfigUrl,
   buildAuthSmtpPatch,
@@ -42,10 +45,15 @@ test("buildAuthSmtpPatch writes DirectMail host plus OTP expiry and resend throt
   assert.equal(patch.smtp_max_frequency, EMAIL_OTP_RESEND_INTERVAL_SECONDS);
   assert.equal(patch.rate_limit_email_sent, CUSTOM_SMTP_EMAIL_RATE_LIMIT);
   assert.equal(patch.mailer_subjects_magic_link, MAILER_SUBJECT_MAGIC_LINK);
+  assert.equal(patch.mailer_subjects_recovery, MAILER_SUBJECT_RECOVERY);
   assert.match(String(patch.mailer_templates_confirmation_content), /\{\{ \.Token \}\}/);
   assert.match(String(patch.mailer_templates_magic_link_content), /\{\{ \.Token \}\}/);
-  assert.ok(MAILER_TEMPLATE_CONFIRMATION.includes("{{ .Token }}"));
-  assert.ok(MAILER_TEMPLATE_MAGIC_LINK.includes("{{ .Token }}"));
+  assert.match(String(patch.mailer_templates_recovery_content), /\{\{ \.Token \}\}/);
+  assert.match(String(patch.mailer_templates_recovery_content), /\{\{ \.ConfirmationURL \}\}/);
+  assert.ok(MAILER_TEMPLATE_CONFIRMATION.includes("StudySolo"));
+  assert.ok(MAILER_TEMPLATE_MAGIC_LINK.includes("StudySolo"));
+  assert.ok(MAILER_TEMPLATE_RECOVERY.includes("StudySolo"));
+  assert.ok(MAILER_SUBJECT_CONFIRMATION.includes("StudySolo"));
   assert.equal(EMAIL_OTP_EXPIRY_SECONDS, 600);
   assert.equal(EMAIL_OTP_RESEND_INTERVAL_SECONDS, 60);
 });

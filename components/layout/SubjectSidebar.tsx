@@ -8,7 +8,6 @@ import {
   FolderOpen,
   Sun,
   Moon,
-  Settings,
   PanelLeftClose,
   PanelLeft,
   ListTree,
@@ -19,8 +18,8 @@ import FileTree from "./FileTree";
 import TocTree from "./TocTree";
 import SiblingFilesPanel from "./SiblingFilesPanel";
 import GlobalSettings from "./GlobalSettings";
-import UserAvatar from "./UserAvatar";
-import { useAuthSession } from "@/lib/hooks/useAuthSession";
+import LeftDock from "./LeftDock";
+import UserQuotaPanel from "./UserQuotaPanel";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
@@ -47,9 +46,9 @@ export default function SubjectSidebar() {
   const toggleTheme = useTheme((s) => s.toggle);
   const hydrateTheme = useTheme((s) => s.hydrate);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [quotaOpen, setQuotaOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const settingsBtnRef = useRef<HTMLButtonElement>(null);
-  const { status: authStatus, email: authEmail } = useAuthSession();
   const academicYear = useAcademicYear((s) => s.year);
   const hydrateYear = useAcademicYear((s) => s.hydrate);
   const visibleSubjects = useMemo(
@@ -346,7 +345,7 @@ export default function SubjectSidebar() {
         )}
       </AnimatePresence>
 
-      {/* 底部工具条：全局设置 + 主题切换 */}
+      {/* 底部工具条：头像 + 昵称打开设置 */}
       <div
         className="flex shrink-0 items-center gap-1"
         style={{
@@ -355,28 +354,11 @@ export default function SubjectSidebar() {
           borderTop: "1px solid var(--md-sys-color-outline-variant)",
         }}
       >
-        <button
-          ref={settingsBtnRef}
-          onClick={() => setSettingsOpen((v) => !v)}
-          className="flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors"
-          style={{
-            color: "var(--md-sys-color-on-surface-variant)",
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "var(--md-sys-color-surface-container-high)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "transparent";
-          }}
-          title="设置 · 查看全局成绩"
-        >
-          <UserAvatar email={authEmail} signedIn={authStatus === "signedIn"} size={22} />
-          <Settings size={15} className="shrink-0" />
-          <span className="truncate text-[12.5px] font-medium">设置</span>
-        </button>
+        <LeftDock
+          buttonRef={settingsBtnRef}
+          onToggle={() => setSettingsOpen((v) => !v)}
+          onOpenQuota={() => setQuotaOpen(true)}
+        />
         <button
           onClick={toggleTheme}
           className="flex shrink-0 items-center justify-center rounded-lg transition-colors"
@@ -400,6 +382,9 @@ export default function SubjectSidebar() {
         </button>
       </div>
 
+      {quotaOpen && (
+        <UserQuotaPanel anchorRef={settingsBtnRef} onClose={() => setQuotaOpen(false)} />
+      )}
       {settingsOpen && (
         <GlobalSettings anchorRef={settingsBtnRef} onClose={() => setSettingsOpen(false)} />
       )}

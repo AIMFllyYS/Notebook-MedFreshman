@@ -13,16 +13,79 @@ export const DIRECTMAIL_SMTP_HOSTS = ["smtpdm.aliyun.com", "smtpdm.aliyuncs.com"
 export const CUSTOM_SMTP_EMAIL_RATE_LIMIT = 30;
 
 /** Default GoTrue templates omit `{{ .Token }}`; OTP login needs the code in the mail. */
-export const MAILER_SUBJECT_CONFIRMATION = "{{ .Token }} is your verification code";
-export const MAILER_SUBJECT_MAGIC_LINK = "{{ .Token }} is your sign-in code";
-export const MAILER_TEMPLATE_CONFIRMATION = `<h2>Confirm your email address</h2>
-<p>Your verification code is <strong>{{ .Token }}</strong>.</p>
-<p>Or follow the link below to confirm this email address and finish signing up.</p>
-<p><a href="{{ .ConfirmationURL }}">Confirm email address</a></p>`;
-export const MAILER_TEMPLATE_MAGIC_LINK = `<h2>Your sign-in code</h2>
-<p>Your verification code is <strong>{{ .Token }}</strong>.</p>
-<p>Or follow the link below to sign in. This link expires shortly and can only be used once.</p>
-<p><a href="{{ .ConfirmationURL }}">Sign in</a></p>`;
+export const MAILER_SUBJECT_CONFIRMATION = "{{ .Token }} · StudySolo 邮箱验证码";
+export const MAILER_SUBJECT_MAGIC_LINK = "{{ .Token }} · StudySolo 登录验证码";
+export const MAILER_SUBJECT_RECOVERY = "重置 StudySolo 密码";
+
+function studysoloMailHtml(opts: {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  tokenLabel: string;
+  linkLabel: string;
+  linkHint: string;
+}): string {
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<body style="margin:0;padding:0;background:#0f1419;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0f1419;padding:32px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="width:480px;max-width:100%;background:#161c24;border:1px solid #2a3340;border-radius:20px;">
+          <tr>
+            <td style="padding:28px 28px 8px 28px;font-family:'Segoe UI',Helvetica,Arial,'PingFang SC','Microsoft YaHei',sans-serif;">
+              <p style="margin:0 0 6px 0;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8ab4ff;">${opts.eyebrow}</p>
+              <h1 style="margin:0;font-size:22px;line-height:1.3;color:#f3f6fb;">${opts.title}</h1>
+              <p style="margin:12px 0 0 0;font-size:14px;line-height:1.6;color:#b7c2d0;">${opts.lead}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 28px 8px 28px;">
+              <p style="margin:0 0 8px 0;font-size:12px;color:#8b97a8;">${opts.tokenLabel}</p>
+              <p style="margin:0;padding:16px 12px;text-align:center;font-size:32px;letter-spacing:0.28em;font-weight:700;color:#f3f6fb;background:#0f1419;border:1px solid #2a3340;border-radius:14px;">{{ .Token }}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 28px 28px 28px;font-family:'Segoe UI',Helvetica,Arial,'PingFang SC','Microsoft YaHei',sans-serif;">
+              <p style="margin:0 0 12px 0;font-size:13px;line-height:1.6;color:#b7c2d0;">${opts.linkHint}</p>
+              <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:10px 16px;border-radius:999px;background:#8ab4ff;color:#0f1419;font-size:13px;font-weight:700;text-decoration:none;">${opts.linkLabel}</a>
+              <p style="margin:20px 0 0 0;font-size:11px;line-height:1.5;color:#6f7b8a;">如果不是你本人在 StudySolo 发起的请求，请忽略这封邮件。验证码约 10 分钟后失效。</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+export const MAILER_TEMPLATE_CONFIRMATION = studysoloMailHtml({
+  eyebrow: "StudySolo",
+  title: "确认你的邮箱",
+  lead: "一人一室，把课堂变成自己的复习工作站。用下面的验证码完成注册。",
+  tokenLabel: "邮箱验证码",
+  linkLabel: "确认邮箱并继续",
+  linkHint: "也可以点击按钮确认邮箱。链接只能使用一次。",
+});
+
+export const MAILER_TEMPLATE_MAGIC_LINK = studysoloMailHtml({
+  eyebrow: "StudySolo",
+  title: "登录验证码",
+  lead: "有人正在用这个邮箱登录 StudySolo。验证码如下。",
+  tokenLabel: "登录验证码",
+  linkLabel: "一键登录",
+  linkHint: "也可以点击按钮直接登录。链接即将过期，且只能使用一次。",
+});
+
+export const MAILER_TEMPLATE_RECOVERY = studysoloMailHtml({
+  eyebrow: "StudySolo",
+  title: "重置密码",
+  lead: "你申请了重置 StudySolo 密码。验证码如下；也可以直接打开重置链接。",
+  tokenLabel: "重置验证码",
+  linkLabel: "设置新密码",
+  linkHint: "点击按钮后返回 StudySolo，在登录弹窗里设置新密码。",
+});
 
 export interface AuthConfigSnapshot {
   smtpHost: string;
@@ -60,8 +123,10 @@ export function buildAuthSmtpPatch(smtp: SmtpEnv): AuthConfigPatch {
     rate_limit_email_sent: CUSTOM_SMTP_EMAIL_RATE_LIMIT,
     mailer_subjects_confirmation: MAILER_SUBJECT_CONFIRMATION,
     mailer_subjects_magic_link: MAILER_SUBJECT_MAGIC_LINK,
+    mailer_subjects_recovery: MAILER_SUBJECT_RECOVERY,
     mailer_templates_confirmation_content: MAILER_TEMPLATE_CONFIRMATION,
     mailer_templates_magic_link_content: MAILER_TEMPLATE_MAGIC_LINK,
+    mailer_templates_recovery_content: MAILER_TEMPLATE_RECOVERY,
   };
 }
 

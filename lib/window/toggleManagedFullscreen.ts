@@ -1,10 +1,13 @@
-import { resolveFullscreenRect, type FullscreenTarget } from "@/lib/constants/layout";
+import { type FullscreenTarget } from "@/lib/constants/layout";
 import { useWindowManager, type WindowPoint, type WindowSize } from "@/lib/hooks/useWindowManager";
 import { useSettings } from "@/lib/hooks/useSettings";
 import type { ManagedWindow } from "@/lib/hooks/useWindowManager";
+import { isAgentWorkspace } from "@/lib/stores/workspace";
+import { resolveWorkspaceFullscreenRect } from "@/lib/workspace/agentDock";
 
 function defaultTargetFor(win: ManagedWindow): FullscreenTarget {
   if (win.type === "billing-dashboard") return "viewport";
+  if (isAgentWorkspace()) return "right";
   if (win.type === "artifact-viewer") return useSettings.getState().artifactFullscreenTarget;
   return "notes";
 }
@@ -30,7 +33,7 @@ export function toggleManagedWindowFullscreen(windowId: string, target?: Fullscr
   wm.updateWindow(windowId, {
     preExpand: { pos: current.pos, size: current.size } satisfies { pos: WindowPoint; size: WindowSize },
   });
-  const rect = resolveFullscreenRect(resolved);
+  const rect = resolveWorkspaceFullscreenRect(resolved);
   if (rect && rect.width > 0 && rect.height > 0) {
     wm.commitGeometry(windowId, {
       pos: { x: rect.left, y: rect.top },

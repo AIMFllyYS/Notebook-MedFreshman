@@ -9,6 +9,15 @@ import {
   type OtpRequestResult,
   type OtpVerifyResult,
 } from "@/lib/auth/otp";
+import {
+  requestPasswordReset,
+  signInWithPasswordEmail,
+  signUpWithPasswordEmail,
+  updateAccountPassword,
+  type AuthPasswordClient,
+  type PasswordAuthResult,
+  type PasswordMailResult,
+} from "@/lib/auth/password";
 import { installAiAuthFetch } from "@/lib/auth/installAiAuthFetch";
 import { applySessionCookie, sessionAccessToken } from "@/lib/auth/sessionCookie";
 import {
@@ -21,7 +30,9 @@ import {
 } from "@/lib/auth/session";
 import { scheduleCloudPull, setCloudSyncEnabled } from "@/lib/sync/schedule";
 
-export type AuthRuntimeClient = AuthOtpClient & AuthSessionClient;
+export type AuthRuntimeClient = {
+  auth: AuthOtpClient["auth"] & AuthSessionClient["auth"] & Partial<AuthPasswordClient["auth"]>;
+};
 
 export type AuthStatus = "loading" | "signedOut" | "signedIn";
 
@@ -29,9 +40,20 @@ export interface AuthSessionApi {
   status: AuthStatus;
   session: AuthSession | null;
   email: string | null;
+  displayName: string | null;
+  avatarUrl: string | null;
   userId: string | null;
-  requestOtp: (email: string) => Promise<OtpRequestResult>;
+  needsNewPassword: boolean;
+  requestOtp: (email: string, opts?: { shouldCreateUser?: boolean }) => Promise<OtpRequestResult>;
   verifyOtp: (email: string, token: string) => Promise<OtpVerifyResult>;
+  signInWithPassword: (email: string, password: string) => Promise<PasswordAuthResult>;
+  signUpWithPassword: (
+    email: string,
+    password: string,
+    confirm: string,
+  ) => Promise<PasswordAuthResult | PasswordMailResult>;
+  requestPasswordReset: (email: string) => Promise<PasswordMailResult>;
+  updatePassword: (password: string, confirm: string) => Promise<PasswordMailResult>;
   signOut: () => Promise<void>;
 }
 
@@ -50,6 +72,7 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
 
   const [status, setStatus] = useState<AuthStatus>(client ? "loading" : "signedOut");
   const [session, setSession] = useState<AuthSession | null>(null);
+  const [needsNewPassword, setNeedsNewPassword] = useState(false);
   const authRevision = useRef(0);
 
   const apply = useCallback((next: AuthSession | null) => {
@@ -73,8 +96,12 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
         if (accept()) setStatus((current) => current === 'loading' ? 'signedOut' : current);
       }
     };
-    const unsub = subscribeAuthSession(client, (next) => {
-      if (!cancelled) { authRevision.current += 1; apply(next); }
+    const unsub = subscribeAuthSession(client, (next, event) => {
+      if (!cancelled) {
+        if (event === "PASSWORD_RECOVERY") setNeedsNewPassword(true);
+        authRevision.current += 1;
+        apply(next);
+      }
     }, (event) => event !== 'INITIAL_SESSION' || authRevision.current === 0);
     void restore();
     const onFocus = () => { if (document.visibilityState !== 'hidden') void restore(); };
@@ -94,9 +121,57 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
   }, [apply, client]);
 
   const requestOtp = useCallback(
-    async (email: string): Promise<OtpRequestResult> => {
+    async (email: string, opts?: { shouldCreateUser?: boolean }): Promise<OtpRequestResult> => {
       if (!client) return UNAVAILABLE;
-      return requestEmailOtp(client, email);
+      return requestEmailOtp(client, email, opts);
+    },
+    [client],
+  );
+
+  const applyAuthOk = useCallback((result: PasswordAuthResult) => {
+    if (result.ok && result.session) {
+      authRevision.current += 1;
+      applySessionCookie(result.session);
+      apply(snapshotAuthSession(result.user, result.session));
+    }
+    return result;
+  }, [apply]);
+
+  const signInWithPassword = useCallback(
+    async (email: string, password: string): Promise<PasswordAuthResult> => {
+      if (!client?.auth.signInWithPassword) return { ...UNAVAILABLE };
+      authRevision.current += 1;
+      return applyAuthOk(await signInWithPasswordEmail(client as AuthPasswordClient, email, password));
+    },
+    [applyAuthOk, client],
+  );
+
+  const signUpWithPassword = useCallback(
+    async (email: string, password: string, confirm: string): Promise<PasswordAuthResult | PasswordMailResult> => {
+      if (!client?.auth.signUp) return { ...UNAVAILABLE };
+      const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/login` : undefined;
+      const result = await signUpWithPasswordEmail(client as AuthPasswordClient, email, password, confirm, redirectTo);
+      if (result.ok && "session" in result) applyAuthOk(result);
+      return result;
+    },
+    [applyAuthOk, client],
+  );
+
+  const requestReset = useCallback(
+    async (email: string): Promise<PasswordMailResult> => {
+      if (!client?.auth.resetPasswordForEmail) return { ...UNAVAILABLE };
+      const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/login` : undefined;
+      return requestPasswordReset(client as AuthPasswordClient, email, redirectTo);
+    },
+    [client],
+  );
+
+  const updatePassword = useCallback(
+    async (password: string, confirm: string): Promise<PasswordMailResult> => {
+      if (!client?.auth.updateUser) return { ...UNAVAILABLE };
+      const result = await updateAccountPassword(client as AuthPasswordClient, password, confirm);
+      if (result.ok) setNeedsNewPassword(false);
+      return result;
     },
     [client],
   );
@@ -129,9 +204,16 @@ export function useAuthSessionController(injected?: AuthRuntimeClient | null): A
     status,
     session,
     email: session?.user.email ?? null,
+    displayName: session?.user.displayName ?? null,
+    avatarUrl: session?.user.avatarUrl ?? null,
     userId: session?.user.id ?? null,
+    needsNewPassword,
     requestOtp,
     verifyOtp,
+    signInWithPassword,
+    signUpWithPassword,
+    requestPasswordReset: requestReset,
+    updatePassword,
     signOut,
   };
 }
@@ -175,9 +257,16 @@ const FALLBACK: AuthSessionApi = {
   status: "signedOut",
   session: null,
   email: null,
+  displayName: null,
+  avatarUrl: null,
   userId: null,
+  needsNewPassword: false,
   requestOtp: async () => UNAVAILABLE,
   verifyOtp: async () => ({ ...UNAVAILABLE }),
+  signInWithPassword: async () => ({ ...UNAVAILABLE }),
+  signUpWithPassword: async () => ({ ...UNAVAILABLE }),
+  requestPasswordReset: async () => ({ ...UNAVAILABLE }),
+  updatePassword: async () => ({ ...UNAVAILABLE }),
   signOut: async () => {},
 };
 

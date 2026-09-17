@@ -10,6 +10,10 @@ export const LOGIN_PATH = "/login";
 export interface AuthSessionUser {
   id: string;
   email: string | null;
+  /** 账户代理可写 user_metadata.display_name / full_name / name / nickname */
+  displayName: string | null;
+  /** 账户代理可写 user_metadata.avatar_url / picture / avatar */
+  avatarUrl: string | null;
 }
 
 export interface AuthSession {
@@ -36,12 +40,28 @@ export interface AuthSessionClient {
   };
 }
 
+function readMetaString(value: object, keys: readonly string[]): string | null {
+  const raw = "user_metadata" in value ? (value as { user_metadata?: unknown }).user_metadata : null;
+  if (!raw || typeof raw !== "object") return null;
+  const meta = raw as Record<string, unknown>;
+  for (const key of keys) {
+    const item = meta[key];
+    if (typeof item === "string" && item.trim()) return item.trim();
+  }
+  return null;
+}
+
 function asUser(value: unknown): AuthSessionUser | null {
   if (!value || typeof value !== "object" || !("id" in value)) return null;
   const id = (value as { id: unknown }).id;
   if (typeof id !== "string" || !id) return null;
   const emailRaw = "email" in value ? (value as { email?: unknown }).email : null;
-  return { id, email: typeof emailRaw === "string" && emailRaw ? emailRaw : null };
+  return {
+    id,
+    email: typeof emailRaw === "string" && emailRaw ? emailRaw : null,
+    displayName: readMetaString(value, ["display_name", "full_name", "name", "nickname"]),
+    avatarUrl: readMetaString(value, ["avatar_url", "picture", "avatar"]),
+  };
 }
 
 export function snapshotAuthSession(user: unknown, session: unknown): AuthSession | null {
@@ -67,13 +87,13 @@ export async function readPersistedSession(
 
 export function subscribeAuthSession(
   client: AuthSessionClient,
-  onChange: (session: AuthSession | null) => void,
+  onChange: (session: AuthSession | null, event: string) => void,
   acceptEvent: (event: string) => boolean = () => true,
 ): () => void {
   const { data } = client.auth.onAuthStateChange((event, session) => {
     if (!acceptEvent(event)) return;
     applySessionCookie(session);
-    onChange(snapshotAuthSession(session?.user ?? null, session));
+    onChange(snapshotAuthSession(session?.user ?? null, session), event);
   });
   return () => data.subscription.unsubscribe();
 }

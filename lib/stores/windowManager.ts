@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { placeAgentDockWindow } from "@/lib/workspace/agentDock";
 
 export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor" | "user-note-editor" | "user-note-library" | "flashcard-cite-picker" | "agent-product-picker" | "memory-proposal" | "quiz-explain";
 
@@ -151,13 +152,14 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
     set((state) => {
       const existing = state.windows.some((win) => win.id === input.id);
       const z = state.topZ + 1;
+      const docked = placeAgentDockWindow({ pos: input.pos, size: input.size });
       const nextWindow: ManagedWindow = {
         id: input.id,
         type: input.type,
         title: input.title,
         icon: input.icon,
-        pos: input.pos,
-        size: input.size,
+        pos: docked.pos,
+        size: docked.size,
         data: input.data as ManagedWindowData,
         z,
         fullscreen: input.fullscreen ?? false,

@@ -25,7 +25,7 @@ test("classifySendError：未登录 401 指向左下角设置登录", () => {
   const hint = classifySendError(new Error("Unauthorized"), { stalled: false, aborted: false });
   assert.match(hint ?? "", /左下角「设置」/);
   assert.match(hint ?? "", /登录/);
-  assert.match(hint ?? "", /邮箱和验证码/);
+  assert.match(hint ?? "", /邮箱验证码/);
   assert.equal(
     classifySendError(new Error("API 请求失败: 401 Unauthorized - Unauthorized"), { stalled: false, aborted: false }),
     hint,

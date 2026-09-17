@@ -17,7 +17,7 @@ import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 import OpenUrlField from "@/components/window/OpenUrlDialog";
 
 interface WindowTaskbarProps {
-  host: "topbar" | "content-tab";
+  host: "topbar" | "content-tab" | "right-panel";
 }
 
 const ICON_SLOT = 32;

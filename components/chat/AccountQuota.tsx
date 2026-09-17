@@ -24,7 +24,7 @@ function GetMembershipTag() {
   );
 }
 
-export function AccountQuota() {
+export function AccountQuota({ variant = "context" }: { variant?: "context" | "panel" }) {
   const { userId, status } = useAuthSession();
   const [state, setState] = useState<{ userId: string | null; data?: QuotaView; error?: string }>({ userId: null });
   const [revision, setRevision] = useState(0);
@@ -53,9 +53,10 @@ export function AccountQuota() {
       document.removeEventListener('visibilitychange', refresh);
     };
   }, [userId, revision]);
+  const chrome = variant === "panel" ? "mb-3" : "mb-3 border-b border-[var(--line)] pb-3";
   if (!userId) {
     return (
-      <div className="mb-3 flex items-center justify-between gap-2 border-b border-[var(--line)] pb-3">
+      <div className={`flex items-center justify-between gap-2 ${chrome}`}>
         <p className="min-w-0 text-[11px] text-[var(--ink-faint)]">{status === 'loading' ? '正在读取账户…' : '登录后查看会员与额度'}</p>
         <GetMembershipTag />
       </div>
@@ -63,7 +64,7 @@ export function AccountQuota() {
   }
   const data = state.userId === userId ? state.data : undefined;
   const error = state.userId === userId ? state.error : undefined;
-  return <section aria-label="会员与额度" className="mb-3 border-b border-[var(--line)] pb-3">
+  return <section aria-label="会员与额度" className={chrome}>
     <div className="mb-2 flex items-center justify-between gap-2">
       <div className="flex min-w-0 items-center gap-2">
         <strong className="text-[12px] text-[var(--ink)]">{data ? TIERS[data.tier] : '会员与额度'}</strong>

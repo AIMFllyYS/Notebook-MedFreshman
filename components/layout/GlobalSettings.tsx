@@ -18,12 +18,15 @@ import {
   LogIn,
   LogOut,
   GraduationCap,
+  Gauge,
 } from "lucide-react";
-import { LOGIN_PATH } from "@/lib/auth/session";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import { useStore } from "@/lib/stores/ui";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
 import UserAvatar from "./UserAvatar";
+import AccountDialog from "./AccountDialog";
+import UserQuotaPanel from "./UserQuotaPanel";
+import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
 import { ACADEMIC_YEAR_LABELS } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
 import { navTree } from "@/lib/content-data/nav";
@@ -155,7 +158,7 @@ function computePos(anchor: HTMLElement | null): PopoverPos {
   const margin = 8;
   const vw = typeof window !== "undefined" ? window.innerWidth : 1280;
   const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-  const width = Math.min(420, vw - margin * 2);
+  const width = Math.min(352, vw - margin * 2);
   if (!anchor) {
     return { left: margin, bottom: 48, width, maxHeight: vh - 64 };
   }
@@ -173,15 +176,18 @@ function computePos(anchor: HTMLElement | null): PopoverPos {
 
 /**
  * 全局「设置」面板：以学习成绩为核心，外加外观与数据管理。
- * 锚定在侧栏底部「设置」按钮上方弹出，无背景遮罩/虚化（不打断阅读），点击外部 / Esc 关闭。
+ * 桌面锚定在侧栏底部「设置」按钮上方弹出；手机设置页以 `variant="page"` 全屏复用同一份内容。
  */
 export default function GlobalSettings({
   onClose,
   anchorRef,
+  variant = "popover",
 }: {
   onClose: () => void;
-  anchorRef?: React.RefObject<HTMLButtonElement | null>;
+  anchorRef?: React.RefObject<HTMLElement | null>;
+  variant?: "popover" | "page";
 }) {
+  const page = variant === "page";
   const theme = useTheme((s) => s.theme);
   const setTheme = useTheme((s) => s.setTheme);
   const appearance = useTheme((s) => s.appearance);
@@ -190,9 +196,14 @@ export default function GlobalSettings({
   const resetAppearance = useTheme((s) => s.resetAppearance);
   const router = useRouter();
   const { status: authStatus, email: authEmail, signOut } = useAuthSession();
+  const account = useAccountProfile();
+  const openLoginOverlay = useStore((s) => s.openLoginOverlay);
 
   const [entries, setEntries] = useState<ProgressEntry[]>(() => getAllProgress());
   const [confirmClear, setConfirmClear] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [quotaOpen, setQuotaOpen] = useState(false);
+  const quotaBtnRef = useRef<HTMLButtonElement>(null);
   const [openSection, setOpenSection] = useState<"year" | "scores" | "keyboard" | "appearance" | null>(null);
   const openAgentSettings = useStore((s) => s.openAgentSettings);
   const academicYear = useAcademicYear((s) => s.year);
@@ -203,10 +214,11 @@ export default function GlobalSettings({
     setOpenSection((prev) => (prev === id ? null : id));
   }, []);
 
-  useOverlayRegistration({ id: "global-settings", open: true, onClose, priority: 50 });
+  useOverlayRegistration({ id: "global-settings", open: !page, onClose, priority: 50 });
 
   // 定位：打开时即算，并随窗口尺寸 / 滚动更新。
   useLayoutEffect(() => {
+    if (page) return;
     const update = () => setPos(computePos(anchorRef?.current ?? null));
     update();
     window.addEventListener("resize", update);
@@ -215,19 +227,21 @@ export default function GlobalSettings({
       window.removeEventListener("resize", update);
       window.removeEventListener("scroll", update, true);
     };
-  }, [anchorRef]);
+  }, [anchorRef, page]);
 
   // 点击外部关闭（无遮罩层，靠监听实现，不影响页面交互）。Esc 由全局 overlay 栈处理。
   useEffect(() => {
+    if (page) return;
     const onDown = (e: MouseEvent) => {
       const t = e.target as Node;
       if (panelRef.current?.contains(t)) return;
       if (anchorRef?.current?.contains(t)) return;
+      if (document.getElementById("studysolo-account-dialog")?.contains(t)) return;
       onClose();
     };
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
-  }, [onClose, anchorRef]);
+  }, [onClose, anchorRef, page]);
 
   const summary = useMemo(() => getGlobalSummary(entries), [entries]);
   const groups = useMemo(() => groupBySubject(entries), [entries]);
@@ -244,42 +258,54 @@ export default function GlobalSettings({
   };
 
   const handleOpenAgentSettings = () => {
-    onClose();
+    if (!page) onClose();
     openAgentSettings();
   };
 
   const node = (
     <motion.div
       ref={panelRef}
-      role="dialog"
+      role={page ? "region" : "dialog"}
       aria-label="设置"
-      initial={{ opacity: 0, scale: 0.97, y: 6 }}
+      data-testid={page ? "global-settings-page" : "global-settings-popover"}
+      initial={page ? false : { opacity: 0, scale: 0.97, y: 6 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.18, ease: [0.05, 0.7, 0.1, 1] }}
-      className="fixed z-[9998] flex flex-col overflow-hidden rounded-[var(--md-sys-shape-corner-extra-large,28px)]"
-      style={{
-        left: pos.left,
-        bottom: pos.bottom,
-        width: pos.width,
-        maxHeight: pos.maxHeight,
-        transformOrigin: "left bottom",
-        background: "var(--md-sys-color-surface-container-low)",
-        border: "1px solid var(--md-sys-color-outline-variant)",
-        boxShadow: "var(--md-sys-elevation-level3, 0 8px 24px rgba(0,0,0,0.32))",
-      }}
+      className={
+        page
+          ? "global-settings-page flex h-full min-h-0 w-full flex-col overflow-hidden"
+          : "fixed z-[9998] flex flex-col overflow-hidden rounded-[var(--md-sys-shape-corner-extra-large,28px)]"
+      }
+      style={
+        page
+          ? {
+              background: "var(--md-sys-color-surface-container-low)",
+            }
+          : {
+              left: pos.left,
+              bottom: pos.bottom,
+              width: pos.width,
+              maxHeight: pos.maxHeight,
+              transformOrigin: "left bottom",
+              background: "var(--md-sys-color-surface-container-low)",
+              border: "1px solid var(--md-sys-color-outline-variant)",
+              boxShadow: "var(--md-sys-elevation-level3, 0 8px 24px rgba(0,0,0,0.32))",
+            }
+      }
     >
         {/* 头部 */}
         <div
-          className="flex shrink-0 items-center justify-between px-5 py-3.5"
+          className="flex shrink-0 items-center justify-between px-3.5 py-2.5"
           style={{
             borderBottom: "1px solid var(--md-sys-color-outline-variant)",
             background: "var(--md-sys-color-surface-container)",
           }}
         >
-          <div className="flex items-center gap-2">
-            <Settings size={16} className="text-[var(--md-sys-color-primary)]" />
-            <span className="text-[14px] font-bold text-[var(--md-sys-color-on-surface)]">设置</span>
+          <div className="flex items-center gap-1.5">
+            <Settings size={14} className="text-[var(--md-sys-color-primary)]" />
+            <span className="text-[13px] font-bold text-[var(--md-sys-color-on-surface)]">设置</span>
           </div>
+          {page ? null : (
           <button
             onClick={onClose}
             className="rounded-lg p-1 text-[var(--md-sys-color-on-surface-variant)] transition-colors hover:bg-[var(--md-sys-color-surface-container-high)]"
@@ -287,28 +313,38 @@ export default function GlobalSettings({
           >
             <X size={18} />
           </button>
+          )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
+        <div className="flex flex-1 flex-col gap-2.5 overflow-y-auto p-3">
           <div
-            className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container)] px-3.5 py-2.5"
+            data-testid="account-card"
+            className="flex items-center justify-between gap-2.5 rounded-[14px] bg-[var(--md-sys-color-surface-container)] px-3 py-2"
             style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
           >
-            <div className="flex min-w-0 items-center gap-3">
+            <button
+              type="button"
+              className="flex min-w-0 flex-1 items-center gap-2.5 text-left"
+              style={{ background: "transparent", border: "none", cursor: "pointer" }}
+              onClick={() => setAccountOpen(true)}
+              aria-label="查看账户"
+            >
               <UserAvatar
-                email={authEmail}
+                name={account.nickname}
+                email={account.email ?? authEmail}
+                imageSrc={account.avatarSrc}
                 signedIn={authStatus === "signedIn"}
-                size={40}
+                size={34}
               />
               <div className="min-w-0">
-                <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">
-                  {authStatus === "signedIn" ? (authEmail?.split("@")[0] || "已登录") : "访客"}
+                <div className="truncate text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
+                  {account.nickname}
                 </div>
                 <div className="truncate text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                  {authStatus === "signedIn" ? authEmail || "已登录" : "未登录"}
+                  {account.membership}
                 </div>
               </div>
-            </div>
+            </button>
             {authStatus === "signedIn" ? (
               <button
                 type="button"
@@ -330,7 +366,7 @@ export default function GlobalSettings({
                 type="button"
                 aria-label="登录"
                 onClick={() => {
-                  router.push(LOGIN_PATH);
+                  openLoginOverlay();
                   onClose();
                 }}
                 className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
@@ -346,6 +382,37 @@ export default function GlobalSettings({
               </button>
             )}
           </div>
+
+          {page ? (
+            <div
+              className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container)] px-3.5 py-2.5"
+              style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
+            >
+              <div className="min-w-0">
+                <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">额度</div>
+                <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                  会员、平台用量与存储占用，与左下角坞同一入口。
+                </div>
+              </div>
+              <button
+                ref={quotaBtnRef}
+                type="button"
+                aria-label="额度"
+                data-testid="mobile-settings-quota"
+                onClick={() => setQuotaOpen(true)}
+                className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
+                style={{
+                  background: "var(--md-sys-color-primary)",
+                  color: "var(--md-sys-color-on-primary)",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <Gauge size={14} />
+                查看
+              </button>
+            </div>
+          ) : null}
 
           <SettingsSection
             title="年级 / 学期"
@@ -537,6 +604,27 @@ export default function GlobalSettings({
     </motion.div>
   );
 
+  const accountDialog = accountOpen ? (
+    <AccountDialog onClose={() => setAccountOpen(false)} />
+  ) : null;
+  const quotaPanel = page && quotaOpen ? (
+    <UserQuotaPanel anchorRef={quotaBtnRef} onClose={() => setQuotaOpen(false)} />
+  ) : null;
+
+  if (page) {
+    return (
+      <>
+        {node}
+        {accountDialog}
+        {quotaPanel}
+      </>
+    );
+  }
   if (typeof document === "undefined") return null;
-  return createPortal(node, document.body);
+  return (
+    <>
+      {createPortal(node, document.body)}
+      {accountDialog}
+    </>
+  );
 }

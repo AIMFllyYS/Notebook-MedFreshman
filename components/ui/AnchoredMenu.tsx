@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode, type Ref } from "react";
 import { createPortal } from "react-dom";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import {
@@ -21,9 +21,19 @@ interface AnchoredMenuProps {
   placement?: "top" | "bottom";
   role?: "menu" | "listbox";
   testId?: string;
+  triggerRef?: Ref<HTMLButtonElement>;
   triggerData?: Record<`data-${string}`, string>;
   /** 叠在 Spotlight 等高层 overlay 上时提高菜单层。默认已盖过设置层与 Mac 窗。 */
   menuZIndex?: number;
+}
+
+function assignRef(ref: Ref<HTMLButtonElement> | undefined, node: HTMLButtonElement | null) {
+  if (!ref) return;
+  if (typeof ref === "function") {
+    ref(node);
+    return;
+  }
+  (ref as { current: HTMLButtonElement | null }).current = node;
 }
 
 function sameBox(a: AnchoredMenuBox | null, b: AnchoredMenuBox): boolean {
@@ -40,11 +50,15 @@ function writeBox(menu: HTMLElement, box: AnchoredMenuBox) {
 
 /** Shared non-modal menu: portal, viewport collision handling and keyboard/focus lifecycle. */
 export default function AnchoredMenu({ label, trigger, children, className = "", style, disabled, width = 240,
-  placement = "bottom", role = "menu", testId, triggerData, menuZIndex = APP_MENU_Z_INDEX }: AnchoredMenuProps) {
+  placement = "bottom", role = "menu", testId, triggerRef, triggerData, menuZIndex = APP_MENU_Z_INDEX }: AnchoredMenuProps) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [box, setBox] = useState<AnchoredMenuBox | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const setButtonRef = useCallback((node: HTMLButtonElement | null) => {
+    buttonRef.current = node;
+    assignRef(triggerRef, node);
+  }, [triggerRef]);
   const menuRef = useRef<HTMLDivElement>(null);
   const focusedRef = useRef(false);
   const close = useCallback(() => {
@@ -131,7 +145,7 @@ export default function AnchoredMenu({ label, trigger, children, className = "",
   }, [open]);
 
   return <>
-    <button ref={buttonRef} type="button" aria-label={label} title={label} aria-haspopup={role}
+    <button ref={setButtonRef} type="button" aria-label={label} title={label} aria-haspopup={role}
       aria-expanded={open} aria-controls={open ? id : undefined} disabled={disabled}
       className={className} style={style} data-testid={testId} {...triggerData}
       onClick={() => {

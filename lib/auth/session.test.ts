@@ -45,14 +45,32 @@ test("LOGIN_PATH is /login", () => {
 
 test("snapshotAuthSession reads user from user or session payload", () => {
   assert.deepEqual(snapshotAuthSession({ id: "u1", email: "ada@example.com" }, null), {
-    user: { id: "u1", email: "ada@example.com" },
+    user: { id: "u1", email: "ada@example.com", displayName: null, avatarUrl: null },
   });
   assert.deepEqual(
     snapshotAuthSession(null, { user: { id: "u2", email: "bob@example.com" } }),
-    { user: { id: "u2", email: "bob@example.com" } },
+    { user: { id: "u2", email: "bob@example.com", displayName: null, avatarUrl: null } },
   );
   assert.equal(snapshotAuthSession(null, null), null);
   assert.equal(snapshotAuthSession({ email: "no-id@example.com" }, null), null);
+  assert.deepEqual(
+    snapshotAuthSession(
+      {
+        id: "u3",
+        email: "sofia@example.com",
+        user_metadata: { display_name: "Sofia", avatar_url: "https://cdn.example/a.png" },
+      },
+      null,
+    ),
+    {
+      user: {
+        id: "u3",
+        email: "sofia@example.com",
+        displayName: "Sofia",
+        avatarUrl: "https://cdn.example/a.png",
+      },
+    },
+  );
 });
 
 test("readPersistedSession returns the stored session (refresh)", async () => {
@@ -61,7 +79,7 @@ test("readPersistedSession returns the stored session (refresh)", async () => {
   });
   const first = await readPersistedSession(client);
   const again = await readPersistedSession(client);
-  assert.deepEqual(first, { user: { id: "u1", email: "ada@example.com" } });
+  assert.deepEqual(first, { user: { id: "u1", email: "ada@example.com", displayName: null, avatarUrl: null } });
   assert.deepEqual(again, first);
 });
 

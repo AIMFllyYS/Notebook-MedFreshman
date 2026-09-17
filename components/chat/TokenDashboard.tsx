@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
 import { useFloatingTokenTracker } from '@/lib/hooks/useFloatingTokenTracker';
 import { useSettings } from '@/lib/hooks/useSettings';
-import { getModelInfoWithCustom } from '@/lib/ai/models';
+import { getModelInfoWithCustom, resolveCacheTtlSec } from '@/lib/ai/models';
 import {
   FIRST_TURN_OVERHEAD_TOKENS,
   contextRingCaption,
@@ -25,11 +25,10 @@ import { openBillingDashboard } from '@/lib/window/openBillingDashboard';
 import { useBillingStore } from '@/lib/hooks/useBillingStore';
 import { costCnyToUsd, summarizeSessionLedger } from '@/lib/billing/ledgerView';
 import { refreshBillingFromLedger } from '@/lib/billing/syncUsageLedger';
-import { AccountQuota } from '@/components/chat/AccountQuota';
 import { UsageProgressBar } from '@/components/chat/UsageProgressBar';
+import { ContextUsageRing } from '@/components/chat/ContextUsageRing';
 import { ACCOUNT_USAGE_CHANGED, notifyAccountUsageChanged } from '@/lib/billing/quotaView';
-import { EMPTY_SESSION_STORAGE, measureSessionStorageUsageAsync, type SessionStorageUsage } from '@/lib/chat/sessionStorageUsage';
-import { formatSyncBytes } from '@/lib/sync/usage';
+import { compactActiveSession } from '@/lib/context/compactChatSession';
 
 function fmtTokens(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -84,10 +83,9 @@ const BREAKDOWN_CATS: { key: 'tools' | 'skills' | 'pages' | 'webSearch' | 'conve
 
 export default function TokenDashboard({ isLoading = false, floatingSessionId, modelId }: { isLoading?: boolean; floatingSessionId?: string; modelId?: string }) {
   const [open, setOpen] = useState(false);
-  const [detailsOpen, setDetailsOpen] = useState(true);
-  const [sessionStorage, setSessionStorage] = useState<SessionStorageUsage>(EMPTY_SESSION_STORAGE);
   const [pinned, setPinned] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [compacting, setCompacting] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
 
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -131,7 +129,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   );
   const modelInfo = getModelInfoWithCustom(selectedModelId, customApiGroups);
   const pricing = modelInfo?.pricing;
-  const cacheTtlSec = modelInfo?.cacheTtlSec;
+  const cacheTtlSec = resolveCacheTtlSec(modelInfo?.cacheTtlSec);
 
   // ── 上下文实时估算（前端先算，后端 usage 再覆盖为真值）+ 手动刷新 ──
   // 读 getState 不订阅 sessions，避免流式时整组件重渲染风暴。
@@ -180,33 +178,26 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
     }
   }, [floatingSessionId, modelId]);
 
-  const refreshSessionStorage = useCallback(() => {
-    const st = useChatHistory.getState();
-    const sid = floatingSessionId ?? st.activeSessionId;
-    if (!sid) {
-      setSessionStorage(EMPTY_SESSION_STORAGE);
-      return;
+  const runCompact = useCallback(async () => {
+    if (compacting) return;
+    setCompacting(true);
+    try {
+      await compactActiveSession(floatingSessionId ?? useChatHistory.getState().activeSessionId);
+      recompute();
+    } finally {
+      setCompacting(false);
     }
-    const apply = async (store: typeof st) => {
-      const meta = store.sessionsMeta.find((item) => item.id === sid);
-      setSessionStorage(await measureSessionStorageUsageAsync(sid, store.messagesById[sid] ?? [], meta));
-    };
-    void st.ensureSessionLoaded(sid).then(() => apply(useChatHistory.getState()));
-  }, [floatingSessionId]);
+  }, [compacting, floatingSessionId, recompute]);
 
   // 始终定时刷新上下文估算（面板开关均运行），确保按钮数字实时更新。
-  // 面板开时 2.5s 高频刷新（展开详情需要跟手）；关时 5s 低频刷新（仅更新按钮数字）。
   useEffect(() => {
     recompute();
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (open) refreshSessionStorage();
     const interval = open ? 2500 : 5000;
     const id = setInterval(() => {
       recompute();
-      if (open) refreshSessionStorage();
     }, interval);
     return () => clearInterval(id);
-  }, [open, recompute, refreshSessionStorage]);
+  }, [open, recompute]);
 
   useEffect(() => {
     if (!open) return;
@@ -275,26 +266,7 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
   }, [open, pinned, elRef]);
 
   const hasContextData = serverContextTokens > 0 || ctxTokens > 0;
-  const RING_R = 14;
-  const RING_C = 2 * Math.PI * RING_R;
-  const ringDash = hasContextData ? `${Math.max(ratio, 0.02) * RING_C} ${RING_C}` : `0 ${RING_C}`;
-  const iconSvg = hasContextData ? (
-    <svg width="14" height="14" viewBox="0 0 32 32" style={{ transform: 'rotate(-90deg)' }}>
-      <circle cx="16" cy="16" r={RING_R} fill="none" stroke={ringColor} strokeWidth="4" strokeOpacity={0.15} />
-      <circle
-        cx="16" cy="16" r={RING_R} fill="none"
-        stroke={ringColor} strokeWidth="4" strokeLinecap="round"
-        strokeDasharray={ringDash}
-        style={{ transition: 'stroke-dasharray 0.3s ease, stroke 0.3s ease' }}
-      />
-    </svg>
-  ) : (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="3" width="18" height="18" rx="2" />
-      <path d="M3 9h18" />
-      <path d="M9 21V9" />
-    </svg>
-  );
+  const iconSvg = <ContextUsageRing ratio={hasContextData ? ratio : 0} size={14} />;
 
   return (
     <>
@@ -395,13 +367,31 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
           </div>
 
           <div style={{ padding: '10px 12px', fontSize: 11 }}>
-            <AccountQuota />
             {/* Context usage bar */}
             <div style={{ marginBottom: 10 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, color: 'var(--ink-soft)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4, color: 'var(--ink-soft)' }}>
                 <span>上下文使用</span>
-                <span style={{ color: barColor, fontWeight: 600 }}>
-                  {fmtTokens(ctxTokens)} / {fmtTokens(ctxLimit)} &nbsp;{pctText}
+                <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ color: barColor, fontWeight: 600 }}>
+                    {fmtTokens(ctxTokens)} / {fmtTokens(ctxLimit)} &nbsp;{pctText}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => { void runCompact(); }}
+                    disabled={compacting}
+                    data-testid="context-compact"
+                    style={{
+                      background: 'none',
+                      border: '1px solid var(--line)',
+                      borderRadius: 6,
+                      padding: '1px 6px',
+                      fontSize: 10,
+                      color: 'var(--accent-ink)',
+                      cursor: compacting ? 'wait' : 'pointer',
+                    }}
+                  >
+                    {compacting ? '压缩中…' : '压缩'}
+                  </button>
                 </span>
               </div>
               <UsageProgressBar ratio={ratio} ariaLabel="上下文使用比例" />
@@ -409,8 +399,6 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
                 <div style={{ marginTop: 4, fontSize: 10, color: ringColor }}>{ringCaption}</div>
               )}
             </div>
-
-            <SessionStorageBlock usage={sessionStorage} />
 
             {(contextTruncated || showCacheRow) && (
               <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8, marginBottom: 10 }}>
@@ -428,10 +416,6 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
               </div>
             )}
 
-            {/* Context composition (IDE 式分项构成) */}
-            <details open={detailsOpen} onToggle={(event) => setDetailsOpen(event.currentTarget.open)}>
-            <summary className="mb-2 cursor-pointer rounded py-2 text-[var(--ink-soft)]">上下文构成与消耗详情</summary>
-            {detailsOpen ? <>
             <div style={{ marginBottom: 10 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, color: 'var(--ink-soft)' }}>
                 <span>上下文构成</span>
@@ -489,52 +473,22 @@ export default function TokenDashboard({ isLoading = false, floatingSessionId, m
 
             {/* Session total */}
             <div style={{ borderTop: '1px solid var(--line)', paddingTop: 8 }}>
-              <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>会话累计</div>
+              <div style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>累计计费</div>
               <Row label="总输入" value={fmtTokens(sessionLedger.promptTokens)} />
               <Row label="总输出" value={fmtTokens(sessionLedger.completionTokens)} />
+              <Row label="缓存命中" value={`${sessionLedger.cacheHitCount} 次`} />
+              <Row label="命中率" value={`${Math.round(sessionLedger.cacheHitRate * 100)}%`} />
               <Row label="累计费用" value={fmtMoneyPair(totalCost, usdExchangeRate)} accent />
             </div>
 
             <div style={{ marginTop: 8, fontSize: 9, color: 'var(--ink-faint)', lineHeight: 1.3 }}>
-              价格为平台参考价，实际以 API 提供商结算为准。
+              价格为平台参考价，实际以 API 提供商结算为准。缓存命中窗口默认 {Math.round(cacheTtlSec / 60)} 分钟。
             </div>
-            </> : null}
-            </details>
           </div>
         </div>,
         document.body,
       )}
     </>
-  );
-}
-
-function SessionStorageBlock({ usage }: { usage: SessionStorageUsage }) {
-  const conversationLimit = usage.conversationLimitBytes;
-  return (
-    <div style={{ marginBottom: 10 }}>
-      <div style={{ marginBottom: 6 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
-          <span>对话占用</span>
-          <span style={{ fontVariantNumeric: 'tabular-nums' }}>
-            {formatSyncBytes(usage.conversationBytes)} / {formatSyncBytes(conversationLimit)}
-          </span>
-        </div>
-        <UsageProgressBar
-          ratio={conversationLimit > 0 ? usage.conversationBytes / conversationLimit : 0}
-          ariaLabel="对话占用"
-          height={4}
-        />
-      </div>
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3, color: 'var(--ink-soft)' }}>
-          <span>附件占用{usage.attachmentCount > 0 ? ` · ${usage.attachmentCount} 个` : ''}</span>
-          <span style={{ fontVariantNumeric: 'tabular-nums' }}>{formatSyncBytes(usage.attachmentBytes)}</span>
-        </div>
-      </div>
-      <div style={{ marginTop: 4, fontSize: 10, color: 'var(--ink-faint)', lineHeight: 1.35 }}>
-        对话条对照本条会话 {Math.round(conversationLimit / (1024 * 1024))} MB 上限。附件只留本机，不占云端额度，也没有账号附件上限。
-      </div>
-    </div>
   );
 }
 

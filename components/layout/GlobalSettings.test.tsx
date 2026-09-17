@@ -125,6 +125,37 @@ describe("GlobalSettings", () => {
     expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toHaveTextContent("大一下学期");
   });
 
+  it("opens a small account window from the account card", async () => {
+    const user = userEvent.setup();
+    renderSettings();
+    await user.click(screen.getByRole("button", { name: "查看账户" }));
+    expect(screen.getByRole("dialog", { name: "账户信息" })).toBeInTheDocument();
+    expect(screen.getByText("只保存在这台设备")).toBeInTheDocument();
+  });
+
+  it("page variant inlines dock settings without a close control", () => {
+    render(<GlobalSettings variant="page" onClose={() => {}} />);
+    expect(screen.getByTestId("global-settings-page")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "登录" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "额度" })).toBeInTheDocument();
+    expect(screen.getByTestId("mobile-settings-quota")).toHaveAccessibleName("额度");
+    expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /成绩/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /快捷键/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /外观/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "打开 Agent 设置" })).toBeInTheDocument();
+    expect(screen.queryByTitle("关闭")).not.toBeInTheDocument();
+  });
+
+  it("page variant opens Agent settings without closing the settings tab", async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    render(<GlobalSettings variant="page" onClose={onClose} />);
+    await user.click(screen.getByRole("button", { name: "打开 Agent 设置" }));
+    expect(onClose).not.toHaveBeenCalled();
+    expect(useStore.getState().agentSettingsOpen).toBe(true);
+  });
+
   it("expands appearance controls and applies custom color/font settings", async () => {
     const user = userEvent.setup();
     renderSettings();

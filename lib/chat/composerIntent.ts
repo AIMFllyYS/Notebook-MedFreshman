@@ -29,12 +29,15 @@ export interface AttachedFileRef {
   childPaths?: string[];
 }
 
+export const COMPOSER_PLAN_LABEL = "计划模式";
+export const COMPOSER_COMPACT_LABEL = "压缩上下文";
+
 export const FORCED_TOOL_LABELS: Record<ForcedComposerTool, string> = {
   generateImage: "生成图片",
-  renderInteractive: "可交互 HTML",
-  writeDocument: "长文",
-  flashcards: "闪卡",
-  notes: "笔记",
+  renderInteractive: "可交互网页",
+  writeDocument: "生成长文",
+  flashcards: "整理闪卡",
+  notes: "整理笔记",
 };
 
 export function isForcedComposerTool(value: string | undefined): value is ForcedComposerTool {

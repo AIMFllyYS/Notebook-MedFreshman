@@ -2,15 +2,17 @@
 
 import type { Skill } from "@/lib/types/skill";
 import {
+  COMPOSER_COMPACT_LABEL,
+  COMPOSER_PLAN_LABEL,
   FORCED_COMPOSER_TOOLS,
   FORCED_TOOL_LABELS,
   type ComposerForcedTool,
   type ForcedComposerTool,
   skillForcedTool,
 } from "@/lib/chat/composerIntent";
-import { ForcedToolIcon, PlanModeIcon, SkillIcon } from "./ComposerIcons";
+import { CompactContextIcon, ForcedToolIcon, PlanModeIcon, SkillIcon } from "./ComposerIcons";
 
-export type ComposerCommandId = "plan" | ComposerForcedTool;
+export type ComposerCommandId = "plan" | "compact" | ComposerForcedTool;
 
 export interface ComposerCommandPanelProps {
   planMode: boolean;
@@ -20,6 +22,7 @@ export interface ComposerCommandPanelProps {
   query?: string;
   activeIndex?: number;
   onSelectPlan: () => void;
+  onSelectCompact: () => void;
   onSelectTool: (tool: ForcedComposerTool) => void;
   onSelectSkill: (skill: Skill) => void;
 }
@@ -28,11 +31,12 @@ export function listComposerCommands(input: {
   planAllowed: boolean;
   skills: Skill[];
   query?: string;
-}): Array<{ id: ComposerCommandId; kind: "plan" | "tool" | "skill"; skill?: Skill }> {
+}): Array<{ id: ComposerCommandId; kind: "plan" | "compact" | "tool" | "skill"; skill?: Skill }> {
   const query = input.query?.trim().toLowerCase() ?? "";
   const match = (label: string) => !query || label.toLowerCase().includes(query);
-  const items: Array<{ id: ComposerCommandId; kind: "plan" | "tool" | "skill"; skill?: Skill }> = [];
-  if (input.planAllowed && match("计划模式")) items.push({ id: "plan", kind: "plan" });
+  const items: Array<{ id: ComposerCommandId; kind: "plan" | "compact" | "tool" | "skill"; skill?: Skill }> = [];
+  if (input.planAllowed && match(COMPOSER_PLAN_LABEL)) items.push({ id: "plan", kind: "plan" });
+  if (match(COMPOSER_COMPACT_LABEL)) items.push({ id: "compact", kind: "compact" });
   for (const tool of FORCED_COMPOSER_TOOLS) {
     if (match(FORCED_TOOL_LABELS[tool]) || match(tool)) items.push({ id: tool, kind: "tool" });
   }
@@ -52,11 +56,13 @@ export default function ComposerCommandPanel({
   query,
   activeIndex = 0,
   onSelectPlan,
+  onSelectCompact,
   onSelectTool,
   onSelectSkill,
 }: ComposerCommandPanelProps) {
   const items = listComposerCommands({ planAllowed, skills, query });
   const showPlan = items.some((item) => item.kind === "plan");
+  const showCompact = items.some((item) => item.kind === "compact");
   const tools = items.filter((item) => item.kind === "tool");
   const skillItems = items.filter((item) => item.kind === "skill");
   const selectedId = items[activeIndex]?.id;
@@ -72,11 +78,23 @@ export default function ComposerCommandPanel({
           onClick={onSelectPlan}
         >
           <span className="app-menu-check"><PlanModeIcon /></span>
-          <span>计划模式</span>
+          <span>{COMPOSER_PLAN_LABEL}</span>
           {planMode ? <span className="composer-command-on">已开</span> : null}
         </button>
       )}
-      {showPlan && tools.length > 0 ? <div className="app-menu-separator" /> : null}
+      {showCompact && (
+        <button
+          type="button"
+          role="option"
+          aria-selected={selectedId === "compact"}
+          className="app-menu-item"
+          onClick={onSelectCompact}
+        >
+          <span className="app-menu-check"><CompactContextIcon /></span>
+          <span>{COMPOSER_COMPACT_LABEL}</span>
+        </button>
+      )}
+      {(showPlan || showCompact) && tools.length > 0 ? <div className="app-menu-separator" /> : null}
       {tools.length > 0 ? <div className="app-menu-heading">特定工具</div> : null}
       {tools.map((item) => {
         const tool = item.id as ForcedComposerTool;

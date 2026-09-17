@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
+  COMPOSER_COMPACT_LABEL,
   FORCED_TOOL_LABELS,
   NOTEBOOK_FILE_MIME,
   filePathOf,
@@ -30,7 +31,11 @@ test("composerIntent：path 与强制工具映射", () => {
   assert.equal(resolveForcedToolName(skillForcedTool("s1")), "useSkill");
   assert.match(formatForcedToolLine("generateImage"), /generateImage/);
   assert.match(formatForcedToolLine(skillForcedTool("s1"), "速记"), /速记/);
-  assert.equal(FORCED_TOOL_LABELS.writeDocument, "长文");
+  assert.equal(FORCED_TOOL_LABELS.writeDocument, "生成长文");
+  assert.equal(FORCED_TOOL_LABELS.renderInteractive, "可交互网页");
+  assert.equal(FORCED_TOOL_LABELS.flashcards, "整理闪卡");
+  assert.equal(FORCED_TOOL_LABELS.notes, "整理笔记");
+  assert.equal(COMPOSER_COMPACT_LABEL, "压缩上下文");
 });
 
 test("composerIntent：拖拽 payload 与去重", () => {
