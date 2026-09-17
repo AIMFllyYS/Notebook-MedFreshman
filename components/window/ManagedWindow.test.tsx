@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ManagedWindow from "@/components/window/ManagedWindow";
@@ -38,6 +38,7 @@ afterEach(() => {
   cleanup();
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
   document.getElementById(NOTES_PANEL_ID)?.remove();
+  vi.unstubAllGlobals();
 });
 
 describe("ManagedWindow", () => {
@@ -108,6 +109,54 @@ describe("ManagedWindow", () => {
       expect(win?.fullscreen).toBe(false);
       expect(win?.pos).toEqual({ x: 40, y: 50 });
       expect(win?.size).toEqual({ width: 480, height: 360 });
+    });
+  });
+
+  it("tracks #notes-panel size when the right panel resizes", async () => {
+    let resize: ResizeObserverCallback | undefined;
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        constructor(callback: ResizeObserverCallback) {
+          resize = callback;
+        }
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      },
+    );
+    const panel = mountNotesPanel({ left: 80, top: 40, width: 900, height: 600 });
+    openTestWindow();
+    render(
+      <ManagedWindow windowId={WIN_ID} title="测试窗" onClose={() => {}} fullscreenTarget="notes">
+        <span>payload</span>
+      </ManagedWindow>,
+    );
+
+    await userEvent.click(screen.getByTitle("全屏"));
+    await waitFor(() => {
+      expect(useWindowManager.getState().windows[0]?.fullscreen).toBe(true);
+      expect(useWindowManager.getState().windows[0]?.size).toEqual({ width: 900, height: 600 });
+    });
+
+    panel.getBoundingClientRect = () =>
+      ({
+        left: 80,
+        top: 40,
+        width: 520,
+        height: 600,
+        right: 600,
+        bottom: 640,
+        x: 80,
+        y: 40,
+        toJSON: () => {},
+      }) as DOMRect;
+
+    act(() => resize?.([], {} as ResizeObserver));
+
+    await waitFor(() => {
+      expect(useWindowManager.getState().windows[0]?.size).toEqual({ width: 520, height: 600 });
+      expect(useWindowManager.getState().windows[0]?.pos).toEqual({ x: 80, y: 40 });
     });
   });
 

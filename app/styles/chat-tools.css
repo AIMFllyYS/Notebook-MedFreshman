@@ -744,9 +744,11 @@ mark.citation-flash {
 
 .user-note-editor {
   display: flex;
+  width: 100%;
+  height: 100%;
   min-width: 0;
   min-height: 0;
-  flex: 1;
+  flex: 1 1 0%;
   flex-direction: column;
   overflow: hidden;
   background: var(--bg-panel);
@@ -816,9 +818,12 @@ mark.citation-flash {
 .user-note-workspace,
 .user-note-toc-split {
   display: flex;
+  width: 100%;
+  height: 100%;
   min-width: 0;
   min-height: 0;
-  flex: 1;
+  flex: 1 1 0%;
+  overflow: hidden;
 }
 
 .user-note-toc {
@@ -896,10 +901,13 @@ mark.citation-flash {
 .user-note-wysiwyg {
   position: relative;
   display: flex;
+  width: 100%;
+  height: 100%;
   min-width: 0;
   min-height: 0;
-  flex: 1;
+  flex: 1 1 0%;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .user-note-refresh {
@@ -1022,9 +1030,11 @@ mark.citation-flash {
 .user-note-split,
 .user-note-single {
   display: flex;
+  width: 100%;
+  height: 100%;
   min-width: 0;
   min-height: 0;
-  flex: 1;
+  flex: 1 1 0%;
   overflow: hidden;
 }
 
@@ -1052,8 +1062,10 @@ mark.citation-flash {
 .user-note-crepe-loading {
   min-width: 0;
   min-height: 0;
-  flex: 1;
-  overflow: auto;
+  flex: 1 1 0%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--bg-panel);
 }
 
@@ -1092,19 +1104,35 @@ mark.citation-flash {
   --crepe-font-code: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
   --crepe-base-font-size: 14.5px;
   min-height: 100%;
-  padding: 8px 12px 28px;
+  padding: 0;
   background: var(--bg-panel);
   color: var(--ink);
+}
+
+/* Crepe 默认 ProseMirror 是 60px 120px，会在窄栏（右侧 AI / 窗内 Agent）留下死白且把滚动撑坏。 */
+.user-note-crepe .milkdown .ProseMirror {
+  padding: 8px 16px 28px 28px;
+}
+
+.user-note-crepe .milkdown .ProseMirror h1 {
+  font-size: 1.45em;
+  margin-top: 18px;
+}
+
+.user-note-crepe .milkdown .ProseMirror h2 {
+  font-size: 1.22em;
+  margin-top: 16px;
 }
 
 .user-note-preview {
   min-width: 0;
   min-height: 0;
   max-width: none;
-  flex: 1;
+  flex: 1 1 0%;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 14px 20px 28px;
+  overscroll-behavior: contain;
+  padding: 10px 14px 24px;
   background: var(--bg-panel);
   overflow-wrap: anywhere;
 }
@@ -1442,6 +1470,10 @@ mark.citation-flash {
 .classroom-note .user-note-crepe,
 .classroom-note .user-note-crepe-loading,
 .user-note-crepe.is-compact {
+  min-height: 0;
+  flex: 1 1 0%;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: transparent;
 }
 
@@ -1449,8 +1481,19 @@ mark.citation-flash {
 .user-note-crepe.is-compact .milkdown {
   --crepe-color-background: transparent;
   --crepe-base-font-size: 13px;
-  padding: 4px 10px 16px;
+  padding: 0;
   background: transparent;
+}
+
+/* 批注跟标题一样靠左，不再吃 Crepe 的 120px 左右留白。 */
+.classroom-note .user-note-crepe .milkdown .ProseMirror,
+.user-note-crepe.is-compact .milkdown .ProseMirror {
+  padding: 2px 8px 16px;
+}
+
+.user-note-crepe.is-compact .milkdown-block-handle {
+  transform: scale(0.82);
+  transform-origin: left center;
 }
 
 .classroom-note-org {
