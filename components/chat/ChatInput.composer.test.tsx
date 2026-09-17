@@ -43,6 +43,7 @@ describe('ChatInput composer slash / hash / drop', () => {
     expect(getByTestId('composer-command-panel').textContent).not.toMatch(/先输出|本轮必调|只读规划/);
     fireEvent.click(screen.getByRole('option', { name: /计划模式/ }));
     expect(getByTestId('composer-chip-plan')).toHaveTextContent('计划模式');
+    expect(getByTestId('composer-chip-plan').querySelector('[data-composer-thumb="square"]')).toBeTruthy();
     fireEvent.change(getByRole('textbox'), { target: { value: '/' } });
     expect(getByTestId('composer-command-panel')).toBeTruthy();
   });

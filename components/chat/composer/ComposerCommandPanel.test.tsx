@@ -4,8 +4,17 @@ import ComposerCommandPanel, { listComposerCommands } from './ComposerCommandPan
 
 afterEach(() => cleanup());
 
+const TOOL_THUMBS = [
+  ['计划模式', 'plan'],
+  ['生成图片', 'generateImage'],
+  ['可交互 HTML', 'renderInteractive'],
+  ['长文', 'writeDocument'],
+  ['闪卡', 'flashcards'],
+  ['笔记', 'notes'],
+] as const;
+
 describe('ComposerCommandPanel', () => {
-  it('lists plan, colored tools and imported skills in three blocks', () => {
+  it('lists plan, square tool thumbs and imported skills in three blocks', () => {
     const onSelectPlan = vi.fn();
     const onSelectTool = vi.fn();
     const onSelectSkill = vi.fn();
@@ -22,9 +31,17 @@ describe('ComposerCommandPanel', () => {
     const panel = getByTestId('composer-command-panel');
     expect(panel.textContent).toMatch(/计划模式[\s\S]*特定工具[\s\S]*已导入 Skills/);
     expect(panel.textContent).not.toMatch(/先输出|本轮必调|只读规划/);
-    expect(getByRole('option', { name: '可交互 HTML' }).querySelector('[data-composer-icon="renderInteractive"]')).toBeTruthy();
-    expect(getByRole('option', { name: '计划模式' }).querySelector('[data-composer-icon="plan"]')).toHaveAttribute('width', '12');
-    expect(getByRole('option', { name: '错题分析' }).querySelector('[data-composer-icon="skill"]')).toBeTruthy();
+    for (const [label, icon] of TOOL_THUMBS) {
+      const thumb = getByRole('option', { name: label }).querySelector(`[data-composer-icon="${icon}"]`);
+      expect(thumb).toHaveAttribute('data-composer-thumb', 'square');
+      expect(thumb).toHaveClass('composer-tool-thumb');
+      expect(thumb?.querySelector('svg')).toBeTruthy();
+      expect(thumb?.querySelector('.composer-tool-thumb-bar')).toBeTruthy();
+    }
+    const skill = getByRole('option', { name: '错题分析' }).querySelector('[data-composer-icon="skill"]');
+    expect(skill).toHaveAttribute('data-composer-thumb', 'square');
+    expect(skill?.querySelector('svg')).toBeNull();
+    expect(skill?.querySelector('.composer-tool-thumb-bar')).toBeNull();
     fireEvent.click(getByRole('option', { name: /计划模式/ }));
     fireEvent.click(getByRole('option', { name: /长文/ }));
     fireEvent.click(getByRole('option', { name: /错题分析/ }));

@@ -1469,8 +1469,49 @@
   font-size: 13.5px;
 }
 .composer-command-panel .app-menu-check {
-  width: 12px;
-  height: 12px;
+  width: 20px;
+  height: 20px;
+}
+.composer-tool-thumb {
+  position: relative;
+  display: inline-grid;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  place-items: center;
+  box-sizing: border-box;
+  border: 1px solid color-mix(in srgb, var(--line) 88%, var(--md-sys-color-primary) 12%);
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  color: var(--md-sys-color-on-surface-variant);
+}
+.composer-tool-thumb svg {
+  width: 11px;
+  height: 11px;
+}
+.composer-tool-thumb-bar {
+  position: absolute;
+  bottom: 1.5px;
+  left: 50%;
+  width: 8px;
+  height: 1.5px;
+  border-radius: 999px;
+  background: var(--composer-thumb-accent, var(--md-sys-color-primary));
+  transform: translateX(-50%);
+}
+.composer-chip .composer-tool-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+}
+.composer-chip .composer-tool-thumb svg {
+  width: 9px;
+  height: 9px;
+}
+.composer-chip .composer-tool-thumb-bar {
+  bottom: 1px;
+  width: 6px;
 }
 .composer-command-on {
   margin-left: auto;
