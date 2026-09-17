@@ -101,6 +101,7 @@ export default function ReviewBoardPage() {
     <div ref={boardRef} className="scroll-y" style={{ height: "100%", display: "flex", flexDirection: "column", background: "var(--bg-app)" }}>
       {/* 顶栏 */}
       <div
+        className="review-board-toolbar"
         style={{
           flexShrink: 0,
           display: "flex",

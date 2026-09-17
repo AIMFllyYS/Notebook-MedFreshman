@@ -6,9 +6,11 @@ import EmbedFallback from "@/components/browser/EmbedFallback";
 import WebviewSite, { type WebviewEl } from "@/components/browser/WebviewSite";
 import { useBrowser, MOBILE_LOGICAL_WIDTH, type ViewMode } from "@/lib/hooks/useBrowser";
 import { useEmbeddable } from "@/lib/hooks/useEmbeddable";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 
 /** 右侧面板内置浏览器：地址栏 + 自适应（手机视口模拟）iframe。本地使用，仅做基础 sandbox 安全。 */
 export default function BrowserTab() {
+  const isPhone = useIsMobile();
   const currentUrl = useBrowser((s) => s.currentUrl);
   const reloadNonce = useBrowser((s) => s.reloadNonce);
   const viewMode = useBrowser((s) => s.viewMode);
@@ -16,6 +18,7 @@ export default function BrowserTab() {
   const reload = useBrowser((s) => s.reload);
   const goHome = useBrowser((s) => s.goHome);
   const setViewMode = useBrowser((s) => s.setViewMode);
+  const frameMode: ViewMode = isPhone ? "desktop" : viewMode;
 
   const [addr, setAddr] = useState(currentUrl);
   const [prevUrl, setPrevUrl] = useState(currentUrl);
@@ -42,7 +45,7 @@ export default function BrowserTab() {
   return (
     <div className="flex h-full flex-col bg-[var(--bg-panel)]">
       {/* 工具栏 */}
-      <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-2 py-1.5">
+      <div className="mobile-browser-toolbar flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-2 py-1.5">
         <button
           onClick={goHome}
           title="主页 / 必应搜索"
@@ -97,6 +100,7 @@ export default function BrowserTab() {
         >
           <ArrowRight size={15} />
         </button>
+        {!isPhone && (
         <button
           onClick={toggleView}
           title={viewMode === "mobile" ? "当前：手机视图（点击切桌面）" : "当前：桌面视图（点击切手机）"}
@@ -104,6 +108,7 @@ export default function BrowserTab() {
         >
           {viewMode === "mobile" ? <Smartphone size={15} /> : <Monitor size={15} />}
         </button>
+        )}
         <a
           href={currentUrl || undefined}
           target="_blank"
@@ -138,7 +143,7 @@ export default function BrowserTab() {
               actionLabel="在新标签页打开"
             />
           ) : (
-            <FramedSite url={currentUrl} nonce={reloadNonce} viewMode={viewMode} />
+            <FramedSite url={currentUrl} nonce={reloadNonce} viewMode={frameMode} />
           )
         ) : (
           <BingStartPage onSearch={navigate} />

@@ -5,7 +5,7 @@ import {
   category,
 } from "@/lib/content-data/category-templates";
 import { layoutFlags, resolveLayoutProfile } from "@/lib/content/layoutProfile";
-import { resolveRouteLayout } from "@/lib/content/routeLayout";
+import { isSubjectReviewPath, resolveRouteLayout } from "@/lib/content/routeLayout";
 import type { LayoutProfile } from "@/lib/types/content";
 
 const EXPECTED_TEMPLATE_PROFILE: Record<keyof typeof STANDARD_CATEGORIES, LayoutProfile> = {
@@ -104,4 +104,11 @@ test("resolveRouteLayout：试卷页只有 AI 对话", () => {
   assert.equal(exam.showRightPanel, true);
   assert.deepEqual(exam.rightTabs, ["ai"]);
   assert.equal(resolveRouteLayout("/").profile, "full");
+});
+
+test("isSubjectReviewPath 只认 /科目/review", () => {
+  assert.equal(isSubjectReviewPath("/physiology/review"), true);
+  assert.equal(isSubjectReviewPath("/physiology/review/"), true);
+  assert.equal(isSubjectReviewPath("/physiology/detail/1.1"), false);
+  assert.equal(isSubjectReviewPath("/review"), false);
 });

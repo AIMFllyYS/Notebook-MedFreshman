@@ -13,7 +13,7 @@ import { DEFAULT_SUBJECT } from "@/lib/constants/subjects";
 // 若两处各写一份同形字面量，新增第五个 tab 时这里不会报错，而 resolveRightTabs 永远不吐出它
 // —— 那个 tab 会在所有档位下静默消失。派生掉了这种漂移的可能。
 export type RightTab = LayoutRightTab;
-export type MobileTab = "detail" | "video" | "ai" | "interactive" | "browser";
+export type MobileTab = "detail" | "review" | "ai" | "browser" | "settings";
 
 export interface OutboundMessage {
   /** 要发送给 AI 的完整内容（可能含划词引用） */

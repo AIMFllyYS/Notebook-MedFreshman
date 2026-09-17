@@ -34,4 +34,10 @@ describe('Agent settings workspace', () => {
     fireEvent.click(view.getByRole('button', { name: '返回对话' }));
     expect(onClose).toHaveBeenCalledOnce();
   });
+
+  it('hides the back control when embedded as the phone settings tab', () => {
+    const view = render(<ChatSettings showBack={false} />);
+    expect(view.queryByRole('button', { name: '返回对话' })).toBeNull();
+    expect(view.getByTestId('chat-settings-workspace')).toBeInTheDocument();
+  });
 });
