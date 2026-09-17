@@ -30,6 +30,8 @@ describe("MobileSettingsPanel", () => {
     expect(screen.getByText("访客")).toBeInTheDocument();
     expect(screen.getByText("未登录")).toBeInTheDocument();
     expect(screen.getByTestId("user-avatar")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "额度" })).toBeInTheDocument();
+    expect(screen.getByTestId("mobile-settings-quota")).toHaveAccessibleName("额度");
     expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /成绩/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /快捷键/ })).toBeInTheDocument();

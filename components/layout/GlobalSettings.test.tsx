@@ -137,6 +137,8 @@ describe("GlobalSettings", () => {
     render(<GlobalSettings variant="page" onClose={() => {}} />);
     expect(screen.getByTestId("global-settings-page")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "登录" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "额度" })).toBeInTheDocument();
+    expect(screen.getByTestId("mobile-settings-quota")).toHaveAccessibleName("额度");
     expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /成绩/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /快捷键/ })).toBeInTheDocument();

@@ -68,7 +68,10 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.match(placeholder, /开发中/);
 
   const settings = readWorkspaceFile("components/layout/MobileSettingsPanel.tsx");
+  const globalSettings = readWorkspaceFile("components/layout/GlobalSettings.tsx");
   assert.match(settings, /from "\.\/GlobalSettings"/);
   assert.match(settings, /variant="page"/);
   assert.doesNotMatch(settings, /ChatSettings/);
+  assert.match(globalSettings, /mobile-settings-quota/);
+  assert.match(globalSettings, /UserQuotaPanel/);
 });

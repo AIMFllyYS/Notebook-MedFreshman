@@ -18,12 +18,14 @@ import {
   LogIn,
   LogOut,
   GraduationCap,
+  Gauge,
 } from "lucide-react";
 import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import { useStore } from "@/lib/stores/ui";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
 import UserAvatar from "./UserAvatar";
 import AccountDialog from "./AccountDialog";
+import UserQuotaPanel from "./UserQuotaPanel";
 import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
 import { ACADEMIC_YEAR_LABELS } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
@@ -200,6 +202,8 @@ export default function GlobalSettings({
   const [entries, setEntries] = useState<ProgressEntry[]>(() => getAllProgress());
   const [confirmClear, setConfirmClear] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [quotaOpen, setQuotaOpen] = useState(false);
+  const quotaBtnRef = useRef<HTMLButtonElement>(null);
   const [openSection, setOpenSection] = useState<"year" | "scores" | "keyboard" | "appearance" | null>(null);
   const openAgentSettings = useStore((s) => s.openAgentSettings);
   const academicYear = useAcademicYear((s) => s.year);
@@ -378,6 +382,37 @@ export default function GlobalSettings({
               </button>
             )}
           </div>
+
+          {page ? (
+            <div
+              className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container)] px-3.5 py-2.5"
+              style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
+            >
+              <div className="min-w-0">
+                <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">额度</div>
+                <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                  会员、平台用量与存储占用，与左下角坞同一入口。
+                </div>
+              </div>
+              <button
+                ref={quotaBtnRef}
+                type="button"
+                aria-label="额度"
+                data-testid="mobile-settings-quota"
+                onClick={() => setQuotaOpen(true)}
+                className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
+                style={{
+                  background: "var(--md-sys-color-primary)",
+                  color: "var(--md-sys-color-on-primary)",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <Gauge size={14} />
+                查看
+              </button>
+            </div>
+          ) : null}
 
           <SettingsSection
             title="年级 / 学期"
@@ -572,12 +607,16 @@ export default function GlobalSettings({
   const accountDialog = accountOpen ? (
     <AccountDialog onClose={() => setAccountOpen(false)} />
   ) : null;
+  const quotaPanel = page && quotaOpen ? (
+    <UserQuotaPanel anchorRef={quotaBtnRef} onClose={() => setQuotaOpen(false)} />
+  ) : null;
 
   if (page) {
     return (
       <>
         {node}
         {accountDialog}
+        {quotaPanel}
       </>
     );
   }
