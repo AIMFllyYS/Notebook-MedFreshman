@@ -1,3 +1,4 @@
+import { flushSync } from "react-dom";
 import { RIGHT_PANEL_ID, resolveFullscreenRect, type FullscreenTarget } from "@/lib/constants/layout";
 import { isAgentWorkspace } from "@/lib/stores/workspace";
 import { useStore } from "@/lib/stores/ui";
@@ -34,9 +35,13 @@ export function resolveWorkspaceFullscreenRect(target: FullscreenTarget): DOMRec
 export function ensureAgentRightPanelOpen(): void {
   if (!isAgentWorkspace()) return;
   const ui = useStore.getState();
-  if (ui.rightCollapsedByProfile[ui.layoutProfile]) {
-    ui.setRightCollapsedForProfile(ui.layoutProfile, false);
+  if (!ui.rightCollapsedByProfile[ui.layoutProfile]) return;
+  const expand = () => ui.setRightCollapsedForProfile(ui.layoutProfile, false);
+  if (typeof document === "undefined") {
+    expand();
+    return;
   }
+  flushSync(expand);
 }
 
 export function placeAgentDockWindow(input: DockGeometry): DockGeometry {

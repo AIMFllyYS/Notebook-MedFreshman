@@ -26,15 +26,20 @@ vi.mock("@/lib/hooks/useChatHistory", () => ({
 vi.mock("@/lib/hooks/useFloatingChats", () => ({
   useFloatingChats: { getState: () => ({ windows: [], closeWindow: vi.fn(), restoreWindow }) },
 }));
-vi.mock("@/lib/hooks/useAuthSession", () => ({
-  useAuthSession: () => ({ status: "signedOut", email: null }),
-}));
 vi.mock("@/lib/hooks/useTokenTracker", () => ({
   useTokenTracker: { getState: () => ({ resetSession: vi.fn() }) },
 }));
 vi.mock("@/lib/notes/openUserNote", () => ({
   openNoteLibrary: (...args: unknown[]) => openLibrary(...args),
 }));
+vi.mock("./LeftDock", () => ({
+  default: () => (
+    <button type="button" data-testid="left-dock">
+      <span data-testid="user-avatar" />
+    </button>
+  ),
+}));
+vi.mock("./UserQuotaPanel", () => ({ default: () => null }));
 vi.mock("./GlobalSettings", () => ({ default: () => null }));
 
 afterEach(() => {
@@ -60,6 +65,7 @@ describe("AgentConversationSidebar", () => {
     expect(screen.getByText("细胞生物学复习")).toBeInTheDocument();
     expect(screen.getByText("解释线粒体")).toBeInTheDocument();
     expect(screen.queryByText("被覆上皮")).toBeNull();
+    expect(screen.getByTestId("left-dock")).toBeInTheDocument();
     expect(screen.getByTestId("user-avatar")).toBeInTheDocument();
   });
 

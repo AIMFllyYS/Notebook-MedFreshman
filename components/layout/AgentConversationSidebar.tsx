@@ -1,13 +1,13 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { Folder, FolderOpen, MessageSquare, PanelLeft, PanelLeftClose, Plus, Settings, Trash2 } from "lucide-react";
+import { Folder, FolderOpen, MessageSquare, PanelLeft, PanelLeftClose, Plus, Trash2 } from "lucide-react";
 import FolderTreeRow from "./FolderTreeRow";
 import GlobalSettings from "./GlobalSettings";
-import UserAvatar from "./UserAvatar";
+import LeftDock from "./LeftDock";
+import UserQuotaPanel from "./UserQuotaPanel";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
-import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import { useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { useStore } from "@/lib/stores/ui";
@@ -34,8 +34,8 @@ export default function AgentConversationSidebar({
   const switchSession = useChatHistory((s) => s.switchSession);
   const isCollapsed = useStore((s) => s.sidebarCollapsed);
   const setCollapsed = useStore((s) => s.setSidebarCollapsed);
-  const { status: authStatus, email: authEmail } = useAuthSession();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [quotaOpen, setQuotaOpen] = useState(false);
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [mainExpanded, setMainExpanded] = useState(true);
   const [floatingExpanded, setFloatingExpanded] = useState(true);
@@ -244,25 +244,16 @@ export default function AgentConversationSidebar({
           borderTop: "1px solid var(--md-sys-color-outline-variant)",
         }}
       >
-        <button
-          ref={settingsBtnRef}
-          type="button"
-          onClick={() => setSettingsOpen((v) => !v)}
-          className="flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors"
-          style={{
-            color: "var(--md-sys-color-on-surface-variant)",
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-          }}
-          title="设置"
-        >
-          <UserAvatar email={authEmail} signedIn={authStatus === "signedIn"} size={22} />
-          <Settings size={15} className="shrink-0" />
-          <span className="truncate text-[12.5px] font-medium">设置</span>
-        </button>
+        <LeftDock
+          buttonRef={settingsBtnRef}
+          onToggle={() => setSettingsOpen((v) => !v)}
+          onOpenQuota={() => setQuotaOpen(true)}
+        />
       </div>
 
+      {quotaOpen && (
+        <UserQuotaPanel anchorRef={settingsBtnRef} onClose={() => setQuotaOpen(false)} />
+      )}
       {settingsOpen && (
         <GlobalSettings anchorRef={settingsBtnRef} onClose={() => setSettingsOpen(false)} />
       )}

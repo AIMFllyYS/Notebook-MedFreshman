@@ -58,6 +58,11 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.match(workspace, /AgentConversationSidebar/);
   assert.match(workspace, /hideAiTab/);
   assert.match(workspace, /showWindowDock/);
+  assert.match(workspace, /展开右侧面板/);
+  const sidebar = readWorkspaceFile("components/layout/AgentConversationSidebar.tsx");
+  assert.match(sidebar, /from "\.\/LeftDock"/);
+  assert.match(sidebar, /正常对话/);
+  assert.match(sidebar, /划词助手对话/);
   assert.match(appShell, /hideWindowTaskbar=\{resolvedMode === "agent"\}/);
   assert.match(placeholder, /开发中/);
 
