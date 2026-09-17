@@ -2208,9 +2208,12 @@
 }
 .chat-settings-workspace[data-nav="top"] .chat-settings-nav-item {
   flex: none;
-  min-height: 40px;
+  min-height: 36px;
   padding: 6px 10px;
-  gap: 6px;
+  gap: 0;
+}
+.chat-settings-workspace[data-nav="top"] .chat-settings-nav-item svg {
+  display: none;
 }
 .chat-settings-workspace[data-nav="top"] .chat-settings-nav-item small {
   display: none;

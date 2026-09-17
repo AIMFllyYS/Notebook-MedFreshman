@@ -64,18 +64,25 @@ export default function SettingsSection({
           }}
         />
       </button>
-      <AnimatedCollapse isOpen={open}>
-        <div
-          className={
-            unbounded
-              ? "border-t px-3.5 py-3"
-              : "min-h-0 max-h-[50vh] overflow-y-auto overscroll-contain border-t px-3.5 py-3"
-          }
-          style={{ borderColor: "var(--md-sys-color-outline-variant)" }}
-        >
-          {children}
-        </div>
-      </AnimatedCollapse>
+      {unbounded ? (
+        open ? (
+          <div
+            className="border-t px-3.5 py-3"
+            style={{ borderColor: "var(--md-sys-color-outline-variant)" }}
+          >
+            {children}
+          </div>
+        ) : null
+      ) : (
+        <AnimatedCollapse isOpen={open}>
+          <div
+            className="min-h-0 max-h-[50vh] overflow-y-auto overscroll-contain border-t px-3.5 py-3"
+            style={{ borderColor: "var(--md-sys-color-outline-variant)" }}
+          >
+            {children}
+          </div>
+        </AnimatedCollapse>
+      )}
     </section>
   );
 }
