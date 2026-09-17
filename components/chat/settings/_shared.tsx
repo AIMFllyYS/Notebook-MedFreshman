@@ -13,9 +13,13 @@ import { Pencil, Star, Trash2 } from "lucide-react";
 const SIZE_OPTIONS = ["1024x1024", "960x1280", "768x1024", "720x1440", "720x1280"];
 const DEFAULT_SIZES = ["1024x1024", "960x1280", "768x1024"];
 
-function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
+function Toggle({ on, onClick, "aria-label": ariaLabel }: { on: boolean; onClick: () => void; "aria-label"?: string }) {
   return (
     <button
+      type="button"
+      aria-label={ariaLabel}
+      aria-checked={on}
+      role="switch"
       onClick={onClick}
       className="relative h-[22px] w-[40px] shrink-0 rounded-full transition-colors"
       style={{

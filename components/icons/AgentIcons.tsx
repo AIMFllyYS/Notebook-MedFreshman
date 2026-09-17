@@ -110,6 +110,11 @@ export function AgentHistoryIcon(props: AgentIconProps) {
   return <IconFrame {...props} data-agent-icon="history"><path d="M3.2 7.2A7 7 0 1 1 3 12M3 3v4.5h4.5M10 5.8v4.6l3 1.9" /></IconFrame>;
 }
 
+/** Right-edge panel with a close chevron: collapse the Agent column. */
+export function AgentPanelCloseIcon(props: AgentIconProps) {
+  return <IconFrame {...props} data-agent-icon="panel-close"><rect x="2.6" y="3.2" width="14.8" height="13.6" rx="2.2" /><path d="M13.4 3.2v13.6M8.8 7.2 6.2 10l2.6 2.8" /></IconFrame>;
+}
+
 function AgentExpandIcon(props: AgentIconProps) {
   return <IconFrame {...props} data-agent-icon="expand"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4" /></IconFrame>;
 }

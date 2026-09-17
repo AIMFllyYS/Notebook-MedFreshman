@@ -5,20 +5,11 @@ import userEvent from "@testing-library/user-event";
 import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
 import { useTheme } from "@/lib/hooks/useTheme";
 import GlobalSettings from "./GlobalSettings";
-import { exportAgentLogs } from "@/lib/ai/observability/downloadAgentLog";
+import { useStore } from "@/lib/stores/ui";
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),
   usePathname: () => "/",
-}));
-
-vi.mock("@/lib/ai/observability/downloadAgentLog", () => ({
-  exportAgentLogs: vi.fn().mockResolvedValue({
-    ok: true,
-    empty: false,
-    filename: "agent-lifecycle.jsonl",
-    byteLength: 12,
-  }),
 }));
 
 function renderSettings() {
@@ -46,7 +37,7 @@ describe("GlobalSettings", () => {
       appearance: DEFAULT_APPEARANCE_SETTINGS,
     });
     (window as unknown as { scrollTo: () => void }).scrollTo = vi.fn();
-    vi.mocked(exportAgentLogs).mockClear();
+    useStore.setState({ agentSettingsOpen: false });
   });
 
   it("renders score and appearance sections with details collapsed by default", () => {
@@ -55,22 +46,24 @@ describe("GlobalSettings", () => {
     expect(screen.getByRole("button", { name: /成绩/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: /快捷键/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: /外观/ })).toHaveAttribute("aria-expanded", "false");
-    expect(screen.getByRole("button", { name: "导出全部日志" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "打开 Agent 设置" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "登录" })).toBeInTheDocument();
     expect(screen.getByText("未登录")).toBeInTheDocument();
     expect(screen.queryByText("清空全部成绩")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "彩色" })).not.toBeInTheDocument();
   });
 
-  it("exports raw agent JSONL from the settings page in one click", async () => {
+  it("opens the centered Agent settings overlay from the left dock entry", async () => {
     const user = userEvent.setup();
-    renderSettings();
+    const onClose = vi.fn();
+    const anchor = document.createElement("button");
+    document.body.appendChild(anchor);
+    const anchorRef = { current: anchor } as React.RefObject<HTMLButtonElement>;
+    render(<GlobalSettings anchorRef={anchorRef} onClose={onClose} />);
 
-    await user.click(screen.getByRole("button", { name: "导出全部日志" }));
-    await waitFor(() => {
-      expect(exportAgentLogs).toHaveBeenCalledTimes(1);
-    });
-    expect(await screen.findByText("已导出")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "打开 Agent 设置" }));
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(useStore.getState().agentSettingsOpen).toBe(true);
   });
 
   it("expands score details and keeps data actions inside the score section", async () => {

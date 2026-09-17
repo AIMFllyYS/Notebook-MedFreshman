@@ -17,7 +17,6 @@ import { subjectShortName } from '@/lib/content-data/subjects.registry';
 import SelectionPopover from '@/components/notes/SelectionPopover';
 import ChatThread from '@/components/chat/ChatThread';
 import ChatInput from '@/components/chat/ChatInput';
-import ChatSettings from '@/components/chat/ChatSettings';
 import { ImageLightbox } from '@/components/shared/ImageLightbox';
 import ChatPanelHeader from '@/components/chat/ChatPanelHeader';
 import ChatEmptyState from '@/components/chat/ChatEmptyState';
@@ -43,9 +42,13 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showHistory, setShowHistory] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
   const [composerInset, setComposerInset] = useState(150);
   const fontScale = useSettings((s) => s.fontScale);
+  const pinChatHeader = useSettings((s) => s.pinChatHeader);
+  const showRightPanelTabBar = useSettings((s) => s.showRightPanelTabBar);
+  const openAgentSettings = useStore((s) => s.openAgentSettings);
+  const layoutProfile = useStore((s) => s.layoutProfile);
+  const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
   const selectedModelId = useSettings((s) => s.selectedModelId);
   const chatReady = useChatReady();
 
@@ -94,7 +97,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const subjectName = subjectShortName(chatContext?.subjectId);
 
   const hasUserSent = useMemo(() => messages.some((m) => m.role === 'user'), [messages]);
-  const headerPinned = showSettings || showHistory;
+  const headerPinned = pinChatHeader || showHistory;
   const {
     autoHideEnabled,
     headerCollapsed,
@@ -135,9 +138,14 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         )}
         <ChatPanelHeader
           topic={chatContext?.currentTopic ?? ''}
-          onOpenSettings={() => setShowSettings(true)}
+          onOpenSettings={openAgentSettings}
           onOpenHistory={() => setShowHistory(true)}
           onNewChat={handleNewChat}
+          onCollapseRight={
+            showRightPanelTabBar !== false
+              ? undefined
+              : () => setRightCollapsedForProfile(layoutProfile, true)
+          }
         />
       </div>
 
@@ -170,7 +178,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         onStop={stopGeneration}
         isLoading={isLoading || !chatReady}
         chatContext={chatContext}
-        onOpenSettings={() => setShowSettings(true)}
+        onOpenSettings={openAgentSettings}
         onComposerInsetChange={setComposerInset}
         notice={(showWarning || cloudSync.message) ? (
           <>
@@ -230,7 +238,6 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         ) : null}
       />
 
-      {showSettings && <ChatSettings onClose={() => setShowSettings(false)} />}
       <SelectionPopover containerRef={scrollContainerRef} noteSource="agent" />
 
       {showHistory && (

@@ -111,6 +111,10 @@ export interface SettingsState {
   defaultSearch: boolean;
   /** Artifact 浮窗全屏对齐：笔记栏或整个视口。默认笔记栏，保持历史行为。 */
   artifactFullscreenTarget: ArtifactFullscreenTarget;
+  /** 右侧 Agent 面板是否显示最顶部文字（AI 对话 / 动画讲解 / 可交互）。 */
+  showRightPanelTabBar: boolean;
+  /** 是否固定 AI 助教顶部导航（设置 / 历史 / 新对话）。关闭则对话开始后自动隐藏。 */
+  pinChatHeader: boolean;
 
   // ── 全局补充上下文 ────────────────────
   /** 所有对话自动注入的用户自定义文本（拼入稳定系统前缀）。 */
@@ -149,6 +153,8 @@ export interface SettingsState {
   setDefaultThinkingEffort: (v: ThinkingEffort) => void;
   setDefaultSearch: (v: boolean) => void;
   setArtifactFullscreenTarget: (v: ArtifactFullscreenTarget) => void;
+  setShowRightPanelTabBar: (v: boolean) => void;
+  setPinChatHeader: (v: boolean) => void;
   setGlobalContext: (v: string) => void;
   setUsdExchangeRate: (v: number) => void;
 }
@@ -180,6 +186,8 @@ type Persisted = Pick<
   | "defaultThinkingEffort"
   | "defaultSearch"
   | "artifactFullscreenTarget"
+  | "showRightPanelTabBar"
+  | "pinChatHeader"
   | "globalContext"
   | "usdExchangeRate"
 >;
@@ -210,6 +218,8 @@ const DEFAULTS: Persisted = {
   defaultThinkingEffort: 'medium',
   defaultSearch: false,
   artifactFullscreenTarget: "notes",
+  showRightPanelTabBar: true,
+  pinChatHeader: false,
   globalContext: "",
   usdExchangeRate: 7.00,
 };
@@ -296,6 +306,8 @@ function load(): Persisted & { settingsLoadWarning?: string | null } {
       parsed.selectionAssistantEnabled = parsed.selectionAssistantEnabled !== false;
       parsed.selectionAssistantActions = normalizeSelectionAssistantActions(parsed.selectionAssistantActions);
       parsed.blockForeignSelectionAssistants = parsed.blockForeignSelectionAssistants === true;
+      parsed.showRightPanelTabBar = parsed.showRightPanelTabBar !== false;
+      parsed.pinChatHeader = parsed.pinChatHeader === true;
 
       let secretsRaw = recoveredSecrets;
       if (secretsRaw === undefined) {
@@ -394,6 +406,8 @@ function persist(get: () => SettingsState) {
     defaultThinkingEffort: s.defaultThinkingEffort,
     defaultSearch: s.defaultSearch,
     artifactFullscreenTarget: s.artifactFullscreenTarget,
+    showRightPanelTabBar: s.showRightPanelTabBar !== false,
+    pinChatHeader: s.pinChatHeader === true,
     globalContext: s.globalContext,
     usdExchangeRate: s.usdExchangeRate,
   };
@@ -637,6 +651,14 @@ export const useSettings = create<SettingsState>((set, get) => {
   },
   setArtifactFullscreenTarget: (v) => {
     set({ artifactFullscreenTarget: v === "viewport" ? "viewport" : "notes" });
+    persist(get);
+  },
+  setShowRightPanelTabBar: (v) => {
+    set({ showRightPanelTabBar: v });
+    persist(get);
+  },
+  setPinChatHeader: (v) => {
+    set({ pinChatHeader: v });
     persist(get);
   },
   setGlobalContext: (v) => {

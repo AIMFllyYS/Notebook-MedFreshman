@@ -138,4 +138,16 @@ describe("settings apiKey persist", () => {
     expect(reloaded.getState().blockForeignSelectionAssistants).toBe(true);
     expect(reloaded.getState().selectionAssistantActions.note).toBe(true);
   });
+
+  it("persist Agent 面板顶部标签与固定助教导航开关", async () => {
+    useSettings.getState().setShowRightPanelTabBar(false);
+    useSettings.getState().setPinChatHeader(true);
+    const raw = JSON.parse(localStorage.getItem(SETTINGS_LS_KEY) ?? "{}");
+    expect(raw.showRightPanelTabBar).toBe(false);
+    expect(raw.pinChatHeader).toBe(true);
+    vi.resetModules();
+    const { useSettings: reloaded } = await import("@/lib/stores/settings");
+    expect(reloaded.getState().showRightPanelTabBar).toBe(false);
+    expect(reloaded.getState().pinChatHeader).toBe(true);
+  });
 });

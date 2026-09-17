@@ -2065,7 +2065,35 @@
 .app-dialog p { margin: 0; color: var(--md-sys-color-on-surface-variant); font-size: 13px; line-height: 1.65; }
 .app-dialog-confirm { width: 100%; margin-top: 18px; padding: 9px 14px; border: 0; border-radius: 11px; background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); font-weight: 700; cursor: pointer; }
 
-/* Agent settings is a child workspace inside the right panel, not a second modal. */
+/* 页面正中的 Agent 设置层（左下角 / AI 助教共用），不是 ManagedWindow。 */
+.agent-settings-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--md-sys-color-scrim, #000) 46%, transparent);
+  animation: agent-settings-overlay-in 160ms var(--ease-out, ease-out) both;
+}
+@keyframes agent-settings-overlay-in { from { opacity: 0; } }
+.agent-settings-dialog {
+  position: relative;
+  width: min(920px, calc(100vw - 32px));
+  height: min(720px, calc(100vh - 48px));
+  overflow: hidden;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 20px;
+  background: var(--md-sys-color-surface-container-low);
+  box-shadow: var(--md-sys-elevation-level4, 0 16px 48px rgba(0, 0, 0, 0.36));
+  animation: agent-settings-dialog-in 180ms var(--ease-out, ease-out) both;
+}
+@keyframes agent-settings-dialog-in {
+  from { opacity: 0.72; transform: translateY(8px) scale(0.98); }
+}
+
+/* Agent settings workspace fills the centered dialog (or a relative host). */
 .chat-settings-workspace {
   position: absolute;
   inset: 0;

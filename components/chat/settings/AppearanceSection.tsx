@@ -1,18 +1,64 @@
 "use client";
 
-import { Type } from "lucide-react";
+import { PanelRight, Pin, Type } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
+import { useStore } from "@/lib/stores/ui";
 import { useTheme } from "@/lib/hooks/useTheme";
 import AppearanceSettingsControls from "@/components/layout/AppearanceSettingsControls";
-import { h3Cls } from "./_shared";
+import { h3Cls, Toggle } from "./_shared";
 
 export function AppearanceSection() {
   const fontScale = useSettings((s) => s.fontScale);
   const setFontScale = useSettings((s) => s.setFontScale);
+  const showRightPanelTabBar = useSettings((s) => s.showRightPanelTabBar);
+  const setShowRightPanelTabBar = useSettings((s) => s.setShowRightPanelTabBar);
+  const pinChatHeader = useSettings((s) => s.pinChatHeader);
+  const setPinChatHeader = useSettings((s) => s.setPinChatHeader);
   const { theme, setTheme, appearance, setAppearanceMode, setCustomAppearance, resetAppearance } = useTheme();
 
   return (
     <section className="flex flex-col gap-3">
+      <h3 className={h3Cls}>Agent 面板</h3>
+      {[
+        {
+          on: showRightPanelTabBar,
+          set: (next: boolean) => {
+            setShowRightPanelTabBar(next);
+            if (!next) useStore.getState().setRightTab("ai");
+          },
+          label: "右侧栏顶部标签",
+          desc: "显示「AI 对话 / 动画讲解 / 可交互」那一行",
+          icon: <PanelRight size={16} />,
+          ariaLabel: "显示右侧栏顶部标签",
+        },
+        {
+          on: pinChatHeader,
+          set: setPinChatHeader,
+          label: "固定助教顶部导航",
+          desc: "始终显示「设置 / 历史 / 新对话」，不随对话自动收起",
+          icon: <Pin size={16} />,
+          ariaLabel: "固定 AI 助教顶部导航",
+        },
+      ].map((it) => (
+        <div
+          key={it.label}
+          className="flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2"
+        >
+          <div className="flex items-center gap-2.5">
+            <span className="text-[var(--md-sys-color-primary)]">{it.icon}</span>
+            <div>
+              <div className="text-[12.5px] font-medium text-[var(--md-sys-color-on-surface)]">
+                {it.label}
+              </div>
+              <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                {it.desc}
+              </div>
+            </div>
+          </div>
+          <Toggle on={it.on} onClick={() => it.set(!it.on)} aria-label={it.ariaLabel} />
+        </div>
+      ))}
+      <div className="settings-section-divider" />
       <h3 className={h3Cls}>整个项目</h3>
       <AppearanceSettingsControls theme={theme} setTheme={setTheme} appearance={appearance}
         setAppearanceMode={setAppearanceMode} setCustomAppearance={setCustomAppearance} resetAppearance={resetAppearance} />

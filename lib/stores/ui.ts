@@ -115,6 +115,11 @@ interface AppState {
   rightCollapsedByProfile: Record<LayoutProfile, boolean>;
   setRightCollapsedForProfile: (profile: LayoutProfile, collapsed: boolean) => void;
 
+  /** 页面正中的 Agent 设置层（左下角与 AI 助教共用）。 */
+  agentSettingsOpen: boolean;
+  openAgentSettings: () => void;
+  closeAgentSettings: () => void;
+
   // ── AI 对话 ───────────────────────────────────────────
   /** 划词 / 外部触发的待发送消息 */
   outbound: OutboundMessage | null;
@@ -255,6 +260,10 @@ export const useStore = create<AppState>((set) => ({
       setLayoutAttr(`data-right-collapsed-${profile}`, collapsed);
       return { rightCollapsedByProfile: next };
     }),
+
+  agentSettingsOpen: false,
+  openAgentSettings: () => set({ agentSettingsOpen: true }),
+  closeAgentSettings: () => set({ agentSettingsOpen: false }),
 
   outbound: null,
   sendToChat: (content, opts) =>
