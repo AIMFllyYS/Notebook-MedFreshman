@@ -2404,7 +2404,8 @@
   .chat-header {
     padding: 6px 10px;
   }
-  .chat-header-topic {
+  .chat-header-topic,
+  .chat-empty-topic {
     display: none;
   }
   .chat-header-btn {
