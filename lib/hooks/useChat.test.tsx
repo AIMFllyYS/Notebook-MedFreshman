@@ -280,7 +280,7 @@ describe('useChat SDK transport regression', () => {
     act(() => result.current.sendMessage('再试'));
     await settle();
     expect(result.current.error).toContain('左下角「设置」');
-    expect(result.current.error).toContain('邮箱和验证码');
+    expect(result.current.error).toContain('邮箱验证码');
     act(() => result.current.clearError());
     expect(result.current.error).toBeNull();
   });

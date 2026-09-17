@@ -1,7 +1,7 @@
 {
-  "source": "pglite-after-0002",
+  "source": "pglite-after-0006",
   "projectRef": "jlahwwnjbhqfnsicdjsx",
-  "capturedAt": "2026-09-12T14:11:49.362Z",
+  "capturedAt": "2026-09-17T05:31:22.181Z",
   "catalog": {
     "tables": [
       "app_users",
@@ -35,7 +35,8 @@
       "handle_new_user",
       "quota_period_sum",
       "sync_documents_enforce_bytes",
-      "touch_updated_at"
+      "touch_updated_at",
+      "update_own_nickname"
     ],
     "triggers": [
       "app_users_touch",
@@ -70,7 +71,8 @@
       "function:touch_updated_at:EXECUTE:anon",
       "function:touch_updated_at:EXECUTE:authenticated",
       "function:touch_updated_at:EXECUTE:service_role",
-      "schema:public:CREATE:service_role",
+      "function:update_own_nickname:EXECUTE:authenticated",
+      "function:update_own_nickname:EXECUTE:service_role",
       "schema:public:USAGE:anon",
       "schema:public:USAGE:authenticated",
       "schema:public:USAGE:service_role",
