@@ -49,7 +49,7 @@ interface AppModeState {
   hydrated: boolean;
   setMode: (mode: AppMode) => void;
   /** 由 AppShell 根据 pathname 回写，其它代理勿各写一套同步。 */
-  syncFromPathname: (pathname: string) => void;
+  syncFromPathname: (pathname: string, options?: { retainAgentOnStudio?: boolean }) => void;
   rememberStudioPath: (pathname: string) => void;
   hydrate: () => void;
 }
@@ -70,10 +70,11 @@ export const useAppMode = create<AppModeState>((set, get) => ({
     setModeAttr(mode);
     set({ ...next, hydrated: true });
   },
-  syncFromPathname: (pathname) => {
+  syncFromPathname: (pathname, options) => {
     const fromPath = appModeFromPathname(pathname);
     if (!fromPath) return;
     const prev = get();
+    if (options?.retainAgentOnStudio && prev.mode === "agent" && fromPath === "studio") return;
     if (prev.mode === fromPath && prev.hydrated) return;
     const next = { mode: fromPath, lastStudioPath: prev.lastStudioPath };
     writePersist(next);

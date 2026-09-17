@@ -7,6 +7,7 @@ import {
   appModeFromPathname,
   appModeTitle,
   hrefForAppMode,
+  hrefForMobileAppMode,
   isAppMode,
   isAppModePath,
   isAuthPath,
@@ -14,6 +15,8 @@ import {
   parseAppMode,
   parseAppModePersist,
   resolveAppMode,
+  resolveMobileAppMode,
+  usesMobileStudioChrome,
   usesStudioChrome,
 } from "./app-mode";
 
@@ -51,6 +54,11 @@ test("pathname 映射：Agent / Class 独立，登录不改 persist", () => {
   assert.equal(usesStudioChrome("/login"), true);
   assert.equal(usesStudioChrome("/agent"), false);
   assert.equal(usesStudioChrome("/class"), false);
+  assert.equal(usesMobileStudioChrome("/"), true);
+  assert.equal(usesMobileStudioChrome("/agent"), true);
+  assert.equal(usesMobileStudioChrome("/login"), true);
+  assert.equal(usesMobileStudioChrome("/anatomy/detail/1.1"), true);
+  assert.equal(usesMobileStudioChrome("/class"), false);
 });
 
 test("resolveAppMode：URL 优先，登录页当 Studio 壳", () => {
@@ -58,6 +66,15 @@ test("resolveAppMode：URL 优先，登录页当 Studio 壳", () => {
   assert.equal(resolveAppMode("/class", "studio"), "class");
   assert.equal(resolveAppMode("/", "agent"), "studio");
   assert.equal(resolveAppMode("/login", "agent"), "studio");
+});
+
+test("resolveMobileAppMode：Studio 路由可保留 persist 的 Agent", () => {
+  assert.equal(resolveMobileAppMode("/", "agent"), "agent");
+  assert.equal(resolveMobileAppMode("/anatomy/detail/1.1", "agent"), "agent");
+  assert.equal(resolveMobileAppMode("/", "studio"), "studio");
+  assert.equal(resolveMobileAppMode("/class", "agent"), "class");
+  assert.equal(resolveMobileAppMode("/login", "agent"), "studio");
+  assert.equal(resolveMobileAppMode("/agent", "studio"), "agent");
 });
 
 test("切回 Studio 走 lastStudioPath，忽略 Agent/Class/登录路径", () => {
@@ -68,6 +85,9 @@ test("切回 Studio 走 lastStudioPath，忽略 Agent/Class/登录路径", () =>
   assert.equal(hrefForAppMode("class", "/anatomy/detail/1.1"), "/class");
   assert.equal(hrefForAppMode("studio", "/anatomy/detail/1.1"), "/anatomy/detail/1.1");
   assert.equal(hrefForAppMode("studio", "/agent"), "/");
+  assert.equal(hrefForMobileAppMode("agent", "/anatomy/detail/1.1"), "/anatomy/detail/1.1");
+  assert.equal(hrefForMobileAppMode("class", "/anatomy/detail/1.1"), "/class");
+  assert.equal(hrefForMobileAppMode("studio", "/anatomy/detail/1.1"), "/anatomy/detail/1.1");
 });
 
 test("persist JSON 与裸字符串兼容", () => {

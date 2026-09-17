@@ -69,13 +69,33 @@ export function appModeFromPathname(pathname: string): AppMode | null {
   return "studio";
 }
 
-/** Studio 三栏壳：登录页保持现布局，Agent / Class 走独立工作区。 */
+/** 桌面 Studio 三栏壳：登录页保持现布局，Agent / Class 走独立工作区。 */
 export function usesStudioChrome(pathname: string): boolean {
   return !isAppModePath(pathname);
 }
 
+/**
+ * 手机壳：Agent 仍用最初 Studio 五段底栏，不套桌面左对话+右侧窗。
+ * Class 继续独立「开发中」页。
+ */
+export function usesMobileStudioChrome(pathname: string): boolean {
+  return firstSegment(pathname) !== "class";
+}
+
 export function resolveAppMode(pathname: string, persisted: AppMode): AppMode {
   return appModeFromPathname(pathname) ?? (isAuthPath(pathname) ? "studio" : persisted);
+}
+
+/**
+ * 手机标题/persist：Studio 路由上若当前 persist 是 Agent，仍显示 Agent。
+ * Class / 登录仍跟 URL。
+ */
+export function resolveMobileAppMode(pathname: string, persisted: AppMode): AppMode {
+  const fromPath = appModeFromPathname(pathname);
+  if (fromPath === "class") return "class";
+  if (fromPath === "agent") return "agent";
+  if (fromPath === null) return isAuthPath(pathname) ? "studio" : persisted;
+  return persisted === "agent" ? "agent" : "studio";
 }
 
 export function isRememberableStudioPath(pathname: string): boolean {
@@ -86,6 +106,12 @@ export function hrefForAppMode(mode: AppMode, lastStudioPath: string): string {
   if (mode !== "studio") return APP_MODE_PATHS[mode];
   if (lastStudioPath && isRememberableStudioPath(lastStudioPath)) return lastStudioPath;
   return DEFAULT_STUDIO_PATH;
+}
+
+/** 手机切 Agent 留在 Studio 路由，避免进入桌面 Agent 工作区。 */
+export function hrefForMobileAppMode(mode: AppMode, lastStudioPath: string): string {
+  if (mode === "class") return APP_MODE_PATHS.class;
+  return hrefForAppMode("studio", lastStudioPath);
 }
 
 /** 顶栏默认展示：项目名 + 间隔点 + 当前模式。 */

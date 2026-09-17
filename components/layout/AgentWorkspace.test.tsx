@@ -2,8 +2,18 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import AgentWorkspace from "./AgentWorkspace";
 
+let mobile = false;
+
 vi.mock("@/lib/hooks/useIsMobile", () => ({
-  useIsMobile: () => false,
+  useIsMobile: () => mobile,
+}));
+
+vi.mock("./AgentConversationSidebar", () => ({
+  default: () => <div>对话</div>,
+}));
+
+vi.mock("./RightPanel", () => ({
+  default: () => <div>窗口</div>,
 }));
 
 vi.mock("@/components/chat/ChatPanel", () => ({
@@ -23,11 +33,21 @@ vi.mock("next/dynamic", () => ({
 
 describe("AgentWorkspace", () => {
   it("桌面三栏槽位 + 复用 ChatPanel 入口，切到 Agent 不崩", () => {
+    mobile = false;
     render(<AgentWorkspace />);
     expect(document.querySelector("[data-agent-workspace]")).not.toBeNull();
-    expect(document.querySelector('[data-agent-slot="conversations"]')).toHaveTextContent("对话");
-    expect(document.querySelector('[data-agent-slot="windows"]')).toHaveTextContent("窗口");
+    expect(document.querySelector('[data-agent-slot="conversations"]')).not.toBeNull();
+    expect(document.querySelector('[data-agent-slot="windows"]')).not.toBeNull();
     expect(document.querySelector('[data-agent-slot="main"]')).not.toBeNull();
     expect(screen.getByTestId("chat-panel-entry")).toBeInTheDocument();
+  });
+
+  it("手机不套桌面左对话+右侧窗，只留主对话", () => {
+    mobile = true;
+    render(<AgentWorkspace />);
+    expect(document.querySelector("[data-agent-workspace]")).not.toBeNull();
+    expect(document.querySelector('[data-agent-slot="conversations"]')).toBeNull();
+    expect(document.querySelector('[data-agent-slot="windows"]')).toBeNull();
+    expect(document.querySelector('[data-agent-slot="main"]')).not.toBeNull();
   });
 });

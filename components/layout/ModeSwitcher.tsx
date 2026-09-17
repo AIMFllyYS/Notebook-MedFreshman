@@ -10,7 +10,9 @@ import {
   APP_NAME,
   appModeTitle,
   hrefForAppMode,
+  hrefForMobileAppMode,
   resolveAppMode,
+  resolveMobileAppMode,
   type AppMode,
 } from "@/lib/constants/app-mode";
 import { useAppMode } from "@/lib/stores/appMode";
@@ -22,13 +24,22 @@ const MODE_HINTS: Record<AppMode, string> = {
   class: "开发中",
 };
 
-export default function ModeSwitcher({ compact = false }: { compact?: boolean }) {
+export default function ModeSwitcher({
+  compact = false,
+  stayOnStudioForAgent = false,
+}: {
+  compact?: boolean;
+  /** 手机：切 Agent 不进 /agent 桌面工作区，标题仍显示 Agent。 */
+  stayOnStudioForAgent?: boolean;
+}) {
   const pathname = usePathname() ?? "/";
   const router = useRouter();
   const persisted = useAppMode((s) => s.mode);
   const lastStudioPath = useAppMode((s) => s.lastStudioPath);
   const setMode = useAppMode((s) => s.setMode);
-  const mode = resolveAppMode(pathname, persisted);
+  const mode = stayOnStudioForAgent
+    ? resolveMobileAppMode(pathname, persisted)
+    : resolveAppMode(pathname, persisted);
   const title = appModeTitle(mode);
 
   return (
@@ -71,7 +82,9 @@ export default function ModeSwitcher({ compact = false }: { compact?: boolean })
                 data-testid={`app-mode-option-${item}`}
                 onClick={() => {
                   setMode(item);
-                  const href = hrefForAppMode(item, lastStudioPath);
+                  const href = stayOnStudioForAgent
+                    ? hrefForMobileAppMode(item, lastStudioPath)
+                    : hrefForAppMode(item, lastStudioPath);
                   if (href !== pathname) router.push(href);
                   close();
                 }}

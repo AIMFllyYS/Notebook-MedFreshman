@@ -6,7 +6,7 @@ import { ChevronDown, Sun, Moon } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
-import { usesStudioChrome } from "@/lib/constants/app-mode";
+import { usesMobileStudioChrome } from "@/lib/constants/app-mode";
 import { getContentItem } from "@/lib/content-data";
 import { subjectShortName } from "@/lib/content-data/subjects.registry";
 import SubjectIcon from "@/components/shared/SubjectIcon";
@@ -14,7 +14,7 @@ import ModeSwitcher from "./ModeSwitcher";
 
 export default function MobileTopBar() {
   const pathname = usePathname() ?? "/";
-  const studioChrome = usesStudioChrome(pathname);
+  const studioChrome = usesMobileStudioChrome(pathname);
   const subjectId = useStore((s) => s.activeSubjectId);
   const categoryId = useStore((s) => s.activeCategoryId);
   const itemId = useStore((s) => s.activeItemId);
@@ -41,7 +41,7 @@ export default function MobileTopBar() {
         paddingTop: "env(safe-area-inset-top, 0px)",
       }}
     >
-      <ModeSwitcher compact />
+      <ModeSwitcher compact stayOnStudioForAgent />
 
       {studioChrome ? (
       <button

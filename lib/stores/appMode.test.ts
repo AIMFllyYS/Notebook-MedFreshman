@@ -74,6 +74,15 @@ test("syncFromPathname 跟 URL，登录页不改 persist", () => {
   assert.equal(useAppMode.getState().mode, "class");
 });
 
+test("手机 retainAgentOnStudio：Studio 路由不把 Agent persist 改回 studio", () => {
+  useAppMode.getState().setMode("agent");
+  useAppMode.getState().rememberStudioPath("/anatomy/detail/1.1");
+  useAppMode.getState().syncFromPathname("/anatomy/detail/1.1", { retainAgentOnStudio: true });
+  assert.equal(useAppMode.getState().mode, "agent");
+  useAppMode.getState().syncFromPathname("/class", { retainAgentOnStudio: true });
+  assert.equal(useAppMode.getState().mode, "class");
+});
+
 test("rememberStudioPath 只记 Studio 路由", () => {
   useAppMode.getState().rememberStudioPath("/anatomy/detail/1.1");
   useAppMode.getState().rememberStudioPath("/agent");

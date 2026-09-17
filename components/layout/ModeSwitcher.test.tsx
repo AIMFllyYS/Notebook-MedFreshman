@@ -47,4 +47,23 @@ describe("ModeSwitcher", () => {
     fireEvent.click(screen.getByTestId("app-mode-option-studio"));
     expect(push).toHaveBeenCalledWith("/anatomy/detail/1.1");
   });
+
+  it("手机 stayOnStudioForAgent：切 Agent 不进 /agent，标题仍是 StudySolo · Agent", () => {
+    pathname = "/anatomy/detail/1.1";
+    useAppMode.setState({ mode: "studio", lastStudioPath: "/anatomy/detail/1.1", hydrated: true });
+    render(<ModeSwitcher stayOnStudioForAgent />);
+    fireEvent.click(screen.getByTestId("app-mode-switcher"));
+    fireEvent.click(screen.getByTestId("app-mode-option-agent"));
+    expect(useAppMode.getState().mode).toBe("agent");
+    expect(push).not.toHaveBeenCalled();
+    expect(screen.getByTestId("app-mode-switcher")).toHaveTextContent("StudySolo · Agent");
+  });
+
+  it("手机 stayOnStudioForAgent：Class 仍走 /class 开发中页", () => {
+    render(<ModeSwitcher stayOnStudioForAgent />);
+    fireEvent.click(screen.getByTestId("app-mode-switcher"));
+    fireEvent.click(screen.getByTestId("app-mode-option-class"));
+    expect(useAppMode.getState().mode).toBe("class");
+    expect(push).toHaveBeenCalledWith("/class");
+  });
 });

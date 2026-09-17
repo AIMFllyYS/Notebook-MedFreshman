@@ -9,7 +9,7 @@ import {
 } from "react-resizable-panels";
 import dynamic from "next/dynamic";
 import { AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
 import { PanelTopClose, PanelTopOpen, PanelRightOpen, Maximize, Minimize } from "lucide-react";
 import { useStore } from "@/lib/stores/ui";
@@ -21,7 +21,14 @@ import { NOTES_PANEL_ID } from "@/lib/constants/layout";
 import type { SubjectId } from "@/lib/types/content";
 import { isSubjectReviewPath, resolveRouteLayout } from "@/lib/content/routeLayout";
 import type { ChatContext } from "@/lib/types/chat";
-import { resolveAppMode, usesStudioChrome } from "@/lib/constants/app-mode";
+import {
+  appModeFromPathname,
+  hrefForMobileAppMode,
+  resolveAppMode,
+  resolveMobileAppMode,
+  usesMobileStudioChrome,
+  usesStudioChrome,
+} from "@/lib/constants/app-mode";
 import { useAppMode } from "@/lib/stores/appMode";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
@@ -164,13 +171,17 @@ function TopBar({
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() ?? "/";
+  const router = useRouter();
   const isMobile = useIsMobile();
   const hydrateMode = useAppMode((s) => s.hydrate);
   const syncFromPathname = useAppMode((s) => s.syncFromPathname);
   const rememberStudioPath = useAppMode((s) => s.rememberStudioPath);
   const persistedMode = useAppMode((s) => s.mode);
-  const resolvedMode = resolveAppMode(pathname, persistedMode);
-  const studioChrome = usesStudioChrome(pathname);
+  const lastStudioPath = useAppMode((s) => s.lastStudioPath);
+  const resolvedMode = isMobile
+    ? resolveMobileAppMode(pathname, persistedMode)
+    : resolveAppMode(pathname, persistedMode);
+  const studioChrome = isMobile ? usesMobileStudioChrome(pathname) : usesStudioChrome(pathname);
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
   const setSidebarCollapsed = useStore((s) => s.setSidebarCollapsed);
   const hydrateLayout = useStore((s) => s.hydrateLayout);
@@ -200,10 +211,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   useLayoutEffect(() => {
     hydrateLayout();
     hydrateMode();
-    syncFromPathname(pathname);
+    syncFromPathname(pathname, { retainAgentOnStudio: isMobile });
     rememberStudioPath(pathname);
     if (route) setActiveRoute(route.subjectId, route.categoryId, route.itemId);
-  }, [hydrateLayout, hydrateMode, syncFromPathname, rememberStudioPath, pathname, route, setActiveRoute]);
+  }, [hydrateLayout, hydrateMode, syncFromPathname, rememberStudioPath, pathname, route, setActiveRoute, isMobile]);
+
+  useEffect(() => {
+    if (!isMobile || appModeFromPathname(pathname) !== "agent") return;
+    const target = hrefForMobileAppMode("agent", lastStudioPath);
+    if (target !== pathname) router.replace(target);
+  }, [isMobile, pathname, lastStudioPath, router]);
 
   // TOC 数据只由内容页的 useToc 产出；离开内容页（首页 / review 等）时清掉，
   // 否则目录视图会残留上一页的标题树，点击也无法滚动（目标 DOM 已不存在）。

@@ -20,11 +20,15 @@ test("顶栏与壳走 StudySolo 三模式，不再写期末复习工作站", () 
   assert.match(appShell, /<ModeSwitcher\s*\/>/);
   assert.match(appShell, /useAppMode/);
   assert.match(appShell, /usesStudioChrome/);
+  assert.match(appShell, /usesMobileStudioChrome/);
+  assert.match(appShell, /retainAgentOnStudio/);
+  assert.match(appShell, /hrefForMobileAppMode/);
   assert.doesNotMatch(appShell, /期末复习工作站/);
   assert.doesNotMatch(appShell, /from "\.\/BrandLogo"/);
 
   assert.match(mobile, /from "\.\/ModeSwitcher"/);
-  assert.match(mobile, /<ModeSwitcher compact \/>/);
+  assert.match(mobile, /<ModeSwitcher compact stayOnStudioForAgent \/>/);
+  assert.match(mobile, /usesMobileStudioChrome/);
   assert.doesNotMatch(mobile, /from "\.\/BrandLogo"/);
 
   assert.match(switcher, /from "@\/components\/ui\/AnchoredMenu"/);
@@ -41,6 +45,7 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   const agentPage = readWorkspaceFile("app/agent/page.tsx");
   const classPage = readWorkspaceFile("app/class/page.tsx");
   const workspace = readWorkspaceFile("components/layout/AgentWorkspace.tsx");
+  const appShell = readWorkspaceFile("components/layout/AppShell.tsx");
   const placeholder = readWorkspaceFile("components/layout/ClassPlaceholder.tsx");
 
   assert.match(agentPage, /from "@\/components\/layout\/AgentWorkspace"/);
@@ -49,5 +54,15 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.match(workspace, /data-agent-slot="windows"/);
   assert.match(workspace, /data-agent-slot="main"/);
   assert.match(workspace, /components\/chat\/ChatPanel/);
+  assert.match(workspace, /if \(isMobile\)/);
+  assert.match(workspace, /AgentConversationSidebar/);
+  assert.match(workspace, /hideAiTab/);
+  assert.match(workspace, /showWindowDock/);
+  assert.match(appShell, /hideWindowTaskbar=\{resolvedMode === "agent"\}/);
   assert.match(placeholder, /开发中/);
+
+  const settings = readWorkspaceFile("components/layout/MobileSettingsPanel.tsx");
+  assert.match(settings, /from "\.\/GlobalSettings"/);
+  assert.match(settings, /variant="page"/);
+  assert.doesNotMatch(settings, /ChatSettings/);
 });

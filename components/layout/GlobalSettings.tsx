@@ -173,15 +173,18 @@ function computePos(anchor: HTMLElement | null): PopoverPos {
 
 /**
  * 全局「设置」面板：以学习成绩为核心，外加外观与数据管理。
- * 锚定在侧栏底部「设置」按钮上方弹出，无背景遮罩/虚化（不打断阅读），点击外部 / Esc 关闭。
+ * 桌面锚定在侧栏底部「设置」按钮上方弹出；手机设置页以 `variant="page"` 全屏复用同一份内容。
  */
 export default function GlobalSettings({
   onClose,
   anchorRef,
+  variant = "popover",
 }: {
   onClose: () => void;
   anchorRef?: React.RefObject<HTMLButtonElement | null>;
+  variant?: "popover" | "page";
 }) {
+  const page = variant === "page";
   const theme = useTheme((s) => s.theme);
   const setTheme = useTheme((s) => s.setTheme);
   const appearance = useTheme((s) => s.appearance);
@@ -203,10 +206,11 @@ export default function GlobalSettings({
     setOpenSection((prev) => (prev === id ? null : id));
   }, []);
 
-  useOverlayRegistration({ id: "global-settings", open: true, onClose, priority: 50 });
+  useOverlayRegistration({ id: "global-settings", open: !page, onClose, priority: 50 });
 
   // 定位：打开时即算，并随窗口尺寸 / 滚动更新。
   useLayoutEffect(() => {
+    if (page) return;
     const update = () => setPos(computePos(anchorRef?.current ?? null));
     update();
     window.addEventListener("resize", update);
@@ -215,10 +219,11 @@ export default function GlobalSettings({
       window.removeEventListener("resize", update);
       window.removeEventListener("scroll", update, true);
     };
-  }, [anchorRef]);
+  }, [anchorRef, page]);
 
   // 点击外部关闭（无遮罩层，靠监听实现，不影响页面交互）。Esc 由全局 overlay 栈处理。
   useEffect(() => {
+    if (page) return;
     const onDown = (e: MouseEvent) => {
       const t = e.target as Node;
       if (panelRef.current?.contains(t)) return;
@@ -227,7 +232,7 @@ export default function GlobalSettings({
     };
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
-  }, [onClose, anchorRef]);
+  }, [onClose, anchorRef, page]);
 
   const summary = useMemo(() => getGlobalSummary(entries), [entries]);
   const groups = useMemo(() => groupBySubject(entries), [entries]);
@@ -244,29 +249,40 @@ export default function GlobalSettings({
   };
 
   const handleOpenAgentSettings = () => {
-    onClose();
+    if (!page) onClose();
     openAgentSettings();
   };
 
   const node = (
     <motion.div
       ref={panelRef}
-      role="dialog"
+      role={page ? "region" : "dialog"}
       aria-label="设置"
-      initial={{ opacity: 0, scale: 0.97, y: 6 }}
+      data-testid={page ? "global-settings-page" : "global-settings-popover"}
+      initial={page ? false : { opacity: 0, scale: 0.97, y: 6 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.18, ease: [0.05, 0.7, 0.1, 1] }}
-      className="fixed z-[9998] flex flex-col overflow-hidden rounded-[var(--md-sys-shape-corner-extra-large,28px)]"
-      style={{
-        left: pos.left,
-        bottom: pos.bottom,
-        width: pos.width,
-        maxHeight: pos.maxHeight,
-        transformOrigin: "left bottom",
-        background: "var(--md-sys-color-surface-container-low)",
-        border: "1px solid var(--md-sys-color-outline-variant)",
-        boxShadow: "var(--md-sys-elevation-level3, 0 8px 24px rgba(0,0,0,0.32))",
-      }}
+      className={
+        page
+          ? "global-settings-page flex h-full min-h-0 w-full flex-col overflow-hidden"
+          : "fixed z-[9998] flex flex-col overflow-hidden rounded-[var(--md-sys-shape-corner-extra-large,28px)]"
+      }
+      style={
+        page
+          ? {
+              background: "var(--md-sys-color-surface-container-low)",
+            }
+          : {
+              left: pos.left,
+              bottom: pos.bottom,
+              width: pos.width,
+              maxHeight: pos.maxHeight,
+              transformOrigin: "left bottom",
+              background: "var(--md-sys-color-surface-container-low)",
+              border: "1px solid var(--md-sys-color-outline-variant)",
+              boxShadow: "var(--md-sys-elevation-level3, 0 8px 24px rgba(0,0,0,0.32))",
+            }
+      }
     >
         {/* 头部 */}
         <div
@@ -280,6 +296,7 @@ export default function GlobalSettings({
             <Settings size={16} className="text-[var(--md-sys-color-primary)]" />
             <span className="text-[14px] font-bold text-[var(--md-sys-color-on-surface)]">设置</span>
           </div>
+          {page ? null : (
           <button
             onClick={onClose}
             className="rounded-lg p-1 text-[var(--md-sys-color-on-surface-variant)] transition-colors hover:bg-[var(--md-sys-color-surface-container-high)]"
@@ -287,6 +304,7 @@ export default function GlobalSettings({
           >
             <X size={18} />
           </button>
+          )}
         </div>
 
         <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
@@ -537,6 +555,7 @@ export default function GlobalSettings({
     </motion.div>
   );
 
+  if (page) return node;
   if (typeof document === "undefined") return null;
   return createPortal(node, document.body);
 }

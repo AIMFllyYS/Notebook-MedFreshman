@@ -945,7 +945,15 @@ html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [d
   container-type: inline-size;
 }
 
-/* 只压手机底栏「设置」，不改桌面右栏 Mac 窗宽。 */
+.mobile-settings-panel .global-settings-page {
+  height: 100%;
+  max-height: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Agent 设置 overlay 若仍挂在本页内，只压侧栏文案，不改桌面右栏。 */
 .mobile-settings-panel .chat-settings-workspace {
   grid-template-columns: 58px minmax(0, 1fr);
 }
