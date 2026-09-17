@@ -3,6 +3,12 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import {
+  APP_MENU_Z_INDEX,
+  computeAnchoredMenuBox,
+  isUsableAnchorRect,
+  type AnchoredMenuBox,
+} from "@/lib/ui/anchoredMenuPosition";
 
 interface AnchoredMenuProps {
   label: string;
@@ -16,55 +22,101 @@ interface AnchoredMenuProps {
   role?: "menu" | "listbox";
   testId?: string;
   triggerData?: Record<`data-${string}`, string>;
-  /** 叠在 Spotlight 等高层 overlay 上时提高菜单层。 */
+  /** 叠在 Spotlight 等高层 overlay 上时提高菜单层。默认已盖过设置层与 Mac 窗。 */
   menuZIndex?: number;
+}
+
+function sameBox(a: AnchoredMenuBox | null, b: AnchoredMenuBox): boolean {
+  return !!a && a.left === b.left && a.top === b.top && a.width === b.width && a.maxHeight === b.maxHeight;
+}
+
+function writeBox(menu: HTMLElement, box: AnchoredMenuBox) {
+  menu.style.left = `${box.left}px`;
+  menu.style.top = `${box.top}px`;
+  menu.style.width = `${box.width}px`;
+  menu.style.maxHeight = `${box.maxHeight}px`;
+  menu.dataset.placed = "true";
 }
 
 /** Shared non-modal menu: portal, viewport collision handling and keyboard/focus lifecycle. */
 export default function AnchoredMenu({ label, trigger, children, className = "", style, disabled, width = 240,
-  placement = "bottom", role = "menu", testId, triggerData, menuZIndex }: AnchoredMenuProps) {
+  placement = "bottom", role = "menu", testId, triggerData, menuZIndex = APP_MENU_Z_INDEX }: AnchoredMenuProps) {
   const id = useId();
   const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState({ left: 8, top: 8, width, maxHeight: 320 });
+  const [box, setBox] = useState<AnchoredMenuBox | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const focusedRef = useRef(false);
   const close = useCallback(() => setOpen(false), []);
   useOverlayRegistration({ id: `menu-${id}`, open, onClose: close, priority: 70 });
 
   useLayoutEffect(() => {
-    if (!open) return;
-    const update = () => {
+    if (!open) {
+      setBox(null);
+      focusedRef.current = false;
+      return;
+    }
+
+    let raf = 0;
+    const apply = (next: AnchoredMenuBox) => {
+      const menu = menuRef.current;
+      if (menu) writeBox(menu, next);
+      setBox((prev) => (sameBox(prev, next) ? prev : next));
+    };
+
+    const measure = (): "close" | AnchoredMenuBox | null => {
       const button = buttonRef.current;
       const menu = menuRef.current;
-      if (!button || !menu) return;
+      if (!button || !menu) return null;
+      if (button.disabled || button.closest("[hidden]") || getComputedStyle(button).display === "none") return "close";
       const rect = button.getBoundingClientRect();
-      if (button.disabled || button.closest('[hidden]') || getComputedStyle(button).display === "none") {
-        setOpen(false);
-        return;
-      }
-      const menuWidth = Math.min(Math.max(width, rect.width), window.innerWidth - 16);
-      const above = Math.max(0, rect.top - 14);
-      const below = Math.max(0, window.innerHeight - rect.bottom - 14);
-      const desiredHeight = Math.min(menu.scrollHeight, 360);
-      const onTop = placement === "top" ? above >= desiredHeight || above > below : below < desiredHeight && above > below;
-      const maxHeight = Math.max(40, Math.min(360, onTop ? above : below));
-      const height = Math.min(desiredHeight, maxHeight);
-      setPosition({
-        left: Math.max(8, Math.min(rect.left, window.innerWidth - menuWidth - 8)),
-        top: Math.max(8, Math.min(onTop ? rect.top - height - 6 : rect.bottom + 6, window.innerHeight - height - 8)),
-        width: menuWidth, maxHeight,
+      if (!isUsableAnchorRect(rect)) return null;
+      const menuHeight = menu.scrollHeight;
+      if (menuHeight === 0 && menu.childElementCount > 0) return null;
+      return computeAnchoredMenuBox({
+        anchor: rect,
+        menuHeight,
+        viewport: { width: window.innerWidth, height: window.innerHeight },
+        preferredWidth: width,
+        placement,
       });
     };
-    update();
-    const selected = menuRef.current?.querySelector<HTMLElement>('[aria-selected="true"], [aria-checked="true"]');
-    (selected ?? menuRef.current?.querySelector<HTMLElement>('button:not(:disabled)'))?.focus({ preventScroll: true });
-    selected?.scrollIntoView?.({ block: "nearest" });
-    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(update);
+
+    const update = () => {
+      const next = measure();
+      if (next === "close") {
+        setOpen(false);
+        return true;
+      }
+      if (!next) return false;
+      apply(next);
+      if (!focusedRef.current) {
+        focusedRef.current = true;
+        const selected = menuRef.current?.querySelector<HTMLElement>('[aria-selected="true"], [aria-checked="true"]');
+        (selected ?? menuRef.current?.querySelector<HTMLElement>("button:not(:disabled)"))?.focus({ preventScroll: true });
+        selected?.scrollIntoView?.({ block: "nearest" });
+      }
+      return true;
+    };
+
+    const retry = () => {
+      if (update()) return;
+      raf = requestAnimationFrame(retry);
+    };
+    retry();
+
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => { update(); });
     if (buttonRef.current) observer?.observe(buttonRef.current);
+    if (menuRef.current) observer?.observe(menuRef.current);
     const scroll = (event: Event) => { if (!menuRef.current?.contains(event.target as Node)) update(); };
     window.addEventListener("resize", update);
     document.addEventListener("scroll", scroll, true);
-    return () => { observer?.disconnect(); window.removeEventListener("resize", update); document.removeEventListener("scroll", scroll, true); };
+    return () => {
+      cancelAnimationFrame(raf);
+      observer?.disconnect();
+      window.removeEventListener("resize", update);
+      document.removeEventListener("scroll", scroll, true);
+    };
   }, [open, width, placement]);
 
   useEffect(() => {
@@ -84,7 +136,15 @@ export default function AnchoredMenu({ label, trigger, children, className = "",
       onKeyDown={(event) => { if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setOpen(true); } }}>
       {trigger}
     </button>
-    {open && createPortal(<div ref={menuRef} id={id} role={role} aria-label={label} className="app-menu" style={{ ...position, zIndex: menuZIndex }}
+    {open && createPortal(<div ref={menuRef} id={id} role={role} aria-label={label} className="app-menu"
+      data-placed={box ? "true" : "false"}
+      style={{
+        left: box?.left ?? 0,
+        top: box?.top ?? 0,
+        width: box?.width ?? width,
+        maxHeight: box?.maxHeight ?? 320,
+        zIndex: menuZIndex,
+      }}
       onKeyDown={(event) => {
         if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); close(); buttonRef.current?.focus(); return; }
         if (event.key === "Tab") { close(); return; }

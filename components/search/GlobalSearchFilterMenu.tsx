@@ -171,7 +171,6 @@ export default function GlobalSearchFilterMenu({
       label="筛选搜索"
       role="menu"
       width={260}
-      menuZIndex={11000}
       testId="global-search-filter"
       className={
         active
