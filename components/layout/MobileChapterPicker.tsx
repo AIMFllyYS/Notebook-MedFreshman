@@ -56,9 +56,8 @@ export default function MobileChapterPicker() {
   const handleSelect = useCallback(
     (subjectId: string, categoryId: string, itemId: string) => {
       router.push(`/${subjectId}/${categoryId}/${itemId}`);
-      close(false);
     },
-    [router, close],
+    [router],
   );
 
   const availableCategories = subject?.categories.filter(
@@ -77,12 +76,16 @@ export default function MobileChapterPicker() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-50 bg-black/40"
+            data-testid="mobile-chapter-backdrop"
             onClick={() => close(false)}
           />
 
           {/* Sheet */}
           <motion.div
             key="chapter-sheet"
+            role="dialog"
+            aria-label="选择章节"
+            data-testid="mobile-chapter-picker"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -112,6 +115,7 @@ export default function MobileChapterPicker() {
               </h2>
               <button
                 onClick={() => close(false)}
+                aria-label="关闭"
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--bg-muted)] text-[var(--ink-soft)]"
               >
                 <X size={16} />
@@ -279,9 +283,6 @@ function ChapterGroup({
                     : "text-[var(--ink-soft)] active:bg-[var(--bg-muted)]",
                 )}
               >
-                <span className="w-7 shrink-0 text-[12px] font-mono text-[var(--ink-faint)]">
-                  {section.id}
-                </span>
                 <span className="flex-1 truncate">{section.title}</span>
                 {isActive && (
                   <Check size={14} className="shrink-0 text-[var(--accent)]" />

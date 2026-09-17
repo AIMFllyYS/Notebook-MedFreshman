@@ -22,6 +22,7 @@ describe("MobileBottomNav", () => {
       "设置",
     ]);
     expect(buttons).toHaveLength(5);
+    expect(document.querySelector(".mobile-nav-ai-mark")).toHaveTextContent("AI");
   });
 
   it("switches the mobile tab store", () => {

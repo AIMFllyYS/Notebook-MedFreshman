@@ -26,10 +26,14 @@ test("顶栏与壳走 StudySolo 三模式，不再写期末复习工作站", () 
   assert.doesNotMatch(appShell, /期末复习工作站/);
   assert.doesNotMatch(appShell, /from "\.\/BrandLogo"/);
 
-  assert.match(mobile, /from "\.\/ModeSwitcher"/);
-  assert.match(mobile, /<ModeSwitcher compact stayOnStudioForAgent \/>/);
+  assert.match(mobile, /打开侧栏/);
   assert.match(mobile, /usesMobileStudioChrome/);
+  assert.doesNotMatch(mobile, /from "\.\/ModeSwitcher"/);
   assert.doesNotMatch(mobile, /from "\.\/BrandLogo"/);
+
+  const drawer = readWorkspaceFile("components/layout/MobileSidebarDrawer.tsx");
+  assert.match(drawer, /<ModeSwitcher compact stayOnStudioForAgent \/>/);
+  assert.match(drawer, /SubjectFolderTree/);
 
   assert.match(switcher, /from "@\/components\/ui\/AnchoredMenu"/);
   assert.match(switcher, /appModeTitle/);
@@ -73,5 +77,8 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.match(settings, /variant="page"/);
   assert.doesNotMatch(settings, /ChatSettings/);
   assert.match(globalSettings, /mobile-settings-quota/);
-  assert.match(globalSettings, /UserQuotaPanel/);
+  assert.match(globalSettings, /AccountQuota/);
+  assert.doesNotMatch(globalSettings, /UserQuotaPanel/);
+  assert.match(appShell, /MobileSidebarDrawer/);
+  assert.match(appShell, /MobileMiniChat/);
 });

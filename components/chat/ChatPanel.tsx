@@ -9,6 +9,7 @@ import { useChat } from '@/lib/hooks/useChat';
 import { useChatHistory, ensureChatHistoryBootstrap } from '@/lib/hooks/useChatHistory';
 import { useFloatingChats } from '@/lib/hooks/useFloatingChats';
 import { useChatReady } from '@/lib/hooks/useChatReady';
+import { useIsMobile } from '@/lib/hooks/useIsMobile';
 import { useSettings } from '@/lib/hooks/useSettings';
 import { useStore } from '@/lib/store';
 import { useTokenTracker } from '@/lib/hooks/useTokenTracker';
@@ -51,6 +52,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
   const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
   const selectedModelId = useSettings((s) => s.selectedModelId);
   const chatReady = useChatReady();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     void ensureChatHistoryBootstrap();
@@ -138,6 +140,7 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext }) => {
         )}
         <ChatPanelHeader
           topic={chatContext?.currentTopic ?? ''}
+          hideTopic={isMobile}
           onOpenSettings={openAgentSettings}
           onOpenHistory={() => setShowHistory(true)}
           onNewChat={handleNewChat}

@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import ChatPanelHeader from './ChatPanelHeader';
 
@@ -34,5 +34,19 @@ describe('ChatPanelHeader native assistant glyphs', () => {
     expect(onCollapseRight).toHaveBeenCalledOnce();
     expect(container.querySelector('[data-agent-icon="panel-close"]')).not.toBeNull();
     expect(container.querySelector('.lucide')).toBeNull();
+  });
+
+  it('can hide the path topic on the phone AI page', () => {
+    render(
+      <ChatPanelHeader
+        topic="probability detail 1.1"
+        hideTopic
+        onOpenSettings={vi.fn()}
+        onOpenHistory={vi.fn()}
+        onNewChat={vi.fn()}
+      />,
+    );
+    expect(screen.getByText('AI 助教')).toBeInTheDocument();
+    expect(screen.queryByText('probability detail 1.1')).not.toBeInTheDocument();
   });
 });

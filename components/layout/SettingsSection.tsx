@@ -13,6 +13,8 @@ export default function SettingsSection({
   children,
   open,
   onToggle,
+  unbounded = false,
+  testId,
 }: {
   title: string;
   icon: React.ReactNode;
@@ -20,10 +22,14 @@ export default function SettingsSection({
   children: React.ReactNode;
   open: boolean;
   onToggle: () => void;
+  /** 手机设置页：不截高度，内容完整并向下推后面的卡片。 */
+  unbounded?: boolean;
+  testId?: string;
 }) {
   return (
     <section
-      className="overflow-hidden rounded-[var(--md-sys-shape-corner-large,16px)]"
+      className="shrink-0 overflow-hidden rounded-[var(--md-sys-shape-corner-large,16px)]"
+      data-settings-expand={unbounded ? "unbounded" : "bounded"}
       style={{
         background: "var(--md-sys-color-surface-container)",
         border: "1px solid var(--md-sys-color-outline-variant)",
@@ -33,6 +39,7 @@ export default function SettingsSection({
         type="button"
         aria-expanded={open}
         aria-label={title}
+        data-testid={testId}
         onClick={onToggle}
         className="flex w-full items-center gap-3 border-0 bg-transparent px-3.5 py-3 text-left"
         style={{ color: "var(--md-sys-color-on-surface)", cursor: "pointer" }}
@@ -59,7 +66,11 @@ export default function SettingsSection({
       </button>
       <AnimatedCollapse isOpen={open}>
         <div
-          className="min-h-0 max-h-[50vh] overflow-y-auto overscroll-contain border-t px-3.5 py-3"
+          className={
+            unbounded
+              ? "border-t px-3.5 py-3"
+              : "min-h-0 max-h-[50vh] overflow-y-auto overscroll-contain border-t px-3.5 py-3"
+          }
           style={{ borderColor: "var(--md-sys-color-outline-variant)" }}
         >
           {children}

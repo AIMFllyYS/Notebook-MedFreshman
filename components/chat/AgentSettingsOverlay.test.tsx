@@ -3,9 +3,15 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import AgentSettingsOverlay from "./AgentSettingsOverlay";
 import { useStore } from "@/lib/stores/ui";
 
+let mobile = false;
+
+vi.mock("@/lib/hooks/useIsMobile", () => ({
+  useIsMobile: () => mobile,
+}));
+
 vi.mock("@/components/chat/ChatSettings", () => ({
-  default: ({ onClose }: { onClose?: () => void }) => (
-    <div data-testid="chat-settings-workspace">
+  default: ({ onClose, navPlacement }: { onClose?: () => void; navPlacement?: string }) => (
+    <div data-testid="chat-settings-workspace" data-nav={navPlacement ?? "side"}>
       <button type="button" onClick={onClose}>返回对话</button>
     </div>
   ),
@@ -13,6 +19,7 @@ vi.mock("@/components/chat/ChatSettings", () => ({
 
 describe("AgentSettingsOverlay", () => {
   beforeEach(() => {
+    mobile = false;
     useStore.setState({ agentSettingsOpen: false });
   });
 
@@ -49,5 +56,14 @@ describe("AgentSettingsOverlay", () => {
     render(<AgentSettingsOverlay />);
     fireEvent.mouseDown(screen.getByTestId("agent-settings-overlay"));
     expect(useStore.getState().agentSettingsOpen).toBe(false);
+  });
+
+  it("goes fullscreen with top tabs on the phone", () => {
+    mobile = true;
+    useStore.setState({ agentSettingsOpen: true });
+    render(<AgentSettingsOverlay />);
+    expect(screen.getByTestId("agent-settings-overlay")).toHaveAttribute("data-layout", "mobile");
+    expect(screen.getByRole("dialog", { name: "Agent 设置" })).toHaveClass("agent-settings-dialog--mobile");
+    expect(screen.getByTestId("chat-settings-workspace")).toHaveAttribute("data-nav", "top");
   });
 });

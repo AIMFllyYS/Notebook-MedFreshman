@@ -1,0 +1,58 @@
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import MobileTopBar from "./MobileTopBar";
+import { useStore } from "@/lib/stores/ui";
+import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
+import { useTheme } from "@/lib/hooks/useTheme";
+
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/",
+}));
+
+vi.mock("@/lib/content-data", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/content-data")>();
+  return {
+    ...actual,
+    getContentItem: () => ({ title: "课堂原文 · 第1-2节" }),
+  };
+});
+
+vi.mock("@/lib/content-data/subjects.registry", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/content-data/subjects.registry")>();
+  return {
+    ...actual,
+    subjectShortName: () => "组胚",
+  };
+});
+
+describe("MobileTopBar", () => {
+  beforeEach(() => {
+    useTheme.setState({
+      theme: "light",
+      hydrated: true,
+      appearance: DEFAULT_APPEARANCE_SETTINGS,
+    });
+    useStore.setState({
+      mobileSidebarOpen: false,
+      mobileChapterPickerOpen: false,
+      activeSubjectId: "histology",
+      activeCategoryId: "recording",
+      activeItemId: "rec-2026-fall-001-0002",
+    });
+  });
+  afterEach(cleanup);
+
+  it("hides the mode switcher and only shows a human chapter title", () => {
+    render(<MobileTopBar />);
+    expect(screen.getByTestId("mobile-sidebar-toggle")).toHaveAccessibleName("打开侧栏");
+    expect(screen.queryByTestId("app-mode-switcher")).not.toBeInTheDocument();
+    expect(screen.getByTestId("mobile-chapter-trigger")).toHaveTextContent("课堂原文 · 第1-2节");
+    expect(screen.getByTestId("mobile-chapter-trigger")).not.toHaveTextContent("rec-2026");
+  });
+
+  it("opens the sidebar from the top-left control", () => {
+    render(<MobileTopBar />);
+    fireEvent.click(screen.getByTestId("mobile-sidebar-toggle"));
+    expect(useStore.getState().mobileSidebarOpen).toBe(true);
+  });
+});

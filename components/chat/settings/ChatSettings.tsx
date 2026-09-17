@@ -54,10 +54,13 @@ const CONTENT: Record<SectionId, { title: string; description: string; body: Rea
 export default function ChatSettings({
   onClose,
   showBack = true,
+  navPlacement = "side",
 }: {
   onClose?: () => void;
   /** 手机底栏「设置」已是独立板块，不再显示返回对话。 */
   showBack?: boolean;
+  /** 手机全屏：顶栏 Tab；桌面仍左侧导航。 */
+  navPlacement?: "side" | "top";
 }) {
   const [active, setActive] = useState<SectionId>("general");
   const close = useCallback(() => onClose?.(), [onClose]);
@@ -72,6 +75,7 @@ export default function ChatSettings({
   return <div
     className="chat-settings-workspace"
     data-testid="chat-settings-workspace"
+    data-nav={navPlacement}
     onFocus={onSettingsFieldFocus}
     onBlur={onSettingsFieldBlur}
   >

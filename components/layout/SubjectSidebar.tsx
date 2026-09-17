@@ -1,42 +1,27 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
-  ChevronRight,
-  Folder,
-  FolderOpen,
   Sun,
   Moon,
   PanelLeftClose,
   PanelLeft,
   ListTree,
-  Home,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import FileTree from "./FileTree";
 import TocTree from "./TocTree";
 import SiblingFilesPanel from "./SiblingFilesPanel";
 import GlobalSettings from "./GlobalSettings";
 import LeftDock from "./LeftDock";
 import UserQuotaPanel from "./UserQuotaPanel";
-import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
+import SubjectFolderTree from "./SubjectFolderTree";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
-import { navTree } from "@/lib/content-data/nav";
-import { filterSubjectsByYear } from "@/lib/constants/academic-year";
-import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
-import SubjectIcon from "@/components/shared/SubjectIcon";
 import { EASE } from "@/lib/motion";
-import type { ContentItem } from "@/lib/types/content";
 
 let savedSidebarScroll = 0;
 
 export default function SubjectSidebar() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const expandedIds = useStore((s) => s.expandedIds);
-  const toggleExpand = useStore((s) => s.toggleExpand);
   // 折叠状态与 AppShell 左面板共用同一真相源（此前各持一份，导致此处的折叠按钮失效）。
   const isCollapsed = useStore((s) => s.sidebarCollapsed);
   const setCollapsed = useStore((s) => s.setSidebarCollapsed);
@@ -47,48 +32,22 @@ export default function SubjectSidebar() {
   const hydrateTheme = useTheme((s) => s.hydrate);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [quotaOpen, setQuotaOpen] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const treeRef = useRef<HTMLDivElement>(null);
   const settingsBtnRef = useRef<HTMLButtonElement>(null);
-  const academicYear = useAcademicYear((s) => s.year);
-  const hydrateYear = useAcademicYear((s) => s.hydrate);
-  const visibleSubjects = useMemo(
-    () => filterSubjectsByYear(navTree.subjects, academicYear),
-    [academicYear],
-  );
 
   useEffect(() => {
-    hydrateYear();
-  }, [hydrateYear]);
-
-  useEffect(() => {
-    const el = scrollRef.current;
+    const el = treeRef.current?.querySelector<HTMLElement>(".scroll-y");
     if (el) el.scrollTop = savedSidebarScroll;
     return () => {
-      if (el) savedSidebarScroll = el.scrollTop;
+      const current = treeRef.current?.querySelector<HTMLElement>(".scroll-y");
+      if (current) savedSidebarScroll = current.scrollTop;
     };
   }, []);
-
-  // 选中态由路由派生（单一真相源）：/[subject]/[category]/[id] → `${subject}/${category}/${id}`。
-  // 这样刷新/深链时也能正确高亮，且天然命名空间化，不会跨学科串扰。
-  const selectedKey = useMemo(() => {
-    const segs = pathname.split("/").filter(Boolean);
-    return segs.length >= 3 ? `${segs[0]}/${segs[1]}/${segs[2]}` : null;
-  }, [pathname]);
 
   // 挂载后从 DOM（已由内联脚本应用本地值）回填真实主题。
   useEffect(() => {
     hydrateTheme();
   }, [hydrateTheme]);
-
-  // 路由直接由渲染处已知的 (subjectId, categoryId) 构造，不再全局搜索 item.id。
-  // 此前的全局搜索会因裸 id 跨学科碰撞（概率论排在首位）而把化学等学科的点击
-  // 错误地解析到 /probability/...。选中键同样命名空间化，杜绝跨学科高亮串扰。
-  const handleItemSelect = useCallback(
-    (subjectId: string, categoryId: string, item: ContentItem) => {
-      router.push(`/${subjectId}/${categoryId}/${item.id}`);
-    },
-    [router],
-  );
 
   return (
     <aside
@@ -207,140 +166,9 @@ export default function SubjectSidebar() {
               minHeight: 0,
             }}
           >
-            {/* 首页入口 */}
-            <button
-              onClick={() => router.push("/")}
-              className="press"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                margin: "6px 8px 2px",
-                padding: "8px 10px",
-                width: "calc(100% - 16px)",
-                borderRadius: 9,
-                border: "none",
-                background: pathname === "/" ? "var(--md-sys-color-secondary-container)" : "transparent",
-                color: pathname === "/" ? "var(--md-sys-color-on-secondary-container)" : "var(--md-sys-color-on-surface-variant)",
-                fontSize: 13,
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
-              title="首页 · 书架"
-            >
-              <Home size={15} /> 首页
-            </button>
-
-            {/* 科目列表 */}
-            <div ref={scrollRef} className="scroll-y flex-1" style={{ padding: "4px 0" }}>
-              {visibleSubjects.map((subject) => {
-          const isSubjectExpanded = expandedIds.has(subject.id);
-
-          return (
-            <div key={subject.id}>
-              {/* 科目行 */}
-              <button
-                onClick={() => toggleExpand(subject.id)}
-                className="flex w-full items-center gap-1 border-0 bg-transparent text-left outline-none"
-                style={{
-                  height: 28,
-                  paddingLeft: 8,
-                  paddingRight: 8,
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: "var(--md-sys-color-on-surface)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background =
-                    "var(--md-sys-color-surface-container-high)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "";
-                }}
-              >
-                <span
-                  className="inline-flex shrink-0 items-center justify-center"
-                  style={{
-                    width: 16,
-                    height: 16,
-                    transition: "transform 0.35s cubic-bezier(0.05,0.7,0.1,1.0)",
-                    transform: isSubjectExpanded ? "rotate(90deg)" : "rotate(0deg)",
-                  }}
-                >
-                  <ChevronRight size={14} />
-                </span>
-                <span className="inline-flex shrink-0 items-center justify-center" style={{ width: 18, height: 18 }}>
-                  <SubjectIcon subjectId={subject.id} size={15} />
-                </span>
-                <span className="truncate">{subject.name}</span>
-              </button>
-
-              {/* 分类列表 */}
-              <AnimatedCollapse isOpen={isSubjectExpanded}>
-                {subject.categories.map((category) => {
-                  const catId = `${subject.id}-${category.id}`;
-                  const isCatExpanded = expandedIds.has(catId);
-
-                  return (
-                    <div key={category.id}>
-                      <button
-                        onClick={() => toggleExpand(catId)}
-                        className="flex w-full items-center gap-1 border-0 bg-transparent text-left outline-none"
-                        style={{
-                          height: 28,
-                          paddingLeft: 24,
-                          paddingRight: 8,
-                          fontSize: 13,
-                          color: "var(--md-sys-color-on-surface-variant)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background =
-                            "var(--md-sys-color-surface-container-high)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = "";
-                        }}
-                      >
-                        <span
-                          className="inline-flex shrink-0 items-center justify-center"
-                          style={{
-                            width: 16,
-                            height: 16,
-                            transition: "transform 0.35s cubic-bezier(0.05,0.7,0.1,1.0)",
-                            transform: isCatExpanded ? "rotate(90deg)" : "rotate(0deg)",
-                          }}
-                        >
-                          <ChevronRight size={14} />
-                        </span>
-                        <span className="inline-flex shrink-0 items-center justify-center" style={{ width: 18, height: 18 }}>
-                          {isCatExpanded ? (
-                            <FolderOpen size={15} style={{ color: "var(--md-sys-color-primary)" }} />
-                          ) : (
-                            <Folder size={15} style={{ color: "var(--md-sys-color-outline)" }} />
-                          )}
-                        </span>
-                        <span className="truncate">{category.name}</span>
-                      </button>
-
-                      {/* 内容项 */}
-                      <AnimatedCollapse isOpen={isCatExpanded}>
-                        <FileTree
-                          items={category.items}
-                          depth={3}
-                          subjectId={subject.id}
-                          categoryId={category.id}
-                          selectedId={selectedKey}
-                          onItemSelect={handleItemSelect}
-                        />
-                      </AnimatedCollapse>
-                    </div>
-                  );
-                })}
-              </AnimatedCollapse>
+            <div ref={treeRef} className="flex min-h-0 flex-1 flex-col">
+              <SubjectFolderTree />
             </div>
-          );
-        })}
-      </div>
           </motion.div>
         )}
       </AnimatePresence>

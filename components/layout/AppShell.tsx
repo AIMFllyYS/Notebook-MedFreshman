@@ -38,6 +38,8 @@ import MobileBottomNav from "./MobileBottomNav";
 import MobileChapterPicker from "./MobileChapterPicker";
 import MobileReviewHub from "./MobileReviewHub";
 import MobileSettingsPanel from "./MobileSettingsPanel";
+import MobileSidebarDrawer from "./MobileSidebarDrawer";
+import MobileMiniChat from "./MobileMiniChat";
 import { ChatSkeleton, PageLoader } from "@/components/shared/ResizeLoader";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
 import GlobalSearchButton from "@/components/search/GlobalSearchButton";
@@ -276,45 +278,64 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     mobileTab === "detail" || (mobileTab === "review" && isReviewRoute);
 
   // ── Mobile layout ──────────────────────────────────────────
+  const mobileSidebarOpen = useStore((s) => s.mobileSidebarOpen);
+  const closeMobileSidebar = useStore((s) => s.setMobileSidebarOpen);
+
   if (isMobile) {
     return (
       <KeyboardShortcutProvider>
-      <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]" data-app-mode={resolvedMode} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT}>
-        <MobileTopBar />
-
+      <div className="flex h-[100dvh] flex-col overflow-hidden bg-[var(--bg-app)]" data-app-mode={resolvedMode} data-subject={route?.subjectId ?? activeSubjectId ?? DEFAULT_SUBJECT} data-mobile-sidebar={mobileSidebarOpen || undefined}>
         <div className="relative min-h-0 flex-1 overflow-hidden">
-          {!studioChrome ? (
-            <div className="absolute inset-0">{children}</div>
-          ) : (
-            <>
-              <div className={clsx("absolute inset-0", !showLessonPane && "invisible pointer-events-none")}>
-                {/* 被 ManagedWindow fullscreenTarget="notes" 用作全屏对齐目标，勿改 id */}
-                <div id={NOTES_PANEL_ID} className="h-full">
-                  {children}
-                </div>
-              </div>
-              {mobileTab === "review" && !isReviewRoute && (
-                <div className="absolute inset-0">
-                  <MobileReviewHub />
-                </div>
+          {studioChrome && <MobileSidebarDrawer />}
+          <div
+            className={clsx("mobile-shell-page flex h-full min-h-0 flex-col", mobileSidebarOpen && "is-shifted")}
+          >
+            <MobileTopBar />
+            <div className="relative min-h-0 flex-1 overflow-hidden">
+              {!studioChrome ? (
+                <div className="absolute inset-0">{children}</div>
+              ) : (
+                <>
+                  <div className={clsx("absolute inset-0", !showLessonPane && "invisible pointer-events-none")}>
+                    {/* 被 ManagedWindow fullscreenTarget="notes" 用作全屏对齐目标，勿改 id */}
+                    <div id={NOTES_PANEL_ID} className="h-full">
+                      {children}
+                    </div>
+                  </div>
+                  {mobileTab === "review" && !isReviewRoute && (
+                    <div className="absolute inset-0">
+                      <MobileReviewHub />
+                    </div>
+                  )}
+                  {mobileTab === "ai" && (
+                    <div className="absolute inset-0">
+                      <ChatPanel chatContext={chatContext} />
+                    </div>
+                  )}
+                  {mobileTab === "browser" && (
+                    <div className="absolute inset-0">
+                      <BrowserTab />
+                    </div>
+                  )}
+                  {mobileTab === "settings" && (
+                    <div className="absolute inset-0">
+                      <MobileSettingsPanel />
+                    </div>
+                  )}
+                  {studioChrome && <MobileMiniChat chatContext={chatContext} />}
+                </>
               )}
-              {mobileTab === "ai" && (
-                <div className="absolute inset-0">
-                  <ChatPanel chatContext={chatContext} />
-                </div>
+              {mobileSidebarOpen && (
+                <button
+                  type="button"
+                  className="mobile-sidebar-backdrop"
+                  aria-label="关闭侧栏"
+                  data-testid="mobile-sidebar-backdrop"
+                  onClick={() => closeMobileSidebar(false)}
+                />
               )}
-              {mobileTab === "browser" && (
-                <div className="absolute inset-0">
-                  <BrowserTab />
-                </div>
-              )}
-              {mobileTab === "settings" && (
-                <div className="absolute inset-0">
-                  <MobileSettingsPanel />
-                </div>
-              )}
-            </>
-          )}
+            </div>
+          </div>
         </div>
 
         {studioChrome && <MobileBottomNav />}

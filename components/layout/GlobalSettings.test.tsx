@@ -14,6 +14,13 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/",
 }));
 
+vi.mock("@/components/chat/AccountQuota", () => ({
+  AccountQuota: () => <div>登录后查看会员与额度</div>,
+}));
+vi.mock("@/components/chat/StorageQuota", () => ({
+  StorageQuotaBlock: () => <div>存储占用条</div>,
+}));
+
 function renderSettings() {
   const anchor = document.createElement("button");
   document.body.appendChild(anchor);
@@ -139,12 +146,26 @@ describe("GlobalSettings", () => {
     expect(screen.getByRole("button", { name: "登录" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "额度" })).toBeInTheDocument();
     expect(screen.getByTestId("mobile-settings-quota")).toHaveAccessibleName("额度");
+    expect(screen.getByTestId("mobile-settings-quota").closest("[data-settings-expand]")).toHaveAttribute(
+      "data-settings-expand",
+      "unbounded",
+    );
     expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /成绩/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /快捷键/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /外观/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "打开 Agent 设置" })).toBeInTheDocument();
     expect(screen.queryByTitle("关闭")).not.toBeInTheDocument();
+  });
+
+  it("page variant expands quota inline and pushes following cards down", async () => {
+    const user = userEvent.setup();
+    render(<GlobalSettings variant="page" onClose={() => {}} />);
+    expect(screen.queryByText("存储额度")).not.toBeInTheDocument();
+    await user.click(screen.getByTestId("mobile-settings-quota"));
+    expect(await screen.findByText("存储额度")).toBeInTheDocument();
+    expect(screen.getByText(/登录后查看会员与额度|正在读取账户/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toBeInTheDocument();
   });
 
   it("page variant opens Agent settings without closing the settings tab", async () => {
