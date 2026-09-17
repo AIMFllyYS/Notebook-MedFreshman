@@ -10,7 +10,7 @@ test("stripUserNoteWindowState drops old persisted editor/library windows", () =
     noteAgentOpenIds: ["note-a"],
     byId: { "note-a": { id: "note-a" } },
   });
-  assert.deepEqual(state.openEditorIds, []);
+  assert.equal(state.openEditorIds?.length, 0);
   assert.equal(state.libraryOpen, false);
   assert.equal(state.agentEditingNoteId, null);
   assert.deepEqual(state.noteAgentOpenIds, []);

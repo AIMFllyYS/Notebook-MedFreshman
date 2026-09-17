@@ -14,50 +14,56 @@ function readWorkspaceFile(path: string) {
 test("citation and document viewers are mounted in the global app shell window layer", () => {
   const chatPanel = readWorkspaceFile("components/chat/ChatPanel.tsx");
   const appShell = readWorkspaceFile("components/layout/AppShell.tsx");
+  const layers = readWorkspaceFile("components/window/DeferredWindowLayers.tsx");
 
   assert.doesNotMatch(chatPanel, /NoteCitationViewer/, "Citation windows must outlive the AI tab.");
   assert.doesNotMatch(chatPanel, /SourcePreviewViewer/, "Source preview windows must outlive the AI tab.");
   assert.doesNotMatch(chatPanel, /UserNoteLayer/, "Personal note windows must outlive the AI tab.");
   assert.doesNotMatch(chatPanel, /FlashcardCiteWindow/, "Flashcard cite windows must outlive the AI tab.");
-  assert.match(appShell, /components\/chat\/NoteCitationViewer/);
-  assert.match(appShell, /<NoteCitationViewer\s*\/>/);
-  assert.match(appShell, /components\/chat\/SourceTraceViewer/);
-  assert.match(appShell, /<SourceTraceViewer\s*\/>/);
-  assert.match(appShell, /components\/chat\/SourcePreviewViewer/);
-  assert.match(appShell, /<SourcePreviewViewer\s*\/>/);
-  assert.match(appShell, /components\/chat\/DocumentViewer/);
-  assert.match(appShell, /<DocumentViewerLayer\s*\/>/);
-  assert.match(appShell, /components\/notes\/UserNoteLayer/);
-  assert.match(appShell, /<UserNoteLayer\s*\/>/);
-  assert.match(appShell, /components\/notes\/FlashcardCiteWindow/);
-  assert.match(appShell, /<FlashcardCiteWindow\s*\/>/);
-  assert.match(appShell, /components\/notes\/AgentProductPickerWindow/);
-  assert.match(appShell, /<AgentProductPickerWindow\s*\/>/);
-  assert.match(appShell, /components\/memory\/MemoryInboxLayer/);
-  assert.match(appShell, /<MemoryInboxLayer\s*\/>/);
-  assert.match(appShell, /components\/quiz\/QuizExplainLayer/);
-  assert.match(appShell, /<QuizExplainLayer\s*\/>/);
+  assert.match(appShell, /DeferredWindowLayers/);
+  assert.match(appShell, /<DeferredWindowLayers\s*\/>/);
+  assert.match(layers, /components\/chat\/NoteCitationViewer/);
+  assert.match(layers, /<NoteCitationViewer\s*\/>/);
+  assert.match(layers, /components\/chat\/SourceTraceViewer/);
+  assert.match(layers, /<SourceTraceViewer\s*\/>/);
+  assert.match(layers, /components\/chat\/SourcePreviewViewer/);
+  assert.match(layers, /<SourcePreviewViewer\s*\/>/);
+  assert.match(layers, /components\/chat\/DocumentViewer/);
+  assert.match(layers, /<DocumentViewerLayer\s*\/>/);
+  assert.match(layers, /components\/notes\/UserNoteLayer/);
+  assert.match(layers, /<UserNoteLayer\s*\/>/);
+  assert.match(layers, /components\/notes\/FlashcardCiteWindow/);
+  assert.match(layers, /<FlashcardCiteWindow\s*\/>/);
+  assert.match(layers, /components\/notes\/AgentProductPickerWindow/);
+  assert.match(layers, /<AgentProductPickerWindow\s*\/>/);
+  assert.match(layers, /components\/memory\/MemoryInboxLayer/);
+  assert.match(layers, /<MemoryInboxLayer\s*\/>/);
+  assert.match(layers, /components\/quiz\/QuizExplainLayer/);
+  assert.match(layers, /<QuizExplainLayer\s*\/>/);
   assert.doesNotMatch(appShell, /DevNoteHarness/);
+  assert.doesNotMatch(layers, /DevNoteHarness/);
 });
 
 test("artifact viewer is mounted in the global app shell window layer", () => {
   const chatPanel = readWorkspaceFile("components/chat/ChatPanel.tsx");
   const appShell = readWorkspaceFile("components/layout/AppShell.tsx");
+  const layers = readWorkspaceFile("components/window/DeferredWindowLayers.tsx");
 
   assert.doesNotMatch(
     chatPanel,
     /ArtifactViewer/,
     "ChatPanel is tab-scoped; artifact windows must not unmount when the AI tab unmounts.",
   );
+  assert.match(appShell, /DeferredWindowLayers/);
   assert.match(
-    appShell,
+    layers,
     /components\/chat\/ArtifactViewer/,
-    "AppShell should dynamically import the artifact viewer as a global floating window layer.",
+    "Deferred window layers should dynamically import the artifact viewer as a global floating window.",
   );
   assert.match(
-    appShell,
+    layers,
     /<ArtifactViewer\s*\/>/,
-    "AppShell should render the artifact viewer alongside the other global window layers.",
+    "Deferred window layers should render the artifact viewer alongside the other global window layers.",
   );
 });
 

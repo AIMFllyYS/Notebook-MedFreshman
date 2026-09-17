@@ -17,6 +17,10 @@ import { useRecordPreviews } from "@/lib/stores/recordPreviews";
 import type { ChatMessage } from "@/lib/types/chat";
 import type { RecordMode } from "@/lib/review/types";
 
+function assistantWithParts(id: string, parts: ChatMessage["parts"], timestamp = 1): ChatMessage {
+  return { id, role: "assistant", parts, timestamp };
+}
+
 function noteCommitMessage(title: string): ChatMessage {
   return {
     ...createAssistantPlaceholder("side-a", {}),
@@ -92,27 +96,22 @@ test("historical propose/commit on first session look do not reopen clouds or re
   const noteId = useUserNotes.getState().createNote("probability", { title: "已有笔记", markdown: "旧稿" });
   useUserNotes.getState().closeEditor(noteId);
   const history = [
-    {
-      id: "old-a",
-      role: "assistant" as const,
-      timestamp: 1,
-      parts: [
-        {
-          type: "tool-proposeMemory",
-          toolCallId: "t-old",
-          state: "output-available",
-          input: { kind: "note", reason: "旧对话" },
-          output: { proposalId: "prop_old", kind: "note", reason: "旧对话", titleHint: "渗透压" },
-        },
-        {
-          type: "tool-commitNotes",
-          toolCallId: "c-old",
-          state: "output-available",
-          input: { title: "渗透压", markdown: "新稿" },
-          output: { text: "ok", noteId: "note_dup", title: "渗透压", markdown: "新稿" },
-        },
-      ],
-    },
+    assistantWithParts("old-a", [
+      {
+        type: "tool-proposeMemory",
+        toolCallId: "t-old",
+        state: "output-available",
+        input: { kind: "note", reason: "旧对话" },
+        output: { text: "提议", proposalId: "prop_old", kind: "note", reason: "旧对话", titleHint: "渗透压" },
+      },
+      {
+        type: "tool-commitNotes",
+        toolCallId: "c-old",
+        state: "output-available",
+        input: { title: "渗透压", markdown: "新稿" },
+        output: { text: "ok", noteId: "note_dup", title: "渗透压", markdown: "新稿" },
+      },
+    ]),
   ];
   syncMemoryInboxFromSessions({ main: history });
   syncMemoryInboxFromSessions({ main: history });
@@ -128,20 +127,15 @@ test("live proposeMemory after a session is acknowledged still opens one cloud",
   syncMemoryInboxFromSessions({ main: [] });
   syncMemoryInboxFromSessions({
     main: [
-      {
-        id: "m-live",
-        role: "assistant",
-        timestamp: 2,
-        parts: [
-          {
-            type: "tool-proposeMemory",
-            toolCallId: "t-live",
-            state: "output-available",
-            input: { kind: "note", reason: "刚讲清" },
-            output: { proposalId: "prop_live", kind: "note", reason: "刚讲清", titleHint: "渗透压" },
-          },
-        ],
-      },
+      assistantWithParts("m-live", [
+        {
+          type: "tool-proposeMemory",
+          toolCallId: "t-live",
+          state: "output-available",
+          input: { kind: "note", reason: "刚讲清" },
+          output: { text: "提议", proposalId: "prop_live", kind: "note", reason: "刚讲清", titleHint: "渗透压" },
+        },
+      ], 2),
     ],
   });
   assert.deepEqual(useMemoryInbox.getState().order, ["prop_live"]);
