@@ -750,6 +750,50 @@
       }
     },
     {
+      "subjectId": "cell-biology",
+      "lessonId": "rec-2026-fall-011-012",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "细胞生物学",
+      "sessionRange": {
+        "start": 11,
+        "end": 12
+      },
+      "taughtOn": "2026-09-17",
+      "topic": "线粒体与细胞的能量转换（一）——线粒体基础特征、功能、疾病、超微结构、动力学、嵴的动态研究",
+      "revision": 1,
+      "quizId": "rec-2026-fall-011-012",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-011-012"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-011-012"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-011-012"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-011-012"
+        }
+      },
+      "hashes": {
+        "recording": "c289565b5005424c32696b2829c26286b1585300581417dcb977009909866c0f",
+        "notesText": "0412de4f7ce34a226fb4d6ae4d886e6d0aa9a4654c9a87692cb876afc5c4c03a"
+      }
+    },
+    {
       "subjectId": "cell-biology-lab",
       "lessonId": "rec-2026-fall-005-008",
       "courseInstanceId": "rec-2026-fall",
@@ -1187,6 +1231,50 @@
       "hashes": {
         "recording": "e4d4345849fcd9764794f9f0b54fba73bf7fbc57efa83f55de335add89a52694",
         "notesText": "b9344b5190c7289d61752ece2230071662c1657a0a38794ac6514a30d929b5d2"
+      }
+    },
+    {
+      "subjectId": "instrumental-analysis",
+      "lessonId": "rec-2026-fall-011-012",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "分析化学",
+      "sessionRange": {
+        "start": 11,
+        "end": 12
+      },
+      "taughtOn": "2026-09-17",
+      "topic": "分光光度法（紫外-可见分光光度法）——单色器、比色皿、检测器、仪器类型、显色反应、误差控制、双波长法",
+      "revision": 1,
+      "quizId": "rec-2026-fall-011-012",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-011-012"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-011-012"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-011-012"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-011-012"
+        }
+      },
+      "hashes": {
+        "recording": "a7235104d0504f1e4e49f1368f7e20b6ddc60dc613324af9e327ed4a39dec817",
+        "notesText": "e688a027962eda335ef5626f86a1646072331833396e8a9673c9d676dc187e94"
       }
     },
     {

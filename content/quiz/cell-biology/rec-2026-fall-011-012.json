@@ -1,0 +1,260 @@
+{
+  "subjectId": "cell-biology",
+  "chapterId": "rec-2026-fall-011-012",
+  "generatedAt": "2026-09-17",
+  "examConfig": {
+    "source": "content/cell-biology/lectures/rec-2026-fall-011-012/recording.md；content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+    "totalPoints": 110,
+    "timeLimit": 45
+  },
+  "contentRef": {
+    "lessonId": "rec-2026-fall-011-012",
+    "revision": 1,
+    "recordingHash": "c289565b5005424c32696b2829c26286b1585300581417dcb977009909866c0f",
+    "notesTextHash": "0412de4f7ce34a226fb4d6ae4d886e6d0aa9a4654c9a87692cb876afc5c4c03a"
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "线粒体外膜标志酶（单胺氧化酶）"
+      },
+      "stem": "线粒体外膜的标志酶是下列哪一种？",
+      "options": [
+        "细胞色素氧化酶（复合物IV）",
+        "单胺氧化酶（MAO）",
+        "腺苷酸激酶",
+        "苹果酸脱氢酶"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**线粒体外膜通透性较高、含大量孔蛋白，其标志酶为单胺氧化酶（MAO），催化单胺类物质氧化脱氨。A错：细胞色素氧化酶（呼吸链复合物IV）是内膜的标志酶，不是外膜。C错：腺苷酸激酶是外膜与内膜之间膜间隙的标志酶。D错：苹果酸脱氢酶属于基质中TCA循环酶类，是基质的标志酶。",
+      "hint": "外膜通透性高、含孔蛋白，记'外单'。"
+    },
+    {
+      "id": "q002",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "人类mtDNA大小与编码基因数"
+      },
+      "stem": "关于人类线粒体DNA（mtDNA）的核心参数，下列说法正确的是？",
+      "options": [
+        "mtDNA为线性双链DNA，约16.5 KB，编码约1500个蛋白",
+        "mtDNA为环状双链DNA，约16.5 KB，仅编码13个蛋白",
+        "mtDNA为环状双链DNA，编码线粒体全部约1500个蛋白",
+        "mtDNA为线性双链DNA，约165 KB，编码13个蛋白"
+      ],
+      "answer": 1,
+      "explanation": "**B 正确。**人类mtDNA为约16.5 KB（16,568 bp）的环状双链DNA，编码13个蛋白（全部为呼吸链复合物亚基）、2个rRNA和22个tRNA。A错：mtDNA是环状而非线性，且1500是线粒体总蛋白数、不是mtDNA编码数。C错：线粒体总蛋白约1500个，但其中99%以上由核基因编码，mtDNA只编码13个。D错：大小不是165 KB，且是环状而非线性。",
+      "hint": "16.5K环，13蛋2R22T，总蛋白1500。"
+    },
+    {
+      "id": "q003",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "mtDNA母系遗传原理"
+      },
+      "stem": "线粒体DNA表现为母系遗传，其主要原因是？",
+      "options": [
+        "受精卵中的线粒体几乎全部来自卵细胞，精子线粒体数量少且受精后被降解",
+        "精子中的mtDNA比卵细胞中的更长",
+        "mtDNA只在女性生殖细胞中进行复制",
+        "父源mtDNA携带显性致死基因"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**受精卵中的线粒体几乎全部来自卵细胞（数量巨大，约10万-20万个），而精子中的线粒体数量很少（约100个）且在受精后被降解，因此mtDNA只从母亲传递给后代。B错：精子线粒体数量少而非更长，这不是母系遗传的原因。C错：mtDNA并非只在女性生殖细胞中复制，体细胞中也复制。D错：父源mtDNA并非携带显性致死基因，而是数量少且被降解。",
+      "hint": "卵细胞线粒体10万+，精子少且被降解。"
+    },
+    {
+      "id": "q004",
+      "type": "single_choice",
+      "difficulty": "basic",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "瓦伯格效应（有氧糖酵解）"
+      },
+      "stem": "关于肿瘤细胞的瓦伯格效应（Warburg effect），下列描述正确的是？",
+      "options": [
+        "肿瘤细胞即使在有氧条件下也倾向于通过糖酵解产生ATP，而非氧化磷酸化",
+        "肿瘤细胞在缺氧条件下才进行糖酵解，有氧时恢复氧化磷酸化",
+        "瓦伯格效应是指肿瘤细胞氧化磷酸化异常旺盛",
+        "瓦伯格效应与PET-CT使用¹⁸F-FDG示踪剂的原理无关"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**瓦伯格效应指肿瘤细胞即使在有氧条件下也优先通过糖酵解产生ATP（有氧糖酵解），因为糖酵解中间产物可为肿瘤提供核苷酸、脂质、氨基酸等生物合成前体。B错：这正是与正常细胞相反之处——肿瘤细胞在有氧时仍走糖酵解，并非缺氧才糖酵解。C错：正好相反，瓦伯格效应是肿瘤细胞减少氧化磷酸化、转向糖酵解，而非氧化磷酸化旺盛。D错：PET-CT正是利用肿瘤细胞高葡萄糖摄取特性，使用¹⁸F-FDG作为示踪剂。",
+      "hint": "肿瘤有氧也糖酵解，为增殖供前体。"
+    },
+    {
+      "id": "q005",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "半自主性细胞器含义"
+      },
+      "stem": "为什么说线粒体是'半自主性细胞器'？下列理解正确的是？",
+      "options": [
+        "线粒体有自己的DNA和核糖体，可自主转录翻译和二分裂增殖，但99%以上蛋白由核基因编码",
+        "线粒体完全独立于细胞核，所有蛋白都由自身mtDNA编码",
+        "线粒体不能自主增殖，完全依赖细胞核分裂",
+        "线粒体有自己的DNA，但不需要任何核糖体即可翻译"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**自主性体现在线粒体有环状mtDNA、自身核糖体，可进行转录翻译和二分裂增殖；半自主性体现在线粒体约1500个蛋白中99%以上由核基因编码、在胞质核糖体合成后再转运入线粒体，增殖和功能受细胞核调控。B错：线粒体并非完全独立，99%蛋白由核编码。C错：线粒体可以自主进行二分裂增殖，并非完全依赖细胞核分裂。D错：线粒体有自己的核糖体（70S型），翻译需要核糖体参与。",
+      "hint": "有自己的DNA和核糖体，但大部分蛋白靠总部（细胞核）。"
+    },
+    {
+      "id": "q006",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "线粒体融合蛋白的定位与分工"
+      },
+      "stem": "关于介导线粒体融合的关键蛋白及其定位，下列配对正确的是？",
+      "options": [
+        "MFN1/MFN2定位在外膜、介导外膜融合；OPA1定位在内膜、介导内膜融合",
+        "MFN1/MFN2定位在内膜、介导内膜融合；OPA1定位在外膜、介导外膜融合",
+        "DRP1定位在外膜、介导外膜融合；OPA1定位在胞质、介导内膜融合",
+        "MFN1/MFN2和OPA1都定位在胞质，被招募到线粒体膜上"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**MFN1/MFN2是定位在线粒体外膜的大型GTP酶（两次跨膜，N端C端朝向胞质），通过两个线粒体MFN的C端反式相互作用拉近外膜、介导外膜融合；OPA1是定位在内膜的GTP酶，在内膜融合阶段接手、介导内膜融合，过程是先外膜融合后内膜融合。B错：内外膜融合蛋白定位正好说反了。C错：DRP1是分裂蛋白不是融合蛋白，且正常定位在胞质。D错：MFN和OPA1都是组成性定位在外膜/内膜上，不是胞质蛋白被招募。",
+      "hint": "外膜MFN，内膜OPA1，先外后内。"
+    },
+    {
+      "id": "q007",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "DRP1正常定位与招募机制"
+      },
+      "stem": "关于线粒体分裂核心蛋白DRP1，下列说法正确的是？",
+      "options": [
+        "DRP1正常情况下定位在细胞质中，分裂时被外膜受体（MFF/FIS1等）招募到线粒体外膜",
+        "DRP1组成性定位在线粒体内膜上，随时准备分裂",
+        "DRP1是一个转录因子，在线粒体基质中调控分裂基因表达",
+        "DRP1不需要GTP水解，通过机械直接把线粒体掐断"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**DRP1是发动蛋白（dynamin）家族的GTP酶，正常情况下定位在细胞质中、不在线粒体上；当需要分裂时，被线粒体外膜受体（主要是MFF，以及FIS1、MiD49/MiD51）招募到分裂位点，组装成多聚体环，通过GTP水解收缩环结构把线粒体'掐断'。B错：DRP1正常在胞质，不在内膜。C错：DRP1是机械收缩的GTP酶，不是转录因子。D错：DRP1正是通过GTP水解提供能量收缩，不是不靠GTP。",
+      "hint": "DRP1平时在胞质，分裂时被MFF招募上环。"
+    },
+    {
+      "id": "q008",
+      "type": "single_choice",
+      "difficulty": "medium",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "突变阈值效应与异质性"
+      },
+      "stem": "关于线粒体DNA突变的阈值效应，下列理解正确的是？",
+      "options": [
+        "细胞中同时存在正常和突变mtDNA（异质性），通常突变比例达到50%-90%以上才出现临床症状",
+        "只要细胞中存在任何一个突变mtDNA就会立即发病",
+        "所有组织对突变mtDNA的阈值都相同，均为10%",
+        "阈值效应是指突变mtDNA必须100%替换正常mtDNA才发病"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**细胞中可同时存在正常mtDNA和突变mtDNA（异质性），只有当突变mtDNA比例达到一定阈值（通常50%-90%以上）时才出现临床症状；高能量需求组织（脑、心肌、骨骼肌）阈值更低、更容易受累。B错：存在少量突变mtDNA不一定发病，需超过阈值。C错：不同组织阈值不同，高能耗组织阈值更低，并非都为10%。D错：阈值是50%-90%以上而非100%，且异质性本身就是正常与突变共存。",
+      "hint": "异质性共存，突变过半到九成才发病。"
+    },
+    {
+      "id": "q009",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "三亲婴儿技术原理（核置换）"
+      },
+      "stem": "关于三亲婴儿技术的原理，下列说法正确的是？",
+      "options": [
+        "将携带mtDNA突变母亲的卵细胞核取出，植入捐献者的去核卵细胞，使婴儿核DNA来自父母、mtDNA来自捐献者",
+        "将母亲卵细胞中的线粒体直接取出，换成捐献者的线粒体，核保持不变",
+        "将父亲的核DNA与母亲和捐献者的线粒体DNA混合后重新合成受精卵",
+        "三亲婴儿的核DNA分别来自父亲、母亲和捐献者三方"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**三亲婴儿技术本质是核置换：把携带mtDNA突变的母亲卵细胞核取出，植入捐献者已去核的卵细胞中，这样婴儿的核DNA来自父母双方，而线粒体DNA来自健康捐献者，因此有三个遗传来源（父亲核DNA、母亲核DNA、捐献者mtDNA）。B错：技术上是反向取核，而不是直接取出线粒体——因为线粒体小、数量多不好操作，核大反而容易取。C错：并非把三方遗传物质在体外重新合成受精卵。D错：核DNA只来自父母双方两人，捐献者提供的是mtDNA而非核DNA。",
+      "hint": "取的是核不是线粒体；核DNA父母给，mtDNA捐献者给。"
+    },
+    {
+      "id": "q010",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "融合分裂蛋白突变与相关疾病"
+      },
+      "stem": "关于线粒体融合分裂蛋白突变导致的疾病，下列配对与解释正确的是？",
+      "options": [
+        "MFN2突变→CMT2A；OPA1突变→视神经萎缩症；DRP1突变通常致死故仅个别病例报道",
+        "MFN1突变→CMT2A；MFN2突变→视神经萎缩症；DRP1突变→高血压",
+        "OPA1突变→CMT2A；MFN2突变→视神经萎缩症；DRP1突变→糖尿病",
+        "三种蛋白突变都只在体外实验中发现，未发现人类患者"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**MFN2有50种以上致病突变导致CMT2A（腓骨肌萎缩症2A型，手脚畸形、神经受损）；OPA1有200种以上突变导致常染色体显性视神经萎缩症（视力下降、部分影响听力）；DRP1突变仅报道1例（发表于NEJM），因为DRP1太重要、突变通常胎死腹中根本生不下来。B错：CMT2A是MFN2不是MFN1（MFN1尚未发现人类致病突变），视神经萎缩是OPA1不是MFN2。C错：疾病与蛋白配对完全错位。D错：MFN2和OPA1都已发现大量人类患者突变。",
+      "hint": "MFN2→CMT，OPA1→视神经，DRP1太重要一突变就死胎。"
+    },
+    {
+      "id": "q011",
+      "type": "single_choice",
+      "difficulty": "hard",
+      "points": 10,
+      "source": "current_chapter",
+      "sourceRef": {
+        "source": "notes",
+        "path": "content/cell-biology/lectures/rec-2026-fall-011-012/notes.html",
+        "label": "细胞色素C释放诱导凋亡通路（王晓东发现）"
+      },
+      "stem": "在线粒体途径（内源性途径）细胞凋亡中，王晓东发现的核心事件及其下游通路是？",
+      "options": [
+        "线粒体外膜通透化释放细胞色素C到细胞质→与Apaf-1结合→激活Caspase-9→Caspase级联→凋亡",
+        "线粒体释放溶酶体酶→直接降解核膜→凋亡",
+        "细胞色素C直接进入细胞核切割DNA→凋亡",
+        "线粒体将ATP泵出→能量耗竭→被动坏死"
+      ],
+      "answer": 0,
+      "explanation": "**A 正确。**凋亡信号触发线粒体外膜通透化（MOMP），由Bcl-2家族（Bax/Bak促凋亡，Bcl-2/Bcl-xL抗凋亡）调控；释放的细胞色素C到细胞质后与Apaf-1结合，激活Caspase-9，进而启动Caspase级联反应诱导凋亡——这是王晓东发现的核心机制。B错：释放的不是溶酶体酶，且不是通过降解核膜。C错：细胞色素C并不直接入核切割DNA，入核降解DNA的是EndoG等。D错：这是主动的程序性凋亡而非能量耗竭导致的被动坏死。",
+      "hint": "色素C出线粒体→结合Apaf-1→激活Caspase-9级联。"
+    }
+  ]
+}

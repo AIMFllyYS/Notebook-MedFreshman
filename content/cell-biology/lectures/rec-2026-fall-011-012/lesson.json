@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "cell-biology",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-011-012",
+  "courseName": "细胞生物学",
+  "sessionRange": {
+    "start": 11,
+    "end": 12
+  },
+  "taughtOn": "2026-09-17",
+  "topic": "线粒体与细胞的能量转换（一）——线粒体基础特征、功能、疾病、超微结构、动力学、嵴的动态研究",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-011-012"
+}
