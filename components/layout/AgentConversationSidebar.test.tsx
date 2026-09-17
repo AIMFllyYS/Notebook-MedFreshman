@@ -22,6 +22,7 @@ vi.mock("@/lib/hooks/useChatHistory", () => ({
     (selector: (state: typeof historyState) => unknown) => selector(historyState),
     { getState: () => historyState },
   ),
+  ensureChatHistoryBootstrap: () => Promise.resolve(),
 }));
 vi.mock("@/lib/hooks/useFloatingChats", () => ({
   useFloatingChats: { getState: () => ({ windows: [], closeWindow: vi.fn(), restoreWindow }) },

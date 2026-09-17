@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Folder, FolderOpen, MessageSquare, PanelLeft, PanelLeftClose, Plus, Trash2 } from "lucide-react";
 import FolderTreeRow from "./FolderTreeRow";
 import GlobalSettings from "./GlobalSettings";
@@ -8,7 +8,7 @@ import LeftDock from "./LeftDock";
 import UserQuotaPanel from "./UserQuotaPanel";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
-import { useChatHistory } from "@/lib/hooks/useChatHistory";
+import { ensureChatHistoryBootstrap, useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { useStore } from "@/lib/stores/ui";
 import { useTokenTracker } from "@/lib/hooks/useTokenTracker";
@@ -40,6 +40,10 @@ export default function AgentConversationSidebar({
   const [mainExpanded, setMainExpanded] = useState(true);
   const [floatingExpanded, setFloatingExpanded] = useState(true);
   const settingsBtnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    void ensureChatHistoryBootstrap();
+  }, []);
 
   const mainSessions = useMemo(
     () => sessions.filter((s) => s.kind !== "floating" && s.kind !== "note"),
