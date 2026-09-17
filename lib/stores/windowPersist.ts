@@ -5,6 +5,7 @@
 
 export const EMPTY_USER_NOTE_WINDOW_STATE = {
   openEditorIds: [] as string[],
+  dirtyEditorIds: [] as string[],
   libraryOpen: false,
   agentEditingNoteId: null as string | null,
   noteAgentOpenIds: [] as string[],
@@ -14,6 +15,7 @@ export function stripUserNoteWindowState<T extends Partial<typeof EMPTY_USER_NOT
   state: T,
 ): T {
   state.openEditorIds = [];
+  state.dirtyEditorIds = [];
   state.libraryOpen = false;
   state.agentEditingNoteId = null;
   state.noteAgentOpenIds = [];

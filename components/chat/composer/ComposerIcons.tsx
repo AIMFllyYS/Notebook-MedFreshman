@@ -1,83 +1,134 @@
-import type { ReactElement, SVGProps } from "react";
+import type { CSSProperties, ReactElement, ReactNode } from "react";
 import type { ForcedComposerTool } from "@/lib/chat/composerIntent";
 
-/** 与顶栏红绿灯同形：12px 圆点 + 细描边字形，菜单文字略大于图标。 */
-function TrafficGlyph({
-  color,
+/** 与顶栏最小化窗同一套缩略图：方圆角、细边框、底栏色条。 */
+const THUMB_ACCENTS = {
+  plan: "#7c3aed",
+  generateImage: "#e11d48",
+  renderInteractive: "#0d9488",
+  writeDocument: "#d97706",
+  flashcards: "#ea580c",
+  notes: "#16a34a",
+} as const;
+
+function ComposerThumb({
+  name,
+  accent,
   children,
-  ...props
-}: SVGProps<SVGSVGElement> & { color: string }) {
+}: {
+  name: string;
+  accent?: string;
+  children?: ReactNode;
+}) {
   return (
-    <svg width={12} height={12} viewBox="0 0 12 12" aria-hidden="true" focusable="false" {...props}>
-      <circle cx={6} cy={6} r={5.5} fill={color} />
-      <g fill="none" stroke="#fff" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round">
-        {children}
-      </g>
+    <span
+      data-composer-icon={name}
+      data-composer-thumb="square"
+      className="composer-tool-thumb"
+      style={accent ? ({ "--composer-thumb-accent": accent } as CSSProperties) : undefined}
+      aria-hidden
+    >
+      {children}
+      {accent ? <span className="composer-tool-thumb-bar" /> : null}
+    </span>
+  );
+}
+
+function Glyph({ children }: { children: ReactNode }) {
+  return (
+    <svg
+      width={12}
+      height={12}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      focusable="false"
+    >
+      {children}
     </svg>
   );
 }
 
-export function PlanModeIcon(props: SVGProps<SVGSVGElement>) {
+export function PlanModeIcon() {
   return (
-    <TrafficGlyph color="#7c3aed" data-composer-icon="plan" {...props}>
-      <path d="M3.4 4h5.2M3.4 6h5.2M3.4 8h3.1" />
-    </TrafficGlyph>
+    <ComposerThumb name="plan" accent={THUMB_ACCENTS.plan}>
+      <Glyph>
+        <circle cx="3.6" cy="4" r="1.15" />
+        <circle cx="3.6" cy="8" r="1.15" />
+        <circle cx="3.6" cy="12" r="1.15" />
+        <path d="M6.3 4h6.2M6.3 8h6.2M6.3 12h4.1" />
+      </Glyph>
+    </ComposerThumb>
   );
 }
 
-export function GenerateImageToolIcon(props: SVGProps<SVGSVGElement>) {
+export function GenerateImageToolIcon() {
   return (
-    <TrafficGlyph color="#e11d48" data-composer-icon="generateImage" {...props}>
-      <rect x="3.1" y="3.6" width="5.8" height="4.8" rx="1" />
-      <path d="m3.4 7.4 1.6-1.5 1.3 1.2.9-.8 1.5 1.3" />
-    </TrafficGlyph>
+    <ComposerThumb name="generateImage" accent={THUMB_ACCENTS.generateImage}>
+      <Glyph>
+        <rect x="2.2" y="3.1" width="11.6" height="9.8" rx="1.6" />
+        <circle cx="10.7" cy="6.3" r="1.15" />
+        <path d="m2.7 10.5 3.3-3.1 2.9 2.8 1.8-1.6 2.6 2.3" />
+      </Glyph>
+    </ComposerThumb>
   );
 }
 
-export function InteractiveHtmlToolIcon(props: SVGProps<SVGSVGElement>) {
+export function InteractiveHtmlToolIcon() {
   return (
-    <TrafficGlyph color="#0d9488" data-composer-icon="renderInteractive" {...props}>
-      <path d="M4.1 4.6 5.7 6 4.1 7.4M6.4 7.4h1.7" />
-    </TrafficGlyph>
+    <ComposerThumb name="renderInteractive" accent={THUMB_ACCENTS.renderInteractive}>
+      <Glyph>
+        <path d="m5.3 4.4-3.1 3.6 3.1 3.6M10.7 4.4l3.1 3.6-3.1 3.6" />
+        <path d="M9.2 4.6 6.8 11.4" />
+      </Glyph>
+    </ComposerThumb>
   );
 }
 
-export function LongArticleToolIcon(props: SVGProps<SVGSVGElement>) {
+export function LongArticleToolIcon() {
   return (
-    <TrafficGlyph color="#d97706" data-composer-icon="writeDocument" {...props}>
-      <path d="M4.2 3.6h2.4L8 5.1v3.4H4.2z" />
-      <path d="M6.5 3.6V5.1H8" />
-    </TrafficGlyph>
+    <ComposerThumb name="writeDocument" accent={THUMB_ACCENTS.writeDocument}>
+      <Glyph>
+        <path d="M4.1 2.4h5.1L12 5.2v8.4H4.1z" />
+        <path d="M9.1 2.4V5.2H12" />
+        <path d="M6.1 7.3h3.8M6.1 9.2h3.8M6.1 11.1h2.4" />
+      </Glyph>
+    </ComposerThumb>
   );
 }
 
-export function FlashcardToolIcon(props: SVGProps<SVGSVGElement>) {
+export function FlashcardToolIcon() {
   return (
-    <TrafficGlyph color="#ea580c" data-composer-icon="flashcards" {...props}>
-      <rect x="3.6" y="3.5" width="5" height="3.8" rx="0.8" />
-      <path d="M3.2 5.1v2.8a.8.8 0 0 0 .8.8h4.2" />
-    </TrafficGlyph>
+    <ComposerThumb name="flashcards" accent={THUMB_ACCENTS.flashcards}>
+      <Glyph>
+        <rect x="4.1" y="2.6" width="8.4" height="6.7" rx="1.2" />
+        <path d="M3.3 5.8v5.2c0 .8.6 1.4 1.4 1.4h7.1" />
+      </Glyph>
+    </ComposerThumb>
   );
 }
 
-export function NotesToolIcon(props: SVGProps<SVGSVGElement>) {
+export function NotesToolIcon() {
   return (
-    <TrafficGlyph color="#16a34a" data-composer-icon="notes" {...props}>
-      <path d="M3.8 3.5h4.4v5.1H3.8z" />
-      <path d="M5.1 3.5v5.1M5.9 5.2h1.7M5.9 6.6h1.3" />
-    </TrafficGlyph>
+    <ComposerThumb name="notes" accent={THUMB_ACCENTS.notes}>
+      <Glyph>
+        <rect x="3.2" y="2.4" width="9.6" height="11.2" rx="1.1" />
+        <path d="M6.1 2.4v11.2M7.8 6.3h3M7.8 8.7h2.1" />
+      </Glyph>
+    </ComposerThumb>
   );
 }
 
-export function SkillIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <TrafficGlyph color="#2563eb" data-composer-icon="skill" {...props}>
-      <path d="M6 3.4v5.2M3.4 6h5.2" />
-    </TrafficGlyph>
-  );
+/** Skills 不画字形，只留统一小方块，和工具行列对齐。 */
+export function SkillIcon() {
+  return <ComposerThumb name="skill" />;
 }
 
-const TOOL_ICONS: Record<ForcedComposerTool, (props: SVGProps<SVGSVGElement>) => ReactElement> = {
+const TOOL_ICONS: Record<ForcedComposerTool, () => ReactElement> = {
   generateImage: GenerateImageToolIcon,
   renderInteractive: InteractiveHtmlToolIcon,
   writeDocument: LongArticleToolIcon,
@@ -85,7 +136,7 @@ const TOOL_ICONS: Record<ForcedComposerTool, (props: SVGProps<SVGSVGElement>) =>
   notes: NotesToolIcon,
 };
 
-export function ForcedToolIcon({ tool, ...props }: SVGProps<SVGSVGElement> & { tool: ForcedComposerTool }) {
+export function ForcedToolIcon({ tool }: { tool: ForcedComposerTool }) {
   const Icon = TOOL_ICONS[tool];
-  return <Icon {...props} />;
+  return <Icon />;
 }

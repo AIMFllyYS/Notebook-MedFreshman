@@ -1469,8 +1469,49 @@
   font-size: 13.5px;
 }
 .composer-command-panel .app-menu-check {
+  width: 22px;
+  height: 22px;
+}
+.composer-tool-thumb {
+  position: relative;
+  display: inline-grid;
+  width: 22px;
+  height: 22px;
+  flex: none;
+  place-items: center;
+  box-sizing: border-box;
+  border: 1px solid color-mix(in srgb, var(--line) 82%, var(--md-sys-color-primary) 18%);
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.07);
+  color: var(--md-sys-color-on-surface-variant);
+}
+.composer-tool-thumb svg {
   width: 12px;
   height: 12px;
+}
+.composer-tool-thumb-bar {
+  position: absolute;
+  bottom: 1.5px;
+  left: 50%;
+  width: 8px;
+  height: 1.5px;
+  border-radius: 999px;
+  background: var(--composer-thumb-accent, var(--md-sys-color-primary));
+  transform: translateX(-50%);
+}
+.composer-chip .composer-tool-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+}
+.composer-chip .composer-tool-thumb svg {
+  width: 9px;
+  height: 9px;
+}
+.composer-chip .composer-tool-thumb-bar {
+  bottom: 1px;
+  width: 6px;
 }
 .composer-command-on {
   margin-left: auto;
@@ -1962,7 +2003,7 @@
 /* Project-owned menus and dialogs used throughout Agent controls. */
 .app-menu {
   position: fixed;
-  z-index: 9999;
+  z-index: 12000;
   overflow: auto;
   padding: 6px;
   border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 35%, transparent);
@@ -1973,6 +2014,11 @@
   backdrop-filter: blur(20px) saturate(1.15);
   -webkit-backdrop-filter: blur(20px) saturate(1.15);
   animation: app-menu-in 140ms var(--ease-out) both;
+}
+.app-menu:not([data-placed="true"]) {
+  visibility: hidden;
+  pointer-events: none;
+  animation: none;
 }
 @keyframes app-menu-in {
   from { opacity: 0; transform: translateY(4px) scale(.985); }
@@ -2064,6 +2110,39 @@
 .app-dialog h2 { margin: 5px 0 8px; color: var(--md-sys-color-on-surface); font-size: 18px; line-height: 1.35; }
 .app-dialog p { margin: 0; color: var(--md-sys-color-on-surface-variant); font-size: 13px; line-height: 1.65; }
 .app-dialog-confirm { width: 100%; margin-top: 18px; padding: 9px 14px; border: 0; border-radius: 11px; background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); font-weight: 700; cursor: pointer; }
+
+.app-toast-host {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 28px;
+  z-index: 12050;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.app-toast {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px 14px 8px 12px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 72%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 82%, transparent);
+  color: var(--md-sys-color-on-surface);
+  box-shadow: var(--md-sys-elevation-level3);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+.app-toast svg { color: var(--md-sys-color-primary); flex-shrink: 0; }
 
 /* 页面正中的 Agent 设置层（左下角 / AI 助教共用），不是 ManagedWindow。 */
 .agent-settings-overlay {

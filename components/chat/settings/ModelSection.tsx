@@ -4,13 +4,10 @@ import { useState } from "react";
 import { BookmarkPlus, Brain, Boxes, Globe, Star } from "lucide-react";
 import { useSettings } from "@/lib/hooks/useSettings";
 import { MODELS, isPickerHiddenModel, getAllModels } from "@/lib/ai/models";
-import {
-  SELECTION_ASSISTANT_ACTIONS,
-  SELECTION_ASSISTANT_ACTION_LABELS,
-} from "@/lib/notes/selectionAssistant";
 import { Toggle, h3Cls, labelCls } from "./_shared";
 import AppSelect from "@/components/ui/AppSelect";
 import SettingsDisclosure from "./SettingsDisclosure";
+import SelectionAssistantPreview from "./SelectionAssistantPreview";
 
 export function BuiltinModelsSection() {
   const defaultImageModelId = useSettings((s) => s.defaultImageModelId);
@@ -206,33 +203,11 @@ export function RecordAssistantSection() {
           <Toggle on={selectionAssistantEnabled} onClick={() => setSelectionAssistantEnabled(!selectionAssistantEnabled)} />
         </div>
 
-        <div className={selectionAssistantEnabled ? "flex flex-col gap-1.5" : "flex flex-col gap-1.5 opacity-60"}>
-          <div className={labelCls}>划词助手展示动作</div>
-          <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">勾选要显示的按钮；未勾选的不出现在浮条上。</p>
-          <div className="grid grid-cols-2 gap-1.5">
-            {SELECTION_ASSISTANT_ACTIONS.map((action) => {
-              const on = selectionAssistantActions[action] !== false;
-              return (
-                <label
-                  key={action}
-                  className="flex items-center justify-between gap-2 rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-1.5"
-                >
-                  <span className="text-[12.5px] text-[var(--md-sys-color-on-surface)]">
-                    {SELECTION_ASSISTANT_ACTION_LABELS[action]}
-                  </span>
-                  <input
-                    type="checkbox"
-                    checked={on}
-                    disabled={!selectionAssistantEnabled}
-                    onChange={(e) => setSelectionAssistantAction(action, e.target.checked)}
-                    data-testid={`selection-action-${action}`}
-                    className="accent-[var(--md-sys-color-primary)]"
-                  />
-                </label>
-              );
-            })}
-          </div>
-        </div>
+        <SelectionAssistantPreview
+          actions={selectionAssistantActions}
+          enabled={selectionAssistantEnabled}
+          onToggle={setSelectionAssistantAction}
+        />
 
         <div className="flex items-center justify-between rounded-lg border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface)] px-3 py-2">
           <div className="min-w-0 pr-3">

@@ -6,6 +6,8 @@ import { DEFAULT_APPEARANCE_SETTINGS } from "@/lib/theme/appearance";
 import { useTheme } from "@/lib/hooks/useTheme";
 import GlobalSettings from "./GlobalSettings";
 import { useStore } from "@/lib/stores/ui";
+import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { DEFAULT_ACADEMIC_YEAR } from "@/lib/constants/academic-year";
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),
@@ -38,17 +40,22 @@ describe("GlobalSettings", () => {
     });
     (window as unknown as { scrollTo: () => void }).scrollTo = vi.fn();
     useStore.setState({ agentSettingsOpen: false });
+    useAcademicYear.setState({ year: DEFAULT_ACADEMIC_YEAR, hydrated: true });
   });
 
   it("renders score and appearance sections with details collapsed by default", () => {
     renderSettings();
 
+    expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: /成绩/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: /快捷键/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: /外观/ })).toHaveAttribute("aria-expanded", "false");
     expect(screen.getByRole("button", { name: "打开 Agent 设置" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "登录" })).toBeInTheDocument();
     expect(screen.getByText("未登录")).toBeInTheDocument();
+    expect(screen.getByText("访客")).toBeInTheDocument();
+    expect(screen.getByTestId("user-avatar")).toBeInTheDocument();
+    expect(screen.queryByRole("group", { name: "切换学年" })).not.toBeInTheDocument();
     expect(screen.queryByText("清空全部成绩")).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "彩色" })).not.toBeInTheDocument();
   });
@@ -105,6 +112,8 @@ describe("GlobalSettings", () => {
   it("renders 切换学年 and switching years persists the academic year", async () => {
     const user = userEvent.setup();
     renderSettings();
+    expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toHaveTextContent("大二上学期");
+    await user.click(screen.getByRole("button", { name: /年级 \/ 学期/ }));
     expect(screen.getByRole("group", { name: "切换学年" })).toBeInTheDocument();
     expect(screen.getByRole("radio", { name: "大二上学期" })).toBeInTheDocument();
     expect(screen.getByRole("radio", { name: "大五" })).toBeInTheDocument();
@@ -113,6 +122,7 @@ describe("GlobalSettings", () => {
     const { useAcademicYear } = await import("@/lib/hooks/useAcademicYear");
     expect(useAcademicYear.getState().year).toBe("freshman-2");
     expect(localStorage.getItem("gailvlun-academic-year")).toBe("freshman-2");
+    expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toHaveTextContent("大一下学期");
   });
 
   it("expands appearance controls and applies custom color/font settings", async () => {

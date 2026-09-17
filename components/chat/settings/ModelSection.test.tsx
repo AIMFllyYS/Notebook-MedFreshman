@@ -19,8 +19,13 @@ describe("RecordAssistantSection", () => {
   it("可开关本站划词助手并隐藏引用动作", () => {
     render(<RecordAssistantSection />);
     expect(screen.getByText("开启本站划词助手")).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId("selection-action-quote"));
+    expect(screen.getByTestId("selection-assistant-preview")).toBeInTheDocument();
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+    const quote = screen.getByTestId("selection-action-quote");
+    expect(quote).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(quote);
     expect(useSettings.getState().selectionAssistantActions.quote).toBe(false);
+    expect(quote).toHaveAttribute("aria-pressed", "false");
     expect(useSettings.getState().quizModelId).toBe(DEFAULT_MODEL_ID);
   });
 });

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Lightbulb, BookmarkPlus, MessageSquare, Send, Copy, Check, StickyNote } from "lucide-react";
+import { Check } from "lucide-react";
 import { useChatUI } from "@/lib/hooks/useChatUI";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
 import { startRecord } from "@/lib/review/startRecord";
@@ -21,6 +21,13 @@ import {
   SELECTION_POPOVER_SCROLL_GRACE_MS,
   shouldIgnoreSelectionDismiss,
 } from "@/lib/notes/selectionPopover";
+import {
+  SELECTION_ACTION_ICONS,
+  SelectionPopBtn,
+  SelectionPopIconBtn,
+  SelectionPopoverCard,
+  SelectionPopoverDivider,
+} from "./selectionPopoverChrome";
 import type { ClassroomNoteSourceKind } from "@/lib/notes/userNote";
 import type { SubjectId } from "@/lib/types/content";
 
@@ -28,55 +35,6 @@ interface PopState {
   x: number;
   y: number;
   text: string;
-}
-
-function PopBtn({
-  onClick,
-  icon: Icon,
-  label,
-}: {
-  onClick: () => void;
-  icon: React.ComponentType<{ size?: number }>;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="press flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-secondary-container)] hover:text-[var(--md-sys-color-on-secondary-container)]"
-    >
-      <Icon size={15} />
-      {label}
-    </button>
-  );
-}
-
-function PopIconBtn({
-  onClick,
-  icon: Icon,
-  copiedIcon: CopiedIcon,
-  copied,
-  title,
-}: {
-  onClick: () => void;
-  icon: React.ComponentType<{ size?: number }>;
-  copiedIcon: React.ComponentType<{ size?: number }>;
-  copied: boolean;
-  title: string;
-}) {
-  const ActiveIcon = copied ? CopiedIcon : Icon;
-  const label = copied ? "已复制" : title;
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      title={label}
-      aria-label={label}
-      className="press flex items-center justify-center rounded-lg p-1.5 text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-secondary-container)] hover:text-[var(--md-sys-color-on-secondary-container)]"
-    >
-      <ActiveIcon size={15} />
-    </button>
-  );
 }
 
 function closePopover(
@@ -305,47 +263,39 @@ export default function SelectionPopover({
     <div
       style={{ position: "fixed", left, top, width: "max-content", transform: "translate(-50%, -100%)", zIndex: 9999 }}
     >
-      <div
-        ref={boxRef}
+      <SelectionPopoverCard
+        boxRef={boxRef}
         onMouseDown={(e) => {
           if (!(e.target instanceof HTMLInputElement)) e.preventDefault();
         }}
-        className="animate-fade-up"
       >
-        <div className="flex items-center gap-0.5 rounded-xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)] p-1 shadow-lg">
-          {showCopy && (
-            <PopIconBtn
-              onClick={() => void handleCopy()}
-              icon={Copy}
-              copiedIcon={Check}
-              copied={copied}
-              title="复制"
-            />
-          )}
-          {showCopy && showMid && (
-            <div className="mx-0.5 h-5 w-px bg-[var(--md-sys-color-outline-variant)]" />
-          )}
-          {showExplain && (
-            <PopBtn onClick={() => spawn("explain")} icon={Lightbulb} label="解释" />
-          )}
-          {showRecord && (
-            <PopBtn onClick={handleRecord} icon={BookmarkPlus} label="记录" />
-          )}
-          {showNote && (
-            <PopBtn onClick={handleNote} icon={StickyNote} label="笔记" />
-          )}
-          {showAsk && (
-            <PopBtn onClick={() => spawn("ask")} icon={MessageSquare} label="追问" />
-          )}
-          {showQuote && (showCopy || showMid) && (
-            <div className="mx-0.5 h-5 w-px bg-[var(--md-sys-color-outline-variant)]" />
-          )}
-          {showQuote && (
-            <PopBtn onClick={handleQuote} icon={Send} label="引用" />
-          )}
-        </div>
-        <div className="mx-auto h-2 w-2 -translate-y-1 rotate-45 border-b border-r border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-low)]" />
-      </div>
+        {showCopy && (
+          <SelectionPopIconBtn
+            onClick={() => void handleCopy()}
+            icon={SELECTION_ACTION_ICONS.copy}
+            copiedIcon={Check}
+            copied={copied}
+            title="复制"
+          />
+        )}
+        {showCopy && showMid && <SelectionPopoverDivider />}
+        {showExplain && (
+          <SelectionPopBtn onClick={() => spawn("explain")} icon={SELECTION_ACTION_ICONS.explain} label="解释" />
+        )}
+        {showRecord && (
+          <SelectionPopBtn onClick={handleRecord} icon={SELECTION_ACTION_ICONS.record} label="记录" />
+        )}
+        {showNote && (
+          <SelectionPopBtn onClick={handleNote} icon={SELECTION_ACTION_ICONS.note} label="笔记" />
+        )}
+        {showAsk && (
+          <SelectionPopBtn onClick={() => spawn("ask")} icon={SELECTION_ACTION_ICONS.ask} label="追问" />
+        )}
+        {showQuote && (showCopy || showMid) && <SelectionPopoverDivider />}
+        {showQuote && (
+          <SelectionPopBtn onClick={handleQuote} icon={SELECTION_ACTION_ICONS.quote} label="引用" />
+        )}
+      </SelectionPopoverCard>
     </div>,
     document.body,
   );

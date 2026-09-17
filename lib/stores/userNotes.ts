@@ -18,6 +18,7 @@ import {
 } from "@/lib/notes/userNote";
 import { notifyUserNoteChanged } from "@/lib/notes/userNoteSync";
 import { stripUserNoteWindowState } from "@/lib/stores/windowPersist";
+import { useToast } from "@/lib/stores/toast";
 
 // 个人笔记仓库（IndexedDB 持久化，复用 useReviewCards / useDocuments 范式）。
 // 本机 IndexedDB 为真相源。云同步走 notifyUserNoteChanged（SYNC POINT），
@@ -60,6 +61,8 @@ interface UserNotesState {
   order: string[];
   /** 已打开的编辑器窗口对应的笔记 id（可多开）。 */
   openEditorIds: string[];
+  /** 本轮打开期间改过标题/正文/学科的编辑窗。不持久化；关窗时提示一次。 */
+  dirtyEditorIds: string[];
   /** 引用到右侧主 Agent 后，主对话本轮可 updateUserNote 的那篇笔记；关掉编辑器后清空。 */
   agentEditingNoteId: string | null;
   setAgentEditingNoteId: (id: string | null) => void;
@@ -188,6 +191,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     byId: {},
     order: [],
     openEditorIds: [],
+    dirtyEditorIds: [],
     agentEditingNoteId: null,
     setAgentEditingNoteId: (id) => set({ agentEditingNoteId: id }),
     noteAgentOpenIds: [],
@@ -281,7 +285,13 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
       }
 
       const next: UserNote = { ...prev, title, markdown, subjectId, quote, source, updatedAt: Date.now() };
-      set((s) => ({ byId: { ...s.byId, [id]: next } }));
+      set((s) => ({
+        byId: { ...s.byId, [id]: next },
+        dirtyEditorIds:
+          s.openEditorIds.includes(id) && !(s.dirtyEditorIds ?? []).includes(id)
+            ? [...(s.dirtyEditorIds ?? []), id]
+            : (s.dirtyEditorIds ?? []),
+      }));
       notifyUserNoteChanged(id, "upsert");
       if (next.title !== prev.title) {
         useWindowManager.getState().updateWindow(userNoteWindowId(id), {
@@ -304,6 +314,7 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
           byId,
           order: s.order.filter((x) => x !== id),
           openEditorIds: s.openEditorIds.filter((x) => x !== id),
+          dirtyEditorIds: (s.dirtyEditorIds ?? []).filter((x) => x !== id),
           noteAgentOpenIds: s.noteAgentOpenIds.filter((x) => x !== id),
           noteAgentSessionById,
           agentEditingNoteId: s.agentEditingNoteId === id ? null : s.agentEditingNoteId,
@@ -340,12 +351,15 @@ export const useUserNotes = createPersistedStore<UserNotesState>(
     },
 
     closeEditor: (id) => {
+      const dirty = (get().dirtyEditorIds ?? []).includes(id);
       useWindowManager.getState().closeWindow(userNoteWindowId(id));
       set((s) => ({
         openEditorIds: s.openEditorIds.filter((x) => x !== id),
+        dirtyEditorIds: (s.dirtyEditorIds ?? []).filter((x) => x !== id),
         noteAgentOpenIds: s.noteAgentOpenIds.filter((x) => x !== id),
         agentEditingNoteId: s.agentEditingNoteId === id ? null : s.agentEditingNoteId,
       }));
+      if (dirty) useToast.getState().showSaved();
     },
 
     setLibrarySubjectId: (subjectId) => {

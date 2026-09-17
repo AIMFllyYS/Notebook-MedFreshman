@@ -9,7 +9,7 @@ import "@milkdown/crepe/theme/frame.css";
 /**
  * 个人笔记 / 课堂便签的「渲染编辑」层。
  * Markdown 字符串仍是唯一真相源（UserNote.markdown）；Crepe 只是可写的所见即所得视图。
- * compact：便签小窗，关掉块级菜单，只留微量工具条。
+ * compact：只缩小窗体与留白，不阉割公式 / 列表 / 斜杠菜单 / 快捷键。
  */
 export default function MilkdownNoteEditor({
   value,
@@ -45,7 +45,7 @@ export default function MilkdownNoteEditor({
             [Crepe.Feature.AI]: false,
             [Crepe.Feature.Latex]: true,
             [Crepe.Feature.Toolbar]: true,
-            [Crepe.Feature.BlockEdit]: !compact,
+            [Crepe.Feature.BlockEdit]: true,
           },
           featureConfigs: {
             [Crepe.Feature.Placeholder]: {

@@ -5,12 +5,14 @@ import { EMPTY_USER_NOTE_WINDOW_STATE, stripOpenIds, stripUserNoteWindowState, s
 test("stripUserNoteWindowState drops old persisted editor/library windows", () => {
   const state = stripUserNoteWindowState({
     openEditorIds: ["note-a", "note-b"],
+    dirtyEditorIds: ["note-a"],
     libraryOpen: true,
     agentEditingNoteId: "note-a",
     noteAgentOpenIds: ["note-a"],
     byId: { "note-a": { id: "note-a" } },
   });
   assert.equal(state.openEditorIds?.length, 0);
+  assert.deepEqual(state.dirtyEditorIds, []);
   assert.equal(state.libraryOpen, false);
   assert.equal(state.agentEditingNoteId, null);
   assert.deepEqual(state.noteAgentOpenIds, []);

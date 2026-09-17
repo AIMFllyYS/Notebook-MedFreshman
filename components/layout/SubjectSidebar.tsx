@@ -19,6 +19,8 @@ import FileTree from "./FileTree";
 import TocTree from "./TocTree";
 import SiblingFilesPanel from "./SiblingFilesPanel";
 import GlobalSettings from "./GlobalSettings";
+import UserAvatar from "./UserAvatar";
+import { useAuthSession } from "@/lib/hooks/useAuthSession";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
@@ -47,6 +49,7 @@ export default function SubjectSidebar() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const settingsBtnRef = useRef<HTMLButtonElement>(null);
+  const { status: authStatus, email: authEmail } = useAuthSession();
   const academicYear = useAcademicYear((s) => s.year);
   const hydrateYear = useAcademicYear((s) => s.hydrate);
   const visibleSubjects = useMemo(
@@ -370,6 +373,7 @@ export default function SubjectSidebar() {
           }}
           title="设置 · 查看全局成绩"
         >
+          <UserAvatar email={authEmail} signedIn={authStatus === "signedIn"} size={22} />
           <Settings size={15} className="shrink-0" />
           <span className="truncate text-[12.5px] font-medium">设置</span>
         </button>

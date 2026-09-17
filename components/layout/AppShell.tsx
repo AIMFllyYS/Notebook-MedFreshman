@@ -35,6 +35,7 @@ import GlobalSearchButton from "@/components/search/GlobalSearchButton";
 import KeyboardShortcutProvider from "@/components/keyboard/KeyboardShortcutProvider";
 import { formatShortcut } from "@/lib/keyboard/format";
 import { useKeyboardSettings } from "@/lib/keyboard/useKeyboardSettings";
+import ToastHost from "@/components/shared/ToastHost";
 
 const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: false });
 const DeferredWindowLayers = dynamic(() => import("@/components/window/DeferredWindowLayers"), { ssr: false });
@@ -293,6 +294,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </AnimatePresence>
         <DeferredWindowLayers />
         <AgentSettingsOverlay />
+        <ToastHost />
       </div>
       </KeyboardShortcutProvider>
     );
@@ -404,6 +406,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       </AnimatePresence>
       <DeferredWindowLayers />
       <AgentSettingsOverlay />
+      <ToastHost />
     </div>
     </KeyboardShortcutProvider>
   );

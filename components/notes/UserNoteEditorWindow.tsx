@@ -185,11 +185,11 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
     <div className="user-note-workspace">
       {tocOpen ? (
         <PanelGroup direction="horizontal" autoSaveId={`user-note-toc:${noteId}`} className="user-note-toc-split">
-          <Panel defaultSize={22} minSize={14} maxSize={40} className="min-h-0 min-w-0">
+          <Panel defaultSize={22} minSize={14} maxSize={40} className="h-full min-h-0 min-w-0 overflow-hidden">
             <NoteTocSidebar items={tocItems} onSelect={handleTocSelect} onHide={() => setTocOpen(false)} />
           </Panel>
           <NoteResizeHandle />
-          <Panel defaultSize={78} minSize={40} className="min-h-0 min-w-0">
+          <Panel defaultSize={78} minSize={40} className="h-full min-h-0 min-w-0 overflow-hidden">
             {editorBody}
           </Panel>
         </PanelGroup>
@@ -214,11 +214,11 @@ export default function UserNoteEditorWindow({ noteId }: { noteId: string }) {
     >
       {agentOpen ? (
         <PanelGroup direction="horizontal" autoSaveId="user-note-agent" className="user-note-with-agent">
-          <Panel defaultSize={64} minSize={40} className="min-h-0 min-w-0">
+          <Panel defaultSize={64} minSize={40} className="h-full min-h-0 min-w-0 overflow-hidden">
             {workspace}
           </Panel>
           <NoteResizeHandle />
-          <Panel defaultSize={36} minSize={26} className="min-h-0 min-w-0">
+          <Panel defaultSize={36} minSize={26} className="h-full min-h-0 min-w-0 overflow-hidden">
             <motion.div
               className="h-full min-h-0 min-w-0"
               initial={{ opacity: 0, x: 28 }}
@@ -325,11 +325,11 @@ function NoteEditorBody({
 
       {mode === "split" ? (
         <PanelGroup direction="horizontal" autoSaveId="user-note-split" className="user-note-split">
-          <Panel defaultSize={50} minSize={22} className="min-h-0 min-w-0">
+          <Panel defaultSize={50} minSize={22} className="h-full min-h-0 min-w-0 overflow-hidden">
             {source}
           </Panel>
           <NoteResizeHandle />
-          <Panel defaultSize={50} minSize={22} className="min-h-0 min-w-0">
+          <Panel defaultSize={50} minSize={22} className="h-full min-h-0 min-w-0 overflow-hidden">
             {preview}
           </Panel>
         </PanelGroup>

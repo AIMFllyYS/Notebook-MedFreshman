@@ -16,7 +16,7 @@ const MilkdownNoteEditor = dynamic(() => import("@/components/notes/MilkdownNote
   loading: () => <div className="user-note-crepe-loading">加载批注编辑器…</div>,
 });
 
-/** 划词「笔记」弹出的小便签：复用 Milkdown compact，不是完整大编辑器。 */
+/** 划词「笔记」弹出的小便签：复用完整 Milkdown，只是窗小、正文靠左。 */
 export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
   const note = useUserNotes((s) => s.byId[noteId]);
   const updateNote = useUserNotes((s) => s.updateNote);

@@ -211,7 +211,7 @@ export const chatRequestSchema = z.object({
     .optional(),
   /** 窗内笔记 Agent：与主对话共用前缀，但可收窄工具。 */
   noteWindowAgent: z.boolean().optional(),
-  /** 工具循环上限（1–16）。缺省由服务端 clamp 为 6。 */
+  /** 工具循环上限（1–20，对齐 ToolLoopAgent 默认 stopWhen）。缺省由服务端 clamp 为 6。 */
   maxToolRounds: z.number().finite().optional(),
   /** 计划模式：只读工具，先输出计划文档。 */
   planMode: z.boolean().optional(),

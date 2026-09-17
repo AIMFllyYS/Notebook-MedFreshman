@@ -2,7 +2,7 @@
 
 Zustand store 的唯一落点。本目录**不做桶导出**（避免把全部 store 打进每个页面）。
 
-清点方法：搜 `from "zustand"` / `from 'zustand'` 且文件内有 `create(`。共 **30** 个。
+清点方法：搜 `from "zustand"` / `from 'zustand'` 且文件内有 `create(`。共 **31** 个。
 
 | 文件 | hook | persist name / 存储 |
 |------|------|---------------------|
@@ -36,7 +36,8 @@ Zustand store 的唯一落点。本目录**不做桶导出**（避免把全部 s
 | `ui.ts` | `useStore` | `gailvlun-sidebar-collapsed` / `gailvlun-topbar-collapsed` |
 | `quiz.ts` | `useQuizStore` | `gailvlun-quiz-progress-v1`（经 `lib/quiz-progress.ts`） |
 | `lightbox.ts` | `useLightbox` | 不持久化 |
+| `toast.ts` | `useToast` | 不持久化 |
 
-云端同步在 `lib/sync/`，不是第 31 个 store：登录后把 `chat-session` / `artifact` / `document` / `user-note` / `review-card` 镜像到 `sync_documents`。不持久化、不同步 `settings` / `skill` / 生图 / 图片 blob / apiKey。笔记与闪卡另有 20MB 额度池，见 `docs/plans/notes-flashcards-cloud-sync.md`。
+云端同步在 `lib/sync/`，不是第 32 个 store：登录后把 `chat-session` / `artifact` / `document` / `user-note` / `review-card` 镜像到 `sync_documents`。不持久化、不同步 `settings` / `skill` / 生图 / 图片 blob / apiKey。笔记与闪卡另有 20MB 额度池，见 `docs/plans/notes-flashcards-cloud-sync.md`。
 
 旧路径（`lib/hooks/useX.ts` 等）保留 re-export 一个发布周期。
