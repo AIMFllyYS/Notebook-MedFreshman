@@ -103,11 +103,7 @@ export function useProgressiveGlobalSearch(
   }, [query, notesHydrated, notesOrder, cardsHydrated, cardsOrder, wantNotes, wantCards]);
 
   useEffect(() => {
-    if (!query || !wantBody) {
-      setBodyHits([]);
-      setBodyLoading(false);
-      return;
-    }
+    if (!query || !wantBody) return;
 
     const ac = new AbortController();
     const shards = listBodySearchShards(contentTree, preferYear);
