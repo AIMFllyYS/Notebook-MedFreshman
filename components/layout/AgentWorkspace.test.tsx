@@ -1,23 +1,12 @@
-import type { ReactNode } from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import AgentWorkspace from "./AgentWorkspace";
 import { useStore } from "@/lib/stores/ui";
 
 let mobile = false;
-let chatReady = true;
 
 vi.mock("@/lib/hooks/useIsMobile", () => ({
   useIsMobile: () => mobile,
-}));
-
-vi.mock("next/dynamic", () => ({
-  default: (_factory: unknown, options?: { loading?: () => ReactNode }) => {
-    return function DynamicChatPanel(props: { chatContext: { subjectId: string } }) {
-      if (!chatReady) return options?.loading?.() ?? null;
-      return <div data-testid="chat-panel-entry">{props.chatContext.subjectId}</div>;
-    };
-  },
 }));
 
 vi.mock("./AgentConversationSidebar", () => ({
@@ -26,6 +15,12 @@ vi.mock("./AgentConversationSidebar", () => ({
 
 vi.mock("./RightPanel", () => ({
   default: () => <div>窗口</div>,
+}));
+
+vi.mock("@/components/chat/ChatPanel", () => ({
+  default: ({ chatContext }: { chatContext: { subjectId: string } }) => (
+    <div data-testid="chat-panel-entry">{chatContext.subjectId}</div>
+  ),
 }));
 
 describe("AgentWorkspace", () => {
@@ -37,15 +32,6 @@ describe("AgentWorkspace", () => {
       rightCollapsedByProfile: { full: false, article: true, reference: false },
     });
     mobile = false;
-    chatReady = true;
-  });
-
-  it("CSR 占位不含加号，避免未挂载的死输入框", () => {
-    chatReady = false;
-    render(<AgentWorkspace />);
-    expect(screen.getByTestId("agent-chat-pending")).toHaveTextContent("正在打开对话");
-    expect(document.querySelector('[data-testid="composer-plus"]')).toBeNull();
-    expect(screen.queryByTestId("chat-panel-entry")).toBeNull();
   });
 
   it("桌面三栏槽位 + 复用 ChatPanel 入口，切到 Agent 不崩", () => {

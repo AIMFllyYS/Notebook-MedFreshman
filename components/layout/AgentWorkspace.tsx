@@ -1,38 +1,16 @@
 "use client";
 
 import { useMemo } from "react";
-import dynamic from "next/dynamic";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { PanelLeftOpen, PanelRightOpen } from "lucide-react";
 import AgentConversationSidebar from "./AgentConversationSidebar";
 import RightPanel from "./RightPanel";
+import ChatPanel from "@/components/chat/ChatPanel";
 import { NOTES_PANEL_ID, RIGHT_PANEL_ID } from "@/lib/constants/layout";
 import { useAcademicYear } from "@/lib/stores/academicYear";
 import { useStore } from "@/lib/stores/ui";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import type { ChatContext } from "@/lib/types/chat";
-
-function AgentChatPending() {
-  return (
-    <div className="chat-panel" data-testid="agent-chat-pending" aria-busy="true">
-      <div className="chat-header-sticky">
-        <div className="chat-header">
-          <div className="chat-header-left">
-            <span className="chat-header-title">AI 助教</span>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-1 items-center justify-center text-[13px] text-[var(--ink-faint)]">
-        正在打开对话…
-      </div>
-    </div>
-  );
-}
-
-const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
-  ssr: false,
-  loading: () => <AgentChatPending />,
-});
 
 /**
  * Agent 工作区。中间复用 ChatPanel；左右槽位接对话栏与右侧窗坞。
@@ -61,8 +39,8 @@ export default function AgentWorkspace() {
   );
 
   const main = (
-    <div data-agent-slot="main" className="relative h-full min-h-0">
-      <div id={NOTES_PANEL_ID} className="h-full w-full">
+    <div data-agent-slot="main" className="relative h-full min-h-0 overflow-visible">
+      <div id={NOTES_PANEL_ID} className="h-full w-full overflow-visible">
         <ChatPanel chatContext={chatContext} />
       </div>
       {sidebarCollapsed && (
