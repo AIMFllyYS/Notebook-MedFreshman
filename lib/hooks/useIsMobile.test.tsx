@@ -50,4 +50,13 @@ describe("useIsMobile", () => {
     const { result } = renderHook(() => useIsMobile());
     expect(typeof result.current).toBe("boolean");
   });
+
+  it("matchMedia 缺失时不抛错，按桌面返回 false", () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: undefined,
+    });
+    const { result } = renderHook(() => useIsMobile());
+    expect(result.current).toBe(false);
+  });
 });

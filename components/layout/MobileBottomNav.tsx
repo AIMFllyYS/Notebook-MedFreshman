@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, BookOpenCheck, MessageSquare, Globe, Settings } from "lucide-react";
+import { FileText, BookOpenCheck, Globe, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 import { useStore, type MobileTab } from "@/lib/stores/ui";
@@ -8,7 +8,7 @@ import { useStore, type MobileTab } from "@/lib/stores/ui";
 const TABS: { id: MobileTab; label: string; icon: React.ReactNode }[] = [
   { id: "detail", label: "详解", icon: <FileText size={20} /> },
   { id: "review", label: "复习", icon: <BookOpenCheck size={20} /> },
-  { id: "ai", label: "AI", icon: <MessageSquare size={20} /> },
+  { id: "ai", label: "AI", icon: null },
   { id: "browser", label: "浏览", icon: <Globe size={20} /> },
   { id: "settings", label: "设置", icon: <Settings size={20} /> },
 ];
@@ -29,6 +29,7 @@ export default function MobileBottomNav() {
       >
         {TABS.map((t) => {
           const active = tab === t.id;
+          const isAi = t.id === "ai";
           return (
             <button
               key={t.id}
@@ -36,11 +37,11 @@ export default function MobileBottomNav() {
               onClick={() => setTab(t.id)}
               aria-current={active ? "page" : undefined}
               aria-label={t.label}
+              data-tab={t.id}
               className={clsx(
-                "relative flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-0.5 pt-1.5 pb-1 transition-colors",
-                active
-                  ? "text-[var(--accent)]"
-                  : "text-[var(--ink-faint)]",
+                "relative flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center px-0.5 pt-1.5 pb-1 transition-colors",
+                !isAi && "gap-0.5",
+                active ? "text-[var(--accent)]" : "text-[var(--ink-faint)]",
               )}
             >
               {active && (
@@ -50,12 +51,20 @@ export default function MobileBottomNav() {
                   transition={{ type: "spring", stiffness: 500, damping: 35 }}
                 />
               )}
-              <span className="flex h-7 w-7 items-center justify-center">
-                {t.icon}
-              </span>
-              <span className="max-w-full truncate text-[10px] font-medium leading-tight">
-                {t.label}
-              </span>
+              {isAi ? (
+                <span className={clsx("mobile-nav-ai-mark", active && "is-active")} aria-hidden>
+                  AI
+                </span>
+              ) : (
+                <>
+                  <span className="flex h-7 w-7 items-center justify-center">
+                    {t.icon}
+                  </span>
+                  <span className="max-w-full truncate text-[10px] font-medium leading-tight">
+                    {t.label}
+                  </span>
+                </>
+              )}
             </button>
           );
         })}

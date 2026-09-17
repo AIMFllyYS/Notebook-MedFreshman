@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Sun, Moon } from "lucide-react";
+import { ChevronDown, Menu, Sun, Moon } from "lucide-react";
 import clsx from "clsx";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
@@ -10,7 +10,6 @@ import { usesMobileStudioChrome } from "@/lib/constants/app-mode";
 import { getContentItem } from "@/lib/content-data";
 import { subjectShortName } from "@/lib/content-data/subjects.registry";
 import SubjectIcon from "@/components/shared/SubjectIcon";
-import ModeSwitcher from "./ModeSwitcher";
 
 export default function MobileTopBar() {
   const pathname = usePathname() ?? "/";
@@ -18,7 +17,9 @@ export default function MobileTopBar() {
   const subjectId = useStore((s) => s.activeSubjectId);
   const categoryId = useStore((s) => s.activeCategoryId);
   const itemId = useStore((s) => s.activeItemId);
-  const toggle = useStore((s) => s.toggleMobileChapterPicker);
+  const toggleChapter = useStore((s) => s.toggleMobileChapterPicker);
+  const sidebarOpen = useStore((s) => s.mobileSidebarOpen);
+  const toggleSidebar = useStore((s) => s.toggleMobileSidebar);
   const theme = useTheme((s) => s.theme);
   const toggleTheme = useTheme((s) => s.toggle);
   const hydrateTheme = useTheme((s) => s.hydrate);
@@ -29,29 +30,41 @@ export default function MobileTopBar() {
 
   const item = getContentItem(subjectId, categoryId, itemId);
   const shortSubject = subjectShortName(subjectId);
-  const sectionLabel = item
-    ? `${itemId} ${item.title}`
-    : itemId;
+  const sectionLabel = item?.title || itemId;
 
   return (
     <header
-      className="flex shrink-0 items-center gap-2 border-b border-[var(--line)] bg-[var(--bg-panel)] px-3"
+      className="mobile-top-bar flex shrink-0 items-center gap-1.5 border-b border-[var(--line)] bg-[var(--bg-panel)] px-2"
+      data-testid="mobile-top-bar"
       style={{
-        minHeight: 52,
+        minHeight: 44,
         paddingTop: "env(safe-area-inset-top, 0px)",
       }}
     >
-      <ModeSwitcher compact stayOnStudioForAgent />
+      {studioChrome ? (
+      <button
+        type="button"
+        onClick={toggleSidebar}
+        aria-label={sidebarOpen ? "关闭侧栏" : "打开侧栏"}
+        aria-expanded={sidebarOpen}
+        data-testid="mobile-sidebar-toggle"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] active:bg-[var(--bg-muted)]"
+      >
+        <Menu size={18} />
+      </button>
+      ) : null}
 
       {studioChrome ? (
       <button
-        onClick={toggle}
+        type="button"
+        onClick={toggleChapter}
+        data-testid="mobile-chapter-trigger"
         className={clsx(
-          "press flex min-w-0 flex-1 items-center gap-1.5 rounded-lg px-2 py-1.5",
+          "press flex min-w-0 flex-1 items-center gap-1 rounded-lg px-1.5 py-0.5",
           "bg-[var(--bg-muted)] text-[var(--ink)] transition-colors active:bg-[var(--bg-elevated)]",
         )}
       >
-        <SubjectIcon subjectId={subjectId} size={14} />
+        <SubjectIcon subjectId={subjectId} size={13} />
         <span className="text-[12px] font-semibold text-[var(--accent)] shrink-0">
           {shortSubject}
         </span>
@@ -64,11 +77,12 @@ export default function MobileTopBar() {
       )}
 
       <button
+        type="button"
         onClick={toggleTheme}
         aria-label={theme === "light" ? "切换到深色" : "切换到浅色"}
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] active:bg-[var(--bg-muted)]"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] active:bg-[var(--bg-muted)]"
       >
-        {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+        {theme === "light" ? <Moon size={17} /> : <Sun size={17} />}
       </button>
     </header>
   );

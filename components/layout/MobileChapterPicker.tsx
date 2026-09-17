@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronRight, Check } from "lucide-react";
@@ -56,33 +57,37 @@ export default function MobileChapterPicker() {
   const handleSelect = useCallback(
     (subjectId: string, categoryId: string, itemId: string) => {
       router.push(`/${subjectId}/${categoryId}/${itemId}`);
-      close(false);
     },
-    [router, close],
+    [router],
   );
 
   const availableCategories = subject?.categories.filter(
     (c) => c.items.length > 0,
   ) ?? [];
 
-  return (
+  const overlay = (
     <AnimatePresence>
       {open && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop — portal 到 body，避免被 AppShell overflow / 底栏叠层裁切 */}
           <motion.div
             key="chapter-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-black/40"
+            className="fixed inset-0 bg-black/40"
+            data-testid="mobile-chapter-backdrop"
             onClick={() => close(false)}
+            style={{ zIndex: 200 }}
           />
 
           {/* Sheet */}
           <motion.div
             key="chapter-sheet"
+            role="dialog"
+            aria-label="选择章节"
+            data-testid="mobile-chapter-picker"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -97,8 +102,8 @@ export default function MobileChapterPicker() {
             onDragEnd={(_, info) => {
               if (info.offset.y > 100 || info.velocity.y > 500) close(false);
             }}
-            className="fixed inset-x-0 bottom-0 z-50 flex max-h-[85dvh] flex-col rounded-t-2xl bg-[var(--bg-panel)] shadow-lg"
-            style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+            className="fixed inset-x-0 bottom-0 flex max-h-[85dvh] flex-col rounded-t-2xl bg-[var(--bg-panel)] shadow-lg"
+            style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)", zIndex: 200 }}
           >
             {/* Drag handle */}
             <div className="flex shrink-0 items-center justify-center py-2">
@@ -112,6 +117,7 @@ export default function MobileChapterPicker() {
               </h2>
               <button
                 onClick={() => close(false)}
+                aria-label="关闭"
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--bg-muted)] text-[var(--ink-soft)]"
               >
                 <X size={16} />
@@ -196,6 +202,9 @@ export default function MobileChapterPicker() {
       )}
     </AnimatePresence>
   );
+
+  if (typeof document === "undefined") return overlay;
+  return createPortal(overlay, document.body);
 }
 
 function ChapterGroup({
@@ -279,9 +288,6 @@ function ChapterGroup({
                     : "text-[var(--ink-soft)] active:bg-[var(--bg-muted)]",
                 )}
               >
-                <span className="w-7 shrink-0 text-[12px] font-mono text-[var(--ink-faint)]">
-                  {section.id}
-                </span>
                 <span className="flex-1 truncate">{section.title}</span>
                 {isActive && (
                   <Check size={14} className="shrink-0 text-[var(--accent)]" />

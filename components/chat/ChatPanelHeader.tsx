@@ -10,6 +10,8 @@ interface ChatPanelHeaderProps {
   onNewChat: () => void;
   /** 隐藏右侧栏顶部标签后，收起按钮改到这条中间导航。 */
   onCollapseRight?: () => void;
+  /** 手机 AI 页不展示路径导航，把空间留给对话。 */
+  hideTopic?: boolean;
 }
 
 const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({
@@ -18,13 +20,14 @@ const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({
   onOpenHistory,
   onNewChat,
   onCollapseRight,
+  hideTopic = false,
 }) => {
   return (
     <div className="chat-header">
       <div className="chat-header-left">
         <AgentLoopIcon size={14} style={{ color: 'var(--ink-soft)' }} />
         <span className="chat-header-title">AI 助教</span>
-        {topic && <span className="chat-header-topic">{topic}</span>}
+        {!hideTopic && topic && <span className="chat-header-topic">{topic}</span>}
       </div>
       <div className="chat-header-actions">
         <button onClick={onOpenSettings} title="AI 设置" className="chat-header-btn">

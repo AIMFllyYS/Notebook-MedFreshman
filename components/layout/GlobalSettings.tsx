@@ -25,7 +25,8 @@ import { useStore } from "@/lib/stores/ui";
 import AcademicYearSwitcher from "./AcademicYearSwitcher";
 import UserAvatar from "./UserAvatar";
 import AccountDialog from "./AccountDialog";
-import UserQuotaPanel from "./UserQuotaPanel";
+import { AccountQuota } from "@/components/chat/AccountQuota";
+import { StorageQuotaBlock } from "@/components/chat/StorageQuota";
 import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
 import { ACADEMIC_YEAR_LABELS } from "@/lib/constants/academic-year";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
@@ -202,15 +203,13 @@ export default function GlobalSettings({
   const [entries, setEntries] = useState<ProgressEntry[]>(() => getAllProgress());
   const [confirmClear, setConfirmClear] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
-  const [quotaOpen, setQuotaOpen] = useState(false);
-  const quotaBtnRef = useRef<HTMLButtonElement>(null);
-  const [openSection, setOpenSection] = useState<"year" | "scores" | "keyboard" | "appearance" | null>(null);
+  const [openSection, setOpenSection] = useState<"year" | "scores" | "keyboard" | "appearance" | "quota" | null>(null);
   const openAgentSettings = useStore((s) => s.openAgentSettings);
   const academicYear = useAcademicYear((s) => s.year);
   const [pos, setPos] = useState<PopoverPos>(() => computePos(null));
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const toggleSection = useCallback((id: "year" | "scores" | "keyboard" | "appearance") => {
+  const toggleSection = useCallback((id: "year" | "scores" | "keyboard" | "appearance" | "quota") => {
     setOpenSection((prev) => (prev === id ? null : id));
   }, []);
 
@@ -316,7 +315,8 @@ export default function GlobalSettings({
           )}
         </div>
 
-        <div className="flex flex-1 flex-col gap-2.5 overflow-y-auto p-3">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3">
+        <div className="flex flex-col gap-2.5">
           <div
             data-testid="account-card"
             className="flex items-center justify-between gap-2.5 rounded-[14px] bg-[var(--md-sys-color-surface-container)] px-3 py-2"
@@ -384,34 +384,23 @@ export default function GlobalSettings({
           </div>
 
           {page ? (
-            <div
-              className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container)] px-3.5 py-2.5"
-              style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
+            <SettingsSection
+              title="额度"
+              icon={<Gauge size={16} />}
+              open={openSection === "quota"}
+              onToggle={() => toggleSection("quota")}
+              summary="会员、平台用量与存储占用"
+              unbounded
+              testId="mobile-settings-quota"
             >
-              <div className="min-w-0">
-                <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">额度</div>
-                <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
-                  会员、平台用量与存储占用，与左下角坞同一入口。
+              <div className="flex flex-col gap-3">
+                <AccountQuota variant="panel" />
+                <div>
+                  <div className="mb-1.5 text-[12px] font-semibold text-[var(--md-sys-color-on-surface)]">存储额度</div>
+                  <StorageQuotaBlock />
                 </div>
               </div>
-              <button
-                ref={quotaBtnRef}
-                type="button"
-                aria-label="额度"
-                data-testid="mobile-settings-quota"
-                onClick={() => setQuotaOpen(true)}
-                className="press flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors"
-                style={{
-                  background: "var(--md-sys-color-primary)",
-                  color: "var(--md-sys-color-on-primary)",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                <Gauge size={14} />
-                查看
-              </button>
-            </div>
+            </SettingsSection>
           ) : null}
 
           <SettingsSection
@@ -420,6 +409,7 @@ export default function GlobalSettings({
             open={openSection === "year"}
             onToggle={() => toggleSection("year")}
             summary={ACADEMIC_YEAR_LABELS[academicYear]}
+            unbounded={page}
           >
             <AcademicYearSwitcher />
           </SettingsSection>
@@ -429,6 +419,7 @@ export default function GlobalSettings({
             icon={<Trophy size={16} />}
             open={openSection === "scores"}
             onToggle={() => toggleSection("scores")}
+            unbounded={page}
             summary={
               summary.chapters
                 ? `${summary.chapters} 章 · 平均 ${summary.avgBest} · ${summary.totalAttempts} 次`
@@ -551,6 +542,7 @@ export default function GlobalSettings({
             icon={<Keyboard size={16} />}
             open={openSection === "keyboard"}
             onToggle={() => toggleSection("keyboard")}
+            unbounded={page}
             summary={`已启用 ${keyboardEnabledCount} / ${SHORTCUTS.length}`}
           >
             <KeyboardShortcutsSettings />
@@ -561,6 +553,7 @@ export default function GlobalSettings({
             icon={<Palette size={16} />}
             open={openSection === "appearance"}
             onToggle={() => toggleSection("appearance")}
+            unbounded={page}
             summary={`${theme === "light" ? "浅色" : "深色"} · ${APPEARANCE_LABELS[appearance.mode]} · ${FONT_CHOICES[appearance.custom.font].label}`}
           >
             <AppearanceSettingsControls
@@ -601,14 +594,12 @@ export default function GlobalSettings({
             </button>
           </div>
         </div>
+        </div>
     </motion.div>
   );
 
   const accountDialog = accountOpen ? (
     <AccountDialog onClose={() => setAccountOpen(false)} />
-  ) : null;
-  const quotaPanel = page && quotaOpen ? (
-    <UserQuotaPanel anchorRef={quotaBtnRef} onClose={() => setQuotaOpen(false)} />
   ) : null;
 
   if (page) {
@@ -616,7 +607,6 @@ export default function GlobalSettings({
       <>
         {node}
         {accountDialog}
-        {quotaPanel}
       </>
     );
   }

@@ -40,4 +40,10 @@ describe('Agent settings workspace', () => {
     expect(view.queryByRole('button', { name: '返回对话' })).toBeNull();
     expect(view.getByTestId('chat-settings-workspace')).toBeInTheDocument();
   });
+
+  it('uses top tabs on the phone fullscreen layout', () => {
+    const view = render(<ChatSettings onClose={() => {}} navPlacement="top" />);
+    expect(view.getByTestId('chat-settings-workspace')).toHaveAttribute('data-nav', 'top');
+    expect(view.getByTestId('chat-settings-nav-models')).toHaveTextContent('模型配置');
+  });
 });

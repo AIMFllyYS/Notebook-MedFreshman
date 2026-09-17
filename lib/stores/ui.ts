@@ -138,6 +138,13 @@ interface AppState {
   mobileChapterPickerOpen: boolean;
   toggleMobileChapterPicker: () => void;
   setMobileChapterPickerOpen: (v: boolean) => void;
+  /** 手机顶栏侧栏：页面右滑，左侧拉出文件夹树。 */
+  mobileSidebarOpen: boolean;
+  setMobileSidebarOpen: (v: boolean) => void;
+  toggleMobileSidebar: () => void;
+  /** 非 AI/设置页右下角自绘小对话窗。 */
+  mobileMiniChatOpen: boolean;
+  setMobileMiniChatOpen: (v: boolean) => void;
 
   // ── 小窗视频（PiP）─────────────────────────────────────
   /** 当前在浮动小窗播放的视频；null 表示未打开 */
@@ -284,11 +291,35 @@ export const useStore = create<AppState>((set) => ({
   clearOutbound: () => set({ outbound: null }),
 
   mobileTab: "detail",
-  setMobileTab: (t) => set({ mobileTab: t }),
+  setMobileTab: (t) =>
+    set((s) => ({
+      mobileTab: t,
+      mobileMiniChatOpen: t === "ai" || t === "settings" ? false : s.mobileMiniChatOpen,
+    })),
   mobileChapterPickerOpen: false,
   toggleMobileChapterPicker: () =>
-    set((s) => ({ mobileChapterPickerOpen: !s.mobileChapterPickerOpen })),
-  setMobileChapterPickerOpen: (v) => set({ mobileChapterPickerOpen: v }),
+    set((s) => ({
+      mobileChapterPickerOpen: !s.mobileChapterPickerOpen,
+      mobileSidebarOpen: s.mobileChapterPickerOpen ? s.mobileSidebarOpen : false,
+    })),
+  setMobileChapterPickerOpen: (v) =>
+    set((s) => ({
+      mobileChapterPickerOpen: v,
+      mobileSidebarOpen: v ? false : s.mobileSidebarOpen,
+    })),
+  mobileSidebarOpen: false,
+  setMobileSidebarOpen: (v) =>
+    set((s) => ({
+      mobileSidebarOpen: v,
+      mobileChapterPickerOpen: v ? false : s.mobileChapterPickerOpen,
+    })),
+  toggleMobileSidebar: () =>
+    set((s) => ({
+      mobileSidebarOpen: !s.mobileSidebarOpen,
+      mobileChapterPickerOpen: !s.mobileSidebarOpen ? false : s.mobileChapterPickerOpen,
+    })),
+  mobileMiniChatOpen: false,
+  setMobileMiniChatOpen: (v) => set({ mobileMiniChatOpen: v }),
 
   pipVideo: null,
   pipStartTime: 0,
