@@ -945,6 +945,27 @@ html[data-right-collapsed-reference="true"] [data-layout-profile="reference"] [d
   container-type: inline-size;
 }
 
+/* 只压手机底栏「设置」，不改桌面右栏 Mac 窗宽。 */
+.mobile-settings-panel .chat-settings-workspace {
+  grid-template-columns: 58px minmax(0, 1fr);
+}
+.mobile-settings-panel .chat-settings-sidebar {
+  padding-inline: 7px;
+}
+.mobile-settings-panel .chat-settings-back span,
+.mobile-settings-panel .chat-settings-brand > span:last-child,
+.mobile-settings-panel .chat-settings-nav-item > span {
+  display: none;
+}
+.mobile-settings-panel .chat-settings-back,
+.mobile-settings-panel .chat-settings-brand,
+.mobile-settings-panel .chat-settings-nav-item {
+  justify-content: center;
+}
+.mobile-settings-panel .chat-settings-nav-item {
+  min-height: 44px;
+}
+
 /* Prevent pull-to-refresh / overscroll bounce on mobile shell */
 @media (max-width: 767px) {
   html, body {
