@@ -64,6 +64,13 @@ test("requestEmailOtp normalizes email, creates the user, and maps failures", as
     options: { shouldCreateUser: true },
   });
 
+  const loginOnly = mockClient({});
+  await requestEmailOtp(loginOnly, "ada@example.com", { shouldCreateUser: false });
+  assert.deepEqual(loginOnly.signCalls[0], {
+    email: "ada@example.com",
+    options: { shouldCreateUser: false },
+  });
+
   const bad = await requestEmailOtp(client, "not-an-email");
   assert.equal(bad.ok, false);
   if (!bad.ok) assert.equal(bad.code, "invalid_email");

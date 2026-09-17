@@ -144,7 +144,7 @@ export function resolveSmtpEnv(env: Partial<NodeJS.ProcessEnv> = defaultAuthProc
   const port = envText(env, "ALIYUN_SMTP_PORT") || "465";
   const user = envText(env, "ALIYUN_SMTP_USER");
   const pass = envText(env, "ALIYUN_SMTP_PASSWORD");
-  const senderName = envText(env, "ALIYUN_SMTP_SENDER_NAME") || "StudyReview";
+  const senderName = envText(env, "ALIYUN_SMTP_SENDER_NAME") || "StudySolo";
   if (!host || !user || !pass) {
     throw new Error("Need ALIYUN_SMTP_HOST, ALIYUN_SMTP_USER, ALIYUN_SMTP_PASSWORD");
   }

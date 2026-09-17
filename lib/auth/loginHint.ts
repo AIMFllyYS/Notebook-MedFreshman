@@ -1,6 +1,6 @@
 /** 未登录调用付费 AI 时给对话区的操作说明（左下角设置 → 登录 → 邮箱验证码）。 */
 export const AI_LOGIN_REQUIRED_MESSAGE =
-  "未鉴权：请点击页面左下角「设置」，在菜单中点击「登录」，输入邮箱和验证码后即可使用 AI 服务。";
+  "未鉴权：请点击页面左下角「设置」，打开登录弹窗，用邮箱验证码或密码登录后即可使用 AI 服务。";
 
 export function isLoginRequiredError(message: string): boolean {
   if (/模型服务拒绝认证/.test(message)) return false;

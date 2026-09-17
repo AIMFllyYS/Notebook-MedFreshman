@@ -50,6 +50,7 @@ const PipPlayer = dynamic(() => import("@/components/video/PipPlayer"), { ssr: f
 const DeferredWindowLayers = dynamic(() => import("@/components/window/DeferredWindowLayers"), { ssr: false });
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), { ssr: false });
 const AgentSettingsOverlay = dynamic(() => import("@/components/chat/AgentSettingsOverlay"), { ssr: false });
+const LoginOverlay = dynamic(() => import("@/components/auth/LoginOverlay"), { ssr: false });
 const BrowserTab = dynamic(() => import("@/components/browser/BrowserTab"), { ssr: false });
 
 function TopBar({
@@ -323,6 +324,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </AnimatePresence>
         <DeferredWindowLayers />
         <AgentSettingsOverlay />
+        <LoginOverlay />
         <ToastHost />
       </div>
       </KeyboardShortcutProvider>
@@ -442,6 +444,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       </AnimatePresence>
       <DeferredWindowLayers />
       <AgentSettingsOverlay />
+      <LoginOverlay />
       <ToastHost />
     </div>
     </KeyboardShortcutProvider>

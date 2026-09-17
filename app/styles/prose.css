@@ -2172,6 +2172,44 @@
   from { opacity: 0.72; transform: translateY(8px) scale(0.98); }
 }
 
+/* 页面正中的登录层：和设置 overlay 同款，不是 ManagedWindow。 */
+.login-overlay,
+.human-challenge-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--md-sys-color-scrim, #000) 46%, transparent);
+  animation: agent-settings-overlay-in 160ms var(--ease-out, ease-out) both;
+}
+.login-overlay { z-index: 10010; }
+.human-challenge-overlay { z-index: 10015; }
+.login-dialog,
+.human-challenge-dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(440px, calc(100vw - 32px));
+  max-height: min(720px, calc(100vh - 48px));
+  overflow: hidden;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 20px;
+  background: var(--md-sys-color-surface-container-low);
+  box-shadow: var(--md-sys-elevation-level4, 0 16px 48px rgba(0, 0, 0, 0.36));
+  animation: agent-settings-dialog-in 180ms var(--ease-out, ease-out) both;
+}
+.human-challenge-dialog {
+  width: min(560px, calc(100vw - 32px));
+}
+.login-form-body {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  overflow: auto;
+}
+
 /* Agent settings workspace fills the centered dialog (or a relative host). */
 .chat-settings-workspace {
   position: absolute;

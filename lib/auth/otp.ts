@@ -69,6 +69,7 @@ function authErrorCode(message: string, fallback: OtpFailureCode): OtpFailureCod
 export async function requestEmailOtp(
   client: AuthOtpClient,
   email: string,
+  opts?: { shouldCreateUser?: boolean },
 ): Promise<OtpRequestResult> {
   const normalized = normalizeEmail(email);
   if (!isValidEmail(normalized)) {
@@ -76,7 +77,7 @@ export async function requestEmailOtp(
   }
   const { error } = await client.auth.signInWithOtp({
     email: normalized,
-    options: { shouldCreateUser: true },
+    options: { shouldCreateUser: opts?.shouldCreateUser ?? true },
   });
   if (error) {
     return { ok: false, code: "auth_error", message: error.message };
