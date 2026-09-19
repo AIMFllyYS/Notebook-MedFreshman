@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 2,
+  "name": "StudySolo Glass Design System",
+  "category": "index",
+  "sourceKind": "from-scratch",
+  "confidence": "medium",
+  "components": [
+    {
+      "slug": "button",
+      "name": "Glass Button",
+      "category": "actions",
+      "sourceKind": "from-scratch",
+      "confidence": "medium",
+      "variantCount": 20,
+      "priorityHint": "high",
+      "keyInsightSeed": "White in dark, ink in light — the primary button is the one opaque moment in a translucent world."
+    },
+    {
+      "slug": "input-field",
+      "name": "Glass Input Field",
+      "category": "forms",
+      "sourceKind": "from-scratch",
+      "confidence": "medium",
+      "variantCount": 6,
+      "priorityHint": "high",
+      "keyInsightSeed": "Inputs are shallow glass at rest and deepen on focus — the interface leans toward attention."
+    },
+    {
+      "slug": "glass-panel",
+      "name": "Glass Panel",
+      "category": "surfaces",
+      "sourceKind": "from-scratch",
+      "confidence": "medium",
+      "variantCount": 6,
+      "priorityHint": "high",
+      "keyInsightSeed": "Depth comes from blur tiers and one blurred layer per nesting level — not from borders."
+    },
+    {
+      "slug": "mac-window",
+      "name": "Mac Window",
+      "category": "windowing",
+      "sourceKind": "from-scratch",
+      "confidence": "medium",
+      "variantCount": 5,
+      "priorityHint": "high",
+      "keyInsightSeed": "A Mac window is glass with three honest pixels: red, yellow, green — everything else stays quiet."
+    },
+    {
+      "slug": "menu-bar",
+      "name": "Mac Menu Bar & Menus",
+      "category": "navigation",
+      "sourceKind": "from-scratch",
+      "confidence": "medium",
+      "variantCount": 5,
+      "priorityHint": "high",
+      "keyInsightSeed": "Menus are the densest glass: small rows, exact 28px rhythm, one tinted wash for hover."
+    },
+    {
+      "slug": "tab-bar",
+      "name": "Glass Tab Bar & Segmented Control",
+      "category": "navigation",
+      "sourceKind": "from-scratch",
+      "confidence": "medium",
+      "variantCount": 4,
+      "priorityHint": "medium",
+      "keyInsightSeed": "Active tab rises toward the user; the segmented thumb is a little white pill floating in a glass track."
+    }
+  ],
+  "crossCuttingPatterns": [
+    "Glass six-pack on every surface: translucent fill + hairline border + inset top highlight + backdrop blur/saturate + ambient shadow + continuous corner",
+    "Single blurred layer per nesting level; inner nested surfaces use fill-only (performance invariant)",
+    "Dark default is warm charcoal; light tints are misty aqua and warm cream, switchable via [data-tint]",
+    "macOS rhythm: 28px menu bar, 44px window title bar, 28px menu rows, traffic lights 12px",
+    "Motion: 120-250ms, emphasized decelerate, spring thumb; scale 0.97 press; everything respects prefers-reduced-motion"
+  ],
+  "iconography": {
+    "system": "lucide-react stroke icons (1.75-2 stroke, 16/18/20/24px)",
+    "custom": "components/icons: AgentIcons, ComposerIcons, ModelBrandIcons, FileTypeIcon, NotebookFormulaIcon, PencilSparklesIcon",
+    "brandMark": "Cream-rounded square with burnt-orange notebook stroke glyph"
+  }
+}

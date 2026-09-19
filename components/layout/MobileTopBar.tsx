@@ -34,7 +34,7 @@ export default function MobileTopBar() {
 
   return (
     <header
-      className="mobile-top-bar flex shrink-0 items-center gap-1.5 border-b border-[var(--line)] bg-[var(--bg-panel)] px-2"
+      className="mobile-top-bar flex shrink-0 items-center gap-1.5 border-b border-[var(--line-soft)] bg-[var(--bg-panel)] px-2"
       data-testid="mobile-top-bar"
       style={{
         minHeight: 44,

@@ -1,128 +1,179 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Folder, FolderOpen, MessageSquare, PanelLeft, PanelLeftClose, Plus, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { Archive, Folder, FolderOpen, MessagesSquare, PanelLeftClose, Plus, Search } from "lucide-react";
 import FolderTreeRow from "./FolderTreeRow";
 import GlobalSettings from "./GlobalSettings";
 import LeftDock from "./LeftDock";
-import UserQuotaPanel from "./UserQuotaPanel";
+import AgentNavRows from "@/components/agent/AgentNavRows";
+import AgentSectionHeader from "@/components/agent/AgentSectionHeader";
+import AgentSessionList from "@/components/agent/AgentSessionList";
+import AgentPanelMenu, { type AgentMenuTarget } from "@/components/agent/AgentPanelMenu";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
-import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import { ensureChatHistoryBootstrap, useChatHistory } from "@/lib/hooks/useChatHistory";
 import { useFloatingChats } from "@/lib/hooks/useFloatingChats";
+import { useGlobalSearch } from "@/lib/keyboard/useGlobalSearch";
 import { useStore } from "@/lib/stores/ui";
 import { useTokenTracker } from "@/lib/hooks/useTokenTracker";
-import { openNoteLibrary } from "@/lib/notes/openUserNote";
+import { buildProjectViews, selectArchivedSessions, selectRecentSessions } from "@/lib/agent/projectViews";
 import type { ChatContext } from "@/lib/types/chat";
 import type { SessionMeta } from "@/lib/storage/chatStorage";
 
-function sessionPreview(session: SessionMeta): string {
-  if (session.preview?.trim()) return session.preview;
-  const count = session.messageCount ?? 0;
-  return count > 0 ? `${count} 条消息` : "空对话";
+interface PanelMenuState {
+  x: number;
+  y: number;
+  target: AgentMenuTarget;
 }
 
-export default function AgentConversationSidebar({
-  chatContext,
-}: {
-  chatContext: ChatContext;
-}) {
-  const sessions = useChatHistory((s) => s.sessionsMeta);
+/**
+ * Agent 左栏。结构（用户口径）：
+ * 固定头（标题 + 全局搜索 + 折叠）→ 固定四行导航（新对话 / 我的资产 / 定时任务 / 插件市场）
+ * → **一起滚动**的 Projects 与 Recents → 固定底（头像/设置 + 归档开关）。
+ *
+ * 项目就是会话分组（folders）：两个系统项目由 kind 决定成员（笔记记录 / 划词摘录），
+ * 用户项目按 meta.folderId 归拢；Recents 是「不属于任何项目的普通对话」。
+ */
+export default function AgentConversationSidebar({ chatContext }: { chatContext: ChatContext }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  /** 只有在对话页（/agent）才谈得上「切换会话」；在资产页等子页面点会话要先把人送回来。 */
+  const onChatRoute = pathname === "/agent";
+  const goToChat = useCallback(() => {
+    if (!onChatRoute) router.push("/agent");
+  }, [onChatRoute, router]);
+  const sessionsMeta = useChatHistory((s) => s.sessionsMeta);
+  const folders = useChatHistory((s) => s.folders);
   const activeSessionId = useChatHistory((s) => s.activeSessionId);
-  const createSession = useChatHistory((s) => s.createSession);
+  const activeProjectId = useChatHistory((s) => s.activeProjectId);
+  const startNewChat = useChatHistory((s) => s.startNewChat);
   const deleteSession = useChatHistory((s) => s.deleteSession);
   const switchSession = useChatHistory((s) => s.switchSession);
-  const isCollapsed = useStore((s) => s.sidebarCollapsed);
+  const archiveSession = useChatHistory((s) => s.archiveSession);
+  const updateSessionTitle = useChatHistory((s) => s.updateSessionTitle);
+  const createFolder = useChatHistory((s) => s.createFolder);
+  const renameFolder = useChatHistory((s) => s.renameFolder);
+  const deleteFolder = useChatHistory((s) => s.deleteFolder);
+  const moveSessionToFolder = useChatHistory((s) => s.moveSessionToFolder);
+  const setActiveProject = useChatHistory((s) => s.setActiveProject);
   const setCollapsed = useStore((s) => s.setSidebarCollapsed);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [quotaOpen, setQuotaOpen] = useState(false);
-  const [confirmId, setConfirmId] = useState<string | null>(null);
-  const [mainExpanded, setMainExpanded] = useState(true);
-  const [floatingExpanded, setFloatingExpanded] = useState(true);
+  const [menu, setMenu] = useState<PanelMenuState | null>(null);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  /** 待确认删除的项目 id（项目删除也要二次确认）。 */
+  const [pendingDeleteProjectId, setPendingDeleteProjectId] = useState<string | null>(null);
+  const [renamingSessionId, setRenamingSessionId] = useState<string | null>(null);
+  const [renamingProjectId, setRenamingProjectId] = useState<string | null>(null);
+  const [showArchived, setShowArchived] = useState(false);
+  const [projectsExpanded, setProjectsExpanded] = useState(true);
+  const [recentsExpanded, setRecentsExpanded] = useState(true);
+  const [collapsedProjects, setCollapsedProjects] = useState<Record<string, boolean>>({});
   const settingsBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     void ensureChatHistoryBootstrap();
   }, []);
 
-  const mainSessions = useMemo(
-    () => sessions.filter((s) => s.kind !== "floating" && s.kind !== "note"),
-    [sessions],
+  useEffect(() => {
+    if (!menu) return;
+    const close = () => {
+      setMenu(null);
+      setPendingDeleteId(null);
+      setPendingDeleteProjectId(null);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close();
+    };
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menu]);
+
+  const projects = useMemo(() => buildProjectViews(folders, sessionsMeta), [folders, sessionsMeta]);
+  const userProjects = useMemo(() => projects.filter((project) => !project.system).map((project) => ({ id: project.id, name: project.name, createdAt: project.updatedAt })), [projects]);
+  const recentSessions = useMemo(() => selectRecentSessions(sessionsMeta), [sessionsMeta]);
+  const archivedSessions = useMemo(() => selectArchivedSessions(sessionsMeta), [sessionsMeta]);
+  const activeMeta = sessionsMeta.find((session) => session.id === activeSessionId) ?? null;
+  const onBlankChat = pathname === "/agent" && (activeMeta?.messageCount ?? 0) === 0;
+
+  const handleNewChat = useCallback(
+    (projectId?: string | null) => {
+      // 先回对话页：在「我的资产 / 定时任务 / 插件市场」里点新对话，
+      // 以前只改 store 不导航，用户看到的是「点了没反应」。
+      goToChat();
+      startNewChat(chatContext, projectId);
+      useTokenTracker.getState().resetSession();
+    },
+    [chatContext, goToChat, startNewChat],
   );
-  const floatingSessions = useMemo(
-    () => sessions.filter((s) => s.kind === "floating"),
-    [sessions],
+
+  const handleSelect = useCallback(
+    (session: SessionMeta) => {
+      setRenamingSessionId(null);
+      // 点会话一律先回对话页：否则在资产页点左栏只是改了状态，看上去毫无反应。
+      goToChat();
+      if (session.kind === "floating") {
+        useFloatingChats.getState().restoreWindow(session.id);
+        return;
+      }
+      // 点进某个项目的会话，就把「下次新建」的落点也切到那个项目（与最近项目一致）。
+      setActiveProject(session.kind === "note" ? null : (session.folderId ?? null));
+      switchSession(session.id);
+    },
+    [goToChat, setActiveProject, switchSession],
   );
 
-  const handleNewChat = () => {
-    createSession(chatContext);
-    useTokenTracker.getState().resetSession();
+  const handleDelete = useCallback(
+    (id: string) => {
+      const floating = useFloatingChats.getState();
+      const win = floating.windows.find((item) => item.sessionId === id);
+      if (win) floating.closeWindow(win.id);
+      deleteSession(id);
+      setPendingDeleteId(null);
+      setMenu(null);
+    },
+    [deleteSession],
+  );
+
+  const openMenu = (event: React.MouseEvent, target: AgentMenuTarget) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setPendingDeleteId(null);
+    setPendingDeleteProjectId(null);
+    setMenu({ x: event.clientX, y: event.clientY, target });
   };
 
-  const handleSelectMain = (id: string) => {
-    if (confirmId) {
-      setConfirmId(null);
-      return;
-    }
-    switchSession(id);
+  const handleCreateProject = () => {
+    const id = createFolder();
+    setProjectsExpanded(true);
+    setRenamingProjectId(id);
   };
 
-  const handleSelectFloating = (id: string) => {
-    if (confirmId) {
-      setConfirmId(null);
-      return;
-    }
-    useFloatingChats.getState().restoreWindow(id);
-  };
+  /** 删除项目：菜单里确认过一次才走到这里；成员对话由 store 退回 Recents。 */
+  const handleDeleteProject = useCallback(
+    (id: string) => {
+      deleteFolder(id);
+      setPendingDeleteProjectId(null);
+      setMenu(null);
+    },
+    [deleteFolder],
+  );
 
-  const handleDelete = (id: string) => {
-    const fc = useFloatingChats.getState();
-    const win = fc.windows.find((w) => w.sessionId === id);
-    if (win) fc.closeWindow(win.id);
-    deleteSession(id);
-    setConfirmId(null);
-  };
-
-  const renderSession = (session: SessionMeta, kind: "main" | "floating") => {
-    const selected = kind === "main" && session.id === activeSessionId;
-    return (
-      <div key={session.id} className="group relative flex items-center">
-        <div className="min-w-0 flex-1">
-          <FolderTreeRow
-            depth={1}
-            title={session.title || "新对话"}
-            isSelected={selected}
-            icon={kind === "floating" ? <PencilSparklesIcon size={14} /> : <MessageSquare size={14} />}
-            titleAttr={sessionPreview(session)}
-            ariaLabel={session.title || "新对话"}
-            onClick={() => (kind === "floating" ? handleSelectFloating(session.id) : handleSelectMain(session.id))}
-          />
-        </div>
-        {confirmId === session.id ? (
-          <div className="mr-1 flex shrink-0 items-center gap-1">
-            <button type="button" className="rounded px-1.5 text-[11px] font-semibold text-[var(--md-sys-color-error)]" onClick={() => handleDelete(session.id)}>
-              删除
-            </button>
-            <button type="button" className="rounded px-1.5 text-[11px] text-[var(--ink-soft)]" onClick={() => setConfirmId(null)}>
-              取消
-            </button>
-          </div>
-        ) : (
-          <button
-            type="button"
-            title="删除对话"
-            aria-label={`删除 ${session.title || "对话"}`}
-            className="mr-1 flex h-6 w-6 shrink-0 items-center justify-center rounded text-[var(--ink-faint)] opacity-0 transition-opacity hover:text-[var(--md-sys-color-error)] group-hover:opacity-100"
-            onClick={(e) => {
-              e.stopPropagation();
-              setConfirmId(session.id);
-            }}
-          >
-            <Trash2 size={12} />
-          </button>
-        )}
-      </div>
-    );
+  const sessionMenuProps = {
+    activeSessionId,
+    renamingId: renamingSessionId,
+    onSelect: handleSelect,
+    onContextMenu: (event: React.MouseEvent, session: SessionMeta) => openMenu(event, { kind: "session", session }),
+    onRenameSubmit: (id: string, title: string) => {
+      const next = title.trim();
+      const prev = sessionsMeta.find((session) => session.id === id)?.title ?? "";
+      if (next && next !== prev) updateSessionTitle(id, next);
+      setRenamingSessionId(null);
+    },
+    onRenameCancel: () => setRenamingSessionId(null),
   };
 
   return (
@@ -130,17 +181,15 @@ export default function AgentConversationSidebar({
       data-testid="agent-conversation-sidebar"
       className="flex h-full flex-col"
       style={{
-        background: "var(--md-sys-color-surface-container-lowest)",
-        borderRight: "1px solid var(--md-sys-color-outline-variant)",
+        // 深色下由 CSS 变量改成「中间那一档」（B-A-A 配色）；浅色保持原样。
+        background: "var(--agent-sidebar-bg, var(--md-sys-color-surface-container-lowest))",
+        borderRight: "1px solid var(--line-soft)",
       }}
+      onContextMenu={(event) => openMenu(event, { kind: "panel" })}
     >
       <div
-        className="flex shrink-0 items-center justify-between"
-        style={{
-          height: 36,
-          padding: "0 8px 0 12px",
-          borderBottom: "1px solid var(--md-sys-color-outline-variant)",
-        }}
+        className="flex shrink-0 items-center gap-1"
+        style={{ height: 40, padding: "0 8px 0 12px", borderBottom: "1px solid var(--line-soft)" }}
       >
         <span
           style={{
@@ -153,113 +202,222 @@ export default function AgentConversationSidebar({
         >
           对话
         </span>
-        <button
-          type="button"
-          onClick={() => setCollapsed(!isCollapsed)}
-          className="flex items-center justify-center rounded"
-          style={{
-            width: 24,
-            height: 24,
-            color: "var(--md-sys-color-outline)",
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-          }}
-          title={isCollapsed ? "展开侧边栏" : "折叠侧边栏"}
-        >
-          {isCollapsed ? <PanelLeft size={15} /> : <PanelLeftClose size={15} />}
-        </button>
+        <div className="ml-auto flex items-center gap-0.5">
+          <button
+            type="button"
+            onClick={() => useGlobalSearch.getState().setOpen(true)}
+            title="全局搜索"
+            aria-label="全局搜索"
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
+          >
+            <Search size={15} />
+          </button>
+          <button
+            type="button"
+            onClick={() => setCollapsed(true)}
+            title="折叠侧边栏"
+            aria-label="折叠侧边栏"
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
+          >
+            <PanelLeftClose size={15} />
+          </button>
+        </div>
       </div>
 
-      <div className="flex shrink-0 flex-col gap-0.5 px-1 pt-1.5">
-        <button
-          type="button"
-          onClick={handleNewChat}
-          className="press flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[13px] font-semibold text-[var(--md-sys-color-on-surface)] hover:bg-[var(--md-sys-color-surface-container-high)]"
-        >
-          <Plus size={15} />
-          新对话
-        </button>
-        <button
-          type="button"
-          onClick={() => openNoteLibrary({ intent: "browse" })}
-          className="press flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[13px] font-medium text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-container-high)]"
-        >
-          <Folder size={15} />
-          我的资产
-        </button>
-      </div>
+      <AgentNavRows onNewChat={() => handleNewChat(activeProjectId)} newChatActive={onBlankChat} />
 
-      <div className="scroll-y min-h-0 flex-1 py-1" data-testid="agent-conversation-groups">
-        <FolderTreeRow
-          depth={0}
-          title="正常对话"
-          isFolder
-          isExpanded={mainExpanded}
-          icon={
-            mainExpanded ? (
-              <FolderOpen size={15} style={{ color: "var(--md-sys-color-primary)" }} />
-            ) : (
-              <Folder size={15} style={{ color: "var(--md-sys-color-outline)" }} />
-            )
-          }
-          onClick={() => setMainExpanded((open) => !open)}
-          fontWeight={600}
-          ariaLabel="正常对话"
-        />
-        <AnimatedCollapse isOpen={mainExpanded}>
-          {mainSessions.length === 0 ? (
-            <div className="px-8 py-2 text-[12px] text-[var(--ink-faint)]">暂无对话</div>
-          ) : (
-            mainSessions.map((session) => renderSession(session, "main"))
-          )}
-        </AnimatedCollapse>
+      <div className="scroll-y min-h-0 flex-1 py-1" data-agent-scroll data-testid="agent-conversation-groups">
+        {showArchived ? (
+          <>
+            <AgentSectionHeader
+              label="已归档"
+              expanded
+              onToggle={() => setShowArchived(false)}
+              testId="agent-archived-header"
+              action={
+                <button
+                  type="button"
+                  onClick={() => setShowArchived(false)}
+                  title="返回对话列表"
+                  aria-label="返回对话列表"
+                  className="flex h-6 w-6 items-center justify-center rounded-md text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
+                >
+                  <MessagesSquare size={14} />
+                </button>
+              }
+            />
+            <AgentSessionList
+              slot="archived"
+              sessions={archivedSessions}
+              emptyLabel="没有归档的对话"
+              depth={1}
+              {...sessionMenuProps}
+            />
+          </>
+        ) : (
+          <>
+            <AgentSectionHeader
+              label="Projects"
+              expanded={projectsExpanded}
+              onToggle={() => setProjectsExpanded((open) => !open)}
+              testId="agent-projects"
+              action={
+                <button
+                  type="button"
+                  data-testid="agent-project-add"
+                  onClick={handleCreateProject}
+                  title="新建项目"
+                  aria-label="新建项目"
+                  className="flex h-6 w-6 items-center justify-center rounded-md text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
+                >
+                  <Plus size={14} />
+                </button>
+              }
+            />
+            <AnimatedCollapse isOpen={projectsExpanded}>
+              {projects.map((project) => {
+                const expanded = collapsedProjects[project.id] !== true;
+                const emptyLabel = project.system
+                  ? project.system === "note"
+                    ? "暂无笔记对话"
+                    : "暂无划词对话"
+                  : "空项目";
+                return (
+                  <div key={project.id}>
+                    <div
+                      className="flex items-center"
+                      onContextMenu={(event) =>
+                        openMenu(event, {
+                          kind: "project",
+                          folder: { id: project.id, name: project.name, createdAt: project.updatedAt, system: project.system },
+                        })
+                      }
+                    >
+                      <div className="min-w-0 flex-1">
+                        {renamingProjectId === project.id ? (
+                          <input
+                            autoFocus
+                            defaultValue={project.name}
+                            aria-label="项目名称"
+                            data-testid="project-rename-input"
+                            className="mx-2 my-0.5 w-[calc(100%-1rem)] rounded-md border border-[var(--accent)] bg-[var(--bg-muted)] px-2 py-0.5 text-[12px] text-[var(--ink)] outline-none"
+                            onPointerDown={(event) => event.stopPropagation()}
+                            // 新建项目时输入框里是「新建项目 N」这个临时名：全选一下，直接打字就是干净的名字。
+                            onFocus={(event) => event.currentTarget.select()}
+                            onBlur={(event) => {
+                              renameFolder(project.id, event.target.value);
+                              setRenamingProjectId(null);
+                            }}
+                            onKeyDown={(event) => {
+                              if (event.key === "Enter") {
+                                renameFolder(project.id, event.currentTarget.value);
+                                setRenamingProjectId(null);
+                              }
+                              if (event.key === "Escape") setRenamingProjectId(null);
+                            }}
+                          />
+                        ) : (
+                          <FolderTreeRow
+                            depth={0}
+                            title={project.name}
+                            isFolder
+                            isExpanded={expanded}
+                            icon={
+                              expanded ? (
+                                <FolderOpen size={15} style={{ color: "var(--md-sys-color-primary)" }} />
+                              ) : (
+                                <Folder size={15} style={{ color: "var(--md-sys-color-outline)" }} />
+                              )
+                            }
+                            onClick={() => setCollapsedProjects((prev) => ({ ...prev, [project.id]: expanded }))}
+                            fontWeight={600}
+                            ariaLabel={project.name}
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <AnimatedCollapse isOpen={expanded}>
+                      <AgentSessionList
+                        slot={`project-${project.id}`}
+                        sessions={project.sessions}
+                        emptyLabel={emptyLabel}
+                        depth={1}
+                        {...sessionMenuProps}
+                      />
+                    </AnimatedCollapse>
+                  </div>
+                );
+              })}
+            </AnimatedCollapse>
 
-        <FolderTreeRow
-          depth={0}
-          title="划词助手对话"
-          isFolder
-          isExpanded={floatingExpanded}
-          icon={
-            floatingExpanded ? (
-              <FolderOpen size={15} style={{ color: "var(--md-sys-color-primary)" }} />
-            ) : (
-              <Folder size={15} style={{ color: "var(--md-sys-color-outline)" }} />
-            )
-          }
-          onClick={() => setFloatingExpanded((open) => !open)}
-          fontWeight={600}
-          ariaLabel="划词助手对话"
-        />
-        <AnimatedCollapse isOpen={floatingExpanded}>
-          {floatingSessions.length === 0 ? (
-            <div className="px-8 py-2 text-[12px] text-[var(--ink-faint)]">暂无划词对话</div>
-          ) : (
-            floatingSessions.map((session) => renderSession(session, "floating"))
-          )}
-        </AnimatedCollapse>
+            <AgentSectionHeader
+              label="Recents"
+              expanded={recentsExpanded}
+              onToggle={() => setRecentsExpanded((open) => !open)}
+              testId="agent-recents"
+            />
+            <AnimatedCollapse isOpen={recentsExpanded}>
+              <AgentSessionList slot="main" sessions={recentSessions} emptyLabel="暂无对话" depth={1} {...sessionMenuProps} />
+            </AnimatedCollapse>
+          </>
+        )}
       </div>
 
       <div
         className="flex shrink-0 items-center gap-1"
-        style={{
-          height: 40,
-          padding: "0 8px",
-          borderTop: "1px solid var(--md-sys-color-outline-variant)",
-        }}
+        style={{ height: 40, padding: "0 8px", borderTop: "1px solid var(--line-soft)" }}
       >
         <LeftDock
           buttonRef={settingsBtnRef}
-          onToggle={() => setSettingsOpen((v) => !v)}
-          onOpenQuota={() => setQuotaOpen(true)}
+          settingsOpen={settingsOpen}
+          onToggle={() => setSettingsOpen((open) => !open)}
         />
+        <button
+          type="button"
+          onClick={() => setShowArchived((value) => !value)}
+          title={showArchived ? "返回对话列表" : "查看已归档对话"}
+          aria-label={showArchived ? "返回对话列表" : "查看已归档对话"}
+          aria-pressed={showArchived}
+          data-testid="archived-toggle"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--md-sys-color-surface-container-high)]"
+        >
+          {showArchived ? <MessagesSquare size={15} /> : <Archive size={15} />}
+        </button>
       </div>
 
-      {quotaOpen && (
-        <UserQuotaPanel anchorRef={settingsBtnRef} onClose={() => setQuotaOpen(false)} />
-      )}
       {settingsOpen && (
         <GlobalSettings anchorRef={settingsBtnRef} onClose={() => setSettingsOpen(false)} />
+      )}
+
+      {menu && (
+        <AgentPanelMenu
+          x={menu.x}
+          y={menu.y}
+          target={menu.target}
+          userProjects={userProjects}
+          pendingDeleteId={pendingDeleteId}
+          pendingDeleteProjectId={pendingDeleteProjectId}
+          onRequestDelete={setPendingDeleteId}
+          onConfirmDelete={handleDelete}
+          onCancelDelete={() => setPendingDeleteId(null)}
+          onRequestDeleteProject={setPendingDeleteProjectId}
+          onConfirmDeleteProject={handleDeleteProject}
+          onCancelDeleteProject={() => setPendingDeleteProjectId(null)}
+          close={() => {
+            setMenu(null);
+            setPendingDeleteId(null);
+            setPendingDeleteProjectId(null);
+          }}
+          actions={{
+            newChat: () => handleNewChat(activeProjectId),
+            newProject: handleCreateProject,
+            renameSession: (id) => setRenamingSessionId(id),
+            moveSession: (id, projectId) => moveSessionToFolder(id, projectId),
+            archiveSession: (id, archived) => archiveSession(id, archived),
+            renameProject: (id) => setRenamingProjectId(id),
+            newChatInProject: (id) => handleNewChat(id),
+          }}
+        />
       )}
     </aside>
   );

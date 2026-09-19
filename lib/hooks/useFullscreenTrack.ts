@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { NOTES_PANEL_ID, RIGHT_PANEL_ID, type FullscreenTarget } from "@/lib/constants/layout";
+import { NOTES_PANEL_ID, RIGHT_PANEL_ID, resolveFullscreenRect, type FullscreenTarget } from "@/lib/constants/layout";
 import { useWindowManager } from "@/lib/hooks/useWindowManager";
-import { isAgentWorkspace } from "@/lib/stores/workspace";
-import { resolveWorkspaceFullscreenRect } from "@/lib/workspace/agentDock";
 
 /**
  * 全屏期间跟随目标矩形（默认笔记栏）。
@@ -19,7 +17,7 @@ export function useFullscreenTrack(
     if (!enabled || !windowId) return;
 
     const sync = () => {
-      const rect = resolveWorkspaceFullscreenRect(target);
+      const rect = resolveFullscreenRect(target);
       if (!rect || rect.width <= 0 || rect.height <= 0) return;
       useWindowManager.getState().commitGeometry(windowId, {
         pos: { x: rect.left, y: rect.top },
@@ -31,7 +29,7 @@ export function useFullscreenTrack(
     window.addEventListener("resize", sync);
     const panelIds = [
       target === "notes" ? NOTES_PANEL_ID : null,
-      target === "right" || isAgentWorkspace() ? RIGHT_PANEL_ID : null,
+      target === "right" ? RIGHT_PANEL_ID : null,
     ].filter(Boolean) as string[];
     const observer =
       panelIds.length > 0 && typeof ResizeObserver !== "undefined" ? new ResizeObserver(sync) : null;

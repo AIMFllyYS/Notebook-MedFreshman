@@ -1,7 +1,8 @@
 import { create } from "zustand";
-import { placeAgentDockWindow } from "@/lib/workspace/agentDock";
+import { isAgentWorkspace } from "@/lib/stores/workspace";
+import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 
-export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor" | "user-note-editor" | "user-note-library" | "flashcard-cite-picker" | "agent-product-picker" | "memory-proposal" | "quiz-explain";
+export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor" | "user-note-editor" | "user-note-library" | "flashcard-cite-picker" | "agent-product-picker" | "memory-proposal" | "quiz-explain" | "project-files";
 
 export interface WindowPoint {
   x: number;
@@ -83,6 +84,11 @@ export interface QuizExplainData {
   questionId: string;
 }
 
+/** 项目文件窗：一个项目一个窗（同项目单开）。 */
+export interface ProjectFilesData {
+  projectId: string;
+}
+
 export interface AttachmentPreviewData {
   name: string;
   mimeType: string;
@@ -90,7 +96,7 @@ export interface AttachmentPreviewData {
   content: string;
 }
 
-export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | MembershipSponsorData | DocumentViewerData | NoteCitationViewerData | SourceTraceViewerData | SourcePreviewData | AttachmentPreviewData | UserNoteEditorData | UserNoteLibraryData | FlashcardCitePickerData | AgentProductPickerData | MemoryProposalData | QuizExplainData | Record<string, unknown>;
+export type ManagedWindowData = FloatingChatData | RecordPreviewData | ArtifactViewerData | ImageGenViewerData | BillingDashboardData | MembershipSponsorData | DocumentViewerData | NoteCitationViewerData | SourceTraceViewerData | SourcePreviewData | AttachmentPreviewData | UserNoteEditorData | UserNoteLibraryData | FlashcardCitePickerData | AgentProductPickerData | MemoryProposalData | QuizExplainData | ProjectFilesData | Record<string, unknown>;
 
 export interface ManagedWindow<TData = ManagedWindowData> {
   id: string;
@@ -103,6 +109,11 @@ export interface ManagedWindow<TData = ManagedWindowData> {
   fullscreen: boolean;
   minimized: boolean;
   badge?: number;
+  /**
+   * 打开这个窗口时所在的对话（Agent 右栏按会话隔离：A 的文档不出现在 B 的右栏）。
+   * null/undefined = 不隔离（Studio 打开的、测试构造的旧窗口都按可见处理）。
+   */
+  sessionId?: string | null;
   /** 进入全屏前的几何，供红绿灯与键盘快捷键还原。 */
   preExpand?: { pos: WindowPoint; size: WindowSize } | null;
   data: TData;
@@ -128,6 +139,7 @@ interface WindowManagerState {
   closeWindow: (id: string) => void;
   minimizeWindow: (id: string) => void;
   restoreWindow: (id: string) => void;
+  setActiveWindow: (id: string | null) => void;
   setFullscreen: (id: string, on: boolean) => void;
   bringToFront: (id: string) => void;
   commitGeometry: (id: string, geom: { pos?: WindowPoint; size?: WindowSize }) => void;
@@ -143,6 +155,16 @@ function withBadges(windows: ManagedWindow[]): ManagedWindow[] {
   });
 }
 
+/**
+ * 「当前对话」的提供者。由外壳注入（AppShell），而不是让 windowManager 直接 import chatHistory ——
+ * 那会形成 windowManager → chatHistory → artifacts → windowManager 的循环依赖。
+ */
+let sessionProvider: (() => string | null) | null = null;
+
+export function setWindowSessionProvider(provider: (() => string | null) | null): void {
+  sessionProvider = provider;
+}
+
 export const useWindowManager = create<WindowManagerState>((set) => ({
   windows: [],
   topZ: 5000,
@@ -152,43 +174,64 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
     set((state) => {
       const existing = state.windows.some((win) => win.id === input.id);
       const z = state.topZ + 1;
-      const docked = placeAgentDockWindow({ pos: input.pos, size: input.size });
       const nextWindow: ManagedWindow = {
         id: input.id,
         type: input.type,
         title: input.title,
         icon: input.icon,
-        pos: docked.pos,
-        size: docked.size,
+        // Agent dock presentation uses the host layout. Keep the caller's
+        // geometry for Studio and for a later mode switch back to floating.
+        pos: input.pos,
+        size: input.size,
         data: input.data as ManagedWindowData,
         z,
         fullscreen: input.fullscreen ?? false,
         minimized: input.minimized ?? false,
+        sessionId: input.sessionId ?? sessionProvider?.() ?? null,
       };
       const windows = existing
         ? state.windows.map((win) => (win.id === input.id ? { ...win, ...nextWindow } : win))
         : [...state.windows, nextWindow];
       return { windows: withBadges(windows), topZ: z, activeWindowId: input.id };
     });
+    // Agent 右栏：新内容打开时请求展开（右栏收起状态里也照样弹出来）。
+    if (isAgentWorkspace() && !(input.minimized ?? false)) {
+      useAgentDockRuntime.getState().requestOpen();
+    }
     return input.id;
   },
 
-  closeWindow: (id) =>
+  closeWindow: (id) => {
     set((state) => {
       const windows = withBadges(state.windows.filter((win) => win.id !== id));
       const activeWindowId =
         state.activeWindowId === id ? pickNextActiveWindow(state.windows, id) : state.activeWindowId;
       return { windows, activeWindowId };
-    }),
+    });
+  },
 
-  minimizeWindow: (id) =>
+  setActiveWindow: (id) =>
     set((state) => ({
-      windows: state.windows.map((win) =>
-        win.id === id ? { ...win, minimized: true, fullscreen: false } : win,
-      ),
+      activeWindowId:
+        id === null || state.windows.some((window) => window.id === id && !window.minimized)
+          ? id
+          : state.activeWindowId,
     })),
 
-  restoreWindow: (id) =>
+  minimizeWindow: (id) => {
+    set((state) => {
+      const wasActive = state.activeWindowId === id;
+      const windows = state.windows.map((win) =>
+        win.id === id ? { ...win, minimized: true, fullscreen: false } : win,
+      );
+      return {
+        windows,
+        activeWindowId: wasActive ? pickNextActiveWindow(windows, id) : state.activeWindowId,
+      };
+    });
+  },
+
+  restoreWindow: (id) => {
     set((state) => {
       const z = state.topZ + 1;
       return {
@@ -198,7 +241,8 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
           win.id === id ? { ...win, minimized: false, z } : win,
         ),
       };
-    }),
+    });
+  },
 
   setFullscreen: (id, on) =>
     set((state) => {

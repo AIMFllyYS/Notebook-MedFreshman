@@ -293,7 +293,7 @@
   font-size: 0.72rem;
   font-weight: 600;
   color: var(--md-sys-color-on-surface-variant);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
 }
 .image-search-gallery-via {
   margin-left: auto;
@@ -556,7 +556,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   background: var(--md-sys-color-surface-container);
   container-type: inline-size;
 }
@@ -704,6 +704,71 @@
   margin-top: 0.5rem;
 }
 
+/* ── Agent 空对话欢迎页 ─────────────────────────────────────────────
+   问候语在上、输入框居中、示例清单在下（对齐 ChatGPT 官网首页那种观感）。
+   输入框在常规对话里是绝对定位贴底的浮层，这里必须回到文档流，才会被夹在两句之间；
+   一发消息 .chat-panel--welcome 就摘掉，输入框回到原来的浮层位置——组件实例没换，草稿不丢。
+   竖直方向用 auto 外边距而不是 justify-content:center：面板不够高时前者能滚动，后者会把顶部裁掉。 */
+.chat-panel--welcome {
+  overflow-y: auto;
+}
+/* 转录区照旧挂着（划词助手的容器 ref 绑在它身上），只是这一屏不显示。 */
+.chat-panel--welcome .chat-thread {
+  display: none;
+}
+.chat-welcome-greeting {
+  flex-shrink: 0;
+  margin: auto auto 0;
+  padding: 0 24px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--md-sys-color-on-surface);
+}
+.chat-welcome-examples {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 780px;
+  margin: 10px auto auto;
+  padding: 0 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.chat-welcome-example {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 13.5px;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.chat-welcome-example:hover {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+.chat-welcome-example-icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--md-sys-color-outline);
+}
+.chat-welcome-example:hover .chat-welcome-example-icon {
+  color: var(--md-sys-color-primary);
+}
+.chat-welcome-example-text {
+  flex: 1;
+  min-width: 0;
+}
 /* (comment) */
 .chat-loading {
   display: flex;
@@ -934,7 +999,7 @@
   flex-direction: column;
   gap: 8px;
   padding: 12px 9px;
-  border-right: 1px solid var(--md-sys-color-outline-variant);
+  border-right: 1px solid var(--line-soft);
   background: color-mix(in srgb, var(--md-sys-color-surface-container) 82%, transparent);
 }
 .chat-history-tabs {
@@ -1383,6 +1448,29 @@
   container-type: inline-size;
   container-name: chat-composer;
 }
+/* 欢迎页里的输入框回到文档流，才会被夹在问候语和示例清单之间（见上方 .chat-panel--welcome）。 */
+.chat-panel--welcome .chat-input-container {
+  position: static;
+  inset-inline: auto;
+  bottom: auto;
+  width: 100%;
+  max-width: 780px;
+  margin: 18px auto 0;
+  padding: 0 24px;
+}
+@media (max-width: 640px) {
+  .chat-welcome-greeting {
+    font-size: 20px;
+    padding: 0 16px;
+  }
+  .chat-panel--welcome .chat-input-container {
+    margin-top: 14px;
+    padding: 0 16px;
+  }
+  .chat-welcome-examples {
+    padding: 0 16px 20px;
+  }
+}
 .chat-input-row {
   position: relative;
   display: flex;
@@ -1556,6 +1644,39 @@
 }
 .chat-input-send:active {
   transform: scale(0.95);
+}
+/* 项目 chip：坐在输入框右下角、发送键左侧（只有 Agent 中央对话会渲染它）。 */
+.chat-input-project-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  max-width: 132px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 13px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 32%, transparent);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 11.5px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+}
+.chat-input-project-chip:hover {
+  background: var(--bg-muted);
+  border-color: var(--md-sys-color-primary);
+}
+.chat-input-project-chip-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* 窄输入框里只留图标，别把发送键挤走。 */
+@container chat-composer (max-width: 520px) {
+  .chat-input-project-chip-text {
+    display: none;
+  }
 }
 .chat-input-toolbar {
   display: flex;
@@ -2157,6 +2278,25 @@
   animation: agent-settings-overlay-in 160ms var(--ease-out, ease-out) both;
 }
 @keyframes agent-settings-overlay-in { from { opacity: 0; } }
+/* 移动端 ManagedWindow 右侧 sheet 的进入动画（Agent 窄屏降级形态）。 */
+@keyframes agent-window-sheet-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-surface="sheet"] { animation: none !important; }
+}
+/* Agent 右侧工作区整列：与顶栏并列、通到窗口最顶；展开时从左侧拉出。 */
+.agent-dock-column {
+  animation: agent-dock-column-in 200ms var(--ease-out, ease-out) both;
+}
+@keyframes agent-dock-column-in {
+  from { opacity: 0.4; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agent-dock-column { animation: none; }
+}
 .agent-settings-dialog {
   position: relative;
   width: min(920px, calc(100vw - 32px));
@@ -2194,7 +2334,7 @@
   gap: 6px;
   padding: 8px 10px;
   border-right: none;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--line-soft);
   overflow-x: auto;
 }
 .chat-settings-workspace[data-nav="top"] .chat-settings-brand {
@@ -2284,7 +2424,7 @@
   flex-direction: column;
   gap: 8px;
   padding: 12px 9px;
-  border-right: 1px solid var(--md-sys-color-outline-variant);
+  border-right: 1px solid var(--line-soft);
   background: color-mix(in srgb, var(--md-sys-color-surface-container) 82%, transparent);
 }
 .chat-settings-back {

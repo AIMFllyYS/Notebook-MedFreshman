@@ -45,6 +45,7 @@ export const SYNC_KIND_META: Record<CloudSyncKind, { label: string; unit: string
   document: { label: "文档", unit: "篇" },
   "user-note": { label: "个人笔记", unit: "篇" },
   "review-card": { label: "复习闪卡", unit: "张" },
+  "chat-project": { label: "对话项目", unit: "个" },
 };
 
 export const SYNC_POOL_META: Record<SyncQuotaPool, { label: string; unit: string }> = {

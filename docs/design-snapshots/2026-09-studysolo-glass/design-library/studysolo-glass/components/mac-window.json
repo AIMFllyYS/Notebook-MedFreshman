@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 2,
+  "slug": "mac-window",
+  "name": "Mac Window",
+  "category": "windowing",
+  "sourceKind": "from-scratch",
+  "confidence": "medium",
+  "semanticTypeCandidates": [
+    { "type": "window/titlebar", "evidence": "Product already ships ManagedWindow + WindowChrome with macOS traffic lights on Electron" },
+    { "type": "dialog/sheet", "evidence": "Attached modal sheets and centered dialogs" },
+    { "type": "inactive-window", "evidence": "Multi-window workspace with key/inactive states" }
+  ],
+  "variantDimensions": [
+    { "name": "variant", "values": ["standard", "sheet", "utility-panel"] },
+    { "name": "state", "values": ["key", "inactive", "dragging"] },
+    { "name": "trafficLights", "values": ["visible", "hidden"] }
+  ],
+  "representativeVariants": [
+    {
+      "id": "standard-key",
+      "whySelected": "The flagship container: 28px glass window with macOS controls",
+      "traits": { "radius": "var(--radius-window)", "background": "var(--glass-window-fill)", "blur": "var(--glass-blur-deep)", "saturate": "var(--glass-saturate)", "shadow": "var(--shadow-5)", "titlebarHeight": "44px" },
+      "childrenDigest": "traffic lights (12px, #ff5f57/#febc2e/#28c840), centered or leading document title, trailing toolbar icons; body below hairline"
+    },
+    {
+      "id": "standard-inactive",
+      "whySelected": "Background windows must recede without disappearing",
+      "traits": { "fill": "alpha -0.03", "saturate": "120%", "lights": "desaturated gray", "title": "muted" },
+      "childrenDigest": "same chrome, muted"
+    },
+    {
+      "id": "sheet",
+      "whySelected": "macOS sheet modality: dialog attached to parent window, slides from title bar",
+      "traits": { "radius": "12px 12px var(--radius-window) var(--radius-window)", "background": "var(--glass-panel-fill)", "scrim": "rgba(0,0,0,0.25) with blur(4px)" },
+      "childrenDigest": "headline, form content, right-aligned cancel/default buttons"
+    },
+    {
+      "id": "utility-panel",
+      "whySelected": "Inspector / right-side panel with compact title bar and segmented tabs",
+      "traits": { "titlebarHeight": "38px", "background": "var(--glass-sidebar-fill)", "radius": "var(--radius-panel)" },
+      "childrenDigest": "panel title, tab segment, close affordance"
+    }
+  ],
+  "anatomy": ["window frame (resizable edges)", "title bar drag region (-webkit-app-region: drag)", "traffic light cluster (close/minimize/zoom, 8px gap, hover glyphs)", "title", "title-bar accessory buttons", "hairline separator", "body (split panes allowed)", "resize grip"],
+  "structurePatterns": [
+    "Traffic lights 12px diameter, 8px gap, 14-16px inset; glyphs appear on hover only",
+    "Title is 13px semibold, 12px tracking, muted when inactive",
+    "Window appears with scaleIn 0.96→1 + fade 200ms; sheets slide-down 250ms emphasized",
+    "Shadow deepens slightly while dragging"
+  ],
+  "usageHints": {
+    "priorityHint": "high",
+    "do": "Keep traffic light colors exact; center title in key window for document feel",
+    "avoid": "Do not draw custom title bars that ignore the drag region or system double-click-to-zoom"
+  },
+  "doNotInvent": ["No Windows-style chrome", "No colored title bars"],
+  "unknowns": ["Fullscreen traffic-light hide animation handled by Electron shell"],
+  "keyInsightSeed": "A Mac window is glass with three honest pixels: red, yellow, green — everything else stays quiet."
+}

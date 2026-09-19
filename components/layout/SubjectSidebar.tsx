@@ -13,7 +13,6 @@ import TocTree from "./TocTree";
 import SiblingFilesPanel from "./SiblingFilesPanel";
 import GlobalSettings from "./GlobalSettings";
 import LeftDock from "./LeftDock";
-import UserQuotaPanel from "./UserQuotaPanel";
 import SubjectFolderTree from "./SubjectFolderTree";
 import { useStore } from "@/lib/store";
 import { useTheme } from "@/lib/hooks/useTheme";
@@ -31,7 +30,6 @@ export default function SubjectSidebar() {
   const toggleTheme = useTheme((s) => s.toggle);
   const hydrateTheme = useTheme((s) => s.hydrate);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [quotaOpen, setQuotaOpen] = useState(false);
   const treeRef = useRef<HTMLDivElement>(null);
   const settingsBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -184,8 +182,8 @@ export default function SubjectSidebar() {
       >
         <LeftDock
           buttonRef={settingsBtnRef}
+          settingsOpen={settingsOpen}
           onToggle={() => setSettingsOpen((v) => !v)}
-          onOpenQuota={() => setQuotaOpen(true)}
         />
         <button
           onClick={toggleTheme}
@@ -210,9 +208,6 @@ export default function SubjectSidebar() {
         </button>
       </div>
 
-      {quotaOpen && (
-        <UserQuotaPanel anchorRef={settingsBtnRef} onClose={() => setQuotaOpen(false)} />
-      )}
       {settingsOpen && (
         <GlobalSettings anchorRef={settingsBtnRef} onClose={() => setSettingsOpen(false)} />
       )}

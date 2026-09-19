@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent 工作区 · StudySolo Glass</title>
+    <style id="theme-vars">
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+/* @group-priority: primary, accent, info, success, glass */
+
+:root {
+  /* primary */
+  --primary-50: #eef5ff;
+  --primary-100: #dae8ff;
+  --primary-200: #b9d3ff;
+  --primary-300: #8fbaff;
+  --primary-400: #6aa6ff;
+  --primary-500: #3f83f0; /* @primary *//* AI-generated */
+  --primary-600: #2563eb;
+  --primary-700: #1d4fc4;
+  --primary-800: #1b4199;
+  --primary-900: #152f66;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --ring: rgba(37,99,235,0.35);
+  --link: #2563eb;
+  /* accent */
+  --accent-50: #fdf3ee;
+  --accent-100: #fae3d8;
+  --accent-200: #f4c5af;
+  --accent-300: #eca17d;
+  --accent-400: #e27d52;
+  --accent-500: #d9542c; /* @primary *//* AI-generated */
+  --accent-600: #c0431f;
+  --accent-700: #9c351a;
+  --accent-800: #7a2c18;
+  --accent-900: #5c2313;
+  --accent: #d9542c;
+  --accent-foreground: #ffffff;
+  /* neutral */
+  --neutral-50: #f7f5f2;
+  --neutral-100: #ece8e2;
+  --neutral-200: #d9d3c9;
+  --neutral-300: #bfb6a8;
+  --neutral-400: #9c917f;
+  --neutral-500: #7d7262; /* @primary *//* AI-generated */
+  --neutral-600: #635a4d;
+  --neutral-700: #4c453c;
+  --neutral-800: #37322c;
+  --neutral-900: #26221d;
+  --muted: #e4ecf5;
+  --secondary: #e4ecf5;
+  /* success */
+  --success-50: #edf9f0;
+  --success-100: #d4f1dc;
+  --success-200: #aee3bd;
+  --success-300: #7fce97;
+  --success-400: #4fb471;
+  --success-500: #2f9954; /* @primary *//* AI-generated */
+  --success-600: #227a43;
+  --success-700: #1d6138;
+  --success-800: #1b4d2f;
+  --success-900: #163d27;
+  --success: #2f9954;
+  /* warning */
+  --warning-50: #fdf6e7;
+  --warning-100: #fae8c2;
+  --warning-200: #f5d388;
+  --warning-300: #efbb4d;
+  --warning-400: #e7a526;
+  --warning-500: #d18a12; /* @primary *//* AI-generated */
+  --warning-600: #ac6c0d;
+  --warning-700: #875310;
+  --warning-800: #6b4212;
+  --warning-900: #523412;
+  --warning: #d18a12;
+  /* info */
+  --info-50: #e8f8fc;
+  --info-100: #c7eef7;
+  --info-200: #97def0;
+  --info-300: #5fc8e6;
+  --info-400: #33aed6;
+  --info-500: #1792bd; /* @primary *//* AI-generated */
+  --info-600: #12749a;
+  --info-700: #135d7c;
+  --info-800: #144c64;
+  --info-900: #123d51;
+  --info: #1792bd;
+  /* text */
+  --text-primary: #1f2733; /* @primary *//* AI-generated */
+  --text-secondary: #4d5b6e;
+  --text-tertiary: #73819a;
+  --text-on-primary: #ffffff;
+  --text-on-glass: #223042;
+  --foreground: var(--text-primary);
+  --muted-foreground: var(--text-secondary);
+  /* surface */
+  --surface-page: #e7eef6; /* @primary *//* AI-generated */
+  --surface-panel: #f4f8fc;
+  --surface-sidebar: #eef4fa;
+  --surface-popover: #fbfdff;
+  --surface-control: #ffffff;
+  --surface-sunken: #dfe8f2;
+  --background: var(--surface-page);
+  --card: var(--surface-panel);
+  --popover: var(--surface-popover);
+  --sidebar: var(--surface-sidebar);
+  --border: rgba(58,88,130,0.12);
+  /* glass */
+  --glass-window-fill: rgba(255,255,255,0.60);
+  --glass-sidebar-fill: rgba(255,255,255,0.55);
+  --glass-panel-fill: rgba(255,255,255,0.62); /* @primary *//* AI-generated */
+  --glass-popover-fill: rgba(255,255,255,0.70);
+  --glass-control-fill: rgba(255,255,255,0.66);
+  --glass-border: rgba(255,255,255,0.65);
+  --glass-highlight: rgba(255,255,255,0.75);
+  --glass-shadow: 0 20px 50px -14px rgba(37,99,235,0.18);
+  --glass-noise: rgba(120,150,200,0.03);
+  --glass-blur-thin: 20px;
+  --glass-blur-base: 32px;
+  --glass-blur-deep: 48px;
+  --glass-saturate: 180%;
+  --glass-brightness: 106%;
+  /* port */
+  --color-primary: var(--primary); /* @primary */
+  --color-accent: var(--accent);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-surface: var(--card);
+  --color-card: var(--card);
+  --color-popover: var(--popover);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  /* typography */
+  --font-sans: "Inter", -apple-system, "SF Pro Text", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-display: var(--font-sans); --font-heading: var(--font-sans); --font-body: var(--font-sans);
+  --font-size-display: 40px; --font-weight-display: 700; --line-height-display: 1.1;
+  --font-size-h1: 30px; --font-weight-h1: 700; --line-height-h1: 1.2;
+  --font-size-h2: 24px; --font-weight-h2: 600; --line-height-h2: 1.25;
+  --font-size-h3: 19px; --font-weight-h3: 600; --line-height-h3: 1.3;
+  --font-size-h4: 16px; --font-weight-h4: 600; --line-height-h4: 1.4;
+  --font-size-body: 15px; --font-weight-body: 400; --line-height-body: 1.6;
+  --font-size-lead: 17px; --font-weight-lead: 400; --line-height-lead: 1.6;
+  --font-size-caption: 12px; --font-weight-caption: 500; --line-height-caption: 1.5;
+  --font-size-mono: 13px; --font-weight-mono: 400; --line-height-mono: 1.6;
+  --type-display: var(--font-size-display); --type-h1: var(--font-size-h1);
+  --type-h2: var(--font-size-h2); --type-body: var(--font-size-body);
+  --type-caption: var(--font-size-caption);
+  /* spacing */
+  --space-1: 4px; --space-2: 8px;
+  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px;
+  --space-7: 48px; --space-8: 64px;
+  /* sizing */
+  --size-traffic-light: 12px; --size-icon-sm: 16px;
+  --size-icon-md: 20px; --size-icon-lg: 24px;
+  --size-button-sm: 30px; --size-button-md: 36px;
+  --size-input: 36px; --size-button-lg: 44px;
+  /* radius */
+  --radius-control: 10px; --radius-sm: var(--radius-control);
+  --radius-panel-sm: 12px; --radius-md: var(--radius-panel-sm);
+  --radius-panel: 18px; --radius-lg: var(--radius-panel);
+  --radius-window: 28px; --radius-xl: var(--radius-window);
+  --radius-pill: 9999px; --radius-full: var(--radius-pill);
+  /* shadows */
+  --shadow-1: 0 1px 2px rgba(30,60,110,0.08); /* Control */
+  --shadow-2: 0 4px 12px -4px rgba(37,99,235,0.12); /* Card */
+  --shadow-3: 0 12px 32px -10px rgba(37,99,235,0.18); /* Popover */
+  --shadow-4: 0 24px 60px -16px rgba(30,70,140,0.28); /* Window */
+  --shadow-5: inset 0 1px 0 rgba(255,255,255,0.75), 0 18px 50px -12px rgba(37,99,235,0.22); /* Glass pane */
+  /* motion */
+  --duration-fast: 140ms; --duration-base: 220ms; --duration-slow: 360ms;
+  --ease-standard: cubic-bezier(0.32,0.72,0,1); --ease-emphasized: cubic-bezier(0.2,0.9,0.3,1);
+  /* mac 窗口灯点 / 玻璃遮罩 / 浅色控件 / 深色媒体面（主题无关常量） */
+  --mac-close:#ff5f57;--mac-min:#febc2e;--mac-zoom:#28c840;--mac-inactive:#7d7d7d;
+  --glass-scrim:rgba(0,0,0,0.25);
+  --seg-thumb-light:#ffffff;
+  --seg-thumb-light-shadow:0 1px 2px rgba(30,60,110,0.10),0 6px 16px -8px rgba(30,60,110,0.22);
+  --media-deep:#05060a;
+  --media-deep-glow:color-mix(in srgb,var(--primary) 30%,#05060a);
+  --media-fg:rgba(255,255,255,0.86);
+  --media-chip-fg:rgba(255,255,255,0.92);
+  --media-chip-bg:rgba(0,0,0,0.42);
+  --media-bar:rgba(255,255,255,0.22);
+  --media-play-fg:#0a0d14;
+  --media-play-bg:rgba(247,245,240,0.96);
+  --media-play-shadow:0 12px 30px -8px color-mix(in srgb,#05060a 65%,transparent),inset 0 1px 0 rgba(255,255,255,0.9);
+  /* 环境光晕与学科强调色 — 浅色（雾蓝）默认 */
+  --ambient-1:#8ab0ff;--ambient-2:#6fd6f2;--ambient-3:#b69bff;--ambient-4:#8fe0d2;
+  --subj-prob:#6750a4;--subj-phy:#1286c4;--subj-chem:#20894f;--subj-hist:#d54458;
+  --subj-prob-soft:rgba(103,80,164,.14);--subj-phy-soft:rgba(20,140,200,.13);
+  --subj-chem-soft:rgba(32,137,79,.13);--subj-hist-soft:rgba(213,68,88,.13);
+  /* spec-foundations 三主题环境光矩阵展示常量（值分别取自 .dark / :root / [data-tint=cream]） */
+  --spec-ambient-carbon-1:#7c6cf0;--spec-ambient-carbon-2:#3f83f0;--spec-ambient-carbon-3:#22c7d6;--spec-ambient-carbon-4:#b06cf0;
+  --spec-ambient-fog-1:#8ab0ff;--spec-ambient-fog-2:#6fd6f2;--spec-ambient-fog-3:#b69bff;--spec-ambient-fog-4:#8fe0d2;
+  --spec-ambient-cream-1:#ffb272;--spec-ambient-cream-2:#ffd470;--spec-ambient-cream-3:#f69cb8;--spec-ambient-cream-4:#c9a7f5;
+}
+.dark {
+  --primary: #6aa6ff;
+  --primary-foreground: #0e1828;
+  --ring: rgba(106,166,255,0.45);
+  --link: #8fbaff;
+  --accent: #e27d52;
+  --accent-foreground: #2a140b;
+  --muted: rgba(255,255,255,0.08);
+  --secondary: rgba(255,255,255,0.10);
+  --success: #4fb471;
+  --warning: #efbb4d;
+  --info: #5fc8e6;
+  --text-primary: #f2ede6;
+  --text-secondary: #b3a99b;
+  --text-tertiary: #8a8175;
+  --text-on-glass: #f5f0e8;
+  --surface-page: #2b2926;
+  --surface-panel: rgba(255,255,255,0.10);
+  --surface-sidebar: rgba(255,255,255,0.06);
+  --surface-popover: rgba(255,255,255,0.14);
+  --surface-control: rgba(255,255,255,0.12);
+  --surface-sunken: #1e1c1a;
+  --border: rgba(255,255,255,0.08);
+  --glass-window-fill: rgba(255,255,255,0.06);
+  --glass-sidebar-fill: rgba(255,255,255,0.08);
+  --glass-panel-fill: rgba(255,255,255,0.10);
+  --glass-popover-fill: rgba(255,255,255,0.18);
+  --glass-control-fill: rgba(255,255,255,0.14);
+  --glass-border: rgba(255,255,255,0.08);
+  --glass-highlight: rgba(255,255,255,0.14);
+  --glass-shadow: 0 24px 60px -16px rgba(0,0,0,0.55);
+  --glass-noise: rgba(255,255,255,0.025);
+  /* 环境光晕与学科强调色 — 深炭 */
+  --ambient-1:#7c6cf0;--ambient-2:#3f83f0;--ambient-3:#22c7d6;--ambient-4:#b06cf0;
+  --subj-prob:#9a8cff;--subj-phy:#58b8ff;--subj-chem:#43d6a0;--subj-hist:#ff7d8a;
+  --subj-prob-soft:rgba(124,108,240,.18);--subj-phy-soft:rgba(63,131,240,.18);
+  --subj-chem-soft:rgba(46,190,140,.18);--subj-hist-soft:rgba(240,90,110,.18);
+  /* spec-foundations 三主题环境光矩阵展示常量（两套块取值相同，保证深炭渲染下矩阵完整可读） */
+  --spec-ambient-carbon-1:#7c6cf0;--spec-ambient-carbon-2:#3f83f0;--spec-ambient-carbon-3:#22c7d6;--spec-ambient-carbon-4:#b06cf0;
+  --spec-ambient-fog-1:#8ab0ff;--spec-ambient-fog-2:#6fd6f2;--spec-ambient-fog-3:#b69bff;--spec-ambient-fog-4:#8fe0d2;
+  --spec-ambient-cream-1:#ffb272;--spec-ambient-cream-2:#ffd470;--spec-ambient-cream-3:#f69cb8;--spec-ambient-cream-4:#c9a7f5;
+}
+[data-tint="cream"] {
+  --accent: #c0431f;
+  --text-primary: #47361f;
+  --text-secondary: #7d6748;
+  --text-tertiary: #a08a68;
+  --text-on-glass: #47361f;
+  --surface-page: #f7f1e3;
+  --surface-panel: #fbf6e9;
+  --surface-sidebar: #f1e8d3;
+  --surface-popover: #fffdf5;
+  --surface-control: #fffdf8;
+  --surface-sunken: #ece0c8;
+  --border: rgba(120,90,40,0.14);
+  --glass-window-fill: rgba(255,252,243,0.60);
+  --glass-sidebar-fill: rgba(255,252,243,0.55);
+  --glass-panel-fill: rgba(255,252,243,0.64);
+  --glass-popover-fill: rgba(255,252,243,0.72);
+  --glass-control-fill: rgba(255,252,243,0.68);
+  --glass-border: rgba(120,90,40,0.12);
+  --glass-highlight: rgba(255,255,255,0.70);
+  --glass-shadow: 0 20px 50px -14px rgba(140,95,30,0.18);
+  --glass-noise: rgba(120,90,40,0.03);
+  /* 环境光晕与学科强调色 — 奶油 */
+  --ambient-1:#ffb272;--ambient-2:#ffd470;--ambient-3:#f69cb8;--ambient-4:#c9a7f5;
+  --subj-prob:#8a4a2a;--subj-phy:#2f7d92;--subj-chem:#3f8a55;--subj-hist:#cf4d5e;
+  --subj-prob-soft:rgba(138,74,42,.14);--subj-phy-soft:rgba(47,125,146,.13);
+  --subj-chem-soft:rgba(63,138,85,.13);--subj-hist-soft:rgba(207,77,94,.13);
+}
+
+    </style>
+    <style id="component-vars">
+/* ═══════════════════════════════════════════════════════════════
+   components.css — Design System Component Definitions
+   Auto-extracted from preview/component-*.html
+   DO NOT EDIT MANUALLY — regenerate via extract-components-css.mjs
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Button ────────────────────────────────────────────────── */
+/* @anatomy
+   <span class="label">变体</span> <button class="btn btn-primary" data-evidence-sample="primary-dark">发送</button> <button class="btn btn-glass" data-evidence-sample="glass-md">深度思考</button> <button class="btn btn-ghost" data-evidence-sample="ghost">取消</button> <button class="btn btn-danger" data-evidence-sample="danger">新对话</button>
+*/
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);height:var(--size-button-md);padding:0 var(--space-5);border:1px solid transparent;border-radius:var(--radius-pill);font-family:var(--font-sans);font-size:var(--font-size-body);font-weight:600;line-height:1;white-space:nowrap;cursor:pointer;flex-shrink:0;transition:background var(--duration-fast) var(--ease-standard),border-color var(--duration-fast),box-shadow var(--duration-fast),filter var(--duration-fast),transform var(--duration-fast);}
+.btn:focus-visible{outline:2px solid var(--color-ring);outline-offset:2px;}
+.btn:active{transform:scale(.97);}
+.btn:disabled{opacity:.4;cursor:default;pointer-events:none;}
+.btn-primary{background:var(--color-foreground);color:var(--color-background);box-shadow:var(--shadow-3);}
+.btn-primary:hover{filter:brightness(1.08);}
+.btn-glass{background:var(--glass-control-fill);color:var(--text-on-glass);border-color:var(--glass-border);box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-1);backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness));-webkit-backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness));}
+.btn-glass:hover{background:var(--glass-popover-fill);}
+.btn-ghost{color:var(--text-on-glass);background:transparent;}
+.btn-ghost:hover{background:var(--glass-highlight);}
+.btn-danger{background:var(--color-accent);color:var(--accent-foreground);box-shadow:var(--shadow-1);}
+.btn-danger:hover{filter:brightness(1.08);}
+.btn-sm{height:var(--size-button-sm);padding:0 var(--space-4);font-size:var(--font-size-caption);}
+.btn-lg{height:var(--size-button-lg);padding:0 var(--space-6);font-size:var(--font-size-lead);}
+.btn-icon{width:40px;height:40px;padding:0;}
+.btn-icon svg{width:var(--size-icon-md);height:var(--size-icon-md);display:block;}
+
+/* ── Glass Panel ───────────────────────────────────────────── */
+/* @anatomy
+   <span class="label">elevation</span> <section class="glass-window" data-evidence-sample="window"> <div class="titlebar"><span class="traffic"><i></i><i></i><i></i></span><span class="t">智能讲解</span>
+*/
+.glass-window{position:relative;flex:1;min-width:0;isolation:isolate;border-radius:var(--radius-window);border:1px solid var(--glass-border);box-shadow:var(--shadow-5);overflow:hidden}
+.glass-window::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--glass-window-fill);-webkit-backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate));backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate))}
+.glass-window::after{content:"";position:absolute;inset:0 0 auto;height:55%;border-radius:inherit;background:linear-gradient(180deg,var(--glass-highlight),transparent 65%);pointer-events:none}
+.titlebar{display:flex;align-items:center;gap:var(--space-3);height:44px;padding:0 var(--space-5);border-bottom:1px solid var(--glass-border)}
+.traffic{display:flex;gap:8px;flex-shrink:0}
+.traffic i{width:var(--size-traffic-light);height:var(--size-traffic-light);border-radius:var(--radius-full);flex-shrink:0}
+.traffic i:nth-child(1){background:var(--accent)}
+.traffic i:nth-child(2){background:var(--warning)}
+.traffic i:nth-child(3){background:var(--success)}
+.titlebar .t{font-size:var(--font-size-body);font-weight:600;color:var(--text-on-glass)}
+.window-body{position:relative;height:214px}
+.glass-card{position:absolute;top:16px;left:16px;right:16px;bottom:16px;border-radius:var(--radius-panel);background:var(--glass-panel-fill);border:1px solid var(--glass-border);box-shadow:var(--shadow-3);padding:var(--space-4)}
+.glass-card h4{margin:6px 0 0;font-size:var(--font-size-h4);font-weight:var(--font-weight-h4);color:var(--text-on-glass)}
+.cap{display:block;font-size:var(--font-size-caption);font-weight:var(--font-weight-caption);color:var(--text-tertiary);white-space:nowrap}
+.glass-popover{position:absolute;right:20px;bottom:20px;width:172px;border-radius:14px;background:var(--glass-popover-fill);border:1px solid var(--glass-border);box-shadow:var(--shadow-4);padding:10px var(--space-3)}
+.mini-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.mini-dot{width:8px;height:8px;border-radius:var(--radius-full);flex-shrink:0;background:var(--primary)}
+.mini-row:nth-of-type(3) .mini-dot{background:var(--info)}
+.mini-bar{height:8px;border-radius:var(--radius-sm);background:var(--glass-control-fill);flex:1;min-width:0}
+.mini-bar.s{flex:0 0 44px}
+.window-foot{display:flex;align-items:center;height:34px;padding:0 var(--space-5);border-top:1px solid var(--glass-border)}
+.glass-sidebar{flex:1;min-width:0;border-radius:var(--radius-panel);background:var(--glass-sidebar-fill);border:1px solid var(--glass-border);box-shadow:var(--shadow-2);overflow:hidden}
+.nav{display:flex;align-items:center;height:42px;padding:0 var(--space-5);border-top:1px solid var(--glass-border);font-size:var(--font-size-body);color:var(--text-secondary);text-decoration:none;transition:background var(--duration-fast) var(--ease-standard),color var(--duration-fast)}
+.nav:first-child{border-top:0}
+.nav:hover{background:var(--muted)}
+.nav.active{background:color-mix(in srgb,var(--primary) 18%,transparent);color:var(--primary);font-weight:600}
+
+/* ── Input Field ───────────────────────────────────────────── */
+/* @anatomy
+   <div class="glass-in search-pill" data-evidence-sample="search-pill"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <input type="text" placeholder="搜索课程、笔记、对话" aria-label="搜索课程、笔记、对话"> <span class="kbd">⌘K</span>
+*/
+/* Component definitions — extracted to components.css by deterministic script */
+.glass-in { border:1px solid var(--glass-border); background:var(--glass-control-fill); -webkit-backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate)); box-shadow:var(--shadow-1); }
+.search-pill { display:flex; align-items:center; gap:var(--space-2); flex:1 1 260px; min-width:240px; height:40px; padding:0 var(--space-4); border-radius:var(--radius-pill); }
+.search-pill > svg { flex-shrink:0; color:var(--color-muted-foreground); }
+.search-pill input { flex:1; min-width:0; border:none; outline:none; background:transparent; color:var(--foreground); font-family:var(--font-sans); font-size:var(--font-size-body); caret-color:var(--primary); }
+.search-pill input::placeholder { color:var(--color-muted-foreground); }
+.kbd { flex-shrink:0; padding:var(--space-1) var(--space-2); border:1px solid var(--glass-border); border-radius:6px; background:var(--glass-highlight); color:var(--color-muted-foreground); font-family:var(--font-mono); font-size:var(--font-size-mono); line-height:1; white-space:nowrap; }
+.text-field { display:flex; align-items:center; gap:var(--space-2); flex-shrink:0; width:280px; height:40px; padding:0 var(--space-3); border-radius:var(--radius-control); transition:border-color .15s,box-shadow .15s,background .15s; }
+.text-field.is-focused { border-color:color-mix(in srgb,var(--primary) 45%,transparent); background:var(--glass-popover-fill); box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 22%,transparent); }
+.grow { flex:1; min-width:0; }
+.caret { flex-shrink:0; width:2px; height:18px; border-radius:1px; background:var(--primary); animation:caret-blink 1.1s steps(1) infinite; }
+@keyframes caret-blink { 50% { opacity:0; } }
+.icon-btn { flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; padding:0; border:none; border-radius:var(--radius-pill); background:transparent; color:var(--color-muted-foreground); cursor:pointer; transition:background .15s; }
+.icon-btn:hover { background:var(--secondary); }
+.composer { width:100%; display:flex; flex-direction:column; justify-content:space-between; gap:var(--space-4); min-height:120px; padding:var(--space-4); border:1px solid var(--glass-border); border-radius:20px; background:var(--glass-panel-fill); -webkit-backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-2); }
+.composer .ph { color:var(--color-muted-foreground); font-size:var(--font-size-body); }
+.toolbar { display:flex; align-items:center; gap:var(--space-2); }
+.spacer { flex:1; min-width:0; }
+.ghost-chip { display:inline-flex; align-items:center; justify-content:center; gap:var(--space-1); height:28px; min-width:28px; padding:0 var(--space-3); border:1px solid var(--glass-border); border-radius:var(--radius-pill); background:transparent; color:var(--color-muted-foreground); font-family:var(--font-sans); font-size:var(--font-size-caption); white-space:nowrap; cursor:pointer; transition:background .15s; }
+.ghost-chip.icon { width:28px; padding:0; }
+.ghost-chip:hover { background:var(--secondary); }
+.send { flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border:none; border-radius:var(--radius-pill); background:var(--primary); color:var(--primary-foreground); box-shadow:var(--shadow-1); cursor:pointer; transition:filter .15s; }
+.send:hover { filter:brightness(1.08); }
+
+/* ── Mac Window ────────────────────────────────────────────── */
+/* @anatomy
+   <div class="win win-key"> <div class="titlebar"> <div class="lights"><span class="dot dot-close"></span><span class="dot dot-min"></span><span class="dot dot-zoom"></span>
+*/
+/* Component definitions — extracted to components.css by deterministic script */
+  .win { border-radius:var(--radius-window); background:var(--glass-window-fill); -webkit-backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness)); backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness)); border:1px solid var(--glass-border); box-shadow:inset 0 1px 0 var(--glass-highlight), var(--shadow-5); overflow:hidden; }
+  .win-key { width:560px; max-width:100%; }
+  .titlebar { position:relative; height:44px; display:flex; align-items:center; justify-content:center; }
+  .lights { position:absolute; left:var(--space-4); display:flex; gap:var(--space-2); }
+  .dot { width:var(--size-traffic-light); height:var(--size-traffic-light); border-radius:var(--radius-pill); flex-shrink:0; }
+  .dot-close { background:var(--mac-close); } .dot-min { background:var(--mac-min); } .dot-zoom { background:var(--mac-zoom); }
+  .win-title { font-size:13px; font-weight:600; color:var(--text-on-glass); white-space:nowrap; }
+  .tb-actions { position:absolute; right:var(--space-3); display:flex; gap:var(--space-1); }
+  .tb-btn { width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-pill); color:var(--text-secondary); border:none; background:transparent; cursor:pointer; flex-shrink:0; transition:background var(--duration-fast) var(--ease-standard); }
+  .tb-btn:hover { background:var(--glass-control-fill); color:var(--text-on-glass); }
+  .hairline { height:1px; background:var(--glass-border); }
+  .win-body { display:flex; min-height:218px; }
+  .pane { padding:var(--space-4); display:flex; flex-direction:column; gap:var(--space-3); min-width:0; }
+  .pane-side { width:148px; border-right:1px solid var(--border); background:var(--glass-sidebar-fill); }
+  .pane-main { flex:1; }
+  .line { height:8px; border-radius:var(--radius-pill); background:var(--text-tertiary); opacity:.38; }
+  .line.w60 { width:60%; } .line.w80 { width:80%; } .line.w45 { width:45%; } .line.w90 { width:90%; } .line.w35 { width:35%; }
+  .win-inactive { width:280px; border-radius:var(--radius-panel); filter:saturate(.55) brightness(.9); box-shadow:inset 0 1px 0 var(--glass-highlight), var(--shadow-2); }
+  .win-inactive .dot { background:var(--mac-inactive); }
+  .win-inactive .win-title { color:var(--text-tertiary); font-weight:500; }
+  .win-inactive .win-body { min-height:150px; }
+  .scrim { position:relative; width:300px; height:250px; border-radius:var(--radius-lg); border:1px solid var(--border); background:var(--glass-scrim); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; }
+  .sheet { width:262px; border-radius:var(--radius-md) var(--radius-md) var(--radius-window) var(--radius-window); background:var(--glass-panel-fill); -webkit-backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); border:1px solid var(--glass-border); box-shadow:inset 0 1px 0 var(--glass-highlight), var(--shadow-3); padding:var(--space-5); }
+  .sheet-head { font-size:var(--font-size-h4); font-weight:600; color:var(--text-on-glass); margin:0 0 var(--space-2); }
+  .sheet-text { font-size:var(--font-size-caption); line-height:var(--line-height-caption); color:var(--text-tertiary); margin:0 0 var(--space-1); }
+  .sheet-actions { display:flex; justify-content:flex-end; gap:var(--space-2); margin-top:var(--space-4); }
+  .btn { display:inline-flex; align-items:center; justify-content:center; height:var(--size-button-sm); min-width:var(--size-button-sm); padding:0 var(--space-4); border-radius:var(--radius-control); font-size:var(--font-size-caption); font-weight:600; white-space:nowrap; text-decoration:none; border:1px solid transparent; transition:background var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard); }
+  .btn-glass { background:var(--glass-control-fill); color:var(--text-on-glass); border-color:var(--glass-border); }
+  .btn-glass:hover { background:var(--glass-popover-fill); }
+  .btn-primary { background:var(--primary); color:var(--primary-foreground); }
+  .btn-primary:hover { filter:brightness(1.08); }
+
+/* ── Menu Bar ──────────────────────────────────────────────── */
+/* @anatomy
+   <div class="blob blob-aqua"></div>
+*/
+/* Component definitions — extracted to components.css by deterministic script */
+  .menu-scene { position:relative; height:232px; margin:0 -12px; }
+  .menubar { height:28px; display:flex; align-items:center; gap:2px; padding:0 12px; font-size:13px; background:var(--glass-sidebar-fill); backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); border-bottom:1px solid var(--glass-border); }
+  .brand { font-weight:700; padding:0 8px; white-space:nowrap; }
+  .mtitle { padding:3px 10px; border-radius:6px; color:var(--text-primary); text-decoration:none; white-space:nowrap; transition:background .15s; }
+  .mtitle:hover { background:var(--glass-control-fill); }
+  .mtitle.is-open { background:var(--glass-control-fill); box-shadow:inset 0 0 0 1px var(--glass-border); }
+  .status { margin-left:auto; display:flex; align-items:center; gap:14px; color:var(--text-secondary); }
+  .status svg { width:15px; height:15px; display:block; }
+  .nsmenu { position:absolute; top:32px; left:140px; z-index:3; width:220px; padding:6px; border-radius:var(--radius-control); background:var(--glass-popover-fill); backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)); border:1px solid var(--glass-border); box-shadow:var(--shadow-4); }
+  .ns-head { padding:4px 10px 6px; font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--text-tertiary); }
+  .mi { display:flex; align-items:center; gap:8px; height:28px; padding:0 10px; border-radius:6px; font-size:13px; color:var(--text-primary); text-decoration:none; white-space:nowrap; transition:background .15s; }
+  .mi svg { width:16px; height:16px; flex-shrink:0; color:var(--text-secondary); }
+  .mi .kbd { margin-left:auto; font-size:12px; color:var(--text-tertiary); }
+  .mi .caret { margin-left:auto; display:flex; color:var(--text-tertiary); }
+  .mi .caret svg { width:14px; height:14px; color:var(--text-tertiary); }
+  .mi .check { margin-left:auto; display:flex; }
+  .mi .check svg { width:15px; height:15px; color:var(--primary); }
+  .mi:hover, .mi.is-hover { background:color-mix(in srgb,var(--color-primary) 18%,transparent); }
+  .mi.is-disabled { opacity:.35; pointer-events:none; }
+  .sep { height:1px; margin:6px; background:var(--border); }
+  .popover { width:300px; margin-left:40px; padding:12px; border-radius:var(--radius-panel); background:var(--glass-popover-fill); backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)); border:1px solid var(--glass-border); box-shadow:var(--shadow-3); }
+  .pop-title { padding:2px 4px 10px; font-size:13px; font-weight:600; }
+  .searchbox { display:flex; align-items:center; gap:8px; height:var(--size-button-sm); padding:0 10px; margin-bottom:6px; border-radius:var(--radius-control); background:var(--glass-control-fill); border:1px solid var(--glass-border); font-size:13px; }
+  .searchbox svg { width:14px; height:14px; flex-shrink:0; color:var(--text-tertiary); }
+  .searchbox .ph { color:var(--text-tertiary); white-space:nowrap; }
+  .searchbox .kbd { margin-left:auto; font-size:12px; color:var(--text-tertiary); }
+  .pick { display:flex; align-items:center; gap:10px; height:34px; padding:0 10px; border-radius:var(--radius-control); font-size:13px; color:var(--text-primary); text-decoration:none; white-space:nowrap; transition:background .15s; }
+  .pick .dot { width:8px; height:8px; flex-shrink:0; border-radius:var(--radius-full); background:var(--success); box-shadow:0 0 0 3px color-mix(in srgb,var(--success) 22%,transparent); }
+  .pick .check { margin-left:auto; display:flex; }
+  .pick .check svg { width:15px; height:15px; color:var(--primary); }
+  .pick svg { width:15px; height:15px; flex-shrink:0; }
+  .pick:hover { background:color-mix(in srgb,var(--color-primary) 14%,transparent); }
+  .pick.is-muted { color:var(--text-tertiary); }
+  .pick.is-muted svg { color:var(--text-tertiary); }
+
+/* ── Tab Bar ───────────────────────────────────────────────── */
+/* @anatomy
+   <span class="label">浏览器标签</span> <div class="b-win"> <div class="b-strip"> <a class="b-tab on" href="#"> <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.2"/><path d="M1.8 8h12.4M8 1.8c1.8 1.9 1.8 10.5 0 12.4M8 1.8c-1.8 1.9-1.8 10.5 0 12.4"/></svg> <span>新标签页</span> <span class="b-x"><svg width="10" height="10" viewB...
+*/
+/* Component definitions — extracted to components.css by deterministic script */
+  .b-win { flex:1; min-width:0; border:1px solid var(--glass-border); border-radius:var(--radius-md); overflow:hidden; background:var(--glass-window-fill); -webkit-backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)); box-shadow:var(--shadow-5); }
+  .b-strip { display:flex; align-items:flex-end; gap:2px; padding:6px 10px 0; border-bottom:1px solid var(--glass-border); }
+  .b-tab { display:inline-flex; align-items:center; gap:8px; min-width:100px; height:34px; padding:0 14px; border:1px solid transparent; border-radius:10px 10px 0 0; font-size:13px; font-weight:500; color:var(--text-tertiary); white-space:nowrap; transition:background .15s,color .15s,border-color .15s; }
+  .b-tab span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .b-tab svg { flex-shrink:0; }
+  .b-tab:not(.on):hover { background:var(--glass-control-fill); color:var(--text-secondary); }
+  .b-tab.on { height:36px; margin-bottom:-1px; color:var(--text-primary); font-weight:600; background:var(--glass-panel-fill); border-color:var(--glass-border); border-bottom-color:var(--glass-panel-fill); -webkit-backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); }
+  .b-x { display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; margin-left:2px; border-radius:var(--radius-pill); color:var(--text-tertiary); opacity:0; transition:opacity .15s,background .15s,color .15s; }
+  .b-tab:hover .b-x, .b-tab.on .b-x { opacity:1; }
+  .b-tab.on .b-x { color:var(--text-secondary); }
+  .b-x:hover { background:var(--muted); color:var(--text-primary); }
+  .b-add { flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; margin:0 2px 3px 6px; border-radius:var(--radius-control); color:var(--text-tertiary); transition:background .15s,color .15s; }
+  .b-add:hover { background:var(--glass-control-fill); color:var(--text-primary); }
+  .b-pane { padding:16px; background:var(--glass-panel-fill); -webkit-backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); }
+  .b-ln { height:8px; border-radius:var(--radius-pill); background:var(--muted); margin-bottom:10px; }
+  .b-ln:last-child { margin-bottom:0; } .b-ln.w2 { width:72%; } .b-ln.w3 { width:46%; }
+  .seg { position:relative; display:flex; flex-shrink:0; width:200px; height:36px; padding:3px; border:1px solid var(--glass-border); border-radius:var(--radius-pill); background:var(--glass-control-fill); -webkit-backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate)); box-shadow:var(--shadow-1); }
+  .seg-thumb { position:absolute; left:3px; top:3px; bottom:3px; width:calc(50% - 3px); border-radius:var(--radius-pill); background:var(--surface-control); box-shadow:var(--shadow-2); }
+  .seg-i { position:relative; z-index:1; flex:1; display:inline-flex; align-items:center; justify-content:center; height:100%; border-radius:var(--radius-pill); font-size:13px; font-weight:600; color:var(--text-tertiary); transition:background .15s,color .15s; }
+  .seg-i.on { color:var(--primary-foreground); }
+  .seg-i:not(.on):hover { background:var(--muted); color:var(--text-secondary); }
+  .side { flex-shrink:0; display:flex; flex-direction:column; gap:4px; width:208px; padding:6px; border:1px solid var(--glass-border); border-radius:var(--radius-md); background:var(--glass-sidebar-fill); -webkit-backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); }
+  .s-tab { position:relative; display:flex; align-items:center; gap:10px; height:36px; padding:0 12px 0 14px; border-radius:var(--radius-control); font-size:13px; font-weight:500; color:var(--text-tertiary); white-space:nowrap; transition:background .15s,color .15s; }
+  .s-tab svg { flex-shrink:0; }
+  .s-tab:not(.on):hover { background:var(--glass-control-fill); color:var(--text-secondary); }
+  .s-tab.on { color:var(--text-primary); font-weight:600; background:color-mix(in srgb,var(--primary) 22%,transparent); }
+  .s-tab.on svg { color:var(--primary); }
+  .s-tab.on::before { content:""; position:absolute; left:4px; top:10px; bottom:10px; width:2px; border-radius:var(--radius-pill); background:var(--primary); }
+  .s-badge { margin-left:auto; min-width:18px; height:18px; padding:0 6px; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-pill); background:var(--primary); color:var(--primary-foreground); font-size:11px; font-weight:600; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-popover: var(--popover);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-border: var(--border);
+    --color-ring: var(--ring);
+    --color-sidebar: var(--sidebar);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
+    --radius-xl: var(--radius-xl);
+  }
+  @layer base {
+    body { background: var(--color-background); color: var(--color-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-secondary { background-color: var(--secondary); }
+      .text-secondary { color: var(--secondary); }
+      .border-secondary { border-color: var(--secondary); }
+      .ring-secondary { --tw-ring-color: var(--secondary); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-accent { background-color: var(--accent); }
+      .text-accent { color: var(--accent); }
+      .border-accent { border-color: var(--accent); }
+      .ring-accent { --tw-ring-color: var(--accent); }
+      .bg-accent-foreground { background-color: var(--accent-foreground); }
+      .text-accent-foreground { color: var(--accent-foreground); }
+      .border-accent-foreground { border-color: var(--accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--accent-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+      .bg-sidebar { background-color: var(--sidebar); }
+      .text-sidebar { color: var(--sidebar); }
+      .border-sidebar { border-color: var(--sidebar); }
+      .ring-sidebar { --tw-ring-color: var(--sidebar); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="h-screen overflow-hidden font-sans antialiased" data-viewport-mode="app-shell">
+<style id="page-styles">
+/* ════════════════════════════════════════════════════════════
+   Agent 工作区 · 深炭 — 页面级样式
+   模糊仅挂在三层：Mac 窗口 / Composer / 一个打开的模型菜单
+   ════════════════════════════════════════════════════════════ */
+/* 环境光晕与学科色令牌已上收至 <style id="theme-vars"> */
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;min-height:100vh;overflow:hidden;
+  background:var(--surface-page);color:var(--text-primary);
+  font-family:var(--font-sans);-webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;background:none;border:0;padding:0;cursor:pointer;color:inherit;
+  transition:background var(--duration-fast) var(--ease-standard),
+             color var(--duration-fast) var(--ease-standard),
+             border-color var(--duration-fast) var(--ease-standard),
+             box-shadow var(--duration-fast) var(--ease-standard),
+             transform var(--duration-fast) var(--ease-standard),
+             filter var(--duration-fast) var(--ease-standard);}
+button:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+button:active{transform:scale(.97)}
+input{font-family:inherit}
+svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fill-ic{fill:currentColor;stroke:none}
+.sw-thick{stroke-width:3.5}
+::-webkit-scrollbar{width:0;height:0}
+*{scrollbar-width:none}
+
+/* ── 环境光晕 ─────────────────────────────────────────────── */
+.ambient{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(90px)}
+.blob{opacity:.6}
+.dark .blob{opacity:.5}
+.b1{width:52vw;height:52vw;left:-13vw;top:-17vw;background:radial-gradient(circle at 50% 50%,var(--ambient-1),transparent 66%)}
+.b2{width:46vw;height:46vw;right:-11vw;top:-13vw;background:radial-gradient(circle at 50% 50%,var(--ambient-2),transparent 66%)}
+.b3{width:50vw;height:50vw;left:6vw;bottom:-22vw;background:radial-gradient(circle at 50% 50%,var(--ambient-3),transparent 66%)}
+.b4{width:30vw;height:30vw;right:-7vw;bottom:-11vw;background:radial-gradient(circle at 50% 50%,var(--ambient-4),transparent 66%)}
+
+/* ── Mac 窗口（许可模糊层 ①：deep） ───────────────────────── */
+.mac-window{
+  position:relative;z-index:1;display:flex;flex-direction:column;
+  margin:10px;height:calc(100vh - 20px);
+  border-radius:var(--radius-window);
+  background:var(--glass-window-fill);
+  -webkit-backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate));
+  backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate));
+  border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--glass-shadow);
+  overflow:hidden;
+}
+
+/* ── 系统菜单栏（fill-only） ──────────────────────────────── */
+.mb{flex-shrink:0;height:28px;display:flex;align-items:center;gap:2px;padding:0 12px;
+  font-size:13px;background:var(--glass-sidebar-fill);border-bottom:1px solid var(--glass-border)}
+.mb .brand{display:inline-flex;align-items:center;gap:6px;font-weight:700;padding:0 8px;white-space:nowrap}
+.mb .brand svg{width:15px;height:15px}
+
+/* ── 窗口标题栏 ───────────────────────────────────────────── */
+.title-bar{position:relative;flex-shrink:0;height:44px;display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--glass-border)}
+.tb-lights{position:absolute;left:20px;display:flex;gap:8px}
+.dot{width:var(--size-traffic-light);height:var(--size-traffic-light);border-radius:var(--radius-pill);flex-shrink:0}
+.dot-close{background:var(--mac-close)}.dot-min{background:var(--mac-min)}.dot-zoom{background:var(--mac-zoom)}
+.tb-actions .tb-btn svg{width:15px;height:15px}
+
+/* ── 工具条 ───────────────────────────────────────────────── */
+.toolbar{flex-shrink:0;height:52px;display:flex;align-items:center;gap:12px;padding:0 16px;
+  border-bottom:1px solid var(--glass-border)}
+.mode-seg .seg-thumb{background:var(--text-on-glass)}
+.mode-seg .seg-i{font-weight:700}
+/* 浅色主题：分段控件回到白底深字的 macOS 原生观感 */
+html:not(.dark) .mode-seg .seg-thumb{
+  background:var(--seg-thumb-light);
+  box-shadow:var(--seg-thumb-light-shadow)}
+html:not(.dark) .mode-seg .seg-i.on{color:var(--text-primary)}
+.mode-seg a.seg-i{text-decoration:none}
+.mode-seg .seg-thumb{transition:transform .24s var(--ease-emphasized)}
+.mode-seg:has(.seg-i[data-goto]:hover) .seg-thumb{transform:translateX(100%)}
+.mode-seg:has(.seg-i[data-goto]:hover) .seg-i.on{color:var(--text-tertiary)}
+.mode-seg:has(.seg-i[data-goto]:hover) .seg-i[data-goto]{color:var(--text-primary)}
+.dark .mode-seg:has(.seg-i[data-goto]:hover) .seg-i[data-goto]{color:var(--primary-foreground)}
+.crumb{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);white-space:nowrap}
+.crumb svg{width:15px;height:15px;color:var(--text-tertiary)}
+.crumb .slash{color:var(--text-tertiary)}
+.tb-spacer{flex:1;min-width:0}
+.global-search{flex:0 0 auto;width:264px;min-width:0;height:36px}
+.global-search > svg{width:15px;height:15px}
+.add-btn{width:36px;height:36px;border-radius:var(--radius-pill);display:inline-flex;align-items:center;justify-content:center;
+  color:var(--primary);background:color-mix(in srgb,var(--primary) 18%,transparent)}
+.add-btn:hover{background:color-mix(in srgb,var(--primary) 28%,transparent)}
+.add-btn svg{width:18px;height:18px}
+.tg{width:34px;height:34px;border-radius:var(--radius-control);display:inline-flex;align-items:center;justify-content:center;
+  color:var(--text-secondary);border:1px solid transparent}
+.tg:hover{background:var(--glass-control-fill);color:var(--text-on-glass)}
+.tg svg{width:16px;height:16px}
+
+/* ── 三栏工作区 ───────────────────────────────────────────── */
+.workspace{flex:1;min-height:0;display:grid;grid-template-columns:264px minmax(0,1fr) 348px;gap:10px;padding:10px}
+/* 重置 head 组件预览类（.pane/.pane-side）的遗留声明，防止 148px 固定宽与 16px 内边距污染页面 */
+.pane{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden;width:auto;padding:0;gap:0;border:0;background:none}
+.pane-side{border-radius:20px;background:var(--glass-sidebar-fill);border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-1)}
+.pane-center{background:transparent;gap:10px}
+
+/* 左栏：对话 */
+.pane-head{flex-shrink:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 14px;
+  border-bottom:1px solid var(--glass-border)}
+.pane-head .t{font-size:13.5px;font-weight:700;letter-spacing:.01em}
+.head-btn{width:28px;height:28px;border-radius:var(--radius-pill);display:inline-flex;align-items:center;justify-content:center;color:var(--text-secondary)}
+.head-btn:hover{background:var(--glass-control-fill);color:var(--text-on-glass)}
+.head-btn svg{width:15px;height:15px}
+.conv-list{flex:1;min-height:0;overflow-y:auto;padding:8px;display:flex;flex-direction:column}
+.lrow{display:flex;align-items:center;gap:9px;width:100%;height:32px;padding:0 10px;border-radius:11px;
+  font-size:14px;font-weight:600;color:var(--text-primary);text-align:left;white-space:nowrap}
+.lrow svg{width:15px;height:15px;color:var(--text-secondary);flex-shrink:0}
+.lrow:hover{background:var(--glass-control-fill)}
+.grp{margin-top:10px}
+.grp + .grp{margin-top:2px}
+.grp-head{display:flex;align-items:center;gap:7px;width:100%;height:28px;padding:0 8px;border-radius:8px;
+  font-size:13px;font-weight:600;color:var(--text-primary);text-align:left;white-space:nowrap}
+.grp-head .tri{width:12px;height:12px;flex-shrink:0;color:var(--text-tertiary);transition:transform .18s var(--ease-standard)}
+.grp-head .gf{width:14px;height:14px;flex-shrink:0;color:var(--text-secondary)}
+.grp-head:hover{background:var(--glass-control-fill)}
+.live-diamond{margin-left:auto;width:7px;height:7px;border-radius:1.5px;transform:rotate(45deg);background:var(--success);flex-shrink:0}
+.empty-row{padding:4px 0 4px 30px;font-size:12.5px;color:var(--text-tertiary);white-space:nowrap}
+.pane-foot{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 8px;border-top:1px solid var(--glass-border)}
+.avatar{width:32px;height:32px;border-radius:var(--radius-pill);display:inline-flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--primary);flex-shrink:0;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--primary) 30%,transparent),color-mix(in srgb,var(--primary) 12%,transparent));
+  border:1px solid var(--glass-border);box-shadow:inset 0 1px 0 var(--glass-highlight)}
+.uname{font-size:13px;font-weight:600;color:var(--text-primary)}
+
+/* 中栏：对话 */
+.chat-head{flex-shrink:0;height:52px;display:flex;align-items:center;gap:10px;padding:0 16px;border-radius:18px;
+  background:var(--glass-panel-fill);border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-1)}
+.ai-ic{width:26px;height:26px;color:var(--primary);flex-shrink:0}
+.ai-t{font-size:15px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+.topic-pill{display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:var(--radius-pill);
+  font-family:var(--font-mono);font-size:11.5px;line-height:1;color:var(--subj-prob);
+  background:var(--glass-control-fill);border:1px solid var(--glass-border);white-space:nowrap}
+.head-actions{margin-left:auto;display:flex;align-items:center;gap:4px;flex-shrink:0}
+.hbtn{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 10px;border-radius:var(--radius-pill);
+  font-size:12.5px;font-weight:500;color:var(--text-secondary)}
+.hbtn svg{width:14px;height:14px}
+.hbtn:hover{background:var(--glass-control-fill);color:var(--text-on-glass)}
+.hbtn.new{color:var(--text-on-glass);background:var(--glass-control-fill);border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 var(--glass-highlight)}
+.hbtn.new:hover{background:var(--glass-popover-fill)}
+
+.chat-scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 16px}
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center}
+.empty-disc{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--primary);
+  background:radial-gradient(circle at 50% 32%,color-mix(in srgb,var(--primary) 34%,transparent),color-mix(in srgb,var(--primary) 6%,transparent) 72%);
+  border:1px solid color-mix(in srgb,var(--primary) 32%,transparent);
+  box-shadow:0 18px 42px -14px color-mix(in srgb,var(--primary) 48%,transparent),inset 0 1px 0 var(--glass-highlight)}
+.empty-disc svg{width:30px;height:30px}
+.empty h2{margin:16px 0 0;font-size:var(--font-size-h3);font-weight:700;letter-spacing:-.01em}
+.empty p{margin:10px 0 0;max-width:380px;font-size:13.5px;line-height:1.65;color:var(--text-secondary)}
+.learn-chip{margin-top:16px;display:inline-flex;align-items:center;height:28px;padding:0 14px;border-radius:var(--radius-pill);
+  font-size:12.5px;color:var(--text-secondary);background:var(--glass-control-fill);border:1px solid var(--glass-border)}
+.learn-chip b{margin-left:5px;font-weight:700;color:var(--text-primary)}
+
+.prompts{margin-top:14px;width:min(440px,92%);padding:13px;border-radius:16px;text-align:left;
+  background:color-mix(in srgb,var(--primary) 8%,transparent);
+  border:1px solid color-mix(in srgb,var(--primary) 38%,transparent);
+  box-shadow:inset 0 1px 0 var(--glass-highlight)}
+.prompts-title{display:flex;align-items:center;gap:7px;padding:0 3px;margin-bottom:9px;
+  font-size:12.5px;font-weight:700;color:var(--primary)}
+.prompts-title svg{width:15px;height:15px}
+.prompt{display:flex;align-items:center;gap:10px;width:100%;padding:7px 9px;border-radius:11px;text-align:left;
+  background:var(--glass-panel-fill);border:1px solid var(--glass-border)}
+.prompt + .prompt{margin-top:7px}
+.prompt:hover{transform:translateY(-1px);background:var(--glass-popover-fill);
+  border-color:color-mix(in srgb,var(--primary) 30%,transparent);box-shadow:var(--shadow-2)}
+.prompt .q{flex-shrink:0;width:22px;height:22px;border-radius:var(--radius-pill);display:inline-flex;align-items:center;justify-content:center;
+  color:var(--primary);background:color-mix(in srgb,var(--primary) 16%,transparent)}
+.prompt .q svg{width:13px;height:13px}
+.prompt .txt{font-size:13px;line-height:1.45;color:var(--text-primary)}
+
+/* Composer（许可模糊层 ②：base） */
+.composer-shell{position:relative;z-index:20;flex-shrink:0;margin:6px 14px 14px;padding:10px 12px;border-radius:22px;
+  background:var(--glass-panel-fill);
+  -webkit-backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate));
+  backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate));
+  border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-2);
+  overflow:visible}
+.composer-shell:focus-within{border-color:color-mix(in srgb,var(--primary) 42%,transparent);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),0 0 0 3px color-mix(in srgb,var(--primary) 22%,transparent),var(--shadow-2)}
+.comp-tools{display:flex;align-items:center;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:var(--radius-pill);
+  font-size:12px;font-weight:600;color:var(--text-secondary);border:1px solid transparent;white-space:nowrap}
+.chip svg{width:14px;height:14px}
+.chip:hover{background:var(--glass-control-fill);color:var(--text-on-glass)}
+.chip.on{color:var(--primary);background:color-mix(in srgb,var(--primary) 16%,transparent);
+  border-color:color-mix(in srgb,var(--primary) 30%,transparent)}
+.comp-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.ctx{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11.5px;color:var(--text-secondary)}
+.ctx .ring{width:17px;height:17px}
+.ring-fg{stroke:var(--primary)}
+.model-wrap{position:relative}
+.model-btn{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border-radius:var(--radius-pill);
+  font-size:12.5px;font-weight:600;color:var(--text-secondary);white-space:nowrap;
+  background:var(--glass-control-fill);border:1px solid var(--glass-border);box-shadow:inset 0 1px 0 var(--glass-highlight)}
+.model-btn svg{width:14px;height:14px}
+.model-btn:hover{color:var(--text-on-glass);background:var(--glass-popover-fill)}
+.model-btn.is-open{color:var(--primary);background:color-mix(in srgb,var(--primary) 18%,transparent);
+  border-color:color-mix(in srgb,var(--primary) 35%,transparent)}
+.model-menu{top:auto;left:auto;right:0;bottom:calc(100% + 8px);width:216px;z-index:40;display:none;
+  transform-origin:bottom right;animation:menu-pop .16s var(--ease-standard)}
+.model-wrap.is-open .model-menu{display:block}
+.model-wrap.is-open .model-caret{transform:rotate(180deg)}
+.model-caret{transition:transform .18s var(--ease-standard)}
+@keyframes menu-pop{from{opacity:0;transform:translateY(6px) scale(.97)}to{opacity:1;transform:none}}
+.model-menu{
+  background:color-mix(in srgb,var(--surface-sunken) 78%,var(--glass-popover-fill));
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-3)}
+.mi-muted{color:var(--text-secondary)}
+.comp-input{display:flex;align-items:center;gap:9px;margin-top:10px}
+.comp-plus{flex-shrink:0;width:32px;height:32px;border-radius:var(--radius-pill);display:inline-flex;align-items:center;justify-content:center;
+  color:var(--text-secondary);background:var(--glass-control-fill);border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 var(--glass-highlight)}
+.comp-plus:hover{color:var(--text-on-glass);background:var(--glass-popover-fill)}
+.comp-plus svg{width:16px;height:16px}
+.comp-input input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:13.5px;color:var(--text-primary);caret-color:var(--primary)}
+.comp-input input::placeholder{color:var(--text-tertiary)}
+.send-btn{flex-shrink:0;width:34px;height:34px;border-radius:var(--radius-pill);display:inline-flex;align-items:center;justify-content:center;
+  color:var(--text-on-glass);
+  background:linear-gradient(145deg,var(--primary),color-mix(in srgb,var(--primary) 78%,var(--surface-sunken)));
+  box-shadow:0 6px 16px -4px color-mix(in srgb,var(--primary) 60%,transparent),inset 0 1px 0 var(--glass-highlight)}
+.send-btn:hover{filter:brightness(1.08)}
+.send-btn svg{width:16px;height:16px}
+
+/* 右栏：窗坞 */
+.dock-tabs{flex-shrink:0;display:flex;align-items:center;gap:4px;padding:9px 10px;
+  border-bottom:1px solid var(--glass-border);overflow-x:auto;white-space:nowrap}
+.dtab{display:inline-flex;align-items:center;gap:4px;height:30px;padding:0 9px;border-radius:var(--radius-pill);
+  font-size:12px;font-weight:600;color:var(--text-secondary);border:1px solid transparent;white-space:nowrap}
+.dtab svg{width:12px;height:12px;flex-shrink:0}
+.dtab:hover{background:var(--glass-control-fill);color:var(--text-on-glass)}
+.dtab.on{color:var(--primary);background:color-mix(in srgb,var(--primary) 16%,transparent);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--primary) 30%,transparent)}
+.dock-more{width:30px;padding:0;justify-content:center}
+.dock-more svg{width:15px;height:15px}
+.dock-body{flex:1;min-height:0;overflow-y:auto;padding:14px}
+.dock-kicker{font-size:12.5px;font-weight:700;color:var(--text-secondary);margin-bottom:10px}
+.video{position:relative;aspect-ratio:16/10;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(120% 120% at 20% 0%,var(--media-deep-glow),var(--media-deep) 70%);
+  border:1px solid var(--glass-border);box-shadow:var(--shadow-3),inset 0 1px 0 var(--glass-highlight)}
+.vt{position:absolute;top:12px;left:8px;right:8px;text-align:center;font-size:12px;color:var(--media-fg)}
+.vdur{position:absolute;top:10px;right:10px;padding:2px 7px;border-radius:7px;font-size:10.5px;font-weight:600;
+  color:var(--media-chip-fg);background:var(--media-chip-bg);backdrop-filter:blur(6px);letter-spacing:.02em}
+.vbar{position:absolute;left:10px;right:10px;bottom:10px;height:3px;border-radius:var(--radius-pill);
+  background:var(--media-bar)}
+.vbar>i{display:block;height:100%;width:34%;border-radius:inherit;background:var(--primary)}
+.vplay{width:60px;height:60px;border-radius:var(--radius-pill);display:inline-flex;align-items:center;justify-content:center;
+  color:var(--media-play-fg);background:var(--media-play-bg);
+  box-shadow:var(--media-play-shadow);
+  transition:transform var(--duration-base) var(--ease-emphasized)}
+.video:hover .vplay{transform:scale(1.06)}
+.vplay svg{width:22px;height:22px;margin-left:2px}
+.video-meta{padding:12px 2px 0}
+.video-meta h3{margin:0;font-size:15px;font-weight:700;letter-spacing:-.01em}
+.video-meta p{margin:6px 0 0;font-size:12.5px;line-height:1.6;color:var(--text-secondary)}
+.keypoints{margin-top:12px;padding:13px;border-radius:16px;background:var(--glass-panel-fill);
+  border:1px solid var(--glass-border);box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-1)}
+.kp-title{font-size:12.5px;font-weight:700;margin-bottom:11px}
+.kp-item + .kp-item{margin-top:11px}
+.kp-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-primary)}
+.kp-txt{flex:1;min-width:0;line-height:1.45}
+.kp-dot{width:6px;height:6px;border-radius:var(--radius-pill);background:var(--primary);flex-shrink:0}
+.kp-item.d-info .kp-dot,.kp-item.d-info .kp-fill{background:var(--info)}
+.kp-item.d-success .kp-dot,.kp-item.d-success .kp-fill{background:var(--success)}
+.kp-track{margin:7px 0 0 14px;height:6px;border-radius:var(--radius-pill);background:var(--glass-control-fill);overflow:hidden}
+.kp-fill{display:block;height:100%;border-radius:inherit;background:var(--primary)}
+
+/* 窄视口下提示卡左移、模型菜单收窄，避免浮层压住内容 */
+@media (max-width:1400px){
+  .prompts{width:min(360px,68%);margin-right:224px}
+  .model-menu{width:206px}
+}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<style id="foundations-styles">
+/* ════════════════════════════════════════════════════════════
+   spec-foundations · 基础设计规范总览（深炭玻璃拟态）
+   所有颜色仅引用 theme-vars 语义令牌；裸色值只允许出现在 theme-vars
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 滚动容器与分区骨架 ─────────────────────────────────────── */
+.fnd-wrap{max-width:1180px;margin:0 auto;padding:26px 32px 72px}
+.fnd-sec{margin-top:22px}
+.fnd-sec:first-child{margin-top:0}
+.fnd-card{background:var(--glass-sidebar-fill);border:1px solid var(--glass-border);border-radius:20px;
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-1);padding:22px 24px}
+.fnd-sec-head{display:flex;align-items:baseline;gap:10px;margin:0 0 18px}
+.fnd-sec-no{font-family:var(--font-mono);font-size:var(--font-size-caption);line-height:1;
+  color:var(--text-tertiary);letter-spacing:.08em}
+.fnd-sec-title{margin:0;font-size:var(--font-size-h3);font-weight:600;line-height:var(--line-height-h3);color:var(--text-primary)}
+.fnd-sub{display:flex;align-items:baseline;gap:8px;margin:22px 0 12px}
+.fnd-sub:first-of-type{margin-top:2px}
+.fnd-sub-idx{font-family:var(--font-mono);font-size:11px;color:var(--text-tertiary)}
+.fnd-sub-t{font-size:13px;font-weight:600;color:var(--text-secondary)}
+
+/* ── A 页头 ─────────────────────────────────────────────────── */
+.fnd-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+.fnd-hero h1{margin:0;font-family:var(--font-display);font-size:var(--font-size-display);font-weight:700;
+  line-height:var(--line-height-display);letter-spacing:-.015em;color:var(--text-primary)}
+.fnd-hero p{margin:9px 0 0;font-size:var(--font-size-lead);line-height:var(--line-height-lead);color:var(--text-secondary)}
+.fnd-ver-pill{flex-shrink:0;display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 13px;margin-top:6px;
+  border-radius:var(--radius-pill);font-family:var(--font-mono);font-size:11.5px;white-space:nowrap;
+  color:var(--text-secondary);background:var(--glass-control-fill);border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-1)}
+.fnd-ver-pill svg{width:13px;height:13px;color:var(--primary)}
+
+/* ── B 色彩：通用样本 ───────────────────────────────────────── */
+.fnd-swatch{height:52px;border-radius:var(--radius-panel-sm);border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 var(--glass-highlight)}
+.fnd-tk{display:block;margin-top:7px;font-family:var(--font-mono);font-size:11px;line-height:1.35;
+  color:var(--text-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fnd-tk-12{font-size:12px}
+.fnd-cell{min-width:0}
+.fnd-key .fnd-swatch{box-shadow:0 0 0 2px var(--primary),0 0 0 5px var(--ring),inset 0 1px 0 var(--glass-highlight)}
+
+/* B1 主色阶 */
+.fnd-scale-grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:10px}
+.fnd-role-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:560px}
+.fnd-role-swatch{height:64px}
+
+/* B2 功能色 */
+.fnd-fn-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.fnd-fn-title{display:flex;align-items:center;gap:7px;margin-bottom:10px;font-size:13px;font-weight:600;color:var(--text-primary)}
+.fnd-fn-title svg{width:15px;height:15px;flex-shrink:0}
+.fnd-fn-swatch{height:40px;border-radius:var(--radius-control)}
+.fnd-fn-line{display:flex;align-items:center;gap:7px;margin-top:6px}
+.fnd-fn-line .fnd-tk{margin-top:0}
+.fnd-fn-tag{flex-shrink:0;font-family:var(--font-mono);font-size:9.5px;line-height:1;padding:3px 6px;border-radius:var(--radius-pill);
+  color:var(--text-secondary);background:var(--glass-control-fill);border:1px solid var(--glass-border)}
+
+/* B3 文本与表面 */
+.fnd-split{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:16px}
+.fnd-text-stage{border-radius:14px;padding:18px 20px;background:var(--surface-sunken);
+  border:1px solid var(--glass-border);display:flex;flex-direction:column;gap:14px}
+.fnd-text-line{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.fnd-text-sample{font-size:15px;font-weight:500;white-space:nowrap}
+.fnd-tk-inline{font-family:var(--font-mono);font-size:11px;color:var(--text-tertiary);white-space:nowrap}
+.fnd-surface-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.fnd-surface-grid .fnd-swatch{height:52px}
+
+/* B4 玻璃填充（彩色斜条检验台） */
+.fnd-fill-stage{border-radius:14px;padding:16px;border:1px solid var(--glass-border);
+  background:repeating-linear-gradient(135deg,
+    var(--ambient-1) 0 30px,var(--ambient-2) 30px 60px,
+    var(--ambient-3) 60px 90px,var(--ambient-1) 90px 120px)}
+.fnd-fill-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.fnd-fill-sample{height:92px;border-radius:var(--radius-panel-sm);border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 var(--glass-highlight)}
+.gf-window{background:var(--glass-window-fill);-webkit-backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate));backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate))}
+.gf-sidebar{background:var(--glass-sidebar-fill);-webkit-backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate));backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate))}
+.gf-panel{background:var(--glass-panel-fill);-webkit-backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate));backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate))}
+.gf-popover{background:var(--glass-popover-fill);-webkit-backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate));backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate))}
+.gf-control{background:var(--glass-control-fill);-webkit-backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate));backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate))}
+.fnd-fill-cap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:10px}
+.fnd-fill-name{font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fnd-fill-blur{margin-top:3px;font-family:var(--font-mono);font-size:10.5px;color:var(--text-tertiary);white-space:nowrap}
+
+/* B5 三主题环境光矩阵 */
+.fnd-am-row{display:grid;grid-template-columns:repeat(4,56px) minmax(0,1fr);gap:12px;align-items:center;padding:11px 0}
+.fnd-am-row + .fnd-am-row{border-top:1px solid var(--glass-border)}
+.fnd-am-cell{width:56px;height:56px;border-radius:var(--radius-panel-sm);display:flex;align-items:center;justify-content:center;
+  background:var(--glass-control-fill);border:1px solid var(--glass-border)}
+.fnd-am-dot{width:15px;height:15px;border-radius:var(--radius-pill)}
+.fnd-am-name{font-size:13px;font-weight:600;color:var(--text-primary);padding-left:8px}
+.fnd-am-name b{display:block;font-family:var(--font-mono);font-size:10.5px;font-weight:400;color:var(--text-tertiary);margin-top:2px}
+
+/* B6 学科标识色 */
+.fnd-subj-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.fnd-subj-name{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-primary)}
+.fnd-subj-dot{width:14px;height:14px;border-radius:var(--radius-pill);flex-shrink:0}
+.fnd-subj-soft{margin-top:10px;height:66px;border-radius:var(--radius-panel-sm);border:1px solid var(--glass-border);
+  display:flex;align-items:flex-end;padding:9px 11px}
+.fnd-subj-soft .fnd-tk{margin-top:0}
+.fnd-subj-tk{margin-top:8px}
+
+/* ── C 字体系统 ─────────────────────────────────────────────── */
+.fnd-type-row{display:grid;grid-template-columns:minmax(0,1fr) 316px;gap:16px;align-items:baseline;
+  padding:13px 0;border-top:1px solid var(--glass-border)}
+.fnd-type-row:first-of-type{border-top:0;padding-top:2px}
+.fnd-type-sample{color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fnd-type-meta{font-family:var(--font-mono);font-size:11.5px;line-height:1.5;color:var(--text-tertiary);
+  text-align:right;white-space:nowrap}
+.fnd-t-display{font-size:var(--font-size-display);font-weight:var(--font-weight-display);line-height:var(--line-height-display)}
+.fnd-t-h1{font-size:var(--font-size-h1);font-weight:var(--font-weight-h1);line-height:var(--line-height-h1)}
+.fnd-t-h2{font-size:var(--font-size-h2);font-weight:var(--font-weight-h2);line-height:var(--line-height-h2)}
+.fnd-t-h3{font-size:var(--font-size-h3);font-weight:var(--font-weight-h3);line-height:var(--line-height-h3)}
+.fnd-t-h4{font-size:var(--font-size-h4);font-weight:var(--font-weight-h4);line-height:var(--line-height-h4)}
+.fnd-t-lead{font-size:var(--font-size-lead);font-weight:var(--font-weight-lead);line-height:var(--line-height-lead)}
+.fnd-t-body{font-size:var(--font-size-body);font-weight:var(--font-weight-body);line-height:var(--line-height-body)}
+.fnd-t-caption{font-size:var(--font-size-caption);font-weight:var(--font-weight-caption);line-height:var(--line-height-caption)}
+.fnd-t-mono{font-family:var(--font-mono);font-size:var(--font-size-mono);font-weight:var(--font-weight-mono);line-height:var(--line-height-mono)}
+.fnd-type-note{margin:15px 0 0;padding-top:13px;border-top:1px solid var(--glass-border);
+  font-size:var(--font-size-caption);color:var(--text-tertiary)}
+.fnd-type-note code{font-family:var(--font-mono);color:var(--text-secondary)}
+
+/* ── D 间距与尺寸 ───────────────────────────────────────────── */
+.fnd-sp-split{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:28px;align-items:start}
+.fnd-bars{display:flex;align-items:flex-end;gap:15px;height:56px;padding-bottom:0}
+.fnd-bar-col{display:flex;flex-direction:column;align-items:center;gap:9px;min-width:0}
+.fnd-bar{height:44px;border-radius:6px;background:var(--primary);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-1)}
+.fnd-bar-lbl{font-family:var(--font-mono);font-size:10.5px;line-height:1.3;text-align:center;color:var(--text-tertiary);white-space:nowrap}
+.fnd-size-groups{display:flex;flex-direction:column;gap:14px}
+.fnd-size-group{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;
+  padding:12px 14px;border-radius:14px;background:var(--glass-control-fill);border:1px solid var(--glass-border)}
+.fnd-size-g-label{flex-basis:100%;font-size:11px;font-weight:600;color:var(--text-tertiary);margin-bottom:2px}
+.fnd-size-item{display:flex;flex-direction:column;align-items:center;gap:7px}
+.fnd-size-box{background:var(--glass-popover-fill);border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-1);
+  display:flex;align-items:center;justify-content:center;color:var(--text-secondary)}
+.fnd-size-box svg{width:56%;height:56%}
+.fnd-size-lbl{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);white-space:nowrap}
+
+/* ── E 圆角 ─────────────────────────────────────────────────── */
+.fnd-rad-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.fnd-rad-box{height:84px;background:var(--glass-panel-fill);border:1px solid var(--glass-border);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-1)}
+
+/* ── F 阴影海拔 ─────────────────────────────────────────────── */
+.fnd-sh-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.fnd-sh-plate{background:var(--glass-sidebar-fill);border:1px solid var(--glass-border);border-radius:var(--radius-panel);
+  padding:18px 12px 14px;min-height:132px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.fnd-sh-card{width:100%;height:58px;border-radius:var(--radius-control);background:var(--glass-popover-fill);
+  border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;
+  font-size:11.5px;font-weight:600;color:var(--text-secondary)}
+.fnd-sh-name{text-align:center;font-size:11px;font-weight:600;color:var(--text-primary);line-height:1.35}
+.fnd-sh-tk{display:block;font-family:var(--font-mono);font-size:10px;font-weight:400;color:var(--text-tertiary);margin-top:2px}
+
+/* ── G 动效 ─────────────────────────────────────────────────── */
+.fnd-mo-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.fnd-dur-row{display:grid;grid-template-columns:92px minmax(0,1fr) 56px;align-items:center;gap:12px;margin:14px 0}
+.fnd-dur-row:first-of-type{margin-top:4px}
+.fnd-dur-name{font-family:var(--font-mono);font-size:11.5px;color:var(--text-secondary);white-space:nowrap}
+.fnd-dur-track{height:10px;border-radius:var(--radius-pill);background:var(--glass-control-fill);
+  border:1px solid var(--glass-border);overflow:hidden}
+.fnd-dur-fill{height:100%;border-radius:var(--radius-pill);background:var(--primary)}
+.fnd-dur-ms{font-family:var(--font-mono);font-size:11px;color:var(--text-tertiary);text-align:right}
+.fnd-ease-stage{position:relative;height:128px;border-radius:14px;background:var(--glass-control-fill);
+  border:1px solid var(--glass-border);outline:none;transition:border-color var(--duration-fast) var(--ease-standard),box-shadow var(--duration-fast) var(--ease-standard)}
+.fnd-ease-stage:hover,.fnd-ease-stage:focus-visible{border-color:color-mix(in srgb,var(--primary) 45%,var(--glass-border));
+  box-shadow:0 0 0 3px var(--ring)}
+.fnd-ease-rail{position:absolute;left:18px;top:12px;width:120px;height:106px}
+.fnd-ease-rail svg{width:120px;height:106px;overflow:visible}
+.fnd-ease-path{fill:none;stroke:var(--text-tertiary);stroke-width:1.6;stroke-dasharray:4 4}
+.fnd-ease-dot{position:absolute;left:0;top:0;width:10px;height:10px;border-radius:var(--radius-pill);
+  background:var(--primary);box-shadow:0 0 0 3px var(--ring);offset-rotate:0deg;offset-anchor:center;offset-distance:0%}
+.fnd-ease-dot.is-std{offset-path:path('M8 92 C 41 32 8 8 112 8');transition:offset-distance 1000ms var(--ease-standard)}
+.fnd-ease-dot.is-em{offset-path:path('M8 92 C 29 16 39 8 112 8');transition:offset-distance 1000ms var(--ease-emphasized)}
+.fnd-ease-stage:hover .fnd-ease-dot,.fnd-ease-stage:focus-visible .fnd-ease-dot{offset-distance:100%}
+.fnd-ease-hint{position:absolute;right:12px;top:10px;font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary)}
+.fnd-ease-label{margin-top:10px;font-size:12px;font-weight:600;color:var(--text-primary)}
+.fnd-ease-val{display:block;margin-top:3px;font-family:var(--font-mono);font-size:11px;font-weight:400;color:var(--text-tertiary)}
+
+/* ── H 图标库 ───────────────────────────────────────────────── */
+.fnd-ic-cat{display:flex;align-items:center;gap:10px;margin:20px 0 12px;font-size:12px;font-weight:600;color:var(--text-tertiary)}
+.fnd-ic-cat:first-child{margin-top:2px}
+.fnd-ic-cat::after{content:"";flex:1;height:1px;background:var(--glass-border)}
+.fnd-ic-cat .fnd-ic-count{font-family:var(--font-mono);font-weight:400}
+.fnd-ic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:12px 8px}
+.fnd-ic-item{min-width:0}
+.fnd-icon-cell{width:36px;height:36px;margin:0 auto;border-radius:var(--radius-control);
+  display:flex;align-items:center;justify-content:center;color:var(--text-secondary);
+  background:var(--glass-panel-fill);border:1px solid var(--glass-border);
+  transition:background var(--duration-fast) var(--ease-standard),color var(--duration-fast) var(--ease-standard),
+             border-color var(--duration-fast) var(--ease-standard),transform var(--duration-fast) var(--ease-standard)}
+.fnd-icon-cell svg{width:18px;height:18px}
+.fnd-icon-cell:hover{background:var(--glass-control-fill);color:var(--primary);
+  border-color:color-mix(in srgb,var(--primary) 40%,var(--glass-border))}
+.fnd-icon-cell:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+.fnd-icon-cell:active{transform:scale(.9)}
+.fnd-ic-name{margin-top:6px;text-align:center;font-family:var(--font-mono);font-size:10px;line-height:1.3;
+  color:var(--text-tertiary);min-height:26px;word-break:break-word}
+
+/* ── I 页脚 ─────────────────────────────────────────────────── */
+.fnd-foot{margin-top:22px;text-align:center;font-size:var(--font-size-caption);
+  line-height:var(--line-height-caption);color:var(--text-tertiary)}
+
+@media (prefers-reduced-motion: reduce){
+  .fnd-icon-cell,.fnd-ease-stage,.fnd-ease-dot,.fnd-ver-pill{transition:none !important}
+}
+</style>
+<div class="ambient" aria-hidden="true">
+  <span class="blob b1"></span>
+  <span class="blob b2"></span>
+  <span class="blob b3"></span>
+  <span class="blob b4"></span>
+</div>
+
+<div class="mac-window">
+
+  <!-- 系统菜单栏 -->
+  <div class="mb">
+    <span class="brand">
+      <svg viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="M3 13l9 5 9-5"/><path d="M21 8v5"/></svg>
+      StudySolo
+    </span>
+    <button class="mtitle" type="button">文件</button>
+    <button class="mtitle" type="button">编辑</button>
+    <button class="mtitle" type="button">显示</button>
+    <button class="mtitle" type="button">窗口</button>
+    <button class="mtitle" type="button">帮助</button>
+    <div class="status">
+      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="17" height="10" rx="2.5"/><line x1="20.5" y1="10" x2="20.5" y2="14"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M1.4 9a16 16 0 0 1 21.2 0"/><path d="M5 12.5a11 11 0 0 1 14 0"/><path d="M8.6 16a6 6 0 0 1 6.8 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="10" height="6" rx="3"/><rect x="12" y="11" width="10" height="6" rx="3"/></svg>
+      <span>周一 9:41</span>
+    </div>
+  </div>
+
+  <!-- 标题栏 -->
+  <div class="title-bar">
+    <div class="tb-lights">
+      <span class="dot dot-close"></span>
+      <span class="dot dot-min"></span>
+      <span class="dot dot-zoom"></span>
+    </div>
+    <span class="win-title">设计规范 · 基础</span>
+    <div class="tb-actions">
+      <button class="tb-btn" type="button" title="切换侧栏">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/><polyline points="12.5 9 15.5 12 12.5 15"/></svg>
+      </button>
+      <button class="tb-btn" type="button" title="分享">
+        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.9" y1="13.5" x2="15.1" y2="17.5"/><line x1="15.1" y1="6.5" x2="8.9" y2="10.5"/></svg>
+      </button>
+      <button class="tb-btn" type="button" title="更多">
+        <svg viewBox="0 0 24 24"><circle class="fill-ic" cx="5" cy="12" r="1.5"/><circle class="fill-ic" cx="12" cy="12" r="1.5"/><circle class="fill-ic" cx="19" cy="12" r="1.5"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- 规范总览主体（唯一纵向滚动区） -->
+  <div class="artboard-scroll overflow-y-auto" data-scroll-region="primary" style="flex:1;min-height:0">
+    <div style="max-width:1180px;margin:0 auto;padding:26px 32px 72px">
+
+      <!-- A 页头 -->
+      <section class="fnd-sec fnd-card fnd-hero">
+        <div>
+          <h1>Foundation 基础规范</h1>
+          <p>StudySolo Glass · 深炭 / 雾蓝 / 奶油三主题共享的设计基座</p>
+        </div>
+        <span class="fnd-ver-pill"><i data-lucide="refresh-cw"></i>v1.0 · Figma Tokens 同步</span>
+      </section>
+
+      <!-- B 色彩系统 -->
+      <section class="fnd-sec fnd-card">
+        <header class="fnd-sec-head">
+          <span class="fnd-sec-no">01</span>
+          <h2 class="fnd-sec-title">色彩系统 Color</h2>
+        </header>
+
+        <div class="fnd-sub"><span class="fnd-sub-idx">1.1</span><span class="fnd-sub-t">主色阶 Primary Scale</span></div>
+        <div class="fnd-scale-grid">
+          <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--primary-50)"></div><span class="fnd-tk fnd-tk-12">--primary-50</span></div>
+          <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--primary-100)"></div><span class="fnd-tk fnd-tk-12">--primary-100</span></div>
+          <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--primary-200)"></div><span class="fnd-tk fnd-tk-12">--primary-200</span></div>
+          <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--primary-300)"></div><span class="fnd-tk fnd-tk-12">--primary-300</span></div>
+          <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--primary-400)"></div><span class="fnd-tk fnd-tk-12">--primary-400</span></div>
+          <div class="fnd-cell fnd-key"><div class="fnd-swatch" style="background:var(--primary-500)"></div><span class="fnd-tk fnd-tk-12">--primary-500</span></div>
+          <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--primary-600)"></div><span class="fnd-tk fnd-tk-12">--primary-600</span></div>
+          <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--primary-700)"></div><span class="fnd-tk fnd-tk-12">--primary-700</span></div>
+          <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--primary-800)"></div><span class="fnd-tk fnd-tk-12">--primary-800</span></div>
+          <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--primary-900)"></div><span class="fnd-tk fnd-tk-12">--primary-900</span></div>
+        </div>
+
+        <div class="fnd-sub"><span class="fnd-sub-idx">1.2</span><span class="fnd-sub-t">深炭模式主色角色 Dark Roles</span></div>
+        <div class="fnd-role-grid">
+          <div class="fnd-cell fnd-key"><div class="fnd-swatch fnd-role-swatch" style="background:var(--primary)"></div><span class="fnd-tk fnd-tk-12">--primary</span></div>
+          <div class="fnd-cell"><div class="fnd-swatch fnd-role-swatch" style="background:var(--primary-foreground)"></div><span class="fnd-tk fnd-tk-12">--primary-foreground</span></div>
+          <div class="fnd-cell"><div class="fnd-swatch fnd-role-swatch" style="background:var(--ring)"></div><span class="fnd-tk fnd-tk-12">--ring</span></div>
+          <div class="fnd-cell"><div class="fnd-swatch fnd-role-swatch" style="background:var(--link)"></div><span class="fnd-tk fnd-tk-12">--link</span></div>
+        </div>
+
+        <div class="fnd-sub"><span class="fnd-sub-idx">1.3</span><span class="fnd-sub-t">功能色 Functional Colors（500 基准色 + 深炭覆盖值）</span></div>
+        <div class="fnd-fn-grid">
+          <div>
+            <div class="fnd-fn-title"><i data-lucide="check-circle-2" style="color:var(--success)"></i>success 成功</div>
+            <div class="fnd-swatch fnd-fn-swatch" style="background:var(--success-500)"></div>
+            <div class="fnd-fn-line"><span class="fnd-tk fnd-tk-12">--success-500</span></div>
+            <div class="fnd-swatch fnd-fn-swatch" style="background:var(--success);margin-top:8px"></div>
+            <div class="fnd-fn-line"><span class="fnd-tk fnd-tk-12">--success</span><span class="fnd-fn-tag">深炭覆盖</span></div>
+          </div>
+          <div>
+            <div class="fnd-fn-title"><i data-lucide="alert-triangle" style="color:var(--warning)"></i>warning 警示</div>
+            <div class="fnd-swatch fnd-fn-swatch" style="background:var(--warning-500)"></div>
+            <div class="fnd-fn-line"><span class="fnd-tk fnd-tk-12">--warning-500</span></div>
+            <div class="fnd-swatch fnd-fn-swatch" style="background:var(--warning);margin-top:8px"></div>
+            <div class="fnd-fn-line"><span class="fnd-tk fnd-tk-12">--warning</span><span class="fnd-fn-tag">深炭覆盖</span></div>
+          </div>
+          <div>
+            <div class="fnd-fn-title"><i data-lucide="info" style="color:var(--info)"></i>info 信息</div>
+            <div class="fnd-swatch fnd-fn-swatch" style="background:var(--info-500)"></div>
+            <div class="fnd-fn-line"><span class="fnd-tk fnd-tk-12">--info-500</span></div>
+            <div class="fnd-swatch fnd-fn-swatch" style="background:var(--info);margin-top:8px"></div>
+            <div class="fnd-fn-line"><span class="fnd-tk fnd-tk-12">--info</span><span class="fnd-fn-tag">深炭覆盖</span></div>
+          </div>
+          <div>
+            <div class="fnd-fn-title"><i data-lucide="sparkles" style="color:var(--accent)"></i>accent 强调</div>
+            <div class="fnd-swatch fnd-fn-swatch" style="background:var(--accent-500)"></div>
+            <div class="fnd-fn-line"><span class="fnd-tk fnd-tk-12">--accent-500</span></div>
+            <div class="fnd-swatch fnd-fn-swatch" style="background:var(--accent);margin-top:8px"></div>
+            <div class="fnd-fn-line"><span class="fnd-tk fnd-tk-12">--accent</span><span class="fnd-fn-tag">深炭覆盖</span></div>
+          </div>
+        </div>
+
+        <div class="fnd-sub"><span class="fnd-sub-idx">1.4</span><span class="fnd-sub-t">文本与表面 Text &amp; Surface（深炭取值实排）</span></div>
+        <div class="fnd-split">
+          <div class="fnd-text-stage">
+            <div class="fnd-text-line">
+              <span class="fnd-text-sample" style="color:var(--text-primary)">主要文本 Primary Text</span>
+              <span class="fnd-tk-inline">--text-primary</span>
+            </div>
+            <div class="fnd-text-line">
+              <span class="fnd-text-sample" style="color:var(--text-secondary)">次要文本 Secondary Text</span>
+              <span class="fnd-tk-inline">--text-secondary</span>
+            </div>
+            <div class="fnd-text-line">
+              <span class="fnd-text-sample" style="color:var(--text-tertiary)">三级文本 Tertiary Text</span>
+              <span class="fnd-tk-inline">--text-tertiary</span>
+            </div>
+          </div>
+          <div class="fnd-surface-grid">
+            <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--surface-page)"></div><span class="fnd-tk fnd-tk-12">--surface-page</span></div>
+            <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--surface-panel)"></div><span class="fnd-tk fnd-tk-12">--surface-panel</span></div>
+            <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--surface-sidebar)"></div><span class="fnd-tk fnd-tk-12">--surface-sidebar</span></div>
+            <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--surface-popover)"></div><span class="fnd-tk fnd-tk-12">--surface-popover</span></div>
+            <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--surface-control)"></div><span class="fnd-tk fnd-tk-12">--surface-control</span></div>
+            <div class="fnd-cell"><div class="fnd-swatch" style="background:var(--surface-sunken)"></div><span class="fnd-tk fnd-tk-12">--surface-sunken</span></div>
+          </div>
+        </div>
+
+        <div class="fnd-sub"><span class="fnd-sub-idx">1.5</span><span class="fnd-sub-t">玻璃填充 Glass Fills（悬于环境光斜条之上检验透明度与模糊档位）</span></div>
+        <div class="fnd-fill-stage">
+          <div class="fnd-fill-grid">
+            <div class="fnd-fill-sample gf-window"></div>
+            <div class="fnd-fill-sample gf-sidebar"></div>
+            <div class="fnd-fill-sample gf-panel"></div>
+            <div class="fnd-fill-sample gf-popover"></div>
+            <div class="fnd-fill-sample gf-control"></div>
+          </div>
+        </div>
+        <div class="fnd-fill-cap">
+          <div><div class="fnd-fill-name">--glass-window-fill</div><div class="fnd-fill-blur">blur deep · 48px</div></div>
+          <div><div class="fnd-fill-name">--glass-sidebar-fill</div><div class="fnd-fill-blur">blur thin · 20px</div></div>
+          <div><div class="fnd-fill-name">--glass-panel-fill</div><div class="fnd-fill-blur">blur base · 32px</div></div>
+          <div><div class="fnd-fill-name">--glass-popover-fill</div><div class="fnd-fill-blur">blur deep · 48px</div></div>
+          <div><div class="fnd-fill-name">--glass-control-fill</div><div class="fnd-fill-blur">blur thin · 20px</div></div>
+        </div>
+
+        <div class="fnd-sub"><span class="fnd-sub-idx">1.6</span><span class="fnd-sub-t">三主题环境光矩阵 Ambient Matrix（ambient-1 → ambient-4）</span></div>
+        <div>
+          <div class="fnd-am-row">
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-carbon-1);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-carbon-1) 60%,transparent)"></span></span>
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-carbon-2);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-carbon-2) 60%,transparent)"></span></span>
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-carbon-3);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-carbon-3) 60%,transparent)"></span></span>
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-carbon-4);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-carbon-4) 60%,transparent)"></span></span>
+            <span class="fnd-am-name">深炭 Carbon<b>.dark · 当前生效主题</b></span>
+          </div>
+          <div class="fnd-am-row">
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-fog-1);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-fog-1) 60%,transparent)"></span></span>
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-fog-2);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-fog-2) 60%,transparent)"></span></span>
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-fog-3);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-fog-3) 60%,transparent)"></span></span>
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-fog-4);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-fog-4) 60%,transparent)"></span></span>
+            <span class="fnd-am-name">雾蓝 Fog<b>:root 默认浅色</b></span>
+          </div>
+          <div class="fnd-am-row">
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-cream-1);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-cream-1) 60%,transparent)"></span></span>
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-cream-2);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-cream-2) 60%,transparent)"></span></span>
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-cream-3);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-cream-3) 60%,transparent)"></span></span>
+            <span class="fnd-am-cell"><span class="fnd-am-dot" style="background:var(--spec-ambient-cream-4);box-shadow:0 0 18px 4px color-mix(in srgb,var(--spec-ambient-cream-4) 60%,transparent)"></span></span>
+            <span class="fnd-am-name">奶油 Cream<b>[data-tint="cream"] 暖色取值</b></span>
+          </div>
+        </div>
+
+        <div class="fnd-sub"><span class="fnd-sub-idx">1.7</span><span class="fnd-sub-t">学科标识色 Subject Identity（实色 + -soft 透明底）</span></div>
+        <div class="fnd-subj-grid">
+          <div>
+            <div class="fnd-subj-name"><span class="fnd-subj-dot" style="background:var(--subj-prob)"></span>概率论（紫）</div>
+            <div class="fnd-subj-soft" style="background:var(--subj-prob-soft);border-color:color-mix(in srgb,var(--subj-prob) 35%,transparent)"><span class="fnd-tk fnd-tk-12" style="color:var(--subj-prob)">--subj-prob-soft</span></div>
+            <span class="fnd-tk fnd-tk-12 fnd-subj-tk">--subj-prob</span>
+          </div>
+          <div>
+            <div class="fnd-subj-name"><span class="fnd-subj-dot" style="background:var(--subj-phy)"></span>大学物理（蓝）</div>
+            <div class="fnd-subj-soft" style="background:var(--subj-phy-soft);border-color:color-mix(in srgb,var(--subj-phy) 35%,transparent)"><span class="fnd-tk fnd-tk-12" style="color:var(--subj-phy)">--subj-phy-soft</span></div>
+            <span class="fnd-tk fnd-tk-12 fnd-subj-tk">--subj-phy</span>
+          </div>
+          <div>
+            <div class="fnd-subj-name"><span class="fnd-subj-dot" style="background:var(--subj-chem)"></span>有机化学（绿）</div>
+            <div class="fnd-subj-soft" style="background:var(--subj-chem-soft);border-color:color-mix(in srgb,var(--subj-chem) 35%,transparent)"><span class="fnd-tk fnd-tk-12" style="color:var(--subj-chem)">--subj-chem-soft</span></div>
+            <span class="fnd-tk fnd-tk-12 fnd-subj-tk">--subj-chem</span>
+          </div>
+          <div>
+            <div class="fnd-subj-name"><span class="fnd-subj-dot" style="background:var(--subj-hist)"></span>近现代史（红）</div>
+            <div class="fnd-subj-soft" style="background:var(--subj-hist-soft);border-color:color-mix(in srgb,var(--subj-hist) 35%,transparent)"><span class="fnd-tk fnd-tk-12" style="color:var(--subj-hist)">--subj-hist-soft</span></div>
+            <span class="fnd-tk fnd-tk-12 fnd-subj-tk">--subj-hist</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- C 字体系统 -->
+      <section class="fnd-sec fnd-card">
+        <header class="fnd-sec-head">
+          <span class="fnd-sec-no">02</span>
+          <h2 class="fnd-sec-title">字体系统 Typography</h2>
+        </header>
+        <div class="fnd-type-row">
+          <span class="fnd-type-sample fnd-t-display">样本空间与事件 Aa</span>
+          <span class="fnd-type-meta">--font-size-display · 40 / 700 / 1.1</span>
+        </div>
+        <div class="fnd-type-row">
+          <span class="fnd-type-sample fnd-t-h1">样本空间与事件 Aa</span>
+          <span class="fnd-type-meta">--font-size-h1 · 30 / 700 / 1.2</span>
+        </div>
+        <div class="fnd-type-row">
+          <span class="fnd-type-sample fnd-t-h2">样本空间与事件 Aa</span>
+          <span class="fnd-type-meta">--font-size-h2 · 24 / 600 / 1.25</span>
+        </div>
+        <div class="fnd-type-row">
+          <span class="fnd-type-sample fnd-t-h3">样本空间与事件 Aa</span>
+          <span class="fnd-type-meta">--font-size-h3 · 19 / 600 / 1.3</span>
+        </div>
+        <div class="fnd-type-row">
+          <span class="fnd-type-sample fnd-t-h4">样本空间与事件 Aa</span>
+          <span class="fnd-type-meta">--font-size-h4 · 16 / 600 / 1.4</span>
+        </div>
+        <div class="fnd-type-row">
+          <span class="fnd-type-sample fnd-t-lead">样本空间与事件 Aa</span>
+          <span class="fnd-type-meta">--font-size-lead · 17 / 400 / 1.6</span>
+        </div>
+        <div class="fnd-type-row">
+          <span class="fnd-type-sample fnd-t-body">样本空间与事件 Aa</span>
+          <span class="fnd-type-meta">--font-size-body · 15 / 400 / 1.6</span>
+        </div>
+        <div class="fnd-type-row">
+          <span class="fnd-type-sample fnd-t-caption">样本空间与事件 Aa</span>
+          <span class="fnd-type-meta">--font-size-caption · 12 / 500 / 1.5</span>
+        </div>
+        <div class="fnd-type-row">
+          <span class="fnd-type-sample fnd-t-mono">P(A)=1/2 · Σ · √n · x²</span>
+          <span class="fnd-type-meta">--font-mono · JetBrains Mono · 13</span>
+        </div>
+        <p class="fnd-type-note">中文回退栈：<code>PingFang SC / Microsoft YaHei</code>　·　字体令牌同时映射 display / heading / body 三个语义别名</p>
+      </section>
+
+      <!-- D 间距与尺寸 -->
+      <section class="fnd-sec fnd-card">
+        <header class="fnd-sec-head">
+          <span class="fnd-sec-no">03</span>
+          <h2 class="fnd-sec-title">间距与尺寸 Spacing &amp; Sizing</h2>
+        </header>
+        <div class="fnd-sp-split">
+          <div>
+            <div class="fnd-bars">
+              <div class="fnd-bar-col"><div class="fnd-bar" style="width:4px"></div><div class="fnd-bar-lbl">--space-1<br>4px</div></div>
+              <div class="fnd-bar-col"><div class="fnd-bar" style="width:8px"></div><div class="fnd-bar-lbl">--space-2<br>8px</div></div>
+              <div class="fnd-bar-col"><div class="fnd-bar" style="width:12px"></div><div class="fnd-bar-lbl">--space-3<br>12px</div></div>
+              <div class="fnd-bar-col"><div class="fnd-bar" style="width:16px"></div><div class="fnd-bar-lbl">--space-4<br>16px</div></div>
+              <div class="fnd-bar-col"><div class="fnd-bar" style="width:24px"></div><div class="fnd-bar-lbl">--space-5<br>24px</div></div>
+              <div class="fnd-bar-col"><div class="fnd-bar" style="width:32px"></div><div class="fnd-bar-lbl">--space-6<br>32px</div></div>
+              <div class="fnd-bar-col"><div class="fnd-bar" style="width:48px"></div><div class="fnd-bar-lbl">--space-7<br>48px</div></div>
+              <div class="fnd-bar-col"><div class="fnd-bar" style="width:64px"></div><div class="fnd-bar-lbl">--space-8<br>64px</div></div>
+            </div>
+            <p class="fnd-type-note" style="border-top:0;padding-top:10px">4px 基准刻度：竖条宽度 = 令牌值，统一 44px 行高便于最小档可见</p>
+          </div>
+          <div class="fnd-size-groups">
+            <div class="fnd-size-group">
+              <span class="fnd-size-g-label">图标尺寸 Icon · --size-icon-sm/md/lg</span>
+              <div class="fnd-size-item"><span class="fnd-size-box" style="width:16px;height:16px"><i data-lucide="square"></i></span><span class="fnd-size-lbl">16</span></div>
+              <div class="fnd-size-item"><span class="fnd-size-box" style="width:20px;height:20px"><i data-lucide="square"></i></span><span class="fnd-size-lbl">20</span></div>
+              <div class="fnd-size-item"><span class="fnd-size-box" style="width:24px;height:24px"><i data-lucide="square"></i></span><span class="fnd-size-lbl">24</span></div>
+            </div>
+            <div class="fnd-size-group">
+              <span class="fnd-size-g-label">控件高度 Control · --size-button-sm/md/lg（输入框 36）</span>
+              <div class="fnd-size-item"><span class="fnd-size-box" style="width:46px;height:30px"></span><span class="fnd-size-lbl">30</span></div>
+              <div class="fnd-size-item"><span class="fnd-size-box" style="width:46px;height:36px"></span><span class="fnd-size-lbl">36</span></div>
+              <div class="fnd-size-item"><span class="fnd-size-box" style="width:46px;height:44px"></span><span class="fnd-size-lbl">44</span></div>
+            </div>
+            <div class="fnd-size-group">
+              <span class="fnd-size-g-label">交通灯 Traffic Light · --size-traffic-light</span>
+              <div class="fnd-size-item"><span class="fnd-size-box" style="width:24px;height:24px;border-radius:var(--radius-pill);background:transparent;border-color:transparent;box-shadow:none"><span style="width:12px;height:12px;border-radius:var(--radius-pill);background:var(--mac-close);display:inline-block"></span></span><span class="fnd-size-lbl">12</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- E 圆角 -->
+      <section class="fnd-sec fnd-card">
+        <header class="fnd-sec-head">
+          <span class="fnd-sec-no">04</span>
+          <h2 class="fnd-sec-title">圆角 Radius</h2>
+        </header>
+        <div class="fnd-rad-grid">
+          <div class="fnd-cell"><div class="fnd-rad-box" style="border-radius:10px"></div><span class="fnd-tk fnd-tk-12" style="text-align:center">--radius-control · 10</span></div>
+          <div class="fnd-cell"><div class="fnd-rad-box" style="border-radius:12px"></div><span class="fnd-tk fnd-tk-12" style="text-align:center">--radius-panel-sm · 12</span></div>
+          <div class="fnd-cell"><div class="fnd-rad-box" style="border-radius:18px"></div><span class="fnd-tk fnd-tk-12" style="text-align:center">--radius-panel · 18</span></div>
+          <div class="fnd-cell"><div class="fnd-rad-box" style="border-radius:28px"></div><span class="fnd-tk fnd-tk-12" style="text-align:center">--radius-window · 28</span></div>
+          <div class="fnd-cell"><div class="fnd-rad-box" style="border-radius:9999px"></div><span class="fnd-tk fnd-tk-12" style="text-align:center">--radius-pill · 9999</span></div>
+        </div>
+      </section>
+
+      <!-- F 阴影海拔 -->
+      <section class="fnd-sec fnd-card">
+        <header class="fnd-sec-head">
+          <span class="fnd-sec-no">05</span>
+          <h2 class="fnd-sec-title">阴影海拔 Elevation</h2>
+        </header>
+        <div class="fnd-sh-grid">
+          <div class="fnd-sh-plate">
+            <div class="fnd-sh-card" style="box-shadow:var(--shadow-1)">Control</div>
+            <div class="fnd-sh-name">Control<span class="fnd-sh-tk">--shadow-1</span></div>
+          </div>
+          <div class="fnd-sh-plate">
+            <div class="fnd-sh-card" style="box-shadow:var(--shadow-2)">Card</div>
+            <div class="fnd-sh-name">Card<span class="fnd-sh-tk">--shadow-2</span></div>
+          </div>
+          <div class="fnd-sh-plate">
+            <div class="fnd-sh-card" style="box-shadow:var(--shadow-3)">Popover</div>
+            <div class="fnd-sh-name">Popover<span class="fnd-sh-tk">--shadow-3</span></div>
+          </div>
+          <div class="fnd-sh-plate">
+            <div class="fnd-sh-card" style="box-shadow:var(--shadow-4)">Window</div>
+            <div class="fnd-sh-name">Window<span class="fnd-sh-tk">--shadow-4</span></div>
+          </div>
+          <div class="fnd-sh-plate">
+            <div class="fnd-sh-card" style="box-shadow:var(--shadow-5)">Glass pane</div>
+            <div class="fnd-sh-name">Glass pane<span class="fnd-sh-tk">--shadow-5</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- G 动效 -->
+      <section class="fnd-sec fnd-card">
+        <header class="fnd-sec-head">
+          <span class="fnd-sec-no">06</span>
+          <h2 class="fnd-sec-title">动效 Motion</h2>
+        </header>
+        <div class="fnd-mo-split">
+          <div>
+            <div class="fnd-dur-row">
+              <span class="fnd-dur-name">--duration-fast</span>
+              <div class="fnd-dur-track"><span class="fnd-dur-fill" style="width:39%"></span></div>
+              <span class="fnd-dur-ms">140ms</span>
+            </div>
+            <div class="fnd-dur-row">
+              <span class="fnd-dur-name">--duration-base</span>
+              <div class="fnd-dur-track"><span class="fnd-dur-fill" style="width:61%"></span></div>
+              <span class="fnd-dur-ms">220ms</span>
+            </div>
+            <div class="fnd-dur-row">
+              <span class="fnd-dur-name">--duration-slow</span>
+              <div class="fnd-dur-track"><span class="fnd-dur-fill" style="width:100%"></span></div>
+              <span class="fnd-dur-ms">360ms</span>
+            </div>
+            <p class="fnd-type-note">条长按 140 / 220 / 360ms 等比映射；状态反馈用 fast，位移进场用 base / slow。</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div>
+              <div class="fnd-ease-stage" tabindex="0" aria-label="Standard 缓动曲线，悬停播放">
+                <div class="fnd-ease-rail">
+                  <svg viewBox="0 0 120 106" aria-hidden="true"><path class="fnd-ease-path" d="M8 92 C 41 32 8 8 112 8"/></svg>
+                  <span class="fnd-ease-dot is-std"></span>
+                </div>
+                <span class="fnd-ease-hint">hover / focus</span>
+              </div>
+              <div class="fnd-ease-label">Standard<span class="fnd-ease-val">--ease-standard · cubic-bezier(0.32, 0.72, 0, 1)</span></div>
+            </div>
+            <div>
+              <div class="fnd-ease-stage" tabindex="0" aria-label="Emphasized 缓动曲线，悬停播放">
+                <div class="fnd-ease-rail">
+                  <svg viewBox="0 0 120 106" aria-hidden="true"><path class="fnd-ease-path" d="M8 92 C 29 16 39 8 112 8"/></svg>
+                  <span class="fnd-ease-dot is-em"></span>
+                </div>
+                <span class="fnd-ease-hint">hover / focus</span>
+              </div>
+              <div class="fnd-ease-label">Emphasized<span class="fnd-ease-val">--ease-emphasized · cubic-bezier(0.2, 0.9, 0.3, 1)</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- H 图标库 -->
+      <section class="fnd-sec fnd-card">
+        <header class="fnd-sec-head">
+          <span class="fnd-sec-no">07</span>
+          <h2 class="fnd-sec-title">图标库 Lucide Icons</h2>
+        </header>
+
+        <div class="fnd-ic-cat">导航与窗口 Navigation &amp; Window<span class="fnd-ic-count">18</span></div>
+        <div class="fnd-ic-grid">
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="home"><i data-lucide="home"></i></button><div class="fnd-ic-name">home</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="search"><i data-lucide="search"></i></button><div class="fnd-ic-name">search</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="menu"><i data-lucide="menu"></i></button><div class="fnd-ic-name">menu</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="x"><i data-lucide="x"></i></button><div class="fnd-ic-name">x</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="plus"><i data-lucide="plus"></i></button><div class="fnd-ic-name">plus</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="minus"><i data-lucide="minus"></i></button><div class="fnd-ic-name">minus</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="square"><i data-lucide="square"></i></button><div class="fnd-ic-name">square</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="ellipsis"><i data-lucide="ellipsis"></i></button><div class="fnd-ic-name">ellipsis</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="share-2"><i data-lucide="share-2"></i></button><div class="fnd-ic-name">share-2</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="panel-right"><i data-lucide="panel-right"></i></button><div class="fnd-ic-name">panel-right</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="chevron-right"><i data-lucide="chevron-right"></i></button><div class="fnd-ic-name">chevron-right</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="chevron-down"><i data-lucide="chevron-down"></i></button><div class="fnd-ic-name">chevron-down</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="settings"><i data-lucide="settings"></i></button><div class="fnd-ic-name">settings</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="library"><i data-lucide="library"></i></button><div class="fnd-ic-name">library</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="book-open"><i data-lucide="book-open"></i></button><div class="fnd-ic-name">book-open</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="folder"><i data-lucide="folder"></i></button><div class="fnd-ic-name">folder</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="maximize"><i data-lucide="maximize"></i></button><div class="fnd-ic-name">maximize</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="picture-in-picture-2"><i data-lucide="picture-in-picture-2"></i></button><div class="fnd-ic-name">picture-in-picture-2</div></div>
+        </div>
+
+        <div class="fnd-ic-cat">Agent 与工具 Agent &amp; Tools<span class="fnd-ic-count">17</span></div>
+        <div class="fnd-ic-grid">
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="sparkles"><i data-lucide="sparkles"></i></button><div class="fnd-ic-name">sparkles</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="brain"><i data-lucide="brain"></i></button><div class="fnd-ic-name">brain</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="globe"><i data-lucide="globe"></i></button><div class="fnd-ic-name">globe</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="wrench"><i data-lucide="wrench"></i></button><div class="fnd-ic-name">wrench</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="code-2"><i data-lucide="code-2"></i></button><div class="fnd-ic-name">code-2</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="file-text"><i data-lucide="file-text"></i></button><div class="fnd-ic-name">file-text</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="lightbulb"><i data-lucide="lightbulb"></i></button><div class="fnd-ic-name">lightbulb</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="rotate-cw"><i data-lucide="rotate-cw"></i></button><div class="fnd-ic-name">rotate-cw</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="send"><i data-lucide="send"></i></button><div class="fnd-ic-name">send</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="stop-circle"><i data-lucide="stop-circle"></i></button><div class="fnd-ic-name">stop-circle</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="quote"><i data-lucide="quote"></i></button><div class="fnd-ic-name">quote</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="list-checks"><i data-lucide="list-checks"></i></button><div class="fnd-ic-name">list-checks</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="calculator"><i data-lucide="calculator"></i></button><div class="fnd-ic-name">calculator</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="network"><i data-lucide="network"></i></button><div class="fnd-ic-name">network</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="notebook-pen"><i data-lucide="notebook-pen"></i></button><div class="fnd-ic-name">notebook-pen</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="calendar-days"><i data-lucide="calendar-days"></i></button><div class="fnd-ic-name">calendar-days</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="clock-4"><i data-lucide="clock-4"></i></button><div class="fnd-ic-name">clock-4</div></div>
+        </div>
+
+        <div class="fnd-ic-cat">学科 Subjects<span class="fnd-ic-count">6</span></div>
+        <div class="fnd-ic-grid">
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="atom"><i data-lucide="atom"></i></button><div class="fnd-ic-name">atom</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="flask-conical"><i data-lucide="flask-conical"></i></button><div class="fnd-ic-name">flask-conical</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="chart-column"><i data-lucide="chart-column"></i></button><div class="fnd-ic-name">chart-column</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="sigma"><i data-lucide="sigma"></i></button><div class="fnd-ic-name">sigma</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="dice-5"><i data-lucide="dice-5"></i></button><div class="fnd-ic-name">dice-5</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="beaker"><i data-lucide="beaker"></i></button><div class="fnd-ic-name">beaker</div></div>
+        </div>
+
+        <div class="fnd-ic-cat">状态与反馈 Status &amp; Feedback<span class="fnd-ic-count">15</span></div>
+        <div class="fnd-ic-grid">
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="check"><i data-lucide="check"></i></button><div class="fnd-ic-name">check</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="check-circle-2"><i data-lucide="check-circle-2"></i></button><div class="fnd-ic-name">check-circle-2</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="alert-triangle"><i data-lucide="alert-triangle"></i></button><div class="fnd-ic-name">alert-triangle</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="info"><i data-lucide="info"></i></button><div class="fnd-ic-name">info</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="loader-2"><i data-lucide="loader-2"></i></button><div class="fnd-ic-name">loader-2</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="arrow-right"><i data-lucide="arrow-right"></i></button><div class="fnd-ic-name">arrow-right</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="copy"><i data-lucide="copy"></i></button><div class="fnd-ic-name">copy</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="refresh-cw"><i data-lucide="refresh-cw"></i></button><div class="fnd-ic-name">refresh-cw</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="bookmark"><i data-lucide="bookmark"></i></button><div class="fnd-ic-name">bookmark</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="volume-2"><i data-lucide="volume-2"></i></button><div class="fnd-ic-name">volume-2</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="thumbs-up"><i data-lucide="thumbs-up"></i></button><div class="fnd-ic-name">thumbs-up</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="thumbs-down"><i data-lucide="thumbs-down"></i></button><div class="fnd-ic-name">thumbs-down</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="pause"><i data-lucide="pause"></i></button><div class="fnd-ic-name">pause</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="play"><i data-lucide="play"></i></button><div class="fnd-ic-name">play</div></div>
+          <div class="fnd-ic-item"><button type="button" class="fnd-icon-cell" aria-label="external-link"><i data-lucide="external-link"></i></button><div class="fnd-ic-name">external-link</div></div>
+        </div>
+      </section>
+
+      <!-- I 页脚 -->
+      <p class="fnd-foot">所有令牌同时写入 Figma Tokens Studio（tokens-studio.json），深炭 / 雾蓝 / 奶油为同一组语义令牌的三套取值</p>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* spec-foundations · Lucide 图标渲染（无其他运行时依赖） */
+(function(){
+  if(window.lucide&&typeof lucide.createIcons==='function'){lucide.createIcons();}
+})();
+</script>
+</body>
+</html>
+

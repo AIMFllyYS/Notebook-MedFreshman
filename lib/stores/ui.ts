@@ -28,6 +28,8 @@ export interface OutboundMessage {
 const LS_KEY_SIDEBAR = "gailvlun-sidebar-collapsed";
 const LS_KEY_TOPBAR = "gailvlun-topbar-collapsed";
 const LS_KEY_RIGHT_COLLAPSED = "gailvlun-right-collapsed-by-profile";
+/** Agent 右栏（通顶工作区）折叠状态：不跟 Studio 的三档右栏共用，避免两个模式互相改对方的开合。 */
+const LS_KEY_AGENT_DOCK = "gailvlun-agent-dock-collapsed";
 
 const DEFAULT_RIGHT_COLLAPSED: Record<LayoutProfile, boolean> = {
   full: false,
@@ -91,6 +93,7 @@ interface AppState {
   toggleSidebar: () => void;
   setSidebarCollapsed: (v: boolean) => void;
 
+
   // 顶部导航栏折叠
   topBarCollapsed: boolean;
   toggleTopBar: () => void;
@@ -111,9 +114,12 @@ interface AppState {
   layoutProfile: LayoutProfile;
   /** 当前档位允许的右侧 tab */
   rightTabs: RightTab[];
-  /** 用户按档位分别记忆的右栏折叠状态 */
+  /** 用户按档位分别记忆的右栏折叠状态（仅 Studio 内容页） */
   rightCollapsedByProfile: Record<LayoutProfile, boolean>;
   setRightCollapsedForProfile: (profile: LayoutProfile, collapsed: boolean) => void;
+  /** Agent 右栏（通顶工作区）是否收起。与 Studio 的档位右栏互不影响。 */
+  agentDockCollapsed: boolean;
+  setAgentDockCollapsed: (collapsed: boolean) => void;
 
   /** 页面正中的 Agent 设置层（左下角与 AI 助教共用）。 */
   agentSettingsOpen: boolean;
@@ -217,6 +223,7 @@ export const useStore = create<AppState>((set) => ({
     set({ sidebarCollapsed: v });
   },
 
+
   topBarCollapsed: false,
   toggleTopBar: () =>
     set((s) => {
@@ -247,6 +254,8 @@ export const useStore = create<AppState>((set) => ({
       }
     }
     if (hasRightAttr) updates.rightCollapsedByProfile = right;
+    // 右栏开合不在这里恢复：它现在跟着对话走（见 useAgentDockPerSession），
+    // 恢复上次的全局值会违背「新对话默认不打开右栏」。
     if (Object.keys(updates).length > 0) set(updates);
   },
 
@@ -272,6 +281,19 @@ export const useStore = create<AppState>((set) => ({
       setLayoutAttr(`data-right-collapsed-${profile}`, collapsed);
       return { rightCollapsedByProfile: next };
     }),
+
+  /**
+   * 右侧工作区当前是否收起。
+   * **默认收起**：Agent 打开时不该先弹一块面板（用户口径）。
+   * 真正的「每个对话各自记一份」由 `useAgentDockPerSession` 在 AgentShell 里摆平，
+   * 所以这里不再从 localStorage 恢复上次的值——那会让「默认收起」在新会话里失效。
+   */
+  agentDockCollapsed: true,
+  setAgentDockCollapsed: (collapsed) => {
+    writeBoolean(LS_KEY_AGENT_DOCK, collapsed);
+    setLayoutAttr("data-agent-dock-collapsed", collapsed);
+    set({ agentDockCollapsed: collapsed });
+  },
 
   agentSettingsOpen: false,
   openAgentSettings: () => set({ agentSettingsOpen: true }),

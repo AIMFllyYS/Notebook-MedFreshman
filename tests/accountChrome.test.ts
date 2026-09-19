@@ -9,7 +9,7 @@ function readWorkspaceFile(path: string) {
   return readFileSync(join(root, path), "utf8");
 }
 
-test("左下角坞显示头像和昵称，设置菜单顶部是账户信息", () => {
+test("左下角坞显示头像和昵称，点击直接打开设置面板（额度折叠在内）", () => {
   const dock = readWorkspaceFile("components/layout/LeftDock.tsx");
   const settings = readWorkspaceFile("components/layout/GlobalSettings.tsx");
   const dialog = readWorkspaceFile("components/layout/AccountDialog.tsx");
@@ -17,9 +17,12 @@ test("左下角坞显示头像和昵称，设置菜单顶部是账户信息", ()
 
   assert.match(dock, /LeftDockFace/);
   assert.match(dock, /useAccountProfile/);
-  assert.match(dock, /UserDockMenu|user-menu-quota|额度/);
+  assert.match(dock, /aria-expanded/);
+  assert.doesNotMatch(dock, /UserDockMenu/);
   assert.match(sidebar, /LeftDock/);
-  assert.match(sidebar, /UserQuotaPanel/);
+  assert.match(sidebar, /GlobalSettings/);
+  assert.doesNotMatch(sidebar, /UserQuotaPanel/);
+  assert.match(settings, /title="额度"/);
   assert.match(settings, /data-testid="account-card"/);
   assert.match(settings, /Math\.min\(352/);
   assert.match(settings, /AccountDialog/);

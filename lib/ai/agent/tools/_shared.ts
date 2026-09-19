@@ -3,6 +3,10 @@ import type { AcademicYearId } from "@/lib/constants/academic-year";
 import type { TextToolOutput } from "@/lib/ai/agent/tools/_types";
 import type { EditingUserNoteContext } from "@/lib/notes/editingUserNote";
 import type { FlashcardCatalogItem, UserNoteCatalogItem } from "@/lib/ai/agent/tools/memoryCatalog";
+import type {
+  ProjectFileCatalogItem,
+  ProjectSlicePayload,
+} from "@/lib/ai/agent/tools/projectFiles/types";
 
 export const IMAGE_SEARCH_MAX_TOTAL = 20;
 export {
@@ -33,6 +37,13 @@ export interface StudyToolContext {
   userNotes?: UserNoteCatalogItem[];
   /** 本机复习闪卡目录（复用复习板，不另开存储）。 */
   flashcards?: FlashcardCatalogItem[];
+  /**
+   * 项目文件目录（索引，不含正文）：本机解析产物，服务端读不到浏览器存储，所以随请求上行。
+   * 正文只在 projectSlices 里（「带入对话」的那部分）。
+   */
+  projectFiles?: ProjectFileCatalogItem[];
+  /** 本轮携带的项目切片正文。 */
+  projectSlices?: ProjectSlicePayload[];
 }
 
 /** 跨工具轮次的可变状态（同一请求内共享）。 */

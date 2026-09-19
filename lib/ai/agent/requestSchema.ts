@@ -294,6 +294,67 @@ export const chatRequestSchema = z.object({
     )
     .max(MAX_MEMORY_CARDS)
     .default([]),
+  /**
+   * 项目文件目录（只有索引，没有正文）。本机解析产物，服务端读不到浏览器存储，所以随请求上行。
+   * 上限都放在这里：目录很小（几十 KB），正文只走 projectSlices。
+   */
+  projectFiles: z
+    .array(
+      z
+        .object({
+          fileId: z.string().max(128),
+          name: z.string().max(256).optional().default(""),
+          kind: z.enum(["imported", "studio-ref"]).optional().default("imported"),
+          status: z.enum(["indexed", "parsing", "error"]).optional().default("indexed"),
+          error: z.string().max(512).optional(),
+          studioRef: z
+            .object({
+              path: z.string().max(256),
+              title: z.string().max(256).optional().default(""),
+              address: z.string().max(512).optional().default(""),
+            })
+            .optional(),
+          slices: z
+            .array(
+              z.object({
+                sliceId: z.string().max(64),
+                title: z.string().max(256).optional().default(""),
+                chars: finiteNumber.optional().default(0),
+                summary: z.string().max(512).optional().default(""),
+              }),
+            )
+            .max(200)
+            .default([]),
+        })
+        .transform((file) => ({
+          fileId: file.fileId,
+          name: String(file.name ?? ""),
+          kind: file.kind,
+          status: file.status,
+          ...(file.error ? { error: file.error } : {}),
+          ...(file.studioRef ? { studioRef: { ...file.studioRef } } : {}),
+          slices: file.slices.map((slice) => ({
+            sliceId: slice.sliceId,
+            title: String(slice.title ?? ""),
+            chars: Number(slice.chars ?? 0),
+            summary: String(slice.summary ?? ""),
+          })),
+        })),
+    )
+    .max(64)
+    .default([]),
+  /** 本轮「带入对话」的项目切片正文（单片封顶 12k 字，总预算由客户端裁好）。 */
+  projectSlices: z
+    .array(
+      z.object({
+        fileId: z.string().max(128),
+        sliceId: z.string().max(64),
+        title: z.string().max(256).optional().default(""),
+        text: z.string().max(12_000),
+      }),
+    )
+    .max(120)
+    .default([]),
 });
 
 export type ChatRequest = z.infer<typeof chatRequestSchema>;

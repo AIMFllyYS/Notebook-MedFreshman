@@ -19,7 +19,7 @@ export default function MobileBottomNav() {
 
   return (
     <nav
-      className="mobile-bottom-nav shrink-0 border-t border-[var(--line)] bg-[var(--bg-panel)]/85"
+      className="mobile-bottom-nav shrink-0 border-t border-[var(--line-soft)] bg-[var(--bg-panel)]/85"
       aria-label="手机底栏"
       data-testid="mobile-bottom-nav"
     >

@@ -76,3 +76,11 @@ test("buildLocationLine：学年在定位行，换学年 / 换页只改这一行
   assert.notEqual(original, samePageNewYear);
   assert.notEqual(original, sameYearNewPage);
 });
+
+test("buildLocationLine：Agent 通用对话不绑定页面时整行不输出，不留空章节残行", () => {
+  const agent = { subjectId: "probability", categoryId: "", itemId: "", currentTopic: "", academicYear: "freshman-2" };
+  assert.equal(buildLocationLine(agent), "");
+  // 只缺一半也算没有定位：不允许拼出「分类：detail ｜ 内容项：」
+  assert.equal(buildLocationLine({ ...agent, categoryId: "detail" }), "");
+  assert.equal(buildLocationLine({ ...agent, itemId: "1.4" }), "");
+});

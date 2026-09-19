@@ -12,13 +12,18 @@ import { useMemoryInbox } from "@/lib/stores/memoryInbox";
 import { useQuizExplain } from "@/lib/stores/quizExplain";
 import type { MemoryProposalData, UserNoteEditorData } from "@/lib/stores/windowManager";
 import { toggleManagedWindowFullscreen } from "@/lib/window/toggleManagedFullscreen";
+import { isAgentWorkspace } from "@/lib/stores/workspace";
+import { useStore } from "@/lib/stores/ui";
+import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 
 /** 解析当前应操作的 managed 窗口（activeWindowId 或 z 最高未最小化）。 */
 export function getActiveManagedWindow(): ManagedWindow | null {
   const { windows, activeWindowId } = useWindowManager.getState();
+  // Agent 右栏收起时不算有前台窗口：快捷键/Esc 不该作用在看不见的窗口上。
+  if (isAgentWorkspace() && useStore.getState().agentDockCollapsed) return null;
   if (activeWindowId) {
     const win = windows.find((w) => w.id === activeWindowId);
-    if (win) return win;
+    if (win && !win.minimized) return win;
   }
   const visible = windows.filter((w) => !w.minimized);
   if (visible.length === 0) return null;
@@ -94,6 +99,12 @@ export function toggleMinimizeActiveWindow(): boolean {
 export function toggleFullscreenActiveWindow(): boolean {
   const win = getActiveManagedWindow();
   if (!win) return false;
+  // Agent 右栏没有「浮窗全屏」这个形态：这里的语义与右栏的「全屏 / 缩小」按钮一致。
+  if (isAgentWorkspace()) {
+    const runtime = useAgentDockRuntime.getState();
+    runtime.setDockGlobal(!runtime.dockGlobal);
+    return true;
+  }
   toggleManagedWindowFullscreen(win.id);
   return true;
 }

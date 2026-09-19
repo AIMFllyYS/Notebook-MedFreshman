@@ -1,0 +1,29 @@
+{
+  "productType": "SaaS Desktop Workspace — macOS-style study workspace with an embedded AI Agent (Electron + Next.js)",
+  "confidence": "high",
+  "personality": ["deep-glassmorphism", "macos-native", "airy", "focused", "premium", "warm-neutral-dark", "performance-conscious"],
+  "language": "zh",
+  "visualTone": "Frosted floating-glass surfaces over a soft ambient wallpaper. Dark default is a warm-neutral charcoal glass (reference: Glass Music Player 5) — heavy backdrop blur, high saturation boost, 1px top inner highlight, hairline dividers, large continuous corner radius, white primary action. Two light tints: misty aqua-blue glass and warm cream/butter glass. Everything reads as layered translucent panes, never flat opaque cards.",
+  "kitType": "dashboard",
+  "colorNamingPrefix": "glass",
+  "themes": {
+    "defaultDark": "Warm-neutral charcoal deep glass, like Glass Music Player 5 over a dim warm-gray wallpaper",
+    "lightAqua": "Misty pale-blue frosted glass (light mode option A)",
+    "lightCream": "Warm pale-butter/cream frosted glass (light mode option B)"
+  },
+  "glassSignatures": {
+    "panelFillDark": "rgba(255,255,255,0.10) base with 0.06-0.16 elevation steps",
+    "panelFillLight": "rgba(255,255,255,0.55-0.68)",
+    "blur": "20px / 32px / 48px three tiers, backdrop-filter blur + saturate(180%)",
+    "highlight": "inset 0 1px 0 rgba(255,255,255,0.14) dark, 0.55 light",
+    "hairline": "1px rgba(255,255,255,0.08) dark separators",
+    "radius": "window 28px, panel 18-20px, control 10-12px, pill 9999px",
+    "primaryAction": "Pure white circular/elevated control in dark; ink control in light",
+    "ambient": "Soft blurred color blobs behind glass (aqua/violet/amber), wallpaper-driven"
+  },
+  "brandHeritage": {
+    "existingMark": "Notebook glyph, cream #f4efe6 ground with burnt-orange #d9542c stroke",
+    "existingM3Primary": "#a8c7fa blue (legacy Material 3, being superseded by glass language)"
+  },
+  "uiCopySamples": ["新对话", "搜索课程、笔记、对话", "深度思考", "Agent", "复习", "书架", "设置", "发送", "全部学科", "今日课堂", "智能讲解", "额度", "Work", "Chat"]
+}

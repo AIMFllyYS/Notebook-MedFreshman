@@ -49,4 +49,20 @@ export function useCloudSyncStatus(): CloudSyncStatus {
 
 export function __resetCloudSyncStatusForTests(): void {
   current = IDLE;
+  cloudRowKeys = null;
+}
+
+/* ── 云端行索引 ────────────────────────────────────────────────────────────
+ * 只读快照：最近一次拉取时云端有哪些 `kind:clientId`。
+ * 放在这个轻模块（而不是 engine）是为了让「我的资产」这类 UI 不必把整个同步引擎拖进 chunk。
+ * 语义：null = 还没和云端对过账（不显示角标，不猜）；Set = 以这次拉取为准。 */
+let cloudRowKeys: ReadonlySet<string> | null = null;
+
+export function setCloudRowKeys(keys: Iterable<string> | null): void {
+  cloudRowKeys = keys ? new Set(keys) : null;
+}
+
+export function hasCloudRow(kind: string, clientId: string): boolean | null {
+  if (!cloudRowKeys) return null;
+  return cloudRowKeys.has(`${kind}:${clientId}`);
 }

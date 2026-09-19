@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link2 } from "lucide-react";
 import { SPOTLIGHT_INPUT_CLASS, SPOTLIGHT_SEARCH_FIELD_CLASS } from "@/components/search/spotlightChrome";
 import { openSourcePreview } from "@/lib/chat/openSourcePreview";
+import { recordImport } from "@/lib/stores/imports";
 
 export function parseOpenableUrl(raw: string): { href: string; hostname: string; isHtml: boolean } | null {
   const trimmed = raw.trim();
@@ -33,9 +34,15 @@ export default function OpenUrlField({ onOpened }: { onOpened?: () => void }) {
       setUrlError("请输入有效的 http:// 或 https:// 地址");
       return;
     }
-    openSourcePreview({
+    const title = `${parsed.isHtml ? "HTML" : "网址"} · ${parsed.hostname}`;
+    openSourcePreview({ url: parsed.href, title });
+    // 本地导入记录：我的资产 → 网址 里能再次打开它（只存链接，不存内容）。
+    recordImport({
+      kind: "url",
+      name: parsed.hostname,
+      title,
       url: parsed.href,
-      title: `${parsed.isHtml ? "HTML" : "网址"} · ${parsed.hostname}`,
+      source: "window-taskbar",
     });
     setUrl("");
     setUrlError(null);

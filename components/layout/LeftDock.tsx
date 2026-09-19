@@ -1,7 +1,6 @@
 "use client";
 
 import UserAvatar from "./UserAvatar";
-import UserDockMenu from "./UserDockMenu";
 import { resolveNickname } from "@/lib/profile/displayName";
 import { useAccountProfile } from "@/lib/hooks/useAccountProfile";
 
@@ -32,23 +31,27 @@ export function LeftDockFace({
   );
 }
 
+/** 左下角用户按钮：头像 + 昵称，点击直接打开设置面板（额度折叠在面板内，与手机设置页共用）。 */
 export default function LeftDock({
   buttonRef,
   onToggle,
-  onOpenQuota,
+  settingsOpen = false,
 }: {
   buttonRef: React.RefObject<HTMLButtonElement | null>;
   onToggle: () => void;
-  onOpenQuota?: () => void;
+  /** 设置面板当前是否打开，用于 aria-expanded。 */
+  settingsOpen?: boolean;
 }) {
   const account = useAccountProfile();
   return (
-    <UserDockMenu
-      triggerRef={buttonRef}
-      testId="left-dock"
-      label={`账户 ${account.nickname}`}
-      onOpenQuota={onOpenQuota ?? (() => {})}
-      onOpenSettings={onToggle}
+    <button
+      ref={buttonRef}
+      type="button"
+      aria-label={`账户 ${account.nickname}`}
+      aria-haspopup="dialog"
+      aria-expanded={settingsOpen}
+      data-testid="left-dock"
+      onClick={onToggle}
       className="flex min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-[var(--md-sys-color-surface-container-high)]"
       style={{
         color: "var(--md-sys-color-on-surface-variant)",
@@ -56,7 +59,8 @@ export default function LeftDock({
         border: "none",
         cursor: "pointer",
       }}
-      trigger={<LeftDockFace />}
-    />
+    >
+      <LeftDockFace />
+    </button>
   );
 }

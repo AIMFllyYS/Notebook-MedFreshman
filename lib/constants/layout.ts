@@ -9,6 +9,9 @@ export const NOTES_PANEL_ID = "notes-panel";
 /** 右侧面板 DOM id。Agent 模式下 Mac 窗放大铺在这一栏。 */
 export const RIGHT_PANEL_ID = "right-panel";
 
+/** Stable portal target below the Agent dock tabs and built-in tool chrome. */
+export const AGENT_DOCK_CONTENT_ID = "agent-dock-content";
+
 export type FullscreenTarget = "viewport" | "notes" | "right" | (() => DOMRect | null);
 
 function panelRect(id: string): DOMRect | null {

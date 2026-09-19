@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { Plus, Trash2, Star, Home, Globe } from "lucide-react";
+import { Bookmark, Trash2, Star, Home, Globe } from "lucide-react";
 import { useBrowser } from "@/lib/hooks/useBrowser";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 
@@ -78,9 +78,10 @@ export default function BrowserSettingsButton({ onAdded }: { onAdded?: () => voi
         ref={btnRef}
         onClick={() => setOpen((v) => !v)}
         title="收藏 / 浏览器设置"
+        aria-label="收藏 / 浏览器设置"
         className="press flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
       >
-        <Plus size={16} />
+        <Bookmark size={15} />
       </button>
 
       {open &&

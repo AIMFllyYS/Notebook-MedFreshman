@@ -1,21 +1,49 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import AgentConversationSidebar from "./AgentConversationSidebar";
 
+type TestSession = {
+  id: string;
+  title: string;
+  kind: string;
+  updatedAt: number;
+  messageCount: number;
+  preview?: string;
+  archived?: boolean;
+  folderId?: string | null;
+};
+
+const push = vi.fn();
+/** 当前路由可切换：验证「在资产页点会话/新对话要跳回对话页」。 */
+const routeRef = { pathname: "/agent" };
+
 const historyState = {
-  sessionsMeta: [
-    { id: "main-1", title: "细胞生物学复习", kind: "main", updatedAt: 1_700_000_000_000, messageCount: 8, preview: "线粒体" },
-    { id: "float-1", title: "解释线粒体", kind: "floating", updatedAt: 1_700_000_100_000, messageCount: 3 },
-    { id: "note-1", title: "被覆上皮", kind: "note", updatedAt: 1_700_000_200_000, messageCount: 2 },
+  sessionsMeta: [] as TestSession[],
+  activeSessionId: null as string | null,
+  activeProjectId: null as string | null,
+  folders: [
+    { id: "project-note", name: "笔记记录", createdAt: 0, system: "note" as const },
+    { id: "project-floating", name: "划词摘录", createdAt: 0, system: "floating" as const },
+    { id: "folder-a", name: "组胚", createdAt: 5, updatedAt: 5 },
   ],
-  activeSessionId: "main-1",
-  createSession: vi.fn(() => "new-1"),
+  startNewChat: vi.fn(() => "session-1"),
   deleteSession: vi.fn(),
   switchSession: vi.fn(),
+  archiveSession: vi.fn(),
+  updateSessionTitle: vi.fn(),
+  createFolder: vi.fn(() => "folder-new"),
+  renameFolder: vi.fn(),
+  deleteFolder: vi.fn(() => true),
+  moveSessionToFolder: vi.fn(),
+  setActiveProject: vi.fn(),
 };
 
 const restoreWindow = vi.fn();
-const openLibrary = vi.fn();
+
+vi.mock("next/navigation", () => ({
+  usePathname: () => routeRef.pathname,
+  useRouter: () => ({ push }),
+}));
 
 vi.mock("@/lib/hooks/useChatHistory", () => ({
   useChatHistory: Object.assign(
@@ -30,9 +58,6 @@ vi.mock("@/lib/hooks/useFloatingChats", () => ({
 vi.mock("@/lib/hooks/useTokenTracker", () => ({
   useTokenTracker: { getState: () => ({ resetSession: vi.fn() }) },
 }));
-vi.mock("@/lib/notes/openUserNote", () => ({
-  openNoteLibrary: (...args: unknown[]) => openLibrary(...args),
-}));
 vi.mock("./LeftDock", () => ({
   default: () => (
     <button type="button" data-testid="left-dock">
@@ -40,12 +65,18 @@ vi.mock("./LeftDock", () => ({
     </button>
   ),
 }));
-vi.mock("./UserQuotaPanel", () => ({ default: () => null }));
 vi.mock("./GlobalSettings", () => ({ default: () => null }));
 
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
+});
+
+beforeEach(() => {
+  historyState.sessionsMeta = [];
+  historyState.activeSessionId = null;
+  historyState.activeProjectId = null;
+  routeRef.pathname = "/agent";
 });
 
 const ctx = {
@@ -55,30 +86,165 @@ const ctx = {
   currentTopic: "anatomy detail 1.1",
 };
 
-describe("AgentConversationSidebar", () => {
-  it("两栏分组：正常对话与划词助手，笔记会话不出现", () => {
+function seedSessions() {
+  historyState.sessionsMeta = [
+    { id: "main-1", title: "细胞生物学复习", kind: "main", updatedAt: 1_700_000_000_000, messageCount: 8, preview: "线粒体" },
+    { id: "float-1", title: "解释线粒体", kind: "floating", updatedAt: 1_700_000_100_000, messageCount: 3 },
+    { id: "note-1", title: "被覆上皮", kind: "note", updatedAt: 1_700_000_200_000, messageCount: 2 },
+    { id: "proj-1", title: "组胚复习", kind: "main", updatedAt: 1_700_000_300_000, messageCount: 5, folderId: "folder-a" },
+  ] as TestSession[];
+}
+
+describe("AgentConversationSidebar（项目 + 最近）", () => {
+  it("非对话页点新对话 / 点会话：都要跳回 /agent", () => {
+    seedSessions();
+    routeRef.pathname = "/agent/assets";
     render(<AgentConversationSidebar chatContext={ctx} />);
-    expect(screen.getByTestId("agent-conversation-sidebar")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "新对话" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "我的资产" })).toBeInTheDocument();
-    expect(screen.getByLabelText("正常对话")).toBeInTheDocument();
-    expect(screen.getByLabelText("划词助手对话")).toBeInTheDocument();
-    expect(screen.getByText("细胞生物学复习")).toBeInTheDocument();
-    expect(screen.getByText("解释线粒体")).toBeInTheDocument();
-    expect(screen.queryByText("被覆上皮")).toBeNull();
-    expect(screen.getByTestId("left-dock")).toBeInTheDocument();
-    expect(screen.getByTestId("user-avatar")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId("agent-nav-new-chat"));
+    expect(push).toHaveBeenCalledWith("/agent");
+    expect(historyState.startNewChat).toHaveBeenCalled();
+
+    push.mockClear();
+    fireEvent.click(screen.getByLabelText("细胞生物学复习"));
+    expect(push).toHaveBeenCalledWith("/agent");
+    expect(historyState.switchSession).toHaveBeenCalledWith("main-1");
   });
 
-  it("新对话 / 我的资产 / 点选主对话与划词会话", () => {
+  it("四行导航固定在最上；系统项目与用户项目各归各的会话", () => {
+    seedSessions();
     render(<AgentConversationSidebar chatContext={ctx} />);
-    fireEvent.click(screen.getByRole("button", { name: "新对话" }));
-    expect(historyState.createSession).toHaveBeenCalledWith(ctx);
-    fireEvent.click(screen.getByRole("button", { name: "我的资产" }));
-    expect(openLibrary).toHaveBeenCalledWith({ intent: "browse" });
+    expect(screen.getByTestId("agent-nav")).toBeInTheDocument();
+    expect(screen.getByTestId("agent-nav-new-chat")).toHaveTextContent("新对话");
+    expect(screen.getByTestId("agent-nav-assets")).toHaveTextContent("我的资产");
+    expect(screen.getByTestId("agent-nav-scheduled")).toHaveTextContent("定时任务");
+    expect(screen.getByTestId("agent-nav-plugins")).toHaveTextContent("插件市场");
+    expect(screen.getByTestId("agent-projects")).toBeInTheDocument();
+    expect(screen.getByTestId("agent-recents")).toBeInTheDocument();
+    // 系统项目：笔记记录 / 划词摘录
+    expect(screen.getByLabelText("笔记记录")).toBeInTheDocument();
+    expect(screen.getByLabelText("划词摘录")).toBeInTheDocument();
+    expect(screen.getByText("被覆上皮")).toBeInTheDocument();
+    expect(screen.getByText("解释线粒体")).toBeInTheDocument();
+    // 用户项目里的会话与 Recents 里的会话
+    expect(screen.getByText("组胚复习")).toBeInTheDocument();
+    expect(screen.getByText("细胞生物学复习")).toBeInTheDocument();
+    expect(screen.getByTestId("left-dock")).toBeInTheDocument();
+  });
+
+  it("我的资产走路由跳转（不再是弹窗）", () => {
+    render(<AgentConversationSidebar chatContext={ctx} />);
+    fireEvent.click(screen.getByTestId("agent-nav-assets"));
+    expect(push).toHaveBeenCalledWith("/agent/assets");
+    fireEvent.click(screen.getByTestId("agent-nav-scheduled"));
+    expect(push).toHaveBeenCalledWith("/agent/scheduled");
+    fireEvent.click(screen.getByTestId("agent-nav-plugins"));
+    expect(push).toHaveBeenCalledWith("/agent/plugins");
+  });
+
+  it("新对话把当前项目作为落点；点会话会同步项目落点", () => {
+    seedSessions();
+    historyState.activeProjectId = "folder-a";
+    historyState.activeSessionId = "main-1";
+    render(<AgentConversationSidebar chatContext={ctx} />);
+    fireEvent.click(screen.getByTestId("agent-nav-new-chat"));
+    expect(historyState.startNewChat).toHaveBeenCalledWith(ctx, "folder-a");
+
     fireEvent.click(screen.getByLabelText("细胞生物学复习"));
     expect(historyState.switchSession).toHaveBeenCalledWith("main-1");
+    expect(historyState.setActiveProject).toHaveBeenLastCalledWith(null);
+
+    fireEvent.click(screen.getByLabelText("划词摘录"));
+    historyState.switchSession.mockClear();
+  });
+
+  it("划词会话点开是还原浮窗，不是切主对话", () => {
+    seedSessions();
+    render(<AgentConversationSidebar chatContext={ctx} />);
     fireEvent.click(screen.getByLabelText("解释线粒体"));
     expect(restoreWindow).toHaveBeenCalledWith("float-1");
+    expect(historyState.switchSession).not.toHaveBeenCalled();
+  });
+
+  it("默认一次 10 条，续载后放出其余", () => {
+    historyState.sessionsMeta = Array.from({ length: 13 }, (_, i) => ({
+      id: `bulk-${i}`,
+      title: `批量对话 ${i}`,
+      kind: "main",
+      updatedAt: 1_700_000_000_000 - i,
+      messageCount: 1,
+    })) as TestSession[];
+    render(<AgentConversationSidebar chatContext={ctx} />);
+    expect(screen.getByText("批量对话 9")).toBeInTheDocument();
+    expect(screen.queryByText("批量对话 10")).toBeNull();
+    fireEvent.click(screen.getByText("还有 3 个"));
+    expect(screen.getByText("批量对话 12")).toBeInTheDocument();
+  });
+
+  it("会话右键：重命名 / 移动到项目 / 归档，删除要二次确认", () => {
+    seedSessions();
+    render(<AgentConversationSidebar chatContext={ctx} />);
+
+    fireEvent.contextMenu(screen.getByLabelText("细胞生物学复习"));
+    expect(screen.getByTestId("agent-panel-menu")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("menuitem", { name: "重命名" }));
+    const renameInput = screen.getByTestId("session-rename-input");
+    fireEvent.change(renameInput, { target: { value: "细胞生物学复习（改）" } });
+    fireEvent.keyDown(renameInput, { key: "Enter" });
+    expect(historyState.updateSessionTitle).toHaveBeenCalledWith("main-1", "细胞生物学复习（改）");
+
+    fireEvent.contextMenu(screen.getByLabelText("细胞生物学复习"));
+    fireEvent.click(screen.getByRole("menuitem", { name: "组胚" }));
+    expect(historyState.moveSessionToFolder).toHaveBeenCalledWith("main-1", "folder-a");
+
+    fireEvent.contextMenu(screen.getByLabelText("细胞生物学复习"));
+    fireEvent.click(screen.getByRole("menuitem", { name: "删除对话" }));
+    expect(historyState.deleteSession).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByTestId("session-delete-confirm").querySelectorAll("button")[1]);
+    expect(historyState.deleteSession).toHaveBeenCalledWith("main-1");
+  });
+
+  it("系统项目的会话不给「移动到项目」，也不给删项目入口", () => {
+    seedSessions();
+    render(<AgentConversationSidebar chatContext={ctx} />);
+    fireEvent.contextMenu(screen.getByLabelText("被覆上皮"));
+    expect(screen.queryByText("移动到项目")).toBeNull();
+    fireEvent.contextMenu(screen.getByLabelText("笔记记录"));
+    expect(screen.queryByRole("menuitem", { name: "删除项目" })).toBeNull();
+    // 删项目也要二次确认：第一次点只是换成确认块，确认后才落库。
+    fireEvent.contextMenu(screen.getByLabelText("组胚"));
+    fireEvent.click(screen.getByRole("menuitem", { name: "删除项目" }));
+    expect(historyState.deleteFolder).not.toHaveBeenCalled();
+    const confirm = screen.getByTestId("project-delete-confirm");
+    expect(confirm).toHaveTextContent("退回 Recents");
+    fireEvent.click(confirm.querySelectorAll("button")[1]);
+    expect(historyState.deleteFolder).toHaveBeenCalledWith("folder-a");
+  });
+
+  it("面板右键新建项目，并且归档视图仍能切换", () => {
+    historyState.sessionsMeta = [
+      { id: "main-1", title: "细胞生物学复习", kind: "main", updatedAt: 1, messageCount: 8 },
+      { id: "arch-1", title: "归档过的对话", kind: "main", updatedAt: 2, messageCount: 3, archived: true },
+    ] as TestSession[];
+    render(<AgentConversationSidebar chatContext={ctx} />);
+    expect(screen.queryByText("归档过的对话")).toBeNull();
+
+    fireEvent.contextMenu(screen.getByTestId("agent-conversation-sidebar"));
+    fireEvent.click(screen.getByRole("menuitem", { name: "新建项目" }));
+    expect(historyState.createFolder).toHaveBeenCalled();
+    // 菜单点完就关（真实运行时新项目由 store 回填，这里只断言动作与关闭）
+    expect(screen.queryByTestId("agent-panel-menu")).toBeNull();
+
+    // 项目重命名：右键项目 → 重命名项目 → 就地输入 → Enter
+    fireEvent.contextMenu(screen.getByLabelText("组胚"));
+    fireEvent.click(screen.getByRole("menuitem", { name: "重命名项目" }));
+    const projectInput = screen.getByTestId("project-rename-input");
+    fireEvent.change(projectInput, { target: { value: "组织胚胎学" } });
+    fireEvent.keyDown(projectInput, { key: "Enter" });
+    expect(historyState.renameFolder).toHaveBeenCalledWith("folder-a", "组织胚胎学");
+
+    fireEvent.click(screen.getByTestId("archived-toggle"));
+    expect(screen.getByText("归档过的对话")).toBeInTheDocument();
+    expect(screen.queryByTestId("agent-projects")).toBeNull();
   });
 });

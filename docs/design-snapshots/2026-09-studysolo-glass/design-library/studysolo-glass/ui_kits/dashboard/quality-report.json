@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "screensGenerated": 4,
+  "coreComponentsUsed": ["button", "menu-bar", "glass-panel", "input-field", "mac-window"],
+  "supportComponentsUsed": ["tab-bar"],
+  "previewClassReuseRate": 0.72,
+  "hasProductContext": true,
+  "inventedComponents": [],
+  "renderedFromEvidence": [],
+  "primaryActionPerScreen": [
+    { "screen": "agent-workspace", "action": "新对话 / 在 composer 发送消息" },
+    { "screen": "empty-state", "action": "点击建议提示词开始对话" },
+    { "screen": "sheet-delete", "action": "确认删除会话" },
+    { "screen": "model-popover", "action": "切换 Agent 模型" }
+  ],
+  "interactiveStatesRendered": ["hover", "focus", "active", "selected", "disabled", "expanded", "collapsed", "popover-open", "checked", "theme-switch"],
+  "warnings": []
+}

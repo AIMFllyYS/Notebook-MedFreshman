@@ -11,6 +11,28 @@ import nextTypeScript from "eslint-config-next/typescript";
 export default defineConfig([
   ...nextCoreWebVitals,
   ...nextTypeScript,
+  {
+    // 持久化 store（settings / appMode …）在首帧仍是默认值，本机值只在水合之后可用。
+    // 用 useState 初始化器取值会永久停在默认值，也会让首屏 DOM 与服务端不一致（React Hydration failed）。
+    files: ["components/**/*.tsx", "app/**/*.tsx"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            "CallExpression[callee.name='useState'] > ArrowFunctionExpression MemberExpression[object.name='useSettings'][property.name='getState']",
+          message:
+            "不要在 useState 初始化器里读 useSettings.getState()：首帧只有默认值，会永久停留并造成 hydration 不一致。请改用 useSettings((s) => s.x) 订阅。",
+        },
+        {
+          selector:
+            "CallExpression[callee.name='useState'] > ArrowFunctionExpression MemberExpression[object.name='useAppMode'][property.name='getState']",
+          message:
+            "不要在 useState 初始化器里读 useAppMode.getState()：本机模式水合后才可用。请改用 useAppMode((s) => s.x) 订阅。",
+        },
+      ],
+    },
+  },
   // 构建产物与同仓的独立子项目（各自有自己的 lint 配置/锁文件）不纳入根 lint。
   globalIgnores([
     ".next/**",

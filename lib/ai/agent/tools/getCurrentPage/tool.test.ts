@@ -37,6 +37,15 @@ test("getCurrentPage：占位页给出尚未生成提示", async (t) => {
   assert.equal(result.contextKey, "page:probability/detail/no-such-page");
 });
 
+test("getCurrentPage：通用对话没有当前页时直说，不谎报成「占位未生成」", async (t) => {
+  // 即使磁盘上真能读到内容，未绑定页面的上下文也不该把它当成「用户正在看的那一页」
+  t.mock.method(contentIo, "readFileSync", () => "# fixture page");
+  const agentCtx: StudyToolContext = { ...ctx, categoryId: "", itemId: "" };
+  const result = (await createGetCurrentPageTool(agentCtx, createToolRuntime()).execute!({}, execOpts)) as GetCurrentPageOutput;
+  assert.match(result.text, /没有打开任何小节/);
+  assert.doesNotMatch(result.text, /fixture page|尚未生成/);
+});
+
 test("getCurrentPage：同一 contextKey 二次调用只回已加载", async (t) => {
   t.mock.method(contentIo, "readFileSync", () => "body");
   const runtime = createToolRuntime();

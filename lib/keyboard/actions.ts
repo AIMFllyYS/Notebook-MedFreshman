@@ -50,7 +50,8 @@ export function dispatchShortcutAction(
 
     case "global.newChat": {
       const chatContext = currentChatContext();
-      useChatHistory.getState().createSession(chatContext);
+      // 已有空白新对话就复用它，不再落第二条（连按快捷键不该刷出一堆空会话）
+      useChatHistory.getState().startNewChat(chatContext);
       useStore.getState().setRightTab("ai");
       return true;
     }
