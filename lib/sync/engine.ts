@@ -45,7 +45,7 @@ import {
 } from "./payload";
 import { beginCloudSyncApply, endCloudSyncApply } from "./schedule";
 import { isSessionStreaming, __resetStreamingSessionsForTests } from "./streamingSessions";
-import { getCloudSyncStatus, setCloudSyncStatus } from "./status";
+import { getCloudSyncStatus, setCloudRowKeys, setCloudSyncStatus } from "./status";
 import {
   CLOUD_SYNC_KINDS,
   type ChatProjectSyncPayload,
@@ -181,6 +181,7 @@ export function __resetCloudSyncForTests(): void {
   lastPushedHash.clear();
   remoteBytesByKey = new Map();
   remoteBytesReady = false;
+  setCloudRowKeys(null);
   chain = Promise.resolve();
   unknownKindWarned.clear();
   __setSyncLimitsForTests(null);
@@ -435,12 +436,14 @@ function rememberRemoteBytesFromRows(rows: SyncDocumentRow[]): void {
   }
   remoteBytesByKey = next;
   remoteBytesReady = true;
+  setCloudRowKeys(next.keys());
 }
 
 function noteRemoteBytes(kind: CloudSyncKind, clientId: string, bytes: number, deleted: boolean): void {
   const key = jobKey(kind, clientId);
   if (deleted) remoteBytesByKey.delete(key);
   else remoteBytesByKey.set(key, bytes);
+  setCloudRowKeys(remoteBytesByKey.keys());
 }
 
 function cachedUserBytes(skipKind: CloudSyncKind, skipId: string): number | null {

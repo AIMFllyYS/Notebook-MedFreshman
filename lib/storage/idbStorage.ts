@@ -24,6 +24,8 @@ export const PERSIST_KEYS = {
   billingHistory: "billing-history",
   documents: "documents",
   userNotes: "user-notes",
+  /** Agent 的本地导入记录（文件绝对路径 / 网址快捷方式），不上云。 */
+  imports: "agent-imports",
 } as const;
 
 export const CHAT_SESSION_KEY_PREFIX = "chat-session:";

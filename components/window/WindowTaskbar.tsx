@@ -14,6 +14,7 @@ import { fileTypeAccent } from "@/components/icons/file-types/FileTypeIcon";
 import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, type AttachmentPreview, type ImageAttachmentPreview } from "@/lib/ai/imageUtils";
 import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
+import { localPathOf, recordImport } from "@/lib/stores/imports";
 import OpenUrlField from "@/components/window/OpenUrlDialog";
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import AgentDockTabs from "@/components/window/AgentDockTabs";
@@ -115,6 +116,18 @@ export function AddContentButton({ showUrlField = true }: { showUrlField?: boole
 
   const handleFiles = async (files: File[]) => {
     const { attachments, errors } = await filesToAttachments(files, { maxFileSize: MAX_LOCAL_FILE_SIZE });
+    // 从加号菜单进来的文件也算「本地导入」：我的资产 → 文件 能按路径找回它。
+    for (const file of files) {
+      if (file.type.startsWith("image/")) continue;
+      recordImport({
+        kind: "file",
+        name: file.name,
+        sizeBytes: file.size,
+        mimeType: file.type || undefined,
+        absPath: localPathOf(file),
+        source: "window-taskbar",
+      });
+    }
     attachments.forEach((attachment, index) => {
       const originalName = isImagePreview(attachment) ? attachment.file.name : attachment.name;
       const kind = previewKind(attachment);
