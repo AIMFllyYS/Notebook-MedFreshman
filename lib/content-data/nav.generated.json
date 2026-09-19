@@ -5895,6 +5895,45 @@
                   "quizRef": "rec-2026-fall-016-018"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-019-020",
+              "title": "第19-20节 · 内脏学总论与消化系统开篇",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-019-020",
+                  "title": "课堂原文 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                },
+                {
+                  "id": "note-rec-2026-fall-019-020",
+                  "title": "课堂笔记 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                },
+                {
+                  "id": "card-rec-2026-fall-019-020",
+                  "title": "复习手卡 · 第19-20节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-019-020",
+                  "quizRef": "rec-2026-fall-019-020"
+                }
+              ]
             }
           ]
         },
@@ -5972,6 +6011,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-016-018",
               "quizRef": "rec-2026-fall-016-018",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-019-020",
+              "title": "课堂纪要 · 第19-20节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-019-020",
+              "quizRef": "rec-2026-fall-019-020",
               "layoutProfile": "full"
             }
           ]
@@ -8471,6 +8521,45 @@
                   "quizRef": "rec-2026-fall-007-008"
                 }
               ]
+            },
+            {
+              "id": "rec-2026-fall-009-011",
+              "title": "第9-11节 · 上皮组织与固有结缔组织实验",
+              "type": "document",
+              "status": "done",
+              "navigationOnly": true,
+              "children": [
+                {
+                  "id": "rec-rec-2026-fall-009-011",
+                  "title": "课堂原文 · 第9-11节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "text",
+                  "materialRole": "recording",
+                  "lessonRef": "rec-2026-fall-009-011",
+                  "quizRef": "rec-2026-fall-009-011"
+                },
+                {
+                  "id": "note-rec-2026-fall-009-011",
+                  "title": "课堂笔记 · 第9-11节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "html",
+                  "materialRole": "notes",
+                  "lessonRef": "rec-2026-fall-009-011",
+                  "quizRef": "rec-2026-fall-009-011"
+                },
+                {
+                  "id": "card-rec-2026-fall-009-011",
+                  "title": "复习手卡 · 第9-11节",
+                  "type": "document",
+                  "status": "done",
+                  "renderType": "markdown",
+                  "materialRole": "cards",
+                  "lessonRef": "rec-2026-fall-009-011",
+                  "quizRef": "rec-2026-fall-009-011"
+                }
+              ]
             }
           ]
         },
@@ -8526,6 +8615,17 @@
               "materialRole": "minutes",
               "lessonRef": "rec-2026-fall-007-008",
               "quizRef": "rec-2026-fall-007-008",
+              "layoutProfile": "full"
+            },
+            {
+              "id": "min-rec-2026-fall-009-011",
+              "title": "课堂纪要 · 第9-11节",
+              "type": "document",
+              "status": "done",
+              "renderType": "markdown",
+              "materialRole": "minutes",
+              "lessonRef": "rec-2026-fall-009-011",
+              "quizRef": "rec-2026-fall-009-011",
               "layoutProfile": "full"
             }
           ]

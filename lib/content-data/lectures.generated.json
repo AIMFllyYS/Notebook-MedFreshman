@@ -266,6 +266,50 @@
       }
     },
     {
+      "subjectId": "anatomy",
+      "lessonId": "rec-2026-fall-019-020",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "系统解剖学",
+      "sessionRange": {
+        "start": 19,
+        "end": 20
+      },
+      "taughtOn": "2026-09-18",
+      "topic": "内脏学总论与消化系统开篇",
+      "revision": 1,
+      "quizId": "rec-2026-fall-019-020",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-019-020"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-019-020"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-019-020"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-019-020"
+        }
+      },
+      "hashes": {
+        "recording": "422f73923fd3bb00beed1f87cc76cfee563f5f1a3a2475ca00d4c3ca5e4fa86c",
+        "notesText": "6c024dec6b03c4af04a69ee06b35caea3500bd7c9b9661e9069afcca7b99675f"
+      }
+    },
+    {
       "subjectId": "biochemistry",
       "lessonId": "rec-2026-fall-001-002",
       "courseInstanceId": "rec-2026-fall",
@@ -1011,6 +1055,50 @@
       "hashes": {
         "recording": "ecb4171b042a42638f4f9078bfd310d312e0ea4b0d92e308587777632bcecaff",
         "notesText": "e0ebdea743f43d7c8f34d395dfce8bd52875001e87d64ab84950237fd5c2767e"
+      }
+    },
+    {
+      "subjectId": "histology",
+      "lessonId": "rec-2026-fall-009-011",
+      "courseInstanceId": "rec-2026-fall",
+      "courseName": "人体组织学",
+      "sessionRange": {
+        "start": 9,
+        "end": 11
+      },
+      "taughtOn": "2026-09-18",
+      "topic": "上皮组织与固有结缔组织实验",
+      "revision": 1,
+      "quizId": "rec-2026-fall-009-011",
+      "materials": {
+        "recording": {
+          "role": "recording",
+          "file": "recording.md",
+          "format": "text",
+          "articleId": "rec-rec-2026-fall-009-011"
+        },
+        "minutes": {
+          "role": "minutes",
+          "file": "minutes.md",
+          "format": "markdown",
+          "articleId": "min-rec-2026-fall-009-011"
+        },
+        "notes": {
+          "role": "notes",
+          "file": "notes.html",
+          "format": "html",
+          "articleId": "note-rec-2026-fall-009-011"
+        },
+        "cards": {
+          "role": "cards",
+          "file": "cards.md",
+          "format": "markdown",
+          "articleId": "card-rec-2026-fall-009-011"
+        }
+      },
+      "hashes": {
+        "recording": "699b856044882d02ff9eedf93070c9b922fb4d814ed7f6fb47032fcf20c7a419",
+        "notesText": "de8046900e8071e42f4aa3c022e7c972119837514344bc2e4efb7cb558a6641c"
       }
     },
     {

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subjectId": "anatomy",
+  "courseInstanceId": "rec-2026-fall",
+  "lessonId": "rec-2026-fall-019-020",
+  "courseName": "系统解剖学",
+  "sessionRange": {
+    "start": 19,
+    "end": 20
+  },
+  "taughtOn": "2026-09-18",
+  "topic": "内脏学总论与消化系统开篇",
+  "revision": 1,
+  "materials": {
+    "recording": {
+      "file": "recording.md",
+      "format": "text"
+    },
+    "minutes": {
+      "file": "minutes.md",
+      "format": "markdown"
+    },
+    "notes": {
+      "file": "notes.html",
+      "format": "html"
+    },
+    "cards": {
+      "file": "cards.md",
+      "format": "markdown"
+    }
+  },
+  "quizId": "rec-2026-fall-019-020"
+}
