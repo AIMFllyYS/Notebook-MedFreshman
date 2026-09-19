@@ -131,7 +131,7 @@ console errors: 仅探针自己制造的 500 与未登录的 401
 | 门 | 结果 |
 |---|---|
 | `npx tsc --noEmit` | 0 |
-| `pnpm run test:unit` | **1387 pass / 0 fail**（阶段落地 +45，BUG 修复轮 +11，后续两轮 +2） |
+| `pnpm run test:unit` | **1388 pass / 0 fail**（阶段落地 +45，BUG 修复轮 +11，后续三轮 +3） |
 | `pnpm run test:react` | **150 文件 / 583 pass**（+5 文件 / +30 用例） |
 | `npx eslint .` | 0 error（warning 90，基线 91） |
 | `npx knip` | 未用文件 3 / 未用导出 14 / 未用类型 1 —— 与基线一致（两轮新增的导出都有消费者） |
@@ -142,7 +142,7 @@ console errors: 仅探针自己制造的 500 与未登录的 401
 
 ```
 npx tsc --noEmit                 → 0
-pnpm run test:unit               → tests 1387 / pass 1387 / fail 0
+pnpm run test:unit               → tests 1388 / pass 1388 / fail 0
 pnpm run test:react              → Test Files 150 passed / Tests 583 passed
 npx eslint .                     → 0 errors, 90 warnings（基线 91）
 npx knip --no-progress           → Unused files 3 / exports 14 / types 1（与基线一致）
@@ -248,6 +248,38 @@ html:not([data-theme="light"]) [data-agent-shell] {
 
 **实测**：进资产页时骨架可见 **1025ms**；点卡片进详情页，详情骨架可见 **1190ms**（含路由切换），随后都换成真内容，无 console 报错。
 
+### 10. 中间对话不贴满左右面板（Codex 式空隙 + 一栏居中）
+
+**要的效果**：中央对话不再顶住左栏/右栏，两侧留出合适的空隙；宽屏时正文收进一栏、居中。
+
+**改法**（纯 CSS，作用域锁在 Agent 外壳）：
+```css
+[data-agent-shell] .chat-panel {
+  --agent-chat-inline: clamp(20px, 2.6vw, 44px);   /* 两侧空隙，随窗口微调 */
+  --agent-chat-max: 920px;                          /* 宽屏时的可读宽度 */
+}
+[data-agent-shell] .chat-messages { padding-left/right: var(--agent-chat-inline) !important; }
+[data-agent-shell] .chat-messages-sizer { width: min(100%, var(--agent-chat-max)) !important; margin-inline: auto; }
+[data-agent-shell] .chat-panel:not(.chat-panel--welcome) .chat-input-container { inset-inline: var(--agent-chat-inline); max-width: var(--agent-chat-max); margin-inline: auto; }
+```
+
+几个必须踩准的点：
+- 消息是**虚拟列表**（`.chat-messages-sizer` 里放绝对定位的行），所以要把定宽/居中加在 sizer 上（行是它的 `width:100%` 子元素，跟着走），
+  而不是给 `.chat-message` 加 max-width —— 那样只会让每条消息自己变窄、整体仍贴左；为此在 `ChatThread` 里给 sizer 加了 `chat-messages-sizer` 类；
+- 输入框原本 `inset-inline: 12px` 且绝对定位：加 `max-width` + `margin-inline: auto` 后与正文同宽同中线（左+右都定位时 auto 外边距会居中），
+  容器查询的宽度也跟着变成「正文宽度」，项目 chip 的窄屏收起逻辑自动跟着走；
+- `padding-left/right` 用了 `!important`：有跳转点时会内联写 `padding-right: 18px`，那 18px 在 Codex 式留白下会把右间隙吃掉；
+- 欢迎页那份输入框自带 `max-width: 780px; margin: auto`，用 `:not(.chat-panel--welcome)` 排除，不重复处理；
+- 加载/报错横幅、「跟随最新输出」按钮也一起对齐到这条中线。
+
+**实测**（1440×900，Playwright 量矩形）：
+| 场景 | 面板宽 | 正文栏宽 | 左右间隙 |
+|---|---|---|---|
+| 左栏展开 | 1119px | 920px | 99px / 99px（输入框同宽同中线） |
+| 左栏收起 | 1438px | 920px | 259px / 259px |
+
+Studio 的对话（不在 agent 外壳里）padding 仍是 12px/18px，未受影响；无 console 报错。
+
 ### 9. 切标签时卡片「滑到新位置」（重排动画）
 
 **要的效果**：从「全部」切到「笔记」这类标签切换，留下的卡不是被瞬间重排，而是彼此挪着位过去 —— 有移动的连续感。
@@ -278,7 +310,7 @@ html:not([data-theme="light"]) [data-agent-shell] {
 | `components/window/ManagedWindow.test.tsx` | 停靠用例显式打开右栏（默认已改为收起） |
 
 **本轮门（末次全量）**：`tsc` 0 · `test:unit` 1387/0 · `test:react` 150 文件 / 583 通过 · `eslint` 0 error / 90 warning ·
-`knip` 3/14/1（基线） · `check:encoding` 3575 合法 · 浏览器验收 13/13 + 6/6 + 4/4 + 3/3 PASS。
+`knip` 3/14/1（基线） · `check:encoding` 3575 合法 · 浏览器验收 13/13 + 6/6 + 4/4 + 3/3 + 6/6 PASS。
 
 ## 运维坑（本轮踩到，记下来）
 
