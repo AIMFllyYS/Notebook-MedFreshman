@@ -1645,6 +1645,39 @@
 .chat-input-send:active {
   transform: scale(0.95);
 }
+/* 项目 chip：坐在输入框右下角、发送键左侧（只有 Agent 中央对话会渲染它）。 */
+.chat-input-project-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  max-width: 132px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 13px;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 32%, transparent);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 11.5px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+}
+.chat-input-project-chip:hover {
+  background: var(--bg-muted);
+  border-color: var(--md-sys-color-primary);
+}
+.chat-input-project-chip-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* 窄输入框里只留图标，别把发送键挤走。 */
+@container chat-composer (max-width: 520px) {
+  .chat-input-project-chip-text {
+    display: none;
+  }
+}
 .chat-input-toolbar {
   display: flex;
   flex-wrap: wrap;

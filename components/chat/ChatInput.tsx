@@ -42,6 +42,7 @@ import AnchoredMenu from '@/components/ui/AnchoredMenu';
 import InputLimitDialog from '@/components/chat/InputLimitDialog';
 import TokenDashboard from '@/components/chat/TokenDashboard';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
+import ProjectPickerChip from '@/components/chat/composer/ProjectPickerChip';
 import { shouldBlockFocusSteal } from '@/lib/notes/selectionPopover';
 export interface ChatInputProps {
   onSend: (content: string, options?: SendMessageOptions) => void;
@@ -66,6 +67,11 @@ export interface ChatInputProps {
   notice?: React.ReactNode;
   /** 自增即聚焦输入框一次（例如点了「新建对话」但其实已经在新对话里，提示用户直接开说）。 */
   focusSignal?: number;
+  /**
+   * 显示「对话所属项目」chip（输入框右下角）。
+   * 只有 Agent 中央对话传 true：划词浮窗 / 题目解析 / 手机迷你聊天都不该出现项目归属。
+   */
+  showProjectPicker?: boolean;
 }
 
 export const MAX_INPUT_CHARACTERS = 50_000;
@@ -92,7 +98,7 @@ function countCharacters(text: string) {
 /** 输入框最大高度（与 `.chat-input-textarea` 的 CSS max-height 保持一致）。 */
 const MAX_TEXTAREA_HEIGHT = 120;
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice, focusSignal, chatContext }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpenSettings, disabled: externalDisabled, disabledReason, modelId, onModelChange, showTokenDashboard = true, floatingSessionId, disableQuote = false, onComposerInsetChange, notice, focusSignal, showProjectPicker = false, chatContext }) => {
   const [input, setInput] = useState('');
   const [queuedMessages, setQueuedMessages] = useState<QueuedMessage[]>([]);
   const [editingQueuedId, setEditingQueuedId] = useState<string | null>(null);
@@ -660,6 +666,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
             <span>{characterCount.toLocaleString('en-US')} / 50,000 字</span>
           </div>
         )}
+
+        {showProjectPicker ? <ProjectPickerChip /> : null}
 
         <button
           onClick={showStopButton ? onStop : handleSend}

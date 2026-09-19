@@ -236,6 +236,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ chatContext, hideHeader = false, 
         onStop={stopGeneration}
         isLoading={isLoading || !chatReady}
         chatContext={chatContext}
+        // 只有 Agent 中央对话给「对话所属项目」这个入口（划词浮窗 / 题目解析 / 手机迷你聊天都不给）。
+        showProjectPicker={emptyLayout === "agent"}
         onOpenSettings={openAgentSettings}
         onComposerInsetChange={setComposerInset}
         focusSignal={focusSignal}

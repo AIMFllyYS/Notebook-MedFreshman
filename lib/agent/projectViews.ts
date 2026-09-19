@@ -83,9 +83,3 @@ export function projectNameOf(folders: ChatFolder[], projectId: string | null | 
   if (!projectId) return null;
   return folders.find((folder) => folder.id === projectId)?.name ?? null;
 }
-
-export function projectIconKind(session: SessionMeta): "note" | "floating" | "main" {
-  if (session.kind === "note") return "note";
-  if (session.kind === "floating") return "floating";
-  return "main";
-}
