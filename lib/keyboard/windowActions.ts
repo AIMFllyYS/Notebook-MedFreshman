@@ -12,13 +12,26 @@ import { useMemoryInbox } from "@/lib/stores/memoryInbox";
 import { useQuizExplain } from "@/lib/stores/quizExplain";
 import type { MemoryProposalData, UserNoteEditorData } from "@/lib/stores/windowManager";
 import { toggleManagedWindowFullscreen } from "@/lib/window/toggleManagedFullscreen";
+import { isAgentWorkspace } from "@/lib/stores/workspace";
+import { useStore } from "@/lib/stores/ui";
+import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 
 /** 解析当前应操作的 managed 窗口（activeWindowId 或 z 最高未最小化）。 */
 export function getActiveManagedWindow(): ManagedWindow | null {
   const { windows, activeWindowId } = useWindowManager.getState();
+  if (isAgentWorkspace()) {
+    const runtime = useAgentDockRuntime.getState();
+    const rightCollapsed = useStore.getState().rightCollapsedByProfile[useStore.getState().layoutProfile];
+    const activeManagedId = runtime.active?.kind === "managed" ? runtime.active.id : null;
+    if (rightCollapsed || runtime.collapsed || !activeManagedId) return null;
+    if (activeWindowId && activeManagedId !== activeWindowId) {
+      const dockActive = windows.find((w) => w.id === activeManagedId && !w.minimized);
+      return dockActive ?? null;
+    }
+  }
   if (activeWindowId) {
     const win = windows.find((w) => w.id === activeWindowId);
-    if (win) return win;
+    if (win && !win.minimized) return win;
   }
   const visible = windows.filter((w) => !w.minimized);
   if (visible.length === 0) return null;

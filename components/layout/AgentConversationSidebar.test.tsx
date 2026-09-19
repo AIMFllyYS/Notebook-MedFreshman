@@ -2,16 +2,33 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import AgentConversationSidebar from "./AgentConversationSidebar";
 
+type TestSession = {
+  id: string;
+  title: string;
+  kind: string;
+  updatedAt: number;
+  messageCount: number;
+  preview?: string;
+  archived?: boolean;
+  folderId?: string | null;
+};
+
 const historyState = {
   sessionsMeta: [
     { id: "main-1", title: "细胞生物学复习", kind: "main", updatedAt: 1_700_000_000_000, messageCount: 8, preview: "线粒体" },
     { id: "float-1", title: "解释线粒体", kind: "floating", updatedAt: 1_700_000_100_000, messageCount: 3 },
     { id: "note-1", title: "被覆上皮", kind: "note", updatedAt: 1_700_000_200_000, messageCount: 2 },
-  ],
+  ] as TestSession[],
   activeSessionId: "main-1",
+  folders: [] as { id: string; name: string; createdAt: number }[],
   createSession: vi.fn(() => "new-1"),
   deleteSession: vi.fn(),
   switchSession: vi.fn(),
+  archiveSession: vi.fn(),
+  createFolder: vi.fn(() => "folder-1"),
+  renameFolder: vi.fn(),
+  deleteFolder: vi.fn(),
+  moveSessionToFolder: vi.fn(),
 };
 
 const restoreWindow = vi.fn();
@@ -80,5 +97,54 @@ describe("AgentConversationSidebar", () => {
     expect(historyState.switchSession).toHaveBeenCalledWith("main-1");
     fireEvent.click(screen.getByLabelText("解释线粒体"));
     expect(restoreWindow).toHaveBeenCalledWith("float-1");
+  });
+
+  it("正常对话默认只显示前 5 条，其余用「···」渐进披露", () => {
+    const many = Array.from({ length: 8 }, (_, i) => ({
+      id: `bulk-${i}`,
+      title: `批量对话 ${i}`,
+      kind: "main",
+      updatedAt: 1_700_000_000_000 - i,
+      messageCount: 1,
+    }));
+    historyState.sessionsMeta = [...many];
+    render(<AgentConversationSidebar chatContext={ctx} />);
+
+    expect(screen.getByText("批量对话 4")).toBeInTheDocument();
+    expect(screen.queryByText("批量对话 5")).toBeNull();
+    fireEvent.click(screen.getByTestId("session-show-more"));
+    expect(screen.getByText("批量对话 7")).toBeInTheDocument();
+  });
+
+  it("面板右键菜单提供新建对话与新建文件夹", () => {
+    historyState.sessionsMeta = [
+      { id: "main-1", title: "细胞生物学复习", kind: "main", updatedAt: 1, messageCount: 8 },
+    ];
+    render(<AgentConversationSidebar chatContext={ctx} />);
+
+    fireEvent.contextMenu(screen.getByTestId("agent-conversation-sidebar"));
+    expect(screen.getByTestId("agent-panel-menu")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("menuitem", { name: "新建文件夹" }));
+    expect(historyState.createFolder).toHaveBeenCalled();
+  });
+
+  it("对话右键可归档，归档后从默认列表移出", () => {
+    historyState.sessionsMeta = [
+      { id: "main-1", title: "细胞生物学复习", kind: "main", updatedAt: 1, messageCount: 8 },
+    ];
+    render(<AgentConversationSidebar chatContext={ctx} />);
+
+    fireEvent.contextMenu(screen.getByLabelText("细胞生物学复习"));
+    fireEvent.click(screen.getByRole("menuitem", { name: "归档" }));
+    expect(historyState.archiveSession).toHaveBeenCalledWith("main-1", true);
+
+    historyState.sessionsMeta = [
+      { id: "main-1", title: "细胞生物学复习", kind: "main", updatedAt: 1, messageCount: 8, archived: true },
+    ];
+    cleanup();
+    render(<AgentConversationSidebar chatContext={ctx} />);
+    expect(screen.queryByText("细胞生物学复习")).toBeNull();
+    fireEvent.click(screen.getByTestId("archived-toggle"));
+    expect(screen.getByText("细胞生物学复习")).toBeInTheDocument();
   });
 });

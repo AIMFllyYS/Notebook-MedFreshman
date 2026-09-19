@@ -24,12 +24,24 @@ export interface SessionMeta {
   messageCount: number;
   preview?: string;
   artifactIds: string[];
+  /** 归档后从「正常对话 / 划词助手对话」默认列表移出，仍在本地可恢复。 */
+  archived?: boolean;
+  /** 用户自建文件夹；缺省表示未分组。 */
+  folderId?: string | null;
+}
+
+/** 用户自建对话文件夹（可选字段，老 manifest 无此项时按空数组处理）。 */
+export interface ChatFolder {
+  id: string;
+  name: string;
+  createdAt: number;
 }
 
 export interface ChatManifestV2 {
   version: 2;
   activeSessionId: string | null;
   sessions: SessionMeta[];
+  folders?: ChatFolder[];
 }
 
 function isBrowser(): boolean {

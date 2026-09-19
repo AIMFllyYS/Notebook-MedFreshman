@@ -10,6 +10,8 @@ import { useWindowManager, type WindowSize } from "@/lib/hooks/useWindowManager"
 import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
 import { isAgentWorkspace } from "@/lib/stores/workspace";
 import { toggleManagedWindowFullscreen } from "@/lib/window/toggleManagedFullscreen";
+import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import type { ManagedWindowPresentation } from "@/lib/window/presentation";
 
 export type { FullscreenTarget };
 
@@ -23,6 +25,10 @@ export interface UseManagedWindowChromeOptions {
   overlayId?: string;
   registerOverlay?: boolean;
   onResize?: (size: WindowSize) => void;
+  presentation?: Exclude<ManagedWindowPresentation, "pending">;
+  interactive?: boolean;
+  /** 焦点在右栏之外的输入框时抑制前台 Esc，避免打字时关掉右侧文档。 */
+  escapeSuppressed?: boolean;
 }
 
 /**
@@ -38,12 +44,18 @@ export function useManagedWindowChrome({
   overlayId,
   registerOverlay = true,
   onResize,
+  presentation = "floating",
+  interactive = true,
+  escapeSuppressed = false,
 }: UseManagedWindowChromeOptions) {
   const managed = useWindowManager((s) => s.windows.find((w) => w.id === windowId));
   const { bringToFront, commitGeometry, minimizeWindow } = useWindowManager();
+  const togglePanelExpand = useAgentDockRuntime((state) => state.togglePanelExpand);
+  const isDock = presentation === "dock";
+  const isSheet = presentation === "sheet";
 
   const { elRef, onPointerDown } = useDraggable((dx, dy) => {
-    if (isAgentWorkspace()) return;
+    if (isAgentWorkspace() || isDock) return;
     const current = useWindowManager.getState().windows.find((w) => w.id === windowId);
     if (!current) return;
     commitGeometry(windowId, {
@@ -72,18 +84,23 @@ export function useManagedWindowChrome({
     { minW: minSize.minW },
   );
 
-  useFullscreenTrack(windowId, managed?.fullscreen ?? false, fullscreenTarget);
+  useFullscreenTrack(windowId, !isDock && !isSheet && (managed?.fullscreen ?? false), fullscreenTarget);
 
   useOverlayRegistration({
     id: overlayId ?? windowId,
-    open: registerOverlay && !!managed,
+    open: registerOverlay && !!managed && interactive && !escapeSuppressed,
     onClose,
     priority: overlayPriority,
   });
 
   const toggleFullscreen = useCallback(() => {
+    if (isDock) {
+      togglePanelExpand();
+      return;
+    }
+    if (isSheet) return;
     toggleManagedWindowFullscreen(windowId, fullscreenTarget);
-  }, [fullscreenTarget, windowId]);
+  }, [fullscreenTarget, isDock, isSheet, togglePanelExpand, windowId]);
 
   return {
     managed,

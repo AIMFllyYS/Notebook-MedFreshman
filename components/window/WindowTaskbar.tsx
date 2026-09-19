@@ -15,6 +15,8 @@ import { ACCEPTED_DOCUMENT_FILE_TYPES, filesToAttachments, MAX_LOCAL_FILE_SIZE, 
 import { attachmentPreviewKind } from "@/lib/chat/attachmentPreviewKind";
 import { openAttachmentPreview } from "@/lib/chat/openAttachmentPreview";
 import OpenUrlField from "@/components/window/OpenUrlDialog";
+import { useOverlayRegistration } from "@/lib/keyboard/useOverlayRegistration";
+import AgentDockTabs from "@/components/window/AgentDockTabs";
 
 interface WindowTaskbarProps {
   host: "topbar" | "content-tab" | "right-panel";
@@ -66,7 +68,7 @@ function AddMenuDivider() {
   return <div className="my-1 border-t border-[var(--line)]" data-menu-divider="" />;
 }
 
-function AddContentButton() {
+export function AddContentButton({ showUrlField = true }: { showUrlField?: boolean } = {}) {
   const [open, setOpen] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState<{ top: number; right: number } | null>(null);
@@ -84,6 +86,14 @@ function AddContentButton() {
       right: Math.max(8, window.innerWidth - rect.right),
     });
   };
+
+  // 附属菜单优先于承载它的面板：Esc 先关菜单，不误关左侧面板。
+  useOverlayRegistration({
+    id: "window-taskbar-add-menu",
+    open,
+    onClose: () => setOpen(false),
+    priority: 62,
+  });
 
   useEffect(() => {
     if (!open) return;
@@ -236,8 +246,12 @@ function AddContentButton() {
               <span><strong className="font-semibold">添加文件</strong><small className="ml-1 text-[var(--ink-soft)]">PDF、文本、代码</small></span>
             </button>
           </div>
-          <AddMenuDivider />
-          <OpenUrlField onOpened={() => setOpen(false)} />
+          {showUrlField && (
+            <>
+              <AddMenuDivider />
+              <OpenUrlField onOpened={() => setOpen(false)} />
+            </>
+          )}
           <p className="px-1 pt-1.5 text-[10px] leading-relaxed text-[var(--ink-faint)]">笔记、闪卡、长文本和演示都从本机仓库打开，不会重新生成。</p>
         </div>,
         document.body,
@@ -305,6 +319,10 @@ export default function WindowTaskbar({ host }: WindowTaskbarProps) {
   };
 
   const activeTooltip = tooltip && windows.some((win) => win.id === tooltip.win.id) ? tooltip : null;
+
+  if (host === "right-panel") {
+    return <AgentDockTabs windows={windows} addContent={<AddContentButton />} />;
+  }
 
   return (
     <div className="flex min-w-0 flex-1 items-center gap-1">

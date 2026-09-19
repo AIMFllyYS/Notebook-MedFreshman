@@ -54,13 +54,17 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
 
   assert.match(agentPage, /from "@\/components\/layout\/AgentWorkspace"/);
   assert.match(classPage, /from "@\/components\/layout\/ClassPlaceholder"/);
-  assert.match(workspace, /data-agent-slot="conversations"/);
+  // 左栏不再常驻：由 AgentLeftPanel 以覆盖式面板承载，AgentWorkspace 只保留主对话 + 右侧窗坞。
   assert.match(workspace, /data-agent-slot="windows"/);
   assert.match(workspace, /data-agent-slot="main"/);
+  assert.doesNotMatch(workspace, /data-agent-slot="conversations"/);
+  assert.match(workspace, /AgentLeftPanel/);
   assert.match(workspace, /components\/chat\/ChatPanel/);
   assert.doesNotMatch(workspace, /next\/dynamic/);
   assert.match(workspace, /if \(isMobile\)/);
-  assert.match(workspace, /AgentConversationSidebar/);
+  const leftPanel = readWorkspaceFile("components/layout/AgentLeftPanel.tsx");
+  assert.match(leftPanel, /AgentConversationSidebar/);
+  assert.match(leftPanel, /agent-left-panel/);
   assert.match(workspace, /hideAiTab/);
   assert.match(workspace, /showWindowDock/);
   assert.match(workspace, /展开右侧面板/);

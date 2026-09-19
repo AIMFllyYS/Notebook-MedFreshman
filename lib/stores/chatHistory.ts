@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { ChatMessage, ChatContext } from '@/lib/types/chat';
 import { useArtifacts } from '@/lib/hooks/useArtifacts';
 import {
+  type ChatFolder,
   type SessionMeta,
   buildSessionMeta,
   mergeArtifactIds,
@@ -35,6 +36,8 @@ export interface ChatSession {
 
 interface ChatHistoryState {
   sessionsMeta: SessionMeta[];
+  /** 用户自建文件夹（与 sessionsMeta 一起写进 manifest）。 */
+  folders: ChatFolder[];
   messagesById: Record<string, ChatMessage[]>;
   activeSessionId: string | null;
   sessionLoadState: Record<string, 'idle' | 'loading' | 'loaded' | 'error'>;
@@ -57,6 +60,12 @@ interface ChatHistoryState {
   replaceMessages: (sessionId: string, messages: ChatMessage[]) => void;
   updateMessage: (sessionId: string, messageId: string, updates: Partial<ChatMessage>) => void;
   updateSessionTitle: (sessionId: string, title: string) => void;
+  /** 归档 / 取消归档；归档不删除消息，只是从默认列表移出。 */
+  archiveSession: (sessionId: string, archived: boolean) => void;
+  createFolder: (name?: string) => string;
+  renameFolder: (folderId: string, name: string) => void;
+  deleteFolder: (folderId: string) => void;
+  moveSessionToFolder: (sessionId: string, folderId: string | null) => void;
 }
 
 let bootstrapPromise: Promise<void> | null = null;
@@ -99,6 +108,7 @@ function sameStringArray(a: string[], b: string[]): boolean {
 
 export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   sessionsMeta: [],
+  folders: [],
   messagesById: {},
   activeSessionId: null,
   sessionLoadState: {},
@@ -207,6 +217,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         version: 2,
         activeSessionId: claimActive ? id : state.activeSessionId,
         sessions: capped,
+        folders: state.folders,
       });
       return {
         sessionsMeta: capped,
@@ -236,7 +247,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       nextActiveToLoad = deletedActive ? newActiveId : null;
       const { [id]: _drop, ...messagesById } = state.messagesById;
       pruneArtifactsFromMetas(sessionsMeta);
-      saveManifest({ version: 2, activeSessionId: newActiveId, sessions: sessionsMeta });
+      saveManifest({ version: 2, activeSessionId: newActiveId, sessions: sessionsMeta, folders: state.folders });
       void (async () => {
         const blobIds = await listBlobIdsForSession(id);
         await deleteSessionData(id, blobIds);
@@ -292,6 +303,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         version: 2,
         activeSessionId: state.activeSessionId,
         sessions: sessionsMeta,
+        folders: state.folders,
       });
       scheduleCloudUpsert('chat-session', sessionId);
       return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
@@ -320,6 +332,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         version: 2,
         activeSessionId: state.activeSessionId,
         sessions: sessionsMeta,
+        folders: state.folders,
       });
       scheduleCloudUpsert("chat-session", sessionId);
       return { messagesById: { ...state.messagesById, [sessionId]: stored }, sessionsMeta };
@@ -356,6 +369,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
           version: 2,
           activeSessionId: state.activeSessionId,
           sessions: sessionsMeta,
+          folders: state.folders,
         });
       }
       return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
@@ -372,8 +386,90 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         version: 2,
         activeSessionId: state.activeSessionId,
         sessions: sessionsMeta,
+        folders: state.folders,
       });
       scheduleCloudUpsert('chat-session', sessionId);
+      return { sessionsMeta };
+    });
+  },
+
+  archiveSession: (sessionId, archived) => {
+    set((state) => {
+      if (!state.sessionsMeta.some((s) => s.id === sessionId)) return state;
+      const sessionsMeta = state.sessionsMeta.map((s) =>
+        s.id === sessionId ? { ...s, archived } : s,
+      );
+      saveManifest({
+        version: 2,
+        activeSessionId: state.activeSessionId,
+        sessions: sessionsMeta,
+        folders: state.folders,
+      });
+      return { sessionsMeta };
+    });
+  },
+
+  createFolder: (name) => {
+    const id = `folder-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+    set((state) => {
+      const folders = [
+        ...state.folders,
+        { id, name: (name ?? '').trim() || `新建文件夹 ${state.folders.length + 1}`, createdAt: Date.now() },
+      ];
+      saveManifest({
+        version: 2,
+        activeSessionId: state.activeSessionId,
+        sessions: state.sessionsMeta,
+        folders,
+      });
+      return { folders };
+    });
+    return id;
+  },
+
+  renameFolder: (folderId, name) => {
+    const next = name.trim();
+    if (!next) return;
+    set((state) => {
+      const folders = state.folders.map((f) => (f.id === folderId ? { ...f, name: next } : f));
+      saveManifest({
+        version: 2,
+        activeSessionId: state.activeSessionId,
+        sessions: state.sessionsMeta,
+        folders,
+      });
+      return { folders };
+    });
+  },
+
+  deleteFolder: (folderId) => {
+    set((state) => {
+      const folders = state.folders.filter((f) => f.id !== folderId);
+      const sessionsMeta = state.sessionsMeta.map((s) =>
+        s.folderId === folderId ? { ...s, folderId: null } : s,
+      );
+      saveManifest({
+        version: 2,
+        activeSessionId: state.activeSessionId,
+        sessions: sessionsMeta,
+        folders,
+      });
+      return { folders, sessionsMeta };
+    });
+  },
+
+  moveSessionToFolder: (sessionId, folderId) => {
+    set((state) => {
+      if (!state.sessionsMeta.some((s) => s.id === sessionId)) return state;
+      const sessionsMeta = state.sessionsMeta.map((s) =>
+        s.id === sessionId ? { ...s, folderId } : s,
+      );
+      saveManifest({
+        version: 2,
+        activeSessionId: state.activeSessionId,
+        sessions: sessionsMeta,
+        folders: state.folders,
+      });
       return { sessionsMeta };
     });
   },
@@ -390,6 +486,7 @@ export async function ensureChatHistoryBootstrap(): Promise<void> {
     if (manifest) {
       useChatHistory.setState({
         sessionsMeta: manifest.sessions,
+        folders: manifest.folders ?? [],
         activeSessionId: manifest.activeSessionId,
         _hasHydrated: true,
       });

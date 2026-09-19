@@ -91,6 +91,11 @@ interface AppState {
   toggleSidebar: () => void;
   setSidebarCollapsed: (v: boolean) => void;
 
+  /** Agent 左侧工作区面板：覆盖式弹出（顶部与顶栏平齐），不常驻、不持久化。 */
+  agentPanelOpen: boolean;
+  setAgentPanelOpen: (v: boolean) => void;
+  toggleAgentPanel: () => void;
+
   // 顶部导航栏折叠
   topBarCollapsed: boolean;
   toggleTopBar: () => void;
@@ -216,6 +221,10 @@ export const useStore = create<AppState>((set) => ({
     setLayoutAttr("data-sidebar-collapsed", v);
     set({ sidebarCollapsed: v });
   },
+
+  agentPanelOpen: false,
+  setAgentPanelOpen: (v) => set({ agentPanelOpen: v }),
+  toggleAgentPanel: () => set((s) => ({ agentPanelOpen: !s.agentPanelOpen })),
 
   topBarCollapsed: false,
   toggleTopBar: () =>

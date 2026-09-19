@@ -1,14 +1,22 @@
 "use client";
 
-import type { CSSProperties, PointerEvent, ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties, type PointerEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import WindowChrome from "@/components/window/WindowChrome";
 import {
   useManagedWindowChrome,
   type FullscreenTarget,
 } from "@/lib/hooks/useManagedWindowChrome";
-import type { WindowSize } from "@/lib/hooks/useWindowManager";
+import { useWindowManager, type WindowSize } from "@/lib/hooks/useWindowManager";
 import { isAgentWorkspace } from "@/lib/stores/workspace";
+import { useAppMode } from "@/lib/stores/appMode";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { useAgentDockRuntime, activateManagedSurface } from "@/lib/window/agentDockRuntime";
+import {
+  isManagedWindowInteractive,
+  resolveManagedWindowPresentation,
+} from "@/lib/window/presentation";
+import { useDockTypingFocusGuard } from "@/lib/window/dockTypingFocus";
 
 export type { FullscreenTarget };
 
@@ -67,8 +75,8 @@ function ResizeGrip({ onPointerDown }: { onPointerDown: (event: PointerEvent) =>
 }
 
 /**
- * 全局浮窗壳。portal 到 `document.body`，由 AppShell 挂载，不属于右侧面板或笔记区。
- * 拖拽 / 缩放 / 全屏 / 最小化 / Esc 只应出现在这里。
+ * 兼容窗口壳。Studio 使用原 fixed 浮窗；Agent 桌面 Portal 到右栏稳定宿主；
+ * Agent 窄屏使用 body 上的右侧 sheet。业务正文和关闭回调保持不变。
  */
 export default function ManagedWindow({
   windowId,
@@ -90,8 +98,48 @@ export default function ManagedWindow({
   frameStyle,
   children,
 }: ManagedWindowProps) {
+  const managed = useWindowManager((state) => state.windows.find((window) => window.id === windowId));
+  const appMode = useAppMode((state) => state.mode);
+  const isMobile = useIsMobile();
+  const dockHost = useAgentDockRuntime((state) => state.contentHost);
+  const activeSurface = useAgentDockRuntime((state) => state.active);
+  const dockCollapsed = useAgentDockRuntime((state) => state.collapsed);
+  const agent = appMode === "agent" || isAgentWorkspace();
+  const presentation = resolveManagedWindowPresentation({
+    agent,
+    mobile: isMobile,
+    dockHostAvailable: !!dockHost,
+  });
+  const dockActive =
+    presentation === "dock" &&
+    activeSurface?.kind === "managed" &&
+    activeSurface.id === windowId;
+  const interactive = isManagedWindowInteractive({
+    presentation,
+    minimized: managed?.minimized ?? true,
+    active: dockActive,
+    dockCollapsed,
+  });
+  const escapeSuppressed = useDockTypingFocusGuard(presentation === "dock" ? dockHost : null);
+
+  // 窄屏 sheet 覆盖整页，关闭后把焦点还给打开它的入口；桌面浮窗保持原行为。
+  const sheetReturnFocusRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (presentation !== "sheet" || typeof document === "undefined") return;
+    const active = document.activeElement;
+    sheetReturnFocusRef.current = active instanceof HTMLElement && active !== document.body ? active : null;
+    return () => {
+      const target = sheetReturnFocusRef.current;
+      sheetReturnFocusRef.current = null;
+      if (!target?.isConnected) return;
+      queueMicrotask(() => {
+        const current = document.activeElement;
+        if (current === document.body || current === null) target.focus();
+      });
+    };
+  }, [presentation]);
+
   const {
-    managed,
     elRef,
     onPointerDown,
     onResizeStart,
@@ -108,35 +156,77 @@ export default function ManagedWindow({
     overlayId,
     registerOverlay,
     onResize,
+    presentation: presentation === "pending" ? "dock" : presentation,
+    interactive,
+    escapeSuppressed,
   });
 
-  if (!managed || typeof document === "undefined") return null;
+  if (!managed || typeof document === "undefined" || presentation === "pending") return null;
 
   const showBody = !(unmountWhenMinimized && managed.minimized);
+  const portalTarget = presentation === "dock" ? dockHost : document.body;
+  if (!portalTarget) return null;
+
+  const surface = presentation === "dock" ? "dock" : presentation === "sheet" ? "sheet" : "floating";
+  const visible = presentation === "dock" ? dockActive && !dockCollapsed && !managed.minimized : !managed.minimized;
+  const floatingFrameStyle = presentation === "floating" ? frameStyle : undefined;
 
   return createPortal(
     <div
       ref={elRef}
-      onPointerDownCapture={() => bringToFront(windowId)}
+      onPointerDownCapture={() => {
+        bringToFront(windowId);
+        if (presentation === "dock") activateManagedSurface(windowId);
+      }}
       className={className}
       data-testid={testId}
+      data-surface={surface}
+      role={surface === "sheet" ? "dialog" : undefined}
+      aria-label={surface === "sheet" ? title : undefined}
+      data-window-active={visible || undefined}
       style={{
         background: "var(--bg-panel)",
-        borderRadius: managed.fullscreen ? 0 : 14,
+        borderRadius: presentation === "floating" && managed.fullscreen ? 0 : presentation === "floating" ? 14 : 0,
         overflow: "hidden",
         flexDirection: "column",
-        boxShadow: managed.fullscreen
-          ? "0 0 0 1px var(--line)"
-          : "0 16px 48px rgba(0,0,0,0.3), 0 0 0 1px var(--line)",
-        ...frameStyle,
-        ...(managed.fullscreen ? { borderRadius: 0 } : {}),
-        position: "fixed",
-        left: managed.pos.x,
-        top: managed.pos.y,
-        width: managed.size.width,
-        height: managed.size.height,
-        display: managed.minimized ? "none" : "flex",
-        zIndex: managed.z,
+        boxShadow:
+          presentation === "dock"
+            ? "none"
+            : managed.fullscreen
+              ? "0 0 0 1px var(--line)"
+              : "0 16px 48px rgba(0,0,0,0.3), 0 0 0 1px var(--line)",
+        ...floatingFrameStyle,
+        ...(presentation === "dock"
+          ? {
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              minWidth: 0,
+              minHeight: 0,
+              display: visible ? "flex" : "none",
+              zIndex: 1,
+            }
+          : presentation === "sheet"
+            ? {
+                position: "fixed",
+                right: 0,
+                top: 0,
+                width: "min(100vw, 720px)",
+                height: "100dvh",
+                display: visible ? "flex" : "none",
+                zIndex: managed.z,
+                boxShadow: "-18px 0 48px rgba(0,0,0,0.24), 0 0 0 1px var(--line)",
+              }
+            : {
+                position: "fixed",
+                left: managed.pos.x,
+                top: managed.pos.y,
+                width: managed.size.width,
+                height: managed.size.height,
+                display: visible ? "flex" : "none",
+                zIndex: managed.z,
+              }),
+        ...(presentation === "sheet" ? { animation: "agent-window-sheet-in 180ms var(--ease-out, ease-out) both" } : {}),
       }}
     >
       <WindowChrome
@@ -153,10 +243,11 @@ export default function ManagedWindow({
         onExternalLink={externalLink ? externalLink.onOpen : undefined}
         actions={actions}
         bodyClassName={bodyClassName}
+        surface={surface}
       >
         {showBody ? children : null}
       </WindowChrome>
-      {!managed.fullscreen && !managed.minimized && isAgentWorkspace() && (
+      {presentation === "floating" && !managed.fullscreen && !managed.minimized && isAgentWorkspace() && (
         <div
           data-no-drag
           data-testid="agent-window-widen"
@@ -173,8 +264,8 @@ export default function ManagedWindow({
           }}
         />
       )}
-      {!managed.fullscreen && !managed.minimized && <ResizeGrip onPointerDown={onResizeStart} />}
+      {presentation === "floating" && !managed.fullscreen && !managed.minimized && <ResizeGrip onPointerDown={onResizeStart} />}
     </div>,
-    document.body,
+    portalTarget,
   );
 }

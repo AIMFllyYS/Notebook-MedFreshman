@@ -1,6 +1,6 @@
 "use client";
 
-import { Component, useEffect, useMemo, useState, useRef, type ErrorInfo, type ReactNode } from "react";
+import { Component, useCallback, useEffect, useMemo, useState, useRef, type ErrorInfo, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 import dynamic from "next/dynamic";
@@ -15,6 +15,9 @@ import BrowserSettingsButton from "@/components/browser/BrowserSettingsButton";
 import WindowTaskbar from "@/components/window/WindowTaskbar";
 import type { ChatContext } from "@/lib/types/chat";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
+import { useWindowManager } from "@/lib/hooks/useWindowManager";
+import { activateBuiltinSurface, useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import { AGENT_DOCK_CONTENT_ID } from "@/lib/constants/layout";
 import { useSettings } from "@/lib/hooks/useSettings";
 
 const ChatPanel = dynamic(() => import("@/components/chat/ChatPanel"), {
@@ -116,6 +119,10 @@ export default function RightPanel({
   const rightTabs = routeLayout.route ? routeLayout.rightTabs : storeRightTabs;
   const layoutProfile = routeLayout.route ? routeLayout.profile : storeLayoutProfile;
   const setRightCollapsedForProfile = useStore((s) => s.setRightCollapsedForProfile);
+  const setActiveWindow = useWindowManager((s) => s.setActiveWindow);
+  const managedWindows = useWindowManager((s) => s.windows);
+  const activeSurface = useAgentDockRuntime((s) => s.active);
+  const registerContentHost = useAgentDockRuntime((s) => s.registerContentHost);
   const showRightPanelTabBar = useSettings((s) => s.showRightPanelTabBar);
   const visibleRightTabs = ALL_RIGHT_TABS.filter(
     (t) => rightTabs.includes(t.id) && !(hideAiTab && t.id === "ai"),
@@ -124,6 +131,8 @@ export default function RightPanel({
   const showTabBar = showRightPanelTabBar !== false;
   const showChrome = showTabBar || showWindowDock;
   const agentFallbackTab = hideAiTab ? visibleRightTabs[0]?.id : undefined;
+  // 右侧工具栏必须始终给「收起」和窗口标签留位置：内置工具标签在窗口坞出现时让出一部分宽度并横向滚动。
+  const hasDockTabs = showWindowDock && managedWindows.length > 0;
 
   useEffect(() => {
     if (hideAiTab && tab === "ai") {
@@ -153,7 +162,23 @@ export default function RightPanel({
     setDir(newIdx >= prevTabIndexRef.current ? 1 : -1);
     prevTabIndexRef.current = newIdx;
     setTab(next);
+    if (showWindowDock) {
+      activateBuiltinSurface(next);
+      setActiveWindow(null);
+    }
   };
+
+  const dockContentRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (showWindowDock) registerContentHost(node);
+    },
+    [registerContentHost, showWindowDock],
+  );
+  const activeBuiltinTab = activeSurface?.kind === "builtin" ? activeSurface.id : null;
+  const managedSurfaceVisible =
+    showWindowDock &&
+    activeSurface?.kind === "managed" &&
+    managedWindows.some((window) => window.id === activeSurface.id);
   const activeSubjectId = useStore((s) => s.activeSubjectId);
   const activeCategoryId = useStore((s) => s.activeCategoryId);
   const activeItemId = useStore((s) => s.activeItemId);
@@ -183,10 +208,11 @@ export default function RightPanel({
     <div className="flex h-full flex-col border-l border-[var(--line)] bg-[var(--bg-panel)]">
       {/* Top-level tab bar（可横向滑动；含浏览器收藏夹标签 + 末尾「＋」） */}
       {showChrome && <div className="flex shrink-0 items-center gap-1 border-b border-[var(--line)] px-1.5 py-1.5">
-        <div className={clsx("hide-scrollbar flex items-center gap-1 overflow-x-auto", showWindowDock ? "shrink-0" : "min-w-0 flex-1")}>
+        <div className={clsx("hide-scrollbar flex min-w-0 items-center gap-1 overflow-x-auto", hasDockTabs ? "shrink basis-auto max-w-[45%]" : "flex-1")}>
           {showTabBar && visibleRightTabs.map((t) => {
             const isActive =
-              t.id === "browser" ? tab === "browser" && activeTabId === BROWSE_TAB : tab === t.id;
+              activeBuiltinTab === t.id ||
+              (!activeSurface && (t.id === "browser" ? tab === "browser" && activeTabId === BROWSE_TAB : tab === t.id));
             return (
               <button
                 key={t.id}
@@ -249,7 +275,7 @@ export default function RightPanel({
         </div>
 
         {showWindowDock && (
-          <div className="flex min-w-0 flex-1 items-center justify-end">
+          <div className={clsx("flex min-w-0 items-center justify-end", hasDockTabs ? "flex-1" : "shrink-0")}>
             <WindowTaskbar host="right-panel" />
           </div>
         )}
@@ -266,31 +292,41 @@ export default function RightPanel({
       </div>}
 
       {/* Content area */}
-      <div className="min-h-0 flex-1 overflow-hidden">
-        <AnimatePresence mode="wait" custom={dir}>
-          <RightPanelTabBoundary key={tab} tab={tab}>
-            {tab === "ai" && !hideAiTab && (
-              <motion.div key="ai-chat" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
-                <ChatPanel chatContext={chatContext} />
-              </motion.div>
-            )}
-            {tab === "video" && (
-              <motion.div key="video" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
-                <VideoTab />
-              </motion.div>
-            )}
-            {tab === "interactive" && (
-              <motion.div key="interactive" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
-                <InteractiveTab />
-              </motion.div>
-            )}
-            {tab === "browser" && (
-              <motion.div key="browser" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
-                <BrowserTab />
-              </motion.div>
-            )}
-          </RightPanelTabBoundary>
-        </AnimatePresence>
+      <div className="relative min-h-0 flex-1 overflow-hidden">
+        {showWindowDock && (
+          <div
+            id={AGENT_DOCK_CONTENT_ID}
+            ref={dockContentRef}
+            className={clsx("absolute inset-0 min-h-0 min-w-0 overflow-hidden", !managedSurfaceVisible && "pointer-events-none")}
+            aria-hidden={!managedSurfaceVisible}
+          />
+        )}
+        <div className={clsx("h-full min-h-0", managedSurfaceVisible && "invisible pointer-events-none")}>
+          <AnimatePresence mode="wait" custom={dir}>
+            <RightPanelTabBoundary key={tab} tab={tab}>
+              {tab === "ai" && !hideAiTab && (
+                <motion.div key="ai-chat" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
+                  <ChatPanel chatContext={chatContext} />
+                </motion.div>
+              )}
+              {tab === "video" && (
+                <motion.div key="video" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
+                  <VideoTab />
+                </motion.div>
+              )}
+              {tab === "interactive" && (
+                <motion.div key="interactive" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
+                  <InteractiveTab />
+                </motion.div>
+              )}
+              {tab === "browser" && (
+                <motion.div key="browser" variants={variants} initial="initial" animate="animate" exit="exit" className="h-full">
+                  <BrowserTab />
+                </motion.div>
+              )}
+            </RightPanelTabBoundary>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );

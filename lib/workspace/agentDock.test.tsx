@@ -8,10 +8,12 @@ import {
   placeAgentDockWindow,
   resolveWorkspaceFullscreenRect,
 } from "@/lib/workspace/agentDock";
+import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 
 function reset() {
   useAppMode.setState({ mode: "studio", lastStudioPath: "/", hydrated: true });
   useWindowManager.setState({ windows: [], topZ: 5000, activeWindowId: null });
+  useAgentDockRuntime.setState({ contentHost: null, active: null, collapsed: false, panelControls: null });
   document.getElementById(RIGHT_PANEL_ID)?.remove();
 }
 
@@ -48,9 +50,8 @@ describe("agentDock", () => {
     expect(rect?.left).toBe(900);
   });
 
-  it("openWindow 在 Agent 模式走右侧坞", () => {
+  it("openWindow 在 Agent 模式保留业务几何，并把活动权交给 dock runtime", () => {
     useAppMode.setState({ mode: "agent", lastStudioPath: "/", hydrated: true });
-    const dock = fallbackAgentDockRect();
     useWindowManager.getState().openWindow({
       id: "dock-1",
       type: "artifact-viewer",
@@ -60,7 +61,8 @@ describe("agentDock", () => {
       data: { artifactId: "a1" },
     });
     const win = useWindowManager.getState().windows[0];
-    expect(win?.pos.y).toBe(dock.top);
-    expect((win?.pos.x ?? 0) + (win?.size.width ?? 0)).toBe(dock.left + dock.width);
+    expect(win?.pos).toEqual({ x: 8, y: 8 });
+    expect(win?.size).toEqual({ width: 200, height: 200 });
+    expect(useAgentDockRuntime.getState().active).toEqual({ kind: "managed", id: "dock-1" });
   });
 });

@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { placeAgentDockWindow } from "@/lib/workspace/agentDock";
+import { isAgentWorkspace } from "@/lib/stores/workspace";
+import { activateManagedSurface, useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 
 export type ManagedWindowType = "floating-chat" | "record-preview" | "artifact-viewer" | "image-gen-viewer" | "billing-dashboard" | "document-viewer" | "note-citation-viewer" | "source-trace-viewer" | "source-preview" | "attachment-preview" | "membership-sponsor" | "user-note-editor" | "user-note-library" | "flashcard-cite-picker" | "agent-product-picker" | "memory-proposal" | "quiz-explain";
 
@@ -120,6 +121,22 @@ function pickNextActiveWindow(windows: ManagedWindow[], closedId: string): strin
   return remaining.reduce((a, b) => (a.z >= b.z ? a : b)).id;
 }
 
+function syncAgentDockAfterWindowChange(): void {
+  if (!isAgentWorkspace()) return;
+  const runtime = useAgentDockRuntime.getState();
+  if (runtime.active?.kind === "builtin") return;
+
+  const state = useWindowManager.getState();
+  const active = state.activeWindowId
+    ? state.windows.find((window) => window.id === state.activeWindowId && !window.minimized)
+    : state.windows
+        .filter((window) => !window.minimized)
+        .reduce<ManagedWindow | null>((top, window) => (!top || window.z > top.z ? window : top), null);
+
+  if (active) activateManagedSurface(active.id);
+  else useAgentDockRuntime.getState().setActive(null);
+}
+
 interface WindowManagerState {
   windows: ManagedWindow[];
   topZ: number;
@@ -128,6 +145,7 @@ interface WindowManagerState {
   closeWindow: (id: string) => void;
   minimizeWindow: (id: string) => void;
   restoreWindow: (id: string) => void;
+  setActiveWindow: (id: string | null) => void;
   setFullscreen: (id: string, on: boolean) => void;
   bringToFront: (id: string) => void;
   commitGeometry: (id: string, geom: { pos?: WindowPoint; size?: WindowSize }) => void;
@@ -152,14 +170,15 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
     set((state) => {
       const existing = state.windows.some((win) => win.id === input.id);
       const z = state.topZ + 1;
-      const docked = placeAgentDockWindow({ pos: input.pos, size: input.size });
       const nextWindow: ManagedWindow = {
         id: input.id,
         type: input.type,
         title: input.title,
         icon: input.icon,
-        pos: docked.pos,
-        size: docked.size,
+        // Agent dock presentation uses the host layout. Keep the caller's
+        // geometry for Studio and for a later mode switch back to floating.
+        pos: input.pos,
+        size: input.size,
         data: input.data as ManagedWindowData,
         z,
         fullscreen: input.fullscreen ?? false,
@@ -170,25 +189,46 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
         : [...state.windows, nextWindow];
       return { windows: withBadges(windows), topZ: z, activeWindowId: input.id };
     });
+    if (isAgentWorkspace() && !(input.minimized ?? false)) {
+      activateManagedSurface(input.id);
+      useAgentDockRuntime.getState().requestOpen();
+    }
     return input.id;
   },
 
-  closeWindow: (id) =>
+  closeWindow: (id) => {
     set((state) => {
       const windows = withBadges(state.windows.filter((win) => win.id !== id));
       const activeWindowId =
         state.activeWindowId === id ? pickNextActiveWindow(state.windows, id) : state.activeWindowId;
       return { windows, activeWindowId };
-    }),
+    });
+    syncAgentDockAfterWindowChange();
+  },
 
-  minimizeWindow: (id) =>
+  setActiveWindow: (id) =>
     set((state) => ({
-      windows: state.windows.map((win) =>
-        win.id === id ? { ...win, minimized: true, fullscreen: false } : win,
-      ),
+      activeWindowId:
+        id === null || state.windows.some((window) => window.id === id && !window.minimized)
+          ? id
+          : state.activeWindowId,
     })),
 
-  restoreWindow: (id) =>
+  minimizeWindow: (id) => {
+    set((state) => {
+      const wasActive = state.activeWindowId === id;
+      const windows = state.windows.map((win) =>
+        win.id === id ? { ...win, minimized: true, fullscreen: false } : win,
+      );
+      return {
+        windows,
+        activeWindowId: wasActive ? pickNextActiveWindow(windows, id) : state.activeWindowId,
+      };
+    });
+    syncAgentDockAfterWindowChange();
+  },
+
+  restoreWindow: (id) => {
     set((state) => {
       const z = state.topZ + 1;
       return {
@@ -198,7 +238,9 @@ export const useWindowManager = create<WindowManagerState>((set) => ({
           win.id === id ? { ...win, minimized: false, z } : win,
         ),
       };
-    }),
+    });
+    if (isAgentWorkspace()) activateManagedSurface(id);
+  },
 
   setFullscreen: (id, on) =>
     set((state) => {

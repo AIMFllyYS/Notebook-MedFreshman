@@ -10,6 +10,9 @@ import { useUserNotes } from "@/lib/stores/userNotes";
 import { userNoteWindowId } from "@/lib/notes/userNote";
 import { useWindowManager } from "@/lib/stores/windowManager";
 import { shouldMountHeavyEditor } from "@/lib/window/heavyEditor";
+import { useAppMode } from "@/lib/stores/appMode";
+import { isAgentWorkspace } from "@/lib/stores/workspace";
+import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
 
 const MilkdownNoteEditor = dynamic(() => import("@/components/notes/MilkdownNoteEditor"), {
   ssr: false,
@@ -23,7 +26,13 @@ export default function ClassroomNoteWindow({ noteId }: { noteId: string }) {
   const removeNote = useUserNotes((s) => s.removeNote);
   const closeEditor = useUserNotes((s) => s.closeEditor);
   const windowId = userNoteWindowId(noteId);
-  const isFront = useWindowManager((s) => shouldMountHeavyEditor(s.activeWindowId, windowId));
+  const activeWindowId = useWindowManager((s) => s.activeWindowId);
+  const appMode = useAppMode((s) => s.mode);
+  const dockActive = useAgentDockRuntime((s) => s.active);
+  const dockCollapsed = useAgentDockRuntime((s) => s.collapsed);
+  const agent = appMode === "agent" || isAgentWorkspace();
+  const isFront = shouldMountHeavyEditor(activeWindowId, windowId) &&
+    (!agent || (dockActive?.kind === "managed" && dockActive.id === windowId && !dockCollapsed));
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleClose = useCallback(() => closeEditor(noteId), [closeEditor, noteId]);

@@ -11,7 +11,7 @@ import dynamic from "next/dynamic";
 import { AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
-import { PanelTopClose, PanelTopOpen, PanelRightOpen, Maximize, Minimize } from "lucide-react";
+import { PanelTopClose, PanelTopOpen, PanelRightOpen, PanelLeft, Maximize, Minimize } from "lucide-react";
 import { useStore } from "@/lib/stores/ui";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useAcademicYear } from "@/lib/hooks/useAcademicYear";
@@ -30,6 +30,7 @@ import {
   usesStudioChrome,
 } from "@/lib/constants/app-mode";
 import { useAppMode } from "@/lib/stores/appMode";
+import { hydrateSettings } from "@/lib/stores/settings";
 import SubjectSidebar from "./SubjectSidebar";
 import RightPanel from "./RightPanel";
 import ModeSwitcher from "./ModeSwitcher";
@@ -60,16 +61,21 @@ function TopBar({
   categoryId,
   itemId,
   hideWindowTaskbar = false,
+  agentMode = false,
 }: {
   subjectId: SubjectId;
   categoryId: string;
   itemId: string;
   hideWindowTaskbar?: boolean;
+  /** Agent 工作区：顶栏只留品牌 + 全屏 + 左侧面板开关，面包屑/全局搜索/收起顶栏都交给各自的位置。 */
+  agentMode?: boolean;
 }) {
   const toggleSidebar = useStore((s) => s.toggleSidebar);
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
   const topBarCollapsed = useStore((s) => s.topBarCollapsed);
   const toggleTopBar = useStore((s) => s.toggleTopBar);
+  const agentPanelOpen = useStore((s) => s.agentPanelOpen);
+  const toggleAgentPanel = useStore((s) => s.toggleAgentPanel);
   const sidebarShortcutEnabled = useKeyboardSettings((s) => s.isEnabled("global.toggleSidebar"));
 
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -104,7 +110,7 @@ function TopBar({
         topBarCollapsed ? "h-0 border-b-0 py-0" : "h-12 border-b border-[var(--line)]",
       )}
     >
-      <button
+      {!agentMode && <button
         onClick={toggleSidebar}
         title={
           sidebarShortcutEnabled
@@ -118,9 +124,9 @@ function TopBar({
           <line x1="3" y1="12" x2="21" y2="12" />
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg>
-      </button>
+      </button>}
       <ModeSwitcher />
-      <div className="ml-2 flex min-w-0 items-center gap-1.5 text-[13px] text-[var(--ink-faint)]">
+      {!agentMode && <div className="ml-2 flex min-w-0 items-center gap-1.5 text-[13px] text-[var(--ink-faint)]">
         {subject && (
           <>
             <span className="shrink-0">·</span>
@@ -145,23 +151,25 @@ function TopBar({
             )}
           </>
         )}
-      </div>
+      </div>}
 
       <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-1">
-        {!topBarCollapsed && (
+        {!topBarCollapsed && !agentMode && (
           <div className="mr-1 flex min-w-0 flex-1 items-center justify-end gap-1 border-r border-[var(--line)] pr-2">
             <GlobalSearchButton />
             {!hideWindowTaskbar && <WindowTaskbar host="topbar" />}
           </div>
         )}
-        <button
-          onClick={toggleTopBar}
-          title={topBarCollapsed ? "展开顶部导航栏" : "收起顶部导航栏"}
-          aria-pressed={topBarCollapsed}
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
-        >
-          {topBarCollapsed ? <PanelTopOpen size={18} /> : <PanelTopClose size={18} />}
-        </button>
+        {!agentMode && (
+          <button
+            onClick={toggleTopBar}
+            title={topBarCollapsed ? "展开顶部导航栏" : "收起顶部导航栏"}
+            aria-pressed={topBarCollapsed}
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+          >
+            {topBarCollapsed ? <PanelTopOpen size={18} /> : <PanelTopClose size={18} />}
+          </button>
+        )}
         <button
           onClick={toggleFullscreen}
           title={isFullscreen ? "退出全屏" : "全屏"}
@@ -169,6 +177,17 @@ function TopBar({
         >
           {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
         </button>
+        {agentMode && (
+          <button
+            onClick={toggleAgentPanel}
+            title={agentPanelOpen ? "收起左侧面板" : "打开左侧面板"}
+            aria-label={agentPanelOpen ? "收起左侧面板" : "打开左侧面板"}
+            aria-pressed={agentPanelOpen}
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--ink-soft)] hover:bg-[var(--bg-muted)]"
+          >
+            <PanelLeft size={18} />
+          </button>
+        )}
       </div>
     </header>
   );
@@ -216,6 +235,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   useLayoutEffect(() => {
     hydrateLayout();
     hydrateMode();
+    // 本机设置只能在客户端水合之后应用；首帧保持 DEFAULTS 才不会 hydration mismatch。
+    hydrateSettings();
     syncFromPathname(pathname, { retainAgentOnStudio: isMobile });
     rememberStudioPath(pathname);
     if (route) setActiveRoute(route.subjectId, route.categoryId, route.itemId);
@@ -361,6 +382,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         categoryId={route?.categoryId ?? "detail"}
         itemId={route?.itemId ?? ""}
         hideWindowTaskbar={resolvedMode === "agent"}
+        agentMode={resolvedMode === "agent"}
       />
       {!studioChrome ? (
       <div className="min-h-0 flex-1">

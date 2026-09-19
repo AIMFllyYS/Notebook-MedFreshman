@@ -43,7 +43,6 @@ import InputLimitDialog from '@/components/chat/InputLimitDialog';
 import TokenDashboard from '@/components/chat/TokenDashboard';
 import AttachmentThumbnails from '@/components/chat/AttachmentThumbnails';
 import { shouldBlockFocusSteal } from '@/lib/notes/selectionPopover';
-
 export interface ChatInputProps {
   onSend: (content: string, options?: SendMessageOptions) => void;
   onStop: () => void;
@@ -100,11 +99,20 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const [showLimitDialog, setShowLimitDialog] = useState(false);
   const composingRef = useRef(false);
   const [isFocused, setIsFocused] = useState(false);
-  const [enableThinking, setEnableThinking] = useState(() => useSettings.getState().defaultThinking);
-  const [thinkingEffort, setThinkingEffort] = useState<ThinkingEffort>(
-    () => useSettings.getState().defaultThinkingEffort,
-  );
-  const [enableSearch, setEnableSearch] = useState(() => useSettings.getState().defaultSearch);
+  // 本机默认值只在水合完成后生效（useHydratedSetting 在 SSR/水合阶段返回服务端默认值），
+  // 用户手动改过就以覆盖值为准：既不会 hydration mismatch，也避免在 effect 里 setState。
+  const defaultThinking = useSettings((s) => s.defaultThinking);
+  const defaultThinkingEffort = useSettings((s) => s.defaultThinkingEffort);
+  const defaultSearch = useSettings((s) => s.defaultSearch);
+  const [thinkingEnabledOverride, setThinkingEnabledOverride] = useState<boolean | null>(null);
+  const [thinkingEffortOverride, setThinkingEffortOverride] = useState<ThinkingEffort | null>(null);
+  const [searchOverride, setSearchOverride] = useState<boolean | null>(null);
+  const enableThinking = thinkingEnabledOverride ?? defaultThinking;
+  const thinkingEffort = thinkingEffortOverride ?? defaultThinkingEffort;
+  const enableSearch = searchOverride ?? defaultSearch;
+  const setEnableThinking = setThinkingEnabledOverride;
+  const setThinkingEffort = setThinkingEffortOverride;
+  const setEnableSearch = setSearchOverride;
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const composerRef = useRef<HTMLDivElement>(null);
   const lastInsetRef = useRef<number | null>(null);
@@ -114,7 +122,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const skills = useSkills((s) => s.skills);
   const settingsSnapshot = useSettings();
   const planGate = readPlanModeGate(settingsSnapshot);
-  const [planMode, setPlanMode] = useState(() => readPlanModeGate(useSettings.getState()).defaultOn);
+  // 计划模式：设置里没有对应字段时保持关闭，有则由设置决定。
+  // 与其它开关同样用「派生值 + 用户覆盖」，避免在 useState 初始化器里读持久化设置
+  // （首帧 store 仍是默认值，固化下来会永久停留，也会造成 hydration 不一致）。
+  const [planModeOverride, setPlanModeOverride] = useState<boolean | null>(null);
   const [forcedTool, setForcedTool] = useState<ComposerForcedTool | undefined>();
   const [attachedFiles, setAttachedFiles] = useState<AttachedFileRef[]>([]);
   const [palette, setPalette] = useState<PaletteKind>(null);
@@ -188,6 +199,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
     };
   }, [onComposerInsetChange]);
 
+  const planMode = planModeOverride ?? planGate.defaultOn;
   const effectivePlanMode = resolvePlanMode(planMode, settingsSnapshot);
   const mentionGroups = useMemo(
     () => listFileMentions(chatContext, mentionQuery),
@@ -219,11 +231,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
   const applyPlan = useCallback(() => {
     if (!planGate.allowed) return;
-    setPlanMode((value) => !value);
+    setPlanModeOverride(!planMode);
     setForcedTool(undefined);
     consumeTrigger();
     closePalette();
-  }, [planGate.allowed, consumeTrigger, closePalette]);
+  }, [planGate.allowed, planMode, consumeTrigger, closePalette]);
 
   const applyCompact = useCallback(() => {
     consumeTrigger();
@@ -233,7 +245,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
 
   const applyTool = useCallback((tool: ForcedComposerTool) => {
     setForcedTool((current) => current === tool ? undefined : tool);
-    if (!planGate.forced) setPlanMode(false);
+    if (!planGate.forced) setPlanModeOverride(false);
     consumeTrigger();
     closePalette();
   }, [planGate.forced, consumeTrigger, closePalette]);
@@ -241,7 +253,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
   const applySkill = useCallback((skill: { id: string }) => {
     const next = skillForcedTool(skill.id);
     setForcedTool((current) => current === next ? undefined : next);
-    if (!planGate.forced) setPlanMode(false);
+    if (!planGate.forced) setPlanModeOverride(false);
     consumeTrigger();
     closePalette();
   }, [planGate.forced, consumeTrigger, closePalette]);
@@ -544,7 +556,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, onStop, isLoading, onOpen
           forcedTool={effectivePlanMode ? undefined : forcedTool}
           forcedSkillName={forcedSkillName}
           attachedFiles={attachedFiles}
-          onClearPlan={() => { if (!planGate.forced) setPlanMode(false); }}
+          onClearPlan={() => { if (!planGate.forced) setPlanModeOverride(false); }}
           onClearTool={() => setForcedTool(undefined)}
           onRemoveFile={(path) => setAttachedFiles((items) => items.filter((item) => item.path !== path))}
         />
