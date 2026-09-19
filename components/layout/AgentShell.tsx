@@ -1,32 +1,35 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle, type ImperativePanelHandle } from "react-resizable-panels";
 import { PanelLeftOpen } from "lucide-react";
 import AgentConversationSidebar from "./AgentConversationSidebar";
-import ChatPanel from "@/components/chat/ChatPanel";
 import { NOTES_PANEL_ID } from "@/lib/constants/layout";
-import { useAcademicYear } from "@/lib/stores/academicYear";
 import { useStore } from "@/lib/stores/ui";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { useAgentDockRuntime } from "@/lib/window/agentDockRuntime";
+import { useAgentChatContext } from "@/lib/hooks/useAgentChatContext";
 import { PANEL_PRESETS, nestedShares } from "@/lib/constants/panelPresets";
 import { ChatSkeleton } from "@/components/shared/ResizeLoader";
-import type { ChatContext } from "@/lib/types/chat";
 
 /**
- * Agent 工作区的「左侧对话栏 + 中央对话」。右侧工作区是顶层布局里独立的一列（见 AppShell / AgentDockColumn），
+ * Agent 段外壳（挂在 `app/agent/layout.tsx`）：「左侧对话栏 + 中央内容插槽」。
+ *
+ * 左栏放在**布局层**而不是页面里：切到 /agent/assets、/agent/scheduled 这些子页时左栏要原样留着，
+ * 只有中央区换内容（子路由的 children）。右侧工作区是顶层布局里独立的一列（见 AppShell / AgentDockColumn），
  * 因为它要通到窗口最顶、与顶栏平齐，不能放在顶栏下面。
+ *
+ * `#notes-panel` 挂在中央这一块上：窗口全屏（fullscreenTarget="notes"）要量它，
+ * 而且资产页等子路由也照样要有这个锚点，所以不能塞进对话组件内部。
  */
-export default function AgentWorkspace() {
+export default function AgentShell({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
-  const activeSubjectId = useStore((s) => s.activeSubjectId);
-  const academicYear = useAcademicYear((s) => s.year);
+  const chatContext = useAgentChatContext();
   const sidebarCollapsed = useStore((s) => s.sidebarCollapsed);
   const setSidebarCollapsed = useStore((s) => s.setSidebarCollapsed);
 
   // 「全局」模式要把中央对话压到 0、让右侧工作区铺满剩余宽度，这需要左栏当前宽度。
-  // 变量挂在 <html> 上：消费方是外层 shell 的分栏面板（AgentWorkspace 的祖先），
+  // 变量挂在 <html> 上：消费方是外层 shell 的分栏面板（AgentShell 的祖先），
   // 挂在本地节点上它读不到。这里只交出宽度数字，不做业务逻辑上的 DOM 测量。
   const conversationsRef = useRef<HTMLElement>(null);
   /** 用户最后一次拖到的「舒适」左栏宽度（像素）；吸附收起再展开时回到它。 */
@@ -124,7 +127,7 @@ export default function AgentWorkspace() {
   }, []);
 
   /**
-   * 中间对话面板的宽度正在变化（真全屏切换、拖分隔线、改窗口大小）→ 盖一层骨架屏。
+   * 中央面板的宽度正在变化（真全屏切换、拖分隔线、改窗口大小、切子路由）→ 盖一层骨架屏。
    * 宽度一变，正文就会重新折行、文字自动异位，很难看；盖住既避免视觉跳动，
    * 也把这段每帧重排的开销省掉（骨架只跑 transform/opacity）。
    */
@@ -153,28 +156,14 @@ export default function AgentWorkspace() {
     };
   }, []);
 
-  /**
-   * Agent 是通用型助手：上下文靠**注入**（引用笔记 / 附件 / 技能），
-   * 不把「当前打开的那一章」默认当成它的上下文——否则每开一个新对话都绑死在同一节，
-   * 换科目还会悄悄改写在聊的这个对话。
-   * 所以这里只带科目与学年：定位行、当前页正文、页级参考材料都不再注入（见 isPageBoundContext）。
-   */
-  const chatContext: ChatContext = useMemo(
-    () => ({
-      subjectId: activeSubjectId,
-      categoryId: "",
-      itemId: "",
-      currentTopic: "",
-      academicYear,
-    }),
-    [activeSubjectId, academicYear],
-  );
-
-  const main = (
-    <div ref={mainRef} data-agent-slot="main" className="relative h-full min-h-0 overflow-visible">
-      <div id={NOTES_PANEL_ID} className="h-full w-full overflow-visible">
-        <ChatPanel chatContext={chatContext} hideHeader emptyLayout="agent" />
-      </div>
+  const center = (
+    <div
+      ref={mainRef}
+      id={NOTES_PANEL_ID}
+      data-agent-slot="main"
+      className="relative h-full min-h-0 overflow-visible"
+    >
+      {children}
       {centerResizing && <ChatSkeleton />}
       {/* 网页全屏按钮不在这里：它挂在顶栏、紧贴右侧工作区开关左侧（见 AppShell 的 TopBar）。
           悬浮在对话正文上方会压住第一条消息，也让人以为是内容区的控件。 */}
@@ -196,7 +185,7 @@ export default function AgentWorkspace() {
   if (isMobile) {
     return (
       <div className="h-full min-h-0" data-agent-workspace>
-        {main}
+        {center}
       </div>
     );
   }
@@ -230,7 +219,7 @@ export default function AgentWorkspace() {
           <span className="absolute inset-y-0 -left-1 -right-1 z-10 cursor-col-resize" />
         </PanelResizeHandle>
         <Panel id="agent-main" order={2} defaultSize={sidebarCollapsed ? 100 : nestedShares(PANEL_PRESETS.agent).center} minSize={32}>
-          {main}
+          {center}
         </Panel>
       </PanelGroup>
     </div>

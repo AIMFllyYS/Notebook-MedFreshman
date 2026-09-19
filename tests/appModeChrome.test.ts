@@ -47,19 +47,24 @@ test("顶栏与壳走 StudySolo 三模式，不再写期末复习工作站", () 
 
 test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   const agentPage = readWorkspaceFile("app/agent/page.tsx");
+  const agentLayout = readWorkspaceFile("app/agent/layout.tsx");
   const classPage = readWorkspaceFile("app/class/page.tsx");
-  const workspace = readWorkspaceFile("components/layout/AgentWorkspace.tsx");
+  const workspace = readWorkspaceFile("components/layout/AgentShell.tsx");
   const appShell = readWorkspaceFile("components/layout/AppShell.tsx");
   const placeholder = readWorkspaceFile("components/layout/ClassPlaceholder.tsx");
 
-  assert.match(agentPage, /from "@\/components\/layout\/AgentWorkspace"/);
+  // 左栏放在 Agent 段布局里：切到 /agent/assets 等子页时左栏要原样留着，只有中央区换内容。
+  assert.match(agentLayout, /from "@\/components\/layout\/AgentShell"/);
+  assert.match(agentLayout, /<AgentShell>\{children\}<\/AgentShell>/);
+  assert.match(agentPage, /from "@\/components\/agent\/AgentChatCenter"/);
   assert.match(classPage, /from "@\/components\/layout\/ClassPlaceholder"/);
   // 左对话栏是常驻列（可收起），右侧工作区是顶层外壳里与顶栏并列、通到窗口最顶的一列。
   assert.match(workspace, /data-agent-slot="conversations"/);
   assert.match(workspace, /data-agent-slot="main"/);
   assert.doesNotMatch(workspace, /data-agent-slot="windows"/);
   assert.match(workspace, /AgentConversationSidebar/);
-  assert.match(workspace, /components\/chat\/ChatPanel/);
+  // 中央内容是路由插槽（children），对话组件挂在 /agent 路由自己身上。
+  assert.match(readWorkspaceFile("components/agent/AgentChatCenter.tsx"), /components\/chat\/ChatPanel/);
   assert.doesNotMatch(workspace, /next\/dynamic/);
   assert.match(workspace, /if \(isMobile\)/);
   assert.match(workspace, /展开对话栏/);
@@ -93,7 +98,7 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
 
 test("Agent 顶栏：网页全屏按钮紧贴右侧工作区开关左侧，且与两个面板级「全屏」用不同图标", () => {
   const appShell = readWorkspaceFile("components/layout/AppShell.tsx");
-  const workspace = readWorkspaceFile("components/layout/AgentWorkspace.tsx");
+  const workspace = readWorkspaceFile("components/layout/AgentShell.tsx");
   const rightPanel = readWorkspaceFile("components/layout/RightPanel.tsx");
 
   // 1) 位置：全屏键排在 agent-dock-toggle（控制右侧工作区的那个键）之前 = 它的左侧。

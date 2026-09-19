@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import AgentWorkspace from "@/components/layout/AgentWorkspace";
+import AgentChatCenter from "@/components/agent/AgentChatCenter";
 import { appModeTitle } from "@/lib/constants/app-mode";
 
 export const metadata: Metadata = {
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function AgentPage() {
-  return <AgentWorkspace />;
+  return <AgentChatCenter />;
 }
