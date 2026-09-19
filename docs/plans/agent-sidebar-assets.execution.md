@@ -131,8 +131,8 @@ console errors: 仅探针自己制造的 500 与未登录的 401
 | 门 | 结果 |
 |---|---|
 | `npx tsc --noEmit` | 0 |
-| `pnpm run test:unit` | **1385 pass / 0 fail**（阶段落地 +45，BUG 修复轮再 +11） |
-| `pnpm run test:react` | **149 文件 / 578 pass**（+4 文件 / +25 用例） |
+| `pnpm run test:unit` | **1386 pass / 0 fail**（阶段落地 +45，BUG 修复轮 +11，骨架/卡片轮 +1） |
+| `pnpm run test:react` | **150 文件 / 582 pass**（+5 文件 / +29 用例） |
 | `npx eslint .` | 0 error（warning 90，基线 91） |
 | `npx knip` | 未用文件 3 / 未用导出 14 / 未用类型 1 —— 与基线一致（两轮新增的导出都有消费者） |
 | `pnpm run check:encoding` | 3575 个 Markdown 全部合法 UTF-8 |
@@ -142,8 +142,8 @@ console errors: 仅探针自己制造的 500 与未登录的 401
 
 ```
 npx tsc --noEmit                 → 0
-pnpm run test:unit               → tests 1385 / pass 1385 / fail 0
-pnpm run test:react              → Test Files 149 passed / Tests 578 passed
+pnpm run test:unit               → tests 1386 / pass 1386 / fail 0
+pnpm run test:react              → Test Files 150 passed / Tests 582 passed
 npx eslint .                     → 0 errors, 90 warnings（基线 91）
 npx knip --no-progress           → Unused files 3 / exports 14 / types 1（与基线一致）
 pnpm run check:encoding          → 3575 个 Markdown 均为合法 UTF-8
@@ -228,12 +228,25 @@ html:not([data-theme="light"]) [data-agent-shell] {
 ### 7. 资产页：卡片更大、默认收起右栏、骨架跟上视图
 
 **改法**：
-- 卡片 132→188 高、图标 36→44，圆角 / 字号 / 内距一起放大；网格列宽 176→208、间距 12→16；
+- 卡片 132→188 高、图标 36→44，圆角 / 字号 / 内距一起放大；网格列宽 176→**260**、间距 12→16
+  （1440 宽下从 4 列约 258px 变成 3 列约 349px，单卡明显舒展）；
 - 页面内距 `px-4 py-3` → `px-5 py-4`；
 - 骨架从「4 根细条」换成为**按当前视图**渲染的骨架（橱窗 8 张卡片骨架 / 列表 10 行骨架），加载期给 `aria-busy`；
 - 右栏默认收起：由第 3 条的「非对话页强制收起」覆盖（资产 / 定时 / 插件都吃到）。
 
-**实测**：冷开 `/agent/assets` 抓得到 `[data-testid="assets-skeleton"]`（aria-label=资产加载中）；卡片实测 188 高、列宽 258（4 列）。
+**实测**：冷开 `/agent/assets` 抓得到 `[data-testid="assets-skeleton"]`（aria-label=资产加载中）；卡片实测 188 高 × **349 宽**（3 列）。
+
+### 8. 骨架懒加载：约 1 秒最小时长（资产页 + 详情页）
+
+**根因**：本机 IndexedDB 往往几十毫秒就把五份数据都喂回来了 —— 骨架一闪而过、内容突然出现，比「等一下」还跳。
+
+**改法**：新增 `lib/hooks/useMinimumSkeleton({ durationMs = 900, ready })`，返回「现在是否仍然显示骨架」：
+数据没就绪 → 一直 true（该等就等）；数据就绪但没到下限 → 仍然 true（刻意的平滑）；两者都满足 → false。
+实现上把 setState 放在定时器回调里，避开 `react-hooks/set-state-in-effect`（effect 体内同步 setState 会被拦）。
+资产页与详情页各接一条：骨架版式跟着视图走（橱窗 8 张卡片骨架 / 列表 10 行骨架），详情页给「图标 + 标题 + 操作按钮 + 正文块」的骨架；
+另删掉了详情页里那条已经不可达的旧骨架分支。
+
+**实测**：进资产页时骨架可见 **1025ms**；点卡片进详情页，详情骨架可见 **1190ms**（含路由切换），随后都换成真内容，无 console 报错。
 
 ### 本轮新增 / 更新的测试
 
@@ -247,8 +260,8 @@ html:not([data-theme="light"]) [data-agent-shell] {
 | `components/layout/AgentConversationSidebar.test.tsx` | 新增「非对话页点新对话/会话要跳回」；项目删除改二次确认 |
 | `components/window/ManagedWindow.test.tsx` | 停靠用例显式打开右栏（默认已改为收起） |
 
-**本轮门（末次全量）**：`tsc` 0 · `test:unit` 1385/0 · `test:react` 149 文件 / 578 通过 · `eslint` 0 error / 90 warning ·
-`knip` 3/14/1（基线） · `check:encoding` 3575 合法 · 浏览器验收 13/13 + 6/6 PASS。
+**本轮门（末次全量）**：`tsc` 0 · `test:unit` 1386/0 · `test:react` 150 文件 / 582 通过 · `eslint` 0 error / 90 warning ·
+`knip` 3/14/1（基线） · `check:encoding` 3575 合法 · 浏览器验收 13/13 + 6/6 + 4/4 PASS。
 
 ## 运维待办
 
