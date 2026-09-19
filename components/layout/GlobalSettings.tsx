@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Settings,
-  X,
   Trophy,
   BarChart3,
   Layers,
@@ -110,12 +109,26 @@ function StatCard({
   value,
   label,
   accent,
+  flat = false,
 }: {
   icon: React.ReactNode;
   value: React.ReactNode;
   label: string;
   accent?: string;
+  /** 桌面弹出面板里去掉卡片外壳，只留一行数字，避免菜单里再套卡片。 */
+  flat?: boolean;
 }) {
+  if (flat) {
+    return (
+      <div className="flex flex-1 flex-col gap-0.5">
+        <span className="flex items-center gap-1.5" style={{ color: accent ?? "var(--md-sys-color-primary)" }}>
+          {icon}
+          <span className="text-[15px] font-bold leading-none">{value}</span>
+        </span>
+        <span className="text-[10.5px] text-[var(--md-sys-color-on-surface-variant)]">{label}</span>
+      </div>
+    );
+  }
   return (
     <div
       className="flex flex-1 flex-col gap-1 rounded-[var(--md-sys-shape-corner-large,16px)] px-3.5 py-3"
@@ -273,7 +286,7 @@ export default function GlobalSettings({
       className={
         page
           ? "global-settings-page flex h-full min-h-0 w-full flex-col overflow-hidden"
-          : "fixed z-[9998] flex flex-col overflow-hidden rounded-[var(--md-sys-shape-corner-extra-large,28px)]"
+          : "fixed z-[9998] flex flex-col overflow-hidden rounded-[14px]"
       }
       style={
         page
@@ -292,31 +305,59 @@ export default function GlobalSettings({
             }
       }
     >
-        {/* 头部 */}
-        <div
-          className="flex shrink-0 items-center justify-between px-3.5 py-2.5"
-          style={{
-            borderBottom: "1px solid var(--md-sys-color-outline-variant)",
-            background: "var(--md-sys-color-surface-container)",
-          }}
-        >
-          <div className="flex items-center gap-1.5">
-            <Settings size={14} className="text-[var(--md-sys-color-primary)]" />
-            <span className="text-[13px] font-bold text-[var(--md-sys-color-on-surface)]">设置</span>
-          </div>
-          {page ? null : (
-          <button
-            onClick={onClose}
-            className="rounded-lg p-1 text-[var(--md-sys-color-on-surface-variant)] transition-colors hover:bg-[var(--md-sys-color-surface-container-high)]"
-            title="关闭"
-          >
-            <X size={18} />
-          </button>
-          )}
-        </div>
+        {/* 桌面弹出面板：顶部就是用户信息，整行点击进入账户（右侧齿轮即跳转入口）。 */}
+        {page ? null : (
+          <>
+            <button
+              type="button"
+              data-testid="account-header"
+              aria-label="查看账户"
+              onClick={() => setAccountOpen(true)}
+              className="flex shrink-0 items-center gap-2.5 px-3.5 py-2.5 text-left transition-colors hover:bg-[var(--md-sys-color-surface-container-high)]"
+              style={{ background: "transparent", border: "none", cursor: "pointer" }}
+            >
+              <UserAvatar
+                name={account.nickname}
+                email={account.email ?? authEmail}
+                imageSrc={account.avatarSrc}
+                signedIn={authStatus === "signedIn"}
+                size={30}
+              />
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[12.5px] font-semibold text-[var(--md-sys-color-on-surface)]">
+                  {account.nickname}
+                </span>
+                <span className="block truncate text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
+                  {account.membership}
+                </span>
+              </span>
+              <Settings size={15} className="shrink-0 text-[var(--md-sys-color-on-surface-variant)]" />
+            </button>
+            <div className="app-menu-separator" />
+          </>
+        )}
 
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3">
-        <div className="flex flex-col gap-2.5">
+        {/* 手机全屏设置页保留标题栏。 */}
+        {page ? (
+          <div
+            className="flex shrink-0 items-center justify-between px-3.5 py-2.5"
+            style={{
+              borderBottom: "1px solid var(--md-sys-color-outline-variant)",
+              background: "var(--md-sys-color-surface-container)",
+            }}
+          >
+            <div className="flex items-center gap-1.5">
+              <Settings size={14} className="text-[var(--md-sys-color-primary)]" />
+              <span className="text-[13px] font-bold text-[var(--md-sys-color-on-surface)]">设置</span>
+            </div>
+          </div>
+        ) : null}
+
+        <div className={page
+          ? "min-h-0 flex-1 overflow-y-auto overscroll-contain p-3"
+          : "min-h-0 flex-1 overflow-y-auto overscroll-contain p-1.5"}>
+        <div className={page ? "flex flex-col gap-2.5" : "flex flex-col"}>
+          {page ? (
           <div
             data-testid="account-card"
             className="flex items-center justify-between gap-2.5 rounded-[14px] bg-[var(--md-sys-color-surface-container)] px-3 py-2"
@@ -382,14 +423,16 @@ export default function GlobalSettings({
               </button>
             )}
           </div>
+          ) : null}
 
           {/* 额度与手机设置页共用同一段：桌面弹出面板里默认收起，展开走有界滚动折叠。 */}
           <SettingsSection
+            variant={page ? "card" : "menu"}
             title="额度"
             icon={<Gauge size={16} />}
             open={openSection === "quota"}
             onToggle={() => toggleSection("quota")}
-            summary="会员、平台用量与存储占用"
+            summary="会员 · 用量 · 存储"
             unbounded={page}
             testId="mobile-settings-quota"
           >
@@ -403,6 +446,7 @@ export default function GlobalSettings({
           </SettingsSection>
 
           <SettingsSection
+            variant={page ? "card" : "menu"}
             title="年级 / 学期"
             icon={<GraduationCap size={16} />}
             open={openSection === "year"}
@@ -414,6 +458,7 @@ export default function GlobalSettings({
           </SettingsSection>
 
           <SettingsSection
+            variant={page ? "card" : "menu"}
             title="成绩"
             icon={<Trophy size={16} />}
             open={openSection === "scores"}
@@ -427,20 +472,23 @@ export default function GlobalSettings({
           >
             <div className="flex flex-col gap-3">
               <div className="flex gap-2.5">
-                <StatCard icon={<Layers size={15} />} value={summary.chapters} label="已测章节" />
+                <StatCard icon={<Layers size={15} />} value={summary.chapters} label="已测章节" flat={!page} />
                 <StatCard
                   icon={<BarChart3 size={15} />}
                   value={summary.chapters ? summary.avgBest : "—"}
                   label="平均最佳分"
                   accent={summary.chapters ? scoreGrade(summary.avgBest).color : undefined}
+                  flat={!page}
                 />
-                <StatCard icon={<Repeat size={15} />} value={summary.totalAttempts} label="测验次数" />
+                <StatCard icon={<Repeat size={15} />} value={summary.totalAttempts} label="测验次数" flat={!page} />
               </div>
 
               {groups.length === 0 ? (
                 <div
-                  className="rounded-[var(--md-sys-shape-corner-large,16px)] px-4 py-6 text-center text-[12.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]"
-                  style={{ background: "var(--md-sys-color-surface-container-lowest)" }}
+                  className={page
+                    ? "rounded-[var(--md-sys-shape-corner-large,16px)] px-4 py-6 text-center text-[12.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]"
+                    : "px-0.5 py-1.5 text-[11.5px] leading-relaxed text-[var(--md-sys-color-on-surface-variant)]"}
+                  style={page ? { background: "var(--md-sys-color-surface-container-lowest)" } : undefined}
                 >
                   还没有测验记录。
                   <br />
@@ -504,9 +552,13 @@ export default function GlobalSettings({
                 </div>
               )}
 
-              <div className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container-lowest)] px-3.5 py-2.5">
+              <div className={page
+                ? "flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container-lowest)] px-3.5 py-2.5"
+                : "flex items-center justify-between gap-3 py-1"}>
                 <div className="min-w-0">
-                  <div className="text-[13px] font-medium text-[var(--md-sys-color-on-surface)]">
+                  <div className={page
+                    ? "text-[13px] font-medium text-[var(--md-sys-color-on-surface)]"
+                    : "text-[11.5px] font-medium text-[var(--md-sys-color-on-surface)]"}>
                     清空全部成绩
                   </div>
                   <div className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
@@ -537,6 +589,7 @@ export default function GlobalSettings({
           </SettingsSection>
 
           <SettingsSection
+            variant={page ? "card" : "menu"}
             title="快捷键"
             icon={<Keyboard size={16} />}
             open={openSection === "keyboard"}
@@ -548,6 +601,7 @@ export default function GlobalSettings({
           </SettingsSection>
 
           <SettingsSection
+            variant={page ? "card" : "menu"}
             title="外观"
             icon={<Palette size={16} />}
             open={openSection === "appearance"}
@@ -565,6 +619,7 @@ export default function GlobalSettings({
             />
           </SettingsSection>
 
+          {page ? (
           <div className="flex items-center justify-between gap-3 rounded-[var(--md-sys-shape-corner-large,16px)] bg-[var(--md-sys-color-surface-container)] px-3.5 py-2.5"
             style={{ border: "1px solid var(--md-sys-color-outline-variant)" }}
           >
@@ -592,8 +647,55 @@ export default function GlobalSettings({
               打开
             </button>
           </div>
+          ) : (
+            <>
+              <div className="app-menu-separator" />
+              <button
+                type="button"
+                aria-label="打开 Agent 设置"
+                onClick={handleOpenAgentSettings}
+                className="app-menu-item"
+              >
+                <span className="app-menu-check"><SlidersHorizontal size={14} /></span>
+                <span>打开 Agent 设置</span>
+              </button>
+            </>
+          )}
         </div>
         </div>
+
+        {/* 桌面弹出面板：底部退出 / 登录。 */}
+        {page ? null : (
+          <>
+            <div className="app-menu-separator" />
+            <div className="shrink-0 px-1.5 pb-1.5">
+              {authStatus === "signedIn" ? (
+                <button
+                  type="button"
+                  aria-label="退出登录"
+                  onClick={() => void signOut()}
+                  className="app-menu-item"
+                >
+                  <span className="app-menu-check"><LogOut size={14} /></span>
+                  <span>退出登录</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  aria-label="登录"
+                  onClick={() => {
+                    openLoginOverlay();
+                    onClose();
+                  }}
+                  className="app-menu-item"
+                >
+                  <span className="app-menu-check"><LogIn size={14} /></span>
+                  <span>登录</span>
+                </button>
+              )}
+            </div>
+          </>
+        )}
     </motion.div>
   );
 

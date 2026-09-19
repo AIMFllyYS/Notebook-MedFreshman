@@ -150,6 +150,10 @@ describe("GlobalSettings", () => {
       "data-settings-expand",
       "unbounded",
     );
+    expect(screen.getByTestId("mobile-settings-quota").closest("[data-settings-variant]")).toHaveAttribute(
+      "data-settings-variant",
+      "card",
+    );
     expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /成绩/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /快捷键/ })).toBeInTheDocument();
@@ -166,6 +170,17 @@ describe("GlobalSettings", () => {
     expect(await screen.findByText("存储额度")).toBeInTheDocument();
     expect(screen.getByText(/登录后查看会员与额度|正在读取账户/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toBeInTheDocument();
+  });
+
+  it("popover uses the flat menu shell with the user header on top", () => {
+    renderSettings();
+    expect(screen.getByTestId("account-header")).toHaveAccessibleName("查看账户");
+    expect(screen.queryByText("设置")).not.toBeInTheDocument();
+    expect(screen.getByTestId("mobile-settings-quota").closest("[data-settings-variant]")).toHaveAttribute(
+      "data-settings-variant",
+      "menu",
+    );
+    expect(screen.getByRole("button", { name: "登录" })).toBeInTheDocument();
   });
 
   it("popover variant collapses quota into the same fold menu", async () => {
