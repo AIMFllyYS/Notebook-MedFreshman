@@ -1,0 +1,120 @@
+{
+  "success": true,
+  "outcome": "passed",
+  "repairable": true,
+  "terminalViolations": [],
+  "terminalBlockingSummary": null,
+  "skillProvenance": {
+    "name": "solo-design",
+    "version": null,
+    "version_source": "unknown",
+    "runtime_skill_dir": null,
+    "recorded_at": null,
+    "expected_version": "2026.07.22.00.00.00",
+    "status": "observed_unknown",
+    "read_status": "unknown"
+  },
+  "operatingMode": "library-bound",
+  "renderBlockingErrorCount": 0,
+  "softWarningCount": 8,
+  "renderBlockingErrors": [],
+  "errorSignatures": [],
+  "softWarnings": [
+    "[orchestration-summary] runtime-orchestration-summary.json is missing skillProvenance.name/version/version_source. Version provenance will be reported as observed_unknown by external evaluators.",
+    "[library-bound-css] agent-states-output.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.artboard-scroll, .spec, .spec-block, .spec-tag, .msg-user-row, .msg-user, .ai-card, .out-caret). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] agent-states-reasoning.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.reason-head, .reason-kicker, .reason-display, .reason-sub, .rcard, .rmini-head, .rmini-title, .rmini-state). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] agent-states-thinking.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.mono, .artboard-scroll, .th-wrap, .th-head, .th-kicker, .th-display, .th-sub, .th-grid). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] agent-states-tools.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.artboard-scroll, .tools-wrap, .tools-head, .tools-kicker, .tools-display, .tools-sub, .tcard, .tcard-head). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] glass-optimized.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.artboard-scroll, .opt-wrap, .opt-pane, .opt-sec, .opt-pane-head, .opt-kicker, .opt-sec-title, .opt-sec-sub). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] spec-components.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.cs-page, .cs-canvas, .cs-hero, .cs-section, .cs-shead, .cs-sindex, .cs-stitle, .cs-block). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] spec-foundations.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.fnd-wrap, .fnd-sec, .fnd-card, .fnd-sec-head, .fnd-sec-no, .fnd-sec-title, .fnd-sub, .fnd-sub-idx). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead."
+  ],
+  "repairPlanHints": [],
+  "repairActionTable": [],
+  "errorCount": 0,
+  "warningCount": 8,
+  "errors": [],
+  "warnings": [
+    "[orchestration-summary] runtime-orchestration-summary.json is missing skillProvenance.name/version/version_source. Version provenance will be reported as observed_unknown by external evaluators.",
+    "[library-bound-css] agent-states-output.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.artboard-scroll, .spec, .spec-block, .spec-tag, .msg-user-row, .msg-user, .ai-card, .out-caret). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] agent-states-reasoning.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.reason-head, .reason-kicker, .reason-display, .reason-sub, .rcard, .rmini-head, .rmini-title, .rmini-state). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] agent-states-thinking.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.mono, .artboard-scroll, .th-wrap, .th-head, .th-kicker, .th-display, .th-sub, .th-grid). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] agent-states-tools.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.artboard-scroll, .tools-wrap, .tools-head, .tools-kicker, .tools-display, .tools-sub, .tcard, .tcard-head). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] glass-optimized.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.artboard-scroll, .opt-wrap, .opt-pane, .opt-sec, .opt-pane-head, .opt-kicker, .opt-sec-title, .opt-sec-sub). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] spec-components.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.cs-page, .cs-canvas, .cs-hero, .cs-section, .cs-shead, .cs-sindex, .cs-stitle, .cs-block). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead.",
+    "[library-bound-css] spec-foundations.html: Library-bound mode discourages custom CSS class definitions in <style> blocks (.fnd-wrap, .fnd-sec, .fnd-card, .fnd-sec-head, .fnd-sec-no, .fnd-sec-title, .fnd-sub, .fnd-sub-idx). Prefer Tailwind utilities plus Library brand CSS variables/component JSON instead."
+  ],
+  "validationRunDisciplineStatus": {
+    "declared": true,
+    "restoreMode": false,
+    "maxFullValidationRuns": 2,
+    "validationHistoryCount": 0,
+    "repairLedgerCount": 0,
+    "softWarningsTriggerRepair": false,
+    "terminalState": null,
+    "nextAction": null,
+    "violations": [],
+    "success": true
+  },
+  "terminalState": null,
+  "nextCheck": {
+    "type": "finish-readiness",
+    "command": "node \"c:\\Users\\AIMFl\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs\" \"d:\\projects\\Dev-Tools\\StudyReview-Platform\\studysolo-glass-mockup\" --check=all",
+    "fullValidationAllowed": false,
+    "reason": "workspace validation passed; run complete finish readiness before final delivery"
+  },
+  "repairBatch": [],
+  "repairContextPacket": {
+    "schema_version": "1.0",
+    "purpose": "small-context repair packet; read this before full validation-report.json",
+    "success": true,
+    "terminalState": null,
+    "skillProvenance": {
+      "name": "solo-design",
+      "version": null,
+      "version_source": "unknown",
+      "runtime_skill_dir": null,
+      "recorded_at": null,
+      "expected_version": "2026.07.22.00.00.00",
+      "status": "observed_unknown",
+      "read_status": "unknown"
+    },
+    "renderBlockingErrorCount": 0,
+    "softWarningCount": 8,
+    "renderBlockingErrors": [],
+    "repairActionTable": [],
+    "nextCheck": {
+      "type": "finish-readiness",
+      "command": "node \"c:\\Users\\AIMFl\\.trae-cn\\builtin\\design\\default\\skills\\solo-design\\shared-runtime\\deterministic-tooling\\validate-finish-readiness.mjs\" \"d:\\projects\\Dev-Tools\\StudyReview-Platform\\studysolo-glass-mockup\" --check=all",
+      "fullValidationAllowed": false,
+      "reason": "workspace validation passed; run complete finish readiness before final delivery"
+    },
+    "forbidden": [
+      "do not read validator source",
+      "do not rerun full validation when nextCheck.fullValidationAllowed=false",
+      "do not start preview/browser unless user explicitly asks",
+      "do not hand-edit repair ledger fields"
+    ]
+  },
+  "projectFileHashes": {
+    "studysolo-glass-mockup.design": "99de8314c76283175ee1fabe0ae140ec91b24077ca6350761a7f29e6511de85b",
+    "runtime-orchestration-summary.json": "0041fd0813007381a6c4451f3e5344f129300b2d0312f3e432ebefa4e738fb68",
+    "pages/agent-states-output.html": "eb7ec51ea5b1cf200f505a94bd187cca5b6144da4504607625998ba1cbcf7c0e",
+    "pages/agent-states-reasoning.html": "a0a3fe2f09be22a999ec57a18e042480747828ece9efb2506c3fcbde22d93c4a",
+    "pages/agent-states-thinking.html": "d0eaa41d33f0d1daf869060626c5a15ad5f7db87abc4b5f6852303d2f8e16f76",
+    "pages/agent-states-tools.html": "3a82ae85c3ff2c8d6a1e6948421304a1d40478e9bf3abb153f3a6acbe417a182",
+    "pages/agent-workspace-aqua.html": "969376d95757289a582a56499d69e4abfc51743be79534cbe43fdc63518c46a7",
+    "pages/agent-workspace-cream.html": "8bc044108849e97d9675f1fefb59414eca91781b8cbecf6f48d7e3e380794b6f",
+    "pages/agent-workspace.html": "ff43dd14ace92bcbf22829b4b21dd996634e1591150edafdf32a99eb33fc7370",
+    "pages/glass-optimized.html": "08f963f77f12fc47671f3f362d257a990d1fae4c2821005be4543ea0675d2173",
+    "pages/spec-components.html": "cfc35d73ffcfcd8bfd955a6e6fdf47bfdb6e3eb21e9c0c3ad2a1a37b3e25dfac",
+    "pages/spec-foundations.html": "7bdf315503f8cdd5738cf242bf209c417b9054f6f7ea476404aa6575d0b38576",
+    "pages/studio-shelf-aqua.html": "f78f61b6e35b26f60d1ac9adbd6f5e44704c3c026bf13921854f223d7805c877",
+    "pages/studio-shelf-cream.html": "9fc7e948fadcfe211e860453f9c59a683240fe7fc42125bdd184edaa026bca3f",
+    "pages/studio-shelf.html": "be86db18e4ec63721285c21b69196a88ce71c1542c7ec7994dc2840fdcc09c69"
+  },
+  "designDir": "d:\\projects\\Dev-Tools\\StudyReview-Platform\\studysolo-glass-mockup",
+  "expectedPages": 13,
+  "requireInteractions": null,
+  "checkedAt": "2026-09-18T03:24:50.182Z"
+}

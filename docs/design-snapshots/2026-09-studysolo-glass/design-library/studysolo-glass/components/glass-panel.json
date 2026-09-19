@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 2,
+  "slug": "glass-panel",
+  "name": "Glass Panel",
+  "category": "surfaces",
+  "sourceKind": "from-scratch",
+  "confidence": "medium",
+  "semanticTypeCandidates": [
+    { "type": "surface/card", "evidence": "The three translucent columns and album card of the reference; every product surface" },
+    { "type": "sidebar", "evidence": "Left navigation/chat-history rail" },
+    { "type": "popover", "evidence": "Model menu, context menus, right-side inspector panels" }
+  ],
+  "variantDimensions": [
+    { "name": "elevation", "values": ["window", "pane", "card", "popover", "inset"] },
+    { "name": "state", "values": ["active", "inactive"] },
+    { "name": "divider", "values": ["hairline", "none"] }
+  ],
+  "representativeVariants": [
+    {
+      "id": "window",
+      "whySelected": "Outermost 28px rounded floating window over ambient wallpaper",
+      "traits": { "radius": "var(--radius-window)", "background": "var(--glass-window-fill)", "blur": "var(--glass-blur-deep)", "saturate": "var(--glass-saturate)", "border": "1px solid var(--glass-border)", "shadow": "var(--shadow-5)" },
+      "childrenDigest": "title bar + content columns"
+    },
+    {
+      "id": "pane-sidebar",
+      "whySelected": "Sidebar pane separated by a hairline, not a bordered card",
+      "traits": { "background": "transparent or var(--glass-sidebar-fill)", "divider": "1px solid var(--glass-border) on one edge", "padding": "var(--space-3)" },
+      "childrenDigest": "nav groups, playlist/chat rows"
+    },
+    {
+      "id": "card",
+      "whySelected": "Opaque-ish content card (album art card): near-solid white in dark, soft shadow",
+      "traits": { "radius": "var(--radius-panel)", "background": "var(--glass-card-fill, #ffffff)", "shadow": "var(--shadow-3)" },
+      "childrenDigest": "image media, title, metadata"
+    },
+    {
+      "id": "popover",
+      "whySelected": "Floating menu/popover panel: densest, smallest radius, deepest blur for legibility",
+      "traits": { "radius": "14px", "background": "var(--glass-popover-fill)", "blur": "var(--glass-blur-deep)", "border": "1px solid var(--glass-border)", "shadow": "var(--shadow-4)" },
+      "childrenDigest": "menu rows / inspector content"
+    }
+  ],
+  "anatomy": ["surface root", "top inset highlight pseudo-layer", "optional hairline header", "content", "optional footer bar", "noise overlay (optional, 2% alpha)"],
+  "structurePatterns": [
+    "The glass six-pack: translucent fill + hairline border + inset top highlight + backdrop blur/saturate + ambient shadow + continuous corner",
+    "Blur lives on a ::before stacking layer so content updates don't repaint the filter (performance rule)",
+    "Inactive windows drop saturate to ~120% and reduce fill alpha by 0.03",
+    "Nested glass: only ONE of any two nested panels carries a blur; the inner one uses a translucent fill alone"
+  ],
+  "usageHints": {
+    "priorityHint": "high",
+    "do": "Layer at most 3 blur surfaces along any sightline; reuse blur tiers window/popover/deep",
+    "avoid": "Never put borders AND heavy shadows AND outlines on the same panel; pick border+shadow only"
+  },
+  "doNotInvent": ["No colorful gradient fills inside panels", "No skeuomorphic bevels"],
+  "unknowns": ["Wallpaper blob asset set delivered with theme package"],
+  "keyInsightSeed": "Depth comes from blur tiers and one blurred layer per nesting level — not from borders."
+}

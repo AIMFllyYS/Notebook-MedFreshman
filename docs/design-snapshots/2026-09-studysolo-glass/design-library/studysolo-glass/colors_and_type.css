@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+/* @group-priority: primary, accent, info, success, glass */
+
+:root {
+  /* primary */
+  --primary-50: #eef5ff;
+  --primary-100: #dae8ff;
+  --primary-200: #b9d3ff;
+  --primary-300: #8fbaff;
+  --primary-400: #6aa6ff;
+  --primary-500: #3f83f0; /* @primary *//* AI-generated */
+  --primary-600: #2563eb;
+  --primary-700: #1d4fc4;
+  --primary-800: #1b4199;
+  --primary-900: #152f66;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --ring: rgba(37,99,235,0.35);
+  --link: #2563eb;
+  /* accent */
+  --accent-50: #fdf3ee;
+  --accent-100: #fae3d8;
+  --accent-200: #f4c5af;
+  --accent-300: #eca17d;
+  --accent-400: #e27d52;
+  --accent-500: #d9542c; /* @primary *//* AI-generated */
+  --accent-600: #c0431f;
+  --accent-700: #9c351a;
+  --accent-800: #7a2c18;
+  --accent-900: #5c2313;
+  --accent: #d9542c;
+  --accent-foreground: #ffffff;
+  /* neutral */
+  --neutral-50: #f7f5f2;
+  --neutral-100: #ece8e2;
+  --neutral-200: #d9d3c9;
+  --neutral-300: #bfb6a8;
+  --neutral-400: #9c917f;
+  --neutral-500: #7d7262; /* @primary *//* AI-generated */
+  --neutral-600: #635a4d;
+  --neutral-700: #4c453c;
+  --neutral-800: #37322c;
+  --neutral-900: #26221d;
+  --muted: #e4ecf5;
+  --secondary: #e4ecf5;
+  /* success */
+  --success-50: #edf9f0;
+  --success-100: #d4f1dc;
+  --success-200: #aee3bd;
+  --success-300: #7fce97;
+  --success-400: #4fb471;
+  --success-500: #2f9954; /* @primary *//* AI-generated */
+  --success-600: #227a43;
+  --success-700: #1d6138;
+  --success-800: #1b4d2f;
+  --success-900: #163d27;
+  --success: #2f9954;
+  /* warning */
+  --warning-50: #fdf6e7;
+  --warning-100: #fae8c2;
+  --warning-200: #f5d388;
+  --warning-300: #efbb4d;
+  --warning-400: #e7a526;
+  --warning-500: #d18a12; /* @primary *//* AI-generated */
+  --warning-600: #ac6c0d;
+  --warning-700: #875310;
+  --warning-800: #6b4212;
+  --warning-900: #523412;
+  --warning: #d18a12;
+  /* info */
+  --info-50: #e8f8fc;
+  --info-100: #c7eef7;
+  --info-200: #97def0;
+  --info-300: #5fc8e6;
+  --info-400: #33aed6;
+  --info-500: #1792bd; /* @primary *//* AI-generated */
+  --info-600: #12749a;
+  --info-700: #135d7c;
+  --info-800: #144c64;
+  --info-900: #123d51;
+  --info: #1792bd;
+  /* text */
+  --text-primary: #1f2733; /* @primary *//* AI-generated */
+  --text-secondary: #4d5b6e;
+  --text-tertiary: #73819a;
+  --text-on-primary: #ffffff;
+  --text-on-glass: #223042;
+  --foreground: var(--text-primary);
+  --muted-foreground: var(--text-secondary);
+  /* surface */
+  --surface-page: #e7eef6; /* @primary *//* AI-generated */
+  --surface-panel: #f4f8fc;
+  --surface-sidebar: #eef4fa;
+  --surface-popover: #fbfdff;
+  --surface-control: #ffffff;
+  --surface-sunken: #dfe8f2;
+  --background: var(--surface-page);
+  --card: var(--surface-panel);
+  --popover: var(--surface-popover);
+  --sidebar: var(--surface-sidebar);
+  --border: rgba(58,88,130,0.12);
+  /* glass */
+  --glass-window-fill: rgba(255,255,255,0.60);
+  --glass-sidebar-fill: rgba(255,255,255,0.55);
+  --glass-panel-fill: rgba(255,255,255,0.62); /* @primary *//* AI-generated */
+  --glass-popover-fill: rgba(255,255,255,0.70);
+  --glass-control-fill: rgba(255,255,255,0.66);
+  --glass-border: rgba(255,255,255,0.65);
+  --glass-highlight: rgba(255,255,255,0.75);
+  --glass-shadow: 0 20px 50px -14px rgba(37,99,235,0.18);
+  --glass-noise: rgba(120,150,200,0.03);
+  --glass-blur-thin: 20px;
+  --glass-blur-base: 32px;
+  --glass-blur-deep: 48px;
+  --glass-saturate: 180%;
+  --glass-brightness: 106%;
+  /* port */
+  --color-primary: var(--primary); /* @primary */
+  --color-accent: var(--accent);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-surface: var(--card);
+  --color-card: var(--card);
+  --color-popover: var(--popover);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  /* typography */
+  --font-sans: "Inter", -apple-system, "SF Pro Text", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-display: var(--font-sans); --font-heading: var(--font-sans); --font-body: var(--font-sans);
+  --font-size-display: 40px; --font-weight-display: 700; --line-height-display: 1.1;
+  --font-size-h1: 30px; --font-weight-h1: 700; --line-height-h1: 1.2;
+  --font-size-h2: 24px; --font-weight-h2: 600; --line-height-h2: 1.25;
+  --font-size-h3: 19px; --font-weight-h3: 600; --line-height-h3: 1.3;
+  --font-size-h4: 16px; --font-weight-h4: 600; --line-height-h4: 1.4;
+  --font-size-body: 15px; --font-weight-body: 400; --line-height-body: 1.6;
+  --font-size-lead: 17px; --font-weight-lead: 400; --line-height-lead: 1.6;
+  --font-size-caption: 12px; --font-weight-caption: 500; --line-height-caption: 1.5;
+  --font-size-mono: 13px; --font-weight-mono: 400; --line-height-mono: 1.6;
+  --type-display: var(--font-size-display); --type-h1: var(--font-size-h1);
+  --type-h2: var(--font-size-h2); --type-body: var(--font-size-body);
+  --type-caption: var(--font-size-caption);
+  /* spacing */
+  --space-1: 4px; --space-2: 8px;
+  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px;
+  --space-7: 48px; --space-8: 64px;
+  /* sizing */
+  --size-traffic-light: 12px; --size-icon-sm: 16px;
+  --size-icon-md: 20px; --size-icon-lg: 24px;
+  --size-button-sm: 30px; --size-button-md: 36px;
+  --size-input: 36px; --size-button-lg: 44px;
+  /* radius */
+  --radius-control: 10px; --radius-sm: var(--radius-control);
+  --radius-panel-sm: 12px; --radius-md: var(--radius-panel-sm);
+  --radius-panel: 18px; --radius-lg: var(--radius-panel);
+  --radius-window: 28px; --radius-xl: var(--radius-window);
+  --radius-pill: 9999px; --radius-full: var(--radius-pill);
+  /* shadows */
+  --shadow-1: 0 1px 2px rgba(30,60,110,0.08); /* Control */
+  --shadow-2: 0 4px 12px -4px rgba(37,99,235,0.12); /* Card */
+  --shadow-3: 0 12px 32px -10px rgba(37,99,235,0.18); /* Popover */
+  --shadow-4: 0 24px 60px -16px rgba(30,70,140,0.28); /* Window */
+  --shadow-5: inset 0 1px 0 rgba(255,255,255,0.75), 0 18px 50px -12px rgba(37,99,235,0.22); /* Glass pane */
+  /* motion */
+  --duration-fast: 140ms; --duration-base: 220ms; --duration-slow: 360ms;
+  --ease-standard: cubic-bezier(0.32,0.72,0,1); --ease-emphasized: cubic-bezier(0.2,0.9,0.3,1);
+}
+.dark {
+  --primary: #6aa6ff;
+  --primary-foreground: #0e1828;
+  --ring: rgba(106,166,255,0.45);
+  --link: #8fbaff;
+  --accent: #e27d52;
+  --accent-foreground: #2a140b;
+  --muted: rgba(255,255,255,0.08);
+  --secondary: rgba(255,255,255,0.10);
+  --success: #4fb471;
+  --warning: #efbb4d;
+  --info: #5fc8e6;
+  --text-primary: #f2ede6;
+  --text-secondary: #b3a99b;
+  --text-tertiary: #8a8175;
+  --text-on-glass: #f5f0e8;
+  --surface-page: #2b2926;
+  --surface-panel: rgba(255,255,255,0.10);
+  --surface-sidebar: rgba(255,255,255,0.06);
+  --surface-popover: rgba(255,255,255,0.14);
+  --surface-control: rgba(255,255,255,0.12);
+  --surface-sunken: #1e1c1a;
+  --border: rgba(255,255,255,0.08);
+  --glass-window-fill: rgba(255,255,255,0.06);
+  --glass-sidebar-fill: rgba(255,255,255,0.08);
+  --glass-panel-fill: rgba(255,255,255,0.10);
+  --glass-popover-fill: rgba(255,255,255,0.18);
+  --glass-control-fill: rgba(255,255,255,0.14);
+  --glass-border: rgba(255,255,255,0.08);
+  --glass-highlight: rgba(255,255,255,0.14);
+  --glass-shadow: 0 24px 60px -16px rgba(0,0,0,0.55);
+  --glass-noise: rgba(255,255,255,0.025);
+}
+[data-tint="cream"] {
+  --accent: #c0431f;
+  --text-primary: #47361f;
+  --text-secondary: #7d6748;
+  --text-tertiary: #a08a68;
+  --text-on-glass: #47361f;
+  --surface-page: #f7f1e3;
+  --surface-panel: #fbf6e9;
+  --surface-sidebar: #f1e8d3;
+  --surface-popover: #fffdf5;
+  --surface-control: #fffdf8;
+  --surface-sunken: #ece0c8;
+  --border: rgba(120,90,40,0.14);
+  --glass-window-fill: rgba(255,252,243,0.60);
+  --glass-sidebar-fill: rgba(255,252,243,0.55);
+  --glass-panel-fill: rgba(255,252,243,0.64);
+  --glass-popover-fill: rgba(255,252,243,0.72);
+  --glass-control-fill: rgba(255,252,243,0.68);
+  --glass-border: rgba(120,90,40,0.12);
+  --glass-highlight: rgba(255,255,255,0.70);
+  --glass-shadow: 0 20px 50px -14px rgba(140,95,30,0.18);
+  --glass-noise: rgba(120,90,40,0.03);
+}

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Glass Button · StudySolo Glass</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body{margin:0;padding:var(--space-3);background:var(--color-background);font-family:var(--font-sans);color:var(--color-foreground);}
+.ambient{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+.ambient span{position:absolute;border-radius:var(--radius-full);filter:blur(var(--glass-blur-deep));}
+.b1{width:380px;height:380px;top:-150px;left:-80px;background:color-mix(in srgb,var(--color-primary) 45%,transparent);}
+.b2{width:430px;height:430px;bottom:-180px;right:-90px;background:color-mix(in srgb,var(--color-accent) 42%,transparent);}
+.b3{width:260px;height:260px;top:30px;left:54%;background:color-mix(in srgb,var(--color-primary) 26%,transparent);}
+.sheet{position:relative;z-index:1;}
+.row{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-2);}
+.label{width:92px;flex-shrink:0;font-size:var(--font-size-caption);font-weight:var(--font-weight-caption);letter-spacing:.06em;color:var(--text-tertiary);}
+.divider{border:none;border-top:1px solid var(--color-border);margin:var(--space-3) 0;}
+/* @component-css-start */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);height:var(--size-button-md);padding:0 var(--space-5);border:1px solid transparent;border-radius:var(--radius-pill);font-family:var(--font-sans);font-size:var(--font-size-body);font-weight:600;line-height:1;white-space:nowrap;cursor:pointer;flex-shrink:0;transition:background var(--duration-fast) var(--ease-standard),border-color var(--duration-fast),box-shadow var(--duration-fast),filter var(--duration-fast),transform var(--duration-fast);}
+.btn:focus-visible{outline:2px solid var(--color-ring);outline-offset:2px;}
+.btn:active{transform:scale(.97);}
+.btn:disabled{opacity:.4;cursor:default;pointer-events:none;}
+.btn-primary{background:var(--color-foreground);color:var(--color-background);box-shadow:var(--shadow-3);}
+.btn-primary:hover{filter:brightness(1.08);}
+.btn-glass{background:var(--glass-control-fill);color:var(--text-on-glass);border-color:var(--glass-border);box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-1);backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness));-webkit-backdrop-filter:blur(var(--glass-blur-thin)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness));}
+.btn-glass:hover{background:var(--glass-popover-fill);}
+.btn-ghost{color:var(--text-on-glass);background:transparent;}
+.btn-ghost:hover{background:var(--glass-highlight);}
+.btn-danger{background:var(--color-accent);color:var(--accent-foreground);box-shadow:var(--shadow-1);}
+.btn-danger:hover{filter:brightness(1.08);}
+.btn-sm{height:var(--size-button-sm);padding:0 var(--space-4);font-size:var(--font-size-caption);}
+.btn-lg{height:var(--size-button-lg);padding:0 var(--space-6);font-size:var(--font-size-lead);}
+.btn-icon{width:40px;height:40px;padding:0;}
+.btn-icon svg{width:var(--size-icon-md);height:var(--size-icon-md);display:block;}
+/* @component-css-end */
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg"><symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></symbol></svg>
+<div class="sheet">
+  <div class="row">
+    <span class="label">变体</span>
+    <button class="btn btn-primary" data-evidence-sample="primary-dark">发送</button>
+    <button class="btn btn-glass" data-evidence-sample="glass-md">深度思考</button>
+    <button class="btn btn-ghost" data-evidence-sample="ghost">取消</button>
+    <button class="btn btn-danger" data-evidence-sample="danger">新对话</button>
+  </div>
+  <hr class="divider">
+  <div class="row">
+    <span class="label">尺寸</span>
+    <button class="btn btn-glass btn-sm" data-evidence-sample="glass-md">新对话</button>
+    <button class="btn btn-glass" data-evidence-sample="glass-md">新对话</button>
+    <button class="btn btn-glass btn-lg" data-evidence-sample="glass-md">新对话</button>
+    <button class="btn btn-glass btn-icon" data-evidence-sample="icon-circle" aria-label="新对话"><svg><use href="#i-plus"/></svg></button>
+    <button class="btn btn-glass" data-evidence-sample="states" disabled>取消</button>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>StudySolo Glass · 真实前端玻璃迁移稿（Agent / Studio）</title>
+<style>
+/* ============================================================
+   StudySolo Glass — 基于真实前端（MD3 :root + data-theme=light）
+   的深度玻璃拟态迁移稿。结构/文案/功能位 1:1 取自真实产品。
+   性能铁律：backdrop-filter 只挂在 4 个容器层（顶栏/三栏/Composer/弹层），
+   内部元素仅半透填充，不二次模糊。
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ---------- 主题令牌：深色暖炭（默认，对齐真实 #0f1115/#131318 + 蓝） ---------- */
+:root{
+  --bg:#0c0e13;
+  --ambient-1:#7c6cf0; --ambient-2:#3f83f0; --ambient-3:#22c7d6; --ambient-4:#b06cf0;
+  --glass:rgba(255,255,255,.055);
+  --glass-2:rgba(255,255,255,.09);
+  --glass-3:rgba(255,255,255,.14);
+  --hair:rgba(255,255,255,.09);
+  --hair-hi:rgba(255,255,255,.16);
+  --ink:#e9ebf3; --ink-2:#aab1c4; --ink-3:#78809a; --ink-4:#565d74;
+  --brand:#8fb0ff; --brand-strong:#6aa6ff; --brand-ink:#0b1426;
+  --brand-glass:rgba(120,150,255,.16); --brand-glass-2:rgba(120,150,255,.26);
+  --c-prob:#9a8cff; --c-phy:#58b8ff; --c-chem:#43d6a0; --c-hist:#ff7d8a;
+  --c-prob-soft:rgba(124,108,240,.16); --c-phy-soft:rgba(63,131,240,.16);
+  --c-chem-soft:rgba(46,190,140,.16); --c-hist-soft:rgba(240,90,110,.16);
+  --video:#05060a;
+  --shadow-pane:0 30px 70px -22px rgba(0,0,0,.65), inset 0 1px 0 var(--hair-hi);
+  --shadow-pop:0 24px 60px -18px rgba(0,0,0,.6), inset 0 1px 0 var(--hair-hi);
+  --blur:32px; --blur-deep:46px; --sat:saturate(170%);
+  --track:rgba(255,255,255,.12);
+}
+/* ---------- 雾蓝浅色 ---------- */
+[data-theme="aqua"]{
+  --bg:#e6edf8;
+  --ambient-1:#8ab0ff; --ambient-2:#6fd6f2; --ambient-3:#b69bff; --ambient-4:#8fe0d2;
+  --glass:rgba(255,255,255,.52);
+  --glass-2:rgba(255,255,255,.68);
+  --glass-3:rgba(255,255,255,.85);
+  --hair:rgba(255,255,255,.78);
+  --hair-hi:rgba(255,255,255,.95);
+  --ink:#202842; --ink-2:#525d7c; --ink-3:#8992ac; --ink-4:#aab2c6;
+  --brand:#5b4fd6; --brand-strong:#4a3cc4; --brand-ink:#ffffff;
+  --brand-glass:rgba(103,80,164,.14); --brand-glass-2:rgba(103,80,164,.24);
+  --c-prob:#6750a4; --c-phy:#1286c4; --c-chem:#20894f; --c-hist:#d54458;
+  --c-prob-soft:rgba(103,80,164,.13); --c-phy-soft:rgba(20,140,200,.12);
+  --c-chem-soft:rgba(32,137,79,.12); --c-hist-soft:rgba(213,68,88,.12);
+  --video:#0b0d14;
+  --shadow-pane:0 30px 70px -26px rgba(40,70,140,.28), inset 0 1px 0 var(--hair-hi);
+  --shadow-pop:0 24px 56px -20px rgba(40,70,140,.30), inset 0 1px 0 var(--hair-hi);
+  --track:rgba(60,80,130,.16);
+}
+/* ---------- 奶油暖黄 ---------- */
+[data-theme="cream"]{
+  --bg:#f5eddc;
+  --ambient-1:#ffb272; --ambient-2:#ffd470; --ambient-3:#f69cb8; --ambient-4:#c9a7f5;
+  --glass:rgba(255,251,240,.54);
+  --glass-2:rgba(255,252,244,.70);
+  --glass-3:rgba(255,253,248,.86);
+  --hair:rgba(255,250,238,.80);
+  --hair-hi:rgba(255,255,255,.96);
+  --ink:#43341d; --ink-2:#77613f; --ink-3:#a48c63; --ink-4:#bda980;
+  --brand:#b0612e; --brand-strong:#974d20; --brand-ink:#fff8ef;
+  --brand-glass:rgba(176,97,46,.14); --brand-glass-2:rgba(176,97,46,.24);
+  --c-prob:#8a4a2a; --c-phy:#2f7d92; --c-chem:#3f8a55; --c-hist:#cf4d5e;
+  --c-prob-soft:rgba(138,74,42,.13); --c-phy-soft:rgba(47,125,146,.13);
+  --c-chem-soft:rgba(63,138,85,.13); --c-hist-soft:rgba(207,77,94,.13);
+  --video:#120d08;
+  --shadow-pane:0 30px 70px -26px rgba(130,85,30,.26), inset 0 1px 0 var(--hair-hi);
+  --shadow-pop:0 24px 56px -20px rgba(130,85,30,.28), inset 0 1px 0 var(--hair-hi);
+  --track:rgba(120,85,40,.16);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:"Inter",-apple-system,"SF Pro Text","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  background:var(--bg);color:var(--ink);
+  overflow:hidden;-webkit-font-smoothing:antialiased;
+  transition:background .5s ease,color .35s ease;
+}
+::-webkit-scrollbar{width:0;height:0}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ic.sm{width:15px;height:15px}
+
+/* ---------- 环境光晕背景（玻璃的景深来源） ---------- */
+.ambient{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;will-change:transform}
+[data-theme="dark"] .blob{opacity:.5}
+.b1{width:52vw;height:52vw;left:-14vw;top:-18vw;background:radial-gradient(circle,var(--ambient-1),transparent 68%)}
+.b2{width:46vw;height:46vw;right:-12vw;top:-10vw;background:radial-gradient(circle,var(--ambient-2),transparent 68%)}
+.b3{width:50vw;height:50vw;left:24vw;bottom:-26vw;background:radial-gradient(circle,var(--ambient-3),transparent 68%)}
+.b4{width:30vw;height:30vw;right:12vw;bottom:6vw;background:radial-gradient(circle,var(--ambient-4),transparent 70%);opacity:.35}
+
+/* ---------- 玻璃容器基类（唯一挂模糊的层） ---------- */
+.glass{
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(var(--blur)) var(--sat);
+  backdrop-filter:blur(var(--blur)) var(--sat);
+  border:1px solid var(--hair);
+  box-shadow:var(--shadow-pane);
+}
+
+/* ================= 画板控件（设计稿用，非产品） ================= */
+.canvas-ctl{position:fixed;z-index:60;right:18px;bottom:18px;display:flex;gap:8px;align-items:center;
+  padding:7px;border-radius:999px;background:var(--glass-3);
+  -webkit-backdrop-filter:blur(var(--blur-deep)) saturate(180%);backdrop-filter:blur(var(--blur-deep)) saturate(180%);
+  border:1px solid var(--hair);box-shadow:var(--shadow-pop)}
+.canvas-ctl .seg{display:flex;background:var(--track);border-radius:999px;padding:2px}
+.canvas-ctl .seg button{padding:5px 13px;border-radius:999px;font-size:12px;font-weight:600;color:var(--ink-3);transition:.2s}
+.canvas-ctl .seg button.on{background:var(--glass-3);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.canvas-ctl .dot{width:3px;height:3px;border-radius:50%;background:var(--ink-4);margin:0 2px}
+
+/* ================= App 骨架 ================= */
+.app{position:relative;z-index:1;height:100vh;display:flex;flex-direction:column;padding:10px;gap:10px}
+
+/* ---------- 顶栏（横贯玻璃条） ---------- */
+.topbar{height:50px;border-radius:18px;display:flex;align-items:center;gap:14px;padding:0 14px;flex:none}
+.tb-icon{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;color:var(--ink-2);transition:.18s}
+.tb-icon:hover{background:var(--glass-2);color:var(--ink)}
+.brand{display:flex;align-items:center;gap:9px;padding:4px 8px 4px 4px;border-radius:12px;transition:.18s}
+.brand:hover{background:var(--glass-2)}
+.brand-logo{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(140deg,var(--c-prob),var(--c-phy));box-shadow:0 4px 14px -4px var(--c-prob)}
+.brand-logo svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2}
+.brand-name{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.brand-name .sep{opacity:.45;margin:0 2px;font-weight:400}
+.brand-name .mode{font-weight:700}
+.brand .chev{color:var(--ink-3);margin-left:-3px}
+.crumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-3);font-weight:500;min-width:0}
+.crumb .dot{opacity:.5}
+.tb-spacer{flex:1}
+.search{height:36px;display:flex;align-items:center;gap:9px;padding:0 12px;border-radius:999px;
+  background:var(--glass-2);border:1px solid var(--hair);color:var(--ink-3);min-width:200px;transition:.18s}
+.search:hover{background:var(--glass-3)}
+.search .lab{font-size:13px;font-weight:500}
+.search kbd{margin-left:auto;font-size:10.5px;font-weight:600;background:var(--glass-3);border:1px solid var(--hair);
+  border-radius:6px;padding:2px 6px;color:var(--ink-2);font-family:inherit}
+.tb-add{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--brand);
+  background:var(--brand-glass);border:1px solid var(--hair);transition:.18s}
+.tb-add:hover{background:var(--brand-glass-2)}
+
+/* ---------- 三栏工作区 ---------- */
+.workspace{flex:1;min-height:0;display:grid;grid-template-columns:258px 1fr 348px;gap:10px}
+.pane{border-radius:20px;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.pane-body{flex:1;min-height:0;overflow:auto;padding:10px}
+
+/* 通用行 */
+.row{display:flex;align-items:center;gap:9px;width:100%;padding:7px 9px;border-radius:11px;
+  font-size:13.5px;font-weight:500;color:var(--ink-2);transition:.16s;text-align:left}
+.row:hover{background:var(--glass-2);color:var(--ink)}
+.row .ic{width:16px;height:16px}
+.row .grow{flex:1}
+.muted{color:var(--ink-3)}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--ink-3);
+  text-transform:none;padding:6px 9px 4px;display:flex;align-items:center;gap:7px}
+
+/* ================= 左栏：对话栏 ================= */
+.left .pane-head{height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;flex:none;
+  border-bottom:1px solid var(--hair)}
+.pane-head .t{font-size:13.5px;font-weight:700}
+.new-chat{color:var(--ink);font-weight:600}
+.new-chat .ic{color:var(--ink)}
+.group-head{display:flex;align-items:center;gap:8px;width:100%;padding:8px 9px;border-radius:11px;font-size:13px;font-weight:600;color:var(--ink)}
+.group-head:hover{background:var(--glass-2)}
+.group-head .ic{width:15px;height:15px;color:var(--ink-3)}
+.group-head .chev{margin-left:auto;transition:.2s;color:var(--ink-3)}
+.group-head .live{width:7px;height:7px;border-radius:2px;background:var(--c-chem);margin-left:auto;transform:rotate(45deg)}
+.group-head .chev+.live{margin-left:0}
+.empty-row{padding:5px 9px 5px 30px;font-size:12.5px;color:var(--ink-4)}
+.left-foot{margin-top:auto;padding:10px 8px;display:flex;align-items:center;gap:10px}
+.avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;
+  background:linear-gradient(145deg,var(--glass-3),var(--glass));border:1px solid var(--hair);color:var(--ink)}
+.avatar.touch{background:linear-gradient(145deg,#3a3f4a,#22262e);color:#fff}
+[data-theme="aqua"] .avatar.touch{background:linear-gradient(145deg,#4a4f5c,#2a2e38)}
+[data-theme="cream"] .avatar.touch{background:linear-gradient(145deg,#5a4a34,#3a2f1e)}
+.uname{font-size:13px;font-weight:600}
+
+/* ================= 中栏：ChatPanel ================= */
+.center{background:transparent;border:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.chat-head{height:52px;flex:none;display:flex;align-items:center;gap:10px;padding:0 16px;border-radius:18px;
+  background:var(--glass);-webkit-backdrop-filter:blur(var(--blur)) var(--sat);backdrop-filter:blur(var(--blur)) var(--sat);
+  border:1px solid var(--hair);box-shadow:var(--shadow-pane)}
+.chat-head .ai-ic{width:26px;height:26px;color:var(--brand)}
+.chat-head .ai-t{font-size:15px;font-weight:800}
+.topic-pill{font-size:11.5px;color:var(--ink-3);font-weight:500;background:var(--glass-2);
+  border:1px solid var(--hair);padding:3px 9px;border-radius:999px;max-width:220px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.head-actions{margin-left:auto;display:flex;align-items:center;gap:2px}
+.hbtn{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:var(--ink-2);
+  padding:7px 10px;border-radius:10px;transition:.16s}
+.hbtn:hover{background:var(--glass-2);color:var(--ink)}
+.hbtn.new{background:var(--glass-2);border:1px solid var(--hair);margin-left:6px;font-weight:600;color:var(--ink)}
+.hbtn.new:hover{background:var(--glass-3)}
+
+.chat-scroll{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column}
+.empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 20px 10px}
+.empty-ic{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;margin-bottom:18px;
+  background:radial-gradient(circle at 32% 28%,var(--brand-glass-2),var(--brand-glass));
+  border:1px solid var(--hair-hi);box-shadow:0 12px 34px -10px var(--c-prob), inset 0 1px 0 var(--hair-hi)}
+.empty-ic .ic{width:30px;height:30px;color:var(--brand);stroke-width:1.6}
+.empty h2{font-size:19px;font-weight:700;margin-bottom:9px;letter-spacing:-.01em}
+.empty p{font-size:13.5px;color:var(--ink-2);line-height:1.65;max-width:380px}
+.learn-chip{margin-top:16px;font-size:12px;color:var(--ink-2);background:var(--glass-2);border:1px solid var(--hair);
+  padding:7px 14px;border-radius:11px}
+.learn-chip b{color:var(--ink-2);font-weight:600}
+
+/* 试试这样问我 */
+.prompts{margin:22px auto 6px;width:min(440px,92%);border-radius:16px;padding:13px;
+  background:var(--c-prob-soft);border:1px solid color-mix(in srgb,var(--c-prob) 38%,transparent)}
+.prompts-title{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--c-prob);margin:2px 3px 10px}
+.prompts-title .ic{width:15px;height:15px}
+.prompt{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:11px 12px;border-radius:11px;
+  background:var(--glass-2);border:1px solid var(--hair);margin-bottom:7px;transition:.17s}
+.prompt:last-child{margin-bottom:2px}
+.prompt:hover{background:var(--glass-3);transform:translateY(-1px);border-color:var(--hair-hi)}
+.prompt .q{width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:var(--c-prob-soft);color:var(--c-prob)}
+.prompt .q .ic{width:12px;height:12px}
+.prompt span{font-size:13px;line-height:1.5;color:var(--ink-2);font-weight:500}
+
+/* ---------- Composer（悬浮玻璃容器，自身挂模糊） ---------- */
+.composer-wrap{flex:none;padding:6px 14px 14px}
+.composer{border-radius:22px;background:var(--glass-2);
+  -webkit-backdrop-filter:blur(var(--blur-deep)) saturate(180%);backdrop-filter:blur(var(--blur-deep)) saturate(180%);
+  border:1px solid var(--hair-hi);box-shadow:var(--shadow-pop);padding:10px 12px 9px}
+.comp-tools{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.chip{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:6px 11px;border-radius:999px;
+  color:var(--ink-2);background:transparent;border:1px solid transparent;transition:.16s}
+.chip .ic{width:14px;height:14px}
+.chip:hover{background:var(--glass-2)}
+.chip.on{color:var(--brand);background:var(--brand-glass);border-color:color-mix(in srgb,var(--brand) 30%,transparent)}
+.comp-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.ctx{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--c-chem)}
+.ring{width:17px;height:17px}
+.model{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--ink-2);padding:5px 7px;border-radius:9px}
+.model:hover{background:var(--glass-2);color:var(--ink)}
+.model .ic{width:13px;height:13px}
+.comp-input{display:flex;align-items:center;gap:10px}
+.plus{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2);
+  background:var(--glass-2);border:1px solid var(--hair);transition:.16s;flex:none}
+.plus:hover{color:var(--ink);background:var(--glass-3)}
+.comp-input input{flex:1;background:none;border:none;outline:none;color:var(--ink);font-size:13.5px;font-family:inherit}
+.comp-input input::placeholder{color:var(--ink-3)}
+.send{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;
+  background:var(--glass-3);color:var(--ink-3);border:1px solid var(--hair)}
+.send.ready{background:linear-gradient(145deg,var(--brand),var(--brand-strong));color:var(--brand-ink);
+  box-shadow:0 6px 18px -6px var(--brand);border-color:transparent}
+
+/* ================= 右栏：窗坞 ================= */
+.dock-tabs{display:flex;align-items:center;gap:4px;padding:9px 10px;border-bottom:1px solid var(--hair);flex:none;overflow:hidden}
+.dtab{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--ink-3);
+  padding:8px 12px;border-radius:11px;white-space:nowrap;transition:.16s}
+.dtab .ic{width:15px;height:15px}
+.dtab:hover{color:var(--ink-2);background:var(--glass-2)}
+.dtab.on{color:var(--brand);background:var(--brand-glass);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--brand) 26%,transparent)}
+.dock-more{margin-left:2px;color:var(--ink-3)}
+.dock-body{padding:14px;overflow:auto}
+.dock-kicker{font-size:12.5px;font-weight:700;color:var(--ink-2);margin:2px 2px 12px}
+.video{border-radius:16px;overflow:hidden;background:var(--video);position:relative;aspect-ratio:16/10;
+  border:1px solid var(--hair);box-shadow:0 18px 44px -18px rgba(0,0,0,.7)}
+.video .vt{position:absolute;top:13px;left:0;right:0;text-align:center;font-size:12px;font-weight:700;color:rgba(255,255,255,.86)}
+.video .play{position:absolute;inset:0;display:grid;place-items:center}
+.video .play button{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(255,255,255,.88);color:#15181f;box-shadow:0 10px 30px -8px rgba(0,0,0,.6);transition:.18s}
+.video .play button:hover{transform:scale(1.06)}
+.video-meta{padding:13px 4px 2px}
+.video-meta h3{font-size:15px;font-weight:700;margin-bottom:6px}
+.video-meta p{font-size:12.5px;line-height:1.6;color:var(--ink-2)}
+
+/* ================= Studio 屏 ================= */
+#screen-studio{display:none}
+body.studio #screen-agent{display:none}
+body.studio #screen-studio{display:contents}
+
+/* 左：学科文件树 */
+.tree-scroll{padding:6px 8px 8px;overflow:auto;flex:1;min-height:0}
+.tview{height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--hair);flex:none}
+.tview .right{display:flex;gap:2px}
+.tview .ti{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;color:var(--ink-3)}
+.tview .ti:hover{background:var(--glass-2);color:var(--ink)}
+.tview .ti.on{background:var(--glass-2);color:var(--ink)}
+.trow{display:flex;align-items:center;gap:8px;width:100%;padding:6px 8px;border-radius:10px;font-size:13px;
+  font-weight:500;color:var(--ink-2);transition:.15s}
+.trow:hover{background:var(--glass-2);color:var(--ink)}
+.trow .ic{width:15px;height:15px;flex:none}
+.trow.home.on{background:var(--brand-glass);color:var(--brand);font-weight:700;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--brand) 22%,transparent)}
+.trow.subj{color:var(--ink);font-weight:700;margin-top:4px}
+.trow .caret{margin-left:auto;color:var(--ink-3)}
+.trow .fld{color:var(--c-prob)}
+.trow.d1{padding-left:26px}
+.trow.d2{padding-left:44px;font-size:12.5px;color:var(--ink-3)}
+.trow.d2 .ic{width:13px;height:13px}
+.trow .ph{color:var(--ink-4)}
+
+/* 中：书架 */
+.shelf-scroll{flex:1;min-height:0;overflow:auto;padding:26px 34px 8px}
+.shelf h1{font-size:38px;font-weight:800;letter-spacing:-.02em;margin-bottom:14px}
+.shelf-intro{font-size:14px;color:var(--ink-2);line-height:1.7;margin-bottom:24px}
+.shelf-intro a{color:var(--brand);font-weight:700;text-decoration:none;border-bottom:1.5px solid color-mix(in srgb,var(--brand) 45%,transparent)}
+.seg-year{display:flex;background:var(--glass-2);border:1px solid var(--hair);border-radius:14px;padding:5px;gap:4px;margin-bottom:10px;max-width:560px}
+.seg-year button{flex:1;padding:11px 0;border-radius:10px;font-size:15px;font-weight:700;color:var(--ink-3);transition:.18s}
+.seg-year button.on{background:var(--brand-glass-2);color:var(--brand);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--brand) 28%,transparent)}
+.seg-term{display:flex;background:var(--glass-2);border:1px solid var(--hair);border-radius:14px;padding:5px;gap:4px;margin-bottom:28px;max-width:560px}
+.seg-term button{flex:1;padding:11px 0;border-radius:10px;font-size:14.5px;font-weight:700;color:var(--ink-3);transition:.18s}
+.seg-term button.on{background:var(--glass-3);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.12),inset 0 1px 0 var(--hair-hi)}
+.books{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:720px}
+.book{position:relative;border-radius:18px;min-height:208px;padding:18px;overflow:hidden;text-align:left;
+  background:var(--glass-2);border:1px solid var(--hair);box-shadow:var(--shadow-pane);transition:.22s}
+.book::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+.book.k-prob::before{background:linear-gradient(var(--c-prob),color-mix(in srgb,var(--c-prob) 40%,transparent))}
+.book.k-phy::before{background:linear-gradient(var(--c-phy),color-mix(in srgb,var(--c-phy) 40%,transparent))}
+.book.k-chem::before{background:linear-gradient(var(--c-chem),color-mix(in srgb,var(--c-chem) 40%,transparent))}
+.book.k-hist::before{background:linear-gradient(var(--c-hist),color-mix(in srgb,var(--c-hist) 40%,transparent))}
+.book:hover{transform:translateY(-3px);background:var(--glass-3)}
+.book .bico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:14px}
+.book .bico .ic{width:22px;height:22px}
+.k-prob .bico{background:var(--c-prob-soft);color:var(--c-prob)}
+.k-phy .bico{background:var(--c-phy-soft);color:var(--c-phy)}
+.k-chem .bico{background:var(--c-chem-soft);color:var(--c-chem)}
+.k-hist .bico{background:var(--c-hist-soft);color:var(--c-hist)}
+.book h3{font-size:17px;font-weight:800;margin-bottom:5px;position:relative;z-index:2}
+.book .meta{font-size:12.5px;color:var(--ink-3);font-weight:500;position:relative;z-index:2}
+.book .watermark{position:absolute;right:-14px;bottom:-16px;width:130px;height:130px;opacity:.10;z-index:1}
+.book .watermark .ic{width:100%;height:100%;stroke-width:1.1}
+.k-prob .watermark{color:var(--c-prob)} .k-phy .watermark{color:var(--c-phy)}
+.k-chem .watermark{color:var(--c-chem)} .k-hist .watermark{color:var(--c-hist)}
+
+/* Studio 右：AI 坞简版 */
+.dock-empty{padding:34px 18px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.dock-empty .empty-ic{width:58px;height:58px;margin-bottom:14px}
+.dock-empty .empty-ic .ic{width:25px;height:25px}
+.dock-empty h4{font-size:15px;font-weight:700;margin-bottom:8px}
+.dock-empty p{font-size:12.5px;color:var(--ink-2);line-height:1.65;margin-bottom:13px}
+.dock-empty .learn-chip{margin:0}
+
+/* 响应式 */
+@media (max-width:1100px){
+  .workspace{grid-template-columns:220px 1fr 300px}
+  .books{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="ambient" aria-hidden="true">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+
+<!-- 画板控件 -->
+<div class="canvas-ctl">
+  <div class="seg" id="screenSeg">
+    <button data-screen="agent" class="on">Agent 工作区</button>
+    <button data-screen="studio">Studio 书架</button>
+  </div>
+  <span class="dot"></span>
+  <div class="seg" id="themeSeg">
+    <button data-theme="dark" class="on">深炭</button>
+    <button data-theme="aqua">雾蓝</button>
+    <button data-theme="cream">奶油</button>
+  </div>
+</div>
+
+<div class="app" id="screen-agent">
+  <!-- ============ 顶栏 ============ -->
+  <header class="topbar glass">
+    <button class="tb-icon" title="收起导航 Ctrl+B">
+      <svg class="ic" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <button class="brand">
+      <span class="brand-logo"><svg viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="M3 13l9 5 9-5"/></svg></span>
+      <span class="brand-name">StudySolo<span class="sep">·</span><span class="mode">Agent</span></span>
+      <svg class="ic sm chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="crumb"><span class="dot">·</span><span>概率论与数理统计</span><span>/</span><span>详解</span></div>
+    <div class="tb-spacer"></div>
+    <button class="search">
+      <svg class="ic sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span class="lab">全局搜索</span><kbd>⇧F</kbd>
+    </button>
+    <button class="tb-add" title="添加内容"><svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+    <button class="tb-icon" title="窗口布局"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="15" y1="4" x2="15" y2="20"/></svg></button>
+    <button class="tb-icon" title="全屏"><svg class="ic" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+  </header>
+
+  <!-- ============ 三栏 ============ -->
+  <div class="workspace">
+    <!-- 左：对话栏 -->
+    <aside class="pane glass left">
+      <div class="pane-head">
+        <span class="t">对话</span>
+        <button class="tb-icon" style="width:30px;height:30px" title="折叠侧边栏">
+          <svg class="ic sm" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/><polyline points="12.5 9 15.5 12 12.5 15"/></svg>
+        </button>
+      </div>
+      <div class="pane-body" style="padding:8px;display:flex;flex-direction:column">
+        <button class="row new-chat"><svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>新对话</button>
+        <button class="row"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>我的资产</button>
+
+        <div style="margin-top:8px">
+          <button class="group-head">
+            <svg class="ic" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+            <svg class="ic" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>
+            正常对话
+            <span class="live" title="进行中"></span>
+          </button>
+          <div class="empty-row">暂无对话</div>
+        </div>
+        <div style="margin-top:2px">
+          <button class="group-head">
+            <svg class="ic" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+            <svg class="ic" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>
+            划词助手对话
+          </button>
+          <div class="empty-row">暂无划词对话</div>
+        </div>
+
+        <div class="left-foot">
+          <div class="avatar">N</div>
+          <span class="uname">访客</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 中：ChatPanel -->
+    <main class="pane center">
+      <div class="chat-head">
+        <svg class="ic ai-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z"/></svg>
+        <span class="ai-t">AI 助教</span>
+        <span class="topic-pill">probability detail 1.1</span>
+        <div class="head-actions">
+          <button class="hbtn"><svg class="ic sm" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="14" y2="17"/><circle cx="17.5" cy="17" r="2.2"/></svg>设置</button>
+          <button class="hbtn"><svg class="ic sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>历史</button>
+          <button class="hbtn new"><svg class="ic sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>新对话</button>
+        </div>
+      </div>
+
+      <div class="chat-scroll">
+        <div class="empty">
+          <div class="empty-ic">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M16.5 3.5 20.5 7.5 8 20l-4.5 1L4.5 16 16.5 3.5Z"/><path d="m14.5 5.5 4 4"/><path d="M19 14v.5a2.5 2.5 0 0 1-2.5 2.5H14"/></svg>
+          </div>
+          <h2>我是你的概率论助教</h2>
+          <p>遇到不懂的概念随时问我，我可以解释公式、出题练习、或者帮你梳理知识点</p>
+          <div class="learn-chip">当前学习: <b>probability detail 1.1</b></div>
+
+          <div class="prompts">
+            <div class="prompts-title">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.6.6 1 1.4 1 2.5h6c0-1.1.4-1.9 1-2.5A6 6 0 0 0 12 3Z"/></svg>
+              试试这样问我
+            </div>
+            <button class="prompt"><span class="q"><svg class="ic" viewBox="0 0 24 24"><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.3-1 .9-1 1.7"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg></span><span>请解释当前小节的核心概念，并配合直观的解释。</span></button>
+            <button class="prompt"><span class="q"><svg class="ic" viewBox="0 0 24 24"><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.3-1 .9-1 1.7"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg></span><span>请根据当前小节的考点，给我出一道典型练习题。</span></button>
+            <button class="prompt"><span class="q"><svg class="ic" viewBox="0 0 24 24"><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.3-1 .9-1 1.7"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg></span><span>请详细推导当前小节的核心公式，并写出每一步的演算逻辑。</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="composer-wrap">
+        <div class="composer">
+          <div class="comp-tools">
+            <button class="chip on"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5 5l2.2 2.2M16.8 16.8 19 19M19 5l-2.2 2.2M7.2 16.8 5 19"/></svg>深度思考·Med</button>
+            <button class="chip"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z"/></svg>联网搜索</button>
+            <div class="comp-right">
+              <span class="ctx">
+                <svg class="ring" viewBox="0 0 36 36">
+                  <circle cx="18" cy="18" r="15" fill="none" stroke="var(--track)" stroke-width="3.5"/>
+                  <circle cx="18" cy="18" r="15" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"
+                    stroke-dasharray="94.2" stroke-dashoffset="60" transform="rotate(-90 18 18)"/>
+                </svg>
+                3.0K
+              </span>
+              <button class="model">
+                <svg class="ic sm" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="3"/><path d="M9 10h.01M15 10h.01M9 14h6"/></svg>
+                DeepSeek V4.1 Flash
+                <svg class="ic sm" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="comp-input">
+            <button class="plus" title="添加计划、工具或技能"><svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <input placeholder="输入问题、引用笔记、计划或工具" />
+            <button class="send" title="发送"><svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 右：窗坞 -->
+    <aside class="pane glass">
+      <div class="dock-tabs">
+        <button class="dtab on"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><polygon points="10 9 16 12 10 15" fill="currentColor" stroke="none"/></svg>动画讲解</button>
+        <button class="dtab"><svg class="ic" viewBox="0 0 24 24"><path d="M4 17c3-8 13-8 16 0"/><circle cx="12" cy="11" r="2.4"/></svg>可交互</button>
+        <button class="dtab"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z"/></svg>浏览器</button>
+        <button class="dtab"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><line x1="7" y1="3" x2="5" y2="6"/><line x1="17" y1="3" x2="19" y2="6"/></svg>B站</button>
+        <button class="dtab dock-more"><svg class="ic sm" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="19" cy="12" r="1.4" fill="currentColor"/></svg></button>
+      </div>
+      <div class="dock-body">
+        <div class="dock-kicker">动画讲解 · 1.1</div>
+        <div class="video">
+          <div class="vt">样本空间与事件</div>
+          <div class="play"><button><svg class="ic" style="width:22px;height:22px;stroke-width:0;fill:currentColor;margin-left:2px" viewBox="0 0 24 24"><polygon points="7 4 20 12 7 20"/></svg></button></div>
+        </div>
+        <div class="video-meta">
+          <h3>样本空间与事件</h3>
+          <p>用掷骰子直观展示样本空间 Ω 与事件 A = 出现偶数。</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ================= Studio 书架屏 ================= -->
+<div class="app" id="screen-studio">
+  <header class="topbar glass">
+    <button class="tb-icon" title="收起导航 Ctrl+B"><svg class="ic" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    <button class="brand">
+      <span class="brand-logo"><svg viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="M3 13l9 5 9-5"/></svg></span>
+      <span class="brand-name">StudySolo<span class="sep">·</span><span class="mode">Studio</span></span>
+      <svg class="ic sm chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="crumb"><span class="dot">·</span><span>概率论与数理统计</span><span>/</span><span>详解</span></div>
+    <div class="tb-spacer"></div>
+    <button class="search"><svg class="ic sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg><span class="lab">全局搜索</span><kbd>⇧F</kbd></button>
+    <button class="tb-add"><svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+    <button class="tb-icon"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="15" y1="4" x2="15" y2="20"/></svg></button>
+    <button class="tb-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+  </header>
+
+  <div class="workspace">
+    <!-- 左：学科文件树 -->
+    <aside class="pane glass left">
+      <div class="tview">
+        <span class="t">期末复习栈</span>
+        <div class="right">
+          <button class="ti on" title="文件树"><svg class="ic sm" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg></button>
+          <button class="ti" title="网格"><svg class="ic sm" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></button>
+          <button class="ti" title="折叠"><svg class="ic sm" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><polyline points="9 4 9 20" style="stroke-width:2.4"/></svg></button>
+        </div>
+      </div>
+      <div class="tree-scroll">
+        <button class="trow home on"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9"/></svg>首页</button>
+
+        <button class="trow subj"><svg class="ic sm" style="color:var(--c-prob)" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>概率论与数理统计<svg class="ic sm caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="trow d1"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h3l2 2h9a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>教材</button>
+        <button class="trow d1" style="color:var(--ink)"><svg class="ic" style="color:var(--c-prob)" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>详解<svg class="ic sm caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="trow d2 ph"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>随机事件与概率</button>
+        <button class="trow d2 ph"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>随机变量及其分布</button>
+        <button class="trow d2 ph"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>多维随机变量及其分布</button>
+        <button class="trow d2 ph"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>随机变量的数字特征</button>
+        <button class="trow d2 ph"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>大数定律与中心极限定理</button>
+        <button class="trow d2 ph"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>样本及抽样分布</button>
+        <button class="trow d2 ph"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>参数估计</button>
+        <button class="trow d2 ph"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>假设检验</button>
+        <button class="trow d1"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><line x1="7" y1="3" x2="5" y2="6"/><line x1="17" y1="3" x2="19" y2="6"/></svg>课上录音</button>
+        <button class="trow d1"><svg class="ic" viewBox="0 0 24 24"><path d="M5 4h11l3 3v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>课堂纪要</button>
+        <button class="trow d1"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="m9 12 2 2 4-4"/></svg>考前模拟</button>
+        <button class="trow d1"><svg class="ic" viewBox="0 0 24 24"><path d="M6 4v16M18 4v16"/><path d="M6 9h12M6 15h12"/></svg>实战演练</button>
+
+        <button class="trow subj"><svg class="ic sm" style="color:var(--c-phy)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.2"/><ellipse cx="12" cy="12" rx="9" ry="3.6"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(120 12 12)"/></svg>大学物理<svg class="ic sm caret" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+        <button class="trow subj"><svg class="ic sm" style="color:var(--c-chem)" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L5 19a1.5 1.5 0 0 0 1.4 2h11.2A1.5 1.5 0 0 0 19 19L14 9V3"/><path d="M7.5 15h9"/></svg>有机化学<svg class="ic sm caret" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+        <button class="trow subj"><svg class="ic sm" style="color:var(--c-hist)" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h6v18H6a2 2 0 0 1-2-2V5Z"/><path d="M20 5a2 2 0 0 0-2-2h-6v18h6a2 2 0 0 0 2-2V5Z"/></svg>中国近现代史纲要<svg class="ic sm caret" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+        <button class="trow subj"><svg class="ic sm" style="color:var(--c-hist)" viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9-9a4.5 4.5 0 0 1 9-1.5A4.5 4.5 0 0 1 21 12c-2 4.4-9 9-9 9Z"/></svg>毛泽东思想和中国特色社会主义…<svg class="ic sm caret" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+        <button class="trow subj"><svg class="ic sm" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>其他<svg class="ic sm caret" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>
+      </div>
+      <div class="left-foot" style="border-top:1px solid var(--hair);margin:0">
+        <div class="avatar touch">N</div><span class="uname">访客</span>
+        <button class="tb-icon" style="margin-left:auto;width:30px;height:30px" title="切换到深色"><svg class="ic sm" viewBox="0 0 24 24"><path d="M20 13.5A8 8 0 1 1 10.5 4 6.5 6.5 0 0 0 20 13.5Z"/></svg></button>
+      </div>
+    </aside>
+
+    <!-- 中：书架 -->
+    <main class="pane center">
+      <div class="shelf-scroll">
+        <div class="shelf">
+          <h1>StudySolo</h1>
+          <p class="shelf-intro">选一本书：<a href="#">开始学习</a> 进入正文，<a href="#">开始复习</a> 翻看记忆卡，<a href="#">笔记</a> 写下这一科的个人笔记。</p>
+
+          <div class="seg-year">
+            <button class="on">大一</button><button>大二</button><button>大三</button><button>大四</button><button>大五</button>
+          </div>
+          <div class="seg-term">
+            <button>上学期</button><button class="on">下学期</button>
+          </div>
+
+          <div class="books">
+            <button class="book k-prob">
+              <span class="bico"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="7" x2="11" y2="7"/><line x1="13" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="11" y2="11"/><line x1="13" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="11" y2="15"/><line x1="13" y1="15" x2="16" y2="15"/></svg></span>
+              <h3>概率论与数理统计</h3><div class="meta">6 个板块 · 77 项</div>
+              <span class="watermark"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="16" y2="15"/></svg></span>
+            </button>
+            <button class="book k-phy">
+              <span class="bico"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.2"/><ellipse cx="12" cy="12" rx="9" ry="3.6"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(120 12 12)"/></svg></span>
+              <h3>大学物理</h3><div class="meta">6 个板块 · 71 项</div>
+              <span class="watermark"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.2"/><ellipse cx="12" cy="12" rx="9" ry="3.6"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(120 12 12)"/></svg></span>
+            </button>
+            <button class="book k-chem">
+              <span class="bico"><svg class="ic" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L5 19a1.5 1.5 0 0 0 1.4 2h11.2A1.5 1.5 0 0 0 19 19L14 9V3"/><path d="M7.5 15h9"/></svg></span>
+              <h3>有机化学</h3><div class="meta">6 个板块 · 67 项</div>
+              <span class="watermark"><svg class="ic" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L5 19a1.5 1.5 0 0 0 1.4 2h11.2A1.5 1.5 0 0 0 19 19L14 9V3"/></svg></span>
+            </button>
+            <button class="book k-hist">
+              <span class="bico"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h6v18H6a2 2 0 0 1-2-2V5Z"/><path d="M20 5a2 2 0 0 0-2-2h-6v18h6a2 2 0 0 0 2-2V5Z"/></svg></span>
+              <h3>中国近现代史纲要</h3><div class="meta">6 个板块 · 50 项</div>
+              <span class="watermark"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h6v18H6a2 2 0 0 1-2-2V5Z"/><path d="M20 5a2 2 0 0 0-2-2h-6v18h6a2 2 0 0 0 2-2V5Z"/></svg></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 右：AI 坞 -->
+    <aside class="pane glass">
+      <div class="dock-tabs">
+        <button class="dtab on"><svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.7 8.7 0 0 1-4-1L3 20l1.1-3.7A8.4 8.4 0 1 1 21 11.5Z"/></svg>AI 对话</button>
+        <button class="dtab"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><polygon points="10 9 16 12 10 15" fill="currentColor" stroke="none"/></svg>动画讲解</button>
+        <button class="dtab"><svg class="ic" viewBox="0 0 24 24"><path d="M4 17c3-8 13-8 16 0"/><circle cx="12" cy="11" r="2.4"/></svg>可交互</button>
+        <button class="dtab"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z"/></svg>浏览器</button>
+      </div>
+      <div class="dock-empty">
+        <div class="empty-ic"><svg class="ic" viewBox="0 0 24 24"><path d="M16.5 3.5 20.5 7.5 8 20l-4.5 1L4.5 16 16.5 3.5Z"/><path d="m14.5 5.5 4 4"/></svg></div>
+        <h4>我是你的概率论助教</h4>
+        <p>遇到不懂的概念随时问我，我可以解释公式、出题练习、或者帮你梳理知识点</p>
+        <div class="learn-chip">当前学习: <b>probability detail 1.1</b></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+const root = document.documentElement;
+document.querySelectorAll('#themeSeg button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#themeSeg button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); root.setAttribute('data-theme', b.dataset.theme);
+}));
+document.querySelectorAll('#screenSeg button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#screenSeg button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  document.body.classList.toggle('studio', b.dataset.screen==='studio');
+}));
+// 年份 / 学期分段控件演示
+document.querySelectorAll('.seg-year,.seg-term').forEach(seg=>{
+  seg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+    seg.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');});
+});
+</script>
+</body>
+</html>

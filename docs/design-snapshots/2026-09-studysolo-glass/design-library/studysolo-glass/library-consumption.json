@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "tokenSource": "css.json",
+  "uikitPlan": "uikit-plan.json",
+  "recommendedReadOrder": [
+    "SKILL.md",
+    "README.md",
+    "css.json",
+    "components/index.json",
+    "uikit-plan.json",
+    "preview/component-glass-panel.html",
+    "preview/component-mac-window.html",
+    "ui_kits/dashboard/index.html"
+  ],
+  "coreComponents": ["glass-panel", "mac-window", "button", "input-field"],
+  "supportComponents": ["menu-bar", "tab-bar"]
+}

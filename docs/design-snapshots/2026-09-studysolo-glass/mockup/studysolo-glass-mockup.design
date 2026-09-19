@@ -1,0 +1,316 @@
+{
+  "data": [
+    {
+      "id": "page-agent-workspace",
+      "title": "Agent 工作区 · 深炭",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789689495244,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 0,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-0f530ad4",
+          "measuredAt": 1789695941120
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/agent-workspace.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-studio-shelf",
+      "title": "Studio 书架 · 深炭",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789689495244,
+      "canvasData": {
+        "x": 480,
+        "y": 0,
+        "group": 0,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-a6ec4138",
+          "measuredAt": 1789695941120
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/studio-shelf.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-agent-workspace-aqua",
+      "title": "Agent 工作区 · 雾蓝",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789689495244,
+      "canvasData": {
+        "x": 0,
+        "y": 373,
+        "group": 1,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-d72d5cca",
+          "measuredAt": 1789695941120
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/agent-workspace-aqua.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-studio-shelf-aqua",
+      "title": "Studio 书架 · 雾蓝",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789689495244,
+      "canvasData": {
+        "x": 480,
+        "y": 373,
+        "group": 1,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-bd3940d9",
+          "measuredAt": 1789695941120
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/studio-shelf-aqua.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-agent-workspace-cream",
+      "title": "Agent 工作区 · 奶油",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789689495244,
+      "canvasData": {
+        "x": 0,
+        "y": 746,
+        "group": 2,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-02471907",
+          "measuredAt": 1789695941120
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/agent-workspace-cream.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-studio-shelf-cream",
+      "title": "Studio 书架 · 奶油",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789689495244,
+      "canvasData": {
+        "x": 480,
+        "y": 746,
+        "group": 2,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-7fb2f36c",
+          "measuredAt": 1789695941120
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/studio-shelf-cream.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-spec-foundations",
+      "title": "基础规范 · 色彩字体图标",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789696000000,
+      "canvasData": {
+        "x": 0,
+        "y": 1119,
+        "group": 3,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-be419207",
+          "measuredAt": 1789708161176
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/spec-foundations.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-spec-components",
+      "title": "基础规范 · 组件弹窗窗口",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789696000000,
+      "canvasData": {
+        "x": 480,
+        "y": 1119,
+        "group": 3,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-377fc760",
+          "measuredAt": 1789708161176
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/spec-components.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-agent-states-reasoning",
+      "title": "Agent · 推理链全状态",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789696000000,
+      "canvasData": {
+        "x": 0,
+        "y": 1492,
+        "group": 4,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-d9574d24",
+          "measuredAt": 1789708161176
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/agent-states-reasoning.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-agent-states-tools",
+      "title": "Agent · 工具调用全状态",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789696000000,
+      "canvasData": {
+        "x": 480,
+        "y": 1492,
+        "group": 4,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-3e28aac3",
+          "measuredAt": 1789708161176
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/agent-states-tools.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-agent-states-thinking",
+      "title": "Agent · 思考动画与状态",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789696000000,
+      "canvasData": {
+        "x": 960,
+        "y": 1492,
+        "group": 4,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-4d592514",
+          "measuredAt": 1789708161176
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/agent-states-thinking.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-agent-states-output",
+      "title": "Agent · 输出显示全状态",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789696000000,
+      "canvasData": {
+        "x": 1440,
+        "y": 1492,
+        "group": 4,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-2e85deb2",
+          "measuredAt": 1789708161176
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/agent-states-output.html",
+        "interactions": []
+      }
+    },
+    {
+      "id": "page-glass-optimized",
+      "title": "玻璃拟态 · 性能特化版",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1789696000000,
+      "canvasData": {
+        "x": 0,
+        "y": 1865,
+        "group": 5,
+        "layoutSnapshot": {
+          "version": 1,
+          "contentHeight": 900,
+          "viewportWidth": 1440,
+          "sourceHash": "fnv1a-5d9582a4",
+          "measuredAt": 1789708161176
+        }
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/glass-optimized.html",
+        "interactions": []
+      }
+    }
+  ],
+  "config": {
+    "autoLayout": true,
+    "deviceType": "desktop",
+    "projectName": "StudySolo Glass 玻璃拟态设计稿",
+    "designLibrary": {
+      "name": "studysolo-glass",
+      "id": "76HQMMBFSV77F3",
+      "version": 2,
+      "scope": "workspace",
+      "path": "d:\\projects\\Dev-Tools\\StudyReview-Platform\\docs\\design-snapshots\\2026-09-studysolo-glass\\design-library\\studysolo-glass",
+      "versionSource": "metadata.json"
+    }
+  }
+}

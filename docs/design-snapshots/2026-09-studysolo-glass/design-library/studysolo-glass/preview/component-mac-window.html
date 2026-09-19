@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mac Window · StudySolo Glass</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  /* Page scaffold — NOT extracted */
+  body { margin:0; padding:var(--space-3); background:var(--background); font-family:var(--font-sans); color:var(--text-primary); }
+  .ambient { position:fixed; inset:0; overflow:hidden; pointer-events:none; }
+  .blob { position:absolute; border-radius:var(--radius-pill); filter:blur(110px); opacity:.55; }
+  .blob-aqua { width:460px; height:460px; left:-120px; top:-140px; background:var(--info-400); }
+  .blob-violet { width:520px; height:520px; right:-160px; top:40px; background:var(--primary-500); opacity:.45; }
+  .blob-amber { width:420px; height:420px; left:32%; bottom:-200px; background:var(--warning-400); opacity:.32; }
+  .specimen { position:relative; z-index:1; }
+  .story { margin-bottom:var(--space-3); }
+  .story-label { display:block; font-size:var(--font-size-caption); font-weight:600; letter-spacing:.06em; color:var(--text-tertiary); text-transform:uppercase; margin:0 0 var(--space-2) var(--space-1); }
+  .rail { display:flex; flex-wrap:wrap; gap:var(--space-5); align-items:center; }
+  .divider { border:none; border-top:1px solid var(--border); margin:var(--space-4) 0; }
+
+  /* @component-css-start */
+  /* Component definitions — extracted to components.css by deterministic script */
+  .win { border-radius:var(--radius-window); background:var(--glass-window-fill); -webkit-backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness)); backdrop-filter:blur(var(--glass-blur-deep)) saturate(var(--glass-saturate)) brightness(var(--glass-brightness)); border:1px solid var(--glass-border); box-shadow:inset 0 1px 0 var(--glass-highlight), var(--shadow-5); overflow:hidden; }
+  .win-key { width:560px; max-width:100%; }
+  .titlebar { position:relative; height:44px; display:flex; align-items:center; justify-content:center; }
+  .lights { position:absolute; left:var(--space-4); display:flex; gap:var(--space-2); }
+  .dot { width:var(--size-traffic-light); height:var(--size-traffic-light); border-radius:var(--radius-pill); flex-shrink:0; }
+  .dot-close { background:#ff5f57; } .dot-min { background:#febc2e; } .dot-zoom { background:#28c840; }
+  .win-title { font-size:13px; font-weight:600; color:var(--text-on-glass); white-space:nowrap; }
+  .tb-actions { position:absolute; right:var(--space-3); display:flex; gap:var(--space-1); }
+  .tb-btn { width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-pill); color:var(--text-secondary); border:none; background:transparent; cursor:pointer; flex-shrink:0; transition:background var(--duration-fast) var(--ease-standard); }
+  .tb-btn:hover { background:var(--glass-control-fill); color:var(--text-on-glass); }
+  .hairline { height:1px; background:var(--glass-border); }
+  .win-body { display:flex; min-height:218px; }
+  .pane { padding:var(--space-4); display:flex; flex-direction:column; gap:var(--space-3); min-width:0; }
+  .pane-side { width:148px; border-right:1px solid var(--border); background:var(--glass-sidebar-fill); }
+  .pane-main { flex:1; }
+  .line { height:8px; border-radius:var(--radius-pill); background:var(--text-tertiary); opacity:.38; }
+  .line.w60 { width:60%; } .line.w80 { width:80%; } .line.w45 { width:45%; } .line.w90 { width:90%; } .line.w35 { width:35%; }
+  .win-inactive { width:280px; border-radius:var(--radius-panel); filter:saturate(.55) brightness(.9); box-shadow:inset 0 1px 0 var(--glass-highlight), var(--shadow-2); }
+  .win-inactive .dot { background:#7d7d7d; }
+  .win-inactive .win-title { color:var(--text-tertiary); font-weight:500; }
+  .win-inactive .win-body { min-height:150px; }
+  .scrim { position:relative; width:300px; height:250px; border-radius:var(--radius-lg); border:1px solid var(--border); background:rgba(0,0,0,0.25); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; }
+  .sheet { width:262px; border-radius:var(--radius-md) var(--radius-md) var(--radius-window) var(--radius-window); background:var(--glass-panel-fill); -webkit-backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); backdrop-filter:blur(var(--glass-blur-base)) saturate(var(--glass-saturate)); border:1px solid var(--glass-border); box-shadow:inset 0 1px 0 var(--glass-highlight), var(--shadow-3); padding:var(--space-5); }
+  .sheet-head { font-size:var(--font-size-h4); font-weight:600; color:var(--text-on-glass); margin:0 0 var(--space-2); }
+  .sheet-text { font-size:var(--font-size-caption); line-height:var(--line-height-caption); color:var(--text-tertiary); margin:0 0 var(--space-1); }
+  .sheet-actions { display:flex; justify-content:flex-end; gap:var(--space-2); margin-top:var(--space-4); }
+  .btn { display:inline-flex; align-items:center; justify-content:center; height:var(--size-button-sm); min-width:var(--size-button-sm); padding:0 var(--space-4); border-radius:var(--radius-control); font-size:var(--font-size-caption); font-weight:600; white-space:nowrap; text-decoration:none; border:1px solid transparent; transition:background var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard); }
+  .btn-glass { background:var(--glass-control-fill); color:var(--text-on-glass); border-color:var(--glass-border); }
+  .btn-glass:hover { background:var(--glass-popover-fill); }
+  .btn-primary { background:var(--primary); color:var(--primary-foreground); }
+  .btn-primary:hover { filter:brightness(1.08); }
+  /* @component-css-end */
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true">
+  <div class="blob blob-aqua"></div>
+  <div class="blob blob-violet"></div>
+  <div class="blob blob-amber"></div>
+</div>
+<div class="specimen">
+  <div class="story" data-evidence-sample="standard-key">
+    <span class="story-label">主窗口 · Key Window</span>
+    <div class="rail">
+      <div class="win win-key">
+        <div class="titlebar">
+          <div class="lights"><span class="dot dot-close"></span><span class="dot dot-min"></span><span class="dot dot-zoom"></span></div>
+          <span class="win-title">课堂笔记.md</span>
+          <div class="tb-actions">
+            <a class="tb-btn" href="#" aria-label="搜索"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.2-3.2"/></svg></a>
+            <a class="tb-btn" href="#" aria-label="新建"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></a>
+          </div>
+        </div>
+        <div class="hairline"></div>
+        <div class="win-body">
+          <div class="pane pane-side">
+            <div class="line w80"></div><div class="line w60"></div><div class="line w90"></div><div class="line w45"></div><div class="line w70"></div>
+          </div>
+          <div class="pane pane-main">
+            <div class="line w90"></div><div class="line w80"></div><div class="line w60"></div><div class="line w80"></div><div class="line w35"></div><div class="line w90"></div><div class="line w45"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="divider">
+  <div class="story" data-evidence-sample="standard-inactive">
+    <span class="story-label">非活动窗口 · 模态 Sheet</span>
+    <div class="rail">
+      <div class="win win-inactive" data-evidence-sample="standard-inactive">
+        <div class="titlebar">
+          <div class="lights"><span class="dot dot-close"></span><span class="dot dot-min"></span><span class="dot dot-zoom"></span></div>
+          <span class="win-title">StudySolo</span>
+        </div>
+        <div class="hairline"></div>
+        <div class="win-body">
+          <div class="pane pane-main">
+            <div class="line w80"></div><div class="line w60"></div><div class="line w90"></div><div class="line w45"></div>
+          </div>
+        </div>
+      </div>
+      <div class="scrim" data-evidence-sample="sheet">
+        <div class="sheet">
+          <h3 class="sheet-head">保存更改？</h3>
+          <p class="sheet-text">课堂笔记.md 包含未保存的更改。</p>
+          <p class="sheet-text">关闭前可以先完成保存。</p>
+          <div class="sheet-actions">
+            <a class="btn btn-glass" href="#">取消</a>
+            <a class="btn btn-primary" href="#">完成</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
