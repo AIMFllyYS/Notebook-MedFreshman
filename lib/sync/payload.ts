@@ -7,6 +7,7 @@ import {
   MAX_USER_SYNC_BYTES,
   POOL_SIZE_LIMIT,
   type ArtifactSyncPayload,
+  type ChatProjectSyncPayload,
   type ChatSessionSyncPayload,
   type CloudSyncKind,
   type DocumentSyncPayload,
@@ -160,6 +161,16 @@ export function buildReviewCardPayload(card: ReviewCardSyncPayload): ReviewCardS
   return stripForbiddenFields(card) as ReviewCardSyncPayload;
 }
 
+export function buildChatProjectPayload(project: ChatProjectSyncPayload): ChatProjectSyncPayload {
+  return stripForbiddenFields({
+    id: project.id,
+    name: project.name,
+    createdAt: project.createdAt,
+    updatedAt: project.updatedAt,
+    ...(project.system ? { system: project.system } : {}),
+  }) as ChatProjectSyncPayload;
+}
+
 export type PayloadCheck =
   | { ok: true; payload: unknown; bytes: number }
   | { ok: false; reason: "unsafe" | "kind-limit"; bytes: number; limit: number };
@@ -201,6 +212,9 @@ export function formatKindLimitMessage(
   if (kind === "review-card") {
     return `这张闪卡约 ${usedKb} KB，${last}超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。`;
   }
+  if (kind === "chat-project") {
+    return `这条项目名约 ${usedKb} KB，${last}超过单条上限 ${limitKb} KB，未同步到云端。本机仍保留。`;
+  }
   return `这段对话约 ${usedKb} KB，${last}超过单条上限 ${limitKb} KB，未上传云端。本机仍保留。瘦身后可再试。`;
 }
 
@@ -225,4 +239,12 @@ export function isSyncUserLimitError(message: string): boolean {
 
 export function isSyncPoolLimitError(message: string): boolean {
   return /sync_pool_limit/i.test(message);
+}
+
+/**
+ * 云端还不认识这个 kind（迁移 0007 未执行）：数据库 check 约束会拒收。
+ * 识别出来是为了**降级**——项目名只留本机、提示一次，而不是每改一次名弹一次错误。
+ */
+export function isSyncUnknownKindError(message: string): boolean {
+  return /sync_documents_kind_check|check constraint|invalid input value for enum/i.test(message);
 }

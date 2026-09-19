@@ -1,10 +1,13 @@
 import { tryGetBrowserAuthClient } from "@/lib/auth/browserClient";
 import {
   deleteSessionData,
+  isSystemProject,
   listBlobIdsForSession,
   loadSessionMessages,
+  manifestFrom,
   saveManifest,
   saveSessionMessages,
+  type ChatFolder,
   type SessionMeta,
 } from "@/lib/storage/chatStorage";
 import { useArtifacts, type Artifact } from "@/lib/stores/artifacts";
@@ -21,6 +24,7 @@ import { isRemoteNewer, mergeChatSessionPayloads } from "./merge";
 import { compactStudyMessages } from "@/lib/chat/compactStudyParts";
 import {
   buildArtifactPayload,
+  buildChatProjectPayload,
   buildChatSessionPayload,
   buildDocumentPayload,
   buildReviewCardPayload,
@@ -32,6 +36,7 @@ import {
   formatUserLimitMessage,
   isSyncKindLimitError,
   isSyncPoolLimitError,
+  isSyncUnknownKindError,
   isSyncUserLimitError,
   payloadByteSize,
   preparePayload,
@@ -43,6 +48,7 @@ import { isSessionStreaming, __resetStreamingSessionsForTests } from "./streamin
 import { getCloudSyncStatus, setCloudSyncStatus } from "./status";
 import {
   CLOUD_SYNC_KINDS,
+  type ChatProjectSyncPayload,
   type ChatSessionSyncPayload,
   type CloudSyncKind,
   type SyncDocumentRow,
@@ -83,6 +89,10 @@ export interface CloudSyncStores {
   getCard: (id: string) => ReviewCard | null;
   applyCard: (card: ReviewCard) => void;
   forgetCard: (id: string) => void;
+  listProjectIds: () => string[];
+  getProject: (id: string) => ChatProjectSyncPayload | null;
+  applyProject: (project: ChatProjectSyncPayload) => void;
+  forgetProject: (id: string) => void;
 }
 
 function createDefaultStores(): CloudSyncStores {
@@ -113,6 +123,20 @@ function createDefaultStores(): CloudSyncStores {
     getCard: (id) => useReviewCards.getState().byId[id] ?? null,
     applyCard: applyCardToZustand,
     forgetCard: forgetCardInZustand,
+    listProjectIds: () => useChatHistory.getState().folders.map((folder) => folder.id),
+    getProject: (id) => {
+      const folder = useChatHistory.getState().folders.find((item) => item.id === id);
+      if (!folder) return null;
+      return {
+        id: folder.id,
+        name: folder.name,
+        createdAt: folder.createdAt,
+        updatedAt: folder.updatedAt ?? folder.createdAt,
+        ...(folder.system ? { system: folder.system } : {}),
+      };
+    },
+    applyProject: applyProjectToZustand,
+    forgetProject: forgetProjectInZustand,
   };
 }
 
@@ -158,6 +182,7 @@ export function __resetCloudSyncForTests(): void {
   remoteBytesByKey = new Map();
   remoteBytesReady = false;
   chain = Promise.resolve();
+  unknownKindWarned.clear();
   __setSyncLimitsForTests(null);
   __resetStreamingSessionsForTests();
 }
@@ -211,6 +236,10 @@ async function measureLocalSyncUsage(): Promise<CloudSyncUsage> {
   for (const id of stores.listCardIds()) {
     const payload = await loadLocalPayload("review-card", id);
     if (payload) entries.push({ kind: "review-card", bytes: payloadByteSize(payload) });
+  }
+  for (const id of stores.listProjectIds()) {
+    const payload = await loadLocalPayload("chat-project", id);
+    if (payload) entries.push({ kind: "chat-project", bytes: payloadByteSize(payload) });
   }
   return summarizeSyncUsage(entries, "local");
 }
@@ -358,6 +387,21 @@ function asReviewCard(value: unknown): ReviewCard | null {
   return row;
 }
 
+function asChatProject(value: unknown): ChatProjectSyncPayload | null {
+  if (!value || typeof value !== "object") return null;
+  const row = value as ChatProjectSyncPayload;
+  if (typeof row.id !== "string" || typeof row.name !== "string") return null;
+  const createdAt = typeof row.createdAt === "number" ? row.createdAt : Date.now();
+  const updatedAt = typeof row.updatedAt === "number" ? row.updatedAt : createdAt;
+  return {
+    id: row.id,
+    name: row.name,
+    createdAt,
+    updatedAt,
+    ...(row.system === "note" || row.system === "floating" ? { system: row.system } : {}),
+  };
+}
+
 async function loadLocalPayload(kind: CloudSyncKind, clientId: string): Promise<unknown | null> {
   if (kind === "chat-session") {
     const session = await stores.loadSession(clientId);
@@ -374,6 +418,10 @@ async function loadLocalPayload(kind: CloudSyncKind, clientId: string): Promise<
   if (kind === "user-note") {
     const note = stores.getNote(clientId);
     return note ? buildUserNotePayload(note) : null;
+  }
+  if (kind === "chat-project") {
+    const project = stores.getProject(clientId);
+    return project ? buildChatProjectPayload(project) : null;
   }
   const card = stores.getCard(clientId);
   return card ? buildReviewCardPayload(card) : null;
@@ -455,6 +503,15 @@ function reportMerged(): void {
   });
 }
 
+/** 云端还不认识这个 kind（迁移没跑）时只提示一次，之后安静地只留本机。 */
+const unknownKindWarned = new Set<CloudSyncKind>();
+function reportUnknownKindOnce(kind: CloudSyncKind): void {
+  if (unknownKindWarned.has(kind)) return;
+  unknownKindWarned.add(kind);
+  const label = kind === "chat-project" ? "项目名" : kind;
+  reportError(`云端还不认识「${label}」这类同步数据，已改为只保留本机；云端升级后会自动补传。`);
+}
+
 async function pushTombstone(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: string): Promise<void> {
   const { data, error } = await api.upsert({
     kind,
@@ -491,6 +548,18 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     const remoteNote = asUserNote(remote.payload);
     if (localNote && remoteNote && remoteNote.updatedAt > localNote.updatedAt) {
       stores.applyNote(remoteNote);
+      rememberBaseline(kind, clientId, remote.updated_at);
+      lastPushedHash.set(jobKey(kind, clientId), payloadFingerprint(remote.payload));
+      noteRemoteBytes(kind, clientId, payloadByteSize(remote.payload), false);
+      return;
+    }
+  }
+  if (kind === "chat-project" && remote && !remote.deleted) {
+    const localProject = asChatProject(local);
+    const remoteProject = asChatProject(remote.payload);
+    // 项目没有正文可合并：谁的 updatedAt 新听谁的。
+    if (localProject && remoteProject && remoteProject.updatedAt > localProject.updatedAt) {
+      stores.applyProject(remoteProject);
       rememberBaseline(kind, clientId, remote.updated_at);
       lastPushedHash.set(jobKey(kind, clientId), payloadFingerprint(remote.payload));
       noteRemoteBytes(kind, clientId, payloadByteSize(remote.payload), false);
@@ -563,6 +632,8 @@ async function pushOne(api: SyncDocumentsApi, kind: CloudSyncKind, clientId: str
     } else if (isSyncPoolLimitError(error.message)) {
       const pool = quotaPoolForKind(kind);
       reportError(formatPoolLimitMessage(pool ?? "notes", pool ? effectivePoolLimit(pool) : effectiveUserLimit()));
+    } else if (isSyncUnknownKindError(error.message)) {
+      reportUnknownKindOnce(kind);
     } else {
       reportError(`云端同步失败：${error.message}`);
     }
@@ -592,11 +663,9 @@ async function applyChatPayloadToZustand(payload: ChatSessionSyncPayload): Promi
       ...state.sessionsMeta.filter((item) => item.id !== meta.id),
     ]);
     saveSessionMessages(meta.id, messages);
-    saveManifest({
-      version: 2,
-      activeSessionId: state.activeSessionId ?? meta.id,
-      sessions: sessionsMeta,
-    });
+    // 走 manifestFrom 统一构造：手写字段漏掉 folders 会把用户的对话项目整批清空
+    // （2026-09-20 核实：云端拉取一次就丢一次，会话的 folderId 全变悬空）。
+    saveManifest(manifestFrom(state, { activeSessionId: state.activeSessionId ?? meta.id, sessions: sessionsMeta }));
     useChatHistory.setState({
       sessionsMeta,
       messagesById: { ...state.messagesById, [meta.id]: messages },
@@ -614,7 +683,7 @@ async function forgetLocalSessionInZustand(id: string): Promise<void> {
     const { [id]: _drop, ...messagesById } = state.messagesById;
     const deletedActive = state.activeSessionId === id;
     const activeSessionId = deletedActive ? sessionsMeta[0]?.id ?? null : state.activeSessionId;
-    saveManifest({ version: 2, activeSessionId, sessions: sessionsMeta });
+    saveManifest(manifestFrom(state, { activeSessionId, sessions: sessionsMeta }));
     useChatHistory.setState({
       sessionsMeta,
       messagesById,
@@ -689,6 +758,52 @@ function forgetNoteInZustand(id: string): void {
   });
 }
 
+function applyProjectToZustand(project: ChatProjectSyncPayload): void {
+  withLocalApply(() => {
+    useChatHistory.setState((state) => {
+      const existing = state.folders.find((folder) => folder.id === project.id);
+      const next: ChatFolder = {
+        id: project.id,
+        name: project.name,
+        createdAt: existing?.createdAt ?? project.createdAt,
+        updatedAt: project.updatedAt,
+        ...(project.system ? { system: project.system } : {}),
+      };
+      const folders = existing
+        ? state.folders.map((folder) => (folder.id === project.id ? next : folder))
+        : [...state.folders, next];
+      saveManifest(manifestFrom(state, { folders }));
+      return { folders };
+    });
+  });
+}
+
+function forgetProjectInZustand(id: string): void {
+  withLocalApply(() => {
+    useChatHistory.setState((state) => {
+      const target = state.folders.find((folder) => folder.id === id);
+      // 系统项目不跟着云端 tombstone 消失：成员由 kind 决定，本地必须留着。
+      if (!target || isSystemProject(target)) return state;
+      const folders = state.folders.filter((folder) => folder.id !== id);
+      const sessionsMeta = state.sessionsMeta.map((s) =>
+        s.folderId === id ? { ...s, folderId: null } : s,
+      );
+      saveManifest(
+        manifestFrom(state, {
+          sessions: sessionsMeta,
+          folders,
+          activeProjectId: state.activeProjectId === id ? null : state.activeProjectId,
+        }),
+      );
+      return {
+        folders,
+        sessionsMeta,
+        activeProjectId: state.activeProjectId === id ? null : state.activeProjectId,
+      };
+    });
+  });
+}
+
 function applyCardToZustand(card: ReviewCard): void {
   withLocalApply(() => {
     useReviewCards.setState((state) => ({
@@ -714,7 +829,8 @@ async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
     else if (row.kind === "artifact") stores.forgetArtifact(row.client_id);
     else if (row.kind === "document") stores.forgetDocument(row.client_id);
     else if (row.kind === "user-note") stores.forgetNote(row.client_id);
-    else stores.forgetCard(row.client_id);
+    else if (row.kind === "review-card") stores.forgetCard(row.client_id);
+    else stores.forgetProject(row.client_id);
     return;
   }
   if (row.kind === "chat-session") {
@@ -751,8 +867,16 @@ async function applyRemoteRow(row: SyncDocumentRow): Promise<void> {
     stores.applyNote(note);
     return;
   }
-  const card = asReviewCard(row.payload);
-  if (card) stores.applyCard(card);
+  if (row.kind === "review-card") {
+    const card = asReviewCard(row.payload);
+    if (card) stores.applyCard(card);
+    return;
+  }
+  const project = asChatProject(row.payload);
+  if (!project) return;
+  const localProject = stores.getProject(row.client_id);
+  if (localProject && localProject.updatedAt > project.updatedAt) return;
+  stores.applyProject(project);
 }
 
 async function pullFromCloud(api: SyncDocumentsApi): Promise<void> {
@@ -777,6 +901,7 @@ async function pushAllLocal(api: SyncDocumentsApi): Promise<void> {
   for (const id of stores.listDocumentIds()) await pushOne(api, "document", id);
   for (const id of stores.listNoteIds()) await pushOne(api, "user-note", id);
   for (const id of stores.listCardIds()) await pushOne(api, "review-card", id);
+  for (const id of stores.listProjectIds()) await pushOne(api, "chat-project", id);
 }
 
 export async function pullAndPushAll(): Promise<void> {

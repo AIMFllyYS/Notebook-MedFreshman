@@ -113,6 +113,12 @@ test("discoverMigrations reads repo baseline in version order", () => {
   assert.equal(findNonIdempotentStatements(files[5].sql).length, 0);
   assert.match(files[5].sql, /nickname/);
   assert.match(files[5].sql, /update_own_nickname/);
+  assert.equal(files[6].version, "0007");
+  assert.equal(files[6].filename, "0007_sync_chat_project_kind.sql");
+  assert.equal(findNonIdempotentStatements(files[6].sql).length, 0);
+  assert.match(files[6].sql, /chat-project/);
+  // 字节上限函数必须跟着重建，否则新 kind 会掉进 else 分支拿 5 MB。
+  assert.match(files[6].sql, /when 'chat-project' then 32768/);
 });
 
 test("0001_init.sql inventory covers tables indexes triggers policies grants", () => {

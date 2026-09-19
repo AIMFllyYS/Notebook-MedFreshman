@@ -5,7 +5,9 @@ import {
   type ChatFolder,
   type ChatManifestV2,
   type SessionMeta,
-  buildSessionMeta,
+  manifestFrom,
+  ensureDefaultProjects as ensureDefaultProjectRows,
+  isSystemProject,
   mergeArtifactIds,
   loadManifest,
   saveManifest,
@@ -37,8 +39,10 @@ export interface ChatSession {
 
 interface ChatHistoryState {
   sessionsMeta: SessionMeta[];
-  /** 用户自建文件夹（与 sessionsMeta 一起写进 manifest）。 */
+  /** 对话项目（与 sessionsMeta 一起写进 manifest）；含两个系统项目。 */
   folders: ChatFolder[];
+  /** 下一次「新建对话」的落点项目；null = 不使用项目。 */
+  activeProjectId: string | null;
   messagesById: Record<string, ChatMessage[]>;
   activeSessionId: string | null;
   sessionLoadState: Record<string, 'idle' | 'loading' | 'loaded' | 'error'>;
@@ -54,14 +58,19 @@ interface ChatHistoryState {
   pinSession: (id: string) => void;
   unpinSession: (id: string) => void;
   ensureSessionLoaded: (sessionId: string) => Promise<void>;
-  createSession: (context?: ChatContext, kind?: 'main' | 'floating' | 'note') => string;
+  /** 补齐两个系统项目（幂等）。水合前不落盘。 */
+  ensureDefaultProjects: () => void;
+  /** 选择/清空下一次新建对话的落点项目。 */
+  setActiveProject: (projectId: string | null) => void;
+  /** 新建会话；folderId 落到某个项目（系统项目的成员由 kind 决定，不从这条路径传）。 */
+  createSession: (context?: ChatContext, kind?: 'main' | 'floating' | 'note', folderId?: string | null) => string;
   /**
    * 显式「新建对话」：左栏按钮 / 右键菜单 / 快捷键 / 面板头部都走这里，规则只有一份。
    * 已经站在一条空白新对话里就什么都不做；否则**复用**最新那条空白 main 会话；都没有才真的新建。
    * 防的是连点：`MAX_SESSIONS` 到顶后每多建一条，最旧的会话会连同消息一起被删掉。
    * 未水合时返回 null 并等水合完再做（绝不基于空列表落盘）。
    */
-  startNewChat: (context?: ChatContext) => string | null;
+  startNewChat: (context?: ChatContext, projectId?: string | null) => string | null;
   /** 「点了新建、复用了已有空白对话」的累计次数：只给 UI 一次轻反馈用，不落盘。 */
   blankChatPulse: number;
   deleteSession: (id: string) => void;
@@ -72,9 +81,12 @@ interface ChatHistoryState {
   updateSessionTitle: (sessionId: string, title: string) => void;
   /** 归档 / 取消归档；归档不删除消息，只是从默认列表移出。 */
   archiveSession: (sessionId: string, archived: boolean) => void;
-  createFolder: (name?: string) => string;
+  /** 新建项目；两个系统项目由 ensureDefaultProjects 种下，不走这里。 */
+  createFolder: (name?: string, opts?: { system?: ChatFolder['system'] }) => string;
+  /** 重命名项目（系统项目也可以改显示名），并把新名字同步到云端。 */
   renameFolder: (folderId: string, name: string) => void;
-  deleteFolder: (folderId: string) => void;
+  /** 删除项目；系统项目不可删（返回 false），成员会话退回 Recents。 */
+  deleteFolder: (folderId: string) => boolean;
   moveSessionToFolder: (sessionId: string, folderId: string | null) => void;
 }
 
@@ -104,6 +116,18 @@ function metaToChatSession(meta: SessionMeta, messages: ChatMessage[]): ChatSess
 function persistManifest(state: ChatHistoryState, manifest: ChatManifestV2): void {
   if (!state._hasHydrated) return;
   saveManifest(manifest);
+}
+
+/**
+ * 从当前状态出发构造 manifest，只覆盖显式传入的字段。
+ * **不允许手写 manifest 字面量**：2026-09-19 的会话清空事故与之后的「云端拉取丢 projects」
+ * 都是漏字段造成的，多一个入口就多一次漏的机会。
+ */
+function manifestOf(
+  state: Pick<ChatHistoryState, 'activeSessionId' | 'sessionsMeta' | 'folders' | 'activeProjectId'>,
+  overrides: Partial<Pick<ChatManifestV2, 'activeSessionId' | 'sessions' | 'folders' | 'activeProjectId'>> = {},
+): ChatManifestV2 {
+  return manifestFrom(state, overrides);
 }
 
 /**
@@ -141,6 +165,7 @@ function sameStringArray(a: string[], b: string[]): boolean {
 export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   sessionsMeta: [],
   folders: [],
+  activeProjectId: null,
   messagesById: {},
   activeSessionId: null,
   sessionLoadState: {},
@@ -215,20 +240,22 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     });
   },
 
-  createSession: (context, kind) => {
+  createSession: (context, kind, folderId) => {
     const id = crypto.randomUUID();
     const now = Date.now();
+    const claimActive = kind !== 'floating' && kind !== 'note';
     const meta: SessionMeta = {
       id,
       title: '新对话',
       createdAt: now,
       updatedAt: now,
-      kind: kind === 'floating' || kind === 'note' ? kind : undefined,
+      kind: claimActive ? undefined : kind,
       context,
       messageCount: 0,
       artifactIds: [],
+      // 系统项目的成员由 kind 决定（笔记记录 / 划词摘录），只有普通会话才落 folderId。
+      ...(claimActive && folderId ? { folderId } : {}),
     };
-    const claimActive = kind !== 'floating' && kind !== 'note';
     set((state) => {
       const sessionsMeta = [meta, ...state.sessionsMeta];
       const capped = sessionsMeta.length > MAX_SESSIONS ? sessionsMeta.slice(0, MAX_SESSIONS) : sessionsMeta;
@@ -246,12 +273,10 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       }
       const messagesById = { ...state.messagesById, [id]: [] };
       for (const dropId of droppedIds) delete messagesById[dropId];
-      persistManifest(state, {
-        version: 2,
-        activeSessionId: claimActive ? id : state.activeSessionId,
-        sessions: capped,
-        folders: state.folders,
-      });
+      persistManifest(
+        state,
+        manifestOf(state, { activeSessionId: claimActive ? id : state.activeSessionId, sessions: capped }),
+      );
       return {
         sessionsMeta: capped,
         messagesById,
@@ -266,14 +291,15 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     return id;
   },
 
-  startNewChat: (context) => {
+  startNewChat: (context, projectId) => {
     const state = get();
+    const targetProjectId = projectId === undefined ? state.activeProjectId : projectId;
     // 还没水合：此刻的 sessionsMeta 是空数组，任何「新建」都会把盘上的真实列表覆盖掉。
     // 等水合完再按当时的真实列表决定，期间返回 null（调用方都不依赖返回值）。
     if (!state._hasHydrated) {
       void ensureChatHistoryBootstrap()
         .then(() => {
-          get().startNewChat(context);
+          get().startNewChat(context, projectId);
         })
         .catch(() => {
           // 水合失败就什么都不做：宁可这次点击没反应，也不能基于空列表落盘
@@ -289,11 +315,18 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     }
     // 否则复用列表里最近的一条空白新对话（sessionsMeta 新的在前）。
     const blank = state.sessionsMeta.find(isBlankMainSession);
-    if (!blank) return get().createSession(context);
+    if (!blank) return get().createSession(context, undefined, targetProjectId);
     // 复用而不是新建。**不走 switchSession**：它会先从 IndexedDB 读一次消息体，
     // 而空白会话的消息体可能压根不在盘上，读空会让 loadState 变 'error'；
     // canSendNow 只认 'loaded'，于是发送被静默挡掉。
+    // 复用一条已有空白对话时，也要把它挪到这次选的落点项目上（否则 chip 选了项目却没生效）。
+    const nextFolderId = targetProjectId ?? null;
+    const sessionsMeta =
+      (blank.folderId ?? null) === nextFolderId
+        ? state.sessionsMeta
+        : state.sessionsMeta.map((meta) => (meta.id === blank.id ? { ...meta, folderId: nextFolderId } : meta));
     set({
+      sessionsMeta,
       activeSessionId: blank.id,
       messagesById: state.messagesById[blank.id]
         ? state.messagesById
@@ -302,12 +335,8 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       loadedSessionIds: [...state.loadedSessionIds.filter((id) => id !== blank.id), blank.id],
       _activeMessagesReady: true,
     });
-    persistManifest(state, {
-      version: 2,
-      activeSessionId: blank.id,
-      sessions: state.sessionsMeta,
-      folders: state.folders,
-    });
+    persistManifest(state, manifestOf(state, { activeSessionId: blank.id, sessions: sessionsMeta }));
+    if (sessionsMeta !== state.sessionsMeta) scheduleCloudUpsert('chat-session', blank.id);
     return blank.id;
   },
 
@@ -325,7 +354,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       nextActiveToLoad = deletedActive ? newActiveId : null;
       const { [id]: _drop, ...messagesById } = state.messagesById;
       pruneArtifactsFromMetas(sessionsMeta);
-      persistManifest(state, { version: 2, activeSessionId: newActiveId, sessions: sessionsMeta, folders: state.folders });
+      persistManifest(state, manifestOf(state, { activeSessionId: newActiveId, sessions: sessionsMeta }));
       void (async () => {
         const blobIds = await listBlobIdsForSession(id);
         await deleteSessionData(id, blobIds);
@@ -377,12 +406,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
           : s,
       );
       saveSessionMessages(sessionId, messages);
-      persistManifest(state, {
-        version: 2,
-        activeSessionId: state.activeSessionId,
-        sessions: sessionsMeta,
-        folders: state.folders,
-      });
+      persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
       scheduleCloudUpsert('chat-session', sessionId);
       return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
     });
@@ -406,12 +430,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
           : s,
       );
       saveSessionMessages(sessionId, stored);
-      persistManifest(state, {
-        version: 2,
-        activeSessionId: state.activeSessionId,
-        sessions: sessionsMeta,
-        folders: state.folders,
-      });
+      persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
       scheduleCloudUpsert("chat-session", sessionId);
       return { messagesById: { ...state.messagesById, [sessionId]: stored }, sessionsMeta };
     });
@@ -443,12 +462,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         });
       saveSessionMessages(sessionId, messages);
       if (shouldSaveManifest) {
-        persistManifest(state, {
-          version: 2,
-          activeSessionId: state.activeSessionId,
-          sessions: sessionsMeta,
-          folders: state.folders,
-        });
+        persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
       }
       return { messagesById: { ...state.messagesById, [sessionId]: messages }, sessionsMeta };
     });
@@ -460,12 +474,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       const sessionsMeta = state.sessionsMeta.map((s) =>
         s.id === sessionId ? { ...s, title, updatedAt: Date.now() } : s,
       );
-      persistManifest(state, {
-        version: 2,
-        activeSessionId: state.activeSessionId,
-        sessions: sessionsMeta,
-        folders: state.folders,
-      });
+      persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
       scheduleCloudUpsert('chat-session', sessionId);
       return { sessionsMeta };
     });
@@ -477,79 +486,106 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       const sessionsMeta = state.sessionsMeta.map((s) =>
         s.id === sessionId ? { ...s, archived } : s,
       );
-      persistManifest(state, {
-        version: 2,
-        activeSessionId: state.activeSessionId,
-        sessions: sessionsMeta,
-        folders: state.folders,
-      });
+      persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
       return { sessionsMeta };
     });
   },
 
-  createFolder: (name) => {
-    const id = `folder-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+  /** 系统项目：水合后补齐两个（笔记记录 / 划词摘录），只补缺的，不动用户改过的名字。 */
+  ensureDefaultProjects: () => {
     set((state) => {
-      const folders = [
-        ...state.folders,
-        { id, name: (name ?? '').trim() || `新建文件夹 ${state.folders.length + 1}`, createdAt: Date.now() },
-      ];
-      persistManifest(state, {
-        version: 2,
-        activeSessionId: state.activeSessionId,
-        sessions: state.sessionsMeta,
-        folders,
-      });
+      const folders = ensureDefaultProjectRows(state.folders);
+      if (!folders) return state;
+      persistManifest(state, manifestOf(state, { folders }));
       return { folders };
     });
+  },
+
+  setActiveProject: (projectId) => {
+    const state = get();
+    const next = projectId && state.folders.some((folder) => folder.id === projectId) ? projectId : null;
+    if (state.activeProjectId === next) return;
+    set({ activeProjectId: next });
+    persistManifest(get(), manifestOf(get(), { activeProjectId: next }));
+  },
+
+  createFolder: (name, opts) => {
+    const id = `folder-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+    const now = Date.now();
+    set((state) => {
+      const userCount = state.folders.filter((folder) => !isSystemProject(folder)).length;
+      const folders = [
+        ...state.folders,
+        {
+          id,
+          name: (name ?? '').trim() || `新建项目 ${userCount + 1}`,
+          createdAt: now,
+          updatedAt: now,
+          ...(opts?.system ? { system: opts.system } : {}),
+        },
+      ];
+      persistManifest(state, manifestOf(state, { folders }));
+      return { folders };
+    });
+    scheduleCloudUpsert('chat-project', id);
     return id;
   },
 
   renameFolder: (folderId, name) => {
     const next = name.trim();
     if (!next) return;
+    let changed = false;
     set((state) => {
-      const folders = state.folders.map((f) => (f.id === folderId ? { ...f, name: next } : f));
-      persistManifest(state, {
-        version: 2,
-        activeSessionId: state.activeSessionId,
-        sessions: state.sessionsMeta,
-        folders,
+      const folders = state.folders.map((f) => {
+        if (f.id !== folderId || f.name === next) return f;
+        changed = true;
+        return { ...f, name: next, updatedAt: Date.now() };
       });
+      if (!changed) return state;
+      persistManifest(state, manifestOf(state, { folders }));
       return { folders };
     });
+    // 项目名要跨设备可见：改名走云端 upsert（删除那条路径走 tombstone）。
+    if (changed) scheduleCloudUpsert('chat-project', folderId);
   },
 
   deleteFolder: (folderId) => {
+    const target = get().folders.find((folder) => folder.id === folderId);
+    // 系统项目（笔记记录 / 划词摘录）不可删：成员由来源决定，删了这些会话就无处安放。
+    if (!target || isSystemProject(target)) return false;
     set((state) => {
       const folders = state.folders.filter((f) => f.id !== folderId);
       const sessionsMeta = state.sessionsMeta.map((s) =>
         s.folderId === folderId ? { ...s, folderId: null } : s,
       );
-      persistManifest(state, {
-        version: 2,
-        activeSessionId: state.activeSessionId,
-        sessions: sessionsMeta,
+      persistManifest(state, manifestOf(state, { sessions: sessionsMeta, folders }));
+      return {
         folders,
-      });
-      return { folders, sessionsMeta };
+        sessionsMeta,
+        activeProjectId: state.activeProjectId === folderId ? null : state.activeProjectId,
+      };
     });
+    scheduleCloudTombstone('chat-project', folderId);
+    return true;
   },
 
   moveSessionToFolder: (sessionId, folderId) => {
+    let moved = false;
     set((state) => {
-      if (!state.sessionsMeta.some((s) => s.id === sessionId)) return state;
+      const target = state.sessionsMeta.find((s) => s.id === sessionId);
+      if (!target) return state;
+      // 系统项目里的会话（note / floating）归属由来源决定，不允许改挂到别的项目。
+      if (target.kind === 'note' || target.kind === 'floating') return state;
+      if ((target.folderId ?? null) === (folderId ?? null)) return state;
+      moved = true;
       const sessionsMeta = state.sessionsMeta.map((s) =>
         s.id === sessionId ? { ...s, folderId } : s,
       );
-      persistManifest(state, {
-        version: 2,
-        activeSessionId: state.activeSessionId,
-        sessions: sessionsMeta,
-        folders: state.folders,
-      });
+      persistManifest(state, manifestOf(state, { sessions: sessionsMeta }));
       return { sessionsMeta };
     });
+    // 归属变化要跟着会话一起上云，否则换设备看不到它进了哪个项目。
+    if (moved) scheduleCloudUpsert('chat-session', sessionId);
   },
 }));
 
@@ -562,12 +598,22 @@ export async function ensureChatHistoryBootstrap(): Promise<void> {
     const manifest = await loadManifest();
     const store = useChatHistory.getState();
     if (manifest) {
+      const folders = manifest.folders ?? [];
+      // 落点项目必须还存在：项目被删掉后 manifest 里可能留下悬空 id。
+      const activeProjectId =
+        manifest.activeProjectId && folders.some((folder) => folder.id === manifest.activeProjectId)
+          ? manifest.activeProjectId
+          : null;
       useChatHistory.setState({
         sessionsMeta: manifest.sessions,
-        folders: manifest.folders ?? [],
+        folders,
         activeSessionId: manifest.activeSessionId,
+        activeProjectId,
         _hasHydrated: true,
       });
+      // 两个系统项目必须在**水合之后**补：persistManifest 的闸门要求 _hasHydrated，
+      // 而且补的动作要基于盘上真实的 folders，绝不能基于空数组。
+      useChatHistory.getState().ensureDefaultProjects();
       if (manifest.activeSessionId) {
         await store.ensureSessionLoaded(manifest.activeSessionId);
         useChatHistory.getState()._setActiveMessagesReady(true);
@@ -576,6 +622,7 @@ export async function ensureChatHistoryBootstrap(): Promise<void> {
       }
     } else {
       useChatHistory.setState({ _hasHydrated: true, _activeMessagesReady: true });
+      useChatHistory.getState().ensureDefaultProjects();
     }
     scheduleOrphanChatGc();
   })();

@@ -30,11 +30,42 @@ export interface SessionMeta {
   folderId?: string | null;
 }
 
-/** 用户自建对话文件夹（可选字段，老 manifest 无此项时按空数组处理）。 */
+/** 系统项目的来源标记：笔记窗内 Agent 会话 / 划词助手会话。 */
+export type ProjectSystemKind = 'note' | 'floating';
+
+/**
+ * 对话项目（= 会话分组，可选字段，老 manifest 无此项时按空数组处理）。
+ * `system` 有值的项目由来源决定成员，不可删除、可重命名。
+ */
 export interface ChatFolder {
   id: string;
   name: string;
   createdAt: number;
+  updatedAt?: number;
+  system?: ProjectSystemKind;
+}
+
+/** 两个默认项目：笔记记录（笔记窗内 Agent 会话）/ 划词摘录（划词助手会话）。 */
+export const SYSTEM_PROJECTS: readonly ChatFolder[] = [
+  { id: 'project-note', name: '笔记记录', createdAt: 0, system: 'note' },
+  { id: 'project-floating', name: '划词摘录', createdAt: 0, system: 'floating' },
+];
+
+export const SYSTEM_PROJECT_IDS = SYSTEM_PROJECTS.map((project) => project.id);
+
+export function isSystemProject(folder: Pick<ChatFolder, 'system' | 'id'>): boolean {
+  return Boolean(folder.system) || SYSTEM_PROJECT_IDS.includes(folder.id);
+}
+
+/**
+ * 补齐两个系统项目（幂等）。返回新数组；没有变化时返回 null，调用方据此跳过落盘。
+ * 用户改过的名字保留：只按 id 判断缺不缺，不按名字判断。
+ */
+export function ensureDefaultProjects(folders: ChatFolder[]): ChatFolder[] | null {
+  const existing = new Set(folders.map((folder) => folder.id));
+  const missing = SYSTEM_PROJECTS.filter((project) => !existing.has(project.id));
+  if (missing.length === 0) return null;
+  return [...folders, ...missing.map((project) => ({ ...project }))];
 }
 
 export interface ChatManifestV2 {
@@ -42,6 +73,52 @@ export interface ChatManifestV2 {
   activeSessionId: string | null;
   sessions: SessionMeta[];
   folders?: ChatFolder[];
+  /** 下一次「新建对话」的落点项目；null = 不使用项目。 */
+  activeProjectId?: string | null;
+}
+
+/**
+ * manifest 的唯一构造入口。**只允许走这里**：2026-09-19 的数据事故与之后的
+ * 「云端拉取丢 folders」都源于手写对象字面量漏字段——新增字段时这里改一处就够。
+ */
+export function buildManifest(input: {
+  activeSessionId: string | null;
+  sessions: SessionMeta[];
+  folders?: ChatFolder[];
+  activeProjectId?: string | null;
+}): ChatManifestV2 {
+  return {
+    version: 2,
+    activeSessionId: input.activeSessionId,
+    sessions: input.sessions,
+    folders: input.folders ?? [],
+    activeProjectId: input.activeProjectId ?? null,
+  };
+}
+
+/** 能构造 manifest 的状态切片（chatHistory store 与云同步引擎都是这个形状）。 */
+export interface ManifestSource {
+  activeSessionId: string | null;
+  sessionsMeta: SessionMeta[];
+  folders: ChatFolder[];
+  activeProjectId: string | null;
+}
+
+/**
+ * 从状态切片构造 manifest，只覆盖显式传入的字段。**所有写盘路径都必须走这里。**
+ * 两次真实事故（2026-09-19 会话被清空、2026-09-20 云端拉取丢项目）都是手写 manifest 字面量漏字段造成的。
+ */
+export function manifestFrom(
+  source: ManifestSource,
+  overrides: Partial<Pick<ChatManifestV2, "activeSessionId" | "sessions" | "folders" | "activeProjectId">> = {},
+): ChatManifestV2 {
+  return buildManifest({
+    activeSessionId: source.activeSessionId,
+    sessions: source.sessionsMeta,
+    folders: source.folders,
+    activeProjectId: source.activeProjectId,
+    ...overrides,
+  });
 }
 
 function isBrowser(): boolean {
@@ -245,7 +322,8 @@ export async function migrateFromV1IfNeeded(): Promise<boolean> {
       metas.push(buildSessionMeta({ ...session, messages }));
     }
 
-    const manifestSaved = await saveManifestNow({ version: 2, activeSessionId, sessions: metas });
+    // v1 没有项目概念：folders / activeProjectId 交给 buildManifest 补默认值。
+    const manifestSaved = await saveManifestNow(buildManifest({ activeSessionId, sessions: metas }));
     if (!manifestSaved) return false;
   } catch {
     return false;

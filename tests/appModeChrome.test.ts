@@ -79,8 +79,10 @@ test("Agent / Class 路由接上，Agent 复用 ChatPanel 槽位", () => {
   assert.match(appShell, /agent-dock-toggle|展开右侧工作区/);
   const sidebar = readWorkspaceFile("components/layout/AgentConversationSidebar.tsx");
   assert.match(sidebar, /from "\.\/LeftDock"/);
-  assert.match(sidebar, /正常对话/);
-  assert.match(sidebar, /划词助手对话/);
+  // 左栏结构：固定四行导航 + 一起滚动的 Projects / Recents（详见 tests/agentNavStructure.test.ts）
+  assert.match(sidebar, /AgentNavRows/);
+  assert.match(sidebar, /label="Projects"/);
+  assert.match(sidebar, /label="Recents"/);
   assert.match(appShell, /hideWindowTaskbar/);
   assert.match(placeholder, /开发中/);
 
