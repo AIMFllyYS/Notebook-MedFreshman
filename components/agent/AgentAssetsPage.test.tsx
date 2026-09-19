@@ -39,16 +39,19 @@ describe("AgentAssetsPage", () => {
     expect(screen.getByText("组胚笔记")).toBeInTheDocument();
   });
 
-  it("切标签只看那一类；搜索能过滤并清空", () => {
+  it("切标签只看那一类；搜索能过滤并清空", async () => {
     render(<AgentAssetsPage />);
     fireEvent.click(screen.getByTestId("assets-tab-note"));
     expect(screen.getByText("组胚笔记")).toBeInTheDocument();
-    expect(screen.queryByText("lecture.pdf")).toBeNull();
+    // 退场的卡由 AnimatePresence 收尾：动画跑完才从 DOM 里摘掉，所以这里等一等。
+    await waitFor(() => expect(screen.queryByText("lecture.pdf")).toBeNull());
     fireEvent.click(screen.getByTestId("assets-tab-all"));
+    await waitFor(() => expect(screen.getByText("lecture.pdf")).toBeInTheDocument());
 
     fireEvent.change(screen.getByTestId("assets-search"), { target: { value: "lecture" } });
     expect(screen.getByText("lecture.pdf")).toBeInTheDocument();
-    expect(screen.queryByText("组胚笔记")).toBeNull();
+    // 同上：被筛掉的卡要等退场动画结束才离开 DOM。
+    await waitFor(() => expect(screen.queryByText("组胚笔记")).toBeNull());
 
     fireEvent.change(screen.getByTestId("assets-search"), { target: { value: "找不到的东西" } });
     expect(screen.getByText(/没有匹配/)).toBeInTheDocument();
@@ -63,6 +66,20 @@ describe("AgentAssetsPage", () => {
     expect(window.localStorage.getItem("agent-assets-view")).toBe("list");
     fireEvent.click(screen.getByTestId("assets-view-grid"));
     expect(screen.getByTestId("assets-grid")).toBeInTheDocument();
+  });
+
+  it("切标签时卡片走「重排」动画容器，不是整块重渲", async () => {
+    render(<AgentAssetsPage />);
+    // 每张卡外面套一层 motion 容器（layout 动画的载体），key 与 testid 都稳定可寻
+    expect(screen.getByTestId("asset-cell-note-n1")).toBeInTheDocument();
+    expect(screen.getByTestId("asset-cell-file-i1")).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="assets-grid"]')).toBeInTheDocument();
+
+    // 切到「笔记」：留下来的那张卡仍然是同一个节点（同一个 key），于是能就地滑到新位置
+    const cell = screen.getByTestId("asset-cell-note-n1");
+    fireEvent.click(screen.getByTestId("assets-tab-note"));
+    expect(screen.getByTestId("asset-cell-note-n1")).toBe(cell);
+    await waitFor(() => expect(screen.queryByTestId("asset-cell-file-i1")).toBeNull());
   });
 
   it("卡片是通往详情页的链接（不当场预览）", () => {

@@ -111,6 +111,24 @@ test("骨架懒加载：资产页与详情页都压约 1 秒最小时长", () =>
   assert.match(detail, /data-testid="asset-detail-skeleton"/);
 });
 
+test("切标签的卡片重排动画：layout + popLayout + 尊重减少动态效果", () => {
+  const page = readFile("components/agent/AgentAssetsPage.tsx");
+  const motion = readFile("lib/motion.ts");
+  // 共享弹簧：刚度/阻尼写在 lib/motion.ts，组件不写魔法数字
+  assert.match(motion, /export const LAYOUT_REFLOW: Transition = \{/);
+  assert.match(motion, /export const cardSwapVariants: Variants = \{/);
+  assert.match(page, /import \{ LAYOUT_REFLOW, cardSwapVariants \} from "@\/lib\/motion";/);
+  // 卡片外层 motion.div 带 layout，进出场由 AnimatePresence 接管；popLayout 让退场的先脱离文档流
+  assert.match(page, /<AnimatePresence initial=\{false\} mode="popLayout">/);
+  assert.match(page, /data-testid=\{`asset-cell-\$\{item\.kind\}-\$\{item\.id\}`\}/);
+  assert.match(page, /layout=\{!reducedMotion\}/);
+  assert.match(page, /const reducedMotion = useReducedMotion\(\);/);
+  // 网格与列表两个容器也参与 layout，容器尺寸变化同样动画
+  const gridBlock = page.slice(page.indexOf("data-testid=\"assets-grid\"") - 400, page.indexOf("data-testid=\"assets-grid\""));
+  assert.match(gridBlock, /<motion\.div[\s\S]*layout=\{!reducedMotion\}/);
+  assert.doesNotMatch(page, /visible\.map\(\(item\) => \(\s*<AgentAssetCard/);
+});
+
 test("资产页：卡片更大 + 骨架按视图 + 加载期 aria-busy", () => {
   const card = readFile("components/agent/AgentAssetCard.tsx");
   const page = readFile("components/agent/AgentAssetsPage.tsx");

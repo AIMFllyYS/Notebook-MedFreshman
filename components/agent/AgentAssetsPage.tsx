@@ -1,11 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { LayoutGrid, List, RefreshCw, Search } from "lucide-react";
 import AgentAssetCard from "./AgentAssetCard";
 import { useAgentAssets } from "@/lib/hooks/useAgentAssets";
 import { useIsClient } from "@/lib/hooks/useIsClient";
 import { useMinimumSkeleton } from "@/lib/hooks/useMinimumSkeleton";
+import { LAYOUT_REFLOW, cardSwapVariants } from "@/lib/motion";
 import {
   ASSET_KINDS,
   ASSET_KIND_LABELS,
@@ -61,6 +63,8 @@ export default function AgentAssetsPage() {
   const [viewChoice, setViewChoice] = useState<ViewMode | null>(null);
   const view: ViewMode = viewChoice ?? (mounted ? readStoredView() : "grid");
   const [refreshing, setRefreshing] = useState(false);
+  /** 系统开了「减少动态效果」就退回静态：不加 layout 动画、不做进出场。 */
+  const reducedMotion = useReducedMotion();
 
   const chooseView = (next: ViewMode) => {
     setViewChoice(next);
@@ -83,6 +87,31 @@ export default function AgentAssetsPage() {
       .catch(() => {})
       .finally(() => window.setTimeout(() => setRefreshing(false), 900));
   };
+
+  /**
+   * 卡片渲染器：外层一律是 motion.div + layout —— 切标签时同一张卡在新版式里的位置变了，
+   * framer-motion 会把它从旧位置**滑**到新位置；进出的卡由 AnimatePresence 接管（popLayout：
+   * 退场的先脱离文档流，剩下的立刻开始重排，不会先卡一下再动）。
+   */
+  const renderCards = (mode: "grid" | "list") => (
+    <AnimatePresence initial={false} mode="popLayout">
+      {visible.map((item) => (
+        <motion.div
+          key={`${item.kind}-${item.id}`}
+          data-testid={`asset-cell-${item.kind}-${item.id}`}
+          layout={!reducedMotion}
+          variants={reducedMotion ? undefined : cardSwapVariants}
+          initial={reducedMotion ? false : "initial"}
+          animate={reducedMotion ? undefined : "animate"}
+          exit={reducedMotion ? undefined : "exit"}
+          transition={LAYOUT_REFLOW}
+          className="min-w-0"
+        >
+          <AgentAssetCard item={item} view={mode} />
+        </motion.div>
+      ))}
+    </AnimatePresence>
+  );
 
   const tabs: { id: KindFilter; label: string; count: number }[] = [
     { id: "all", label: "全部", count: counts.all },
@@ -235,17 +264,23 @@ export default function AgentAssetsPage() {
             ) : null}
           </div>
         ) : view === "grid" ? (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4" data-testid="assets-grid">
-            {visible.map((item) => (
-              <AgentAssetCard key={`${item.kind}-${item.id}`} item={item} />
-            ))}
-          </div>
+          <motion.div
+            layout={!reducedMotion}
+            transition={LAYOUT_REFLOW}
+            className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4"
+            data-testid="assets-grid"
+          >
+            {renderCards("grid")}
+          </motion.div>
         ) : (
-          <div className="flex flex-col gap-0.5" data-testid="assets-list">
-            {visible.map((item) => (
-              <AgentAssetCard key={`${item.kind}-${item.id}`} item={item} view="list" />
-            ))}
-          </div>
+          <motion.div
+            layout={!reducedMotion}
+            transition={LAYOUT_REFLOW}
+            className="flex flex-col gap-0.5"
+            data-testid="assets-list"
+          >
+            {renderCards("list")}
+          </motion.div>
         )}
       </div>
     </section>
