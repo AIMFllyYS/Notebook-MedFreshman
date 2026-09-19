@@ -12,6 +12,9 @@ const assetsRef: { value: AssetItem[] | null } = { value: fixtures };
 
 vi.mock("@/lib/hooks/useAgentAssets", () => ({ useAgentAssets: () => assetsRef.value }));
 vi.mock("@/lib/hooks/useIsClient", () => ({ useIsClient: () => true }));
+/** 最小骨架时长：默认在本文件里关掉（否则每个用例都要等 900ms），单独一条用例再打开。 */
+const skeletonOn = { value: false };
+vi.mock("@/lib/hooks/useMinimumSkeleton", () => ({ useMinimumSkeleton: () => skeletonOn.value }));
 const scheduleCloudPull = vi.fn();
 vi.mock("@/lib/sync/schedule", () => ({ scheduleCloudPull: () => scheduleCloudPull() }));
 
@@ -20,6 +23,7 @@ import AgentAssetsPage from "./AgentAssetsPage";
 afterEach(() => {
   cleanup();
   assetsRef.value = fixtures;
+  skeletonOn.value = false;
   vi.clearAllMocks();
   window.localStorage.clear();
 });
@@ -70,9 +74,17 @@ describe("AgentAssetsPage", () => {
 
   it("数据没水合完时给骨架，不显示空态", () => {
     assetsRef.value = null;
+    skeletonOn.value = true;
+    render(<AgentAssetsPage />);
+    expect(screen.getByTestId("assets-skeleton")).toBeInTheDocument();
+    expect(screen.queryByText(/还没有资产/)).toBeNull();
+  });
+
+  it("数据已就绪但还压在最小骨架时长里：仍然显示骨架（约 1 秒后再换内容）", () => {
+    skeletonOn.value = true;
     render(<AgentAssetsPage />);
     expect(screen.getByLabelText("资产加载中")).toBeInTheDocument();
-    expect(screen.queryByText(/还没有资产/)).toBeNull();
+    expect(screen.queryByText("组胚笔记")).toBeNull();
   });
 
   it("刷新只重新对齐云端状态", async () => {

@@ -5,6 +5,7 @@ import { LayoutGrid, List, RefreshCw, Search } from "lucide-react";
 import AgentAssetCard from "./AgentAssetCard";
 import { useAgentAssets } from "@/lib/hooks/useAgentAssets";
 import { useIsClient } from "@/lib/hooks/useIsClient";
+import { useMinimumSkeleton } from "@/lib/hooks/useMinimumSkeleton";
 import {
   ASSET_KINDS,
   ASSET_KIND_LABELS,
@@ -66,6 +67,8 @@ export default function AgentAssetsPage() {
     writeStoredView(next);
   };
 
+  /** 数据就绪后再压一小段（约 1 秒）骨架：本机水合太快，直接换内容会显得跳。 */
+  const showSkeleton = useMinimumSkeleton({ ready: assets !== null });
   const counts = useMemo(() => assetCounts(assets ?? []), [assets]);
   const visible = useMemo(
     () => filterAssets(assets ?? [], { kind, query, sort }),
@@ -174,8 +177,8 @@ export default function AgentAssetsPage() {
         ))}
       </div>
 
-      <div data-testid="assets-body" className="min-h-0 flex-1 overflow-y-auto px-5 py-4" aria-busy={assets === null || undefined}>
-        {assets === null ? (
+      <div data-testid="assets-body" className="min-h-0 flex-1 overflow-y-auto px-5 py-4" aria-busy={showSkeleton || undefined}>
+        {showSkeleton ? (
           // 五个 store（笔记/闪卡/长文/演示/导入记录）要等 IndexedDB 水合完才给数据；
           // 这段骨架**跟着视图走**：橱窗给卡片骨架，列表给行骨架，切过来不会先闪一下另一种版式。
           <div
@@ -185,7 +188,7 @@ export default function AgentAssetsPage() {
             className="animate-fade-up"
           >
             {view === "grid" ? (
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(208px,1fr))] gap-4">
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
                 {Array.from({ length: 8 }, (_, index) => (
                   <div
                     key={index}
@@ -232,7 +235,7 @@ export default function AgentAssetsPage() {
             ) : null}
           </div>
         ) : view === "grid" ? (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(208px,1fr))] gap-4" data-testid="assets-grid">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4" data-testid="assets-grid">
             {visible.map((item) => (
               <AgentAssetCard key={`${item.kind}-${item.id}`} item={item} />
             ))}

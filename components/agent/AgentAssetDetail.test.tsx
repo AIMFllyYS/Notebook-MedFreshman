@@ -29,6 +29,7 @@ const assetsRef: { value: typeof noteItem[] | null } = { value: [noteItem] };
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
 vi.mock("@/lib/hooks/useAgentAssets", () => ({ useAgentAssets: () => assetsRef.value }));
+vi.mock("@/lib/hooks/useMinimumSkeleton", () => ({ useMinimumSkeleton: () => false }));
 vi.mock("@/lib/stores/userNotes", () => ({
   useUserNotes: Object.assign((selector: (s: unknown) => unknown) => selector({ byId: { n1: note } }), {
     getState: () => ({ removeNote }),

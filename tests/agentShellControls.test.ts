@@ -98,12 +98,27 @@ test("右栏按对话隔离：窗口带 sessionId，四处一致筛选，默认�
   assert.match(readFile("lib/hooks/useAgentDockPerSession.ts"), /rememberAgentDockState\(previous, snapshotRef\.current\)/);
 });
 
+test("骨架懒加载：资产页与详情页都压约 1 秒最小时长", () => {
+  const hook = readFile("lib/hooks/useMinimumSkeleton.ts");
+  const page = readFile("components/agent/AgentAssetsPage.tsx");
+  const detail = readFile("components/agent/AgentAssetDetail.tsx");
+  assert.match(hook, /durationMs = 900/);
+  assert.match(hook, /return !ready \|\| elapsedAt === null;/);
+  // 定时器回调里 setState（不是 effect 体内同步 setState），才过得了 react-hooks/set-state-in-effect
+  assert.match(hook, /setTimeout\(\(\) => setElapsedAt\(Date\.now\(\)\), durationMs\)/);
+  assert.match(page, /const showSkeleton = useMinimumSkeleton\(\{ ready: assets !== null \}\);/);
+  assert.match(detail, /const showSkeleton = useMinimumSkeleton\(\{ ready: assets !== null \}\);/);
+  assert.match(detail, /data-testid="asset-detail-skeleton"/);
+});
+
 test("资产页：卡片更大 + 骨架按视图 + 加载期 aria-busy", () => {
   const card = readFile("components/agent/AgentAssetCard.tsx");
   const page = readFile("components/agent/AgentAssetsPage.tsx");
   assert.match(card, /h-\[188px\] flex-col gap-2\.5 rounded-2xl/);
-  assert.match(page, /minmax\(208px,1fr\)\)\] gap-4/);
+  // 卡片左右再拉宽：网格最小列宽 208 → 260（1440 下从 4 列变 3 列，单卡更舒展）
+  assert.match(page, /minmax\(260px,1fr\)\)\] gap-4/);
+  assert.doesNotMatch(page, /minmax\(208px/);
   assert.match(page, /data-testid="assets-skeleton"/);
   assert.match(page, /aria-label="资产加载中"/);
-  assert.match(page, /aria-busy=\{assets === null \|\| undefined\}/);
+  assert.match(page, /aria-busy=\{showSkeleton \|\| undefined\}/);
 });

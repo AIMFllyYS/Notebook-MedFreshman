@@ -8,6 +8,7 @@ import NoteRenderer from "@/components/notes/NoteRenderer";
 import FlipCard from "@/components/review/FlipCard";
 import { AssetKindIcon } from "./AgentAssetCard";
 import { useAgentAssets } from "@/lib/hooks/useAgentAssets";
+import { useMinimumSkeleton } from "@/lib/hooks/useMinimumSkeleton";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useReviewCards } from "@/lib/stores/reviewCards";
 import { useDocuments } from "@/lib/stores/documents";
@@ -46,6 +47,8 @@ export default function AgentAssetDetail({ kind, id }: { kind: AssetKind; id: st
     () => assets?.find((entry) => entry.kind === kind && entry.id === id) ?? null,
     [assets, id, kind],
   );
+  /** 与资产页同一条口径：数据就绪后再压一小段（约 1 秒）骨架，换页不跳。 */
+  const showSkeleton = useMinimumSkeleton({ ready: assets !== null });
 
   const back = (
     <Link href={ASSET_LIST_HREF} className={ACTION_CLASS}>
@@ -160,7 +163,27 @@ export default function AgentAssetDetail({ kind, id }: { kind: AssetKind; id: st
       </header>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
-        {item ? (
+        {showSkeleton ? (
+          <div className="mx-auto flex w-full max-w-[880px] flex-col gap-3" role="status" aria-label="资产加载中" data-testid="asset-detail-skeleton">
+            <div className="flex items-start gap-3">
+              <div className="h-10 w-10 animate-shimmer rounded-xl bg-[var(--bg-muted)]" />
+              <div className="flex min-w-0 flex-1 flex-col gap-2">
+                <div className="h-4 w-[46%] animate-shimmer rounded bg-[var(--bg-muted)]" />
+                <div className="h-3 w-[30%] animate-shimmer rounded bg-[var(--bg-muted)]" />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <div className="h-8 w-24 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
+              <div className="h-8 w-24 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
+              <div className="h-8 w-20 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
+            </div>
+            <div className="flex flex-col gap-2 rounded-xl border border-[var(--line-soft)] bg-[var(--bg-panel)] p-4">
+              {[0, 1, 2, 3, 4, 5].map((index) => (
+                <div key={index} className="h-3.5 animate-shimmer rounded bg-[var(--bg-muted)]" style={{ width: `${92 - index * 8}%` }} />
+              ))}
+            </div>
+          </div>
+        ) : item ? (
           <div className="mx-auto flex w-full max-w-[880px] flex-col gap-3">
             <div className="flex items-start gap-3">
               <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--bg-muted)] text-[var(--md-sys-color-primary)]">
@@ -242,13 +265,10 @@ export default function AgentAssetDetail({ kind, id }: { kind: AssetKind; id: st
               ) : null}
             </div>
           </div>
-        ) : (
-          <div className="flex flex-col gap-2" role="status" aria-label="资产加载中">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="h-12 animate-shimmer rounded-lg bg-[var(--bg-muted)]" />
-            ))}
-          </div>
-        )}
+        ) : null}
+        {/* 上面两个分支已经覆盖全部情形：
+            数据没好 / 还没到最小骨架时长 → 骨架；找到了 → 正文。
+            「数据好了但找不到这件资产」在更早的地方直接返回空态，不会走到这里。 */}
       </div>
     </section>
   );
