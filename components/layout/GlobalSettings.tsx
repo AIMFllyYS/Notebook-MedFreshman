@@ -267,8 +267,8 @@ export default function GlobalSettings({
       role={page ? "region" : "dialog"}
       aria-label="设置"
       data-testid={page ? "global-settings-page" : "global-settings-popover"}
-      initial={page ? false : { opacity: 0, scale: 0.97, y: 6 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
+      initial={page ? false : { opacity: 0, scale: 0.87, y: 5 }}
+      animate={page ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, scale: 0.9, y: 0 }}
       transition={{ duration: 0.18, ease: [0.05, 0.7, 0.1, 1] }}
       className={
         page
