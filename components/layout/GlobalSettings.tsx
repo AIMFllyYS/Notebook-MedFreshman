@@ -383,25 +383,24 @@ export default function GlobalSettings({
             )}
           </div>
 
-          {page ? (
-            <SettingsSection
-              title="额度"
-              icon={<Gauge size={16} />}
-              open={openSection === "quota"}
-              onToggle={() => toggleSection("quota")}
-              summary="会员、平台用量与存储占用"
-              unbounded
-              testId="mobile-settings-quota"
-            >
-              <div className="flex flex-col gap-3">
-                <AccountQuota variant="panel" />
-                <div>
-                  <div className="mb-1.5 text-[12px] font-semibold text-[var(--md-sys-color-on-surface)]">存储额度</div>
-                  <StorageQuotaBlock />
-                </div>
+          {/* 额度与手机设置页共用同一段：桌面弹出面板里默认收起，展开走有界滚动折叠。 */}
+          <SettingsSection
+            title="额度"
+            icon={<Gauge size={16} />}
+            open={openSection === "quota"}
+            onToggle={() => toggleSection("quota")}
+            summary="会员、平台用量与存储占用"
+            unbounded={page}
+            testId="mobile-settings-quota"
+          >
+            <div className="flex flex-col gap-3">
+              <AccountQuota variant="panel" />
+              <div>
+                <div className="mb-1.5 text-[12px] font-semibold text-[var(--md-sys-color-on-surface)]">存储额度</div>
+                <StorageQuotaBlock />
               </div>
-            </SettingsSection>
-          ) : null}
+            </div>
+          </SettingsSection>
 
           <SettingsSection
             title="年级 / 学期"

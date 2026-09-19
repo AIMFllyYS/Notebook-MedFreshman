@@ -57,7 +57,6 @@ vi.mock("./LeftDock", () => ({
     </button>
   ),
 }));
-vi.mock("./UserQuotaPanel", () => ({ default: () => null }));
 vi.mock("./GlobalSettings", () => ({ default: () => null }));
 
 afterEach(() => {

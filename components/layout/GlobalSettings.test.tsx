@@ -168,6 +168,20 @@ describe("GlobalSettings", () => {
     expect(screen.getByRole("button", { name: /年级 \/ 学期/ })).toBeInTheDocument();
   });
 
+  it("popover variant collapses quota into the same fold menu", async () => {
+    const user = userEvent.setup();
+    renderSettings();
+    expect(screen.getByTestId("mobile-settings-quota")).toHaveAccessibleName("额度");
+    expect(screen.getByTestId("mobile-settings-quota").closest("[data-settings-expand]")).toHaveAttribute(
+      "data-settings-expand",
+      "bounded",
+    );
+    expect(screen.queryByText("存储额度")).not.toBeInTheDocument();
+    await user.click(screen.getByTestId("mobile-settings-quota"));
+    expect(await screen.findByText("存储额度")).toBeInTheDocument();
+    expect(screen.getByText(/登录后查看会员与额度|正在读取账户/)).toBeInTheDocument();
+  });
+
   it("page variant opens Agent settings without closing the settings tab", async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();

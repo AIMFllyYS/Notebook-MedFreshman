@@ -19,7 +19,6 @@ import {
 import FolderTreeRow from "./FolderTreeRow";
 import GlobalSettings from "./GlobalSettings";
 import LeftDock from "./LeftDock";
-import UserQuotaPanel from "./UserQuotaPanel";
 import AnimatedCollapse from "@/components/ui/AnimatedCollapse";
 import PencilSparklesIcon from "@/components/icons/PencilSparklesIcon";
 import { AddContentButton } from "@/components/window/WindowTaskbar";
@@ -75,7 +74,6 @@ export default function AgentConversationSidebar({
   const isCollapsed = useStore((s) => s.sidebarCollapsed);
   const setCollapsed = useStore((s) => s.setSidebarCollapsed);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [quotaOpen, setQuotaOpen] = useState(false);
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [mainExpanded, setMainExpanded] = useState(true);
   const [floatingExpanded, setFloatingExpanded] = useState(true);
@@ -436,8 +434,8 @@ export default function AgentConversationSidebar({
       >
         <LeftDock
           buttonRef={settingsBtnRef}
+          settingsOpen={settingsOpen}
           onToggle={() => setSettingsOpen((v) => !v)}
-          onOpenQuota={() => setQuotaOpen(true)}
         />
         <button
           type="button"
@@ -452,9 +450,6 @@ export default function AgentConversationSidebar({
         </button>
       </div>
 
-      {quotaOpen && (
-        <UserQuotaPanel anchorRef={settingsBtnRef} onClose={() => setQuotaOpen(false)} />
-      )}
       {settingsOpen && (
         <GlobalSettings anchorRef={settingsBtnRef} onClose={() => setSettingsOpen(false)} />
       )}
