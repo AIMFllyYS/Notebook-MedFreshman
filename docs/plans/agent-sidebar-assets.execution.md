@@ -131,8 +131,8 @@ console errors: 仅探针自己制造的 500 与未登录的 401
 | 门 | 结果 |
 |---|---|
 | `npx tsc --noEmit` | 0 |
-| `pnpm run test:unit` | **1386 pass / 0 fail**（阶段落地 +45，BUG 修复轮 +11，骨架/卡片轮 +1） |
-| `pnpm run test:react` | **150 文件 / 582 pass**（+5 文件 / +29 用例） |
+| `pnpm run test:unit` | **1387 pass / 0 fail**（阶段落地 +45，BUG 修复轮 +11，后续两轮 +2） |
+| `pnpm run test:react` | **150 文件 / 583 pass**（+5 文件 / +30 用例） |
 | `npx eslint .` | 0 error（warning 90，基线 91） |
 | `npx knip` | 未用文件 3 / 未用导出 14 / 未用类型 1 —— 与基线一致（两轮新增的导出都有消费者） |
 | `pnpm run check:encoding` | 3575 个 Markdown 全部合法 UTF-8 |
@@ -142,8 +142,8 @@ console errors: 仅探针自己制造的 500 与未登录的 401
 
 ```
 npx tsc --noEmit                 → 0
-pnpm run test:unit               → tests 1386 / pass 1386 / fail 0
-pnpm run test:react              → Test Files 150 passed / Tests 582 passed
+pnpm run test:unit               → tests 1387 / pass 1387 / fail 0
+pnpm run test:react              → Test Files 150 passed / Tests 583 passed
 npx eslint .                     → 0 errors, 90 warnings（基线 91）
 npx knip --no-progress           → Unused files 3 / exports 14 / types 1（与基线一致）
 pnpm run check:encoding          → 3575 个 Markdown 均为合法 UTF-8
@@ -248,6 +248,23 @@ html:not([data-theme="light"]) [data-agent-shell] {
 
 **实测**：进资产页时骨架可见 **1025ms**；点卡片进详情页，详情骨架可见 **1190ms**（含路由切换），随后都换成真内容，无 console 报错。
 
+### 9. 切标签时卡片「滑到新位置」（重排动画）
+
+**要的效果**：从「全部」切到「笔记」这类标签切换，留下的卡不是被瞬间重排，而是彼此挪着位过去 —— 有移动的连续感。
+
+**改法**（framer-motion 的 layout 动画，仓库已在用同一套）：
+- `lib/motion.ts` 新增共享常量：`LAYOUT_REFLOW`（spring，stiffness 420 / damping 36 / mass 0.7 —— 够快又不拖尾）与
+  `cardSwapVariants`（进出场只做淡 + 微缩，**位移完全交给 layout**，两套位移一起上会互抢、看起来就是抖）；
+- 资产页的卡片外层统一换成 `motion.div`：`key` 仍是 `kind-id`，所以同一张卡在两次筛选之间**是同一个 React 节点**，
+  framer-motion 才有旧位置可对照、才能滑；外面套 `AnimatePresence mode="popLayout"`，
+  退场的卡先脱离文档流，剩下的立刻开始重排（否则会先卡一下再动）；
+- 网格容器与列表容器本身也带 `layout`，容器尺寸变化一并动画；两种视图共用同一个渲染器，切视图也是滑过去；
+- 尊重系统设置：`useReducedMotion()` 为真时不加 layout、不做进出场，退回静态列表。
+
+**实测**（Playwright 在页面内用 rAF 逐帧采样卡片矩形）：从「全部」（5 张）切到「笔记」（3 张），
+`asset-cell-note-example-user-note` 位移 **418px**，**55 帧里出现 25 个不同的中间位置**（轨迹从 (705,369) 平滑到新槽位），
+另外两张笔记卡本来就在最前、保持不动 —— 正是「该动的动、不该动的不动」。无 console 报错。
+
 ### 本轮新增 / 更新的测试
 
 | 文件 | 覆盖 |
@@ -260,8 +277,16 @@ html:not([data-theme="light"]) [data-agent-shell] {
 | `components/layout/AgentConversationSidebar.test.tsx` | 新增「非对话页点新对话/会话要跳回」；项目删除改二次确认 |
 | `components/window/ManagedWindow.test.tsx` | 停靠用例显式打开右栏（默认已改为收起） |
 
-**本轮门（末次全量）**：`tsc` 0 · `test:unit` 1386/0 · `test:react` 150 文件 / 582 通过 · `eslint` 0 error / 90 warning ·
-`knip` 3/14/1（基线） · `check:encoding` 3575 合法 · 浏览器验收 13/13 + 6/6 + 4/4 PASS。
+**本轮门（末次全量）**：`tsc` 0 · `test:unit` 1387/0 · `test:react` 150 文件 / 583 通过 · `eslint` 0 error / 90 warning ·
+`knip` 3/14/1（基线） · `check:encoding` 3575 合法 · 浏览器验收 13/13 + 6/6 + 4/4 + 3/3 PASS。
+
+## 运维坑（本轮踩到，记下来）
+
+**Next dev 的 `.next` 缓存被写坏会让整个 dev server 空转。** 现象：进程 CPU 疯涨（实测几分钟烧掉 2 万+ CPU 秒、内存 4GB），
+`/agent`、`/login`、连 `/api/health/search` 全部超时，但日志停在「Ready」不再输出编译进度。
+触发路径：在 dev server 正在编译时强杀它（本轮排查重启时连续做了几次）。
+**处置**：`Stop-Process` 掉监听 35349 的进程 → `Remove-Item -Recurse -Force .next`（gitignored 的构建产物）→ 重启 `pnpm dev`。
+冷缓存下首屏要等编译：`/api/health/search` 约 21s、`/agent` 约 12s，之后就正常了。
 
 ## 运维待办
 
