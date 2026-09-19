@@ -44,7 +44,21 @@ console errors: []
 - 数据库：`supabase/migrations/0007_sync_chat_project_kind.sql`（kind 约束 + 重建字节上限函数）。
 - 降级：`isSyncUnknownKindError` 命中时只提示一次「云端还不认识项目名这类数据，已改为只保留本机」，本次会话不再重试该 kind —— 迁移没跑也不会刷屏、不影响其它同步。
 
-**迁移状态：`0007` 已落地仓但尚未在云端执行**（见文末运维待办）。
+**迁移状态：`0007` 已在云端执行（2026-09-20，见文末运维待办与「云端迁移实测」）。**
+
+**云端迁移实测**（Supabase 项目 `jlahwwnjbhqfnsicdjsx` = StudyReview-Platform）
+
+| 检查 | 迁移前 | 迁移后 |
+|---|---|---|
+| `sync_documents_kind_check` | 7 个 kind（无 `chat-project`） | 8 个 kind，含 `'chat-project'` |
+| `sync_documents_enforce_bytes()` | 无 `chat-project` 分支 | 命中 `chat-project` 且含 `32768` |
+| `public.schema_migrations` | 0001–0006 | 0001–**0007**（7 条 checksum 与本地文件逐一相符） |
+| 触发器 `sync_documents_byte_limits` | 在 | 在（重建后仍在） |
+
+外加两条功能证据：
+
+1. **事务内探测**：以真实 `user_id` 插一行 `kind='chat-project'` → 成功（约束与 32 KB 触发器都放行）→ `rollback`；事后 `leftover = 0`，没有留下任何行。
+2. **客户端真跑通**：迁移记录写入后约 10 秒，云端出现两行 `chat-project`（`project-note` / `project-floating`）——用户本机已登录的客户端把两个系统项目推了上来，整条链路（客户端新 kind → 约束 → 行）就此验证，不再需要那条降级提示。
 
 ## 附三 · 我的资产（`feat(agent-assets)`）
 
@@ -145,6 +159,15 @@ git diff --check                 → 0
 
 ## 运维待办
 
-1. **`0007` 迁移还没在云端执行**：项目重命名在此之前只落本机（会有一次提示）。执行方式见 `docs/plans/notes-flashcards-cloud-sync.md` 同款两步：`pnpm db:migrate:status --compare` → `pnpm db:migrate`（会打生产库，需要人确认）。
+1. ~~**`0007` 迁移还没在云端执行**~~ → **已于 2026-09-20 执行完毕**。
+   实际路径不是 `pnpm db:migrate`（它要 `SUPABASE_ACCESS_TOKEN` 环境变量，仓库里没有），而是用**已登录的 Supabase CLI**
+   （`supabase projects list` 能列出项目，说明登录态在）走管理 API：
+   ```powershell
+   supabase db query --linked --project-ref jlahwwnjbhqfnsicdjsx --file supabase/migrations/0007_sync_chat_project_kind.sql
+   # 记账（checksum 用仓库同一套 sha256，保证 db:migrate:status 不会报漂移）
+   supabase db query --linked --project-ref jlahwwnjbhqfnsicdjsx "insert into public.schema_migrations (version, name, checksum) values ('0007','sync_chat_project_kind','<sha256>') on conflict (version) do update set name = excluded.name, checksum = excluded.checksum"
+   ```
+   注意：`--project-ref` 必须和 `--linked` 一起用（CLI 的硬性要求），单独传 ref 会报错。
+   后续迁移照这个路径走即可；`pnpm db:migrate:status --compare` 需要额外提供 `SUPABASE_ACCESS_TOKEN` 才能跑。
 2. 项目文件是纯本机数据：换设备 / 清 IndexedDB 后需要重新导入（这也是「不上云」的代价，已在窗口里写明）。
 3. 本轮的三个新入口都写「本地导入记录」：如果用户大量导入文件，「我的资产 → 文件」会变长——目前没有上限，后续可按 `createdAt` 分页。
