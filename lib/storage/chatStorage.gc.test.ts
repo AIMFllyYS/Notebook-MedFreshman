@@ -106,6 +106,68 @@ test("gcOrphanedChatKeys deletes keys missing from manifest and keeps referenced
   assert.equal(typeof listAllChatKeys, "function");
 });
 
+test("gcOrphanedChatKeys：读不到 manifest 时一个都不删（空 keep 集合 != 真相）", async () => {
+  const { gcOrphanedChatKeys } = await import("./chatStorage.ts");
+  const keys = new Map<string, string>([
+    [chatSessionKey("a"), JSON.stringify([msgWithBlob("blob-a")])],
+    [chatSessionKey("b"), JSON.stringify([msgWithBlob("blob-b")])],
+    [chatBlobKey("blob-a"), "data:image/png;base64,AAA"],
+  ]);
+  const result = await gcOrphanedChatKeys({
+    listKeys: async () => [...keys.keys()],
+    removeKey: async (key) => { keys.delete(key); },
+    loadMessages: async () => null,
+    loadManifest: async () => null,
+  });
+  assert.deepEqual(result.deleted, []);
+  assert.equal(keys.size, 3);
+});
+
+test("gcOrphanedChatKeys：孤儿异常多时整轮放弃（manifest 很可能是被覆盖过的旧/空列表）", async () => {
+  const { gcOrphanedChatKeys } = await import("./chatStorage.ts");
+  const keys = new Map<string, string>();
+  for (const id of ["a", "b", "c", "d", "e"]) keys.set(chatSessionKey(id), JSON.stringify([msgWithBlob("blob-" + id)]));
+  const manifest: ChatManifestV2 = {
+    version: 2,
+    activeSessionId: "fresh",
+    sessions: [{ id: "fresh", title: "新对话", createdAt: 1, updatedAt: 1, messageCount: 0, artifactIds: [] }],
+  };
+  const result = await gcOrphanedChatKeys({
+    listKeys: async () => [...keys.keys()],
+    removeKey: async (key) => { keys.delete(key); },
+    loadMessages: async () => null,
+    loadManifest: async () => manifest,
+  });
+  assert.deepEqual(result.deleted, []);
+  assert.equal(keys.size, 5, "宁可留着孤儿键，也不能在 manifest 不可信时删正文");
+});
+
+test("gcOrphanedChatKeys：存活会话正文读不出来时不动任何附件", async () => {
+  const { gcOrphanedChatKeys } = await import("./chatStorage.ts");
+  const keys = new Map<string, string>([
+    [chatSessionKey("keep"), "NOT-JSON"],
+    [chatSessionKey("orphan"), JSON.stringify([msgWithBlob("blob-o")])],
+    [chatBlobKey("blob-keep-actual"), "data:image/png;base64,AAA"],
+  ]);
+  const manifest: ChatManifestV2 = {
+    version: 2,
+    activeSessionId: "keep",
+    sessions: [{ id: "keep", title: "keep", createdAt: 1, updatedAt: 1, messageCount: 3, artifactIds: [] }],
+  };
+  const result = await gcOrphanedChatKeys({
+    listKeys: async () => [...keys.keys()],
+    removeKey: async (key) => { keys.delete(key); },
+    loadMessages: async (sessionId) => {
+      const raw = keys.get(chatSessionKey(sessionId));
+      if (!raw) return null;
+      try { return JSON.parse(raw) as ChatMessage[]; } catch { return null; }
+    },
+    loadManifest: async () => manifest,
+  });
+  assert.deepEqual(result.deleted, [chatSessionKey("orphan")]);
+  assert.equal(keys.has(chatBlobKey("blob-keep-actual")), true, "keep 集合不完整时不能删附件");
+});
+
 test("listAllChatKeys enumerates session and blob prefixes from local storage", async () => {
   const { listAllChatKeys } = await import("./chatStorage.ts");
   storage.set(chatSessionKey("zzz"), "[]");

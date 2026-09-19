@@ -8,7 +8,7 @@ import {
   type SessionMeta,
 } from "@/lib/storage/chatStorage";
 import { useArtifacts, type Artifact } from "@/lib/stores/artifacts";
-import { useChatHistory } from "@/lib/stores/chatHistory";
+import { ensureChatHistoryBootstrap, useChatHistory } from "@/lib/stores/chatHistory";
 import { useDocuments } from "@/lib/stores/documents";
 import { useUserNotes } from "@/lib/stores/userNotes";
 import { useReviewCards } from "@/lib/stores/reviewCards";
@@ -579,10 +579,14 @@ function capSessions(metas: SessionMeta[]): SessionMeta[] {
   return [...metas].sort((a, b) => b.updatedAt - a.updatedAt).slice(0, MAX_LOCAL_SESSIONS);
 }
 
-function applyChatPayloadToZustand(payload: ChatSessionSyncPayload): void {
+async function applyChatPayloadToZustand(payload: ChatSessionSyncPayload): Promise<void> {
+  // 先等本地水合：未水合时 sessionsMeta 是空的，据此写 manifest 会把盘上真实的会话列表
+  // 覆盖成「只剩云端这一条」。等水合完再合并，顺带也保证拉取不会白跑。
+  await ensureChatHistoryBootstrap().catch(() => {});
   withLocalApply(() => {
     const { meta, messages } = payload;
     const state = useChatHistory.getState();
+    if (!state._hasHydrated) return;
     const sessionsMeta = capSessions([
       meta,
       ...state.sessionsMeta.filter((item) => item.id !== meta.id),
@@ -600,9 +604,12 @@ function applyChatPayloadToZustand(payload: ChatSessionSyncPayload): void {
   });
 }
 
-function forgetLocalSessionInZustand(id: string): void {
+async function forgetLocalSessionInZustand(id: string): Promise<void> {
+  // 同上：等水合完再按本地真实列表重写 manifest。
+  await ensureChatHistoryBootstrap().catch(() => {});
   withLocalApply(() => {
     const state = useChatHistory.getState();
+    if (!state._hasHydrated) return;
     const sessionsMeta = state.sessionsMeta.filter((item) => item.id !== id);
     const { [id]: _drop, ...messagesById } = state.messagesById;
     const deletedActive = state.activeSessionId === id;

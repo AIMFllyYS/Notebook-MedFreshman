@@ -3,6 +3,7 @@ import type { ChatMessage, ChatContext } from '@/lib/types/chat';
 import { useArtifacts } from '@/lib/hooks/useArtifacts';
 import {
   type ChatFolder,
+  type ChatManifestV2,
   type SessionMeta,
   buildSessionMeta,
   mergeArtifactIds,
@@ -54,6 +55,15 @@ interface ChatHistoryState {
   unpinSession: (id: string) => void;
   ensureSessionLoaded: (sessionId: string) => Promise<void>;
   createSession: (context?: ChatContext, kind?: 'main' | 'floating' | 'note') => string;
+  /**
+   * 显式「新建对话」：左栏按钮 / 右键菜单 / 快捷键 / 面板头部都走这里，规则只有一份。
+   * 已经站在一条空白新对话里就什么都不做；否则**复用**最新那条空白 main 会话；都没有才真的新建。
+   * 防的是连点：`MAX_SESSIONS` 到顶后每多建一条，最旧的会话会连同消息一起被删掉。
+   * 未水合时返回 null 并等水合完再做（绝不基于空列表落盘）。
+   */
+  startNewChat: (context?: ChatContext) => string | null;
+  /** 「点了新建、复用了已有空白对话」的累计次数：只给 UI 一次轻反馈用，不落盘。 */
+  blankChatPulse: number;
   deleteSession: (id: string) => void;
   switchSession: (id: string) => void;
   addMessage: (sessionId: string, message: ChatMessage) => void;
@@ -81,6 +91,28 @@ function metaToChatSession(meta: SessionMeta, messages: ChatMessage[]): ChatSess
     kind: meta.kind,
     messageCount: meta.messageCount,
   };
+}
+
+/**
+ * manifest 全量落盘（唯一入口）。
+ *
+ * **未水合前一律不写**：那时 sessionsMeta 还是空数组，写下去等于把盘上真实的会话列表
+ * 覆盖成「只剩刚建的那一条」；紧接着启动期的孤儿 GC 会以 manifest 为唯一真相源，
+ * 把其余会话的消息体全部当成孤儿删掉——2026-09-19 的真实数据事故就是这个链路。
+ * 未水合期间照常改内存，但绝不允许落盘。
+ */
+function persistManifest(state: ChatHistoryState, manifest: ChatManifestV2): void {
+  if (!state._hasHydrated) return;
+  saveManifest(manifest);
+}
+
+/**
+ * 「空白新对话」：main 类型、没归档、一条消息都没有。
+ * 用 meta.messageCount 判定（写在 manifest 里），不依赖消息体是否已从 IndexedDB 加载回来，
+ * 否则一个正在加载的真实对话会被误判成空白。
+ */
+function isBlankMainSession(meta: SessionMeta): boolean {
+  return meta.kind !== 'floating' && meta.kind !== 'note' && !meta.archived && meta.messageCount === 0;
 }
 
 function pruneArtifactsFromMetas(metas: SessionMeta[]): void {
@@ -116,6 +148,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
   pinnedSessionIds: [],
   _hasHydrated: false,
   _activeMessagesReady: false,
+  blankChatPulse: 0,
   _setHasHydrated: (v) => set({ _hasHydrated: v }),
   _setActiveMessagesReady: (v) => set({ _activeMessagesReady: v }),
 
@@ -213,7 +246,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       }
       const messagesById = { ...state.messagesById, [id]: [] };
       for (const dropId of droppedIds) delete messagesById[dropId];
-      saveManifest({
+      persistManifest(state, {
         version: 2,
         activeSessionId: claimActive ? id : state.activeSessionId,
         sessions: capped,
@@ -233,6 +266,51 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     return id;
   },
 
+  startNewChat: (context) => {
+    const state = get();
+    // 还没水合：此刻的 sessionsMeta 是空数组，任何「新建」都会把盘上的真实列表覆盖掉。
+    // 等水合完再按当时的真实列表决定，期间返回 null（调用方都不依赖返回值）。
+    if (!state._hasHydrated) {
+      void ensureChatHistoryBootstrap()
+        .then(() => {
+          get().startNewChat(context);
+        })
+        .catch(() => {
+          // 水合失败就什么都不做：宁可这次点击没反应，也不能基于空列表落盘
+        });
+      return null;
+    }
+    // 先看「脚下这条」：已经站在一条空白新对话里就原地不动
+    // （草稿、输入框实例都原样保留），只放一个脉冲让 UI 提示一下。
+    const active = state.sessionsMeta.find((meta) => meta.id === state.activeSessionId);
+    if (active && isBlankMainSession(active)) {
+      set({ blankChatPulse: state.blankChatPulse + 1 });
+      return active.id;
+    }
+    // 否则复用列表里最近的一条空白新对话（sessionsMeta 新的在前）。
+    const blank = state.sessionsMeta.find(isBlankMainSession);
+    if (!blank) return get().createSession(context);
+    // 复用而不是新建。**不走 switchSession**：它会先从 IndexedDB 读一次消息体，
+    // 而空白会话的消息体可能压根不在盘上，读空会让 loadState 变 'error'；
+    // canSendNow 只认 'loaded'，于是发送被静默挡掉。
+    set({
+      activeSessionId: blank.id,
+      messagesById: state.messagesById[blank.id]
+        ? state.messagesById
+        : { ...state.messagesById, [blank.id]: [] },
+      sessionLoadState: { ...state.sessionLoadState, [blank.id]: 'loaded' },
+      loadedSessionIds: [...state.loadedSessionIds.filter((id) => id !== blank.id), blank.id],
+      _activeMessagesReady: true,
+    });
+    persistManifest(state, {
+      version: 2,
+      activeSessionId: blank.id,
+      sessions: state.sessionsMeta,
+      folders: state.folders,
+    });
+    return blank.id;
+  },
+
   deleteSession: (id) => {
     let nextActiveToLoad: string | null = null;
     set((state) => {
@@ -247,7 +325,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       nextActiveToLoad = deletedActive ? newActiveId : null;
       const { [id]: _drop, ...messagesById } = state.messagesById;
       pruneArtifactsFromMetas(sessionsMeta);
-      saveManifest({ version: 2, activeSessionId: newActiveId, sessions: sessionsMeta, folders: state.folders });
+      persistManifest(state, { version: 2, activeSessionId: newActiveId, sessions: sessionsMeta, folders: state.folders });
       void (async () => {
         const blobIds = await listBlobIdsForSession(id);
         await deleteSessionData(id, blobIds);
@@ -299,7 +377,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
           : s,
       );
       saveSessionMessages(sessionId, messages);
-      saveManifest({
+      persistManifest(state, {
         version: 2,
         activeSessionId: state.activeSessionId,
         sessions: sessionsMeta,
@@ -328,7 +406,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
           : s,
       );
       saveSessionMessages(sessionId, stored);
-      saveManifest({
+      persistManifest(state, {
         version: 2,
         activeSessionId: state.activeSessionId,
         sessions: sessionsMeta,
@@ -365,7 +443,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         });
       saveSessionMessages(sessionId, messages);
       if (shouldSaveManifest) {
-        saveManifest({
+        persistManifest(state, {
           version: 2,
           activeSessionId: state.activeSessionId,
           sessions: sessionsMeta,
@@ -382,7 +460,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       const sessionsMeta = state.sessionsMeta.map((s) =>
         s.id === sessionId ? { ...s, title, updatedAt: Date.now() } : s,
       );
-      saveManifest({
+      persistManifest(state, {
         version: 2,
         activeSessionId: state.activeSessionId,
         sessions: sessionsMeta,
@@ -399,7 +477,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       const sessionsMeta = state.sessionsMeta.map((s) =>
         s.id === sessionId ? { ...s, archived } : s,
       );
-      saveManifest({
+      persistManifest(state, {
         version: 2,
         activeSessionId: state.activeSessionId,
         sessions: sessionsMeta,
@@ -416,7 +494,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
         ...state.folders,
         { id, name: (name ?? '').trim() || `新建文件夹 ${state.folders.length + 1}`, createdAt: Date.now() },
       ];
-      saveManifest({
+      persistManifest(state, {
         version: 2,
         activeSessionId: state.activeSessionId,
         sessions: state.sessionsMeta,
@@ -432,7 +510,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
     if (!next) return;
     set((state) => {
       const folders = state.folders.map((f) => (f.id === folderId ? { ...f, name: next } : f));
-      saveManifest({
+      persistManifest(state, {
         version: 2,
         activeSessionId: state.activeSessionId,
         sessions: state.sessionsMeta,
@@ -448,7 +526,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       const sessionsMeta = state.sessionsMeta.map((s) =>
         s.folderId === folderId ? { ...s, folderId: null } : s,
       );
-      saveManifest({
+      persistManifest(state, {
         version: 2,
         activeSessionId: state.activeSessionId,
         sessions: sessionsMeta,
@@ -464,7 +542,7 @@ export const useChatHistory = create<ChatHistoryState>()((set, get) => ({
       const sessionsMeta = state.sessionsMeta.map((s) =>
         s.id === sessionId ? { ...s, folderId } : s,
       );
-      saveManifest({
+      persistManifest(state, {
         version: 2,
         activeSessionId: state.activeSessionId,
         sessions: sessionsMeta,

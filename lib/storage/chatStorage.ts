@@ -356,6 +356,12 @@ export async function listAllChatKeys(): Promise<string[]> {
   );
 }
 
+/**
+ * 单轮 GC 允许删除的会话键上限。超过就认为 manifest 不可信、整轮放弃——
+ * 正常情况只有「超出 50 条上限被淘汰」这类零星孤儿，绝不会有大批量同时失效。
+ */
+const MAX_ORPHAN_DELETIONS = 3;
+
 export interface ChatGcDeps {
   listKeys?: () => Promise<string[]>;
   removeKey?: (key: string) => Promise<void>;
@@ -375,22 +381,35 @@ export async function gcOrphanedChatKeys(deps: ChatGcDeps = {}): Promise<{ delet
 
   flushPendingWrites();
   const manifest = await readManifest();
-  const keepSessions = new Set((manifest?.sessions ?? []).map((s) => s.id));
+  // 读不到 manifest 时**绝不能**把「keep 集合为空」当成真相：那等于一次删光所有会话正文。
+  if (!manifest) return { deleted: [] };
+  const keepSessions = new Set(manifest.sessions.map((s) => s.id));
   const keys = await listKeys();
   const deleted: string[] = [];
 
-  for (const key of keys) {
-    if (!key.startsWith(CHAT_SESSION_KEY_PREFIX)) continue;
+  const orphanSessionKeys = keys.filter((key) => {
+    if (!key.startsWith(CHAT_SESSION_KEY_PREFIX)) return false;
     const sessionId = key.slice(CHAT_SESSION_KEY_PREFIX.length);
-    if (!sessionId || keepSessions.has(sessionId)) continue;
+    return Boolean(sessionId) && !keepSessions.has(sessionId);
+  });
+  // 孤儿异常多 = manifest 很可能不是真相（被空列表/旧列表覆盖过、或水合失败）。
+  // 这时**一个都不删**：误删正文是不可逆的，留几个孤儿键只是占点空间。
+  if (orphanSessionKeys.length > MAX_ORPHAN_DELETIONS) return { deleted: [] };
+
+  for (const key of orphanSessionKeys) {
     await removeKey(key);
     deleted.push(key);
   }
 
+  // 附件清理依赖「所有存活会话的正文都能读出来」。只要有一个存活会话的键在、正文却读不出来，
+  // keep 集合就不完整，这一轮不动任何 blob（否则会把它们的附件误判成孤儿删掉）。
   const keepBlobs = new Set<string>();
   for (const sessionId of keepSessions) {
     const messages = await loadMessages(sessionId);
-    if (!messages) continue;
+    if (!messages) {
+      if (keys.includes(CHAT_SESSION_KEY_PREFIX + sessionId)) return { deleted };
+      continue;
+    }
     for (const blobId of extractBlobIdsFromMessages(messages)) keepBlobs.add(blobId);
   }
 

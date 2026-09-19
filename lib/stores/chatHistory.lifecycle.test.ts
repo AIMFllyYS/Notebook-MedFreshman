@@ -77,8 +77,9 @@ beforeEach(async () => {
     sessionLoadState: {},
     loadedSessionIds: [],
     pinnedSessionIds: [],
-    _hasHydrated: false,
-    _activeMessagesReady: false,
+    _hasHydrated: true,
+    _activeMessagesReady: true,
+    blankChatPulse: 0,
   });
 });
 
@@ -261,5 +262,150 @@ test("updateMessage on an evicted session does not write the shard back", async 
   useChatHistory.getState().updateMessage(evicted, "m1", { parts: [{ type: "text", text: "ghost" }] });
   await waitForPendingWrites();
   assert.equal(storage.get(chatSessionKey(evicted)), undefined);
+});
+
+describe("chatHistory.startNewChat", { concurrency: false }, () => {
+  const main = (id: string, messageCount = 0, extra: Partial<SessionMeta> = {}): SessionMeta => ({
+    id,
+    title: "新对话",
+    createdAt: 1,
+    updatedAt: 1,
+    messageCount,
+    artifactIds: [],
+    ...extra,
+  });
+
+  test("连点：已经在空白新对话里就复用，不再落第二条", async () => {
+    const { useChatHistory } = await import("./chatHistory.ts");
+    const first = useChatHistory.getState().startNewChat({ subjectId: "probability", categoryId: "", itemId: "", currentTopic: "" });
+    const second = useChatHistory.getState().startNewChat();
+    const third = useChatHistory.getState().startNewChat();
+    assert.equal(second, first);
+    assert.equal(third, first);
+    assert.equal(useChatHistory.getState().sessionsMeta.length, 1);
+    // 三次点击里有两次是「复用当前这条」，脉冲记两次给 UI 提示
+    assert.equal(useChatHistory.getState().blankChatPulse, 2);
+  });
+
+  test("发过消息之后再点才真的新建", async () => {
+    const { useChatHistory } = await import("./chatHistory.ts");
+    const first = useChatHistory.getState().startNewChat();
+    assert.ok(first);
+    useChatHistory.getState().addMessage(first, msg("m1", "问了一句"));
+    const second = useChatHistory.getState().startNewChat();
+    assert.notEqual(second, first);
+    assert.equal(useChatHistory.getState().sessionsMeta.length, 2);
+    assert.equal(useChatHistory.getState().activeSessionId, second);
+  });
+
+  test("已经站在空白对话里：不跳走、不新建，只记一次脉冲", async () => {
+    const { useChatHistory } = await import("./chatHistory.ts");
+    useChatHistory.setState({
+      sessionsMeta: [main("newer-blank"), main("older-blank")],
+      messagesById: {},
+      activeSessionId: "older-blank",
+      sessionLoadState: {},
+      loadedSessionIds: [],
+      pinnedSessionIds: [],
+      _hasHydrated: true,
+      _activeMessagesReady: true,
+    });
+    const id = useChatHistory.getState().startNewChat();
+    assert.equal(id, "older-blank");
+    assert.equal(useChatHistory.getState().sessionsMeta.length, 2);
+    assert.equal(useChatHistory.getState().blankChatPulse, 1);
+  });
+
+  test("人在真实对话里：复用列表里最新那条空白，且接上后可直接发送", async () => {
+    const { canSendNow } = await import("@/lib/chat/canSendNow");
+    const { useChatHistory } = await import("./chatHistory.ts");
+    useChatHistory.setState({
+      sessionsMeta: [main("blank"), main("real", 4)],
+      messagesById: { real: [msg("m1", "旧消息")] },
+      activeSessionId: "real",
+      sessionLoadState: { real: "loaded" },
+      loadedSessionIds: ["real"],
+      pinnedSessionIds: [],
+      _hasHydrated: true,
+      _activeMessagesReady: true,
+    });
+    const id = useChatHistory.getState().startNewChat();
+    const state = useChatHistory.getState();
+    assert.equal(id, "blank");
+    assert.equal(state.sessionsMeta.length, 2);
+    assert.equal(state.activeSessionId, "blank");
+    // 复用路径必须自己把会话标成「已加载」：否则 canSendNow 会静默挡住发送
+    assert.equal(state.sessionLoadState.blank, "loaded");
+    assert.ok(state.messagesById.blank);
+    assert.equal(canSendNow(state), true);
+    assert.equal(state.blankChatPulse, 0);
+  });
+
+  test("未水合前不落盘：createSession 照常建，但 manifest 不会被空列表覆盖", async () => {
+    const { useChatHistory } = await import("./chatHistory.ts");
+    useChatHistory.setState({ _hasHydrated: false, _activeMessagesReady: false });
+    useChatHistory.getState().createSession();
+    await waitForPendingWrites();
+    // 未水合 → 守卫拦下写入：盘上不会出现「只剩这一条」的 manifest
+    assert.equal(storage.get(PERSIST_KEYS.chatManifest), undefined);
+
+    useChatHistory.setState({ _hasHydrated: true });
+    useChatHistory.getState().createSession();
+    await waitForPendingWrites();
+    const manifest = JSON.parse(storage.get(PERSIST_KEYS.chatManifest) ?? "{}");
+    assert.equal(manifest.sessions.length, 2);
+  });
+
+  test("未水合时 startNewChat 不新建、不落盘，返回 null（等水合后再决定）", async () => {
+    const { useChatHistory } = await import("./chatHistory.ts");
+    useChatHistory.setState({ _hasHydrated: false, _activeMessagesReady: false });
+    const before = useChatHistory.getState().sessionsMeta.length;
+    const id = useChatHistory.getState().startNewChat();
+    // 未水合：这一下点击既不新建也不落盘（水合完成后才由延后逻辑兑现）
+    assert.equal(id, null);
+    assert.equal(useChatHistory.getState().sessionsMeta.length, before);
+    assert.equal(storage.get(PERSIST_KEYS.chatManifest), undefined);
+    await waitForPendingWrites();
+  });
+
+  test("归档的空白、划词/笔记会话都不算「空白新对话」", async () => {
+    const { useChatHistory } = await import("./chatHistory.ts");
+    useChatHistory.setState({
+      sessionsMeta: [
+        main("archived-blank", 0, { archived: true }),
+        main("float-blank", 0, { kind: "floating" }),
+        main("note-blank", 0, { kind: "note" }),
+      ],
+      messagesById: {},
+      activeSessionId: null,
+      sessionLoadState: {},
+      loadedSessionIds: [],
+      pinnedSessionIds: [],
+      _hasHydrated: true,
+      _activeMessagesReady: true,
+    });
+    const id = useChatHistory.getState().startNewChat();
+    assert.notEqual(id, "archived-blank");
+    assert.notEqual(id, "float-blank");
+    assert.notEqual(id, "note-blank");
+    assert.equal(useChatHistory.getState().sessionsMeta.length, 4);
+  });
+
+  test("消息没加载回来的真实对话不会被误判成空白（messageCount 说话）", async () => {
+    const { useChatHistory } = await import("./chatHistory.ts");
+    useChatHistory.setState({
+      sessionsMeta: [main("real", 6)],
+      messagesById: {},          // 消息体还在 IndexedDB 里，没加载
+      activeSessionId: "real",
+      sessionLoadState: { real: "idle" },
+      loadedSessionIds: [],
+      pinnedSessionIds: [],
+      _hasHydrated: true,
+      _activeMessagesReady: false,
+    });
+    const id = useChatHistory.getState().startNewChat();
+    assert.notEqual(id, "real");
+    assert.equal(useChatHistory.getState().sessionsMeta.length, 2);
+  });
 });
 });
